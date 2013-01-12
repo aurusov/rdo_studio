@@ -401,7 +401,7 @@ void LogView::push_back(CREF(tstring) log)
 	rsint lastString = m_strings.count() - 1;
 	if (lastString == 1)
 	{
-		setUpActionFind(isActivated());
+		updateActionFind(isActivated());
 	}
 
 	if (m_drawLog)
@@ -567,8 +567,8 @@ rsint LogView::selectedLine() const
 void LogView::setSelectedLine(rsint selectedLine)
 {
 	m_selectedLine = selectedLine;
-	setUpActionEditCopy(isActivated());
-	setUpCoordStatusBar(isActivated());
+	updateActionEditCopy(isActivated());
+	setUpCoordStatusBar (isActivated());
 }
 
 tstring LogView::getString(rsint index) const
@@ -746,7 +746,7 @@ void LogView::setFont()
 	m_charWidth  = fontMetrics.averageCharWidth(); // fontMetrics.maxWidth()
 }
 
-void LogView::setUpActionFind(rbool activate)
+void LogView::updateActionFind(rbool activate)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
@@ -790,7 +790,7 @@ void LogView::setUpActionFind(rbool activate)
 	}
 }
 
-void LogView::setUpActionEditCopy(rbool activate)
+void LogView::updateActionEditCopy(rbool activate)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
@@ -859,7 +859,7 @@ rsint LogView::find(rbool searchDown)
 void LogView::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
-	setUpActionFind(isActivated());
+	updateActionFind(isActivated());
 	onSearchFindNext();
 }
 
@@ -1074,8 +1074,8 @@ void LogView::onUpdateActions(rbool activated)
 		this, "onHelpContext()"
 	);
 
-	setUpActionFind    (activated);
-	setUpActionEditCopy(activated);
+	updateActionFind    (activated);
+	updateActionEditCopy(activated);
 	setUpCoordStatusBar(activated);
 
 	pMainWindow->statusBar()->update<StatusBar::SB_MODIFY>(activated

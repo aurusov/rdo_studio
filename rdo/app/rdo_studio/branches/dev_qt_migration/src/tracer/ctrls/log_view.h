@@ -143,29 +143,29 @@ private:
 	rsint selectedLine() const;
 	void  setSelectedLine(rsint selectedLine);
 
-	tstring     getString          (rsint index) const;
-	tstring     getSelected        () const;
+	tstring     getString           (rsint index) const;
+	tstring     getSelected         () const;
 
-	QScrollBar& getVertScrollBar   ();
-	QScrollBar& getHorzScrollBar   ();
-	void        updateScrollBars   ();
-	rbool       scrollVertically   (rsint pos);
-	rbool       scrollHorizontally (rsint pos);
+	QScrollBar& getVertScrollBar    ();
+	QScrollBar& getHorzScrollBar    ();
+	void        updateScrollBars    ();
+	rbool       scrollVertically    (rsint pos);
+	rbool       scrollHorizontally  (rsint pos);
 
-	rbool       makeLineVisible    (rsint index);
-	rbool       isFullyVisible     (rsint index) const;
-	QRect       getLineRect        (rsint index) const;
-	void        repaintLine        (rsint index);
+	rbool       makeLineVisible     (rsint index);
+	rbool       isFullyVisible      (rsint index) const;
+	QRect       getLineRect         (rsint index) const;
+	void        repaintLine         (rsint index);
 
-	void        setFont            ();
-	void        setUpActionFind    (rbool activate);
-	void        setUpActionEditCopy(rbool activate);
-	void        setUpCoordStatusBar(rbool activate);
-	rbool       canCopy            () const;
+	void        setFont             ();
+	void        updateActionFind    (rbool activate);
+	void        updateActionEditCopy(rbool activate);
+	void        setUpCoordStatusBar (rbool activate);
+	rbool       canCopy             () const;
 
-	rsint       find               (rbool searchDown);
-	void        onFindDlgFind      (CREF(FindDialog::Settings) settings);
-	void        onFindDlgClose     ();
+	rsint       find                (rbool searchDown);
+	void        onFindDlgFind       (CREF(FindDialog::Settings) settings);
+	void        onFindDlgClose      ();
 
 	virtual void resizeEvent    (QResizeEvent* pEvent);
 	virtual void paintEvent     (QPaintEvent*  pEvent);

@@ -840,7 +840,7 @@ void RDOStudioModel::openModelFromRepository()
 	studioApp.getMainWndUI()->statusBar()->endProgress();
 
 	updateFrmDescribed();
-	setUpActions();
+	updateActions();
 
 	if (active) active->SetFocus();
 }
@@ -928,7 +928,7 @@ void RDOStudioModel::saveModelToRepository()
 	{
 		updateFrmDescribed();
 	}
-	setUpActions();
+	updateActions();
 }
 
 void RDOStudioModel::saveToXML()
@@ -1161,7 +1161,7 @@ void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 			}
 		}
 	}
-	setUpActions();
+	updateActions();
 }
 
 tstring RDOStudioModel::getLastBreakPointName()
@@ -1185,7 +1185,7 @@ void RDOStudioModel::setSpeed(double persent)
 		{
 			sendMessage(kernel->runtime(), RT_RUNTIME_SET_SPEED, &m_speed);
 		}
-		setUpActions();
+		updateActions();
 	}
 }
 
@@ -1203,7 +1203,7 @@ void RDOStudioModel::setShowRate(double value)
 	{
 		m_showRate = value;
 		sendMessage(kernel->runtime(), RT_RUNTIME_SET_SHOWRATE, &m_showRate);
-		setUpActions();
+		updateActions();
 	}
 }
 
@@ -1245,16 +1245,16 @@ rbool RDOStudioModel::hasModel() const
 void RDOStudioModel::setHasModel(rbool value)
 {
 	m_GUI_HAS_MODEL = value;
-	setUpActions();
+	updateActions();
 }
 
 void RDOStudioModel::setCanRun(rbool value)
 {
 	m_GUI_CAN_RUN = value;
-	setUpActions();
+	updateActions();
 }
 
-void RDOStudioModel::setUpActions()
+void RDOStudioModel::updateActions()
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	if (!pMainWindow)
@@ -1459,7 +1459,7 @@ rbool RDOStudioModel::isRunning() const
 void RDOStudioModel::setIsRunning(rbool value)
 {
 	m_GUI_IS_RUNNING = value;
-	setUpActions();
+	updateActions();
 }
 
 rbool RDOStudioModel::isFrmDescribed() const
@@ -1489,7 +1489,7 @@ REF(RDOStudioFrameManager) RDOStudioModel::getFrameManager()
 
 void RDOStudioModel::onChangeFrame(ruint)
 {
-	setUpActions();
+	updateActions();
 }
 
 PTR(RPViewQt) RDOStudioModel::getProcView()
@@ -1599,5 +1599,5 @@ void RDOStudioModel::onModelSpeedValueChanged(int value)
 
 void RDOStudioModel::onEditModifyChanged(bool)
 {
-	setUpActions();
+	updateActions();
 }
