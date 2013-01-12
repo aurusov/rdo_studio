@@ -568,7 +568,7 @@ void LogView::setSelectedLine(rsint selectedLine)
 {
 	m_selectedLine = selectedLine;
 	updateActionEditCopy(isActivated());
-	setUpCoordStatusBar (isActivated());
+	updateCoordStatusBar(isActivated());
 }
 
 tstring LogView::getString(rsint index) const
@@ -782,7 +782,7 @@ void LogView::updateActionEditCopy(rbool activated)
 	);
 }
 
-void LogView::setUpCoordStatusBar(rbool activated)
+void LogView::updateCoordStatusBar(rbool activated)
 {
 	QString coord = activated && selectedLine() != -1
 		? QString("1 : %1").arg(selectedLine())
@@ -1045,7 +1045,7 @@ void LogView::onUpdateActions(rbool activated)
 
 	updateActionFind    (activated);
 	updateActionEditCopy(activated);
-	setUpCoordStatusBar(activated);
+	updateCoordStatusBar(activated);
 
 	pMainWindow->statusBar()->update<StatusBar::SB_MODIFY>(activated
 		? "Только чтение"

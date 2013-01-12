@@ -160,7 +160,7 @@ private:
 	void        setFont             ();
 	void        updateActionFind    (rbool activated);
 	void        updateActionEditCopy(rbool activated);
-	void        setUpCoordStatusBar (rbool activated);
+	void        updateCoordStatusBar(rbool activated);
 	rbool       canCopy             () const;
 
 	rsint       find                (rbool searchDown);
