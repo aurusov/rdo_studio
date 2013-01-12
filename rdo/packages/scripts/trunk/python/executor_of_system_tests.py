@@ -282,7 +282,7 @@ for task in files:
             print u'CHECK SIM EXIT CODE  :', simulation_exit_code_string    
             
             # nornal simulation check
-            if simulation_code != RDO_CONSOLE_TERMINATION_NORMAL:
+            if simulation_code == RDO_CONSOLE_TERMINATION_NORMAL:
 
                 command = (rdo_test_ex + ' -T ' + wrap_the_string_in_quotes(etalon_trace) + ' -R ' + wrap_the_string_in_quotes(etalon_result) 
                                        + ' -t ' + wrap_the_string_in_quotes(simulation_trace) + ' -r ' + wrap_the_string_in_quotes(simulation_result)
