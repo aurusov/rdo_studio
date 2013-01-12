@@ -408,7 +408,7 @@ void RDOBaseEdit::onSearchFind()
 void RDOBaseEdit::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
-	setUpActionFind(isActivated());
+	updateActionFind(isActivated());
 	onSearchFindNext();
 }
 
@@ -527,21 +527,21 @@ void RDOBaseEdit::onSearchReplace()
 void RDOBaseEdit::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
-	setUpActionFind(isActivated());
+	updateActionFind(isActivated());
 	findNext(m_findReplaceSettings.what, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
 }
 
 void RDOBaseEdit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
-	setUpActionFind(isActivated());
+	updateActionFind(isActivated());
 	replace(m_findReplaceSettings.what, m_findReplaceSettings.byWhat, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
 }
 
 void RDOBaseEdit::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
-	setUpActionFind(isActivated());
+	updateActionFind(isActivated());
 	replaceAll(m_findReplaceSettings.what, m_findReplaceSettings.byWhat, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
 }
 
@@ -1405,7 +1405,7 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 		this, "onSearchFind()"
 	);
 
-	setUpActionFind    (activated);
+	updateActionFind(activated);
 
 	QString modify = activated
 		? isReadOnly()
@@ -1430,7 +1430,7 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 	pMainWindow->statusBar()->update<StatusBar::SB_OVERWRITE>(overwrite);
 }
 
-void RDOBaseEdit::setUpActionFind(rbool activate)
+void RDOBaseEdit::updateActionFind(rbool activate)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);

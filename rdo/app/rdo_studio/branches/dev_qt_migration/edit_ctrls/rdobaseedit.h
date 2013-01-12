@@ -85,8 +85,6 @@ private:
 	afx_msg void OnSearchFindNextFast();
 	afx_msg void OnSearchFindPreviousFast();
 
-	void setUpActionFind(rbool activate);
-
 	void onFindDlgFind(CREF(FindDialog::Settings) settings);
 	void onFindDlgClose();
 
@@ -94,6 +92,8 @@ private:
 	void onFindReplaceDlgReplace   (CREF(FindReplaceDialog::Settings) settings);
 	void onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings);
 	void onFindReplaceDlgClose     ();
+
+	void updateActionFind(rbool activate);
 
 private slots:
 	void catchNeedShown(int position, int length);
