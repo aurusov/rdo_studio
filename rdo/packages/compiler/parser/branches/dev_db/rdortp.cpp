@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -91,7 +92,9 @@ void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream) const
 
 int RDORTPResType::serializeInDB(REF(InterfaceDB) db) const
 {
-	db.insertRow("rtp", "DEFAULT,'" + QString(name().c_str()) + "'," + (m_permanent ? "true" : "false"));
+	db.insertRow("rtp",QString("DEFAULT,'%1',%2")
+		.arg(QString::fromStdString(name())
+		.arg(m_permanent ? "true" : "false")));
 
 	QSqlQuery query;
 	query.exec("select max(r_t_id) as alt from rtp;");
@@ -100,7 +103,10 @@ int RDORTPResType::serializeInDB(REF(InterfaceDB) db) const
 
 	BOOST_FOREACH(CREF(LPRDORTPParam) param, m_params)
 	{
-		db.insertRow("param_of_type","DEFAULT,'" + QString(param->name().c_str()) + "'," + QString::number(rtp_id) + "," + QString::number(param->serializeInDB(db)));
+		db.insertRow("param_of_type",QString("DEFAULT,'%1',%2,%3")
+			.arg(QString::fromStdString(param->name())
+			.arg(rtp_id)
+			.arg(param->serializeInDB(db))));
 	}
 
 	return rtp_id;

@@ -30,7 +30,6 @@ public:
 	CREF(RDOParserSrcInfo) src_info  (CREF(RDOParserSrcInfo) srcInfo) const;
 	LPTypeInfo             type_cast (CREF(LPTypeInfo) pFrom, CREF(RDOParserSrcInfo) src_info) const;
 	LPRDOValue             value_cast(CREF(LPRDOValue) pValue) const;
-	LPRDOType              get_type  () { return m_pType; }
 
 protected:
 	TypeInfo(CREF(LPTypeInfo) pTypeInfo);

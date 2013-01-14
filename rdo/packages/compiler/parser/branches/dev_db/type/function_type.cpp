@@ -48,6 +48,11 @@ rdo::runtime::RDOType::TypeID FunctionParamType::typeID() const
 	return rdo::runtime::RDOType::t_unknow;
 }
 
+int FunctionParamType::serializeInDB(REF(InterfaceDB) db) const
+{
+	return -1;
+}
+
 tstring FunctionParamType::name() const
 {
 	return src_text();

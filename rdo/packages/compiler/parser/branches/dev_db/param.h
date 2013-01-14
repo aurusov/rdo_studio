@@ -30,9 +30,9 @@ CLASS(RDOParam):
 {
 DECLARE_FACTORY(RDOParam)
 public:
-	CREF(tstring)    name       () const { return src_info().src_text(); }
-	LPTypeInfo       getTypeInfo() const { return m_pType;               }
-	CREF(LPRDOValue) getDefault () const { return m_pDefault;            }
+	CREF(tstring)    name       () const;
+	LPTypeInfo       getTypeInfo() const;
+	CREF(LPRDOValue) getDefault () const;
 
 protected:
 	RDOParam(CREF(tstring)          name,    CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault = LPRDOValue(NULL));

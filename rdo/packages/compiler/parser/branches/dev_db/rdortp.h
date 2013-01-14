@@ -13,7 +13,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 #include "simulator/compiler/parser/rdo_object.h"
