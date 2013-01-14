@@ -425,7 +425,11 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\headers\db\general_db.h"
+			RelativePath="..\..\src\db\general_db.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\headers\db\interface_db.h"
 			>
 		</File>
 	</Files>

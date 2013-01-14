@@ -15,7 +15,7 @@
 #include <iostream>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\compiler\parser\headers\db\general_db.h"
+#include "simulator\compiler\parser\src\db\general_db.h"
 // --------------------------------------------------------------------------------
 
 GeneralDB::GeneralDB()
