@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/result/result_group.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -56,9 +57,9 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
 			if (m_streamTable.is_open())
 			{
-				STL_FOR_ALL_CONST(m_resultList, it)
+				BOOST_FOREACH(const LPIResult& pResult, m_resultList)
 				{
-					LPIResultGetValue pGetValue = (*it);
+					LPIResultGetValue pGetValue = pResult;
 					if (pGetValue)
 					{
 						LPIName pName = pGetValue;
@@ -71,9 +72,9 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 		}
 	}
 
-	STL_FOR_ALL(m_resultList, it)
+	BOOST_FOREACH(LPIResult& pResult, m_resultList)
 	{
-		(*it)->resetResult(pRuntime);
+		pResult->resetResult(pRuntime);
 	}
 }
 
@@ -82,9 +83,9 @@ void RDOPMDResultGroup::checkResult(CREF(LPRDORuntime) pRuntime)
 	if (m_state == RGS_STOP)
 		return;
 
-	STL_FOR_ALL(m_resultList, it)
+	BOOST_FOREACH(LPIResult& pResult, m_resultList)
 	{
-		(*it)->checkResult(pRuntime);
+		pResult->checkResult(pRuntime);
 	}
 }
 
@@ -106,11 +107,11 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) 
 	}
 
 	rbool tableWrite = false;
-	STL_FOR_ALL(m_resultList, it)
+	BOOST_FOREACH(LPIResult& pResult, m_resultList)
 	{
 		rdo::textstream textStream;
 
-		(*it)->calcStat(pRuntime, textStream);
+		pResult->calcStat(pRuntime, textStream);
 
 		stream << textStream.str();
 		if (m_streamFull.is_open())
@@ -118,7 +119,7 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) 
 			m_streamFull << textStream.str();
 		}
 
-		LPIResultGetValue pGetValue = (*it);
+		LPIResultGetValue pGetValue = pResult;
 		if (pGetValue)
 		{
 			if (pGetValue->getValue().typeID() != RDOType::t_real)
