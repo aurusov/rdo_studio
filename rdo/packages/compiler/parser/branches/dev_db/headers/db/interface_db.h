@@ -17,7 +17,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-class InterfaceDB
+class IDB
 {
 public:
 	virtual void insertRow      (const QString& tableName, const QString& qRow) = 0;

@@ -17,7 +17,7 @@
 #include "simulator\compiler\parser\headers\db\interface_db.h"
 // --------------------------------------------------------------------------------
 
-class GeneralDB: public InterfaceDB
+class GeneralDB: public IDB
 {
 public:
 	GeneralDB();

@@ -191,7 +191,7 @@ void RDOType__int::writeModelStructure(REF(rdo::ostream) stream) const
 	stream << _T("I") << std::endl;
 }
 
-int RDOType__int::serializeInDB(REF(InterfaceDB) db) const
+int RDOType__int::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("int","DEFAULT,NULL,NULL,NULL");
 

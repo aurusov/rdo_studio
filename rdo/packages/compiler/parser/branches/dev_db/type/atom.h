@@ -34,7 +34,7 @@ public:                                                   \
 	{}                                                    \
 	DECLARE_IType;                                        \
 	DECLARE_IModelStructure;                              \
-	virtual int serializeInDB(REF(InterfaceDB) db) const; \
+	virtual int serializeInDB(REF(IDB) db) const; \
 };                                                        \
 DECLARE_POINTER(RDOType__##Type);
 

@@ -81,7 +81,7 @@ public:
 
 	void writeModelStructure(REF(rdo::ostream) stream) const;
 
-	virtual int serializeInDB(REF(InterfaceDB) db) const;
+	virtual int serializeInDB(REF(IDB) db) const;
 
 	DECLARE_IType;
 

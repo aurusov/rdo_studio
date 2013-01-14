@@ -22,7 +22,7 @@
 // --------------------------------------------------------------------------------
 
 
-void eraseMap(InterfaceDB::enumContainer& enumCont)
+void eraseMap(IDB::enumContainer& enumCont)
 {
 	while(!enumCont.empty())
 	{
@@ -38,12 +38,12 @@ int main(int argc, char *argv[])
 
 	QCoreApplication app(argc, argv);
 
-	InterfaceDB db;
+	IDB db;
 
 	QTextCodec* codec = QTextCodec::codecForName("CP1251");
 	QTextCodec::setCodecForCStrings(codec);
 
-	InterfaceDB::enumContainer enumCont;
+	IDB::enumContainer enumCont;
 
 	db.insertIntRow();
 

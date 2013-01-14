@@ -90,7 +90,7 @@ void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream) const
 	}
 }
 
-int RDORTPResType::serializeInDB(REF(InterfaceDB) db) const
+int RDORTPResType::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("rtp",QString("DEFAULT,'%1',%2")
 		.arg(QString::fromStdString(name())

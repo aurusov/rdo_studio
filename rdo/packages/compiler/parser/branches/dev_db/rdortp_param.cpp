@@ -39,7 +39,7 @@ void RDORTPParam::writeModelStructure(REF(rdo::ostream) stream) const
 	getTypeInfo()->type()->writeModelStructure(stream);
 }
 
-int RDORTPParam::serializeInDB(REF(InterfaceDB) db) const
+int RDORTPParam::serializeInDB(REF(IDB) db) const
 {
 	return this->getTypeInfo()->type()->serializeInDB(db);
 }
