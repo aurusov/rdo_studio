@@ -29,6 +29,7 @@ public:
 		tstring what;
 		tstring byWhat;
 		rbool   matchCase;
+		rbool   searchDown;
 		rbool   matchWholeWord;
 
 		Settings();

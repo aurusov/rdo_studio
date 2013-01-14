@@ -15,6 +15,7 @@
 #include <QtGui/qdialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/ui_find_dialog.h"
+#include "app/rdo_studio_mfc/src/dialog/find_replace_dialog.h"
 // --------------------------------------------------------------------------------
 
 class FindDialog
@@ -24,13 +25,8 @@ class FindDialog
 Q_OBJECT
 
 public:
-	struct Settings
+	struct Settings : public FindReplaceDialog::Settings
 	{
-		tstring what;
-		rbool   matchCase;
-		rbool   matchWholeWord;
-		rbool   searchDown;
-
 		Settings();
 		Settings(CREF(Settings) settings);
 	};

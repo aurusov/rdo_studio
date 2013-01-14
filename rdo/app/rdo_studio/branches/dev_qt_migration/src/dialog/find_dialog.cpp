@@ -15,18 +15,22 @@
 // --------------------------------------------------------------------------------
 
 FindDialog::Settings::Settings()
-	: what          ("")
-	, matchCase     (false)
-	, matchWholeWord(false)
-	, searchDown    (true )
-{}
+{
+	what = "";
+	byWhat = "";
+	matchCase      = false;
+	matchWholeWord = false;
+	searchDown     = false;
+}
 
 FindDialog::Settings::Settings(CREF(Settings) settings)
-	: what          (settings.what          )
-	, matchCase     (settings.matchCase     )
-	, matchWholeWord(settings.matchWholeWord)
-	, searchDown    (settings.searchDown    )
-{}
+{
+	what = settings.what ;
+	byWhat = "";
+	matchCase      = settings.matchCase ;
+	matchWholeWord = settings.matchWholeWord ;
+	searchDown     = settings.searchDown ;
+}
 
 FindDialog::FindDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback, CREF(OnCloseCallback) onCloseCallback)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)

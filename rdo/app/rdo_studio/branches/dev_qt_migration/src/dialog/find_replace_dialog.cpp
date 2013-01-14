@@ -19,6 +19,7 @@ FindReplaceDialog::Settings::Settings()
 , byWhat        ("")
 , matchCase     (false)
 , matchWholeWord(false)
+, searchDown    (false)
 {}
 
 FindReplaceDialog::Settings::Settings(CREF(Settings) settings)
@@ -26,6 +27,7 @@ FindReplaceDialog::Settings::Settings(CREF(Settings) settings)
 , byWhat        (settings.byWhat        )
 , matchCase     (settings.matchCase     )
 , matchWholeWord(settings.matchWholeWord)
+, searchDown    (settings.searchDown    )
 {}
 
 FindReplaceDialog::FindReplaceDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback, CREF(OnFindCallback) onReplaceCallback, CREF(OnFindCallback) onReplaceAllCallback, CREF(OnCloseCallback) onCloseCallback)
