@@ -14,9 +14,10 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtSql\QtSql>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator\compiler\parser\headers\interface_db.h"
 // --------------------------------------------------------------------------------
 
-class GeneralDB
+class GeneralDB: public InterfaceDB
 {
 public:
 	GeneralDB();
@@ -33,6 +34,8 @@ public:
 
 	void queryExec(const QString&   query);
 	void queryExec(const QueryList& query);
+
+	virtual void insertRow      (const QString& tableName, const QString& qRow);
 
 private:
 	void initDB();

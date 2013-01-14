@@ -4,7 +4,7 @@
   \authors   Клеванец Игорь (cerevra@gmail.com)
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      15.11.2012
-  \brief     Работа с запросами к базе данных
+  \brief     Интерфейс работы с БД
   \indent    4T
 */
 
@@ -20,25 +20,21 @@
 // --------------------------------------------------------------------------------
 
 
-void InterfaceDB::insertRow(const QString& tableName, const QString& qRow)
-{
-	queryExec("INSERT INTO " + tableName + " VALUES(" + qRow + ");");
-}
 
-void InterfaceDB::insertRTPHeader(const QString& rtp_name, bool permanent)
-{
-	insertRow("rtp", "DEFAULT,'" + rtp_name + "'," + (permanent ? "true" : "false"));
-}
-
-void InterfaceDB::insertIntRow()
-{
-	insertRow("int","DEFAULT,NULL,NULL,NULL");
-}
-
-void InterfaceDB::insertEnumRow(const QString& defaultValue)
-{
-	insertRow("enum","DEFAULT,'" + defaultValue + "'");
-}
+//void InterfaceDB::insertRTPHeader(const QString& rtp_name, bool permanent)
+//{
+//	insertRow("rtp", "DEFAULT,'" + rtp_name + "'," + (permanent ? "true" : "false"));
+//}
+//
+//void InterfaceDB::insertIntRow()
+//{
+//	insertRow("int","DEFAULT,NULL,NULL,NULL");
+//}
+//
+//void InterfaceDB::insertEnumRow(const QString& defaultValue)
+//{
+//	insertRow("enum","DEFAULT,'" + defaultValue + "'");
+//}
 
 //void InterfaceDB::insertRTPParam(const QString& rtp_name, const QString& param_name, rdo::compiler::parser::RuntimeWrapperType type)
 //{
@@ -48,20 +44,20 @@ void InterfaceDB::insertEnumRow(const QString& defaultValue)
 //	insertRow("param_of_type","DEFAULT,'" + param_name + "'," + QString::number(query.value(query.record().indexOf("r_t_id")).toInt()) + "," + QString::number(type.selfInsertToDB(*this)));
 //}
 
-int InterfaceDB::getEnumTypeID(enumContainer& container, const QString defaultValue)
-{
-	QSqlQuery query;
-	insertEnumRow(defaultValue);
-
-	query.exec("select max(type_id) as alt from enum;");
-	query.next();
-	int enum_id = query.value(query.record().indexOf("alt")).toInt();
-
-	std::map <QString,int>::const_iterator it;
-	for ( it=container.begin(); it != container.end(); ++it )
-	{
-		insertRow("enum_valid_value",QString::number(enum_id) + ",DEFAULT,'" + (*it).first+ "'," + QString::number((*it).second));
-	}
-
-	return enum_id;
-}
+//int InterfaceDB::getEnumTypeID(enumContainer& container, const QString defaultValue)
+//{
+//	QSqlQuery query;
+//	insertEnumRow(defaultValue);
+//
+//	query.exec("select max(type_id) as alt from enum;");
+//	query.next();
+//	int enum_id = query.value(query.record().indexOf("alt")).toInt();
+//
+//	std::map <QString,int>::const_iterator it;
+//	for ( it=container.begin(); it != container.end(); ++it )
+//	{
+//		insertRow("enum_valid_value",QString::number(enum_id) + ",DEFAULT,'" + (*it).first+ "'," + QString::number((*it).second));
+//	}
+//
+//	return enum_id;
+//}

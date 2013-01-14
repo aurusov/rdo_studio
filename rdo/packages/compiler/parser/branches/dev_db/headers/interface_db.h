@@ -4,7 +4,7 @@
   \authors   Клеванец Игорь (cerevra@gmail.com)
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      15.11.2012
-  \brief     Работа с запросами к базе данных
+  \brief     Интерфейс работы с БД
   \indent    4T
 */
 
@@ -15,22 +15,19 @@
 #include <QtSql\QtSql>
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\compiler\parser\headers\general_db.h"
 // --------------------------------------------------------------------------------
 
-class InterfaceDB: public GeneralDB
+class InterfaceDB
 {
 public:
-	void insertRow      (const QString& tableName, const QString& qRow);
-	void insertRTPHeader(const QString& rtp_name, bool permanent);
-	void insertIntRow   ();
-	void insertEnumRow  (const QString& defaultValue);
+	virtual void insertRow      (const QString& tableName, const QString& qRow) = 0;
+	//void insertRTPHeader(const QString& rtp_name, bool permanent);
+	//void insertIntRow   ();
+	//void insertEnumRow  (const QString& defaultValue);
 
-	typedef std::map <QString,int> enumContainer;
+	//typedef std::map <QString,int> enumContainer;
 
-	int  getEnumTypeID       (enumContainer& container, const QString defaultValue = "NULL");
-
-private:
+	//int  getEnumTypeID       (enumContainer& container, const QString defaultValue = "NULL");
 };
 
 #endif // _SIMULATOR_RUNTIME_SQL_INTERFACE_DB_H_

@@ -90,3 +90,8 @@ void GeneralDB::queryExec(const QString& query)
 		break;
 	}
 }
+
+void GeneralDB::insertRow(const QString& tableName, const QString& qRow)
+{
+	queryExec("INSERT INTO " + tableName + " VALUES(" + qRow + ");");
+}
