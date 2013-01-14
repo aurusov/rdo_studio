@@ -15,20 +15,22 @@
 // --------------------------------------------------------------------------------
 
 FindReplaceDialog::Settings::Settings()
-: what          ("")
-, byWhat        ("")
-, matchCase     (false)
-, matchWholeWord(false)
-, searchDown    (false)
-{}
+: byWhat("")
+{
+	what = "";
+	matchCase      = false;
+	matchWholeWord = false;
+	searchDown = false;
+}
 
 FindReplaceDialog::Settings::Settings(CREF(Settings) settings)
-: what          (settings.what          )
-, byWhat        (settings.byWhat        )
-, matchCase     (settings.matchCase     )
-, matchWholeWord(settings.matchWholeWord)
-, searchDown    (settings.searchDown    )
-{}
+: byWhat(settings.byWhat)
+{
+	what           = settings.what;
+	matchCase      = settings.matchCase;
+	matchWholeWord = settings.matchWholeWord;
+	searchDown     = settings.searchDown;
+}
 
 FindReplaceDialog::FindReplaceDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback, CREF(OnFindCallback) onReplaceCallback, CREF(OnFindCallback) onReplaceAllCallback, CREF(OnCloseCallback) onCloseCallback)
 : QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
