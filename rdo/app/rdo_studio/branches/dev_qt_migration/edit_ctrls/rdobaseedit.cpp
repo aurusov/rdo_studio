@@ -445,7 +445,7 @@ void RDOBaseEdit::onSearchFindNextCurrent()
 	//}
 }
 
-void RDOBaseEdit::OnSearchFindPreviousCurrent() 
+void RDOBaseEdit::onSearchFindPreviousCurrent() 
 {
 	//firstFoundPos = getCurrentPos();
 	//if ( m_pGroup ) {
