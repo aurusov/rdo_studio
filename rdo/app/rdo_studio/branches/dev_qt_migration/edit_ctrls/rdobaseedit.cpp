@@ -435,7 +435,7 @@ void RDOBaseEdit::onSearchFindPrevious()
 	findNext(m_findSettings.what, !m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord);
 }
 
-void RDOBaseEdit::OnSearchFindNextFast() 
+void RDOBaseEdit::onSearchFindNextCurrent() 
 {
 	//firstFoundPos = getCurrentPos();
 	//if ( m_pGroup ) {
@@ -445,7 +445,7 @@ void RDOBaseEdit::OnSearchFindNextFast()
 	//}
 }
 
-void RDOBaseEdit::OnSearchFindPreviousFast() 
+void RDOBaseEdit::OnSearchFindPreviousCurrent() 
 {
 	//firstFoundPos = getCurrentPos();
 	//if ( m_pGroup ) {

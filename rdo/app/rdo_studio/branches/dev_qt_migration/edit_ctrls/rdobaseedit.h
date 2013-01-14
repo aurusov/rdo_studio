@@ -62,9 +62,9 @@ protected:
 
 	int  firstFoundPos;
 	rbool bHaveFound;
-	void findNext  (REF(tstring) findWhat, rbool searchDown = true, rbool matchCase = false, rbool matchWholeWord = false);
-	void replace   (REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown = true, rbool matchCase = false, rbool matchWholeWord = false);
-	void replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase = false, rbool matchWholeWord = false);
+	void findNext  (REF(tstring) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
+	void replace   (REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
+	void replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase, rbool matchWholeWord);
 
 	int indentOfBlock( int line ) const;
 	void setLineIndentation( int line, int indent ) const;
@@ -82,8 +82,6 @@ protected slots:
 private:
 	//! @todo qt
 	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
-	afx_msg void OnSearchFindNextFast();
-	afx_msg void OnSearchFindPreviousFast();
 
 	void onFindDlgFind(CREF(FindDialog::Settings) settings);
 	void onFindDlgClose();
@@ -109,15 +107,17 @@ private slots:
 	void onEditUpperCase();
 	void onEditLowerCase();
 
-	void onSearchFind            ();
-	void onSearchFindNext        ();
-	void onSearchFindPrevious    ();
-	void onSearchReplace         ();
-	void onSearchBookmarkToggle  ();
-	void onSearchBookmarkNext    () const;
-	void onSearchBookmarkPrev    () const;
-	void onSearchBookmarkClearAll();
-	void onSearchGotoLine        ();
+	void onSearchFind               ();
+	void onSearchFindNext           ();
+	void onSearchFindPrevious       ();
+	void onSearchFindNextCurrent    ();
+	void onSearchFindPreviousCurrent();
+	void onSearchReplace            ();
+	void onSearchBookmarkToggle     ();
+	void onSearchBookmarkNext       () const;
+	void onSearchBookmarkPrev       () const;
+	void onSearchBookmarkClearAll   ();
+	void onSearchGotoLine           ();
 
 	void onViewZoomChanged   (int zoom);
 	void onViewZoomInc       ();
