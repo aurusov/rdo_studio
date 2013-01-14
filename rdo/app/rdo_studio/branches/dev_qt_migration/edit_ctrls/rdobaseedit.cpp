@@ -399,6 +399,14 @@ void RDOBaseEdit::onSearchFind()
 		);
 	}
 
+	if(m_pGroup)
+	{
+		m_findSettings.what = m_pGroup->findStr;
+		m_findSettings.searchDown = m_pGroup->bSearchDown;
+		m_findSettings.matchCase = m_pGroup->bMatchCase;
+		m_findSettings.matchWholeWord = m_pGroup->bMatchWholeWord;
+	}
+
 	m_pFindDialog->setSettings(m_findSettings);
 	m_pFindDialog->show();
 	m_pFindDialog->raise();
@@ -516,6 +524,15 @@ void RDOBaseEdit::onSearchReplace()
 			boost::bind(&RDOBaseEdit::onFindReplaceDlgReplaceAll, this, _1),
 			boost::bind(&RDOBaseEdit::onFindReplaceDlgClose,      this)
 		);
+	}
+	
+	if(m_pGroup)
+	{
+		m_findReplaceSettings.what = m_pGroup->findStr;
+		m_findReplaceSettings.byWhat = m_pGroup->replaceStr;
+		m_findReplaceSettings.searchDown = m_pGroup->bSearchDown;
+		m_findReplaceSettings.matchCase = m_pGroup->bMatchCase;
+		m_findReplaceSettings.matchWholeWord = m_pGroup->bMatchWholeWord;
 	}
 
 	m_pFindReplaceDialog->setSettings(m_findReplaceSettings);
