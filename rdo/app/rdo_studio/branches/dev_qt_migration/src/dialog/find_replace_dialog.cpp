@@ -43,11 +43,12 @@ FindReplaceDialog::FindReplaceDialog(PTR(QWidget) pParent, CREF(OnFindCallback) 
 
 	connect(findButton,       SIGNAL(clicked()),                  this, SLOT(onFindButton()));
 	connect(replaceButton,    SIGNAL(clicked()),                  this, SLOT(onReplaceButton()));
-	connect(replaceAllButton, SIGNAL(clicked()),                   this, SLOT(onReplaceAllButton()));
+	connect(replaceAllButton, SIGNAL(clicked()),                  this, SLOT(onReplaceAllButton()));
 	connect(whatLineEdit,     SIGNAL(textEdited(const QString&)), this, SLOT(onWhatEdited(const QString&)));
 	connect(byWhatLineEdit,   SIGNAL(textEdited(const QString&)), this, SLOT(onByWhatEdited(const QString&)));
 	connect(matchCase,        SIGNAL(stateChanged(int)),          this, SLOT(onMatchCaseChanged(int)));
 	connect(wholeWord,        SIGNAL(stateChanged(int)),          this, SLOT(onMatchWholeWordChanged(int)));
+	connect(directionDown,    SIGNAL(toggled(bool)),              this, SLOT(onDirectionDownToggled(bool)));
 
 	setAttribute(Qt::WA_DeleteOnClose, true);
 }
@@ -101,4 +102,9 @@ void FindReplaceDialog::onMatchCaseChanged(int value)
 void FindReplaceDialog::onMatchWholeWordChanged(int value)
 {
 	m_settings.matchWholeWord = value ? true : false;
+}
+
+void FindReplaceDialog::onDirectionDownToggled(bool checked)
+{
+	m_settings.searchDown = checked;
 }

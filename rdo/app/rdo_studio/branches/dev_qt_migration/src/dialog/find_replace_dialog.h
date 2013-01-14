@@ -59,6 +59,7 @@ private slots:
 	void onByWhatEdited         (const QString& text);
 	void onMatchCaseChanged     (int value);
 	void onMatchWholeWordChanged(int value);
+	void onDirectionDownToggled (bool checked);
 };
 
 #endif // _RDO_STUDIO_MFC_DIALOG_FIND_REPLACE_DIALOG_H_
