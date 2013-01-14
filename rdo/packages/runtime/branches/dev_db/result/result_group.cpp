@@ -10,6 +10,8 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
+#include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/result/result_group.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -45,20 +47,28 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 		{
 			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
 			ASSERT(pThreadProxy);
-			rdo::repository::RDOThreadRepository::CreateFileInfo file(rdo::format(_T("- %s - full"), m_name.c_str()), _T("txt"), m_streamFull);
+			rdo::repository::RDOThreadRepository::CreateFileInfo file(
+				boost::str(boost::format(_T("- %1% - full")) % m_name),
+				_T("txt"),
+				m_streamFull
+			);
 			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
 		}
 		if (!m_streamTable.is_open())
 		{
 			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
 			ASSERT(pThreadProxy);
-			rdo::repository::RDOThreadRepository::CreateFileInfo file(rdo::format(_T("- %s - table"), m_name.c_str()), _T("txt"), m_streamTable);
+			rdo::repository::RDOThreadRepository::CreateFileInfo file(
+				boost::str(boost::format(_T("- %1% - table")) % m_name),
+				_T("txt"),
+				m_streamTable
+			);
 			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
 			if (m_streamTable.is_open())
 			{
-				STL_FOR_ALL_CONST(m_resultList, it)
+				BOOST_FOREACH(const LPIResult& pResult, m_resultList)
 				{
-					LPIResultGetValue pGetValue = (*it);
+					LPIResultGetValue pGetValue = pResult;
 					if (pGetValue)
 					{
 						LPIName pName = pGetValue;
@@ -71,9 +81,9 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 		}
 	}
 
-	STL_FOR_ALL(m_resultList, it)
+	BOOST_FOREACH(LPIResult& pResult, m_resultList)
 	{
-		(*it)->resetResult(pRuntime);
+		pResult->resetResult(pRuntime);
 	}
 }
 
@@ -82,9 +92,9 @@ void RDOPMDResultGroup::checkResult(CREF(LPRDORuntime) pRuntime)
 	if (m_state == RGS_STOP)
 		return;
 
-	STL_FOR_ALL(m_resultList, it)
+	BOOST_FOREACH(LPIResult& pResult, m_resultList)
 	{
-		(*it)->checkResult(pRuntime);
+		pResult->checkResult(pRuntime);
 	}
 }
 
@@ -96,21 +106,27 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) 
 	if (!m_name.empty())
 	{
 		double timeStop = pRuntime->getCurrentTime();
-		rdo::textstream textStream;
-		textStream << rdo::format(_T("---> %s, %f -> %f = %f\n"), m_name.c_str(), m_timeStart, timeStop, timeStop - m_timeStart);
-		stream << textStream.str();
+		boost::format header(_T("---> %1%, %2$1.6f -> %3$1.6f = %4$1.6f\n"));
+		header
+			% m_name
+			% m_timeStart
+			% timeStop
+			% (timeStop - m_timeStart);
+
+		stream << header.str();
+
 		if (m_streamFull.is_open())
 		{
-			m_streamFull << textStream.str();
+			m_streamFull << header.str();
 		}
 	}
 
 	rbool tableWrite = false;
-	STL_FOR_ALL(m_resultList, it)
+	BOOST_FOREACH(LPIResult& pResult, m_resultList)
 	{
 		rdo::textstream textStream;
 
-		(*it)->calcStat(pRuntime, textStream);
+		pResult->calcStat(pRuntime, textStream);
 
 		stream << textStream.str();
 		if (m_streamFull.is_open())
@@ -118,7 +134,7 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) 
 			m_streamFull << textStream.str();
 		}
 
-		LPIResultGetValue pGetValue = (*it);
+		LPIResultGetValue pGetValue = pResult;
 		if (pGetValue)
 		{
 			if (pGetValue->getValue().typeID() != RDOType::t_real)
@@ -142,12 +158,12 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) 
 
 	if (!m_name.empty())
 	{
-		rdo::textstream textStream;
-		textStream << rdo::format(_T("<--- %s\n"), m_name.c_str());
-		stream << textStream.str();
+		boost::format footer(_T("<--- %1%\n"));
+		footer % m_name;
+		stream << footer.str();
 		if (m_streamFull.is_open())
 		{
-			m_streamFull << textStream.str();
+			m_streamFull << footer.str();
 		}
 	}
 	pRuntime->getResults().flush();
