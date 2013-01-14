@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/type/type.h"
-#include "simulator/compiler/parser/headers/interface_db.h"
+#include "simulator/compiler/parser/headers/db/interface_db.h"
 #include "simulator/compiler/parser/type/type_db_i.h"
 // --------------------------------------------------------------------------------
 

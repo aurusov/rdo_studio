@@ -425,7 +425,7 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\headers\general_db.h"
+			RelativePath="..\..\headers\db\general_db.h"
 			>
 		</File>
 	</Files>

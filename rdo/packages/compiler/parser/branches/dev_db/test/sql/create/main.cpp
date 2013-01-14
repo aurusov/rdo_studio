@@ -15,7 +15,7 @@
 #include <QtSql\QtSql>
 #include <QtCore\QCoreApplication>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\runtime\headers\general_db.h"
+#include "simulator\compiler\parser\headers\db\general_db.h"
 // --------------------------------------------------------------------------------
 
 void dropDB()

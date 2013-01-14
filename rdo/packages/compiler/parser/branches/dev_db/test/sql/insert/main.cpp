@@ -18,7 +18,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator\compiler\parser\type\atom.h"
 #include "simulator\compiler\parser\headers\general_db.h"
-#include "simulator\compiler\parser\headers\interface_db.h"
+#include "simulator\compiler\parser\headers\db\interface_db.h"
 // --------------------------------------------------------------------------------
 
 

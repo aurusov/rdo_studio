@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtSql\QtSql>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\compiler\parser\headers\interface_db.h"
+#include "simulator\compiler\parser\headers\db\interface_db.h"
 // --------------------------------------------------------------------------------
 
 class GeneralDB: public InterfaceDB
