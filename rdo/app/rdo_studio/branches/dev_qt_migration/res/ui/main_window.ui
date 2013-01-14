@@ -105,7 +105,7 @@ border: none;
     <addaction name="actSearchFindPrevious"/>
     <addaction name="actSearchReplace"/>
     <addaction name="separator"/>
-    <addaction name="actSearchFinInModel"/>
+    <addaction name="actSearchFindInModel"/>
     <addaction name="separator"/>
     <addaction name="actSearchBookmarksToggle"/>
     <addaction name="actSearchBookmarkNext"/>
@@ -573,7 +573,7 @@ border: none;
     <string>Ctrl+R</string>
    </property>
   </action>
-  <action name="actSearchFinInModel">
+  <action name="actSearchFindInModel">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -1040,6 +1040,22 @@ border: none;
   <action name="actHelpWhatsNew">
    <property name="text">
     <string>Что нового</string>
+   </property>
+  </action>
+  <action name="actSearchFindNextCurrent">
+   <property name="text">
+    <string>Найти следующий текущий</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F3</string>
+   </property>
+  </action>
+  <action name="actSearchFindPreviousCurrent">
+   <property name="text">
+    <string>Найти предыдущий текущий</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F3</string>
    </property>
   </action>
  </widget>
