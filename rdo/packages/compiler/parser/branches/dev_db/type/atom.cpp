@@ -191,14 +191,11 @@ void RDOType__int::writeModelStructure(REF(rdo::ostream) stream) const
 	stream << _T("I") << std::endl;
 }
 
-int RDOType__int::serializeInDB(REF(IDB) db) const
+void RDOType__int::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("int","DEFAULT,NULL,NULL,NULL");
 
-	QSqlQuery query;
-	query.exec("select max(type_id) as alt from int;");
-	query.next();
-	return query.value(query.record().indexOf("alt")).toInt();
+	db.setContext(db.queryExecIndex("int","type_id"));
 }
 
 // --------------------------------------------------------------------------------

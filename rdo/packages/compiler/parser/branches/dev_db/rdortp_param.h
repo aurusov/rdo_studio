@@ -36,7 +36,7 @@ DECLARE_FACTORY(RDORTPParam);
 public:
 	DECLARE_IModelStructure;
 	DECLARE_IName;
-	virtual int serializeInDB(REF(IDB) db) const;
+	virtual void serializeInDB(REF(IDB) db) const;
 
 private:
 	RDORTPParam(CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault, CREF(RDOParserSrcInfo) src_info);

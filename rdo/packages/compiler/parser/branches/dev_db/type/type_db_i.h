@@ -20,7 +20,7 @@ OPEN_RDO_PARSER_NAMESPACE
 class ISerializeTypeInDB
 {
 public:
-	virtual int serializeInDB(REF(IDB) db) const = 0;
+	virtual void serializeInDB(REF(IDB) db) const = 0;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

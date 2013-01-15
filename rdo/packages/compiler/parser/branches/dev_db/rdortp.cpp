@@ -90,26 +90,19 @@ void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream) const
 	}
 }
 
-int RDORTPResType::serializeInDB(REF(IDB) db) const
+void RDORTPResType::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("rtp",QString("DEFAULT,'%1',%2")
 		.arg(QString::fromStdString(name())
 		.arg(m_permanent ? "true" : "false")));
 
-	QSqlQuery query;
-	query.exec("select max(r_t_id) as alt from rtp;");
-	query.next();
-	int rtp_id = query.value(query.record().indexOf("alt")).toInt();
+	int index = db.queryExecIndex("rtp", "r_t_id");
 
 	BOOST_FOREACH(CREF(LPRDORTPParam) param, m_params)
 	{
-		db.insertRow("param_of_type",QString("DEFAULT,'%1',%2,%3")
-			.arg(QString::fromStdString(param->name())
-			.arg(rtp_id)
-			.arg(param->serializeInDB(db))));
+		db.setContext(index);
+		param->serializeInDB(db);
 	}
-
-	return rtp_id;
 }
 
 tstring RDORTPResType::name() const

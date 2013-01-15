@@ -13,16 +13,11 @@
 #include <QtSql\QtSql>
 #include <QtSql\QSqlError>
 #include <iostream>
-#include <boost/foreach.hpp>
+#include <boost\foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator\compiler\parser\src\db\general_db.h"
+#include "utils\rdodebug.h"
 // --------------------------------------------------------------------------------
-
-GeneralDB::GeneralDB()
-{
-	setDefParams();
-	initDB      ();
-}
 
 GeneralDB::GeneralDB(const QString& hostName, const QString& databaseName, const QString& userName, const QString& password, const int& port)
 	: m_hostName    (hostName    )
@@ -34,34 +29,20 @@ GeneralDB::GeneralDB(const QString& hostName, const QString& databaseName, const
 	initDB();
 }
 
+GeneralDB::GeneralDB()
+{
+	setDefParams();
+	initDB      ();
+}
+
 GeneralDB::~GeneralDB()
 {
 	m_db.close();
 }
 
-void GeneralDB::initDB()
+void GeneralDB::insertRow(const QString& tableName, const QString& qRow)
 {
-	m_db = QSqlDatabase::addDatabase("QPSQL");
-
-	m_db.setHostName    (m_hostName);
-	m_db.setDatabaseName(m_databaseName);
-	m_db.setUserName    (m_userName);
-	m_db.setPassword    (m_password);
-	m_db.setPort        (m_port);
-
-	if (!m_db.open())
-	{
-		std::cout << "Connection to datebase failed! :(" << std::endl;
-	}
-}
-
-void GeneralDB::setDefParams()
-{
-	m_hostName     = "localhost";
-	m_databaseName = "rdo";
-	m_userName     = "postgres";
-	m_password     = "rdo";
-	m_port         = 5432;
+	queryExec("INSERT INTO " + tableName + " VALUES(" + qRow + ");");
 }
 
 void GeneralDB::queryExec(const QueryList& query)
@@ -91,7 +72,52 @@ void GeneralDB::queryExec(const QString& query)
 	}
 }
 
-void GeneralDB::insertRow(const QString& tableName, const QString& qRow)
+int GeneralDB::queryExecIndex(const QString& table, const QString& column)
 {
-	queryExec("INSERT INTO " + tableName + " VALUES(" + qRow + ");");
+	QSqlQuery query;
+	query.exec(QString("select max(%1) as alt from %2;")
+		.arg(column)
+		.arg(table ));
+	query.next();
+	int index = query.value(query.record().indexOf("alt")).toInt();
+	m_contextParrentID = index;
+	return index;
+}
+
+void GeneralDB::setContext(int context)
+{
+	m_contextParrentID = context;
+}
+
+int GeneralDB::getContext()
+{
+//	ASSERT(m_contextParrentID.is_initialized());
+	int i = m_contextParrentID.get();
+	m_contextParrentID.reset();
+	return i;
+}
+
+void GeneralDB::initDB()
+{
+	m_db = QSqlDatabase::addDatabase("QPSQL");
+
+	m_db.setHostName    (m_hostName);
+	m_db.setDatabaseName(m_databaseName);
+	m_db.setUserName    (m_userName);
+	m_db.setPassword    (m_password);
+	m_db.setPort        (m_port);
+
+	if (!m_db.open())
+	{
+		std::cout << "Connection to datebase failed! :(" << std::endl;
+	}
+}
+
+void GeneralDB::setDefParams()
+{
+	m_hostName     = "localhost";
+	m_databaseName = "rdo";
+	m_userName     = "postgres";
+	m_password     = "rdo";
+	m_port         = 5432;
 }

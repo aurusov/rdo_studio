@@ -14,13 +14,24 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtSql\QtSql>
 #include <map>
+#include <boost\optional\optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
 class IDB
 {
 public:
-	virtual void insertRow      (const QString& tableName, const QString& qRow) = 0;
+	typedef std::list<QString>   QueryList;
+	typedef boost::optional<int> boint;
+
+	virtual void insertRow     (const QString& tableName, const QString& qRow) = 0;
+	virtual void queryExec     (const QString&   query                       ) = 0;
+	virtual void queryExec     (const QueryList& query                       ) = 0;
+
+	virtual int  queryExecIndex(const QString& table, const QString& column  ) = 0;
+	virtual void setContext    (int context                                  ) = 0;
+	virtual int  getContext    (                                             ) = 0;
+
 	//void insertRTPHeader(const QString& rtp_name, bool permanent);
 	//void insertIntRow   ();
 	//void insertEnumRow  (const QString& defaultValue);

@@ -30,12 +30,13 @@ public:
 	);
 	~GeneralDB();
 
-	typedef  std::list<QString>  QueryList;
+	virtual void insertRow     (const QString& tableName, const QString& qRow);
+	virtual void queryExec     (const QString&   query                       );
+	virtual void queryExec     (const QueryList& query                       );
 
-	void queryExec(const QString&   query);
-	void queryExec(const QueryList& query);
-
-	virtual void insertRow      (const QString& tableName, const QString& qRow);
+	virtual int  queryExecIndex(const QString& table, const QString& column  );
+	virtual void setContext    (int context                                  );
+	virtual int  getContext    (                                             );
 
 private:
 	void initDB();
@@ -48,6 +49,7 @@ private:
 	int          m_port;
 	QSqlDatabase m_db;
 
+	boint m_contextParrentID;
 };
 
 #endif // _SIMULATOR_RUNTIME_SQL_GENERAL_DB_H_

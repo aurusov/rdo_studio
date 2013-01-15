@@ -48,9 +48,8 @@ rdo::runtime::RDOType::TypeID FunctionParamType::typeID() const
 	return rdo::runtime::RDOType::t_unknow;
 }
 
-int FunctionParamType::serializeInDB(REF(IDB) db) const
+void FunctionParamType::serializeInDB(REF(IDB) db) const
 {
-	return -1;
 }
 
 tstring FunctionParamType::name() const
@@ -134,6 +133,9 @@ rdo::runtime::RDOType::TypeID FunctionType::typeID() const
 {
 	return m_pReturnType->type()->typeID();
 }
+
+void FunctionType::serializeInDB(REF(IDB) db) const
+{}
 
 CREF(LPTypeInfo) FunctionType::returnType() const
 {
