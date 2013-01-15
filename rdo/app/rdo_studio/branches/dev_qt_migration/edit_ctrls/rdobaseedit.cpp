@@ -389,6 +389,9 @@ void RDOBaseEdit::ensureRangeVisible( int posStart, int posEnd, rbool enforcePol
 void RDOBaseEdit::onSearchFind() 
 {
 	m_findSettings.what = getSelection();
+	m_findSettings.what.empty() 
+		? m_findSettings.what = m_pGroup->findStr
+	    : m_pGroup->findStr = m_findSettings.what;
 
 	if (!m_pFindDialog)
 	{
@@ -397,6 +400,13 @@ void RDOBaseEdit::onSearchFind()
 			boost::bind(&RDOBaseEdit::onFindDlgFind,  this, _1),
 			boost::bind(&RDOBaseEdit::onFindDlgClose, this)
 		);
+	}
+
+	if(m_pGroup)
+	{
+		m_findReplaceSettings.searchDown = m_pGroup->bSearchDown;
+		m_findReplaceSettings.matchCase = m_pGroup->bMatchCase;
+		m_findReplaceSettings.matchWholeWord = m_pGroup->bMatchWholeWord;
 	}
 
 	m_pFindDialog->setSettings(m_findSettings);
@@ -408,6 +418,7 @@ void RDOBaseEdit::onSearchFind()
 void RDOBaseEdit::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
+	m_pGroup->findStr = m_findSettings.what;
 	onSearchFindNext();
 	updateActionFind(isActivated());
 }
@@ -419,12 +430,12 @@ void RDOBaseEdit::onFindDlgClose()
 
 void RDOBaseEdit::onSearchFindNext() 
 {
-	findNext(m_findSettings.what, m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord);
+	findNext(m_pGroup->findStr.empty() ? m_findSettings.what : m_pGroup->findStr, m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord);
 }
 
 void RDOBaseEdit::onSearchFindPrevious() 
 {
-	findNext(m_findSettings.what, !m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord);
+	findNext(m_pGroup->findStr.empty() ? m_findSettings.what : m_pGroup->findStr, !m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord);
 }
 
 void RDOBaseEdit::onSearchFindNextCurrent() 
@@ -506,6 +517,9 @@ void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchC
 void RDOBaseEdit::onSearchReplace() 
 {
 	m_findReplaceSettings.what = getSelection();
+	m_findReplaceSettings.what.empty() 
+		? m_findReplaceSettings.what = m_pGroup->findStr
+		: m_pGroup->findStr = m_findReplaceSettings.what;
 
 	if (!m_pFindReplaceDialog)
 	{
@@ -518,14 +532,12 @@ void RDOBaseEdit::onSearchReplace()
 		);
 	}
 	
-	//if(m_pGroup)
-	//{
-	//	m_findReplaceSettings.what = m_pGroup->findStr;
-	//	m_findReplaceSettings.byWhat = m_pGroup->replaceStr;
-	//	m_findReplaceSettings.searchDown = m_pGroup->bSearchDown;
-	//	m_findReplaceSettings.matchCase = m_pGroup->bMatchCase;
-	//	m_findReplaceSettings.matchWholeWord = m_pGroup->bMatchWholeWord;
-	//}
+	if(m_pGroup)
+	{
+		m_findReplaceSettings.searchDown = m_pGroup->bSearchDown;
+		m_findReplaceSettings.matchCase = m_pGroup->bMatchCase;
+		m_findReplaceSettings.matchWholeWord = m_pGroup->bMatchWholeWord;
+	}
 
 	m_pFindReplaceDialog->setSettings(m_findReplaceSettings);
 	m_pFindReplaceDialog->show();
@@ -536,6 +548,7 @@ void RDOBaseEdit::onSearchReplace()
 void RDOBaseEdit::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
+	m_pGroup->findStr = m_findReplaceSettings.what;
 	findNext(m_findReplaceSettings.what, m_findReplaceSettings.searchDown, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
 	updateActionFind(isActivated());
 }
@@ -543,6 +556,8 @@ void RDOBaseEdit::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) setting
 void RDOBaseEdit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
+	m_pGroup->findStr = m_findReplaceSettings.what;
+	m_pGroup->replaceStr = m_findReplaceSettings.byWhat;
 	replace(m_findReplaceSettings.what, m_findReplaceSettings.byWhat, m_findReplaceSettings.searchDown, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
 	updateActionFind(isActivated());
 }
@@ -550,6 +565,8 @@ void RDOBaseEdit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) sett
 void RDOBaseEdit::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
+	m_pGroup->findStr = m_findReplaceSettings.what;
+	m_pGroup->replaceStr = m_findReplaceSettings.byWhat;
 	replaceAll(m_findReplaceSettings.what, m_findReplaceSettings.byWhat, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
 	updateActionFind(isActivated());
 }
@@ -1456,7 +1473,7 @@ void RDOBaseEdit::updateActionFind(rbool activated)
 		this, "onSearchReplace()"
 	);
 
-	rbool findNextPrev = activated && !m_findReplaceSettings.what.empty();
+	rbool findNextPrev = activated && (!m_findReplaceSettings.what.empty() || !m_findSettings.what.empty() || !m_pGroup->findStr.empty());
 	updateAction(
 		pMainWindow->actSearchFindNext,
 		findNextPrev,
