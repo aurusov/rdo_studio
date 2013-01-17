@@ -128,9 +128,6 @@ void RDOStudioModelView::onSearchFindInModel()
 	m_pFindDialog->show();
 	m_pFindDialog->raise();
 	m_pFindDialog->activateWindow();
-	//! todo qt
-	//PTR(CFindReplaceDialog) pDlg = new CFindReplaceDialog();
-	//pDlg->Create(true, m_pTabCtrl->getCurrentEdit()->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, &m_thisCWnd);
 }
 
 void RDOStudioModelView::onFindDlgFind(CREF(FindDialog::Settings) settings)
