@@ -31,7 +31,7 @@ public:
 	virtual void showFirstError();
 
 protected:
-	virtual void updateEdit( rdoEditor::RDOEditorEdit* edit, const LogEditLineInfo* lineInfo );
+	virtual void updateEdit(rdoEditor::RDOEditorEdit* pEdit, const LogEditLineInfo* pLineInfo);
 
 private:
 	typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
