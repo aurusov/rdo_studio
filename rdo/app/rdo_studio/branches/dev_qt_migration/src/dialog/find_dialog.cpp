@@ -57,6 +57,8 @@ void FindDialog::setSettings(CREF(Settings) settings)
 	m_settings = settings;
 
 	lineEdit->setText(QString::fromStdString(m_settings.what));
+	lineEdit->setFocus();
+	lineEdit->selectAll();
 	matchCase->setChecked(m_settings.matchCase);
 	wholeWord->setChecked(m_settings.matchWholeWord);
 	if (m_settings.searchDown)

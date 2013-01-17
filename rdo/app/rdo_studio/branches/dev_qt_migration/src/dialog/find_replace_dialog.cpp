@@ -65,6 +65,8 @@ void FindReplaceDialog::setSettings(CREF(Settings) settings)
 	m_settings = settings;
 
 	whatLineEdit->setText(QString::fromStdString(m_settings.what));
+	whatLineEdit->setFocus();
+	whatLineEdit->selectAll();
 	byWhatLineEdit->setText(QString::fromStdString(m_settings.byWhat));
 	matchCase->setChecked(m_settings.matchCase);
 	wholeWord->setChecked(m_settings.matchWholeWord);
