@@ -46,6 +46,9 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	createStatusBar();
 	createToolBar  ();
 
+	addAction(actSearchFindNextCurrent);
+	addAction(actSearchFindPreviousCurrent);
+
 	connect(menuFileReopen, SIGNAL(triggered(QAction*)), this, SLOT(onMenuFileReopen(QAction*)));
 	connect(actFileExit,    SIGNAL(triggered(bool)),     this, SLOT(close()));
 

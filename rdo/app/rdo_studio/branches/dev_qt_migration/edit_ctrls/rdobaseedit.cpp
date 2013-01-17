@@ -441,22 +441,20 @@ void RDOBaseEdit::onSearchFindPrevious()
 
 void RDOBaseEdit::onSearchFindNextCurrent() 
 {
-	//firstFoundPos = getCurrentPos();
-	//if ( m_pGroup ) {
-	//	m_pGroup->findStr     = getWordForFind();
-	//	m_pGroup->bSearchDown = true;
-	//	findNext(m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
-	//}
+	if (m_pGroup){
+		m_pGroup->findStr     = getWordForFind();
+		m_pGroup->bSearchDown = true;
+		findNext(m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
+	}	
 }
 
 void RDOBaseEdit::onSearchFindPreviousCurrent() 
 {
-	//firstFoundPos = getCurrentPos();
-	//if ( m_pGroup ) {
-	//	m_pGroup->findStr     = getWordForFind();
-	//	m_pGroup->bSearchDown = true;
-	//	findNext(m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
-	//}
+	if (m_pGroup){
+		m_pGroup->findStr     = getWordForFind();
+		m_pGroup->bSearchDown = true;
+		findNext(m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
+	}
 }
 
 void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
@@ -1495,12 +1493,12 @@ void RDOBaseEdit::updateActionFind(rbool activated)
 
 	updateAction(
 		pMainWindow->actSearchFindNextCurrent,
-		true,
+		activated,
 		this, "onSearchFindNextCurrent()"
 	);
 	updateAction(
 		pMainWindow->actSearchFindPreviousCurrent,
-		true,
+		activated,
 		this, "onSearchFindPreviousCurrent()"
 	);
 }
