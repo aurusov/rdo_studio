@@ -986,26 +986,6 @@ border: none;
     <string>Упорядочить свернутые</string>
    </property>
   </action>
-  <action name="actViewToolbarFile">
-   <property name="text">
-    <string>Панель файлов</string>
-   </property>
-  </action>
-  <action name="actViewToolbarEdit">
-   <property name="text">
-    <string>Панель редактирования</string>
-   </property>
-  </action>
-  <action name="actViewToolbarZoom">
-   <property name="text">
-    <string>Панель масштаба</string>
-   </property>
-  </action>
-  <action name="actViewToolbarModel">
-   <property name="text">
-    <string>Панель модели</string>
-   </property>
-  </action>
   <action name="actModelShowRateIncFour">
    <property name="enabled">
     <bool>false</bool>
