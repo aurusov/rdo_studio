@@ -15,29 +15,20 @@
 // --------------------------------------------------------------------------------
 
 FindReplaceDialog::Settings::Settings()
-: byWhat("")
-{
-	what = "";
-	matchCase      = false;
-	matchWholeWord = false;
-	searchDown = false;
-}
+	: byWhat("")
+{}
 
 FindReplaceDialog::Settings::Settings(CREF(Settings) settings)
-: byWhat(settings.byWhat)
-{
-	what           = settings.what;
-	matchCase      = settings.matchCase;
-	matchWholeWord = settings.matchWholeWord;
-	searchDown     = settings.searchDown;
-}
+	: FindDialog::Settings(settings)
+	, byWhat(settings.byWhat)
+{}
 
 FindReplaceDialog::FindReplaceDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback, CREF(OnFindCallback) onReplaceCallback, CREF(OnFindCallback) onReplaceAllCallback, CREF(OnCloseCallback) onCloseCallback)
-: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
-, m_onFindCallback      (onFindCallback      )
-, m_onCloseCallback     (onCloseCallback     )
-, m_onReplaceCallback   (onReplaceCallback   )
-, m_onReplaceAllCallback(onReplaceAllCallback)
+	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
+	, m_onFindCallback      (onFindCallback      )
+	, m_onCloseCallback     (onCloseCallback     )
+	, m_onReplaceCallback   (onReplaceCallback   )
+	, m_onReplaceAllCallback(onReplaceAllCallback)
 {
 	setupUi(this);
 
