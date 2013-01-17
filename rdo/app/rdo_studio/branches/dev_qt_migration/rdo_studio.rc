@@ -743,22 +743,6 @@ BEGIN
         MENUITEM "&Закомментировать выделенное\tCtrl+Q", ID_EDIT_COMMENTSELECTION
         MENUITEM "Завершить &слово\tCtrl+Space", ID_EDIT_COMPLETEWORD
     END
-    POPUP "П&оиск"
-    BEGIN
-        MENUITEM "Найт&и...\tCtrl+F",           ID_SEARCH_FIND
-        MENUITEM "Найти &следующий\tF3",        ID_SEARCH_FIND_NEXT
-        MENUITEM "Найти &предыдущий\tShift+F3", ID_SEARCH_FIND_PREVIOUS
-        MENUITEM "&Заменить...\tCtrl+H",        ID_SEARCH_REPLACE
-        MENUITEM SEPARATOR
-        MENUITEM "Найти в &модели...\tCtrl+Shift+F", ID_SEARCH_FIND_INMODEL
-        MENUITEM SEPARATOR
-        MENUITEM "Пос&тавить/снять закладку\tCtrl+F2", ID_SEARCH_BOOKMARK_TOGGLE
-        MENUITEM "Перейти к с&лед. закладке\tF2", ID_SEARCH_BOOKMARK_NEXT
-        MENUITEM "Перейти к п&ред. закладке\tShift+F2", ID_SEARCH_BOOKMARK_PREVIOUS
-        MENUITEM "&Очисть все закладки\tCtrl+Shift+F2", ID_SEARCH_BOOKMARKS_CLEAR
-        MENUITEM SEPARATOR
-        MENUITEM "П&ерейти на строчку\tCtrl+G", ID_SEARCH_GOTO_LINE
-    END
     POPUP "П&росмотр"
     BEGIN
         MENUITEM "Свернуть/развернуть все &группы\tCtrl+Shift+0", ID_VIEW_TOGGLE_ALLFOLDS
@@ -1139,18 +1123,6 @@ BEGIN
     VK_SUBTRACT,    ID_MODEL_SHOWRATE_DEC,  VIRTKEY, ALT, NOINVERT
     VK_ADD,         ID_MODEL_SHOWRATE_INC,  VIRTKEY, ALT, NOINVERT
     VK_F5,          ID_MODEL_STOP,          VIRTKEY, SHIFT, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARK_NEXT, VIRTKEY, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARK_PREVIOUS, VIRTKEY, SHIFT, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARK_TOGGLE, VIRTKEY, CONTROL, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARKS_CLEAR, VIRTKEY, SHIFT, CONTROL, NOINVERT
-    "F",            ID_SEARCH_FIND,         VIRTKEY, CONTROL, NOINVERT
-    "F",            ID_SEARCH_FIND_INMODEL, VIRTKEY, SHIFT, CONTROL, NOINVERT
-    VK_F3,          ID_SEARCH_FIND_NEXT,    VIRTKEY, NOINVERT
-    VK_F3,          ID_SEARCH_FIND_NEXT_FAST, VIRTKEY, CONTROL, NOINVERT
-    VK_F3,          ID_SEARCH_FIND_PREVIOUS, VIRTKEY, SHIFT, NOINVERT
-    VK_F3,          ID_SEARCH_FIND_PREVIOUS_FAST, VIRTKEY, SHIFT, CONTROL, NOINVERT
-    "G",            ID_SEARCH_GOTO_LINE,    VIRTKEY, CONTROL, NOINVERT
-    "H",            ID_SEARCH_REPLACE,      VIRTKEY, CONTROL, NOINVERT
     "9",            ID_VIEW_ENDOFLINE,      VIRTKEY, SHIFT, CONTROL, NOINVERT
     "8",            ID_VIEW_WHITESPACE,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     VK_MULTIPLY,    ID_VIEW_ZOOMAUTO,       VIRTKEY, CONTROL, NOINVERT
@@ -1258,10 +1230,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_SEARCH_FIND          "\nПоиск (Ctrl+F)"
-    ID_SEARCH_REPLACE       "\nЗамена (Ctrl+H)"
-    ID_SEARCH_BOOKMARK_NEXT "\nСлед. закладка (F2)"
-    ID_SEARCH_BOOKMARK_PREVIOUS "\nПред. закладка (Shift+F2)"
     ID_FILE_SAVE_ALL        "\nЗаписать всё"
 END
 

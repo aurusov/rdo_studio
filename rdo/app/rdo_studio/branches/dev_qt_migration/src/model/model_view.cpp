@@ -28,7 +28,6 @@ using namespace rdoEditor;
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioModelView
 // --------------------------------------------------------------------------------
-static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
 // ON_UPDATE_COMMAND_UI сделано
 
@@ -38,8 +37,6 @@ static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //	ON_WM_CREATE()
 //	ON_WM_SETFOCUS()
 //	ON_WM_SIZE()
-//	ON_COMMAND(ID_SEARCH_FIND_INMODEL, OnSearchFindInModel)
-//	ON_REGISTERED_MESSAGE( FINDINMODEL_MSG, OnFindInModelMsg )
 //	ON_COMMAND(ID_FILE_PRINT, RDOStudioEditBaseView::OnFilePrint)
 //	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioEditBaseView::OnFilePrint)
 //	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioEditBaseView::OnFilePrintPreview)
