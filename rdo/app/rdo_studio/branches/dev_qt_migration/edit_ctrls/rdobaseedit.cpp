@@ -442,7 +442,7 @@ void RDOBaseEdit::onSearchFindPrevious()
 void RDOBaseEdit::onSearchFindNextCurrent() 
 {
 	if (m_pGroup){
-		m_pGroup->findStr     = getWordForFind();
+		m_pGroup->findStr     = getCurrentWord();
 		m_pGroup->bSearchDown = true;
 		findNext(m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
 	}	
@@ -451,7 +451,7 @@ void RDOBaseEdit::onSearchFindNextCurrent()
 void RDOBaseEdit::onSearchFindPreviousCurrent() 
 {
 	if (m_pGroup){
-		m_pGroup->findStr     = getWordForFind();
+		m_pGroup->findStr     = getCurrentWord();
 		m_pGroup->bSearchDown = true;
 		findNext(m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
 	}
