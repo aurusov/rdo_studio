@@ -132,7 +132,6 @@ RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::find_if(CREF(this_p
 // ---------------
 //! @todo qt
 //BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
-//	ON_WM_SETFOCUS()
 //	ON_WM_CONTEXTMENU()
 //END_MESSAGE_MAP()
 
