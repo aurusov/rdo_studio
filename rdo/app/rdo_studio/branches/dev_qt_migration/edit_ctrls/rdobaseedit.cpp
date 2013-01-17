@@ -388,7 +388,7 @@ void RDOBaseEdit::ensureRangeVisible( int posStart, int posEnd, rbool enforcePol
 
 void RDOBaseEdit::onSearchFind() 
 {
-	m_findSettings.what = getSelection();
+	m_findSettings.what = getCurrentOrSelectedWord();
 
 	if (!m_pFindDialog)
 	{
@@ -515,7 +515,7 @@ void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchC
 
 void RDOBaseEdit::onSearchReplace() 
 {
-	m_findReplaceSettings.what = getSelection();
+	m_findReplaceSettings.what = getCurrentOrSelectedWord();
 
 	if (!m_pFindReplaceDialog)
 	{

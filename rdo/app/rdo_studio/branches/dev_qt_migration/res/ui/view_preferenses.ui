@@ -1116,34 +1116,9 @@
         <widget class="QTextBrowser" name="textBrowser"/>
        </item>
       </layout>
-      <zorder>label_3</zorder>
-      <zorder>comboBox</zorder>
-      <zorder>comboBox_3</zorder>
-      <zorder>label_4</zorder>
-      <zorder>label_5</zorder>
-      <zorder>fontComboBox</zorder>
-      <zorder>comboBox_2</zorder>
-      <zorder>comboBox_4</zorder>
-      <zorder>toolButton</zorder>
-      <zorder>toolButton_2</zorder>
-      <zorder>checkBox_8</zorder>
-      <zorder>checkBox_9</zorder>
-      <zorder>checkBox_10</zorder>
-      <zorder>label_4</zorder>
-      <zorder>checkBox_11</zorder>
-      <zorder>checkBox_12</zorder>
-      <zorder>label_6</zorder>
-      <zorder>label_7</zorder>
-      <zorder>comboBox_5</zorder>
-      <zorder>comboBox_6</zorder>
       <zorder>checkBox_13</zorder>
       <zorder>treeWidget</zorder>
       <zorder>textBrowser</zorder>
-     </widget>
-     <widget class="QWidget" name="tab_5">
-      <attribute name="title">
-       <string>Внешние модули</string>
-      </attribute>
      </widget>
     </widget>
    </item>
