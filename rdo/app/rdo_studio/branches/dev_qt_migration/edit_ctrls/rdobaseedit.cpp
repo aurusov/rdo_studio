@@ -134,8 +134,6 @@ RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::find_if(CREF(this_p
 //BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 //	ON_WM_SETFOCUS()
 //	ON_WM_CONTEXTMENU()
-//	ON_COMMAND(ID_SEARCH_FIND_NEXT_FAST, OnSearchFindNextFast)
-//	ON_COMMAND(ID_SEARCH_FIND_PREVIOUS_FAST, OnSearchFindPreviousFast)
 //END_MESSAGE_MAP()
 
 RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent)
@@ -445,7 +443,7 @@ void RDOBaseEdit::onSearchFindNextCurrent()
 		m_pGroup->findStr     = getCurrentWord();
 		m_pGroup->bSearchDown = true;
 		findNext(m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
-	}	
+	}
 }
 
 void RDOBaseEdit::onSearchFindPreviousCurrent() 
