@@ -75,20 +75,6 @@ void RDOStudioModelView::closeEvent(PTR(QCloseEvent) event)
 	}
 }
 
-//! @todo qt
-//BOOL RDOStudioModelView::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
-//{
-//	if ( m_pTabCtrl->getCurrentEdit()->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-//	return RDOStudioEditBaseView::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
-//}
-//
-//void RDOStudioModelView::OnSetFocus(CWnd* pOldWnd)
-//{
-//	RDOStudioEditBaseView::OnSetFocus( pOldWnd );
-//	m_pTabCtrl->SetFocus();
-//}
-//
-
 REF(rdoEditor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
 {
 	return *m_pTabCtrl;
