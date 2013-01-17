@@ -23,16 +23,16 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 class RDOFindEdit: public LogEdit
 {
-private:
-	virtual void onHelpContext();
-
 public:
 	RDOFindEdit(PTR(QWidget) pParent);
 	virtual ~RDOFindEdit();
 
-	void setEditorStyle( RDOFindEditStyle* _style );
+	void setEditorStyle(RDOFindEditStyle* pStyle);
 
-	void setKeyword( CREF(tstring) keyword, const rbool matchCase = false ) const;
+	void setKeyword(CREF(tstring) keyword, const rbool matchCase = false) const;
+
+private:
+	virtual void onHelpContext();
 };
 
 } // namespace rdoEditCtrl
