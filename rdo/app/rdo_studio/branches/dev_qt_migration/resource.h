@@ -450,8 +450,6 @@
 #define ID_MODEL_RUN                    33234
 #define ID_MODEL_STOP                   33235
 #define ID_FILE_MODEL_SAVE              33239
-#define ID_BUILDFINDLOG_GOTO_NEXT       33241
-#define ID_BUILDFINDLOG_GOTO_PREV       33242
 #define ID_VIEW_WHITESPACE              33244
 #define ID_VIEW_ENDOFLINE               33245
 #define ID_VIEW_ZOOMIN                  33246

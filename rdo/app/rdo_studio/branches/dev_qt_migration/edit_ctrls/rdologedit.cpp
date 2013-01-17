@@ -31,13 +31,6 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- LogEdit
 // ---------------------------------------------------------------------------
-
-//! @todo qt
-//BEGIN_MESSAGE_MAP( LogEdit, RDOBaseEdit )
-//	ON_COMMAND(ID_BUILDFINDLOG_GOTO_NEXT, OnGotoNext)
-//	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
-//END_MESSAGE_MAP()
-
 LogEdit::LogEdit(PTR(QWidget) pParent)
 	: RDOBaseEdit  (pParent)
 	, m_currentLine(-1)
@@ -232,16 +225,6 @@ void LogEdit::appendLine(PTR(LogEditLineInfo) pLine)
 		setReadOnly(true);
 	}
 	onUpdateEditGUI();
-}
-
-void LogEdit::OnGotoNext()
-{
-	gotoNext();
-}
-
-void LogEdit::OnGotoPrev()
-{
-	gotoPrev();
 }
 
 void LogEdit::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScroll)

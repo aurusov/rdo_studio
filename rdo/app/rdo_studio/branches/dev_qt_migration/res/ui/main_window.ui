@@ -1038,6 +1038,22 @@ border: none;
     <string>Ctrl+Shift+F3</string>
    </property>
   </action>
+  <action name="actSearchLogNext">
+   <property name="text">
+    <string>Перейти к следующему в логе</string>
+   </property>
+   <property name="shortcut">
+    <string>F4</string>
+   </property>
+  </action>
+  <action name="actSearchLogPrev">
+   <property name="text">
+    <string>Перейти к предыдущему в логе</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F4</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../rdo_studio.qrc"/>

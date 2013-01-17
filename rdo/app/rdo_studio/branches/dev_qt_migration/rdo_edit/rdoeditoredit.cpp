@@ -40,10 +40,6 @@ using namespace rdoEditCtrl;
 
 //! @todo qt
 //BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBaseEdit )
-//	ON_COMMAND(ID_BUILDFINDLOG_GOTO_NEXT, OnGotoNext)
-//	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
-//	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTO_NEXT, OnUpdateGotoNext)
-//	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTO_PREV, OnUpdateGotoPrev)
 //
 //	ON_COMMAND_RANGE( ID_INSERT_PAT_TEMPL_OPERATION, ID_INSERT_ALGO_RETURN, OnInsertCommand )
 //
@@ -617,7 +613,7 @@ void RDOEditorEdit::setLog(REF(LogEdit) log)
 	this->log = &log;
 }
 
-void RDOEditorEdit::OnGotoNext()
+void RDOEditorEdit::onGotoNext()
 {
 	if (log)
 	{
@@ -625,22 +621,12 @@ void RDOEditorEdit::OnGotoNext()
 	}
 }
 
-void RDOEditorEdit::OnGotoPrev()
+void RDOEditorEdit::onGotoPrev()
 {
 	if (log)
 	{
 		log->gotoPrev();
 	}
-}
-
-void RDOEditorEdit::OnUpdateGotoNext(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(log ? true : false);
-}
-
-void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(log ? true : false);
 }
 
 void RDOEditorEdit::onHelpContext()
@@ -700,11 +686,23 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 		pMainWindow->actViewToggleCurrentFold,
 		activated && !isEmpty(),
 		this, "onToggleCurrentFold()"
-		);
+	);
 
 	updateAction(
 		pMainWindow->actViewToggleAllFolds,
 		activated && !isEmpty(),
 		this, "onToggleAllFolds()"
-		);
+	);
+
+	updateAction(
+		pMainWindow->actSearchLogNext,
+		activated && log,
+		this, "onGotoNext()"
+	);
+
+	updateAction(
+		pMainWindow->actSearchLogPrev,
+		activated && log,
+		this, "onGotoPrev()"
+	);
 }

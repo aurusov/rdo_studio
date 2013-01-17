@@ -48,6 +48,8 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 
 	addAction(actSearchFindNextCurrent);
 	addAction(actSearchFindPreviousCurrent);
+	addAction(actSearchLogNext);
+	addAction(actSearchLogPrev);
 
 	connect(menuFileReopen, SIGNAL(triggered(QAction*)), this, SLOT(onMenuFileReopen(QAction*)));
 	connect(actFileExit,    SIGNAL(triggered(bool)),     this, SLOT(close()));
