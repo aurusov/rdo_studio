@@ -54,7 +54,7 @@ RDOStudioModelView::RDOStudioModelView(PTR(QWidget) pParent)
 	pLayout->setSpacing(0);
 	pLayout->setContentsMargins(0, 0, 0, 0);
 	pLayout->addWidget(m_pTabCtrl);
-	
+
 	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 	pMainWindow->actSearchFindInModel->setEnabled(true);
@@ -108,7 +108,7 @@ REF(rdoEditor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
 	return *m_pTabCtrl;
 }
 
-void RDOStudioModelView::onSearchFindInModel() 
+void RDOStudioModelView::onSearchFindInModel()
 {
 	m_findSettings.what = m_pTabCtrl->getCurrentEdit()->getWordForFind();
 
@@ -118,7 +118,7 @@ void RDOStudioModelView::onSearchFindInModel()
 			this,
 			boost::bind(&RDOStudioModelView::onFindDlgFind, this, _1),
 			boost::bind(&RDOStudioModelView::onFindDlgClose, this)
-			);
+		);
 	}
 
 	m_pFindDialog->setSettings(m_findSettings);
