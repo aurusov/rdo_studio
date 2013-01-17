@@ -37,9 +37,6 @@ using namespace rdoEditor;
 //	ON_WM_CREATE()
 //	ON_WM_SETFOCUS()
 //	ON_WM_SIZE()
-//	ON_COMMAND(ID_FILE_PRINT, RDOStudioEditBaseView::OnFilePrint)
-//	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioEditBaseView::OnFilePrint)
-//	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioEditBaseView::OnFilePrintPreview)
 //END_MESSAGE_MAP()
 
 RDOStudioModelView::RDOStudioModelView(PTR(QWidget) pParent)
