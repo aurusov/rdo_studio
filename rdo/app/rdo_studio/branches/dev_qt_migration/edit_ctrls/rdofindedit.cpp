@@ -33,7 +33,8 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 // --------------------------------------------------------------------------------
 // -------------------- RDOFindEdit
 // ---------------------------------------------------------------------------
-RDOFindEdit::RDOFindEdit(PTR(QWidget) pParent): LogEdit(pParent)
+RDOFindEdit::RDOFindEdit(PTR(QWidget) pParent)
+	: LogEdit(pParent)
 {
 	sendEditor(SCI_SETLEXER, SCLEX_FIND);
 	//	int lexLanguage = sendEditor(SCI_GETLEXER);
