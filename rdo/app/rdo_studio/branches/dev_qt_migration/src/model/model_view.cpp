@@ -51,6 +51,7 @@ RDOStudioModelView::~RDOStudioModelView()
 {
 	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
+	pMainWindow->actSearchFindInModel->setEnabled(false);
 	disconnect(pMainWindow->actSearchFindInModel, SIGNAL(triggered(bool)), this, SLOT(onSearchFindInModel()));
 }
 
