@@ -131,8 +131,11 @@ void RDOStudioModelView::onSearchFindAll()
 			pos = pEdit->findPos(findStr, line, bMatchCase, bMatchWholeWord);
 			if (pos != -1)
 			{
+				pEdit->setCurrentPos(pos);
+				tstring newfindStr = pEdit->getCurrentWord();
+				pos = pEdit->findPos(newfindStr, line, bMatchCase, bMatchWholeWord);
 				line = pEdit->getLineFromPosition(pos);
-				studioApp.getIMainWnd()->getDockFind().appendString(pEdit->getLine(line), m_pTabCtrl->indexToType(i), line, pos - pEdit->getPositionFromLine(line));
+				studioApp.getIMainWnd()->getDockFind().appendString(pEdit->getLine(line), m_pTabCtrl->indexToType(i), line, pos - pEdit->getPositionFromLine(line) + newfindStr.length());
 				line++;
 				count++;
 			}
