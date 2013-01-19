@@ -31,16 +31,16 @@ GeneralDB::QueryList generateCreateDBQuery()
 
 	queryList.push_back(
 		"CREATE TABLE rtp("
-		"id          serial,"
-		"r_t_name    VARCHAR(40) NOT NULL,"
-		"r_t_perm    boolean NOT NULL,"
+		"id       serial,"
+		"rtp_name VARCHAR(40) NOT NULL,"
+		"rtp_perm boolean NOT NULL,"
 		"PRIMARY KEY (id)"
 		");");
 
 	queryList.push_back(
 		"CREATE TABLE list_of_types_of_params("
-		"type_id     integer,"
-		"table_id    integer NOT NULL,"
+		"type_id  integer,"
+		"table_id integer NOT NULL,"
 		"PRIMARY KEY (type_id)"
 		");");
 
@@ -48,10 +48,10 @@ GeneralDB::QueryList generateCreateDBQuery()
 		"CREATE TABLE param_of_type("
 		"id          serial,"
 		"param_name  VARCHAR(40) NOT NULL,"
-		"r_t_id      integer,"
+		"rtp_id      integer,"
 		"type_id     integer NOT NULL,"
-		"PRIMARY KEY (id,r_t_id),"
-		"FOREIGN KEY (r_t_id) REFERENCES rtp(id),"
+		"PRIMARY KEY (id,rtp_id),"
+		"FOREIGN KEY (rtp_id) REFERENCES rtp(id),"
 		"FOREIGN KEY (type_id) REFERENCES list_of_types_of_params"
 		");");
 //------------------------
