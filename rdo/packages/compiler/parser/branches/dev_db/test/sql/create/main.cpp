@@ -31,10 +31,10 @@ GeneralDB::QueryList generateCreateDBQuery()
 
 	queryList.push_back(
 		"CREATE TABLE rtp("
-		"r_t_id      serial,"
+		"id          serial,"
 		"r_t_name    VARCHAR(40) NOT NULL,"
 		"r_t_perm    boolean NOT NULL,"
-		"PRIMARY KEY (r_t_id)"
+		"PRIMARY KEY (id)"
 		");");
 
 	queryList.push_back(
@@ -46,12 +46,12 @@ GeneralDB::QueryList generateCreateDBQuery()
 
 	queryList.push_back(
 		"CREATE TABLE param_of_type("
-		"param_id    serial,"
+		"id          serial,"
 		"param_name  VARCHAR(40) NOT NULL,"
 		"r_t_id      integer,"
 		"type_id     integer NOT NULL,"
-		"PRIMARY KEY (param_id,r_t_id),"
-		"FOREIGN KEY (r_t_id) REFERENCES rtp,"
+		"PRIMARY KEY (id,r_t_id),"
+		"FOREIGN KEY (r_t_id) REFERENCES rtp(id),"
 		"FOREIGN KEY (type_id) REFERENCES list_of_types_of_params"
 		");");
 //------------------------
@@ -63,7 +63,7 @@ GeneralDB::QueryList generateCreateDBQuery()
 		"CREATE FUNCTION copy_type_id() RETURNS TRIGGER AS $trig$ "
 		"BEGIN "
 		"INSERT INTO list_of_types_of_params VALUES "
-		"(NEW.type_id, NEW.tableoid); "
+		"(NEW.id, NEW.tableoid); "
 		"RETURN NULL; "
 		"END; "
 		"$trig$ LANGUAGE plpgsql; ");
@@ -76,11 +76,11 @@ GeneralDB::QueryList generateCreateDBQuery()
 //------------------------
 	queryList.push_back(
 		"CREATE TABLE real("
-		"type_id     integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
+		"id          integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
 		"def_val     real,"
 		"min         real,"
 		"max         real,"
-		"PRIMARY KEY (type_id)"
+		"PRIMARY KEY (id)"
 		");");
 
 	queryList.push_back(
@@ -93,9 +93,9 @@ GeneralDB::QueryList generateCreateDBQuery()
 //------------------------
 	queryList.push_back(
 		"CREATE TABLE enum("
-		"type_id     integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
+		"id          integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
 		"def_val     VARCHAR(40),"
-		"PRIMARY KEY (type_id)"
+		"PRIMARY KEY (id)"
 		");");
 
 	queryList.push_back(
@@ -118,11 +118,11 @@ GeneralDB::QueryList generateCreateDBQuery()
 //------------------------
 	queryList.push_back(
 		"CREATE TABLE int("
-		"type_id     integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
+		"id          integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
 		"def_val     integer,"
 		"min         integer,"
 		"max         integer,"
-		"PRIMARY KEY (type_id)"
+		"PRIMARY KEY (id)"
 		");");
 
 	queryList.push_back(

@@ -195,7 +195,7 @@ void RDOType__int::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("int","DEFAULT,NULL,NULL,NULL");
 
-	db.setContext(db.queryExecIndex("int","type_id"));
+	db.setContext(db.queryExecIndex("int"));
 }
 
 // --------------------------------------------------------------------------------

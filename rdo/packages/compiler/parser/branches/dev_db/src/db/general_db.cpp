@@ -72,11 +72,10 @@ void GeneralDB::queryExec(const QString& query)
 	}
 }
 
-int GeneralDB::queryExecIndex(const QString& table, const QString& column)
+int GeneralDB::queryExecIndex(const QString& table)
 {
 	QSqlQuery query;
-	query.exec(QString("select max(%1) as alt from %2;")
-		.arg(column)
+	query.exec(QString("select max(id) as alt from %1;")
 		.arg(table ));
 	query.next();
 	int index = query.value(query.record().indexOf("alt")).toInt();

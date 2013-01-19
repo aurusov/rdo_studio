@@ -28,7 +28,7 @@ public:
 	virtual void queryExec     (const QString&   query                       ) = 0;
 	virtual void queryExec     (const QueryList& query                       ) = 0;
 
-	virtual int  queryExecIndex(const QString& table, const QString& column  ) = 0;
+	virtual int  queryExecIndex(const QString& table                         ) = 0;
 	virtual void setContext    (int context                                  ) = 0;
 	virtual int  getContext    (                                             ) = 0;
 

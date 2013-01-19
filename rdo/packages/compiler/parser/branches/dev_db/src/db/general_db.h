@@ -34,7 +34,7 @@ public:
 	virtual void queryExec     (const QString&   query                       );
 	virtual void queryExec     (const QueryList& query                       );
 
-	virtual int  queryExecIndex(const QString& table, const QString& column  );
+	virtual int  queryExecIndex(const QString& table                         );
 	virtual void setContext    (int context                                  );
 	virtual int  getContext    (                                             );
 

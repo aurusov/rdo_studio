@@ -96,7 +96,7 @@ void RDORTPResType::serializeInDB(REF(IDB) db) const
 		.arg(QString::fromStdString(name())
 		.arg(m_permanent ? "true" : "false")));
 
-	int index = db.queryExecIndex("rtp", "r_t_id");
+	int index = db.queryExecIndex("rtp");
 
 	BOOST_FOREACH(CREF(LPRDORTPParam) param, m_params)
 	{
