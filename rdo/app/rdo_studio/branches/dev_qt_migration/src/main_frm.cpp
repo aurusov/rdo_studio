@@ -54,6 +54,9 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	connect(menuFileReopen, SIGNAL(triggered(QAction*)), this, SLOT(onMenuFileReopen(QAction*)));
 	connect(actFileExit,    SIGNAL(triggered(bool)),     this, SLOT(close()));
 
+	connect(actWindowCascade,        SIGNAL(triggered(bool)), mdiArea, SLOT(cascadeSubWindows()));
+	connect(actWindowTitleHorzontal, SIGNAL(triggered(bool)), mdiArea, SLOT(tileSubWindows   ()));
+
 	connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions ()));
 	connect(actHelpWhatsNew, SIGNAL(triggered(bool)), this, SLOT(onHelpWhatsNew()));
 	connect(actHelpAbout,    SIGNAL(triggered(bool)), this, SLOT(onHelpAbout   ()));

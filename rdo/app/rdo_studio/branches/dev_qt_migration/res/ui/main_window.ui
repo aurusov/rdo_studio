@@ -964,7 +964,7 @@ border: none;
   </action>
   <action name="actWindowCascade">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Расположить каскадом</string>
@@ -972,7 +972,7 @@ border: none;
   </action>
   <action name="actWindowTitleHorzontal">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Расположить заголовками</string>
