@@ -90,7 +90,7 @@ void GeneralDB::setContext(int context)
 
 int GeneralDB::getContext()
 {
-//	ASSERT(m_contextParrentID.is_initialized());
+	ASSERT(m_contextParrentID.is_initialized());
 	int i = m_contextParrentID.get();
 	m_contextParrentID.reset();
 	return i;
