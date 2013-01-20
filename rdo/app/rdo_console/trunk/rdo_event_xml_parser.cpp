@@ -29,7 +29,7 @@ bool event_xml_parser::register_parser(CREF(tstring) name, boost::shared_ptr<eve
 	return false;
 }
 
-void event_xml_parser::parse(REF(std::istream) stream, REF(event_list) list)
+void event_xml_parser::parse(REF(std::istream) stream, REF(event_container) list)
 {
 	list.clear();
 
@@ -40,14 +40,14 @@ void event_xml_parser::parse(REF(std::istream) stream, REF(event_list) list)
 	{
 		boost::property_tree::ptree const& node = v.second;
 
-        tstring event_type = node.get<tstring>("<xmlattr>.type", "");
+		tstring event_type = node.get<tstring>("<xmlattr>.type", "");
 		parsers::iterator it = m_parsers.find(event_type);
 		if(it != m_parsers.end())
 		{
             event* e = it->second->read(node);
 			if(e != nullptr)
 			{
-				list.push_back(boost::shared_ptr<event>(e));
+				list.insert(std::make_pair(e->getTime(), boost::shared_ptr<event>(e)));
 			}
 			else
 			{

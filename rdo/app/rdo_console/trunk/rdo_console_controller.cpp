@@ -23,7 +23,7 @@ using namespace rdo::simulation::report;
 
 #define MUTEXT_PROTECTION(A) boost::lock_guard<boost::mutex> lg_##__LINE__(A);
 
-StudioConsoleController::StudioConsoleController()
+console_controller::console_controller()
 	: RDOThread(_T("RDOThreadStudioConsoleController"))
 	, m_state(SS_UNDEFINED)
 	, m_converted(false)
@@ -33,7 +33,7 @@ StudioConsoleController::StudioConsoleController()
 	, m_exitCode(rdo::simulation::report::EC_OK)
 {
 	notifies.push_back(RT_REPOSITORY_MODEL_OPEN_ERROR       );
-	notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        );
+	notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        ); /// @todo : wait
 	notifies.push_back(RT_RUNTIME_MODEL_STOP_AFTER          );
 	notifies.push_back(RT_SIMULATOR_PARSE_OK                );
 	notifies.push_back(RT_SIMULATOR_PARSE_ERROR             );
@@ -48,11 +48,11 @@ StudioConsoleController::StudioConsoleController()
 	after_constructor();
 }
 
-StudioConsoleController::~StudioConsoleController()
+console_controller::~console_controller()
 {
 }
 
-rbool StudioConsoleController::finished() const
+rbool console_controller::finished() const
 {
 	rbool res = true;
 	{
@@ -62,38 +62,38 @@ rbool StudioConsoleController::finished() const
 	return res;
 }
 
-rbool StudioConsoleController::converted() const
+rbool console_controller::converted() const
 {
 	return m_converted;
 }
 
-rbool StudioConsoleController::simulationSuccessfully()
+rbool console_controller::simulationSuccessfully()
 {
 	sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 	return m_exitCode == rdo::simulation::report::EC_OK;
 }
 
-rbool StudioConsoleController::buildError () const
+rbool console_controller::buildError () const
 {
 	return m_buildError;
 }
 
-rbool StudioConsoleController::runtimeError() const
+rbool console_controller::runtimeError() const
 {
 	return m_runtimeError;
 }
 
-rbool StudioConsoleController::convertorError() const
+rbool console_controller::convertorError() const
 {
 	return m_convertorError;
 }
 
-void StudioConsoleController::getBuildLogList(StringList& list) const
+void console_controller::getBuildLogList(StringList& list) const
 {
 	list = m_buildLogList;
 }
 
-void StudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)
+void console_controller::proc(REF(RDOThread::RDOMessageInfo) msg)
 {
 	switch (msg.message)
 	{
@@ -154,11 +154,12 @@ void StudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)
 		m_convertorError = true;
 		break;
 
-	default: break;
+	default:
+		break;
 	}
 }
 
-void StudioConsoleController::fillBuildLogList(REF(std::vector<FileMessage>) errors)
+void console_controller::fillBuildLogList(REF(std::vector<FileMessage>) errors)
 {
 	STL_FOR_ALL_CONST(errors, it)
 	{

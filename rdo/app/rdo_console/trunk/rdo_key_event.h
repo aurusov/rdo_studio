@@ -22,7 +22,7 @@ class key_event : public event
 {
 public:
 	enum states {
-		press,
+		press = 0,
 		release
 	};
 

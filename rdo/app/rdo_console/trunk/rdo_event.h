@@ -15,6 +15,8 @@
 #include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
+#include <time.h>
+
 OPEN_RDO_NAMESPACE
 
 /// base event class
@@ -27,22 +29,22 @@ public:
 		mouse
 	};
 
+	typedef double etime;
+
 public:
-	event(CREF(tstring) name, double time, types type = none);
+	event(CREF(tstring) name, etime time, types type = none);
 	virtual ~event();
 
 	void setName(CREF(tstring) name);
-	void setTime(double time);
+	void setTime(etime time);
 
 	tstring getName() const;
-	double  getTime() const;
+	etime   getTime() const;
 	types   getType() const;
-
-	friend bool operator< (CREF(event) left, CREF(event) right);
 
 private:
 	tstring m_name;
-	double  m_time;
+	etime   m_time;
 	types   m_type;
 };
 

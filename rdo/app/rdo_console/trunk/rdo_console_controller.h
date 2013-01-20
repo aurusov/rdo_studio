@@ -22,13 +22,13 @@
 
 OPEN_RDO_NAMESPACE
 
-class StudioConsoleController: public RDOThread
+class console_controller: public RDOThread
 {
 public:
 	typedef  std::list<tstring>  StringList;
 
-	StudioConsoleController();
-	virtual ~StudioConsoleController();
+	console_controller();
+	virtual ~console_controller();
 
 	rbool finished              () const;
 	rbool converted             () const;

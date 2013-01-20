@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file     app/rdo_console/main.cpp
+  \file	    app/rdo_console/main.cpp
   \author   Пройдаков Евгений (lord.tiran@gmail.com)
-  \date     26.10.2011
-  \brief    Консольная версия RDO
+  \date	    26.10.2011
+  \brief	Консольная версия RDO
   \indent   4T
 */
 
@@ -21,6 +21,8 @@
 #include "simulator/runtime/keyboard.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_console/rdo_event.h"
+#include "app/rdo_console/rdo_key_event.h"
+#include "app/rdo_console/rdo_mouse_event.h"
 #include "app/rdo_console/rdo_event_xml_parser.h"
 #include "app/rdo_console/rdo_key_event_xml_reader.h"
 #include "app/rdo_console/rdo_mouse_event_xml_reader.h"
@@ -32,17 +34,19 @@
 namespace fs = boost::filesystem;
 
 typedef std::list<tstring> string_list;
-typedef rdo::event_xml_parser::event_list event_list;
+typedef rdo::event_xml_parser::event_container event_container;
 
 const tstring LOG_FILE_NAME = _T("log.txt");
 
-static ruint g_exitCode = TERMINATION_NORMAL;
-
-void read_events(REF(std::istream) stream, REF(event_list) list);
+void read_events(REF(std::istream) stream, REF(event_container) container);
 void write_build_log(REF(std::ostream) stream, CREF(string_list) list);
+bool run(PTR(rdo::console_controller) pAppController, REF(event_container) container);
+void process_event(PTR(rdo::console_controller) pAppController, REF(event_container) container);
 
 int main(int argc, PTR(char) argv[])
 {
+	ruint exitCode = TERMINATION_NORMAL;
+
 	rdo::setup_locale();
 
 	boost::posix_time::ptime startTime = boost::posix_time::microsec_clock::local_time();
@@ -58,25 +62,24 @@ int main(int argc, PTR(char) argv[])
 
 	if (options_controller.helpQuery())
 	{
-		return TERMINATION_NORMAL;
+		exit(TERMINATION_NORMAL);
 	}
 	else if (!model_exist)
 	{
 		std::cerr << _T("Model file does not exist") << std::endl;
-		return TERMINATION_WITH_AN_ERROR_NO_MODEL;
+		exit(TERMINATION_WITH_AN_ERROR_NO_MODEL);
 	}
 	else if (!event_exist && !events_file_name.empty())
 	{
 		std::cerr << _T("Events file does not exist") << std::endl;
-		return TERMINATION_WITH_AN_ERROR_NO_EVENTS;
+		exit(TERMINATION_WITH_AN_ERROR_NO_EVENTS);
 	}
 
 	// read events
-	event_list list;
+	event_container container;
 	if(event_exist) {
 		std::ifstream stream(events_file_name.c_str(), std::ios::out);
-		read_events(stream, list);
-		list.sort();
+		read_events(stream, container);
 	}
 
 	// simulation
@@ -84,7 +87,7 @@ int main(int argc, PTR(char) argv[])
 	new rdo::service::simulation::RDOThreadSimulator();
 	new rdo::repository::RDOThreadRepository();
 
-	rdo::StudioConsoleController* pAppController = new rdo::StudioConsoleController();
+	rdo::console_controller* pAppController = new rdo::console_controller();
 
 	rdo::repository::RDOThreadRepository::OpenFile data(model_file_name);
 	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
@@ -121,71 +124,36 @@ int main(int argc, PTR(char) argv[])
 		boost::filesystem::remove(fileName);
 		std::ofstream stream(fileName.c_str(), std::ios::out);
 
-			write_build_log(stream, buildList);
+		write_build_log(stream, buildList);
 
 		std::cerr << _T("Build model error") << std::endl;
-		g_exitCode = TERMINATION_WITH_AN_ERROR_PARSE_MODEL_ERROR;
+		exitCode = TERMINATION_WITH_AN_ERROR_PARSE_MODEL_ERROR;
 	}
 	else
 	{
-		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
-
-		while (!pAppController->finished())
-		{
-			kernel->idle();
-
-			if (pAppController->runtimeError())
-			{
-				std::cout << _T("Run-time error") << std::endl;
-				g_exitCode = TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR;
-			}
-
-			if(!list.empty())
-			{
-				double runtime_time = 0;
-				pAppController->broadcastMessage(RDOThread::RT_RUNTIME_GET_TIMENOW, &runtime_time);
-
-				event_list::iterator it = list.begin();
-				if((*it)->getTime() < runtime_time)
-				{
-					std::cout << "push event : " << "time : " << (*it)->getTime() << "  |  name : " << (*it)->getName() << std::endl;
-					list.pop_front();
-
-					ruint code = VK_SPACE;
-
-					pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_DOWN, &code);
-					pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_UP,   &code);
-					pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_DOWN, &code);
-					pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_UP,   &code);
-				}
-			}
-		}
-		simulationSuccessfully = pAppController->simulationSuccessfully();
-
+		simulationSuccessfully = run(pAppController, container);
 		RDOKernel::close();
 	}
 
 	boost::posix_time::ptime endTime = boost::posix_time::microsec_clock::local_time();
-
 	ruint64 simulationTimeMillisecond = ( endTime - startTime ).total_milliseconds();
-
 	std::cout << "Total simulation time : " << simulationTimeMillisecond << " milliseconds" << std::endl;
 
 	if (simulationSuccessfully)
 	{
 		std::cout << _T("Simulation finished successfully") << std::endl;
-		g_exitCode = TERMINATION_NORMAL;
+		exitCode = TERMINATION_NORMAL;
 	}
 	else
 	{
 		std::cout << _T("Simulation completed with errors") << std::endl;
 	}
-	return g_exitCode;
+	return exitCode;
 }
 
-void read_events(REF(std::istream) stream, REF(event_list) list)
+void read_events(REF(std::istream) stream, REF(event_container) container)
 {
-	list.clear();
+	container.clear();
 
 	if (stream.fail()) {
 		exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
@@ -196,7 +164,7 @@ void read_events(REF(std::istream) stream, REF(event_list) list)
 
 	try
 	{
-		parser.parse(stream, list);
+		parser.parse(stream, container);
 	}
 	catch(...)
 	{
@@ -213,5 +181,71 @@ void write_build_log(REF(std::ostream) stream, CREF(string_list) list)
 	BOOST_FOREACH( string_list::value_type const& line, list )
 	{
 		stream << line.c_str() << std::endl;
+	}
+}
+
+bool run(PTR(rdo::console_controller) pAppController, REF(event_container) container)
+{
+	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
+
+	while (!pAppController->finished())
+	{
+		kernel->idle();
+
+		if (pAppController->runtimeError())
+		{
+			std::cout << _T("Run-time error") << std::endl;
+			exit(TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR);
+		}
+        process_event(pAppController, container);
+	}
+	return pAppController->simulationSuccessfully();
+}
+
+void process_event(PTR(rdo::console_controller) pAppController, REF(event_container) container)
+{
+	double runtime_time = 0;
+	pAppController->broadcastMessage(RDOThread::RT_RUNTIME_GET_TIMENOW, &runtime_time);
+
+	if(!container.empty())
+	{
+		event_container::iterator it = container.begin();
+		if(it->first < runtime_time)
+		{
+            std::cout << "process event : " << "name : " << it->second->getName() << "  |  " << "time : " << it->second->getTime() << std::endl;
+
+			rdo::event::types type = it->second->getType();
+
+			switch (type) {
+			case rdo::event::key:
+			{
+				ruint code = static_cast<rdo::key_event*>(it->second.get())->getKeyCode();
+				rdo::key_event::states state = static_cast<rdo::key_event*>(it->second.get())->getState();
+
+				rdo::console_controller::RDOTreadMessage message_type;
+				if(state == rdo::key_event::press) {
+					message_type = RDOThread::RT_RUNTIME_KEY_DOWN;
+				}
+				else if(state == rdo::key_event::release) {
+					message_type = RDOThread::RT_RUNTIME_KEY_UP;
+				}
+				else {
+					NEVER_REACH_HERE;
+				}
+				pAppController->broadcastMessage(message_type, &code);
+			}
+				break;
+
+			case rdo::event::mouse:
+				/// @todo : complete me
+				NEVER_REACH_HERE;
+				break;
+
+			default:
+				NEVER_REACH_HERE;
+				break;
+			}
+			container.erase(it);
+		}
 	}
 }
