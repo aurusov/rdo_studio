@@ -1,11 +1,12 @@
 ###############################################################################
-# Copyright (c) 2012 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2012-2013 Evgeny Proydakov <lord.tiran@gmail.com>
 ###############################################################################
 
 import os
 import sys
 import uuid
 import shutil
+import argparse
 import subprocess
 import xml.dom.minidom
 
@@ -14,7 +15,7 @@ import xml.dom.minidom
 ###############################################################################
 
 # data about rdo apps
-directory          = u'.'
+app_directory      = u'.'
 model_directory    = u'.'
 test_expansion     = u'.rtestx'
 trace_expansion    = u'.trc'
@@ -28,7 +29,7 @@ if sys.platform == 'win32':
     rdo_test_ex_substr = u'rdo_check_results.exe'
 
 RDO_CONSOLE_COMPILE_LOG_FILE_NAME = 'log.txt'
-    
+
 # test target type
 TARGET_CONSOLE   = u'CONSOLE'
 TAGRET_CONVERTER = u'CONVERTOR'
@@ -160,6 +161,17 @@ def compare_text_files(file1, file2):
 #                                 main code                                   #
 ###############################################################################
 
+# parse console options
+
+parser = argparse.ArgumentParser(description = u'rdo executor of system tests:', version = u'0.7.0')
+parser.add_argument(u'-ad', action = 'store', dest = u'app_directory',   default = app_directory,   help = u'application directory')
+parser.add_argument(u'-md', action = 'store', dest = u'model_directory', default = model_directory, help = u'model directory')
+
+args = parser.parse_args()
+
+app_directory   = u'' + args.app_directory
+model_directory = u'' + args.model_directory
+
 # global exit code variable
 G_EXIT_CODE = APP_CODE_TERMINATION_NORMAL
 
@@ -167,7 +179,7 @@ print u'STARTED SCRIPT :', sys.argv[0]
 print u'ENCODING', sys.getfilesystemencoding()
 
 # search rdo and rdo_test executables
-executables = get_executables(directory)
+executables = get_executables(app_directory)
 
 rdo_ex      = executables[0]
 rdo_test_ex = executables[1]
@@ -348,7 +360,6 @@ for task in files:
             print u'CONVERT EXIT CODE :', convertor_exit_code, u'\n'
             
             if convertor_exit_code == exit_code:
-                
                 # compare etalons
                 for etalon in etalons:
                     source_file = temp_directory_name + etalon['source']
