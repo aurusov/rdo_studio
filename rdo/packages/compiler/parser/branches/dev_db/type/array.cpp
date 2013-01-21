@@ -135,4 +135,9 @@ LPTypeInfo RDOArrayType::typeInfo() const
 	return pType;
 }
 
+void RDOArrayType::serializeInDB(REF(IDB) db) const
+{
+	NEVER_REACH_HERE;
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

@@ -50,6 +50,7 @@ rdo::runtime::RDOType::TypeID FunctionParamType::typeID() const
 
 void FunctionParamType::serializeInDB(REF(IDB) db) const
 {
+	NEVER_REACH_HERE;
 }
 
 tstring FunctionParamType::name() const
@@ -135,7 +136,9 @@ rdo::runtime::RDOType::TypeID FunctionType::typeID() const
 }
 
 void FunctionType::serializeInDB(REF(IDB) db) const
-{}
+{
+	NEVER_REACH_HERE;
+}
 
 CREF(LPTypeInfo) FunctionType::returnType() const
 {
