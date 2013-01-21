@@ -130,6 +130,65 @@ GeneralDB::QueryList generateCreateDBQuery()
 		"AFTER INSERT ON int "
 		"FOR EACH ROW "
 		"EXECUTE PROCEDURE copy_type_id();");
+//------------------------
+
+//------------------------
+	queryList.push_back(
+		"CREATE TABLE identificator("
+		"id      integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
+		"PRIMARY KEY (id)"
+		");");
+
+	queryList.push_back(
+		"CREATE TRIGGER identificator_trig "
+		"AFTER INSERT ON identificator "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE copy_type_id();");
+//------------------------
+
+//------------------------
+	queryList.push_back(
+		"CREATE TABLE bool("
+		"id      integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
+		"def_val boolean,"
+		"PRIMARY KEY (id)"
+		");");
+
+	queryList.push_back(
+		"CREATE TRIGGER bool_trig "
+		"AFTER INSERT ON bool "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE copy_type_id();");
+//------------------------
+
+//------------------------
+	queryList.push_back(
+		"CREATE TABLE string("
+		"id      integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
+		"def_val VARCHAR(40) NOT NULL,"
+		"PRIMARY KEY (id)"
+		");");
+
+	queryList.push_back(
+		"CREATE TRIGGER string_trig "
+		"AFTER INSERT ON string "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE copy_type_id();");
+//------------------------
+
+//------------------------
+	queryList.push_back(
+		"CREATE TABLE void("
+		"id      integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
+		"PRIMARY KEY (id)"
+		");");
+
+	queryList.push_back(
+		"CREATE TRIGGER void_trig "
+		"AFTER INSERT ON void "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE copy_type_id();");
+
 
 	return queryList;
 }
