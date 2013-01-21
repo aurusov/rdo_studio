@@ -581,7 +581,7 @@ void RDOBaseEdit::onFindReplaceDlgClose()
 
 void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
-	if(firstTime && findWhat != "")
+	if(findWhat != "")
 		findNext(findWhat, searchDown, matchCase, matchWholeWord);
 	if ( bHaveFound ) {
 		int replaceLen = replaceWhat.length();
@@ -595,7 +595,7 @@ void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool
 		}
 		else
 		{
-			startPosition = findPos(getCurrentWord(), getCurrentLineNumber(), matchCase, matchWholeWord);
+			startPosition = sendEditor(SCI_WORDSTARTPOSITION, getCurrentPos(), true);
 			endPosition   = startPosition + getCurrentWord().length();
 		}
 		sendEditor(SCI_SETTARGETSTART, startPosition);
