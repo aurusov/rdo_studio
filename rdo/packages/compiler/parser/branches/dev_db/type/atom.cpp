@@ -78,6 +78,11 @@ void RDOType__unknow::writeModelStructure(REF(rdo::ostream) stream) const
 	NEVER_REACH_HERE;
 }
 
+void RDOType__unknow::serializeInDB(REF(IDB) db) const
+{
+	NEVER_REACH_HERE;
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__void
 // --------------------------------------------------------------------------------
@@ -124,6 +129,13 @@ void RDOType__void::writeModelStructure(REF(rdo::ostream) stream) const
 	UNUSED(stream);
 	parser::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать void-тип в отчет"));
 	NEVER_REACH_HERE;
+}
+
+void RDOType__void::serializeInDB(REF(IDB) db) const
+{
+	db.insertRow("void","DEFAULT");
+
+	db.setContext(db.queryExecIndex("void"));
 }
 
 // --------------------------------------------------------------------------------
@@ -257,6 +269,13 @@ void RDOType__real::writeModelStructure(REF(rdo::ostream) stream) const
 	stream << _T("R") << std::endl;
 }
 
+void RDOType__real::serializeInDB(REF(IDB) db) const
+{
+	db.insertRow("real","DEFAULT,NULL,NULL,NULL");
+
+	db.setContext(db.queryExecIndex("real"));
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__string
 // --------------------------------------------------------------------------------
@@ -315,6 +334,13 @@ void RDOType__string::writeModelStructure(REF(rdo::ostream) stream) const
 	stream << _T("S") << std::endl;
 }
 
+void RDOType__string::serializeInDB(REF(IDB) db) const
+{
+	db.insertRow("string","DEFAULT,NULL");
+
+	db.setContext(db.queryExecIndex("string"));
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__identificator
 // --------------------------------------------------------------------------------
@@ -364,6 +390,13 @@ void RDOType__identificator::writeModelStructure(REF(rdo::ostream) stream) const
 	UNUSED(stream);
 	parser::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать тип идектификатор в отчет"));
 	NEVER_REACH_HERE;
+}
+
+void RDOType__identificator::serializeInDB(REF(IDB) db) const
+{
+	db.insertRow("identificator","DEFAULT");
+
+	db.setContext(db.queryExecIndex("identificator"));
 }
 
 // --------------------------------------------------------------------------------
@@ -422,6 +455,13 @@ rdo::runtime::RDOValue RDOType__bool::get_default() const
 void RDOType__bool::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << _T("B") << std::endl;
+}
+
+void RDOType__bool::serializeInDB(REF(IDB) db) const
+{
+	db.insertRow("bool","DEFAULT,NULL");
+
+	db.setContext(db.queryExecIndex("bool"));
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

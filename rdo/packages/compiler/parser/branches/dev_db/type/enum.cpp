@@ -202,4 +202,19 @@ void RDOEnumType::add(CREF(LPRDOValue) pNext)
 	getEnums()->add(pNext->value().getAsString());
 }
 
+void RDOEnumType::serializeInDB(REF(IDB) db) const
+{
+	db.insertRow("enum","DEFAULT,NULL");
+
+	int enum_id = db.queryExecIndex("enum");
+
+	for (ruint i = 0; i < getEnums()->getValues().size(); i++)
+	{
+		db.insertRow("enum_valid_value",QString("%1,DEFAULT,'%2',%3")
+			.arg(enum_id)
+			.arg(QString::fromStdString(getEnums()->getValues().at(i)))
+			.arg(i));
+	}
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

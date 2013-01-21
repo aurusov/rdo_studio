@@ -45,6 +45,8 @@ public:
 		return !operator==(pEnumType);
 	}
 
+	virtual void serializeInDB(REF(IDB) db) const;
+
 	DECLARE_IType;
 	DECLARE_IModelStructure;
 
