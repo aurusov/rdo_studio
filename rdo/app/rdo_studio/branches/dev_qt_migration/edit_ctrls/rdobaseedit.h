@@ -205,6 +205,7 @@ public:
 	int getCurrentPos() const                       { return sendEditor( SCI_GETCURRENTPOS );              };
 	int getPositionFromLine( const int line ) const { return sendEditor( SCI_POSITIONFROMLINE, line );     };
 	int getLineFromPosition( const int pos ) const  { return sendEditor( SCI_LINEFROMPOSITION, pos );      };
+	int isEndOfWord( int pos ) const                { return sendEditor( SCI_WORDENDPOSITION, pos, true );   };
 	void setCurrentPos( const int value ) const;
 	void setCurrentPos( const int line, int pos_in_line, const rbool convert_rdo_tab = false ) const;
 	rbool isLineVisible( const int line ) const;
