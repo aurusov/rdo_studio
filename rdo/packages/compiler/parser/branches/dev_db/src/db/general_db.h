@@ -13,6 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtSql\QtSql>
+#include <boost\optional\optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator\compiler\parser\headers\db\interface_db.h"
 // --------------------------------------------------------------------------------
@@ -20,6 +21,8 @@
 class GeneralDB: public IDB
 {
 public:
+	typedef boost::optional<int> boint;
+
 	GeneralDB();
 	GeneralDB(
 		const QString& hostName,

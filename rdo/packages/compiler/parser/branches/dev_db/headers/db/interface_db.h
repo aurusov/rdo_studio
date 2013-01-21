@@ -14,7 +14,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtSql\QtSql>
 #include <map>
-#include <boost\optional\optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
@@ -22,7 +21,6 @@ class IDB
 {
 public:
 	typedef std::list<QString>   QueryList;
-	typedef boost::optional<int> boint;
 
 	virtual void insertRow     (const QString& tableName, const QString& qRow) = 0;
 	virtual void queryExec     (const QString&   query                       ) = 0;
