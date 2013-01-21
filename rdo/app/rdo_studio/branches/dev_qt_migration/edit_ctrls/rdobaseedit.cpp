@@ -586,23 +586,16 @@ void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool
 	if ( bHaveFound ) {
 		int replaceLen = replaceWhat.length();
 		CharacterRange cr = getSelectionRange();
-		int startPosition = 0;
-		int endPosition = 0;
-		if(cr.cpMin != cr.cpMax)
+		if(cr.cpMin == cr.cpMax)
 		{
-			startPosition = cr.cpMin;
-			endPosition = cr.cpMax;
+			cr.cpMin = sendEditor(SCI_WORDSTARTPOSITION, getCurrentPos(), true);
+			cr.cpMax   = cr.cpMin + getCurrentWord().length();
 		}
-		else
-		{
-			startPosition = sendEditor(SCI_WORDSTARTPOSITION, getCurrentPos(), true);
-			endPosition   = startPosition + getCurrentWord().length();
-		}
-		sendEditor(SCI_SETTARGETSTART, startPosition);
-		sendEditor(SCI_SETTARGETEND,   endPosition);
+		sendEditor(SCI_SETTARGETSTART, cr.cpMin);
+		sendEditor(SCI_SETTARGETEND,   cr.cpMax);
 		int lenReplaced = replaceLen;
 		sendEditorString(SCI_REPLACETARGET, replaceLen, replaceWhat.c_str());
-		setSelection(startPosition + lenReplaced, startPosition);
+		setSelection(cr.cpMin + lenReplaced, cr.cpMin);
 		bHaveFound = false;
 	}
 	findNext(findWhat, searchDown, matchCase, matchWholeWord);
