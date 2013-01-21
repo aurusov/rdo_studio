@@ -89,13 +89,6 @@ private slots:
 	void onToolBarModelOrientationChanged(Qt::Orientation orientation);
 
 	void onMenuFileReopen(QAction* pAction);
-
-private:
-	afx_msg void OnDestroy();
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnMethodCommandRange( UINT id );
-	afx_msg void OnMethodUpdateRange( CCmdUI* pCmdUI );
 };
 
 #endif // _RDO_STUDIO_MFC_MAIN_FRM_H_
