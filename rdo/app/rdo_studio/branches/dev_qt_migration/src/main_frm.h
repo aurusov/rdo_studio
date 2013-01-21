@@ -32,8 +32,6 @@ class RDOStudioMainFrame
 {
 Q_OBJECT
 
-friend class RDOToolBar;
-
 public:
 	RDOStudioMainFrame();
 	virtual ~RDOStudioMainFrame();
@@ -63,10 +61,10 @@ private:
 	typedef  QMainWindow           parent_type;
 	typedef  std::vector<tstring>  ReopenList;
 
-	CWnd                    m_thisCWnd;
-	int                     m_updateTimerID;
-	LPStatusBar             m_pStatusBar;
-	ReopenList              m_reopenList;
+	CWnd          m_thisCWnd;
+	int           m_updateTimerID;
+	LPStatusBar   m_pStatusBar;
+	ReopenList    m_reopenList;
 
 	void createStatusBar();
 	void createToolBar  ();
