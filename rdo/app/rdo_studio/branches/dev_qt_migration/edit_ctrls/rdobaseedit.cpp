@@ -581,8 +581,7 @@ void RDOBaseEdit::onFindReplaceDlgClose()
 
 void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
-	if(findWhat != "")
-		findNext(findWhat, searchDown, matchCase, matchWholeWord);
+	findNext(findWhat, searchDown, matchCase, matchWholeWord);
 	if ( bHaveFound ) {
 		int replaceLen = replaceWhat.length();
 		CharacterRange cr = getSelectionRange();
@@ -598,7 +597,6 @@ void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool
 		setSelection(cr.cpMin + lenReplaced, cr.cpMin);
 		bHaveFound = false;
 	}
-	findNext(findWhat, searchDown, matchCase, matchWholeWord);
 }
 
 void RDOBaseEdit::replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase, rbool matchWholeWord)
