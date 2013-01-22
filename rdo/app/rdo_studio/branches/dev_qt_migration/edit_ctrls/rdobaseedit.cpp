@@ -459,11 +459,17 @@ void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchC
 	int findLen = findWhat.length();
 	if ( !findLen ) return;
 
+	if (!getSelection().empty() && !bHaveFound)
+		setCurrentPos(sendEditor(searchDown ? SCI_GETSELECTIONSTART : SCI_GETSELECTIONEND));
+	else 
+		if (!getCurrentWord().empty() && !bHaveFound)
+			setCurrentPos(sendEditor(searchDown ? SCI_WORDSTARTPOSITION : SCI_WORDENDPOSITION, getCurrentPos(), true));
+
 	CharacterRange cr = getSelectionRange();
 	int startPosition = cr.cpMax;
 	int endPosition   = getLength();
 	if ( !searchDown ) {
-		startPosition = cr.cpMin - 1;
+		startPosition = cr.cpMin;
 		endPosition   = 0;
 	}
 
