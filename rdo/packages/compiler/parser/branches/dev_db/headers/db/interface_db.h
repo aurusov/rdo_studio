@@ -27,8 +27,8 @@ public:
 	virtual void queryExec     (const QueryList& query                       ) = 0;
 
 	virtual int  queryExecIndex(const QString& table                         ) = 0;
-	virtual void setContext    (int context                                  ) = 0;
-	virtual int  getContext    (                                             ) = 0;
+	virtual void pushContext   (int context                                  ) = 0;
+	virtual int  popContext    (                                             ) = 0;
 
 	//void insertRTPHeader(const QString& rtp_name, bool permanent);
 	//void insertIntRow   ();

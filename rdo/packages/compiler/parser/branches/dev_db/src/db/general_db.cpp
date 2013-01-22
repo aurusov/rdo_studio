@@ -83,12 +83,12 @@ int GeneralDB::queryExecIndex(const QString& table)
 	return index;
 }
 
-void GeneralDB::setContext(int context)
+void GeneralDB::pushContext(int context)
 {
 	m_contextParrentID = context;
 }
 
-int GeneralDB::getContext()
+int GeneralDB::popContext()
 {
 	ASSERT(m_contextParrentID.is_initialized());
 	int i = m_contextParrentID.get();

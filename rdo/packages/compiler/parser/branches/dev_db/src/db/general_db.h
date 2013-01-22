@@ -38,8 +38,8 @@ public:
 	virtual void queryExec     (const QueryList& query                       );
 
 	virtual int  queryExecIndex(const QString& table                         );
-	virtual void setContext    (int context                                  );
-	virtual int  getContext    (                                             );
+	virtual void pushContext   (int context                                  );
+	virtual int  popContext    (                                             );
 
 private:
 	void initDB();

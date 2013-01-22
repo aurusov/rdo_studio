@@ -135,7 +135,7 @@ void RDOType__void::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("void","DEFAULT");
 
-	db.setContext(db.queryExecIndex("void"));
+	db.pushContext(db.queryExecIndex("void"));
 }
 
 // --------------------------------------------------------------------------------
@@ -207,7 +207,7 @@ void RDOType__int::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("int","DEFAULT,NULL,NULL,NULL");
 
-	db.setContext(db.queryExecIndex("int"));
+	db.pushContext(db.queryExecIndex("int"));
 }
 
 // --------------------------------------------------------------------------------
@@ -273,7 +273,7 @@ void RDOType__real::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("real","DEFAULT,NULL,NULL,NULL");
 
-	db.setContext(db.queryExecIndex("real"));
+	db.pushContext(db.queryExecIndex("real"));
 }
 
 // --------------------------------------------------------------------------------
@@ -338,7 +338,7 @@ void RDOType__string::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("string","DEFAULT,NULL");
 
-	db.setContext(db.queryExecIndex("string"));
+	db.pushContext(db.queryExecIndex("string"));
 }
 
 // --------------------------------------------------------------------------------
@@ -396,7 +396,7 @@ void RDOType__identificator::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("identificator","DEFAULT");
 
-	db.setContext(db.queryExecIndex("identificator"));
+	db.pushContext(db.queryExecIndex("identificator"));
 }
 
 // --------------------------------------------------------------------------------
@@ -461,7 +461,7 @@ void RDOType__bool::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("bool","DEFAULT,NULL");
 
-	db.setContext(db.queryExecIndex("bool"));
+	db.pushContext(db.queryExecIndex("bool"));
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

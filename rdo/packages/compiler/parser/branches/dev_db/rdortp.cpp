@@ -100,7 +100,7 @@ void RDORTPResType::serializeInDB(REF(IDB) db) const
 
 	BOOST_FOREACH(CREF(LPRDORTPParam) param, m_params)
 	{
-		db.setContext(index);
+		db.pushContext(index);
 		param->serializeInDB(db);
 	}
 }
