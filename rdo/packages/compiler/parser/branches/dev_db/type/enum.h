@@ -31,19 +31,10 @@ DECLARE_FACTORY(RDOEnumType);
 public:
 	void add(CREF(LPRDOValue) pNext);
 
-	rdo::runtime::LPRDOEnumType getEnums() const
-	{
-		return m_pType.object_static_cast<rdo::runtime::RDOEnumType>();
-	}
+	rdo::runtime::LPRDOEnumType getEnums() const;
 
-	rbool operator== (CREF(RDOEnumType) pEnumType) const
-	{
-		return getEnums()->getValues() == pEnumType.getEnums()->getValues();
-	}
-	rbool operator!= (CREF(RDOEnumType) pEnumType) const
-	{
-		return !operator==(pEnumType);
-	}
+	rbool operator== (CREF(RDOEnumType) pEnumType) const;
+	rbool operator!= (CREF(RDOEnumType) pEnumType) const;
 
 	virtual void serializeInDB(REF(IDB) db) const;
 

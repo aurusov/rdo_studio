@@ -202,6 +202,21 @@ void RDOEnumType::add(CREF(LPRDOValue) pNext)
 	getEnums()->add(pNext->value().getAsString());
 }
 
+rdo::runtime::LPRDOEnumType RDOEnumType::getEnums() const
+{
+	return m_pType.object_static_cast<rdo::runtime::RDOEnumType>();
+}
+
+rbool RDOEnumType::operator== (CREF(RDOEnumType) pEnumType) const
+{
+	return getEnums()->getValues() == pEnumType.getEnums()->getValues();
+}
+
+rbool RDOEnumType::operator!= (CREF(RDOEnumType) pEnumType) const
+{
+	return !operator==(pEnumType);
+}
+
 void RDOEnumType::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("enum","DEFAULT,NULL");
