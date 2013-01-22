@@ -261,22 +261,22 @@ void RDOStudioMainFrame::createInsertMenu()
 	menuList.push_back(std::make_pair("", MenuItemList()));
 	menuList.push_back(
 		std::make_pair(
-			"Алгоритмические операторы",
+			"Встроенные функции",
+			MenuItemList("Abs")("ArcCos")("ArcSin")("ArcTan")("Cos")("Cotan")("Exist")("Exp")("Floor")("For_All")("Frac")
+				("IAbs")("IMax")("IMin")("Int")("IntPower")("Ln")("Log10")("Log2")("LogN")("Max")("Min")("Not_Exist")
+				("Not_For_All")("Power")("Round")("Select")("Sin")("Sqrt")("Tan")
+		)
+	);
+	menuList.push_back(
+		std::make_pair(
+			"Процедурный язык",
 			MenuItemList
 				(MenuItem("if", "algo_if.txt", 4))
 				("else")
 				(MenuItem("if-else", "algo_if_else.txt", 4))
 				(MenuItem("for", "algo_for.txt", 5))
 				("return")
-		)
-	);
-	menuList.push_back(std::make_pair("", MenuItemList()));
-	menuList.push_back(
-		std::make_pair(
-			"Функции",
-			MenuItemList("Abs")("ArcCos")("ArcSin")("ArcTan")("Cos")("Cotan")("Exist")("Exp")("Floor")("For_All")("Frac")
-				("IAbs")("IMax")("IMin")("Int")("IntPower")("Ln")("Log10")("Log2")("LogN")("Max")("Min")("Not_Exist")
-				("Not_For_All")("Power")("Round")("Select")("Sin")("Sqrt")("Tan")
+				(MenuItem("Локальная переменная", "algo_local_variable.txt"))
 		)
 	);
 

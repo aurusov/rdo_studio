@@ -145,6 +145,7 @@
     <file>new_model_template/template_0/template_0.rdox</file>
   </qresource>
   <qresource prefix="/insert_menu_template">
+    <file>insert_menu_template/algo_local_variable.txt</file>
     <file>insert_menu_template/algo_for.txt</file>
     <file>insert_menu_template/algo_if.txt</file>
     <file>insert_menu_template/algo_if_else.txt</file>
