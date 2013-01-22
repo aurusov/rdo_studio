@@ -35,16 +35,6 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEdit
 // ---------------------------------------------------------------------------
-
-// ON_UPDATE_COMMAND_UI сделано
-
-//! @todo qt
-//BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBaseEdit )
-//
-//	ON_COMMAND_RANGE( ID_INSERT_PAT_TEMPL_OPERATION, ID_INSERT_ALGO_RETURN, OnInsertCommand )
-//
-//END_MESSAGE_MAP()
-
 RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView)
 	: RDOEditorBaseEdit(pParent)
 	, view             (pView  )
@@ -566,41 +556,17 @@ rbool RDOEditorEdit::hasErrorLine() const
 	return nextLine >= 0;
 }
 
-void RDOEditorEdit::OnInsertCommand(UINT nID)
+void RDOEditorEdit::onInsertCommand(QObject* pObject)
 {
-	CString s = "";
-	if (!s.LoadString(nID))
-	{
-		AfxGetMainWnd()->GetMenu()->GetMenuString(nID, s, MF_BYCOMMAND);
-	}
+	RDOStudioMainFrame::InsertMenuData* pInsertMenuData = dynamic_cast<RDOStudioMainFrame::InsertMenuData*>(pObject);
+	ASSERT(pInsertMenuData);
 
-	int incPos = -1;
-
-	switch (nID) {
-		case ID_INSERT_PAT_TEMPL_OPERATION  :
-		case ID_INSERT_PAT_TEMPL_EVENT:
-		case ID_INSERT_PAT_TEMPL_KEYBOARD:
-		case ID_INSERT_PAT_TEMPL_RULE       : incPos = 9;  break;
-		case ID_INSERT_RTP_RTPPERMANENT     :
-		case ID_INSERT_RTP_RTPTEMPORARY     : incPos = 15; break;
-		case ID_INSERT_RSS_RSS              : incPos = 13; break;
-		case ID_INSERT_ALGO_ELSE            : incPos = 6;  break;
-		case ID_INSERT_FRM_FRM              : incPos = 7;  break;
-		case ID_INSERT_FUN_FUN              :
-		case ID_INSERT_FUN_SQN              : incPos = 10; break;
-		case ID_INSERT_FUN_CNS              : incPos = 12; break;
-		case ID_INSERT_DPT_TEMPL_SEARCH     :
-		case ID_INSERT_DPT_TEMPL_SOME       : incPos = 16; break;
-		case ID_INSERT_DPT_TEMPL_PRIOR      : incPos = 16; break;
-		case ID_INSERT_DPT_ACTIV            : incPos = 14; break;
-		case ID_INSERT_SMR_SMR              : incPos = 17; break;
-		case ID_INSERT_PMD_PMD              : incPos = 11; break;
-		case ID_INSERT_ALGO_FOR             : incPos = 5;  break;
-		case ID_INSERT_ALGO_IF              :
-		case ID_INSERT_ALGO_IF_ELSE         : incPos = 4;  break;
-	}
-
-	replaceCurrent(static_cast<LPCTSTR>(s), incPos);
+	replaceCurrent(
+		pInsertMenuData->text().toStdString(),
+		pInsertMenuData->position().is_initialized()
+			? pInsertMenuData->position().get()
+			: -1
+	);
 }
 
 CPTR(rdoEditCtrl::LogEdit) RDOEditorEdit::getLog() const
@@ -704,5 +670,10 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 		pMainWindow->actSearchLogPrev,
 		activated && log,
 		this, "onGotoPrev()"
+	);
+
+	pMainWindow->updateInsertMenu(
+		activated,
+		this, "onInsertCommand(QObject*)"
 	);
 }

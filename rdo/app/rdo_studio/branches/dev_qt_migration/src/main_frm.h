@@ -15,6 +15,7 @@
 #include <boost/mpl/integral_c.hpp>
 #include <QtGui/qmainwindow.h>
 #include <QtGui/qslider.h>
+#include <QtCore/qsignalmapper.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
@@ -60,17 +61,36 @@ public:
 
 	void insertMenuFileReopenItem(CREF(tstring) item);
 
+	void updateInsertMenu(rbool enabled, QObject* pObject, CREF(tstring) method);
+
+	class InsertMenuData: public QObject
+	{
+	public:
+		typedef  boost::optional<ruint>  Position;
+
+		InsertMenuData(QObject* pParent, const QString& text, const Position& position = Position());
+
+		const QString&  text    () const;
+		const Position& position() const;
+
+	private:
+		QString   m_text;
+		Position  m_position;
+	};
+
 private:
 	typedef  QMainWindow           parent_type;
 	typedef  std::vector<tstring>  ReopenList;
 
-	CWnd          m_thisCWnd;
-	int           m_updateTimerID;
-	LPStatusBar   m_pStatusBar;
-	ReopenList    m_reopenList;
+	CWnd            m_thisCWnd;
+	int             m_updateTimerID;
+	LPStatusBar     m_pStatusBar;
+	ReopenList      m_reopenList;
+	QSignalMapper*  m_pInsertMenuSignalMapper;
 
-	void createStatusBar();
-	void createToolBar  ();
+	void createStatusBar ();
+	void createToolBar   ();
+	void createInsertMenu();
 
 	void updateMenuFileReopen();
 	void loadMenuFileReopen  ();
