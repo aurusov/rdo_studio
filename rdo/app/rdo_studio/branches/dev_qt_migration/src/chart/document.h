@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/chart/doc_serie.h"
+#include "app/rdo_studio_mfc/src/chart/chart_serie.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
 // --------------------------------------------------------------------------------
 

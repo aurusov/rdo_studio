@@ -19,7 +19,7 @@
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
-#include "app/rdo_studio_mfc/src/chart/doc_serie.h"
+#include "app/rdo_studio_mfc/src/chart/chart_serie.h"
 #include "app/rdo_studio_mfc/src/chart/options.h"
 // --------------------------------------------------------------------------------
 
