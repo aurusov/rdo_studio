@@ -18,36 +18,46 @@
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioDocSerie
 // --------------------------------------------------------------------------------
-class TracerTimeNow;
 class RDOStudioChartView;
 
 class RDOStudioDocSerie
 {
-friend class RDOStudioChartDoc;
-friend class RDOStudioChartOptionsChart;
-friend class RDOStudioChartOptionsSeries;
-protected:
-	TracerSerie* serie;
-	COLORREF color;
-	TracerSerieMarker marker;
-	rbool needDrawMarker;
-	int marker_size;
-	tstring docSerieTitle;
-	rbool showInLegend;
-	rbool transparentMarker;
 public:
-	RDOStudioDocSerie( TracerSerie* _serie );
+	RDOStudioDocSerie(TracerSerie* pSerie);
 	~RDOStudioDocSerie();
-	TracerSerie* getSerie() const { return serie; };
-	COLORREF getColor() const { return color; };
-	rbool isTracerSerie( const TracerSerie* _serie ) { return serie == _serie; };
-	void  drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect ) const { serie->drawSerie( view, dc, rect, color, marker, marker_size, needDrawMarker, transparentMarker ); };
-	void  getCaptions( std::vector<tstring> &captions, const int val_count ) const { serie->getCaptions( captions, val_count ); };
-	void  getLegendExtent( HDC &dc, CRect& rect, SIZE& size ) const;
-	void  drawInLegend( HDC &dc, CRect &rect, const COLORREF text_color, SIZE& size ) const;
-	void  lock() { serie->mutex.Lock(); };
-	void  unlock() { serie->mutex.Unlock(); };
-	rbool empty() const { return serie->empty(); };
+
+	struct Options
+	{
+		tstring            title;
+		COLORREF           color;
+		TracerSerieMarker  markerType;
+		int                markerSize;
+		rbool              markerNeedDraw;
+		rbool              markerTransparent;
+		rbool              showInLegend;
+
+		Options();
+		rbool operator== (CREF(Options) options) const;
+	};
+
+	TracerSerie* getSerie() const;
+
+	CREF(Options) options   () const;
+	void          setOptions(CREF(Options) options);
+
+	rbool isTracerSerie  (const TracerSerie* pSerie) const;
+	void  drawSerie      (RDOStudioChartView* const pView, HDC &dc, CRect &rect) const;
+	void  getCaptions    (std::vector<tstring> &captions, const int val_count) const;
+	void  getLegendExtent(HDC &dc, CRect& rect, SIZE& size) const;
+	void  drawInLegend   (HDC &dc, CRect &rect, const COLORREF text_color, SIZE& size) const;
+
+	void  lock  ();
+	void  unlock();
+	rbool empty () const;
+
+protected:
+	TracerSerie*  m_pSerie;
+	Options       m_options;
 };
 
 #endif // _RDO_STUDIO_MFC_CHART_DOC_SERIE_H_

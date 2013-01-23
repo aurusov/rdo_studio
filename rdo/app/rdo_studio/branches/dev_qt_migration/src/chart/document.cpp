@@ -10,7 +10,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 #include <boost/foreach.hpp>
+#include <boost/range/algorithm/find_if.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/src/chart/view.h"
@@ -84,7 +86,7 @@ RDOStudioChartDoc::~RDOStudioChartDoc()
 	mutex.Lock();
 
 	for ( std::vector< RDOStudioDocSerie* >::iterator it = series.begin(); it != series.end(); it++ ) {
-		(*it)->serie->removeFromDoc( this );
+		(*it)->getSerie()->removeFromDoc( this );
 		delete (*it);
 	}
 	if ( !previewMode )
@@ -178,7 +180,7 @@ int RDOStudioChartDoc::getMaxMarkerSize() const
 	
 	int res = 0;
 	for ( std::vector< RDOStudioDocSerie* >::const_iterator it = series.begin(); it != series.end(); it++ ) {
-		if ( (*it)->needDrawMarker && (*it)->marker_size > res ) res = (*it)->marker_size;
+		if ( (*it)->options().markerNeedDraw && (*it)->options().markerSize > res ) res = (*it)->options().markerSize;
 	}
 
 	const_cast<CMutex&>(mutex).Unlock();
@@ -224,8 +226,10 @@ void RDOStudioChartDoc::addSerie( TracerSerie* const serie )
 	if ( serie && !serieExists( serie ) ) {
 		RDOStudioDocSerie* docserie = new RDOStudioDocSerie( serie );
 		docserie->lock();
-		docserie->color = selectColor();
-		docserie->marker = selectMarker();
+		RDOStudioDocSerie::Options options(docserie->options());
+		options.color      = selectColor();
+		options.markerType = selectMarker();
+		docserie->setOptions(options);
 		series.push_back( docserie );
 		inserted_it = docTimes.begin();
 
@@ -328,7 +332,7 @@ rbool RDOStudioChartDoc::serieExists( const TracerSerie* serie ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	rbool res = std::find_if( series.begin(), series.end(), std::bind2nd( std::mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) ) != series.end();
+	rbool res = boost::range::find_if(series, boost::bind(&RDOStudioDocSerie::isTracerSerie, _1, serie)) != series.end();
 
 	const_cast<CMutex&>(mutex).Unlock();
 
