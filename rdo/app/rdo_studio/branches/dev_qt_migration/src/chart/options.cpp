@@ -73,7 +73,7 @@ BOOL RDOStudioChartOptionsChart::OnInitDialog()
 
 	RDOStudioChartDoc* doc = sheet->view->GetDocument();
 
-	for ( std::vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
+	for ( std::vector< ChartSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
 		m_AxisSerieCombo.AddString( (*it)->getSerie()->getTitle().c_str() );
 	}
 	
@@ -227,7 +227,7 @@ rbool RDOStudioChartOptionsSeries::getModified() const
 		rbool legend = m_DrawInLegend.GetCheck() ? true : false;
 		rbool transp = m_TranspMarker.GetCheck() ? true : false;
 
-		RDOStudioDocSerie::Options options;
+		ChartSerie::Options options;
 		options.title             = title;
 		options.color             = ColorCB.getCurrentColor();
 		options.markerType        = static_cast<TracerSerieMarker>(m_Marker.GetCurSel());
@@ -266,7 +266,7 @@ BOOL RDOStudioChartOptionsSeries::OnInitDialog()
 
 	RDOStudioChartDoc* doc = sheet->view->GetDocument();
 
-	for ( std::vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
+	for ( std::vector< ChartSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
 		m_SerieCombo.AddString( (*it)->getSerie()->getTitle().c_str() );
 	}
 	
@@ -347,7 +347,7 @@ void RDOStudioChartOptionsSeries::apply() const
 		CString title;
 		m_SerieTitle.GetWindowText( title );
 
-		RDOStudioDocSerie::Options options;
+		ChartSerie::Options options;
 		options.title             = title;
 		options.color             = ColorCB.getCurrentColor();
 		options.markerType        = static_cast<TracerSerieMarker>(m_Marker.GetCurSel());

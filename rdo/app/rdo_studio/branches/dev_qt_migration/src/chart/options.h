@@ -62,7 +62,7 @@ class RDOStudioChartOptionsSeries: public CPropertyPage
 {
 private:
 	RDOStudioChartOptions* sheet;
-	RDOStudioDocSerie* serie;
+	ChartSerie* serie;
 
 	RDOColorComboBox ColorCB;
 

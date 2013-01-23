@@ -16,15 +16,15 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioDocSerie
+// -------------------- ChartSerie
 // --------------------------------------------------------------------------------
 class RDOStudioChartView;
 
-class RDOStudioDocSerie
+class ChartSerie
 {
 public:
-	RDOStudioDocSerie(TracerSerie* pSerie);
-	~RDOStudioDocSerie();
+	ChartSerie(TracerSerie* pSerie);
+	~ChartSerie();
 
 	struct Options
 	{

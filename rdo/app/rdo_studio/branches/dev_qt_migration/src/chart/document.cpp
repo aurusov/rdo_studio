@@ -85,7 +85,7 @@ RDOStudioChartDoc::~RDOStudioChartDoc()
 
 	mutex.Lock();
 
-	for ( std::vector< RDOStudioDocSerie* >::iterator it = series.begin(); it != series.end(); it++ ) {
+	for ( std::vector< ChartSerie* >::iterator it = series.begin(); it != series.end(); it++ ) {
 		(*it)->getSerie()->removeFromDoc( this );
 		delete (*it);
 	}
@@ -126,11 +126,11 @@ void RDOStudioChartDoc::updateAllViews()
 	}
 }
 
-int RDOStudioChartDoc::getSerieIndex( RDOStudioDocSerie* serie ) const
+int RDOStudioChartDoc::getSerieIndex( ChartSerie* serie ) const
 {
 	int res = -1;
 	int index = 0;
-	for ( std::vector< RDOStudioDocSerie* >::const_iterator it = series.begin(); it != series.end(); it++ ) {
+	for ( std::vector< ChartSerie* >::const_iterator it = series.begin(); it != series.end(); it++ ) {
 		if ( serie == (*it) )
 			res = index;
 		index ++;
@@ -179,7 +179,7 @@ int RDOStudioChartDoc::getMaxMarkerSize() const
 	const_cast<CMutex&>(mutex).Lock();
 	
 	int res = 0;
-	for ( std::vector< RDOStudioDocSerie* >::const_iterator it = series.begin(); it != series.end(); it++ ) {
+	for ( std::vector< ChartSerie* >::const_iterator it = series.begin(); it != series.end(); it++ ) {
 		if ( (*it)->options().markerNeedDraw && (*it)->options().markerSize > res ) res = (*it)->options().markerSize;
 	}
 
@@ -224,9 +224,9 @@ void RDOStudioChartDoc::addSerie( TracerSerie* const serie )
 	mutex.Lock();
 	
 	if ( serie && !serieExists( serie ) ) {
-		RDOStudioDocSerie* docserie = new RDOStudioDocSerie( serie );
+		ChartSerie* docserie = new ChartSerie( serie );
 		docserie->lock();
-		RDOStudioDocSerie::Options options(docserie->options());
+		ChartSerie::Options options(docserie->options());
 		options.color      = selectColor();
 		options.markerType = selectMarker();
 		docserie->setOptions(options);
@@ -277,7 +277,7 @@ void RDOStudioChartDoc::addSerie( TracerSerie* const serie )
 /*void RDOStudioChartDoc::removeSerie( TracerSerie* const serie )
 {
 	if ( !serie ) return;
-	vector<RDOStudioDocSerie*>::iterator it = find_if( series.begin(), series.end(), bind2nd( mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) );
+	vector<ChartSerie*>::iterator it = find_if( series.begin(), series.end(), bind2nd( mem_fun1(&ChartSerie::isTracerSerie), serie ) );
 	if ( it != series.end() ) {
 		(*it)->serie->removeFromDoc( this );
 		//must be recalc of minTimeOffset && tickscount
@@ -332,7 +332,7 @@ rbool RDOStudioChartDoc::serieExists( const TracerSerie* serie ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	rbool res = boost::range::find_if(series, boost::bind(&RDOStudioDocSerie::isTracerSerie, _1, serie)) != series.end();
+	rbool res = boost::range::find_if(series, boost::bind(&ChartSerie::isTracerSerie, _1, serie)) != series.end();
 
 	const_cast<CMutex&>(mutex).Unlock();
 

@@ -21,9 +21,9 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioDocSerie::Options
+// -------------------- ChartSerie::Options
 // --------------------------------------------------------------------------------
-RDOStudioDocSerie::Options::Options()
+ChartSerie::Options::Options()
 	: color            (RGB(0x00, 0x00, 0x00))
 	, markerType       (RDOSM_NONE)
 	, markerSize       (3)
@@ -32,7 +32,7 @@ RDOStudioDocSerie::Options::Options()
 	, showInLegend     (true)
 {}
 
-rbool RDOStudioDocSerie::Options::operator== (CREF(Options) options) const
+rbool ChartSerie::Options::operator== (CREF(Options) options) const
 {
 	return title             == options.title
 		&& color             == options.color
@@ -44,9 +44,9 @@ rbool RDOStudioDocSerie::Options::operator== (CREF(Options) options) const
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioDocSerie
+// -------------------- ChartSerie
 // --------------------------------------------------------------------------------
-RDOStudioDocSerie::RDOStudioDocSerie(TracerSerie* pSerie)
+ChartSerie::ChartSerie(TracerSerie* pSerie)
 	: m_pSerie(pSerie)
 {
 	if (m_pSerie)
@@ -55,55 +55,55 @@ RDOStudioDocSerie::RDOStudioDocSerie(TracerSerie* pSerie)
 	}
 }
 
-RDOStudioDocSerie::~RDOStudioDocSerie()
+ChartSerie::~ChartSerie()
 {}
 
-TracerSerie* RDOStudioDocSerie::getSerie() const
+TracerSerie* ChartSerie::getSerie() const
 {
 	return m_pSerie;
 }
 
-CREF(RDOStudioDocSerie::Options) RDOStudioDocSerie::options() const
+CREF(ChartSerie::Options) ChartSerie::options() const
 {
 	return m_options;
 }
 
-void RDOStudioDocSerie::setOptions(CREF(Options) options)
+void ChartSerie::setOptions(CREF(Options) options)
 {
 	m_options = options;
 }
 
-rbool RDOStudioDocSerie::isTracerSerie(const TracerSerie* pSerie) const
+rbool ChartSerie::isTracerSerie(const TracerSerie* pSerie) const
 {
 	return m_pSerie == pSerie;
 }
 
-void RDOStudioDocSerie::drawSerie(RDOStudioChartView* const pView, HDC &dc, CRect &rect) const
+void ChartSerie::drawSerie(RDOStudioChartView* const pView, HDC &dc, CRect &rect) const
 {
 	m_pSerie->drawSerie(pView, dc, rect, m_options.color, m_options.markerType, m_options.markerSize, m_options.markerNeedDraw, m_options.markerTransparent);
 }
 
-void RDOStudioDocSerie::getCaptions(std::vector<tstring> &captions, const int val_count) const
+void ChartSerie::getCaptions(std::vector<tstring> &captions, const int val_count) const
 {
 	m_pSerie->getCaptions(captions, val_count);
 }
 
-void RDOStudioDocSerie::lock()
+void ChartSerie::lock()
 {
 	m_pSerie->mutex.Lock();
 }
 
-void RDOStudioDocSerie::unlock()
+void ChartSerie::unlock()
 {
 	m_pSerie->mutex.Unlock();
 }
 
-rbool RDOStudioDocSerie::empty() const
+rbool ChartSerie::empty() const
 {
 	return m_pSerie->empty();
 }
 
-void RDOStudioDocSerie::getLegendExtent(HDC &dc, CRect& rect, SIZE& size) const
+void ChartSerie::getLegendExtent(HDC &dc, CRect& rect, SIZE& size) const
 {
 	size.cx = 0;
 	size.cy = 0;
@@ -125,7 +125,7 @@ void RDOStudioDocSerie::getLegendExtent(HDC &dc, CRect& rect, SIZE& size) const
 	size.cy += 2;
 }
 
-void RDOStudioDocSerie::drawInLegend(HDC &dc, CRect &rect, const COLORREF text_color, SIZE& size) const
+void ChartSerie::drawInLegend(HDC &dc, CRect &rect, const COLORREF text_color, SIZE& size) const
 {
 	getLegendExtent(dc, rect, size);
 	if (!m_options.showInLegend)
