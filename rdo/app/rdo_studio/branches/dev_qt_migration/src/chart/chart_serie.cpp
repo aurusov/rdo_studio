@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      doc_serie.cpp
+  \file      chart_serie.cpp
   \author    Захаров Павел
   \date      31.03.2003
   \brief     
