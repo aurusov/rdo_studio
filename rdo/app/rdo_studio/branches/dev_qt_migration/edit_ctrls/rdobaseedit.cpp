@@ -564,6 +564,10 @@ void RDOBaseEdit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) sett
 		m_pGroup->findStr = m_findReplaceSettings.what;
 		m_pGroup->replaceStr = m_findReplaceSettings.byWhat;
 	}
+	if ((!getSelection().empty() && !bHaveFound) || (!getCurrentWord().empty() && !bHaveFound))
+	{
+		findNext(m_findReplaceSettings.what, m_findReplaceSettings.searchDown, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);	
+	}
 	replace(m_findReplaceSettings.what, m_findReplaceSettings.byWhat, m_findReplaceSettings.searchDown, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
 	updateActionFind(isActivated());
 }
@@ -587,7 +591,6 @@ void RDOBaseEdit::onFindReplaceDlgClose()
 
 void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
-	findNext(findWhat, searchDown, matchCase, matchWholeWord);
 	if ( bHaveFound ) {
 		int replaceLen = replaceWhat.length();
 		CharacterRange cr = getSelectionRange();
@@ -603,6 +606,7 @@ void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool
 		setSelection(cr.cpMin + lenReplaced, cr.cpMin);
 		bHaveFound = false;
 	}
+	findNext(findWhat, searchDown, matchCase, matchWholeWord);
 }
 
 void RDOBaseEdit::replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase, rbool matchWholeWord)
