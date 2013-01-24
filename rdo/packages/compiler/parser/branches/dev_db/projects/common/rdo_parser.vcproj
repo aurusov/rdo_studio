@@ -2806,10 +2806,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdortp.inl"
-				>
-			</File>
-			<File
 				RelativePath="..\..\rdortp_param.cpp"
 				>
 			</File>
