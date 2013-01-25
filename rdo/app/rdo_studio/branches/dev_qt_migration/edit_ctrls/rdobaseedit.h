@@ -175,7 +175,6 @@ public:
 	void setEditorStyle( RDOBaseEditStyle* _style );
 
 	void setGroup(PTR(Group) pGroup);
-	void setPopupMenu( QMenu* const value )                { m_pPopupMenu = value; };
 
 	rbool isEmpty() const                                  { return getLength() == 0;                                                         };
 	rbool isSelected() const                               { return sendEditor( SCI_GETSELECTIONSTART ) != sendEditor( SCI_GETSELECTIONEND ); };
