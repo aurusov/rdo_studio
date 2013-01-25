@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindeditstyle.h"
+#include "app/rdo_studio_mfc/edit_ctrls/editwithreadonlypopupmenu.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
@@ -21,7 +22,9 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOFindEdit
 // --------------------------------------------------------------------------------
-class RDOFindEdit: public LogEdit
+class RDOFindEdit
+	: public LogEdit
+	, EditWithReadOnlyPopupMenu
 {
 public:
 	RDOFindEdit(PTR(QWidget) pParent);

@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresultsstyle.h"
+#include "app/rdo_studio_mfc/edit_ctrls/editwithreadonlypopupmenu.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditor {
@@ -21,7 +22,9 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorResults
 // --------------------------------------------------------------------------------
-class RDOEditorResults: public RDOEditorBaseEdit
+class RDOEditorResults
+	: public RDOEditorBaseEdit
+	, private EditWithReadOnlyPopupMenu
 {
 public:
 	RDOEditorResults(PTR(QWidget) pParent);

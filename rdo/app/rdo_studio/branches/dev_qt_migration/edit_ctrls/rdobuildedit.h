@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
+#include "app/rdo_studio_mfc/edit_ctrls/editwithreadonlypopupmenu.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
@@ -22,7 +23,9 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEdit
 // --------------------------------------------------------------------------------
-class RDOBuildEdit: public LogEdit
+class RDOBuildEdit
+	: public LogEdit
+	, private EditWithReadOnlyPopupMenu
 {
 public:
 	RDOBuildEdit(PTR(QWidget) pParent);

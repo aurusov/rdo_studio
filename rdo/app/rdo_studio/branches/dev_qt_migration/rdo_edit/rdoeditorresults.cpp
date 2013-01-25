@@ -38,20 +38,7 @@ RDOEditorResults::RDOEditorResults(PTR(QWidget) pParent)
 
 	setReadOnly( true );
 
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
-	ASSERT(pMainWindow);
-	m_pPopupMenu = new QMenu(this);
-	m_pPopupMenu->addAction(pMainWindow->actEditCopy);
-	m_pPopupMenu->addAction(pMainWindow->actEditSelectAll);
-	m_pPopupMenu->addSeparator();
-	m_pPopupMenu->addAction(pMainWindow->actSearchFind);
-	m_pPopupMenu->addAction(pMainWindow->actSearchFindNext);
-	m_pPopupMenu->addAction(pMainWindow->actSearchFindPrevious);
-	m_pPopupMenu->addSeparator();
-	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksToggle);
-	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkNext);
-	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkPrev);
-	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksClearAll);
+	m_pPopupMenu = createPopupMenu(pParent);
 }
 
 RDOEditorResults::~RDOEditorResults()
