@@ -171,6 +171,11 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent)
 	m_pPopupMenu->addAction(pMainWindow->actSearchFind);
 	m_pPopupMenu->addAction(pMainWindow->actSearchReplace);
 	m_pPopupMenu->addAction(pMainWindow->actSearchFindNext);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksToggle);
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkNext);
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkPrev);
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksClearAll);
 }
 
 RDOBaseEdit::~RDOBaseEdit()

@@ -542,6 +542,14 @@
 				Name=".editor"
 				>
 				<File
+					RelativePath="..\..\edit_ctrls\editwithreadonlypopupmenu.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\edit_ctrls\editwithreadonlypopupmenu.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\edit_ctrls\rdobaseedit.cpp"
 					>
 				</File>
