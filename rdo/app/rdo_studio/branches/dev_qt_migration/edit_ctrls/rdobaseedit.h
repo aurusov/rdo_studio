@@ -44,10 +44,11 @@ private:
 	FindReplaceDialog*          m_pFindReplaceDialog;
 	FindReplaceDialog::Settings m_findReplaceSettings;
 
+	QMenu* m_pPopupMenu;
+
 protected:
 	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return super::send( msg, wParam, lParam );; };
 	long sendEditorString( unsigned int msg, unsigned long wParam, const char* str ) const { return super::sends( msg, wParam, str ); };
-	QMenu* popupMenu;
 
 	int sci_MARKER_BOOKMARK;
 	int getNewMarker();
@@ -74,6 +75,8 @@ protected:
 	virtual void focusInEvent   (QFocusEvent* pEvent);
 	virtual void focusOutEvent  (QFocusEvent* pEvent);
 	virtual void onUpdateActions(rbool activated);
+
+	virtual void mousePressEvent(QMouseEvent*  pEvent);
 
 protected slots:
 	        void onUpdateEditGUI();
@@ -172,7 +175,7 @@ public:
 	void setEditorStyle( RDOBaseEditStyle* _style );
 
 	void setGroup(PTR(Group) pGroup);
-	void setPopupMenu( QMenu* const value )                { popupMenu = value; };
+	void setPopupMenu( QMenu* const value )                { m_pPopupMenu = value; };
 
 	rbool isEmpty() const                                  { return getLength() == 0;                                                         };
 	rbool isSelected() const                               { return sendEditor( SCI_GETSELECTIONSTART ) != sendEditor( SCI_GETSELECTIONEND ); };

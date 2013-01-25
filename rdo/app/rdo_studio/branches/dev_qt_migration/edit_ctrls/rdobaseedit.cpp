@@ -130,21 +130,17 @@ RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::find_if(CREF(this_p
 #define MAX_COLORDEF    32
 
 // ---------------
-//! @todo qt
-//BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
-//	ON_WM_CONTEXTMENU()
-//END_MESSAGE_MAP()
 
 RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent)
 	: super        (pParent)
 	, markerCount  (0   )
-	, popupMenu    (NULL)
 	, style        (NULL)
 	, m_pGroup     (NULL)
 	, firstFoundPos(-1  )
 	, bHaveFound   (false)
 	, m_pFindDialog       (NULL)
 	, m_pFindReplaceDialog(NULL)
+	, m_pPopupMenu (NULL)
 {
 	QObject::connect(this, SIGNAL(needShown(int, int)), this, SLOT(catchNeedShown(int, int)));
 	QObject::connect(this, SIGNAL(charAdded(int)),      this, SLOT(catchCharAdded(int)));
@@ -161,6 +157,19 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent)
 	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
 
 	sendEditor( SCI_USEPOPUP, 0 );
+	//! @todo qt Всплывающее меню вставки
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+	m_pPopupMenu = new QMenu(this);
+	m_pPopupMenu->addAction(pMainWindow->actEditCut);
+	m_pPopupMenu->addAction(pMainWindow->actEditCopy);
+	m_pPopupMenu->addAction(pMainWindow->actEditPaste);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actEditSelectAll);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actSearchFind);
+	m_pPopupMenu->addAction(pMainWindow->actSearchReplace);
+	m_pPopupMenu->addAction(pMainWindow->actSearchFindNext);
 }
 
 RDOBaseEdit::~RDOBaseEdit()
@@ -176,13 +185,6 @@ void RDOBaseEdit::catchCharAdded(int ch)
 	if ( style && style->tab->autoIndent && ( ch == '\r' || ch == '\n' ) )
 		autoIndent();
 }
-
-//! @todo qt
-//void RDOBaseEdit::OnContextMenu( CWnd* pWnd, QPoint pos )
-//{
-//	CWnd::OnContextMenu( pWnd, pos );
-//	if ( popupMenu ) popupMenu->TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x(), pos.y(), this );
-//}
 
 int RDOBaseEdit::getNewMarker()
 {
@@ -267,6 +269,18 @@ void RDOBaseEdit::setEditorStyle( RDOBaseEditStyle* _style )
 void RDOBaseEdit::setGroup(PTR(Group) pGroup)
 {
 	m_pGroup = pGroup;
+}
+
+void RDOBaseEdit::mousePressEvent(QMouseEvent*  pEvent)
+{
+	if (pEvent->button() == Qt::LeftButton)
+	{
+		super::mousePressEvent(pEvent);
+	}
+	else if (pEvent->button() == Qt::RightButton)
+	{
+		m_pPopupMenu->exec(pEvent->globalPos());
+	}
 }
 
 void RDOBaseEdit::onEditUndo() 
