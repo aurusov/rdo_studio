@@ -32,7 +32,10 @@ public:
 	void setKeyword(CREF(tstring) keyword, const rbool matchCase = false) const;
 
 private:
+	QMenu* m_pPopupMenu;
+
 	virtual void onHelpContext();
+	virtual void mousePressEvent(QMouseEvent* pEvent);
 };
 
 } // namespace rdoEditCtrl

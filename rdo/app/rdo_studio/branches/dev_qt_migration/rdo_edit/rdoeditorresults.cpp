@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/resource.h"
 // --------------------------------------------------------------------------------
 
@@ -36,6 +37,21 @@ RDOEditorResults::RDOEditorResults(PTR(QWidget) pParent)
 	kw3 = "";
 
 	setReadOnly( true );
+
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+	m_pPopupMenu = new QMenu(this);
+	m_pPopupMenu->addAction(pMainWindow->actEditCopy);
+	m_pPopupMenu->addAction(pMainWindow->actEditSelectAll);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actSearchFind);
+	m_pPopupMenu->addAction(pMainWindow->actSearchFindNext);
+	m_pPopupMenu->addAction(pMainWindow->actSearchFindPrevious);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksToggle);
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkNext);
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkPrev);
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksClearAll);
 }
 
 RDOEditorResults::~RDOEditorResults()
@@ -61,4 +77,16 @@ void RDOEditorResults::onHelpContext()
 	ba.append(keyword.c_str());
 	ba.append("\n");
 	studioApp.callQtAssistant(ba);
+}
+
+void RDOEditorResults::mousePressEvent(QMouseEvent* pEvent)
+{
+	if (pEvent->button() == Qt::LeftButton)
+	{
+		RDOBaseEdit::mousePressEvent(pEvent);
+	}
+	else if (pEvent->button() == Qt::RightButton)
+	{
+		m_pPopupMenu->exec(pEvent->globalPos());
+	}
 }

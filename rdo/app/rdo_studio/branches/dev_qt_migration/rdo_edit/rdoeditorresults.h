@@ -30,7 +30,12 @@ public:
 	void setEditorStyle(PTR(RDOEditorResultsStyle) pStyle);
 
 private:
+	typedef QWidget parent_type;
+
+	QMenu* m_pPopupMenu;
+
 	virtual void onHelpContext();
+	virtual void mousePressEvent(QMouseEvent* pEvent);
 };
 
 } // namespace rdoEditor

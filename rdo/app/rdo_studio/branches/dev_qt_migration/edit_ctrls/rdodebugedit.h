@@ -29,7 +29,10 @@ public:
 	void appendLine(CREF(tstring) str);
 
 private:
+	QMenu* m_pPopupMenu;
+
 	virtual void onHelpContext();
+	virtual void mousePressEvent(QMouseEvent* pEvent);
 };
 
 } // namespace rdoEditCtrl

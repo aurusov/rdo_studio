@@ -36,7 +36,10 @@ protected:
 private:
 	typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
 
+	QMenu* m_pPopupMenu;
+
 	virtual void onHelpContext();
+	virtual void mousePressEvent(QMouseEvent* pEvent);
 };
 
 } // namespace rdoEditCtrl
