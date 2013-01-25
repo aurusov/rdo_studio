@@ -157,7 +157,6 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent)
 	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
 
 	sendEditor( SCI_USEPOPUP, 0 );
-	//! @todo qt Всплывающее меню вставки
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 	m_pPopupMenu = new QMenu(this);
