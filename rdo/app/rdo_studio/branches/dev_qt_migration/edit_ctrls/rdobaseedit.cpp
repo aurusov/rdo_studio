@@ -161,6 +161,8 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent)
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 	m_pPopupMenu = new QMenu(this);
+	m_pPopupMenu->addMenu(pMainWindow->menuInsert);
+	m_pPopupMenu->addSeparator();
 	m_pPopupMenu->addAction(pMainWindow->actEditCut);
 	m_pPopupMenu->addAction(pMainWindow->actEditCopy);
 	m_pPopupMenu->addAction(pMainWindow->actEditPaste);
