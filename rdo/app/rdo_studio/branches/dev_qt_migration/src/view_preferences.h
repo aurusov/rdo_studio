@@ -42,6 +42,8 @@ private slots:
 	void marginBookmarkChanged(int state);
 	void marginLineNumberChanged(int state);
 
+	void onTreeWidgetItemActivated(QTreeWidgetItem* item, int column);
+
 private:
 	rdoEditor::RDOEditorEditStyle style_editor;
 
@@ -89,7 +91,8 @@ private:
 	};
 
 	void createTree();
-	void createTreeItem(PTR(QTreeWidgetItem) parent, PTR(QTreeWidgetItem) item, CREF(QString) name, ItemType itemType);
+	void createTreeItem (PTR(QTreeWidgetItem) parent, PTR(QTreeWidgetItem) item, CREF(QString) name, ItemType itemType);
+	void createChildItem(PTR(QTreeWidgetItem) parent, PTR(QTreeWidgetItem) item, CREF(QString) name, ItemType itemType);
 };
 
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

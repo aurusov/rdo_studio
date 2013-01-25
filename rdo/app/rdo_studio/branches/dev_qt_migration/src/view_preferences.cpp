@@ -36,7 +36,10 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(checkBoxMarginLineNum, SIGNAL(stateChanged(int)), this, SLOT(marginLineNumberChanged(int)));
 
 	//Вкладка "Стиль и цвет"
+	stackedWidget->setCurrentWidget(pageRoot);
 	createTree();
+
+	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 }
 
 void ViewPreferences::onUpdateStyleNotify(const rdoEditor::RDOEditorEditStyle& style)
@@ -147,6 +150,7 @@ void ViewPreferences::createTree()
 	m_pRoot = new QTreeWidgetItem(treeWidget);
 	m_pRoot->setText(0, "Все окна");
 	m_pRoot->setData(0, Qt::UserRole, IT_ROOT);
+
 	createTreeItem(m_pRoot, m_pText,      "Исходный текст",   IT_TEXT);
 	createTreeItem(m_pRoot, m_pCompile,   "Окно компиляции",  IT_COMPILE);
 	createTreeItem(m_pRoot, m_pDebug,     "Окно отладки",     IT_DEBUG);
@@ -172,8 +176,6 @@ void ViewPreferences::createTree()
 	//createTreeItem(m_pText, m_pBookmark,  "Закладка",           IT_TEXT);
 	//createTreeItem(m_pText, m_pGroup,     "Группа",             IT_TEXT);
 	//createTreeItem(m_pText, m_pError,     "Ошибка",             IT_TEXT);
-
-	m_pText->setExpanded(true);
 }
 
 void ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent, PTR(QTreeWidgetItem) item, CREF(QString) name, ItemType itemType)
@@ -181,4 +183,10 @@ void ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent, PTR(QTreeWidge
 	item = new QTreeWidgetItem(parent);
 	item->setText(0, name);
 	item->setData(0, Qt::UserRole, QVariant(itemType));
+	item->setDisabled(false);
+}
+
+void ViewPreferences::onTreeWidgetItemActivated(QTreeWidgetItem* item, int column)
+{
+	stackedWidget->setCurrentIndex(item->data(column, Qt::UserRole).toInt());
 }
