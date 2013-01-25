@@ -390,37 +390,6 @@ void RDOStudioMainFrame::init()
 	m_pDockProcess = NULL;
 #endif
 
-	//! @todo qt
-	//! Создание popup-menu для редакторов из докод
-	//popupMenu.CreatePopupMenu();
-
-	//if (AfxGetMainWnd())
-	//{
-	//	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-	//	if (mainMenu)
-	//	{
-	//		rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
-	//		int delta = maximized ? 1 : 0;
-
-	//		appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 1 + delta ), 8, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
-	//		popupMenu.AppendMenu( MF_SEPARATOR );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
-	//		popupMenu.AppendMenu( MF_SEPARATOR );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 7, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 8, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 9, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 10, &popupMenu );
-	//	}
-	//}
-	//build->setPopupMenu( &popupMenu );
-	//debug->setPopupMenu( &popupMenu );
-	//results->setPopupMenu( &popupMenu );
-	//find->setPopupMenu( &popupMenu );
-
 	g_pTracer->registerClipboardFormat();
 
 	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(model);

@@ -83,8 +83,6 @@ protected slots:
 	virtual void onHelpContext  () = 0;
 
 private:
-	//! @todo qt
-	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
 
 	void onFindDlgFind(CREF(FindDialog::Settings) settings);
 	void onFindDlgClose();
