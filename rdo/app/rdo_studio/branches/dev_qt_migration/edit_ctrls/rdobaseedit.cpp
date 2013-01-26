@@ -140,7 +140,6 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent)
 	, bHaveFound   (false)
 	, m_pFindDialog       (NULL)
 	, m_pFindReplaceDialog(NULL)
-	, m_pPopupMenu (NULL)
 {
 	QObject::connect(this, SIGNAL(needShown(int, int)), this, SLOT(catchNeedShown(int, int)));
 	QObject::connect(this, SIGNAL(charAdded(int)),      this, SLOT(catchCharAdded(int)));
@@ -157,25 +156,6 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent)
 	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
 
 	sendEditor( SCI_USEPOPUP, 0 );
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
-	ASSERT(pMainWindow);
-	m_pPopupMenu = new QMenu(this);
-	m_pPopupMenu->addMenu(pMainWindow->menuInsert);
-	m_pPopupMenu->addSeparator();
-	m_pPopupMenu->addAction(pMainWindow->actEditCut);
-	m_pPopupMenu->addAction(pMainWindow->actEditCopy);
-	m_pPopupMenu->addAction(pMainWindow->actEditPaste);
-	m_pPopupMenu->addSeparator();
-	m_pPopupMenu->addAction(pMainWindow->actEditSelectAll);
-	m_pPopupMenu->addSeparator();
-	m_pPopupMenu->addAction(pMainWindow->actSearchFind);
-	m_pPopupMenu->addAction(pMainWindow->actSearchReplace);
-	m_pPopupMenu->addAction(pMainWindow->actSearchFindNext);
-	m_pPopupMenu->addSeparator();
-	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksToggle);
-	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkNext);
-	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkPrev);
-	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksClearAll);
 }
 
 RDOBaseEdit::~RDOBaseEdit()
@@ -275,18 +255,6 @@ void RDOBaseEdit::setEditorStyle( RDOBaseEditStyle* _style )
 void RDOBaseEdit::setGroup(PTR(Group) pGroup)
 {
 	m_pGroup = pGroup;
-}
-
-void RDOBaseEdit::mousePressEvent(QMouseEvent*  pEvent)
-{
-	if (pEvent->button() == Qt::LeftButton)
-	{
-		super::mousePressEvent(pEvent);
-	}
-	else if (pEvent->button() == Qt::RightButton)
-	{
-		m_pPopupMenu->exec(pEvent->globalPos());
-	}
 }
 
 void RDOBaseEdit::onEditUndo() 

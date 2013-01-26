@@ -25,7 +25,7 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 class RDOBuildEdit
 	: public LogEdit
-	, private EditWithReadOnlyPopupMenu
+	, public EditWithReadOnlyPopupMenu
 {
 public:
 	RDOBuildEdit(PTR(QWidget) pParent);
@@ -37,9 +37,8 @@ protected:
 	virtual void updateEdit(rdoEditor::RDOEditorEdit* pEdit, const LogEditLineInfo* pLineInfo);
 
 private:
-	typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
-
-	QMenu* m_pPopupMenu;
+	typedef  LogEdit  super;
+	typedef  rdo::simulation::report::FileMessage RDOSyntaxMessage;
 
 	virtual void onHelpContext();
 	virtual void mousePressEvent(QMouseEvent* pEvent);

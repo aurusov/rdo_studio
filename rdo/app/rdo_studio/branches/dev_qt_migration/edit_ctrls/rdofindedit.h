@@ -24,7 +24,7 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 class RDOFindEdit
 	: public LogEdit
-	, EditWithReadOnlyPopupMenu
+	, public EditWithReadOnlyPopupMenu
 {
 public:
 	RDOFindEdit(PTR(QWidget) pParent);
@@ -35,7 +35,7 @@ public:
 	void setKeyword(CREF(tstring) keyword, const rbool matchCase = false) const;
 
 private:
-	QMenu* m_pPopupMenu;
+	typedef  LogEdit  super;
 
 	virtual void onHelpContext();
 	virtual void mousePressEvent(QMouseEvent* pEvent);

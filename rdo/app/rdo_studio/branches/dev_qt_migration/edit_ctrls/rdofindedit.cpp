@@ -35,14 +35,13 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 // -------------------- RDOFindEdit
 // ---------------------------------------------------------------------------
 RDOFindEdit::RDOFindEdit(PTR(QWidget) pParent)
-	: LogEdit(pParent)
+	: super(pParent)
+	, EditWithReadOnlyPopupMenu(pParent)
 {
 	sendEditor(SCI_SETLEXER, SCLEX_FIND);
 	//	int lexLanguage = sendEditor(SCI_GETLEXER);
 	sendEditor(SCI_SETSTYLEBITS, 5);
 	sendEditorString(SCI_SETWORDCHARS, 0, wordCharacters);
-	
-	m_pPopupMenu = createPopupMenu(pParent);
 }
 
 RDOFindEdit::~RDOFindEdit()
@@ -50,7 +49,7 @@ RDOFindEdit::~RDOFindEdit()
 
 void RDOFindEdit::setEditorStyle(RDOFindEditStyle* pStyle)
 {
-	LogEdit::setEditorStyle(pStyle);
+	super::setEditorStyle(pStyle);
 	if (!style)
 	{
 		return;
@@ -106,7 +105,7 @@ void RDOFindEdit::mousePressEvent(QMouseEvent* pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{
-		RDOBaseEdit::mousePressEvent(pEvent);
+		super::mousePressEvent(pEvent);
 	}
 	else if (pEvent->button() == Qt::RightButton)
 	{

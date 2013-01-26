@@ -36,10 +36,11 @@ using namespace rdoEditCtrl;
 // -------------------- RDOEditorEdit
 // ---------------------------------------------------------------------------
 RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView)
-	: RDOEditorBaseEdit(pParent)
+	: super            (pParent)
 	, view             (pView  )
 	, log              (NULL   )
 	, canClearErrorLine(true   )
+	, m_pPopupMenu     (NULL   )
 {
 	sci_FOLDMARGIN_ID = getNewMarker();
 	sci_MARKER_ERROR  = getNewMarker();
@@ -60,6 +61,26 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView)
 
 	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
 	QObject::connect(this, SIGNAL(marginClicked(int, int, int)), this, SLOT(catchMarginClick(int, int, int)));
+
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+	m_pPopupMenu = new QMenu(this);
+	m_pPopupMenu->addMenu(pMainWindow->menuInsert);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actEditCut);
+	m_pPopupMenu->addAction(pMainWindow->actEditCopy);
+	m_pPopupMenu->addAction(pMainWindow->actEditPaste);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actEditSelectAll);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actSearchFind);
+	m_pPopupMenu->addAction(pMainWindow->actSearchReplace);
+	m_pPopupMenu->addAction(pMainWindow->actSearchFindNext);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksToggle);
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkNext);
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkPrev);
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksClearAll);
 }
 
 RDOEditorEdit::~RDOEditorEdit()
@@ -92,7 +113,7 @@ void RDOEditorEdit::catchMarginClick(int position, int modifiers, int margin)
 
 void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 {
-	RDOEditorBaseEdit::setEditorStyle(pStyle);
+	super::setEditorStyle(pStyle);
 	if (!style)
 		return;
 
@@ -631,7 +652,7 @@ void RDOEditorEdit::onHelpContext()
 
 void RDOEditorEdit::onUpdateActions(rbool activated)
 {
-	RDOEditorBaseEdit::onUpdateActions(activated);
+	super::onUpdateActions(activated);
 
 	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
@@ -676,4 +697,16 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 		activated,
 		this, "onInsertCommand(QObject*)"
 	);
+}
+
+void RDOEditorEdit::mousePressEvent(QMouseEvent*  pEvent)
+{
+	if (pEvent->button() == Qt::LeftButton)
+	{
+		super::mousePressEvent(pEvent);
+	}
+	else if (pEvent->button() == Qt::RightButton)
+	{
+		m_pPopupMenu->exec(pEvent->globalPos());
+	}
 }

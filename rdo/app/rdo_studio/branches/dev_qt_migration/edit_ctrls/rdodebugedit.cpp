@@ -31,11 +31,10 @@ using namespace rdoEditCtrl;
 // -------------------- RDODebugEdit
 // ---------------------------------------------------------------------------
 RDODebugEdit::RDODebugEdit(PTR(QWidget) pParent)
-	: RDOBaseEdit(pParent)
+	: super(pParent)
+	, EditWithReadOnlyPopupMenu(pParent)
 {
 	setReadOnly(true);
-	
-	m_pPopupMenu = createPopupMenu(pParent);
 }
 
 RDODebugEdit::~RDODebugEdit()
@@ -70,7 +69,7 @@ void RDODebugEdit::mousePressEvent(QMouseEvent* pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{
-		RDOBaseEdit::mousePressEvent(pEvent);
+		super::mousePressEvent(pEvent);
 	}
 	else if (pEvent->button() == Qt::RightButton)
 	{

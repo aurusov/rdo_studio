@@ -14,7 +14,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <boost/function.hpp>
-#include <QtGui/qmenu.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
@@ -43,8 +42,6 @@ private:
 
 	FindReplaceDialog*          m_pFindReplaceDialog;
 	FindReplaceDialog::Settings m_findReplaceSettings;
-
-	QMenu* m_pPopupMenu;
 
 protected:
 	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return super::send( msg, wParam, lParam );; };
@@ -75,8 +72,6 @@ protected:
 	virtual void focusInEvent   (QFocusEvent* pEvent);
 	virtual void focusOutEvent  (QFocusEvent* pEvent);
 	virtual void onUpdateActions(rbool activated);
-
-	virtual void mousePressEvent(QMouseEvent*  pEvent);
 
 protected slots:
 	        void onUpdateEditGUI();

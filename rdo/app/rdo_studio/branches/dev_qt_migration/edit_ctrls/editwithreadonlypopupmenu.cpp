@@ -16,10 +16,8 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-EditWithReadOnlyPopupMenu::EditWithReadOnlyPopupMenu()
-{}
-
-QMenu* EditWithReadOnlyPopupMenu::createPopupMenu(QWidget* pParent)
+EditWithReadOnlyPopupMenu::EditWithReadOnlyPopupMenu(QWidget* pParent)
+	: m_pPopupMenu(NULL)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
@@ -36,6 +34,7 @@ QMenu* EditWithReadOnlyPopupMenu::createPopupMenu(QWidget* pParent)
 	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkNext);
 	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkPrev);
 	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksClearAll);
-
-	return m_pPopupMenu;
 }
+
+EditWithReadOnlyPopupMenu::~EditWithReadOnlyPopupMenu()
+{}

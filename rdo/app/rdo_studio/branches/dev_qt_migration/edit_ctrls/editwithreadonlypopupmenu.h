@@ -7,6 +7,9 @@
   \indent    4T
 */
 
+#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
+#define _RDO_STUDIO_MFC_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
+
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qwidget.h>
@@ -14,18 +17,13 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
-#define _RDO_STUDIO_MFC_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
-
 class EditWithReadOnlyPopupMenu
 {
-	public:
-		EditWithReadOnlyPopupMenu();
+protected:
+	EditWithReadOnlyPopupMenu(QWidget* pParent);
+	virtual ~EditWithReadOnlyPopupMenu();
 
-		QMenu* createPopupMenu(QWidget* pParent);
-
-	private:
-		QMenu* m_pPopupMenu;
+	QMenu* m_pPopupMenu;
 };
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_

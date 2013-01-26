@@ -24,7 +24,7 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 class RDOEditorResults
 	: public RDOEditorBaseEdit
-	, private EditWithReadOnlyPopupMenu
+	, public EditWithReadOnlyPopupMenu
 {
 public:
 	RDOEditorResults(PTR(QWidget) pParent);
@@ -33,12 +33,10 @@ public:
 	void setEditorStyle(PTR(RDOEditorResultsStyle) pStyle);
 
 private:
-	typedef QWidget parent_type;
+	typedef  RDOEditorBaseEdit  super;
 
-	QMenu* m_pPopupMenu;
-
-	virtual void onHelpContext();
 	virtual void mousePressEvent(QMouseEvent* pEvent);
+	virtual void onHelpContext();
 };
 
 } // namespace rdoEditor

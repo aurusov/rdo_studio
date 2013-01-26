@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qwidget.h>
+#include <QtGui/qmenu.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
@@ -69,6 +70,13 @@ public:
 	void setLog(REF(rdoEditCtrl::LogEdit) log);
 
 	void setCanClearErrorLine( rbool value ) { canClearErrorLine = value; }
+
+private:
+	typedef  RDOEditorBaseEdit  super;
+
+	QMenu* m_pPopupMenu;
+
+	virtual void mousePressEvent(QMouseEvent* pEvent);
 
 private slots:
 	void catchModified     (int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev);

@@ -33,10 +33,9 @@ using namespace rdoEditCtrl;
 // -------------------- RDOBuildEdit
 // ---------------------------------------------------------------------------
 RDOBuildEdit::RDOBuildEdit(PTR(QWidget) pParent)
-	: LogEdit(pParent)
-{
-	m_pPopupMenu = createPopupMenu(pParent);
-}
+	: super(pParent)
+	, EditWithReadOnlyPopupMenu(pParent)
+{}
 
 RDOBuildEdit::~RDOBuildEdit()
 {}
@@ -105,7 +104,7 @@ void RDOBuildEdit::showFirstError()
 
 void RDOBuildEdit::updateEdit(rdoEditor::RDOEditorEdit* pEdit, const LogEditLineInfo* pLineInfo)
 {
-	LogEdit::updateEdit(pEdit, pLineInfo);
+	super::updateEdit(pEdit, pLineInfo);
 	pEdit->setErrorLine(pLineInfo->getLineNumber());
 }
 
@@ -120,7 +119,7 @@ void RDOBuildEdit::mousePressEvent(QMouseEvent*  pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{
-		RDOBaseEdit::mousePressEvent(pEvent);
+		super::mousePressEvent(pEvent);
 	}
 	else if (pEvent->button() == Qt::RightButton)
 	{

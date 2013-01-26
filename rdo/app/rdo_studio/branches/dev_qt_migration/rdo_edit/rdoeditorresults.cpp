@@ -29,7 +29,8 @@ using namespace rdoEditor;
 // -------------------- RDOEditorResults
 // ---------------------------------------------------------------------------
 RDOEditorResults::RDOEditorResults(PTR(QWidget) pParent)
-	: RDOEditorBaseEdit(pParent)
+	: super(pParent)
+	, EditWithReadOnlyPopupMenu(pParent)
 {
 	kw0 = "TRUE FALSE";
 	kw1 = "";
@@ -37,8 +38,6 @@ RDOEditorResults::RDOEditorResults(PTR(QWidget) pParent)
 	kw3 = "";
 
 	setReadOnly( true );
-
-	m_pPopupMenu = createPopupMenu(pParent);
 }
 
 RDOEditorResults::~RDOEditorResults()
@@ -46,7 +45,7 @@ RDOEditorResults::~RDOEditorResults()
 
 void RDOEditorResults::setEditorStyle(PTR(RDOEditorResultsStyle) pStyle)
 {
-	RDOEditorBaseEdit::setEditorStyle(pStyle);
+	super::setEditorStyle(pStyle);
 }
 
 void RDOEditorResults::onHelpContext()
@@ -70,7 +69,7 @@ void RDOEditorResults::mousePressEvent(QMouseEvent* pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{
-		RDOBaseEdit::mousePressEvent(pEvent);
+		super::mousePressEvent(pEvent);
 	}
 	else if (pEvent->button() == Qt::RightButton)
 	{
