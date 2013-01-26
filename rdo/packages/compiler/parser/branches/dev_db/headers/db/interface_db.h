@@ -23,20 +23,13 @@ public:
 	typedef std::list<QString>   QueryList;
 
 	virtual void insertRow     (const QString& tableName, const QString& qRow) = 0;
+
 	virtual void queryExec     (const QString&   query                       ) = 0;
 	virtual void queryExec     (const QueryList& query                       ) = 0;
-
 	virtual int  queryExecIndex(const QString& table                         ) = 0;
+
 	virtual void pushContext   (int context                                  ) = 0;
 	virtual int  popContext    (                                             ) = 0;
-
-	//void insertRTPHeader(const QString& rtp_name, bool permanent);
-	//void insertIntRow   ();
-	//void insertEnumRow  (const QString& defaultValue);
-
-	//typedef std::map <QString,int> enumContainer;
-
-	//int  getEnumTypeID       (enumContainer& container, const QString defaultValue = "NULL");
 };
 
 #endif // _SIMULATOR_RUNTIME_SQL_INTERFACE_DB_H_

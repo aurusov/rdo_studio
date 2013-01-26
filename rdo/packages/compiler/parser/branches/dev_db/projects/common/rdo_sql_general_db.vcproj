@@ -164,6 +164,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\src\db\init_struct_db.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\src\db\init_struct_db.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\headers\db\interface_db.h"
 			>
 		</File>
