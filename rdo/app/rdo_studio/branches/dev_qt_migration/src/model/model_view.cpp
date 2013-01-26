@@ -118,7 +118,7 @@ void RDOStudioModelView::onSearchFindAll()
 	rbool bMatchCase      = m_findSettings.matchCase;
 	rbool bMatchWholeWord = m_findSettings.matchWholeWord;
 	studioApp.getIMainWnd()->getDockFind().getContext().setKeyword(findStr, bMatchCase);
-	studioApp.getIMainWnd()->getDockFind().appendString(rdo::format(ID_FINDINMODEL_BEGINMSG, findStr.c_str()));
+	studioApp.getIMainWnd()->getDockFind().appendString(rdo::format("Поиск '%s'...\r\n", findStr.c_str()));
 	int count = 0;
 	for (int i = 0; i < m_pTabCtrl->count(); i++)
 	{
@@ -141,7 +141,7 @@ void RDOStudioModelView::onSearchFindAll()
 	}
 	m_pFindDialog = NULL;
 	tstring s = count
-		? rdo::format(ID_FINDINMODEL_ENDMSG_COUNT,    count)
-		: rdo::format(ID_FINDINMODEL_ENDMSG_NOTFOUND, findStr.c_str());
+		? rdo::format("'%d' раз было найдено.\r\n", count)
+		: rdo::format("Не получилось найти строчку '%s'.\r\n", findStr.c_str());
 	studioApp.getIMainWnd()->getDockFind().appendString(s);
 }
