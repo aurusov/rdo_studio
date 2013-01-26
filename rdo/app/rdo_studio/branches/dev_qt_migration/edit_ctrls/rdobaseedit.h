@@ -130,31 +130,19 @@ public:
 protected:
 	RDOBaseEditStyle* m_pStyle;
 
-	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return super::send( msg, wParam, lParam );; };
-	long sendEditorString( unsigned int msg, unsigned long wParam, const char* str ) const { return super::sends( msg, wParam, str ); };
+	long sendEditor      (ruint msg, unsigned long wParam = 0, long lParam = 0) const { return super::send (msg, wParam, lParam); }
+	long sendEditorString(ruint msg, unsigned long wParam, const char* str)     const { return super::sends(msg, wParam, str);    }
 
-	int getNewMarker();
+	int  getNewMarker();
 	void defineMarker( int marker, int markerType, COLORREF fore, COLORREF back ) const;
 
-	void setSelection( int anchor, int currentPos ) const { sendEditor( SCI_SETSEL, anchor, currentPos ); };
 	CharacterRange getSelectionRange() const;
-	void gotoLineEnsureVisible( int line ) const;
-	void ensureRangeVisible( int posStart, int posEnd, rbool enforcePolicy = true ) const;
-
-	void findNext  (REF(tstring) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
-	void replace   (REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
-	void replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase, rbool matchWholeWord);
-
-	int indentOfBlock( int line ) const;
-	void setLineIndentation( int line, int indent ) const;
-	void autoIndent() const;
-
-	virtual void focusInEvent   (QFocusEvent* pEvent);
-	virtual void focusOutEvent  (QFocusEvent* pEvent);
-	virtual void onUpdateActions(rbool activated);
+	void setSelection( int anchor, int currentPos ) const { sendEditor( SCI_SETSEL, anchor, currentPos ); }
 
 	int getCurrentLineNumber  () const { return getLineFromPosition(getCurrentPos());       };
 	int getCurrentColumnNumber() const { return sendEditor(SCI_GETCOLUMN, getCurrentPos()); };
+
+	virtual void onUpdateActions(rbool activated);
 
 protected slots:
 	        void onUpdateEditGUI();
@@ -167,6 +155,17 @@ private:
 	int        m_sciMarkerBookmark;
 	int        m_firstFoundPos;
 	rbool      m_haveFound;
+
+	void gotoLineEnsureVisible( int line ) const;
+	void ensureRangeVisible( int posStart, int posEnd, rbool enforcePolicy = true ) const;
+
+	void findNext  (REF(tstring) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
+	void replace   (REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
+	void replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase, rbool matchWholeWord);
+
+	int  indentOfBlock     (int line) const;
+	void setLineIndentation(int line, int indent) const;
+	void autoIndent        () const;
 
 	rbool isViewWhiteSpace () const;
 	void  setViewWhiteSpace(rbool value);
@@ -199,6 +198,9 @@ private:
 
 	void  methodOfGroup   (CREF(this_method)    fun);
 	rbool predicateOfGroup(CREF(this_predicate) fun) const;
+
+	virtual void focusInEvent (QFocusEvent* pEvent);
+	virtual void focusOutEvent(QFocusEvent* pEvent);
 
 private slots:
 	void catchNeedShown(int position, int length);
