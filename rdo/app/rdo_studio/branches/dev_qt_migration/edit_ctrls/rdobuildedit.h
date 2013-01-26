@@ -40,8 +40,8 @@ private:
 	typedef  LogEdit  super;
 	typedef  rdo::simulation::report::FileMessage RDOSyntaxMessage;
 
-	virtual void onHelpContext();
 	virtual void mousePressEvent(QMouseEvent* pEvent);
+	virtual void onHelpContext  ();
 };
 
 } // namespace rdoEditCtrl

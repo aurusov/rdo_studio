@@ -37,8 +37,8 @@ public:
 private:
 	typedef  LogEdit  super;
 
-	virtual void onHelpContext();
 	virtual void mousePressEvent(QMouseEvent* pEvent);
+	virtual void onHelpContext();
 };
 
 } // namespace rdoEditCtrl
