@@ -11,16 +11,20 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser_base.h"
 #include "simulator/compiler/parser/rdoparser_rdo.h"
 #include "simulator/compiler/parser/parser/std_fun.h"
+#include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_corba.h"
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/rdosmr.h"
 #include "simulator/compiler/parser/src/animation/animation_frame.h"
 #include "simulator/compiler/parser/rdopmd.h"
+#include "simulator/compiler/parser/rdortp.h"
+#include "simulator/compiler/parser/src/db/init_struct_db.h"
 #include "simulator/compiler/parser/rdortp.h"
 // --------------------------------------------------------------------------------
 
@@ -127,6 +131,13 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRSSPost>::create());
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex));
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserSMRPost>::create());
+
+	InitSructDB db;
+
+	BOOST_FOREACH(const LPRDORTPResType& pResType, parser::RDOParser::s_parser()->getRTPResTypes())
+	{
+		pResType->serializeInDB(db);
+	}
 }
 
 // --------------------------------------------------------------------------------
