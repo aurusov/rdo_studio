@@ -10,8 +10,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/bind.hpp>
 #include <limits>
+#include <boost/bind.hpp>
+#include <boost/foreach.hpp>
 #include <QtGui/qmessagebox.h>
 #include <QtGui/qfiledialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -390,10 +391,10 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
-			STL_FOR_ALL_CONST(errors, it)
+			BOOST_FOREACH(const FileMessage& message, errors)
 			{
-				studioApp.getIMainWnd()->getDockBuild().appendString(*it);
-				if (it->getType() == FileMessage::MT_WARNING)
+				studioApp.getIMainWnd()->getDockBuild().appendString(message);
+				if (message.getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -417,10 +418,10 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
-			STL_FOR_ALL_CONST(errors, it)
+			BOOST_FOREACH(const FileMessage& message, errors)
 			{
-				studioApp.getIMainWnd()->getDockBuild().appendString(*it);
-				if (it->getType() == FileMessage::MT_WARNING)
+				studioApp.getIMainWnd()->getDockBuild().appendString(message);
+				if (message.getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -451,10 +452,10 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
-			STL_FOR_ALL_CONST(errors, it)
+			BOOST_FOREACH(const FileMessage& message, errors)
 			{
-				studioApp.getIMainWnd()->getDockBuild().appendString(*it);
-				if (it->getType() == FileMessage::MT_WARNING)
+				studioApp.getIMainWnd()->getDockBuild().appendString(message);
+				if (message.getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -1073,13 +1074,13 @@ void RDOStudioModel::afterModelStart()
 		rdo::service::simulation::RDOThreadSimulator::GetList getListBitmaps(rdo::service::simulation::RDOThreadSimulator::GetList::bitmaps, &bitmaps);
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListFrames );
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
-		STL_FOR_ALL_CONST(bitmaps, bmp_it)
+		BOOST_FOREACH(const tstring& name, bitmaps)
 		{
-			m_frameManager.insertBitmap(*bmp_it);
+			m_frameManager.insertBitmap(name);
 		}
-		STL_FOR_ALL_CONST(frames, frame_it)
+		BOOST_FOREACH(const tstring& name, frames)
 		{
-			m_frameManager.insertFrame(*frame_it);
+			m_frameManager.insertFrame(name);
 		}
 		m_timeNow = 0;
 		ruint initFrameNumber = kernel->simulator()->getInitialFrameNumber();

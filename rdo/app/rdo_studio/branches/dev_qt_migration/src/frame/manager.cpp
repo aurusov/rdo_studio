@@ -63,9 +63,9 @@ RDOStudioFrameManager::~RDOStudioFrameManager()
 {
 	clear();
 
-	STL_FOR_ALL(m_frameList, it)
+	BOOST_FOREACH(Frame* pFrame, m_frameList)
 	{
-		delete *it;
+		delete pFrame;
 	}
 }
 
@@ -243,11 +243,6 @@ void RDOStudioFrameManager::clear()
 		}
 		delete pFrame;
 	}
-
-	//STL_FOR_ALL(m_bitmapList, it)
-	//{
-	//	delete it->second;
-	//}
 
 	m_frameList .clear();
 	m_bitmapList.clear();

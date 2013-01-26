@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
+#include <boost/foreach.hpp>
 #include <QtGui/qlayout.h>
 #include <QtGui/qpainter.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -181,9 +182,8 @@ void FrameAnimationContent::update(
 
 	m_memDC.dc().setFont(m_font);
 
-	STL_FOR_ALL_CONST(pFrame->m_elements, it)
+	BOOST_FOREACH(PTR(rdo::animation::FrameItem) pCurrElement, pFrame->m_elements)
 	{
-		PTR(rdo::animation::FrameItem) pCurrElement = *it;
 		ASSERT(pCurrElement);
 		switch (pCurrElement->getType())
 		{

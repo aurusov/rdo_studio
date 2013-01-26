@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
+#include <boost/range/algorithm/find.hpp>
 #include <QtCore/qprocess.h>
 #include <QtGui/qmdisubwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -625,13 +626,10 @@ void RDOStudioMainFrame::insertMenuFileReopenItem(CREF(tstring) item)
 {
 	if (!item.empty())
 	{
-		STL_FOR_ALL(m_reopenList, it)
+		ReopenList::iterator it = boost::range::find(m_reopenList, item);
+		if (it != m_reopenList.end())
 		{
-			if (*it == item)
-			{
-				m_reopenList.erase(it);
-				break;
-			}
+			m_reopenList.erase(it);
 		}
 
 		m_reopenList.insert(m_reopenList.begin(), item);
