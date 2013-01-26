@@ -75,25 +75,25 @@ public:
 
 	void setGroup(PTR(Group) pGroup);
 
-	rbool isEmpty() const                                  { return getLength() == 0;                                                         };
-	rbool isSelected() const                               { return sendEditor( SCI_GETSELECTIONSTART ) != sendEditor( SCI_GETSELECTIONEND ); };
+	rbool isEmpty() const                                  { return getLength() == 0;                                                     }
+	rbool isSelected() const                               { return sendEditor(SCI_GETSELECTIONSTART) != sendEditor(SCI_GETSELECTIONEND); }
 
-	rbool isModify() const                                 { return sendEditor(SCI_GETMODIFY) ? true : false; };
-	void  setModifyFalse()                                 { sendEditor(SCI_SETSAVEPOINT); };
+	rbool isModify() const                                 { return sendEditor(SCI_GETMODIFY) ? true : false; }
+	void  setModifyFalse()                                 { sendEditor(SCI_SETSAVEPOINT); }
 
 	virtual void clearAll();
-	void clearUndoBuffer() const                           { sendEditor( SCI_EMPTYUNDOBUFFER ); };
+	void clearUndoBuffer() const                           { sendEditor(SCI_EMPTYUNDOBUFFER); }
 
-	rbool isReadOnly() const                               { return sendEditor( SCI_GETREADONLY ) ? true : false;           };
-	void setReadOnly( const rbool value )                  { sendEditor( SCI_SETREADONLY, value ); };
+	rbool isReadOnly() const                               { return sendEditor(SCI_GETREADONLY) ? true : false; }
+	void setReadOnly(const rbool value)                    { sendEditor(SCI_SETREADONLY, value); }
 
-	void appendText( CREF(tstring) str ) const;
+	void appendText(CREF(tstring) str) const;
 
-	int getZoom() const                                    { return sendEditor( SCI_GETZOOM ); };
-	void setZoom( const int value ) const                  { sendEditor( SCI_SETZOOM, value ); };
-	void zoomIn() const                                    { sendEditor( SCI_ZOOMIN );         };
-	void zoomOut() const                                   { sendEditor( SCI_ZOOMOUT );        };
-	void resetZoom() const                                 { sendEditor( SCI_SETZOOM, 0 );     };
+	int getZoom() const                                    { return sendEditor(SCI_GETZOOM); }
+	void setZoom(const int value) const                    { sendEditor(SCI_SETZOOM, value); }
+	void zoomIn() const                                    { sendEditor(SCI_ZOOMIN);         }
+	void zoomOut() const                                   { sendEditor(SCI_ZOOMOUT);        }
+	void resetZoom() const                                 { sendEditor(SCI_SETZOOM, 0);     }
 
 	rbool bookmarkToggle  (int line = -1) const;
 	rbool bookmarkNext    (rbool canLoop = true, rbool fromCurrentLine = true) const;
@@ -101,30 +101,30 @@ public:
 	void  bookmarkClearAll() const;
 	rbool hasBookmarks    () const;
 
-	int getLength() const                           { return sendEditor( SCI_GETLENGTH );                  };
-	int getLineCount() const                        { return sendEditor( SCI_GETLINECOUNT );               };
-	int getCurrentPos() const                       { return sendEditor( SCI_GETCURRENTPOS );              };
-	int getPositionFromLine( const int line ) const { return sendEditor( SCI_POSITIONFROMLINE, line );     };
-	int getLineFromPosition( const int pos ) const  { return sendEditor( SCI_LINEFROMPOSITION, pos );      };
-	int isEndOfWord( int pos ) const                { return sendEditor( SCI_WORDENDPOSITION, pos, true );   };
-	void setCurrentPos( const int value ) const;
-	void setCurrentPos( const int line, int pos_in_line, const rbool convert_rdo_tab = false ) const;
-	rbool isLineVisible( const int line ) const;
-	void scrollToLine( const int line ) const;
-	void scrollToLine2( const int line ) const;
+	int getLength() const                         { return sendEditor(SCI_GETLENGTH);                  }
+	int getLineCount() const                      { return sendEditor(SCI_GETLINECOUNT);               }
+	int getCurrentPos() const                     { return sendEditor(SCI_GETCURRENTPOS);              }
+	int getPositionFromLine(const int line) const { return sendEditor(SCI_POSITIONFROMLINE, line);     }
+	int getLineFromPosition(const int pos) const  { return sendEditor(SCI_LINEFROMPOSITION, pos);      }
+	int isEndOfWord(int pos) const                { return sendEditor(SCI_WORDENDPOSITION, pos, true); }
+	void setCurrentPos (const int value) const;
+	void setCurrentPos (const int line, int pos_in_line, const rbool convert_rdo_tab = false) const;
+	rbool isLineVisible(const int line) const;
+	void scrollToLine  (const int line) const;
+	void scrollToLine2 (const int line) const;
 	void scrollToCarret() const;
 	void horzScrollToCurrentPos() const;
 
 	tstring getCurrentWord() const;
-	tstring getSelection() const;
+	tstring getSelection  () const;
 	tstring getCurrentOrSelectedWord() const;
 	tstring getWordForFind() const;
 
-	int findPos( REF(tstring) findWhat, const int startFromLine = 0, const rbool matchCase = false, const rbool matchWholeWord = false ) const;
-	tstring getLine( const int line ) const;
+	int findPos(REF(tstring) findWhat, const int startFromLine = 0, const rbool matchCase = false, const rbool matchWholeWord = false) const;
+	tstring getLine(const int line) const;
 
-	void load( rdo::stream& stream );
-	void save( rdo::stream& stream ) const;
+	void load(rdo::stream& stream);
+	void save(rdo::stream& stream) const;
 	tstring saveAsRTF(int start, int end) const;
 
 protected:
@@ -134,13 +134,13 @@ protected:
 	long sendEditorString(ruint msg, unsigned long wParam, const char* str)     const { return super::sends(msg, wParam, str);    }
 
 	int  getNewMarker();
-	void defineMarker( int marker, int markerType, COLORREF fore, COLORREF back ) const;
+	void defineMarker(int marker, int markerType, COLORREF fore, COLORREF back) const;
 
 	CharacterRange getSelectionRange() const;
-	void setSelection( int anchor, int currentPos ) const { sendEditor( SCI_SETSEL, anchor, currentPos ); }
+	void setSelection(int anchor, int currentPos) const { sendEditor(SCI_SETSEL, anchor, currentPos); }
 
-	int getCurrentLineNumber  () const { return getLineFromPosition(getCurrentPos());       };
-	int getCurrentColumnNumber() const { return sendEditor(SCI_GETCOLUMN, getCurrentPos()); };
+	int getCurrentLineNumber  () const { return getLineFromPosition(getCurrentPos());       }
+	int getCurrentColumnNumber() const { return sendEditor(SCI_GETCOLUMN, getCurrentPos()); }
 
 	virtual void onUpdateActions(rbool activated);
 
@@ -156,8 +156,8 @@ private:
 	int        m_firstFoundPos;
 	rbool      m_haveFound;
 
-	void gotoLineEnsureVisible( int line ) const;
-	void ensureRangeVisible( int posStart, int posEnd, rbool enforcePolicy = true ) const;
+	void gotoLineEnsureVisible(int line) const;
+	void ensureRangeVisible(int posStart, int posEnd, rbool enforcePolicy = true) const;
 
 	void findNext  (REF(tstring) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
 	void replace   (REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);

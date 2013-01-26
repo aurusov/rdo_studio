@@ -150,12 +150,10 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent)
 
 	m_sciMarkerBookmark = getNewMarker();
 
-	sendEditor( SCI_SETLEXER, SCLEX_NULL );
-	//	int lexLanguage = sendEditor( SCI_GETLEXER );
-
-	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
-
-	sendEditor( SCI_USEPOPUP, 0 );
+	sendEditor(SCI_SETLEXER, SCLEX_NULL);
+	//	int lexLanguage = sendEditor(SCI_GETLEXER);
+	sendEditor(SCI_SETMARGINWIDTHN, 1, 0);
+	sendEditor(SCI_USEPOPUP, 0);
 }
 
 RDOBaseEdit::~RDOBaseEdit()
@@ -168,21 +166,23 @@ void RDOBaseEdit::catchNeedShown(int position, int length)
 
 void RDOBaseEdit::catchCharAdded(int ch)
 {
-	if ( m_pStyle && m_pStyle->tab->autoIndent && ( ch == '\r' || ch == '\n' ) )
+	if (m_pStyle && m_pStyle->tab->autoIndent && (ch == '\r' || ch == '\n'))
+	{
 		autoIndent();
+	}
 }
 
 int RDOBaseEdit::getNewMarker()
 {
-	m_markerCount++;
+	++m_markerCount;
 	return m_markerCount;
 }
 
-void RDOBaseEdit::defineMarker( int marker, int markerType, COLORREF fore, COLORREF back ) const
+void RDOBaseEdit::defineMarker(int marker, int markerType, COLORREF fore, COLORREF back) const
 {
-	sendEditor( SCI_MARKERDEFINE, marker, markerType );
-	sendEditor( SCI_MARKERSETFORE, marker, fore );
-	sendEditor( SCI_MARKERSETBACK, marker, back );
+	sendEditor(SCI_MARKERDEFINE,  marker, markerType);
+	sendEditor(SCI_MARKERSETFORE, marker, fore);
+	sendEditor(SCI_MARKERSETBACK, marker, back);
 }
 
 const RDOBaseEditStyle* RDOBaseEdit::getEditorStyle() const
@@ -199,63 +199,64 @@ void RDOBaseEdit::setEditorStyle(RDOBaseEditStyle* pStyle)
 	// ----------
 	// Colors
 	RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(m_pStyle->theme);
-	sendEditor( SCI_STYLESETBACK, STYLE_DEFAULT, theme->defaultColor );
-	sendEditor( SCI_STYLESETBACK, STYLE_DEFAULT, theme->backgroundColor );
-	sendEditor( SCI_STYLESETFORE, SCE_TEXT_DEFAULT, theme->defaultColor );
-	sendEditor( SCI_STYLESETBACK, SCE_TEXT_DEFAULT, theme->backgroundColor );
+	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, theme->defaultColor);
+	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, theme->backgroundColor);
+	sendEditor(SCI_STYLESETFORE, SCE_TEXT_DEFAULT, theme->defaultColor);
+	sendEditor(SCI_STYLESETBACK, SCE_TEXT_DEFAULT, theme->backgroundColor);
 
 	// ----------
 	// Styles
-	sendEditor( SCI_STYLESETBOLD     , STYLE_DEFAULT, theme->defaultStyle & RDOStyleFont::BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , STYLE_DEFAULT, theme->defaultStyle & RDOStyleFont::ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, STYLE_DEFAULT, theme->defaultStyle & RDOStyleFont::UNDERLINE );
-	sendEditor( SCI_STYLESETBOLD     , SCE_TEXT_DEFAULT, theme->defaultStyle & RDOStyleFont::BOLD      );
-	sendEditor( SCI_STYLESETITALIC   , SCE_TEXT_DEFAULT, theme->defaultStyle & RDOStyleFont::ITALIC    );
-	sendEditor( SCI_STYLESETUNDERLINE, SCE_TEXT_DEFAULT, theme->defaultStyle & RDOStyleFont::UNDERLINE );
+	sendEditor(SCI_STYLESETBOLD     , STYLE_DEFAULT, theme->defaultStyle & RDOStyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , STYLE_DEFAULT, theme->defaultStyle & RDOStyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, STYLE_DEFAULT, theme->defaultStyle & RDOStyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_TEXT_DEFAULT, theme->defaultStyle & RDOStyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_TEXT_DEFAULT, theme->defaultStyle & RDOStyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_TEXT_DEFAULT, theme->defaultStyle & RDOStyleFont::UNDERLINE);
 
 	// ----------
 	// Font Name
-	sendEditorString( SCI_STYLESETFONT, STYLE_DEFAULT, m_pStyle->font->name.c_str() );
+	sendEditorString(SCI_STYLESETFONT, STYLE_DEFAULT, m_pStyle->font->name.c_str());
 
 	// ----------
 	// Font Size
-	sendEditor( SCI_STYLESETSIZE, STYLE_DEFAULT, m_pStyle->font->size );
+	sendEditor(SCI_STYLESETSIZE, STYLE_DEFAULT, m_pStyle->font->size);
 
 	// ----------
 	// Codepage and Characterset
-	sendEditor( SCI_SETCODEPAGE, m_pStyle->font->codepage );
-	sendEditor( SCI_STYLESETCHARACTERSET, STYLE_DEFAULT, m_pStyle->font->characterSet );
+	sendEditor(SCI_SETCODEPAGE, m_pStyle->font->codepage);
+	sendEditor(SCI_STYLESETCHARACTERSET, STYLE_DEFAULT, m_pStyle->font->characterSet);
 
 	// ----------
 	// Tabs
-	sendEditor( SCI_SETTABWIDTH, m_pStyle->tab->tabSize );
-	sendEditor( SCI_SETINDENT, m_pStyle->tab->indentSize );
-	sendEditor( SCI_SETUSETABS, m_pStyle->tab->useTabs );
-	sendEditor( SCI_SETTABINDENTS, m_pStyle->tab->tabIndents );
-	sendEditor( SCI_SETBACKSPACEUNINDENTS, !m_pStyle->tab->backspaceUntabs );
+	sendEditor(SCI_SETTABWIDTH, m_pStyle->tab->tabSize);
+	sendEditor(SCI_SETINDENT, m_pStyle->tab->indentSize);
+	sendEditor(SCI_SETUSETABS, m_pStyle->tab->useTabs);
+	sendEditor(SCI_SETTABINDENTS, m_pStyle->tab->tabIndents);
+	sendEditor(SCI_SETBACKSPACEUNINDENTS, !m_pStyle->tab->backspaceUntabs);
 
 	// ----------
 	// Caret
-	sendEditor( SCI_SETCARETFORE, theme->caretColor );
-	sendEditor( SCI_SETSELBACK, true, theme->selectionBgColor );
-	sendEditor( SCI_SETCARETWIDTH, 1 );
+	sendEditor(SCI_SETCARETFORE, theme->caretColor);
+	sendEditor(SCI_SETSELBACK, true, theme->selectionBgColor);
+	sendEditor(SCI_SETCARETWIDTH, 1);
 
 	// ----------
 	// Bookmark
 	COLORREF bookmarkFgColor = theme->bookmarkFgColor;
 	COLORREF bookmarkBgColor = theme->bookmarkBgColor;
-	switch ( theme->bookmarkStyle ) {
-		case RDOBOOKMARKS_NONE     : defineMarker( m_sciMarkerBookmark, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor ); break;
-		case RDOBOOKMARKS_CIRCLE   : defineMarker( m_sciMarkerBookmark, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor ); break;
-		case RDOBOOKMARKS_RECT     : defineMarker( m_sciMarkerBookmark, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor ); break;
-		case RDOBOOKMARKS_ROUNDRECT: defineMarker( m_sciMarkerBookmark, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor ); break;
-		case RDOBOOKMARKS_ARROW    : defineMarker( m_sciMarkerBookmark, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor ); break;
+	switch (theme->bookmarkStyle)
+	{
+		case RDOBOOKMARKS_NONE     : defineMarker(m_sciMarkerBookmark, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor); break;
+		case RDOBOOKMARKS_CIRCLE   : defineMarker(m_sciMarkerBookmark, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor); break;
+		case RDOBOOKMARKS_RECT     : defineMarker(m_sciMarkerBookmark, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor); break;
+		case RDOBOOKMARKS_ROUNDRECT: defineMarker(m_sciMarkerBookmark, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor); break;
+		case RDOBOOKMARKS_ARROW    : defineMarker(m_sciMarkerBookmark, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor); break;
 	}
 
 	// ----------
 	// Window
-	sendEditor( SCI_SETWRAPMODE, m_pStyle->window->wordWrap ? SC_WRAP_WORD : SC_WRAP_NONE );
-	sendEditor( SCI_SETHSCROLLBAR, m_pStyle->window->showHorzScrollBar );
+	sendEditor(SCI_SETWRAPMODE, m_pStyle->window->wordWrap ? SC_WRAP_WORD : SC_WRAP_NONE);
+	sendEditor(SCI_SETHSCROLLBAR, m_pStyle->window->showHorzScrollBar);
 }
 
 void RDOBaseEdit::setGroup(PTR(Group) pGroup)
@@ -310,16 +311,16 @@ void RDOBaseEdit::onEditLowerCase()
 
 tstring RDOBaseEdit::getCurrentWord() const
 {
-	int pos_begin = sendEditor( SCI_WORDSTARTPOSITION, getCurrentPos(), true );
-	int pos_end   = sendEditor( SCI_WORDENDPOSITION, getCurrentPos(), true );
+	int pos_begin = sendEditor(SCI_WORDSTARTPOSITION, getCurrentPos(), true);
+	int pos_end   = sendEditor(SCI_WORDENDPOSITION, getCurrentPos(), true);
 	int len = pos_end - pos_begin + 2;
 	char* word = new char[ len ];
 	TextRange tr;
 	tr.lpstrText  = word;
 	tr.chrg.cpMin = pos_begin;
 	tr.chrg.cpMax = pos_end;
-	sendEditor( SCI_GETTEXTRANGE, 0, (long)&tr );
-	tstring str( tr.lpstrText );
+	sendEditor(SCI_GETTEXTRANGE, 0, (long)&tr);
+	tstring str(tr.lpstrText);
 	delete[] word;
 	return str;
 }
@@ -328,52 +329,49 @@ tstring RDOBaseEdit::getSelection() const
 {
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
-	sendEditor( SCI_GETSELTEXT, 0, (long)selection );
-	tstring str( selection );
+	sendEditor(SCI_GETSELTEXT, 0, (long)selection);
+	tstring str(selection);
 	delete[] selection;
 	return str;
 }
 
 tstring RDOBaseEdit::getCurrentOrSelectedWord() const
 {
-	if ( isSelected() ) {
-		return getSelection();
-	} else {
-		return getCurrentWord();
-	}
+	return isSelected()
+		? getSelection  ()
+		: getCurrentWord();
 }
 
 tstring RDOBaseEdit::getWordForFind() const
 {
-	if ( isSelected() ) {
-		return getSelection();
-	} else if ( m_pGroup && !m_pGroup->findStr.empty() ) {
-		return m_pGroup->findStr;
-	} else {
-		return getCurrentWord();
-	}
+	return isSelected()
+		? getSelection()
+		: m_pGroup && !m_pGroup->findStr.empty()
+			? m_pGroup->findStr
+			: getCurrentWord();
 }
 
 CharacterRange RDOBaseEdit::getSelectionRange() const
 {
 	CharacterRange crange;
-	crange.cpMin = sendEditor( SCI_GETSELECTIONSTART );
-	crange.cpMax = sendEditor( SCI_GETSELECTIONEND );
+	crange.cpMin = sendEditor(SCI_GETSELECTIONSTART);
+	crange.cpMax = sendEditor(SCI_GETSELECTIONEND);
 	return crange;
 }
 
-void RDOBaseEdit::gotoLineEnsureVisible( int line ) const
+void RDOBaseEdit::gotoLineEnsureVisible(int line) const
 {
-	sendEditor( SCI_ENSUREVISIBLEENFORCEPOLICY, line );
-	sendEditor( SCI_GOTOLINE, line );
+	sendEditor(SCI_ENSUREVISIBLEENFORCEPOLICY, line);
+	sendEditor(SCI_GOTOLINE, line);
 }
 
-void RDOBaseEdit::ensureRangeVisible( int posStart, int posEnd, rbool enforcePolicy ) const
+void RDOBaseEdit::ensureRangeVisible(int posStart, int posEnd, rbool enforcePolicy) const
 {
-	int lineStart = getLineFromPosition( posStart < posEnd ? posStart : posEnd );
-	int lineEnd   = getLineFromPosition( posStart > posEnd ? posStart : posEnd );
-	for ( int line = lineStart; line <= lineEnd; line++ ) {
-		sendEditor( enforcePolicy ? SCI_ENSUREVISIBLEENFORCEPOLICY : SCI_ENSUREVISIBLE, line );
+	int lineStart = getLineFromPosition(posStart < posEnd ? posStart : posEnd);
+	int lineEnd   = getLineFromPosition(posStart > posEnd ? posStart : posEnd);
+	for (int line = lineStart; line <= lineEnd; ++line)
+	{
+		sendEditor(enforcePolicy ? SCI_ENSUREVISIBLEENFORCEPOLICY : SCI_ENSUREVISIBLE, line);
 	}
 }
 
@@ -409,8 +407,10 @@ void RDOBaseEdit::onSearchFind()
 void RDOBaseEdit::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
-	if(m_pGroup)
+	if (m_pGroup)
+	{
 		m_pGroup->findStr = m_findSettings.what;
+	}
 	onSearchFindNext();
 	updateActionFind(isActivated());
 }
@@ -422,17 +422,32 @@ void RDOBaseEdit::onFindDlgClose()
 
 void RDOBaseEdit::onSearchFindNext() 
 {
-	findNext(m_pGroup->findStr.empty() ? m_findSettings.what : m_pGroup->findStr, m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord);
+	findNext(
+		m_pGroup->findStr.empty()
+			? m_findSettings.what
+			: m_pGroup->findStr,
+		m_findSettings.searchDown,
+		m_findSettings.matchCase,
+		m_findSettings.matchWholeWord
+	);
 }
 
 void RDOBaseEdit::onSearchFindPrevious() 
 {
-	findNext(m_pGroup->findStr.empty() ? m_findSettings.what : m_pGroup->findStr, !m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord);
+	findNext(
+		m_pGroup->findStr.empty()
+			? m_findSettings.what
+			: m_pGroup->findStr,
+		!m_findSettings.searchDown,
+		m_findSettings.matchCase,
+		m_findSettings.matchWholeWord
+	);
 }
 
 void RDOBaseEdit::onSearchFindNextCurrent() 
 {
-	if (m_pGroup){
+	if (m_pGroup)
+	{
 		m_pGroup->findStr     = getCurrentWord();
 		m_pGroup->bSearchDown = true;
 		findNext(m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
@@ -441,7 +456,8 @@ void RDOBaseEdit::onSearchFindNextCurrent()
 
 void RDOBaseEdit::onSearchFindPreviousCurrent() 
 {
-	if (m_pGroup){
+	if (m_pGroup)
+	{
 		m_pGroup->findStr     = getCurrentWord();
 		m_pGroup->bSearchDown = true;
 		findNext(m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
@@ -451,7 +467,8 @@ void RDOBaseEdit::onSearchFindPreviousCurrent()
 void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
 	int findLen = findWhat.length();
-	if ( !findLen ) return;
+	if (!findLen)
+		return;
 
 	if (!getSelection().empty() && !m_haveFound)
 	{
@@ -468,51 +485,62 @@ void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchC
 	CharacterRange cr = getSelectionRange();
 	int startPosition = cr.cpMax;
 	int endPosition   = getLength();
-	if ( !searchDown ) {
+	if (!searchDown)
+	{
 		startPosition = cr.cpMin;
 		endPosition   = 0;
 	}
 
 	int flags = (matchCase ? SCFIND_MATCHCASE : 0) | (matchWholeWord ? SCFIND_WHOLEWORD : 0);
 
-	sendEditor( SCI_SETTARGETSTART, startPosition );
-	sendEditor( SCI_SETTARGETEND, endPosition );
-	sendEditor( SCI_SETSEARCHFLAGS, flags );
-	int posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
-	if ( posFind == -1 ) {
-		if ( !searchDown ) {
+	sendEditor(SCI_SETTARGETSTART, startPosition);
+	sendEditor(SCI_SETTARGETEND, endPosition);
+	sendEditor(SCI_SETSEARCHFLAGS, flags);
+	int posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat.c_str());
+	if (posFind == -1)
+	{
+		if (!searchDown)
+		{
 			startPosition = getLength();
 			endPosition   = 0;
-		} else {
+		}
+		else
+		{
 			startPosition = 0;
 			endPosition   = getLength();
 		}
-		sendEditor( SCI_SETTARGETSTART, startPosition );
-		sendEditor( SCI_SETTARGETEND, endPosition );
-		posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
+		sendEditor(SCI_SETTARGETSTART, startPosition);
+		sendEditor(SCI_SETTARGETEND, endPosition);
+		posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat.c_str());
 	}
-	if ( posFind == -1 ) {
+	if (posFind == -1)
+	{
 		m_firstFoundPos = -1;
-		m_haveFound    = false;
+		m_haveFound     = false;
 		QMessageBox::warning(this, "Результаты поиска", rdo::format(ID_MSG_CANTFIND, findWhat.c_str()).c_str());
 		//! @todo возможно, надо убрать
 		setFocus();
-	} else {
-		if ( m_firstFoundPos == -1 ) {
+	}
+	else
+	{
+		if (m_firstFoundPos == -1)
+		{
 			m_firstFoundPos = posFind;
-		} else if ( posFind == m_firstFoundPos ) {
+		}
+		else if (posFind == m_firstFoundPos)
+		{
 			m_firstFoundPos = -1;
-			m_haveFound    = false;
+			m_haveFound     = false;
 			QMessageBox::warning(this, "Результаты поиска", rdo::format(ID_MSG_CANTFIND, findWhat.c_str()).c_str());
 			//! @todo возможно, надо убрать
 			setFocus();
 			return;
 		}
 		m_haveFound = true;
-		int start  = sendEditor( SCI_GETTARGETSTART );
-		int end    = sendEditor( SCI_GETTARGETEND );
-		ensureRangeVisible( start, end );
-		setSelection( start, end );
+		int start   = sendEditor(SCI_GETTARGETSTART);
+		int end     = sendEditor(SCI_GETTARGETEND);
+		ensureRangeVisible(start, end);
+		setSelection(start, end);
 	}
 }
 
@@ -550,8 +578,10 @@ void RDOBaseEdit::onSearchReplace()
 void RDOBaseEdit::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
-	if(m_pGroup)
+	if (m_pGroup)
+	{
 		m_pGroup->findStr = m_findReplaceSettings.what;
+	}
 	findNext(m_findReplaceSettings.what, m_findReplaceSettings.searchDown, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
 	updateActionFind(isActivated());
 }
@@ -559,7 +589,7 @@ void RDOBaseEdit::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) setting
 void RDOBaseEdit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
-	if(m_pGroup)
+	if (m_pGroup)
 	{
 		m_pGroup->findStr = m_findReplaceSettings.what;
 		m_pGroup->replaceStr = m_findReplaceSettings.byWhat;
@@ -575,9 +605,9 @@ void RDOBaseEdit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) sett
 void RDOBaseEdit::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
-	if(m_pGroup)
+	if (m_pGroup)
 	{
-		m_pGroup->findStr = m_findReplaceSettings.what;
+		m_pGroup->findStr    = m_findReplaceSettings.what;
 		m_pGroup->replaceStr = m_findReplaceSettings.byWhat;
 	}
 	replaceAll(m_findReplaceSettings.what, m_findReplaceSettings.byWhat, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
@@ -591,13 +621,14 @@ void RDOBaseEdit::onFindReplaceDlgClose()
 
 void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
-	if ( m_haveFound ) {
+	if (m_haveFound)
+	{
 		int replaceLen = replaceWhat.length();
 		CharacterRange cr = getSelectionRange();
-		if(cr.cpMin == cr.cpMax)
+		if (cr.cpMin == cr.cpMax)
 		{
 			cr.cpMin = sendEditor(SCI_WORDSTARTPOSITION, getCurrentPos(), true);
-			cr.cpMax   = cr.cpMin + getCurrentWord().length();
+			cr.cpMax = cr.cpMin + getCurrentWord().length();
 		}
 		sendEditor(SCI_SETTARGETSTART, cr.cpMin);
 		sendEditor(SCI_SETTARGETEND,   cr.cpMax);
@@ -612,7 +643,8 @@ void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool
 void RDOBaseEdit::replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase, rbool matchWholeWord)
 {
 	int findLen = findWhat.length();
-	if ( !findLen ) return;
+	if (!findLen)
+		return;
 
 	int startPosition = 0;
 	int endPosition   = getLength();
@@ -620,28 +652,33 @@ void RDOBaseEdit::replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rb
 	int replaceLen = replaceWhat.length();
 	int flags = (matchCase ? SCFIND_MATCHCASE : 0) | (matchWholeWord ? SCFIND_WHOLEWORD : 0);
 
-	sendEditor( SCI_SETTARGETSTART, startPosition );
-	sendEditor( SCI_SETTARGETEND, endPosition );
-	sendEditor( SCI_SETSEARCHFLAGS, flags );
-	int posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
+	sendEditor(SCI_SETTARGETSTART, startPosition);
+	sendEditor(SCI_SETTARGETEND, endPosition);
+	sendEditor(SCI_SETSEARCHFLAGS, flags);
+	int posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat.c_str());
 
-	if ( (posFind != -1) && (posFind <= endPosition) ) {
+	if ((posFind != -1) && (posFind <= endPosition))
+	{
 		int lastMatch = posFind;
-		sendEditor( SCI_BEGINUNDOACTION );
-		while ( posFind != -1 ) {
-			int lenTarget = sendEditor( SCI_GETTARGETEND ) - sendEditor( SCI_GETTARGETSTART );
+		sendEditor(SCI_BEGINUNDOACTION);
+		while (posFind != -1)
+		{
+			int lenTarget = sendEditor(SCI_GETTARGETEND) - sendEditor(SCI_GETTARGETSTART);
 			int lenReplaced = replaceLen;
-			sendEditorString( SCI_REPLACETARGET, replaceLen, replaceWhat.c_str() );
+			sendEditorString(SCI_REPLACETARGET, replaceLen, replaceWhat.c_str());
 			endPosition += lenReplaced - lenTarget;
 			lastMatch    = posFind + lenReplaced;
-			if ( lenTarget <= 0 ) lastMatch++;
-			sendEditor( SCI_SETTARGETSTART, lastMatch );
-			sendEditor( SCI_SETTARGETEND, endPosition );
-			posFind = sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
+			if (lenTarget <= 0)
+				++lastMatch;
+			sendEditor(SCI_SETTARGETSTART, lastMatch);
+			sendEditor(SCI_SETTARGETEND, endPosition);
+			posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat.c_str());
 		}
-		setSelection( lastMatch, lastMatch );
-		sendEditor( SCI_ENDUNDOACTION );
-	} else {
+		setSelection(lastMatch, lastMatch);
+		sendEditor(SCI_ENDUNDOACTION);
+	}
+	else
+	{
 		QMessageBox::warning(this, "Результаты поиска", rdo::format(ID_MSG_CANTFIND, findWhat.c_str()).c_str());
 		//! @todo возможно, надо убрать
 		setFocus();
@@ -651,9 +688,9 @@ void RDOBaseEdit::replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rb
 void RDOBaseEdit::clearAll()
 {
 	rbool readOnly = isReadOnly();
-	setReadOnly( false );
-	sendEditor( SCI_CLEARALL );
-	setReadOnly( readOnly );
+	setReadOnly(false);
+	sendEditor(SCI_CLEARALL);
+	setReadOnly(readOnly);
 }
 
 rbool RDOBaseEdit::bookmarkToggle(int line) const
@@ -667,7 +704,9 @@ rbool RDOBaseEdit::bookmarkToggle(int line) const
 	{
 		sendEditor(SCI_MARKERDELETE, line, m_sciMarkerBookmark);
 		return false;
-	} else {
+	}
+	else
+	{
 		sendEditor(SCI_MARKERADD, line, m_sciMarkerBookmark);
 		return true;
 	}
@@ -758,17 +797,17 @@ void RDOBaseEdit::onCopyAsRTF(QMimeData* pMimeData)
 // --------------------------------------------------------------------------------
 // -------------------- RDOBaseEdit: some functions for RTF export ---------- BEGIN
 // --------------------------------------------------------------------------------
-int GetHexChar( char ch ) // 'H'
+int GetHexChar(char ch) // 'H'
 {
 	return ch > '9' ? (ch | 0x20) - 'a' + 10 : ch - '0';
 }
 
-int GetHexByte( const char *hexbyte ) // "HH"
+int GetHexByte(const char *hexbyte) // "HH"
 {
 	return (GetHexChar(*hexbyte) << 4) | GetHexChar(hexbyte[1]);
 }
 
-void GetRTFStyleChange( char *delta, char *last, const char *current ) // \f0\fs20\cf0\highlight0\b0\i0
+void GetRTFStyleChange(char *delta, char *last, const char *current) // \f0\fs20\cf0\highlight0\b0\i0
 {
 	int lastLen = strlen(last), offset = 2, lastOffset, currentOffset, len;
 	*delta = '\0';
@@ -917,8 +956,8 @@ tstring RDOBaseEdit::saveAsRTF(int start, int end) const
 	}
 
 	int lengthDoc = getLength();
-	if ( end < 0 ) end = lengthDoc;
-	sendEditor( SCI_COLOURISE, 0, -1 );
+	if (end < 0) end = lengthDoc;
+	sendEditor(SCI_COLOURISE, 0, -1);
 	char styles[STYLE_DEFAULT + 1][MAX_STYLEDEF];
 	char fonts[STYLE_DEFAULT + 1][MAX_FONTDEF];
 	char colors[STYLE_DEFAULT + 1][MAX_COLORDEF];
@@ -932,72 +971,97 @@ tstring RDOBaseEdit::saveAsRTF(int start, int end) const
 	saveStr += RTF_FONTDEFOPEN;
 
 #pragma warning(disable: 4996)
-	strncpy( *fonts, m_pStyle->font->name.c_str(), MAX_FONTDEF );
+	strncpy(*fonts, m_pStyle->font->name.c_str(), MAX_FONTDEF);
 #pragma warning(default: 4996)
-	saveStr += rdo::format( RTF_FONTDEF, 0, m_pStyle->font->characterSet, m_pStyle->font->name.c_str() );
+	saveStr += rdo::format(RTF_FONTDEF, 0, m_pStyle->font->characterSet, m_pStyle->font->name.c_str());
 #pragma warning(disable: 4996)
-	strncpy( *colors, "#000000", MAX_COLORDEF );
+	strncpy(*colors, "#000000", MAX_COLORDEF);
 #pragma warning(default: 4996)
 
 	RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(m_pStyle->theme);
 
-	for ( int istyle = 0; istyle <= STYLE_DEFAULT; istyle++ ) {
-		if ( theme->styleUsing( istyle ) ) {
+	for (int istyle = 0; istyle <= STYLE_DEFAULT; istyle++) {
+		if (theme->styleUsing(istyle)) {
 #pragma warning(disable: 4996)
-			sprintf( lastStyle, RTF_SETFONTFACE "%d", fontCount-1 );
-			sprintf( lastStyle + strlen(lastStyle), RTF_SETFONTSIZE "%d", m_pStyle->font->size * 2 );
+			sprintf(lastStyle, RTF_SETFONTFACE "%d", fontCount-1);
+			sprintf(lastStyle + strlen(lastStyle), RTF_SETFONTSIZE "%d", m_pStyle->font->size * 2);
 #pragma warning(default: 4996)
-			if ( theme->styleDefault( istyle ) ) {
+			if (theme->styleDefault(istyle)) {
 #pragma warning(disable: 4996)
-				strncpy( colors[colorCount++], theme->styleBGColorToHEX( istyle ).c_str(), MAX_COLORDEF );
+				strncpy(colors[colorCount++], theme->styleBGColorToHEX(istyle).c_str(), MAX_COLORDEF);
 #pragma warning(default: 4996)
 			}
 #pragma warning(disable: 4996)
-			strncpy( colors[colorCount++], theme->styleFGColorToHEX( istyle ).c_str(), MAX_COLORDEF );
+			strncpy(colors[colorCount++], theme->styleFGColorToHEX(istyle).c_str(), MAX_COLORDEF);
 #pragma warning(default: 4996)
-			rbool bold   = theme->styleBold( istyle );
-			rbool italic = theme->styleItalic( istyle );
+			rbool bold   = theme->styleBold(istyle);
+			rbool italic = theme->styleItalic(istyle);
 #pragma warning(disable: 4996)
-			sprintf( lastStyle + strlen(lastStyle), RTF_SETCOLOR "%d", colorCount-1 );
-			sprintf( lastStyle + strlen(lastStyle), RTF_SETBACKGROUND "%d", 1 );
-			strcat( lastStyle, bold ? RTF_BOLD_ON : RTF_BOLD_OFF );
-			strcat( lastStyle, italic ? RTF_ITALIC_ON : RTF_ITALIC_OFF );
-			strncpy( styles[istyle], lastStyle, MAX_STYLEDEF );
+			sprintf(lastStyle + strlen(lastStyle), RTF_SETCOLOR "%d", colorCount-1);
+			sprintf(lastStyle + strlen(lastStyle), RTF_SETBACKGROUND "%d", 1);
+			strcat(lastStyle, bold ? RTF_BOLD_ON : RTF_BOLD_OFF);
+			strcat(lastStyle, italic ? RTF_ITALIC_ON : RTF_ITALIC_OFF);
+			strncpy(styles[istyle], lastStyle, MAX_STYLEDEF);
 #pragma warning(default: 4996)
 		}
 	}
 	saveStr += RTF_FONTDEFCLOSE;
 	saveStr += RTF_COLORDEFOPEN;
 
-	for ( i = 0; i < colorCount; i++ ) {
-		saveStr += rdo::format( RTF_COLORDEF, GetHexByte(colors[i] + 1), GetHexByte(colors[i] + 3), GetHexByte(colors[i] + 5) );
+	for (i = 0; i < colorCount; i++) {
+		saveStr += rdo::format(RTF_COLORDEF, GetHexByte(colors[i] + 1), GetHexByte(colors[i] + 3), GetHexByte(colors[i] + 5));
 	}
 
-	saveStr += rdo::format( RTF_COLORDEFCLOSE RTF_HEADERCLOSE RTF_BODYOPEN RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0 ", m_pStyle->font->size * 2 );
+	saveStr += rdo::format(RTF_COLORDEFCLOSE RTF_HEADERCLOSE RTF_BODYOPEN RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0 ", m_pStyle->font->size * 2);
 
 #pragma warning(disable: 4996)
-	sprintf( lastStyle, RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0" RTF_SETBACKGROUND "0" RTF_BOLD_OFF RTF_ITALIC_OFF, m_pStyle->font->size * 2 );
+	sprintf(lastStyle, RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0" RTF_SETBACKGROUND "0" RTF_BOLD_OFF RTF_ITALIC_OFF, m_pStyle->font->size * 2);
 #pragma warning(default: 4996)
 
 	tstring::size_type prevLength = saveStr.length();
 	rbool prevCR = false;
 	int styleCurrent = -1;
-	for ( i = start; i < end; i++ ) {
-		int m_pStyle = sendEditor( SCI_GETSTYLEAT, i );
+	for (i = start; i < end; i++)
+	{
+		int m_pStyle = sendEditor(SCI_GETSTYLEAT, i);
 		if (!theme->styleUsing(m_pStyle))
+		{
 			continue;
-		char ch   = (char)sendEditor( SCI_GETCHARAT, i );
-		if ( m_pStyle != styleCurrent ) {
-			GetRTFStyleChange( deltaStyle, lastStyle, styles[m_pStyle] );
-			if ( *deltaStyle ) saveStr += deltaStyle;
+		}
+
+		char ch = (char)sendEditor(SCI_GETCHARAT, i);
+		if (m_pStyle != styleCurrent)
+		{
+			GetRTFStyleChange(deltaStyle, lastStyle, styles[m_pStyle]);
+			if (*deltaStyle)
+			{
+				saveStr += deltaStyle;
+			}
 			styleCurrent = m_pStyle;
 		}
-		if (ch == '\\') saveStr += "\\\\";
-		else if (ch == '\t') saveStr += RTF_TAB;
-		else if (ch == '\n') {
-			if ( !prevCR ) saveStr += RTF_EOLN;
-		} else if (ch == '\r') saveStr += RTF_EOLN;
-		else saveStr += ch;
+		if (ch == '\\')
+		{
+			saveStr += "\\\\";
+		}
+		else if (ch == '\t')
+		{
+			saveStr += RTF_TAB;
+		}
+		else if (ch == '\n')
+		{
+			if (!prevCR)
+			{
+				saveStr += RTF_EOLN;
+			}
+		}
+		else if (ch == '\r')
+		{
+			saveStr += RTF_EOLN;
+		}
+		else
+		{
+			saveStr += ch;
+		}
 
 		prevCR = ch == '\r';
 	}
@@ -1015,154 +1079,176 @@ tstring RDOBaseEdit::saveAsRTF(int start, int end) const
 }
 #pragma warning(default: 4996)
 
-void RDOBaseEdit::setCurrentPos( const int value ) const
+void RDOBaseEdit::setCurrentPos(const int value) const
 {
-	sendEditor( SCI_SETCURRENTPOS, value );
-	sendEditor( SCI_SETSELECTIONSTART, value );
-	sendEditor( SCI_SETSELECTIONEND, value );
+	sendEditor(SCI_SETCURRENTPOS, value);
+	sendEditor(SCI_SETSELECTIONSTART, value);
+	sendEditor(SCI_SETSELECTIONEND, value);
 }
 
-void RDOBaseEdit::setCurrentPos( const int line, int pos_in_line, const rbool convert_rdo_tab ) const
+void RDOBaseEdit::setCurrentPos(const int line, int pos_in_line, const rbool convert_rdo_tab) const
 {
-	int pos = getPositionFromLine( line );
-	int line_length = sendEditor( SCI_LINELENGTH, line );
+	int pos = getPositionFromLine(line);
+	int line_length = sendEditor(SCI_LINELENGTH, line);
 	char currentLine[8000];
 	rbool canUseLine = false;
-	if ( line_length < 8000 ) {
-		sendEditor( SCI_GETLINE, line, (long)currentLine );
-		while ( currentLine[line_length-1] == 0x0A || currentLine[line_length-1] == 0x0D ) {
-			line_length--;
+	if (line_length < 8000)
+	{
+		sendEditor(SCI_GETLINE, line, (long)currentLine);
+		while (currentLine[line_length-1] == 0x0A || currentLine[line_length-1] == 0x0D)
+		{
+			--line_length;
 		}
 		canUseLine = true;
-	} else {
+	}
+	else
+	{
 		line_length -= 2;
 	}
 
 	int new_line_length = line_length;
 
-	if ( canUseLine && convert_rdo_tab ) {
+	if (canUseLine && convert_rdo_tab)
+	{
 		int tab_size = m_pStyle ? m_pStyle->tab->tabSize : 8;
 		int spaces = 0;
-		for ( int i = 0; i < line_length; i++ ) {
-			if ( currentLine[i] == ' ' ) {
+		for (int i = 0; i < line_length; i++)
+		{
+			if (currentLine[i] == ' ')
+			{
 				spaces++;
-			} else if ( currentLine[i] == '\t' ) {
+			}
+			else if (currentLine[i] == '\t')
+			{
 				int delta = spaces % 8;
 				pos_in_line     -= 7 - delta;
 				new_line_length += tab_size + delta;
 				spaces = 0;
-			} else {
+			}
+			else
+			{
 				spaces = 0;
 			}
 		}
 	}
 
-	if ( new_line_length < pos_in_line ) {
-		pos += new_line_length;
-	} else {
-		pos += pos_in_line;
-	}
+	pos += (std::min)(new_line_length, pos_in_line);
 
 	int line_to_scroll = line > 0 ? line - 1 : 0;
-	scrollToLine( line_to_scroll );
-	sendEditor( SCI_GOTOPOS, pos );
+	scrollToLine(line_to_scroll);
+	sendEditor(SCI_GOTOPOS, pos);
 
-	setCurrentPos( pos );
+	setCurrentPos(pos);
 }
 
-rbool RDOBaseEdit::isLineVisible( const int line ) const
+rbool RDOBaseEdit::isLineVisible(const int line) const
 {
-	int first_line = sendEditor( SCI_GETFIRSTVISIBLELINE );
-	int last_line = first_line + sendEditor( SCI_LINESONSCREEN );
+	int first_line = sendEditor(SCI_GETFIRSTVISIBLELINE);
+	int last_line = first_line + sendEditor(SCI_LINESONSCREEN);
 	return line >= first_line && line <= last_line;
 }
 
-void RDOBaseEdit::appendText( CREF(tstring) str ) const
+void RDOBaseEdit::appendText(CREF(tstring) str) const
 {
-	sendEditorString( SCI_ADDTEXT, str.length(), str.c_str() );
+	sendEditorString(SCI_ADDTEXT, str.length(), str.c_str());
 }
 
-void RDOBaseEdit::scrollToLine( const int line ) const
+void RDOBaseEdit::scrollToLine(const int line) const
 {
-	sendEditor( SCI_LINESCROLL, 0, line - sendEditor( SCI_GETFIRSTVISIBLELINE ) - sendEditor( SCI_LINESONSCREEN )/3 );
-	setCurrentPos( getPositionFromLine( line ) );
+	sendEditor(SCI_LINESCROLL, 0, line - sendEditor(SCI_GETFIRSTVISIBLELINE) - sendEditor(SCI_LINESONSCREEN)/3);
+	setCurrentPos(getPositionFromLine(line));
 }
 
-void RDOBaseEdit::scrollToLine2( const int line ) const
+void RDOBaseEdit::scrollToLine2(const int line) const
 {
-	sendEditor( SCI_LINESCROLL, 0, line );
+	sendEditor(SCI_LINESCROLL, 0, line);
 }
 
 void RDOBaseEdit::scrollToCarret() const
 {
-	sendEditor( SCI_SCROLLCARET );
+	sendEditor(SCI_SCROLLCARET);
 }
 
 void RDOBaseEdit::horzScrollToCurrentPos() const
 {
-	setCurrentPos( getCurrentPos() );
-	sendEditor( SCI_REPLACESEL, 0, 0 );
+	setCurrentPos(getCurrentPos());
+	sendEditor(SCI_REPLACESEL, 0, 0);
 }
 
-void RDOBaseEdit::load( rdo::stream& stream )
+void RDOBaseEdit::load(rdo::stream& stream)
 {
 	rbool readOnly = isReadOnly();
-	setReadOnly( false );
+	setReadOnly(false);
 
-	sendEditorString( SCI_ADDTEXT, stream.str().length(), &stream.str()[0] );
+	sendEditorString(SCI_ADDTEXT, stream.str().length(), &stream.str()[0]);
 
-	setReadOnly( readOnly );
+	setReadOnly(readOnly);
 }
 
-void RDOBaseEdit::save( rdo::stream& stream ) const
+void RDOBaseEdit::save(rdo::stream& stream) const
 {
 	int len = getLength();
 	std::vector<char> str;
-	str.resize( len + 1 );
-	sendEditorString( SCI_GETTEXT, len + 1, &str[0] );
+	str.resize(len + 1);
+	sendEditorString(SCI_GETTEXT, len + 1, &str[0]);
 //	str[len] = "\0";
-//	str.resize( len );
-	stream.str( &str[0] ); // qq
+//	str.resize(len);
+	stream.str(&str[0]); // qq
 }
 
-int RDOBaseEdit::indentOfBlock( int line ) const
+int RDOBaseEdit::indentOfBlock(int line) const
 {
-	if ( line < 0 ) return 0;
-	return sendEditor( SCI_GETLINEINDENTATION, line );
+	if (line < 0)
+		return 0;
+
+	return sendEditor(SCI_GETLINEINDENTATION, line);
 }
 
-void RDOBaseEdit::setLineIndentation( int line, int indent ) const
+void RDOBaseEdit::setLineIndentation(int line, int indent) const
 {
-	if ( indent < 0 ) return;
+	if (indent < 0) return;
 	CharacterRange crange = getSelectionRange();
-	int posBefore = sendEditor( SCI_GETLINEINDENTPOSITION, line );
-	sendEditor( SCI_SETLINEINDENTATION, line, indent );
-	int posAfter = sendEditor( SCI_GETLINEINDENTPOSITION, line );
+	int posBefore = sendEditor(SCI_GETLINEINDENTPOSITION, line);
+	sendEditor(SCI_SETLINEINDENTATION, line, indent);
+	int posAfter = sendEditor(SCI_GETLINEINDENTPOSITION, line);
 	int posDifference = posAfter - posBefore;
-	if ( posAfter > posBefore ) {
-		if ( crange.cpMin >= posBefore ) {
+	if (posAfter > posBefore)
+	{
+		if (crange.cpMin >= posBefore)
+		{
 			crange.cpMin += posDifference;
 		}
-		if ( crange.cpMax >= posBefore ) {
+		if (crange.cpMax >= posBefore)
+		{
 			crange.cpMax += posDifference;
 		}
-	} else if ( posAfter < posBefore ) {
-		if ( crange.cpMin >= posAfter ) {
-			if ( crange.cpMin >= posBefore ) {
+	}
+	else if (posAfter < posBefore)
+	{
+		if (crange.cpMin >= posAfter)
+		{
+			if (crange.cpMin >= posBefore)
+			{
 				crange.cpMin += posDifference;
-			} else {
+			}
+			else
+			{
 				crange.cpMin = posAfter;
 			}
 		}
-		if ( crange.cpMax >= posAfter ) {
-			if ( crange.cpMax >= posBefore ) {
+		if (crange.cpMax >= posAfter)
+		{
+			if (crange.cpMax >= posBefore)
+			{
 				crange.cpMax += posDifference;
-			} else {
+			}
+			else
+			{
 				crange.cpMax = posAfter;
 			}
 		}
 	}
-	setSelection( crange.cpMin, crange.cpMax );
+	setSelection(crange.cpMin, crange.cpMax);
 }
 
 void RDOBaseEdit::autoIndent() const
@@ -1170,11 +1256,12 @@ void RDOBaseEdit::autoIndent() const
 	CharacterRange crange = getSelectionRange();
 	int selStart      = crange.cpMin;
 	int curLine       = getCurrentLineNumber();
-	int thisLineStart = getPositionFromLine( curLine );
-	int indentBlock   = indentOfBlock( curLine - 1 );
+	int thisLineStart = getPositionFromLine(curLine);
+	int indentBlock   = indentOfBlock(curLine - 1);
 
-	if ( selStart == thisLineStart ) {
-		setLineIndentation( curLine, indentBlock );
+	if (selStart == thisLineStart)
+	{
+		setLineIndentation(curLine, indentBlock);
 	}
 }
 
@@ -1285,28 +1372,29 @@ void RDOBaseEdit::onViewZoomReset()
 	onUpdateActions(isActivated());
 }
 
-int RDOBaseEdit::findPos( REF(tstring) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord ) const
+int RDOBaseEdit::findPos(REF(tstring) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord) const
 {
 	int findLen = findWhat.length();
-	if ( !findLen ) return -1;
+	if (!findLen)
+		return -1;
 
-	int startPosition = getPositionFromLine( startFromLine );
+	int startPosition = getPositionFromLine(startFromLine);
 	int endPosition   = getLength();
 
 	int flags = (matchCase ? SCFIND_MATCHCASE : 0) | (matchWholeWord ? SCFIND_WHOLEWORD : 0);
 
-	sendEditor( SCI_SETTARGETSTART, startPosition );
-	sendEditor( SCI_SETTARGETEND, endPosition );
-	sendEditor( SCI_SETSEARCHFLAGS, flags );
-	return sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
+	sendEditor(SCI_SETTARGETSTART, startPosition);
+	sendEditor(SCI_SETTARGETEND, endPosition);
+	sendEditor(SCI_SETSEARCHFLAGS, flags);
+	return sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat.c_str());
 }
 
-tstring RDOBaseEdit::getLine( const int line ) const
+tstring RDOBaseEdit::getLine(const int line) const
 {
-	int length = sendEditor( SCI_LINELENGTH, line );
+	int length = sendEditor(SCI_LINELENGTH, line);
 	tstring str;
-	str.resize( length );
-	sendEditor( SCI_GETLINE, line, (long)str.data() );
+	str.resize(length);
+	sendEditor(SCI_GETLINE, line, (long)str.data());
 	return str;
 }
 
@@ -1542,7 +1630,9 @@ void RDOBaseEdit::setViewEndOfLine(rbool value)
 
 void RDOBaseEdit::methodOfGroup(CREF(this_method) fun)
 {
-	m_pGroup ? m_pGroup->for_each(fun) : fun(this);
+	m_pGroup
+		? m_pGroup->for_each(fun)
+		: fun(this);
 }
 
 rbool RDOBaseEdit::predicateOfGroup(CREF(this_predicate) fun) const
