@@ -33,110 +33,16 @@ class RDOBaseEdit
 	, public ActionActivator
 {
 Q_OBJECT
-private:
-	typedef  ScintillaEditBase  super;
-	int   markerCount;
-
-	FindDialog*          m_pFindDialog;
-	FindDialog::Settings m_findSettings;
-
-	FindReplaceDialog*          m_pFindReplaceDialog;
-	FindReplaceDialog::Settings m_findReplaceSettings;
-
-protected:
-	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return super::send( msg, wParam, lParam );; };
-	long sendEditorString( unsigned int msg, unsigned long wParam, const char* str ) const { return super::sends( msg, wParam, str ); };
-
-	int sci_MARKER_BOOKMARK;
-	int getNewMarker();
-	void defineMarker( int marker, int markerType, COLORREF fore, COLORREF back ) const;
-
-	void setSelection( int anchor, int currentPos ) const { sendEditor( SCI_SETSEL, anchor, currentPos ); };
-	CharacterRange getSelectionRange() const;
-	void gotoLineEnsureVisible( int line ) const;
-	void ensureRangeVisible( int posStart, int posEnd, rbool enforcePolicy = true ) const;
-
-	RDOBaseEditStyle* style;
-
-	int  firstFoundPos;
-	rbool bHaveFound;
-	void findNext  (REF(tstring) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
-	void replace   (REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
-	void replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase, rbool matchWholeWord);
-
-	int indentOfBlock( int line ) const;
-	void setLineIndentation( int line, int indent ) const;
-	void autoIndent() const;
-
-protected:
-	virtual void focusInEvent   (QFocusEvent* pEvent);
-	virtual void focusOutEvent  (QFocusEvent* pEvent);
-	virtual void onUpdateActions(rbool activated);
-
-protected slots:
-	        void onUpdateEditGUI();
-	virtual void onHelpContext  () = 0;
-
-private:
-
-	void onFindDlgFind(CREF(FindDialog::Settings) settings);
-	void onFindDlgClose();
-
-	void onFindReplaceDlgFind      (CREF(FindReplaceDialog::Settings) settings);
-	void onFindReplaceDlgReplace   (CREF(FindReplaceDialog::Settings) settings);
-	void onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings);
-	void onFindReplaceDlgClose     ();
-
-	void updateActionFind(rbool activated);
-
-private slots:
-	void catchNeedShown(int position, int length);
-	void catchCharAdded(int ch);
-
-	void onEditUndo     ();
-	void onEditRedo     ();
-	void onEditCut      ();
-	void onEditCopy     ();
-	void onEditPaste    ();
-	void onEditDel      ();
-	void onEditSelectAll();
-	void onEditUpperCase();
-	void onEditLowerCase();
-
-	void onSearchFind               ();
-	void onSearchFindNext           ();
-	void onSearchFindPrevious       ();
-	void onSearchFindNextCurrent    ();
-	void onSearchFindPreviousCurrent();
-	void onSearchReplace            ();
-	void onSearchBookmarkToggle     ();
-	void onSearchBookmarkNext       () const;
-	void onSearchBookmarkPrev       () const;
-	void onSearchBookmarkClearAll   ();
-	void onSearchGotoLine           ();
-
-	void onViewZoomChanged   (int zoom);
-	void onViewZoomInc       ();
-	void onViewZoomDec       ();
-	void onViewZoomReset     ();
-	void onViewShowWhiteSpace();
-	void onViewShowEndOfLine ();
-
-	void onCopyAsRTF(QMimeData* pMimeData);
-
-	void onUpdateModify();
 
 private:
 	typedef  boost::function<void (RDOBaseEdit*)>         this_method;
 	typedef  boost::function<rbool (const RDOBaseEdit*)>  this_predicate;
 
-	void  methodOfGroup   (CREF(this_method)    fun);
-	rbool predicateOfGroup(CREF(this_predicate) fun) const;
-
 public:
 	RDOBaseEdit(PTR(QWidget) pParent);
 	virtual ~RDOBaseEdit();
 
+	//! @todo Вынести класс в отдельный модуль
 	class Group
 	{
 	public:
@@ -221,14 +127,45 @@ public:
 	void save( rdo::stream& stream ) const;
 	tstring saveAsRTF(int start, int end) const;
 
-signals:
-	void modifyChanged(bool value);
-
 protected:
+	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return super::send( msg, wParam, lParam );; };
+	long sendEditorString( unsigned int msg, unsigned long wParam, const char* str ) const { return super::sends( msg, wParam, str ); };
+
+	int sci_MARKER_BOOKMARK;
+	int getNewMarker();
+	void defineMarker( int marker, int markerType, COLORREF fore, COLORREF back ) const;
+
+	void setSelection( int anchor, int currentPos ) const { sendEditor( SCI_SETSEL, anchor, currentPos ); };
+	CharacterRange getSelectionRange() const;
+	void gotoLineEnsureVisible( int line ) const;
+	void ensureRangeVisible( int posStart, int posEnd, rbool enforcePolicy = true ) const;
+
+	RDOBaseEditStyle* style;
+
+	int  firstFoundPos;
+	rbool bHaveFound;
+	void findNext  (REF(tstring) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
+	void replace   (REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
+	void replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase, rbool matchWholeWord);
+
+	int indentOfBlock( int line ) const;
+	void setLineIndentation( int line, int indent ) const;
+	void autoIndent() const;
+
+	virtual void focusInEvent   (QFocusEvent* pEvent);
+	virtual void focusOutEvent  (QFocusEvent* pEvent);
+	virtual void onUpdateActions(rbool activated);
+
 	int getCurrentLineNumber  () const { return getLineFromPosition(getCurrentPos());       };
 	int getCurrentColumnNumber() const { return sendEditor(SCI_GETCOLUMN, getCurrentPos()); };
 
+protected slots:
+	        void onUpdateEditGUI();
+	virtual void onHelpContext  () = 0;
+
 private:
+	typedef  ScintillaEditBase  super;
+
 	PTR(Group) m_pGroup;
 
 	rbool isViewWhiteSpace () const;
@@ -241,6 +178,67 @@ private:
 		const boost::function<rbool (const RDOBaseEdit*, rbool, rbool)>& nextPrevFun,
 		const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
 	) const;
+
+	int   markerCount;
+
+	FindDialog*          m_pFindDialog;
+	FindDialog::Settings m_findSettings;
+
+	FindReplaceDialog*          m_pFindReplaceDialog;
+	FindReplaceDialog::Settings m_findReplaceSettings;
+
+	void onFindDlgFind(CREF(FindDialog::Settings) settings);
+	void onFindDlgClose();
+
+	void onFindReplaceDlgFind      (CREF(FindReplaceDialog::Settings) settings);
+	void onFindReplaceDlgReplace   (CREF(FindReplaceDialog::Settings) settings);
+	void onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings);
+	void onFindReplaceDlgClose     ();
+
+	void updateActionFind(rbool activated);
+
+	void  methodOfGroup   (CREF(this_method)    fun);
+	rbool predicateOfGroup(CREF(this_predicate) fun) const;
+
+private slots:
+	void catchNeedShown(int position, int length);
+	void catchCharAdded(int ch);
+
+	void onEditUndo     ();
+	void onEditRedo     ();
+	void onEditCut      ();
+	void onEditCopy     ();
+	void onEditPaste    ();
+	void onEditDel      ();
+	void onEditSelectAll();
+	void onEditUpperCase();
+	void onEditLowerCase();
+
+	void onSearchFind               ();
+	void onSearchFindNext           ();
+	void onSearchFindPrevious       ();
+	void onSearchFindNextCurrent    ();
+	void onSearchFindPreviousCurrent();
+	void onSearchReplace            ();
+	void onSearchBookmarkToggle     ();
+	void onSearchBookmarkNext       () const;
+	void onSearchBookmarkPrev       () const;
+	void onSearchBookmarkClearAll   ();
+	void onSearchGotoLine           ();
+
+	void onViewZoomChanged   (int zoom);
+	void onViewZoomInc       ();
+	void onViewZoomDec       ();
+	void onViewZoomReset     ();
+	void onViewShowWhiteSpace();
+	void onViewShowEndOfLine ();
+
+	void onCopyAsRTF(QMimeData* pMimeData);
+
+	void onUpdateModify();
+
+signals:
+	void modifyChanged(bool value);
 };
 
 } // namespace rdoEditCtrl
