@@ -28,9 +28,18 @@ class RDOEditorEdit: public RDOEditorBaseEdit
 {
 Q_OBJECT
 
-private:
-	int sci_FOLDMARGIN_ID;
-	int sci_MARKER_ERROR;
+public:
+	RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);
+	virtual ~RDOEditorEdit();
+
+	void setEditorStyle(PTR(RDOEditorEditStyle) pStyle);
+
+	void setErrorLine(int line = -1);
+
+	CPTR(rdoEditCtrl::LogEdit) getLog() const;
+	void setLog(REF(rdoEditCtrl::LogEdit) log);
+
+	void setCanClearErrorLine( rbool value ) { canClearErrorLine = value; }
 
 protected:
 	QWidget* view;
@@ -46,6 +55,13 @@ protected:
 	rbool hasErrorLine  () const;
 
 private:
+	typedef  RDOEditorBaseEdit  super;
+
+	QMenu* m_pPopupMenu;
+	int    sci_FOLDMARGIN_ID;
+	int    sci_MARKER_ERROR;
+
+	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void onUpdateActions(rbool activated);
 	virtual void onHelpContext  ();
 
@@ -58,29 +74,8 @@ private slots:
 	void onGotoPrev            ();
 	void onInsertCommand       (QObject* pObject);
 
-public:
-	RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);
-	virtual ~RDOEditorEdit();
-
-	void setEditorStyle(PTR(RDOEditorEditStyle) pStyle);
-
-	void setErrorLine(int line = -1);
-
-	CPTR(rdoEditCtrl::LogEdit) getLog() const;
-	void setLog(REF(rdoEditCtrl::LogEdit) log);
-
-	void setCanClearErrorLine( rbool value ) { canClearErrorLine = value; }
-
-private:
-	typedef  RDOEditorBaseEdit  super;
-
-	QMenu* m_pPopupMenu;
-
-	virtual void mousePressEvent(QMouseEvent* pEvent);
-
-private slots:
-	void catchModified     (int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev);
-	void catchMarginClick  (int position, int modifiers, int margin);
+	void catchModified   (int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev);
+	void catchMarginClick(int position, int modifiers, int margin);
 };
 
 } // namespace rdoEditor
