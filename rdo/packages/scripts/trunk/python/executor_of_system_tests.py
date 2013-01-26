@@ -184,6 +184,8 @@ executables = get_executables(app_directory)
 rdo_ex      = executables[0]
 rdo_test_ex = executables[1]
 
+bad_models = []
+
 if not os.path.exists(rdo_ex) or not os.path.exists(rdo_test_ex):
     print u'Build app not found. Critical error !!!'
     exit(EXIT_CODE_TERMINATION_ERROR)
@@ -350,7 +352,7 @@ for task in files:
                 cycle_exit_code = APP_CODE_TERMINATION_NORMAL
 
         elif model['target'] == TAGRET_CONVERTER:
-            text_uuid = str(uuid.uuid1())
+            text_uuid = str(uuid.uuid4())
             temp_directory_name = dirname + text_uuid + u'/'
             shutil.copytree(dirname, temp_directory_name)
             
@@ -358,6 +360,8 @@ for task in files:
             command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model_file) + u' -c')
             convertor_exit_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             print u'CONVERT EXIT CODE :', convertor_exit_code, u'\n'
+
+            cycle_exit_code = APP_CODE_TERMINATION_NORMAL
             
             if convertor_exit_code == exit_code:
                 # compare etalons
@@ -388,8 +392,11 @@ for task in files:
         #os.remove(simulation_result)
 
         if cycle_exit_code == APP_CODE_TERMINATION_ERROR:
+            bad_models.append(task)
             G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
 
+print '\n', u'MODEL WITH ERRORS:'
+print_list_of_line(bad_models)
 print '\n', u'PYTHON EXIT CODE :', G_EXIT_CODE, '\n'
 
 sys.exit(G_EXIT_CODE)
