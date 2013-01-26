@@ -39,27 +39,24 @@ public:
 	CPTR(rdoEditCtrl::LogEdit) getLog() const;
 	void setLog(REF(rdoEditCtrl::LogEdit) log);
 
-	void setCanClearErrorLine( rbool value ) { canClearErrorLine = value; }
-
-protected:
-	QWidget* view;
-
-	rdoEditCtrl::LogEdit* log;
-
-	void expand( int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1 ) const;
-	void foldChanged( int line, int levelNow, int levelPrev ) const;
-	void foldMarginClick( int position, int modifiers ) const;
-
-	rbool canClearErrorLine;
-	void  clearErrorLine();
-	rbool hasErrorLine  () const;
+	void setCanClearErrorLine(rbool value);
 
 private:
 	typedef  RDOEditorBaseEdit  super;
 
-	QMenu* m_pPopupMenu;
-	int    sci_FOLDMARGIN_ID;
-	int    sci_MARKER_ERROR;
+	QWidget*               m_pView;
+	rdoEditCtrl::LogEdit*  m_pLog;
+	QMenu*                 m_pPopupMenu;
+	int                    m_sciFoldMarginID;
+	int                    m_sciMarkerError;
+	rbool                  m_canClearErrorLine;
+
+	void expand         (int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1) const;
+	void foldChanged    (int line, int levelNow, int levelPrev) const;
+	void foldMarginClick(int position, int modifiers) const;
+
+	void  clearErrorLine();
+	rbool hasErrorLine  () const;
 
 	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void onUpdateActions(rbool activated);

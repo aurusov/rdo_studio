@@ -36,21 +36,21 @@ using namespace rdoEditCtrl;
 // -------------------- RDOEditorEdit
 // ---------------------------------------------------------------------------
 RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView)
-	: super            (pParent)
-	, view             (pView  )
-	, log              (NULL   )
-	, canClearErrorLine(true   )
-	, m_pPopupMenu     (NULL   )
+	: super              (pParent)
+	, m_pView            (pView  )
+	, m_pLog             (NULL   )
+	, m_canClearErrorLine(true   )
+	, m_pPopupMenu       (NULL   )
 {
-	sci_FOLDMARGIN_ID = getNewMarker();
-	sci_MARKER_ERROR  = getNewMarker();
+	m_sciFoldMarginID = getNewMarker();
+	m_sciMarkerError  = getNewMarker();
 
 	sendEditor(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT | SC_MOD_CHANGEFOLD);
 
-	sendEditor(SCI_SETMARGINTYPEN     , sci_FOLDMARGIN_ID, SC_MARGIN_SYMBOL);
+	sendEditor(SCI_SETMARGINTYPEN     , m_sciFoldMarginID, SC_MARGIN_SYMBOL);
 	sendEditor(SCI_SETFOLDFLAGS, 16);
-	sendEditor(SCI_SETMARGINMASKN     , sci_FOLDMARGIN_ID, SC_MASK_FOLDERS);
-	sendEditor(SCI_SETMARGINSENSITIVEN, sci_FOLDMARGIN_ID, 1);
+	sendEditor(SCI_SETMARGINMASKN     , m_sciFoldMarginID, SC_MASK_FOLDERS);
+	sendEditor(SCI_SETMARGINSENSITIVEN, m_sciFoldMarginID, 1);
 
 	sendEditor(SCI_AUTOCSETIGNORECASE    , 1);
 	sendEditor(SCI_AUTOCSETCHOOSESINGLE  , 0);
@@ -97,7 +97,7 @@ void RDOEditorEdit::catchModified(int modificationType, int position, int length
 	{
 		foldChanged(line, foldLevelNow, foldLevelPrev);
 	}
-	if (canClearErrorLine && hasErrorLine())
+	if (m_canClearErrorLine && hasErrorLine())
 	{
 		clearErrorLine();
 	}
@@ -105,7 +105,7 @@ void RDOEditorEdit::catchModified(int modificationType, int position, int length
 
 void RDOEditorEdit::catchMarginClick(int position, int modifiers, int margin)
 {
-	if (margin == sci_FOLDMARGIN_ID)
+	if (margin == m_sciFoldMarginID)
 	{
 		foldMarginClick(position, modifiers);
 	}
@@ -208,7 +208,7 @@ void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 
 	// ----------
 	// Error
-	defineMarker(sci_MARKER_ERROR, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<RDOEditorEditTheme*>(style->theme)->errorBgColor);
+	defineMarker(m_sciMarkerError, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<RDOEditorEditTheme*>(style->theme)->errorBgColor);
 }
 
 void RDOEditorEdit::expand(int& line, rbool doExpand, rbool force, int visLevels, int level) const
@@ -558,22 +558,22 @@ void RDOEditorEdit::setErrorLine(int line)
 	{
 		line = getCurrentLineNumber();
 	}
-	sendEditor(SCI_MARKERADD, line, sci_MARKER_ERROR);
+	sendEditor(SCI_MARKERADD, line, m_sciMarkerError);
 }
 
 void RDOEditorEdit::clearErrorLine()
 {
-	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << sci_MARKER_ERROR);
+	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerError);
 	if (nextLine >= 0)
 	{
-		sendEditor(SCI_MARKERDELETE, nextLine, sci_MARKER_ERROR);
+		sendEditor(SCI_MARKERDELETE, nextLine, m_sciMarkerError);
 		QWidget::update();
 	}
 }
 
 rbool RDOEditorEdit::hasErrorLine() const
 {
-	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << sci_MARKER_ERROR);
+	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerError);
 	return nextLine >= 0;
 }
 
@@ -592,27 +592,32 @@ void RDOEditorEdit::onInsertCommand(QObject* pObject)
 
 CPTR(rdoEditCtrl::LogEdit) RDOEditorEdit::getLog() const
 {
-	return log;
+	return m_pLog;
 }
 
-void RDOEditorEdit::setLog(REF(LogEdit) log)
+void RDOEditorEdit::setLog(REF(LogEdit) pLog)
 {
-	this->log = &log;
+	m_pLog = &pLog;
+}
+
+void RDOEditorEdit::setCanClearErrorLine(rbool value)
+{
+	m_canClearErrorLine = value;
 }
 
 void RDOEditorEdit::onGotoNext()
 {
-	if (log)
+	if (m_pLog)
 	{
-		log->gotoNext();
+		m_pLog->gotoNext();
 	}
 }
 
 void RDOEditorEdit::onGotoPrev()
 {
-	if (log)
+	if (m_pLog)
 	{
-		log->gotoPrev();
+		m_pLog->gotoPrev();
 	}
 }
 
@@ -683,13 +688,13 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 
 	updateAction(
 		pMainWindow->actSearchLogNext,
-		activated && log,
+		activated && m_pLog,
 		this, "onGotoNext()"
 	);
 
 	updateAction(
 		pMainWindow->actSearchLogPrev,
-		activated && log,
+		activated && m_pLog,
 		this, "onGotoPrev()"
 	);
 
