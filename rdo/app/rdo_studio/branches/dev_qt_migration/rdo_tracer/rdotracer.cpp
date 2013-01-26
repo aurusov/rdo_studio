@@ -81,9 +81,9 @@ void Tracer::proc( RDOThread::RDOMessageInfo& msg )
 				rdo::textstream model_structure;
 				sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure );
 				getModelStructure( model_structure );
-				studioApp.getIMainWnd()->getDockDebug().appendString( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
+				studioApp.getIMainWnd()->getDockDebug().appendString("ok\n");
 			} catch ( ... ) {
-				studioApp.getIMainWnd()->getDockDebug().appendString( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
+				studioApp.getIMainWnd()->getDockDebug().appendString("failed\n");
 			}
 			break;
 		}

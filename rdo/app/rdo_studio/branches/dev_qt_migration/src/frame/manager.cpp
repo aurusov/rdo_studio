@@ -90,9 +90,9 @@ void RDOStudioFrameManager::insertFrame(CREF(tstring) frameName)
 ruint RDOStudioFrameManager::findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetItem) const
 {
 	ruint index = 0;
-	STL_FOR_ALL_CONST(m_frameList, it)
+	BOOST_FOREACH(const Frame* pFrame, m_frameList)
 	{
-		if ((*it)->m_pTreeWidgetItem == pTreeWidgetItem)
+		if (pFrame->m_pTreeWidgetItem == pTreeWidgetItem)
 		{
 			return index;
 		}
@@ -104,9 +104,9 @@ ruint RDOStudioFrameManager::findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetIte
 ruint RDOStudioFrameManager::findFrameIndex(CPTR(FrameAnimationWnd) pView) const
 {
 	ruint index = 0;
-	STL_FOR_ALL_CONST(m_frameList, it)
+	BOOST_FOREACH(const Frame* pFrame, m_frameList)
 	{
-		if ((*it)->m_pView == pView)
+		if (pFrame->m_pView == pView)
 		{
 			return index;
 		}
@@ -118,9 +118,9 @@ ruint RDOStudioFrameManager::findFrameIndex(CPTR(FrameAnimationWnd) pView) const
 ruint RDOStudioFrameManager::findFrameIndex(CPTR(FrameAnimationContent) pContent) const
 {
 	ruint index = 0;
-	STL_FOR_ALL_CONST(m_frameList, it)
+	BOOST_FOREACH(const Frame* pFrame, m_frameList)
 	{
-		if ((*it)->m_pContent == pContent)
+		if (pFrame->m_pContent == pContent)
 		{
 			return index;
 		}
@@ -166,11 +166,11 @@ void RDOStudioFrameManager::areaDown(ruint frameIndex, CREF(QPoint) point) const
 	ASSERT(frameIndex != ruint(~0) && frameIndex < m_frameList.size());
 
 	CREF(rdo::gui::animation::AreaList) areaList = m_frameList[frameIndex]->m_areaList;
-	STL_FOR_ALL_CONST(areaList, it)
+	BOOST_FOREACH(const rdo::gui::animation::AreaList::value_type& area, areaList)
 	{
-		if (it->second.m_rect.contains(point))
+		if (area.second.m_rect.contains(point))
 		{
-			tstring areaName = it->first;
+			tstring areaName = area.first;
 			model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &areaName);
 		}
 	}
@@ -184,7 +184,7 @@ PTR(FrameAnimationWnd) RDOStudioFrameManager::createView(ruint index)
 		pView = new FrameAnimationWnd(NULL);
 		studioApp.getIMainWnd()->addSubWindow(pView);
 		pView->parentWidget()->setWindowIcon (QIcon(QString::fromUtf8(":/images/images/mdi_frame.png")));
-		pView->parentWidget()->setWindowTitle(QString::fromStdString(rdo::format(IDS_FRAME_NAME, getFrameName(index).c_str()).c_str()));
+		pView->parentWidget()->setWindowTitle(QString::fromStdString(rdo::format("кадр: %s", getFrameName(index).c_str()).c_str()));
 
 		m_frameList[index]->m_pView    = pView;
 		m_frameList[index]->m_pContent = pView->getContent();
@@ -302,7 +302,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
 		return;
 
-	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_RESOURCE_LOADING_NAME, bitmapName.c_str()));
+	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format("Загрузка %s...", bitmapName.c_str()));
 	studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
 	rdo::binarystream stream;
@@ -321,7 +321,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 		}
 	}
 
-	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(ok ? IDS_MODEL_RESOURCE_LOADING_NAME_OK : IDS_MODEL_RESOURCE_LOADING_NAME_FAILED));
+	studioApp.getIMainWnd()->getDockDebug().appendString(ok ? "ok\n" : "failed\n");
 	studioApp.getIMainWnd()->getDockDebug().getContext().update();
 }
 
