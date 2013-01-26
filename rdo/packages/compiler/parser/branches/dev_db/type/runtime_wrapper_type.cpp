@@ -49,9 +49,4 @@ rdo::runtime::LPRDOCalc RuntimeWrapperType::calc_cast(CREF(rdo::runtime::LPRDOCa
 	return pCalc;
 }
 
-void RuntimeWrapperType::serializeInDB(REF(IDB) db) const
-{
-	NEVER_REACH_HERE;
-}
-
 CLOSE_RDO_PARSER_NAMESPACE

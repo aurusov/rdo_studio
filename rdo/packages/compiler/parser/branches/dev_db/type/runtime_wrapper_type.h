@@ -25,7 +25,6 @@ DECLARE_FACTORY(RuntimeWrapperType)
 public:
 	virtual CREF(rdo::runtime::LPRDOType)   type() const;
 	virtual rdo::runtime::RDOType::TypeID typeID() const;
-	virtual void serializeInDB(REF(IDB) db) const;
 
 	virtual rdo::runtime::LPRDOCalc calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const;
 
