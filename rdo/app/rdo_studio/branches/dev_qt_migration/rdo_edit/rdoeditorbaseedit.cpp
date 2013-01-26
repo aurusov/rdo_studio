@@ -27,7 +27,7 @@ using namespace rdoStyle;
 // ---------------------------------------------------------------------------
 
 RDOEditorBaseEdit::RDOEditorBaseEdit(PTR(QWidget) pParent)
-	: RDOBaseEdit(pParent)
+	: super(pParent)
 	, kw0("$Activities?0 $Back_picture?0 $Body?0 $Changes?0 $Compare_tops?0 $Condition?0 \
 $Constant?0 $Decision_point?0 $Default?0 $End?0 $End_picture?0 $Evaluate_by?0 $Frame?0 $Function?0 \
 $Include?0 $Multithreading?0 $multithreading?0 $Operations?0 $Parameters?0 $Fuzzy_Parameters?0 Term?0 $Pattern?0 $Process?0 $Relevant_resources?0 $Resource_type?0 \
@@ -98,7 +98,7 @@ tstring RDOEditorBaseEdit::convertToLexer(CREF(tstring) kw)
 
 void RDOEditorBaseEdit::setEditorStyle(PTR(RDOEditorBaseEditStyle) pStyle)
 {
-	RDOBaseEdit::setEditorStyle(pStyle);
+	super::setEditorStyle(pStyle);
 	if (!style)
 		return;
 
