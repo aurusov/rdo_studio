@@ -70,8 +70,8 @@ public:
 		List m_list;
 	};
 
-	const RDOBaseEditStyle* getEditorStyle() const         { return style; };
-	void setEditorStyle( RDOBaseEditStyle* _style );
+	const RDOBaseEditStyle* getEditorStyle() const;
+	void setEditorStyle(RDOBaseEditStyle* pStyle);
 
 	void setGroup(PTR(Group) pGroup);
 
@@ -128,10 +128,11 @@ public:
 	tstring saveAsRTF(int start, int end) const;
 
 protected:
+	RDOBaseEditStyle* m_pStyle;
+
 	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return super::send( msg, wParam, lParam );; };
 	long sendEditorString( unsigned int msg, unsigned long wParam, const char* str ) const { return super::sends( msg, wParam, str ); };
 
-	int sci_MARKER_BOOKMARK;
 	int getNewMarker();
 	void defineMarker( int marker, int markerType, COLORREF fore, COLORREF back ) const;
 
@@ -140,10 +141,6 @@ protected:
 	void gotoLineEnsureVisible( int line ) const;
 	void ensureRangeVisible( int posStart, int posEnd, rbool enforcePolicy = true ) const;
 
-	RDOBaseEditStyle* style;
-
-	int  firstFoundPos;
-	rbool bHaveFound;
 	void findNext  (REF(tstring) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
 	void replace   (REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
 	void replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase, rbool matchWholeWord);
@@ -167,6 +164,9 @@ private:
 	typedef  ScintillaEditBase  super;
 
 	PTR(Group) m_pGroup;
+	int        m_sciMarkerBookmark;
+	int        m_firstFoundPos;
+	rbool      m_haveFound;
 
 	rbool isViewWhiteSpace () const;
 	void  setViewWhiteSpace(rbool value);
@@ -179,7 +179,7 @@ private:
 		const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
 	) const;
 
-	int   markerCount;
+	int   m_markerCount;
 
 	FindDialog*          m_pFindDialog;
 	FindDialog::Settings m_findSettings;

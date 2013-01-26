@@ -114,12 +114,12 @@ void RDOEditorEdit::catchMarginClick(int position, int modifiers, int margin)
 void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 {
 	super::setEditorStyle(pStyle);
-	if (!style)
+	if (!m_pStyle)
 		return;
 
 	// ----------
 	// Fold
-	RDOEditorEditTheme* theme = static_cast<RDOEditorEditTheme*>(style->theme);
+	RDOEditorEditTheme* theme = static_cast<RDOEditorEditTheme*>(m_pStyle->theme);
 	COLORREF foldFgColor = theme->foldFgColor;
 	COLORREF foldBgColor = theme->foldBgColor;
 	switch (theme->foldStyle)
@@ -202,13 +202,13 @@ void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 
 	// ----------
 	// Margin
-	sendEditor(SCI_SETMARGINWIDTHN, 2, static_cast<RDOEditorEditStyle*>(style)->margin->fold ? 16 : 0);
-	sendEditor(SCI_SETMARGINWIDTHN, 1, static_cast<RDOEditorEditStyle*>(style)->margin->bookmark ? 16 : 0);
-	sendEditor(SCI_SETMARGINWIDTHN, 0, static_cast<RDOEditorEditStyle*>(style)->margin->lineNumber ? 40 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 2, static_cast<RDOEditorEditStyle*>(m_pStyle)->margin->fold ? 16 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 1, static_cast<RDOEditorEditStyle*>(m_pStyle)->margin->bookmark ? 16 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 0, static_cast<RDOEditorEditStyle*>(m_pStyle)->margin->lineNumber ? 40 : 0);
 
 	// ----------
 	// Error
-	defineMarker(m_sciMarkerError, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<RDOEditorEditTheme*>(style->theme)->errorBgColor);
+	defineMarker(m_sciMarkerError, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->errorBgColor);
 }
 
 void RDOEditorEdit::expand(int& line, rbool doExpand, rbool force, int visLevels, int level) const
@@ -408,7 +408,7 @@ void RDOEditorEdit::onEditCommentSelection() const
 
 void RDOEditorEdit::onEditCompleteWord()
 {
-	if (!static_cast<RDOEditorEditStyle*>(style)->autoComplete->useAutoComplete)
+	if (!static_cast<RDOEditorEditStyle*>(m_pStyle)->autoComplete->useAutoComplete)
 		return;
 
 	setFocus();
@@ -494,7 +494,7 @@ void RDOEditorEdit::onEditCompleteWord()
 		}
 	}
 	LPCTSTR list;
-	if (static_cast<PTR(RDOEditorEditStyle)>(style)->autoComplete->showFullList)
+	if (static_cast<PTR(RDOEditorEditStyle)>(m_pStyle)->autoComplete->showFullList)
 	{
 		list = primaryKwList.c_str();
 	}

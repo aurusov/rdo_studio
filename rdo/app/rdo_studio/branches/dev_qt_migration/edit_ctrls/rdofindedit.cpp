@@ -50,14 +50,14 @@ RDOFindEdit::~RDOFindEdit()
 void RDOFindEdit::setEditorStyle(RDOFindEditStyle* pStyle)
 {
 	super::setEditorStyle(pStyle);
-	if (!style)
+	if (!m_pStyle)
 	{
 		return;
 	}
 
 	// ----------
 	// Colors
-	RDOFindEditTheme* theme = static_cast<RDOFindEditTheme*>(style->theme);
+	RDOFindEditTheme* theme = static_cast<RDOFindEditTheme*>(m_pStyle->theme);
 	sendEditor(SCI_STYLESETFORE, SCE_FIND_DEFAULT, theme->defaultColor);
 	sendEditor(SCI_STYLESETBACK, SCE_FIND_DEFAULT, theme->backgroundColor);
 	sendEditor(SCI_STYLESETFORE, SCE_FIND_KEYWORD, theme->keywordColor);
@@ -74,18 +74,18 @@ void RDOFindEdit::setEditorStyle(RDOFindEditStyle* pStyle)
 
 	// ----------
 	// Font Name
-	sendEditorString(SCI_STYLESETFONT, SCE_FIND_DEFAULT, style->font->name.c_str());
-	sendEditorString(SCI_STYLESETFONT, SCE_FIND_KEYWORD, style->font->name.c_str());
+	sendEditorString(SCI_STYLESETFONT, SCE_FIND_DEFAULT, m_pStyle->font->name.c_str());
+	sendEditorString(SCI_STYLESETFONT, SCE_FIND_KEYWORD, m_pStyle->font->name.c_str());
 
 	// ----------
 	// Font Size
-	sendEditor(SCI_STYLESETSIZE, SCE_FIND_DEFAULT, style->font->size);
-	sendEditor(SCI_STYLESETSIZE, SCE_FIND_KEYWORD, style->font->size);
+	sendEditor(SCI_STYLESETSIZE, SCE_FIND_DEFAULT, m_pStyle->font->size);
+	sendEditor(SCI_STYLESETSIZE, SCE_FIND_KEYWORD, m_pStyle->font->size);
 
 	// ----------
 	// Codepage and Characterset
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_FIND_DEFAULT, style->font->characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_FIND_KEYWORD, style->font->characterSet);
+	sendEditor(SCI_STYLESETCHARACTERSET, SCE_FIND_DEFAULT, m_pStyle->font->characterSet);
+	sendEditor(SCI_STYLESETCHARACTERSET, SCE_FIND_KEYWORD, m_pStyle->font->characterSet);
 }
 
 void RDOFindEdit::setKeyword(CREF(tstring) keyword, const rbool matchCase) const
