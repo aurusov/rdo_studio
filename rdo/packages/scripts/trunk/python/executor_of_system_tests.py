@@ -176,7 +176,8 @@ model_directory = u'' + args.model_directory
 G_EXIT_CODE = APP_CODE_TERMINATION_NORMAL
 
 print u'STARTED SCRIPT :', sys.argv[0]
-print u'ENCODING', sys.getfilesystemencoding()
+print u'SYSTEM ENCODING', sys.getdefaultencoding()
+print u'FILESYSTEM ENCODING', sys.getfilesystemencoding()
 
 # search rdo and rdo_test executables
 executables = get_executables(app_directory)
@@ -188,7 +189,7 @@ bad_models = []
 
 if not os.path.exists(rdo_ex) or not os.path.exists(rdo_test_ex):
     print u'Build app not found. Critical error !!!'
-    exit(EXIT_CODE_TERMINATION_ERROR)
+    sys.exit(EXIT_CODE_TERMINATION_ERROR)
 
 # search .rtestx files
 files = get_test_files(model_directory)
