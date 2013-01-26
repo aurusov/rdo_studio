@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
-#include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/res/ac_function.xpm"
 #include "app/rdo_studio_mfc/res/ac_data.xpm"
 #include "app/rdo_studio_mfc/res/ac_trace.xpm"

@@ -19,7 +19,6 @@
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
-#include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 // --------------------------------------------------------------------------------
 

@@ -20,7 +20,6 @@
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
-#include "app/rdo_studio_mfc/resource.h"
 #include "thirdparty/sci/include/SciLexer.h"
 #include "thirdparty/sci/lexlib/WordList.h"
 #include "app/rdo_studio_mfc/src/dialog/goto_line_dialog.h"
@@ -517,7 +516,7 @@ void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchC
 	{
 		m_firstFoundPos = -1;
 		m_haveFound     = false;
-		QMessageBox::warning(this, "Результаты поиска", rdo::format(ID_MSG_CANTFIND, findWhat.c_str()).c_str());
+		showFindWarning(QString::fromStdString(findWhat));
 		//! @todo возможно, надо убрать
 		setFocus();
 	}
@@ -531,7 +530,7 @@ void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchC
 		{
 			m_firstFoundPos = -1;
 			m_haveFound     = false;
-			QMessageBox::warning(this, "Результаты поиска", rdo::format(ID_MSG_CANTFIND, findWhat.c_str()).c_str());
+			showFindWarning(QString::fromStdString(findWhat));
 			//! @todo возможно, надо убрать
 			setFocus();
 			return;
@@ -619,6 +618,11 @@ void RDOBaseEdit::onFindReplaceDlgClose()
 	m_pFindReplaceDialog = NULL;
 }
 
+void RDOBaseEdit::showFindWarning(CREF(QString) findWhat)
+{
+	QMessageBox::warning(this, "Результаты поиска", QString("Невозможно найти строчку '%1'.").arg(findWhat));
+}
+
 void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
 	if (m_haveFound)
@@ -679,7 +683,7 @@ void RDOBaseEdit::replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rb
 	}
 	else
 	{
-		QMessageBox::warning(this, "Результаты поиска", rdo::format(ID_MSG_CANTFIND, findWhat.c_str()).c_str());
+		showFindWarning(QString::fromStdString(findWhat));
 		//! @todo возможно, надо убрать
 		setFocus();
 	}

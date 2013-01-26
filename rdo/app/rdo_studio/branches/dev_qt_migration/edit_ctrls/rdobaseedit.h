@@ -193,6 +193,7 @@ private:
 	void onFindReplaceDlgReplace   (CREF(FindReplaceDialog::Settings) settings);
 	void onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings);
 	void onFindReplaceDlgClose     ();
+	void showFindWarning           (CREF(QString) findWhat);
 
 	void updateActionFind(rbool activated);
 

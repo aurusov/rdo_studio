@@ -10,13 +10,13 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/report//error_code.h"
+#include "simulator/report/error_code.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
-#include "app/rdo_studio_mfc/resource.h"
 #include "thirdparty/sci/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
@@ -286,11 +286,9 @@ rbool LogEdit::hasSelectLine() const
 
 void LogEdit::clearLines()
 {
-	LogEditLineInfoList::iterator it = m_lines.begin();
-	while (it != m_lines.end())
+	BOOST_FOREACH(LogEditLineInfo* pInfo, m_lines)
 	{
-		delete *it;
-		++it;
+		delete pInfo;
 	}
 	m_lines.clear();
 	m_currentLine = 0;

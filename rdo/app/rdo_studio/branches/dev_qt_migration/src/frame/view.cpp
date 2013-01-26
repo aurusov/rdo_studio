@@ -20,7 +20,6 @@
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
-#include "app/rdo_studio_mfc/resource.h"
 // --------------------------------------------------------------------------------
 
 FrameAnimationContent::FrameAnimationContent(PTR(QWidget) pParent)

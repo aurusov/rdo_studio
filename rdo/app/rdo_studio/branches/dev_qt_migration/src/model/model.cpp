@@ -33,7 +33,6 @@
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/resource.h"
 #include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 

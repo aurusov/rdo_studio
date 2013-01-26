@@ -17,7 +17,6 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/resource.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
