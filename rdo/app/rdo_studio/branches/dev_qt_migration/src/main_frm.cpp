@@ -534,21 +534,6 @@ void RDOStudioMainFrame::addSubWindow(QWidget* pWidget)
 	}
 }
 
-void RDOStudioMainFrame::onUpdateActions(rbool activated)
-{
-	updateAction(
-		actWindowCascade,
-		activated,
-		mdiArea, "cascadeSubWindows()"
-	);
-
-	updateAction(
-		actWindowTitleHorzontal,
-		activated,
-		mdiArea, "tileSubWindows()"
-	);
-}
-
 void RDOStudioMainFrame::activateSubWindow(QWidget* pWidget)
 {
 	QMdiSubWindow* pSubWindow = dynamic_cast<QMdiSubWindow*>(pWidget);

@@ -30,7 +30,6 @@ class RDOStudioMainFrame
 	: public QMainWindow
 	, public MainWindowBase
 	, public Ui::MainWindow
-	, public ActionActivator
 {
 Q_OBJECT
 
@@ -54,8 +53,6 @@ public:
 	virtual void addSubWindow              (QWidget* pWidget);
 	virtual void activateSubWindow         (QWidget* pWidget);
 	virtual void connectOnActivateSubWindow(QObject* pObject);
-
-	virtual void onUpdateActions(rbool activated);
 
 	PTR(QSlider) m_pModelSpeedSlider;
 

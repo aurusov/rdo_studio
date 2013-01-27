@@ -535,7 +535,6 @@ rbool RDOStudioModel::newModel(CREF(tstring) modelName, CREF(tstring) modelPath,
 	data.m_name = modelName;
 	data.m_path = modelPath;
 	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_NEW, &data);
-	studioApp.getMainWndUI()->onUpdateActions(true);
 	return true;
 }
 
@@ -570,7 +569,6 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName)
 		studioApp.getIMainWnd()->getDockResults().appendString(stream.str());
 		studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_LOADING_OK));
 		studioApp.setLastProjectName(getFullName());
-		studioApp.getMainWndUI()->onUpdateActions(true);
 	}
 	else
 	{
@@ -616,7 +614,6 @@ rbool RDOStudioModel::closeModel()
 	studioApp.getIMainWnd()->getDockResults().clear();
 	studioApp.getIMainWnd()->getDockFind   ().clear();
 	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_CLOSE);
-	studioApp.getMainWndUI()->onUpdateActions(false);
 	return true;
 }
 
