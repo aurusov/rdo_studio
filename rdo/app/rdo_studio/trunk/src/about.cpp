@@ -20,7 +20,7 @@ About::About(PTR(QWidget) pParent)
 {
 	setupUi(this);
 
-	version->setText(QString("RAO-studio   %1%2-version 1.1 (build %3)")
+	QString limitation;
 
 #ifdef RDO_LICENSE_ACADEMIC
 		limitation += "не для коммерческого использования";
