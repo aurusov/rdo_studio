@@ -183,7 +183,7 @@ PTR(FrameAnimationWnd) RDOStudioFrameManager::createView(ruint index)
 	{
 		pView = new FrameAnimationWnd(NULL);
 		studioApp.getIMainWnd()->addSubWindow(pView);
-		pView->parentWidget()->setWindowIcon (QIcon(QString::fromUtf8(":/images/images/frame.png")));
+		pView->parentWidget()->setWindowIcon (QIcon(QString::fromUtf8(":/images/images/mdi_frame.png")));
 		pView->parentWidget()->setWindowTitle(QString::fromStdString(rdo::format("кадр: %s", getFrameName(index).c_str()).c_str()));
 
 		m_frameList[index]->m_pView    = pView;
