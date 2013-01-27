@@ -1,0 +1,5 @@
+Frame_number   = 1
+Show_mode      = Animation
+Show_rate      = 10000.0
+
+Terminate_if Time_now >= 10*60*60.0
