@@ -12,22 +12,22 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditorresultsstyle.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdobuildeditstyle.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdofindeditstyle.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/log_view_style.h"
-#include "app/rdo_studio_mfc/src/style.h"
-#include "app/rdo_studio_mfc/src/chart/view_style.h"
-#include "app/rdo_studio_mfc/src/frame/style.h"
-#include "app/rdo_studio_mfc/src/dock/dock_build.h"
-#include "app/rdo_studio_mfc/src/dock/dock_debug.h"
-#include "app/rdo_studio_mfc/src/dock/dock_trace.h"
-#include "app/rdo_studio_mfc/src/dock/dock_results.h"
-#include "app/rdo_studio_mfc/src/dock/dock_find.h"
-#include "app/rdo_studio_mfc/src/dock/dock_chart_tree.h"
-#include "app/rdo_studio_mfc/src/dock/dock_frame.h"
+#include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"
+#include "app/rdo_studio/rdo_edit/rdoeditorresultsstyle.h"
+#include "app/rdo_studio/edit_ctrls/rdobuildeditstyle.h"
+#include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
+#include "app/rdo_studio/edit_ctrls/rdofindeditstyle.h"
+#include "app/rdo_studio/src/tracer/ctrls/log_view_style.h"
+#include "app/rdo_studio/src/style.h"
+#include "app/rdo_studio/src/chart/view_style.h"
+#include "app/rdo_studio/src/frame/style.h"
+#include "app/rdo_studio/src/dock/dock_build.h"
+#include "app/rdo_studio/src/dock/dock_debug.h"
+#include "app/rdo_studio/src/dock/dock_trace.h"
+#include "app/rdo_studio/src/dock/dock_results.h"
+#include "app/rdo_studio/src/dock/dock_find.h"
+#include "app/rdo_studio/src/dock/dock_chart_tree.h"
+#include "app/rdo_studio/src/dock/dock_frame.h"
 // --------------------------------------------------------------------------------
 
 class MainWindowBase

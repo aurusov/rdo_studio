@@ -9,11 +9,11 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qstatusbar.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/status_bar.h"
+#include "app/rdo_studio/src/status_bar.h"
 // --------------------------------------------------------------------------------
 
 StatusBar::StatusBar(QMainWindow* pParent)

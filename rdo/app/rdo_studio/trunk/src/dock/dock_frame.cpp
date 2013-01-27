@@ -8,11 +8,11 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_frame.h"
+#include "app/rdo_studio/src/dock/dock_frame.h"
 // --------------------------------------------------------------------------------
 
 DockFrame::DockFrame(PTR(QWidget) pParent)

@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/model/model.cpp
+  \file      app/rdo_studio/src/model/model.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
@@ -8,7 +8,7 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
 #include <boost/bind.hpp>
@@ -22,18 +22,18 @@
 #include "kernel/rdothread.h"
 #include "repository/rdorepository.h"
 #include "simulator/runtime/rdo_exception.h"
-#include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/src/model/model_view.h"
-#include "app/rdo_studio_mfc/src/thread.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
-#include "app/rdo_studio_mfc/src/main_windows_base.h"
-#include "app/rdo_studio_mfc/src/frame/view.h"
-#include "app/rdo_studio_mfc/src/dialog/new_model_dialog.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdobuildedit.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/src/model/model.h"
+#include "app/rdo_studio/src/model/model_view.h"
+#include "app/rdo_studio/src/thread.h"
+#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_windows_base.h"
+#include "app/rdo_studio/src/frame/view.h"
+#include "app/rdo_studio/src/dialog/new_model_dialog.h"
+#include "app/rdo_studio/rdo_edit/rdoeditortabctrl.h"
+#include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
+#include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
+#include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
+#include "app/rdo_studio/rdo_tracer/rdotracer.h"
 #include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 

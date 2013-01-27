@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/model/model.h
+  \file      app/rdo_studio/src/model/model.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_MODEL_MODEL_H_
-#define _RDO_STUDIO_MFC_MODEL_MODEL_H_
+#ifndef _RDO_STUDIO_MODEL_MODEL_H_
+#define _RDO_STUDIO_MODEL_MODEL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/optional.hpp>
@@ -17,8 +17,8 @@
 #include "utils/rdointerface.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio_mfc/src/frame/manager.h"
-#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio/src/frame/manager.h"
+#include "app/rdo_studio/src/application.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -195,4 +195,4 @@ private slots:
 // --------------------------------------------------------------------------------
 extern PTR(RDOStudioModel) model;
 
-#endif // _RDO_STUDIO_MFC_MODEL_MODEL_H_
+#endif // _RDO_STUDIO_MODEL_MODEL_H_

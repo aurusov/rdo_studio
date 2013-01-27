@@ -1,18 +1,18 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/chart/view_style.h
+  \file      app/rdo_studio/src/chart/view_style.h
   \author    Захаров Павел
   \date      28.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_CHART_VIEW_STYLE_H_
-#define _RDO_STUDIO_MFC_CHART_VIEW_STYLE_H_
+#ifndef _RDO_STUDIO_CHART_VIEW_STYLE_H_
+#define _RDO_STUDIO_CHART_VIEW_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/style.h"
+#include "app/rdo_studio/src/style.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -90,4 +90,4 @@ public:
 	RDOStudioChartViewFontsTicks* fonts_ticks;
 };
 
-#endif // _RDO_STUDIO_MFC_CHART_VIEW_STYLE_H_
+#endif // _RDO_STUDIO_CHART_VIEW_STYLE_H_

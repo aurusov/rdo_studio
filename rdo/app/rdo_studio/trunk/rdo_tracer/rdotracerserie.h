@@ -7,15 +7,15 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACERSERIE_H_
-#define _RDO_STUDIO_MFC_TRACER_RDOTRACERSERIE_H_
+#ifndef _RDO_STUDIO_TRACER_RDOTRACERSERIE_H_
+#define _RDO_STUDIO_TRACER_RDOTRACERSERIE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <list>
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/chart/chart_tree_item.h"
+#include "app/rdo_studio/src/chart/chart_tree_item.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -97,4 +97,4 @@ public:
 	ExportData exportData();
 };
 
-#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERSERIE_H_
+#endif // _RDO_STUDIO_TRACER_RDOTRACERSERIE_H_

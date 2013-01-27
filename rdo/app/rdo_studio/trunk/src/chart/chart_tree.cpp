@@ -8,20 +8,20 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 #include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/chart/chart_tree.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracerrestype.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracerresource.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracerpattern.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotraceroperation.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracerresult.h"
-#include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio/src/chart/chart_tree.h"
+#include "app/rdo_studio/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/rdo_tracer/rdotracerrestype.h"
+#include "app/rdo_studio/rdo_tracer/rdotracerresource.h"
+#include "app/rdo_studio/rdo_tracer/rdotracerpattern.h"
+#include "app/rdo_studio/rdo_tracer/rdotraceroperation.h"
+#include "app/rdo_studio/rdo_tracer/rdotracerresult.h"
+#include "app/rdo_studio/src/application.h"
+#include "app/rdo_studio/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

@@ -7,13 +7,13 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORTABCTRL_H_
-#define _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORTABCTRL_H_
+#ifndef _RDO_STUDIO_RDO_EDIT_RDOEDITORTABCTRL_H_
+#define _RDO_STUDIO_RDO_EDIT_RDOEDITORTABCTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qtabwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
+#include "app/rdo_studio/rdo_edit/rdoeditoredit.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditor {
@@ -48,4 +48,4 @@ private:
 
 } // namespace rdoEditor
 
-#endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORTABCTRL_H_
+#endif // _RDO_STUDIO_RDO_EDIT_RDOEDITORTABCTRL_H_

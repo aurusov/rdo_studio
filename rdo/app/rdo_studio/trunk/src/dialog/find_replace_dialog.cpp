@@ -8,10 +8,10 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dialog/find_replace_dialog.h"
+#include "app/rdo_studio/src/dialog/find_replace_dialog.h"
 // --------------------------------------------------------------------------------
 
 FindReplaceDialog::Settings::Settings()

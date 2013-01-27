@@ -1,39 +1,39 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/options.h
+  \file      app/rdo_studio/src/options.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      13.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_OPTIONS_H_
-#define _RDO_STUDIO_MFC_OPTIONS_H_
+#ifndef _RDO_STUDIO_OPTIONS_H_
+#define _RDO_STUDIO_OPTIONS_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "ui/mfc_ctrls/rdocolorcombobox.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditorresultsstyle.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdobuildedit.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdofindedit.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdobuildeditstyle.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdofindeditstyle.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/log_main_wnd.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/log_view_style.h"
-#include "app/rdo_studio_mfc/src/chart/document.h"
-#include "app/rdo_studio_mfc/src/chart/view.h"
-#include "app/rdo_studio_mfc/src/chart/view_style.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
-#include "app/rdo_studio_mfc/src/frame/style.h"
-#include "app/rdo_studio_mfc/src/frame/options_ctrl.h"
-#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio/rdo_edit/rdoeditoredit.h"
+#include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
+#include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"
+#include "app/rdo_studio/rdo_edit/rdoeditorresultsstyle.h"
+#include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
+#include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
+#include "app/rdo_studio/edit_ctrls/rdofindedit.h"
+#include "app/rdo_studio/edit_ctrls/rdobuildeditstyle.h"
+#include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
+#include "app/rdo_studio/edit_ctrls/rdofindeditstyle.h"
+#include "app/rdo_studio/src/tracer/ctrls/log_main_wnd.h"
+#include "app/rdo_studio/src/tracer/ctrls/log_view_style.h"
+#include "app/rdo_studio/src/chart/document.h"
+#include "app/rdo_studio/src/chart/view.h"
+#include "app/rdo_studio/src/chart/view_style.h"
+#include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
+#include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
+#include "app/rdo_studio/src/frame/style.h"
+#include "app/rdo_studio/src/frame/options_ctrl.h"
+#include "app/rdo_studio/resource.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -401,4 +401,4 @@ private:
 	DECLARE_MESSAGE_MAP()
 };
 
-#endif // _RDO_STUDIO_MFC_OPTIONS_H_
+#endif // _RDO_STUDIO_OPTIONS_H_

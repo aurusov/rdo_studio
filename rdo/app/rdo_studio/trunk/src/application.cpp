@@ -8,7 +8,7 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextcodec.h>
@@ -18,11 +18,11 @@
 #include "kernel/rdothread.h"
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
-#include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/src/thread.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/src/application.h"
+#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/model/model.h"
+#include "app/rdo_studio/src/thread.h"
+#include "app/rdo_studio/rdo_tracer/rdotracer.h"
 #include "thirdparty/win_registry/registry.h"
 #include "thirdparty/qt-solutions/qtwinmigrate/src/qmfcapp.h"
 // --------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/chart/options.cpp
+  \file      app/rdo_studio/src/chart/options.cpp
   \author    Захаров Павел
   \date      31.03.2003
   \brief     
@@ -8,14 +8,14 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/chart/options.h"
-#include "app/rdo_studio_mfc/src/chart/view.h"
-#include "app/rdo_studio_mfc/src/chart/document.h"
-#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio/src/chart/options.h"
+#include "app/rdo_studio/src/chart/view.h"
+#include "app/rdo_studio/src/chart/document.h"
+#include "app/rdo_studio/src/application.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

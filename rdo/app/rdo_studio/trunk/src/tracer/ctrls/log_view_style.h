@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qcolor.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/style.h"
+#include "app/rdo_studio/src/style.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace tracer {

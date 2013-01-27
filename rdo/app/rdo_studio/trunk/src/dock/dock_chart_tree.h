@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_focusable.h"
-#include "app/rdo_studio_mfc/src/chart/chart_tree.h"
+#include "app/rdo_studio/src/dock/dock_focusable.h"
+#include "app/rdo_studio/src/chart/chart_tree.h"
 // --------------------------------------------------------------------------------
 
 class DockChartTree: public DockFocusable

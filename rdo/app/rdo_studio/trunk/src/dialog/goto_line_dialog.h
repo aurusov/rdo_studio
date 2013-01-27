@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qdialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/ui_goto_line_dialog.h"
+#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_goto_line_dialog.h"
 // --------------------------------------------------------------------------------
 
 class GoToLineDialog

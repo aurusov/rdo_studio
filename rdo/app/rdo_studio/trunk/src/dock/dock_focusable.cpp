@@ -8,10 +8,10 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_focusable.h"
+#include "app/rdo_studio/src/dock/dock_focusable.h"
 // --------------------------------------------------------------------------------
 
 DockFocusable::DockFocusable(CREF(QString) title, PTR(QWidget) pParent)

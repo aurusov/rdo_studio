@@ -8,13 +8,13 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qaction.h>
 #include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_build.h"
-#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio/src/dock/dock_build.h"
+#include "app/rdo_studio/src/application.h"
 #include "simulator/report/file_message.h"
 #include "simulator/report/build_edit_line_info.h"
 // --------------------------------------------------------------------------------

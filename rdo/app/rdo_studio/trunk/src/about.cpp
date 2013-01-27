@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/about.cpp
+  \file      app/rdo_studio/src/about.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      18.08.2012
   \brief     
@@ -8,11 +8,11 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/about.h"
-#include "app/rdo_studio_mfc/res/build_version.h"
+#include "app/rdo_studio/src/about.h"
+#include "app/rdo_studio/res/build_version.h"
 // --------------------------------------------------------------------------------
 
 About::About(PTR(QWidget) pParent)

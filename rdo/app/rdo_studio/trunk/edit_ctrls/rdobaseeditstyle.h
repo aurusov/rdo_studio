@@ -7,12 +7,12 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDITSTYLE_H_
-#define _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDITSTYLE_H_
+#ifndef _RDO_STUDIO_EDIT_CTRLS_RDOBASEEDITSTYLE_H_
+#define _RDO_STUDIO_EDIT_CTRLS_RDOBASEEDITSTYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/style.h"
+#include "app/rdo_studio/src/style.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
@@ -136,4 +136,4 @@ public:
 
 } // namespace rdoEditCtrl
 
-#endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDITSTYLE_H_
+#endif // _RDO_STUDIO_EDIT_CTRLS_RDOBASEEDITSTYLE_H_

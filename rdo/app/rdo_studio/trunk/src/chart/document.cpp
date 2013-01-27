@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/chart/document.cpp
+  \file      app/rdo_studio/src/chart/document.cpp
   \author    Захаров Павел
   \date      20.02.2003
   \brief     
@@ -8,19 +8,19 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm/find_if.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/chart/document.h"
-#include "app/rdo_studio_mfc/src/chart/view.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
-#include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_windows_base.h"
+#include "app/rdo_studio/src/chart/document.h"
+#include "app/rdo_studio/src/chart/view.h"
+#include "app/rdo_studio/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
+#include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
+#include "app/rdo_studio/src/application.h"
+#include "app/rdo_studio/src/main_windows_base.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

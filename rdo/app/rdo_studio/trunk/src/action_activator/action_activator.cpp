@@ -8,11 +8,11 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGUI/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
+#include "app/rdo_studio/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
 
 ActionActivator::ActionActivator()

@@ -9,12 +9,12 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/tracer/ctrls/log_main_wnd.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/log_view_style.h"
-#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio/src/tracer/ctrls/log_main_wnd.h"
+#include "app/rdo_studio/src/tracer/ctrls/log_view_style.h"
+#include "app/rdo_studio/src/application.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

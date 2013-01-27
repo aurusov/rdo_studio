@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/about.h
+  \file      app/rdo_studio/src/about.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      18.08.2012
   \brief     
@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qdialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/ui_about.h"
+#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_about.h"
 // --------------------------------------------------------------------------------
 
 class About: public QDialog, private Ui::AboutDialog

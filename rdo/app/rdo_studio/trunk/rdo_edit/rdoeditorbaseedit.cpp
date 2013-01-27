@@ -8,13 +8,13 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
-#include "app/rdo_studio_mfc/res/ac_function.xpm"
-#include "app/rdo_studio_mfc/res/ac_data.xpm"
-#include "app/rdo_studio_mfc/res/ac_trace.xpm"
+#include "app/rdo_studio/rdo_edit/rdoeditorbaseedit.h"
+#include "app/rdo_studio/res/ac_function.xpm"
+#include "app/rdo_studio/res/ac_data.xpm"
+#include "app/rdo_studio/res/ac_trace.xpm"
 #include "thirdparty/scintilla/include/SciLexer.h"
 // --------------------------------------------------------------------------------
 

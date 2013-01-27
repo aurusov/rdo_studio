@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
-#define _RDO_STUDIO_MFC_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
+#ifndef _RDO_STUDIO_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
+#define _RDO_STUDIO_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
 
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
@@ -26,4 +26,4 @@ protected:
 	QMenu* m_pPopupMenu;
 };
 
-#endif // _RDO_STUDIO_MFC_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
+#endif // _RDO_STUDIO_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_

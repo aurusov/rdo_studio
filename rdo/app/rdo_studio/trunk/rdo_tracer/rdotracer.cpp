@@ -8,18 +8,18 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/src/main_windows_base.h"
-#include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/thread.h"
-#include "app/rdo_studio_mfc/src/chart/document.h"
+#include "app/rdo_studio/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/src/model/model.h"
+#include "app/rdo_studio/src/main_windows_base.h"
+#include "app/rdo_studio/src/application.h"
+#include "app/rdo_studio/src/thread.h"
+#include "app/rdo_studio/src/chart/document.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

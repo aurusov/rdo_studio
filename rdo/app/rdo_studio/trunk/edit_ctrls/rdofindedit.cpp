@@ -8,13 +8,13 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/edit_ctrls/rdofindedit.h"
-#include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio/edit_ctrls/rdofindedit.h"
+#include "app/rdo_studio/src/application.h"
+#include "app/rdo_studio/src/main_frm.h"
 #include "thirdparty/scintilla/include/SciLexer.h"
 #include "thirdparty/scintilla/rdo/LexFind.h"
 // --------------------------------------------------------------------------------

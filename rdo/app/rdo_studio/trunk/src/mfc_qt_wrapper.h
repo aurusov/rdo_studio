@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_QT_WRAPPER_H_
-#define _RDO_STUDIO_MFC_QT_WRAPPER_H_
+#ifndef _RDO_STUDIO_QT_WRAPPER_H_
+#define _RDO_STUDIO_QT_WRAPPER_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qwidget.h>
@@ -108,4 +108,4 @@ private:
 	}
 };
 
-#endif // _RDO_STUDIO_MFC_QT_WRAPPER_H_
+#endif // _RDO_STUDIO_QT_WRAPPER_H_

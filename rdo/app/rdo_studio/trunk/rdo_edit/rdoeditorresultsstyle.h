@@ -7,12 +7,12 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORRESULTSSTYLE_H_
-#define _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORRESULTSSTYLE_H_
+#ifndef _RDO_STUDIO_RDO_EDIT_RDOEDITORRESULTSSTYLE_H_
+#define _RDO_STUDIO_RDO_EDIT_RDOEDITORRESULTSSTYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseeditstyle.h"
+#include "app/rdo_studio/rdo_edit/rdoeditorbaseeditstyle.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditor {
@@ -29,4 +29,4 @@ public:
 
 } // namespace rdoEditor
 
-#endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORRESULTSSTYLE_H_
+#endif // _RDO_STUDIO_RDO_EDIT_RDOEDITORRESULTSSTYLE_H_

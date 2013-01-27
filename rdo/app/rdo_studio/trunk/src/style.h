@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/style.h
+  \file      app/rdo_studio/src/style.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      27.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_STYLE_H_
-#define _RDO_STUDIO_MFC_STYLE_H_
+#ifndef _RDO_STUDIO_STYLE_H_
+#define _RDO_STUDIO_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
@@ -120,4 +120,4 @@ public:
 
 } // namespace rdoStyle
 
-#endif // _RDO_STUDIO_MFC_STYLE_H_
+#endif // _RDO_STUDIO_STYLE_H_

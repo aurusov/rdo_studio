@@ -8,11 +8,11 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracerresult.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
+#include "app/rdo_studio/rdo_tracer/rdotracerresult.h"
+#include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_APPLICATION_H_
-#define _RDO_STUDIO_MFC_APPLICATION_H_
+#ifndef _RDO_STUDIO_APPLICATION_H_
+#define _RDO_STUDIO_APPLICATION_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
@@ -18,8 +18,8 @@
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio_mfc/src/main_windows_base.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
+#include "app/rdo_studio/src/main_windows_base.h"
+#include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -117,4 +117,4 @@ private:
 // --------------------------------------------------------------------------------
 extern RDOStudioApp studioApp;
 
-#endif // _RDO_STUDIO_MFC_APPLICATION_H_
+#endif // _RDO_STUDIO_APPLICATION_H_

@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/frame/style.cpp
+  \file      app/rdo_studio/src/frame/style.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      18.04.2003
   \brief     
@@ -8,10 +8,10 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/frame/style.h"
+#include "app/rdo_studio/src/frame/style.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

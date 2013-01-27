@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_focusable.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
+#include "app/rdo_studio/src/dock/dock_focusable.h"
+#include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
 // --------------------------------------------------------------------------------
 
 class DockDebug: public DockFocusable

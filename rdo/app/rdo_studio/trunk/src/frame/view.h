@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/frame/view.h
+  \file      app/rdo_studio/src/frame/view.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      06.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_FRAME_VIEW_H_
-#define _RDO_STUDIO_MFC_FRAME_VIEW_H_
+#ifndef _RDO_STUDIO_FRAME_VIEW_H_
+#define _RDO_STUDIO_FRAME_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
@@ -108,4 +108,4 @@ private:
 	virtual rbool event(QEvent* pEvent);
 };
 
-#endif // _RDO_STUDIO_MFC_FRAME_VIEW_H_
+#endif // _RDO_STUDIO_FRAME_VIEW_H_

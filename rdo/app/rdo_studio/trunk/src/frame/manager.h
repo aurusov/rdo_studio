@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/frame/manager.h
+  \file      app/rdo_studio/src/frame/manager.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_FRAME_MANAGER_H_
-#define _RDO_STUDIO_MFC_FRAME_MANAGER_H_
+#ifndef _RDO_STUDIO_FRAME_MANAGER_H_
+#define _RDO_STUDIO_FRAME_MANAGER_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
@@ -18,7 +18,7 @@
 #include <QtGui/qtreewidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
-#include "app/rdo_studio_mfc/src/frame/view.h"
+#include "app/rdo_studio/src/frame/view.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -105,4 +105,4 @@ private slots:
 	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pTreeWidgetItem, int);
 };
 
-#endif // _RDO_STUDIO_MFC_FRAME_MANAGER_H_
+#endif // _RDO_STUDIO_FRAME_MANAGER_H_

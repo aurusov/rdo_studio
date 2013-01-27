@@ -7,15 +7,15 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBUILDEDIT_H_
-#define _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBUILDEDIT_H_
+#ifndef _RDO_STUDIO_EDIT_CTRLS_RDOBUILDEDIT_H_
+#define _RDO_STUDIO_EDIT_CTRLS_RDOBUILDEDIT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
-#include "app/rdo_studio_mfc/edit_ctrls/editwithreadonlypopupmenu.h"
+#include "app/rdo_studio/edit_ctrls/rdologedit.h"
+#include "app/rdo_studio/edit_ctrls/editwithreadonlypopupmenu.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
@@ -46,4 +46,4 @@ private:
 
 } // namespace rdoEditCtrl
 
-#endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBUILDEDIT_H_
+#endif // _RDO_STUDIO_EDIT_CTRLS_RDOBUILDEDIT_H_

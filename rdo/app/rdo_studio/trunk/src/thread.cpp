@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2006-2012
-  \file      app/rdo_studio_mfc/src/thread.cpp
+  \file      app/rdo_studio/src/thread.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      15.07.2006
   \brief     
@@ -8,12 +8,12 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/thread.h"
-#include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/src/thread.h"
+#include "app/rdo_studio/src/model/model.h"
+#include "app/rdo_studio/rdo_tracer/rdotracer.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

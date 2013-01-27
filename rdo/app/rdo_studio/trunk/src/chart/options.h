@@ -1,20 +1,20 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/chart/options.h
+  \file      app/rdo_studio/src/chart/options.h
   \author    Захаров Павел
   \date      31.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_CHART_OPTIONS_H_
-#define _RDO_STUDIO_MFC_CHART_OPTIONS_H_
+#ifndef _RDO_STUDIO_CHART_OPTIONS_H_
+#define _RDO_STUDIO_CHART_OPTIONS_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "ui/mfc_ctrls/rdocolorcombobox.h"
-#include "app/rdo_studio_mfc/src/chart/document.h"
-#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio/src/chart/document.h"
+#include "app/rdo_studio/resource.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -128,4 +128,4 @@ public:
 	virtual ~RDOStudioChartOptions();
 };
 
-#endif // _RDO_STUDIO_MFC_CHART_OPTIONS_H_
+#endif // _RDO_STUDIO_CHART_OPTIONS_H_

@@ -7,15 +7,15 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACERBASE_H_
-#define _RDO_STUDIO_MFC_TRACER_RDOTRACERBASE_H_
+#ifndef _RDO_STUDIO_TRACER_RDOTRACERBASE_H_
+#define _RDO_STUDIO_TRACER_RDOTRACERBASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
-#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio/resource.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -123,4 +123,4 @@ public:
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERBASE_H_
+#endif // _RDO_STUDIO_TRACER_RDOTRACERBASE_H_

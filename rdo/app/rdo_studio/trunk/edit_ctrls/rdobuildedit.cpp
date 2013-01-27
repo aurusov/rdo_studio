@@ -8,15 +8,15 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/report/build_edit_line_info.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdobuildedit.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
-#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
+#include "app/rdo_studio/rdo_edit/rdoeditoredit.h"
+#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/application.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

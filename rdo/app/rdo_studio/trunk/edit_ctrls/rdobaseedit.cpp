@@ -8,7 +8,7 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <boost/range.hpp>
@@ -17,10 +17,10 @@
 #include <QtGui/qmessagebox.h>
 #include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
-#include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
-#include "app/rdo_studio_mfc/src/dialog/goto_line_dialog.h"
+#include "app/rdo_studio/edit_ctrls/rdobaseedit.h"
+#include "app/rdo_studio/src/application.h"
+#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/dialog/goto_line_dialog.h"
 #include "thirdparty/scintilla/include/SciLexer.h"
 #include "thirdparty/scintilla/lexlib/WordList.h"
 // --------------------------------------------------------------------------------

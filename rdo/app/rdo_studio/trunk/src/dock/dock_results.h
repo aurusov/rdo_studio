@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_focusable.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
+#include "app/rdo_studio/src/dock/dock_focusable.h"
+#include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
 // --------------------------------------------------------------------------------
 
 class DockResults: public DockFocusable

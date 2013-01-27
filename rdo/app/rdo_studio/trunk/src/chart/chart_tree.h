@@ -14,8 +14,8 @@
 #include <QtGui/qtreewidget.h>
 #include <QtGui/qicon.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/chart/chart_tree_item.h"
-#include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
+#include "app/rdo_studio/src/chart/chart_tree_item.h"
+#include "app/rdo_studio/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------

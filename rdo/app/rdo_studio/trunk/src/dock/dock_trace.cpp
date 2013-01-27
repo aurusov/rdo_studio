@@ -8,12 +8,12 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_trace.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/src/dock/dock_trace.h"
+#include "app/rdo_studio/rdo_tracer/rdotracer.h"
 // --------------------------------------------------------------------------------
 
 DockTrace::DockTrace(PTR(QWidget) pParent)

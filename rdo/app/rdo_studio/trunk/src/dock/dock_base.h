@@ -14,7 +14,7 @@
 #include <QtGui/qdockwidget.h>
 #include <QtGui/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/mfc_qt_wrapper.h"
+#include "app/rdo_studio/src/mfc_qt_wrapper.h"
 // --------------------------------------------------------------------------------
 
 template <class T>

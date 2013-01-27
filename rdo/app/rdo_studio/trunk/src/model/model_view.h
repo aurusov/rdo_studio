@@ -1,20 +1,20 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/model/model_view.h
+  \file      app/rdo_studio/src/model/model_view.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_MODEL_VIEW_H_
-#define _RDO_STUDIO_MFC_MODEL_VIEW_H_
+#ifndef _RDO_STUDIO_MODEL_VIEW_H_
+#define _RDO_STUDIO_MODEL_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/src/dialog/find_dialog.h"
+#include "app/rdo_studio/src/model/model.h"
+#include "app/rdo_studio/src/dialog/find_dialog.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------

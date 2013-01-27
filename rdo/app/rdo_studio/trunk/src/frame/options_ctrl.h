@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/frame/options_ctrl.h
+  \file      app/rdo_studio/src/frame/options_ctrl.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      18.04.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_FRAME_OPTIONS_CTRL_H_
-#define _RDO_STUDIO_MFC_FRAME_OPTIONS_CTRL_H_
+#ifndef _RDO_STUDIO_FRAME_OPTIONS_CTRL_H_
+#define _RDO_STUDIO_FRAME_OPTIONS_CTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -43,4 +43,4 @@ private:
 	DECLARE_MESSAGE_MAP()
 };
 
-#endif // _RDO_STUDIO_MFC_FRAME_OPTIONS_CTRL_H_
+#endif // _RDO_STUDIO_FRAME_OPTIONS_CTRL_H_

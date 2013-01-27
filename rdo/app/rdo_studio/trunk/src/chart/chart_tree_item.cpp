@@ -8,10 +8,10 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/chart/chart_tree_item.h"
+#include "app/rdo_studio/src/chart/chart_tree_item.h"
 // --------------------------------------------------------------------------------
 
 ChartTreeItem::ChartTreeItem(rbool drawable)

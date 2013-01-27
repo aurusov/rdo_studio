@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDIT_H_
-#define _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDIT_H_
+#ifndef _RDO_STUDIO_EDIT_CTRLS_RDOBASEEDIT_H_
+#define _RDO_STUDIO_EDIT_CTRLS_RDOBASEEDIT_H_
 
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
@@ -16,10 +16,10 @@
 #include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
-#include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
-#include "app/rdo_studio_mfc/src/dialog/find_dialog.h"
-#include "app/rdo_studio_mfc/src/dialog/find_replace_dialog.h"
+#include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
+#include "app/rdo_studio/src/action_activator/action_activator.h"
+#include "app/rdo_studio/src/dialog/find_dialog.h"
+#include "app/rdo_studio/src/dialog/find_replace_dialog.h"
 #include "thirdparty/scintilla/qt/ScintillaEditBase/ScintillaEditBase.h"
 // --------------------------------------------------------------------------------
 
@@ -246,4 +246,4 @@ signals:
 
 } // namespace rdoEditCtrl
 
-#endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDIT_H_
+#endif // _RDO_STUDIO_EDIT_CTRLS_RDOBASEEDIT_H_

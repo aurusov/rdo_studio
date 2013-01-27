@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/view_preferences.h
+  \file      app/rdo_studio/src/view_preferences.h
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      27.11.2012
   \brief     
@@ -13,8 +13,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qdialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/ui_view_preferenses.h"
-#include "app/rdo_studio_mfc/src/options.h"
+#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_view_preferenses.h"
+#include "app/rdo_studio/src/options.h"
 // --------------------------------------------------------------------------------
 
 class ViewPreferences

@@ -7,12 +7,12 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_RDOFINDEDITSTYLE_H_
-#define _RDO_STUDIO_MFC_EDIT_CTRLS_RDOFINDEDITSTYLE_H_
+#ifndef _RDO_STUDIO_EDIT_CTRLS_RDOFINDEDITSTYLE_H_
+#define _RDO_STUDIO_EDIT_CTRLS_RDOFINDEDITSTYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/edit_ctrls/rdologeditstyle.h"
+#include "app/rdo_studio/edit_ctrls/rdologeditstyle.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
@@ -68,4 +68,4 @@ public:
 
 } // namespace rdoEditCtrl
 
-#endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOFINDEDITSTYLE_H_
+#endif // _RDO_STUDIO_EDIT_CTRLS_RDOFINDEDITSTYLE_H_

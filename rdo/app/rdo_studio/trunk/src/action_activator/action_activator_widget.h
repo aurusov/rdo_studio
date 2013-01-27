@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
+#include "app/rdo_studio/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
 
 class ActionActivatorWidget

@@ -8,13 +8,13 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
-#include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_windows_base.h"
+#include "app/rdo_studio/rdo_edit/rdoeditortabctrl.h"
+#include "app/rdo_studio/src/application.h"
+#include "app/rdo_studio/src/main_windows_base.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;

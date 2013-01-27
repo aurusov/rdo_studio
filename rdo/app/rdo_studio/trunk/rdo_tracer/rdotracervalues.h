@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACERVALUES_H_
-#define _RDO_STUDIO_MFC_TRACER_RDOTRACERVALUES_H_
+#ifndef _RDO_STUDIO_TRACER_RDOTRACERVALUES_H_
+#define _RDO_STUDIO_TRACER_RDOTRACERVALUES_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -55,4 +55,4 @@ public:
 	TracerTimeNow* const getModelTime() const { return modeltime; };
 };
 
-#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERVALUES_H_
+#endif // _RDO_STUDIO_TRACER_RDOTRACERVALUES_H_

@@ -2,7 +2,7 @@
 //	rdo_studio.pch will be the pre-compiled header
 //	stdafx.obj will contain the pre-compiled type information
 
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 
 void appendMenu(PTR(CMenu) pFrom, const int from_index, PTR(CMenu) pTo)
 {

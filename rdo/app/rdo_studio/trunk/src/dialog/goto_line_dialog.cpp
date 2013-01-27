@@ -8,10 +8,10 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dialog/goto_line_dialog.h"
+#include "app/rdo_studio/src/dialog/goto_line_dialog.h"
 // --------------------------------------------------------------------------------
 
 GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount)

@@ -8,12 +8,12 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qdir.h>
 #include <QtGui/qfiledialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dialog/new_model_dialog.h"
+#include "app/rdo_studio/src/dialog/new_model_dialog.h"
 // --------------------------------------------------------------------------------
 
 NewModelDialog::NewModelDialog(PTR(QWidget) pParent)

@@ -9,7 +9,7 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
@@ -17,9 +17,9 @@
 #include <QtGui/qscrollbar.h>
 #include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/tracer/ctrls/log_view.h"
-#include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio/src/tracer/ctrls/log_view.h"
+#include "app/rdo_studio/src/application.h"
+#include "app/rdo_studio/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

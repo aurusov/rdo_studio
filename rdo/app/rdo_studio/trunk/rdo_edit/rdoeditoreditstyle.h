@@ -7,13 +7,13 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDITSTYLE_H_
-#define _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDITSTYLE_H_
+#ifndef _RDO_STUDIO_RDO_EDIT_RDOEDITOREDITSTYLE_H_
+#define _RDO_STUDIO_RDO_EDIT_RDOEDITOREDITSTYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/signal.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseeditstyle.h"
+#include "app/rdo_studio/rdo_edit/rdoeditorbaseeditstyle.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditor {
@@ -150,4 +150,4 @@ DECLARE_POINTER(RDOEditorEditStyle)
 
 } // namespace rdoEditor
 
-#endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDITSTYLE_H_
+#endif // _RDO_STUDIO_RDO_EDIT_RDOEDITOREDITSTYLE_H_

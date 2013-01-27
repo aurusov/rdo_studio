@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/tracer/ctrls/log_view.h"
+#include "app/rdo_studio/src/tracer/ctrls/log_view.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace tracer {

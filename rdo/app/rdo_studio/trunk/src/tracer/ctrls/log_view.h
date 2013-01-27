@@ -16,9 +16,9 @@
 #include <QtGui/qevent.h>
 #include <QtGui/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/tracer/ctrls/log_view_style.h"
-#include "app/rdo_studio_mfc/src/action_activator/action_activator_widget.h"
-#include "app/rdo_studio_mfc/src/dialog/find_dialog.h"
+#include "app/rdo_studio/src/tracer/ctrls/log_view_style.h"
+#include "app/rdo_studio/src/action_activator/action_activator_widget.h"
+#include "app/rdo_studio/src/dialog/find_dialog.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace tracer {

@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio_mfc/src/view_preferences.cpp
+  \file      app/rdo_studio/src/view_preferences.cpp
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      27.11.2012
   \brief     
@@ -8,12 +8,12 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/view_preferences.h"
-#include "app/rdo_studio_mfc/res/build_version.h"
-#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio/src/view_preferences.h"
+#include "app/rdo_studio/res/build_version.h"
+#include "app/rdo_studio/src/application.h"
 // --------------------------------------------------------------------------------
 
 ViewPreferences::ViewPreferences(PTR(QWidget) pParent)

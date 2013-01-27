@@ -7,14 +7,14 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACERRESULT_H_
-#define _RDO_STUDIO_MFC_TRACER_RDOTRACERRESULT_H_
+#ifndef _RDO_STUDIO_TRACER_RDOTRACERRESULT_H_
+#define _RDO_STUDIO_TRACER_RDOTRACERRESULT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
+#include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -45,4 +45,4 @@ public:
 	void setValue( tstring& line, TracerTimeNow* const time, const int eventIndex );
 };
 
-#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERRESULT_H_
+#endif // _RDO_STUDIO_TRACER_RDOTRACERRESULT_H_

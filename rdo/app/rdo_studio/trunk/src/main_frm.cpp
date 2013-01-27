@@ -8,7 +8,7 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
@@ -16,15 +16,15 @@
 #include <QtCore/qprocess.h>
 #include <QtGui/qmdisubwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/main_frm.h"
-#include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/src/options.h"
-#include "app/rdo_studio_mfc/src/about.h"
-#include "app/rdo_studio_mfc/src/view_preferences.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/application.h"
+#include "app/rdo_studio/src/model/model.h"
+#include "app/rdo_studio/src/options.h"
+#include "app/rdo_studio/src/about.h"
+#include "app/rdo_studio/src/view_preferences.h"
+#include "app/rdo_studio/rdo_edit/rdoeditortabctrl.h"
+#include "app/rdo_studio/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/resource.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 

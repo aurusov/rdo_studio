@@ -8,10 +8,10 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio_mfc/pch/stdpch.h"
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
+#include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

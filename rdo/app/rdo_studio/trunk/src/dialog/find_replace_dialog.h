@@ -7,15 +7,15 @@
   \indent    4T
   */
 
-#ifndef _RDO_STUDIO_MFC_DIALOG_FIND_REPLACE_DIALOG_H_
-#define _RDO_STUDIO_MFC_DIALOG_FIND_REPLACE_DIALOG_H_
+#ifndef _RDO_STUDIO_DIALOG_FIND_REPLACE_DIALOG_H_
+#define _RDO_STUDIO_DIALOG_FIND_REPLACE_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/function.hpp>
 #include <QtGui/qdialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/ui_find_replace_dialog.h"
-#include "app/rdo_studio_mfc/src/dialog/find_dialog.h"
+#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_find_replace_dialog.h"
+#include "app/rdo_studio/src/dialog/find_dialog.h"
 // --------------------------------------------------------------------------------
 
 class FindReplaceDialog
@@ -58,4 +58,4 @@ private slots:
 	void onDirectionDownToggled (bool checked);
 };
 
-#endif // _RDO_STUDIO_MFC_DIALOG_FIND_REPLACE_DIALOG_H_
+#endif // _RDO_STUDIO_DIALOG_FIND_REPLACE_DIALOG_H_

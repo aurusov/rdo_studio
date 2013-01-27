@@ -7,12 +7,12 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACERRESOURCE_H_
-#define _RDO_STUDIO_MFC_TRACER_RDOTRACERRESOURCE_H_
+#ifndef _RDO_STUDIO_TRACER_RDOTRACERRESOURCE_H_
+#define _RDO_STUDIO_TRACER_RDOTRACERRESOURCE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
+#include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -63,4 +63,4 @@ public:
 	rbool isErased() { return erased; };
 };
 
-#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERRESOURCE_H_
+#endif // _RDO_STUDIO_TRACER_RDOTRACERRESOURCE_H_
