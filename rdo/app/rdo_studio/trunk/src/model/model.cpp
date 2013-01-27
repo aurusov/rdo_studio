@@ -26,14 +26,12 @@
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
-#include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildedit.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "app/rdo_studio_mfc/plugins/common/rdoplugin.h"
 #include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 
@@ -249,19 +247,11 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_REPOSITORY_MODEL_NEW:
 		{
 			newModelFromRepository();
-			if (plugins)
-			{
-				plugins->pluginProc(rdoPlugin::PM_MODEL_NEW);
-			}
 			break;
 		}
 		case RDOThread::RT_REPOSITORY_MODEL_OPEN:
 		{
 			openModelFromRepository();
-			if (plugins)
-			{
-				plugins->pluginProc(rdoPlugin::PM_MODEL_OPEN);
-			}
 			break;
 		}
 		case RDOThread::RT_REPOSITORY_MODEL_OPEN_ERROR:
@@ -307,10 +297,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_REPOSITORY_MODEL_CLOSE:
 		{
 			closeModelFromRepository();
-			if (plugins)
-			{
-				plugins->pluginProc(rdoPlugin::PM_MODEL_CLOSE);
-			}
 			break;
 		}
 		case RDOThread::RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE:
@@ -341,11 +327,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		}
 		case RDOThread::RT_RUNTIME_MODEL_START_BEFORE:
 		{
-			if (plugins)
-			{
-				plugins->modelStart();
-				plugins->pluginProc(rdoPlugin::PM_MODEL_BEFORE_START);
-			}
 			break;
 		}
 		case RDOThread::RT_RUNTIME_MODEL_START_AFTER:
@@ -366,10 +347,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 				if (pView) pView->setFocus();
 			}
 			studioApp.getIMainWnd()->update_start();
-			if (plugins)
-			{
-				plugins->pluginProc(rdoPlugin::PM_MODEL_AFTER_START);
-			}
 			break;
 		}
 		case RDOThread::RT_RUNTIME_MODEL_STOP_BEFORE:
@@ -403,11 +380,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 
 			show_result();
 
-			if (plugins)
-			{
-				plugins->pluginProc(rdoPlugin::PM_MODEL_FINISHED);
-				plugins->modelStop();
-			}
 			studioApp.autoCloseByModel();
 			break;
 		}
@@ -419,11 +391,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 
 			show_result();
 
-			if (plugins)
-			{
-				plugins->pluginProc(rdoPlugin::PM_MODEL_STOP_CANCEL);
-				plugins->modelStop(false);
-			}
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
@@ -455,11 +422,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 //				const_cast<PTR(rdoEditCtrl::RDOBuildEdit)>(output->getBuild())->showFirstError();
 			}
 
-			if (plugins)
-			{
-				plugins->pluginProc(rdoPlugin::PM_MODEL_STOP_RUNTIME_ERROR);
-				plugins->modelStop(false);
-			}
 			studioApp.autoCloseByModel();
 			break;
 		}
@@ -486,10 +448,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			if (errors_cnt || warnings_cnt)
 			{
 //				studioApp.getIMainWnd()->getDockBuild().getContext().showFirstError();
-			}
-			if (plugins)
-			{
-				plugins->pluginProc(rdoPlugin::PM_MODEL_BUILD_OK);
 			}
 			m_buildState = BS_COMPLETE;
 			PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
@@ -524,11 +482,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			if (errors_cnt || warnings_cnt)
 			{
 				studioApp.getIMainWnd()->getDockBuild().getContext().showFirstError();
-			}
-
-			if (plugins)
-			{
-				plugins->pluginProc(rdoPlugin::PM_MODEL_BUILD_FAILD);
 			}
 
 			m_GUI_CAN_RUN = true;
@@ -587,9 +540,6 @@ void RDOStudioModel::show_result()
 
 rbool RDOStudioModel::newModel(tstring _model_name, tstring _model_path, const int _useTemplate )
 {
-	if (!plugins->canAction(rdoPlugin::maCreate))
-		return false;
-
 	m_useTemplate = _useTemplate;
 	studioApp.getIMainWnd()->getDockBuild  ().clear();
 	studioApp.getIMainWnd()->getDockDebug  ().clear();
@@ -604,9 +554,6 @@ rbool RDOStudioModel::newModel(tstring _model_name, tstring _model_path, const i
 
 rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 {
-	if (!plugins->canAction(rdoPlugin::maOpen))
-		return false;
-
 	if (isRunning())
 	{
 		AfxGetMainWnd()->MessageBox(rdo::format(ID_MSG_MODEL_NEED_STOPED_FOR_OPEN).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK);
@@ -655,9 +602,6 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 
 rbool RDOStudioModel::saveModel() const
 {
-	if (!plugins->canAction(rdoPlugin::maSave))
-		return false;
-
 	rbool res = true;
 	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_SAVE, &res);
 	return res;
@@ -670,9 +614,6 @@ void RDOStudioModel::saveAsModel() const
 
 rbool RDOStudioModel::closeModel() const
 {
-	if (!plugins->canAction(rdoPlugin::maClose))
-		return false;
-
 	if (!isRunning())
 	{
 		stopModel();
@@ -692,9 +633,6 @@ rbool RDOStudioModel::closeModel() const
 
 rbool RDOStudioModel::buildModel()
 {
-	if (!plugins->canAction(rdoPlugin::maBuild))
-		return false;
-
 	if (hasModel() && !isRunning() && saveModel())
 	{
 		studioApp.getIMainWnd()->getDockBuild().clear();
@@ -714,9 +652,6 @@ rbool RDOStudioModel::runModel()
 {
 	if (buildModel())
 	{
-		if (!plugins->canAction(rdoPlugin::maRun))
-			return false;
-
 		m_GUI_CAN_RUN = false;
 		studioApp.getIMainWnd()->getDockBuild().clear();
 		studioApp.getIMainWnd()->getDockDebug().clear();
@@ -1004,11 +939,6 @@ void RDOStudioModel::saveModelToRepository()
 	{
 		updateFrmDescribed();
 	}
-
-	if (wasSaved && plugins)
-	{
-		plugins->pluginProc(rdoPlugin::PM_MODEL_SAVE);
-	}
 }
 
 void RDOStudioModel::saveToXML()
@@ -1148,11 +1078,6 @@ void RDOStudioModel::setName(CREF(tstring) str)
 				m_pModelView->parentWidget()->setWindowTitle(QString::fromStdString(rdo::format(IDS_MODEL_NAME, m_name.c_str())));
 			}
 		}
-
-		if (plugins)
-		{
-			plugins->pluginProc(rdoPlugin::PM_MODEL_NAME_CHANGED);
-		}
 	}
 }
 
@@ -1254,10 +1179,6 @@ void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 		m_runtimeMode = value;
 		sendMessage(kernel->runtime(), RT_RUNTIME_SET_MODE, &m_runtimeMode);
 		g_pTracer->setRuntimeMode(m_runtimeMode);
-		if (plugins)
-		{
-			plugins->pluginProc(rdoPlugin::PM_MODEL_RUNTIMEMODE);
-		}
 		switch (m_runtimeMode)
 		{
 			case rdo::runtime::RTM_MaxSpeed: closeAllFrame(); break;
@@ -1448,10 +1369,6 @@ rbool RDOStudioModel::isModify() const
 	if (m_modify != result)
 	{
 		m_modify = result;
-		if (plugins)
-		{
-			plugins->pluginProc(rdoPlugin::PM_MODEL_MODIFY);
-		}
 	}
 
 	return result;

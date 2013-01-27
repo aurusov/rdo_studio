@@ -20,7 +20,6 @@
 #include "app/rdo_studio_mfc/src/frame/manager.h"
 #include "app/rdo_studio_mfc/src/model/view.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
-#include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 #include "app/rdo_studio_mfc/src/application.h"
