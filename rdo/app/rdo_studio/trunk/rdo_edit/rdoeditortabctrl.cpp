@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
 #include "app/rdo_studio_mfc/resource.h"
 // --------------------------------------------------------------------------------
@@ -75,16 +75,16 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page9->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	page10->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 
-	page1->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
-	page2->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
-	page3->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
-	page4->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
-	page5->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
-	page6->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
-	page7->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
-	page8->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
-	page9->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
-	page10->setEditorStyle( &studioApp.m_pMainFrame->style_editor );
+	page1->setEditorStyle ( &studioApp.getStyle()->style_editor );
+	page2->setEditorStyle ( &studioApp.getStyle()->style_editor );
+	page3->setEditorStyle ( &studioApp.getStyle()->style_editor );
+	page4->setEditorStyle ( &studioApp.getStyle()->style_editor );
+	page5->setEditorStyle ( &studioApp.getStyle()->style_editor );
+	page6->setEditorStyle ( &studioApp.getStyle()->style_editor );
+	page7->setEditorStyle ( &studioApp.getStyle()->style_editor );
+	page8->setEditorStyle ( &studioApp.getStyle()->style_editor );
+	page9->setEditorStyle ( &studioApp.getStyle()->style_editor );
+	page10->setEditorStyle( &studioApp.getStyle()->style_editor );
 
 	page1->setPopupMenu ( &view->popupMenu );
 	page2->setPopupMenu ( &view->popupMenu );

@@ -280,11 +280,14 @@ BOOL RDOStudioApp::InitInstance()
 	rpMethod::project->cursors[ RPProject::cursor_flow_dock_not ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_NOT);
 	rpMethod::project->cursors[ RPProject::cursor_flow_trash ]         = AfxGetApp()->LoadCursor(IDC_FLOW_TRASH);
 #endif
+	QMfcApp::instance(this);
+	qApp->setQuitOnLastWindowClosed(true);
+
 	// Внутри создается объект модели
 	m_pMainFrame = new RDOStudioMainFrame;
-	m_pMainWnd   = m_pMainFrame;
-	if (!m_pMainFrame->LoadFrame(IDR_MAINFRAME))
-		return FALSE;
+	m_pMainFrame->init();
+	m_pMainWnd = m_pMainFrame->c_wnd();
+	m_pMainFrame->show();
 
 #ifdef RDO_MT
 	kernel->thread_studio = m_pStudioGUI;
@@ -293,15 +296,13 @@ BOOL RDOStudioApp::InitInstance()
 #endif
 
 	loadReopen();
-	updateReopenSubMenu();
+//	updateReopenSubMenu();
 
 	if (getFileAssociationCheckInFuture())
 	{
 		setupFileAssociation();
 	}
 
-	m_pMainFrame->ShowWindow(m_nCmdShow);
-	m_pMainFrame->UpdateWindow();
 #ifdef PROCGUI_ENABLE
 	m_methodManager.init();
 	m_pMainFrame->workspace.pagectrl->selectFirst();
@@ -380,6 +381,8 @@ BOOL RDOStudioApp::InitInstance()
 
 int RDOStudioApp::ExitInstance()
 {
+	m_pMainFrame = NULL;
+
 #ifdef PROCGUI_ENABLE
 	m_methodManager.close();
 
@@ -428,6 +431,21 @@ int RDOStudioApp::ExitInstance()
 	{
 		return CWinApp::ExitInstance();
 	}
+}
+
+PTR(QWidget) RDOStudioApp::getMainWnd()
+{
+	return m_pMainFrame;
+}
+
+PTR(MainWindowBase) RDOStudioApp::getStyle()
+{
+	return m_pMainFrame;
+}
+
+PTR(MainWindowBase) RDOStudioApp::getIMainWnd()
+{
+	return m_pMainFrame;
 }
 
 CREF(RPMethodManager) RDOStudioApp::getMethodManager() const
@@ -594,8 +612,10 @@ void RDOStudioApp::insertReopenItem(CREF(tstring) item)
 
 void RDOStudioApp::updateReopenSubMenu() const
 {
-	BOOL maximized;
-	m_pMainFrame->MDIGetActive(&maximized);
+	if (!AfxGetMainWnd() || !AfxGetMainWnd()->GetMenu())
+		return;
+
+	rbool maximized = m_pMainFrame->isMDIMaximazed();
 	int delta = maximized ? 1 : 0;
 
 	PTR(CMenu) pReopenMenu = AfxGetMainWnd()->GetMenu()->GetSubMenu(delta)->GetSubMenu(2);
@@ -990,8 +1010,7 @@ void RDOStudioApp::setupFileAssociation()
 
 void RDOStudioApp::OnAppAbout()
 {
-	QWinWidget parent(m_pMainFrame);
-	About dlg(&parent);
+	About dlg(m_pMainFrame);
 	dlg.exec();
 }
 
@@ -1001,7 +1020,7 @@ void RDOStudioApp::autoCloseByModel()
 	{
 		if (!m_dontCloseIfError || !model || (m_dontCloseIfError && (model->getExitCode() == rdo::simulation::report::EC_OK || model->getExitCode() == rdo::simulation::report::EC_NoMoreEvents)))
 		{
-			m_pMainFrame->SendMessage(WM_CLOSE);
+			m_pMainFrame->close();
 		}
 	}
 }
@@ -1010,7 +1029,7 @@ void RDOStudioApp::autoCloseByPlugin(PTR(RDOStudioPlugin) plugin)
 {
 	if (std::find(m_pluginExitNameList.begin(), m_pluginExitNameList.end(), plugin->getFileName()) != m_pluginExitNameList.end())
 	{
-		m_pMainFrame->SendMessage(WM_CLOSE);
+		m_pMainFrame->close();
 	}
 }
 
@@ -1023,16 +1042,16 @@ BOOL RDOStudioApp::PreTranslateMessage(PTR(MSG) pMsg)
 {
 	if (pMsg->message == WM_KEYDOWN)
 	{
-		PTR(CMDIChildWnd) pChild = m_pMainFrame->MDIGetActive();
-		if (pChild)
-		{
-			PTR(CView) pView = pChild->GetActiveView();
-			if (dynamic_cast<PTR(RDOStudioFrameView)>(pView) && pView == pChild->GetFocus())
-			{
-				pView->SendMessage(pMsg->message, pMsg->wParam, pMsg->lParam);
-				return true;
-			}
-		}
+		//PTR(CMDIChildWnd) pChild = m_pMainFrame->MDIGetActive();
+		//if (pChild)
+		//{
+		//	PTR(CView) pView = pChild->GetActiveView();
+		//	if (dynamic_cast<PTR(RDOStudioFrameView)>(pView) && pView == pChild->GetFocus())
+		//	{
+		//		pView->SendMessage(pMsg->message, pMsg->wParam, pMsg->lParam);
+		//		return true;
+		//	}
+		//}
 	}
 	if (pMsg->message == PLUGIN_MUSTEXIT_MESSAGE)
 	{

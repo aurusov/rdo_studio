@@ -15,7 +15,7 @@
 #include "app/rdo_studio_mfc/src/chart/view.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
 #include "app/rdo_studio_mfc/src/chart/doc_serie.h"
@@ -154,7 +154,7 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	hbmpInit  = (HBITMAP)::GetCurrentObject( hmemdc, OBJ_BITMAP );
 
 	if ( !previewMode )
-		setStyle( &studioApp.m_pMainFrame->style_chart, false );
+		setStyle( &studioApp.getStyle()->style_chart, false );
 
 	if ( GetDocument() ) {
 		recalcLayout();
@@ -163,22 +163,26 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	popupMenu.CreatePopupMenu();
 
-	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-	
-	BOOL maximized;
-	studioApp.m_pMainFrame->MDIGetActive( &maximized );
-	int delta = maximized ? 1 : 0;
+	if (AfxGetMainWnd())
+	{
+		CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+		if (mainMenu)
+		{
+			rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
+			int delta = maximized ? 1 : 0;
 
-	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 6, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 7, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 8, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 9, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 4, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 6, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+			popupMenu.AppendMenu( MF_SEPARATOR );
+			appendMenu( mainMenu->GetSubMenu( 3 + delta ), 6, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 3 + delta ), 7, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 3 + delta ), 8, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 3 + delta ), 9, &popupMenu );
+			popupMenu.AppendMenu( MF_SEPARATOR );
+			appendMenu( mainMenu->GetSubMenu( 6 + delta ), 3, &popupMenu );
+			popupMenu.AppendMenu( MF_SEPARATOR );
+			appendMenu( mainMenu->GetSubMenu( 6 + delta ), 5, &popupMenu );
+		}
+	}
 
 	return 0;
 }

@@ -20,7 +20,7 @@
 #include "app/rdo_studio_mfc/src/frame/document.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
@@ -33,9 +33,9 @@ FrameAnimationContent::FrameAnimationContent(PTR(QWidget) pParent)
 	setAttribute(Qt::WA_NoSystemBackground, true);
 
 	m_bgColor = QColor(
-		GetRValue(studioApp.m_pMainFrame->style_frame.theme->backgroundColor),
-		GetGValue(studioApp.m_pMainFrame->style_frame.theme->backgroundColor),
-		GetBValue(studioApp.m_pMainFrame->style_frame.theme->backgroundColor)
+		GetRValue(studioApp.getStyle()->style_frame.theme->backgroundColor),
+		GetGValue(studioApp.getStyle()->style_frame.theme->backgroundColor),
+		GetBValue(studioApp.getStyle()->style_frame.theme->backgroundColor)
 	);
 
 	updateFont();
@@ -75,9 +75,9 @@ void FrameAnimationContent::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::
 	if (pFrame->m_bgColor.m_transparent)
 	{
 		bgColor = QColor(
-			GetRValue(studioApp.m_pMainFrame->style_frame.theme->backgroundColor),
-			GetGValue(studioApp.m_pMainFrame->style_frame.theme->backgroundColor),
-			GetBValue(studioApp.m_pMainFrame->style_frame.theme->backgroundColor)
+			GetRValue(studioApp.getStyle()->style_frame.theme->backgroundColor),
+			GetGValue(studioApp.getStyle()->style_frame.theme->backgroundColor),
+			GetBValue(studioApp.getStyle()->style_frame.theme->backgroundColor)
 		);
 	}
 	else
@@ -97,7 +97,7 @@ void FrameAnimationContent::init(CREF(QSize) size)
 
 void FrameAnimationContent::updateFont()
 {
-	PTR(RDOStudioFrameStyle) pStyle = &studioApp.m_pMainFrame->style_frame;
+	PTR(RDOStudioFrameStyle) pStyle = &studioApp.getStyle()->style_frame;
 	ASSERT(pStyle);
 
 	m_font = QFont(pStyle->font->name.c_str());
@@ -223,9 +223,9 @@ void FrameAnimationContent::drawBackground(CPTRC(rdo::animation::Frame) pFrame, 
 	{
 		m_memDC.dc().setPen(
 			QColor(
-				GetRValue(studioApp.m_pMainFrame->style_frame.theme->defaultColor),
-				GetGValue(studioApp.m_pMainFrame->style_frame.theme->defaultColor),
-				GetBValue(studioApp.m_pMainFrame->style_frame.theme->defaultColor)
+				GetRValue(studioApp.getStyle()->style_frame.theme->defaultColor),
+				GetGValue(studioApp.getStyle()->style_frame.theme->defaultColor),
+				GetBValue(studioApp.getStyle()->style_frame.theme->defaultColor)
 			)
 		);
 		m_memDC.dc().setBrush(m_bgColor);

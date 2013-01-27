@@ -18,7 +18,7 @@
 #include "app/rdo_studio_mfc/src/frame/document.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
@@ -90,7 +90,7 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 				if ( !doc ) {
 					model->m_frameManager.connectFrameDoc( index );
 				} else {
-					studioApp.m_pMainFrame->MDIActivate( doc->getView()->GetParentFrame() );
+//					studioApp.m_pMainFrame->MDIActivate( doc->getView()->GetParentFrame() );
 				}
 			}
 		}

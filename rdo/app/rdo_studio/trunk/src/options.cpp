@@ -15,7 +15,7 @@
 #include "simulator/report/build_edit_line_info.h"
 #include "app/rdo_studio_mfc/src/options.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
@@ -212,7 +212,7 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 		sheet->preview_editor.setEditorStyle( &sheet->style_editor );
 	}
 
-	SetModified( *sheet->style_editor.buffer != *studioApp.m_pMainFrame->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.m_pMainFrame->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.m_pMainFrame->style_editor.margin );
+	SetModified( *sheet->style_editor.buffer != *studioApp.getStyle()->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.getStyle()->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.getStyle()->style_editor.margin );
 }
 
 // --------------------------------------------------------------------------------
@@ -299,7 +299,7 @@ void RDOStudioOptionsTabs::OnUpdateModify()
 
 	sheet->updateStyles();
 
-	SetModified( *sheet->style_editor.tab != *studioApp.m_pMainFrame->style_editor.tab );
+	SetModified( *sheet->style_editor.tab != *studioApp.getStyle()->style_editor.tab );
 }
 
 // --------------------------------------------------------------------------------
@@ -1477,29 +1477,29 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 
 	sheet->updateStyles();
 
-	SetModified( *sheet->style_editor.font  != *studioApp.m_pMainFrame->style_editor.font ||
-	             *sheet->style_build.font   != *studioApp.m_pMainFrame->style_build.font ||
-	             *sheet->style_debug.font   != *studioApp.m_pMainFrame->style_debug.font ||
-	             *sheet->style_trace.font   != *studioApp.m_pMainFrame->style_trace.font ||
-	             *sheet->style_results.font != *studioApp.m_pMainFrame->style_results.font ||
-	             *sheet->style_find.font    != *studioApp.m_pMainFrame->style_find.font ||
-				 *sheet->style_chart.font   != *studioApp.m_pMainFrame->style_chart.font ||
-				 *sheet->style_frame.font   != *studioApp.m_pMainFrame->style_frame.font ||
-	             *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) != *static_cast<RDOEditorEditTheme*>(studioApp.m_pMainFrame->style_editor.theme) ||
-	             *static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) != *static_cast<RDOBuildEditTheme*>(studioApp.m_pMainFrame->style_build.theme) ||
-	             *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) != *static_cast<RDOBaseEditTheme*>(studioApp.m_pMainFrame->style_debug.theme) ||
-	             *static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) != *static_cast<RDOTracerLogTheme*>(studioApp.m_pMainFrame->style_trace.theme) ||
-	             *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) != *static_cast<RDOEditorBaseEditTheme*>(studioApp.m_pMainFrame->style_results.theme) ||
-	             *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) != *static_cast<RDOFindEditTheme*>(studioApp.m_pMainFrame->style_find.theme) ||
-				 *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) != *static_cast<RDOStudioChartViewTheme*>(studioApp.m_pMainFrame->style_chart.theme) ||
-				 *static_cast<RDOStudioFrameTheme*>(sheet->style_frame.theme) != *static_cast<RDOStudioFrameTheme*>(studioApp.m_pMainFrame->style_frame.theme) ||
-	             *sheet->style_editor.window     != *studioApp.m_pMainFrame->style_editor.window ||
-	             *sheet->style_build.window      != *studioApp.m_pMainFrame->style_build.window ||
-	             *sheet->style_debug.window      != *studioApp.m_pMainFrame->style_debug.window ||
-	             *sheet->style_results.window    != *studioApp.m_pMainFrame->style_results.window ||
-	             *sheet->style_find.window       != *studioApp.m_pMainFrame->style_find.window ||
-	             *sheet->style_trace.borders     != *studioApp.m_pMainFrame->style_trace.borders || 
-				 *sheet->style_chart.fonts_ticks != *studioApp.m_pMainFrame->style_chart.fonts_ticks );
+	SetModified( *sheet->style_editor.font  != *studioApp.getStyle()->style_editor.font ||
+	             *sheet->style_build.font   != *studioApp.getStyle()->style_build.font ||
+	             *sheet->style_debug.font   != *studioApp.getStyle()->style_debug.font ||
+	             *sheet->style_trace.font   != *studioApp.getStyle()->style_trace.font ||
+	             *sheet->style_results.font != *studioApp.getStyle()->style_results.font ||
+	             *sheet->style_find.font    != *studioApp.getStyle()->style_find.font ||
+				 *sheet->style_chart.font   != *studioApp.getStyle()->style_chart.font ||
+				 *sheet->style_frame.font   != *studioApp.getStyle()->style_frame.font ||
+	             *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) != *static_cast<RDOEditorEditTheme*>(studioApp.getStyle()->style_editor.theme) ||
+	             *static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) != *static_cast<RDOBuildEditTheme*>(studioApp.getStyle()->style_build.theme) ||
+	             *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) != *static_cast<RDOBaseEditTheme*>(studioApp.getStyle()->style_debug.theme) ||
+	             *static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) != *static_cast<RDOTracerLogTheme*>(studioApp.getStyle()->style_trace.theme) ||
+	             *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) != *static_cast<RDOEditorBaseEditTheme*>(studioApp.getStyle()->style_results.theme) ||
+	             *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) != *static_cast<RDOFindEditTheme*>(studioApp.getStyle()->style_find.theme) ||
+				 *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) != *static_cast<RDOStudioChartViewTheme*>(studioApp.getStyle()->style_chart.theme) ||
+				 *static_cast<RDOStudioFrameTheme*>(sheet->style_frame.theme) != *static_cast<RDOStudioFrameTheme*>(studioApp.getStyle()->style_frame.theme) ||
+	             *sheet->style_editor.window     != *studioApp.getStyle()->style_editor.window ||
+	             *sheet->style_build.window      != *studioApp.getStyle()->style_build.window ||
+	             *sheet->style_debug.window      != *studioApp.getStyle()->style_debug.window ||
+	             *sheet->style_results.window    != *studioApp.getStyle()->style_results.window ||
+	             *sheet->style_find.window       != *studioApp.getStyle()->style_find.window ||
+	             *sheet->style_trace.borders     != *studioApp.getStyle()->style_trace.borders || 
+				 *sheet->style_chart.fonts_ticks != *studioApp.getStyle()->style_chart.fonts_ticks );
 }
 
 void RDOStudioOptionsColorsStyles::loadFontsIntoCombo( rbool fixed )
@@ -2075,14 +2075,14 @@ RDOStudioOptions::RDOStudioOptions():
 	style_chart.init();
 	style_frame.init();
 
-	style_editor  = studioApp.m_pMainFrame->style_editor;
-	style_build   = studioApp.m_pMainFrame->style_build;
-	style_debug   = studioApp.m_pMainFrame->style_debug;
-	style_trace   = studioApp.m_pMainFrame->style_trace;
-	style_results = studioApp.m_pMainFrame->style_results;
-	style_find    = studioApp.m_pMainFrame->style_find;
-	style_chart   = studioApp.m_pMainFrame->style_chart;
-	style_frame   = studioApp.m_pMainFrame->style_frame;
+	style_editor  = studioApp.getStyle()->style_editor;
+	style_build   = studioApp.getStyle()->style_build;
+	style_debug   = studioApp.getStyle()->style_debug;
+	style_trace   = studioApp.getStyle()->style_trace;
+	style_results = studioApp.getStyle()->style_results;
+	style_find    = studioApp.getStyle()->style_find;
+	style_chart   = studioApp.getStyle()->style_chart;
+	style_frame   = studioApp.getStyle()->style_frame;
 
 	general = new RDOStudioOptionsGeneral( *this );
 	editor  = new RDOStudioOptionsEditor( *this );
@@ -2149,15 +2149,15 @@ void RDOStudioOptions::updateStyles()
 
 void RDOStudioOptions::apply() const
 {
-	studioApp.m_pMainFrame->style_editor  = style_editor;
-	studioApp.m_pMainFrame->style_build   = style_build;
-	studioApp.m_pMainFrame->style_debug   = style_debug;
-	studioApp.m_pMainFrame->style_trace   = style_trace;
-	studioApp.m_pMainFrame->style_results = style_results;
-	studioApp.m_pMainFrame->style_find    = style_find;
-	studioApp.m_pMainFrame->style_chart   = style_chart;
-	studioApp.m_pMainFrame->style_frame   = style_frame;
-	studioApp.m_pMainFrame->updateAllStyles();
+	studioApp.getStyle()->style_editor  = style_editor;
+	studioApp.getStyle()->style_build   = style_build;
+	studioApp.getStyle()->style_debug   = style_debug;
+	studioApp.getStyle()->style_trace   = style_trace;
+	studioApp.getStyle()->style_results = style_results;
+	studioApp.getStyle()->style_find    = style_find;
+	studioApp.getStyle()->style_chart   = style_chart;
+	studioApp.getStyle()->style_frame   = style_frame;
+	studioApp.getStyle()->updateAllStyles();
 	studioApp.setFileAssociationSetup( general->m_setup ? true : false );
 	studioApp.setFileAssociationCheckInFuture( general->m_checkInFuture ? true : false );
 	studioApp.setOpenLastProject( general->m_openLastProject ? true : false );

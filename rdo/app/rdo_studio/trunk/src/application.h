@@ -13,10 +13,13 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
 #include <QtCore/qprocess.h>
+#include <QtGui/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
+#include "kernel/rdokernel.h"
+#include "simulator/service/rdosimwin.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_method_manager.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
 //#define PROCGUI_ENABLE
@@ -41,7 +44,10 @@ public:
 	RDOStudioApp();
 	virtual ~RDOStudioApp();
 
-	PTR(RDOStudioMainFrame) m_pMainFrame;
+	PTR(QWidget)        getMainWnd ();
+	PTR(MainWindowBase) getIMainWnd();
+	PTR(MainWindowBase) getStyle   ();
+
 	//! см. описание RDOKernelGUI
 	//! Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы
 	PTR(RDOThread)          m_pStudioGUI;
@@ -107,6 +113,7 @@ private:
 	PluginNameList                         m_pluginStartNameList;
 	PluginNameList                         m_pluginExitNameList;
 	QProcess*                              m_pAssistant;
+	PTR(RDOStudioMainFrame)                m_pMainFrame;
 
 	void setupFileAssociation();
 	void updateReopenSubMenu () const;

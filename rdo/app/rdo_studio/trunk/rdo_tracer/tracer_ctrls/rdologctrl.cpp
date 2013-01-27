@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -210,7 +210,7 @@ RDOLogCtrl::RDOLogCtrl( RDOLogStyle* style ):
 {
 	//if no style specified default style will be used
 	if ( !logStyle ) {
-		logStyle = &studioApp.m_pMainFrame->style_trace;
+		logStyle = &studioApp.getStyle()->style_trace;
 	}
 }
 

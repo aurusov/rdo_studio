@@ -14,7 +14,7 @@
 #include "app/rdo_studio_mfc/src/edit/view.h"
 #include "app/rdo_studio_mfc/src/edit/document.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio_mfc/resource.h"
 // --------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ int RDOStudioEditView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (RDOStudioEditBaseView::OnCreate(lpCreateStruct) == -1) return -1;
 
-	edit->setEditorStyle( &studioApp.m_pMainFrame->style_editor );
+	edit->setEditorStyle( &studioApp.getStyle()->style_editor );
 	edit->Create( NULL, NULL, WS_VISIBLE, CRect(0, 0, 100, 100), this, 0 );
 	edit->setPopupMenu( &popupMenu );
 

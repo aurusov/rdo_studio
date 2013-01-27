@@ -14,7 +14,7 @@
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
 #include "app/rdo_studio_mfc/src/edit/document_base.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 // --------------------------------------------------------------------------------
 
@@ -87,8 +87,7 @@ int RDOStudioEditBaseView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 
-	BOOL maximized;
-	studioApp.m_pMainFrame->MDIGetActive( &maximized );
+	rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
 	int delta = maximized ? 1 : 0;
 
 	appendMenu( mainMenu, 4 + delta, &popupMenu );
@@ -145,8 +144,8 @@ RDOStudioEditBaseDoc* RDOStudioEditBaseView::GetDocument()
 
 void RDOStudioEditBaseView::restartBufTimer( const int bufIndex )
 {
-	rbool canClear = studioApp.m_pMainFrame->style_editor.buffer->canClearBuffer;
-	int   delay    = studioApp.m_pMainFrame->style_editor.buffer->clearBufferDelay * 1000;
+	rbool canClear = studioApp.getStyle()->style_editor.buffer->canClearBuffer;
+	int   delay    = studioApp.getStyle()->style_editor.buffer->clearBufferDelay * 1000;
 	if ( delay < 0 ) delay = 0;
 	switch ( bufIndex ) {
 		case 1: stopTimer( timerBuf1 ); if ( canClear ) timerBuf1 = SetTimer( timerBuf1_ID, delay, NULL ); break;

@@ -19,7 +19,7 @@
 #include "app/rdo_studio_mfc/src/chart/view.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -448,7 +448,7 @@ rbool RDOTracerSerie::activateFirstDoc() const
 			if ( pos )
 				view = static_cast<RDOStudioChartView*>(doc->GetNextView( pos ));
 			if ( view ) {
-				studioApp.m_pMainFrame->MDIActivate( view->GetParentFrame() );
+//				studioApp.m_pMainFrame->MDIActivate( view->GetParentFrame() );
 				res = true;
 			}
 		}

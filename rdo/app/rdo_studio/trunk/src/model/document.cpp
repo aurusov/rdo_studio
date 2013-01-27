@@ -17,7 +17,7 @@
 #include "app/rdo_studio_mfc/src/model/view.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/resource.h"
 // --------------------------------------------------------------------------------
@@ -107,7 +107,7 @@ BOOL RDOStudioModelDoc::SaveModified()
 			case IDNO    : flag = true; break;
 			case IDCANCEL: flag = false; break;
 		}
-	} else if ( !RDOStudioMainFrame::is_close_mode() ) {
+	} else if ( !MainWindowBase::is_close_mode() ) {
 		switch ( AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODELCLOSE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNO ) ) {
 			case IDYES: flag = true; break;
 			case IDNO : flag = false; break;
