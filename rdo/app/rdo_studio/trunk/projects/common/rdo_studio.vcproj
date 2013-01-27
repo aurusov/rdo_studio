@@ -1305,75 +1305,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\res\flow_connector.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flow_dock_in.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flow_dock_not.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flow_move.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flow_rotate.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flow_rotate_center.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flow_rotate_tl.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flow_scale_lr.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flow_scale_tb.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flow_scale_tlbr.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flow_scale_trbl.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flow_select.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flow_trash.cur"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\flowchart_default.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\res\frameoptionsctrl.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\pagectrl_close.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\pagectrl_close_over.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\pagectrl_page.bmp"
 				>
 			</File>
 			<File
@@ -1551,27 +1483,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\res\toolbar1.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\res\toolbar_empty.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\toolbar_mainframe.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\toolbar_mainframe_d.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\toolbar_styleandcolor.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\trash.bmp"
 				>
 			</File>
 			<File
@@ -2948,50 +2860,6 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name=".process"
-			>
-			<File
-				RelativePath="..\..\rdo_process\rdoprocess_docview.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rdoprocess_docview.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rdoprocess_method_manager.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rdoprocess_method_manager.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rdoprocess_pagectrl.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rdoprocess_pagectrl.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rdoprocess_project.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rdoprocess_project.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rdoprocess_toolbar.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rdoprocess_toolbar.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name=".pch"
 			>
 			<File
@@ -3400,14 +3268,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\dock\dock_frame.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dock\dock_process.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dock\dock_process.h"
 				>
 			</File>
 			<File

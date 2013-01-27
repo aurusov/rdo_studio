@@ -25,8 +25,6 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
-#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
 #include "thirdparty/sci/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
@@ -382,14 +380,6 @@ void RDOStudioMainFrame::init()
 	pMenuToolbarView->addAction(toolBarModel->toggleViewAction());
 
 	menuView->insertSeparator(actViewSettings);
-
-#ifdef PROCGUI_ENABLE
-	m_pDockProcess = new DockProcess(this);
-	tabifyDockWidget(m_pDockChartTree, m_pDockProcess);
-	pMenuDockView->addAction(m_pDockProcess->toggleViewAction());
-#else
-	m_pDockProcess = NULL;
-#endif
 
 	g_pTracer->registerClipboardFormat();
 

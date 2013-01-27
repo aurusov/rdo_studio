@@ -23,9 +23,6 @@
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/thread.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
-#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
-#include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
 #include "thirdparty/win_registry/registry.h"
 #include "thirdparty/qt-solutions/qtwinmigrate/src/qmfcapp.h"
 // --------------------------------------------------------------------------------
@@ -169,11 +166,6 @@ RDOStudioApp::RDOStudioApp()
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());
 
 	m_log.open(_T("log.txt"));
-#ifdef PROCGUI_ENABLE
-	new RPProjectMFC();
-	new RPObjectFactory();
-	rpMethod::factory->registerDefaultObject();
-#endif
 }
 
 RDOStudioApp::~RDOStudioApp()
@@ -226,27 +218,6 @@ BOOL RDOStudioApp::InitInstance()
 
 	g_pTracer = new rdo::gui::tracer::Tracer();
 
-#ifdef PROCGUI_ENABLE
-	rpMethod::project->cursors[ RPProject::cursor_flow_select ]        = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
-	rpMethod::project->cursors[ RPProject::cursor_flow_move ]          = AfxGetApp()->LoadCursor(IDC_FLOW_MOVE);
-	rpMethod::project->cursors[ RPProject::cursor_flow_connector ]     = AfxGetApp()->LoadCursor(IDC_FLOW_CONNECTOR);
-	rpMethod::project->cursors[ RPProject::cursor_flow_rotate ]        = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE);
-	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_center ] = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_CENTER);
-	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_tl ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
-	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_tr ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
-	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_bl ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
-	rpMethod::project->cursors[ RPProject::cursor_flow_rotate_br ]     = AfxGetApp()->LoadCursor(IDC_FLOW_ROTATE_TL);
-	rpMethod::project->cursors[ RPProject::cursor_flow_scale_lr ]      = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_LR);
-	rpMethod::project->cursors[ RPProject::cursor_flow_scale_tb ]      = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TB);
-	rpMethod::project->cursors[ RPProject::cursor_flow_scale_tlbr ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TLBR);
-	rpMethod::project->cursors[ RPProject::cursor_flow_scale_trbl ]    = AfxGetApp()->LoadCursor(IDC_FLOW_SCALE_TRBL);
-	rpMethod::project->cursors[ RPProject::cursor_flow_dock_in ]       = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
-	rpMethod::project->cursors[ RPProject::cursor_flow_dock_out ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
-	rpMethod::project->cursors[ RPProject::cursor_flow_dock_inout ]    = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
-	rpMethod::project->cursors[ RPProject::cursor_flow_dock_fly ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_IN);
-	rpMethod::project->cursors[ RPProject::cursor_flow_dock_not ]      = AfxGetApp()->LoadCursor(IDC_FLOW_DOCK_NOT);
-	rpMethod::project->cursors[ RPProject::cursor_flow_trash ]         = AfxGetApp()->LoadCursor(IDC_FLOW_TRASH);
-#endif
 	QMfcApp::instance(this);
 	qApp->setQuitOnLastWindowClosed(true);
 
@@ -269,10 +240,6 @@ BOOL RDOStudioApp::InitInstance()
 		setupFileAssociation();
 	}
 
-#ifdef PROCGUI_ENABLE
-	m_methodManager.init();
-	m_pMainFrame->getDockProcess().getContext().selectFirst();
-#endif
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
 
@@ -341,21 +308,6 @@ int RDOStudioApp::ExitInstance()
 {
 	m_pMainFrame = NULL;
 
-#ifdef PROCGUI_ENABLE
-	m_methodManager.close();
-
-	if (rpMethod::factory)
-	{
-		delete rpMethod::factory;
-		rpMethod::factory = NULL;
-	}
-
-	if (rpMethod::project)
-	{
-		delete rpMethod::project;
-		rpMethod::project = NULL;
-	}
-#endif
 	if (m_exitCode != rdo::simulation::report::EC_ModelNotFound)
 	{
 		m_exitCode = model->getExitCode();
@@ -401,11 +353,6 @@ PTR(MainWindowBase) RDOStudioApp::getStyle()
 PTR(MainWindowBase) RDOStudioApp::getIMainWnd()
 {
 	return m_pMainFrame;
-}
-
-CREF(RPMethodManager) RDOStudioApp::getMethodManager() const
-{
-	return m_methodManager;
 }
 
 REF(std::ofstream) RDOStudioApp::log()

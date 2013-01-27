@@ -18,9 +18,6 @@
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/src/frame/manager.h"
-#include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
-#include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
-#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 #include "app/rdo_studio_mfc/src/application.h"
 // --------------------------------------------------------------------------------
 
@@ -85,15 +82,12 @@ private:
 	rdo::simulation::report::RDOExitCode   m_exitCode;
 	mutable rbool                          m_modify;
 	RDOStudioModelView*                    m_pModelView;
-	RPViewQt*                              m_pModelProcView;
 	tstring                                m_name;
 
-	rbool newModel      (CREF(tstring) modelName, CREF(tstring) modelPath, ruint templateIndex);
-	rbool saveModel     () const;
-	void  saveToXML     ();
-	void  loadFromXML   ();
-	rbool buildModel    ();
-	rbool stopModel     () const;
+	rbool newModel  (CREF(tstring) modelName, CREF(tstring) modelPath, ruint templateIndex);
+	rbool saveModel () const;
+	rbool buildModel();
+	rbool stopModel () const;
 
 	void  updateFrmDescribed      ();
 	void  newModelFromRepository  ();
@@ -105,8 +99,6 @@ private:
 
 	double  getSpeed() const;
 	void    setSpeed(double persent);
-
-	PTR(RPMethodProc2RDO) getProc2rdo() const;
 
 	struct ModelTemplateItem
 	{
@@ -124,8 +116,7 @@ private:
 
 	void show_result();
 
-	void createView    ();
-	void createProcView();
+	void createView();
 
 	DECLARE_IInit;
 
@@ -172,8 +163,6 @@ public:
 
 	REF(RDOStudioFrameManager) getFrameManager();
 	void onChangeFrame(ruint index);
-
-	PTR(RPViewQt) getProcView();
 
 private slots:
 	void onFileNew    ();

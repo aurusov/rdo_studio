@@ -31,153 +31,6 @@ LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 // Dialog
 //
 
-IDD_DIALOG_GEN_TYPE DIALOG  0, 0, 207, 98
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "GENERATION PARAMETERS "
-FONT 8, "MS Sans Serif"
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,39,77,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,98,77,50,14
-    COMBOBOX        IDC_COMBO1,15,14,168,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_EDIT1,99,34,80,15,ES_AUTOHSCROLL
-    LTEXT           "Время останова",IDC_STATIC,19,39,64,8
-END
-
-IDD_DIALOG_PROCESS_SHAPE_CREATE_1 DIALOGEX 0, 0, 329, 191
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Create"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,198,170,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,257,170,50,14
-    EDITTEXT        IDC_EDIT1,117,14,106,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    LTEXT           "Имя блока",IDC_STATIC,76,17,38,8
-    LTEXT           "Время прибытия первого транзакта",IDC_STATIC,33,36,124,8
-    EDITTEXT        IDC_EDIT2,159,34,39,13,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT3,159,51,40,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    LTEXT           "Кол-во создаваемых транзактов",IDC_STATIC,42,54,112,8
-    GROUPBOX        "Интервал между поступлениями транзактов",IDC_STATIC,7,72,314,90
-    LTEXT           "Закон ",IDC_STATIC,11,88,24,8
-    COMBOBOX        IDC_COMBO1,42,86,105,56,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_EDIT4,96,108,40,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT5,96,126,40,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT8,225,84,76,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    LTEXT           "База генератора",IDC_STATIC,160,87,58,8
-    LTEXT           "Мат. ожидание",IDC_STATIC7,18,108,72,8
-    LTEXT           "Дисперсия",IDC_STATIC8,18,126,72,8
-    PUSHBUTTON      "Доп.Настройки",IDC_BUTTON1,83,170,60,14
-    EDITTEXT        IDC_EDIT6,96,144,40,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    LTEXT           "Максимум",IDC_STATIC9,18,144,72,8
-END
-
-IDD_DIALOG_PROCESS_SHAPE_CREATE_2 DIALOGEX 0, 0, 182, 142
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Дополнительные настройки"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,120,120,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,65,120,50,14
-    LTEXT           "Временная бесконечность",IDC_STATIC,11,14,92,8
-    EDITTEXT        IDC_EDIT1,108,10,62,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    LTEXT           "ID группы",IDC_STATIC,69,34,34,8
-    EDITTEXT        IDC_EDIT2,108,31,61,15,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    LTEXT           "Параметр 1",IDC_STATIC,43,60,41,8
-    LTEXT           "Параметр 2",IDC_STATIC,42,77,41,8
-    EDITTEXT        IDC_EDIT3,96,57,40,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT4,96,75,40,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    LTEXT           "Параметр 3",IDC_STATIC,42,95,41,8
-    EDITTEXT        IDC_EDIT5,96,93,40,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    GROUPBOX        "Дополнительные параметры",IDC_STATIC,12,48,160,65
-END
-
-IDD_DIALOG_DECIDE_1 DIALOG  0, 0, 341, 250
-STYLE DS_SETFONT | WS_CAPTION | WS_SYSMENU
-CAPTION "DECIDE"
-FONT 8, "MS Sans Serif"
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,221,217,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,271,217,50,14
-    LTEXT           "Имя блока",IDC_STATIC,25,17,38,8
-    LTEXT           "Вероятность TRUE",IDC_STATIC,25,47,68,8
-    LTEXT           "Вероятность FALSE",IDC_STATIC,25,77,68,8
-    EDITTEXT        IDC_EDIT1,119,15,116,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT2,119,45,116,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT3,119,75,116,14,ES_AUTOHSCROLL
-END
-
-IDD_DIALOG_PROCESS_SHAPE_PROCESS_2 DIALOG  0, 0, 159, 73
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Добавление ресурса"
-FONT 8, "MS Sans Serif"
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,45,52,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,102,52,50,14
-    LTEXT           "Ресурс",IDC_STATIC,7,17,25,8
-    COMBOBOX        IDC_COMBO1,37,15,108,78,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-END
-
-IDD_DIALOG_PROCESS_SHAPE_PROCESS_1 DIALOGEX 0, 0, 341, 255
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Process"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,222,234,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,276,234,50,14
-    GROUPBOX        "Интервал между поступлениями транзактов",IDC_STATIC,20,139,300,89
-    LTEXT           "Закон ",IDC_STATIC,23,151,24,8
-    COMBOBOX        IDC_COMBO1,55,148,105,16,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_EDIT4,120,168,40,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT5,120,186,40,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT7,120,204,40,14,ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
-    EDITTEXT        IDC_EDIT8,237,148,76,14,ES_AUTOHSCROLL,WS_EX_STATICEDGE
-    LTEXT           "База генератора",IDC_STATIC,173,151,58,8
-    LTEXT           "Мат. ожидание",IDC_STATIC4,30,168,84,8
-    LTEXT           "Дисперсия",IDC_STATIC5,30,186,84,8
-    LTEXT           "Максимум",IDC_STATIC7,30,204,84,8
-    LTEXT           "Имя блока",IDC_STATIC,15,10,38,8
-    EDITTEXT        IDC_EDIT1,54,7,125,14,ES_AUTOHSCROLL
-    LTEXT           "Действие",IDC_STATIC,17,30,34,8
-    COMBOBOX        IDC_COMBO2,53,27,126,61,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Приоритет",IDC_STATIC,200,30,37,8
-    EDITTEXT        IDC_EDIT2,240,26,40,14,ES_AUTOHSCROLL
-    GROUPBOX        "Ресурсы",IDC_STATIC,20,84,300,53
-    PUSHBUTTON      "Добавить",IDC_BUTTON1,246,95,50,14
-    PUSHBUTTON      "Удалить",IDC_BUTTON2,246,115,50,14
-    LISTBOX         IDC_LIST1,29,95,197,36,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Закон",IDC_STATIC,30,65,22,8
-    COMBOBOX        IDC_COMBO3,54,62,141,44,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    GROUPBOX        "Очередь",IDC_STATIC,20,50,300,30
-    LTEXT           "Параметр",IDC_STATIC,207,62,35,8
-    COMBOBOX        IDC_COMBO4,246,60,48,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-END
-
-IDD_DIALOG_RESOURCE_DLG1 DIALOG  0, 0, 238, 73
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Resource"
-FONT 8, "MS Sans Serif"
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,124,52,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,181,52,50,14
-    EDITTEXT        IDC_EDIT1,54,13,111,14,ES_AUTOHSCROLL
-    LTEXT           "Имя блока",IDC_STATIC,13,15,38,8
-    LTEXT           "Одновременно может обсдуживаться ",IDC_STATIC,13,34,132,8
-    EDITTEXT        IDC_EDIT2,145,31,21,14,ES_AUTOHSCROLL
-    LTEXT           "транзактов",IDC_STATIC,170,34,40,8
-END
-
-IDD_DIALOG_PROCESS_SHAPE_TERMINATE DIALOGEX 0, 0, 228, 90
-STYLE DS_SETFONT | WS_CAPTION | WS_SYSMENU
-CAPTION "TERMINATE"
-FONT 8, "MS Sans Serif", 0, 0, 0x0
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,86,71,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,146,71,50,14
-    LTEXT           "Имя блока",IDC_STATIC,25,17,38,8
-    EDITTEXT        IDC_EDIT1,79,15,116,14,ES_AUTOHSCROLL
-    LTEXT           "Терминальный счетчик",IDC_STATIC,26,46,84,8
-    EDITTEXT        IDC_EDIT3,116,43,80,15,ES_AUTOHSCROLL
-END
-
 IDD_OPTIONS_EDITOR DIALOGEX 0, 0, 292, 138
 STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Редактор"
@@ -434,16 +287,7 @@ END
 // Bitmap
 //
 
-IDB_PAGECTRL_CLOSE      BITMAP                  "res\\pagectrl_close.bmp"
-IDB_PAGECTRL_CLOSE_OVER BITMAP                  "res\\pagectrl_close_over.bmp"
-IDB_PAGECTRL_PAGE       BITMAP                  "res\\pagectrl_page.bmp"
-IDB_TRASH               BITMAP                  "res\\trash.bmp"
-IDB_FLOWCHART_DEFAULT   BITMAP                  "res\\flowchart_default.bmp"
-PROCESS_TOOLBAR_BLOCK   BITMAP                  "res\\toolbar1.bmp"
-IDR_TOOLBAR_STYLEANDCOLOR BITMAP                  "res\\toolbar_styleandcolor.bmp"
-IDR_TOOLBAR_MAINFRAME   BITMAP                  "res\\toolbar_mainframe.bmp"
 IDR_TOOLBAR_EMPTY       BITMAP                  "res\\toolbar_empty.bmp"
-IDR_TOOLBAR_MAINFRAME_D BITMAP                  "res\\toolbar_mainframe_d.bmp"
 IDB_FRAME_OPTIONS_CTRL  BITMAP                  "res\\frameoptionsctrl.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -451,64 +295,11 @@ IDB_FRAME_OPTIONS_CTRL  BITMAP                  "res\\frameoptionsctrl.bmp"
 // Toolbar
 //
 
-PROCESS_TOOLBAR_BLOCK TOOLBAR  16, 15
-BEGIN
-    BUTTON      ID_GENERATE
-    BUTTON      ID_GEN_TYPE
-    SEPARATOR
-    BUTTON      ID_BUTTON32779
-    BUTTON      ID_BUTTON32781
-    BUTTON      ID_BUTTON32782
-    SEPARATOR
-    BUTTON      ID_BUTTON32783
-END
-
-IDR_TOOLBAR_STYLEANDCOLOR TOOLBAR  16, 15
-BEGIN
-    BUTTON      ID_BTN_FILL_BRUSH
-    BUTTON      ID_BTN_FILL_PEN
-    BUTTON      ID_BTN_FILL_TEXT
-END
-
-IDR_TOOLBAR_MAINFRAME TOOLBAR  16, 15
-BEGIN
-    BUTTON      ID_FILE_NEW
-    BUTTON      ID_FILE_OPEN
-    BUTTON      ID_FLOWCHART_SAVE
-    SEPARATOR
-    BUTTON      ID_EDIT_CUT
-    BUTTON      ID_EDIT_COPY
-    BUTTON      ID_EDIT_PASTE
-    SEPARATOR
-    BUTTON      ID_FLOW_SELECT
-    BUTTON      ID_FLOW_CONNECTOR
-    BUTTON      ID_FLOW_ROTATE
-END
-
 IDR_TOOLBAR_EMPTY TOOLBAR  16, 15
 BEGIN
     BUTTON      ID_BTN_EMPTY
 END
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Cursor
-//
-
-IDC_FLOW_SELECT         CURSOR                  "res\\flow_select.cur"
-IDC_FLOW_ROTATE         CURSOR                  "res\\flow_rotate.cur"
-IDC_FLOW_CONNECTOR      CURSOR                  "res\\flow_connector.cur"
-IDC_FLOW_SCALE_TB       CURSOR                  "res\\flow_scale_tb.cur"
-IDC_FLOW_SCALE_LR       CURSOR                  "res\\flow_scale_lr.cur"
-IDC_FLOW_SCALE_TRBL     CURSOR                  "res\\flow_scale_trbl.cur"
-IDC_FLOW_SCALE_TLBR     CURSOR                  "res\\flow_scale_tlbr.cur"
-IDC_FLOW_ROTATE_TL      CURSOR                  "res\\flow_rotate_tl.cur"
-IDC_FLOW_ROTATE_CENTER  CURSOR                  "res\\flow_rotate_center.cur"
-IDC_FLOW_MOVE           CURSOR                  "res\\flow_move.cur"
-IDC_FLOW_DOCK_IN        CURSOR                  "res\\flow_dock_in.cur"
-IDC_FLOW_DOCK_NOT       CURSOR                  "res\\flow_dock_not.cur"
-IDC_FLOW_TRASH          CURSOR                  "res\\flow_trash.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1144,7 +935,6 @@ IDR_RT_MANIFEST1        RT_MANIFEST             "res\\RAO-studio.manifest"
 
 STRINGTABLE 
 BEGIN
-    PROCESS_TOOLBAR_BLOCK   "РДО-Процесс"
     IDR_TOOLBAR_STYLEANDCOLOR "Стиль и цвет"
     IDR_TOOLBAR_MAINFRAME   "Основные"
     IDR_TOOLBAR_EMPTY       "Команды"
@@ -1156,9 +946,6 @@ BEGIN
     ID_BTN_FILL_BRUSH       "\nФон"
     ID_BTN_FILL_PEN         "\nЛиния"
     ID_BTN_FILL_TEXT        "\nШрифт"
-    ID_FLOW_SELECT          "\nПеремещение"
-    ID_FLOW_CONNECTOR       "\nДобавить связь"
-    ID_FLOW_ROTATE          "\nПоворот"
 END
 
 STRINGTABLE 
@@ -1530,36 +1317,6 @@ END
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Neutral (Sys. Default) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUSD)
-#ifdef _WIN32
-LANGUAGE LANG_NEUTRAL, SUBLANG_SYS_DEFAULT
-#pragma code_page(1251)
-#endif //_WIN32
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog
-//
-
-IDD_METHOD_NEW DIALOGEX 0, 0, 304, 169
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Выбор метода"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    CONTROL         "",IDC_METHOD_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | LVS_NOLABELWRAP | LVS_OWNERDRAWFIXED | LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_TABSTOP,4,4,172,140,WS_EX_CLIENTEDGE
-    LTEXT           "Описание:",IDC_STATIC,180,20,120,8
-    LTEXT           "",IDC_METHOD_DESC,180,36,120,108
-    DEFPUSHBUTTON   "OK",IDOK,192,152,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,248,152,50,14
-END
-
-#endif    // Neutral (Sys. Default) resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
 // English (U.S.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
@@ -1575,62 +1332,11 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 IDD_DIALOG_GEN_TYPE DLGINIT
 BEGIN
-    IDC_COMBO1, 0x403, 11, 0
+    1137, 0x403, 11, 0
 0xeecf, 0xe220, 0xe5f0, 0xe5ec, 0xe8ed, "\000" 
-    IDC_COMBO1, 0x403, 33, 0
+    1137, 0x403, 33, 0
 0xe5cd, 0xee20, 0xf2f1, 0xebe0, 0xf1ee, 0x20fc, 0xf0f2, 0xede0, 0xe0e7, 
 0xf2ea, 0xe2ee, 0xe220, 0xf120, 0xf1e8, 0xe5f2, 0xe5ec, "\000" 
-    0
-END
-
-IDD_DIALOG_PROCESS_SHAPE_PROCESS_1 DLGINIT
-BEGIN
-    IDC_COMBO1, 0x403, 10, 0
-0xeeca, 0xf1ed, 0xe0f2, 0xf2ed, 0x00e0, 
-    IDC_COMBO1, 0x403, 12, 0
-0xe0d0, 0xede2, 0xecee, 0xf0e5, 0xfbed, 0x00e9, 
-    IDC_COMBO1, 0x403, 17, 0
-0xeadd, 0xeff1, 0xedee, 0xede5, 0xe8f6, 0xebe0, 0xedfc, 0xe9fb, "\000" 
-    IDC_COMBO1, 0x403, 12, 0
-0xf0d2, 0xf3e5, 0xeee3, 0xfceb, 0xfbed, 0x00e9, 
-    IDC_COMBO1, 0x403, 11, 0
-0xeecd, 0xecf0, 0xebe0, 0xedfc, 0xe9fb, "\000" 
-    IDC_COMBO2, 0x403, 10, 0
-0xe0c7, 0xe5e4, 0xe6f0, 0xf2e0, 0x00fc, 
-    IDC_COMBO2, 0x403, 28, 0
-0xe0c7, 0xffed, 0xfcf2, 0xc720, 0xe4e0, 0xf0e5, 0xe0e6, 0xfcf2, 0xce20, 
-0xe2f1, 0xe1ee, 0xe4ee, 0xf2e8, 0x00fc, 
-    IDC_COMBO2, 0x403, 18, 0
-0xe0c7, 0xffed, 0xfcf2, 0xc720, 0xe4e0, 0xf0e5, 0xe0e6, 0xfcf2, 0x0020, 
-
-    IDC_COMBO2, 0x403, 21, 0
-0xe0c7, 0xe5e4, 0xe6f0, 0xf2e0, 0x20fc, 0xf1ce, 0xeee2, 0xeee1, 0xe8e4, 
-0xfcf2, "\000" 
-    IDC_COMBO3, 0x403, 5, 0
-0x4946, 0x4f46, "\000" 
-    IDC_COMBO3, 0x403, 5, 0
-0x494c, 0x4f46, "\000" 
-    IDC_COMBO3, 0x403, 22, 0
-0xe8cc, 0xe8ed, 0xe8ec, 0xe0e7, 0xe8f6, 0x20ff, 0xe0ef, 0xe0f0, 0xe5ec, 
-0xf0f2, 0x00e0, 
-    IDC_COMBO3, 0x403, 23, 0
-0xe0cc, 0xf1ea, 0xece8, 0xe7e8, 0xf6e0, 0xffe8, 0xef20, 0xf0e0, 0xece0, 
-0xf2e5, 0xe0f0, "\000" 
-    0
-END
-
-IDD_DIALOG_PROCESS_SHAPE_CREATE_1 DLGINIT
-BEGIN
-    IDC_COMBO1, 0x403, 10, 0
-0xeeca, 0xf1ed, 0xe0f2, 0xf2ed, 0x00e0, 
-    IDC_COMBO1, 0x403, 12, 0
-0xe0d0, 0xede2, 0xecee, 0xf0e5, 0xfbed, 0x00e9, 
-    IDC_COMBO1, 0x403, 17, 0
-0xeadd, 0xeff1, 0xedee, 0xede5, 0xe8f6, 0xebe0, 0xedfc, 0xe9fb, "\000" 
-    IDC_COMBO1, 0x403, 12, 0
-0xf0d2, 0xf3e5, 0xeee3, 0xfceb, 0xfbed, 0x00e9, 
-    IDC_COMBO1, 0x403, 11, 0
-0xeecd, 0xecf0, 0xebe0, 0xedfc, 0xe9fb, "\000" 
     0
 END
 

@@ -19,11 +19,8 @@
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
-#include "app/rdo_studio_mfc/rdo_process/rdoprocess_method_manager.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
 // --------------------------------------------------------------------------------
-
-//#define PROCGUI_ENABLE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioApp
@@ -52,8 +49,7 @@ public:
 	//! Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы
 	PTR(RDOThread)          m_pStudioGUI;
 
-	CREF(RPMethodManager) getMethodManager() const;
-	REF(std::ofstream)    log             ();
+	REF(std::ofstream)      log();
 
 	void           broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam = NULL);
 
@@ -92,7 +88,6 @@ private:
 	PTR(RDOThreadStudio) m_pStudioMT;
 #endif
 
-	RPMethodManager                        m_methodManager;
 	std::ofstream                          m_log;
 	rbool                                  m_fileAssociationSetup;
 	rbool                                  m_fileAssociationCheckInFuture;

@@ -90,7 +90,6 @@ RDOStudioModel::RDOStudioModel()
 	, m_modify         (false                     )
 	, m_buildState     (BS_UNDEFINED              )
 	, m_pModelView     (NULL                      )
-	, m_pModelProcView (NULL                      )
 	, m_name           ("")
 {
 	model = this;
@@ -436,11 +435,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 //				studioApp.getIMainWnd()->getDockBuild().getContext().showFirstError();
 			}
 			m_buildState = BS_COMPLETE;
-			PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
-			if (pMethod && pMethod->checkModelStructure())
-			{
-				pMethod->generate();
-			}
 			::GetSystemTime(&m_timeStart);
 			break;
 		}
@@ -688,24 +682,9 @@ void RDOStudioModel::resetView()
 	}
 }
 
-void RDOStudioModel::createProcView()
-{
-	ASSERT(m_pModelProcView == NULL);
-	m_pModelProcView = new RPViewQt();
-	studioApp.getIMainWnd()->addSubWindow(m_pModelProcView);
-	m_pModelProcView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/mdi_flowchart.png")));
-}
-
 void RDOStudioModel::newModelFromRepository()
 {
 	setHasModel(true);
-
-	PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
-	if (pMethod)
-	{
-		createProcView();
-		pMethod->makeFlowChart(rpMethod::project);
-	}
 
 	createView();
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
@@ -761,13 +740,6 @@ void RDOStudioModel::newModelFromRepository()
 void RDOStudioModel::openModelFromRepository()
 {
 	setHasModel(true);
-
-	PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
-	if (pMethod)
-	{
-		createProcView();
-		loadFromXML();
-	}
 
 	PTR(CWnd) active = CWnd::GetActiveWindow();
 	createView();
@@ -917,11 +889,6 @@ void RDOStudioModel::saveModelToRepository()
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(data.m_name);
 
-	if (getProc2rdo())
-	{
-		saveToXML();
-	}
-
 	studioApp.getMainWndUI()->insertMenuFileReopenItem(getFullName());
 
 	if (smr_modified)
@@ -929,60 +896,6 @@ void RDOStudioModel::saveModelToRepository()
 		updateFrmDescribed();
 	}
 	updateActions();
-}
-
-void RDOStudioModel::saveToXML()
-{
-	// Заводим документ:
-	pugi::xml_document doc;
-	// Пишем первый узел документа:
-	pugi::xml_node node = doc.append_child(_T("Model"));
-	// Ссылаемся на виртуальную функцию saveToXML(parentNode), которая поэтапно запишет информацию в файл:
-	rpMethod::project->saveToXML(node);
-
-	// Создаем файл '.prcx' с помощью репозитария:
-	rdo::repository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::PRCX);
-	sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
-
-	// Автоматически открываем файл при создании потока:
-	std::ofstream outFile(fileInfo.m_fullName.c_str());
-	// Проверяем открытый нами поток на наличие ошибок ввода-вывода:
-	if (outFile.good())
-	{
-		doc.save(outFile);
-		outFile.close();
-	}
-}
-
-void RDOStudioModel::loadFromXML()
-{
-	// Заводим документ:
-	pugi::xml_document doc;
-
-	rdo::repository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::PRCX);
-	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
-
-	// Открываем сохраненный xml-файл и проверяем поток на ошибки ввода-вывода:
-	std::ifstream inFile(fileInfo.m_fullName.c_str());
-	if (inFile.good())
-	{
-		// Загружаем документ и проверяем на предмет ошибок парсинга и пустого узла:
-		if (doc.load(inFile))
-		{
-			pugi::xml_node node = doc.child(_T("Model"));
-			if (!node.empty())
-			{
-				// Ссылаемся на виртуальную функцию loadFromXML(node), которая поэтапно загрузит графику из файла:
-				rpMethod::project->loadFromXML(node.first_child());
-			}
-		}
-		inFile.close();
-	}
-	else
-	{
-		PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
-		pMethod->makeFlowChart(rpMethod::project);
-	}
 }
 
 tstring RDOStudioModel::getFullName() const
@@ -1015,11 +928,6 @@ rbool RDOStudioModel::canCloseModel()
 
 void RDOStudioModel::closeModelFromRepository()
 {
-	if (m_pModelProcView)
-	{
-		m_pModelProcView->parentWidget()->close();
-		m_pModelProcView = NULL;
-	}
 	setHasModel(false);
 	m_pModelView->parentWidget()->close();
 	m_pModelView  = NULL;
@@ -1102,24 +1010,6 @@ void RDOStudioModel::afterModelStart()
 		m_timeNow = 0;
 		m_frameManager.setLastShowedFrame(ruint(~0));
 	}
-}
-
-PTR(RPMethodProc2RDO) RDOStudioModel::getProc2rdo() const
-{
-	RPMethodManager::MethodList::const_iterator it = studioApp.getMethodManager().getList().begin();
-	while (it != studioApp.getMethodManager().getList().end())
-	{
-		PTR(rpMethod::RPMethod) pMethod = *it;
-		ASSERT(pMethod);
-		if (pMethod->getClassName() == _T("RPMethodProc2RDO"))
-		{
-			PTR(RPMethodProc2RDO) pProc2RDO = dynamic_cast<PTR(RPMethodProc2RDO)>(pMethod);
-			ASSERT(pProc2RDO);
-			return pProc2RDO;
-		}
-		it++;
-	}
-	return NULL;
 }
 
 void RDOStudioModel::updateStyleOfAllModel() const
@@ -1490,11 +1380,6 @@ REF(RDOStudioFrameManager) RDOStudioModel::getFrameManager()
 void RDOStudioModel::onChangeFrame(ruint)
 {
 	updateActions();
-}
-
-PTR(RPViewQt) RDOStudioModel::getProcView()
-{
-	return m_pModelProcView;
 }
 
 PTR(rdoEditor::RDOEditorTabCtrl) RDOStudioModel::getTab()

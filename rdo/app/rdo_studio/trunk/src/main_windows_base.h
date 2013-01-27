@@ -28,7 +28,6 @@
 #include "app/rdo_studio_mfc/src/dock/dock_find.h"
 #include "app/rdo_studio_mfc/src/dock/dock_chart_tree.h"
 #include "app/rdo_studio_mfc/src/dock/dock_frame.h"
-#include "app/rdo_studio_mfc/src/dock/dock_process.h"
 // --------------------------------------------------------------------------------
 
 class MainWindowBase
@@ -52,7 +51,6 @@ public:
 	REF(DockFind)       getDockFind     () { ASSERT(m_pDockFind     ); return *m_pDockFind;      }
 	REF(DockChartTree)  getDockChartTree() { ASSERT(m_pDockChartTree); return *m_pDockChartTree; }
 	REF(DockFrame)      getDockFrame    () { ASSERT(m_pDockFrame    ); return *m_pDockFrame;     }
-	REF(DockProcess)    getDockProcess  () { ASSERT(m_pDockProcess  ); return *m_pDockProcess;   }
 
 	virtual void updateAllStyles() = 0;
 
@@ -71,7 +69,6 @@ protected:
 	PTR(DockFind)       m_pDockFind;
 	PTR(DockChartTree)  m_pDockChartTree;
 	PTR(DockFrame)      m_pDockFrame;
-	PTR(DockProcess)    m_pDockProcess;
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOWS_BASE_H_
