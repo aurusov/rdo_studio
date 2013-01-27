@@ -86,7 +86,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\QtCored4.dll&quot; &quot;$(TargetDir)\QtCored4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtSqld4.dll&quot; &quot;$(TargetDir)\QtSqld4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsqld4.dll&quot; &quot;$(TargetDir)\qsqlpsqld4.dll&quot;&#x0D;&#x0A;copy &quot;C:\psql\bin\libeay32.dll&quot; &quot;$(TargetDir)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;C:\psql\bin\libintl.dll&quot; &quot;$(TargetDir)\libintl.dll&quot;&#x0D;&#x0A;copy &quot;C:\psql\bin\libpq.dll&quot; &quot;$(TargetDir)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;C:\psql\bin\ssleay32.dll&quot; &quot;$(TargetDir)\ssleay32.dll&quot;&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCored4.dll&quot; &quot;$(TargetDir)\QtCored4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtSqld4.dll&quot; &quot;$(TargetDir)\QtSqld4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsqld4.dll&quot; &quot;$(TargetDir)\qsqlpsqld4.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(TargetDir)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(TargetDir)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(TargetDir)\ssleay32.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -159,6 +159,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCore4.dll&quot; &quot;$(TargetDir)\QtCore4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtSql4.dll&quot; &quot;$(TargetDir)\QtSql4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsql4.dll&quot; &quot;$(TargetDir)\qsqlpsql4.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(TargetDir)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(TargetDir)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(TargetDir)\ssleay32.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
