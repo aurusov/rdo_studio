@@ -151,39 +151,39 @@ void ViewPreferences::createTree()
 	m_pRoot->setText(0, "Все окна");
 	m_pRoot->setData(0, Qt::UserRole, IT_ROOT);
 
-	createTreeItem(m_pRoot, m_pText,      "Исходный текст",   IT_TEXT);
-	createTreeItem(m_pRoot, m_pCompile,   "Окно компиляции",  IT_COMPILE);
-	createTreeItem(m_pRoot, m_pDebug,     "Окно отладки",     IT_DEBUG);
-	createTreeItem(m_pRoot, m_pTrace,     "Окно трассировки", IT_TRACE);
-	createTreeItem(m_pRoot, m_pResult,    "Окно результатов", IT_RESULT);
-	createTreeItem(m_pRoot, m_pSearch,    "Окно поиска",      IT_SEARCH);
-	createTreeItem(m_pRoot, m_pChart,     "Окно графиков",    IT_CHART);
-	createTreeItem(m_pRoot, m_pAnimation, "Окно анимации",    IT_ANIMATION);
+	m_pText      = createTreeItem(m_pRoot, "Исходный текст",   IT_TEXT);
+	m_pCompile   = createTreeItem(m_pRoot, "Окно компиляции",  IT_COMPILE);
+	m_pDebug     = createTreeItem(m_pRoot, "Окно отладки",     IT_DEBUG);
+	m_pTrace     = createTreeItem(m_pRoot, "Окно трассировки", IT_TRACE);
+	m_pResult    = createTreeItem(m_pRoot, "Окно результатов", IT_RESULT);
+	m_pSearch    = createTreeItem(m_pRoot, "Окно поиска",      IT_SEARCH);
+	m_pChart     = createTreeItem(m_pRoot, "Окно графиков",    IT_CHART);
+	m_pAnimation = createTreeItem(m_pRoot, "Окно анимации",    IT_ANIMATION);
 
 	m_pRoot->setExpanded(true);
 
-	//createTreeItem(m_pText, m_pPlainText, "Обыкновенный текст", IT_TEXT);
-	//createTreeItem(m_pText, m_pVariable,  "Переменная",         IT_TEXT);
-	//createTreeItem(m_pText, m_pKeyword,   "Ключевое слово",     IT_TEXT);
-	//createTreeItem(m_pText, m_pTraceText, "Трассировка",        IT_TEXT);
-	//createTreeItem(m_pText, m_pColor,     "Цвет",               IT_TEXT);
-	//createTreeItem(m_pText, m_pComment,   "Комментарии",        IT_TEXT);
-	//createTreeItem(m_pText, m_pNumber,    "Число",              IT_TEXT);
-	//createTreeItem(m_pText, m_pString,    "Строка",             IT_TEXT);
-	//createTreeItem(m_pText, m_pOperator,  "Оператор",           IT_TEXT);
-	//createTreeItem(m_pText, m_pCaret,     "Каретка",            IT_TEXT);
-	//createTreeItem(m_pText, m_pSelection, "Выделение",          IT_TEXT);
-	//createTreeItem(m_pText, m_pBookmark,  "Закладка",           IT_TEXT);
-	//createTreeItem(m_pText, m_pGroup,     "Группа",             IT_TEXT);
-	//createTreeItem(m_pText, m_pError,     "Ошибка",             IT_TEXT);
+	m_pPlainText = createTreeItem(m_pText, "Обыкновенный текст", IT_TEXT);
+	m_pVariable  = createTreeItem(m_pText, "Переменная",         IT_TEXT);
+	m_pKeyword   = createTreeItem(m_pText, "Ключевое слово",     IT_TEXT);
+	m_pTraceText = createTreeItem(m_pText, "Трассировка",        IT_TEXT);
+	m_pColor     = createTreeItem(m_pText, "Цвет",               IT_TEXT);
+	m_pComment   = createTreeItem(m_pText, "Комментарии",        IT_TEXT);
+	m_pNumber    = createTreeItem(m_pText, "Число",              IT_TEXT);
+	m_pString    = createTreeItem(m_pText, "Строка",             IT_TEXT);
+	m_pOperator  = createTreeItem(m_pText, "Оператор",           IT_TEXT);
+	m_pCaret     = createTreeItem(m_pText, "Каретка",            IT_TEXT);
+	m_pSelection = createTreeItem(m_pText, "Выделение",          IT_TEXT);
+	m_pBookmark  = createTreeItem(m_pText, "Закладка",           IT_TEXT);
+	m_pGroup     = createTreeItem(m_pText, "Группа",             IT_TEXT);
+	m_pError     = createTreeItem(m_pText, "Ошибка",             IT_TEXT);
 }
 
-void ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent, PTR(QTreeWidgetItem) item, CREF(QString) name, ItemType itemType)
+PTR(QTreeWidgetItem) ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType)
 {
-	item = new QTreeWidgetItem(parent);
+	PTR(QTreeWidgetItem) item = new QTreeWidgetItem(parent);
 	item->setText(0, name);
 	item->setData(0, Qt::UserRole, QVariant(itemType));
-	item->setDisabled(false);
+	return item;
 }
 
 void ViewPreferences::onTreeWidgetItemActivated(QTreeWidgetItem* item, int column)

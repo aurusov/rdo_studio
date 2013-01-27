@@ -77,6 +77,8 @@ private:
 	treeItem m_pGroup;
 	treeItem m_pError;
 
+	
+
 	enum ItemType
 	{
 		IT_ROOT = 0,
@@ -91,8 +93,7 @@ private:
 	};
 
 	void createTree();
-	void createTreeItem (PTR(QTreeWidgetItem) parent, PTR(QTreeWidgetItem) item, CREF(QString) name, ItemType itemType);
-	void createChildItem(PTR(QTreeWidgetItem) parent, PTR(QTreeWidgetItem) item, CREF(QString) name, ItemType itemType);
+	PTR(QTreeWidgetItem) createTreeItem (PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType);
 };
 
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_
