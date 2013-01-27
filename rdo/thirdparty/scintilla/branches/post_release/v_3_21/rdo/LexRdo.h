@@ -3,8 +3,8 @@
 
 #include <ctype.h>
 #include "utils/rdotypes.h"
-#include "thirdparty/sci/include/ILexer.h"
-#include "thirdparty/sci/lexlib/LexerModule.h"
+#include "thirdparty/scintilla/include/ILexer.h"
+#include "thirdparty/scintilla/lexlib/LexerModule.h"
 
 static inline bool isRDOLexerOperator( char ch )
 {

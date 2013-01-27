@@ -13,7 +13,7 @@
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdotypes.h"
-#include "thirdparty/sci/rdo/WordListUtil.h"
+#include "thirdparty/scintilla/rdo/WordListUtil.h"
 // --------------------------------------------------------------------------------
 
 WordListUtil::WordListUtil(const WordList& wordlist)

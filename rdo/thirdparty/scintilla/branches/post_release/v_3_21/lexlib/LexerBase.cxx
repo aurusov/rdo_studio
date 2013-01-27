@@ -12,7 +12,7 @@
 #include <assert.h>
 #include <ctype.h>
 
-#include "thirdparty/sci/rdo/LexFind.h"
+#include "thirdparty/scintilla/rdo/LexFind.h"
 
 #include "ILexer.h"
 #include "Scintilla.h"

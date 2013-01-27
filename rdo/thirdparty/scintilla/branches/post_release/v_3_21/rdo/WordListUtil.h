@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "thirdparty/sci/lexlib/WordList.h"
+#include "thirdparty/scintilla/lexlib/WordList.h"
 // --------------------------------------------------------------------------------
 
 class WordListUtil: public boost::noncopyable
