@@ -36,7 +36,6 @@ RDOThreadRepository::RDOThreadRepository()
 	notifies.push_back(RT_STUDIO_MODEL_OPEN                 );
 	notifies.push_back(RT_STUDIO_MODEL_CLOSE                );
 	notifies.push_back(RT_STUDIO_MODEL_SAVE                 );
-	notifies.push_back(RT_STUDIO_MODEL_SAVE_AS              );
 	notifies.push_back(RT_REPOSITORY_MODEL_GET_FILEINFO     );
 	notifies.push_back(RT_REPOSITORY_LOAD                   );
 	notifies.push_back(RT_REPOSITORY_SAVE                   );
@@ -107,11 +106,6 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 			msg.lock();
 			if (msg.param) *static_cast<PTR(rbool)>(msg.param) = res;
 			msg.unlock();
-			break;
-		}
-		case RT_STUDIO_MODEL_SAVE_AS:
-		{
-			saveAsModel();
 			break;
 		}
 		case RT_RUNTIME_MODEL_START_BEFORE:
@@ -337,47 +331,9 @@ rbool RDOThreadRepository::openModel(CREF(tstring) modelFileName)
 
 rbool RDOThreadRepository::saveModel()
 {
-	rbool flag = true;
-	if (m_modelPath.empty())
-	{
-		flag = saveAsDlg();
-	}
-	if (flag)
-	{
-		broadcastMessage(RT_REPOSITORY_MODEL_SAVE);
-	}
-	return flag;
-}
-
-void RDOThreadRepository::saveAsModel()
-{
-	if (saveAsDlg())
-	{
-		broadcastMessage(RT_REPOSITORY_MODEL_SAVE);
-	}
-}
-
-rbool RDOThreadRepository::saveAsDlg()
-{
-	OpenFile data;
-	broadcastMessage(RT_REPOSITORY_MODEL_SAVE_GET_NAME, &data, true);
-	if (data.m_result)
-	{
-		extractName(data.m_name);
-		if (m_modelName.empty())
-		{
-			return false;
-		}
-		STL_FOR_ALL(m_files, it)
-		{
-			it->second.m_fileName = m_modelName;
-		}
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	ASSERT(!m_modelPath.empty());
+	broadcastMessage(RT_REPOSITORY_MODEL_SAVE);
+	return true;
 }
 
 rbool RDOThreadRepository::canCloseModel()
