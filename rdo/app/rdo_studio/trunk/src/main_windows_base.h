@@ -54,19 +54,7 @@ public:
 	REF(DockFrame)      getDockFrame    () { ASSERT(m_pDockFrame    ); return *m_pDockFrame;     }
 	REF(DockProcess)    getDockProcess  () { ASSERT(m_pDockProcess  ); return *m_pDockProcess;   }
 
-	static rbool is_close_mode() { return close_mode; }
-
 	virtual void updateAllStyles() = 0;
-
-	virtual double getSpeed() const = 0;
-
-	virtual void beginProgress   (const int lower = 0, const int upper = 100, const int step = 1 ) = 0;
-	virtual void getProgressRange(int& lower, int& upper ) const = 0;
-	virtual void setProgress     (const int pos)                 = 0;
-	virtual int  getProgress     () const                        = 0;
-	virtual void offsetProgress  (const int offset)              = 0;
-	virtual void stepProgress    ()                              = 0;
-	virtual void endProgress     ()                              = 0;
 
 	virtual void update_start() = 0;
 	virtual void update_stop () = 0;
@@ -76,9 +64,6 @@ public:
 	virtual void connectOnActivateSubWindow(QObject* pObject) = 0;
 
 protected:
-	// Используется при закрытии модели. Задается вопрос.
-	static rbool close_mode;
-
 	PTR(DockBuild)      m_pDockBuild;
 	PTR(DockDebug)      m_pDockDebug;
 	PTR(DockTrace)      m_pDockTrace;

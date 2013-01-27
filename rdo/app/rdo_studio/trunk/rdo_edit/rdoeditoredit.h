@@ -38,29 +38,27 @@ protected:
 
 	void expand( int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1 ) const;
 	void foldChanged( int line, int levelNow, int levelPrev ) const;
-	void toggleCurrentFold() const;
-	void toggleAllFolds() const;
 	void foldMarginClick( int position, int modifiers ) const;
-
-	void commentSelection() const;
-	void completeWord();
 
 	rbool canClearErrorLine;
 	void  clearErrorLine();
 	rbool hasErrorLine  () const;
 
 private:
-	afx_msg void OnEditCommentSelection();
-	afx_msg void OnEditCompleteWord();
+	virtual void onUpdateActions(rbool activated);
+	virtual void onHelpContext  ();
+
 	afx_msg void OnGotoNext();
 	afx_msg void OnGotoPrev();
 	afx_msg void OnUpdateGotoNext(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateGotoPrev(CCmdUI* pCmdUI);
-	afx_msg void OnToggleAllFolds();
-	afx_msg void OnToggleCurrentFold();
-	afx_msg void OnUpdateFold(CCmdUI* pCmdUI);
-	afx_msg void OnHelpKeyword();
 	afx_msg void OnInsertCommand( UINT nID );
+
+private slots:
+	void onEditCommentSelection() const;
+	void onEditCompleteWord    ();
+	void onToggleAllFolds      () const;
+	void onToggleCurrentFold   () const;
 
 public:
 	RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);

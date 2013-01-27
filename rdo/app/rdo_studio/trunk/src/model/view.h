@@ -40,9 +40,6 @@ private:
 
 	afx_msg void OnSearchFindInModel();
 	afx_msg LRESULT OnFindInModelMsg(WPARAM wParam, LPARAM lParam);
-	afx_msg void OnUpdateCoordStatusBar          (CCmdUI* pCmdUI);
-	afx_msg void OnUpdateModifyStatusBar         (CCmdUI* pCmdUI);
-	afx_msg void OnUpdateInsertOverwriteStatusBar(CCmdUI* pCmdUI);
 };
 
 #endif // RDOSTUDIOMODELVIEW_H

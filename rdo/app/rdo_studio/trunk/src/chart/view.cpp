@@ -21,7 +21,6 @@
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
 #include "app/rdo_studio_mfc/src/chart/doc_serie.h"
 #include "app/rdo_studio_mfc/src/chart/options.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

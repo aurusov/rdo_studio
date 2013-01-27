@@ -17,7 +17,6 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -33,15 +32,6 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEdit
 // ---------------------------------------------------------------------------
-
-// ON_UPDATE_COMMAND_UI сделано
-
-//! @todo qt
-//BEGIN_MESSAGE_MAP( RDOBuildEdit, LogEdit )
-//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
-//END_MESSAGE_MAP()
-
 RDOBuildEdit::RDOBuildEdit(PTR(QWidget) pParent)
 	: LogEdit(pParent)
 {}
@@ -105,18 +95,6 @@ void RDOBuildEdit::updateEdit( rdoEditor::RDOEditorEdit* edit, const LogEditLine
 {
 	LogEdit::updateEdit( edit, lineInfo );
 	edit->setErrorLine( lineInfo->getLineNumber() );
-}
-
-void RDOBuildEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( rdo::format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
-}
-
-void RDOBuildEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( rdo::format( ID_STATUSBAR_READONLY ).c_str() );
 }
 
 void RDOBuildEdit::onHelpContext()

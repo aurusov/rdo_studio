@@ -22,9 +22,7 @@
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/thread.h"
-#include "app/rdo_studio_mfc/src/model/new.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
@@ -143,20 +141,6 @@ void g_messageOutput(QtMsgType type, const char *msg)
 	}
 }
 #endif
-
-BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
-	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE,    OnUpdateFileSave   )
-	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_ALL,      OnUpdateFileSaveAll)
-	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_CLOSE,   OnUpdateFileClose  )
-	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE_AS, OnUpdateFileSaveAs )
-	ON_UPDATE_COMMAND_UI(ID_MODEL_BUILD,        OnUpdateModelBuild )
-	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN,          OnUpdateModelRun   )
-	ON_UPDATE_COMMAND_UI(ID_MODEL_STOP,         OnUpdateModelStop  )
-	ON_UPDATE_COMMAND_UI(ID_FILE_NEW,           OnUpdateFileNew    )
-	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN,          OnUpdateFileOpen   )
-	ON_COMMAND_RANGE    (ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen)
-	ON_COMMAND          (ID_FILE_PRINT_SETUP,   CWinApp::OnFilePrintSetup)
-END_MESSAGE_MAP()
 
 RDOStudioApp::RDOStudioApp()
 	: CWinApp()
@@ -280,9 +264,6 @@ BOOL RDOStudioApp::InitInstance()
 	kernel->thread_studio = model;
 #endif
 
-	loadReopen();
-	updateReopenSubMenu();
-
 	if (getFileAssociationCheckInFuture())
 	{
 		setupFileAssociation();
@@ -350,7 +331,7 @@ BOOL RDOStudioApp::InitInstance()
 
 	if (m_autoRun)
 	{
-		m_pMainFrame->onModelRun();
+		model->runModel();
 	}
 
 	return TRUE;
@@ -390,8 +371,6 @@ int RDOStudioApp::ExitInstance()
 
 	// Роняем кернел и закрываем все треды
 	RDOKernel::close();
-
-	::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
 
 	if (m_autoExitByModel)
 	{
@@ -470,244 +449,6 @@ rbool RDOStudioApp::shortToLongPath(CREF(tstring) shortPath, REF(tstring) longPa
 		longPath = W2A(szLongPath);
 		return true;
 	}
-}
-
-void RDOStudioApp::OnUpdateFileNew(PTR(CCmdUI) pCmdUI)
-{
-	pCmdUI->Enable(model->canNew());
-}
-
-void RDOStudioApp::OnUpdateFileOpen(PTR(CCmdUI) pCmdUI)
-{
-	pCmdUI->Enable(model->canOpen());
-}
-
-void RDOStudioApp::OnUpdateFileClose(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->canClose());
-}
-
-void RDOStudioApp::OnUpdateFileSave(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->canSave());
-}
-
-void RDOStudioApp::OnUpdateFileSaveAs(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->hasModel() && !model->isRunning());
-}
-
-void RDOStudioApp::OnUpdateFileSaveAll(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->canSave());
-}
-
-void RDOStudioApp::OnProjectReopen(UINT nID)
-{
-	ruint i = 0;
-	switch (nID)
-	{
-	case ID_FILE_REOPEN_1 : i = 0; break;
-	case ID_FILE_REOPEN_2 : i = 1; break;
-	case ID_FILE_REOPEN_3 : i = 2; break;
-	case ID_FILE_REOPEN_4 : i = 3; break;
-	case ID_FILE_REOPEN_5 : i = 4; break;
-	case ID_FILE_REOPEN_6 : i = 5; break;
-	case ID_FILE_REOPEN_7 : i = 6; break;
-	case ID_FILE_REOPEN_8 : i = 7; break;
-	case ID_FILE_REOPEN_9 : i = 8; break;
-	case ID_FILE_REOPEN_10: i = 9; break;
-	}
-
-	if (!model->openModel(m_reopenList[i]) && model->isPrevModelClosed())
-	{
-		m_reopenList.erase(m_reopenList.begin() + i);
-		updateReopenSubMenu();
-	}
-}
-
-void RDOStudioApp::insertReopenItem(CREF(tstring) item)
-{
-	if (!item.empty())
-	{
-		STL_FOR_ALL(m_reopenList, it)
-		{
-			if (*it == item)
-			{
-				m_reopenList.erase(it);
-				break;
-			}
-		}
-
-		m_reopenList.insert(m_reopenList.begin(), item);
-
-		while (m_reopenList.size() > 10)
-		{
-			ReopenList::iterator it = m_reopenList.end();
-			--it;
-			m_reopenList.erase(it);
-		}
-
-		updateReopenSubMenu();
-	}
-}
-
-void RDOStudioApp::updateReopenSubMenu() const
-{
-	QMenu* pMenuFile = m_pMainFrame->getMenuFile();
-	QList<QAction*> actionList = pMenuFile->actions();
-	for (int actionIndex = 0; actionIndex < actionList.size(); ++actionIndex)
-	{
-		QAction* pAction = actionList[actionIndex];
-		if (pAction->text() == "Недавние")
-		{
-			QMenu* pMenuReopen = pAction->menu();
-			if (pMenuReopen)
-			{
-				pMenuReopen->clear();
-			}
-			else
-			{
-				pMenuReopen = new QMenu();
-			}
-
-			for (ReopenList::size_type reopenIndex = 0; reopenIndex < m_reopenList.size(); ++reopenIndex)
-			{
-				if (reopenIndex == 4)
-				{
-					pMenuReopen->addSeparator();
-				}
-				pMenuReopen->addAction(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str());
-			}
-
-			pAction->setMenu(pMenuReopen);
-			break;
-		}
-	}
-
-	saveReopen();
-
-	//! @todo qt
-	//if (!AfxGetMainWnd() || !AfxGetMainWnd()->GetMenu())
-	//	return;
-
-	//rbool maximized = m_pMainFrame->isMDIMaximazed();
-	//int delta = maximized ? 1 : 0;
-
-	//PTR(CMenu) pReopenMenu = AfxGetMainWnd()->GetMenu()->GetSubMenu(delta)->GetSubMenu(2);
-
-	//while (pReopenMenu->GetMenuItemCount())
-	//{
-	//	pReopenMenu->DeleteMenu(0, MF_BYPOSITION);
-	//}
-
-	//if (!m_reopenList.empty())
-	//{
-	//	AfxGetMainWnd()->GetMenu()->GetSubMenu(delta)->EnableMenuItem(2, MF_BYPOSITION | MF_ENABLED);
-	//	for (ReopenList::size_type i = 0; i < m_reopenList.size(); i++)
-	//	{
-	//		if (i == 4)
-	//		{
-	//			pReopenMenu->AppendMenu(MF_SEPARATOR);
-	//		}
-	//		ruint id = ID_FILE_MRU_FILE1;
-	//		switch (i)
-	//		{
-	//		case 0: id = ID_FILE_REOPEN_1;  break;
-	//		case 1: id = ID_FILE_REOPEN_2;  break;
-	//		case 2: id = ID_FILE_REOPEN_3;  break;
-	//		case 3: id = ID_FILE_REOPEN_4;  break;
-	//		case 4: id = ID_FILE_REOPEN_5;  break;
-	//		case 5: id = ID_FILE_REOPEN_6;  break;
-	//		case 6: id = ID_FILE_REOPEN_7;  break;
-	//		case 7: id = ID_FILE_REOPEN_8;  break;
-	//		case 8: id = ID_FILE_REOPEN_9;  break;
-	//		case 9: id = ID_FILE_REOPEN_10; break;
-	//		}
-	//		pReopenMenu->AppendMenu(MF_STRING, id, rdo::format(_T("%d. %s"), i+1, m_reopenList[i].c_str()).c_str());
-	//	}
-	//}
-	//else
-	//{
-	//	AfxGetMainWnd()->GetMenu()->GetSubMenu(delta)->EnableMenuItem(2, MF_BYPOSITION | MF_DISABLED | MF_GRAYED);
-	//}
-
-	//saveReopen();
-}
-
-void RDOStudioApp::loadReopen()
-{
-	m_reopenList.clear();
-	for (ruint i = 0; i < 10; i++)
-	{
-		tstring sec;
-		if (i+1 < 10)
-		{
-			sec = rdo::format(_T("0%d"), i+1);
-		}
-		else
-		{
-			sec = rdo::format(_T("%d"), i+1);
-		}
-		TRY
-		{
-			tstring s = AfxGetApp()->GetProfileString(_T("reopen"), sec.c_str(), _T(""));
-			if (!s.empty())
-			{
-				m_reopenList.insert(m_reopenList.end(), s);
-			}
-		}
-		CATCH(CException, e)
-		{}
-		END_CATCH
-	}
-}
-
-void RDOStudioApp::saveReopen() const
-{
-	for (ReopenList::size_type i = 0; i < 10; i++)
-	{
-		tstring sec;
-		if (i+1 < 10)
-		{
-			sec = rdo::format(_T("0%d"), i+1);
-		}
-		else
-		{
-			sec = rdo::format(_T("%d"), i+1);
-		}
-		tstring s;
-		if (i < m_reopenList.size())
-		{
-			s = m_reopenList[i];
-		}
-		else
-		{
-			s = _T("");
-		}
-		TRY
-		{
-			AfxGetApp()->WriteProfileString(_T("reopen"), sec.c_str(), s.c_str());
-		}
-		CATCH(CException, e)
-		{}
-		END_CATCH
-	}
-}
-
-void RDOStudioApp::OnUpdateModelBuild(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->canBuild());
-}
-
-void RDOStudioApp::OnUpdateModelRun(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->canRun());
-}
-
-void RDOStudioApp::OnUpdateModelStop(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->isRunning());
 }
 
 tstring RDOStudioApp::getFullExtName()
@@ -824,7 +565,7 @@ CREF(tstring) RDOStudioApp::getLastProjectName() const
 
 void RDOStudioApp::setLastProjectName(CREF(tstring) projectName)
 {
-	insertReopenItem(projectName);
+	m_pMainFrame->insertMenuFileReopenItem(projectName);
 	if (m_lastProjectName != projectName)
 	{
 		m_lastProjectName = projectName;

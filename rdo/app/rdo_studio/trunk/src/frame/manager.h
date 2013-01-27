@@ -35,7 +35,9 @@ class RDOStudioFrameManager
 Q_OBJECT
 
 public:
-	RDOStudioFrameManager();
+	typedef  boost::function<void (ruint)>  OnChangeFrame;
+
+	RDOStudioFrameManager(CREF(OnChangeFrame) onChangeFrame);
 	virtual ~RDOStudioFrameManager();
 
 	void insertFrame (CREF(tstring) frameName );
@@ -94,6 +96,7 @@ private:
 	ruint                 m_lastShowedFrame;
 	ruint                 m_currentShowingFrame;
 	rbool                 m_changed;
+	OnChangeFrame         m_onChangeFrame;
 
 	DECLARE_IInit;
 

@@ -10,8 +10,8 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtCore/qprocess.h>
 #include <boost/foreach.hpp>
+#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/chart_tree.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
@@ -21,7 +21,7 @@
 #include "app/rdo_studio_mfc/rdo_tracer/rdotraceroperation.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerresult.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_windows_base.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -362,6 +362,30 @@ void ChartTree::OnUpdateChartFindincharts(CCmdUI* pCmdUI)
 void ChartTree::OnChartFindincharts()
 {
 	findInCharts(getSelected());
+}
+
+void ChartTree::focusInEvent(QFocusEvent* pEvent)
+{
+	parent_type::focusInEvent(pEvent);
+	activate(pEvent);
+}
+
+void ChartTree::focusOutEvent(QFocusEvent* pEvent)
+{
+	parent_type::focusOutEvent(pEvent);
+	deactivate(pEvent);
+}
+
+void ChartTree::onUpdateActions(rbool activated)
+{
+	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+
+	updateAction(
+		pMainWindow->actHelpContext,
+		activated,
+		this, "onHelpContext()"
+	);
 }
 
 void ChartTree::onHelpContext()

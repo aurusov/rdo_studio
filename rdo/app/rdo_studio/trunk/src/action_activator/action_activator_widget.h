@@ -26,13 +26,6 @@ protected:
 
 	virtual void focusInEvent (QFocusEvent* pEvent);
 	virtual void focusOutEvent(QFocusEvent* pEvent);
-
-	virtual void onActivate   () = 0;
-	virtual void onDeactivate () = 0;
 };
-
-#define DECLARE_ActionActivatorWidget \
-	virtual void onActivate  ();      \
-	virtual void onDeactivate();
 
 #endif // _RDO_STUDIO_ACTION_ACTIVATOR_WIDGET_H_

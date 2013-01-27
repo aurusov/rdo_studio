@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>855</width>
-    <height>464</height>
+    <width>1059</width>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,13 +30,19 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="styleSheet">
+    <string notr="true">QStatusBar::item {
+border: none;
+}</string>
+   </property>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>855</width>
+     <width>1059</width>
      <height>21</height>
     </rect>
    </property>
@@ -44,13 +50,20 @@
     <property name="title">
      <string>Файл</string>
     </property>
+    <widget class="QMenu" name="menuFileReopen">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Недавние</string>
+     </property>
+     <addaction name="action"/>
+    </widget>
     <addaction name="actFileNew"/>
     <addaction name="actFileOpen"/>
-    <addaction name="actFileReopen"/>
+    <addaction name="menuFileReopen"/>
     <addaction name="actFileClose"/>
     <addaction name="separator"/>
-    <addaction name="actFileSave"/>
-    <addaction name="actFileSaveAs"/>
     <addaction name="actFileSaveAll"/>
     <addaction name="separator"/>
     <addaction name="actFileExit"/>
@@ -60,6 +73,7 @@
      <string>Помощь</string>
     </property>
     <addaction name="actHelpContext"/>
+    <addaction name="actHelpWhatsNew"/>
     <addaction name="separator"/>
     <addaction name="actHelpAbout"/>
    </widget>
@@ -73,14 +87,12 @@
     <addaction name="actEditCut"/>
     <addaction name="actEditCopy"/>
     <addaction name="actEditPaste"/>
-    <addaction name="actEditClear"/>
-    <addaction name="separator"/>
-    <addaction name="actEditCopyAsRTF"/>
+    <addaction name="actEditDel"/>
     <addaction name="separator"/>
     <addaction name="actEditSelectAll"/>
     <addaction name="separator"/>
-    <addaction name="actEditUpPercase"/>
-    <addaction name="actEditLowPercase"/>
+    <addaction name="actEditUpperCase"/>
+    <addaction name="actEditLowerCase"/>
     <addaction name="actEditCommentSelection"/>
     <addaction name="actEditCompleteWord"/>
    </widget>
@@ -95,7 +107,7 @@
     <addaction name="separator"/>
     <addaction name="actSearchFinInModel"/>
     <addaction name="separator"/>
-    <addaction name="actSearchBookmarksAddClear"/>
+    <addaction name="actSearchBookmarksToggle"/>
     <addaction name="actSearchBookmarkNext"/>
     <addaction name="actSearchBookmarkPrev"/>
     <addaction name="actSearchBookmarksClearAll"/>
@@ -106,11 +118,11 @@
     <property name="title">
      <string>Просмотр</string>
     </property>
-    <addaction name="actViewToggleAllfolds"/>
-    <addaction name="actViewToggleCurrentfold"/>
+    <addaction name="actViewToggleAllFolds"/>
+    <addaction name="actViewToggleCurrentFold"/>
     <addaction name="separator"/>
-    <addaction name="actViewShowSpace"/>
-    <addaction name="actViewShowEndSymbol"/>
+    <addaction name="actViewShowWhiteSpace"/>
+    <addaction name="actViewShowEndOfLine"/>
     <addaction name="separator"/>
     <addaction name="actViewZoomInc"/>
     <addaction name="actViewZoomDec"/>
@@ -174,7 +186,112 @@
    <addaction name="menuWindow"/>
    <addaction name="menuHelp"/>
   </widget>
+  <widget class="QToolBar" name="toolBarFile">
+   <property name="windowTitle">
+    <string>Файл</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actFileNew"/>
+   <addaction name="actFileOpen"/>
+   <addaction name="actFileSaveAll"/>
+  </widget>
+  <widget class="QToolBar" name="toolBarEdit">
+   <property name="windowTitle">
+    <string>Редактирование</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actEditCut"/>
+   <addaction name="actEditCopy"/>
+   <addaction name="actEditPaste"/>
+   <addaction name="separator"/>
+   <addaction name="actEditUndo"/>
+   <addaction name="actEditRedo"/>
+   <addaction name="separator"/>
+   <addaction name="actSearchFind"/>
+   <addaction name="actSearchReplace"/>
+   <addaction name="separator"/>
+   <addaction name="actSearchBookmarkPrev"/>
+   <addaction name="actSearchBookmarkNext"/>
+  </widget>
+  <widget class="QToolBar" name="toolBarZoom">
+   <property name="windowTitle">
+    <string>Масштаб</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actViewZoomInc"/>
+   <addaction name="actViewZoomDec"/>
+   <addaction name="actViewZoomAuto"/>
+   <addaction name="actViewZoomReset"/>
+  </widget>
+  <widget class="QToolBar" name="toolBarModel">
+   <property name="windowTitle">
+    <string>Модель</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actModelRun"/>
+   <addaction name="actModelStop"/>
+   <addaction name="separator"/>
+   <addaction name="actModelRuntimeMaxSpeed"/>
+   <addaction name="actModelRuntimeJump"/>
+   <addaction name="actModelRuntimeSync"/>
+   <addaction name="actModelRuntimePause"/>
+   <addaction name="separator"/>
+   <addaction name="actModelShowRateInc"/>
+   <addaction name="actModelShowRateIncFour"/>
+   <addaction name="actModelShowRateDecFour"/>
+   <addaction name="actModelShowRateDec"/>
+   <addaction name="separator"/>
+   <addaction name="actModelFrameNext"/>
+   <addaction name="actModelFramePrev"/>
+  </widget>
   <action name="actFileNew">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../rdo_studio.qrc">
      <normaloff>:/images/images/file_new.png</normaloff>
@@ -188,6 +305,9 @@
    </property>
   </action>
   <action name="actFileOpen">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../rdo_studio.qrc">
      <normaloff>:/images/images/file_open.png</normaloff>
@@ -200,35 +320,18 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actFileReopen">
-   <property name="text">
-    <string>Недавние</string>
-   </property>
-  </action>
   <action name="actFileClose">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Закрыть</string>
    </property>
   </action>
-  <action name="actFileSave">
-   <property name="icon">
-    <iconset resource="../rdo_studio.qrc">
-     <normaloff>:/images/images/file_save.png</normaloff>
-     <disabledoff>:/images/images/file_save_d.png</disabledoff>:/images/images/file_save.png</iconset>
-   </property>
-   <property name="text">
-    <string>Сохранить</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
-   </property>
-  </action>
-  <action name="actFileSaveAs">
-   <property name="text">
-    <string>Сохранить как...</string>
-   </property>
-  </action>
   <action name="actFileSaveAll">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../rdo_studio.qrc">
      <normaloff>:/images/images/file_save_all.png</normaloff>
@@ -237,6 +340,9 @@
    <property name="text">
     <string>Сохранить всё</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="actFileExit">
    <property name="text">
@@ -244,12 +350,15 @@
    </property>
   </action>
   <action name="actHelpContext">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../rdo_studio.qrc">
      <normaloff>:/images/images/help_context.png</normaloff>:/images/images/help_context.png</iconset>
    </property>
    <property name="text">
-    <string>Содержание</string>
+    <string>Контекстная справка</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
@@ -344,7 +453,7 @@
     <string>Ctrl+V</string>
    </property>
   </action>
-  <action name="actEditClear">
+  <action name="actEditDel">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -353,17 +462,6 @@
    </property>
    <property name="shortcut">
     <string>Del</string>
-   </property>
-  </action>
-  <action name="actEditCopyAsRTF">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Копировать как RTF</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+C</string>
    </property>
   </action>
   <action name="actEditSelectAll">
@@ -377,7 +475,7 @@
     <string>Ctrl+A</string>
    </property>
   </action>
-  <action name="actEditUpPercase">
+  <action name="actEditUpperCase">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -388,7 +486,7 @@
     <string>Ctrl+Shift+U</string>
    </property>
   </action>
-  <action name="actEditLowPercase">
+  <action name="actEditLowerCase">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -486,7 +584,7 @@
     <string>Ctrl+Shift+F</string>
    </property>
   </action>
-  <action name="actSearchBookmarksAddClear">
+  <action name="actSearchBookmarksToggle">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -551,7 +649,7 @@
     <string>Ctrl+G</string>
    </property>
   </action>
-  <action name="actViewToggleAllfolds">
+  <action name="actViewToggleAllFolds">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -559,10 +657,10 @@
     <string>Свернуть/развернуть все группы</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+0</string>
+    <string>Ctrl+Shift+0</string>
    </property>
   </action>
-  <action name="actViewToggleCurrentfold">
+  <action name="actViewToggleCurrentFold">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -570,7 +668,10 @@
     <string>Свернуть/развернуть текущую группу</string>
    </property>
   </action>
-  <action name="actViewShowSpace">
+  <action name="actViewShowWhiteSpace">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -578,18 +679,21 @@
     <string>Показать пробелы</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+8</string>
+    <string>Ctrl+Shift+8</string>
    </property>
   </action>
-  <action name="actViewShowEndSymbol">
+  <action name="actViewShowEndOfLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Показать символ конца строки</string>
+    <string>Показать символы конца строки</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+9</string>
+    <string>Ctrl+Shift+9</string>
    </property>
   </action>
   <action name="actViewZoomInc">
@@ -605,7 +709,7 @@
     <string>Увеличить масштаб</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+=</string>
+    <string>Ctrl++</string>
    </property>
   </action>
   <action name="actViewZoomDec">
@@ -659,6 +763,9 @@
    </property>
   </action>
   <action name="actModelBuild">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Скомпилировать</string>
    </property>
@@ -667,6 +774,9 @@
    </property>
   </action>
   <action name="actModelRun">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../rdo_studio.qrc">
      <normaloff>:/images/images/model_run.png</normaloff>
@@ -680,6 +790,9 @@
    </property>
   </action>
   <action name="actModelStop">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../rdo_studio.qrc">
      <normaloff>:/images/images/model_stop.png</normaloff>
@@ -693,6 +806,9 @@
    </property>
   </action>
   <action name="actModelRuntimeMaxSpeed">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -706,6 +822,9 @@
    </property>
   </action>
   <action name="actModelRuntimeJump">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -719,6 +838,9 @@
    </property>
   </action>
   <action name="actModelRuntimeSync">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -732,6 +854,9 @@
    </property>
   </action>
   <action name="actModelRuntimePause">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -803,16 +928,25 @@
    </property>
   </action>
   <action name="actChartFindInChart">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Поиск на графике</string>
    </property>
   </action>
   <action name="actChartAddToNewChart">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Добавить на новый график</string>
    </property>
   </action>
   <action name="actChartTimeWrap">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>'Схлопнуть' время</string>
    </property>
@@ -821,21 +955,33 @@
    </property>
   </action>
   <action name="actChartOptions">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Настройки</string>
    </property>
   </action>
   <action name="actWindowCascade">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Расположить каскадом</string>
    </property>
   </action>
   <action name="actWindowTitleHorzontal">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Расположить заголовками</string>
    </property>
   </action>
   <action name="actWindowArrange">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Упорядочить свернутые</string>
    </property>
@@ -884,6 +1030,16 @@
    </property>
    <property name="text">
     <string>Уменьшить масштаб в 4-ре раза</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Пусто</string>
+   </property>
+  </action>
+  <action name="actHelpWhatsNew">
+   <property name="text">
+    <string>Что нового</string>
    </property>
   </action>
  </widget>

@@ -11,7 +11,7 @@
 #define _RDO_STUDIO_MFC_MODEL_MODEL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/signal.hpp>
+#include <boost/optional.hpp>
 #include <QtCore/qobject.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
@@ -39,10 +39,7 @@ class RDOStudioModel
 {
 Q_OBJECT
 
-friend class RDOStudioFrameTreeCtrl;
-friend class RDOStudioApp;
 friend class RDOThreadStudioGUI;
-friend class RDOStudioPlugins;
 
 private:
 	enum BuildState
@@ -53,20 +50,23 @@ private:
 	};
 
 	RDOStudioFrameManager                  m_frameManager;
-
-	int                                    m_useTemplate;
-	rbool                                  m_autoDeleteDoc;
-	rbool                                  m_showCanNotCloseModelMessage;
-
+	boost::optional<ruint>                 m_templateIndex;
 	rbool                                  m_GUI_HAS_MODEL;
 	rbool                                  m_GUI_CAN_RUN;
-	rbool                                  m_GUI_IS_RUNING;
-	rbool                                  m_GUI_ACTION_NEW;
-	rbool                                  m_GUI_ACTION_OPEN;
-	rbool                                  m_GUI_ACTION_SAVE;
-	rbool                                  m_GUI_ACTION_CLOSE;
-	rbool                                  m_GUI_ACTION_BUILD;
-	rbool                                  m_GUI_ACTION_RUN;
+	rbool                                  m_GUI_IS_RUNNING;
+
+	void setHasModel (rbool value);
+	void setCanRun   (rbool value);
+	void setIsRunning(rbool value);
+	void setUpActions();
+
+	rbool  isModify  () const;
+	rbool  canNew    () const;
+	rbool  canOpen   () const;
+	rbool  canSave   () const;
+	rbool  canClose  () const;
+	rbool  canBuild  () const;
+	rbool  canRun    () const;
 
 	SYSTEMTIME                             m_timeStart;
 	BuildState                             m_buildState;
@@ -81,14 +81,18 @@ private:
 	double                                 m_showRate;
 	rbool                                  m_tempPause;
 	rdo::runtime::RunTimeMode              m_runtimeMode;
-	rdo::runtime::RunTimeMode              m_runtimeModePrev;
 	rdo::simulation::report::RDOExitCode   m_exitCode;
 	mutable rbool                          m_modify;
 	RDOStudioModelView*                    m_pModelView;
 	RPViewQt*                              m_pModelProcView;
 	tstring                                m_name;
 
-	boost::signal<void (float)>            m_timeNowSignal;
+	rbool newModel      (CREF(tstring) modelName, CREF(tstring) modelPath, ruint templateIndex);
+	rbool saveModel     () const;
+	void  saveToXML     ();
+	void  loadFromXML   ();
+	rbool buildModel    ();
+	rbool stopModel     () const;
 
 	void  updateFrmDescribed      ();
 	void  newModelFromRepository  ();
@@ -98,16 +102,20 @@ private:
 	rbool canCloseModel           ();
 	void  afterModelStart         ();
 
+	double  getSpeed() const;
+	void    setSpeed(double persent);
+
 	PTR(RPMethodProc2RDO) getProc2rdo() const;
 
 	struct ModelTemplateItem
 	{
-		ruint m_resID;
-		int   m_position;
+		QString                resName;
+		boost::optional<ruint> position;
 
 		ModelTemplateItem();
 		ModelTemplateItem(CREF(ModelTemplateItem) copy);
-		ModelTemplateItem(ruint resID, int position);
+		ModelTemplateItem(CREF(QString) resName);
+		ModelTemplateItem(CREF(QString) resName, ruint position);
 	};
 	typedef  std::map<rdoModelObjects::RDOFileType, ModelTemplateItem>  ModelTemplate;
 	typedef  std::map<int, ModelTemplate>                               ModelTemplateList;
@@ -127,31 +135,15 @@ public:
 	RDOStudioModel();
 	virtual ~RDOStudioModel();
 
-	rbool newModel      (tstring _model_name = _T(""), tstring _model_path = _T(""), const int _useTemplate = -1);
-	rbool openModel     (CREF(tstring) modelName = _T("")) const;
-	rbool saveModel     () const;
-	void  saveAsModel   () const;
-	void  saveToXML     ();
-	void  loadFromXML   ();
-	rbool closeModel    () const;
-	rbool buildModel    ();
-	rbool runModel      ();
-	rbool stopModel     () const;
-	void  update        ();
-	void  setGUIPause   ();
-	void  setGUIContinue();
+	rbool openModel (CREF(tstring) modelName = _T(""));
+	rbool runModel  ();
+	rbool closeModel();
+	void  update    ();
 
 	CREF(tstring) getName    () const;
 	void          setName    (CREF(tstring) str);
 	tstring       getFullName() const;
 
-	rbool  isModify      () const;
-	rbool  canNew        () const;
-	rbool  canOpen       () const;
-	rbool  canSave       () const;
-	rbool  canClose      () const;
-	rbool  canBuild      () const;
-	rbool  canRun        () const;
 	rbool  isRunning     () const;
 	rbool  isFrmDescribed() const;
 	double getTimeNow    () const;
@@ -160,15 +152,9 @@ public:
 	rdo::runtime::RunTimeMode            getRuntimeMode() const;
 	void    setRuntimeMode       (const rdo::runtime::RunTimeMode value);
 	tstring getLastBreakPointName();
-	double  getSpeed             () const;
-	void    setSpeed             (double persent);
 	double  getShowRate          () const;
 	void    setShowRate          (double value);
 
-	void       showNextFrame   ();
-	void       showPrevFrame   ();
-	rbool      canShowNextFrame() const;
-	rbool      canShowPrevFrame() const;
 	int        getFrameCount   () const;
 	CPTR(char) getFrameName    (int index) const;
 	void       showFrame       (int index);
@@ -194,16 +180,37 @@ public:
 	void  updateStyleOfAllModel() const;
 	rbool isPrevModelClosed    () const;
 
-	rbool saveModified();
-
 	REF(RDOStudioFrameManager) getFrameManager();
+	void onChangeFrame(ruint index);
 
 	PTR(RPViewQt) getProcView();
 
 private slots:
+	void onFileNew    ();
+	void onFileOpen   ();
+	void onFileClose  ();
+	void onFileSaveAll();
+
 	void onModelBuild();
 	void onModelRun  ();
 	void onModelStop ();
+
+	void onModelRuntimeMaxSpeed();
+	void onModelRuntimeJump    ();
+	void onModelRuntimeSync    ();
+	void onModelRuntimePause   ();
+
+	void onModelShowRateInc    ();
+	void onModelShowRateIncFour();
+	void onModelShowRateDecFour();
+	void onModelShowRateDec    ();
+
+	void onShowNextFrame();
+	void onShowPrevFrame();
+
+	void onModelSpeedValueChanged(int value);
+
+	void onEditModifyChanged(bool value);
 };
 
 // --------------------------------------------------------------------------------

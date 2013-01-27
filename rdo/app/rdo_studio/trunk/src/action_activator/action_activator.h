@@ -12,16 +12,13 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qevent.h>
-#include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
 class ActionActivator
 {
 protected:
-	typedef  boost::function<void ()>  Callback;
-
-	ActionActivator(CREF(Callback) onActivate, CREF(Callback) onDeactivate);
+	ActionActivator();
 	virtual ~ActionActivator();
 
 	rbool isActivated() const;
@@ -29,10 +26,12 @@ protected:
 	void activate  (QFocusEvent* pEvent);
 	void deactivate(QFocusEvent* pEvent);
 
+	virtual void onUpdateActions(rbool activated) = 0;
+
+	static void updateAction(QAction* pAction, rbool enabled, QObject* pObject, CREF(tstring) method);
+
 private:
-	Callback  m_onActivate;
-	Callback  m_onDeactivate;
-	rbool     m_activated;
+	rbool m_activated;
 };
 
 #endif // _RDO_STUDIO_ACTION_ACTIVATOR_H_

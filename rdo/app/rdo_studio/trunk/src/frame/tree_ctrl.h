@@ -13,13 +13,15 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qtreewidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/help_context_i.h"
+#include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
 
 class RDOStudioFrameTreeCtrl
 	: public QTreeWidget
-	, public IHelpContext
+	, public ActionActivator
 {
+Q_OBJECT
+
 public:
 	RDOStudioFrameTreeCtrl(PTR(QWidget) pParent);
 	virtual ~RDOStudioFrameTreeCtrl();
@@ -33,7 +35,12 @@ private:
 
 	PTR(QTreeWidgetItem) m_pRootItem;
 
-	DECLARE_IHelpContext;
+	virtual void focusInEvent   (QFocusEvent* pEvent);
+	virtual void focusOutEvent  (QFocusEvent* pEvent);
+	virtual void onUpdateActions(rbool activated);
+
+private slots:
+	void onHelpContext();
 };
 
 #endif // _RDO_STUDIO_MFC_FRAME_TREE_CTRL_H_

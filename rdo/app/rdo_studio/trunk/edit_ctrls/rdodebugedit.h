@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
-#include "app/rdo_studio_mfc/src/help_context_i.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
@@ -21,21 +20,16 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDODebugEdit
 // --------------------------------------------------------------------------------
-class RDODebugEdit
-	: public RDOBaseEdit
-	, public IHelpContext
+class RDODebugEdit: public RDOBaseEdit
 {
-private:
-	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-
-	DECLARE_IHelpContext;
-
 public:
 	RDODebugEdit(PTR(QWidget) pParent);
 	virtual ~RDODebugEdit();
 
-	void appendLine( CREF(tstring) str );
+	void appendLine(CREF(tstring) str);
+
+private:
+	virtual void onHelpContext();
 };
 
 } // namespace rdoEditCtrl

@@ -35,6 +35,8 @@ FindDialog::FindDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback
 {
 	setupUi(this);
 
+	layout()->setSizeConstraint(QLayout::SetFixedSize);
+
 	connect(findButton,    SIGNAL(clicked(bool)),              this, SLOT(onFindButton()));
 	connect(cancelButton,  SIGNAL(clicked(bool)),              this, SLOT(reject()));
 	connect(lineEdit,      SIGNAL(textEdited(const QString&)), this, SLOT(onWhatEdited(const QString&)));
@@ -43,11 +45,6 @@ FindDialog::FindDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback
 	connect(directionDown, SIGNAL(toggled(bool)),              this, SLOT(onDirectionDownToggled(bool)));
 
 	setAttribute(Qt::WA_DeleteOnClose, true);
-
-	if (pParent)
-	{
-//		move(pParent->frameGeometry().center() - frameGeometry().center());
-	}
 }
 
 FindDialog::~FindDialog()

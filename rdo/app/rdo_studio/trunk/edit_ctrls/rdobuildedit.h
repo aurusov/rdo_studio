@@ -15,7 +15,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
-#include "app/rdo_studio_mfc/src/help_context_i.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
@@ -23,9 +22,7 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEdit
 // --------------------------------------------------------------------------------
-class RDOBuildEdit
-	: public LogEdit
-	, public IHelpContext
+class RDOBuildEdit: public LogEdit
 {
 public:
 	RDOBuildEdit(PTR(QWidget) pParent);
@@ -39,10 +36,7 @@ protected:
 private:
 	typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
 
-	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-
-	DECLARE_IHelpContext;
+	virtual void onHelpContext();
 };
 
 } // namespace rdoEditCtrl

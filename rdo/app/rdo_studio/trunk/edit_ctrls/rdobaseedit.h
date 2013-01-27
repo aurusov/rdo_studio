@@ -13,12 +13,15 @@
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
+#include <boost/function.hpp>
 #include <QtGui/qmenu.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
 #include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
 #include "thirdparty/sci/qt/ScintillaEditBase/ScintillaEditBase.h"
+#include "app/rdo_studio_mfc/src/dialog/find_dialog.h"
+#include "app/rdo_studio_mfc/src/dialog/find_replace_dialog.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
@@ -26,37 +29,6 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBaseEdit
 // --------------------------------------------------------------------------------
-class RDOBaseEdit;
-
-typedef std::vector< RDOBaseEdit* >                 RDOBaseEditList;
-typedef std::vector< RDOBaseEdit* >::const_iterator RDOBaseEditListIterator;
-
-class RDOBaseEditGroup {
-private:
-	RDOBaseEditList list;
-
-public:
-	rbool bMatchCase;
-	rbool bMatchWholeWord;
-	rbool bSearchDown;
-	tstring findStr;
-	tstring replaceStr;
-
-	RDOBaseEditGroup():
-		bMatchCase( false ),
-		bMatchWholeWord( false ),
-		bSearchDown( true ),
-		findStr( "" ),
-		replaceStr( "" )
-	{
-	}
-	void insert( RDOBaseEdit* edit ) {
-		list.insert( list.end(), edit );
-	}
-	RDOBaseEditListIterator begin() const { return list.begin(); }
-	RDOBaseEditListIterator end()   const { return list.end();   }
-};
-
 class RDOBaseEdit
 	: public ScintillaEditBase
 	, public ActionActivator
@@ -64,20 +36,15 @@ class RDOBaseEdit
 Q_OBJECT
 private:
 	typedef  ScintillaEditBase  super;
-	int markerCount;
+	int   markerCount;
+
+	FindDialog*          m_pFindDialog;
+	FindDialog::Settings m_findSettings;
+
+	FindReplaceDialog*          m_pFindReplaceDialog;
+	FindReplaceDialog::Settings m_findReplaceSettings;
 
 protected:
-	rbool GUI_ID_EDIT_UNDO;
-	rbool GUI_ID_EDIT_REDO;
-	rbool GUI_ID_EDIT_CUT;
-	rbool GUI_IS_SELECTED;
-	rbool GUI_IS_EMPTY;
-	rbool GUI_IS_READONLY;
-	rbool GUI_IS_MODIFY;
-	rbool GUI_HAS_BOOKMARK;
-	rbool GUI_ID_VIEW_WHITESPACE;
-	rbool GUI_ID_VIEW_ENDOFLINE;
-
 	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return super::send( msg, wParam, lParam );; };
 	long sendEditorString( unsigned int msg, unsigned long wParam, const char* str ) const { return super::sends( msg, wParam, str ); };
 	QMenu* popupMenu;
@@ -92,7 +59,6 @@ protected:
 	void ensureRangeVisible( int posStart, int posEnd, rbool enforcePolicy = true ) const;
 
 	RDOBaseEditStyle* style;
-	RDOBaseEditGroup* group;
 
 	int  firstFoundPos;
 	rbool bHaveFound;
@@ -100,105 +66,130 @@ protected:
 	void replace( REF(tstring) findWhat, REF(tstring) replaceWhat, const rbool searchDown = true, const rbool matchCase = false, const rbool matchWholeWord = false );
 	void replaceAll( REF(tstring) findWhat, REF(tstring) replaceWhat, const rbool matchCase = false, const rbool matchWholeWord = false );
 
-	void copyAsRTF();
-
 	int indentOfBlock( int line ) const;
 	void setLineIndentation( int line, int indent ) const;
 	void autoIndent() const;
 
-	void updateAllGUI();
-	void updateBookmarksGUI();
-
 protected:
-	virtual void focusInEvent (QFocusEvent* pEvent);
-	virtual void focusOutEvent(QFocusEvent* pEvent);
+	virtual void focusInEvent   (QFocusEvent* pEvent);
+	virtual void focusOutEvent  (QFocusEvent* pEvent);
+	virtual void onUpdateActions(rbool activated);
 
-	afx_msg void OnIsSelected(CCmdUI* pCmdUI);
+protected slots:
+	        void onUpdateEditGUI();
+	virtual void onHelpContext  () = 0;
 
 private:
-	void onActivate  ();
-	void onDeactivate();
-
 	//! @todo qt
-	//afx_msg void OnSetFocus( CWnd *pOldWnd );
 	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
-	afx_msg void OnEditUndo();
-	afx_msg void OnEditRedo();
-	afx_msg void OnEditCut();
-	afx_msg void OnEditCopy();
-	afx_msg void OnEditPaste();
-	afx_msg void OnEditClear();
-	afx_msg void OnEditCopyAsRTF();
-	afx_msg void OnEditSelectAll();
-	afx_msg void OnEditUpperCase();
-	afx_msg void OnEditLowerCase();
-	afx_msg void OnUpdateEditUndo(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateEditRedo(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateEditCut(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateEditPaste(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateEditClear(CCmdUI* pCmdUI);
-	afx_msg void OnSelectAll( CCmdUI* pCmdUI );
-	afx_msg void OnSearchFind();
-	afx_msg void OnSearchReplace();
-	afx_msg void OnSearchFindNext();
-	afx_msg void OnSearchFindPrevious();
 	afx_msg void OnSearchFindNextFast();
 	afx_msg void OnSearchFindPreviousFast();
-	afx_msg void OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateSearchFind(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateSearchReplace(CCmdUI* pCmdUI);
-	afx_msg void OnBookmarkToggle();
-	afx_msg void OnBookmarkNext();
-	afx_msg void OnBookmarkPrev();
-	afx_msg void OnBookmarkClearAll();
-	afx_msg void OnHasBookmarks( CCmdUI* pCmdUI );
-	afx_msg void OnViewWhiteSpace();
-	afx_msg void OnViewEndOfLine();
-	afx_msg void OnViewZoomIn();
-	afx_msg void OnViewZoomOut();
-	afx_msg void OnViewZoomReset();
-	afx_msg void OnUpdateWhiteSpace( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateEndOfLine( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateZoomIn( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateZoomOut( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateZoomReset( CCmdUI *pCmdUI );
-	afx_msg void OnSearchGotoLine();
-	afx_msg LRESULT OnFindReplaceMsg( WPARAM wParam, LPARAM lParam );
+
+	void setUpActionFind(rbool activate);
+
+	void onFindDlgFind(CREF(FindDialog::Settings) settings);
+	void onFindDlgClose();
+
+	void onFindReplaceDlgFind      (CREF(FindReplaceDialog::Settings) settings);
+	void onFindReplaceDlgReplace   (CREF(FindReplaceDialog::Settings) settings);
+	void onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings);
+	void onFindReplaceDlgClose     ();
 
 private slots:
 	void catchNeedShown(int position, int length);
 	void catchCharAdded(int ch);
-	void catchUpdateUi();
+
+	void onEditUndo     ();
+	void onEditRedo     ();
+	void onEditCut      ();
+	void onEditCopy     ();
+	void onEditPaste    ();
+	void onEditDel      ();
+	void onEditSelectAll();
+	void onEditUpperCase();
+	void onEditLowerCase();
+
+	void onViewZoomChanged     (int zoom);
+	void onViewZoomInc         ();
+	void onViewZoomDec         ();
+	void onViewZoomReset       ();
+
+	void onViewShowWhiteSpace();
+	void onViewShowEndOfLine ();
+
+	void onBookmarkToggle  ();
+	void onBookmarkNext    () const;
+	void onBookmarkPrev    () const;
+	void onBookmarkClearAll();
+
+	void onSearchGotoLine       ();
+	void onSearchFind           ();
+	void onSearchFindNext       ();
+	void onSearchFindPrevious   ();
+	void onSearchReplace        ();
+	void onSearchReplaceFind    ();
+	void onSearchReplaceNext    ();
+	void onSearchReplaceAll     ();
+
+	void onCopyAsRTF(QMimeData* pMimeData);
+
+	void onUpdateModify();
+
+private:
+	typedef  boost::function<void (RDOBaseEdit*)>         this_method;
+	typedef  boost::function<rbool (const RDOBaseEdit*)>  this_predicate;
+
+	void  methodOfGroup   (CREF(this_method)    fun);
+	rbool predicateOfGroup(CREF(this_predicate) fun) const;
 
 public:
 	RDOBaseEdit(PTR(QWidget) pParent);
 	virtual ~RDOBaseEdit();
 
+	class Group
+	{
+	public:
+		typedef std::vector<PTR(RDOBaseEdit)> List;
+
+		rbool   bMatchCase;
+		rbool   bMatchWholeWord;
+		rbool   bSearchDown;
+		tstring findStr;
+		tstring replaceStr;
+
+		Group();
+
+		void insert(PTR(RDOBaseEdit) pEdit);
+
+		List::const_iterator begin() const;
+		List::const_iterator end  () const;
+		List::const_iterator next (CREF(List::const_iterator) it) const;
+		List::const_iterator prev (CREF(List::const_iterator) it) const;
+
+		void                 for_each(CREF(this_method)    fun) const;
+		List::const_iterator find_if (CREF(this_predicate) fun) const;
+
+	private:
+		List m_list;
+	};
+
 	const RDOBaseEditStyle* getEditorStyle() const         { return style; };
 	void setEditorStyle( RDOBaseEditStyle* _style );
 
-	void setGroup( RDOBaseEditGroup* _group );
+	void setGroup(PTR(Group) pGroup);
 	void setPopupMenu( QMenu* const value )                { popupMenu = value; };
 
 	rbool isEmpty() const                                  { return getLength() == 0;                                                         };
 	rbool isSelected() const                               { return sendEditor( SCI_GETSELECTIONSTART ) != sendEditor( SCI_GETSELECTIONEND ); };
-	rbool isOverwrite() const                              { return sendEditor( SCI_GETOVERTYPE ) ? true : false;                             };
 
-	void updateEditGUI();
-	rbool isModify() const                                 { return GUI_IS_MODIFY;                                  };
-	void setModifyFalse()                                  { GUI_IS_MODIFY = false; sendEditor( SCI_SETSAVEPOINT ); };
+	rbool isModify() const                                 { return sendEditor(SCI_GETMODIFY) ? true : false; };
+	void  setModifyFalse()                                 { sendEditor(SCI_SETSAVEPOINT); };
 
 	virtual void clearAll();
 	void clearUndoBuffer() const                           { sendEditor( SCI_EMPTYUNDOBUFFER ); };
 
 	rbool isReadOnly() const                               { return sendEditor( SCI_GETREADONLY ) ? true : false;           };
-	void setReadOnly( const rbool value )                  { GUI_IS_READONLY = value; sendEditor( SCI_SETREADONLY, value ); };
-
-	rbool isViewWhiteSpace() const                         { return sendEditor( SCI_GETVIEWWS ) != SCWS_INVISIBLE;                                                     };
-	void setViewWhiteSpace( const rbool value )            { GUI_ID_VIEW_WHITESPACE = value; sendEditor( SCI_SETVIEWWS, value ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE ); };
-
-	rbool isViewEndOfLine() const                          { return sendEditor( SCI_GETVIEWEOL ) ? true : false;                 };
-	void setEndOfLine( const rbool value )                 { GUI_ID_VIEW_ENDOFLINE = value; sendEditor( SCI_SETVIEWEOL, value ); };
+	void setReadOnly( const rbool value )                  { sendEditor( SCI_SETREADONLY, value ); };
 
 	void appendText( CREF(tstring) str ) const;
 
@@ -208,11 +199,11 @@ public:
 	void zoomOut() const                                   { sendEditor( SCI_ZOOMOUT );        };
 	void resetZoom() const                                 { sendEditor( SCI_SETZOOM, 0 );     };
 
-	rbool bookmarkToggle( int line = -1 ) const;
-	rbool bookmarkNext( const rbool canLoop = true, const rbool fromCurrentLine = true, rbool* wasLoop = NULL ) const;
-	rbool bookmarkPrev( const rbool canLoop = true, const rbool fromCurrentLine = true, rbool* wasLoop = NULL ) const;
+	rbool bookmarkToggle  (int line = -1) const;
+	rbool bookmarkNext    (rbool canLoop = true, rbool fromCurrentLine = true) const;
+	rbool bookmarkPrev    (rbool canLoop = true, rbool fromCurrentLine = true) const;
 	void  bookmarkClearAll() const;
-	rbool hasBookmarks() const;
+	rbool hasBookmarks    () const;
 
 	int getLength() const                           { return sendEditor( SCI_GETLENGTH );                  };
 	int getLineCount() const                        { return sendEditor( SCI_GETLINECOUNT );               };
@@ -221,8 +212,6 @@ public:
 	int getLineFromPosition( const int pos ) const  { return sendEditor( SCI_LINEFROMPOSITION, pos );      };
 	void setCurrentPos( const int value ) const;
 	void setCurrentPos( const int line, int pos_in_line, const rbool convert_rdo_tab = false ) const;
-	int getCurrentLineNumber() const                { return getLineFromPosition( getCurrentPos() );       };
-	int getCurrentColumnNumber() const              { return sendEditor( SCI_GETCOLUMN, getCurrentPos() ); };
 	rbool isLineVisible( const int line ) const;
 	void scrollToLine( const int line ) const;
 	void scrollToLine2( const int line ) const;
@@ -239,7 +228,28 @@ public:
 
 	void load( rdo::stream& stream );
 	void save( rdo::stream& stream ) const;
-	void saveAsRTF( CFile& file, int start = 0, int end = -1 ) const;
+	tstring saveAsRTF(int start, int end) const;
+
+signals:
+	void modifyChanged(bool value);
+
+protected:
+	int getCurrentLineNumber  () const { return getLineFromPosition(getCurrentPos());       };
+	int getCurrentColumnNumber() const { return sendEditor(SCI_GETCOLUMN, getCurrentPos()); };
+
+private:
+	PTR(Group) m_pGroup;
+
+	rbool isViewWhiteSpace () const;
+	void  setViewWhiteSpace(rbool value);
+
+	rbool isViewEndOfLine () const;
+	void  setViewEndOfLine(rbool value);
+
+	void onBookmarkNextPrev(
+		const boost::function<rbool (const RDOBaseEdit*, rbool, rbool)>& nextPrevFun,
+		const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
+	) const;
 };
 
 } // namespace rdoEditCtrl

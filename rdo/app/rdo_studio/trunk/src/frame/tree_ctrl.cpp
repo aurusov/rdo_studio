@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
 RDOStudioFrameTreeCtrl::RDOStudioFrameTreeCtrl(PTR(QWidget) pParent)
@@ -48,6 +49,30 @@ void RDOStudioFrameTreeCtrl::clear()
 	{
 		m_pRootItem->removeChild(item);
 	}
+}
+
+void RDOStudioFrameTreeCtrl::focusInEvent(QFocusEvent* pEvent)
+{
+	parent_type::focusInEvent(pEvent);
+	activate(pEvent);
+}
+
+void RDOStudioFrameTreeCtrl::focusOutEvent(QFocusEvent* pEvent)
+{
+	parent_type::focusOutEvent(pEvent);
+	deactivate(pEvent);
+}
+
+void RDOStudioFrameTreeCtrl::onUpdateActions(rbool activated)
+{
+	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+
+	updateAction(
+		pMainWindow->actHelpContext,
+		activated,
+		this, "onHelpContext()"
+	);
 }
 
 void RDOStudioFrameTreeCtrl::onHelpContext()

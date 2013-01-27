@@ -15,9 +15,9 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 #include "thirdparty/sci/lexlib/WordList.h"
 #include "thirdparty/sci/rdo/LexRdo.h"
 #include "thirdparty/sci/rdo/WordListUtil.h"
@@ -40,18 +40,10 @@ using namespace rdoEditCtrl;
 
 //! @todo qt
 //BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBaseEdit )
-//	ON_COMMAND(ID_EDIT_COMMENTSELECTION, OnEditCommentSelection)
-//	ON_COMMAND(ID_EDIT_COMPLETEWORD, OnEditCompleteWord)
 //	ON_COMMAND(ID_BUILDFINDLOG_GOTO_NEXT, OnGotoNext)
 //	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
 //	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTO_NEXT, OnUpdateGotoNext)
 //	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTO_PREV, OnUpdateGotoPrev)
-//	ON_COMMAND(ID_VIEW_TOGGLE_ALLFOLDS, OnToggleAllFolds)
-//	ON_COMMAND(ID_VIEW_TOGGLE_CURRENTFOLD, OnToggleCurrentFold)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOGGLE_ALLFOLDS, OnUpdateFold)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOGGLE_CURRENTFOLD, OnUpdateFold)
-//	ON_UPDATE_COMMAND_UI( ID_EDIT_COMMENTSELECTION, OnIsSelected )
-//	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 //
 //	ON_COMMAND_RANGE( ID_INSERT_PAT_TEMPL_OPERATION, ID_INSERT_ALGO_RETURN, OnInsertCommand )
 //
@@ -212,16 +204,6 @@ void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 	defineMarker(sci_MARKER_ERROR, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<RDOEditorEditTheme*>(style->theme)->errorBgColor);
 }
 
-void RDOEditorEdit::OnEditCommentSelection() 
-{
-	commentSelection();
-}
-
-void RDOEditorEdit::OnEditCompleteWord() 
-{
-	completeWord();
-}
-
 void RDOEditorEdit::expand(int& line, rbool doExpand, rbool force, int visLevels, int level) const
 {
 	int lineMaxSubord = sendEditor(SCI_GETLASTCHILD, line, level & SC_FOLDLEVELNUMBERMASK);
@@ -304,12 +286,12 @@ void RDOEditorEdit::foldChanged(int line, int levelNow, int levelPrev) const
 	}
 }
 
-void RDOEditorEdit::toggleCurrentFold() const
+void RDOEditorEdit::onToggleCurrentFold() const
 {
 	sendEditor(SCI_TOGGLEFOLD, getCurrentLineNumber());
 }
 
-void RDOEditorEdit::toggleAllFolds() const
+void RDOEditorEdit::onToggleAllFolds() const
 {
 	sendEditor(SCI_COLOURISE, 0, -1);
 	int maxLine = getLineCount();
@@ -352,7 +334,7 @@ void RDOEditorEdit::foldMarginClick(int position, int modifiers) const
 	int lineClick = getLineFromPosition(position);
 	if ((modifiers & SCMOD_SHIFT) && (modifiers & SCMOD_CTRL))
 	{
-		toggleAllFolds();
+		onToggleAllFolds();
 	}
 	else
 	{
@@ -389,50 +371,35 @@ void RDOEditorEdit::foldMarginClick(int position, int modifiers) const
 	}
 }
 
-void RDOEditorEdit::OnToggleCurrentFold()
+void RDOEditorEdit::onEditCommentSelection() const
 {
-	toggleCurrentFold();
-}
+	if (!isSelected())
+		return;
 
-void RDOEditorEdit::OnToggleAllFolds()
-{
-	toggleAllFolds();
-}
-
-void RDOEditorEdit::OnUpdateFold(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(!GUI_IS_EMPTY);
-}
-
-void RDOEditorEdit::commentSelection() const
-{
-	if (GUI_IS_SELECTED)
+	tstring startComment("/*");
+	tstring endComment("*/");
+	int startCommentLength = startComment.length();
+	CharacterRange cr = getSelectionRange();
+	int caretPosition = getCurrentPos();
+	rbool moveCaret   = caretPosition < cr.cpMax;
+	sendEditor(SCI_BEGINUNDOACTION);
+	sendEditorString(SCI_INSERTTEXT, cr.cpMin, startComment.c_str());
+	cr.cpMax += startCommentLength;
+	cr.cpMin += startCommentLength;
+	sendEditorString(SCI_INSERTTEXT, cr.cpMax, endComment.c_str());
+	if (moveCaret)
 	{
-		tstring startComment("/*");
-		tstring endComment("*/");
-		int startCommentLength = startComment.length();
-		CharacterRange cr = getSelectionRange();
-		int caretPosition = getCurrentPos();
-		rbool moveCaret   = caretPosition < cr.cpMax;
-		sendEditor(SCI_BEGINUNDOACTION);
-		sendEditorString(SCI_INSERTTEXT, cr.cpMin, startComment.c_str());
-		cr.cpMax += startCommentLength;
-		cr.cpMin += startCommentLength;
-		sendEditorString(SCI_INSERTTEXT, cr.cpMax, endComment.c_str());
-		if (moveCaret)
-		{
-			sendEditor(SCI_GOTOPOS,       cr.cpMax);
-			sendEditor(SCI_SETCURRENTPOS, cr.cpMin);
-		}
-		else
-		{
-			setSelection(cr.cpMin, cr.cpMax);
-		}
-		sendEditor(SCI_ENDUNDOACTION);
+		sendEditor(SCI_GOTOPOS,       cr.cpMax);
+		sendEditor(SCI_SETCURRENTPOS, cr.cpMin);
 	}
+	else
+	{
+		setSelection(cr.cpMin, cr.cpMax);
+	}
+	sendEditor(SCI_ENDUNDOACTION);
 }
 
-void RDOEditorEdit::completeWord()
+void RDOEditorEdit::onEditCompleteWord()
 {
 	if (!static_cast<RDOEditorEditStyle*>(style)->autoComplete->useAutoComplete)
 		return;
@@ -676,7 +643,7 @@ void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
 	pCmdUI->Enable(log ? true : false);
 }
 
-void RDOEditorEdit::OnHelpKeyword()
+void RDOEditorEdit::onHelpContext()
 {
 	tstring keyword = getCurrentOrSelectedWord();
 	tstring s = getAllKW();
@@ -708,4 +675,36 @@ void RDOEditorEdit::OnHelpKeyword()
 	ba.append(keyword.c_str());
 	ba.append("\n");
 	studioApp.callQtAssistant(ba);
+}
+
+void RDOEditorEdit::onUpdateActions(rbool activated)
+{
+	RDOEditorBaseEdit::onUpdateActions(activated);
+
+	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+
+	updateAction(
+		pMainWindow->actEditCommentSelection,
+		activated && isSelected(),
+		this, "onEditCommentSelection()"
+	);
+
+	updateAction(
+		pMainWindow->actEditCompleteWord,
+		activated,
+		this, "onEditCompleteWord()"
+	);
+
+	updateAction(
+		pMainWindow->actViewToggleCurrentFold,
+		activated && !isEmpty(),
+		this, "onToggleCurrentFold()"
+		);
+
+	updateAction(
+		pMainWindow->actViewToggleAllFolds,
+		activated && !isEmpty(),
+		this, "onToggleAllFolds()"
+		);
 }

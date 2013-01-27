@@ -56,7 +56,6 @@ public:
 	REF(std::ofstream)    log             ();
 
 	void           broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam = NULL);
-	void           insertReopenItem(CREF(tstring) item);
 
 	rbool          getFileAssociationSetup() const;
 	void           setFileAssociationSetup(rbool value);
@@ -93,11 +92,8 @@ private:
 	PTR(RDOThreadStudio) m_pStudioMT;
 #endif
 
-	typedef  std::vector<tstring>  ReopenList;
-
 	RPMethodManager                        m_methodManager;
 	std::ofstream                          m_log;
-	ReopenList                             m_reopenList;
 	rbool                                  m_fileAssociationSetup;
 	rbool                                  m_fileAssociationCheckInFuture;
 	rbool                                  m_openLastProject;
@@ -113,9 +109,6 @@ private:
 	rdoEditor::LPRDOEditorEditStyle        m_pEditorEditStyle;
 
 	void setupFileAssociation();
-	void updateReopenSubMenu () const;
-	void loadReopen          ();
-	void saveReopen          () const;
 
 private:
 	virtual BOOL Run                 ();
@@ -124,19 +117,6 @@ private:
 	virtual BOOL PreTranslateMessage (PTR(MSG) pMsg);
 	virtual BOOL OnIdle              (LONG lCount);
 	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
-
-	afx_msg void OnWindowNew        ();
-	afx_msg void OnProjectReopen    (UINT nID);
-	afx_msg void OnUpdateFileSave   (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateFileSaveAll(PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateFileClose  (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateFileSaveAs (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateModelBuild (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateModelRun   (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateModelStop  (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateFileNew    (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateFileOpen   (PTR(CCmdUI) pCmdUI);
-	DECLARE_MESSAGE_MAP()
 };
 
 // --------------------------------------------------------------------------------

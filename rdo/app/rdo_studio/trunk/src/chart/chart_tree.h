@@ -15,7 +15,7 @@
 #include <QtGui/qicon.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/chart_tree_item.h"
-#include "app/rdo_studio_mfc/src/help_context_i.h"
+#include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ class TracerResult;
 
 class ChartTree
 	: public QTreeWidget
-	, public IHelpContext
+	, public ActionActivator
 {
 Q_OBJECT
 
@@ -94,7 +94,9 @@ private:
 	PTR(ChartTreeItem)   getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
 	PTR(QTreeWidgetItem) getSelected        () const;
 
-	DECLARE_IHelpContext;
+	virtual void focusInEvent   (QFocusEvent* pEvent);
+	virtual void focusOutEvent  (QFocusEvent* pEvent);
+	virtual void onUpdateActions(rbool activated);
 
 	//! @todo qt
 	//void doDragDrop( ChartTreeItem* item, CPoint point );
@@ -110,6 +112,7 @@ private:
 
 private slots:
 	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int);
+	void onHelpContext();
 };
 
 #endif // _APP_RDO_STUDIO_CHART_TREE_H_

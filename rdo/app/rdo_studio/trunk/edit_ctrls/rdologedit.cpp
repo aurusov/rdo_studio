@@ -231,7 +231,7 @@ void LogEdit::appendLine(PTR(LogEditLineInfo) pLine)
 	{
 		setReadOnly(true);
 	}
-	updateEditGUI();
+	onUpdateEditGUI();
 }
 
 void LogEdit::OnGotoNext()

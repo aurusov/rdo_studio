@@ -10,22 +10,18 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <limits>
 #include <boost/bind.hpp>
 #include <QtCore/qprocess.h>
 #include <QtGui/qmdisubwindow.h>
-#include <QtGui/qtoolbar.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/help_context_i.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/options.h"
 #include "app/rdo_studio_mfc/src/about.h"
 #include "app/rdo_studio_mfc/src/view_preferences.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
@@ -39,113 +35,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOToolBar
-// --------------------------------------------------------------------------------
-void RDOToolBar::init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID )
-{
-	CreateEx( parent, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
-	LoadToolBar( tbResID );
-	ModifyStyle( 0, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT );
-	SetWindowText( rdo::format( tbResID ).c_str() );
-
-	disabledImage.Create( tbDisabledImageResID, 16, 0, 0xFF00FF );
-	GetToolBarCtrl().SetDisabledImageList( &disabledImage );
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOToolBarModel
-// --------------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP(RDOToolBarModel, RDOToolBar)
-	ON_WM_HSCROLL()
-END_MESSAGE_MAP()
-
-void RDOToolBarModel::init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID )
-{
-	RDOToolBar::init( parent, tbResID, tbDisabledImageResID );
-	SetButtonInfo( CommandToIndex(ID_MODEL_SPEED_SLIDER), ID_MODEL_SPEED_SLIDER, TBBS_SEPARATOR, 100 );
-	CRect rc;
-	GetItemRect( CommandToIndex(ID_MODEL_SPEED_SLIDER), rc );
-	rc.top    += 1;
-	rc.bottom -= 1;
-
-#define VISTA_TRANSPARENT_FLAG 0x1000
-	slider.Create( WS_CHILD | WS_VISIBLE | WS_TABSTOP | TBS_HORZ | VISTA_TRANSPARENT_FLAG, rc, this, ID_MODEL_SPEED_SLIDER );
-#undef VISTA_TRANSPARENT_FLAG
-
-	slider.SetRange( 0, 100 );
-	for ( int i = 1; i <= 101; i += 10 ) {
-		slider.SetTic( (int)(log( (double)i ) / log101 * 100) );
-	}
-	slider.SetPos( 100 );
-}
-
-void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
-{
-	UNUSED(nPos      );
-	UNUSED(pScrollBar);
-
-	if ( nSBCode == SB_THUMBTRACK )
-	{
-		model->setSpeed( getSpeed() );
-	}
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOStudioMainFrame
 // --------------------------------------------------------------------------------
-//! @todo qt
-//BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
-//	ON_WM_CREATE()
-//	ON_WM_DESTROY()
-//	ON_COMMAND(ID_MODEL_RUNTIME_MAXSPEED, OnModelRuntimeMaxSpeed)
-//	ON_COMMAND(ID_MODEL_RUNTIME_JUMP, OnModelRuntimeJump)
-//	ON_COMMAND(ID_MODEL_RUNTIME_SYNC, OnModelRuntimeSync)
-//	ON_COMMAND(ID_MODEL_RUNTIME_PAUSE, OnModelRuntimePause)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_MAXSPEED, OnUpdateModelRuntimeMaxSpeed)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_JUMP, OnUpdateModelRuntimeJump)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_SYNC, OnUpdateModelRuntimeSync)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_PAUSE, OnUpdateModelRuntimePause)
-//	ON_COMMAND(ID_MODEL_SHOWRATE_INC, OnModelShowRateInc)
-//	ON_COMMAND(ID_MODEL_SHOWRATE_INCFOUR, OnModelShowRateIncFour)
-//	ON_COMMAND(ID_MODEL_SHOWRATE_DECFOUR, OnModelShowRateDecFour)
-//	ON_COMMAND(ID_MODEL_SHOWRATE_DEC, OnModelShowRateDec)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INC, OnUpdateModelShowRateInc)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INCFOUR, OnUpdateModelShowRateIncFour)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DECFOUR, OnUpdateModelShowRateDecFour)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DEC, OnUpdateModelShowRateDec)
-//	ON_COMMAND(ID_MODEL_FRAME_NEXT, OnModelFrameNext)
-//	ON_COMMAND(ID_MODEL_FRAME_PREV, OnModelFramePrev)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_NEXT, OnUpdateModelFrameNext)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
-//	ON_WM_TIMER()
-//	ON_WM_CLOSE()
-//	ON_WM_SHOWWINDOW()
-//	ON_WM_SIZE()
-//	ON_WM_ENTERMENULOOP()
-//	ON_WM_EXITMENULOOP()
-//	ON_WM_ENTERIDLE()
-//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITE_STATUSBAR , OnUpdateInsertOverwriteStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_MODEL_TIME_STATUSBAR      , OnUpdateModelTimeStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_MODEL_RUNTYPE_STATUSBAR   , OnUpdateModelRunTypeStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_MODEL_SPEED_STATUSBAR     , OnUpdateModelSpeedStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_MODEL_SHOWRATE_STATUSBAR  , OnUpdateModelShowRateStatusBar )
-//END_MESSAGE_MAP()
-
-static UINT indicators[] = {
-	ID_COORD_STATUSBAR,
-	ID_MODIFY_STATUSBAR,
-	ID_INSERTOVERWRITE_STATUSBAR,
-	ID_MODEL_TIME_STATUSBAR,
-	ID_MODEL_RUNTYPE_STATUSBAR,
-	ID_MODEL_SPEED_STATUSBAR,
-	ID_MODEL_SHOWRATE_STATUSBAR,
-	ID_PROGRESSSTATUSBAR
-};
-
-rbool MainWindowBase::close_mode = false;
-
 RDOStudioMainFrame::RDOStudioMainFrame()
 	: m_updateTimerID(0)
 {
@@ -155,91 +46,39 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	createStatusBar();
 	createToolBar  ();
 
-	QObject::connect(actFileNew,     SIGNAL(triggered(bool)), this, SLOT(onFileNew    ()));
-	QObject::connect(actFileOpen,    SIGNAL(triggered(bool)), this, SLOT(onFileOpen   ()));
-	QObject::connect(actFileClose,   SIGNAL(triggered(bool)), this, SLOT(onFileClose  ()));
-	QObject::connect(actFileSave,    SIGNAL(triggered(bool)), this, SLOT(onFileSave   ()));
-	QObject::connect(actFileSaveAs,  SIGNAL(triggered(bool)), this, SLOT(onFileSaveAs ()));
-	QObject::connect(actFileSaveAll, SIGNAL(triggered(bool)), this, SLOT(onFileSaveAll()));
+	connect(menuFileReopen, SIGNAL(triggered(QAction*)), this, SLOT(onMenuFileReopen(QAction*)));
+	connect(actFileExit,    SIGNAL(triggered(bool)),     this, SLOT(close()));
 
-	QObject::connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions()));
+	connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions ()));
+	connect(actHelpWhatsNew, SIGNAL(triggered(bool)), this, SLOT(onHelpWhatsNew()));
+	connect(actHelpAbout,    SIGNAL(triggered(bool)), this, SLOT(onHelpAbout   ()));
 
-	QObject::connect(actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
-	QObject::connect(actHelpAbout,   SIGNAL(triggered(bool)), this, SLOT(onHelpAbout  ()));
+	connect(toolBarModel, SIGNAL(orientationChanged(Qt::Orientation)), this, SLOT(onToolBarModelOrientationChanged(Qt::Orientation)));
 
 	Scintilla_LinkLexers();
+
+	loadMenuFileReopen  ();
+	updateMenuFileReopen();
 }
 
+//! todo не вызывается диструктор
 RDOStudioMainFrame::~RDOStudioMainFrame()
 {}
 
 void RDOStudioMainFrame::createStatusBar()
 {
-	m_pSBCoord         = new QLabel(this);
-	m_pSBModify        = new QLabel(this);
-	m_pSBModelTime     = new QLabel(this);
-	m_pSBModelRuntype  = new QLabel(this);
-	m_pSBModelSpeed    = new QLabel(this);
-	m_pSBModelShowRate = new QLabel(this);
-
-	parent_type::statusBar()->addWidget(m_pSBCoord,         5);
-	parent_type::statusBar()->addWidget(m_pSBModify,        5);
-	parent_type::statusBar()->addWidget(m_pSBModelTime,     5);
-	parent_type::statusBar()->addWidget(m_pSBModelRuntype,  5);
-	parent_type::statusBar()->addWidget(m_pSBModelSpeed,    5);
-	parent_type::statusBar()->addWidget(m_pSBModelShowRate, 5);
+	m_pStatusBar = rdo::Factory<StatusBar>::create(this);
 }
 
 void RDOStudioMainFrame::createToolBar()
 {
-	QSize iconSize(16, 15);
+	m_pModelSpeedSlider = new QSlider(Qt::Horizontal, this);
+	m_pModelSpeedSlider->setRange(0, 100);
+	m_pModelSpeedSlider->setValue(100);
+	m_pModelSpeedSlider->setMaximumSize(100, 100);
 
-	m_pFileToolBar = addToolBar("Файл");
-	m_pFileToolBar->setIconSize(iconSize);
-	m_pFileToolBar->addAction(actFileNew);
-	m_pFileToolBar->addAction(actFileOpen);
-	m_pFileToolBar->addAction(actFileSave);
-	m_pFileToolBar->addAction(actFileSaveAll);
-
-	m_pEditToolBar = addToolBar("Редактирование");
-	m_pEditToolBar->setIconSize(iconSize);
-	m_pEditToolBar->addAction(actEditCut);
-	m_pEditToolBar->addAction(actEditCopy);
-	m_pEditToolBar->addAction(actEditPaste);
-	m_pEditToolBar->addSeparator();
-	m_pEditToolBar->addAction(actEditUndo);
-	m_pEditToolBar->addAction(actEditRedo);
-	m_pEditToolBar->addSeparator();
-	m_pEditToolBar->addAction(actSearchFind);
-	m_pEditToolBar->addAction(actSearchReplace);
-	m_pEditToolBar->addSeparator();
-	m_pEditToolBar->addAction(actSearchBookmarkPrev);
-	m_pEditToolBar->addAction(actSearchBookmarkNext);
-
-	m_pZoomToolBar = addToolBar("Масштаб");
-	m_pZoomToolBar->setIconSize(iconSize);
-	m_pZoomToolBar->addAction(actViewZoomInc);
-	m_pZoomToolBar->addAction(actViewZoomDec);
-	m_pZoomToolBar->addAction(actViewZoomAuto);
-	m_pZoomToolBar->addAction(actViewZoomReset);
-
-	m_pModelToolBar = addToolBar("Модель");
-	m_pModelToolBar->setIconSize(iconSize);
-	m_pModelToolBar->addAction(actModelRun);
-	m_pModelToolBar->addAction(actModelStop);
-	m_pModelToolBar->addSeparator();
-	m_pModelToolBar->addAction(actModelRuntimeMaxSpeed);
-	m_pModelToolBar->addAction(actModelRuntimeJump);
-	m_pModelToolBar->addAction(actModelRuntimeSync);
-	m_pModelToolBar->addAction(actModelRuntimePause);
-	m_pModelToolBar->addSeparator();
-	m_pModelToolBar->addAction(actModelShowRateInc);
-	m_pModelToolBar->addAction(actModelShowRateIncFour);
-	m_pModelToolBar->addAction(actModelShowRateDecFour);
-	m_pModelToolBar->addAction(actModelShowRateDec);
-	m_pModelToolBar->addSeparator();
-	m_pModelToolBar->addAction(actModelFrameNext);
-	m_pModelToolBar->addAction(actModelFramePrev);
+	toolBarModel->insertWidget(actModelFrameNext, m_pModelSpeedSlider);
+	toolBarModel->insertSeparator(actModelFrameNext);
 }
 
 void RDOStudioMainFrame::init()
@@ -314,10 +153,10 @@ void RDOStudioMainFrame::init()
 	PTR(QMenu) pMenuToolbarView = new QMenu("Панели");
 	ASSERT(pMenuToolbarView);
 	menuView->insertMenu(actViewSettings, pMenuToolbarView);
-	pMenuToolbarView->addAction(m_pFileToolBar->toggleViewAction());
-	pMenuToolbarView->addAction(m_pEditToolBar->toggleViewAction());
-	pMenuToolbarView->addAction(m_pZoomToolBar->toggleViewAction());
-	pMenuToolbarView->addAction(m_pModelToolBar->toggleViewAction());
+	pMenuToolbarView->addAction(toolBarFile->toggleViewAction());
+	pMenuToolbarView->addAction(toolBarEdit->toggleViewAction());
+	pMenuToolbarView->addAction(toolBarZoom->toggleViewAction());
+	pMenuToolbarView->addAction(toolBarModel->toggleViewAction());
 
 	menuView->insertSeparator(actViewSettings);
 
@@ -360,34 +199,6 @@ void RDOStudioMainFrame::init()
 	//results->setPopupMenu( &popupMenu );
 	//find->setPopupMenu( &popupMenu );
 
-	//! @todo qt
-	//fileToolBar.init( c_wnd(), IDR_FILE_TOOLBAR, IDB_FILE_TOOLBAR_D );
-	//editToolBar.init( c_wnd(), IDR_EDIT_TOOLBAR, IDB_EDIT_TOOLBAR_D );
-	//zoomToolBar.init( c_wnd(), IDR_ZOOM_TOOLBAR, IDB_ZOOM_TOOLBAR_D );
-	//modelToolBar.init( c_wnd(), IDR_MODEL_TOOLBAR, IDB_MODEL_TOOLBAR_D );
-
-	//statusBar.Create( c_wnd() );
-	//statusBar.SetIndicators( indicators, sizeof(indicators)/sizeof(UINT) );
-	//statusBar.SetPaneInfo( 0, ID_COORD_STATUSBAR           , SBPS_NORMAL , 70 );
-	//statusBar.SetPaneInfo( 1, ID_MODIFY_STATUSBAR          , SBPS_NORMAL , 80 );
-	//statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITE_STATUSBAR , SBPS_NORMAL , 70 );
-	//statusBar.SetPaneInfo( 3, ID_MODEL_TIME_STATUSBAR      , SBPS_NORMAL , 100 );
-	//statusBar.SetPaneInfo( 4, ID_MODEL_RUNTYPE_STATUSBAR   , SBPS_NORMAL , 120 );
-	//statusBar.SetPaneInfo( 5, ID_MODEL_SPEED_STATUSBAR     , SBPS_NORMAL , 90 );
-	//statusBar.SetPaneInfo( 6, ID_MODEL_SHOWRATE_STATUSBAR  , SBPS_NORMAL , 140 );
-	//statusBar.SetPaneInfo( 7, ID_PROGRESSSTATUSBAR         , SBPS_STRETCH, 70 );
-	//statusBar.setProgressIndicator( ID_PROGRESSSTATUSBAR );
-
-	//! @todo qt
-	//fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	//editToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	//zoomToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	//modelToolBar.EnableDocking( CBRS_ALIGN_ANY );
-
-	//modelToolBar.SetButtonStyle( 3, TBBS_CHECKBOX | TBBS_CHECKGROUP );
-	//modelToolBar.SetButtonStyle( 4, TBBS_CHECKBOX | TBBS_CHECKGROUP );
-	//modelToolBar.SetButtonStyle( 5, TBBS_CHECKBOX | TBBS_CHECKGROUP );
-
 	g_pTracer->registerClipboardFormat();
 
 	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(model);
@@ -402,166 +213,12 @@ void RDOStudioMainFrame::setVisible(rbool visible)
 
 void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 {
-	close_mode = true;
-
-	update_stop();
-	style_editor.save();
-	style_build.save();
-	style_debug.save();
-	style_trace.save();
-	style_results.save();
-	style_find.save();
-	style_frame.save();
-	style_chart.save();
-
-	close_mode = false;
+	if (model && !model->closeModel())
+	{
+		event->ignore();
+	}
 
 	parent_type::closeEvent(event);
-}
-
-void RDOStudioMainFrame::onFileNew()
-{
-	//! @todo qt
-	//RDOStudioModelNew dlg;
-	//if (dlg.DoModal() == IDOK)
-	//{
-	//	model->newModel(dlg.getModelName(), dlg.getModelPath() + dlg.getModelName(), dlg.getModelTemplate());
-	//}
-}
-
-void RDOStudioMainFrame::onFileOpen()
-{
-	model->openModel();
-}
-
-void RDOStudioMainFrame::onFileClose()
-{
-	model->closeModel();
-}
-
-void RDOStudioMainFrame::onFileSave()
-{
-	model->saveModel();
-}
-
-void RDOStudioMainFrame::onFileSaveAs()
-{
-	model->saveAsModel();
-}
-
-void RDOStudioMainFrame::onFileSaveAll()
-{
-	model->saveModel();
-}
-
-void RDOStudioMainFrame::onModelRun()
-{
-	model->runModel();
-}
-
-void RDOStudioMainFrame::onUpdateModify()
-{
-}
-
-void RDOStudioMainFrame::onUpdateModelTime(float time)
-{
-	updateStatusBar<SB_MODEL_TIME>(QString(rdo::format("Время: %f", time).c_str()));
-}
-
-void RDOStudioMainFrame::onUpdateModelRuntype()
-{
-}
-
-void RDOStudioMainFrame::onUpdateModelSpeed()
-{
-}
-
-void RDOStudioMainFrame::onUpdateModelShowRate()
-{
-}
-
-void RDOStudioMainFrame::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( "" );
-}
-
-void RDOStudioMainFrame::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( "" );
-}
-
-void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( "" );
-}
-
-void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( rdo::format( ID_STATUSBAR_MODEL_TIME, model->getTimeNow() ).c_str() );
-}
-
-void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	tstring s = "";
-	if ( model->isRunning() ) {
-		switch ( model->getRuntimeMode() ) {
-			case rdo::runtime::RTM_MaxSpeed  : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_MAXSPEED ); break;
-			case rdo::runtime::RTM_Jump      : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_JUMP ); break;
-			case rdo::runtime::RTM_Sync      : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_SYNC ); break;
-			case rdo::runtime::RTM_Pause     : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_PAUSE ); break;
-			case rdo::runtime::RTM_BreakPoint: s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT, model->getLastBreakPointName().c_str() ); break;
-		}
-	}
-	pCmdUI->SetText( s.c_str() );
-}
-
-void RDOStudioMainFrame::OnUpdateModelSpeedStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	if ( model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed || !model->isRunning() ) {
-		pCmdUI->SetText( rdo::format( IDS_MODEL_SPEED, static_cast<int>(model->getSpeed() * 100) ).c_str() );
-	} else {
-		pCmdUI->SetText( "" );
-	}
-}
-
-void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	if ( model->isRunning() ) {
-		switch ( model->getRuntimeMode() ) {
-			case rdo::runtime::RTM_MaxSpeed:
-			case rdo::runtime::RTM_Jump: {
-				pCmdUI->SetText( rdo::format( IDS_MODEL_SHOWRATE_S, rdo::format( IDS_INFINITI ).c_str() ).c_str()  );
-				break;
-			}
-			case rdo::runtime::RTM_Pause     :
-			case rdo::runtime::RTM_BreakPoint: {
-				pCmdUI->SetText( rdo::format( IDS_MODEL_SHOWRATE_S, "0.0" ).c_str() );
-				break;
-			}
-			case rdo::runtime::RTM_Sync: {
-				tstring s;
-				double showRate = model->getShowRate();
-				if ( showRate < 1e-10 || showRate > 1e10 ) {
-					s = rdo::format( IDS_MODEL_SHOWRATE_E, showRate );
-				} else if ( showRate >= 1 ) {
-					s = rdo::format( IDS_MODEL_SHOWRATE_FMOREONE, showRate );
-				} else {
-					s = rdo::format( IDS_MODEL_SHOWRATE_FLESSONE, showRate );
-				}
-				pCmdUI->SetText( s.c_str() );
-				break;
-			}
-		}
-	} else {
-		pCmdUI->SetText( "" );
-	}
 }
 
 void RDOStudioMainFrame::onViewOptions()
@@ -590,179 +247,22 @@ void RDOStudioMainFrame::updateAllStyles()
 	g_pTracer->updateChartsStyles();
 }
 
-void RDOStudioMainFrame::beginProgress( const int lower, const int upper, const int step )
+CREF(LPStatusBar) RDOStudioMainFrame::statusBar() const
 {
-	//! @todo qt
-	//statusBar.setRange( lower, upper );
-	//statusBar.setStep( step );
-	//statusBar.setPos( lower );
-	//statusBar.setProgressVisible( true );
+	return m_pStatusBar;
 }
 
-void RDOStudioMainFrame::getProgressRange(int& lower, int& upper) const
+void RDOStudioMainFrame::onHelpWhatsNew()
 {
-	//! @todo qt
-	//statusBar.getRange( lower, upper );
-};
-
-void RDOStudioMainFrame::setProgress(const int pos)
-{
-	//! @todo qt
-	//statusBar.setPos( pos );
-};
-
-int RDOStudioMainFrame::getProgress() const
-{
-	return 0;
-	//! @todo qt
-	//return statusBar.getPos();
-};
-
-void RDOStudioMainFrame::offsetProgress(const int offset)
-{
-	//! @todo qt
-	//statusBar.offsetPos( offset );
-};
-
-void RDOStudioMainFrame::stepProgress()
-{
-	//! @todo qt
-	//statusBar.stepIt();
-};
-
-void RDOStudioMainFrame::endProgress()
-{
-	//! @todo qt
-	//statusBar.setProgressVisible( false );
-}
-
-void RDOStudioMainFrame::onHelpContext()
-{
-	PTR(IHelpContext) pHelpContext = dynamic_cast<PTR(IHelpContext)>(focusWidget());
-	if (pHelpContext)
-	{
-		pHelpContext->onHelpContext();
-	}
-	else
-	{
-		QByteArray ba;
-		ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/rdo_whats_new.htm\n");
-		studioApp.callQtAssistant(ba);
-	}
+	QByteArray ba;
+	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/rdo_whats_new.htm\n");
+	studioApp.callQtAssistant(ba);
 }
 
 void RDOStudioMainFrame::onHelpAbout()
 {
 	About dlg(this);
 	dlg.exec();
-}
-
-void RDOStudioMainFrame::OnModelRuntimeMaxSpeed()
-{
-	model->setRuntimeMode( rdo::runtime::RTM_MaxSpeed );
-}
-
-void RDOStudioMainFrame::OnModelRuntimeJump()
-{
-	model->setRuntimeMode( rdo::runtime::RTM_Jump );
-}
-
-void RDOStudioMainFrame::OnModelRuntimeSync()
-{
-	model->setRuntimeMode( rdo::runtime::RTM_Sync );
-}
-
-void RDOStudioMainFrame::OnModelRuntimePause()
-{
-	model->setRuntimeMode( rdo::runtime::RTM_Pause );
-}
-
-void RDOStudioMainFrame::OnUpdateModelRuntimeMaxSpeed( CCmdUI* pCmdUI )
-{
-	rbool runing = model->isRunning();
-	pCmdUI->Enable( runing );
-	pCmdUI->SetCheck( runing && model->getRuntimeMode() == rdo::runtime::RTM_MaxSpeed ? 1 : 0 );
-}
-
-void RDOStudioMainFrame::OnUpdateModelRuntimeJump( CCmdUI* pCmdUI )
-{
-	rbool runing = model->isRunning();
-	pCmdUI->Enable( runing );
-	pCmdUI->SetCheck( runing && model->getRuntimeMode() == rdo::runtime::RTM_Jump ? 1 : 0 );
-}
-
-void RDOStudioMainFrame::OnUpdateModelRuntimeSync( CCmdUI* pCmdUI )
-{
-	rbool runing = model->isRunning();
-	pCmdUI->Enable( runing );
-	pCmdUI->SetCheck( runing && model->getRuntimeMode() == rdo::runtime::RTM_Sync ? 1 : 0 );
-}
-
-void RDOStudioMainFrame::OnUpdateModelRuntimePause( CCmdUI* pCmdUI )
-{
-	rbool runing = model->isRunning();
-	pCmdUI->Enable( runing );
-	pCmdUI->SetCheck( runing && (model->getRuntimeMode() == rdo::runtime::RTM_Pause || model->getRuntimeMode() == rdo::runtime::RTM_BreakPoint) ? 1 : 0 );
-}
-
-void RDOStudioMainFrame::OnModelShowRateInc()
-{
-	model->setShowRate( model->getShowRate() * 1.5 );
-}
-
-void RDOStudioMainFrame::OnModelShowRateIncFour()
-{
-	model->setShowRate( model->getShowRate() * 4 );
-}
-
-void RDOStudioMainFrame::OnModelShowRateDecFour()
-{
-	model->setShowRate( model->getShowRate() / 4 );
-}
-
-void RDOStudioMainFrame::OnModelShowRateDec()
-{
-	model->setShowRate( model->getShowRate() / 1.5 );
-}
-
-void RDOStudioMainFrame::OnUpdateModelShowRateInc(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( model->isRunning() && model->getRuntimeMode() == rdo::runtime::RTM_Sync && model->getShowRate() * 1.5 <= DBL_MAX );
-}
-
-void RDOStudioMainFrame::OnUpdateModelShowRateIncFour(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( model->isRunning() && model->getRuntimeMode() == rdo::runtime::RTM_Sync && model->getShowRate() * 4 <= DBL_MAX );
-}
-
-void RDOStudioMainFrame::OnUpdateModelShowRateDecFour(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( model->isRunning() && model->getRuntimeMode() == rdo::runtime::RTM_Sync && model->getShowRate() / 4 >= DBL_MIN );
-}
-
-void RDOStudioMainFrame::OnUpdateModelShowRateDec(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( model->isRunning() && model->getRuntimeMode() == rdo::runtime::RTM_Sync && model->getShowRate() / 1.5 >= DBL_MIN );
-}
-
-void RDOStudioMainFrame::OnModelFrameNext()
-{
-	model->showNextFrame();
-}
-
-void RDOStudioMainFrame::OnModelFramePrev()
-{
-	model->showPrevFrame();
-}
-
-void RDOStudioMainFrame::OnUpdateModelFrameNext(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( model->canShowNextFrame() );
-}
-
-void RDOStudioMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( model->canShowPrevFrame() );
 }
 
 void RDOStudioMainFrame::update_start()
@@ -796,17 +296,6 @@ void RDOStudioMainFrame::showEvent(QShowEvent*)
 
 void RDOStudioMainFrame::hideEvent(QHideEvent*)
 {}
-
-//! @todo qt
-//void RDOStudioMainFrame::OnEnterMenuLoop( BOOL bIsTrackPopupMenu )
-//{
-//	model->setGUIPause();
-//}
-//
-//void RDOStudioMainFrame::OnExitMenuLoop( BOOL bIsTrackPopupMenu )
-//{
-//	model->setGUIContinue();
-//}
 
 void RDOStudioMainFrame::addSubWindow(QWidget* pWidget)
 {
@@ -859,42 +348,6 @@ void RDOStudioMainFrame::connectOnActivateSubWindow(QObject* pObject)
 	QObject::connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), pObject, SLOT(onSubWindowActivated(QMdiSubWindow*)));
 }
 
-template <>
-PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_COORD>(StatusBarType<SB_COORD>)
-{
-	return m_pSBCoord;
-}
-
-template <>
-PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODIFY>(StatusBarType<SB_MODIFY>)
-{
-	return m_pSBModify;
-}
-
-template <>
-PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODEL_TIME>(StatusBarType<SB_MODEL_TIME>)
-{
-	return m_pSBModelTime;
-}
-
-template <>
-PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODEL_RUNTYPE>(StatusBarType<SB_MODEL_RUNTYPE>)
-{
-	return m_pSBModelRuntype;
-}
-
-template <>
-PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODEL_SPEED>(StatusBarType<SB_MODEL_SPEED>)
-{
-	return m_pSBModelSpeed;
-}
-
-template <>
-PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODEL_SHOWRATE>(StatusBarType<SB_MODEL_SHOWRATE>)
-{
-	return m_pSBModelShowRate;
-}
-
 void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 {
 	if (!visible)
@@ -924,5 +377,133 @@ void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 		{
 			pEditorTab->getItemEdit(i)->setLog(*pLog);
 		}
+	}
+}
+
+void RDOStudioMainFrame::onToolBarModelOrientationChanged(Qt::Orientation orientation)
+{
+	m_pModelSpeedSlider->setOrientation(orientation);
+}
+
+void RDOStudioMainFrame::onMenuFileReopen(QAction* pAction)
+{
+	tstring fileName = pAction->text().toStdString();
+	tstring::size_type pos = fileName.find(' ');
+	if (pos == tstring::npos)
+		return;
+
+	fileName = fileName.substr(pos + 1);
+	if (!model->openModel(fileName) && model->isPrevModelClosed())
+	{
+		ReopenList::iterator it = std::find(m_reopenList.begin(), m_reopenList.end(), fileName);
+		if (it != m_reopenList.end())
+		{
+			m_reopenList.erase(it);
+		}
+		updateMenuFileReopen();
+	}
+}
+
+void RDOStudioMainFrame::insertMenuFileReopenItem(CREF(tstring) item)
+{
+	if (!item.empty())
+	{
+		STL_FOR_ALL(m_reopenList, it)
+		{
+			if (*it == item)
+			{
+				m_reopenList.erase(it);
+				break;
+			}
+		}
+
+		m_reopenList.insert(m_reopenList.begin(), item);
+
+		while (m_reopenList.size() > 10)
+		{
+			ReopenList::iterator it = m_reopenList.end();
+			--it;
+			m_reopenList.erase(it);
+		}
+
+		updateMenuFileReopen();
+	}
+}
+
+void RDOStudioMainFrame::updateMenuFileReopen()
+{
+	menuFileReopen->clear();
+
+	for (ReopenList::size_type reopenIndex = 0; reopenIndex < m_reopenList.size(); ++reopenIndex)
+	{
+		if (reopenIndex == 4)
+		{
+			menuFileReopen->addSeparator();
+		}
+		menuFileReopen->addAction(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str());
+	}
+
+	menuFileReopen->setEnabled(!menuFileReopen->isEmpty());
+
+	saveMenuFileReopen();
+}
+
+void RDOStudioMainFrame::loadMenuFileReopen()
+{
+	m_reopenList.clear();
+	for (ruint i = 0; i < 10; i++)
+	{
+		tstring sec;
+		if (i+1 < 10)
+		{
+			sec = rdo::format(_T("0%d"), i+1);
+		}
+		else
+		{
+			sec = rdo::format(_T("%d"), i+1);
+		}
+		TRY
+		{
+			tstring s = AfxGetApp()->GetProfileString(_T("reopen"), sec.c_str(), _T(""));
+			if (!s.empty())
+			{
+				m_reopenList.insert(m_reopenList.end(), s);
+			}
+		}
+		CATCH(CException, e)
+		{}
+		END_CATCH
+	}
+}
+
+void RDOStudioMainFrame::saveMenuFileReopen() const
+{
+	for (ReopenList::size_type i = 0; i < 10; i++)
+	{
+		tstring sec;
+		if (i+1 < 10)
+		{
+			sec = rdo::format(_T("0%d"), i+1);
+		}
+		else
+		{
+			sec = rdo::format(_T("%d"), i+1);
+		}
+		tstring s;
+		if (i < m_reopenList.size())
+		{
+			s = m_reopenList[i];
+		}
+		else
+		{
+			s = _T("");
+		}
+		TRY
+		{
+			AfxGetApp()->WriteProfileString(_T("reopen"), sec.c_str(), s.c_str());
+		}
+		CATCH(CException, e)
+		{}
+		END_CATCH
 	}
 }

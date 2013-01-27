@@ -10,14 +10,13 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGUI/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
 
-ActionActivator::ActionActivator(CREF(Callback) onActivate, CREF(Callback) onDeactivate)
-	: m_onActivate  (onActivate  )
-	, m_onDeactivate(onDeactivate)
-	, m_activated   (false       )
+ActionActivator::ActionActivator()
+	: m_activated(false)
 {}
 
 ActionActivator::~ActionActivator()
@@ -35,7 +34,7 @@ void ActionActivator::activate(QFocusEvent* pEvent)
 	if (!m_activated)
 	{
 		m_activated = true;
-		m_onActivate();
+		onUpdateActions(m_activated);
 	}
 }
 
@@ -48,7 +47,25 @@ void ActionActivator::deactivate(QFocusEvent* pEvent)
 		if (m_activated)
 		{
 			m_activated = false;
-			m_onDeactivate();
+			onUpdateActions(m_activated);
 		}
+	}
+}
+
+void ActionActivator::updateAction(QAction* pAction, rbool enabled, QObject* pObject, CREF(tstring) method)
+{
+	ASSERT(pAction);
+
+	pAction->setEnabled(enabled);
+	if (enabled)
+	{
+		ASSERT(pObject);
+		ASSERT(!method.empty());
+		tstring formattedMethod = rdo::format("1%s %s", method.c_str(), QLOCATION);
+		QObject::connect(pAction, SIGNAL(triggered(bool)), pObject, qFlagLocation(formattedMethod.c_str()), Qt::UniqueConnection);
+	}
+	else
+	{
+		QObject::disconnect(pAction, SIGNAL(triggered(bool)), NULL, NULL);
 	}
 }

@@ -173,7 +173,7 @@ private:
 	virtual void wheelEvent     (QWheelEvent*  pEvent);
 	virtual void mousePressEvent(QMouseEvent*  pEvent);
 
-	DECLARE_ActionActivatorWidget;
+	virtual void onUpdateActions(rbool activated);
 
 private slots:
 	void onVertScrollBarValueChanged(int value);
