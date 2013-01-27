@@ -26,6 +26,7 @@
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
+#include "thirdparty/sci/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -175,6 +176,8 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 
 	QObject::connect(actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 	QObject::connect(actHelpAbout,   SIGNAL(triggered(bool)), this, SLOT(onHelpAbout  ()));
+
+	Scintilla_LinkLexers();
 }
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
@@ -535,11 +538,11 @@ void RDOStudioMainFrame::OnViewOptions()
 void RDOStudioMainFrame::updateAllStyles()
 {
 	model->updateStyleOfAllModel();
-	getDockBuild  ().getContext().setEditorStyle(&style_build  );
-	getDockDebug  ().getContext().setEditorStyle(&style_debug  );
-	getDockTrace  ().getContext().setStyle      (&style_trace  );
-	getDockResults().getContext().setEditorStyle(&style_results);
-	getDockFind   ().getContext().setEditorStyle(&style_find   );
+	getDockBuild  ().getContext().setEditorStyle (&style_build  );
+	getDockDebug  ().getContext().setEditorStyle (&style_debug  );
+	getDockTrace  ().getContext().view().setStyle(&style_trace  );
+	getDockResults().getContext().setEditorStyle (&style_results);
+	getDockFind   ().getContext().setEditorStyle (&style_find   );
 	tracer->updateChartsStyles();
 }
 

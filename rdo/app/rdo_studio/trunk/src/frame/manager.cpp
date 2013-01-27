@@ -22,7 +22,6 @@
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
-#include "app/rdo_studio_mfc/src/child_frm.h"
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio_mfc/resource.h"
@@ -303,7 +302,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 		return;
 
 	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_RESOURCE_LOADING_NAME, bitmapName.c_str()));
-	studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
+	studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
 	rdo::binarystream stream;
 	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName, stream);
@@ -322,7 +321,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	}
 
 	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(ok ? IDS_MODEL_RESOURCE_LOADING_NAME_OK : IDS_MODEL_RESOURCE_LOADING_NAME_FAILED));
-	studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
+	studioApp.getIMainWnd()->getDockDebug().getContext().update();
 }
 
 void RDOStudioFrameManager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint index)

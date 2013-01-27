@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/bind.hpp>
 #include <QtGui/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_trace.h"
@@ -18,18 +17,22 @@
 // --------------------------------------------------------------------------------
 
 DockTrace::DockTrace(PTR(QWidget) pParent)
-	: parent_class(
-		"Трассировка",
-		pParent,
-		parent_class::Context::CreateFunction(
-			boost::bind<BOOL>(&parent_class::Context::context_type::Create, _1, LPCTSTR(NULL), LPCTSTR(NULL), DWORD(0), CRect(0, 0, 0, 0), _2, UINT(0), static_cast<CCreateContext*>(NULL))
-		),
-		QSize(300, 150)
-	)
+	: QDockWidget("Трассировка", pParent)
 {
+	PTR(context_type) pWidget = new context_type(this);
+	pWidget->setMinimumSize(QSize(300, 150));
+
+	setWidget(pWidget);
+
 	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_trace.png")));
+
 	tracer->setLog(&getContext());
 }
 
 DockTrace::~DockTrace()
 {}
+
+REF(DockTrace::context_type) DockTrace::getContext()
+{
+	return *static_cast<PTR(context_type)>(widget());
+}

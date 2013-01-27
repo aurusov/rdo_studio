@@ -24,8 +24,8 @@
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildeditstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindeditstyle.h"
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view_style.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/src/chart/view.h"
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
@@ -45,27 +45,27 @@ class RDOStudioOptionsGeneral: public CPropertyPage
 {
 friend class RDOStudioOptions;
 
-private:
-	RDOStudioOptions* sheet;
+public:
+	RDOStudioOptionsGeneral(REF(RDOStudioOptions) sheet);
+	virtual ~RDOStudioOptionsGeneral();
 
 protected:
 	enum { IDD = IDD_OPTIONS_GENERAL };
-	BOOL	m_setup;
-	BOOL	m_checkInFuture;
-	BOOL	m_openLastProject;
-	BOOL	m_showFullName;
+
+	BOOL m_setup;
+	BOOL m_checkInFuture;
+	BOOL m_openLastProject;
+	BOOL m_showFullName;
 
 private:
-	virtual void OnOK();
+	PTR(RDOStudioOptions) sheet;
+
+	virtual void OnOK          ();
 	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	virtual BOOL OnNotify      (WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
 	afx_msg void OnUpdateModify();
 	DECLARE_MESSAGE_MAP()
-
-public:
-	RDOStudioOptionsGeneral( RDOStudioOptions& _sheet );
-	virtual ~RDOStudioOptionsGeneral();
 };
 
 // --------------------------------------------------------------------------------
@@ -73,20 +73,24 @@ public:
 // --------------------------------------------------------------------------------
 class RDOStudioOptionsEditor: public CPropertyPage
 {
-private:
-	RDOStudioOptions* sheet;
+public:
+	RDOStudioOptionsEditor(REF(RDOStudioOptions) sheet);
+	virtual ~RDOStudioOptionsEditor();
 
 protected:
 	enum { IDD = IDD_OPTIONS_EDITOR };
-	BOOL	m_bufferClearAuto;
-	int		m_bufferDelay;
-	BOOL	m_codecompUse;
-	int		m_codecompShowFullList;
-	BOOL	m_marginFold;
-	BOOL	m_marginBookmark;
-	BOOL	m_marginLineNumber;
+
+	BOOL m_bufferClearAuto;
+	int  m_bufferDelay;
+	BOOL m_codecompUse;
+	int  m_codecompShowFullList;
+	BOOL m_marginFold;
+	BOOL m_marginBookmark;
+	BOOL m_marginLineNumber;
 
 private:
+	RDOStudioOptions* sheet;
+
 	virtual void OnOK();
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
@@ -96,10 +100,6 @@ private:
 	afx_msg void OnUpdateModify();
 	afx_msg void OnClearAutoCheck();
 	DECLARE_MESSAGE_MAP()
-
-public:
-	RDOStudioOptionsEditor( RDOStudioOptions& _sheet );
-	virtual ~RDOStudioOptionsEditor();
 };
 
 // --------------------------------------------------------------------------------
@@ -107,29 +107,29 @@ public:
 // --------------------------------------------------------------------------------
 class RDOStudioOptionsTabs: public CPropertyPage
 {
-private:
-	RDOStudioOptions* sheet;
+public:
+	RDOStudioOptionsTabs(REF(RDOStudioOptions) sheet);
+	virtual ~RDOStudioOptionsTabs();
 
 protected:
 	enum { IDD = IDD_OPTIONS_TABS };
-	BOOL	m_tabUse;
-	int		m_tabSize;
-	BOOL	m_tabUseTabIndent;
-	int		m_tabIndentSize;
-	int		m_tabBackspaceUntabs;
-	BOOL	m_tabAutoIndent;
+
+	BOOL m_tabUse;
+	int  m_tabSize;
+	BOOL m_tabUseTabIndent;
+	int  m_tabIndentSize;
+	int  m_tabBackspaceUntabs;
+	BOOL m_tabAutoIndent;
 
 private:
-	virtual void OnOK();
+	PTR(RDOStudioOptions) sheet;
+
+	virtual void OnOK          ();
 	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	virtual BOOL OnNotify      (WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
 	afx_msg void OnUpdateModify();
 	DECLARE_MESSAGE_MAP()
-
-public:
-	RDOStudioOptionsTabs( RDOStudioOptions& _sheet );
-	virtual ~RDOStudioOptionsTabs();
 };
 
 // --------------------------------------------------------------------------------
@@ -137,11 +137,51 @@ public:
 // --------------------------------------------------------------------------------
 class RDOStudioOptionsColorsStyles: public CPropertyPage
 {
+public:
+	RDOStudioOptionsColorsStyles(RDOStudioOptions& _sheet);
+	virtual ~RDOStudioOptionsColorsStyles();
+
+protected:
+	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
+
+	CButton   m_warning;
+	CButton   m_commentGroupButton;
+	CStatic   m_title_fontSizeStatic;
+	CStatic   m_leg_fontSizeStatic;
+	CComboBox m_leg_fontSizeCombo;
+	CComboBox m_title_fontSizeCombo;
+	CStatic   m_tickWidthStatic;
+	CEdit     m_tickWidth;
+	CStatic   m_vertBorderStatic;
+	CEdit     m_vertBorder;
+	CStatic   m_horzBorderStatic;
+	CEdit     m_horzBorder;
+	CComboBox m_theme;
+	CButton   m_horzScrollBar;
+	CButton   m_wordWrap;
+	CComboBox m_fold;
+	CStatic   m_foldStatic;
+	CStatic   m_bookmarkStatic;
+	CComboBox m_bookmark;
+	CStatic   m_previewAsStatic;
+	CStatic   m_bgColorStatic;
+	CStatic   m_fgColorStatic;
+	CButton   m_bgColorButton;
+	CButton   m_fgColorButton;
+	CButton   m_fontStyleUnderline;
+	CButton   m_fontStyleItalic;
+	CButton   m_fontStyleBold;
+	CComboBox m_fontSize;
+	CComboBox m_previewAs;
+	CComboBox m_fontName;
+	CTreeCtrl m_styleItem;
+
 private:
 
 	class STYLEObject;
 
-	class STYLEProperty {
+	class STYLEProperty
+	{
 	public:
 		STYLEObject* object;
 		tstring name;
@@ -153,12 +193,35 @@ private:
 		COLORREF& fg_disable_color;
 		COLORREF& bg_disable_color;
 
-		STYLEProperty( STYLEObject* _object, tstring _name, rdoStyle::RDOStyleFont::style& _font_style, COLORREF& _fg_color, COLORREF& _bg_color, COLORREF& _fg_disable_color = null_fg_color, COLORREF& _bg_disable_color = null_bg_color ): object( _object ), name( _name ), font_style( _font_style ), fg_color( _fg_color ), bg_color( _bg_color ), fg_disable_color( _fg_disable_color ), bg_disable_color( _bg_disable_color ) {};
+		STYLEProperty(STYLEObject* object, CREF(tstring) name, rdoStyle::RDOStyleFont::style& font_style, COLORREF& fg_color, COLORREF& bg_color, COLORREF& fg_disable_color = null_fg_color, COLORREF& bg_disable_color = null_bg_color)
+			: object          (object    )
+			, name            (name      )
+			, font_style      (font_style)
+			, fg_color        (fg_color  )
+			, bg_color        (bg_color  )
+			, fg_disable_color(fg_disable_color)
+			, bg_disable_color(bg_disable_color)
+		{};
 	};
+	typedef  std::list<PTR(STYLEProperty)>  PropertyList;
 
-	class STYLEObject {
+	class STYLEObject
+	{
 	public:
-		enum Type { none = 0, all, source, build, debug, trace, results, find, chart, frame } type;
+		enum Type
+		{
+			none = 0,
+			all,
+			source,
+			build,
+			debug,
+			trace,
+			results,
+			find,
+			chart,
+			frame
+		} type;
+
 		tstring&                       font_name;
 		int&                           font_size;
 		rbool                          font_fixed;
@@ -170,43 +233,54 @@ private:
 		rbool&                         commentfold;
 
 		std::list< tstring > themes;
-		std::list< STYLEProperty* > properties;
+		PropertyList         properties;
 
-		STYLEObject( const Type _type, tstring& _font_name, int& _font_size, const rbool _font_fixed = true, rbool& _wordwrap = null_wordwrap, rbool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& _foldstyle = null_foldstyle, rbool& _commentfold = null_commentfold, rbool& _warning = null_warning ):
-			type( _type ),
-			font_name( _font_name ),
-			font_size( _font_size ),
-			font_fixed( _font_fixed ),
-			wordwrap( _wordwrap ),
-			horzscrollbar( _horzscrollbar ),
-			warning( _warning ),
-			bookmarkstyle( _bookmarkstyle ),
-			foldstyle( _foldstyle ),
-			commentfold( _commentfold )
+		STYLEObject(Type type, tstring& font_name, int& font_size, rbool font_fixed = true, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
+			: type         (type         )
+			, font_name    (font_name    )
+			, font_size    (font_size    )
+			, font_fixed   (font_fixed   )
+			, wordwrap     (wordwrap     )
+			, horzscrollbar(horzscrollbar)
+			, warning      (warning      )
+			, bookmarkstyle(bookmarkstyle)
+			, foldstyle    (foldstyle    )
+			, commentfold  (commentfold  )
+		{}
+
+		~STYLEObject()
 		{
-		};
-		~STYLEObject() {
-			std::list< STYLEProperty* >::iterator it = properties.begin();
-			while ( it != properties.end() ) {
+			PropertyList::iterator it = properties.begin();
+			while (it != properties.end())
+			{
 				delete *it++;
 			};
 		}
 	};
+	typedef  std::list<PTR(STYLEObject)>  ObjectList;
 
-	class STYLEFont {
+	class STYLEFont
+	{
 	public:
 		tstring name;
 		rbool   fixed;
 
-		STYLEFont(): name( "" ), fixed( true ) {};
-		STYLEFont( tstring _name, rbool _fixed = true ): name( _name ), fixed( _fixed ) {};
+		STYLEFont()
+			: name (""  )
+			, fixed(true)
+		{}
+		STYLEFont(CREF(tstring) name, rbool fixed = true)
+			: name (name )
+			, fixed(fixed)
+		{}
 	};
+	typedef  std::list<STYLEFont>  FontList;
 
-	std::list< STYLEObject* > objects;
-	std::list< STYLEFont > fonts;
-	rbool isCurrentFixed;
-	static int CALLBACK EnumFontFamExProc( ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* lpntme, DWORD FontType, LPARAM lParam );
-	void loadFontsIntoCombo( rbool fixed = true );
+	ObjectList objects;
+	FontList   fonts;
+	rbool      isCurrentFixed;
+	static int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* lpntme, DWORD FontType, LPARAM lParam);
+	void loadFontsIntoCombo(rbool fixed = true);
 
 	RDOStudioOptions* sheet;
 
@@ -218,7 +292,7 @@ private:
 	STYLEObject::Type getCurrentObjectType() const;
 
 	STYLEObject::Type previewAs;
-	void setPreviewAsCombo( STYLEObject::Type type );
+	void setPreviewAsCombo(STYLEObject::Type type);
 
 	tstring     all_font_name;
 	int         all_font_size;
@@ -241,41 +315,6 @@ private:
 	void updateStyleItem();
 	void updateTheme();
 
-protected:
-	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
-	CButton	m_warning;
-	CButton	m_commentGroupButton;
-	CStatic	m_title_fontSizeStatic;
-	CStatic	m_leg_fontSizeStatic;
-	CComboBox	m_leg_fontSizeCombo;
-	CComboBox	m_title_fontSizeCombo;
-	CStatic	m_tickWidthStatic;
-	CEdit	m_tickWidth;
-	CStatic	m_vertBorderStatic;
-	CEdit	m_vertBorder;
-	CStatic	m_horzBorderStatic;
-	CEdit	m_horzBorder;
-	CComboBox	m_theme;
-	CButton	m_horzScrollBar;
-	CButton	m_wordWrap;
-	CComboBox	m_fold;
-	CStatic	m_foldStatic;
-	CStatic	m_bookmarkStatic;
-	CComboBox	m_bookmark;
-	CStatic	m_previewAsStatic;
-	CStatic	m_bgColorStatic;
-	CStatic	m_fgColorStatic;
-	CButton	m_bgColorButton;
-	CButton	m_fgColorButton;
-	CButton	m_fontStyleUnderline;
-	CButton	m_fontStyleItalic;
-	CButton	m_fontStyleBold;
-	CComboBox	m_fontSize;
-	CComboBox	m_previewAs;
-	CComboBox	m_fontName;
-	CTreeCtrl	m_styleItem;
-
-private:
 	virtual void OnOK();
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
@@ -301,10 +340,6 @@ private:
 	afx_msg void OnCommentGroupCheck();
 	afx_msg void OnWarningCheck();
 	DECLARE_MESSAGE_MAP()
-
-public:
-	RDOStudioOptionsColorsStyles( RDOStudioOptions& _sheet );
-	virtual ~RDOStudioOptionsColorsStyles();
 };
 
 // --------------------------------------------------------------------------------
@@ -314,8 +349,23 @@ class RDOStudioPlugin;
 
 class RDOStudioOptionsPlugins: public CPropertyPage
 {
+public:
+	RDOStudioOptionsPlugins(REF(RDOStudioOptions) sheet);
+	virtual ~RDOStudioOptionsPlugins();
+
+protected:
+	enum { IDD = IDD_OPTIONS_PLUGINS };
+
+	CButton   m_restoreStateCheckBox;
+	CButton   m_stopButton;
+	CButton   m_startButton;
+	CComboBox m_runModeComboBox;
+	CButton   m_runModeButton;
+	CStatic   m_runModeStatic;
+	CListCtrl m_pluginList;
+
 private:
-	RDOStudioOptions* sheet;
+	PTR(RDOStudioOptions) sheet;
 
 	rbool sortPluginNameAsceding;
 	rbool sortPluginVersionAsceding;
@@ -325,21 +375,10 @@ private:
 
 	UINT timer;
 
-	void updateRunModeInGrid( const RDOStudioPlugin* plugin, const int index );
-	void updateStateInGrid( const RDOStudioPlugin* plugin, const int index );
-	void updateControls( const RDOStudioPlugin* plugin );
+	void updateRunModeInGrid(const RDOStudioPlugin* plugin, const int index);
+	void updateStateInGrid(const RDOStudioPlugin* plugin, const int index);
+	void updateControls(const RDOStudioPlugin* plugin);
 
-protected:
-	enum { IDD = IDD_OPTIONS_PLUGINS };
-	CButton	m_restoreStateCheckBox;
-	CButton	m_stopButton;
-	CButton	m_startButton;
-	CComboBox	m_runModeComboBox;
-	CButton	m_runModeButton;
-	CStatic	m_runModeStatic;
-	CListCtrl	m_pluginList;
-
-private:
 	virtual void OnOK();
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
@@ -355,10 +394,6 @@ private:
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnDestroy();
 	DECLARE_MESSAGE_MAP()
-
-public:
-	RDOStudioOptionsPlugins( RDOStudioOptions& _sheet );
-	virtual ~RDOStudioOptionsPlugins();
 };
 
 // --------------------------------------------------------------------------------
@@ -371,6 +406,10 @@ friend class RDOStudioOptionsEditor;
 friend class RDOStudioOptionsTabs;
 friend class RDOStudioOptionsColorsStyles;
 friend class RDOStudioOptionsPlugins;
+
+public:
+	RDOStudioOptions();
+	virtual ~RDOStudioOptions();
 
 private:
 	rdoEditor::RDOEditorEditStyle    style_editor;
@@ -404,7 +443,7 @@ private:
 	RDOStudioFrameOptionsCtrl      preview_frame;
 
 	typedef std::map<ruint,tstring> mapKeyAndUrl;
-	mapKeyAndUrl                   m_keyAndUrl;
+	mapKeyAndUrl                    m_keyAndUrl;
 
 	tstring      resolveKeyAndUrl (ruint helpInfo);
 	void         buildMap         ();
@@ -418,10 +457,6 @@ private:
 
 	afx_msg BOOL OnHelpInfo(PTR(HELPINFO) pHelpInfo);
 	DECLARE_MESSAGE_MAP()
-
-public:
-	RDOStudioOptions();
-	virtual ~RDOStudioOptions();
 };
 
 #endif // _RDO_STUDIO_MFC_OPTIONS_H_

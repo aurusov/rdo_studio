@@ -19,12 +19,11 @@
 #include "app/rdo_studio_mfc/rdo_tracer/rdotraceroperation.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerresult.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view.h"
 #include "app/rdo_studio_mfc/src/chart/chart_tree.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/src/chart/view.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/child_frm.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 // --------------------------------------------------------------------------------
 
@@ -600,7 +599,7 @@ void RDOTracerBase::clear()
 	if( tree )
 		tree->clear();
 	if ( log )
-		log->clear();
+		log->view().clear();
 
 	mutex.Unlock();
 }
@@ -741,7 +740,7 @@ void RDOTracerBase::getTraceString( tstring trace_string )
 	mutex.Lock();
 
 	if ( log ) {
-		log->addStringToLog( trace_string );
+		log->view().addStringToLog( trace_string );
 	}
 
 	action = RUA_NONE;
@@ -840,6 +839,6 @@ void RDOTracerBase::setDrawTrace( const rbool value )
 		drawTrace = value;
 		if ( !drawTrace )
 			clearCharts();
-		log->setDrawLog( value );
+		log->view().setDrawLog( value );
 	}
 }

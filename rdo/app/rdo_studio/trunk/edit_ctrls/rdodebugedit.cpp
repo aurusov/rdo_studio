@@ -33,29 +33,20 @@ using namespace rdoEditCtrl;
 
 // ON_UPDATE_COMMAND_UI сделано
 
-BEGIN_MESSAGE_MAP( RDODebugEdit, RDOBaseEdit )
-	ON_WM_CREATE()
-	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
-END_MESSAGE_MAP()
+//! @todo qt
+//BEGIN_MESSAGE_MAP( RDODebugEdit, RDOBaseEdit )
+//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
+//END_MESSAGE_MAP()
 
-RDODebugEdit::RDODebugEdit(): RDOBaseEdit()
+RDODebugEdit::RDODebugEdit(PTR(QWidget) pParent)
+	: RDOBaseEdit(pParent)
 {
+	setReadOnly( true );
 }
 
 RDODebugEdit::~RDODebugEdit()
-{
-}
-
-int RDODebugEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
-
-	setReadOnly( true );
-
-	return 0;
-}
+{}
 
 void RDODebugEdit::appendLine( CREF(tstring) str )
 {
@@ -86,7 +77,7 @@ void RDODebugEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 	pCmdUI->SetText( rdo::format( ID_STATUSBAR_READONLY ).c_str() );
 }
 
-void RDODebugEdit::OnHelpKeyword()
+void RDODebugEdit::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_debug\n");

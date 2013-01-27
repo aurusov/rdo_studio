@@ -49,8 +49,6 @@ public:
 protected:
 	RDOStudioEditBaseView(QWidget* pParent);
 
-	CWnd m_thisCWnd;
-
 private:
 	void stopTimer(QTimer* pTimer);
 

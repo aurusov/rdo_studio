@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerlogstyle.cpp
+  \file      tracer_ctrl_view_style.cpp
   \author    Захаров Павел
   \date      12.03.2003
   \brief     
@@ -11,7 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view_style.h"
 #include "app/rdo_studio_mfc/src/application.h"
 // --------------------------------------------------------------------------------
 
@@ -28,52 +28,52 @@ using namespace rdoTracerLog;
 // --------------------------------------------------------------------------------
 RDOTracerLogTheme::RDOTracerLogTheme(): RDOLogTheme()
 {
-	es.foregroundColor = RGB( 0x8B, 0x00, 0x00 );
-	es.backgroundColor = RGB( 0xFF, 0xC0, 0xCB );
+	es.foregroundColor = QColor( 0x8B, 0x00, 0x00 );
+	es.backgroundColor = QColor( 0xFF, 0xC0, 0xCB );
 	
-	eb.foregroundColor = RGB( 0x34, 0x4B, 0xA2 );
-	eb.backgroundColor = RGB( 0xAA, 0xE3, 0xFB );
+	eb.foregroundColor = QColor( 0x34, 0x4B, 0xA2 );
+	eb.backgroundColor = QColor( 0xAA, 0xE3, 0xFB );
 	
-	ef.foregroundColor = RGB( 0x16, 0x02, 0x50 );
-	ef.backgroundColor = RGB( 0x81, 0xB0, 0xD5 );
+	ef.foregroundColor = QColor( 0x16, 0x02, 0x50 );
+	ef.backgroundColor = QColor( 0x81, 0xB0, 0xD5 );
 	
-	ei.foregroundColor = RGB( 0x4F, 0x29, 0x62 );
-	ei.backgroundColor = RGB( 0xD0, 0xD0, 0xFF );
+	ei.foregroundColor = QColor( 0x4F, 0x29, 0x62 );
+	ei.backgroundColor = QColor( 0xD0, 0xD0, 0xFF );
 	
-	er.foregroundColor = RGB( 0x17, 0x32, 0x47 );
-	er.backgroundColor = RGB( 0xB6, 0xCB, 0xDB );
+	er.foregroundColor = QColor( 0x17, 0x32, 0x47 );
+	er.backgroundColor = QColor( 0xB6, 0xCB, 0xDB );
 	
-	rc.foregroundColor = RGB( 0x23, 0x74, 0x42 );
-	rc.backgroundColor = RGB( 0x96, 0xFF, 0x96 );
+	rc.foregroundColor = QColor( 0x23, 0x74, 0x42 );
+	rc.backgroundColor = QColor( 0x96, 0xFF, 0x96 );
 	
-	re.foregroundColor = RGB( 0x43, 0x5A, 0x43 );
-	re.backgroundColor = RGB( 0xB4, 0xE0, 0xB4 );
+	re.foregroundColor = QColor( 0x43, 0x5A, 0x43 );
+	re.backgroundColor = QColor( 0xB4, 0xE0, 0xB4 );
 	
-	rk.foregroundColor = RGB( 0x00, 0x86, 0x00 );
-	rk.backgroundColor = RGB( 0xD0, 0xFF, 0xD0 );
+	rk.foregroundColor = QColor( 0x00, 0x86, 0x00 );
+	rk.backgroundColor = QColor( 0xD0, 0xFF, 0xD0 );
 	
-	v.foregroundColor  = RGB( 0x00, 0x00, 0x00 );
-	v.backgroundColor  = RGB( 0xF1, 0xFB, 0xE2 );
+	v.foregroundColor  = QColor( 0x00, 0x00, 0x00 );
+	v.backgroundColor  = QColor( 0xF1, 0xFB, 0xE2 );
 	
-	s.foregroundColor  = RGB( 0x00, 0x00, 0xFF );
-	s.backgroundColor  = RGB( 0xE7, 0xF8, 0xF8 );
+	s.foregroundColor  = QColor( 0x00, 0x00, 0xFF );
+	s.backgroundColor  = QColor( 0xE7, 0xF8, 0xF8 );
 
-	dps.foregroundColor = RGB( 0x03, 0x23, 0x8B );
-	dps.backgroundColor = RGB( 0xC9, 0xCD, 0xDB );
+	dps.foregroundColor = QColor( 0x03, 0x23, 0x8B );
+	dps.backgroundColor = QColor( 0xC9, 0xCD, 0xDB );
 
-	sb.foregroundColor = RGB( 0x5A, 0x4F, 0x37 );
-	sb.backgroundColor = RGB( 0xF8, 0xD6, 0x8D );
+	sb.foregroundColor = QColor( 0x5A, 0x4F, 0x37 );
+	sb.backgroundColor = QColor( 0xF8, 0xD6, 0x8D );
 	
-	so.foregroundColor = RGB( 0x4B, 0x54, 0x0E );
-	so.backgroundColor = RGB( 0xE6, 0xF1, 0x98 );
+	so.foregroundColor = QColor( 0x4B, 0x54, 0x0E );
+	so.backgroundColor = QColor( 0xE6, 0xF1, 0x98 );
 
-	stn.foregroundColor = RGB( 0x00, 0x54, 0x72 );
-	stn.backgroundColor = RGB( 0xE8, 0xE8, 0xD7 );
+	stn.foregroundColor = QColor( 0x00, 0x54, 0x72 );
+	stn.backgroundColor = QColor( 0xE8, 0xE8, 0xD7 );
 
-	std.foregroundColor = RGB( 0x69, 0x55, 0x49 );
+	std.foregroundColor = QColor( 0x69, 0x55, 0x49 );
 	std.backgroundColor = stn.backgroundColor;
 
-	str.foregroundColor = RGB( 0x8B, 0x00, 0x00 );
+	str.foregroundColor = QColor( 0x8B, 0x00, 0x00 );
 	str.backgroundColor = stn.backgroundColor;
 	
 	src.foregroundColor = rc.foregroundColor;
@@ -85,17 +85,17 @@ RDOTracerLogTheme::RDOTracerLogTheme(): RDOLogTheme()
 	srk.foregroundColor = rk.foregroundColor;
 	srk.backgroundColor = rk.backgroundColor;
 
-	sd.foregroundColor = RGB( 0x54, 0x1E, 0x09 );
-	sd.backgroundColor = RGB( 0xF7, 0xCF, 0xB5 );
+	sd.foregroundColor = QColor( 0x54, 0x1E, 0x09 );
+	sd.backgroundColor = QColor( 0xF7, 0xCF, 0xB5 );
 
-	ses.foregroundColor = RGB( 0x54, 0x1E, 0x09 );
-	ses.backgroundColor = RGB( 0xF0, 0xDE, 0xDB );
+	ses.foregroundColor = QColor( 0x54, 0x1E, 0x09 );
+	ses.backgroundColor = QColor( 0xF0, 0xDE, 0xDB );
 	
-	sen.foregroundColor = RGB( 0xF0, 0x4B, 0x30 );
+	sen.foregroundColor = QColor( 0xF0, 0x4B, 0x30 );
 	sen.backgroundColor = ses.backgroundColor;
 	
-	sem.foregroundColor = RGB( 0xF0, 0x4B, 0x30 );
-	sem.backgroundColor = RGB( 0xE3, 0xF0, 0xF6 );
+	sem.foregroundColor = QColor( 0xF0, 0x4B, 0x30 );
+	sem.backgroundColor = QColor( 0xE3, 0xF0, 0xF6 );
 	
 	sef.foregroundColor = sem.foregroundColor;
 	sef.backgroundColor = sem.backgroundColor;

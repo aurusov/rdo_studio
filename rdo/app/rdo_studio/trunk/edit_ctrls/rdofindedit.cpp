@@ -37,31 +37,22 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 
 // ON_UPDATE_COMMAND_UI сделано
 
-BEGIN_MESSAGE_MAP( RDOFindEdit, RDOLogEdit )
-	ON_WM_CREATE()
-	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
-END_MESSAGE_MAP()
+//! @todo qt
+//BEGIN_MESSAGE_MAP( RDOFindEdit, RDOLogEdit )
+//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
+//END_MESSAGE_MAP()
 
-RDOFindEdit::RDOFindEdit(): RDOLogEdit()
+RDOFindEdit::RDOFindEdit(PTR(QWidget) pParent): RDOLogEdit(pParent)
 {
+	sendEditor( SCI_SETLEXER, SCLEX_FIND );
+	//	int lexLanguage = sendEditor( SCI_GETLEXER );
+	sendEditor( SCI_SETSTYLEBITS, 5 );
+	sendEditorString( SCI_SETWORDCHARS, 0, wordCharacters );
 }
 
 RDOFindEdit::~RDOFindEdit()
 {
-}
-
-int RDOFindEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
-{
-	if ( RDOLogEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
-
-	sendEditor( SCI_SETLEXER, SCLEX_FIND );
-//	int lexLanguage = sendEditor( SCI_GETLEXER );
-	sendEditor( SCI_SETSTYLEBITS, 5 );
-	sendEditorString( SCI_SETWORDCHARS, 0, wordCharacters );
-
-	return 0;
 }
 
 void RDOFindEdit::setEditorStyle( RDOFindEditStyle* _style )
@@ -120,7 +111,7 @@ void RDOFindEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 	pCmdUI->SetText( rdo::format( ID_STATUSBAR_READONLY ).c_str() );
 }
 
-void RDOFindEdit::OnHelpKeyword()
+void RDOFindEdit::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_find\n");

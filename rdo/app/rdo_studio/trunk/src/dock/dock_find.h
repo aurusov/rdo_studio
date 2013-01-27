@@ -11,14 +11,17 @@
 #define _RDO_STUDIO_DOCK_FIND_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_base.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindedit.h"
 // --------------------------------------------------------------------------------
 
-class DockFind: public DockBase<rdoEditCtrl::RDOFindEdit>
+class DockFind: public QDockWidget
 {
 public:
+	typedef rdoEditCtrl::RDOFindEdit context_type;
+
 	DockFind(PTR(QWidget) pParent);
 	virtual ~DockFind();
 
@@ -28,8 +31,7 @@ public:
 		int lineNumber = -1, int posInLine = 0);
 	void clear();
 
-private:
-	typedef  DockBase<rdoEditCtrl::RDOFindEdit>  parent_class;
+	REF(context_type) getContext();
 };
 
 #endif // _RDO_STUDIO_DOCK_FIND_H_

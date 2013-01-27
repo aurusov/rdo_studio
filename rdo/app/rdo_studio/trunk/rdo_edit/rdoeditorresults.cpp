@@ -10,12 +10,10 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -32,54 +30,39 @@ using namespace rdoEditor;
 
 // ON_UPDATE_COMMAND_UI сделано
 
-BEGIN_MESSAGE_MAP( RDOEditorResults, RDOEditorBaseEdit )
-	ON_WM_CREATE()
-	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
-END_MESSAGE_MAP()
+//! @todo qt
+//BEGIN_MESSAGE_MAP( RDOEditorResults, RDOEditorBaseEdit )
+//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
+//END_MESSAGE_MAP()
 
-RDOEditorResults::RDOEditorResults(): RDOEditorBaseEdit()
+RDOEditorResults::RDOEditorResults(PTR(QWidget) pParent)
+	: RDOEditorBaseEdit(pParent)
 {
 	kw0 = "TRUE FALSE";
 	kw1 = "";
 	kw2 = "";
 	kw3 = "";
+
+	setReadOnly( true );
 }
 
 RDOEditorResults::~RDOEditorResults()
+{}
+
+void RDOEditorResults::setEditorStyle(PTR(RDOEditorResultsStyle) pStyle)
 {
+	RDOEditorBaseEdit::setEditorStyle(pStyle);
 }
 
-/*
-BOOL RDOEditorResults::DestroyWindow()
-{
-	return RDOEditorBaseEdit::DestroyWindow();
-}
-*/
-
-int RDOEditorResults::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if ( RDOEditorBaseEdit ::OnCreate(lpCreateStruct) == -1 ) return -1;
-
-	setReadOnly( true );
-
-	return 0;
-}
-
-void RDOEditorResults::setEditorStyle( RDOEditorResultsStyle* _style )
-{
-	RDOEditorBaseEdit::setEditorStyle( _style );
-	if ( !style ) return;
-}
-
-void RDOEditorResults::OnHelpKeyword()
+void RDOEditorResults::onHelpContext()
 {
 	tstring keyword = getCurrentOrSelectedWord();
 	tstring s = getAllKW();
 
-	if ( s.find_first_of( keyword ) == tstring::npos || keyword.empty() ) {
-		keyword = "pmv";
+	if (s.find_first_of(keyword) == tstring::npos || keyword.empty())
+	{
+		keyword = _T("pmv");
 	}
 
 	QByteArray ba;

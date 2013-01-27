@@ -11,14 +11,16 @@
 #define _RDO_STUDIO_DOCK_BUILD_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_base.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildedit.h"
 // --------------------------------------------------------------------------------
 
-class DockBuild: public DockBase<rdoEditCtrl::RDOBuildEdit>
+class DockBuild: public QDockWidget
 {
 public:
+	typedef rdoEditCtrl::RDOBuildEdit context_type;
+
 	DockBuild(PTR(QWidget) pParent);
 	virtual ~DockBuild();
 
@@ -26,8 +28,7 @@ public:
 	void appendString(CREF(rdo::simulation::report::FileMessage) message);
 	void clear();
 
-private:
-	typedef  DockBase<rdoEditCtrl::RDOBuildEdit>  parent_class;
+	REF(context_type) getContext();
 };
 
 #endif // _RDO_STUDIO_DOCK_BUILD_H_

@@ -1,19 +1,21 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerlogctrl.h
+  \file      tracer_ctrl_view.h
   \author    Захаров Павел
   \date      12.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGCTRL_H_
-#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGCTRL_H_
+#ifndef _RDO_STUDIO_MFC_TRACER_CTRLSTRACER_CTRL_VIEW_H_
+#define _RDO_STUDIO_MFC_TRACER_CTRLSTRACER_CTRL_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologctrl.h"
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view_style.h"
+#include "app/rdo_studio_mfc/src/help_context_i.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoTracer {
@@ -23,12 +25,12 @@ class RDOTracerBase;
 namespace rdoTracerLog {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerLogCtrl
+// -------------------- RDOTracerLogCtrlView
 // --------------------------------------------------------------------------------
-class RDOTracerLogCtrl: public RDOLogCtrl
+class RDOTracerLogCtrlView
+	: public RDOLogCtrl
+	, public IHelpContext
 {
-DECLARE_DYNCREATE( RDOTracerLogCtrl )
-
 protected:
 	typedef std::map< int, RDOLogColorPair* > RDOColorMap;
 	RDOColorMap subitemColors;
@@ -41,7 +43,8 @@ protected:
 	rbool bShowMenu;
 
 private:
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
+	DECLARE_IHelpContext;
+
 	afx_msg void OnFind();
 	afx_msg void OnFindNext();
 	afx_msg void OnFindPrev();
@@ -50,16 +53,15 @@ private:
 	afx_msg void OnCanCopy( CCmdUI* pCmdUI );
 	afx_msg void OnUpdateFindNextPrev( CCmdUI* pCmdUI );
 	afx_msg void OnUpdateFind( CCmdUI* pCmdUI );
-	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
-	afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
-	afx_msg void OnHelpKeyword();
+	//! todo qt
+	//afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
+	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-	DECLARE_MESSAGE_MAP()
 	
 public:
-	RDOTracerLogCtrl();
-	virtual ~RDOTracerLogCtrl();
+	RDOTracerLogCtrlView(PTR(QAbstractScrollArea) pParent);
+	virtual ~RDOTracerLogCtrlView();
 
 	virtual void addStringToLog( const tstring logStr );
 
@@ -72,6 +74,23 @@ public:
 
 };
 
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerLogCtrl
+// --------------------------------------------------------------------------------
+class RDOTracerLogCtrl: public QAbstractScrollArea
+{
+public:
+	RDOTracerLogCtrl(PTR(QWidget) pParent);
+
+	REF(RDOTracerLogCtrlView) view()
+	{
+		return *static_cast<PTR(RDOTracerLogCtrlView)>(viewport());
+	}
+
+private:
+	rbool viewportEvent(PTR(QEvent) pEvent);
+};
+
 }; // namespace rdoTracerLog
 
-#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGCTRL_H_
+#endif // _RDO_STUDIO_MFC_TRACER_CTRLSTRACER_CTRL_VIEW_H_

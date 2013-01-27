@@ -1,18 +1,21 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdologctrl.h
+  \file      tracer_ctrl.h
   \author    Захаров Павел
   \date      12.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGCTRL_H_
-#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGCTRL_H_
+#ifndef _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_H_
+#define _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qwidget.h>
+#include <QtGui/qevent.h>
+#include <QtGui/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologstyle.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_style.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoTracerLog {
@@ -20,15 +23,13 @@ namespace rdoTracerLog {
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogCtrl
 // --------------------------------------------------------------------------------
-#define WM_LOGSELCHANGE WM_USER + 1
-
 typedef std::list< tstring > stringList;
 
-class RDOLogCtrl: public CWnd  
+class RDOLogCtrl: public QWidget
 {
-friend class RDOLogCtrlFindInList;
+Q_OBJECT
 
-DECLARE_DYNAMIC( RDOLogCtrl )
+friend class RDOLogCtrlFindInList;
 
 protected:
 	CMutex mutex;
@@ -45,12 +46,11 @@ protected:
 	int yPageSize;
 	
 	CRect clipRect;
-	CRect prevClientRect;
-	CRect newClientRect;
-	CRect prevWindowRect;
+	QRect prevClientRect;
+	QRect newClientRect;
+	QRect prevWindowRect;
 	
 	int lastViewableLine;
-	rbool hasFocus;
 	int selectedLine;
 	int fullRepaintLines;
 	rbool focusOnly;
@@ -79,13 +79,14 @@ protected:
 	
 	void  recalcWidth( const int newMaxStrWidth );
 	void  updateScrollBars();
-	rbool scrollVertically( int inc );
-	rbool scrollHorizontally( int inc );
+
+	rbool scrollVertically  (int pos);
+	rbool scrollHorizontally(int pos);
 	
 	rbool isVisible( const int index ) const;
 	rbool isFullyVisible( const int index ) const;
 
-	void  getLineRect( const int index, CRect* rect ) const;
+	QRect getLineRect(int index) const;
 	void  repaintLine ( const int index );
 
 	rbool canCopy() const { return selectedLine != -1; };
@@ -94,35 +95,33 @@ protected:
 
 	rbool drawLog;
 
-	HDC   hdc;
-	int   saved_hdc;
-	HWND  hwnd;
-	HFONT fontInit;
-	HFONT hfontLog;
-	void setFont( const rbool needRedraw = true );
+	QFont m_font;
+	void setFont(rbool needRedraw);
+
+	PTR(QAbstractScrollArea) m_pScrollArea;
+	int m_prevVertSBValue;
+	int m_prevHorzSBValue;
 
 protected:
 	afx_msg int  OnCreate( LPCREATESTRUCT lpCreateStruct );
 
 private:
-	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
+	typedef  QWidget  parent_type;
+	virtual void resizeEvent    (QResizeEvent* pEvent);
+	virtual void paintEvent     (QPaintEvent*  pEvent);
+	virtual void keyPressEvent  (QKeyEvent*    pEvent);
+	virtual void wheelEvent     (QWheelEvent*  pEvent);
+	virtual void mousePressEvent(QMouseEvent*  pEvent);
 
-	afx_msg void OnSize( UINT nType, int cx, int cy );
-	afx_msg void OnPaint();
-	afx_msg void OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar );
-	afx_msg void OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar );
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnSetFocus( CWnd* pOldWnd );
-	afx_msg void OnKillFocus( CWnd* pNewWnd );
-	afx_msg void OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags );
-	afx_msg UINT OnGetDlgCode() { return DLGC_WANTARROWS; };
-	afx_msg BOOL OnMouseWheel( UINT nFlags, short zDelta, CPoint pt );
-	afx_msg void OnLButtonDown( UINT nFlags, CPoint point );
-	afx_msg void OnDestroy();
-	DECLARE_MESSAGE_MAP()
+	REF(QScrollBar) getVertScrollBar();
+	REF(QScrollBar) getHorzScrollBar();
+
+private slots:
+	void onVertScrollBarValueChanged(int value);
+	void onHorzScrollBarValueChanged(int value);
 
 public:
-	RDOLogCtrl( RDOLogStyle* style = NULL );
+	RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle = NULL);
 	virtual ~RDOLogCtrl();
 
 	virtual void addStringToLog( const tstring logStr );
@@ -140,12 +139,12 @@ public:
 	virtual void findPrevious() { int res; find( res, !bSearchDown, bMatchCase, bMatchWholeWord ); selectLine( res ); };
 	virtual void clear();
 	
-	virtual const RDOLogStyle& getStyle() const;
+	virtual CREF(RDOLogStyle) getStyle() const;
 	virtual void setStyle( RDOLogStyle* style, const rbool needRedraw = true );
 
 	void setText( tstring text );
 
-	void  setDrawLog( const rbool value );
+	void  setDrawLog( rbool value );
 	rbool getDrawLog() const { return drawLog; };
 
 	int getStringsCount() const { return stringsCount; };
@@ -153,4 +152,4 @@ public:
 
 }; // namespace rdoTracerLog
 
-#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGCTRL_H_
+#endif // _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_H_

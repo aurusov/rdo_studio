@@ -1,18 +1,18 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerlogstyle.h
+  \file      tracer_ctrl_view_style.h
   \author    Захаров Павел
   \date      12.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGSTYLE_H_
-#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGSTYLE_H_
+#ifndef _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_VIEW_STYLE_H_
+#define _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_VIEW_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologstyle.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_style.h"
 // --------------------------------------------------------------------------------
 
 class RDOStudioOptionsStylesAndColors;
@@ -90,4 +90,4 @@ public:
 
 }; // namespace rdoTracerLog
 
-#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGSTYLE_H_
+#endif // _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_VIEW_STYLE_H_

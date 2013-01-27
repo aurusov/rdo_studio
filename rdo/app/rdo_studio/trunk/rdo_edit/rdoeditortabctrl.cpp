@@ -45,31 +45,19 @@ RDOEditorTabCtrl::~RDOEditorTabCtrl()
 
 void RDOEditorTabCtrl::createPage(PTR(RDOStudioEditBaseView) pView, CREF(QString) name)
 {
-	PTR(PageContext) pPage = new PageContext(
-		this,
-		boost::bind<PTR(PageContext::context_type)>(&RDOEditorTabCtrl::constructPage, pView),
-		PageContext::CreateFunction(
-			boost::bind<BOOL>(&PageContext::context_type::Create, _1, LPCTSTR(NULL), LPCTSTR(NULL), DWORD(0), CRect(0, 0, 0, 0), _2, UINT(0), static_cast<CCreateContext*>(NULL))
-		)
-	);
+	PTR(context_type) pPage = new context_type(this, pView);
+
 	ASSERT(pPage);
 
 	addTab(pPage, name);
 
-	pPage->init();
-
-	pPage->getContext().setEditorStyle(&studioApp.getStyle()->style_editor);
-	pPage->getContext().ShowWindow(SW_SHOW);
+	pPage->setEditorStyle(&studioApp.getStyle()->style_editor);
+	pPage->show();
 	//! @todo qt
 	//pPage->getContext().setPopupMenu(&pView->popupMenu);
 
-	group.insert(&pPage->getContext());
-	pPage->getContext().setGroup(&group);
-}
-
-PTR(RDOEditorTabCtrl::PageContext::context_type) RDOEditorTabCtrl::constructPage(PTR(RDOStudioEditBaseView) pView)
-{
-	return new PageContext::context_type(pView);
+	group.insert(pPage);
+	pPage->setGroup(&group);
 }
 
 rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType(int index) const
@@ -115,7 +103,7 @@ void RDOEditorTabCtrl::setCurrentRDOItem(rdoModelObjects::RDOFileType type)
 		setCurrentIndex(index);
 }
 
-PTR(RDOEditorTabCtrl::PageContext::context_type) RDOEditorTabCtrl::getItemEdit(rdoModelObjects::RDOFileType type) const
+PTR(RDOEditorTabCtrl::context_type) RDOEditorTabCtrl::getItemEdit(rdoModelObjects::RDOFileType type) const
 {
 	int index = typeToIndex(type);
 	return index != -1
@@ -123,12 +111,12 @@ PTR(RDOEditorTabCtrl::PageContext::context_type) RDOEditorTabCtrl::getItemEdit(r
 		: NULL;
 }
 
-PTR(RDOEditorTabCtrl::PageContext::context_type) RDOEditorTabCtrl::getCurrentEdit() const
+PTR(RDOEditorTabCtrl::context_type) RDOEditorTabCtrl::getCurrentEdit() const
 {
-	return &static_cast<PTR(PageContext)>(currentWidget())->getContext();
+	return static_cast<PTR(context_type)>(currentWidget());
 }
 
-PTR(RDOEditorTabCtrl::PageContext::context_type) RDOEditorTabCtrl::getItemEdit(int index) const
+PTR(RDOEditorTabCtrl::context_type) RDOEditorTabCtrl::getItemEdit(int index) const
 {
-	return &static_cast<PTR(PageContext)>(widget(index))->getContext();
+	return static_cast<PTR(context_type)>(widget(index));
 }

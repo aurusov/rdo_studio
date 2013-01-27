@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextcodec.h>
+#include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"
@@ -19,7 +20,6 @@
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
-#include "app/rdo_studio_mfc/src/child_frm.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/src/thread.h"
@@ -148,6 +148,30 @@ void RDOStudioCommandLineInfo::ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bL
 // --------------------------------------------------------------------------------
 RDOStudioApp studioApp;
 
+#ifdef _DEBUG
+void g_messageOutput(QtMsgType type, const char *msg)
+{
+	switch (type)
+	{
+	case QtDebugMsg:
+		TRACE1("Debug: %s\n", msg);
+		break;
+
+	case QtWarningMsg:
+		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", msg);
+		break;
+
+	case QtCriticalMsg:
+		QMessageBox::critical(studioApp.getMainWnd(), "QtCritical", msg);
+		break;
+
+	case QtFatalMsg:
+		QMessageBox::critical(studioApp.getMainWnd(), "QtFatal", msg);
+		break;
+	}
+}
+#endif
+
 BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE,    OnUpdateFileSave   )
 	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_ALL,      OnUpdateFileSaveAll)
@@ -180,6 +204,10 @@ RDOStudioApp::RDOStudioApp()
 	, m_openModelName               (_T(""))
 	, m_pMainFrame                  (NULL  )
 {
+#ifdef _DEBUG
+	qInstallMsgHandler(g_messageOutput);
+#endif
+
 	setlocale(LC_ALL,     _T("rus"));
 	setlocale(LC_NUMERIC, _T("eng"));
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());

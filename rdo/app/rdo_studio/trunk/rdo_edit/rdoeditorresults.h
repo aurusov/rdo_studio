@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresultsstyle.h"
+#include "app/rdo_studio_mfc/src/help_context_i.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditor {
@@ -21,22 +22,21 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorResults
 // --------------------------------------------------------------------------------
-class RDOEditorResults: public RDOEditorBaseEdit
+class RDOEditorResults
+	: public RDOEditorBaseEdit
+	, public IHelpContext
 {
-private:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnHelpKeyword();
-	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-	DECLARE_MESSAGE_MAP()
-
 public:
-	RDOEditorResults();
+	RDOEditorResults(PTR(QWidget) pParent);
 	virtual ~RDOEditorResults();
 
-//	virtual BOOL DestroyWindow();
+	void setEditorStyle(PTR(RDOEditorResultsStyle) pStyle);
 
-	void setEditorStyle( RDOEditorResultsStyle* _style );
+private:
+	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
+	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
+
+	DECLARE_IHelpContext;
 };
 
 }; // namespace rdoEditor
