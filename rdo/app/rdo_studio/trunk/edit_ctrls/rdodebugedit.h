@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
+#include "app/rdo_studio_mfc/edit_ctrls/editwithreadonlypopupmenu.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
@@ -20,7 +21,9 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDODebugEdit
 // --------------------------------------------------------------------------------
-class RDODebugEdit: public RDOBaseEdit
+class RDODebugEdit
+	: public RDOBaseEdit
+	, public EditWithReadOnlyPopupMenu
 {
 public:
 	RDODebugEdit(PTR(QWidget) pParent);
@@ -29,6 +32,9 @@ public:
 	void appendLine(CREF(tstring) str);
 
 private:
+	typedef  RDOBaseEdit  super;
+
+	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void onHelpContext();
 };
 

@@ -40,8 +40,8 @@ public:
 
 	virtual void setEditorStyle(PTR(LogEditStyle) pStyle);
 
-	virtual void gotoNext();
-	virtual void gotoPrev();
+	void gotoNext();
+	void gotoPrev();
 
 	virtual void clearAll();
 	virtual void appendLine(PTR(LogEditLineInfo) pLine);
@@ -61,9 +61,6 @@ protected:
 	void  setSelectLine  (int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScroll = false);
 	void  clearSelectLine();
 	rbool hasSelectLine  () const;
-
-	afx_msg void OnGotoNext();
-	afx_msg void OnGotoPrev();
 
 private:
 	LogEditLineInfoList  m_lines;

@@ -19,7 +19,7 @@
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
-#include "app/rdo_studio_mfc/src/chart/doc_serie.h"
+#include "app/rdo_studio_mfc/src/chart/chart_serie.h"
 #include "app/rdo_studio_mfc/src/chart/options.h"
 // --------------------------------------------------------------------------------
 
@@ -243,7 +243,7 @@ void RDOStudioChartView::recalcLayout()
 		::SelectObject( hmemdc, hfontLegend );
 
 		int count = 0;
-		for ( std::vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
+		for ( std::vector< ChartSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
 			(*it)->getLegendExtent( hmemdc, chartRect, sz );
 			if ( sz.cx && sz.cy ) {
 				if ( sz.cx > size_max.cx )
@@ -468,13 +468,13 @@ void RDOStudioChartView::drawLegend( CRect& legendRect )
 	tmprect.CopyRect( &legendRect );
 	SIZE size;
 	::SelectObject( hmemdc, hfontLegend );
-	for ( std::vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
+	for ( std::vector< ChartSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
 		(*it)->drawInLegend( hmemdc, tmprect, style->getTheme()->legendFgColor, size );
 		tmprect.top += size.cy;
 	}
 }
 
-void RDOStudioChartView::drawYAxis( CRect& chartRect, const RDOStudioDocSerie* axisValues )
+void RDOStudioChartView::drawYAxis( CRect& chartRect, const ChartSerie* axisValues )
 {
 	CRect tmprect;
 	tmprect.CopyRect( &newClientRect );
@@ -744,7 +744,7 @@ void RDOStudioChartView::onDraw()
 			}
 		}
 
-		for ( std::vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ )
+		for ( std::vector< ChartSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ )
 			(*it)->drawSerie( this, hmemdc, chartRect );
 	}
 

@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 #include <QtGui/qevent.h>
 #include <QtGui/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -18,7 +19,7 @@
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
-#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;
@@ -26,27 +27,11 @@ using namespace rdoEditor;
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioModelView
 // --------------------------------------------------------------------------------
-static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
-
-// ON_UPDATE_COMMAND_UI сделано
-
-//! @todo qt
-// RDOStudioEditBaseView -> QWidget
-//BEGIN_MESSAGE_MAP(RDOStudioModelView, RDOStudioEditBaseView)
-//	ON_WM_CREATE()
-//	ON_WM_SETFOCUS()
-//	ON_WM_SIZE()
-//	ON_COMMAND(ID_SEARCH_FIND_INMODEL, OnSearchFindInModel)
-//	ON_REGISTERED_MESSAGE( FINDINMODEL_MSG, OnFindInModelMsg )
-//	ON_COMMAND(ID_FILE_PRINT, RDOStudioEditBaseView::OnFilePrint)
-//	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioEditBaseView::OnFilePrint)
-//	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioEditBaseView::OnFilePrintPreview)
-//END_MESSAGE_MAP()
-
 RDOStudioModelView::RDOStudioModelView(PTR(QWidget) pParent)
 	: parent_type(pParent)
-	, m_pModel  (NULL)
-	, m_pTabCtrl(NULL)
+	, m_pModel     (NULL)
+	, m_pTabCtrl   (NULL)
+	, m_pFindDialog(NULL)
 {
 	m_pTabCtrl = new RDOEditorTabCtrl(this, this);
 
@@ -54,10 +39,20 @@ RDOStudioModelView::RDOStudioModelView(PTR(QWidget) pParent)
 	pLayout->setSpacing(0);
 	pLayout->setContentsMargins(0, 0, 0, 0);
 	pLayout->addWidget(m_pTabCtrl);
+
+	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+	pMainWindow->actSearchFindInModel->setEnabled(true);
+	connect(pMainWindow->actSearchFindInModel, SIGNAL(triggered(bool)), this, SLOT(onSearchFindInModel()));
 }
 
 RDOStudioModelView::~RDOStudioModelView()
-{}
+{
+	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+	pMainWindow->actSearchFindInModel->setEnabled(false);
+	disconnect(pMainWindow->actSearchFindInModel, SIGNAL(triggered(bool)), this, SLOT(onSearchFindInModel()));
+}
 
 void RDOStudioModelView::setModel(PTR(RDOStudioModel) pModel)
 {
@@ -80,68 +75,73 @@ void RDOStudioModelView::closeEvent(PTR(QCloseEvent) event)
 	}
 }
 
-//! @todo qt
-//BOOL RDOStudioModelView::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
-//{
-//	if ( m_pTabCtrl->getCurrentEdit()->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-//	return RDOStudioEditBaseView::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
-//}
-//
-//void RDOStudioModelView::OnSetFocus(CWnd* pOldWnd)
-//{
-//	RDOStudioEditBaseView::OnSetFocus( pOldWnd );
-//	m_pTabCtrl->SetFocus();
-//}
-//
-
 REF(rdoEditor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
 {
 	return *m_pTabCtrl;
 }
 
-void RDOStudioModelView::OnSearchFindInModel() 
+void RDOStudioModelView::onSearchFindInModel()
 {
-	//! todo qt
-	//PTR(CFindReplaceDialog) pDlg = new CFindReplaceDialog();
-	//pDlg->Create(true, m_pTabCtrl->getCurrentEdit()->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, &m_thisCWnd);
+	m_findSettings.what = m_pTabCtrl->getCurrentEdit()->getWordForFind();
+
+	if (!m_pFindDialog)
+	{
+		m_pFindDialog = new FindDialog(
+			this,
+			boost::bind(&RDOStudioModelView::onFindDlgFind, this, _1),
+			boost::bind(&RDOStudioModelView::onFindDlgClose, this)
+		);
+	}
+
+	m_pFindDialog->setSettings(m_findSettings);
+	m_pFindDialog->show();
+	m_pFindDialog->raise();
+	m_pFindDialog->activateWindow();
 }
 
-LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
+void RDOStudioModelView::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
-	PTR(CFindReplaceDialog) pDialog = CFindReplaceDialog::GetNotifier(lParam);
+	m_findSettings = settings;
+	onSearchFindAll();
+}
 
-	if (!pDialog->IsTerminating())
+void RDOStudioModelView::onFindDlgClose()
+{
+	m_pFindDialog = NULL;
+}
+
+void RDOStudioModelView::onSearchFindAll()
+{
+	studioApp.getIMainWnd()->getDockFind().clear();
+	studioApp.getIMainWnd()->getDockFind().raise();
+	tstring findStr       = m_findSettings.what;
+	rbool bMatchCase      = m_findSettings.matchCase;
+	rbool bMatchWholeWord = m_findSettings.matchWholeWord;
+	studioApp.getIMainWnd()->getDockFind().getContext().setKeyword(findStr, bMatchCase);
+	studioApp.getIMainWnd()->getDockFind().appendString(rdo::format("Поиск '%s'...\r\n", findStr.c_str()));
+	int count = 0;
+	for (int i = 0; i < m_pTabCtrl->count(); i++)
 	{
-		studioApp.getIMainWnd()->getDockFind().clear();
-		studioApp.getIMainWnd()->getDockFind().raise();
-		tstring findStr       = pDialog->GetFindString();
-		rbool bMatchCase      = pDialog->MatchCase() ? true : false;
-		rbool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
-		studioApp.getIMainWnd()->getDockFind().getContext().setKeyword(findStr, bMatchCase);
-		studioApp.getIMainWnd()->getDockFind().appendString(rdo::format(ID_FINDINMODEL_BEGINMSG, findStr.c_str()));
-		int count = 0;
-		for (int i = 0; i < m_pTabCtrl->count(); i++)
+		PTR(RDOEditorEdit) pEdit = m_pTabCtrl->getItemEdit(i);
+		int pos  = 0;
+		int line = 0;
+		while (pos != -1)
 		{
-			PTR(RDOEditorEdit) pEdit = m_pTabCtrl->getItemEdit(i);
-			int pos  = 0;
-			int line = 0;
-			while (pos != -1)
+			pos = pEdit->findPos(findStr, line, bMatchCase, bMatchWholeWord);
+			if (pos != -1)
 			{
-				pos = pEdit->findPos(findStr, line, bMatchCase, bMatchWholeWord);
-				if (pos != -1)
-				{
-					line = pEdit->getLineFromPosition(pos);
-					studioApp.getIMainWnd()->getDockFind().appendString(pEdit->getLine(line), m_pTabCtrl->indexToType(i), line, pos - pEdit->getPositionFromLine(line));
-					line++;
-					count++;
-				}
+				int endPos = pEdit->isEndOfWord(pos);
+				ASSERT(endPos != -1);
+				line = pEdit->getLineFromPosition(pos);
+				studioApp.getIMainWnd()->getDockFind().appendString(pEdit->getLine(line), m_pTabCtrl->indexToType(i), line, endPos - pEdit->getPositionFromLine(line));
+				line++;
+				count++;
 			}
 		}
-		pDialog->SendMessage(WM_CLOSE);
-		tstring s = count
-			? rdo::format(ID_FINDINMODEL_ENDMSG_COUNT,    count)
-			: rdo::format(ID_FINDINMODEL_ENDMSG_NOTFOUND, findStr.c_str());
-		studioApp.getIMainWnd()->getDockFind().appendString(s);
 	}
-	return 0;
+	m_pFindDialog = NULL;
+	tstring s = count
+		? rdo::format("'%d' раз было найдено.\r\n", count)
+		: rdo::format("Не получилось найти строчку '%s'.\r\n", findStr.c_str());
+	studioApp.getIMainWnd()->getDockFind().appendString(s);
 }

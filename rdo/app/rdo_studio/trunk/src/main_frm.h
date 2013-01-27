@@ -15,6 +15,7 @@
 #include <boost/mpl/integral_c.hpp>
 #include <QtGui/qmainwindow.h>
 #include <QtGui/qslider.h>
+#include <QtCore/qsignalmapper.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
@@ -31,8 +32,6 @@ class RDOStudioMainFrame
 	, public Ui::MainWindow
 {
 Q_OBJECT
-
-friend class RDOToolBar;
 
 public:
 	RDOStudioMainFrame();
@@ -59,17 +58,36 @@ public:
 
 	void insertMenuFileReopenItem(CREF(tstring) item);
 
+	void updateInsertMenu(rbool enabled, QObject* pObject, CREF(tstring) method);
+
+	class InsertMenuData: public QObject
+	{
+	public:
+		typedef  boost::optional<ruint>  Position;
+
+		InsertMenuData(QObject* pParent, const QString& text, const Position& position = Position());
+
+		const QString&  text    () const;
+		const Position& position() const;
+
+	private:
+		QString   m_text;
+		Position  m_position;
+	};
+
 private:
 	typedef  QMainWindow           parent_type;
 	typedef  std::vector<tstring>  ReopenList;
 
-	CWnd                    m_thisCWnd;
-	int                     m_updateTimerID;
-	LPStatusBar             m_pStatusBar;
-	ReopenList              m_reopenList;
+	CWnd            m_thisCWnd;
+	int             m_updateTimerID;
+	LPStatusBar     m_pStatusBar;
+	ReopenList      m_reopenList;
+	QSignalMapper*  m_pInsertMenuSignalMapper;
 
-	void createStatusBar();
-	void createToolBar  ();
+	void createStatusBar ();
+	void createToolBar   ();
+	void createInsertMenu();
 
 	void updateMenuFileReopen();
 	void loadMenuFileReopen  ();
@@ -89,13 +107,6 @@ private slots:
 	void onToolBarModelOrientationChanged(Qt::Orientation orientation);
 
 	void onMenuFileReopen(QAction* pAction);
-
-private:
-	afx_msg void OnDestroy();
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnMethodCommandRange( UINT id );
-	afx_msg void OnMethodUpdateRange( CCmdUI* pCmdUI );
 };
 
 #endif // _RDO_STUDIO_MFC_MAIN_FRM_H_

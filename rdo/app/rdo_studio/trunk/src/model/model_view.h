@@ -14,6 +14,7 @@
 #include <QtGui/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/model/model.h"
+#include "app/rdo_studio_mfc/src/dialog/find_dialog.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -23,8 +24,10 @@ namespace rdoEditor {
 	class RDOEditorTabCtrl;
 }
 
-class RDOStudioModelView: public QWidget
+class RDOStudioModelView
+	: public QWidget
 {
+Q_OBJECT
 public:
 	RDOStudioModelView(PTR(QWidget) pParent);
 	virtual ~RDOStudioModelView();
@@ -36,13 +39,22 @@ public:
 private:
 	typedef  QWidget  parent_type;
 
+	FindDialog*          m_pFindDialog;
+	FindDialog::Settings m_findSettings;
+
 	PTR(rdoEditor::RDOEditorTabCtrl) m_pTabCtrl;
 	PTR(RDOStudioModel)              m_pModel;
 
 	void closeEvent(PTR(QCloseEvent) event);
 
-	afx_msg void OnSearchFindInModel();
-	afx_msg LRESULT OnFindInModelMsg(WPARAM wParam, LPARAM lParam);
+	void onFindDlgFind(CREF(FindDialog::Settings) settings);
+	void onFindDlgClose();
+
+	void onSearchFindAll();
+
+private slots:
+	void onSearchFindInModel();
+
 };
 
 #endif // RDOSTUDIOMODELVIEW_H

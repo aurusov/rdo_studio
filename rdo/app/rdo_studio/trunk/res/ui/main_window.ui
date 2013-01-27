@@ -105,7 +105,7 @@ border: none;
     <addaction name="actSearchFindPrevious"/>
     <addaction name="actSearchReplace"/>
     <addaction name="separator"/>
-    <addaction name="actSearchFinInModel"/>
+    <addaction name="actSearchFindInModel"/>
     <addaction name="separator"/>
     <addaction name="actSearchBookmarksToggle"/>
     <addaction name="actSearchBookmarkNext"/>
@@ -570,10 +570,10 @@ border: none;
     <string>Заменить</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+R</string>
+    <string>Ctrl+H</string>
    </property>
   </action>
-  <action name="actSearchFinInModel">
+  <action name="actSearchFindInModel">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -986,26 +986,6 @@ border: none;
     <string>Упорядочить свернутые</string>
    </property>
   </action>
-  <action name="actViewToolbarFile">
-   <property name="text">
-    <string>Панель файлов</string>
-   </property>
-  </action>
-  <action name="actViewToolbarEdit">
-   <property name="text">
-    <string>Панель редактирования</string>
-   </property>
-  </action>
-  <action name="actViewToolbarZoom">
-   <property name="text">
-    <string>Панель масштаба</string>
-   </property>
-  </action>
-  <action name="actViewToolbarModel">
-   <property name="text">
-    <string>Панель модели</string>
-   </property>
-  </action>
   <action name="actModelShowRateIncFour">
    <property name="enabled">
     <bool>false</bool>
@@ -1040,6 +1020,38 @@ border: none;
   <action name="actHelpWhatsNew">
    <property name="text">
     <string>Что нового</string>
+   </property>
+  </action>
+  <action name="actSearchFindNextCurrent">
+   <property name="text">
+    <string>Найти следующий текущий</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F3</string>
+   </property>
+  </action>
+  <action name="actSearchFindPreviousCurrent">
+   <property name="text">
+    <string>Найти предыдущий текущий</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F3</string>
+   </property>
+  </action>
+  <action name="actSearchLogNext">
+   <property name="text">
+    <string>Перейти к следующему в логе</string>
+   </property>
+   <property name="shortcut">
+    <string>F4</string>
+   </property>
+  </action>
+  <action name="actSearchLogPrev">
+   <property name="text">
+    <string>Перейти к предыдущему в логе</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F4</string>
    </property>
   </action>
  </widget>

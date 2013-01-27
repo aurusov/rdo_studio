@@ -73,8 +73,8 @@ BOOL RDOStudioChartOptionsChart::OnInitDialog()
 
 	RDOStudioChartDoc* doc = sheet->view->GetDocument();
 
-	for ( std::vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
-		m_AxisSerieCombo.AddString( (*it)->serie->getTitle().c_str() );
+	for ( std::vector< ChartSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
+		m_AxisSerieCombo.AddString( (*it)->getSerie()->getTitle().c_str() );
 	}
 	
 	m_AxisSerieCombo.SetCurSel( sheet->view->GetDocument()->getSerieIndex( sheet->view->yAxis ) );
@@ -226,7 +226,16 @@ rbool RDOStudioChartOptionsSeries::getModified() const
 		rbool marker = m_DrawMarker.GetCheck() ? true : false;
 		rbool legend = m_DrawInLegend.GetCheck() ? true : false;
 		rbool transp = m_TranspMarker.GetCheck() ? true : false;
-		res = title != serie->docSerieTitle.c_str() || ColorCB.getCurrentColor() != serie->color || m_Marker.GetCurSel() != serie->marker || marker != serie->needDrawMarker || m_sizeMarker != serie->marker_size || legend != serie->showInLegend || transp != serie->transparentMarker;
+
+		ChartSerie::Options options;
+		options.title             = title;
+		options.color             = ColorCB.getCurrentColor();
+		options.markerType        = static_cast<TracerSerieMarker>(m_Marker.GetCurSel());
+		options.markerSize        = m_sizeMarker;
+		options.markerNeedDraw    = marker;
+		options.markerTransparent = transp;
+		options.showInLegend      = legend;
+		res = serie->options() == options;
 	}
 	return res;
 }
@@ -257,8 +266,8 @@ BOOL RDOStudioChartOptionsSeries::OnInitDialog()
 
 	RDOStudioChartDoc* doc = sheet->view->GetDocument();
 
-	for ( std::vector< RDOStudioDocSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
-		m_SerieCombo.AddString( (*it)->serie->getTitle().c_str() );
+	for ( std::vector< ChartSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
+		m_SerieCombo.AddString( (*it)->getSerie()->getTitle().c_str() );
 	}
 	
 	m_SerieCombo.SetCurSel( 0 );
@@ -333,33 +342,35 @@ void RDOStudioChartOptionsSeries::OnUpdateModify()
 
 void RDOStudioChartOptionsSeries::apply() const
 {
-	if ( serie ) {
+	if ( serie )
+	{
 		CString title;
 		m_SerieTitle.GetWindowText( title );
-		serie->docSerieTitle = title;
-		serie->color = ColorCB.getCurrentColor();
-		serie->marker = static_cast<TracerSerieMarker>(m_Marker.GetCurSel());
-		rbool marker = m_DrawMarker.GetCheck() ? true : false;
-		serie->needDrawMarker = marker;
-		serie->marker_size = m_sizeMarker;
-		rbool legend = m_DrawInLegend.GetCheck() ? true : false;
-		serie->showInLegend = legend;
-		rbool transp = m_TranspMarker.GetCheck() ? true : false;
-		serie->transparentMarker = transp;
+
+		ChartSerie::Options options;
+		options.title             = title;
+		options.color             = ColorCB.getCurrentColor();
+		options.markerType        = static_cast<TracerSerieMarker>(m_Marker.GetCurSel());
+		options.markerSize        = m_sizeMarker;
+		options.markerNeedDraw    = m_DrawMarker.GetCheck() ? true : false;
+		options.markerTransparent = m_TranspMarker.GetCheck() ? true : false;
+		options.showInLegend      = m_DrawInLegend.GetCheck() ? true : false;
+
+		serie->setOptions(options);
 	}
 }
 
 void RDOStudioChartOptionsSeries::restoreValues()
 {
 	if ( serie ) {
-		m_SerieTitle.SetWindowText( serie->docSerieTitle.c_str() );
-		ColorCB.insertColor( serie->color );
-		ColorCB.setCurrentColor( serie->color );
-		m_Marker.SetCurSel( serie->marker );
-		m_DrawMarker.SetCheck( serie->needDrawMarker );
-		m_MarkerSize.SetWindowText( rdo::format( "%d", serie->marker_size).c_str() );
-		m_DrawInLegend.SetCheck( serie->showInLegend );
-		m_TranspMarker.SetCheck( serie->transparentMarker );
+		m_SerieTitle.SetWindowText( serie->options().title.c_str() );
+		ColorCB.insertColor( serie->options().color );
+		ColorCB.setCurrentColor( serie->options().color );
+		m_Marker.SetCurSel( serie->options().markerType );
+		m_DrawMarker.SetCheck( serie->options().markerNeedDraw );
+		m_MarkerSize.SetWindowText( rdo::format( "%d", serie->options().markerSize).c_str() );
+		m_DrawInLegend.SetCheck( serie->options().showInLegend );
+		m_TranspMarker.SetCheck( serie->options().markerTransparent );
 	}
 }
 

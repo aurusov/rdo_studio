@@ -10,8 +10,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/bind.hpp>
 #include <limits>
+#include <boost/bind.hpp>
+#include <boost/foreach.hpp>
 #include <QtGui/qmessagebox.h>
 #include <QtGui/qfiledialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -33,7 +34,6 @@
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/resource.h"
 #include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 
@@ -391,10 +391,10 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
-			STL_FOR_ALL_CONST(errors, it)
+			BOOST_FOREACH(const FileMessage& message, errors)
 			{
-				studioApp.getIMainWnd()->getDockBuild().appendString(*it);
-				if (it->getType() == FileMessage::MT_WARNING)
+				studioApp.getIMainWnd()->getDockBuild().appendString(message);
+				if (message.getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -418,10 +418,10 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
-			STL_FOR_ALL_CONST(errors, it)
+			BOOST_FOREACH(const FileMessage& message, errors)
 			{
-				studioApp.getIMainWnd()->getDockBuild().appendString(*it);
-				if (it->getType() == FileMessage::MT_WARNING)
+				studioApp.getIMainWnd()->getDockBuild().appendString(message);
+				if (message.getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -452,10 +452,10 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
-			STL_FOR_ALL_CONST(errors, it)
+			BOOST_FOREACH(const FileMessage& message, errors)
 			{
-				studioApp.getIMainWnd()->getDockBuild().appendString(*it);
-				if (it->getType() == FileMessage::MT_WARNING)
+				studioApp.getIMainWnd()->getDockBuild().appendString(message);
+				if (message.getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -839,7 +839,7 @@ void RDOStudioModel::openModelFromRepository()
 	studioApp.getMainWndUI()->statusBar()->endProgress();
 
 	updateFrmDescribed();
-	setUpActions();
+	updateActions();
 
 	if (active) active->SetFocus();
 }
@@ -927,7 +927,7 @@ void RDOStudioModel::saveModelToRepository()
 	{
 		updateFrmDescribed();
 	}
-	setUpActions();
+	updateActions();
 }
 
 void RDOStudioModel::saveToXML()
@@ -1070,13 +1070,13 @@ void RDOStudioModel::afterModelStart()
 		rdo::service::simulation::RDOThreadSimulator::GetList getListBitmaps(rdo::service::simulation::RDOThreadSimulator::GetList::bitmaps, &bitmaps);
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListFrames );
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
-		STL_FOR_ALL_CONST(bitmaps, bmp_it)
+		BOOST_FOREACH(const tstring& name, bitmaps)
 		{
-			m_frameManager.insertBitmap(*bmp_it);
+			m_frameManager.insertBitmap(name);
 		}
-		STL_FOR_ALL_CONST(frames, frame_it)
+		BOOST_FOREACH(const tstring& name, frames)
 		{
-			m_frameManager.insertFrame(*frame_it);
+			m_frameManager.insertFrame(name);
 		}
 		m_timeNow = 0;
 		ruint initFrameNumber = kernel->simulator()->getInitialFrameNumber();
@@ -1160,7 +1160,7 @@ void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 			}
 		}
 	}
-	setUpActions();
+	updateActions();
 }
 
 tstring RDOStudioModel::getLastBreakPointName()
@@ -1184,7 +1184,7 @@ void RDOStudioModel::setSpeed(double persent)
 		{
 			sendMessage(kernel->runtime(), RT_RUNTIME_SET_SPEED, &m_speed);
 		}
-		setUpActions();
+		updateActions();
 	}
 }
 
@@ -1202,7 +1202,7 @@ void RDOStudioModel::setShowRate(double value)
 	{
 		m_showRate = value;
 		sendMessage(kernel->runtime(), RT_RUNTIME_SET_SHOWRATE, &m_showRate);
-		setUpActions();
+		updateActions();
 	}
 }
 
@@ -1244,16 +1244,16 @@ rbool RDOStudioModel::hasModel() const
 void RDOStudioModel::setHasModel(rbool value)
 {
 	m_GUI_HAS_MODEL = value;
-	setUpActions();
+	updateActions();
 }
 
 void RDOStudioModel::setCanRun(rbool value)
 {
 	m_GUI_CAN_RUN = value;
-	setUpActions();
+	updateActions();
 }
 
-void RDOStudioModel::setUpActions()
+void RDOStudioModel::updateActions()
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	if (!pMainWindow)
@@ -1458,7 +1458,7 @@ rbool RDOStudioModel::isRunning() const
 void RDOStudioModel::setIsRunning(rbool value)
 {
 	m_GUI_IS_RUNNING = value;
-	setUpActions();
+	updateActions();
 }
 
 rbool RDOStudioModel::isFrmDescribed() const
@@ -1488,7 +1488,7 @@ REF(RDOStudioFrameManager) RDOStudioModel::getFrameManager()
 
 void RDOStudioModel::onChangeFrame(ruint)
 {
-	setUpActions();
+	updateActions();
 }
 
 PTR(RPViewQt) RDOStudioModel::getProcView()
@@ -1598,5 +1598,5 @@ void RDOStudioModel::onModelSpeedValueChanged(int value)
 
 void RDOStudioModel::onEditModifyChanged(bool)
 {
-	setUpActions();
+	updateActions();
 }

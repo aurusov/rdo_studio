@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
+#include "app/rdo_studio_mfc/edit_ctrls/editwithreadonlypopupmenu.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
@@ -22,7 +23,9 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEdit
 // --------------------------------------------------------------------------------
-class RDOBuildEdit: public LogEdit
+class RDOBuildEdit
+	: public LogEdit
+	, public EditWithReadOnlyPopupMenu
 {
 public:
 	RDOBuildEdit(PTR(QWidget) pParent);
@@ -31,12 +34,14 @@ public:
 	virtual void showFirstError();
 
 protected:
-	virtual void updateEdit( rdoEditor::RDOEditorEdit* edit, const LogEditLineInfo* lineInfo );
+	virtual void updateEdit(rdoEditor::RDOEditorEdit* pEdit, const LogEditLineInfo* pLineInfo);
 
 private:
-	typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
+	typedef  LogEdit  super;
+	typedef  rdo::simulation::report::FileMessage RDOSyntaxMessage;
 
-	virtual void onHelpContext();
+	virtual void mousePressEvent(QMouseEvent* pEvent);
+	virtual void onHelpContext  ();
 };
 
 } // namespace rdoEditCtrl

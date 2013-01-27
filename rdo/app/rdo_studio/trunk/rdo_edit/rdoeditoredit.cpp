@@ -17,7 +17,6 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/resource.h"
 #include "thirdparty/sci/lexlib/WordList.h"
 #include "thirdparty/sci/rdo/LexRdo.h"
 #include "thirdparty/sci/rdo/WordListUtil.h"
@@ -35,35 +34,22 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEdit
 // ---------------------------------------------------------------------------
-
-// ON_UPDATE_COMMAND_UI сделано
-
-//! @todo qt
-//BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBaseEdit )
-//	ON_COMMAND(ID_BUILDFINDLOG_GOTO_NEXT, OnGotoNext)
-//	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
-//	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTO_NEXT, OnUpdateGotoNext)
-//	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTO_PREV, OnUpdateGotoPrev)
-//
-//	ON_COMMAND_RANGE( ID_INSERT_PAT_TEMPL_OPERATION, ID_INSERT_ALGO_RETURN, OnInsertCommand )
-//
-//END_MESSAGE_MAP()
-
 RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView)
-	: RDOEditorBaseEdit(pParent)
-	, view             (pView  )
-	, log              (NULL   )
-	, canClearErrorLine(true   )
+	: super              (pParent)
+	, m_pView            (pView  )
+	, m_pLog             (NULL   )
+	, m_canClearErrorLine(true   )
+	, m_pPopupMenu       (NULL   )
 {
-	sci_FOLDMARGIN_ID = getNewMarker();
-	sci_MARKER_ERROR  = getNewMarker();
+	m_sciFoldMarginID = getNewMarker();
+	m_sciMarkerError  = getNewMarker();
 
 	sendEditor(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT | SC_MOD_CHANGEFOLD);
 
-	sendEditor(SCI_SETMARGINTYPEN     , sci_FOLDMARGIN_ID, SC_MARGIN_SYMBOL);
+	sendEditor(SCI_SETMARGINTYPEN     , m_sciFoldMarginID, SC_MARGIN_SYMBOL);
 	sendEditor(SCI_SETFOLDFLAGS, 16);
-	sendEditor(SCI_SETMARGINMASKN     , sci_FOLDMARGIN_ID, SC_MASK_FOLDERS);
-	sendEditor(SCI_SETMARGINSENSITIVEN, sci_FOLDMARGIN_ID, 1);
+	sendEditor(SCI_SETMARGINMASKN     , m_sciFoldMarginID, SC_MASK_FOLDERS);
+	sendEditor(SCI_SETMARGINSENSITIVEN, m_sciFoldMarginID, 1);
 
 	sendEditor(SCI_AUTOCSETIGNORECASE    , 1);
 	sendEditor(SCI_AUTOCSETCHOOSESINGLE  , 0);
@@ -74,6 +60,26 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView)
 
 	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
 	QObject::connect(this, SIGNAL(marginClicked(int, int, int)), this, SLOT(catchMarginClick(int, int, int)));
+
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+	m_pPopupMenu = new QMenu(this);
+	m_pPopupMenu->addMenu(pMainWindow->menuInsert);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actEditCut);
+	m_pPopupMenu->addAction(pMainWindow->actEditCopy);
+	m_pPopupMenu->addAction(pMainWindow->actEditPaste);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actEditSelectAll);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actSearchFind);
+	m_pPopupMenu->addAction(pMainWindow->actSearchReplace);
+	m_pPopupMenu->addAction(pMainWindow->actSearchFindNext);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksToggle);
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkNext);
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarkPrev);
+	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksClearAll);
 }
 
 RDOEditorEdit::~RDOEditorEdit()
@@ -90,7 +96,7 @@ void RDOEditorEdit::catchModified(int modificationType, int position, int length
 	{
 		foldChanged(line, foldLevelNow, foldLevelPrev);
 	}
-	if (canClearErrorLine && hasErrorLine())
+	if (m_canClearErrorLine && hasErrorLine())
 	{
 		clearErrorLine();
 	}
@@ -98,7 +104,7 @@ void RDOEditorEdit::catchModified(int modificationType, int position, int length
 
 void RDOEditorEdit::catchMarginClick(int position, int modifiers, int margin)
 {
-	if (margin == sci_FOLDMARGIN_ID)
+	if (margin == m_sciFoldMarginID)
 	{
 		foldMarginClick(position, modifiers);
 	}
@@ -106,13 +112,13 @@ void RDOEditorEdit::catchMarginClick(int position, int modifiers, int margin)
 
 void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 {
-	RDOEditorBaseEdit::setEditorStyle(pStyle);
-	if (!style)
+	super::setEditorStyle(pStyle);
+	if (!m_pStyle)
 		return;
 
 	// ----------
 	// Fold
-	RDOEditorEditTheme* theme = static_cast<RDOEditorEditTheme*>(style->theme);
+	RDOEditorEditTheme* theme = static_cast<RDOEditorEditTheme*>(m_pStyle->theme);
 	COLORREF foldFgColor = theme->foldFgColor;
 	COLORREF foldBgColor = theme->foldBgColor;
 	switch (theme->foldStyle)
@@ -195,13 +201,13 @@ void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 
 	// ----------
 	// Margin
-	sendEditor(SCI_SETMARGINWIDTHN, 2, static_cast<RDOEditorEditStyle*>(style)->margin->fold ? 16 : 0);
-	sendEditor(SCI_SETMARGINWIDTHN, 1, static_cast<RDOEditorEditStyle*>(style)->margin->bookmark ? 16 : 0);
-	sendEditor(SCI_SETMARGINWIDTHN, 0, static_cast<RDOEditorEditStyle*>(style)->margin->lineNumber ? 40 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 2, static_cast<RDOEditorEditStyle*>(m_pStyle)->margin->fold ? 16 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 1, static_cast<RDOEditorEditStyle*>(m_pStyle)->margin->bookmark ? 16 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 0, static_cast<RDOEditorEditStyle*>(m_pStyle)->margin->lineNumber ? 40 : 0);
 
 	// ----------
 	// Error
-	defineMarker(sci_MARKER_ERROR, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<RDOEditorEditTheme*>(style->theme)->errorBgColor);
+	defineMarker(m_sciMarkerError, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->errorBgColor);
 }
 
 void RDOEditorEdit::expand(int& line, rbool doExpand, rbool force, int visLevels, int level) const
@@ -401,7 +407,7 @@ void RDOEditorEdit::onEditCommentSelection() const
 
 void RDOEditorEdit::onEditCompleteWord()
 {
-	if (!static_cast<RDOEditorEditStyle*>(style)->autoComplete->useAutoComplete)
+	if (!static_cast<RDOEditorEditStyle*>(m_pStyle)->autoComplete->useAutoComplete)
 		return;
 
 	setFocus();
@@ -487,7 +493,7 @@ void RDOEditorEdit::onEditCompleteWord()
 		}
 	}
 	LPCTSTR list;
-	if (static_cast<PTR(RDOEditorEditStyle)>(style)->autoComplete->showFullList)
+	if (static_cast<PTR(RDOEditorEditStyle)>(m_pStyle)->autoComplete->showFullList)
 	{
 		list = primaryKwList.c_str();
 	}
@@ -551,96 +557,67 @@ void RDOEditorEdit::setErrorLine(int line)
 	{
 		line = getCurrentLineNumber();
 	}
-	sendEditor(SCI_MARKERADD, line, sci_MARKER_ERROR);
+	sendEditor(SCI_MARKERADD, line, m_sciMarkerError);
 }
 
 void RDOEditorEdit::clearErrorLine()
 {
-	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << sci_MARKER_ERROR);
+	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerError);
 	if (nextLine >= 0)
 	{
-		sendEditor(SCI_MARKERDELETE, nextLine, sci_MARKER_ERROR);
+		sendEditor(SCI_MARKERDELETE, nextLine, m_sciMarkerError);
 		QWidget::update();
 	}
 }
 
 rbool RDOEditorEdit::hasErrorLine() const
 {
-	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << sci_MARKER_ERROR);
+	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerError);
 	return nextLine >= 0;
 }
 
-void RDOEditorEdit::OnInsertCommand(UINT nID)
+void RDOEditorEdit::onInsertCommand(QObject* pObject)
 {
-	CString s = "";
-	if (!s.LoadString(nID))
-	{
-		AfxGetMainWnd()->GetMenu()->GetMenuString(nID, s, MF_BYCOMMAND);
-	}
+	RDOStudioMainFrame::InsertMenuData* pInsertMenuData = dynamic_cast<RDOStudioMainFrame::InsertMenuData*>(pObject);
+	ASSERT(pInsertMenuData);
 
-	int incPos = -1;
-
-	switch (nID) {
-		case ID_INSERT_PAT_TEMPL_OPERATION  :
-		case ID_INSERT_PAT_TEMPL_EVENT:
-		case ID_INSERT_PAT_TEMPL_KEYBOARD:
-		case ID_INSERT_PAT_TEMPL_RULE       : incPos = 9;  break;
-		case ID_INSERT_RTP_RTPPERMANENT     :
-		case ID_INSERT_RTP_RTPTEMPORARY     : incPos = 15; break;
-		case ID_INSERT_RSS_RSS              : incPos = 13; break;
-		case ID_INSERT_ALGO_ELSE            : incPos = 6;  break;
-		case ID_INSERT_FRM_FRM              : incPos = 7;  break;
-		case ID_INSERT_FUN_FUN              :
-		case ID_INSERT_FUN_SQN              : incPos = 10; break;
-		case ID_INSERT_FUN_CNS              : incPos = 12; break;
-		case ID_INSERT_DPT_TEMPL_SEARCH     :
-		case ID_INSERT_DPT_TEMPL_SOME       : incPos = 16; break;
-		case ID_INSERT_DPT_TEMPL_PRIOR      : incPos = 16; break;
-		case ID_INSERT_DPT_ACTIV            : incPos = 14; break;
-		case ID_INSERT_SMR_SMR              : incPos = 17; break;
-		case ID_INSERT_PMD_PMD              : incPos = 11; break;
-		case ID_INSERT_ALGO_FOR             : incPos = 5;  break;
-		case ID_INSERT_ALGO_IF              :
-		case ID_INSERT_ALGO_IF_ELSE         : incPos = 4;  break;
-	}
-
-	replaceCurrent(static_cast<LPCTSTR>(s), incPos);
+	replaceCurrent(
+		pInsertMenuData->text().toStdString(),
+		pInsertMenuData->position().is_initialized()
+			? pInsertMenuData->position().get()
+			: -1
+	);
 }
 
 CPTR(rdoEditCtrl::LogEdit) RDOEditorEdit::getLog() const
 {
-	return log;
+	return m_pLog;
 }
 
-void RDOEditorEdit::setLog(REF(LogEdit) log)
+void RDOEditorEdit::setLog(REF(LogEdit) pLog)
 {
-	this->log = &log;
+	m_pLog = &pLog;
 }
 
-void RDOEditorEdit::OnGotoNext()
+void RDOEditorEdit::setCanClearErrorLine(rbool value)
 {
-	if (log)
+	m_canClearErrorLine = value;
+}
+
+void RDOEditorEdit::onGotoNext()
+{
+	if (m_pLog)
 	{
-		log->gotoNext();
+		m_pLog->gotoNext();
 	}
 }
 
-void RDOEditorEdit::OnGotoPrev()
+void RDOEditorEdit::onGotoPrev()
 {
-	if (log)
+	if (m_pLog)
 	{
-		log->gotoPrev();
+		m_pLog->gotoPrev();
 	}
-}
-
-void RDOEditorEdit::OnUpdateGotoNext(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(log ? true : false);
-}
-
-void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(log ? true : false);
 }
 
 void RDOEditorEdit::onHelpContext()
@@ -679,7 +656,7 @@ void RDOEditorEdit::onHelpContext()
 
 void RDOEditorEdit::onUpdateActions(rbool activated)
 {
-	RDOEditorBaseEdit::onUpdateActions(activated);
+	super::onUpdateActions(activated);
 
 	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
@@ -700,11 +677,40 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 		pMainWindow->actViewToggleCurrentFold,
 		activated && !isEmpty(),
 		this, "onToggleCurrentFold()"
-		);
+	);
 
 	updateAction(
 		pMainWindow->actViewToggleAllFolds,
 		activated && !isEmpty(),
 		this, "onToggleAllFolds()"
-		);
+	);
+
+	updateAction(
+		pMainWindow->actSearchLogNext,
+		activated && m_pLog,
+		this, "onGotoNext()"
+	);
+
+	updateAction(
+		pMainWindow->actSearchLogPrev,
+		activated && m_pLog,
+		this, "onGotoPrev()"
+	);
+
+	pMainWindow->updateInsertMenu(
+		activated,
+		this, "onInsertCommand(QObject*)"
+	);
+}
+
+void RDOEditorEdit::mousePressEvent(QMouseEvent*  pEvent)
+{
+	if (pEvent->button() == Qt::LeftButton)
+	{
+		super::mousePressEvent(pEvent);
+	}
+	else if (pEvent->button() == Qt::RightButton)
+	{
+		m_pPopupMenu->exec(pEvent->globalPos());
+	}
 }

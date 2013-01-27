@@ -743,22 +743,6 @@ BEGIN
         MENUITEM "&Закомментировать выделенное\tCtrl+Q", ID_EDIT_COMMENTSELECTION
         MENUITEM "Завершить &слово\tCtrl+Space", ID_EDIT_COMPLETEWORD
     END
-    POPUP "П&оиск"
-    BEGIN
-        MENUITEM "Найт&и...\tCtrl+F",           ID_SEARCH_FIND
-        MENUITEM "Найти &следующий\tF3",        ID_SEARCH_FIND_NEXT
-        MENUITEM "Найти &предыдущий\tShift+F3", ID_SEARCH_FIND_PREVIOUS
-        MENUITEM "&Заменить...\tCtrl+H",        ID_SEARCH_REPLACE
-        MENUITEM SEPARATOR
-        MENUITEM "Найти в &модели...\tCtrl+Shift+F", ID_SEARCH_FIND_INMODEL
-        MENUITEM SEPARATOR
-        MENUITEM "Пос&тавить/снять закладку\tCtrl+F2", ID_SEARCH_BOOKMARK_TOGGLE
-        MENUITEM "Перейти к с&лед. закладке\tF2", ID_SEARCH_BOOKMARK_NEXT
-        MENUITEM "Перейти к п&ред. закладке\tShift+F2", ID_SEARCH_BOOKMARK_PREVIOUS
-        MENUITEM "&Очисть все закладки\tCtrl+Shift+F2", ID_SEARCH_BOOKMARKS_CLEAR
-        MENUITEM SEPARATOR
-        MENUITEM "П&ерейти на строчку\tCtrl+G", ID_SEARCH_GOTO_LINE
-    END
     POPUP "П&росмотр"
     BEGIN
         MENUITEM "Свернуть/развернуть все &группы\tCtrl+Shift+0", ID_VIEW_TOGGLE_ALLFOLDS
@@ -1073,8 +1057,6 @@ END
 
 IDR_MAINFRAME ACCELERATORS 
 BEGIN
-    VK_F4,          ID_BUILDFINDLOG_GOTO_NEXT, VIRTKEY, NOINVERT
-    VK_F4,          ID_BUILDFINDLOG_GOTO_PREV, VIRTKEY, SHIFT, NOINVERT
     "W",            ID_CHART_TIMEWRAP,      VIRTKEY, CONTROL, NOINVERT
     VK_DELETE,      ID_EDIT_CLEAR,          VIRTKEY, CONTROL, NOINVERT
     "Q",            ID_EDIT_COMMENTSELECTION, VIRTKEY, CONTROL, NOINVERT
@@ -1139,18 +1121,6 @@ BEGIN
     VK_SUBTRACT,    ID_MODEL_SHOWRATE_DEC,  VIRTKEY, ALT, NOINVERT
     VK_ADD,         ID_MODEL_SHOWRATE_INC,  VIRTKEY, ALT, NOINVERT
     VK_F5,          ID_MODEL_STOP,          VIRTKEY, SHIFT, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARK_NEXT, VIRTKEY, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARK_PREVIOUS, VIRTKEY, SHIFT, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARK_TOGGLE, VIRTKEY, CONTROL, NOINVERT
-    VK_F2,          ID_SEARCH_BOOKMARKS_CLEAR, VIRTKEY, SHIFT, CONTROL, NOINVERT
-    "F",            ID_SEARCH_FIND,         VIRTKEY, CONTROL, NOINVERT
-    "F",            ID_SEARCH_FIND_INMODEL, VIRTKEY, SHIFT, CONTROL, NOINVERT
-    VK_F3,          ID_SEARCH_FIND_NEXT,    VIRTKEY, NOINVERT
-    VK_F3,          ID_SEARCH_FIND_NEXT_FAST, VIRTKEY, CONTROL, NOINVERT
-    VK_F3,          ID_SEARCH_FIND_PREVIOUS, VIRTKEY, SHIFT, NOINVERT
-    VK_F3,          ID_SEARCH_FIND_PREVIOUS_FAST, VIRTKEY, SHIFT, CONTROL, NOINVERT
-    "G",            ID_SEARCH_GOTO_LINE,    VIRTKEY, CONTROL, NOINVERT
-    "H",            ID_SEARCH_REPLACE,      VIRTKEY, CONTROL, NOINVERT
     "9",            ID_VIEW_ENDOFLINE,      VIRTKEY, SHIFT, CONTROL, NOINVERT
     "8",            ID_VIEW_WHITESPACE,     VIRTKEY, SHIFT, CONTROL, NOINVERT
     VK_MULTIPLY,    ID_VIEW_ZOOMAUTO,       VIRTKEY, CONTROL, NOINVERT
@@ -1211,9 +1181,6 @@ BEGIN
     ID_FILE_CLOSE           "Закрыть модель\nЗакрыть"
     ID_FILE_SAVE_AS         "Записать модель под новым именем\nЗаписать под новым именем"
     ID_FILE_PAGE_SETUP      "Изменить настройки печати\nНастройки печати"
-    ID_FILE_PRINT_SETUP     "Изменить настройки принтера\nНастройки принтера"
-    ID_FILE_PRINT           "Распечатать модель\nПечать"
-    ID_FILE_PRINT_PREVIEW   "Печать с предварительным просмотром \nПредварительный просмотр"
 END
 
 STRINGTABLE 
@@ -1258,78 +1225,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_SEARCH_FIND          "\nПоиск (Ctrl+F)"
-    ID_SEARCH_REPLACE       "\nЗамена (Ctrl+H)"
-    ID_SEARCH_BOOKMARK_NEXT "\nСлед. закладка (F2)"
-    ID_SEARCH_BOOKMARK_PREVIOUS "\nПред. закладка (Shift+F2)"
     ID_FILE_SAVE_ALL        "\nЗаписать всё"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_RSS_RSS       "$Resources\r\n\t\r\n$End\r\n"
-    ID_INSERT_PRC_TEMPL_PROCESS "$Process\r\n\r\n$End\r\n"
-    ID_INSERT_FRM_FRM       "$Frame \r\n$Back_picture = <255 255 255> 800 600\r\nShow\r\n\tbitmap [, , ]\r\n\ttext [, , , , <255 255 255>, <0 0 0>, = ]\r\nShow_if\r\n\r\n$End\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_PAT_TEMPL_OPERATION 
-                            "$Pattern  : operation\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
-    ID_INSERT_PAT_TEMPL_EVENT 
-                            "$Pattern  : event\r\n$Parameters  :\r\n$Relevant_resources\r\n\r\n$Body\r\tConvert_event\r\n\r\n$End\r\n"
-    ID_INSERT_PAT_TEMPL_RULE 
-                            "$Pattern  : rule\r\n$Relevant_resources\r\n\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_rule\r\n\r\n$End\r\n"
-    ID_INSERT_SMR_SMR       "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_PAT_TEMPL_KEYBOARD 
-                            "$Pattern  : keyboard\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_RTP_RTPPERMANENT 
-                            "$Resource_type  : permanent\r\n$Parameters\r\n\r\n$End\r\n"
-    ID_INSERT_RTP_RTPTEMPORARY 
-                            "$Resource_type  : temporary\r\n$Parameters\r\n\r\n$End\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_FUN_FUN       "$Function  : integer\r\n$Type = algorithmic\r\n$Parameters\r\n  \r\n$Body\r\n$End\r\n"
-    ID_INSERT_FUN_SQN       "$Sequence  : real\r\n$Type = exponential 123456789\r\n$End\r\n"
-    ID_INSERT_FUN_CNS       "$Constant\r\n\t : integer =\r\n$End\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_DPT_TEMPL_PRIOR 
-                            "$Decision_point  : prior\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
-    ID_INSERT_DPT_TEMPL_SEARCH 
-                            "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
-    ID_INSERT_DPT_TEMPL_SOME 
-                            "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_DPT_ACTIV     "$Activities\r\n\t\r\n$End\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_PMD_PMD       "$Results\r\n\t: watch_par\r\n\t: watch_state\r\n\t: watch_quant\r\n\t: watch_value\r\n\t: get_value\r\n$End\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_ALGO_IF       "if ( )\r\n"
-    ID_INSERT_ALGO_ELSE     "else ( )\r\n"
-    ID_INSERT_ALGO_IF_ELSE  "if ( )\r\n\telse ( )\r\n"
-    ID_INSERT_ALGO_FOR      "for ( ; ; )\r\n"
 END
 
 STRINGTABLE 

@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/chart/doc_serie.h"
+#include "app/rdo_studio_mfc/src/chart/chart_serie.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
 // --------------------------------------------------------------------------------
 
@@ -26,7 +26,7 @@
 // --------------------------------------------------------------------------------
 class TracerTimeNow;
 class TracerValue;
-class RDOStudioDocSerie;
+class ChartSerie;
 class RDOStudioChartViewStyle;
 
 typedef std::list< TracerTimeNow* > timesList;
@@ -41,8 +41,8 @@ friend class RDOStudioChartOptionsSeries;
 protected:
 	CMutex mutex;
 
-	std::vector< RDOStudioDocSerie* > series;
-	int getSerieIndex( RDOStudioDocSerie* serie ) const;
+	std::vector< ChartSerie* > series;
+	int getSerieIndex( ChartSerie* serie ) const;
 	COLORREF selectColor();
 	TracerSerieMarker selectMarker();
 

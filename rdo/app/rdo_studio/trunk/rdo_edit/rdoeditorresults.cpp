@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -28,7 +28,8 @@ using namespace rdoEditor;
 // -------------------- RDOEditorResults
 // ---------------------------------------------------------------------------
 RDOEditorResults::RDOEditorResults(PTR(QWidget) pParent)
-	: RDOEditorBaseEdit(pParent)
+	: super(pParent)
+	, EditWithReadOnlyPopupMenu(pParent)
 {
 	kw0 = "TRUE FALSE";
 	kw1 = "";
@@ -43,7 +44,7 @@ RDOEditorResults::~RDOEditorResults()
 
 void RDOEditorResults::setEditorStyle(PTR(RDOEditorResultsStyle) pStyle)
 {
-	RDOEditorBaseEdit::setEditorStyle(pStyle);
+	super::setEditorStyle(pStyle);
 }
 
 void RDOEditorResults::onHelpContext()
@@ -61,4 +62,16 @@ void RDOEditorResults::onHelpContext()
 	ba.append(keyword.c_str());
 	ba.append("\n");
 	studioApp.callQtAssistant(ba);
+}
+
+void RDOEditorResults::mousePressEvent(QMouseEvent* pEvent)
+{
+	if (pEvent->button() == Qt::LeftButton)
+	{
+		super::mousePressEvent(pEvent);
+	}
+	else if (pEvent->button() == Qt::RightButton)
+	{
+		m_pPopupMenu->exec(pEvent->globalPos());
+	}
 }

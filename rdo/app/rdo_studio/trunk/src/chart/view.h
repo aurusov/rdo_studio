@@ -24,7 +24,7 @@
 // --------------------------------------------------------------------------------
 class RDOStudioChartViewStyle;
 class TracerSerie;
-class RDOStudioDocSerie;
+class ChartSerie;
 
 class RDOStudioChartView : public CWnd
 {
@@ -74,7 +74,7 @@ protected:
 	void drawTitle( CRect& chartRect );
 	CRect legendRect;
 	void drawLegend( CRect& chartRect );
-	void drawYAxis( CRect& chartRect, const RDOStudioDocSerie* axisValues );
+	void drawYAxis( CRect& chartRect, const ChartSerie* axisValues );
 	void drawXAxis( CRect& chartRect );
 	void drawGrid( CRect& chartRect );
 
@@ -91,7 +91,7 @@ protected:
 	rbool previewMode;
 	RDOStudioChartViewStyle* style;
 
-	RDOStudioDocSerie* yAxis;
+	ChartSerie* yAxis;
 	rbool needDrawLegend;
 
 	void updateWindow();

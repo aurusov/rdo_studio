@@ -11,6 +11,8 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
+#include <boost/foreach.hpp>
+#include <boost/range/algorithm/find.hpp>
 #include <QtCore/qprocess.h>
 #include <QtGui/qmdisubwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -35,16 +37,42 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOStudioMainFrame::InsertMenuData
+// --------------------------------------------------------------------------------
+RDOStudioMainFrame::InsertMenuData::InsertMenuData(QObject* pParent, const QString& text, const Position& position)
+	: QObject   (pParent )
+	, m_text    (text    )
+	, m_position(position)
+{}
+
+const QString& RDOStudioMainFrame::InsertMenuData::text() const
+{
+	return m_text;
+}
+
+const RDOStudioMainFrame::InsertMenuData::Position& RDOStudioMainFrame::InsertMenuData::position() const
+{
+	return m_position;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOStudioMainFrame
 // --------------------------------------------------------------------------------
 RDOStudioMainFrame::RDOStudioMainFrame()
 	: m_updateTimerID(0)
+	, m_pInsertMenuSignalMapper(NULL)
 {
 	setupUi(this);
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
 
-	createStatusBar();
-	createToolBar  ();
+	createStatusBar ();
+	createToolBar   ();
+	createInsertMenu();
+
+	addAction(actSearchFindNextCurrent);
+	addAction(actSearchFindPreviousCurrent);
+	addAction(actSearchLogNext);
+	addAction(actSearchLogPrev);
 
 	connect(menuFileReopen, SIGNAL(triggered(QAction*)), this, SLOT(onMenuFileReopen(QAction*)));
 	connect(actFileExit,    SIGNAL(triggered(bool)),     this, SLOT(close()));
@@ -79,6 +107,201 @@ void RDOStudioMainFrame::createToolBar()
 
 	toolBarModel->insertWidget(actModelFrameNext, m_pModelSpeedSlider);
 	toolBarModel->insertSeparator(actModelFrameNext);
+}
+
+void RDOStudioMainFrame::createInsertMenu()
+{
+	ASSERT(!m_pInsertMenuSignalMapper);
+	m_pInsertMenuSignalMapper = new QSignalMapper(this);
+
+	class MenuItem
+	{
+	public:
+		typedef  InsertMenuData::Position  Position;
+
+		MenuItem(const char* title, const QString& resourceName = QString(), const Position& position = Position())
+			: m_title   (title   )
+			, m_position(position)
+		{
+			if (!resourceName.isEmpty())
+			{
+				QFile file(":/insert_menu_template/insert_menu_template/" + resourceName);
+				if (file.open(QIODevice::ReadOnly) && file.isOpen())
+				{
+					m_textForInsert = file.readAll();
+				}
+			}
+		}
+
+		const QString& title() const
+		{
+			return m_title;
+		}
+
+		const QString textForInsert() const
+		{
+			return !m_textForInsert.isEmpty()
+				? m_textForInsert
+				: m_title;
+		}
+
+		const Position& position() const
+		{
+			return m_position;
+		}
+
+	private:
+		QString    m_title;
+		QString    m_textForInsert;
+		Position   m_position;
+	};
+
+	typedef  rdo::vector<MenuItem>                         MenuItemList;
+	typedef  std::list<std::pair<QString, MenuItemList> >  MenuList;
+
+	MenuList menuList;
+	menuList.push_back(
+		std::make_pair(
+			"PAT",
+			MenuItemList
+				(MenuItem("PAT operation", "pat_operation.txt", 9))
+				(MenuItem("PAT rule", "pat_rule.txt", 9))
+				(MenuItem("PAT keyboard", "pat_keyboard.txt", 9))
+				("$Pattern")("operation")("event")("rule")("keyboard")("trace")("no_trace")("$Parameters")
+				("$Relevant_resources")("Keep")("NoChange")("Create")("Erase")("NonExist")("$Time")("$Body")
+				("Convert_begin")("Convert_end")("Convert_event")("Convert_rule")("Choice from")
+				("Choice NoCheck")("first")("with_max")("with_min")("set")("$End")
+		)
+	);
+	menuList.push_back(
+		std::make_pair(
+			"EVN",
+			MenuItemList
+				(MenuItem("EVN", "pat_event.txt", 9))
+				("$Pattern")("trace")("no_trace")("$Parameters")("$Relevant_resources")("Keep")("NoChange")
+				("Create")("Erase")("NonExist")("$Body")("Convert_event")("$End")
+		)
+	);
+	menuList.push_back(
+		std::make_pair(
+			"PRC",
+			MenuItemList
+				(MenuItem("PRC", "prc.txt", 9))
+				("$Process")("GENERATE")("SEIZE")("RELEASE")("ADVANCE")("QUEUE")("DEPART")("ASSIGN")("TERMINATE")
+		)
+	);
+	menuList.push_back(
+		std::make_pair(
+			"RTP",
+			MenuItemList
+				(MenuItem("RTP permanent", "rtp_permanent.txt", 15))
+				(MenuItem("RTP temporary", "rtp_temporary.txt", 15))
+				("$Resource_type")("permanent")("temporary")("$Parameters")("integer")("real")("enum")("string")
+				("bool")("true")("false")("such_as")("$End")
+		)
+	);
+	menuList.push_back(
+		std::make_pair(
+			"RSS",
+			MenuItemList
+				(MenuItem("RSS", "rss.txt", 13))
+				("$Resources")("trace")("no_trace")("$End")
+		)
+	);
+	menuList.push_back(
+		std::make_pair(
+			"FRM",
+			MenuItemList
+				(MenuItem("FRM", "frm.txt", 7))
+				("$Frame")("$Back_picture")("bitmap")("text")("line")("rect")("circle")("ellipse")("r_rect")
+				("triang")("s_bmp")("active")("$End")
+		)
+	);
+	menuList.push_back(
+		std::make_pair(
+			"FUN",
+			MenuItemList
+				(MenuItem("FUN algorithmic", "fun_algorithmic.txt", 10))
+				(MenuItem("SQN", "fun_sequence.txt", 10))
+				(MenuItem("CNS", "fun_const.txt", 12))
+				("$Function")("$Type")("algorithmic")("list")("table")("normal")("uniform")("exponential")
+				("triangular")("by_hist")("enumerative")("$Parameters")("$Body")("$Sequence")("$Constant")
+				("$End")
+		)
+	);
+	menuList.push_back(
+		std::make_pair(
+			"DPT",
+			MenuItemList
+				(MenuItem("DPT some", "dtp_some.txt", 16))
+				(MenuItem("DPT prior", "dtp_prior.txt", 16))
+				(MenuItem("DPT search", "dtp_search.txt", 16))
+				("$Decision_point")("some")("search")("prior")("no_trace")("trace_stat")("trace_tops")("trace_all")
+				("$Condition")("$Term_condition")("$Evaluate_by")("$Compare_tops")("YES")("NO")("$Activities")
+				("value before")("value after")("$End")
+		)
+	);
+	menuList.push_back(
+		std::make_pair(
+			"SMR",
+			MenuItemList
+				(MenuItem("SMR", "smr.txt", 17))
+				("Frame_number")("Show_mode")("Animation")("Monitor")("NoShow")("Show_rate")("Run_StartTime")
+				("Trace_StartTime")("Trace_EndTime")("Terminate_if")("Time_now")("Seconds")("Break_point")
+		)
+	);
+	menuList.push_back(
+		std::make_pair(
+			"PMD",
+			MenuItemList
+				(MenuItem("PMD", "pmd.txt", 11))
+				("$Results")("watch_par")("watch_state")("watch_quant")("watch_value")("get_value")("trace")
+				("no_trace")("$End")
+		)
+	);
+	menuList.push_back(std::make_pair("", MenuItemList()));
+	menuList.push_back(
+		std::make_pair(
+			"Встроенные функции",
+			MenuItemList("Abs")("ArcCos")("ArcSin")("ArcTan")("Cos")("Cotan")("Exist")("Exp")("Floor")("For_All")("Frac")
+				("IAbs")("IMax")("IMin")("Int")("IntPower")("Ln")("Log10")("Log2")("LogN")("Max")("Min")("Not_Exist")
+				("Not_For_All")("Power")("Round")("Select")("Sin")("Sqrt")("Tan")
+		)
+	);
+	menuList.push_back(
+		std::make_pair(
+			"Процедурный язык",
+			MenuItemList
+				(MenuItem("if", "algo_if.txt", 4))
+				("else")
+				(MenuItem("if-else", "algo_if_else.txt", 4))
+				(MenuItem("for", "algo_for.txt", 5))
+				("return")
+				(MenuItem("Локальная переменная", "algo_local_variable.txt"))
+		)
+	);
+
+	BOOST_FOREACH(const MenuList::value_type& menu, menuList)
+	{
+		if (menu.first.isEmpty())
+		{
+			ASSERT(menu.second.empty());
+			menuInsert->addSeparator();
+			continue;
+		}
+
+		QMenu* pMenu = new QMenu(menu.first, this);
+		menuInsert->addMenu(pMenu);
+
+		BOOST_FOREACH(const MenuItem& menuItem, menu.second)
+		{
+			QAction* pAction = pMenu->addAction(menuItem.title());
+			pAction->setEnabled(false);
+			QObject::connect(pAction, SIGNAL(triggered(bool)), m_pInsertMenuSignalMapper, SLOT(map()));
+			InsertMenuData* pInsertMenuData = new InsertMenuData(this, menuItem.textForInsert(), menuItem.position());
+			m_pInsertMenuSignalMapper->setMapping(pAction, pInsertMenuData);
+		}
+	}
 }
 
 void RDOStudioMainFrame::init()
@@ -167,37 +390,6 @@ void RDOStudioMainFrame::init()
 #else
 	m_pDockProcess = NULL;
 #endif
-
-	//! @todo qt
-	//! Создание popup-menu для редакторов из докод
-	//popupMenu.CreatePopupMenu();
-
-	//if (AfxGetMainWnd())
-	//{
-	//	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-	//	if (mainMenu)
-	//	{
-	//		rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
-	//		int delta = maximized ? 1 : 0;
-
-	//		appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 1 + delta ), 8, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
-	//		popupMenu.AppendMenu( MF_SEPARATOR );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
-	//		popupMenu.AppendMenu( MF_SEPARATOR );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 7, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 8, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 9, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 10, &popupMenu );
-	//	}
-	//}
-	//build->setPopupMenu( &popupMenu );
-	//debug->setPopupMenu( &popupMenu );
-	//results->setPopupMenu( &popupMenu );
-	//find->setPopupMenu( &popupMenu );
 
 	g_pTracer->registerClipboardFormat();
 
@@ -408,13 +600,10 @@ void RDOStudioMainFrame::insertMenuFileReopenItem(CREF(tstring) item)
 {
 	if (!item.empty())
 	{
-		STL_FOR_ALL(m_reopenList, it)
+		ReopenList::iterator it = boost::range::find(m_reopenList, item);
+		if (it != m_reopenList.end())
 		{
-			if (*it == item)
-			{
-				m_reopenList.erase(it);
-				break;
-			}
+			m_reopenList.erase(it);
 		}
 
 		m_reopenList.insert(m_reopenList.begin(), item);
@@ -505,5 +694,33 @@ void RDOStudioMainFrame::saveMenuFileReopen() const
 		CATCH(CException, e)
 		{}
 		END_CATCH
+	}
+}
+
+void RDOStudioMainFrame::updateInsertMenu(rbool enabled, QObject* pObject, CREF(tstring) method)
+{
+	QList<QAction*> menuList = menuInsert->actions();
+	BOOST_FOREACH(const QAction* pMenu, menuList)
+	{
+		if (pMenu->isSeparator())
+			continue;
+
+		QList<QAction*> itemList = pMenu->menu()->actions();
+		BOOST_FOREACH(QAction* pItem, itemList)
+		{
+			pItem->setEnabled(enabled);
+		}
+	}
+
+	if (enabled)
+	{
+		ASSERT(pObject);
+		ASSERT(!method.empty());
+		tstring formattedMethod = rdo::format("1%s %s", method.c_str(), QLOCATION);
+		QObject::connect(m_pInsertMenuSignalMapper, SIGNAL(mapped(QObject*)), pObject, qFlagLocation(formattedMethod.c_str()), Qt::UniqueConnection);
+	}
+	else
+	{
+		QObject::disconnect(m_pInsertMenuSignalMapper, SIGNAL(mapped(QObject*)), NULL, NULL);
 	}
 }

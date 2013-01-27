@@ -401,7 +401,7 @@ void LogView::push_back(CREF(tstring) log)
 	rsint lastString = m_strings.count() - 1;
 	if (lastString == 1)
 	{
-		setUpActionFind(isActivated());
+		updateActionFind(isActivated());
 	}
 
 	if (m_drawLog)
@@ -567,8 +567,8 @@ rsint LogView::selectedLine() const
 void LogView::setSelectedLine(rsint selectedLine)
 {
 	m_selectedLine = selectedLine;
-	setUpActionEditCopy(isActivated());
-	setUpCoordStatusBar(isActivated());
+	updateActionEditCopy(isActivated());
+	updateCoordStatusBar(isActivated());
 }
 
 tstring LogView::getString(rsint index) const
@@ -746,76 +746,45 @@ void LogView::setFont()
 	m_charWidth  = fontMetrics.averageCharWidth(); // fontMetrics.maxWidth()
 }
 
-void LogView::setUpActionFind(rbool activate)
+void LogView::updateActionFind(rbool activated)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 
-	if (activate && m_strings.count())
-	{
-		if (!pMainWindow->actSearchFind->isEnabled())
-		{
-			pMainWindow->actSearchFind->setEnabled(true);
-			connect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
-		}
-	}
-	else
-	{
-		if (pMainWindow->actSearchFind->isEnabled())
-		{
-			pMainWindow->actSearchFind->setEnabled(false);
-			disconnect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
-		}
-	}
+	updateAction(
+		pMainWindow->actSearchFind,
+		activated && m_strings.count(),
+		this, "onSearchFind()"
+	);
 
-	if (activate && !m_findSettings.what.empty())
-	{
-		if (!pMainWindow->actSearchFindNext->isEnabled())
-		{
-			pMainWindow->actSearchFindNext->setEnabled(true);
-			pMainWindow->actSearchFindPrevious->setEnabled(true);
-			connect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
-			connect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
-		}
-	}
-	else
-	{
-		if (pMainWindow->actSearchFindNext->isEnabled())
-		{
-			pMainWindow->actSearchFindNext->setEnabled(false);
-			pMainWindow->actSearchFindPrevious->setEnabled(false);
-			disconnect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
-			disconnect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
-		}
-	}
+	rbool findNextPrev = activated && !m_findSettings.what.empty();
+	updateAction(
+		pMainWindow->actSearchFindNext,
+		findNextPrev,
+		this, "onSearchFindNext()"
+	);
+	updateAction(
+		pMainWindow->actSearchFindPrevious,
+		findNextPrev,
+		this, "onSearchFindPrevious()"
+	);
 }
 
-void LogView::setUpActionEditCopy(rbool activate)
+void LogView::updateActionEditCopy(rbool activated)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 
-	if (activate && canCopy())
-	{
-		if (!pMainWindow->actEditCopy->isEnabled())
-		{
-			pMainWindow->actEditCopy->setEnabled(true);
-			connect(pMainWindow->actEditCopy, SIGNAL(triggered(bool)), this, SLOT(onEditCopy()));
-		}
-	}
-	else
-	{
-		if (pMainWindow->actEditCopy->isEnabled())
-		{
-			pMainWindow->actEditCopy->setEnabled(false);
-			disconnect(pMainWindow->actEditCopy, SIGNAL(triggered(bool)), this, SLOT(onEditCopy()));
-		}
-	}
+	updateAction(
+		pMainWindow->actEditCopy,
+		activated && canCopy(),
+		this, "onEditCopy()"
+	);
 }
 
-void LogView::setUpCoordStatusBar(rbool activate)
+void LogView::updateCoordStatusBar(rbool activated)
 {
-	QString coord = activate && selectedLine() != -1
+	QString coord = activated && selectedLine() != -1
 		? QString("1 : %1").arg(selectedLine())
 		: QString();
 
@@ -859,7 +828,7 @@ rsint LogView::find(rbool searchDown)
 void LogView::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
-	setUpActionFind(isActivated());
+	updateActionFind(isActivated());
 	onSearchFindNext();
 }
 
@@ -1074,9 +1043,9 @@ void LogView::onUpdateActions(rbool activated)
 		this, "onHelpContext()"
 	);
 
-	setUpActionFind    (activated);
-	setUpActionEditCopy(activated);
-	setUpCoordStatusBar(activated);
+	updateActionFind    (activated);
+	updateActionEditCopy(activated);
+	updateCoordStatusBar(activated);
 
 	pMainWindow->statusBar()->update<StatusBar::SB_MODIFY>(activated
 		? "Только чтение"

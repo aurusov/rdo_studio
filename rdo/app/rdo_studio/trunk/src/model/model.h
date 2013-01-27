@@ -55,10 +55,10 @@ private:
 	rbool                                  m_GUI_CAN_RUN;
 	rbool                                  m_GUI_IS_RUNNING;
 
-	void setHasModel (rbool value);
-	void setCanRun   (rbool value);
-	void setIsRunning(rbool value);
-	void setUpActions();
+	void setHasModel  (rbool value);
+	void setCanRun    (rbool value);
+	void setIsRunning (rbool value);
+	void updateActions();
 
 	rbool  isModify  () const;
 	rbool  canNew    () const;

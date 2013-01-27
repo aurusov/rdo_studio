@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qwidget.h>
+#include <QtGui/qmenu.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
@@ -27,39 +28,6 @@ class RDOEditorEdit: public RDOEditorBaseEdit
 {
 Q_OBJECT
 
-private:
-	int sci_FOLDMARGIN_ID;
-	int sci_MARKER_ERROR;
-
-protected:
-	QWidget* view;
-
-	rdoEditCtrl::LogEdit* log;
-
-	void expand( int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1 ) const;
-	void foldChanged( int line, int levelNow, int levelPrev ) const;
-	void foldMarginClick( int position, int modifiers ) const;
-
-	rbool canClearErrorLine;
-	void  clearErrorLine();
-	rbool hasErrorLine  () const;
-
-private:
-	virtual void onUpdateActions(rbool activated);
-	virtual void onHelpContext  ();
-
-	afx_msg void OnGotoNext();
-	afx_msg void OnGotoPrev();
-	afx_msg void OnUpdateGotoNext(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateGotoPrev(CCmdUI* pCmdUI);
-	afx_msg void OnInsertCommand( UINT nID );
-
-private slots:
-	void onEditCommentSelection() const;
-	void onEditCompleteWord    ();
-	void onToggleAllFolds      () const;
-	void onToggleCurrentFold   () const;
-
 public:
 	RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);
 	virtual ~RDOEditorEdit();
@@ -71,11 +39,40 @@ public:
 	CPTR(rdoEditCtrl::LogEdit) getLog() const;
 	void setLog(REF(rdoEditCtrl::LogEdit) log);
 
-	void setCanClearErrorLine( rbool value ) { canClearErrorLine = value; }
+	void setCanClearErrorLine(rbool value);
+
+private:
+	typedef  RDOEditorBaseEdit  super;
+
+	QWidget*               m_pView;
+	rdoEditCtrl::LogEdit*  m_pLog;
+	QMenu*                 m_pPopupMenu;
+	int                    m_sciFoldMarginID;
+	int                    m_sciMarkerError;
+	rbool                  m_canClearErrorLine;
+
+	void expand         (int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1) const;
+	void foldChanged    (int line, int levelNow, int levelPrev) const;
+	void foldMarginClick(int position, int modifiers) const;
+
+	void  clearErrorLine();
+	rbool hasErrorLine  () const;
+
+	virtual void mousePressEvent(QMouseEvent* pEvent);
+	virtual void onUpdateActions(rbool activated);
+	virtual void onHelpContext  ();
 
 private slots:
-	void catchModified     (int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev);
-	void catchMarginClick  (int position, int modifiers, int margin);
+	void onEditCommentSelection() const;
+	void onEditCompleteWord    ();
+	void onToggleAllFolds      () const;
+	void onToggleCurrentFold   () const;
+	void onGotoNext            ();
+	void onGotoPrev            ();
+	void onInsertCommand       (QObject* pObject);
+
+	void catchModified   (int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev);
+	void catchMarginClick(int position, int modifiers, int margin);
 };
 
 } // namespace rdoEditor

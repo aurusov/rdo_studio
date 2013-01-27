@@ -45,7 +45,7 @@ typedef std::list< TracerValue* > valuesList;
 
 class TracerSerie : public ChartTreeItem
 {
-friend class RDOStudioDocSerie;
+friend class ChartSerie;
 
 protected:
 	CMutex mutex;

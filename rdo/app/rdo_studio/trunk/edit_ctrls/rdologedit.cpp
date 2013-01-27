@@ -10,13 +10,13 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/report//error_code.h"
+#include "simulator/report/error_code.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
-#include "app/rdo_studio_mfc/resource.h"
 #include "thirdparty/sci/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
@@ -31,13 +31,6 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- LogEdit
 // ---------------------------------------------------------------------------
-
-//! @todo qt
-//BEGIN_MESSAGE_MAP( LogEdit, RDOBaseEdit )
-//	ON_COMMAND(ID_BUILDFINDLOG_GOTO_NEXT, OnGotoNext)
-//	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
-//END_MESSAGE_MAP()
-
 LogEdit::LogEdit(PTR(QWidget) pParent)
 	: RDOBaseEdit  (pParent)
 	, m_currentLine(-1)
@@ -90,14 +83,12 @@ LogEdit::~LogEdit()
 void LogEdit::setEditorStyle(PTR(LogEditStyle) pStyle)
 {
 	RDOBaseEdit::setEditorStyle(pStyle);
-	if (!style) 
-	{
+	if (!m_pStyle)
 		return;
-	}
 
 	// ----------
 	// Selected Line
-	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<PTR(LogEditTheme)>(style->theme)->selectLineBgColor);
+	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<PTR(LogEditTheme)>(m_pStyle->theme)->selectLineBgColor);
 }
 
 void LogEdit::gotoPrev()
@@ -234,16 +225,6 @@ void LogEdit::appendLine(PTR(LogEditLineInfo) pLine)
 	onUpdateEditGUI();
 }
 
-void LogEdit::OnGotoNext()
-{
-	gotoNext();
-}
-
-void LogEdit::OnGotoPrev()
-{
-	gotoPrev();
-}
-
 void LogEdit::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScroll)
 {
 	if (pLineInfo->getLineNumber() != -1)
@@ -305,11 +286,9 @@ rbool LogEdit::hasSelectLine() const
 
 void LogEdit::clearLines()
 {
-	LogEditLineInfoList::iterator it = m_lines.begin();
-	while (it != m_lines.end())
+	BOOST_FOREACH(LogEditLineInfo* pInfo, m_lines)
 	{
-		delete *it;
-		++it;
+		delete pInfo;
 	}
 	m_lines.clear();
 	m_currentLine = 0;

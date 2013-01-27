@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindeditstyle.h"
+#include "app/rdo_studio_mfc/edit_ctrls/editwithreadonlypopupmenu.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
@@ -21,18 +22,23 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOFindEdit
 // --------------------------------------------------------------------------------
-class RDOFindEdit: public LogEdit
+class RDOFindEdit
+	: public LogEdit
+	, public EditWithReadOnlyPopupMenu
 {
-private:
-	virtual void onHelpContext();
-
 public:
 	RDOFindEdit(PTR(QWidget) pParent);
 	virtual ~RDOFindEdit();
 
-	void setEditorStyle( RDOFindEditStyle* _style );
+	void setEditorStyle(RDOFindEditStyle* pStyle);
 
-	void setKeyword( CREF(tstring) keyword, const rbool matchCase = false ) const;
+	void setKeyword(CREF(tstring) keyword, const rbool matchCase = false) const;
+
+private:
+	typedef  LogEdit  super;
+
+	virtual void mousePressEvent(QMouseEvent* pEvent);
+	virtual void onHelpContext();
 };
 
 } // namespace rdoEditCtrl
