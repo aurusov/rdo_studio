@@ -1,4 +1,0 @@
-$Resource_type  : temporary
-$Parameters
-
-$End
