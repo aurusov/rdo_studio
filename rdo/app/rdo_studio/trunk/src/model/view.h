@@ -12,64 +12,43 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdointerface.h"
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioModelView
 // --------------------------------------------------------------------------------
-class RDOStudioModelDoc;
-
 namespace rdoEditor {
 	class RDOEditorEdit;
 	class RDOEditorTabCtrl;
 }
 
-class RDOStudioModelView: public RDOStudioEditBaseView
+class RDOStudioModelView: public RDOStudioEditBaseView, public IInit
 {
-friend class RDOStudioModelDoc;
-friend class RDOStudioModel;
-
 private:
 	rdoEditor::RDOEditorTabCtrl* tab;
 
-protected:
-	RDOStudioModelView();
-	DECLARE_DYNCREATE(RDOStudioModelView)
-
 public:
+	RDOStudioModelView(QWidget* pParent);
 	virtual ~RDOStudioModelView();
 
-	RDOStudioModelDoc* GetDocument();
+	REF(rdoEditor::RDOEditorTabCtrl)  getTab ();
 	virtual rdoEditor::RDOEditorEdit* getEdit() const;
 
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
-
 private:
-	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	typedef  RDOStudioEditBaseView  parent_type;
 
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSetFocus(CWnd* pOldWnd);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
+	void closeEvent (PTR(QCloseEvent)  event);
+	void resizeEvent(PTR(QResizeEvent) event);
+
+	DECLARE_IInit;
+
 	afx_msg void OnSearchFindInModel();
 	afx_msg LRESULT OnFindInModelMsg( WPARAM wParam, LPARAM lParam );
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI );
-	DECLARE_MESSAGE_MAP()
 };
-
-#ifndef _DEBUG
-inline RDOStudioModelDoc* RDOStudioModelView::GetDocument()
-   { return (RDOStudioModelDoc*)m_pDocument; }
-#endif
 
 #endif // RDOSTUDIOMODELVIEW_H

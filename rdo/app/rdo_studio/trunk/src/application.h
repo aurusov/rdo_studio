@@ -99,7 +99,6 @@ private:
 	RPMethodManager                        m_methodManager;
 	std::ofstream                          m_log;
 	ReopenList                             m_reopenList;
-	PTR(CMultiDocTemplate)                 m_editDocTemplate;
 	rbool                                  m_fileAssociationSetup;
 	rbool                                  m_fileAssociationCheckInFuture;
 	rbool                                  m_openLastProject;
@@ -128,16 +127,7 @@ private:
 	virtual BOOL OnIdle              (LONG lCount);
 	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
-	afx_msg void OnFileNew          ();
 	afx_msg void OnWindowNew        ();
-	afx_msg void OnFileOpen         ();
-	afx_msg void OnFileSave         ();
-	afx_msg void OnFileSaveAll      ();
-	afx_msg void OnFileClose        ();
-	afx_msg void OnFileSaveAs       ();
-	afx_msg void OnModelBuild       ();
-	afx_msg void OnModelRun         ();
-	afx_msg void OnModelStop        ();
 	afx_msg void OnAppAbout         ();
 	afx_msg void OnProjectReopen    (UINT nID);
 	afx_msg void OnUpdateFileSave   (PTR(CCmdUI) pCmdUI);

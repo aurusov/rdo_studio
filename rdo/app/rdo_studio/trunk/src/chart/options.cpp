@@ -186,7 +186,7 @@ void RDOStudioChartOptionsChart::apply() const
 	sheet->view->needDrawLegend = legend;
 	sheet->view->valueCountX = m_ValCountX;
 	sheet->view->valueCountY = m_ValCountY;
-	sheet->view->GetDocument()->SetTitle( m_ChartTitle );
+	sheet->view->GetDocument()->setTitle(static_cast<LPCTSTR>(m_ChartTitle));
 }
 
 // --------------------------------------------------------------------------------
@@ -441,7 +441,7 @@ void RDOStudioChartOptions::apply() const
 {
 	chart->apply();
 	series->apply();
-	view->GetDocument()->UpdateAllViews( NULL );
+	view->GetDocument()->updateAllViews();
 }
 
 void RDOStudioChartOptions::onHelpButton()

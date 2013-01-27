@@ -13,6 +13,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <math.h>
 #include <QtGui/qmainwindow.h>
+#include <QtGui/qlabel.h>
+#include <boost/mpl/integral_c.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
@@ -49,7 +51,7 @@ public:
 
 	virtual void init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID );
 
-	double getSpeed() const { return log( double(slider.GetPos() + 1) ) / log101; }
+	double getSpeed() const { return 1; /*log( double(slider.GetPos() + 1) ) / log101;*/ } //! @todo qt
 };
 
 // --------------------------------------------------------------------------------
@@ -63,29 +65,37 @@ class RDOStudioMainFrame
 Q_OBJECT
 
 friend class RDOToolBar;
-friend class RDOStudioModelDoc;
 
 public:
 	RDOStudioMainFrame();
 	virtual ~RDOStudioMainFrame();
 
+	enum StatusBar
+	{
+		SB_COORD,
+		SB_MODIFY,
+		SB_INSERTOVERWRITE,
+		SB_MODEL_TIME,
+		SB_MODEL_RUNTYPE,
+		SB_MODEL_SPEED,
+		SB_MODEL_SHOWRATE,
+		SB_PROGRESSSTATUSBAR
+	};
+
 	void init();
 
-	virtual void updateAllStyles() const;
-
-	virtual void showWorkspace();
-	virtual void showOutput   ();
+	virtual void updateAllStyles();
 
 	virtual void setVisible(rbool visible);
 
 	double getSpeed() const { return modelToolBar.getSpeed(); }
 
 	void beginProgress   (const int lower = 0, const int upper = 100, const int step = 1);
-	void getProgressRange(int& lower, int& upper) const  { statusBar.getRange( lower, upper ); };
-	void setProgress     (const int pos)                 { statusBar.setPos( pos );            };
-	int  getProgress     () const                        { return statusBar.getPos();          };
-	void offsetProgress  (const int offset)              { statusBar.offsetPos( offset );      };
-	void stepProgress    ()                              { statusBar.stepIt();                 };
+	void getProgressRange(int& lower, int& upper) const;
+	void setProgress     (const int pos);
+	int  getProgress     () const;
+	void offsetProgress  (const int offset);
+	void stepProgress    ();
 	void endProgress     ();
 
 	void update_start();
@@ -94,6 +104,13 @@ public:
 	PTR(QMenu) getMenuFile() { return menuFile; }
 
 	PTR(CWnd) c_wnd() { return &m_thisCWnd; }
+
+	virtual void addSubWindow              (QWidget* pWidget);
+	virtual void activateSubWindow         (QWidget* pWidget);
+	virtual void connectOnActivateSubWindow(QObject* pObject);
+
+	template <StatusBar N>
+	void updateStatusBar(CREF(QString) message);
 
 private:
 	typedef  QMainWindow  parent_type;
@@ -104,14 +121,42 @@ private:
 	RDOToolBar              zoomToolBar;
 	RDOToolBarModel         modelToolBar;
 	RDOStudioStatusBar      statusBar;
+	int                     m_updateTimerID;
+	PTR(QLabel)             m_pSBCoord;
+	PTR(QLabel)             m_pSBModify;
 
 	virtual void closeEvent(QCloseEvent* event);
 	virtual void showEvent (QShowEvent*  event);
 	virtual void hideEvent (QHideEvent*  event);
+	virtual void timerEvent(QTimerEvent* event);
 
-	UINT m_updateTimer;
+	template <StatusBar N>
+	struct StatusBarType: boost::mpl::integral_c<StatusBar, N>
+	{};
 
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	template <StatusBar N>
+	void updateStatusBar(StatusBarType<N>, CREF(QString) message);
+
+	template <StatusBar N>
+	PTR(QLabel) getStatusBarLabel(StatusBarType<N>);
+
+private slots:
+	void onFileNew    ();
+	void onFileOpen   ();
+	void onFileClose  ();
+	void onFileSave   ();
+	void onFileSaveAs ();
+	void onFileSaveAll();
+
+	void onModelBuild();
+public slots:
+	void onModelRun  ();
+private slots:
+	void onModelStop ();
+
+	void onDockVisibleChanged(bool visible);
+
+private:
 	afx_msg void OnViewFileToolbar();
 	afx_msg void OnViewEditToolbar();
 	afx_msg void OnViewZoomToolbar();
@@ -120,10 +165,6 @@ private:
 	afx_msg void OnUpdateViewEditToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateViewZoomToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateViewModelToolbar(CCmdUI* pCmdUI);
-	afx_msg void OnViewWorkspace();
-	afx_msg void OnViewOutput();
-	afx_msg void OnUpdateViewWorkspace(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewOutput(CCmdUI* pCmdUI);
 	afx_msg void OnDestroy();
 	afx_msg void OnViewOptions();
 	afx_msg void OnHelpKeyword();
@@ -147,7 +188,6 @@ private:
 	afx_msg void OnModelFramePrev();
 	afx_msg void OnUpdateModelFrameNext(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelFramePrev(CCmdUI* pCmdUI);
-	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
@@ -157,8 +197,6 @@ private:
 	afx_msg void OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelSpeedStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnWorkspaceShow();
-	afx_msg void OnOutputShow();
 	afx_msg void OnMethodCommandRange( UINT id );
 	afx_msg void OnMethodUpdateRange( CCmdUI* pCmdUI );
 };

@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/workspace.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresultsstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildeditstyle.h"
@@ -22,15 +21,19 @@
 #include "app/rdo_studio_mfc/src/style.h"
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
 #include "app/rdo_studio_mfc/src/frame/style.h"
+#include "app/rdo_studio_mfc/src/dock/dock_build.h"
+#include "app/rdo_studio_mfc/src/dock/dock_debug.h"
+#include "app/rdo_studio_mfc/src/dock/dock_trace.h"
+#include "app/rdo_studio_mfc/src/dock/dock_results.h"
+#include "app/rdo_studio_mfc/src/dock/dock_find.h"
+#include "app/rdo_studio_mfc/src/dock/dock_trace_tree.h"
+#include "app/rdo_studio_mfc/src/dock/dock_frame.h"
+#include "app/rdo_studio_mfc/src/dock/dock_process.h"
 // --------------------------------------------------------------------------------
-
-class RDOStudioOutput;
 
 class MainWindowBase
 {
 public:
-	PTR(CControlBar)     m_pLastDocked;
-
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;
 	rdoEditCtrl::RDOBaseEditStyle    style_debug;
@@ -42,14 +45,18 @@ public:
 
 	rbool isMDIMaximazed() const { return true; }
 
-	PTR(RDOStudioOutput)    getOutputDoc   () { return m_pOutputDoc;    }
-	PTR(RDOStudioWorkspace) getWorkspaceDoc() { return m_pWorkspaceDoc; }
+	REF(DockBuild)      getDockBuild    () { ASSERT(m_pDockBuild    ); return *m_pDockBuild;     }
+	REF(DockDebug)      getDockDebug    () { ASSERT(m_pDockDebug    ); return *m_pDockDebug;     }
+	REF(DockTrace)      getDockTrace    () { ASSERT(m_pDockTrace    ); return *m_pDockTrace;     }
+	REF(DockResults)    getDockResults  () { ASSERT(m_pDockResults  ); return *m_pDockResults;   }
+	REF(DockFind)       getDockFind     () { ASSERT(m_pDockFind     ); return *m_pDockFind;      }
+	REF(DockTraceTree)  getDockTraceTree() { ASSERT(m_pDockTraceTree); return *m_pDockTraceTree; }
+	REF(DockFrame)      getDockFrame    () { ASSERT(m_pDockFrame    ); return *m_pDockFrame;     }
+	REF(DockProcess)    getDockProcess  () { ASSERT(m_pDockProcess  ); return *m_pDockProcess;   }
 
 	static rbool is_close_mode() { return close_mode; }
 
-	virtual void updateAllStyles() const = 0;
-	virtual void showWorkspace  () = 0;
-	virtual void showOutput     () = 0;
+	virtual void updateAllStyles() = 0;
 
 	virtual double getSpeed() const = 0;
 
@@ -64,12 +71,22 @@ public:
 	virtual void update_start() = 0;
 	virtual void update_stop () = 0;
 
+	virtual void addSubWindow              (QWidget* pWidget) = 0;
+	virtual void activateSubWindow         (QWidget* pWidget) = 0;
+	virtual void connectOnActivateSubWindow(QObject* pObject) = 0;
+
 protected:
 	// Используется при закрытии модели. Задается вопрос.
 	static rbool close_mode;
 
-	PTR(RDOStudioOutput)     m_pOutputDoc;
-	PTR(RDOStudioWorkspace)  m_pWorkspaceDoc;
+	PTR(DockBuild)      m_pDockBuild;
+	PTR(DockDebug)      m_pDockDebug;
+	PTR(DockTrace)      m_pDockTrace;
+	PTR(DockResults)    m_pDockResults;
+	PTR(DockFind)       m_pDockFind;
+	PTR(DockTraceTree)  m_pDockTraceTree;
+	PTR(DockFrame)      m_pDockFrame;
+	PTR(DockProcess)    m_pDockProcess;
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOWS_BASE_H_

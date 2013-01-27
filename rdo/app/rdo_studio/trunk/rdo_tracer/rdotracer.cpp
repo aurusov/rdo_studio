@@ -15,11 +15,11 @@
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/src/output.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/thread.h"
+#include "app/rdo_studio_mfc/src/chart/document.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -74,15 +74,16 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 		}
 		case RDOThread::RT_RUNTIME_MODEL_START_BEFORE: {
 			clear();
+			RDOStudioChartDoc::resetTitleIndex();
 			try {
 				setModelName( model->getName() );
-				studioApp.getIMainWnd()->getOutputDoc()->appendStringToDebug( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );
+				studioApp.getIMainWnd()->getDockDebug().appendString( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );
 				rdo::textstream model_structure;
 				sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure );
 				getModelStructure( model_structure );
-				studioApp.getIMainWnd()->getOutputDoc()->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
+				studioApp.getIMainWnd()->getDockDebug().appendString( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
 			} catch ( ... ) {
-				studioApp.getIMainWnd()->getOutputDoc()->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
+				studioApp.getIMainWnd()->getDockDebug().appendString( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
 			}
 			break;
 		}

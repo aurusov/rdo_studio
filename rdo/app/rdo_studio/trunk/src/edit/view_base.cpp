@@ -10,9 +10,11 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtCore/qtimer.h>
+#include <QtCore/qcoreevent.h>
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
-#include "app/rdo_studio_mfc/src/edit/document_base.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
@@ -29,167 +31,95 @@ using namespace rdoEditor;
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioEditBaseView
 // --------------------------------------------------------------------------------
-#define timerBuf1_ID 1
-#define timerBuf2_ID 2
-#define timerBuf3_ID 3
-#define timerBuf4_ID 4
+RDOStudioEditBaseView::Buffer::Buffer(QTimer* pTimer)
+	: value (""    )
+	, reset (false )
+	, pTimer(pTimer)
+{}
 
-IMPLEMENT_DYNCREATE(RDOStudioEditBaseView, RDOStudioView)
-
-BEGIN_MESSAGE_MAP(RDOStudioEditBaseView, RDOStudioView)
-	ON_WM_CREATE()
-	ON_WM_DESTROY()
-	ON_WM_TIMER()
-	ON_COMMAND(ID_FILE_PRINT, RDOStudioView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioView::OnFilePrintPreview)
-END_MESSAGE_MAP()
-
-RDOStudioEditBaseView::RDOStudioEditBaseView():
-	RDOStudioView(),
-	buf1( "" ),
-	buf2( "" ),
-	buf3( "" ),
-	buf4( "" ),
-	resetBuf1( true ),
-	resetBuf2( true ),
-	resetBuf3( true ),
-	resetBuf4( true ),
-	currentBuffer( 1 ),
-	timerBuf1( 0 ),
-	timerBuf2( 0 ),
-	timerBuf3( 0 ),
-	timerBuf4( 0 )
+RDOStudioEditBaseView::RDOStudioEditBaseView(QWidget* pParent)
+	: QWidget(pParent)
+	, m_currentBuffer(0)
 {
+	m_thisCWnd.Attach(winId());
+
+	m_bufferList.insert(BufferList::value_type(0, Buffer(new QTimer(this))));
+	m_bufferList.insert(BufferList::value_type(1, Buffer(new QTimer(this))));
+	m_bufferList.insert(BufferList::value_type(2, Buffer(new QTimer(this))));
+	m_bufferList.insert(BufferList::value_type(3, Buffer(new QTimer(this))));
+
+	BOOST_FOREACH(BufferList::value_type& buffer, m_bufferList)
+	{
+		connect(buffer.second.pTimer, SIGNAL(timeout()), this, SLOT(timerEvent(QTimerEvent*)));
+	}
+
+	//! todo qt
+	//popupMenu.CreatePopupMenu();
+
+	//CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+
+	//rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
+	//int delta = maximized ? 1 : 0;
+
+	//appendMenu( mainMenu, 4 + delta, &popupMenu );
+	//popupMenu.AppendMenu( MF_SEPARATOR );
+	//appendMenu( mainMenu->GetSubMenu( 1 + delta ), 3, &popupMenu );
+	//appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+	//appendMenu( mainMenu->GetSubMenu( 1 + delta ), 5, &popupMenu );
+	//popupMenu.AppendMenu( MF_SEPARATOR );
+	//appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
+	//popupMenu.AppendMenu( MF_SEPARATOR );
+	//appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
+	//appendMenu( mainMenu->GetSubMenu( 2 + delta ), 3, &popupMenu );
+	//appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
 }
 
 RDOStudioEditBaseView::~RDOStudioEditBaseView()
 {
-	eraseMenu( &popupMenu );
+	m_thisCWnd.Detach();
+
+	//! todo qt
+	// eraseMenu(&m_popupMenu);
 }
 
-BOOL RDOStudioEditBaseView::PreCreateWindow(CREATESTRUCT& cs)
+void RDOStudioEditBaseView::restartBufTimer(ruint bufferID)
 {
-	if( !RDOStudioView::PreCreateWindow( cs ) ) return FALSE;
+	BufferList::iterator it = m_bufferList.find(bufferID);
+	if (it == m_bufferList.end())
+		return;
 
-	cs.style &= ~WS_BORDER;
-	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
-	cs.lpszClass = AfxRegisterWndClass( 0, ::LoadCursor(NULL, IDC_ARROW) );
-
-	return TRUE;
-}
-
-int RDOStudioEditBaseView::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if ( RDOStudioView::OnCreate(lpCreateStruct) == -1 ) return -1;
-
-	popupMenu.CreatePopupMenu();
-
-	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-
-	rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
-	int delta = maximized ? 1 : 0;
-
-	appendMenu( mainMenu, 4 + delta, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 3, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 5, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 3, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
-
-	return 0;
-}
-
-void RDOStudioEditBaseView::OnDraw(CDC* /*pDC*/)
-{
-	RDOStudioEditBaseDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-}
-
-BOOL RDOStudioEditBaseView::OnPreparePrinting(CPrintInfo* pInfo)
-{
-	return DoPreparePrinting(pInfo);
-}
-
-void RDOStudioEditBaseView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-}
-
-void RDOStudioEditBaseView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-}
-
-#ifdef _DEBUG
-void RDOStudioEditBaseView::AssertValid() const
-{
-	RDOStudioView::AssertValid();
-}
-
-void RDOStudioEditBaseView::Dump(CDumpContext& dc) const
-{
-	RDOStudioView::Dump(dc);
-}
-
-RDOStudioEditBaseDoc* RDOStudioEditBaseView::GetDocument()
-{
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(RDOStudioEditBaseDoc)));
-	return (RDOStudioEditBaseDoc*)m_pDocument;
-}
-#endif
-
-void RDOStudioEditBaseView::restartBufTimer( const int bufIndex )
-{
-	rbool canClear = studioApp.getStyle()->style_editor.buffer->canClearBuffer;
-	int   delay    = studioApp.getStyle()->style_editor.buffer->clearBufferDelay * 1000;
-	if ( delay < 0 ) delay = 0;
-	switch ( bufIndex ) {
-		case 1: stopTimer( timerBuf1 ); if ( canClear ) timerBuf1 = SetTimer( timerBuf1_ID, delay, NULL ); break;
-		case 2: stopTimer( timerBuf2 ); if ( canClear ) timerBuf2 = SetTimer( timerBuf2_ID, delay, NULL ); break;
-		case 3: stopTimer( timerBuf3 ); if ( canClear ) timerBuf3 = SetTimer( timerBuf3_ID, delay, NULL ); break;
-		case 4: stopTimer( timerBuf4 ); if ( canClear ) timerBuf4 = SetTimer( timerBuf4_ID, delay, NULL ); break;
+	stopTimer(it->second.pTimer);
+	if (studioApp.getStyle()->style_editor.buffer->canClearBuffer)
+	{
+		int delay = studioApp.getStyle()->style_editor.buffer->clearBufferDelay * 1000;
+		if (delay < 0)
+		{
+			delay = 0;
+		}
+		it->second.pTimer->start(delay);
 	}
 }
 
-void RDOStudioEditBaseView::stopTimer( UINT& timer )
+void RDOStudioEditBaseView::stopTimer(QTimer* pTimer)
 {
-	if ( timer ) {
-		KillTimer( timer );
-		timer = 0;
+	ASSERT(pTimer);
+	if (pTimer->isActive())
+	{
+		pTimer->stop();
 	}
 }
 
-void RDOStudioEditBaseView::OnDestroy() 
+void RDOStudioEditBaseView::timerEvent(QTimerEvent* event)
 {
-	RDOStudioView::OnDestroy();
-	
-	stopTimer( timerBuf1 );
-	stopTimer( timerBuf2 );
-	stopTimer( timerBuf3 );
-	stopTimer( timerBuf4 );
-}
-
-void RDOStudioEditBaseView::OnTimer(UINT nIDEvent) 
-{
-	if ( nIDEvent == timerBuf1 ) {
-		resetBuf1 = true;
-		stopTimer( timerBuf1 );
-	} else if ( nIDEvent == timerBuf2 ) {
-		resetBuf2 = true;
-		stopTimer( timerBuf2 );
-	} else if ( nIDEvent == timerBuf3 ) {
-		resetBuf3 = true;
-		stopTimer( timerBuf3 );
-	} else if ( nIDEvent == timerBuf4 ) {
-		resetBuf4 = true;
-		stopTimer( timerBuf4 );
+	BOOST_FOREACH(BufferList::value_type& buffer, m_bufferList)
+	{
+		if (buffer.second.pTimer->timerId() == event->timerId())
+		{
+			buffer.second.reset = true;
+			stopTimer(buffer.second.pTimer);
+			break;
+		}
 	}
-	
-	RDOStudioView::OnTimer(nIDEvent);
 }
 
 RDOEditorEdit* RDOStudioEditBaseView::getEdit() const

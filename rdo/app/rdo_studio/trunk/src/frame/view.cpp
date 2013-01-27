@@ -17,7 +17,6 @@
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
-#include "app/rdo_studio_mfc/src/frame/document.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
@@ -115,6 +114,7 @@ void FrameAnimationContent::setBGColor(CREF(QColor) color)
 void FrameAnimationContent::resizeEvent(QResizeEvent* pEvent)
 {
 	m_size = pEvent->size();
+	parent_type::resizeEvent(pEvent);
 }
 
 void FrameAnimationContent::paintEvent(QPaintEvent* pEvent)
@@ -123,6 +123,8 @@ void FrameAnimationContent::paintEvent(QPaintEvent* pEvent)
 
 	QPainter painter(this);
 	onDraw(painter);
+
+	parent_type::paintEvent(pEvent);
 }
 
 void FrameAnimationContent::mousePressEvent(QMouseEvent* pEvent)
@@ -130,13 +132,14 @@ void FrameAnimationContent::mousePressEvent(QMouseEvent* pEvent)
 	ASSERT(pEvent);
 	if (pEvent->button() == Qt::LeftButton)
 	{
-		PTR(RDOStudioFrameManager) pFrameManager = &model->m_frameManager;
-		ruint index = pFrameManager->findFrameIndex(this);
+		ruint index = model->getFrameManager().findFrameIndex(this);
 		if (index != ruint(~0))
 		{
-			pFrameManager->areaDown(index, pEvent->pos());
+			model->getFrameManager().areaDown(index, pEvent->pos());
 		}
 	}
+
+	parent_type::mousePressEvent(pEvent);
 }
 
 void FrameAnimationContent::onDraw(REF(QPainter) painter)
@@ -563,182 +566,66 @@ FrameAnimationWnd::FrameAnimationWnd(PTR(QWidget) pParent)
 	m_pContent = new FrameAnimationContent(this);
 	ASSERT(m_pContent);
 	setWidget(m_pContent);
+
+	updateFont();
 }
 
 FrameAnimationWnd::~FrameAnimationWnd()
-{}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameView
-// --------------------------------------------------------------------------------
-IMPLEMENT_DYNCREATE(RDOStudioFrameView, RDOStudioView)
-
-BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
-	ON_WM_CREATE ()
-	ON_WM_DESTROY()
-	ON_WM_SIZE   ()
-	ON_WM_KEYDOWN()
-	ON_WM_KEYUP  ()
-	ON_WM_PAINT  ()
-	ON_COMMAND   (ID_HELP_KEYWORD, OnHelpKeyword)
-END_MESSAGE_MAP()
-
-RDOStudioFrameView::RDOStudioFrameView()
-	: RDOStudioView       ()
-	, m_clientRect        (0, 0, 0, 0)
-	, m_pWidget           (NULL )
-	, m_pFrameAnimationWnd(NULL )
-{}
-
-RDOStudioFrameView::~RDOStudioFrameView()
-{}
-
-BOOL RDOStudioFrameView::PreCreateWindow(REF(CREATESTRUCT) cs)
 {
-	if (!RDOStudioView::PreCreateWindow(cs))
-		return FALSE;
-
-	cs.style &= ~WS_BORDER;
-	cs.lpszClass = AfxRegisterWndClass(CS_DBLCLKS | CS_OWNDC, ::LoadCursor(NULL, IDC_ARROW));
-
-	return TRUE;
-}
-
-int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if (RDOStudioView::OnCreate(lpCreateStruct) == -1)
-		return -1;
-
-	m_pWidget = new QWinWidget(this);
-	m_pWidget->setAttribute(Qt::WA_NoSystemBackground, true);
-
-	ASSERT(m_pWidget);
-
-	PTR(QVBoxLayout) pVBoxLayout = new QVBoxLayout(m_pWidget);
-	ASSERT(pVBoxLayout);
-	pVBoxLayout->setSpacing(0);
-	pVBoxLayout->setContentsMargins(0, 0, 0, 0);
-
-	m_pFrameAnimationWnd = new FrameAnimationWnd(m_pWidget);
-	ASSERT(m_pFrameAnimationWnd);
-
-	pVBoxLayout->addWidget(m_pFrameAnimationWnd);
-
-	m_pWidget->move(0, 0);
-	m_pWidget->show();
-
-	updateFont();
-
-	return 0;
-}
-
-void RDOStudioFrameView::OnDestroy()
-{
-	ruint index = model->m_frameManager.findFrameIndex(this);
+	ruint index = model->getFrameManager().findFrameIndex(this);
 	if (index != ruint(~0))
 	{
-		model->m_frameManager.disconnectFrameDoc(GetDocument());
-		model->m_frameManager.resetCurrentShowingFrame(index);
+		model->getFrameManager().disconnectView(this);
+		model->getFrameManager().resetCurrentShowingFrame(index);
 	}
-
-	delete m_pWidget;
-	m_pWidget = NULL;
-
-	m_pFrameAnimationWnd = NULL;
-
-	RDOStudioView::OnDestroy();
 }
 
-void RDOStudioFrameView::update(
+PTR(FrameAnimationContent) FrameAnimationWnd::getContent()
+{
+	PTR(FrameAnimationContent) pContent = static_cast<PTR(FrameAnimationContent)>(widget());
+	ASSERT(pContent);
+	return pContent;
+}
+
+void FrameAnimationWnd::update(
 	CPTRC(rdo::animation::Frame)         pFrame,
 	 CREF(rdo::gui::BitmapList)          bitmapList,
 	  REF(rdo::gui::BitmapList)          bitmapGeneratedList,
 	  REF(rdo::gui::animation::AreaList) areaList
 )
 {
-	static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd->widget())->update(pFrame, bitmapList, bitmapGeneratedList, areaList);
+	getContent()->update(pFrame, bitmapList, bitmapGeneratedList, areaList);
 }
 
-void RDOStudioFrameView::updateFont()
+void FrameAnimationWnd::updateFont()
 {
-	static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd->widget())->updateFont();
+	getContent()->updateFont();
 }
 
-PTR(FrameAnimationContent) RDOStudioFrameView::getContent()
+rbool FrameAnimationWnd::event(QEvent* pEvent)
 {
-	PTR(FrameAnimationContent) pContent = static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd->widget());
-	ASSERT(pContent);
-	return pContent;
-}
-
-#ifdef _DEBUG
-void RDOStudioFrameView::AssertValid() const
-{
-	RDOStudioView::AssertValid();
-}
-
-void RDOStudioFrameView::Dump(REF(CDumpContext) dc) const
-{
-	RDOStudioView::Dump(dc);
-}
-#endif
-
-PTR(RDOStudioFrameDoc) RDOStudioFrameView::GetDocument()
-{
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(RDOStudioFrameDoc)));
-	return static_cast<PTR(RDOStudioFrameDoc)>(m_pDocument);
-}
-
-CREF(CRect) RDOStudioFrameView::getClientRect() const
-{
-	return m_clientRect;
-}
-
-void RDOStudioFrameView::OnSize(UINT nType, int cx, int cy)
-{
-	RDOStudioView::OnSize(nType, cx, cy);
-
-	GetClientRect(&m_clientRect);
-	m_pWidget->resize(cx, cy);
-}
-
-void RDOStudioFrameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_DOWN, &nChar);
-	RDOStudioView::OnKeyDown(nChar, nRepCnt, nFlags);
-}
-
-void RDOStudioFrameView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_UP, &nChar);
-	RDOStudioView::OnKeyUp(nChar, nRepCnt, nFlags);
-}
-
-void RDOStudioFrameView::OnActivateView(BOOL bActivate, PTR(CView) pActivateView, PTR(CView) pDeactiveView)
-{
-	if (bActivate)
+	if (pEvent->type() == QEvent::KeyPress || pEvent->type() == QEvent::ShortcutOverride)
 	{
-		ruint index = model->m_frameManager.findFrameIndex(this);
-		model->m_frameManager.setLastShowedFrame    (index);
-		model->m_frameManager.setCurrentShowingFrame(index);
+		QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
+		ruint scanCode = pKeyEvent->nativeScanCode();
+		model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_DOWN, &scanCode);
+
+		if (pKeyEvent->key() == Qt::Key_F1)
+		{
+			QByteArray ba;
+			ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/work_model/work_model_frame.htm\n");
+			studioApp.callQtAssistant(ba);
+		}
+
+		return true;
 	}
-	RDOStudioView::OnActivateView(bActivate, pActivateView, pDeactiveView);
-}
+	else if (pEvent->type() == QEvent::KeyRelease)
+	{
+		QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
+		ruint scanCode = pKeyEvent->nativeScanCode();
+		model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_UP, &scanCode);
+		return true;
+	}
 
-void RDOStudioFrameView::OnPaint()
-{
-	CPaintDC dc(this);
-	m_pFrameAnimationWnd->update();
-}
-
-void RDOStudioFrameView::OnDraw(PTR(CDC) pDC)
-{
-	RDOStudioView::OnDraw(pDC);
-}
-
-void RDOStudioFrameView::OnHelpKeyword()
-{
-	QByteArray ba;
-	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_frame.htm\n");
-	studioApp.callQtAssistant(ba);
+	return parent_type::event(pEvent);
 }

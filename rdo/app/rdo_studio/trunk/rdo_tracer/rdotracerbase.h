@@ -92,7 +92,6 @@ private:
 
 	UINT clipboardFormat;
 
-	CMultiDocTemplate* chartDocTemplate;
 	std::vector <RDOStudioChartDoc*> charts;
 
 	rbool drawTrace;
@@ -102,9 +101,8 @@ protected:
 	virtual ~RDOTracerBase();
 
 public:
-	CMultiDocTemplate* createDocTemplate();
-	rdoTracerLog::RDOTracerLogCtrl* createLog();
-	RDOTracerTreeCtrl* createTree();
+	void setLog (PTR(rdoTracerLog::RDOTracerLogCtrl) pTracerLog);
+	void setTree(PTR(RDOTracerTreeCtrl)              pTreeCtrl );
 
 	void startTrace();
 	void getModelStructure( rdo::textstream& stream );

@@ -37,7 +37,7 @@
      <x>0</x>
      <y>0</y>
      <width>855</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -126,8 +126,6 @@
     <addaction name="actViewZoomAuto"/>
     <addaction name="actViewZoomReset"/>
     <addaction name="separator"/>
-    <addaction name="actViewWorkspace"/>
-    <addaction name="actViewOutput"/>
     <addaction name="menuViewToolbar"/>
     <addaction name="separator"/>
     <addaction name="actViewSettings"/>
@@ -184,24 +182,6 @@
    <addaction name="menuChart"/>
    <addaction name="menuWindow"/>
    <addaction name="menuHelp"/>
-  </widget>
-  <widget class="QDockWidget" name="workspaceDockWidget">
-   <property name="windowTitle">
-    <string>Workspace</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="workspaceDockWidgetContents"/>
-  </widget>
-  <widget class="QDockWidget" name="outputDockWidget">
-   <property name="windowTitle">
-    <string>Output</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>8</number>
-   </attribute>
-   <widget class="QWidget" name="outputDockWidgetContents"/>
   </widget>
   <action name="actFileNew">
    <property name="text">
@@ -497,22 +477,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+/</string>
-   </property>
-  </action>
-  <action name="actViewWorkspace">
-   <property name="text">
-    <string>Показать панель объектов</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+0</string>
-   </property>
-  </action>
-  <action name="actViewOutput">
-   <property name="text">
-    <string>Показать панель вывода</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+9</string>
    </property>
   </action>
   <action name="actViewSettings">

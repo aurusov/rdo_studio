@@ -22,8 +22,6 @@
 #include "app/rdo_studio_mfc/src/child_frm.h"
 #include "app/rdo_studio_mfc/src/about.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/src/edit/document.h"
-#include "app/rdo_studio_mfc/src/edit/view.h"
 #include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/src/thread.h"
 #include "app/rdo_studio_mfc/src/model/new.h"
@@ -152,19 +150,10 @@ void RDOStudioCommandLineInfo::ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bL
 RDOStudioApp studioApp;
 
 BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
-	ON_COMMAND          (ID_FILE_NEW,           OnFileNew          )
-	ON_COMMAND          (ID_FILE_OPEN,          OnFileOpen         )
-	ON_COMMAND          (ID_FILE_MODEL_SAVE,    OnFileSave         )
 	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE,    OnUpdateFileSave   )
-	ON_COMMAND          (ID_FILE_SAVE_ALL,      OnFileSaveAll      )
 	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_ALL,      OnUpdateFileSaveAll)
-	ON_COMMAND          (ID_FILE_MODEL_CLOSE,   OnFileClose        )
-	ON_COMMAND          (ID_FILE_MODEL_SAVE_AS, OnFileSaveAs       )
 	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_CLOSE,   OnUpdateFileClose  )
 	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE_AS, OnUpdateFileSaveAs )
-	ON_COMMAND          (ID_MODEL_BUILD,        OnModelBuild       )
-	ON_COMMAND          (ID_MODEL_RUN,          OnModelRun         )
-	ON_COMMAND          (ID_MODEL_STOP,         OnModelStop        )
 	ON_UPDATE_COMMAND_UI(ID_MODEL_BUILD,        OnUpdateModelBuild )
 	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN,          OnUpdateModelRun   )
 	ON_UPDATE_COMMAND_UI(ID_MODEL_STOP,         OnUpdateModelStop  )
@@ -181,7 +170,6 @@ RDOStudioApp::RDOStudioApp()
 #ifdef RDO_MT
 	, m_pStudioMT                   (NULL  )
 #endif
-	, m_editDocTemplate             (NULL  )
 	, m_fileAssociationSetup        (false )
 	, m_fileAssociationCheckInFuture(false )
 	, m_openLastProject             (false )
@@ -232,9 +220,6 @@ BOOL RDOStudioApp::InitInstance()
 	m_lastProjectName              = GetProfileString(_T("general"),         _T("lastProject"),        _T(""));
 	m_showCaptionFullName          = GetProfileInt   (_T("general"),         _T("showCaptionFullName"), false) ? true : false;
 
-	m_editDocTemplate = new CMultiDocTemplate(IDR_EDIT_TYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView));
-	AddDocTemplate(m_editDocTemplate);
-
 	// Кто-то должен поднять кернел и треды
 	RDOKernel::init();
 #ifdef RDO_MT
@@ -258,7 +243,7 @@ BOOL RDOStudioApp::InitInstance()
 //	new RDOThreadStudio2();
 
 	tracer = new rdoTracer::RDOTracer();
-	AddDocTemplate(tracer->createDocTemplate());
+
 #ifdef PROCGUI_ENABLE
 	rpMethod::project->cursors[ RPProject::cursor_flow_select ]        = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
 	rpMethod::project->cursors[ RPProject::cursor_flow_move ]          = AfxGetApp()->LoadCursor(IDC_FLOW_MOVE);
@@ -305,7 +290,7 @@ BOOL RDOStudioApp::InitInstance()
 
 #ifdef PROCGUI_ENABLE
 	m_methodManager.init();
-	m_pMainFrame->workspace.pagectrl->selectFirst();
+	m_pMainFrame->getDockProcess().getContext().selectFirst();
 #endif
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
@@ -366,14 +351,9 @@ BOOL RDOStudioApp::InitInstance()
 		m_dontCloseIfError = false;
 	}
 
-	if (newModel)
-	{
-//		OnFileNew();
-	}
-
 	if (m_autoRun)
 	{
-		OnModelRun();
+		m_pMainFrame->onModelRun();
 	}
 
 	return TRUE;
@@ -494,40 +474,6 @@ rbool RDOStudioApp::shortToLongPath(CREF(tstring) shortPath, REF(tstring) longPa
 		longPath = W2A(szLongPath);
 		return true;
 	}
-}
-
-void RDOStudioApp::OnFileNew() 
-{
-	RDOStudioModelNew dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-		model->newModel(dlg.getModelName(), dlg.getModelPath() + dlg.getModelName(), dlg.getModelTemplate());
-	}
-}
-
-void RDOStudioApp::OnFileOpen() 
-{
-	model->openModel();
-}
-
-void RDOStudioApp::OnFileClose() 
-{
-	model->closeModel();
-}
-
-void RDOStudioApp::OnFileSave() 
-{
-	model->saveModel();
-}
-
-void RDOStudioApp::OnFileSaveAs() 
-{
-	model->saveAsModel();
-}
-
-void RDOStudioApp::OnFileSaveAll() 
-{
-	model->saveModel();
 }
 
 void RDOStudioApp::OnUpdateFileNew(PTR(CCmdUI) pCmdUI)
@@ -751,21 +697,6 @@ void RDOStudioApp::saveReopen() const
 		{}
 		END_CATCH
 	}
-}
-
-void RDOStudioApp::OnModelBuild() 
-{
-	model->buildModel();
-}
-
-void RDOStudioApp::OnModelRun() 
-{
-	model->runModel();
-}
-
-void RDOStudioApp::OnModelStop() 
-{
-	model->stopModel();
 }
 
 void RDOStudioApp::OnUpdateModelBuild(PTR(CCmdUI) pCmdUI) 

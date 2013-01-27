@@ -20,7 +20,6 @@
 #include "ui/qt/headers/memdc/memdc.h"
 #include "ui/qt/headers/animation/area.h"
 #include "ui/qt/headers/bitmap/bitmap.h"
-#include "app/rdo_studio_mfc/src/view.h"
 #include "thirdparty/qt-solutions/qtwinmigrate/src/qwinwidget.h"
 // --------------------------------------------------------------------------------
 
@@ -92,53 +91,21 @@ public:
 	FrameAnimationWnd(PTR(QWidget) pParent);
 	virtual ~FrameAnimationWnd();
 
+	PTR(FrameAnimationContent) getContent();
+
+	using QWidget::update;
+
+	void updateFont();
+
+	void update(CPTRC(rdo::animation::Frame)         pFrame,
+	             CREF(rdo::gui::BitmapList)          bitmapList,
+	              REF(rdo::gui::BitmapList)          bitmapGeneratedList,
+	              REF(rdo::gui::animation::AreaList) areaList);
+
 private:
 	PTR(QWidget) m_pContent;
-};
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameView
-// --------------------------------------------------------------------------------
-class RDOStudioFrameDoc;
-
-class RDOStudioFrameView: public RDOStudioView
-{
-DECLARE_DYNCREATE(RDOStudioFrameView)
-public:
-	RDOStudioFrameView();
-	virtual ~RDOStudioFrameView();
-
-	void                       update       (CPTRC(rdo::animation::Frame)         pFrame,
-	                                          CREF(rdo::gui::BitmapList)          bitmapList,
-	                                           REF(rdo::gui::BitmapList)          bitmapGeneratedList,
-	                                           REF(rdo::gui::animation::AreaList) areaList);
-	void                       updateFont   ();
-	PTR(RDOStudioFrameDoc)     GetDocument  ();
-	CREF(CRect)                getClientRect() const;
-	PTR(FrameAnimationContent) getContent   ();
-
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump       (REF(CDumpContext) dc) const;
-#endif
-
-private:
-	CRect                  m_clientRect;
-	PTR(QWinWidget)        m_pWidget;
-	PTR(FrameAnimationWnd) m_pFrameAnimationWnd;
-
-	virtual BOOL PreCreateWindow(REF(CREATESTRUCT) cs);
-	virtual void OnActivateView (BOOL bActivate, PTR(CView) pActivateView, PTR(CView) pDeactiveView);
-	virtual void OnDraw         (PTR(CDC) pDC);
-
-	afx_msg int  OnCreate       (LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnDestroy      ();
-	afx_msg void OnPaint        ();
-	afx_msg void OnHelpKeyword  ();
-	afx_msg void OnSize         (UINT nType,    int    cx,      int cy);
-	afx_msg void OnKeyDown      (UINT nChar,    UINT   nRepCnt, UINT nFlags);
-	afx_msg void OnKeyUp        (UINT nChar,    UINT   nRepCnt, UINT nFlags);
-	DECLARE_MESSAGE_MAP()
+	virtual rbool event(QEvent* pEvent);
 };
 
 #endif // _RDO_STUDIO_MFC_FRAME_VIEW_H_

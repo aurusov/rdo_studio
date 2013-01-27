@@ -260,8 +260,6 @@
 #define IDC_STATIC8                     1169
 #define IDC_STATIC9                     1170
 #define ID_CHART_ADDTONEWCHART          32771
-#define ID_VIEW_WORKSPACE               32774
-#define ID_VIEW_OUTPUT                  32775
 #define ID_EDIT_UPPERCASE               32780
 #define ID_EDIT_LOWERCASE               32781
 #define ID_SEARCH_FIND                  32787
@@ -605,8 +603,6 @@
 #define ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT 40010
 #define ID_MODEL_FILETYPE               40011
 #define ID_OPTIONS                      40012
-#define ID_DOCK_WORKSPACE               40013
-#define ID_DOCK_OUTPUT                  40014
 #define ID_FINDINMODEL_BEGINMSG         40015
 #define ID_FINDINMODEL_ENDMSG_COUNT     40016
 #define ID_FINDINMODEL_ENDMSG_NOTFOUND  40017

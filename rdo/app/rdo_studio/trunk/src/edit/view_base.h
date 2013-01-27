@@ -11,73 +11,53 @@
 #define _RDO_STUDIO_MFC_EDIT_VIEW_BASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qwidget.h>
+#include <QtGui/qmenu.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/view.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioEditBaseView
 // --------------------------------------------------------------------------------
-class RDOStudioEditBaseDoc;
 namespace rdoEditor {
 	class RDOEditorEdit;
 }
 
-class RDOStudioEditBaseView: public RDOStudioView
+class RDOStudioEditBaseView: public QWidget
 {
-private:
-	UINT timerBuf1;
-	UINT timerBuf2;
-	UINT timerBuf3;
-	UINT timerBuf4;
-	void stopTimer( UINT& timer );
-
-protected:
-	RDOStudioEditBaseView();
-	DECLARE_DYNCREATE(RDOStudioEditBaseView)
+Q_OBJECT
 
 public:
 	virtual ~RDOStudioEditBaseView();
 
-	RDOStudioEditBaseDoc* GetDocument();
+	struct Buffer
+	{
+		tstring  value;
+		rbool    reset;
+		QTimer*  pTimer;
+
+		Buffer(QTimer* pTimer);
+	};
+	typedef  std::map<ruint, Buffer>  BufferList;
+
+	QMenu*      m_pPopupMenu;
+	BufferList  m_bufferList;
+	ruint       m_currentBuffer;
+
+	void restartBufTimer(ruint bufferID);
+
 	virtual rdoEditor::RDOEditorEdit* getEdit() const;
 
-	CMenu popupMenu;
-
-	tstring buf1;
-	tstring buf2;
-	tstring buf3;
-	tstring buf4;
-	rbool resetBuf1;
-	rbool resetBuf2;
-	rbool resetBuf3;
-	rbool resetBuf4;
-	int  currentBuffer;
-	void restartBufTimer( const int bufIndex );
-
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
-
 protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	RDOStudioEditBaseView(QWidget* pParent);
+
+	CWnd m_thisCWnd;
 
 private:
-	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
-	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	void stopTimer(QTimer* pTimer);
 
-	afx_msg void OnDestroy();
-	afx_msg void OnTimer(UINT nIDEvent);
-	DECLARE_MESSAGE_MAP()
+private slots:
+	virtual void timerEvent(QTimerEvent* event);
 };
-
-#ifndef _DEBUG
-inline RDOStudioEditBaseDoc* RDOStudioEditBaseView::GetDocument()
-   { return (RDOStudioEditBaseDoc*)m_pDocument; }
-#endif
 
 #endif // _RDO_STUDIO_MFC_EDIT_VIEW_BASE_H_

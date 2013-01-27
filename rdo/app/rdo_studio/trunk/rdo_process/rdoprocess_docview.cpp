@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qevent.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_flowchart.h"
@@ -25,103 +26,60 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+//! @todo qt
 // --------------------------------------------------------------------------------
 // -------------------- RPDoc
 // --------------------------------------------------------------------------------
-IMPLEMENT_DYNCREATE(RPDoc, CDocument)
-
-BEGIN_MESSAGE_MAP(RPDoc, CDocument)
-	ON_COMMAND_RANGE( 20000, 30000, OnMethodCommandRange )
-	ON_UPDATE_COMMAND_UI_RANGE( 20000, 30000, OnMethodUpdateRange )
-END_MESSAGE_MAP()
-
-RPDoc::RPDoc()
-{
-}
-
-RPDoc::~RPDoc()
-{
-}
-
-BOOL RPDoc::OnNewDocument()
-{
-	if ( !CDocument::OnNewDocument() ) return FALSE;
-	return TRUE;
-}
-
-void RPDoc::Serialize( CArchive& ar )
-{
-	if ( ar.IsStoring() ) {
-		/// @todo add storing code here
-	} else {
-		/// @todo add loading code here
-	}
-}
-
-RPView* RPDoc::getView() const
-{
-	POSITION pos = GetFirstViewPosition();
-	return static_cast<RPView*>(GetNextView( pos ));
-}
-
-#ifdef _DEBUG
-void RPDoc::AssertValid() const
-{
-	CDocument::AssertValid();
-}
-
-void RPDoc::Dump(CDumpContext& dc) const
-{
-	CDocument::Dump(dc);
-}
-#endif //_DEBUG
-
-void RPDoc::OnMethodCommandRange( UINT id )
-{
-	rpMethod::RPMethod* method = rpMethod::project->getMethodByButton( id );
-	if ( method ) {
-		method->buttonCommand( id );
-	}
-}
-
-void RPDoc::OnMethodUpdateRange( CCmdUI* pCmdUI )
-{
-	rpMethod::RPMethod* method = rpMethod::project->getMethodByButton( pCmdUI->m_nID );
-	if ( method ) {
-		RPCtrlToolbar::ButtonUpdate button_update( pCmdUI->m_nID );
-		method->buttonUpdate( button_update );
-		pCmdUI->Enable( button_update.enable );
-	}
-}
+//BEGIN_MESSAGE_MAP(RPDoc, CDocument)
+//	ON_COMMAND_RANGE( 20000, 30000, OnMethodCommandRange )
+//	ON_UPDATE_COMMAND_UI_RANGE( 20000, 30000, OnMethodUpdateRange )
+//END_MESSAGE_MAP()
+//
+//void RPDoc::OnMethodCommandRange( UINT id )
+//{
+//	rpMethod::RPMethod* method = rpMethod::project->getMethodByButton( id );
+//	if ( method ) {
+//		method->buttonCommand( id );
+//	}
+//}
+//
+//void RPDoc::OnMethodUpdateRange( CCmdUI* pCmdUI )
+//{
+//	rpMethod::RPMethod* method = rpMethod::project->getMethodByButton( pCmdUI->m_nID );
+//	if ( method ) {
+//		RPCtrlToolbar::ButtonUpdate button_update( pCmdUI->m_nID );
+//		method->buttonUpdate( button_update );
+//		pCmdUI->Enable( button_update.enable );
+//	}
+//}
 
 // --------------------------------------------------------------------------------
 // -------------------- RPView
 // --------------------------------------------------------------------------------
-IMPLEMENT_DYNCREATE(RPView, CView)
-
-BEGIN_MESSAGE_MAP(RPView, CView)
+BEGIN_MESSAGE_MAP(RPView, CWnd)
 	ON_WM_DESTROY()
 	ON_WM_SETFOCUS()
 	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
-RPView::RPView():
-	CView(),
-	flowchart( NULL )
-{
-}
+RPView::RPView(QWidget* pParent)
+	: CWnd     ()
+	, m_pParent(pParent)
+	, flowchart(NULL   )
+{}
 
 RPView::~RPView()
-{
-}
+{}
 
 BOOL RPView::PreCreateWindow( CREATESTRUCT& cs )
 {
-	if( !CView::PreCreateWindow( cs ) ) return FALSE;
+	if( !CWnd::PreCreateWindow( cs ) ) return FALSE;
 
 	cs.style &= ~WS_BORDER;
 	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
 	cs.lpszClass = AfxRegisterWndClass( 0, ::LoadCursor(NULL, IDC_ARROW) );
+
+	target.Register( this );
 
 	return TRUE;
 }
@@ -136,19 +94,19 @@ void RPView::OnDestroy()
 
 void RPView::OnSetFocus(CWnd* pOldWnd) 
 {
-	CView::OnSetFocus( pOldWnd );
+	CWnd::OnSetFocus( pOldWnd );
 	if ( flowchart ) flowchart->SetFocus();
 }
 
 BOOL RPView::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
 	if ( flowchart && flowchart->OnCmdMsg(nID, nCode, pExtra, pHandlerInfo) ) return TRUE;
-	return CView::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+	return CWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
 void RPView::OnSize( UINT nType, int cx, int cy ) 
 {
-	CView::OnSize( nType, cx, cy );
+	CWnd::OnSize( nType, cx, cy );
 	if ( flowchart ) {
 		CRect rect;
 		GetClientRect( rect );
@@ -156,26 +114,13 @@ void RPView::OnSize( UINT nType, int cx, int cy )
 	}
 }
 
-void RPView::OnInitialUpdate()
-{
-	CView::OnInitialUpdate();
-	target.Register( this );
-}
-
 void RPView::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
-	flowchart = new RPFlowChart( flowobj, GetDocument() );
+	flowchart = new RPFlowChart( flowobj, this );
 	CRect rect;
 	GetClientRect( &rect );
 	flowchart->Create( NULL, NULL, AFX_WS_DEFAULT_VIEW, rect, this, AFX_IDW_PANE_FIRST, NULL );
 	flowchart->init();
-}
-
-void RPView::OnDraw(CDC* /*pDC*/)
-{
-	RPDoc* pDoc = GetDocument();
-	ASSERT_VALID( pDoc );
-	if ( !pDoc ) return;
 }
 
 const RPObjectClassInfo* RPView::getSrcClassInfo( COleDataObject* pDataObject ) const
@@ -244,33 +189,51 @@ BOOL RPView::OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint 
 	}
 }
 
-BOOL RPView::OnPreparePrinting( CPrintInfo* pInfo )
+QWidget* RPView::getQtParent()
 {
-	return DoPreparePrinting(pInfo);
+	return m_pParent;
 }
 
-void RPView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
+RPViewQt::RPViewQt()
+	: m_pContext(NULL)
+{}
+
+RPViewQt::~RPViewQt()
 {
+	m_thisCWnd.Detach();
 }
 
-void RPView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
+rbool RPViewQt::init()
 {
+	m_thisCWnd.Attach(winId());
+
+	m_pContext = new RPView(this);
+	m_pContext->Create(NULL, NULL, 0, CRect(0, 0, 100, 100), &m_thisCWnd, 0);
+
+	return true;
 }
 
-#ifdef _DEBUG
-void RPView::AssertValid() const
+RPView* RPViewQt::getContext()
 {
-	CView::AssertValid();
+	return m_pContext;
 }
 
-void RPView::Dump(CDumpContext& dc) const
+void RPViewQt::resizeEvent(PTR(QResizeEvent) event)
 {
-	CView::Dump(dc);
+	parent_type::resizeEvent(event);
+
+	if (!m_pContext)
+		return;
+
+	QSize size(event->size());
+	m_pContext->MoveWindow(0, 0, size.width(), size.height());
 }
 
-RPDoc* RPView::GetDocument() const
+void RPViewQt::closeEvent(PTR(QCloseEvent) event)
 {
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(RPDoc)));
-	return reinterpret_cast<RPDoc*>(m_pDocument);
+	ASSERT(m_pContext);
+	m_pContext->DestroyWindow();
+	delete m_pContext;
+
+	parent_type::closeEvent(event);
 }
-#endif //_DEBUG
