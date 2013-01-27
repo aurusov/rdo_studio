@@ -28,7 +28,6 @@
 						<section title="Редактирование" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
 						<section title="Автозавершение (code completion)" ref="rdo_studio_rus/html/work_model/work_model_complete.htm"/>
 						<section title="Шаблоны и вставка синтаксических конструкций" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
-						<section title="Дополнительные буферы обмена" ref="rdo_studio_rus/html/work_model/work_model_buffer.htm"/>
 						<section title="Поиск и замена подстрок" ref="rdo_studio_rus/html/work_model/work_model_search_replace.htm"/>
 						<section title="Поиск фразы по всей модели" ref="rdo_studio_rus/html/work_model/work_model_find_in_model.htm"/>
 						<section title="Навигация с помощью закладок" ref="rdo_studio_rus/html/work_model/work_model_bookmarks.htm"/>
@@ -99,7 +98,6 @@
 			<keyword name="анимация" ref="rdo_studio_rus/html/work_model/work_model_frame.htm"/>
 			<keyword name="бордюр" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="буферы" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
-			<keyword name="буферы" ref="rdo_studio_rus/html/work_model/work_model_buffer.htm"/>
 			<keyword name="буферы" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="вставка" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="выделение текста" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
@@ -150,7 +148,6 @@
 			<keyword name="модель: автозавершение" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="модель: анимация" ref="rdo_studio_rus/html/work_model/work_model_frame.htm"/>
 			<keyword name="модель: буферы" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
-			<keyword name="модель: буферы" ref="rdo_studio_rus/html/work_model/work_model_buffer.htm"/>
 			<keyword name="модель: буферы" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="модель: закладки" ref="rdo_studio_rus/html/work_menu/work_menu_search.htm"/>
 			<keyword name="модель: закладки" ref="rdo_studio_rus/html/work_model/work_model_bookmarks.htm"/>
