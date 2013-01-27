@@ -123,7 +123,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_simulator_report", "..\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".report", ".report", "{5425BEB8-53E7-403F-8CCC-34065EB9C016}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scintilla", "..\..\..\thirdparty\sci\win32\scintilla.vcproj", "{4FD39261-AA37-485C-AFFA-D910E8BE7B06}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scintilla", "..\..\..\thirdparty\scintilla\win32\scintilla.vcproj", "{4FD39261-AA37-485C-AFFA-D910E8BE7B06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

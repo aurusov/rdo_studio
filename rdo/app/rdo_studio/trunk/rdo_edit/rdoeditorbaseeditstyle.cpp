@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseeditstyle.h"
-#include "thirdparty/sci/include/SciLexer.h"
+#include "thirdparty/scintilla/include/SciLexer.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

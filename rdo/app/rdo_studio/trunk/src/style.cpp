@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/style.h"
-#include "thirdparty/sci/include/Scintilla.h"
+#include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

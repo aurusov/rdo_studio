@@ -15,7 +15,7 @@
 #include "app/rdo_studio_mfc/res/ac_function.xpm"
 #include "app/rdo_studio_mfc/res/ac_data.xpm"
 #include "app/rdo_studio_mfc/res/ac_trace.xpm"
-#include "thirdparty/sci/include/SciLexer.h"
+#include "thirdparty/scintilla/include/SciLexer.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;

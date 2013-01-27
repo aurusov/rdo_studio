@@ -17,9 +17,9 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
-#include "thirdparty/sci/lexlib/WordList.h"
-#include "thirdparty/sci/rdo/LexRdo.h"
-#include "thirdparty/sci/rdo/WordListUtil.h"
+#include "thirdparty/scintilla/lexlib/WordList.h"
+#include "thirdparty/scintilla/rdo/LexRdo.h"
+#include "thirdparty/scintilla/rdo/WordListUtil.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

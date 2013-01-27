@@ -15,7 +15,7 @@
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
-#include "thirdparty/sci/include/SciLexer.h"
+#include "thirdparty/scintilla/include/SciLexer.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

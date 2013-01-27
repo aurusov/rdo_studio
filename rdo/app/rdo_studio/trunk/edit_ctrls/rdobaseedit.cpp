@@ -20,9 +20,9 @@
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
-#include "thirdparty/sci/include/SciLexer.h"
-#include "thirdparty/sci/lexlib/WordList.h"
 #include "app/rdo_studio_mfc/src/dialog/goto_line_dialog.h"
+#include "thirdparty/scintilla/include/SciLexer.h"
+#include "thirdparty/scintilla/lexlib/WordList.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

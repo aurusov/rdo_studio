@@ -25,7 +25,7 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "thirdparty/sci/include/Scintilla.h"
+#include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

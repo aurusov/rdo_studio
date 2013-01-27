@@ -18,9 +18,9 @@
 #include "utils/rdostream.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
 #include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
-#include "thirdparty/sci/qt/ScintillaEditBase/ScintillaEditBase.h"
 #include "app/rdo_studio_mfc/src/dialog/find_dialog.h"
 #include "app/rdo_studio_mfc/src/dialog/find_replace_dialog.h"
+#include "thirdparty/scintilla/qt/ScintillaEditBase/ScintillaEditBase.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
