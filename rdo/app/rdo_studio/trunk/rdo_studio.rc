@@ -253,17 +253,6 @@ BEGIN
     CONTROL         "Проверять в будущем",IDC_FILEASSOCIATION_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,30,91,10
 END
 
-IDD_BUFFER DIALOG  0, 0, 205, 60
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Буфер"
-FONT 8, "MS Sans Serif"
-BEGIN
-    LTEXT           "Буфер 1",IDC_BUFFERVALUESTATIC,7,17,37,8
-    EDITTEXT        IDC_BUFFERVALUEEDIT,46,14,152,14,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "OK",IDOK,35,39,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,113,39,50,14
-END
-
 IDD_OPTIONS_TABS DIALOGEX 0, 0, 292, 121
 STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Табуляция"
@@ -1093,39 +1082,6 @@ BEGIN
             MENUITEM "Sqrt",                        ID_INSERT_FUNCTIONS_SQRT
             MENUITEM "Tan",                         ID_INSERT_FUNCTIONS_TAN
         END
-        MENUITEM SEPARATOR
-        POPUP "Буфер &1"
-        BEGIN
-            MENUITEM "Вст&авить\tCtrl+1",           ID_INSERT_BUFFER1_PASTE
-            MENUITEM "&Добавить\tAlt+1",            ID_INSERT_BUFFER1_APPEND
-            MENUITEM "&Редактировать...",           ID_INSERT_BUFFER1_EDIT
-            MENUITEM SEPARATOR
-            MENUITEM "&Очистить\tCtrl+Shift+1",     ID_INSERT_BUFFER1_CLEAR
-        END
-        POPUP "Буфер &2"
-        BEGIN
-            MENUITEM "Вст&авить\tCtrl+2",           ID_INSERT_BUFFER2_PASTE
-            MENUITEM "&Добавить\tAlt+2",            ID_INSERT_BUFFER2_APPEND
-            MENUITEM "&Редактировать...",           ID_INSERT_BUFFER2_EDIT
-            MENUITEM SEPARATOR
-            MENUITEM "&Очистить\tCtrl+Shift+2",     ID_INSERT_BUFFER2_CLEAR
-        END
-        POPUP "Буфер &3"
-        BEGIN
-            MENUITEM "Вст&авить\tCtrl+3",           ID_INSERT_BUFFER3_PASTE
-            MENUITEM "&Добавить\tAlt+3",            ID_INSERT_BUFFER3_APPEND
-            MENUITEM "&Редактировать...",           ID_INSERT_BUFFER3_EDIT
-            MENUITEM SEPARATOR
-            MENUITEM "&Очистить\tCtrl+Shift+3",     ID_INSERT_BUFFER3_CLEAR
-        END
-        POPUP "Буфер &4"
-        BEGIN
-            MENUITEM "Вст&авить\tCtrl+4",           ID_INSERT_BUFFER4_PASTE
-            MENUITEM "&Добавить\tAlt+4",            ID_INSERT_BUFFER4_APPEND
-            MENUITEM "&Редактировать...",           ID_INSERT_BUFFER4_EDIT
-            MENUITEM SEPARATOR
-            MENUITEM "&Очистить\tCtrl+Shift+4",     ID_INSERT_BUFFER4_CLEAR
-        END
     END
     POPUP "&Модель"
     BEGIN
@@ -1235,18 +1191,6 @@ BEGIN
     "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
     "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
     VK_F1,          ID_HELP_KEYWORD,        VIRTKEY, NOINVERT
-    "1",            ID_INSERT_BUFFER1_APPEND, VIRTKEY, ALT, NOINVERT
-    "1",            ID_INSERT_BUFFER1_CLEAR, VIRTKEY, SHIFT, CONTROL, NOINVERT
-    "1",            ID_INSERT_BUFFER1_PASTE, VIRTKEY, CONTROL, NOINVERT
-    "2",            ID_INSERT_BUFFER2_APPEND, VIRTKEY, ALT, NOINVERT
-    "2",            ID_INSERT_BUFFER2_CLEAR, VIRTKEY, SHIFT, CONTROL, NOINVERT
-    "2",            ID_INSERT_BUFFER2_PASTE, VIRTKEY, CONTROL, NOINVERT
-    "3",            ID_INSERT_BUFFER3_APPEND, VIRTKEY, ALT, NOINVERT
-    "3",            ID_INSERT_BUFFER3_CLEAR, VIRTKEY, SHIFT, CONTROL, NOINVERT
-    "3",            ID_INSERT_BUFFER3_PASTE, VIRTKEY, CONTROL, NOINVERT
-    "4",            ID_INSERT_BUFFER4_APPEND, VIRTKEY, ALT, NOINVERT
-    "4",            ID_INSERT_BUFFER4_CLEAR, VIRTKEY, SHIFT, CONTROL, NOINVERT
-    "4",            ID_INSERT_BUFFER4_PASTE, VIRTKEY, CONTROL, NOINVERT
     VK_F7,          ID_MODEL_BUILD,         VIRTKEY, NOINVERT
     VK_F5,          ID_MODEL_RUN,           VIRTKEY, NOINVERT
     VK_F5,          ID_MODEL_RUN,           VIRTKEY, CONTROL, NOINVERT
