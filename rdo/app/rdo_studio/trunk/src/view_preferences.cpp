@@ -176,6 +176,69 @@ void ViewPreferences::createTree()
 	m_pBookmark  = createTreeItem(m_pText, "Закладка",           IT_TEXT);
 	m_pGroup     = createTreeItem(m_pText, "Группа",             IT_TEXT);
 	m_pError     = createTreeItem(m_pText, "Ошибка",             IT_TEXT);
+
+	m_pTextCompile      = createTreeItem(m_pCompile, "текст",             IT_COMPILE);
+	m_pSelectedString   = createTreeItem(m_pCompile, "выделенная строка", IT_COMPILE);
+	m_pCaretCompile     = createTreeItem(m_pCompile, "каретка",           IT_COMPILE);
+	m_pSelectionCompile = createTreeItem(m_pCompile, "выделение",         IT_COMPILE);
+	m_pBookmarkCompile  = createTreeItem(m_pCompile, "закладка",          IT_COMPILE);
+
+	m_pTextDebug      = createTreeItem(m_pDebug, "текст",     IT_DEBUG);
+	m_pCaretDebug     = createTreeItem(m_pDebug, "каретка",   IT_DEBUG);
+	m_pSelectionDebug = createTreeItem(m_pDebug, "выделение", IT_DEBUG);
+	m_pBookmarkDebug  = createTreeItem(m_pDebug, "закладка",  IT_DEBUG);
+
+	m_pES     = createTreeItem(m_pTrace, "Служебное событие (ES)",                         IT_TRACE);
+	m_pEB     = createTreeItem(m_pTrace, "Начало действия (EB)",                           IT_TRACE);
+	m_pEF     = createTreeItem(m_pTrace, "Окончание действия (EF)",                        IT_TRACE);
+	m_pEI     = createTreeItem(m_pTrace, "Нерегулярное событие (EI)",                      IT_TRACE);
+	m_pER     = createTreeItem(m_pTrace, "Продукционное правило (ER)",                     IT_TRACE);
+	m_pRC     = createTreeItem(m_pTrace, "Создание ресурса (RC)",                          IT_TRACE);
+	m_pRE     = createTreeItem(m_pTrace, "Удаление ресурса (RE)",                          IT_TRACE);
+	m_pRK     = createTreeItem(m_pTrace, "Изменение состояния ресурса (RK)",               IT_TRACE);
+	m_pV      = createTreeItem(m_pTrace, "Трассировка индекса (V)",                        IT_TRACE);
+	m_pStatus = createTreeItem(m_pTrace, "Статус окончания моделирования ($Status)",       IT_TRACE);
+	m_pDPS    = createTreeItem(m_pTrace, "Статистика по поиску на графе (DPS)",            IT_TRACE);
+	m_pSB     = createTreeItem(m_pTrace, "Начало поиска (SB)",                             IT_TRACE);
+	m_pSO     = createTreeItem(m_pTrace, "Трассировка раскрываемой вершины (SO)",          IT_TRACE);
+	m_pSTN    = createTreeItem(m_pTrace, "Признак вершины (STN)",                          IT_TRACE);
+	m_pSTD    = createTreeItem(m_pTrace, "Признак вершины (STD)",                          IT_TRACE);
+	m_pSTR    = createTreeItem(m_pTrace, "Признак вершины (STR)",                          IT_TRACE);
+	m_pSRC    = createTreeItem(m_pTrace, "Создание ресурса (при поиске) (SRC)",            IT_TRACE);
+	m_pSRE    = createTreeItem(m_pTrace, "Удаление ресурса (при поиске) (SRE)",            IT_TRACE);
+	m_pSRK    = createTreeItem(m_pTrace, "Изменение состояния ресурса (при поиске) (SRK)", IT_TRACE);
+	m_pSD     = createTreeItem(m_pTrace, "Трассировка решения (SD)",                       IT_TRACE);
+	m_pSES    = createTreeItem(m_pTrace, "Завершение поиска (SES)",                        IT_TRACE);
+	m_pSEN    = createTreeItem(m_pTrace, "Завершение поиска (SEN)",                        IT_TRACE);
+	m_pSEM    = createTreeItem(m_pTrace, "Завершение поиска (SEM)",                        IT_TRACE);
+	m_pSEF    = createTreeItem(m_pTrace, "Завершение поиска (SEF)",                        IT_TRACE);
+	m_pSEU    = createTreeItem(m_pTrace, "Завершение поиска (SEU)",                        IT_TRACE);
+
+	m_pPlainTextResult = createTreeItem(m_pResult, "исходный текст", IT_RESULT);
+	m_pVariableResult  = createTreeItem(m_pResult, "переменная",     IT_RESULT);
+	m_pKeywordResult   = createTreeItem(m_pResult, "ключевое слово", IT_RESULT);
+	m_pNumberResult    = createTreeItem(m_pResult, "число",          IT_RESULT);
+	m_pStringResult    = createTreeItem(m_pResult, "строка",         IT_RESULT);
+	m_pOperatorResult  = createTreeItem(m_pResult, "оператор",       IT_RESULT);
+	m_pCaretResult     = createTreeItem(m_pResult, "каретка",        IT_RESULT);
+	m_pSelectionResult = createTreeItem(m_pResult, "выделение",      IT_RESULT);
+	m_pBookmarkResult  = createTreeItem(m_pResult, "закладка",       IT_RESULT);
+
+	m_pTextSearch           = createTreeItem(m_pSearch, "текст",             IT_SEARCH);
+	m_pStringSearch         = createTreeItem(m_pSearch, "строка для поиска", IT_SEARCH);
+	m_pSelectedStringSearch = createTreeItem(m_pSearch, "выделенная строка", IT_SEARCH);
+	m_pCaretSearch          = createTreeItem(m_pSearch, "каретка",           IT_SEARCH);
+	m_pSelectionSearch      = createTreeItem(m_pSearch, "выделение",         IT_SEARCH);
+	m_pBookmarkSearch       = createTreeItem(m_pSearch, "закладка",          IT_SEARCH);
+
+	m_pAxis   = createTreeItem(m_pChart, "ось",       IT_CHART);
+	m_pTitle  = createTreeItem(m_pChart, "заголовок", IT_CHART);
+	m_pLegend = createTreeItem(m_pChart, "легенда",   IT_CHART);
+	m_pGraph  = createTreeItem(m_pChart, "график",    IT_CHART);
+	m_pTime   = createTreeItem(m_pChart, "время",     IT_CHART);
+
+	m_pEdgingColor     = createTreeItem(m_pAnimation, "цвет окантовки",               IT_ANIMATION);
+	m_pBackgroundColor = createTreeItem(m_pAnimation, "цвет фона за пределами кадра", IT_ANIMATION);
 }
 
 PTR(QTreeWidgetItem) ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType)

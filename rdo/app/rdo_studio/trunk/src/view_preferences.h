@@ -77,7 +77,75 @@ private:
 	treeItem m_pGroup;
 	treeItem m_pError;
 
-	
+	//Окно компиляции
+	treeItem m_pTextCompile;
+	treeItem m_pSelectedString;
+	treeItem m_pCaretCompile;
+	treeItem m_pSelectionCompile;
+	treeItem m_pBookmarkCompile;
+
+	//Окно отладки
+	treeItem m_pTextDebug;
+	treeItem m_pCaretDebug;
+	treeItem m_pSelectionDebug;
+	treeItem m_pBookmarkDebug;
+
+	//Окно трассировки
+	treeItem m_pES;
+	treeItem m_pEB;
+	treeItem m_pEF;
+	treeItem m_pEI;
+	treeItem m_pER;
+	treeItem m_pRC;
+	treeItem m_pRE;
+	treeItem m_pRK;
+	treeItem m_pV;
+	treeItem m_pStatus;
+	treeItem m_pDPS;
+	treeItem m_pSB;
+	treeItem m_pSO;
+	treeItem m_pSTN;
+	treeItem m_pSTD;
+	treeItem m_pSTR;
+	treeItem m_pSRC;
+	treeItem m_pSRE;
+	treeItem m_pSRK;
+	treeItem m_pSD;
+	treeItem m_pSES;
+	treeItem m_pSEN;
+	treeItem m_pSEM;
+	treeItem m_pSEF;
+	treeItem m_pSEU;
+
+	//Окно результатов
+	treeItem m_pPlainTextResult;
+	treeItem m_pVariableResult;
+	treeItem m_pKeywordResult;
+	treeItem m_pNumberResult;
+	treeItem m_pStringResult;
+	treeItem m_pOperatorResult;
+	treeItem m_pCaretResult;
+	treeItem m_pSelectionResult;
+	treeItem m_pBookmarkResult;
+
+	//Окно поиска
+	treeItem m_pTextSearch;
+	treeItem m_pStringSearch;
+	treeItem m_pSelectedStringSearch;
+	treeItem m_pCaretSearch;
+	treeItem m_pSelectionSearch;
+	treeItem m_pBookmarkSearch;
+
+	//Окно графиков
+	treeItem m_pAxis;
+	treeItem m_pTitle;
+	treeItem m_pLegend;
+	treeItem m_pGraph;
+	treeItem m_pTime;
+
+	//Окно анимации
+	treeItem m_pEdgingColor;
+	treeItem m_pBackgroundColor;	
 
 	enum ItemType
 	{
