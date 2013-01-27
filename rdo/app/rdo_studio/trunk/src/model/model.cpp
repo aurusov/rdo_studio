@@ -34,7 +34,6 @@
 #include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio/rdo_tracer/rdotracer.h"
-#include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;
