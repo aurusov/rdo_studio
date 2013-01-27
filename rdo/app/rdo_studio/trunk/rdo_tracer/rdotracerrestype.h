@@ -16,9 +16,9 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerResParamInfo
+// -------------------- TracerResParamInfo
 // --------------------------------------------------------------------------------
-enum RDOTracerResParamType {
+enum TracerResParamType {
 	RDOPT_INTEGER   = 0,
 	RDOPT_REAL,
 	RDOPT_ENUMERATIVE,
@@ -29,17 +29,17 @@ enum RDOTracerResParamType {
 	
 typedef std::vector <tstring> RDOStringVector;
 
-class RDOTracerResParamInfo
+class TracerResParamInfo
 {
 protected:
 	RDOStringVector* enumValues;
-	RDOTracerResParamType paramType;
+	TracerResParamType paramType;
 public:
-	RDOTracerResParamInfo( const RDOTracerResParamType type );
-	virtual ~RDOTracerResParamInfo();
+	TracerResParamInfo( const TracerResParamType type );
+	virtual ~TracerResParamInfo();
 
 	tstring Name;
-	RDOTracerResParamType getParamType() const { return paramType; };
+	TracerResParamType getParamType() const { return paramType; };
 	int addEnumValue  ( CREF(tstring) value );
 	int addStringValue( CREF(tstring) value );
 	tstring getEnumValue( unsigned int index ) const;
@@ -47,26 +47,26 @@ public:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerResType
+// -------------------- TracerResType
 // --------------------------------------------------------------------------------
-enum RDOTracerResTypeKind {
+enum TracerResTypeKind {
 	RDOTK_PERMANENT = 0,
 	RDOTK_TEMPORARY
 };
 
-class RDOTracerResType : public ChartTreeItem
+class TracerResType : public ChartTreeItem
 {
 protected:
-	std::vector <RDOTracerResParamInfo*> paramsInfo;
-	RDOTracerResTypeKind restypeKind;
+	std::vector <TracerResParamInfo*> paramsInfo;
+	TracerResTypeKind restypeKind;
 public:
-	RDOTracerResType( const RDOTracerResTypeKind kind );
-	virtual ~RDOTracerResType();
+	TracerResType( const TracerResTypeKind kind );
+	virtual ~TracerResType();
 
 	tstring Name;
-	RDOTracerResTypeKind getResTypeKind() const { return restypeKind; };
-	int addParamInfo( RDOTracerResParamInfo* const value );
-	RDOTracerResParamInfo* getParamInfo( unsigned int index ) const;
+	TracerResTypeKind getResTypeKind() const { return restypeKind; };
+	int addParamInfo( TracerResParamInfo* const value );
+	TracerResParamInfo* getParamInfo( unsigned int index ) const;
 	const int getParamsCount() const { return paramsInfo.size(); };
 };
 

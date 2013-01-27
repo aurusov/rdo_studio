@@ -17,7 +17,7 @@
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildeditstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindeditstyle.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view_style.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/log_view_style.h"
 #include "app/rdo_studio_mfc/src/style.h"
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
 #include "app/rdo_studio_mfc/src/frame/style.h"
@@ -34,14 +34,14 @@
 class MainWindowBase
 {
 public:
-	rdoEditor::RDOEditorEditStyle    style_editor;
-	rdoEditCtrl::RDOBuildEditStyle   style_build;
-	rdoEditCtrl::RDOBaseEditStyle    style_debug;
-	rdoTracerLog::RDOTracerLogStyle  style_trace;
-	rdoEditor::RDOEditorResultsStyle style_results;
-	rdoEditCtrl::RDOFindEditStyle    style_find;
-	RDOStudioFrameStyle              style_frame;
-	RDOStudioChartViewStyle          style_chart;
+	rdoEditor::RDOEditorEditStyle     style_editor;
+	rdoEditCtrl::RDOBuildEditStyle    style_build;
+	rdoEditCtrl::RDOBaseEditStyle     style_debug;
+	rdo::gui::tracer::LogStyle        style_trace;
+	rdoEditor::RDOEditorResultsStyle  style_results;
+	rdoEditCtrl::RDOFindEditStyle     style_find;
+	RDOStudioFrameStyle               style_frame;
+	RDOStudioChartViewStyle           style_chart;
 
 	rbool isMDIMaximazed() const { return true; }
 

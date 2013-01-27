@@ -29,17 +29,17 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerSerieFindValue
+// -------------------- TracerSerieFindValue
 // --------------------------------------------------------------------------------
-class RDOTracerSerieFindValue
+class TracerSerieFindValue
 {
 	RDOStudioChartView* view;
 public:
-	RDOTracerSerieFindValue( RDOStudioChartView* _view ): view( _view ) {};
-	rbool operator ()( RDOTracerValue* val );
+	TracerSerieFindValue( RDOStudioChartView* _view ): view( _view ) {};
+	rbool operator ()( TracerValue* val );
 };
 
-rbool RDOTracerSerieFindValue::operator ()( RDOTracerValue* val )
+rbool TracerSerieFindValue::operator ()( TracerValue* val )
 {
 	rbool res = val && val->modeltime->time >= view->drawFromX.time;
 	if ( view->doUnwrapTime() && res && ( val->modeltime->time == view->drawFromX.time ) )
@@ -48,9 +48,9 @@ rbool RDOTracerSerieFindValue::operator ()( RDOTracerValue* val )
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerSerie
+// -------------------- TracerSerie
 // --------------------------------------------------------------------------------
-RDOTracerSerie::RDOTracerSerie( RDOTracerSerieKind _serieKind ) :
+TracerSerie::TracerSerie( TracerSerieKind _serieKind ) :
 	ChartTreeItem( true ),
 	serieKind( _serieKind ),
 	minValue( 0 ),
@@ -59,7 +59,7 @@ RDOTracerSerie::RDOTracerSerie( RDOTracerSerieKind _serieKind ) :
 {
 }
 
-RDOTracerSerie::~RDOTracerSerie()
+TracerSerie::~TracerSerie()
 {
 	mutex.Lock();
 
@@ -74,23 +74,23 @@ RDOTracerSerie::~RDOTracerSerie()
 	mutex.Unlock();
 };
 
-rbool RDOTracerSerie::isTemporaryResourceParam() const
+rbool TracerSerie::isTemporaryResourceParam() const
 {
-	return serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->getType()->getResTypeKind() == RDOTK_TEMPORARY;
+	return serieKind == RDOST_RESPARAM && ((TracerResParam*)this)->getResource()->getType()->getResTypeKind() == RDOTK_TEMPORARY;
 };
 
-tstring RDOTracerSerie::getTitle() const
+tstring TracerSerie::getTitle() const
 {
 	return title;
 }
 
-void RDOTracerSerie::setTitle( CREF(tstring) value )
+void TracerSerie::setTitle( CREF(tstring) value )
 {
 	if ( title != value )
 		title = value;
 }
 
-void RDOTracerSerie::addValue( RDOTracerValue* const value )
+void TracerSerie::addValue( TracerValue* const value )
 {
 	std::vector< RDOStudioChartDoc* >::iterator it;
 	for ( it = documents.begin(); it != documents.end(); it++ )
@@ -115,7 +115,7 @@ void RDOTracerSerie::addValue( RDOTracerValue* const value )
 		(*it)->unlock();
 }
 
-void RDOTracerSerie::getValueCount( int& count ) const
+void TracerSerie::getValueCount( int& count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -124,7 +124,7 @@ void RDOTracerSerie::getValueCount( int& count ) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptions( std::vector<tstring> &captions, const int val_count ) const
+void TracerSerie::getCaptions( std::vector<tstring> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -147,11 +147,11 @@ void RDOTracerSerie::getCaptions( std::vector<tstring> &captions, const int val_
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptionsInt( std::vector<tstring> &captions, const int val_count ) const
+void TracerSerie::getCaptionsInt( std::vector<tstring> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	RDOTracerSerie::getCaptions( captions, val_count );
+	TracerSerie::getCaptions( captions, val_count );
 
 	int real_val_count = val_count;
 	if ( ( maxValue - minValue + 1 ) > real_val_count ) {
@@ -171,11 +171,11 @@ void RDOTracerSerie::getCaptionsInt( std::vector<tstring> &captions, const int v
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptionsDouble( std::vector<tstring> &captions, const int val_count ) const
+void TracerSerie::getCaptionsDouble( std::vector<tstring> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	RDOTracerSerie::getCaptions( captions, val_count );
+	TracerSerie::getCaptions( captions, val_count );
 	
 	double valoffset = ( maxValue - minValue ) / (double)( val_count - 1 );
 	double valo = minValue;
@@ -192,14 +192,14 @@ void RDOTracerSerie::getCaptionsDouble( std::vector<tstring> &captions, const in
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptionsBool( std::vector<tstring> &captions, const int val_count ) const
+void TracerSerie::getCaptionsBool( std::vector<tstring> &captions, const int val_count ) const
 {
-	RDOTracerSerie::getCaptions( captions, val_count );
+	TracerSerie::getCaptions( captions, val_count );
 	captions.push_back( "FALSE" );
 	captions.push_back( "TRUE" );
 }
 
-void RDOTracerSerie::getLastValue( RDOTracerValue*& val ) const
+void TracerSerie::getLastValue( TracerValue*& val ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -211,13 +211,13 @@ void RDOTracerSerie::getLastValue( RDOTracerValue*& val ) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const rbool draw_marker, const rbool transparent_marker ) const
+void TracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect, const COLORREF color, TracerSerieMarker marker, const int marker_size, const rbool draw_marker, const rbool transparent_marker ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 	
 	if ( !values.empty() ) {
 		
-		valuesList::const_iterator it = std::find_if( values.begin(), values.end(), RDOTracerSerieFindValue( view ) );
+		valuesList::const_iterator it = std::find_if( values.begin(), values.end(), TracerSerieFindValue( view ) );
 
 		if ( it == values.end() && !values.empty() && !isTemporaryResourceParam() ) {
 			it --;
@@ -323,7 +323,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &
 					}
 				}
 				
-				rbool tempres_erased = ( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() );
+				rbool tempres_erased = ( serieKind == RDOST_RESPARAM && ((TracerResParam*)this)->getResource()->isErased() );
 				rbool need_continue = !view->doUnwrapTime() ? ( values.size() > 1 ) : true;
 				if ( tempres_erased ) {
 					if ( !view->doUnwrapTime() ) {
@@ -368,7 +368,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::drawMarker( HDC &dc, const int x, const int y, RDOTracerSerieMarker marker, const int marker_size ) const
+void TracerSerie::drawMarker( HDC &dc, const int x, const int y, TracerSerieMarker marker, const int marker_size ) const
 {
 	CRect rect;
 	rect.left = x - marker_size;
@@ -412,7 +412,7 @@ void RDOTracerSerie::drawMarker( HDC &dc, const int x, const int y, RDOTracerSer
 	}
 }
 
-void RDOTracerSerie::addToDoc( RDOStudioChartDoc* const doc )
+void TracerSerie::addToDoc( RDOStudioChartDoc* const doc )
 {
 	mutex.Lock();
 	
@@ -423,7 +423,7 @@ void RDOTracerSerie::addToDoc( RDOStudioChartDoc* const doc )
 	mutex.Unlock();
 }
 
-void RDOTracerSerie::removeFromDoc( RDOStudioChartDoc* const doc )
+void TracerSerie::removeFromDoc( RDOStudioChartDoc* const doc )
 {
 	mutex.Lock();
 	
@@ -435,7 +435,7 @@ void RDOTracerSerie::removeFromDoc( RDOStudioChartDoc* const doc )
 	mutex.Unlock();
 }
 
-rbool RDOTracerSerie::activateFirstDoc() const
+rbool TracerSerie::activateFirstDoc() const
 {
 	const_cast<CMutex&>(mutex).Lock();
 	
@@ -457,7 +457,7 @@ rbool RDOTracerSerie::activateFirstDoc() const
 	return result;
 }
 
-RDOTracerSerie::ExportData RDOTracerSerie::exportData()
+TracerSerie::ExportData TracerSerie::exportData()
 {
 	setlocale(LC_ALL, _T("rus"));
 
@@ -465,7 +465,7 @@ RDOTracerSerie::ExportData RDOTracerSerie::exportData()
 	exportData.reserve(values.size() + 1);
 	exportData.push_back(rdo::format("%s;%s", "время", title.c_str()));
 
-	BOOST_FOREACH(PTR(RDOTracerValue) pValue, values)
+	BOOST_FOREACH(PTR(TracerValue) pValue, values)
 	{
 		exportData.push_back(rdo::format("%f;%f", pValue->getModelTime()->time, pValue->value));
 	}

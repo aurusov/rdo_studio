@@ -31,20 +31,20 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdo::repository;
 using namespace rdo::service::simulation;
-using namespace rdoTracer;
+using namespace rdo::gui::tracer;
 
-RDOTracer* tracer = NULL;
+Tracer* g_pTracer = NULL;
 
 static rbool clear_after_stop = false;
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracer
+// -------------------- Tracer
 // --------------------------------------------------------------------------------
-RDOTracer::RDOTracer(): RDOTracerBase( "RDOStudioTracerGUI", static_cast<RDOKernelGUI*>(studioApp.m_pStudioGUI) )
+Tracer::Tracer(): TracerBase( "RDOStudioTracerGUI", static_cast<RDOKernelGUI*>(studioApp.m_pStudioGUI) )
 {
 	clear_after_stop = false;
 
-	tracer = this;
+	g_pTracer = this;
 
 	notifies.push_back( RT_REPOSITORY_MODEL_CLOSE );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_OK );
@@ -57,12 +57,12 @@ RDOTracer::RDOTracer(): RDOTracerBase( "RDOStudioTracerGUI", static_cast<RDOKern
 	after_constructor();
 }
 
-RDOTracer::~RDOTracer()
+Tracer::~Tracer()
 {
-	tracer = NULL;
+	g_pTracer = NULL;
 }
 
-void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
+void Tracer::proc( RDOThread::RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
 		case RDOThread::RT_REPOSITORY_MODEL_CLOSE: {
@@ -113,7 +113,7 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 	}
 }
 
-void RDOTracer::setRuntimeMode( const rdo::runtime::RunTimeMode value )
+void Tracer::setRuntimeMode( const rdo::runtime::RunTimeMode value )
 {
 	if ( value == rdo::runtime::RTM_MaxSpeed ) {
 		setDrawTrace( false );

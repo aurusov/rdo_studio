@@ -118,6 +118,6 @@ public:
 	RDOStyleTheme* theme;
 };
 
-}; // namespace rdoStyle
+} // namespace rdoStyle
 
 #endif // _RDO_STUDIO_MFC_STYLE_H_

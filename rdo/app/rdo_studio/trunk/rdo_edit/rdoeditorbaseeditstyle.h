@@ -85,6 +85,6 @@ public:
 	rbool operator !=( const RDOEditorBaseEditStyle& style ) const;
 };
 
-}; // namespace rdoEditor
+} // namespace rdoEditor
 
 #endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORBASEEDITSTYLE_H_

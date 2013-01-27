@@ -35,13 +35,13 @@ class RDOStudioChartDocInsertTime
 	RDOStudioChartDoc* doc;
 public:
 	RDOStudioChartDocInsertTime( RDOStudioChartDoc* _doc ): doc( _doc ) {};
-	void operator ()( RDOTracerValue* val );
+	void operator ()( TracerValue* val );
 };
 
-void RDOStudioChartDocInsertTime::operator ()( RDOTracerValue* val )
+void RDOStudioChartDocInsertTime::operator ()( TracerValue* val )
 {
 	if( val ) {
-		timesList::iterator it = std::find_if( doc->inserted_it, doc->docTimes.end(), std::bind2nd( std::mem_fun1( &RDOTracerTimeNow::compareTimes ), val->modeltime ) );
+		timesList::iterator it = std::find_if( doc->inserted_it, doc->docTimes.end(), std::bind2nd( std::mem_fun1( &TracerTimeNow::compareTimes ), val->modeltime ) );
 		if ( it == doc->docTimes.end() || (*it) != val->modeltime ) {
 			doc->inserted_it = doc->docTimes.insert( it, val->modeltime );
 			doc->ticksCount += val->modeltime->eventCount;
@@ -74,12 +74,12 @@ RDOStudioChartDoc::RDOStudioChartDoc(const rbool preview)
 	, previewMode  (preview )
 {
 	if ( !previewMode )
-		tracer->addChart( this );
+		g_pTracer->addChart( this );
 }
 
 RDOStudioChartDoc::~RDOStudioChartDoc()
 {
-	tracer->lock();
+	g_pTracer->lock();
 
 	mutex.Lock();
 
@@ -88,11 +88,11 @@ RDOStudioChartDoc::~RDOStudioChartDoc()
 		delete (*it);
 	}
 	if ( !previewMode )
-		tracer->removeChart( this );
+		g_pTracer->removeChart( this );
 
 	mutex.Unlock();
 
-	tracer->unlock();
+	g_pTracer->unlock();
 }
 
 void RDOStudioChartDoc::attachView(RDOStudioChartView* pView)
@@ -136,9 +136,9 @@ int RDOStudioChartDoc::getSerieIndex( RDOStudioDocSerie* serie ) const
 	return res;
 }
 
-void RDOStudioChartDoc::incTimeEventsCount( RDOTracerTimeNow* time )
+void RDOStudioChartDoc::incTimeEventsCount( TracerTimeNow* time )
 {
-	//mutex.Lock(); Document is locked from RDOTracerBase::addTime
+	//mutex.Lock(); Document is locked from TracerBase::addTime
 
 	if ( !docTimes.empty() && docTimes.back() == time ) {
 		ticksCount ++;
@@ -148,15 +148,15 @@ void RDOStudioChartDoc::incTimeEventsCount( RDOTracerTimeNow* time )
 	//mutex.Unlock();
 }
 
-rbool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
+rbool RDOStudioChartDoc::newValueToSerieAdded( TracerValue* val )
 {
-	//mutex.Lock(); Document is locked from RDOTracerSerie::addValue
+	//mutex.Lock(); Document is locked from TracerSerie::addValue
 	
 	if ( docTimes.empty() ) {
 		docTimes.push_back( val->modeltime );
 		ticksCount += val->modeltime->eventCount;
 	} else {
-		RDOTracerTimeNow* last = docTimes.back();
+		TracerTimeNow* last = docTimes.back();
 		if ( last != val->modeltime ) {
 			docTimes.push_back( val->modeltime );
 			ticksCount += val->modeltime->eventCount;
@@ -217,7 +217,7 @@ void RDOStudioChartDoc::updateChartViews( const UINT update_type ) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
+void RDOStudioChartDoc::addSerie( TracerSerie* const serie )
 {
 	mutex.Lock();
 	
@@ -270,7 +270,7 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 	mutex.Unlock();
 }
 
-/*void RDOStudioChartDoc::removeSerie( RDOTracerSerie* const serie )
+/*void RDOStudioChartDoc::removeSerie( TracerSerie* const serie )
 {
 	if ( !serie ) return;
 	vector<RDOStudioDocSerie*>::iterator it = find_if( series.begin(), series.end(), bind2nd( mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) );
@@ -309,12 +309,12 @@ COLORREF RDOStudioChartDoc::selectColor()
 	return res;
 }
 
-RDOTracerSerieMarker RDOStudioChartDoc::selectMarker()
+TracerSerieMarker RDOStudioChartDoc::selectMarker()
 {
 	int count = series.size();
 	int mul = count / 4;
 	int index = count - mul * 4;
-	RDOTracerSerieMarker res = RDOSM_CIRCLE;
+	TracerSerieMarker res = RDOSM_CIRCLE;
 	switch ( index ) {
 		case 0  : res = RDOSM_CIRCLE; break;
 		case 1  : res = RDOSM_SQUARE; break;
@@ -324,7 +324,7 @@ RDOTracerSerieMarker RDOStudioChartDoc::selectMarker()
 	return res;
 }
 
-rbool RDOStudioChartDoc::serieExists( const RDOTracerSerie* serie ) const
+rbool RDOStudioChartDoc::serieExists( const TracerSerie* serie ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 

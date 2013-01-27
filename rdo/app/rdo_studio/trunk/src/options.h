@@ -24,8 +24,8 @@
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildeditstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindeditstyle.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view_style.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/log_main_wnd.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/log_view_style.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/src/chart/view.h"
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
@@ -80,8 +80,6 @@ public:
 protected:
 	enum { IDD = IDD_OPTIONS_EDITOR };
 
-	BOOL m_bufferClearAuto;
-	int  m_bufferDelay;
 	BOOL m_codecompUse;
 	int  m_codecompShowFullList;
 	BOOL m_marginFold;
@@ -415,7 +413,7 @@ private:
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;
 	rdoEditCtrl::RDOBaseEditStyle    style_debug;
-	rdoTracerLog::RDOTracerLogStyle  style_trace;
+	rdo::gui::tracer::LogStyle       style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
 	RDOStudioChartViewStyle          style_chart;
@@ -430,15 +428,15 @@ private:
 	rdoEditor::RDOEditorEdit       preview_editor;
 	rdoEditCtrl::RDOBuildEdit      preview_build;
 	rdoEditCtrl::RDODebugEdit      preview_debug;
-	rdoTracerLog::RDOTracerLogCtrl preview_trace;
+	rdo::gui::tracer::LogMainWnd   preview_trace;
 	rdoEditor::RDOEditorResults    preview_results;
 	rdoEditCtrl::RDOFindEdit       preview_find;
 
 	rbool                          chart_need_delete;
 	RDOStudioChartDoc*             preview_chart_doc;
 	RDOStudioChartView*            preview_chart;
-	std::vector<RDOTracerTimeNow>  preview_times;
-	RDOTracerSerie                 preview_serie;
+	std::vector<TracerTimeNow>     preview_times;
+	TracerSerie                    preview_serie;
 
 	RDOStudioFrameOptionsCtrl      preview_frame;
 

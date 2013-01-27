@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 #include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
@@ -130,7 +131,8 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //END_MESSAGE_MAP()
 
 RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
-	ScintillaEditBase(pParent),
+	super(pParent),
+	ActionActivator(boost::bind(&RDOBaseEdit::onActivate, this), boost::bind(&RDOBaseEdit::onDeactivate, this)),
 	GUI_ID_EDIT_UNDO( false ),
 	GUI_ID_EDIT_REDO( false ),
 	GUI_ID_EDIT_CUT( false ),
@@ -1429,4 +1431,26 @@ void RDOBaseEdit::OnSearchGotoLine()
 	//	}
 	//	setCurrentPos( dialog.line - 1, 0 );
 	//}
+}
+
+void RDOBaseEdit::focusInEvent(QFocusEvent* pEvent)
+{
+	super::focusInEvent(pEvent);
+	activate(pEvent);
+}
+
+void RDOBaseEdit::focusOutEvent(QFocusEvent* pEvent)
+{
+	super::focusOutEvent(pEvent);
+	deactivate(pEvent);
+}
+
+void RDOBaseEdit::onActivate()
+{
+	TRACE("RDOBaseEdit::onActivate\n");
+}
+
+void RDOBaseEdit::onDeactivate()
+{
+	TRACE("RDOBaseEdit::onDeactivate\n");
 }

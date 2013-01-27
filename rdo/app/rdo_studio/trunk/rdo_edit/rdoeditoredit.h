@@ -11,13 +11,12 @@
 #define _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDIT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
 // --------------------------------------------------------------------------------
-
-class RDOStudioEditBaseView;
 
 namespace rdoEditor {
 
@@ -33,9 +32,9 @@ private:
 	int sci_MARKER_ERROR;
 
 protected:
-	RDOStudioEditBaseView* view;
+	QWidget* view;
 
-	rdoEditCtrl::RDOLogEdit* log;
+	rdoEditCtrl::LogEdit* log;
 
 	void expand( int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1 ) const;
 	void foldChanged( int line, int levelNow, int levelPrev ) const;
@@ -45,9 +44,6 @@ protected:
 
 	void commentSelection() const;
 	void completeWord();
-
-	void onBufferAppend(ruint bufferID);
-	void onBufferEdit  (ruint bufferID);
 
 	rbool canClearErrorLine;
 	void  clearErrorLine();
@@ -67,15 +63,15 @@ private:
 	afx_msg void OnInsertCommand( UINT nID );
 
 public:
-	RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pView = NULL);
+	RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);
 	virtual ~RDOEditorEdit();
 
 	void setEditorStyle(PTR(RDOEditorEditStyle) pStyle);
 
 	void setErrorLine(int line = -1);
 
-	CPTR(rdoEditCtrl::RDOLogEdit) getLog() const;
-	void setLog(REF(rdoEditCtrl::RDOLogEdit) log);
+	CPTR(rdoEditCtrl::LogEdit) getLog() const;
+	void setLog(REF(rdoEditCtrl::LogEdit) log);
 
 	void setCanClearErrorLine( rbool value ) { canClearErrorLine = value; }
 
@@ -84,6 +80,6 @@ private slots:
 	void catchMarginClick  (int position, int modifiers, int margin);
 };
 
-}; // namespace rdoEditor
+} // namespace rdoEditor
 
 #endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDIT_H_

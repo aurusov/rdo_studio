@@ -17,7 +17,7 @@
 // --------------------------------------------------------------------------------
 
 DockTrace::DockTrace(PTR(QWidget) pParent)
-	: QDockWidget("Трассировка", pParent)
+	: DockFocusable("Трассировка", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 150));
@@ -26,7 +26,7 @@ DockTrace::DockTrace(PTR(QWidget) pParent)
 
 	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_trace.png")));
 
-	tracer->setLog(&getContext());
+	g_pTracer->setLog(&getContext());
 }
 
 DockTrace::~DockTrace()

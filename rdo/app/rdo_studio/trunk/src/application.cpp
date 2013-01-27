@@ -268,7 +268,7 @@ BOOL RDOStudioApp::InitInstance()
 //	new RDOThreadStudio1();
 //	new RDOThreadStudio2();
 
-	tracer = new rdoTracer::RDOTracer();
+	g_pTracer = new rdo::gui::tracer::Tracer();
 
 #ifdef PROCGUI_ENABLE
 	rpMethod::project->cursors[ RPProject::cursor_flow_select ]        = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
@@ -297,7 +297,7 @@ BOOL RDOStudioApp::InitInstance()
 	m_pEditorEditStyle = rdo::Factory<rdoEditor::RDOEditorEditStyle>::create();
 
 	// Внутри создается объект модели
-	m_pMainFrame = new RDOStudioMainFrame;
+	m_pMainFrame = new RDOStudioMainFrame();
 	m_pMainFrame->init();
 	m_pMainWnd = m_pMainFrame->c_wnd();
 	m_pMainFrame->show();
@@ -439,6 +439,11 @@ int RDOStudioApp::ExitInstance()
 	{
 		return CWinApp::ExitInstance();
 	}
+}
+
+PTR(RDOStudioMainFrame) RDOStudioApp::getMainWndUI()
+{
+	return m_pMainFrame;
 }
 
 PTR(QMainWindow) RDOStudioApp::getMainWnd()
@@ -1089,4 +1094,10 @@ BOOL RDOStudioApp::OnIdle(LONG lCount)
 		return true;
 	}
 #endif
+}
+
+CREF(rdoEditor::LPRDOEditorEditStyle) RDOStudioApp::getEditorEditStyle() const
+{
+	ASSERT(m_pEditorEditStyle);
+	return m_pEditorEditStyle;
 }

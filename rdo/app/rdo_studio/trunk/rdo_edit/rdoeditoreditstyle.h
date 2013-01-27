@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/signal.hpp>
-#include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseeditstyle.h"
 // --------------------------------------------------------------------------------
@@ -128,17 +127,27 @@ public:
 
 	RDOEditorEditAutoComplete* autoComplete;
 	RDOEditorEditMargin*       margin;
+
 	template <class CallbackFun>
-	void attachSubscriber(const CallbackFun& sub);
+	void attachSubscriber(const CallbackFun& subscriber)
+	{
+		m_subscriberList.connect(subscriber);
+		subscriber(*this);
+	}
+
 	template <class CallbackFun>
-	void detachSubscriber(const CallbackFun& sub);
+	void detachSubscriber(const CallbackFun& subscriber)
+	{
+		m_subscriberList.disconnect(subscriber);
+	}
 
 private:
-	boost::signal<void (const RDOEditorEditStyle&)> subscriber;
+	typedef boost::signal<void (const RDOEditorEditStyle&)> SubscriberList;
+	SubscriberList m_subscriberList;
 };
 
 DECLARE_POINTER(RDOEditorEditStyle)
 
-}; // namespace rdoEditor
+} // namespace rdoEditor
 
 #endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDITSTYLE_H_

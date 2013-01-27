@@ -11,8 +11,8 @@
 #define _RDO_STUDIO_MFC_MODEL_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/edit/view_base.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ namespace rdoEditor {
 	class RDOEditorTabCtrl;
 }
 
-class RDOStudioModelView: public RDOStudioEditBaseView
+class RDOStudioModelView: public QWidget
 {
 public:
 	RDOStudioModelView(PTR(QWidget) pParent);
@@ -31,7 +31,7 @@ public:
 	REF(rdoEditor::RDOEditorTabCtrl) getTab();
 
 private:
-	typedef  RDOStudioEditBaseView  parent_type;
+	typedef  QWidget  parent_type;
 
 	PTR(rdoEditor::RDOEditorTabCtrl) m_pTabCtrl;
 	PTR(RDOStudioModel)              m_pModel;

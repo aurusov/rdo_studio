@@ -16,7 +16,6 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/src/edit/view_base.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
 #include "thirdparty/sci/lexlib/WordList.h"
@@ -58,7 +57,7 @@ using namespace rdoEditCtrl;
 //
 //END_MESSAGE_MAP()
 
-RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pView)
+RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView)
 	: RDOEditorBaseEdit(pParent)
 	, view             (pView  )
 	, log              (NULL   )
@@ -641,12 +640,12 @@ void RDOEditorEdit::OnInsertCommand(UINT nID)
 	replaceCurrent(static_cast<LPCTSTR>(s), incPos);
 }
 
-CPTR(rdoEditCtrl::RDOLogEdit) RDOEditorEdit::getLog() const
+CPTR(rdoEditCtrl::LogEdit) RDOEditorEdit::getLog() const
 {
 	return log;
 }
 
-void RDOEditorEdit::setLog(REF(RDOLogEdit) log)
+void RDOEditorEdit::setLog(REF(LogEdit) log)
 {
 	this->log = &log;
 }

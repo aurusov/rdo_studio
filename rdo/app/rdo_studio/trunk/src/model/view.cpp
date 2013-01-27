@@ -32,6 +32,7 @@ static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 // ON_UPDATE_COMMAND_UI сделано
 
 //! @todo qt
+// RDOStudioEditBaseView -> QWidget
 //BEGIN_MESSAGE_MAP(RDOStudioModelView, RDOStudioEditBaseView)
 //	ON_WM_CREATE()
 //	ON_WM_SETFOCUS()
@@ -47,7 +48,7 @@ static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //END_MESSAGE_MAP()
 
 RDOStudioModelView::RDOStudioModelView(PTR(QWidget) pParent)
-	: RDOStudioEditBaseView(pParent)
+	: parent_type(pParent)
 	, m_pModel  (NULL)
 	, m_pTabCtrl(NULL)
 {

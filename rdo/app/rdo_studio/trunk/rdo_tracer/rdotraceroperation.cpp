@@ -22,96 +22,96 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerOperationBase
+// -------------------- TracerOperationBase
 // --------------------------------------------------------------------------------
-RDOTracerOperationBase::RDOTracerOperationBase( RDOTracerPattern* const pat )
-	: RDOTracerSerie( RDOST_OPERATION ),
+TracerOperationBase::TracerOperationBase( TracerPattern* const pat )
+	: TracerSerie( RDOST_OPERATION ),
 	pattern( pat )
 {
 }
 
-RDOTracerOperationBase::~RDOTracerOperationBase()
+TracerOperationBase::~TracerOperationBase()
 {
 }
 
-void RDOTracerOperationBase::incOperationsCount( RDOTracerTimeNow* const time, const int eventIndex )
+void TracerOperationBase::incOperationsCount( TracerTimeNow* const time, const int eventIndex )
 {
-	RDOTracerValue* newval = new RDOTracerValue( time, eventIndex );
-	RDOTracerValue* prevval;
+	TracerValue* newval = new TracerValue( time, eventIndex );
+	TracerValue* prevval;
 	getLastValue( prevval );
 	newval->value = prevval ? prevval->value + 1 : 1;
 	addValue( newval );
 }
 
-void RDOTracerOperationBase::getCaptions( std::vector<tstring> &captions, const int val_count ) const
+void TracerOperationBase::getCaptions( std::vector<tstring> &captions, const int val_count ) const
 {
-	RDOTracerSerie::getCaptionsInt( captions, val_count );
+	TracerSerie::getCaptionsInt( captions, val_count );
 }
 
-void RDOTracerOperationBase::monitorTime( RDOTracerTimeNow* const time, const int eventIndex )
+void TracerOperationBase::monitorTime( TracerTimeNow* const time, const int eventIndex )
 {
 	UNUSED(time      );
 	UNUSED(eventIndex);
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerOperation
+// -------------------- TracerOperation
 // --------------------------------------------------------------------------------
-RDOTracerOperation::RDOTracerOperation( RDOTracerPattern* const pat ) :
-	RDOTracerOperationBase( pat )
+TracerOperation::TracerOperation( TracerPattern* const pat ) :
+	TracerOperationBase( pat )
 {
 }
 
-RDOTracerOperation::~RDOTracerOperation()
+TracerOperation::~TracerOperation()
 {
 }
 
-void RDOTracerOperation::start( RDOTracerTimeNow* const time, const int eventIndex )
+void TracerOperation::start( TracerTimeNow* const time, const int eventIndex )
 {
-	RDOTracerOperationBase::incOperationsCount( time, eventIndex );
+	TracerOperationBase::incOperationsCount( time, eventIndex );
 }
 
-void RDOTracerOperation::accomplish( RDOTracerTimeNow* const time, const int eventIndex )
+void TracerOperation::accomplish( TracerTimeNow* const time, const int eventIndex )
 {
-	RDOTracerValue* lastval;
+	TracerValue* lastval;
 	getLastValue( lastval );
 	if ( lastval ) {
-		RDOTracerValue* newval = new RDOTracerValue( time, eventIndex );
+		TracerValue* newval = new TracerValue( time, eventIndex );
 		newval->value = lastval->value - 1;
 		addValue( newval );
 	}
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerIrregularEvent
+// -------------------- TracerIrregularEvent
 // --------------------------------------------------------------------------------
-RDOTracerEvent::RDOTracerEvent( RDOTracerPattern* const pat ) :
-	RDOTracerOperationBase( pat )
+TracerEvent::TracerEvent( TracerPattern* const pat ) :
+	TracerOperationBase( pat )
 {
 }
 
-RDOTracerEvent::~RDOTracerEvent()
+TracerEvent::~TracerEvent()
 {
 }
 
-void RDOTracerEvent::occurs( RDOTracerTimeNow* const time, const int eventIndex )
+void TracerEvent::occurs( TracerTimeNow* const time, const int eventIndex )
 {
-	RDOTracerOperationBase::incOperationsCount( time, eventIndex );
+	TracerOperationBase::incOperationsCount( time, eventIndex );
 }
 
-void RDOTracerEvent::monitorTime( RDOTracerTimeNow* const time, const int eventIndex )
+void TracerEvent::monitorTime( TracerTimeNow* const time, const int eventIndex )
 {
-	RDOTracerValue* prevval;
+	TracerValue* prevval;
 	getLastValue( prevval );
-	RDOTracerValue* newval = NULL;
+	TracerValue* newval = NULL;
 	if ( prevval && prevval->value != 0 ) {
 		if ( *prevval->getModelTime() != *time ) {
-			newval = new RDOTracerValue( prevval->getModelTime(), prevval->getModelTime()->eventCount );
+			newval = new TracerValue( prevval->getModelTime(), prevval->getModelTime()->eventCount );
 			newval->value = 0;
 		}
 	}
 	if ( !prevval ) {
-		newval = new RDOTracerValue( time, eventIndex );
+		newval = new TracerValue( time, eventIndex );
 		newval->value = 0;
 	}
 	if( newval ) {

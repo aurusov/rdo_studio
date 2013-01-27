@@ -28,7 +28,7 @@ public:
 
 private:
 	PTR(QTreeWidgetItem) m_pCtrlItem;
-	rbool                m_drawable; // set to true ONLY for RDOTracerSerie and descendants
+	rbool                m_drawable; // set to true ONLY for TracerSerie and descendants
 };
 
 #endif // _APP_RDO_STUDIO_CHART_TREE_ITEM_H_

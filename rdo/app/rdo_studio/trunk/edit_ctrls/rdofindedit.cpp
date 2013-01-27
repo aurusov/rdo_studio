@@ -38,12 +38,12 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 // ON_UPDATE_COMMAND_UI сделано
 
 //! @todo qt
-//BEGIN_MESSAGE_MAP( RDOFindEdit, RDOLogEdit )
+//BEGIN_MESSAGE_MAP( RDOFindEdit, LogEdit )
 //	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
 //	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 //END_MESSAGE_MAP()
 
-RDOFindEdit::RDOFindEdit(PTR(QWidget) pParent): RDOLogEdit(pParent)
+RDOFindEdit::RDOFindEdit(PTR(QWidget) pParent): LogEdit(pParent)
 {
 	sendEditor( SCI_SETLEXER, SCLEX_FIND );
 	//	int lexLanguage = sendEditor( SCI_GETLEXER );
@@ -57,7 +57,7 @@ RDOFindEdit::~RDOFindEdit()
 
 void RDOFindEdit::setEditorStyle( RDOFindEditStyle* _style )
 {
-	RDOLogEdit::setEditorStyle( _style );
+	LogEdit::setEditorStyle( _style );
 	if ( !style ) return;
 
 	// ----------

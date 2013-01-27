@@ -17,56 +17,20 @@
 #include "app/rdo_studio_mfc/src/options.h"
 // --------------------------------------------------------------------------------
 
-class RDOStudioPreferences
-{
-public:
-	RDOStudioPreferences();
-	virtual ~RDOStudioPreferences();
-
-private:
-	rdoEditor::RDOEditorEditStyle style_editor;
-
-	//typedef boost::function<void (const RDOStudioPreferences& options)> NotifyCallback;
-	//typedef std::list<NotifyCallback>  CallbackList;
-};
-
-class RDOStudioPreferencesEditor
-{
-public:
-	RDOStudioPreferencesEditor();
-	virtual ~RDOStudioPreferencesEditor();
-
-private:
-	BOOL m_codecompUse;
-	int  m_codecompShowFullList;
-	BOOL m_marginFold;
-	BOOL m_marginBookmark;
-	BOOL m_marginLineNumber;
-
-public:
-
-	BOOL getCodeCompUse         () const;
-	int  getCodeCompShowFullList() const;
-	BOOL getMarginFold          () const;
-	BOOL getMarginBookmark      () const;
-	BOOL getMarginLineNumber    () const;
-
-	void setCodeCompUse         (BOOL m_value);
-	void setCodeCompShowFullList(int  m_value);
-	void setMarginFold          (BOOL m_value);
-	void setMarginBookmark      (BOOL m_value);
-	void setMarginLineNumber    (BOOL m_value);
-};
-
-class ViewPreferences: public QDialog, private Ui::ViewPreferencesDialog
+class ViewPreferences
+	: public QDialog
+	, private Ui::ViewPreferencesDialog
 {
 Q_OBJECT
-
 public:
 	explicit ViewPreferences(PTR(QWidget) pParent = NULL);
 
-private slots:
+	void onUpdateStyleNotify(const rdoEditor::RDOEditorEditStyle& style);
+	void setEditorPreferences(const rdoEditor::RDOEditorEditStyle& style);
+	void updateDialog();
+	rbool checkNewOptions(const rdoEditor::RDOEditorEditStyle& style);
 
+private slots:
 	void okButtonClicked();
 	void cancelButtonClicked();
 	void applyButtonClicked();
@@ -79,7 +43,7 @@ private slots:
 	void marginLineNumberChanged(int state);
 
 private:
-	RDOStudioPreferencesEditor editor;
+	rdoEditor::RDOEditorEditStyle style_editor;
 };
 
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

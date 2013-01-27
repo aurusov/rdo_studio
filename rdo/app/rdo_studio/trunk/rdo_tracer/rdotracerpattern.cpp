@@ -21,14 +21,14 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerPattern
+// -------------------- TracerPattern
 // --------------------------------------------------------------------------------
-RDOTracerPattern::RDOTracerPattern( const RDOTracerPatternKind kind ) :
+TracerPattern::TracerPattern( const TracerPatternKind kind ) :
 	ChartTreeItem(),
 	patKind( kind )
 {
 }
 
-RDOTracerPattern::~RDOTracerPattern()
+TracerPattern::~TracerPattern()
 {
 }

@@ -37,13 +37,13 @@ namespace rdoEditCtrl {
 // ON_UPDATE_COMMAND_UI сделано
 
 //! @todo qt
-//BEGIN_MESSAGE_MAP( RDOBuildEdit, RDOLogEdit )
+//BEGIN_MESSAGE_MAP( RDOBuildEdit, LogEdit )
 //	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
 //	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 //END_MESSAGE_MAP()
 
 RDOBuildEdit::RDOBuildEdit(PTR(QWidget) pParent)
-	: RDOLogEdit(pParent)
+	: LogEdit(pParent)
 {}
 
 RDOBuildEdit::~RDOBuildEdit()
@@ -52,9 +52,9 @@ RDOBuildEdit::~RDOBuildEdit()
 void RDOBuildEdit::showFirstError()
 {
 	setCurrentLine(getCurrentLine() + 1);
-	RDOLogEditLineInfoList lines;
+	LogEditLineInfoList lines;
 	getLines(lines);
-	std::list< RDOLogEditLineInfo* >::iterator it = lines.begin();
+	std::list< LogEditLineInfo* >::iterator it = lines.begin();
 	TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 	int i;
 	for ( i = 0; i < getCurrentLine(); i++ ) {
@@ -101,9 +101,9 @@ void RDOBuildEdit::showFirstError()
 	}
 }
 
-void RDOBuildEdit::updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo )
+void RDOBuildEdit::updateEdit( rdoEditor::RDOEditorEdit* edit, const LogEditLineInfo* lineInfo )
 {
-	RDOLogEdit::updateEdit( edit, lineInfo );
+	LogEdit::updateEdit( edit, lineInfo );
 	edit->setErrorLine( lineInfo->getLineNumber() );
 }
 
@@ -126,4 +126,4 @@ void RDOBuildEdit::onHelpContext()
 	studioApp.callQtAssistant(ba);
 }
 
-}; // namespace rdoEditCtrl
+} // namespace rdoEditCtrl

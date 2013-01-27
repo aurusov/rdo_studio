@@ -23,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioDocSerie
 // --------------------------------------------------------------------------------
-RDOStudioDocSerie::RDOStudioDocSerie( RDOTracerSerie* _serie ) :
+RDOStudioDocSerie::RDOStudioDocSerie( TracerSerie* _serie ) :
 	serie( _serie ),
 	color( RGB( 0x00, 0x00, 0x00 ) ),
 	marker( RDOSM_NONE ),

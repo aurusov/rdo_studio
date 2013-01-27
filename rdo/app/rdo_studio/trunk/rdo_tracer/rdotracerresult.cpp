@@ -22,41 +22,41 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerResult
+// -------------------- TracerResult
 // --------------------------------------------------------------------------------
-RDOTracerResult::RDOTracerResult( const RDOTracerResultKind kind )
-	: RDOTracerSerie( RDOST_RESULT ),
+TracerResult::TracerResult( const TracerResultKind kind )
+	: TracerSerie( RDOST_RESULT ),
 	resultKind( kind ),
 	id( 0 )
 {
 }
 
-RDOTracerResult::~RDOTracerResult()
+TracerResult::~TracerResult()
 {
 }
 
-void RDOTracerResult::getCaptions( std::vector<tstring> &captions, const int val_count ) const
+void TracerResult::getCaptions( std::vector<tstring> &captions, const int val_count ) const
 {
 	switch( resultKind ) {
 		case RDORK_WATCHQUANT: {
-			RDOTracerSerie::getCaptionsInt( captions, val_count );
+			TracerSerie::getCaptionsInt( captions, val_count );
 			break;
 		}
 		case RDORK_WATCHSTATE: {
-			RDOTracerSerie::getCaptionsBool( captions, val_count );
+			TracerSerie::getCaptionsBool( captions, val_count );
 			break;
 		}
 		case RDORK_WATCHPAR:
 		case RDORK_WATCHVALUE: {
-			RDOTracerSerie::getCaptionsDouble( captions, val_count );
+			TracerSerie::getCaptionsDouble( captions, val_count );
 			break;
 		}
 	}
 }
 
-void RDOTracerResult::setValue( tstring& line, RDOTracerTimeNow* const time, const int eventIndex )
+void TracerResult::setValue( tstring& line, TracerTimeNow* const time, const int eventIndex )
 {
-	RDOTracerValue* newvalue = new RDOTracerValue( time, eventIndex );
+	TracerValue* newvalue = new TracerValue( time, eventIndex );
 	double newval;
 	rdo::trim( line );
 	if ( resultKind != RDORK_WATCHSTATE )

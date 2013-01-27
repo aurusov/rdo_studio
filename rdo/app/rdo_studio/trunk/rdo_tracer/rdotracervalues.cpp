@@ -21,20 +21,20 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerTimeNow
+// -------------------- TracerTimeNow
 // --------------------------------------------------------------------------------
-RDOTracerTimeNow::RDOTracerTimeNow( const double _time ) : time( _time )
+TracerTimeNow::TracerTimeNow( const double _time ) : time( _time )
 {
 	eventCount = 0;
 }
 
-RDOTracerTimeNow::RDOTracerTimeNow( const double _time, const int _event_count )
+TracerTimeNow::TracerTimeNow( const double _time, const int _event_count )
 {
 	time = _time;
 	eventCount = _event_count;
 }
 
-RDOTracerTimeNow& RDOTracerTimeNow::operator =( const RDOTracerTimeNow& timenow )
+TracerTimeNow& TracerTimeNow::operator =( const TracerTimeNow& timenow )
 {
 	time         = timenow.time;
 	eventCount   = timenow.eventCount;
@@ -42,18 +42,18 @@ RDOTracerTimeNow& RDOTracerTimeNow::operator =( const RDOTracerTimeNow& timenow 
 	return *this;
 }
 
-rbool RDOTracerTimeNow::operator ==( const RDOTracerTimeNow& timenow ) const
+rbool TracerTimeNow::operator ==( const TracerTimeNow& timenow ) const
 {
 	return time         == timenow.time &&
 	       eventCount   == timenow.eventCount;
 }
 
-rbool RDOTracerTimeNow::operator !=( const RDOTracerTimeNow& timenow ) const
+rbool TracerTimeNow::operator !=( const TracerTimeNow& timenow ) const
 {
 	return !(*this == timenow);
 }
 
-rbool RDOTracerTimeNow::compareTimes( const RDOTracerTimeNow* timenow )
+rbool TracerTimeNow::compareTimes( const TracerTimeNow* timenow )
 {
 	rbool res = false;
 	if( timenow ) {
@@ -63,15 +63,15 @@ rbool RDOTracerTimeNow::compareTimes( const RDOTracerTimeNow* timenow )
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerValue
+// -------------------- TracerValue
 // --------------------------------------------------------------------------------
-RDOTracerValue::RDOTracerValue( RDOTracerTimeNow* const timenow, const int _eventIndex, const double _value )
+TracerValue::TracerValue( TracerTimeNow* const timenow, const int _eventIndex, const double _value )
 	: modeltime( timenow ),
 	eventIndex( _eventIndex ),
 	value( _value )
 {
 }
 
-RDOTracerValue::~RDOTracerValue()
+TracerValue::~TracerValue()
 {
 }

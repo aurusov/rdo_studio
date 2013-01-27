@@ -300,6 +300,8 @@ RDOEditorEditStyle::RDOEditorEditStyle():
 	autoComplete( NULL ),
 	margin( NULL )
 {
+	autoComplete = new RDOEditorEditAutoComplete();
+	margin = new RDOEditorEditMargin();
 }
 
 RDOEditorEditStyle::~RDOEditorEditStyle()
@@ -372,17 +374,4 @@ rbool RDOEditorEditStyle::save() const
 		return true;
 	}
 	return false;
-}
-
-template <class CallbackFun>
-void RDOEditorEditStyle::attachSubscriber(const CallbackFun& sub)
-{
-	subscriber.connect(sub);
-	sub(*this);
-}
-
-template <class CallbackFun>
-void RDOEditorEditStyle::detachSubscriber(const CallbackFun& sub)
-{
-	subscriber.disconnect(sub);
 }

@@ -18,7 +18,7 @@
 
 ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	: QDialog(pParent),
-	  editor()
+	  style_editor()
 {
 	setupUi(this);
 
@@ -34,6 +34,13 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(checkBoxMarginFold, SIGNAL(stateChanged(int)), this, SLOT(marginFoldChanged(int)));
 	connect(checkBoxMarginBookmark, SIGNAL(stateChanged(int)), this, SLOT(marginBookmarkChanged(int)));
 	connect(checkBoxMarginLineNum, SIGNAL(stateChanged(int)), this, SLOT(marginLineNumberChanged(int)));
+}
+
+void ViewPreferences::onUpdateStyleNotify(const rdoEditor::RDOEditorEditStyle& style)
+{
+	if(style_editor != style)
+		setEditorPreferences(style);
+	updateDialog();
 }
 
 void ViewPreferences::okButtonClicked()
@@ -58,7 +65,7 @@ void ViewPreferences::helpButtonClicked()
 
 void ViewPreferences::codeCompUseChanged(int state)
 {
-	editor.setCodeCompUse(state);
+	style_editor.autoComplete->useAutoComplete = state;
 	
 	switch(state)
 	{
@@ -79,83 +86,51 @@ void ViewPreferences::codeCompShowFullListChanged(bool state)
 	UNUSED(state);
 
 	if(radioButtonFullList->isChecked())
-		editor.setCodeCompShowFullList(true);
+		style_editor.autoComplete->showFullList = true;
 	if(radioButtonNearestWords->isChecked())
-		editor.setCodeCompShowFullList(false);
+		style_editor.autoComplete->showFullList = false;
 }
 
 void ViewPreferences::marginFoldChanged(int state)
 {
-	editor.setMarginFold(state);
+	style_editor.margin->fold = state;
 }
 
 void ViewPreferences::marginBookmarkChanged(int state)
 {
-	editor.setMarginBookmark(state);
+	style_editor.margin->bookmark = state;
 }
 
 void ViewPreferences::marginLineNumberChanged(int state)
 {
-	editor.setMarginLineNumber(state);
+	style_editor.margin->lineNumber = state;
 }
 
-RDOStudioPreferencesEditor::RDOStudioPreferencesEditor()
-	: m_codecompUse         (FALSE),
-	  m_codecompShowFullList(-1   ),
-	  m_marginFold          (FALSE),
-	  m_marginBookmark      (FALSE),
-	  m_marginLineNumber    (FALSE)
-{}
-
-RDOStudioPreferencesEditor::~RDOStudioPreferencesEditor()
-{}
-
-BOOL RDOStudioPreferencesEditor::getCodeCompUse() const
+void ViewPreferences::setEditorPreferences(const rdoEditor::RDOEditorEditStyle& style)
 {
-	return m_codecompUse;
+	style_editor = style;
 }
 
-int  RDOStudioPreferencesEditor::getCodeCompShowFullList() const
+void ViewPreferences::updateDialog()
 {
-	return m_codecompShowFullList;
-}
+	checkBoxCodeCompUse->setCheckState(style_editor.autoComplete->useAutoComplete
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+	checkBoxMarginFold->setCheckState(style_editor.margin->fold
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+	checkBoxMarginBookmark->setCheckState(style_editor.margin->bookmark
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+	checkBoxMarginLineNum->setCheckState(style_editor.margin->lineNumber
+		? Qt::Checked
+		: Qt::Unchecked
+		);
 
-BOOL RDOStudioPreferencesEditor::getMarginFold() const
-{
-	return m_marginFold;
-}
-
-BOOL RDOStudioPreferencesEditor::getMarginBookmark() const
-{
-	return m_marginBookmark;
-}
-
-BOOL RDOStudioPreferencesEditor::getMarginLineNumber() const
-{
-	return m_marginLineNumber;
-}
-
-void RDOStudioPreferencesEditor::setCodeCompUse(BOOL m_value)
-{
-	m_codecompUse = m_value;
-}
-
-void RDOStudioPreferencesEditor::setCodeCompShowFullList(int m_value )
-{
-	m_codecompShowFullList = m_value;
-}
-
-void RDOStudioPreferencesEditor::setMarginFold(BOOL m_value)
-{
-	m_marginFold = m_value;
-}
-
-void RDOStudioPreferencesEditor::setMarginBookmark(BOOL m_value)
-{
-	m_marginBookmark = m_value;
-}
-
-void RDOStudioPreferencesEditor::setMarginLineNumber(BOOL m_value)
-{
-	m_marginLineNumber = m_value;
+	style_editor.autoComplete->showFullList
+		? radioButtonFullList->toggle()
+		: radioButtonNearestWords->toggle();
 }

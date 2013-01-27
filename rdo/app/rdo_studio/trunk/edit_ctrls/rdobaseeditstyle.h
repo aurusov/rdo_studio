@@ -134,6 +134,6 @@ public:
 	RDOBaseEditWindow* window;
 };
 
-}; // namespace rdoEditCtrl
+} // namespace rdoEditCtrl
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDITSTYLE_H_

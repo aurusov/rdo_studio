@@ -11,8 +11,10 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
+#include <boost/bind.hpp>
 #include <QtCore/qprocess.h>
 #include <QtGui/qmdisubwindow.h>
+#include <QtGui/qtoolbar.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -94,16 +96,7 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 //! @todo qt
 //BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 //	ON_WM_CREATE()
-//	ON_COMMAND(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnViewFileToolbar)
-//	ON_COMMAND(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnViewEditToolbar)
-//	ON_COMMAND(ID_VIEW_TOOLBAR_ZOOM_TOOLBAR, OnViewZoomToolbar)
-//	ON_COMMAND(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnViewModelToolbar)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnUpdateViewFileToolbar)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnUpdateViewEditToolbar)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_ZOOM_TOOLBAR, OnUpdateViewZoomToolbar)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnUpdateViewModelToolbar)
 //	ON_WM_DESTROY()
-//	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
 //	ON_COMMAND(ID_MODEL_RUNTIME_MAXSPEED, OnModelRuntimeMaxSpeed)
 //	ON_COMMAND(ID_MODEL_RUNTIME_JUMP, OnModelRuntimeJump)
 //	ON_COMMAND(ID_MODEL_RUNTIME_SYNC, OnModelRuntimeSync)
@@ -159,19 +152,8 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	setupUi(this);
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
 
-	m_pSBCoord         = new QLabel(this);
-	m_pSBModify        = new QLabel(this);
-	m_pSBModelTime     = new QLabel(this);
-	m_pSBModelRuntype  = new QLabel(this);
-	m_pSBModelSpeed    = new QLabel(this);
-	m_pSBModelShowRate = new QLabel(this);
-
-	parent_type::statusBar()->addWidget(m_pSBCoord );
-	parent_type::statusBar()->addWidget(m_pSBModify);
-	parent_type::statusBar()->addWidget(m_pSBModelTime);
-	parent_type::statusBar()->addWidget(m_pSBModelRuntype);
-	parent_type::statusBar()->addWidget(m_pSBModelSpeed);
-	parent_type::statusBar()->addWidget(m_pSBModelShowRate);
+	createStatusBar();
+	createToolBar  ();
 
 	QObject::connect(actFileNew,     SIGNAL(triggered(bool)), this, SLOT(onFileNew    ()));
 	QObject::connect(actFileOpen,    SIGNAL(triggered(bool)), this, SLOT(onFileOpen   ()));
@@ -179,10 +161,6 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	QObject::connect(actFileSave,    SIGNAL(triggered(bool)), this, SLOT(onFileSave   ()));
 	QObject::connect(actFileSaveAs,  SIGNAL(triggered(bool)), this, SLOT(onFileSaveAs ()));
 	QObject::connect(actFileSaveAll, SIGNAL(triggered(bool)), this, SLOT(onFileSaveAll()));
-
-	QObject::connect(actModelBuild, SIGNAL(triggered(bool)), this, SLOT(onModelBuild()));
-	QObject::connect(actModelRun,   SIGNAL(triggered(bool)), this, SLOT(onModelRun  ()));
-	QObject::connect(actModelStop,  SIGNAL(triggered(bool)), this, SLOT(onModelStop ()));
 
 	QObject::connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions()));
 
@@ -194,6 +172,75 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
 {}
+
+void RDOStudioMainFrame::createStatusBar()
+{
+	m_pSBCoord         = new QLabel(this);
+	m_pSBModify        = new QLabel(this);
+	m_pSBModelTime     = new QLabel(this);
+	m_pSBModelRuntype  = new QLabel(this);
+	m_pSBModelSpeed    = new QLabel(this);
+	m_pSBModelShowRate = new QLabel(this);
+
+	parent_type::statusBar()->addWidget(m_pSBCoord,         5);
+	parent_type::statusBar()->addWidget(m_pSBModify,        5);
+	parent_type::statusBar()->addWidget(m_pSBModelTime,     5);
+	parent_type::statusBar()->addWidget(m_pSBModelRuntype,  5);
+	parent_type::statusBar()->addWidget(m_pSBModelSpeed,    5);
+	parent_type::statusBar()->addWidget(m_pSBModelShowRate, 5);
+}
+
+void RDOStudioMainFrame::createToolBar()
+{
+	QSize iconSize(16, 15);
+
+	m_pFileToolBar = addToolBar("Файл");
+	m_pFileToolBar->setIconSize(iconSize);
+	m_pFileToolBar->addAction(actFileNew);
+	m_pFileToolBar->addAction(actFileOpen);
+	m_pFileToolBar->addAction(actFileSave);
+	m_pFileToolBar->addAction(actFileSaveAll);
+
+	m_pEditToolBar = addToolBar("Редактирование");
+	m_pEditToolBar->setIconSize(iconSize);
+	m_pEditToolBar->addAction(actEditCut);
+	m_pEditToolBar->addAction(actEditCopy);
+	m_pEditToolBar->addAction(actEditPaste);
+	m_pEditToolBar->addSeparator();
+	m_pEditToolBar->addAction(actEditUndo);
+	m_pEditToolBar->addAction(actEditRedo);
+	m_pEditToolBar->addSeparator();
+	m_pEditToolBar->addAction(actSearchFind);
+	m_pEditToolBar->addAction(actSearchReplace);
+	m_pEditToolBar->addSeparator();
+	m_pEditToolBar->addAction(actSearchBookmarkPrev);
+	m_pEditToolBar->addAction(actSearchBookmarkNext);
+
+	m_pZoomToolBar = addToolBar("Масштаб");
+	m_pZoomToolBar->setIconSize(iconSize);
+	m_pZoomToolBar->addAction(actViewZoomInc);
+	m_pZoomToolBar->addAction(actViewZoomDec);
+	m_pZoomToolBar->addAction(actViewZoomAuto);
+	m_pZoomToolBar->addAction(actViewZoomReset);
+
+	m_pModelToolBar = addToolBar("Модель");
+	m_pModelToolBar->setIconSize(iconSize);
+	m_pModelToolBar->addAction(actModelRun);
+	m_pModelToolBar->addAction(actModelStop);
+	m_pModelToolBar->addSeparator();
+	m_pModelToolBar->addAction(actModelRuntimeMaxSpeed);
+	m_pModelToolBar->addAction(actModelRuntimeJump);
+	m_pModelToolBar->addAction(actModelRuntimeSync);
+	m_pModelToolBar->addAction(actModelRuntimePause);
+	m_pModelToolBar->addSeparator();
+	m_pModelToolBar->addAction(actModelShowRateInc);
+	m_pModelToolBar->addAction(actModelShowRateIncFour);
+	m_pModelToolBar->addAction(actModelShowRateDecFour);
+	m_pModelToolBar->addAction(actModelShowRateDec);
+	m_pModelToolBar->addSeparator();
+	m_pModelToolBar->addAction(actModelFrameNext);
+	m_pModelToolBar->addAction(actModelFramePrev);
+}
 
 void RDOStudioMainFrame::init()
 {
@@ -255,8 +302,7 @@ void RDOStudioMainFrame::init()
 
 	PTR(QMenu) pMenuDockView = new QMenu("Окна");
 	ASSERT(pMenuDockView);
-	menuView->insertMenu(menuViewToolbar->menuAction(), pMenuDockView);
-
+	menuView->insertMenu(actViewSettings, pMenuDockView);
 	pMenuDockView->addAction(m_pDockBuild->toggleViewAction());
 	pMenuDockView->addAction(m_pDockDebug->toggleViewAction());
 	pMenuDockView->addAction(m_pDockTrace->toggleViewAction());
@@ -264,6 +310,16 @@ void RDOStudioMainFrame::init()
 	pMenuDockView->addAction(m_pDockFind->toggleViewAction());
 	pMenuDockView->addAction(m_pDockChartTree->toggleViewAction());
 	pMenuDockView->addAction(m_pDockFrame->toggleViewAction());
+
+	PTR(QMenu) pMenuToolbarView = new QMenu("Панели");
+	ASSERT(pMenuToolbarView);
+	menuView->insertMenu(actViewSettings, pMenuToolbarView);
+	pMenuToolbarView->addAction(m_pFileToolBar->toggleViewAction());
+	pMenuToolbarView->addAction(m_pEditToolBar->toggleViewAction());
+	pMenuToolbarView->addAction(m_pZoomToolBar->toggleViewAction());
+	pMenuToolbarView->addAction(m_pModelToolBar->toggleViewAction());
+
+	menuView->insertSeparator(actViewSettings);
 
 #ifdef PROCGUI_ENABLE
 	m_pDockProcess = new DockProcess(this);
@@ -332,7 +388,7 @@ void RDOStudioMainFrame::init()
 	//modelToolBar.SetButtonStyle( 4, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 	//modelToolBar.SetButtonStyle( 5, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 
-	tracer->registerClipboardFormat();
+	g_pTracer->registerClipboardFormat();
 
 	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(model);
 	ASSERT(pModelInit);
@@ -398,63 +454,30 @@ void RDOStudioMainFrame::onFileSaveAll()
 	model->saveModel();
 }
 
-void RDOStudioMainFrame::onModelBuild()
-{
-	model->buildModel();
-}
-
 void RDOStudioMainFrame::onModelRun()
 {
 	model->runModel();
 }
 
-void RDOStudioMainFrame::onModelStop()
+void RDOStudioMainFrame::onUpdateModify()
 {
-	model->stopModel();
 }
 
-void RDOStudioMainFrame::OnViewFileToolbar()
+void RDOStudioMainFrame::onUpdateModelTime(float time)
 {
-	//! @todo qt
-	//ShowControlBar( &fileToolBar, !(fileToolBar.GetStyle() & WS_VISIBLE), false );
+	updateStatusBar<SB_MODEL_TIME>(QString(rdo::format("Время: %f", time).c_str()));
 }
 
-void RDOStudioMainFrame::OnViewEditToolbar()
+void RDOStudioMainFrame::onUpdateModelRuntype()
 {
-	//! @todo qt
-	//ShowControlBar( &editToolBar, !(editToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
-void RDOStudioMainFrame::OnViewZoomToolbar()
+void RDOStudioMainFrame::onUpdateModelSpeed()
 {
-	//! @todo qt
-	//ShowControlBar( &zoomToolBar, !(zoomToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
-void RDOStudioMainFrame::OnViewModelToolbar()
+void RDOStudioMainFrame::onUpdateModelShowRate()
 {
-	//! @todo qt
-	//ShowControlBar( &modelToolBar, !(modelToolBar.GetStyle() & WS_VISIBLE), false );
-}
-
-void RDOStudioMainFrame::OnUpdateViewFileToolbar(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck( fileToolBar.GetStyle() & WS_VISIBLE );
-}
-
-void RDOStudioMainFrame::OnUpdateViewEditToolbar(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck( editToolBar.GetStyle() & WS_VISIBLE );
-}
-
-void RDOStudioMainFrame::OnUpdateViewZoomToolbar(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck( zoomToolBar.GetStyle() & WS_VISIBLE );
-}
-
-void RDOStudioMainFrame::OnUpdateViewModelToolbar(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck( modelToolBar.GetStyle() & WS_VISIBLE );
 }
 
 void RDOStudioMainFrame::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
@@ -544,7 +567,16 @@ void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 void RDOStudioMainFrame::onViewOptions()
 {
 	ViewPreferences dlg(this);
+
+	studioApp.getEditorEditStyle()->attachSubscriber(
+		boost::bind(&ViewPreferences::onUpdateStyleNotify, &dlg, _1)
+	);
+
 	dlg.exec();
+
+	studioApp.getEditorEditStyle()->detachSubscriber(
+		boost::bind(&ViewPreferences::onUpdateStyleNotify, &dlg, _1)
+	);
 }
 
 void RDOStudioMainFrame::updateAllStyles()
@@ -555,7 +587,7 @@ void RDOStudioMainFrame::updateAllStyles()
 	getDockTrace  ().getContext().view().setStyle(&style_trace  );
 	getDockResults().getContext().setEditorStyle (&style_results);
 	getDockFind   ().getContext().setEditorStyle (&style_find   );
-	tracer->updateChartsStyles();
+	g_pTracer->updateChartsStyles();
 }
 
 void RDOStudioMainFrame::beginProgress( const int lower, const int upper, const int step )
@@ -755,7 +787,6 @@ void RDOStudioMainFrame::timerEvent(QTimerEvent* event)
 	{
 		update_stop();
 		model->update();
-		updateStatusBar<SB_MODEL_TIME>(QString(rdo::format( "Время: %f", model->getTimeNow() ).c_str()));
 		update_start();
 	}
 }
@@ -838,20 +869,6 @@ void RDOStudioMainFrame::connectOnActivateSubWindow(QObject* pObject)
 	QObject::connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), pObject, SLOT(onSubWindowActivated(QMdiSubWindow*)));
 }
 
-template <RDOStudioMainFrame::StatusBar N>
-void RDOStudioMainFrame::updateStatusBar(CREF(QString) message)
-{
-	updateStatusBar(StatusBarType<N>(), message);
-}
-
-template <RDOStudioMainFrame::StatusBar N>
-void RDOStudioMainFrame::updateStatusBar(StatusBarType<N> statusBar, CREF(QString) message)
-{
-	PTR(QLabel) pLabel = getStatusBarLabel(statusBar);
-	ASSERT(pLabel);
-	pLabel->setText(message);
-}
-
 template <>
 PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_COORD>(StatusBarType<SB_COORD>)
 {
@@ -896,7 +913,7 @@ void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 	QDockWidget* pDock = dynamic_cast<QDockWidget*>(sender());
 	ASSERT(pDock);
 
-	rdoEditCtrl::RDOLogEdit* pLog = NULL;
+	rdoEditCtrl::LogEdit* pLog = NULL;
 
 	if (pDock == &getDockBuild())
 	{

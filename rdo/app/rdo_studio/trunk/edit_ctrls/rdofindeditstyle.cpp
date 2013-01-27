@@ -25,9 +25,9 @@ using namespace rdoEditCtrl;
 using namespace rdoStyle;
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogEditTheme
+// -------------------- LogEditTheme
 // --------------------------------------------------------------------------------
-RDOFindEditTheme::RDOFindEditTheme(): RDOLogEditTheme()
+RDOFindEditTheme::RDOFindEditTheme(): LogEditTheme()
 {
 	keywordColor = RGB( 0x00, 0x00, 0x00 );
 	keywordStyle = RDOStyleFont::BOLD;
@@ -39,7 +39,7 @@ RDOFindEditTheme::~RDOFindEditTheme()
 
 RDOFindEditTheme& RDOFindEditTheme::operator =( const RDOFindEditTheme& theme )
 {
-	RDOLogEditTheme::operator=( theme );
+	LogEditTheme::operator=( theme );
 
 	keywordColor = theme.keywordColor;
 	keywordStyle = theme.keywordStyle;
@@ -49,7 +49,7 @@ RDOFindEditTheme& RDOFindEditTheme::operator =( const RDOFindEditTheme& theme )
 
 rbool RDOFindEditTheme::operator ==( const RDOFindEditTheme& theme ) const
 {
-	rbool flag = RDOLogEditTheme::operator==( theme );
+	rbool flag = LogEditTheme::operator==( theme );
 
 	if ( flag ) flag &= keywordColor == theme.keywordColor &&
 	                    keywordStyle == theme.keywordStyle;
@@ -63,7 +63,7 @@ rbool RDOFindEditTheme::operator !=( const RDOFindEditTheme& theme ) const
 
 void RDOFindEditTheme::load( tstring regPath )
 {
-	RDOLogEditTheme::load( regPath );
+	LogEditTheme::load( regPath );
 
 	regPath += "theme";
 	keywordColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordColor", keywordColor );
@@ -72,7 +72,7 @@ void RDOFindEditTheme::load( tstring regPath )
 
 void RDOFindEditTheme::save( tstring regPath ) const
 {
-	RDOLogEditTheme::save( regPath );
+	LogEditTheme::save( regPath );
 
 	regPath += "theme";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordColor", keywordColor );
@@ -113,7 +113,7 @@ tstring RDOFindEditTheme::styleFGColorToHEX( const int styleType ) const
 		case SCE_FIND_DEFAULT: return colorToHEX( defaultColor );
 		case SCE_FIND_KEYWORD: return colorToHEX( keywordColor );
 	}
-	return RDOLogEditTheme::styleFGColorToHEX( styleType );
+	return LogEditTheme::styleFGColorToHEX( styleType );
 }
 
 RDOFindEditTheme RDOFindEditTheme::getDefaultTheme()
@@ -125,7 +125,7 @@ RDOFindEditTheme RDOFindEditTheme::getDefaultTheme()
 RDOFindEditTheme RDOFindEditTheme::getClassicTheme()
 {
 	RDOFindEditTheme theme;
-	*static_cast<RDOLogEditTheme*>(&theme) = RDOLogEditTheme::getClassicTheme();
+	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getClassicTheme();
 
 	theme.keywordColor = RGB( 0xFF, 0xFF, 0xFF );
 	theme.keywordStyle = RDOStyleFont::NONE;
@@ -136,7 +136,7 @@ RDOFindEditTheme RDOFindEditTheme::getClassicTheme()
 RDOFindEditTheme RDOFindEditTheme::getTwilightTheme()
 {
 	RDOFindEditTheme theme;
-	*static_cast<RDOLogEditTheme*>(&theme) = RDOLogEditTheme::getTwilightTheme();
+	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getTwilightTheme();
 
 	theme.keywordColor = RGB( 0x00, 0xFF, 0xFF );
 	theme.keywordStyle = RDOStyleFont::BOLD;
@@ -147,7 +147,7 @@ RDOFindEditTheme RDOFindEditTheme::getTwilightTheme()
 RDOFindEditTheme RDOFindEditTheme::getOceanTheme()
 {
 	RDOFindEditTheme theme;
-	*static_cast<RDOLogEditTheme*>(&theme) = RDOLogEditTheme::getOceanTheme();
+	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getOceanTheme();
 
 	theme.keywordColor = RGB( 0x00, 0x00, 0x00 );
 	theme.keywordStyle = RDOStyleFont::BOLD;
@@ -158,7 +158,7 @@ RDOFindEditTheme RDOFindEditTheme::getOceanTheme()
 // --------------------------------------------------------------------------------
 // -------------------- RDOFindEditStyle
 // --------------------------------------------------------------------------------
-RDOFindEditStyle::RDOFindEditStyle(): RDOLogEditStyle()
+RDOFindEditStyle::RDOFindEditStyle(): LogEditStyle()
 {
 }
 
@@ -173,7 +173,7 @@ void RDOFindEditStyle::initTheme()
 
 RDOFindEditStyle& RDOFindEditStyle::operator =( const RDOFindEditStyle& style )
 {
-	RDOLogEditStyle::operator=( style );
+	LogEditStyle::operator=( style );
 	if ( theme && style.theme ) *static_cast<RDOFindEditTheme*>(theme) = *static_cast<RDOFindEditTheme*>(style.theme);
 
 	return *this;
@@ -181,7 +181,7 @@ RDOFindEditStyle& RDOFindEditStyle::operator =( const RDOFindEditStyle& style )
 
 rbool RDOFindEditStyle::operator ==( const RDOFindEditStyle& style ) const
 {
-	rbool flag = RDOLogEditStyle::operator==( style );
+	rbool flag = LogEditStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<RDOFindEditTheme*>(theme) == *static_cast<RDOFindEditTheme*>(style.theme);
 	return flag;
 }

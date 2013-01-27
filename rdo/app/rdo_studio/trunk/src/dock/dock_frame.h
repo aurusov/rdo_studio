@@ -11,12 +11,12 @@
 #define _RDO_STUDIO_DOCK_FRAME_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio_mfc/src/dock/dock_focusable.h"
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
 // --------------------------------------------------------------------------------
 
-class DockFrame: public QDockWidget
+class DockFrame: public DockFocusable
 {
 public:
 	typedef  RDOStudioFrameTreeCtrl  context_type;

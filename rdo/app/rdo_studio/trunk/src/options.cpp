@@ -30,7 +30,7 @@
 using namespace rdoEditor;
 using namespace rdoStyle;
 using namespace rdoEditCtrl;
-using namespace rdoTracerLog;
+using namespace rdo::gui::tracer;
 using namespace rdo::simulation::report;
 
 #define timerPlugin_ID 1
@@ -114,16 +114,11 @@ RDOStudioOptionsEditor::RDOStudioOptionsEditor(REF(RDOStudioOptions) sheet)
 	: CPropertyPage(IDD   )
 	, sheet        (&sheet)
 {
-	m_bufferClearAuto      = FALSE;
-	m_bufferDelay          = 0;
 	m_codecompUse          = FALSE;
 	m_codecompShowFullList = -1;
 	m_marginFold           = FALSE;
 	m_marginBookmark       = FALSE;
 	m_marginLineNumber     = FALSE;
-
-	m_bufferClearAuto = this->sheet->style_editor.buffer->canClearBuffer ? 1 : 0;
-	m_bufferDelay     = this->sheet->style_editor.buffer->clearBufferDelay;
 
 	m_codecompUse          = this->sheet->style_editor.autoComplete->useAutoComplete ? 1 : 0;
 	m_codecompShowFullList = this->sheet->style_editor.autoComplete->showFullList ? 0 : 1;
@@ -141,10 +136,6 @@ RDOStudioOptionsEditor::~RDOStudioOptionsEditor()
 void RDOStudioOptionsEditor::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
-
-	DDX_Check(pDX, IDC_CLEARAUTO_CHECK, m_bufferClearAuto);
-	DDX_Text(pDX, IDC_CLEARAUTO_EDIT, m_bufferDelay);
-	DDV_MinMaxInt(pDX, m_bufferDelay, 1, 100);
 	DDX_Check(pDX, IDC_USEAUTOCOMPLETE_CHECK, m_codecompUse);
 	DDX_Radio(pDX, IDC_SHOWFULLLIST_RADIO, m_codecompShowFullList);
 	DDX_Check(pDX, IDC_MARGIN_FOLD_CHECK, m_marginFold);
@@ -198,9 +189,6 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 {
 	UpdateData();
 
-	sheet->style_editor.buffer->canClearBuffer   = m_bufferClearAuto ? true : false;
-	sheet->style_editor.buffer->clearBufferDelay = m_bufferDelay;
-
 	sheet->style_editor.autoComplete->useAutoComplete = m_codecompUse ? true : false;
 	sheet->style_editor.autoComplete->showFullList    = m_codecompShowFullList == 0;
 
@@ -210,7 +198,7 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 
 	sheet->preview_editor.setEditorStyle(&sheet->style_editor);
 
-	SetModified(*sheet->style_editor.buffer != *studioApp.getStyle()->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.getStyle()->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.getStyle()->style_editor.margin);
+	SetModified(*sheet->style_editor.autoComplete != *studioApp.getStyle()->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.getStyle()->style_editor.margin);
 }
 
 // --------------------------------------------------------------------------------
@@ -396,7 +384,7 @@ RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles(REF(RDOStudioOptions)
 	object->properties.push_back(new STYLEProperty(object, rdo::format(IDS_COLORSTYLE_EDITOR_BOOKMARK), null_font_style, null_fg_color, debug_theme->bookmarkBgColor));
 	objects.push_back(object);
 
-	RDOTracerLogTheme* trace_theme = static_cast<RDOTracerLogTheme*>(this->sheet->style_trace.theme);
+	LogTheme* trace_theme = this->sheet->style_trace.theme;
 	object = new STYLEObject(STYLEObject::trace, this->sheet->style_trace.font->name, this->sheet->style_trace.font->size);
 	//! todo qt
 	//object->properties.push_back(new STYLEProperty(object, rdo::format(IDS_COLORSTYLE_LOG), trace_theme->style, trace_theme->defaultColor.foregroundColor, trace_theme->defaultColor.backgroundColor));
@@ -583,7 +571,8 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	//sheet->preview_trace.Create(NULL, NULL, WS_CHILD, CRect(0, 0, 444, 223), this, 0);
 	sheet->preview_trace.view().setStyle(&sheet->style_trace);
 	sheet->preview_trace.view().setFocusOnly(true);
-	sheet->preview_trace.view().setShowMenu(false);
+	//! todo надо протестить popup-menu в режиме настроект
+	//sheet->preview_trace.view().setShowMenu(false);
 	sheet->preview_trace.view().setText(rdo::format(IDS_COLORSTYLE_LOG_SAMPLE));
 	sheet->preview_trace.view().selectLine(0);
 
@@ -611,19 +600,19 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_chart_doc->attachView(sheet->preview_chart);
 	sheet->preview_chart->setStyle(&sheet->style_chart, false);
 	//initializing times vector
-	sheet->preview_times.push_back(RDOTracerTimeNow(0, 3));
-	sheet->preview_times.push_back(RDOTracerTimeNow(2, 3));
-	sheet->preview_times.push_back(RDOTracerTimeNow(4, 3));
-	sheet->preview_times.push_back(RDOTracerTimeNow(6, 3));
-	sheet->preview_times.push_back(RDOTracerTimeNow(8, 3));
-	sheet->preview_times.push_back(RDOTracerTimeNow(10, 3));
+	sheet->preview_times.push_back(TracerTimeNow(0, 3));
+	sheet->preview_times.push_back(TracerTimeNow(2, 3));
+	sheet->preview_times.push_back(TracerTimeNow(4, 3));
+	sheet->preview_times.push_back(TracerTimeNow(6, 3));
+	sheet->preview_times.push_back(TracerTimeNow(8, 3));
+	sheet->preview_times.push_back(TracerTimeNow(10, 3));
 	sheet->preview_serie.setTitle(rdo::format(IDS_COLORSTYLE_CHART_SAMPLE2));
-	sheet->preview_serie.addValue(new RDOTracerValue(&sheet->preview_times.at(0), 2, 0));
-	sheet->preview_serie.addValue(new RDOTracerValue(&sheet->preview_times.at(1), 1, 1));
-	sheet->preview_serie.addValue(new RDOTracerValue(&sheet->preview_times.at(2), 0, 4));
-	sheet->preview_serie.addValue(new RDOTracerValue(&sheet->preview_times.at(3), 3, 3));
-	sheet->preview_serie.addValue(new RDOTracerValue(&sheet->preview_times.at(4), 1, 2));
-	sheet->preview_serie.addValue(new RDOTracerValue(&sheet->preview_times.at(5), 0, 3));
+	sheet->preview_serie.addValue(new TracerValue(&sheet->preview_times.at(0), 2, 0));
+	sheet->preview_serie.addValue(new TracerValue(&sheet->preview_times.at(1), 1, 1));
+	sheet->preview_serie.addValue(new TracerValue(&sheet->preview_times.at(2), 0, 4));
+	sheet->preview_serie.addValue(new TracerValue(&sheet->preview_times.at(3), 3, 3));
+	sheet->preview_serie.addValue(new TracerValue(&sheet->preview_times.at(4), 1, 2));
+	sheet->preview_serie.addValue(new TracerValue(&sheet->preview_times.at(5), 0, 3));
 	sheet->preview_chart_doc->addSerie(&sheet->preview_serie);
 	sheet->chart_need_delete = false;
 
@@ -939,7 +928,7 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 		if (*static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) == RDOEditorEditTheme::getDefaultTheme() &&
 			 *static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) == RDOBuildEditTheme::getDefaultTheme() &&
 			 *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) == RDOBaseEditTheme::getDefaultTheme() &&
-			 *static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) == RDOTracerLogTheme::getDefaultTheme() &&
+			 *sheet->style_trace.theme == LogTheme::getDefaultTheme() &&
 			 *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) == RDOEditorBaseEditTheme::getDefaultTheme() &&
 			 *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) == RDOFindEditTheme::getDefaultTheme() &&
 			 *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) == RDOStudioChartViewTheme::getDefaultTheme() &&
@@ -1022,9 +1011,9 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 
 	case STYLEObject::trace:
 		{
-			RDOTracerLogTheme* theme = static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme);
+			LogTheme* theme = sheet->style_trace.theme;
 			RDOStyleFont* font = sheet->style_trace.font;
-			if (*theme == RDOTracerLogTheme::getDefaultTheme() && *font == RDOStyleFont::getTracerLogFont()) {
+			if (*theme == LogTheme::getDefaultTheme() && *font == RDOStyleFont::getTracerLogFont()) {
 				m_theme.SetCurSel(1);
 			} else {
 				m_theme.SetCurSel(0);
@@ -1116,7 +1105,7 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 				*static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) = RDOEditorEditTheme::getDefaultTheme();
 				*static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) = RDOBuildEditTheme::getDefaultTheme();
 				*static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) = RDOBaseEditTheme::getDefaultTheme();
-				*static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) = RDOTracerLogTheme::getDefaultTheme();
+				*sheet->style_trace.theme = LogTheme::getDefaultTheme();
 				*static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) = RDOEditorBaseEditTheme::getDefaultTheme();
 				*static_cast<RDOFindEditTheme*>(sheet->style_find.theme) = RDOFindEditTheme::getDefaultTheme();
 				*static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) = RDOStudioChartViewTheme::getDefaultTheme();
@@ -1176,10 +1165,10 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 
 		case STYLEObject::trace:
 			{
-				RDOTracerLogTheme* theme = static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme);
+				LogTheme* theme = sheet->style_trace.theme;
 				switch (index)
 				{
-				case 1: *theme = RDOTracerLogTheme::getDefaultTheme(); *sheet->style_trace.font = RDOStyleFont::getTracerLogFont(); break;
+				case 1: *theme = LogTheme::getDefaultTheme(); *sheet->style_trace.font = RDOStyleFont::getTracerLogFont(); break;
 				}
 			}
 			break;
@@ -1612,7 +1601,7 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 	            *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) != *static_cast<RDOEditorEditTheme*>(studioApp.getStyle()->style_editor.theme) ||
 	            *static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) != *static_cast<RDOBuildEditTheme*>(studioApp.getStyle()->style_build.theme) ||
 	            *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) != *static_cast<RDOBaseEditTheme*>(studioApp.getStyle()->style_debug.theme) ||
-	            *static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) != *static_cast<RDOTracerLogTheme*>(studioApp.getStyle()->style_trace.theme) ||
+	            *sheet->style_trace.theme != *studioApp.getStyle()->style_trace.theme ||
 	            *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) != *static_cast<RDOEditorBaseEditTheme*>(studioApp.getStyle()->style_results.theme) ||
 	            *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) != *static_cast<RDOFindEditTheme*>(studioApp.getStyle()->style_find.theme) ||
 	            *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) != *static_cast<RDOStudioChartViewTheme*>(studioApp.getStyle()->style_chart.theme) ||

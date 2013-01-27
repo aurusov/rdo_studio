@@ -11,12 +11,12 @@
 #define _RDO_STUDIO_DOCK_DEBUG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio_mfc/src/dock/dock_focusable.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
 // --------------------------------------------------------------------------------
 
-class DockDebug: public QDockWidget
+class DockDebug: public DockFocusable
 {
 public:
 	typedef rdoEditCtrl::RDODebugEdit context_type;

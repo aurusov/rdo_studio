@@ -20,7 +20,7 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditTheme
 // --------------------------------------------------------------------------------
-class RDOBuildEditTheme: public RDOLogEditTheme
+class RDOBuildEditTheme: public LogEditTheme
 {
 public:
 	RDOBuildEditTheme();
@@ -42,9 +42,9 @@ public:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogEditStyle
+// -------------------- LogEditStyle
 // --------------------------------------------------------------------------------
-class RDOBuildEditStyle: public RDOLogEditStyle
+class RDOBuildEditStyle: public LogEditStyle
 {
 protected:
 	virtual void initTheme();
@@ -58,6 +58,6 @@ public:
 	rbool operator !=( const RDOBuildEditStyle& style ) const;
 };
 
-}; // namespace rdoEditCtrl
+} // namespace rdoEditCtrl
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBUILDEDITSTYLE_H_

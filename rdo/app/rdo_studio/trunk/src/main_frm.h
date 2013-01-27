@@ -62,9 +62,9 @@ private:
 // -------------------- RDOStudioMainFrame
 // --------------------------------------------------------------------------------
 class RDOStudioMainFrame
-	: public  QMainWindow
-	, public  MainWindowBase
-	, private Ui::MainWindow
+	: public QMainWindow
+	, public MainWindowBase
+	, public Ui::MainWindow
 {
 Q_OBJECT
 
@@ -114,7 +114,10 @@ public:
 	virtual void connectOnActivateSubWindow(QObject* pObject);
 
 	template <StatusBar N>
-	void updateStatusBar(CREF(QString) message);
+	void updateStatusBar(CREF(QString) message)
+	{
+		updateStatusBar(StatusBarType<N>(), message);
+	}
 
 private:
 	typedef  QMainWindow  parent_type;
@@ -134,6 +137,14 @@ private:
 	PTR(QLabel)             m_pSBModelSpeed;
 	PTR(QLabel)             m_pSBModelShowRate;
 
+	PTR(QToolBar)           m_pFileToolBar;
+	PTR(QToolBar)           m_pEditToolBar;
+	PTR(QToolBar)           m_pZoomToolBar;
+	PTR(QToolBar)           m_pModelToolBar;
+
+	void createStatusBar();
+	void createToolBar  ();
+
 	virtual void closeEvent(QCloseEvent* event);
 	virtual void showEvent (QShowEvent*  event);
 	virtual void hideEvent (QHideEvent*  event);
@@ -144,10 +155,23 @@ private:
 	{};
 
 	template <StatusBar N>
-	void updateStatusBar(StatusBarType<N>, CREF(QString) message);
+	void updateStatusBar(StatusBarType<N> statusBar, CREF(QString) message)
+	{
+		PTR(QLabel) pLabel = getStatusBarLabel(statusBar);
+		ASSERT(pLabel);
+		pLabel->setText(message);
+	}
 
 	template <StatusBar N>
 	PTR(QLabel) getStatusBarLabel(StatusBarType<N>);
+
+public:
+	void onUpdateModify       ();
+	void onUpdateModelTime    (float time);
+	void onUpdateModelRuntype ();
+	void onUpdateModelSpeed   ();
+	void onUpdateModelShowRate();
+	void onModelRun           ();
 
 private slots:
 	void onFileNew    ();
@@ -157,12 +181,6 @@ private slots:
 	void onFileSaveAs ();
 	void onFileSaveAll();
 
-	void onModelBuild();
-public slots:
-	void onModelRun  ();
-private slots:
-	void onModelStop ();
-
 	void onViewOptions();
 
 	void onHelpContext();
@@ -171,14 +189,6 @@ private slots:
 	void onDockVisibleChanged(bool visible);
 
 private:
-	afx_msg void OnViewFileToolbar();
-	afx_msg void OnViewEditToolbar();
-	afx_msg void OnViewZoomToolbar();
-	afx_msg void OnViewModelToolbar();
-	afx_msg void OnUpdateViewFileToolbar(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewEditToolbar(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewZoomToolbar(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewModelToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnDestroy();
 	afx_msg void OnModelRuntimeMaxSpeed();
 	afx_msg void OnModelRuntimeJump();

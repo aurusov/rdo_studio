@@ -19,73 +19,71 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerBase
+// -------------------- TracerBase
 // --------------------------------------------------------------------------------
-class RDOTracerResType;
-class RDOTracerResource;
-class RDOTracerPattern;
-class RDOTracerOperationBase;
-class RDOTracerEvent;
-class RDOTracerResult;
-class RDOTracerTimeNow;
-class RDOTracerSerie;
-class RDOTracerResParamInfo;
+class TracerResType;
+class TracerResource;
+class TracerPattern;
+class TracerOperationBase;
+class TracerEvent;
+class TracerResult;
+class TracerTimeNow;
+class TracerSerie;
+class TracerResParamInfo;
 
 class ChartTree;
 class RDOStudioChartDoc;
 
-namespace rdoTracerLog {
-class RDOTracerLogCtrl;
-}
+namespace rdo { namespace gui { namespace tracer {
 
-namespace rdoTracer {
+class LogMainWnd;
 
-class RDOTracerBase: public RDOThreadGUI
+class TracerBase: public RDOThreadGUI
 {
 private:
 	CMutex mutex;
 
-	rdoTracerLog::RDOTracerLogCtrl* log;
+	LogMainWnd* log;
 	ChartTree*  tree;
 
-	RDOTracerResParamInfo* getParam( rdo::textstream& stream );
-	RDOTracerResParamInfo* getParamType( rdo::textstream& stream );
-	std::vector <RDOTracerResType*> resTypes;
+	TracerResParamInfo* getParam( rdo::textstream& stream );
+	TracerResParamInfo* getParamType( rdo::textstream& stream );
+	std::vector <TracerResType*> resTypes;
 	void addResourceType( REF(tstring) s, rdo::textstream& stream );
-	std::vector <RDOTracerResource*> resources;
+	std::vector <TracerResource*> resources;
 	void addResource( REF(tstring) s, rdo::textstream& stream );
-	std::vector <RDOTracerPattern*> patterns;
+	std::vector <TracerPattern*> patterns;
 	void addPattern( REF(tstring) s, rdo::textstream& stream );
-	std::vector <RDOTracerOperationBase*> operations;
-	std::vector <RDOTracerEvent*> irregularEvents;
+	std::vector <TracerOperationBase*> operations;
+	std::vector <TracerEvent*> irregularEvents;
 	void addOperation( REF(tstring) s, rdo::textstream& stream );
 	//void addIrregularEvent( REF(tstring) s, rdo::textstream& stream );
-	std::vector <RDOTracerResult*> results;
+	std::vector <TracerResult*> results;
 	void addResult( REF(tstring) s, rdo::textstream& stream );
 	
 	void dispatchNextString( REF(tstring) line );
 
-	RDOTracerTimeNow* addTime( CREF(tstring) time );
+	TracerTimeNow* addTime( CREF(tstring) time );
 	int eventIndex;
 	
-	RDOTracerOperationBase* getOperation( REF(tstring) line );
-	void startAction( REF(tstring) line, RDOTracerTimeNow* const time );
-	void accomplishAction( REF(tstring) line, RDOTracerTimeNow* const time  );
-	void irregularEvent( REF(tstring) line, RDOTracerTimeNow* const time  );
-	void productionRule( REF(tstring) line, RDOTracerTimeNow* const time  );
+	TracerOperationBase* getOperation( REF(tstring) line );
+	void startAction( REF(tstring) line, TracerTimeNow* const time );
+	void accomplishAction( REF(tstring) line, TracerTimeNow* const time  );
+	void irregularEvent( REF(tstring) line, TracerTimeNow* const time  );
+	void productionRule( REF(tstring) line, TracerTimeNow* const time  );
 
-	RDOTracerResource* getResource( REF(tstring) line );
-	RDOTracerResource* resourceCreation( REF(tstring) line, RDOTracerTimeNow* const time  );
-	RDOTracerResource* resourceElimination( REF(tstring) line, RDOTracerTimeNow* const time  );
-	enum RDOTracerResUpdateAction { RUA_NONE, RUA_ADD, RUA_UPDATE };
-	RDOTracerResUpdateAction action;
-	RDOTracerResource* resource;
-	RDOTracerResource* resourceChanging( REF(tstring) line, RDOTracerTimeNow* const time  );
+	TracerResource* getResource( REF(tstring) line );
+	TracerResource* resourceCreation( REF(tstring) line, TracerTimeNow* const time  );
+	TracerResource* resourceElimination( REF(tstring) line, TracerTimeNow* const time  );
+	enum TracerResUpdateAction { RUA_NONE, RUA_ADD, RUA_UPDATE };
+	TracerResUpdateAction action;
+	TracerResource* resource;
+	TracerResource* resourceChanging( REF(tstring) line, TracerTimeNow* const time  );
 	
-	RDOTracerResult* getResult( REF(tstring) line );
-	void resultChanging( REF(tstring) line, RDOTracerTimeNow* const time  );
+	TracerResult* getResult( REF(tstring) line );
+	void resultChanging( REF(tstring) line, TracerTimeNow* const time  );
 
-	std::list< RDOTracerTimeNow* > timeList;
+	std::list< TracerTimeNow* > timeList;
 	
 	void clearCharts();
 	void deleteTrace();
@@ -97,12 +95,12 @@ private:
 	rbool drawTrace;
 
 protected:
-	RDOTracerBase( CREF(tstring) _thread_name, RDOKernelGUI* _kernel_gui );
-	virtual ~RDOTracerBase();
+	TracerBase( CREF(tstring) _thread_name, RDOKernelGUI* _kernel_gui );
+	virtual ~TracerBase();
 
 public:
-	void setLog (PTR(rdoTracerLog::RDOTracerLogCtrl) pTracerLog);
-	void setTree(PTR(ChartTree)                      pTreeCtrl );
+	void setLog (PTR(LogMainWnd) pTracerLog);
+	void setTree(PTR(ChartTree)  pTreeCtrl );
 
 	void startTrace();
 	void getModelStructure( rdo::textstream& stream );
@@ -113,7 +111,7 @@ public:
 	RDOStudioChartDoc* createNewChart();
 	void addChart( RDOStudioChartDoc* const chart );
 	void removeChart( RDOStudioChartDoc* chart );
-	RDOStudioChartDoc* addSerieToChart( RDOTracerSerie* const serie, RDOStudioChartDoc* chart = NULL );
+	RDOStudioChartDoc* addSerieToChart( TracerSerie* const serie, RDOStudioChartDoc* chart = NULL );
 	void updateChartsStyles() const;
 	void clear();
 	void setModelName( tstring name ) const;
@@ -123,6 +121,6 @@ public:
 	void unlock() { mutex.Unlock(); };
 };
 
-}; // namespace rdoTracer
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERBASE_H_

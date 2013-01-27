@@ -38,6 +38,6 @@ public:
 	void appendLine( CREF(tstring) str );
 };
 
-}; // namespace rdoEditCtrl
+} // namespace rdoEditCtrl
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDODEBUGEDIT_H_

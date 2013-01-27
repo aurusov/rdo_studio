@@ -21,9 +21,9 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerResParamInfo
+// -------------------- TracerResParamInfo
 // --------------------------------------------------------------------------------
-RDOTracerResParamInfo::RDOTracerResParamInfo( const RDOTracerResParamType type ) :
+TracerResParamInfo::TracerResParamInfo( const TracerResParamType type ) :
 	paramType( type ),
 	enumValues( NULL )
 {
@@ -31,13 +31,13 @@ RDOTracerResParamInfo::RDOTracerResParamInfo( const RDOTracerResParamType type )
 		enumValues = new RDOStringVector();
 }
 
-RDOTracerResParamInfo::~RDOTracerResParamInfo()
+TracerResParamInfo::~TracerResParamInfo()
 {
 	if ( enumValues )
 		delete enumValues;
 };
 
-int RDOTracerResParamInfo::addEnumValue( CREF(tstring) value )
+int TracerResParamInfo::addEnumValue( CREF(tstring) value )
 {
 	if ( !enumValues )
 		return -1;
@@ -45,7 +45,7 @@ int RDOTracerResParamInfo::addEnumValue( CREF(tstring) value )
 	return enumValues->size() - 1;
 }
 
-int RDOTracerResParamInfo::addStringValue( CREF(tstring) value )
+int TracerResParamInfo::addStringValue( CREF(tstring) value )
 {
 	if ( !enumValues )
 		return -1;
@@ -62,7 +62,7 @@ int RDOTracerResParamInfo::addStringValue( CREF(tstring) value )
 
 static tstring nullStr = "";
 
-tstring RDOTracerResParamInfo::getEnumValue( unsigned int index ) const
+tstring TracerResParamInfo::getEnumValue( unsigned int index ) const
 {
 	if ( !enumValues )
 		return nullStr;
@@ -72,15 +72,15 @@ tstring RDOTracerResParamInfo::getEnumValue( unsigned int index ) const
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerResType
+// -------------------- TracerResType
 // --------------------------------------------------------------------------------
-RDOTracerResType::RDOTracerResType( const RDOTracerResTypeKind kind ) :
+TracerResType::TracerResType( const TracerResTypeKind kind ) :
 	ChartTreeItem(),
 	restypeKind( kind )
 {
 }
 
-RDOTracerResType::~RDOTracerResType()
+TracerResType::~TracerResType()
 {
 	int count = paramsInfo.size();
 	for (int i = 0; i < count; i++ ) {
@@ -88,13 +88,13 @@ RDOTracerResType::~RDOTracerResType()
 	}
 };
 
-int RDOTracerResType::addParamInfo( RDOTracerResParamInfo* const value )
+int TracerResType::addParamInfo( TracerResParamInfo* const value )
 {
 	paramsInfo.push_back( value );
 	return paramsInfo.size() - 1;
 }
 
-RDOTracerResParamInfo* RDOTracerResType::getParamInfo( unsigned int index ) const
+TracerResParamInfo* TracerResType::getParamInfo( unsigned int index ) const
 {
 	if ( index >= paramsInfo.size() || index < 0 )
 		return NULL;

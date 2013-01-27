@@ -11,12 +11,12 @@
 #define _RDO_STUDIO_DOCK_RESULTS_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio_mfc/src/dock/dock_focusable.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 // --------------------------------------------------------------------------------
 
-class DockResults: public QDockWidget
+class DockResults: public DockFocusable
 {
 public:
 	typedef rdoEditor::RDOEditorResults context_type;

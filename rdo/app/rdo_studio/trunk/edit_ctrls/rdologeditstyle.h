@@ -18,46 +18,46 @@
 namespace rdoEditCtrl {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogEditTheme
+// -------------------- LogEditTheme
 // --------------------------------------------------------------------------------
-class RDOLogEditTheme: public RDOBaseEditTheme
+class LogEditTheme: public RDOBaseEditTheme
 {
 public:
-	RDOLogEditTheme();
-	virtual ~RDOLogEditTheme();
+	LogEditTheme();
+	virtual ~LogEditTheme();
 
-	RDOLogEditTheme& operator =( const RDOLogEditTheme& theme );
-	rbool operator ==( const RDOLogEditTheme& theme ) const;
-	rbool operator !=( const RDOLogEditTheme& theme ) const;
+	LogEditTheme& operator =( const LogEditTheme& theme );
+	rbool operator ==( const LogEditTheme& theme ) const;
+	rbool operator !=( const LogEditTheme& theme ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
 	COLORREF selectLineBgColor;
 
-	static RDOLogEditTheme getDefaultTheme();
-	static RDOLogEditTheme getClassicTheme();
-	static RDOLogEditTheme getTwilightTheme();
-	static RDOLogEditTheme getOceanTheme();
+	static LogEditTheme getDefaultTheme();
+	static LogEditTheme getClassicTheme();
+	static LogEditTheme getTwilightTheme();
+	static LogEditTheme getOceanTheme();
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogEditStyle
+// -------------------- LogEditStyle
 // --------------------------------------------------------------------------------
-class RDOLogEditStyle: public RDOBaseEditStyle
+class LogEditStyle: public RDOBaseEditStyle
 {
 protected:
 	virtual void initTheme();
 
 public:
-	RDOLogEditStyle();
-	virtual ~RDOLogEditStyle();
+	LogEditStyle();
+	virtual ~LogEditStyle();
 
-	RDOLogEditStyle& operator =( const RDOLogEditStyle& style );
-	rbool operator ==( const RDOLogEditStyle& style ) const;
-	rbool operator !=( const RDOLogEditStyle& style ) const;
+	LogEditStyle& operator =( const LogEditStyle& style );
+	rbool operator ==( const LogEditStyle& style ) const;
+	rbool operator !=( const LogEditStyle& style ) const;
 };
 
-}; // namespace rdoEditCtrl
+} // namespace rdoEditCtrl
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOLOGEDITSTYLE_H_

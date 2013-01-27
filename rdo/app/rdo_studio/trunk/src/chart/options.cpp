@@ -339,7 +339,7 @@ void RDOStudioChartOptionsSeries::apply() const
 		m_SerieTitle.GetWindowText( title );
 		serie->docSerieTitle = title;
 		serie->color = ColorCB.getCurrentColor();
-		serie->marker = static_cast<RDOTracerSerieMarker>(m_Marker.GetCurSel());
+		serie->marker = static_cast<TracerSerieMarker>(m_Marker.GetCurSel());
 		rbool marker = m_DrawMarker.GetCheck() ? true : false;
 		serie->needDrawMarker = marker;
 		serie->marker_size = m_sizeMarker;

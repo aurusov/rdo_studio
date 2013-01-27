@@ -24,12 +24,12 @@
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartDoc
 // --------------------------------------------------------------------------------
-class RDOTracerTimeNow;
-class RDOTracerValue;
+class TracerTimeNow;
+class TracerValue;
 class RDOStudioDocSerie;
 class RDOStudioChartViewStyle;
 
-typedef std::list< RDOTracerTimeNow* > timesList;
+typedef std::list< TracerTimeNow* > timesList;
 
 class RDOStudioChartDoc
 {
@@ -44,7 +44,7 @@ protected:
 	std::vector< RDOStudioDocSerie* > series;
 	int getSerieIndex( RDOStudioDocSerie* serie ) const;
 	COLORREF selectColor();
-	RDOTracerSerieMarker selectMarker();
+	TracerSerieMarker selectMarker();
 
 	timesList docTimes;
 	timesList::iterator inserted_it;
@@ -83,14 +83,14 @@ public:
 
 	void updateAllViews();
 
-	void addSerie( RDOTracerSerie* const serie );
-	//void removeSerie( RDOTracerSerie* const serie );
-	rbool serieExists( const RDOTracerSerie* serie ) const;
+	void addSerie( TracerSerie* const serie );
+	//void removeSerie( TracerSerie* const serie );
+	rbool serieExists( const TracerSerie* serie ) const;
 
 	void lock() { mutex.Lock(); };
 	void unlock() { mutex.Unlock(); };
-	void incTimeEventsCount( RDOTracerTimeNow* time );
-	rbool newValueToSerieAdded( RDOTracerValue* val );
+	void incTimeEventsCount( TracerTimeNow* time );
+	rbool newValueToSerieAdded( TracerValue* val );
 };
 
 #endif // _RDO_STUDIO_MFC_CHART_DOCUMENT_H_

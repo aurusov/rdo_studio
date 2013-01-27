@@ -17,6 +17,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
+#include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
 #include "thirdparty/sci/qt/ScintillaEditBase/ScintillaEditBase.h"
 // --------------------------------------------------------------------------------
 
@@ -56,10 +57,13 @@ public:
 	RDOBaseEditListIterator end()   const { return list.end();   }
 };
 
-class RDOBaseEdit: public ScintillaEditBase
+class RDOBaseEdit
+	: public ScintillaEditBase
+	, public ActionActivator
 {
 Q_OBJECT
 private:
+	typedef  ScintillaEditBase  super;
 	int markerCount;
 
 protected:
@@ -74,8 +78,8 @@ protected:
 	rbool GUI_ID_VIEW_WHITESPACE;
 	rbool GUI_ID_VIEW_ENDOFLINE;
 
-	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return ScintillaEditBase::send( msg, wParam, lParam );; };
-	long sendEditorString( unsigned int msg, unsigned long wParam, const char* str ) const { return ScintillaEditBase::sends( msg, wParam, str ); };
+	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return super::send( msg, wParam, lParam );; };
+	long sendEditorString( unsigned int msg, unsigned long wParam, const char* str ) const { return super::sends( msg, wParam, str ); };
 	QMenu* popupMenu;
 
 	int sci_MARKER_BOOKMARK;
@@ -106,9 +110,15 @@ protected:
 	void updateBookmarksGUI();
 
 protected:
+	virtual void focusInEvent (QFocusEvent* pEvent);
+	virtual void focusOutEvent(QFocusEvent* pEvent);
+
 	afx_msg void OnIsSelected(CCmdUI* pCmdUI);
 
 private:
+	void onActivate  ();
+	void onDeactivate();
+
 	//! @todo qt
 	//afx_msg void OnSetFocus( CWnd *pOldWnd );
 	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
@@ -232,6 +242,6 @@ public:
 	void saveAsRTF( CFile& file, int start = 0, int end = -1 ) const;
 };
 
-}; // namespace rdoEditCtrl
+} // namespace rdoEditCtrl
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDIT_H_
