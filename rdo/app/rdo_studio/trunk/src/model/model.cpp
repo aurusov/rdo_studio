@@ -538,7 +538,7 @@ rbool RDOStudioModel::newModel(CREF(tstring) modelName, CREF(tstring) modelPath,
 	return true;
 }
 
-rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
+rbool RDOStudioModel::openModel(CREF(tstring) modelName)
 {
 	if (isRunning())
 	{
@@ -593,7 +593,7 @@ rbool RDOStudioModel::saveModel() const
 	return res;
 }
 
-rbool RDOStudioModel::closeModel() const
+rbool RDOStudioModel::closeModel()
 {
 	if (isRunning())
 	{
@@ -664,6 +664,7 @@ void RDOStudioModel::createView()
 {
 	ASSERT(m_pModelView == NULL);
 	m_pModelView = new RDOStudioModelView(NULL);
+	m_pModelView->setModel(this);
 	studioApp.getIMainWnd()->addSubWindow(m_pModelView);
 	m_pModelView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/mdi_model.png")));
 

@@ -410,7 +410,18 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 		event->ignore();
 	}
 
-	parent_type::closeEvent(event);
+	if (event->isAccepted())
+	{
+		update_stop();
+		style_editor.save();
+		style_build.save();
+		style_debug.save();
+		style_trace.save();
+		style_results.save();
+		style_find.save();
+		style_frame.save();
+		style_chart.save();
+	}
 }
 
 void RDOStudioMainFrame::onViewOptions()

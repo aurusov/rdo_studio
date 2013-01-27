@@ -18,7 +18,6 @@
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/src/frame/manager.h"
-#include "app/rdo_studio_mfc/src/model/view.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
@@ -31,6 +30,8 @@
 namespace rdoEditor {
 	class RDOEditorTabCtrl;
 }
+
+class RDOStudioModelView;
 
 class RDOStudioModel
 	: public QObject
@@ -140,6 +141,8 @@ public:
 	rbool closeModel();
 	void  update    ();
 
+	void resetView();
+
 	CREF(tstring) getName    () const;
 	void          setName    (CREF(tstring) str);
 	tstring       getFullName() const;
@@ -161,21 +164,8 @@ public:
 	void       closeAllFrame   ();
 	rbool      hasModel        () const;
 
-	PTR(rdoEditor::RDOEditorTabCtrl) getTab()
-	{
-		if (!m_pModelView)
-			return NULL;
-
-		return &m_pModelView->getTab();
-	}
-
-	CPTR(rdoEditor::RDOEditorTabCtrl) getTab() const
-	{
-		if (!m_pModelView)
-			return NULL;
-
-		return &m_pModelView->getTab();
-	}
+	 PTR(rdoEditor::RDOEditorTabCtrl) getTab();
+	CPTR(rdoEditor::RDOEditorTabCtrl) getTab() const;
 
 	void  updateStyleOfAllModel() const;
 	rbool isPrevModelClosed    () const;
