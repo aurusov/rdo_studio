@@ -69,6 +69,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="QtSql4.lib QtCore4.lib $(QTDIR)\plugins\sqldrivers\qsqlpsql4.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -84,6 +85,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				Description=""
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -134,6 +137,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="QtSqld4.lib QtCored4.lib $(QTDIR)\plugins\sqldrivers\qsqlpsqld4.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -149,6 +153,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				Description=""
+				CommandLine=""
 			/>
 		</Configuration>
 	</Configurations>

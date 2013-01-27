@@ -60,7 +60,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="QtSqld4.lib QtCored4.lib $(QTDIR)\plugins\sqldrivers\qsqlpsqld4.lib"
 				LinkIncremental="0"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
@@ -86,7 +85,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\QtCored4.dll&quot; &quot;$(TargetDir)\QtCored4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtSqld4.dll&quot; &quot;$(TargetDir)\QtSqld4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsqld4.dll&quot; &quot;$(TargetDir)\qsqlpsqld4.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(TargetDir)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(TargetDir)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(TargetDir)\ssleay32.dll&quot;&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCored4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtCored4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtSqld4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtSqld4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsqld4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\qsqlpsqld4.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\ssleay32.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -133,7 +132,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="QtSql4.lib QtCore4.lib $(QTDIR)\plugins\sqldrivers\qsqlpsql4.lib"
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -159,7 +157,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(QTDIR)\bin\QtCore4.dll&quot; &quot;$(TargetDir)\QtCore4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtSql4.dll&quot; &quot;$(TargetDir)\QtSql4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsql4.dll&quot; &quot;$(TargetDir)\qsqlpsql4.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(TargetDir)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(TargetDir)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(TargetDir)\ssleay32.dll&quot;&#x0D;&#x0A;"
+				Description="copy qt-dll"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCore4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtCore4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtSql4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtSql4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsql4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\qsqlpsql4.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\ssleay32.dll&quot;l&quot;"
 			/>
 		</Configuration>
 	</Configurations>
