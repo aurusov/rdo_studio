@@ -2456,14 +2456,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dock_wnd.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dock_wnd.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\main_frm.cpp"
 				>
 			</File>

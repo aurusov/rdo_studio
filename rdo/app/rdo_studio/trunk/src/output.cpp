@@ -38,31 +38,20 @@ using namespace rdo::simulation::report;
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioOutput
 // --------------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP(RDOStudioOutput, RDOStudioDockWnd)
-	ON_WM_CREATE()
-END_MESSAGE_MAP()
-
-RDOStudioOutput::RDOStudioOutput()
-	: build  (NULL)
+RDOStudioOutput::RDOStudioOutput(PTR(QWidget) pParent)
+	: parent_type(pParent)
+	, build  (NULL)
 	, debug  (NULL)
 	, trace  (NULL)
 	, results(NULL)
 	, find   (NULL)
-{}
-
-RDOStudioOutput::~RDOStudioOutput()
 {
-	eraseMenu( &popupMenu );
-}
+	setMinimumSize(300, 150);
 
-int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct) 
-{
-	if (RDOStudioDockWnd::OnCreate(lpCreateStruct) == -1)
-		return -1;
+	m_thisCWnd.Attach(winId());
 
-	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, 0 );
+	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), &m_thisCWnd, 0 );
 	tab.modifyTabStyle( 0, TCS_MULTILINE );
-//	tab.modifyTabStyle( 0, TCS_BOTTOM | TCS_MULTILINE );
 
 	popupMenu.CreatePopupMenu();
 
@@ -121,13 +110,24 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	tab.insertItem( results, rdo::format( IDS_TAB_RESULT ).c_str() );
 	tab.insertItem( find, rdo::format( IDS_TAB_FIND ).c_str() );
 
+	//! @todo qt
 	//studioApp.m_pMainFrame->registerCmdWnd( build, build->getSCIHWND() );
 	//studioApp.m_pMainFrame->registerCmdWnd( debug, debug->getSCIHWND() );
 	//studioApp.m_pMainFrame->registerCmdWnd( trace );
 	//studioApp.m_pMainFrame->registerCmdWnd( results, results->getSCIHWND() );
 	//studioApp.m_pMainFrame->registerCmdWnd( find, find->getSCIHWND() );
+}
 
-	return 0;
+RDOStudioOutput::~RDOStudioOutput()
+{
+	eraseMenu( &popupMenu );
+}
+
+void RDOStudioOutput::resizeEvent(PTR(QResizeEvent) event)
+{
+	parent_type::resizeEvent(event);
+	QSize size(event->size());
+	tab.MoveWindow(0, 0, size.width(), size.height());
 }
 
 void RDOStudioOutput::showBuild()
@@ -136,7 +136,7 @@ void RDOStudioOutput::showBuild()
 	tab.setCurrentItem( 0 );
 	if ( plugins->studioIsShow() ) {
 		build->SetFocus();
-		UpdateWindow();
+		update();
 	}
 }
 
@@ -146,7 +146,7 @@ void RDOStudioOutput::showDebug()
 	tab.setCurrentItem( 1 );
 	if ( plugins->studioIsShow() ) {
 		debug->SetFocus();
-		UpdateWindow();
+		update();
 	}
 }
 
@@ -156,7 +156,7 @@ void RDOStudioOutput::showTrace()
 	tab.setCurrentItem( 2 );
 	if ( plugins->studioIsShow() ) {
 		trace->SetFocus();
-		UpdateWindow();
+		update();
 	}
 }
 
@@ -166,7 +166,7 @@ void RDOStudioOutput::showResults()
 	tab.setCurrentItem( 3 );
 	if ( plugins->studioIsShow() ) {
 		results->SetFocus();
-		UpdateWindow();
+		update();
 	}
 }
 
@@ -176,7 +176,7 @@ void RDOStudioOutput::showFind()
 	tab.setCurrentItem( 4 );
 	if ( plugins->studioIsShow() ) {
 		find->SetFocus();
-		UpdateWindow();
+		update();
 	}
 }
 
@@ -243,7 +243,7 @@ void RDOStudioOutput::appendStringToFind( CREF(tstring) str, rdoModelObjects::RD
 
 void RDOStudioOutput::Tab::changeCurrentItem()
 {
-	studioApp.getIMainWnd()->output.updateLogConnection();
+	studioApp.getIMainWnd()->getOutputDoc()->updateLogConnection();
 }
 
 void RDOStudioOutput::updateLogConnection() const

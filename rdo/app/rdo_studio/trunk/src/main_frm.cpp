@@ -17,6 +17,7 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/options.h"
+#include "app/rdo_studio_mfc/src/output.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
 #include "app/rdo_studio_mfc/resource.h"
@@ -88,6 +89,7 @@ const ruint WORKSPACE_SHOW_MESSAGE = ::RegisterWindowMessage( "WORKSPACE_SHOW_ME
 const ruint OUTPUT_SHOW_MESSAGE    = ::RegisterWindowMessage( "OUTPUT_SHOW_MESSAGE" );
 const ruint update_timer_ID = 1;
 
+//! @todo qt
 //BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 //	ON_WM_CREATE()
 //	ON_COMMAND(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnViewFileToolbar)
@@ -199,6 +201,7 @@ void RDOStudioMainFrame::init()
 	style_chart.init( "chart" );
 	style_chart.load();
 
+	//! @todo qt
 	//fileToolBar.init( c_wnd(), IDR_FILE_TOOLBAR, IDB_FILE_TOOLBAR_D );
 	//editToolBar.init( c_wnd(), IDR_EDIT_TOOLBAR, IDB_EDIT_TOOLBAR_D );
 	//zoomToolBar.init( c_wnd(), IDR_ZOOM_TOOLBAR, IDB_ZOOM_TOOLBAR_D );
@@ -216,17 +219,24 @@ void RDOStudioMainFrame::init()
 	//statusBar.SetPaneInfo( 7, ID_PROGRESSSTATUSBAR         , SBPS_STRETCH, 70 );
 	//statusBar.setProgressIndicator( ID_PROGRESSSTATUSBAR );
 
-	//workspace.Create( rdo::format( ID_DOCK_WORKSPACE ).c_str(), c_wnd(), 0 );
-	//workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
-	output.Create( rdo::format( ID_DOCK_OUTPUT ).c_str(), c_wnd(), 0 );
-	output.SetBarStyle( output.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
+	m_pWorkspaceDoc = new RDOStudioWorkspace(workspaceDockWidgetContents);
+	PTR(QVBoxLayout) pWorkspaceLayout = new QVBoxLayout(workspaceDockWidgetContents);
+	pWorkspaceLayout->setSpacing(0);
+	pWorkspaceLayout->setContentsMargins(0, 0, 0, 0);
+	pWorkspaceLayout->addWidget(m_pWorkspaceDoc);
 
+	m_pOutputDoc = new RDOStudioOutput(outputDockWidgetContents);
+	PTR(QVBoxLayout) pOutputLayout = new QVBoxLayout(outputDockWidgetContents);
+	pOutputLayout->setSpacing(0);
+	pOutputLayout->setContentsMargins(0, 0, 0, 0);
+	pOutputLayout->addWidget(m_pOutputDoc);
+
+	//! @todo qt
 	//fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	//editToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	//zoomToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	//modelToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	//workspace.EnableDocking( CBRS_ALIGN_ANY );
-	//output.EnableDocking( CBRS_ALIGN_ANY );
 
 	//modelToolBar.SetButtonStyle( 3, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 	//modelToolBar.SetButtonStyle( 4, TBBS_CHECKBOX | TBBS_CHECKGROUP );
@@ -261,21 +271,25 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 
 void RDOStudioMainFrame::OnViewFileToolbar() 
 {
+	//! @todo qt
 	//ShowControlBar( &fileToolBar, !(fileToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
 void RDOStudioMainFrame::OnViewEditToolbar() 
 {
+	//! @todo qt
 	//ShowControlBar( &editToolBar, !(editToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
 void RDOStudioMainFrame::OnViewZoomToolbar()
 {
+	//! @todo qt
 	//ShowControlBar( &zoomToolBar, !(zoomToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
 void RDOStudioMainFrame::OnViewModelToolbar()
 {
+	//! @todo qt
 	//ShowControlBar( &modelToolBar, !(modelToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
@@ -301,42 +315,48 @@ void RDOStudioMainFrame::OnUpdateViewModelToolbar(CCmdUI* pCmdUI)
 
 void RDOStudioMainFrame::OnViewWorkspace() 
 {
+	//! @todo qt
 	//ShowControlBar( &workspace, !workspace.IsVisible(), false );
 }
 
 void RDOStudioMainFrame::OnViewOutput() 
 {
+	//! @todo qt
 	//ShowControlBar( &output, !output.IsVisible(), false );
 }
 
 void RDOStudioMainFrame::OnWorkspaceShow()
 {
+	//! @todo qt
 	//ShowControlBar( &workspace, true, false );
 }
 
 void RDOStudioMainFrame::OnOutputShow()
 {
+	//! @todo qt
 	//ShowControlBar( &output, true, false );
 }
 
 void RDOStudioMainFrame::showWorkspace()
 {
+	//! @todo qt
 	//::SendMessage( m_hWnd, WORKSPACE_SHOW_MESSAGE, 0, 0 );
 }
 
 void RDOStudioMainFrame::showOutput()
 {
+	//! @todo qt
 	//::SendMessage( m_hWnd, OUTPUT_SHOW_MESSAGE, 0, 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateViewWorkspace(CCmdUI* pCmdUI) 
 {
-	pCmdUI->SetCheck( workspace.IsVisible() );
+	pCmdUI->SetCheck(getWorkspaceDoc()->isVisible());
 }
 
 void RDOStudioMainFrame::OnUpdateViewOutput(CCmdUI* pCmdUI) 
 {
-	pCmdUI->SetCheck( output.IsVisible() );
+	pCmdUI->SetCheck(getOutputDoc()->isVisible());
 }
 
 void RDOStudioMainFrame::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
@@ -432,7 +452,7 @@ void RDOStudioMainFrame::OnViewOptions()
 void RDOStudioMainFrame::updateAllStyles() const
 {
 	model->updateStyleOfAllModel();
-	output.updateStyles();
+	const_cast<PTR(RDOStudioMainFrame)>(this)->getOutputDoc()->updateStyles();
 	tracer->updateChartsStyles();
 }
 
@@ -566,6 +586,7 @@ void RDOStudioMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
 
 void RDOStudioMainFrame::update_start()
 {
+//! @todo qt
 //	m_updateTimer = SetTimer(update_timer_ID, 1000 / 30, NULL);
 }
 
@@ -573,6 +594,7 @@ void RDOStudioMainFrame::update_stop()
 {
 	if (m_updateTimer)
 	{
+		//! @todo qt
 		//KillTimer(m_updateTimer);
 		m_updateTimer = 0;
 	}
@@ -580,6 +602,7 @@ void RDOStudioMainFrame::update_stop()
 
 void RDOStudioMainFrame::OnTimer( UINT nIDEvent )
 {
+	//! @todo qt
 	//parent_type::OnTimer(nIDEvent);
 
 	if (nIDEvent == m_updateTimer)
@@ -606,6 +629,7 @@ void RDOStudioMainFrame::hideEvent(QHideEvent*)
 	}
 }
 
+//! @todo qt
 //void RDOStudioMainFrame::OnEnterMenuLoop( BOOL bIsTrackPopupMenu )
 //{
 //	model->setGUIPause();

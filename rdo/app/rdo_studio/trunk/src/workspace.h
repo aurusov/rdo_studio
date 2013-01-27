@@ -11,9 +11,9 @@
 #define _RDO_STUDIO_MFC_WORKSPACE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "ui/mfc_ctrls/rdotabctrl.h"
-#include "app/rdo_studio_mfc/src/dock_wnd.h"
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_pagectrl.h"
 // --------------------------------------------------------------------------------
@@ -21,25 +21,27 @@
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioWorkspace
 // --------------------------------------------------------------------------------
-class RDOStudioWorkspace: public RDOStudioDockWnd
+class RDOStudioWorkspace: public QWidget
 {
 friend class RDOStudioFrameManager;
-private:
-	RDOTabCtrl tab;
-	RDOStudioFrameTreeCtrl* frames;
 public:
-	RDOStudioWorkspace();
+	RDOStudioWorkspace(PTR(QWidget) pParent);
 	virtual ~RDOStudioWorkspace();
-	
-	RPPageCtrl* pagectrl;	
+
+	RPPageCtrl* pagectrl;
 	RPPageCtrlItem* prepareNewPage()                                 { return pagectrl->prepareNewPage();         }
 	RPPageCtrlItem* insertPage( CWnd* wnd, const rp::string& label ) { return pagectrl->insertPage( wnd, label ); }
 	void removePage( RPPageCtrlItem* page )                          { pagectrl->removePage( page );              }
 	void selectFirst()                                               { pagectrl->selectFirst();                   }
 
 private:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	DECLARE_MESSAGE_MAP()
+	typedef  QWidget  parent_type;
+
+	CWnd                    m_thisCWnd;
+	RDOTabCtrl              tab;
+	RDOStudioFrameTreeCtrl* frames;
+
+	void resizeEvent(PTR(QResizeEvent) event);
 };
 
 #endif // _RDO_STUDIO_MFC_WORKSPACE_H_
