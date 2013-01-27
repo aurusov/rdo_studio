@@ -504,7 +504,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>8</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="pageRoot">
           <layout class="QGridLayout" name="gridLayout_7">
@@ -560,20 +560,24 @@
          <widget class="QWidget" name="pageText">
           <layout class="QGridLayout" name="gridLayout_6">
            <item row="0" column="0">
-            <widget class="QCheckBox" name="checkBox_14">
-             <property name="text">
-              <string>Перенос слов</string>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
+             <item>
+              <widget class="QCheckBox" name="checkBox_14">
+               <property name="text">
+                <string>Перенос слов</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkBox_15">
+               <property name="text">
+                <string>Горизонтальная прокрутка</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="checkBox_15">
-             <property name="text">
-              <string>Горизонтальная прокрутка</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="2">
+           <item row="1" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_16">
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_17">
@@ -619,7 +623,7 @@
              </item>
             </layout>
            </item>
-           <item row="2" column="0" colspan="2">
+           <item row="2" column="0">
             <widget class="QCheckBox" name="checkBox_13">
              <property name="text">
               <string>Группа для комментариев</string>
