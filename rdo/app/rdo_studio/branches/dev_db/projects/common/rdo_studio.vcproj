@@ -100,7 +100,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\QtCored4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtCored4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtGuid4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtGuid4.dll&quot;&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCored4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtCored4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtGuid4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtGuid4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtSqld4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtSqld4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsqld4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\qsqlpsqld4.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\ssleay32.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -185,7 +185,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\QtCore4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtCore4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtGui4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtGui4.dll&quot;&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCore4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtCore4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtGui4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtGui4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtSql4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtSql4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsql4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\qsqlpsql4.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\ssleay32.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
