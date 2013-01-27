@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ViewPreferencesDialog</class>
+ <widget class="QDialog" name="ViewPreferencesDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>494</width>
+    <height>449</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Настройки</string>
+  </property>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>461</width>
+     <height>391</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
+   <widget class="QWidget" name="tab_1">
+    <property name="accessibleName">
+     <string/>
+    </property>
+    <attribute name="title">
+     <string>Основные</string>
+    </attribute>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>431</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Привязка к расширению</string>
+     </property>
+     <widget class="QCheckBox" name="checkBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>281</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Установить привязку для файла проекта (*.rdox)</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>141</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Проверять в будущем</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_3">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>100</y>
+       <width>241</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Открывать последний проект при старте</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_4">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>120</y>
+       <width>261</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Показывать полное имя проекта в заголовке</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>Редактор</string>
+    </attribute>
+    <widget class="QGroupBox" name="groupBoxAutoComplete">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>211</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Авто-завершение</string>
+     </property>
+     <widget class="QCheckBox" name="checkBoxCodeCompUse">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>281</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Включить</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="radioButtonFullList">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>50</y>
+        <width>131</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Полный список</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="radioButtonNearestWords">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>70</y>
+        <width>171</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Только ближайшие слова</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBoxLeft">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>20</y>
+       <width>211</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Слева</string>
+     </property>
+     <widget class="QCheckBox" name="checkBoxMarginFold">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>281</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Выводить группы</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBoxMarginBookmark">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>281</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Выводить закладки</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBoxMarginLineNum">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>281</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Выводить номера строк</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>Табуляция</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="tab_4">
+    <attribute name="title">
+     <string>Стиль и цвет</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="tab_5">
+    <attribute name="title">
+     <string>Внешние модули</string>
+    </attribute>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="buttonApply">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>410</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Применить</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="buttonHelp">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>410</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Справка</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="buttonOk">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>410</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Ок</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="buttonCancel">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>410</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Отмена</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -20,6 +20,7 @@
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_method_manager.h"
+#include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
 // --------------------------------------------------------------------------------
 
 //#define PROCGUI_ENABLE
@@ -84,6 +85,8 @@ public:
 	void           chkAndRunQtAssistant();
 	PTR(QProcess)  runQtAssistant      () const;
 	void           callQtAssistant     (CREF(QByteArray) ba);
+
+	rdoEditor::LPRDOEditorEditStyle  m_pEditorEditStyle;
 
 private:
 #ifdef RDO_MT

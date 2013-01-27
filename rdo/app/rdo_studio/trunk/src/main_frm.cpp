@@ -20,6 +20,7 @@
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/options.h"
 #include "app/rdo_studio_mfc/src/about.h"
+#include "app/rdo_studio_mfc/src/view_preferences.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
@@ -161,12 +162,14 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	m_pSBCoord         = new QLabel(this);
 	m_pSBModify        = new QLabel(this);
 	m_pSBModelTime     = new QLabel(this);
+	m_pSBModelRuntype  = new QLabel(this);
 	m_pSBModelSpeed    = new QLabel(this);
 	m_pSBModelShowRate = new QLabel(this);
 
 	parent_type::statusBar()->addWidget(m_pSBCoord );
 	parent_type::statusBar()->addWidget(m_pSBModify);
 	parent_type::statusBar()->addWidget(m_pSBModelTime);
+	parent_type::statusBar()->addWidget(m_pSBModelRuntype);
 	parent_type::statusBar()->addWidget(m_pSBModelSpeed);
 	parent_type::statusBar()->addWidget(m_pSBModelShowRate);
 
@@ -180,6 +183,8 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	QObject::connect(actModelBuild, SIGNAL(triggered(bool)), this, SLOT(onModelBuild()));
 	QObject::connect(actModelRun,   SIGNAL(triggered(bool)), this, SLOT(onModelRun  ()));
 	QObject::connect(actModelStop,  SIGNAL(triggered(bool)), this, SLOT(onModelStop ()));
+
+	QObject::connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions()));
 
 	QObject::connect(actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 	QObject::connect(actHelpAbout,   SIGNAL(triggered(bool)), this, SLOT(onHelpAbout  ()));
@@ -536,10 +541,10 @@ void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 	}
 }
 
-void RDOStudioMainFrame::OnViewOptions()
+void RDOStudioMainFrame::onViewOptions()
 {
-	RDOStudioOptions dlg;
-	dlg.DoModal();
+	ViewPreferences dlg(this);
+	dlg.exec();
 }
 
 void RDOStudioMainFrame::updateAllStyles()
@@ -863,6 +868,12 @@ template <>
 PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODEL_TIME>(StatusBarType<SB_MODEL_TIME>)
 {
 	return m_pSBModelTime;
+}
+
+template <>
+PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODEL_RUNTYPE>(StatusBarType<SB_MODEL_RUNTYPE>)
+{
+	return m_pSBModelRuntype;
 }
 
 template <>

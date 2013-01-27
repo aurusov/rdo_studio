@@ -294,6 +294,8 @@ BOOL RDOStudioApp::InitInstance()
 	QMfcApp::instance(this);
 	qApp->setQuitOnLastWindowClosed(true);
 
+	m_pEditorEditStyle = rdo::Factory<rdoEditor::RDOEditorEditStyle>::create();
+
 	// Внутри создается объект модели
 	m_pMainFrame = new RDOStudioMainFrame;
 	m_pMainFrame->init();

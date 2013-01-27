@@ -80,15 +80,6 @@ void RDOStudioEditBaseView::restartBufTimer(ruint bufferID)
 		return;
 
 	stopTimer(it->second.pTimer);
-	if (studioApp.getStyle()->style_editor.buffer->canClearBuffer)
-	{
-		int delay = studioApp.getStyle()->style_editor.buffer->clearBufferDelay * 1000;
-		if (delay < 0)
-		{
-			delay = 0;
-		}
-		it->second.pTimer->start(delay);
-	}
 }
 
 void RDOStudioEditBaseView::stopTimer(QTimer* pTimer)

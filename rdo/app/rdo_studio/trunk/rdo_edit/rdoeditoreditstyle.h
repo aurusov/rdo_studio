@@ -11,6 +11,8 @@
 #define _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDITSTYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/signal.hpp>
+#include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseeditstyle.h"
 // --------------------------------------------------------------------------------
@@ -81,26 +83,6 @@ public:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorEditBuffer
-// --------------------------------------------------------------------------------
-class RDOEditorEditBuffer
-{
-public:
-	RDOEditorEditBuffer();
-	virtual ~RDOEditorEditBuffer();
-
-	RDOEditorEditBuffer& operator =( const RDOEditorEditBuffer& buffer );
-	rbool operator ==( const RDOEditorEditBuffer& buffer ) const;
-	rbool operator !=( const RDOEditorEditBuffer& buffer ) const;
-
-	virtual void load( tstring regPath );
-	virtual void save( tstring regPath ) const;
-
-	rbool canClearBuffer;
-	int   clearBufferDelay;
-};
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditMargin
 // --------------------------------------------------------------------------------
 class RDOEditorEditMargin
@@ -129,10 +111,10 @@ class RDOEditorEditStyle: public RDOEditorBaseEditStyle
 protected:
 	virtual void initTheme();
 	virtual void initAutoComplete();
-	virtual void initBuffer();
 	virtual void initMargin();
 
 public:
+
 	RDOEditorEditStyle();
 	virtual ~RDOEditorEditStyle();
 
@@ -145,9 +127,17 @@ public:
 	virtual rbool save() const;
 
 	RDOEditorEditAutoComplete* autoComplete;
-	RDOEditorEditBuffer*       buffer;
 	RDOEditorEditMargin*       margin;
+	template <class CallbackFun>
+	void attachSubscriber(const CallbackFun& sub);
+	template <class CallbackFun>
+	void detachSubscriber(const CallbackFun& sub);
+
+private:
+	boost::signal<void (const RDOEditorEditStyle&)> subscriber;
 };
+
+DECLARE_POINTER(RDOEditorEditStyle)
 
 }; // namespace rdoEditor
 

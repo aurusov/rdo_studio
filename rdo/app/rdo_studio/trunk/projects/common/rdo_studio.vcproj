@@ -1681,6 +1681,70 @@
 						/>
 					</FileConfiguration>
 				</File>
+				<File
+					RelativePath="..\..\res\ui\view_preferenses.ui"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1983,6 +2047,24 @@
 			<File
 				RelativePath="..\..\src\thread.h"
 				>
+			</File>
+			<File
+				RelativePath="..\..\src\view_preferences.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\view_preferences.h"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC $(InputFileName)"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio_mfc/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -2802,6 +2884,10 @@
 					RelativePath=".\bin\rdo_studio\generated\moc_view_base.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\bin\rdo_studio\generated\moc_view_preferences.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".qrc"
@@ -2868,6 +2954,10 @@
 				</File>
 				<File
 					RelativePath=".\bin\rdo_studio\generated\ui_main_window.h"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\rdo_studio\generated\ui_view_preferenses.h"
 					>
 				</File>
 			</Filter>
