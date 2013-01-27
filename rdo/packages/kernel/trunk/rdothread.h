@@ -84,7 +84,6 @@ public:
 		RT_STUDIO_MODEL_NEW,                   // param = rdo::repository::RDOThreadRepository::NewModel* = { model_name:tstring&, model_path:tstring&      }
 		RT_STUDIO_MODEL_OPEN,                  // param = rdo::repository::RDOThreadRepository::OpenFile* = { model_name:tstring&, result:rbool&, readonly:rbool& }
 		RT_STUDIO_MODEL_SAVE,
-		RT_STUDIO_MODEL_SAVE_AS,
 		RT_STUDIO_MODEL_CLOSE,
 		RT_STUDIO_MODEL_BUILD,
 		RT_STUDIO_MODEL_RUN,
@@ -95,7 +94,6 @@ public:
 		RT_REPOSITORY_MODEL_OPEN_ERROR,        // param = model_name:tstring*
 		RT_REPOSITORY_MODEL_SAVE,
 		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdo::repository::RDOThreadRepository::OpenFile* = { model_name:tstring, readonly:rbool, result:rbool }
-		RT_REPOSITORY_MODEL_SAVE_GET_NAME,     // param = rdo::repository::RDOThreadRepository::OpenFile* = { model_name:tstring, readonly:rbool, result:rbool }
 		RT_REPOSITORY_MODEL_CLOSE,
 		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:rbool*, работает как И
 		RT_REPOSITORY_MODEL_CLOSE_ERROR,
@@ -161,7 +159,6 @@ public:
 			case RT_STUDIO_MODEL_NEW                  : return _T("RT_STUDIO_MODEL_NEW");
 			case RT_STUDIO_MODEL_OPEN                 : return _T("RT_STUDIO_MODEL_OPEN");
 			case RT_STUDIO_MODEL_SAVE                 : return _T("RT_STUDIO_MODEL_SAVE");
-			case RT_STUDIO_MODEL_SAVE_AS              : return _T("RT_STUDIO_MODEL_SAVE_AS");
 			case RT_STUDIO_MODEL_CLOSE                : return _T("RT_STUDIO_MODEL_CLOSE");
 			case RT_STUDIO_MODEL_BUILD                : return _T("RT_STUDIO_MODEL_BUILD");
 			case RT_STUDIO_MODEL_RUN                  : return _T("RT_STUDIO_MODEL_RUN");
@@ -172,7 +169,6 @@ public:
 			case RT_REPOSITORY_MODEL_OPEN_ERROR       : return _T("RT_REPOSITORY_MODEL_OPEN_ERROR");
 			case RT_REPOSITORY_MODEL_SAVE             : return _T("RT_REPOSITORY_MODEL_SAVE");
 			case RT_REPOSITORY_MODEL_OPEN_GET_NAME    : return _T("RT_REPOSITORY_MODEL_OPEN_GET_NAME");
-			case RT_REPOSITORY_MODEL_SAVE_GET_NAME    : return _T("RT_REPOSITORY_MODEL_SAVE_GET_NAME");
 			case RT_REPOSITORY_MODEL_CLOSE            : return _T("RT_REPOSITORY_MODEL_CLOSE");
 			case RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE  : return _T("RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE");
 			case RT_REPOSITORY_MODEL_CLOSE_ERROR      : return _T("RT_REPOSITORY_MODEL_CLOSE_ERROR");
