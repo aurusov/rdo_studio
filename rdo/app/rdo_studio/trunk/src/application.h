@@ -83,7 +83,7 @@ public:
 	tstring        chkHelpExist        (tstring fileName) const;
 	void           chkAndRunQtAssistant();
 	PTR(QProcess)  runQtAssistant      () const;
-	void           callQtAssistant     (QByteArray ba);
+	void           callQtAssistant     (CREF(QByteArray) ba);
 
 private:
 #ifdef RDO_MT
@@ -128,7 +128,6 @@ private:
 	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
 	afx_msg void OnWindowNew        ();
-	afx_msg void OnAppAbout         ();
 	afx_msg void OnProjectReopen    (UINT nID);
 	afx_msg void OnUpdateFileSave   (PTR(CCmdUI) pCmdUI);
 	afx_msg void OnUpdateFileSaveAll(PTR(CCmdUI) pCmdUI);

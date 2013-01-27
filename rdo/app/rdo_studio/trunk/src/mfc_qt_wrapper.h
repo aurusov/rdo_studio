@@ -26,12 +26,14 @@ class MFCQtWrapper
 public:
 	typedef  T        context_type;
 	typedef  QWidget  parent_type;
+	typedef  boost::function<T* ()>             ConstructFunction;
 	typedef  boost::function<void (T*, CWnd*)>  CreateFunction;
 
-	MFCQtWrapper(PTR(QWidget) pParent, CREF(CreateFunction) createFunction)
-		: QWidget         (pParent       )
-		, m_pContext      (NULL          )
-		, m_createFunction(createFunction)
+	MFCQtWrapper(PTR(QWidget) pParent, CREF(ConstructFunction) constructFunction, CREF(CreateFunction) createFunction)
+		: QWidget            (pParent          )
+		, m_pContext         (NULL             )
+		, m_constructFunction(constructFunction)
+		, m_createFunction   (createFunction   )
 	{}
 
 	virtual ~MFCQtWrapper()
@@ -45,7 +47,7 @@ public:
 
 		m_thisCWnd.Attach(winId());
 
-		m_pContext = new T;
+		m_pContext = m_constructFunction();
 		m_createFunction(m_pContext, &m_thisCWnd);
 
 		return true;
@@ -58,9 +60,10 @@ public:
 	}
 
 private:
-	PTR(T)          m_pContext;
-	CWnd            m_thisCWnd;
-	CreateFunction  m_createFunction;
+	PTR(T)             m_pContext;
+	CWnd               m_thisCWnd;
+	ConstructFunction  m_constructFunction;
+	CreateFunction     m_createFunction;
 
 	virtual void resizeEvent(PTR(QResizeEvent) event)
 	{
@@ -80,6 +83,28 @@ private:
 		delete m_pContext;
 
 		parent_type::closeEvent(event);
+	}
+};
+
+template <class T>
+class MFCQtWrapperSimpleConstructor: public MFCQtWrapper<T>
+{
+public:
+	MFCQtWrapperSimpleConstructor(PTR(QWidget) pParent, CREF(CreateFunction) createFunction)
+		: MFCQtWrapper(
+			pParent,
+			boost::bind<PTR(T)>(&MFCQtWrapperSimpleConstructor<T>::construct),
+			createFunction
+		)
+	{}
+
+	virtual ~MFCQtWrapperSimpleConstructor()
+	{}
+
+private:
+	static PTR(T) construct()
+	{
+		return new T;
 	}
 };
 

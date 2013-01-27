@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qevent.h>
+#include <QtGui/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/model/view.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
@@ -20,12 +21,6 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/resource.h"
 // --------------------------------------------------------------------------------
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 using namespace rdoEditor;
 
@@ -51,21 +46,26 @@ static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioEditBaseView::OnFilePrintPreview)
 //END_MESSAGE_MAP()
 
-RDOStudioModelView::RDOStudioModelView(QWidget* pParent)
+RDOStudioModelView::RDOStudioModelView(PTR(QWidget) pParent)
 	: RDOStudioEditBaseView(pParent)
-	, tab(NULL)
-{}
-
-RDOStudioModelView::~RDOStudioModelView()
+	, m_pModel  (NULL)
+	, m_pTabCtrl(NULL)
 {
-	if ( tab ) { delete tab; tab = NULL; }
+	m_pTabCtrl = new RDOEditorTabCtrl(this, this);
+
+	PTR(QVBoxLayout) pLayout = new QVBoxLayout(this);
+	pLayout->setSpacing(0);
+	pLayout->setContentsMargins(0, 0, 0, 0);
+	pLayout->addWidget(m_pTabCtrl);
 }
 
-rbool RDOStudioModelView::init()
+RDOStudioModelView::~RDOStudioModelView()
+{}
+
+void RDOStudioModelView::setModel(PTR(RDOStudioModel) pModel)
 {
-	tab = new RDOEditorTabCtrl(this);
-	tab->Create( NULL, NULL, 0, CRect(0, 0, 100, 100), CWnd::FromHandle(winId()), 0 );
-	return true;
+	ASSERT(m_pModel != pModel);
+	m_pModel = pModel;
 }
 
 void RDOStudioModelView::closeEvent(PTR(QCloseEvent) event)
@@ -83,127 +83,113 @@ void RDOStudioModelView::closeEvent(PTR(QCloseEvent) event)
 //! @todo qt
 //BOOL RDOStudioModelView::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 //{
-//	if ( tab->getCurrentEdit()->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+//	if ( m_pTabCtrl->getCurrentEdit()->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
 //	return RDOStudioEditBaseView::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 //}
 //
 //void RDOStudioModelView::OnSetFocus(CWnd* pOldWnd)
 //{
 //	RDOStudioEditBaseView::OnSetFocus( pOldWnd );
-//	tab->SetFocus();
+//	m_pTabCtrl->SetFocus();
 //}
 //
 
-void RDOStudioModelView::resizeEvent(PTR(QResizeEvent) event)
-{
-	parent_type::resizeEvent(event);
-
-	if (!tab)
-		return;
-
-	QSize size(event->size());
-	tab->MoveWindow(0, 0, size.width(), size.height());
-}
-
-//void RDOStudioModelView::OnSize(UINT nType, int cx, int cy) 
-//{
-//	RDOStudioEditBaseView::OnSize(nType, cx, cy);
-//	
-//	CRect r;
-//	GetClientRect( r );
-//	tab->MoveWindow( r );
-//}
-
 REF(rdoEditor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
 {
-	return *tab;
-}
-
-RDOEditorEdit* RDOStudioModelView::getEdit() const
-{
-	return tab->getCurrentEdit();
+	return *m_pTabCtrl;
 }
 
 void RDOStudioModelView::OnSearchFindInModel() 
 {
-	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	pDlg->Create( true, getEdit()->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, &m_thisCWnd );
+	PTR(CFindReplaceDialog) pDlg = new CFindReplaceDialog();
+	pDlg->Create(true, m_pTabCtrl->getCurrentEdit()->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, &m_thisCWnd);
 }
 
 LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 {
-	CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
+	PTR(CFindReplaceDialog) pDialog = CFindReplaceDialog::GetNotifier(lParam);
 
-	if ( !pDialog->IsTerminating() ) {
+	if (!pDialog->IsTerminating())
+	{
 		studioApp.getIMainWnd()->getDockFind().clear();
 		studioApp.getIMainWnd()->getDockFind().raise();
-		tstring findStr  = pDialog->GetFindString();
+		tstring findStr       = pDialog->GetFindString();
 		rbool bMatchCase      = pDialog->MatchCase() ? true : false;
 		rbool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
 		studioApp.getIMainWnd()->getDockFind().getContext().setKeyword(findStr, bMatchCase);
 		studioApp.getIMainWnd()->getDockFind().appendString(rdo::format(ID_FINDINMODEL_BEGINMSG, findStr.c_str()));
 		int count = 0;
-		for ( int i = 0; i < tab->getItemCount(); i++ ) {
-			RDOEditorEdit* edit = tab->getItemEdit( i );
+		for (int i = 0; i < m_pTabCtrl->count(); i++)
+		{
+			PTR(RDOEditorEdit) pEdit = m_pTabCtrl->getItemEdit(i);
 			int pos  = 0;
 			int line = 0;
-			while ( pos != -1 ) {
-				pos = edit->findPos( findStr, line, bMatchCase, bMatchWholeWord );
-				if ( pos != -1 ) {
-					line = edit->getLineFromPosition( pos );
-					studioApp.getIMainWnd()->getDockFind().appendString(edit->getLine(line), tab->indexToType(i), line, pos - edit->getPositionFromLine(line));
+			while (pos != -1)
+			{
+				pos = pEdit->findPos(findStr, line, bMatchCase, bMatchWholeWord);
+				if (pos != -1)
+				{
+					line = pEdit->getLineFromPosition(pos);
+					studioApp.getIMainWnd()->getDockFind().appendString(pEdit->getLine(line), m_pTabCtrl->indexToType(i), line, pos - pEdit->getPositionFromLine(line));
 					line++;
 					count++;
 				}
 			}
 		}
-		pDialog->SendMessage( WM_CLOSE );
-		tstring s;
-		if ( count ) {
-			s = rdo::format( ID_FINDINMODEL_ENDMSG_COUNT, count );
-		} else {
-			s = rdo::format( ID_FINDINMODEL_ENDMSG_NOTFOUND, findStr.c_str() );
-		}
+		pDialog->SendMessage(WM_CLOSE);
+		tstring s = count
+			? rdo::format(ID_FINDINMODEL_ENDMSG_COUNT,    count)
+			: rdo::format(ID_FINDINMODEL_ENDMSG_NOTFOUND, findStr.c_str());
 		studioApp.getIMainWnd()->getDockFind().appendString(s);
 	}
 	return 0;
 }
 
-void RDOStudioModelView::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
+void RDOStudioModelView::OnUpdateCoordStatusBar(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable();
-	RDOEditorEdit* edit = getEdit();
-	if ( edit ) {
-		pCmdUI->SetText( rdo::format( "%d: %d", edit->getCurrentColumnNumber() + 1, edit->getCurrentLineNumber() + 1 ).c_str() );
-	} else {
-		pCmdUI->SetText( "" );
-	}
+	PTR(RDOEditorEdit) pEdit = m_pTabCtrl->getCurrentEdit();
+	pCmdUI->SetText(pEdit
+		? rdo::format("%d: %d", pEdit->getCurrentColumnNumber() + 1, pEdit->getCurrentLineNumber() + 1).c_str()
+		: ""
+	);
 }
 
-void RDOStudioModelView::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
+void RDOStudioModelView::OnUpdateModifyStatusBar(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable();
-	RDOEditorEdit* edit = getEdit();
-	if ( edit ) {
-		if ( edit->isReadOnly() ) {
-			pCmdUI->SetText( rdo::format( ID_STATUSBAR_READONLY ).c_str() );
-		} else if ( edit->isModify() ) {
-			pCmdUI->SetText( rdo::format( ID_STATUSBAR_MODIFIED ).c_str() );
-		} else {
-			pCmdUI->SetText( "" );
+	PTR(RDOEditorEdit) pEdit = m_pTabCtrl->getCurrentEdit();
+	if (pEdit)
+	{
+		if (pEdit->isReadOnly())
+		{
+			pCmdUI->SetText(rdo::format(ID_STATUSBAR_READONLY).c_str());
 		}
-	} else {
-		pCmdUI->SetText( "" );
+		else if (pEdit->isModify())
+		{
+			pCmdUI->SetText(rdo::format( ID_STATUSBAR_MODIFIED ).c_str());
+		}
+		else
+		{
+			pCmdUI->SetText("");
+		}
+	}
+	else
+	{
+		pCmdUI->SetText("");
 	}
 }
 
-void RDOStudioModelView::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
+void RDOStudioModelView::OnUpdateInsertOverwriteStatusBar(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable();
-	RDOEditorEdit* edit = getEdit();
-	if ( edit && edit->isOverwrite() ) {
-		pCmdUI->SetText( rdo::format( ID_STATUSBAR_OVERWRITE ).c_str() );
-	} else {
-		pCmdUI->SetText( "" );
+	PTR(RDOEditorEdit) pEdit = m_pTabCtrl->getCurrentEdit();
+	if (pEdit && pEdit->isOverwrite())
+	{
+		pCmdUI->SetText(rdo::format(ID_STATUSBAR_OVERWRITE).c_str());
+	}
+	else
+	{
+		pCmdUI->SetText("");
 	}
 }

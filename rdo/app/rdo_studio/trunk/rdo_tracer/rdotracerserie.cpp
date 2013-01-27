@@ -51,7 +51,7 @@ rbool RDOTracerSerieFindValue::operator ()( RDOTracerValue* val )
 // -------------------- RDOTracerSerie
 // --------------------------------------------------------------------------------
 RDOTracerSerie::RDOTracerSerie( RDOTracerSerieKind _serieKind ) :
-	RDOTracerTreeItem( true ),
+	ChartTreeItem( true ),
 	serieKind( _serieKind ),
 	minValue( 0 ),
 	maxValue( 0 ),

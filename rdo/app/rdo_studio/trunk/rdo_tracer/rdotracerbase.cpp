@@ -20,7 +20,7 @@
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerresult.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
+#include "app/rdo_studio_mfc/src/chart/chart_tree.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/src/chart/view.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -622,7 +622,7 @@ void RDOTracerBase::setLog(PTR(rdoTracerLog::RDOTracerLogCtrl) pTracerLog)
 	log = pTracerLog;
 }
 
-void RDOTracerBase::setTree(PTR(RDOTracerTreeCtrl) pTreeCtrl)
+void RDOTracerBase::setTree(PTR(ChartTree) pTreeCtrl)
 {
 	tree = pTreeCtrl;
 }

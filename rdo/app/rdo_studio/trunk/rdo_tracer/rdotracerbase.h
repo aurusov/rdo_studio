@@ -31,7 +31,7 @@ class RDOTracerTimeNow;
 class RDOTracerSerie;
 class RDOTracerResParamInfo;
 
-class RDOTracerTreeCtrl;
+class ChartTree;
 class RDOStudioChartDoc;
 
 namespace rdoTracerLog {
@@ -46,7 +46,7 @@ private:
 	CMutex mutex;
 
 	rdoTracerLog::RDOTracerLogCtrl* log;
-	RDOTracerTreeCtrl*  tree;
+	ChartTree*  tree;
 
 	RDOTracerResParamInfo* getParam( rdo::textstream& stream );
 	RDOTracerResParamInfo* getParamType( rdo::textstream& stream );
@@ -102,7 +102,7 @@ protected:
 
 public:
 	void setLog (PTR(rdoTracerLog::RDOTracerLogCtrl) pTracerLog);
-	void setTree(PTR(RDOTracerTreeCtrl)              pTreeCtrl );
+	void setTree(PTR(ChartTree)                      pTreeCtrl );
 
 	void startTrace();
 	void getModelStructure( rdo::textstream& stream );

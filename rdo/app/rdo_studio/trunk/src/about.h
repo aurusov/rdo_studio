@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qdialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/about_ui.h"
+#include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/ui_about.h"
 // --------------------------------------------------------------------------------
 
 class About: public QDialog, private Ui::AboutDialog

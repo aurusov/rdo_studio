@@ -3,7 +3,7 @@
   \file      app/rdo_studio_mfc/src/frame/tree_ctrl.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.03.2003
-  \brief     
+  \brief     Дерево кадров анимации
   \indent    4T
 */
 
@@ -11,30 +11,29 @@
 #define _RDO_STUDIO_MFC_FRAME_TREE_CTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qtreewidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "ui/mfc_ctrls/rdotreectrl.h"
+#include "app/rdo_studio_mfc/src/help_context_i.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameTreeCtrl
-// --------------------------------------------------------------------------------
-class RDOStudioFrameTreeCtrl: public RDOTreeCtrl
+class RDOStudioFrameTreeCtrl
+	: public QTreeWidget
+	, public IHelpContext
 {
-private:
-	CImageList imageList;
-
 public:
-	RDOStudioFrameTreeCtrl();
+	RDOStudioFrameTreeCtrl(PTR(QWidget) pParent);
 	virtual ~RDOStudioFrameTreeCtrl();
 
-	void expand();
+	PTR(QTreeWidgetItem) insertFrame(CREF(QString) name);
+
+	void clear();
 
 private:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-	afx_msg void OnHelpKeyword();
-	DECLARE_MESSAGE_MAP()
+	typedef  QTreeWidget  parent_type;
+
+	PTR(QTreeWidgetItem) m_pRootItem;
+
+	DECLARE_IHelpContext;
 };
 
 #endif // _RDO_STUDIO_MFC_FRAME_TREE_CTRL_H_

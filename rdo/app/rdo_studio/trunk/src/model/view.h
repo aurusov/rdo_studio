@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdointerface.h"
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
 // --------------------------------------------------------------------------------
 
@@ -20,35 +19,30 @@
 // -------------------- RDOStudioModelView
 // --------------------------------------------------------------------------------
 namespace rdoEditor {
-	class RDOEditorEdit;
 	class RDOEditorTabCtrl;
 }
 
-class RDOStudioModelView: public RDOStudioEditBaseView, public IInit
+class RDOStudioModelView: public RDOStudioEditBaseView
 {
-private:
-	rdoEditor::RDOEditorTabCtrl* tab;
-
 public:
-	RDOStudioModelView(QWidget* pParent);
+	RDOStudioModelView(PTR(QWidget) pParent);
 	virtual ~RDOStudioModelView();
 
-	REF(rdoEditor::RDOEditorTabCtrl)  getTab ();
-	virtual rdoEditor::RDOEditorEdit* getEdit() const;
+	REF(rdoEditor::RDOEditorTabCtrl) getTab();
 
 private:
 	typedef  RDOStudioEditBaseView  parent_type;
 
-	void closeEvent (PTR(QCloseEvent)  event);
-	void resizeEvent(PTR(QResizeEvent) event);
+	PTR(rdoEditor::RDOEditorTabCtrl) m_pTabCtrl;
+	PTR(RDOStudioModel)              m_pModel;
 
-	DECLARE_IInit;
+	void closeEvent(PTR(QCloseEvent) event);
 
 	afx_msg void OnSearchFindInModel();
-	afx_msg LRESULT OnFindInModelMsg( WPARAM wParam, LPARAM lParam );
-	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI );
+	afx_msg LRESULT OnFindInModelMsg(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnUpdateCoordStatusBar          (CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModifyStatusBar         (CCmdUI* pCmdUI);
+	afx_msg void OnUpdateInsertOverwriteStatusBar(CCmdUI* pCmdUI);
 };
 
 #endif // RDOSTUDIOMODELVIEW_H

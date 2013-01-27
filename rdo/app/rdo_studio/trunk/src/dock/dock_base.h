@@ -21,7 +21,7 @@ template <class T>
 class DockBase: public QDockWidget
 {
 public:
-	typedef  MFCQtWrapper<T>  Context;
+	typedef  MFCQtWrapperSimpleConstructor<T>  Context;
 
 	DockBase(CREF(QString) caption, PTR(QWidget) pParent, CREF(typename Context::CreateFunction) createFunction, CREF(QSize) minSize)
 		: QDockWidget(caption, pParent)

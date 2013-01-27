@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOTracerPattern
 // --------------------------------------------------------------------------------
 RDOTracerPattern::RDOTracerPattern( const RDOTracerPatternKind kind ) :
-	RDOTracerTreeItem(),
+	ChartTreeItem(),
 	patKind( kind )
 {
 }

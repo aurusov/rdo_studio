@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdointerface.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/src/frame/manager.h"
@@ -30,7 +31,9 @@ namespace rdoEditor {
 	class RDOEditorTabCtrl;
 }
 
-class RDOStudioModel: public RDOThreadGUI
+class RDOStudioModel
+	: public RDOThreadGUI
+	, public IInit
 {
 friend class RDOStudioFrameTreeCtrl;
 friend class RDOStudioApp;
@@ -133,6 +136,8 @@ private:
 
 	void createView    ();
 	void createProcView();
+
+	DECLARE_IInit;
 
 protected:
 	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);

@@ -5,12 +5,7 @@
 #define IDD_CHART_OPTIONS_CHART         107
 #define IDR_MAINFRAME                   128
 #define IDR_MODEL_TYPE                  129
-//#define IDC_CURMARGIN                   130 // можно использовать
-#define IDR_EDIT_TYPE                   131
 #define IDR_FILE_TOOLBAR                132
-#define IDB_TREECTRL                    133
-#define IDR_CHARTTYPE                   134
-#define IDR_FRAME_TYPE                  135
 #define IDD_BUFFER                      142
 #define IDB_TRASH                       143
 #define IDB_FILE_TOOLBAR_D              144
@@ -25,7 +20,6 @@
 #define IDD_OPTIONS_STYLESANDCOLORS     154
 #define IDD_FILEASSOCIATION             155
 #define IDD_OPTIONS_TABS                156
-#define IDB_FRAMES_TREECTRL             157
 #define IDD_CHART_OPTIONS_SERIES        158
 #define IDR_ZOOM_TOOLBAR                160
 #define IDB_ZOOM_TOOLBAR_D              162
@@ -105,7 +99,6 @@
 #define IDR_TOOLBAR_MAINFRAME           264
 #define IDR_TOOLBAR_EMPTY               265
 #define IDR_TOOLBAR_MAINFRAME_D         266
-#define IDR_FLOWCHART_TYPE              267
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -318,11 +311,8 @@
 #define ID_INSERT_RSS_TRACE             32884
 #define ID_INSERT_RSS_NOTRACE           32885
 #define ID_INSERT_RSS_END               32886
-//#define ID_INSERT_FUN_CALCULATEIF       32887 // можно использовать
 #define ID_INSERT_PRC_TEMPL_PROCESS     32888
 #define ID_INSERT_DPT_PRIOR             32889
-//#define ID_INSERT_PRC_PROCESS           32890 // можно использовать
-//#define ID_INSERT_PRC_GENERATE          32891 // можно использовать
 #define ID_INSERT_FRM_FRM               32892
 #define ID_INSERT_FRM_FRAME             32893
 #define ID_INSERT_FRM_BACKPICTURE       32894

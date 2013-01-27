@@ -10,135 +10,71 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
-#include "app/rdo_studio_mfc/resource.h"
 // --------------------------------------------------------------------------------
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 using namespace rdoEditor;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorTabCtrl
 // --------------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP( RDOEditorTabCtrl, RDOTabCtrl )
-	ON_WM_CREATE()
-END_MESSAGE_MAP()
+RDOEditorTabCtrl::RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pView)
+	: QTabWidget(pParent)
+{
+	createPage(pView, "RTP");
+	createPage(pView, "RSS");
+	createPage(pView, "EVN");
+	createPage(pView, "PAT");
+	createPage(pView, "DPT");
+	createPage(pView, "PRC");
+	createPage(pView, "FRM");
+	createPage(pView, "FUN");
+	createPage(pView, "SMR");
+	createPage(pView, "PMD");
 
-RDOEditorTabCtrl::RDOEditorTabCtrl( RDOStudioEditBaseView* _view ):
-	RDOTabCtrl(),
-	view( _view )
-{}
+	setCurrentRDOItem(rdoModelObjects::RTP);
+}
 
 RDOEditorTabCtrl::~RDOEditorTabCtrl()
 {}
 
-BOOL RDOEditorTabCtrl::PreCreateWindow( CREATESTRUCT& cs )
+void RDOEditorTabCtrl::createPage(PTR(RDOStudioEditBaseView) pView, CREF(QString) name)
 {
-	if ( !RDOTabCtrl::PreCreateWindow(cs) ) return FALSE;
-	cs.style &= ~WS_BORDER;
-	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
-	return TRUE;
-}
+	PTR(PageContext) pPage = new PageContext(
+		this,
+		boost::bind<PTR(PageContext::context_type)>(&RDOEditorTabCtrl::constructPage, pView),
+		PageContext::CreateFunction(
+			boost::bind<BOOL>(&PageContext::context_type::Create, _1, LPCTSTR(NULL), LPCTSTR(NULL), DWORD(0), CRect(0, 0, 0, 0), _2, UINT(0), static_cast<CCreateContext*>(NULL))
+		)
+	);
+	ASSERT(pPage);
 
-int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
-{
-	if ( RDOTabCtrl::OnCreate(lpCreateStruct) == -1 ) return -1;
+	addTab(pPage, name);
 
-	RDOEditorEdit* page1  = new RDOEditorEdit( view );
-	RDOEditorEdit* page2  = new RDOEditorEdit( view );
-	RDOEditorEdit* page3  = new RDOEditorEdit( view );
-	RDOEditorEdit* page4  = new RDOEditorEdit( view );
-	RDOEditorEdit* page5  = new RDOEditorEdit( view );
-	RDOEditorEdit* page6  = new RDOEditorEdit( view );
-	RDOEditorEdit* page7  = new RDOEditorEdit( view );
-	RDOEditorEdit* page8  = new RDOEditorEdit( view );
-	RDOEditorEdit* page9  = new RDOEditorEdit( view );
-	RDOEditorEdit* page10 = new RDOEditorEdit( view );
+	pPage->init();
 
-	page1->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page2->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page3->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page4->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page5->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page6->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page7->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page8->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page9->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-	page10->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
-
-	page1->setEditorStyle ( &studioApp.getStyle()->style_editor );
-	page2->setEditorStyle ( &studioApp.getStyle()->style_editor );
-	page3->setEditorStyle ( &studioApp.getStyle()->style_editor );
-	page4->setEditorStyle ( &studioApp.getStyle()->style_editor );
-	page5->setEditorStyle ( &studioApp.getStyle()->style_editor );
-	page6->setEditorStyle ( &studioApp.getStyle()->style_editor );
-	page7->setEditorStyle ( &studioApp.getStyle()->style_editor );
-	page8->setEditorStyle ( &studioApp.getStyle()->style_editor );
-	page9->setEditorStyle ( &studioApp.getStyle()->style_editor );
-	page10->setEditorStyle( &studioApp.getStyle()->style_editor );
-
+	pPage->getContext().setEditorStyle(&studioApp.getStyle()->style_editor);
+	pPage->getContext().ShowWindow(SW_SHOW);
 	//! @todo qt
-	//page1->setPopupMenu ( &view->popupMenu );
-	//page2->setPopupMenu ( &view->popupMenu );
-	//page3->setPopupMenu ( &view->popupMenu );
-	//page4->setPopupMenu ( &view->popupMenu );
-	//page5->setPopupMenu ( &view->popupMenu );
-	//page6->setPopupMenu ( &view->popupMenu );
-	//page7->setPopupMenu ( &view->popupMenu );
-	//page8->setPopupMenu ( &view->popupMenu );
-	//page9->setPopupMenu ( &view->popupMenu );
-	//page10->setPopupMenu( &view->popupMenu );
+	//pPage->getContext().setPopupMenu(&pView->popupMenu);
 
-	group.insert( page1 );
-	group.insert( page2 );
-	group.insert( page3 );
-	group.insert( page4 );
-	group.insert( page5 );
-	group.insert( page6 );
-	group.insert( page7 );
-	group.insert( page8 );
-	group.insert( page9 );
-	group.insert( page10);
-	page1->setGroup( &group );
-
-	page2->setGroup ( &group );
-	page3->setGroup ( &group );
-	page4->setGroup ( &group );
-	page5->setGroup ( &group );
-	page6->setGroup ( &group );
-	page7->setGroup ( &group );
-	page8->setGroup ( &group );
-	page9->setGroup ( &group );
-	page10->setGroup( &group );
-
-	insertItem( page1 , "RTP" );
-	insertItem( page2 , "RSS" );
-	insertItem( page3 , "EVN" );
-	insertItem( page4 , "PAT" );
-	insertItem( page5 , "DPT" );
-	insertItem( page6 , "PRC" );
-	insertItem( page7 , "FRM" );
-	insertItem( page8 , "FUN" );
-	insertItem( page9 , "SMR" );
-	insertItem( page10, "PMD" );
-
-	setCurrentRDOItem( rdoModelObjects::RTP );
-
-	return 0;
+	group.insert(&pPage->getContext());
+	pPage->getContext().setGroup(&group);
 }
 
-rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType( const int index ) const
+PTR(RDOEditorTabCtrl::PageContext::context_type) RDOEditorTabCtrl::constructPage(PTR(RDOStudioEditBaseView) pView)
 {
-	switch ( index )
+	return new PageContext::context_type(pView);
+}
+
+rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType(int index) const
+{
+	switch (index)
 	{
 		case  0: return rdoModelObjects::RTP;
 		case  1: return rdoModelObjects::RSS;
@@ -154,9 +90,9 @@ rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType( const int index ) co
 	}
 }
 
-int RDOEditorTabCtrl::typeToIndex( const rdoModelObjects::RDOFileType type ) const
+int RDOEditorTabCtrl::typeToIndex(rdoModelObjects::RDOFileType type) const
 {
-	switch ( type )
+	switch (type)
 	{
 		case rdoModelObjects::RTP: return 0;
 		case rdoModelObjects::RSS: return 1;
@@ -172,14 +108,27 @@ int RDOEditorTabCtrl::typeToIndex( const rdoModelObjects::RDOFileType type ) con
 	return -1;
 }
 
-void RDOEditorTabCtrl::setCurrentRDOItem( const rdoModelObjects::RDOFileType type )
+void RDOEditorTabCtrl::setCurrentRDOItem(rdoModelObjects::RDOFileType type)
 {
-	int index = typeToIndex( type );
-	if ( index != -1 ) setCurrentItem( index );
+	int index = typeToIndex(type);
+	if (index != -1)
+		setCurrentIndex(index);
 }
 
-RDOEditorEdit* RDOEditorTabCtrl::getItemEdit( const rdoModelObjects::RDOFileType type ) const
+PTR(RDOEditorTabCtrl::PageContext::context_type) RDOEditorTabCtrl::getItemEdit(rdoModelObjects::RDOFileType type) const
 {
-	int index = typeToIndex( type );
-	return index != -1 ? getItemEdit( index ) : NULL;
+	int index = typeToIndex(type);
+	return index != -1
+		? getItemEdit(index)
+		: NULL;
+}
+
+PTR(RDOEditorTabCtrl::PageContext::context_type) RDOEditorTabCtrl::getCurrentEdit() const
+{
+	return &static_cast<PTR(PageContext)>(currentWidget())->getContext();
+}
+
+PTR(RDOEditorTabCtrl::PageContext::context_type) RDOEditorTabCtrl::getItemEdit(int index) const
+{
+	return &static_cast<PTR(PageContext)>(widget(index))->getContext();
 }

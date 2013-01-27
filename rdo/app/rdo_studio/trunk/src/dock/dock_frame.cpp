@@ -10,24 +10,32 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/bind.hpp>
 #include <QtGui/qaction.h>
+#include <QtGui/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_frame.h"
 // --------------------------------------------------------------------------------
 
 DockFrame::DockFrame(PTR(QWidget) pParent)
-	: parent_class(
-		"Анимация",
-		pParent,
-		parent_class::Context::CreateFunction(
-			boost::bind<BOOL>(&parent_class::Context::context_type::Create, _1, DWORD(0), CRect(0, 0, 0, 0), _2, UINT(0))
-		),
-		QSize(150, 300)
-	)
+	: QDockWidget("Анимация", pParent)
 {
+	PTR(context_type) pWidget = new context_type(this);
+	pWidget->setMinimumSize(QSize(150, 300));
+
+	PTR(QVBoxLayout) pLayout = new QVBoxLayout(this);
+	pLayout->setSpacing(0);
+	pLayout->setContentsMargins(0, 0, 0, 0);
+	pLayout->addWidget(pWidget);
+
+	setWidget(pWidget);
+
 	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_frame.png")));
 }
 
 DockFrame::~DockFrame()
 {}
+
+REF(DockFrame::context_type) DockFrame::getContext()
+{
+	return *static_cast<PTR(context_type)>(widget());
+}

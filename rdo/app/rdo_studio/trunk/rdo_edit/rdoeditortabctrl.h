@@ -11,9 +11,10 @@
 #define _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORTABCTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qtabwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
-#include "ui/mfc_ctrls/rdotabctrl.h"
+#include "app/rdo_studio_mfc/src/mfc_qt_wrapper.h"
 // --------------------------------------------------------------------------------
 
 class RDOStudioEditBaseView;
@@ -23,32 +24,31 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorTabCtrl
 // --------------------------------------------------------------------------------
-class RDOEditorTabCtrl: public RDOTabCtrl
+class RDOEditorTabCtrl: public QTabWidget
 {
-private:
-	RDOStudioEditBaseView*        view;
-	rdoEditCtrl::RDOBaseEditGroup group;
-
-private:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
-	DECLARE_MESSAGE_MAP()
-
 public:
-	RDOEditorTabCtrl( RDOStudioEditBaseView* _view );
+	typedef  MFCQtWrapper<RDOEditorEdit>  PageContext;
+
+	RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pView);
 	virtual ~RDOEditorTabCtrl();
 
-	rdoModelObjects::RDOFileType indexToType( const int index ) const;
-	int typeToIndex( const rdoModelObjects::RDOFileType type ) const;
-	rbool typeSupported( const rdoModelObjects::RDOFileType type ) const { return typeToIndex( type ) != -1;        }
+	rdoModelObjects::RDOFileType indexToType(int index) const;
+	int   typeToIndex  (rdoModelObjects::RDOFileType type) const;
+	rbool typeSupported(rdoModelObjects::RDOFileType type) const   { return typeToIndex(type) != -1;     }
 
-	rdoModelObjects::RDOFileType getCurrentRDOItem() const              { return indexToType( getCurrentIndex() ); }
-	void setCurrentRDOItem( const rdoModelObjects::RDOFileType type );
+	rdoModelObjects::RDOFileType getCurrentRDOItem() const         { return indexToType(currentIndex()); }
+	void setCurrentRDOItem(rdoModelObjects::RDOFileType type);
 
-	RDOEditorEdit* getCurrentEdit() const               { return static_cast<RDOEditorEdit*>(getItemCurrent()); }
-	RDOEditorEdit* getItemEdit( const int index ) const { return static_cast<RDOEditorEdit*>(getItem( index )); }
-	RDOEditorEdit* getItemEdit( const rdoModelObjects::RDOFileType type ) const;
+	PTR(PageContext::context_type) getCurrentEdit() const;
+	PTR(PageContext::context_type) getItemEdit   (int index) const;
+	PTR(PageContext::context_type) getItemEdit   (rdoModelObjects::RDOFileType type) const;
+
+private:
+	rdoEditCtrl::RDOBaseEditGroup group;
+
+	static PTR(PageContext::context_type) constructPage(PTR(RDOStudioEditBaseView) pView);
+
+	void createPage(PTR(RDOStudioEditBaseView) pView, CREF(QString) name);
 };
 
 }; // namespace rdoEditor

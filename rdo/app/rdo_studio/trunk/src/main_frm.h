@@ -19,7 +19,7 @@
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/status_bar.h"
-#include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/main_window_ui.h"
+#include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/ui_main_window.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -154,6 +154,9 @@ public slots:
 private slots:
 	void onModelStop ();
 
+	void onHelpContext();
+	void onHelpAbout  ();
+
 	void onDockVisibleChanged(bool visible);
 
 private:
@@ -167,7 +170,6 @@ private:
 	afx_msg void OnUpdateViewModelToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnDestroy();
 	afx_msg void OnViewOptions();
-	afx_msg void OnHelpKeyword();
 	afx_msg void OnModelRuntimeMaxSpeed();
 	afx_msg void OnModelRuntimeJump();
 	afx_msg void OnModelRuntimeSync();

@@ -121,8 +121,3 @@ void RDOStudioEditBaseView::timerEvent(QTimerEvent* event)
 		}
 	}
 }
-
-RDOEditorEdit* RDOStudioEditBaseView::getEdit() const
-{
-	return NULL;
-}

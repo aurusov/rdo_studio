@@ -16,8 +16,10 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/src/help_context_i.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/options.h"
+#include "app/rdo_studio_mfc/src/about.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
@@ -99,7 +101,6 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 //	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnUpdateViewModelToolbar)
 //	ON_WM_DESTROY()
 //	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
-//	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 //	ON_COMMAND(ID_MODEL_RUNTIME_MAXSPEED, OnModelRuntimeMaxSpeed)
 //	ON_COMMAND(ID_MODEL_RUNTIME_JUMP, OnModelRuntimeJump)
 //	ON_COMMAND(ID_MODEL_RUNTIME_SYNC, OnModelRuntimeSync)
@@ -171,6 +172,9 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	QObject::connect(actModelBuild, SIGNAL(triggered(bool)), this, SLOT(onModelBuild()));
 	QObject::connect(actModelRun,   SIGNAL(triggered(bool)), this, SLOT(onModelRun  ()));
 	QObject::connect(actModelStop,  SIGNAL(triggered(bool)), this, SLOT(onModelStop ()));
+
+	QObject::connect(actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
+	QObject::connect(actHelpAbout,   SIGNAL(triggered(bool)), this, SLOT(onHelpAbout  ()));
 }
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
@@ -228,11 +232,11 @@ void RDOStudioMainFrame::init()
 	tabifyDockWidget(m_pDockBuild, m_pDockFind   );
 	m_pDockDebug->raise();
 
-	m_pDockTraceTree = new DockTraceTree(this);
+	m_pDockChartTree = new DockChartTree(this);
 	m_pDockFrame     = new DockFrame    (this);
-	addDockWidget(Qt::LeftDockWidgetArea, m_pDockTraceTree);
-	tabifyDockWidget(m_pDockTraceTree, m_pDockFrame);
-	m_pDockTraceTree->raise();
+	addDockWidget(Qt::LeftDockWidgetArea, m_pDockChartTree);
+	tabifyDockWidget(m_pDockChartTree, m_pDockFrame);
+	m_pDockChartTree->raise();
 
 	PTR(QMenu) pMenuDockView = new QMenu("Окна");
 	ASSERT(pMenuDockView);
@@ -243,12 +247,12 @@ void RDOStudioMainFrame::init()
 	pMenuDockView->addAction(m_pDockTrace->toggleViewAction());
 	pMenuDockView->addAction(m_pDockResults->toggleViewAction());
 	pMenuDockView->addAction(m_pDockFind->toggleViewAction());
-	pMenuDockView->addAction(m_pDockTraceTree->toggleViewAction());
+	pMenuDockView->addAction(m_pDockChartTree->toggleViewAction());
 	pMenuDockView->addAction(m_pDockFrame->toggleViewAction());
 
 #ifdef PROCGUI_ENABLE
 	m_pDockProcess = new DockProcess(this);
-	tabifyDockWidget(m_pDockTraceTree, m_pDockProcess);
+	tabifyDockWidget(m_pDockChartTree, m_pDockProcess);
 	pMenuDockView->addAction(m_pDockProcess->toggleViewAction());
 #else
 	m_pDockProcess = NULL;
@@ -314,6 +318,10 @@ void RDOStudioMainFrame::init()
 	//modelToolBar.SetButtonStyle( 5, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 
 	tracer->registerClipboardFormat();
+
+	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(model);
+	ASSERT(pModelInit);
+	pModelInit->init();
 }
 
 void RDOStudioMainFrame::setVisible(rbool visible)
@@ -581,11 +589,25 @@ void RDOStudioMainFrame::endProgress()
 	//statusBar.setProgressVisible( false );
 }
 
-void RDOStudioMainFrame::OnHelpKeyword()
+void RDOStudioMainFrame::onHelpContext()
 {
-	QByteArray ba;
-	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/rdo_whats_new.htm\n");
-	studioApp.callQtAssistant(ba);
+	PTR(IHelpContext) pHelpContext = dynamic_cast<PTR(IHelpContext)>(focusWidget());
+	if (pHelpContext)
+	{
+		pHelpContext->onHelpContext();
+	}
+	else
+	{
+		QByteArray ba;
+		ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/rdo_whats_new.htm\n");
+		studioApp.callQtAssistant(ba);
+	}
+}
+
+void RDOStudioMainFrame::onHelpAbout()
+{
+	About dlg(this);
+	dlg.exec();
 }
 
 void RDOStudioMainFrame::OnModelRuntimeMaxSpeed()
@@ -851,7 +873,7 @@ void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 	rdoEditor::RDOEditorTabCtrl* pEditorTab = model->getTab();
 	if (pEditorTab)
 	{
-		for (int i = 0; i < pEditorTab->getItemCount(); ++i)
+		for (int i = 0; i < pEditorTab->count(); ++i)
 		{
 			pEditorTab->getItemEdit(i)->setLog(*pLog);
 		}

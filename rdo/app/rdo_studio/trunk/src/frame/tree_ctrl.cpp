@@ -3,103 +3,54 @@
   \file      app/rdo_studio_mfc/src/frame/tree_ctrl.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.03.2003
-  \brief     
+  \brief     Дерево кадров анимации
   \indent    4T
 */
 
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtCore/qprocess.h>
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
-#include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/src/frame/manager.h"
-#include "app/rdo_studio_mfc/src/frame/view.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_windows_base.h"
-#include "app/rdo_studio_mfc/resource.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameTreeCtrl
-// --------------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP(RDOStudioFrameTreeCtrl, RDOTreeCtrl)
-	ON_WM_CREATE()
-	ON_WM_LBUTTONDBLCLK()
-	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-END_MESSAGE_MAP()
-
-RDOStudioFrameTreeCtrl::RDOStudioFrameTreeCtrl()
+RDOStudioFrameTreeCtrl::RDOStudioFrameTreeCtrl(PTR(QWidget) pParent)
+	: parent_type(pParent)
 {
+	setColumnCount    (1);
+	setHeaderHidden   (true);
+	setRootIsDecorated(false);
+
+	m_pRootItem = new QTreeWidgetItem(this);
+	m_pRootItem->setText(0, "Кадры");
+	m_pRootItem->setIcon(0, QIcon(QString::fromUtf8(":/images/images/tree_frame_root.png")));
+	addTopLevelItem(m_pRootItem);
 }
 
 RDOStudioFrameTreeCtrl::~RDOStudioFrameTreeCtrl()
+{}
+
+PTR(QTreeWidgetItem) RDOStudioFrameTreeCtrl::insertFrame(CREF(QString) name)
 {
+	PTR(QTreeWidgetItem) pItem = new QTreeWidgetItem(m_pRootItem);
+	ASSERT(pItem);
+	pItem->setText(0, name);
+	pItem->setIcon(0, QIcon(QString::fromUtf8(":/images/images/tree_frame_item.png")));
+	return pItem;
 }
 
-BOOL RDOStudioFrameTreeCtrl::PreCreateWindow(CREATESTRUCT& cs)
+void RDOStudioFrameTreeCtrl::clear()
 {
-	if ( !RDOTreeCtrl::PreCreateWindow(cs) ) return FALSE;
-	cs.style |= WS_VISIBLE | WS_CHILD | WS_CLIPCHILDREN | WS_TABSTOP | TVS_HASLINES | TVS_SHOWSELALWAYS | TVS_DISABLEDRAGDROP;
-	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	return TRUE;
-}
-
-int RDOStudioFrameTreeCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if ( RDOTreeCtrl::OnCreate(lpCreateStruct) == -1 ) return -1;
-
-	imageList.Create( 16, 16, ILC_COLORDDB | ILC_MASK, 5, 1 );
-	CBitmap bmp;
-	bmp.LoadBitmap( IDB_FRAMES_TREECTRL );
-	imageList.Add( &bmp, RGB( 255, 0, 255 ) );
-	SetImageList( &imageList, TVSIL_NORMAL );
-	InsertItem( rdo::format( IDS_FRAMES ).c_str(), 0, 0 );
-
-	return 0;
-}
-
-void RDOStudioFrameTreeCtrl::expand()
-{
-	Expand( GetRootItem(), TVE_EXPAND );
-}
-
-void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
-{
-	RDOTreeCtrl::OnLButtonDblClk(nFlags, point);
-
-	if ( model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed ) {
-
-		UINT uFlags;
-		HTREEITEM hitem = HitTest( point, &uFlags );
-
-		if ( hitem && ( TVHT_ONITEM & uFlags ) && hitem != GetRootItem() ) {
-			ruint index = model->m_frameManager.findFrameIndex( hitem );
-			if (index != ruint(~0))
-			{
-				FrameAnimationWnd* pView = model->getFrameManager().getFrameView(index);
-				if (!pView)
-				{
-					model->getFrameManager().createView(index);
-				}
-				else
-				{
-					studioApp.getIMainWnd()->activateSubWindow(pView->parentWidget());
-				}
-			}
-		}
+	QList<PTR(QTreeWidgetItem)> children = m_pRootItem->takeChildren();
+	BOOST_FOREACH(PTR(QTreeWidgetItem) item, children)
+	{
+		m_pRootItem->removeChild(item);
 	}
 }
 
-void RDOStudioFrameTreeCtrl::OnHelpKeyword()
+void RDOStudioFrameTreeCtrl::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_frame.htm#frame\n");

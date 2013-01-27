@@ -26,7 +26,7 @@
 #include "app/rdo_studio_mfc/src/dock/dock_trace.h"
 #include "app/rdo_studio_mfc/src/dock/dock_results.h"
 #include "app/rdo_studio_mfc/src/dock/dock_find.h"
-#include "app/rdo_studio_mfc/src/dock/dock_trace_tree.h"
+#include "app/rdo_studio_mfc/src/dock/dock_chart_tree.h"
 #include "app/rdo_studio_mfc/src/dock/dock_frame.h"
 #include "app/rdo_studio_mfc/src/dock/dock_process.h"
 // --------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ public:
 	REF(DockTrace)      getDockTrace    () { ASSERT(m_pDockTrace    ); return *m_pDockTrace;     }
 	REF(DockResults)    getDockResults  () { ASSERT(m_pDockResults  ); return *m_pDockResults;   }
 	REF(DockFind)       getDockFind     () { ASSERT(m_pDockFind     ); return *m_pDockFind;      }
-	REF(DockTraceTree)  getDockTraceTree() { ASSERT(m_pDockTraceTree); return *m_pDockTraceTree; }
+	REF(DockChartTree)  getDockChartTree() { ASSERT(m_pDockChartTree); return *m_pDockChartTree; }
 	REF(DockFrame)      getDockFrame    () { ASSERT(m_pDockFrame    ); return *m_pDockFrame;     }
 	REF(DockProcess)    getDockProcess  () { ASSERT(m_pDockProcess  ); return *m_pDockProcess;   }
 
@@ -84,7 +84,7 @@ protected:
 	PTR(DockTrace)      m_pDockTrace;
 	PTR(DockResults)    m_pDockResults;
 	PTR(DockFind)       m_pDockFind;
-	PTR(DockTraceTree)  m_pDockTraceTree;
+	PTR(DockChartTree)  m_pDockChartTree;
 	PTR(DockFrame)      m_pDockFrame;
 	PTR(DockProcess)    m_pDockProcess;
 };

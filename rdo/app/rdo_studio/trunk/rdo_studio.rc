@@ -458,11 +458,9 @@ IDR_TOOLBAR_MAINFRAME_D BITMAP                  "res\\toolbar_mainframe_d.bmp"
 IDB_FILE_TOOLBAR_D      BITMAP                  "res\\fileToolbar_d.bmp"
 IDB_EDIT_TOOLBAR_D      BITMAP                  "res\\editToolbar_d.bmp"
 IDR_FILE_TOOLBAR        BITMAP                  "res\\fileToolbar.bmp"
-IDB_TREECTRL            BITMAP                  "res\\tracertreectrl.bmp"
 IDR_EDIT_TOOLBAR        BITMAP                  "res\\editToolbar.bmp"
 IDR_MODEL_TOOLBAR       BITMAP                  "res\\modeToolbar.bmp"
 IDB_MODEL_TOOLBAR_D     BITMAP                  "res\\modelToolbar_d.bmp"
-IDB_FRAMES_TREECTRL     BITMAP                  "res\\framestreectrl.bmp"
 IDR_ZOOM_TOOLBAR        BITMAP                  "res\\zoomToolbar.bmp"
 IDB_ZOOM_TOOLBAR_D      BITMAP                  "res\\zoomToolbar_d.bmp"
 IDB_FRAME_OPTIONS_CTRL  BITMAP                  "res\\frameoptionsctrl.bmp"
@@ -763,11 +761,6 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\rdo_studio.ico"
-IDR_CHARTTYPE           ICON                    "res\\rdostudiochartdoc.ico"
-IDR_MODEL_TYPE          ICON                    "res\\rdostudiomodeldoc.ico"
-IDR_EDIT_TYPE           ICON                    "res\\rdostudioeditdoc.ico"
-IDR_FRAME_TYPE          ICON                    "res\\rdostudioframedoc.ico"
-IDR_FLOWCHART_TYPE      ICON                    "res\\flowchart_icon.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1059,11 +1052,11 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "&Алгоритмические операторы"
         BEGIN
-            MENUITEM "if"                           ID_INSERT_ALGO_IF
-            MENUITEM "else"                         ID_INSERT_ALGO_ELSE
-            MENUITEM "if-else"                      ID_INSERT_ALGO_IF_ELSE
-            MENUITEM "for"                          ID_INSERT_ALGO_FOR
-            MENUITEM "return"                       ID_INSERT_ALGO_RETURN
+            MENUITEM "if",                          ID_INSERT_ALGO_IF
+            MENUITEM "else",                        ID_INSERT_ALGO_ELSE
+            MENUITEM "if-else",                     ID_INSERT_ALGO_IF_ELSE
+            MENUITEM "for",                         ID_INSERT_ALGO_FOR
+            MENUITEM "return",                      ID_INSERT_ALGO_RETURN
         END
         POPUP "&Функции"
         BEGIN
@@ -1172,8 +1165,6 @@ BEGIN
     POPUP "Помо&щь"
     BEGIN
         MENUITEM "&Содержание\tF1",             ID_HELP_KEYWORD
-        MENUITEM SEPARATOR
-        MENUITEM "&О программе...",             ID_APP_ABOUT
     END
 END
 
@@ -3311,7 +3302,6 @@ BEGIN
     IDR_TOOLBAR_STYLEANDCOLOR "Стиль и цвет"
     IDR_TOOLBAR_MAINFRAME   "Основные"
     IDR_TOOLBAR_EMPTY       "Команды"
-    IDR_FLOWCHART_TYPE      "\nfchart\nfchart"
 END
 
 STRINGTABLE 
@@ -3329,10 +3319,7 @@ STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "RAO Studio"
     IDR_MODEL_TYPE          "\nmodel\nModel Files\nRAO Model File (*.rdox)\n.rdox\nRAOStudio.Document\nRAO Document"
-    IDR_EDIT_TYPE           "\nedit\nEdit File\nRAO Files (.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc)\n.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc\nRAOStudio.Document\nRAO Document"
     IDR_FILE_TOOLBAR        "Файл"
-    IDR_CHARTTYPE           "\nГрафик\nChart\n\n\nRAOStudio.Document\nRAO Document"
-    IDR_FRAME_TYPE          "\nframe\nModel Frame\n\n\nRAOStudio.Document\nRAO Document"
 END
 
 STRINGTABLE 
@@ -3355,7 +3342,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_APP_ABOUT            "Показать информация о программе\nО программе"
     ID_APP_EXIT             "Выход из приложения\nВыход"
 END
 
@@ -3405,18 +3391,26 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_INSERT_PRC_TEMPL_PROCESS
-                            "$Process\r\n\r\n$End\r\n"
+    ID_INSERT_RSS_RSS       "$Resources\r\n\t\r\n$End\r\n"
+    ID_INSERT_PRC_TEMPL_PROCESS "$Process\r\n\r\n$End\r\n"
+    ID_INSERT_FRM_FRM       "$Frame \r\n$Back_picture = <255 255 255> 800 600\r\nShow\r\n\tbitmap [, , ]\r\n\ttext [, , , , <255 255 255>, <0 0 0>, = ]\r\nShow_if\r\n\r\n$End\r\n"
 END
 
 STRINGTABLE 
 BEGIN
     ID_INSERT_PAT_TEMPL_OPERATION 
-                                   "$Pattern  : operation\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
-    ID_INSERT_PAT_TEMPL_EVENT      "$Pattern  : event\r\n$Parameters  :\r\n$Relevant_resources\r\n\r\n$Body\r\tConvert_event\r\n\r\n$End\r\n"
-    ID_INSERT_PAT_TEMPL_RULE       "$Pattern  : rule\r\n$Relevant_resources\r\n\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_rule\r\n\r\n$End\r\n"
-    ID_INSERT_PAT_TEMPL_KEYBOARD   "$Pattern  : keyboard\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
-    ID_INSERT_SMR_SMR              "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
+                            "$Pattern  : operation\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
+    ID_INSERT_PAT_TEMPL_EVENT 
+                            "$Pattern  : event\r\n$Parameters  :\r\n$Relevant_resources\r\n\r\n$Body\r\tConvert_event\r\n\r\n$End\r\n"
+    ID_INSERT_PAT_TEMPL_RULE 
+                            "$Pattern  : rule\r\n$Relevant_resources\r\n\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_rule\r\n\r\n$End\r\n"
+    ID_INSERT_SMR_SMR       "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INSERT_PAT_TEMPL_KEYBOARD 
+                            "$Pattern  : keyboard\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
 END
 
 STRINGTABLE 
@@ -3429,12 +3423,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_INSERT_RSS_RSS       "$Resources\r\n\t\r\n$End\r\n"
-    ID_INSERT_FRM_FRM       "$Frame \r\n$Back_picture = <255 255 255> 800 600\r\nShow\r\n\tbitmap [, , ]\r\n\ttext [, , , , <255 255 255>, <0 0 0>, = ]\r\nShow_if\r\n\r\n$End\r\n"
-END
-
-STRINGTABLE 
-BEGIN
     ID_INSERT_FUN_FUN       "$Function  : integer\r\n$Type = algorithmic\r\n$Parameters\r\n  \r\n$Body\r\n$End\r\n"
     ID_INSERT_FUN_SQN       "$Sequence  : real\r\n$Type = exponential 123456789\r\n$End\r\n"
     ID_INSERT_FUN_CNS       "$Constant\r\n\t : integer =\r\n$End\r\n"
@@ -3442,9 +3430,12 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_INSERT_DPT_TEMPL_SEARCH "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
-    ID_INSERT_DPT_TEMPL_SOME   "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
-    ID_INSERT_DPT_TEMPL_PRIOR  "$Decision_point  : prior\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
+    ID_INSERT_DPT_TEMPL_PRIOR 
+                            "$Decision_point  : prior\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
+    ID_INSERT_DPT_TEMPL_SEARCH 
+                            "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
+    ID_INSERT_DPT_TEMPL_SOME 
+                            "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
 END
 
 STRINGTABLE 
@@ -3459,22 +3450,10 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_INSERT_ALGO_FOR     "for ( ; ; )\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_ALGO_IF     "if ( )\r\n"
-END
-
-STRINGTABLE 
-BEGIN
+    ID_INSERT_ALGO_IF       "if ( )\r\n"
     ID_INSERT_ALGO_ELSE     "else ( )\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_ALGO_IF_ELSE     "if ( )\r\n\telse ( )\r\n"
+    ID_INSERT_ALGO_IF_ELSE  "if ( )\r\n\telse ( )\r\n"
+    ID_INSERT_ALGO_FOR      "for ( ; ; )\r\n"
 END
 
 STRINGTABLE 
@@ -4189,7 +4168,7 @@ BEGIN
             MENUITEM "set",                         ID_INSERT_PAT_SET
             MENUITEM "$End",                        ID_INSERT_PAT_END
         END
-		POPUP "EVN"
+        POPUP "EVN"
         BEGIN
             MENUITEM "EVN",                         ID_INSERT_PAT_TEMPL_EVENT
             MENUITEM "$Pattern",                    ID_INSERT_PAT_PATTERN
@@ -4206,7 +4185,7 @@ BEGIN
             MENUITEM "Convert_event",               ID_INSERT_PAT_CONVERTEVENT
             MENUITEM "$End",                        ID_INSERT_PAT_END
         END
-		POPUP "PRC"
+        POPUP "PRC"
         BEGIN
             MENUITEM "$Process",                    ID_INSERT_PRC_TEMPL_PROCESS
             MENUITEM "GENERATE",                    ID_INSERT_PRC_GENERATE
@@ -4354,11 +4333,11 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "&Algorithmic operators"
         BEGIN
-            MENUITEM "if"                           ID_INSERT_ALGO_IF
-            MENUITEM "else"                         ID_INSERT_ALGO_ELSE
-            MENUITEM "if-else"                      ID_INSERT_ALGO_IF_ELSE
-            MENUITEM "for"                          ID_INSERT_ALGO_FOR
-            MENUITEM "return"                       ID_INSERT_ALGO_RETURN
+            MENUITEM "if",                          ID_INSERT_ALGO_IF
+            MENUITEM "else",                        ID_INSERT_ALGO_ELSE
+            MENUITEM "if-else",                     ID_INSERT_ALGO_IF_ELSE
+            MENUITEM "for",                         ID_INSERT_ALGO_FOR
+            MENUITEM "return",                      ID_INSERT_ALGO_RETURN
         END
         POPUP "&Functions"
         BEGIN
@@ -4465,8 +4444,6 @@ BEGIN
     POPUP "&Help"
     BEGIN
         MENUITEM "&Contents",                   ID_HELP_CONTENTS
-        MENUITEM SEPARATOR
-        MENUITEM "&About...",                   ID_APP_ABOUT
     END
 END
 
@@ -4478,69 +4455,13 @@ END
 
 #ifdef APSTUDIO_INVOKED
 GUIDELINES DESIGNINFO 
-	BEGIN
+BEGIN
     IDD_ABOUT, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 217
         TOPMARGIN, 7
         BOTTOMMARGIN, 242
-    END
-	
-	IDD_DIALOG_GEN_TYPE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 200
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 91
-    END
-	
-	IDD_DIALOG_PROCESS_SHAPE_CREATE_2, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 175
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 135
-    END
-
-    IDD_DIALOG_PROCESS_SHAPE_CREATE_1, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 310
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 163
-    END
-	
-	IDD_DIALOG_PROCESS_SHAPE_PROCESS_2, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 152
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 66
-    END
-
-    IDD_DIALOG_PROCESS_SHAPE_PROCESS_1, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 334
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 231
-    END
-
-	IDD_DIALOG_RESOURCE_DLG1, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 231
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 66
-    END
-
-	IDD_DIALOG_PROCESS_SHAPE_TERMINATE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 221
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 50
     END
 
     IDD_BUFFER, DIALOG
@@ -4643,10 +4564,7 @@ STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "RAO Studio"
     IDR_MODEL_TYPE          "\nmodel\nModel Files\nRAO Model File (*.rdox)\n.rdox\nRAOStudio.Document\nRAO Document"
-    IDR_EDIT_TYPE           "\nedit\nEdit File\nRAO Files (.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc)\n.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc\nRAOStudio.Document\nRAO Document"
     IDR_FILE_TOOLBAR        "File"
-    IDR_CHARTTYPE           "\nchart\nChart\n\n\nRAOStudio.Document\nRAO Document"
-    IDR_FRAME_TYPE          "\nframe\nModel Frame\n\n\nRAOStudio.Document\nRAO Document"
 END
 
 STRINGTABLE 
@@ -4669,7 +4587,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
     ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
 END
 
@@ -4720,12 +4637,18 @@ END
 STRINGTABLE 
 BEGIN
     ID_INSERT_PAT_TEMPL_OPERATION 
-                                   "$Pattern  : operation\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
+                            "$Pattern  : operation\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
     ID_INSERT_PAT_TEMPL_EVENT 
-                                   "$Pattern  : event\r\n$Parameters  :\r\n$Relevant_resources\r\n\$Body\r\tConvert_event\r\n\r\n$End\r\n"
-    ID_INSERT_PAT_TEMPL_RULE       "$Pattern  : rule\r\n$Relevant_resources\r\n\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_rule\r\n\r\n$End\r\n"
-    ID_INSERT_PAT_TEMPL_KEYBOARD   "$Pattern  : keyboard\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
+                            "$Pattern  : event\r\n$Parameters  :\r\n$Relevant_resources\r\n\\$Body\r\tConvert_event\r\n\r\n$End\r\n"
+    ID_INSERT_PAT_TEMPL_RULE 
+                            "$Pattern  : rule\r\n$Relevant_resources\r\n\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_rule\r\n\r\n$End\r\n"
     ID_INSERT_SMR_SMR       "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INSERT_PAT_TEMPL_KEYBOARD 
+                            "$Pattern  : keyboard\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
 END
 
 STRINGTABLE 
@@ -4751,9 +4674,12 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_INSERT_DPT_TEMPL_SEARCH "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
-    ID_INSERT_DPT_TEMPL_SOME   "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
-    ID_INSERT_DPT_TEMPL_PRIOR  "$Decision_point  : prior\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
+    ID_INSERT_DPT_TEMPL_PRIOR 
+                            "$Decision_point  : prior\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
+    ID_INSERT_DPT_TEMPL_SEARCH 
+                            "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
+    ID_INSERT_DPT_TEMPL_SOME 
+                            "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
 END
 
 STRINGTABLE 

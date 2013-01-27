@@ -233,6 +233,10 @@
    </property>
   </action>
   <action name="actHelpContext">
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/help_context.png</normaloff>:/images/images/help_context.png</iconset>
+   </property>
    <property name="text">
     <string>Содержание</string>
    </property>
@@ -241,6 +245,10 @@
    </property>
   </action>
   <action name="actHelpAbout">
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/about.png</normaloff>:/images/images/about.png</iconset>
+   </property>
    <property name="text">
     <string>О программе...</string>
    </property>

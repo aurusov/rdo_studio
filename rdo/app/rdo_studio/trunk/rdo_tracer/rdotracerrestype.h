@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
+#include "app/rdo_studio_mfc/src/chart/chart_tree_item.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ enum RDOTracerResTypeKind {
 	RDOTK_TEMPORARY
 };
 
-class RDOTracerResType : public RDOTracerTreeItem
+class RDOTracerResType : public ChartTreeItem
 {
 protected:
 	std::vector <RDOTracerResParamInfo*> paramsInfo;
