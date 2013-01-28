@@ -1,0 +1,26 @@
+Библиотека ICU является сторонней для Qt. Используется для работы с юникодом WebKit'а. А без последнего плохо отображаются страницы документации РДО.
+
+1. Скачать исходники последней версии. На текущий момент - это icu4c-50_1_2-src
+http://site.icu-project.org/
+
+2. Разархивировать, например, в C:\icu
+
+2. Для сборки надо поставить cygwin. См. install.cygwin.txt
+3. Теперь консольный квест
+3.1 Открываем спец. консоль
+Пуск\Поиск\Visual Studio 2008 Command Prompt
+
+3.2 Запускаем vcvars32.bat
+У меня он лежит в 
+C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\vcvars32.bat
+
+3.3 Добавляем cygwin в PATH прямо из консоли
+set PATH=D:\Downloads\cygwin\bin;%PATH%
+
+3.4 Запускаем консоль cygwin'а
+D:\Downloads\cygwin\bin\bash.exe
+
+4. Конфигурирование и компиляция
+cd /cygdrive/c/icu/source/
+./runConfigureICU Cygwin/MSVC
+make
