@@ -134,9 +134,10 @@ RDOParserContainerModel::RDOParserContainerModel()
 
 	InitSructDB db;
 
-	BOOST_FOREACH(const LPRDORTPResType& pResType, parser::RDOParser::s_parser()->getRTPResTypes())
+	STL_FOR_ALL_CONST(parser::RDOParser::s_parser()->getRTPResTypes(), rtp_it)
 	{
-		pResType->serializeInDB(db);
+		LPRDORTPResType rtp(*rtp_it);
+		rtp->serializeInDB(db);
 	}
 }
 
