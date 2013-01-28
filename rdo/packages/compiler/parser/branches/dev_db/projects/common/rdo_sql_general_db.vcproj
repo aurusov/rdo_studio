@@ -50,10 +50,10 @@
 				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_ST;RDO_LIMIT_RES;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				RuntimeLibrary="2"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="simulator/runtime/pch/stdpch.h"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderThrough=""
 				BrowseInformation="1"
-				WarningLevel="4"
+				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -85,7 +85,6 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description=""
 				CommandLine=""
 			/>
 		</Configuration>
@@ -153,7 +152,6 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description=""
 				CommandLine=""
 			/>
 		</Configuration>
@@ -164,6 +162,15 @@
 		<File
 			RelativePath="..\..\src\db\general_db.cpp"
 			>
+			<FileConfiguration
+				Name="release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					PrecompiledHeaderThrough=""
+					PrecompiledHeaderFile=""
+				/>
+			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="..\..\src\db\general_db.h"
