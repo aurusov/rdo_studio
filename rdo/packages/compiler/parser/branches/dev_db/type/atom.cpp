@@ -133,9 +133,7 @@ void RDOType__void::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDOType__void::serializeInDB(REF(IDB) db) const
 {
-	db.insertRow("void","DEFAULT");
-
-	db.pushContext(db.queryExecIndex("void"));
+	NEVER_REACH_HERE;
 }
 
 // --------------------------------------------------------------------------------
@@ -394,7 +392,7 @@ void RDOType__identificator::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDOType__identificator::serializeInDB(REF(IDB) db) const
 {
-	db.insertRow("identificator","DEFAULT");
+	db.insertRow("identificator","DEFAULT,NULL");
 
 	db.pushContext(db.queryExecIndex("identificator"));
 }

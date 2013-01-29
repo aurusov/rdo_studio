@@ -135,6 +135,7 @@ GeneralDB::QueryList InitSructDB::generateCreateDBQuery()
 	queryList.push_back(
 		"CREATE TABLE identificator("
 		"id      integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
+		"def_val VARCHAR(40) NOT NULL,"
 		"PRIMARY KEY (id)"
 		");");
 
