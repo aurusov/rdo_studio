@@ -97,8 +97,6 @@
 			<keyword name="автозавершение" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="анимация" ref="rdo_studio_rus/html/work_model/work_model_frame.htm"/>
 			<keyword name="бордюр" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
-			<keyword name="буферы" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
-			<keyword name="буферы" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="вставка" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="выделение текста" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="выделение текста" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
@@ -147,8 +145,6 @@
 			<keyword name="модель: автозавершение" ref="rdo_studio_rus/html/work_model/work_model_complete.htm"/>
 			<keyword name="модель: автозавершение" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="модель: анимация" ref="rdo_studio_rus/html/work_model/work_model_frame.htm"/>
-			<keyword name="модель: буферы" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
-			<keyword name="модель: буферы" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="модель: закладки" ref="rdo_studio_rus/html/work_menu/work_menu_search.htm"/>
 			<keyword name="модель: закладки" ref="rdo_studio_rus/html/work_model/work_model_bookmarks.htm"/>
 			<keyword name="модель: запуск" ref="rdo_studio_rus/html/work_menu/work_menu_model.htm"/>
@@ -174,7 +170,6 @@
 			<keyword name="настройки: warnings" ref="rdo_studio_rus/html/work_options/work_options_styles_and_color.htm"/>
 			<keyword name="настройки: автозавершение" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="настройки: бордюр" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
-			<keyword name="настройки: буферы" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="настройки: перенос по словам" ref="rdo_studio_rus/html/work_options/work_options_styles_and_color.htm"/>
 			<keyword name="настройки: табуляция" ref="rdo_studio_rus/html/work_options/work_options_tabs.htm"/>
 			<keyword name="настройки: тема" ref="rdo_studio_rus/html/work_options/work_options_styles_and_color.htm"/>
