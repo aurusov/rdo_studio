@@ -203,7 +203,8 @@ void RDOType__int::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDOType__int::serializeInDB(REF(IDB) db) const
 {
-	db.insertRow("int","DEFAULT,NULL,NULL,NULL");
+	db.insertRow("int",QString("DEFAULT,%1,NULL,NULL")
+		.arg(get_default().getInt()));
 
 	db.pushContext(db.queryExecIndex("int"));
 }
@@ -269,7 +270,8 @@ void RDOType__real::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDOType__real::serializeInDB(REF(IDB) db) const
 {
-	db.insertRow("real","DEFAULT,NULL,NULL,NULL");
+	db.insertRow("real",QString("DEFAULT,%1,NULL,NULL")
+		.arg(get_default().getDouble()));
 
 	db.pushContext(db.queryExecIndex("real"));
 }
@@ -334,7 +336,8 @@ void RDOType__string::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDOType__string::serializeInDB(REF(IDB) db) const
 {
-	db.insertRow("string","DEFAULT,NULL");
+	db.insertRow("string",QString("DEFAULT,%1")
+		.arg(QString::fromStdString(get_default().getString())));
 
 	db.pushContext(db.queryExecIndex("string"));
 }
@@ -392,7 +395,8 @@ void RDOType__identificator::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDOType__identificator::serializeInDB(REF(IDB) db) const
 {
-	db.insertRow("identificator","DEFAULT,NULL");
+	db.insertRow("identificator",QString("DEFAULT,%1")
+		.arg(QString::fromStdString(get_default().getString())));
 
 	db.pushContext(db.queryExecIndex("identificator"));
 }
@@ -457,8 +461,8 @@ void RDOType__bool::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDOType__bool::serializeInDB(REF(IDB) db) const
 {
-	db.insertRow("bool","DEFAULT,NULL");
-
+	db.insertRow("bool",QString("DEFAULT,%1")
+		.arg(get_default().getBool()));
 	db.pushContext(db.queryExecIndex("bool"));
 }
 
