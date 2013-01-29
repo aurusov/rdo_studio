@@ -504,7 +504,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="pageRoot">
           <layout class="QGridLayout" name="gridLayout_7">
@@ -518,7 +518,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="comboBox_11">
+              <widget class="QComboBox" name="switchPreviewComboBox">
                <property name="minimumSize">
                 <size>
                  <width>100</width>
@@ -1007,9 +1007,6 @@
          </column>
         </widget>
        </item>
-       <item row="5" column="0" colspan="3">
-        <widget class="QTextBrowser" name="textBrowser"/>
-       </item>
        <item row="2" column="2" rowspan="2">
         <layout class="QVBoxLayout" name="verticalLayout_7">
          <item>
@@ -1062,6 +1059,9 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item row="5" column="0" colspan="3">
+        <widget class="QStackedWidget" name="previewStackedWidget"/>
        </item>
       </layout>
      </widget>

@@ -14,7 +14,12 @@
 #include "app/rdo_studio/src/view_preferences.h"
 #include "app/rdo_studio/res/build_version.h"
 #include "app/rdo_studio/src/application.h"
+#include "simulator/report/build_edit_line_info.h"
 // --------------------------------------------------------------------------------
+using namespace rdo::simulation::report;
+using namespace rdoEditCtrl;
+using namespace rdoEditor;
+using namespace rdo::gui::tracer;
 
 ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	: QDialog(pParent),
@@ -38,8 +43,19 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	//Вкладка "Стиль и цвет"
 	stackedWidget->setCurrentWidget(pageRoot);
 	createTree();
+	createPreview();
+
+	switchPreviewComboBox->addItem("Editor",  IT_TEXT);
+	switchPreviewComboBox->addItem("Build",   IT_COMPILE);
+	switchPreviewComboBox->addItem("Debug",   IT_DEBUG);
+	switchPreviewComboBox->addItem("Tracer",  IT_TRACE);
+	switchPreviewComboBox->addItem("Results", IT_RESULT);
+	switchPreviewComboBox->addItem("Find",    IT_SEARCH);
+	switchPreviewComboBox->addItem("Chart",   IT_CHART);
+	switchPreviewComboBox->addItem("Frame",   IT_ANIMATION);
 
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
+	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
 }
 
 void ViewPreferences::onUpdateStyleNotify(const rdoEditor::RDOEditorEditStyle& style)
@@ -140,7 +156,56 @@ void ViewPreferences::updateDialog()
 		? radioButtonFullList->toggle()
 		: radioButtonNearestWords->toggle();
 }
+void ViewPreferences::createPreview()
+{
+	preview_editor = new RDOEditorEdit(previewStackedWidget->currentWidget(), previewStackedWidget->currentWidget());
+	ASSERT(preview_editor);
+	preview_editor->setEditorStyle(&studioApp.getStyle()->style_editor);
+	preview_editor->setCanClearErrorLine(false);
+	preview_editor->appendText(rdo::format(IDS_COLORSTYLE_EDITOR_SAMPLE));
+	preview_editor->scrollToLine(0);
+	preview_editor->setReadOnly(true);
+	preview_editor->bookmarkToggle();
+	preview_editor->setErrorLine(preview_editor->getLineCount() - 1);
+	previewStackedWidget->addWidget(preview_editor);
 
+	preview_build = new RDOBuildEdit(previewStackedWidget->currentWidget());
+	preview_build->setEditorStyle(&studioApp.getStyle()->style_build);
+	preview_build->appendLine(new BuildEditLineInfo(rdo::format(IDS_COLORSTYLE_BUILD_SAMPLE1)));
+	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage(rdo::format(IDS_COLORSTYLE_BUILD_SAMPLE2), rdoModelObjects::PAT, 40, 0)));
+	preview_build->appendLine(new BuildEditLineInfo(rdo::format(IDS_COLORSTYLE_BUILD_SAMPLE3)));
+	preview_build->gotoNext();
+	previewStackedWidget->addWidget(preview_build);
+
+	preview_debug = new RDODebugEdit(previewStackedWidget->currentWidget());
+	preview_debug->setEditorStyle(&studioApp.getStyle()->style_debug);
+	preview_debug->appendLine(rdo::format(IDS_COLORSTYLE_DEBUG_SAMPLE));
+	previewStackedWidget->addWidget(preview_debug);
+
+	preview_trace = new LogMainWnd(previewStackedWidget->currentWidget());
+	preview_trace->view().setStyle(&studioApp.getStyle()->style_trace);
+	preview_trace->view().setFocusOnly(true);
+	preview_trace->view().setText(rdo::format(IDS_COLORSTYLE_LOG_SAMPLE));
+	preview_trace->view().selectLine(0);
+	previewStackedWidget->addWidget(preview_trace);
+
+	preview_results = new RDOEditorResults(previewStackedWidget->currentWidget());
+	preview_results->setEditorStyle(&studioApp.getStyle()->style_results);
+	preview_results->setReadOnly(false);
+	preview_results->replaceCurrent(rdo::format(IDS_COLORSTYLE_RESULTS_SAMPLE), 0);
+	preview_results->setReadOnly(true);
+	previewStackedWidget->addWidget(preview_results);
+
+	preview_find = new RDOFindEdit(previewStackedWidget->currentWidget());
+	preview_find->setEditorStyle(&studioApp.getStyle()->style_find);
+	preview_find->setKeyword("$Time");
+	preview_find->appendLine(new LogEditLineInfo(rdo::format(IDS_COLORSTYLE_FIND_SAMPLE1)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(rdo::format(IDS_COLORSTYLE_FIND_SAMPLE2), rdoModelObjects::PAT, 3, 0)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(rdo::format(IDS_COLORSTYLE_FIND_SAMPLE3), rdoModelObjects::PAT, 13, 0)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::format(IDS_COLORSTYLE_FIND_SAMPLE4)));
+	preview_find->gotoNext();
+	previewStackedWidget->addWidget(preview_find);
+}
 void ViewPreferences::createTree()
 {
 	treeWidget->setColumnCount(1);
@@ -252,4 +317,14 @@ PTR(QTreeWidgetItem) ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent
 void ViewPreferences::onTreeWidgetItemActivated(QTreeWidgetItem* item, int column)
 {
 	stackedWidget->setCurrentIndex(item->data(column, Qt::UserRole).toInt());
+	if(item->data(column, Qt::UserRole).toInt() != 0)
+	{
+		switchPreviewComboBox->setCurrentIndex(item->data(column, Qt::UserRole).toInt() - 1);
+	}
+	previewStackedWidget->setCurrentIndex(item->data(column, Qt::UserRole).toInt() - 1);
+}
+
+void ViewPreferences::onSwitchPreviewComboBox(int index)
+{
+	previewStackedWidget->setCurrentIndex(switchPreviewComboBox->itemData(index, Qt::UserRole).toInt() - 1);
 }

@@ -15,6 +15,12 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_view_preferenses.h"
 #include "app/rdo_studio/src/options.h"
+#include "app/rdo_studio/rdo_edit/rdoeditoredit.h"
+#include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
+#include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
+#include "app/rdo_studio/edit_ctrls/rdofindedit.h"
+#include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
+#include "app/rdo_studio/src/tracer/ctrls/log_main_wnd.h"
 // --------------------------------------------------------------------------------
 
 class ViewPreferences
@@ -43,9 +49,17 @@ private slots:
 	void marginLineNumberChanged(int state);
 
 	void onTreeWidgetItemActivated(QTreeWidgetItem* item, int column);
+	void onSwitchPreviewComboBox(int index);
 
 private:
 	rdoEditor::RDOEditorEditStyle style_editor;
+
+	PTR(rdoEditor::RDOEditorEdit)     preview_editor;
+	PTR(rdoEditCtrl::RDOBuildEdit)    preview_build;
+	PTR(rdoEditCtrl::RDODebugEdit)    preview_debug;
+	PTR(rdo::gui::tracer::LogMainWnd) preview_trace;
+	PTR(rdoEditor::RDOEditorResults)  preview_results;
+	PTR(rdoEditCtrl::RDOFindEdit)     preview_find;
 
 	typedef PTR(QTreeWidgetItem) treeItem;
 
@@ -159,7 +173,8 @@ private:
 		IT_CHART,
 		IT_ANIMATION
 	};
-
+	
+	void createPreview();
 	void createTree();
 	PTR(QTreeWidgetItem) createTreeItem (PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType);
 };
