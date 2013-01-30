@@ -58,7 +58,7 @@
    <item row="0" column="0" colspan="5">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_1">
       <property name="accessibleName">
@@ -75,7 +75,7 @@
            <property name="title">
             <string>Привязка к расширению</string>
            </property>
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="setupCheckBox">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -88,7 +88,7 @@
              <string>Установить привязку для файла проекта (*.rdox)</string>
             </property>
            </widget>
-           <widget class="QCheckBox" name="checkBox_2">
+           <widget class="QCheckBox" name="checkInFutureCheckBox">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -120,14 +120,14 @@
           </spacer>
          </item>
          <item>
-          <widget class="QCheckBox" name="checkBox_3">
+          <widget class="QCheckBox" name="openLastProjectCheckBox">
            <property name="text">
             <string>Открывать последний проект при старте</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="checkBox_4">
+          <widget class="QCheckBox" name="showFullNameCheckBox">
            <property name="text">
             <string>Показывать полное имя проекта в заголовке</string>
            </property>
@@ -335,7 +335,7 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_2">
                 <item>
-                 <widget class="QLabel" name="label">
+                 <widget class="QLabel" name="tabSizeLabel">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -361,7 +361,7 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit">
+                 <widget class="QLineEdit" name="tabSizeLineEdit">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -381,7 +381,7 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_3">
                 <item>
-                 <widget class="QLabel" name="label_2">
+                 <widget class="QLabel" name="indentSizeLabel">
                   <property name="text">
                    <string>Размер отступа</string>
                   </property>
@@ -401,7 +401,7 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_2">
+                 <widget class="QLineEdit" name="indentSizeLineEdit">
                   <property name="minimumSize">
                    <size>
                     <width>70</width>
@@ -423,14 +423,14 @@
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_4">
               <item>
-               <widget class="QCheckBox" name="checkBox_5">
+               <widget class="QCheckBox" name="useTabSymbolCheckBox">
                 <property name="text">
                  <string>Использовать символ табуляции (не пробел)</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="checkBox_6">
+               <widget class="QCheckBox" name="indentAsTabcheckBox">
                 <property name="text">
                  <string>Отступ через табуляцию</string>
                 </property>
@@ -445,14 +445,14 @@
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_5">
               <item>
-               <widget class="QRadioButton" name="radioButton">
+               <widget class="QRadioButton" name="eraseWithTabRadioButton">
                 <property name="text">
                  <string>Стирать табуляцией</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QRadioButton" name="radioButton_2">
+               <widget class="QRadioButton" name="eraseWithIndentRadioButton">
                 <property name="text">
                  <string>Стирать отступом</string>
                 </property>
@@ -461,7 +461,7 @@
              </layout>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_7">
+             <widget class="QCheckBox" name="autoIndentCheckBox">
               <property name="text">
                <string>Авто-отступ</string>
               </property>
