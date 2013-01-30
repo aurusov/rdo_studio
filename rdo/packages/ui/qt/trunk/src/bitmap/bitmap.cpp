@@ -18,27 +18,23 @@ using namespace rdo::gui;
 
 QPixmap Bitmap::transparent(CREF(QPixmap) bitmap, CREF(QPixmap) mask)
 {
+	QPixmap result;
+
 	if (bitmap.isNull() || mask.isNull() || bitmap.size() != mask.size())
-		return QPixmap();
+		return result;
 
 	QImage generatedImage = bitmap.copy().toImage().convertToFormat(QImage::Format_ARGB32);
 
-	Bitmap::transparent(generatedImage, mask.toImage());
-
-	if (generatedImage.isNull())
-		return QPixmap();
-
-	QPixmap generated = QPixmap::fromImage(generatedImage);
-	if (generated.isNull())
-		return QPixmap();
-
-	return generated;
+	result = QPixmap::fromImage(Bitmap::transparent(generatedImage, mask.toImage()));
+	return result;
 }
 
-rbool Bitmap::transparent(REF(QImage) inOutBitmap, CREF(QImage) mask)
+QImage Bitmap::transparent(CREF(QImage) bitmap, CREF(QImage) mask)
 {
-	if (inOutBitmap.isNull() || mask.isNull() || inOutBitmap.size() != mask.size())
-		return false;
+	QImage result(bitmap);
+
+	if (bitmap.isNull() || mask.isNull() || bitmap.size() != mask.size())
+		return result;
 
 	QRgb white       = QColor(Qt::white).rgb();
 	QRgb transparent = QColor(Qt::transparent).rgba();
@@ -48,10 +44,10 @@ rbool Bitmap::transparent(REF(QImage) inOutBitmap, CREF(QImage) mask)
 		{
 			if (mask.pixel(x, y) == white)
 			{
-				inOutBitmap.setPixel(x, y, transparent);
+				result.setPixel(x, y, transparent);
 			}
 		}
 	}
 
-	return true;
+	return result;
 }
