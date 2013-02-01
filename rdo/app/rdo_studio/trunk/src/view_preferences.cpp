@@ -76,8 +76,6 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(indentSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onIndentSize(const QString&)));
 	//Вкладка "Стиль и цвет"
 	stackedWidget->setCurrentWidget(pageRoot);
-	QString border = "border: 1px solid black;";
-	previewStackedWidget->setStyleSheet(border);
 	createTree();
 	createPreview();
 

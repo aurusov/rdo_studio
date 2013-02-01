@@ -58,7 +58,7 @@
    <item row="0" column="0" colspan="5">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab_1">
       <property name="accessibleName">
@@ -1154,7 +1154,14 @@
         </layout>
        </item>
        <item row="5" column="0" colspan="3">
-        <widget class="QStackedWidget" name="previewStackedWidget"/>
+        <widget class="QStackedWidget" name="previewStackedWidget">
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
