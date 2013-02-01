@@ -246,7 +246,34 @@ void ViewPreferences::onFontSize(int index)
 		style_find.font->size    = size;
 		//style_chart.font->size   = size;
 		//style_frame.font->size   = size;
+		break;
+	case IT_TEXT:
+		style_editor.font->size = size;
+		break;
+	case IT_COMPILE:
+		style_build.font->size = size;
+		break;
+	case IT_DEBUG:
+		style_debug.font->size   = size;
+		break;
+	case IT_TRACE:
+		style_trace.font->size = size;
+		break;
+	case IT_RESULT:
+		style_results.font->size = size;
+		break;
+	case IT_SEARCH:
+		style_find.font->size    = size;
+		break;
+	case IT_CHART:
+		//style_chart.font->size   = size;
+		break;
+	case IT_ANIMATION:
+		//style_frame.font->size   = size;
+		break;
 	}
+
+	updatePreview();
 }
 
 void ViewPreferences::updateDialog()
@@ -301,6 +328,12 @@ void ViewPreferences::updateDialog()
 	style_editor.tab->useTabs
 		? eraseWithTabRadioButton->toggle()
 		: eraseWithIndentRadioButton->toggle();	
+}
+
+void ViewPreferences::updatePreview()
+{
+	preview_editor->setEditorStyle(&style_editor);
+	preview_editor->repaint();
 }
 
 void ViewPreferences::createPreview()

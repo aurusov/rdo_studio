@@ -37,6 +37,7 @@ public:
 	explicit ViewPreferences(PTR(QWidget) pParent = NULL);
 
 	void updateDialog();
+	void updatePreview();
 	rbool checkNewOptions(const rdoEditor::RDOEditorEditStyle& style);
 
 private slots:
