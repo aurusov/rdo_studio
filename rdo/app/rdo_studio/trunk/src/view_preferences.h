@@ -75,6 +75,11 @@ private:
 	rbool m_showFullName;
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
+	rdoEditCtrl::RDOBuildEditStyle   style_build;
+	rdoEditCtrl::RDOBaseEditStyle    style_debug;
+	rdo::gui::tracer::LogStyle       style_trace;
+	rdoEditor::RDOEditorResultsStyle style_results;
+	rdoEditCtrl::RDOFindEditStyle    style_find;
 
 	PTR(rdoEditor::RDOEditorEdit)     preview_editor;
 	PTR(rdoEditCtrl::RDOBuildEdit)    preview_build;

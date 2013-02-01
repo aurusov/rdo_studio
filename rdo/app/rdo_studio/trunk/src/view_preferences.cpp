@@ -37,8 +37,18 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	m_showFullName    = studioApp.getShowCaptionFullName();
 
 	style_editor.init();
+	style_build.init();
+	style_debug.init();
+	style_trace.init();
+	style_results.init();
+	style_find.init();
 
 	style_editor  = studioApp.getStyle()->style_editor;
+	style_build   = studioApp.getStyle()->style_build;
+	style_debug   = studioApp.getStyle()->style_debug;
+	style_trace   = studioApp.getStyle()->style_trace;
+	style_results = studioApp.getStyle()->style_results;
+	style_find    = studioApp.getStyle()->style_find;
 
 	fontComboBox->setEditable(false);
 	//¬кладка "ќсновные"
@@ -296,7 +306,7 @@ void ViewPreferences::createPreview()
 	previewStackedWidget->addWidget(preview_editor);
 
 	preview_build = new RDOBuildEdit(previewStackedWidget->currentWidget());
-	preview_build->setEditorStyle(&studioApp.getStyle()->style_build);
+	preview_build->setEditorStyle(&style_build);
 	preview_build->appendLine(new BuildEditLineInfo(rdo::format(IDS_COLORSTYLE_BUILD_SAMPLE1)));
 	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage(rdo::format(IDS_COLORSTYLE_BUILD_SAMPLE2), rdoModelObjects::PAT, 40, 0)));
 	preview_build->appendLine(new BuildEditLineInfo(rdo::format(IDS_COLORSTYLE_BUILD_SAMPLE3)));
@@ -304,7 +314,7 @@ void ViewPreferences::createPreview()
 	previewStackedWidget->addWidget(preview_build);
 
 	preview_debug = new RDODebugEdit(previewStackedWidget->currentWidget());
-	preview_debug->setEditorStyle(&studioApp.getStyle()->style_debug);
+	preview_debug->setEditorStyle(&style_debug);
 	preview_debug->appendLine(rdo::format(IDS_COLORSTYLE_DEBUG_SAMPLE));
 	previewStackedWidget->addWidget(preview_debug);
 
@@ -316,14 +326,14 @@ void ViewPreferences::createPreview()
 	previewStackedWidget->addWidget(preview_trace);
 
 	preview_results = new RDOEditorResults(previewStackedWidget->currentWidget());
-	preview_results->setEditorStyle(&studioApp.getStyle()->style_results);
+	preview_results->setEditorStyle(&style_results);
 	preview_results->setReadOnly(false);
 	preview_results->replaceCurrent(rdo::format(IDS_COLORSTYLE_RESULTS_SAMPLE), 0);
 	preview_results->setReadOnly(true);
 	previewStackedWidget->addWidget(preview_results);
 
 	preview_find = new RDOFindEdit(previewStackedWidget->currentWidget());
-	preview_find->setEditorStyle(&studioApp.getStyle()->style_find);
+	preview_find->setEditorStyle(&style_find);
 	preview_find->setKeyword("$Time");
 	preview_find->appendLine(new LogEditLineInfo(rdo::format(IDS_COLORSTYLE_FIND_SAMPLE1)));
 	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(rdo::format(IDS_COLORSTYLE_FIND_SAMPLE2), rdoModelObjects::PAT, 3, 0)));
