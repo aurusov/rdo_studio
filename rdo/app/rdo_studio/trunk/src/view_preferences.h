@@ -40,21 +40,21 @@ public:
 	rbool checkNewOptions(const rdoEditor::RDOEditorEditStyle& style);
 
 private slots:
-	void okButtonClicked();
-	void cancelButtonClicked();
-	void applyButtonClicked();
-	void helpButtonClicked();
+	void onOkButton();
+	void onCancelButton();
+	void onApplyButton();
+	void onHelpButton();
 
 	void onSetup(int state);
 	void onCheckInFuture(int state);
 	void onOpenLastProject(int state);
 	void onShowFullName(int state);
 
-	void codeCompUseChanged(int state);
-	void codeCompShowFullListChanged(bool state);
-	void marginFoldChanged(int state);
-	void marginBookmarkChanged(int state);
-	void marginLineNumberChanged(int state);
+	void onCodeCompUse(int state);
+	void onCodeCompShowFullList(bool state);
+	void onMarginFold(int state);
+	void onMarginBookmark(int state);
+	void onMarginLineNumber(int state);
 
 	void onUseTabSymbol(int state);
 	void onIndentAsTab(int state);

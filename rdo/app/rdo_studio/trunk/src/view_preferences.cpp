@@ -26,10 +26,10 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 {
 	setupUi(this);
 
-	connect(buttonOk, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
-	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(cancelButtonClicked()));
-	connect(buttonApply, SIGNAL(clicked()), this, SLOT(applyButtonClicked()));
-	connect(buttonHelp, SIGNAL(clicked()), this, SLOT(helpButtonClicked()));
+	connect(buttonOk, SIGNAL(clicked()), this, SLOT(onOkButton()));
+	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(onCancelButton()));
+	connect(buttonApply, SIGNAL(clicked()), this, SLOT(onApplyButton()));
+	connect(buttonHelp, SIGNAL(clicked()), this, SLOT(onHelpButton()));
 	
 	m_setup           = studioApp.getFileAssociationSetup();
 	m_checkInFuture   = studioApp.getFileAssociationCheckInFuture();
@@ -57,12 +57,12 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(openLastProjectCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onOpenLastProject(int)));
 	connect(showFullNameCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onShowFullName(int)));
 	//Âêëàäêà "Ğåäàêòîğ"
-	connect(checkBoxCodeCompUse, SIGNAL(stateChanged(int)), this, SLOT(codeCompUseChanged(int)));
-	connect(radioButtonFullList, SIGNAL(toggled(bool)), this, SLOT(codeCompShowFullListChanged(bool)));
-	connect(radioButtonNearestWords, SIGNAL(toggled(bool)), this, SLOT(codeCompShowFullListChanged(bool)));
-	connect(checkBoxMarginFold, SIGNAL(stateChanged(int)), this, SLOT(marginFoldChanged(int)));
-	connect(checkBoxMarginBookmark, SIGNAL(stateChanged(int)), this, SLOT(marginBookmarkChanged(int)));
-	connect(checkBoxMarginLineNum, SIGNAL(stateChanged(int)), this, SLOT(marginLineNumberChanged(int)));
+	connect(checkBoxCodeCompUse, SIGNAL(stateChanged(int)), this, SLOT(onCodeCompUse(int)));
+	connect(radioButtonFullList, SIGNAL(toggled(bool)), this, SLOT(onCodeCompShowFullList(bool)));
+	connect(radioButtonNearestWords, SIGNAL(toggled(bool)), this, SLOT(onCodeCompShowFullList(bool)));
+	connect(checkBoxMarginFold, SIGNAL(stateChanged(int)), this, SLOT(onMarginFold(int)));
+	connect(checkBoxMarginBookmark, SIGNAL(stateChanged(int)), this, SLOT(onMarginBookmark(int)));
+	connect(checkBoxMarginLineNum, SIGNAL(stateChanged(int)), this, SLOT(onMarginLineNumber(int)));
 	//Âêëàäêà "Òàáóëÿöèÿ"
 	tabSizeLineEdit->setValidator(new QIntValidator(1, 100, this));
 	tabSizeLineEdit->setText(QString::number(style_editor.tab->tabSize));
@@ -97,28 +97,28 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	updateDialog();
 }
 
-void ViewPreferences::okButtonClicked()
+void ViewPreferences::onOkButton()
 {
 	apply();
 	done(Accepted);
 }
 
-void ViewPreferences::cancelButtonClicked()
+void ViewPreferences::onCancelButton()
 {
 	done(Rejected);
 }
 
-void ViewPreferences::applyButtonClicked()
+void ViewPreferences::onApplyButton()
 {
 	apply();
 }
 
-void ViewPreferences::helpButtonClicked()
+void ViewPreferences::onHelpButton()
 {
 
 }
 
-void ViewPreferences::codeCompUseChanged(int state)
+void ViewPreferences::onCodeCompUse(int state)
 {
 	style_editor.autoComplete->useAutoComplete = state;
 	
@@ -136,7 +136,7 @@ void ViewPreferences::codeCompUseChanged(int state)
 
 }
 
-void ViewPreferences::codeCompShowFullListChanged(bool state)
+void ViewPreferences::onCodeCompShowFullList(bool state)
 {
 	UNUSED(state);
 
@@ -146,17 +146,17 @@ void ViewPreferences::codeCompShowFullListChanged(bool state)
 		style_editor.autoComplete->showFullList = false;
 }
 
-void ViewPreferences::marginFoldChanged(int state)
+void ViewPreferences::onMarginFold(int state)
 {
 	style_editor.margin->fold = state;
 }
 
-void ViewPreferences::marginBookmarkChanged(int state)
+void ViewPreferences::onMarginBookmark(int state)
 {
 	style_editor.margin->bookmark = state;
 }
 
-void ViewPreferences::marginLineNumberChanged(int state)
+void ViewPreferences::onMarginLineNumber(int state)
 {
 	style_editor.margin->lineNumber = state;
 }
