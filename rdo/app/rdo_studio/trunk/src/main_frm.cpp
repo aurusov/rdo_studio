@@ -417,16 +417,7 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 void RDOStudioMainFrame::onViewOptions()
 {
 	ViewPreferences dlg(this);
-
-	studioApp.getEditorEditStyle()->attachSubscriber(
-		boost::bind(&ViewPreferences::onUpdateStyleNotify, &dlg, _1)
-	);
-
 	dlg.exec();
-
-	studioApp.getEditorEditStyle()->detachSubscriber(
-		boost::bind(&ViewPreferences::onUpdateStyleNotify, &dlg, _1)
-	);
 }
 
 void RDOStudioMainFrame::updateAllStyles()
