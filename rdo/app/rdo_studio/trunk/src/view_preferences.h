@@ -36,8 +36,6 @@ Q_OBJECT
 public:
 	explicit ViewPreferences(PTR(QWidget) pParent = NULL);
 
-	void onUpdateStyleNotify(const rdoEditor::RDOEditorEditStyle& style);
-	void setEditorPreferences(const rdoEditor::RDOEditorEditStyle& style);
 	void updateDialog();
 	rbool checkNewOptions(const rdoEditor::RDOEditorEditStyle& style);
 

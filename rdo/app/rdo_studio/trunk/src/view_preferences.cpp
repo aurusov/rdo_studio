@@ -93,12 +93,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
 	connect(fontSizeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFontSize(int)));
-}
 
-void ViewPreferences::onUpdateStyleNotify(const rdoEditor::RDOEditorEditStyle& style)
-{
-	//if(style_editor != style)
-	//	setEditorPreferences(style);
 	updateDialog();
 }
 
@@ -252,11 +247,6 @@ void ViewPreferences::onFontSize(int index)
 		//style_chart.font->size   = size;
 		//style_frame.font->size   = size;
 	}
-}
-
-void ViewPreferences::setEditorPreferences(const rdoEditor::RDOEditorEditStyle& style)
-{
-	style_editor = style;
 }
 
 void ViewPreferences::updateDialog()
