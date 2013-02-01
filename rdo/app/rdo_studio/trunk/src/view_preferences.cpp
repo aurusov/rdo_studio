@@ -334,6 +334,21 @@ void ViewPreferences::updatePreview()
 {
 	preview_editor->setEditorStyle(&style_editor);
 	preview_editor->repaint();
+
+	preview_build->setEditorStyle(&style_build);
+	preview_build->repaint();
+
+	preview_debug->setEditorStyle(&style_debug);
+	preview_debug->repaint();
+
+	//preview_trace->view().setStyle(&style_trace);
+	//preview_trace->repaint();
+
+	preview_results->setEditorStyle(&style_results);
+	preview_results->repaint();
+
+	preview_find->setEditorStyle(&style_find);
+	preview_find->repaint();
 }
 
 void ViewPreferences::createPreview()
