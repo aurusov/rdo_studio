@@ -67,6 +67,7 @@ private slots:
 
 	void onTreeWidgetItemActivated(QTreeWidgetItem* item, int column);
 	void onSwitchPreviewComboBox(int index);
+	void onFontSize(int index);
 
 private:
 	rbool m_setup;
@@ -87,6 +88,7 @@ private:
 	PTR(rdo::gui::tracer::LogMainWnd) preview_trace;
 	PTR(rdoEditor::RDOEditorResults)  preview_results;
 	PTR(rdoEditCtrl::RDOFindEdit)     preview_find;
+	PTR(FrameAnimationContent)        preview_frame;
 
 	typedef PTR(QTreeWidgetItem) treeItem;
 

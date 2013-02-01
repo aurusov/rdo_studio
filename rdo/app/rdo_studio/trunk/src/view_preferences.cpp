@@ -90,6 +90,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
+	connect(fontSizeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFontSize(int)));
 }
 
 void ViewPreferences::onUpdateStyleNotify(const rdoEditor::RDOEditorEditStyle& style)
@@ -231,6 +232,24 @@ void ViewPreferences::onTreeWidgetItemActivated(QTreeWidgetItem* item, int colum
 void ViewPreferences::onSwitchPreviewComboBox(int index)
 {
 	previewStackedWidget->setCurrentIndex(switchPreviewComboBox->itemData(index, Qt::UserRole).toInt() - 1);
+}
+
+void ViewPreferences::onFontSize(int index)
+{
+	UNUSED(index);
+	int size = fontSizeComboBox->currentText().toInt();
+	switch(treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
+	{
+	case IT_ROOT:
+		style_editor.font->size  = size;
+		style_build.font->size   = size;
+		style_debug.font->size   = size;
+		style_trace.font->size   = size;
+		style_results.font->size = size;
+		style_find.font->size    = size;
+		//style_chart.font->size   = size;
+		//style_frame.font->size   = size;
+	}
 }
 
 void ViewPreferences::setEditorPreferences(const rdoEditor::RDOEditorEditStyle& style)
