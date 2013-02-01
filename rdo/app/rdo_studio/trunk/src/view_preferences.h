@@ -87,7 +87,6 @@ private:
 	PTR(rdo::gui::tracer::LogMainWnd) preview_trace;
 	PTR(rdoEditor::RDOEditorResults)  preview_results;
 	PTR(rdoEditCtrl::RDOFindEdit)     preview_find;
-	PTR(FrameAnimationContent)        preview_frame;
 
 	typedef PTR(QTreeWidgetItem) treeItem;
 
