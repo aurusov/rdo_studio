@@ -129,14 +129,14 @@ void ViewPreferences::codeCompUseChanged(int state)
 	
 	switch(state)
 	{
-		case 0:
-			radioButtonFullList->setEnabled(false);
-			radioButtonNearestWords->setEnabled(false);
-			break;
-		case 2:
-			radioButtonFullList->setEnabled(true);
-			radioButtonNearestWords->setEnabled(true);
-			break;
+	case 0:
+		radioButtonFullList->setEnabled(false);
+		radioButtonNearestWords->setEnabled(false);
+		break;
+	case 2:
+		radioButtonFullList->setEnabled(true);
+		radioButtonNearestWords->setEnabled(true);
+		break;
 	}
 
 }
