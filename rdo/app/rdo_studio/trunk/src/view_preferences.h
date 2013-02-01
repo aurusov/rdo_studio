@@ -19,8 +19,13 @@
 #include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
 #include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio/edit_ctrls/rdofindedit.h"
+#include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"
+#include "app/rdo_studio/rdo_edit/rdoeditorresultsstyle.h"
+#include "app/rdo_studio/edit_ctrls/rdobuildeditstyle.h"
+#include "app/rdo_studio/edit_ctrls/rdofindeditstyle.h"
 #include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio/src/tracer/ctrls/log_main_wnd.h"
+#include "app/rdo_studio/src/frame/view.h"
 // --------------------------------------------------------------------------------
 
 class ViewPreferences
@@ -42,17 +47,34 @@ private slots:
 	void applyButtonClicked();
 	void helpButtonClicked();
 
+	void onSetup(int state);
+	void onCheckInFuture(int state);
+	void onOpenLastProject(int state);
+	void onShowFullName(int state);
+
 	void codeCompUseChanged(int state);
 	void codeCompShowFullListChanged(bool state);
 	void marginFoldChanged(int state);
 	void marginBookmarkChanged(int state);
 	void marginLineNumberChanged(int state);
 
+	void onUseTabSymbol(int state);
+	void onIndentAsTab(int state);
+	void onAutoIndent(int state);
+	void onEraseWithTab(bool state);
+	void onTabSize(const QString& text);
+	void onIndentSize(const QString& text);
+
 	void onTreeWidgetItemActivated(QTreeWidgetItem* item, int column);
 	void onSwitchPreviewComboBox(int index);
 
 private:
-	rdoEditor::RDOEditorEditStyle style_editor;
+	rbool m_setup;
+	rbool m_checkInFuture;
+	rbool m_openLastProject;
+	rbool m_showFullName;
+
+	rdoEditor::RDOEditorEditStyle    style_editor;
 
 	PTR(rdoEditor::RDOEditorEdit)     preview_editor;
 	PTR(rdoEditCtrl::RDOBuildEdit)    preview_build;
@@ -177,6 +199,8 @@ private:
 	void createPreview();
 	void createTree();
 	PTR(QTreeWidgetItem) createTreeItem (PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType);
+
+	void apply();
 };
 
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

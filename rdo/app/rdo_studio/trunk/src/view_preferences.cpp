@@ -22,8 +22,7 @@ using namespace rdoEditor;
 using namespace rdo::gui::tracer;
 
 ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
-	: QDialog(pParent),
-	  style_editor()
+	: QDialog(pParent)
 {
 	setupUi(this);
 
@@ -31,7 +30,22 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(cancelButtonClicked()));
 	connect(buttonApply, SIGNAL(clicked()), this, SLOT(applyButtonClicked()));
 	connect(buttonHelp, SIGNAL(clicked()), this, SLOT(helpButtonClicked()));
+	
+	m_setup           = studioApp.getFileAssociationSetup();
+	m_checkInFuture   = studioApp.getFileAssociationCheckInFuture();
+	m_openLastProject = studioApp.getOpenLastProject();
+	m_showFullName    = studioApp.getShowCaptionFullName();
 
+	style_editor.init();
+
+	style_editor  = studioApp.getStyle()->style_editor;
+
+	fontComboBox->setEditable(false);
+	//Вкладка "Основные"
+	connect(setupCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onSetup(int)));
+	connect(checkInFutureCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onCheckInFuture(int)));
+	connect(openLastProjectCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onOpenLastProject(int)));
+	connect(showFullNameCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onShowFullName(int)));
 	//Вкладка "Редактор"
 	connect(checkBoxCodeCompUse, SIGNAL(stateChanged(int)), this, SLOT(codeCompUseChanged(int)));
 	connect(radioButtonFullList, SIGNAL(toggled(bool)), this, SLOT(codeCompShowFullListChanged(bool)));
@@ -39,7 +53,17 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(checkBoxMarginFold, SIGNAL(stateChanged(int)), this, SLOT(marginFoldChanged(int)));
 	connect(checkBoxMarginBookmark, SIGNAL(stateChanged(int)), this, SLOT(marginBookmarkChanged(int)));
 	connect(checkBoxMarginLineNum, SIGNAL(stateChanged(int)), this, SLOT(marginLineNumberChanged(int)));
-
+	//Вкладка "Табуляция"
+	tabSizeLineEdit->setValidator(new QIntValidator(1, 100, this));
+	tabSizeLineEdit->setText(QString::number(style_editor.tab->tabSize));
+	indentSizeLineEdit->setValidator(new QIntValidator(1, 100, this));
+	indentSizeLineEdit->setText(QString::number(style_editor.tab->indentSize));
+	connect(useTabSymbolCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onUseTabSymbol(int)));
+	connect(indentAsTabcheckBox, SIGNAL(stateChanged(int)), this, SLOT(onIndentAsTab(int)));
+	connect(autoIndentCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onAutoIndent(int)));
+	connect(eraseWithTabRadioButton, SIGNAL(toggled(bool)), this, SLOT(onEraseWithTab(bool)));
+	connect(tabSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onTabSize(const QString&)));
+	connect(indentSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onIndentSize(const QString&)));
 	//Вкладка "Стиль и цвет"
 	stackedWidget->setCurrentWidget(pageRoot);
 	createTree();
@@ -60,24 +84,25 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 
 void ViewPreferences::onUpdateStyleNotify(const rdoEditor::RDOEditorEditStyle& style)
 {
-	if(style_editor != style)
-		setEditorPreferences(style);
+	//if(style_editor != style)
+	//	setEditorPreferences(style);
 	updateDialog();
 }
 
 void ViewPreferences::okButtonClicked()
 {
-
+	apply();
+	done(Accepted);
 }
 
 void ViewPreferences::cancelButtonClicked()
 {
-
+	done(Rejected);
 }
 
 void ViewPreferences::applyButtonClicked()
 {
-	//applyList
+	apply();
 }
 
 void ViewPreferences::helpButtonClicked()
@@ -128,6 +153,76 @@ void ViewPreferences::marginLineNumberChanged(int state)
 	style_editor.margin->lineNumber = state;
 }
 
+void ViewPreferences::onUseTabSymbol(int state)
+{
+	style_editor.tab->backspaceUntabs = state;
+}
+
+void ViewPreferences::onIndentAsTab(int state)
+{
+	style_editor.tab->tabIndents = state;
+}
+
+void ViewPreferences::onAutoIndent(int state)
+{
+	style_editor.tab->autoIndent = state;
+}
+
+void ViewPreferences::onEraseWithTab(bool state)
+{
+	UNUSED(state);
+
+	if(eraseWithTabRadioButton->isChecked())
+		style_editor.tab->useTabs = true;
+	if(eraseWithIndentRadioButton->isChecked())
+		style_editor.tab->useTabs = false;
+}
+
+void ViewPreferences::onTabSize(const QString& text)
+{
+	style_editor.tab->tabSize = text.toInt();
+}
+
+void ViewPreferences::onIndentSize(const QString& text)
+{
+	style_editor.tab->indentSize = text.toInt();
+}
+
+void ViewPreferences::onSetup(int state)
+{
+	m_setup = state;
+}
+
+void ViewPreferences::onCheckInFuture(int state)
+{
+	m_checkInFuture = state;
+}
+
+void ViewPreferences::onOpenLastProject(int state)
+{
+	m_openLastProject = state;
+}
+
+void ViewPreferences::onShowFullName(int state)
+{
+	m_showFullName = state;
+}
+
+void ViewPreferences::onTreeWidgetItemActivated(QTreeWidgetItem* item, int column)
+{
+	stackedWidget->setCurrentIndex(item->data(column, Qt::UserRole).toInt());
+	if(item->data(column, Qt::UserRole).toInt() != 0)
+	{
+		switchPreviewComboBox->setCurrentIndex(item->data(column, Qt::UserRole).toInt() - 1);
+	}
+	previewStackedWidget->setCurrentIndex(item->data(column, Qt::UserRole).toInt() - 1);
+}
+
+void ViewPreferences::onSwitchPreviewComboBox(int index)
+{
+	previewStackedWidget->setCurrentIndex(switchPreviewComboBox->itemData(index, Qt::UserRole).toInt() - 1);
+}
+
 void ViewPreferences::setEditorPreferences(const rdoEditor::RDOEditorEditStyle& style)
 {
 	style_editor = style;
@@ -135,6 +230,22 @@ void ViewPreferences::setEditorPreferences(const rdoEditor::RDOEditorEditStyle& 
 
 void ViewPreferences::updateDialog()
 {
+	setupCheckBox->setCheckState(m_setup
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+	checkInFutureCheckBox->setCheckState(m_checkInFuture
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+	openLastProjectCheckBox->setCheckState(m_openLastProject
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+	showFullNameCheckBox->setCheckState(m_showFullName
+		? Qt::Checked
+		: Qt::Unchecked
+		);
 	checkBoxCodeCompUse->setCheckState(style_editor.autoComplete->useAutoComplete
 		? Qt::Checked
 		: Qt::Unchecked
@@ -151,16 +262,31 @@ void ViewPreferences::updateDialog()
 		? Qt::Checked
 		: Qt::Unchecked
 		);
-
 	style_editor.autoComplete->showFullList
 		? radioButtonFullList->toggle()
-		: radioButtonNearestWords->toggle();
+		: radioButtonNearestWords->toggle();	
+	useTabSymbolCheckBox->setCheckState(style_editor.tab->backspaceUntabs
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+	indentAsTabcheckBox->setCheckState(style_editor.tab->tabIndents
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+	autoIndentCheckBox->setCheckState(style_editor.tab->autoIndent
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+	style_editor.tab->useTabs
+		? eraseWithTabRadioButton->toggle()
+		: eraseWithIndentRadioButton->toggle();	
 }
+
 void ViewPreferences::createPreview()
 {
 	preview_editor = new RDOEditorEdit(previewStackedWidget->currentWidget(), previewStackedWidget->currentWidget());
 	ASSERT(preview_editor);
-	preview_editor->setEditorStyle(&studioApp.getStyle()->style_editor);
+	preview_editor->setEditorStyle(&style_editor);
 	preview_editor->setCanClearErrorLine(false);
 	preview_editor->appendText(rdo::format(IDS_COLORSTYLE_EDITOR_SAMPLE));
 	preview_editor->scrollToLine(0);
@@ -206,6 +332,7 @@ void ViewPreferences::createPreview()
 	preview_find->gotoNext();
 	previewStackedWidget->addWidget(preview_find);
 }
+
 void ViewPreferences::createTree()
 {
 	treeWidget->setColumnCount(1);
@@ -304,6 +431,8 @@ void ViewPreferences::createTree()
 
 	m_pEdgingColor     = createTreeItem(m_pAnimation, "цвет окантовки",               IT_ANIMATION);
 	m_pBackgroundColor = createTreeItem(m_pAnimation, "цвет фона за пределами кадра", IT_ANIMATION);
+
+	treeWidget->setCurrentItem(m_pRoot);
 }
 
 PTR(QTreeWidgetItem) ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType)
@@ -314,17 +443,12 @@ PTR(QTreeWidgetItem) ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent
 	return item;
 }
 
-void ViewPreferences::onTreeWidgetItemActivated(QTreeWidgetItem* item, int column)
+void ViewPreferences::apply()
 {
-	stackedWidget->setCurrentIndex(item->data(column, Qt::UserRole).toInt());
-	if(item->data(column, Qt::UserRole).toInt() != 0)
-	{
-		switchPreviewComboBox->setCurrentIndex(item->data(column, Qt::UserRole).toInt() - 1);
-	}
-	previewStackedWidget->setCurrentIndex(item->data(column, Qt::UserRole).toInt() - 1);
-}
-
-void ViewPreferences::onSwitchPreviewComboBox(int index)
-{
-	previewStackedWidget->setCurrentIndex(switchPreviewComboBox->itemData(index, Qt::UserRole).toInt() - 1);
+	studioApp.getStyle()->style_editor  = style_editor;
+	studioApp.setFileAssociationSetup(m_setup);
+	studioApp.setFileAssociationCheckInFuture(m_checkInFuture);
+	studioApp.setOpenLastProject(m_openLastProject);
+	studioApp.setShowCaptionFullName(m_showFullName);
+	studioApp.getStyle()->updateAllStyles();
 }
