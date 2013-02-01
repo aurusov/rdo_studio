@@ -93,6 +93,9 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
 	connect(fontSizeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFontSize(int)));
+	connect(boldCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
+	connect(italicCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
+	connect(underlineCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
 
 	updateDialog();
 }
@@ -274,6 +277,21 @@ void ViewPreferences::onFontSize(int index)
 	}
 
 	updatePreview();
+}
+
+void ViewPreferences::onFontBold(int state)
+{
+
+}
+
+void ViewPreferences::onFontItalic(int state)
+{
+
+}
+
+void ViewPreferences::onFontUnderline(int state)
+{
+
 }
 
 void ViewPreferences::updateDialog()

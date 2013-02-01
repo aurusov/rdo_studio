@@ -67,6 +67,9 @@ private slots:
 	void onTreeWidgetItemActivated(QTreeWidgetItem* item, int column);
 	void onSwitchPreviewComboBox(int index);
 	void onFontSize(int index);
+	void onFontBold(int state);
+	void onFontItalic(int state);
+	void onFontUnderline(int state);
 
 private:
 	rbool m_setup;
