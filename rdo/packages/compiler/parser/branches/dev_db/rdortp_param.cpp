@@ -42,11 +42,11 @@ void RDORTPParam::writeModelStructure(REF(rdo::ostream) stream) const
 void RDORTPParam::serializeInDB(REF(IDB) db) const
 {
 	int rtp_id = db.popContext();
-	this->getTypeInfo()->type()->serializeInDB(db);
+	getTypeInfo()->type()->serializeInDB(db);
 	db.insertRow("param_of_type",QString("DEFAULT,'%1',%2,%3")
-			.arg(QString::fromStdString(this->name())
+			.arg(QString::fromStdString(this->name()))
 			.arg(rtp_id)
-			.arg(db.popContext())));
+			.arg(db.popContext()));
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
