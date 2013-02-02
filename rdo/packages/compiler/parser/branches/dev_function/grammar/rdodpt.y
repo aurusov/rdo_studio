@@ -555,6 +555,10 @@ dpt_search_name
 
 dpt_searcht_activity
 	: /* empty */
+	{
+		LPRDODPTActivity pActivity = NULL;
+		$$ = PARSER->stack().push(pActivity);
+	}
 	| dpt_searcht_activity dpt_search_name dpt_search_descr_param dpt_search_descr_value
 	{
 		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($2);
@@ -572,7 +576,6 @@ dpt_search_header
 	: dp_searcht_compare RDO_Activities dpt_searcht_activity
 	{
 		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($3);
-		ASSERT(pActivity);
 	}
 	| dp_searcht_compare error
 	{
@@ -1100,6 +1103,10 @@ dpt_prior_activ_prior
 
 dpt_prior_activity
 	: /* empty */
+	{
+		LPRDODPTActivity pActivity = NULL;
+		$$ = PARSER->stack().push(pActivity);
+	}
 	| dpt_prior_activity dpt_prior_name dpt_prior_descr_keyb dpt_prior_descr_param dpt_prior_activ_prior
 	{
 		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($2);
@@ -1113,7 +1120,6 @@ dpt_prior_header
 	: dpt_prior_prior RDO_Activities dpt_prior_activity
 	{
 		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($3);
-		ASSERT(pActivity);
 	}
 	| dpt_prior_prior error
 	{
