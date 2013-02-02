@@ -28,6 +28,13 @@
      </property>
     </widget>
    </item>
+   <item row="1" column="4">
+    <widget class="QPushButton" name="buttonHelp">
+     <property name="text">
+      <string>Справка</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0">
     <spacer name="horizontalSpacer">
      <property name="orientation">
@@ -51,7 +58,7 @@
    <item row="0" column="0" colspan="5">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab_1">
       <property name="accessibleName">

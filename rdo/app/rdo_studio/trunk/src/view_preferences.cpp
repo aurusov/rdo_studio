@@ -29,6 +29,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(buttonOk, SIGNAL(clicked()), this, SLOT(onOkButton()));
 	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(onCancelButton()));
 	connect(buttonApply, SIGNAL(clicked()), this, SLOT(onApplyButton()));
+	connect(buttonHelp, SIGNAL(clicked()), this, SLOT(onHelpButton()));
 	
 	m_setup           = studioApp.getFileAssociationSetup();
 	m_checkInFuture   = studioApp.getFileAssociationCheckInFuture();
@@ -78,14 +79,14 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	createTree();
 	createPreview();
 
-	switchPreviewComboBox->addItem("Editor",  IT_EDITOR);
-	switchPreviewComboBox->addItem("Build",   IT_BUILD);
+	switchPreviewComboBox->addItem("Editor",  IT_TEXT);
+	switchPreviewComboBox->addItem("Build",   IT_COMPILE);
 	switchPreviewComboBox->addItem("Debug",   IT_DEBUG);
-	switchPreviewComboBox->addItem("Tracer",  IT_LOG);
+	switchPreviewComboBox->addItem("Tracer",  IT_TRACE);
 	switchPreviewComboBox->addItem("Results", IT_RESULT);
-	switchPreviewComboBox->addItem("Find",    IT_FIND);
+	switchPreviewComboBox->addItem("Find",    IT_SEARCH);
 	switchPreviewComboBox->addItem("Chart",   IT_CHART);
-	switchPreviewComboBox->addItem("Frame",   IT_FRAME);
+	switchPreviewComboBox->addItem("Frame",   IT_ANIMATION);
 
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
@@ -111,6 +112,11 @@ void ViewPreferences::onCancelButton()
 void ViewPreferences::onApplyButton()
 {
 	apply();
+}
+
+void ViewPreferences::onHelpButton()
+{
+
 }
 
 void ViewPreferences::onCodeCompUse(int state)
@@ -242,28 +248,28 @@ void ViewPreferences::onFontSize(int index)
 		//style_chart.font->size   = size;
 		//style_frame.font->size   = size;
 		break;
-	case IT_EDITOR:
+	case IT_TEXT:
 		style_editor.font->size = size;
 		break;
-	case IT_BUILD:
+	case IT_COMPILE:
 		style_build.font->size = size;
 		break;
 	case IT_DEBUG:
 		style_debug.font->size   = size;
 		break;
-	case IT_LOG:
+	case IT_TRACE:
 		style_trace.font->size = size;
 		break;
 	case IT_RESULT:
 		style_results.font->size = size;
 		break;
-	case IT_FIND:
+	case IT_SEARCH:
 		style_find.font->size    = size;
 		break;
 	case IT_CHART:
 		//style_chart.font->size   = size;
 		break;
-	case IT_FRAME:
+	case IT_ANIMATION:
 		//style_frame.font->size   = size;
 		break;
 	}
@@ -422,95 +428,94 @@ void ViewPreferences::createTree()
 	m_pRoot->setText(0, "Все окна");
 	m_pRoot->setData(0, Qt::UserRole, IT_ROOT);
 
-	m_pText      = createTreeItem(m_pRoot, "Исходный текст",   IT_EDITOR);
-	m_pCompile   = createTreeItem(m_pRoot, "Окно компиляции",  IT_BUILD);
+	m_pText      = createTreeItem(m_pRoot, "Исходный текст",   IT_TEXT);
+	m_pCompile   = createTreeItem(m_pRoot, "Окно компиляции",  IT_COMPILE);
 	m_pDebug     = createTreeItem(m_pRoot, "Окно отладки",     IT_DEBUG);
-	m_pTrace     = createTreeItem(m_pRoot, "Окно трассировки", IT_LOG);
+	m_pTrace     = createTreeItem(m_pRoot, "Окно трассировки", IT_TRACE);
 	m_pResult    = createTreeItem(m_pRoot, "Окно результатов", IT_RESULT);
-	m_pSearch    = createTreeItem(m_pRoot, "Окно поиска",      IT_FIND);
+	m_pSearch    = createTreeItem(m_pRoot, "Окно поиска",      IT_SEARCH);
 	m_pChart     = createTreeItem(m_pRoot, "Окно графиков",    IT_CHART);
-	m_pAnimation = createTreeItem(m_pRoot, "Окно анимации",    IT_FRAME);
+	m_pAnimation = createTreeItem(m_pRoot, "Окно анимации",    IT_ANIMATION);
 
 	m_pRoot->setExpanded(true);
 
-	m_pPlainText = createTreeItem(m_pText, "Обыкновенный текст", IT_EDITOR_PLAINTEXT);
-	m_pVariable  = createTreeItem(m_pText, "Переменная",         IT_EDITOR_IDENTIFICATOR);
-	m_pKeyword   = createTreeItem(m_pText, "Ключевое слово",     IT_EDITOR_KEYWORD);
-	m_pFunction  = createTreeItem(m_pText, "Функция",            IT_EDITOR_FUNCTION);
-	m_pTraceText = createTreeItem(m_pText, "Трассировка",        IT_EDITOR_TRACE);
-	m_pColor     = createTreeItem(m_pText, "Цвет",               IT_EDITOR_COLOR);
-	m_pComment   = createTreeItem(m_pText, "Комментарии",        IT_EDITOR_COMMENT);
-	m_pNumber    = createTreeItem(m_pText, "Число",              IT_EDITOR_NUMBER);
-	m_pString    = createTreeItem(m_pText, "Строка",             IT_EDITOR_STRING);
-	m_pOperator  = createTreeItem(m_pText, "Оператор",           IT_EDITOR_OPERATOR);
-	m_pCaret     = createTreeItem(m_pText, "Каретка",            IT_EDITOR_CARET);
-	m_pSelection = createTreeItem(m_pText, "Выделение",          IT_EDITOR_TEXTSELECTION);
-	m_pBookmark  = createTreeItem(m_pText, "Закладка",           IT_EDITOR_BOOKMARK);
-	m_pGroup     = createTreeItem(m_pText, "Группа",             IT_EDITOR_FOLD);
-	m_pError     = createTreeItem(m_pText, "Ошибка",             IT_EDITOR_ERROR);
+	m_pPlainText = createTreeItem(m_pText, "Обыкновенный текст", IT_TEXT);
+	m_pVariable  = createTreeItem(m_pText, "Переменная",         IT_TEXT);
+	m_pKeyword   = createTreeItem(m_pText, "Ключевое слово",     IT_TEXT);
+	m_pTraceText = createTreeItem(m_pText, "Трассировка",        IT_TEXT);
+	m_pColor     = createTreeItem(m_pText, "Цвет",               IT_TEXT);
+	m_pComment   = createTreeItem(m_pText, "Комментарии",        IT_TEXT);
+	m_pNumber    = createTreeItem(m_pText, "Число",              IT_TEXT);
+	m_pString    = createTreeItem(m_pText, "Строка",             IT_TEXT);
+	m_pOperator  = createTreeItem(m_pText, "Оператор",           IT_TEXT);
+	m_pCaret     = createTreeItem(m_pText, "Каретка",            IT_TEXT);
+	m_pSelection = createTreeItem(m_pText, "Выделение",          IT_TEXT);
+	m_pBookmark  = createTreeItem(m_pText, "Закладка",           IT_TEXT);
+	m_pGroup     = createTreeItem(m_pText, "Группа",             IT_TEXT);
+	m_pError     = createTreeItem(m_pText, "Ошибка",             IT_TEXT);
 
-	m_pTextCompile      = createTreeItem(m_pCompile, "текст",             IT_BUILD_TEXT);
-	m_pSelectedString   = createTreeItem(m_pCompile, "выделенная строка", IT_BUILD_SELECTEDLINE);
-	m_pCaretCompile     = createTreeItem(m_pCompile, "каретка",           IT_EDITOR_CARET);
-	m_pSelectionCompile = createTreeItem(m_pCompile, "выделение",         IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkCompile  = createTreeItem(m_pCompile, "закладка",          IT_EDITOR_BOOKMARK);
+	m_pTextCompile      = createTreeItem(m_pCompile, "текст",             IT_COMPILE);
+	m_pSelectedString   = createTreeItem(m_pCompile, "выделенная строка", IT_COMPILE);
+	m_pCaretCompile     = createTreeItem(m_pCompile, "каретка",           IT_COMPILE);
+	m_pSelectionCompile = createTreeItem(m_pCompile, "выделение",         IT_COMPILE);
+	m_pBookmarkCompile  = createTreeItem(m_pCompile, "закладка",          IT_COMPILE);
 
-	m_pTextDebug      = createTreeItem(m_pDebug, "текст",     IT_BUILD_TEXT);
-	m_pCaretDebug     = createTreeItem(m_pDebug, "каретка",   IT_EDITOR_CARET);
-	m_pSelectionDebug = createTreeItem(m_pDebug, "выделение", IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkDebug  = createTreeItem(m_pDebug, "закладка",  IT_EDITOR_BOOKMARK);
+	m_pTextDebug      = createTreeItem(m_pDebug, "текст",     IT_DEBUG);
+	m_pCaretDebug     = createTreeItem(m_pDebug, "каретка",   IT_DEBUG);
+	m_pSelectionDebug = createTreeItem(m_pDebug, "выделение", IT_DEBUG);
+	m_pBookmarkDebug  = createTreeItem(m_pDebug, "закладка",  IT_DEBUG);
 
-	m_pES     = createTreeItem(m_pTrace, "Служебное событие (ES)",                         IT_LOG_ES);
-	m_pEB     = createTreeItem(m_pTrace, "Начало действия (EB)",                           IT_LOG_EB);
-	m_pEF     = createTreeItem(m_pTrace, "Окончание действия (EF)",                        IT_LOG_EF);
-	m_pEI     = createTreeItem(m_pTrace, "Нерегулярное событие (EI)",                      IT_LOG_EI);
-	m_pER     = createTreeItem(m_pTrace, "Продукционное правило (ER)",                     IT_LOG_ER);
-	m_pRC     = createTreeItem(m_pTrace, "Создание ресурса (RC)",                          IT_LOG_RC);
-	m_pRE     = createTreeItem(m_pTrace, "Удаление ресурса (RE)",                          IT_LOG_RE);
-	m_pRK     = createTreeItem(m_pTrace, "Изменение состояния ресурса (RK)",               IT_LOG_RK);
-	m_pV      = createTreeItem(m_pTrace, "Трассировка индекса (V)",                        IT_LOG_V);
-	m_pStatus = createTreeItem(m_pTrace, "Статус окончания моделирования ($Status)",       IT_LOG_STATUS);
-	m_pDPS    = createTreeItem(m_pTrace, "Статистика по поиску на графе (DPS)",            IT_LOG_DPS);
-	m_pSB     = createTreeItem(m_pTrace, "Начало поиска (SB)",                             IT_LOG_SB);
-	m_pSO     = createTreeItem(m_pTrace, "Трассировка раскрываемой вершины (SO)",          IT_LOG_SO);
-	m_pSTN    = createTreeItem(m_pTrace, "Признак вершины (STN)",                          IT_LOG_STN);
-	m_pSTD    = createTreeItem(m_pTrace, "Признак вершины (STD)",                          IT_LOG_STD);
-	m_pSTR    = createTreeItem(m_pTrace, "Признак вершины (STR)",                          IT_LOG_STR);
-	m_pSRC    = createTreeItem(m_pTrace, "Создание ресурса (при поиске) (SRC)",            IT_LOG_SRC);
-	m_pSRE    = createTreeItem(m_pTrace, "Удаление ресурса (при поиске) (SRE)",            IT_LOG_SRE);
-	m_pSRK    = createTreeItem(m_pTrace, "Изменение состояния ресурса (при поиске) (SRK)", IT_LOG_SRK);
-	m_pSD     = createTreeItem(m_pTrace, "Трассировка решения (SD)",                       IT_LOG_SD);
-	m_pSES    = createTreeItem(m_pTrace, "Завершение поиска (SES)",                        IT_LOG_SES);
-	m_pSEN    = createTreeItem(m_pTrace, "Завершение поиска (SEN)",                        IT_LOG_SEN);
-	m_pSEM    = createTreeItem(m_pTrace, "Завершение поиска (SEM)",                        IT_LOG_SEM);
-	m_pSEF    = createTreeItem(m_pTrace, "Завершение поиска (SEF)",                        IT_LOG_SEF);
-	m_pSEU    = createTreeItem(m_pTrace, "Завершение поиска (SEU)",                        IT_LOG_SEU);
+	m_pES     = createTreeItem(m_pTrace, "Служебное событие (ES)",                         IT_TRACE);
+	m_pEB     = createTreeItem(m_pTrace, "Начало действия (EB)",                           IT_TRACE);
+	m_pEF     = createTreeItem(m_pTrace, "Окончание действия (EF)",                        IT_TRACE);
+	m_pEI     = createTreeItem(m_pTrace, "Нерегулярное событие (EI)",                      IT_TRACE);
+	m_pER     = createTreeItem(m_pTrace, "Продукционное правило (ER)",                     IT_TRACE);
+	m_pRC     = createTreeItem(m_pTrace, "Создание ресурса (RC)",                          IT_TRACE);
+	m_pRE     = createTreeItem(m_pTrace, "Удаление ресурса (RE)",                          IT_TRACE);
+	m_pRK     = createTreeItem(m_pTrace, "Изменение состояния ресурса (RK)",               IT_TRACE);
+	m_pV      = createTreeItem(m_pTrace, "Трассировка индекса (V)",                        IT_TRACE);
+	m_pStatus = createTreeItem(m_pTrace, "Статус окончания моделирования ($Status)",       IT_TRACE);
+	m_pDPS    = createTreeItem(m_pTrace, "Статистика по поиску на графе (DPS)",            IT_TRACE);
+	m_pSB     = createTreeItem(m_pTrace, "Начало поиска (SB)",                             IT_TRACE);
+	m_pSO     = createTreeItem(m_pTrace, "Трассировка раскрываемой вершины (SO)",          IT_TRACE);
+	m_pSTN    = createTreeItem(m_pTrace, "Признак вершины (STN)",                          IT_TRACE);
+	m_pSTD    = createTreeItem(m_pTrace, "Признак вершины (STD)",                          IT_TRACE);
+	m_pSTR    = createTreeItem(m_pTrace, "Признак вершины (STR)",                          IT_TRACE);
+	m_pSRC    = createTreeItem(m_pTrace, "Создание ресурса (при поиске) (SRC)",            IT_TRACE);
+	m_pSRE    = createTreeItem(m_pTrace, "Удаление ресурса (при поиске) (SRE)",            IT_TRACE);
+	m_pSRK    = createTreeItem(m_pTrace, "Изменение состояния ресурса (при поиске) (SRK)", IT_TRACE);
+	m_pSD     = createTreeItem(m_pTrace, "Трассировка решения (SD)",                       IT_TRACE);
+	m_pSES    = createTreeItem(m_pTrace, "Завершение поиска (SES)",                        IT_TRACE);
+	m_pSEN    = createTreeItem(m_pTrace, "Завершение поиска (SEN)",                        IT_TRACE);
+	m_pSEM    = createTreeItem(m_pTrace, "Завершение поиска (SEM)",                        IT_TRACE);
+	m_pSEF    = createTreeItem(m_pTrace, "Завершение поиска (SEF)",                        IT_TRACE);
+	m_pSEU    = createTreeItem(m_pTrace, "Завершение поиска (SEU)",                        IT_TRACE);
 
-	m_pPlainTextResult = createTreeItem(m_pResult, "исходный текст", IT_EDITOR_PLAINTEXT);
-	m_pVariableResult  = createTreeItem(m_pResult, "переменная",     IT_EDITOR_IDENTIFICATOR);
-	m_pKeywordResult   = createTreeItem(m_pResult, "ключевое слово", IT_EDITOR_KEYWORD);
-	m_pNumberResult    = createTreeItem(m_pResult, "число",          IT_EDITOR_NUMBER);
-	m_pStringResult    = createTreeItem(m_pResult, "строка",         IT_EDITOR_STRING);
-	m_pOperatorResult  = createTreeItem(m_pResult, "оператор",       IT_EDITOR_OPERATOR);
-	m_pCaretResult     = createTreeItem(m_pResult, "каретка",        IT_EDITOR_CARET);
-	m_pSelectionResult = createTreeItem(m_pResult, "выделение",      IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkResult  = createTreeItem(m_pResult, "закладка",       IT_EDITOR_BOOKMARK);
+	m_pPlainTextResult = createTreeItem(m_pResult, "исходный текст", IT_RESULT);
+	m_pVariableResult  = createTreeItem(m_pResult, "переменная",     IT_RESULT);
+	m_pKeywordResult   = createTreeItem(m_pResult, "ключевое слово", IT_RESULT);
+	m_pNumberResult    = createTreeItem(m_pResult, "число",          IT_RESULT);
+	m_pStringResult    = createTreeItem(m_pResult, "строка",         IT_RESULT);
+	m_pOperatorResult  = createTreeItem(m_pResult, "оператор",       IT_RESULT);
+	m_pCaretResult     = createTreeItem(m_pResult, "каретка",        IT_RESULT);
+	m_pSelectionResult = createTreeItem(m_pResult, "выделение",      IT_RESULT);
+	m_pBookmarkResult  = createTreeItem(m_pResult, "закладка",       IT_RESULT);
 
-	m_pTextSearch           = createTreeItem(m_pSearch, "текст",             IT_BUILD_TEXT);
-	m_pStringSearch         = createTreeItem(m_pSearch, "строка для поиска", IT_FIND_SEARCHTEXT);
-	m_pSelectedStringSearch = createTreeItem(m_pSearch, "выделенная строка", IT_BUILD_SELECTEDLINE);
-	m_pCaretSearch          = createTreeItem(m_pSearch, "каретка",           IT_EDITOR_CARET);
-	m_pSelectionSearch      = createTreeItem(m_pSearch, "выделение",         IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkSearch       = createTreeItem(m_pSearch, "закладка",          IT_EDITOR_BOOKMARK);
+	m_pTextSearch           = createTreeItem(m_pSearch, "текст",             IT_SEARCH);
+	m_pStringSearch         = createTreeItem(m_pSearch, "строка для поиска", IT_SEARCH);
+	m_pSelectedStringSearch = createTreeItem(m_pSearch, "выделенная строка", IT_SEARCH);
+	m_pCaretSearch          = createTreeItem(m_pSearch, "каретка",           IT_SEARCH);
+	m_pSelectionSearch      = createTreeItem(m_pSearch, "выделение",         IT_SEARCH);
+	m_pBookmarkSearch       = createTreeItem(m_pSearch, "закладка",          IT_SEARCH);
 
-	m_pAxis   = createTreeItem(m_pChart, "ось",       IT_CHART_AXIS);
-	m_pTitle  = createTreeItem(m_pChart, "заголовок", IT_CHART_TITLE);
-	m_pLegend = createTreeItem(m_pChart, "легенда",   IT_CHART_LEGEND);
-	m_pGraph  = createTreeItem(m_pChart, "график",    IT_CHART_CHART);
-	m_pTime   = createTreeItem(m_pChart, "время",     IT_CHART_TIME);
+	m_pAxis   = createTreeItem(m_pChart, "ось",       IT_CHART);
+	m_pTitle  = createTreeItem(m_pChart, "заголовок", IT_CHART);
+	m_pLegend = createTreeItem(m_pChart, "легенда",   IT_CHART);
+	m_pGraph  = createTreeItem(m_pChart, "график",    IT_CHART);
+	m_pTime   = createTreeItem(m_pChart, "время",     IT_CHART);
 
-	m_pEdgingColor     = createTreeItem(m_pAnimation, "цвет окантовки",               IT_FRAME_BORDER);
-	m_pBackgroundColor = createTreeItem(m_pAnimation, "цвет фона за пределами кадра", IT_FRAME_BACKGROUND);
+	m_pEdgingColor     = createTreeItem(m_pAnimation, "цвет окантовки",               IT_ANIMATION);
+	m_pBackgroundColor = createTreeItem(m_pAnimation, "цвет фона за пределами кадра", IT_ANIMATION);
 
 	treeWidget->setCurrentItem(m_pRoot);
 }
