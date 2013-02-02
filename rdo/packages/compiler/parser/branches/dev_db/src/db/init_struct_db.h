@@ -20,6 +20,8 @@ class InitSructDB : public GeneralDB
 {
 public:
 	InitSructDB();
+	static void dropDB();
+	static void createDB();
 
 private:
 	GeneralDB::QueryList generateCreateDBQuery();

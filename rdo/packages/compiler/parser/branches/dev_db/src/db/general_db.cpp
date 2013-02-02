@@ -98,7 +98,6 @@ int GeneralDB::popContext()
 
 void GeneralDB::initDB()
 {
-	QSqlDatabase::removeDatabase("qt_sql_default_connection");
 	m_db = QSqlDatabase::addDatabase("QPSQL");
 
 	m_db.setHostName    (m_hostName);

@@ -16,12 +16,25 @@
 
 InitSructDB::InitSructDB()
 {
-	GeneralDB dbTemp("localhost", "postgres", "postgres", "rdo", 5432);
-	dbTemp.queryExec("DROP DATABASE IF EXISTS rdo;");
-	dbTemp.queryExec("CREATE DATABASE rdo;");
+	queryExec(generateCreateDBQuery());
+}
 
-	GeneralDB db;
-	db.queryExec(generateCreateDBQuery());
+void InitSructDB::dropDB()
+{
+	{
+		GeneralDB dbTemp("localhost", "postgres", "postgres", "rdo", 5432);
+		dbTemp.queryExec("DROP DATABASE IF EXISTS rdo;");
+	}
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+}
+
+void InitSructDB::createDB()
+{
+	{
+		GeneralDB dbTemp("localhost", "postgres", "postgres", "rdo", 5432);
+		dbTemp.queryExec("CREATE DATABASE rdo;");
+	}
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
 }
 
 GeneralDB::QueryList InitSructDB::generateCreateDBQuery()
