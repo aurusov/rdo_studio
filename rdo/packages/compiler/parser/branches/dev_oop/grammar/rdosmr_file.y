@@ -185,7 +185,6 @@
 %token RDO_Select
 %token RDO_Size
 %token RDO_Empty
-%token RDO_Select_Array
 %token RDO_not
 %token RDO_UMINUS
 %token RDO_string

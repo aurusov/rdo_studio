@@ -14,12 +14,8 @@
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm/find_if.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/procedural/calc_statement.h"
-#include "simulator/runtime/calc/procedural/calc_braces.h"
 #include "simulator/compiler/parser/src/function/function.h"
 #include "simulator/compiler/parser/rdoparser.h"
-#include "simulator/compiler/parser/context/function/context_function_body.h"
-#include "simulator/compiler/parser/context/statement.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -34,12 +30,19 @@ Function::Function(CREF(LPTypeInfo) pReturnType, CREF(RDOParserSrcInfo) srcInfo)
 Function::~Function()
 {}
 
+void Function::setCall(CREF(rdo::runtime::LPRDOCalc) pCalc)
+{
+	ASSERT(!m_pCallpCalc);
+	ASSERT(pCalc);
+	m_pCallpCalc = pCalc;
+}
+
 LPExpression Function::expression() const
 {
-	ASSERT(m_pBody);
+	ASSERT(m_pCallpCalc);
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		rdo::Factory<TypeInfo>::create(m_pFunctionType, m_pFunctionType->src_info()),
-		m_pBody,
+		m_pCallpCalc,
 		src_info()
 	);
 	ASSERT(pExpression);
@@ -53,7 +56,7 @@ void Function::pushContext()
 
 void Function::popContext()
 {
-	RDOParser::s_parser()->contextStack()->pop<Function>();
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 void Function::pushParamDefinitionContext()
@@ -67,7 +70,8 @@ void Function::pushParamDefinitionContext()
 
 void Function::popParamDefinitionContext()
 {
-	RDOParser::s_parser()->contextStack()->pop<ContextParamDefinition>();
+	ASSERT(RDOParser::s_parser()->context().object_dynamic_cast<ContextParamDefinition>());
+	RDOParser::s_parser()->contextStack()->pop();
 
 	m_pFunctionType = generateType();
 	ASSERT(m_pFunctionType);
@@ -109,11 +113,6 @@ Function::ParamList::const_iterator Function::find(CREF(tstring) paramName) cons
 	return boost::range::find_if(m_paramList, compareName<RDOParam>(paramName));
 }
 
-CREF(Function::ParamList) Function::getParams() const
-{
-	return m_paramList;
-}
-
 LPFunctionType Function::generateType() const
 {
 	ASSERT(m_pReturnType);
@@ -123,14 +122,6 @@ LPFunctionType Function::generateType() const
 	{
 		paramTypeList.push_back(pParam->getTypeInfo());
 	}
-
-	if (paramTypeList.empty())
-	{
-		paramTypeList.push_back(
-			rdo::Factory<TypeInfo>::delegate<RDOType__void>(src_info())
-		);
-	}
-
 	LPFunctionParamType pParamType = rdo::Factory<FunctionParamType>::create(paramTypeList, src_info());
 	ASSERT(pParamType);
 
@@ -139,60 +130,18 @@ LPFunctionType Function::generateType() const
 
 void Function::pushFunctionBodyContext()
 {
-	ASSERT(!m_pContextFunctionBody);
-	m_pContextFunctionBody = rdo::Factory<ContextFunctionBody>::create(
-		boost::bind(&Function::setBody, this, _1)
-	);
-	ASSERT(m_pContextFunctionBody);
-	RDOParser::s_parser()->contextStack()->push(m_pContextFunctionBody);
-	m_pContextFunctionBody->pushContext();
+	ASSERT(!m_pContextMemory);
+	m_pContextMemory = rdo::Factory<ContextMemory>::create();
+	ASSERT(m_pContextMemory);
+	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
+
+	ContextMemory::push();
 }
 
 void Function::popFunctionBodyContext()
 {
-	ASSERT(m_pContextFunctionBody);
-
-	if (m_pReturnType->type()->typeID() != rdo::runtime::RDOType::t_void)
-	{
-		if (!m_pContextFunctionBody->getReturnFlag())
-		{
-			RDOParser::s_parser()->error().warning(
-				src_info(),
-				rdo::format(_T("Возможно, не все ветки функции '%s' могут вернуть значение."), src_text().c_str())
-			);
-		}
-	}
-
-	m_pContextFunctionBody->popContext();
-	RDOParser::s_parser()->contextStack()->pop<ContextFunctionBody>();
-	m_pContextFunctionBody = NULL;
-}
-
-void Function::setBody(CREF(rdo::runtime::LPRDOCalc) pBody)
-{
-	ASSERT(!m_pBody);
-	ASSERT(pBody);
-
-	rdo::runtime::LPRDOCalcBaseStatementList pCalcStatementList =
-		rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
-	ASSERT(pCalcStatementList);
-
-	rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
-	ASSERT(pCalcOpenBrace);
-
-	rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
-	ASSERT(pCalcCloseBrace);
-
-	pCalcStatementList->addCalcStatement(pCalcOpenBrace);
-	pCalcStatementList->addCalcStatement(pBody);
-	pCalcStatementList->addCalcStatement(pCalcCloseBrace);
-
-	rdo::runtime::LPRDOCalcReturnCatch pCalcReturnCatch =
-		rdo::Factory<rdo::runtime::RDOCalcReturnCatch>::create();
-	ASSERT(pCalcReturnCatch);
-	pCalcReturnCatch->setTryCalc(pCalcStatementList);
-
-	m_pBody = pCalcReturnCatch;
+	ContextMemory::pop();
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 Context::FindResult Function::onFindContext(CREF(LPRDOValue) pValue) const

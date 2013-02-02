@@ -541,7 +541,6 @@ fun_arithm
 	| RDO_STRING_CONST                   {}
 	| param_array_value                  {}
 	| RDO_IDENTIF                        {}
-	| RDO_IDENTIF_RELRES                 {}
 	| RDO_IDENTIF '.' RDO_IDENTIF        {}
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF {}
 	| '*'                                {}
@@ -553,9 +552,6 @@ fun_arithm
 	| fun_select_arithm                  {}
 	| '(' fun_arithm ')'                 {}
 	| '-' fun_arithm %prec RDO_UMINUS    {}
-	| RDO_IDENTIF '.' RDO_Size
-	| RDO_IDENTIF '[' fun_arithm ']' '.' RDO_IDENTIF {}
-	| RDO_IDENTIF '[' fun_arithm ']'     {}
 	;
 
 // --------------------------------------------------------------------------------
@@ -633,12 +629,9 @@ fun_select_logic
 	;
 
 fun_select_arithm
-	: fun_select_body '.' RDO_Size '(' ')'           {}
-	| fun_select_body '.' RDO_Size error             {}
-	| fun_select_body '.' RDO_Size '(' error         {}
-	| fun_select_body '.' RDO_Select_Array '(' ')'   {}
-	| fun_select_body '.' RDO_Select_Array error     {}
-	| fun_select_body '.' RDO_Select_Array '(' error {}
+	: fun_select_body '.' RDO_Size '(' ')'   {}
+	| fun_select_body '.' RDO_Size error     {}
+	| fun_select_body '.' RDO_Size '(' error {}
 	;
 
 %%

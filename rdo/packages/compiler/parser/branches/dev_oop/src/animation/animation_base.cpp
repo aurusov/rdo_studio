@@ -12,62 +12,14 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/src/animation/animation_base.h"
-#include "simulator/compiler/parser/src/animation/animation_sprite.h"
 #include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-RDOFRMCommandList::RDOFRMCommandList(CREF(RDOParserSrcInfo) srcInfo)
+RDOFRMCommandList::RDOFRMCommandList()
 {
-	m_pFunction = rdo::Factory<Function>::create(
-		rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo),
-		srcInfo
-	);
-	ASSERT(m_pFunction);
-
 	RDOParser::s_parser()->insertFRMCommandList(this);
-	RDOParser::s_parser()->contextStack()->push(this);
-	m_pFunction->pushContext();
-}
-
-RDOFRMCommandList::~RDOFRMCommandList()
-{}
-
-CREF(tstring) RDOFRMCommandList::name() const
-{
-	return m_pFunction->src_text();
-}
-
-LPExpression RDOFRMCommandList::expression() const
-{
-	return m_pFunction->expression();
-}
-
-CREF(LPFunction) RDOFRMCommandList::function() const
-{
-	return m_pFunction;
-}
-
-Context::FindResult RDOFRMCommandList::onFindContext(CREF(LPRDOValue) pValue) const
-{
-	ASSERT(pValue);
-
-	tstring name = pValue->value().getIdentificator();
-	LPRDOFRMSprite pSprite = RDOParser::s_parser()->findFRMSprite(name);
-	if (pSprite)
-	{
-		return Context::FindResult(const_cast<PTR(RDOFRMCommandList)>(this), pSprite->expression(), pValue);
-	}
-
-	return Context::FindResult();
-}
-
-void RDOFRMCommandList::end()
-{
-	m_pFunction->popContext();
-	RDOParser::s_parser()->contextStack()->pop<RDOFRMCommandList>();
-	list()->setSpriteCalc(expression()->calc());
 }
 
 LPExpression RDOFRMCommandList::generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo)

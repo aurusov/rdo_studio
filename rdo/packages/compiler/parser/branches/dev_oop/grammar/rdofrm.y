@@ -206,7 +206,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
@@ -217,8 +216,7 @@
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/type/range.h"
 #include "simulator/compiler/parser/rdo_array.h"
-#include "simulator/compiler/parser/src/function/local_variable/local_variable.h"
-#include "simulator/compiler/parser/src/function/local_variable/local_variable_context.h"
+#include "simulator/compiler/parser/local_variable.h"
 #include "simulator/compiler/parser/type/such_as.h"
 #include "simulator/compiler/parser/context/context_type.h"
 #include "simulator/compiler/parser/context/memory.h"
@@ -301,15 +299,6 @@ frm_begin
 		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
 		ASSERT(pFrame);
 		$$ = PARSER->stack().push(pFrame);
-
-		LPIContextParamDefinitionManager pContextParamDefinitionManager = PARSER->context()->interface_cast<IContextParamDefinitionManager>();
-		ASSERT(pContextParamDefinitionManager);
-		pContextParamDefinitionManager->pushParamDefinitionContext();
-		pContextParamDefinitionManager->popParamDefinitionContext ();
-
-		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
-		ASSERT(pContextFunctionBodyManager);
-		pContextFunctionBodyManager->pushFunctionBodyContext();
 	}
 	;
 
@@ -368,22 +357,78 @@ frm_backpicture
 	}
 	;
 
+frm_item_statement
+	: frm_item
+	{
+		rdo::runtime::LPRDOFRMItem pItem = PARSER->stack().pop<rdo::runtime::RDOFRMItem>($1);
+		ASSERT(pItem);
+
+		PARSER->getLastFRMCommandList()->list()->insertItem(pItem);
+
+		LPExpression pExpression = RDOFRMCommandList::generateExpression(
+			pItem,
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_sprite
+	{
+		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpression);
+
+		PARSER->getLastFRMCommandList()->list()->insertItem(pExpression->calc());
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+frm_item
+	: frm_text
+	| frm_bitmap
+	| frm_rect
+	| frm_line
+	| frm_circle
+	| frm_ellipse
+	| frm_r_rect
+	| frm_triang
+	| frm_s_bmp
+	| frm_active
+	| frm_ruler
+	| frm_space
+	;
+
 frm_header
 	: frm_backpicture statement_list
 	{
-		LPExpression pExpressionBody = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpressionBody);
+		LPExpression pExpressionFrameBody = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionFrameBody);
 
-		LPContextFunctionBody pContextFunctionBody = PARSER->context()->cast<ContextFunctionBody>();
-		ASSERT(pContextFunctionBody);
-		pContextFunctionBody->setBody(pExpressionBody->calc());
+		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionFrameBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
+		ASSERT(pCalcStatementList);
 
-		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
-		ASSERT(pContextFunctionBodyManager);
-		pContextFunctionBodyManager->popFunctionBodyContext();
+		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
+		ASSERT(pCalcBaseStatementList);
+
+		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
+		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
+		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
+
+		LPExpression pExpressionFrame = rdo::Factory<Expression>::create(pExpressionFrameBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
+		ASSERT(pExpressionFrame);
 
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
+
+		PARSER->getLastFRMCommandList()->list()->setSpriteCalc(pExpressionFrame->calc());
+
 		$$ = PARSER->stack().push(pFrame);
 	}
 	;
@@ -394,97 +439,6 @@ frm_end
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
 		pFrame->end();
-	}
-	;
-
-// --------------------------------------------------------------------------------
-// -------------------- Спрайт
-// --------------------------------------------------------------------------------
-frm_sprite_end
-	: frm_sprite_begin RDO_End
-	{
-		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
-		ASSERT(pSprite);
-		pSprite->end();
-	}
-	;
-
-frm_sprite_begin
-	: frm_sprite_header statement_list
-	{
-		LPExpression pExpressionBody = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpressionBody);
-
-		LPContextFunctionBody pContextFunctionBody = PARSER->context()->cast<ContextFunctionBody>();
-		ASSERT(pContextFunctionBody);
-		pContextFunctionBody->setBody(pExpressionBody->calc());
-
-		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
-		ASSERT(pContextFunctionBodyManager);
-		pContextFunctionBodyManager->popFunctionBodyContext();
-
-		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
-		ASSERT(pSprite);
-		$$ = PARSER->stack().push(pSprite);
-	}
-	;
-
-frm_sprite_header_begin
-	: RDO_Sprite RDO_IDENTIF
-	{
-		LPRDOFRMSprite pSprite = rdo::Factory<RDOFRMSprite>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
-		ASSERT(pSprite);
-		$$ = PARSER->stack().push(pSprite);
-	}
-	;
-
-frm_sprite_header
-	: frm_sprite_header_begin param_list
-	{
-		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
-		ASSERT(pContextFunctionBodyManager);
-		pContextFunctionBodyManager->pushFunctionBodyContext();
-
-		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
-		ASSERT(pSprite);
-		$$ = PARSER->stack().push(pSprite);
-	}
-	;
-
-frm_sprite
-	: RDO_sprite_call RDO_IDENTIF '(' arithm_list ')'
-	{
-		LPRDOValue        pValue           = PARSER->stack().pop<RDOValue>($2);
-		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($4);
-		ASSERT(pValue);
-		ASSERT(pArithmContainer);
-
-		tstring funName = pValue->value().getIdentificator();
-
-		LPExpression pFunctionExpression = RDOFUNArithm::generateByIdentificator(pValue)->expression();
-		ASSERT(pFunctionExpression);
-
-		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create(pArithmContainer);
-		ASSERT(pFunParams);
-
-		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@2, funName));
-		pFunParams->setSrcPos (@2, @5);
-		pFunParams->setSrcText(funName + _T("(") + pArithmContainer->src_text() + _T(")"));
-		LPExpression pExpression = pFunParams->createCallExpression(pFunctionExpression);
-		ASSERT(pExpression);
-		$$ = PARSER->stack().push(pExpression);
-	}
-	| RDO_sprite_call RDO_IDENTIF '(' arithm_list error
-	{
-		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
-	}
-	| RDO_sprite_call RDO_IDENTIF '(' error
-	{
-		PARSER->error().error(@4, _T("Ошибка задания параметров"));
-	}
-	| RDO_sprite_call RDO_IDENTIF error
-	{
-		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
 	}
 	;
 
@@ -548,8 +502,11 @@ param_declaration
 		LPRDOParam pParam = rdo::Factory<RDOParam>::create(pName->src_info(), pType);
 		ASSERT(pParam);
 
-		LPContextParamDefinition pContextParamDefinition =
-			RDOParser::s_parser()->context().object_dynamic_cast<ContextParamDefinition>();
+		PARSER->contextStack()->pop();
+
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+		LPContextParamDefinition pContextParamDefinition = pContext->cast<ContextParamDefinition>();
 		ASSERT(pContextParamDefinition);
 		pContextParamDefinition->pushParam(pParam);
 	}
@@ -558,48 +515,6 @@ param_declaration
 // --------------------------------------------------------------------------------
 // -------------------- Элементы
 // --------------------------------------------------------------------------------
-frm_item_statement
-	: frm_item
-	{
-		rdo::runtime::LPRDOFRMItem pItem = PARSER->stack().pop<rdo::runtime::RDOFRMItem>($1);
-		ASSERT(pItem);
-
-		PARSER->getLastFRMCommandList()->list()->insertItem(pItem);
-
-		LPExpression pExpression = RDOFRMCommandList::generateExpression(
-			pItem,
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	| frm_sprite
-	{
-		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpression);
-
-		PARSER->getLastFRMCommandList()->list()->insertItem(pExpression->calc());
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	;
-
-frm_item
-	: frm_text
-	| frm_bitmap
-	| frm_rect
-	| frm_line
-	| frm_circle
-	| frm_ellipse
-	| frm_r_rect
-	| frm_triang
-	| frm_s_bmp
-	| frm_active
-	| frm_ruler
-	| frm_space
-	;
-
 frm_color
 	: RDO_color_transparent
 	{
@@ -1872,6 +1787,113 @@ frm_active
 	;
 
 // --------------------------------------------------------------------------------
+// -------------------- Спрайт
+// --------------------------------------------------------------------------------
+frm_sprite_end
+	: frm_sprite_begin RDO_End
+	{
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = pSprite->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->popFunctionBodyContext();
+		pSprite->end();
+	}
+	;
+
+frm_sprite_begin
+	: frm_sprite_header statement_list
+	{
+		LPExpression pExpressionSpriteBody = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionSpriteBody);
+
+		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionSpriteBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
+		ASSERT(pCalcStatementList);
+
+		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
+		ASSERT(pCalcBaseStatementList);
+
+		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
+		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
+		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
+
+		LPExpression pExpressionSprite = rdo::Factory<Expression>::create(pExpressionSpriteBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
+		ASSERT(pExpressionSprite);
+
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
+
+		PARSER->getLastFRMCommandList()->list()->setSpriteCalc(pExpressionSprite->calc());
+
+		$$ = PARSER->stack().push(pSprite);
+	}
+	;
+
+frm_sprite_header_begin
+	: RDO_Sprite RDO_IDENTIF
+	{
+		LPRDOFRMSprite pSprite = rdo::Factory<RDOFRMSprite>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
+		ASSERT(pSprite);
+		$$ = PARSER->stack().push(pSprite);
+	}
+	;
+
+frm_sprite_header
+	: frm_sprite_header_begin param_list
+	{
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = pSprite->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->pushFunctionBodyContext();
+		$$ = PARSER->stack().push(pSprite);
+	}
+	;
+
+frm_sprite
+	: RDO_sprite_call RDO_IDENTIF '(' arithm_list ')'
+	{
+		LPRDOValue        pValue           = PARSER->stack().pop<RDOValue>($2);
+		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($4);
+		ASSERT(pValue);
+		ASSERT(pArithmContainer);
+
+		tstring funName = pValue->value().getIdentificator();
+
+		LPExpression pFunctionExpression = RDOFUNArithm::generateByIdentificator(pValue)->expression();
+		ASSERT(pFunctionExpression);
+
+		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create(pArithmContainer);
+		ASSERT(pFunParams);
+
+		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@2, funName));
+		pFunParams->setSrcPos (@2, @5);
+		pFunParams->setSrcText(funName + _T("(") + pArithmContainer->src_text() + _T(")"));
+		LPExpression pExpression = pFunParams->createCallExpression(pFunctionExpression);
+		ASSERT(pExpression);
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| RDO_sprite_call RDO_IDENTIF '(' arithm_list error
+	{
+		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
+	}
+	| RDO_sprite_call RDO_IDENTIF '(' error
+	{
+		PARSER->error().error(@4, _T("Ошибка задания параметров"));
+	}
+	| RDO_sprite_call RDO_IDENTIF error
+	{
+		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
+	}
+	;
+
+// --------------------------------------------------------------------------------
 // -------------------- Список statement'ов для анимации
 // --------------------------------------------------------------------------------
 return_statement
@@ -1888,10 +1910,6 @@ return_statement
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcReturn, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
-
-		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnable);
-		pContextReturnable->setReturnFlag();
 
 		$$ = PARSER->stack().push(pExpression);
 	}
@@ -1973,29 +1991,6 @@ statement
 	| error
 	{
 		PARSER->error().error(@1, _T("Неизвестная инструкция"));
-	}
-	;
-
-returnable_statement
-	: returnable_context_push statement returnable_context_pop
-	{
-		$$ = $2;
-	}
-	;
-
-returnable_context_push
-	: /* empty */
-	{
-		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnable);
-		pContextReturnable->addChildContext();
-	}
-	;
-
-returnable_context_pop
-	: /* empty */
-	{
-		PARSER->contextStack()->pop<ContextReturnable>();
 	}
 	;
 
@@ -2458,57 +2453,20 @@ set_array_item_statement
 	;
 
 local_variable_declaration
-	: local_variable_declaration_context init_declaration_list
-	{
-		LPTypeContext pTypeContext = PARSER->context()->cast<TypeContext>();
-		ASSERT(pTypeContext);
-
-		LPTypeInfo pType = pTypeContext->getTypeInfo();
-		ASSERT(pType);
-
-		LPContextLocalVariable pContextLocalVariable = PARSER->context().object_dynamic_cast<ContextLocalVariable>();
-		ASSERT(pContextLocalVariable);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			pType, pContextLocalVariable->calc(), RDOParserSrcInfo(@1, @2)
-		);
-		ASSERT(pExpression);
-
-		PARSER->contextStack()->pop<ContextLocalVariable>();
-		PARSER->contextStack()->pop<TypeContext>();
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	;
-
-local_variable_declaration_context
-	: type_declaration_context
-	{
-		LPContextMemory pContextMemory = PARSER->context()->cast<ContextMemory>();
-		ASSERT(pContextMemory);
-
-		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableListStack);
-		LPLocalVariableList pLocalVariableList = pLocalVariableListStack->top();
-		ASSERT(pLocalVariableList);
-
-		LPContextLocalVariable pContextLocalVariable = rdo::Factory<ContextLocalVariable>::create(
-			boost::bind(&LocalVariableList::append, pLocalVariableList.get(), _1)
-		);
-		ASSERT(pContextLocalVariable);
-		PARSER->contextStack()->push(pContextLocalVariable);
-	}
-	;
-
-type_declaration_context
-	: type_declaration
+	: type_declaration init_declaration_list
 	{
 		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
 		ASSERT(pType);
 
-		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
-		ASSERT(pTypeContext);
-		PARSER->contextStack()->push(pTypeContext);
+		rdo::runtime::LPRDOCalc pCalc = PARSER->stack().pop<rdo::runtime::RDOCalc>($2);
+		ASSERT(pCalc);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1, @2));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+
+		PARSER->contextStack()->pop();
 	}
 	;
 
@@ -2517,18 +2475,33 @@ type_declaration
 	{
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_real
 	{
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_string
 	{
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__string>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_array
@@ -2538,12 +2511,22 @@ type_declaration
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pArray, RDOParserSrcInfo(@1));
 		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_bool
 	{
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_enum
@@ -2554,6 +2537,11 @@ type_declaration
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, RDOParserSrcInfo(@1));
 		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_IDENTIF
@@ -2569,6 +2557,12 @@ type_declaration
 
 		LPExpression pExpression = pContext->create(pValue);
 		ASSERT(pExpression);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pExpression->typeInfo());
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+
 		$$ = PARSER->stack().push(pExpression->typeInfo());
 	}
 	| param_type_such_as
@@ -2578,39 +2572,86 @@ type_declaration
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pTypeSuchAs->type(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	;
 
 init_declaration_list
-	: init_declaration_list_item
-	| init_declaration_list ',' init_declaration_list_item
+	: init_declaration
+	{
+		LPVariableWrapper pVariableWrapper = PARSER->stack().pop<VariableWrapper>($1);
+		ASSERT(pVariableWrapper);
+
+		LPLocalVariable pLocalVariable = pVariableWrapper->getSecond();
+		ASSERT(pLocalVariable);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+
+		pLocalVariableListStack->append(pLocalVariable);
+
+		rdo::runtime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
+		ASSERT(pCalc);
+
+		rdo::runtime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdo::runtime::RDOCalcLocalVariableList>::create();
+		ASSERT(pCalcLocalVariableList);
+
+		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
+
+		$$ = PARSER->stack().push(pCalcLocalVariableList);
+	}
+	| init_declaration_list ',' init_declaration
+	{
+		LPVariableWrapper pVariableWrapper = PARSER->stack().pop<VariableWrapper>($3);
+		ASSERT(pVariableWrapper);
+
+		LPLocalVariable pLocalVariable = pVariableWrapper->getSecond();
+		ASSERT(pLocalVariable);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+
+		pLocalVariableListStack->append(pLocalVariable);
+
+		rdo::runtime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
+		ASSERT(pCalc);
+
+		rdo::runtime::LPRDOCalcLocalVariableList pCalcLocalVariableList = PARSER->stack().pop<rdo::runtime::RDOCalcLocalVariableList>($1);
+		ASSERT(pCalcLocalVariableList);
+
+		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
+
+		$$ = PARSER->stack().push(pCalcLocalVariableList);
+	}
 	;
 
-init_declaration_list_item
-	: RDO_IDENTIF init_declaration_value
+init_declaration
+	: RDO_IDENTIF
 	{
 		LPRDOValue pVariableName = PARSER->stack().pop<RDOValue>($1);
 		ASSERT(pVariableName);
 
-		LPExpression pExpression = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpression);
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
 
-		pExpression->setSrcInfo(RDOParserSrcInfo(@1, @2, pVariableName->src_text()));
-
-		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression);
-		ASSERT(pLocalVariable);
-
-		LPContextLocalVariable pContextLocalVariable = PARSER->context().object_dynamic_cast<ContextLocalVariable>();
-		ASSERT(pContextLocalVariable);
-		pContextLocalVariable->pushLocalVariable(pLocalVariable);
-	}
-	;
-
-init_declaration_value
-	: /* empty */
-	{
-		LPTypeContext pTypeContext = PARSER->context()->cast<TypeContext>();
+		LPTypeContext pTypeContext = pContext.object_static_cast<TypeContext>();
 		ASSERT(pTypeContext);
 
 		LPTypeInfo pTypeInfo = pTypeContext->getTypeInfo();
@@ -2619,21 +2660,86 @@ init_declaration_value
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			pTypeInfo,
 			rdo::Factory<rdo::runtime::RDOCalcConst>::create(pTypeInfo->type()->get_default()),
-			RDOParserSrcInfo()
+			pVariableName->src_info()
 		);
 		ASSERT(pExpression);
-		$$ = PARSER->stack().push(pExpression);
+
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression);
+		ASSERT(pLocalVariable);
+
+		rdo::runtime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdo::runtime::RDOCalcCreateLocalVariable>::create(pLocalVariable->getName(), pLocalVariable->getExpression()->calc());
+		ASSERT(pCalcCreateLocalVariable);
+
+		LPVariableWrapper pVariableWrapper = rdo::Factory<VariableWrapper>::create(pCalcCreateLocalVariable, pLocalVariable);
+		ASSERT(pVariableWrapper);
+
+		$$ = PARSER->stack().push(pVariableWrapper);
 	}
-	| '=' fun_arithm
+	| RDO_IDENTIF '=' fun_arithm
 	{
-		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+		LPRDOValue pVariableName = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pVariableName);
+
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 		ASSERT(pArithm);
-		$$ = PARSER->stack().push(pArithm->expression());
+
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pArithm->expression());
+		ASSERT(pLocalVariable);
+
+		rdo::runtime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdo::runtime::RDOCalcCreateLocalVariable>::create(pLocalVariable->getName(), pLocalVariable->getExpression()->calc());
+		ASSERT(pCalcCreateLocalVariable);
+
+		LPVariableWrapper pVariableWrapper = rdo::Factory<VariableWrapper>::create(pCalcCreateLocalVariable, pLocalVariable);
+		ASSERT(pVariableWrapper);
+
+		$$ = PARSER->stack().push(pVariableWrapper);
+	}
+	;
+
+if_else_statement
+	: if_statement
+	{
+		PARSER->contextStack()->pop();
+	}
+	| if_statement RDO_else statement
+	{
+		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpression);
+
+		rdo::runtime::LPRDOCalcIf pCalc = pExpression->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
+		ASSERT(pCalc);
+
+		if (!pCalc->hasElse())
+		{
+			LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($3);
+			ASSERT(pExpressionStatement);
+
+			rdo::runtime::LPRDOCalc pCalcStatement = pExpressionStatement->calc();
+			ASSERT(pCalcStatement);
+
+			pCalc->setElseStatement(pCalcStatement);
+
+			LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
+			ASSERT(pContextReturnableChild);
+
+			PARSER->contextStack()->pop();
+
+			LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
+			ASSERT(pContextReturnableParent);
+
+			pContextReturnableParent->addContext(pContextReturnableChild);
+
+			$$ = PARSER->stack().push(pExpression);
+		}
+		else
+		{
+			PARSER->error().error(@2, rdo::format(_T("С одним If нельзя использовать больше одного Else")));
+		}
 	}
 	;
 
 if_statement
-	: if_header returnable_statement
+	: if_header statement
 	{
 		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
 		ASSERT(pExpression);
@@ -2648,6 +2754,21 @@ if_statement
 		ASSERT(pCalcStatement);
 
 		pCalc->setThenStatement(pCalcStatement);
+
+		LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnableChild);
+
+		PARSER->contextStack()->pop();
+
+		LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnableParent);
+
+		pContextReturnableParent->addContext(pContextReturnableChild);
+
+		LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
+		ASSERT(pContextReturnable);
+
+		PARSER->contextStack()->push(pContextReturnable);
 
 		$$ = PARSER->stack().push(pExpression);
 	}
@@ -2668,12 +2789,14 @@ if_header
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcIf>::create(pConditionCalc);
 		ASSERT(pCalc);
 
-		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnable);
-		pContextReturnable->addChildContext();
-
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
+
+		LPContextReturnable pContextReturnableChild = rdo::Factory<ContextReturnable>::create();
+		ASSERT(pContextReturnableChild);
+
+		PARSER->contextStack()->push(pContextReturnableChild);
+
 		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_if error fun_logic
@@ -2683,40 +2806,6 @@ if_header
 	| RDO_if '(' fun_logic error
 	{
 		PARSER->error().error(@4, _T("Ожидается закрывающая скобка"));
-	}
-	;
-
-if_else_statement
-	: if_statement returnable_context_push returnable_context_pop
-	{
-		PARSER->contextStack()->pop<ContextReturnable>();
-	}
-	| if_statement RDO_else returnable_statement
-	{
-		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpression);
-
-		rdo::runtime::LPRDOCalcIf pCalc = pExpression->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
-		ASSERT(pCalc);
-
-		if (!pCalc->hasElse())
-		{
-			LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($3);
-			ASSERT(pExpressionStatement);
-
-			rdo::runtime::LPRDOCalc pCalcStatement = pExpressionStatement->calc();
-			ASSERT(pCalcStatement);
-
-			pCalc->setElseStatement(pCalcStatement);
-
-			$$ = PARSER->stack().push(pExpression);
-		}
-		else
-		{
-			PARSER->error().error(@2, rdo::format(_T("С одним If нельзя использовать больше одного Else")));
-		}
-
-		PARSER->contextStack()->pop<ContextReturnable>();
 	}
 	;
 
@@ -2743,7 +2832,7 @@ for_statement
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pExpressionStatement->typeInfo(), pCalcBreakCatch, RDOParserSrcInfo(@1, @2));
 
-		PARSER->contextStack()->pop<ContextBreakable>();
+		PARSER->contextStack()->pop();
 
 		$$ = PARSER->stack().push(pExpression);
 	}

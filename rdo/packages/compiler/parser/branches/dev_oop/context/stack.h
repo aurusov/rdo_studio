@@ -28,18 +28,12 @@ OBJECT(ContextStack)
 {
 DECLARE_FACTORY(ContextStack);
 public:
-	void                     push(LPContext pContext);
-	template <class T> void  pop ()
-	{
-		ASSERT(top().object_dynamic_cast<T>());
-		pop_not_safed();
-	}
+	void      push  (LPContext pContext);
+	void      pop   ();
 
 	LPContext top   () const;
 	LPContext global() const;
 	LPContext prev  (CREF(LPContext) pContext) const;
-
-	void pop_not_safed();
 
 private:
 	ContextStack();

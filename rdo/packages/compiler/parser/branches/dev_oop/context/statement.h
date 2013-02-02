@@ -13,19 +13,32 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
+// -------------------- ContextStatementBase
+// --------------------------------------------------------------------------------
+CLASS(ContextStatementBase):
+	             INSTANCE_OF (Context)
+{
+DECLARE_FACTORY(ContextStatementBase);
+protected:
+	ContextStatementBase();
+};
+DECLARE_POINTER(ContextStatementBase);
+
+// --------------------------------------------------------------------------------
 // -------------------- ContextBreakable
 // --------------------------------------------------------------------------------
-class ContextBreakable: public Context
+CLASS(ContextBreakable):
+	         INSTANCE_OF (ContextStatementBase)
 {
 DECLARE_FACTORY(ContextBreakable);
-private:
+protected:
 	ContextBreakable();
-	virtual ~ContextBreakable();
 };
 DECLARE_POINTER(ContextBreakable);
 
@@ -33,26 +46,27 @@ DECLARE_POINTER(ContextBreakable);
 // -------------------- ContextReturnable
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(ContextReturnable);
-class ContextReturnable: public Context
+CLASS(ContextReturnable):
+	         INSTANCE_OF (ContextStatementBase)
 {
 DECLARE_FACTORY(ContextReturnable);
 public:
-	rbool getReturnFlag() const;
-	void  setReturnFlag();
 
-	void addChildContext();
+	typedef std::vector<LPContextReturnable> ContextReturnableList;
+	void addContext(REF(LPContextReturnable) pContext);
+
+	void setReturnFlag();
+	bool returnFlag();
+
+private:
+	bool checkChildFlags();
 
 protected:
 	ContextReturnable();
-	virtual ~ContextReturnable();
-
-private:
-	typedef std::vector<LPContextReturnable> ContextReturnableList;
 
 	ContextReturnableList m_contextReturnableList;
-	rbool                 m_returnFlag;
+	bool                  m_returnFlag;
 
-	rbool getChildFlags() const;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

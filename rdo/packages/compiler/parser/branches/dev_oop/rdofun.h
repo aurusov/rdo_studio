@@ -23,7 +23,6 @@
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
 #include "simulator/compiler/parser/type/function_type.h"
-#include "simulator/compiler/parser/src/function/function.h"
 
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_type.h"
@@ -562,17 +561,27 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNFunction
 // --------------------------------------------------------------------------------
-class RDOFUNFunction: public Function
+CLASS(RDOFUNFunction):
+	    INSTANCE_OF      (RDOParserSrcInfo)
+	AND INSTANCE_OF      (Context         )
+	AND IMPLEMENTATION_OF(IContextFind    )
 {
 DECLARE_FACTORY(RDOFUNFunction)
+friend class Converter;
 public:
+	typedef std::vector<LPRDOParam> ParamList;
+
 	CREF(tstring)    name                   () const;
+	void             add                    (CREF(LPRDOParam)                  pParam       );
 	void             add                    (CREF(LPRDOFUNFunctionListElement) pListElement );
 	void             add                    (CREF(LPRDOFUNCalculateIf)         pCalculateIf );
+	LPRDOParam       findFUNFunctionParam   (CREF(tstring)                     paramName    ) const;
+	int              findFUNFunctionParamNum(CREF(tstring)                     paramName    ) const;
 	void             createListCalc         ();
 	void             createTableCalc        (CREF(YYLTYPE)                     elements_pos );
 	void             createAlgorithmicCalc  ();
 	CREF(LPRDOParam) getReturn              () const;
+	const ParamList  getParams              () const;
 	rbool            getReturnFlag          () const;
 	void             setReturnFlag          (rbool flag);
 	void             end                    ();
@@ -589,6 +598,7 @@ private:
 	typedef  std::vector<LPRDOFUNCalculateIf>          CalculateIfList;
 
 	LPRDOParam               m_pReturn;
+	ParamList                m_paramList;
 	ElementList              m_elementList;     //! for list and table
 	CalculateIfList          m_calculateIfList; //! for algorithmic
 	rdo::runtime::LPRDOCalc  m_pFunctionCalc;
@@ -596,6 +606,8 @@ private:
 	rbool                    m_returnFlag;
 
 	void init();
+
+	DECLARE_IContextFind;
 };
 DECLARE_POINTER(RDOFUNFunction);
 
@@ -613,11 +625,11 @@ DECLARE_FACTORY(RDOFUNGroup);
 public:
 	CREF(LPRDORTPResType) getResType()const { return m_pResType; }
 
-	void end();
-
 protected:
 	RDOFUNGroup(CREF(RDOParserSrcInfo) res_info);
 	virtual ~RDOFUNGroup();
+
+	void end();
 
 private:
 	void init(CREF(RDOParserSrcInfo) res_info);

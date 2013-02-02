@@ -142,7 +142,7 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 			RDOParser::s_parser()->error().push_done();
 		}
 	}
-	RDOParser::s_parser()->contextStack()->pop<RDODPTActivity>();
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
@@ -383,7 +383,7 @@ void RDODPTSearch::end()
 	m_closed = true;
 
 	//! @todo проверить, можно ли избавиться от повторения этой строки. Уже есть в RDOLogicBase::end()
-	RDOParser::s_parser()->contextStack()->pop<RDODPTSearch>();
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

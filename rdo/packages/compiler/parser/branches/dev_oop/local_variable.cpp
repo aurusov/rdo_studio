@@ -11,7 +11,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/src/function/local_variable/local_variable.h"
+#include "simulator/compiler/parser/local_variable.h"
 #include "simulator/compiler/parser/rdoparser_error.h"
 #include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
@@ -107,13 +107,15 @@ void LocalVariableListStack::push(CREF(LPLocalVariableList) pVariableList)
 void LocalVariableListStack::pop()
 {
 	ASSERT(!m_pVariableListStack.empty());
+
 	m_pVariableListStack.pop_back();
 }
 
-LPLocalVariableList LocalVariableListStack::top() const
+void LocalVariableListStack::append(CREF(LPLocalVariable) pVariable)
 {
 	ASSERT(!m_pVariableListStack.empty());
-	return m_pVariableListStack.back();
+
+	m_pVariableListStack.back()->append(pVariable);
 }
 
 LPLocalVariable LocalVariableListStack::findLocalVariable(CREF(tstring) name) const

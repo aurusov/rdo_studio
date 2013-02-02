@@ -36,8 +36,6 @@ public:
 	virtual ruint lexer_loc_line();
 	virtual ruint lexer_loc_pos ();
 
-	tstring text() const;
-
 protected:
 	RDOParserRDOItem(rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun, StreamFrom from = sf_repository);
 	virtual ~RDOParserRDOItem();
@@ -49,7 +47,6 @@ private:
 	void parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream);
 	PTR(RDOLexer) getLexer(CREF(LPRDOParser) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream);
 };
-DECLARE_POINTER(RDOParserRDOItem);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserRSS

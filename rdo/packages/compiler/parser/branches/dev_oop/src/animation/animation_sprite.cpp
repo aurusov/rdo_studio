@@ -11,27 +11,33 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/src/animation/animation_sprite.h"
+#include "simulator/compiler/parser/src/animation/animation_frame.h"
 #include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
 RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
-	: RDOFRMCommandList(src_info)
+	: RDOFRMCommandList()
+	, Function(rdo::Factory<TypeInfo>::delegate<RDOType__void>(src_info), src_info)
 {
-	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(function()->src_info());
+	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(this->src_info());
 	ASSERT(m_pSprite)
-
 	RDOParser::s_parser()->insertFRMSprite(this);
+
+	setCall(m_pSprite);
+
+	pushContext();
 }
 
-RDOFRMSprite::~RDOFRMSprite()
-{}
-
-rdo::runtime::LPRDOFRMSprite RDOFRMSprite::list() const
+void RDOFRMSprite::end()
 {
-	return m_pSprite;
+	popContext();
+}
+
+Context::FindResult RDOFRMSprite::onFindContext(CREF(LPRDOValue) pValue) const
+{
+	return Function::onFindContext(pValue);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

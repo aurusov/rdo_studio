@@ -55,7 +55,7 @@ RDORSSResource::~RDORSSResource()
 
 void RDORSSResource::end()
 {
-	RDOParser::s_parser()->contextStack()->pop<RDORSSResource>();
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 Context::FindResult RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
