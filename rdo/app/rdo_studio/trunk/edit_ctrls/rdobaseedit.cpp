@@ -14,7 +14,7 @@
 #include <boost/range.hpp>
 #include <boost/range/algorithm/for_each.hpp>
 #include <boost/range/algorithm/find_if.hpp>
-#include <QtGui/qmessagebox.h>
+#include <QtWidgets/qmessagebox.h>
 #include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/edit_ctrls/rdobaseedit.h"
@@ -516,7 +516,7 @@ void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchC
 	{
 		m_firstFoundPos = -1;
 		m_haveFound     = false;
-		showFindWarning(QString::fromStdString(findWhat));
+		showFindWarning(QString::fromLocal8Bit(findWhat.c_str()));
 		//! @todo возможно, надо убрать
 		setFocus();
 	}
@@ -530,7 +530,7 @@ void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchC
 		{
 			m_firstFoundPos = -1;
 			m_haveFound     = false;
-			showFindWarning(QString::fromStdString(findWhat));
+			showFindWarning(QString::fromLocal8Bit(findWhat.c_str()));
 			//! @todo возможно, надо убрать
 			setFocus();
 			return;
@@ -620,7 +620,7 @@ void RDOBaseEdit::onFindReplaceDlgClose()
 
 void RDOBaseEdit::showFindWarning(CREF(QString) findWhat)
 {
-	QMessageBox::warning(this, "Результаты поиска", QString("Невозможно найти строчку '%1'.").arg(findWhat));
+	QMessageBox::warning(this, QString::fromStdWString(L"Результаты поиска"), QString::fromStdWString(L"Невозможно найти строчку '%1'.").arg(findWhat));
 }
 
 void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
@@ -683,7 +683,7 @@ void RDOBaseEdit::replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rb
 	}
 	else
 	{
-		showFindWarning(QString::fromStdString(findWhat));
+		showFindWarning(QString::fromLocal8Bit(findWhat.c_str()));
 		//! @todo возможно, надо убрать
 		setFocus();
 	}
@@ -793,7 +793,7 @@ void RDOBaseEdit::onCopyAsRTF(QMimeData* pMimeData)
 		return;
 
 	QByteArray ba;
-	ba.append(QString::fromStdString(result));
+	ba.append(result.c_str());
 	//! @todo для линуха надо будет использовать "text/rtf" ?
 	pMimeData->setData("Rich Text Format", ba);
 }
@@ -1545,9 +1545,9 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 
 	QString modify = activated
 		? isReadOnly()
-			? QString("Только чтение")
+			? QString::fromStdWString(L"Только чтение")
 			: isModify()
-				? QString("Изменён")
+				? QString::fromStdWString(L"Изменён")
 				: QString()
 		: QString();
 
@@ -1560,7 +1560,7 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 	pMainWindow->statusBar()->update<StatusBar::SB_COORD>(coord);
 
 	QString overwrite = activated && sendEditor(SCI_GETOVERTYPE)
-		? QString("Замена")
+		? QString::fromStdWString(L"Замена")
 		: QString();
 
 	pMainWindow->statusBar()->update<StatusBar::SB_OVERWRITE>(overwrite);

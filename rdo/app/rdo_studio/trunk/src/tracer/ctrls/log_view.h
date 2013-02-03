@@ -12,9 +12,9 @@
 #define _RDO_STUDIO_TRACER_CTRLS_LOG_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qwidget.h>
+#include <QtWidgets/qwidget.h>
 #include <QtGui/qevent.h>
-#include <QtGui/qabstractscrollarea.h>
+#include <QtWidgets/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/ctrls/log_view_style.h"
 #include "app/rdo_studio/src/action_activator/action_activator_widget.h"

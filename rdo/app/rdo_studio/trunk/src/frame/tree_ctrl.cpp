@@ -25,7 +25,7 @@ RDOStudioFrameTreeCtrl::RDOStudioFrameTreeCtrl(PTR(QWidget) pParent)
 	setRootIsDecorated(false);
 
 	m_pRootItem = new QTreeWidgetItem(this);
-	m_pRootItem->setText(0, "Кадры");
+	m_pRootItem->setText(0, QString::fromStdWString(L"Кадры"));
 	m_pRootItem->setIcon(0, QIcon(QString::fromUtf8(":/images/images/tree_frame_root.png")));
 	addTopLevelItem(m_pRootItem);
 }

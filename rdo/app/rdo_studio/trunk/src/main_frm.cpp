@@ -14,7 +14,8 @@
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm/find.hpp>
 #include <QtCore/qprocess.h>
-#include <QtGui/qmdisubwindow.h>
+#include <QtCore/qtextcodec.h>
+#include <QtWidgets/qmdisubwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_frm.h"
 #include "app/rdo_studio/src/application.h"
@@ -121,14 +122,14 @@ void RDOStudioMainFrame::createInsertMenu()
 			: m_title   (title   )
 			, m_position(position)
 		{
-			if (!resourceName.isEmpty())
-			{
-				QFile file(":/insert_menu_template/insert_menu_template/" + resourceName);
-				if (file.open(QIODevice::ReadOnly) && file.isOpen())
-				{
-					m_textForInsert = file.readAll();
-				}
-			}
+			init(resourceName);
+		}
+
+		MenuItem(const QString& title, const QString& resourceName = QString(), const Position& position = Position())
+			: m_title   (title   )
+			, m_position(position)
+		{
+			init(resourceName);
 		}
 
 		const QString& title() const
@@ -152,6 +153,18 @@ void RDOStudioMainFrame::createInsertMenu()
 		QString    m_title;
 		QString    m_textForInsert;
 		Position   m_position;
+
+		void init(const QString& resourceName)
+		{
+			if (!resourceName.isEmpty())
+			{
+				QFile file(":/insert_menu_template/insert_menu_template/" + resourceName);
+				if (file.open(QIODevice::ReadOnly) && file.isOpen())
+				{
+					m_textForInsert = file.readAll();
+				}
+			}
+		}
 	};
 
 	typedef  rdo::vector<MenuItem>                         MenuItemList;
@@ -260,7 +273,7 @@ void RDOStudioMainFrame::createInsertMenu()
 	menuList.push_back(std::make_pair("", MenuItemList()));
 	menuList.push_back(
 		std::make_pair(
-			"Встроенные функции",
+			QString::fromStdWString(L"Встроенные функции"),
 			MenuItemList("Abs")("ArcCos")("ArcSin")("ArcTan")("Cos")("Cotan")("Exist")("Exp")("Floor")("For_All")("Frac")
 				("IAbs")("IMax")("IMin")("Int")("IntPower")("Ln")("Log10")("Log2")("LogN")("Max")("Min")("Not_Exist")
 				("Not_For_All")("Power")("Round")("Select")("Sin")("Sqrt")("Tan")
@@ -268,14 +281,14 @@ void RDOStudioMainFrame::createInsertMenu()
 	);
 	menuList.push_back(
 		std::make_pair(
-			"Процедурный язык",
+			QString::fromStdWString(L"Процедурный язык"),
 			MenuItemList
 				(MenuItem("if", "algo_if.txt", 4))
 				("else")
 				(MenuItem("if-else", "algo_if_else.txt", 4))
 				(MenuItem("for", "algo_for.txt", 5))
 				("return")
-				(MenuItem("Локальная переменная", "algo_local_variable.txt"))
+				(MenuItem(QString::fromLocal8Bit("Локальная переменная"), "algo_local_variable.txt"))
 		)
 	);
 
@@ -304,7 +317,7 @@ void RDOStudioMainFrame::createInsertMenu()
 
 void RDOStudioMainFrame::init()
 {
-	m_thisCWnd.Attach(winId());
+	m_thisCWnd.Attach(reinterpret_cast<HWND>(winId()));
 
 	// Кто-то должен поднять кернел и треды
 	new RDOStudioModel();
@@ -358,9 +371,11 @@ void RDOStudioMainFrame::init()
 	m_pDockFrame     = new DockFrame    (this);
 	addDockWidget(Qt::LeftDockWidgetArea, m_pDockChartTree);
 	tabifyDockWidget(m_pDockChartTree, m_pDockFrame);
+	//! @todo Почему-то любое второе окно слева приводит с сбросу координат и заголовка главного окна
+	m_pDockFrame->hide();
 	m_pDockChartTree->raise();
 
-	PTR(QMenu) pMenuDockView = new QMenu("Окна");
+	PTR(QMenu) pMenuDockView = new QMenu(QString::fromStdWString(L"Окна"));
 	ASSERT(pMenuDockView);
 	menuView->insertMenu(actViewSettings, pMenuDockView);
 	pMenuDockView->addAction(m_pDockBuild->toggleViewAction());
@@ -371,7 +386,7 @@ void RDOStudioMainFrame::init()
 	pMenuDockView->addAction(m_pDockChartTree->toggleViewAction());
 	pMenuDockView->addAction(m_pDockFrame->toggleViewAction());
 
-	PTR(QMenu) pMenuToolbarView = new QMenu("Панели");
+	PTR(QMenu) pMenuToolbarView = new QMenu(QString::fromStdWString(L"Панели"));
 	ASSERT(pMenuToolbarView);
 	menuView->insertMenu(actViewSettings, pMenuToolbarView);
 	pMenuToolbarView->addAction(toolBarFile->toggleViewAction());
@@ -621,7 +636,7 @@ void RDOStudioMainFrame::updateMenuFileReopen()
 		{
 			menuFileReopen->addSeparator();
 		}
-		menuFileReopen->addAction(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str());
+		menuFileReopen->addAction(QTextCodec::codecForLocale()->toUnicode(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str()));
 	}
 
 	menuFileReopen->setEnabled(!menuFileReopen->isEmpty());

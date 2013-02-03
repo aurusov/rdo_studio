@@ -13,8 +13,8 @@
 #include <limits>
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
-#include <QtGui/qmessagebox.h>
-#include <QtGui/qfiledialog.h>
+#include <QtWidgets/qmessagebox.h>
+#include <QtWidgets/qfiledialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "utils/rdoanimation.h"
@@ -276,8 +276,8 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		{
 			QMessageBox::critical(
 				studioApp.getMainWnd(),
-				"Ошибка открытия модели",
-				QString("Невозможно открыть модель '%1'.").arg(static_cast<PTR(tstring)>(msg.param)->c_str())
+				QString::fromStdWString(L"Ошибка открытия модели"),
+				QString::fromStdWString(L"Невозможно открыть модель '%1'.").arg(static_cast<PTR(tstring)>(msg.param)->c_str())
 			);
 			break;
 		}
@@ -293,9 +293,9 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 
 			QString modelName = QFileDialog::getOpenFileName(
 				NULL,
-				"Открыть модель",
+				QString::fromStdWString(L"Открыть модель"),
 				QString(),
-				"РДО-проект (*.rdox);;РДО-конвертор (*.smr);;Все файлы (*.*)"
+				QString::fromStdWString(L"РДО-проект (*.rdox);;РДО-конвертор (*.smr);;Все файлы (*.*)")
 			);
 			data->m_result   = !modelName.isEmpty();
 			data->m_name     = modelName.toStdString();
@@ -509,6 +509,7 @@ void RDOStudioModel::show_result()
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 		if (!data.m_described)
 		{
+			//! @todo unicode
 			studioApp.getIMainWnd()->getDockDebug().appendString(_T("Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n"));
 		}
 		studioApp.getIMainWnd()->getDockResults().getContext().clearAll();
@@ -830,7 +831,7 @@ void RDOStudioModel::saveModelToRepository()
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
 		if (m_smrEmptyError)
 		{
-			QMessageBox::critical(studioApp.getMainWnd(), _T("Ошибка записи модели"), _T("В smr-файле не найдено имя модели, модель не будет записана"));
+			QMessageBox::critical(studioApp.getMainWnd(), QString::fromStdWString(L"Ошибка записи модели"), QString::fromStdWString(L"В smr-файле не найдено имя модели, модель не будет записана"));
 			return;
 		}
 		smr_modified = true;
@@ -952,11 +953,11 @@ void RDOStudioModel::setName(CREF(tstring) str)
 		{
 			if (studioApp.getShowCaptionFullName())
 			{
-				m_pModelView->parentWidget()->setWindowTitle(QString::fromStdString(rdo::format(IDS_MODEL_NAME, getFullName().c_str())));
+				m_pModelView->parentWidget()->setWindowTitle(QString::fromLocal8Bit(rdo::format(IDS_MODEL_NAME, getFullName().c_str()).c_str()));
 			}
 			else
 			{
-				m_pModelView->parentWidget()->setWindowTitle(QString::fromStdString(rdo::format(IDS_MODEL_NAME, m_name.c_str())));
+				m_pModelView->parentWidget()->setWindowTitle(QString::fromLocal8Bit(rdo::format(IDS_MODEL_NAME, m_name.c_str()).c_str()));
 			}
 		}
 	}
@@ -1188,23 +1189,23 @@ void RDOStudioModel::updateActions()
 		case rdo::runtime::RTM_BreakPoint: runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT, getLastBreakPointName().c_str()); break;
 		}
 	}
-	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_RUNTYPE>(QString::fromStdString(runTimeMode));
+	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_RUNTYPE>(QString::fromLocal8Bit(runTimeMode.c_str()));
 
 	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SPEED>(
 		getRuntimeMode() != rdo::runtime::RTM_MaxSpeed || !isRunning()
-			? QString("Скорость: %1%").arg(rsint(getSpeed() * 100))
+			? QString::fromStdWString(L"Скорость: %1%").arg(rsint(getSpeed() * 100))
 			: ""
 	);
 
 	QString showRateStr;
 	if (isRunning())
 	{
-		showRateStr = "Масштаб: ";
+		showRateStr = QString::fromStdWString(L"Масштаб: ");
 		switch (getRuntimeMode())
 		{
 		case rdo::runtime::RTM_MaxSpeed:
 		case rdo::runtime::RTM_Jump    :
-			showRateStr += "Бесконечность";
+			showRateStr += QString::fromStdWString(L"Бесконечность");
 			break;
 
 		case rdo::runtime::RTM_Pause     :
@@ -1217,15 +1218,15 @@ void RDOStudioModel::updateActions()
 				double showRate = model->getShowRate();
 				if (showRate < 1e-10 || showRate > 1e10)
 				{
-					showRateStr += QString::fromStdString(rdo::format("%e", showRate));
+					showRateStr += QString::fromLocal8Bit(rdo::format("%e", showRate).c_str());
 				}
 				else if (showRate >= 1)
 				{
-					showRateStr += QString::fromStdString(rdo::format("%1.1f", showRate));
+					showRateStr += QString::fromLocal8Bit(rdo::format("%1.1f", showRate).c_str());
 				}
 				else
 				{
-					showRateStr += QString::fromStdString(rdo::format("%1.10f", showRate));
+					showRateStr += QString::fromLocal8Bit(rdo::format("%1.10f", showRate).c_str());
 				}
 			}
 			break;
@@ -1238,7 +1239,7 @@ void RDOStudioModel::update()
 {
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
 
-	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_TIME>(QString("Время: %1").arg(m_timeNow));
+	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_TIME>(QString::fromStdWString(L"Время: %1").arg(m_timeNow));
 
 	rdo::runtime::RunTimeMode rm;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &rm);
@@ -1246,6 +1247,7 @@ void RDOStudioModel::update()
 	{
 		if (rm == rdo::runtime::RTM_BreakPoint)
 		{
+			//! @todo unicode
 			studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(_T("Пауза в %f из-за точки '%s'\n"), getTimeNow(), getLastBreakPointName().c_str()));
 		}
 		setRuntimeMode(rm);

@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <QtGui/qevent.h>
-#include <QtGui/qboxlayout.h>
+#include <QtWidgets/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/model/model_view.h"
 #include "app/rdo_studio/src/application.h"
@@ -118,6 +118,7 @@ void RDOStudioModelView::onSearchFindAll()
 	rbool bMatchCase      = m_findSettings.matchCase;
 	rbool bMatchWholeWord = m_findSettings.matchWholeWord;
 	studioApp.getIMainWnd()->getDockFind().getContext().setKeyword(findStr, bMatchCase);
+	//! @todo unicode
 	studioApp.getIMainWnd()->getDockFind().appendString(rdo::format("Поиск '%s'...\r\n", findStr.c_str()));
 	int count = 0;
 	for (int i = 0; i < m_pTabCtrl->count(); i++)
@@ -140,6 +141,7 @@ void RDOStudioModelView::onSearchFindAll()
 		}
 	}
 	m_pFindDialog = NULL;
+	//! @todo unicode
 	tstring s = count
 		? rdo::format("'%d' раз было найдено.\r\n", count)
 		: rdo::format("Не получилось найти строчку '%s'.\r\n", findStr.c_str());

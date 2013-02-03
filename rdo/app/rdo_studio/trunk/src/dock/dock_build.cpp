@@ -10,8 +10,8 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qaction.h>
-#include <QtGui/qmessagebox.h>
+#include <QtWidgets/qaction.h>
+#include <QtWidgets/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_build.h"
 #include "app/rdo_studio/src/application.h"
@@ -20,7 +20,7 @@
 // --------------------------------------------------------------------------------
 
 DockBuild::DockBuild(PTR(QWidget) pParent)
-	: DockFocusable("Компилятор", pParent)
+	: DockFocusable(QString::fromStdWString(L"Компилятор"), pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 150));
@@ -45,7 +45,7 @@ void DockBuild::appendString(CREF(rdo::simulation::report::FileMessage) message)
 	{
 		if (message.getText().find("Сработало лицензионное ограничение") != tstring::npos)
 		{
-			QMessageBox::critical(studioApp.getMainWnd(), "Лицензионное ограничение", message.getText().c_str());
+			QMessageBox::critical(studioApp.getMainWnd(), QString::fromStdWString(L"Лицензионное ограничение"), QString::fromLocal8Bit(message.getText().c_str()));
 			return;
 		}
 

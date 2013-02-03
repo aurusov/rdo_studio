@@ -576,35 +576,35 @@ void ViewPreferences::createTree()
 	treeWidget->setRootIsDecorated(false);
 
 	m_pRoot = new QTreeWidgetItem(treeWidget);
-	m_pRoot->setText(0, "Все окна");
+	m_pRoot->setText(0, QString::fromStdWString(L"Все окна"));
 	m_pRoot->setData(0, Qt::UserRole, IT_ROOT);
 
-	m_pText      = createTreeItem(m_pRoot, "Исходный текст",   IT_EDITOR);
-	m_pCompile   = createTreeItem(m_pRoot, "Окно компиляции",  IT_BUILD);
-	m_pDebug     = createTreeItem(m_pRoot, "Окно отладки",     IT_DEBUG);
-	m_pTrace     = createTreeItem(m_pRoot, "Окно трассировки", IT_LOG);
-	m_pResult    = createTreeItem(m_pRoot, "Окно результатов", IT_RESULT);
-	m_pSearch    = createTreeItem(m_pRoot, "Окно поиска",      IT_FIND);
-	m_pChart     = createTreeItem(m_pRoot, "Окно графиков",    IT_CHART);
-	m_pAnimation = createTreeItem(m_pRoot, "Окно анимации",    IT_FRAME);
+	m_pText      = createTreeItem(m_pRoot, QString::fromStdWString(L"Исходный текст"),   IT_EDITOR);
+	m_pCompile   = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно компиляции"),  IT_BUILD);
+	m_pDebug     = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно отладки"),     IT_DEBUG);
+	m_pTrace     = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно трассировки"), IT_LOG);
+	m_pResult    = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно результатов"), IT_RESULT);
+	m_pSearch    = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно поиска"),      IT_FIND);
+	m_pChart     = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно графиков"),    IT_CHART);
+	m_pAnimation = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно анимации"),    IT_FRAME);
 
 	m_pRoot->setExpanded(true);
 
-	m_pPlainText = createTreeItem(m_pText, "Обыкновенный текст", IT_EDITOR_PLAINTEXT);
-	m_pVariable  = createTreeItem(m_pText, "Переменная",         IT_EDITOR_IDENTIFICATOR);
-	m_pKeyword   = createTreeItem(m_pText, "Ключевое слово",     IT_EDITOR_KEYWORD);
-	m_pFunction  = createTreeItem(m_pText, "Функция",            IT_EDITOR_FUNCTION);
-	m_pTraceText = createTreeItem(m_pText, "Трассировка",        IT_EDITOR_TRACE);
-	m_pColor     = createTreeItem(m_pText, "Цвет",               IT_EDITOR_COLOR);
-	m_pComment   = createTreeItem(m_pText, "Комментарии",        IT_EDITOR_COMMENT);
-	m_pNumber    = createTreeItem(m_pText, "Число",              IT_EDITOR_NUMBER);
-	m_pString    = createTreeItem(m_pText, "Строка",             IT_EDITOR_STRING);
-	m_pOperator  = createTreeItem(m_pText, "Оператор",           IT_EDITOR_OPERATOR);
-	m_pCaret     = createTreeItem(m_pText, "Каретка",            IT_EDITOR_CARET);
-	m_pSelection = createTreeItem(m_pText, "Выделение",          IT_EDITOR_TEXTSELECTION);
-	m_pBookmark  = createTreeItem(m_pText, "Закладка",           IT_EDITOR_BOOKMARK);
-	m_pGroup     = createTreeItem(m_pText, "Группа",             IT_EDITOR_FOLD);
-	m_pError     = createTreeItem(m_pText, "Ошибка",             IT_EDITOR_ERROR);
+	m_pPlainText = createTreeItem(m_pText, QString::fromStdWString(L"Обыкновенный текст"), IT_EDITOR_PLAINTEXT);
+	m_pVariable  = createTreeItem(m_pText, QString::fromStdWString(L"Переменная"),         IT_EDITOR_IDENTIFICATOR);
+	m_pKeyword   = createTreeItem(m_pText, QString::fromStdWString(L"Ключевое слово"),     IT_EDITOR_KEYWORD);
+	m_pFunction  = createTreeItem(m_pText, QString::fromStdWString(L"Функция"),            IT_EDITOR_FUNCTION);
+	m_pTraceText = createTreeItem(m_pText, QString::fromStdWString(L"Трассировка"),        IT_EDITOR_TRACE);
+	m_pColor     = createTreeItem(m_pText, QString::fromStdWString(L"Цвет"),               IT_EDITOR_COLOR);
+	m_pComment   = createTreeItem(m_pText, QString::fromStdWString(L"Комментарии"),        IT_EDITOR_COMMENT);
+	m_pNumber    = createTreeItem(m_pText, QString::fromStdWString(L"Число"),              IT_EDITOR_NUMBER);
+	m_pString    = createTreeItem(m_pText, QString::fromStdWString(L"Строка"),             IT_EDITOR_STRING);
+	m_pOperator  = createTreeItem(m_pText, QString::fromStdWString(L"Оператор"),           IT_EDITOR_OPERATOR);
+	m_pCaret     = createTreeItem(m_pText, QString::fromStdWString(L"Каретка"),            IT_EDITOR_CARET);
+	m_pSelection = createTreeItem(m_pText, QString::fromStdWString(L"Выделение"),          IT_EDITOR_TEXTSELECTION);
+	m_pBookmark  = createTreeItem(m_pText, QString::fromStdWString(L"Закладка"),           IT_EDITOR_BOOKMARK);
+	m_pGroup     = createTreeItem(m_pText, QString::fromStdWString(L"Группа"),             IT_EDITOR_FOLD);
+	m_pError     = createTreeItem(m_pText, QString::fromStdWString(L"Ошибка"),             IT_EDITOR_ERROR);
 
 	m_pTextCompile      = createTreeItem(m_pCompile, "Текст",             IT_BUILD_TEXT);
 	m_pSelectedString   = createTreeItem(m_pCompile, "Выделенная строка", IT_BUILD_SELECTEDLINE);
@@ -744,4 +744,3 @@ void ViewPreferences::apply()
 	studioApp.setShowCaptionFullName(m_showFullName);
 	studioApp.getStyle()->updateAllStyles();
 }
-

@@ -11,7 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qdir.h>
-#include <QtGui/qfiledialog.h>
+#include <QtWidgets/qfiledialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dialog/new_model_dialog.h"
 // --------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ void NewModelDialog::updateUI()
 	rbool error = true;
 	if (modelName->text().isEmpty())
 	{
-		labelError->setText("Необходимо указать имя модели");
+		labelError->setText(QString::fromStdWString(L"Необходимо указать имя модели"));
 	}
 	else
 	{
@@ -68,14 +68,14 @@ void NewModelDialog::updateUI()
 		if (fileInfo.exists())
 		{
 			QString info = fileInfo.isDir()
-				? "Такая директория уже существует: '%1'"
-				: "Такой файл уже существует: '%1'";
+				? QString::fromStdWString(L"Такая директория уже существует: '%1'")
+				: QString::fromStdWString(L"Такой файл уже существует: '%1'");
 
 			labelError->setText(info.arg(fullName));
 		}
 		else
 		{
-			labelError->setText(QString("Будет создана директория: '%1'").arg(fullName));
+			labelError->setText(QString::fromStdWString(L"Будет создана директория: '%1'").arg(fullName));
 			error = false;
 		}
 	}
@@ -89,7 +89,7 @@ void NewModelDialog::onPathButtonClicked()
 {
 	QString path = QFileDialog::getExistingDirectory(
 		this,
-		"Выбор директории для модели",
+		QString::fromStdWString(L"Выбор директории для модели"),
 		modelPath->text(),
 		QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks
 	);
