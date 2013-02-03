@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../;../../../thirdparty/scintilla/include;../../../thirdparty/scintilla/src;../../../thirdparty/scintilla/lexlib;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;"
+				AdditionalIncludeDirectories="../../../;../../../thirdparty/scintilla/include;../../../thirdparty/scintilla/src;../../../thirdparty/scintilla/lexlib;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;"
 				PreprocessorDefinitions="RDO_ST;SCI_LEXER;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -113,7 +113,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="../../../;../../../thirdparty/scintilla/include;../../../thirdparty/scintilla/src;../../../thirdparty/scintilla/lexlib;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;"
+				AdditionalIncludeDirectories="../../../;../../../thirdparty/scintilla/include;../../../thirdparty/scintilla/src;../../../thirdparty/scintilla/lexlib;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;"
 				PreprocessorDefinitions="RDO_ST;SCI_LEXER;WIN32;NDEBUG;_LIB;WINVER=0x0501;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				WarningLevel="4"
