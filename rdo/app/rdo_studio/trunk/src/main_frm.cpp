@@ -371,8 +371,6 @@ void RDOStudioMainFrame::init()
 	m_pDockFrame     = new DockFrame    (this);
 	addDockWidget(Qt::LeftDockWidgetArea, m_pDockChartTree);
 	tabifyDockWidget(m_pDockChartTree, m_pDockFrame);
-	//! @todo Почему-то любое второе окно слева приводит с сбросу координат и заголовка главного окна
-	m_pDockFrame->hide();
 	m_pDockChartTree->raise();
 
 	PTR(QMenu) pMenuDockView = new QMenu(QString::fromStdWString(L"Окна"));
