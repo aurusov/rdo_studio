@@ -79,20 +79,20 @@ int GeneralDB::queryExecIndex(const QString& table)
 		.arg(table ));
 	query.next();
 	int index = query.value(query.record().indexOf("alt")).toInt();
-	m_contextParrentID = index;
+	m_context = index;
 	return index;
 }
 
 void GeneralDB::pushContext(int context)
 {
-	m_contextParrentID = context;
+	m_context = context<int>;
 }
 
-int GeneralDB::popContext()
+IDB::bany GeneralDB::popContext()
 {
-	ASSERT(m_contextParrentID.is_initialized());
-	int i = m_contextParrentID.get();
-	m_contextParrentID.reset();
+	ASSERT(!m_context.empty());
+	bany i = m_context;
+	m_context = boost::any();
 	return i;
 }
 

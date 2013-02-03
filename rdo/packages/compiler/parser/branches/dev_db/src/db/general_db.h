@@ -13,7 +13,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtSql\QtSql>
-#include <boost\optional\optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator\compiler\parser\headers\db\interface_db.h"
 // --------------------------------------------------------------------------------
@@ -21,8 +20,6 @@
 class GeneralDB: public IDB
 {
 public:
-	typedef boost::optional<int> boint;
-
 	GeneralDB();
 	GeneralDB(
 		const QString& hostName,
@@ -39,7 +36,7 @@ public:
 
 	virtual int  queryExecIndex(const QString& table                         );
 	virtual void pushContext   (int context                                  );
-	virtual int  popContext    (                                             );
+	virtual bany popContext    (                                             );
 
 private:
 	void initDB();
@@ -52,7 +49,7 @@ private:
 	int          m_port;
 	QSqlDatabase m_db;
 
-	boint m_contextParrentID;
+	bany m_context;
 };
 
 #endif // _SIMULATOR_RUNTIME_SQL_GENERAL_DB_H_

@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtSql\QtSql>
 #include <list>
+#include <boost\any.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
@@ -21,6 +22,7 @@ class IDB
 {
 public:
 	typedef std::list<QString>   QueryList;
+	typedef boost::any           bany;
 
 	virtual void insertRow     (const QString& tableName, const QString& qRow) = 0;
 
@@ -29,7 +31,7 @@ public:
 	virtual int  queryExecIndex(const QString& table                         ) = 0;
 
 	virtual void pushContext   (int context                                  ) = 0;
-	virtual int  popContext    (                                             ) = 0;
+	virtual bany popContext    (                                             ) = 0;
 };
 
 #endif // _SIMULATOR_RUNTIME_SQL_INTERFACE_DB_H_
