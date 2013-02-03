@@ -104,7 +104,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdo_help_cbs\QtCLucene4.dll.txt"
+				RelativePath=".\rdo_help_cbs\icudt50.dll.txt"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -128,7 +128,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdo_help_cbs\QtCore4.dll.txt"
+				RelativePath=".\rdo_help_cbs\icuin50.dll.txt"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -152,7 +152,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdo_help_cbs\QtGui4.dll.txt"
+				RelativePath=".\rdo_help_cbs\icuuc50.dll.txt"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -176,7 +176,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdo_help_cbs\QtHelp4.dll.txt"
+				RelativePath=".\rdo_help_cbs\Qt5CLucene.dll.txt"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -200,7 +200,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdo_help_cbs\QtNetwork4.dll.txt"
+				RelativePath=".\rdo_help_cbs\Qt5Core.dll.txt"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -224,7 +224,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdo_help_cbs\QtSql4.dll.txt"
+				RelativePath=".\rdo_help_cbs\Qt5Gui.dll.txt"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -248,7 +248,223 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdo_help_cbs\QtWebKit4.dll.txt"
+				RelativePath=".\rdo_help_cbs\Qt5Help.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\Qt5Multimedia.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\Qt5MultimediaWidgets.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\Qt5Network.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\Qt5OpenGL.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\Qt5PrintSupport.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\Qt5Sql.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\Qt5WebKit.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\Qt5WebKitWidgets.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\Qt5Widgets.dll.txt"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -272,10 +488,62 @@
 				</FileConfiguration>
 			</File>
 			<Filter
+				Name="platforms"
+				>
+				<File
+					RelativePath=".\rdo_help_cbs\platforms\qminimal.dll.txt"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="copy $(InputName)"
+							CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\$(InputName)&quot; copy &quot;$(QTDIR)\plugins\platforms\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\$(InputName)&quot; &gt; nul&#x0D;&#x0A;"
+							Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\$(InputName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="copy $(InputName)"
+							CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\$(InputName)&quot; copy &quot;$(QTDIR)\plugins\platforms\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\$(InputName)&quot; &gt; nul&#x0D;&#x0A;"
+							Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\$(InputName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\rdo_help_cbs\platforms\qwindows.dll.txt"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="copy $(InputName)"
+							CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\$(InputName)&quot; copy &quot;$(QTDIR)\plugins\platforms\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\$(InputName)&quot; &gt; nul&#x0D;&#x0A;"
+							Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\$(InputName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="copy $(InputName)"
+							CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\$(InputName)&quot; copy &quot;$(QTDIR)\plugins\platforms\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\$(InputName)&quot; &gt; nul&#x0D;&#x0A;"
+							Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\$(InputName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
 				Name="sqldrivers"
 				>
 				<File
-					RelativePath=".\rdo_help_cbs\sqldrivers\qsqlite4.dll.txt"
+					RelativePath=".\rdo_help_cbs\sqldrivers\qsqlite.dll.txt"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
