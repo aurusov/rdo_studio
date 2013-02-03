@@ -93,8 +93,8 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
-	connect(fontSizeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFontSize(int)));
-	connect(fontComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFontType(int)));
+	connect(fontSizeComboBox, SIGNAL(activated(int)), this, SLOT(onFontSize(int)));
+	connect(fontComboBox, SIGNAL(activated(int)), this, SLOT(onFontType(int)));
 	connect(boldCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
 	connect(italicCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
 	connect(underlineCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
