@@ -297,8 +297,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
 		return;
 
-	//! @todo unicode
-	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format("Загрузка %s...", bitmapName.c_str()));
+	studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка %1...").arg(QString::fromLocal8Bit(bitmapName.c_str())));
 	studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
 	rdo::binarystream stream;

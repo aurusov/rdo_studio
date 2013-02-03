@@ -1152,9 +1152,10 @@ rbool RDOBaseEdit::isLineVisible(const int line) const
 	return line >= first_line && line <= last_line;
 }
 
-void RDOBaseEdit::appendText(CREF(tstring) str) const
+void RDOBaseEdit::appendText(CREF(QString) str) const
 {
-	sendEditorString(SCI_ADDTEXT, str.length(), str.c_str());
+	QByteArray text = str.toLocal8Bit();
+	sendEditorString(SCI_ADDTEXT, text.size(), text.constData());
 }
 
 void RDOBaseEdit::scrollToLine(const int line) const

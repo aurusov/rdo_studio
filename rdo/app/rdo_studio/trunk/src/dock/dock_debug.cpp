@@ -29,7 +29,7 @@ DockDebug::DockDebug(PTR(QWidget) pParent)
 DockDebug::~DockDebug()
 {}
 
-void DockDebug::appendString(CREF(tstring) str)
+void DockDebug::appendString(CREF(QString) str)
 {
 	getContext().appendLine(str);
 }

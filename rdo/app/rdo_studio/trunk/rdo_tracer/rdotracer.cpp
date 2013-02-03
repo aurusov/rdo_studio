@@ -77,7 +77,7 @@ void Tracer::proc( RDOThread::RDOMessageInfo& msg )
 			RDOStudioChartDoc::resetTitleIndex();
 			try {
 				setModelName( model->getName() );
-				studioApp.getIMainWnd()->getDockDebug().appendString( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );
+				studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Получение структуры модели..."));
 				rdo::textstream model_structure;
 				sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure );
 				getModelStructure( model_structure );

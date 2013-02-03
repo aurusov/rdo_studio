@@ -429,7 +429,7 @@ void ViewPreferences::createPreview()
 	ASSERT(preview_editor);
 	preview_editor->setEditorStyle(&style_editor);
 	preview_editor->setCanClearErrorLine(false);
-	preview_editor->appendText(rdo::format(IDS_COLORSTYLE_EDITOR_SAMPLE));
+	preview_editor->appendText(QString::fromLocal8Bit("{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"));
 	preview_editor->scrollToLine(0);
 	preview_editor->setReadOnly(true);
 	preview_editor->bookmarkToggle();
@@ -446,7 +446,7 @@ void ViewPreferences::createPreview()
 
 	preview_debug = new RDODebugEdit(previewStackedWidget->currentWidget());
 	preview_debug->setEditorStyle(&style_debug);
-	preview_debug->appendLine(rdo::format(IDS_COLORSTYLE_DEBUG_SAMPLE));
+	preview_debug->appendLine(QString::fromLocal8Bit("Получение структуры модели...ok\nМодель запущена"));
 	previewStackedWidget->addWidget(preview_debug);
 
 	preview_trace = new LogMainWnd(previewStackedWidget->currentWidget());
