@@ -38,3 +38,5 @@ Tools/Options/Projects and Solutions/VC++ Directories
 Platform             = Win32
 Show directories for = Include files, добавляем $(QTDIR)\include
 Show directories for = Library files, добавляем $(QTDIR)\lib
+
+4. см. install.icu.txt, пункт 6
