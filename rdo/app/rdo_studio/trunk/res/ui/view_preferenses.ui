@@ -497,7 +497,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="pageRoot">
           <layout class="QGridLayout" name="gridLayout_7">
@@ -555,14 +555,14 @@
            <item row="0" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_9">
              <item>
-              <widget class="QCheckBox" name="checkBox_14">
+              <widget class="QCheckBox" name="wordWrapEditorCheckBox">
                <property name="text">
                 <string>Перенос слов</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_15">
+              <widget class="QCheckBox" name="horzScrollEditorCheckBox">
                <property name="text">
                 <string>Горизонтальная прокрутка</string>
                </property>
@@ -643,14 +643,14 @@
            <item row="0" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_19">
              <item>
-              <widget class="QCheckBox" name="checkBox_16">
+              <widget class="QCheckBox" name="wordWrapBuildCheckBox">
                <property name="text">
                 <string>Перенос слов</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_17">
+              <widget class="QCheckBox" name="horzScrollBuildCheckBox">
                <property name="text">
                 <string>Горизонтальная прокрутка</string>
                </property>
@@ -685,14 +685,14 @@
            <item row="0" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_20">
              <item>
-              <widget class="QCheckBox" name="checkBox_19">
+              <widget class="QCheckBox" name="wordWrapDebugCheckBox">
                <property name="text">
                 <string>Перенос слов</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_20">
+              <widget class="QCheckBox" name="horzScrollDebugCheckBox">
                <property name="text">
                 <string>Горизонтальная прокрутка</string>
                </property>
@@ -765,14 +765,14 @@
            <item row="0" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_23">
              <item>
-              <widget class="QCheckBox" name="checkBox_21">
+              <widget class="QCheckBox" name="wordWrapResultsCheckBox">
                <property name="text">
                 <string>Перенос слов</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_22">
+              <widget class="QCheckBox" name="horzScrollResultsCheckBox">
                <property name="text">
                 <string>Горизонтальная прокрутка</string>
                </property>
@@ -800,14 +800,14 @@
            <item row="0" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_24">
              <item>
-              <widget class="QCheckBox" name="checkBox_23">
+              <widget class="QCheckBox" name="wordWrapFindCheckBox">
                <property name="text">
                 <string>Перенос слов</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_24">
+              <widget class="QCheckBox" name="horzScrollFindCheckBox">
                <property name="text">
                 <string>Горизонтальная прокрутка</string>
                </property>
