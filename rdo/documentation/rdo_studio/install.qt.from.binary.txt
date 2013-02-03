@@ -25,7 +25,9 @@ qtmultimedia
 и др. файлы и папки
 
 2. Загрузка бинарников
-Из присланной ссылки на директорию qt из google-docs выкачиваем два архива
+Открываем папку из google-docs
+https://docs.google.com/folder/d/0B-tnm4ER5l74c0hnRFl4LTVHbDA/edit?usp=sharing
+и выкачиваем два архива
 qt-5.0.1-qbase-bin-vs2008-sp1.7z
 qt-5.0.1-qbase-plugins-vs2008-sp1.7z
 
