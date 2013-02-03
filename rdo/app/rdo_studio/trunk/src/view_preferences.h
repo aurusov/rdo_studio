@@ -38,7 +38,6 @@ public:
 
 	void updateDialog();
 	void updatePreview();
-	rbool checkNewOptions(const rdoEditor::RDOEditorEditStyle& style);
 
 private slots:
 	void onOkButton();
@@ -66,11 +65,119 @@ private slots:
 	void onTreeWidgetItemActivated(QTreeWidgetItem* item, int column);
 	void onSwitchPreviewComboBox(int index);
 	void onFontSize(int index);
+	void onFontType(int index);
 	void onFontBold(int state);
 	void onFontItalic(int state);
 	void onFontUnderline(int state);
 
 private:
+	enum ItemType
+	{
+		IT_ROOT = 0,
+		IT_EDITOR,
+		IT_BUILD,
+		IT_DEBUG,
+		IT_LOG,
+		IT_RESULT,
+		IT_FIND,
+		IT_CHART,
+		IT_FRAME,
+		IT_EDITOR_PLAINTEXT,
+		IT_EDITOR_IDENTIFICATOR,
+		IT_EDITOR_KEYWORD,
+		IT_EDITOR_FUNCTION,
+		IT_EDITOR_TRACE,
+		IT_EDITOR_COLOR,
+		IT_EDITOR_COMMENT,
+		IT_EDITOR_NUMBER,
+		IT_EDITOR_STRING,
+		IT_EDITOR_OPERATOR,
+		IT_EDITOR_CARET,
+		IT_EDITOR_TEXTSELECTION,
+		IT_EDITOR_BOOKMARK,
+		IT_EDITOR_FOLD,
+		IT_EDITOR_ERROR,
+		IT_BUILD_TEXT,
+		IT_BUILD_SELECTEDLINE,
+		IT_LOG_ES,
+		IT_LOG_EB,
+		IT_LOG_EF,
+		IT_LOG_EI,
+		IT_LOG_ER,
+		IT_LOG_RC,
+		IT_LOG_RE,
+		IT_LOG_RK,
+		IT_LOG_V,
+		IT_LOG_STATUS,
+		IT_LOG_DPS,
+		IT_LOG_SB,
+		IT_LOG_SO,
+		IT_LOG_STN,
+		IT_LOG_STD,
+		IT_LOG_STR,
+		IT_LOG_SRC,
+		IT_LOG_SRE,
+		IT_LOG_SRK,
+		IT_LOG_SD,
+		IT_LOG_SES,
+		IT_LOG_SEN,
+		IT_LOG_SEM,
+		IT_LOG_SEF,
+		IT_LOG_SEU,
+		IT_FIND_SEARCHTEXT,
+		IT_CHART_AXIS,
+		IT_CHART_TITLE,
+		IT_CHART_LEGEND,
+		IT_CHART_CHART,
+		IT_CHART_TIME,
+		IT_FRAME_BORDER,
+		IT_FRAME_BACKGROUND
+	};
+
+	class StyleItem;
+
+	class StyleProperty
+	{
+	public:
+		StyleItem* item;
+		int identificator;
+
+		rdoStyle::RDOStyleFont::style& font_style;
+
+		StyleProperty(StyleItem* item, int identificator, rdoStyle::RDOStyleFont::style& font_style)
+			: item(item)
+			, identificator(identificator)
+			, font_style(font_style)
+		{}
+	};
+
+	typedef std::list<PTR(StyleProperty)> PropertyList;
+
+	class StyleItem
+	{
+	public:
+		ItemType type;
+		int&     font_size;
+		tstring& font_name;
+
+		PropertyList properties;
+
+		StyleItem(ItemType type, int font_size, tstring& font_name)
+			: type(type)
+			, font_size(font_size)
+			, font_name(font_name)
+		{}
+	};
+
+	typedef std::list<PTR(StyleItem)> StyleItemList;
+
+	StyleItemList style_list;
+
+	int         all_font_size;
+	tstring     all_font_name;
+
+	rdoStyle::RDOStyleFont::style        null_font_style;
+
 	rbool m_setup;
 	rbool m_checkInFuture;
 	rbool m_openLastProject;
@@ -188,75 +295,16 @@ private:
 
 	//Окно анимации
 	treeItem m_pEdgingColor;
-	treeItem m_pBackgroundColor;	
+	treeItem m_pBackgroundColor;
 
-	enum ItemType
-	{
-		IT_ROOT = 0,
-		IT_EDITOR,
-		IT_BUILD,
-		IT_DEBUG,
-		IT_LOG,
-		IT_RESULT,
-		IT_FIND,
-		IT_CHART,
-		IT_FRAME,
-		IT_EDITOR_PLAINTEXT,
-		IT_EDITOR_IDENTIFICATOR,
-		IT_EDITOR_KEYWORD,
-		IT_EDITOR_FUNCTION,
-		IT_EDITOR_TRACE,
-		IT_EDITOR_COLOR,
-		IT_EDITOR_COMMENT,
-		IT_EDITOR_NUMBER,
-		IT_EDITOR_STRING,
-		IT_EDITOR_OPERATOR,
-		IT_EDITOR_CARET,
-		IT_EDITOR_TEXTSELECTION,
-		IT_EDITOR_BOOKMARK,
-		IT_EDITOR_FOLD,
-		IT_EDITOR_ERROR,
-		IT_BUILD_TEXT,
-		IT_BUILD_SELECTEDLINE,
-		IT_LOG_ES,
-		IT_LOG_EB,
-		IT_LOG_EF,
-		IT_LOG_EI,
-		IT_LOG_ER,
-		IT_LOG_RC,
-		IT_LOG_RE,
-		IT_LOG_RK,
-		IT_LOG_V,
-		IT_LOG_STATUS,
-		IT_LOG_DPS,
-		IT_LOG_SB,
-		IT_LOG_SO,
-		IT_LOG_STN,
-		IT_LOG_STD,
-		IT_LOG_STR,
-		IT_LOG_SRC,
-		IT_LOG_SRE,
-		IT_LOG_SRK,
-		IT_LOG_SD,
-		IT_LOG_SES,
-		IT_LOG_SEN,
-		IT_LOG_SEM,
-		IT_LOG_SEF,
-		IT_LOG_SEU,
-		IT_FIND_SEARCHTEXT,
-		IT_CHART_AXIS,
-		IT_CHART_TITLE,
-		IT_CHART_LEGEND,
-		IT_CHART_CHART,
-		IT_CHART_TIME,
-		IT_FRAME_BORDER,
-		IT_FRAME_BACKGROUND
-	};
-	
+	void createStyles();
 	void createPreview();
 	void createTree();
+	int getStylePropertyType();
+	PTR(StyleProperty) getStyleProperty();
+	PTR(StyleItem) getStyleItem();
 	PTR(QTreeWidgetItem) createTreeItem (PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType);
-
+	
 	void apply();
 };
 

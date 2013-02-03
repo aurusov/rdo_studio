@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/view_preferences.h"
 #include "app/rdo_studio/res/build_version.h"
@@ -23,6 +24,8 @@ using namespace rdo::gui::tracer;
 
 ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	: QDialog(pParent)
+	, all_font_size(-1)
+	, all_font_name("")
 {
 	setupUi(this);
 
@@ -77,6 +80,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	stackedWidget->setCurrentWidget(pageRoot);
 	createTree();
 	createPreview();
+	createStyles();
 
 	switchPreviewComboBox->addItem("Editor",  IT_EDITOR);
 	switchPreviewComboBox->addItem("Build",   IT_BUILD);
@@ -90,6 +94,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
 	connect(fontSizeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFontSize(int)));
+	connect(fontComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFontType(int)));
 	connect(boldCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
 	connect(italicCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
 	connect(underlineCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
@@ -218,7 +223,7 @@ void ViewPreferences::onTreeWidgetItemActivated(QTreeWidgetItem* item, int colum
 	{
 		switchPreviewComboBox->setCurrentIndex(item->data(column, Qt::UserRole).toInt() - 1);
 	}
-	previewStackedWidget->setCurrentIndex(item->data(column, Qt::UserRole).toInt() - 1);
+	previewStackedWidget->setCurrentIndex(getStyleItem()->type - 1);
 }
 
 void ViewPreferences::onSwitchPreviewComboBox(int index)
@@ -230,9 +235,10 @@ void ViewPreferences::onFontSize(int index)
 {
 	UNUSED(index);
 	int size = fontSizeComboBox->currentText().toInt();
-	switch(treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
+	switch(getStyleItem()->type)
 	{
 	case IT_ROOT:
+		all_font_size = size;
 		style_editor.font->size  = size;
 		style_build.font->size   = size;
 		style_debug.font->size   = size;
@@ -265,6 +271,54 @@ void ViewPreferences::onFontSize(int index)
 		break;
 	case IT_FRAME:
 		//style_frame.font->size   = size;
+		break;
+	}
+
+	updatePreview();
+}
+
+void ViewPreferences::onFontType(int index)
+{
+	UNUSED(index);
+
+	QString name = fontComboBox->currentFont().rawName();
+
+	switch(getStyleItem()->type)
+	{
+	case IT_ROOT:
+		all_font_name = name.toStdString();
+		style_editor.font->name  = name.toStdString();
+		style_build.font->name   = name.toStdString();
+		style_debug.font->name   = name.toStdString();
+		style_trace.font->name   = name.toStdString();
+		style_results.font->name = name.toStdString();
+		style_find.font->name    = name.toStdString();
+		//style_chart.font->name   = name.toStdString();
+		//style_frame.font->name   = name.toStdString();
+		break;
+	case IT_EDITOR:
+		style_editor.font->name = name.toStdString();
+		break;
+	case IT_BUILD:
+		style_build.font->name = name.toStdString();
+		break;
+	case IT_DEBUG:
+		style_debug.font->name   = name.toStdString();
+		break;
+	case IT_LOG:
+		style_trace.font->name = name.toStdString();
+		break;
+	case IT_RESULT:
+		style_results.font->name = name.toStdString();
+		break;
+	case IT_FIND:
+		style_find.font->name    = name.toStdString();
+		break;
+	case IT_CHART:
+		//style_chart.font->name   = name.toStdString();
+		break;
+	case IT_FRAME:
+		//style_frame.font->name   = name.toStdString();
 		break;
 	}
 
@@ -412,6 +466,109 @@ void ViewPreferences::createPreview()
 	previewStackedWidget->addWidget(preview_find);
 }
 
+void ViewPreferences::createStyles()
+{
+	StyleItem* item;
+	item = new StyleItem(IT_ROOT, all_font_size, all_font_name);
+	item->properties.push_back(new StyleProperty(item, IT_ROOT, null_font_style));
+	style_list.push_back(item);
+
+	RDOEditorEditTheme* editor_theme = static_cast<RDOEditorEditTheme*>(style_editor.theme);
+	item = new StyleItem(IT_EDITOR, style_editor.font->size, style_editor.font->name);
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR, editor_theme->identifierStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, editor_theme->defaultStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_IDENTIFICATOR, editor_theme->identifierStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_KEYWORD, editor_theme->keywordStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_FUNCTION, editor_theme->functionsStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TRACE, editor_theme->traceStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_COLOR, editor_theme->colorStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_COMMENT, editor_theme->commentStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_NUMBER, editor_theme->numberStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_STRING, editor_theme->stringStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_OPERATOR, editor_theme->operatorStyle));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, editor_theme->caretColor));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_FOLD, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_ERROR, null_font_style));
+	style_list.push_back(item);
+
+	RDOBuildEditTheme* build_theme = static_cast<RDOBuildEditTheme*>(style_build.theme);
+	item = new StyleItem(IT_BUILD, style_build.font->size, style_build.font->name);
+	item->properties.push_back(new StyleProperty(item, IT_BUILD, build_theme->defaultStyle));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, build_theme->defaultStyle));
+	//item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	style_list.push_back(item);
+
+	RDOBaseEditTheme* debug_theme = static_cast<RDOBaseEditTheme*>(style_debug.theme);
+	item = new StyleItem(IT_DEBUG, style_debug.font->size, style_debug.font->name);
+	item->properties.push_back(new StyleProperty(item, IT_DEBUG, debug_theme->defaultStyle));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, debug_theme->defaultStyle));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	style_list.push_back(item);
+
+	LogTheme* trace_theme = style_trace.theme;
+	item = new StyleItem(IT_LOG, style_trace.font->size, style_trace.font->name);
+	item->properties.push_back(new StyleProperty(item, IT_LOG, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_ES, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_EB, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_EF, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_EI, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_ER, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_RC, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_RE, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_RK, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_V, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_STATUS, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_DPS, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SB, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SO, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_STN, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_STD, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_STR, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SRC, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SRE, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SRK, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SD, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SES, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SEN, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SEM, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SEF, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SEU, trace_theme->style));
+	style_list.push_back(item);
+
+	RDOEditorBaseEditTheme* results_theme = static_cast<RDOEditorBaseEditTheme*>(style_results.theme);
+	item = new StyleItem(IT_RESULT, style_results.font->size, style_results.font->name);
+	item->properties.push_back(new StyleProperty(item, IT_RESULT, results_theme->identifierStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, results_theme->defaultStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_IDENTIFICATOR, results_theme->identifierStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_KEYWORD, results_theme->keywordStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_NUMBER, results_theme->numberStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_STRING, results_theme->stringStyle));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_OPERATOR, results_theme->operatorStyle));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	style_list.push_back(item);
+
+	RDOFindEditTheme* find_theme = static_cast<RDOFindEditTheme*>(style_find.theme);
+	item = new StyleItem(IT_FIND, style_find.font->size, style_find.font->name);
+	item->properties.push_back(new StyleProperty(item, IT_FIND, find_theme->defaultStyle));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, find_theme->defaultStyle));
+	item->properties.push_back(new StyleProperty(item, IT_FIND_SEARCHTEXT, results_theme->identifierStyle));
+	//item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
+	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	style_list.push_back(item);
+
+}
+
 void ViewPreferences::createTree()
 {
 	treeWidget->setColumnCount(1);
@@ -449,16 +606,16 @@ void ViewPreferences::createTree()
 	m_pGroup     = createTreeItem(m_pText, "Группа",             IT_EDITOR_FOLD);
 	m_pError     = createTreeItem(m_pText, "Ошибка",             IT_EDITOR_ERROR);
 
-	m_pTextCompile      = createTreeItem(m_pCompile, "текст",             IT_BUILD_TEXT);
-	m_pSelectedString   = createTreeItem(m_pCompile, "выделенная строка", IT_BUILD_SELECTEDLINE);
-	m_pCaretCompile     = createTreeItem(m_pCompile, "каретка",           IT_EDITOR_CARET);
-	m_pSelectionCompile = createTreeItem(m_pCompile, "выделение",         IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkCompile  = createTreeItem(m_pCompile, "закладка",          IT_EDITOR_BOOKMARK);
+	m_pTextCompile      = createTreeItem(m_pCompile, "Текст",             IT_BUILD_TEXT);
+	m_pSelectedString   = createTreeItem(m_pCompile, "Выделенная строка", IT_BUILD_SELECTEDLINE);
+	m_pCaretCompile     = createTreeItem(m_pCompile, "Каретка",           IT_EDITOR_CARET);
+	m_pSelectionCompile = createTreeItem(m_pCompile, "Выделение",         IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkCompile  = createTreeItem(m_pCompile, "Закладка",          IT_EDITOR_BOOKMARK);
 
-	m_pTextDebug      = createTreeItem(m_pDebug, "текст",     IT_BUILD_TEXT);
-	m_pCaretDebug     = createTreeItem(m_pDebug, "каретка",   IT_EDITOR_CARET);
-	m_pSelectionDebug = createTreeItem(m_pDebug, "выделение", IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkDebug  = createTreeItem(m_pDebug, "закладка",  IT_EDITOR_BOOKMARK);
+	m_pTextDebug      = createTreeItem(m_pDebug, "Текст",     IT_BUILD_TEXT);
+	m_pCaretDebug     = createTreeItem(m_pDebug, "Каретка",   IT_EDITOR_CARET);
+	m_pSelectionDebug = createTreeItem(m_pDebug, "Выделение", IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkDebug  = createTreeItem(m_pDebug, "Закладка",  IT_EDITOR_BOOKMARK);
 
 	m_pES     = createTreeItem(m_pTrace, "Служебное событие (ES)",                         IT_LOG_ES);
 	m_pEB     = createTreeItem(m_pTrace, "Начало действия (EB)",                           IT_LOG_EB);
@@ -486,31 +643,31 @@ void ViewPreferences::createTree()
 	m_pSEF    = createTreeItem(m_pTrace, "Завершение поиска (SEF)",                        IT_LOG_SEF);
 	m_pSEU    = createTreeItem(m_pTrace, "Завершение поиска (SEU)",                        IT_LOG_SEU);
 
-	m_pPlainTextResult = createTreeItem(m_pResult, "исходный текст", IT_EDITOR_PLAINTEXT);
-	m_pVariableResult  = createTreeItem(m_pResult, "переменная",     IT_EDITOR_IDENTIFICATOR);
-	m_pKeywordResult   = createTreeItem(m_pResult, "ключевое слово", IT_EDITOR_KEYWORD);
-	m_pNumberResult    = createTreeItem(m_pResult, "число",          IT_EDITOR_NUMBER);
-	m_pStringResult    = createTreeItem(m_pResult, "строка",         IT_EDITOR_STRING);
-	m_pOperatorResult  = createTreeItem(m_pResult, "оператор",       IT_EDITOR_OPERATOR);
-	m_pCaretResult     = createTreeItem(m_pResult, "каретка",        IT_EDITOR_CARET);
-	m_pSelectionResult = createTreeItem(m_pResult, "выделение",      IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkResult  = createTreeItem(m_pResult, "закладка",       IT_EDITOR_BOOKMARK);
+	m_pPlainTextResult = createTreeItem(m_pResult, "Исходный текст", IT_EDITOR_PLAINTEXT);
+	m_pVariableResult  = createTreeItem(m_pResult, "Переменная",     IT_EDITOR_IDENTIFICATOR);
+	m_pKeywordResult   = createTreeItem(m_pResult, "Ключевое слово", IT_EDITOR_KEYWORD);
+	m_pNumberResult    = createTreeItem(m_pResult, "Число",          IT_EDITOR_NUMBER);
+	m_pStringResult    = createTreeItem(m_pResult, "Строка",         IT_EDITOR_STRING);
+	m_pOperatorResult  = createTreeItem(m_pResult, "Оператор",       IT_EDITOR_OPERATOR);
+	m_pCaretResult     = createTreeItem(m_pResult, "Каретка",        IT_EDITOR_CARET);
+	m_pSelectionResult = createTreeItem(m_pResult, "Выделение",      IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkResult  = createTreeItem(m_pResult, "Закладка",       IT_EDITOR_BOOKMARK);
 
-	m_pTextSearch           = createTreeItem(m_pSearch, "текст",             IT_BUILD_TEXT);
-	m_pStringSearch         = createTreeItem(m_pSearch, "строка для поиска", IT_FIND_SEARCHTEXT);
-	m_pSelectedStringSearch = createTreeItem(m_pSearch, "выделенная строка", IT_BUILD_SELECTEDLINE);
-	m_pCaretSearch          = createTreeItem(m_pSearch, "каретка",           IT_EDITOR_CARET);
-	m_pSelectionSearch      = createTreeItem(m_pSearch, "выделение",         IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkSearch       = createTreeItem(m_pSearch, "закладка",          IT_EDITOR_BOOKMARK);
+	m_pTextSearch           = createTreeItem(m_pSearch, "Текст",             IT_BUILD_TEXT);
+	m_pStringSearch         = createTreeItem(m_pSearch, "Строка для поиска", IT_FIND_SEARCHTEXT);
+	m_pSelectedStringSearch = createTreeItem(m_pSearch, "Выделенная строка", IT_BUILD_SELECTEDLINE);
+	m_pCaretSearch          = createTreeItem(m_pSearch, "Каретка",           IT_EDITOR_CARET);
+	m_pSelectionSearch      = createTreeItem(m_pSearch, "Выделение",         IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkSearch       = createTreeItem(m_pSearch, "Закладка",          IT_EDITOR_BOOKMARK);
 
-	m_pAxis   = createTreeItem(m_pChart, "ось",       IT_CHART_AXIS);
-	m_pTitle  = createTreeItem(m_pChart, "заголовок", IT_CHART_TITLE);
-	m_pLegend = createTreeItem(m_pChart, "легенда",   IT_CHART_LEGEND);
-	m_pGraph  = createTreeItem(m_pChart, "график",    IT_CHART_CHART);
-	m_pTime   = createTreeItem(m_pChart, "время",     IT_CHART_TIME);
+	m_pAxis   = createTreeItem(m_pChart, "Ось",       IT_CHART_AXIS);
+	m_pTitle  = createTreeItem(m_pChart, "Заголовок", IT_CHART_TITLE);
+	m_pLegend = createTreeItem(m_pChart, "Легенда",   IT_CHART_LEGEND);
+	m_pGraph  = createTreeItem(m_pChart, "График",    IT_CHART_CHART);
+	m_pTime   = createTreeItem(m_pChart, "Время",     IT_CHART_TIME);
 
-	m_pEdgingColor     = createTreeItem(m_pAnimation, "цвет окантовки",               IT_FRAME_BORDER);
-	m_pBackgroundColor = createTreeItem(m_pAnimation, "цвет фона за пределами кадра", IT_FRAME_BACKGROUND);
+	m_pEdgingColor     = createTreeItem(m_pAnimation, "Цвет окантовки",               IT_FRAME_BORDER);
+	m_pBackgroundColor = createTreeItem(m_pAnimation, "Цвет фона за пределами кадра", IT_FRAME_BACKGROUND);
 
 	treeWidget->setCurrentItem(m_pRoot);
 }
@@ -523,12 +680,68 @@ PTR(QTreeWidgetItem) ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent
 	return item;
 }
 
+int ViewPreferences::getStylePropertyType()
+{
+	PTR(StyleItem) item = getStyleItem();
+	BOOST_FOREACH(StyleProperty* prop, item->properties)
+	{
+		if(prop->identificator == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
+			return prop->identificator;
+	}
+	return -1;
+}
+
+PTR(ViewPreferences::StyleProperty) ViewPreferences::getStyleProperty()
+{
+	PTR(StyleItem) item =getStyleItem();
+	BOOST_FOREACH(StyleProperty* prop, item->properties)
+	{
+		if(prop->identificator == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
+			return prop;
+	}
+	return NULL;
+}
+
+PTR(ViewPreferences::StyleItem) ViewPreferences::getStyleItem()
+{
+	if(treeWidget->currentItem()->data(0, Qt::UserRole).toInt() == IT_ROOT)
+	{
+		BOOST_FOREACH(StyleItem* item, style_list)
+		{
+			if(item->type == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
+				return item;
+		}
+	}
+
+	if(treeWidget->currentItem()->parent()->data(0, Qt::UserRole).toInt() == IT_ROOT)
+	{
+		BOOST_FOREACH(StyleItem* item, style_list)
+		{
+			if(item->type == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
+			return item;
+		}
+	}
+
+	BOOST_FOREACH(StyleItem* item, style_list)
+	{
+		if(item->type == treeWidget->currentItem()->parent()->data(0, Qt::UserRole).toInt())
+			return item;
+	}
+	return NULL;
+}
+
 void ViewPreferences::apply()
 {
 	studioApp.getStyle()->style_editor  = style_editor;
+	studioApp.getStyle()->style_build   = style_build;
+	studioApp.getStyle()->style_debug   = style_debug;
+	studioApp.getStyle()->style_trace   = style_trace;
+	studioApp.getStyle()->style_results = style_results;
+	studioApp.getStyle()->style_find    = style_find;
 	studioApp.setFileAssociationSetup(m_setup);
 	studioApp.setFileAssociationCheckInFuture(m_checkInFuture);
 	studioApp.setOpenLastProject(m_openLastProject);
 	studioApp.setShowCaptionFullName(m_showFullName);
 	studioApp.getStyle()->updateAllStyles();
 }
+
