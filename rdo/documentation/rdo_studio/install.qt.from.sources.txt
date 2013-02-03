@@ -78,3 +78,13 @@ Tools/Options/Projects and Solutions/VC++ Directories
 Platform             = Win32
 Show directories for = Include files, добавляем $(QTDIR)\include
 Show directories for = Library files, добавляем $(QTDIR)\lib
+
+PS: Чтобы скомпиленная Qt стала переносимой в другие папки, необходимо в файле
+C:\qt-5.0.1\qtbase\bin\qt.conf
+прописать
+[Paths]
+Prefix=..
+
+А для релиза РДО
+[Paths]
+Plugins=./plugins
