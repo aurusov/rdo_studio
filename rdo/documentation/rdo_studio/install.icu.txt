@@ -7,12 +7,8 @@ http://site.icu-project.org/
 
 2. Для сборки надо поставить cygwin. См. install.cygwin.txt
 3. Теперь консольный квест
-3.1 Открываем спец. консоль
+3.1 Открываем спец. консоль *с правами администратора*
 Пуск\Поиск\Visual Studio 2008 Command Prompt
-
-3.2 Запускаем vcvars32.bat
-У меня он лежит в 
-C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\vcvars32.bat
 
 3.3 Добавляем cygwin в PATH прямо из консоли
 set PATH=D:\Downloads\cygwin\bin;%PATH%
@@ -23,4 +19,12 @@ D:\Downloads\cygwin\bin\bash.exe
 4. Конфигурирование и компиляция
 cd /cygdrive/c/icu/source/
 ./runConfigureICU Cygwin/MSVC
+
+Если ошибка, то выходим из cygwin'а и запускаем
+"C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\vcvars32.bat"
+Повторяем 3.4. Если удачно, то
+
 make
+make install
+
+5. После сборки, можно удалить C:\icu, т.к. всё нужное будет в D:\Downloads\cygwin\usr\local\
