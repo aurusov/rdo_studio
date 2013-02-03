@@ -156,16 +156,28 @@ private:
 	class StyleItem
 	{
 	public:
-		ItemType type;
-		int&     font_size;
-		tstring& font_name;
+		ItemType                       type;
+		int&                           font_size;
+		tstring&                       font_name;
+		rbool&                         wordwrap;
+		rbool&                         horzscrollbar;
+		rbool&                         warning;
+		rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle;
+		rdoEditor::RDOFoldStyle&       foldstyle;
+		rbool&                         commentfold;
 
 		PropertyList properties;
 
-		StyleItem(ItemType type, int font_size, tstring& font_name)
+		StyleItem(ItemType type, int font_size, tstring& font_name, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
 			: type(type)
 			, font_size(font_size)
 			, font_name(font_name)
+			, wordwrap(wordwrap)
+			, horzscrollbar(horzscrollbar)
+			, warning(warning)
+			, bookmarkstyle(bookmarkstyle)
+			, foldstyle(foldstyle)
+			, commentfold(commentfold)
 		{}
 	};
 
@@ -177,6 +189,12 @@ private:
 	tstring     all_font_name;
 
 	rdoStyle::RDOStyleFont::style        null_font_style;
+	static rbool                         null_wordwrap;
+	static rbool                         null_horzscrollbar;
+	static rbool                         null_warning;
+	static rbool                         null_commentfold;
+	static rdoEditCtrl::RDOBookmarkStyle null_bookmarkstyle;
+	static rdoEditor::RDOFoldStyle       null_foldstyle;
 
 	rbool m_setup;
 	rbool m_checkInFuture;

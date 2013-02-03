@@ -22,10 +22,18 @@ using namespace rdoEditCtrl;
 using namespace rdoEditor;
 using namespace rdo::gui::tracer;
 
+rbool ViewPreferences::null_wordwrap      = false;
+rbool ViewPreferences::null_horzscrollbar = true;
+rbool ViewPreferences::null_warning       = true;
+rbool ViewPreferences::null_commentfold   = false;
+RDOBookmarkStyle ViewPreferences::null_bookmarkstyle = RDOBOOKMARKS_NONE;
+RDOFoldStyle     ViewPreferences::null_foldstyle     = RDOFOLDS_NONE;
+
 ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	: QDialog(pParent)
 	, all_font_size(-1)
 	, all_font_name("")
+	, null_font_style(rdoStyle::RDOStyleFont::NONE)
 {
 	setupUi(this);
 
@@ -474,7 +482,7 @@ void ViewPreferences::createStyles()
 	style_list.push_back(item);
 
 	RDOEditorEditTheme* editor_theme = static_cast<RDOEditorEditTheme*>(style_editor.theme);
-	item = new StyleItem(IT_EDITOR, style_editor.font->size, style_editor.font->name);
+	item = new StyleItem(IT_EDITOR, style_editor.font->size, style_editor.font->name, style_editor.window->wordWrap, style_editor.window->showHorzScrollBar, editor_theme->bookmarkStyle, editor_theme->foldStyle, editor_theme->commentFold);
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR, editor_theme->identifierStyle));
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, editor_theme->defaultStyle));
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_IDENTIFICATOR, editor_theme->identifierStyle));
@@ -494,22 +502,22 @@ void ViewPreferences::createStyles()
 	style_list.push_back(item);
 
 	RDOBuildEditTheme* build_theme = static_cast<RDOBuildEditTheme*>(style_build.theme);
-	item = new StyleItem(IT_BUILD, style_build.font->size, style_build.font->name);
+	item = new StyleItem(IT_BUILD, style_build.font->size, style_build.font->name, style_build.window->wordWrap, style_build.window->showHorzScrollBar, null_bookmarkstyle, null_foldstyle, null_commentfold, build_theme->warning);
 	item->properties.push_back(new StyleProperty(item, IT_BUILD, build_theme->defaultStyle));
 	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, build_theme->defaultStyle));
-	//item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
 	style_list.push_back(item);
 
 	RDOBaseEditTheme* debug_theme = static_cast<RDOBaseEditTheme*>(style_debug.theme);
-	item = new StyleItem(IT_DEBUG, style_debug.font->size, style_debug.font->name);
+	item = new StyleItem(IT_DEBUG, style_debug.font->size, style_debug.font->name, style_debug.window->wordWrap, style_debug.window->showHorzScrollBar);
 	item->properties.push_back(new StyleProperty(item, IT_DEBUG, debug_theme->defaultStyle));
 	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, debug_theme->defaultStyle));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
 	style_list.push_back(item);
 
 	LogTheme* trace_theme = style_trace.theme;
@@ -543,7 +551,7 @@ void ViewPreferences::createStyles()
 	style_list.push_back(item);
 
 	RDOEditorBaseEditTheme* results_theme = static_cast<RDOEditorBaseEditTheme*>(style_results.theme);
-	item = new StyleItem(IT_RESULT, style_results.font->size, style_results.font->name);
+	item = new StyleItem(IT_RESULT, style_results.font->size, style_results.font->name, style_results.window->wordWrap, style_results.window->showHorzScrollBar);
 	item->properties.push_back(new StyleProperty(item, IT_RESULT, results_theme->identifierStyle));
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, results_theme->defaultStyle));
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_IDENTIFICATOR, results_theme->identifierStyle));
@@ -551,20 +559,20 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_NUMBER, results_theme->numberStyle));
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_STRING, results_theme->stringStyle));
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_OPERATOR, results_theme->operatorStyle));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
 	style_list.push_back(item);
 
 	RDOFindEditTheme* find_theme = static_cast<RDOFindEditTheme*>(style_find.theme);
-	item = new StyleItem(IT_FIND, style_find.font->size, style_find.font->name);
+	item = new StyleItem(IT_FIND, style_find.font->size, style_find.font->name, style_find.window->wordWrap, style_find.window->showHorzScrollBar);
 	item->properties.push_back(new StyleProperty(item, IT_FIND, find_theme->defaultStyle));
 	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, find_theme->defaultStyle));
 	item->properties.push_back(new StyleProperty(item, IT_FIND_SEARCHTEXT, results_theme->identifierStyle));
-	//item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
 	style_list.push_back(item);
 
 }
@@ -735,7 +743,7 @@ void ViewPreferences::apply()
 	studioApp.getStyle()->style_editor  = style_editor;
 	studioApp.getStyle()->style_build   = style_build;
 	studioApp.getStyle()->style_debug   = style_debug;
-	studioApp.getStyle()->style_trace   = style_trace;
+	//studioApp.getStyle()->style_trace   = style_trace;
 	studioApp.getStyle()->style_results = style_results;
 	studioApp.getStyle()->style_find    = style_find;
 	studioApp.setFileAssociationSetup(m_setup);
