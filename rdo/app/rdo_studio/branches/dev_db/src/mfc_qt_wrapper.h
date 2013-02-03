@@ -11,7 +11,7 @@
 #define _RDO_STUDIO_QT_WRAPPER_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qwidget.h>
+#include <QtWidgets/qwidget.h>
 #include <QtGui/qevent.h>
 #include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS

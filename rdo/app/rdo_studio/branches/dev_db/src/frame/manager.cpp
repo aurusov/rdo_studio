@@ -82,7 +82,7 @@ rbool RDOStudioFrameManager::init()
 void RDOStudioFrameManager::insertFrame(CREF(tstring) frameName)
 {
 	PTR(Frame) item = new Frame();
-	item->m_pTreeWidgetItem = studioApp.getIMainWnd()->getDockFrame().getContext().insertFrame(QString::fromStdString(frameName));
+	item->m_pTreeWidgetItem = studioApp.getIMainWnd()->getDockFrame().getContext().insertFrame(QString::fromLocal8Bit(frameName.c_str()));
 	item->m_name            = frameName;
 	m_frameList.push_back(item);
 }
@@ -184,7 +184,7 @@ PTR(FrameAnimationWnd) RDOStudioFrameManager::createView(ruint index)
 		pView = new FrameAnimationWnd(NULL);
 		studioApp.getIMainWnd()->addSubWindow(pView);
 		pView->parentWidget()->setWindowIcon (QIcon(QString::fromUtf8(":/images/images/mdi_frame.png")));
-		pView->parentWidget()->setWindowTitle(QString::fromStdString(rdo::format("кадр: %s", getFrameName(index).c_str()).c_str()));
+		pView->parentWidget()->setWindowTitle(QString::fromLocal8Bit(rdo::format("кадр: %s", getFrameName(index).c_str()).c_str()));
 
 		m_frameList[index]->m_pView    = pView;
 		m_frameList[index]->m_pContent = pView->getContent();
@@ -297,6 +297,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
 		return;
 
+	//! @todo unicode
 	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format("Загрузка %s...", bitmapName.c_str()));
 	studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
@@ -305,7 +306,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	model->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
 	rbool ok = false;
-	QPixmap pixmap(QString::fromStdString(data.m_name));
+	QPixmap pixmap(QString::fromLocal8Bit(data.m_name.c_str()));
 	if (!pixmap.isNull())
 	{
 		std::pair<rdo::gui::BitmapList::const_iterator, rbool> result =

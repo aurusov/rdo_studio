@@ -10,13 +10,13 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qaction.h>
+#include <QtWidgets/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_debug.h"
 // --------------------------------------------------------------------------------
 
 DockDebug::DockDebug(PTR(QWidget) pParent)
-	: DockFocusable("Вывод", pParent)
+	: DockFocusable(QString::fromStdWString(L"Вывод"), pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 150));

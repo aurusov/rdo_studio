@@ -11,7 +11,7 @@
 #define _RDO_STUDIO_RDO_EDIT_RDOEDITORTABCTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qtabwidget.h>
+#include <QtWidgets/qtabwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/rdo_edit/rdoeditoredit.h"
 // --------------------------------------------------------------------------------

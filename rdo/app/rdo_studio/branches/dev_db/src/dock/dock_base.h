@@ -11,8 +11,8 @@
 #define _RDO_STUDIO_DOCK_BASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qdockwidget.h>
-#include <QtGui/qboxlayout.h>
+#include <QtWidgets/qdockwidget.h>
+#include <QtWidgets/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/mfc_qt_wrapper.h"
 // --------------------------------------------------------------------------------

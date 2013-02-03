@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
-#include <QtGui/qwidget.h>
-#include <QtGui/qscrollarea.h>
+#include <QtWidgets/qwidget.h>
+#include <QtWidgets/qscrollarea.h>
 #include <QtGui/qevent.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdoanimation.h"

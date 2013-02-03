@@ -11,7 +11,7 @@
 #define _RDO_STUDIO_CHART_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qwidget.h>
+#include <QtWidgets/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "app/rdo_studio/rdo_tracer/rdotracervalues.h"

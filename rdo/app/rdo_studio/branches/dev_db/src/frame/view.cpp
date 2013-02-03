@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
-#include <QtGui/qlayout.h>
+#include <QtWidgets/qlayout.h>
 #include <QtGui/qpainter.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
@@ -320,7 +320,7 @@ void FrameAnimationContent::elementText(PTR(rdo::animation::TextElement) pElemen
 		pElement->m_size.m_height
 	);
 
-	m_memDC.dc().drawText(rect, flags, QString::fromStdString(pElement->m_text), &rect);
+	m_memDC.dc().drawText(rect, flags, QString::fromLocal8Bit(pElement->m_text.c_str()), &rect);
 }
 
 void FrameAnimationContent::elementRect(PTR(rdo::animation::RectElement) pElement)

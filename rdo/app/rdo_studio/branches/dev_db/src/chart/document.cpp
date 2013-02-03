@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <algorithm>
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm/find_if.hpp>
@@ -57,7 +58,7 @@ void RDOStudioChartDocInsertTime::operator ()( TracerValue* val )
 				prev_it --;
 				offl -= (*prev_it)->time;
 			}
-			double minoff = min( offl, offr );
+			double minoff = std::min( offl, offr );
 			if ( minoff < doc->minTimeOffset )
 				doc->minTimeOffset = minoff;
 		}
@@ -347,7 +348,7 @@ tstring RDOStudioChartDoc::getTitle() const
 void RDOStudioChartDoc::setTitle(CREF(tstring) title)
 {
 	this->title = title;
-	getFirstView()->getQtParent()->setWindowTitle(QString::fromStdString(rdo::format(IDS_CHART_TITLE, this->title.c_str()).c_str()));
+	getFirstView()->getQtParent()->setWindowTitle(QString::fromLocal8Bit(rdo::format(IDS_CHART_TITLE, this->title.c_str()).c_str()));
 }
 
 void RDOStudioChartDoc::autoTitle()

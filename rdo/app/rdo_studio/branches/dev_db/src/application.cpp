@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextcodec.h>
-#include <QtGui/qmessagebox.h>
+#include <QtWidgets/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"
@@ -116,24 +116,24 @@ void RDOStudioCommandLineInfo::ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bL
 RDOStudioApp studioApp;
 
 #ifdef _DEBUG
-void g_messageOutput(QtMsgType type, const char *msg)
+void g_messageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
 	switch (type)
 	{
 	case QtDebugMsg:
-		TRACE1("Debug: %s\n", msg);
+		TRACE1("Debug: %s\n", msg.toStdString().c_str());
 		break;
 
 	case QtWarningMsg:
-		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", msg);
+//		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", msg);
 		break;
 
 	case QtCriticalMsg:
-		QMessageBox::critical(studioApp.getMainWnd(), "QtCritical", msg);
+//		QMessageBox::critical(studioApp.getMainWnd(), "QtCritical", msg);
 		break;
 
 	case QtFatalMsg:
-		QMessageBox::critical(studioApp.getMainWnd(), "QtFatal", msg);
+//		QMessageBox::critical(studioApp.getMainWnd(), "QtFatal", msg);
 		break;
 	}
 }
@@ -158,12 +158,11 @@ RDOStudioApp::RDOStudioApp()
 	, m_pMainFrame                  (NULL  )
 {
 #ifdef _DEBUG
-	qInstallMsgHandler(g_messageOutput);
+	qInstallMessageHandler(g_messageOutput);
 #endif
 
 	setlocale(LC_ALL,     _T("rus"));
 	setlocale(LC_NUMERIC, _T("eng"));
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());
 
 	m_log.open(_T("log.txt"));
 }
@@ -173,7 +172,9 @@ RDOStudioApp::~RDOStudioApp()
 
 BOOL RDOStudioApp::Run()
 {
-	return QMfcApp::run(this);
+	int result = QMfcApp::run(this);
+	delete qApp;
+	return result;
 }
 
 BOOL RDOStudioApp::InitInstance()
