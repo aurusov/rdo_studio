@@ -353,23 +353,24 @@ void ViewPreferences::onFontType(int index)
 
 void ViewPreferences::onFontBold(int state)
 {
-
+		updatePreview();
 }
 
 void ViewPreferences::onFontItalic(int state)
 {
-
+	updatePreview();
 }
 
 void ViewPreferences::onFontUnderline(int state)
 {
-
+	updatePreview();
 }
 
 void ViewPreferences::onHorzScroll(int state)
 {
 	PTR(StyleItem) item = getStyleItem();
 	item->horzscrollbar = state;
+	updatePreview();
 }
 
 void ViewPreferences::onWordWrap(int state)
@@ -420,12 +421,14 @@ void ViewPreferences::onWordWrap(int state)
 			break;
 		}
 	}
+	updatePreview();
 }
 
 void ViewPreferences::onBookmark(int index)
 {
 	PTR(StyleItem) item = getStyleItem();
 	item->bookmarkstyle =static_cast<RDOBookmarkStyle>(index);
+	updatePreview();
 }
 
 void ViewPreferences::updateDialog()
