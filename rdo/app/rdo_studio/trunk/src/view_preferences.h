@@ -71,6 +71,7 @@ private slots:
 	void onFontUnderline(int state);
 	void onHorzScroll(int state);
 	void onWordWrap(int state);
+	void onBookmark(int index);
 
 private:
 	enum ItemType

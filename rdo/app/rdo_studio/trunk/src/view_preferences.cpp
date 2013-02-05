@@ -99,6 +99,12 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	switchPreviewComboBox->addItem("Chart",   IT_CHART);
 	switchPreviewComboBox->addItem("Frame",   IT_FRAME);
 
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Нет"),           RDOBOOKMARKS_NONE);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Круг"),          RDOBOOKMARKS_CIRCLE);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Прямоугольник"), RDOBOOKMARKS_RECT);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Овал"),          RDOBOOKMARKS_ROUNDRECT);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Стрелка"),       RDOBOOKMARKS_ARROW);
+
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
 	connect(fontSizeComboBox, SIGNAL(activated(int)), this, SLOT(onFontSize(int)));
@@ -116,6 +122,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(wordWrapDebugCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
 	connect(wordWrapResultsCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
 	connect(wordWrapFindCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
+	connect(bookmarkComboBox, SIGNAL(activated(int)), this, SLOT(onBookmark(int)));
 
 
 	updateDialog();
@@ -413,6 +420,12 @@ void ViewPreferences::onWordWrap(int state)
 			break;
 		}
 	}
+}
+
+void ViewPreferences::onBookmark(int index)
+{
+	PTR(StyleItem) item = getStyleItem();
+	item->bookmarkstyle =static_cast<RDOBookmarkStyle>(index);
 }
 
 void ViewPreferences::updateDialog()

@@ -497,7 +497,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="pageRoot">
           <layout class="QGridLayout" name="gridLayout_7">
@@ -582,7 +582,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_9">
+                <widget class="QComboBox" name="foldComboBox">
                  <property name="minimumSize">
                   <size>
                    <width>110</width>
@@ -603,7 +603,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_10">
+                <widget class="QComboBox" name="bookmarkComboBox">
                  <property name="minimumSize">
                   <size>
                    <width>80</width>
