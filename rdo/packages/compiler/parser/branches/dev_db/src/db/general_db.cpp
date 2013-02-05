@@ -85,7 +85,7 @@ int GeneralDB::queryExecIndex(const QString& table)
 
 void GeneralDB::pushContext(int context)
 {
-	m_context = context<int>;
+	m_context = context;
 }
 
 IDB::bany GeneralDB::popContext()
