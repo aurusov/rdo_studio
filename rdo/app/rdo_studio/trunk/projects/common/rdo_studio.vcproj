@@ -185,7 +185,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Core.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Core.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Gui.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Gui.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgets.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgets.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimal.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimal.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindows.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindows.dll&quot; &gt;null"
+				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Core.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Core.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Gui.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Gui.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgets.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgets.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimal.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimal.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindows.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindows.dll&quot; &gt;null&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -357,7 +357,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Core.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Core.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Gui.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Gui.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgets.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgets.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimal.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimal.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindows.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindows.dll&quot; &gt;null"
+				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Core.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Core.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Gui.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Gui.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgets.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgets.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimal.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimal.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindows.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindows.dll&quot; &gt;null&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -528,7 +528,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Core.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Core.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Gui.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Gui.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgets.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgets.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimal.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimal.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindows.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindows.dll&quot; &gt;null"
+				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Core.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Core.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Gui.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Gui.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgets.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgets.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimal.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimal.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindows.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindows.dll&quot; &gt;null&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -2516,6 +2516,22 @@
 			Name=".chart"
 			>
 			<File
+				RelativePath="..\..\src\chart\chart_doc.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\chart\chart_doc.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\chart\chart_options.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\chart\chart_options.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\chart\chart_serie.cpp"
 				>
 			</File>
@@ -2600,188 +2616,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\chart\document.cpp"
-				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_chart"
-						BrowseInformationFile="$(IntDir)\document_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_chart"
-						BrowseInformationFile="$(IntDir)\document_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_chart"
-						BrowseInformationFile="$(IntDir)\document_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_chart"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\chart\document.h"
+				RelativePath="..\..\src\chart\chart_view.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\chart\options.cpp"
-				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\options_chart"
-						BrowseInformationFile="$(IntDir)\options_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\options_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\options_chart"
-						BrowseInformationFile="$(IntDir)\options_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\options_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\options_chart"
-						BrowseInformationFile="$(IntDir)\options_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\options_chart"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\chart\options.h"
+				RelativePath="..\..\src\chart\chart_view.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\chart\view.cpp"
-				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_chart"
-						BrowseInformationFile="$(IntDir)\view_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_chart"
-						BrowseInformationFile="$(IntDir)\view_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_chart"
-						BrowseInformationFile="$(IntDir)\view_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_chart"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\chart\view.h"
+				RelativePath="..\..\src\chart\chart_view_style.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\chart\view_style.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\chart\view_style.h"
+				RelativePath="..\..\src\chart\chart_view_style.h"
 				>
 			</File>
 		</Filter>
