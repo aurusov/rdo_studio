@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="QtSql4.lib QtCore4.lib $(QTDIR)\plugins\sqldrivers\qsqlpsql4.lib"
+				AdditionalDependencies="Qt5Sql.lib Qt5Core.lib $(QTDIR)\plugins\sqldrivers\qsqlpsql.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -136,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="QtSqld4.lib QtCored4.lib $(QTDIR)\plugins\sqldrivers\qsqlpsqld4.lib"
+				AdditionalDependencies="Qt5Sqld.lib Qt5Cored.lib $(QTDIR)\plugins\sqldrivers\qsqlpsqld.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
