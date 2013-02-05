@@ -104,8 +104,19 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(fontSizeComboBox, SIGNAL(activated(int)), this, SLOT(onFontSize(int)));
 	connect(fontComboBox, SIGNAL(activated(int)), this, SLOT(onFontType(int)));
 	connect(boldCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
-	connect(italicCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
-	connect(underlineCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
+	connect(italicCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontItalic(int)));
+	connect(underlineCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontUnderline(int)));
+	connect(horzScrollEditorCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onHorzScroll(int)));
+	connect(horzScrollBuildCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onHorzScroll(int)));
+	connect(horzScrollDebugCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onHorzScroll(int)));
+	connect(horzScrollResultsCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onHorzScroll(int)));
+	connect(horzScrollFindCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onHorzScroll(int)));
+	connect(wordWrapEditorCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
+	connect(wordWrapBuildCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
+	connect(wordWrapDebugCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
+	connect(wordWrapResultsCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
+	connect(wordWrapFindCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
+
 
 	updateDialog();
 }
@@ -346,6 +357,62 @@ void ViewPreferences::onFontItalic(int state)
 void ViewPreferences::onFontUnderline(int state)
 {
 
+}
+
+void ViewPreferences::onHorzScroll(int state)
+{
+	PTR(StyleItem) item = getStyleItem();
+	item->horzscrollbar = state;
+}
+
+void ViewPreferences::onWordWrap(int state)
+{
+	PTR(StyleItem) item = getStyleItem();
+	item->wordwrap = state;
+		
+	switch(item->type)
+	{
+	case IT_EDITOR:
+		horzScrollEditorCheckBox->setEnabled(state ? false : true);
+		break;
+	case IT_BUILD:
+		horzScrollBuildCheckBox->setEnabled(state ? false : true);
+		break;
+	case IT_DEBUG:
+		horzScrollDebugCheckBox->setEnabled(state ? false : true);
+		break;
+	case IT_RESULT:
+		horzScrollResultsCheckBox->setEnabled(state ? false : true);
+		break;
+	case IT_FIND:
+		horzScrollFindCheckBox->setEnabled(state ? false : true);
+		break;
+	}
+	if(state)
+	{
+		item->horzscrollbar = false;
+	}
+	else
+	{
+		switch(item->type)
+		{
+		case IT_EDITOR:
+			item->horzscrollbar = horzScrollEditorCheckBox->checkState();
+			break;
+		case IT_BUILD:
+			item->horzscrollbar = horzScrollBuildCheckBox->checkState();
+			break;
+		case IT_DEBUG:
+			item->horzscrollbar = horzScrollDebugCheckBox->checkState();
+			break;
+		case IT_RESULT:
+			item->horzscrollbar = horzScrollResultsCheckBox->checkState();
+			break;
+		case IT_FIND:
+			item->horzscrollbar = horzScrollFindCheckBox->checkState();
+			break;
+		}
+	}
 }
 
 void ViewPreferences::updateDialog()

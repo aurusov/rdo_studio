@@ -69,6 +69,8 @@ private slots:
 	void onFontBold(int state);
 	void onFontItalic(int state);
 	void onFontUnderline(int state);
+	void onHorzScroll(int state);
+	void onWordWrap(int state);
 
 private:
 	enum ItemType
