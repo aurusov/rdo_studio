@@ -2758,6 +2758,18 @@
 					>
 				</File>
 				<File
+					RelativePath=".\bin\rdo_studio\generated\moc_frame_manager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\rdo_studio\generated\moc_frame_tree_ctrl.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\rdo_studio\generated\moc_frame_view.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\bin\rdo_studio\generated\moc_goto_line_dialog.cpp"
 					>
 				</File>
@@ -2767,10 +2779,6 @@
 				</File>
 				<File
 					RelativePath=".\bin\rdo_studio\generated\moc_main_frm.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\bin\rdo_studio\generated\moc_manager.cpp"
 					>
 				</File>
 				<File
@@ -2795,14 +2803,6 @@
 				</File>
 				<File
 					RelativePath=".\bin\rdo_studio\generated\moc_rdologedit.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\bin\rdo_studio\generated\moc_tree_ctrl.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\bin\rdo_studio\generated\moc_view.cpp"
 					>
 				</File>
 				<File
