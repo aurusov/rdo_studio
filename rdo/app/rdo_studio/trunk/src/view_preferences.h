@@ -73,6 +73,7 @@ private slots:
 	void onWordWrap(int state);
 	void onBookmark(int index);
 	void onFold(int index);
+	void onComment(int state);
 
 private:
 	enum ItemType

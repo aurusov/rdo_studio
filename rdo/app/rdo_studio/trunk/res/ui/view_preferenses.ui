@@ -617,7 +617,7 @@
             </layout>
            </item>
            <item row="2" column="0">
-            <widget class="QCheckBox" name="checkBox_13">
+            <widget class="QCheckBox" name="commentCheckBox">
              <property name="text">
               <string>Группа для комментариев</string>
              </property>

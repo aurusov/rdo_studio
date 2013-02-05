@@ -137,6 +137,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(wordWrapFindCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
 	connect(bookmarkComboBox, SIGNAL(activated(int)), this, SLOT(onBookmark(int)));
 	connect(foldComboBox, SIGNAL(activated(int)), this, SLOT(onFold(int)));
+	connect(commentCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onComment(int)));
 
 	updateDialog();
 }
@@ -496,6 +497,13 @@ void ViewPreferences::onFold(int index)
 {
 	PTR(StyleItem) item = getStyleItem();
 	item->foldstyle = static_cast<RDOFoldStyle>(index);
+	updatePreview();
+}
+
+void ViewPreferences::onComment(int state)
+{
+	PTR(StyleItem) item = getStyleItem();
+	item->commentfold = state ? true : false;
 	updatePreview();
 }
 
