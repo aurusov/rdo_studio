@@ -3056,10 +3056,6 @@
 			Name=".dock"
 			>
 			<File
-				RelativePath="..\..\src\dock\dock_base.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\dock\dock_build.cpp"
 				>
 			</File>
