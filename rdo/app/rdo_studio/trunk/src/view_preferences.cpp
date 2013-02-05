@@ -138,6 +138,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(bookmarkComboBox, SIGNAL(activated(int)), this, SLOT(onBookmark(int)));
 	connect(foldComboBox, SIGNAL(activated(int)), this, SLOT(onFold(int)));
 	connect(commentCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onComment(int)));
+	connect(warningCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWarning(int)));
 
 	updateDialog();
 }
@@ -507,6 +508,13 @@ void ViewPreferences::onComment(int state)
 	updatePreview();
 }
 
+void ViewPreferences::onWarning(int state)
+{
+	PTR(StyleItem) item = getStyleItem();
+	item->warning = state ? true : false;
+	updatePreview();
+}
+
 void ViewPreferences::updateDialog()
 {
 	setupCheckBox->setCheckState(m_setup
@@ -558,7 +566,7 @@ void ViewPreferences::updateDialog()
 		);
 	style_editor.tab->useTabs
 		? eraseWithTabRadioButton->toggle()
-		: eraseWithIndentRadioButton->toggle();	
+		: eraseWithIndentRadioButton->toggle();
 }
 
 void ViewPreferences::updatePreview()

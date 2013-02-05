@@ -74,6 +74,7 @@ private slots:
 	void onBookmark(int index);
 	void onFold(int index);
 	void onComment(int state);
+	void onWarning(int state);
 
 private:
 	enum ItemType

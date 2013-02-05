@@ -497,7 +497,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="pageRoot">
           <layout class="QGridLayout" name="gridLayout_7">
@@ -672,7 +672,7 @@
             </spacer>
            </item>
            <item row="1" column="0">
-            <widget class="QCheckBox" name="checkBox_18">
+            <widget class="QCheckBox" name="warningCheckBox">
              <property name="text">
               <string>Вывод предупреждений</string>
              </property>
