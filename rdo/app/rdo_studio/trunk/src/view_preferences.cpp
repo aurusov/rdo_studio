@@ -21,6 +21,7 @@ using namespace rdo::simulation::report;
 using namespace rdoEditCtrl;
 using namespace rdoEditor;
 using namespace rdo::gui::tracer;
+using namespace rdoStyle;
 
 rbool ViewPreferences::null_wordwrap      = false;
 rbool ViewPreferences::null_horzscrollbar = true;
@@ -113,6 +114,10 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	foldComboBox->addItem(QString::fromStdWString(L"Квадрат + линия"), RDOFOLDS_BOXCONNECTED);
 	foldComboBox->addItem(QString::fromStdWString(L"Круг + линия"),    RDOFOLDS_CIRCLECONNECTED);
 
+	boldCheckBox->setEnabled(false);
+	italicCheckBox->setEnabled(false);
+	underlineCheckBox->setEnabled(false);
+
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
 	connect(fontSizeComboBox, SIGNAL(activated(int)), this, SLOT(onFontSize(int)));
@@ -132,7 +137,6 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(wordWrapFindCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
 	connect(bookmarkComboBox, SIGNAL(activated(int)), this, SLOT(onBookmark(int)));
 	connect(foldComboBox, SIGNAL(activated(int)), this, SLOT(onFold(int)));
-
 
 	updateDialog();
 }
@@ -259,6 +263,27 @@ void ViewPreferences::onTreeWidgetItemActivated(QTreeWidgetItem* item, int colum
 		switchPreviewComboBox->setCurrentIndex(item->data(column, Qt::UserRole).toInt() - 1);
 	}
 	previewStackedWidget->setCurrentIndex(getStyleItem()->type - 1);
+
+	switch(item->data(column, Qt::UserRole).toInt())
+	{
+	case IT_ROOT:
+	case IT_EDITOR_CARET:
+	case IT_EDITOR_TEXTSELECTION:
+	case IT_EDITOR_BOOKMARK:
+	case IT_EDITOR_FOLD:
+	case IT_EDITOR_ERROR:
+	case IT_BUILD_SELECTEDLINE:
+	case IT_CHART_CHART:
+	case IT_CHART_TIME:
+		boldCheckBox->setEnabled(false);
+		italicCheckBox->setEnabled(false);
+		underlineCheckBox->setEnabled(false);
+		break;
+	default:
+		boldCheckBox->setEnabled(true);
+		italicCheckBox->setEnabled(true);
+		underlineCheckBox->setEnabled(true);
+	}
 }
 
 void ViewPreferences::onSwitchPreviewComboBox(int index)
@@ -362,17 +387,44 @@ void ViewPreferences::onFontType(int index)
 
 void ViewPreferences::onFontBold(int state)
 {
+	PTR(StyleProperty) prop = getStyleProperty();
+	if (prop && &prop->font_style != &null_font_style)
+	{
+		prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style & ~RDOStyleFont::BOLD);
+		if (state)
+		{
+			prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style | RDOStyleFont::BOLD);
+		}
 		updatePreview();
+	}
 }
 
 void ViewPreferences::onFontItalic(int state)
 {
-	updatePreview();
+	PTR(StyleProperty) prop = getStyleProperty();
+	if (prop && &prop->font_style != &null_font_style)
+	{
+		prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style & ~RDOStyleFont::ITALIC);
+		if (state)
+		{
+			prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style | RDOStyleFont::ITALIC);
+		}
+		updatePreview();
+	}
 }
 
 void ViewPreferences::onFontUnderline(int state)
 {
-	updatePreview();
+	PTR(StyleProperty) prop = getStyleProperty();
+	if (prop && &prop->font_style != &null_font_style)
+	{
+		prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style & ~RDOStyleFont::UNDERLINE);
+		if (state)
+		{
+			prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style | RDOStyleFont::UNDERLINE);
+		}
+		updatePreview();
+	}
 }
 
 void ViewPreferences::onHorzScroll(int state)
