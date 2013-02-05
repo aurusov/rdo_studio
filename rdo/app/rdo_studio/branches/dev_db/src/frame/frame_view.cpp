@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/frame/view.cpp
+  \file      frame_view.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      06.03.2003
   \brief     
@@ -17,7 +17,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio/src/frame/view.h"
+#include "app/rdo_studio/src/frame/frame_view.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"

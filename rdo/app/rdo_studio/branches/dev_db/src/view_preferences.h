@@ -25,7 +25,7 @@
 #include "app/rdo_studio/edit_ctrls/rdofindeditstyle.h"
 #include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio/src/tracer/ctrls/log_main_wnd.h"
-#include "app/rdo_studio/src/frame/view.h"
+#include "app/rdo_studio/src/frame/frame_view.h"
 // --------------------------------------------------------------------------------
 
 class ViewPreferences
@@ -69,6 +69,14 @@ private slots:
 	void onFontBold(int state);
 	void onFontItalic(int state);
 	void onFontUnderline(int state);
+	void onHorzScroll(int state);
+	void onWordWrap(int state);
+	void onBookmark(int index);
+	void onFold(int index);
+	void onComment(int state);
+	void onWarning(int state);
+	void onHorzIndent(const QString& text);
+	void onVertIndent(const QString& text);
 
 private:
 	enum ItemType

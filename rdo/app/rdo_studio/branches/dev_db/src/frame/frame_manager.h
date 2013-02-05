@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/frame/manager.h
+  \file      frame_manager.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.03.2003
   \brief     
@@ -18,7 +18,7 @@
 #include <QtWidgets/qtreewidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
-#include "app/rdo_studio/src/frame/view.h"
+#include "app/rdo_studio/src/frame/frame_view.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------

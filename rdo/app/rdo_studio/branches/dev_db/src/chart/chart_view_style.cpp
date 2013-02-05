@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/chart/view_style.cpp
+  \file      chart_view_style.cpp
   \author    Захаров Павел
   \date      28.03.2003
   \brief     
@@ -11,7 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/chart/view_style.h"
+#include "app/rdo_studio/src/chart/chart_view_style.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

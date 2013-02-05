@@ -87,7 +87,7 @@ public:
 	rbool isReadOnly() const                               { return sendEditor(SCI_GETREADONLY) ? true : false; }
 	void setReadOnly(const rbool value)                    { sendEditor(SCI_SETREADONLY, value); }
 
-	void appendText(CREF(tstring) str) const;
+	void appendText(CREF(QString) str) const;
 
 	int getZoom() const                                    { return sendEditor(SCI_GETZOOM); }
 	void setZoom(const int value) const                    { sendEditor(SCI_SETZOOM, value); }

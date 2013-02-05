@@ -21,6 +21,7 @@ using namespace rdo::simulation::report;
 using namespace rdoEditCtrl;
 using namespace rdoEditor;
 using namespace rdo::gui::tracer;
+using namespace rdoStyle;
 
 rbool ViewPreferences::null_wordwrap      = false;
 rbool ViewPreferences::null_horzscrollbar = true;
@@ -99,13 +100,52 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	switchPreviewComboBox->addItem("Chart",   IT_CHART);
 	switchPreviewComboBox->addItem("Frame",   IT_FRAME);
 
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Нет"),           RDOBOOKMARKS_NONE);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Круг"),          RDOBOOKMARKS_CIRCLE);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Прямоугольник"), RDOBOOKMARKS_RECT);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Овал"),          RDOBOOKMARKS_ROUNDRECT);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Стрелка"),       RDOBOOKMARKS_ARROW);
+
+	foldComboBox->addItem(QString::fromStdWString(L"Нет"),             RDOFOLDS_NONE);
+	foldComboBox->addItem(QString::fromStdWString(L"Плюс"),            RDOFOLDS_PLUS);
+	foldComboBox->addItem(QString::fromStdWString(L"Плюс + линия"),    RDOFOLDS_PLUSCONNECTED);
+	foldComboBox->addItem(QString::fromStdWString(L"Стрелка"),         RDOFOLDS_ARROW);
+	foldComboBox->addItem(QString::fromStdWString(L"Стрелка + линия"), RDOFOLDS_ARROWCONNECTED);
+	foldComboBox->addItem(QString::fromStdWString(L"Квадрат + линия"), RDOFOLDS_BOXCONNECTED);
+	foldComboBox->addItem(QString::fromStdWString(L"Круг + линия"),    RDOFOLDS_CIRCLECONNECTED);
+
+	boldCheckBox->setEnabled(false);
+	italicCheckBox->setEnabled(false);
+	underlineCheckBox->setEnabled(false);
+
+	horzIndentLineEdit->setValidator(new QIntValidator(1, 100, this));
+	horzIndentLineEdit->setText(QString::number(style_trace.borders->horzBorder));
+	vertIndentLineEdit->setValidator(new QIntValidator(1, 100, this));
+	vertIndentLineEdit->setText(QString::number(style_trace.borders->vertBorder));
+
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
 	connect(fontSizeComboBox, SIGNAL(activated(int)), this, SLOT(onFontSize(int)));
 	connect(fontComboBox, SIGNAL(activated(int)), this, SLOT(onFontType(int)));
 	connect(boldCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
-	connect(italicCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
-	connect(underlineCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontBold(int)));
+	connect(italicCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontItalic(int)));
+	connect(underlineCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onFontUnderline(int)));
+	connect(horzScrollEditorCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onHorzScroll(int)));
+	connect(horzScrollBuildCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onHorzScroll(int)));
+	connect(horzScrollDebugCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onHorzScroll(int)));
+	connect(horzScrollResultsCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onHorzScroll(int)));
+	connect(horzScrollFindCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onHorzScroll(int)));
+	connect(wordWrapEditorCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
+	connect(wordWrapBuildCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
+	connect(wordWrapDebugCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
+	connect(wordWrapResultsCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
+	connect(wordWrapFindCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
+	connect(bookmarkComboBox, SIGNAL(activated(int)), this, SLOT(onBookmark(int)));
+	connect(foldComboBox, SIGNAL(activated(int)), this, SLOT(onFold(int)));
+	connect(commentCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onComment(int)));
+	connect(warningCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWarning(int)));
+	connect(horzIndentLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onHorzIndent(const QString&)));
+	connect(vertIndentLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onVertIndent(const QString&)));
 
 	updateDialog();
 }
@@ -232,6 +272,27 @@ void ViewPreferences::onTreeWidgetItemActivated(QTreeWidgetItem* item, int colum
 		switchPreviewComboBox->setCurrentIndex(item->data(column, Qt::UserRole).toInt() - 1);
 	}
 	previewStackedWidget->setCurrentIndex(getStyleItem()->type - 1);
+
+	switch(item->data(column, Qt::UserRole).toInt())
+	{
+	case IT_ROOT:
+	case IT_EDITOR_CARET:
+	case IT_EDITOR_TEXTSELECTION:
+	case IT_EDITOR_BOOKMARK:
+	case IT_EDITOR_FOLD:
+	case IT_EDITOR_ERROR:
+	case IT_BUILD_SELECTEDLINE:
+	case IT_CHART_CHART:
+	case IT_CHART_TIME:
+		boldCheckBox->setEnabled(false);
+		italicCheckBox->setEnabled(false);
+		underlineCheckBox->setEnabled(false);
+		break;
+	default:
+		boldCheckBox->setEnabled(true);
+		italicCheckBox->setEnabled(true);
+		underlineCheckBox->setEnabled(true);
+	}
 }
 
 void ViewPreferences::onSwitchPreviewComboBox(int index)
@@ -335,17 +396,142 @@ void ViewPreferences::onFontType(int index)
 
 void ViewPreferences::onFontBold(int state)
 {
-
+	PTR(StyleProperty) prop = getStyleProperty();
+	if (prop && &prop->font_style != &null_font_style)
+	{
+		prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style & ~RDOStyleFont::BOLD);
+		if (state)
+		{
+			prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style | RDOStyleFont::BOLD);
+		}
+		updatePreview();
+	}
 }
 
 void ViewPreferences::onFontItalic(int state)
 {
-
+	PTR(StyleProperty) prop = getStyleProperty();
+	if (prop && &prop->font_style != &null_font_style)
+	{
+		prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style & ~RDOStyleFont::ITALIC);
+		if (state)
+		{
+			prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style | RDOStyleFont::ITALIC);
+		}
+		updatePreview();
+	}
 }
 
 void ViewPreferences::onFontUnderline(int state)
 {
+	PTR(StyleProperty) prop = getStyleProperty();
+	if (prop && &prop->font_style != &null_font_style)
+	{
+		prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style & ~RDOStyleFont::UNDERLINE);
+		if (state)
+		{
+			prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style | RDOStyleFont::UNDERLINE);
+		}
+		updatePreview();
+	}
+}
 
+void ViewPreferences::onHorzScroll(int state)
+{
+	PTR(StyleItem) item = getStyleItem();
+	item->horzscrollbar = state;
+	updatePreview();
+}
+
+void ViewPreferences::onWordWrap(int state)
+{
+	PTR(StyleItem) item = getStyleItem();
+	item->wordwrap = state;
+		
+	switch(item->type)
+	{
+	case IT_EDITOR:
+		horzScrollEditorCheckBox->setEnabled(state ? false : true);
+		break;
+	case IT_BUILD:
+		horzScrollBuildCheckBox->setEnabled(state ? false : true);
+		break;
+	case IT_DEBUG:
+		horzScrollDebugCheckBox->setEnabled(state ? false : true);
+		break;
+	case IT_RESULT:
+		horzScrollResultsCheckBox->setEnabled(state ? false : true);
+		break;
+	case IT_FIND:
+		horzScrollFindCheckBox->setEnabled(state ? false : true);
+		break;
+	}
+	if(state)
+	{
+		item->horzscrollbar = false;
+	}
+	else
+	{
+		switch(item->type)
+		{
+		case IT_EDITOR:
+			item->horzscrollbar = horzScrollEditorCheckBox->checkState();
+			break;
+		case IT_BUILD:
+			item->horzscrollbar = horzScrollBuildCheckBox->checkState();
+			break;
+		case IT_DEBUG:
+			item->horzscrollbar = horzScrollDebugCheckBox->checkState();
+			break;
+		case IT_RESULT:
+			item->horzscrollbar = horzScrollResultsCheckBox->checkState();
+			break;
+		case IT_FIND:
+			item->horzscrollbar = horzScrollFindCheckBox->checkState();
+			break;
+		}
+	}
+	updatePreview();
+}
+
+void ViewPreferences::onBookmark(int index)
+{
+	PTR(StyleItem) item = getStyleItem();
+	item->bookmarkstyle = static_cast<RDOBookmarkStyle>(index);
+	updatePreview();
+}
+
+void ViewPreferences::onFold(int index)
+{
+	PTR(StyleItem) item = getStyleItem();
+	item->foldstyle = static_cast<RDOFoldStyle>(index);
+	updatePreview();
+}
+
+void ViewPreferences::onComment(int state)
+{
+	PTR(StyleItem) item = getStyleItem();
+	item->commentfold = state ? true : false;
+	updatePreview();
+}
+
+void ViewPreferences::onWarning(int state)
+{
+	PTR(StyleItem) item = getStyleItem();
+	item->warning = state ? true : false;
+	updatePreview();
+}
+
+void ViewPreferences::onHorzIndent(const QString& text)
+{
+	style_trace.borders->horzBorder = text.toInt();
+	updatePreview();
+}
+
+void ViewPreferences::onVertIndent(const QString& text)
+{
+	style_trace.borders->vertBorder = text.toInt();
+	updatePreview();
 }
 
 void ViewPreferences::updateDialog()
@@ -399,7 +585,7 @@ void ViewPreferences::updateDialog()
 		);
 	style_editor.tab->useTabs
 		? eraseWithTabRadioButton->toggle()
-		: eraseWithIndentRadioButton->toggle();	
+		: eraseWithIndentRadioButton->toggle();
 }
 
 void ViewPreferences::updatePreview()
@@ -429,7 +615,7 @@ void ViewPreferences::createPreview()
 	ASSERT(preview_editor);
 	preview_editor->setEditorStyle(&style_editor);
 	preview_editor->setCanClearErrorLine(false);
-	preview_editor->appendText(rdo::format(IDS_COLORSTYLE_EDITOR_SAMPLE));
+	preview_editor->appendText(QString::fromLocal8Bit("{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"));
 	preview_editor->scrollToLine(0);
 	preview_editor->setReadOnly(true);
 	preview_editor->bookmarkToggle();
@@ -446,7 +632,7 @@ void ViewPreferences::createPreview()
 
 	preview_debug = new RDODebugEdit(previewStackedWidget->currentWidget());
 	preview_debug->setEditorStyle(&style_debug);
-	preview_debug->appendLine(rdo::format(IDS_COLORSTYLE_DEBUG_SAMPLE));
+	preview_debug->appendLine(QString::fromLocal8Bit("Получение структуры модели...ok\nМодель запущена"));
 	previewStackedWidget->addWidget(preview_debug);
 
 	preview_trace = new LogMainWnd(previewStackedWidget->currentWidget());
@@ -614,68 +800,68 @@ void ViewPreferences::createTree()
 	m_pGroup     = createTreeItem(m_pText, QString::fromStdWString(L"Группа"),             IT_EDITOR_FOLD);
 	m_pError     = createTreeItem(m_pText, QString::fromStdWString(L"Ошибка"),             IT_EDITOR_ERROR);
 
-	m_pTextCompile      = createTreeItem(m_pCompile, "Текст",             IT_BUILD_TEXT);
-	m_pSelectedString   = createTreeItem(m_pCompile, "Выделенная строка", IT_BUILD_SELECTEDLINE);
-	m_pCaretCompile     = createTreeItem(m_pCompile, "Каретка",           IT_EDITOR_CARET);
-	m_pSelectionCompile = createTreeItem(m_pCompile, "Выделение",         IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkCompile  = createTreeItem(m_pCompile, "Закладка",          IT_EDITOR_BOOKMARK);
+	m_pTextCompile      = createTreeItem(m_pCompile, QString::fromStdWString(L"Текст"),             IT_BUILD_TEXT);
+	m_pSelectedString   = createTreeItem(m_pCompile, QString::fromStdWString(L"Выделенная строка"), IT_BUILD_SELECTEDLINE);
+	m_pCaretCompile     = createTreeItem(m_pCompile, QString::fromStdWString(L"Каретка"),           IT_EDITOR_CARET);
+	m_pSelectionCompile = createTreeItem(m_pCompile, QString::fromStdWString(L"Выделение"),         IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkCompile  = createTreeItem(m_pCompile, QString::fromStdWString(L"Закладка"),          IT_EDITOR_BOOKMARK);
 
-	m_pTextDebug      = createTreeItem(m_pDebug, "Текст",     IT_BUILD_TEXT);
-	m_pCaretDebug     = createTreeItem(m_pDebug, "Каретка",   IT_EDITOR_CARET);
-	m_pSelectionDebug = createTreeItem(m_pDebug, "Выделение", IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkDebug  = createTreeItem(m_pDebug, "Закладка",  IT_EDITOR_BOOKMARK);
+	m_pTextDebug      = createTreeItem(m_pDebug, QString::fromStdWString(L"Текст"),     IT_BUILD_TEXT);
+	m_pCaretDebug     = createTreeItem(m_pDebug, QString::fromStdWString(L"Каретка"),   IT_EDITOR_CARET);
+	m_pSelectionDebug = createTreeItem(m_pDebug, QString::fromStdWString(L"Выделение"), IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkDebug  = createTreeItem(m_pDebug, QString::fromStdWString(L"Закладка"),  IT_EDITOR_BOOKMARK);
 
-	m_pES     = createTreeItem(m_pTrace, "Служебное событие (ES)",                         IT_LOG_ES);
-	m_pEB     = createTreeItem(m_pTrace, "Начало действия (EB)",                           IT_LOG_EB);
-	m_pEF     = createTreeItem(m_pTrace, "Окончание действия (EF)",                        IT_LOG_EF);
-	m_pEI     = createTreeItem(m_pTrace, "Нерегулярное событие (EI)",                      IT_LOG_EI);
-	m_pER     = createTreeItem(m_pTrace, "Продукционное правило (ER)",                     IT_LOG_ER);
-	m_pRC     = createTreeItem(m_pTrace, "Создание ресурса (RC)",                          IT_LOG_RC);
-	m_pRE     = createTreeItem(m_pTrace, "Удаление ресурса (RE)",                          IT_LOG_RE);
-	m_pRK     = createTreeItem(m_pTrace, "Изменение состояния ресурса (RK)",               IT_LOG_RK);
-	m_pV      = createTreeItem(m_pTrace, "Трассировка индекса (V)",                        IT_LOG_V);
-	m_pStatus = createTreeItem(m_pTrace, "Статус окончания моделирования ($Status)",       IT_LOG_STATUS);
-	m_pDPS    = createTreeItem(m_pTrace, "Статистика по поиску на графе (DPS)",            IT_LOG_DPS);
-	m_pSB     = createTreeItem(m_pTrace, "Начало поиска (SB)",                             IT_LOG_SB);
-	m_pSO     = createTreeItem(m_pTrace, "Трассировка раскрываемой вершины (SO)",          IT_LOG_SO);
-	m_pSTN    = createTreeItem(m_pTrace, "Признак вершины (STN)",                          IT_LOG_STN);
-	m_pSTD    = createTreeItem(m_pTrace, "Признак вершины (STD)",                          IT_LOG_STD);
-	m_pSTR    = createTreeItem(m_pTrace, "Признак вершины (STR)",                          IT_LOG_STR);
-	m_pSRC    = createTreeItem(m_pTrace, "Создание ресурса (при поиске) (SRC)",            IT_LOG_SRC);
-	m_pSRE    = createTreeItem(m_pTrace, "Удаление ресурса (при поиске) (SRE)",            IT_LOG_SRE);
-	m_pSRK    = createTreeItem(m_pTrace, "Изменение состояния ресурса (при поиске) (SRK)", IT_LOG_SRK);
-	m_pSD     = createTreeItem(m_pTrace, "Трассировка решения (SD)",                       IT_LOG_SD);
-	m_pSES    = createTreeItem(m_pTrace, "Завершение поиска (SES)",                        IT_LOG_SES);
-	m_pSEN    = createTreeItem(m_pTrace, "Завершение поиска (SEN)",                        IT_LOG_SEN);
-	m_pSEM    = createTreeItem(m_pTrace, "Завершение поиска (SEM)",                        IT_LOG_SEM);
-	m_pSEF    = createTreeItem(m_pTrace, "Завершение поиска (SEF)",                        IT_LOG_SEF);
-	m_pSEU    = createTreeItem(m_pTrace, "Завершение поиска (SEU)",                        IT_LOG_SEU);
+	m_pES     = createTreeItem(m_pTrace, QString::fromStdWString(L"Служебное событие (ES)"),                         IT_LOG_ES);
+	m_pEB     = createTreeItem(m_pTrace, QString::fromStdWString(L"Начало действия (EB)"),                           IT_LOG_EB);
+	m_pEF     = createTreeItem(m_pTrace, QString::fromStdWString(L"Окончание действия (EF)"),                        IT_LOG_EF);
+	m_pEI     = createTreeItem(m_pTrace, QString::fromStdWString(L"Нерегулярное событие (EI)"),                      IT_LOG_EI);
+	m_pER     = createTreeItem(m_pTrace, QString::fromStdWString(L"Продукционное правило (ER)"),                     IT_LOG_ER);
+	m_pRC     = createTreeItem(m_pTrace, QString::fromStdWString(L"Создание ресурса (RC)"),                          IT_LOG_RC);
+	m_pRE     = createTreeItem(m_pTrace, QString::fromStdWString(L"Удаление ресурса (RE)"),                          IT_LOG_RE);
+	m_pRK     = createTreeItem(m_pTrace, QString::fromStdWString(L"Изменение состояния ресурса (RK)"),               IT_LOG_RK);
+	m_pV      = createTreeItem(m_pTrace, QString::fromStdWString(L"Трассировка индекса (V)"),                        IT_LOG_V);
+	m_pStatus = createTreeItem(m_pTrace, QString::fromStdWString(L"Статус окончания моделирования ($Status)"),       IT_LOG_STATUS);
+	m_pDPS    = createTreeItem(m_pTrace, QString::fromStdWString(L"Статистика по поиску на графе (DPS)"),            IT_LOG_DPS);
+	m_pSB     = createTreeItem(m_pTrace, QString::fromStdWString(L"Начало поиска (SB)"),                             IT_LOG_SB);
+	m_pSO     = createTreeItem(m_pTrace, QString::fromStdWString(L"Трассировка раскрываемой вершины (SO)"),          IT_LOG_SO);
+	m_pSTN    = createTreeItem(m_pTrace, QString::fromStdWString(L"Признак вершины (STN)"),                          IT_LOG_STN);
+	m_pSTD    = createTreeItem(m_pTrace, QString::fromStdWString(L"Признак вершины (STD)"),                          IT_LOG_STD);
+	m_pSTR    = createTreeItem(m_pTrace, QString::fromStdWString(L"Признак вершины (STR)"),                          IT_LOG_STR);
+	m_pSRC    = createTreeItem(m_pTrace, QString::fromStdWString(L"Создание ресурса (при поиске) (SRC)"),            IT_LOG_SRC);
+	m_pSRE    = createTreeItem(m_pTrace, QString::fromStdWString(L"Удаление ресурса (при поиске) (SRE)"),            IT_LOG_SRE);
+	m_pSRK    = createTreeItem(m_pTrace, QString::fromStdWString(L"Изменение состояния ресурса (при поиске) (SRK)"), IT_LOG_SRK);
+	m_pSD     = createTreeItem(m_pTrace, QString::fromStdWString(L"Трассировка решения (SD)"),                       IT_LOG_SD);
+	m_pSES    = createTreeItem(m_pTrace, QString::fromStdWString(L"Завершение поиска (SES)"),                        IT_LOG_SES);
+	m_pSEN    = createTreeItem(m_pTrace, QString::fromStdWString(L"Завершение поиска (SEN)"),                        IT_LOG_SEN);
+	m_pSEM    = createTreeItem(m_pTrace, QString::fromStdWString(L"Завершение поиска (SEM)"),                        IT_LOG_SEM);
+	m_pSEF    = createTreeItem(m_pTrace, QString::fromStdWString(L"Завершение поиска (SEF)"),                        IT_LOG_SEF);
+	m_pSEU    = createTreeItem(m_pTrace, QString::fromStdWString(L"Завершение поиска (SEU)"),                        IT_LOG_SEU);
 
-	m_pPlainTextResult = createTreeItem(m_pResult, "Исходный текст", IT_EDITOR_PLAINTEXT);
-	m_pVariableResult  = createTreeItem(m_pResult, "Переменная",     IT_EDITOR_IDENTIFICATOR);
-	m_pKeywordResult   = createTreeItem(m_pResult, "Ключевое слово", IT_EDITOR_KEYWORD);
-	m_pNumberResult    = createTreeItem(m_pResult, "Число",          IT_EDITOR_NUMBER);
-	m_pStringResult    = createTreeItem(m_pResult, "Строка",         IT_EDITOR_STRING);
-	m_pOperatorResult  = createTreeItem(m_pResult, "Оператор",       IT_EDITOR_OPERATOR);
-	m_pCaretResult     = createTreeItem(m_pResult, "Каретка",        IT_EDITOR_CARET);
-	m_pSelectionResult = createTreeItem(m_pResult, "Выделение",      IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkResult  = createTreeItem(m_pResult, "Закладка",       IT_EDITOR_BOOKMARK);
+	m_pPlainTextResult = createTreeItem(m_pResult, QString::fromStdWString(L"Исходный текст"), IT_EDITOR_PLAINTEXT);
+	m_pVariableResult  = createTreeItem(m_pResult, QString::fromStdWString(L"Переменная"),     IT_EDITOR_IDENTIFICATOR);
+	m_pKeywordResult   = createTreeItem(m_pResult, QString::fromStdWString(L"Ключевое слово"), IT_EDITOR_KEYWORD);
+	m_pNumberResult    = createTreeItem(m_pResult, QString::fromStdWString(L"Число"),          IT_EDITOR_NUMBER);
+	m_pStringResult    = createTreeItem(m_pResult, QString::fromStdWString(L"Строка"),         IT_EDITOR_STRING);
+	m_pOperatorResult  = createTreeItem(m_pResult, QString::fromStdWString(L"Оператор"),       IT_EDITOR_OPERATOR);
+	m_pCaretResult     = createTreeItem(m_pResult, QString::fromStdWString(L"Каретка"),        IT_EDITOR_CARET);
+	m_pSelectionResult = createTreeItem(m_pResult, QString::fromStdWString(L"Выделение"),      IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkResult  = createTreeItem(m_pResult, QString::fromStdWString(L"Закладка"),       IT_EDITOR_BOOKMARK);
 
-	m_pTextSearch           = createTreeItem(m_pSearch, "Текст",             IT_BUILD_TEXT);
-	m_pStringSearch         = createTreeItem(m_pSearch, "Строка для поиска", IT_FIND_SEARCHTEXT);
-	m_pSelectedStringSearch = createTreeItem(m_pSearch, "Выделенная строка", IT_BUILD_SELECTEDLINE);
-	m_pCaretSearch          = createTreeItem(m_pSearch, "Каретка",           IT_EDITOR_CARET);
-	m_pSelectionSearch      = createTreeItem(m_pSearch, "Выделение",         IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkSearch       = createTreeItem(m_pSearch, "Закладка",          IT_EDITOR_BOOKMARK);
+	m_pTextSearch           = createTreeItem(m_pSearch, QString::fromStdWString(L"Текст"),             IT_BUILD_TEXT);
+	m_pStringSearch         = createTreeItem(m_pSearch, QString::fromStdWString(L"Строка для поиска"), IT_FIND_SEARCHTEXT);
+	m_pSelectedStringSearch = createTreeItem(m_pSearch, QString::fromStdWString(L"Выделенная строка"), IT_BUILD_SELECTEDLINE);
+	m_pCaretSearch          = createTreeItem(m_pSearch, QString::fromStdWString(L"Каретка"),           IT_EDITOR_CARET);
+	m_pSelectionSearch      = createTreeItem(m_pSearch, QString::fromStdWString(L"Выделение"),         IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkSearch       = createTreeItem(m_pSearch, QString::fromStdWString(L"Закладка"),          IT_EDITOR_BOOKMARK);
 
-	m_pAxis   = createTreeItem(m_pChart, "Ось",       IT_CHART_AXIS);
-	m_pTitle  = createTreeItem(m_pChart, "Заголовок", IT_CHART_TITLE);
-	m_pLegend = createTreeItem(m_pChart, "Легенда",   IT_CHART_LEGEND);
-	m_pGraph  = createTreeItem(m_pChart, "График",    IT_CHART_CHART);
-	m_pTime   = createTreeItem(m_pChart, "Время",     IT_CHART_TIME);
+	m_pAxis   = createTreeItem(m_pChart, QString::fromStdWString(L"Ось"),       IT_CHART_AXIS);
+	m_pTitle  = createTreeItem(m_pChart, QString::fromStdWString(L"Заголовок"), IT_CHART_TITLE);
+	m_pLegend = createTreeItem(m_pChart, QString::fromStdWString(L"Легенда"),   IT_CHART_LEGEND);
+	m_pGraph  = createTreeItem(m_pChart, QString::fromStdWString(L"График"),    IT_CHART_CHART);
+	m_pTime   = createTreeItem(m_pChart, QString::fromStdWString(L"Время"),     IT_CHART_TIME);
 
-	m_pEdgingColor     = createTreeItem(m_pAnimation, "Цвет окантовки",               IT_FRAME_BORDER);
-	m_pBackgroundColor = createTreeItem(m_pAnimation, "Цвет фона за пределами кадра", IT_FRAME_BACKGROUND);
+	m_pEdgingColor     = createTreeItem(m_pAnimation, QString::fromStdWString(L"Цвет окантовки"),               IT_FRAME_BORDER);
+	m_pBackgroundColor = createTreeItem(m_pAnimation, QString::fromStdWString(L"Цвет фона за пределами кадра"), IT_FRAME_BACKGROUND);
 
 	treeWidget->setCurrentItem(m_pRoot);
 }
@@ -743,7 +929,7 @@ void ViewPreferences::apply()
 	studioApp.getStyle()->style_editor  = style_editor;
 	studioApp.getStyle()->style_build   = style_build;
 	studioApp.getStyle()->style_debug   = style_debug;
-	//studioApp.getStyle()->style_trace   = style_trace;
+	studioApp.getStyle()->style_trace   = style_trace;
 	studioApp.getStyle()->style_results = style_results;
 	studioApp.getStyle()->style_find    = style_find;
 	studioApp.setFileAssociationSetup(m_setup);

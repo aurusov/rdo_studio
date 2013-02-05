@@ -34,7 +34,7 @@ void DockResults::appendString(CREF(tstring) str)
 	int pos = getContext().getCurrentPos();
 	getContext().setCurrentPos(getContext().getLength());
 	getContext().setReadOnly  (false);
-	getContext().appendText   (str  );
+	getContext().appendText   (QString::fromLocal8Bit(str.c_str()));
 	getContext().setReadOnly  (true );
 	getContext().setCurrentPos(pos  );
 }

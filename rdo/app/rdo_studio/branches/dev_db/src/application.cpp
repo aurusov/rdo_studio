@@ -116,26 +116,39 @@ void RDOStudioCommandLineInfo::ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bL
 RDOStudioApp studioApp;
 
 #ifdef _DEBUG
-void g_messageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
+	if (msg.contains("requested for null window or window without handle"))
+		return;
+
+	qInstallMessageHandler(NULL);
+
+	QString message = QString("%1\n\nfile: %2: %3\nat function: %4")
+		.arg(msg)
+		.arg(context.file)
+		.arg(context.line)
+		.arg(context.function);
+
 	switch (type)
 	{
 	case QtDebugMsg:
-		TRACE1("Debug: %s\n", msg.toStdString().c_str());
+		TRACE1("Debug: %s\n", msg.toLocal8Bit().constData());
 		break;
 
 	case QtWarningMsg:
-//		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", msg);
+		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", message);
 		break;
 
 	case QtCriticalMsg:
-//		QMessageBox::critical(studioApp.getMainWnd(), "QtCritical", msg);
+		QMessageBox::critical(studioApp.getMainWnd(), "QtCritical", message);
 		break;
 
 	case QtFatalMsg:
-//		QMessageBox::critical(studioApp.getMainWnd(), "QtFatal", msg);
+		QMessageBox::critical(studioApp.getMainWnd(), "QtFatal", message);
 		break;
 	}
+
+	qInstallMessageHandler(g_messageOutput);
 }
 #endif
 

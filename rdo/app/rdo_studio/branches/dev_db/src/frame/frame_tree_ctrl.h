@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/frame/tree_ctrl.h
+  \file      frame_tree_ctrl.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.03.2003
   \brief     Дерево кадров анимации
