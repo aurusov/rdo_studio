@@ -25,7 +25,7 @@
 #include "app/rdo_studio/edit_ctrls/rdofindeditstyle.h"
 #include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio/src/tracer/ctrls/log_main_wnd.h"
-#include "app/rdo_studio/src/frame/view.h"
+#include "app/rdo_studio/src/frame/frame_view.h"
 // --------------------------------------------------------------------------------
 
 class ViewPreferences

@@ -31,8 +31,8 @@
 #include "app/rdo_studio/src/chart/chart_view_style.h"
 #include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
 #include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
-#include "app/rdo_studio/src/frame/style.h"
-#include "app/rdo_studio/src/frame/options_ctrl.h"
+#include "app/rdo_studio/src/frame/frame_style.h"
+#include "app/rdo_studio/src/frame/frame_options_ctrl.h"
 #include "app/rdo_studio/resource.h"
 // --------------------------------------------------------------------------------
 

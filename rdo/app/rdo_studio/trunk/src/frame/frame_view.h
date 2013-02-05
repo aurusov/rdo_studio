@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/frame/view.h
+  \file      frame_view.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      06.03.2003
   \brief     

@@ -20,7 +20,7 @@
 #include "app/rdo_studio/src/tracer/ctrls/log_view_style.h"
 #include "app/rdo_studio/src/style.h"
 #include "app/rdo_studio/src/chart/chart_view_style.h"
-#include "app/rdo_studio/src/frame/style.h"
+#include "app/rdo_studio/src/frame/frame_style.h"
 #include "app/rdo_studio/src/dock/dock_build.h"
 #include "app/rdo_studio/src/dock/dock_debug.h"
 #include "app/rdo_studio/src/dock/dock_trace.h"

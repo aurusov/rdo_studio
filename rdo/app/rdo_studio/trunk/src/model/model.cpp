@@ -27,7 +27,7 @@
 #include "app/rdo_studio/src/thread.h"
 #include "app/rdo_studio/src/main_frm.h"
 #include "app/rdo_studio/src/main_windows_base.h"
-#include "app/rdo_studio/src/frame/view.h"
+#include "app/rdo_studio/src/frame/frame_view.h"
 #include "app/rdo_studio/src/dialog/new_model_dialog.h"
 #include "app/rdo_studio/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio/edit_ctrls/rdobuildedit.h"

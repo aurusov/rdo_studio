@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/frame/tree_ctrl.cpp
+  \file      frame_tree_ctrl.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.03.2003
   \brief     Дерево кадров анимации
@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/frame/tree_ctrl.h"
+#include "app/rdo_studio/src/frame/frame_tree_ctrl.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_frm.h"
 // --------------------------------------------------------------------------------

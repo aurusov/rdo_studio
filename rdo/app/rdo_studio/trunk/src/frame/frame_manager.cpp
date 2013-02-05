@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/frame/manager.cpp
+  \file      frame_manager.cpp
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Копнин Андрей (kopninandrey@gmail.com)
   \date      28.03.2003
@@ -18,11 +18,11 @@
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
 #include "repository/rdorepository.h"
-#include "app/rdo_studio/src/frame/manager.h"
+#include "app/rdo_studio/src/frame/frame_manager.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
-#include "app/rdo_studio/src/frame/tree_ctrl.h"
+#include "app/rdo_studio/src/frame/frame_tree_ctrl.h"
 #include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
 // --------------------------------------------------------------------------------
 
