@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/chart/document.cpp
+  \file      chart_doc.cpp
   \author    Захаров Павел
   \date      20.02.2003
   \brief     
@@ -15,8 +15,8 @@
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm/find_if.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/chart/document.h"
-#include "app/rdo_studio/src/chart/view.h"
+#include "app/rdo_studio/src/chart/chart_doc.h"
+#include "app/rdo_studio/src/chart/chart_view.h"
 #include "app/rdo_studio/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
 #include "app/rdo_studio/rdo_tracer/rdotracervalues.h"

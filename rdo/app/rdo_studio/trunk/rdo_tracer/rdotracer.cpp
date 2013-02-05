@@ -19,7 +19,7 @@
 #include "app/rdo_studio/src/main_windows_base.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/thread.h"
-#include "app/rdo_studio/src/chart/document.h"
+#include "app/rdo_studio/src/chart/chart_doc.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
