@@ -105,6 +105,14 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	bookmarkComboBox->addItem(QString::fromStdWString(L"Овал"),          RDOBOOKMARKS_ROUNDRECT);
 	bookmarkComboBox->addItem(QString::fromStdWString(L"Стрелка"),       RDOBOOKMARKS_ARROW);
 
+	foldComboBox->addItem(QString::fromStdWString(L"Нет"),             RDOFOLDS_NONE);
+	foldComboBox->addItem(QString::fromStdWString(L"Плюс"),            RDOFOLDS_PLUS);
+	foldComboBox->addItem(QString::fromStdWString(L"Плюс + линия"),    RDOFOLDS_PLUSCONNECTED);
+	foldComboBox->addItem(QString::fromStdWString(L"Стрелка"),         RDOFOLDS_ARROW);
+	foldComboBox->addItem(QString::fromStdWString(L"Стрелка + линия"), RDOFOLDS_ARROWCONNECTED);
+	foldComboBox->addItem(QString::fromStdWString(L"Квадрат + линия"), RDOFOLDS_BOXCONNECTED);
+	foldComboBox->addItem(QString::fromStdWString(L"Круг + линия"),    RDOFOLDS_CIRCLECONNECTED);
+
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
 	connect(fontSizeComboBox, SIGNAL(activated(int)), this, SLOT(onFontSize(int)));
@@ -123,6 +131,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(wordWrapResultsCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
 	connect(wordWrapFindCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWordWrap(int)));
 	connect(bookmarkComboBox, SIGNAL(activated(int)), this, SLOT(onBookmark(int)));
+	connect(foldComboBox, SIGNAL(activated(int)), this, SLOT(onFold(int)));
 
 
 	updateDialog();
@@ -427,7 +436,14 @@ void ViewPreferences::onWordWrap(int state)
 void ViewPreferences::onBookmark(int index)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->bookmarkstyle =static_cast<RDOBookmarkStyle>(index);
+	item->bookmarkstyle = static_cast<RDOBookmarkStyle>(index);
+	updatePreview();
+}
+
+void ViewPreferences::onFold(int index)
+{
+	PTR(StyleItem) item = getStyleItem();
+	item->foldstyle = static_cast<RDOFoldStyle>(index);
 	updatePreview();
 }
 

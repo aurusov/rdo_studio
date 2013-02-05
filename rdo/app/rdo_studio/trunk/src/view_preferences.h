@@ -72,6 +72,7 @@ private slots:
 	void onHorzScroll(int state);
 	void onWordWrap(int state);
 	void onBookmark(int index);
+	void onFold(int index);
 
 private:
 	enum ItemType
