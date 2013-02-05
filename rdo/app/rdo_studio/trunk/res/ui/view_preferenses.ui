@@ -497,7 +497,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>4</number>
          </property>
          <widget class="QWidget" name="pageRoot">
           <layout class="QGridLayout" name="gridLayout_7">
@@ -727,7 +727,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_4"/>
+              <widget class="QLineEdit" name="horzIndentLineEdit"/>
              </item>
             </layout>
            </item>
@@ -741,7 +741,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_3"/>
+              <widget class="QLineEdit" name="vertIndentLineEdit"/>
              </item>
             </layout>
            </item>

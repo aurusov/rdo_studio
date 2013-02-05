@@ -75,6 +75,8 @@ private slots:
 	void onFold(int index);
 	void onComment(int state);
 	void onWarning(int state);
+	void onHorzIndent(const QString& text);
+	void onVertIndent(const QString& text);
 
 private:
 	enum ItemType

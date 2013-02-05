@@ -118,6 +118,11 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	italicCheckBox->setEnabled(false);
 	underlineCheckBox->setEnabled(false);
 
+	horzIndentLineEdit->setValidator(new QIntValidator(1, 100, this));
+	horzIndentLineEdit->setText(QString::number(style_trace.borders->horzBorder));
+	vertIndentLineEdit->setValidator(new QIntValidator(1, 100, this));
+	vertIndentLineEdit->setText(QString::number(style_trace.borders->vertBorder));
+
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
 	connect(fontSizeComboBox, SIGNAL(activated(int)), this, SLOT(onFontSize(int)));
@@ -139,6 +144,8 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(foldComboBox, SIGNAL(activated(int)), this, SLOT(onFold(int)));
 	connect(commentCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onComment(int)));
 	connect(warningCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWarning(int)));
+	connect(horzIndentLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onHorzIndent(const QString&)));
+	connect(vertIndentLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onVertIndent(const QString&)));
 
 	updateDialog();
 }
@@ -512,6 +519,18 @@ void ViewPreferences::onWarning(int state)
 {
 	PTR(StyleItem) item = getStyleItem();
 	item->warning = state ? true : false;
+	updatePreview();
+}
+
+void ViewPreferences::onHorzIndent(const QString& text)
+{
+	style_trace.borders->horzBorder = text.toInt();
+	updatePreview();
+}
+
+void ViewPreferences::onVertIndent(const QString& text)
+{
+	style_trace.borders->vertBorder = text.toInt();
 	updatePreview();
 }
 
@@ -910,7 +929,7 @@ void ViewPreferences::apply()
 	studioApp.getStyle()->style_editor  = style_editor;
 	studioApp.getStyle()->style_build   = style_build;
 	studioApp.getStyle()->style_debug   = style_debug;
-	//studioApp.getStyle()->style_trace   = style_trace;
+	studioApp.getStyle()->style_trace   = style_trace;
 	studioApp.getStyle()->style_results = style_results;
 	studioApp.getStyle()->style_find    = style_find;
 	studioApp.setFileAssociationSetup(m_setup);
