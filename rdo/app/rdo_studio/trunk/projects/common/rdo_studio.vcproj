@@ -911,62 +911,11 @@
 			Name=".frame"
 			>
 			<File
-				RelativePath="..\..\src\frame\manager.cpp"
+				RelativePath="..\..\src\frame\frame_manager.cpp"
 				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\frame_manager"
-						BrowseInformationFile="$(IntDir)\frame_manager"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\frame_manager"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\frame_manager"
-						BrowseInformationFile="$(IntDir)\frame_manager"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\frame_manager"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\frame_manager"
-						BrowseInformationFile="$(IntDir)\frame_manager"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\frame_manager"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\manager.h"
+				RelativePath="..\..\src\frame\frame_manager.h"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -974,7 +923,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -984,7 +933,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -994,7 +943,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1004,7 +953,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1014,7 +963,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1024,84 +973,33 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\options_ctrl.cpp"
+				RelativePath="..\..\src\frame\frame_options_ctrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\options_ctrl.h"
+				RelativePath="..\..\src\frame\frame_options_ctrl.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\style.cpp"
-				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\style_frame"
-						BrowseInformationFile="$(IntDir)\style_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\style_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\style_frame"
-						BrowseInformationFile="$(IntDir)\style_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\style_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\style_frame"
-						BrowseInformationFile="$(IntDir)\style_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\style_frame"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\frame\style.h"
+				RelativePath="..\..\src\frame\frame_style.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\tree_ctrl.cpp"
+				RelativePath="..\..\src\frame\frame_style.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\tree_ctrl.h"
+				RelativePath="..\..\src\frame\frame_tree_ctrl.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\frame\frame_tree_ctrl.h"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -1109,7 +1007,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1119,7 +1017,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1129,7 +1027,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1139,7 +1037,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1149,7 +1047,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1159,68 +1057,17 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\view.cpp"
+				RelativePath="..\..\src\frame\frame_view.cpp"
 				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_frame"
-						BrowseInformationFile="$(IntDir)\view_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_frame"
-						BrowseInformationFile="$(IntDir)\view_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_frame"
-						BrowseInformationFile="$(IntDir)\view_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_frame"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\view.h"
+				RelativePath="..\..\src\frame\frame_view.h"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -1228,7 +1075,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1238,7 +1085,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1248,7 +1095,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1258,7 +1105,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1268,7 +1115,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -1278,7 +1125,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC $(InputFileName)"
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
