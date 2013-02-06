@@ -1060,7 +1060,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_2">
+          <widget class="QComboBox" name="fgColorComboBox">
            <property name="minimumSize">
             <size>
              <width>115</width>
@@ -1128,7 +1128,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_4">
+          <widget class="QComboBox" name="bgColorComboBox">
            <property name="minimumSize">
             <size>
              <width>115</width>

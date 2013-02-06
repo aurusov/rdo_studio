@@ -95,6 +95,9 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	createPreview();
 	createStyles();
 
+	insertColors(fgColorComboBox);
+	insertColors(bgColorComboBox);
+
 	switchPreviewComboBox->addItem("Editor",  IT_EDITOR);
 	switchPreviewComboBox->addItem("Build",   IT_BUILD);
 	switchPreviewComboBox->addItem("Debug",   IT_DEBUG);
@@ -150,6 +153,8 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(warningCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onWarning(int)));
 	connect(horzIndentLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onHorzIndent(const QString&)));
 	connect(vertIndentLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onVertIndent(const QString&)));
+	connect(fgColorComboBox, SIGNAL(activated(int)), this, SLOT(onFgColor(int)));
+	connect(bgColorComboBox, SIGNAL(activated(int)), this, SLOT(onBgColor(int)));
 
 	updateDialog();
 }
@@ -539,6 +544,72 @@ void ViewPreferences::onVertIndent(const QString& text)
 	updatePreview();
 }
 
+void ViewPreferences::onFgColor(int index)
+{
+	QPixmap pix = fgColorComboBox->itemData(index, Qt::DecorationRole).value<QPixmap>();
+	QColor pixColor = pix.toImage().pixel(pix.height() / 2, pix.width() / 2);
+	QColor color(pixColor.blue(), pixColor.green(), pixColor.red());
+	if(getStyleItem()->type == IT_LOG)
+		color = pixColor;
+	PTR(StyleProperty) prop = getStyleProperty();
+	if (&prop->fg_color != &null_fg_color)
+	{
+		prop->fg_color = color;
+		if (&prop->fg_color == &all_fg_color)
+		{
+			StyleItemList::const_iterator it = style_list.begin();
+			if (it != style_list.end())
+			{
+				++it;
+				while (it != style_list.end())
+				{
+					PropertyList::const_iterator it_prop = (*it)->properties.begin();
+					if (it_prop != (*it)->properties.end())
+					{
+						(*it_prop)->fg_color = all_fg_color;
+					}
+					++it;
+				}
+			}
+		}
+		updatePreview();
+	}
+}
+
+void ViewPreferences::onBgColor(int index)
+{
+	QPixmap pix = bgColorComboBox->itemData(index, Qt::DecorationRole).value<QPixmap>();
+	QColor pixColor = pix.toImage().pixel(pix.height() / 2, pix.width() / 2);
+	QColor color(pixColor.blue(), pixColor.green(), pixColor.red());
+	if(getStyleItem()->type == IT_LOG)
+	{
+		color = pixColor;
+	}
+	PTR(StyleProperty) prop = getStyleProperty();
+	if (&prop->bg_color != &null_bg_color)
+	{
+		prop->bg_color = color;
+		if (&prop->bg_color == &all_bg_color)
+		{
+			StyleItemList::const_iterator it = style_list.begin();
+			if (it != style_list.end())
+			{
+				++it;
+				while (it != style_list.end())
+				{
+					PropertyList::const_iterator it_prop = (*it)->properties.begin();
+					if (it_prop != (*it)->properties.end())
+					{
+						(*it_prop)->bg_color = all_bg_color;
+					}
+					++it;
+				}
+			}
+		}
+		updatePreview();
+	}
+}
+
 void ViewPreferences::updateDialog()
 {
 	setupCheckBox->setCheckState(m_setup
@@ -877,6 +948,39 @@ PTR(QTreeWidgetItem) ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent
 	item->setText(0, name);
 	item->setData(0, Qt::UserRole, QVariant(itemType));
 	return item;
+}
+void ViewPreferences::insertColors(QComboBox* colorBox)
+{
+	insertColor( QColor( 0x00, 0x80, 0x00 ), "Green", colorBox);
+	insertColor( QColor( 0x00, 0x00, 0x80 ), "Navy", colorBox );
+	insertColor( QColor( 0x80, 0x80, 0x80 ), "Grey", colorBox );
+	insertColor( QColor( 0x80, 0x00, 0x80 ), "Purple", colorBox );
+	insertColor( QColor( 0xFF, 0x00, 0x00 ), "Red", colorBox );
+	insertColor( QColor( 0x00, 0xFF, 0x00 ), "Lime", colorBox );
+	insertColor( QColor( 0x00, 0x00, 0x00 ), "Black", colorBox );
+	insertColor( QColor( 0xFF, 0xFF, 0xFF ), "White", colorBox );
+	insertColor( QColor( 0x80, 0x80, 0x00 ), "Olive", colorBox );
+	insertColor( QColor( 0xC0, 0xC0, 0xC0 ), "Silver", colorBox );
+	insertColor( QColor( 0x80, 0x00, 0x00 ), "Maroon", colorBox );
+	insertColor( QColor( 0x00, 0x80, 0x80 ), "Teal", colorBox );
+	insertColor( QColor( 0xFF, 0xFF, 0x00 ), "Yellow", colorBox );
+	insertColor( QColor( 0x00, 0x00, 0xFF ), "Blue", colorBox );
+	insertColor( QColor( 0xFF, 0x00, 0xFF ), "Fushcia", colorBox );
+	insertColor( QColor( 0x00, 0xFF, 0xFF ), "Aqua", colorBox );
+}
+
+void ViewPreferences::insertColor(const QColor color, QString colorName, QComboBox* colorBox)
+{
+	colorBox->addItem(colorName);
+	int size = colorBox->style()->pixelMetric(QStyle::PM_SmallIconSize);
+	QPixmap pix(size, size - 5);
+	pix.fill(color);
+	QRect rBorder(0,0,size-1,size-6);
+	QPainter p(&pix);
+	QPen pen(Qt::black, 1, Qt::SolidLine);
+	p.setPen(pen);
+	p.drawRect(rBorder);
+	colorBox->setItemData(colorBox->findText(colorName), pix, Qt::DecorationRole);
 }
 
 int ViewPreferences::getStylePropertyType()

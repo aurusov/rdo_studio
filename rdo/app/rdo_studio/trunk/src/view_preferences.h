@@ -77,6 +77,8 @@ private slots:
 	void onWarning(int state);
 	void onHorzIndent(const QString& text);
 	void onVertIndent(const QString& text);
+	void onFgColor(int index);
+	void onBgColor(int index);
 
 private:
 	enum ItemType
@@ -339,6 +341,8 @@ private:
 	void createStyles();
 	void createPreview();
 	void createTree();
+	void insertColors(QComboBox* colorBox);
+	void insertColor (const QColor color, QString colorName, QComboBox* colorBox);
 	int getStylePropertyType();
 	PTR(StyleProperty) getStyleProperty();
 	PTR(StyleItem) getStyleItem();
