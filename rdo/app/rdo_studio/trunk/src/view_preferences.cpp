@@ -354,44 +354,45 @@ void ViewPreferences::onFontType(int index)
 {
 	UNUSED(index);
 
-	QString name = fontComboBox->currentFont().rawName();
+	QString name = fontComboBox->currentFont().toString();
+	QByteArray text = name.toLocal8Bit();
 
 	switch(getStyleItem()->type)
 	{
 	case IT_ROOT:
 		all_font_name = name.toStdString();
-		style_editor.font->name  = name.toStdString();
-		style_build.font->name   = name.toStdString();
-		style_debug.font->name   = name.toStdString();
-		style_trace.font->name   = name.toStdString();
-		style_results.font->name = name.toStdString();
-		style_find.font->name    = name.toStdString();
-		//style_chart.font->name   = name.toStdString();
-		//style_frame.font->name   = name.toStdString();
+		style_editor.font->name  = text.constData();
+		style_build.font->name   = text.constData();
+		style_debug.font->name   = text.constData();
+		style_trace.font->name   = text.constData();
+		style_results.font->name = text.constData();
+		style_find.font->name    = text.constData();
+		//style_chart.font->name   = text.constData();
+		//style_frame.font->name   = text.constData();
 		break;
 	case IT_EDITOR:
-		style_editor.font->name = name.toStdString();
+		style_editor.font->name = text.constData();
 		break;
 	case IT_BUILD:
-		style_build.font->name = name.toStdString();
+		style_build.font->name = text.constData();
 		break;
 	case IT_DEBUG:
-		style_debug.font->name   = name.toStdString();
+		style_debug.font->name   = text.constData();
 		break;
 	case IT_LOG:
-		style_trace.font->name = name.toStdString();
+		style_trace.font->name = text.constData();
 		break;
 	case IT_RESULT:
-		style_results.font->name = name.toStdString();
+		style_results.font->name = text.constData();
 		break;
 	case IT_FIND:
-		style_find.font->name    = name.toStdString();
+		style_find.font->name    = text.constData();
 		break;
 	case IT_CHART:
-		//style_chart.font->name   = name.toStdString();
+		//style_chart.font->name   = text.constData();
 		break;
 	case IT_FRAME:
-		//style_frame.font->name   = name.toStdString();
+		//style_frame.font->name   = text.constData();
 		break;
 	}
 
