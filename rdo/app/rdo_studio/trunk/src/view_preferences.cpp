@@ -951,22 +951,22 @@ PTR(QTreeWidgetItem) ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent
 }
 void ViewPreferences::insertColors(QComboBox* colorBox)
 {
-	insertColor( QColor( 0x00, 0x80, 0x00 ), "Green", colorBox);
-	insertColor( QColor( 0x00, 0x00, 0x80 ), "Navy", colorBox );
-	insertColor( QColor( 0x80, 0x80, 0x80 ), "Grey", colorBox );
-	insertColor( QColor( 0x80, 0x00, 0x80 ), "Purple", colorBox );
-	insertColor( QColor( 0xFF, 0x00, 0x00 ), "Red", colorBox );
-	insertColor( QColor( 0x00, 0xFF, 0x00 ), "Lime", colorBox );
-	insertColor( QColor( 0x00, 0x00, 0x00 ), "Black", colorBox );
-	insertColor( QColor( 0xFF, 0xFF, 0xFF ), "White", colorBox );
-	insertColor( QColor( 0x80, 0x80, 0x00 ), "Olive", colorBox );
-	insertColor( QColor( 0xC0, 0xC0, 0xC0 ), "Silver", colorBox );
-	insertColor( QColor( 0x80, 0x00, 0x00 ), "Maroon", colorBox );
-	insertColor( QColor( 0x00, 0x80, 0x80 ), "Teal", colorBox );
-	insertColor( QColor( 0xFF, 0xFF, 0x00 ), "Yellow", colorBox );
-	insertColor( QColor( 0x00, 0x00, 0xFF ), "Blue", colorBox );
-	insertColor( QColor( 0xFF, 0x00, 0xFF ), "Fushcia", colorBox );
-	insertColor( QColor( 0x00, 0xFF, 0xFF ), "Aqua", colorBox );
+	insertColor(QColor(0x00, 0x80, 0x00), "Green",   colorBox);
+	insertColor(QColor(0x00, 0x00, 0x80), "Navy",    colorBox);
+	insertColor(QColor(0x80, 0x80, 0x80), "Grey",    colorBox);
+	insertColor(QColor(0x80, 0x00, 0x80), "Purple",  colorBox);
+	insertColor(QColor(0xFF, 0x00, 0x00), "Red",     colorBox);
+	insertColor(QColor(0x00, 0xFF, 0x00), "Lime",    colorBox);
+	insertColor(QColor(0x00, 0x00, 0x00), "Black",   colorBox);
+	insertColor(QColor(0xFF, 0xFF, 0xFF), "White",   colorBox);
+	insertColor(QColor(0x80, 0x80, 0x00), "Olive",   colorBox);
+	insertColor(QColor(0xC0, 0xC0, 0xC0), "Silver",  colorBox);
+	insertColor(QColor(0x80, 0x00, 0x00), "Maroon",  colorBox);
+	insertColor(QColor(0x00, 0x80, 0x80), "Teal",    colorBox);
+	insertColor(QColor(0xFF, 0xFF, 0x00), "Yellow",  colorBox);
+	insertColor(QColor(0x00, 0x00, 0xFF), "Blue",    colorBox);
+	insertColor(QColor(0xFF, 0x00, 0xFF), "Fushcia", colorBox);
+	insertColor(QColor(0x00, 0xFF, 0xFF), "Aqua",    colorBox);
 }
 
 void ViewPreferences::insertColor(const QColor color, QString colorName, QComboBox* colorBox)
