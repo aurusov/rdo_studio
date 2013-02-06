@@ -110,7 +110,7 @@ void RDOStudioFrameOptionsCtrl::OnPaint()
 		tstring str = "Sample of drawing text";
 		dc.DrawText( str.c_str(), str.length(), CRect( 3, 12, bmpInfo.bmWidth + 1, bmpInfo.bmHeight + 1 ), DT_LEFT );
 
-		CPen pen( PS_SOLID, 0, style->theme->defaultColor );
+		CPen pen( PS_SOLID, 0, style->theme->defaultColor.rgb() );
 		CPen* pOldPen = dc.SelectObject( &pen );
 
 		CPoint points[5];
@@ -126,7 +126,7 @@ void RDOStudioFrameOptionsCtrl::OnPaint()
 		points[4].y = 0;
 		dc.Polyline( points, 5 );
 
-		CBrush brush( style->theme->backgroundColor );
+		CBrush brush( style->theme->backgroundColor.rgb() );
 		CBrush* pOldBrush = dc.SelectObject( &brush );
 
 		CRect rect;

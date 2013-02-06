@@ -28,10 +28,10 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 RDOEditorEditTheme::RDOEditorEditTheme(): RDOEditorBaseEditTheme()
 {
-	foldFgColor = RGB( 0xFF, 0xFF, 0xFF );
-	foldBgColor = RGB( 0x00, 0x00, 0x00 );
+	foldFgColor = QColor( 0xFF, 0xFF, 0xFF );
+	foldBgColor = QColor( 0x00, 0x00, 0x00 );
 
-	errorBgColor = RGB( 0xFF, 0x80, 0x80 );
+	errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
 	foldStyle   = RDOFOLDS_PLUS;
 	commentFold = false;
@@ -80,9 +80,9 @@ void RDOEditorEditTheme::load( tstring regPath )
 	RDOEditorBaseEditTheme::load( regPath );
 
 	regPath += "theme";
-	foldFgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "foldFgColor", foldFgColor );
-	foldBgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "foldBgColor", foldBgColor );
-	errorBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "errorBgColor", errorBgColor );
+	foldFgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "foldFgColor", foldFgColor.rgb() );
+	foldBgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "foldBgColor", foldBgColor.rgb() );
+	errorBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "errorBgColor", errorBgColor.rgb() );
 	foldStyle    = (RDOFoldStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "foldStyle", foldStyle );
 	commentFold  = AfxGetApp()->GetProfileInt( regPath.c_str(), "commentFold", commentFold ) ? true : false;
 }
@@ -92,9 +92,9 @@ void RDOEditorEditTheme::save( tstring regPath ) const
 	RDOEditorBaseEditTheme::save( regPath );
 
 	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldFgColor", foldFgColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldBgColor", foldBgColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "errorBgColor", errorBgColor );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldFgColor", foldFgColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldBgColor", foldBgColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "errorBgColor", errorBgColor.rgb() );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldStyle", foldStyle );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "commentFold", commentFold );
 }
@@ -110,9 +110,9 @@ RDOEditorEditTheme RDOEditorEditTheme::getCppTheme()
 	RDOEditorEditTheme theme;
 	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getCppTheme();
 
-	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = RGB( 0xFF, 0x80, 0x80 );
+	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
+	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
+	theme.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
 	theme.foldStyle   = RDOFOLDS_PLUS;
 	theme.commentFold = false;
@@ -125,9 +125,9 @@ RDOEditorEditTheme RDOEditorEditTheme::getPascalTheme()
 	RDOEditorEditTheme theme;
 	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getPascalTheme();
 
-	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = RGB( 0xFF, 0x80, 0x80 );
+	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
+	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
+	theme.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
 	theme.foldStyle   = RDOFOLDS_PLUS;
 	theme.commentFold = false;
@@ -140,9 +140,9 @@ RDOEditorEditTheme RDOEditorEditTheme::getHtmlTheme()
 	RDOEditorEditTheme theme;
 	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getHtmlTheme();
 
-	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = RGB( 0xFF, 0x80, 0x80 );
+	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
+	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
+	theme.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
 	theme.foldStyle   = RDOFOLDS_PLUS;
 	theme.commentFold = false;
@@ -155,9 +155,9 @@ RDOEditorEditTheme RDOEditorEditTheme::getClassicTheme()
 	RDOEditorEditTheme theme;
 	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getClassicTheme();
 
-	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = RGB( 0xE6, 0x05, 0xF8 );
+	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
+	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
+	theme.errorBgColor = QColor( 0xE6, 0x05, 0xF8 );
 
 	theme.foldStyle   = RDOFOLDS_PLUS;
 	theme.commentFold = false;
@@ -170,9 +170,9 @@ RDOEditorEditTheme RDOEditorEditTheme::getTwilightTheme()
 	RDOEditorEditTheme theme;
 	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getTwilightTheme();
 
-	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = RGB( 0xFF, 0x80, 0x80 );
+	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
+	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
+	theme.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
 	theme.foldStyle   = RDOFOLDS_PLUS;
 	theme.commentFold = false;
@@ -185,9 +185,9 @@ RDOEditorEditTheme RDOEditorEditTheme::getOceanTheme()
 	RDOEditorEditTheme theme;
 	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getOceanTheme();
 
-	theme.foldFgColor  = RGB( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = RGB( 0xFF, 0xFF, 0x00 );
+	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
+	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
+	theme.errorBgColor = QColor( 0xFF, 0xFF, 0x00 );
 
 	theme.foldStyle   = RDOFOLDS_PLUS;
 	theme.commentFold = false;

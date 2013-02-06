@@ -88,7 +88,7 @@ void LogEdit::setEditorStyle(PTR(LogEditStyle) pStyle)
 
 	// ----------
 	// Selected Line
-	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<PTR(LogEditTheme)>(m_pStyle->theme)->selectLineBgColor);
+	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<PTR(LogEditTheme)>(m_pStyle->theme)->selectLineBgColor);
 }
 
 void LogEdit::gotoPrev()

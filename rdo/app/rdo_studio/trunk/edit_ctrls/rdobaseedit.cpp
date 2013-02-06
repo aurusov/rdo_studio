@@ -177,11 +177,11 @@ int RDOBaseEdit::getNewMarker()
 	return m_markerCount;
 }
 
-void RDOBaseEdit::defineMarker(int marker, int markerType, COLORREF fore, COLORREF back) const
+void RDOBaseEdit::defineMarker(int marker, int markerType, QColor fore, QColor back) const
 {
 	sendEditor(SCI_MARKERDEFINE,  marker, markerType);
-	sendEditor(SCI_MARKERSETFORE, marker, fore);
-	sendEditor(SCI_MARKERSETBACK, marker, back);
+	sendEditor(SCI_MARKERSETFORE, marker, fore.rgb());
+	sendEditor(SCI_MARKERSETBACK, marker, back.rgb());
 }
 
 const RDOBaseEditStyle* RDOBaseEdit::getEditorStyle() const
@@ -198,10 +198,10 @@ void RDOBaseEdit::setEditorStyle(RDOBaseEditStyle* pStyle)
 	// ----------
 	// Colors
 	RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(m_pStyle->theme);
-	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, theme->defaultColor);
-	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, theme->backgroundColor);
-	sendEditor(SCI_STYLESETFORE, SCE_TEXT_DEFAULT, theme->defaultColor);
-	sendEditor(SCI_STYLESETBACK, SCE_TEXT_DEFAULT, theme->backgroundColor);
+	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, theme->defaultColor.rgb());
+	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, theme->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETFORE, SCE_TEXT_DEFAULT, theme->defaultColor.rgb());
+	sendEditor(SCI_STYLESETBACK, SCE_TEXT_DEFAULT, theme->backgroundColor.rgb());
 
 	// ----------
 	// Styles
@@ -235,14 +235,14 @@ void RDOBaseEdit::setEditorStyle(RDOBaseEditStyle* pStyle)
 
 	// ----------
 	// Caret
-	sendEditor(SCI_SETCARETFORE, theme->caretColor);
-	sendEditor(SCI_SETSELBACK, true, theme->selectionBgColor);
+	sendEditor(SCI_SETCARETFORE, theme->caretColor.rgb());
+	sendEditor(SCI_SETSELBACK, true, theme->selectionBgColor.rgb());
 	sendEditor(SCI_SETCARETWIDTH, 1);
 
 	// ----------
 	// Bookmark
-	COLORREF bookmarkFgColor = theme->bookmarkFgColor;
-	COLORREF bookmarkBgColor = theme->bookmarkBgColor;
+	QColor bookmarkFgColor = theme->bookmarkFgColor;
+	QColor bookmarkBgColor = theme->bookmarkBgColor;
 	switch (theme->bookmarkStyle)
 	{
 		case RDOBOOKMARKS_NONE     : defineMarker(m_sciMarkerBookmark, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor); break;

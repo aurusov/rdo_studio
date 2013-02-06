@@ -29,7 +29,7 @@ using namespace rdoStyle;
 // --------------------------------------------------------------------------------
 RDOFindEditTheme::RDOFindEditTheme(): LogEditTheme()
 {
-	keywordColor = RGB( 0x00, 0x00, 0x00 );
+	keywordColor = QColor( 0x00, 0x00, 0x00 );
 	keywordStyle = RDOStyleFont::BOLD;
 }
 
@@ -66,7 +66,7 @@ void RDOFindEditTheme::load( tstring regPath )
 	LogEditTheme::load( regPath );
 
 	regPath += "theme";
-	keywordColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordColor", keywordColor );
+	keywordColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordColor", keywordColor.rgb() );
 	keywordStyle = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle ));
 }
 
@@ -75,7 +75,7 @@ void RDOFindEditTheme::save( tstring regPath ) const
 	LogEditTheme::save( regPath );
 
 	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordColor", keywordColor );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordColor", keywordColor.rgb() );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordStyle", keywordStyle );
 }
 
@@ -110,8 +110,8 @@ rbool RDOFindEditTheme::styleItalic( const int styleType ) const
 tstring RDOFindEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_FIND_DEFAULT: return colorToHEX( defaultColor );
-		case SCE_FIND_KEYWORD: return colorToHEX( keywordColor );
+		case SCE_FIND_DEFAULT: return colorToHEX( defaultColor.rgb() );
+		case SCE_FIND_KEYWORD: return colorToHEX( keywordColor.rgb() );
 	}
 	return LogEditTheme::styleFGColorToHEX( styleType );
 }
@@ -149,7 +149,7 @@ RDOFindEditTheme RDOFindEditTheme::getOceanTheme()
 	RDOFindEditTheme theme;
 	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getOceanTheme();
 
-	theme.keywordColor = RGB( 0x00, 0x00, 0x00 );
+	theme.keywordColor = QColor( 0x00, 0x00, 0x00 );
 	theme.keywordStyle = RDOStyleFont::BOLD;
 
 	return theme;

@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
+#include <QtGui/qcolor.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
@@ -64,8 +65,8 @@ public:
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
-	COLORREF defaultColor;
-	COLORREF backgroundColor;
+	QColor defaultColor;
+	QColor backgroundColor;
 
 	rdoStyle::RDOStyleFont::style defaultStyle;
 };

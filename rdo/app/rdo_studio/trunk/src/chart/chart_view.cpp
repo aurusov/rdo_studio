@@ -710,7 +710,7 @@ void RDOStudioChartView::onDraw()
 	rect.CopyRect( &newClientRect );
 
 	//MFC's FillSolidRect do the same thing
-	::SetBkColor( hmemdc, style->theme->backgroundColor );
+	::SetBkColor( hmemdc, style->theme->backgroundColor.rgb() );
 	::ExtTextOut( hmemdc, 0, 0, ETO_OPAQUE, newClientRect, NULL, 0, NULL );
 
 	drawTitle( chartRect );
@@ -723,7 +723,7 @@ void RDOStudioChartView::onDraw()
 		HPEN pen_chart = NULL;
 		HPEN old_pen   = NULL;
 		try {
-			pen_chart = ::CreatePen( PS_SOLID, 0, style->getTheme()->defaultColor );
+			pen_chart = ::CreatePen( PS_SOLID, 0, style->getTheme()->defaultColor.rgb() );
 			old_pen   = (HPEN)::SelectObject( hmemdc, pen_chart );
 			
 			drawYAxis( chartRect, yAxis );

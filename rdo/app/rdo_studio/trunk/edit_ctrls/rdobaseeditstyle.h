@@ -42,10 +42,10 @@ public:
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
-	COLORREF caretColor;
-	COLORREF selectionBgColor;
-	COLORREF bookmarkFgColor;
-	COLORREF bookmarkBgColor;
+	QColor caretColor;
+	QColor selectionBgColor;
+	QColor bookmarkFgColor;
+	QColor bookmarkBgColor;
 
 	RDOBookmarkStyle bookmarkStyle;
 
