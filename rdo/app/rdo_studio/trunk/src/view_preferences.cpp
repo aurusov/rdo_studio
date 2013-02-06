@@ -29,12 +29,16 @@ rbool ViewPreferences::null_warning       = true;
 rbool ViewPreferences::null_commentfold   = false;
 RDOBookmarkStyle ViewPreferences::null_bookmarkstyle = RDOBOOKMARKS_NONE;
 RDOFoldStyle     ViewPreferences::null_foldstyle     = RDOFOLDS_NONE;
+QColor ViewPreferences::null_fg_color = QColor(0x00, 0x00, 0x00);
+QColor ViewPreferences::null_bg_color = QColor(0xFF, 0xFF, 0xFF);
 
 ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	: QDialog(pParent)
 	, all_font_size(-1)
 	, all_font_name("")
 	, null_font_style(rdoStyle::RDOStyleFont::NONE)
+	, all_fg_color(0x00, 0x00, 0x00)
+	, all_bg_color(0xFF, 0xFF, 0xFF)
 {
 	setupUi(this);
 
@@ -664,101 +668,101 @@ void ViewPreferences::createStyles()
 {
 	StyleItem* item;
 	item = new StyleItem(IT_ROOT, all_font_size, all_font_name);
-	item->properties.push_back(new StyleProperty(item, IT_ROOT, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_ROOT, null_font_style, all_fg_color, all_bg_color));
 	style_list.push_back(item);
 
 	RDOEditorEditTheme* editor_theme = static_cast<RDOEditorEditTheme*>(style_editor.theme);
 	item = new StyleItem(IT_EDITOR, style_editor.font->size, style_editor.font->name, style_editor.window->wordWrap, style_editor.window->showHorzScrollBar, editor_theme->bookmarkStyle, editor_theme->foldStyle, editor_theme->commentFold);
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR, editor_theme->identifierStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, editor_theme->defaultStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_IDENTIFICATOR, editor_theme->identifierStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_KEYWORD, editor_theme->keywordStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_FUNCTION, editor_theme->functionsStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TRACE, editor_theme->traceStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_COLOR, editor_theme->colorStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_COMMENT, editor_theme->commentStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_NUMBER, editor_theme->numberStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_STRING, editor_theme->stringStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_OPERATOR, editor_theme->operatorStyle));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, editor_theme->caretColor));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_FOLD, null_font_style));
-	//item->properties.push_back(new StyleProperty(item, IT_EDITOR_ERROR, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR, editor_theme->identifierStyle, editor_theme->identifierColor, editor_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, editor_theme->defaultStyle, editor_theme->defaultColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_IDENTIFICATOR, editor_theme->identifierStyle, editor_theme->identifierColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_KEYWORD, editor_theme->keywordStyle, editor_theme->keywordColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_FUNCTION, editor_theme->functionsStyle, editor_theme->functionsColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TRACE, editor_theme->traceStyle, editor_theme->traceColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_COLOR, editor_theme->colorStyle, editor_theme->colorColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_COMMENT, editor_theme->commentStyle, editor_theme->commentColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_NUMBER, editor_theme->numberStyle, editor_theme->numberColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_STRING, editor_theme->stringStyle, editor_theme->stringColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_OPERATOR, editor_theme->operatorStyle, editor_theme->operatorColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, editor_theme->caretColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, editor_theme->selectionBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, editor_theme->bookmarkFgColor, editor_theme->bookmarkBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_FOLD, null_font_style, editor_theme->foldFgColor, editor_theme->foldBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_ERROR, null_font_style, null_fg_color, editor_theme->errorBgColor));
 	style_list.push_back(item);
 
 	RDOBuildEditTheme* build_theme = static_cast<RDOBuildEditTheme*>(style_build.theme);
 	item = new StyleItem(IT_BUILD, style_build.font->size, style_build.font->name, style_build.window->wordWrap, style_build.window->showHorzScrollBar, null_bookmarkstyle, null_foldstyle, null_commentfold, build_theme->warning);
-	item->properties.push_back(new StyleProperty(item, IT_BUILD, build_theme->defaultStyle));
-	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, build_theme->defaultStyle));
-	item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style, null_fg_color, build_theme->selectLineBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, build_theme->caretColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, build_theme->selectionBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, build_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
 	RDOBaseEditTheme* debug_theme = static_cast<RDOBaseEditTheme*>(style_debug.theme);
 	item = new StyleItem(IT_DEBUG, style_debug.font->size, style_debug.font->name, style_debug.window->wordWrap, style_debug.window->showHorzScrollBar);
-	item->properties.push_back(new StyleProperty(item, IT_DEBUG, debug_theme->defaultStyle));
-	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, debug_theme->defaultStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_DEBUG, debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, debug_theme->caretColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, debug_theme->selectionBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, debug_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
 	LogTheme* trace_theme = style_trace.theme;
 	item = new StyleItem(IT_LOG, style_trace.font->size, style_trace.font->name);
-	item->properties.push_back(new StyleProperty(item, IT_LOG, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_ES, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_EB, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_EF, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_EI, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_ER, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_RC, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_RE, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_RK, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_V, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_STATUS, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_DPS, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SB, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SO, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_STN, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_STD, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_STR, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SRC, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SRE, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SRK, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SD, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SES, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SEN, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SEM, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SEF, trace_theme->style));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SEU, trace_theme->style));
+	item->properties.push_back(new StyleProperty(item, IT_LOG, trace_theme->style, trace_theme->defaultColor.foregroundColor, trace_theme->defaultColor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_ES, trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_EB, trace_theme->style, trace_theme->eb.foregroundColor, trace_theme->eb.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_EF, trace_theme->style, trace_theme->ef.foregroundColor, trace_theme->ef.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_EI, trace_theme->style, trace_theme->ei.foregroundColor, trace_theme->ei.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_ER, trace_theme->style, trace_theme->er.foregroundColor, trace_theme->er.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_RC, trace_theme->style, trace_theme->rc.foregroundColor, trace_theme->rc.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_RE, trace_theme->style, trace_theme->re.foregroundColor, trace_theme->re.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_RK, trace_theme->style, trace_theme->rk.foregroundColor, trace_theme->rk.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_V, trace_theme->style, trace_theme->v.foregroundColor, trace_theme->v.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_STATUS, trace_theme->style, trace_theme->s.foregroundColor, trace_theme->s.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_DPS, trace_theme->style, trace_theme->dps.foregroundColor, trace_theme->dps.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SB, trace_theme->style, trace_theme->sb.foregroundColor, trace_theme->sb.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SO, trace_theme->style, trace_theme->so.foregroundColor, trace_theme->so.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_STN, trace_theme->style, trace_theme->stn.foregroundColor, trace_theme->stn.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_STD, trace_theme->style, trace_theme->std.foregroundColor, trace_theme->std.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_STR, trace_theme->style, trace_theme->str.foregroundColor, trace_theme->str.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SRC, trace_theme->style, trace_theme->src.foregroundColor, trace_theme->src.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SRE, trace_theme->style, trace_theme->sre.foregroundColor, trace_theme->sre.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SRK, trace_theme->style, trace_theme->srk.foregroundColor, trace_theme->srk.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SD, trace_theme->style, trace_theme->sd.foregroundColor, trace_theme->sd.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SES, trace_theme->style, trace_theme->ses.foregroundColor, trace_theme->ses.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SEN, trace_theme->style, trace_theme->sen.foregroundColor, trace_theme->sen.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SEM, trace_theme->style, trace_theme->sem.foregroundColor, trace_theme->sem.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SEF, trace_theme->style, trace_theme->sef.foregroundColor, trace_theme->sef.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SEU, trace_theme->style, trace_theme->seu.foregroundColor, trace_theme->seu.backgroundColor));
 	style_list.push_back(item);
 
 	RDOEditorBaseEditTheme* results_theme = static_cast<RDOEditorBaseEditTheme*>(style_results.theme);
 	item = new StyleItem(IT_RESULT, style_results.font->size, style_results.font->name, style_results.window->wordWrap, style_results.window->showHorzScrollBar);
-	item->properties.push_back(new StyleProperty(item, IT_RESULT, results_theme->identifierStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, results_theme->defaultStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_IDENTIFICATOR, results_theme->identifierStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_KEYWORD, results_theme->keywordStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_NUMBER, results_theme->numberStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_STRING, results_theme->stringStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_OPERATOR, results_theme->operatorStyle));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_RESULT, results_theme->identifierStyle, results_theme->identifierColor, results_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, results_theme->defaultStyle, results_theme->defaultColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_IDENTIFICATOR, results_theme->identifierStyle, results_theme->identifierColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_KEYWORD, results_theme->keywordStyle, results_theme->keywordColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_NUMBER, results_theme->numberStyle, results_theme->numberColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_STRING, results_theme->stringStyle, results_theme->stringColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_OPERATOR, results_theme->operatorStyle, results_theme->operatorColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, results_theme->caretColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, results_theme->selectionBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, results_theme->bookmarkFgColor, results_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
 	RDOFindEditTheme* find_theme = static_cast<RDOFindEditTheme*>(style_find.theme);
 	item = new StyleItem(IT_FIND, style_find.font->size, style_find.font->name, style_find.window->wordWrap, style_find.window->showHorzScrollBar);
-	item->properties.push_back(new StyleProperty(item, IT_FIND, find_theme->defaultStyle));
-	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, find_theme->defaultStyle));
-	item->properties.push_back(new StyleProperty(item, IT_FIND_SEARCHTEXT, results_theme->identifierStyle));
-	item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style));
+	item->properties.push_back(new StyleProperty(item, IT_FIND, find_theme->defaultStyle, find_theme->defaultColor, find_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, find_theme->defaultStyle, find_theme->defaultColor, find_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_FIND_SEARCHTEXT, find_theme->keywordStyle, find_theme->keywordColor, null_bg_color, null_fg_color, find_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style, null_fg_color, find_theme->selectLineBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, find_theme->caretColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, find_theme->selectionBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, find_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
 }

@@ -152,10 +152,19 @@ private:
 
 		rdoStyle::RDOStyleFont::style& font_style;
 
-		StyleProperty(StyleItem* item, int identificator, rdoStyle::RDOStyleFont::style& font_style)
+		QColor& fg_color;
+		QColor& bg_color;
+		QColor& fg_disable_color;
+		QColor& bg_disable_color;
+
+		StyleProperty(StyleItem* item, int identificator, rdoStyle::RDOStyleFont::style& font_style, QColor& fg_color, QColor& bg_color, QColor& fg_disable_color = null_fg_color, QColor& bg_disable_color = null_bg_color)
 			: item(item)
 			, identificator(identificator)
 			, font_style(font_style)
+			, fg_color(fg_color)
+			, bg_color(bg_color)
+			, fg_disable_color(fg_disable_color)
+			, bg_disable_color(bg_disable_color)
 		{}
 	};
 
@@ -195,6 +204,8 @@ private:
 
 	int         all_font_size;
 	tstring     all_font_name;
+	QColor      all_fg_color;
+	QColor      all_bg_color;
 
 	rdoStyle::RDOStyleFont::style        null_font_style;
 	static rbool                         null_wordwrap;
@@ -203,6 +214,8 @@ private:
 	static rbool                         null_commentfold;
 	static rdoEditCtrl::RDOBookmarkStyle null_bookmarkstyle;
 	static rdoEditor::RDOFoldStyle       null_foldstyle;
+	static QColor                        null_fg_color;
+	static QColor                        null_bg_color;
 
 	rbool m_setup;
 	rbool m_checkInFuture;
