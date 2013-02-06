@@ -328,15 +328,15 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
 	RDOEditorBaseEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getClassicTheme();
 
-	theme.identifierColor = RGB( 0xFF, 0xFF, 0x00 );
-	theme.keywordColor    = RGB( 0xFF, 0xFF, 0xFF );
-	theme.functionsColor  = RGB( 0xFF, 0xFF, 0xFF );
-	theme.traceColor      = RGB( 0xFF, 0xFF, 0xFF );
-	theme.colorColor      = RGB( 0xFF, 0xFF, 0xFF );
-	theme.commentColor    = RGB( 0xC0, 0xC0, 0xC0 );
-	theme.numberColor     = RGB( 0xFF, 0xFF, 0x00 );
-	theme.stringColor     = RGB( 0xFF, 0xFF, 0x00 );
-	theme.operatorColor   = RGB( 0xFF, 0xFF, 0x00 );
+	theme.identifierColor = QColor( 0xFF, 0xFF, 0x00 );
+	theme.keywordColor    = QColor( 0xFF, 0xFF, 0xFF );
+	theme.functionsColor  = QColor( 0xFF, 0xFF, 0xFF );
+	theme.traceColor      = QColor( 0xFF, 0xFF, 0xFF );
+	theme.colorColor      = QColor( 0xFF, 0xFF, 0xFF );
+	theme.commentColor    = QColor( 0xC0, 0xC0, 0xC0 );
+	theme.numberColor     = QColor( 0xFF, 0xFF, 0x00 );
+	theme.stringColor     = QColor( 0xFF, 0xFF, 0x00 );
+	theme.operatorColor   = QColor( 0xFF, 0xFF, 0x00 );
 
 	theme.identifierStyle = RDOStyleFont::NONE;
 	theme.keywordStyle    = RDOStyleFont::NONE;
@@ -356,15 +356,15 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
 	RDOEditorBaseEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getTwilightTheme();
 
-	theme.identifierColor = RGB( 0xFF, 0xFF, 0xFF );
-	theme.keywordColor    = RGB( 0x00, 0xFF, 0xFF );
-	theme.functionsColor  = RGB( 0xFF, 0xFF, 0x00 );
-	theme.traceColor      = RGB( 0x00, 0xFF, 0x00 );
-	theme.colorColor      = RGB( 0x00, 0xFF, 0x00 );
-	theme.commentColor    = RGB( 0xC0, 0xC0, 0xC0 );
-	theme.numberColor     = RGB( 0xC0, 0xC0, 0xC0 );
-	theme.stringColor     = RGB( 0xFF, 0xFF, 0xFF );
-	theme.operatorColor   = RGB( 0xFF, 0xFF, 0xFF );
+	theme.identifierColor = QColor( 0xFF, 0xFF, 0xFF );
+	theme.keywordColor    = QColor( 0x00, 0xFF, 0xFF );
+	theme.functionsColor  = QColor( 0xFF, 0xFF, 0x00 );
+	theme.traceColor      = QColor( 0x00, 0xFF, 0x00 );
+	theme.colorColor      = QColor( 0x00, 0xFF, 0x00 );
+	theme.commentColor    = QColor( 0xC0, 0xC0, 0xC0 );
+	theme.numberColor     = QColor( 0xC0, 0xC0, 0xC0 );
+	theme.stringColor     = QColor( 0xFF, 0xFF, 0xFF );
+	theme.operatorColor   = QColor( 0xFF, 0xFF, 0xFF );
 
 	theme.identifierStyle = RDOStyleFont::NONE;
 	theme.keywordStyle    = RDOStyleFont::BOLD;
