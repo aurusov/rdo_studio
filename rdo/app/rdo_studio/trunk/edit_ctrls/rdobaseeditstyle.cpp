@@ -201,9 +201,9 @@ RDOBaseEditTheme RDOBaseEditTheme::getOceanTheme()
 	return theme;
 }
 
-tstring RDOBaseEditTheme::colorToHEX( const COLORREF color )
+tstring RDOBaseEditTheme::colorToHEX( const QColor color )
 {
-	return rdo::format( "#%02X%02X%02X", GetRValue( color ), GetGValue( color ), GetBValue( color ) );
+	return rdo::format( "#%02X%02X%02X", color.red(), color.green(), color.blue() );
 }
 
 // --------------------------------------------------------------------------------

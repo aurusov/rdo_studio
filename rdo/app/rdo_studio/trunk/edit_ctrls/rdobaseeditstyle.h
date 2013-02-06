@@ -61,7 +61,7 @@ public:
 	static RDOBaseEditTheme getTwilightTheme();
 	static RDOBaseEditTheme getOceanTheme();
 
-	static tstring colorToHEX( const COLORREF color );
+	static tstring colorToHEX( const QColor color );
 };
 
 // --------------------------------------------------------------------------------
