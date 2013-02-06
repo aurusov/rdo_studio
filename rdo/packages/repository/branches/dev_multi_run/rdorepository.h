@@ -170,7 +170,6 @@ private:
 
 	void      resetModelNames ();
 	FindModel updateModelNames();
-	rbool     saveAsDlg       ();
 	rbool     canCloseModel   ();
 	void      realCloseModel  ();
 	void      extractName     (CREF(tstring) fullName);
@@ -191,11 +190,10 @@ protected:
 	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	void  newModel   (CPTRC(NewModel) data                  );
-	rbool openModel  (CREF(tstring)   modelFileName = _T(""));
-	void  closeModel ();
-	rbool saveModel  ();
-	void  saveAsModel();
+	void  newModel  (CPTRC(NewModel) data                  );
+	rbool openModel (CREF(tstring)   modelFileName = _T(""));
+	void  closeModel();
+	rbool saveModel ();
 
 	void load(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream);
 	void save(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream) const;
