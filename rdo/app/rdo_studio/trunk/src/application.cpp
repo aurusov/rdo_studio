@@ -121,6 +121,12 @@ void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QS
 	if (msg.contains("requested for null window or window without handle"))
 		return;
 
+	if (msg.contains("QBackingStore::flush() called with non-exposed window, behavior is undefined"))
+		return;
+
+	if (msg.contains("Cannot create accessible interface for object"))
+		return;
+
 	qInstallMessageHandler(NULL);
 
 	QString message = QString("%1\n\nfile: %2: %3\nat function: %4")
@@ -136,6 +142,7 @@ void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QS
 		break;
 
 	case QtWarningMsg:
+		TRACE1("Warning: %s\n", message.toLocal8Bit().constData());
 		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", message);
 		break;
 
