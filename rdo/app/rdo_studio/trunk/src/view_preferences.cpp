@@ -155,6 +155,8 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(vertIndentLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onVertIndent(const QString&)));
 	connect(fgColorComboBox, SIGNAL(activated(int)), this, SLOT(onFgColor(int)));
 	connect(bgColorComboBox, SIGNAL(activated(int)), this, SLOT(onBgColor(int)));
+	connect(fgColorToolButton, SIGNAL(clicked()), this, SLOT(onFgColorDialog()));
+	connect(bgColorToolButton, SIGNAL(clicked()), this, SLOT(onBgColorDialog()));
 
 	updateDialog();
 }
@@ -546,11 +548,12 @@ void ViewPreferences::onVertIndent(const QString& text)
 
 void ViewPreferences::onFgColor(int index)
 {
-	QPixmap pix = fgColorComboBox->itemData(index, Qt::DecorationRole).value<QPixmap>();
-	QColor pixColor = pix.toImage().pixel(pix.height() / 2, pix.width() / 2);
-	QColor color(pixColor.blue(), pixColor.green(), pixColor.red());
-	if(getStyleItem()->type == IT_LOG)
-		color = pixColor;
+	QColor color = qvariant_cast<QColor>(fgColorComboBox->itemData(index, Qt::UserRole));
+	QColor invColor(color.blue(), color.green(), color.red());
+	if(getStyleItem()->type != IT_LOG)
+	{
+		color = invColor;
+	}
 	PTR(StyleProperty) prop = getStyleProperty();
 	if (&prop->fg_color != &null_fg_color)
 	{
@@ -578,12 +581,11 @@ void ViewPreferences::onFgColor(int index)
 
 void ViewPreferences::onBgColor(int index)
 {
-	QPixmap pix = bgColorComboBox->itemData(index, Qt::DecorationRole).value<QPixmap>();
-	QColor pixColor = pix.toImage().pixel(pix.height() / 2, pix.width() / 2);
-	QColor color(pixColor.blue(), pixColor.green(), pixColor.red());
-	if(getStyleItem()->type == IT_LOG)
+	QColor color = qvariant_cast<QColor>(bgColorComboBox->itemData(index, Qt::UserRole));
+	QColor invColor(color.blue(), color.green(), color.red());
+	if(getStyleItem()->type != IT_LOG)
 	{
-		color = pixColor;
+		color = invColor;
 	}
 	PTR(StyleProperty) prop = getStyleProperty();
 	if (&prop->bg_color != &null_bg_color)
@@ -607,6 +609,48 @@ void ViewPreferences::onBgColor(int index)
 			}
 		}
 		updatePreview();
+	}
+}
+
+void ViewPreferences::onFgColorDialog()
+{
+	QColor color = fgColorComboBox->itemData(fgColorComboBox->currentIndex(), Qt::UserRole).value<QColor>();
+	fgColorDlg = new QColorDialog(color, this);
+	connect(fgColorDlg, SIGNAL(colorSelected(const QColor&)), this, SLOT(onFgColorSelected(const QColor&)));
+	fgColorDlg->exec();
+}
+
+void ViewPreferences::onBgColorDialog()
+{
+	QColor color = bgColorComboBox->itemData(bgColorComboBox->currentIndex(), Qt::UserRole).value<QColor>();
+	bgColorDlg = new QColorDialog(color, this);
+	connect(bgColorDlg, SIGNAL(colorSelected(const QColor&)), this, SLOT(onBgColorSelected(const QColor&)));
+	bgColorDlg->exec();
+}
+
+void ViewPreferences::onFgColorSelected(const QColor& color)
+{
+	if(fgColorComboBox->findData(color, Qt::UserRole) == -1)
+	{
+		insertColor(color, QString::fromStdString(rdo::format("[%d, %d, %d]", color.red(), color.green(), color.blue())), fgColorComboBox);
+		fgColorComboBox->setCurrentIndex(fgColorComboBox->findData(color, Qt::UserRole));
+	}
+	else
+	{
+		fgColorComboBox->setCurrentIndex(fgColorComboBox->findData(color, Qt::UserRole));
+	}
+}
+
+void ViewPreferences::onBgColorSelected(const QColor& color)
+{
+	if(bgColorComboBox->findData(color, Qt::UserRole) == -1)
+	{
+		insertColor(color, QString::fromStdString(rdo::format("[%d, %d, %d]", color.red(), color.green(), color.blue())), bgColorComboBox);
+		bgColorComboBox->setCurrentIndex(bgColorComboBox->findData(color, Qt::UserRole));
+	}
+	else
+	{
+		bgColorComboBox->setCurrentIndex(bgColorComboBox->findData(color, Qt::UserRole));
 	}
 }
 
@@ -972,15 +1016,16 @@ void ViewPreferences::insertColors(QComboBox* colorBox)
 void ViewPreferences::insertColor(const QColor color, QString colorName, QComboBox* colorBox)
 {
 	colorBox->addItem(colorName);
-	int size = colorBox->style()->pixelMetric(QStyle::PM_SmallIconSize);
-	QPixmap pix(size, size - 5);
-	pix.fill(color);
+	int size = comboBox ->style()->pixelMetric(QStyle::PM_SmallIconSize);
+	QPixmap pixmap(size,size-5);
+	pixmap.fill(color);
 	QRect rBorder(0,0,size-1,size-6);
-	QPainter p(&pix);
-	QPen pen(Qt::black, 1, Qt::SolidLine);
+	QPainter p(&pixmap);
+	QPen pen(Qt::lightGray, 1, Qt::SolidLine);
 	p.setPen(pen);
 	p.drawRect(rBorder);
-	colorBox->setItemData(colorBox->findText(colorName), pix, Qt::DecorationRole);
+	colorBox->setItemData(colorBox->findText(colorName), color, Qt::UserRole);
+	colorBox->setItemIcon(colorBox->findText(colorName), QIcon(pixmap));
 }
 
 int ViewPreferences::getStylePropertyType()

@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtWidgets/qdialog.h>
+#include <QtWidgets/qcolordialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_view_preferenses.h"
 #include "app/rdo_studio/src/options.h"
@@ -79,7 +80,10 @@ private slots:
 	void onVertIndent(const QString& text);
 	void onFgColor(int index);
 	void onBgColor(int index);
-
+	void onFgColorDialog();
+	void onBgColorDialog();
+	void onFgColorSelected(const QColor& color);
+	void onBgColorSelected(const QColor& color);
 private:
 	enum ItemType
 	{
@@ -337,6 +341,9 @@ private:
 	//Окно анимации
 	treeItem m_pEdgingColor;
 	treeItem m_pBackgroundColor;
+
+	PTR(QColorDialog) fgColorDlg;
+	PTR(QColorDialog) bgColorDlg;
 
 	void createStyles();
 	void createPreview();
