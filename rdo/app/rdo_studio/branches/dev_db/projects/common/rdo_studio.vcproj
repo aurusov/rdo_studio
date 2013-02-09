@@ -100,7 +100,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Cored.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Cored.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Guid.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Guid.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgetsd.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgetsd.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimald.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimald.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindowsd.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindowsd.dll&quot; &gt;null&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Cored.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Cored.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Guid.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Guid.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgetsd.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgetsd.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimald.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimald.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindowsd.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindowsd.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsqld.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\qsqlpsqld.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\ssleay32.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -140,7 +140,7 @@
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
-				WarningLevel="4"
+				WarningLevel="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -185,7 +185,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Core.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Core.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Gui.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Gui.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgets.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgets.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimal.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimal.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindows.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindows.dll&quot; &gt;null&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Core.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Core.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Gui.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Gui.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgets.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgets.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimal.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimal.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindows.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindows.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsql.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\qsqlpsql.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\ssleay32.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -224,7 +224,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
 				BrowseInformation="1"
-				WarningLevel="4"
+				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -312,7 +312,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
 				BrowseInformation="1"
-				WarningLevel="4"
+				WarningLevel="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -395,7 +395,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
 				BrowseInformation="1"
-				WarningLevel="4"
+				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -483,7 +483,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
 				BrowseInformation="1"
-				WarningLevel="4"
+				WarningLevel="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
