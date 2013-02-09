@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <boost/function.hpp>
+#include <QtGui/qcolor.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
@@ -87,7 +88,7 @@ public:
 	rbool isReadOnly() const                               { return sendEditor(SCI_GETREADONLY) ? true : false; }
 	void setReadOnly(const rbool value)                    { sendEditor(SCI_SETREADONLY, value); }
 
-	void appendText(CREF(tstring) str) const;
+	void appendText(CREF(QString) str) const;
 
 	int getZoom() const                                    { return sendEditor(SCI_GETZOOM); }
 	void setZoom(const int value) const                    { sendEditor(SCI_SETZOOM, value); }
@@ -134,7 +135,7 @@ protected:
 	long sendEditorString(ruint msg, unsigned long wParam, const char* str)     const { return super::sends(msg, wParam, str);    }
 
 	int  getNewMarker();
-	void defineMarker(int marker, int markerType, COLORREF fore, COLORREF back) const;
+	void defineMarker(int marker, int markerType, QColor fore, QColor back) const;
 
 	CharacterRange getSelectionRange() const;
 	void setSelection(int anchor, int currentPos) const { sendEditor(SCI_SETSEL, anchor, currentPos); }

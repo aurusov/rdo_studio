@@ -88,7 +88,7 @@ void LogEdit::setEditorStyle(PTR(LogEditStyle) pStyle)
 
 	// ----------
 	// Selected Line
-	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<PTR(LogEditTheme)>(m_pStyle->theme)->selectLineBgColor);
+	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<PTR(LogEditTheme)>(m_pStyle->theme)->selectLineBgColor);
 }
 
 void LogEdit::gotoPrev()
@@ -214,7 +214,7 @@ void LogEdit::appendLine(PTR(LogEditLineInfo) pLine)
 	rdo::trimRight(str);
 	str += "\r\n";
 	setCurrentPos(getLength());
-	appendText(str);
+	appendText(QString::fromLocal8Bit(str.c_str()));
 	pLine->setPosInLog(getLength());
 	scrollToLine2(getLineCount());
 	setCurrentPos(pLine->getPosInLog());

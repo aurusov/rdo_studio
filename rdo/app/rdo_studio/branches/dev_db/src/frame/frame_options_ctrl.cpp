@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/frame/options_ctrl.cpp
+  \file      frame_options_ctrl.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      18.04.2003
   \brief     
@@ -11,8 +11,8 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/frame/options_ctrl.h"
-#include "app/rdo_studio/src/frame/style.h"
+#include "app/rdo_studio/src/frame/frame_options_ctrl.h"
+#include "app/rdo_studio/src/frame/frame_style.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
 #include "app/rdo_studio/resource.h"
@@ -110,7 +110,7 @@ void RDOStudioFrameOptionsCtrl::OnPaint()
 		tstring str = "Sample of drawing text";
 		dc.DrawText( str.c_str(), str.length(), CRect( 3, 12, bmpInfo.bmWidth + 1, bmpInfo.bmHeight + 1 ), DT_LEFT );
 
-		CPen pen( PS_SOLID, 0, style->theme->defaultColor );
+		CPen pen( PS_SOLID, 0, style->theme->defaultColor.rgb() );
 		CPen* pOldPen = dc.SelectObject( &pen );
 
 		CPoint points[5];
@@ -126,7 +126,7 @@ void RDOStudioFrameOptionsCtrl::OnPaint()
 		points[4].y = 0;
 		dc.Polyline( points, 5 );
 
-		CBrush brush( style->theme->backgroundColor );
+		CBrush brush( style->theme->backgroundColor.rgb() );
 		CBrush* pOldBrush = dc.SelectObject( &brush );
 
 		CRect rect;

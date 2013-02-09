@@ -33,7 +33,7 @@ public:
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
-	COLORREF selectLineBgColor;
+	QColor selectLineBgColor;
 
 	static LogEditTheme getDefaultTheme();
 	static LogEditTheme getClassicTheme();

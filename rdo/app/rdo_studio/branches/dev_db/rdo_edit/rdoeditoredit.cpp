@@ -119,8 +119,8 @@ void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 	// ----------
 	// Fold
 	RDOEditorEditTheme* theme = static_cast<RDOEditorEditTheme*>(m_pStyle->theme);
-	COLORREF foldFgColor = theme->foldFgColor;
-	COLORREF foldBgColor = theme->foldBgColor;
+	QColor foldFgColor = theme->foldFgColor;
+	QColor foldBgColor = theme->foldBgColor;
 	switch (theme->foldStyle)
 	{
 	case RDOFOLDS_NONE:
@@ -207,7 +207,7 @@ void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 
 	// ----------
 	// Error
-	defineMarker(m_sciMarkerError, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->errorBgColor);
+	defineMarker(m_sciMarkerError, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->errorBgColor);
 }
 
 void RDOEditorEdit::expand(int& line, rbool doExpand, rbool force, int visLevels, int level) const
@@ -669,7 +669,7 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 
 	updateAction(
 		pMainWindow->actEditCompleteWord,
-		activated,
+		activated && studioApp.getStyle()->style_editor.autoComplete->useAutoComplete,
 		this, "onEditCompleteWord()"
 	);
 

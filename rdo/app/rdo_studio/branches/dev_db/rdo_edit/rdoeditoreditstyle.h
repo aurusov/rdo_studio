@@ -44,10 +44,10 @@ public:
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
-	COLORREF foldFgColor;
-	COLORREF foldBgColor;
+	QColor foldFgColor;
+	QColor foldBgColor;
 
-	COLORREF errorBgColor;
+	QColor errorBgColor;
 
 	RDOFoldStyle foldStyle;
 	rbool        commentFold;

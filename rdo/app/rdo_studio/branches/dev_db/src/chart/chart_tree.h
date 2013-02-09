@@ -11,7 +11,7 @@
 #define _APP_RDO_STUDIO_CHART_TREE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qtreewidget.h>
+#include <QtWidgets/qtreewidget.h>
 #include <QtGui/qicon.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/chart/chart_tree_item.h"

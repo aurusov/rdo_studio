@@ -12,7 +12,7 @@
 #define _RDO_STUDIO_TRACER_CTRLS_LOG_MAIN_WND_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qabstractscrollarea.h>
+#include <QtWidgets/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/ctrls/log_view.h"
 // --------------------------------------------------------------------------------

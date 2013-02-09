@@ -11,6 +11,7 @@
 #define _RDO_STUDIO_RDO_EDIT_RDOEDITORBASEEDITSTYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qcolor.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
 // --------------------------------------------------------------------------------
@@ -33,15 +34,15 @@ public:
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
-	COLORREF identifierColor;
-	COLORREF keywordColor;
-	COLORREF functionsColor;
-	COLORREF traceColor;
-	COLORREF colorColor;
-	COLORREF commentColor;
-	COLORREF numberColor;
-	COLORREF stringColor;
-	COLORREF operatorColor;
+	QColor identifierColor;
+	QColor keywordColor;
+	QColor functionsColor;
+	QColor traceColor;
+	QColor colorColor;
+	QColor commentColor;
+	QColor numberColor;
+	QColor stringColor;
+	QColor operatorColor;
 
 	rdoStyle::RDOStyleFont::style identifierStyle;
 	rdoStyle::RDOStyleFont::style keywordStyle;

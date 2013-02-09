@@ -28,13 +28,13 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 RDOBaseEditTheme::RDOBaseEditTheme(): RDOStyleTheme()
 {
-	defaultColor    = RGB( 0x00, 0x00, 0x00 );
-	backgroundColor = RGB( 0xFF, 0xFF, 0xFF );
+	defaultColor    = QColor( 0x00, 0x00, 0x00 );
+	backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
 
-	caretColor       = RGB( 0x00, 0x00, 0x00 );
-	selectionBgColor = RGB( 0xC0, 0xC0, 0xC0 );
-	bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
-	bookmarkBgColor  = RGB( 0x00, 0xFF, 0xFF );
+	caretColor       = QColor( 0x00, 0x00, 0x00 );
+	selectionBgColor = QColor( 0xC0, 0xC0, 0xC0 );
+	bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
+	bookmarkBgColor  = QColor( 0x00, 0xFF, 0xFF );
 
 	defaultStyle = RDOStyleFont::NONE;
 
@@ -85,12 +85,12 @@ rbool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
 void RDOBaseEditTheme::load( tstring regPath )
 {
 	regPath += "theme";
-	defaultColor     = AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultColor", defaultColor );
-	backgroundColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "backgroundColor", backgroundColor );
-	caretColor       = AfxGetApp()->GetProfileInt( regPath.c_str(), "caretColor", caretColor );
-	selectionBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "selectionBgColor", selectionBgColor );
-	bookmarkFgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkFgColor", bookmarkFgColor );
-	bookmarkBgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkBgColor", bookmarkBgColor );
+	defaultColor     = AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultColor", defaultColor.rgb() );
+	backgroundColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "backgroundColor", backgroundColor.rgb() );
+	caretColor       = AfxGetApp()->GetProfileInt( regPath.c_str(), "caretColor", caretColor.rgb() );
+	selectionBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "selectionBgColor", selectionBgColor.rgb() );
+	bookmarkFgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkFgColor", bookmarkFgColor.rgb() );
+	bookmarkBgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkBgColor", bookmarkBgColor.rgb() );
 	defaultStyle     = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultStyle", defaultStyle ));
 	bookmarkStyle    = static_cast<RDOBookmarkStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkStyle", bookmarkStyle ));
 }
@@ -98,12 +98,12 @@ void RDOBaseEditTheme::load( tstring regPath )
 void RDOBaseEditTheme::save( tstring regPath ) const
 {
 	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultColor", defaultColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "backgroundColor", backgroundColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "caretColor", caretColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "selectionBgColor", selectionBgColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkFgColor", bookmarkFgColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkBgColor", bookmarkBgColor );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultColor", defaultColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "backgroundColor", backgroundColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "caretColor", caretColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "selectionBgColor", selectionBgColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkFgColor", bookmarkFgColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkBgColor", bookmarkBgColor.rgb() );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultStyle", defaultStyle );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkStyle", bookmarkStyle );
 }
@@ -130,12 +130,12 @@ rbool RDOBaseEditTheme::styleItalic( const int /*styleType*/ ) const
 
 tstring RDOBaseEditTheme::styleFGColorToHEX( const int /*styleType*/ ) const
 {
-	return colorToHEX( defaultColor );
+	return colorToHEX( defaultColor.rgb() );
 }
 
 tstring RDOBaseEditTheme::styleBGColorToHEX( const int /*styleType*/ ) const
 {
-	return colorToHEX( backgroundColor );
+	return colorToHEX( backgroundColor.rgb() );
 }
 
 RDOBaseEditTheme RDOBaseEditTheme::getDefaultTheme()
@@ -148,13 +148,13 @@ RDOBaseEditTheme RDOBaseEditTheme::getClassicTheme()
 {
 	RDOBaseEditTheme theme;
 
-	theme.defaultColor    = RGB( 0xFF, 0xFF, 0x00 );
-	theme.backgroundColor = RGB( 0x00, 0x00, 0x80 );
+	theme.defaultColor    = QColor( 0xFF, 0xFF, 0x00 );
+	theme.backgroundColor = QColor( 0x00, 0x00, 0x80 );
 
-	theme.caretColor       = RGB( 0xFF, 0xFF, 0x00 );
-	theme.selectionBgColor = RGB( 0x00, 0x00, 0x40 );
-	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = RGB( 0x80, 0x80, 0x00 );
+	theme.caretColor       = QColor( 0xFF, 0xFF, 0x00 );
+	theme.selectionBgColor = QColor( 0x00, 0x00, 0x40 );
+	theme.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
+	theme.bookmarkBgColor  = QColor( 0x80, 0x80, 0x00 );
 
 	theme.defaultStyle = RDOStyleFont::NONE;
 
@@ -167,13 +167,13 @@ RDOBaseEditTheme RDOBaseEditTheme::getTwilightTheme()
 {
 	RDOBaseEditTheme theme;
 
-	theme.defaultColor    = RGB( 0xFF, 0xFF, 0xFF );
-	theme.backgroundColor = RGB( 0x00, 0x00, 0x00 );
+	theme.defaultColor    = QColor( 0xFF, 0xFF, 0xFF );
+	theme.backgroundColor = QColor( 0x00, 0x00, 0x00 );
 
-	theme.caretColor       = RGB( 0xFF, 0xFF, 0xFF );
-	theme.selectionBgColor = RGB( 0x70, 0x70, 0x70 );
-	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = RGB( 0x00, 0x00, 0xFF );
+	theme.caretColor       = QColor( 0xFF, 0xFF, 0xFF );
+	theme.selectionBgColor = QColor( 0x70, 0x70, 0x70 );
+	theme.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
+	theme.bookmarkBgColor  = QColor( 0x00, 0x00, 0xFF );
 
 	theme.defaultStyle = RDOStyleFont::NONE;
 
@@ -186,13 +186,13 @@ RDOBaseEditTheme RDOBaseEditTheme::getOceanTheme()
 {
 	RDOBaseEditTheme theme;
 
-	theme.defaultColor    = RGB( 0x00, 0x00, 0xFF );
-	theme.backgroundColor = RGB( 0x00, 0xFF, 0xFF );
+	theme.defaultColor    = QColor( 0x00, 0x00, 0xFF );
+	theme.backgroundColor = QColor( 0x00, 0xFF, 0xFF );
 
-	theme.caretColor       = RGB( 0x00, 0x00, 0x00 );
-	theme.selectionBgColor = RGB( 0xC0, 0xC0, 0xD0 );
-	theme.bookmarkFgColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = RGB( 0xBA, 0xCC, 0xFC );
+	theme.caretColor       = QColor( 0x00, 0x00, 0x00 );
+	theme.selectionBgColor = QColor( 0xC0, 0xC0, 0xD0 );
+	theme.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
+	theme.bookmarkBgColor  = QColor( 0xBA, 0xCC, 0xFC );
 
 	theme.defaultStyle = RDOStyleFont::NONE;
 
@@ -201,9 +201,9 @@ RDOBaseEditTheme RDOBaseEditTheme::getOceanTheme()
 	return theme;
 }
 
-tstring RDOBaseEditTheme::colorToHEX( const COLORREF color )
+tstring RDOBaseEditTheme::colorToHEX( const QColor color )
 {
-	return rdo::format( "#%02X%02X%02X", GetRValue( color ), GetGValue( color ), GetBValue( color ) );
+	return rdo::format( "#%02X%02X%02X", color.red(), color.green(), color.blue() );
 }
 
 // --------------------------------------------------------------------------------

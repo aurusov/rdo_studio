@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/chart/view.h
+  \file      chart_view.h
   \author    Захаров Павел
   \date      20.02.2003
   \brief     
@@ -11,11 +11,11 @@
 #define _RDO_STUDIO_CHART_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qwidget.h>
+#include <QtWidgets/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
-#include "app/rdo_studio/src/chart/document.h"
+#include "app/rdo_studio/src/chart/chart_doc.h"
 #include "thirdparty/qt-solutions/qtwinmigrate/src/qwinhost.h"
 // --------------------------------------------------------------------------------
 

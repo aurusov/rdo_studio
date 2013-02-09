@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/chart/document.h
+  \file      chart_doc.h
   \author    Захаров Павел
   \date      20.02.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_CHART_DOCUMENT_H_
-#define _RDO_STUDIO_CHART_DOCUMENT_H_
+#ifndef _RDO_STUDIO_CHART_DOC_H_
+#define _RDO_STUDIO_CHART_DOC_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -93,4 +93,4 @@ public:
 	rbool newValueToSerieAdded( TracerValue* val );
 };
 
-#endif // _RDO_STUDIO_CHART_DOCUMENT_H_
+#endif // _RDO_STUDIO_CHART_DOC_H_

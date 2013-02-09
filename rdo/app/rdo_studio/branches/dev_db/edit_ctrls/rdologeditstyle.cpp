@@ -59,7 +59,7 @@ void LogEditTheme::load( tstring regPath )
 	RDOBaseEditTheme::load( regPath );
 
 	regPath += "theme";
-	selectLineBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "selectLineBgColor", selectLineBgColor );
+	selectLineBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "selectLineBgColor", selectLineBgColor.rgb() );
 }
 
 void LogEditTheme::save( tstring regPath ) const
@@ -67,7 +67,7 @@ void LogEditTheme::save( tstring regPath ) const
 	RDOBaseEditTheme::save( regPath );
 
 	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "selectLineBgColor", selectLineBgColor );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "selectLineBgColor", selectLineBgColor.rgb() );
 }
 
 LogEditTheme LogEditTheme::getDefaultTheme()

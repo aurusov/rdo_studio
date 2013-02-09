@@ -103,28 +103,28 @@ void RDOEditorBaseEdit::setEditorStyle(PTR(RDOEditorBaseEditStyle) pStyle)
 
 	// ----------
 	// Colors
-	sendEditor(SCI_STYLESETFORE, SCE_RDO_DEFAULT, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->defaultColor);
-	sendEditor(SCI_STYLESETBACK, SCE_RDO_DEFAULT, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor);
-	sendEditor(SCI_STYLESETFORE, SCE_RDO_IDENTIFIER, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->identifierColor);
-	sendEditor(SCI_STYLESETBACK, SCE_RDO_IDENTIFIER, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor);
-	sendEditor(SCI_STYLESETFORE, SCE_RDO_KEYWORD, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->keywordColor);
-	sendEditor(SCI_STYLESETBACK, SCE_RDO_KEYWORD, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor);
-	sendEditor(SCI_STYLESETFORE, SCE_RDO_FUNCTION, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->functionsColor);
-	sendEditor(SCI_STYLESETBACK, SCE_RDO_FUNCTION, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor);
-	sendEditor(SCI_STYLESETFORE, SCE_RDO_TRACE, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->traceColor);
-	sendEditor(SCI_STYLESETBACK, SCE_RDO_TRACE, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor);
-	sendEditor(SCI_STYLESETFORE, SCE_RDO_FRAME_COLOR, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->colorColor);
-	sendEditor(SCI_STYLESETBACK, SCE_RDO_FRAME_COLOR, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor);
-	sendEditor(SCI_STYLESETFORE, SCE_RDO_COMMENT_CPP, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->commentColor);
-	sendEditor(SCI_STYLESETBACK, SCE_RDO_COMMENT_CPP, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor);
-	sendEditor(SCI_STYLESETFORE, SCE_RDO_COMMENT_LINE, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->commentColor);
-	sendEditor(SCI_STYLESETBACK, SCE_RDO_COMMENT_LINE, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor);
-	sendEditor(SCI_STYLESETFORE, SCE_RDO_NUMBER, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->numberColor);
-	sendEditor(SCI_STYLESETBACK, SCE_RDO_NUMBER, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor);
-	sendEditor(SCI_STYLESETFORE, SCE_RDO_STRING, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->stringColor);
-	sendEditor(SCI_STYLESETBACK, SCE_RDO_STRING, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor);
-	sendEditor(SCI_STYLESETFORE, SCE_RDO_OPERATOR, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->operatorColor);
-	sendEditor(SCI_STYLESETBACK, SCE_RDO_OPERATOR, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor);
+	sendEditor(SCI_STYLESETFORE, SCE_RDO_DEFAULT, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->defaultColor.rgb());
+	sendEditor(SCI_STYLESETBACK, SCE_RDO_DEFAULT, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETFORE, SCE_RDO_IDENTIFIER, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->identifierColor.rgb());
+	sendEditor(SCI_STYLESETBACK, SCE_RDO_IDENTIFIER, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETFORE, SCE_RDO_KEYWORD, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->keywordColor.rgb());
+	sendEditor(SCI_STYLESETBACK, SCE_RDO_KEYWORD, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETFORE, SCE_RDO_FUNCTION, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->functionsColor.rgb());
+	sendEditor(SCI_STYLESETBACK, SCE_RDO_FUNCTION, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETFORE, SCE_RDO_TRACE, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->traceColor.rgb());
+	sendEditor(SCI_STYLESETBACK, SCE_RDO_TRACE, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETFORE, SCE_RDO_FRAME_COLOR, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->colorColor.rgb());
+	sendEditor(SCI_STYLESETBACK, SCE_RDO_FRAME_COLOR, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETFORE, SCE_RDO_COMMENT_CPP, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->commentColor.rgb());
+	sendEditor(SCI_STYLESETBACK, SCE_RDO_COMMENT_CPP, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETFORE, SCE_RDO_COMMENT_LINE, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->commentColor.rgb());
+	sendEditor(SCI_STYLESETBACK, SCE_RDO_COMMENT_LINE, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETFORE, SCE_RDO_NUMBER, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->numberColor.rgb());
+	sendEditor(SCI_STYLESETBACK, SCE_RDO_NUMBER, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETFORE, SCE_RDO_STRING, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->stringColor.rgb());
+	sendEditor(SCI_STYLESETBACK, SCE_RDO_STRING, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETFORE, SCE_RDO_OPERATOR, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->operatorColor.rgb());
+	sendEditor(SCI_STYLESETBACK, SCE_RDO_OPERATOR, static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->backgroundColor.rgb());
 
 	// ----------
 	// Styles

@@ -33,7 +33,7 @@ public:
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
-	COLORREF keywordColor;
+	QColor keywordColor;
 
 	rdoStyle::RDOStyleFont::style keywordStyle;
 

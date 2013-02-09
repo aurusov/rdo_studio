@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/frame/style.cpp
+  \file      frame_style.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      18.04.2003
   \brief     
@@ -11,7 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/frame/style.h"
+#include "app/rdo_studio/src/frame/frame_style.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -27,8 +27,8 @@ using namespace rdoStyle;
 // --------------------------------------------------------------------------------
 RDOStudioFrameTheme::RDOStudioFrameTheme(): RDOStyleTheme()
 {
-	defaultColor    = RGB( 0x00, 0x00, 0x00 );
-	backgroundColor = RGB( 0x00, 0x80, 0x80 );
+	defaultColor    = QColor( 0x00, 0x00, 0x00 );
+	backgroundColor = QColor( 0x00, 0x80, 0x80 );
 
 	defaultStyle = RDOStyleFont::NONE;
 }

@@ -134,8 +134,8 @@ RDOStyleFont RDOStyleFont::getFrameFont()
 // --------------------------------------------------------------------------------
 RDOStyleTheme::RDOStyleTheme()
 {
-	defaultColor    = RGB( 0x00, 0x00, 0x00 );
-	backgroundColor = RGB( 0xFF, 0xFF, 0xFF );
+	defaultColor    = QColor( 0x00, 0x00, 0x00 );
+	backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
 
 	defaultStyle = RDOStyleFont::NONE;
 }
@@ -170,16 +170,16 @@ rbool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 void RDOStyleTheme::load( tstring regPath )
 {
 	regPath += "theme";
-	defaultColor    = AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultColor", defaultColor );
-	backgroundColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "backgroundColor", backgroundColor );
+	defaultColor    = AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultColor", defaultColor.rgb() );
+	backgroundColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "backgroundColor", backgroundColor.rgb() );
 	defaultStyle    = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultStyle", defaultStyle ));
 }
 
 void RDOStyleTheme::save( tstring regPath ) const
 {
 	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultColor", defaultColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "backgroundColor", backgroundColor );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultColor", defaultColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "backgroundColor", backgroundColor.rgb() );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultStyle", defaultStyle );
 }
 

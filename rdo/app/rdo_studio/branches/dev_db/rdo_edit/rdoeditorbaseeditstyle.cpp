@@ -30,16 +30,16 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 RDOEditorBaseEditTheme::RDOEditorBaseEditTheme(): RDOBaseEditTheme()
 {
-	defaultColor    = RGB( 0x80, 0x80, 0x80 );
-	identifierColor = RGB( 0x00, 0x00, 0x00 );
-	keywordColor    = RGB( 0x00, 0x00, 0x00 );
-	functionsColor  = RGB( 0x00, 0x80, 0x00 );
-	traceColor      = RGB( 0x80, 0x00, 0x00 );
-	colorColor      = RGB( 0x09, 0x26, 0xB0 );
-	commentColor    = RGB( 0x00, 0x80, 0x00 );
-	numberColor     = RGB( 0x00, 0x00, 0x80 );
-	stringColor     = RGB( 0x80, 0x00, 0x80 );
-	operatorColor   = RGB( 0x00, 0x00, 0x00 );
+	defaultColor    = QColor( 0x80, 0x80, 0x80 );
+	identifierColor = QColor( 0x00, 0x00, 0x00 );
+	keywordColor    = QColor( 0x00, 0x00, 0x00 );
+	functionsColor  = QColor( 0x00, 0x80, 0x00 );
+	traceColor      = QColor( 0x80, 0x00, 0x00 );
+	colorColor      = QColor( 0x09, 0x26, 0xB0 );
+	commentColor    = QColor( 0x00, 0x80, 0x00 );
+	numberColor     = QColor( 0x00, 0x00, 0x80 );
+	stringColor     = QColor( 0x80, 0x00, 0x80 );
+	operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
 	identifierStyle = RDOStyleFont::NONE;
 	keywordStyle    = RDOStyleFont::BOLD;
@@ -119,15 +119,15 @@ void RDOEditorBaseEditTheme::load( tstring regPath )
 	RDOBaseEditTheme::load( regPath );
 
 	regPath += "theme";
-	identifierColor        = AfxGetApp()->GetProfileInt( regPath.c_str(), "identifierColor", identifierColor );
-	keywordColor           = AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordColor", keywordColor );
-	functionsColor         = AfxGetApp()->GetProfileInt( regPath.c_str(), "functionsColor", functionsColor );
-	traceColor             = AfxGetApp()->GetProfileInt( regPath.c_str(), "traceColor", traceColor );
-	colorColor             = AfxGetApp()->GetProfileInt( regPath.c_str(), "colorColor", colorColor );
-	commentColor           = AfxGetApp()->GetProfileInt( regPath.c_str(), "commentColor", commentColor );
-	numberColor            = AfxGetApp()->GetProfileInt( regPath.c_str(), "numberColor", numberColor );
-	stringColor            = AfxGetApp()->GetProfileInt( regPath.c_str(), "stringColor", stringColor );
-	operatorColor          = AfxGetApp()->GetProfileInt( regPath.c_str(), "operatorColor", operatorColor );
+	identifierColor        = AfxGetApp()->GetProfileInt( regPath.c_str(), "identifierColor", identifierColor.rgb() );
+	keywordColor           = AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordColor", keywordColor.rgb() );
+	functionsColor         = AfxGetApp()->GetProfileInt( regPath.c_str(), "functionsColor", functionsColor.rgb() );
+	traceColor             = AfxGetApp()->GetProfileInt( regPath.c_str(), "traceColor", traceColor.rgb() );
+	colorColor             = AfxGetApp()->GetProfileInt( regPath.c_str(), "colorColor", colorColor.rgb());
+	commentColor           = AfxGetApp()->GetProfileInt( regPath.c_str(), "commentColor", commentColor.rgb() );
+	numberColor            = AfxGetApp()->GetProfileInt( regPath.c_str(), "numberColor", numberColor.rgb() );
+	stringColor            = AfxGetApp()->GetProfileInt( regPath.c_str(), "stringColor", stringColor.rgb() );
+	operatorColor          = AfxGetApp()->GetProfileInt( regPath.c_str(), "operatorColor", operatorColor.rgb() );
 	identifierStyle        = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "identifierStyle", identifierStyle ));
 	keywordStyle           = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle ));
 	functionsStyle         = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "functionsStyle", functionsStyle ));
@@ -144,20 +144,20 @@ void RDOEditorBaseEditTheme::save( tstring regPath ) const
 	RDOBaseEditTheme::save( regPath );
 
 	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "identifierColor", identifierColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordColor", keywordColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "functionsColor", functionsColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "traceColor", traceColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "colorColor", colorColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "commentColor", commentColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "numberColor", numberColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "stringColor", stringColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "operatorColor", operatorColor );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "identifierColor", identifierColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordColor", keywordColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "functionsColor", functionsColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "traceColor", traceColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "colorColor", colorColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "commentColor", commentColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "numberColor", numberColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "stringColor", stringColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "operatorColor", operatorColor.rgb() );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "identifierStyle", identifierStyle );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordStyle", keywordStyle );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "functionsStyle", functionsStyle );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "traceColor", traceColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "colorColor", colorColor );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "traceColor", traceColor.rgb() );
+	AfxGetApp()->WriteProfileInt( regPath.c_str(), "colorColor", colorColor.rgb() );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "commentStyle", commentStyle );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "numberStyle", numberStyle );
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "stringStyle", stringStyle );
@@ -218,17 +218,17 @@ rbool RDOEditorBaseEditTheme::styleItalic( const int styleType ) const
 tstring RDOEditorBaseEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_RDO_DEFAULT     : return colorToHEX( defaultColor );
-		case SCE_RDO_IDENTIFIER  : return colorToHEX( identifierColor );
-		case SCE_RDO_KEYWORD     : return colorToHEX( keywordColor );
-		case SCE_RDO_FUNCTION    : return colorToHEX( functionsColor );
-		case SCE_RDO_TRACE       : return colorToHEX( traceColor );
-		case SCE_RDO_FRAME_COLOR : return colorToHEX( colorColor );
-		case SCE_RDO_COMMENT_CPP : return colorToHEX( commentColor );
-		case SCE_RDO_COMMENT_LINE: return colorToHEX( commentColor );
-		case SCE_RDO_NUMBER      : return colorToHEX( numberColor );
-		case SCE_RDO_STRING      : return colorToHEX( stringColor );
-		case SCE_RDO_OPERATOR    : return colorToHEX( operatorColor );
+		case SCE_RDO_DEFAULT     : return colorToHEX( defaultColor.rgb() );
+		case SCE_RDO_IDENTIFIER  : return colorToHEX( identifierColor.rgb() );
+		case SCE_RDO_KEYWORD     : return colorToHEX( keywordColor.rgb() );
+		case SCE_RDO_FUNCTION    : return colorToHEX( functionsColor.rgb() );
+		case SCE_RDO_TRACE       : return colorToHEX( traceColor.rgb() );
+		case SCE_RDO_FRAME_COLOR : return colorToHEX( colorColor.rgb() );
+		case SCE_RDO_COMMENT_CPP : return colorToHEX( commentColor.rgb() );
+		case SCE_RDO_COMMENT_LINE: return colorToHEX( commentColor.rgb() );
+		case SCE_RDO_NUMBER      : return colorToHEX( numberColor.rgb() );
+		case SCE_RDO_STRING      : return colorToHEX( stringColor.rgb() );
+		case SCE_RDO_OPERATOR    : return colorToHEX( operatorColor.rgb() );
 	}
 	return RDOBaseEditTheme::styleFGColorToHEX( styleType );
 }
@@ -244,15 +244,15 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getCppTheme()
 	RDOEditorBaseEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getDefaultTheme();
 
-	theme.identifierColor = RGB( 0x00, 0x00, 0x00 );
-	theme.keywordColor    = RGB( 0x00, 0x00, 0xFF );
-	theme.functionsColor  = RGB( 0x00, 0x00, 0xFF );
-	theme.traceColor      = RGB( 0x00, 0x00, 0xFF );
-	theme.colorColor      = RGB( 0x00, 0x00, 0xFF );
-	theme.commentColor    = RGB( 0x00, 0x80, 0x00 );
-	theme.numberColor     = RGB( 0x00, 0x00, 0x00 );
-	theme.stringColor     = RGB( 0x00, 0x00, 0x00 );
-	theme.operatorColor   = RGB( 0x00, 0x00, 0x00 );
+	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
+	theme.keywordColor    = QColor( 0x00, 0x00, 0xFF );
+	theme.functionsColor  = QColor( 0x00, 0x00, 0xFF );
+	theme.traceColor      = QColor( 0x00, 0x00, 0xFF );
+	theme.colorColor      = QColor( 0x00, 0x00, 0xFF );
+	theme.commentColor    = QColor( 0x00, 0x80, 0x00 );
+	theme.numberColor     = QColor( 0x00, 0x00, 0x00 );
+	theme.stringColor     = QColor( 0x00, 0x00, 0x00 );
+	theme.operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
 	theme.identifierStyle = RDOStyleFont::NONE;
 	theme.keywordStyle    = RDOStyleFont::NONE;
@@ -272,15 +272,15 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getPascalTheme()
 	RDOEditorBaseEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getDefaultTheme();
 
-	theme.identifierColor = RGB( 0x00, 0x00, 0x00 );
-	theme.keywordColor    = RGB( 0x00, 0x00, 0x00 );
-	theme.functionsColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.traceColor      = RGB( 0x00, 0x00, 0x00 );
-	theme.colorColor      = RGB( 0x00, 0x00, 0x00 );
-	theme.commentColor    = RGB( 0x00, 0x00, 0x80 );
-	theme.numberColor     = RGB( 0x00, 0x00, 0x00 );
-	theme.stringColor     = RGB( 0x00, 0x00, 0x00 );
-	theme.operatorColor   = RGB( 0x00, 0x00, 0x00 );
+	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
+	theme.keywordColor    = QColor( 0x00, 0x00, 0x00 );
+	theme.functionsColor  = QColor( 0x00, 0x00, 0x00 );
+	theme.traceColor      = QColor( 0x00, 0x00, 0x00 );
+	theme.colorColor      = QColor( 0x00, 0x00, 0x00 );
+	theme.commentColor    = QColor( 0x00, 0x00, 0x80 );
+	theme.numberColor     = QColor( 0x00, 0x00, 0x00 );
+	theme.stringColor     = QColor( 0x00, 0x00, 0x00 );
+	theme.operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
 	theme.identifierStyle = RDOStyleFont::NONE;
 	theme.keywordStyle    = RDOStyleFont::BOLD;
@@ -300,15 +300,15 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getHtmlTheme()
 	RDOEditorBaseEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getDefaultTheme();
 
-	theme.identifierColor = RGB( 0x00, 0x00, 0x00 );
-	theme.keywordColor    = RGB( 0x80, 0x00, 0x80 );
-	theme.functionsColor  = RGB( 0xFF, 0x00, 0x00 );
-	theme.traceColor      = RGB( 0xFF, 0x00, 0x00 );
-	theme.colorColor      = RGB( 0xFF, 0x00, 0x00 );
-	theme.commentColor    = RGB( 0x00, 0x80, 0x00 );
-	theme.numberColor     = RGB( 0x00, 0x00, 0xFF );
-	theme.stringColor     = RGB( 0x00, 0x00, 0xFF );
-	theme.operatorColor   = RGB( 0x00, 0x00, 0x00 );
+	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
+	theme.keywordColor    = QColor( 0x80, 0x00, 0x80 );
+	theme.functionsColor  = QColor( 0xFF, 0x00, 0x00 );
+	theme.traceColor      = QColor( 0xFF, 0x00, 0x00 );
+	theme.colorColor      = QColor( 0xFF, 0x00, 0x00 );
+	theme.commentColor    = QColor( 0x00, 0x80, 0x00 );
+	theme.numberColor     = QColor( 0x00, 0x00, 0xFF );
+	theme.stringColor     = QColor( 0x00, 0x00, 0xFF );
+	theme.operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
 	theme.identifierStyle = RDOStyleFont::NONE;
 	theme.keywordStyle    = RDOStyleFont::NONE;
@@ -328,15 +328,15 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
 	RDOEditorBaseEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getClassicTheme();
 
-	theme.identifierColor = RGB( 0xFF, 0xFF, 0x00 );
-	theme.keywordColor    = RGB( 0xFF, 0xFF, 0xFF );
-	theme.functionsColor  = RGB( 0xFF, 0xFF, 0xFF );
-	theme.traceColor      = RGB( 0xFF, 0xFF, 0xFF );
-	theme.colorColor      = RGB( 0xFF, 0xFF, 0xFF );
-	theme.commentColor    = RGB( 0xC0, 0xC0, 0xC0 );
-	theme.numberColor     = RGB( 0xFF, 0xFF, 0x00 );
-	theme.stringColor     = RGB( 0xFF, 0xFF, 0x00 );
-	theme.operatorColor   = RGB( 0xFF, 0xFF, 0x00 );
+	theme.identifierColor = QColor( 0xFF, 0xFF, 0x00 );
+	theme.keywordColor    = QColor( 0xFF, 0xFF, 0xFF );
+	theme.functionsColor  = QColor( 0xFF, 0xFF, 0xFF );
+	theme.traceColor      = QColor( 0xFF, 0xFF, 0xFF );
+	theme.colorColor      = QColor( 0xFF, 0xFF, 0xFF );
+	theme.commentColor    = QColor( 0xC0, 0xC0, 0xC0 );
+	theme.numberColor     = QColor( 0xFF, 0xFF, 0x00 );
+	theme.stringColor     = QColor( 0xFF, 0xFF, 0x00 );
+	theme.operatorColor   = QColor( 0xFF, 0xFF, 0x00 );
 
 	theme.identifierStyle = RDOStyleFont::NONE;
 	theme.keywordStyle    = RDOStyleFont::NONE;
@@ -356,15 +356,15 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
 	RDOEditorBaseEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getTwilightTheme();
 
-	theme.identifierColor = RGB( 0xFF, 0xFF, 0xFF );
-	theme.keywordColor    = RGB( 0x00, 0xFF, 0xFF );
-	theme.functionsColor  = RGB( 0xFF, 0xFF, 0x00 );
-	theme.traceColor      = RGB( 0x00, 0xFF, 0x00 );
-	theme.colorColor      = RGB( 0x00, 0xFF, 0x00 );
-	theme.commentColor    = RGB( 0xC0, 0xC0, 0xC0 );
-	theme.numberColor     = RGB( 0xC0, 0xC0, 0xC0 );
-	theme.stringColor     = RGB( 0xFF, 0xFF, 0xFF );
-	theme.operatorColor   = RGB( 0xFF, 0xFF, 0xFF );
+	theme.identifierColor = QColor( 0xFF, 0xFF, 0xFF );
+	theme.keywordColor    = QColor( 0x00, 0xFF, 0xFF );
+	theme.functionsColor  = QColor( 0xFF, 0xFF, 0x00 );
+	theme.traceColor      = QColor( 0x00, 0xFF, 0x00 );
+	theme.colorColor      = QColor( 0x00, 0xFF, 0x00 );
+	theme.commentColor    = QColor( 0xC0, 0xC0, 0xC0 );
+	theme.numberColor     = QColor( 0xC0, 0xC0, 0xC0 );
+	theme.stringColor     = QColor( 0xFF, 0xFF, 0xFF );
+	theme.operatorColor   = QColor( 0xFF, 0xFF, 0xFF );
 
 	theme.identifierStyle = RDOStyleFont::NONE;
 	theme.keywordStyle    = RDOStyleFont::BOLD;
@@ -384,15 +384,15 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
 	RDOEditorBaseEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getOceanTheme();
 
-	theme.identifierColor = RGB( 0x00, 0x00, 0xFF );
-	theme.keywordColor    = RGB( 0x00, 0x00, 0x00 );
-	theme.functionsColor  = RGB( 0x00, 0x00, 0x00 );
-	theme.traceColor      = RGB( 0x00, 0x00, 0x00 );
-	theme.colorColor      = RGB( 0x00, 0x00, 0x00 );
-	theme.commentColor    = RGB( 0x00, 0x80, 0x80 );
-	theme.numberColor     = RGB( 0x00, 0x00, 0xFF );
-	theme.stringColor     = RGB( 0x00, 0x00, 0xFF );
-	theme.operatorColor   = RGB( 0x00, 0x00, 0xFF );
+	theme.identifierColor = QColor( 0x00, 0x00, 0xFF );
+	theme.keywordColor    = QColor( 0x00, 0x00, 0x00 );
+	theme.functionsColor  = QColor( 0x00, 0x00, 0x00 );
+	theme.traceColor      = QColor( 0x00, 0x00, 0x00 );
+	theme.colorColor      = QColor( 0x00, 0x00, 0x00 );
+	theme.commentColor    = QColor( 0x00, 0x80, 0x80 );
+	theme.numberColor     = QColor( 0x00, 0x00, 0xFF );
+	theme.stringColor     = QColor( 0x00, 0x00, 0xFF );
+	theme.operatorColor   = QColor( 0x00, 0x00, 0xFF );
 
 	theme.identifierStyle = RDOStyleFont::NONE;
 	theme.keywordStyle    = RDOStyleFont::BOLD;

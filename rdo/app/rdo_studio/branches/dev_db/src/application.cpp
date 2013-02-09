@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextcodec.h>
-#include <QtGui/qmessagebox.h>
+#include <QtWidgets/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"
@@ -116,26 +116,46 @@ void RDOStudioCommandLineInfo::ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bL
 RDOStudioApp studioApp;
 
 #ifdef _DEBUG
-void g_messageOutput(QtMsgType type, const char *msg)
+void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
+	if (msg.contains("requested for null window or window without handle"))
+		return;
+
+	if (msg.contains("QBackingStore::flush() called with non-exposed window, behavior is undefined"))
+		return;
+
+	if (msg.contains("Cannot create accessible interface for object"))
+		return;
+
+	qInstallMessageHandler(NULL);
+
+	QString message = QString("%1\n\nfile: %2: %3\nat function: %4")
+		.arg(msg)
+		.arg(context.file)
+		.arg(context.line)
+		.arg(context.function);
+
 	switch (type)
 	{
 	case QtDebugMsg:
-		TRACE1("Debug: %s\n", msg);
+		TRACE1("Debug: %s\n", msg.toLocal8Bit().constData());
 		break;
 
 	case QtWarningMsg:
-		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", msg);
+		TRACE1("Warning: %s\n", message.toLocal8Bit().constData());
+		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", message);
 		break;
 
 	case QtCriticalMsg:
-		QMessageBox::critical(studioApp.getMainWnd(), "QtCritical", msg);
+		QMessageBox::critical(studioApp.getMainWnd(), "QtCritical", message);
 		break;
 
 	case QtFatalMsg:
-		QMessageBox::critical(studioApp.getMainWnd(), "QtFatal", msg);
+		QMessageBox::critical(studioApp.getMainWnd(), "QtFatal", message);
 		break;
 	}
+
+	qInstallMessageHandler(g_messageOutput);
 }
 #endif
 
@@ -158,12 +178,11 @@ RDOStudioApp::RDOStudioApp()
 	, m_pMainFrame                  (NULL  )
 {
 #ifdef _DEBUG
-	qInstallMsgHandler(g_messageOutput);
+	qInstallMessageHandler(g_messageOutput);
 #endif
 
 	setlocale(LC_ALL,     _T("rus"));
 	setlocale(LC_NUMERIC, _T("eng"));
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());
 
 	m_log.open(_T("log.txt"));
 }
@@ -173,7 +192,9 @@ RDOStudioApp::~RDOStudioApp()
 
 BOOL RDOStudioApp::Run()
 {
-	return QMfcApp::run(this);
+	int result = QMfcApp::run(this);
+	delete qApp;
+	return result;
 }
 
 BOOL RDOStudioApp::InitInstance()
