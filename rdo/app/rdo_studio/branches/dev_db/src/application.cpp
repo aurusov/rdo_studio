@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextcodec.h>
-#include <QtWidgets/qmessagebox.h>
+#include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"
@@ -116,39 +116,26 @@ void RDOStudioCommandLineInfo::ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bL
 RDOStudioApp studioApp;
 
 #ifdef _DEBUG
-void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+void g_messageOutput(QtMsgType type, const char *msg)
 {
-	if (msg.contains("requested for null window or window without handle"))
-		return;
-
-	qInstallMessageHandler(NULL);
-
-	QString message = QString("%1\n\nfile: %2: %3\nat function: %4")
-		.arg(msg)
-		.arg(context.file)
-		.arg(context.line)
-		.arg(context.function);
-
 	switch (type)
 	{
 	case QtDebugMsg:
-		TRACE1("Debug: %s\n", msg.toLocal8Bit().constData());
+		TRACE1("Debug: %s\n", msg);
 		break;
 
 	case QtWarningMsg:
-		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", message);
+		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", msg);
 		break;
 
 	case QtCriticalMsg:
-		QMessageBox::critical(studioApp.getMainWnd(), "QtCritical", message);
+		QMessageBox::critical(studioApp.getMainWnd(), "QtCritical", msg);
 		break;
 
 	case QtFatalMsg:
-		QMessageBox::critical(studioApp.getMainWnd(), "QtFatal", message);
+		QMessageBox::critical(studioApp.getMainWnd(), "QtFatal", msg);
 		break;
 	}
-
-	qInstallMessageHandler(g_messageOutput);
 }
 #endif
 
@@ -171,11 +158,12 @@ RDOStudioApp::RDOStudioApp()
 	, m_pMainFrame                  (NULL  )
 {
 #ifdef _DEBUG
-	qInstallMessageHandler(g_messageOutput);
+	qInstallMsgHandler(g_messageOutput);
 #endif
 
 	setlocale(LC_ALL,     _T("rus"));
 	setlocale(LC_NUMERIC, _T("eng"));
+	QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());
 
 	m_log.open(_T("log.txt"));
 }
@@ -185,9 +173,7 @@ RDOStudioApp::~RDOStudioApp()
 
 BOOL RDOStudioApp::Run()
 {
-	int result = QMfcApp::run(this);
-	delete qApp;
-	return result;
+	return QMfcApp::run(this);
 }
 
 BOOL RDOStudioApp::InitInstance()

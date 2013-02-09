@@ -5,8 +5,6 @@
 #define WINVER 0x0501        // Change this to the appropriate value to target other versions of Windows.
 #endif
 
-#define NOMINMAX
-
 #pragma warning(push)
 #pragma warning(disable: 4512)
 #include <boost/signal.hpp>

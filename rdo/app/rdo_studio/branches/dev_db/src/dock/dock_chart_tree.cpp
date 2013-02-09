@@ -10,14 +10,14 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qaction.h>
+#include <QtGui/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_chart_tree.h"
 #include "app/rdo_studio/rdo_tracer/rdotracer.h"
 // --------------------------------------------------------------------------------
 
 DockChartTree::DockChartTree(PTR(QWidget) pParent)
-	: DockFocusable(QString::fromStdWString(L"Графики"), pParent)
+	: DockFocusable("Графики", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(200, 300));

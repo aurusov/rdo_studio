@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      chart_options.h
+  \file      app/rdo_studio/src/chart/options.h
   \author    Захаров Павел
   \date      31.03.2003
   \brief     
@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "ui/mfc_ctrls/rdocolorcombobox.h"
-#include "app/rdo_studio/src/chart/chart_doc.h"
+#include "app/rdo_studio/src/chart/document.h"
 #include "app/rdo_studio/resource.h"
 // --------------------------------------------------------------------------------
 

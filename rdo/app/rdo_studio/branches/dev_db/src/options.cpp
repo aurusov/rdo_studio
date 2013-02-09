@@ -544,7 +544,7 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	//sheet->preview_editor.Create(NULL, NULL, WS_CHILD, CRect(0, 0, 444, 223), this, 0);
 	sheet->preview_editor.setEditorStyle(&sheet->style_editor);
 	sheet->preview_editor.setCanClearErrorLine(false);
-	sheet->preview_editor.appendText(QString::fromLocal8Bit(rdo::format(IDS_COLORSTYLE_EDITOR_SAMPLE).c_str()));
+	sheet->preview_editor.appendText(rdo::format(IDS_COLORSTYLE_EDITOR_SAMPLE));
 	sheet->preview_editor.scrollToLine(0);
 	sheet->preview_editor.setReadOnly(true);
 	sheet->preview_editor.bookmarkToggle();
@@ -561,7 +561,7 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	//! @todo qt
 	//sheet->preview_debug.Create(NULL, NULL, WS_CHILD, CRect(0, 0, 444, 223), this, 0);
 	sheet->preview_debug.setEditorStyle(&sheet->style_debug);
-	sheet->preview_debug.appendLine(QString::fromLocal8Bit(rdo::format(IDS_COLORSTYLE_DEBUG_SAMPLE).c_str()));
+	sheet->preview_debug.appendLine(rdo::format(IDS_COLORSTYLE_DEBUG_SAMPLE));
 
 	//! todo qt
 	//sheet->preview_trace.Create(NULL, NULL, WS_CHILD, CRect(0, 0, 444, 223), this, 0);

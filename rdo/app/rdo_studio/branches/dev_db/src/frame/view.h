@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      frame_view.h
+  \file      app/rdo_studio/src/frame/view.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      06.03.2003
   \brief     
@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
-#include <QtWidgets/qwidget.h>
-#include <QtWidgets/qscrollarea.h>
+#include <QtGui/qwidget.h>
+#include <QtGui/qscrollarea.h>
 #include <QtGui/qevent.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdoanimation.h"

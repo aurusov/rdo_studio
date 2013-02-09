@@ -11,8 +11,8 @@
 #define _RDO_STUDIO_RDO_EDIT_RDOEDITOREDIT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qwidget.h>
-#include <QtWidgets/qmenu.h>
+#include <QtGui/qwidget.h>
+#include <QtGui/qmenu.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/rdo_edit/rdoeditorbaseedit.h"
 #include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"

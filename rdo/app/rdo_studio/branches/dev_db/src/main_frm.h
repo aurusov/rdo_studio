@@ -13,8 +13,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <math.h>
 #include <boost/mpl/integral_c.hpp>
-#include <QtWidgets/qmainwindow.h>
-#include <QtWidgets/qslider.h>
+#include <QtGui/qmainwindow.h>
+#include <QtGui/qslider.h>
 #include <QtCore/qsignalmapper.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"

@@ -10,14 +10,14 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qaction.h>
+#include <QtGui/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_find.h"
 #include "simulator/report/log_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
 DockFind::DockFind(PTR(QWidget) pParent)
-	: DockFocusable(QString::fromStdWString(L"Поиск"), pParent)
+	: DockFocusable("Поиск", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 150));

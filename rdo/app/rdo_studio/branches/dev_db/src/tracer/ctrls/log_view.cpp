@@ -14,7 +14,7 @@
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
 #include <QtGui/qpainter.h>
-#include <QtWidgets/qscrollbar.h>
+#include <QtGui/qscrollbar.h>
 #include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/ctrls/log_view.h"
@@ -929,7 +929,7 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 				painter.setPen  (colors->foregroundColor);
 				painter.drawText(
 					textRect,
-					QString::fromLocal8Bit(it->c_str())
+					QString::fromStdString(*it)
 				);
 				//End of main drawing cycle :)
 
@@ -1048,14 +1048,14 @@ void LogView::onUpdateActions(rbool activated)
 	updateCoordStatusBar(activated);
 
 	pMainWindow->statusBar()->update<StatusBar::SB_MODIFY>(activated
-		? QString::fromStdWString(L"Только чтение")
+		? "Только чтение"
 		: QString()
 	);
 }
 
 void LogView::onEditCopy()
 {
-	QApplication::clipboard()->setText(QString::fromLocal8Bit(getSelected().c_str()));
+	QApplication::clipboard()->setText(QString::fromStdString(getSelected()));
 }
 
 void LogView::onHelpContext()

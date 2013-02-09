@@ -19,7 +19,7 @@
 #include "app/rdo_studio/src/main_windows_base.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/thread.h"
-#include "app/rdo_studio/src/chart/chart_doc.h"
+#include "app/rdo_studio/src/chart/document.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -77,7 +77,7 @@ void Tracer::proc( RDOThread::RDOMessageInfo& msg )
 			RDOStudioChartDoc::resetTitleIndex();
 			try {
 				setModelName( model->getName() );
-				studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Получение структуры модели..."));
+				studioApp.getIMainWnd()->getDockDebug().appendString( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );
 				rdo::textstream model_structure;
 				sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure );
 				getModelStructure( model_structure );

@@ -21,8 +21,8 @@
 #include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
 #include "app/rdo_studio/src/tracer/ctrls/log_main_wnd.h"
 #include "app/rdo_studio/src/chart/chart_tree.h"
-#include "app/rdo_studio/src/chart/chart_doc.h"
-#include "app/rdo_studio/src/chart/chart_view.h"
+#include "app/rdo_studio/src/chart/document.h"
+#include "app/rdo_studio/src/chart/view.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
 // --------------------------------------------------------------------------------

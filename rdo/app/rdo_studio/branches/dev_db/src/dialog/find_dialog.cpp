@@ -56,7 +56,7 @@ void FindDialog::setSettings(CREF(Settings) settings)
 {
 	m_settings = settings;
 
-	lineEdit->setText(QString::fromLocal8Bit(m_settings.what.c_str()));
+	lineEdit->setText(QString::fromStdString(m_settings.what));
 	lineEdit->setFocus();
 	lineEdit->selectAll();
 	matchCase->setChecked(m_settings.matchCase);

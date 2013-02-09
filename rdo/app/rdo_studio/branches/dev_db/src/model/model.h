@@ -17,7 +17,7 @@
 #include "utils/rdointerface.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio/src/frame/frame_manager.h"
+#include "app/rdo_studio/src/frame/manager.h"
 #include "app/rdo_studio/src/application.h"
 // --------------------------------------------------------------------------------
 

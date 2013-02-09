@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
 #include <QtCore/qprocess.h>
-#include <QtWidgets/qmainwindow.h>
+#include <QtGui/qmainwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"

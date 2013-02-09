@@ -13,8 +13,8 @@
 #include <limits>
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
-#include <QtWidgets/qmessagebox.h>
-#include <QtWidgets/qfiledialog.h>
+#include <QtGui/qmessagebox.h>
+#include <QtGui/qfiledialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "utils/rdoanimation.h"
@@ -27,7 +27,7 @@
 #include "app/rdo_studio/src/thread.h"
 #include "app/rdo_studio/src/main_frm.h"
 #include "app/rdo_studio/src/main_windows_base.h"
-#include "app/rdo_studio/src/frame/frame_view.h"
+#include "app/rdo_studio/src/frame/view.h"
 #include "app/rdo_studio/src/dialog/new_model_dialog.h"
 #include "app/rdo_studio/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
@@ -276,8 +276,8 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		{
 			QMessageBox::critical(
 				studioApp.getMainWnd(),
-				QString::fromStdWString(L"Ошибка открытия модели"),
-				QString::fromStdWString(L"Невозможно открыть модель '%1'.").arg(static_cast<PTR(tstring)>(msg.param)->c_str())
+				"Ошибка открытия модели",
+				QString("Невозможно открыть модель '%1'.").arg(static_cast<PTR(tstring)>(msg.param)->c_str())
 			);
 			break;
 		}
@@ -293,9 +293,9 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 
 			QString modelName = QFileDialog::getOpenFileName(
 				NULL,
-				QString::fromStdWString(L"Открыть модель"),
+				"Открыть модель",
 				QString(),
-				QString::fromStdWString(L"РДО-проект (*.rdox);;РДО-конвертор (*.smr);;Все файлы (*.*)")
+				"РДО-проект (*.rdox);;РДО-конвертор (*.smr);;Все файлы (*.*)"
 			);
 			data->m_result   = !modelName.isEmpty();
 			data->m_name     = modelName.toStdString();
@@ -322,7 +322,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			setSpeed(m_speed);
 			afterModelStart();
 			studioApp.getIMainWnd()->getDockDebug().raise();
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Модель запущена\n"));
+			studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_STARTED));
 			studioApp.getIMainWnd()->getDockDebug().getContext().update();
 			int index = m_frameManager.getLastShowedFrame();
 			if (index != -1)
@@ -351,7 +351,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			}
 			if (delay != -1)
 			{
-				studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Длительность прогона: %1 мсек.\n").arg(delay));
+				studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_DURATION, delay));
 			}
 			setCanRun   (true );
 			setIsRunning(false);
@@ -359,7 +359,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
 		{
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Модель завершена\n"));
+			studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_FINISHED));
 			studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
 			show_result();
@@ -370,7 +370,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_BY_USER:
 		{
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Модель завершена\n"));
+			studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_STOPED));
 			studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
 			show_result();
@@ -381,7 +381,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		{
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 			show_result();
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Модель остановлена из-за ошибки прогона"));
+			studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_RUNTIMEERROR_STOPED));
 			studioApp.getIMainWnd()->getDockBuild().clear();
 			studioApp.getIMainWnd()->getDockBuild().raise();
 			studioApp.getIMainWnd()->getDockBuild().appendString(rdo::format(IDS_MODEL_RUNTIMEERROR));
@@ -484,7 +484,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_DEBUG_STRING:
 		{
 			msg.lock();
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit(static_cast<PTR(tstring)>(msg.param)->c_str()));
+			studioApp.getIMainWnd()->getDockDebug().appendString(*static_cast<PTR(tstring)>(msg.param));
 			msg.unlock();
 			break;
 		}
@@ -509,7 +509,6 @@ void RDOStudioModel::show_result()
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 		if (!data.m_described)
 		{
-			//! @todo unicode
 			studioApp.getIMainWnd()->getDockDebug().appendString(_T("Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n"));
 		}
 		studioApp.getIMainWnd()->getDockResults().getContext().clearAll();
@@ -548,7 +547,7 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName)
 	studioApp.getIMainWnd()->getDockResults().clear();
 	studioApp.getIMainWnd()->getDockFind   ().clear();
 	studioApp.getIMainWnd()->getDockDebug().raise();
-	studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка модели...\n"));
+	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_LOADING_BEGIN));
 	studioApp.getIMainWnd()->getDockDebug().getContext().update();
 	m_openError     = false;
 	m_smrEmptyError = false;
@@ -561,7 +560,7 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName)
 		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::PMV, stream);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 		studioApp.getIMainWnd()->getDockResults().appendString(stream.str());
-		studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка модели... ok\n"));
+		studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_LOADING_OK));
 		studioApp.setLastProjectName(getFullName());
 	}
 	else
@@ -574,7 +573,7 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName)
 		}
 		else
 		{
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка модели... failed\n"));
+			studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_LOADING_FAILD));
 		}
 	}
 	return data.m_result;
@@ -779,7 +778,7 @@ void RDOStudioModel::openModelFromRepository()
 				pEdit->setReadOnly(data.m_readOnly);
 				if (data.m_readOnly)
 				{
-					studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("%1 - только чтение\n").arg(tstring(data.m_name + data.m_extention).c_str()));
+					studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_FILE_READONLY, tstring(data.m_name + data.m_extention).c_str()));
 				}
 			}
 			else
@@ -798,7 +797,7 @@ void RDOStudioModel::openModelFromRepository()
 				}
 				if (obj)
 				{
-					studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Невозможно загрузить %1 (%2)\n").arg(rdo::format(obj).c_str()).arg(data.m_fullName.c_str()));
+					studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_CANNOT_LOAD, rdo::format(obj).c_str(), data.m_fullName.c_str()));
 					studioApp.getIMainWnd()->getDockDebug().getContext().update();
 				}
 				m_openError = true;
@@ -831,7 +830,7 @@ void RDOStudioModel::saveModelToRepository()
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
 		if (m_smrEmptyError)
 		{
-			QMessageBox::critical(studioApp.getMainWnd(), QString::fromStdWString(L"Ошибка записи модели"), QString::fromStdWString(L"В smr-файле не найдено имя модели, модель не будет записана"));
+			QMessageBox::critical(studioApp.getMainWnd(), _T("Ошибка записи модели"), _T("В smr-файле не найдено имя модели, модель не будет записана"));
 			return;
 		}
 		smr_modified = true;
@@ -953,11 +952,11 @@ void RDOStudioModel::setName(CREF(tstring) str)
 		{
 			if (studioApp.getShowCaptionFullName())
 			{
-				m_pModelView->parentWidget()->setWindowTitle(QString::fromLocal8Bit(rdo::format(IDS_MODEL_NAME, getFullName().c_str()).c_str()));
+				m_pModelView->parentWidget()->setWindowTitle(QString::fromStdString(rdo::format(IDS_MODEL_NAME, getFullName().c_str())));
 			}
 			else
 			{
-				m_pModelView->parentWidget()->setWindowTitle(QString::fromLocal8Bit(rdo::format(IDS_MODEL_NAME, m_name.c_str()).c_str()));
+				m_pModelView->parentWidget()->setWindowTitle(QString::fromStdString(rdo::format(IDS_MODEL_NAME, m_name.c_str())));
 			}
 		}
 	}
@@ -970,7 +969,7 @@ void RDOStudioModel::afterModelStart()
 	if (isFrmDescribed())
 	{
 		studioApp.getIMainWnd()->getDockDebug().raise();
-		studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка ресурсов для анимации...\n"));
+		studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_RESOURCE_LOADING_BEGIN));
 		studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
 		std::list< tstring > frames;
@@ -1002,7 +1001,7 @@ void RDOStudioModel::afterModelStart()
 				m_frameManager.getFrameView(initFrameNumber)->setFocus();
 			}
 		}
-		studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка ресурсов для анимации...ok\n"));
+		studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_RESOURCE_LOADING_OK));
 		studioApp.getIMainWnd()->getDockDebug().getContext().update();
 	}
 	else
@@ -1189,23 +1188,23 @@ void RDOStudioModel::updateActions()
 		case rdo::runtime::RTM_BreakPoint: runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT, getLastBreakPointName().c_str()); break;
 		}
 	}
-	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_RUNTYPE>(QString::fromLocal8Bit(runTimeMode.c_str()));
+	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_RUNTYPE>(QString::fromStdString(runTimeMode));
 
 	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SPEED>(
 		getRuntimeMode() != rdo::runtime::RTM_MaxSpeed || !isRunning()
-			? QString::fromStdWString(L"Скорость: %1%").arg(rsint(getSpeed() * 100))
+			? QString("Скорость: %1%").arg(rsint(getSpeed() * 100))
 			: ""
 	);
 
 	QString showRateStr;
 	if (isRunning())
 	{
-		showRateStr = QString::fromStdWString(L"Масштаб: ");
+		showRateStr = "Масштаб: ";
 		switch (getRuntimeMode())
 		{
 		case rdo::runtime::RTM_MaxSpeed:
 		case rdo::runtime::RTM_Jump    :
-			showRateStr += QString::fromStdWString(L"Бесконечность");
+			showRateStr += "Бесконечность";
 			break;
 
 		case rdo::runtime::RTM_Pause     :
@@ -1218,15 +1217,15 @@ void RDOStudioModel::updateActions()
 				double showRate = model->getShowRate();
 				if (showRate < 1e-10 || showRate > 1e10)
 				{
-					showRateStr += QString::fromLocal8Bit(rdo::format("%e", showRate).c_str());
+					showRateStr += QString::fromStdString(rdo::format("%e", showRate));
 				}
 				else if (showRate >= 1)
 				{
-					showRateStr += QString::fromLocal8Bit(rdo::format("%1.1f", showRate).c_str());
+					showRateStr += QString::fromStdString(rdo::format("%1.1f", showRate));
 				}
 				else
 				{
-					showRateStr += QString::fromLocal8Bit(rdo::format("%1.10f", showRate).c_str());
+					showRateStr += QString::fromStdString(rdo::format("%1.10f", showRate));
 				}
 			}
 			break;
@@ -1239,7 +1238,7 @@ void RDOStudioModel::update()
 {
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
 
-	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_TIME>(QString::fromStdWString(L"Время: %1").arg(m_timeNow));
+	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_TIME>(QString("Время: %1").arg(m_timeNow));
 
 	rdo::runtime::RunTimeMode rm;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &rm);
@@ -1247,7 +1246,7 @@ void RDOStudioModel::update()
 	{
 		if (rm == rdo::runtime::RTM_BreakPoint)
 		{
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Пауза в %1 из-за точки '%2'\n").arg(getTimeNow()).arg(QString::fromLocal8Bit(getLastBreakPointName().c_str())));
+			studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(_T("Пауза в %f из-за точки '%s'\n"), getTimeNow(), getLastBreakPointName().c_str()));
 		}
 		setRuntimeMode(rm);
 	}

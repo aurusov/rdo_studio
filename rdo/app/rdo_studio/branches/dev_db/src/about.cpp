@@ -23,17 +23,17 @@ About::About(PTR(QWidget) pParent)
 	QString limitation;
 
 #ifdef RDO_LICENSE_ACADEMIC
-		limitation += QString::fromStdWString(L"не для коммерческого использования");
+		limitation += "не для коммерческого использования";
 #endif
 
 #ifdef RDO_LIMIT_RES
 		if (!limitation.isEmpty())
 			limitation += ", ";
 
-		limitation += QString::fromStdWString(L"ограниченная версия");
+		limitation += "ограниченная версия";
 #endif
 
-	version->setText(QString::fromStdWString(L"Система имитационного моделирования\n\nRAO-studio   %1%2-version 1.1 (build %3)%4")
+	version->setText(QString("Система имитационного моделирования\n\nRAO-studio   %1%2-version 1.1 (build %3)%4")
 
 #ifdef RDO_MT
 		.arg("mt")

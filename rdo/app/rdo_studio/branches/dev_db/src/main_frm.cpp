@@ -14,8 +14,7 @@
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm/find.hpp>
 #include <QtCore/qprocess.h>
-#include <QtCore/qtextcodec.h>
-#include <QtWidgets/qmdisubwindow.h>
+#include <QtGui/qmdisubwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_frm.h"
 #include "app/rdo_studio/src/application.h"
@@ -122,14 +121,14 @@ void RDOStudioMainFrame::createInsertMenu()
 			: m_title   (title   )
 			, m_position(position)
 		{
-			init(resourceName);
-		}
-
-		MenuItem(const QString& title, const QString& resourceName = QString(), const Position& position = Position())
-			: m_title   (title   )
-			, m_position(position)
-		{
-			init(resourceName);
+			if (!resourceName.isEmpty())
+			{
+				QFile file(":/insert_menu_template/insert_menu_template/" + resourceName);
+				if (file.open(QIODevice::ReadOnly) && file.isOpen())
+				{
+					m_textForInsert = file.readAll();
+				}
+			}
 		}
 
 		const QString& title() const
@@ -153,18 +152,6 @@ void RDOStudioMainFrame::createInsertMenu()
 		QString    m_title;
 		QString    m_textForInsert;
 		Position   m_position;
-
-		void init(const QString& resourceName)
-		{
-			if (!resourceName.isEmpty())
-			{
-				QFile file(":/insert_menu_template/insert_menu_template/" + resourceName);
-				if (file.open(QIODevice::ReadOnly) && file.isOpen())
-				{
-					m_textForInsert = file.readAll();
-				}
-			}
-		}
 	};
 
 	typedef  rdo::vector<MenuItem>                         MenuItemList;
@@ -273,7 +260,7 @@ void RDOStudioMainFrame::createInsertMenu()
 	menuList.push_back(std::make_pair("", MenuItemList()));
 	menuList.push_back(
 		std::make_pair(
-			QString::fromStdWString(L"Встроенные функции"),
+			"Встроенные функции",
 			MenuItemList("Abs")("ArcCos")("ArcSin")("ArcTan")("Cos")("Cotan")("Exist")("Exp")("Floor")("For_All")("Frac")
 				("IAbs")("IMax")("IMin")("Int")("IntPower")("Ln")("Log10")("Log2")("LogN")("Max")("Min")("Not_Exist")
 				("Not_For_All")("Power")("Round")("Select")("Sin")("Sqrt")("Tan")
@@ -281,14 +268,14 @@ void RDOStudioMainFrame::createInsertMenu()
 	);
 	menuList.push_back(
 		std::make_pair(
-			QString::fromStdWString(L"Процедурный язык"),
+			"Процедурный язык",
 			MenuItemList
 				(MenuItem("if", "algo_if.txt", 4))
 				("else")
 				(MenuItem("if-else", "algo_if_else.txt", 4))
 				(MenuItem("for", "algo_for.txt", 5))
 				("return")
-				(MenuItem(QString::fromLocal8Bit("Локальная переменная"), "algo_local_variable.txt"))
+				(MenuItem("Локальная переменная", "algo_local_variable.txt"))
 		)
 	);
 
@@ -317,7 +304,7 @@ void RDOStudioMainFrame::createInsertMenu()
 
 void RDOStudioMainFrame::init()
 {
-	m_thisCWnd.Attach(reinterpret_cast<HWND>(winId()));
+	m_thisCWnd.Attach(winId());
 
 	// Кто-то должен поднять кернел и треды
 	new RDOStudioModel();
@@ -373,7 +360,7 @@ void RDOStudioMainFrame::init()
 	tabifyDockWidget(m_pDockChartTree, m_pDockFrame);
 	m_pDockChartTree->raise();
 
-	PTR(QMenu) pMenuDockView = new QMenu(QString::fromStdWString(L"Окна"));
+	PTR(QMenu) pMenuDockView = new QMenu("Окна");
 	ASSERT(pMenuDockView);
 	menuView->insertMenu(actViewSettings, pMenuDockView);
 	pMenuDockView->addAction(m_pDockBuild->toggleViewAction());
@@ -384,7 +371,7 @@ void RDOStudioMainFrame::init()
 	pMenuDockView->addAction(m_pDockChartTree->toggleViewAction());
 	pMenuDockView->addAction(m_pDockFrame->toggleViewAction());
 
-	PTR(QMenu) pMenuToolbarView = new QMenu(QString::fromStdWString(L"Панели"));
+	PTR(QMenu) pMenuToolbarView = new QMenu("Панели");
 	ASSERT(pMenuToolbarView);
 	menuView->insertMenu(actViewSettings, pMenuToolbarView);
 	pMenuToolbarView->addAction(toolBarFile->toggleViewAction());
@@ -430,7 +417,16 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 void RDOStudioMainFrame::onViewOptions()
 {
 	ViewPreferences dlg(this);
+
+	studioApp.getEditorEditStyle()->attachSubscriber(
+		boost::bind(&ViewPreferences::onUpdateStyleNotify, &dlg, _1)
+	);
+
 	dlg.exec();
+
+	studioApp.getEditorEditStyle()->detachSubscriber(
+		boost::bind(&ViewPreferences::onUpdateStyleNotify, &dlg, _1)
+	);
 }
 
 void RDOStudioMainFrame::updateAllStyles()
@@ -634,7 +630,7 @@ void RDOStudioMainFrame::updateMenuFileReopen()
 		{
 			menuFileReopen->addSeparator();
 		}
-		menuFileReopen->addAction(QTextCodec::codecForLocale()->toUnicode(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str()));
+		menuFileReopen->addAction(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str());
 	}
 
 	menuFileReopen->setEnabled(!menuFileReopen->isEmpty());

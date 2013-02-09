@@ -26,13 +26,13 @@
 #include "app/rdo_studio/edit_ctrls/rdofindeditstyle.h"
 #include "app/rdo_studio/src/tracer/ctrls/log_main_wnd.h"
 #include "app/rdo_studio/src/tracer/ctrls/log_view_style.h"
-#include "app/rdo_studio/src/chart/chart_doc.h"
-#include "app/rdo_studio/src/chart/chart_view.h"
-#include "app/rdo_studio/src/chart/chart_view_style.h"
+#include "app/rdo_studio/src/chart/document.h"
+#include "app/rdo_studio/src/chart/view.h"
+#include "app/rdo_studio/src/chart/view_style.h"
 #include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
 #include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
-#include "app/rdo_studio/src/frame/frame_style.h"
-#include "app/rdo_studio/src/frame/frame_options_ctrl.h"
+#include "app/rdo_studio/src/frame/style.h"
+#include "app/rdo_studio/src/frame/options_ctrl.h"
 #include "app/rdo_studio/resource.h"
 // --------------------------------------------------------------------------------
 

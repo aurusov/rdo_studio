@@ -10,14 +10,14 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qaction.h>
+#include <QtGui/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_trace.h"
 #include "app/rdo_studio/rdo_tracer/rdotracer.h"
 // --------------------------------------------------------------------------------
 
 DockTrace::DockTrace(PTR(QWidget) pParent)
-	: DockFocusable(QString::fromStdWString(L"Трассировка"), pParent)
+	: DockFocusable("Трассировка", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 150));

@@ -22,7 +22,7 @@ GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount)
 
 	layout()->setSizeConstraint(QLayout::SetFixedSize);
 
-	label->setText(QString::fromStdWString(L"Номер строки (1-%1):").arg(lineCount));
+	label->setText(QString("Номер строки (1-%1):").arg(lineCount));
 
 	lineEdit->setValidator(new QIntValidator(1, lineCount, this));
 	lineEdit->setText(QString::number(m_line));

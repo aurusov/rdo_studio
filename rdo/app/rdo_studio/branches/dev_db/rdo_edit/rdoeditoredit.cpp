@@ -669,7 +669,7 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 
 	updateAction(
 		pMainWindow->actEditCompleteWord,
-		activated && studioApp.getStyle()->style_editor.autoComplete->useAutoComplete,
+		activated,
 		this, "onEditCompleteWord()"
 	);
 

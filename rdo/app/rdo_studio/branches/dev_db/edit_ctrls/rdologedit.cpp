@@ -214,7 +214,7 @@ void LogEdit::appendLine(PTR(LogEditLineInfo) pLine)
 	rdo::trimRight(str);
 	str += "\r\n";
 	setCurrentPos(getLength());
-	appendText(QString::fromLocal8Bit(str.c_str()));
+	appendText(str);
 	pLine->setPosInLog(getLength());
 	scrollToLine2(getLineCount());
 	setCurrentPos(pLine->getPosInLog());

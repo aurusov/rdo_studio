@@ -10,15 +10,14 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <algorithm>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
 #include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
 #include "app/rdo_studio/rdo_tracer/rdotracerresource.h"
 #include "app/rdo_studio/rdo_tracer/rdotracerrestype.h"
-#include "app/rdo_studio/src/chart/chart_view.h"
-#include "app/rdo_studio/src/chart/chart_doc.h"
+#include "app/rdo_studio/src/chart/view.h"
+#include "app/rdo_studio/src/chart/document.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
 // --------------------------------------------------------------------------------
@@ -249,9 +248,9 @@ void TracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rec
 				it --;
 			
 			int lasty = roundDouble( (double)rect.bottom - double(ky) * ( (*it)->value - minValue ) );
-			lasty = std::min( lasty, int(rect.bottom) - 1 );
+			lasty = min( lasty, rect.bottom - 1 );
 			int lastx = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * double(view->timeScale) ) - view->chartShift;
-			lastx = std::min( lastx, int(rect.right) - 1 );
+			lastx = min( lastx, rect.right - 1 );
 			
 			int ticks = 0;
 			timesList::iterator times_it = view->unwrapTimesList.begin();
@@ -266,7 +265,7 @@ void TracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rec
 					lastx += ( ticks + (*it)->eventIndex - view->drawFromEventIndex ) * view->style->fonts_ticks->tickWidth;
 				}
 			}
-			lastx = std::min( lastx, int(rect.right) - 1 );
+			lastx = min( lastx, rect.right - 1 );
 
 			HPEN pen = NULL;
 			HPEN old_pen = NULL;
@@ -303,12 +302,12 @@ void TracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rec
 
 				while ( it != values.end() && ( (!view->doUnwrapTime() && (*it)->modeltime->time <= view->drawToX.time) || (view->doUnwrapTime() && ((*it)->modeltime->time < view->drawToX.time || ((*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex <= view->drawToEventCount) )) ) ) {
 					y = roundDouble( (double)rect.bottom - double(ky) * ( (*it)->value - minValue ) );
-					y = std::min( y, int(rect.bottom) - 1 );
+					y = min( y, rect.bottom - 1 );
 					x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * double(view->timeScale) ) - view->chartShift;
 					if ( view->doUnwrapTime() ) {
 						x += ( ticks + (*it)->eventIndex ) * view->style->fonts_ticks->tickWidth;
 					}
-					x = std::min( x, int(rect.right) - 1 );
+					x = min( x, rect.right - 1 );
 					if ( draw_marker )
 						drawMarker( dc, x, y, marker, marker_size );
 					::LineTo( dc, x, lasty );
@@ -337,7 +336,7 @@ void TracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rec
 				if ( need_continue ) {
 					if ( view->drawFromX == view->drawToX ) {
 						x = rect.left + ( view->drawToEventCount - view->drawFromEventIndex ) * view->style->fonts_ticks->tickWidth;
-						x = std::min( x, int(rect.right) - 1 );
+						x = min( x, rect.right - 1 );
 					} else {
 						x = rect.right - 1;
 					}

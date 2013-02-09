@@ -69,12 +69,12 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 	m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_erased.png")));
 
 	m_root.setCtrlItem(new QTreeWidgetItem(this));
-	m_root.getCtrlItem().setText(0, QString::fromStdWString(L"Модель"));
+	m_root.getCtrlItem().setText(0, "Модель");
 	m_root.getCtrlItem().setIcon(0, m_iconList[IT_ROOT]);
 
-	createItem(m_root, m_rootRTP, QString::fromStdWString(L"Типы ресурсов"), IT_SUB_ROOT_1);
-	createItem(m_root, m_rootPAT, QString::fromStdWString(L"Образцы"),       IT_SUB_ROOT_1);
-	createItem(m_root, m_rootPMV, QString::fromStdWString(L"Результаты"),    IT_SUB_ROOT_1);
+	createItem(m_root, m_rootRTP, "Типы ресурсов", IT_SUB_ROOT_1);
+	createItem(m_root, m_rootPAT, "Образцы",       IT_SUB_ROOT_1);
+	createItem(m_root, m_rootPMV, "Результаты",    IT_SUB_ROOT_1);
 
 	m_root.getCtrlItem().setExpanded(true);
 
@@ -159,7 +159,7 @@ PTR(ChartTreeItem) ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlIte
 
 void ChartTree::setModelName(CREF(tstring) modelName)
 {
-	m_root.getCtrlItem().setText(0, QString::fromLocal8Bit(rdo::format(ID_MODEL, modelName.c_str()).c_str()));
+	m_root.getCtrlItem().setText(0, QString::fromStdString(rdo::format(ID_MODEL, modelName.c_str())));
 }
 
 void ChartTree::createItem(REF(ChartTreeItem) parent, REF(ChartTreeItem) item, CREF(QString) name, IconType iconType)
@@ -173,20 +173,20 @@ void ChartTree::createItem(REF(ChartTreeItem) parent, REF(ChartTreeItem) item, C
 
 void ChartTree::addResourceType(PTR(TracerResType) pRTP)
 {
-	createItem(m_rootRTP, *pRTP, QString::fromLocal8Bit(pRTP->Name.c_str()), IT_SUB_ROOT_2);
+	createItem(m_rootRTP, *pRTP, QString::fromStdString(pRTP->Name), IT_SUB_ROOT_2);
 }
 
 void ChartTree::addResource(PTR(TracerResource) pRSS)
 {
 	PTR(TracerResType) pRTP = pRSS->getType();
-	createItem(*pRTP, *pRSS, QString::fromLocal8Bit(pRSS->Name.c_str()), IT_SUB_ROOT_3);
+	createItem(*pRTP, *pRSS, QString::fromStdString(pRSS->Name), IT_SUB_ROOT_3);
 
 	int count = pRTP->getParamsCount();
 	for (int i = 0; i < count; i++)
 	{
 		PTR(ChartTreeItem) pParam = pRSS->getParam(i);
 		ASSERT(pParam);
-		createItem(*pRSS, *pParam, QString::fromLocal8Bit(pRTP->getParamInfo(i)->Name.c_str()), IT_VALUE);
+		createItem(*pRSS, *pParam, QString::fromStdString(pRTP->getParamInfo(i)->Name), IT_VALUE);
 	}
 	updateResource(pRSS);
 }
@@ -205,12 +205,12 @@ void ChartTree::updateResource(PTR(TracerResource) pRSS)
 
 void ChartTree::addPattern(PTR(TracerPattern) pPAT)
 {
-	createItem(m_rootPAT, *pPAT, QString::fromLocal8Bit(pPAT->Name.c_str()), IT_SUB_ROOT_2);
+	createItem(m_rootPAT, *pPAT, QString::fromStdString(pPAT->Name), IT_SUB_ROOT_2);
 }
 
 void ChartTree::addOperation(PTR(TracerOperationBase) pOPR)
 {
-	createItem(*pOPR->getPattern(), *pOPR, QString::fromLocal8Bit(pOPR->getName().c_str()), IT_VALUE);
+	createItem(*pOPR->getPattern(), *pOPR, QString::fromStdString(pOPR->getName()), IT_VALUE);
 }
 
 /*void ChartTree::addIrregularEvent(PTR(TracerOperation) pOpr)
@@ -220,7 +220,7 @@ void ChartTree::addOperation(PTR(TracerOperationBase) pOPR)
 
 void ChartTree::addResult(PTR(TracerResult) pPMV)
 {
-	createItem(m_rootPMV, *pPMV, QString::fromLocal8Bit(pPMV->getName().c_str()), IT_VALUE);
+	createItem(m_rootPMV, *pPMV, QString::fromStdString(pPMV->getName()), IT_VALUE);
 }
 
 void ChartTree::deleteChildren(REF(ChartTreeItem) parent)
@@ -237,7 +237,7 @@ void ChartTree::clear()
 	deleteChildren(m_rootRTP);
 	deleteChildren(m_rootPAT);
 	deleteChildren(m_rootPMV);
-	m_root.getCtrlItem().setText(0, QString::fromStdWString(L"Модель"));
+	m_root.getCtrlItem().setText(0, "Модель");
 }
 
 void ChartTree::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const

@@ -10,13 +10,13 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qaction.h>
+#include <QtGui/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_results.h"
 // --------------------------------------------------------------------------------
 
 DockResults::DockResults(PTR(QWidget) pParent)
-	: DockFocusable(QString::fromStdWString(L"Результаты"), pParent)
+	: DockFocusable("Результаты", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 150));
@@ -34,7 +34,7 @@ void DockResults::appendString(CREF(tstring) str)
 	int pos = getContext().getCurrentPos();
 	getContext().setCurrentPos(getContext().getLength());
 	getContext().setReadOnly  (false);
-	getContext().appendText   (QString::fromLocal8Bit(str.c_str()));
+	getContext().appendText   (str  );
 	getContext().setReadOnly  (true );
 	getContext().setCurrentPos(pos  );
 }

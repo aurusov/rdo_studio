@@ -10,7 +10,7 @@
 #ifndef _RDO_STUDIO_GO_TO_NEXT_LINE_DIALOG_H_
 #define _RDO_STUDIO_GO_TO_NEXT_LINE_DIALOG_H_
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qdialog.h>
+#include <QtGui/qdialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_goto_line_dialog.h"
 // --------------------------------------------------------------------------------

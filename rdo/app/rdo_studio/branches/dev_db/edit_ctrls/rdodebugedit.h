@@ -29,7 +29,7 @@ public:
 	RDODebugEdit(PTR(QWidget) pParent);
 	virtual ~RDODebugEdit();
 
-	void appendLine(CREF(QString) str);
+	void appendLine(CREF(tstring) str);
 
 private:
 	typedef  RDOBaseEdit  super;

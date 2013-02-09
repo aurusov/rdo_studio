@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_focusable.h"
-#include "app/rdo_studio/src/frame/frame_tree_ctrl.h"
+#include "app/rdo_studio/src/frame/tree_ctrl.h"
 // --------------------------------------------------------------------------------
 
 class DockFrame: public DockFocusable

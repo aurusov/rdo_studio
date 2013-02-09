@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;;../../../../thirdparty/scintilla/include"
+				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;../../../../thirdparty/scintilla/include"
 				PreprocessorDefinitions="RDO_ST;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;QT_QTWINMIGRATE_IMPORT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -67,7 +67,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Qt5Guid.lib Qt5Cored.lib Qt5Widgetsd.lib"
+				AdditionalDependencies="Imm32.lib Version.lib QtGuid4.lib QtCored4.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
@@ -100,7 +100,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Cored.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Cored.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Guid.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Guid.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgetsd.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgetsd.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimald.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimald.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindowsd.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindowsd.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsqld.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\qsqlpsqld.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\ssleay32.dll&quot;&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCored4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtCored4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtGuid4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtGuid4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtSqld4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtSqld4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsqld4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\qsqlpsqld4.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\ssleay32.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -135,12 +135,12 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;;../../../../thirdparty/scintilla/include"
+				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;../../../../thirdparty/scintilla/include"
 				PreprocessorDefinitions="RDO_ST;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;QT_QTWINMIGRATE_IMPORT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
-				WarningLevel="3"
+				WarningLevel="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -155,7 +155,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Qt5Gui.lib Qt5Core.lib Qt5Widgets.lib"
+				AdditionalDependencies="Imm32.lib Version.lib QtGui4.lib QtCore4.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				SubSystem="2"
@@ -185,7 +185,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Core.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Core.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Gui.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Gui.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgets.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgets.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimal.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimal.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindows.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindows.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsql.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\qsqlpsql.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\ssleay32.dll&quot;&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCore4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtCore4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtGui4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtGui4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtSql4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtSql4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsql4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\qsqlpsql4.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libeay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\libpq.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;$(PSQL)\bin\ssleay32.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\ssleay32.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -217,14 +217,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;;../../../../thirdparty/scintilla/include;../../../../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;../../../../thirdparty/scintilla/include;../../../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;QT_QTWINMIGRATE_IMPORT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -240,7 +240,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Qt5Guid.lib Qt5Cored.lib Qt5Widgetsd.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
+				AdditionalDependencies="Imm32.lib Version.lib QtGuid4.lib QtCored4.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
@@ -273,7 +273,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Cored.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Cored.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Guid.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Guid.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgetsd.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgetsd.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot;&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimald.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimald.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindowsd.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindowsd.dll&quot;&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCored4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtCored4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtGuid4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtGuid4.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -306,13 +306,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;;../../../../thirdparty/scintilla/include;../../../../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;../../../../thirdparty/scintilla/include;../../../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;QT_QTWINMIGRATE_IMPORT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -327,7 +327,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Qt5Gui.lib Qt5Core.lib Qt5Widgets.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
+				AdditionalDependencies="Imm32.lib Version.lib QtGui4.lib QtCore4.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				SubSystem="2"
@@ -357,7 +357,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Core.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Core.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Gui.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Gui.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgets.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgets.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimal.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimal.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindows.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindows.dll&quot; &gt;null&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCore4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtCore4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtGui4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtGui4.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -389,13 +389,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;;../../../../thirdparty/scintilla/include"
+				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;../../../../thirdparty/scintilla/include"
 				PreprocessorDefinitions="RDO_MT;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;QT_QTWINMIGRATE_IMPORT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -411,7 +411,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Qt5Guid.lib Qt5Cored.lib Qt5Widgetsd.lib"
+				AdditionalDependencies="Imm32.lib Version.lib QtGuid4.lib QtCored4.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
@@ -444,7 +444,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Cored.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Cored.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Guid.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Guid.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgetsd.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgetsd.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot;&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimald.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimald.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindowsd.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindowsd.dll&quot;&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCored4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtCored4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtGuid4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtGuid4.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -477,13 +477,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;;../../../../thirdparty/scintilla/include"
+				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;../../../../thirdparty/scintilla/include"
 				PreprocessorDefinitions="RDO_MT;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;QT_QTWINMIGRATE_IMPORT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -498,7 +498,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Qt5Gui.lib Qt5Core.lib Qt5Widgets.lib"
+				AdditionalDependencies="Imm32.lib Version.lib QtGui4.lib QtCore4.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				SubSystem="2"
@@ -528,7 +528,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="copy qt-dll"
-				CommandLine="copy &quot;$(QTDIR)\bin\Qt5Core.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Core.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Gui.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Gui.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\Qt5Widgets.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\Qt5Widgets.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icudt50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icudt50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuin50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuin50.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\icuuc50.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\icuuc50.dll&quot; &gt;null&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qminimal.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qminimal.dll&quot; &gt;null&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\platforms\qwindows.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\platforms\qwindows.dll&quot; &gt;null&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCore4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtCore4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtGui4.dll&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\QtGui4.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -911,11 +911,62 @@
 			Name=".frame"
 			>
 			<File
-				RelativePath="..\..\src\frame\frame_manager.cpp"
+				RelativePath="..\..\src\frame\manager.cpp"
 				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\frame_manager"
+						BrowseInformationFile="$(IntDir)\frame_manager"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\frame_manager"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\frame_manager"
+						BrowseInformationFile="$(IntDir)\frame_manager"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\frame_manager"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\frame_manager"
+						BrowseInformationFile="$(IntDir)\frame_manager"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\frame_manager"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\frame_manager.h"
+				RelativePath="..\..\src\frame\manager.h"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -979,27 +1030,78 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\frame_options_ctrl.cpp"
+				RelativePath="..\..\src\frame\options_ctrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\frame_options_ctrl.h"
+				RelativePath="..\..\src\frame\options_ctrl.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\frame_style.cpp"
+				RelativePath="..\..\src\frame\style.cpp"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_frame"
+						BrowseInformationFile="$(IntDir)\style_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_frame"
+						BrowseInformationFile="$(IntDir)\style_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_frame"
+						BrowseInformationFile="$(IntDir)\style_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_frame"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\frame\style.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\frame_style.h"
+				RelativePath="..\..\src\frame\tree_ctrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\frame_tree_ctrl.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\frame\frame_tree_ctrl.h"
+				RelativePath="..\..\src\frame\tree_ctrl.h"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -1063,11 +1165,62 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\frame_view.cpp"
+				RelativePath="..\..\src\frame\view.cpp"
 				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_frame"
+						BrowseInformationFile="$(IntDir)\view_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_frame"
+						BrowseInformationFile="$(IntDir)\view_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_frame"
+						BrowseInformationFile="$(IntDir)\view_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_frame"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\frame_view.h"
+				RelativePath="..\..\src\frame\view.h"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -1948,6 +2101,57 @@
 			<File
 				RelativePath="..\..\src\options.cpp"
 				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_general"
+						BrowseInformationFile="$(IntDir)\options_general"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_general"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_general"
+						BrowseInformationFile="$(IntDir)\options_general"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_general"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_general"
+						BrowseInformationFile="$(IntDir)\options_general"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_general"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\options.h"
@@ -1964,6 +2168,57 @@
 			<File
 				RelativePath="..\..\src\style.cpp"
 				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_base"
+						BrowseInformationFile="$(IntDir)\style_base"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_base"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_base"
+						BrowseInformationFile="$(IntDir)\style_base"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_base"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_base"
+						BrowseInformationFile="$(IntDir)\style_base"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_base"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\style.h"
@@ -2140,6 +2395,57 @@
 			<File
 				RelativePath="..\..\src\model\model_view.cpp"
 				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_model"
+						BrowseInformationFile="$(IntDir)\view_model"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_model"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_model"
+						BrowseInformationFile="$(IntDir)\view_model"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_model"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_model"
+						BrowseInformationFile="$(IntDir)\view_model"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_model"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\model\model_view.h"
@@ -2209,22 +2515,6 @@
 		<Filter
 			Name=".chart"
 			>
-			<File
-				RelativePath="..\..\src\chart\chart_doc.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\chart\chart_doc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\chart\chart_options.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\chart\chart_options.h"
-				>
-			</File>
 			<File
 				RelativePath="..\..\src\chart\chart_serie.cpp"
 				>
@@ -2310,19 +2600,188 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\chart\chart_view.cpp"
+				RelativePath="..\..\src\chart\document.cpp"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\document_chart"
+						BrowseInformationFile="$(IntDir)\document_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\document_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\document_chart"
+						BrowseInformationFile="$(IntDir)\document_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\document_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\document_chart"
+						BrowseInformationFile="$(IntDir)\document_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\document_chart"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\chart\document.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\chart\chart_view.h"
+				RelativePath="..\..\src\chart\options.cpp"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_chart"
+						BrowseInformationFile="$(IntDir)\options_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_chart"
+						BrowseInformationFile="$(IntDir)\options_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_chart"
+						BrowseInformationFile="$(IntDir)\options_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_chart"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\chart\options.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\chart\chart_view_style.cpp"
+				RelativePath="..\..\src\chart\view.cpp"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_chart"
+						BrowseInformationFile="$(IntDir)\view_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_chart"
+						BrowseInformationFile="$(IntDir)\view_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_chart"
+						BrowseInformationFile="$(IntDir)\view_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_chart"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\chart\view.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\chart\chart_view_style.h"
+				RelativePath="..\..\src\chart\view_style.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\chart\view_style.h"
 				>
 			</File>
 		</Filter>
@@ -2605,18 +3064,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\bin\rdo_studio\generated\moc_frame_manager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\bin\rdo_studio\generated\moc_frame_tree_ctrl.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\bin\rdo_studio\generated\moc_frame_view.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\bin\rdo_studio\generated\moc_goto_line_dialog.cpp"
 					>
 				</File>
@@ -2626,6 +3073,10 @@
 				</File>
 				<File
 					RelativePath=".\bin\rdo_studio\generated\moc_main_frm.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\rdo_studio\generated\moc_manager.cpp"
 					>
 				</File>
 				<File
@@ -2650,6 +3101,14 @@
 				</File>
 				<File
 					RelativePath=".\bin\rdo_studio\generated\moc_rdologedit.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\rdo_studio\generated\moc_tree_ctrl.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\rdo_studio\generated\moc_view.cpp"
 					>
 				</File>
 				<File
@@ -2749,6 +3208,10 @@
 		<Filter
 			Name=".dock"
 			>
+			<File
+				RelativePath="..\..\src\dock\dock_base.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\src\dock\dock_build.cpp"
 				>

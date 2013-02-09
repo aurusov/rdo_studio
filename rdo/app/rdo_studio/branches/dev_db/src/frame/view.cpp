@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      frame_view.cpp
+  \file      app/rdo_studio/src/frame/view.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      06.03.2003
   \brief     
@@ -12,12 +12,12 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
-#include <QtWidgets/qlayout.h>
+#include <QtGui/qlayout.h>
 #include <QtGui/qpainter.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio/src/frame/frame_view.h"
+#include "app/rdo_studio/src/frame/view.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
@@ -320,7 +320,7 @@ void FrameAnimationContent::elementText(PTR(rdo::animation::TextElement) pElemen
 		pElement->m_size.m_height
 	);
 
-	m_memDC.dc().drawText(rect, flags, QString::fromLocal8Bit(pElement->m_text.c_str()), &rect);
+	m_memDC.dc().drawText(rect, flags, QString::fromStdString(pElement->m_text), &rect);
 }
 
 void FrameAnimationContent::elementRect(PTR(rdo::animation::RectElement) pElement)

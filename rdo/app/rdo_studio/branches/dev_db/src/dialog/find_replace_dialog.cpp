@@ -55,10 +55,10 @@ void FindReplaceDialog::setSettings(CREF(Settings) settings)
 {
 	m_settings = settings;
 
-	whatLineEdit->setText(QString::fromLocal8Bit(m_settings.what.c_str()));
+	whatLineEdit->setText(QString::fromStdString(m_settings.what));
 	whatLineEdit->setFocus();
 	whatLineEdit->selectAll();
-	byWhatLineEdit->setText(QString::fromLocal8Bit(m_settings.byWhat.c_str()));
+	byWhatLineEdit->setText(QString::fromStdString(m_settings.byWhat));
 	matchCase->setChecked(m_settings.matchCase);
 	wholeWord->setChecked(m_settings.matchWholeWord);
 }

@@ -11,7 +11,7 @@
 #define _RDO_STUDIO_ABOUT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qdialog.h>
+#include <QtGui/qdialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_about.h"
 // --------------------------------------------------------------------------------

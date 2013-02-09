@@ -10,13 +10,13 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qaction.h>
+#include <QtGui/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_frame.h"
 // --------------------------------------------------------------------------------
 
 DockFrame::DockFrame(PTR(QWidget) pParent)
-	: DockFocusable(QString::fromStdWString(L"Анимация"), pParent)
+	: DockFocusable("Анимация", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(150, 300));

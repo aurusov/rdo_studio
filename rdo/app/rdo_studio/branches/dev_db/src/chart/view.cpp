@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      chart_view.cpp
+  \file      app/rdo_studio/src/chart/view.cpp
   \author    Захаров Павел
   \date      20.02.2003
   \brief     
@@ -10,18 +10,17 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <algorithm>
 #include <QtCore/qprocess.h>
 #include <QtGui/qevent.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/chart/chart_view.h"
+#include "app/rdo_studio/src/chart/view.h"
 #include "app/rdo_studio/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
 #include "app/rdo_studio/resource.h"
-#include "app/rdo_studio/src/chart/chart_view_style.h"
+#include "app/rdo_studio/src/chart/view_style.h"
 #include "app/rdo_studio/src/chart/chart_serie.h"
-#include "app/rdo_studio/src/chart/chart_options.h"
+#include "app/rdo_studio/src/chart/options.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -324,8 +323,8 @@ void RDOStudioChartView::updateScrollBars( const rbool need_update )
 		size = 0;
 	}
 
-	xMax = std::max( 0, size - chartRect.Width() );
-	xPos = std::min( xPos, xMax );
+	xMax = max ( 0, size - chartRect.Width() );
+	xPos = min ( xPos, xMax );
 	
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
@@ -558,7 +557,7 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 			SIZE sz;
 			for( timesList::iterator it = unwrapTimesList.begin(); it != unwrapTimesList.end(); it++ ) {
 				tmprect.left = chartRect.left + (LONG)(( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift);
-				tmprect.left = std::min( tmprect.left, chartRect.right - 1 );
+				tmprect.left = min( tmprect.left, chartRect.right - 1 );
 				str = rdo::format( formatstr.c_str(), (*it)->time );
 				if ( *(*it) == drawFromX ) {
 					tmprect.left += chartShift;
@@ -907,7 +906,7 @@ void RDOStudioChartView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 	// take the scrolling position out of the scrolling range, 
 	// increment the scrolling position, adjust the position 
 	// of the scroll box, and update the window.
-	if ( inc == std::max ( -xPos, std::min ( inc, xMax - xPos ) ) ) {
+	if ( inc == max ( -xPos, min ( inc, xMax - xPos ) ) ) {
 		xPos += inc;
 		
 		setScrollPos( SB_HORZ, xPos );
@@ -1235,7 +1234,7 @@ RDOStudioChartViewQt::~RDOStudioChartViewQt()
 
 rbool RDOStudioChartViewQt::init()
 {
-	m_thisCWnd.Attach(reinterpret_cast<HWND>(winId()));
+	m_thisCWnd.Attach(winId());
 
 	m_pContext = new RDOStudioChartView(this, m_pDocument, m_preview);
 	m_pContext->Create(NULL, NULL, 0, CRect(0, 0, 100, 100), &m_thisCWnd, 0);

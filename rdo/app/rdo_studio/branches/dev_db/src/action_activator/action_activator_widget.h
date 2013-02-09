@@ -11,7 +11,7 @@
 #define _RDO_STUDIO_ACTION_ACTIVATOR_WIDGET_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qwidget.h>
+#include <QtGui/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
