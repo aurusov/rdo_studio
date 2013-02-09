@@ -6,7 +6,7 @@
 
 1. Скачиваем boost
     http://www.boost.org/
-    текущая версия 1.49
+    текущая версия 1.53
 
     Для Windows предположим, что разархивировали в 'с:\boost_1_49_0'
     Для GNU/Linux предположим, что разархивировали в '/home/user/boost'
@@ -14,7 +14,7 @@
 2. Собираем статические либы буста
 2.1. Для Windows (из Far'а или cmd.exe):
 
-    cd c:\boost_1_49_0
+    cd c:\boost_1_53_0
     bootstrap.bat
 
     Если вывелось
@@ -75,22 +75,20 @@
 
 3. Настройка окружения и IDE
 
-3.1. Для Windows запускаем Visual Studio, заходим в настройки
+3.1. Для Windows
+3.1.1. Добавляем переменную окружения
+	BOOSTDIR=C:\boost_1_53_0
+	Не забывам перелогиниться в винде.
+
+3.1.2. В Visual Studio, заходим в настройки
 
     Tools/Options/Projects and Solutions/VC++ Directories
 
-    Выбираем
-    Platform = Win32
-    Show Directories for = Include Files
-    Под ней нажимаем на кнопку с папкой (вторая слева) и добавляем путь к инклюдам буста, в нашем случае
-    с:\boost_1_49_0 (да, да, корень буста)
+	Platform             = Win32
+	Show directories for = Include files, добавляем $(BOOSTDIR)
+	Show directories for = Library files, добавляем $(BOOSTDIR)\stage\lib
 
-    Выбираем
-    Show Directories for = Library Files
-    Добавляем путь к скомпиленным на шаге 3 либам
-    C:\boost_1_49_0\stage\lib
-
-    Теперь можно компилировать rao_studio.
+    Теперь можно компилировать rdo_studio.
 
 3.2. Для GNU/Linux
 
