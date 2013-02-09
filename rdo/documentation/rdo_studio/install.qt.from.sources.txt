@@ -22,7 +22,8 @@ qtjsbackend
 qtmultimedia
 и др. файлы и папки
 
-2. Подготовка к компиляции Qt
+2. Подготовка к компиляции Qt. Проверялось только на пакетах для x86
+
 2.1 Установить ActiveState Perl
 http://www.activestate.com/activeperl/downloads
 После установки необходимо перелогиниться в винде (перезагружаться не обязательно)
@@ -47,12 +48,21 @@ http://qt-project.org/wiki/jom
 Пуск\Поиск\Visual Studio 2008 Command Prompt
 
 3.2 Запуск конфигуратора
+3.2.1 Без поддержки PostgreSQL
 cd C:\qt-5.0.1
 set PATH=D:\Programs\Python27;D:\Programs\Ruby193\bin;D:\Downloads\jom;%PATH%
 set INCLUDE=D:\Downloads\cygwin\usr\local\include;%INCLUDE%
 set LIB=D:\Downloads\cygwin\usr\local\lib;%LIB%
 
 configure.bat -debug-and-release -opensource -confirm-license -nomake tests -nomake examples -nomake demos -opengl desktop
+
+3.2.2 С пожддержкой PostgreSQL
+cd C:\qt-5.0.1
+set PATH=D:\Programs\Python27;D:\Programs\Ruby193\bin;D:\Downloads\jom;%PATH%
+set INCLUDE=%PSQL%\include;D:\Downloads\cygwin\usr\local\include;%INCLUDE%
+set LIB=%PSQL%\lib;D:\Downloads\cygwin\usr\local\lib;%LIB%
+
+configure.bat -debug-and-release -opensource -confirm-license -nomake tests -nomake examples -nomake demos -opengl desktop -plugin-sql-psql
 
 Если выдает Error, то попробуйте запустить консоль от имени Администратора. В конце конфигурации должно быть
 Qt is now configured for building. Just run nmake.
