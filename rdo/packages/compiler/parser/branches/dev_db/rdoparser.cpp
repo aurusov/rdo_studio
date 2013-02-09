@@ -431,9 +431,8 @@ void RDOParser::parse()
 	InitSructDB::createDB();
 	InitSructDB db;
 
-	STL_FOR_ALL_CONST(getRTPResTypes(), RTPResTypeIt)
+	BOOST_FOREACH(const LPRDORTPResType& pResType, getRTPResTypes())
 	{
-		LPRDORTPResType pResType = *RTPResTypeIt;
 		pResType->serializeInDB(db);
 	}
 }
