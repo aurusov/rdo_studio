@@ -25,7 +25,6 @@
 #include "app/rdo_studio/src/thread.h"
 #include "app/rdo_studio/src/dialog/file_association_dialog.h"
 #include "app/rdo_studio/rdo_tracer/rdotracer.h"
-#include "thirdparty/win_registry/registry.h"
 #include "thirdparty/qt-solutions/qtwinmigrate/src/qmfcapp.h"
 // --------------------------------------------------------------------------------
 
