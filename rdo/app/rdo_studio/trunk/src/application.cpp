@@ -538,10 +538,7 @@ void RDOStudioApp::setupFileAssociation()
 			{
 				FileAssociationDialog dlg(studioApp.getMainWndUI());
 				mustBeRegistered = dlg.exec() == QDialog::Accepted;
-				if (mustBeRegistered)
-				{
-					setFileAssociationCheckInFuture(dlg.checkBox->isChecked());
-				}
+				setFileAssociationCheckInFuture(dlg.checkBox->isChecked());
 			}
 			else
 			{
