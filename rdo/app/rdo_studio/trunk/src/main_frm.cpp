@@ -60,6 +60,7 @@ const RDOStudioMainFrame::InsertMenuData::Position& RDOStudioMainFrame::InsertMe
 RDOStudioMainFrame::RDOStudioMainFrame()
 	: m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
+	, m_hasWindow(false)
 {
 	setupUi(this);
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
@@ -75,6 +76,8 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 
 	connect(menuFileReopen, SIGNAL(triggered(QAction*)), this, SLOT(onMenuFileReopen(QAction*)));
 	connect(actFileExit,    SIGNAL(triggered(bool)),     this, SLOT(close()));
+
+	connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(onSubWindowActivated(QMdiSubWindow*)));
 
 	connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions ()));
 	connect(actHelpWhatsNew, SIGNAL(triggered(bool)), this, SLOT(onHelpWhatsNew()));
@@ -729,3 +732,31 @@ void RDOStudioMainFrame::updateInsertMenu(rbool enabled, QObject* pObject, CREF(
 		QObject::disconnect(m_pInsertMenuSignalMapper, SIGNAL(mapped(QObject*)), NULL, NULL);
 	}
 }
+
+void RDOStudioMainFrame::onSubWindowActivated(QMdiSubWindow * window)
+{
+	QList<QMdiSubWindow *> windowList = mdiArea->subWindowList();
+	if (windowList.empty())
+	{
+		if (m_hasWindow)
+		{
+			actWindowTitleHorzontal->setEnabled(false);
+			actWindowCascade       ->setEnabled(false);
+			disconnect(actWindowTitleHorzontal, SIGNAL(triggered(bool)), mdiArea, SLOT(cascadeSubWindows()));
+			disconnect(actWindowCascade       , SIGNAL(triggered(bool)), mdiArea, SLOT(tileSubWindows   ()));
+			m_hasWindow = false;
+		}
+	}
+	else
+	{
+		if (!m_hasWindow)
+		{
+			actWindowTitleHorzontal->setEnabled(true);
+			actWindowCascade       ->setEnabled(true);
+			connect(actWindowTitleHorzontal, SIGNAL(triggered(bool)), mdiArea, SLOT(cascadeSubWindows()));
+			connect(actWindowCascade       , SIGNAL(triggered(bool)), mdiArea, SLOT(tileSubWindows   ()));
+			m_hasWindow = true;
+		}
+	}
+}
+

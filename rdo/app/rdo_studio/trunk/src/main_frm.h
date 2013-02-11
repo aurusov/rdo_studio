@@ -84,6 +84,7 @@ private:
 	LPStatusBar     m_pStatusBar;
 	ReopenList      m_reopenList;
 	QSignalMapper*  m_pInsertMenuSignalMapper;
+	bool            m_hasWindow;
 
 	void createStatusBar ();
 	void createToolBar   ();
@@ -99,6 +100,7 @@ private:
 	virtual void timerEvent(QTimerEvent* event);
 
 private slots:
+	void onSubWindowActivated(QMdiSubWindow*);
 	void onViewOptions ();
 	void onHelpWhatsNew();
 	void onHelpAbout   ();
