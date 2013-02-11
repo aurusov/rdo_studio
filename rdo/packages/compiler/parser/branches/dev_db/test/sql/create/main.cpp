@@ -22,6 +22,8 @@ int main(int argc, char *argv[])
 {
 	QCoreApplication app(argc, argv);
 
+	InitSructDB::dropDB();
+	InitSructDB::createDB();
 	InitSructDB db;
 
 	std::cout << "to be continued...\n";
