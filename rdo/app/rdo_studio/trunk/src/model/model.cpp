@@ -518,7 +518,7 @@ void RDOStudioModel::show_result()
 	}
 }
 
-rbool RDOStudioModel::newModel(CREF(tstring) modelName, CREF(tstring) modelPath, ruint templateIndex)
+rbool RDOStudioModel::newModel(CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex)
 {
 	m_templateIndex = templateIndex;
 	studioApp.getIMainWnd()->getDockBuild  ().clear();
@@ -526,13 +526,13 @@ rbool RDOStudioModel::newModel(CREF(tstring) modelName, CREF(tstring) modelPath,
 	studioApp.getIMainWnd()->getDockResults().clear();
 	studioApp.getIMainWnd()->getDockFind   ().clear();
 	rdo::repository::RDOThreadRepository::NewModel data;
-	data.m_name = modelName;
-	data.m_path = modelPath;
+	data.m_name = modelName.toLocal8Bit().constData();
+	data.m_path = modelPath.toLocal8Bit().constData();
 	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_NEW, &data);
 	return true;
 }
 
-rbool RDOStudioModel::openModel(CREF(tstring) modelName)
+rbool RDOStudioModel::openModel(CREF(QString) modelName)
 {
 	if (isRunning())
 	{
@@ -553,7 +553,7 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName)
 	m_openError     = false;
 	m_smrEmptyError = false;
 	m_modelClosed   = false;
-	rdo::repository::RDOThreadRepository::OpenFile data(modelName);
+	rdo::repository::RDOThreadRepository::OpenFile data(modelName.toLocal8Bit().constData());
 	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
 	if (data.m_result && !m_openError && !m_smrEmptyError)
 	{
@@ -950,7 +950,7 @@ void RDOStudioModel::setName(CREF(QString) name)
 
 		if (m_pModelView)
 		{
-			m_pModelView->parentWidget()->setWindowTitle(QString("модель: %1").arg(
+			m_pModelView->parentWidget()->setWindowTitle(QString::fromLocal8Bit("модель: %1").arg(
 				studioApp.getShowCaptionFullName()
 					? getFullName()
 					: m_name
@@ -1050,11 +1050,11 @@ void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 	updateActions();
 }
 
-tstring RDOStudioModel::getLastBreakPointName()
+QString RDOStudioModel::getLastBreakPointName()
 {
 	tstring str;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_LAST_BREAKPOINT, &str);
-	return str;
+	return QString::fromLocal8Bit(str.c_str());
 }
 
 double RDOStudioModel::getSpeed() const
@@ -1173,19 +1173,19 @@ void RDOStudioModel::updateActions()
 	pMainWindow->actModelFrameNext->setEnabled(m_frameManager.canShowNextFrame());
 	pMainWindow->actModelFramePrev->setEnabled(m_frameManager.canShowPrevFrame());
 
-	tstring runTimeMode;
+	QString runTimeMode;
 	if (isRunning())
 	{
 		switch (getRuntimeMode())
 		{
-		case rdo::runtime::RTM_MaxSpeed  : runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_MAXSPEED); break;
-		case rdo::runtime::RTM_Jump      : runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_JUMP    ); break;
-		case rdo::runtime::RTM_Sync      : runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_SYNC    ); break;
-		case rdo::runtime::RTM_Pause     : runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_PAUSE   ); break;
-		case rdo::runtime::RTM_BreakPoint: runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT, getLastBreakPointName().c_str()); break;
+		case rdo::runtime::RTM_MaxSpeed  : runTimeMode = QString::fromLocal8Bit("Без анимации"); break;
+		case rdo::runtime::RTM_Jump      : runTimeMode = QString::fromLocal8Bit("Дискретная имитация"); break;
+		case rdo::runtime::RTM_Sync      : runTimeMode = QString::fromLocal8Bit("Синхронная имитация"); break;
+		case rdo::runtime::RTM_Pause     : runTimeMode = QString::fromLocal8Bit("Пауза"); break;
+		case rdo::runtime::RTM_BreakPoint: runTimeMode = QString::fromLocal8Bit("Точка останова: %1").arg(getLastBreakPointName()); break;
 		}
 	}
-	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_RUNTYPE>(QString::fromLocal8Bit(runTimeMode.c_str()));
+	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_RUNTYPE>(runTimeMode);
 
 	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SPEED>(
 		getRuntimeMode() != rdo::runtime::RTM_MaxSpeed || !isRunning()
@@ -1243,7 +1243,7 @@ void RDOStudioModel::update()
 	{
 		if (rm == rdo::runtime::RTM_BreakPoint)
 		{
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Пауза в %1 из-за точки '%2'\n").arg(getTimeNow()).arg(QString::fromLocal8Bit(getLastBreakPointName().c_str())));
+			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Пауза в %1 из-за точки '%2'\n").arg(getTimeNow()).arg(getLastBreakPointName()));
 		}
 		setRuntimeMode(rm);
 	}

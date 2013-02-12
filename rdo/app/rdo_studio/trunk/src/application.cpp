@@ -249,7 +249,7 @@ BOOL RDOStudioApp::InitInstance()
 			{
 				m_openModelName = longFileName;
 			}
-			if (model->openModel(m_openModelName))
+			if (model->openModel(QString::fromLocal8Bit(m_openModelName.c_str())))
 			{
 				autoModel = true;
 			}
@@ -257,7 +257,7 @@ BOOL RDOStudioApp::InitInstance()
 		else
 		{
 			m_openModelName = rdo::extractFilePath(RDOStudioApp::getFullExtName()) + m_openModelName;
-			if (rdo::File::exist(m_openModelName) && model->openModel(m_openModelName))
+			if (rdo::File::exist(m_openModelName) && model->openModel(QString::fromLocal8Bit(m_openModelName.c_str())))
 			{
 				m_autoRun          = true;
 				m_autoExitByModel  = true;

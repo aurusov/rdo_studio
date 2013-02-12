@@ -43,7 +43,7 @@ public:
 	RDOStudioModel();
 	virtual ~RDOStudioModel();
 
-	rbool openModel (CREF(tstring) modelName = _T(""));
+	rbool openModel (CREF(QString) modelName = QString());
 	rbool runModel  ();
 	rbool closeModel();
 	void  update    ();
@@ -61,7 +61,7 @@ public:
 	rdo::simulation::report::RDOExitCode getExitCode   () const;
 	rdo::runtime::RunTimeMode            getRuntimeMode() const;
 	void    setRuntimeMode       (const rdo::runtime::RunTimeMode value);
-	tstring getLastBreakPointName();
+	QString getLastBreakPointName();
 	double  getShowRate          () const;
 	void    setShowRate          (double value);
 
@@ -128,7 +128,7 @@ private:
 	RDOStudioModelView*                    m_pModelView;
 	QString                                m_name;
 
-	rbool newModel  (CREF(tstring) modelName, CREF(tstring) modelPath, ruint templateIndex);
+	rbool newModel  (CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex);
 	rbool saveModel () const;
 	rbool buildModel();
 	rbool stopModel () const;
