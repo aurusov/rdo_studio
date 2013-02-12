@@ -588,13 +588,13 @@ void RDOStudioMainFrame::onToolBarModelOrientationChanged(Qt::Orientation orient
 
 void RDOStudioMainFrame::onMenuFileReopen(QAction* pAction)
 {
-	tstring fileName = pAction->text().toStdString();
-	tstring::size_type pos = fileName.find(' ');
-	if (pos == tstring::npos)
+	QString menuName = pAction->text();
+	int pos = menuName.indexOf(' ');
+	if (pos == -1)
 		return;
 
-	fileName = fileName.substr(pos + 1);
-	if (!model->openModel(fileName) && model->isPrevModelClosed())
+	QStringRef fileName = menuName.midRef(pos + 1);
+	if (!model->openModel(fileName.toLocal8Bit().constData()) && model->isPrevModelClosed())
 	{
 		ReopenList::iterator it = std::find(m_reopenList.begin(), m_reopenList.end(), fileName);
 		if (it != m_reopenList.end())
@@ -605,9 +605,9 @@ void RDOStudioMainFrame::onMenuFileReopen(QAction* pAction)
 	}
 }
 
-void RDOStudioMainFrame::insertMenuFileReopenItem(CREF(tstring) item)
+void RDOStudioMainFrame::insertMenuFileReopenItem(CREF(QString) item)
 {
-	if (!item.empty())
+	if (!item.isEmpty())
 	{
 		ReopenList::iterator it = boost::range::find(m_reopenList, item);
 		if (it != m_reopenList.end())
@@ -615,7 +615,7 @@ void RDOStudioMainFrame::insertMenuFileReopenItem(CREF(tstring) item)
 			m_reopenList.erase(it);
 		}
 
-		m_reopenList.insert(m_reopenList.begin(), item);
+		m_reopenList.push_front(item);
 
 		while (m_reopenList.size() > 10)
 		{
@@ -638,7 +638,7 @@ void RDOStudioMainFrame::updateMenuFileReopen()
 		{
 			menuFileReopen->addSeparator();
 		}
-		menuFileReopen->addAction(QTextCodec::codecForLocale()->toUnicode(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str()));
+		menuFileReopen->addAction(QString("%1. %2").arg(reopenIndex+1).arg(m_reopenList[reopenIndex]));
 	}
 
 	menuFileReopen->setEnabled(!menuFileReopen->isEmpty());
@@ -679,9 +679,9 @@ void RDOStudioMainFrame::saveMenuFileReopen() const
 	settings.beginGroup("reopen");
 
 	ruint index = 1;
-	BOOST_FOREACH(const tstring& fileName, m_reopenList)
+	BOOST_FOREACH(const QString& fileName, m_reopenList)
 	{
-		settings.setValue(QString::number(index++), QString::fromLocal8Bit(fileName.c_str()));
+		settings.setValue(QString::number(index++), fileName);
 	}
 
 	settings.endGroup();

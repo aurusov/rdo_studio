@@ -56,7 +56,7 @@ public:
 
 	PTR(QSlider) m_pModelSpeedSlider;
 
-	void insertMenuFileReopenItem(CREF(tstring) item);
+	void insertMenuFileReopenItem(CREF(QString) item);
 
 	void updateInsertMenu(rbool enabled, QObject* pObject, CREF(tstring) method);
 
@@ -76,8 +76,8 @@ public:
 	};
 
 private:
-	typedef  QMainWindow           parent_type;
-	typedef  std::vector<tstring>  ReopenList;
+	typedef  QMainWindow  parent_type;
+	typedef  QStringList  ReopenList;
 
 	CWnd            m_thisCWnd;
 	int             m_updateTimerID;

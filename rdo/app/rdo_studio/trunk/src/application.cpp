@@ -133,7 +133,6 @@ RDOStudioApp::RDOStudioApp()
 	, m_fileAssociationSetup        (false )
 	, m_fileAssociationCheckInFuture(false )
 	, m_openLastProject             (false )
-	, m_lastProjectName             (_T(""))
 	, m_showCaptionFullName         (false )
 	, m_autoRun                     (false )
 	, m_autoExitByModel             (false )
@@ -274,9 +273,9 @@ BOOL RDOStudioApp::InitInstance()
 	}
 	else
 	{
-		if (getOpenLastProject() && !getLastProjectName().empty() && rdo::File::exist(getLastProjectName()))
+		if (getOpenLastProject() && !getLastProjectName().isEmpty() && QFile::exists(getLastProjectName()))
 		{
-			model->openModel(getLastProjectName());
+			model->openModel(getLastProjectName().toLocal8Bit().constData());
 			newModel = false;
 		}
 	}
@@ -498,12 +497,12 @@ void RDOStudioApp::setOpenLastProject(rbool value)
 	}
 }
 
-CREF(tstring) RDOStudioApp::getLastProjectName() const
+CREF(QString) RDOStudioApp::getLastProjectName() const
 {
 	return m_lastProjectName;
 }
 
-void RDOStudioApp::setLastProjectName(CREF(tstring) projectName)
+void RDOStudioApp::setLastProjectName(CREF(QString) projectName)
 {
 	m_pMainFrame->insertMenuFileReopenItem(projectName);
 	if (m_lastProjectName != projectName)
@@ -511,7 +510,7 @@ void RDOStudioApp::setLastProjectName(CREF(tstring) projectName)
 		m_lastProjectName = projectName;
 		QSettings settings;
 		settings.setValue("general/last_project_full_name", getOpenLastProject()
-			? QString::fromLocal8Bit(m_lastProjectName.c_str())
+			? m_lastProjectName
 			: QString()
 		);
 	}

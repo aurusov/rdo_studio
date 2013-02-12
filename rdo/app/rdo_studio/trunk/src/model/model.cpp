@@ -562,7 +562,7 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName)
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 		studioApp.getIMainWnd()->getDockResults().appendString(stream.str());
 		studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка модели... ok\n"));
-		studioApp.setLastProjectName(getFullName());
+		studioApp.setLastProjectName(QString::fromLocal8Bit(getFullName().c_str()));
 	}
 	else
 	{
@@ -725,7 +725,7 @@ void RDOStudioModel::newModelFromRepository()
 		}
 	}
 
-	studioApp.setLastProjectName(getFullName());
+	studioApp.setLastProjectName(QString::fromLocal8Bit(getFullName().c_str()));
 	if (templateIt != m_modelTemplates.end())
 	{
 		saveModel();
@@ -889,7 +889,7 @@ void RDOStudioModel::saveModelToRepository()
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(data.m_name);
 
-	studioApp.getMainWndUI()->insertMenuFileReopenItem(getFullName());
+	studioApp.getMainWndUI()->insertMenuFileReopenItem(QString::fromLocal8Bit(getFullName().c_str()));
 
 	if (smr_modified)
 	{

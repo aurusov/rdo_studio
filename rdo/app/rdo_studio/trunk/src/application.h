@@ -62,8 +62,8 @@ public:
 	rbool          getOpenLastProject() const;
 	void           setOpenLastProject(rbool value);
 
-	CREF(tstring)  getLastProjectName() const;
-	void           setLastProjectName(CREF(tstring) projectName);
+	CREF(QString)  getLastProjectName() const;
+	void           setLastProjectName(CREF(QString) projectName);
 
 	rbool          getShowCaptionFullName() const;
 	void           setShowCaptionFullName(rbool value);
@@ -92,12 +92,12 @@ private:
 	rbool                                  m_fileAssociationSetup;
 	rbool                                  m_fileAssociationCheckInFuture;
 	rbool                                  m_openLastProject;
-	tstring                                m_lastProjectName;
+	QString                                m_lastProjectName;
 	rbool                                  m_showCaptionFullName;
 	rbool                                  m_autoRun;
 	rbool                                  m_autoExitByModel;
 	rbool                                  m_dontCloseIfError;
-	rdo::simulation::report::RDOExitCode  m_exitCode;
+	rdo::simulation::report::RDOExitCode   m_exitCode;
 	tstring                                m_openModelName;
 	QProcess*                              m_pAssistant;
 	PTR(RDOStudioMainFrame)                m_pMainFrame;
