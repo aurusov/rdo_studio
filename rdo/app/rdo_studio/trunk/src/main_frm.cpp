@@ -75,16 +75,16 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	addAction(actSearchLogNext);
 	addAction(actSearchLogPrev);
 
-	connect(menuFileReopen, SIGNAL(triggered(QAction*)), this, SLOT(onMenuFileReopen(QAction*)));
-	connect(actFileExit,    SIGNAL(triggered(bool)),     this, SLOT(close()));
+	connect(menuFileReopen, &QMenu::triggered,   this, &RDOStudioMainFrame::onMenuFileReopen);
+	connect(actFileExit,    &QAction::triggered, this, &QMainWindow::close);
 
-	connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(onSubWindowActivated(QMdiSubWindow*)));
+	connect(mdiArea, &QMdiArea::subWindowActivated, this, &RDOStudioMainFrame::onSubWindowActivated);
 
-	connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions ()));
-	connect(actHelpWhatsNew, SIGNAL(triggered(bool)), this, SLOT(onHelpWhatsNew()));
-	connect(actHelpAbout,    SIGNAL(triggered(bool)), this, SLOT(onHelpAbout   ()));
+	connect(actViewSettings, &QAction::triggered, this, &RDOStudioMainFrame::onViewOptions);
+	connect(actHelpWhatsNew, &QAction::triggered, this, &RDOStudioMainFrame::onHelpWhatsNew);
+	connect(actHelpAbout,    &QAction::triggered, this, &RDOStudioMainFrame::onHelpAbout);
 
-	connect(toolBarModel, SIGNAL(orientationChanged(Qt::Orientation)), this, SLOT(onToolBarModelOrientationChanged(Qt::Orientation)));
+	connect(toolBarModel, &QToolBar::orientationChanged, this, &RDOStudioMainFrame::onToolBarModelOrientationChanged);
 
 	Scintilla_LinkLexers();
 
@@ -360,8 +360,8 @@ void RDOStudioMainFrame::init()
 	m_pDockResults = new DockResults(this);
 	m_pDockFind    = new DockFind   (this);
 
-	QObject::connect(m_pDockBuild, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockVisibleChanged(bool)));
-	QObject::connect(m_pDockFind,  SIGNAL(visibilityChanged(bool)), this, SLOT(onDockVisibleChanged(bool)));
+	QObject::connect(m_pDockBuild, &QDockWidget::visibilityChanged, this, &RDOStudioMainFrame::onDockVisibleChanged);
+	QObject::connect(m_pDockFind,  &QDockWidget::visibilityChanged, this, &RDOStudioMainFrame::onDockVisibleChanged);
 
 	updateAllStyles();
 	addDockWidget(Qt::BottomDockWidgetArea, m_pDockBuild);

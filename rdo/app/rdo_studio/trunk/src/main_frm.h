@@ -99,7 +99,6 @@ private:
 	virtual void hideEvent (QHideEvent*  event);
 	virtual void timerEvent(QTimerEvent* event);
 
-private slots:
 	void onSubWindowActivated(QMdiSubWindow*);
 	void onViewOptions ();
 	void onHelpWhatsNew();
