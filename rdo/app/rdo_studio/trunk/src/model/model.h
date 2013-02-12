@@ -82,7 +82,7 @@ private:
 	rdo::simulation::report::RDOExitCode   m_exitCode;
 	mutable rbool                          m_modify;
 	RDOStudioModelView*                    m_pModelView;
-	tstring                                m_name;
+	QString                                m_name;
 
 	rbool newModel  (CREF(tstring) modelName, CREF(tstring) modelPath, ruint templateIndex);
 	rbool saveModel () const;
@@ -134,9 +134,9 @@ public:
 
 	void resetView();
 
-	CREF(tstring) getName    () const;
-	void          setName    (CREF(tstring) str);
-	tstring       getFullName() const;
+	CREF(QString) getName    () const;
+	void          setName    (CREF(QString) str);
+	QString       getFullName() const;
 
 	rbool  isRunning     () const;
 	rbool  isFrmDescribed() const;

@@ -562,7 +562,7 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName)
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 		studioApp.getIMainWnd()->getDockResults().appendString(stream.str());
 		studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка модели... ok\n"));
-		studioApp.setLastProjectName(QString::fromLocal8Bit(getFullName().c_str()));
+		studioApp.setLastProjectName(getFullName());
 	}
 	else
 	{
@@ -689,7 +689,7 @@ void RDOStudioModel::newModelFromRepository()
 	createView();
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
-	setName(data_smr.m_name);
+	setName(QString::fromLocal8Bit(data_smr.m_name.c_str()));
 
 	ModelTemplateList::const_iterator templateIt = m_templateIndex.is_initialized()
 		? m_modelTemplates.find(*m_templateIndex)
@@ -725,7 +725,7 @@ void RDOStudioModel::newModelFromRepository()
 		}
 	}
 
-	studioApp.setLastProjectName(QString::fromLocal8Bit(getFullName().c_str()));
+	studioApp.setLastProjectName(getFullName());
 	if (templateIt != m_modelTemplates.end())
 	{
 		saveModel();
@@ -745,7 +745,7 @@ void RDOStudioModel::openModelFromRepository()
 	createView();
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
-	setName(data_smr.m_name);
+	setName(QString::fromLocal8Bit(data_smr.m_name.c_str()));
 
 	int cnt = m_pModelView->getTab().count();
 	studioApp.getMainWndUI()->statusBar()->beginProgress(0, cnt * 2 + 1);
@@ -887,9 +887,9 @@ void RDOStudioModel::saveModelToRepository()
 
 	rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
-	setName(data.m_name);
+	setName(QString::fromLocal8Bit(data.m_name.c_str()));
 
-	studioApp.getMainWndUI()->insertMenuFileReopenItem(QString::fromLocal8Bit(getFullName().c_str()));
+	studioApp.getMainWndUI()->insertMenuFileReopenItem(getFullName());
 
 	if (smr_modified)
 	{
@@ -898,11 +898,11 @@ void RDOStudioModel::saveModelToRepository()
 	updateActions();
 }
 
-tstring RDOStudioModel::getFullName() const
+QString RDOStudioModel::getFullName() const
 {
 	rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
-	return data.m_fullName;
+	return QString::fromLocal8Bit(data.m_fullName.c_str());
 }
 
 void RDOStudioModel::updateFrmDescribed()
@@ -935,15 +935,14 @@ void RDOStudioModel::closeModelFromRepository()
 	setName("");
 }
 
-CREF(tstring) RDOStudioModel::getName() const
+CREF(QString) RDOStudioModel::getName() const
 {
 	return m_name;
 }
 
-void RDOStudioModel::setName(CREF(tstring) str)
+void RDOStudioModel::setName(CREF(QString) name)
 {
-	tstring newName(str);
-	rdo::trim(newName);
+	QString newName = name.trimmed();
 
 	if (m_name != newName)
 	{
@@ -951,14 +950,11 @@ void RDOStudioModel::setName(CREF(tstring) str)
 
 		if (m_pModelView)
 		{
-			if (studioApp.getShowCaptionFullName())
-			{
-				m_pModelView->parentWidget()->setWindowTitle(QString::fromLocal8Bit(rdo::format(IDS_MODEL_NAME, getFullName().c_str()).c_str()));
-			}
-			else
-			{
-				m_pModelView->parentWidget()->setWindowTitle(QString::fromLocal8Bit(rdo::format(IDS_MODEL_NAME, m_name.c_str()).c_str()));
-			}
+			m_pModelView->parentWidget()->setWindowTitle(QString("модель: %1").arg(
+				studioApp.getShowCaptionFullName()
+					? getFullName()
+					: m_name
+			));
 		}
 	}
 }

@@ -157,9 +157,9 @@ PTR(ChartTreeItem) ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlIte
 //	*result = 0;
 //}
 
-void ChartTree::setModelName(CREF(tstring) modelName)
+void ChartTree::setModelName(CREF(QString) modelName)
 {
-	m_root.getCtrlItem().setText(0, QString::fromLocal8Bit(rdo::format(ID_MODEL, modelName.c_str()).c_str()));
+	m_root.getCtrlItem().setText(0, QString("Модель : %1").arg(modelName));
 }
 
 void ChartTree::createItem(REF(ChartTreeItem) parent, REF(ChartTreeItem) item, CREF(QString) name, IconType iconType)

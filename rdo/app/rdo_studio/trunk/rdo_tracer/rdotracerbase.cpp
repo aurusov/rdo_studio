@@ -827,9 +827,9 @@ void TracerBase::updateChartsStyles() const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void TracerBase::setModelName( tstring name ) const
+void TracerBase::setModelName(CREF(QString) name) const
 {
-	if ( tree ) tree->setModelName( name );
+	if ( tree ) tree->setModelName(name);
 }
 
 void TracerBase::setDrawTrace( const rbool value )
