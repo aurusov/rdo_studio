@@ -71,7 +71,7 @@ void RDOStudioFrameTreeCtrl::onUpdateActions(rbool activated)
 	updateAction(
 		pMainWindow->actHelpContext,
 		activated,
-		this, "onHelpContext()"
+		this, &RDOStudioFrameTreeCtrl::onHelpContext
 	);
 }
 

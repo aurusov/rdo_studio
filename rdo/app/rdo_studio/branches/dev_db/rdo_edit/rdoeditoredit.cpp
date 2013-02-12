@@ -664,42 +664,42 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 	updateAction(
 		pMainWindow->actEditCommentSelection,
 		activated && isSelected(),
-		this, "onEditCommentSelection()"
+		this, &RDOEditorEdit::onEditCommentSelection
 	);
 
 	updateAction(
 		pMainWindow->actEditCompleteWord,
 		activated && studioApp.getStyle()->style_editor.autoComplete->useAutoComplete,
-		this, "onEditCompleteWord()"
+		this, &RDOEditorEdit::onEditCompleteWord
 	);
 
 	updateAction(
 		pMainWindow->actViewToggleCurrentFold,
 		activated && !isEmpty(),
-		this, "onToggleCurrentFold()"
+		this, &RDOEditorEdit::onToggleCurrentFold
 	);
 
 	updateAction(
 		pMainWindow->actViewToggleAllFolds,
 		activated && !isEmpty(),
-		this, "onToggleAllFolds()"
+		this, &RDOEditorEdit::onToggleAllFolds
 	);
 
 	updateAction(
 		pMainWindow->actSearchLogNext,
 		activated && m_pLog,
-		this, "onGotoNext()"
+		this, &RDOEditorEdit::onGotoNext
 	);
 
 	updateAction(
 		pMainWindow->actSearchLogPrev,
 		activated && m_pLog,
-		this, "onGotoPrev()"
+		this, &RDOEditorEdit::onGotoPrev
 	);
 
 	pMainWindow->updateInsertMenu(
 		activated,
-		this, "onInsertCommand(QObject*)"
+		this, &RDOEditorEdit::onInsertCommand
 	);
 }
 

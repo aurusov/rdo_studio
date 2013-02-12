@@ -50,7 +50,7 @@ public:
 	ChartTree(PTR(QWidget) pParent);
 	virtual ~ChartTree();
 
-	void setModelName   (CREF(tstring) modelName);
+	void setModelName   (CREF(QString) modelName);
 	void addResourceType(PTR(TracerResType)       pRTP);
 	void addResource    (PTR(TracerResource)      pRSS);
 	void updateResource (PTR(TracerResource)      pRSS);

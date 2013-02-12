@@ -11,6 +11,7 @@
 #define _RDO_STUDIO_TRACER_RDOTRACERBASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtCore/qstring.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "kernel/rdothread.h"
@@ -114,7 +115,7 @@ public:
 	RDOStudioChartDoc* addSerieToChart( TracerSerie* const serie, RDOStudioChartDoc* chart = NULL );
 	void updateChartsStyles() const;
 	void clear();
-	void setModelName( tstring name ) const;
+	void setModelName(CREF(QString) name) const;
 	void setDrawTrace( const rbool value );
 	rbool getDrawTrace() const { return drawTrace; };
 	void lock()   { mutex.Lock(); };

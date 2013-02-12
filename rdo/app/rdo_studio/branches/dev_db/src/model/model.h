@@ -39,6 +39,50 @@ Q_OBJECT
 
 friend class RDOThreadStudioGUI;
 
+public:
+	RDOStudioModel();
+	virtual ~RDOStudioModel();
+
+	rbool openModel (CREF(QString) modelName = QString());
+	rbool runModel  ();
+	rbool closeModel();
+	void  update    ();
+
+	void resetView();
+
+	CREF(QString) getName    () const;
+	void          setName    (CREF(QString) str);
+	QString       getFullName() const;
+
+	rbool  isRunning     () const;
+	rbool  isFrmDescribed() const;
+	double getTimeNow    () const;
+
+	rdo::simulation::report::RDOExitCode getExitCode   () const;
+	rdo::runtime::RunTimeMode            getRuntimeMode() const;
+	void    setRuntimeMode       (const rdo::runtime::RunTimeMode value);
+	QString getLastBreakPointName();
+	double  getShowRate          () const;
+	void    setShowRate          (double value);
+
+	int        getFrameCount   () const;
+	CPTR(char) getFrameName    (int index) const;
+	void       showFrame       (int index);
+	void       closeAllFrame   ();
+	rbool      hasModel        () const;
+
+	 PTR(rdoEditor::RDOEditorTabCtrl) getTab();
+	CPTR(rdoEditor::RDOEditorTabCtrl) getTab() const;
+
+	void  updateStyleOfAllModel() const;
+	rbool isPrevModelClosed    () const;
+
+	REF(RDOStudioFrameManager) getFrameManager();
+	void onChangeFrame(ruint index);
+
+protected:
+	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
+
 private:
 	enum BuildState
 	{
@@ -82,9 +126,9 @@ private:
 	rdo::simulation::report::RDOExitCode   m_exitCode;
 	mutable rbool                          m_modify;
 	RDOStudioModelView*                    m_pModelView;
-	tstring                                m_name;
+	QString                                m_name;
 
-	rbool newModel  (CREF(tstring) modelName, CREF(tstring) modelPath, ruint templateIndex);
+	rbool newModel  (CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex);
 	rbool saveModel () const;
 	rbool buildModel();
 	rbool stopModel () const;
@@ -119,50 +163,6 @@ private:
 	void createView();
 
 	DECLARE_IInit;
-
-protected:
-	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
-
-public:
-	RDOStudioModel();
-	virtual ~RDOStudioModel();
-
-	rbool openModel (CREF(tstring) modelName = _T(""));
-	rbool runModel  ();
-	rbool closeModel();
-	void  update    ();
-
-	void resetView();
-
-	CREF(tstring) getName    () const;
-	void          setName    (CREF(tstring) str);
-	tstring       getFullName() const;
-
-	rbool  isRunning     () const;
-	rbool  isFrmDescribed() const;
-	double getTimeNow    () const;
-
-	rdo::simulation::report::RDOExitCode getExitCode   () const;
-	rdo::runtime::RunTimeMode            getRuntimeMode() const;
-	void    setRuntimeMode       (const rdo::runtime::RunTimeMode value);
-	tstring getLastBreakPointName();
-	double  getShowRate          () const;
-	void    setShowRate          (double value);
-
-	int        getFrameCount   () const;
-	CPTR(char) getFrameName    (int index) const;
-	void       showFrame       (int index);
-	void       closeAllFrame   ();
-	rbool      hasModel        () const;
-
-	 PTR(rdoEditor::RDOEditorTabCtrl) getTab();
-	CPTR(rdoEditor::RDOEditorTabCtrl) getTab() const;
-
-	void  updateStyleOfAllModel() const;
-	rbool isPrevModelClosed    () const;
-
-	REF(RDOStudioFrameManager) getFrameManager();
-	void onChangeFrame(ruint index);
 
 private slots:
 	void onFileNew    ();

@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextcodec.h>
+#include <QtCore/qsettings.h>
 #include <QtWidgets/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
@@ -22,8 +23,8 @@
 #include "app/rdo_studio/src/main_frm.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/thread.h"
+#include "app/rdo_studio/src/dialog/file_association_dialog.h"
 #include "app/rdo_studio/rdo_tracer/rdotracer.h"
-#include "thirdparty/win_registry/registry.h"
 #include "thirdparty/qt-solutions/qtwinmigrate/src/qmfcapp.h"
 // --------------------------------------------------------------------------------
 
@@ -32,42 +33,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFileAssociationDlg
-// --------------------------------------------------------------------------------
-class RDOFileAssociationDlg: public CDialog
-{
-protected:
-	virtual void DoDataExchange(PTR(CDataExchange) pDX);
-	virtual void OnCancel      ();
-
-public:
-	RDOFileAssociationDlg(PTR(CWnd) pParentWnd = NULL);
-	virtual ~RDOFileAssociationDlg();
-
-	int m_checkInFuture;
-};
-
-RDOFileAssociationDlg::RDOFileAssociationDlg(PTR(CWnd) pParentWnd)
-	: CDialog(IDD_FILEASSOCIATION, pParentWnd)
-	, m_checkInFuture(true)
-{}
-
-RDOFileAssociationDlg::~RDOFileAssociationDlg()
-{}
-
-void RDOFileAssociationDlg::DoDataExchange(PTR(CDataExchange) pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Check(pDX, IDC_FILEASSOCIATION_CHECK, m_checkInFuture);
-}
-
-void RDOFileAssociationDlg::OnCancel()
-{
-	CDialog::UpdateData(true);
-	CDialog::OnCancel  ();
-}
 
 // -----------------------------------------------------------------
 // -------------------- RDOStudioCommandLineInfo
@@ -168,7 +133,6 @@ RDOStudioApp::RDOStudioApp()
 	, m_fileAssociationSetup        (false )
 	, m_fileAssociationCheckInFuture(false )
 	, m_openLastProject             (false )
-	, m_lastProjectName             (_T(""))
 	, m_showCaptionFullName         (false )
 	, m_autoRun                     (false )
 	, m_autoExitByModel             (false )
@@ -209,11 +173,24 @@ BOOL RDOStudioApp::InitInstance()
 	free((PTR(void))m_pszRegistryKey);
 	m_pszRegistryKey = _tcsdup(_T("RAO-studio"));
 
-	m_fileAssociationSetup         = GetProfileInt   (_T("fileAssociation"), _T("setup"),                true) ? true : false;
-	m_fileAssociationCheckInFuture = GetProfileInt   (_T("fileAssociation"), _T("checkInFuture"),        true) ? true : false;
-	m_openLastProject              = GetProfileInt   (_T("general"),         _T("openLastProject"),      true) ? true : false;
-	m_lastProjectName              = GetProfileString(_T("general"),         _T("lastProject"),        _T(""));
-	m_showCaptionFullName          = GetProfileInt   (_T("general"),         _T("showCaptionFullName"), false) ? true : false;
+	QMfcApp::instance(this);
+	qApp->setQuitOnLastWindowClosed(true);
+
+	QApplication::setApplicationName("RAO-studio");
+	QApplication::setOrganizationName("RAO-studio");
+
+#ifdef Q_OS_WIN
+	convertSettings();
+#endif
+
+	QSettings settings;
+
+	m_fileAssociationSetup         = settings.value("general/file_association_setup", true).toBool();
+	m_fileAssociationCheckInFuture = settings.value("general/file_association_check_in_future", true).toBool();
+
+	m_lastProjectName     = settings.value("general/last_project_full_name", QString()).toString().toLocal8Bit().constData();
+	m_openLastProject     = settings.value("general/last_project_auto_open", true).toBool();
+	m_showCaptionFullName = settings.value("general/show_caption_full_name", false).toBool();
 
 	// Кто-то должен поднять кернел и треды
 	RDOKernel::init();
@@ -238,9 +215,6 @@ BOOL RDOStudioApp::InitInstance()
 //	new RDOThreadStudio2();
 
 	g_pTracer = new rdo::gui::tracer::Tracer();
-
-	QMfcApp::instance(this);
-	qApp->setQuitOnLastWindowClosed(true);
 
 	m_pEditorEditStyle = rdo::Factory<rdoEditor::RDOEditorEditStyle>::create();
 
@@ -275,7 +249,7 @@ BOOL RDOStudioApp::InitInstance()
 			{
 				m_openModelName = longFileName;
 			}
-			if (model->openModel(m_openModelName))
+			if (model->openModel(QString::fromLocal8Bit(m_openModelName.c_str())))
 			{
 				autoModel = true;
 			}
@@ -283,7 +257,7 @@ BOOL RDOStudioApp::InitInstance()
 		else
 		{
 			m_openModelName = rdo::extractFilePath(RDOStudioApp::getFullExtName()) + m_openModelName;
-			if (rdo::File::exist(m_openModelName) && model->openModel(m_openModelName))
+			if (rdo::File::exist(m_openModelName) && model->openModel(QString::fromLocal8Bit(m_openModelName.c_str())))
 			{
 				m_autoRun          = true;
 				m_autoExitByModel  = true;
@@ -299,9 +273,9 @@ BOOL RDOStudioApp::InitInstance()
 	}
 	else
 	{
-		if (getOpenLastProject() && !getLastProjectName().empty() && rdo::File::exist(getLastProjectName()))
+		if (getOpenLastProject() && !getLastProjectName().isEmpty() && QFile::exists(getLastProjectName()))
 		{
-			model->openModel(getLastProjectName());
+			model->openModel(getLastProjectName().toLocal8Bit().constData());
 			newModel = false;
 		}
 	}
@@ -421,13 +395,7 @@ rbool RDOStudioApp::shortToLongPath(CREF(tstring) shortPath, REF(tstring) longPa
 
 tstring RDOStudioApp::getFullExtName()
 {
-	tstring fileName = _T("");
-	TCHAR szExeName[ MAX_PATH + 1 ];
-	if (::GetModuleFileName(NULL, szExeName, MAX_PATH))
-	{
-		fileName = szExeName;
-	}
-	return fileName;
+	return qApp->applicationFilePath().toLocal8Bit().constData();
 }
 
 tstring RDOStudioApp::getFullHelpFileName(tstring str) const
@@ -444,8 +412,8 @@ tstring RDOStudioApp::chkHelpExist(tstring fileName) const
 	fileName.insert(0, rdo::extractFilePath(RDOStudioApp::getFullExtName()));
 	if (!rdo::File::exist(fileName))
 	{
-		::MessageBox(NULL, rdo::format(ID_MSG_NO_HELP_FILE, fileName.c_str()).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK);
-		return _T("");
+		QMessageBox::warning(studioApp.getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Невозможно найти файл справки '%1'.\r\nОн должен быть расположен в директории с RAO-studio.").arg(QString::fromLocal8Bit(fileName.c_str())));
+		return tstring();
 	}
 	return fileName;
 }
@@ -491,7 +459,8 @@ rbool RDOStudioApp::getFileAssociationSetup() const
 void RDOStudioApp::setFileAssociationSetup(rbool value)
 {
 	m_fileAssociationSetup = value;
-	WriteProfileInt(_T("fileAssociation"), _T("setup"), m_fileAssociationSetup);
+	QSettings settings;
+	settings.setValue("general/file_association_setup", m_fileAssociationSetup);
 	if (m_fileAssociationSetup)
 	{
 		setupFileAssociation();
@@ -508,7 +477,8 @@ void RDOStudioApp::setFileAssociationCheckInFuture(rbool value)
 	if (m_fileAssociationCheckInFuture != value)
 	{
 		m_fileAssociationCheckInFuture = value;
-		WriteProfileInt(_T("fileAssociation"), _T("checkInFuture"), m_fileAssociationCheckInFuture);
+		QSettings settings;
+		settings.setValue("general/file_association_check_in_future", m_fileAssociationCheckInFuture);
 	}
 }
 
@@ -522,22 +492,27 @@ void RDOStudioApp::setOpenLastProject(rbool value)
 	if (m_openLastProject != value)
 	{
 		m_openLastProject = value;
-		WriteProfileInt(_T("general"), _T("openLastProject"), m_openLastProject);
+		QSettings settings;
+		settings.setValue("general/last_project_auto_open", m_openLastProject);
 	}
 }
 
-CREF(tstring) RDOStudioApp::getLastProjectName() const
+CREF(QString) RDOStudioApp::getLastProjectName() const
 {
 	return m_lastProjectName;
 }
 
-void RDOStudioApp::setLastProjectName(CREF(tstring) projectName)
+void RDOStudioApp::setLastProjectName(CREF(QString) projectName)
 {
 	m_pMainFrame->insertMenuFileReopenItem(projectName);
 	if (m_lastProjectName != projectName)
 	{
 		m_lastProjectName = projectName;
-		WriteProfileString(_T("general"), _T("lastProject"), getOpenLastProject() ? m_lastProjectName.c_str() : _T(""));
+		QSettings settings;
+		settings.setValue("general/last_project_full_name", getOpenLastProject()
+			? m_lastProjectName
+			: QString()
+		);
 	}
 }
 
@@ -552,130 +527,60 @@ void RDOStudioApp::setShowCaptionFullName(rbool value)
 	{
 		m_showCaptionFullName = value;
 		model->setName(model->getName());
-		WriteProfileInt(_T("general"), _T("showCaptionFullName"), m_showCaptionFullName);
+		QSettings settings;
+		settings.setValue("general/show_caption_full_name", m_showCaptionFullName);
 	}
 }
 
 void RDOStudioApp::setupFileAssociation()
 {
-	tstring strFileTypeId    = _T("RAO.Project");
-	tstring strFileTypeName  = _T("RAO Project");
-	tstring strParam         = _T(" \"%1\"");
-	tstring strPathName      = RDOStudioApp::getFullExtName();
-	tstring strRAOExt        = _T(".rdox");
+#ifdef Q_OS_WIN
+	QString strFileTypeId("RAO.Project");
+	QString strParam(" \"%1\"");
+	QString strPathName(QString::fromLocal8Bit(RDOStudioApp::getFullExtName().c_str()));
+	strPathName.replace("/", "\\");
 
-	tstring strFileTypeIdOld = _T("RAO.FileInfo");
-	tstring strRAOExtOld     = _T(".smr");
+	QSettings settings("HKEY_CURRENT_USER\\Software\\Classes", QSettings::NativeFormat);
 
-	rbool win2000 = false;
-	OSVERSIONINFO osvi;
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	if (::GetVersionEx(&osvi))
+	rbool mustBeRegistered = true;
+	if (settings.childGroups().contains(strFileTypeId))
 	{
-		win2000 = osvi.dwMajorVersion >= 5;
-	}
-
-	HKEY hCurUserSoftClasses = 0;
-	HKEY hKey;
-	DWORD result;
-	if (win2000)
-	{
-		if (::RegOpenKeyEx(HKEY_CURRENT_USER, _T("Software\\Classes"), 0, KEY_ALL_ACCESS, &hCurUserSoftClasses) != ERROR_SUCCESS)
+		QString openCommand = settings.value(strFileTypeId + "/shell/open/command/Default").toString();
+		int pos = openCommand.indexOf(strParam);
+		if (pos != -1)
 		{
-			hCurUserSoftClasses = 0;
-		}
-	}
-	else
-	{
-		hCurUserSoftClasses = HKEY_CLASSES_ROOT;
-	}
-	if (hCurUserSoftClasses)
-	{
-		if (::RegCreateKeyEx(hCurUserSoftClasses, strFileTypeId.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey, &result) == ERROR_SUCCESS)
-		{
-			rbool mustBeRegistered = true;
-			DWORD size;
-			if (::RegQueryValueEx(hKey, _T(""), NULL, NULL, NULL, &size) == ERROR_SUCCESS)
+			openCommand.remove(pos, strParam.length());
+			if (openCommand != strPathName)
 			{
-				if (size > 0)
-				{
-					HKEY hKeyPath;
-					if (::RegOpenKeyEx(hKey, _T("shell\\open\\command"), 0, KEY_READ, &hKeyPath) == ERROR_SUCCESS)
-					{
-						CString s;
-						DWORD length = MAX_PATH + strParam.length() * sizeof(TCHAR) + 1;
-						::RegQueryValueEx(hKeyPath, _T(""), NULL, NULL, (LPBYTE)s.GetBuffer(length), &length);
-						s.ReleaseBuffer();
-						::RegCloseKey(hKeyPath);
-
-						int pos = s.Find(strParam.c_str());
-						if (pos != -1)
-						{
-							s.Delete(pos, strParam.length());
-							if (s != strPathName.c_str())
-							{
-								if (!getFileAssociationSetup())
-								{
-									RDOFileAssociationDlg dlg;
-									mustBeRegistered = dlg.DoModal() == IDOK;
-									setFileAssociationCheckInFuture(dlg.m_checkInFuture ? true : false);
-								}
-							}
-							else
-							{
-								mustBeRegistered = false;
-							}
-						}
-					}
-				}
+				FileAssociationDialog dlg(studioApp.getMainWndUI());
+				mustBeRegistered = dlg.exec() == QDialog::Accepted;
+				setFileAssociationCheckInFuture(dlg.checkBox->isChecked());
 			}
-			if (mustBeRegistered)
+			else
 			{
-				DeleteRegistryKey(hCurUserSoftClasses, strFileTypeIdOld.c_str());
-				DeleteRegistryKey(hCurUserSoftClasses, tstring(strFileTypeIdOld + _T("\\DefaultIcon")).c_str());
-				DeleteRegistryKey(hCurUserSoftClasses, tstring(strFileTypeIdOld + _T("\\shell\\open\\command")).c_str());
-				DeleteRegistryKey(hCurUserSoftClasses, tstring(strRAOExtOld + _T("\\ShellNew")).c_str());
-				DeleteRegistryKey(hCurUserSoftClasses, strRAOExtOld.c_str());
-
-				HKEY hKey_tmp;
-				if (::RegCreateKeyEx(hCurUserSoftClasses, strFileTypeId.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result) == ERROR_SUCCESS)
-				{
-					tstring s = strFileTypeName;
-					::RegSetValueEx(hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length());
-					::RegCloseKey(hKey_tmp);
-				}
-				if (::RegCreateKeyEx(hCurUserSoftClasses, tstring(strFileTypeId + _T("\\DefaultIcon")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result) == ERROR_SUCCESS)
-				{
-					tstring s = strPathName + _T(",0");
-					::RegSetValueEx(hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length());
-					::RegCloseKey(hKey_tmp);
-				}
-				if (::RegCreateKeyEx(hCurUserSoftClasses, tstring(strFileTypeId + _T("\\shell\\open\\command")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result) == ERROR_SUCCESS)
-				{
-					tstring s = strPathName + strParam;
-					::RegSetValueEx(hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length());
-					::RegCloseKey(hKey_tmp);
-				}
-				if (::RegCreateKeyEx(hCurUserSoftClasses, strRAOExt.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result) == ERROR_SUCCESS)
-				{
-					tstring s = strFileTypeId;
-					::RegSetValueEx(hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length());
-					::RegCloseKey(hKey_tmp);
-				}
-				if (::RegCreateKeyEx(hCurUserSoftClasses, tstring(strRAOExt + _T("\\ShellNew")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result) == ERROR_SUCCESS)
-				{
-					tstring s = _T("");
-					::RegSetValueEx(hKey_tmp, _T("NullFile"), 0, REG_SZ, (LPBYTE)s.c_str(), s.length());
-					::RegCloseKey(hKey_tmp);
-				}
+				mustBeRegistered = false;
 			}
-			::RegCloseKey(hKey);
-		}
-		if (hCurUserSoftClasses != HKEY_CLASSES_ROOT)
-		{
-			::RegCloseKey(hCurUserSoftClasses);
 		}
 	}
+
+	if (mustBeRegistered)
+	{
+		{
+			QString strFileTypeIdOld("RAO.FileInfo");
+			QString strRAOExtOld(".smr");
+			settings.remove(strFileTypeIdOld);
+			settings.remove(strRAOExtOld);
+		}
+
+		settings.setValue(strFileTypeId + "/Default", "RAO Project");
+		settings.setValue(strFileTypeId + "/DefaultIcon/Default", strPathName + ",0");
+		settings.setValue(strFileTypeId + "/shell/open/command/Default", strPathName + strParam);
+
+		QString strRAOExt(".rdox");
+		settings.setValue(strRAOExt + "/Default", strFileTypeId);
+		settings.setValue(strRAOExt + "/ShellNew/NullFile", "");
+	}
+#endif
 }
 
 void RDOStudioApp::autoCloseByModel()
@@ -756,3 +661,45 @@ CREF(rdoEditor::LPRDOEditorEditStyle) RDOStudioApp::getEditorEditStyle() const
 	ASSERT(m_pEditorEditStyle);
 	return m_pEditorEditStyle;
 }
+
+#ifdef Q_OS_WIN
+void RDOStudioApp::convertSettings() const
+{
+	QSettings settingsTo;
+	QSettings settingsFrom("HKEY_CURRENT_USER\\Software\\RAO-studio", QSettings::NativeFormat);
+	QStringList childGroupsFrom = settingsFrom.childGroups();
+
+	if (childGroupsFrom.contains("fileAssociation"))
+	{
+		settingsTo.setValue("general/file_association_setup",           settingsFrom.value("fileAssociation/setup",         true).toBool());
+		settingsTo.setValue("general/file_association_check_in_future", settingsFrom.value("fileAssociation/checkInFuture", true).toBool());
+		settingsFrom.remove("fileAssociation");
+	}
+
+	if (childGroupsFrom.contains("general"))
+	{
+		settingsTo.setValue("general/last_project_full_name", settingsFrom.value("general/lastProject", QString()).toString());
+		settingsTo.setValue("general/last_project_auto_open", settingsFrom.value("general/openLastProject",     true).toBool());
+		settingsTo.setValue("general/show_caption_full_name", settingsFrom.value("general/showCaptionFullName", false).toBool());
+		settingsFrom.remove("general");
+	}
+
+	if (childGroupsFrom.contains("plugins"))
+	{
+		settingsFrom.remove("plugins");
+	}
+
+	if (childGroupsFrom.contains("reopen"))
+	{
+		for (ruint i = 0; i < 10; i++)
+		{
+			QString value = settingsFrom.value(QString("reopen/%1%2").arg(i+1 < 10 ? "0" : "").arg(i+1), QString()).toString();
+			if (value.isEmpty())
+				break;
+
+			settingsTo.setValue(QString("reopen/%1").arg(i+1), value);
+		}
+		settingsFrom.remove("reopen");
+	}
+}
+#endif

@@ -754,19 +754,19 @@ void LogView::updateActionFind(rbool activated)
 	updateAction(
 		pMainWindow->actSearchFind,
 		activated && m_strings.count(),
-		this, "onSearchFind()"
+		this, &LogView::onSearchFind
 	);
 
 	rbool findNextPrev = activated && !m_findSettings.what.empty();
 	updateAction(
 		pMainWindow->actSearchFindNext,
 		findNextPrev,
-		this, "onSearchFindNext()"
+		this, &LogView::onSearchFindNext
 	);
 	updateAction(
 		pMainWindow->actSearchFindPrevious,
 		findNextPrev,
-		this, "onSearchFindPrevious()"
+		this, &LogView::onSearchFindPrevious
 	);
 }
 
@@ -778,7 +778,7 @@ void LogView::updateActionEditCopy(rbool activated)
 	updateAction(
 		pMainWindow->actEditCopy,
 		activated && canCopy(),
-		this, "onEditCopy()"
+		this, &LogView::onEditCopy
 	);
 }
 
@@ -1040,7 +1040,7 @@ void LogView::onUpdateActions(rbool activated)
 	updateAction(
 		pMainWindow->actHelpContext,
 		activated,
-		this, "onHelpContext()"
+		this, &LogView::onHelpContext
 	);
 
 	updateActionFind    (activated);

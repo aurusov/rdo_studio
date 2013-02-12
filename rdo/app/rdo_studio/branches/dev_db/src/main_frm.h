@@ -56,9 +56,23 @@ public:
 
 	PTR(QSlider) m_pModelSpeedSlider;
 
-	void insertMenuFileReopenItem(CREF(tstring) item);
+	void insertMenuFileReopenItem(CREF(QString) item);
 
-	void updateInsertMenu(rbool enabled, QObject* pObject, CREF(tstring) method);
+	template <typename SlotFun>
+	void updateInsertMenu(rbool enabled, const typename QtPrivate::FunctionPointer<SlotFun>::Object* pObject, SlotFun pSlot)
+	{
+		updateInsertMenu(enabled);
+		void (QSignalMapper::*pSignal)(QObject*) = &QSignalMapper::mapped;
+		if (enabled)
+		{
+			ASSERT(pObject);
+			QObject::connect(m_pInsertMenuSignalMapper, pSignal, pObject, pSlot, Qt::UniqueConnection);
+		}
+		else
+		{
+			QObject::disconnect(m_pInsertMenuSignalMapper, pSignal, NULL, NULL);
+		}
+	}
 
 	class InsertMenuData: public QObject
 	{
@@ -76,14 +90,15 @@ public:
 	};
 
 private:
-	typedef  QMainWindow           parent_type;
-	typedef  std::vector<tstring>  ReopenList;
+	typedef  QMainWindow  parent_type;
+	typedef  QStringList  ReopenList;
 
 	CWnd            m_thisCWnd;
 	int             m_updateTimerID;
 	LPStatusBar     m_pStatusBar;
 	ReopenList      m_reopenList;
 	QSignalMapper*  m_pInsertMenuSignalMapper;
+	bool            m_hasWindow;
 
 	void createStatusBar ();
 	void createToolBar   ();
@@ -98,7 +113,7 @@ private:
 	virtual void hideEvent (QHideEvent*  event);
 	virtual void timerEvent(QTimerEvent* event);
 
-private slots:
+	void onSubWindowActivated(QMdiSubWindow*);
 	void onViewOptions ();
 	void onHelpWhatsNew();
 	void onHelpAbout   ();
@@ -107,6 +122,8 @@ private slots:
 	void onToolBarModelOrientationChanged(Qt::Orientation orientation);
 
 	void onMenuFileReopen(QAction* pAction);
+
+	void updateInsertMenu(rbool enabled);
 };
 
 #endif // _RDO_STUDIO_MAIN_FRM_H_

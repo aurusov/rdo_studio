@@ -15,6 +15,7 @@
 #include <boost/range/algorithm/find.hpp>
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextcodec.h>
+#include <QtCore/qsettings.h>
 #include <QtWidgets/qmdisubwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_frm.h"
@@ -60,6 +61,7 @@ const RDOStudioMainFrame::InsertMenuData::Position& RDOStudioMainFrame::InsertMe
 RDOStudioMainFrame::RDOStudioMainFrame()
 	: m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
+	, m_hasWindow(false)
 {
 	setupUi(this);
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
@@ -73,14 +75,16 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	addAction(actSearchLogNext);
 	addAction(actSearchLogPrev);
 
-	connect(menuFileReopen, SIGNAL(triggered(QAction*)), this, SLOT(onMenuFileReopen(QAction*)));
-	connect(actFileExit,    SIGNAL(triggered(bool)),     this, SLOT(close()));
+	connect(menuFileReopen, &QMenu::triggered,   this, &RDOStudioMainFrame::onMenuFileReopen);
+	connect(actFileExit,    &QAction::triggered, this, &QMainWindow::close);
 
-	connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions ()));
-	connect(actHelpWhatsNew, SIGNAL(triggered(bool)), this, SLOT(onHelpWhatsNew()));
-	connect(actHelpAbout,    SIGNAL(triggered(bool)), this, SLOT(onHelpAbout   ()));
+	connect(mdiArea, &QMdiArea::subWindowActivated, this, &RDOStudioMainFrame::onSubWindowActivated);
 
-	connect(toolBarModel, SIGNAL(orientationChanged(Qt::Orientation)), this, SLOT(onToolBarModelOrientationChanged(Qt::Orientation)));
+	connect(actViewSettings, &QAction::triggered, this, &RDOStudioMainFrame::onViewOptions);
+	connect(actHelpWhatsNew, &QAction::triggered, this, &RDOStudioMainFrame::onHelpWhatsNew);
+	connect(actHelpAbout,    &QAction::triggered, this, &RDOStudioMainFrame::onHelpAbout);
+
+	connect(toolBarModel, &QToolBar::orientationChanged, this, &RDOStudioMainFrame::onToolBarModelOrientationChanged);
 
 	Scintilla_LinkLexers();
 
@@ -356,8 +360,8 @@ void RDOStudioMainFrame::init()
 	m_pDockResults = new DockResults(this);
 	m_pDockFind    = new DockFind   (this);
 
-	QObject::connect(m_pDockBuild, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockVisibleChanged(bool)));
-	QObject::connect(m_pDockFind,  SIGNAL(visibilityChanged(bool)), this, SLOT(onDockVisibleChanged(bool)));
+	QObject::connect(m_pDockBuild, &QDockWidget::visibilityChanged, this, &RDOStudioMainFrame::onDockVisibleChanged);
+	QObject::connect(m_pDockFind,  &QDockWidget::visibilityChanged, this, &RDOStudioMainFrame::onDockVisibleChanged);
 
 	updateAllStyles();
 	addDockWidget(Qt::BottomDockWidgetArea, m_pDockBuild);
@@ -584,13 +588,13 @@ void RDOStudioMainFrame::onToolBarModelOrientationChanged(Qt::Orientation orient
 
 void RDOStudioMainFrame::onMenuFileReopen(QAction* pAction)
 {
-	tstring fileName = pAction->text().toStdString();
-	tstring::size_type pos = fileName.find(' ');
-	if (pos == tstring::npos)
+	QString menuName = pAction->text();
+	int pos = menuName.indexOf(' ');
+	if (pos == -1)
 		return;
 
-	fileName = fileName.substr(pos + 1);
-	if (!model->openModel(fileName) && model->isPrevModelClosed())
+	QStringRef fileName = menuName.midRef(pos + 1);
+	if (!model->openModel(fileName.toLocal8Bit().constData()) && model->isPrevModelClosed())
 	{
 		ReopenList::iterator it = std::find(m_reopenList.begin(), m_reopenList.end(), fileName);
 		if (it != m_reopenList.end())
@@ -601,9 +605,9 @@ void RDOStudioMainFrame::onMenuFileReopen(QAction* pAction)
 	}
 }
 
-void RDOStudioMainFrame::insertMenuFileReopenItem(CREF(tstring) item)
+void RDOStudioMainFrame::insertMenuFileReopenItem(CREF(QString) item)
 {
-	if (!item.empty())
+	if (!item.isEmpty())
 	{
 		ReopenList::iterator it = boost::range::find(m_reopenList, item);
 		if (it != m_reopenList.end())
@@ -611,7 +615,7 @@ void RDOStudioMainFrame::insertMenuFileReopenItem(CREF(tstring) item)
 			m_reopenList.erase(it);
 		}
 
-		m_reopenList.insert(m_reopenList.begin(), item);
+		m_reopenList.push_front(item);
 
 		while (m_reopenList.size() > 10)
 		{
@@ -634,7 +638,7 @@ void RDOStudioMainFrame::updateMenuFileReopen()
 		{
 			menuFileReopen->addSeparator();
 		}
-		menuFileReopen->addAction(QTextCodec::codecForLocale()->toUnicode(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str()));
+		menuFileReopen->addAction(QString("%1. %2").arg(reopenIndex+1).arg(m_reopenList[reopenIndex]));
 	}
 
 	menuFileReopen->setEnabled(!menuFileReopen->isEmpty());
@@ -645,64 +649,45 @@ void RDOStudioMainFrame::updateMenuFileReopen()
 void RDOStudioMainFrame::loadMenuFileReopen()
 {
 	m_reopenList.clear();
-	for (ruint i = 0; i < 10; i++)
+
+	QSettings settings;
+	settings.beginGroup("reopen");
+
+	QStringList groupList = settings.childKeys();
+	std::vector<int> indexList;
+	BOOST_FOREACH(const QString& index, groupList)
 	{
-		tstring sec;
-		if (i+1 < 10)
-		{
-			sec = rdo::format(_T("0%d"), i+1);
-		}
-		else
-		{
-			sec = rdo::format(_T("%d"), i+1);
-		}
-		TRY
-		{
-			tstring s = AfxGetApp()->GetProfileString(_T("reopen"), sec.c_str(), _T(""));
-			if (!s.empty())
-			{
-				m_reopenList.insert(m_reopenList.end(), s);
-			}
-		}
-		CATCH(CException, e)
-		{}
-		END_CATCH
+		indexList.push_back(index.toInt());
 	}
+	std::sort(indexList.begin(), indexList.end());
+
+	BOOST_FOREACH(int index, indexList)
+	{
+		QString value = settings.value(QString::number(index), QString()).toString();
+		if (!value.isEmpty())
+		{
+			m_reopenList.push_back(value.toLocal8Bit().constData());
+		}
+	}
+
+	settings.endGroup();
 }
 
 void RDOStudioMainFrame::saveMenuFileReopen() const
 {
-	for (ReopenList::size_type i = 0; i < 10; i++)
+	QSettings settings;
+	settings.beginGroup("reopen");
+
+	ruint index = 1;
+	BOOST_FOREACH(const QString& fileName, m_reopenList)
 	{
-		tstring sec;
-		if (i+1 < 10)
-		{
-			sec = rdo::format(_T("0%d"), i+1);
-		}
-		else
-		{
-			sec = rdo::format(_T("%d"), i+1);
-		}
-		tstring s;
-		if (i < m_reopenList.size())
-		{
-			s = m_reopenList[i];
-		}
-		else
-		{
-			s = _T("");
-		}
-		TRY
-		{
-			AfxGetApp()->WriteProfileString(_T("reopen"), sec.c_str(), s.c_str());
-		}
-		CATCH(CException, e)
-		{}
-		END_CATCH
+		settings.setValue(QString::number(index++), fileName);
 	}
+
+	settings.endGroup();
 }
 
-void RDOStudioMainFrame::updateInsertMenu(rbool enabled, QObject* pObject, CREF(tstring) method)
+void RDOStudioMainFrame::updateInsertMenu(rbool enabled)
 {
 	QList<QAction*> menuList = menuInsert->actions();
 	BOOST_FOREACH(const QAction* pMenu, menuList)
@@ -716,16 +701,32 @@ void RDOStudioMainFrame::updateInsertMenu(rbool enabled, QObject* pObject, CREF(
 			pItem->setEnabled(enabled);
 		}
 	}
+}
 
-	if (enabled)
+void RDOStudioMainFrame::onSubWindowActivated(QMdiSubWindow * window)
+{
+	QList<QMdiSubWindow *> windowList = mdiArea->subWindowList();
+	if (windowList.empty())
 	{
-		ASSERT(pObject);
-		ASSERT(!method.empty());
-		tstring formattedMethod = rdo::format("1%s %s", method.c_str(), QLOCATION);
-		QObject::connect(m_pInsertMenuSignalMapper, SIGNAL(mapped(QObject*)), pObject, qFlagLocation(formattedMethod.c_str()), Qt::UniqueConnection);
+		if (m_hasWindow)
+		{
+			actWindowTitleHorzontal->setEnabled(false);
+			actWindowCascade       ->setEnabled(false);
+			disconnect(actWindowTitleHorzontal, SIGNAL(triggered(bool)), mdiArea, SLOT(cascadeSubWindows()));
+			disconnect(actWindowCascade       , SIGNAL(triggered(bool)), mdiArea, SLOT(tileSubWindows   ()));
+			m_hasWindow = false;
+		}
 	}
 	else
 	{
-		QObject::disconnect(m_pInsertMenuSignalMapper, SIGNAL(mapped(QObject*)), NULL, NULL);
+		if (!m_hasWindow)
+		{
+			actWindowTitleHorzontal->setEnabled(true);
+			actWindowCascade       ->setEnabled(true);
+			connect(actWindowTitleHorzontal, SIGNAL(triggered(bool)), mdiArea, SLOT(cascadeSubWindows()));
+			connect(actWindowCascade       , SIGNAL(triggered(bool)), mdiArea, SLOT(tileSubWindows   ()));
+			m_hasWindow = true;
+		}
 	}
 }
+

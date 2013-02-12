@@ -99,14 +99,14 @@ void NewModelDialog::onPathButtonClicked()
 	}
 }
 
-tstring NewModelDialog::getModelName() const
+QString NewModelDialog::getModelName() const
 {
-	return modelName->text().toStdString();
+	return modelName->text();
 }
 
-tstring NewModelDialog::getModelPath() const
+QString NewModelDialog::getModelPath() const
 {
-	return modelPath->text().toStdString();
+	return modelPath->text();
 }
 
 ruint NewModelDialog::getTemplateIndex() const

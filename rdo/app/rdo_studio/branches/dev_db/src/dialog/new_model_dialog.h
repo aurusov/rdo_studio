@@ -26,8 +26,8 @@ public:
 	NewModelDialog(PTR(QWidget) pParent);
 	virtual ~NewModelDialog();
 
-	tstring getModelName() const;
-	tstring getModelPath() const;
+	QString getModelName() const;
+	QString getModelPath() const;
 	ruint   getTemplateIndex() const;
 
 private:
