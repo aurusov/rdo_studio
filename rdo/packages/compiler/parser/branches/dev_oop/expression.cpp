@@ -57,6 +57,9 @@ Expression::Expression(CREF(LPExpression) pExpression)
 	, m_pCalc (pExpression->m_pCalc )
 {}
 
+Expression::Expression()
+{}
+
 Expression::~Expression()
 {}
 
@@ -100,5 +103,42 @@ ExpressionEmpty::ExpressionEmpty()
 
 ExpressionEmpty::~ExpressionEmpty()
 {}
+
+// --------------------------------------------------------------------------------
+// -------------------- ExpressionGenerator
+// --------------------------------------------------------------------------------
+ExpressionGenerator::ExpressionGenerator(CREF(LPExpression) pExpression)
+	:Expression  (pExpression)
+{}
+
+ExpressionGenerator::~ExpressionGenerator()
+{}
+
+LPExpression ExpressionGenerator::generateByConst(CREF(LPRDOValue) pValue)
+{
+	ASSERT(pValue);
+	ASSERT(pValue->constant());
+
+	LPExpression pExpression = rdo::Factory<Expression>::create(pValue);
+	ASSERT(pExpression);
+
+	return pExpression;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- ExpressionList
+// --------------------------------------------------------------------------------
+ExpressionList::ExpressionList()
+	: Expression()
+{}
+
+ExpressionList::~ExpressionList()
+{}
+
+void ExpressionList::addItem(CREF(LPExpression) pExpression)
+{
+	ASSERT(pExpression);
+	m_expressionList.push_back(pExpression);
+}
 
 CLOSE_RDO_PARSER_NAMESPACE

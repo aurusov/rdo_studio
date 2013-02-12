@@ -28,6 +28,8 @@ OBJECT(Expression) IS INSTANCE_OF(RDOParserSrcInfo)
 DECLARE_FACTORY(Expression);
 friend class ExpressionStatement;
 public:
+	typedef std::vector<LPExpression> RDOExpressionList;
+
 	CREF(LPTypeInfo)               typeInfo  () const;
 	CREF(rdo::runtime::LPRDOCalc)  calc      () const;
 	virtual void                   setSrcInfo(CREF(RDOParserSrcInfo) src_info);
@@ -35,6 +37,7 @@ public:
 	LPRDOValue                     constant  () const;
 
 protected:
+	Expression();
 	Expression(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) src_info);
 	Expression(CREF(LPRDOValue) pValue);
 	Expression(CREF(LPExpression) pExpression);
@@ -57,6 +60,40 @@ private:
 	virtual ~ExpressionEmpty();
 };
 DECLARE_POINTER(ExpressionEmpty);
+
+// --------------------------------------------------------------------------------
+// -------------------- ExpressionGenerator
+// --------------------------------------------------------------------------------
+CLASS(ExpressionGenerator): INSTANCE_OF(Expression)
+{
+DECLARE_FACTORY(ExpressionGenerator);
+public:
+static LPExpression generateByConst (CREF(LPRDOValue) pValue);
+
+private:
+	ExpressionGenerator(CREF(LPExpression) pExpression);
+	virtual ~ExpressionGenerator();
+};
+
+// --------------------------------------------------------------------------------
+// -------------------- ExpressionList
+// --------------------------------------------------------------------------------
+//! Список выражений
+CLASS(ExpressionList): INSTANCE_OF(Expression)
+{
+DECLARE_FACTORY(ExpressionList);
+public:
+	
+	CREF(RDOExpressionList) expressionList() const { return m_expressionList; }
+	void                    addItem       (CREF(LPExpression) pExpression);
+
+private:
+	ExpressionList();
+	virtual ~ExpressionList();
+
+	RDOExpressionList m_expressionList;
+};
+DECLARE_POINTER(ExpressionList);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

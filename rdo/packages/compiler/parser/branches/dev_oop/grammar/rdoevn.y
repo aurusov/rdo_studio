@@ -1633,10 +1633,11 @@ stopping_statement
 	;
 
 planning_statement
-	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' ';'
+	: RDO_IDENTIF '.' RDO_Planning '(' expression ')' ';'
 	{
 		tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-		LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
+		LPExpression      pExpression = PARSER->stack().pop<Expression>($5);
+		ASSERT(pExpression);
 
 		LPRDOEvent pEvent = PARSER->findEvent(eventName);
 		if (!pEvent)
@@ -1644,45 +1645,25 @@ planning_statement
 			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
 		}
 
-		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
-		if (arithmIt == pArithmList->getContainer().end())
-		{
-			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
-		}
+		rdo::runtime::LPRDOCalcEventPlan pCalc = pEvent->prepareEvent(pExpression);
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pExpression->src_info().src_text().c_str())));
 
-		LPRDOFUNArithm pTimeArithm = *arithmIt;
-		ASSERT(pTimeArithm);
-		++arithmIt;
-
-		LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
-		ASSERT(pParamList);
-
-		while (arithmIt != pArithmList->getContainer().end())
-		{
-			pParamList->addItem(*arithmIt);
-			++arithmIt;
-		}
-
-		pEvent->setParamList(pParamList);
-
-		rdo::runtime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
-		pCalcTime->setSrcInfo(pTimeArithm->src_info());
-		ASSERT(pCalcTime);
-
-		rdo::runtime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
-		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
+		LPExpression pEventExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pEventExpression);
 
-		$$ = PARSER->stack().push(pExpression);
+		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
+		ASSERT(pBaseOperation);
+
+		pCalc->setEvent(pBaseOperation);
+		pEvent->setInitCalc(pCalc);
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' error
+	| RDO_IDENTIF '.' RDO_Planning '(' expression ')' error
 	{
 		PARSER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
@@ -1694,7 +1675,7 @@ planning_statement
 	{
 		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list error
+	| RDO_IDENTIF '.' RDO_Planning '(' expression error
 	{
 		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
 	}
@@ -2057,12 +2038,13 @@ equal_statement
 
 		$$ = PARSER->stack().push(pExpression);
 	}
-	| RDO_IDENTIF param_equal_type fun_arithm
+	| RDO_IDENTIF param_equal_type expression
 	{
-		LPRDOValue              pParamName   = PARSER->stack().pop<RDOValue>($1);
-		tstring                 paramName    = pParamName->value().getIdentificator();
-		rdo::runtime::EqualType equalType    = static_cast<rdo::runtime::EqualType>($2);
-		LPRDOFUNArithm          pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		LPRDOValue              pParamName       = PARSER->stack().pop<RDOValue>($1);
+		tstring                 paramName        = pParamName->value().getIdentificator();
+		rdo::runtime::EqualType equalType        = static_cast<rdo::runtime::EqualType>($2);
+		LPExpression            pRightExpression = PARSER->stack().pop<Expression>($3);
+		ASSERT(pRightExpression);
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
@@ -2072,12 +2054,13 @@ equal_statement
 		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
 		rdo::runtime::LPRDOCalc pCalc;
 		rdo::runtime::LPRDOCalc pCalcRight;
-		LPTypeInfo pLeftArithmType;
+		LPTypeInfo pLeftExpressionType;
+		LPExpression pExpressionLeft;
 		if (pLocalVariable)
 		{
-			pLeftArithmType = pLocalVariable->getTypeInfo();
+			pLeftExpressionType = pLocalVariable->getTypeInfo();
 
-			pCalcRight = pRightArithm->createCalc(pLocalVariable->getTypeInfo());
+			pCalcRight = pRightExpression->calc();
 			switch (equalType)
 			{
 				case rdo::runtime::ET_NOCHANGE:
@@ -2125,9 +2108,9 @@ equal_statement
 				PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
 			}
 
-			pLeftArithmType = pParam->getTypeInfo();
+			pLeftExpressionType = pParam->getTypeInfo();
 
-			pCalcRight = pRightArithm->createCalc(pParam->getTypeInfo());
+			pCalcRight = pRightExpression->calc();
 			switch (equalType)
 			{
 				case rdo::runtime::ET_NOCHANGE:
@@ -2140,16 +2123,12 @@ equal_statement
 					ASSERT(pCalc);
 					pCalc->setSrcInfo(RDOParserSrcInfo(@1, rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str())));
 
-					LPExpression pExpressionLeft = rdo::Factory<Expression>::create(
+					pExpressionLeft = rdo::Factory<Expression>::create(
 						pParam->getTypeInfo(),
 						pCalc,
 						pCalc->srcInfo()
 					);
 					ASSERT(pExpressionLeft);
-
-					LPRDOFUNArithm pArithmLeft = rdo::Factory<RDOFUNArithm>::create(pExpressionLeft);
-					ASSERT(pArithmLeft);
-					pArithmLeft->setEqual(pRightArithm);
 
 					pRelRes->getParamSetList().insert(pParam);
 					break;
@@ -2231,10 +2210,7 @@ equal_statement
 		}
 		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->srcInfo().src_text().c_str())));
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, pCalc->srcInfo());
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
+		$$ = PARSER->stack().push(pExpressionLeft);
 	}
 	| RDO_IDENTIF param_equal_type error
 	{
@@ -3183,9 +3159,9 @@ fun_logic
 // -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
-	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
-	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	:/* RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| */RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+/*	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| param_array_value                  { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
@@ -3386,6 +3362,33 @@ fun_arithm
 		ASSERT(pArithmArrayItem);
 
 		$$ = PARSER->stack().push(pArithmArrayItem);
+	}*/
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Замена арифметическх выражений, Экспрешены
+// --------------------------------------------------------------------------------
+expression
+	: RDO_INT_CONST                      { $$ = PARSER->stack().push(ExpressionGenerator::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| expression ',' expression
+	{
+		LPExpression pFirstEpression    = PARSER->stack().pop<Expression>($1);
+		LPExpression pSecondExpression  = PARSER->stack().pop<Expression>($3);
+		ASSERT (pFirstEpression  );
+		ASSERT (pSecondExpression);
+		LPExpressionList pExpressionList = pFirstEpression.object_dynamic_cast<ExpressionList>();
+		if(pExpressionList)
+		{
+			pExpressionList->addItem(pSecondExpression);
+		}
+		else
+		{
+			pExpressionList = rdo::Factory<ExpressionList>::create();
+			pExpressionList->addItem(pFirstEpression  );
+			pExpressionList->addItem(pSecondExpression);
+		}
+		
+		$$ = PARSER->stack().push(pExpressionList);
 	}
 	;
 
@@ -3417,7 +3420,7 @@ fun_arithm_func_call
 
 arithm_list
 	: /* empty */
-	{
+/*	{
 		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
 		ASSERT(pArithmContainer);
 		$$ = PARSER->stack().push(pArithmContainer);
@@ -3449,7 +3452,7 @@ arithm_list_body
 	| arithm_list_body ',' error
 	{
 		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
-	}
+	}*/
 	;
 
 // --------------------------------------------------------------------------------

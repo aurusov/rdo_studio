@@ -693,9 +693,9 @@ fun_logic
 // -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
-	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
-	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	:/* RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| */RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+/*	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| param_array_value                  { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
@@ -896,6 +896,33 @@ fun_arithm
 		ASSERT(pArithmArrayItem);
 
 		$$ = PARSER->stack().push(pArithmArrayItem);
+	}*/
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Замена арифметическх выражений, Экспрешены
+// --------------------------------------------------------------------------------
+expression
+	: RDO_INT_CONST                      { $$ = PARSER->stack().push(ExpressionGenerator::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| expression ',' expression
+	{
+		LPExpression pFirstEpression    = PARSER->stack().pop<Expression>($1);
+		LPExpression pSecondExpression  = PARSER->stack().pop<Expression>($3);
+		ASSERT (pFirstEpression  );
+		ASSERT (pSecondExpression);
+		LPExpressionList pExpressionList = pFirstEpression.object_dynamic_cast<ExpressionList>();
+		if(pExpressionList)
+		{
+			pExpressionList->addItem(pSecondExpression);
+		}
+		else
+		{
+			pExpressionList = rdo::Factory<ExpressionList>::create();
+			pExpressionList->addItem(pFirstEpression  );
+			pExpressionList->addItem(pSecondExpression);
+		}
+		
+		$$ = PARSER->stack().push(pExpressionList);
 	}
 	;
 
@@ -927,7 +954,7 @@ fun_arithm_func_call
 
 arithm_list
 	: /* empty */
-	{
+/*	{
 		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
 		ASSERT(pArithmContainer);
 		$$ = PARSER->stack().push(pArithmContainer);
@@ -959,7 +986,7 @@ arithm_list_body
 	| arithm_list_body ',' error
 	{
 		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
-	}
+	}*/
 	;
 
 // --------------------------------------------------------------------------------

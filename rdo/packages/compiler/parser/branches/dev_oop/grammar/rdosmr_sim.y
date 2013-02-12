@@ -254,48 +254,32 @@ smr_show_mode
 
 smr_cond
 	: /* empty */
-	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
+	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' expression ')'
 	{
-		tstring    eventName          = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
-		LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($6);
-		LPRDOEvent pEvent             = PARSER->findEvent(eventName);
+		tstring           eventName   = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		LPExpression      pExpression = PARSER->stack().pop<Expression>($6);
+		ASSERT(pExpression);
+
+		LPRDOEvent pEvent = PARSER->findEvent(eventName);
 		if (!pEvent)
 		{
-			PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
+			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
 		}
+		rdo::runtime::LPRDOCalcEventPlan pCalc = pEvent->prepareEvent(pExpression);
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pExpression->src_info().src_text().c_str())));
+		ASSERT(pCalc);
 
-		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
-		if (arithmIt == pArithmList->getContainer().end())
-		{
-			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
-		}
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
 
-		LPRDOFUNArithm pTimeArithm = *arithmIt;
-		ASSERT(pTimeArithm);
-		++arithmIt;
-
-		LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
-		ASSERT(pParamList);
-
-		while (arithmIt != pArithmList->getContainer().end())
-		{
-			pParamList->addItem(*arithmIt);
-			++arithmIt;
-		}
-
-		rdo::runtime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
-		pCalcTime->setSrcInfo(pTimeArithm->src_info());
-		ASSERT(pCalcTime);
+		LPExpression pEventExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
 
 		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
 		ASSERT(pBaseOperation);
 
-		rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
-		pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
-		ASSERT(pEventPlan);
-		pEvent->setParamList(pParamList);
-		pEventPlan->setEvent(pBaseOperation);
-		pEvent->setInitCalc(pEventPlan);
+		pCalc->setEvent(pBaseOperation);
+		pEvent->setInitCalc(pCalc);
 	}
 	| smr_cond RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
 	| smr_cond RDO_Show_mode                  '=' smr_show_mode
@@ -744,9 +728,9 @@ fun_logic
 // -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
-	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
-	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	:/* RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| */RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+/*	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| param_array_value                  { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
@@ -947,6 +931,33 @@ fun_arithm
 		ASSERT(pArithmArrayItem);
 
 		$$ = PARSER->stack().push(pArithmArrayItem);
+	}*/
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Замена арифметическх выражений, Экспрешены
+// --------------------------------------------------------------------------------
+expression
+	: RDO_INT_CONST                      { $$ = PARSER->stack().push(ExpressionGenerator::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| expression ',' expression
+	{
+		LPExpression pFirstEpression    = PARSER->stack().pop<Expression>($1);
+		LPExpression pSecondExpression  = PARSER->stack().pop<Expression>($3);
+		ASSERT (pFirstEpression  );
+		ASSERT (pSecondExpression);
+		LPExpressionList pExpressionList = pFirstEpression.object_dynamic_cast<ExpressionList>();
+		if(pExpressionList)
+		{
+			pExpressionList->addItem(pSecondExpression);
+		}
+		else
+		{
+			pExpressionList = rdo::Factory<ExpressionList>::create();
+			pExpressionList->addItem(pFirstEpression  );
+			pExpressionList->addItem(pSecondExpression);
+		}
+		
+		$$ = PARSER->stack().push(pExpressionList);
 	}
 	;
 
@@ -978,7 +989,7 @@ fun_arithm_func_call
 
 arithm_list
 	: /* empty */
-	{
+/*	{
 		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
 		ASSERT(pArithmContainer);
 		$$ = PARSER->stack().push(pArithmContainer);
@@ -1010,7 +1021,7 @@ arithm_list_body
 	| arithm_list_body ',' error
 	{
 		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
-	}
+	}*/
 	;
 
 // --------------------------------------------------------------------------------

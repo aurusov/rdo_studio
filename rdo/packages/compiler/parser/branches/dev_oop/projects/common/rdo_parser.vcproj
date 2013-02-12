@@ -2778,6 +2778,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\rdopatpreparse.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\rdopatpreparse.h"
 				>
 			</File>
