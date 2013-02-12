@@ -95,17 +95,6 @@ BEGIN
     CONTROL         "Вывод предупреждений",IDC_WARNING_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,88,84,97,10
 END
 
-IDD_FILEASSOCIATION DIALOG  0, 0, 200, 70
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Привязка к расширению"
-FONT 8, "MS Sans Serif"
-BEGIN
-    DEFPUSHBUTTON   "Да",IDOK,45,50,50,14
-    PUSHBUTTON      "Нет",IDCANCEL,115,50,50,14
-    LTEXT           "Запущенная RAO-studio не связана с расширением SMR (файлы прокта модели). Связать ?",IDC_FILEASSOCIATION_STATIC,5,5,190,20
-    CONTROL         "Проверять в будущем",IDC_FILEASSOCIATION_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,30,91,10
-END
-
 IDD_OPTIONS_TABS DIALOGEX 0, 0, 292, 121
 STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Табуляция"
@@ -190,56 +179,6 @@ BEGIN
     EDITTEXT        IDC_MARKER_SIZE_EDIT,164,56,25,12,ES_AUTOHSCROLL
     CONTROL         "Показать",IDC_MARKER_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,64,72,58,10
     CONTROL         "Прозрачный маркер",IDC_TRANSP_MARKER_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,144,72,85,10
-END
-
-IDD_ABOUT DIALOGEX 0, 0, 268, 249
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "О программе"
-FONT 8, "MS Sans Serif", 0, 0, 0x0
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,212,228,50,14
-    ICON            IDR_MAINFRAME,IDC_ABOUT_PICTURE,12,8,20,20
-    CTEXT           "caption",IDC_ABOUT_CAPTION,40,8,220,8
-    LTEXT           "Московский Государственный Университет им.Н.Э.Баумана,\nФакультет Робототехники и комплексной автоматизации,\nКафедра Компьютерные системы автоматизации производства",IDC_ABOUT_INFO,40,20,220,24
-    RTEXT           "Телефон: +7 (499) 263 63 88\n+7 (499) 263 69 54",IDC_ABOUT_TEL,117,83,144,23
-    EDITTEXT        IDC_DEVELOPERS,4,131,260,92,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL
-    LTEXT           "Разработчики",IDC_STATIC,4,120,50,8
-    RTEXT           "rdo@rk9.bmstu.ru",IDC_ABOUT_EMAIL,204,112,56,8,SS_NOTIFY
-    RTEXT           "http://rdo.rk9.bmstu.ru",IDC_ABOUT_WEB,180,120,80,8,SS_NOTIFY
-    RTEXT           "Россия, Москва, 105005,\nул. 2-ая Бауманская, д.5.\nКафедра РК-9",IDC_ABOUT_ADDRESS,116,48,144,24
-END
-
-IDD_MODEL_NEW DIALOG  0, 0, 238, 170
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Создание модели"
-FONT 8, "MS Sans Serif"
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,120,152,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,184,152,50,14
-    EDITTEXT        IDC_MODEL_NAME,62,6,172,12,ES_AUTOHSCROLL
-    RTEXT           "Путь",IDC_STATIC,8,22,48,8
-    EDITTEXT        IDC_MODEL_PATH,62,20,156,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
-    PUSHBUTTON      "...",IDC_MODEL_PATH_BUTTON,220,20,14,12,BS_FLAT
-    GROUPBOX        "Шаблон",IDC_STATIC,4,64,230,82
-    RTEXT           "Имя модели",IDC_STATIC,8,10,47,8
-    CONTROL         "Пустая модель",IDC_MODEL_EMPTY,"Button",BS_AUTORADIOBUTTON | BS_FLAT | WS_GROUP,8,76,67,10
-    CONTROL         "Только каркас",IDC_MODEL_TEMPLATE,"Button",BS_AUTORADIOBUTTON | BS_FLAT,8,88,67,10
-    CONTROL         "Модель простейшей СМО",IDC_MODEL_BARBER1,"Button",BS_AUTORADIOBUTTON | BS_FLAT,8,100,103,10
-    CONTROL         "Модель многоканальной СМО с временными ресурсами",IDC_MODEL_BARBER2,
-                    "Button",BS_AUTORADIOBUTTON | BS_FLAT,8,112,209,10
-    LTEXT           "Static",IDC_INFO,8,36,226,24
-    CONTROL         "Добавить комментарии",IDC_COMMENT,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,8,132,194,10
-    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,8,126,192,1
-END
-
-IDD_GOTO_LINE_DIALOG DIALOG  0, 0, 160, 41
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Перейти на строчку"
-FONT 8, "MS Sans Serif"
-BEGIN
-    LTEXT           "Номер строки",IDC_GOTO_STATIC,12,4,49,8
-    EDITTEXT        IDC_GOTO_EDIT,12,16,76,14,ES_AUTOHSCROLL | ES_NUMBER
-    DEFPUSHBUTTON   "OK",IDOK,100,16,50,14
 END
 
 
@@ -1017,17 +956,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_STATUSBAR_READONLY   "Только чтение"
-    ID_STATUSBAR_MODIFIED   "Изменён"
-    ID_STATUSBAR_OVERWRITE  "Замена"
-    ID_STATUSBAR_MODEL_TIME "Время: %f"
-    ID_STATUSBAR_MODEL_RUNTIME_MAXSPEED "Без анимации"
-    ID_STATUSBAR_MODEL_RUNTIME_JUMP "Дискретная имитация"
-    ID_STATUSBAR_MODEL_RUNTIME_SYNC "Синхронная имитация"
-    ID_STATUSBAR_MODEL_RUNTIME_PAUSE "Пауза"
-    ID_BUFFER_NAME          "Буфер"
-    ID_PROGRESSSTATUSBAR    " "
-    ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT "Точка останова: %s"
     ID_MODEL_FILETYPE       "РДО-проект (*.rdox)|*.rdox|РДО-конвертор (*.smr)|*.smr|Все файлы (*.*)|*.*||"
     ID_OPTIONS              "Настройки"
     ID_FINDINMODEL_BEGINMSG "Поиск '%s'...\r\n"
@@ -1075,7 +1003,6 @@ BEGIN
     ID_RESOURCE_TYPES       "Типы ресурсов"
     ID_PATTERNS             "Образцы"
     ID_RESULTS              "Результаты"
-    ID_MODEL                "Модель : %s"
     ID_RAO_CLIPBRD          "RAO Studio Serie"
     IDS_MODEL_RUNTIMEERROR_STOPED "Модель остановлена из-за ошибки прогона"
 END
@@ -1208,8 +1135,6 @@ END
 STRINGTABLE 
 BEGIN
     IDS_FRAMES              "Кадры"
-    IDS_FRAME_NAME          "кадр: %s"
-    IDS_MODEL_NAME          "модель: %s"
     IDS_MODEL_LOADING_BEGIN "Загрузка модели...\n"
     IDS_MODEL_LOADING_OK    "Загрузка модели... ok\n"
     IDS_MODEL_LOADING_FAILD "Загрузка модели... failed\n"
@@ -1252,8 +1177,6 @@ BEGIN
     IDS_MODEL_SHOWRATE_FLESSONE "Масштаб: %1.10f"
     IDS_MODEL_SHOWRATE_E    "Масштаб: %e"
     IDS_MODEL_SHOWRATE_S    "Масштаб: %s"
-    IDS_INFINITI            "Бесконечность"
-    IDS_MODEL_SPEED         "Скорость: %d%%"
     IDS_COLORSTYLE_EDITOR_COLOR "цвет"
 END
 
