@@ -538,13 +538,6 @@
 #define ID_RESULTS                      40916
 #define ID_RAO_CLIPBRD                  40918
 #define IDS_MODEL_RUNTIMEERROR_STOPED   40919
-#define ID_MSG_NO_HELP_FILE             60000
-#define ID_MSG_CANTFIND                 60001
-#define ID_MSG_MODELOPEN_ERROR          60002
-#define ID_MSG_MODELSAVE_QUERY          60003
-#define ID_MSG_MODELCLOSE_ERROR         60004
-#define ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE 60005
-#define ID_MSG_MODEL_NEED_STOPED_FOR_OPEN 60006
 
 // Next default values for new objects
 // 

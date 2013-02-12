@@ -412,8 +412,8 @@ tstring RDOStudioApp::chkHelpExist(tstring fileName) const
 	fileName.insert(0, rdo::extractFilePath(RDOStudioApp::getFullExtName()));
 	if (!rdo::File::exist(fileName))
 	{
-		::MessageBox(NULL, rdo::format(ID_MSG_NO_HELP_FILE, fileName.c_str()).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK);
-		return _T("");
+		QMessageBox::warning(studioApp.getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Невозможно найти файл справки '%1'.\r\nОн должен быть расположен в директории с RAO-studio.").arg(QString::fromLocal8Bit(fileName.c_str())));
+		return tstring();
 	}
 	return fileName;
 }

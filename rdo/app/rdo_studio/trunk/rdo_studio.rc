@@ -1021,19 +1021,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_MSG_NO_HELP_FILE     "Невозможно найти файл справки '%s'.\r\nОн должен быть расположен в директории с RAO-studio."
-    ID_MSG_CANTFIND         "Невозможно найти строчку '%s'."
-    ID_MSG_MODELOPEN_ERROR  "Невозможно открыть модель '%s'."
-    ID_MSG_MODELSAVE_QUERY  "Сохранить модель ?"
-    ID_MSG_MODELCLOSE_ERROR "Невозможно закрыть модель."
-    ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE 
-                            "Работает модель. Перед закрытием её необходимо остановить."
-    ID_MSG_MODEL_NEED_STOPED_FOR_OPEN 
-                            "Работает модель. Перед открытием её необходимо остановить."
-END
-
-STRINGTABLE 
-BEGIN
     ID_FINDINMODEL_ENDMSG_COUNT "'%d' раз было найдено.\r\n"
     ID_FINDINMODEL_ENDMSG_NOTFOUND "Не получилось найти строчку '%s'.\r\n"
     IDS_PLUGIN_NAME         "Имя"
