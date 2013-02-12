@@ -24,7 +24,11 @@ public:
 	static void createDB();
 
 private:
-	GeneralDB::QueryList generateCreateDBQuery();
+	void rdoValueTable        (QString tableName, QString dataType);
+	void dataTypeTable        (QString tableName, QString dataType);
+	void generateCreateDBQuery();
+
+	GeneralDB::QueryList m_queryList;
 };
 
 #endif // _SIMULATOR_PARSER_DB_INIT_STRUCT_H_
