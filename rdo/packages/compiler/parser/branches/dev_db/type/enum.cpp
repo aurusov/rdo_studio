@@ -220,14 +220,14 @@ rbool RDOEnumType::operator!= (CREF(RDOEnumType) pEnumType) const
 void RDOEnumType::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("enum",QString("DEFAULT,%1")
-		.arg(QString::fromStdString("NULL")));
+		.arg(QString::fromLocal8Bit("NULL")));
 	int enum_id = db.queryExecIndex("enum");
 
 	for (ruint i = 0; i < getEnums()->getValues().size(); i++)
 	{
 		db.insertRow("enum_valid_value",QString("%1,DEFAULT,'%2',%3")
 			.arg(enum_id)
-			.arg(QString::fromStdString(getEnums()->getValues().at(i)))
+			.arg(QString::fromLocal8Bit(getEnums()->getValues().at(i).c_str()))
 			.arg(i));
 	}
 }

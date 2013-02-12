@@ -44,7 +44,7 @@ void RDORTPParam::serializeInDB(REF(IDB) db) const
 	int rtp_id = boost::any_cast<int>(db.popContext());
 	getTypeInfo()->type()->serializeInDB(db);
 	db.insertRow("param_of_type",QString("DEFAULT,'%1',%2,%3")
-			.arg(QString::fromStdString(this->name()))
+			.arg(QString::fromLocal8Bit(name().c_str()))
 			.arg(rtp_id)
 			.arg(boost::any_cast<int>(db.popContext())));
 }

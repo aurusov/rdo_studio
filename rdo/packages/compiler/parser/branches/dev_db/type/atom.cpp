@@ -337,7 +337,7 @@ void RDOType__string::writeModelStructure(REF(rdo::ostream) stream) const
 void RDOType__string::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("string",QString("DEFAULT,%1")
-		.arg(QString::fromStdString(get_default().getString())));
+		.arg(QString::fromLocal8Bit(get_default().getString().c_str())));
 
 	db.pushContext(db.queryExecIndex("string"));
 }
@@ -396,7 +396,7 @@ void RDOType__identificator::writeModelStructure(REF(rdo::ostream) stream) const
 void RDOType__identificator::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("identificator",QString("DEFAULT,%1")
-		.arg(QString::fromStdString(get_default().getString())));
+		.arg(QString::fromLocal8Bit(get_default().getString().c_str())));
 
 	db.pushContext(db.queryExecIndex("identificator"));
 }

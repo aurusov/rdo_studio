@@ -150,7 +150,7 @@ void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream) const
 void RDORTPResType::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("rtp",QString("DEFAULT,'%1',%2")
-		.arg(QString::fromStdString(name()))
+		.arg(QString::fromLocal8Bit(name().c_str()))
 		.arg(m_permanent ? "true" : "false"));
 
 	int index = db.queryExecIndex("rtp");
