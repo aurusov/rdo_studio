@@ -687,7 +687,7 @@ void RDOStudioMainFrame::saveMenuFileReopen() const
 	settings.endGroup();
 }
 
-void RDOStudioMainFrame::updateInsertMenu(rbool enabled, QObject* pObject, CREF(tstring) method)
+void RDOStudioMainFrame::updateInsertMenu(rbool enabled)
 {
 	QList<QAction*> menuList = menuInsert->actions();
 	BOOST_FOREACH(const QAction* pMenu, menuList)
@@ -700,18 +700,6 @@ void RDOStudioMainFrame::updateInsertMenu(rbool enabled, QObject* pObject, CREF(
 		{
 			pItem->setEnabled(enabled);
 		}
-	}
-
-	if (enabled)
-	{
-		ASSERT(pObject);
-		ASSERT(!method.empty());
-		tstring formattedMethod = rdo::format("1%s %s", method.c_str(), QLOCATION);
-		QObject::connect(m_pInsertMenuSignalMapper, SIGNAL(mapped(QObject*)), pObject, qFlagLocation(formattedMethod.c_str()), Qt::UniqueConnection);
-	}
-	else
-	{
-		QObject::disconnect(m_pInsertMenuSignalMapper, SIGNAL(mapped(QObject*)), NULL, NULL);
 	}
 }
 

@@ -384,7 +384,7 @@ void ChartTree::onUpdateActions(rbool activated)
 	updateAction(
 		pMainWindow->actHelpContext,
 		activated,
-		this, "onHelpContext()"
+		this, &ChartTree::onHelpContext
 	);
 }
 

@@ -28,7 +28,22 @@ protected:
 
 	virtual void onUpdateActions(rbool activated) = 0;
 
-	static void updateAction(QAction* pAction, rbool enabled, QObject* pObject, CREF(tstring) method);
+	template <typename SlotFun>
+	static void updateAction(QAction* pAction, rbool enabled, const typename QtPrivate::FunctionPointer<SlotFun>::Object* pObject, SlotFun pSlot)
+	{
+		ASSERT(pAction);
+
+		pAction->setEnabled(enabled);
+		if (enabled)
+		{
+			ASSERT(pObject);
+			QObject::connect(pAction, &QAction::triggered, pObject, pSlot, Qt::UniqueConnection);
+		}
+		else
+		{
+			QObject::disconnect(pAction, &QAction::triggered, NULL, NULL);
+		}
+	}
 
 private:
 	rbool m_activated;

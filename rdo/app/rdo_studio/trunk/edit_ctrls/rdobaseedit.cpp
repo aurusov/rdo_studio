@@ -1432,81 +1432,81 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 	updateAction(
 		pMainWindow->actEditUndo,
 		activated && sendEditor(SCI_CANUNDO),
-		this, "onEditUndo()"
+		this, &RDOBaseEdit::onEditUndo
 	);
 	updateAction(
 		pMainWindow->actEditRedo,
 		activated && sendEditor(SCI_CANREDO),
-		this, "onEditRedo()"
+		this, &RDOBaseEdit::onEditRedo
 	);
 	updateAction(
 		pMainWindow->actEditCut,
 		activated && !isReadOnly() && isSelected(),
-		this, "onEditCut()"
+		this, &RDOBaseEdit::onEditCut
 	);
 	updateAction(
 		pMainWindow->actEditCopy,
 		activated && isSelected(),
-		this, "onEditCopy()"
+		this, &RDOBaseEdit::onEditCopy
 	);
 	updateAction(
 		pMainWindow->actEditPaste,
 		activated && sendEditor(SCI_CANPASTE),
-		this, "onEditPaste()"
+		this, &RDOBaseEdit::onEditPaste
 	);
 	updateAction(
 		pMainWindow->actEditDel,
 		activated && !isReadOnly() && (getCurrentPos() != getLength() || isSelected()),
-		this, "onEditDel()"
+		this, &RDOBaseEdit::onEditDel
 	);
 	updateAction(
 		pMainWindow->actEditSelectAll,
 		activated && !isEmpty(),
-		this, "onEditSelectAll()"
+		this, &RDOBaseEdit::onEditSelectAll
 	);
 	updateAction(
 		pMainWindow->actEditUpperCase,
 		activated && !isReadOnly() && isSelected(),
-		this, "onEditUpperCase()"
+		this, &RDOBaseEdit::onEditUpperCase
 	);
 	updateAction(
 		pMainWindow->actEditLowerCase,
 		activated && !isReadOnly() && isSelected(),
-		this, "onEditLowerCase()"
+		this, &RDOBaseEdit::onEditLowerCase
 	);
 	updateAction(
 		pMainWindow->actViewShowWhiteSpace,
 		activated,
-		this, "onViewShowWhiteSpace()"
+		this, &RDOBaseEdit::onViewShowWhiteSpace
 	);
 	pMainWindow->actViewShowWhiteSpace->setChecked(isViewWhiteSpace());
 
 	updateAction(
 		pMainWindow->actViewShowEndOfLine,
 		activated,
-		this, "onViewShowEndOfLine()"
+		this, &RDOBaseEdit::onViewShowEndOfLine
 	);
 	pMainWindow->actViewShowEndOfLine->setChecked(isViewEndOfLine());
 
 	updateAction(
 		pMainWindow->actHelpContext,
 		activated,
-		this, "onHelpContext()"
+		this, &RDOBaseEdit::onHelpContext
 	);
 	updateAction(
 		pMainWindow->actViewZoomInc,
 		activated &&  getZoom() < 20,
-		this, "onViewZoomInc()"
+		this, &RDOBaseEdit::onViewZoomInc
 	);
 	updateAction(
 		pMainWindow->actViewZoomDec,
 		activated && getZoom() > -10,
-		this, "onViewZoomDec()"
+		this, &RDOBaseEdit::onViewZoomDec
 	);
 	updateAction(
 		pMainWindow->actViewZoomReset,
 		activated && getZoom(),
-		this, "onViewZoomReset()"
+		this, &RDOBaseEdit::onViewZoomReset
 	);
 
 	rbool hasBookmark = predicateOfGroup(boost::bind(&RDOBaseEdit::hasBookmarks, _1));
@@ -1514,32 +1514,32 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 	updateAction(
 		pMainWindow->actSearchBookmarkNext,
 		activated && hasBookmark,
-		this, "onSearchBookmarkNext()"
+		this, &RDOBaseEdit::onSearchBookmarkNext
 	);
 	updateAction(
 		pMainWindow->actSearchBookmarkPrev,
 		activated && hasBookmark,
-		this, "onSearchBookmarkPrev()"
+		this, &RDOBaseEdit::onSearchBookmarkPrev
 	);
 	updateAction(
 		pMainWindow->actSearchBookmarksToggle,
 		activated,
-		this, "onSearchBookmarkToggle()"
+		this, &RDOBaseEdit::onSearchBookmarkToggle
 	);
 	updateAction(
 		pMainWindow->actSearchBookmarksClearAll,
 		activated && hasBookmark,
-		this, "onSearchBookmarkClearAll()"
+		this, &RDOBaseEdit::onSearchBookmarkClearAll
 	);
 	updateAction(
 		pMainWindow->actSearchGotoLine,
 		activated,
-		this, "onSearchGotoLine()"
+		this, &RDOBaseEdit::onSearchGotoLine
 	);
 	updateAction(
 		pMainWindow->actSearchFind,
 		activated,
-		this, "onSearchFind()"
+		this, &RDOBaseEdit::onSearchFind
 	);
 
 	updateActionFind(activated);
@@ -1575,36 +1575,36 @@ void RDOBaseEdit::updateActionFind(rbool activated)
 	updateAction(
 		pMainWindow->actSearchFind,
 		activated && !isEmpty(),
-		this, "onSearchFind()"
+		this, &RDOBaseEdit::onSearchFind
 	);
 
 	updateAction(
 		pMainWindow->actSearchReplace,
 		activated && !isEmpty() && !isReadOnly(),
-		this, "onSearchReplace()"
+		this, &RDOBaseEdit::onSearchReplace
 	);
 
 	rbool findNextPrev = activated && (!m_findReplaceSettings.what.empty() || !m_findSettings.what.empty() || (m_pGroup && !m_pGroup->findStr.empty()));
 	updateAction(
 		pMainWindow->actSearchFindNext,
 		findNextPrev,
-		this, "onSearchFindNext()"
+		this, &RDOBaseEdit::onSearchFindNext
 	);
 	updateAction(
 		pMainWindow->actSearchFindPrevious,
 		findNextPrev,
-		this, "onSearchFindPrevious()"
+		this, &RDOBaseEdit::onSearchFindPrevious
 	);
 
 	updateAction(
 		pMainWindow->actSearchFindNextCurrent,
 		activated,
-		this, "onSearchFindNextCurrent()"
+		this, &RDOBaseEdit::onSearchFindNextCurrent
 	);
 	updateAction(
 		pMainWindow->actSearchFindPreviousCurrent,
 		activated,
-		this, "onSearchFindPreviousCurrent()"
+		this, &RDOBaseEdit::onSearchFindPreviousCurrent
 	);
 }
 

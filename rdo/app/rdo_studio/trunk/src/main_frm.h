@@ -58,7 +58,21 @@ public:
 
 	void insertMenuFileReopenItem(CREF(QString) item);
 
-	void updateInsertMenu(rbool enabled, QObject* pObject, CREF(tstring) method);
+	template <typename SlotFun>
+	void updateInsertMenu(rbool enabled, const typename QtPrivate::FunctionPointer<SlotFun>::Object* pObject, SlotFun pSlot)
+	{
+		updateInsertMenu(enabled);
+		void (QSignalMapper::*pSignal)(QObject*) = &QSignalMapper::mapped;
+		if (enabled)
+		{
+			ASSERT(pObject);
+			QObject::connect(m_pInsertMenuSignalMapper, pSignal, pObject, pSlot, Qt::UniqueConnection);
+		}
+		else
+		{
+			QObject::disconnect(m_pInsertMenuSignalMapper, pSignal, NULL, NULL);
+		}
+	}
 
 	class InsertMenuData: public QObject
 	{
@@ -108,6 +122,8 @@ private:
 	void onToolBarModelOrientationChanged(Qt::Orientation orientation);
 
 	void onMenuFileReopen(QAction* pAction);
+
+	void updateInsertMenu(rbool enabled);
 };
 
 #endif // _RDO_STUDIO_MAIN_FRM_H_

@@ -72,8 +72,8 @@ RDOStudioFrameManager::~RDOStudioFrameManager()
 rbool RDOStudioFrameManager::init()
 {
 	connect(
-		&studioApp.getIMainWnd()->getDockFrame().getContext(), SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
-		this,                                                  SLOT(onTreeWidgetItemDoubleClicked(QTreeWidgetItem*, int))
+		&studioApp.getIMainWnd()->getDockFrame().getContext(), &RDOStudioFrameTreeCtrl::itemDoubleClicked,
+		this, &RDOStudioFrameManager::onTreeWidgetItemDoubleClicked
 	);
 
 	return true;
