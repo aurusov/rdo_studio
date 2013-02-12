@@ -15,6 +15,7 @@
 #include <boost/range/algorithm/find.hpp>
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextcodec.h>
+#include <QtCore/qsettings.h>
 #include <QtWidgets/qmdisubwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_frm.h"
@@ -648,61 +649,42 @@ void RDOStudioMainFrame::updateMenuFileReopen()
 void RDOStudioMainFrame::loadMenuFileReopen()
 {
 	m_reopenList.clear();
-	for (ruint i = 0; i < 10; i++)
+
+	QSettings settings;
+	settings.beginGroup("reopen");
+
+	QStringList groupList = settings.childKeys();
+	std::vector<int> indexList;
+	BOOST_FOREACH(const QString& index, groupList)
 	{
-		tstring sec;
-		if (i+1 < 10)
-		{
-			sec = rdo::format(_T("0%d"), i+1);
-		}
-		else
-		{
-			sec = rdo::format(_T("%d"), i+1);
-		}
-		TRY
-		{
-			tstring s = AfxGetApp()->GetProfileString(_T("reopen"), sec.c_str(), _T(""));
-			if (!s.empty())
-			{
-				m_reopenList.insert(m_reopenList.end(), s);
-			}
-		}
-		CATCH(CException, e)
-		{}
-		END_CATCH
+		indexList.push_back(index.toInt());
 	}
+	std::sort(indexList.begin(), indexList.end());
+
+	BOOST_FOREACH(int index, indexList)
+	{
+		QString value = settings.value(QString::number(index), QString()).toString();
+		if (!value.isEmpty())
+		{
+			m_reopenList.push_back(value.toLocal8Bit().constData());
+		}
+	}
+
+	settings.endGroup();
 }
 
 void RDOStudioMainFrame::saveMenuFileReopen() const
 {
-	for (ReopenList::size_type i = 0; i < 10; i++)
+	QSettings settings;
+	settings.beginGroup("reopen");
+
+	ruint index = 1;
+	BOOST_FOREACH(const tstring& fileName, m_reopenList)
 	{
-		tstring sec;
-		if (i+1 < 10)
-		{
-			sec = rdo::format(_T("0%d"), i+1);
-		}
-		else
-		{
-			sec = rdo::format(_T("%d"), i+1);
-		}
-		tstring s;
-		if (i < m_reopenList.size())
-		{
-			s = m_reopenList[i];
-		}
-		else
-		{
-			s = _T("");
-		}
-		TRY
-		{
-			AfxGetApp()->WriteProfileString(_T("reopen"), sec.c_str(), s.c_str());
-		}
-		CATCH(CException, e)
-		{}
-		END_CATCH
+		settings.setValue(QString::number(index++), QString::fromLocal8Bit(fileName.c_str()));
 	}
+
+	settings.endGroup();
 }
 
 void RDOStudioMainFrame::updateInsertMenu(rbool enabled, QObject* pObject, CREF(tstring) method)

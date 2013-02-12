@@ -105,6 +105,10 @@ private:
 
 	void setupFileAssociation();
 
+#ifdef Q_OS_WIN
+	void convertSettings() const;
+#endif
+
 private:
 	virtual BOOL Run                 ();
 	virtual BOOL InitInstance        ();

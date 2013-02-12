@@ -174,11 +174,24 @@ BOOL RDOStudioApp::InitInstance()
 	free((PTR(void))m_pszRegistryKey);
 	m_pszRegistryKey = _tcsdup(_T("RAO-studio"));
 
-	m_fileAssociationSetup         = GetProfileInt   (_T("fileAssociation"), _T("setup"),                true) ? true : false;
-	m_fileAssociationCheckInFuture = GetProfileInt   (_T("fileAssociation"), _T("checkInFuture"),        true) ? true : false;
-	m_openLastProject              = GetProfileInt   (_T("general"),         _T("openLastProject"),      true) ? true : false;
-	m_lastProjectName              = GetProfileString(_T("general"),         _T("lastProject"),        _T(""));
-	m_showCaptionFullName          = GetProfileInt   (_T("general"),         _T("showCaptionFullName"), false) ? true : false;
+	QMfcApp::instance(this);
+	qApp->setQuitOnLastWindowClosed(true);
+
+	QApplication::setApplicationName("RAO-studio");
+	QApplication::setOrganizationName("RAO-studio");
+
+#ifdef Q_OS_WIN
+	convertSettings();
+#endif
+
+	QSettings settings;
+
+	m_fileAssociationSetup         = settings.value("general/file_association_setup", true).toBool();
+	m_fileAssociationCheckInFuture = settings.value("general/file_association_check_in_future", true).toBool();
+
+	m_lastProjectName     = settings.value("general/last_project_full_name", QString()).toString().toLocal8Bit().constData();
+	m_openLastProject     = settings.value("general/last_project_auto_open", true).toBool();
+	m_showCaptionFullName = settings.value("general/show_caption_full_name", false).toBool();
 
 	// Кто-то должен поднять кернел и треды
 	RDOKernel::init();
@@ -203,9 +216,6 @@ BOOL RDOStudioApp::InitInstance()
 //	new RDOThreadStudio2();
 
 	g_pTracer = new rdo::gui::tracer::Tracer();
-
-	QMfcApp::instance(this);
-	qApp->setQuitOnLastWindowClosed(true);
 
 	m_pEditorEditStyle = rdo::Factory<rdoEditor::RDOEditorEditStyle>::create();
 
@@ -450,7 +460,8 @@ rbool RDOStudioApp::getFileAssociationSetup() const
 void RDOStudioApp::setFileAssociationSetup(rbool value)
 {
 	m_fileAssociationSetup = value;
-	WriteProfileInt(_T("fileAssociation"), _T("setup"), m_fileAssociationSetup);
+	QSettings settings;
+	settings.setValue("general/file_association_setup", m_fileAssociationSetup);
 	if (m_fileAssociationSetup)
 	{
 		setupFileAssociation();
@@ -467,7 +478,8 @@ void RDOStudioApp::setFileAssociationCheckInFuture(rbool value)
 	if (m_fileAssociationCheckInFuture != value)
 	{
 		m_fileAssociationCheckInFuture = value;
-		WriteProfileInt(_T("fileAssociation"), _T("checkInFuture"), m_fileAssociationCheckInFuture);
+		QSettings settings;
+		settings.setValue("general/file_association_check_in_future", m_fileAssociationCheckInFuture);
 	}
 }
 
@@ -481,7 +493,8 @@ void RDOStudioApp::setOpenLastProject(rbool value)
 	if (m_openLastProject != value)
 	{
 		m_openLastProject = value;
-		WriteProfileInt(_T("general"), _T("openLastProject"), m_openLastProject);
+		QSettings settings;
+		settings.setValue("general/last_project_auto_open", m_openLastProject);
 	}
 }
 
@@ -496,7 +509,11 @@ void RDOStudioApp::setLastProjectName(CREF(tstring) projectName)
 	if (m_lastProjectName != projectName)
 	{
 		m_lastProjectName = projectName;
-		WriteProfileString(_T("general"), _T("lastProject"), getOpenLastProject() ? m_lastProjectName.c_str() : _T(""));
+		QSettings settings;
+		settings.setValue("general/last_project_full_name", getOpenLastProject()
+			? QString::fromLocal8Bit(m_lastProjectName.c_str())
+			: QString()
+		);
 	}
 }
 
@@ -511,7 +528,8 @@ void RDOStudioApp::setShowCaptionFullName(rbool value)
 	{
 		m_showCaptionFullName = value;
 		model->setName(model->getName());
-		WriteProfileInt(_T("general"), _T("showCaptionFullName"), m_showCaptionFullName);
+		QSettings settings;
+		settings.setValue("general/show_caption_full_name", m_showCaptionFullName);
 	}
 }
 
@@ -644,3 +662,45 @@ CREF(rdoEditor::LPRDOEditorEditStyle) RDOStudioApp::getEditorEditStyle() const
 	ASSERT(m_pEditorEditStyle);
 	return m_pEditorEditStyle;
 }
+
+#ifdef Q_OS_WIN
+void RDOStudioApp::convertSettings() const
+{
+	QSettings settingsTo;
+	QSettings settingsFrom("HKEY_CURRENT_USER\\Software\\RAO-studio", QSettings::NativeFormat);
+	QStringList childGroupsFrom = settingsFrom.childGroups();
+
+	if (childGroupsFrom.contains("fileAssociation"))
+	{
+		settingsTo.setValue("general/file_association_setup",           settingsFrom.value("fileAssociation/setup",         true).toBool());
+		settingsTo.setValue("general/file_association_check_in_future", settingsFrom.value("fileAssociation/checkInFuture", true).toBool());
+		settingsFrom.remove("fileAssociation");
+	}
+
+	if (childGroupsFrom.contains("general"))
+	{
+		settingsTo.setValue("general/last_project_full_name", settingsFrom.value("general/lastProject", QString()).toString());
+		settingsTo.setValue("general/last_project_auto_open", settingsFrom.value("general/openLastProject",     true).toBool());
+		settingsTo.setValue("general/show_caption_full_name", settingsFrom.value("general/showCaptionFullName", false).toBool());
+		settingsFrom.remove("general");
+	}
+
+	if (childGroupsFrom.contains("plugins"))
+	{
+		settingsFrom.remove("plugins");
+	}
+
+	if (childGroupsFrom.contains("reopen"))
+	{
+		for (ruint i = 0; i < 10; i++)
+		{
+			QString value = settingsFrom.value(QString("reopen/%1%2").arg(i+1 < 10 ? "0" : "").arg(i+1), QString()).toString();
+			if (value.isEmpty())
+				break;
+
+			settingsTo.setValue(QString("reopen/%1").arg(i+1), value);
+		}
+		settingsFrom.remove("reopen");
+	}
+}
+#endif
