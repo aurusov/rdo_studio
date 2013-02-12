@@ -172,6 +172,7 @@ border: none;
     </property>
     <addaction name="actChartFindInChart"/>
     <addaction name="actChartAddToNewChart"/>
+    <addaction name="actChartExport"/>
     <addaction name="separator"/>
     <addaction name="actChartTimeWrap"/>
     <addaction name="separator"/>
@@ -1061,6 +1062,14 @@ border: none;
    </property>
    <property name="shortcut">
     <string>Shift+F4</string>
+   </property>
+  </action>
+  <action name="actChartExport">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Экспорт данных</string>
    </property>
   </action>
  </widget>
