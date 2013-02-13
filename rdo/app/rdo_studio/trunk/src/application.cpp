@@ -668,9 +668,9 @@ void RDOStudioApp::convertSettings() const
 	class ColorConvertor
 	{
 	public:
-		static QColor convert(QColor color)
+		static QColor convert(__int32 color)
 		{
-			return QColor(color.blue(), color.green(), color.red());
+			return QColor(GetRValue(color), GetGValue(color), GetBValue(color));
 		}
 	};
 
@@ -715,20 +715,127 @@ void RDOStudioApp::convertSettings() const
 		settingsTo.setValue("style/build/build/warning", settingsFrom.value("style/build/build/warning", bool()).toBool());
 		
 		settingsTo.setValue("style/build/font/character_set", settingsFrom.value("style/build/font/characterSet", int()).toInt());
-		settingsTo.setValue("style/build/font/codepage", settingsFrom.value("style/build/font/codepage", int()).toInt());
-		settingsTo.setValue("style/build/font/name", settingsFrom.value("style/build/font/name", QString()).toString());
-		settingsTo.setValue("style/build/font/size", settingsFrom.value("style/build/font/size", int()).toInt());
+		settingsTo.setValue("style/build/font/codepage",      settingsFrom.value("style/build/font/codepage", int()).toInt());
+		settingsTo.setValue("style/build/font/name",          settingsFrom.value("style/build/font/name", QString()).toString());
+		settingsTo.setValue("style/build/font/size",          settingsFrom.value("style/build/font/size", int()).toInt());
 
-		settingsTo.setValue("style/build/tab/auto_indent", settingsFrom.value("style/build/tab/autoIndent", bool()).toBool());
+		settingsTo.setValue("style/build/tab/auto_indent",      settingsFrom.value("style/build/tab/autoIndent", bool()).toBool());
 		settingsTo.setValue("style/build/tab/backspace_untabs", settingsFrom.value("style/build/tab/backspaceUntabs", bool()).toBool());
-		settingsTo.setValue("style/build/tab/indent_size", settingsFrom.value("style/build/tab/indentSize", int()).toInt());
-		settingsTo.setValue("style/build/tab/tab_indents", settingsFrom.value("style/build/tab/tabIndents", bool()).toBool());
-		settingsTo.setValue("style/build/tab/tab_size", settingsFrom.value("style/build/tab/tabSize", int()).toInt());
-		settingsTo.setValue("style/build/tab/use_tabs", settingsFrom.value("style/build/tab/useTabs", bool()).toBool());
+		settingsTo.setValue("style/build/tab/indent_size",      settingsFrom.value("style/build/tab/indentSize", int()).toInt());
+		settingsTo.setValue("style/build/tab/tab_indents",      settingsFrom.value("style/build/tab/tabIndents", bool()).toBool());
+		settingsTo.setValue("style/build/tab/tab_size",         settingsFrom.value("style/build/tab/tabSize", int()).toInt());
+		settingsTo.setValue("style/build/tab/use_tabs",         settingsFrom.value("style/build/tab/useTabs", bool()).toBool());
 
-		settingsTo.setValue("style/build/theme/background_color", ColorConvertor::convert(settingsFrom.value("style/build/tab/backgroundColor", __int32()).value<QColor>()));
-		settingsTo.setValue("style/build/theme/bookmark_bg_color", ColorConvertor::convert(settingsFrom.value("style/build/tab/bookmarkBgColor", __int32()).value<QColor>()));
-		settingsTo.setValue("style/build/theme/bookmark_fg_color", ColorConvertor::convert(settingsFrom.value("style/build/tab/bookmarkFgColor", __int32()).value<QColor>()));
+		settingsTo.setValue("style/build/theme/background_color",     ColorConvertor::convert(settingsFrom.value("style/build/theme/backgroundColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/build/theme/bookmark_bg_color",    ColorConvertor::convert(settingsFrom.value("style/build/theme/bookmarkBgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/build/theme/bookmark_fg_color",    ColorConvertor::convert(settingsFrom.value("style/build/theme/bookmarkFgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/build/theme/bookmark_style",       settingsFrom.value("style/build/theme/bookmarkStyle", int()).toInt());
+		settingsTo.setValue("style/build/theme/caret_color",          ColorConvertor::convert(settingsFrom.value("style/build/theme/caretColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/build/theme/default_color",        ColorConvertor::convert(settingsFrom.value("style/build/theme/defaultColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/build/theme/default_style",        settingsFrom.value("style/build/theme/defaultStyle", int()).toInt());
+		settingsTo.setValue("style/build/theme/selection_bg_color",   ColorConvertor::convert(settingsFrom.value("style/build/theme/selectionBgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/build/theme/select_line_bg_color", ColorConvertor::convert(settingsFrom.value("style/build/theme/selectLineBgColor", __int32()).value<__int32>()));
+
+		settingsTo.setValue("style/build/window/show_horz_scroll_bar", settingsFrom.value("style/build/window/showHorzScrollBar", bool()).toBool());
+		settingsTo.setValue("style/build/window/word_wrap",            settingsFrom.value("style/build/window/wordWrap", bool()).toBool());
+
+		settingsTo.setValue("style/chart/font/character_set", settingsFrom.value("style/chart/font/characterSet", int()).toInt());
+		settingsTo.setValue("style/chart/font/codepage",      settingsFrom.value("style/chart/font/codepage", int()).toInt());
+		settingsTo.setValue("style/chart/font/name",          settingsFrom.value("style/chart/font/name", QString()).toString());
+		settingsTo.setValue("style/chart/font/size",          settingsFrom.value("style/chart/font/size", int()).toInt());
+
+		settingsTo.setValue("style/chart/fonts_ticks/legend_font_size", settingsFrom.value("style/chart/fonts_ticks/legendFontSize", int()).toInt());
+		settingsTo.setValue("style/chart/fonts_ticks/tick_width",       settingsFrom.value("style/chart/fonts_ticks/tickWidth", int()).toInt());
+		settingsTo.setValue("style/chart/fonts_ticks/title_font_size",  settingsFrom.value("style/chart/fonts_ticks/titleFontSize", int()).toInt());
+
+		settingsTo.setValue("style/chart/theme/axis_fg_color",    ColorConvertor::convert(settingsFrom.value("style/chart/theme/axisFgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/chart/theme/background_color", ColorConvertor::convert(settingsFrom.value("style/chart/theme/backgroundColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/chart/theme/chart_bg_color",   ColorConvertor::convert(settingsFrom.value("style/chart/theme/chartBgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/chart/theme/default_color",    ColorConvertor::convert(settingsFrom.value("style/chart/theme/defaultColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/chart/theme/default_style",    settingsFrom.value("style/chart/theme/defaultStyle", int()).toInt());
+		settingsTo.setValue("style/chart/theme/legend_fg_color",  ColorConvertor::convert(settingsFrom.value("style/chart/theme/legendFgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/chart/theme/legend_style",     settingsFrom.value("style/chart/theme/legendStyle", int()).toInt());
+		settingsTo.setValue("style/chart/theme/time_bg_color",    ColorConvertor::convert(settingsFrom.value("style/chart/theme/timeBgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/chart/theme/title_fg_color",   ColorConvertor::convert(settingsFrom.value("style/chart/theme/titleFGColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/chart/theme/title_style",     settingsFrom.value("style/chart/theme/titleStyle", int()).toInt());
+
+		settingsTo.setValue("style/debug/font/character_set", settingsFrom.value("style/debug/font/characterSet", int()).toInt());
+		settingsTo.setValue("style/debug/font/codepage",      settingsFrom.value("style/debug/font/codepage", int()).toInt());
+		settingsTo.setValue("style/debug/font/name",          settingsFrom.value("style/debug/font/name", QString()).toString());
+		settingsTo.setValue("style/debug/font/size",          settingsFrom.value("style/debug/font/size", int()).toInt());
+
+		settingsTo.setValue("style/debug/tab/auto_indent",      settingsFrom.value("style/debug/tab/autoIndent", bool()).toBool());
+		settingsTo.setValue("style/debug/tab/backspace_untabs", settingsFrom.value("style/debug/tab/backspaceUntabs", bool()).toBool());
+		settingsTo.setValue("style/debug/tab/indent_size",      settingsFrom.value("style/debug/tab/indentSize", int()).toInt());
+		settingsTo.setValue("style/debug/tab/tab_indents",      settingsFrom.value("style/debug/tab/tabIndents", bool()).toBool());
+		settingsTo.setValue("style/debug/tab/tab_size",         settingsFrom.value("style/debug/tab/tabSize", int()).toInt());
+		settingsTo.setValue("style/debug/tab/use_tabs",         settingsFrom.value("style/debug/tab/useTabs", bool()).toBool());
+
+		settingsTo.setValue("style/debug/theme/background_color",     ColorConvertor::convert(settingsFrom.value("style/debug/theme/backgroundColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/debug/theme/bookmark_bg_color",    ColorConvertor::convert(settingsFrom.value("style/debug/theme/bookmarkBgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/debug/theme/bookmark_fg_color",    ColorConvertor::convert(settingsFrom.value("style/debug/theme/bookmarkFgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/debug/theme/bookmark_style",       settingsFrom.value("style/debug/theme/bookmarkStyle", int()).toInt());
+		settingsTo.setValue("style/debug/theme/caret_color",          ColorConvertor::convert(settingsFrom.value("style/debug/theme/caretColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/debug/theme/default_color",        ColorConvertor::convert(settingsFrom.value("style/debug/theme/defaultColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/debug/theme/default_style",        settingsFrom.value("style/debug/theme/defaultStyle", int()).toInt());
+		settingsTo.setValue("style/debug/theme/selection_bg_color",   ColorConvertor::convert(settingsFrom.value("style/debug/theme/selectionBgColor", __int32()).value<__int32>()));
+
+		settingsTo.setValue("style/debug/window/show_horz_scroll_bar", settingsFrom.value("style/debug/window/showHorzScrollBar", bool()).toBool());
+		settingsTo.setValue("style/debug/window/word_wrap",            settingsFrom.value("style/debug/window/wordWrap", bool()).toBool());
+
+		settingsTo.setValue("style/editor/autoComplete/show_full_list",    settingsFrom.value("style/editor/autoComplete/showFullList", bool()).toBool());
+		settingsTo.setValue("style/editor/autoComplete/use_auto_complete", settingsFrom.value("style/editor/autoComplete/useAutoComplete", bool()).toBool());
+
+		settingsFrom.remove("style/editor/buffer");
+
+		settingsTo.setValue("style/editor/font/character_set", settingsFrom.value("style/editor/font/characterSet", int()).toInt());
+		settingsTo.setValue("style/editor/font/codepage",      settingsFrom.value("style/editor/font/codepage", int()).toInt());
+		settingsTo.setValue("style/editor/font/name",          settingsFrom.value("style/editor/font/name", QString()).toString());
+		settingsTo.setValue("style/editor/font/size",          settingsFrom.value("style/editor/font/size", int()).toInt());
+
+		settingsTo.setValue("style/editor/margin/bookmark",    settingsFrom.value("style/editor/margin/bookmark", bool()).toBool());
+		settingsTo.setValue("style/editor/margin/fold",        settingsFrom.value("style/editor/margin/fold", bool()).toBool());
+		settingsTo.setValue("style/editor/margin/line_number", settingsFrom.value("style/editor/margin/lineNumber", bool()).toBool());
+
+		settingsTo.setValue("style/editor/tab/auto_indent",      settingsFrom.value("style/editor/tab/autoIndent", bool()).toBool());
+		settingsTo.setValue("style/editor/tab/backspace_untabs", settingsFrom.value("style/editor/tab/backspaceUntabs", bool()).toBool());
+		settingsTo.setValue("style/editor/tab/indent_size",      settingsFrom.value("style/editor/tab/indentSize", int()).toInt());
+		settingsTo.setValue("style/editor/tab/tab_indents",      settingsFrom.value("style/editor/tab/tabIndents", bool()).toBool());
+		settingsTo.setValue("style/editor/tab/tab_size",         settingsFrom.value("style/editor/tab/tabSize", int()).toInt());
+		settingsTo.setValue("style/editor/tab/use_tabs",         settingsFrom.value("style/editor/tab/useTabs", bool()).toBool());
+
+		settingsTo.setValue("style/editor/theme/background_color",   ColorConvertor::convert(settingsFrom.value("style/editor/theme/backgroundColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/bookmark_bg_color",  ColorConvertor::convert(settingsFrom.value("style/editor/theme/bookmarkBgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/bookmark_fg_color",  ColorConvertor::convert(settingsFrom.value("style/editor/theme/bookmarkFgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/bookmark_style",     settingsFrom.value("style/editor/theme/bookmarkStyle", int()).toInt());
+		settingsTo.setValue("style/editor/theme/caret_color",        ColorConvertor::convert(settingsFrom.value("style/editor/theme/caretColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/color_color",        ColorConvertor::convert(settingsFrom.value("style/editor/theme/colorColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/comment_color",      ColorConvertor::convert(settingsFrom.value("style/editor/theme/commentColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/comment_fold",       settingsFrom.value("style/editor/theme/commentFold", bool()).toBool());
+		settingsTo.setValue("style/editor/theme/comment_style",      settingsFrom.value("style/editor/theme/commentStyle", int()).toInt());
+		settingsTo.setValue("style/editor/theme/default_color",      ColorConvertor::convert(settingsFrom.value("style/editor/theme/defaultColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/default_style",      settingsFrom.value("style/editor/theme/defaultStyle", int()).toInt());
+		settingsTo.setValue("style/editor/theme/error_bg_color",     ColorConvertor::convert(settingsFrom.value("style/editor/theme/errorBgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/fold_bg_color",      ColorConvertor::convert(settingsFrom.value("style/editor/theme/foldBgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/fold_fg_color",      ColorConvertor::convert(settingsFrom.value("style/editor/theme/foldFgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/fold_style",         settingsFrom.value("style/editor/theme/foldStyle", int()).toInt());
+		settingsTo.setValue("style/editor/theme/functions_color",    ColorConvertor::convert(settingsFrom.value("style/editor/theme/functionsColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/functions_style",    settingsFrom.value("style/editor/theme/functionsStyle", int()).toInt());
+		settingsTo.setValue("style/editor/theme/identifier_color",   ColorConvertor::convert(settingsFrom.value("style/editor/theme/identifierColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/identifier_style",   settingsFrom.value("style/editor/theme/identifierStyle", int()).toInt());
+		settingsTo.setValue("style/editor/theme/keyword_color",      ColorConvertor::convert(settingsFrom.value("style/editor/theme/keywordColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/keyword_style",      settingsFrom.value("style/editor/theme/keywordStyle", int()).toInt());
+		settingsTo.setValue("style/editor/theme/number_color",       ColorConvertor::convert(settingsFrom.value("style/editor/theme/numberColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/number_style",       settingsFrom.value("style/editor/theme/numberStyle", int()).toInt());
+		settingsTo.setValue("style/editor/theme/operator_color",     ColorConvertor::convert(settingsFrom.value("style/editor/theme/operatorColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/operator_style",     settingsFrom.value("style/editor/theme/operatorStyle", int()).toInt());
+		settingsTo.setValue("style/editor/theme/selection_bg_color", ColorConvertor::convert(settingsFrom.value("style/editor/theme/selectionBgColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/string_color",       ColorConvertor::convert(settingsFrom.value("style/editor/theme/stringColor", __int32()).value<__int32>()));
+		settingsTo.setValue("style/editor/theme/string_style",       settingsFrom.value("style/editor/theme/stringStyle", int()).toInt());
+		settingsTo.setValue("style/editor/theme/trace_color",        ColorConvertor::convert(settingsFrom.value("style/editor/theme/traceColor", __int32()).value<__int32>()));
+
+		settingsTo.setValue("style/editor/window/show_horz_scroll_bar", settingsFrom.value("style/editor/window/showHorzScrollBar", bool()).toBool());
+		settingsTo.setValue("style/editor/window/word_wrap",            settingsFrom.value("style/editor/window/wordWrap", bool()).toBool());
 
 	}
 	
