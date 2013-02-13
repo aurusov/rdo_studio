@@ -47,7 +47,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;RDO_LIMIT_RES;WIN32;NDEBUG;_LIB;WINVER=0x0501;NOMINMAX"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -115,7 +115,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;RDO_LIMIT_RES;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;NOMINMAX"
 				RuntimeLibrary="3"
 				BrowseInformation="1"

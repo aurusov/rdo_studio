@@ -15,7 +15,7 @@
 #include <QtSql\QtSql>
 #include <QtCore\QCoreApplication>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\compiler\parser\src\db\init_struct_db.h"
+#include "simulator\runtime\src\db\init_struct_db.h"
 // --------------------------------------------------------------------------------
 
 int main(int argc, char *argv[])

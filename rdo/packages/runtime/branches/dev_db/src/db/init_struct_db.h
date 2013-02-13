@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\compiler\parser\src\db\general_db.h"
+#include "simulator\runtime\src\db\general_db.h"
 // --------------------------------------------------------------------------------
 
 class InitSructDB : public GeneralDB
