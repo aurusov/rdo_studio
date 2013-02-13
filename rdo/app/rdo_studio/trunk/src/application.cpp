@@ -665,6 +665,15 @@ CREF(rdoEditor::LPRDOEditorEditStyle) RDOStudioApp::getEditorEditStyle() const
 #ifdef Q_OS_WIN
 void RDOStudioApp::convertSettings() const
 {
+	class ColorConvertor
+	{
+	public:
+		static QColor convert(QColor color)
+		{
+			return QColor(color.blue(), color.green(), color.red());
+		}
+	};
+
 	QSettings settingsTo;
 	QSettings settingsFrom("HKEY_CURRENT_USER\\Software\\RAO-studio", QSettings::NativeFormat);
 	QStringList childGroupsFrom = settingsFrom.childGroups();
@@ -701,5 +710,27 @@ void RDOStudioApp::convertSettings() const
 		}
 		settingsFrom.remove("reopen");
 	}
+	if(childGroupsFrom.contains("style"))
+	{
+		settingsTo.setValue("style/build/build/warning", settingsFrom.value("style/build/build/warning", bool()).toBool());
+		
+		settingsTo.setValue("style/build/font/character_set", settingsFrom.value("style/build/font/characterSet", int()).toInt());
+		settingsTo.setValue("style/build/font/codepage", settingsFrom.value("style/build/font/codepage", int()).toInt());
+		settingsTo.setValue("style/build/font/name", settingsFrom.value("style/build/font/name", QString()).toString());
+		settingsTo.setValue("style/build/font/size", settingsFrom.value("style/build/font/size", int()).toInt());
+
+		settingsTo.setValue("style/build/tab/auto_indent", settingsFrom.value("style/build/tab/autoIndent", bool()).toBool());
+		settingsTo.setValue("style/build/tab/backspace_untabs", settingsFrom.value("style/build/tab/backspaceUntabs", bool()).toBool());
+		settingsTo.setValue("style/build/tab/indent_size", settingsFrom.value("style/build/tab/indentSize", int()).toInt());
+		settingsTo.setValue("style/build/tab/tab_indents", settingsFrom.value("style/build/tab/tabIndents", bool()).toBool());
+		settingsTo.setValue("style/build/tab/tab_size", settingsFrom.value("style/build/tab/tabSize", int()).toInt());
+		settingsTo.setValue("style/build/tab/use_tabs", settingsFrom.value("style/build/tab/useTabs", bool()).toBool());
+
+		settingsTo.setValue("style/build/theme/background_color", ColorConvertor::convert(settingsFrom.value("style/build/tab/backgroundColor", __int32()).value<QColor>()));
+		settingsTo.setValue("style/build/theme/bookmark_bg_color", ColorConvertor::convert(settingsFrom.value("style/build/tab/bookmarkBgColor", __int32()).value<QColor>()));
+		settingsTo.setValue("style/build/theme/bookmark_bg_color", ColorConvertor::convert(settingsFrom.value("style/build/tab/bookmarkBgColor", __int32()).value<QColor>()));
+
+	}
+	
 }
 #endif
