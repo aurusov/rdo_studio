@@ -724,7 +724,7 @@ private:
 	template <class T>
 	static QVariant convert(const QVariant& value)
 	{
-		return value.value<T>();
+		return value;
 	}
 
 	template <>
