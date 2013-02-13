@@ -49,33 +49,34 @@ void InitSructDB::rdoValueTable(QString tableName, QString dataType)
 		.arg(tableName)
 		.arg(dataType));
 
-	m_queryList.push_back(QString(
-		"CREATE TRIGGER %1_trig "
-		"AFTER INSERT ON %1 "
-		"FOR EACH ROW "
-		"EXECUTE PROCEDURE copy_rdo_value_id();")
-		.arg(tableName));
+	triger(tableName,"copy_rdo_value_id");
 }
 
-void InitSructDB::dataTypeTable(QString tableName, QString dataType)
+void InitSructDB::dataTypeTable(QString tableName)
 {
 	//------------------------
 	m_queryList.push_back(QString(
 		"CREATE TABLE %1("
 		"id      integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
-		"def_val %2,"
-		"PRIMARY KEY (id)"
+		"def_val integer,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (def_val) REFERENCES %1_rv(id)"
 		");")
-		.arg(tableName)
-		.arg(dataType));
+		.arg(tableName));
 
+	triger(tableName,"copy_type_id");
+//------------------------
+}
+
+void InitSructDB::triger(QString tableName, QString functionName)
+{
 	m_queryList.push_back(QString(
 		"CREATE TRIGGER %1_trig "
 		"AFTER INSERT ON %1 "
 		"FOR EACH ROW "
-		"EXECUTE PROCEDURE copy_type_id();")
-		.arg(tableName));
-//------------------------
+		"EXECUTE PROCEDURE %2();")
+		.arg(tableName)
+		.arg(functionName));
 }
 
 void InitSructDB::generateCreateDBQuery()
@@ -123,34 +124,72 @@ void InitSructDB::generateCreateDBQuery()
 
 //------------------------
 	m_queryList.push_back(
-		"CREATE TABLE real("
-		"id          integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
-		"def_val     real,"
-		"min         real,"
-		"max         real,"
+		"CREATE TABLE rdo_value("
+		"value_id  integer,"
+		"table_id integer NOT NULL,"
+		"PRIMARY KEY (value_id)"
+		");");
+
+	m_queryList.push_back("CREATE SEQUENCE rdo_value_seq;");
+
+	m_queryList.push_back(
+		"CREATE FUNCTION copy_rdo_value_id() RETURNS TRIGGER AS $trig$ "
+		"BEGIN "
+		"INSERT INTO rdo_value VALUES "
+		"(NEW.id, NEW.tableoid); "
+		"RETURN NULL; "
+		"END; "
+		"$trig$ LANGUAGE plpgsql; ");
+
+	rdoValueTable("real_rv","real");
+	rdoValueTable("int_rv","integer");
+	rdoValueTable("identificator_rv","VARCHAR(40)");
+	rdoValueTable("bool_rv","boolean");
+	rdoValueTable("string_rv","VARCHAR(40)");
+	rdoValueTable("enum_rv","VARCHAR(40)");
+
+	m_queryList.push_back(
+		"CREATE TABLE array_rv("
+		"id  integer NOT NULL DEFAULT nextval('rdo_value_seq'),"
 		"PRIMARY KEY (id)"
 		");");
 
+	triger("array_rv","copy_rdo_value_id");
+
 	m_queryList.push_back(
-		"CREATE TRIGGER real_trig "
-		"AFTER INSERT ON real "
-		"FOR EACH ROW "
-		"EXECUTE PROCEDURE copy_type_id();");
+		"CREATE TABLE array_value("
+		"array_id      integer,"
+		"array_elem_id serial,"
+		"vv_id         integer NOT NULL,"
+		"PRIMARY KEY   (array_id, vv_id),"
+		"FOREIGN KEY   (array_id) REFERENCES array_rv"
+		");");
+//------------------------
+
+//------------------------
+	m_queryList.push_back(
+		"CREATE TABLE real("
+		"id          integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
+		"def_val     integer,"
+		"min         real,"
+		"max         real,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (def_val) REFERENCES real_rv(id)"
+		");");
+
+	triger("real","copy_type_id");
 //------------------------
 
 //------------------------
 	m_queryList.push_back(
 		"CREATE TABLE enum("
 		"id          integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
-		"def_val     VARCHAR(40),"
-		"PRIMARY KEY (id)"
+		"def_val     integer,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (def_val) REFERENCES enum_rv(id)"
 		");");
 
-	m_queryList.push_back(
-		"CREATE TRIGGER enum_trig "
-		"AFTER INSERT ON enum "
-		"FOR EACH ROW "
-		"EXECUTE PROCEDURE copy_type_id();");
+	triger("enum","copy_type_id");
 
 	m_queryList.push_back(
 		"CREATE TABLE enum_valid_value("
@@ -170,14 +209,11 @@ void InitSructDB::generateCreateDBQuery()
 		"def_val     integer,"
 		"min         integer,"
 		"max         integer,"
-		"PRIMARY KEY (id)"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (def_val) REFERENCES int_rv(id)"
 		");");
 
-	m_queryList.push_back(
-		"CREATE TRIGGER int_trig "
-		"AFTER INSERT ON int "
-		"FOR EACH ROW "
-		"EXECUTE PROCEDURE copy_type_id();");
+	triger("int","copy_type_id");
 //------------------------
 
 //------------------------
@@ -187,67 +223,10 @@ void InitSructDB::generateCreateDBQuery()
 		"PRIMARY KEY (id)"
 		");");
 
-	m_queryList.push_back(
-		"CREATE TRIGGER void_trig "
-		"AFTER INSERT ON void "
-		"FOR EACH ROW "
-		"EXECUTE PROCEDURE copy_type_id();");
+	triger("void","copy_type_id");
 //------------------------
 
-	dataTypeTable("identificator","VARCHAR(40)");
-	dataTypeTable("bool","boolean");
-	dataTypeTable("string","VARCHAR(40)");
-
-
-
-//------------------------
-	m_queryList.push_back(
-		"CREATE TABLE rdo_value("
-		"value_id  integer,"
-		"table_id integer NOT NULL,"
-		"PRIMARY KEY (value_id)"
-		");");
-
-
-	m_queryList.push_back("CREATE SEQUENCE rdo_value_seq;");
-
-	m_queryList.push_back(
-		"CREATE FUNCTION copy_rdo_value_id() RETURNS TRIGGER AS $trig$ "
-		"BEGIN "
-		"INSERT INTO rdo_value VALUES "
-		"(NEW.id, NEW.tableoid); "
-		"RETURN NULL; "
-		"END; "
-		"$trig$ LANGUAGE plpgsql; ");
-//------------------------
-
-	rdoValueTable("real_rv","real");
-	rdoValueTable("int_rv","integer");
-	rdoValueTable("identificator_rv","VARCHAR(40)");
-	rdoValueTable("bool_rv","boolean");
-	rdoValueTable("string_rv","VARCHAR(40)");
-	rdoValueTable("enum_rv","VARCHAR(40)");
-
-//------------------------
-	m_queryList.push_back(
-		"CREATE TABLE array_rv("
-		"id  integer NOT NULL DEFAULT nextval('rdo_value_seq'),"
-		"PRIMARY KEY (id)"
-		");");
-
-	m_queryList.push_back(
-		"CREATE TRIGGER array_rv_trig "
-		"AFTER INSERT ON array_rv "
-		"FOR EACH ROW "
-		"EXECUTE PROCEDURE copy_rdo_value_id();");
-
-	m_queryList.push_back(
-		"CREATE TABLE array_value("
-		"array_id      integer,"
-		"array_elem_id serial,"
-		"vv_id         integer NOT NULL,"
-		"PRIMARY KEY   (array_id, vv_id),"
-		"FOREIGN KEY   (array_id) REFERENCES array_rv"
-		");");
-//------------------------
+	dataTypeTable("identificator");
+	dataTypeTable("bool");
+	dataTypeTable("string");
 }
