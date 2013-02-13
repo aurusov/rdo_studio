@@ -684,13 +684,13 @@ public:
 		if (!settingsFrom.contains(from))
 			return;
 
-		setValue(to, value<T>(from));
+		setValue(to, convertTo<T>(value<T>(from)));
 	}
 
 	template <class T>
 	T value(const QString& from)
 	{
-		return convert<T>(settingsFrom.value(from, qt_to_mfc_type_convertor<T>::type())).value<T>();
+		return convertFrom<T>(settingsFrom.value(from, qt_to_mfc_type_convertor<T>::type())).value<T>();
 	}
 
 	template <class T>
@@ -722,16 +722,28 @@ private:
 	};
 
 	template <class T>
-	static QVariant convert(const QVariant& value)
+	static QVariant convertFrom(const QVariant& value)
 	{
 		return value;
 	}
 
 	template <>
-	static QVariant convert<QColor>(const QVariant& value)
+	static QVariant convertFrom<QColor>(const QVariant& value)
 	{
 		__int32 colorRef = value.value<__int32>();
 		return QColor(GetRValue(colorRef), GetGValue(colorRef), GetBValue(colorRef));
+	}
+
+	template <class T>
+	static QVariant convertTo(const QVariant& value)
+	{
+		return value;
+	}
+
+	template <>
+	static QVariant convertTo<QColor>(const QVariant& value)
+	{
+		return value.value<QColor>().name();
 	}
 };
 
