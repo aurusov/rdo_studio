@@ -728,7 +728,7 @@ void RDOStudioApp::convertSettings() const
 
 		settingsTo.setValue("style/build/theme/background_color", ColorConvertor::convert(settingsFrom.value("style/build/tab/backgroundColor", __int32()).value<QColor>()));
 		settingsTo.setValue("style/build/theme/bookmark_bg_color", ColorConvertor::convert(settingsFrom.value("style/build/tab/bookmarkBgColor", __int32()).value<QColor>()));
-		settingsTo.setValue("style/build/theme/bookmark_bg_color", ColorConvertor::convert(settingsFrom.value("style/build/tab/bookmarkBgColor", __int32()).value<QColor>()));
+		settingsTo.setValue("style/build/theme/bookmark_fg_color", ColorConvertor::convert(settingsFrom.value("style/build/tab/bookmarkFgColor", __int32()).value<QColor>()));
 
 	}
 	
