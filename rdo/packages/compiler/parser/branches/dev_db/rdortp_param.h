@@ -27,10 +27,10 @@ OPEN_RDO_PARSER_NAMESPACE
 PREDECLARE_POINTER(RDORTPResType);
 
 CLASS(RDORTPParam):
-	    INSTANCE_OF      (RDOParam          )
-	AND IMPLEMENTATION_OF(IModelStructure   )
-	AND IMPLEMENTATION_OF(IName             )
-	AND IMPLEMENTATION_OF(ISerializeTypeInDB)
+	    INSTANCE_OF      (RDOParam                        )
+	AND IMPLEMENTATION_OF(IModelStructure                 )
+	AND IMPLEMENTATION_OF(IName                           )
+	AND IMPLEMENTATION_OF(rdo::runtime::ISerializeTypeInDB)
 {
 DECLARE_FACTORY(RDORTPParam);
 public:

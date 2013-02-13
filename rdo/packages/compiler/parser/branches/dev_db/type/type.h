@@ -23,7 +23,7 @@ class RDOType
 	: public virtual rdo::counter_reference
 	, public IType
 	, public IModelStructure
-	, public ISerializeTypeInDB
+	, public rdo::runtime::ISerializeTypeInDB
 {
 DECLARE_FACTORY(RDOType)
 public:
