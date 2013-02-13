@@ -27,6 +27,8 @@ const tstring SYSTEM_OS = _T("Linux");
 const tstring SYSTEM_ARCHITECTURES = _T("AMD64");
 #elif defined( ARCHITECTURE_X86 )
 const tstring SYSTEM_ARCHITECTURES = _T("x86");
+#elif defined( ARCHITECTURE_ARM )
+const tstring SYSTEM_ARCHITECTURES = _T("arm");
 #endif // ARCHITECTURE_AMD64
 
 // Input param constant
