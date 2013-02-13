@@ -18,7 +18,7 @@
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/rdorss.h"
 #include "simulator/compiler/parser/rdortp.h"
-#include "simulator/compiler/parser/src/db/init_struct_db.h"
+#include "simulator/runtime/src/db/init_struct_db.h"
 #include "simulator/runtime/calc/calc_process.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
 #include "simulator/runtime/calc/function/calc_function_system.h"

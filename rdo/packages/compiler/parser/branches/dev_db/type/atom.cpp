@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/rdoparser_error.h"
 #include "simulator/runtime/calc/operation/calc_unary.h"
 #include "simulator/runtime/rdo_resource.h"
-#include "simulator/compiler/parser/headers/db/interface_db.h"
+#include "simulator/runtime/headers/db/interface_db.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

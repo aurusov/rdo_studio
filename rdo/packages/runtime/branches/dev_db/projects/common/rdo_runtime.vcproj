@@ -2009,6 +2009,10 @@
 				RelativePath="..\..\rdo_type.inl"
 				>
 			</File>
+			<File
+				RelativePath="..\..\type\type_db_i.h"
+				>
+			</File>
 			<Filter
 				Name=".rdo_enum"
 				>

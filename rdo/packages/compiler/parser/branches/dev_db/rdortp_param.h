@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/param.h"
-#include "simulator/compiler/parser/type/type_db_i.h"
+#include "simulator/runtime/type/type_db_i.h"
 #include "simulator/runtime/rdo_model_i.h"
 #include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------

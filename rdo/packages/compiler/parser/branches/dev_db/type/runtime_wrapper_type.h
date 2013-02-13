@@ -12,10 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+
 #include "simulator/compiler/parser/type/type.h"
-#include "simulator/compiler/parser/headers/db/interface_db.h"
-#include "simulator/compiler/parser/type/type_db_i.h"
-// --------------------------------------------------------------------------------
+#include "simulator/runtime/type/type_db_i.h"
+#include "simulator/runtime/headers/db/interface_db.h"// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
