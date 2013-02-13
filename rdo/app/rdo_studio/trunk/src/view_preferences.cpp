@@ -57,6 +57,8 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	style_trace.init();
 	style_results.init();
 	style_find.init();
+	//style_chart.init();
+	style_frame.init();
 
 	style_editor  = studioApp.getStyle()->style_editor;
 	style_build   = studioApp.getStyle()->style_build;
@@ -64,6 +66,8 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	style_trace   = studioApp.getStyle()->style_trace;
 	style_results = studioApp.getStyle()->style_results;
 	style_find    = studioApp.getStyle()->style_find;
+	//style_chart   = studioApp.getStyle()->style_chart;
+	style_frame   = studioApp.getStyle()->style_frame;
 
 	fontComboBox->setEditable(false);
 	//Вкладка "Основные"
@@ -91,6 +95,11 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(indentSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onIndentSize(const QString&)));
 	//Вкладка "Стиль и цвет"
 	stackedWidget->setCurrentWidget(pageRoot);
+
+	PTR(QPalette) palette = new QPalette();
+	palette->setColor(QPalette::Foreground, Qt::gray);
+	previewStackedWidget->setPalette(*palette);
+
 	createTree();
 	createPreview();
 	createStyles();
@@ -326,7 +335,7 @@ void ViewPreferences::onFontSize(int index)
 		style_results.font->size = size;
 		style_find.font->size    = size;
 		//style_chart.font->size   = size;
-		//style_frame.font->size   = size;
+		style_frame.font->size   = size;
 		break;
 	case IT_EDITOR:
 		style_editor.font->size = size;
@@ -350,7 +359,7 @@ void ViewPreferences::onFontSize(int index)
 		//style_chart.font->size   = size;
 		break;
 	case IT_FRAME:
-		//style_frame.font->size   = size;
+		style_frame.font->size   = size;
 		break;
 	}
 
@@ -375,7 +384,7 @@ void ViewPreferences::onFontType(int index)
 		style_results.font->name = text.constData();
 		style_find.font->name    = text.constData();
 		//style_chart.font->name   = text.constData();
-		//style_frame.font->name   = text.constData();
+		style_frame.font->name   = text.constData();
 		break;
 	case IT_EDITOR:
 		style_editor.font->name = text.constData();
@@ -399,7 +408,7 @@ void ViewPreferences::onFontType(int index)
 		//style_chart.font->name   = text.constData();
 		break;
 	case IT_FRAME:
-		//style_frame.font->name   = text.constData();
+		style_frame.font->name   = text.constData();
 		break;
 	}
 
@@ -727,6 +736,9 @@ void ViewPreferences::updatePreview()
 
 	preview_find->setEditorStyle(&style_find);
 	preview_find->repaint();
+
+	preview_frame->setStyle(&style_frame);
+	preview_frame->repaint();
 }
 
 void ViewPreferences::createPreview()
@@ -778,6 +790,13 @@ void ViewPreferences::createPreview()
 	preview_find->appendLine(new LogEditLineInfo(rdo::format(IDS_COLORSTYLE_FIND_SAMPLE4)));
 	preview_find->gotoNext();
 	previewStackedWidget->addWidget(preview_find);
+
+	//Заглушка для превью графиков
+	previewStackedWidget->addWidget(new QWidget(previewStackedWidget->currentWidget()));
+
+	preview_frame = new FrameOptionsView(previewStackedWidget->currentWidget());
+	preview_frame->setStyle(&style_frame);
+	previewStackedWidget->addWidget(preview_frame);
 }
 
 void ViewPreferences::createStyles()
@@ -881,6 +900,16 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, find_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
+	//RDOStudioChartViewTheme* chart_theme = static_cast<RDOStudioChartViewTheme*>(style_chart.theme);
+	//item = new StyleItem(IT_CHART, style_chart.font->size, style_chart.font->name);
+	//style_list.push_back(item);
+
+	RDOStudioFrameTheme* frame_theme = static_cast<RDOStudioFrameTheme*>(style_frame.theme);
+	item = new StyleItem(IT_FRAME, style_frame.font->size, style_frame.font->name);
+	item->properties.push_back(new StyleProperty(item, IT_FRAME, frame_theme->defaultStyle, frame_theme->defaultColor, frame_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_FRAME_BORDER, frame_theme->defaultStyle, frame_theme->defaultColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_FRAME_BACKGROUND, frame_theme->defaultStyle, null_fg_color, frame_theme->backgroundColor));
+	style_list.push_back(item);
 }
 
 void ViewPreferences::createTree()
@@ -993,6 +1022,7 @@ PTR(QTreeWidgetItem) ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent
 	item->setData(0, Qt::UserRole, QVariant(itemType));
 	return item;
 }
+
 void ViewPreferences::insertColors(QComboBox* colorBox)
 {
 	insertColor(QColor(0x00, 0x80, 0x00), "Green",   colorBox);
@@ -1021,27 +1051,16 @@ void ViewPreferences::insertColor(const QColor color, QString colorName, QComboB
 	pixmap.fill(color);
 	QRect rBorder(0,0,size-1,size-6);
 	QPainter p(&pixmap);
-	QPen pen(Qt::lightGray, 1, Qt::SolidLine);
+	QPen pen(Qt::black, 1, Qt::SolidLine);
 	p.setPen(pen);
 	p.drawRect(rBorder);
 	colorBox->setItemData(colorBox->findText(colorName), color, Qt::UserRole);
 	colorBox->setItemIcon(colorBox->findText(colorName), QIcon(pixmap));
 }
 
-int ViewPreferences::getStylePropertyType()
-{
-	PTR(StyleItem) item = getStyleItem();
-	BOOST_FOREACH(StyleProperty* prop, item->properties)
-	{
-		if(prop->identificator == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
-			return prop->identificator;
-	}
-	return -1;
-}
-
 PTR(ViewPreferences::StyleProperty) ViewPreferences::getStyleProperty()
 {
-	PTR(StyleItem) item =getStyleItem();
+	PTR(StyleItem) item = getStyleItem();
 	BOOST_FOREACH(StyleProperty* prop, item->properties)
 	{
 		if(prop->identificator == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
@@ -1086,6 +1105,7 @@ void ViewPreferences::apply()
 	studioApp.getStyle()->style_trace   = style_trace;
 	studioApp.getStyle()->style_results = style_results;
 	studioApp.getStyle()->style_find    = style_find;
+	studioApp.getStyle()->style_frame   = style_frame;
 	studioApp.setFileAssociationSetup(m_setup);
 	studioApp.setFileAssociationCheckInFuture(m_checkInFuture);
 	studioApp.setOpenLastProject(m_openLastProject);
