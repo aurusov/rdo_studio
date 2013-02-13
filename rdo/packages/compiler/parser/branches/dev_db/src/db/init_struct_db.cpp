@@ -49,12 +49,11 @@ void InitSructDB::rdoValueTable(QString tableName, QString dataType)
 		.arg(tableName)
 		.arg(dataType));
 
-	triger(tableName,"copy_rdo_value_id");
+	trigger(tableName,"copy_rdo_value_id");
 }
 
 void InitSructDB::dataTypeTable(QString tableName)
 {
-	//------------------------
 	m_queryList.push_back(QString(
 		"CREATE TABLE %1("
 		"id      integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
@@ -64,11 +63,10 @@ void InitSructDB::dataTypeTable(QString tableName)
 		");")
 		.arg(tableName));
 
-	triger(tableName,"copy_type_id");
-//------------------------
+	trigger(tableName,"copy_type_id");
 }
 
-void InitSructDB::triger(QString tableName, QString functionName)
+void InitSructDB::trigger(QString tableName, QString functionName)
 {
 	m_queryList.push_back(QString(
 		"CREATE TRIGGER %1_trig "
@@ -154,7 +152,7 @@ void InitSructDB::generateCreateDBQuery()
 		"PRIMARY KEY (id)"
 		");");
 
-	triger("array_rv","copy_rdo_value_id");
+	trigger("array_rv","copy_rdo_value_id");
 
 	m_queryList.push_back(
 		"CREATE TABLE array_value("
@@ -177,7 +175,7 @@ void InitSructDB::generateCreateDBQuery()
 		"FOREIGN KEY (def_val) REFERENCES real_rv(id)"
 		");");
 
-	triger("real","copy_type_id");
+	trigger("real","copy_type_id");
 //------------------------
 
 //------------------------
@@ -189,7 +187,7 @@ void InitSructDB::generateCreateDBQuery()
 		"FOREIGN KEY (def_val) REFERENCES enum_rv(id)"
 		");");
 
-	triger("enum","copy_type_id");
+	trigger("enum","copy_type_id");
 
 	m_queryList.push_back(
 		"CREATE TABLE enum_valid_value("
@@ -213,7 +211,7 @@ void InitSructDB::generateCreateDBQuery()
 		"FOREIGN KEY (def_val) REFERENCES int_rv(id)"
 		");");
 
-	triger("int","copy_type_id");
+	trigger("int","copy_type_id");
 //------------------------
 
 //------------------------
@@ -223,7 +221,7 @@ void InitSructDB::generateCreateDBQuery()
 		"PRIMARY KEY (id)"
 		");");
 
-	triger("void","copy_type_id");
+	trigger("void","copy_type_id");
 //------------------------
 
 	dataTypeTable("identificator");

@@ -26,7 +26,7 @@ public:
 private:
 	void rdoValueTable        (QString tableName, QString dataType);
 	void dataTypeTable        (QString tableName);
-	void triger               (QString tableName, QString functionName);
+	void trigger               (QString tableName, QString functionName);
 	void generateCreateDBQuery();
 
 	GeneralDB::QueryList m_queryList;
