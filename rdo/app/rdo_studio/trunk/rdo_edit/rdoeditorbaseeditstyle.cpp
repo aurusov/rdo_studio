@@ -119,7 +119,7 @@ void RDOEditorBaseEditTheme::load( QString regPath )
 	RDOBaseEditTheme::load( regPath );
 
 	QSettings settings;
-	regPath.append("theme\\");
+	regPath.append("theme/");
 	identifierColor        = QColor(settings.value(QString(regPath + "identifier_color"), identifierColor.name()).toString());
 	keywordColor           = QColor(settings.value(QString(regPath + "keyword_color"), keywordColor.name()).toString());
 	functionsColor         = QColor(settings.value(QString(regPath + "functions_color"), functionsColor.name()).toString());
@@ -146,7 +146,7 @@ void RDOEditorBaseEditTheme::save( QString regPath ) const
 	RDOBaseEditTheme::save( regPath );
 
 	QSettings settings;
-	regPath.append("theme\\");
+	regPath.append("theme/");
 	settings.setValue(QString(regPath + "identifier_color"), identifierColor.name());
 	settings.setValue(QString(regPath + "keyword_color"), keywordColor.name());
 	settings.setValue(QString(regPath + "functions_color"), functionsColor.name());

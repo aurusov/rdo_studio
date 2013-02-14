@@ -67,7 +67,7 @@ rbool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 void RDOStyleFont::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("font\\");
+	regPath.append("font/");
 	name         = settings.value(QString(regPath + "name"), QString::fromLocal8Bit(name.c_str())).toString().toLocal8Bit().constData();
 	size         = settings.value(QString(regPath + "size"), size).toInt();
 	codepage     = settings.value(QString(regPath + "codepage"), codepage).toInt();
@@ -81,7 +81,7 @@ void RDOStyleFont::load( QString regPath )
 void RDOStyleFont::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("font\\");
+	regPath.append("font/");
 	settings.setValue(QString(regPath + "name"), QString::fromLocal8Bit(name.c_str()));
 	settings.setValue(QString(regPath + "size"), size);
 	settings.setValue(QString(regPath + "codepage"), codepage);
@@ -172,7 +172,7 @@ rbool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 void RDOStyleTheme::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("theme\\");
+	regPath.append("theme/");
 	defaultColor = QColor(settings.value(QString(regPath + "default_color"), defaultColor.name()).toString());
 	backgroundColor = QColor(settings.value(QString(regPath + "background_color"), backgroundColor.name()).toString());
 	defaultStyle    = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "default_style"), defaultStyle).toInt());
@@ -181,7 +181,7 @@ void RDOStyleTheme::load( QString regPath )
 void RDOStyleTheme::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("theme\\");
+	regPath.append("theme/");
 	settings.setValue(QString(regPath + "default_color"), defaultColor.name());
 	settings.setValue(QString(regPath + "background_color"), backgroundColor.name());
 	settings.setValue(QString(regPath + "default_style"), defaultStyle);
@@ -230,10 +230,10 @@ void RDOStyle::init( CREF(QString) _regPath )
 	regPath = _regPath;
 	if (!regPath.isEmpty()) 
 	{
-		regPath.prepend("style\\");
-		if(regPath.lastIndexOf("\\") != regPath.length() - 1)
+		regPath.prepend("style/");
+		if(regPath.lastIndexOf("/") != regPath.length() - 1)
 		{
-			regPath.append("\\");
+			regPath.append("/");
 		}
 	}
 	initFont();

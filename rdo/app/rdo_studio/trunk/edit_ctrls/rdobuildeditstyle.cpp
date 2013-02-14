@@ -59,7 +59,7 @@ void RDOBuildEditTheme::load( QString regPath )
 	LogEditTheme::load( regPath );
 	
 	QSettings settings;
-	regPath.append("build\\");
+	regPath.append("build/");
 	warning = settings.value(QString(regPath + "warning"), warning).toBool() ? true : false;
 }
 
@@ -68,7 +68,7 @@ void RDOBuildEditTheme::save( QString regPath ) const
 	LogEditTheme::save( regPath );
 
 	QSettings settings;
-	regPath.append("build\\");
+	regPath.append("build/");
 	settings.setValue(QString(regPath + "warning"), warning);
 }
 

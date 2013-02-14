@@ -66,7 +66,7 @@ void RDOFindEditTheme::load( QString regPath )
 	LogEditTheme::load( regPath );
 
 	QSettings settings;
-	regPath.append("theme\\");
+	regPath.append("theme/");
 	keywordColor = QColor(settings.value(QString(regPath + "keyword_color"), keywordColor.name()).toString());
 	keywordStyle = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "keyword_style"), keywordStyle).toInt());
 }
@@ -76,7 +76,7 @@ void RDOFindEditTheme::save( QString regPath ) const
 	LogEditTheme::save( regPath );
 
 	QSettings settings;
-	regPath.append("theme\\");
+	regPath.append("theme/");
 	settings.setValue(QString(regPath + "keyword_color"), keywordColor.name());
 	settings.setValue(QString(regPath + "keyword_style"), keywordStyle);
 }

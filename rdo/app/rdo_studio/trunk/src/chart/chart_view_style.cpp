@@ -86,7 +86,7 @@ void RDOStudioChartViewTheme::load( QString regPath )
 {
 	QSettings settings;
 	RDOStyleTheme::load( regPath );
-	regPath.append("theme\\");
+	regPath.append("theme/");
 	//! @todo qt COLORREF -> QColor
 	//axisFgColor   = settings.value(QString(regPath + "axis_fg_color"), __int32()).toInt();
 	//titleFGColor  = settings.value(QString(regPath + "title_fg_color"), __int32()).toInt();
@@ -101,7 +101,7 @@ void RDOStudioChartViewTheme::save( QString regPath ) const
 {
 	QSettings settings;
 	RDOStyleTheme::save( regPath );
-	regPath.append("theme\\");
+	regPath.append("theme/");
 	//! @todo qt
 	//AfxGetApp()->WriteProfileInt( regPath.c_str(), "axisFgColor", axisFgColor );
 	//AfxGetApp()->WriteProfileInt( regPath.c_str(), "titleFGColor", titleFGColor );
@@ -156,7 +156,7 @@ rbool RDOStudioChartViewFontsTicks::operator !=( const RDOStudioChartViewFontsTi
 void RDOStudioChartViewFontsTicks::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("fonts_ticks\\");
+	regPath.append("fonts_ticks/");
 	titleFontSize  = settings.value(QString(regPath + "title_font_size"), titleFontSize).toInt();
 	legendFontSize = settings.value(QString(regPath + "legend_font_size"), legendFontSize).toInt();
 	tickWidth      = settings.value(QString(regPath + "tick_width"), tickWidth).toInt();
@@ -165,7 +165,7 @@ void RDOStudioChartViewFontsTicks::load( QString regPath )
 void RDOStudioChartViewFontsTicks::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("fonts_ticks\\");
+	regPath.append("fonts_ticks/");
 	settings.setValue(QString(regPath + "title_font_size"), titleFontSize);
 	settings.setValue(QString(regPath + "legend_font_size"), legendFontSize);
 	settings.setValue(QString(regPath + "tick_width"), tickWidth);

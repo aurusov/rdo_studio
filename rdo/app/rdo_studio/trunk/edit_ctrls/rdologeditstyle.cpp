@@ -59,7 +59,7 @@ void LogEditTheme::load( QString regPath )
 	RDOBaseEditTheme::load( regPath );
 
 	QSettings settings;
-	regPath.append("theme\\");
+	regPath.append("theme/");
 	selectLineBgColor = QColor(settings.value(QString(regPath + "select_line_bg_color"), selectLineBgColor.name()).toString());
 }
 
@@ -68,7 +68,7 @@ void LogEditTheme::save( QString regPath ) const
 	RDOBaseEditTheme::save( regPath );
 
 	QSettings settings;
-	regPath.append("theme\\");
+	regPath.append("theme/");
 	settings.setValue(QString(regPath + "select_line_bg_color"), selectLineBgColor.name());
 }
 

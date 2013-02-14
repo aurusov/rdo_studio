@@ -229,7 +229,7 @@ rbool LogTheme::operator !=( const LogTheme& theme ) const
 void LogTheme::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("theme\\");
+	regPath.append("theme/");
 	style = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "style"), style).toInt());
 	defaultColor.load( regPath, "defaultColor" );
 	es.load ( regPath, "es"  );
@@ -262,7 +262,7 @@ void LogTheme::load( QString regPath )
 void LogTheme::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("theme\\");
+	regPath.append("theme/");
 	settings.setValue(QString(regPath + "style"), style);
 	defaultColor.save( regPath, "defaultColor" );
 	es.save ( regPath, "es"  );
@@ -333,7 +333,7 @@ rbool LogBorders::operator !=( const LogBorders& borders ) const
 void LogBorders::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("borders\\");
+	regPath.append("borders/");
 	vertBorder = settings.value(QString(regPath + "vert_border"), vertBorder).toInt();
 	horzBorder = settings.value(QString(regPath + "horz_border"), horzBorder).toInt();
 }
@@ -341,7 +341,7 @@ void LogBorders::load( QString regPath )
 void LogBorders::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("borders\\");
+	regPath.append("borders/");
 	settings.setValue(QString(regPath + "vert_border"), vertBorder);
 	settings.setValue(QString(regPath + "horz_border"), horzBorder);
 }
