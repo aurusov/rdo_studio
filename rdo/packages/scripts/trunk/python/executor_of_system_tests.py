@@ -65,13 +65,13 @@ dividing_line = '---------------------------------------------------------------
 #                                 functions                                   #
 ###############################################################################
 
-def safe_encode(string):
-    return string.encode(sys.getfilesystemencoding())
+def safe_encode(string, encoding):
+    return string.encode(encoding)
 
 
 def print_list_of_line(list):
     for string in list:
-        print string
+        print safe_encode(string, sys.getfilesystemencoding())
 
 
 def cut_slash(list):
@@ -254,19 +254,19 @@ for task in files:
         except:
             exit_code = DEFAULT_EXIT_CODE
         
-        print u'Project              :', task
-        print u'Model file           :', model['name']
-        print u'Target               :', model['target']
-        print u'Exit code            :', model['exit_code']
-        print u'Trace file           :', model['trace']
-        print u'Result file          :', model['result']
-        print u'Log compilation file :', model['log_compilation']
+        print u'Project              :', safe_encode(task, sys.getfilesystemencoding())
+        print u'Model file           :', safe_encode(model['name'], sys.getfilesystemencoding())
+        print u'Target               :', safe_encode(model['target'], sys.getfilesystemencoding())
+        print u'Exit code            :', safe_encode(model['exit_code'], sys.getfilesystemencoding())
+        print u'Trace file           :', safe_encode(model['trace'], sys.getfilesystemencoding())
+        print u'Result file          :', safe_encode(model['result'], sys.getfilesystemencoding())
+        print u'Log compilation file :', safe_encode(model['log_compilation'], sys.getfilesystemencoding())
 
         if len(etalons):
             print '\n', u'Etalons :', '\n'
         
         for etalon in etalons:
-            print u'source:', etalon['source'], u'target', etalon['target']
+            print u'source:', safe_encode(etalon['source'], sys.getfilesystemencoding()), u'target', safe_encode(etalon['target'], sys.getfilesystemencoding())
 
         print ''
 
@@ -285,7 +285,7 @@ for task in files:
         if model['target'] == TARGET_CONSOLE:
             # run rdo_console app on test model
             command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model_file))
-            simulation_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            simulation_code = subprocess.call(safe_encode(command, 'UTF-8'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             print u'SIMYLATION EXIT CODE :', simulation_code
 
             # check simulation exit code
@@ -305,7 +305,7 @@ for task in files:
                                        + ' -t ' + wrap_the_string_in_quotes(simulation_trace) + ' -r ' + wrap_the_string_in_quotes(simulation_result)
                                        )
 
-                test_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                test_code = subprocess.call(safe_encode(command, 'UTF-8'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
                 check_exit_code_string = u'ERROR UNKNOWN'
 
@@ -361,7 +361,7 @@ for task in files:
             
             model_file    = temp_directory_name + model['name']
             command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model_file) + u' -c')
-            convertor_exit_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            convertor_exit_code = subprocess.call(safe_encode(command, 'UTF-8'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             print u'CONVERT EXIT CODE :', convertor_exit_code, u'\n'
 
             cycle_exit_code = APP_CODE_TERMINATION_NORMAL
