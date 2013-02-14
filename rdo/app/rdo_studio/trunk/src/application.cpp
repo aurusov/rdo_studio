@@ -795,121 +795,261 @@ void RDOStudioApp::convertSettings() const
 
 		convertor.convert<bool>("style/build/tab/autoIndent",      "style/build/tab/auto_indent");
 		convertor.convert<bool>("style/build/tab/backspaceUntabs", "style/build/tab/backspace_untabs");
-		convertor.convert<int >("style/build/tab/indentSize",      "style/build/tab/indent_size");
+		convertor.convert<int> ("style/build/tab/indentSize",      "style/build/tab/indent_size");
 		convertor.convert<bool>("style/build/tab/tabIndents",      "style/build/tab/tab_indents");
-		convertor.convert<int >("style/build/tab/tabSize",         "style/build/tab/tab_size");
+		convertor.convert<int> ("style/build/tab/tabSize",         "style/build/tab/tab_size");
 		convertor.convert<bool>("style/build/tab/useTabs",         "style/build/tab/use_tabs");
 
 		convertor.convert<QColor>("style/build/theme/backgroundColor", "style/build/theme/background_color");
+		convertor.convert<QColor>("style/build/theme/bookmarkBgColor",    "style/build/theme/bookmark_bg_color");
+		convertor.convert<QColor>("style/build/theme/bookmarkFgColor",    "style/build/theme/bookmark_fg_color");
+		convertor.convert<int>   ("style/build/theme/bookmarkStyle",      "style/build/theme/bookmark_style");
+		convertor.convert<QColor>("style/build/theme/caretColor",         "style/build/theme/caret_color");
+		convertor.convert<QColor>("style/build/theme/defaultColor",       "style/build/theme/default_color");
+		convertor.convert<int>   ("style/build/theme/defaultStyle",       "style/build/theme/default_style");
+		convertor.convert<QColor>("style/build/theme/selectionBgColor",   "style/build/theme/selection_bg_color");
+		convertor.convert<QColor>("style/build/theme/selectLineBgColor",  "style/build/theme/select_line_bg_color");
 
-		//convertor.convert("style/build/theme/bookmark_bg_color",    ColorConvertor::convert(settingsFrom.value("style/build/theme/bookmarkBgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/build/theme/bookmark_fg_color",    ColorConvertor::convert(settingsFrom.value("style/build/theme/bookmarkFgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/build/theme/bookmark_style",       settingsFrom.value("style/build/theme/bookmarkStyle", int()).toInt());
-		//convertor.convert("style/build/theme/caret_color",          ColorConvertor::convert(settingsFrom.value("style/build/theme/caretColor", __int32()).value<__int32>()));
-		//convertor.convert("style/build/theme/default_color",        ColorConvertor::convert(settingsFrom.value("style/build/theme/defaultColor", __int32()).value<__int32>()));
-		//convertor.convert("style/build/theme/default_style",        settingsFrom.value("style/build/theme/defaultStyle", int()).toInt());
-		//convertor.convert("style/build/theme/selection_bg_color",   ColorConvertor::convert(settingsFrom.value("style/build/theme/selectionBgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/build/theme/select_line_bg_color", ColorConvertor::convert(settingsFrom.value("style/build/theme/selectLineBgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/build/window/show_horz_scroll_bar", settingsFrom.value("style/build/window/showHorzScrollBar", bool()).toBool());
-		//convertor.convert("style/build/window/word_wrap",            settingsFrom.value("style/build/window/wordWrap", bool()).toBool());
+		convertor.convert<bool>  ("style/build/window/showHorzScrollBar", "style/build/window/show_horz_scroll_bar");
+		convertor.convert<bool>  ("style/build/window/wordWrap",          "style/build/window/word_wrap");
 
-		//convertor.convert("style/chart/font/character_set", settingsFrom.value("style/chart/font/characterSet", int()).toInt());
-		//convertor.convert("style/chart/font/codepage",      settingsFrom.value("style/chart/font/codepage", int()).toInt());
-		//convertor.convert("style/chart/font/name",          settingsFrom.value("style/chart/font/name", QString()).toString());
-		//convertor.convert("style/chart/font/size",          settingsFrom.value("style/chart/font/size", int()).toInt());
+		convertor.convert<int>    ("style/chart/font/characterSet", "style/chart/font/character_set");
+		convertor.convert<int>    ("style/chart/font/codepage",     "style/chart/font/codepage");
+		convertor.convert<QString>("style/chart/font/name",         "style/chart/font/name");
+		convertor.convert<int>    ("style/chart/font/size",         "style/chart/font/size");
 
-		//convertor.convert("style/chart/fonts_ticks/legend_font_size", settingsFrom.value("style/chart/fonts_ticks/legendFontSize", int()).toInt());
-		//convertor.convert("style/chart/fonts_ticks/tick_width",       settingsFrom.value("style/chart/fonts_ticks/tickWidth", int()).toInt());
-		//convertor.convert("style/chart/fonts_ticks/title_font_size",  settingsFrom.value("style/chart/fonts_ticks/titleFontSize", int()).toInt());
+		convertor.convert<int>("style/chart/fonts_ticks/legendFontSize", "style/chart/fonts_ticks/legend_font_size");
+		convertor.convert<int>("style/chart/fonts_ticks/tickWidth",      "style/chart/fonts_ticks/tick_width");
+		convertor.convert<int>("style/chart/fonts_ticks/titleFontSize",  "style/chart/fonts_ticks/title_font_size");
 
-		//convertor.convert("style/chart/theme/axis_fg_color",    ColorConvertor::convert(settingsFrom.value("style/chart/theme/axisFgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/chart/theme/background_color", ColorConvertor::convert(settingsFrom.value("style/chart/theme/backgroundColor", __int32()).value<__int32>()));
-		//convertor.convert("style/chart/theme/chart_bg_color",   ColorConvertor::convert(settingsFrom.value("style/chart/theme/chartBgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/chart/theme/default_color",    ColorConvertor::convert(settingsFrom.value("style/chart/theme/defaultColor", __int32()).value<__int32>()));
-		//convertor.convert("style/chart/theme/default_style",    settingsFrom.value("style/chart/theme/defaultStyle", int()).toInt());
-		//convertor.convert("style/chart/theme/legend_fg_color",  ColorConvertor::convert(settingsFrom.value("style/chart/theme/legendFgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/chart/theme/legend_style",     settingsFrom.value("style/chart/theme/legendStyle", int()).toInt());
-		//convertor.convert("style/chart/theme/time_bg_color",    ColorConvertor::convert(settingsFrom.value("style/chart/theme/timeBgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/chart/theme/title_fg_color",   ColorConvertor::convert(settingsFrom.value("style/chart/theme/titleFGColor", __int32()).value<__int32>()));
-		//convertor.convert("style/chart/theme/title_style",     settingsFrom.value("style/chart/theme/titleStyle", int()).toInt());
+		convertor.convert<QColor>("style/chart/theme/axisFgColor",     "style/chart/theme/axis_fg_color");
+		convertor.convert<QColor>("style/chart/theme/backgroundColor", "style/chart/theme/background_color");
+		convertor.convert<QColor>("style/chart/theme/chartBgColor",    "style/chart/theme/chart_bg_color");
+		convertor.convert<QColor>("style/chart/theme/defaultColor",    "style/chart/theme/default_color");
+		convertor.convert<int>   ("style/chart/theme/defaultStyle",    "style/chart/theme/default_style");
+		convertor.convert<QColor>("style/chart/theme/legendFgColor",   "style/chart/theme/legend_fg_color");
+		convertor.convert<int>   ("style/chart/theme/legendStyle",     "style/chart/theme/legend_style");
+		convertor.convert<QColor>("style/chart/theme/timeBgColor",     "style/chart/theme/time_bg_color");
+		convertor.convert<QColor>("style/chart/theme/titleFGColor",    "style/chart/theme/title_fg_color");
+		convertor.convert<int>   ("style/chart/theme/titleStyle",      "style/chart/theme/title_style");
 
-		//convertor.convert("style/debug/font/character_set", settingsFrom.value("style/debug/font/characterSet", int()).toInt());
-		//convertor.convert("style/debug/font/codepage",      settingsFrom.value("style/debug/font/codepage", int()).toInt());
-		//convertor.convert("style/debug/font/name",          settingsFrom.value("style/debug/font/name", QString()).toString());
-		//convertor.convert("style/debug/font/size",          settingsFrom.value("style/debug/font/size", int()).toInt());
+		convertor.convert<int>    ("style/debug/font/characterSet", "style/debug/font/character_set");
+		convertor.convert<int>    ("style/debug/font/codepage",     "style/debug/font/codepage");
+		convertor.convert<QString>("style/debug/font/name",         "style/debug/font/name");
+		convertor.convert<int>    ("style/debug/font/size",         "style/debug/font/size");
 
-		//convertor.convert("style/debug/tab/auto_indent",      settingsFrom.value("style/debug/tab/autoIndent", bool()).toBool());
-		//convertor.convert("style/debug/tab/backspace_untabs", settingsFrom.value("style/debug/tab/backspaceUntabs", bool()).toBool());
-		//convertor.convert("style/debug/tab/indent_size",      settingsFrom.value("style/debug/tab/indentSize", int()).toInt());
-		//convertor.convert("style/debug/tab/tab_indents",      settingsFrom.value("style/debug/tab/tabIndents", bool()).toBool());
-		//convertor.convert("style/debug/tab/tab_size",         settingsFrom.value("style/debug/tab/tabSize", int()).toInt());
-		//convertor.convert("style/debug/tab/use_tabs",         settingsFrom.value("style/debug/tab/useTabs", bool()).toBool());
+		convertor.convert<bool>("style/debug/tab/autoIndent",      "style/debug/tab/auto_indent");
+		convertor.convert<bool>("style/debug/tab/backspaceUntabs", "style/debug/tab/backspace_untabs");
+		convertor.convert<int> ("style/debug/tab/indentSize",      "style/debug/tab/indent_size");
+		convertor.convert<bool>("style/debug/tab/tabIndents",      "style/debug/tab/tab_indents");
+		convertor.convert<int> ("style/debug/tab/tabSize",         "style/debug/tab/tab_size");
+		convertor.convert<bool>("style/debug/tab/useTabs",         "style/debug/tab/use_tabs");
 
-		//convertor.convert("style/debug/theme/background_color",     ColorConvertor::convert(settingsFrom.value("style/debug/theme/backgroundColor", __int32()).value<__int32>()));
-		//convertor.convert("style/debug/theme/bookmark_bg_color",    ColorConvertor::convert(settingsFrom.value("style/debug/theme/bookmarkBgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/debug/theme/bookmark_fg_color",    ColorConvertor::convert(settingsFrom.value("style/debug/theme/bookmarkFgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/debug/theme/bookmark_style",       settingsFrom.value("style/debug/theme/bookmarkStyle", int()).toInt());
-		//convertor.convert("style/debug/theme/caret_color",          ColorConvertor::convert(settingsFrom.value("style/debug/theme/caretColor", __int32()).value<__int32>()));
-		//convertor.convert("style/debug/theme/default_color",        ColorConvertor::convert(settingsFrom.value("style/debug/theme/defaultColor", __int32()).value<__int32>()));
-		//convertor.convert("style/debug/theme/default_style",        settingsFrom.value("style/debug/theme/defaultStyle", int()).toInt());
-		//convertor.convert("style/debug/theme/selection_bg_color",   ColorConvertor::convert(settingsFrom.value("style/debug/theme/selectionBgColor", __int32()).value<__int32>()));
+		convertor.convert<QColor>("style/debug/theme/backgroundColor",  "style/debug/theme/background_color");
+		convertor.convert<QColor>("style/debug/theme/bookmarkBgColor",  "style/debug/theme/bookmark_bg_color");
+		convertor.convert<QColor>("style/debug/theme/bookmarkFgColor",  "style/debug/theme/bookmark_fg_color");
+		convertor.convert<int>   ("style/debug/theme/bookmarkStyle",    "style/debug/theme/bookmark_style");
+		convertor.convert<QColor>("style/debug/theme/caretColor",       "style/debug/theme/caret_color");
+		convertor.convert<QColor>("style/debug/theme/defaultColor",     "style/debug/theme/default_color");
+		convertor.convert<int>   ("style/debug/theme/defaultStyle",     "style/debug/theme/default_style");
+		convertor.convert<QColor>("style/debug/theme/selectionBgColor", "style/debug/theme/selection_bg_color");
 
-		//convertor.convert("style/debug/window/show_horz_scroll_bar", settingsFrom.value("style/debug/window/showHorzScrollBar", bool()).toBool());
-		//convertor.convert("style/debug/window/word_wrap",            settingsFrom.value("style/debug/window/wordWrap", bool()).toBool());
+		convertor.convert<bool>("style/debug/window/showHorzScrollBar", "style/debug/window/show_horz_scroll_bar");
+		convertor.convert<bool>("style/debug/window/wordWrap",          "style/debug/window/word_wrap");
 
-		//convertor.convert("style/editor/autoComplete/show_full_list",    settingsFrom.value("style/editor/autoComplete/showFullList", bool()).toBool());
-		//convertor.convert("style/editor/autoComplete/use_auto_complete", settingsFrom.value("style/editor/autoComplete/useAutoComplete", bool()).toBool());
+		convertor.convert<bool>("style/editor/autoComplete/showFullList",    "style/editor/auto_complete/show_full_list");
+		convertor.convert<bool>("style/editor/autoComplete/useAutoComplete", "style/editor/auto_complete/use_auto_complete");
 
-		//settingsFrom.remove("style/editor/buffer");
+		convertor.remove("style/editor/buffer");
 
-		//convertor.convert("style/editor/font/character_set", settingsFrom.value("style/editor/font/characterSet", int()).toInt());
-		//convertor.convert("style/editor/font/codepage",      settingsFrom.value("style/editor/font/codepage", int()).toInt());
-		//convertor.convert("style/editor/font/name",          settingsFrom.value("style/editor/font/name", QString()).toString());
-		//convertor.convert("style/editor/font/size",          settingsFrom.value("style/editor/font/size", int()).toInt());
+		convertor.convert<int>    ("style/editor/font/characterSet", "style/editor/font/character_set");
+		convertor.convert<int>    ("style/editor/font/codepage",     "style/editor/font/codepage");
+		convertor.convert<QString>("style/editor/font/name",         "style/editor/font/name");
+		convertor.convert<int>    ("style/editor/font/size",         "style/editor/font/size");
 
-		//convertor.convert("style/editor/margin/bookmark",    settingsFrom.value("style/editor/margin/bookmark", bool()).toBool());
-		//convertor.convert("style/editor/margin/fold",        settingsFrom.value("style/editor/margin/fold", bool()).toBool());
-		//convertor.convert("style/editor/margin/line_number", settingsFrom.value("style/editor/margin/lineNumber", bool()).toBool());
+		convertor.convert<bool>("style/editor/margin/bookmark",   "style/editor/margin/bookmark");
+		convertor.convert<bool>("style/editor/margin/fold",       "style/editor/margin/fold");
+		convertor.convert<bool>("style/editor/margin/lineNumber", "style/editor/margin/line_number");
 
-		//convertor.convert("style/editor/tab/auto_indent",      settingsFrom.value("style/editor/tab/autoIndent", bool()).toBool());
-		//convertor.convert("style/editor/tab/backspace_untabs", settingsFrom.value("style/editor/tab/backspaceUntabs", bool()).toBool());
-		//convertor.convert("style/editor/tab/indent_size",      settingsFrom.value("style/editor/tab/indentSize", int()).toInt());
-		//convertor.convert("style/editor/tab/tab_indents",      settingsFrom.value("style/editor/tab/tabIndents", bool()).toBool());
-		//convertor.convert("style/editor/tab/tab_size",         settingsFrom.value("style/editor/tab/tabSize", int()).toInt());
-		//convertor.convert("style/editor/tab/use_tabs",         settingsFrom.value("style/editor/tab/useTabs", bool()).toBool());
+		convertor.convert<bool>("style/editor/tab/autoIndent",      "style/editor/tab/auto_indent");
+		convertor.convert<bool>("style/editor/tab/backspaceUntabs", "style/editor/tab/backspace_untabs");
+		convertor.convert<int> ("style/editor/tab/indentSize",      "style/editor/tab/indent_size");
+		convertor.convert<bool>("style/editor/tab/tabIndents",      "style/editor/tab/tab_indents");
+		convertor.convert<int> ("style/editor/tab/tabSize",         "style/editor/tab/tab_size");
+		convertor.convert<bool>("style/editor/tab/useTabs",         "style/editor/tab/use_tabs");
 
-		//convertor.convert("style/editor/theme/background_color",   ColorConvertor::convert(settingsFrom.value("style/editor/theme/backgroundColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/bookmark_bg_color",  ColorConvertor::convert(settingsFrom.value("style/editor/theme/bookmarkBgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/bookmark_fg_color",  ColorConvertor::convert(settingsFrom.value("style/editor/theme/bookmarkFgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/bookmark_style",     settingsFrom.value("style/editor/theme/bookmarkStyle", int()).toInt());
-		//convertor.convert("style/editor/theme/caret_color",        ColorConvertor::convert(settingsFrom.value("style/editor/theme/caretColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/color_color",        ColorConvertor::convert(settingsFrom.value("style/editor/theme/colorColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/comment_color",      ColorConvertor::convert(settingsFrom.value("style/editor/theme/commentColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/comment_fold",       settingsFrom.value("style/editor/theme/commentFold", bool()).toBool());
-		//convertor.convert("style/editor/theme/comment_style",      settingsFrom.value("style/editor/theme/commentStyle", int()).toInt());
-		//convertor.convert("style/editor/theme/default_color",      ColorConvertor::convert(settingsFrom.value("style/editor/theme/defaultColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/default_style",      settingsFrom.value("style/editor/theme/defaultStyle", int()).toInt());
-		//convertor.convert("style/editor/theme/error_bg_color",     ColorConvertor::convert(settingsFrom.value("style/editor/theme/errorBgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/fold_bg_color",      ColorConvertor::convert(settingsFrom.value("style/editor/theme/foldBgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/fold_fg_color",      ColorConvertor::convert(settingsFrom.value("style/editor/theme/foldFgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/fold_style",         settingsFrom.value("style/editor/theme/foldStyle", int()).toInt());
-		//convertor.convert("style/editor/theme/functions_color",    ColorConvertor::convert(settingsFrom.value("style/editor/theme/functionsColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/functions_style",    settingsFrom.value("style/editor/theme/functionsStyle", int()).toInt());
-		//convertor.convert("style/editor/theme/identifier_color",   ColorConvertor::convert(settingsFrom.value("style/editor/theme/identifierColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/identifier_style",   settingsFrom.value("style/editor/theme/identifierStyle", int()).toInt());
-		//convertor.convert("style/editor/theme/keyword_color",      ColorConvertor::convert(settingsFrom.value("style/editor/theme/keywordColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/keyword_style",      settingsFrom.value("style/editor/theme/keywordStyle", int()).toInt());
-		//convertor.convert("style/editor/theme/number_color",       ColorConvertor::convert(settingsFrom.value("style/editor/theme/numberColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/number_style",       settingsFrom.value("style/editor/theme/numberStyle", int()).toInt());
-		//convertor.convert("style/editor/theme/operator_color",     ColorConvertor::convert(settingsFrom.value("style/editor/theme/operatorColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/operator_style",     settingsFrom.value("style/editor/theme/operatorStyle", int()).toInt());
-		//convertor.convert("style/editor/theme/selection_bg_color", ColorConvertor::convert(settingsFrom.value("style/editor/theme/selectionBgColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/string_color",       ColorConvertor::convert(settingsFrom.value("style/editor/theme/stringColor", __int32()).value<__int32>()));
-		//convertor.convert("style/editor/theme/string_style",       settingsFrom.value("style/editor/theme/stringStyle", int()).toInt());
-		//convertor.convert("style/editor/theme/trace_color",        ColorConvertor::convert(settingsFrom.value("style/editor/theme/traceColor", __int32()).value<__int32>()));
+		convertor.convert<QColor>("style/editor/theme/backgroundColor",  "style/editor/theme/background_color");
+		convertor.convert<QColor>("style/editor/theme/bookmarkBgColor",  "style/editor/theme/bookmark_bg_color");
+		convertor.convert<QColor>("style/editor/theme/bookmarkFgColor",  "style/editor/theme/bookmark_fg_color");
+		convertor.convert<int>   ("style/editor/theme/bookmarkStyle",    "style/editor/theme/bookmark_style");
+		convertor.convert<QColor>("style/editor/theme/caretColor",       "style/editor/theme/caret_color");
+		convertor.convert<QColor>("style/editor/theme/colorColor",       "style/editor/theme/color_color");
+		convertor.convert<QColor>("style/editor/theme/commentColor",     "style/editor/theme/comment_color");
+		convertor.convert<bool>  ("style/editor/theme/commentFold",      "style/editor/theme/comment_fold");
+		convertor.convert<int>   ("style/editor/theme/commentStyle",     "style/editor/theme/comment_style");
+		convertor.convert<QColor>("style/editor/theme/defaultColor",     "style/editor/theme/default_color");
+		convertor.convert<int>   ("style/editor/theme/defaultStyle",     "style/editor/theme/default_style");
+		convertor.convert<QColor>("style/editor/theme/errorBgColor",     "style/editor/theme/error_bg_color");
+		convertor.convert<QColor>("style/editor/theme/foldBgColor",      "style/editor/theme/fold_bg_color");
+		convertor.convert<QColor>("style/editor/theme/foldFgColor",      "style/editor/theme/fold_fg_color");
+		convertor.convert<int>   ("style/editor/theme/foldStyle",        "style/editor/theme/fold_style");
+		convertor.convert<QColor>("style/editor/theme/functionsColor",   "style/editor/theme/functions_color");
+		convertor.convert<int>   ("style/editor/theme/functionsStyle",   "style/editor/theme/functions_style");
+		convertor.convert<QColor>("style/editor/theme/identifierColor",  "style/editor/theme/identifier_color");
+		convertor.convert<int>   ("style/editor/theme/identifierStyle",  "style/editor/theme/identifier_style");
+		convertor.convert<QColor>("style/editor/theme/keywordColor",     "style/editor/theme/keyword_color");
+		convertor.convert<int>   ("style/editor/theme/keywordStyle",     "style/editor/theme/keyword_style");
+		convertor.convert<QColor>("style/editor/theme/numberColor",      "style/editor/theme/number_color");
+		convertor.convert<int>   ("style/editor/theme/numberStyle",      "style/editor/theme/number_style");
+		convertor.convert<QColor>("style/editor/theme/operatorColor",    "style/editor/theme/operator_color");
+		convertor.convert<int>   ("style/editor/theme/operatorStyle",    "style/editor/theme/operator_style");
+		convertor.convert<QColor>("style/editor/theme/selectionBgColor", "style/editor/theme/selection_bg_color");
+		convertor.convert<QColor>("style/editor/theme/stringColor",      "style/editor/theme/string_color");
+		convertor.convert<int>   ("style/editor/theme/stringStyle",      "style/editor/theme/string_style");
+		convertor.convert<QColor>("style/editor/theme/traceColor",       "style/editor/theme/trace_color");
 
-		//convertor.convert("style/editor/window/show_horz_scroll_bar", settingsFrom.value("style/editor/window/showHorzScrollBar", bool()).toBool());
-		//convertor.convert("style/editor/window/word_wrap",            settingsFrom.value("style/editor/window/wordWrap", bool()).toBool());
+		convertor.convert<bool>("style/editor/window/showHorzScrollBar", "style/editor/window/show_horz_scroll_bar");
+		convertor.convert<bool>("style/editor/window/wordWrap",          "style/editor/window/word_wrap");
+
+		convertor.convert<int>    ("style/find/font/characterSet", "style/find/font/character_set");
+		convertor.convert<int>    ("style/find/font/codepage",     "style/find/font/codepage");
+		convertor.convert<QString>("style/find/font/name",         "style/find/font/name");
+		convertor.convert<int>    ("style/find/font/size",         "style/find/font/size");
+
+		convertor.convert<bool>("style/find/tab/autoIndent",      "style/find/tab/auto_indent");
+		convertor.convert<bool>("style/find/tab/backspaceUntabs", "style/find/tab/backspace_untabs");
+		convertor.convert<int> ("style/find/tab/indentSize",      "style/find/tab/indent_size");
+		convertor.convert<bool>("style/find/tab/tabIndents",      "style/find/tab/tab_indents");
+		convertor.convert<int> ("style/find/tab/tabSize",         "style/find/tab/tab_size");
+		convertor.convert<bool>("style/find/tab/useTabs",         "style/find/tab/use_tabs");
+
+		convertor.convert<QColor>("style/find/theme/backgroundColor",   "style/find/theme/background_color");
+		convertor.convert<QColor>("style/find/theme/bookmarkBgColor",   "style/find/theme/bookmark_bg_color");
+		convertor.convert<QColor>("style/find/theme/bookmarkFgColor",   "style/find/theme/bookmark_fg_color");
+		convertor.convert<int>   ("style/find/theme/bookmarkStyle",     "style/find/theme/bookmark_style");
+		convertor.convert<QColor>("style/find/theme/caretColor",        "style/find/theme/caret_color");
+		convertor.convert<QColor>("style/find/theme/defaultColor",      "style/find/theme/default_color");
+		convertor.convert<int>   ("style/find/theme/defaultStyle",      "style/find/theme/default_style");
+		convertor.convert<QColor>("style/find/theme/keywordColor",      "style/find/theme/keyword_ñolor");
+		convertor.convert<int>   ("style/find/theme/keywordStyle",      "style/find/theme/keyword_style");
+		convertor.convert<QColor>("style/find/theme/selectionBgColor",  "style/find/theme/selection_bg_color");
+		convertor.convert<QColor>("style/find/theme/selectLineBgColor", "style/find/theme/select_line_bg_color");
+
+		convertor.convert<bool>("style/find/window/showHorzScrollBar", "style/find/window/show_horz_scroll_bar");
+		convertor.convert<bool>("style/find/window/wordWrap",          "style/find/window/word_wrap");
+
+		convertor.convert<int>    ("style/frame/font/characterSet", "style/frame/font/character_set");
+		convertor.convert<int>    ("style/frame/font/codepage",     "style/frame/font/codepage");
+		convertor.convert<QString>("style/frame/font/name",         "style/frame/font/name");
+		convertor.convert<int>    ("style/frame/font/size",         "style/frame/font/size");
+
+		convertor.convert<QColor>("style/frame/theme/backgroundColor",   "style/frame/theme/background_color");
+		convertor.convert<QColor>("style/frame/theme/defaultColor",      "style/frame/theme/default_color");
+		convertor.convert<int>   ("style/frame/theme/defaultStyle",      "style/frame/theme/default_style");
+
+		convertor.convert<int>    ("style/results/font/characterSet", "style/results/font/character_set");
+		convertor.convert<int>    ("style/results/font/codepage",     "style/results/font/codepage");
+		convertor.convert<QString>("style/results/font/name",         "style/results/font/name");
+		convertor.convert<int>    ("style/results/font/size",         "style/results/font/size");
+
+		convertor.convert<bool>("style/results/tab/autoIndent",      "style/results/tab/auto_indent");
+		convertor.convert<bool>("style/results/tab/backspaceUntabs", "style/results/tab/backspace_untabs");
+		convertor.convert<int> ("style/results/tab/indentSize",      "style/results/tab/indent_size");
+		convertor.convert<bool>("style/results/tab/tabIndents",      "style/results/tab/tab_indents");
+		convertor.convert<int> ("style/results/tab/tabSize",         "style/results/tab/tab_size");
+		convertor.convert<bool>("style/results/tab/useTabs",         "style/results/tab/use_tabs");
+
+		convertor.convert<QColor>("style/results/theme/backgroundColor",  "style/results/theme/background_color");
+		convertor.convert<QColor>("style/results/theme/bookmarkBgColor",  "style/results/theme/bookmark_bg_color");
+		convertor.convert<QColor>("style/results/theme/bookmarkFgColor",  "style/results/theme/bookmark_fg_color");
+		convertor.convert<int>   ("style/results/theme/bookmarkStyle",    "style/results/theme/bookmark_style");
+		convertor.convert<QColor>("style/results/theme/caretColor",       "style/results/theme/caret_color");
+		convertor.convert<QColor>("style/results/theme/colorColor",       "style/results/theme/color_color");
+		convertor.convert<QColor>("style/results/theme/commentColor",     "style/results/theme/comment_color");
+		convertor.convert<int>   ("style/results/theme/commentStyle",     "style/results/theme/comment_style");
+		convertor.convert<QColor>("style/results/theme/defaultColor",     "style/results/theme/default_color");
+		convertor.convert<int>   ("style/results/theme/defaultStyle",     "style/results/theme/default_style");
+		convertor.convert<QColor>("style/results/theme/functionsColor",   "style/results/theme/functions_color");
+		convertor.convert<int>   ("style/results/theme/functionsStyle",   "style/results/theme/functions_style");
+		convertor.convert<QColor>("style/results/theme/identifierColor",  "style/results/theme/identifier_color");
+		convertor.convert<int>   ("style/results/theme/identifierStyle",  "style/results/theme/identifier_style");
+		convertor.convert<QColor>("style/results/theme/keywordColor",     "style/results/theme/keyword_color");
+		convertor.convert<int>   ("style/results/theme/keywordStyle",     "style/results/theme/keyword_style");
+		convertor.convert<QColor>("style/results/theme/numberColor",      "style/results/theme/number_color");
+		convertor.convert<int>   ("style/results/theme/numberStyle",      "style/results/theme/number_style");
+		convertor.convert<QColor>("style/results/theme/operatorColor",    "style/results/theme/operator_color");
+		convertor.convert<int>   ("style/results/theme/operatorStyle",    "style/results/theme/operator_style");
+		convertor.convert<QColor>("style/results/theme/selectionBgColor", "style/results/theme/selection_bg_color");
+		convertor.convert<QColor>("style/results/theme/stringColor",      "style/results/theme/string_color");
+		convertor.convert<int>   ("style/results/theme/stringStyle",      "style/results/theme/string_style");
+		convertor.convert<QColor>("style/results/theme/traceColor",       "style/results/theme/trace_color");
+
+		convertor.convert<bool>("style/results/window/showHorzScrollBar", "style/results/window/show_horz_scroll_bar");
+		convertor.convert<bool>("style/results/window/wordWrap",          "style/results/window/word_wrap");
+
+		convertor.convert<int>("style/trace/borders/horzBorder", "style/trace/borders/horz_border");
+		convertor.convert<int>("style/trace/borders/vertBorder", "style/trace/borders/vert_border");
+
+		convertor.convert<int>    ("style/trace/font/characterSet", "style/trace/font/character_set");
+		convertor.convert<int>    ("style/trace/font/codepage",     "style/trace/font/codepage");
+		convertor.convert<QString>("style/trace/font/name",         "style/trace/font/name");
+		convertor.convert<int>    ("style/trace/font/size",         "style/trace/font/size");		
+
+		convertor.convert<QColor>("style/trace/theme/defaultColor_backgroundColor",  "style/trace/theme/default_color_background_color");
+		convertor.convert<QColor>("style/trace/theme/defaultColor_foregroundColor",  "style/trace/theme/default_color_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/dps_backgroundColor",           "style/trace/theme/dps_background_color");
+		convertor.convert<QColor>("style/trace/theme/dps_foregroundColor",           "style/trace/theme/dps_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/eb_backgroundColor",            "style/trace/theme/eb_background_color");
+		convertor.convert<QColor>("style/trace/theme/eb_foregroundColor",            "style/trace/theme/eb_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/ef_backgroundColor",            "style/trace/theme/ef_background_color");
+		convertor.convert<QColor>("style/trace/theme/ef_foregroundColor",            "style/trace/theme/ef_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/ei_backgroundColor",            "style/trace/theme/ei_background_color");
+		convertor.convert<QColor>("style/trace/theme/ei_foregroundColor",            "style/trace/theme/ei_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/er_backgroundColor",            "style/trace/theme/er_background_color");
+		convertor.convert<QColor>("style/trace/theme/er_foregroundColor",            "style/trace/theme/er_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/es_backgroundColor",            "style/trace/theme/es_background_color");
+		convertor.convert<QColor>("style/trace/theme/es_foregroundColor",            "style/trace/theme/es_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/rc_backgroundColor",            "style/trace/theme/rc_background_color");
+		convertor.convert<QColor>("style/trace/theme/rc_foregroundColor",            "style/trace/theme/rc_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/re_backgroundColor",            "style/trace/theme/re_background_color");
+		convertor.convert<QColor>("style/trace/theme/re_foregroundColor",            "style/trace/theme/re_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/rk_backgroundColor",            "style/trace/theme/rk_background_color");
+		convertor.convert<QColor>("style/trace/theme/rk_foregroundColor",            "style/trace/theme/rk_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/s_backgroundColor",             "style/trace/theme/s_background_color");
+		convertor.convert<QColor>("style/trace/theme/s_foregroundColor",             "style/trace/theme/s_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/sb_backgroundColor",            "style/trace/theme/sb_background_color");
+		convertor.convert<QColor>("style/trace/theme/sb_foregroundColor",            "style/trace/theme/sb_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/sd_backgroundColor",            "style/trace/theme/sd_background_color");
+		convertor.convert<QColor>("style/trace/theme/sd_foregroundColor",            "style/trace/theme/sd_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/sef_backgroundColor",           "style/trace/theme/sef_background_color");
+		convertor.convert<QColor>("style/trace/theme/sef_foregroundColor",           "style/trace/theme/sef_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/sem_backgroundColor",           "style/trace/theme/sem_background_color");
+		convertor.convert<QColor>("style/trace/theme/sem_foregroundColor",           "style/trace/theme/sem_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/sen_backgroundColor",           "style/trace/theme/sen_background_color");
+		convertor.convert<QColor>("style/trace/theme/sen_foregroundColor",           "style/trace/theme/sen_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/ses_backgroundColor",           "style/trace/theme/ses_background_color");
+		convertor.convert<QColor>("style/trace/theme/ses_foregroundColor",           "style/trace/theme/ses_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/seu_backgroundColor",           "style/trace/theme/seu_background_color");
+		convertor.convert<QColor>("style/trace/theme/seu_foregroundColor",           "style/trace/theme/seu_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/so_backgroundColor",            "style/trace/theme/so_background_color");
+		convertor.convert<QColor>("style/trace/theme/so_foregroundColor",            "style/trace/theme/so_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/src_backgroundColor",           "style/trace/theme/src_background_color");
+		convertor.convert<QColor>("style/trace/theme/src_foregroundColor",           "style/trace/theme/src_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/sre_backgroundColor",           "style/trace/theme/sre_background_color");
+		convertor.convert<QColor>("style/trace/theme/sre_foregroundColor",           "style/trace/theme/sre_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/srk_backgroundColor",           "style/trace/theme/srk_background_color");
+		convertor.convert<QColor>("style/trace/theme/srk_foregroundColor",           "style/trace/theme/srk_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/std_backgroundColor",           "style/trace/theme/std_background_color");
+		convertor.convert<QColor>("style/trace/theme/std_foregroundColor",           "style/trace/theme/std_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/stn_backgroundColor",           "style/trace/theme/stn_background_color");
+		convertor.convert<QColor>("style/trace/theme/stn_foregroundColor",           "style/trace/theme/stn_foreground_color");
+		convertor.convert<QColor>("style/trace/theme/str_backgroundColor",           "style/trace/theme/str_background_color");
+		convertor.convert<QColor>("style/trace/theme/str_foregroundColor",           "style/trace/theme/str_foreground_color");
+		convertor.convert<int>   ("style/trace/theme/style",                         "style/trace/theme/style");
+		convertor.convert<QColor>("style/trace/theme/v_backgroundColor",             "style/trace/theme/v_background_color");
+		convertor.convert<QColor>("style/trace/theme/v_foregroundColor",             "style/trace/theme/v_foreground_color");
+
+		convertor.remove("style");
 	}
 }
 #endif

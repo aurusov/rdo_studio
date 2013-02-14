@@ -55,19 +55,20 @@ rbool LogColorPair::operator !=( const LogColorPair& colors ) const
 	return !(*this == colors);
 }
 
-void LogColorPair::load( tstring regPath, tstring regParam )
+void LogColorPair::load( QString regPath, QString regParam )
 {
-	regParam += "_%s";
-	//! todo qt
-	//foregroundColor = QColor(QString::fromLocal8Bit((LPCTSTR)AfxGetApp()->GetProfileString( regPath.c_str(), rdo::format( regParam.c_str(), "foregroundColor" ).c_str(), foregroundColor.name().toStdString().c_str() )));
-	//backgroundColor = QColor(QString::fromLocal8Bit((LPCTSTR)AfxGetApp()->GetProfileString( regPath.c_str(), rdo::format( regParam.c_str(), "backgroundColor" ).c_str(), backgroundColor.name().toStdString().c_str() )));
+	QSettings settings;
+	regParam.append("_%s");
+	foregroundColor = QColor(settings.value(QString(regPath + regParam + "foreground_color"), foregroundColor.name()).toString());
+	backgroundColor = QColor(settings.value(QString(regPath + regParam + "background_color"), backgroundColor.name()).toString());
 }
 
-void LogColorPair::save( tstring regPath, tstring regParam ) const
+void LogColorPair::save( QString regPath, QString regParam ) const
 {
-	regParam += "_%s";
-	AfxGetApp()->WriteProfileString( regPath.c_str(), rdo::format( regParam.c_str(), "foregroundColor" ).c_str(), foregroundColor.name().toStdString().c_str() );
-	AfxGetApp()->WriteProfileString( regPath.c_str(), rdo::format( regParam.c_str(), "backgroundColor" ).c_str(), backgroundColor.name().toStdString().c_str() );
+	QSettings settings;
+	regParam.append("_%s");
+	settings.setValue(QString(regPath + regParam + "foreground_color"), foregroundColor.name());
+	settings.setValue(QString(regPath + regParam + "background_color"), backgroundColor.name());
 }
 
 // --------------------------------------------------------------------------------
@@ -225,10 +226,11 @@ rbool LogTheme::operator !=( const LogTheme& theme ) const
 	return !(*this == theme);
 }
 
-void LogTheme::load( tstring regPath )
+void LogTheme::load( QString regPath )
 {
-	regPath += "theme";
-	style = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "style", style ));
+	QSettings settings;
+	regPath.append("theme\\");
+	style = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "style"), style).toInt());
 	defaultColor.load( regPath, "defaultColor" );
 	es.load ( regPath, "es"  );
 	eb.load ( regPath, "eb"  );
@@ -257,10 +259,11 @@ void LogTheme::load( tstring regPath )
 	seu.load( regPath, "seu" );
 }
 
-void LogTheme::save( tstring regPath ) const
+void LogTheme::save( QString regPath ) const
 {
-	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "style", style );
+	QSettings settings;
+	regPath.append("theme\\");
+	settings.setValue(QString(regPath + "style"), style);
 	defaultColor.save( regPath, "defaultColor" );
 	es.save ( regPath, "es"  );
 	eb.save ( regPath, "eb"  );
@@ -327,18 +330,20 @@ rbool LogBorders::operator !=( const LogBorders& borders ) const
 	return !(*this == borders);
 }
 
-void LogBorders::load( tstring regPath )
+void LogBorders::load( QString regPath )
 {
-	regPath += "borders";
-	vertBorder = AfxGetApp()->GetProfileInt( regPath.c_str(), "vertBorder", vertBorder );
-	horzBorder = AfxGetApp()->GetProfileInt( regPath.c_str(), "horzBorder", horzBorder );
+	QSettings settings;
+	regPath.append("borders\\");
+	vertBorder = settings.value(QString(regPath + "vert_border"), vertBorder).toInt();
+	horzBorder = settings.value(QString(regPath + "horz_border"), horzBorder).toInt();
 }
 
-void LogBorders::save( tstring regPath ) const
+void LogBorders::save( QString regPath ) const
 {
-	regPath += "borders";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "vertBorder", vertBorder );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "horzBorder", horzBorder );
+	QSettings settings;
+	regPath.append("borders\\");
+	settings.setValue(QString(regPath + "vert_border"), vertBorder);
+	settings.setValue(QString(regPath + "horz_border"), horzBorder);
 }
 
 // --------------------------------------------------------------------------------
@@ -474,7 +479,7 @@ rbool LogStyle::operator !=( const LogStyle& style ) const
 	return !(*this == style);
 }
 
-void LogStyle::init( CREF(tstring) _regPath )
+void LogStyle::init( CREF(QString) _regPath )
 {
 	RDOStyle::init( _regPath );
 	initTheme();

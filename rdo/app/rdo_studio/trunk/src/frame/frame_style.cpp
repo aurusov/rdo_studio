@@ -95,7 +95,7 @@ rbool RDOStudioFrameStyle::operator !=( const RDOStudioFrameStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOStudioFrameStyle::init( CREF(tstring) _regPath )
+void RDOStudioFrameStyle::init( CREF(QString) _regPath )
 {
 	RDOStyleWithTheme::init( _regPath );
 	*font = rdoStyle::RDOStyleFont::getFrameFont();

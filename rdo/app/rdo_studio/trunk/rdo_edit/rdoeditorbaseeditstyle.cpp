@@ -114,54 +114,58 @@ rbool RDOEditorBaseEditTheme::operator !=( const RDOEditorBaseEditTheme& theme )
 	return !(*this == theme);
 }
 
-void RDOEditorBaseEditTheme::load( tstring regPath )
+void RDOEditorBaseEditTheme::load( QString regPath )
 {
 	RDOBaseEditTheme::load( regPath );
 
-	regPath += "theme";
-	identifierColor        = AfxGetApp()->GetProfileInt( regPath.c_str(), "identifierColor", identifierColor.rgb() );
-	keywordColor           = AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordColor", keywordColor.rgb() );
-	functionsColor         = AfxGetApp()->GetProfileInt( regPath.c_str(), "functionsColor", functionsColor.rgb() );
-	traceColor             = AfxGetApp()->GetProfileInt( regPath.c_str(), "traceColor", traceColor.rgb() );
-	colorColor             = AfxGetApp()->GetProfileInt( regPath.c_str(), "colorColor", colorColor.rgb());
-	commentColor           = AfxGetApp()->GetProfileInt( regPath.c_str(), "commentColor", commentColor.rgb() );
-	numberColor            = AfxGetApp()->GetProfileInt( regPath.c_str(), "numberColor", numberColor.rgb() );
-	stringColor            = AfxGetApp()->GetProfileInt( regPath.c_str(), "stringColor", stringColor.rgb() );
-	operatorColor          = AfxGetApp()->GetProfileInt( regPath.c_str(), "operatorColor", operatorColor.rgb() );
-	identifierStyle        = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "identifierStyle", identifierStyle ));
-	keywordStyle           = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle ));
-	functionsStyle         = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "functionsStyle", functionsStyle ));
-	traceStyle             = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "traceStyle", traceStyle ));
-	colorStyle             = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "colorStyle", colorStyle ));
-	commentStyle           = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "commentStyle", commentStyle ));
-	numberStyle            = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "numberStyle", numberStyle ));
-	stringStyle            = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "stringStyle", stringStyle ));
-	operatorStyle          = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "operatorStyle", operatorStyle ));
+	QSettings settings;
+	regPath.append("theme\\");
+	identifierColor        = QColor(settings.value(QString(regPath + "identifier_color"), identifierColor.name()).toString());
+	keywordColor           = QColor(settings.value(QString(regPath + "keyword_color"), keywordColor.name()).toString());
+	functionsColor         = QColor(settings.value(QString(regPath + "functions_color"), functionsColor.name()).toString());
+	traceColor             = QColor(settings.value(QString(regPath + "trace_color"), traceColor.name()).toString());
+	colorColor             = QColor(settings.value(QString(regPath + "color_color"), colorColor.name()).toString());
+	commentColor           = QColor(settings.value(QString(regPath + "comment_color"), commentColor.name()).toString());
+	numberColor            = QColor(settings.value(QString(regPath + "number_color"), numberColor.name()).toString());
+	stringColor            = QColor(settings.value(QString(regPath + "string_color"), stringColor.name()).toString());
+	operatorColor          = QColor(settings.value(QString(regPath + "operator_color"), operatorColor.name()).toString());
+
+	identifierStyle        = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "identifier_style"), identifierStyle).toInt());
+	keywordStyle           = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "keyword_style"), keywordStyle).toInt());
+	functionsStyle         = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "functions_style"), functionsStyle).toInt());
+	traceStyle             = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "trace_style"), traceStyle).toInt());
+	colorStyle             = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "color_style"), colorStyle).toInt());
+	commentStyle           = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "comment_style"), commentStyle).toInt());
+	numberStyle            = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "number_style"), numberStyle).toInt());
+	stringStyle            = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "string_style"), stringStyle).toInt());
+	operatorStyle          = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "operator_style"), operatorStyle).toInt());
 }
 
-void RDOEditorBaseEditTheme::save( tstring regPath ) const
+void RDOEditorBaseEditTheme::save( QString regPath ) const
 {
 	RDOBaseEditTheme::save( regPath );
 
-	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "identifierColor", identifierColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordColor", keywordColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "functionsColor", functionsColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "traceColor", traceColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "colorColor", colorColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "commentColor", commentColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "numberColor", numberColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "stringColor", stringColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "operatorColor", operatorColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "identifierStyle", identifierStyle );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordStyle", keywordStyle );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "functionsStyle", functionsStyle );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "traceColor", traceColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "colorColor", colorColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "commentStyle", commentStyle );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "numberStyle", numberStyle );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "stringStyle", stringStyle );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "operatorStyle", operatorStyle );
+	QSettings settings;
+	regPath.append("theme\\");
+	settings.setValue(QString(regPath + "identifier_color"), identifierColor.name());
+	settings.setValue(QString(regPath + "keyword_color"), keywordColor.name());
+	settings.setValue(QString(regPath + "functions_color"), functionsColor.name());
+	settings.setValue(QString(regPath + "trace_color"), traceColor.name());
+	settings.setValue(QString(regPath + "color_color"), colorColor.name());
+	settings.setValue(QString(regPath + "comment_color"), commentColor.name());
+	settings.setValue(QString(regPath + "number_color"), numberColor.name());
+	settings.setValue(QString(regPath + "string_color"), stringColor.name());
+	settings.setValue(QString(regPath + "operator_color"), operatorColor.name());
+
+	settings.setValue(QString(regPath + "identifier_style"), identifierStyle);
+	settings.setValue(QString(regPath + "keyword_style"), keywordStyle);
+	settings.setValue(QString(regPath + "functions_style"), functionsStyle);
+	settings.setValue(QString(regPath + "trace_style"), traceStyle);
+	settings.setValue(QString(regPath + "color_style"), colorStyle);
+	settings.setValue(QString(regPath + "comment_style"), commentStyle);
+	settings.setValue(QString(regPath + "number_style"), numberStyle);
+	settings.setValue(QString(regPath + "string_style"), stringStyle);
+	settings.setValue(QString(regPath + "operator_style"), operatorStyle);
 }
 
 rbool RDOEditorBaseEditTheme::styleDefault( const int styleType ) const

@@ -82,30 +82,32 @@ rbool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOBaseEditTheme::load( tstring regPath )
+void RDOBaseEditTheme::load( QString regPath )
 {
-	regPath += "theme";
-	defaultColor     = AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultColor", defaultColor.rgb() );
-	backgroundColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "backgroundColor", backgroundColor.rgb() );
-	caretColor       = AfxGetApp()->GetProfileInt( regPath.c_str(), "caretColor", caretColor.rgb() );
-	selectionBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "selectionBgColor", selectionBgColor.rgb() );
-	bookmarkFgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkFgColor", bookmarkFgColor.rgb() );
-	bookmarkBgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkBgColor", bookmarkBgColor.rgb() );
-	defaultStyle     = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultStyle", defaultStyle ));
-	bookmarkStyle    = static_cast<RDOBookmarkStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkStyle", bookmarkStyle ));
+	QSettings settings;
+	regPath.append("theme\\");
+	defaultColor     = QColor(settings.value(QString(regPath + "default_color"), defaultColor.name()).toString());
+	backgroundColor  = QColor(settings.value(QString(regPath + "background_color"), backgroundColor.name()).toString());
+	caretColor       = QColor(settings.value(QString(regPath + "caret_color"), caretColor.name()).toString());
+	selectionBgColor = QColor(settings.value(QString(regPath + "selection_bg_color"), selectionBgColor.name()).toString());
+	bookmarkFgColor  = QColor(settings.value(QString(regPath + "bookmark_fg_color"), bookmarkFgColor.name()).toString());
+	bookmarkBgColor  = QColor(settings.value(QString(regPath + "bookmark_bg_color"), bookmarkBgColor.name()).toString());
+	defaultStyle     = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "default_style"), defaultStyle).toInt());
+	bookmarkStyle    = static_cast<RDOBookmarkStyle>(settings.value(QString(regPath + "bookmark_style"), bookmarkStyle).toInt());
 }
 
-void RDOBaseEditTheme::save( tstring regPath ) const
+void RDOBaseEditTheme::save( QString regPath ) const
 {
-	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultColor", defaultColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "backgroundColor", backgroundColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "caretColor", caretColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "selectionBgColor", selectionBgColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkFgColor", bookmarkFgColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkBgColor", bookmarkBgColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultStyle", defaultStyle );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkStyle", bookmarkStyle );
+	QSettings settings;
+	regPath.append("theme\\");
+	settings.setValue(QString(regPath + "default_color"), defaultColor.name());
+	settings.setValue(QString(regPath + "background_color"), backgroundColor.name());
+	settings.setValue(QString(regPath + "caret_color"), caretColor.name());
+	settings.setValue(QString(regPath + "selection_bg_color"), selectionBgColor.name());
+	settings.setValue(QString(regPath + "bookmark_fg_color"), bookmarkFgColor.name());
+	settings.setValue(QString(regPath + "bookmark_bg_color"), bookmarkBgColor.name());
+	settings.setValue(QString(regPath + "default_style"), defaultStyle);
+	settings.setValue(QString(regPath + "bookmark_style"), bookmarkStyle);
 }
 
 rbool RDOBaseEditTheme::styleDefault( const int styleType ) const
@@ -250,26 +252,28 @@ rbool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
 	return !(*this == tab);
 }
 
-void RDOBaseEditTab::load( tstring regPath )
+void RDOBaseEditTab::load( QString regPath )
 {
-	regPath += "tab";
-	tabSize         = AfxGetApp()->GetProfileInt( regPath.c_str(), "tabSize", tabSize );
-	indentSize      = AfxGetApp()->GetProfileInt( regPath.c_str(), "indentSize", indentSize );
-	useTabs         = AfxGetApp()->GetProfileInt( regPath.c_str(), "useTabs", useTabs ) ? true : false;
-	tabIndents      = AfxGetApp()->GetProfileInt( regPath.c_str(), "tabIndents", tabIndents ) ? true : false;
-	backspaceUntabs = AfxGetApp()->GetProfileInt( regPath.c_str(), "backspaceUntabs", backspaceUntabs ) ? true : false;
-	autoIndent      = AfxGetApp()->GetProfileInt( regPath.c_str(), "autoIndent", autoIndent ) ? true : false;
+	QSettings settings;
+	regPath.append("tab\\");
+	tabSize         = settings.value(QString(regPath + "tab_size"), tabSize).toInt();
+	indentSize      = settings.value(QString(regPath + "indent_size"), indentSize).toInt();
+	useTabs         = settings.value(QString(regPath + "use_tabs"), useTabs).toBool() ? true : false;
+	tabIndents      = settings.value(QString(regPath + "tab_indents"), tabIndents).toBool() ? true : false;
+	backspaceUntabs = settings.value(QString(regPath + "backspace_untabs"), backspaceUntabs).toBool() ? true : false;
+	autoIndent      = settings.value(QString(regPath + "auto_indent"), autoIndent).toBool() ? true : false;
 }
 
-void RDOBaseEditTab::save( tstring regPath ) const
+void RDOBaseEditTab::save( QString regPath ) const
 {
-	regPath += "tab";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "tabSize", tabSize );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "indentSize", indentSize );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "useTabs", useTabs );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "tabIndents", tabIndents );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "backspaceUntabs", backspaceUntabs );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "autoIndent", autoIndent );
+	QSettings settings;
+	regPath.append("tab\\");
+	settings.setValue(QString(regPath + "tab_size"), tabSize);
+	settings.setValue(QString(regPath + "indent_size"), indentSize);
+	settings.setValue(QString(regPath + "use_tabs"), useTabs);
+	settings.setValue(QString(regPath + "tab_indents"), tabIndents);
+	settings.setValue(QString(regPath + "backspace_untabs"), backspaceUntabs);
+	settings.setValue(QString(regPath + "auto_indent"), autoIndent);
 }
 
 // --------------------------------------------------------------------------------
@@ -304,18 +308,20 @@ rbool RDOBaseEditWindow::operator !=( const RDOBaseEditWindow& window ) const
 	return !(*this == window);
 }
 
-void RDOBaseEditWindow::load( tstring regPath )
+void RDOBaseEditWindow::load( QString regPath )
 {
-	regPath += "window";
-	wordWrap          = AfxGetApp()->GetProfileInt( regPath.c_str(), "wordWrap", wordWrap ) ? true : false;
-	showHorzScrollBar = AfxGetApp()->GetProfileInt( regPath.c_str(), "showHorzScrollBar", showHorzScrollBar ) ? true : false;
+	QSettings settings;
+	regPath.append("window\\");
+	wordWrap          = settings.value(QString(regPath + "word_wrap"), wordWrap).toBool() ? true : false;
+	showHorzScrollBar = settings.value(QString(regPath + "show_horz_scroll_bar"), showHorzScrollBar).toBool() ? true : false;
 }
 
-void RDOBaseEditWindow::save( tstring regPath ) const
+void RDOBaseEditWindow::save( QString regPath ) const
 {
-	regPath += "window";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "wordWrap", wordWrap );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "showHorzScrollBar", showHorzScrollBar );
+	QSettings settings;
+	regPath.append("window\\");
+	settings.setValue(QString(regPath + "word_wrap"), wordWrap);
+	settings.setValue(QString(regPath + "show_horz_scroll_bar"), showHorzScrollBar);
 }
 
 // --------------------------------------------------------------------------------
@@ -373,7 +379,7 @@ rbool RDOBaseEditStyle::operator !=( const RDOBaseEditStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOBaseEditStyle::init( CREF(tstring) _regPath )
+void RDOBaseEditStyle::init( CREF(QString) _regPath )
 {
 	RDOStyleWithTheme::init( _regPath );
 	initTab();

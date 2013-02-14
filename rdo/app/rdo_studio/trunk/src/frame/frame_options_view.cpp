@@ -45,13 +45,10 @@ void FrameOptionsView::setStyle(PTR(RDOStudioFrameStyle) style)
 	englishSampleLabel->setFont(font);
 	russianSampleLabel->setFont(font);
 
-	QColor fgColor(m_style->theme->defaultColor.blue(), m_style->theme->defaultColor.green(), m_style->theme->defaultColor.red());
-	QColor bgColor(m_style->theme->backgroundColor.blue(), m_style->theme->backgroundColor.green(), m_style->theme->backgroundColor.red());
-	
-	pictureLabel->setStyleSheet("border: 1px solid "+fgColor.name()+";");
+	pictureLabel->setStyleSheet("border: 1px solid "+m_style->theme->defaultColor.name()+";");
 
 	PTR(QPalette) palette = new QPalette();
-	palette->setColor(QPalette::Background, bgColor);
+	palette->setColor(QPalette::Background, m_style->theme->backgroundColor);
 	setAutoFillBackground(true);
 	setPalette(*palette);
 }

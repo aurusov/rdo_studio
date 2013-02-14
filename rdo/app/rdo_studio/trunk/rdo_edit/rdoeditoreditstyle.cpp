@@ -75,28 +75,30 @@ rbool RDOEditorEditTheme::operator !=( const RDOEditorEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOEditorEditTheme::load( tstring regPath )
+void RDOEditorEditTheme::load( QString regPath )
 {
 	RDOEditorBaseEditTheme::load( regPath );
 
-	regPath += "theme";
-	foldFgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "foldFgColor", foldFgColor.rgb() );
-	foldBgColor  = AfxGetApp()->GetProfileInt( regPath.c_str(), "foldBgColor", foldBgColor.rgb() );
-	errorBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "errorBgColor", errorBgColor.rgb() );
-	foldStyle    = (RDOFoldStyle)AfxGetApp()->GetProfileInt( regPath.c_str(), "foldStyle", foldStyle );
-	commentFold  = AfxGetApp()->GetProfileInt( regPath.c_str(), "commentFold", commentFold ) ? true : false;
+	QSettings settings;
+	regPath.append("theme\\");
+	foldFgColor  = QColor(settings.value(QString(regPath + "fold_fg_color"), foldFgColor.name()).toString());
+	foldBgColor  = QColor(settings.value(QString(regPath + "fold_bg_color"), foldBgColor.name()).toString());
+	errorBgColor = QColor(settings.value(QString(regPath + "error_bg_color"), errorBgColor.name()).toString());
+	foldStyle    = (RDOFoldStyle)settings.value(QString(regPath + "fold_style"), foldStyle).toInt();
+	commentFold  = settings.value(QString(regPath + "comment_fold"), commentFold).toBool() ? true : false;
 }
 
-void RDOEditorEditTheme::save( tstring regPath ) const
+void RDOEditorEditTheme::save( QString regPath ) const
 {
 	RDOEditorBaseEditTheme::save( regPath );
 
-	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldFgColor", foldFgColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldBgColor", foldBgColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "errorBgColor", errorBgColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "foldStyle", foldStyle );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "commentFold", commentFold );
+	QSettings settings;
+	regPath.append("theme\\");
+	settings.setValue(QString(regPath + "fold_fg_color"), foldFgColor.name());
+	settings.setValue(QString(regPath + "fold_bg_color"), foldBgColor.name());
+	settings.setValue(QString(regPath + "error_bg_color"), errorBgColor.name());
+	settings.setValue(QString(regPath + "fold_style"), foldStyle);
+	settings.setValue(QString(regPath + "comment_fold"), commentFold);
 }
 
 RDOEditorEditTheme RDOEditorEditTheme::getDefaultTheme()
@@ -227,18 +229,20 @@ rbool RDOEditorEditAutoComplete::operator !=( const RDOEditorEditAutoComplete& a
 	return !(*this == autoComplete);
 }
 
-void RDOEditorEditAutoComplete::load( tstring regPath )
+void RDOEditorEditAutoComplete::load( QString regPath )
 {
-	regPath += "autoComplete";
-	useAutoComplete = AfxGetApp()->GetProfileInt( regPath.c_str(), "useAutoComplete", useAutoComplete ) ? true : false;
-	showFullList    = AfxGetApp()->GetProfileInt( regPath.c_str(), "showFullList", showFullList ) ? true : false;
+	QSettings settings;
+	regPath.append("auto_complete\\");
+	useAutoComplete = settings.value(QString(regPath + "use_auto_complete"), useAutoComplete).toBool() ? true : false;
+	showFullList    = settings.value(QString(regPath + "show_full_list"), showFullList).toBool() ? true : false;
 }
 
-void RDOEditorEditAutoComplete::save( tstring regPath ) const
+void RDOEditorEditAutoComplete::save( QString regPath ) const
 {
-	regPath += "autoComplete";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "useAutoComplete", useAutoComplete );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "showFullList", showFullList );
+	QSettings settings;
+	regPath.append("auto_complete\\");
+	settings.setValue(QString(regPath + "use_auto_complete"), useAutoComplete);
+	settings.setValue(QString(regPath + "show_full_list"), showFullList);
 }
 
 // --------------------------------------------------------------------------------
@@ -276,20 +280,22 @@ rbool RDOEditorEditMargin::operator !=( const RDOEditorEditMargin& margin ) cons
 	return !(*this == margin);
 }
 
-void RDOEditorEditMargin::load( tstring regPath )
+void RDOEditorEditMargin::load( QString regPath )
 {
-	regPath += "margin";
-	fold       = AfxGetApp()->GetProfileInt( regPath.c_str(), "fold", fold ) ? true : false;
-	bookmark   = AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmark", bookmark ) ? true : false;
-	lineNumber = AfxGetApp()->GetProfileInt( regPath.c_str(), "lineNumber", lineNumber ) ? true : false;
+	QSettings settings;
+	regPath.append("margin\\");
+	fold       = settings.value(QString(regPath + "fold"), fold).toBool() ? true : false;
+	bookmark   = settings.value(QString(regPath + "bookmark"), bookmark).toBool() ? true : false;
+	lineNumber = settings.value(QString(regPath + "line_number"), lineNumber).toBool() ? true : false;
 }
 
-void RDOEditorEditMargin::save( tstring regPath ) const
+void RDOEditorEditMargin::save( QString regPath ) const
 {
-	regPath += "margin";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "fold", fold );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmark", bookmark );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "lineNumber", lineNumber );
+	QSettings settings;
+	regPath.append("margin\\");
+	settings.setValue(QString(regPath + "fold"), fold);
+	settings.setValue(QString(regPath + "bookmark"), bookmark);
+	settings.setValue(QString(regPath + "line_number"), lineNumber);
 }
 
 // --------------------------------------------------------------------------------
@@ -349,7 +355,7 @@ rbool RDOEditorEditStyle::operator !=( const RDOEditorEditStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOEditorEditStyle::init( CREF(tstring) _regPath )
+void RDOEditorEditStyle::init( CREF(QString) _regPath )
 {
 	RDOEditorBaseEditStyle::init( _regPath );
 	initAutoComplete();

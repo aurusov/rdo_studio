@@ -41,8 +41,8 @@ public:
 	rbool operator ==( const RDOEditorEditTheme& theme ) const;
 	rbool operator !=( const RDOEditorEditTheme& theme ) const;
 
-	virtual void load( tstring regPath );
-	virtual void save( tstring regPath ) const;
+	virtual void load( QString regPath );
+	virtual void save( QString regPath ) const;
 
 	QColor foldFgColor;
 	QColor foldBgColor;
@@ -74,8 +74,8 @@ public:
 	rbool operator ==( const RDOEditorEditAutoComplete& autoComplete ) const;
 	rbool operator !=( const RDOEditorEditAutoComplete& autoComplete ) const;
 
-	virtual void load( tstring regPath );
-	virtual void save( tstring regPath ) const;
+	virtual void load( QString regPath );
+	virtual void save( QString regPath ) const;
 
 	rbool useAutoComplete;
 	rbool showFullList;
@@ -94,8 +94,8 @@ public:
 	rbool operator ==( const RDOEditorEditMargin& margin ) const;
 	rbool operator !=( const RDOEditorEditMargin& margin ) const;
 
-	virtual void load( tstring regPath );
-	virtual void save( tstring regPath ) const;
+	virtual void load( QString regPath );
+	virtual void save( QString regPath ) const;
 
 	rbool fold;
 	rbool bookmark;
@@ -121,7 +121,7 @@ public:
 	rbool operator ==( const RDOEditorEditStyle& style ) const;
 	rbool operator !=( const RDOEditorEditStyle& style ) const;
 
-	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual void  init( CREF(QString) _regPath = "" );
 	virtual rbool load();
 	virtual rbool save() const;
 

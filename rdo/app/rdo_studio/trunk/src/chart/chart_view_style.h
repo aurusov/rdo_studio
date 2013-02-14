@@ -28,8 +28,8 @@ public:
 	rbool operator ==( const RDOStudioChartViewTheme& theme ) const;
 	rbool operator !=( const RDOStudioChartViewTheme& theme ) const;
 
-	virtual void load( tstring regPath );
-	virtual void save( tstring regPath ) const;
+	virtual void load( QString regPath );
+	virtual void save( QString regPath ) const;
 
 	COLORREF axisFgColor;
 	COLORREF titleFGColor;
@@ -56,8 +56,8 @@ public:
 	rbool operator ==( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
 	rbool operator !=( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
 
-	virtual void load( tstring regPath );
-	virtual void save( tstring regPath ) const;
+	virtual void load( QString regPath );
+	virtual void save( QString regPath ) const;
 
 	int titleFontSize;
 	int legendFontSize;
@@ -81,7 +81,7 @@ public:
 	rbool operator ==( const RDOStudioChartViewStyle& style ) const;
 	rbool operator !=( const RDOStudioChartViewStyle& style ) const;
 
-	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual void  init( CREF(QString) _regPath = "" );
 	virtual rbool load();
 	virtual rbool save() const;
 	

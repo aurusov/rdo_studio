@@ -30,8 +30,8 @@ public:
 	rbool operator ==( const RDOBuildEditTheme& theme ) const;
 	rbool operator !=( const RDOBuildEditTheme& theme ) const;
 
-	virtual void load( tstring regPath );
-	virtual void save( tstring regPath ) const;
+	virtual void load( QString regPath );
+	virtual void save( QString regPath ) const;
 
 	rbool warning;
 
