@@ -69,9 +69,9 @@ def safe_encode(string, encoding):
     return string.encode(encoding)
 
 
-def print_list_of_line(list):
+def print_list_of_line(list, encoding):
     for string in list:
-        print safe_encode(string, sys.getfilesystemencoding())
+        print safe_encode(string, encoding)
 
 
 def cut_slash(list):
@@ -200,10 +200,10 @@ files.sort()
 print u'\nDEBUG INFO'
 
 print u'\nFind RDO executables    :'
-print_list_of_line(executables)
+print_list_of_line(executables, sys.getfilesystemencoding())
 
 print '\nFind test project files :'
-print_list_of_line(files)
+print_list_of_line(files, sys.getfilesystemencoding())
 
 # parse xml and start tests
 print u'\nSTARTED TEST CYCLE\n'
@@ -399,7 +399,7 @@ for task in files:
             G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
 
 print '\n', u'MODEL WITH ERRORS:'
-print_list_of_line(bad_models)
+print_list_of_line(bad_models, sys.getfilesystemencoding())
 print '\n', u'PYTHON EXIT CODE :', G_EXIT_CODE, '\n'
 
 sys.exit(G_EXIT_CODE)
