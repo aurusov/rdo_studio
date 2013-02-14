@@ -255,7 +255,7 @@ rbool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
 void RDOBaseEditTab::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("ta/");
+	regPath.append("tab/");
 	tabSize         = settings.value(QString(regPath + "tab_size"), tabSize).toInt();
 	indentSize      = settings.value(QString(regPath + "indent_size"), indentSize).toInt();
 	useTabs         = settings.value(QString(regPath + "use_tabs"), useTabs).toBool() ? true : false;
