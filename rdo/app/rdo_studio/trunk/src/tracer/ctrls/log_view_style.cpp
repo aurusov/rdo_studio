@@ -58,7 +58,7 @@ rbool LogColorPair::operator !=( const LogColorPair& colors ) const
 void LogColorPair::load( QString regPath, QString regParam )
 {
 	QSettings settings;
-	regParam.append("_%s");
+	regParam.append("_");
 	foregroundColor = QColor(settings.value(QString(regPath + regParam + "foreground_color"), foregroundColor.name()).toString());
 	backgroundColor = QColor(settings.value(QString(regPath + regParam + "background_color"), backgroundColor.name()).toString());
 }
@@ -66,7 +66,7 @@ void LogColorPair::load( QString regPath, QString regParam )
 void LogColorPair::save( QString regPath, QString regParam ) const
 {
 	QSettings settings;
-	regParam.append("_%s");
+	regParam.append("_");
 	settings.setValue(QString(regPath + regParam + "foreground_color"), foregroundColor.name());
 	settings.setValue(QString(regPath + regParam + "background_color"), backgroundColor.name());
 }
