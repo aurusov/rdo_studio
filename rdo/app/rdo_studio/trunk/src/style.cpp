@@ -67,11 +67,12 @@ rbool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 void RDOStyleFont::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("font/");
-	name         = settings.value(QString(regPath + "name"), QString::fromLocal8Bit(name.c_str())).toString().toLocal8Bit().constData();
-	size         = settings.value(QString(regPath + "size"), size).toInt();
-	codepage     = settings.value(QString(regPath + "codepage"), codepage).toInt();
-	characterSet = settings.value(QString(regPath + "character_set"), characterSet).toInt();
+	settings.beginGroup(regPath + "font");
+	name         = settings.value("name", QString::fromLocal8Bit(name.c_str())).toString().toLocal8Bit().constData();
+	size         = settings.value("size", size).toInt();
+	codepage     = settings.value("codepage", codepage).toInt();
+	characterSet = settings.value("character_set", characterSet).toInt();
+	settings.endGroup();
 	if (characterSet == RUSSIAN_CHARSET)
 	{
 		characterSet = SC_CHARSET_CYRILLIC;
@@ -81,11 +82,12 @@ void RDOStyleFont::load( QString regPath )
 void RDOStyleFont::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("font/");
-	settings.setValue(QString(regPath + "name"), QString::fromLocal8Bit(name.c_str()));
-	settings.setValue(QString(regPath + "size"), size);
-	settings.setValue(QString(regPath + "codepage"), codepage);
-	settings.setValue(QString(regPath + "character_set"), characterSet);
+	settings.beginGroup(regPath +"font");
+	settings.setValue("name", QString::fromLocal8Bit(name.c_str()));
+	settings.setValue("size", size);
+	settings.setValue("codepage", codepage);
+	settings.setValue("character_set", characterSet);
+	settings.endGroup();
 }
 
 RDOStyleFont RDOStyleFont::getDefaultFont()
@@ -172,19 +174,21 @@ rbool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 void RDOStyleTheme::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("theme/");
-	defaultColor = QColor(settings.value(QString(regPath + "default_color"), defaultColor.name()).toString());
-	backgroundColor = QColor(settings.value(QString(regPath + "background_color"), backgroundColor.name()).toString());
-	defaultStyle    = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "default_style"), defaultStyle).toInt());
+	settings.beginGroup(regPath + "theme");
+	defaultColor = QColor(settings.value("default_color", defaultColor.name()).toString());
+	backgroundColor = QColor(settings.value("background_color", backgroundColor.name()).toString());
+	defaultStyle    = static_cast<RDOStyleFont::style>(settings.value("default_style", defaultStyle).toInt());
+	settings.endGroup();
 }
 
 void RDOStyleTheme::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("theme/");
-	settings.setValue(QString(regPath + "default_color"), defaultColor.name());
-	settings.setValue(QString(regPath + "background_color"), backgroundColor.name());
-	settings.setValue(QString(regPath + "default_style"), defaultStyle);
+	settings.beginGroup(regPath + "theme");
+	settings.setValue("default_color", defaultColor.name());
+	settings.setValue("background_color", backgroundColor.name());
+	settings.setValue("default_style", defaultStyle);
+	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------

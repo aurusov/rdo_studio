@@ -85,29 +85,31 @@ rbool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
 void RDOBaseEditTheme::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("theme/");
-	defaultColor     = QColor(settings.value(QString(regPath + "default_color"), defaultColor.name()).toString());
-	backgroundColor  = QColor(settings.value(QString(regPath + "background_color"), backgroundColor.name()).toString());
-	caretColor       = QColor(settings.value(QString(regPath + "caret_color"), caretColor.name()).toString());
-	selectionBgColor = QColor(settings.value(QString(regPath + "selection_bg_color"), selectionBgColor.name()).toString());
-	bookmarkFgColor  = QColor(settings.value(QString(regPath + "bookmark_fg_color"), bookmarkFgColor.name()).toString());
-	bookmarkBgColor  = QColor(settings.value(QString(regPath + "bookmark_bg_color"), bookmarkBgColor.name()).toString());
-	defaultStyle     = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "default_style"), defaultStyle).toInt());
-	bookmarkStyle    = static_cast<RDOBookmarkStyle>(settings.value(QString(regPath + "bookmark_style"), bookmarkStyle).toInt());
+	settings.beginGroup(regPath + "theme");
+	defaultColor     = QColor(settings.value("default_color", defaultColor.name()).toString());
+	backgroundColor  = QColor(settings.value("background_color", backgroundColor.name()).toString());
+	caretColor       = QColor(settings.value("caret_color", caretColor.name()).toString());
+	selectionBgColor = QColor(settings.value("selection_bg_color", selectionBgColor.name()).toString());
+	bookmarkFgColor  = QColor(settings.value("bookmark_fg_color", bookmarkFgColor.name()).toString());
+	bookmarkBgColor  = QColor(settings.value("bookmark_bg_color", bookmarkBgColor.name()).toString());
+	defaultStyle     = static_cast<RDOStyleFont::style>(settings.value("default_style", defaultStyle).toInt());
+	bookmarkStyle    = static_cast<RDOBookmarkStyle>(settings.value("bookmark_style", bookmarkStyle).toInt());
+	settings.endGroup();
 }
 
 void RDOBaseEditTheme::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("theme/");
-	settings.setValue(QString(regPath + "default_color"), defaultColor.name());
-	settings.setValue(QString(regPath + "background_color"), backgroundColor.name());
-	settings.setValue(QString(regPath + "caret_color"), caretColor.name());
-	settings.setValue(QString(regPath + "selection_bg_color"), selectionBgColor.name());
-	settings.setValue(QString(regPath + "bookmark_fg_color"), bookmarkFgColor.name());
-	settings.setValue(QString(regPath + "bookmark_bg_color"), bookmarkBgColor.name());
-	settings.setValue(QString(regPath + "default_style"), defaultStyle);
-	settings.setValue(QString(regPath + "bookmark_style"), bookmarkStyle);
+	settings.beginGroup(regPath + "theme");
+	settings.setValue("default_color", defaultColor.name());
+	settings.setValue("background_color", backgroundColor.name());
+	settings.setValue("caret_color", caretColor.name());
+	settings.setValue("selection_bg_color", selectionBgColor.name());
+	settings.setValue("bookmark_fg_color", bookmarkFgColor.name());
+	settings.setValue("bookmark_bg_color", bookmarkBgColor.name());
+	settings.setValue("default_style", defaultStyle);
+	settings.setValue("bookmark_style", bookmarkStyle);
+	settings.endGroup();
 }
 
 rbool RDOBaseEditTheme::styleDefault( const int styleType ) const
@@ -255,25 +257,27 @@ rbool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
 void RDOBaseEditTab::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("tab/");
-	tabSize         = settings.value(QString(regPath + "tab_size"), tabSize).toInt();
-	indentSize      = settings.value(QString(regPath + "indent_size"), indentSize).toInt();
-	useTabs         = settings.value(QString(regPath + "use_tabs"), useTabs).toBool() ? true : false;
-	tabIndents      = settings.value(QString(regPath + "tab_indents"), tabIndents).toBool() ? true : false;
-	backspaceUntabs = settings.value(QString(regPath + "backspace_untabs"), backspaceUntabs).toBool() ? true : false;
-	autoIndent      = settings.value(QString(regPath + "auto_indent"), autoIndent).toBool() ? true : false;
+	settings.beginGroup(regPath + "tab");
+	tabSize         = settings.value("tab_size", tabSize).toInt();
+	indentSize      = settings.value("indent_size", indentSize).toInt();
+	useTabs         = settings.value("use_tabs", useTabs).toBool() ? true : false;
+	tabIndents      = settings.value("tab_indents", tabIndents).toBool() ? true : false;
+	backspaceUntabs = settings.value("backspace_untabs", backspaceUntabs).toBool() ? true : false;
+	autoIndent      = settings.value("auto_indent", autoIndent).toBool() ? true : false;
+	settings.endGroup();
 }
 
 void RDOBaseEditTab::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("tab/");
-	settings.setValue(QString(regPath + "tab_size"), tabSize);
-	settings.setValue(QString(regPath + "indent_size"), indentSize);
-	settings.setValue(QString(regPath + "use_tabs"), useTabs);
-	settings.setValue(QString(regPath + "tab_indents"), tabIndents);
-	settings.setValue(QString(regPath + "backspace_untabs"), backspaceUntabs);
-	settings.setValue(QString(regPath + "auto_indent"), autoIndent);
+	settings.beginGroup(regPath + "tab");
+	settings.setValue("tab_size", tabSize);
+	settings.setValue("indent_size", indentSize);
+	settings.setValue("use_tabs", useTabs);
+	settings.setValue("tab_indents", tabIndents);
+	settings.setValue("backspace_untabs", backspaceUntabs);
+	settings.setValue("auto_indent", autoIndent);
+	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------
@@ -311,17 +315,19 @@ rbool RDOBaseEditWindow::operator !=( const RDOBaseEditWindow& window ) const
 void RDOBaseEditWindow::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("window/");
-	wordWrap          = settings.value(QString(regPath + "word_wrap"), wordWrap).toBool() ? true : false;
-	showHorzScrollBar = settings.value(QString(regPath + "show_horz_scroll_bar"), showHorzScrollBar).toBool() ? true : false;
+	settings.beginGroup(regPath + "window");
+	wordWrap          = settings.value("word_wrap", wordWrap).toBool() ? true : false;
+	showHorzScrollBar = settings.value("show_horz_scroll_bar", showHorzScrollBar).toBool() ? true : false;
+	settings.endGroup();
 }
 
 void RDOBaseEditWindow::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("window/");
-	settings.setValue(QString(regPath + "word_wrap"), wordWrap);
-	settings.setValue(QString(regPath + "show_horz_scroll_bar"), showHorzScrollBar);
+	settings.beginGroup(regPath + "window");
+	settings.setValue("word_wrap", wordWrap);
+	settings.setValue("show_horz_scroll_bar", showHorzScrollBar);
+	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------

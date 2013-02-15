@@ -80,12 +80,13 @@ void RDOEditorEditTheme::load( QString regPath )
 	RDOEditorBaseEditTheme::load( regPath );
 
 	QSettings settings;
-	regPath.append("theme/");
-	foldFgColor  = QColor(settings.value(QString(regPath + "fold_fg_color"), foldFgColor.name()).toString());
-	foldBgColor  = QColor(settings.value(QString(regPath + "fold_bg_color"), foldBgColor.name()).toString());
-	errorBgColor = QColor(settings.value(QString(regPath + "error_bg_color"), errorBgColor.name()).toString());
-	foldStyle    = (RDOFoldStyle)settings.value(QString(regPath + "fold_style"), foldStyle).toInt();
-	commentFold  = settings.value(QString(regPath + "comment_fold"), commentFold).toBool() ? true : false;
+	settings.beginGroup(regPath + "theme");
+	foldFgColor  = QColor(settings.value("fold_fg_color", foldFgColor.name()).toString());
+	foldBgColor  = QColor(settings.value("fold_bg_color", foldBgColor.name()).toString());
+	errorBgColor = QColor(settings.value("error_bg_color", errorBgColor.name()).toString());
+	foldStyle    = (RDOFoldStyle)settings.value("fold_style", foldStyle).toInt();
+	commentFold  = settings.value("comment_fold", commentFold).toBool() ? true : false;
+	settings.endGroup();
 }
 
 void RDOEditorEditTheme::save( QString regPath ) const
@@ -93,12 +94,13 @@ void RDOEditorEditTheme::save( QString regPath ) const
 	RDOEditorBaseEditTheme::save( regPath );
 
 	QSettings settings;
-	regPath.append("theme/");
-	settings.setValue(QString(regPath + "fold_fg_color"), foldFgColor.name());
-	settings.setValue(QString(regPath + "fold_bg_color"), foldBgColor.name());
-	settings.setValue(QString(regPath + "error_bg_color"), errorBgColor.name());
-	settings.setValue(QString(regPath + "fold_style"), foldStyle);
-	settings.setValue(QString(regPath + "comment_fold"), commentFold);
+	settings.beginGroup(regPath + "theme");
+	settings.setValue("fold_fg_color", foldFgColor.name());
+	settings.setValue("fold_bg_color", foldBgColor.name());
+	settings.setValue("error_bg_color", errorBgColor.name());
+	settings.setValue("fold_style", foldStyle);
+	settings.setValue("comment_fold", commentFold);
+	settings.endGroup();
 }
 
 RDOEditorEditTheme RDOEditorEditTheme::getDefaultTheme()
@@ -232,17 +234,19 @@ rbool RDOEditorEditAutoComplete::operator !=( const RDOEditorEditAutoComplete& a
 void RDOEditorEditAutoComplete::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("auto_complete/");
-	useAutoComplete = settings.value(QString(regPath + "use_auto_complete"), useAutoComplete).toBool() ? true : false;
-	showFullList    = settings.value(QString(regPath + "show_full_list"), showFullList).toBool() ? true : false;
+	settings.beginGroup(regPath + "auto_complete");
+	useAutoComplete = settings.value("use_auto_complete", useAutoComplete).toBool() ? true : false;
+	showFullList    = settings.value("show_full_list", showFullList).toBool() ? true : false;
+	settings.endGroup();
 }
 
 void RDOEditorEditAutoComplete::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("auto_complete/");
-	settings.setValue(QString(regPath + "use_auto_complete"), useAutoComplete);
-	settings.setValue(QString(regPath + "show_full_list"), showFullList);
+	settings.beginGroup(regPath + "auto_complete");
+	settings.setValue("use_auto_complete", useAutoComplete);
+	settings.setValue("show_full_list", showFullList);
+	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------
@@ -283,19 +287,21 @@ rbool RDOEditorEditMargin::operator !=( const RDOEditorEditMargin& margin ) cons
 void RDOEditorEditMargin::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("margin/");
-	fold       = settings.value(QString(regPath + "fold"), fold).toBool() ? true : false;
-	bookmark   = settings.value(QString(regPath + "bookmark"), bookmark).toBool() ? true : false;
-	lineNumber = settings.value(QString(regPath + "line_number"), lineNumber).toBool() ? true : false;
+	settings.beginGroup(regPath + "margin");
+	fold       = settings.value("fold", fold).toBool() ? true : false;
+	bookmark   = settings.value("bookmark", bookmark).toBool() ? true : false;
+	lineNumber = settings.value("line_number", lineNumber).toBool() ? true : false;
+	settings.endGroup();
 }
 
 void RDOEditorEditMargin::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("margin/");
-	settings.setValue(QString(regPath + "fold"), fold);
-	settings.setValue(QString(regPath + "bookmark"), bookmark);
-	settings.setValue(QString(regPath + "line_number"), lineNumber);
+	settings.beginGroup(regPath + "margin");
+	settings.setValue("fold", fold);
+	settings.setValue("bookmark", bookmark);
+	settings.setValue("line_number", lineNumber);
+	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------

@@ -58,17 +58,21 @@ rbool LogColorPair::operator !=( const LogColorPair& colors ) const
 void LogColorPair::load( QString regPath, QString regParam )
 {
 	QSettings settings;
+	settings.beginGroup(regPath);
 	regParam.append("_");
-	foregroundColor = QColor(settings.value(QString(regPath + regParam + "foreground_color"), foregroundColor.name()).toString());
-	backgroundColor = QColor(settings.value(QString(regPath + regParam + "background_color"), backgroundColor.name()).toString());
+	foregroundColor = QColor(settings.value(QString(regParam + "foreground_color"), foregroundColor.name()).toString());
+	backgroundColor = QColor(settings.value(QString(regParam + "background_color"), backgroundColor.name()).toString());
+	settings.endGroup();
 }
 
 void LogColorPair::save( QString regPath, QString regParam ) const
 {
 	QSettings settings;
+	settings.beginGroup(regPath);
 	regParam.append("_");
-	settings.setValue(QString(regPath + regParam + "foreground_color"), foregroundColor.name());
-	settings.setValue(QString(regPath + regParam + "background_color"), backgroundColor.name());
+	settings.setValue(QString(regParam + "foreground_color"), foregroundColor.name());
+	settings.setValue(QString(regParam + "background_color"), backgroundColor.name());
+	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------
@@ -229,8 +233,10 @@ rbool LogTheme::operator !=( const LogTheme& theme ) const
 void LogTheme::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("theme/");
-	style = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "style"), style).toInt());
+	regPath.append("theme");
+	settings.beginGroup(regPath);
+	style = static_cast<RDOStyleFont::style>(settings.value("style", style).toInt());
+	settings.endGroup();
 	defaultColor.load( regPath, "defaultColor" );
 	es.load ( regPath, "es"  );
 	eb.load ( regPath, "eb"  );
@@ -262,8 +268,10 @@ void LogTheme::load( QString regPath )
 void LogTheme::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("theme/");
-	settings.setValue(QString(regPath + "style"), style);
+	regPath.append("theme");
+	settings.beginGroup(regPath);
+	settings.setValue("style", style);
+	settings.endGroup();
 	defaultColor.save( regPath, "defaultColor" );
 	es.save ( regPath, "es"  );
 	eb.save ( regPath, "eb"  );
@@ -333,17 +341,19 @@ rbool LogBorders::operator !=( const LogBorders& borders ) const
 void LogBorders::load( QString regPath )
 {
 	QSettings settings;
-	regPath.append("borders/");
-	vertBorder = settings.value(QString(regPath + "vert_border"), vertBorder).toInt();
-	horzBorder = settings.value(QString(regPath + "horz_border"), horzBorder).toInt();
+	settings.beginGroup(regPath + "borders");
+	vertBorder = settings.value("vert_border", vertBorder).toInt();
+	horzBorder = settings.value("horz_border", horzBorder).toInt();
+	settings.endGroup();
 }
 
 void LogBorders::save( QString regPath ) const
 {
 	QSettings settings;
-	regPath.append("borders/");
-	settings.setValue(QString(regPath + "vert_border"), vertBorder);
-	settings.setValue(QString(regPath + "horz_border"), horzBorder);
+	settings.beginGroup(regPath + "borders");
+	settings.setValue("vert_border", vertBorder);
+	settings.setValue("horz_border", horzBorder);
+	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------
