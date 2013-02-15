@@ -42,7 +42,9 @@ GeneralDB::~GeneralDB()
 
 void GeneralDB::insertRow(const QString& tableName, const QString& qRow)
 {
-	queryExec("INSERT INTO " + tableName + " VALUES(" + qRow + ");");
+	queryExec(QString("INSERT INTO %1 VALUES(%2);")
+		.arg(tableName)
+		.arg(qRow));
 }
 
 void GeneralDB::queryExec(const QueryList& query)
