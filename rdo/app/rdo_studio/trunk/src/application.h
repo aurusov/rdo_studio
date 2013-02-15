@@ -96,7 +96,6 @@ private:
 	rbool                                  m_autoExitByModel;
 	rbool                                  m_dontCloseIfError;
 	rdo::simulation::report::RDOExitCode   m_exitCode;
-	tstring                                m_openModelName;
 	QProcess*                              m_pAssistant;
 	PTR(RDOStudioMainFrame)                m_pMainFrame;
 	rdoEditor::LPRDOEditorEditStyle        m_pEditorEditStyle;
