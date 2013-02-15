@@ -319,6 +319,8 @@ void ViewPreferences::onTreeWidgetItemActivated(QTreeWidgetItem* item, int colum
 		italicCheckBox->setEnabled(true);
 		underlineCheckBox->setEnabled(true);
 	}
+
+	updateStyleTab();
 }
 
 void ViewPreferences::onSwitchPreviewComboBox(int index)
@@ -731,6 +733,77 @@ void ViewPreferences::updateDialog()
 	style_editor.tab->useTabs
 		? eraseWithTabRadioButton->toggle()
 		: eraseWithIndentRadioButton->toggle();
+
+	updateStyleTab();
+}
+
+void ViewPreferences::updateStyleTab()
+{
+	PTR(StyleProperty) prop = getStyleProperty();
+	fontComboBox->setCurrentFont(QFont(QString::fromStdString(prop->item->font_name)));
+	fontSizeComboBox->setCurrentIndex(fontSizeComboBox->findText(QString::number(prop->item->font_size)));
+	
+	if(fgColorComboBox->findData(prop->fg_color) == -1)
+	{
+		insertColor(prop->fg_color, QString::fromStdString(rdo::format("[%d, %d, %d]", prop->fg_color.red(), prop->fg_color.green(), prop->fg_color.blue())), fgColorComboBox);
+	}
+	fgColorComboBox->setCurrentIndex(fgColorComboBox->findData(prop->fg_color));
+	
+	QColor bgColor(prop->bg_color.blue(), prop->bg_color.green(), prop->bg_color.red());
+	if(bgColorComboBox->findData(prop->bg_color) == -1)
+	{
+		insertColor(prop->bg_color, QString::fromStdString(rdo::format("[%d, %d, %d]", prop->bg_color.red(), prop->bg_color.green(), prop->bg_color.blue())), bgColorComboBox);
+	}
+	bgColorComboBox->setCurrentIndex(bgColorComboBox->findData(prop->bg_color));
+
+	if(boldCheckBox->isEnabled())
+	{
+		boldCheckBox->setCheckState((prop->font_style & RDOStyleFont::BOLD) != 0 ? Qt::Checked : Qt::Unchecked);
+	}
+	if(italicCheckBox->isEnabled())
+	{
+		italicCheckBox->setCheckState((prop->font_style & RDOStyleFont::ITALIC) != 0 ? Qt::Checked : Qt::Unchecked);
+	}
+	if(underlineCheckBox->isEnabled())
+	{
+		underlineCheckBox->setCheckState((prop->font_style & RDOStyleFont::UNDERLINE) != 0 ? Qt::Checked : Qt::Unchecked);
+	}
+	switch(prop->item->type)
+	{
+	case IT_EDITOR:
+		wordWrapEditorCheckBox->setCheckState(prop->item->wordwrap ? Qt::Checked : Qt::Unchecked);
+		horzScrollEditorCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
+		commentCheckBox->setCheckState(prop->item->commentfold ? Qt::Checked : Qt::Unchecked);
+		foldComboBox->setCurrentIndex(static_cast<int>(prop->item->foldstyle));
+		bookmarkComboBox->setCurrentIndex(static_cast<int>(prop->item->bookmarkstyle));
+		break;
+	case IT_BUILD:
+		wordWrapBuildCheckBox->setCheckState(prop->item->wordwrap ? Qt::Checked : Qt::Unchecked);
+		horzScrollBuildCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
+		warningCheckBox->setCheckState(prop->item->warning ? Qt::Checked : Qt::Unchecked);
+		break;
+	case IT_DEBUG:
+		wordWrapDebugCheckBox->setCheckState(prop->item->wordwrap ? Qt::Checked : Qt::Unchecked);
+		horzScrollDebugCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
+		break;
+	case IT_LOG:
+		vertIndentLineEdit->setText(QString::number(style_trace.borders->vertBorder));
+		horzIndentLineEdit->setText(QString::number(style_trace.borders->horzBorder));
+		break;
+	case IT_RESULT:
+		wordWrapResultsCheckBox->setCheckState(prop->item->wordwrap ? Qt::Checked : Qt::Unchecked);
+		horzScrollResultsCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
+		break;
+	case IT_FIND:
+		wordWrapFindCheckBox->setCheckState(prop->item->wordwrap ? Qt::Checked : Qt::Unchecked);
+		horzScrollFindCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
+		break;
+	case IT_CHART:
+		titleComboBox->setCurrentIndex(titleComboBox->findText(QString::number(style_chart.fonts_ticks->titleFontSize)));
+		legendComboBox->setCurrentIndex(legendComboBox->findText(QString::number(style_chart.fonts_ticks->legendFontSize)));
+		tickWidthLineEdit->setText(QString::number(style_chart.fonts_ticks->tickWidth));
+		break;
+	}
 }
 
 void ViewPreferences::updatePreview()

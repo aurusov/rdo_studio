@@ -42,6 +42,7 @@ public:
 
 	void updateDialog();
 	void updatePreview();
+	void updateStyleTab();
 
 private slots:
 	void onOkButton();
