@@ -31,11 +31,11 @@ public:
 	virtual void load( CREF(QString) groupName );
 	virtual void save( CREF(QString) groupName ) const;
 
-	COLORREF axisFgColor;
-	COLORREF titleFGColor;
-	COLORREF legendFgColor;
-	COLORREF chartBgColor;
-	COLORREF timeBgColor;
+	QColor axisFgColor;
+	QColor titleFGColor;
+	QColor legendFgColor;
+	QColor chartBgColor;
+	QColor timeBgColor;
 
 	rdoStyle::RDOStyleFont::style titleStyle;
 	rdoStyle::RDOStyleFont::style legendStyle;

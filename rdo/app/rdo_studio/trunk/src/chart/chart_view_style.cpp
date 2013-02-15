@@ -87,14 +87,13 @@ void RDOStudioChartViewTheme::load( CREF(QString) groupName )
 	QSettings settings;
 	RDOStyleTheme::load( groupName );
 	settings.beginGroup(groupName + "theme");
-	//! @todo qt COLORREF -> QColor
-	//axisFgColor   = settings.value(QString(groupName + "axis_fg_color"), __int32()).toInt();
-	//titleFGColor  = settings.value(QString(groupName + "title_fg_color"), __int32()).toInt();
-	//legendFgColor = settings.value(QString(groupName + "legend_fg_color"), __int32()).toInt();
-	//chartBgColor  = settings.value(QString(groupName + "chart_bg_color"), __int32()).toInt();
-	//timeBgColor   = settings.value(QString(groupName + "time_bg_color"), __int32()).toInt();
-	//titleStyle    = static_cast<RDOStyleFont::style>(settings.value(QString(groupName + "title_style"), int()).toInt());
-	//legendStyle   = static_cast<RDOStyleFont::style>(settings.value(QString(groupName + "legend_style"), int()).toInt());
+	axisFgColor   = QColor(settings.value("axis_fg_color", axisFgColor.name()).toString());
+	titleFGColor  = QColor(settings.value("title_fg_color", titleFGColor.name()).toString());
+	legendFgColor = QColor(settings.value("legend_fg_color", legendFgColor.name()).toString());
+	chartBgColor  = QColor(settings.value("chart_bg_color", chartBgColor.name()).toString());
+	timeBgColor   = QColor(settings.value("time_bg_color", timeBgColor.name()).toString());
+	titleStyle    = static_cast<RDOStyleFont::style>(settings.value("title_style", titleStyle).toInt());
+	legendStyle   = static_cast<RDOStyleFont::style>(settings.value("legend_style", legendStyle).toInt());
 	settings.endGroup();
 }
 
@@ -104,6 +103,13 @@ void RDOStudioChartViewTheme::save( CREF(QString) groupName ) const
 	RDOStyleTheme::save( groupName );
 	settings.beginGroup(groupName + "theme");
 	//! @todo qt
+	settings.setValue("axis_fg_color", axisFgColor.name());
+	settings.setValue("title_fg_color", titleFGColor.name());
+	settings.setValue("legend_fg_color", legendFgColor.name());
+	settings.setValue("chart_bg_color", chartBgColor.name());
+	settings.setValue("time_bg_color", timeBgColor.name());
+	settings.setValue("title_style", titleStyle);
+	settings.setValue("legend_style", legendStyle);
 	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "axisFgColor", axisFgColor );
 	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "titleFGColor", titleFGColor );
 	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "legendFgColor", legendFgColor );

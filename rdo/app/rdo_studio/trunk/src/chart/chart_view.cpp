@@ -456,7 +456,7 @@ void RDOStudioChartView::drawTitle( CRect& chartRect )
 	tmprect.bottom = chartRect.top;
 	
 	::SelectObject( hmemdc, hfontTitle );
-	::SetTextColor( hmemdc, style->getTheme()->titleFGColor );
+	::SetTextColor( hmemdc, RGB(style->getTheme()->titleFGColor.red(), style->getTheme()->titleFGColor.green(), style->getTheme()->titleFGColor.blue()) );
 	
 	tstring str = GetDocument()->getTitle();
 	::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_CENTER | DT_WORDBREAK );
@@ -470,7 +470,7 @@ void RDOStudioChartView::drawLegend( CRect& legendRect )
 	SIZE size;
 	::SelectObject( hmemdc, hfontLegend );
 	for ( std::vector< ChartSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
-		(*it)->drawInLegend( hmemdc, tmprect, style->getTheme()->legendFgColor, size );
+		(*it)->drawInLegend( hmemdc, tmprect, RGB(style->getTheme()->legendFgColor.red(), style->getTheme()->legendFgColor.green(), style->getTheme()->legendFgColor.blue()), size );
 		tmprect.top += size.cy;
 	}
 }
@@ -487,7 +487,7 @@ void RDOStudioChartView::drawYAxis( CRect& chartRect, const ChartSerie* axisValu
 		if ( count ) {
 			
 			::SelectObject( hmemdc, hfontAxis );
-			::SetTextColor( hmemdc, style->getTheme()->axisFgColor );
+			::SetTextColor( hmemdc, RGB(style->getTheme()->axisFgColor.red(), style->getTheme()->axisFgColor.green(), style->getTheme()->axisFgColor.blue()) );
 			
 			int count = captions.size();
 			int heightoffset = roundDouble( (double)chartRect.Height() / (double)( count - 1 ) );
@@ -523,7 +523,7 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 		tstring formatstr = "%.3f";
 		
 		::SelectObject( hmemdc, hfontAxis );
-		::SetTextColor( hmemdc, style->getTheme()->axisFgColor );
+		::SetTextColor( hmemdc, RGB(style->getTheme()->axisFgColor.red(), style->getTheme()->axisFgColor.green(), style->getTheme()->axisFgColor.blue()) );
 		
 		if( !doUnwrapTime() ) {
 			double valoffset = 0;
@@ -591,7 +591,7 @@ void RDOStudioChartView::drawGrid( CRect& chartRect )
 	HBRUSH brush_chart = NULL;
 	HBRUSH old_brush = NULL;
 	try {
-		brush_chart = ::CreateSolidBrush( style->getTheme()->chartBgColor );
+		brush_chart = ::CreateSolidBrush( RGB(style->getTheme()->chartBgColor.red(), style->getTheme()->chartBgColor.green(), style->getTheme()->chartBgColor.blue()) );
 		old_brush = (HBRUSH)::SelectObject( hmemdc, brush_chart );
 		::Rectangle( hmemdc, chartRect.left, chartRect.top, chartRect.right, chartRect.bottom );
 		::SelectObject( hmemdc, old_brush );
@@ -619,7 +619,7 @@ void RDOStudioChartView::drawGrid( CRect& chartRect )
 			it ++;
 		}
 		//For drawing solid rect
-		::SetBkColor( hmemdc, style->getTheme()->timeBgColor );
+		::SetBkColor( hmemdc, RGB(style->getTheme()->timeBgColor.red(), style->getTheme()->timeBgColor.green(), style->getTheme()->timeBgColor.blue()) );
 		for( ; it != unwrapTimesList.end(); it++ ) {
 			int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
 			tmprect.left = rect.left + (LONG)(( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift);
