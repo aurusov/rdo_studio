@@ -229,9 +229,9 @@ rbool RDOStyle::operator !=( const RDOStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOStyle::init( CREF(QString) _regPath )
+void RDOStyle::init( CREF(QString) _groupName )
 {
-	groupName = _regPath;
+	groupName = _groupName;
 	if (!groupName.isEmpty()) 
 	{
 		groupName.prepend("style/");
@@ -300,9 +300,9 @@ rbool RDOStyleWithTheme::operator !=( const RDOStyleWithTheme& style ) const
 	return !(*this == style);
 }
 
-void RDOStyleWithTheme::init( CREF(QString) _regPath )
+void RDOStyleWithTheme::init( CREF(QString) _groupName )
 {
-	RDOStyle::init( _regPath );
+	RDOStyle::init( _groupName );
 	initTheme();
 }
 

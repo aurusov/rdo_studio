@@ -121,7 +121,7 @@ public:
 	rbool operator ==( const RDOEditorEditStyle& style ) const;
 	rbool operator !=( const RDOEditorEditStyle& style ) const;
 
-	virtual void  init( CREF(QString) _regPath = "" );
+	virtual void  init( CREF(QString) _groupName = "" );
 	virtual rbool load();
 	virtual rbool save() const;
 

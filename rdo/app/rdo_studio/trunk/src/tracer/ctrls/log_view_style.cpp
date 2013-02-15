@@ -489,9 +489,9 @@ rbool LogStyle::operator !=( const LogStyle& style ) const
 	return !(*this == style);
 }
 
-void LogStyle::init( CREF(QString) _regPath )
+void LogStyle::init( CREF(QString) _groupName )
 {
-	RDOStyle::init( _regPath );
+	RDOStyle::init( _groupName );
 	initTheme();
 	initBorders();
 	*font = rdoStyle::RDOStyleFont::getTracerLogFont();

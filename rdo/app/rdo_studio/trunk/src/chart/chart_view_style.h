@@ -81,7 +81,7 @@ public:
 	rbool operator ==( const RDOStudioChartViewStyle& style ) const;
 	rbool operator !=( const RDOStudioChartViewStyle& style ) const;
 
-	virtual void  init( CREF(QString) _regPath = "" );
+	virtual void  init( CREF(QString) _groupName = "" );
 	virtual rbool load();
 	virtual rbool save() const;
 	

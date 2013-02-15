@@ -361,9 +361,9 @@ rbool RDOEditorEditStyle::operator !=( const RDOEditorEditStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOEditorEditStyle::init( CREF(QString) _regPath )
+void RDOEditorEditStyle::init( CREF(QString) _groupName )
 {
-	RDOEditorBaseEditStyle::init( _regPath );
+	RDOEditorBaseEditStyle::init( _groupName );
 	initAutoComplete();
 	initMargin();
 }

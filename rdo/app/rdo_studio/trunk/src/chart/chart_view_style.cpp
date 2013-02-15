@@ -218,9 +218,9 @@ rbool RDOStudioChartViewStyle::operator !=( const RDOStudioChartViewStyle& style
 	return !(*this == style);
 }
 
-void RDOStudioChartViewStyle::init( CREF(QString) _regPath )
+void RDOStudioChartViewStyle::init( CREF(QString) _groupName )
 {
-	RDOStyleWithTheme::init( _regPath );
+	RDOStyleWithTheme::init( _groupName );
 	*font = rdoStyle::RDOStyleFont::getChartViewFont();
 	initFontsTicks();
 }

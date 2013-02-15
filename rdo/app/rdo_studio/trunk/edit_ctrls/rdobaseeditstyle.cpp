@@ -385,9 +385,9 @@ rbool RDOBaseEditStyle::operator !=( const RDOBaseEditStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOBaseEditStyle::init( CREF(QString) _regPath )
+void RDOBaseEditStyle::init( CREF(QString) _groupName )
 {
-	RDOStyleWithTheme::init( _regPath );
+	RDOStyleWithTheme::init( _groupName );
 	initTab();
 	initWindow();
 }

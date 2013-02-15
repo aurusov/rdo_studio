@@ -47,7 +47,7 @@ public:
 	rbool operator ==( const RDOStudioFrameStyle& style ) const;
 	rbool operator !=( const RDOStudioFrameStyle& style ) const;
 
-	virtual void init( CREF(QString) _regPath = "" );
+	virtual void init( CREF(QString) _groupName = "" );
 };
 
 #endif // _RDO_STUDIO_FRAME_STYLE_H_
