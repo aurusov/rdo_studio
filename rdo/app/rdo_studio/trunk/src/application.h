@@ -93,7 +93,6 @@ private:
 	rbool                                  m_openLastProject;
 	QString                                m_lastProjectName;
 	rbool                                  m_showCaptionFullName;
-	rbool                                  m_autoRun;
 	rbool                                  m_autoExitByModel;
 	rbool                                  m_dontCloseIfError;
 	rdo::simulation::report::RDOExitCode   m_exitCode;

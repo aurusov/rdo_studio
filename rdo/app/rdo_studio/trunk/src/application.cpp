@@ -94,7 +94,6 @@ RDOStudioApp::RDOStudioApp()
 	, m_fileAssociationCheckInFuture(false )
 	, m_openLastProject             (false )
 	, m_showCaptionFullName         (false )
-	, m_autoRun                     (false )
 	, m_autoExitByModel             (false )
 	, m_dontCloseIfError            (false )
 	, m_exitCode                    (rdo::simulation::report::EC_OK)
@@ -214,9 +213,10 @@ BOOL RDOStudioApp::InitInstance()
 	catch (const std::exception& e)
 	{}
 
+	rbool autoRun = false;
 	if (vm.count("autorun"))
 	{
-		m_autoRun = true;
+		autoRun = true;
 	}
 
 	if (vm.count("autoexit"))
@@ -229,7 +229,7 @@ BOOL RDOStudioApp::InitInstance()
 		m_dontCloseIfError = true;
 	}
 
-	if (!m_autoRun && !m_autoExitByModel && !m_dontCloseIfError)
+	if (!autoRun && !m_autoExitByModel && !m_dontCloseIfError)
 	{
 		if (m_openModelName.empty())
 		{
@@ -258,7 +258,7 @@ BOOL RDOStudioApp::InitInstance()
 			m_openModelName = rdo::extractFilePath(RDOStudioApp::getFullExtName()) + m_openModelName;
 			if (rdo::File::exist(m_openModelName) && model->openModel(QString::fromLocal8Bit(m_openModelName.c_str())))
 			{
-				m_autoRun          = true;
+				autoRun            = true;
 				m_autoExitByModel  = true;
 				m_dontCloseIfError = true;
 				autoModel          = true;
@@ -285,12 +285,12 @@ BOOL RDOStudioApp::InitInstance()
 	}
 	else
 	{
-		m_autoRun          = false;
+		autoRun            = false;
 		m_autoExitByModel  = false;
 		m_dontCloseIfError = false;
 	}
 
-	if (m_autoRun)
+	if (autoRun)
 	{
 		model->runModel();
 	}
