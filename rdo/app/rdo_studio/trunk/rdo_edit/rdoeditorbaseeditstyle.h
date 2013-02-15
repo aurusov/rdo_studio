@@ -31,8 +31,8 @@ public:
 	rbool operator ==( const RDOEditorBaseEditTheme& theme ) const;
 	rbool operator !=( const RDOEditorBaseEditTheme& theme ) const;
 
-	virtual void load( CREF(QString) regPath );
-	virtual void save( CREF(QString) regPath ) const;
+	virtual void load( CREF(QString) groupName );
+	virtual void save( CREF(QString) groupName ) const;
 
 	QColor identifierColor;
 	QColor keywordColor;

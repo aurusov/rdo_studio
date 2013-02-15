@@ -61,23 +61,23 @@ rbool RDOFindEditTheme::operator !=( const RDOFindEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOFindEditTheme::load( CREF(QString) regPath )
+void RDOFindEditTheme::load( CREF(QString) groupName )
 {
-	LogEditTheme::load( regPath );
+	LogEditTheme::load( groupName );
 
 	QSettings settings;
-	settings.beginGroup(regPath + "theme");
+	settings.beginGroup(groupName + "theme");
 	keywordColor = QColor(settings.value("keyword_color", keywordColor.name()).toString());
 	keywordStyle = static_cast<RDOStyleFont::style>(settings.value("keyword_style", keywordStyle).toInt());
 	settings.endGroup();
 }
 
-void RDOFindEditTheme::save( CREF(QString) regPath ) const
+void RDOFindEditTheme::save( CREF(QString) groupName ) const
 {
-	LogEditTheme::save( regPath );
+	LogEditTheme::save( groupName );
 
 	QSettings settings;
-	settings.beginGroup(regPath + "theme");
+	settings.beginGroup(groupName + "theme");
 	settings.setValue("keyword_color", keywordColor.name());
 	settings.setValue("keyword_style", keywordStyle);
 	settings.endGroup();

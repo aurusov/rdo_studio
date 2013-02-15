@@ -114,12 +114,12 @@ rbool RDOEditorBaseEditTheme::operator !=( const RDOEditorBaseEditTheme& theme )
 	return !(*this == theme);
 }
 
-void RDOEditorBaseEditTheme::load( CREF(QString) regPath )
+void RDOEditorBaseEditTheme::load( CREF(QString) groupName )
 {
-	RDOBaseEditTheme::load( regPath );
+	RDOBaseEditTheme::load( groupName );
 
 	QSettings settings;
-	settings.beginGroup(regPath + "theme");
+	settings.beginGroup(groupName + "theme");
 	identifierColor        = QColor(settings.value("identifier_color", identifierColor.name()).toString());
 	keywordColor           = QColor(settings.value("keyword_color", keywordColor.name()).toString());
 	functionsColor         = QColor(settings.value("functions_color", functionsColor.name()).toString());
@@ -142,12 +142,12 @@ void RDOEditorBaseEditTheme::load( CREF(QString) regPath )
 	settings.endGroup();
 }
 
-void RDOEditorBaseEditTheme::save( CREF(QString) regPath ) const
+void RDOEditorBaseEditTheme::save( CREF(QString) groupName ) const
 {
-	RDOBaseEditTheme::save( regPath );
+	RDOBaseEditTheme::save( groupName );
 
 	QSettings settings;
-	settings.beginGroup(regPath + "theme");
+	settings.beginGroup(groupName + "theme");
 	settings.setValue("identifier_color", identifierColor.name());
 	settings.setValue("keyword_color", keywordColor.name());
 	settings.setValue("functions_color", functionsColor.name());

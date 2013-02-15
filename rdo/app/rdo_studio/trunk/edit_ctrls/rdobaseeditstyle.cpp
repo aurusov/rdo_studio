@@ -82,10 +82,10 @@ rbool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOBaseEditTheme::load( CREF(QString) regPath )
+void RDOBaseEditTheme::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "theme");
+	settings.beginGroup(groupName + "theme");
 	defaultColor     = QColor(settings.value("default_color", defaultColor.name()).toString());
 	backgroundColor  = QColor(settings.value("background_color", backgroundColor.name()).toString());
 	caretColor       = QColor(settings.value("caret_color", caretColor.name()).toString());
@@ -97,10 +97,10 @@ void RDOBaseEditTheme::load( CREF(QString) regPath )
 	settings.endGroup();
 }
 
-void RDOBaseEditTheme::save( CREF(QString) regPath ) const
+void RDOBaseEditTheme::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "theme");
+	settings.beginGroup(groupName + "theme");
 	settings.setValue("default_color", defaultColor.name());
 	settings.setValue("background_color", backgroundColor.name());
 	settings.setValue("caret_color", caretColor.name());
@@ -254,10 +254,10 @@ rbool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
 	return !(*this == tab);
 }
 
-void RDOBaseEditTab::load( CREF(QString) regPath )
+void RDOBaseEditTab::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "tab");
+	settings.beginGroup(groupName + "tab");
 	tabSize         = settings.value("tab_size", tabSize).toInt();
 	indentSize      = settings.value("indent_size", indentSize).toInt();
 	useTabs         = settings.value("use_tabs", useTabs).toBool() ? true : false;
@@ -267,10 +267,10 @@ void RDOBaseEditTab::load( CREF(QString) regPath )
 	settings.endGroup();
 }
 
-void RDOBaseEditTab::save( CREF(QString) regPath ) const
+void RDOBaseEditTab::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "tab");
+	settings.beginGroup(groupName + "tab");
 	settings.setValue("tab_size", tabSize);
 	settings.setValue("indent_size", indentSize);
 	settings.setValue("use_tabs", useTabs);
@@ -312,19 +312,19 @@ rbool RDOBaseEditWindow::operator !=( const RDOBaseEditWindow& window ) const
 	return !(*this == window);
 }
 
-void RDOBaseEditWindow::load( CREF(QString) regPath )
+void RDOBaseEditWindow::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "window");
+	settings.beginGroup(groupName + "window");
 	wordWrap          = settings.value("word_wrap", wordWrap).toBool() ? true : false;
 	showHorzScrollBar = settings.value("show_horz_scroll_bar", showHorzScrollBar).toBool() ? true : false;
 	settings.endGroup();
 }
 
-void RDOBaseEditWindow::save( CREF(QString) regPath ) const
+void RDOBaseEditWindow::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "window");
+	settings.beginGroup(groupName + "window");
 	settings.setValue("word_wrap", wordWrap);
 	settings.setValue("show_horz_scroll_bar", showHorzScrollBar);
 	settings.endGroup();
@@ -395,8 +395,8 @@ void RDOBaseEditStyle::init( CREF(QString) _regPath )
 rbool RDOBaseEditStyle::load()
 {
 	if ( RDOStyleWithTheme::load() ) {
-		if ( tab )    tab->load( regPath );
-		if ( window ) window->load( regPath );
+		if ( tab )    tab->load( groupName );
+		if ( window ) window->load( groupName );
 		return true;
 	}
 	return false;
@@ -405,8 +405,8 @@ rbool RDOBaseEditStyle::load()
 rbool RDOBaseEditStyle::save() const
 {
 	if ( RDOStyleWithTheme::save() ) {
-		if ( tab )    tab->save( regPath );
-		if ( window ) window->save( regPath );
+		if ( tab )    tab->save( groupName );
+		if ( window ) window->save( groupName );
 		return true;
 	}
 	return false;

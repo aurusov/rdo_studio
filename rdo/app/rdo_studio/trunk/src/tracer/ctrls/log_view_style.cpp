@@ -55,20 +55,20 @@ rbool LogColorPair::operator !=( const LogColorPair& colors ) const
 	return !(*this == colors);
 }
 
-void LogColorPair::load( CREF(QString) regPath, QString regParam )
+void LogColorPair::load( CREF(QString) groupName, QString regParam )
 {
 	QSettings settings;
-	settings.beginGroup(regPath);
+	settings.beginGroup(groupName);
 	regParam.append("_");
 	foregroundColor = QColor(settings.value(QString(regParam + "foreground_color"), foregroundColor.name()).toString());
 	backgroundColor = QColor(settings.value(QString(regParam + "background_color"), backgroundColor.name()).toString());
 	settings.endGroup();
 }
 
-void LogColorPair::save( CREF(QString) regPath, QString regParam ) const
+void LogColorPair::save( CREF(QString) groupName, QString regParam ) const
 {
 	QSettings settings;
-	settings.beginGroup(regPath);
+	settings.beginGroup(groupName);
 	regParam.append("_");
 	settings.setValue(QString(regParam + "foreground_color"), foregroundColor.name());
 	settings.setValue(QString(regParam + "background_color"), backgroundColor.name());
@@ -230,74 +230,74 @@ rbool LogTheme::operator !=( const LogTheme& theme ) const
 	return !(*this == theme);
 }
 
-void LogTheme::load( QString regPath )
+void LogTheme::load( QString groupName )
 {
 	QSettings settings;
-	regPath.append("theme");
-	settings.beginGroup(regPath);
+	groupName.append("theme");
+	settings.beginGroup(groupName);
 	style = static_cast<RDOStyleFont::style>(settings.value("style", style).toInt());
 	settings.endGroup();
-	defaultColor.load( regPath, "defaultColor" );
-	es.load ( regPath, "es"  );
-	eb.load ( regPath, "eb"  );
-	ef.load ( regPath, "ef"  );
-	ei.load ( regPath, "ei"  );
-	er.load ( regPath, "er"  );
-	rc.load ( regPath, "rc"  );
-	re.load ( regPath, "re"  );
-	rk.load ( regPath, "rk"  );
-	v.load  ( regPath, "v"   );
-	s.load  ( regPath, "s"   );
-	dps.load( regPath, "dps" );
-	sb.load ( regPath, "sb"  );
-	so.load ( regPath, "so"  );
-	stn.load( regPath, "stn" );
-	std.load( regPath, "std" );
-	str.load( regPath, "str" );
-	src.load( regPath, "src" );
-	sre.load( regPath, "sre" );
-	srk.load( regPath, "srk" );
-	sd.load ( regPath, "sd"  );
-	ses.load( regPath, "ses" );
-	sen.load( regPath, "sen" );
-	sem.load( regPath, "sem" );
-	sef.load( regPath, "sef" );
-	seu.load( regPath, "seu" );
+	defaultColor.load( groupName, "defaultColor" );
+	es.load ( groupName, "es"  );
+	eb.load ( groupName, "eb"  );
+	ef.load ( groupName, "ef"  );
+	ei.load ( groupName, "ei"  );
+	er.load ( groupName, "er"  );
+	rc.load ( groupName, "rc"  );
+	re.load ( groupName, "re"  );
+	rk.load ( groupName, "rk"  );
+	v.load  ( groupName, "v"   );
+	s.load  ( groupName, "s"   );
+	dps.load( groupName, "dps" );
+	sb.load ( groupName, "sb"  );
+	so.load ( groupName, "so"  );
+	stn.load( groupName, "stn" );
+	std.load( groupName, "std" );
+	str.load( groupName, "str" );
+	src.load( groupName, "src" );
+	sre.load( groupName, "sre" );
+	srk.load( groupName, "srk" );
+	sd.load ( groupName, "sd"  );
+	ses.load( groupName, "ses" );
+	sen.load( groupName, "sen" );
+	sem.load( groupName, "sem" );
+	sef.load( groupName, "sef" );
+	seu.load( groupName, "seu" );
 }
 
-void LogTheme::save( QString regPath ) const
+void LogTheme::save( QString groupName ) const
 {
 	QSettings settings;
-	regPath.append("theme");
-	settings.beginGroup(regPath);
+	groupName.append("theme");
+	settings.beginGroup(groupName);
 	settings.setValue("style", style);
 	settings.endGroup();
-	defaultColor.save( regPath, "defaultColor" );
-	es.save ( regPath, "es"  );
-	eb.save ( regPath, "eb"  );
-	ef.save ( regPath, "ef"  );
-	ei.save ( regPath, "ei"  );
-	er.save ( regPath, "er"  );
-	rc.save ( regPath, "rc"  );
-	re.save ( regPath, "re"  );
-	rk.save ( regPath, "rk"  );
-	v.save  ( regPath, "v"   );
-	s.save  ( regPath, "s"   );
-	dps.save( regPath, "dps" );
-	sb.save ( regPath, "sb"  );
-	so.save ( regPath, "so"  );
-	stn.save( regPath, "stn" );
-	std.save( regPath, "std" );
-	str.save( regPath, "str" );
-	src.save( regPath, "src" );
-	sre.save( regPath, "sre" );
-	srk.save( regPath, "srk" );
-	sd.save ( regPath, "sd"  );
-	ses.save( regPath, "ses" );
-	sen.save( regPath, "sen" );
-	sem.save( regPath, "sem" );
-	sef.save( regPath, "sef" );
-	seu.save( regPath, "seu" );
+	defaultColor.save( groupName, "defaultColor" );
+	es.save ( groupName, "es"  );
+	eb.save ( groupName, "eb"  );
+	ef.save ( groupName, "ef"  );
+	ei.save ( groupName, "ei"  );
+	er.save ( groupName, "er"  );
+	rc.save ( groupName, "rc"  );
+	re.save ( groupName, "re"  );
+	rk.save ( groupName, "rk"  );
+	v.save  ( groupName, "v"   );
+	s.save  ( groupName, "s"   );
+	dps.save( groupName, "dps" );
+	sb.save ( groupName, "sb"  );
+	so.save ( groupName, "so"  );
+	stn.save( groupName, "stn" );
+	std.save( groupName, "std" );
+	str.save( groupName, "str" );
+	src.save( groupName, "src" );
+	sre.save( groupName, "sre" );
+	srk.save( groupName, "srk" );
+	sd.save ( groupName, "sd"  );
+	ses.save( groupName, "ses" );
+	sen.save( groupName, "sen" );
+	sem.save( groupName, "sem" );
+	sef.save( groupName, "sef" );
+	seu.save( groupName, "seu" );
 }
 
 LogTheme LogTheme::getDefaultTheme()
@@ -338,19 +338,19 @@ rbool LogBorders::operator !=( const LogBorders& borders ) const
 	return !(*this == borders);
 }
 
-void LogBorders::load( CREF(QString) regPath )
+void LogBorders::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "borders");
+	settings.beginGroup(groupName + "borders");
 	vertBorder = settings.value("vert_border", vertBorder).toInt();
 	horzBorder = settings.value("horz_border", horzBorder).toInt();
 	settings.endGroup();
 }
 
-void LogBorders::save( CREF(QString) regPath ) const
+void LogBorders::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "borders");
+	settings.beginGroup(groupName + "borders");
 	settings.setValue("vert_border", vertBorder);
 	settings.setValue("horz_border", horzBorder);
 	settings.endGroup();
@@ -500,8 +500,8 @@ void LogStyle::init( CREF(QString) _regPath )
 rbool LogStyle::load()
 {
 	if ( RDOStyle::load() ) {
-		if ( theme )   theme->load( regPath );
-		if ( borders ) borders->load( regPath );
+		if ( theme )   theme->load( groupName );
+		if ( borders ) borders->load( groupName );
 		return true;
 	}
 	return false;
@@ -510,8 +510,8 @@ rbool LogStyle::load()
 rbool LogStyle::save() const
 {
 	if ( RDOStyle::save() ) {
-		if ( theme )   theme->save( regPath );
-		if ( borders ) borders->save( regPath );
+		if ( theme )   theme->save( groupName );
+		if ( borders ) borders->save( groupName );
 		return true;
 	}
 	return false;

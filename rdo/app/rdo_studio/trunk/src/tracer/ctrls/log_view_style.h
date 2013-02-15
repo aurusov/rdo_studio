@@ -31,8 +31,8 @@ public:
 	rbool operator ==( const LogColorPair& colors ) const;
 	rbool operator !=( const LogColorPair& colors ) const;
 
-	virtual void load( CREF(QString) regPath, QString regParam );
-	virtual void save( CREF(QString) regPath, QString regParam ) const;
+	virtual void load( CREF(QString) groupName, QString regParam );
+	virtual void save( CREF(QString) groupName, QString regParam ) const;
 
 	QColor foregroundColor;
 	QColor backgroundColor;
@@ -51,8 +51,8 @@ public:
 	rbool operator ==( const LogTheme& theme ) const;
 	rbool operator !=( const LogTheme& theme ) const;
 
-	virtual void load( QString regPath );
-	virtual void save( QString regPath ) const;
+	virtual void load( QString groupName );
+	virtual void save( QString groupName ) const;
 
 	rdoStyle::RDOStyleFont::style style;
 
@@ -99,8 +99,8 @@ public:
 	rbool operator ==( const LogBorders& borders ) const;
 	rbool operator !=( const LogBorders& borders ) const;
 
-	virtual void load( CREF(QString) regPath );
-	virtual void save( CREF(QString) regPath ) const;
+	virtual void load( CREF(QString) groupName );
+	virtual void save( CREF(QString) groupName ) const;
 
 	int vertBorder;
 	int horzBorder;

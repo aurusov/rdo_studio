@@ -64,10 +64,10 @@ rbool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 	return !(*this == font);
 }
 
-void RDOStyleFont::load( CREF(QString) regPath )
+void RDOStyleFont::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "font");
+	settings.beginGroup(groupName + "font");
 	name         = settings.value("name", QString::fromLocal8Bit(name.c_str())).toString().toLocal8Bit().constData();
 	size         = settings.value("size", size).toInt();
 	codepage     = settings.value("codepage", codepage).toInt();
@@ -79,10 +79,10 @@ void RDOStyleFont::load( CREF(QString) regPath )
 	}
 }
 
-void RDOStyleFont::save( CREF(QString) regPath ) const
+void RDOStyleFont::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(regPath +"font");
+	settings.beginGroup(groupName +"font");
 	settings.setValue("name", QString::fromLocal8Bit(name.c_str()));
 	settings.setValue("size", size);
 	settings.setValue("codepage", codepage);
@@ -171,20 +171,20 @@ rbool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOStyleTheme::load( CREF(QString) regPath )
+void RDOStyleTheme::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "theme");
+	settings.beginGroup(groupName + "theme");
 	defaultColor = QColor(settings.value("default_color", defaultColor.name()).toString());
 	backgroundColor = QColor(settings.value("background_color", backgroundColor.name()).toString());
 	defaultStyle    = static_cast<RDOStyleFont::style>(settings.value("default_style", defaultStyle).toInt());
 	settings.endGroup();
 }
 
-void RDOStyleTheme::save( CREF(QString) regPath ) const
+void RDOStyleTheme::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "theme");
+	settings.beginGroup(groupName + "theme");
 	settings.setValue("default_color", defaultColor.name());
 	settings.setValue("background_color", backgroundColor.name());
 	settings.setValue("default_style", defaultStyle);
@@ -195,7 +195,7 @@ void RDOStyleTheme::save( CREF(QString) regPath ) const
 // -------------------- RDOStyle
 // --------------------------------------------------------------------------------
 RDOStyle::RDOStyle():
-	regPath( "" ),
+	groupName( "" ),
 	font( NULL )
 {
 }
@@ -231,13 +231,13 @@ rbool RDOStyle::operator !=( const RDOStyle& style ) const
 
 void RDOStyle::init( CREF(QString) _regPath )
 {
-	regPath = _regPath;
-	if (!regPath.isEmpty()) 
+	groupName = _regPath;
+	if (!groupName.isEmpty()) 
 	{
-		regPath.prepend("style/");
-		if(regPath.lastIndexOf("/") != regPath.length() - 1)
+		groupName.prepend("style/");
+		if(groupName.lastIndexOf("/") != groupName.length() - 1)
 		{
-			regPath.append("/");
+			groupName.append("/");
 		}
 	}
 	initFont();
@@ -245,8 +245,8 @@ void RDOStyle::init( CREF(QString) _regPath )
 
 rbool RDOStyle::load()
 {
-	if ( !regPath.isEmpty() ) {
-		if ( font ) font->load( regPath );
+	if ( !groupName.isEmpty() ) {
+		if ( font ) font->load( groupName );
 		return true;
 	}
 	return false;
@@ -254,8 +254,8 @@ rbool RDOStyle::load()
 
 rbool RDOStyle::save() const
 {
-	if ( !regPath.isEmpty() ) {
-		if ( font ) font->save( regPath );
+	if ( !groupName.isEmpty() ) {
+		if ( font ) font->save( groupName );
 		return true;
 	}
 	return false;
@@ -309,7 +309,7 @@ void RDOStyleWithTheme::init( CREF(QString) _regPath )
 rbool RDOStyleWithTheme::load()
 {
 	if ( RDOStyle::load() ) {
-		if ( theme ) theme->load( regPath );
+		if ( theme ) theme->load( groupName );
 		return true;
 	}
 	return false;
@@ -318,7 +318,7 @@ rbool RDOStyleWithTheme::load()
 rbool RDOStyleWithTheme::save() const
 {
 	if ( RDOStyle::save() ) {
-		if ( theme ) theme->save( regPath );
+		if ( theme ) theme->save( groupName );
 		return true;
 	}
 	return false;

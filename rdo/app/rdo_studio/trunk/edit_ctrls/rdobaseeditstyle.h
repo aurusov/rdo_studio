@@ -39,8 +39,8 @@ public:
 	rbool operator ==( const RDOBaseEditTheme& theme ) const;
 	rbool operator !=( const RDOBaseEditTheme& theme ) const;
 
-	virtual void load( CREF(QString) regPath );
-	virtual void save( CREF(QString) regPath ) const;
+	virtual void load( CREF(QString) groupName );
+	virtual void save( CREF(QString) groupName ) const;
 
 	QColor caretColor;
 	QColor selectionBgColor;
@@ -77,8 +77,8 @@ public:
 	rbool operator ==( const RDOBaseEditTab& tab ) const;
 	rbool operator !=( const RDOBaseEditTab& tab ) const;
 
-	virtual void load( CREF(QString) regPath );
-	virtual void save( CREF(QString) regPath ) const;
+	virtual void load( CREF(QString) groupName );
+	virtual void save( CREF(QString) groupName ) const;
 
 	int tabSize;
 	int indentSize;
@@ -101,8 +101,8 @@ public:
 	rbool operator ==( const RDOBaseEditWindow& window ) const;
 	rbool operator !=( const RDOBaseEditWindow& window ) const;
 
-	virtual void load( CREF(QString) regPath );
-	virtual void save( CREF(QString) regPath ) const;
+	virtual void load( CREF(QString) groupName );
+	virtual void save( CREF(QString) groupName ) const;
 
 	rbool wordWrap;
 	rbool showHorzScrollBar;

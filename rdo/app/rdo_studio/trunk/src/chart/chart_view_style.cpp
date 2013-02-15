@@ -82,35 +82,35 @@ rbool RDOStudioChartViewTheme::operator !=( const RDOStudioChartViewTheme& theme
 	return !(*this == theme);
 }
 
-void RDOStudioChartViewTheme::load( CREF(QString) regPath )
+void RDOStudioChartViewTheme::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	RDOStyleTheme::load( regPath );
-	settings.beginGroup(regPath + "theme");
+	RDOStyleTheme::load( groupName );
+	settings.beginGroup(groupName + "theme");
 	//! @todo qt COLORREF -> QColor
-	//axisFgColor   = settings.value(QString(regPath + "axis_fg_color"), __int32()).toInt();
-	//titleFGColor  = settings.value(QString(regPath + "title_fg_color"), __int32()).toInt();
-	//legendFgColor = settings.value(QString(regPath + "legend_fg_color"), __int32()).toInt();
-	//chartBgColor  = settings.value(QString(regPath + "chart_bg_color"), __int32()).toInt();
-	//timeBgColor   = settings.value(QString(regPath + "time_bg_color"), __int32()).toInt();
-	//titleStyle    = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "title_style"), int()).toInt());
-	//legendStyle   = static_cast<RDOStyleFont::style>(settings.value(QString(regPath + "legend_style"), int()).toInt());
+	//axisFgColor   = settings.value(QString(groupName + "axis_fg_color"), __int32()).toInt();
+	//titleFGColor  = settings.value(QString(groupName + "title_fg_color"), __int32()).toInt();
+	//legendFgColor = settings.value(QString(groupName + "legend_fg_color"), __int32()).toInt();
+	//chartBgColor  = settings.value(QString(groupName + "chart_bg_color"), __int32()).toInt();
+	//timeBgColor   = settings.value(QString(groupName + "time_bg_color"), __int32()).toInt();
+	//titleStyle    = static_cast<RDOStyleFont::style>(settings.value(QString(groupName + "title_style"), int()).toInt());
+	//legendStyle   = static_cast<RDOStyleFont::style>(settings.value(QString(groupName + "legend_style"), int()).toInt());
 	settings.endGroup();
 }
 
-void RDOStudioChartViewTheme::save( CREF(QString) regPath ) const
+void RDOStudioChartViewTheme::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	RDOStyleTheme::save( regPath );
-	settings.beginGroup(regPath + "theme");
+	RDOStyleTheme::save( groupName );
+	settings.beginGroup(groupName + "theme");
 	//! @todo qt
-	//AfxGetApp()->WriteProfileInt( regPath.c_str(), "axisFgColor", axisFgColor );
-	//AfxGetApp()->WriteProfileInt( regPath.c_str(), "titleFGColor", titleFGColor );
-	//AfxGetApp()->WriteProfileInt( regPath.c_str(), "legendFgColor", legendFgColor );
-	//AfxGetApp()->WriteProfileInt( regPath.c_str(), "chartBgColor", chartBgColor );
-	//AfxGetApp()->WriteProfileInt( regPath.c_str(), "timeBgColor", timeBgColor );
-	//AfxGetApp()->WriteProfileInt( regPath.c_str(), "titleStyle", titleStyle );
-	//AfxGetApp()->WriteProfileInt( regPath.c_str(), "legendStyle", legendStyle );
+	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "axisFgColor", axisFgColor );
+	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "titleFGColor", titleFGColor );
+	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "legendFgColor", legendFgColor );
+	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "chartBgColor", chartBgColor );
+	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "timeBgColor", timeBgColor );
+	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "titleStyle", titleStyle );
+	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "legendStyle", legendStyle );
 	settings.endGroup();
 }
 
@@ -155,20 +155,20 @@ rbool RDOStudioChartViewFontsTicks::operator !=( const RDOStudioChartViewFontsTi
 	return !(*this == fonts_ticks);
 }
 
-void RDOStudioChartViewFontsTicks::load( CREF(QString) regPath )
+void RDOStudioChartViewFontsTicks::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "fonts_ticks");
+	settings.beginGroup(groupName + "fonts_ticks");
 	titleFontSize  = settings.value("title_font_size", titleFontSize).toInt();
 	legendFontSize = settings.value("legend_font_size", legendFontSize).toInt();
 	tickWidth      = settings.value("tick_width", tickWidth).toInt();
 	settings.endGroup();
 }
 
-void RDOStudioChartViewFontsTicks::save( CREF(QString) regPath ) const
+void RDOStudioChartViewFontsTicks::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(regPath + "fonts_ticks");
+	settings.beginGroup(groupName + "fonts_ticks");
 	settings.setValue("title_font_size", titleFontSize);
 	settings.setValue("legend_font_size", legendFontSize);
 	settings.setValue("tick_width", tickWidth);
@@ -228,7 +228,7 @@ void RDOStudioChartViewStyle::init( CREF(QString) _regPath )
 rbool RDOStudioChartViewStyle::load()
 {
 	if ( RDOStyleWithTheme::load() ) {
-		if ( fonts_ticks ) fonts_ticks->load( regPath );
+		if ( fonts_ticks ) fonts_ticks->load( groupName );
 		return true;
 	}
 	return false;
@@ -237,7 +237,7 @@ rbool RDOStudioChartViewStyle::load()
 rbool RDOStudioChartViewStyle::save() const
 {
 	if ( RDOStyleWithTheme::save() ) {
-		if ( fonts_ticks ) fonts_ticks->save( regPath );
+		if ( fonts_ticks ) fonts_ticks->save( groupName );
 		return true;
 	}
 	return false;
