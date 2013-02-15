@@ -15,7 +15,6 @@
 #include <QtWidgets/qcolordialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_view_preferenses.h"
-#include "app/rdo_studio/src/options.h"
 #include "app/rdo_studio/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
 #include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
@@ -27,6 +26,10 @@
 #include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio/src/tracer/ctrls/log_main_wnd.h"
 #include "app/rdo_studio/src/frame/frame_view.h"
+#include "app/rdo_studio/src/frame/frame_options_view.h"
+#include "app/rdo_studio/src/chart/chart_view_style.h"
+#include "app/rdo_studio/src/frame/frame_style.h"
+#include "app/rdo_studio/resource.h"
 // --------------------------------------------------------------------------------
 
 class ViewPreferences
@@ -39,6 +42,7 @@ public:
 
 	void updateDialog();
 	void updatePreview();
+	void updateStyleTab();
 
 private slots:
 	void onOkButton();
@@ -84,6 +88,9 @@ private slots:
 	void onBgColorDialog();
 	void onFgColorSelected(const QColor& color);
 	void onBgColorSelected(const QColor& color);
+	void onTitleSize(int index);
+	void onLegendSize(int index);
+	void onTickWidth(const QString& text);
 private:
 	enum ItemType
 	{
@@ -234,6 +241,8 @@ private:
 	rdo::gui::tracer::LogStyle       style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
+	RDOStudioChartViewStyle          style_chart;
+	RDOStudioFrameStyle              style_frame;
 
 	PTR(rdoEditor::RDOEditorEdit)     preview_editor;
 	PTR(rdoEditCtrl::RDOBuildEdit)    preview_build;
@@ -241,6 +250,7 @@ private:
 	PTR(rdo::gui::tracer::LogMainWnd) preview_trace;
 	PTR(rdoEditor::RDOEditorResults)  preview_results;
 	PTR(rdoEditCtrl::RDOFindEdit)     preview_find;
+	PTR(FrameOptionsView)             preview_frame;
 
 	typedef PTR(QTreeWidgetItem) treeItem;
 
@@ -350,7 +360,6 @@ private:
 	void createTree();
 	void insertColors(QComboBox* colorBox);
 	void insertColor (const QColor color, QString colorName, QComboBox* colorBox);
-	int getStylePropertyType();
 	PTR(StyleProperty) getStyleProperty();
 	PTR(StyleItem) getStyleItem();
 	PTR(QTreeWidgetItem) createTreeItem (PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType);

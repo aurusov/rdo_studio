@@ -61,22 +61,26 @@ rbool RDOFindEditTheme::operator !=( const RDOFindEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOFindEditTheme::load( tstring regPath )
+void RDOFindEditTheme::load( CREF(QString) groupName )
 {
-	LogEditTheme::load( regPath );
+	LogEditTheme::load( groupName );
 
-	regPath += "theme";
-	keywordColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordColor", keywordColor.rgb() );
-	keywordStyle = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle ));
+	QSettings settings;
+	settings.beginGroup(groupName + "theme");
+	keywordColor = QColor(settings.value("keyword_color", keywordColor.name()).toString());
+	keywordStyle = static_cast<RDOStyleFont::style>(settings.value("keyword_style", keywordStyle).toInt());
+	settings.endGroup();
 }
 
-void RDOFindEditTheme::save( tstring regPath ) const
+void RDOFindEditTheme::save( CREF(QString) groupName ) const
 {
-	LogEditTheme::save( regPath );
+	LogEditTheme::save( groupName );
 
-	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordColor", keywordColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordStyle", keywordStyle );
+	QSettings settings;
+	settings.beginGroup(groupName + "theme");
+	settings.setValue("keyword_color", keywordColor.name());
+	settings.setValue("keyword_style", keywordStyle);
+	settings.endGroup();
 }
 
 rbool RDOFindEditTheme::styleDefault( const int styleType ) const

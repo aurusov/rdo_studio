@@ -64,26 +64,30 @@ rbool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 	return !(*this == font);
 }
 
-void RDOStyleFont::load( tstring regPath )
+void RDOStyleFont::load( CREF(QString) groupName )
 {
-	regPath += "font";
-	name         = AfxGetApp()->GetProfileString( regPath.c_str(), "name", name.c_str() );
-	size         = AfxGetApp()->GetProfileInt( regPath.c_str(), "size", size );
-	codepage     = AfxGetApp()->GetProfileInt( regPath.c_str(), "codepage", codepage );
-	characterSet = AfxGetApp()->GetProfileInt( regPath.c_str(), "characterSet", characterSet );
+	QSettings settings;
+	settings.beginGroup(groupName + "font");
+	name         = settings.value("name", QString::fromLocal8Bit(name.c_str())).toString().toLocal8Bit().constData();
+	size         = settings.value("size", size).toInt();
+	codepage     = settings.value("codepage", codepage).toInt();
+	characterSet = settings.value("character_set", characterSet).toInt();
+	settings.endGroup();
 	if (characterSet == RUSSIAN_CHARSET)
 	{
 		characterSet = SC_CHARSET_CYRILLIC;
 	}
 }
 
-void RDOStyleFont::save( tstring regPath ) const
+void RDOStyleFont::save( CREF(QString) groupName ) const
 {
-	regPath += "font";
-	AfxGetApp()->WriteProfileString( regPath.c_str(), "name", name.c_str() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "size", size );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "codepage", codepage );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "characterSet", characterSet );
+	QSettings settings;
+	settings.beginGroup(groupName +"font");
+	settings.setValue("name", QString::fromLocal8Bit(name.c_str()));
+	settings.setValue("size", size);
+	settings.setValue("codepage", codepage);
+	settings.setValue("character_set", characterSet);
+	settings.endGroup();
 }
 
 RDOStyleFont RDOStyleFont::getDefaultFont()
@@ -167,27 +171,31 @@ rbool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOStyleTheme::load( tstring regPath )
+void RDOStyleTheme::load( CREF(QString) groupName )
 {
-	regPath += "theme";
-	defaultColor    = AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultColor", defaultColor.rgb() );
-	backgroundColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "backgroundColor", backgroundColor.rgb() );
-	defaultStyle    = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultStyle", defaultStyle ));
+	QSettings settings;
+	settings.beginGroup(groupName + "theme");
+	defaultColor = QColor(settings.value("default_color", defaultColor.name()).toString());
+	backgroundColor = QColor(settings.value("background_color", backgroundColor.name()).toString());
+	defaultStyle    = static_cast<RDOStyleFont::style>(settings.value("default_style", defaultStyle).toInt());
+	settings.endGroup();
 }
 
-void RDOStyleTheme::save( tstring regPath ) const
+void RDOStyleTheme::save( CREF(QString) groupName ) const
 {
-	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultColor", defaultColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "backgroundColor", backgroundColor.rgb() );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultStyle", defaultStyle );
+	QSettings settings;
+	settings.beginGroup(groupName + "theme");
+	settings.setValue("default_color", defaultColor.name());
+	settings.setValue("background_color", backgroundColor.name());
+	settings.setValue("default_style", defaultStyle);
+	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStyle
 // --------------------------------------------------------------------------------
 RDOStyle::RDOStyle():
-	regPath( "" ),
+	groupName( "" ),
 	font( NULL )
 {
 }
@@ -221,23 +229,24 @@ rbool RDOStyle::operator !=( const RDOStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOStyle::init( CREF(tstring) _regPath )
+void RDOStyle::init( CREF(QString) _groupName )
 {
-	regPath = _regPath;
-	rdo::trim( regPath );
-	if ( !regPath.empty() ) {
-		if ( regPath.find_last_of( '\\' ) != regPath.length() - 1 ) {
-			regPath += '\\';
+	groupName = _groupName;
+	if (!groupName.isEmpty()) 
+	{
+		groupName.prepend("style/");
+		if(groupName.lastIndexOf("/") != groupName.length() - 1)
+		{
+			groupName.append("/");
 		}
-		regPath = "style\\" + regPath;
 	}
 	initFont();
 }
 
 rbool RDOStyle::load()
 {
-	if ( !regPath.empty() ) {
-		if ( font ) font->load( regPath );
+	if ( !groupName.isEmpty() ) {
+		if ( font ) font->load( groupName );
 		return true;
 	}
 	return false;
@@ -245,8 +254,8 @@ rbool RDOStyle::load()
 
 rbool RDOStyle::save() const
 {
-	if ( !regPath.empty() ) {
-		if ( font ) font->save( regPath );
+	if ( !groupName.isEmpty() ) {
+		if ( font ) font->save( groupName );
 		return true;
 	}
 	return false;
@@ -291,16 +300,16 @@ rbool RDOStyleWithTheme::operator !=( const RDOStyleWithTheme& style ) const
 	return !(*this == style);
 }
 
-void RDOStyleWithTheme::init( CREF(tstring) _regPath )
+void RDOStyleWithTheme::init( CREF(QString) _groupName )
 {
-	RDOStyle::init( _regPath );
+	RDOStyle::init( _groupName );
 	initTheme();
 }
 
 rbool RDOStyleWithTheme::load()
 {
 	if ( RDOStyle::load() ) {
-		if ( theme ) theme->load( regPath );
+		if ( theme ) theme->load( groupName );
 		return true;
 	}
 	return false;
@@ -309,7 +318,7 @@ rbool RDOStyleWithTheme::load()
 rbool RDOStyleWithTheme::save() const
 {
 	if ( RDOStyle::save() ) {
-		if ( theme ) theme->save( regPath );
+		if ( theme ) theme->save( groupName );
 		return true;
 	}
 	return false;

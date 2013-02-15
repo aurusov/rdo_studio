@@ -30,8 +30,8 @@ public:
 	rbool operator ==( const LogEditTheme& theme ) const;
 	rbool operator !=( const LogEditTheme& theme ) const;
 
-	virtual void load( tstring regPath );
-	virtual void save( tstring regPath ) const;
+	virtual void load( CREF(QString) groupName );
+	virtual void save( CREF(QString) groupName ) const;
 
 	QColor selectLineBgColor;
 

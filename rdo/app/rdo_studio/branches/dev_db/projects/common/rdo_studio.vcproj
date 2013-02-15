@@ -987,6 +987,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\frame\frame_options_view.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\frame\frame_options_view.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\frame\frame_style.cpp"
 				>
 			</File>
@@ -1592,6 +1600,70 @@
 							Name="VCCustomBuildTool"
 							Description="UIC $(InputFileName)"
 							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\res\ui\frame_options_widget.ui"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
 							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
 						/>
 					</FileConfiguration>
@@ -2726,6 +2798,10 @@
 				</File>
 				<File
 					RelativePath=".\bin\rdo_studio\generated\ui_find_replace_dialog.h"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\rdo_studio\generated\ui_frame_options_widget.h"
 					>
 				</File>
 				<File

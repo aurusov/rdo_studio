@@ -54,20 +54,24 @@ rbool LogEditTheme::operator !=( const LogEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void LogEditTheme::load( tstring regPath )
+void LogEditTheme::load( CREF(QString) groupName )
 {
-	RDOBaseEditTheme::load( regPath );
+	RDOBaseEditTheme::load( groupName );
 
-	regPath += "theme";
-	selectLineBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "selectLineBgColor", selectLineBgColor.rgb() );
+	QSettings settings;
+	settings.beginGroup(groupName + "theme");
+	selectLineBgColor = QColor(settings.value("select_line_bg_color", selectLineBgColor.name()).toString());
+	settings.endGroup();
 }
 
-void LogEditTheme::save( tstring regPath ) const
+void LogEditTheme::save( CREF(QString) groupName ) const
 {
-	RDOBaseEditTheme::save( regPath );
+	RDOBaseEditTheme::save( groupName );
 
-	regPath += "theme";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "selectLineBgColor", selectLineBgColor.rgb() );
+	QSettings settings;
+	settings.beginGroup(groupName + "theme");
+	settings.setValue("select_line_bg_color", selectLineBgColor.name());
+	settings.endGroup();
 }
 
 LogEditTheme LogEditTheme::getDefaultTheme()

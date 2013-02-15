@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
 #include <QtGui/qcolor.h>
+#include <QtCore/qsettings.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
@@ -32,8 +33,8 @@ public:
 	rbool operator ==( const RDOStyleFont& font ) const;
 	rbool operator !=( const RDOStyleFont& font ) const;
 
-	virtual void load( tstring regPath );
-	virtual void save( tstring regPath ) const;
+	virtual void load( CREF(QString) groupName );
+	virtual void save( CREF(QString) groupName ) const;
 
 	enum style { NONE = 0x00, BOLD = 0x01, ITALIC = 0x02, UNDERLINE = 0x04 };
 
@@ -62,8 +63,8 @@ public:
 	rbool operator ==( const RDOStyleTheme& theme ) const;
 	rbool operator !=( const RDOStyleTheme& theme ) const;
 
-	virtual void load( tstring regPath );
-	virtual void save( tstring regPath ) const;
+	virtual void load( CREF(QString) groupName );
+	virtual void save( CREF(QString) groupName ) const;
 
 	QColor defaultColor;
 	QColor backgroundColor;
@@ -77,7 +78,7 @@ public:
 OBJECT(RDOStyle)
 {
 protected:
-	tstring regPath;
+	QString groupName;
 
 	virtual void initFont();
 
@@ -89,7 +90,7 @@ public:
 	rbool operator ==( const RDOStyle& style ) const;
 	rbool operator !=( const RDOStyle& style ) const;
 
-	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual void  init( CREF(QString) _groupName = "" );
 	virtual rbool load();
 	virtual rbool save() const;
 
@@ -112,7 +113,7 @@ public:
 	rbool operator ==( const RDOStyleWithTheme& style ) const;
 	rbool operator !=( const RDOStyleWithTheme& style ) const;
 
-	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual void  init( CREF(QString) _groupName = "" );
 	virtual rbool load();
 	virtual rbool save() const;
 

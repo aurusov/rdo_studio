@@ -57,6 +57,8 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	style_trace.init();
 	style_results.init();
 	style_find.init();
+	style_chart.init();
+	style_frame.init();
 
 	style_editor  = studioApp.getStyle()->style_editor;
 	style_build   = studioApp.getStyle()->style_build;
@@ -64,6 +66,8 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	style_trace   = studioApp.getStyle()->style_trace;
 	style_results = studioApp.getStyle()->style_results;
 	style_find    = studioApp.getStyle()->style_find;
+	style_chart   = studioApp.getStyle()->style_chart;
+	style_frame   = studioApp.getStyle()->style_frame;
 
 	fontComboBox->setEditable(false);
 	//Вкладка "Основные"
@@ -91,6 +95,11 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(indentSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onIndentSize(const QString&)));
 	//Вкладка "Стиль и цвет"
 	stackedWidget->setCurrentWidget(pageRoot);
+
+	PTR(QPalette) palette = new QPalette();
+	palette->setColor(QPalette::Foreground, Qt::gray);
+	previewStackedWidget->setPalette(*palette);
+
 	createTree();
 	createPreview();
 	createStyles();
@@ -130,6 +139,9 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	vertIndentLineEdit->setValidator(new QIntValidator(1, 100, this));
 	vertIndentLineEdit->setText(QString::number(style_trace.borders->vertBorder));
 
+	tickWidthLineEdit->setValidator(new QIntValidator(1, 100, this));
+	tickWidthLineEdit->setText(QString::number(style_chart.fonts_ticks->tickWidth));
+
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
 	connect(fontSizeComboBox, SIGNAL(activated(int)), this, SLOT(onFontSize(int)));
@@ -157,6 +169,9 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(bgColorComboBox, SIGNAL(activated(int)), this, SLOT(onBgColor(int)));
 	connect(fgColorToolButton, SIGNAL(clicked()), this, SLOT(onFgColorDialog()));
 	connect(bgColorToolButton, SIGNAL(clicked()), this, SLOT(onBgColorDialog()));
+	connect(titleComboBox, SIGNAL(activated(int)), this, SLOT(onTitleSize(int)));
+	connect(legendComboBox, SIGNAL(activated(int)), this, SLOT(onLegendSize(int)));
+	connect(tickWidthLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onTickWidth(const QString&)));
 
 	updateDialog();
 }
@@ -304,6 +319,8 @@ void ViewPreferences::onTreeWidgetItemActivated(QTreeWidgetItem* item, int colum
 		italicCheckBox->setEnabled(true);
 		underlineCheckBox->setEnabled(true);
 	}
+
+	updateStyleTab();
 }
 
 void ViewPreferences::onSwitchPreviewComboBox(int index)
@@ -325,8 +342,8 @@ void ViewPreferences::onFontSize(int index)
 		style_trace.font->size   = size;
 		style_results.font->size = size;
 		style_find.font->size    = size;
-		//style_chart.font->size   = size;
-		//style_frame.font->size   = size;
+		style_chart.font->size   = size;
+		style_frame.font->size   = size;
 		break;
 	case IT_EDITOR:
 		style_editor.font->size = size;
@@ -347,10 +364,10 @@ void ViewPreferences::onFontSize(int index)
 		style_find.font->size    = size;
 		break;
 	case IT_CHART:
-		//style_chart.font->size   = size;
+		style_chart.font->size   = size;
 		break;
 	case IT_FRAME:
-		//style_frame.font->size   = size;
+		style_frame.font->size   = size;
 		break;
 	}
 
@@ -374,8 +391,8 @@ void ViewPreferences::onFontType(int index)
 		style_trace.font->name   = text.constData();
 		style_results.font->name = text.constData();
 		style_find.font->name    = text.constData();
-		//style_chart.font->name   = text.constData();
-		//style_frame.font->name   = text.constData();
+		style_chart.font->name   = text.constData();
+		style_frame.font->name   = text.constData();
 		break;
 	case IT_EDITOR:
 		style_editor.font->name = text.constData();
@@ -396,10 +413,10 @@ void ViewPreferences::onFontType(int index)
 		style_find.font->name    = text.constData();
 		break;
 	case IT_CHART:
-		//style_chart.font->name   = text.constData();
+		style_chart.font->name   = text.constData();
 		break;
 	case IT_FRAME:
-		//style_frame.font->name   = text.constData();
+		style_frame.font->name   = text.constData();
 		break;
 	}
 
@@ -549,11 +566,6 @@ void ViewPreferences::onVertIndent(const QString& text)
 void ViewPreferences::onFgColor(int index)
 {
 	QColor color = qvariant_cast<QColor>(fgColorComboBox->itemData(index, Qt::UserRole));
-	QColor invColor(color.blue(), color.green(), color.red());
-	if(getStyleItem()->type != IT_LOG)
-	{
-		color = invColor;
-	}
 	PTR(StyleProperty) prop = getStyleProperty();
 	if (&prop->fg_color != &null_fg_color)
 	{
@@ -582,11 +594,6 @@ void ViewPreferences::onFgColor(int index)
 void ViewPreferences::onBgColor(int index)
 {
 	QColor color = qvariant_cast<QColor>(bgColorComboBox->itemData(index, Qt::UserRole));
-	QColor invColor(color.blue(), color.green(), color.red());
-	if(getStyleItem()->type != IT_LOG)
-	{
-		color = invColor;
-	}
 	PTR(StyleProperty) prop = getStyleProperty();
 	if (&prop->bg_color != &null_bg_color)
 	{
@@ -654,6 +661,26 @@ void ViewPreferences::onBgColorSelected(const QColor& color)
 	}
 }
 
+void ViewPreferences::onTitleSize(int index)
+{
+	UNUSED(index);
+	style_chart.fonts_ticks->titleFontSize = titleComboBox->currentText().toInt();
+	updatePreview();
+}
+
+void ViewPreferences::onLegendSize(int index)
+{
+	UNUSED(index);
+	style_chart.fonts_ticks->legendFontSize = legendComboBox->currentText().toInt();
+	updatePreview();
+}
+
+void ViewPreferences::onTickWidth(const QString& text)
+{
+	style_chart.fonts_ticks->tickWidth = text.toInt();
+	updatePreview();
+}
+
 void ViewPreferences::updateDialog()
 {
 	setupCheckBox->setCheckState(m_setup
@@ -706,6 +733,101 @@ void ViewPreferences::updateDialog()
 	style_editor.tab->useTabs
 		? eraseWithTabRadioButton->toggle()
 		: eraseWithIndentRadioButton->toggle();
+
+	updateStyleTab();
+}
+
+void ViewPreferences::updateStyleTab()
+{
+	PTR(StyleProperty) prop = getStyleProperty();
+	fontComboBox->setCurrentFont(QFont(QString::fromStdString(prop->item->font_name)));
+	fontSizeComboBox->setCurrentIndex(fontSizeComboBox->findText(QString::number(prop->item->font_size)));
+	
+	if(fgColorComboBox->findData(prop->fg_color) == -1)
+	{
+		insertColor(prop->fg_color, QString::fromStdString(rdo::format("[%d, %d, %d]", prop->fg_color.red(), prop->fg_color.green(), prop->fg_color.blue())), fgColorComboBox);
+	}
+	fgColorComboBox->setCurrentIndex(fgColorComboBox->findData(prop->fg_color));
+	
+	QColor bgColor(prop->bg_color.blue(), prop->bg_color.green(), prop->bg_color.red());
+	if(bgColorComboBox->findData(prop->bg_color) == -1)
+	{
+		insertColor(prop->bg_color, QString::fromStdString(rdo::format("[%d, %d, %d]", prop->bg_color.red(), prop->bg_color.green(), prop->bg_color.blue())), bgColorComboBox);
+	}
+	bgColorComboBox->setCurrentIndex(bgColorComboBox->findData(prop->bg_color));
+
+	if(boldCheckBox->isEnabled())
+	{
+		boldCheckBox->setCheckState((prop->font_style & RDOStyleFont::BOLD) != 0 ? Qt::Checked : Qt::Unchecked);
+	}
+	if(italicCheckBox->isEnabled())
+	{
+		italicCheckBox->setCheckState((prop->font_style & RDOStyleFont::ITALIC) != 0 ? Qt::Checked : Qt::Unchecked);
+	}
+	if(underlineCheckBox->isEnabled())
+	{
+		underlineCheckBox->setCheckState((prop->font_style & RDOStyleFont::UNDERLINE) != 0 ? Qt::Checked : Qt::Unchecked);
+	}
+	switch(prop->item->type)
+	{
+	case IT_EDITOR:
+		wordWrapEditorCheckBox->setCheckState(prop->item->wordwrap ? Qt::Checked : Qt::Unchecked);
+		horzScrollEditorCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
+		commentCheckBox->setCheckState(prop->item->commentfold ? Qt::Checked : Qt::Unchecked);
+		foldComboBox->setCurrentIndex(static_cast<int>(prop->item->foldstyle));
+		bookmarkComboBox->setCurrentIndex(static_cast<int>(prop->item->bookmarkstyle));
+		break;
+	case IT_BUILD:
+		wordWrapBuildCheckBox->setCheckState(prop->item->wordwrap ? Qt::Checked : Qt::Unchecked);
+		horzScrollBuildCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
+		warningCheckBox->setCheckState(prop->item->warning ? Qt::Checked : Qt::Unchecked);
+		break;
+	case IT_DEBUG:
+		wordWrapDebugCheckBox->setCheckState(prop->item->wordwrap ? Qt::Checked : Qt::Unchecked);
+		horzScrollDebugCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
+		break;
+	case IT_LOG:
+		vertIndentLineEdit->setText(QString::number(style_trace.borders->vertBorder));
+		horzIndentLineEdit->setText(QString::number(style_trace.borders->horzBorder));
+		break;
+	case IT_RESULT:
+		wordWrapResultsCheckBox->setCheckState(prop->item->wordwrap ? Qt::Checked : Qt::Unchecked);
+		horzScrollResultsCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
+		break;
+	case IT_FIND:
+		wordWrapFindCheckBox->setCheckState(prop->item->wordwrap ? Qt::Checked : Qt::Unchecked);
+		horzScrollFindCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
+		break;
+	case IT_CHART:
+		titleComboBox->setCurrentIndex(titleComboBox->findText(QString::number(style_chart.fonts_ticks->titleFontSize)));
+		legendComboBox->setCurrentIndex(legendComboBox->findText(QString::number(style_chart.fonts_ticks->legendFontSize)));
+		tickWidthLineEdit->setText(QString::number(style_chart.fonts_ticks->tickWidth));
+		break;
+	case IT_FRAME:
+		switch(prop->identificator)
+		{
+		case IT_FRAME:
+			fgColorComboBox->setEnabled(true);
+			bgColorComboBox->setEnabled(true);
+			fgColorToolButton->setEnabled(true);
+			bgColorToolButton->setEnabled(true);
+			break;
+		case IT_FRAME_BORDER:
+			fgColorComboBox->setEnabled(true);
+			bgColorComboBox->setEnabled(false);
+			fgColorToolButton->setEnabled(true);
+			bgColorToolButton->setEnabled(false);			
+			break;
+		case IT_FRAME_BACKGROUND:
+			fgColorComboBox->setEnabled(false);
+			bgColorComboBox->setEnabled(true);
+			fgColorToolButton->setEnabled(false);
+			bgColorToolButton->setEnabled(true);
+			break;
+		}
+		
+	}
+
 }
 
 void ViewPreferences::updatePreview()
@@ -727,6 +849,9 @@ void ViewPreferences::updatePreview()
 
 	preview_find->setEditorStyle(&style_find);
 	preview_find->repaint();
+
+	preview_frame->setStyle(&style_frame);
+	preview_frame->repaint();
 }
 
 void ViewPreferences::createPreview()
@@ -778,6 +903,13 @@ void ViewPreferences::createPreview()
 	preview_find->appendLine(new LogEditLineInfo(rdo::format(IDS_COLORSTYLE_FIND_SAMPLE4)));
 	preview_find->gotoNext();
 	previewStackedWidget->addWidget(preview_find);
+
+	//Заглушка для превью графиков
+	previewStackedWidget->addWidget(new QWidget(previewStackedWidget->currentWidget()));
+
+	preview_frame = new FrameOptionsView(previewStackedWidget->currentWidget());
+	preview_frame->setStyle(&style_frame);
+	previewStackedWidget->addWidget(preview_frame);
 }
 
 void ViewPreferences::createStyles()
@@ -881,6 +1013,22 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, find_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
+	RDOStudioChartViewTheme* chart_theme = static_cast<RDOStudioChartViewTheme*>(style_chart.theme);
+	item = new StyleItem(IT_CHART, style_chart.font->size, style_chart.font->name);
+	item->properties.push_back(new StyleProperty(item, IT_CHART, chart_theme->defaultStyle, chart_theme->defaultColor, chart_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_AXIS, chart_theme->defaultStyle, chart_theme->axisFgColor, null_bg_color, null_fg_color, chart_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_TITLE, chart_theme->titleStyle, chart_theme->titleFGColor, null_bg_color, null_fg_color, chart_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_LEGEND, chart_theme->legendStyle, chart_theme->legendFgColor, null_bg_color, null_fg_color, chart_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_CHART, null_font_style, null_fg_color, chart_theme->chartBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_TIME, null_font_style, null_fg_color, chart_theme->timeBgColor));
+	style_list.push_back(item);
+
+	RDOStudioFrameTheme* frame_theme = static_cast<RDOStudioFrameTheme*>(style_frame.theme);
+	item = new StyleItem(IT_FRAME, style_frame.font->size, style_frame.font->name);
+	item->properties.push_back(new StyleProperty(item, IT_FRAME, frame_theme->defaultStyle, frame_theme->defaultColor, frame_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_FRAME_BORDER, frame_theme->defaultStyle, frame_theme->defaultColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_FRAME_BACKGROUND, frame_theme->defaultStyle, null_fg_color, frame_theme->backgroundColor));
+	style_list.push_back(item);
 }
 
 void ViewPreferences::createTree()
@@ -993,6 +1141,7 @@ PTR(QTreeWidgetItem) ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent
 	item->setData(0, Qt::UserRole, QVariant(itemType));
 	return item;
 }
+
 void ViewPreferences::insertColors(QComboBox* colorBox)
 {
 	insertColor(QColor(0x00, 0x80, 0x00), "Green",   colorBox);
@@ -1021,27 +1170,16 @@ void ViewPreferences::insertColor(const QColor color, QString colorName, QComboB
 	pixmap.fill(color);
 	QRect rBorder(0,0,size-1,size-6);
 	QPainter p(&pixmap);
-	QPen pen(Qt::lightGray, 1, Qt::SolidLine);
+	QPen pen(Qt::black, 1, Qt::SolidLine);
 	p.setPen(pen);
 	p.drawRect(rBorder);
 	colorBox->setItemData(colorBox->findText(colorName), color, Qt::UserRole);
 	colorBox->setItemIcon(colorBox->findText(colorName), QIcon(pixmap));
 }
 
-int ViewPreferences::getStylePropertyType()
-{
-	PTR(StyleItem) item = getStyleItem();
-	BOOST_FOREACH(StyleProperty* prop, item->properties)
-	{
-		if(prop->identificator == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
-			return prop->identificator;
-	}
-	return -1;
-}
-
 PTR(ViewPreferences::StyleProperty) ViewPreferences::getStyleProperty()
 {
-	PTR(StyleItem) item =getStyleItem();
+	PTR(StyleItem) item = getStyleItem();
 	BOOST_FOREACH(StyleProperty* prop, item->properties)
 	{
 		if(prop->identificator == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
@@ -1086,6 +1224,7 @@ void ViewPreferences::apply()
 	studioApp.getStyle()->style_trace   = style_trace;
 	studioApp.getStyle()->style_results = style_results;
 	studioApp.getStyle()->style_find    = style_find;
+	studioApp.getStyle()->style_frame   = style_frame;
 	studioApp.setFileAssociationSetup(m_setup);
 	studioApp.setFileAssociationCheckInFuture(m_checkInFuture);
 	studioApp.setOpenLastProject(m_openLastProject);

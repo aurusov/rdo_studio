@@ -54,20 +54,25 @@ rbool RDOBuildEditTheme::operator !=( const RDOBuildEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOBuildEditTheme::load( tstring regPath )
+void RDOBuildEditTheme::load( CREF(QString) groupName )
 {
-	LogEditTheme::load( regPath );
+	LogEditTheme::load( groupName );
+	
+	QSettings settings;
+	settings.beginGroup(groupName + "build");
+	warning = settings.value("warning", warning).toBool() ? true : false;
+	settings.endGroup();
 
-	regPath += "build";
-	warning = AfxGetApp()->GetProfileInt( regPath.c_str(), "warning", warning ) ? true : false;
 }
 
-void RDOBuildEditTheme::save( tstring regPath ) const
+void RDOBuildEditTheme::save( CREF(QString) groupName ) const
 {
-	LogEditTheme::save( regPath );
+	LogEditTheme::save( groupName );
 
-	regPath += "build";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "warning", warning );
+	QSettings settings;
+	settings.beginGroup(groupName + "build");
+	settings.setValue("warning", warning);
+	settings.endGroup();
 }
 
 RDOBuildEditTheme RDOBuildEditTheme::getDefaultTheme()

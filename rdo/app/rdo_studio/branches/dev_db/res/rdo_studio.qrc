@@ -167,4 +167,7 @@
     <file>insert_menu_template/rtp_temporary.txt</file>
     <file>insert_menu_template/smr.txt</file>
   </qresource>
+  <qresource prefix="/frame_options_view">
+    <file>frame_options_view/frameoptionsview.bmp</file>
+  </qresource>
 </RCC>
