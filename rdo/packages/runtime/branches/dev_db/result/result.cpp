@@ -30,6 +30,8 @@
 typedef ruint64 ruint_type;
 #elif defined( ARCHITECTURE_X86 )
 typedef ruint ruint_type;
+#elif defined( ARCHITECTURE_ARM )
+typedef ruint ruint_type;
 #endif // ARCHITECTURES_AMD64
 
 OPEN_RDO_RUNTIME_NAMESPACE

@@ -47,7 +47,11 @@ const double   g_var                  = 1.0;                        //!< парамет
 const double   g_from                 = 1.0;                        //!< параметр закона равномерного и треугольного
 const double   g_to                   = 7.0;                        //!< параметр закона равномерного и треугольного
 const double   g_top                  = 5.0;                        //!< параметр закона треугольного
+#if defined(ARCHITECTURE_AMD64) || defined(ARCHITECTURE_X86)
 const ruint    g_precision            = 20;                         //!< точность вещественного числа при выводе в поток
+#elif defined(ARCHITECTURE_ARM)
+const ruint    g_precision            = 14;                         //!< точность вещественного числа при выводе в поток
+#endif
 
 const ruint    g_countOfExamples      = 2000;                       //!< количество чисел в выборке
 const ruint    g_countOfR             = 39;                         //!< число разрядов
@@ -85,31 +89,45 @@ void onCheckData(F binder, contstr g_fileName)
 {
 	std::ifstream stream(g_fileName.c_str());
 	BOOST_CHECK(stream.good());
+	Container orig;
+	while (stream.good())
+	{
+		double value;
+		stream >> value;
+		std::stringstream s;
+		s.precision(g_precision);
+		s << value;
+		s >> value;
+		orig.push_back(value);
+	}
 
 	Container test;
 	test.reserve(g_count);
 	T sequence(g_seed);
 	for (ruint i = 0; i < g_count; ++i)
 	{
-		test.push_back(binder.operator()(&sequence));
+		std::stringstream s;
+		s.precision(g_precision);
+		s << binder.operator()(&sequence);
+		double value;
+		s >> value;
+		test.push_back(value);
 	}
 
+	Container::const_iterator origIt = orig.begin();
 	stream.precision(g_precision);
 	STL_FOR_ALL(test, it)
 	{
-		BOOST_CHECK(stream.good());
-		tstring str;
-		stream >> str;
-
-		double val;
-		BOOST_CHECK(__SCANF(str.c_str(), _T("%lf"), &val) == 1);
-		BOOST_CHECK(val == *it);
-				if (val != *it)
+		BOOST_CHECK(origIt != orig.end());
+		rbool check = *it == *origIt;
+		BOOST_CHECK(check);
+		if (!check)
 		{
 			std::cout.precision(g_precision);
 			std::cout << *it << std::endl;
-			std::cout << val << std::endl;
+			std::cout << *origIt << std::endl;
 		}
+		++origIt;
 	}
 }
 
