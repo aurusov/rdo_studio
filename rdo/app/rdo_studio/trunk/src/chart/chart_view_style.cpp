@@ -82,7 +82,7 @@ rbool RDOStudioChartViewTheme::operator !=( const RDOStudioChartViewTheme& theme
 	return !(*this == theme);
 }
 
-void RDOStudioChartViewTheme::load( QString regPath )
+void RDOStudioChartViewTheme::load( CREF(QString) regPath )
 {
 	QSettings settings;
 	RDOStyleTheme::load( regPath );
@@ -98,7 +98,7 @@ void RDOStudioChartViewTheme::load( QString regPath )
 	settings.endGroup();
 }
 
-void RDOStudioChartViewTheme::save( QString regPath ) const
+void RDOStudioChartViewTheme::save( CREF(QString) regPath ) const
 {
 	QSettings settings;
 	RDOStyleTheme::save( regPath );
@@ -155,7 +155,7 @@ rbool RDOStudioChartViewFontsTicks::operator !=( const RDOStudioChartViewFontsTi
 	return !(*this == fonts_ticks);
 }
 
-void RDOStudioChartViewFontsTicks::load( QString regPath )
+void RDOStudioChartViewFontsTicks::load( CREF(QString) regPath )
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "fonts_ticks");
@@ -165,7 +165,7 @@ void RDOStudioChartViewFontsTicks::load( QString regPath )
 	settings.endGroup();
 }
 
-void RDOStudioChartViewFontsTicks::save( QString regPath ) const
+void RDOStudioChartViewFontsTicks::save( CREF(QString) regPath ) const
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "fonts_ticks");

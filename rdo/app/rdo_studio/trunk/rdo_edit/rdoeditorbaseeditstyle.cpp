@@ -114,7 +114,7 @@ rbool RDOEditorBaseEditTheme::operator !=( const RDOEditorBaseEditTheme& theme )
 	return !(*this == theme);
 }
 
-void RDOEditorBaseEditTheme::load( QString regPath )
+void RDOEditorBaseEditTheme::load( CREF(QString) regPath )
 {
 	RDOBaseEditTheme::load( regPath );
 
@@ -142,7 +142,7 @@ void RDOEditorBaseEditTheme::load( QString regPath )
 	settings.endGroup();
 }
 
-void RDOEditorBaseEditTheme::save( QString regPath ) const
+void RDOEditorBaseEditTheme::save( CREF(QString) regPath ) const
 {
 	RDOBaseEditTheme::save( regPath );
 

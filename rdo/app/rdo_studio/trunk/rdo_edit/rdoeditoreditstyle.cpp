@@ -75,7 +75,7 @@ rbool RDOEditorEditTheme::operator !=( const RDOEditorEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOEditorEditTheme::load( QString regPath )
+void RDOEditorEditTheme::load( CREF(QString) regPath )
 {
 	RDOEditorBaseEditTheme::load( regPath );
 
@@ -89,7 +89,7 @@ void RDOEditorEditTheme::load( QString regPath )
 	settings.endGroup();
 }
 
-void RDOEditorEditTheme::save( QString regPath ) const
+void RDOEditorEditTheme::save( CREF(QString) regPath ) const
 {
 	RDOEditorBaseEditTheme::save( regPath );
 
@@ -231,7 +231,7 @@ rbool RDOEditorEditAutoComplete::operator !=( const RDOEditorEditAutoComplete& a
 	return !(*this == autoComplete);
 }
 
-void RDOEditorEditAutoComplete::load( QString regPath )
+void RDOEditorEditAutoComplete::load( CREF(QString) regPath )
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "auto_complete");
@@ -240,7 +240,7 @@ void RDOEditorEditAutoComplete::load( QString regPath )
 	settings.endGroup();
 }
 
-void RDOEditorEditAutoComplete::save( QString regPath ) const
+void RDOEditorEditAutoComplete::save( CREF(QString) regPath ) const
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "auto_complete");
@@ -284,7 +284,7 @@ rbool RDOEditorEditMargin::operator !=( const RDOEditorEditMargin& margin ) cons
 	return !(*this == margin);
 }
 
-void RDOEditorEditMargin::load( QString regPath )
+void RDOEditorEditMargin::load( CREF(QString) regPath )
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "margin");
@@ -294,7 +294,7 @@ void RDOEditorEditMargin::load( QString regPath )
 	settings.endGroup();
 }
 
-void RDOEditorEditMargin::save( QString regPath ) const
+void RDOEditorEditMargin::save( CREF(QString) regPath ) const
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "margin");

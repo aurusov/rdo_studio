@@ -54,7 +54,7 @@ rbool RDOBuildEditTheme::operator !=( const RDOBuildEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOBuildEditTheme::load( QString regPath )
+void RDOBuildEditTheme::load( CREF(QString) regPath )
 {
 	LogEditTheme::load( regPath );
 	
@@ -65,7 +65,7 @@ void RDOBuildEditTheme::load( QString regPath )
 
 }
 
-void RDOBuildEditTheme::save( QString regPath ) const
+void RDOBuildEditTheme::save( CREF(QString) regPath ) const
 {
 	LogEditTheme::save( regPath );
 

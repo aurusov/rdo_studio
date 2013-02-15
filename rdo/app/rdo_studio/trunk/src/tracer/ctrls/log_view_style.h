@@ -31,8 +31,8 @@ public:
 	rbool operator ==( const LogColorPair& colors ) const;
 	rbool operator !=( const LogColorPair& colors ) const;
 
-	virtual void load( QString regPath, QString regParam );
-	virtual void save( QString regPath, QString regParam ) const;
+	virtual void load( CREF(QString) regPath, QString regParam );
+	virtual void save( CREF(QString) regPath, QString regParam ) const;
 
 	QColor foregroundColor;
 	QColor backgroundColor;
@@ -99,8 +99,8 @@ public:
 	rbool operator ==( const LogBorders& borders ) const;
 	rbool operator !=( const LogBorders& borders ) const;
 
-	virtual void load( QString regPath );
-	virtual void save( QString regPath ) const;
+	virtual void load( CREF(QString) regPath );
+	virtual void save( CREF(QString) regPath ) const;
 
 	int vertBorder;
 	int horzBorder;

@@ -61,7 +61,7 @@ rbool RDOFindEditTheme::operator !=( const RDOFindEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOFindEditTheme::load( QString regPath )
+void RDOFindEditTheme::load( CREF(QString) regPath )
 {
 	LogEditTheme::load( regPath );
 
@@ -72,7 +72,7 @@ void RDOFindEditTheme::load( QString regPath )
 	settings.endGroup();
 }
 
-void RDOFindEditTheme::save( QString regPath ) const
+void RDOFindEditTheme::save( CREF(QString) regPath ) const
 {
 	LogEditTheme::save( regPath );
 

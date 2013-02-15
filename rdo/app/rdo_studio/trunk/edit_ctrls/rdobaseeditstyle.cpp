@@ -82,7 +82,7 @@ rbool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOBaseEditTheme::load( QString regPath )
+void RDOBaseEditTheme::load( CREF(QString) regPath )
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "theme");
@@ -97,7 +97,7 @@ void RDOBaseEditTheme::load( QString regPath )
 	settings.endGroup();
 }
 
-void RDOBaseEditTheme::save( QString regPath ) const
+void RDOBaseEditTheme::save( CREF(QString) regPath ) const
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "theme");
@@ -254,7 +254,7 @@ rbool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
 	return !(*this == tab);
 }
 
-void RDOBaseEditTab::load( QString regPath )
+void RDOBaseEditTab::load( CREF(QString) regPath )
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "tab");
@@ -267,7 +267,7 @@ void RDOBaseEditTab::load( QString regPath )
 	settings.endGroup();
 }
 
-void RDOBaseEditTab::save( QString regPath ) const
+void RDOBaseEditTab::save( CREF(QString) regPath ) const
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "tab");
@@ -312,7 +312,7 @@ rbool RDOBaseEditWindow::operator !=( const RDOBaseEditWindow& window ) const
 	return !(*this == window);
 }
 
-void RDOBaseEditWindow::load( QString regPath )
+void RDOBaseEditWindow::load( CREF(QString) regPath )
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "window");
@@ -321,7 +321,7 @@ void RDOBaseEditWindow::load( QString regPath )
 	settings.endGroup();
 }
 
-void RDOBaseEditWindow::save( QString regPath ) const
+void RDOBaseEditWindow::save( CREF(QString) regPath ) const
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "window");

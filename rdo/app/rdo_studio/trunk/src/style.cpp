@@ -64,7 +64,7 @@ rbool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 	return !(*this == font);
 }
 
-void RDOStyleFont::load( QString regPath )
+void RDOStyleFont::load( CREF(QString) regPath )
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "font");
@@ -79,7 +79,7 @@ void RDOStyleFont::load( QString regPath )
 	}
 }
 
-void RDOStyleFont::save( QString regPath ) const
+void RDOStyleFont::save( CREF(QString) regPath ) const
 {
 	QSettings settings;
 	settings.beginGroup(regPath +"font");
@@ -171,7 +171,7 @@ rbool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOStyleTheme::load( QString regPath )
+void RDOStyleTheme::load( CREF(QString) regPath )
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "theme");
@@ -181,7 +181,7 @@ void RDOStyleTheme::load( QString regPath )
 	settings.endGroup();
 }
 
-void RDOStyleTheme::save( QString regPath ) const
+void RDOStyleTheme::save( CREF(QString) regPath ) const
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "theme");

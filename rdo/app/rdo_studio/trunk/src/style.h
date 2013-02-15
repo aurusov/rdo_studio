@@ -33,8 +33,8 @@ public:
 	rbool operator ==( const RDOStyleFont& font ) const;
 	rbool operator !=( const RDOStyleFont& font ) const;
 
-	virtual void load( QString regPath );
-	virtual void save( QString regPath ) const;
+	virtual void load( CREF(QString) regPath );
+	virtual void save( CREF(QString) regPath ) const;
 
 	enum style { NONE = 0x00, BOLD = 0x01, ITALIC = 0x02, UNDERLINE = 0x04 };
 
@@ -63,8 +63,8 @@ public:
 	rbool operator ==( const RDOStyleTheme& theme ) const;
 	rbool operator !=( const RDOStyleTheme& theme ) const;
 
-	virtual void load( QString regPath );
-	virtual void save( QString regPath ) const;
+	virtual void load( CREF(QString) regPath );
+	virtual void save( CREF(QString) regPath ) const;
 
 	QColor defaultColor;
 	QColor backgroundColor;

@@ -55,7 +55,7 @@ rbool LogColorPair::operator !=( const LogColorPair& colors ) const
 	return !(*this == colors);
 }
 
-void LogColorPair::load( QString regPath, QString regParam )
+void LogColorPair::load( CREF(QString) regPath, QString regParam )
 {
 	QSettings settings;
 	settings.beginGroup(regPath);
@@ -65,7 +65,7 @@ void LogColorPair::load( QString regPath, QString regParam )
 	settings.endGroup();
 }
 
-void LogColorPair::save( QString regPath, QString regParam ) const
+void LogColorPair::save( CREF(QString) regPath, QString regParam ) const
 {
 	QSettings settings;
 	settings.beginGroup(regPath);
@@ -338,7 +338,7 @@ rbool LogBorders::operator !=( const LogBorders& borders ) const
 	return !(*this == borders);
 }
 
-void LogBorders::load( QString regPath )
+void LogBorders::load( CREF(QString) regPath )
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "borders");
@@ -347,7 +347,7 @@ void LogBorders::load( QString regPath )
 	settings.endGroup();
 }
 
-void LogBorders::save( QString regPath ) const
+void LogBorders::save( CREF(QString) regPath ) const
 {
 	QSettings settings;
 	settings.beginGroup(regPath + "borders");

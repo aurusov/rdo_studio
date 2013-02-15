@@ -30,8 +30,8 @@ public:
 	rbool operator ==( const RDOFindEditTheme& theme ) const;
 	rbool operator !=( const RDOFindEditTheme& theme ) const;
 
-	virtual void load( QString regPath );
-	virtual void save( QString regPath ) const;
+	virtual void load( CREF(QString) regPath );
+	virtual void save( CREF(QString) regPath ) const;
 
 	QColor keywordColor;
 
