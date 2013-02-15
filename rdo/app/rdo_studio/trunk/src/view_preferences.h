@@ -87,6 +87,9 @@ private slots:
 	void onBgColorDialog();
 	void onFgColorSelected(const QColor& color);
 	void onBgColorSelected(const QColor& color);
+	void onTitleSize(int index);
+	void onLegendSize(int index);
+	void onTickWidth(const QString& text);
 private:
 	enum ItemType
 	{
@@ -237,7 +240,7 @@ private:
 	rdo::gui::tracer::LogStyle       style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
-	//RDOStudioChartViewStyle          style_chart;
+	RDOStudioChartViewStyle          style_chart;
 	RDOStudioFrameStyle              style_frame;
 
 	PTR(rdoEditor::RDOEditorEdit)     preview_editor;

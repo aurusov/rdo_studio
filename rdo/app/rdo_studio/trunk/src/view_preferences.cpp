@@ -57,7 +57,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	style_trace.init();
 	style_results.init();
 	style_find.init();
-	//style_chart.init();
+	style_chart.init();
 	style_frame.init();
 
 	style_editor  = studioApp.getStyle()->style_editor;
@@ -66,7 +66,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	style_trace   = studioApp.getStyle()->style_trace;
 	style_results = studioApp.getStyle()->style_results;
 	style_find    = studioApp.getStyle()->style_find;
-	//style_chart   = studioApp.getStyle()->style_chart;
+	style_chart   = studioApp.getStyle()->style_chart;
 	style_frame   = studioApp.getStyle()->style_frame;
 
 	fontComboBox->setEditable(false);
@@ -139,6 +139,9 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	vertIndentLineEdit->setValidator(new QIntValidator(1, 100, this));
 	vertIndentLineEdit->setText(QString::number(style_trace.borders->vertBorder));
 
+	tickWidthLineEdit->setValidator(new QIntValidator(1, 100, this));
+	tickWidthLineEdit->setText(QString::number(style_chart.fonts_ticks->tickWidth));
+
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
 	connect(fontSizeComboBox, SIGNAL(activated(int)), this, SLOT(onFontSize(int)));
@@ -166,6 +169,9 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(bgColorComboBox, SIGNAL(activated(int)), this, SLOT(onBgColor(int)));
 	connect(fgColorToolButton, SIGNAL(clicked()), this, SLOT(onFgColorDialog()));
 	connect(bgColorToolButton, SIGNAL(clicked()), this, SLOT(onBgColorDialog()));
+	connect(titleComboBox, SIGNAL(activated(int)), this, SLOT(onTitleSize(int)));
+	connect(legendComboBox, SIGNAL(activated(int)), this, SLOT(onLegendSize(int)));
+	connect(tickWidthLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onTickWidth(const QString&)));
 
 	updateDialog();
 }
@@ -334,7 +340,7 @@ void ViewPreferences::onFontSize(int index)
 		style_trace.font->size   = size;
 		style_results.font->size = size;
 		style_find.font->size    = size;
-		//style_chart.font->size   = size;
+		style_chart.font->size   = size;
 		style_frame.font->size   = size;
 		break;
 	case IT_EDITOR:
@@ -356,7 +362,7 @@ void ViewPreferences::onFontSize(int index)
 		style_find.font->size    = size;
 		break;
 	case IT_CHART:
-		//style_chart.font->size   = size;
+		style_chart.font->size   = size;
 		break;
 	case IT_FRAME:
 		style_frame.font->size   = size;
@@ -383,7 +389,7 @@ void ViewPreferences::onFontType(int index)
 		style_trace.font->name   = text.constData();
 		style_results.font->name = text.constData();
 		style_find.font->name    = text.constData();
-		//style_chart.font->name   = text.constData();
+		style_chart.font->name   = text.constData();
 		style_frame.font->name   = text.constData();
 		break;
 	case IT_EDITOR:
@@ -405,7 +411,7 @@ void ViewPreferences::onFontType(int index)
 		style_find.font->name    = text.constData();
 		break;
 	case IT_CHART:
-		//style_chart.font->name   = text.constData();
+		style_chart.font->name   = text.constData();
 		break;
 	case IT_FRAME:
 		style_frame.font->name   = text.constData();
@@ -558,11 +564,6 @@ void ViewPreferences::onVertIndent(const QString& text)
 void ViewPreferences::onFgColor(int index)
 {
 	QColor color = qvariant_cast<QColor>(fgColorComboBox->itemData(index, Qt::UserRole));
-	QColor invColor(color.blue(), color.green(), color.red());
-	if(getStyleItem()->type != IT_LOG)
-	{
-		color = invColor;
-	}
 	PTR(StyleProperty) prop = getStyleProperty();
 	if (&prop->fg_color != &null_fg_color)
 	{
@@ -591,11 +592,6 @@ void ViewPreferences::onFgColor(int index)
 void ViewPreferences::onBgColor(int index)
 {
 	QColor color = qvariant_cast<QColor>(bgColorComboBox->itemData(index, Qt::UserRole));
-	QColor invColor(color.blue(), color.green(), color.red());
-	if(getStyleItem()->type != IT_LOG)
-	{
-		color = invColor;
-	}
 	PTR(StyleProperty) prop = getStyleProperty();
 	if (&prop->bg_color != &null_bg_color)
 	{
@@ -661,6 +657,26 @@ void ViewPreferences::onBgColorSelected(const QColor& color)
 	{
 		bgColorComboBox->setCurrentIndex(bgColorComboBox->findData(color, Qt::UserRole));
 	}
+}
+
+void ViewPreferences::onTitleSize(int index)
+{
+	UNUSED(index);
+	style_chart.fonts_ticks->titleFontSize = titleComboBox->currentText().toInt();
+	updatePreview();
+}
+
+void ViewPreferences::onLegendSize(int index)
+{
+	UNUSED(index);
+	style_chart.fonts_ticks->legendFontSize = legendComboBox->currentText().toInt();
+	updatePreview();
+}
+
+void ViewPreferences::onTickWidth(const QString& text)
+{
+	style_chart.fonts_ticks->tickWidth = text.toInt();
+	updatePreview();
 }
 
 void ViewPreferences::updateDialog()
@@ -900,9 +916,15 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, find_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
-	//RDOStudioChartViewTheme* chart_theme = static_cast<RDOStudioChartViewTheme*>(style_chart.theme);
-	//item = new StyleItem(IT_CHART, style_chart.font->size, style_chart.font->name);
-	//style_list.push_back(item);
+	RDOStudioChartViewTheme* chart_theme = static_cast<RDOStudioChartViewTheme*>(style_chart.theme);
+	item = new StyleItem(IT_CHART, style_chart.font->size, style_chart.font->name);
+	item->properties.push_back(new StyleProperty(item, IT_CHART, chart_theme->defaultStyle, chart_theme->defaultColor, chart_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_AXIS, chart_theme->defaultStyle, chart_theme->axisFgColor, null_bg_color, null_fg_color, chart_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_TITLE, chart_theme->titleStyle, chart_theme->titleFGColor, null_bg_color, null_fg_color, chart_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_LEGEND, chart_theme->legendStyle, chart_theme->legendFgColor, null_bg_color, null_fg_color, chart_theme->backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_CHART, null_font_style, null_fg_color, chart_theme->chartBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_TIME, null_font_style, null_fg_color, chart_theme->timeBgColor));
+	style_list.push_back(item);
 
 	RDOStudioFrameTheme* frame_theme = static_cast<RDOStudioFrameTheme*>(style_frame.theme);
 	item = new StyleItem(IT_FRAME, style_frame.font->size, style_frame.font->name);
