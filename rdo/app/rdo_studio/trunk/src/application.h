@@ -35,7 +35,6 @@ class Tracer;
 
 class RDOStudioApp: public CWinApp
 {
-friend class RDOStudioCommandLineInfo;
 public:
 	RDOStudioApp();
 	virtual ~RDOStudioApp();

@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/program_options.hpp>
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextcodec.h>
 #include <QtCore/qsettings.h>
@@ -33,47 +34,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-// -----------------------------------------------------------------
-// -------------------- RDOStudioCommandLineInfo
-// -----------------------------------------------------------------
-class RDOStudioCommandLineInfo: public CCommandLineInfo
-{
-public:
-	RDOStudioCommandLineInfo()
-		: CCommandLineInfo()
-	{}
-
-protected:
-	virtual void ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bLast);
-};
-
-void RDOStudioCommandLineInfo::ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bLast)
-{
-	CCommandLineInfo::ParseParam(lpszParam, bFlag, bLast);
-	if (bFlag)
-	{
-		if (CString(lpszParam).CompareNoCase(_T("autorun")) == 0)
-		{
-			studioApp.m_autoRun = true;
-		}
-		else if (CString(lpszParam).CompareNoCase(_T("autoexit")) == 0)
-		{
-			studioApp.m_autoExitByModel = true;
-		}
-		else if (CString(lpszParam).CompareNoCase(_T("dont_close_if_error")) == 0)
-		{
-			studioApp.m_dontCloseIfError = true;
-		}
-	}
-	else
-	{
-		if (studioApp.m_openModelName.empty())
-		{
-			studioApp.m_openModelName = lpszParam;
-		}
-	}
-}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioApp
@@ -235,8 +195,47 @@ BOOL RDOStudioApp::InitInstance()
 		setupFileAssociation();
 	}
 
-	RDOStudioCommandLineInfo cmdInfo;
-	ParseCommandLine(cmdInfo);
+	namespace po = boost::program_options;
+
+	po::options_description desc("RAO-studio");
+	desc.add_options()
+		("autorun", "auto run model")
+		("autoexit", "auto exit after simulation stoped")
+		("dont_close_if_error", "don't close application if model error detected")
+	;
+
+	std::vector<tstring> args = po::split_winmain(m_lpCmdLine);
+	po::variables_map vm;
+	try
+	{
+		po::store(po::command_line_parser(args).options(desc).run(), vm);
+		po::notify(vm);
+	}
+	catch (const std::exception& e)
+	{}
+
+	if (vm.count("autorun"))
+	{
+		m_autoRun = true;
+	}
+
+	if (vm.count("autoexit"))
+	{
+		m_autoExitByModel = true;
+	}
+
+	if (vm.count("dont_close_if_error"))
+	{
+		m_dontCloseIfError = true;
+	}
+
+	if (!m_autoRun && !m_autoExitByModel && !m_dontCloseIfError)
+	{
+		if (m_openModelName.empty())
+		{
+			m_openModelName = m_lpCmdLine;
+		}
+	}
 
 	rbool newModel  = true;
 	rbool autoModel = false;
