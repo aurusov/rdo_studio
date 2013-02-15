@@ -210,7 +210,7 @@ BOOL RDOStudioApp::InitInstance()
 		po::store(po::command_line_parser(args).options(desc).run(), vm);
 		po::notify(vm);
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{}
 
 	rbool autoRun = false;
