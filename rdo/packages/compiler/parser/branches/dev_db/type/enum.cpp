@@ -219,8 +219,9 @@ rbool RDOEnumType::operator!= (CREF(RDOEnumType) pEnumType) const
 
 void RDOEnumType::serializeInDB(REF(IDB) db) const
 {
+	get_default().serializeInDB(db);
 	db.insertRow("enum",QString("DEFAULT,%1")
-		.arg(QString::fromLocal8Bit("NULL")));
+		.arg(boost::any_cast<int>(db.popContext())));
 	int enum_id = db.queryExecIndex("enum");
 
 	for (ruint i = 0; i < getEnums()->getValues().size(); i++)
