@@ -803,7 +803,31 @@ void ViewPreferences::updateStyleTab()
 		legendComboBox->setCurrentIndex(legendComboBox->findText(QString::number(style_chart.fonts_ticks->legendFontSize)));
 		tickWidthLineEdit->setText(QString::number(style_chart.fonts_ticks->tickWidth));
 		break;
+	case IT_FRAME:
+		switch(prop->identificator)
+		{
+		case IT_FRAME:
+			fgColorComboBox->setEnabled(true);
+			bgColorComboBox->setEnabled(true);
+			fgColorToolButton->setEnabled(true);
+			bgColorToolButton->setEnabled(true);
+			break;
+		case IT_FRAME_BORDER:
+			fgColorComboBox->setEnabled(true);
+			bgColorComboBox->setEnabled(false);
+			fgColorToolButton->setEnabled(true);
+			bgColorToolButton->setEnabled(false);			
+			break;
+		case IT_FRAME_BACKGROUND:
+			fgColorComboBox->setEnabled(false);
+			bgColorComboBox->setEnabled(true);
+			fgColorToolButton->setEnabled(false);
+			bgColorToolButton->setEnabled(true);
+			break;
+		}
+		
 	}
+
 }
 
 void ViewPreferences::updatePreview()
