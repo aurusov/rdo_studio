@@ -68,7 +68,8 @@ CLASS(ExpressionGenerator): INSTANCE_OF(Expression)
 {
 DECLARE_FACTORY(ExpressionGenerator);
 public:
-static LPExpression generateByConst (CREF(LPRDOValue) pValue);
+static LPExpression generateByConst        (CREF(LPRDOValue) pValue);
+static LPExpression generateByIdentificator(CREF(LPRDOValue) pValue);
 
 private:
 	ExpressionGenerator(CREF(LPExpression) pExpression);

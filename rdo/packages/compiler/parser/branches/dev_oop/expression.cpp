@@ -11,6 +11,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/expression.h"
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/calc/procedural/calc_const.h"
@@ -125,6 +126,21 @@ LPExpression ExpressionGenerator::generateByConst(CREF(LPRDOValue) pValue)
 	return pExpression;
 }
 
+LPExpression ExpressionGenerator::generateByIdentificator(CREF(LPRDOValue) pValue)
+{
+	ASSERT(pValue);
+
+	LPContext pContext = RDOParser::s_parser()->context();
+	ASSERT(pContext);
+
+	pContext = pContext->find(pValue);
+	ASSERT(pContext);
+
+	LPExpression pExpression = pContext->create(pValue);
+	ASSERT(pExpression);
+
+	return pExpression;
+}
 // --------------------------------------------------------------------------------
 // -------------------- ExpressionList
 // --------------------------------------------------------------------------------

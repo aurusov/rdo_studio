@@ -2401,11 +2401,11 @@ init_declaration_value
 		ASSERT(pExpression);
 		$$ = PARSER->stack().push(pExpression);
 	}
-	| '=' fun_arithm
+	| '=' expression
 	{
-		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
-		ASSERT(pArithm);
-		$$ = PARSER->stack().push(pArithm->expression());
+		LPExpression pRightExpression = PARSER->stack().pop<Expression>($2);
+		ASSERT(pRightExpression);
+		$$ = PARSER->stack().push(pRightExpression);
 	}
 	;
 
@@ -3159,9 +3159,11 @@ fun_logic
 // -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
 fun_arithm
-	:/* RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
-	| */RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
-/*	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	: /*empty*/
+	;
+	/*RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| param_array_value                  { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
@@ -3362,14 +3364,19 @@ fun_arithm
 		ASSERT(pArithmArrayItem);
 
 		$$ = PARSER->stack().push(pArithmArrayItem);
-	}*/
+	}
 	;
-
+*/
 // --------------------------------------------------------------------------------
 // -------------------- Замена арифметическх выражений, Экспрешены
 // --------------------------------------------------------------------------------
 expression
 	: RDO_INT_CONST                      { $$ = PARSER->stack().push(ExpressionGenerator::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(ExpressionGenerator::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(ExpressionGenerator::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(ExpressionGenerator::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| param_array_value                  { $$ = PARSER->stack().push(ExpressionGenerator::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF                        { $$ = PARSER->stack().push(ExpressionGenerator::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
 	| expression ',' expression
 	{
 		LPExpression pFirstEpression    = PARSER->stack().pop<Expression>($1);
