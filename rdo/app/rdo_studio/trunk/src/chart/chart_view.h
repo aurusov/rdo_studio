@@ -34,6 +34,17 @@ friend class RDOStudioChartViewQt;
 friend class TracerSerie;
 friend class RDOStudioChartDoc;
 
+public:
+	RDOStudioChartDoc* GetDocument();
+	void attachToDoc();
+
+	QWidget* getQtParent();
+
+	const RDOStudioChartViewStyle& getStyle() const;
+	void setStyle(RDOStudioChartViewStyle* _style, const rbool needRedraw = true);
+
+	void setPreviwMode(rbool value);
+
 protected:
 	CMutex mutex;
 
@@ -52,12 +63,12 @@ protected:
 	{
 		return scale_koeff >= 1 && !zoomAuto;
 	}
-	;
+
 	rbool doUnwrapTime() const
 	{
 		return canUnwrapTime() && !timeWrap;
 	}
-	;
+
 
 	CRect chartRect;
 	void recalcLayout();
@@ -68,12 +79,12 @@ protected:
 	{
 		return xPos == 0;
 	}
-	;
+
 	rbool maxXVisible() const
 	{
 		return xPos == xMax;
 	}
-	;
+
 	void setScrollPos(UINT nSBCode, UINT nPos, const rbool need_update = true);
 	void updateScrollBars(const rbool need_update = true);
 
@@ -134,18 +145,6 @@ private:
 	RDOStudioChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview /* = false*/); //! @todo qt
 	virtual ~RDOStudioChartView();
 
-public:
-	RDOStudioChartDoc* GetDocument();
-	void attachToDoc();
-
-	QWidget* getQtParent();
-
-	const RDOStudioChartViewStyle& getStyle() const;
-	void setStyle(RDOStudioChartViewStyle* _style, const rbool needRedraw = true);
-
-	void setPreviwMode(rbool value);
-
-private:
 	RDOStudioChartDoc* m_pDocument;
 
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

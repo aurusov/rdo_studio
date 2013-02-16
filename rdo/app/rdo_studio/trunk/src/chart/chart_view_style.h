@@ -69,10 +69,6 @@ public:
 // --------------------------------------------------------------------------------
 class RDOStudioChartViewStyle: public rdoStyle::RDOStyleWithTheme
 {
-protected:
-	virtual void initTheme();
-	virtual void initFontsTicks();
-
 public:
 	RDOStudioChartViewStyle();
 	virtual ~RDOStudioChartViewStyle();
@@ -91,6 +87,10 @@ public:
 	}
 	
 	RDOStudioChartViewFontsTicks* fonts_ticks;
+
+protected:
+	virtual void initTheme();
+	virtual void initFontsTicks();
 };
 
 #endif // _RDO_STUDIO_CHART_VIEW_STYLE_H_

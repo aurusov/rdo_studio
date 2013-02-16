@@ -109,7 +109,7 @@ void ChartSerie::getLegendExtent(HDC &dc, CRect& rect, SIZE& size) const
 	size.cy = 0;
 	if (!m_options.showInLegend)
 		return;
-	
+
 	CRect tmprect;
 	tmprect.left   = rect.left + 10 + m_options.markerSize * 2 + 5;
 	tmprect.right  = rect.right;
