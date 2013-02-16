@@ -1381,18 +1381,18 @@ void ChartView::OnHelpKeyword()
 	studioApp.callQtAssistant(ba);
 }
 
-RDOStudioChartViewQt::RDOStudioChartViewQt(RDOStudioChartDoc* pDocument, const rbool preview)
+ChartViewMainWnd::ChartViewMainWnd(RDOStudioChartDoc* pDocument, const rbool preview)
 	: m_pContext (NULL     )
 	, m_pDocument(pDocument)
 	, m_preview  (preview  )
 {}
 
-RDOStudioChartViewQt::~RDOStudioChartViewQt()
+ChartViewMainWnd::~ChartViewMainWnd()
 {
 	m_thisCWnd.Detach();
 }
 
-rbool RDOStudioChartViewQt::init()
+rbool ChartViewMainWnd::init()
 {
 	m_thisCWnd.Attach(reinterpret_cast<HWND>(winId()));
 
@@ -1402,12 +1402,12 @@ rbool RDOStudioChartViewQt::init()
 	return true;
 }
 
-ChartView* RDOStudioChartViewQt::getContext()
+ChartView* ChartViewMainWnd::getContext()
 {
 	return m_pContext;
 }
 
-void RDOStudioChartViewQt::resizeEvent(PTR(QResizeEvent) event)
+void ChartViewMainWnd::resizeEvent(PTR(QResizeEvent) event)
 {
 	parent_type::resizeEvent(event);
 
@@ -1418,7 +1418,7 @@ void RDOStudioChartViewQt::resizeEvent(PTR(QResizeEvent) event)
 	m_pContext->MoveWindow(0, 0, size.width(), size.height());
 }
 
-void RDOStudioChartViewQt::paintEvent(PTR(QPaintEvent) event)
+void ChartViewMainWnd::paintEvent(PTR(QPaintEvent) event)
 {
 	parent_type::paintEvent(event);
 
@@ -1429,7 +1429,7 @@ void RDOStudioChartViewQt::paintEvent(PTR(QPaintEvent) event)
 	m_pContext->InvalidateRect(&rect);
 }
 
-void RDOStudioChartViewQt::closeEvent(PTR(QCloseEvent) event)
+void ChartViewMainWnd::closeEvent(PTR(QCloseEvent) event)
 {
 	ASSERT(m_pContext);
 	m_pContext->DestroyWindow();

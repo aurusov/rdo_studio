@@ -30,7 +30,7 @@ class ChartView: public CWnd
 {
 friend class TracerSerieFindValue;
 friend class RDOStudioChartOptionsChart;
-friend class RDOStudioChartViewQt;
+friend class ChartViewMainWnd;
 friend class TracerSerie;
 friend class RDOStudioChartDoc;
 
@@ -182,13 +182,13 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-class RDOStudioChartViewQt:
+class ChartViewMainWnd:
 	public QWidget,
 	public IInit
 {
 public:
-	RDOStudioChartViewQt(RDOStudioChartDoc* pDocument, const rbool preview);
-	virtual ~RDOStudioChartViewQt();
+	ChartViewMainWnd(RDOStudioChartDoc* pDocument, const rbool preview);
+	virtual ~ChartViewMainWnd();
 
 	ChartView* getContext();
 

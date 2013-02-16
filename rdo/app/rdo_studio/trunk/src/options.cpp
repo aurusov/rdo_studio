@@ -1815,7 +1815,7 @@ RDOStudioOptions::RDOStudioOptions()
 	styles  = new RDOStudioOptionsColorsStyles(*this);
 
 	preview_chart_doc = new RDOStudioChartDoc(true);
-	RDOStudioChartViewQt* pViewQt = new RDOStudioChartViewQt(preview_chart_doc, true);
+	ChartViewMainWnd* pViewQt = new ChartViewMainWnd(preview_chart_doc, true);
 	IInit* pViewInit = dynamic_cast<IInit*>(pViewQt);
 	pViewInit->init();
 
