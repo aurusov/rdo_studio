@@ -60,6 +60,8 @@ RDO_CHECK_RESULT_TERMINATION_ERROR_RESULT_AND_TRACE = 5
 
 IGNORE_PATTERNS = ('^.git','.svn')
 
+CONSOLE_PARAM_ENCODING = sys.getfilesystemencoding()
+
 # ancillary data
 dividing_line = '-------------------------------------------------------------------------------'
 
@@ -288,7 +290,7 @@ for task in files:
         if model['target'] == TARGET_CONSOLE:
             # run rdo_console app on test model
             command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model_file))
-            simulation_code = subprocess.call(safe_encode(command, 'UTF-8'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            simulation_code = subprocess.call(safe_encode(command, CONSOLE_PARAM_ENCODING), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             print u'SIMYLATION EXIT CODE :', simulation_code
 
             # check simulation exit code
@@ -308,7 +310,7 @@ for task in files:
                                        + ' -t ' + wrap_the_string_in_quotes(simulation_trace) + ' -r ' + wrap_the_string_in_quotes(simulation_result)
                                        )
 
-                test_code = subprocess.call(safe_encode(command, 'UTF-8'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                test_code = subprocess.call(safe_encode(command, CONSOLE_PARAM_ENCODING), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
                 check_exit_code_string = u'ERROR UNKNOWN'
 
