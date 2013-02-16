@@ -43,9 +43,9 @@ RDOStudioChartOptionsChart::RDOStudioChartOptionsChart(RDOStudioChartOptions& _s
 	:CPropertyPage(IDD)
 	,m_pSheet(&_sheet)
 {
-	m_ValCountX = m_pSheet->view->m_valueCountX;
-	m_ValCountY = m_pSheet->view->m_valueCountY;
-	m_ChartTitle = m_pSheet->view->getDocument()->getTitle().c_str();
+	m_ValCountX = m_pSheet->m_pView->m_valueCountX;
+	m_ValCountY = m_pSheet->m_pView->m_valueCountY;
+	m_ChartTitle = m_pSheet->m_pView->getDocument()->getTitle().c_str();
 	m_AxisSerie = -1;
 
 	m_psp.dwFlags |= PSP_HASHELP;
@@ -70,16 +70,16 @@ BOOL RDOStudioChartOptionsChart::OnInitDialog()
 {
 	CPropertyPage::OnInitDialog();
 
-	RDOStudioChartDoc* doc = m_pSheet->view->getDocument();
+	RDOStudioChartDoc* doc = m_pSheet->m_pView->getDocument();
 
 	for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); it++)
 	{
 		m_AxisSerieCombo.AddString((*it)->getSerie()->getTitle().c_str());
 	}
 
-	m_AxisSerieCombo.SetCurSel(m_pSheet->view->getDocument()->getSerieIndex(m_pSheet->view->m_pYAxis));
+	m_AxisSerieCombo.SetCurSel(m_pSheet->m_pView->getDocument()->getSerieIndex(m_pSheet->m_pView->m_pYAxis));
 
-	m_DrawLegend.SetCheck(m_pSheet->view->m_needDrawLegend);
+	m_DrawLegend.SetCheck(m_pSheet->m_pView->m_needDrawLegend);
 
 	return TRUE;
 }
@@ -173,7 +173,7 @@ void RDOStudioChartOptionsChart::OnUpdateModify()
 {
 	UpdateData();
 
-	ChartView* view = m_pSheet->view;
+	ChartView* view = m_pSheet->m_pView;
 	rbool legend = m_DrawLegend.GetCheck() ? true : false;
 
 	SetModified(
@@ -185,17 +185,17 @@ void RDOStudioChartOptionsChart::apply() const
 {
 	if (m_AxisSerie != -1)
 	{
-		m_pSheet->view->m_pYAxis = m_pSheet->view->getDocument()->m_serieList.at(m_AxisSerie);
+		m_pSheet->m_pView->m_pYAxis = m_pSheet->m_pView->getDocument()->m_serieList.at(m_AxisSerie);
 	}
 	else
 	{
-		m_pSheet->view->m_pYAxis = NULL;
+		m_pSheet->m_pView->m_pYAxis = NULL;
 	}
 	rbool legend = m_DrawLegend.GetCheck() ? true : false;
-	m_pSheet->view->m_needDrawLegend = legend;
-	m_pSheet->view->m_valueCountX = m_ValCountX;
-	m_pSheet->view->m_valueCountY = m_ValCountY;
-	m_pSheet->view->getDocument()->setTitle(static_cast<LPCTSTR>(m_ChartTitle));
+	m_pSheet->m_pView->m_needDrawLegend = legend;
+	m_pSheet->m_pView->m_valueCountX = m_ValCountX;
+	m_pSheet->m_pView->m_valueCountY = m_ValCountY;
+	m_pSheet->m_pView->getDocument()->setTitle(static_cast<LPCTSTR>(m_ChartTitle));
 }
 
 // --------------------------------------------------------------------------------
@@ -274,7 +274,7 @@ BOOL RDOStudioChartOptionsSeries::OnInitDialog()
 	m_colorCB.setItemHeight(itemHeight);
 	m_colorCB.insertBaseColors();
 
-	RDOStudioChartDoc* doc = m_pSheet->view->getDocument();
+	RDOStudioChartDoc* doc = m_pSheet->m_pView->getDocument();
 
 	for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); it++)
 	{
@@ -393,7 +393,7 @@ void RDOStudioChartOptionsSeries::OnSelchangeSeriesCombo()
 {
 	if (!checkValues())
 	{
-		m_SerieCombo.SetCurSel(m_pSheet->view->getDocument()->getSerieIndex(m_pSerie));
+		m_SerieCombo.SetCurSel(m_pSheet->m_pView->getDocument()->getSerieIndex(m_pSerie));
 		return;
 	}
 	int ser = m_SerieCombo.GetCurSel();
@@ -417,7 +417,7 @@ void RDOStudioChartOptionsSeries::OnSelchangeSeriesCombo()
 			case IDNO    : restoreValues(); break;
 			case IDCANCEL:
 				continue_flag = false;
-				m_SerieCombo.SetCurSel(m_pSheet->view->getDocument()->getSerieIndex(m_pSerie));
+				m_SerieCombo.SetCurSel(m_pSheet->m_pView->getDocument()->getSerieIndex(m_pSerie));
 				break;
 			}
 			if (!continue_flag)
@@ -425,7 +425,7 @@ void RDOStudioChartOptionsSeries::OnSelchangeSeriesCombo()
 				return;
 			}
 		}
-		m_pSerie = m_pSheet->view->getDocument()->m_serieList.at(ser);
+		m_pSerie = m_pSheet->m_pView->getDocument()->m_serieList.at(ser);
 		restoreValues();
 	}
 	else
@@ -451,39 +451,39 @@ BEGIN_MESSAGE_MAP(RDOStudioChartOptions, CPropertySheet)
 	ON_WM_HELPINFO()
 END_MESSAGE_MAP()
 
-RDOStudioChartOptions::RDOStudioChartOptions(ChartView* _view)
+RDOStudioChartOptions::RDOStudioChartOptions(ChartView* pView)
 	: CPropertySheet()
-	, chart(NULL)
-	, view(_view)
+	, m_pChart(NULL )
+	, m_pView (pView)
 {
 	SetTitle(rdo::format(IDS_CHART_OPTIONS).c_str());
 
-	chart = new RDOStudioChartOptionsChart(*this);
-	series = new RDOStudioChartOptionsSeries(*this);
+	m_pChart = new RDOStudioChartOptionsChart(*this);
+	m_pSeries = new RDOStudioChartOptionsSeries(*this);
 
-	AddPage(chart);
-	AddPage(series);
+	AddPage(m_pChart);
+	AddPage(m_pSeries);
 }
 
 RDOStudioChartOptions::~RDOStudioChartOptions()
 {
-	if (chart)
+	if (m_pChart)
 	{
-		delete chart;
-		chart = NULL;
+		delete m_pChart;
+		m_pChart = NULL;
 	}
-	if (series)
+	if (m_pSeries)
 	{
-		delete series;
-		series = NULL;
+		delete m_pSeries;
+		m_pSeries = NULL;
 	}
 }
 
 void RDOStudioChartOptions::apply() const
 {
-	chart->apply();
-	series->apply();
-	view->getDocument()->updateAllViews();
+	m_pChart->apply();
+	m_pSeries->apply();
+	m_pView->getDocument()->updateAllViews();
 }
 
 void RDOStudioChartOptions::onHelpButton()
@@ -491,11 +491,11 @@ void RDOStudioChartOptions::onHelpButton()
 	QByteArray ba;
 
 	CPropertyPage* page = GetActivePage();
-	if (page == chart)
+	if (page == m_pChart)
 	{
 		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm#chart\n");
 	}
-	else if (page == series)
+	else if (page == m_pSeries)
 	{
 		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm#series\n");
 	}

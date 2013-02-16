@@ -108,13 +108,13 @@ class RDOStudioChartOptions: public CPropertySheet
 friend class RDOStudioChartOptionsChart;
 friend class RDOStudioChartOptionsSeries;
 public:
-	RDOStudioChartOptions(ChartView* _view);
+	RDOStudioChartOptions(ChartView* pView);
 	virtual ~RDOStudioChartOptions();
 
 private:
-	RDOStudioChartOptionsChart*  chart;
-	RDOStudioChartOptionsSeries* series;
-	ChartView*                   view;
+	RDOStudioChartOptionsChart*  m_pChart;
+	RDOStudioChartOptionsSeries* m_pSeries;
+	ChartView*                   m_pView;
 
 	void apply() const;
 	void onHelpButton();
