@@ -180,8 +180,8 @@ int RDOBaseEdit::getNewMarker()
 void RDOBaseEdit::defineMarker(int marker, int markerType, QColor fore, QColor back) const
 {
 	sendEditor(SCI_MARKERDEFINE,  marker, markerType);
-	sendEditor(SCI_MARKERSETFORE, marker, fore.rgb());
-	sendEditor(SCI_MARKERSETBACK, marker, back.rgb());
+	sendEditor(SCI_MARKERSETFORE, marker, convertColor(fore));
+	sendEditor(SCI_MARKERSETBACK, marker, convertColor(back));
 }
 
 const RDOBaseEditStyle* RDOBaseEdit::getEditorStyle() const
@@ -198,10 +198,10 @@ void RDOBaseEdit::setEditorStyle(RDOBaseEditStyle* pStyle)
 	// ----------
 	// Colors
 	RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(m_pStyle->theme);
-	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, theme->defaultColor.rgb());
-	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, theme->backgroundColor.rgb());
-	sendEditor(SCI_STYLESETFORE, SCE_TEXT_DEFAULT, theme->defaultColor.rgb());
-	sendEditor(SCI_STYLESETBACK, SCE_TEXT_DEFAULT, theme->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, convertColor(theme->defaultColor));
+	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, convertColor(theme->backgroundColor));
+	sendEditor(SCI_STYLESETFORE, SCE_TEXT_DEFAULT, convertColor(theme->defaultColor));
+	sendEditor(SCI_STYLESETBACK, SCE_TEXT_DEFAULT, convertColor(theme->backgroundColor));
 
 	// ----------
 	// Styles
@@ -235,8 +235,8 @@ void RDOBaseEdit::setEditorStyle(RDOBaseEditStyle* pStyle)
 
 	// ----------
 	// Caret
-	sendEditor(SCI_SETCARETFORE, theme->caretColor.rgb());
-	sendEditor(SCI_SETSELBACK, true, theme->selectionBgColor.rgb());
+	sendEditor(SCI_SETCARETFORE, convertColor(theme->caretColor));
+	sendEditor(SCI_SETSELBACK, true, convertColor(theme->selectionBgColor));
 	sendEditor(SCI_SETCARETWIDTH, 1);
 
 	// ----------

@@ -114,8 +114,8 @@ rbool RDOFindEditTheme::styleItalic( const int styleType ) const
 tstring RDOFindEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_FIND_DEFAULT: return colorToHEX( defaultColor.rgb() );
-		case SCE_FIND_KEYWORD: return colorToHEX( keywordColor.rgb() );
+		case SCE_FIND_DEFAULT: return colorToHEX( defaultColor );
+		case SCE_FIND_KEYWORD: return colorToHEX( keywordColor );
 	}
 	return LogEditTheme::styleFGColorToHEX( styleType );
 }
