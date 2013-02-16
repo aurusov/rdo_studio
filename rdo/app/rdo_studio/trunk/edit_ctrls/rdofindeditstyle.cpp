@@ -131,7 +131,7 @@ RDOFindEditTheme RDOFindEditTheme::getClassicTheme()
 	RDOFindEditTheme theme;
 	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getClassicTheme();
 
-	theme.keywordColor = RGB( 0xFF, 0xFF, 0xFF );
+	theme.keywordColor = QColor( 0xFF, 0xFF, 0xFF );
 	theme.keywordStyle = RDOStyleFont::NONE;
 
 	return theme;
@@ -142,7 +142,7 @@ RDOFindEditTheme RDOFindEditTheme::getTwilightTheme()
 	RDOFindEditTheme theme;
 	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getTwilightTheme();
 
-	theme.keywordColor = RGB( 0x00, 0xFF, 0xFF );
+	theme.keywordColor = QColor( 0x00, 0xFF, 0xFF );
 	theme.keywordStyle = RDOStyleFont::BOLD;
 
 	return theme;
