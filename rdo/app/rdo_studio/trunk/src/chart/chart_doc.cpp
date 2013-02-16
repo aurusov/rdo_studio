@@ -35,10 +35,12 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 class RDOStudioChartDocInsertTime
 {
-	RDOStudioChartDoc* doc;
 public:
 	RDOStudioChartDocInsertTime( RDOStudioChartDoc* _doc ): doc( _doc ) {};
 	void operator ()( TracerValue* val );
+
+private:
+	RDOStudioChartDoc* doc;
 };
 
 void RDOStudioChartDocInsertTime::operator ()( TracerValue* val )
