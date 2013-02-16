@@ -98,6 +98,11 @@ IDB::bany GeneralDB::popContext()
 	return i;
 }
 
+bool GeneralDB::isEmptyContext()
+{
+	return m_context.empty();
+}
+
 void GeneralDB::initDB()
 {
 	m_db = QSqlDatabase::addDatabase("QPSQL");

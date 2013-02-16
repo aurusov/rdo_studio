@@ -32,6 +32,7 @@ public:
 
 	virtual void pushContext   (int context                                  ) = 0;
 	virtual bany popContext    (                                             ) = 0;
+	virtual bool isEmptyContext(                                             ) = 0;
 };
 
 #endif // _SIMULATOR_RUNTIME_SQL_INTERFACE_DB_H_

@@ -37,6 +37,7 @@ public:
 	virtual int  queryExecIndex(const QString& table                         );
 	virtual void pushContext   (int context                                  );
 	virtual bany popContext    (                                             );
+	virtual bool isEmptyContext(                                             );
 
 private:
 	void initDB();

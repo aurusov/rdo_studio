@@ -219,7 +219,11 @@ rbool RDOEnumType::operator!= (CREF(RDOEnumType) pEnumType) const
 
 void RDOEnumType::serializeInDB(REF(IDB) db) const
 {
-	get_default().serializeInDB(db);
+	if (db.isEmptyContext())
+	{
+		get_default().serializeInDB(db);
+	}
+
 	db.insertRow("enum",QString("DEFAULT,%1")
 		.arg(boost::any_cast<int>(db.popContext())));
 	int enum_id = db.queryExecIndex("enum");

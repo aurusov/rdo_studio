@@ -42,6 +42,13 @@ void RDORTPParam::writeModelStructure(REF(rdo::ostream) stream) const
 void RDORTPParam::serializeInDB(REF(IDB) db) const
 {
 	int rtp_id = boost::any_cast<int>(db.popContext());
+
+	LPRDOValue def_val = getDefault();
+	if (def_val->defined())
+	{
+		def_val->serializeInDB(db);
+	}
+
 	getTypeInfo()->type()->serializeInDB(db);
 	db.insertRow("param_of_type",QString("DEFAULT,'%1',%2,%3")
 			.arg(QString::fromLocal8Bit(name().c_str()))
