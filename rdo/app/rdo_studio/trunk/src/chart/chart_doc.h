@@ -38,7 +38,32 @@ friend class RDOStudioChartDocInsertTime;
 friend class RDOStudioChartOptionsChart;
 friend class RDOStudioChartOptionsSeries;
 
-protected:
+public:
+	RDOStudioChartDoc( const rbool preview = false );
+	virtual ~RDOStudioChartDoc();
+
+	void attachView(RDOStudioChartView* pView);
+	RDOStudioChartView* getFirstView();
+
+	tstring     getTitle () const;
+	void        setTitle (CREF(tstring) title);
+	void        autoTitle();
+	static void resetTitleIndex();
+
+	void setStyle(RDOStudioChartViewStyle* pStyle);
+
+	void updateAllViews();
+
+	void addSerie( TracerSerie* const serie );
+	//void removeSerie( TracerSerie* const serie );
+	rbool serieExists( const TracerSerie* serie ) const;
+
+	void lock() { mutex.Lock(); };
+	void unlock() { mutex.Unlock(); };
+	void incTimeEventsCount( TracerTimeNow* time );
+	rbool newValueToSerieAdded( TracerValue* val );
+
+private:
 	CMutex mutex;
 
 	std::vector< ChartSerie* > series;
@@ -66,31 +91,6 @@ protected:
 	std::vector<RDOStudioChartView*> m_viewList;
 
 	static ruint s_titleIndex;
-
-public:
-	RDOStudioChartDoc( const rbool preview = false );
-	virtual ~RDOStudioChartDoc();
-
-	void attachView(RDOStudioChartView* pView);
-	RDOStudioChartView* getFirstView();
-
-	tstring     getTitle () const;
-	void        setTitle (CREF(tstring) title);
-	void        autoTitle();
-	static void resetTitleIndex();
-
-	void setStyle(RDOStudioChartViewStyle* pStyle);
-
-	void updateAllViews();
-
-	void addSerie( TracerSerie* const serie );
-	//void removeSerie( TracerSerie* const serie );
-	rbool serieExists( const TracerSerie* serie ) const;
-
-	void lock() { mutex.Lock(); };
-	void unlock() { mutex.Unlock(); };
-	void incTimeEventsCount( TracerTimeNow* time );
-	rbool newValueToSerieAdded( TracerValue* val );
 };
 
 #endif // _RDO_STUDIO_CHART_DOC_H_
