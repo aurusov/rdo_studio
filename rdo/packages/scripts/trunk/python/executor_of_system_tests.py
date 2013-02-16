@@ -58,6 +58,8 @@ RDO_CHECK_RESULT_TERMINATION_ERROR_RESULT           = 3
 RDO_CHECK_RESULT_TERMINATION_ERROR_TRACE            = 4
 RDO_CHECK_RESULT_TERMINATION_ERROR_RESULT_AND_TRACE = 5
 
+IGNORE_PATTERNS = ('^.git','.svn')
+
 # ancillary data
 dividing_line = '-------------------------------------------------------------------------------'
 
@@ -158,6 +160,7 @@ def compare_text_files(file1, file2):
         return True
     
     return False
+
 
 ###############################################################################
 #                                 main code                                   #
@@ -357,7 +360,7 @@ for task in files:
         elif model['target'] == TAGRET_CONVERTER:
             text_uuid = str(uuid.uuid4())
             temp_directory_name = dirname + text_uuid + u'/'
-            shutil.copytree(dirname, temp_directory_name)
+            shutil.copytree(dirname, temp_directory_name, ignore=shutil.ignore_patterns(*IGNORE_PATTERNS))
             
             model_file    = temp_directory_name + model['name']
             command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model_file) + u' -c')
