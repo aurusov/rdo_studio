@@ -78,7 +78,7 @@ rbool ChartSerie::isTracerSerie(const TracerSerie* pSerie) const
 	return m_pSerie == pSerie;
 }
 
-void ChartSerie::drawSerie(RDOStudioChartView* const pView, HDC &dc, CRect &rect) const
+void ChartSerie::drawSerie(ChartView* const pView, HDC &dc, CRect &rect) const
 {
 	m_pSerie->drawSerie(pView, dc, rect, m_options.color, m_options.markerType, m_options.markerSize, m_options.markerNeedDraw, m_options.markerTransparent);
 }

@@ -115,12 +115,12 @@ RDOStudioChartDoc::~RDOStudioChartDoc()
 	g_pTracer->unlock();
 }
 
-void RDOStudioChartDoc::attachView(RDOStudioChartView* pView)
+void RDOStudioChartDoc::attachView(ChartView* pView)
 {
 	m_viewList.push_back(pView);
 }
 
-RDOStudioChartView* RDOStudioChartDoc::getFirstView()
+ChartView* RDOStudioChartDoc::getFirstView()
 {
 	return m_viewList.empty() ? NULL : m_viewList.front();
 }
@@ -128,7 +128,7 @@ RDOStudioChartView* RDOStudioChartDoc::getFirstView()
 void RDOStudioChartDoc::setStyle(RDOStudioChartViewStyle* pStyle)
 {
 	ASSERT (pStyle)
-	BOOST_FOREACH(RDOStudioChartView * pView, m_viewList)
+	BOOST_FOREACH(ChartView * pView, m_viewList)
 	{
 		pView->setStyle(pStyle);
 	}
@@ -136,7 +136,7 @@ void RDOStudioChartDoc::setStyle(RDOStudioChartViewStyle* pStyle)
 
 void RDOStudioChartDoc::updateAllViews()
 {
-	BOOST_FOREACH(RDOStudioChartView * pView, m_viewList)
+	BOOST_FOREACH(ChartView * pView, m_viewList)
 	{
 		pView->updateView();
 	}
@@ -303,7 +303,7 @@ void RDOStudioChartDoc::addSerie(TracerSerie* const serie)
 		serie->addToDoc(this);
 		if (m_serieList.size() == 1)
 		{
-			RDOStudioChartView* pView = getFirstView();
+			ChartView* pView = getFirstView();
 			ASSERT(pView);
 			pView->m_pYAxis = docserie;
 		}

@@ -101,20 +101,20 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartOptions
 // --------------------------------------------------------------------------------
-class RDOStudioChartView;
+class ChartView;
 
 class RDOStudioChartOptions: public CPropertySheet
 {
 friend class RDOStudioChartOptionsChart;
 friend class RDOStudioChartOptionsSeries;
 public:
-	RDOStudioChartOptions(RDOStudioChartView* _view);
+	RDOStudioChartOptions(ChartView* _view);
 	virtual ~RDOStudioChartOptions();
 
 private:
 	RDOStudioChartOptionsChart*  chart;
 	RDOStudioChartOptionsSeries* series;
-	RDOStudioChartView*          view;
+	ChartView*                   view;
 
 	void apply() const;
 	void onHelpButton();

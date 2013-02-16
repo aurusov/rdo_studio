@@ -36,7 +36,7 @@ enum TracerSerieMarker{
 	RDOSM_CROSS
 };
 
-class RDOStudioChartView;
+class ChartView;
 class RDOStudioChartDoc;
 class TracerValue;
 class TracerTimeNow;
@@ -85,7 +85,7 @@ public:
 	//double getMaxValue() const { return maxValue; };
 	virtual void getCaptions( std::vector<tstring> &captions, const int val_count ) const;
 
-	void drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect, const COLORREF color, TracerSerieMarker marker, const int marker_size, const rbool draw_marker, const rbool transparent_marker ) const;
+	void drawSerie( ChartView* const view, HDC &dc, CRect &rect, const COLORREF color, TracerSerieMarker marker, const int marker_size, const rbool draw_marker, const rbool transparent_marker ) const;
 	void drawMarker( HDC &dc, const int x, const int y, TracerSerieMarker marker, const int marker_size ) const;
 
 	void  addToDoc( RDOStudioChartDoc* const doc );

@@ -33,7 +33,7 @@ typedef std::list<TracerTimeNow*> TimesList;
 
 class RDOStudioChartDoc
 {
-friend class RDOStudioChartView;
+friend class ChartView;
 friend class RDOStudioChartDocInsertTime;
 friend class RDOStudioChartOptionsChart;
 friend class RDOStudioChartOptionsSeries;
@@ -42,8 +42,8 @@ public:
 	RDOStudioChartDoc(const rbool preview = false);
 	virtual ~RDOStudioChartDoc();
 
-	void attachView(RDOStudioChartView* pView);
-	RDOStudioChartView* getFirstView();
+	void attachView(ChartView* pView);
+	ChartView* getFirstView();
 
 	tstring getTitle () const;
 	void    setTitle (CREF(tstring) title);
@@ -93,9 +93,9 @@ private:
 
 	void updateChartViews(const UINT update_type) const;
 
-	tstring                          m_title;
-	std::vector<RDOStudioChartView*> m_viewList;
-	static ruint                     s_titleIndex;
+	tstring                 m_title;
+	std::vector<ChartView*> m_viewList;
+	static ruint            s_titleIndex;
 };
 
 #endif // _RDO_STUDIO_CHART_DOC_H_

@@ -34,9 +34,9 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 class TracerSerieFindValue
 {
-	RDOStudioChartView* view;
+	ChartView* view;
 public:
-	TracerSerieFindValue( RDOStudioChartView* _view ): view( _view ) {};
+	TracerSerieFindValue( ChartView* _view ): view( _view ) {};
 	rbool operator ()( TracerValue* val );
 };
 
@@ -212,7 +212,7 @@ void TracerSerie::getLastValue( TracerValue*& val ) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void TracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect, const COLORREF color, TracerSerieMarker marker, const int marker_size, const rbool draw_marker, const rbool transparent_marker ) const
+void TracerSerie::drawSerie( ChartView* const view, HDC &dc, CRect &rect, const COLORREF color, TracerSerieMarker marker, const int marker_size, const rbool draw_marker, const rbool transparent_marker ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 	
@@ -446,7 +446,7 @@ rbool TracerSerie::activateFirstDoc() const
 		RDOStudioChartDoc* pDoc = documents.front();
 		if (pDoc)
 		{
-			RDOStudioChartView* pView = pDoc->getFirstView();
+			ChartView* pView = pDoc->getFirstView();
 			ASSERT(pView)
 			studioApp.getIMainWnd()->activateSubWindow(pView->getQtParent()->parentWidget());
 			result = true;

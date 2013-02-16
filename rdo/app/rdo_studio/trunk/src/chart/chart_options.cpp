@@ -173,7 +173,7 @@ void RDOStudioChartOptionsChart::OnUpdateModify()
 {
 	UpdateData();
 
-	RDOStudioChartView* view = m_pSheet->view;
+	ChartView* view = m_pSheet->view;
 	rbool legend = m_DrawLegend.GetCheck() ? true : false;
 
 	SetModified(
@@ -451,7 +451,7 @@ BEGIN_MESSAGE_MAP(RDOStudioChartOptions, CPropertySheet)
 	ON_WM_HELPINFO()
 END_MESSAGE_MAP()
 
-RDOStudioChartOptions::RDOStudioChartOptions(RDOStudioChartView* _view)
+RDOStudioChartOptions::RDOStudioChartOptions(ChartView* _view)
 	: CPropertySheet()
 	, chart(NULL)
 	, view(_view)

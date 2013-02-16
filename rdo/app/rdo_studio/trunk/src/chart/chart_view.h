@@ -20,13 +20,13 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioChartView
+// -------------------- ChartView
 // --------------------------------------------------------------------------------
 class RDOStudioChartViewStyle;
 class TracerSerie;
 class ChartSerie;
 
-class RDOStudioChartView: public CWnd
+class ChartView: public CWnd
 {
 friend class TracerSerieFindValue;
 friend class RDOStudioChartOptionsChart;
@@ -143,8 +143,8 @@ protected:
 	void onDraw();
 
 private:
-	RDOStudioChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview /* = false*/); //! @todo qt
-	virtual ~RDOStudioChartView();
+	ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview /* = false*/); //! @todo qt
+	virtual ~ChartView();
 
 	RDOStudioChartDoc* m_pDocument;
 
@@ -190,12 +190,12 @@ public:
 	RDOStudioChartViewQt(RDOStudioChartDoc* pDocument, const rbool preview);
 	virtual ~RDOStudioChartViewQt();
 
-	RDOStudioChartView* getContext();
+	ChartView* getContext();
 
 private:
 	typedef  QWidget  parent_type;
 
-	RDOStudioChartView* m_pContext;
+	ChartView*          m_pContext;
 	RDOStudioChartDoc*  m_pDocument;
 	rbool               m_preview;
 	CWnd                m_thisCWnd;
