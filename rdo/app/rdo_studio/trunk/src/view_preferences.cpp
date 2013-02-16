@@ -756,7 +756,15 @@ void ViewPreferences::updateDialog()
 void ViewPreferences::updateStyleTab()
 {
 	PTR(StyleProperty) prop = getStyleProperty();
-	fontComboBox->setCurrentFont(QFont(QString::fromLocal8Bit(prop->item->font_name.c_str())));
+	QString fontName = QString::fromLocal8Bit(prop->item->font_name.c_str());
+	if (!fontName.isEmpty())
+	{
+		fontComboBox->setCurrentFont(QFont(fontName));
+	}
+	else
+	{
+		fontComboBox->setCurrentIndex(-1);
+	}
 	fontSizeComboBox->setCurrentIndex(fontSizeComboBox->findText(QString::number(prop->item->font_size)));
 	
 	if(fgColorComboBox->findData(prop->fg_color) == -1)
