@@ -102,7 +102,6 @@ void RDOStudioChartViewTheme::save( CREF(QString) groupName ) const
 	QSettings settings;
 	RDOStyleTheme::save( groupName );
 	settings.beginGroup(groupName + "theme");
-	//! @todo qt
 	settings.setValue("axis_fg_color", axisFgColor.name());
 	settings.setValue("title_fg_color", titleFGColor.name());
 	settings.setValue("legend_fg_color", legendFgColor.name());
@@ -110,13 +109,6 @@ void RDOStudioChartViewTheme::save( CREF(QString) groupName ) const
 	settings.setValue("time_bg_color", timeBgColor.name());
 	settings.setValue("title_style", titleStyle);
 	settings.setValue("legend_style", legendStyle);
-	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "axisFgColor", axisFgColor );
-	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "titleFGColor", titleFGColor );
-	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "legendFgColor", legendFgColor );
-	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "chartBgColor", chartBgColor );
-	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "timeBgColor", timeBgColor );
-	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "titleStyle", titleStyle );
-	//AfxGetApp()->WriteProfileInt( groupName.c_str(), "legendStyle", legendStyle );
 	settings.endGroup();
 }
 
