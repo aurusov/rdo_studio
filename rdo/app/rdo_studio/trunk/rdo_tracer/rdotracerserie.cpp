@@ -42,9 +42,9 @@ public:
 
 rbool TracerSerieFindValue::operator ()( TracerValue* val )
 {
-	rbool res = val && val->modeltime->time >= view->drawFromX.time;
-	if ( view->doUnwrapTime() && res && ( val->modeltime->time == view->drawFromX.time ) )
-		res = val->eventIndex >= view->drawFromEventIndex;
+	rbool res = val && val->modeltime->time >= view->m_drawFromX.time;
+	if ( view->doUnwrapTime() && res && ( val->modeltime->time == view->m_drawFromX.time ) )
+		res = val->eventIndex >= view->m_drawFromEventIndex;
 	return res;
 }
 
@@ -226,9 +226,9 @@ void TracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rec
 		
 		rbool flag = it != values.end();
 		if ( flag && !view->doUnwrapTime() ) {
-			flag = !( it == values.begin() && (*it)->modeltime->time > view->drawToX.time );
+			flag = !( it == values.begin() && (*it)->modeltime->time > view->m_drawToX.time );
 		} else if ( flag ) {
-			flag = !( it == values.begin() && ( (*it)->modeltime->time > view->drawToX.time || ( (*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex > view->drawToEventCount ) ) );
+			flag = !( it == values.begin() && ( (*it)->modeltime->time > view->m_drawToX.time || ( (*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex > view->m_drawToEventCount ) ) );
 		}
 
 		if ( flag ) {
@@ -241,29 +241,29 @@ void TracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rec
 			
 			flag = it != values.begin();
 			if ( flag && !view->doUnwrapTime() ) {
-				flag = (*it)->modeltime->time > view->drawFromX.time;
+				flag = (*it)->modeltime->time > view->m_drawFromX.time;
 			} else if ( flag ) {
-				flag = (*it)->modeltime->time > view->drawFromX.time || ( (*it)->modeltime->time == view->drawFromX.time && (*it)->eventIndex > view->drawFromEventIndex );
+				flag = (*it)->modeltime->time > view->m_drawFromX.time || ( (*it)->modeltime->time == view->m_drawFromX.time && (*it)->eventIndex > view->m_drawFromEventIndex );
 			}
 			if ( flag )
 				it --;
 			
 			int lasty = roundDouble( (double)rect.bottom - double(ky) * ( (*it)->value - minValue ) );
 			lasty = std::min( lasty, int(rect.bottom) - 1 );
-			int lastx = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * double(view->timeScale) ) - view->chartShift;
+			int lastx = rect.left + roundDouble( ( (*it)->modeltime->time - view->m_drawFromX.time ) * double(view->m_timeScale) ) - view->m_chartShift;
 			lastx = std::min( lastx, int(rect.right) - 1 );
 			
 			int ticks = 0;
-			timesList::iterator times_it = view->unwrapTimesList.begin();
-			if ( view->doUnwrapTime() && (*it)->modeltime->time >= view->drawFromX.time ) {
+			TimesList::iterator times_it = view->m_unwrapTimesList.begin();
+			if ( view->doUnwrapTime() && (*it)->modeltime->time >= view->m_drawFromX.time ) {
 				if ( *(*it)->modeltime == *(*times_it) ) {
-					lastx += ( (*it)->eventIndex - view->drawFromEventIndex ) * view->style->fonts_ticks->tickWidth;
+					lastx += ( (*it)->eventIndex - view->m_drawFromEventIndex ) * view->m_pStyle->pFontsTicks->tickWidth;
 				} else {
-					while ( times_it != view->unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
+					while ( times_it != view->m_unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
 						ticks += (*times_it)->eventCount;
 						times_it ++;
 					}
-					lastx += ( ticks + (*it)->eventIndex - view->drawFromEventIndex ) * view->style->fonts_ticks->tickWidth;
+					lastx += ( ticks + (*it)->eventIndex - view->m_drawFromEventIndex ) * view->m_pStyle->pFontsTicks->tickWidth;
 				}
 			}
 			lastx = std::min( lastx, int(rect.right) - 1 );
@@ -291,22 +291,22 @@ void TracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rec
 				
 				int x = lastx, y = lasty;
 				if ( view->doUnwrapTime() ) {
-					ticks -= view->drawFromEventIndex;
+					ticks -= view->m_drawFromEventIndex;
 				}
 				it ++;
 				if ( view->doUnwrapTime() && it != values.end() ) {
-					while ( times_it != view->unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
+					while ( times_it != view->m_unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
 						ticks += (*times_it)->eventCount;
 						times_it ++;
 					}
 				}
 
-				while ( it != values.end() && ( (!view->doUnwrapTime() && (*it)->modeltime->time <= view->drawToX.time) || (view->doUnwrapTime() && ((*it)->modeltime->time < view->drawToX.time || ((*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex <= view->drawToEventCount) )) ) ) {
+				while ( it != values.end() && ( (!view->doUnwrapTime() && (*it)->modeltime->time <= view->m_drawToX.time) || (view->doUnwrapTime() && ((*it)->modeltime->time < view->m_drawToX.time || ((*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex <= view->m_drawToEventCount) )) ) ) {
 					y = roundDouble( (double)rect.bottom - double(ky) * ( (*it)->value - minValue ) );
 					y = std::min( y, int(rect.bottom) - 1 );
-					x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * double(view->timeScale) ) - view->chartShift;
+					x = rect.left + roundDouble( ( (*it)->modeltime->time - view->m_drawFromX.time ) * double(view->m_timeScale) ) - view->m_chartShift;
 					if ( view->doUnwrapTime() ) {
-						x += ( ticks + (*it)->eventIndex ) * view->style->fonts_ticks->tickWidth;
+						x += ( ticks + (*it)->eventIndex ) * view->m_pStyle->pFontsTicks->tickWidth;
 					}
 					x = std::min( x, int(rect.right) - 1 );
 					if ( draw_marker )
@@ -317,7 +317,7 @@ void TracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rec
 					lasty = y;
 					it ++;
 					if ( view->doUnwrapTime() && it != values.end() ) {
-						while ( times_it != view->unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
+						while ( times_it != view->m_unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
 							ticks += (*times_it)->eventCount;
 							times_it ++;
 						}
@@ -328,15 +328,15 @@ void TracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rec
 				rbool need_continue = !view->doUnwrapTime() ? ( values.size() > 1 ) : true;
 				if ( tempres_erased ) {
 					if ( !view->doUnwrapTime() ) {
-						need_continue = ( it != values.end() && (*it)->modeltime->time > view->drawToX.time );
+						need_continue = ( it != values.end() && (*it)->modeltime->time > view->m_drawToX.time );
 					} else {
-						need_continue = ( it != values.end() && ( (*it)->modeltime->time > view->drawToX.time || ( (*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex > view->drawToEventCount ) ) );
+						need_continue = ( it != values.end() && ( (*it)->modeltime->time > view->m_drawToX.time || ( (*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex > view->m_drawToEventCount ) ) );
 					}
 				}
 
 				if ( need_continue ) {
-					if ( view->drawFromX == view->drawToX ) {
-						x = rect.left + ( view->drawToEventCount - view->drawFromEventIndex ) * view->style->fonts_ticks->tickWidth;
+					if ( view->m_drawFromX == view->m_drawToX ) {
+						x = rect.left + ( view->m_drawToEventCount - view->m_drawFromEventIndex ) * view->m_pStyle->pFontsTicks->tickWidth;
 						x = std::min( x, int(rect.right) - 1 );
 					} else {
 						x = rect.right - 1;

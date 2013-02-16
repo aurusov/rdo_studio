@@ -40,7 +40,7 @@ protected:
 	int       m_AxisSerie;
 
 private:
-	RDOStudioChartOptions* sheet;
+	RDOStudioChartOptions* m_pSheet;
 
 	rbool checkValues() const;
 
@@ -80,9 +80,9 @@ protected:
 	int        m_sizeMarker;
 
 private:
-	RDOStudioChartOptions* sheet;
-	ChartSerie*            serie;
-	RDOColorComboBox       ColorCB;
+	RDOStudioChartOptions* m_pSheet;
+	ChartSerie*            m_pSerie;
+	RDOColorComboBox       m_colorCB;
 
 	rbool checkValues() const;
 

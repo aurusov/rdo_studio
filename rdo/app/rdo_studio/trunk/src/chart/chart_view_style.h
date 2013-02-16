@@ -85,8 +85,8 @@ public:
 	{
 		return static_cast<RDOStudioChartViewTheme*>(theme);
 	}
-	
-	RDOStudioChartViewFontsTicks* fonts_ticks;
+
+	RDOStudioChartViewFontsTicks* pFontsTicks;
 
 protected:
 	virtual void initTheme();

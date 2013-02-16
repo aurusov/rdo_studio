@@ -35,7 +35,7 @@ friend class TracerSerie;
 friend class RDOStudioChartDoc;
 
 public:
-	RDOStudioChartDoc* GetDocument();
+	RDOStudioChartDoc* getDocument();
 	void attachToDoc();
 
 	QWidget* getQtParent();
@@ -46,95 +46,96 @@ public:
 	void setPreviwMode(rbool value);
 
 protected:
-	CMutex mutex;
+	CMutex m_mutex;
 
-	COleDropTarget target;
-	TracerSerie* dragedSerie;
+	COleDropTarget m_ddTarget;
+	TracerSerie*   m_pddSerie;
 
-	CRect bmpRect;
-	CRect newClientRect;
+	CRect m_bmpRect;
+	CRect m_newClientRect;
 
-	int valueCountX;
-	std::vector<tstring> captions;
-	int valueCountY;
+	int m_valueCountX;
+	std::vector<tstring> m_captionList;
+	int m_valueCountY;
 
-	rbool timeWrap;
+	rbool m_timeWrapFlag;
 	rbool canUnwrapTime() const
 	{
-		return scale_koeff >= 1 && !zoomAuto;
+		return m_scaleKoeff >= 1 && !m_zoomAutoFlag;
 	}
 
 	rbool doUnwrapTime() const
 	{
-		return canUnwrapTime() && !timeWrap;
+		return canUnwrapTime() && !m_timeWrapFlag;
 	}
 
-
-	CRect chartRect;
+	CRect m_chartRect;
 	void recalcLayout();
 
-	int xMax;
-	int xPos;
+	int m_xMax;
+	int m_xPos;
 	rbool minXVisible() const
 	{
-		return xPos == 0;
+		return m_xPos == 0;
 	}
 
 	rbool maxXVisible() const
 	{
-		return xPos == xMax;
+		return m_xPos == m_xMax;
 	}
 
 	void setScrollPos(UINT nSBCode, UINT nPos, const rbool need_update = true);
 	void updateScrollBars(const rbool need_update = true);
 
-	long double timeScale;
-	TracerTimeNow drawFromX;
-	int drawFromEventIndex;
-	TracerTimeNow drawToX;
-	int drawToEventCount;
-	int chartShift;
+	long double   m_timeScale;
+	TracerTimeNow m_drawFromX;
+	int           m_drawFromEventIndex;
+	TracerTimeNow m_drawToX;
+	int           m_drawToEventCount;
+	int           m_chartShift;
+	TimesList     m_unwrapTimesList;
+
 	rbool setTo(const int from_max_pos);
-	void setFromTo();
-	timesList unwrapTimesList;
+	void  setFromTo();
 
 	void drawTitle(CRect& chartRect);
-	CRect legendRect;
+
+	CRect m_legendRect;
 	void drawLegend(CRect& chartRect);
 	void drawYAxis(CRect& chartRect, const ChartSerie* axisValues);
 	void drawXAxis(CRect& chartRect);
 	void drawGrid(CRect& chartRect);
 
-	CMenu popupMenu;
+	CMenu m_popupMenu;
 	void copyToClipboard();
 
-	double zoom;
-	double old_zoom;
-	double auto_zoom;
-	double scale_koeff;
+	double m_zoom;
+	double m_zoomOld;
+	double m_zoomAuto;
+	double m_scaleKoeff;
+	rbool  m_zoomAutoFlag;
 	void setZoom(double new_zoom, const rbool force_update = false);
-	rbool zoomAuto;
 
-	rbool previewMode;
-	RDOStudioChartViewStyle* style;
+	rbool                    m_previewMode;
+	RDOStudioChartViewStyle* m_pStyle;
 
-	ChartSerie* yAxis;
-	rbool needDrawLegend;
+	ChartSerie* m_pYAxis;
+	rbool       m_needDrawLegend;
 
 	void updateWindow();
 	void updateView();
 
-	HBITMAP hbmp;
-	HBITMAP hbmpInit;
-	HFONT   hfontTitle;
-	HFONT   hfontLegend;
-	HFONT   hfontAxis;
-	HFONT   hfontInit;
-	HDC     hdc;
-	int     saved_hdc;
-	HDC     hmemdc;
-	int     saved_hmemdc;
-	HWND    hwnd;
+	HBITMAP m_hbmp;
+	HBITMAP m_hbmpInit;
+	HFONT   m_hfontTitle;
+	HFONT   m_hfontLegend;
+	HFONT   m_hfontAxis;
+	HFONT   m_hfontInit;
+	HDC     m_hdc;
+	int     m_savedHdc;
+	HDC     m_hmemdc;
+	int     m_savedHmemdc;
+	HWND    m_hwnd;
 	void setFonts(const rbool needRedraw = true);
 
 	QWidget* m_pParent;

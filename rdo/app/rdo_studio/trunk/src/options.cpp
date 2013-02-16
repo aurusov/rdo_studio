@@ -677,9 +677,9 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 
 	int vertBorder = sheet->style_trace.borders->vertBorder;
 	int horzBorder = sheet->style_trace.borders->horzBorder;
-	int title_font_size = sheet->style_chart.fonts_ticks->titleFontSize;
-	int legent_font_size = sheet->style_chart.fonts_ticks->legendFontSize;
-	int tick_width = sheet->style_chart.fonts_ticks->tickWidth;
+	int title_font_size = sheet->style_chart.pFontsTicks->titleFontSize;
+	int legent_font_size = sheet->style_chart.pFontsTicks->legendFontSize;
+	int tick_width = sheet->style_chart.pFontsTicks->tickWidth;
 	m_vertBorder.SetWindowText(rdo::format("%d", vertBorder).c_str());
 	m_horzBorder.SetWindowText(rdo::format("%d", horzBorder).c_str());
 	m_vertBorder.SetLimitText(2);
@@ -1564,24 +1564,24 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 	m_horzBorder.GetWindowText(str);
 	sheet->style_trace.borders->horzBorder = atoi(str);
 	m_tickWidth.GetWindowText(str);
-	sheet->style_chart.fonts_ticks->tickWidth = atoi(str);
-	if (sheet->style_chart.fonts_ticks->tickWidth < 2)
+	sheet->style_chart.pFontsTicks->tickWidth = atoi(str);
+	if (sheet->style_chart.pFontsTicks->tickWidth < 2)
 	{
-		sheet->style_chart.fonts_ticks->tickWidth = 2;
-		m_tickWidth.SetWindowText(rdo::format("%d", sheet->style_chart.fonts_ticks->tickWidth).c_str());
+		sheet->style_chart.pFontsTicks->tickWidth = 2;
+		m_tickWidth.SetWindowText(rdo::format("%d", sheet->style_chart.pFontsTicks->tickWidth).c_str());
 	}
 
 	int index = m_leg_fontSizeCombo.GetCurSel();
 	if (index != CB_ERR)
 	{
 		m_leg_fontSizeCombo.GetLBText(index, str);
-		sheet->style_chart.fonts_ticks->legendFontSize = atoi(str);
+		sheet->style_chart.pFontsTicks->legendFontSize = atoi(str);
 	}
 	index = m_title_fontSizeCombo.GetCurSel();
 	if (index != CB_ERR)
 	{
 		m_title_fontSizeCombo.GetLBText(index, str);
-		sheet->style_chart.fonts_ticks->titleFontSize = atoi(str);
+		sheet->style_chart.pFontsTicks->titleFontSize = atoi(str);
 	}
 
 	sheet->updateStyles();
@@ -1608,7 +1608,7 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 	            *sheet->style_results.window    != *studioApp.getStyle()->style_results.window ||
 	            *sheet->style_find.window       != *studioApp.getStyle()->style_find.window ||
 	            *sheet->style_trace.borders     != *studioApp.getStyle()->style_trace.borders || 
-	            *sheet->style_chart.fonts_ticks != *studioApp.getStyle()->style_chart.fonts_ticks);
+	            *sheet->style_chart.pFontsTicks != *studioApp.getStyle()->style_chart.pFontsTicks);
 }
 
 void RDOStudioOptionsColorsStyles::loadFontsIntoCombo(rbool fixed)

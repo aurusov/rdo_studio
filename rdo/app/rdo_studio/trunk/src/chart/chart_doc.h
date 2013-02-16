@@ -29,7 +29,7 @@ class TracerValue;
 class ChartSerie;
 class RDOStudioChartViewStyle;
 
-typedef std::list<TracerTimeNow*> timesList;
+typedef std::list<TracerTimeNow*> TimesList;
 
 class RDOStudioChartDoc
 {
@@ -59,45 +59,42 @@ public:
 
 	void lock()
 	{
-		mutex.Lock();
+		m_mutex.Lock();
 	}
 
 	void unlock()
 	{
-		mutex.Unlock();
+		m_mutex.Unlock();
 	}
 
 	void incTimeEventsCount(TracerTimeNow* time);
 	rbool newValueToSerieAdded(TracerValue* val);
 
 private:
-	CMutex mutex;
+	CMutex m_mutex;
 
-	std::vector<ChartSerie*> series;
+	std::vector<ChartSerie*> m_serieList;
 	int getSerieIndex(ChartSerie* serie) const;
 	COLORREF selectColor();
 	TracerSerieMarker selectMarker();
 
-	timesList docTimes;
-	timesList::iterator inserted_it;
-	double minTimeOffset;
-	int ticksCount;
-
-	rbool previewMode;
+	TimesList           m_docTimes;
+	TimesList::iterator m_insertedIt;
+	double              m_minTimeOffset;
+	int                 m_ticksCount;
+	rbool               m_previewMode;
 
 	int getMaxMarkerSize() const;
 
-	std::vector<HWND> views_hwnd;
+	std::vector<HWND> m_viewHwndList;
 	void removeFromViews(const HWND handle);
 	void addToViews(const HWND handle);
 
 	void updateChartViews(const UINT update_type) const;
 
-	tstring title;
-
+	tstring                          m_title;
 	std::vector<RDOStudioChartView*> m_viewList;
-
-	static ruint s_titleIndex;
+	static ruint                     s_titleIndex;
 };
 
 #endif // _RDO_STUDIO_CHART_DOC_H_

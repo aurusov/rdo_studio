@@ -181,10 +181,10 @@ RDOStudioChartViewStyle::RDOStudioChartViewStyle()
 
 RDOStudioChartViewStyle::~RDOStudioChartViewStyle()
 {
-	if (fonts_ticks)
+	if (pFontsTicks)
 	{
-		delete fonts_ticks;
-		fonts_ticks = NULL;
+		delete pFontsTicks;
+		pFontsTicks = NULL;
 	}
 }
 
@@ -195,7 +195,7 @@ void RDOStudioChartViewStyle::initTheme()
 
 void RDOStudioChartViewStyle::initFontsTicks()
 {
-	fonts_ticks = new RDOStudioChartViewFontsTicks;
+	pFontsTicks = new RDOStudioChartViewFontsTicks;
 }
 
 RDOStudioChartViewStyle& RDOStudioChartViewStyle::operator =(const RDOStudioChartViewStyle& style)
@@ -205,9 +205,9 @@ RDOStudioChartViewStyle& RDOStudioChartViewStyle::operator =(const RDOStudioChar
 	{
 		*static_cast<RDOStudioChartViewTheme*>(theme) = *static_cast<RDOStudioChartViewTheme*>(style.theme);
 	}
-	if (fonts_ticks && style.fonts_ticks)
+	if (pFontsTicks && style.pFontsTicks)
 	{
-		*fonts_ticks = *style.fonts_ticks;
+		*pFontsTicks = *style.pFontsTicks;
 	}
 	return *this;
 }
@@ -219,9 +219,9 @@ rbool RDOStudioChartViewStyle::operator ==(const RDOStudioChartViewStyle& style)
 	{
 		flag &= *static_cast<RDOStudioChartViewTheme*>(theme) == *static_cast<RDOStudioChartViewTheme*>(style.theme);
 	}
-	if (fonts_ticks && style.fonts_ticks && flag)
+	if (pFontsTicks && style.pFontsTicks && flag)
 	{
-		flag &= *fonts_ticks == *style.fonts_ticks;
+		flag &= *pFontsTicks == *style.pFontsTicks;
 	}
 	return flag;
 }
@@ -242,8 +242,8 @@ rbool RDOStudioChartViewStyle::load()
 {
 	if (RDOStyleWithTheme::load())
 	{
-		if (fonts_ticks)
-			fonts_ticks->load(groupName);
+		if (pFontsTicks)
+			pFontsTicks->load(groupName);
 		return true;
 	}
 	return false;
@@ -253,8 +253,8 @@ rbool RDOStudioChartViewStyle::save() const
 {
 	if (RDOStyleWithTheme::save())
 	{
-		if (fonts_ticks)
-			fonts_ticks->save(groupName);
+		if (pFontsTicks)
+			pFontsTicks->save(groupName);
 		return true;
 	}
 	return false;

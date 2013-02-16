@@ -140,7 +140,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	vertIndentLineEdit->setText(QString::number(style_trace.borders->vertBorder));
 
 	tickWidthLineEdit->setValidator(new QIntValidator(1, 100, this));
-	tickWidthLineEdit->setText(QString::number(style_chart.fonts_ticks->tickWidth));
+	tickWidthLineEdit->setText(QString::number(style_chart.pFontsTicks->tickWidth));
 
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
@@ -680,20 +680,20 @@ void ViewPreferences::onBgColorSelected(const QColor& color)
 void ViewPreferences::onTitleSize(int index)
 {
 	UNUSED(index);
-	style_chart.fonts_ticks->titleFontSize = titleComboBox->currentText().toInt();
+	style_chart.pFontsTicks->titleFontSize = titleComboBox->currentText().toInt();
 	updatePreview();
 }
 
 void ViewPreferences::onLegendSize(int index)
 {
 	UNUSED(index);
-	style_chart.fonts_ticks->legendFontSize = legendComboBox->currentText().toInt();
+	style_chart.pFontsTicks->legendFontSize = legendComboBox->currentText().toInt();
 	updatePreview();
 }
 
 void ViewPreferences::onTickWidth(const QString& text)
 {
-	style_chart.fonts_ticks->tickWidth = text.toInt();
+	style_chart.pFontsTicks->tickWidth = text.toInt();
 	updatePreview();
 }
 
@@ -823,9 +823,9 @@ void ViewPreferences::updateStyleTab()
 		horzScrollFindCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
 		break;
 	case IT_CHART:
-		titleComboBox->setCurrentIndex(titleComboBox->findText(QString::number(style_chart.fonts_ticks->titleFontSize)));
-		legendComboBox->setCurrentIndex(legendComboBox->findText(QString::number(style_chart.fonts_ticks->legendFontSize)));
-		tickWidthLineEdit->setText(QString::number(style_chart.fonts_ticks->tickWidth));
+		titleComboBox->setCurrentIndex(titleComboBox->findText(QString::number(style_chart.pFontsTicks->titleFontSize)));
+		legendComboBox->setCurrentIndex(legendComboBox->findText(QString::number(style_chart.pFontsTicks->legendFontSize)));
+		tickWidthLineEdit->setText(QString::number(style_chart.pFontsTicks->tickWidth));
 		break;
 	case IT_FRAME:
 		switch(prop->identificator)
