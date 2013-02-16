@@ -64,6 +64,11 @@ BEGIN_MESSAGE_MAP(RDOStudioChartView, CWnd)
 	ON_MESSAGE(WM_USER_UPDATE_CHART_VIEW, OnUserUpdateChartView)
 END_MESSAGE_MAP()
 
+static COLORREF convertColor(CREF(QColor) color)
+{
+	return RGB(color.red(), color.green(), color.blue());
+}
+
 RDOStudioChartView::RDOStudioChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview)
 	: CWnd()
 	, m_pDocument(pDocument)
@@ -456,7 +461,7 @@ void RDOStudioChartView::drawTitle( CRect& chartRect )
 	tmprect.bottom = chartRect.top;
 	
 	::SelectObject( hmemdc, hfontTitle );
-	::SetTextColor( hmemdc, RGB(style->getTheme()->titleFGColor.red(), style->getTheme()->titleFGColor.green(), style->getTheme()->titleFGColor.blue()) );
+	::SetTextColor( hmemdc, convertColor(style->getTheme()->titleFGColor));
 	
 	tstring str = GetDocument()->getTitle();
 	::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_CENTER | DT_WORDBREAK );
@@ -470,7 +475,7 @@ void RDOStudioChartView::drawLegend( CRect& legendRect )
 	SIZE size;
 	::SelectObject( hmemdc, hfontLegend );
 	for ( std::vector< ChartSerie* >::iterator it = doc->series.begin(); it != doc->series.end(); it++ ) {
-		(*it)->drawInLegend( hmemdc, tmprect, RGB(style->getTheme()->legendFgColor.red(), style->getTheme()->legendFgColor.green(), style->getTheme()->legendFgColor.blue()), size );
+		(*it)->drawInLegend( hmemdc, tmprect, convertColor(style->getTheme()->legendFgColor), size );
 		tmprect.top += size.cy;
 	}
 }
@@ -487,7 +492,7 @@ void RDOStudioChartView::drawYAxis( CRect& chartRect, const ChartSerie* axisValu
 		if ( count ) {
 			
 			::SelectObject( hmemdc, hfontAxis );
-			::SetTextColor( hmemdc, RGB(style->getTheme()->axisFgColor.red(), style->getTheme()->axisFgColor.green(), style->getTheme()->axisFgColor.blue()) );
+			::SetTextColor( hmemdc, convertColor(style->getTheme()->axisFgColor) );
 			
 			int count = captions.size();
 			int heightoffset = roundDouble( (double)chartRect.Height() / (double)( count - 1 ) );
@@ -523,7 +528,7 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 		tstring formatstr = "%.3f";
 		
 		::SelectObject( hmemdc, hfontAxis );
-		::SetTextColor( hmemdc, RGB(style->getTheme()->axisFgColor.red(), style->getTheme()->axisFgColor.green(), style->getTheme()->axisFgColor.blue()) );
+		::SetTextColor( hmemdc, convertColor(style->getTheme()->axisFgColor) );
 		
 		if( !doUnwrapTime() ) {
 			double valoffset = 0;
@@ -591,7 +596,7 @@ void RDOStudioChartView::drawGrid( CRect& chartRect )
 	HBRUSH brush_chart = NULL;
 	HBRUSH old_brush = NULL;
 	try {
-		brush_chart = ::CreateSolidBrush( RGB(style->getTheme()->chartBgColor.red(), style->getTheme()->chartBgColor.green(), style->getTheme()->chartBgColor.blue()) );
+		brush_chart = ::CreateSolidBrush( convertColor(style->getTheme()->chartBgColor) );
 		old_brush = (HBRUSH)::SelectObject( hmemdc, brush_chart );
 		::Rectangle( hmemdc, chartRect.left, chartRect.top, chartRect.right, chartRect.bottom );
 		::SelectObject( hmemdc, old_brush );
@@ -619,7 +624,7 @@ void RDOStudioChartView::drawGrid( CRect& chartRect )
 			it ++;
 		}
 		//For drawing solid rect
-		::SetBkColor( hmemdc, RGB(style->getTheme()->timeBgColor.red(), style->getTheme()->timeBgColor.green(), style->getTheme()->timeBgColor.blue()) );
+		::SetBkColor( hmemdc, convertColor(style->getTheme()->timeBgColor) );
 		for( ; it != unwrapTimesList.end(); it++ ) {
 			int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
 			tmprect.left = rect.left + (LONG)(( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift);
@@ -710,7 +715,7 @@ void RDOStudioChartView::onDraw()
 	rect.CopyRect( &newClientRect );
 
 	//MFC's FillSolidRect do the same thing
-	::SetBkColor( hmemdc, RGB(style->theme->backgroundColor.red(), style->theme->backgroundColor.green(), style->theme->backgroundColor.blue()));
+	::SetBkColor( hmemdc, convertColor(style->theme->backgroundColor));
 	::ExtTextOut( hmemdc, 0, 0, ETO_OPAQUE, newClientRect, NULL, 0, NULL );
 
 	drawTitle( chartRect );
@@ -723,7 +728,7 @@ void RDOStudioChartView::onDraw()
 		HPEN pen_chart = NULL;
 		HPEN old_pen   = NULL;
 		try {
-			pen_chart = ::CreatePen( PS_SOLID, 0, RGB(style->getTheme()->defaultColor.red(), style->getTheme()->defaultColor.green(), style->getTheme()->defaultColor.blue()));
+			pen_chart = ::CreatePen( PS_SOLID, 0, convertColor(style->getTheme()->defaultColor));
 			old_pen   = (HPEN)::SelectObject( hmemdc, pen_chart );
 			
 			drawYAxis( chartRect, yAxis );

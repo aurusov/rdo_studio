@@ -27,14 +27,14 @@ using namespace rdoStyle;
 // --------------------------------------------------------------------------------
 RDOStudioChartViewTheme::RDOStudioChartViewTheme(): RDOStyleTheme()
 {
-	defaultColor    = RGB( 0x80, 0x80, 0x80 );
-	backgroundColor = RGB( 0xFF, 0xFF, 0xFF );
+	defaultColor    = QColor( 0x80, 0x80, 0x80 );
+	backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
 
-	axisFgColor   = RGB( 0x00, 0x00, 0x80 );
-	titleFGColor  = RGB( 0x80, 0x00, 0x00 );
-	legendFgColor = RGB( 0x58, 0x46, 0x3A );
-	chartBgColor  = RGB( 0xF3, 0xFC, 0xFC );
-	timeBgColor   = RGB( 0xBA, 0xEB, 0xEB );
+	axisFgColor   = QColor( 0x00, 0x00, 0x80 );
+	titleFGColor  = QColor( 0x80, 0x00, 0x00 );
+	legendFgColor = QColor( 0x58, 0x46, 0x3A );
+	chartBgColor  = QColor( 0xF3, 0xFC, 0xFC );
+	timeBgColor   = QColor( 0xBA, 0xEB, 0xEB );
 
 	titleStyle  = RDOStyleFont::BOLD;
 	legendStyle = RDOStyleFont::NONE;
