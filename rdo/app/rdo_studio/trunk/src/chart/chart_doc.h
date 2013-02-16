@@ -45,8 +45,9 @@ public:
 	void attachView(RDOStudioChartView* pView);
 	RDOStudioChartView* getFirstView();
 
-	tstring getTitle() const;void setTitle (CREF(tstring) title);
-	void autoTitle();
+	tstring getTitle () const;
+	void    setTitle (CREF(tstring) title);
+	void    autoTitle();
 	static void resetTitleIndex();
 
 	void setStyle(RDOStudioChartViewStyle* pStyle);
