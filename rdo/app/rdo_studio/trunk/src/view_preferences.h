@@ -91,6 +91,7 @@ private slots:
 	void onTitleSize(int index);
 	void onLegendSize(int index);
 	void onTickWidth(const QString& text);
+
 private:
 	enum ItemType
 	{
@@ -365,6 +366,7 @@ private:
 	PTR(QTreeWidgetItem) createTreeItem (PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType);
 	
 	void apply();
+	void checkAllData();
 };
 
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

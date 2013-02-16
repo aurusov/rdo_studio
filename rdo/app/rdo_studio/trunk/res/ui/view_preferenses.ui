@@ -44,7 +44,7 @@
    <item row="1" column="1">
     <widget class="QPushButton" name="buttonOk">
      <property name="text">
-      <string>Ок</string>
+      <string>ОК</string>
      </property>
     </widget>
    </item>
@@ -497,7 +497,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>6</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="pageRoot">
           <layout class="QGridLayout" name="gridLayout_7">
