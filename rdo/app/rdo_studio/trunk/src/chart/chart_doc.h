@@ -29,7 +29,7 @@ class TracerValue;
 class ChartSerie;
 class RDOStudioChartViewStyle;
 
-typedef std::list< TracerTimeNow* > timesList;
+typedef std::list<TracerTimeNow*> timesList;
 
 class RDOStudioChartDoc
 {
@@ -39,35 +39,42 @@ friend class RDOStudioChartOptionsChart;
 friend class RDOStudioChartOptionsSeries;
 
 public:
-	RDOStudioChartDoc( const rbool preview = false );
+	RDOStudioChartDoc(const rbool preview = false);
 	virtual ~RDOStudioChartDoc();
 
 	void attachView(RDOStudioChartView* pView);
 	RDOStudioChartView* getFirstView();
 
-	tstring     getTitle () const;
-	void        setTitle (CREF(tstring) title);
-	void        autoTitle();
+	tstring getTitle() const;void setTitle (CREF(tstring) title);
+	void autoTitle();
 	static void resetTitleIndex();
 
 	void setStyle(RDOStudioChartViewStyle* pStyle);
 
 	void updateAllViews();
 
-	void addSerie( TracerSerie* const serie );
+	void addSerie(TracerSerie* const serie);
 	//void removeSerie( TracerSerie* const serie );
-	rbool serieExists( const TracerSerie* serie ) const;
+	rbool serieExists(const TracerSerie* serie) const;
 
-	void lock() { mutex.Lock(); };
-	void unlock() { mutex.Unlock(); };
-	void incTimeEventsCount( TracerTimeNow* time );
-	rbool newValueToSerieAdded( TracerValue* val );
+	void lock()
+	{
+		mutex.Lock();
+	}
+
+	void unlock()
+	{
+		mutex.Unlock();
+	}
+
+	void incTimeEventsCount(TracerTimeNow* time);
+	rbool newValueToSerieAdded(TracerValue* val);
 
 private:
 	CMutex mutex;
 
-	std::vector< ChartSerie* > series;
-	int getSerieIndex( ChartSerie* serie ) const;
+	std::vector<ChartSerie*> series;
+	int getSerieIndex(ChartSerie* serie) const;
 	COLORREF selectColor();
 	TracerSerieMarker selectMarker();
 
@@ -80,11 +87,11 @@ private:
 
 	int getMaxMarkerSize() const;
 
-	std::vector< HWND > views_hwnd;
-	void removeFromViews( const HWND handle );
-	void addToViews( const HWND handle );
+	std::vector<HWND> views_hwnd;
+	void removeFromViews(const HWND handle);
+	void addToViews(const HWND handle);
 
-	void updateChartViews( const UINT update_type ) const;
+	void updateChartViews(const UINT update_type) const;
 
 	tstring title;
 

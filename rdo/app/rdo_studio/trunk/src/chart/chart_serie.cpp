@@ -130,12 +130,12 @@ void ChartSerie::drawInLegend(HDC &dc, CRect &rect, const COLORREF text_color, S
 	getLegendExtent(dc, rect, size);
 	if (!m_options.showInLegend)
 		return;
-	
+
 	::SetTextColor(dc, text_color);
 
 	HPEN pen     = NULL;
 	HPEN old_pen = NULL;
-	
+
 	HBRUSH brush_marker = NULL;
 	HBRUSH old_brush    = NULL;
 	LOGBRUSH log_brush;
@@ -145,16 +145,16 @@ void ChartSerie::drawInLegend(HDC &dc, CRect &rect, const COLORREF text_color, S
 	{
 		pen     = ::CreatePen(PS_SOLID, 0, m_options.color);
 		old_pen = (HPEN)::SelectObject(dc, pen);
-		
+
 		brush_marker = ::CreateBrushIndirect(&log_brush);
 		old_brush    = (HBRUSH)::SelectObject(dc, brush_marker);
-		
+
 		int middle = rect.top + (size.cy - 2) / 2;
 		if (m_options.markerNeedDraw)
 		{
 			m_pSerie->drawMarker(dc, rect.left + 5 + m_options.markerSize, middle, m_options.markerType, m_options.markerSize);
 		}
-		
+
 		::MoveToEx(dc, rect.left, middle, (LPPOINT)NULL);
 		::LineTo(dc, rect.left + 10 + m_options.markerSize * 2, middle);
 
@@ -172,7 +172,7 @@ void ChartSerie::drawInLegend(HDC &dc, CRect &rect, const COLORREF text_color, S
 		::DeleteObject(brush_marker);
 		brush_marker = NULL;
 	}
-	catch(...)
+	catch (...)
 	{
 		if (pen)
 		{

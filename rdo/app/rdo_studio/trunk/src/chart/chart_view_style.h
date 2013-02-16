@@ -18,18 +18,18 @@
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartViewTheme
 // --------------------------------------------------------------------------------
-class RDOStudioChartViewTheme : public rdoStyle::RDOStyleTheme
+class RDOStudioChartViewTheme: public rdoStyle::RDOStyleTheme
 {
 public:
 	RDOStudioChartViewTheme();
 	virtual ~RDOStudioChartViewTheme();
 
-	RDOStudioChartViewTheme& operator =( const RDOStudioChartViewTheme& theme );
-	rbool operator ==( const RDOStudioChartViewTheme& theme ) const;
-	rbool operator !=( const RDOStudioChartViewTheme& theme ) const;
+	RDOStudioChartViewTheme& operator =(const RDOStudioChartViewTheme& theme);
+	rbool operator ==(const RDOStudioChartViewTheme& theme) const;
+	rbool operator !=(const RDOStudioChartViewTheme& theme) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(CREF(QString) groupName);
+	virtual void save(CREF(QString) groupName) const;
 
 	QColor axisFgColor;
 	QColor titleFGColor;
@@ -52,12 +52,12 @@ public:
 	RDOStudioChartViewFontsTicks();
 	virtual ~RDOStudioChartViewFontsTicks();
 
-	RDOStudioChartViewFontsTicks& operator =( const RDOStudioChartViewFontsTicks& fonts_ticks );
-	rbool operator ==( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
-	rbool operator !=( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
+	RDOStudioChartViewFontsTicks& operator =(const RDOStudioChartViewFontsTicks& fonts_ticks);
+	rbool operator ==(const RDOStudioChartViewFontsTicks& fonts_ticks) const;
+	rbool operator !=(const RDOStudioChartViewFontsTicks& fonts_ticks) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(CREF(QString) groupName);
+	virtual void save(CREF(QString) groupName) const;
 
 	int titleFontSize;
 	int legendFontSize;
@@ -77,16 +77,19 @@ public:
 	RDOStudioChartViewStyle();
 	virtual ~RDOStudioChartViewStyle();
 
-	RDOStudioChartViewStyle& operator =( const RDOStudioChartViewStyle& style );
-	rbool operator ==( const RDOStudioChartViewStyle& style ) const;
-	rbool operator !=( const RDOStudioChartViewStyle& style ) const;
+	RDOStudioChartViewStyle& operator =(const RDOStudioChartViewStyle& style);
+	rbool operator ==(const RDOStudioChartViewStyle& style) const;
+	rbool operator !=(const RDOStudioChartViewStyle& style) const;
 
-	virtual void  init( CREF(QString) _groupName = "" );
+	virtual void  init(CREF(QString) _groupName = "");
 	virtual rbool load();
 	virtual rbool save() const;
-	
-	RDOStudioChartViewTheme* getTheme() { return static_cast<RDOStudioChartViewTheme*>(theme); }
 
+	RDOStudioChartViewTheme* getTheme()
+	{
+		return static_cast<RDOStudioChartViewTheme*>(theme);
+	}
+	
 	RDOStudioChartViewFontsTicks* fonts_ticks;
 };
 

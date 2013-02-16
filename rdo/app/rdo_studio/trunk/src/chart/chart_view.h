@@ -26,7 +26,7 @@ class RDOStudioChartViewStyle;
 class TracerSerie;
 class ChartSerie;
 
-class RDOStudioChartView : public CWnd
+class RDOStudioChartView: public CWnd
 {
 friend class TracerSerieFindValue;
 friend class RDOStudioChartOptionsChart;
@@ -46,20 +46,36 @@ protected:
 	int valueCountX;
 	std::vector<tstring> captions;
 	int valueCountY;
-	
+
 	rbool timeWrap;
-	rbool canUnwrapTime() const { return scale_koeff >= 1 && !zoomAuto; };
-	rbool doUnwrapTime() const { return canUnwrapTime() && !timeWrap; };
+	rbool canUnwrapTime() const
+	{
+		return scale_koeff >= 1 && !zoomAuto;
+	}
+	;
+	rbool doUnwrapTime() const
+	{
+		return canUnwrapTime() && !timeWrap;
+	}
+	;
 
 	CRect chartRect;
 	void recalcLayout();
 
 	int xMax;
 	int xPos;
-	rbool minXVisible() const { return xPos == 0; };
-	rbool maxXVisible() const { return xPos == xMax; };
-	void  setScrollPos( UINT nSBCode, UINT nPos, const rbool need_update = true );
-	void  updateScrollBars( const rbool need_update = true );
+	rbool minXVisible() const
+	{
+		return xPos == 0;
+	}
+	;
+	rbool maxXVisible() const
+	{
+		return xPos == xMax;
+	}
+	;
+	void setScrollPos(UINT nSBCode, UINT nPos, const rbool need_update = true);
+	void updateScrollBars(const rbool need_update = true);
 
 	long double timeScale;
 	TracerTimeNow drawFromX;
@@ -67,16 +83,16 @@ protected:
 	TracerTimeNow drawToX;
 	int drawToEventCount;
 	int chartShift;
-	rbool setTo( const int from_max_pos );
+	rbool setTo(const int from_max_pos);
 	void setFromTo();
 	timesList unwrapTimesList;
-	
-	void drawTitle( CRect& chartRect );
+
+	void drawTitle(CRect& chartRect);
 	CRect legendRect;
-	void drawLegend( CRect& chartRect );
-	void drawYAxis( CRect& chartRect, const ChartSerie* axisValues );
-	void drawXAxis( CRect& chartRect );
-	void drawGrid( CRect& chartRect );
+	void drawLegend(CRect& chartRect);
+	void drawYAxis(CRect& chartRect, const ChartSerie* axisValues);
+	void drawXAxis(CRect& chartRect);
+	void drawGrid(CRect& chartRect);
 
 	CMenu popupMenu;
 	void copyToClipboard();
@@ -85,7 +101,7 @@ protected:
 	double old_zoom;
 	double auto_zoom;
 	double scale_koeff;
-	void  setZoom( double new_zoom, const rbool force_update = false );
+	void setZoom(double new_zoom, const rbool force_update = false);
 	rbool zoomAuto;
 
 	rbool previewMode;
@@ -108,7 +124,7 @@ protected:
 	HDC     hmemdc;
 	int     saved_hmemdc;
 	HWND    hwnd;
-	void setFonts( const rbool needRedraw = true );
+	void setFonts(const rbool needRedraw = true);
 
 	QWidget* m_pParent;
 
@@ -125,7 +141,7 @@ public:
 	QWidget* getQtParent();
 
 	const RDOStudioChartViewStyle& getStyle() const;
-	void setStyle( RDOStudioChartViewStyle* _style, const rbool needRedraw = true );
+	void setStyle(RDOStudioChartViewStyle* _style, const rbool needRedraw = true);
 
 	void setPreviwMode(rbool value);
 
@@ -133,10 +149,10 @@ private:
 	RDOStudioChartDoc* m_pDocument;
 
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual DROPEFFECT OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
+	virtual DROPEFFECT OnDragEnter(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
 	virtual void OnDragLeave();
-	virtual DROPEFFECT OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
-	virtual BOOL OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point );
+	virtual DROPEFFECT OnDragOver(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
+	virtual BOOL OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point);
 
 protected:
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );

@@ -112,10 +112,10 @@ friend class RDOStudioChartOptionsChart;
 friend class RDOStudioChartOptionsSeries;
 
 private:
-	RDOStudioChartOptionsChart*  chart;
+	RDOStudioChartOptionsChart* chart;
 	RDOStudioChartOptionsSeries* series;
-	
-	RDOStudioChartView*          view;
+
+	RDOStudioChartView* view;
 
 	void apply() const;
 	void onHelpButton();

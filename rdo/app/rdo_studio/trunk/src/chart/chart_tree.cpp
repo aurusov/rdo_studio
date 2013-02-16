@@ -273,7 +273,7 @@ void ChartTree::OnAddToNewChart()
 	addToNewChart(getSelected());
 }
 
-void ChartTree::OnUpdateAddToNewChart( CCmdUI* pCmdUI )
+void ChartTree::OnUpdateAddToNewChart(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(g_pTracer->getDrawTrace() && getIfItemIsDrawable(getSelected()));
 }
