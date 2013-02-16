@@ -15,6 +15,7 @@
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_error.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
+#include <boost/foreach.hpp>
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -85,6 +86,21 @@ tstring RDOArrayValue::getAsString() const
 CREF(RDOArrayValue::Container) RDOArrayValue::getContainer() const
 {
 	return m_container;
+}
+
+void RDOArrayValue::serializeInDB(REF(IDB) db) const
+{
+	db.insertRow("array_rv","DEFAULT");
+	int array_id = db.queryExecIndex("array_rv");
+
+	BOOST_FOREACH(LPRDOValue arrayItem, getContainer())
+	{
+		arrayItem->serializeInDB(db);
+		db.insertRow("array_value",QString("%1,DEFAULT,%2")
+			.arg(array_id)
+			.arg(boost::any_cast<int>(db.popContext())));
+	}
+
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

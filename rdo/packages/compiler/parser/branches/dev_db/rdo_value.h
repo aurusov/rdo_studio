@@ -19,6 +19,7 @@
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/type/info.h"
 #include "simulator/runtime/rdo_value.h"
+#include "simulator/runtime/type/type_db_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -27,6 +28,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDOValue
 // --------------------------------------------------------------------------------
 OBJECT(RDOValue) IS INSTANCE_OF(RDOParserSrcInfo)
+	AND INSTANCE_OF(rdo::runtime::ISerializeTypeInDB)
 {
 DECLARE_FACTORY(RDOValue);
 public:
@@ -43,6 +45,12 @@ public:
 
 	static LPRDOValue getIdentificator(CREF(tstring)     identificator);
 	static LPRDOValue getUnknow       (CREF(RDOParserSrcInfo) src_info);
+
+	#define DEFINE_SERIALIZE_RDO_VALUE(Table,Value)      \
+	db.insertRow(Table,QString("DEFAULT,%1").arg(Value));\
+	db.pushContext(db.queryExecIndex(Table));
+
+	virtual void serializeInDB(REF(IDB) db) const;
 
 private:
 	// Неопределенный тип
