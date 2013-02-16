@@ -1241,6 +1241,7 @@ void ViewPreferences::apply()
 	studioApp.getStyle()->style_results = style_results;
 	studioApp.getStyle()->style_find    = style_find;
 	studioApp.getStyle()->style_frame   = style_frame;
+	studioApp.getStyle()->style_chart   = style_chart;
 	studioApp.setFileAssociationSetup(m_setup);
 	studioApp.setFileAssociationCheckInFuture(m_checkInFuture);
 	studioApp.setOpenLastProject(m_openLastProject);
