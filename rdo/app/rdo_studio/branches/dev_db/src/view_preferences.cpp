@@ -140,7 +140,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	vertIndentLineEdit->setText(QString::number(style_trace.borders->vertBorder));
 
 	tickWidthLineEdit->setValidator(new QIntValidator(1, 100, this));
-	tickWidthLineEdit->setText(QString::number(style_chart.fonts_ticks->tickWidth));
+	tickWidthLineEdit->setText(QString::number(style_chart.pFontsTicks->tickWidth));
 
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
@@ -174,6 +174,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(tickWidthLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onTickWidth(const QString&)));
 
 	updateDialog();
+	checkAllData();
 }
 
 void ViewPreferences::onOkButton()
@@ -190,6 +191,7 @@ void ViewPreferences::onCancelButton()
 void ViewPreferences::onApplyButton()
 {
 	apply();
+	buttonApply->setEnabled(false);
 }
 
 void ViewPreferences::onCodeCompUse(int state)
@@ -207,7 +209,7 @@ void ViewPreferences::onCodeCompUse(int state)
 		radioButtonNearestWords->setEnabled(true);
 		break;
 	}
-
+	checkAllData();
 }
 
 void ViewPreferences::onCodeCompShowFullList(bool state)
@@ -218,36 +220,43 @@ void ViewPreferences::onCodeCompShowFullList(bool state)
 		style_editor.autoComplete->showFullList = true;
 	if(radioButtonNearestWords->isChecked())
 		style_editor.autoComplete->showFullList = false;
+	checkAllData();
 }
 
 void ViewPreferences::onMarginFold(int state)
 {
 	style_editor.margin->fold = state;
+	checkAllData();
 }
 
 void ViewPreferences::onMarginBookmark(int state)
 {
 	style_editor.margin->bookmark = state;
+	checkAllData();
 }
 
 void ViewPreferences::onMarginLineNumber(int state)
 {
 	style_editor.margin->lineNumber = state;
+	checkAllData();
 }
 
 void ViewPreferences::onUseTabSymbol(int state)
 {
 	style_editor.tab->backspaceUntabs = state;
+	checkAllData();
 }
 
 void ViewPreferences::onIndentAsTab(int state)
 {
 	style_editor.tab->tabIndents = state;
+	checkAllData();
 }
 
 void ViewPreferences::onAutoIndent(int state)
 {
 	style_editor.tab->autoIndent = state;
+	checkAllData();
 }
 
 void ViewPreferences::onEraseWithTab(bool state)
@@ -258,36 +267,43 @@ void ViewPreferences::onEraseWithTab(bool state)
 		style_editor.tab->useTabs = true;
 	if(eraseWithIndentRadioButton->isChecked())
 		style_editor.tab->useTabs = false;
+	checkAllData();
 }
 
 void ViewPreferences::onTabSize(const QString& text)
 {
 	style_editor.tab->tabSize = text.toInt();
+	checkAllData();
 }
 
 void ViewPreferences::onIndentSize(const QString& text)
 {
 	style_editor.tab->indentSize = text.toInt();
+	checkAllData();
 }
 
 void ViewPreferences::onSetup(int state)
 {
 	m_setup = state;
+	checkAllData();
 }
 
 void ViewPreferences::onCheckInFuture(int state)
 {
 	m_checkInFuture = state;
+	checkAllData();
 }
 
 void ViewPreferences::onOpenLastProject(int state)
 {
 	m_openLastProject = state;
+	checkAllData();
 }
 
 void ViewPreferences::onShowFullName(int state)
 {
 	m_showFullName = state;
+	checkAllData();
 }
 
 void ViewPreferences::onTreeWidgetItemActivated(QTreeWidgetItem* item, int column)
@@ -664,20 +680,20 @@ void ViewPreferences::onBgColorSelected(const QColor& color)
 void ViewPreferences::onTitleSize(int index)
 {
 	UNUSED(index);
-	style_chart.fonts_ticks->titleFontSize = titleComboBox->currentText().toInt();
+	style_chart.pFontsTicks->titleFontSize = titleComboBox->currentText().toInt();
 	updatePreview();
 }
 
 void ViewPreferences::onLegendSize(int index)
 {
 	UNUSED(index);
-	style_chart.fonts_ticks->legendFontSize = legendComboBox->currentText().toInt();
+	style_chart.pFontsTicks->legendFontSize = legendComboBox->currentText().toInt();
 	updatePreview();
 }
 
 void ViewPreferences::onTickWidth(const QString& text)
 {
-	style_chart.fonts_ticks->tickWidth = text.toInt();
+	style_chart.pFontsTicks->tickWidth = text.toInt();
 	updatePreview();
 }
 
@@ -740,7 +756,15 @@ void ViewPreferences::updateDialog()
 void ViewPreferences::updateStyleTab()
 {
 	PTR(StyleProperty) prop = getStyleProperty();
-	fontComboBox->setCurrentFont(QFont(QString::fromStdString(prop->item->font_name)));
+	QString fontName = QString::fromLocal8Bit(prop->item->font_name.c_str());
+	if (!fontName.isEmpty())
+	{
+		fontComboBox->setCurrentFont(QFont(fontName));
+	}
+	else
+	{
+		fontComboBox->setCurrentIndex(-1);
+	}
 	fontSizeComboBox->setCurrentIndex(fontSizeComboBox->findText(QString::number(prop->item->font_size)));
 	
 	if(fgColorComboBox->findData(prop->fg_color) == -1)
@@ -799,9 +823,9 @@ void ViewPreferences::updateStyleTab()
 		horzScrollFindCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
 		break;
 	case IT_CHART:
-		titleComboBox->setCurrentIndex(titleComboBox->findText(QString::number(style_chart.fonts_ticks->titleFontSize)));
-		legendComboBox->setCurrentIndex(legendComboBox->findText(QString::number(style_chart.fonts_ticks->legendFontSize)));
-		tickWidthLineEdit->setText(QString::number(style_chart.fonts_ticks->tickWidth));
+		titleComboBox->setCurrentIndex(titleComboBox->findText(QString::number(style_chart.pFontsTicks->titleFontSize)));
+		legendComboBox->setCurrentIndex(legendComboBox->findText(QString::number(style_chart.pFontsTicks->legendFontSize)));
+		tickWidthLineEdit->setText(QString::number(style_chart.pFontsTicks->tickWidth));
 		break;
 	case IT_FRAME:
 		switch(prop->identificator)
@@ -825,9 +849,7 @@ void ViewPreferences::updateStyleTab()
 			bgColorToolButton->setEnabled(true);
 			break;
 		}
-		
 	}
-
 }
 
 void ViewPreferences::updatePreview()
@@ -852,6 +874,8 @@ void ViewPreferences::updatePreview()
 
 	preview_frame->setStyle(&style_frame);
 	preview_frame->repaint();
+
+	checkAllData();
 }
 
 void ViewPreferences::createPreview()
@@ -1225,9 +1249,43 @@ void ViewPreferences::apply()
 	studioApp.getStyle()->style_results = style_results;
 	studioApp.getStyle()->style_find    = style_find;
 	studioApp.getStyle()->style_frame   = style_frame;
+	studioApp.getStyle()->style_chart   = style_chart;
 	studioApp.setFileAssociationSetup(m_setup);
 	studioApp.setFileAssociationCheckInFuture(m_checkInFuture);
 	studioApp.setOpenLastProject(m_openLastProject);
 	studioApp.setShowCaptionFullName(m_showFullName);
 	studioApp.getStyle()->updateAllStyles();
+}
+
+void ViewPreferences::checkAllData()
+{
+	rbool setupFlag           = m_setup           == studioApp.getFileAssociationSetup() ? true : false;
+	rbool checkInFutureFlag   = m_checkInFuture   == studioApp.getFileAssociationCheckInFuture() ? true : false;
+	rbool openLastProjectFlag = m_openLastProject == studioApp.getOpenLastProject() ? true : false;
+	rbool showFullNameFlag    = m_showFullName    == studioApp.getShowCaptionFullName() ? true : false;
+
+	rbool style_editor_flag  = style_editor  == studioApp.getStyle()->style_editor ? true : false;
+	rbool style_build_flag   = style_build   == studioApp.getStyle()->style_build ? true : false;
+	rbool style_debug_flag   = style_debug   == studioApp.getStyle()->style_debug ? true : false;
+	rbool style_trace_flag   = style_trace   == studioApp.getStyle()->style_trace ? true : false;
+	rbool style_results_flag = style_results == studioApp.getStyle()->style_results ? true : false;
+	rbool style_find_flag    = style_find    == studioApp.getStyle()->style_find ? true : false;
+	rbool style_chart_flag   = style_chart   == studioApp.getStyle()->style_chart ? true : false;
+	rbool style_frame_flag   = style_frame   == studioApp.getStyle()->style_frame ? true : false;
+
+	if(setupFlag
+		&& checkInFutureFlag
+		&& openLastProjectFlag
+		&& showFullNameFlag
+		&& style_editor_flag
+		&& style_build_flag
+		&& style_debug_flag
+		&& style_trace_flag
+		&& style_results_flag
+		&& style_find_flag
+		&& style_chart_flag
+		&& style_frame_flag)
+		buttonApply->setEnabled(false);
+	else
+		buttonApply->setEnabled(true);
 }

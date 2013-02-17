@@ -18,7 +18,7 @@
 // --------------------------------------------------------------------------------
 // -------------------- ChartSerie
 // --------------------------------------------------------------------------------
-class RDOStudioChartView;
+class ChartView;
 
 class ChartSerie
 {
@@ -46,7 +46,7 @@ public:
 	void          setOptions(CREF(Options) options);
 
 	rbool isTracerSerie  (const TracerSerie* pSerie) const;
-	void  drawSerie      (RDOStudioChartView* const pView, HDC &dc, CRect &rect) const;
+	void  drawSerie      (ChartView* const pView, HDC &dc, CRect &rect) const;
 	void  getCaptions    (std::vector<tstring> &captions, const int val_count) const;
 	void  getLegendExtent(HDC &dc, CRect& rect, SIZE& size) const;
 	void  drawInLegend   (HDC &dc, CRect &rect, const COLORREF text_color, SIZE& size) const;

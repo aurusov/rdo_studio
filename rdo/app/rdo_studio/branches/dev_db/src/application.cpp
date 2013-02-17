@@ -10,7 +10,16 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(disable: 4100)
+#endif
+
 #include <boost/program_options.hpp>
+
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(default: 4100)
+#endif
+
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextcodec.h>
 #include <QtCore/qsettings.h>
@@ -97,7 +106,6 @@ RDOStudioApp::RDOStudioApp()
 	, m_autoExitByModel             (false )
 	, m_dontCloseIfError            (false )
 	, m_exitCode                    (rdo::simulation::report::EC_OK)
-	, m_openModelName               (_T(""))
 	, m_pMainFrame                  (NULL  )
 {
 #ifdef _DEBUG
@@ -198,6 +206,7 @@ BOOL RDOStudioApp::InitInstance()
 
 	po::options_description desc("RAO-studio");
 	desc.add_options()
+		("input,i", po::value<tstring>(), "model file name")
 		("autorun", "auto run model")
 		("autoexit", "auto exit after simulation stoped")
 		("dont_close_if_error", "don't close application if model error detected")
@@ -212,6 +221,12 @@ BOOL RDOStudioApp::InitInstance()
 	}
 	catch (const std::exception&)
 	{}
+
+	tstring openModelName;
+	if (vm.count("input"))
+	{
+		openModelName = vm["input"].as<tstring>();
+	}
 
 	rbool autoRun = false;
 	if (vm.count("autorun"))
@@ -229,34 +244,26 @@ BOOL RDOStudioApp::InitInstance()
 		m_dontCloseIfError = true;
 	}
 
-	if (!autoRun && !m_autoExitByModel && !m_dontCloseIfError)
-	{
-		if (m_openModelName.empty())
-		{
-			m_openModelName = m_lpCmdLine;
-		}
-	}
-
 	rbool newModel  = true;
 	rbool autoModel = false;
-	if (!m_openModelName.empty())
+	if (!openModelName.empty())
 	{
-		if (!rdo::extractFilePath(m_openModelName).empty())
+		if (!rdo::extractFilePath(openModelName).empty())
 		{
 			tstring longFileName;
-			if (shortToLongPath(m_openModelName, longFileName))
+			if (shortToLongPath(openModelName, longFileName))
 			{
-				m_openModelName = longFileName;
+				openModelName = longFileName;
 			}
-			if (model->openModel(QString::fromLocal8Bit(m_openModelName.c_str())))
+			if (model->openModel(QString::fromLocal8Bit(openModelName.c_str())))
 			{
 				autoModel = true;
 			}
 		}
 		else
 		{
-			m_openModelName = rdo::extractFilePath(RDOStudioApp::getFullExtName()) + m_openModelName;
-			if (rdo::File::exist(m_openModelName) && model->openModel(QString::fromLocal8Bit(m_openModelName.c_str())))
+			openModelName = rdo::extractFilePath(RDOStudioApp::getFullExtName()) + openModelName;
+			if (rdo::File::exist(openModelName) && model->openModel(QString::fromLocal8Bit(openModelName.c_str())))
 			{
 				autoRun            = true;
 				m_autoExitByModel  = true;
@@ -534,22 +541,22 @@ void RDOStudioApp::setShowCaptionFullName(rbool value)
 void RDOStudioApp::setupFileAssociation()
 {
 #ifdef Q_OS_WIN
-	QString strFileTypeId("RAO.Project");
-	QString strParam(" \"%1\"");
-	QString strPathName(QString::fromLocal8Bit(RDOStudioApp::getFullExtName().c_str()));
-	strPathName.replace("/", "\\");
+	QString fileTypeID("RAO.Project");
+	QString appParam(" -i \"%1\"");
+	QString appFullName(QString::fromLocal8Bit(RDOStudioApp::getFullExtName().c_str()));
+	appFullName.replace("/", "\\");
 
 	QSettings settings("HKEY_CURRENT_USER\\Software\\Classes", QSettings::NativeFormat);
 
 	rbool mustBeRegistered = true;
-	if (settings.childGroups().contains(strFileTypeId))
+	if (settings.childGroups().contains(fileTypeID))
 	{
-		QString openCommand = settings.value(strFileTypeId + "/shell/open/command/Default").toString();
-		int pos = openCommand.indexOf(strParam);
+		QString openCommand = settings.value(fileTypeID + "/shell/open/command/Default").toString();
+		int pos = openCommand.indexOf(appParam);
 		if (pos != -1)
 		{
-			openCommand.remove(pos, strParam.length());
-			if (openCommand != strPathName)
+			openCommand.remove(pos, appParam.length());
+			if (openCommand != appFullName)
 			{
 				FileAssociationDialog dlg(studioApp.getMainWndUI());
 				mustBeRegistered = dlg.exec() == QDialog::Accepted;
@@ -565,19 +572,19 @@ void RDOStudioApp::setupFileAssociation()
 	if (mustBeRegistered)
 	{
 		{
-			QString strFileTypeIdOld("RAO.FileInfo");
-			QString strRAOExtOld(".smr");
-			settings.remove(strFileTypeIdOld);
-			settings.remove(strRAOExtOld);
+			QString fileTypeIDPrev("RAO.FileInfo");
+			QString appExtPrev(".smr");
+			settings.remove(fileTypeIDPrev);
+			settings.remove(appExtPrev);
 		}
 
-		settings.setValue(strFileTypeId + "/Default", "RAO Project");
-		settings.setValue(strFileTypeId + "/DefaultIcon/Default", strPathName + ",0");
-		settings.setValue(strFileTypeId + "/shell/open/command/Default", strPathName + strParam);
+		settings.setValue(fileTypeID + "/Default", "RAO Project");
+		settings.setValue(fileTypeID + "/DefaultIcon/Default", appFullName + ",0");
+		settings.setValue(fileTypeID + "/shell/open/command/Default", appFullName + appParam);
 
-		QString strRAOExt(".rdox");
-		settings.setValue(strRAOExt + "/Default", strFileTypeId);
-		settings.setValue(strRAOExt + "/ShellNew/NullFile", "");
+		QString appExt(".rdox");
+		settings.setValue(appExt + "/Default", fileTypeID);
+		settings.setValue(appExt + "/ShellNew/NullFile", "");
 	}
 #endif
 }

@@ -378,7 +378,7 @@ private:
 
 	rbool                          chart_need_delete;
 	RDOStudioChartDoc*             preview_chart_doc;
-	RDOStudioChartView*            preview_chart;
+	ChartView*                     preview_chart;
 	std::vector<TracerTimeNow>     preview_times;
 	TracerSerie                    preview_serie;
 

@@ -20,123 +20,139 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioChartView
+// -------------------- ChartView
 // --------------------------------------------------------------------------------
 class RDOStudioChartViewStyle;
 class TracerSerie;
 class ChartSerie;
 
-class RDOStudioChartView : public CWnd
+class ChartView: public CWnd
 {
 friend class TracerSerieFindValue;
 friend class RDOStudioChartOptionsChart;
-friend class RDOStudioChartViewQt;
+friend class ChartViewMainWnd;
 friend class TracerSerie;
 friend class RDOStudioChartDoc;
 
+public:
+	RDOStudioChartDoc* getDocument();
+	void attachToDoc();
+
+	QWidget* getQtParent();
+
+	const RDOStudioChartViewStyle& getStyle() const;
+	void setStyle(RDOStudioChartViewStyle* _style, const rbool needRedraw = true);
+
+	void setPreviwMode(rbool value);
+
 protected:
-	CMutex mutex;
+	CMutex m_mutex;
 
-	COleDropTarget target;
-	TracerSerie* dragedSerie;
+	COleDropTarget m_ddTarget;
+	TracerSerie*   m_pddSerie;
 
-	CRect bmpRect;
-	CRect newClientRect;
+	CRect m_bmpRect;
+	CRect m_newClientRect;
 
-	int valueCountX;
-	std::vector<tstring> captions;
-	int valueCountY;
-	
-	rbool timeWrap;
-	rbool canUnwrapTime() const { return scale_koeff >= 1 && !zoomAuto; };
-	rbool doUnwrapTime() const { return canUnwrapTime() && !timeWrap; };
+	int m_valueCountX;
+	std::vector<tstring> m_captionList;
+	int m_valueCountY;
 
-	CRect chartRect;
+	rbool m_timeWrapFlag;
+	rbool canUnwrapTime() const
+	{
+		return m_scaleKoeff >= 1 && !m_zoomAutoFlag;
+	}
+
+	rbool doUnwrapTime() const
+	{
+		return canUnwrapTime() && !m_timeWrapFlag;
+	}
+
+	CRect m_chartRect;
 	void recalcLayout();
 
-	int xMax;
-	int xPos;
-	rbool minXVisible() const { return xPos == 0; };
-	rbool maxXVisible() const { return xPos == xMax; };
-	void  setScrollPos( UINT nSBCode, UINT nPos, const rbool need_update = true );
-	void  updateScrollBars( const rbool need_update = true );
+	int m_xMax;
+	int m_xPos;
+	rbool minXVisible() const
+	{
+		return m_xPos == 0;
+	}
 
-	long double timeScale;
-	TracerTimeNow drawFromX;
-	int drawFromEventIndex;
-	TracerTimeNow drawToX;
-	int drawToEventCount;
-	int chartShift;
-	rbool setTo( const int from_max_pos );
-	void setFromTo();
-	timesList unwrapTimesList;
-	
-	void drawTitle( CRect& chartRect );
-	CRect legendRect;
-	void drawLegend( CRect& chartRect );
-	void drawYAxis( CRect& chartRect, const ChartSerie* axisValues );
-	void drawXAxis( CRect& chartRect );
-	void drawGrid( CRect& chartRect );
+	rbool maxXVisible() const
+	{
+		return m_xPos == m_xMax;
+	}
 
-	CMenu popupMenu;
+	void setScrollPos(UINT nSBCode, UINT nPos, const rbool need_update = true);
+	void updateScrollBars(const rbool need_update = true);
+
+	long double   m_timeScale;
+	TracerTimeNow m_drawFromX;
+	int           m_drawFromEventIndex;
+	TracerTimeNow m_drawToX;
+	int           m_drawToEventCount;
+	int           m_chartShift;
+	TimesList     m_unwrapTimesList;
+
+	rbool setTo(const int from_max_pos);
+	void  setFromTo();
+
+	void drawTitle(CRect& chartRect);
+
+	CRect m_legendRect;
+	void drawLegend(CRect& chartRect);
+	void drawYAxis(CRect& chartRect, const ChartSerie* axisValues);
+	void drawXAxis(CRect& chartRect);
+	void drawGrid(CRect& chartRect);
+
+	CMenu m_popupMenu;
 	void copyToClipboard();
 
-	double zoom;
-	double old_zoom;
-	double auto_zoom;
-	double scale_koeff;
-	void  setZoom( double new_zoom, const rbool force_update = false );
-	rbool zoomAuto;
+	double m_zoom;
+	double m_zoomOld;
+	double m_zoomAuto;
+	double m_scaleKoeff;
+	rbool  m_zoomAutoFlag;
+	void setZoom(double new_zoom, const rbool force_update = false);
 
-	rbool previewMode;
-	RDOStudioChartViewStyle* style;
+	rbool                    m_previewMode;
+	RDOStudioChartViewStyle* m_pStyle;
 
-	ChartSerie* yAxis;
-	rbool needDrawLegend;
+	ChartSerie* m_pYAxis;
+	rbool       m_needDrawLegend;
 
 	void updateWindow();
 	void updateView();
 
-	HBITMAP hbmp;
-	HBITMAP hbmpInit;
-	HFONT   hfontTitle;
-	HFONT   hfontLegend;
-	HFONT   hfontAxis;
-	HFONT   hfontInit;
-	HDC     hdc;
-	int     saved_hdc;
-	HDC     hmemdc;
-	int     saved_hmemdc;
-	HWND    hwnd;
-	void setFonts( const rbool needRedraw = true );
+	HBITMAP m_hbmp;
+	HBITMAP m_hbmpInit;
+	HFONT   m_hfontTitle;
+	HFONT   m_hfontLegend;
+	HFONT   m_hfontAxis;
+	HFONT   m_hfontInit;
+	HDC     m_hdc;
+	int     m_savedHdc;
+	HDC     m_hmemdc;
+	int     m_savedHmemdc;
+	HWND    m_hwnd;
+	void setFonts(const rbool needRedraw = true);
 
 	QWidget* m_pParent;
 
 	void onDraw();
 
 private:
-	RDOStudioChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview /* = false*/); //! @todo qt
-	virtual ~RDOStudioChartView();
+	ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview /* = false*/); //! @todo qt
+	virtual ~ChartView();
 
-public:
-	RDOStudioChartDoc* GetDocument();
-	void attachToDoc();
-
-	QWidget* getQtParent();
-
-	const RDOStudioChartViewStyle& getStyle() const;
-	void setStyle( RDOStudioChartViewStyle* _style, const rbool needRedraw = true );
-
-	void setPreviwMode(rbool value);
-
-private:
 	RDOStudioChartDoc* m_pDocument;
 
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual DROPEFFECT OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
+	virtual DROPEFFECT OnDragEnter(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
 	virtual void OnDragLeave();
-	virtual DROPEFFECT OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
-	virtual BOOL OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point );
+	virtual DROPEFFECT OnDragOver(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
+	virtual BOOL OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point);
 
 protected:
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
@@ -166,20 +182,20 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-class RDOStudioChartViewQt:
+class ChartViewMainWnd:
 	public QWidget,
 	public IInit
 {
 public:
-	RDOStudioChartViewQt(RDOStudioChartDoc* pDocument, const rbool preview);
-	virtual ~RDOStudioChartViewQt();
+	ChartViewMainWnd(RDOStudioChartDoc* pDocument, const rbool preview);
+	virtual ~ChartViewMainWnd();
 
-	RDOStudioChartView* getContext();
+	ChartView* getContext();
 
 private:
 	typedef  QWidget  parent_type;
 
-	RDOStudioChartView* m_pContext;
+	ChartView*          m_pContext;
 	RDOStudioChartDoc*  m_pDocument;
 	rbool               m_preview;
 	CWnd                m_thisCWnd;

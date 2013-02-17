@@ -134,12 +134,12 @@ rbool RDOBaseEditTheme::styleItalic( const int /*styleType*/ ) const
 
 tstring RDOBaseEditTheme::styleFGColorToHEX( const int /*styleType*/ ) const
 {
-	return colorToHEX( defaultColor.rgb() );
+	return colorToHEX( defaultColor );
 }
 
 tstring RDOBaseEditTheme::styleBGColorToHEX( const int /*styleType*/ ) const
 {
-	return colorToHEX( backgroundColor.rgb() );
+	return colorToHEX( backgroundColor );
 }
 
 RDOBaseEditTheme RDOBaseEditTheme::getDefaultTheme()

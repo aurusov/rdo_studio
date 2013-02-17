@@ -72,6 +72,9 @@ public:
 	rdoStyle::RDOStyleFont::style defaultStyle;
 };
 
+QSettings& operator<< (QSettings& settings, const RDOStyleTheme& theme);
+QSettings& operator>> (QSettings& settings,       RDOStyleTheme& theme);
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOStyle
 // --------------------------------------------------------------------------------

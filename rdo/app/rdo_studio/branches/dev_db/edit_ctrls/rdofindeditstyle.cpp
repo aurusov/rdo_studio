@@ -114,8 +114,8 @@ rbool RDOFindEditTheme::styleItalic( const int styleType ) const
 tstring RDOFindEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_FIND_DEFAULT: return colorToHEX( defaultColor.rgb() );
-		case SCE_FIND_KEYWORD: return colorToHEX( keywordColor.rgb() );
+		case SCE_FIND_DEFAULT: return colorToHEX( defaultColor );
+		case SCE_FIND_KEYWORD: return colorToHEX( keywordColor );
 	}
 	return LogEditTheme::styleFGColorToHEX( styleType );
 }
@@ -131,7 +131,7 @@ RDOFindEditTheme RDOFindEditTheme::getClassicTheme()
 	RDOFindEditTheme theme;
 	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getClassicTheme();
 
-	theme.keywordColor = RGB( 0xFF, 0xFF, 0xFF );
+	theme.keywordColor = QColor( 0xFF, 0xFF, 0xFF );
 	theme.keywordStyle = RDOStyleFont::NONE;
 
 	return theme;
@@ -142,7 +142,7 @@ RDOFindEditTheme RDOFindEditTheme::getTwilightTheme()
 	RDOFindEditTheme theme;
 	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getTwilightTheme();
 
-	theme.keywordColor = RGB( 0x00, 0xFF, 0xFF );
+	theme.keywordColor = QColor( 0x00, 0xFF, 0xFF );
 	theme.keywordStyle = RDOStyleFont::BOLD;
 
 	return theme;

@@ -57,10 +57,10 @@ void RDOFindEdit::setEditorStyle(RDOFindEditStyle* pStyle)
 	// ----------
 	// Colors
 	RDOFindEditTheme* theme = static_cast<RDOFindEditTheme*>(m_pStyle->theme);
-	sendEditor(SCI_STYLESETFORE, SCE_FIND_DEFAULT, theme->defaultColor.rgb());
-	sendEditor(SCI_STYLESETBACK, SCE_FIND_DEFAULT, theme->backgroundColor.rgb());
-	sendEditor(SCI_STYLESETFORE, SCE_FIND_KEYWORD, theme->keywordColor.rgb());
-	sendEditor(SCI_STYLESETBACK, SCE_FIND_KEYWORD, theme->backgroundColor.rgb());
+	sendEditor(SCI_STYLESETFORE, SCE_FIND_DEFAULT, convertColor(theme->defaultColor));
+	sendEditor(SCI_STYLESETBACK, SCE_FIND_DEFAULT, convertColor(theme->backgroundColor));
+	sendEditor(SCI_STYLESETFORE, SCE_FIND_KEYWORD, convertColor(theme->keywordColor));
+	sendEditor(SCI_STYLESETBACK, SCE_FIND_KEYWORD, convertColor(theme->backgroundColor));
 
 	// ----------
 	// Styles

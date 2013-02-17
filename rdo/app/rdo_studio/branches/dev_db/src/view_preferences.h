@@ -91,6 +91,7 @@ private slots:
 	void onTitleSize(int index);
 	void onLegendSize(int index);
 	void onTickWidth(const QString& text);
+
 private:
 	enum ItemType
 	{
@@ -198,7 +199,7 @@ private:
 
 		PropertyList properties;
 
-		StyleItem(ItemType type, int font_size, tstring& font_name, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
+		StyleItem(ItemType type, int& font_size, tstring& font_name, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
 			: type(type)
 			, font_size(font_size)
 			, font_name(font_name)
@@ -365,6 +366,7 @@ private:
 	PTR(QTreeWidgetItem) createTreeItem (PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType);
 	
 	void apply();
+	void checkAllData();
 };
 
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

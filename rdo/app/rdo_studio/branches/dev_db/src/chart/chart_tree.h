@@ -23,15 +23,15 @@
 // --------------------------------------------------------------------------------
 class RDODropSource: public COleDropSource
 {
-private:
-	virtual SCODE GiveFeedback(DROPEFFECT dropEffect);
-
 public:
 	RDODropSource()
 		: COleDropSource()
 	{}
 	virtual ~RDODropSource()
 	{}
+
+private:
+	virtual SCODE GiveFeedback(DROPEFFECT dropEffect);
 };
 
 class TracerResType;

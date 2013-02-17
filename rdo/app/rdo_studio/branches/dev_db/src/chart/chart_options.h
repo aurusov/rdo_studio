@@ -24,19 +24,24 @@ class RDOStudioChartOptions;
 
 class RDOStudioChartOptionsChart: public CPropertyPage
 {
-private:
-	RDOStudioChartOptions* sheet;
+public:
+	RDOStudioChartOptionsChart(RDOStudioChartOptions& _sheet);
+	virtual ~RDOStudioChartOptionsChart();
+
+	void apply() const;
 
 protected:
 	enum { IDD = IDD_CHART_OPTIONS_CHART };
-	CComboBox	m_AxisSerieCombo;
-	CButton	m_DrawLegend;
-	int		m_ValCountX;
-	int		m_ValCountY;
-	CString	m_ChartTitle;
-	int		m_AxisSerie;
+	CComboBox m_AxisSerieCombo;
+	CButton   m_DrawLegend;
+	int       m_ValCountX;
+	int       m_ValCountY;
+	CString   m_ChartTitle;
+	int       m_AxisSerie;
 
 private:
+	RDOStudioChartOptions* m_pSheet;
+
 	rbool checkValues() const;
 
 	virtual void OnOK();
@@ -47,12 +52,6 @@ private:
 
 	afx_msg void OnUpdateModify();
 	DECLARE_MESSAGE_MAP()
-
-public:
-	RDOStudioChartOptionsChart( RDOStudioChartOptions& _sheet );
-	virtual ~RDOStudioChartOptionsChart();
-
-	void apply() const;
 };
 
 // --------------------------------------------------------------------------------
@@ -60,28 +59,31 @@ public:
 // --------------------------------------------------------------------------------
 class RDOStudioChartOptionsSeries: public CPropertyPage
 {
-private:
-	RDOStudioChartOptions* sheet;
-	ChartSerie* serie;
+public:
+	RDOStudioChartOptionsSeries(RDOStudioChartOptions& _sheet);
+	virtual ~RDOStudioChartOptionsSeries();
 
-	RDOColorComboBox ColorCB;
+	void apply() const;
 
 protected:
-	
 	rbool getModified() const;
 	void  restoreValues();
 
 	enum { IDD = IDD_CHART_OPTIONS_SERIES };
-	CButton	m_TranspMarker;
-	CComboBox	m_SerieCombo;
-	CButton	m_DrawInLegend;
-	CEdit	m_MarkerSize;
-	CButton	m_DrawMarker;
-	CComboBox	m_Marker;
-	CEdit	m_SerieTitle;
-	int		m_sizeMarker;
+	CButton    m_TranspMarker;
+	CComboBox  m_SerieCombo;
+	CButton    m_DrawInLegend;
+	CEdit      m_MarkerSize;
+	CButton    m_DrawMarker;
+	CComboBox  m_Marker;
+	CEdit      m_SerieTitle;
+	int        m_sizeMarker;
 
 private:
+	RDOStudioChartOptions* m_pSheet;
+	ChartSerie*            m_pSerie;
+	RDOColorComboBox       m_colorCB;
+
 	rbool checkValues() const;
 
 	virtual void OnOK();
@@ -94,38 +96,30 @@ private:
 	afx_msg void OnColorButton();
 	afx_msg void OnSelchangeSeriesCombo();
 	DECLARE_MESSAGE_MAP()
-
-public:
-	RDOStudioChartOptionsSeries( RDOStudioChartOptions& _sheet );
-	virtual ~RDOStudioChartOptionsSeries();
-
-	void apply() const;
 };
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartOptions
 // --------------------------------------------------------------------------------
-class RDOStudioChartView;
+class ChartView;
 
 class RDOStudioChartOptions: public CPropertySheet
 {
 friend class RDOStudioChartOptionsChart;
 friend class RDOStudioChartOptionsSeries;
+public:
+	RDOStudioChartOptions(ChartView* pView);
+	virtual ~RDOStudioChartOptions();
 
 private:
-	RDOStudioChartOptionsChart*  chart;
-	RDOStudioChartOptionsSeries* series;
-	
-	RDOStudioChartView*          view;
+	RDOStudioChartOptionsChart*  m_pChart;
+	RDOStudioChartOptionsSeries* m_pSeries;
+	ChartView*                   m_pView;
 
 	void apply() const;
 	void onHelpButton();
 
-private:
 	DECLARE_MESSAGE_MAP()
-
-public:
-	RDOStudioChartOptions( RDOStudioChartView* _view );
-	virtual ~RDOStudioChartOptions();
 };
 
 #endif // _RDO_STUDIO_CHART_OPTIONS_H_

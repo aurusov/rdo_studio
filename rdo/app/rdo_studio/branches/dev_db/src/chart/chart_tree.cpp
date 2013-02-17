@@ -39,16 +39,16 @@ SCODE RDODropSource::GiveFeedback(DROPEFFECT dropEffect)
 }
 
 //! @todo qt
-//BEGIN_MESSAGE_MAP( ChartTree, RDOTreeCtrl )
+//BEGIN_MESSAGE_MAP(ChartTree, RDOTreeCtrl)
 //	ON_WM_INITMENUPOPUP()
-//	ON_COMMAND( ID_CHART_ADDTONEWCHART, OnAddToNewChart )
-//	ON_UPDATE_COMMAND_UI( ID_CHART_ADDTONEWCHART, OnUpdateAddToNewChart )
-//	ON_NOTIFY_REFLECT( TVN_BEGINDRAG, OnDragDrop )
+//	ON_COMMAND(ID_CHART_ADDTONEWCHART, OnAddToNewChart)
+//	ON_UPDATE_COMMAND_UI(ID_CHART_ADDTONEWCHART, OnUpdateAddToNewChart)
+//	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnDragDrop)
 //	ON_WM_RBUTTONDOWN()
 //	ON_UPDATE_COMMAND_UI(ID_CHART_FINDINCHARTS, OnUpdateChartFindincharts)
 //	ON_COMMAND(ID_CHART_FINDINCHARTS, OnChartFindincharts)
-//	ON_COMMAND( ID_CHART_EXPORT, OnExportChart )
-//	ON_UPDATE_COMMAND_UI( ID_CHART_EXPORT, OnUpdateExportChart )
+//	ON_COMMAND(ID_CHART_EXPORT, OnExportChart)
+//	ON_UPDATE_COMMAND_UI(ID_CHART_EXPORT, OnUpdateExportChart)
 //END_MESSAGE_MAP()
 
 Q_DECLARE_METATYPE(ChartTreeItem*);
@@ -94,7 +94,7 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 	//		rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
 	//		int delta = maximized ? 1 : 0;
 
-	//		appendMenu( mainMenu->GetSubMenu( 6 + delta ), 2, &popupMenu );
+	//		appendMenu(mainMenu->GetSubMenu(6 + delta), 2, &popupMenu);
 	//	}
 	//}
 }
@@ -118,42 +118,42 @@ PTR(ChartTreeItem) ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlIte
 }
 
 //! @todo qt
-//void ChartTree::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu )
+//void ChartTree::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
 //{
-//	RDOTreeCtrl::OnInitMenuPopup( pPopupMenu, nIndex, bSysMenu );
+//	RDOTreeCtrl::OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
 //	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
-//	if( pwndFrame ) pwndFrame->SendMessage( WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu) );
+//	if(pwndFrame) pwndFrame->SendMessage(WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu));
 //}
 //
-//void ChartTree::doDragDrop( ChartTreeItem* item, CPoint point )
+//void ChartTree::doDragDrop(ChartTreeItem* item, CPoint point)
 //{
 //	UNUSED(point);
 //
 //	UINT format = g_pTracer->getClipboardFormat();
-//	if ( format ) {
-//		TracerSerie** ptr = (TracerSerie**)::GlobalAlloc( LMEM_FIXED, sizeof( TracerSerie* ) );
+//	if (format) {
+//		TracerSerie** ptr = (TracerSerie**)::GlobalAlloc(LMEM_FIXED, sizeof(TracerSerie*));
 //		*ptr = (TracerSerie*)item;
-//		source.CacheGlobalData( CLIPFORMAT(format), ptr );
-//		source.DoDragDrop( DROPEFFECT_COPY, NULL, &dropsource );
+//		source.CacheGlobalData(CLIPFORMAT(format), ptr);
+//		source.DoDragDrop(DROPEFFECT_COPY, NULL, &dropsource);
 //		source.Empty();
-//		// Dont call ::GlobalFree( ptr ), because
+//		// Dont call ::GlobalFree(ptr), because
 //		// COleDataSource::Empty() calls ::ReleaseStgMedium() for
 //		// each allocated storage medium. By Microsoft's default
 //		// STGMEDIUM::punkForRelease == NULL,
 //		// so ::ReleaseStgMedium() calls ::GlobalFree()
 //		// for each allocated STGMEDIUM::TYMED_HGLOBAL.
-//		// ::GlobalFlags( ptr ) returns GMEM_INVALID_HANDLE
+//		// ::GlobalFlags(ptr) returns GMEM_INVALID_HANDLE
 //		// if HGLOBAL is not a valid handle.
 //	}
 //}
 //
-//void ChartTree::OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result )
+//void ChartTree::OnDragDrop (NMHDR * pNotifyStruct, LRESULT* result)
 //{
 //	LPNMTREEVIEW lpnmtv = (LPNMTREEVIEW)pNotifyStruct;
 //	HTREEITEM hitem = lpnmtv->itemNew.hItem;
-//	ChartTreeItem* item = getIfItemIsDrawable( hitem );
-//	if ( item  )
-//		doDragDrop( item, lpnmtv->ptDrag );
+//	ChartTreeItem* item = getIfItemIsDrawable(hitem);
+//	if (item )
+//		doDragDrop(item, lpnmtv->ptDrag);
 //	*result = 0;
 //}
 
@@ -273,7 +273,7 @@ void ChartTree::OnAddToNewChart()
 	addToNewChart(getSelected());
 }
 
-void ChartTree::OnUpdateAddToNewChart( CCmdUI* pCmdUI )
+void ChartTree::OnUpdateAddToNewChart(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(g_pTracer->getDrawTrace() && getIfItemIsDrawable(getSelected()));
 }
@@ -295,15 +295,15 @@ void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 //	UNUSED(_nFlags);
 //
 //	UINT uFlags;
-//	HTREEITEM hitem = HitTest( point, &uFlags );
-//	if ( hitem && ( TVHT_ONITEM & uFlags ) ) {
-//		SelectItem( hitem );
+//	HTREEITEM hitem = HitTest(point, &uFlags);
+//	if (hitem && (TVHT_ONITEM & uFlags)) {
+//		SelectItem(hitem);
 //	}
-//	if ( GetFocus() != this )
+//	if (GetFocus() != this)
 //		SetFocus();
 //	CPoint pos = point;
-//	ClientToScreen( &pos );
-//	if ( popupMenu.m_hMenu ) popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
+//	ClientToScreen(&pos);
+//	if (popupMenu.m_hMenu) popupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this);
 //}
 //
 //void TracerTreeCtrl::OnExportChart()
@@ -339,9 +339,9 @@ void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 //	stream.close();
 //}
 //
-//void TracerTreeCtrl::OnUpdateExportChart( CCmdUI* pCmdUI )
+//void TracerTreeCtrl::OnUpdateExportChart(CCmdUI* pCmdUI)
 //{
-//	pCmdUI->Enable( g_pTracer->getDrawTrace() && getIfItemIsDrawable( GetSelectedItem() ) != NULL );
+//	pCmdUI->Enable(g_pTracer->getDrawTrace() && getIfItemIsDrawable(GetSelectedItem()) != NULL);
 //}
 
 void ChartTree::OnUpdateChartFindincharts(CCmdUI* pCmdUI)

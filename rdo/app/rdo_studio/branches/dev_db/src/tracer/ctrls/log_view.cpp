@@ -306,7 +306,7 @@ LogView::ScrollMetricVert::ScrollMetricVert()
 rbool LogView::ScrollMetricVert::isVisible(rsint index) const
 {
 	return index >= position &&
-		   index <= lastViewableLine;
+	       index <= lastViewableLine;
 }
 
 rbool LogView::ScrollMetricVert::applyInc(rsint delta)

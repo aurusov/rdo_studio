@@ -175,9 +175,7 @@ void RDOStyleTheme::load( CREF(QString) groupName )
 {
 	QSettings settings;
 	settings.beginGroup(groupName + "theme");
-	defaultColor = QColor(settings.value("default_color", defaultColor.name()).toString());
-	backgroundColor = QColor(settings.value("background_color", backgroundColor.name()).toString());
-	defaultStyle    = static_cast<RDOStyleFont::style>(settings.value("default_style", defaultStyle).toInt());
+	settings >> *this;
 	settings.endGroup();
 }
 
@@ -185,11 +183,33 @@ void RDOStyleTheme::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
 	settings.beginGroup(groupName + "theme");
-	settings.setValue("default_color", defaultColor.name());
-	settings.setValue("background_color", backgroundColor.name());
-	settings.setValue("default_style", defaultStyle);
+	settings << *this;
 	settings.endGroup();
 }
+
+namespace rdoStyle
+{
+
+QSettings& operator<< (QSettings& settings, const RDOStyleTheme& theme)
+{
+	settings.setValue("default_color", theme.defaultColor.name());
+	settings.setValue("background_color", theme.backgroundColor.name());
+	settings.setValue("default_style", theme.defaultStyle);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, RDOStyleTheme& theme)
+{
+	theme.defaultColor    = QColor(settings.value("default_color", QColor( 0x00, 0x00, 0x00 ).name()).toString());
+	theme.backgroundColor = QColor(settings.value("background_color", QColor( 0xFF, 0xFF, 0xFF ).name()).toString());
+	theme.defaultStyle    = static_cast<RDOStyleFont::style>(settings.value("default_style", RDOStyleFont::NONE).toInt());
+
+	return settings;
+}
+
+} // namespace rdoStyle
+
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStyle

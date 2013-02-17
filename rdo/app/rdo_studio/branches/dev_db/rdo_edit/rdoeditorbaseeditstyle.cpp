@@ -224,17 +224,17 @@ rbool RDOEditorBaseEditTheme::styleItalic( const int styleType ) const
 tstring RDOEditorBaseEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_RDO_DEFAULT     : return colorToHEX( defaultColor.rgb() );
-		case SCE_RDO_IDENTIFIER  : return colorToHEX( identifierColor.rgb() );
-		case SCE_RDO_KEYWORD     : return colorToHEX( keywordColor.rgb() );
-		case SCE_RDO_FUNCTION    : return colorToHEX( functionsColor.rgb() );
-		case SCE_RDO_TRACE       : return colorToHEX( traceColor.rgb() );
-		case SCE_RDO_FRAME_COLOR : return colorToHEX( colorColor.rgb() );
-		case SCE_RDO_COMMENT_CPP : return colorToHEX( commentColor.rgb() );
-		case SCE_RDO_COMMENT_LINE: return colorToHEX( commentColor.rgb() );
-		case SCE_RDO_NUMBER      : return colorToHEX( numberColor.rgb() );
-		case SCE_RDO_STRING      : return colorToHEX( stringColor.rgb() );
-		case SCE_RDO_OPERATOR    : return colorToHEX( operatorColor.rgb() );
+		case SCE_RDO_DEFAULT     : return colorToHEX( defaultColor );
+		case SCE_RDO_IDENTIFIER  : return colorToHEX( identifierColor );
+		case SCE_RDO_KEYWORD     : return colorToHEX( keywordColor );
+		case SCE_RDO_FUNCTION    : return colorToHEX( functionsColor );
+		case SCE_RDO_TRACE       : return colorToHEX( traceColor );
+		case SCE_RDO_FRAME_COLOR : return colorToHEX( colorColor );
+		case SCE_RDO_COMMENT_CPP : return colorToHEX( commentColor );
+		case SCE_RDO_COMMENT_LINE: return colorToHEX( commentColor );
+		case SCE_RDO_NUMBER      : return colorToHEX( numberColor );
+		case SCE_RDO_STRING      : return colorToHEX( stringColor );
+		case SCE_RDO_OPERATOR    : return colorToHEX( operatorColor );
 	}
 	return RDOBaseEditTheme::styleFGColorToHEX( styleType );
 }

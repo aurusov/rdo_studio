@@ -145,6 +145,11 @@ protected:
 
 	virtual void onUpdateActions(rbool activated);
 
+	static COLORREF convertColor(CREF(QColor) color)
+	{
+		return RGB(color.red(), color.green(), color.blue());
+	}
+
 protected slots:
 	        void onUpdateEditGUI();
 	virtual void onHelpContext  () = 0;

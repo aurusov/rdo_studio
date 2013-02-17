@@ -27,7 +27,7 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 LogEditTheme::LogEditTheme(): RDOBaseEditTheme()
 {
-	selectLineBgColor = RGB( 0x00, 0xC0, 0xEF );
+	selectLineBgColor = QColor( 0x00, 0xC0, 0xEF );
 }
 
 LogEditTheme::~LogEditTheme()
@@ -85,7 +85,7 @@ LogEditTheme LogEditTheme::getClassicTheme()
 	LogEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getClassicTheme();
 
-	theme.selectLineBgColor = RGB( 0x00, 0xC0, 0xEF );
+	theme.selectLineBgColor = QColor( 0x00, 0xC0, 0xEF );
 
 	return theme;
 }
@@ -95,7 +95,7 @@ LogEditTheme LogEditTheme::getTwilightTheme()
 	LogEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getTwilightTheme();
 
-	theme.selectLineBgColor = RGB( 0x00, 0x96, 0xBB );
+	theme.selectLineBgColor = QColor( 0x00, 0x96, 0xBB );
 
 	return theme;
 }
@@ -105,7 +105,7 @@ LogEditTheme LogEditTheme::getOceanTheme()
 	LogEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getOceanTheme();
 
-	theme.selectLineBgColor = RGB( 0xCA, 0xF4, 0xFF );
+	theme.selectLineBgColor = QColor( 0xCA, 0xF4, 0xFF );
 
 	return theme;
 }

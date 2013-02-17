@@ -766,8 +766,8 @@ void TracerBase::getTraceString( tstring trace_string )
 
 RDOStudioChartDoc* TracerBase::createNewChart()
 {
-	RDOStudioChartDoc*    pDoc  = new RDOStudioChartDoc   ();
-	RDOStudioChartViewQt* pView = new RDOStudioChartViewQt(pDoc, false);
+	RDOStudioChartDoc* pDoc  = new RDOStudioChartDoc();
+	ChartViewMainWnd*  pView = new ChartViewMainWnd(pDoc, false);
 	studioApp.getIMainWnd()->addSubWindow(pView);
 	pDoc->attachView(pView->getContext());
 	pDoc->autoTitle();
