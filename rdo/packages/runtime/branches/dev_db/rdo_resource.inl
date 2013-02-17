@@ -74,9 +74,8 @@ inline CREF(RDOValue) RDOResource::getParam(ruint index) const
 
 inline REF(RDOValue) RDOResource::getParamRaw(ruint index)
 {
-	ASSERT(index < m_paramList.size());
 	setState(CS_Keep);
-	return m_paramList[index];
+	return getParam(index);
 }
 
 inline void RDOResource::setParam(ruint index, CREF(RDOValue) value)
