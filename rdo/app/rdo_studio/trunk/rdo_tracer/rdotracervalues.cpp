@@ -23,41 +23,42 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 // -------------------- TracerTimeNow
 // --------------------------------------------------------------------------------
-TracerTimeNow::TracerTimeNow( const double _time ) : time( _time )
+TracerTimeNow::TracerTimeNow(const double _time)
+	: time(_time)
 {
 	eventCount = 0;
 }
 
-TracerTimeNow::TracerTimeNow( const double _time, const int _event_count )
+TracerTimeNow::TracerTimeNow(const double _time, const int _event_count)
 {
 	time = _time;
 	eventCount = _event_count;
 }
 
-TracerTimeNow& TracerTimeNow::operator =( const TracerTimeNow& timenow )
+TracerTimeNow& TracerTimeNow::operator =(const TracerTimeNow& timenow)
 {
-	time         = timenow.time;
-	eventCount   = timenow.eventCount;
+	time = timenow.time;
+	eventCount = timenow.eventCount;
 
 	return *this;
 }
 
-rbool TracerTimeNow::operator ==( const TracerTimeNow& timenow ) const
+rbool TracerTimeNow::operator ==(const TracerTimeNow& timenow) const
 {
-	return time         == timenow.time &&
-	       eventCount   == timenow.eventCount;
+	return time == timenow.time && eventCount == timenow.eventCount;
 }
 
-rbool TracerTimeNow::operator !=( const TracerTimeNow& timenow ) const
+rbool TracerTimeNow::operator !=(const TracerTimeNow& timenow) const
 {
 	return !(*this == timenow);
 }
 
-rbool TracerTimeNow::compareTimes( const TracerTimeNow* timenow )
+rbool TracerTimeNow::compareTimes(const TracerTimeNow* timenow)
 {
 	rbool res = false;
-	if( timenow ) {
-		res = ( time >= timenow->time );
+	if (timenow)
+	{
+		res = (time >= timenow->time);
 	}
 	return res;
 }
@@ -65,13 +66,11 @@ rbool TracerTimeNow::compareTimes( const TracerTimeNow* timenow )
 // --------------------------------------------------------------------------------
 // -------------------- TracerValue
 // --------------------------------------------------------------------------------
-TracerValue::TracerValue( TracerTimeNow* const timenow, const int _eventIndex, const double _value )
-	: modeltime( timenow ),
-	eventIndex( _eventIndex ),
-	value( _value )
-{
-}
+TracerValue::TracerValue(TracerTimeNow* const timenow, const int _eventIndex, const double _value)
+	: modeltime(timenow),
+	  eventIndex(_eventIndex),
+	  value(_value)
+{}
 
 TracerValue::~TracerValue()
-{
-}
+{}

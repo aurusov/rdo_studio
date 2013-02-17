@@ -20,18 +20,19 @@
 class TracerTimeNow
 {
 public:
-	TracerTimeNow( const double _time = 0 );
-	TracerTimeNow( const double _time, const int _event_count );
-	~TracerTimeNow() {};
+	TracerTimeNow(const double _time = 0);
+	TracerTimeNow(const double _time, const int _event_count);
+	~TracerTimeNow()
+	{}
 
 	double time;
 	int eventCount;
-	
-	TracerTimeNow& operator =( const TracerTimeNow& timenow );
-	rbool operator ==( const TracerTimeNow& timenow ) const;
-	rbool operator !=( const TracerTimeNow& timenow ) const;
 
-	rbool compareTimes( const TracerTimeNow* timenow );
+	TracerTimeNow& operator =(const TracerTimeNow& timenow);
+	rbool operator ==(const TracerTimeNow& timenow) const;
+	rbool operator !=(const TracerTimeNow& timenow) const;
+
+	rbool compareTimes(const TracerTimeNow* timenow);
 };
 
 // --------------------------------------------------------------------------------
@@ -45,14 +46,19 @@ friend class RDOStudioChartDocInsertTime;
 friend class RDOStudioChartDocInsertTime;
 friend class TracerSerieFindValue;
 
+public:
+	double value;
+	TracerValue(TracerTimeNow* const timenow, const int _eventIndex, const double _value = 0);
+	~TracerValue();
+
+	TracerTimeNow* const getModelTime() const
+	{
+		return modeltime;
+	}
+
 protected:
 	TracerTimeNow* modeltime;
 	int eventIndex;
-public:
-	double value;
-	TracerValue( TracerTimeNow* const timenow, const int _eventIndex, const double _value = 0 );
-	~TracerValue();
-	TracerTimeNow* const getModelTime() const { return modeltime; };
 };
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERVALUES_H_

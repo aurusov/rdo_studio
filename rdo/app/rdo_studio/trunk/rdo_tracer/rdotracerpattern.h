@@ -18,7 +18,8 @@
 // --------------------------------------------------------------------------------
 // -------------------- TracerPattern
 // --------------------------------------------------------------------------------
-enum TracerPatternKind {
+enum TracerPatternKind
+{
 	RDOPK_UNDEFINED = ~0,
 	RDOPK_OPERATION = 0,
 	RDOPK_IRREGULAREVENT,
@@ -26,16 +27,19 @@ enum TracerPatternKind {
 	RDOPK_KEYBOARD
 };
 
-class TracerPattern : public ChartTreeItem
+class TracerPattern: public ChartTreeItem
 {
 protected:
 	TracerPatternKind patKind;
 public:
-	TracerPattern( const TracerPatternKind kind );
+	TracerPattern(const TracerPatternKind kind);
 	virtual ~TracerPattern();
 
 	tstring Name;
-	TracerPatternKind getPatternKind() const { return patKind; };
+	TracerPatternKind getPatternKind() const
+	{
+		return patKind;
+	}
 };
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERPATTERN_H_

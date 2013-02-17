@@ -20,7 +20,8 @@
 // --------------------------------------------------------------------------------
 // -------------------- TracerResult
 // --------------------------------------------------------------------------------
-enum TracerResultKind {
+enum TracerResultKind
+{
 	RDORK_UNDEFINED  = ~0,
 	RDORK_WATCHPAR   = 0,
 	RDORK_WATCHSTATE,
@@ -30,19 +31,34 @@ enum TracerResultKind {
 
 class TracerResult: public TracerSerie
 {
-protected:
-	TracerResultKind resultKind;
-	tstring Name;
 public:
-	TracerResult( const TracerResultKind kind );
+	TracerResult(const TracerResultKind kind);
 	virtual ~TracerResult();
 
 	int id;
-	TracerResultKind getResultKind() const { return resultKind; };
-	void setName( CREF(tstring) name ) { Name = name; if ( title.empty() ) title = Name; };
-	const tstring getName() const { return Name; };
-	virtual void getCaptions( std::vector<tstring> &captions, const int val_count ) const;
-	void setValue( tstring& line, TracerTimeNow* const time, const int eventIndex );
+	TracerResultKind getResultKind() const
+	{
+		return resultKind;
+	}
+	void setName(CREF(tstring) name)
+	{
+		Name = name;
+		if (title.empty())
+		{
+			title = Name;
+		}
+	}
+	const tstring getName() const
+	{
+		return Name;
+	}
+
+	virtual void getCaptions(std::vector<tstring> &captions, const int val_count) const;
+	void setValue(tstring& line, TracerTimeNow* const time, const int eventIndex);
+
+protected:
+	TracerResultKind resultKind;
+	tstring Name;
 };
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERRESULT_H_
