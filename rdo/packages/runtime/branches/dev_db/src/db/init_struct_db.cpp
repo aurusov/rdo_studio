@@ -169,10 +169,12 @@ void InitSructDB::generateCreateDBQuery()
 		"CREATE TABLE real("
 		"id          integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
 		"def_val     integer,"
-		"min         real,"
-		"max         real,"
+		"min         integer,"
+		"max         integer,"
 		"PRIMARY KEY (id),"
-		"FOREIGN KEY (def_val) REFERENCES real_rv(id)"
+		"FOREIGN KEY (def_val) REFERENCES real_rv(id),"
+		"FOREIGN KEY (min) REFERENCES real_rv(id),"
+		"FOREIGN KEY (max) REFERENCES real_rv(id)"
 		");");
 
 	trigger("real","copy_type_id");
@@ -208,7 +210,9 @@ void InitSructDB::generateCreateDBQuery()
 		"min         integer,"
 		"max         integer,"
 		"PRIMARY KEY (id),"
-		"FOREIGN KEY (def_val) REFERENCES int_rv(id)"
+		"FOREIGN KEY (def_val) REFERENCES int_rv(id),"
+		"FOREIGN KEY (min) REFERENCES int_rv(id),"
+		"FOREIGN KEY (max) REFERENCES int_rv(id)"
 		");");
 
 	trigger("int","copy_type_id");
