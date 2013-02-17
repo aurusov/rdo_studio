@@ -212,7 +212,7 @@ void TracerSerie::getLastValue( TracerValue*& val ) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void TracerSerie::drawSerie( ChartView* const view, HDC &dc, CRect &rect, const COLORREF color, TracerSerieMarker marker, const int marker_size, const rbool draw_marker, const rbool transparent_marker ) const
+void TracerSerie::drawSerie(ChartView* const view, QPainter& painter, const QRect& rect, const QColor& color, TracerSerieMarker marker, const int markerSize, const rbool draw_marker, const rbool transparent_marker) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 	
@@ -235,7 +235,7 @@ void TracerSerie::drawSerie( ChartView* const view, HDC &dc, CRect &rect, const 
 			
 			long double ky;
 			if ( maxValue != minValue )
-				ky = rect.Height() / ( maxValue - minValue );
+				ky = rect.height() / ( maxValue - minValue );
 			else
 				ky = 0;
 			
@@ -248,10 +248,10 @@ void TracerSerie::drawSerie( ChartView* const view, HDC &dc, CRect &rect, const 
 			if ( flag )
 				it --;
 			
-			int lasty = roundDouble( (double)rect.bottom - double(ky) * ( (*it)->value - minValue ) );
-			lasty = std::min( lasty, int(rect.bottom) - 1 );
-			int lastx = rect.left + roundDouble( ( (*it)->modeltime->time - view->m_drawFromX.time ) * double(view->m_timeScale) ) - view->m_chartShift;
-			lastx = std::min( lastx, int(rect.right) - 1 );
+			int lasty = roundDouble( (double)rect.bottom() - double(ky) * ( (*it)->value - minValue ) );
+			lasty = std::min(lasty, rect.bottom() - 1);
+			int lastx = rect.left() + roundDouble( ( (*it)->modeltime->time - view->m_drawFromX.time ) * double(view->m_timeScale) ) - view->m_chartShift;
+			lastx = std::min(lastx, rect.right() - 1);
 			
 			int ticks = 0;
 			TimesList::iterator times_it = view->m_unwrapTimesList.begin();
@@ -266,33 +266,45 @@ void TracerSerie::drawSerie( ChartView* const view, HDC &dc, CRect &rect, const 
 					lastx += ( ticks + (*it)->eventIndex - view->m_drawFromEventIndex ) * view->m_pStyle->pFontsTicks->tickWidth;
 				}
 			}
-			lastx = std::min( lastx, int(rect.right) - 1 );
+			lastx = std::min(lastx, rect.right() - 1);
 
-			HPEN pen = NULL;
-			HPEN old_pen = NULL;
+			QPen   pen(color);
+			QBrush brush(color, transparent_marker ? Qt::NoBrush : Qt::SolidPattern);
+
+			QPainterPath path;
+			if ( lastx >= rect.left() && draw_marker ) {
+				drawMarker(painter, lastx, lasty, marker, markerSize);
+				path.moveTo(lastx, lasty);
+			}
+			else
+				path.moveTo(rect.left(), lasty);
 			
-			HBRUSH brush_marker = NULL;
-			HBRUSH old_brush = NULL;
-			LOGBRUSH log_brush;
-			log_brush.lbStyle = transparent_marker ? BS_HOLLOW : BS_SOLID;
-			log_brush.lbColor = color;
-			try {
-				pen = ::CreatePen( PS_SOLID, 0, color );
-				old_pen = (HPEN)::SelectObject( dc, pen );
-				brush_marker = ::CreateBrushIndirect( &log_brush );
-				old_brush = (HBRUSH)::SelectObject( dc, brush_marker );
+			int x = lastx, y = lasty;
+			if ( view->doUnwrapTime() ) {
+				ticks -= view->m_drawFromEventIndex;
+			}
+			it ++;
+			if ( view->doUnwrapTime() && it != values.end() ) {
+				while ( times_it != view->m_unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
+					ticks += (*times_it)->eventCount;
+					times_it ++;
+				}
+			}
 
-				if ( lastx >= rect.left && draw_marker ) {
-					drawMarker( dc, lastx, lasty, marker, marker_size );
-					::MoveToEx( dc, lastx, lasty, (LPPOINT)NULL );
-				}
-				else
-					::MoveToEx( dc, rect.left, lasty, (LPPOINT)NULL );
-				
-				int x = lastx, y = lasty;
+			while ( it != values.end() && ( (!view->doUnwrapTime() && (*it)->modeltime->time <= view->m_drawToX.time) || (view->doUnwrapTime() && ((*it)->modeltime->time < view->m_drawToX.time || ((*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex <= view->m_drawToEventCount) )) ) ) {
+				y = roundDouble( (double)rect.bottom() - double(ky) * ( (*it)->value - minValue ) );
+				y = std::min( y, rect.bottom() - 1 );
+				x = rect.left() + roundDouble( ( (*it)->modeltime->time - view->m_drawFromX.time ) * double(view->m_timeScale) ) - view->m_chartShift;
 				if ( view->doUnwrapTime() ) {
-					ticks -= view->m_drawFromEventIndex;
+					x += ( ticks + (*it)->eventIndex ) * view->m_pStyle->pFontsTicks->tickWidth;
 				}
+				x = std::min( x, rect.right() - 1 );
+				if ( draw_marker )
+					drawMarker( painter, x, y, marker, markerSize );
+				path.lineTo(x, lasty);
+				path.lineTo(x, y);
+				lastx = x;
+				lasty = y;
 				it ++;
 				if ( view->doUnwrapTime() && it != values.end() ) {
 					while ( times_it != view->m_unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
@@ -300,114 +312,72 @@ void TracerSerie::drawSerie( ChartView* const view, HDC &dc, CRect &rect, const 
 						times_it ++;
 					}
 				}
-
-				while ( it != values.end() && ( (!view->doUnwrapTime() && (*it)->modeltime->time <= view->m_drawToX.time) || (view->doUnwrapTime() && ((*it)->modeltime->time < view->m_drawToX.time || ((*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex <= view->m_drawToEventCount) )) ) ) {
-					y = roundDouble( (double)rect.bottom - double(ky) * ( (*it)->value - minValue ) );
-					y = std::min( y, int(rect.bottom) - 1 );
-					x = rect.left + roundDouble( ( (*it)->modeltime->time - view->m_drawFromX.time ) * double(view->m_timeScale) ) - view->m_chartShift;
-					if ( view->doUnwrapTime() ) {
-						x += ( ticks + (*it)->eventIndex ) * view->m_pStyle->pFontsTicks->tickWidth;
-					}
-					x = std::min( x, int(rect.right) - 1 );
-					if ( draw_marker )
-						drawMarker( dc, x, y, marker, marker_size );
-					::LineTo( dc, x, lasty );
-					::LineTo( dc, x, y );
-					lastx = x;
-					lasty = y;
-					it ++;
-					if ( view->doUnwrapTime() && it != values.end() ) {
-						while ( times_it != view->m_unwrapTimesList.end() && *(*it)->modeltime != *(*times_it) ) {
-							ticks += (*times_it)->eventCount;
-							times_it ++;
-						}
-					}
-				}
-				
-				rbool tempres_erased = ( serieKind == RDOST_RESPARAM && ((TracerResParam*)this)->getResource()->isErased() );
-				rbool need_continue = !view->doUnwrapTime() ? ( values.size() > 1 ) : true;
-				if ( tempres_erased ) {
-					if ( !view->doUnwrapTime() ) {
-						need_continue = ( it != values.end() && (*it)->modeltime->time > view->m_drawToX.time );
-					} else {
-						need_continue = ( it != values.end() && ( (*it)->modeltime->time > view->m_drawToX.time || ( (*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex > view->m_drawToEventCount ) ) );
-					}
-				}
-
-				if ( need_continue ) {
-					if ( view->m_drawFromX == view->m_drawToX ) {
-						x = rect.left + ( view->m_drawToEventCount - view->m_drawFromEventIndex ) * view->m_pStyle->pFontsTicks->tickWidth;
-						x = std::min( x, int(rect.right) - 1 );
-					} else {
-						x = rect.right - 1;
-					}
-					::LineTo( dc, x, lasty );
-				}
-				
-				::SelectObject( dc, old_pen );
-				::DeleteObject( pen );
-				pen = NULL;
-
-				::SelectObject( dc, old_brush );
-				::DeleteObject( brush_marker );
-				brush_marker = NULL;
-			} catch( ... ) {
-				if ( pen ) {
-					::SelectObject( dc, old_pen );
-					::DeleteObject( pen );
-					pen = NULL;
-				}
-				if ( brush_marker ) {
-					::SelectObject( dc, old_brush );
-					::DeleteObject( brush_marker );
-					brush_marker = NULL;
+			}
+			
+			rbool tempres_erased = ( serieKind == RDOST_RESPARAM && ((TracerResParam*)this)->getResource()->isErased() );
+			rbool need_continue = !view->doUnwrapTime() ? ( values.size() > 1 ) : true;
+			if ( tempres_erased ) {
+				if ( !view->doUnwrapTime() ) {
+					need_continue = ( it != values.end() && (*it)->modeltime->time > view->m_drawToX.time );
+				} else {
+					need_continue = ( it != values.end() && ( (*it)->modeltime->time > view->m_drawToX.time || ( (*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex > view->m_drawToEventCount ) ) );
 				}
 			}
+
+			if ( need_continue ) {
+				if ( view->m_drawFromX == view->m_drawToX ) {
+					x = rect.left() + ( view->m_drawToEventCount - view->m_drawFromEventIndex ) * view->m_pStyle->pFontsTicks->tickWidth;
+					x = std::min( x, rect.right() - 1 );
+				} else {
+					x = rect.right() - 1;
+				}
+				path.lineTo(x, lasty);
+			}
+
+			painter.drawPath(path);
 		}
 	}
 
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void TracerSerie::drawMarker( HDC &dc, const int x, const int y, TracerSerieMarker marker, const int marker_size ) const
+void TracerSerie::drawMarker(QPainter& painter, const int x, const int y, TracerSerieMarker marker, const int markerSize) const
 {
-	CRect rect;
-	rect.left = x - marker_size;
-	rect.top = y - marker_size;
-	rect.bottom = y + marker_size;
-	rect.right = x + marker_size;
+	QRect rect;
+	rect.setLeft(x - markerSize);
+	rect.setTop(y - markerSize);
+	rect.setBottom(y + markerSize);
+	rect.setRight(x + markerSize);
 
 	switch( marker ) {
 		case RDOSM_CIRCLE : {
-			::Ellipse( dc, rect.left, rect.top, rect.right, rect.bottom );
+			painter.drawEllipse(rect);
 			break;
 		}
 		case RDOSM_SQUARE : {
-			::Rectangle( dc, rect.left, rect.top, rect.right, rect.bottom );
+			painter.drawRect(rect);
 			break;
 		}
 		case RDOSM_RHOMB : {
-			POINT pts[4];
-			pts[0].x = rect.left + ( rect.right - rect.left ) / 2;
-			pts[0].y = rect.top;
-			pts[1].x = rect.right;
-			pts[1].y = rect.top + ( rect.bottom - rect.top ) / 2;
-			pts[2].x = pts[0].x;
-			pts[2].y = rect.bottom;
-			pts[3].x = rect.left;
-			pts[3].y = pts[1].y;
-			::Polygon( dc, pts, 4 );
+			QPoint pts[4];
+			pts[0].setX(rect.left() + ( rect.right() - rect.left() ) / 2);
+			pts[0].setY(rect.top());
+			pts[1].setX(rect.right());
+			pts[1].setY(rect.top() + ( rect.bottom() - rect.top() ) / 2);
+			pts[2].setX(pts[0].x());
+			pts[2].setY(rect.bottom());
+			pts[3].setX(rect.left());
+			pts[3].setY(pts[1].y());
+			painter.drawPolygon(pts, 4);
 			break;
 		}
 		case RDOSM_CROSS : {
-			POINT pos;
-			::GetCurrentPositionEx( dc, &pos );
-			
-			::MoveToEx( dc, rect.left, rect.top, (LPPOINT)NULL );
-			::LineTo( dc, rect.right, rect.bottom + 1 );
-			::MoveToEx( dc, rect.left, rect.bottom, (LPPOINT)NULL );
-			::LineTo( dc, rect.right, rect.top - 1 );
-			::MoveToEx( dc, pos.x, pos.y, (LPPOINT)NULL );
+			QPainterPath path;
+			path.moveTo(rect.left(), rect.top());
+			path.lineTo(rect.right(), rect.bottom() + 1);
+			path.moveTo(rect.left(), rect.bottom());
+			path.lineTo(rect.right(), rect.top() - 1);
+			painter.drawPath(path);
 			break;
 		}
 	}
@@ -448,7 +418,7 @@ rbool TracerSerie::activateFirstDoc() const
 		{
 			ChartView* pView = pDoc->getFirstView();
 			ASSERT(pView)
-			studioApp.getIMainWnd()->activateSubWindow(pView->getQtParent()->parentWidget());
+			studioApp.getIMainWnd()->activateSubWindow(pView->parentWidget()->parentWidget());
 			result = true;
 		}
 	}

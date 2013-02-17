@@ -592,7 +592,7 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 
 	sheet->preview_chart_doc->setTitle(rdo::format(IDS_COLORSTYLE_CHART_SAMPLE1).c_str());
 	sheet->preview_chart->setPreviwMode(true);
-	sheet->preview_chart->Create(NULL, NULL, WS_CHILD, CRect(0, 0, 444, 223), this, 0);
+	sheet->preview_chart->resize(444, 223);
 	sheet->preview_chart_doc->attachView(sheet->preview_chart);
 	sheet->preview_chart->setStyle(&sheet->style_chart, false);
 	//initializing times vector
@@ -641,7 +641,7 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_trace.setGeometry(qRectEdit);
 	sheet->preview_results.setGeometry(qRectEdit);
 	sheet->preview_find.setGeometry(qRectEdit);
-	sheet->preview_chart->MoveWindow(rectEdit);
+	sheet->preview_chart->setGeometry(qRectEdit);
 	sheet->preview_frame.MoveWindow(rectEdit);
 
 	ObjectList::const_iterator obj_it = objects.begin();
@@ -1658,7 +1658,7 @@ void RDOStudioOptionsColorsStyles::setPreviewAsCombo(STYLEObject::Type type)
 		sheet->preview_trace.view().hide();
 		sheet->preview_results.hide();
 		sheet->preview_find.hide();
-		sheet->preview_chart->ShowWindow(SW_HIDE);
+		sheet->preview_chart->hide();
 		sheet->preview_frame.ShowWindow(SW_HIDE);
 		switch (previewAs)
 		{
@@ -1694,7 +1694,7 @@ void RDOStudioOptionsColorsStyles::setPreviewAsCombo(STYLEObject::Type type)
 
 		case STYLEObject::chart:
 			m_previewAs.SetCurSel(6);
-			sheet->preview_chart->ShowWindow(SW_SHOW);
+			sheet->preview_chart->show();
 			break;
 
 		case STYLEObject::frame:
@@ -1815,7 +1815,7 @@ RDOStudioOptions::RDOStudioOptions()
 	styles  = new RDOStudioOptionsColorsStyles(*this);
 
 	preview_chart_doc = new RDOStudioChartDoc(true);
-	ChartViewMainWnd* pViewQt = new ChartViewMainWnd(preview_chart_doc, true);
+	ChartViewMainWnd* pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
 	IInit* pViewInit = dynamic_cast<IInit*>(pViewQt);
 	pViewInit->init();
 
@@ -1835,7 +1835,7 @@ RDOStudioOptions::~RDOStudioOptions()
 	//because framework kills them itself
 	if (chart_need_delete)
 	{
-		preview_chart_doc->getFirstView()->getQtParent()->parentWidget()->close();
+		preview_chart_doc->getFirstView()->parentWidget()->parentWidget()->close();
 	}
 	if (general)  { delete general; general = NULL; }
 	if (editor)   { delete editor; editor = NULL; }

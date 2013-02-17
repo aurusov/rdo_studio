@@ -87,9 +87,9 @@ private:
 
 	int getMaxMarkerSize() const;
 
-	std::vector<HWND> m_viewHwndList;
-	void removeFromViews(const HWND handle);
-	void addToViews(const HWND handle);
+	std::vector<ChartView*> m_widgetList;
+	void addToViews(ChartView* pWidget);
+	void removeFromViews(ChartView* pWidget);
 
 	void updateChartViews(const UINT update_type) const;
 

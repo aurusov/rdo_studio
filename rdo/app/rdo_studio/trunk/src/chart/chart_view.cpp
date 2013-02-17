@@ -35,46 +35,33 @@ using namespace rdoStyle;
 // --------------------------------------------------------------------------------
 // -------------------- ChartView
 // --------------------------------------------------------------------------------
-// ON_UPDATE_COMMAND_UI сделано
-
-BEGIN_MESSAGE_MAP(ChartView, CWnd)
-	ON_WM_CREATE()
-	ON_WM_ERASEBKGND()
-	ON_WM_SIZE()
-	ON_COMMAND(ID_CHART_TIMEWRAP, OnChartTimewrap)
-	ON_UPDATE_COMMAND_UI(ID_CHART_TIMEWRAP, OnUpdateChartTimewrap)
-	ON_WM_HSCROLL()
-	ON_WM_KEYDOWN()
-	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-	ON_WM_INITMENUPOPUP()
-	ON_WM_CONTEXTMENU()
-	ON_COMMAND(ID_VIEW_ZOOMIN, OnChartZoomZoomin)
-	ON_COMMAND(ID_VIEW_ZOOMOUT, OnChartZoomZoomout)
-	ON_COMMAND(ID_VIEW_ZOOMRESET, OnChartZoomResetzoom)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMIN, OnUpdateChartZoomZoomin)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMOUT, OnUpdateChartZoomZoomout)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateChartZoomResetzoom)
-	ON_WM_MOUSEACTIVATE()
-	ON_COMMAND(ID_CHART_OPTIONS, OnChartOptions)
-	ON_WM_DESTROY()
-	ON_WM_PAINT()
-	ON_COMMAND(ID_VIEW_ZOOMAUTO, OnViewZoomauto)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateViewZoomauto)
-	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	ON_MESSAGE(WM_USER_UPDATE_CHART_VIEW, OnUserUpdateChartView)
-END_MESSAGE_MAP()
-
-static COLORREF convertColor(CREF(QColor) color)
-{
-	return RGB(color.red(), color.green(), color.blue());
-}
+//BEGIN_MESSAGE_MAP(ChartView, CWnd)
+//	ON_WM_ERASEBKGND()
+//	ON_COMMAND(ID_CHART_TIMEWRAP, OnChartTimewrap)
+//	ON_UPDATE_COMMAND_UI(ID_CHART_TIMEWRAP, OnUpdateChartTimewrap)
+//	ON_WM_HSCROLL()
+//	ON_WM_KEYDOWN()
+//	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
+//	ON_WM_INITMENUPOPUP()
+//	ON_WM_CONTEXTMENU()
+//	ON_COMMAND(ID_VIEW_ZOOMIN, OnChartZoomZoomin)
+//	ON_COMMAND(ID_VIEW_ZOOMOUT, OnChartZoomZoomout)
+//	ON_COMMAND(ID_VIEW_ZOOMRESET, OnChartZoomResetzoom)
+//	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMIN, OnUpdateChartZoomZoomin)
+//	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMOUT, OnUpdateChartZoomZoomout)
+//	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateChartZoomResetzoom)
+//	ON_WM_MOUSEACTIVATE()
+//	ON_COMMAND(ID_CHART_OPTIONS, OnChartOptions)
+//	ON_COMMAND(ID_VIEW_ZOOMAUTO, OnViewZoomauto)
+//	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateViewZoomauto)
+//	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
+//END_MESSAGE_MAP()
 
 ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview)
-	: CWnd()
+	: super(pParent)
 	, m_pDocument(pDocument)
-	, m_pParent  (pParent  )
 	, m_bmpRect(0, 0, 0, 0)
-	, m_newClientRect(0, 0, 0, 0)
+	, m_clientRect(0, 0, 0, 0)
 	, m_pddSerie(NULL)
 	, m_valueCountX(5)
 	, m_valueCountY(5)
@@ -96,77 +83,18 @@ ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool
 	, m_previewMode(preview)
 	, m_legendRect(0, 0, 0, 0)
 	, m_needDrawLegend(true)
-	, m_hbmp(NULL)
-	, m_hbmpInit(NULL)
-	, m_hfontTitle(NULL)
-	, m_hfontLegend(NULL)
-	, m_hfontAxis(NULL)
-	, m_hfontInit(NULL)
-	, m_hdc(NULL)
-	, m_savedHdc(0)
-	, m_hmemdc(NULL)
-	, m_savedHmemdc(0)
-	, m_hwnd(NULL)
 {
 	if (m_previewMode)
 		m_timeWrapFlag = false;
-}
 
-ChartView::~ChartView()
-{
-	delete m_pDocument;
-}
-
-BOOL ChartView::PreCreateWindow(CREATESTRUCT& cs)
-{
-	if (!CWnd::PreCreateWindow(cs))
-		return FALSE;
-	cs.style = WS_CHILD | WS_VISIBLE | WS_HSCROLL /*| WS_VSCROLL*/| WS_TABSTOP;
-	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	//Setting class style CS_OWNDC to avoid DC releasing
-	//and selecting previous objects into it
-	cs.lpszClass = AfxRegisterWndClass(CS_DBLCLKS | CS_OWNDC, ::LoadCursor(NULL, IDC_ARROW)/*, reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1), NULL*/);
-	return TRUE;
-}
-
-int ChartView::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if (!m_ddTarget.Register(this))
-		return -1;
-	if (CWnd::OnCreate(lpCreateStruct) == -1)
-		return -1;
-
-	//Remembering handle to the window in hwnd member
-	m_hwnd = GetSafeHwnd();
-	//Remembering handle to the private device context in hdc member
-	if (m_hwnd)
-		m_hdc = ::GetDC(m_hwnd);
-	if (!m_hdc)
-		return -1;
-
-	//Creating memory device context to draw on bitmap
-	m_hmemdc = ::CreateCompatibleDC(m_hdc);
-	if (!m_hmemdc)
-		return -1;
-	//Saving the own DC and memory DC states to restore them
-	//before deleting the memory DC or destroying window
-	m_savedHdc = ::SaveDC(m_hdc);
-	m_savedHmemdc = ::SaveDC(m_hmemdc);
-	if (!m_savedHdc || !m_savedHmemdc)
-		return -1;
-	//Setting background mode one time in initialization.
-	//We have private DC, so we needn't to reset it each time
-	//we paint
-	::SetBkMode(m_hmemdc, TRANSPARENT);
-	//Remembering default font to select it into DC
-	//when destroying window or setting new font
-	m_hfontInit = (HFONT)::GetCurrentObject(m_hmemdc, OBJ_FONT);
-	//Remembering default bmp to select it into DC
-	//when resizing window
-	m_hbmpInit = (HBITMAP)::GetCurrentObject(m_hmemdc, OBJ_BITMAP);
+	//! @todo qt
+	//if (!m_ddTarget.Register(this))
+	//	return -1;
 
 	if (!m_previewMode)
+	{
 		setStyle(&studioApp.getStyle()->style_chart, false);
+	}
 
 	if (getDocument())
 	{
@@ -174,37 +102,39 @@ int ChartView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		updateScrollBars();
 	}
 
-	m_popupMenu.CreatePopupMenu();
+	//m_popupMenu.CreatePopupMenu();
 
-	if (AfxGetMainWnd())
-	{
-		CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-		if (mainMenu)
-		{
-			rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
-			int delta = maximized ? 1 : 0;
+	//if (AfxGetMainWnd())
+	//{
+	//	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+	//	if (mainMenu)
+	//	{
+	//		rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
+	//		int delta = maximized ? 1 : 0;
 
-			appendMenu(mainMenu->GetSubMenu(1 + delta), 4, &m_popupMenu);
-			m_popupMenu.AppendMenu(MF_SEPARATOR);
-			appendMenu(mainMenu->GetSubMenu(3 + delta), 6, &m_popupMenu);
-			appendMenu(mainMenu->GetSubMenu(3 + delta), 7, &m_popupMenu);
-			appendMenu(mainMenu->GetSubMenu(3 + delta), 8, &m_popupMenu);
-			appendMenu(mainMenu->GetSubMenu(3 + delta), 9, &m_popupMenu);
-			m_popupMenu.AppendMenu(MF_SEPARATOR);
-			appendMenu(mainMenu->GetSubMenu(6 + delta), 4, &m_popupMenu);
-			m_popupMenu.AppendMenu(MF_SEPARATOR);
-			appendMenu(mainMenu->GetSubMenu(6 + delta), 6, &m_popupMenu);
-		}
-	}
+	//		appendMenu(mainMenu->GetSubMenu(1 + delta), 4, &m_popupMenu);
+	//		m_popupMenu.AppendMenu(MF_SEPARATOR);
+	//		appendMenu(mainMenu->GetSubMenu(3 + delta), 6, &m_popupMenu);
+	//		appendMenu(mainMenu->GetSubMenu(3 + delta), 7, &m_popupMenu);
+	//		appendMenu(mainMenu->GetSubMenu(3 + delta), 8, &m_popupMenu);
+	//		appendMenu(mainMenu->GetSubMenu(3 + delta), 9, &m_popupMenu);
+	//		m_popupMenu.AppendMenu(MF_SEPARATOR);
+	//		appendMenu(mainMenu->GetSubMenu(6 + delta), 4, &m_popupMenu);
+	//		m_popupMenu.AppendMenu(MF_SEPARATOR);
+	//		appendMenu(mainMenu->GetSubMenu(6 + delta), 6, &m_popupMenu);
+	//	}
+	//}
 
 	attachToDoc();
-
-	return 0;
 }
 
-QWidget* ChartView::getQtParent()
+ChartView::~ChartView()
 {
-	return m_pParent;
+	if (getDocument())
+	{
+		getDocument()->removeFromViews(this);
+	}
+	delete m_pDocument;
 }
 
 void ChartView::recalcLayout()
@@ -214,69 +144,62 @@ void ChartView::recalcLayout()
 
 	m_mutex.Lock();
 
-	::SelectObject(m_hmemdc, m_hfontTitle);
-
-	CRect tmprect;
+	QFontMetrics titleFontMetrics(m_fontTitle);
 	tstring str = doc->getTitle();
-	if (!str.empty())
-	{
-		tmprect.CopyRect(&m_newClientRect);
-		::DrawText(m_hmemdc, str.c_str(), str.length(), tmprect, DT_WORDBREAK | DT_CENTER | DT_CALCRECT);
-	}
-	else
-	{
-		tmprect = CRect(0, 0, 0, 0);
-	}
-	m_chartRect.top = tmprect.Height() + 5;
+	QRect titleRect = !str.empty()
+		? titleFontMetrics.boundingRect(QString::fromLocal8Bit(str.c_str()))
+		: QRect(0, 0, 0, 0);
+	m_chartRect.setTop(titleRect.height() + 5);
 
-	::SelectObject(m_hmemdc, m_hfontAxis);
-
-	SIZE sz;
-	SIZE size_max;
-	size_max.cx = 0;
-	size_max.cy = 0;
+	QFontMetrics axisFontMetrics(m_fontAxis);
+	QSize sizeMax(0, 0);
 	if (m_pYAxis)
 	{
 		m_pYAxis->getCaptions(m_captionList, m_valueCountY);
-		for (std::vector<tstring>::iterator it = m_captionList.begin(); it != m_captionList.end(); it++)
+		for (std::vector<tstring>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)
 		{
-			::GetTextExtentPoint32(m_hmemdc, (*it).c_str(), (*it).length(), &sz);
-			if (sz.cx > size_max.cx)
-				size_max.cx = sz.cx;
+			QRect rect = axisFontMetrics.boundingRect(QString::fromLocal8Bit(it->c_str()));
+			if (rect.width() > sizeMax.width())
+			{
+				sizeMax.setWidth(rect.width());
+			}
 		}
 	}
-	m_chartRect.left = size_max.cx + 10;
+	m_chartRect.setLeft(sizeMax.width() + 10);
 
-	str = !doc->m_docTimes.empty() ? rdo::format("%.3f", doc->m_docTimes.back()->time) : rdo::format("%.3f", 0);
-	::GetTextExtentPoint32(m_hmemdc, str.c_str(), str.length(), &sz);
-	m_chartRect.right = m_newClientRect.right - sz.cx - 5;
-
-	m_chartRect.bottom = m_newClientRect.bottom - sz.cy - 7;
+	str = !doc->m_docTimes.empty()
+		? rdo::format("%.3f", doc->m_docTimes.back()->time)
+		: rdo::format("%.3f", 0);
+	QSize size = axisFontMetrics.boundingRect(QString::fromLocal8Bit(str.c_str())).size();
+	m_chartRect.setRight(m_clientRect.right() - size.width() - 5);
+	m_chartRect.setBottom(m_clientRect.bottom() - size.height() - 7);
 
 	if (m_needDrawLegend)
 	{
-
-		::SelectObject(m_hmemdc, m_hfontLegend);
-
+		QFontMetrics legendFontMetrics(m_fontLegend);
 		int count = 0;
-		for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); it++)
+		for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); ++it)
 		{
-			(*it)->getLegendExtent(m_hmemdc, m_chartRect, sz);
-			if (sz.cx && sz.cy)
+			(*it)->getLegendExtent(legendFontMetrics, m_chartRect, size);
+			if (size.width() && size.height())
 			{
-				if (sz.cx > size_max.cx)
-					size_max.cx = sz.cx;
-				if (sz.cy > size_max.cy)
-					size_max.cy = sz.cy;
+				if (size.width() > sizeMax.width())
+				{
+					sizeMax.setWidth(size.width());
+				}
+				if (size.height() > sizeMax.height())
+				{
+					sizeMax.setHeight(size.height());
+				}
 				count++;
 			}
 		}
 
-		m_legendRect.top = m_chartRect.top;
-		m_legendRect.bottom = m_legendRect.top + count * size_max.cy + 3 + doc->getMaxMarkerSize() / 2;
-		m_legendRect.left = m_chartRect.left + (m_chartRect.Width() - size_max.cx) / 2;
-		m_legendRect.right = m_legendRect.left + size_max.cx;
-		m_chartRect.top += m_legendRect.Height();
+		m_legendRect.setTop(m_chartRect.top());
+		m_legendRect.setBottom(m_legendRect.top() + count * sizeMax.height() + 3 + doc->getMaxMarkerSize() / 2);
+		m_legendRect.setLeft(m_chartRect.left() + (m_chartRect.width() - sizeMax.width()) / 2);
+		m_legendRect.setRight(m_legendRect.left() + sizeMax.width());
+		m_chartRect.setTop(m_chartRect.top() + m_legendRect.height());
 	}
 
 	if (!doc->m_docTimes.empty())
@@ -284,7 +207,7 @@ void ChartView::recalcLayout()
 		double timeRange = doc->m_docTimes.back()->time - doc->m_docTimes.front()->time;
 		if (timeRange > 0)
 		{
-			long double timeScaleAuto = doUnwrapTime() ? (double)(m_chartRect.Width() - m_pStyle->pFontsTicks->tickWidth * doc->m_ticksCount) / timeRange : (double)m_chartRect.Width() / timeRange;
+			long double timeScaleAuto = doUnwrapTime() ? (double)(m_chartRect.width() - m_pStyle->pFontsTicks->tickWidth * doc->m_ticksCount) / timeRange : (double)m_chartRect.width() / timeRange;
 			m_timeScale = (double)m_pStyle->pFontsTicks->tickWidth / doc->m_minTimeOffset;
 			m_zoomAuto = double(timeScaleAuto) / double(m_timeScale);
 			/*if (doUnwrapTime() && auto_zoom < 0) {
@@ -318,7 +241,7 @@ void ChartView::recalcLayout()
 	doc->m_mutex.Unlock();
 }
 
-void ChartView::setScrollPos(UINT nSBCode, UINT nPos, const rbool need_update)
+void ChartView::setScrollPos(UINT nSBCode, UINT nPos, const rbool needUpdate)
 {
 	if (nSBCode == SB_HORZ)
 		m_xPos = nPos;
@@ -327,16 +250,16 @@ void ChartView::setScrollPos(UINT nSBCode, UINT nPos, const rbool need_update)
 	si.cbSize = sizeof(si);
 	si.fMask = SIF_POS;
 	si.nPos = m_xPos;
-	SetScrollInfo(nSBCode, &si, TRUE);
+	//! @todo qt
+	//SetScrollInfo(nSBCode, &si, TRUE);
 
-	if (need_update)
+	if (needUpdate)
 	{
-		Invalidate();
-		updateWindow();
+		update();
 	}
 }
 
-void ChartView::updateScrollBars(const rbool need_update)
+void ChartView::updateScrollBars(const rbool /*needUpdate toto qt*/)
 {
 	RDOStudioChartDoc* doc = getDocument();
 	doc->m_mutex.Lock();
@@ -355,7 +278,7 @@ void ChartView::updateScrollBars(const rbool need_update)
 		size = 0;
 	}
 
-	m_xMax = std::max(0, size - m_chartRect.Width());
+	m_xMax = std::max(0, size - m_chartRect.width());
 	m_xPos = std::min(m_xPos, m_xMax);
 
 	SCROLLINFO si;
@@ -363,17 +286,18 @@ void ChartView::updateScrollBars(const rbool need_update)
 	si.fMask = SIF_RANGE | SIF_PAGE | SIF_POS;
 	si.nMin = 0;
 	si.nMax = size - 1;
-	si.nPage = m_chartRect.Width();
+	si.nPage = m_chartRect.width();
 	si.nPos = m_xPos;
-	SetScrollInfo(SB_HORZ, &si, need_update);
+	//! @todo qt
+	//SetScrollInfo(SB_HORZ, &si, needUpdate);
 
 	doc->m_mutex.Unlock();
 }
 
-rbool ChartView::setTo(const int from_max_pos)
+rbool ChartView::setTo(const int fromMaxPos)
 {
 	rbool res = true;
-	int delta = (from_max_pos - m_xPos - m_chartRect.Width()) / m_pStyle->pFontsTicks->tickWidth;
+	int delta = (fromMaxPos - m_xPos - m_chartRect.width()) / m_pStyle->pFontsTicks->tickWidth;
 	if (delta >= 0)
 	{
 		res = false;
@@ -405,7 +329,7 @@ void ChartView::setFromTo()
 			}
 			else
 			{
-				m_drawToX.time = doc->m_docTimes.front()->time + (double)(m_xPos + m_chartRect.Width()) / double(m_timeScale);
+				m_drawToX.time = doc->m_docTimes.front()->time + (double)(m_xPos + m_chartRect.width()) / double(m_timeScale);
 			}
 		}
 		else
@@ -421,7 +345,7 @@ void ChartView::setFromTo()
 		rbool need_search_to = true;
 		int ticks = 0;
 		TimesList::iterator it;
-		for (it = doc->m_docTimes.begin(); it != doc->m_docTimes.end(); it++)
+		for (it = doc->m_docTimes.begin(); it != doc->m_docTimes.end(); ++it)
 		{
 			it_pos = roundDouble(((*it)->time - doc->m_docTimes.front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks->tickWidth;
 			it_max_pos = it_pos + m_pStyle->pFontsTicks->tickWidth * (*it)->eventCount;
@@ -458,14 +382,16 @@ void ChartView::setFromTo()
 			if (it == doc->m_docTimes.end() && !doc->m_docTimes.empty())
 			{
 				m_drawToX = m_drawFromX;
-				int delta = m_drawToX.eventCount * m_pStyle->pFontsTicks->tickWidth - m_chartRect.Width();
+				int delta = m_drawToX.eventCount * m_pStyle->pFontsTicks->tickWidth - m_chartRect.width();
 				m_drawToEventCount = delta >= 0 ? roundDouble((double)delta / (double)m_pStyle->pFontsTicks->tickWidth) : m_drawToX.eventCount;
 				it_max_pos = m_drawToX.eventCount * m_pStyle->pFontsTicks->tickWidth;
-				if (it_max_pos > m_chartRect.Width())
+				if (it_max_pos > m_chartRect.width())
 				{
-					m_drawToEventCount = (it_max_pos - m_chartRect.Width()) / m_pStyle->pFontsTicks->tickWidth;
-					if (m_drawToEventCount * m_pStyle->pFontsTicks->tickWidth < m_chartRect.Width())
+					m_drawToEventCount = (it_max_pos - m_chartRect.width()) / m_pStyle->pFontsTicks->tickWidth;
+					if (m_drawToEventCount * m_pStyle->pFontsTicks->tickWidth < m_chartRect.width())
+					{
 						m_drawToEventCount++;
+					}
 				}
 				else
 				{
@@ -473,8 +399,8 @@ void ChartView::setFromTo()
 				}
 				
 			}
-			int pos = m_xPos + m_chartRect.Width();
-			for (; it != doc->m_docTimes.end(); it++)
+			int pos = m_xPos + m_chartRect.width();
+			for (; it != doc->m_docTimes.end(); ++it)
 			{
 				it_pos = roundDouble(((*it)->time - doc->m_docTimes.front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks->tickWidth;
 				it_max_pos = it_pos + m_pStyle->pFontsTicks->tickWidth * (*it)->eventCount;
@@ -488,7 +414,9 @@ void ChartView::setFromTo()
 					m_drawToX = *(*it);
 					m_drawToEventCount = (pos - it_pos) / m_pStyle->pFontsTicks->tickWidth;
 					if (it_pos + m_drawToEventCount * m_pStyle->pFontsTicks->tickWidth < pos)
+					{
 						m_drawToEventCount++;
+					}
 					break;
 				}
 				if (it_pos > pos)
@@ -504,105 +432,102 @@ void ChartView::setFromTo()
 	}
 }
 
-void ChartView::drawTitle(CRect& chartRect)
+void ChartView::drawTitle(QPainter& painter, const QRect& chartRect)
 {
-	CRect tmprect;
-	tmprect.CopyRect(&m_newClientRect);
-	tmprect.top = 0;
-	tmprect.bottom = chartRect.top;
+	QRect rect(m_clientRect);
+	rect.setTop(0);
+	rect.setBottom(chartRect.top());
 
-	::SelectObject(m_hmemdc, m_hfontTitle);
-	::SetTextColor(m_hmemdc, convertColor(m_pStyle->getTheme()->titleFGColor));
-
-	tstring str = getDocument()->getTitle();
-	::DrawText(m_hmemdc, str.c_str(), str.length(), tmprect, DT_CENTER | DT_WORDBREAK);
+	painter.setFont(m_fontTitle);
+	painter.setPen(m_pStyle->getTheme()->titleFGColor);
+	//! @todo qt +DT_WORDBREAK
+	painter.drawText(rect, Qt::AlignCenter, QString::fromLocal8Bit(getDocument()->getTitle().c_str()));
 }
 
-void ChartView::drawLegend(CRect& legendRect)
+void ChartView::drawLegend(QPainter& painter, const QRect& legendRect)
 {
 	RDOStudioChartDoc* doc = getDocument();
-	CRect tmprect;
-	tmprect.CopyRect(&legendRect);
-	SIZE size;
-	::SelectObject(m_hmemdc, m_hfontLegend);
+	QRect rect(legendRect);
+	QSize size;
+	painter.setFont(m_fontLegend);
 	for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); ++it)
 	{
-		(*it)->drawInLegend(m_hmemdc, tmprect, convertColor(m_pStyle->getTheme()->legendFgColor), size);
-		tmprect.top += size.cy;
+		(*it)->drawInLegend(painter, rect, m_pStyle->getTheme()->legendFgColor, size);
+		rect.setTop(rect.top() + size.height());
 	}
 }
 
-void ChartView::drawYAxis(CRect& chartRect, const ChartSerie* axisValues)
+void ChartView::drawYAxis(QPainter& painter, const QRect& chartRect, const ChartSerie* axisValues)
 {
-	CRect tmprect;
-	tmprect.CopyRect(&m_newClientRect);
-	tmprect.right = chartRect.left - 5;
-	tmprect.left = 5;
+	QRect tmprect(m_clientRect);
+	tmprect.setRight(chartRect.left() - 5);
+	tmprect.setLeft(5);
 	if (axisValues)
 	{
 		int count;
 		axisValues->getSerie()->getValueCount(count);
 		if (count)
 		{
-			::SelectObject(m_hmemdc, m_hfontAxis);
-			::SetTextColor(m_hmemdc, convertColor(m_pStyle->getTheme()->axisFgColor));
+			painter.setFont(m_fontAxis);
+			painter.setPen(m_pStyle->getTheme()->axisFgColor);
 
 			int count = m_captionList.size();
-			int heightoffset = roundDouble((double)chartRect.Height() / (double)(count - 1));
-			tmprect.top = chartRect.bottom;
+			int heightoffset = roundDouble((double)chartRect.height() / (double)(count - 1));
+			tmprect.setTop(chartRect.bottom());
 			int index = 0;
-			for (std::vector<tstring>::iterator it = m_captionList.begin(); it != m_captionList.end(); it++)
+			for (std::vector<tstring>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)
 			{
 				index++;
-				::DrawText(m_hmemdc, (*it).c_str(), (*it).length(), tmprect, DT_RIGHT);
+				painter.drawText(tmprect, Qt::AlignRight, QString::fromLocal8Bit(it->c_str()));
 				if (index != 1 && index < count)
 				{
-					::MoveToEx(m_hmemdc, tmprect.right + 2, tmprect.top, (LPPOINT)NULL);
-					::LineTo(m_hmemdc, chartRect.left, tmprect.top);
+					QPainterPath path;
+					path.moveTo(tmprect.right() + 2, tmprect.top());
+					path.lineTo(chartRect.left(), tmprect.top());
+					painter.drawPath(path);
 				}
 				if (index == count - 1)
 				{
-					tmprect.top = chartRect.top;
+					tmprect.setTop(chartRect.top());
 				}
 				else
 				{
-					tmprect.top -= heightoffset;
+					tmprect.setTop(tmprect.top() - heightoffset);
 				}
 			}
 		}
 	}
 }
 
-void ChartView::drawXAxis(CRect& chartRect)
+void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 {
-	CRect tmprect;
-	tmprect.CopyRect(&chartRect);
-	tmprect.top = chartRect.bottom + 3;
-	tmprect.left = chartRect.left;
-	tmprect.bottom = m_newClientRect.bottom;
-	tmprect.right = m_newClientRect.right - 5;
+	QRect tmprect(chartRect);
+	tmprect.setTop(chartRect.bottom() + 3);
+	tmprect.setLeft(chartRect.left());
+	tmprect.setBottom(m_clientRect.bottom());
+	tmprect.setRight(m_clientRect.right() - 5);
 
 	RDOStudioChartDoc* doc = getDocument();
 	if (!doc->m_docTimes.empty())
 	{
 		tstring formatstr = "%.3f";
 
-		::SelectObject(m_hmemdc, m_hfontAxis);
-		::SetTextColor(m_hmemdc, convertColor(m_pStyle->getTheme()->axisFgColor));
+		painter.setFont(m_fontAxis);
+		painter.setPen(m_pStyle->getTheme()->axisFgColor);
 
 		if (!doUnwrapTime())
 		{
 			double valoffset = 0;
-			int widthoffset = chartRect.Width() / (m_valueCountX - 1);
+			int widthoffset = chartRect.width() / (m_valueCountX - 1);
 			if (m_drawToX != m_drawFromX)
 			{
 				valoffset = (m_drawToX.time - m_drawFromX.time) / (m_valueCountX - 1);
 			}
 			double valo = m_drawFromX.time;
-			int x = chartRect.left;
+			int x = chartRect.left();
 			tstring str = rdo::format(formatstr.c_str(), valo);
-			tmprect.left = x;
-			::DrawText(m_hmemdc, str.c_str(), str.length(), tmprect, DT_LEFT);
+			tmprect.setLeft(x);
+			painter.drawText(tmprect, Qt::AlignLeft, QString::fromLocal8Bit(str.c_str()));
 			valo += valoffset;
 			x += widthoffset;
 			if (valoffset)
@@ -610,12 +535,14 @@ void ChartView::drawXAxis(CRect& chartRect)
 				for (int i = 1; i < m_valueCountX; i++)
 				{
 					str = rdo::format(formatstr.c_str(), valo);
-					tmprect.left = x;
-					::DrawText(m_hmemdc, str.c_str(), str.length(), tmprect, DT_LEFT);
+					tmprect.setLeft(x);
+					painter.drawText(tmprect, Qt::AlignLeft, QString::fromLocal8Bit(str.c_str()));
 					if (i != m_valueCountX - 1)
 					{
-						::MoveToEx(m_hmemdc, x, chartRect.bottom, (LPPOINT)NULL);
-						::LineTo(m_hmemdc, x, chartRect.bottom + 3);
+						QPainterPath path;
+						path.moveTo(x, chartRect.bottom());
+						path.lineTo(x, chartRect.bottom() + 3);
+						painter.drawPath(path);
 					}
 					valo += valoffset;
 					x += widthoffset;
@@ -627,31 +554,33 @@ void ChartView::drawXAxis(CRect& chartRect)
 			int ticks = 0;
 			tstring str;
 			int lastx = 0;
-			SIZE sz;
-			for (TimesList::iterator it = m_unwrapTimesList.begin(); it != m_unwrapTimesList.end(); it++)
+			QSize sz;
+			for (TimesList::iterator it = m_unwrapTimesList.begin(); it != m_unwrapTimesList.end(); ++it)
 			{
-				tmprect.left = chartRect.left + (LONG)(((*it)->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks->tickWidth - m_chartShift);
-				tmprect.left = std::min(tmprect.left, chartRect.right - 1);
+				tmprect.setLeft(chartRect.left() + (LONG)(((*it)->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks->tickWidth - m_chartShift));
+				tmprect.setLeft(std::min(tmprect.left(), chartRect.right() - 1));
 				str = rdo::format(formatstr.c_str(), (*it)->time);
 				if (*(*it) == m_drawFromX)
 				{
-					tmprect.left += m_chartShift;
+					tmprect.setLeft(tmprect.left() + m_chartShift);
 				}
-				if (tmprect.left > chartRect.right)
+				if (tmprect.left() > chartRect.right())
 				{
-					tmprect.left = chartRect.right;
+					tmprect.setLeft(chartRect.right());
 				}
 
-				if (tmprect.left > lastx)
+				if (tmprect.left() > lastx)
 				{
-					::DrawText(m_hmemdc, str.c_str(), str.length(), tmprect, DT_LEFT);
-					if (tmprect.left != chartRect.left && tmprect.left != chartRect.right)
+					painter.drawText(tmprect, Qt::AlignLeft, QString::fromLocal8Bit(str.c_str()));
+					if (tmprect.left() != chartRect.left() && tmprect.left() != chartRect.right())
 					{
-						::MoveToEx(m_hmemdc, tmprect.left, chartRect.bottom, (LPPOINT)NULL);
-						::LineTo(m_hmemdc, tmprect.left, chartRect.bottom + 3);
+						QPainterPath path;
+						path.moveTo(tmprect.left(), chartRect.bottom());
+						path.lineTo(tmprect.left(), chartRect.bottom() + 3);
+						painter.drawPath(path);
 					}
-					::GetTextExtentPoint32(m_hmemdc, str.c_str(), str.length(), &sz);
-					lastx = tmprect.left + sz.cx;
+					QSize size = painter.fontMetrics().boundingRect(QString::fromLocal8Bit(str.c_str())).size();
+					lastx = tmprect.left() + size.width();
 				}
 
 				ticks += (*it)->eventCount;
@@ -664,52 +593,34 @@ void ChartView::drawXAxis(CRect& chartRect)
 	}
 }
 
-void ChartView::drawGrid(CRect& chartRect)
+void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 {
-	HBRUSH brush_chart = NULL;
-	HBRUSH old_brush = NULL;
-	try
-	{
-		brush_chart = ::CreateSolidBrush(convertColor(m_pStyle->getTheme()->chartBgColor));
-		old_brush = (HBRUSH)::SelectObject(m_hmemdc, brush_chart);
-		::Rectangle(m_hmemdc, chartRect.left, chartRect.top, chartRect.right, chartRect.bottom);
-		::SelectObject(m_hmemdc, old_brush);
-		::DeleteObject(brush_chart);
-		brush_chart = NULL;
-	}
-	catch (...)
-	{
-		if (brush_chart)
-		{
-			::SelectObject(m_hmemdc, old_brush);
-			::DeleteObject(brush_chart);
-			brush_chart = NULL;
-		}
-	}
+	QBrush brush(m_pStyle->getTheme()->chartBgColor);
+	painter.setBrush(brush);
+	painter.drawRect(chartRect);
 
 	if (doUnwrapTime())
 	{
-		CRect rect;
-		rect.CopyRect(chartRect);
-		rect.InflateRect(-1, -1);
-		CRect tmprect;
-		tmprect.CopyRect(&rect);
+		QRect rect(chartRect);
+		rect.adjust(-1, -1, -1, -1);
+		QRect tmprect(rect);
 
-		::IntersectClipRect(m_hmemdc, rect.left, rect.top, rect.right, rect.bottom);
+		//! @todo qt
+		//::IntersectClipRect(m_hmemdc, rect.left, rect.top, rect.right, rect.bottom);
 		int ticks = 0;
 		TimesList::iterator it = m_unwrapTimesList.begin();
 		if (m_drawFromX == m_drawToX)
 		{
-			it++;
+			++it;
 		}
 		//For drawing solid rect
-		::SetBkColor(m_hmemdc, convertColor(m_pStyle->getTheme()->timeBgColor));
-		for (; it != m_unwrapTimesList.end(); it++)
+		painter.setBrush(m_pStyle->getTheme()->timeBgColor);
+		for (; it != m_unwrapTimesList.end(); ++it)
 		{
 			int width = (*it)->eventCount * m_pStyle->pFontsTicks->tickWidth;
-			tmprect.left = rect.left + (LONG)(((*it)->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks->tickWidth - m_chartShift);
-			if (tmprect.left < rect.left)
-				tmprect.left = rect.left;
+			tmprect.setLeft(rect.left() + (LONG)(((*it)->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks->tickWidth - m_chartShift));
+			if (tmprect.left() < rect.left())
+				tmprect.setLeft(rect.left());
 			if (*(*it) == m_drawFromX)
 			{
 				width -= m_drawFromEventIndex * m_pStyle->pFontsTicks->tickWidth + m_chartShift;
@@ -718,52 +629,51 @@ void ChartView::drawGrid(CRect& chartRect)
 			{
 				width = m_drawToEventCount * m_pStyle->pFontsTicks->tickWidth;
 			}
-			tmprect.right = tmprect.left + width;
-			if (tmprect.right > rect.right)
-				tmprect.right = rect.right;
-			//MFC's FillSolidRect do the same thing
-			::ExtTextOut(m_hmemdc, 0, 0, ETO_OPAQUE, tmprect, NULL, 0, NULL);
+			tmprect.setRight(tmprect.left() + width);
+			if (tmprect.right() > rect.right())
+				tmprect.setRight(rect.right());
+			painter.drawRect(tmprect);
 			ticks += (*it)->eventCount;
 			if (*(*it) == m_drawFromX)
 			{
 				ticks -= m_drawFromEventIndex;
 			}
 		}
-		::SelectClipRgn(m_hmemdc, NULL);
 	}
 }
 
 void ChartView::copyToClipboard()
 {
-	if (!OpenClipboard() || !::EmptyClipboard())
-		return;
+	//! todo qt
+	//if (!OpenClipboard() || !::EmptyClipboard())
+	//	return;
 
-	m_mutex.Lock();
+	//m_mutex.Lock();
 
-	if (m_hmemdc)
-	{
-		HBITMAP hbm = ::CreateCompatibleBitmap(m_hmemdc, m_newClientRect.Width(), m_newClientRect.Height());
-		if (hbm)
-		{
-			HDC hdcDst = ::CreateCompatibleDC(m_hmemdc);
-			if (hdcDst)
-			{
-				HGDIOBJ oldObj = ::SelectObject(hdcDst, hbm);
-				::BitBlt(hdcDst, 0, 0, m_newClientRect.Width(), m_newClientRect.Height(), m_hmemdc, m_newClientRect.left, m_newClientRect.top, SRCCOPY);
-				::SelectObject(hdcDst, oldObj);
-				::DeleteDC(hdcDst);
-				::SetClipboardData(CF_BITMAP, hbm);
-			}
-			else
-			{
-				::DeleteObject(hbm);
-			}
-		}
-	}
+	//if (m_hmemdc)
+	//{
+	//	HBITMAP hbm = ::CreateCompatibleBitmap(m_hmemdc, m_clientRect.width(), m_clientRect.height());
+	//	if (hbm)
+	//	{
+	//		HDC hdcDst = ::CreateCompatibleDC(m_hmemdc);
+	//		if (hdcDst)
+	//		{
+	//			HGDIOBJ oldObj = ::SelectObject(hdcDst, hbm);
+	//			::BitBlt(hdcDst, 0, 0, m_clientRect.width(), m_clientRect.height(), m_hmemdc, m_clientRect.left, m_clientRect.top, SRCCOPY);
+	//			::SelectObject(hdcDst, oldObj);
+	//			::DeleteDC(hdcDst);
+	//			::SetClipboardData(CF_BITMAP, hbm);
+	//		}
+	//		else
+	//		{
+	//			::DeleteObject(hbm);
+	//		}
+	//	}
+	//}
 
-	CloseClipboard();
+	//CloseClipboard();
 
-	m_mutex.Unlock();
+	//m_mutex.Unlock();
 }
 
 void ChartView::setZoom(double new_zoom, const rbool force_update)
@@ -787,66 +697,8 @@ void ChartView::setZoom(double new_zoom, const rbool force_update)
 		m_scaleKoeff = m_zoom;
 		recalcLayout();
 		updateScrollBars();
-		Invalidate();
-		updateWindow();
+		update();
 	//}
-}
-
-void ChartView::onDraw()
-{
-	//Document and view are locked from OnPaint()
-
-	RDOStudioChartDoc* doc = getDocument();
-
-	CRect rect;
-	rect.CopyRect(&m_newClientRect);
-
-	//MFC's FillSolidRect do the same thing
-	::SetBkColor(m_hmemdc, convertColor(m_pStyle->theme->backgroundColor));
-	::ExtTextOut(m_hmemdc, 0, 0, ETO_OPAQUE, m_newClientRect, NULL, 0, NULL);
-
-	drawTitle(m_chartRect);
-
-	if (m_needDrawLegend)
-	{
-		drawLegend(m_legendRect);
-	}
-
-	if (m_chartRect.Height() > 0 && m_chartRect.Width() > 0)
-	{
-		HPEN pen_chart = NULL;
-		HPEN old_pen = NULL;
-		try
-		{
-			pen_chart = ::CreatePen(PS_SOLID, 0, convertColor(m_pStyle->getTheme()->defaultColor));
-			old_pen = (HPEN)::SelectObject(m_hmemdc, pen_chart);
-
-			drawYAxis(m_chartRect, m_pYAxis);
-			setFromTo();
-			drawXAxis(m_chartRect);
-			drawGrid(m_chartRect);
-
-			::SelectObject(m_hmemdc, old_pen);
-			::DeleteObject(pen_chart);
-			pen_chart = NULL;
-		}
-		catch (...)
-		{
-			if (pen_chart)
-			{
-				::SelectObject(m_hmemdc, old_pen);
-				::DeleteObject(pen_chart);
-				pen_chart = NULL;
-			}
-		}
-
-		for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); ++it)
-		{
-			(*it)->drawSerie(this, m_hmemdc, m_chartRect);
-		}
-	}
-
-	::BitBlt(m_hdc, 0, 0, m_newClientRect.Width(), m_newClientRect.Height(), m_hmemdc, 0, 0, SRCCOPY);
 }
 
 DROPEFFECT ChartView::OnDragEnter(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point)
@@ -914,28 +766,13 @@ BOOL ChartView::OnEraseBkgnd(CDC* pDC)
 	return TRUE;
 }
 
-void ChartView::OnSize(UINT nType, int cx, int cy)
+void ChartView::resizeEvent(QResizeEvent* pEvent)
 {
-	UNUSED(nType);
-	UNUSED(cx);
-	UNUSED(cy);
+	super::resizeEvent(pEvent);
 
 	m_mutex.Lock();
 
-	GetClientRect(&m_newClientRect);
-
-	if (m_newClientRect.Width() > m_bmpRect.Width() || m_newClientRect.Height() > m_bmpRect.Height())
-	{
-		if (m_hbmp)
-		{
-			::SelectObject(m_hmemdc, m_hbmpInit);
-			::DeleteObject (m_hbmp);
-		}
-		m_hbmp = CreateCompatibleBitmap(m_hdc, m_newClientRect.Width(), m_newClientRect.Height());
-		::SelectObject(m_hmemdc, m_hbmp);
-		m_bmpRect = m_newClientRect;
-	}
-
+	m_clientRect = QRect(QPoint(0, 0), pEvent->size());
 	if (getDocument())
 	{
 		recalcLayout();
@@ -951,8 +788,7 @@ void ChartView::OnChartTimewrap()
 	m_timeWrapFlag = !m_timeWrapFlag;
 	recalcLayout();
 	updateScrollBars();
-	Invalidate();
-	updateWindow();
+	update();
 }
 
 void ChartView::OnUpdateChartTimewrap(CCmdUI* pCmdUI)
@@ -961,15 +797,12 @@ void ChartView::OnUpdateChartTimewrap(CCmdUI* pCmdUI)
 	pCmdUI->Enable(canUnwrapTime());
 }
 
-LRESULT ChartView::OnUserUpdateChartView(WPARAM wParam, LPARAM lParam)
+void ChartView::onUserUpdateChartView(ruint updateType)
 {
-	UNUSED(lParam);
-
-	if (doUnwrapTime() || wParam != UPDATE_TIMETICKS)
+	if (doUnwrapTime() || updateType != UPDATE_TIMETICKS)
 	{
 		updateView();
 	}
-	return 0;
 }
 
 void ChartView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
@@ -984,11 +817,11 @@ void ChartView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	switch (nSBCode)
 	{
 	case SB_PAGEUP:
-		inc = -m_chartRect.Width();
+		inc = -m_chartRect.width();
 		break;
 
 	case SB_PAGEDOWN:
-		inc = m_chartRect.Width();
+		inc = m_chartRect.width();
 		break;
 
 	case SB_LINEUP:
@@ -1001,7 +834,8 @@ void ChartView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 	case SB_THUMBTRACK:
 	{
-		GetScrollInfo(SB_HORZ, &si, SIF_TRACKPOS);
+		//! @todo qt
+		//GetScrollInfo(SB_HORZ, &si, SIF_TRACKPOS);
 		inc = si.nTrackPos - m_xPos;
 		break;
 	}
@@ -1069,7 +903,8 @@ void ChartView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (scrollNotify != 0xFFFF)
 	{
-		::SendMessage(m_hWnd, msg, MAKELONG(scrollNotify, pos), NULL);
+		//! @todo qt
+		//::SendMessage(m_hWnd, msg, MAKELONG(scrollNotify, pos), NULL);
 	}
 
 	if (side)
@@ -1085,24 +920,26 @@ void ChartView::OnEditCopy()
 
 void ChartView::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
 {
-	CWnd::OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
-	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
-	if (pwndFrame)
-	{
-		pwndFrame->SendMessage(WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu));
-	}
+	//! @todo qt
+	//CWnd::OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
+	//CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
+	//if (pwndFrame)
+	//{
+	//	pwndFrame->SendMessage(WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu));
+	//}
 }
 
 void ChartView::OnContextMenu(CWnd* pWnd, CPoint pos)
 {
-	if (m_previewMode)
-		return;
+	//! @todo qt
+	//if (m_previewMode)
+	//	return;
 
-	CWnd::OnContextMenu(pWnd, pos);
-	if (m_popupMenu.m_hMenu)
-	{
-		m_popupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this);
-	}
+	//CWnd::OnContextMenu(pWnd, pos);
+	//if (m_popupMenu.m_hMenu)
+	//{
+	//	m_popupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this);
+	//}
 }
 
 void ChartView::OnChartZoomZoomin()
@@ -1162,18 +999,6 @@ const RDOStudioChartViewStyle& ChartView::getStyle() const
 	return (*m_pStyle);
 }
 
-int ChartView::OnMouseActivate(CWnd* pDesktopWnd, UINT nHitTest, UINT message)
-{
-	if (m_previewMode)
-	{
-		return CWnd::OnMouseActivate(pDesktopWnd, nHitTest, message);
-	}
-	else
-	{
-		return CWnd::OnMouseActivate(pDesktopWnd, nHitTest, message);
-	}
-}
-
 void ChartView::setFonts(const rbool needRedraw)
 {
 	UNUSED(needRedraw);
@@ -1183,62 +1008,32 @@ void ChartView::setFonts(const rbool needRedraw)
 	
 	m_mutex.Lock();
 
-	LOGFONT lf;
-	RDOStudioChartViewTheme* chart_theme = static_cast<RDOStudioChartViewTheme*>(m_pStyle->theme);
-	::SelectObject(m_hdc, m_hfontInit);
+	RDOStudioChartViewTheme* pChartTheme = static_cast<RDOStudioChartViewTheme*>(m_pStyle->theme);
 
-	if (!m_hfontAxis || ::DeleteObject(m_hfontAxis))
-	{
-		memset(&lf, 0, sizeof(lf));
-		// The negative is to allow for leading
-		lf.lfHeight = -MulDiv(m_pStyle->font->size, ::GetDeviceCaps(m_hdc, LOGPIXELSY), 72);
-		lf.lfWeight = chart_theme->defaultStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
-		lf.lfItalic = chart_theme->defaultStyle & RDOStyleFont::ITALIC;
-		lf.lfUnderline = chart_theme->defaultStyle & RDOStyleFont::UNDERLINE;
-		lf.lfCharSet = BYTE(m_pStyle->font->characterSet);
-#pragma warning(disable: 4996)
-		strcpy(lf.lfFaceName, m_pStyle->font->name.c_str());
-#pragma warning(default: 4996)
-		m_hfontAxis = ::CreateFontIndirect(&lf);
-	}
+	m_fontAxis = QFont(m_pStyle->font->name.c_str());
+	m_fontAxis.setBold     (pChartTheme->defaultStyle & RDOStyleFont::BOLD     );
+	m_fontAxis.setItalic   (pChartTheme->defaultStyle & RDOStyleFont::ITALIC   );
+	m_fontAxis.setUnderline(pChartTheme->defaultStyle & RDOStyleFont::UNDERLINE);
+	m_fontAxis.setPointSize(m_pStyle->font->size);
 
-	if (!m_hfontTitle || ::DeleteObject(m_hfontTitle))
-	{
-		memset(&lf, 0, sizeof(lf));
-		// The negative is to allow for leading
-		lf.lfHeight = -MulDiv(m_pStyle->pFontsTicks->titleFontSize, ::GetDeviceCaps(m_hdc, LOGPIXELSY), 72);
-		lf.lfWeight = chart_theme->titleStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
-		lf.lfItalic = chart_theme->titleStyle & RDOStyleFont::ITALIC;
-		lf.lfUnderline = chart_theme->titleStyle & RDOStyleFont::UNDERLINE;
-		lf.lfCharSet = BYTE(m_pStyle->font->characterSet);
-#pragma warning(disable: 4996)
-		strcpy(lf.lfFaceName, m_pStyle->font->name.c_str());
-#pragma warning(default: 4996)
+	m_fontTitle = QFont(m_pStyle->font->name.c_str());
+	m_fontTitle.setBold     (pChartTheme->defaultStyle & RDOStyleFont::BOLD     );
+	m_fontTitle.setItalic   (pChartTheme->defaultStyle & RDOStyleFont::ITALIC   );
+	m_fontTitle.setUnderline(pChartTheme->defaultStyle & RDOStyleFont::UNDERLINE);
+	m_fontTitle.setPointSize(m_pStyle->pFontsTicks->titleFontSize);
 
-		m_hfontTitle = ::CreateFontIndirect(&lf);
-	}
-	if (!m_hfontLegend || ::DeleteObject(m_hfontLegend))
-	{
-		memset(&lf, 0, sizeof(lf));
-		// The negative is to allow for leading
-		lf.lfHeight = -MulDiv(m_pStyle->pFontsTicks->legendFontSize, ::GetDeviceCaps(m_hdc, LOGPIXELSY), 72);
-		lf.lfWeight = chart_theme->legendStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
-		lf.lfItalic = chart_theme->legendStyle & RDOStyleFont::ITALIC;
-		lf.lfUnderline = chart_theme->legendStyle & RDOStyleFont::UNDERLINE;
-		lf.lfCharSet = BYTE(m_pStyle->font->characterSet);
-#pragma warning(disable: 4996)
-		strcpy(lf.lfFaceName, m_pStyle->font->name.c_str());
-#pragma warning(default: 4996)
-
-		m_hfontLegend = ::CreateFontIndirect(&lf);
-	}
+	m_fontLegend = QFont(m_pStyle->font->name.c_str());
+	m_fontLegend.setBold     (pChartTheme->defaultStyle & RDOStyleFont::BOLD     );
+	m_fontLegend.setItalic   (pChartTheme->defaultStyle & RDOStyleFont::ITALIC   );
+	m_fontLegend.setUnderline(pChartTheme->defaultStyle & RDOStyleFont::UNDERLINE);
+	m_fontLegend.setPointSize(m_pStyle->pFontsTicks->legendFontSize);
 
 	m_mutex.Unlock();
 }
 
-void ChartView::setStyle(RDOStudioChartViewStyle* _style, const rbool needRedraw)
+void ChartView::setStyle(RDOStudioChartViewStyle* pStyle, const rbool needRedraw)
 {
-	m_pStyle = _style;
+	m_pStyle = pStyle;
 
 	setFonts(false);
 
@@ -1251,8 +1046,7 @@ void ChartView::setStyle(RDOStudioChartViewStyle* _style, const rbool needRedraw
 	{
 		recalcLayout();
 		updateScrollBars();
-		Invalidate();
-		updateWindow();
+		update();
 	}
 }
 
@@ -1267,16 +1061,6 @@ void ChartView::OnChartOptions()
 	dlg.DoModal();
 }
 
-void ChartView::updateWindow()
-{
-	CRgn updateRgn;
-	int rgn_type = GetUpdateRgn(&updateRgn);
-	if (rgn_type != NULLREGION && rgn_type != ERROR)
-	{
-		SendNotifyMessage(WM_PAINT, 0, 0);
-	}
-}
-
 void ChartView::updateView()
 {
 	getDocument()->lock();
@@ -1287,68 +1071,48 @@ void ChartView::updateView()
 	{
 		setScrollPos(SB_HORZ, m_xMax, false);
 	}
-	getQtParent()->update();
+	parentWidget()->update();
 	updateScrollBars(true);
 	getDocument()->unlock();
 }
 
-void ChartView::OnDestroy()
-{
-	if (getDocument())
-	{
-		getDocument()->removeFromViews(GetSafeHwnd());
-	}
-	if (m_hdc)
-	{
-		::RestoreDC(m_hdc, m_savedHdc);
-	}
-	if (m_hmemdc)
-	{
-		::RestoreDC(m_hmemdc, m_savedHmemdc);
-		::DeleteDC (m_hmemdc);
-	}
-	if (m_hfontTitle)
-	{
-		::DeleteObject (m_hfontTitle);
-	}
-	if (m_hfontLegend)
-	{
-		::DeleteObject (m_hfontLegend);
-	}
-	if (m_hfontAxis)
-	{
-		::DeleteObject (m_hfontAxis);
-	}
-	if (m_hbmp)
-	{
-		::DeleteObject (m_hbmp);
-	}
-	CWnd::OnDestroy();
-}
-
 void ChartView::attachToDoc()
 {
-	getDocument()->addToViews(GetSafeHwnd());
+	getDocument()->addToViews(this);
 }
 
-void ChartView::OnPaint()
+void ChartView::paintEvent(QPaintEvent* pEvent)
 {
+	QPainter painter(this);
+
 	RDOStudioChartDoc* doc = getDocument();
 	doc->m_mutex.Lock();
 
 	m_mutex.Lock();
 
-	//MFC's realization
-	/*PAINTSTRUCT ps;
-	 CDC* dc = BeginPaint(&ps);
-	 OnPrepareDC(dc);
-	 OnDraw(dc);
-	 EndPaint(&ps);*/
+	painter.fillRect(m_clientRect, m_pStyle->theme->backgroundColor);
 
-	PAINTSTRUCT ps;
-	::BeginPaint(m_hwnd, &ps);
-	onDraw();
-	::EndPaint(m_hwnd, &ps);
+	drawTitle(painter, m_chartRect);
+
+	if (m_needDrawLegend)
+	{
+		drawLegend(painter, m_legendRect);
+	}
+
+	if (m_chartRect.height() > 0 && m_chartRect.width() > 0)
+	{
+		painter.setPen(m_pStyle->getTheme()->defaultColor);
+
+		drawYAxis(painter, m_chartRect, m_pYAxis);
+		setFromTo();
+		drawXAxis(painter, m_chartRect);
+		drawGrid(painter, m_chartRect);
+
+		for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); ++it)
+		{
+			(*it)->drawSerie(this, painter, m_chartRect);
+		}
+	}
 
 	m_mutex.Unlock();
 
@@ -1381,59 +1145,73 @@ void ChartView::OnHelpKeyword()
 	studioApp.callQtAssistant(ba);
 }
 
-ChartViewMainWnd::ChartViewMainWnd(RDOStudioChartDoc* pDocument, const rbool preview)
-	: m_pContext (NULL     )
-	, m_pDocument(pDocument)
-	, m_preview  (preview  )
-{}
+rbool ChartView::canUnwrapTime() const
+{
+	return m_scaleKoeff >= 1 && !m_zoomAutoFlag;
+}
+
+rbool ChartView::doUnwrapTime() const
+{
+	return canUnwrapTime() && !m_timeWrapFlag;
+}
+
+rbool ChartView::minXVisible() const
+{
+	return m_xPos == 0;
+}
+
+rbool ChartView::maxXVisible() const
+{
+	return m_xPos == m_xMax;
+}
+
+ChartViewMainWnd::ChartViewMainWnd(PTR(QWidget) pParent, PTR(RDOStudioChartDoc) pDocument, rbool preview)
+	: super(pParent)
+{
+	ChartView* pContext = new ChartView(this, pDocument, preview);
+	pContext->show();
+	setViewport(pContext);
+}
 
 ChartViewMainWnd::~ChartViewMainWnd()
+{}
+
+ChartView& ChartViewMainWnd::view()
 {
-	m_thisCWnd.Detach();
+	return *static_cast<PTR(ChartView)>(viewport());
 }
 
-rbool ChartViewMainWnd::init()
+rbool ChartViewMainWnd::viewportEvent(PTR(QEvent) pEvent)
 {
-	m_thisCWnd.Attach(reinterpret_cast<HWND>(winId()));
-
-	m_pContext = new ChartView(this, m_pDocument, m_preview);
-	m_pContext->Create(NULL, NULL, 0, CRect(0, 0, 100, 100), &m_thisCWnd, 0);
-
-	return true;
+	UNUSED(pEvent);
+	return false;
 }
 
-ChartView* ChartViewMainWnd::getContext()
+void ChartViewMainWnd::focusInEvent(QFocusEvent* pEvent)
 {
-	return m_pContext;
+	static_cast<QObject*>(viewport())->event(pEvent);
 }
 
-void ChartViewMainWnd::resizeEvent(PTR(QResizeEvent) event)
+void ChartViewMainWnd::focusOutEvent(QFocusEvent* pEvent)
 {
-	parent_type::resizeEvent(event);
-
-	if (!m_pContext)
-		return;
-
-	QSize size(event->size());
-	m_pContext->MoveWindow(0, 0, size.width(), size.height());
+	static_cast<QObject*>(viewport())->event(pEvent);
 }
 
-void ChartViewMainWnd::paintEvent(PTR(QPaintEvent) event)
+void ChartViewMainWnd::keyPressEvent(PTR(QKeyEvent) pEvent)
 {
-	parent_type::paintEvent(event);
+	switch (pEvent->key())
+	{
+	case Qt::Key_Up      :
+	case Qt::Key_Down    :
+	case Qt::Key_PageUp  :
+	case Qt::Key_PageDown:
+	case Qt::Key_Home    :
+	case Qt::Key_End     :
+		static_cast<QObject*>(viewport())->event(pEvent);
+		break;
 
-	if (!m_pContext)
-		return;
-
-	CRect rect(event->rect().left(), event->rect().top(), event->rect().right(), event->rect().bottom());
-	m_pContext->InvalidateRect(&rect);
-}
-
-void ChartViewMainWnd::closeEvent(PTR(QCloseEvent) event)
-{
-	ASSERT(m_pContext);
-	m_pContext->DestroyWindow();
-	delete m_pContext;
-
-	parent_type::closeEvent(event);
+	default:
+		super::keyPressEvent(pEvent);
+		break;
+	}
 }

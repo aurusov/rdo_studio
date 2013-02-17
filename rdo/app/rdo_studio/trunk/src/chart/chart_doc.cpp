@@ -218,35 +218,35 @@ int RDOStudioChartDoc::getMaxMarkerSize() const
 	return res;
 }
 
-void RDOStudioChartDoc::addToViews(const HWND handle)
+void RDOStudioChartDoc::addToViews(ChartView* pWidget)
 {
 	m_mutex.Lock();
 
-	m_viewHwndList.push_back(handle);
+	m_widgetList.push_back(pWidget);
 
 	m_mutex.Unlock();
 }
 
-void RDOStudioChartDoc::removeFromViews(const HWND handle)
+void RDOStudioChartDoc::removeFromViews(ChartView* pWidget)
 {
 	m_mutex.Lock();
 
-	std::vector<HWND>::iterator it = std::find(m_viewHwndList.begin(), m_viewHwndList.end(), handle);
-	if (it != m_viewHwndList.end())
+	std::vector<ChartView*>::iterator it = std::find(m_widgetList.begin(), m_widgetList.end(), pWidget);
+	if (it != m_widgetList.end())
 	{
-		m_viewHwndList.erase(it);
+		m_widgetList.erase(it);
 	}
 
 	m_mutex.Unlock();
 }
 
-void RDOStudioChartDoc::updateChartViews(const UINT update_type) const
+void RDOStudioChartDoc::updateChartViews(ruint updateType) const
 {
 	const_cast<CMutex&>(m_mutex).Lock();
 
-	for (std::vector<HWND>::const_iterator it = m_viewHwndList.begin(); it != m_viewHwndList.end(); it++)
+	for (std::vector<ChartView*>::const_iterator it = m_widgetList.begin(); it != m_widgetList.end(); ++it)
 	{
-		::SendNotifyMessage((*it), WM_USER_UPDATE_CHART_VIEW, WPARAM(update_type), 0);
+		(*it)->onUserUpdateChartView(updateType);
 	}
 
 	const_cast<CMutex&>(m_mutex).Unlock();
@@ -427,7 +427,7 @@ tstring RDOStudioChartDoc::getTitle() const
 void RDOStudioChartDoc::setTitle(CREF(tstring) title)
 {
 	this->m_title = title;
-	getFirstView()->getQtParent()->setWindowTitle(QString::fromLocal8Bit(rdo::format(IDS_CHART_TITLE, this->m_title.c_str()).c_str()));
+	getFirstView()->parentWidget()->setWindowTitle(QString::fromLocal8Bit(rdo::format(IDS_CHART_TITLE, this->m_title.c_str()).c_str()));
 }
 
 void RDOStudioChartDoc::autoTitle()

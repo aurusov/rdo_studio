@@ -11,6 +11,7 @@
 #define _RDO_STUDIO_CHART_SERIE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qpainter.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
 // --------------------------------------------------------------------------------
@@ -29,7 +30,7 @@ public:
 	struct Options
 	{
 		tstring            title;
-		COLORREF           color;
+		QColor             color;
 		TracerSerieMarker  markerType;
 		int                markerSize;
 		rbool              markerNeedDraw;
@@ -46,10 +47,10 @@ public:
 	void          setOptions(CREF(Options) options);
 
 	rbool isTracerSerie  (const TracerSerie* pSerie) const;
-	void  drawSerie      (ChartView* const pView, HDC &dc, CRect &rect) const;
+	void  drawSerie      (ChartView* const pView, QPainter& painter, const QRect& rect) const;
 	void  getCaptions    (std::vector<tstring> &captions, const int val_count) const;
-	void  getLegendExtent(HDC &dc, CRect& rect, SIZE& size) const;
-	void  drawInLegend   (HDC &dc, CRect &rect, const COLORREF text_color, SIZE& size) const;
+	void  getLegendExtent(const QFontMetrics& fm, QRect& rect, QSize& size) const;
+	void  drawInLegend   (QPainter& painter, QRect& rect, const QColor& textColor, QSize& size) const;
 
 	void  lock  ();
 	void  unlock();

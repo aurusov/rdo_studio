@@ -609,7 +609,7 @@ void TracerBase::clearCharts()
 
 	while (!charts.empty())
 	{
-		charts.front()->getFirstView()->getQtParent()->parentWidget()->close();
+		charts.front()->getFirstView()->parentWidget()->parentWidget()->close();
 	}
 
 	mutex.Unlock();
@@ -767,9 +767,9 @@ void TracerBase::getTraceString( tstring trace_string )
 RDOStudioChartDoc* TracerBase::createNewChart()
 {
 	RDOStudioChartDoc* pDoc  = new RDOStudioChartDoc();
-	ChartViewMainWnd*  pView = new ChartViewMainWnd(pDoc, false);
+	ChartViewMainWnd*  pView = new ChartViewMainWnd(NULL, pDoc, false);
 	studioApp.getIMainWnd()->addSubWindow(pView);
-	pDoc->attachView(pView->getContext());
+	pDoc->attachView(&pView->view());
 	pDoc->autoTitle();
 
 	pView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/mdi_chart.png")));

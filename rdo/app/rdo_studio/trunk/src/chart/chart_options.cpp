@@ -379,8 +379,9 @@ void RDOStudioChartOptionsSeries::restoreValues()
 	if (m_pSerie)
 	{
 		m_SerieTitle.SetWindowText(m_pSerie->options().title.c_str());
-		m_colorCB.insertColor(m_pSerie->options().color);
-		m_colorCB.setCurrentColor(m_pSerie->options().color);
+		//! @todo qt
+//		m_colorCB.insertColor(m_pSerie->options().color);
+//		m_colorCB.setCurrentColor(m_pSerie->options().color);
 		m_Marker.SetCurSel(m_pSerie->options().markerType);
 		m_DrawMarker.SetCheck(m_pSerie->options().markerNeedDraw);
 		m_MarkerSize.SetWindowText(rdo::format("%d", m_pSerie->options().markerSize).c_str());

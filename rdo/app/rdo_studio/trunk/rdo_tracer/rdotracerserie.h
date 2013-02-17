@@ -85,8 +85,8 @@ public:
 	//double getMaxValue() const { return maxValue; };
 	virtual void getCaptions( std::vector<tstring> &captions, const int val_count ) const;
 
-	void drawSerie( ChartView* const view, HDC &dc, CRect &rect, const COLORREF color, TracerSerieMarker marker, const int marker_size, const rbool draw_marker, const rbool transparent_marker ) const;
-	void drawMarker( HDC &dc, const int x, const int y, TracerSerieMarker marker, const int marker_size ) const;
+	void drawSerie(ChartView* const view, QPainter& painter, const QRect& rect, const QColor& color, TracerSerieMarker marker, const int markerSize, const rbool draw_marker, const rbool transparent_marker) const;
+	void drawMarker(QPainter& painter, const int x, const int y, TracerSerieMarker marker, const int markerSize) const;
 
 	void  addToDoc( RDOStudioChartDoc* const doc );
 	void  removeFromDoc( RDOStudioChartDoc* const doc );

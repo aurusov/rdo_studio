@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtWidgets/qwidget.h>
+#include <QtWidgets/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdointerface.h"
 #include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
 #include "app/rdo_studio/src/chart/chart_doc.h"
 #include "thirdparty/qt-solutions/qtwinmigrate/src/qwinhost.h"
@@ -26,7 +26,7 @@ class RDOStudioChartViewStyle;
 class TracerSerie;
 class ChartSerie;
 
-class ChartView: public CWnd
+class ChartView: public QWidget
 {
 friend class TracerSerieFindValue;
 friend class RDOStudioChartOptionsChart;
@@ -38,10 +38,8 @@ public:
 	RDOStudioChartDoc* getDocument();
 	void attachToDoc();
 
-	QWidget* getQtParent();
-
 	const RDOStudioChartViewStyle& getStyle() const;
-	void setStyle(RDOStudioChartViewStyle* _style, const rbool needRedraw = true);
+	void setStyle(RDOStudioChartViewStyle* pStyle, const rbool needRedraw = true);
 
 	void setPreviwMode(rbool value);
 
@@ -51,41 +49,27 @@ protected:
 	COleDropTarget m_ddTarget;
 	TracerSerie*   m_pddSerie;
 
-	CRect m_bmpRect;
-	CRect m_newClientRect;
+	QRect m_bmpRect;
+	QRect m_clientRect;
 
 	int m_valueCountX;
 	std::vector<tstring> m_captionList;
 	int m_valueCountY;
 
 	rbool m_timeWrapFlag;
-	rbool canUnwrapTime() const
-	{
-		return m_scaleKoeff >= 1 && !m_zoomAutoFlag;
-	}
+	rbool canUnwrapTime() const;
+	rbool doUnwrapTime () const;
 
-	rbool doUnwrapTime() const
-	{
-		return canUnwrapTime() && !m_timeWrapFlag;
-	}
-
-	CRect m_chartRect;
+	QRect m_chartRect;
 	void recalcLayout();
 
 	int m_xMax;
 	int m_xPos;
-	rbool minXVisible() const
-	{
-		return m_xPos == 0;
-	}
+	rbool minXVisible() const;
+	rbool maxXVisible() const;
 
-	rbool maxXVisible() const
-	{
-		return m_xPos == m_xMax;
-	}
-
-	void setScrollPos(UINT nSBCode, UINT nPos, const rbool need_update = true);
-	void updateScrollBars(const rbool need_update = true);
+	void setScrollPos(UINT nSBCode, UINT nPos, const rbool needUpdate = true);
+	void updateScrollBars(const rbool needUpdate = true);
 
 	long double   m_timeScale;
 	TracerTimeNow m_drawFromX;
@@ -95,16 +79,16 @@ protected:
 	int           m_chartShift;
 	TimesList     m_unwrapTimesList;
 
-	rbool setTo(const int from_max_pos);
+	rbool setTo(const int fromMaxPos);
 	void  setFromTo();
 
-	void drawTitle(CRect& chartRect);
+	void drawTitle(QPainter& painter, const QRect& chartRect);
 
-	CRect m_legendRect;
-	void drawLegend(CRect& chartRect);
-	void drawYAxis(CRect& chartRect, const ChartSerie* axisValues);
-	void drawXAxis(CRect& chartRect);
-	void drawGrid(CRect& chartRect);
+	QRect m_legendRect;
+	void drawLegend(QPainter& painter, const QRect& chartRect);
+	void drawYAxis (QPainter& painter, const QRect& chartRect, const ChartSerie* axisValues);
+	void drawXAxis (QPainter& painter, const QRect& chartRect);
+	void drawGrid  (QPainter& painter, const QRect& chartRect);
 
 	CMenu m_popupMenu;
 	void copyToClipboard();
@@ -122,42 +106,35 @@ protected:
 	ChartSerie* m_pYAxis;
 	rbool       m_needDrawLegend;
 
-	void updateWindow();
 	void updateView();
 
-	HBITMAP m_hbmp;
-	HBITMAP m_hbmpInit;
-	HFONT   m_hfontTitle;
-	HFONT   m_hfontLegend;
-	HFONT   m_hfontAxis;
-	HFONT   m_hfontInit;
-	HDC     m_hdc;
-	int     m_savedHdc;
-	HDC     m_hmemdc;
-	int     m_savedHmemdc;
-	HWND    m_hwnd;
+	QFont   m_fontTitle;
+	QFont   m_fontLegend;
+	QFont   m_fontAxis;
 	void setFonts(const rbool needRedraw = true);
-
-	QWidget* m_pParent;
 
 	void onDraw();
 
 private:
+	typedef  QWidget  super;
+
 	ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview /* = false*/); //! @todo qt
 	virtual ~ChartView();
 
 	RDOStudioChartDoc* m_pDocument;
 
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual DROPEFFECT OnDragEnter(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
 	virtual void OnDragLeave();
 	virtual DROPEFFECT OnDragOver(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
 	virtual BOOL OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point);
 
+	virtual void resizeEvent    (QResizeEvent* pEvent);
+	virtual void paintEvent     (QPaintEvent*  pEvent);
+
+	void onUserUpdateChartView(ruint updateType);
+
 protected:
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnChartTimewrap();
 	afx_msg void OnUpdateChartTimewrap(CCmdUI* pCmdUI);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
@@ -171,40 +148,28 @@ protected:
 	afx_msg void OnUpdateChartZoomZoomin(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateChartZoomZoomout(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateChartZoomResetzoom(CCmdUI* pCmdUI);
-	afx_msg int OnMouseActivate( CWnd* pDesktopWnd, UINT nHitTest, UINT message );
 	afx_msg void OnChartOptions();
-	afx_msg void OnDestroy();
-	afx_msg void OnPaint();
 	afx_msg void OnViewZoomauto();
 	afx_msg void OnUpdateViewZoomauto(CCmdUI* pCmdUI);
 	afx_msg void OnHelpKeyword();
-	afx_msg LRESULT OnUserUpdateChartView(WPARAM wParam = 0, LPARAM lParam = 0);
-	DECLARE_MESSAGE_MAP()
+//	DECLARE_MESSAGE_MAP()
 };
 
-class ChartViewMainWnd:
-	public QWidget,
-	public IInit
+class ChartViewMainWnd: public QAbstractScrollArea
 {
 public:
-	ChartViewMainWnd(RDOStudioChartDoc* pDocument, const rbool preview);
+	ChartViewMainWnd(PTR(QWidget) pParent, PTR(RDOStudioChartDoc) pDocument, rbool preview);
 	virtual ~ChartViewMainWnd();
 
-	ChartView* getContext();
+	ChartView& view();
 
 private:
-	typedef  QWidget  parent_type;
+	typedef  QAbstractScrollArea  super;
 
-	ChartView*          m_pContext;
-	RDOStudioChartDoc*  m_pDocument;
-	rbool               m_preview;
-	CWnd                m_thisCWnd;
-
-	virtual void resizeEvent(PTR(QResizeEvent) event);
-	virtual void paintEvent (PTR(QPaintEvent ) event);
-	virtual void closeEvent (PTR(QCloseEvent ) event);
-
-	DECLARE_IInit;
+	virtual rbool viewportEvent(PTR(QEvent)      pEvent);
+	virtual void  focusInEvent (PTR(QFocusEvent) pEvent);
+	virtual void  focusOutEvent(PTR(QFocusEvent) pEvent);
+	virtual void  keyPressEvent(PTR(QKeyEvent)   pEvent);
 };
 
 #endif // _RDO_STUDIO_CHART_VIEW_H_
