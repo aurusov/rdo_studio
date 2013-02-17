@@ -149,15 +149,15 @@ void RDOPMDWatchPar::resetResult(CREF(LPRDORuntime) pRuntime)
 
 void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 {
-	if (m_resourceID == ruint(~0))
-	{
+	if (!m_pResource)
 		return;
-	}
+
+	if (m_resourceID == ruint(~0))
+		return;
 
 	double currTime = pRuntime->getCurrentTime();
 	m_currentValue.weight += currTime - m_timePrev;
 
-	ASSERT(m_pResource);
 	RDOValue newValue = m_pResource->getParam(m_paramID);
 	if (newValue != m_currentValue.rdoValue)
 	{

@@ -47,9 +47,9 @@ const double   g_var                  = 1.0;                        //!< парамет
 const double   g_from                 = 1.0;                        //!< параметр закона равномерного и треугольного
 const double   g_to                   = 7.0;                        //!< параметр закона равномерного и треугольного
 const double   g_top                  = 5.0;                        //!< параметр закона треугольного
-#if defined(ARCHITECTURE_AMD64) || defined(ARCHITECTURE_X86)
+#if defined(ARCHITECTURE_X86)
 const ruint    g_precision            = 20;                         //!< точность вещественного числа при выводе в поток
-#elif defined(ARCHITECTURE_ARM)
+#elif defined(ARCHITECTURE_AMD64) || defined(ARCHITECTURE_ARM)
 const ruint    g_precision            = 14;                         //!< точность вещественного числа при выводе в поток
 #endif
 
