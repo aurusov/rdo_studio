@@ -237,6 +237,7 @@ void InitSructDB::generateCreateDBQuery()
 		"id      serial,"
 		"rtp_id  integer NOT NULL,"
 		"name    VARCHAR(40) NOT NULL,"
+		"trace   boolean NOT NULL,"
 		"PRIMARY KEY (id),"
 		"FOREIGN KEY (rtp_id) REFERENCES rtp(id)"
 		");");
