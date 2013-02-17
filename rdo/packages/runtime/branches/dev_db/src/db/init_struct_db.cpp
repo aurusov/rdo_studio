@@ -226,9 +226,30 @@ void InitSructDB::generateCreateDBQuery()
 		");");
 
 	trigger("void","copy_type_id");
-//------------------------
 
 	dataTypeTable("identificator");
 	dataTypeTable("bool");
 	dataTypeTable("string");
+//------------------------
+
+	m_queryList.push_back(
+		"CREATE TABLE rss("
+		"id      serial,"
+		"rtp_id  integer NOT NULL,"
+		"name    VARCHAR(40) NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (rtp_id) REFERENCES rtp(id)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE TABLE rss_param("
+		"id       serial,"
+		"rss_id   integer NOT NULL,"
+		"param_id integer NOT NULL,"
+		"value    integer NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (rss_id) REFERENCES rss(id),"
+		"FOREIGN KEY (param_id) REFERENCES rsparam_of_types(id),"
+		"FOREIGN KEY (value) REFERENCES rdo_value(value_id)"
+		");");
 }
