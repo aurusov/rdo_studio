@@ -1163,7 +1163,7 @@ void ChartView::onUpdateActions(rbool activated)
 
 	updateAction(
 		pMainWindow->actViewZoomAuto,
-		activated && m_zoomAutoFlag,
+		activated,
 		this, &ChartView::onViewZoomAuto
 	);
 
