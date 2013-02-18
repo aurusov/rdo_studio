@@ -103,7 +103,7 @@ rbool ChartSerie::empty() const
 	return m_pSerie->empty();
 }
 
-QSize ChartSerie::getLegendExtent(const QFontMetrics& fm, const QRect& rect) const
+QSize ChartSerie::getLegendSize(const QFontMetrics& fm, const QRect& rect) const
 {
 	QSize size(0, 0);
 	if (!m_options.showInLegend)
@@ -125,9 +125,9 @@ QSize ChartSerie::getLegendExtent(const QFontMetrics& fm, const QRect& rect) con
 	return size;
 }
 
-QSize ChartSerie::drawInLegend(QPainter& painter, const QRect& rect, const QColor& textColor) const
+QSize ChartSerie::drawLegend(QPainter& painter, const QRect& rect, const QColor& textColor) const
 {
-	QSize size = getLegendExtent(painter.fontMetrics(), rect);
+	QSize size = getLegendSize(painter.fontMetrics(), rect);
 	if (!m_options.showInLegend)
 		return size;
 

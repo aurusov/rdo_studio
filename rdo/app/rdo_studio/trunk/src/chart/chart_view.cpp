@@ -171,7 +171,7 @@ void ChartView::recalcLayout()
 		int count = 0;
 		for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); ++it)
 		{
-			size = (*it)->getLegendExtent(legendFontMetrics, m_chartRect);
+			size = (*it)->getLegendSize(legendFontMetrics, m_chartRect);
 			if (size.width() && size.height())
 			{
 				if (size.width() > sizeMax.width())
@@ -441,7 +441,7 @@ void ChartView::drawLegend(QPainter& painter, const QRect& legendRect)
 	painter.setFont(m_fontLegend);
 	for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); ++it)
 	{
-		QSize size = (*it)->drawInLegend(painter, rect, m_pStyle->getTheme()->legendFgColor);
+		QSize size = (*it)->drawLegend(painter, rect, m_pStyle->getTheme()->legendFgColor);
 		rect.setTop(rect.top() + size.height());
 	}
 }

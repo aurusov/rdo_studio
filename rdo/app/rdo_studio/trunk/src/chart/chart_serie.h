@@ -46,11 +46,11 @@ public:
 	CREF(Options) options   () const;
 	void          setOptions(CREF(Options) options);
 
-	rbool isTracerSerie  (const TracerSerie* pSerie) const;
-	void  drawSerie      (ChartView* const pView, QPainter& painter, const QRect& rect) const;
-	void  getCaptions    (std::vector<tstring> &captions, const int val_count) const;
-	QSize getLegendExtent(const QFontMetrics& fm, const QRect& rect) const;
-	QSize drawInLegend   (QPainter& painter, const QRect& rect, const QColor& textColor) const;
+	rbool isTracerSerie(const TracerSerie* pSerie) const;
+	void  drawSerie    (ChartView* const pView, QPainter& painter, const QRect& rect) const;
+	void  getCaptions  (std::vector<tstring> &captions, const int val_count) const;
+	QSize getLegendSize(const QFontMetrics& fm, const QRect& rect) const;
+	QSize drawLegend   (QPainter& painter, const QRect& rect, const QColor& textColor) const;
 
 	void  lock  ();
 	void  unlock();
