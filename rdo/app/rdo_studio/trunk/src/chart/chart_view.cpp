@@ -782,6 +782,7 @@ void ChartView::onChartTimeWrap()
 	recalcLayout();
 	updateScrollBars();
 	update();
+	onUpdateActions(isActivated());
 }
 
 void ChartView::OnUpdateChartTimewrap(CCmdUI* pCmdUI)
