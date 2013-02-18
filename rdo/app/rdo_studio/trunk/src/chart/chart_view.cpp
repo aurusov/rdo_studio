@@ -22,6 +22,7 @@
 #include "app/rdo_studio/src/chart/chart_view_style.h"
 #include "app/rdo_studio/src/chart/chart_serie.h"
 #include "app/rdo_studio/src/chart/chart_options.h"
+#include "app/rdo_studio/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -44,16 +45,8 @@ using namespace rdoStyle;
 //	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 //	ON_WM_INITMENUPOPUP()
 //	ON_WM_CONTEXTMENU()
-//	ON_COMMAND(ID_VIEW_ZOOMIN, OnChartZoomZoomin)
-//	ON_COMMAND(ID_VIEW_ZOOMOUT, OnChartZoomZoomout)
-//	ON_COMMAND(ID_VIEW_ZOOMRESET, OnChartZoomResetzoom)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMIN, OnUpdateChartZoomZoomin)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMOUT, OnUpdateChartZoomZoomout)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMRESET, OnUpdateChartZoomResetzoom)
 //	ON_WM_MOUSEACTIVATE()
 //	ON_COMMAND(ID_CHART_OPTIONS, OnChartOptions)
-//	ON_COMMAND(ID_VIEW_ZOOMAUTO, OnViewZoomauto)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateViewZoomauto)
 //	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 //END_MESSAGE_MAP()
 
@@ -942,7 +935,7 @@ void ChartView::OnContextMenu(CWnd* pWnd, CPoint pos)
 	//}
 }
 
-void ChartView::OnChartZoomZoomin()
+void ChartView::onViewZoomIn()
 {
 	if (m_zoomAutoFlag)
 	{
@@ -957,9 +950,10 @@ void ChartView::OnChartZoomZoomin()
 	{
 		setZoom(m_zoom + delta);
 	}
+	onUpdateActions(isActivated());
 }
 
-void ChartView::OnChartZoomZoomout()
+void ChartView::onViewZoomOut()
 {
 	if (m_zoomAutoFlag)
 	{
@@ -968,30 +962,17 @@ void ChartView::OnChartZoomZoomout()
 	double delta = m_zoom > 1 ? -0.5 : -0.1;
 	double zoom_new = m_zoom + delta;
 	setZoom(zoom_new);
+	onUpdateActions(isActivated());
 }
 
-void ChartView::OnChartZoomResetzoom()
+void ChartView::onViewZoomReset()
 {
 	if (m_zoomAutoFlag)
 	{
 		m_zoomAutoFlag = !m_zoomAutoFlag;
 	}
 	setZoom(1);
-}
-
-void ChartView::OnUpdateChartZoomZoomin(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(!m_zoomAutoFlag && m_zoom < 5);
-}
-
-void ChartView::OnUpdateChartZoomZoomout(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(!m_zoomAutoFlag && ((!doUnwrapTime() && m_zoom > m_zoomAuto) || (doUnwrapTime() && m_zoom > 1)));
-}
-
-void ChartView::OnUpdateChartZoomResetzoom(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_zoom != 1);
+	onUpdateActions(isActivated());
 }
 
 const RDOStudioChartViewStyle& ChartView::getStyle() const
@@ -1119,7 +1100,7 @@ void ChartView::paintEvent(QPaintEvent* pEvent)
 	doc->m_mutex.Unlock();
 }
 
-void ChartView::OnViewZoomauto()
+void ChartView::onViewZoomAuto()
 {
 	m_zoomAutoFlag = !m_zoomAutoFlag;
 	if (!m_zoomAutoFlag)
@@ -1131,11 +1112,7 @@ void ChartView::OnViewZoomauto()
 		m_zoomOld = m_zoom;
 		setZoom(m_zoomAuto, true);
 	}
-}
-
-void ChartView::OnUpdateViewZoomauto(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_zoomAutoFlag);
+	onUpdateActions(isActivated());
 }
 
 void ChartView::OnHelpKeyword()
@@ -1163,6 +1140,36 @@ rbool ChartView::minXVisible() const
 rbool ChartView::maxXVisible() const
 {
 	return m_xPos == m_xMax;
+}
+
+void ChartView::onUpdateActions(rbool activated)
+{
+	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+
+	updateAction(
+		pMainWindow->actViewZoomInc,
+		activated && !m_zoomAutoFlag && m_zoom < 5,
+		this, &ChartView::onViewZoomIn
+	);
+
+	updateAction(
+		pMainWindow->actViewZoomDec,
+		activated && !m_zoomAutoFlag && ((!doUnwrapTime() && m_zoom > m_zoomAuto) || (doUnwrapTime() && m_zoom > 1)),
+		this, &ChartView::onViewZoomOut
+	);
+
+	updateAction(
+		pMainWindow->actViewZoomReset,
+		activated && m_zoom != 1,
+		this, &ChartView::onViewZoomReset
+	);
+
+		updateAction(
+		pMainWindow->actViewZoomAuto,
+		activated && m_zoomAutoFlag,
+		this, &ChartView::onViewZoomAuto
+	);
 }
 
 ChartViewMainWnd::ChartViewMainWnd(PTR(QWidget) pParent, PTR(RDOStudioChartDoc) pDocument, rbool preview)

@@ -17,6 +17,7 @@
 #include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
 #include "app/rdo_studio/src/chart/chart_doc.h"
 #include "thirdparty/qt-solutions/qtwinmigrate/src/qwinhost.h"
+#include "app/rdo_studio/src/action_activator/action_activator_widget.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -26,8 +27,10 @@ class RDOStudioChartViewStyle;
 class TracerSerie;
 class ChartSerie;
 
-class ChartView: public QWidget
+class ChartView: public ActionActivatorWidget
 {
+Q_OBJECT
+
 friend class TracerSerieFindValue;
 friend class RDOStudioChartOptionsChart;
 friend class ChartViewMainWnd;
@@ -116,7 +119,7 @@ protected:
 	void onDraw();
 
 private:
-	typedef  QWidget  super;
+	typedef  ActionActivatorWidget  super;
 
 	ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview /* = false*/); //! @todo qt
 	virtual ~ChartView();
@@ -133,6 +136,14 @@ private:
 
 	void onUserUpdateChartView(ruint updateType);
 
+	virtual void onUpdateActions(rbool activated);
+
+private slots:
+	void onViewZoomIn();
+	void onViewZoomOut();
+	void onViewZoomReset();
+	void onViewZoomAuto();
+
 protected:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnChartTimewrap();
@@ -142,15 +153,7 @@ protected:
 	afx_msg void OnEditCopy();
 	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
 	afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
-	afx_msg void OnChartZoomZoomin();
-	afx_msg void OnChartZoomZoomout();
-	afx_msg void OnChartZoomResetzoom();
-	afx_msg void OnUpdateChartZoomZoomin(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateChartZoomZoomout(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateChartZoomResetzoom(CCmdUI* pCmdUI);
 	afx_msg void OnChartOptions();
-	afx_msg void OnViewZoomauto();
-	afx_msg void OnUpdateViewZoomauto(CCmdUI* pCmdUI);
 	afx_msg void OnHelpKeyword();
 //	DECLARE_MESSAGE_MAP()
 };
