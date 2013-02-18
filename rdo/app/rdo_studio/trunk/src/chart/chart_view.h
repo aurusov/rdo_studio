@@ -143,10 +143,10 @@ private slots:
 	void onViewZoomOut();
 	void onViewZoomReset();
 	void onViewZoomAuto();
-
+	
+	void onChartTimeWrap();
 protected:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnChartTimewrap();
 	afx_msg void OnUpdateChartTimewrap(CCmdUI* pCmdUI);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);

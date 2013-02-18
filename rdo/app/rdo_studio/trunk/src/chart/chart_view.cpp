@@ -776,7 +776,7 @@ void ChartView::resizeEvent(QResizeEvent* pEvent)
 	m_mutex.Unlock();
 }
 
-void ChartView::OnChartTimewrap()
+void ChartView::onChartTimeWrap()
 {
 	m_timeWrapFlag = !m_timeWrapFlag;
 	recalcLayout();
@@ -1165,10 +1165,19 @@ void ChartView::onUpdateActions(rbool activated)
 		this, &ChartView::onViewZoomReset
 	);
 
-		updateAction(
+	updateAction(
 		pMainWindow->actViewZoomAuto,
 		activated && m_zoomAutoFlag,
 		this, &ChartView::onViewZoomAuto
+	);
+
+	pMainWindow->actChartTimeWrap->setCheckable(true);
+	pMainWindow->actChartTimeWrap->setChecked(!canUnwrapTime() || m_timeWrapFlag);
+
+	updateAction(
+		pMainWindow->actChartTimeWrap,
+		activated && canUnwrapTime(),
+		this, &ChartView::onChartTimeWrap
 	);
 }
 
