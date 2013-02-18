@@ -137,10 +137,10 @@ void ChartView::recalcLayout()
 
 	QFontMetrics titleFontMetrics(m_fontTitle);
 	tstring str = doc->getTitle();
-	QRect titleRect = !str.empty()
-		? titleFontMetrics.boundingRect(QString::fromLocal8Bit(str.c_str()))
-		: QRect(0, 0, 0, 0);
-	m_chartRect.setTop(titleRect.height() + 5);
+	QSize titleSize = !str.empty()
+		? titleFontMetrics.size(Qt::TextSingleLine, QString::fromLocal8Bit(str.c_str()))
+		: QSize(0, 0);
+	m_chartRect.setTop(titleSize.height() + 5);
 
 	QFontMetrics axisFontMetrics(m_fontAxis);
 	QSize sizeMax(0, 0);
@@ -431,8 +431,7 @@ void ChartView::drawTitle(QPainter& painter, const QRect& chartRect)
 
 	painter.setFont(m_fontTitle);
 	painter.setPen(m_pStyle->getTheme()->titleFGColor);
-	//! @todo qt +DT_WORDBREAK
-	painter.drawText(rect, Qt::AlignCenter, QString::fromLocal8Bit(getDocument()->getTitle().c_str()));
+	painter.drawText(rect, Qt::AlignHCenter | Qt::AlignTop, QString::fromLocal8Bit(getDocument()->getTitle().c_str()));
 }
 
 void ChartView::drawLegend(QPainter& painter, const QRect& legendRect)
