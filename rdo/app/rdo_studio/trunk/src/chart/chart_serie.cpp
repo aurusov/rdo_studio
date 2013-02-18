@@ -120,7 +120,7 @@ QSize ChartSerie::getLegendSize(const QFontMetrics& fm, const QRect& rect) const
 	{
 		size.setHeight(m_options.markerSize * 2);
 	}
-	size.setWidth(tmprect.width());
+	size.setWidth(tmprect.right() - rect.left());
 	size.setHeight(size.height() + 2);
 	return size;
 }
