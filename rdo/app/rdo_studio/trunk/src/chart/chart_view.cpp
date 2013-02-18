@@ -38,8 +38,6 @@ using namespace rdoStyle;
 // --------------------------------------------------------------------------------
 //BEGIN_MESSAGE_MAP(ChartView, CWnd)
 //	ON_WM_ERASEBKGND()
-//	ON_COMMAND(ID_CHART_TIMEWRAP, OnChartTimewrap)
-//	ON_UPDATE_COMMAND_UI(ID_CHART_TIMEWRAP, OnUpdateChartTimewrap)
 //	ON_WM_HSCROLL()
 //	ON_WM_KEYDOWN()
 //	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
