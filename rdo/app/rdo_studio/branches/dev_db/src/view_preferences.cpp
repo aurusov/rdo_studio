@@ -928,8 +928,31 @@ void ViewPreferences::createPreview()
 	preview_find->gotoNext();
 	previewStackedWidget->addWidget(preview_find);
 
-	//Заглушка для превью графиков
-	previewStackedWidget->addWidget(new QWidget(previewStackedWidget->currentWidget()));
+	//! @todo qt
+	//preview_chart_doc = new RDOStudioChartDoc(true);
+	//PTR(ChartViewMainWnd) pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
+
+	//preview_chart_doc->setTitle(rdo::format(IDS_COLORSTYLE_CHART_SAMPLE1).c_str());
+	//preview_chart->setPreviwMode(true);
+	//preview_chart_doc->attachView(preview_chart);
+	//preview_chart->setStyle(&style_chart, false);
+	////initializing times vector
+	//preview_times.push_back(TracerTimeNow(0, 3));
+	//preview_times.push_back(TracerTimeNow(2, 3));
+	//preview_times.push_back(TracerTimeNow(4, 3));
+	//preview_times.push_back(TracerTimeNow(6, 3));
+	//preview_times.push_back(TracerTimeNow(8, 3));
+	//preview_times.push_back(TracerTimeNow(10, 3));
+	//preview_serie.setTitle(rdo::format(IDS_COLORSTYLE_CHART_SAMPLE2));
+	//preview_serie.addValue(new TracerValue(&preview_times.at(0), 2, 0));
+	//preview_serie.addValue(new TracerValue(&preview_times.at(1), 1, 1));
+	//preview_serie.addValue(new TracerValue(&preview_times.at(2), 0, 4));
+	//preview_serie.addValue(new TracerValue(&preview_times.at(3), 3, 3));
+	//preview_serie.addValue(new TracerValue(&preview_times.at(4), 1, 2));
+	//preview_serie.addValue(new TracerValue(&preview_times.at(5), 0, 3));
+	//preview_chart_doc->addSerie(&preview_serie);
+
+	//previewStackedWidget->addWidget(pViewQt);
 
 	preview_frame = new FrameOptionsView(previewStackedWidget->currentWidget());
 	preview_frame->setStyle(&style_frame);

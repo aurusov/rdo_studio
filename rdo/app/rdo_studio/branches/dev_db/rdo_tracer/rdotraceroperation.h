@@ -22,21 +22,37 @@ class TracerPattern;
 
 class TracerOperationBase: public TracerSerie
 {
+public:
+	TracerOperationBase(TracerPattern* const pat);
+	virtual ~TracerOperationBase();
+
+	TracerPattern* getPattern() const
+	{
+		return pattern;
+	}
+
+	//void start( TracerTimeNow* const time, const int eventIndex );
+	//void accomplish( TracerTimeNow* const time, const int eventIndex );
+	void setName( CREF(tstring) name )
+	{
+		Name = name;
+		if (title.empty())
+		{
+			title = Name;
+		}
+	}
+	const tstring getName() const
+	{
+		return Name;
+	}
+
+	virtual void getCaptions(std::vector<tstring> &captions, const int val_count) const;
+	virtual void monitorTime(TracerTimeNow* const time, const int eventIndex);
+
 protected:
 	TracerPattern* pattern;
 	tstring Name;
-	void incOperationsCount( TracerTimeNow* const time, const int eventIndex );
-public:
-	TracerOperationBase( TracerPattern* const pat );
-	virtual ~TracerOperationBase();
-
-	TracerPattern* getPattern() const { return pattern; };
-	//void start( TracerTimeNow* const time, const int eventIndex );
-	//void accomplish( TracerTimeNow* const time, const int eventIndex );
-	void setName( CREF(tstring) name ) { Name = name; if ( title.empty() ) title = Name; };
-	const tstring getName() const { return Name; };
-	virtual void getCaptions( std::vector<tstring> &captions, const int val_count ) const;
-	virtual void monitorTime( TracerTimeNow* const time, const int eventIndex );
+	void incOperationsCount(TracerTimeNow* const time, const int eventIndex);
 };
 
 // --------------------------------------------------------------------------------
@@ -45,11 +61,11 @@ public:
 class TracerOperation: public TracerOperationBase
 {
 public:
-	TracerOperation( TracerPattern* const pat );
+	TracerOperation(TracerPattern* const pat);
 	virtual ~TracerOperation();
 
-	void start( TracerTimeNow* const time, const int eventIndex );
-	void accomplish( TracerTimeNow* const time, const int eventIndex );
+	void start(TracerTimeNow* const time, const int eventIndex);
+	void accomplish(TracerTimeNow* const time, const int eventIndex);
 };
 
 // --------------------------------------------------------------------------------
@@ -58,11 +74,11 @@ public:
 class TracerEvent: public TracerOperationBase
 {
 public:
-	TracerEvent( TracerPattern* const pat );
+	TracerEvent(TracerPattern* const pat);
 	virtual ~TracerEvent();
-	
-	void occurs( TracerTimeNow* const time, const int eventIndex );
-	virtual void monitorTime( TracerTimeNow* const time, const int eventIndex );
+
+	void occurs(TracerTimeNow* const time, const int eventIndex);
+	virtual void monitorTime(TracerTimeNow* const time, const int eventIndex);
 };
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACEROPERATION_H_

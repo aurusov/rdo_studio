@@ -20,21 +20,28 @@
 // --------------------------------------------------------------------------------
 // -------------------- Tracer
 // --------------------------------------------------------------------------------
-namespace rdo { namespace gui { namespace tracer {
-
-class Tracer: public TracerBase
+namespace rdo
 {
-protected:
-	void proc( RDOThread::RDOMessageInfo& msg );
+	namespace gui
+	{
+		namespace tracer
+		{
 
-public:
-	Tracer();
-	virtual ~Tracer();
+			class Tracer: public TracerBase
+			{
+			protected:
+				void proc(RDOThread::RDOMessageInfo& msg);
 
-	void setRuntimeMode( const rdo::runtime::RunTimeMode value );
-};
+			public:
+				Tracer();
+				virtual ~Tracer();
 
-}}} // namespace rdo::gui::tracer
+				void setRuntimeMode(const rdo::runtime::RunTimeMode value);
+			};
+
+		}
+	}
+} // namespace rdo::gui::tracer
 
 // --------------------------------------------------------------------------------
 extern rdo::gui::tracer::Tracer* g_pTracer;

@@ -24,9 +24,9 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- ChartSerie::Options
 // --------------------------------------------------------------------------------
 ChartSerie::Options::Options()
-	: color            (RGB(0x00, 0x00, 0x00))
+	: color            (QColor(0x00, 0x00, 0x00))
 	, markerType       (RDOSM_NONE)
-	, markerSize       (3)
+	, markerSize       (2) //! @todo qt ≈сли это параметр учавствует в конвертировании настроек, то из старого значени€ надо вычесть 1
 	, markerNeedDraw   (true)
 	, markerTransparent(true)
 	, showInLegend     (true)
@@ -78,9 +78,9 @@ rbool ChartSerie::isTracerSerie(const TracerSerie* pSerie) const
 	return m_pSerie == pSerie;
 }
 
-void ChartSerie::drawSerie(ChartView* const pView, HDC &dc, CRect &rect) const
+void ChartSerie::drawSerie(ChartView* const pView, QPainter& painter, const QRect& rect) const
 {
-	m_pSerie->drawSerie(pView, dc, rect, m_options.color, m_options.markerType, m_options.markerSize, m_options.markerNeedDraw, m_options.markerTransparent);
+	m_pSerie->drawSerie(pView, painter, rect, m_options.color, m_options.markerType, m_options.markerSize, m_options.markerNeedDraw, m_options.markerTransparent);
 }
 
 void ChartSerie::getCaptions(std::vector<tstring> &captions, const int val_count) const
@@ -103,88 +103,54 @@ rbool ChartSerie::empty() const
 	return m_pSerie->empty();
 }
 
-void ChartSerie::getLegendExtent(HDC &dc, CRect& rect, SIZE& size) const
+QSize ChartSerie::getLegendSize(const QFontMetrics& fm, const QRect& rect) const
 {
-	size.cx = 0;
-	size.cy = 0;
+	QSize size(0, 0);
 	if (!m_options.showInLegend)
-		return;
+		return size;
 
-	CRect tmprect;
-	tmprect.left   = rect.left + 10 + m_options.markerSize * 2 + 5;
-	tmprect.right  = rect.right;
-	tmprect.top    = rect.top;
-	tmprect.bottom = rect.bottom;
-	::DrawText(dc, m_options.title.c_str(), m_options.title.length(), tmprect, DT_LEFT | DT_SINGLELINE | DT_END_ELLIPSIS | DT_CALCRECT);
-	size.cy = tmprect.Height();
-	if (size.cy < m_options.markerSize * 2)
+	QRect tmprect;
+	tmprect.setLeft(rect.left() + 10 + m_options.markerSize * 2 + 5);
+	tmprect.setRight(rect.right());
+	tmprect.setTop(rect.top());
+	tmprect.setBottom(rect.bottom());
+	tmprect = fm.boundingRect(tmprect, Qt::AlignLeft | Qt::TextSingleLine, QString::fromLocal8Bit(m_options.title.c_str()));
+	size.setHeight(tmprect.height());
+	if (size.height() < m_options.markerSize * 2)
 	{
-		size.cy = m_options.markerSize * 2;
+		size.setHeight(m_options.markerSize * 2);
 	}
-	size.cx = tmprect.right - rect.left;
-	size.cy += 2;
+	size.setWidth(tmprect.right() - rect.left());
+	size.setHeight(size.height() + 2);
+	return size;
 }
 
-void ChartSerie::drawInLegend(HDC &dc, CRect &rect, const COLORREF text_color, SIZE& size) const
+QSize ChartSerie::drawLegend(QPainter& painter, const QRect& rect, const QColor& textColor) const
 {
-	getLegendExtent(dc, rect, size);
+	QSize size = getLegendSize(painter.fontMetrics(), rect);
 	if (!m_options.showInLegend)
-		return;
+		return size;
 
-	::SetTextColor(dc, text_color);
-
-	HPEN pen     = NULL;
-	HPEN old_pen = NULL;
-
-	HBRUSH brush_marker = NULL;
-	HBRUSH old_brush    = NULL;
-	LOGBRUSH log_brush;
-	log_brush.lbStyle = m_options.markerTransparent ? BS_HOLLOW : BS_SOLID;
-	log_brush.lbColor = m_options.color;
-	try
+	int middle = rect.top() + (size.height() - 2) / 2;
+	if (m_options.markerNeedDraw)
 	{
-		pen     = ::CreatePen(PS_SOLID, 0, m_options.color);
-		old_pen = (HPEN)::SelectObject(dc, pen);
-
-		brush_marker = ::CreateBrushIndirect(&log_brush);
-		old_brush    = (HBRUSH)::SelectObject(dc, brush_marker);
-
-		int middle = rect.top + (size.cy - 2) / 2;
-		if (m_options.markerNeedDraw)
-		{
-			m_pSerie->drawMarker(dc, rect.left + 5 + m_options.markerSize, middle, m_options.markerType, m_options.markerSize);
-		}
-
-		::MoveToEx(dc, rect.left, middle, (LPPOINT)NULL);
-		::LineTo(dc, rect.left + 10 + m_options.markerSize * 2, middle);
-
-		CRect tmprect;
-		tmprect.CopyRect(rect);
-		tmprect.left += 10 + m_options.markerSize * 2 + 5;
-
-		::DrawText(dc, m_options.title.c_str(), m_options.title.length(), tmprect, DT_LEFT | DT_SINGLELINE | DT_END_ELLIPSIS);
-
-		::SelectObject(dc, old_pen);
-		::DeleteObject(pen);
-		pen = NULL;
-
-		::SelectObject(dc, old_brush);
-		::DeleteObject(brush_marker);
-		brush_marker = NULL;
+		QPen   pen(m_options.color);
+		QBrush brush(m_options.color, m_options.markerTransparent ? Qt::NoBrush : Qt::SolidPattern);
+		painter.setPen(pen);
+		painter.setBrush(brush);
+		m_pSerie->drawMarker(painter, rect.left() + 5 + m_options.markerSize, middle, m_options.markerType, m_options.markerSize);
 	}
-	catch (...)
-	{
-		if (pen)
-		{
-			::SelectObject(dc, old_pen);
-			::DeleteObject(pen);
-			pen = NULL;
-		}
-		if (brush_marker)
-		{
-			::SelectObject(dc, old_brush);
-			::DeleteObject(brush_marker);
-			brush_marker = NULL;
-		}
-	}
+
+	painter.drawLine(rect.left(), middle, rect.left() + 10 + m_options.markerSize * 2, middle);
+
+	QRect tmprect(rect);
+	tmprect.setLeft(tmprect.left() + 10 + m_options.markerSize * 2 + 5);
+
+	//! @todo qt
+	//::SetTextColor(dc, textColor);
+	painter.setPen(textColor);
+	//! @todo qt +DT_END_ELLIPSIS
+	painter.drawText(tmprect, Qt::AlignLeft | Qt::TextSingleLine, QString::fromLocal8Bit(m_options.title.c_str()));
+
+	return size;
 }

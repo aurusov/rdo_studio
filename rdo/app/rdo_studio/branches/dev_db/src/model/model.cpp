@@ -69,7 +69,7 @@ RDOStudioModel::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, ruin
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioModel
 // --------------------------------------------------------------------------------
-PTR(RDOStudioModel) model = NULL;
+PTR(RDOStudioModel) g_pModel = NULL;
 
 RDOStudioModel::RDOStudioModel()
 	: RDOThreadGUI(_T("RDOThreadModelGUI"), static_cast<PTR(RDOKernelGUI)>(studioApp.m_pStudioGUI))
@@ -91,7 +91,7 @@ RDOStudioModel::RDOStudioModel()
 	, m_pModelView     (NULL                      )
 	, m_name           ("")
 {
-	model = this;
+	g_pModel = this;
 
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
@@ -233,7 +233,7 @@ RDOStudioModel::RDOStudioModel()
 
 RDOStudioModel::~RDOStudioModel()
 {
-	model = NULL;
+	g_pModel = NULL;
 //	closeModel();
 }
 
@@ -1211,7 +1211,7 @@ void RDOStudioModel::updateActions()
 
 		case rdo::runtime::RTM_Sync:
 			{
-				double showRate = model->getShowRate();
+				double showRate = g_pModel->getShowRate();
 				if (showRate < 1e-10 || showRate > 1e10)
 				{
 					showRateStr += QString::fromLocal8Bit(rdo::format("%e", showRate).c_str());

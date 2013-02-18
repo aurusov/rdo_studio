@@ -239,7 +239,7 @@ void LogEdit::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, rbool use
 				scrollToCarret();
 			}
 		}
-		PTR(rdoEditor::RDOEditorTabCtrl) pTab = model->getTab();
+		PTR(rdoEditor::RDOEditorTabCtrl) pTab = g_pModel->getTab();
 		if (pTab)
 		{
 			if (pTab->getCurrentRDOItem() != pLineInfo->getFileType())

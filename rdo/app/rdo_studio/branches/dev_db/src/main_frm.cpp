@@ -399,7 +399,7 @@ void RDOStudioMainFrame::init()
 
 	g_pTracer->registerClipboardFormat();
 
-	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(model);
+	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(g_pModel);
 	ASSERT(pModelInit);
 	pModelInit->init();
 }
@@ -411,7 +411,7 @@ void RDOStudioMainFrame::setVisible(rbool visible)
 
 void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 {
-	if (model && !model->closeModel())
+	if (g_pModel && !g_pModel->closeModel())
 	{
 		event->ignore();
 	}
@@ -438,7 +438,7 @@ void RDOStudioMainFrame::onViewOptions()
 
 void RDOStudioMainFrame::updateAllStyles()
 {
-	model->updateStyleOfAllModel();
+	g_pModel->updateStyleOfAllModel();
 	getDockBuild  ().getContext().setEditorStyle (&style_build  );
 	getDockDebug  ().getContext().setEditorStyle (&style_debug  );
 	getDockTrace  ().getContext().view().setStyle(&style_trace  );
@@ -486,7 +486,7 @@ void RDOStudioMainFrame::timerEvent(QTimerEvent* event)
 	if (event->timerId() == m_updateTimerID)
 	{
 		update_stop();
-		model->update();
+		g_pModel->update();
 		update_start();
 	}
 }
@@ -570,7 +570,7 @@ void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 	if (!pLog)
 		return;
 
-	rdoEditor::RDOEditorTabCtrl* pEditorTab = model->getTab();
+	rdoEditor::RDOEditorTabCtrl* pEditorTab = g_pModel->getTab();
 	if (pEditorTab)
 	{
 		for (int i = 0; i < pEditorTab->count(); ++i)
@@ -593,7 +593,7 @@ void RDOStudioMainFrame::onMenuFileReopen(QAction* pAction)
 		return;
 
 	QStringRef fileName = menuName.midRef(pos + 1);
-	if (!model->openModel(fileName.toLocal8Bit().constData()) && model->isPrevModelClosed())
+	if (!g_pModel->openModel(fileName.toLocal8Bit().constData()) && g_pModel->isPrevModelClosed())
 	{
 		ReopenList::iterator it = std::find(m_reopenList.begin(), m_reopenList.end(), fileName);
 		if (it != m_reopenList.end())

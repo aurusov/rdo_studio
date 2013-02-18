@@ -193,6 +193,6 @@ private slots:
 };
 
 // --------------------------------------------------------------------------------
-extern PTR(RDOStudioModel) model;
+extern PTR(RDOStudioModel) g_pModel;
 
 #endif // _RDO_STUDIO_MODEL_MODEL_H_
