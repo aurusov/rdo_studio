@@ -990,15 +990,15 @@ void ChartView::setFonts(const rbool needRedraw)
 	m_fontAxis.setPointSize(m_pStyle->font->size);
 
 	m_fontTitle = QFont(m_pStyle->font->name.c_str());
-	m_fontTitle.setBold     (pChartTheme->defaultStyle & RDOStyleFont::BOLD     );
-	m_fontTitle.setItalic   (pChartTheme->defaultStyle & RDOStyleFont::ITALIC   );
-	m_fontTitle.setUnderline(pChartTheme->defaultStyle & RDOStyleFont::UNDERLINE);
+	m_fontTitle.setBold     (pChartTheme->titleStyle & RDOStyleFont::BOLD     );
+	m_fontTitle.setItalic   (pChartTheme->titleStyle & RDOStyleFont::ITALIC   );
+	m_fontTitle.setUnderline(pChartTheme->titleStyle & RDOStyleFont::UNDERLINE);
 	m_fontTitle.setPointSize(m_pStyle->pFontsTicks->titleFontSize);
 
 	m_fontLegend = QFont(m_pStyle->font->name.c_str());
-	m_fontLegend.setBold     (pChartTheme->defaultStyle & RDOStyleFont::BOLD     );
-	m_fontLegend.setItalic   (pChartTheme->defaultStyle & RDOStyleFont::ITALIC   );
-	m_fontLegend.setUnderline(pChartTheme->defaultStyle & RDOStyleFont::UNDERLINE);
+	m_fontLegend.setBold     (pChartTheme->legendStyle & RDOStyleFont::BOLD     );
+	m_fontLegend.setItalic   (pChartTheme->legendStyle & RDOStyleFont::ITALIC   );
+	m_fontLegend.setUnderline(pChartTheme->legendStyle & RDOStyleFont::UNDERLINE);
 	m_fontLegend.setPointSize(m_pStyle->pFontsTicks->legendFontSize);
 
 	m_mutex.Unlock();
