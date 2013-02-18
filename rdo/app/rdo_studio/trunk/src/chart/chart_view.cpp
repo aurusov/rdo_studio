@@ -783,12 +783,6 @@ void ChartView::onChartTimeWrap()
 	onUpdateActions(isActivated());
 }
 
-void ChartView::OnUpdateChartTimewrap(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(!canUnwrapTime() || m_timeWrapFlag);
-	pCmdUI->Enable(canUnwrapTime());
-}
-
 void ChartView::onUserUpdateChartView(ruint updateType)
 {
 	if (doUnwrapTime() || updateType != UPDATE_TIMETICKS)
