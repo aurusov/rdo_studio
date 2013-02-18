@@ -49,8 +49,8 @@ public:
 	rbool isTracerSerie  (const TracerSerie* pSerie) const;
 	void  drawSerie      (ChartView* const pView, QPainter& painter, const QRect& rect) const;
 	void  getCaptions    (std::vector<tstring> &captions, const int val_count) const;
-	void  getLegendExtent(const QFontMetrics& fm, QRect& rect, QSize& size) const;
-	void  drawInLegend   (QPainter& painter, QRect& rect, const QColor& textColor, QSize& size) const;
+	QSize getLegendExtent(const QFontMetrics& fm, const QRect& rect) const;
+	QSize drawInLegend   (QPainter& painter, const QRect& rect, const QColor& textColor) const;
 
 	void  lock  ();
 	void  unlock();

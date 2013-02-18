@@ -103,11 +103,11 @@ rbool ChartSerie::empty() const
 	return m_pSerie->empty();
 }
 
-void ChartSerie::getLegendExtent(const QFontMetrics& fm, QRect& rect, QSize& size) const
+QSize ChartSerie::getLegendExtent(const QFontMetrics& fm, const QRect& rect) const
 {
-	size = QSize(0, 0);
+	QSize size(0, 0);
 	if (!m_options.showInLegend)
-		return;
+		return size;
 
 	QRect tmprect;
 	tmprect.setLeft(rect.left() + 10 + m_options.markerSize * 2 + 5);
@@ -122,13 +122,14 @@ void ChartSerie::getLegendExtent(const QFontMetrics& fm, QRect& rect, QSize& siz
 	}
 	size.setWidth(tmprect.right() - rect.left());
 	size.setHeight(size.height() + 2);
+	return size;
 }
 
-void ChartSerie::drawInLegend(QPainter& painter, QRect& rect, const QColor& textColor, QSize& size) const
+QSize ChartSerie::drawInLegend(QPainter& painter, const QRect& rect, const QColor& textColor) const
 {
-	getLegendExtent(painter.fontMetrics(), rect, size);
+	QSize size = getLegendExtent(painter.fontMetrics(), rect);
 	if (!m_options.showInLegend)
-		return;
+		return size;
 
 	int middle = rect.top() + (size.height() - 2) / 2;
 	if (m_options.markerNeedDraw)
@@ -150,4 +151,6 @@ void ChartSerie::drawInLegend(QPainter& painter, QRect& rect, const QColor& text
 	painter.setPen(textColor);
 	//! @todo qt +DT_END_ELLIPSIS
 	painter.drawText(tmprect, Qt::AlignLeft | Qt::TextSingleLine, QString::fromLocal8Bit(m_options.title.c_str()));
+
+	return size;
 }
