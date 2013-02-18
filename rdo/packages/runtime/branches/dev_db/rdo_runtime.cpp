@@ -34,6 +34,7 @@
 #include "simulator/runtime/rdodptrtime.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/resource/calc_relevant.h"
+#include "simulator/runtime/src/db/general_db.h"
 // --------------------------------------------------------------------------------
 
 typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
