@@ -171,7 +171,7 @@ void RDOStudioFrameManager::areaDown(ruint frameIndex, CREF(QPoint) point) const
 		if (area.second.m_rect.contains(point))
 		{
 			tstring areaName = area.first;
-			model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &areaName);
+			g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &areaName);
 		}
 	}
 }
@@ -302,7 +302,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 
 	rdo::binarystream stream;
 	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName, stream);
-	model->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
+	g_pModel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
 	rbool ok = false;
 	QPixmap pixmap(QString::fromLocal8Bit(data.m_name.c_str()));
@@ -338,7 +338,7 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint
 void RDOStudioFrameManager::showNextFrame()
 {
 	ruint cnt = count();
-	if (model->isRunning() && model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame < cnt-1)
+	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame < cnt-1)
 	{
 		ruint index = m_currentShowingFrame + 1;
 		PTR(FrameAnimationWnd) pView = getFrameView(index);
@@ -359,7 +359,7 @@ void RDOStudioFrameManager::showNextFrame()
 void RDOStudioFrameManager::showPrevFrame()
 {
 	ruint cnt = count();
-	if (model->isRunning() && model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame != ruint(~0))
+	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame != ruint(~0))
 	{
 		ruint index = m_currentShowingFrame - 1;
 		PTR(FrameAnimationWnd) pView = getFrameView(index);
@@ -380,7 +380,7 @@ void RDOStudioFrameManager::showPrevFrame()
 void RDOStudioFrameManager::showFrame(ruint index)
 {
 	ruint cnt = count();
-	if (model->isRunning() && model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt)
+	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt)
 	{
 		PTR(FrameAnimationWnd) pView = getFrameView(index);
 		if (!pView)
@@ -400,13 +400,13 @@ void RDOStudioFrameManager::showFrame(ruint index)
 rbool RDOStudioFrameManager::canShowNextFrame() const
 {
 	ruint cnt = count();
-	return model->isRunning() && model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame == ruint(~0) || m_currentShowingFrame < cnt-1);
+	return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame == ruint(~0) || m_currentShowingFrame < cnt-1);
 }
 
 rbool RDOStudioFrameManager::canShowPrevFrame() const
 {
 	int cnt = count();
-	return model->isRunning() && model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame != ruint(~0) && m_currentShowingFrame > 0);
+	return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame != ruint(~0) && m_currentShowingFrame > 0);
 }
 
 void RDOStudioFrameManager::updateStyles() const
@@ -438,7 +438,7 @@ void RDOStudioFrameManager::onSubWindowActivated(QMdiSubWindow* pWindow)
 
 void RDOStudioFrameManager::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pTreeWidgetItem, int)
 {
-	if (model->getRuntimeMode() == rdo::runtime::RTM_MaxSpeed)
+	if (g_pModel->getRuntimeMode() == rdo::runtime::RTM_MaxSpeed)
 		return;
 
 	ruint index = findFrameIndex(pTreeWidgetItem);

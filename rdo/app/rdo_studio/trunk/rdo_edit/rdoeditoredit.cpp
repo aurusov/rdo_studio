@@ -412,7 +412,7 @@ void RDOEditorEdit::onEditCompleteWord()
 
 	setFocus();
 	tstring primaryKwList;
-	if (model->getTab())
+	if (g_pModel->getTab())
 	{
 		//studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdo::service::simulation::RDOThreadCodeComp::GetCodeComp(tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), primaryKwList));
 
@@ -627,7 +627,7 @@ void RDOEditorEdit::onHelpContext()
 
 	if (s.find_first_of(keyword) == tstring::npos || keyword.empty())
 	{
-		RDOEditorTabCtrl* tab = model->getTab();
+		RDOEditorTabCtrl* tab = g_pModel->getTab();
 		if (tab)
 		{
 			switch(tab->getCurrentRDOItem())

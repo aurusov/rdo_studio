@@ -194,7 +194,7 @@ BOOL RDOStudioApp::InitInstance()
 #ifdef RDO_MT
 	kernel->thread_studio = m_pStudioGUI;
 #else
-	kernel->thread_studio = model;
+	kernel->thread_studio = g_pModel;
 #endif
 
 	if (getFileAssociationCheckInFuture())
@@ -255,7 +255,7 @@ BOOL RDOStudioApp::InitInstance()
 			{
 				openModelName = longFileName;
 			}
-			if (model->openModel(QString::fromLocal8Bit(openModelName.c_str())))
+			if (g_pModel->openModel(QString::fromLocal8Bit(openModelName.c_str())))
 			{
 				autoModel = true;
 			}
@@ -263,7 +263,7 @@ BOOL RDOStudioApp::InitInstance()
 		else
 		{
 			openModelName = rdo::extractFilePath(RDOStudioApp::getFullExtName()) + openModelName;
-			if (rdo::File::exist(openModelName) && model->openModel(QString::fromLocal8Bit(openModelName.c_str())))
+			if (rdo::File::exist(openModelName) && g_pModel->openModel(QString::fromLocal8Bit(openModelName.c_str())))
 			{
 				autoRun            = true;
 				m_autoExitByModel  = true;
@@ -281,7 +281,7 @@ BOOL RDOStudioApp::InitInstance()
 	{
 		if (getOpenLastProject() && !getLastProjectName().isEmpty() && QFile::exists(getLastProjectName()))
 		{
-			model->openModel(getLastProjectName().toLocal8Bit().constData());
+			g_pModel->openModel(getLastProjectName().toLocal8Bit().constData());
 			newModel = false;
 		}
 	}
@@ -299,7 +299,7 @@ BOOL RDOStudioApp::InitInstance()
 
 	if (autoRun)
 	{
-		model->runModel();
+		g_pModel->runModel();
 	}
 
 	return TRUE;
@@ -311,7 +311,7 @@ int RDOStudioApp::ExitInstance()
 
 	if (m_exitCode != rdo::simulation::report::EC_ModelNotFound)
 	{
-		m_exitCode = model->getExitCode();
+		m_exitCode = g_pModel->getExitCode();
 	}
 #ifdef RDO_MT
 	if (m_pStudioGUI)
@@ -532,7 +532,7 @@ void RDOStudioApp::setShowCaptionFullName(rbool value)
 	if (m_showCaptionFullName != value)
 	{
 		m_showCaptionFullName = value;
-		model->setName(model->getName());
+		g_pModel->setName(g_pModel->getName());
 		QSettings settings;
 		settings.setValue("general/show_caption_full_name", m_showCaptionFullName);
 	}
@@ -593,7 +593,7 @@ void RDOStudioApp::autoCloseByModel()
 {
 	if (m_autoExitByModel)
 	{
-		if (!m_dontCloseIfError || !model || (m_dontCloseIfError && (model->getExitCode() == rdo::simulation::report::EC_OK || model->getExitCode() == rdo::simulation::report::EC_NoMoreEvents)))
+		if (!m_dontCloseIfError || !g_pModel || (m_dontCloseIfError && (g_pModel->getExitCode() == rdo::simulation::report::EC_OK || g_pModel->getExitCode() == rdo::simulation::report::EC_NoMoreEvents)))
 		{
 			m_pMainFrame->close();
 		}

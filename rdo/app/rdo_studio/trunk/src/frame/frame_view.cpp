@@ -123,10 +123,10 @@ void FrameAnimationContent::mousePressEvent(QMouseEvent* pEvent)
 	ASSERT(pEvent);
 	if (pEvent->button() == Qt::LeftButton)
 	{
-		ruint index = model->getFrameManager().findFrameIndex(this);
+		ruint index = g_pModel->getFrameManager().findFrameIndex(this);
 		if (index != ruint(~0))
 		{
-			model->getFrameManager().areaDown(index, pEvent->pos());
+			g_pModel->getFrameManager().areaDown(index, pEvent->pos());
 		}
 	}
 
@@ -556,11 +556,11 @@ FrameAnimationWnd::FrameAnimationWnd(PTR(QWidget) pParent)
 
 FrameAnimationWnd::~FrameAnimationWnd()
 {
-	ruint index = model->getFrameManager().findFrameIndex(this);
+	ruint index = g_pModel->getFrameManager().findFrameIndex(this);
 	if (index != ruint(~0))
 	{
-		model->getFrameManager().disconnectView(this);
-		model->getFrameManager().resetCurrentShowingFrame(index);
+		g_pModel->getFrameManager().disconnectView(this);
+		g_pModel->getFrameManager().resetCurrentShowingFrame(index);
 	}
 }
 
@@ -592,7 +592,7 @@ rbool FrameAnimationWnd::event(QEvent* pEvent)
 	{
 		QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
 		ruint scanCode = pKeyEvent->nativeScanCode();
-		model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_DOWN, &scanCode);
+		g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_DOWN, &scanCode);
 
 		if (pKeyEvent->key() == Qt::Key_F1)
 		{
@@ -607,7 +607,7 @@ rbool FrameAnimationWnd::event(QEvent* pEvent)
 	{
 		QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
 		ruint scanCode = pKeyEvent->nativeScanCode();
-		model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_UP, &scanCode);
+		g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_UP, &scanCode);
 		return true;
 	}
 

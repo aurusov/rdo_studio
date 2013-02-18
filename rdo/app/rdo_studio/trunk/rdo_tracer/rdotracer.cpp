@@ -34,7 +34,7 @@ using namespace rdo::gui::tracer;
 
 Tracer* g_pTracer = NULL;
 
-static rbool clear_after_stop = false;
+static rbool s_clearAfterStop = false;
 
 // --------------------------------------------------------------------------------
 // -------------------- Tracer
@@ -42,7 +42,7 @@ static rbool clear_after_stop = false;
 Tracer::Tracer()
 	: TracerBase("RDOStudioTracerGUI", static_cast<RDOKernelGUI*>(studioApp.m_pStudioGUI))
 {
-	clear_after_stop = false;
+	s_clearAfterStop = false;
 
 	g_pTracer = this;
 
@@ -68,8 +68,8 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 	{
 	case RDOThread::RT_REPOSITORY_MODEL_CLOSE:
 	{
-		clear_after_stop = model->isRunning();
-		if (!clear_after_stop)
+		s_clearAfterStop = g_pModel->isRunning();
+		if (!s_clearAfterStop)
 		{
 			clear();
 		}
@@ -81,7 +81,7 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 		RDOStudioChartDoc::resetTitleIndex();
 		try
 		{
-			setModelName(model->getName());
+			setModelName(g_pModel->getName());
 			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Получение структуры модели..."));
 			rdo::textstream model_structure;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
@@ -105,10 +105,10 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 	case RDOThread::RT_SIMULATOR_MODEL_STOP_BY_USER:
 	case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
 	{
-		if (clear_after_stop)
+		if (s_clearAfterStop)
 		{
 			clear();
-			clear_after_stop = false;
+			s_clearAfterStop = false;
 		}
 		setDrawTrace(true);
 		break;
