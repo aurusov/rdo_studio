@@ -144,7 +144,7 @@ QSize ChartSerie::drawLegend(QPainter& painter, const QRect& rect, const QColor&
 	painter.drawLine(rect.left(), middle, rect.left() + 10 + m_options.markerSize * 2, middle);
 
 	QRect tmprect(rect);
-	tmprect.setLeft(tmprect.left() + m_options.markerSize * 2 + 5);
+	tmprect.setLeft(tmprect.left() + 10 + m_options.markerSize * 2 + 5);
 
 	//! @todo qt
 	//::SetTextColor(dc, textColor);
