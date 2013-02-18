@@ -30,6 +30,7 @@
 #include "app/rdo_studio/src/chart/chart_view_style.h"
 #include "app/rdo_studio/src/frame/frame_style.h"
 #include "app/rdo_studio/resource.h"
+#include "app/rdo_studio/src/chart/chart_view.h"
 // --------------------------------------------------------------------------------
 
 class ViewPreferences
@@ -251,6 +252,12 @@ private:
 	PTR(rdo::gui::tracer::LogMainWnd) preview_trace;
 	PTR(rdoEditor::RDOEditorResults)  preview_results;
 	PTR(rdoEditCtrl::RDOFindEdit)     preview_find;
+
+	PTR(RDOStudioChartDoc)            preview_chart_doc;
+	PTR(ChartView)                    preview_chart;
+	std::vector<TracerTimeNow>        preview_times;
+	TracerSerie                       preview_serie;
+
 	PTR(FrameOptionsView)             preview_frame;
 
 	typedef PTR(QTreeWidgetItem) treeItem;
