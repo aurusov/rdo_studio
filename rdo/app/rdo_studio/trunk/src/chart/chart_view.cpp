@@ -1158,6 +1158,9 @@ void ChartView::onUpdateActions(rbool activated)
 		this, &ChartView::onViewZoomReset
 	);
 
+	pMainWindow->actViewZoomAuto->setCheckable(true);
+	pMainWindow->actViewZoomAuto->setChecked(m_zoomAutoFlag);
+
 	updateAction(
 		pMainWindow->actViewZoomAuto,
 		activated && m_zoomAutoFlag,
