@@ -979,14 +979,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\frame\frame_options_ctrl.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\frame\frame_options_ctrl.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\frame\frame_options_view.cpp"
 				>
 			</File>
@@ -2079,14 +2071,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\mfc_qt_wrapper.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\options.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\options.h"
 				>
 			</File>
 			<File
