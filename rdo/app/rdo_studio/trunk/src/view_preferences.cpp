@@ -657,10 +657,12 @@ void ViewPreferences::onFgColorSelected(const QColor& color)
 	{
 		insertColor(color, QString::fromStdString(rdo::format("[%d, %d, %d]", color.red(), color.green(), color.blue())), fgColorComboBox);
 		fgColorComboBox->setCurrentIndex(fgColorComboBox->findData(color, Qt::UserRole));
+		onFgColor(fgColorComboBox->findData(color, Qt::UserRole));
 	}
 	else
 	{
 		fgColorComboBox->setCurrentIndex(fgColorComboBox->findData(color, Qt::UserRole));
+		onFgColor(fgColorComboBox->findData(color, Qt::UserRole));
 	}
 }
 
@@ -670,10 +672,12 @@ void ViewPreferences::onBgColorSelected(const QColor& color)
 	{
 		insertColor(color, QString::fromStdString(rdo::format("[%d, %d, %d]", color.red(), color.green(), color.blue())), bgColorComboBox);
 		bgColorComboBox->setCurrentIndex(bgColorComboBox->findData(color, Qt::UserRole));
+		onBgColor(bgColorComboBox->findData(color, Qt::UserRole));
 	}
 	else
 	{
 		bgColorComboBox->setCurrentIndex(bgColorComboBox->findData(color, Qt::UserRole));
+		onBgColor(bgColorComboBox->findData(color, Qt::UserRole));
 	}
 }
 
