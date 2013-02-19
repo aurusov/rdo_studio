@@ -41,8 +41,8 @@ public:
 	rbool operator ==( const RDOEditorEditTheme& theme ) const;
 	rbool operator !=( const RDOEditorEditTheme& theme ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	QColor foldFgColor;
 	QColor foldBgColor;
@@ -61,6 +61,9 @@ public:
 	static RDOEditorEditTheme getOceanTheme();
 };
 
+QSettings& operator<< (QSettings& settings, const RDOEditorEditTheme& theme);
+QSettings& operator>> (QSettings& settings,       RDOEditorEditTheme& theme);
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditAutoComplete
 // --------------------------------------------------------------------------------
@@ -74,12 +77,15 @@ public:
 	rbool operator ==( const RDOEditorEditAutoComplete& autoComplete ) const;
 	rbool operator !=( const RDOEditorEditAutoComplete& autoComplete ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	rbool useAutoComplete;
 	rbool showFullList;
 };
+
+QSettings& operator<< (QSettings& settings, const RDOEditorEditAutoComplete& auto_complete);
+QSettings& operator>> (QSettings& settings,       RDOEditorEditAutoComplete& auto_complete);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditMargin
@@ -94,13 +100,16 @@ public:
 	rbool operator ==( const RDOEditorEditMargin& margin ) const;
 	rbool operator !=( const RDOEditorEditMargin& margin ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	rbool fold;
 	rbool bookmark;
 	rbool lineNumber;
 };
+
+QSettings& operator<< (QSettings& settings, const RDOEditorEditMargin& margin);
+QSettings& operator>> (QSettings& settings,       RDOEditorEditMargin& margin);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditStyle

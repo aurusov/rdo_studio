@@ -64,30 +64,14 @@ rbool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 	return !(*this == font);
 }
 
-void RDOStyleFont::load( CREF(QString) groupName )
+void RDOStyleFont::load(QSettings& settings)
 {
-	QSettings settings;
-	settings.beginGroup(groupName + "font");
-	name         = settings.value("name", QString::fromLocal8Bit(name.c_str())).toString().toLocal8Bit().constData();
-	size         = settings.value("size", size).toInt();
-	codepage     = settings.value("codepage", codepage).toInt();
-	characterSet = settings.value("character_set", characterSet).toInt();
-	settings.endGroup();
-	if (characterSet == RUSSIAN_CHARSET)
-	{
-		characterSet = SC_CHARSET_CYRILLIC;
-	}
+	settings >> *this;
 }
 
-void RDOStyleFont::save( CREF(QString) groupName ) const
+void RDOStyleFont::save(QSettings& settings) const
 {
-	QSettings settings;
-	settings.beginGroup(groupName +"font");
-	settings.setValue("name", QString::fromLocal8Bit(name.c_str()));
-	settings.setValue("size", size);
-	settings.setValue("codepage", codepage);
-	settings.setValue("character_set", characterSet);
-	settings.endGroup();
+	settings << *this;
 }
 
 RDOStyleFont RDOStyleFont::getDefaultFont()
@@ -133,6 +117,33 @@ RDOStyleFont RDOStyleFont::getFrameFont()
 	return font;
 }
 
+namespace rdoStyle
+{
+
+QSettings& operator<< (QSettings& settings, const RDOStyleFont& font)
+{
+	settings.setValue("name", QString::fromLocal8Bit(font.name.c_str()));
+	settings.setValue("size", font.size);
+	settings.setValue("codepage", font.codepage);
+	settings.setValue("character_set", font.characterSet);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, RDOStyleFont& font)
+{
+	font.name         = settings.value("name", QString::fromLocal8Bit(font.name.c_str())).toString().toLocal8Bit().constData();
+	font.size         = settings.value("size", font.size).toInt();
+	font.codepage     = settings.value("codepage", font.codepage).toInt();
+	font.characterSet = settings.value("character_set", font.characterSet).toInt();
+	if (font.characterSet == RUSSIAN_CHARSET)
+	{
+		font.characterSet = SC_CHARSET_CYRILLIC;
+	}
+	return settings;
+}
+
+} // namespace rdoStyle
 // --------------------------------------------------------------------------------
 // -------------------- RDOStyleTheme
 // --------------------------------------------------------------------------------
@@ -171,20 +182,14 @@ rbool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOStyleTheme::load( CREF(QString) groupName )
+void RDOStyleTheme::load(QSettings& settings)
 {
-	QSettings settings;
-	settings.beginGroup(groupName + "theme");
 	settings >> *this;
-	settings.endGroup();
 }
 
-void RDOStyleTheme::save( CREF(QString) groupName ) const
+void RDOStyleTheme::save(QSettings& settings) const
 {
-	QSettings settings;
-	settings.beginGroup(groupName + "theme");
 	settings << *this;
-	settings.endGroup();
 }
 
 namespace rdoStyle
@@ -265,8 +270,11 @@ void RDOStyle::init( CREF(QString) _groupName )
 
 rbool RDOStyle::load()
 {
-	if ( !groupName.isEmpty() ) {
-		if ( font ) font->load( groupName );
+	if (!groupName.isEmpty()) {
+		QSettings settings;
+		settings.beginGroup(groupName + "font");
+		if (font) font->load(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;
@@ -274,8 +282,11 @@ rbool RDOStyle::load()
 
 rbool RDOStyle::save() const
 {
-	if ( !groupName.isEmpty() ) {
-		if ( font ) font->save( groupName );
+	if (!groupName.isEmpty()) {
+		QSettings settings;
+		settings.beginGroup(groupName + "font");
+		if (font) font->save(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;
@@ -328,8 +339,11 @@ void RDOStyleWithTheme::init( CREF(QString) _groupName )
 
 rbool RDOStyleWithTheme::load()
 {
-	if ( RDOStyle::load() ) {
-		if ( theme ) theme->load( groupName );
+	if (RDOStyle::load()) {
+		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		if (theme) theme->load(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;
@@ -337,8 +351,11 @@ rbool RDOStyleWithTheme::load()
 
 rbool RDOStyleWithTheme::save() const
 {
-	if ( RDOStyle::save() ) {
-		if ( theme ) theme->save( groupName );
+	if (RDOStyle::save()) {
+		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		if (theme) theme->save(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;

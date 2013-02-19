@@ -61,26 +61,18 @@ rbool RDOFindEditTheme::operator !=( const RDOFindEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOFindEditTheme::load( CREF(QString) groupName )
+void RDOFindEditTheme::load(QSettings& settings)
 {
-	LogEditTheme::load( groupName );
+	LogEditTheme::load(settings);
 
-	QSettings settings;
-	settings.beginGroup(groupName + "theme");
-	keywordColor = QColor(settings.value("keyword_color", keywordColor.name()).toString());
-	keywordStyle = static_cast<RDOStyleFont::style>(settings.value("keyword_style", keywordStyle).toInt());
-	settings.endGroup();
+	settings >> *this;
 }
 
-void RDOFindEditTheme::save( CREF(QString) groupName ) const
+void RDOFindEditTheme::save(QSettings& settings) const
 {
-	LogEditTheme::save( groupName );
+	LogEditTheme::save(settings);
 
-	QSettings settings;
-	settings.beginGroup(groupName + "theme");
-	settings.setValue("keyword_color", keywordColor.name());
-	settings.setValue("keyword_style", keywordStyle);
-	settings.endGroup();
+	settings << *this;
 }
 
 rbool RDOFindEditTheme::styleDefault( const int styleType ) const
@@ -158,6 +150,27 @@ RDOFindEditTheme RDOFindEditTheme::getOceanTheme()
 
 	return theme;
 }
+
+namespace rdoEditCtrl
+{
+
+QSettings& operator<< (QSettings& settings, const RDOFindEditTheme& theme)
+{
+	settings.setValue("keyword_color", theme.keywordColor.name());
+	settings.setValue("keyword_style", theme.keywordStyle);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, RDOFindEditTheme& theme)
+{
+	theme.keywordColor = QColor(settings.value("keyword_color", theme.keywordColor.name()).toString());
+	theme.keywordStyle = static_cast<RDOStyleFont::style>(settings.value("keyword_style", theme.keywordStyle).toInt());
+
+	return settings;
+}
+
+} // namespace rdoEditCtrl
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFindEditStyle

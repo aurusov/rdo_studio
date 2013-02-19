@@ -30,8 +30,8 @@ public:
 	rbool operator ==( const RDOFindEditTheme& theme ) const;
 	rbool operator !=( const RDOFindEditTheme& theme ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	QColor keywordColor;
 
@@ -48,6 +48,9 @@ public:
 	static RDOFindEditTheme getTwilightTheme();
 	static RDOFindEditTheme getOceanTheme();
 };
+
+QSettings& operator<< (QSettings& settings, const RDOFindEditTheme& theme);
+QSettings& operator>> (QSettings& settings,       RDOFindEditTheme& theme);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFindEditStyle

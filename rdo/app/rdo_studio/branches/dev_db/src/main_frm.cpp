@@ -592,8 +592,8 @@ void RDOStudioMainFrame::onMenuFileReopen(QAction* pAction)
 	if (pos == -1)
 		return;
 
-	QStringRef fileName = menuName.midRef(pos + 1);
-	if (!g_pModel->openModel(fileName.toLocal8Bit().constData()) && g_pModel->isPrevModelClosed())
+	QString fileName = menuName.midRef(pos + 1).toString();
+	if (!g_pModel->openModel(fileName) && g_pModel->isPrevModelClosed())
 	{
 		ReopenList::iterator it = std::find(m_reopenList.begin(), m_reopenList.end(), fileName);
 		if (it != m_reopenList.end())
@@ -665,7 +665,7 @@ void RDOStudioMainFrame::loadMenuFileReopen()
 		QString value = settings.value(QString::number(index), QString()).toString();
 		if (!value.isEmpty())
 		{
-			m_reopenList.push_back(value.toLocal8Bit().constData());
+			m_reopenList.push_back(value);
 		}
 	}
 

@@ -582,7 +582,7 @@ void RDOEditorEdit::onInsertCommand(QObject* pObject)
 	ASSERT(pInsertMenuData);
 
 	replaceCurrent(
-		pInsertMenuData->text().toStdString(),
+		pInsertMenuData->text().toLocal8Bit().constData(),
 		pInsertMenuData->position().is_initialized()
 			? pInsertMenuData->position().get()
 			: -1

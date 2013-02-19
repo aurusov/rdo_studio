@@ -30,8 +30,8 @@ public:
 	rbool operator ==( const LogEditTheme& theme ) const;
 	rbool operator !=( const LogEditTheme& theme ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	QColor selectLineBgColor;
 
@@ -40,6 +40,9 @@ public:
 	static LogEditTheme getTwilightTheme();
 	static LogEditTheme getOceanTheme();
 };
+
+QSettings& operator<< (QSettings& settings, const LogEditTheme& theme);
+QSettings& operator>> (QSettings& settings,       LogEditTheme& theme);
 
 // --------------------------------------------------------------------------------
 // -------------------- LogEditStyle

@@ -114,60 +114,18 @@ rbool RDOEditorBaseEditTheme::operator !=( const RDOEditorBaseEditTheme& theme )
 	return !(*this == theme);
 }
 
-void RDOEditorBaseEditTheme::load( CREF(QString) groupName )
+void RDOEditorBaseEditTheme::load(QSettings& settings)
 {
-	RDOBaseEditTheme::load( groupName );
+	RDOBaseEditTheme::load(settings);
 
-	QSettings settings;
-	settings.beginGroup(groupName + "theme");
-	identifierColor        = QColor(settings.value("identifier_color", identifierColor.name()).toString());
-	keywordColor           = QColor(settings.value("keyword_color", keywordColor.name()).toString());
-	functionsColor         = QColor(settings.value("functions_color", functionsColor.name()).toString());
-	traceColor             = QColor(settings.value("trace_color", traceColor.name()).toString());
-	colorColor             = QColor(settings.value("color_color", colorColor.name()).toString());
-	commentColor           = QColor(settings.value("comment_color", commentColor.name()).toString());
-	numberColor            = QColor(settings.value("number_color", numberColor.name()).toString());
-	stringColor            = QColor(settings.value("string_color", stringColor.name()).toString());
-	operatorColor          = QColor(settings.value("operator_color", operatorColor.name()).toString());
-
-	identifierStyle        = static_cast<RDOStyleFont::style>(settings.value("identifier_style", identifierStyle).toInt());
-	keywordStyle           = static_cast<RDOStyleFont::style>(settings.value("keyword_style", keywordStyle).toInt());
-	functionsStyle         = static_cast<RDOStyleFont::style>(settings.value("functions_style", functionsStyle).toInt());
-	traceStyle             = static_cast<RDOStyleFont::style>(settings.value("trace_style", traceStyle).toInt());
-	colorStyle             = static_cast<RDOStyleFont::style>(settings.value("color_style", colorStyle).toInt());
-	commentStyle           = static_cast<RDOStyleFont::style>(settings.value("comment_style", commentStyle).toInt());
-	numberStyle            = static_cast<RDOStyleFont::style>(settings.value("number_style", numberStyle).toInt());
-	stringStyle            = static_cast<RDOStyleFont::style>(settings.value("string_style", stringStyle).toInt());
-	operatorStyle          = static_cast<RDOStyleFont::style>(settings.value("operator_style", operatorStyle).toInt());
-	settings.endGroup();
+	settings >> *this;
 }
 
-void RDOEditorBaseEditTheme::save( CREF(QString) groupName ) const
+void RDOEditorBaseEditTheme::save(QSettings& settings) const
 {
-	RDOBaseEditTheme::save( groupName );
+	RDOBaseEditTheme::save(settings);
 
-	QSettings settings;
-	settings.beginGroup(groupName + "theme");
-	settings.setValue("identifier_color", identifierColor.name());
-	settings.setValue("keyword_color", keywordColor.name());
-	settings.setValue("functions_color", functionsColor.name());
-	settings.setValue("trace_color", traceColor.name());
-	settings.setValue("color_color", colorColor.name());
-	settings.setValue("comment_color", commentColor.name());
-	settings.setValue("number_color", numberColor.name());
-	settings.setValue("string_color", stringColor.name());
-	settings.setValue("operator_color", operatorColor.name());
-
-	settings.setValue("identifier_style", identifierStyle);
-	settings.setValue("keyword_style", keywordStyle);
-	settings.setValue("functions_style", functionsStyle);
-	settings.setValue("trace_style", traceStyle);
-	settings.setValue("color_style", colorStyle);
-	settings.setValue("comment_style", commentStyle);
-	settings.setValue("number_style", numberStyle);
-	settings.setValue("string_style", stringStyle);
-	settings.setValue("operator_style", operatorStyle);
-	settings.endGroup();
+	settings << *this;
 }
 
 rbool RDOEditorBaseEditTheme::styleDefault( const int styleType ) const
@@ -412,6 +370,61 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
 
 	return theme;
 }
+
+namespace rdoEditor
+{
+
+QSettings& operator<< (QSettings& settings, const RDOEditorBaseEditTheme& theme)
+{
+	settings.setValue("identifier_color", theme.identifierColor.name());
+	settings.setValue("keyword_color", theme.keywordColor.name());
+	settings.setValue("functions_color", theme.functionsColor.name());
+	settings.setValue("trace_color", theme.traceColor.name());
+	settings.setValue("color_color", theme.colorColor.name());
+	settings.setValue("comment_color", theme.commentColor.name());
+	settings.setValue("number_color", theme.numberColor.name());
+	settings.setValue("string_color", theme.stringColor.name());
+	settings.setValue("operator_color", theme.operatorColor.name());
+
+	settings.setValue("identifier_style", theme.identifierStyle);
+	settings.setValue("keyword_style", theme.keywordStyle);
+	settings.setValue("functions_style", theme.functionsStyle);
+	settings.setValue("trace_style", theme.traceStyle);
+	settings.setValue("color_style", theme.colorStyle);
+	settings.setValue("comment_style", theme.commentStyle);
+	settings.setValue("number_style", theme.numberStyle);
+	settings.setValue("string_style", theme.stringStyle);
+	settings.setValue("operator_style", theme.operatorStyle);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, RDOEditorBaseEditTheme& theme)
+{
+	theme.identifierColor        = QColor(settings.value("identifier_color", theme.identifierColor.name()).toString());
+	theme.keywordColor           = QColor(settings.value("keyword_color", theme.keywordColor.name()).toString());
+	theme.functionsColor         = QColor(settings.value("functions_color", theme.functionsColor.name()).toString());
+	theme.traceColor             = QColor(settings.value("trace_color", theme.traceColor.name()).toString());
+	theme.colorColor             = QColor(settings.value("color_color", theme.colorColor.name()).toString());
+	theme.commentColor           = QColor(settings.value("comment_color", theme.commentColor.name()).toString());
+	theme.numberColor            = QColor(settings.value("number_color", theme.numberColor.name()).toString());
+	theme.stringColor            = QColor(settings.value("string_color", theme.stringColor.name()).toString());
+	theme.operatorColor          = QColor(settings.value("operator_color", theme.operatorColor.name()).toString());
+
+	theme.identifierStyle        = static_cast<RDOStyleFont::style>(settings.value("identifier_style", theme.identifierStyle).toInt());
+	theme.keywordStyle           = static_cast<RDOStyleFont::style>(settings.value("keyword_style", theme.keywordStyle).toInt());
+	theme.functionsStyle         = static_cast<RDOStyleFont::style>(settings.value("functions_style", theme.functionsStyle).toInt());
+	theme.traceStyle             = static_cast<RDOStyleFont::style>(settings.value("trace_style", theme.traceStyle).toInt());
+	theme.colorStyle             = static_cast<RDOStyleFont::style>(settings.value("color_style", theme.colorStyle).toInt());
+	theme.commentStyle           = static_cast<RDOStyleFont::style>(settings.value("comment_style", theme.commentStyle).toInt());
+	theme.numberStyle            = static_cast<RDOStyleFont::style>(settings.value("number_style", theme.numberStyle).toInt());
+	theme.stringStyle            = static_cast<RDOStyleFont::style>(settings.value("string_style", theme.stringStyle).toInt());
+	theme.operatorStyle          = static_cast<RDOStyleFont::style>(settings.value("operator_style", theme.operatorStyle).toInt());
+	
+	return settings;
+}
+
+} // namespace rdoEditor
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorBaseEditStyle

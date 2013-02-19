@@ -39,8 +39,8 @@ public:
 	rbool operator ==( const RDOBaseEditTheme& theme ) const;
 	rbool operator !=( const RDOBaseEditTheme& theme ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	QColor caretColor;
 	QColor selectionBgColor;
@@ -64,6 +64,9 @@ public:
 	static tstring colorToHEX( const QColor color );
 };
 
+QSettings& operator<< (QSettings& settings, const RDOBaseEditTheme& theme);
+QSettings& operator>> (QSettings& settings,       RDOBaseEditTheme& theme);
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOBaseEditTab
 // --------------------------------------------------------------------------------
@@ -77,8 +80,8 @@ public:
 	rbool operator ==( const RDOBaseEditTab& tab ) const;
 	rbool operator !=( const RDOBaseEditTab& tab ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	int tabSize;
 	int indentSize;
@@ -87,6 +90,9 @@ public:
 	rbool backspaceUntabs;
 	rbool autoIndent;
 };
+
+QSettings& operator<< (QSettings& settings, const RDOBaseEditTab& tab);
+QSettings& operator>> (QSettings& settings,       RDOBaseEditTab& tab);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOBaseEditWindow
@@ -101,12 +107,15 @@ public:
 	rbool operator ==( const RDOBaseEditWindow& window ) const;
 	rbool operator !=( const RDOBaseEditWindow& window ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	rbool wordWrap;
 	rbool showHorzScrollBar;
 };
+
+QSettings& operator<< (QSettings& settings, const RDOBaseEditWindow& window);
+QSettings& operator>> (QSettings& settings,       RDOBaseEditWindow& window);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOBaseEditStyle

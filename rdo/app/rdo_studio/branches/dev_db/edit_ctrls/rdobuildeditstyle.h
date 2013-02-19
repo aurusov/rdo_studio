@@ -30,8 +30,8 @@ public:
 	rbool operator ==( const RDOBuildEditTheme& theme ) const;
 	rbool operator !=( const RDOBuildEditTheme& theme ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	rbool warning;
 
@@ -41,8 +41,11 @@ public:
 	static RDOBuildEditTheme getOceanTheme();
 };
 
+QSettings& operator<< (QSettings& settings, const RDOBuildEditTheme& theme);
+QSettings& operator>> (QSettings& settings,       RDOBuildEditTheme& theme);
+
 // --------------------------------------------------------------------------------
-// -------------------- LogEditStyle
+// -------------------- RDOBuildEditStyle
 // --------------------------------------------------------------------------------
 class RDOBuildEditStyle: public LogEditStyle
 {
