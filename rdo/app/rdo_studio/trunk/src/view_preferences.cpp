@@ -907,14 +907,14 @@ void ViewPreferences::createPreview()
 	preview_trace = new LogMainWnd(previewStackedWidget->currentWidget());
 	preview_trace->view().setStyle(&studioApp.getStyle()->style_trace);
 	preview_trace->view().setFocusOnly(true);
-	preview_trace->view().setText(rdo::format(IDS_COLORSTYLE_LOG_SAMPLE));
+	preview_trace->view().setText(rdo::format("Простая строка\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19"));
 	preview_trace->view().selectLine(0);
 	previewStackedWidget->addWidget(preview_trace);
 
 	preview_results = new RDOEditorResults(previewStackedWidget->currentWidget());
 	preview_results->setEditorStyle(&style_results);
 	preview_results->setReadOnly(false);
-	preview_results->replaceCurrent(rdo::format(IDS_COLORSTYLE_RESULTS_SAMPLE), 0);
+	preview_results->replaceCurrent(rdo::format("Длина_очереди                2  194  0.675957  21.6506  0  4\r\nЗанятость_парикмахера         TRUE  96  0.877351  21.7041  0.0397544  0.918872\r\nВсего_обслужено              96\r\nПропускная_способность       1.99198\r\n"), 0);
 	preview_results->setReadOnly(true);
 	previewStackedWidget->addWidget(preview_results);
 
