@@ -298,7 +298,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 				QString::fromStdWString(L"РДО-проект (*.rdox);;РДО-конвертор (*.smr);;Все файлы (*.*)")
 			);
 			data->m_result   = !modelName.isEmpty();
-			data->m_name     = modelName.toStdString();
+			data->m_name     = modelName.toLocal8Bit().constData();
 			data->m_readOnly = false;
 
 			msg.unlock();
