@@ -400,7 +400,7 @@ void ViewPreferences::onFontType(int index)
 	switch(getStyleItem()->type)
 	{
 	case IT_ROOT:
-		all_font_name = name.toStdString();
+		all_font_name = name.toLocal8Bit().constData();
 		style_editor.font->name  = text.constData();
 		style_build.font->name   = text.constData();
 		style_debug.font->name   = text.constData();

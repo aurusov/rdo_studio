@@ -78,7 +78,7 @@ void FindDialog::onFindButton()
 
 void FindDialog::onWhatEdited(const QString& text)
 {
-	m_settings.what = text.toStdString();
+	m_settings.what = text.toLocal8Bit().constData();
 }
 
 void FindDialog::onMatchCaseChanged(int value)
