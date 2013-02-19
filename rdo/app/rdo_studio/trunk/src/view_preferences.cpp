@@ -1244,7 +1244,7 @@ void ViewPreferences::insertColors(QComboBox* colorBox)
 	insertColor(QColor(0x00, 0xFF, 0xFF), "Aqua",    colorBox);
 }
 
-void ViewPreferences::insertColor(const QColor color, QString colorName, QComboBox* colorBox)
+void ViewPreferences::insertColor(const QColor& color, const QString& colorName, QComboBox* colorBox)
 {
 	colorBox->addItem(colorName);
 	int size = comboBox ->style()->pixelMetric(QStyle::PM_SmallIconSize);
