@@ -54,24 +54,18 @@ rbool LogEditTheme::operator !=( const LogEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void LogEditTheme::load( CREF(QString) groupName )
+void LogEditTheme::load(QSettings& settings)
 {
-	RDOBaseEditTheme::load( groupName );
+	RDOBaseEditTheme::load(settings);
 
-	QSettings settings;
-	settings.beginGroup(groupName);
 	selectLineBgColor = QColor(settings.value("select_line_bg_color", selectLineBgColor.name()).toString());
-	settings.endGroup();
 }
 
-void LogEditTheme::save( CREF(QString) groupName ) const
+void LogEditTheme::save(QSettings& settings) const
 {
-	RDOBaseEditTheme::save( groupName );
+	RDOBaseEditTheme::save(settings);
 
-	QSettings settings;
-	settings.beginGroup(groupName);
 	settings.setValue("select_line_bg_color", selectLineBgColor.name());
-	settings.endGroup();
 }
 
 LogEditTheme LogEditTheme::getDefaultTheme()

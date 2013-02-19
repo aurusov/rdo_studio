@@ -82,10 +82,8 @@ rbool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOBaseEditTheme::load( CREF(QString) groupName )
+void RDOBaseEditTheme::load(QSettings& settings)
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	defaultColor     = QColor(settings.value("default_color", defaultColor.name()).toString());
 	backgroundColor  = QColor(settings.value("background_color", backgroundColor.name()).toString());
 	caretColor       = QColor(settings.value("caret_color", caretColor.name()).toString());
@@ -94,13 +92,10 @@ void RDOBaseEditTheme::load( CREF(QString) groupName )
 	bookmarkBgColor  = QColor(settings.value("bookmark_bg_color", bookmarkBgColor.name()).toString());
 	defaultStyle     = static_cast<RDOStyleFont::style>(settings.value("default_style", defaultStyle).toInt());
 	bookmarkStyle    = static_cast<RDOBookmarkStyle>(settings.value("bookmark_style", bookmarkStyle).toInt());
-	settings.endGroup();
 }
 
-void RDOBaseEditTheme::save( CREF(QString) groupName ) const
+void RDOBaseEditTheme::save(QSettings& settings) const
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	settings.setValue("default_color", defaultColor.name());
 	settings.setValue("background_color", backgroundColor.name());
 	settings.setValue("caret_color", caretColor.name());
@@ -109,7 +104,6 @@ void RDOBaseEditTheme::save( CREF(QString) groupName ) const
 	settings.setValue("bookmark_bg_color", bookmarkBgColor.name());
 	settings.setValue("default_style", defaultStyle);
 	settings.setValue("bookmark_style", bookmarkStyle);
-	settings.endGroup();
 }
 
 rbool RDOBaseEditTheme::styleDefault( const int styleType ) const
@@ -254,30 +248,24 @@ rbool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
 	return !(*this == tab);
 }
 
-void RDOBaseEditTab::load( CREF(QString) groupName )
+void RDOBaseEditTab::load(QSettings& settings)
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	tabSize         = settings.value("tab_size", tabSize).toInt();
 	indentSize      = settings.value("indent_size", indentSize).toInt();
 	useTabs         = settings.value("use_tabs", useTabs).toBool() ? true : false;
 	tabIndents      = settings.value("tab_indents", tabIndents).toBool() ? true : false;
 	backspaceUntabs = settings.value("backspace_untabs", backspaceUntabs).toBool() ? true : false;
 	autoIndent      = settings.value("auto_indent", autoIndent).toBool() ? true : false;
-	settings.endGroup();
 }
 
-void RDOBaseEditTab::save( CREF(QString) groupName ) const
+void RDOBaseEditTab::save(QSettings& settings) const
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	settings.setValue("tab_size", tabSize);
 	settings.setValue("indent_size", indentSize);
 	settings.setValue("use_tabs", useTabs);
 	settings.setValue("tab_indents", tabIndents);
 	settings.setValue("backspace_untabs", backspaceUntabs);
 	settings.setValue("auto_indent", autoIndent);
-	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------
@@ -312,22 +300,16 @@ rbool RDOBaseEditWindow::operator !=( const RDOBaseEditWindow& window ) const
 	return !(*this == window);
 }
 
-void RDOBaseEditWindow::load( CREF(QString) groupName )
+void RDOBaseEditWindow::load(QSettings& settings)
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	wordWrap          = settings.value("word_wrap", wordWrap).toBool() ? true : false;
 	showHorzScrollBar = settings.value("show_horz_scroll_bar", showHorzScrollBar).toBool() ? true : false;
-	settings.endGroup();
 }
 
-void RDOBaseEditWindow::save( CREF(QString) groupName ) const
+void RDOBaseEditWindow::save(QSettings& settings) const
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	settings.setValue("word_wrap", wordWrap);
 	settings.setValue("show_horz_scroll_bar", showHorzScrollBar);
-	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------
@@ -395,8 +377,13 @@ void RDOBaseEditStyle::init( CREF(QString) _groupName )
 rbool RDOBaseEditStyle::load()
 {
 	if ( RDOStyleWithTheme::load() ) {
-		if ( tab )    tab->load( groupName + "tab" );
-		if ( window ) window->load( groupName + "window" );
+		QSettings settings;
+		settings.beginGroup(groupName + "tab");
+		if (tab)    tab->load(settings);
+		settings.endGroup();
+		settings.beginGroup(groupName + "window");
+		if (window) window->load(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;
@@ -405,8 +392,13 @@ rbool RDOBaseEditStyle::load()
 rbool RDOBaseEditStyle::save() const
 {
 	if ( RDOStyleWithTheme::save() ) {
-		if ( tab )    tab->save( groupName + "tab" );
-		if ( window ) window->save( groupName + "window" );
+		QSettings settings;
+		settings.beginGroup(groupName + "tab");
+		if (tab)    tab->save(settings);
+		settings.endGroup();
+		settings.beginGroup(groupName + "window");
+		if (window) window->save(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;

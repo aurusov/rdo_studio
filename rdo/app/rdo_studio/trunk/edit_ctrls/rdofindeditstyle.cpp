@@ -61,26 +61,20 @@ rbool RDOFindEditTheme::operator !=( const RDOFindEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOFindEditTheme::load( CREF(QString) groupName )
+void RDOFindEditTheme::load(QSettings& settings)
 {
-	LogEditTheme::load( groupName );
+	LogEditTheme::load(settings);
 
-	QSettings settings;
-	settings.beginGroup(groupName);
 	keywordColor = QColor(settings.value("keyword_color", keywordColor.name()).toString());
 	keywordStyle = static_cast<RDOStyleFont::style>(settings.value("keyword_style", keywordStyle).toInt());
-	settings.endGroup();
 }
 
-void RDOFindEditTheme::save( CREF(QString) groupName ) const
+void RDOFindEditTheme::save(QSettings& settings) const
 {
-	LogEditTheme::save( groupName );
+	LogEditTheme::save(settings);
 
-	QSettings settings;
-	settings.beginGroup(groupName);
 	settings.setValue("keyword_color", keywordColor.name());
 	settings.setValue("keyword_style", keywordStyle);
-	settings.endGroup();
 }
 
 rbool RDOFindEditTheme::styleDefault( const int styleType ) const

@@ -30,8 +30,8 @@ public:
 	rbool operator ==( const RDOBuildEditTheme& theme ) const;
 	rbool operator !=( const RDOBuildEditTheme& theme ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	rbool warning;
 

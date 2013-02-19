@@ -64,30 +64,24 @@ rbool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 	return !(*this == font);
 }
 
-void RDOStyleFont::load( CREF(QString) groupName )
+void RDOStyleFont::load(QSettings& settings)
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	name         = settings.value("name", QString::fromLocal8Bit(name.c_str())).toString().toLocal8Bit().constData();
 	size         = settings.value("size", size).toInt();
 	codepage     = settings.value("codepage", codepage).toInt();
 	characterSet = settings.value("character_set", characterSet).toInt();
-	settings.endGroup();
 	if (characterSet == RUSSIAN_CHARSET)
 	{
 		characterSet = SC_CHARSET_CYRILLIC;
 	}
 }
 
-void RDOStyleFont::save( CREF(QString) groupName ) const
+void RDOStyleFont::save(QSettings& settings) const
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	settings.setValue("name", QString::fromLocal8Bit(name.c_str()));
 	settings.setValue("size", size);
 	settings.setValue("codepage", codepage);
 	settings.setValue("character_set", characterSet);
-	settings.endGroup();
 }
 
 RDOStyleFont RDOStyleFont::getDefaultFont()
@@ -171,20 +165,14 @@ rbool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOStyleTheme::load( CREF(QString) groupName )
+void RDOStyleTheme::load(QSettings& settings)
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	settings >> *this;
-	settings.endGroup();
 }
 
-void RDOStyleTheme::save( CREF(QString) groupName ) const
+void RDOStyleTheme::save(QSettings& settings) const
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	settings << *this;
-	settings.endGroup();
 }
 
 namespace rdoStyle
@@ -265,8 +253,11 @@ void RDOStyle::init( CREF(QString) _groupName )
 
 rbool RDOStyle::load()
 {
-	if ( !groupName.isEmpty() ) {
-		if ( font ) font->load( groupName + "font" );
+	if (!groupName.isEmpty()) {
+		QSettings settings;
+		settings.beginGroup(groupName + "font");
+		if (font) font->load(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;
@@ -274,8 +265,11 @@ rbool RDOStyle::load()
 
 rbool RDOStyle::save() const
 {
-	if ( !groupName.isEmpty() ) {
-		if ( font ) font->save( groupName + "font" );
+	if (!groupName.isEmpty()) {
+		QSettings settings;
+		settings.beginGroup(groupName + "font");
+		if (font) font->save(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;
@@ -328,8 +322,11 @@ void RDOStyleWithTheme::init( CREF(QString) _groupName )
 
 rbool RDOStyleWithTheme::load()
 {
-	if ( RDOStyle::load() ) {
-		if ( theme ) theme->load( groupName + "theme");
+	if (RDOStyle::load()) {
+		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		if (theme) theme->load(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;
@@ -337,8 +334,11 @@ rbool RDOStyleWithTheme::load()
 
 rbool RDOStyleWithTheme::save() const
 {
-	if ( RDOStyle::save() ) {
-		if ( theme ) theme->save( groupName + "theme" );
+	if (RDOStyle::save()) {
+		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		if (theme) theme->save(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;

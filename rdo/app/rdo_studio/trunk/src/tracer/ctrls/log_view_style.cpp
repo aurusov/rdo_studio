@@ -55,24 +55,18 @@ rbool LogColorPair::operator !=( const LogColorPair& colors ) const
 	return !(*this == colors);
 }
 
-void LogColorPair::load( CREF(QString) groupName, QString regParam )
+void LogColorPair::load(QSettings& settings, QString regParam)
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	regParam.append("_");
 	foregroundColor = QColor(settings.value(QString(regParam + "foreground_color"), foregroundColor.name()).toString());
 	backgroundColor = QColor(settings.value(QString(regParam + "background_color"), backgroundColor.name()).toString());
-	settings.endGroup();
 }
 
-void LogColorPair::save( CREF(QString) groupName, QString regParam ) const
+void LogColorPair::save(QSettings& settings, QString regParam) const
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	regParam.append("_");
 	settings.setValue(QString(regParam + "foreground_color"), foregroundColor.name());
 	settings.setValue(QString(regParam + "background_color"), backgroundColor.name());
-	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------
@@ -230,73 +224,66 @@ rbool LogTheme::operator !=( const LogTheme& theme ) const
 	return !(*this == theme);
 }
 
-void LogTheme::load( QString groupName )
+void LogTheme::load(QSettings& settings)
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	style = static_cast<RDOStyleFont::style>(settings.value("style", style).toInt());
-	settings.endGroup();
-	defaultColor.load( groupName, "defaultColor" );
-	es.load ( groupName, "es"  );
-	eb.load ( groupName, "eb"  );
-	ef.load ( groupName, "ef"  );
-	ei.load ( groupName, "ei"  );
-	er.load ( groupName, "er"  );
-	rc.load ( groupName, "rc"  );
-	re.load ( groupName, "re"  );
-	rk.load ( groupName, "rk"  );
-	v.load  ( groupName, "v"   );
-	s.load  ( groupName, "s"   );
-	dps.load( groupName, "dps" );
-	sb.load ( groupName, "sb"  );
-	so.load ( groupName, "so"  );
-	stn.load( groupName, "stn" );
-	std.load( groupName, "std" );
-	str.load( groupName, "str" );
-	src.load( groupName, "src" );
-	sre.load( groupName, "sre" );
-	srk.load( groupName, "srk" );
-	sd.load ( groupName, "sd"  );
-	ses.load( groupName, "ses" );
-	sen.load( groupName, "sen" );
-	sem.load( groupName, "sem" );
-	sef.load( groupName, "sef" );
-	seu.load( groupName, "seu" );
+	defaultColor.load( settings, "defaultColor" );
+	es.load ( settings, "es"  );
+	eb.load ( settings, "eb"  );
+	ef.load ( settings, "ef"  );
+	ei.load ( settings, "ei"  );
+	er.load ( settings, "er"  );
+	rc.load ( settings, "rc"  );
+	re.load ( settings, "re"  );
+	rk.load ( settings, "rk"  );
+	v.load  ( settings, "v"   );
+	s.load  ( settings, "s"   );
+	dps.load( settings, "dps" );
+	sb.load ( settings, "sb"  );
+	so.load ( settings, "so"  );
+	stn.load( settings, "stn" );
+	std.load( settings, "std" );
+	str.load( settings, "str" );
+	src.load( settings, "src" );
+	sre.load( settings, "sre" );
+	srk.load( settings, "srk" );
+	sd.load ( settings, "sd"  );
+	ses.load( settings, "ses" );
+	sen.load( settings, "sen" );
+	sem.load( settings, "sem" );
+	sef.load( settings, "sef" );
+	seu.load( settings, "seu" );
 }
 
-void LogTheme::save( QString groupName ) const
+void LogTheme::save(QSettings& settings) const
 {
-	QSettings settings;
-	groupName.append("theme");
-	settings.beginGroup(groupName);
 	settings.setValue("style", style);
-	settings.endGroup();
-	defaultColor.save( groupName, "defaultColor" );
-	es.save ( groupName, "es"  );
-	eb.save ( groupName, "eb"  );
-	ef.save ( groupName, "ef"  );
-	ei.save ( groupName, "ei"  );
-	er.save ( groupName, "er"  );
-	rc.save ( groupName, "rc"  );
-	re.save ( groupName, "re"  );
-	rk.save ( groupName, "rk"  );
-	v.save  ( groupName, "v"   );
-	s.save  ( groupName, "s"   );
-	dps.save( groupName, "dps" );
-	sb.save ( groupName, "sb"  );
-	so.save ( groupName, "so"  );
-	stn.save( groupName, "stn" );
-	std.save( groupName, "std" );
-	str.save( groupName, "str" );
-	src.save( groupName, "src" );
-	sre.save( groupName, "sre" );
-	srk.save( groupName, "srk" );
-	sd.save ( groupName, "sd"  );
-	ses.save( groupName, "ses" );
-	sen.save( groupName, "sen" );
-	sem.save( groupName, "sem" );
-	sef.save( groupName, "sef" );
-	seu.save( groupName, "seu" );
+	defaultColor.save( settings, "defaultColor" );
+	es.save ( settings, "es"  );
+	eb.save ( settings, "eb"  );
+	ef.save ( settings, "ef"  );
+	ei.save ( settings, "ei"  );
+	er.save ( settings, "er"  );
+	rc.save ( settings, "rc"  );
+	re.save ( settings, "re"  );
+	rk.save ( settings, "rk"  );
+	v.save  ( settings, "v"   );
+	s.save  ( settings, "s"   );
+	dps.save( settings, "dps" );
+	sb.save ( settings, "sb"  );
+	so.save ( settings, "so"  );
+	stn.save( settings, "stn" );
+	std.save( settings, "std" );
+	str.save( settings, "str" );
+	src.save( settings, "src" );
+	sre.save( settings, "sre" );
+	srk.save( settings, "srk" );
+	sd.save ( settings, "sd"  );
+	ses.save( settings, "ses" );
+	sen.save( settings, "sen" );
+	sem.save( settings, "sem" );
+	sef.save( settings, "sef" );
+	seu.save( settings, "seu" );
 }
 
 LogTheme LogTheme::getDefaultTheme()
@@ -337,22 +324,16 @@ rbool LogBorders::operator !=( const LogBorders& borders ) const
 	return !(*this == borders);
 }
 
-void LogBorders::load( CREF(QString) groupName )
+void LogBorders::load(QSettings& settings)
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	vertBorder = settings.value("vert_border", vertBorder).toInt();
 	horzBorder = settings.value("horz_border", horzBorder).toInt();
-	settings.endGroup();
 }
 
-void LogBorders::save( CREF(QString) groupName ) const
+void LogBorders::save(QSettings& settings) const
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	settings.setValue("vert_border", vertBorder);
 	settings.setValue("horz_border", horzBorder);
-	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------
@@ -499,8 +480,13 @@ void LogStyle::init( CREF(QString) _groupName )
 rbool LogStyle::load()
 {
 	if (RDOStyle::load()) {
-		if (theme)   theme->load(groupName + "theme");
-		if (borders) borders->load(groupName + "borders");
+		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		if (theme)   theme->load(settings);
+		settings.endGroup();
+		settings.beginGroup(groupName + "borders");
+		if (borders) borders->load(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;
@@ -509,8 +495,13 @@ rbool LogStyle::load()
 rbool LogStyle::save() const
 {
 	if (RDOStyle::save()) {
-		if (theme)   theme->save(groupName + "theme");
-		if (borders) borders->save(groupName + "borders");
+		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		if (theme)   theme->save(settings);
+		settings.endGroup();
+		settings.beginGroup(groupName + "borders");
+		if (borders) borders->save(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;

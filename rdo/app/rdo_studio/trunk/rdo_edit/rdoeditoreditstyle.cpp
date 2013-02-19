@@ -75,32 +75,27 @@ rbool RDOEditorEditTheme::operator !=( const RDOEditorEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOEditorEditTheme::load( CREF(QString) groupName )
+void RDOEditorEditTheme::load(QSettings& settings)
 {
-	RDOEditorBaseEditTheme::load( groupName );
+	RDOEditorBaseEditTheme::load(settings);
 
-	QSettings settings;
-	settings.beginGroup(groupName);
 	foldFgColor  = QColor(settings.value("fold_fg_color", foldFgColor.name()).toString());
 	foldBgColor  = QColor(settings.value("fold_bg_color", foldBgColor.name()).toString());
 	errorBgColor = QColor(settings.value("error_bg_color", errorBgColor.name()).toString());
 	foldStyle    = (RDOFoldStyle)settings.value("fold_style", foldStyle).toInt();
 	commentFold  = settings.value("comment_fold", commentFold).toBool() ? true : false;
-	settings.endGroup();
 }
 
-void RDOEditorEditTheme::save( CREF(QString) groupName ) const
+void RDOEditorEditTheme::save(QSettings& settings ) const
 {
-	RDOEditorBaseEditTheme::save( groupName );
+	RDOEditorBaseEditTheme::save(settings);
 
-	QSettings settings;
-	settings.beginGroup(groupName);
 	settings.setValue("fold_fg_color", foldFgColor.name());
 	settings.setValue("fold_bg_color", foldBgColor.name());
 	settings.setValue("error_bg_color", errorBgColor.name());
 	settings.setValue("fold_style", foldStyle);
 	settings.setValue("comment_fold", commentFold);
-	settings.endGroup();
+
 }
 
 RDOEditorEditTheme RDOEditorEditTheme::getDefaultTheme()
@@ -231,22 +226,16 @@ rbool RDOEditorEditAutoComplete::operator !=( const RDOEditorEditAutoComplete& a
 	return !(*this == autoComplete);
 }
 
-void RDOEditorEditAutoComplete::load( CREF(QString) groupName )
+void RDOEditorEditAutoComplete::load(QSettings& settings)
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	useAutoComplete = settings.value("use_auto_complete", useAutoComplete).toBool() ? true : false;
 	showFullList    = settings.value("show_full_list", showFullList).toBool() ? true : false;
-	settings.endGroup();
 }
 
-void RDOEditorEditAutoComplete::save( CREF(QString) groupName ) const
+void RDOEditorEditAutoComplete::save(QSettings& settings) const
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	settings.setValue("use_auto_complete", useAutoComplete);
 	settings.setValue("show_full_list", showFullList);
-	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------
@@ -284,24 +273,18 @@ rbool RDOEditorEditMargin::operator !=( const RDOEditorEditMargin& margin ) cons
 	return !(*this == margin);
 }
 
-void RDOEditorEditMargin::load( CREF(QString) groupName )
+void RDOEditorEditMargin::load(QSettings& settings)
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	fold       = settings.value("fold", fold).toBool() ? true : false;
 	bookmark   = settings.value("bookmark", bookmark).toBool() ? true : false;
 	lineNumber = settings.value("line_number", lineNumber).toBool() ? true : false;
-	settings.endGroup();
 }
 
-void RDOEditorEditMargin::save( CREF(QString) groupName ) const
+void RDOEditorEditMargin::save(QSettings& settings) const
 {
-	QSettings settings;
-	settings.beginGroup(groupName);
 	settings.setValue("fold", fold);
 	settings.setValue("bookmark", bookmark);
 	settings.setValue("line_number", lineNumber);
-	settings.endGroup();
 }
 
 // --------------------------------------------------------------------------------
@@ -371,8 +354,13 @@ void RDOEditorEditStyle::init( CREF(QString) _groupName )
 rbool RDOEditorEditStyle::load()
 {
 	if ( RDOEditorBaseEditStyle::load() ) {
-		if ( autoComplete ) autoComplete->load( groupName + "auto_complete" );
-		if ( margin )       margin->load( groupName + "margin" );
+		QSettings settings;
+		settings.beginGroup(groupName + "auto_complete");
+		if (autoComplete) autoComplete->load(settings);
+		settings.endGroup();
+		settings.beginGroup(groupName + "margin");
+		if (margin)       margin->load(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;
@@ -381,8 +369,13 @@ rbool RDOEditorEditStyle::load()
 rbool RDOEditorEditStyle::save() const
 {
 	if ( RDOEditorBaseEditStyle::save() ) {
-		if ( autoComplete ) autoComplete->save(  groupName + "auto_complete" );
-		if ( margin )       margin->save(  groupName + "margin" );
+		QSettings settings;
+		settings.beginGroup(groupName + "auto_complete");
+		if ( autoComplete ) autoComplete->save(settings);
+		settings.endGroup();
+		settings.beginGroup(groupName + "margin");
+		if ( margin )       margin->save(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;

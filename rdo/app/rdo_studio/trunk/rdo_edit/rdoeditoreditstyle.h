@@ -41,8 +41,8 @@ public:
 	rbool operator ==( const RDOEditorEditTheme& theme ) const;
 	rbool operator !=( const RDOEditorEditTheme& theme ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	QColor foldFgColor;
 	QColor foldBgColor;
@@ -74,8 +74,8 @@ public:
 	rbool operator ==( const RDOEditorEditAutoComplete& autoComplete ) const;
 	rbool operator !=( const RDOEditorEditAutoComplete& autoComplete ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	rbool useAutoComplete;
 	rbool showFullList;
@@ -94,8 +94,8 @@ public:
 	rbool operator ==( const RDOEditorEditMargin& margin ) const;
 	rbool operator !=( const RDOEditorEditMargin& margin ) const;
 
-	virtual void load( CREF(QString) groupName );
-	virtual void save( CREF(QString) groupName ) const;
+	virtual void load(QSettings& settings);
+	virtual void save(QSettings& settings) const;
 
 	rbool fold;
 	rbool bookmark;

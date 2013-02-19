@@ -54,25 +54,16 @@ rbool RDOBuildEditTheme::operator !=( const RDOBuildEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOBuildEditTheme::load( CREF(QString) groupName )
+void RDOBuildEditTheme::load(QSettings& settings)
 {
-	LogEditTheme::load( groupName );
-	
-	QSettings settings;
-	settings.beginGroup(groupName);
+	LogEditTheme::load(settings);
 	warning = settings.value("warning", warning).toBool() ? true : false;
-	settings.endGroup();
-
 }
 
-void RDOBuildEditTheme::save( CREF(QString) groupName ) const
+void RDOBuildEditTheme::save(QSettings& settings) const
 {
-	LogEditTheme::save( groupName );
-
-	QSettings settings;
-	settings.beginGroup(groupName);
+	LogEditTheme::save(settings);
 	settings.setValue("warning", warning);
-	settings.endGroup();
 }
 
 RDOBuildEditTheme RDOBuildEditTheme::getDefaultTheme()
