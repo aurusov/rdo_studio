@@ -710,11 +710,11 @@ void RDOStudioModel::newModelFromRepository()
 				QFile   file(it->second.resName);
 				if (file.open(QIODevice::ReadOnly) && file.isOpen())
 				{
-					resourceData = file.readAll();
+					resourceData = QString::fromLocal8Bit(file.readAll());
 				}
 				if (!resourceData.isEmpty())
 				{
-					pEdit->replaceCurrent(resourceData.toStdString());
+					pEdit->replaceCurrent(resourceData.toLocal8Bit().constData());
 					pEdit->scrollToLine(0);
 					if (it->second.position.is_initialized())
 					{
