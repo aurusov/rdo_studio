@@ -1020,7 +1020,7 @@ void ChartView::attachToDoc()
 	getDocument()->addToViews(this);
 }
 
-void ChartView::paintEvent(QPaintEvent* pEvent)
+void ChartView::paintEvent(QPaintEvent*)
 {
 	QPainter painter(this);
 
