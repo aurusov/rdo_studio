@@ -32,6 +32,7 @@ class ChartView: public ActionActivatorWidget
 Q_OBJECT
 
 friend class TracerSerieFindValue;
+friend class ChartPreferences;
 friend class RDOStudioChartOptionsChart;
 friend class ChartViewMainWnd;
 friend class TracerSerie;
