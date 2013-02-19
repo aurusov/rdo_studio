@@ -893,9 +893,9 @@ void ViewPreferences::createPreview()
 
 	preview_build = new RDOBuildEdit(previewStackedWidget->currentWidget());
 	preview_build->setEditorStyle(&style_build);
-	preview_build->appendLine(new BuildEditLineInfo(rdo::format(IDS_COLORSTYLE_BUILD_SAMPLE1)));
-	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage(rdo::format(IDS_COLORSTYLE_BUILD_SAMPLE2), rdoModelObjects::PAT, 40, 0)));
-	preview_build->appendLine(new BuildEditLineInfo(rdo::format(IDS_COLORSTYLE_BUILD_SAMPLE3)));
+	preview_build->appendLine(new BuildEditLineInfo(rdo::format("Компиляция...")));
+	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage(rdo::format("Неправильное значение параметра: 4"), rdoModelObjects::PAT, 40, 0)));
+	preview_build->appendLine(new BuildEditLineInfo(rdo::format("найдено ошибок: 1, предупреждений: 0")));
 	preview_build->gotoNext();
 	previewStackedWidget->addWidget(preview_build);
 
@@ -921,18 +921,19 @@ void ViewPreferences::createPreview()
 	preview_find = new RDOFindEdit(previewStackedWidget->currentWidget());
 	preview_find->setEditorStyle(&style_find);
 	preview_find->setKeyword("$Time");
-	preview_find->appendLine(new LogEditLineInfo(rdo::format(IDS_COLORSTYLE_FIND_SAMPLE1)));
-	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(rdo::format(IDS_COLORSTYLE_FIND_SAMPLE2), rdoModelObjects::PAT, 3, 0)));
-	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(rdo::format(IDS_COLORSTYLE_FIND_SAMPLE3), rdoModelObjects::PAT, 13, 0)));
-	preview_find->appendLine(new LogEditLineInfo(rdo::format(IDS_COLORSTYLE_FIND_SAMPLE4)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::format("Поиск '$Time'...")));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(rdo::format("$Time = Равномерный(0.25, 0.75)"), rdoModelObjects::PAT, 3, 0)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(rdo::format("$Time = Нормальный(0.45, 0.2)"), rdoModelObjects::PAT, 13, 0)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::format("'2' раз было найдено.")));
 	preview_find->gotoNext();
 	previewStackedWidget->addWidget(preview_find);
 
+	previewStackedWidget->addWidget(new QWidget(previewStackedWidget->currentWidget()));
 	//! @todo qt
 	//preview_chart_doc = new RDOStudioChartDoc(true);
 	//PTR(ChartViewMainWnd) pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
 
-	//preview_chart_doc->setTitle(rdo::format(IDS_COLORSTYLE_CHART_SAMPLE1).c_str());
+	//preview_chart_doc->setTitle(rdo::format("график 1").c_str());
 	//preview_chart->setPreviwMode(true);
 	//preview_chart_doc->attachView(preview_chart);
 	//preview_chart->setStyle(&style_chart, false);
@@ -943,7 +944,7 @@ void ViewPreferences::createPreview()
 	//preview_times.push_back(TracerTimeNow(6, 3));
 	//preview_times.push_back(TracerTimeNow(8, 3));
 	//preview_times.push_back(TracerTimeNow(10, 3));
-	//preview_serie.setTitle(rdo::format(IDS_COLORSTYLE_CHART_SAMPLE2));
+	//preview_serie.setTitle(rdo::format("значение 1"));
 	//preview_serie.addValue(new TracerValue(&preview_times.at(0), 2, 0));
 	//preview_serie.addValue(new TracerValue(&preview_times.at(1), 1, 1));
 	//preview_serie.addValue(new TracerValue(&preview_times.at(2), 0, 4));
