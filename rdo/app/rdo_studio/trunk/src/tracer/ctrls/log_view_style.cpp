@@ -233,7 +233,6 @@ rbool LogTheme::operator !=( const LogTheme& theme ) const
 void LogTheme::load( QString groupName )
 {
 	QSettings settings;
-	groupName.append("theme");
 	settings.beginGroup(groupName);
 	style = static_cast<RDOStyleFont::style>(settings.value("style", style).toInt());
 	settings.endGroup();
@@ -499,9 +498,9 @@ void LogStyle::init( CREF(QString) _groupName )
 
 rbool LogStyle::load()
 {
-	if ( RDOStyle::load() ) {
-		if ( theme )   theme->load( groupName );
-		if ( borders ) borders->load( groupName + "borders" );
+	if (RDOStyle::load()) {
+		if (theme)   theme->load(groupName + "theme");
+		if (borders) borders->load(groupName + "borders");
 		return true;
 	}
 	return false;
@@ -509,9 +508,9 @@ rbool LogStyle::load()
 
 rbool LogStyle::save() const
 {
-	if ( RDOStyle::save() ) {
-		if ( theme )   theme->save( groupName );
-		if ( borders ) borders->save( groupName + "borders" );
+	if (RDOStyle::save()) {
+		if (theme)   theme->save(groupName + "theme");
+		if (borders) borders->save(groupName + "borders");
 		return true;
 	}
 	return false;
