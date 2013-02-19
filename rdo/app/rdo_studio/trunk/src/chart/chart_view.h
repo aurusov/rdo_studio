@@ -146,12 +146,12 @@ private slots:
 	void onViewZoomAuto();
 	
 	void onChartTimeWrap();
+	void onChartOptions();
 protected:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnEditCopy();
-	afx_msg void OnChartOptions();
 	afx_msg void OnHelpKeyword();
 //	DECLARE_MESSAGE_MAP()
 };

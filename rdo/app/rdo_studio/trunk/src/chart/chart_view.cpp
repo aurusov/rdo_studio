@@ -21,8 +21,8 @@
 #include "app/rdo_studio/resource.h"
 #include "app/rdo_studio/src/chart/chart_view_style.h"
 #include "app/rdo_studio/src/chart/chart_serie.h"
-#include "app/rdo_studio/src/chart/chart_options.h"
 #include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/chart/chart_preferences.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -994,10 +994,10 @@ void ChartView::setPreviwMode(rbool value)
 	m_previewMode = value;
 }
 
-void ChartView::OnChartOptions()
+void ChartView::onChartOptions()
 {
-	RDOStudioChartOptions dlg(this);
-	dlg.DoModal();
+	ChartPreferences dlg(this);
+	dlg.exec();
 }
 
 void ChartView::updateView()
@@ -1139,6 +1139,12 @@ void ChartView::onUpdateActions(rbool activated)
 		pMainWindow->actChartTimeWrap,
 		activated && canUnwrapTime(),
 		this, &ChartView::onChartTimeWrap
+	);
+
+	updateAction(
+		pMainWindow->actChartOptions,
+		activated,
+		this, &ChartView::onChartOptions
 	);
 }
 
