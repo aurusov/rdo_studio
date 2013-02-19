@@ -341,7 +341,7 @@ rbool LogBorders::operator !=( const LogBorders& borders ) const
 void LogBorders::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "borders");
+	settings.beginGroup(groupName);
 	vertBorder = settings.value("vert_border", vertBorder).toInt();
 	horzBorder = settings.value("horz_border", horzBorder).toInt();
 	settings.endGroup();
@@ -350,7 +350,7 @@ void LogBorders::load( CREF(QString) groupName )
 void LogBorders::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "borders");
+	settings.beginGroup(groupName);
 	settings.setValue("vert_border", vertBorder);
 	settings.setValue("horz_border", horzBorder);
 	settings.endGroup();
@@ -501,7 +501,7 @@ rbool LogStyle::load()
 {
 	if ( RDOStyle::load() ) {
 		if ( theme )   theme->load( groupName );
-		if ( borders ) borders->load( groupName );
+		if ( borders ) borders->load( groupName + "borders" );
 		return true;
 	}
 	return false;
@@ -511,7 +511,7 @@ rbool LogStyle::save() const
 {
 	if ( RDOStyle::save() ) {
 		if ( theme )   theme->save( groupName );
-		if ( borders ) borders->save( groupName );
+		if ( borders ) borders->save( groupName + "borders" );
 		return true;
 	}
 	return false;

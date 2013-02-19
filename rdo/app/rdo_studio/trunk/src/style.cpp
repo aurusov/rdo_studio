@@ -67,7 +67,7 @@ rbool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 void RDOStyleFont::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "font");
+	settings.beginGroup(groupName);
 	name         = settings.value("name", QString::fromLocal8Bit(name.c_str())).toString().toLocal8Bit().constData();
 	size         = settings.value("size", size).toInt();
 	codepage     = settings.value("codepage", codepage).toInt();
@@ -82,7 +82,7 @@ void RDOStyleFont::load( CREF(QString) groupName )
 void RDOStyleFont::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(groupName +"font");
+	settings.beginGroup(groupName);
 	settings.setValue("name", QString::fromLocal8Bit(name.c_str()));
 	settings.setValue("size", size);
 	settings.setValue("codepage", codepage);
@@ -174,7 +174,7 @@ rbool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 void RDOStyleTheme::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "theme");
+	settings.beginGroup(groupName);
 	settings >> *this;
 	settings.endGroup();
 }
@@ -182,7 +182,7 @@ void RDOStyleTheme::load( CREF(QString) groupName )
 void RDOStyleTheme::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "theme");
+	settings.beginGroup(groupName);
 	settings << *this;
 	settings.endGroup();
 }
@@ -266,7 +266,7 @@ void RDOStyle::init( CREF(QString) _groupName )
 rbool RDOStyle::load()
 {
 	if ( !groupName.isEmpty() ) {
-		if ( font ) font->load( groupName );
+		if ( font ) font->load( groupName + "font" );
 		return true;
 	}
 	return false;
@@ -275,7 +275,7 @@ rbool RDOStyle::load()
 rbool RDOStyle::save() const
 {
 	if ( !groupName.isEmpty() ) {
-		if ( font ) font->save( groupName );
+		if ( font ) font->save( groupName + "font" );
 		return true;
 	}
 	return false;
@@ -329,7 +329,7 @@ void RDOStyleWithTheme::init( CREF(QString) _groupName )
 rbool RDOStyleWithTheme::load()
 {
 	if ( RDOStyle::load() ) {
-		if ( theme ) theme->load( groupName );
+		if ( theme ) theme->load( groupName + "theme");
 		return true;
 	}
 	return false;
@@ -338,7 +338,7 @@ rbool RDOStyleWithTheme::load()
 rbool RDOStyleWithTheme::save() const
 {
 	if ( RDOStyle::save() ) {
-		if ( theme ) theme->save( groupName );
+		if ( theme ) theme->save( groupName + "theme" );
 		return true;
 	}
 	return false;

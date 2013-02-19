@@ -59,7 +59,7 @@ void RDOBuildEditTheme::load( CREF(QString) groupName )
 	LogEditTheme::load( groupName );
 	
 	QSettings settings;
-	settings.beginGroup(groupName + "build");
+	settings.beginGroup(groupName);
 	warning = settings.value("warning", warning).toBool() ? true : false;
 	settings.endGroup();
 
@@ -70,7 +70,7 @@ void RDOBuildEditTheme::save( CREF(QString) groupName ) const
 	LogEditTheme::save( groupName );
 
 	QSettings settings;
-	settings.beginGroup(groupName + "build");
+	settings.beginGroup(groupName);
 	settings.setValue("warning", warning);
 	settings.endGroup();
 }

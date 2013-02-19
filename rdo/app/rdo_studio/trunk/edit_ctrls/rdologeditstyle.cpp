@@ -59,7 +59,7 @@ void LogEditTheme::load( CREF(QString) groupName )
 	RDOBaseEditTheme::load( groupName );
 
 	QSettings settings;
-	settings.beginGroup(groupName + "theme");
+	settings.beginGroup(groupName);
 	selectLineBgColor = QColor(settings.value("select_line_bg_color", selectLineBgColor.name()).toString());
 	settings.endGroup();
 }
@@ -69,7 +69,7 @@ void LogEditTheme::save( CREF(QString) groupName ) const
 	RDOBaseEditTheme::save( groupName );
 
 	QSettings settings;
-	settings.beginGroup(groupName + "theme");
+	settings.beginGroup(groupName);
 	settings.setValue("select_line_bg_color", selectLineBgColor.name());
 	settings.endGroup();
 }

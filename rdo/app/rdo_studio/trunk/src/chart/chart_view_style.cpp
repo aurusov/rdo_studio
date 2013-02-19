@@ -85,7 +85,7 @@ void RDOStudioChartViewTheme::load(CREF(QString) groupName)
 {
 	QSettings settings;
 	RDOStyleTheme::load(groupName);
-	settings.beginGroup(groupName + "theme");
+	settings.beginGroup(groupName);
 	axisFgColor   = QColor(settings.value("axis_fg_color", axisFgColor.name()).toString());
 	titleFGColor  = QColor(settings.value("title_fg_color", titleFGColor.name()).toString());
 	legendFgColor = QColor(settings.value("legend_fg_color", legendFgColor.name()).toString());
@@ -100,7 +100,7 @@ void RDOStudioChartViewTheme::save(CREF(QString) groupName) const
 {
 	QSettings settings;
 	RDOStyleTheme::save(groupName);
-	settings.beginGroup(groupName + "theme");
+	settings.beginGroup(groupName);
 	settings.setValue("axis_fg_color", axisFgColor.name());
 	settings.setValue("title_fg_color", titleFGColor.name());
 	settings.setValue("legend_fg_color", legendFgColor.name());
@@ -155,7 +155,7 @@ rbool RDOStudioChartViewFontsTicks::operator !=(const RDOStudioChartViewFontsTic
 void RDOStudioChartViewFontsTicks::load(CREF(QString) groupName)
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "fonts_ticks");
+	settings.beginGroup(groupName);
 	titleFontSize  = settings.value("title_font_size", titleFontSize).toInt();
 	legendFontSize = settings.value("legend_font_size", legendFontSize).toInt();
 	tickWidth      = settings.value("tick_width", tickWidth).toInt();
@@ -165,7 +165,7 @@ void RDOStudioChartViewFontsTicks::load(CREF(QString) groupName)
 void RDOStudioChartViewFontsTicks::save(CREF(QString) groupName) const
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "fonts_ticks");
+	settings.beginGroup(groupName);
 	settings.setValue("title_font_size", titleFontSize);
 	settings.setValue("legend_font_size", legendFontSize);
 	settings.setValue("tick_width", tickWidth);
@@ -243,7 +243,7 @@ rbool RDOStudioChartViewStyle::load()
 	if (RDOStyleWithTheme::load())
 	{
 		if (pFontsTicks)
-			pFontsTicks->load(groupName);
+			pFontsTicks->load(groupName + "fonts_ticks");
 		return true;
 	}
 	return false;
@@ -254,7 +254,7 @@ rbool RDOStudioChartViewStyle::save() const
 	if (RDOStyleWithTheme::save())
 	{
 		if (pFontsTicks)
-			pFontsTicks->save(groupName);
+			pFontsTicks->save(groupName + "fonts_ticks");
 		return true;
 	}
 	return false;

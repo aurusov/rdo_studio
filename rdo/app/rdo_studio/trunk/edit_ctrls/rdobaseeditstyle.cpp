@@ -85,7 +85,7 @@ rbool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
 void RDOBaseEditTheme::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "theme");
+	settings.beginGroup(groupName);
 	defaultColor     = QColor(settings.value("default_color", defaultColor.name()).toString());
 	backgroundColor  = QColor(settings.value("background_color", backgroundColor.name()).toString());
 	caretColor       = QColor(settings.value("caret_color", caretColor.name()).toString());
@@ -100,7 +100,7 @@ void RDOBaseEditTheme::load( CREF(QString) groupName )
 void RDOBaseEditTheme::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "theme");
+	settings.beginGroup(groupName);
 	settings.setValue("default_color", defaultColor.name());
 	settings.setValue("background_color", backgroundColor.name());
 	settings.setValue("caret_color", caretColor.name());
@@ -257,7 +257,7 @@ rbool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
 void RDOBaseEditTab::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "tab");
+	settings.beginGroup(groupName);
 	tabSize         = settings.value("tab_size", tabSize).toInt();
 	indentSize      = settings.value("indent_size", indentSize).toInt();
 	useTabs         = settings.value("use_tabs", useTabs).toBool() ? true : false;
@@ -270,7 +270,7 @@ void RDOBaseEditTab::load( CREF(QString) groupName )
 void RDOBaseEditTab::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "tab");
+	settings.beginGroup(groupName);
 	settings.setValue("tab_size", tabSize);
 	settings.setValue("indent_size", indentSize);
 	settings.setValue("use_tabs", useTabs);
@@ -315,7 +315,7 @@ rbool RDOBaseEditWindow::operator !=( const RDOBaseEditWindow& window ) const
 void RDOBaseEditWindow::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "window");
+	settings.beginGroup(groupName);
 	wordWrap          = settings.value("word_wrap", wordWrap).toBool() ? true : false;
 	showHorzScrollBar = settings.value("show_horz_scroll_bar", showHorzScrollBar).toBool() ? true : false;
 	settings.endGroup();
@@ -324,7 +324,7 @@ void RDOBaseEditWindow::load( CREF(QString) groupName )
 void RDOBaseEditWindow::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "window");
+	settings.beginGroup(groupName);
 	settings.setValue("word_wrap", wordWrap);
 	settings.setValue("show_horz_scroll_bar", showHorzScrollBar);
 	settings.endGroup();
@@ -395,8 +395,8 @@ void RDOBaseEditStyle::init( CREF(QString) _groupName )
 rbool RDOBaseEditStyle::load()
 {
 	if ( RDOStyleWithTheme::load() ) {
-		if ( tab )    tab->load( groupName );
-		if ( window ) window->load( groupName );
+		if ( tab )    tab->load( groupName + "tab" );
+		if ( window ) window->load( groupName + "window" );
 		return true;
 	}
 	return false;
@@ -405,8 +405,8 @@ rbool RDOBaseEditStyle::load()
 rbool RDOBaseEditStyle::save() const
 {
 	if ( RDOStyleWithTheme::save() ) {
-		if ( tab )    tab->save( groupName );
-		if ( window ) window->save( groupName );
+		if ( tab )    tab->save( groupName + "tab" );
+		if ( window ) window->save( groupName + "window" );
 		return true;
 	}
 	return false;

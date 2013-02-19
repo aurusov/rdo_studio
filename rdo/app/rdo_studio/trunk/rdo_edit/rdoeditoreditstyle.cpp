@@ -80,7 +80,7 @@ void RDOEditorEditTheme::load( CREF(QString) groupName )
 	RDOEditorBaseEditTheme::load( groupName );
 
 	QSettings settings;
-	settings.beginGroup(groupName + "theme");
+	settings.beginGroup(groupName);
 	foldFgColor  = QColor(settings.value("fold_fg_color", foldFgColor.name()).toString());
 	foldBgColor  = QColor(settings.value("fold_bg_color", foldBgColor.name()).toString());
 	errorBgColor = QColor(settings.value("error_bg_color", errorBgColor.name()).toString());
@@ -94,7 +94,7 @@ void RDOEditorEditTheme::save( CREF(QString) groupName ) const
 	RDOEditorBaseEditTheme::save( groupName );
 
 	QSettings settings;
-	settings.beginGroup(groupName + "theme");
+	settings.beginGroup(groupName);
 	settings.setValue("fold_fg_color", foldFgColor.name());
 	settings.setValue("fold_bg_color", foldBgColor.name());
 	settings.setValue("error_bg_color", errorBgColor.name());
@@ -234,7 +234,7 @@ rbool RDOEditorEditAutoComplete::operator !=( const RDOEditorEditAutoComplete& a
 void RDOEditorEditAutoComplete::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "auto_complete");
+	settings.beginGroup(groupName);
 	useAutoComplete = settings.value("use_auto_complete", useAutoComplete).toBool() ? true : false;
 	showFullList    = settings.value("show_full_list", showFullList).toBool() ? true : false;
 	settings.endGroup();
@@ -243,7 +243,7 @@ void RDOEditorEditAutoComplete::load( CREF(QString) groupName )
 void RDOEditorEditAutoComplete::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "auto_complete");
+	settings.beginGroup(groupName);
 	settings.setValue("use_auto_complete", useAutoComplete);
 	settings.setValue("show_full_list", showFullList);
 	settings.endGroup();
@@ -287,7 +287,7 @@ rbool RDOEditorEditMargin::operator !=( const RDOEditorEditMargin& margin ) cons
 void RDOEditorEditMargin::load( CREF(QString) groupName )
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "margin");
+	settings.beginGroup(groupName);
 	fold       = settings.value("fold", fold).toBool() ? true : false;
 	bookmark   = settings.value("bookmark", bookmark).toBool() ? true : false;
 	lineNumber = settings.value("line_number", lineNumber).toBool() ? true : false;
@@ -297,7 +297,7 @@ void RDOEditorEditMargin::load( CREF(QString) groupName )
 void RDOEditorEditMargin::save( CREF(QString) groupName ) const
 {
 	QSettings settings;
-	settings.beginGroup(groupName + "margin");
+	settings.beginGroup(groupName);
 	settings.setValue("fold", fold);
 	settings.setValue("bookmark", bookmark);
 	settings.setValue("line_number", lineNumber);
@@ -371,8 +371,8 @@ void RDOEditorEditStyle::init( CREF(QString) _groupName )
 rbool RDOEditorEditStyle::load()
 {
 	if ( RDOEditorBaseEditStyle::load() ) {
-		if ( autoComplete ) autoComplete->load( groupName );
-		if ( margin )       margin->load( groupName );
+		if ( autoComplete ) autoComplete->load( groupName + "auto_complete" );
+		if ( margin )       margin->load( groupName + "margin" );
 		return true;
 	}
 	return false;
@@ -381,8 +381,8 @@ rbool RDOEditorEditStyle::load()
 rbool RDOEditorEditStyle::save() const
 {
 	if ( RDOEditorBaseEditStyle::save() ) {
-		if ( autoComplete ) autoComplete->save(  groupName );
-		if ( margin )       margin->save(  groupName );
+		if ( autoComplete ) autoComplete->save(  groupName + "auto_complete" );
+		if ( margin )       margin->save(  groupName + "margin" );
 		return true;
 	}
 	return false;

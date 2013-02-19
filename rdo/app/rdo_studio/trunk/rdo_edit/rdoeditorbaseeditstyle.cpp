@@ -119,7 +119,7 @@ void RDOEditorBaseEditTheme::load( CREF(QString) groupName )
 	RDOBaseEditTheme::load( groupName );
 
 	QSettings settings;
-	settings.beginGroup(groupName + "theme");
+	settings.beginGroup(groupName);
 	identifierColor        = QColor(settings.value("identifier_color", identifierColor.name()).toString());
 	keywordColor           = QColor(settings.value("keyword_color", keywordColor.name()).toString());
 	functionsColor         = QColor(settings.value("functions_color", functionsColor.name()).toString());
@@ -147,7 +147,7 @@ void RDOEditorBaseEditTheme::save( CREF(QString) groupName ) const
 	RDOBaseEditTheme::save( groupName );
 
 	QSettings settings;
-	settings.beginGroup(groupName + "theme");
+	settings.beginGroup(groupName);
 	settings.setValue("identifier_color", identifierColor.name());
 	settings.setValue("keyword_color", keywordColor.name());
 	settings.setValue("functions_color", functionsColor.name());
