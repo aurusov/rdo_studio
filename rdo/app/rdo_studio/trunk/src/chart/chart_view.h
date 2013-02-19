@@ -93,7 +93,7 @@ protected:
 	void drawXAxis (QPainter& painter, const QRect& chartRect);
 	void drawGrid  (QPainter& painter, const QRect& chartRect);
 
-	CMenu m_popupMenu;
+	QMenu* m_pPopupMenu;
 	void copyToClipboard();
 
 	double m_zoom;
@@ -133,6 +133,7 @@ private:
 
 	virtual void resizeEvent    (QResizeEvent* pEvent);
 	virtual void paintEvent     (QPaintEvent*  pEvent);
+	virtual void  mousePressEvent(PTR(QMouseEvent) pEvent);
 
 	void onUserUpdateChartView(ruint updateType);
 
@@ -150,8 +151,6 @@ protected:
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnEditCopy();
-	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
-	afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
 	afx_msg void OnChartOptions();
 	afx_msg void OnHelpKeyword();
 //	DECLARE_MESSAGE_MAP()
@@ -168,10 +167,10 @@ public:
 private:
 	typedef  QAbstractScrollArea  super;
 
-	virtual rbool viewportEvent(PTR(QEvent)      pEvent);
-	virtual void  focusInEvent (PTR(QFocusEvent) pEvent);
-	virtual void  focusOutEvent(PTR(QFocusEvent) pEvent);
-	virtual void  keyPressEvent(PTR(QKeyEvent)   pEvent);
+	virtual rbool viewportEvent  (PTR(QEvent)      pEvent);
+	virtual void  focusInEvent   (PTR(QFocusEvent) pEvent);
+	virtual void  focusOutEvent  (PTR(QFocusEvent) pEvent);
+	virtual void  keyPressEvent  (PTR(QKeyEvent)   pEvent);
 };
 
 #endif // _RDO_STUDIO_CHART_VIEW_H_

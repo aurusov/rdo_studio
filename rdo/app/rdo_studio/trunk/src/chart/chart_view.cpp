@@ -41,8 +41,6 @@ using namespace rdoStyle;
 //	ON_WM_HSCROLL()
 //	ON_WM_KEYDOWN()
 //	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-//	ON_WM_INITMENUPOPUP()
-//	ON_WM_CONTEXTMENU()
 //	ON_WM_MOUSEACTIVATE()
 //	ON_COMMAND(ID_CHART_OPTIONS, OnChartOptions)
 //	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
@@ -74,6 +72,7 @@ ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool
 	, m_previewMode(preview)
 	, m_legendRect(0, 0, 0, 0)
 	, m_needDrawLegend(true)
+	, m_pPopupMenu(NULL)
 {
 	if (m_previewMode)
 		m_timeWrapFlag = false;
@@ -93,28 +92,20 @@ ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool
 		updateScrollBars();
 	}
 
-	//m_popupMenu.CreatePopupMenu();
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
 
-	//if (AfxGetMainWnd())
-	//{
-	//	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-	//	if (mainMenu)
-	//	{
-	//		rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
-	//		int delta = maximized ? 1 : 0;
-
-	//		appendMenu(mainMenu->GetSubMenu(1 + delta), 4, &m_popupMenu);
-	//		m_popupMenu.AppendMenu(MF_SEPARATOR);
-	//		appendMenu(mainMenu->GetSubMenu(3 + delta), 6, &m_popupMenu);
-	//		appendMenu(mainMenu->GetSubMenu(3 + delta), 7, &m_popupMenu);
-	//		appendMenu(mainMenu->GetSubMenu(3 + delta), 8, &m_popupMenu);
-	//		appendMenu(mainMenu->GetSubMenu(3 + delta), 9, &m_popupMenu);
-	//		m_popupMenu.AppendMenu(MF_SEPARATOR);
-	//		appendMenu(mainMenu->GetSubMenu(6 + delta), 4, &m_popupMenu);
-	//		m_popupMenu.AppendMenu(MF_SEPARATOR);
-	//		appendMenu(mainMenu->GetSubMenu(6 + delta), 6, &m_popupMenu);
-	//	}
-	//}
+	m_pPopupMenu = new QMenu(pParent);
+	//m_pPopupMenu->addAction(pMainWindow->actEditCopy);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actViewZoomInc);
+	m_pPopupMenu->addAction(pMainWindow->actViewZoomDec);
+	m_pPopupMenu->addAction(pMainWindow->actViewZoomAuto);
+	m_pPopupMenu->addAction(pMainWindow->actViewZoomReset);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actChartTimeWrap);
+	m_pPopupMenu->addSeparator();
+	//m_pPopupMenu->addAction(pMainWindow->actChartOptions);
 
 	attachToDoc();
 }
@@ -902,30 +893,6 @@ void ChartView::OnEditCopy()
 	copyToClipboard();
 }
 
-void ChartView::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
-{
-	//! @todo qt
-	//CWnd::OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
-	//CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
-	//if (pwndFrame)
-	//{
-	//	pwndFrame->SendMessage(WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu));
-	//}
-}
-
-void ChartView::OnContextMenu(CWnd* pWnd, CPoint pos)
-{
-	//! @todo qt
-	//if (m_previewMode)
-	//	return;
-
-	//CWnd::OnContextMenu(pWnd, pos);
-	//if (m_popupMenu.m_hMenu)
-	//{
-	//	m_popupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this);
-	//}
-}
-
 void ChartView::onViewZoomIn()
 {
 	if (m_zoomAutoFlag)
@@ -1223,5 +1190,13 @@ void ChartViewMainWnd::keyPressEvent(PTR(QKeyEvent) pEvent)
 	default:
 		super::keyPressEvent(pEvent);
 		break;
+	}
+}
+
+void ChartView::mousePressEvent(PTR(QMouseEvent) pEvent)
+{
+	if (pEvent->button() == Qt::RightButton && !m_previewMode)
+	{
+		m_pPopupMenu->exec(pEvent->globalPos());
 	}
 }
