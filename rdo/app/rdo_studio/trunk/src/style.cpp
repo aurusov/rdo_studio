@@ -66,22 +66,12 @@ rbool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 
 void RDOStyleFont::load(QSettings& settings)
 {
-	name         = settings.value("name", QString::fromLocal8Bit(name.c_str())).toString().toLocal8Bit().constData();
-	size         = settings.value("size", size).toInt();
-	codepage     = settings.value("codepage", codepage).toInt();
-	characterSet = settings.value("character_set", characterSet).toInt();
-	if (characterSet == RUSSIAN_CHARSET)
-	{
-		characterSet = SC_CHARSET_CYRILLIC;
-	}
+	settings >> *this;
 }
 
 void RDOStyleFont::save(QSettings& settings) const
 {
-	settings.setValue("name", QString::fromLocal8Bit(name.c_str()));
-	settings.setValue("size", size);
-	settings.setValue("codepage", codepage);
-	settings.setValue("character_set", characterSet);
+	settings << *this;
 }
 
 RDOStyleFont RDOStyleFont::getDefaultFont()
@@ -127,6 +117,33 @@ RDOStyleFont RDOStyleFont::getFrameFont()
 	return font;
 }
 
+namespace rdoStyle
+{
+
+QSettings& operator<< (QSettings& settings, const RDOStyleFont& font)
+{
+	settings.setValue("name", QString::fromLocal8Bit(font.name.c_str()));
+	settings.setValue("size", font.size);
+	settings.setValue("codepage", font.codepage);
+	settings.setValue("character_set", font.characterSet);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, RDOStyleFont& font)
+{
+	font.name         = settings.value("name", QString::fromLocal8Bit(font.name.c_str())).toString().toLocal8Bit().constData();
+	font.size         = settings.value("size", font.size).toInt();
+	font.codepage     = settings.value("codepage", font.codepage).toInt();
+	font.characterSet = settings.value("character_set", font.characterSet).toInt();
+	if (font.characterSet == RUSSIAN_CHARSET)
+	{
+		font.characterSet = SC_CHARSET_CYRILLIC;
+	}
+	return settings;
+}
+
+} // namespace rdoStyle
 // --------------------------------------------------------------------------------
 // -------------------- RDOStyleTheme
 // --------------------------------------------------------------------------------

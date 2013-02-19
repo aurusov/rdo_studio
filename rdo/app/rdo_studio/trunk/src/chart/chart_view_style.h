@@ -43,6 +43,9 @@ public:
 	static RDOStudioChartViewTheme getDefaultTheme();
 };
 
+QSettings& operator<< (QSettings& settings, const RDOStudioChartViewTheme& theme);
+QSettings& operator>> (QSettings& settings,       RDOStudioChartViewTheme& theme);
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartViewFontsTicks
 // --------------------------------------------------------------------------------
@@ -63,6 +66,9 @@ public:
 	int legendFontSize;
 	int tickWidth;
 };
+
+QSettings& operator<< (QSettings& settings, const RDOStudioChartViewFontsTicks& fonts_ticks);
+QSettings& operator>> (QSettings& settings,       RDOStudioChartViewFontsTicks& fonts_ticks);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartViewStyle

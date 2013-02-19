@@ -41,8 +41,11 @@ public:
 	static RDOBuildEditTheme getOceanTheme();
 };
 
+QSettings& operator<< (QSettings& settings, const RDOBuildEditTheme& theme);
+QSettings& operator>> (QSettings& settings,       RDOBuildEditTheme& theme);
+
 // --------------------------------------------------------------------------------
-// -------------------- LogEditStyle
+// -------------------- RDOBuildEditStyle
 // --------------------------------------------------------------------------------
 class RDOBuildEditStyle: public LogEditStyle
 {

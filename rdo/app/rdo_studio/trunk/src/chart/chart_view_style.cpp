@@ -84,31 +84,45 @@ rbool RDOStudioChartViewTheme::operator !=(const RDOStudioChartViewTheme& theme)
 void RDOStudioChartViewTheme::load(QSettings& settings)
 {
 	RDOStyleTheme::load(settings);
-	axisFgColor   = QColor(settings.value("axis_fg_color", axisFgColor.name()).toString());
-	titleFGColor  = QColor(settings.value("title_fg_color", titleFGColor.name()).toString());
-	legendFgColor = QColor(settings.value("legend_fg_color", legendFgColor.name()).toString());
-	chartBgColor  = QColor(settings.value("chart_bg_color", chartBgColor.name()).toString());
-	timeBgColor   = QColor(settings.value("time_bg_color", timeBgColor.name()).toString());
-	titleStyle    = static_cast<RDOStyleFont::style>(settings.value("title_style", titleStyle).toInt());
-	legendStyle   = static_cast<RDOStyleFont::style>(settings.value("legend_style", legendStyle).toInt());
+	settings >> *this;
 }
 
 void RDOStudioChartViewTheme::save(REF(QSettings) settings) const
 {
 	RDOStyleTheme::save(settings);
-	settings.setValue("axis_fg_color", axisFgColor.name());
-	settings.setValue("title_fg_color", titleFGColor.name());
-	settings.setValue("legend_fg_color", legendFgColor.name());
-	settings.setValue("chart_bg_color", chartBgColor.name());
-	settings.setValue("time_bg_color", timeBgColor.name());
-	settings.setValue("title_style", titleStyle);
-	settings.setValue("legend_style", legendStyle);
+	settings << *this;
 }
 
 RDOStudioChartViewTheme RDOStudioChartViewTheme::getDefaultTheme()
 {
 	RDOStudioChartViewTheme theme;
 	return theme;
+}
+
+QSettings& operator<< (QSettings& settings, const RDOStudioChartViewTheme& theme)
+{
+	settings.setValue("axis_fg_color", theme.axisFgColor.name());
+	settings.setValue("title_fg_color", theme.titleFGColor.name());
+	settings.setValue("legend_fg_color", theme.legendFgColor.name());
+	settings.setValue("chart_bg_color", theme.chartBgColor.name());
+	settings.setValue("time_bg_color", theme.timeBgColor.name());
+	settings.setValue("title_style", theme.titleStyle);
+	settings.setValue("legend_style", theme.legendStyle);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, RDOStudioChartViewTheme& theme)
+{
+	theme.axisFgColor   = QColor(settings.value("axis_fg_color", theme.axisFgColor.name()).toString());
+	theme.titleFGColor  = QColor(settings.value("title_fg_color", theme.titleFGColor.name()).toString());
+	theme.legendFgColor = QColor(settings.value("legend_fg_color", theme.legendFgColor.name()).toString());
+	theme.chartBgColor  = QColor(settings.value("chart_bg_color", theme.chartBgColor.name()).toString());
+	theme.timeBgColor   = QColor(settings.value("time_bg_color", theme.timeBgColor.name()).toString());
+	theme.titleStyle    = static_cast<RDOStyleFont::style>(settings.value("title_style", theme.titleStyle).toInt());
+	theme.legendStyle   = static_cast<RDOStyleFont::style>(settings.value("legend_style", theme.legendStyle).toInt());
+
+	return settings;
 }
 
 // --------------------------------------------------------------------------------
@@ -148,18 +162,31 @@ rbool RDOStudioChartViewFontsTicks::operator !=(const RDOStudioChartViewFontsTic
 
 void RDOStudioChartViewFontsTicks::load(QSettings& settings)
 {
-	titleFontSize  = settings.value("title_font_size", titleFontSize).toInt();
-	legendFontSize = settings.value("legend_font_size", legendFontSize).toInt();
-	tickWidth      = settings.value("tick_width", tickWidth).toInt();
+	settings >> *this;
 }
 
 void RDOStudioChartViewFontsTicks::save(QSettings& settings) const
 {
-	settings.setValue("title_font_size", titleFontSize);
-	settings.setValue("legend_font_size", legendFontSize);
-	settings.setValue("tick_width", tickWidth);
+	settings << *this;
 }
 
+QSettings& operator<< (QSettings& settings, const RDOStudioChartViewFontsTicks& fonts_ticks)
+{
+	settings.setValue("title_font_size", fonts_ticks.titleFontSize);
+	settings.setValue("legend_font_size", fonts_ticks.legendFontSize);
+	settings.setValue("tick_width", fonts_ticks.tickWidth);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, RDOStudioChartViewFontsTicks& fonts_ticks)
+{
+	fonts_ticks.titleFontSize  = settings.value("title_font_size", fonts_ticks.titleFontSize).toInt();
+	fonts_ticks.legendFontSize = settings.value("legend_font_size", fonts_ticks.legendFontSize).toInt();
+	fonts_ticks.tickWidth      = settings.value("tick_width", fonts_ticks.tickWidth).toInt();
+
+	return settings;
+}
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartViewStyle
 // --------------------------------------------------------------------------------

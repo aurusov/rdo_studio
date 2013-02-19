@@ -64,6 +64,9 @@ public:
 	static tstring colorToHEX( const QColor color );
 };
 
+QSettings& operator<< (QSettings& settings, const RDOBaseEditTheme& theme);
+QSettings& operator>> (QSettings& settings,       RDOBaseEditTheme& theme);
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOBaseEditTab
 // --------------------------------------------------------------------------------
@@ -88,6 +91,9 @@ public:
 	rbool autoIndent;
 };
 
+QSettings& operator<< (QSettings& settings, const RDOBaseEditTab& tab);
+QSettings& operator>> (QSettings& settings,       RDOBaseEditTab& tab);
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOBaseEditWindow
 // --------------------------------------------------------------------------------
@@ -107,6 +113,9 @@ public:
 	rbool wordWrap;
 	rbool showHorzScrollBar;
 };
+
+QSettings& operator<< (QSettings& settings, const RDOBaseEditWindow& window);
+QSettings& operator>> (QSettings& settings,       RDOBaseEditWindow& window);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOBaseEditStyle

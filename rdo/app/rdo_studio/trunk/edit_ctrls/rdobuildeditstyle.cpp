@@ -57,13 +57,13 @@ rbool RDOBuildEditTheme::operator !=( const RDOBuildEditTheme& theme ) const
 void RDOBuildEditTheme::load(QSettings& settings)
 {
 	LogEditTheme::load(settings);
-	warning = settings.value("warning", warning).toBool() ? true : false;
+	settings >> *this;
 }
 
 void RDOBuildEditTheme::save(QSettings& settings) const
 {
 	LogEditTheme::save(settings);
-	settings.setValue("warning", warning);
+	settings << *this;
 }
 
 RDOBuildEditTheme RDOBuildEditTheme::getDefaultTheme()
@@ -95,6 +95,25 @@ RDOBuildEditTheme RDOBuildEditTheme::getOceanTheme()
 
 	return theme;
 }
+
+namespace rdoEditCtrl
+{
+
+QSettings& operator<< (QSettings& settings, const RDOBuildEditTheme& theme)
+{
+	settings.setValue("warning", theme.warning);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, RDOBuildEditTheme& theme)
+{
+	theme.warning = settings.value("warning", theme.warning).toBool() ? true : false;
+
+	return settings;
+}
+
+} // namespace rdoEditCtrl
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditStyle

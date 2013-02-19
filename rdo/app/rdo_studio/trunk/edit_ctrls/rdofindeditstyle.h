@@ -49,6 +49,9 @@ public:
 	static RDOFindEditTheme getOceanTheme();
 };
 
+QSettings& operator<< (QSettings& settings, const RDOFindEditTheme& theme);
+QSettings& operator>> (QSettings& settings,       RDOFindEditTheme& theme);
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOFindEditStyle
 // --------------------------------------------------------------------------------

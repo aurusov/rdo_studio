@@ -50,6 +50,9 @@ public:
 	static RDOStyleFont getFrameFont();
 };
 
+QSettings& operator<< (QSettings& settings, const RDOStyleFont& font);
+QSettings& operator>> (QSettings& settings,       RDOStyleFont& font);
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOStyleTheme
 // --------------------------------------------------------------------------------

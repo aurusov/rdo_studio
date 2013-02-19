@@ -65,16 +65,14 @@ void RDOFindEditTheme::load(QSettings& settings)
 {
 	LogEditTheme::load(settings);
 
-	keywordColor = QColor(settings.value("keyword_color", keywordColor.name()).toString());
-	keywordStyle = static_cast<RDOStyleFont::style>(settings.value("keyword_style", keywordStyle).toInt());
+	settings >> *this;
 }
 
 void RDOFindEditTheme::save(QSettings& settings) const
 {
 	LogEditTheme::save(settings);
 
-	settings.setValue("keyword_color", keywordColor.name());
-	settings.setValue("keyword_style", keywordStyle);
+	settings << *this;
 }
 
 rbool RDOFindEditTheme::styleDefault( const int styleType ) const
@@ -152,6 +150,27 @@ RDOFindEditTheme RDOFindEditTheme::getOceanTheme()
 
 	return theme;
 }
+
+namespace rdoEditCtrl
+{
+
+QSettings& operator<< (QSettings& settings, const RDOFindEditTheme& theme)
+{
+	settings.setValue("keyword_color", theme.keywordColor.name());
+	settings.setValue("keyword_style", theme.keywordStyle);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, RDOFindEditTheme& theme)
+{
+	theme.keywordColor = QColor(settings.value("keyword_color", theme.keywordColor.name()).toString());
+	theme.keywordStyle = static_cast<RDOStyleFont::style>(settings.value("keyword_style", theme.keywordStyle).toInt());
+
+	return settings;
+}
+
+} // namespace rdoEditCtrl
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFindEditStyle

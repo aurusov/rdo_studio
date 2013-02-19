@@ -79,23 +79,14 @@ void RDOEditorEditTheme::load(QSettings& settings)
 {
 	RDOEditorBaseEditTheme::load(settings);
 
-	foldFgColor  = QColor(settings.value("fold_fg_color", foldFgColor.name()).toString());
-	foldBgColor  = QColor(settings.value("fold_bg_color", foldBgColor.name()).toString());
-	errorBgColor = QColor(settings.value("error_bg_color", errorBgColor.name()).toString());
-	foldStyle    = (RDOFoldStyle)settings.value("fold_style", foldStyle).toInt();
-	commentFold  = settings.value("comment_fold", commentFold).toBool() ? true : false;
+	settings >> *this;
 }
 
 void RDOEditorEditTheme::save(QSettings& settings ) const
 {
 	RDOEditorBaseEditTheme::save(settings);
 
-	settings.setValue("fold_fg_color", foldFgColor.name());
-	settings.setValue("fold_bg_color", foldBgColor.name());
-	settings.setValue("error_bg_color", errorBgColor.name());
-	settings.setValue("fold_style", foldStyle);
-	settings.setValue("comment_fold", commentFold);
-
+	settings << *this;
 }
 
 RDOEditorEditTheme RDOEditorEditTheme::getDefaultTheme()
@@ -194,6 +185,33 @@ RDOEditorEditTheme RDOEditorEditTheme::getOceanTheme()
 	return theme;
 }
 
+namespace rdoEditor
+{
+
+QSettings& operator<< (QSettings& settings, const RDOEditorEditTheme& theme)
+{
+	settings.setValue("fold_fg_color", theme.foldFgColor.name());
+	settings.setValue("fold_bg_color", theme.foldBgColor.name());
+	settings.setValue("error_bg_color", theme.errorBgColor.name());
+	settings.setValue("fold_style", theme.foldStyle);
+	settings.setValue("comment_fold", theme.commentFold);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, RDOEditorEditTheme& theme)
+{
+	theme.foldFgColor  = QColor(settings.value("fold_fg_color", theme.foldFgColor.name()).toString());
+	theme.foldBgColor  = QColor(settings.value("fold_bg_color", theme.foldBgColor.name()).toString());
+	theme.errorBgColor = QColor(settings.value("error_bg_color", theme.errorBgColor.name()).toString());
+	theme.foldStyle    = (RDOFoldStyle)settings.value("fold_style", theme.foldStyle).toInt();
+	theme.commentFold  = settings.value("comment_fold", theme.commentFold).toBool() ? true : false;
+
+	return settings;
+}
+
+} // namespace rdoEditor
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditAutoComplete
 // --------------------------------------------------------------------------------
@@ -228,15 +246,34 @@ rbool RDOEditorEditAutoComplete::operator !=( const RDOEditorEditAutoComplete& a
 
 void RDOEditorEditAutoComplete::load(QSettings& settings)
 {
-	useAutoComplete = settings.value("use_auto_complete", useAutoComplete).toBool() ? true : false;
-	showFullList    = settings.value("show_full_list", showFullList).toBool() ? true : false;
+	settings >> *this;
 }
 
 void RDOEditorEditAutoComplete::save(QSettings& settings) const
 {
-	settings.setValue("use_auto_complete", useAutoComplete);
-	settings.setValue("show_full_list", showFullList);
+	settings << *this;
 }
+
+namespace rdoEditor
+{
+
+QSettings& operator<< (QSettings& settings, const RDOEditorEditAutoComplete& auto_complete)
+{
+	settings.setValue("use_auto_complete", auto_complete.useAutoComplete);
+	settings.setValue("show_full_list", auto_complete.showFullList);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, RDOEditorEditAutoComplete& auto_complete)
+{
+	auto_complete.useAutoComplete = settings.value("use_auto_complete", auto_complete.useAutoComplete).toBool() ? true : false;
+	auto_complete.showFullList    = settings.value("show_full_list", auto_complete.showFullList).toBool() ? true : false;
+
+	return settings;
+}
+
+} // namespace rdoEditor
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditMargin
@@ -275,17 +312,36 @@ rbool RDOEditorEditMargin::operator !=( const RDOEditorEditMargin& margin ) cons
 
 void RDOEditorEditMargin::load(QSettings& settings)
 {
-	fold       = settings.value("fold", fold).toBool() ? true : false;
-	bookmark   = settings.value("bookmark", bookmark).toBool() ? true : false;
-	lineNumber = settings.value("line_number", lineNumber).toBool() ? true : false;
+	settings >> *this;
 }
 
 void RDOEditorEditMargin::save(QSettings& settings) const
 {
-	settings.setValue("fold", fold);
-	settings.setValue("bookmark", bookmark);
-	settings.setValue("line_number", lineNumber);
+	settings << *this;
 }
+
+namespace rdoEditor
+{
+
+QSettings& operator<< (QSettings& settings, const RDOEditorEditMargin& margin)
+{
+	settings.setValue("fold", margin.fold);
+	settings.setValue("bookmark", margin.bookmark);
+	settings.setValue("line_number", margin.lineNumber);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, RDOEditorEditMargin& margin)
+{
+	margin.fold       = settings.value("fold", margin.fold).toBool() ? true : false;
+	margin.bookmark   = settings.value("bookmark", margin.bookmark).toBool() ? true : false;
+	margin.lineNumber = settings.value("line_number", margin.lineNumber).toBool() ? true : false;
+
+	return settings;
+}
+
+} // namespace rdoEditor
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditStyle

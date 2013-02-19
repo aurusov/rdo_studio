@@ -41,6 +41,9 @@ public:
 	static LogEditTheme getOceanTheme();
 };
 
+QSettings& operator<< (QSettings& settings, const LogEditTheme& theme);
+QSettings& operator>> (QSettings& settings,       LogEditTheme& theme);
+
 // --------------------------------------------------------------------------------
 // -------------------- LogEditStyle
 // --------------------------------------------------------------------------------

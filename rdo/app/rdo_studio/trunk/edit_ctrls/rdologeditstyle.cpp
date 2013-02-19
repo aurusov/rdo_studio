@@ -58,14 +58,14 @@ void LogEditTheme::load(QSettings& settings)
 {
 	RDOBaseEditTheme::load(settings);
 
-	selectLineBgColor = QColor(settings.value("select_line_bg_color", selectLineBgColor.name()).toString());
+	settings >> *this;
 }
 
 void LogEditTheme::save(QSettings& settings) const
 {
 	RDOBaseEditTheme::save(settings);
 
-	settings.setValue("select_line_bg_color", selectLineBgColor.name());
+	settings << *this;
 }
 
 LogEditTheme LogEditTheme::getDefaultTheme()
@@ -103,6 +103,24 @@ LogEditTheme LogEditTheme::getOceanTheme()
 
 	return theme;
 }
+namespace rdoEditCtrl
+{
+
+QSettings& operator<< (QSettings& settings, const LogEditTheme& theme)
+{
+	settings.setValue("select_line_bg_color", theme.selectLineBgColor.name());
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, LogEditTheme& theme)
+{
+	theme.selectLineBgColor = QColor(settings.value("select_line_bg_color", theme.selectLineBgColor.name()).toString());
+
+	return settings;
+}
+
+} // namespace rdoEditCtrl
 
 // --------------------------------------------------------------------------------
 // -------------------- LogEditStyle

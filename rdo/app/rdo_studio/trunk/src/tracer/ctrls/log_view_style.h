@@ -86,6 +86,9 @@ public:
 	static LogTheme getDefaultTheme();
 };
 
+QSettings& operator<< (QSettings& settings, const LogTheme& theme);
+QSettings& operator>> (QSettings& settings,       LogTheme& theme);
+
 // --------------------------------------------------------------------------------
 // -------------------- LogBorders
 // --------------------------------------------------------------------------------
@@ -105,6 +108,9 @@ public:
 	int vertBorder;
 	int horzBorder;
 };
+
+QSettings& operator<< (QSettings& settings, const LogBorders& border);
+QSettings& operator>> (QSettings& settings,       LogBorders& border);
 
 // --------------------------------------------------------------------------------
 // -------------------- LogStyle

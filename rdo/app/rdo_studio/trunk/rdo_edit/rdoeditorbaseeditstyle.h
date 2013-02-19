@@ -69,6 +69,9 @@ public:
 	static RDOEditorBaseEditTheme getOceanTheme();
 };
 
+QSettings& operator<< (QSettings& settings, const RDOEditorBaseEditTheme& theme);
+QSettings& operator>> (QSettings& settings,       RDOEditorBaseEditTheme& theme);
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorBaseEditStyle
 // --------------------------------------------------------------------------------

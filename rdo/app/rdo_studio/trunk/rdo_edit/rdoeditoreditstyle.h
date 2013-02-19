@@ -61,6 +61,9 @@ public:
 	static RDOEditorEditTheme getOceanTheme();
 };
 
+QSettings& operator<< (QSettings& settings, const RDOEditorEditTheme& theme);
+QSettings& operator>> (QSettings& settings,       RDOEditorEditTheme& theme);
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditAutoComplete
 // --------------------------------------------------------------------------------
@@ -80,6 +83,9 @@ public:
 	rbool useAutoComplete;
 	rbool showFullList;
 };
+
+QSettings& operator<< (QSettings& settings, const RDOEditorEditAutoComplete& auto_complete);
+QSettings& operator>> (QSettings& settings,       RDOEditorEditAutoComplete& auto_complete);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditMargin
@@ -101,6 +107,9 @@ public:
 	rbool bookmark;
 	rbool lineNumber;
 };
+
+QSettings& operator<< (QSettings& settings, const RDOEditorEditMargin& margin);
+QSettings& operator>> (QSettings& settings,       RDOEditorEditMargin& margin);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditStyle
