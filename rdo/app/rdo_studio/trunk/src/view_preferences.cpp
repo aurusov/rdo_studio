@@ -394,7 +394,7 @@ void ViewPreferences::onFontType(int index)
 {
 	UNUSED(index);
 
-	QString name = fontComboBox->currentFont().toString();
+	QString name = fontComboBox->currentFont().family();
 	QByteArray text = name.toLocal8Bit();
 
 	switch(getStyleItem()->type)
@@ -798,6 +798,36 @@ void ViewPreferences::updateStyleTab()
 	}
 	switch(prop->item->type)
 	{
+	case IT_ROOT:
+		if((all_font_size == style_editor.font->size)  &&
+		   (all_font_size == style_debug.font->size)   &&
+		   (all_font_size == style_build.font->size)   &&
+		   (all_font_size == style_find.font->size)    &&
+		   (all_font_size == style_frame.font->size)   &&
+		   (all_font_size == style_results.font->size) &&
+		   (all_font_size == style_trace.font->size)   &&
+		   (all_font_size == style_chart.font->size)
+		)
+		{
+			fontSizeComboBox->setCurrentIndex(fontSizeComboBox->findText(QString::number(prop->item->font_size)));
+		}
+		else
+			fontSizeComboBox->setCurrentIndex(-1);
+		
+		if((all_font_name == style_editor.font->name)  &&
+		   (all_font_name == style_debug.font->name)   &&
+		   (all_font_name == style_build.font->name)   &&
+		   (all_font_name == style_find.font->name)    &&
+	       (all_font_name == style_frame.font->name)   &&
+	       (all_font_name == style_results.font->name) &&
+		   (all_font_name == style_trace.font->name)   &&
+		   (all_font_name == style_chart.font->name)
+		)
+		{
+			fontComboBox->setCurrentFont(QFont(QString::fromLocal8Bit(all_font_name.c_str())));
+		}
+		else
+			fontComboBox->setCurrentIndex(-1);
 	case IT_EDITOR:
 		wordWrapEditorCheckBox->setCheckState(prop->item->wordwrap ? Qt::Checked : Qt::Unchecked);
 		horzScrollEditorCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
