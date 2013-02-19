@@ -1013,6 +1013,7 @@ void ChartView::updateView()
 	parentWidget()->update();
 	updateScrollBars(true);
 	getDocument()->unlock();
+	onUpdateActions(isActivated());
 }
 
 void ChartView::attachToDoc()
