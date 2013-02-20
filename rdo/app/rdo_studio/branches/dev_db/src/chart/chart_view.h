@@ -32,7 +32,7 @@ class ChartView: public ActionActivatorWidget
 Q_OBJECT
 
 friend class TracerSerieFindValue;
-friend class RDOStudioChartOptionsChart;
+friend class ChartPreferences;
 friend class ChartViewMainWnd;
 friend class TracerSerie;
 friend class RDOStudioChartDoc;
@@ -140,6 +140,8 @@ private:
 	virtual void onUpdateActions(rbool activated);
 
 private slots:
+	void onEditCopy();
+
 	void onViewZoomIn();
 	void onViewZoomOut();
 	void onViewZoomReset();
@@ -147,12 +149,12 @@ private slots:
 	
 	void onChartTimeWrap();
 	void onChartOptions();
+
+	void onHelpKeyword();
 protected:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnEditCopy();
-	afx_msg void OnHelpKeyword();
 //	DECLARE_MESSAGE_MAP()
 };
 

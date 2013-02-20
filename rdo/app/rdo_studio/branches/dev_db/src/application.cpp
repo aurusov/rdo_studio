@@ -155,7 +155,7 @@ BOOL RDOStudioApp::InitInstance()
 	m_fileAssociationSetup         = settings.value("general/file_association_setup", true).toBool();
 	m_fileAssociationCheckInFuture = settings.value("general/file_association_check_in_future", true).toBool();
 
-	m_lastProjectName     = settings.value("general/last_project_full_name", QString()).toString().toLocal8Bit().constData();
+	m_lastProjectName     = settings.value("general/last_project_full_name", QString()).toString();
 	m_openLastProject     = settings.value("general/last_project_auto_open", true).toBool();
 	m_showCaptionFullName = settings.value("general/show_caption_full_name", false).toBool();
 
@@ -281,7 +281,7 @@ BOOL RDOStudioApp::InitInstance()
 	{
 		if (getOpenLastProject() && !getLastProjectName().isEmpty() && QFile::exists(getLastProjectName()))
 		{
-			g_pModel->openModel(getLastProjectName().toLocal8Bit().constData());
+			g_pModel->openModel(getLastProjectName());
 			newModel = false;
 		}
 	}

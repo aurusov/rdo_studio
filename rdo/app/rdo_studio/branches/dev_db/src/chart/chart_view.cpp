@@ -40,10 +40,7 @@ using namespace rdoStyle;
 //	ON_WM_ERASEBKGND()
 //	ON_WM_HSCROLL()
 //	ON_WM_KEYDOWN()
-//	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 //	ON_WM_MOUSEACTIVATE()
-//	ON_COMMAND(ID_CHART_OPTIONS, OnChartOptions)
-//	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 //END_MESSAGE_MAP()
 
 ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview)
@@ -96,7 +93,7 @@ ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool
 	ASSERT(pMainWindow);
 
 	m_pPopupMenu = new QMenu(pParent);
-	//m_pPopupMenu->addAction(pMainWindow->actEditCopy);
+	m_pPopupMenu->addAction(pMainWindow->actEditCopy);
 	m_pPopupMenu->addSeparator();
 	m_pPopupMenu->addAction(pMainWindow->actViewZoomInc);
 	m_pPopupMenu->addAction(pMainWindow->actViewZoomDec);
@@ -105,7 +102,7 @@ ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool
 	m_pPopupMenu->addSeparator();
 	m_pPopupMenu->addAction(pMainWindow->actChartTimeWrap);
 	m_pPopupMenu->addSeparator();
-	//m_pPopupMenu->addAction(pMainWindow->actChartOptions);
+	m_pPopupMenu->addAction(pMainWindow->actChartOptions);
 
 	attachToDoc();
 }
@@ -888,9 +885,10 @@ void ChartView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 }
 
-void ChartView::OnEditCopy()
+void ChartView::onEditCopy()
 {
 	copyToClipboard();
+	onUpdateActions(isActivated());
 }
 
 void ChartView::onViewZoomIn()
@@ -1013,6 +1011,7 @@ void ChartView::updateView()
 	parentWidget()->update();
 	updateScrollBars(true);
 	getDocument()->unlock();
+	onUpdateActions(isActivated());
 }
 
 void ChartView::attachToDoc()
@@ -1020,7 +1019,7 @@ void ChartView::attachToDoc()
 	getDocument()->addToViews(this);
 }
 
-void ChartView::paintEvent(QPaintEvent* pEvent)
+void ChartView::paintEvent(QPaintEvent*)
 {
 	QPainter painter(this);
 
@@ -1073,7 +1072,7 @@ void ChartView::onViewZoomAuto()
 	onUpdateActions(isActivated());
 }
 
-void ChartView::OnHelpKeyword()
+void ChartView::onHelpKeyword()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm\n");
@@ -1145,6 +1144,18 @@ void ChartView::onUpdateActions(rbool activated)
 		pMainWindow->actChartOptions,
 		activated,
 		this, &ChartView::onChartOptions
+	);
+
+	updateAction(
+		pMainWindow->actEditCopy,
+		activated,
+		this, &ChartView::onEditCopy
+	);
+
+	updateAction(
+		pMainWindow->actHelpContext,
+		activated,
+		this, &ChartView::onHelpKeyword
 	);
 }
 

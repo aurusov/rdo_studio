@@ -34,9 +34,8 @@ typedef std::list<TracerTimeNow*> TimesList;
 class RDOStudioChartDoc
 {
 friend class ChartView;
+friend class ChartPreferences;
 friend class RDOStudioChartDocInsertTime;
-friend class RDOStudioChartOptionsChart;
-friend class RDOStudioChartOptionsSeries;
 
 public:
 	RDOStudioChartDoc(const rbool preview = false);

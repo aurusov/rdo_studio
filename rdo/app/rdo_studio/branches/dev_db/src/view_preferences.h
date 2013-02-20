@@ -367,7 +367,7 @@ private:
 	void createPreview();
 	void createTree();
 	void insertColors(QComboBox* colorBox);
-	void insertColor (const QColor color, QString colorName, QComboBox* colorBox);
+	void insertColor (const QColor& color, const QString& colorName, QComboBox* colorBox);
 	PTR(StyleProperty) getStyleProperty();
 	PTR(StyleItem) getStyleItem();
 	PTR(QTreeWidgetItem) createTreeItem (PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType);
