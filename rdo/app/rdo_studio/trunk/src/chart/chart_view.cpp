@@ -40,7 +40,6 @@ using namespace rdoStyle;
 //	ON_WM_ERASEBKGND()
 //	ON_WM_HSCROLL()
 //	ON_WM_KEYDOWN()
-//	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 //	ON_WM_MOUSEACTIVATE()
 //	ON_COMMAND(ID_CHART_OPTIONS, OnChartOptions)
 //	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
@@ -96,7 +95,7 @@ ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool
 	ASSERT(pMainWindow);
 
 	m_pPopupMenu = new QMenu(pParent);
-	//m_pPopupMenu->addAction(pMainWindow->actEditCopy);
+	m_pPopupMenu->addAction(pMainWindow->actEditCopy);
 	m_pPopupMenu->addSeparator();
 	m_pPopupMenu->addAction(pMainWindow->actViewZoomInc);
 	m_pPopupMenu->addAction(pMainWindow->actViewZoomDec);
@@ -888,9 +887,10 @@ void ChartView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 }
 
-void ChartView::OnEditCopy()
+void ChartView::onEditCopy()
 {
 	copyToClipboard();
+	onUpdateActions(isActivated());
 }
 
 void ChartView::onViewZoomIn()
@@ -1146,6 +1146,12 @@ void ChartView::onUpdateActions(rbool activated)
 		pMainWindow->actChartOptions,
 		activated,
 		this, &ChartView::onChartOptions
+	);
+
+	updateAction(
+		pMainWindow->actEditCopy,
+		activated,
+		this, &ChartView::onEditCopy
 	);
 }
 
