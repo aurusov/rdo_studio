@@ -2,42 +2,17 @@
 // Microsoft Visual C++ generated include file.
 // Used by rdo_studio.rc
 //
-#define IDD_CHART_OPTIONS_CHART         107
 #define IDR_MAINFRAME                   128
 #define IDR_MODEL_TYPE                  129
 #define IDR_FILE_TOOLBAR                132
 #define IDR_MODEL_TOOLBAR               148
 #define IDR_EDIT_TOOLBAR                151
-#define IDD_CHART_OPTIONS_SERIES        158
 #define IDR_ZOOM_TOOLBAR                160
 #define IDB_FRAME_OPTIONS_CTRL          164
 #define IDR_RT_MANIFEST1                250
 #define IDR_TOOLBAR_STYLEANDCOLOR       263
 #define IDR_TOOLBAR_MAINFRAME           264
 #define IDR_TOOLBAR_EMPTY               265
-#define IDC_CHART_TITLE_STATIC          1057
-#define IDC_CHART_TITLE_EDIT            1058
-#define IDC_DRAW_LEGEND_CHECK           1059
-#define IDC_AXIS_VAL_STATIC             1060
-#define IDC_AXIS_SERIES                 1061
-#define IDC_VAL_COUNT_Y_STATIC          1062
-#define IDC_IDC_VAL_COUNT_Y_EDIT        1063
-#define IDC_VAL_COUNT_X_STATIC          1064
-#define IDC_IDC_VAL_COUNT_X_EDIT        1065
-#define IDC_SERIES_STATIC               1067
-#define IDC_SERIES_COMBO                1068
-#define IDC_SERIE_TITLE_STATIC          1069
-#define IDC_SERIE_TITLE_EDIT            1070
-#define IDC_COLOR_STATIC                1071
-#define IDC_COLOR_COMBO                 1072
-#define IDC_COLOR_BUTTON                1073
-#define IDC_MARKER_COMBO                1074
-#define IDC_MARKER_STATIC               1075
-#define IDC_MARKER_CHECK                1076
-#define IDC_MAKER_SIZE_STATIC           1077
-#define IDC_MARKER_SIZE_EDIT            1078
-#define IDC_LEGEND_CHECK                1079
-#define IDC_TRANSP_MARKER_CHECK         1081
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_EDIT_UPPERCASE               32780
 #define ID_EDIT_LOWERCASE               32781
