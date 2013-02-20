@@ -105,7 +105,7 @@ ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool
 	m_pPopupMenu->addSeparator();
 	m_pPopupMenu->addAction(pMainWindow->actChartTimeWrap);
 	m_pPopupMenu->addSeparator();
-	//m_pPopupMenu->addAction(pMainWindow->actChartOptions);
+	m_pPopupMenu->addAction(pMainWindow->actChartOptions);
 
 	attachToDoc();
 }

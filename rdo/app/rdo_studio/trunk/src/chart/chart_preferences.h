@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtWidgets/qdialog.h>
+#include <QtWidgets/qcolordialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_chart_preferences.h"
 #include "app/rdo_studio/src/chart/chart_doc.h"
@@ -26,16 +27,33 @@ public:
 	explicit ChartPreferences(PTR(ChartView) pView = NULL);
 
 private:
+	PTR(QColorDialog) colorDlg;
+
 	int       m_ValCountX;
 	int       m_ValCountY;
-	QString   m_ChartTitle;
-	int       m_AxisSerie;
+	QString   m_chartTitle;
 
 	int       m_sizeMarker;
 
-	PTR(ChartView) m_pView;
+	PTR(ChartView)  m_pView;
+	PTR(ChartSerie) m_pSerie;
 
+	void ChartPreferences::insertColors(QComboBox* colorBox);
+	void ChartPreferences::insertColor(const QColor& color, const QString& colorName, QComboBox* colorBox);
 	void apply();
+
+private slots:
+	void onOkButton();
+	void onCancelButton();
+	void onApplyButton();
+	void onXValue(const QString& text);
+	void onYValue(const QString& text);
+	void onTitle(const QString& text);
+	void onMarkerSize(const QString& text);
+	void onColorDialog();
+	void onColorSelected(const QColor& color);
+	void onValueComboBox(int index);
+	void onCheckAllData();
 
 };
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

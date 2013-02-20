@@ -205,7 +205,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QComboBox" name="titleComboBox">
+          <widget class="QLineEdit" name="titleValueLineEdit">
            <property name="minimumSize">
             <size>
              <width>280</width>
@@ -251,7 +251,7 @@
             <widget class="QComboBox" name="colorComboBox">
              <property name="minimumSize">
               <size>
-               <width>100</width>
+               <width>120</width>
                <height>20</height>
               </size>
              </property>
