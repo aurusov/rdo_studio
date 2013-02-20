@@ -41,8 +41,6 @@ using namespace rdoStyle;
 //	ON_WM_HSCROLL()
 //	ON_WM_KEYDOWN()
 //	ON_WM_MOUSEACTIVATE()
-//	ON_COMMAND(ID_CHART_OPTIONS, OnChartOptions)
-//	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 //END_MESSAGE_MAP()
 
 ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview)
@@ -1074,7 +1072,7 @@ void ChartView::onViewZoomAuto()
 	onUpdateActions(isActivated());
 }
 
-void ChartView::OnHelpKeyword()
+void ChartView::onHelpKeyword()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm\n");
@@ -1152,6 +1150,12 @@ void ChartView::onUpdateActions(rbool activated)
 		pMainWindow->actEditCopy,
 		activated,
 		this, &ChartView::onEditCopy
+	);
+
+	updateAction(
+		pMainWindow->actHelpContext,
+		activated,
+		this, &ChartView::onHelpKeyword
 	);
 }
 
