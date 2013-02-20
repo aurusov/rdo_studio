@@ -155,8 +155,7 @@ QSize ChartSerie::drawLegend(QPainter& painter, const QRect& rect, const QColor&
 		return size;
 
 	painter.setPen(textColor);
-	//! @todo qt +DT_END_ELLIPSIS
-	painter.drawText(tmprect, Qt::AlignLeft | Qt::TextSingleLine, QString::fromLocal8Bit(m_options.title.c_str()));
+	painter.drawText(tmprect, Qt::AlignLeft | Qt::TextSingleLine, painter.fontMetrics().elidedText(QString::fromLocal8Bit(m_options.title.c_str()), Qt::ElideRight, tmprect.width()));
 
 	return size;
 }
