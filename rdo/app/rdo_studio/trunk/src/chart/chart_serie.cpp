@@ -106,11 +106,12 @@ rbool ChartSerie::empty() const
 QSize ChartSerie::getLegendSize(const QFontMetrics& fm, const QRect& rect) const
 {
 	QSize size(0, 0);
-	if (!m_options.showInLegend)
+	if (!m_options.showInLegend || rect.isEmpty())
 		return size;
 
 	QRect tmprect;
-	tmprect.setLeft(rect.left() + 10 + m_options.markerSize * 2 + 5);
+	int markerAreaWidth = 10 + m_options.markerSize * 2 + 5;
+	tmprect.setLeft(rect.left() + markerAreaWidth);
 	tmprect.setRight(rect.right());
 	tmprect.setTop(rect.top());
 	tmprect.setBottom(rect.bottom());
@@ -122,29 +123,36 @@ QSize ChartSerie::getLegendSize(const QFontMetrics& fm, const QRect& rect) const
 	}
 	size.setWidth(tmprect.right() - rect.left());
 	size.setHeight(size.height() + 2);
+	if (size.width() > rect.width())
+	{
+		size.setWidth(rect.width());
+	}
 	return size;
 }
 
 QSize ChartSerie::drawLegend(QPainter& painter, const QRect& rect, const QColor& textColor) const
 {
 	QSize size = getLegendSize(painter.fontMetrics(), rect);
-	if (!m_options.showInLegend)
+	if (!m_options.showInLegend || size.isEmpty())
 		return size;
 
-	int middle = rect.top() + (size.height() - 2) / 2;
+	QPoint markerCenter(5 + m_options.markerSize, rect.top() + (size.height() - 2) / 2);
 	if (m_options.markerNeedDraw)
 	{
 		QPen   pen(m_options.color);
 		QBrush brush(m_options.color, m_options.markerTransparent ? Qt::NoBrush : Qt::SolidPattern);
 		painter.setPen(pen);
 		painter.setBrush(brush);
-		m_pSerie->drawMarker(painter, rect.left() + 5 + m_options.markerSize, middle, m_options.markerType, m_options.markerSize);
+		m_pSerie->drawMarker(painter, rect.left() + markerCenter.x(), markerCenter.y(), m_options.markerType, m_options.markerSize);
 	}
 
-	painter.drawLine(rect.left(), middle, rect.left() + 10 + m_options.markerSize * 2, middle);
+	painter.drawLine(rect.left(), markerCenter.y(), rect.left() + markerCenter.x() * 2, markerCenter.y());
 
 	QRect tmprect(rect);
-	tmprect.setLeft(tmprect.left() + 10 + m_options.markerSize * 2 + 5);
+	tmprect.setLeft(tmprect.left() + markerCenter.x() * 2 + 5);
+
+	if (tmprect.isEmpty())
+		return size;
 
 	//! @todo qt
 	//::SetTextColor(dc, textColor);

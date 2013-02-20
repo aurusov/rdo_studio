@@ -179,6 +179,11 @@ void ChartView::recalcLayout()
 		m_legendRect.setLeft(m_chartRect.left() + (m_chartRect.width() - sizeMax.width()) / 2);
 		m_legendRect.setRight(m_legendRect.left() + sizeMax.width());
 		m_chartRect.setTop(m_chartRect.top() + m_legendRect.height());
+		if (m_legendRect.width() > m_chartRect.width())
+		{
+			m_legendRect.setLeft(m_chartRect.left());
+			m_legendRect.setRight(m_chartRect.right());
+		}
 	}
 
 	if (!doc->m_docTimes.empty())
@@ -1032,13 +1037,13 @@ void ChartView::paintEvent(QPaintEvent*)
 
 	drawTitle(painter, m_chartRect);
 
-	if (m_needDrawLegend)
+	if (!m_chartRect.isEmpty())
 	{
-		drawLegend(painter, m_legendRect);
-	}
+		if (m_needDrawLegend)
+		{
+			drawLegend(painter, m_legendRect);
+		}
 
-	if (m_chartRect.height() > 0 && m_chartRect.width() > 0)
-	{
 		painter.setPen(m_pStyle->getTheme()->defaultColor);
 
 		drawYAxis(painter, m_chartRect, m_pYAxis);
