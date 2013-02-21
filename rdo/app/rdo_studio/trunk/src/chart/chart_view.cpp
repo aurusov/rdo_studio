@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <QtCore/qprocess.h>
 #include <QtGui/qevent.h>
+#include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/chart/chart_view.h"
 #include "app/rdo_studio/rdo_tracer/rdotracer.h"
@@ -624,40 +625,6 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 	}
 }
 
-void ChartView::copyToClipboard()
-{
-	//! todo qt
-	//if (!OpenClipboard() || !::EmptyClipboard())
-	//	return;
-
-	//m_mutex.Lock();
-
-	//if (m_hmemdc)
-	//{
-	//	HBITMAP hbm = ::CreateCompatibleBitmap(m_hmemdc, m_clientRect.width(), m_clientRect.height());
-	//	if (hbm)
-	//	{
-	//		HDC hdcDst = ::CreateCompatibleDC(m_hmemdc);
-	//		if (hdcDst)
-	//		{
-	//			HGDIOBJ oldObj = ::SelectObject(hdcDst, hbm);
-	//			::BitBlt(hdcDst, 0, 0, m_clientRect.width(), m_clientRect.height(), m_hmemdc, m_clientRect.left, m_clientRect.top, SRCCOPY);
-	//			::SelectObject(hdcDst, oldObj);
-	//			::DeleteDC(hdcDst);
-	//			::SetClipboardData(CF_BITMAP, hbm);
-	//		}
-	//		else
-	//		{
-	//			::DeleteObject(hbm);
-	//		}
-	//	}
-	//}
-
-	//CloseClipboard();
-
-	//m_mutex.Unlock();
-}
-
 void ChartView::setZoom(double new_zoom, const rbool force_update)
 {
 	UNUSED(force_update);
@@ -892,8 +859,7 @@ void ChartView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void ChartView::onEditCopy()
 {
-	copyToClipboard();
-	onUpdateActions(isActivated());
+	QApplication::clipboard()->setPixmap(grab());
 }
 
 void ChartView::onViewZoomIn()

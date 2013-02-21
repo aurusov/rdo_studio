@@ -94,7 +94,6 @@ protected:
 	void drawGrid  (QPainter& painter, const QRect& chartRect);
 
 	QMenu* m_pPopupMenu;
-	void copyToClipboard();
 
 	double m_zoom;
 	double m_zoomOld;
