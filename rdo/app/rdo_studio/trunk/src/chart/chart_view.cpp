@@ -38,7 +38,6 @@ using namespace rdoStyle;
 // -------------------- ChartView
 // --------------------------------------------------------------------------------
 //BEGIN_MESSAGE_MAP(ChartView, CWnd)
-//	ON_WM_ERASEBKGND()
 //	ON_WM_HSCROLL()
 //	ON_WM_KEYDOWN()
 //	ON_WM_MOUSEACTIVATE()
@@ -707,12 +706,6 @@ BOOL ChartView::OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoin
 RDOStudioChartDoc* ChartView::getDocument()
 {
 	return m_pDocument;
-}
-
-BOOL ChartView::OnEraseBkgnd(CDC* pDC)
-{
-	UNUSED(pDC);
-	return TRUE;
 }
 
 void ChartView::resizeEvent(QResizeEvent* pEvent)

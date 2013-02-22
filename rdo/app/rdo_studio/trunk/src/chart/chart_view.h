@@ -150,8 +150,8 @@ private slots:
 	void onChartOptions();
 
 	void onHelpKeyword();
+
 protected:
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 //	DECLARE_MESSAGE_MAP()
