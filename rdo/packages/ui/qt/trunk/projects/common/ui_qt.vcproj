@@ -212,6 +212,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name=".scroll_bar"
+			>
+			<File
+				RelativePath="..\..\src\scroll_bar\scroll_bar.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\headers\scroll_bar\scroll_bar.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
