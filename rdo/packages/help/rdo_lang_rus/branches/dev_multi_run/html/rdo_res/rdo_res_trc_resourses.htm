@@ -1,0 +1,51 @@
+﻿<HTML>
+<HEAD>
+<TITLE>Трассировка состояния ресурсов</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>ТРАССИРОВКА СОСТОЯНИЯ РЕСУРСОВ</H1>
+		<P><B>Трассировка состояния ресурсов</B> включает в себя информацию обо всех изменениях состояния ресурсов. В момент изменения состояния трассируемого ресурса в объект трассировки выдается отдельная строка следующего формата:</P>
+		<PRE class="syntax">R<A class="syntax" href="#stat_symb">&lt;символ_статуса&gt;</A> <A class="syntax" href="#time">&lt;время&gt;</A> <A class="syntax" href="#type_num">&lt;номер_типа&gt;</A> <A class="syntax" href="#res_num">&lt;номер_ресурса&gt;</A>
+<A class="syntax" href="#new_val">&lt;новые_значения_параметров&gt;</A></PRE>
+		<DL class="syntax">
+			<DT class="syntax"><A name="stat_symb"></A><I>символ_статуса</I></DT>
+			<DD class="syntax">Символ статуса обозначает, что произошло с ресурсом в целом:
+				<TABLE class="visible">
+					<TR valign="top">
+						<TH align="left" width="20%">Символ статуса</TH>
+						<TH align="left" width="80%">Описание</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A name="rc"></A><FONT class="syntax">C</FONT></TD>
+						<TD class="visible" width="80%">Ресурс создан</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A name="re"></A><FONT class="syntax">E</FONT></TD>
+						<TD class="visible" width="80%">Ресурс уничтожен</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A name="rk"></A><FONT class="syntax">K</FONT></TD>
+						<TD class="visible" width="80%">Значения параметров ресурса изменились</TD>
+					</TR>
+				</TABLE>
+			</DD>
+			<DT class="syntax"><A name="time"></A><I>время</I></DT>
+			<DD class="syntax">Время изменения ресурса в формате вещественного числа.</DD>
+			<DT class="syntax"><A name="type_num"></A><A name="res_num"></A><I>номер_типа, номер_ресурса</I></DT>
+			<DD class="syntax">Номер типа и номер ресурса определяется порядком следования типов и ресурсов в <A href="../rdo_base/rdo_base_res_types.htm">объекте описания типов</A> и <A href="../rdo_base/rdo_base_resources.htm">объекте ресурсов</A> соответственно.</DD>
+			<DT class="syntax"><A name="new_val"></A><I>новые_значения_параметров</I></DT>
+			<DD class="syntax">Новые значения параметров выводятся в объект в порядке следования параметров при <A href="../rdo_base/rdo_base_res_types.htm#param_desc">описании типов ресурсов</A>. Для перечислимых параметров выводятся не имена значений, а их номера. При этом первому имени значения присваивается номер 0, второму - 1 и так далее.
+				<P>Для ресурсов, которые уничтожаются (символ статуса <FONT class="syntax">E</FONT>), новые значения параметров не выводятся.</P>
+			</DD>
+		</DL>
+		<H4>См. также</H4>
+		<P><A href="rdo_res_trc.htm">Объект трассировки</A></P>
+		<P><A href="rdo_res_trc_events.htm">Трассировка событий</A></P>
+		<P><A href="rdo_res_trc_results.htm">Трассировка показателей</A></P>
+		<P><A href="rdo_res_trc_decisionpt.htm">Трассировка точек принятия решений</A></P>
+	</DIV>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
+</BODY>
+</HTML>

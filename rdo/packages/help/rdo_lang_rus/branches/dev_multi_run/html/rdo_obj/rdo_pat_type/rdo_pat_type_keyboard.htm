@@ -1,0 +1,199 @@
+﻿<HTML>
+<HEAD>
+<TITLE>Клавиатурная операция</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../../../../shared/styles/styles.css">
+</HEAD>
+<BODY>
+<DIV>
+<H1>ТИП ОБРАЗЦА "КЛАВИАТУРНАЯ ОПЕРАЦИЯ"</H1>
+<P>Образцы типа <A name="keyboard"><B>keyboard</B></A> описывают клавиатурные операции(такая операция может быть выполнена если нажата определенная клавиша или кнопка мыши и выполняются предусловия операции) </P>
+		<P><A name="keyb_opr"></A>Способ записи <A href="../rdo_obj_pat.htm#pat_type">клавиатурных операций</A> позволяет в РДО разрабатывать интерактивные программы. Для этой цели используются образцы типа <FONT class="syntax">keyboard</FONT>. Каждой клавиатурной операции ставится в соответствие клавиша или комбинация клавиш. В момент нажатия этой клавиши проверяются <A href="#init_cond">предусловия</A> и, если они выполняются, инициируется событие начала клавиатурной операции. Дальнейший ход этой операции ничем не отличается от выполнения операции других типов. Таким образом, единственным отличием клавиатурной операции является то, что для ее начала недостаточно выполнения предусловий, сформулированных в образце, а необходимо чтобы еще была нажата соответствующая клавиша.</P>
+		<P>Клавиатурная операция также может быть инициирована нажатием кнопки мыши в активной области <A href="../rdo_obj_frm.htm">кадра анимации</A>, связанной с этой операцией. Механизм выполнения клавиатурной операции при нажатии кнопки мыши ничем не отличается от ее выполнения при нажатии клавиши (комбинации клавишей) на клавиатуре. Одной клавиатурной операции может быть поставлена в соответствие только одна уникальная комбинация клавишей и любое количество активных областей в кадрах анимации.</P>
+		<P>Формат описания образца&nbsp; клавиатурной операции похож на описание образца обычной:</P>
+		<PRE class = "syntax">$Pattern <A class="syntax" href="../rdo_obj_pat.htm#pat_name">&lt;имя_образца&gt;</A> : keyboard [ <A class="syntax" href="../../rdo_res/rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A> ]
+[ $Parameters <A class="syntax" href="../rdo_obj_pat.htm#param_desc">&lt;описание_параметров_образца&gt;</A> ]
+$Relevant_resources <A class="syntax" href="../rdo_obj_pat.htm#rel_res_desc">&lt;описание_релевантных_ресурсов_образца&gt;</A>
+[ <A class="syntax" href="../rdo_obj_pat.htm#pat_choice_type" style="color: FF0000">&lt;способ_выбора&gt;</A> ]
+$Time = <A class="syntax" href="../rdo_obj_pat.htm#time_expr">&lt;выражение_времени&gt;</A>
+$Body <A class="syntax" href="#body">&lt;тело_образца&gt;</A>
+$End</PRE>
+
+		<DT class="syntax"><A name="body"></A><I>тело_образца</I></DT>
+		<DD class="syntax">Тело событий и образцов имеет следующий формат:
+			<PRE class="syntax"><A class="syntax" href="#body_rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> <A class="syntax" href="#init_cond">&lt;предусловие&gt;</A> [ Convert_begin <A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A> ] [ Convert_end <A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A> ]</PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="body_rel_res_name"></A><I>имя_релевантного_ресурса</I></DT>
+					<DD class="syntax">Имена релевантных ресурсов должны следовать в том порядке, в котором они указаны в описании <A href="#rel_res_desc">релевантных ресурсов</A>.</DD>
+						<DT class="syntax"><A name="init_cond"></A><A name="init_cond_nchk"></A><I>предусловие</I></DT>
+						<DD class="syntax">Предусловие записывают в следующем формате:
+							<PRE class="syntax">Choice from <A class="syntax" href="#cond_log_expr">&lt;логическое_выражение&gt;</A> [ <A class="syntax" href="#cond_choice_type">&lt;способ_выбора&gt;</A> ]
+или
+Choice NoCheck [ &lt;способ_выбора&gt; ]</PRE>
+							<DL class="syntax">
+								<DT class="syntax"><A name="cond_log_expr"></A><I>логическое_выражение</I></DT>
+								<DD class="syntax"><A href="../../rdo_base/rdo_base_equations.htm">Логическое выражение</A> определяет предусловие использования ресурса (возможность выполнения операции или правила). Если нет необходимости в предусловии, то это указывают зарезервированным словом <FONT class="syntax">NoCheck</FONT> или вообще отсутствием <FONT class="syntax">Choice from</FONT>.</DD>
+								<DT class="syntax"><A name="cond_choice_type"></A><I>способ_выбора</I></DT>
+								<DD class="syntax">Способ выбора задается также, как и <A href="#pat_choice_type">после описания релевантных ресурсов образца</A>. Если он не указан после описания релевантных ресурсов образца, он может быть указан в теле образца для каждого релевантного ресурса после <A href="../../rdo_base/rdo_base_equations.htm">логического выражения</A>. Способ выбора может быть задан также в случае, когда описатель релевантного ресурса есть имя конкретного ресурса и не существует альтернативы выбора. При этом можно использовать любой способ выбора: все равно он не будет учитываться, и результат будет одинаковым. Если состояние этого ресурса удовлетворяет предусловию, то ресурс может быть использован независимо от способа выбора, если же не удовлетворяет, то также независимо от способа выбора ресурс не может быть использован. Если способ выбора не указан, то по умолчанию используется <FONT class="syntax">first</FONT>.
+									<P>Если способ выбора указан после описания релевантных ресурсов образца, в теле образца он должен отсутствовать для всех релевантных ресурсов.</P>
+								</DD>
+							</DL>
+						</DD>
+						<DT class="syntax"><A name="statement_list"></A><I>список_инструкций</I></DT>
+						<DD class="syntax">Список инструкций и указанное перед ним зарезервированное слово должны присутствовать в образце в том случае, если соответствующий <A href="#rel_res_desc">статус конвертора</A>, указанный при описании релевантных ресурсов, есть <FONT class="syntax">Keep</FONT> или <FONT class="syntax">Create</FONT>. Если статус конвертора есть <FONT class="syntax">Erase</FONT>, то список инструкций может быть пустым или наоборот содержать инструкции, которые требуется выполнить для сбора статистики в момент удаления ресурса. <A name="temp_trace_feat"></A>Если статус конвертора есть <FONT class="syntax">Create</FONT>, то после зарезервированного слова может быть указан <A href="../../rdo_res/rdo_res_trace_descr.htm">признак трассировки</A> для создаваемого ресурса.
+							<P>Список инструкций записывают в следующем формате:</P>
+							<PRE class="syntax"><A class="syntax" href="../../rdo_base/rdo_base_proc_lang.htm#statement">&lt;инструкция&gt;</A> { &lt;инструкция&gt; }</PRE>
+							<P><A name="set_order"></A>Все инструкции могут быть указаны в произвольном порядке. Вычисление новых значений параметров релевантных ресурсов происходит в том порядке, в котором следуют их инструкции присваивания. Если нет ни одной инструкции присваивания, которая относится к данному параметру, то подразумевается, что значение этого параметра не изменяется. Для ресурсов, имеющих статус конвертора <FONT class="syntax">Create</FONT>, задание новых значений каждого параметра обязательны, за исключением случая, когда для параметра указано значение по умолчанию в описании типа ресурса.</P>
+						</DD>
+				</DL>
+		</DD>
+
+
+		<P>При заведении <A href="../rdo_obj_dpt.htm#dpt_act_block_end">активности</A> от образца типа &quot;клавиатурная операция&quot; в объекте .dpt после имени образца указывают код клавиши, при нажатии которой производится попытка выполнить операцию. После кода указывают значения параметров образца, если они есть.</P>
+		<P>Код клавиши может быть задан следующими способами. Для использования цифровой или буквенной клавиши достаточно указать в апострофах соответствующую букву или цифру. Названия буквенных клавишей указываются прописными латинскими буквами. Например, следующие клавиатурные операции будут выполняться при нажатии клавишей с цифрой <B>5</B> и буквой <B>R</B> соответственно (при выполнении остальных предусловий).</P>
+		<PRE class="syntax">
+$Activities 
+		Клавиатурная_операция_1 : Образец_клавиатурной_операции '5'  12
+		Клавиатурная_операция_R : Образец_клавиатурной_операции 'R'  25
+$End</PRE>
+		<P>Кроме буквенных и цифровых клавишей могут быть использованы некоторые другие клавиши. Эти клавиши с идентификаторами, которые необходимо указать для их использования в описании клавиатурных операций, приведены в таблице:</P>
+		<TABLE class="visible" cols="2" style="width: 93%; height: 608px;">
+			<TR valign="top">
+				<TH align="left" width="20%">Идентификатор</TH>
+				<TH align="left" width="80%">Клавиша</TH>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'ESCAPE'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша выхода (ESC)</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'F2' - 'F12'</FONT></TD>
+				<TD class="visible" width="80%">Функциональные клавиши F2 - F12 (кроме F1, которая используется в приложениях Windows для вызова подсказки)</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'TAB'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша табуляции</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'SHIFT'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша смены регистра (Shift)</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'CONTROL'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша Ctrl</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'BACK'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша Backspace</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'RETURN'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша возврата (Enter)</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'INSERT'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша вставки (Ins)</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'HOME'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша перехода в начало (Home)</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'PRIOR'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша перемещения на страницу вверх (Page Up)</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'DELETE'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша удаления (Delete)</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'END'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша End</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'NEXT'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша перемещения на страницу вниз (Page Down)</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'UP'</FONT></TD>
+				<TD class="visible" width="80%">Стрелка вверх</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'LEFT'</FONT></TD>
+				<TD class="visible" width="80%">Стрелка влево</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'DOWN'</FONT></TD>
+				<TD class="visible" width="80%">Стрелка вниз</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'RIGHT'</FONT></TD>
+				<TD class="visible" width="80%">Стрелка вправо</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'NUMPAD0' - 'NUMPAD9'</FONT></TD>
+				<TD class="visible" width="80%">Клавиши 0 - 9 на цифровой клавиатуре при включенной клавише Num Lock</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'DIVIDE'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша деления на цифровой клавиатуре</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'MULTIPLY'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша умножения на цифровой клавиатуре</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'SUBTRACT'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша вычитания на цифровой клавиатуре</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'ADD'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша сложения на цифровой клавиатуре</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'CLEAR'</FONT></TD>
+				<TD class="visible" width="80%">Клавиша 5 на цифровой клавиатуре при отключенной клавише Num Lock</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'SPACE'</FONT></TD>
+				<TD class="visible" width="80%">Пробел</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">'DECIMAL'</FONT></TD>
+				<TD class="visible" width="80%">Точка на цифровой клавиатуре при включенной клавише Num Lock</TD>
+			</TR>
+		</TABLE>
+		<DL class="syntax">
+			<DD class="syntax">
+		<H4>Примечания</H4>
+		<P>Например, следующие клавиатурные операции будут выполняться при нажатии клавишей <B>пробела</B>, <B>стрелки вправо</B> и клавиши <B>5</B> на цифровой клавиатуре при включенной клавише <B>Num Lock</B>.</P>
+		<PRE class="syntax">Клавиатурная_операция_пробел  : Образец_клавиатурной_операции 'SPACE'
+Клавиатурная_операция_стрелка : Образец_клавиатурной_операции 'RIGHT'
+Клавиатурная_операция_5_цифр  : Образец_клавиатурной_операции 'NUMPAD5'</PRE>
+		<P>Все перечисленные выше клавиши (кроме <B>Shift</B> и <B>Ctrl</B>) могут быть использованы совместно с управляющими клавишами <B>Shift</B> и <B>Ctrl</B>, а также с двумя этими клавишами, нажатыми одновременно. Приведенные ниже примеры показывают способ записи комбинаций клавишей при описании клавиатурных операций.</P>
+		<PRE class="syntax">Shift_стрелка      : Образец_клав_операции 'SHIFT' + 'RIGHT'
+Ctrl_стрелка       : Образец_клав_операции 'CONTROL' + 'RIGHT'
+Shift_Ctrl_стрелка : Образец_клав_операции 'SHIFT' + 'CONTROL' + 'RIGHT'</PRE>
+		<P>Описанные выше клавиатурные операции будут выполняться при одновременном нажатии двух клавишей <B>Shift</B> и <B>стрелка вправо</B>, <B>Ctrl</B> и <B>стрелка вправо</B>, при одновременном нажатии трех клавишей - <B>Shift</B>, <B>Ctrl</B> и <B>стрелка вправо</B>.</P>
+		<P>Клавиатурная операция может не иметь кода клавиши. В этом случае при ее описании вместо кода клавиши указывается слово <FONT class="syntax">'NOKEY'</FONT>. Такие клавиатурные операции используются в том случае, когда для их инициирования используются активные области в кадре анимации и нет необходимости в назначении клавишей.</P>
+		<P>Каждая комбинация клавишей может быть присвоена только одной клавиатурной операции. Запрещенными являются следующие комбинации, используемые в РДО-имитаторе для переключения режимов моделирования:</P>
+		<UL>
+			<LI><FONT class="syntax">'CONTROL' + 'A'</FONT></LI>
+			<LI><FONT class="syntax">'SHIFT' + 'CONTROL' + 'A'</FONT></LI>
+			<LI><FONT class="syntax">'CONTROL' + 'R'</FONT></LI>
+			<LI><FONT class="syntax">'SHIFT' + 'CONTROL' + 'R'</FONT></LI>
+			<LI><FONT class="syntax">'CONTROL' + 'M'</FONT></LI>
+			<LI><FONT class="syntax">'SHIFT' + 'CONTROL' + 'M'</FONT></LI>
+		</UL>
+		<P><A href="../rdo_obj_frm_elem.htm#active">Активные области</A>, инициирующие выполнение клавиатурных операций при нажатии кнопки мыши, описывают в <A href="../rdo_obj_frm.htm">объекте кадров анимации</A>.</P>
+			</DD>
+		</DL>
+<H4>См. также</H4>
+	<P><A href="../rdo_obj_pat.htm">Описание образцов</A></P>
+	<P><A href="../rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
+	<P><A href="rdo_pat_type_rule.htm">Тип образца "Продукционное правило"</A></P>
+	<P><A href="rdo_pat_type_opr.htm">Тип образца "Операция"</A></P>
+	<P><A href="../../rdo_res/rdo_res_trace_descr.htm">Трассировка состояния объектов РДО</A></P>
+</DIV>
+	<BR><SCRIPT src="../../../../shared/scripts/navbar.js"></SCRIPT>
+</BODY>
+</HTML>

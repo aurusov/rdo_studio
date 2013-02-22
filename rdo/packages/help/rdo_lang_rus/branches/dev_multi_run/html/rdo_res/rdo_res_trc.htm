@@ -1,0 +1,119 @@
+﻿<HTML>
+<HEAD>
+<TITLE>Объект трассировки</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>ОБЪЕКТ ТРАССИРОВКИ</H1>
+		<P><B>Объект трассировки</B> (с расширением <FONT class="syntax">.trc</FONT>) создается РДО-имитатором, если в <A href="../rdo_obj/rdo_obj_smr.htm">объекте прогона</A> присутствует дескриптор, задающий имя объекта трассировки. Объект имеет следующий формат:</P>
+		<PRE class="syntax">Results_file   = <A class="syntax" href="#res_obj_name">&lt;имя_объекта_результатов&gt;</A>.pmv <A class="syntax" href="#creation_date">&lt;дата_создания&gt;</A>
+Run_file       = <A class="syntax" href="#smr_name">&lt;имя_прогона&gt;</A>.smr
+Model_name     = <A class="syntax" href="#model_name">&lt;имя_модели&gt;</A>
+Resource_file  = <A class="syntax" href="#res_name">&lt;имя_объекта_ресурсов&gt;</A>.rss
+DptIev_file    = <A class="syntax" href="#opr_name">&lt;имя_объекта_точек_принятия_решений&gt;</A>.dpt
+
+$Changes
+  <A class="syntax" href="#changes">&lt;список_изменений&gt;</A>
+
+$Watching
+{ <A class="syntax" href="#watching">&lt;описание_трассируемого_показателя&gt;</A> }
+
+$Tracing
+  <A class="syntax" href="#tracing">&lt;трассировка&gt;</A>
+
+$Status = <A class="syntax" href="#end_status">&lt;статус_окончания_моделирования&gt;</A> &lt;модельное_время_окончания&gt;
+{ <A class="syntax" href="#graph_stat">&lt;статистика_по_поиску_на_графе&gt;</A> }
+<A name="dps_mm"></A>DPS_MM &lt;объем_использованной_памяти&gt;</PRE>
+		<DL class="syntax">
+			<DT class="syntax"><A name="res_obj_name"></A><I>имя_объекта_результатов</I></DT>
+			<DD class="syntax">Имя <A href="rdo_res_pmv.htm">объекта результатов</A>, созданного РДО-имитатором.</DD>
+			<DT class="syntax"><A name="creation_date"></A><I>дата_создания</I></DT>
+			<DD class="syntax">Дата создания данного объекта трассировки.</DD>
+			<DT class="syntax"><A name="smr_name"></A><I>имя_прогона</I></DT>
+			<DD class="syntax">Имя <A href="../rdo_obj/rdo_obj_smr.htm">объекта прогона</A>, использовавшегося при моделировании.</DD>
+			<DT class="syntax"><A name="model_name"></A><A name="res_name"></A><A name="opr_name"></A><I>имя_модели, имя_объекта_ресурсов, имя_объекта_операций</I></DT>
+			<DD class="syntax">Имена модели, <A href="../rdo_base/rdo_base_resources.htm">объекта ресурсов</A> и <A href="../rdo_obj/rdo_obj_dpt.htm">объекта точек принятия решений</A> - это имена, заданные в объекте прогона.</DD>
+			<DT class="syntax"><A name="changes"></A><I>список_изменений</I></DT>
+			<DD class="syntax">Список изменений содержит имена и заданные в объекте прогона новые значения <A href="../rdo_obj/rdo_obj_smr.htm#const_new">символьных констант</A>, <A href="../rdo_obj/rdo_obj_smr.htm#res_param_new">параметров ресурсов</A> и <A href="../rdo_obj/rdo_obj_smr.htm#seed_new">баз генераторов последовательностей</A>.</DD>
+			<DT class="syntax"><A name="watching"></A><I>описание_трассируемого_показателя</I></DT>
+			<DD class="syntax">Описание трассируемого показателя приводится только для тех показателей, для которых в <A href="../rdo_obj/rdo_obj_pmd.htm">объекте описания показателей</A> задан признак трассировки <FONT class="syntax">trace</FONT>. Описание трассируемого показателя имеет формат:
+				<PRE class="syntax"><A class="syntax" href="#whatch_name">&lt;имя_показателя&gt;</A> <A class="syntax" href="#whatch_num">&lt;номер_показателя&gt;</A> <A class="syntax" href="#whatch_type">&lt;вид_показателя&gt;</A></PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="whatch_name"></A><I>имя_показателя</I></DT>
+					<DD class="syntax">Имя показателя - это одно из имен, заданных в <A href="../rdo_obj/rdo_obj_pmd.htm">объекте описания показателей</A>.</DD>
+					<DT class="syntax"><A name="whatch_num"></A><A name="whatch_type"></A><I>номер_показателя, вид_показателя</I></DT>
+					<DD class="syntax">Номер показателя определяется порядком описания показателей в этом <A href="../rdo_obj/rdo_obj_pmd.htm">объекте</A>, вид показателя также описан в этом объекте.</DD>
+				</DL>
+			</DD>
+			<DT class="syntax"><A name="tracing"></A><I>трассировка</I></DT>
+			<DD class="syntax">Трассировка содержит информацию четырех видов: <A href="rdo_res_trc_events.htm">трассировку событий</A>, <A href="rdo_res_trc_resourses.htm">трассировку состояния ресурсов</A>, <A href="rdo_res_trc_results.htm">трассировку показателей</A> и <A href="rdo_res_trc_decisionpt.htm">трассировку точек принятия решений</A>. Трассировка выдается только если текущее модельное время больше или равно времени <A href="../rdo_obj/rdo_obj_smr.htm#trace_start_time">начала трассировки</A> и меньше или равно <A href="../rdo_obj/rdo_obj_smr.htm#trace_end_time">времени окончания трассировки</A>, а также если в соответствующем объекте (<A href="../rdo_base/rdo_base_resources.htm">ресурсе</A>, <A href="../rdo_obj/rdo_obj_pat.htm">образце</A>, <A href="../rdo_obj/rdo_obj_pmd.htm">показателе</A> или <A href="../rdo_obj/rdo_obj_dpt.htm">точке принятия решений</A>) явно указан <A href="rdo_res_trace_descr.htm">признак трассировки.</A></DD>
+			<DT class="syntax"><A name="end_status"></A><A name="end_status_norm"></A><A name="end_status_nme"></A><A name="end_status_ub"></A><A name="end_status_rte"></A><I>статус_окончания_моделирования</I></DT>
+			<DD class="syntax">Статус окончания моделирования описывает причину завершения моделирования и может быть одним из следующих:</DD>
+				<TABLE class="visible">
+					<TR valign="top">
+						<TH align="left" width="20%">Статус</TH>
+						<TH align="left" width="80%">Описание</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">NORMAL_TERMINATION</FONT></TD>
+						<TD class="visible" width="80%">Нормальное завершение моделирования при выполнении условия окончания моделирования, заданного в прогоне</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">NO_MORE_EVENTS</FONT></TD>
+						<TD class="visible" width="80%">Нет больше событий в модели</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">USER_BREAK</FONT></TD>
+						<TD class="visible" width="80%">Моделирование завершилось из-за вмешательства пользователя, который завершил РДО-имитатор</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">RUN_TIME_ERROR</FONT></TD>
+						<TD class="visible" width="80%">Моделирование завершилось из-за ошибки во время счета (информация об ошибке выводится в окно диалога РДО-имитатора)</TD>
+					</TR>
+				</TABLE>
+			</DD>
+			<DT class="syntax"><A name="graph_stat"></A><I>статистика_по_поиску_на_графе</I></DT>
+			<DD class="syntax">Статистика по поиску на графе для каждой точки принятия решений типа <A href="../rdo_obj/rdo_obj_dpt.htm#dpt_type">search</A> имеет следующий формат:
+				<PRE class="syntax"><A name="dps_c"></A>DPS_C  &lt;номер_точки&gt; &lt;количество_активаций&gt; &lt;количество_успешных&gt;
+<A name="dps_tm"></A>DPS_TM &lt;среднее_время_поиска&gt; &lt;минимальное_время_поиска&gt;
+  &lt;максимальное_время_поиска&gt;
+<A name="dps_me"></A>DPS_ME &lt;средний_объем_памяти&gt; &lt;минимальный_объем_памяти&gt;
+  &lt;максимальный_объем_памяти&gt;
+<A name="dps_co"></A>DPS_CO &lt;средняя_стоимость_решения&gt; &lt;минимальная_стоимость_решения&gt;
+  &lt;максимальная_стоимость_решения&gt;
+<A name="dps_to"></A>DPS_TO &lt;среднее_количество_раскрытых_вершин&gt;
+  &lt;минимальное_количество_раскрытых_вершин&gt;
+  &lt;максимальное_количество_раскрытых_вершин&gt;
+<A name="dps_tt"></A>DPS_TT &lt;среднее_количество_вершин_в_графе&gt;
+  &lt;минимальное_количество_вершин_в_графе&gt;
+  &lt;максимальное_количество_вершин_в_графе&gt;
+<A name="dps_ti"></A>DPS_TI &lt;среднее_количество_включенных_в_граф_вершин&gt;
+  &lt;минимальное_количество_включенных_в_граф_вершин&gt;
+  &lt;максимальное_количество_включенных_в_граф_вершин&gt;
+<A name="dps_tg"></A>DPS_TG &lt;среднее_количество_порожденных_вершин&gt;
+  &lt;минимальное_количество_порожденных_вершин&gt;
+  &lt;максимальное_количество_порожденных_вершин&gt;</PRE>
+					<P>Она содержит номер точки принятия решений, количество активаций данной точки и количество успешных завершений поиска с нахождением решения. Кроме этого статистика содержит средние по всем активациям поиска, минимальные и максимальные значения таких характеристик процесса поиска, как время поиска (в секундах), количество использованной для построения графа поиска памяти (в байтах), стоимость найденного решения, количество раскрытых вершин, количество вершин в построенном графе, количество включавшихся в граф вершин (вершины, соответствующие одному и тому же состоянию системы, могут включаться в граф неоднократно, если порождается вершина с меньшей стоимостью пути), общее количество порожденных вершин-преемников в процессе поиска. Значения этих характеристик для каждой активации поиска отдельно находятся в <A href="rdo_res_trc_decisionpt.htm#end_search">трассировке окончания поиска</A>.</P>
+					<DL class="syntax">
+						<DD class="syntax"><H4>Примеры</H4><PRE class="samples">DPS_C  1  1  1
+DPS_TM 193.816  193.816  193.816
+DPS_ME 7458816  7458816  7458816
+DPS_CO 1.28515e+09  1.28515e+09  1.28515e+09
+DPS_TO 10204  10204  10204
+DPS_TT 20261  20261  20261
+DPS_TI 21109  21109  21109
+DPS_TG 38894  38894  38894</PRE>
+						</DD>
+					</DL>
+			</DD>
+		</DL>
+		<H4>См. также</H4>
+		<P><A href="rdo_res_trc_events.htm">Трассировка событий</A></P>
+		<P><A href="rdo_res_trc_resourses.htm">Трассировка состояния ресурсов</A></P>
+		<P><A href="rdo_res_trc_results.htm">Трассировка показателей</A></P>
+		<P><A href="rdo_res_trc_decisionpt.htm">Трассировка точек принятия решений</A></P>
+	</DIV>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
+</BODY>
+</HTML>

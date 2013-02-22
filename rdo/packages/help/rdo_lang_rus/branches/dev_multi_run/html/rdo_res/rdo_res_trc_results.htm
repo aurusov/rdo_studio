@@ -1,0 +1,52 @@
+﻿<HTML>
+<HEAD>
+<TITLE>Трассировка показателей</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>ТРАССИРОВКА ПОКАЗАТЕЛЕЙ</H1>
+		<P>Строка <B>трассировки показателя</B> имеет следующий формат:</P>
+		<PRE class="syntax">V <A class="syntax" href="#time">&lt;время&gt;</A> <A class="syntax" href="#pmv_num">&lt;номер_показателя&gt;</A> <A class="syntax" href="#value">&lt;значение&gt;</A></PRE>
+		<DL class="syntax">
+			<DT class="syntax"><A name="time"></A><I>время</I></DT>
+			<DD class="syntax">Время изменения показателя в формате вещественного числа.</DD>
+			<DT class="syntax"><A name="pmv_num"></A><I>номер_показателя</I></DT>
+			<DD class="syntax">Номер показателя - это номер, указанный для трассируемых показателей в секции <FONT class="syntax">$Watching</FONT> <A href="rdo_res_trc.htm#watching">объекта трассировки</A>.</DD>
+			<DT class="syntax"><A name="value"></A><I>значение</I></DT>
+			<DD class="syntax">Трассировка показателей производится в момент изменения значения параметра, количества временных ресурсов, значения логического выражения (для показателя вида <FONT class="syntax">watch_state</FONT>) или в момент уничтожения ресурса (для показателя вида <FONT class="syntax">watch_value</FONT>).
+			<P>Значение зависит от вида показателя. Ниже приведены значения для всех видов показателей:</P>
+				<TABLE class="visible">
+					<TR valign="top">
+						<TH align="left" width="20%">Вид показателя</TH>
+						<TH align="left" width="80%">Описание значения трассировки</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">watch_par</FONT></TD>
+						<TD class="visible" width="80%">Новое значение параметра</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">watch_state</FONT></TD>
+						<TD class="visible" width="80%">Новое значение логического выражения</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">watch_quant</FONT></TD>
+						<TD class="visible" width="80%">Новое значение количества ресурсов</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">watch_value</FONT></TD>
+						<TD class="visible" width="80%">Значение арифметического выражения</TD>
+					</TR>
+				</TABLE>
+				<P>Трассировка показателя вида <FONT class="syntax">get_value</FONT> не производится.</P>
+			</DD>
+		</DL>
+		<H4>См. также</H4>
+		<P><A href="rdo_res_trc.htm">Объект трассировки</A></P>
+		<P><A href="rdo_res_trc_events.htm">Трассировка событий</A></P>
+		<P><A href="rdo_res_trc_resourses.htm">Трассировка состояния ресурсов</A></P>
+		<P><A href="rdo_res_trc_decisionpt.htm">Трассировка точек принятия решений</A></P>
+	</DIV>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
+</BODY>
+</HTML>
