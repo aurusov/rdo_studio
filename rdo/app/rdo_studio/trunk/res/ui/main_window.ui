@@ -961,7 +961,7 @@ border: none;
     <string>'Схлопнуть' время</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+W</string>
+    <string>Ctrl+I</string>
    </property>
   </action>
   <action name="actChartOptions">
