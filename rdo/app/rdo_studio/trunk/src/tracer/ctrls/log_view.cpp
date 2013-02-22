@@ -316,8 +316,8 @@ LogView::LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle)
 		m_logStyle = &studioApp.getStyle()->style_trace;
 	}
 
-	connect(&getVertScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onVertScrollBarValueChanged(int)));
-	connect(&getHorzScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onHorzScrollBarValueChanged(int)));
+	connect(&getVertScrollBar(), &QScrollBar::valueChanged, this, &LogView::onVertScrollBarValueChanged);
+	connect(&getHorzScrollBar(), &QScrollBar::valueChanged, this, &LogView::onHorzScrollBarValueChanged);
 
 	QPalette p = palette();
 	p.setColor(QPalette::Inactive, QPalette::Highlight,       p.color(QPalette::Active, QPalette::Highlight));
