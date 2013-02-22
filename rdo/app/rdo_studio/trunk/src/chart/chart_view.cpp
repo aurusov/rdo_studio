@@ -37,12 +37,7 @@ using namespace rdoStyle;
 // --------------------------------------------------------------------------------
 // -------------------- ChartView
 // --------------------------------------------------------------------------------
-//BEGIN_MESSAGE_MAP(ChartView, CWnd)
-//	ON_WM_HSCROLL()
-//	ON_WM_KEYDOWN()
-//END_MESSAGE_MAP()
-
-ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview)
+ChartView::ChartView(QAbstractScrollArea* pParent, RDOStudioChartDoc* pDocument, const rbool preview)
 	: super(pParent)
 	, m_pDocument(pDocument)
 	, m_bmpRect(0, 0, 0, 0)
@@ -53,8 +48,6 @@ ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool
 	, m_pYAxis(NULL)
 	, m_timeWrapFlag(true)
 	, m_chartRect(0, 0, 0, 0)
-	, m_xMax(0)
-	, m_xPos(0)
 	, m_timeScale(0)
 	, m_drawFromEventIndex(0)
 	, m_drawToEventCount(0)
@@ -70,6 +63,8 @@ ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool
 	, m_needDrawLegend(true)
 	, m_pPopupMenu(NULL)
 {
+	connect(&getHorzScrollBar(), &QScrollBar::valueChanged, this, &ChartView::onHorzScrollBarValueChanged);
+
 	if (m_previewMode)
 		m_timeWrapFlag = false;
 
@@ -224,25 +219,14 @@ void ChartView::recalcLayout()
 	doc->m_mutex.Unlock();
 }
 
-void ChartView::setScrollPos(UINT nSBCode, UINT nPos, const rbool needUpdate)
+QScrollBar& ChartView::getHorzScrollBar()
 {
-	if (nSBCode == SB_HORZ)
-		m_xPos = nPos;
-
-	SCROLLINFO si;
-	si.cbSize = sizeof(si);
-	si.fMask = SIF_POS;
-	si.nPos = m_xPos;
-	//! @todo qt
-	//SetScrollInfo(nSBCode, &si, TRUE);
-
-	if (needUpdate)
-	{
-		update();
-	}
+	QScrollBar* pScrollBar = static_cast<QAbstractScrollArea*>(parentWidget())->horizontalScrollBar();
+	ASSERT(pScrollBar);
+	return *pScrollBar;
 }
 
-void ChartView::updateScrollBars(const rbool /*needUpdate toto qt*/)
+void ChartView::updateScrollBars()
 {
 	RDOStudioChartDoc* doc = getDocument();
 	doc->m_mutex.Lock();
@@ -261,26 +245,69 @@ void ChartView::updateScrollBars(const rbool /*needUpdate toto qt*/)
 		size = 0;
 	}
 
-	m_xMax = std::max(0, size - m_chartRect.width());
-	m_xPos = std::min(m_xPos, m_xMax);
+	m_SM_X.pageSize = m_chartRect.width();
+	m_SM_X.posMax   = std::max(0, size - m_chartRect.width());
+	m_SM_X.position = std::min(m_SM_X.position, m_SM_X.posMax);
 
-	SCROLLINFO si;
-	si.cbSize = sizeof(si);
-	si.fMask = SIF_RANGE | SIF_PAGE | SIF_POS;
-	si.nMin = 0;
-	si.nMax = size - 1;
-	si.nPage = m_chartRect.width();
-	si.nPos = m_xPos;
-	//! @todo qt
-	//SetScrollInfo(SB_HORZ, &si, needUpdate);
+	getHorzScrollBar().setRange   (0, m_SM_X.posMax);
+	getHorzScrollBar().setPageStep(m_SM_X.pageSize);
+	getHorzScrollBar().setValue   (m_SM_X.position);
 
 	doc->m_mutex.Unlock();
+}
+
+rbool ChartView::scrollHorizontally(rsint inc)
+{
+	if (!m_SM_X.applyInc(inc))
+	{
+		return false;
+	}
+
+	getHorzScrollBar().setValue(m_SM_X.position);
+	update();
+	return true;
+}
+
+void ChartView::onHorzScrollBarValueChanged(int value)
+{
+	if (value < 0)
+	{
+		return;
+	}
+
+	scrollHorizontally(value - m_SM_X.position);
+}
+
+void ChartView::keyPressEvent(QKeyEvent* pEvent)
+{
+	boost::optional<int> position;
+
+	switch (pEvent->key())
+	{
+	case Qt::Key_Left    : position = std::max(0,             m_SM_X.position - (pEvent->modifiers().testFlag(Qt::ControlModifier) ? m_SM_X.pageSize : 1)); break;
+	case Qt::Key_Right   : position = std::min(m_SM_X.posMax, m_SM_X.position + (pEvent->modifiers().testFlag(Qt::ControlModifier) ? m_SM_X.pageSize : 1)); break;
+	case Qt::Key_PageUp  : position = std::max(0,             m_SM_X.position - m_SM_X.pageSize); break;
+	case Qt::Key_PageDown: position = std::min(m_SM_X.posMax, m_SM_X.position + m_SM_X.pageSize); break;
+	case Qt::Key_Home    : position = 0; break;
+	case Qt::Key_End     : position = m_SM_X.posMax; break;
+		break;
+	}
+
+	if (position.is_initialized())
+	{
+		getHorzScrollBar().setValue(position.get());
+	}
+}
+
+void ChartView::wheelEvent(QWheelEvent*  pEvent)
+{
+	getHorzScrollBar().setValue(getHorzScrollBar().value() - m_SM_X.pageSize * (pEvent->delta() > 0 ? 1 : -1));
 }
 
 rbool ChartView::setTo(const int fromMaxPos)
 {
 	rbool res = true;
-	int delta = (fromMaxPos - m_xPos - m_chartRect.width()) / m_pStyle->pFontsTicks->tickWidth;
+	int delta = (fromMaxPos - m_SM_X.position - m_chartRect.width()) / m_pStyle->pFontsTicks->tickWidth;
 	if (delta >= 0)
 	{
 		res = false;
@@ -305,14 +332,14 @@ void ChartView::setFromTo()
 	{
 		if (m_timeScale)
 		{
-			m_drawFromX.time = doc->m_docTimes.front()->time + (double)m_xPos / double(m_timeScale);
+			m_drawFromX.time = doc->m_docTimes.front()->time + (double)m_SM_X.position / double(m_timeScale);
 			if (maxXVisible())
 			{
 				m_drawToX.time = doc->m_docTimes.back()->time;
 			}
 			else
 			{
-				m_drawToX.time = doc->m_docTimes.front()->time + (double)(m_xPos + m_chartRect.width()) / double(m_timeScale);
+				m_drawToX.time = doc->m_docTimes.front()->time + (double)(m_SM_X.position + m_chartRect.width()) / double(m_timeScale);
 			}
 		}
 		else
@@ -332,23 +359,23 @@ void ChartView::setFromTo()
 		{
 			it_pos = roundDouble(((*it)->time - doc->m_docTimes.front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks->tickWidth;
 			it_max_pos = it_pos + m_pStyle->pFontsTicks->tickWidth * (*it)->eventCount;
-			if (it_pos == m_xPos)
+			if (it_pos == m_SM_X.position)
 			{
 				m_drawFromX = *(*it);
 				need_search_to = setTo(it_max_pos);
 				break;
 			}
-			if (it_pos < m_xPos && (it_max_pos >= m_xPos))
+			if (it_pos < m_SM_X.position && (it_max_pos >= m_SM_X.position))
 			{
 				m_drawFromX = *(*it);
-				m_drawFromEventIndex = (m_xPos - it_pos) / m_pStyle->pFontsTicks->tickWidth;
-				m_chartShift = m_xPos - (it_pos + m_drawFromEventIndex * m_pStyle->pFontsTicks->tickWidth);
+				m_drawFromEventIndex = (m_SM_X.position - it_pos) / m_pStyle->pFontsTicks->tickWidth;
+				m_chartShift = m_SM_X.position - (it_pos + m_drawFromEventIndex * m_pStyle->pFontsTicks->tickWidth);
 				need_search_to = setTo(it_max_pos);
 				break;
 			}
-			if (it_pos > m_xPos)
+			if (it_pos > m_SM_X.position)
 			{
-				m_drawFromX.time = (*it)->time - (it_pos - m_xPos) / double(m_timeScale);
+				m_drawFromX.time = (*it)->time - (it_pos - m_SM_X.position) / double(m_timeScale);
 				need_search_to = setTo(0);
 				break;
 			}
@@ -382,7 +409,7 @@ void ChartView::setFromTo()
 				}
 				
 			}
-			int pos = m_xPos + m_chartRect.width();
+			int pos = m_SM_X.position + m_chartRect.width();
 			for (; it != doc->m_docTimes.end(); ++it)
 			{
 				it_pos = roundDouble(((*it)->time - doc->m_docTimes.front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks->tickWidth;
@@ -717,7 +744,7 @@ void ChartView::resizeEvent(QResizeEvent* pEvent)
 	if (getDocument())
 	{
 		recalcLayout();
-		updateScrollBars(false);
+		updateScrollBars();
 		//setZoom(zoom);
 	}
 
@@ -738,114 +765,6 @@ void ChartView::onUserUpdateChartView(ruint updateType)
 	if (doUnwrapTime() || updateType != UPDATE_TIMETICKS)
 	{
 		updateView();
-	}
-}
-
-void ChartView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
-{
-	UNUSED(nPos);
-	UNUSED(pScrollBar);
-
-	int inc = 0;
-	SCROLLINFO si;
-	si.cbSize = sizeof(si);
-
-	switch (nSBCode)
-	{
-	case SB_PAGEUP:
-		inc = -m_chartRect.width();
-		break;
-
-	case SB_PAGEDOWN:
-		inc = m_chartRect.width();
-		break;
-
-	case SB_LINEUP:
-		inc = -m_pStyle->pFontsTicks->tickWidth;
-		break;
-
-	case SB_LINEDOWN:
-		inc = m_pStyle->pFontsTicks->tickWidth;
-		break;
-
-	case SB_THUMBTRACK:
-	{
-		//! @todo qt
-		//GetScrollInfo(SB_HORZ, &si, SIF_TRACKPOS);
-		inc = si.nTrackPos - m_xPos;
-		break;
-	}
-	default:
-		inc = 0;
-	}
-
-	if (!inc)
-		return;
-
-	// If applying the horizontal scrolling increment does not 
-	// take the scrolling position out of the scrolling range, 
-	// increment the scrolling position, adjust the position 
-	// of the scroll box, and update the window.
-	if (inc == std::max(-m_xPos, std::min(inc, m_xMax - m_xPos)))
-	{
-		m_xPos += inc;
-		setScrollPos(SB_HORZ, m_xPos);
-	}
-}
-
-void ChartView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	UNUSED(nRepCnt);
-	UNUSED(nFlags);
-
-	WORD scrollNotify = 0xFFFF;
-	UINT msg = WM_VSCROLL;
-	rbool ctrl = ((::GetKeyState(VK_CONTROL) & 0x80000000) != 0);
-	rbool side = false;
-	int pos = 0;
-
-	switch (nChar)
-	{
-	case VK_LEFT:
-	{
-		if (ctrl)
-		{
-			side = true;
-		}
-		else
-		{
-			scrollNotify = SB_LINEUP;
-			msg = WM_HSCROLL;
-		}
-		break;
-	}
-	case VK_RIGHT:
-	{
-		if (ctrl)
-		{
-			side = true;
-			pos = m_xMax;
-		}
-		else
-		{
-			scrollNotify = SB_LINEDOWN;
-			msg = WM_HSCROLL;
-		}
-		break;
-	}
-	default:
-		break;
-	}
-
-	if (scrollNotify != 0xFFFF)
-	{
-		//! @todo qt
-		//::SendMessage(m_hWnd, msg, MAKELONG(scrollNotify, pos), NULL);
-	}
-
-	if (side)
-	{
-		setScrollPos(SB_HORZ, pos);
 	}
 }
 
@@ -966,13 +885,14 @@ void ChartView::updateView()
 	getDocument()->lock();
 	rbool lastvisible = maxXVisible();
 	recalcLayout();
-	updateScrollBars(false);
+	updateScrollBars();
 	if (lastvisible && !maxXVisible())
 	{
-		setScrollPos(SB_HORZ, m_xMax, false);
+		//! @todo qt
+		//setScrollPos(SB_HORZ, m_SM_X.posMax, false);
 	}
 	parentWidget()->update();
-	updateScrollBars(true);
+	updateScrollBars();
 	getDocument()->unlock();
 	onUpdateActions(isActivated());
 }
@@ -1054,12 +974,12 @@ rbool ChartView::doUnwrapTime() const
 
 rbool ChartView::minXVisible() const
 {
-	return m_xPos == 0;
+	return m_SM_X.position == 0;
 }
 
 rbool ChartView::maxXVisible() const
 {
-	return m_xPos == m_xMax;
+	return m_SM_X.position == m_SM_X.posMax;
 }
 
 void ChartView::onUpdateActions(rbool activated)
@@ -1122,6 +1042,17 @@ void ChartView::onUpdateActions(rbool activated)
 	);
 }
 
+void ChartView::mousePressEvent(QMouseEvent* pEvent)
+{
+	if (pEvent->button() == Qt::RightButton && !m_previewMode)
+	{
+		m_pPopupMenu->exec(pEvent->globalPos());
+	}
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- ChartViewMainWnd
+// --------------------------------------------------------------------------------
 ChartViewMainWnd::ChartViewMainWnd(PTR(QWidget) pParent, PTR(RDOStudioChartDoc) pDocument, rbool preview)
 	: super(pParent)
 {
@@ -1158,8 +1089,8 @@ void ChartViewMainWnd::keyPressEvent(PTR(QKeyEvent) pEvent)
 {
 	switch (pEvent->key())
 	{
-	case Qt::Key_Up      :
-	case Qt::Key_Down    :
+	case Qt::Key_Left    :
+	case Qt::Key_Right   :
 	case Qt::Key_PageUp  :
 	case Qt::Key_PageDown:
 	case Qt::Key_Home    :
@@ -1170,13 +1101,5 @@ void ChartViewMainWnd::keyPressEvent(PTR(QKeyEvent) pEvent)
 	default:
 		super::keyPressEvent(pEvent);
 		break;
-	}
-}
-
-void ChartView::mousePressEvent(PTR(QMouseEvent) pEvent)
-{
-	if (pEvent->button() == Qt::RightButton && !m_previewMode)
-	{
-		m_pPopupMenu->exec(pEvent->globalPos());
 	}
 }

@@ -13,11 +13,12 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtWidgets/qwidget.h>
 #include <QtWidgets/qabstractscrollarea.h>
+#include <QtWidgets/qscrollbar.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
 #include "app/rdo_studio/src/chart/chart_doc.h"
-#include "thirdparty/qt-solutions/qtwinmigrate/src/qwinhost.h"
 #include "app/rdo_studio/src/action_activator/action_activator_widget.h"
+#include "ui/qt/headers/scroll_bar/scroll_bar.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -46,7 +47,7 @@ public:
 
 	void setPreviwMode(rbool value);
 
-protected:
+private:
 	CMutex m_mutex;
 
 	COleDropTarget m_ddTarget;
@@ -66,13 +67,12 @@ protected:
 	QRect m_chartRect;
 	void recalcLayout();
 
-	int m_xMax;
-	int m_xPos;
-	rbool minXVisible() const;
-	rbool maxXVisible() const;
-
-	void setScrollPos(UINT nSBCode, UINT nPos, const rbool needUpdate = true);
-	void updateScrollBars(const rbool needUpdate = true);
+	rdo::gui::ScrollMetric m_SM_X;
+	rbool       minXVisible       () const;
+	rbool       maxXVisible       () const;
+	QScrollBar& getHorzScrollBar  ();
+	void        updateScrollBars  ();
+	rbool       scrollHorizontally(rsint inc);
 
 	long double   m_timeScale;
 	TracerTimeNow m_drawFromX;
@@ -117,10 +117,9 @@ protected:
 
 	void onDraw();
 
-private:
 	typedef  ActionActivatorWidget  super;
 
-	ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview /* = false*/); //! @todo qt
+	ChartView(QAbstractScrollArea* pParent, RDOStudioChartDoc* pDocument, const rbool preview /* = false*/); //! @todo qt
 	virtual ~ChartView();
 
 	RDOStudioChartDoc* m_pDocument;
@@ -132,13 +131,17 @@ private:
 
 	virtual void resizeEvent    (QResizeEvent* pEvent);
 	virtual void paintEvent     (QPaintEvent*  pEvent);
-	virtual void  mousePressEvent(PTR(QMouseEvent) pEvent);
+	virtual void mousePressEvent(QMouseEvent*  pEvent);
+	virtual void keyPressEvent  (QKeyEvent*    pEvent);
+	virtual void wheelEvent     (QWheelEvent*  pEvent);
 
 	void onUserUpdateChartView(ruint updateType);
 
 	virtual void onUpdateActions(rbool activated);
 
 private slots:
+	void onHorzScrollBarValueChanged(int value);
+
 	void onEditCopy();
 
 	void onViewZoomIn();
@@ -150,13 +153,11 @@ private slots:
 	void onChartOptions();
 
 	void onHelpKeyword();
-
-protected:
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-//	DECLARE_MESSAGE_MAP()
 };
 
+// --------------------------------------------------------------------------------
+// -------------------- ChartViewMainWnd
+// --------------------------------------------------------------------------------
 class ChartViewMainWnd: public QAbstractScrollArea
 {
 public:
