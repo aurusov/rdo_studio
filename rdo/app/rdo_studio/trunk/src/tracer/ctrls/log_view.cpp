@@ -271,31 +271,6 @@ LogView::SubitemColors::SubitemColors(CREF(SubitemColors) subitemColors)
 {}
 
 // --------------------------------------------------------------------------------
-// -------------------- LogView::ScrollMetric
-// --------------------------------------------------------------------------------
-LogView::ScrollMetric::ScrollMetric()
-	: position(0)
-	, posMax  (0)
-	, pageSize(0)
-{}
-
-rbool LogView::ScrollMetric::applyInc(rsint delta)
-{
-	if (delta == 0)
-	{
-		return false;
-	}
-
-	if (position + delta < 0 || position + delta > posMax)
-	{
-		return false;
-	}
-
-	position += delta;
-	return true;
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- LogView::ScrollMetricVert
 // --------------------------------------------------------------------------------
 LogView::ScrollMetricVert::ScrollMetricVert()

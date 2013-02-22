@@ -19,6 +19,7 @@
 #include "app/rdo_studio/src/tracer/ctrls/log_view_style.h"
 #include "app/rdo_studio/src/action_activator/action_activator_widget.h"
 #include "app/rdo_studio/src/dialog/find_dialog.h"
+#include "ui/qt/headers/scroll_bar/scroll_bar.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace tracer {
@@ -98,17 +99,6 @@ private:
 		SubitemColors(CREF(SubitemColors) subitemColors);
 	};
 
-	struct ScrollMetric
-	{
-		rsint position;
-		rsint posMax;
-		rsint pageSize;
-
-		ScrollMetric();
-
-		rbool applyInc(rsint delta);
-	};
-
 	struct ScrollMetricVert: public ScrollMetric
 	{
 		rsint lastViewableLine;
@@ -149,8 +139,8 @@ private:
 	QScrollBar& getVertScrollBar    ();
 	QScrollBar& getHorzScrollBar    ();
 	void        updateScrollBars    ();
-	rbool       scrollVertically    (rsint pos);
-	rbool       scrollHorizontally  (rsint pos);
+	rbool       scrollVertically    (rsint inc);
+	rbool       scrollHorizontally  (rsint inc);
 
 	rbool       makeLineVisible     (rsint index);
 	rbool       isFullyVisible      (rsint index) const;
