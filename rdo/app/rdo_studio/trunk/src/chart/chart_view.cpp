@@ -40,7 +40,6 @@ using namespace rdoStyle;
 //BEGIN_MESSAGE_MAP(ChartView, CWnd)
 //	ON_WM_HSCROLL()
 //	ON_WM_KEYDOWN()
-//	ON_WM_MOUSEACTIVATE()
 //END_MESSAGE_MAP()
 
 ChartView::ChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview)
