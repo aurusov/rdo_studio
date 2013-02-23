@@ -130,7 +130,7 @@ public:
 	rbool operator ==( const RDOBaseEditStyle& style ) const;
 	rbool operator !=( const RDOBaseEditStyle& style ) const;
 
-	void  init( CREF(QString) _groupName = "" );
+	void init( CREF(QString) _groupName = "" );
 	virtual rbool load();
 	virtual rbool save() const;
 

@@ -261,7 +261,6 @@ void RDOStyle::init( CREF(QString) _groupName )
 			groupName.append("/");
 		}
 	}
-	initFont();
 }
 
 rbool RDOStyle::load()
