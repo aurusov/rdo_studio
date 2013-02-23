@@ -1073,6 +1073,8 @@ void ChartView::mousePressEvent(QMouseEvent* pEvent)
 ChartViewMainWnd::ChartViewMainWnd(PTR(QWidget) pParent, PTR(RDOStudioChartDoc) pDocument, rbool preview)
 	: super(pParent)
 {
+	setMinimumSize(400, 200);
+
 	ChartView* pContext = new ChartView(this, pDocument, preview);
 	pContext->show();
 	setViewport(pContext);
