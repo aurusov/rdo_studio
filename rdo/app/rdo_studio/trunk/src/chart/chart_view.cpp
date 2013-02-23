@@ -621,8 +621,6 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 		rect.adjust(1, 1, 0, 0);
 		QRect wrapRect(rect);
 
-		//! @todo qt
-		//::IntersectClipRect(m_hmemdc, rect.left, rect.top, rect.right, rect.bottom);
 		int ticks = 0;
 		TimesList::iterator it = m_unwrapTimesList.begin();
 		if (m_drawFromX == m_drawToX)
