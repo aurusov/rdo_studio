@@ -57,7 +57,8 @@ public:
 	void removeChart(RDOStudioChartDoc* chart);
 	RDOStudioChartDoc* addSerieToChart(CREF(LPTracerSerie) pSerie, RDOStudioChartDoc* chart = NULL);
 	void updateChartsStyles() const;
-	void clear();void setModelName(CREF(QString) name) const;
+	void clear();
+	void setModelName(CREF(QString) name) const;
 	void setDrawTrace(const rbool value);
 	rbool getDrawTrace() const;
 
