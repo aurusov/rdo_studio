@@ -903,8 +903,7 @@ void ChartView::updateView()
 	updateScrollBars();
 	if (lastvisible && !maxXVisible())
 	{
-		//! @todo qt
-		//setScrollPos(SB_HORZ, m_SM_X.posMax, false);
+		getHorzScrollBar().setValue(m_SM_X.posMax);
 	}
 	parentWidget()->update();
 	updateScrollBars();
