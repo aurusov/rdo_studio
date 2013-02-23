@@ -20,13 +20,25 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// --------------------------------------------------------------------------------
-// -------------------- TracerPattern
-// --------------------------------------------------------------------------------
-TracerPattern::TracerPattern(const TracerPatternKind kind)
+TracerPattern::TracerPattern(Kind kind)
 	: ChartTreeItem()
-	, patKind(kind)
+	, m_kind(kind)
 {}
 
 TracerPattern::~TracerPattern()
 {}
+
+TracerPattern::Kind TracerPattern::getKind() const
+{
+	return m_kind;
+}
+
+CREF(QString) TracerPattern::getName() const
+{
+	return m_name;
+}
+
+void TracerPattern::setName(CREF(QString) name)
+{
+	m_name = name;
+}

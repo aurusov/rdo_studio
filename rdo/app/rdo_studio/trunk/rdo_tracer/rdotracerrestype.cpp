@@ -41,6 +41,16 @@ TracerResParamInfo::~TracerResParamInfo()
 	}
 }
 
+CREF(QString) TracerResParamInfo::getName() const
+{
+	return m_name;
+}
+
+void TracerResParamInfo::setName(CREF(QString) name)
+{
+	m_name = name;
+}
+
 int TracerResParamInfo::addEnumValue(CREF(tstring) value)
 {
 	if (!enumValues)
@@ -78,29 +88,49 @@ tstring TracerResParamInfo::getEnumValue(unsigned int index) const
 // --------------------------------------------------------------------------------
 // -------------------- TracerResType
 // --------------------------------------------------------------------------------
-TracerResType::TracerResType(const TracerResTypeKind kind)
-	: ChartTreeItem(),
-	  restypeKind(kind)
+TracerResourceType::TracerResourceType(Kind kind)
+	: ChartTreeItem()
+	, m_kind(kind)
 {}
 
-TracerResType::~TracerResType()
+TracerResourceType::~TracerResourceType()
 {
-	int count = paramsInfo.size();
+	int count = m_paramInfoList.size();
 	for (int i = 0; i < count; i++)
 	{
-		delete paramsInfo.at(i);
+		delete m_paramInfoList.at(i);
 	}
 }
 
-int TracerResType::addParamInfo(TracerResParamInfo* const value)
+TracerResourceType::Kind TracerResourceType::getKind() const
 {
-	paramsInfo.push_back(value);
-	return paramsInfo.size() - 1;
+	return m_kind;
 }
 
-TracerResParamInfo* TracerResType::getParamInfo(unsigned int index) const
+CREF(QString) TracerResourceType::getName() const
 {
-	if (index >= paramsInfo.size() || index < 0)
+	return m_name;
+}
+
+void TracerResourceType::setName(CREF(QString) name)
+{
+	m_name = name;
+}
+
+int TracerResourceType::addParamInfo(TracerResParamInfo* const value)
+{
+	m_paramInfoList.push_back(value);
+	return m_paramInfoList.size() - 1;
+}
+
+TracerResParamInfo* TracerResourceType::getParamInfo(unsigned int index) const
+{
+	if (index >= m_paramInfoList.size() || index < 0)
 		return NULL;
-	return paramsInfo.at(index);
+	return m_paramInfoList.at(index);
+}
+
+int TracerResourceType::getParamsCount() const
+{
+	return m_paramInfoList.size();
 }

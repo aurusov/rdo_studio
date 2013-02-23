@@ -33,24 +33,38 @@ TracerResult::TracerResult(const TracerResultKind kind)
 TracerResult::~TracerResult()
 {}
 
-void TracerResult::getCaptions(std::vector<tstring> &captions, const int val_count) const
+CREF(QString) TracerResult::getName() const
+{
+	return m_name;
+}
+
+void TracerResult::setName(CREF(QString) name)
+{
+	m_name = name;
+	if (title.isEmpty())
+	{
+		title = m_name;
+	}
+}
+
+void TracerResult::getCaptions(std::vector<tstring>& captions, const int valueCount) const
 {
 	switch (resultKind)
 	{
 	case RDORK_WATCHQUANT:
 	{
-		TracerSerie::getCaptionsInt(captions, val_count);
+		TracerSerie::getCaptionsInt(captions, valueCount);
 		break;
 	}
 	case RDORK_WATCHSTATE:
 	{
-		TracerSerie::getCaptionsBool(captions, val_count);
+		TracerSerie::getCaptionsBool(captions, valueCount);
 		break;
 	}
 	case RDORK_WATCHPAR:
 	case RDORK_WATCHVALUE:
 	{
-		TracerSerie::getCaptionsDouble(captions, val_count);
+		TracerSerie::getCaptionsDouble(captions, valueCount);
 		break;
 	}
 	}

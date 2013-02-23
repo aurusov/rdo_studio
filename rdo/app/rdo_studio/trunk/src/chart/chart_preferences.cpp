@@ -40,12 +40,11 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 
 	for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); it++)
 	{
-		yTraceComboBox->addItem(QString::fromLocal8Bit((*it)->getSerie()->getTitle().c_str()));
-		valueComboBox->addItem(QString::fromLocal8Bit((*it)->getSerie()->getTitle().c_str()));
+		yTraceComboBox->addItem((*it)->getSerie()->getTitle());
+		valueComboBox->addItem((*it)->getSerie()->getTitle());
 	}
 
 	markerSizeLineEdit->setValidator(new QIntValidator(2, 6, this));
-
 
 	insertColors(colorComboBox);
 
@@ -247,7 +246,7 @@ void ChartPreferences::onValueComboBox(int index)
 	m_pSerie = m_pView->getDocument()->m_serieList.at(index);
 
 	m_sizeMarker = m_pSerie->options().markerSize;
-	titleValueLineEdit->setText(QString::fromLocal8Bit(m_pSerie->options().title.c_str()));
+	titleValueLineEdit->setText(m_pSerie->options().title);
 	showMarkerCheckBox->setChecked(m_pSerie->options().markerNeedDraw ? Qt::Checked : Qt::Unchecked);
 	transparentMarkerCheckBox->setChecked(m_pSerie->options().markerTransparent ? Qt::Checked : Qt::Unchecked);
 	showInLegendCheckBox->setChecked(m_pSerie->options().showInLegend ? Qt::Checked : Qt::Unchecked);

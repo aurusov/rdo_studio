@@ -34,7 +34,7 @@ private:
 	virtual SCODE GiveFeedback(DROPEFFECT dropEffect);
 };
 
-PREDECLARE_POINTER(TracerResType);
+PREDECLARE_POINTER(TracerResourceType);
 PREDECLARE_POINTER(TracerResource);
 PREDECLARE_POINTER(TracerPattern);
 PREDECLARE_POINTER(TracerOperationBase);
@@ -51,7 +51,7 @@ public:
 	virtual ~ChartTree();
 
 	void setModelName   (CREF(QString) modelName);
-	void addResourceType(CREF(LPTracerResType)       pRTP);
+	void addResourceType(CREF(LPTracerResourceType)       pRTP);
 	void addResource    (CREF(LPTracerResource)      pRSS);
 	void updateResource (CREF(LPTracerResource)      pRSS);
 	void addPattern     (CREF(LPTracerPattern)       pPAT);

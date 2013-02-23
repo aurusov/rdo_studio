@@ -32,25 +32,41 @@ TracerOperationBase::TracerOperationBase(CREF(LPTracerPattern) pPattern)
 TracerOperationBase::~TracerOperationBase()
 {}
 
-void TracerOperationBase::incOperationsCount(TracerTimeNow* const time, const int eventIndex)
+LPTracerPattern TracerOperationBase::getPattern() const
 {
-	TracerValue* newval = new TracerValue(time, eventIndex);
-	TracerValue* prevval;
-	getLastValue(prevval);
-	newval->value = prevval ? prevval->value + 1 : 1;
-	addValue(newval);
+	return m_pPattern;
 }
 
-void TracerOperationBase::getCaptions(std::vector<tstring> &captions, const int val_count) const
+void TracerOperationBase::setName(CREF(QString) name)
 {
-	TracerSerie::getCaptionsInt(captions, val_count);
+	m_name = name;
+	if (title.isEmpty())
+	{
+		title = m_name;
+	}
 }
 
-void TracerOperationBase::monitorTime(TracerTimeNow* const time, const int eventIndex)
+CREF(QString) TracerOperationBase::getName() const
 {
-	UNUSED(time);
-	UNUSED(eventIndex);
+	return m_name;
 }
+
+void TracerOperationBase::incOperationsCount(TracerTimeNow* const pTime, const int eventIndex)
+{
+	TracerValue* pNewValue = new TracerValue(pTime, eventIndex);
+	TracerValue* pPrevValue;
+	getLastValue(pPrevValue);
+	pNewValue->value = pPrevValue ? pPrevValue->value + 1 : 1;
+	addValue(pNewValue);
+}
+
+void TracerOperationBase::getCaptions(std::vector<tstring> &captions, const int valueCount) const
+{
+	TracerSerie::getCaptionsInt(captions, valueCount);
+}
+
+void TracerOperationBase::monitorTime(TracerTimeNow* const, const int)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- TracerOperation
@@ -62,18 +78,18 @@ TracerOperation::TracerOperation(CREF(LPTracerPattern) pPattern)
 TracerOperation::~TracerOperation()
 {}
 
-void TracerOperation::start(TracerTimeNow* const time, const int eventIndex)
+void TracerOperation::start(TracerTimeNow* const pTime, const int eventIndex)
 {
-	TracerOperationBase::incOperationsCount(time, eventIndex);
+	TracerOperationBase::incOperationsCount(pTime, eventIndex);
 }
 
-void TracerOperation::accomplish(TracerTimeNow* const time, const int eventIndex)
+void TracerOperation::accomplish(TracerTimeNow* const pTime, const int eventIndex)
 {
 	TracerValue* lastval;
 	getLastValue(lastval);
 	if (lastval)
 	{
-		TracerValue* newval = new TracerValue(time, eventIndex);
+		TracerValue* newval = new TracerValue(pTime, eventIndex);
 		newval->value = lastval->value - 1;
 		addValue(newval);
 	}
@@ -89,19 +105,19 @@ TracerEvent::TracerEvent(CREF(LPTracerPattern) pPattern)
 TracerEvent::~TracerEvent()
 {}
 
-void TracerEvent::occurs(TracerTimeNow* const time, const int eventIndex)
+void TracerEvent::occurs(TracerTimeNow* const pTime, const int eventIndex)
 {
-	TracerOperationBase::incOperationsCount(time, eventIndex);
+	TracerOperationBase::incOperationsCount(pTime, eventIndex);
 }
 
-void TracerEvent::monitorTime(TracerTimeNow* const time, const int eventIndex)
+void TracerEvent::monitorTime(TracerTimeNow* const pTime, const int eventIndex)
 {
 	TracerValue* prevval;
 	getLastValue(prevval);
 	TracerValue* newval = NULL;
 	if (prevval && prevval->value != 0)
 	{
-		if (*prevval->getModelTime() != *time)
+		if (*prevval->getModelTime() != *pTime)
 		{
 			newval = new TracerValue(prevval->getModelTime(), prevval->getModelTime()->eventCount);
 			newval->value = 0;
@@ -109,7 +125,7 @@ void TracerEvent::monitorTime(TracerTimeNow* const time, const int eventIndex)
 	}
 	if (!prevval)
 	{
-		newval = new TracerValue(time, eventIndex);
+		newval = new TracerValue(pTime, eventIndex);
 		newval->value = 0;
 	}
 	if (newval)

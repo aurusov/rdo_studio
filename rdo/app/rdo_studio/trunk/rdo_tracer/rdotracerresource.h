@@ -32,7 +32,7 @@ public:
 
 	TracerResParamInfo* getParamInfo() const;
 
-	virtual void getCaptions(std::vector<tstring> &captions, const int val_count) const;
+	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
 
 protected:
 	TracerResParamInfo* paramInfo;
@@ -48,16 +48,18 @@ typedef  rdo::intrusive_ptr<TracerResParam>  LPTracerResParam;
 // --------------------------------------------------------------------------------
 // -------------------- TracerResource
 // --------------------------------------------------------------------------------
-PREDECLARE_POINTER(TracerResType);
+PREDECLARE_POINTER(TracerResourceType);
 
 class TracerResource: public ChartTreeItem
 {
 DECLARE_FACTORY(TracerResource)
 public:
-	tstring Name;
 	int     id;
 
-	CREF(LPTracerResType) getType() const
+	CREF(QString) getName() const;
+	void setName(CREF(QString) name);
+
+	CREF(LPTracerResourceType) getType() const
 	{
 		return m_pResType;
 	}
@@ -74,12 +76,14 @@ public:
 
 protected:
 	std::vector<LPTracerResParam> m_paramList;
-	LPTracerResType               m_pResType;
+	LPTracerResourceType          m_pResType;
 	rbool erased;
 
 private:
-	TracerResource(CREF(LPTracerResType) pResType, CREF(tstring) name);
+	TracerResource(CREF(LPTracerResourceType) pResType, CREF(QString) name);
 	virtual ~TracerResource();
+
+	QString m_name;
 };
 
 typedef  rdo::intrusive_ptr<TracerResource>  LPTracerResource;

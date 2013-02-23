@@ -15,34 +15,30 @@
 #include "app/rdo_studio/src/chart/chart_tree_item.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- TracerPattern
-// --------------------------------------------------------------------------------
-enum TracerPatternKind
-{
-	RDOPK_UNDEFINED = ~0,
-	RDOPK_OPERATION = 0,
-	RDOPK_IRREGULAREVENT,
-	RDOPK_RULE,
-	RDOPK_KEYBOARD
-};
-
 class TracerPattern: public ChartTreeItem
 {
 DECLARE_FACTORY(TracerPattern)
 public:
-	tstring Name;
-	TracerPatternKind getPatternKind() const
+	enum Kind
 	{
-		return patKind;
-	}
+		PK_UNDEFINED = ~0,
+		PK_OPERATION = 0,
+		PK_EVENT,
+		PK_RULE,
+		PK_KEYBOARD
+	};
 
-protected:
-	TracerPatternKind patKind;
+	Kind getKind() const;
+
+	CREF(QString) getName() const;
+	void setName(CREF(QString) name);
 
 private:
-	TracerPattern(const TracerPatternKind kind);
+	TracerPattern(Kind kind);
 	virtual ~TracerPattern();
+
+	QString  m_name;
+	Kind     m_kind;
 };
 
 typedef  rdo::intrusive_ptr<TracerPattern>  LPTracerPattern;

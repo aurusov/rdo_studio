@@ -43,27 +43,27 @@ TracerResParamInfo* TracerResParam::getParamInfo() const
 		: NULL;
 }
 
-void TracerResParam::getCaptions(std::vector<tstring> &captions, const int val_count) const
+void TracerResParam::getCaptions(std::vector<tstring>& captions, const int valueCount) const
 {
 	switch (getParamInfo()->getParamType())
 	{
 	case RDOPT_INTEGER:
-		TracerSerie::getCaptionsInt(captions, val_count);
+		TracerSerie::getCaptionsInt(captions, valueCount);
 		break;
 
 	case RDOPT_REAL:
-		TracerSerie::getCaptionsDouble(captions, val_count);
+		TracerSerie::getCaptionsDouble(captions, valueCount);
 		break;
 
 	case RDOPT_ENUMERATIVE:
 	case RDOPT_BOOL:
 	case RDOPT_STRING:
 	{
-		TracerSerie::getCaptions(captions, val_count);
+		TracerSerie::getCaptions(captions, valueCount);
 		int delta = getParamInfo()->getEnumCount();
 		minValue = 0;
 		maxValue = delta - 1;
-		int real_val_count = val_count;
+		int real_val_count = valueCount;
 		if (delta > real_val_count)
 		{
 			while ((int)((delta - 1) / (real_val_count - 1)) != ((double)(delta - 1) / (real_val_count - 1)))
@@ -88,11 +88,11 @@ void TracerResParam::getCaptions(std::vector<tstring> &captions, const int val_c
 // --------------------------------------------------------------------------------
 // -------------------- TracerResource
 // --------------------------------------------------------------------------------
-TracerResource::TracerResource(CREF(LPTracerResType) pResType, CREF(tstring) name)
+TracerResource::TracerResource(CREF(LPTracerResourceType) pResType, CREF(QString) name)
 	: ChartTreeItem()
 	, erased(false)
 	, m_pResType(pResType)
-	, Name(name)
+	, m_name(name)
 	, id(0)
 {
 	int count = m_pResType->getParamsCount();
@@ -105,10 +105,20 @@ TracerResource::TracerResource(CREF(LPTracerResType) pResType, CREF(tstring) nam
 TracerResource::~TracerResource()
 {}
 
+CREF(QString) TracerResource::getName() const
+{
+	return m_name;
+}
+
+void TracerResource::setName(CREF(QString) name)
+{
+	m_name = name;
+}
+
 void TracerResource::addParam(CREF(LPTracerResParam) pParam)
 {
 	ASSERT(pParam);
-	pParam->setTitle(Name + "." + m_pResType->getParamInfo(m_paramList.size())->Name);
+	pParam->setTitle(m_name + "." + m_pResType->getParamInfo(m_paramList.size())->getName());
 	m_paramList.push_back(pParam);
 }
 

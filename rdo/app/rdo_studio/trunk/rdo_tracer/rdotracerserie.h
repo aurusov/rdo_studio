@@ -56,7 +56,8 @@ public:
 		return serieKind;
 	}
 
-	tstring getTitle() const;void setTitle(CREF(tstring) value);
+	CREF(QString) getTitle() const;
+	void setTitle(CREF(QString) value);
 
 	void addValue(TracerValue* const value);
 	void getValueCount(int& count) const;
@@ -76,9 +77,7 @@ public:
 	}
 
 	void getLastValue(TracerValue*& val) const;
-	//double getMinValue() const { return minValue; };
-	//double getMaxValue() const { return maxValue; };
-	virtual void getCaptions(std::vector<tstring> &captions, const int val_count) const;
+	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
 
 	void drawSerie(ChartView* const view,
 	               QPainter& painter,
@@ -99,7 +98,7 @@ public:
 
 	rbool activateFirstDoc() const;
 
-	typedef std::vector<tstring> ExportData;
+	typedef std::vector<QString> ExportData;
 	ExportData exportData();
 
 protected:
@@ -107,7 +106,7 @@ protected:
 	virtual ~TracerSerie();
 
 	TracerSerieKind serieKind;
-	tstring title;
+	QString         title;
 
 	valuesList values;
 	mutable double minValue;
@@ -118,9 +117,9 @@ protected:
 
 	std::vector<RDOStudioChartDoc*> documents;
 
-	void getCaptionsInt(std::vector<tstring> &captions, const int val_count) const;
-	void getCaptionsDouble(std::vector<tstring> &captions, const int val_count) const;
-	void getCaptionsBool(std::vector<tstring> &captions, const int val_count) const;
+	void getCaptionsInt   (std::vector<tstring>& captions, const int valueCount) const;
+	void getCaptionsDouble(std::vector<tstring>& captions, const int valueCount) const;
+	void getCaptionsBool  (std::vector<tstring>& captions, const int valueCount) const;
 };
 
 typedef  rdo::intrusive_ptr<TracerSerie>  LPTracerSerie;

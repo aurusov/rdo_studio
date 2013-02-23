@@ -178,25 +178,25 @@ void ChartTree::createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) i
 	item->setCtrlItem(pCtrlItem);
 }
 
-void ChartTree::addResourceType(CREF(LPTracerResType) pRTP)
+void ChartTree::addResourceType(CREF(LPTracerResourceType) pRTP)
 {
 	ASSERT(pRTP);
-	createItem(m_rootRTP, pRTP, QString::fromLocal8Bit(pRTP->Name.c_str()), IT_SUB_ROOT_2);
+	createItem(m_rootRTP, pRTP, pRTP->getName(), IT_SUB_ROOT_2);
 }
 
 void ChartTree::addResource(CREF(LPTracerResource) pRSS)
 {
-	LPTracerResType pRTP = pRSS->getType();
+	LPTracerResourceType pRTP = pRSS->getType();
 	ASSERT(pRTP);
 	ASSERT(pRSS);
-	createItem(pRTP, pRSS, QString::fromLocal8Bit(pRSS->Name.c_str()), IT_SUB_ROOT_3);
+	createItem(pRTP, pRSS, pRSS->getName(), IT_SUB_ROOT_3);
 
 	int count = pRTP->getParamsCount();
 	for (int i = 0; i < count; i++)
 	{
 		LPChartTreeItem pParam = pRSS->getParam(i);
 		ASSERT(pParam);
-		createItem(pRSS, pParam, QString::fromLocal8Bit(pRTP->getParamInfo(i)->Name.c_str()), IT_VALUE);
+		createItem(pRSS, pParam, pRTP->getParamInfo(i)->getName(), IT_VALUE);
 	}
 	updateResource(pRSS);
 }
@@ -216,22 +216,17 @@ void ChartTree::updateResource(CREF(LPTracerResource) pRSS)
 void ChartTree::addPattern(CREF(LPTracerPattern) pPAT)
 {
 	ASSERT(pPAT);
-	createItem(m_rootPAT, pPAT, QString::fromLocal8Bit(pPAT->Name.c_str()), IT_SUB_ROOT_2);
+	createItem(m_rootPAT, pPAT, pPAT->getName(), IT_SUB_ROOT_2);
 }
 
 void ChartTree::addOperation(CREF(LPTracerOperationBase) pOPR)
 {
-	createItem(pOPR->getPattern(), pOPR, QString::fromLocal8Bit(pOPR->getName().c_str()), IT_VALUE);
+	createItem(pOPR->getPattern(), pOPR, pOPR->getName(), IT_VALUE);
 }
-
-/*void ChartTree::addIrregularEvent(PTR(TracerOperation) pOpr)
-{
-	addOperation(pOpr);
-}*/
 
 void ChartTree::addResult(CREF(LPTracerResult) pPMV)
 {
-	createItem(m_rootPMV, pPMV, QString::fromLocal8Bit(pPMV->getName().c_str()), IT_VALUE);
+	createItem(m_rootPMV, pPMV, pPMV->getName(), IT_VALUE);
 }
 
 void ChartTree::deleteChildren(CREF(LPChartTreeItem) pParent)

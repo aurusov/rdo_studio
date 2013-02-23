@@ -83,9 +83,9 @@ void ChartSerie::drawSerie(ChartView* const pView, QPainter& painter, const QRec
 	m_pSerie->drawSerie(pView, painter, rect, m_options.color, m_options.markerType, m_options.markerSize, m_options.markerNeedDraw, m_options.markerTransparent);
 }
 
-void ChartSerie::getCaptions(std::vector<tstring> &captions, const int val_count) const
+void ChartSerie::getCaptions(std::vector<tstring>& captions, const int valueCount) const
 {
-	m_pSerie->getCaptions(captions, val_count);
+	m_pSerie->getCaptions(captions, valueCount);
 }
 
 rbool ChartSerie::empty() const
@@ -105,7 +105,7 @@ QSize ChartSerie::getLegendSize(const QFontMetrics& fm, const QRect& rect) const
 	tmprect.setRight(rect.right());
 	tmprect.setTop(rect.top());
 	tmprect.setBottom(rect.bottom());
-	tmprect = fm.boundingRect(tmprect, Qt::AlignLeft | Qt::TextSingleLine, QString::fromLocal8Bit(m_options.title.c_str()));
+	tmprect = fm.boundingRect(tmprect, Qt::AlignLeft | Qt::TextSingleLine, m_options.title);
 	size.setHeight(tmprect.height());
 	if (size.height() < m_options.markerSize * 2)
 	{
@@ -145,7 +145,7 @@ QSize ChartSerie::drawLegend(QPainter& painter, const QRect& rect, const QColor&
 		return size;
 
 	painter.setPen(textColor);
-	painter.drawText(tmprect, Qt::AlignLeft | Qt::TextSingleLine, painter.fontMetrics().elidedText(QString::fromLocal8Bit(m_options.title.c_str()), Qt::ElideRight, tmprect.width()));
+	painter.drawText(tmprect, Qt::AlignLeft | Qt::TextSingleLine, painter.fontMetrics().elidedText(m_options.title, Qt::ElideRight, tmprect.width()));
 
 	return size;
 }

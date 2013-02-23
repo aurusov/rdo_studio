@@ -38,25 +38,16 @@ public:
 	{
 		return resultKind;
 	}
-	void setName(CREF(tstring) name)
-	{
-		Name = name;
-		if (title.empty())
-		{
-			title = Name;
-		}
-	}
-	const tstring getName() const
-	{
-		return Name;
-	}
 
-	virtual void getCaptions(std::vector<tstring> &captions, const int val_count) const;
+	CREF(QString) getName() const;
+	void setName(CREF(QString) name);
+
+	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
 	void setValue(tstring& line, TracerTimeNow* const time, const int eventIndex);
 
 protected:
 	TracerResultKind resultKind;
-	tstring Name;
+	QString m_name;
 
 private:
 	TracerResult(const TracerResultKind kind);

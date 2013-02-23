@@ -80,18 +80,20 @@ TracerSerie::~TracerSerie()
 
 rbool TracerSerie::isTemporaryResourceParam() const
 {
-	return serieKind == RDOST_RESPARAM && ((TracerResParam*)this)->getResource()->getType()->getResTypeKind() == RDOTK_TEMPORARY;
+	return serieKind == RDOST_RESPARAM && ((TracerResParam*)this)->getResource()->getType()->getKind() == TracerResourceType::RDOTK_TEMPORARY;
 }
 
-tstring TracerSerie::getTitle() const
+CREF(QString) TracerSerie::getTitle() const
 {
 	return title;
 }
 
-void TracerSerie::setTitle(CREF(tstring) value)
+void TracerSerie::setTitle(CREF(QString) value)
 {
 	if (title != value)
+	{
 		title = value;
+	}
 }
 
 void TracerSerie::addValue(TracerValue* const value)
@@ -115,18 +117,18 @@ void TracerSerie::getValueCount(int& count) const
 	count = value_count;
 }
 
-void TracerSerie::getCaptions(std::vector<tstring> &captions, const int val_count) const
+void TracerSerie::getCaptions(std::vector<tstring>& captions, const int valueCount) const
 {
 	if (!captions.empty())
 		captions.clear();
 	if (serieKind == RDOST_PREVIEW)
 	{
-		double valoffset = (maxValue - minValue) / (double)(val_count - 1);
+		double valoffset = (maxValue - minValue) / (double)(valueCount - 1);
 		double valo = minValue;
 		tstring formatstr = "%.3f";
 		if (value_count > 1)
 		{
-			for (int i = 0; i < val_count; i++)
+			for (int i = 0; i < valueCount; i++)
 			{
 				captions.push_back(rdo::format(formatstr.c_str(), valo));
 				valo += valoffset;
@@ -139,11 +141,11 @@ void TracerSerie::getCaptions(std::vector<tstring> &captions, const int val_coun
 	}
 }
 
-void TracerSerie::getCaptionsInt(std::vector<tstring> &captions, const int val_count) const
+void TracerSerie::getCaptionsInt(std::vector<tstring>& captions, const int valueCount) const
 {
-	TracerSerie::getCaptions(captions, val_count);
+	TracerSerie::getCaptions(captions, valueCount);
 
-	int real_val_count = val_count;
+	int real_val_count = valueCount;
 	if ((maxValue - minValue + 1) > real_val_count)
 	{
 		while ((int)((maxValue - minValue) / (real_val_count - 1)) != (double)((maxValue - minValue) / (real_val_count - 1)))
@@ -163,16 +165,16 @@ void TracerSerie::getCaptionsInt(std::vector<tstring> &captions, const int val_c
 	}
 }
 
-void TracerSerie::getCaptionsDouble(std::vector<tstring> &captions, const int val_count) const
+void TracerSerie::getCaptionsDouble(std::vector<tstring>& captions, const int valueCount) const
 {
-	TracerSerie::getCaptions(captions, val_count);
+	TracerSerie::getCaptions(captions, valueCount);
 
-	double valoffset = (maxValue - minValue) / (double)(val_count - 1);
+	double valoffset = (maxValue - minValue) / (double)(valueCount - 1);
 	double valo = minValue;
 	tstring formatstr = "%.3f";
 	if (value_count > 1)
 	{
-		for (int i = 0; i < val_count; i++)
+		for (int i = 0; i < valueCount; i++)
 		{
 			captions.push_back(rdo::format(formatstr.c_str(), valo));
 			valo += valoffset;
@@ -184,9 +186,9 @@ void TracerSerie::getCaptionsDouble(std::vector<tstring> &captions, const int va
 	}
 }
 
-void TracerSerie::getCaptionsBool(std::vector<tstring> &captions, const int val_count) const
+void TracerSerie::getCaptionsBool(std::vector<tstring>& captions, const int valueCount) const
 {
-	TracerSerie::getCaptions(captions, val_count);
+	TracerSerie::getCaptions(captions, valueCount);
 	captions.push_back("FALSE");
 	captions.push_back("TRUE");
 }
@@ -455,11 +457,11 @@ TracerSerie::ExportData TracerSerie::exportData()
 
 	ExportData exportData;
 	exportData.reserve(values.size() + 1);
-	exportData.push_back(rdo::format("%s;%s", "время", title.c_str()));
+	exportData.push_back(QString("%1;%2").arg(QString::fromStdWString(L"время")).arg(title));
 
 	BOOST_FOREACH(PTR(TracerValue) pValue, values)
 	{
-		exportData.push_back(rdo::format("%f;%f", pValue->getModelTime()->time, pValue->value));
+		exportData.push_back(QString("%1;%2").arg(pValue->getModelTime()->time).arg(pValue->value));
 	}
 
 	setlocale(LC_NUMERIC, _T("eng"));

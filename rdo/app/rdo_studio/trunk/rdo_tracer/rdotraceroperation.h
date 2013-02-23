@@ -23,36 +23,23 @@ class TracerOperationBase: public TracerSerie
 {
 DECLARE_FACTORY(TracerOperationBase)
 public:
-	LPTracerPattern getPattern() const
-	{
-		return m_pPattern;
-	}
+	LPTracerPattern getPattern() const;
 
-	//void start( TracerTimeNow* const time, const int eventIndex );
-	//void accomplish( TracerTimeNow* const time, const int eventIndex );
-	void setName( CREF(tstring) name )
-	{
-		Name = name;
-		if (title.empty())
-		{
-			title = Name;
-		}
-	}
-	const tstring getName() const
-	{
-		return Name;
-	}
+	CREF(QString) getName() const;
+	void          setName(CREF(QString) name);
 
-	virtual void getCaptions(std::vector<tstring> &captions, const int val_count) const;
-	virtual void monitorTime(TracerTimeNow* const time, const int eventIndex);
+	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
+	virtual void monitorTime(TracerTimeNow* const pTime, const int eventIndex);
 
 protected:
 	TracerOperationBase(CREF(LPTracerPattern) pPattern);
 	virtual ~TracerOperationBase();
 
-	LPTracerPattern m_pPattern;
-	tstring Name;
-	void incOperationsCount(TracerTimeNow* const time, const int eventIndex);
+	void incOperationsCount(TracerTimeNow* const pTime, const int eventIndex);
+
+private:
+	LPTracerPattern  m_pPattern;
+	QString          m_name;
 };
 
 typedef  rdo::intrusive_ptr<TracerOperationBase>  LPTracerOperationBase;
@@ -64,8 +51,8 @@ class TracerOperation: public TracerOperationBase
 {
 DECLARE_FACTORY(TracerOperation)
 public:
-	void start(TracerTimeNow* const time, const int eventIndex);
-	void accomplish(TracerTimeNow* const time, const int eventIndex);
+	void start(TracerTimeNow* const pTime, const int eventIndex);
+	void accomplish(TracerTimeNow* const pTime, const int eventIndex);
 
 private:
 	TracerOperation(CREF(LPTracerPattern) pPattern);
@@ -81,8 +68,8 @@ class TracerEvent: public TracerOperationBase
 {
 DECLARE_FACTORY(TracerEvent)
 public:
-	void occurs(TracerTimeNow* const time, const int eventIndex);
-	virtual void monitorTime(TracerTimeNow* const time, const int eventIndex);
+	void occurs(TracerTimeNow* const pTime, const int eventIndex);
+	virtual void monitorTime(TracerTimeNow* const pTime, const int eventIndex);
 
 private:
 	TracerEvent(CREF(LPTracerPattern) pPattern);
