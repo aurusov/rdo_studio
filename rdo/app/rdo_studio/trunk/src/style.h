@@ -86,8 +86,6 @@ OBJECT(RDOStyle)
 protected:
 	QString groupName;
 
-	virtual void initFont();
-
 public:
 	RDOStyle();
 	virtual ~RDOStyle();

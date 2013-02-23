@@ -223,16 +223,12 @@ RDOStyle::RDOStyle():
 	groupName( "" ),
 	font( NULL )
 {
+	font = new RDOStyleFont();
 }
 
 RDOStyle::~RDOStyle()
 {
 	if ( font ) { delete font; font = NULL; };
-}
-
-void RDOStyle::initFont()
-{
-	font = new RDOStyleFont;
 }
 
 RDOStyle& RDOStyle::operator =( const RDOStyle& style )
