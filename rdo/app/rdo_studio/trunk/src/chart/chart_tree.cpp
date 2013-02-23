@@ -51,7 +51,7 @@ SCODE RDODropSource::GiveFeedback(DROPEFFECT dropEffect)
 //	ON_UPDATE_COMMAND_UI(ID_CHART_EXPORT, OnUpdateExportChart)
 //END_MESSAGE_MAP()
 
-Q_DECLARE_METATYPE(ChartTreeItem*);
+Q_DECLARE_METATYPE(const ChartTreeItem*);
 
 ChartTree::ChartTree(PTR(QWidget) pParent)
 	: parent_type(pParent)
@@ -68,15 +68,20 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 	m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_value.png")));
 	m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_erased.png")));
 
-	m_root.setCtrlItem(new QTreeWidgetItem(this));
-	m_root.getCtrlItem().setText(0, QString::fromStdWString(L"Модель"));
-	m_root.getCtrlItem().setIcon(0, m_iconList[IT_ROOT]);
+	m_root    = rdo::Factory<ChartTreeItem>::create();
+	m_rootRTP = rdo::Factory<ChartTreeItem>::create();
+	m_rootPAT = rdo::Factory<ChartTreeItem>::create();
+	m_rootPMV = rdo::Factory<ChartTreeItem>::create();
+
+	m_root->setCtrlItem(new QTreeWidgetItem(this));
+	m_root->getCtrlItem().setText(0, QString::fromStdWString(L"Модель"));
+	m_root->getCtrlItem().setIcon(0, m_iconList[IT_ROOT]);
 
 	createItem(m_root, m_rootRTP, QString::fromStdWString(L"Типы ресурсов"), IT_SUB_ROOT_1);
 	createItem(m_root, m_rootPAT, QString::fromStdWString(L"Образцы"),       IT_SUB_ROOT_1);
 	createItem(m_root, m_rootPMV, QString::fromStdWString(L"Результаты"),    IT_SUB_ROOT_1);
 
-	m_root.getCtrlItem().setExpanded(true);
+	m_root->getCtrlItem().setExpanded(true);
 
 	connect(
 		this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
@@ -104,12 +109,12 @@ ChartTree::~ChartTree()
 	m_source.Empty();
 }
 
-PTR(ChartTreeItem) ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const
+LPChartTreeItem ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const
 {
-	PTR(ChartTreeItem) pRes = NULL;
+	LPChartTreeItem pRes;
 	if (pCtrlItem)
 	{
-		PTR(ChartTreeItem) pItem = pCtrlItem->data(0, Qt::UserRole).value<PTR(ChartTreeItem)>();
+		PTR(ChartTreeItem) pItem = const_cast<PTR(ChartTreeItem)>(pCtrlItem->data(0, Qt::UserRole).value<CPTR(ChartTreeItem)>());
 		pRes = pItem && pItem->isDrawable()
 			? pItem
 			: NULL;
@@ -159,39 +164,44 @@ PTR(ChartTreeItem) ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlIte
 
 void ChartTree::setModelName(CREF(QString) modelName)
 {
-	m_root.getCtrlItem().setText(0, QString::fromLocal8Bit("Модель : %1").arg(modelName));
+	m_root->getCtrlItem().setText(0, QString::fromLocal8Bit("Модель : %1").arg(modelName));
 }
 
-void ChartTree::createItem(REF(ChartTreeItem) parent, REF(ChartTreeItem) item, CREF(QString) name, IconType iconType)
+void ChartTree::createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType)
 {
-	PTR(QTreeWidgetItem) pCtrlItem = new QTreeWidgetItem(&parent.getCtrlItem());
+	PTR(QTreeWidgetItem) pCtrlItem = new QTreeWidgetItem(&parent->getCtrlItem());
 	pCtrlItem->setText(0, name);
 	pCtrlItem->setIcon(0, m_iconList[iconType]);
-	pCtrlItem->setData(0, Qt::UserRole, QVariant::fromValue(&item));
-	item.setCtrlItem(pCtrlItem);
+	//! @todo smart_ptr
+	const ChartTreeItem* pRawItem = item.get();
+	pCtrlItem->setData(0, Qt::UserRole, QVariant::fromValue(pRawItem));
+	item->setCtrlItem(pCtrlItem);
 }
 
-void ChartTree::addResourceType(PTR(TracerResType) pRTP)
+void ChartTree::addResourceType(CREF(LPTracerResType) pRTP)
 {
-	createItem(m_rootRTP, *pRTP, QString::fromLocal8Bit(pRTP->Name.c_str()), IT_SUB_ROOT_2);
+	ASSERT(pRTP);
+	createItem(m_rootRTP, pRTP, QString::fromLocal8Bit(pRTP->Name.c_str()), IT_SUB_ROOT_2);
 }
 
-void ChartTree::addResource(PTR(TracerResource) pRSS)
+void ChartTree::addResource(CREF(LPTracerResource) pRSS)
 {
-	PTR(TracerResType) pRTP = pRSS->getType();
-	createItem(*pRTP, *pRSS, QString::fromLocal8Bit(pRSS->Name.c_str()), IT_SUB_ROOT_3);
+	LPTracerResType pRTP = pRSS->getType();
+	ASSERT(pRTP);
+	ASSERT(pRSS);
+	createItem(pRTP, pRSS, QString::fromLocal8Bit(pRSS->Name.c_str()), IT_SUB_ROOT_3);
 
 	int count = pRTP->getParamsCount();
 	for (int i = 0; i < count; i++)
 	{
-		PTR(ChartTreeItem) pParam = pRSS->getParam(i);
+		LPChartTreeItem pParam = pRSS->getParam(i);
 		ASSERT(pParam);
-		createItem(*pRSS, *pParam, QString::fromLocal8Bit(pRTP->getParamInfo(i)->Name.c_str()), IT_VALUE);
+		createItem(pRSS, pParam, QString::fromLocal8Bit(pRTP->getParamInfo(i)->Name.c_str()), IT_VALUE);
 	}
 	updateResource(pRSS);
 }
 
-void ChartTree::updateResource(PTR(TracerResource) pRSS)
+void ChartTree::updateResource(CREF(LPTracerResource) pRSS)
 {
 	if (pRSS->isErased())
 	{
@@ -203,14 +213,15 @@ void ChartTree::updateResource(PTR(TracerResource) pRSS)
 	}
 }
 
-void ChartTree::addPattern(PTR(TracerPattern) pPAT)
+void ChartTree::addPattern(CREF(LPTracerPattern) pPAT)
 {
-	createItem(m_rootPAT, *pPAT, QString::fromLocal8Bit(pPAT->Name.c_str()), IT_SUB_ROOT_2);
+	ASSERT(pPAT);
+	createItem(m_rootPAT, pPAT, QString::fromLocal8Bit(pPAT->Name.c_str()), IT_SUB_ROOT_2);
 }
 
-void ChartTree::addOperation(PTR(TracerOperationBase) pOPR)
+void ChartTree::addOperation(CREF(LPTracerOperationBase) pOPR)
 {
-	createItem(*pOPR->getPattern(), *pOPR, QString::fromLocal8Bit(pOPR->getName().c_str()), IT_VALUE);
+	createItem(pOPR->getPattern(), pOPR, QString::fromLocal8Bit(pOPR->getName().c_str()), IT_VALUE);
 }
 
 /*void ChartTree::addIrregularEvent(PTR(TracerOperation) pOpr)
@@ -218,17 +229,17 @@ void ChartTree::addOperation(PTR(TracerOperationBase) pOPR)
 	addOperation(pOpr);
 }*/
 
-void ChartTree::addResult(PTR(TracerResult) pPMV)
+void ChartTree::addResult(CREF(LPTracerResult) pPMV)
 {
-	createItem(m_rootPMV, *pPMV, QString::fromLocal8Bit(pPMV->getName().c_str()), IT_VALUE);
+	createItem(m_rootPMV, pPMV, QString::fromLocal8Bit(pPMV->getName().c_str()), IT_VALUE);
 }
 
-void ChartTree::deleteChildren(REF(ChartTreeItem) parent)
+void ChartTree::deleteChildren(CREF(LPChartTreeItem) pParent)
 {
-	QList<PTR(QTreeWidgetItem)> children = parent.getCtrlItem().takeChildren();
+	QList<PTR(QTreeWidgetItem)> children = pParent->getCtrlItem().takeChildren();
 	BOOST_FOREACH(PTR(QTreeWidgetItem) item, children)
 	{
-		parent.getCtrlItem().removeChild(item);
+		pParent->getCtrlItem().removeChild(item);
 	}
 }
 
@@ -237,24 +248,23 @@ void ChartTree::clear()
 	deleteChildren(m_rootRTP);
 	deleteChildren(m_rootPAT);
 	deleteChildren(m_rootPMV);
-	m_root.getCtrlItem().setText(0, QString::fromStdWString(L"Модель"));
+	m_root->getCtrlItem().setText(0, QString::fromStdWString(L"Модель"));
 }
 
 void ChartTree::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
 {
-	PTR(ChartTreeItem) pTreeItem = getIfItemIsDrawable(pCtrlItem);
-	if (pTreeItem)
+	LPTracerSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<TracerSerie>();
+	if (pSerie)
 	{
-		g_pTracer->addSerieToChart(static_cast<PTR(TracerSerie)>(pTreeItem));
+		g_pTracer->addSerieToChart(pSerie);
 	}
 }
 
 rbool ChartTree::findInCharts(PTR(QTreeWidgetItem) pCtrlItem) const
 {
-	PTR(ChartTreeItem) pTreeItem = getIfItemIsDrawable(pCtrlItem);
-	if (pTreeItem)
+	LPTracerSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<TracerSerie>();
+	if (pSerie)
 	{
-		PTR(TracerSerie) pSerie = static_cast<PTR(TracerSerie)>(pTreeItem);
 		return pSerie->activateFirstDoc();
 	}
 	return false;
@@ -349,10 +359,9 @@ void ChartTree::OnUpdateChartFindincharts(CCmdUI* pCmdUI)
 	rbool enable = false;
 	if (g_pTracer->getDrawTrace())
 	{
-		PTR(ChartTreeItem) pTreeItem = getIfItemIsDrawable(getSelected());
-		if (pTreeItem)
+		LPTracerSerie pSerie = getIfItemIsDrawable(getSelected()).object_dynamic_cast<TracerSerie>();
+		if (pSerie)
 		{
-			PTR(TracerSerie) pSerie = static_cast<PTR(TracerSerie)>(pTreeItem);
 			enable = pSerie->isInOneOrMoreDocs();
 		}
 	}

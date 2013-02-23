@@ -128,16 +128,16 @@ void TracerBase::addResourceType(REF(tstring) s, rdo::textstream& stream)
 {
 	UNUSED(s);
 
-	TracerResType* type = new TracerResType(RDOTK_PERMANENT);
-	stream >> type->Name;
+	LPTracerResType pResType = rdo::Factory<TracerResType>::create(RDOTK_PERMANENT);
+	stream >> pResType->Name;
 	int paramcount;
 	stream >> paramcount;
 	for (int i = 0; i < paramcount; i++)
 	{
-		type->addParamInfo(getParam(stream));
+		pResType->addParamInfo(getParam(stream));
 	}
-	resTypes.push_back(type);
-	tree->addResourceType(type);
+	resTypes.push_back(pResType);
+	tree->addResourceType(pResType);
 }
 
 void TracerBase::addResource(REF(tstring) s, rdo::textstream& stream)
@@ -146,8 +146,8 @@ void TracerBase::addResource(REF(tstring) s, rdo::textstream& stream)
 	tstring res_name;
 	stream >> res_name;
 	stream >> rtp;
-	TracerResource* res = new TracerResource(resTypes.at(rtp - 1), res_name);
-	res->id = atoi(s.c_str());
+	LPTracerResource pResource = rdo::Factory<TracerResource>::create(resTypes.at(rtp - 1), res_name);
+	pResource->id = atoi(s.c_str());
 
 	/*int pos = s.find(' ');
 	 int endpos = s.rfind(' ');
@@ -159,8 +159,8 @@ void TracerBase::addResource(REF(tstring) s, rdo::textstream& stream)
 	 rtpstr = getNextValue(s);
 	 res->id = atoi(rtpstr.c_str());*/
 
-	resources.push_back(res);
-	tree->addResource(res);
+	resources.push_back(pResource);
+	tree->addResource(pResource);
 }
 
 void TracerBase::addPattern(REF(tstring) s, rdo::textstream& stream)
@@ -193,7 +193,7 @@ void TracerBase::addPattern(REF(tstring) s, rdo::textstream& stream)
 		kind = RDOPK_UNDEFINED;
 	}
 
-	TracerPattern* pat = new TracerPattern(kind);
+	LPTracerPattern pat = rdo::Factory<TracerPattern>::create(kind);
 	pat->Name = pat_name;
 
 	/*string str = s;
@@ -229,17 +229,17 @@ void TracerBase::addOperation(REF(tstring) s, rdo::textstream& stream)
 	stream >> opr_name;
 	int pat_id;
 	stream >> pat_id;
-	TracerPattern* pattern = patterns.at(pat_id - 1);
+	LPTracerPattern pattern = patterns.at(pat_id - 1);
 
-	TracerOperationBase* opr = NULL;
+	LPTracerOperationBase opr;
 
 	if (pattern->getPatternKind() != RDOPK_RULE && pattern->getPatternKind() != RDOPK_IRREGULAREVENT)
 	{
-		opr = new TracerOperation(pattern);
+		opr = rdo::Factory<TracerOperation>::create(pattern);
 	}
 	else
 	{
-		opr = new TracerEvent(pattern);
+		opr = rdo::Factory<TracerEvent>::create(pattern);
 	}
 
 	opr->setName(opr_name);
@@ -250,7 +250,9 @@ void TracerBase::addOperation(REF(tstring) s, rdo::textstream& stream)
 	}
 	else
 	{
-		irregularEvents.push_back(static_cast<TracerEvent*>(opr));
+		LPTracerEvent pEvent = opr.object_dynamic_cast<TracerEvent>();
+		ASSERT(pEvent);
+		irregularEvents.push_back(pEvent);
 	}
 
 	tree->addOperation(opr);
@@ -321,7 +323,7 @@ void TracerBase::addResult(REF(tstring) s, rdo::textstream& stream)
 	}
 	ASSERT(resKind != RDORK_UNDEFINED);
 
-	TracerResult* res = new TracerResult(resKind);
+	LPTracerResult res = rdo::Factory<TracerResult>::create(resKind);
 	res->setName(s);
 	res->id = resid;
 	/*string str = s;
@@ -414,7 +416,7 @@ void TracerBase::dispatchNextString(REF(tstring) line)
 	{
 		rbool re = key == "RE" || key == "SRE";
 		tstring copy1 = line;
-		TracerResource* res = resourceChanging(line, timeNow);
+		LPTracerResource res = resourceChanging(line, timeNow);
 		if (!res)
 		{
 			tstring copy2 = copy1;
@@ -483,11 +485,11 @@ TracerTimeNow* TracerBase::addTime(CREF(tstring) time)
 		TracerTimeNow* timeNow = new TracerTimeNow(val);
 		timeList.push_back(timeNow);
 		eventIndex = 0;
-		for (std::vector <TracerOperationBase*>::iterator it = operations.begin(); it != operations.end(); ++it)
+		for (std::vector<LPTracerOperationBase>::iterator it = operations.begin(); it != operations.end(); ++it)
 		{
 			(*it)->monitorTime(timeNow, eventIndex);
 		}
-		for (std::vector <TracerEvent*>::iterator it_ie = irregularEvents.begin(); it_ie != irregularEvents.end(); ++it_ie)
+		for (std::vector<LPTracerEvent>::iterator it_ie = irregularEvents.begin(); it_ie != irregularEvents.end(); ++it_ie)
 		{
 			(*it_ie)->monitorTime(timeNow, eventIndex);
 		}
@@ -504,7 +506,7 @@ TracerTimeNow* TracerBase::addTime(CREF(tstring) time)
 	return timeList.back();
 }
 
-TracerOperationBase* TracerBase::getOperation(REF(tstring) line)
+LPTracerOperationBase TracerBase::getOperation(REF(tstring) line)
 {
 	getNextValue(line);
 	return operations.at(atoi(getNextValue(line).c_str()) - 1);
@@ -512,12 +514,16 @@ TracerOperationBase* TracerBase::getOperation(REF(tstring) line)
 
 void TracerBase::startAction(REF(tstring) line, TracerTimeNow* const time)
 {
-	static_cast<TracerOperation*>(getOperation(line))->start(time, eventIndex);
+	LPTracerOperation pOperation = getOperation(line).object_dynamic_cast<TracerOperation>();
+	ASSERT(pOperation);
+	pOperation->start(time, eventIndex);
 }
 
 void TracerBase::accomplishAction(REF(tstring) line, TracerTimeNow* const time)
 {
-	static_cast<TracerOperation*>(getOperation(line))->accomplish(time, eventIndex);
+	LPTracerOperation pOperation = getOperation(line).object_dynamic_cast<TracerOperation>();
+	ASSERT(pOperation);
+	pOperation->accomplish(time, eventIndex);
 }
 
 void TracerBase::irregularEvent(REF(tstring) line, TracerTimeNow* const time)
@@ -531,16 +537,18 @@ void TracerBase::irregularEvent(REF(tstring) line, TracerTimeNow* const time)
 
 void TracerBase::productionRule(REF(tstring) line, TracerTimeNow* const time)
 {
-	static_cast<TracerEvent*>(getOperation(line))->occurs(time, eventIndex);
+	LPTracerEvent pEvent = getOperation(line).object_dynamic_cast<TracerEvent>();
+	ASSERT(pEvent);
+	pEvent->occurs(time, eventIndex);
 }
 
-TracerResource* TracerBase::getResource(REF(tstring) line)
+LPTracerResource TracerBase::getResource(REF(tstring) line)
 {
 	getNextValue(line);
-	TracerResource* res = NULL;
+	LPTracerResource res;
 	int findid = atoi(getNextValue(line).c_str());
 	int i = 0;
-	for (std::vector< TracerResource* >::iterator it = resources.begin(); it != resources.end(); ++it)
+	for (std::vector<LPTracerResource>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
 		if ((*it)->id == findid)
 		if ((*it)->id == findid && !(*it)->isErased())
@@ -553,13 +561,13 @@ TracerResource* TracerBase::getResource(REF(tstring) line)
 	return res;
 }
 
-TracerResource* TracerBase::resourceCreation(REF(tstring) line, TracerTimeNow* const time)
+LPTracerResource TracerBase::resourceCreation(REF(tstring) line, TracerTimeNow* const time)
 {
 	ruint typeID = atoi(getNextValue(line).c_str()) - 1;
 	ASSERT(typeID < resTypes.size());
-	TracerResType* type = resTypes.at(typeID);
+	LPTracerResType type = resTypes.at(typeID);
 	int id = atoi(getNextValue(line).c_str());
-	TracerResource* res = new TracerResource(type, rdo::format("%s #%d", type->Name.c_str(), id));
+	LPTracerResource res = rdo::Factory<TracerResource>::create(type, rdo::format("%s #%d", type->Name.c_str(), id));
 	res->id = id;
 	res->setParams(line, time, eventIndex);
 
@@ -568,9 +576,9 @@ TracerResource* TracerBase::resourceCreation(REF(tstring) line, TracerTimeNow* c
 	return res;
 }
 
-TracerResource* TracerBase::resourceElimination(REF(tstring) line, TracerTimeNow* const time)
+LPTracerResource TracerBase::resourceElimination(REF(tstring) line, TracerTimeNow* const time)
 {
-	TracerResource* res = getResource(line);
+	LPTracerResource res = getResource(line);
 	if (!res)
 		return NULL;
 #ifdef RDOSIM_COMPATIBLE
@@ -583,9 +591,9 @@ TracerResource* TracerBase::resourceElimination(REF(tstring) line, TracerTimeNow
 	return res;
 }
 
-TracerResource* TracerBase::resourceChanging(REF(tstring) line, TracerTimeNow* const time)
+LPTracerResource TracerBase::resourceChanging(REF(tstring) line, TracerTimeNow* const time)
 {
-	TracerResource* res = getResource(line);
+	LPTracerResource res = getResource(line);
 	if (res)
 	{
 		res->setParams(line, time, eventIndex);
@@ -593,11 +601,11 @@ TracerResource* TracerBase::resourceChanging(REF(tstring) line, TracerTimeNow* c
 	return res;
 }
 
-TracerResult* TracerBase::getResult(REF(tstring) line)
+LPTracerResult TracerBase::getResult(REF(tstring) line)
 {
-	TracerResult* res = NULL;
+	LPTracerResult res;
 	int findid = atoi(getNextValue(line).c_str());
-	for (std::vector< TracerResult* >::iterator it = results.begin(); it != results.end(); ++it)
+	for (std::vector<LPTracerResult>::iterator it = results.begin(); it != results.end(); ++it)
 	{
 		if ((*it)->id == findid)
 		{
@@ -615,42 +623,11 @@ void TracerBase::resultChanging(REF(tstring) line, TracerTimeNow* const time)
 
 void TracerBase::deleteTrace()
 {
-	int count = resources.size();
-	int i;
-	for (i = 0; i < count; i++)
-	{
-		delete resources.at(i);
-	}
 	resources.clear();
-	count = resTypes.size();
-	for (i = 0; i < count; i++)
-	{
-		delete resTypes.at(i);
-	}
 	resTypes.clear();
-	count = operations.size();
-	for (i = 0; i < count; i++)
-	{
-		delete operations.at(i);
-	}
 	operations.clear();
-	count = irregularEvents.size();
-	for (i = 0; i < count; i++)
-	{
-		delete irregularEvents.at(i);
-	}
 	irregularEvents.clear();
-	count = patterns.size();
-	for (i = 0; i < count; i++)
-	{
-		delete patterns.at(i);
-	}
 	patterns.clear();
-	count = results.size();
-	for (i = 0; i < count; i++)
-	{
-		delete results.at(i);
-	}
 	results.clear();
 	std::list<TracerTimeNow*>::iterator it = timeList.begin();
 	while (it != timeList.end())
@@ -673,9 +650,9 @@ void TracerBase::clear()
 
 void TracerBase::clearCharts()
 {
-	while (!charts.empty())
+	BOOST_FOREACH(RDOStudioChartDoc* pDoc, charts)
 	{
-		charts.front()->getFirstView()->parentWidget()->parentWidget()->close();
+		pDoc->getFirstView()->parentWidget()->parentWidget()->close();
 	}
 }
 
@@ -858,7 +835,7 @@ RDOStudioChartDoc* TracerBase::createNewChart()
 	return pDoc;
 }
 
-RDOStudioChartDoc* TracerBase::addSerieToChart(TracerSerie* const serie, RDOStudioChartDoc* chart)
+RDOStudioChartDoc* TracerBase::addSerieToChart(CREF(LPTracerSerie) pSerie, RDOStudioChartDoc* chart)
 {
 	if (!chart)
 	{
@@ -866,7 +843,7 @@ RDOStudioChartDoc* TracerBase::addSerieToChart(TracerSerie* const serie, RDOStud
 	}
 	if (chart)
 	{
-		chart->addSerie(serie);
+		chart->addSerie(pSerie);
 	}
 
 	return chart;

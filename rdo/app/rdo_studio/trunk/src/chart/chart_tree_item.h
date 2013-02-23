@@ -13,22 +13,27 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtWidgets/qtreewidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
-class ChartTreeItem
+class ChartTreeItem: public rdo::counter_reference
 {
+DECLARE_FACTORY(ChartTreeItem)
 public:
-	ChartTreeItem (rbool drawable = false);
-	~ChartTreeItem();
-
 	void setCtrlItem(PTR(QTreeWidgetItem) pCtrlItem);
 	REF(QTreeWidgetItem) getCtrlItem();
 
 	rbool isDrawable() const;
 
+protected:
+	ChartTreeItem (rbool drawable = false);
+	~ChartTreeItem();
+
 private:
 	PTR(QTreeWidgetItem) m_pCtrlItem;
 	rbool                m_drawable; // set to true ONLY for TracerSerie and descendants
 };
+
+typedef  rdo::intrusive_ptr<ChartTreeItem>  LPChartTreeItem;
 
 #endif // _APP_RDO_STUDIO_CHART_TREE_ITEM_H_

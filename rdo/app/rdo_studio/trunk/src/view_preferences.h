@@ -256,7 +256,7 @@ private:
 	PTR(RDOStudioChartDoc)            preview_chart_doc;
 	PTR(ChartView)                    preview_chart;
 	std::vector<TracerTimeNow>        preview_times;
-	TracerSerie                       preview_serie;
+	LPTracerSerie                     preview_serie;
 
 	PTR(FrameOptionsView)             preview_frame;
 

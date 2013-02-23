@@ -47,12 +47,10 @@ typedef std::list<TracerValue*> valuesList;
 
 class TracerSerie: public ChartTreeItem
 {
+DECLARE_FACTORY(TracerSerie)
 friend class ChartSerie;
 
 public:
-	TracerSerie(TracerSerieKind _serieKind = RDOST_PREVIEW);
-	virtual ~TracerSerie();
-
 	TracerSerieKind getSerieKind() const
 	{
 		return serieKind;
@@ -105,6 +103,9 @@ public:
 	ExportData exportData();
 
 protected:
+	TracerSerie(TracerSerieKind _serieKind = RDOST_PREVIEW);
+	virtual ~TracerSerie();
+
 	TracerSerieKind serieKind;
 	tstring title;
 
@@ -121,5 +122,7 @@ protected:
 	void getCaptionsDouble(std::vector<tstring> &captions, const int val_count) const;
 	void getCaptionsBool(std::vector<tstring> &captions, const int val_count) const;
 };
+
+typedef  rdo::intrusive_ptr<TracerSerie>  LPTracerSerie;
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERSERIE_H_

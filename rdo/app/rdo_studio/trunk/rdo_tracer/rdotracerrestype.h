@@ -63,10 +63,8 @@ enum TracerResTypeKind
 
 class TracerResType: public ChartTreeItem
 {
+DECLARE_FACTORY(TracerResType)
 public:
-	TracerResType(const TracerResTypeKind kind);
-	virtual ~TracerResType();
-
 	tstring Name;
 	TracerResTypeKind getResTypeKind() const
 	{
@@ -83,6 +81,12 @@ public:
 protected:
 	std::vector<TracerResParamInfo*> paramsInfo;
 	TracerResTypeKind restypeKind;
+
+private:
+	TracerResType(const TracerResTypeKind kind);
+	virtual ~TracerResType();
 };
+
+typedef rdo::intrusive_ptr<TracerResType> LPTracerResType;
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERRESTYPE_H_

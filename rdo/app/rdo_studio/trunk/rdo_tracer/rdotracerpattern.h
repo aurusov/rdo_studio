@@ -29,17 +29,22 @@ enum TracerPatternKind
 
 class TracerPattern: public ChartTreeItem
 {
-protected:
-	TracerPatternKind patKind;
+DECLARE_FACTORY(TracerPattern)
 public:
-	TracerPattern(const TracerPatternKind kind);
-	virtual ~TracerPattern();
-
 	tstring Name;
 	TracerPatternKind getPatternKind() const
 	{
 		return patKind;
 	}
+
+protected:
+	TracerPatternKind patKind;
+
+private:
+	TracerPattern(const TracerPatternKind kind);
+	virtual ~TracerPattern();
 };
+
+typedef  rdo::intrusive_ptr<TracerPattern>  LPTracerPattern;
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERPATTERN_H_

@@ -46,7 +46,7 @@ rbool ChartSerie::Options::operator== (CREF(Options) options) const
 // --------------------------------------------------------------------------------
 // -------------------- ChartSerie
 // --------------------------------------------------------------------------------
-ChartSerie::ChartSerie(TracerSerie* pSerie)
+ChartSerie::ChartSerie(CREF(LPTracerSerie) pSerie)
 	: m_pSerie(pSerie)
 {
 	if (m_pSerie)
@@ -58,7 +58,7 @@ ChartSerie::ChartSerie(TracerSerie* pSerie)
 ChartSerie::~ChartSerie()
 {}
 
-TracerSerie* ChartSerie::getSerie() const
+CREF(LPTracerSerie) ChartSerie::getSerie() const
 {
 	return m_pSerie;
 }
@@ -73,7 +73,7 @@ void ChartSerie::setOptions(CREF(Options) options)
 	m_options = options;
 }
 
-rbool ChartSerie::isTracerSerie(const TracerSerie* pSerie) const
+rbool ChartSerie::isTracerSerie(CREF(LPTracerSerie) pSerie) const
 {
 	return m_pSerie == pSerie;
 }

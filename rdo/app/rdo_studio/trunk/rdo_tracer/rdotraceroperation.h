@@ -13,22 +13,19 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
+#include "app/rdo_studio/rdo_tracer/rdotracerpattern.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- TracerOperationBase
 // --------------------------------------------------------------------------------
-class TracerPattern;
-
 class TracerOperationBase: public TracerSerie
 {
+DECLARE_FACTORY(TracerOperationBase)
 public:
-	TracerOperationBase(TracerPattern* const pat);
-	virtual ~TracerOperationBase();
-
-	TracerPattern* getPattern() const
+	LPTracerPattern getPattern() const
 	{
-		return pattern;
+		return m_pPattern;
 	}
 
 	//void start( TracerTimeNow* const time, const int eventIndex );
@@ -50,35 +47,48 @@ public:
 	virtual void monitorTime(TracerTimeNow* const time, const int eventIndex);
 
 protected:
-	TracerPattern* pattern;
+	TracerOperationBase(CREF(LPTracerPattern) pPattern);
+	virtual ~TracerOperationBase();
+
+	LPTracerPattern m_pPattern;
 	tstring Name;
 	void incOperationsCount(TracerTimeNow* const time, const int eventIndex);
 };
+
+typedef  rdo::intrusive_ptr<TracerOperationBase>  LPTracerOperationBase;
 
 // --------------------------------------------------------------------------------
 // -------------------- TracerOperation
 // --------------------------------------------------------------------------------
 class TracerOperation: public TracerOperationBase
 {
+DECLARE_FACTORY(TracerOperation)
 public:
-	TracerOperation(TracerPattern* const pat);
-	virtual ~TracerOperation();
-
 	void start(TracerTimeNow* const time, const int eventIndex);
 	void accomplish(TracerTimeNow* const time, const int eventIndex);
+
+private:
+	TracerOperation(CREF(LPTracerPattern) pPattern);
+	virtual ~TracerOperation();
 };
+
+typedef  rdo::intrusive_ptr<TracerOperation>  LPTracerOperation;
 
 // --------------------------------------------------------------------------------
 // -------------------- TracerEvent
 // --------------------------------------------------------------------------------
 class TracerEvent: public TracerOperationBase
 {
+DECLARE_FACTORY(TracerEvent)
 public:
-	TracerEvent(TracerPattern* const pat);
-	virtual ~TracerEvent();
-
 	void occurs(TracerTimeNow* const time, const int eventIndex);
 	virtual void monitorTime(TracerTimeNow* const time, const int eventIndex);
+
+private:
+	TracerEvent(CREF(LPTracerPattern) pPattern);
+	virtual ~TracerEvent();
 };
+
+typedef  rdo::intrusive_ptr<TracerEvent>  LPTracerEvent;
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACEROPERATION_H_

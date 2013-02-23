@@ -968,6 +968,7 @@ void ViewPreferences::createPreview()
 	//preview_times.push_back(TracerTimeNow(6, 3));
 	//preview_times.push_back(TracerTimeNow(8, 3));
 	//preview_times.push_back(TracerTimeNow(10, 3));
+	preview_serie = rdo::Factory<TracerSerie>::create();
 	//preview_serie.setTitle(rdo::format("значение 1"));
 	//preview_serie.addValue(new TracerValue(&preview_times.at(0), 2, 0));
 	//preview_serie.addValue(new TracerValue(&preview_times.at(1), 1, 1));

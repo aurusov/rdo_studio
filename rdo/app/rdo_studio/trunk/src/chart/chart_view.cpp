@@ -42,7 +42,6 @@ ChartView::ChartView(QAbstractScrollArea* pParent, RDOStudioChartDoc* pDocument,
 	, m_pDocument(pDocument)
 	, m_bmpRect(0, 0, 0, 0)
 	, m_clientRect(0, 0, 0, 0)
-	, m_pddSerie(NULL)
 	, m_valueCountX(5)
 	, m_valueCountY(5)
 	, m_pYAxis(NULL)
@@ -692,7 +691,8 @@ DROPEFFECT ChartView::OnDragEnter(COleDataObject* pDataObject, DWORD dwKeyState,
 		glb = pDataObject->GetGlobalData(CLIPFORMAT(format));
 		if (glb)
 		{
-			m_pddSerie = *(TracerSerie**)::GlobalLock(glb);
+			//! @todo qt
+			//m_pddSerie = *(TracerSerie**)::GlobalLock(glb);
 			::GlobalUnlock(glb);
 			::GlobalFree(glb);
 		}

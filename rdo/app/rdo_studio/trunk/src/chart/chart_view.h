@@ -25,7 +25,7 @@
 // -------------------- ChartView
 // --------------------------------------------------------------------------------
 class RDOStudioChartViewStyle;
-class TracerSerie;
+PREDECLARE_POINTER(TracerSerie);
 class ChartSerie;
 
 class ChartView: public ActionActivatorWidget
@@ -49,7 +49,7 @@ public:
 
 private:
 	COleDropTarget m_ddTarget;
-	TracerSerie*   m_pddSerie;
+	LPTracerSerie  m_pddSerie;
 
 	QRect m_bmpRect;
 	QRect m_clientRect;

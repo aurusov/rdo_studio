@@ -59,11 +59,11 @@ rbool TracerSerieFindValue::operator ()(TracerValue* val)
 // -------------------- TracerSerie
 // --------------------------------------------------------------------------------
 TracerSerie::TracerSerie(TracerSerieKind _serieKind)
-	: ChartTreeItem(true),
-	  serieKind(_serieKind),
-	  minValue(0),
-	  maxValue(0),
-	  value_count(0)
+	: ChartTreeItem(true)
+	, serieKind(_serieKind)
+	, minValue(0)
+	, maxValue(0)
+	, value_count(0)
 {}
 
 TracerSerie::~TracerSerie()
@@ -77,7 +77,6 @@ TracerSerie::~TracerSerie()
 	values.clear();
 	documents.clear();
 }
-;
 
 rbool TracerSerie::isTemporaryResourceParam() const
 {

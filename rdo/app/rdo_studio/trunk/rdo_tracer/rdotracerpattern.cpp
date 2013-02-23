@@ -24,11 +24,9 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- TracerPattern
 // --------------------------------------------------------------------------------
 TracerPattern::TracerPattern(const TracerPatternKind kind)
-	: ChartTreeItem(),
-	  patKind(kind)
-{
-}
+	: ChartTreeItem()
+	, patKind(kind)
+{}
 
 TracerPattern::~TracerPattern()
-{
-}
+{}

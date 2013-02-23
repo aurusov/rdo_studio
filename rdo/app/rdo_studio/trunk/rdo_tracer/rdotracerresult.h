@@ -31,10 +31,8 @@ enum TracerResultKind
 
 class TracerResult: public TracerSerie
 {
+DECLARE_FACTORY(TracerResult)
 public:
-	TracerResult(const TracerResultKind kind);
-	virtual ~TracerResult();
-
 	int id;
 	TracerResultKind getResultKind() const
 	{
@@ -59,6 +57,12 @@ public:
 protected:
 	TracerResultKind resultKind;
 	tstring Name;
+
+private:
+	TracerResult(const TracerResultKind kind);
+	virtual ~TracerResult();
 };
+
+typedef  rdo::intrusive_ptr<TracerResult>  LPTracerResult;
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERRESULT_H_

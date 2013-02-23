@@ -34,11 +34,11 @@ private:
 	virtual SCODE GiveFeedback(DROPEFFECT dropEffect);
 };
 
-class TracerResType;
-class TracerResource;
-class TracerPattern;
-class TracerOperationBase;
-class TracerResult;
+PREDECLARE_POINTER(TracerResType);
+PREDECLARE_POINTER(TracerResource);
+PREDECLARE_POINTER(TracerPattern);
+PREDECLARE_POINTER(TracerOperationBase);
+PREDECLARE_POINTER(TracerResult);
 
 class ChartTree
 	: public QTreeWidget
@@ -51,13 +51,13 @@ public:
 	virtual ~ChartTree();
 
 	void setModelName   (CREF(QString) modelName);
-	void addResourceType(PTR(TracerResType)       pRTP);
-	void addResource    (PTR(TracerResource)      pRSS);
-	void updateResource (PTR(TracerResource)      pRSS);
-	void addPattern     (PTR(TracerPattern)       pPAT);
-	void addOperation   (PTR(TracerOperationBase) pOPR);
-	void addResult      (PTR(TracerResult)        pPMV);
-	void deleteChildren (REF(ChartTreeItem)       parent);
+	void addResourceType(CREF(LPTracerResType)       pRTP);
+	void addResource    (CREF(LPTracerResource)      pRSS);
+	void updateResource (CREF(LPTracerResource)      pRSS);
+	void addPattern     (CREF(LPTracerPattern)       pPAT);
+	void addOperation   (CREF(LPTracerOperationBase) pOPR);
+	void addResult      (CREF(LPTracerResult)        pPMV);
+	void deleteChildren (CREF(LPChartTreeItem)       pParent);
 	void clear();
 	//void addIrregularEvent( TracerOperation* opr );
 
@@ -76,22 +76,22 @@ private:
 	};
 	typedef  std::vector<QIcon>  IconList;
 
-	ChartTreeItem  m_root;
-	ChartTreeItem  m_rootRTP;
-	ChartTreeItem  m_rootPAT;
-	ChartTreeItem  m_rootPMV;
-	IconList       m_iconList;
+	LPChartTreeItem  m_root;
+	LPChartTreeItem  m_rootRTP;
+	LPChartTreeItem  m_rootPAT;
+	LPChartTreeItem  m_rootPMV;
+	IconList         m_iconList;
 
 	COleDataSource m_source;
 	RDODropSource  m_dropsource;
 	CMenu          m_popupMenu;
 
-	void createItem(REF(ChartTreeItem) parent, REF(ChartTreeItem) item, CREF(QString) name, IconType iconType);
+	void createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType);
 
 	void  addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const;
 	rbool findInCharts (PTR(QTreeWidgetItem) pCtrlItem) const;
 
-	PTR(ChartTreeItem)   getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
+	LPChartTreeItem      getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
 	PTR(QTreeWidgetItem) getSelected        () const;
 
 	virtual void focusInEvent   (QFocusEvent* pEvent);

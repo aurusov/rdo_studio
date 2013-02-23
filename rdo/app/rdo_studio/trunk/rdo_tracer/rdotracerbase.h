@@ -14,6 +14,7 @@
 #include <QtCore/qstring.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio/resource.h"
@@ -22,14 +23,14 @@
 // --------------------------------------------------------------------------------
 // -------------------- TracerBase
 // --------------------------------------------------------------------------------
-class TracerResType;
-class TracerResource;
-class TracerPattern;
-class TracerOperationBase;
-class TracerEvent;
-class TracerResult;
+PREDECLARE_POINTER(TracerResType);
+PREDECLARE_POINTER(TracerResource);
+PREDECLARE_POINTER(TracerPattern);
+PREDECLARE_POINTER(TracerOperationBase);
+PREDECLARE_POINTER(TracerEvent);
+PREDECLARE_POINTER(TracerResult);
 class TracerTimeNow;
-class TracerSerie;
+PREDECLARE_POINTER(TracerSerie);
 class TracerResParamInfo;
 
 class ChartTree;
@@ -47,30 +48,46 @@ private:
 
 	TracerResParamInfo* getParam(rdo::textstream& stream);
 	TracerResParamInfo* getParamType(rdo::textstream& stream);
-	std::vector<TracerResType*> resTypes;void addResourceType(REF(tstring) s, rdo::textstream& stream);
-	std::vector<TracerResource*> resources;void addResource(REF(tstring) s, rdo::textstream& stream);
-	std::vector<TracerPattern*> patterns;void addPattern(REF(tstring) s, rdo::textstream& stream);
-	std::vector<TracerOperationBase*> operations;
-	std::vector<TracerEvent*> irregularEvents;void addOperation(REF(tstring) s, rdo::textstream& stream);
+
+	std::vector<LPTracerResType> resTypes;
+	void addResourceType(REF(tstring) s, rdo::textstream& stream);
+
+	std::vector<LPTracerResource> resources;
+	void addResource(REF(tstring) s, rdo::textstream& stream);
+
+	std::vector<LPTracerPattern> patterns;
+	void addPattern(REF(tstring) s, rdo::textstream& stream);
+
+	std::vector<LPTracerOperationBase> operations;
+	std::vector<LPTracerEvent> irregularEvents;
+	void addOperation(REF(tstring) s, rdo::textstream& stream);
 	//void addIrregularEvent(REF(tstring) s, rdo::textstream& stream);
-	std::vector<TracerResult*> results;void addResult(REF(tstring) s, rdo::textstream& stream);
+
+	std::vector<LPTracerResult> results;
+	void addResult(REF(tstring) s, rdo::textstream& stream);
 
 	void dispatchNextString(REF(tstring) line);
 
 	TracerTimeNow* addTime(CREF(tstring) time);
 	int eventIndex;
 
-	TracerOperationBase* getOperation(REF(tstring) line);void startAction(REF(tstring) line, TracerTimeNow* const time);void accomplishAction(REF(tstring) line, TracerTimeNow* const time);void irregularEvent(REF(tstring) line, TracerTimeNow* const time);void productionRule(REF(tstring) line, TracerTimeNow* const time);
+	LPTracerOperationBase getOperation(REF(tstring) line);void startAction(REF(tstring) line, TracerTimeNow* const time);
+	void accomplishAction(REF(tstring) line, TracerTimeNow* const time);
+	void irregularEvent(REF(tstring) line, TracerTimeNow* const time);
+	void productionRule(REF(tstring) line, TracerTimeNow* const time);
 
-	TracerResource* getResource(REF(tstring) line);TracerResource* resourceCreation(REF(tstring) line, TracerTimeNow* const time);TracerResource* resourceElimination(REF(tstring) line, TracerTimeNow* const time);
+	LPTracerResource getResource(REF(tstring) line);
+	LPTracerResource resourceCreation(REF(tstring) line, TracerTimeNow* const time);
+	LPTracerResource resourceElimination(REF(tstring) line, TracerTimeNow* const time);
 	enum TracerResUpdateAction
 	{
 		RUA_NONE, RUA_ADD, RUA_UPDATE
 	};
 	TracerResUpdateAction action;
-	TracerResource* resource;TracerResource* resourceChanging(REF(tstring) line, TracerTimeNow* const time);
+	LPTracerResource resource;
+	LPTracerResource resourceChanging(REF(tstring) line, TracerTimeNow* const time);
 
-	TracerResult* getResult(REF(tstring) line);void resultChanging(REF(tstring) line, TracerTimeNow* const time);
+	LPTracerResult getResult(REF(tstring) line);void resultChanging(REF(tstring) line, TracerTimeNow* const time);
 
 	std::list<TracerTimeNow*> timeList;
 
@@ -104,7 +121,7 @@ public:
 	RDOStudioChartDoc* createNewChart();
 	void addChart(RDOStudioChartDoc* const chart);
 	void removeChart(RDOStudioChartDoc* chart);
-	RDOStudioChartDoc* addSerieToChart(TracerSerie* const serie, RDOStudioChartDoc* chart = NULL);
+	RDOStudioChartDoc* addSerieToChart(CREF(LPTracerSerie) pSerie, RDOStudioChartDoc* chart = NULL);
 	void updateChartsStyles() const;
 	void clear();void setModelName(CREF(QString) name) const;
 	void setDrawTrace(const rbool value);

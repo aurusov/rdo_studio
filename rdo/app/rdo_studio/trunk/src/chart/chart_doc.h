@@ -53,9 +53,9 @@ public:
 
 	void updateAllViews();
 
-	void addSerie(TracerSerie* const serie);
-	//void removeSerie( TracerSerie* const serie );
-	rbool serieExists(const TracerSerie* serie) const;
+	void addSerie(CREF(LPTracerSerie) pSerie);
+	//void removeSerie(CREF(LPTracerSerie) pSerie);
+	rbool serieExists(CREF(LPTracerSerie) pSerie) const;
 
 	void incTimeEventsCount(TracerTimeNow* time);
 	rbool newValueToSerieAdded(TracerValue* val);
