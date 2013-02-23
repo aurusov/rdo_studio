@@ -206,9 +206,9 @@ QSettings& operator<< (QSettings& settings, const RDOStyleTheme& theme)
 
 QSettings& operator>> (QSettings& settings, RDOStyleTheme& theme)
 {
-	theme.defaultColor    = QColor(settings.value("default_color", QColor( 0x00, 0x00, 0x00 ).name()).toString());
-	theme.backgroundColor = QColor(settings.value("background_color", QColor( 0xFF, 0xFF, 0xFF ).name()).toString());
-	theme.defaultStyle    = static_cast<RDOStyleFont::style>(settings.value("default_style", RDOStyleFont::NONE).toInt());
+	theme.defaultColor    = QColor(settings.value("default_color", theme.defaultColor.name()).toString());
+	theme.backgroundColor = QColor(settings.value("background_color", theme.backgroundColor.name()).toString());
+	theme.defaultStyle    = static_cast<RDOStyleFont::style>(settings.value("default_style", theme.defaultStyle).toInt());
 
 	return settings;
 }
