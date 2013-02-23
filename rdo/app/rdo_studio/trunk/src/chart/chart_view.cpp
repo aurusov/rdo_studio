@@ -611,9 +611,11 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 
 	if (doUnwrapTime())
 	{
-		QRect rect(chartRect);
-		rect.adjust(-1, -1, -1, -1);
-		QRect tmprect(rect);
+		painter.setPen(Qt::NoPen);
+		painter.setBrush(m_pStyle->getTheme()->timeBgColor);
+
+		rect.adjust(1, 1, 0, 0);
+		QRect wrapRect(rect);
 
 		//! @todo qt
 		//::IntersectClipRect(m_hmemdc, rect.left, rect.top, rect.right, rect.bottom);
@@ -623,14 +625,16 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 		{
 			++it;
 		}
-		//For drawing solid rect
-		painter.setBrush(m_pStyle->getTheme()->timeBgColor);
+
 		for (; it != m_unwrapTimesList.end(); ++it)
 		{
 			int width = (*it)->eventCount * m_pStyle->pFontsTicks->tickWidth;
-			tmprect.setLeft(rect.left() + (LONG)(((*it)->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks->tickWidth - m_chartShift));
-			if (tmprect.left() < rect.left())
-				tmprect.setLeft(rect.left());
+
+			wrapRect.setLeft(std::max(
+				rect.left() + (int)(((*it)->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks->tickWidth - m_chartShift),
+				rect.left()
+			));
+
 			if (*(*it) == m_drawFromX)
 			{
 				width -= m_drawFromEventIndex * m_pStyle->pFontsTicks->tickWidth + m_chartShift;
@@ -639,10 +643,17 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 			{
 				width = m_drawToEventCount * m_pStyle->pFontsTicks->tickWidth;
 			}
-			tmprect.setRight(tmprect.left() + width);
-			if (tmprect.right() > rect.right())
-				tmprect.setRight(rect.right());
-			painter.drawRect(tmprect);
+
+			wrapRect.setRight(std::min(
+				wrapRect.left() + width,
+				rect.right()
+			));
+
+			if (wrapRect.left() < wrapRect.right())
+			{
+				painter.drawRect(wrapRect);
+			}
+
 			ticks += (*it)->eventCount;
 			if (*(*it) == m_drawFromX)
 			{
