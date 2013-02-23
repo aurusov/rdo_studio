@@ -405,11 +405,8 @@ void TracerSerie::drawSerie(ChartView* const view,
 
 void TracerSerie::drawMarker(QPainter& painter, const int x, const int y, TracerSerieMarker marker, const int markerSize) const
 {
-	QRect rect;
-	rect.setLeft(x - markerSize);
-	rect.setTop(y - markerSize);
-	rect.setBottom(y + markerSize);
-	rect.setRight(x + markerSize);
+	float halfMarkerSize = float(markerSize) / 2.0;
+	QRectF rect(x - halfMarkerSize, y - halfMarkerSize, markerSize, markerSize);
 
 	switch (marker)
 	{
@@ -423,27 +420,30 @@ void TracerSerie::drawMarker(QPainter& painter, const int x, const int y, Tracer
 		painter.drawRect(rect);
 		break;
 	}
-	case RDOSM_RHOMB:
+	case RDOSM_TRIANG:
 	{
-		QPoint pts[4];
-		pts[0].setX(rect.left() + (rect.right() - rect.left()) / 2);
-		pts[0].setY(rect.top());
-		pts[1].setX(rect.right());
-		pts[1].setY(rect.top() + (rect.bottom() - rect.top()) / 2);
-		pts[2].setX(pts[0].x());
-		pts[2].setY(rect.bottom());
-		pts[3].setX(rect.left());
-		pts[3].setY(pts[1].y());
-		painter.drawPolygon(pts, 4);
+		QPolygonF polygon;
+		polygon << QPointF(rect.left () + halfMarkerSize, rect.top());
+		polygon << QPointF(rect.right(),                  rect.bottom());
+		polygon << QPointF(rect.left (),                  rect.bottom());
+		polygon << QPointF(rect.left () + halfMarkerSize, rect.top());
+
+		QPainterPath path;
+		path.addPolygon(polygon);
+		painter.drawPath(path);
 		break;
 	}
 	case RDOSM_CROSS:
 	{
+		int delta = halfMarkerSize == int(halfMarkerSize)
+			? 1
+			: 0;
+
 		QPainterPath path;
-		path.moveTo(rect.left(), rect.top());
-		path.lineTo(rect.right(), rect.bottom() + 1);
-		path.moveTo(rect.left(), rect.bottom());
-		path.lineTo(rect.right(), rect.top() - 1);
+		path.moveTo(QPointF(x - halfMarkerSize - delta, y - halfMarkerSize - delta));
+		path.lineTo(QPointF(x + halfMarkerSize, y + halfMarkerSize));
+		path.moveTo(QPointF(x - halfMarkerSize - delta, y + halfMarkerSize + delta));
+		path.lineTo(QPointF(x + halfMarkerSize, y - halfMarkerSize));
 		painter.drawPath(path);
 		break;
 	}

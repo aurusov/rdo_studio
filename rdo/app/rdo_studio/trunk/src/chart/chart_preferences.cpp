@@ -49,11 +49,11 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 
 	insertColors(colorComboBox);
 
-	markerComboBox->addItem(QString::fromLocal8Bit("Нет"),     RDOSM_NONE);
-	markerComboBox->addItem(QString::fromLocal8Bit("Круг"),    RDOSM_CIRCLE);
-	markerComboBox->addItem(QString::fromLocal8Bit("Квадрат"), RDOSM_SQUARE);
-	markerComboBox->addItem(QString::fromLocal8Bit("Ромб"),    RDOSM_RHOMB);
-	markerComboBox->addItem(QString::fromLocal8Bit("Крестик"), RDOSM_CROSS);
+	markerComboBox->addItem(QString::fromLocal8Bit("Нет"),         RDOSM_NONE);
+	markerComboBox->addItem(QString::fromLocal8Bit("Круг"),        RDOSM_CIRCLE);
+	markerComboBox->addItem(QString::fromLocal8Bit("Квадрат"),     RDOSM_SQUARE);
+	markerComboBox->addItem(QString::fromLocal8Bit("Треугольник"), RDOSM_TRIANG);
+	markerComboBox->addItem(QString::fromLocal8Bit("Крестик"),     RDOSM_CROSS);
 
 	connect(xValueLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onXValue(const QString&)));
 	connect(yValueLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onYValue(const QString&)));

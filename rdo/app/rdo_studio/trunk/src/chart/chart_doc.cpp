@@ -399,7 +399,7 @@ TracerSerieMarker RDOStudioChartDoc::selectMarker()
 		res = RDOSM_SQUARE;
 		break;
 	case 2:
-		res = RDOSM_RHOMB;
+		res = RDOSM_TRIANG;
 		break;
 	case 3:
 		res = RDOSM_CROSS;

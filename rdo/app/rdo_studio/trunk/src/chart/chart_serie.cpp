@@ -26,7 +26,7 @@ static char THIS_FILE[] = __FILE__;
 ChartSerie::Options::Options()
 	: color            (QColor(0x00, 0x00, 0x00))
 	, markerType       (RDOSM_NONE)
-	, markerSize       (2) //! @todo qt ≈сли это параметр учавствует в конвертировании настроек, то из старого значени€ надо вычесть 1
+	, markerSize       (4)
 	, markerNeedDraw   (true)
 	, markerTransparent(true)
 	, showInLegend     (true)
