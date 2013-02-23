@@ -288,9 +288,10 @@ void TracerSerie::drawSerie(ChartView* const view,
 				--it;
 
 			int lasty = roundDouble((double)rect.bottom() - double(ky) * ((*it)->value - minValue));
-			lasty = std::min(lasty, rect.bottom() - 1);
+			lasty = std::max(lasty, rect.top());
+			lasty = std::min(lasty, rect.bottom());
 			int lastx = rect.left() + roundDouble(((*it)->modeltime->time - view->m_drawFromX.time) * double(view->m_timeScale)) - view->m_chartShift;
-			lastx = std::min(lastx, rect.right() - 1);
+			lastx = std::min(lastx, rect.right());
 
 			int ticks = 0;
 			TimesList::iterator times_it = view->m_unwrapTimesList.begin();
@@ -310,7 +311,7 @@ void TracerSerie::drawSerie(ChartView* const view,
 					lastx += (ticks + (*it)->eventIndex - view->m_drawFromEventIndex) * view->m_pStyle->pFontsTicks->tickWidth;
 				}
 			}
-			lastx = std::min(lastx, rect.right() - 1);
+			lastx = std::min(lastx, rect.right());
 
 			QPainterPath path;
 			if (lastx >= rect.left() && draw_marker)
@@ -342,13 +343,14 @@ void TracerSerie::drawSerie(ChartView* const view,
 			                        && ((*it)->modeltime->time < view->m_drawToX.time || ((*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex <= view->m_drawToEventCount)))))
 			{
 				y = roundDouble((double)rect.bottom() - double(ky) * ((*it)->value - minValue));
-				y = std::min(y, rect.bottom() - 1);
+				y = std::max(y, rect.top());
+				y = std::min(y, rect.bottom());
 				x = rect.left() + roundDouble(((*it)->modeltime->time - view->m_drawFromX.time) * double(view->m_timeScale)) - view->m_chartShift;
 				if (view->doUnwrapTime())
 				{
 					x += (ticks + (*it)->eventIndex) * view->m_pStyle->pFontsTicks->tickWidth;
 				}
-				x = std::min(x, rect.right() - 1);
+				x = std::min(x, rect.right());
 				if (draw_marker)
 					drawMarker(painter, x, y, marker, markerSize);
 				path.lineTo(x, lasty);
@@ -386,11 +388,11 @@ void TracerSerie::drawSerie(ChartView* const view,
 				if (view->m_drawFromX == view->m_drawToX)
 				{
 					x = rect.left() + (view->m_drawToEventCount - view->m_drawFromEventIndex) * view->m_pStyle->pFontsTicks->tickWidth;
-					x = std::min(x, rect.right() - 1);
+					x = std::min(x, rect.right());
 				}
 				else
 				{
-					x = rect.right() - 1;
+					x = rect.right();
 				}
 				path.lineTo(x, lasty);
 			}
