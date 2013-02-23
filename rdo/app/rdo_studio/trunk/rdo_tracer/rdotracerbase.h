@@ -47,17 +47,11 @@ public:
 	void setTree(PTR(ChartTree) pTreeCtrl);
 
 	void startTrace();
-	void getModelStructure(rdo::textstream& stream);
-	void getTraceString(tstring trace_string);
+	void    getModelStructure(rdo::textstream& stream);
+	void    getTraceString(tstring trace_string);
 	tstring getNextValue(REF(tstring) line);
-	void registerClipboardFormat()
-	{
-		clipboardFormat = ::RegisterClipboardFormat(rdo::format(ID_RAO_CLIPBRD).c_str());
-	}
-	UINT const getClipboardFormat() const
-	{
-		return clipboardFormat;
-	}
+	void registerClipboardFormat();
+	UINT const getClipboardFormat() const;
 	RDOStudioChartDoc* createNewChart();
 	void addChart(RDOStudioChartDoc* const chart);
 	void removeChart(RDOStudioChartDoc* chart);
@@ -72,35 +66,38 @@ protected:
 	virtual ~TracerBase();
 
 private:
-	LogMainWnd* log;
-	ChartTree* tree;
+	LogMainWnd* m_pLog;
+	ChartTree*  m_pChartTree;
 
 	TracerResParamInfo* getParam(rdo::textstream& stream);
 	TracerResParamInfo* getParamType(rdo::textstream& stream);
 
-	typedef  std::vector<LPTracerResType>  ResTypeList;
+	typedef  std::vector<LPTracerResType>        ResourceTypeList;
+	typedef  std::vector<LPTracerResource>       ResourceList;
+	typedef  std::vector<LPTracerPattern>        PatternList;
+	typedef  std::vector<LPTracerOperationBase>  OperationBaseList;
+	typedef  std::vector<LPTracerEvent>          EventList;
+	typedef  std::vector<LPTracerResult>         ResultList;
+	typedef  std::list<TracerTimeNow*>           TimeList;
+	typedef  std::vector<RDOStudioChartDoc*>     DocumentList;
 
-	ResTypeList resTypes;
+	ResourceTypeList  m_resourceTypeList;
+	ResourceList      m_resourceList;
+	PatternList       m_patternList;
+	OperationBaseList m_operationList;
+	EventList         m_eventList;
+	ResultList        m_resultList;
+
 	void addResourceType(REF(tstring) s, rdo::textstream& stream);
-
-	std::vector<LPTracerResource> resources;
-	void addResource(REF(tstring) s, rdo::textstream& stream);
-
-	std::vector<LPTracerPattern> patterns;
-	void addPattern(REF(tstring) s, rdo::textstream& stream);
-
-	std::vector<LPTracerOperationBase> operations;
-	std::vector<LPTracerEvent> irregularEvents;
-	void addOperation(REF(tstring) s, rdo::textstream& stream);
-	//void addIrregularEvent(REF(tstring) s, rdo::textstream& stream);
-
-	std::vector<LPTracerResult> results;
-	void addResult(REF(tstring) s, rdo::textstream& stream);
+	void addResource    (REF(tstring) s, rdo::textstream& stream);
+	void addPattern     (REF(tstring) s, rdo::textstream& stream);
+	void addOperation   (REF(tstring) s, rdo::textstream& stream);
+	void addResult      (REF(tstring) s, rdo::textstream& stream);
 
 	void dispatchNextString(REF(tstring) line);
 
 	TracerTimeNow* addTime(CREF(tstring) time);
-	int eventIndex;
+	int m_eventIndex;
 
 	LPTracerOperationBase getOperation(REF(tstring) line);void startAction(REF(tstring) line, TracerTimeNow* const time);
 	void accomplishAction(REF(tstring) line, TracerTimeNow* const time);
@@ -114,22 +111,20 @@ private:
 	{
 		RUA_NONE, RUA_ADD, RUA_UPDATE
 	};
-	TracerResUpdateAction action;
-	LPTracerResource resource;
+	TracerResUpdateAction m_updateAction;
+	LPTracerResource      m_pResource;
 	LPTracerResource resourceChanging(REF(tstring) line, TracerTimeNow* const time);
 
 	LPTracerResult getResult(REF(tstring) line);void resultChanging(REF(tstring) line, TracerTimeNow* const time);
 
-	std::list<TracerTimeNow*> timeList;
+	TimeList m_timeList;
 
 	void clearCharts();
 	void deleteTrace();
 
-	UINT clipboardFormat;
-
-	std::vector<RDOStudioChartDoc*> charts;
-
-	rbool drawTrace;
+	UINT         m_clipboardFormat;
+	DocumentList m_documentList;
+	rbool        m_drawTrace;
 };
 
 }}} // namespace rdo::gui::tracer
