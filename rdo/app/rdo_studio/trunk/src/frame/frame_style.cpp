@@ -64,16 +64,13 @@ RDOStudioFrameTheme RDOStudioFrameTheme::getDefaultTheme()
 // --------------------------------------------------------------------------------
 RDOStudioFrameStyle::RDOStudioFrameStyle(): RDOStyleWithTheme()
 {
+	theme = new RDOStudioFrameTheme();
 }
 
 RDOStudioFrameStyle::~RDOStudioFrameStyle()
 {
 }
 
-void RDOStudioFrameStyle::initTheme()
-{
-	theme = new RDOStudioFrameTheme;
-}
 
 RDOStudioFrameStyle& RDOStudioFrameStyle::operator =( const RDOStudioFrameStyle& style )
 {

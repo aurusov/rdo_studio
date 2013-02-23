@@ -379,24 +379,17 @@ LogStyle::LogStyle()
 	: RDOStyle()
 	, theme   (NULL)
 	, borders (NULL)
-{}
+{
+	theme = new LogTheme();
+	borders = new LogBorders;
+	borders->vertBorder = 1;
+	borders->horzBorder = 2;
+}
 
 LogStyle::~LogStyle()
 {
 	if ( theme )   { delete theme;   theme = NULL; };
 	if ( borders ) { delete borders; borders = NULL; };
-}
-
-void LogStyle::initTheme()
-{
-	theme = new LogTheme;
-}
-
-void LogStyle::initBorders()
-{
-	borders = new LogBorders;
-	borders->vertBorder = 1;
-	borders->horzBorder = 2;
 }
 
 rbool LogStyle::getItemColors( int index, LogColorPair* &colors ) const
@@ -508,8 +501,6 @@ rbool LogStyle::operator !=( const LogStyle& style ) const
 void LogStyle::init( CREF(QString) _groupName )
 {
 	RDOStyle::init( _groupName );
-	initTheme();
-	initBorders();
 	*font = rdoStyle::RDOStyleFont::getTracerLogFont();
 }
 

@@ -132,7 +132,7 @@ public:
 	rbool operator ==( const LogStyle& style ) const;
 	rbool operator !=( const LogStyle& style ) const;
 
-	virtual void  init( CREF(QString) _groupName = "" );
+	void  init( CREF(QString) _groupName = "" );
 	virtual rbool load();
 	virtual rbool save() const;
 
@@ -140,8 +140,6 @@ public:
 	LogBorders* borders;
 
 private:
-	virtual void initTheme();
-	        void initBorders();
 
 	rbool getDefaultColor(LogColorPair* &colors) const;
 };

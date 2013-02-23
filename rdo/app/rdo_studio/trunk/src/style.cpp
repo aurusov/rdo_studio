@@ -299,16 +299,12 @@ RDOStyleWithTheme::RDOStyleWithTheme():
 	RDOStyle(),
 	theme( NULL )
 {
+	theme = new RDOStyleTheme();
 }
 
 RDOStyleWithTheme::~RDOStyleWithTheme()
 {
 	if ( theme ) { delete theme; theme = NULL; };
-}
-
-void RDOStyleWithTheme::initTheme()
-{
-	theme = new RDOStyleTheme;
 }
 
 RDOStyleWithTheme& RDOStyleWithTheme::operator =( const RDOStyleWithTheme& style )
@@ -334,7 +330,6 @@ rbool RDOStyleWithTheme::operator !=( const RDOStyleWithTheme& style ) const
 void RDOStyleWithTheme::init( CREF(QString) _groupName )
 {
 	RDOStyle::init( _groupName );
-	initTheme();
 }
 
 rbool RDOStyleWithTheme::load()

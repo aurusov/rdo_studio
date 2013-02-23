@@ -177,15 +177,11 @@ QSettings& operator>> (QSettings& settings, RDOFindEditTheme& theme)
 // --------------------------------------------------------------------------------
 RDOFindEditStyle::RDOFindEditStyle(): LogEditStyle()
 {
+	theme = new RDOFindEditTheme();
 }
 
 RDOFindEditStyle::~RDOFindEditStyle()
 {
-}
-
-void RDOFindEditStyle::initTheme()
-{
-	theme = new RDOFindEditTheme;
 }
 
 RDOFindEditStyle& RDOFindEditStyle::operator =( const RDOFindEditStyle& style )

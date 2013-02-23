@@ -192,7 +192,10 @@ QSettings& operator>> (QSettings& settings, RDOStudioChartViewFontsTicks& fonts_
 // --------------------------------------------------------------------------------
 RDOStudioChartViewStyle::RDOStudioChartViewStyle()
 	: RDOStyleWithTheme()
-{}
+{
+	theme       = new RDOStudioChartViewTheme();
+	pFontsTicks = new RDOStudioChartViewFontsTicks();
+}
 
 RDOStudioChartViewStyle::~RDOStudioChartViewStyle()
 {
@@ -201,16 +204,6 @@ RDOStudioChartViewStyle::~RDOStudioChartViewStyle()
 		delete pFontsTicks;
 		pFontsTicks = NULL;
 	}
-}
-
-void RDOStudioChartViewStyle::initTheme()
-{
-	theme = new RDOStudioChartViewTheme;
-}
-
-void RDOStudioChartViewStyle::initFontsTicks()
-{
-	pFontsTicks = new RDOStudioChartViewFontsTicks;
 }
 
 RDOStudioChartViewStyle& RDOStudioChartViewStyle::operator =(const RDOStudioChartViewStyle& style)
@@ -250,7 +243,6 @@ void RDOStudioChartViewStyle::init(CREF(QString) _groupName)
 {
 	RDOStyleWithTheme::init(_groupName);
 	*font = rdoStyle::RDOStyleFont::getChartViewFont();
-	initFontsTicks();
 }
 
 rbool RDOStudioChartViewStyle::load()

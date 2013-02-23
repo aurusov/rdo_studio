@@ -77,9 +77,6 @@ QSettings& operator>> (QSettings& settings,       RDOEditorBaseEditTheme& theme)
 // --------------------------------------------------------------------------------
 class RDOEditorBaseEditStyle: public rdoEditCtrl::RDOBaseEditStyle
 {
-protected:
-	virtual void initTheme();
-
 public:
 	RDOEditorBaseEditStyle();
 	virtual ~RDOEditorBaseEditStyle();

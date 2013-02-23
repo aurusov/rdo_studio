@@ -49,9 +49,6 @@ QSettings& operator>> (QSettings& settings,       RDOBuildEditTheme& theme);
 // --------------------------------------------------------------------------------
 class RDOBuildEditStyle: public LogEditStyle
 {
-protected:
-	virtual void initTheme();
-
 public:
 	RDOBuildEditStyle();
 	virtual ~RDOBuildEditStyle();

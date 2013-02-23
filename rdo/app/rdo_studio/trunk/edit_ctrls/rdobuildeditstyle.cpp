@@ -120,15 +120,11 @@ QSettings& operator>> (QSettings& settings, RDOBuildEditTheme& theme)
 // --------------------------------------------------------------------------------
 RDOBuildEditStyle::RDOBuildEditStyle(): LogEditStyle()
 {
+	theme = new RDOBuildEditTheme();
 }
 
 RDOBuildEditStyle::~RDOBuildEditStyle()
 {
-}
-
-void RDOBuildEditStyle::initTheme()
-{
-	theme = new RDOBuildEditTheme;
 }
 
 RDOBuildEditStyle& RDOBuildEditStyle::operator =( const RDOBuildEditStyle& style )

@@ -122,11 +122,6 @@ QSettings& operator>> (QSettings& settings,       RDOBaseEditWindow& window);
 // --------------------------------------------------------------------------------
 class RDOBaseEditStyle: public rdoStyle::RDOStyleWithTheme
 {
-protected:
-	virtual void initTheme();
-	virtual void initTab();
-	virtual void initWindow();
-
 public:
 	RDOBaseEditStyle();
 	virtual ~RDOBaseEditStyle();
@@ -135,7 +130,7 @@ public:
 	rbool operator ==( const RDOBaseEditStyle& style ) const;
 	rbool operator !=( const RDOBaseEditStyle& style ) const;
 
-	virtual void  init( CREF(QString) _groupName = "" );
+	void  init( CREF(QString) _groupName = "" );
 	virtual rbool load();
 	virtual rbool save() const;
 

@@ -93,10 +93,6 @@ public:
 	}
 
 	RDOStudioChartViewFontsTicks* pFontsTicks;
-
-protected:
-	virtual void initTheme();
-	virtual void initFontsTicks();
 };
 
 #endif // _RDO_STUDIO_CHART_VIEW_STYLE_H_

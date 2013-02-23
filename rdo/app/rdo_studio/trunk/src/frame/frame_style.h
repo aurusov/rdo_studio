@@ -36,9 +36,6 @@ public:
 // --------------------------------------------------------------------------------
 class RDOStudioFrameStyle: public rdoStyle::RDOStyleWithTheme
 {
-protected:
-	virtual void initTheme();
-
 public:
 	RDOStudioFrameStyle();
 	virtual ~RDOStudioFrameStyle();

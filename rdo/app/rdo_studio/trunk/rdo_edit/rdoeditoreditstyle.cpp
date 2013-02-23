@@ -353,27 +353,13 @@ RDOEditorEditStyle::RDOEditorEditStyle():
 {
 	autoComplete = new RDOEditorEditAutoComplete();
 	margin = new RDOEditorEditMargin();
+	theme = new RDOEditorEditTheme();
 }
 
 RDOEditorEditStyle::~RDOEditorEditStyle()
 {
 	if ( autoComplete ) { delete autoComplete; autoComplete = NULL; };
 	if ( margin )       { delete margin;       margin = NULL; };
-}
-
-void RDOEditorEditStyle::initTheme()
-{
-	theme = new RDOEditorEditTheme;
-}
-
-void RDOEditorEditStyle::initAutoComplete()
-{
-	autoComplete = new RDOEditorEditAutoComplete;
-}
-
-void RDOEditorEditStyle::initMargin()
-{
-	margin = new RDOEditorEditMargin;
 }
 
 RDOEditorEditStyle& RDOEditorEditStyle::operator =( const RDOEditorEditStyle& style )
@@ -403,8 +389,6 @@ rbool RDOEditorEditStyle::operator !=( const RDOEditorEditStyle& style ) const
 void RDOEditorEditStyle::init( CREF(QString) _groupName )
 {
 	RDOEditorBaseEditStyle::init( _groupName );
-	initAutoComplete();
-	initMargin();
 }
 
 rbool RDOEditorEditStyle::load()

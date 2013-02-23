@@ -96,7 +96,7 @@ public:
 	rbool operator ==(const RDOStyle& style) const;
 	rbool operator !=(const RDOStyle& style) const;
 
-	virtual void  init(CREF(QString) _groupName = "");
+	void  init(CREF(QString) _groupName = "");
 	virtual rbool load();
 	virtual rbool save() const;
 
@@ -108,9 +108,6 @@ public:
 // --------------------------------------------------------------------------------
 class RDOStyleWithTheme: public RDOStyle
 {
-protected:
-	virtual void initTheme();
-
 public:
 	RDOStyleWithTheme();
 	virtual ~RDOStyleWithTheme();
@@ -119,7 +116,7 @@ public:
 	rbool operator ==(const RDOStyleWithTheme& style) const;
 	rbool operator !=(const RDOStyleWithTheme& style) const;
 
-	virtual void  init(CREF(QString) _groupName = "");
+	void  init(CREF(QString) _groupName = "");
 	virtual rbool load();
 	virtual rbool save() const;
 

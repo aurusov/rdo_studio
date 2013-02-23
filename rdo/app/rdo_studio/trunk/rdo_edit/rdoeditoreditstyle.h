@@ -117,9 +117,6 @@ QSettings& operator>> (QSettings& settings,       RDOEditorEditMargin& margin);
 class RDOEditorEditStyle: public RDOEditorBaseEditStyle
 {
 protected:
-	virtual void initTheme();
-	virtual void initAutoComplete();
-	virtual void initMargin();
 
 public:
 
@@ -130,7 +127,7 @@ public:
 	rbool operator ==( const RDOEditorEditStyle& style ) const;
 	rbool operator !=( const RDOEditorEditStyle& style ) const;
 
-	virtual void  init( CREF(QString) _groupName = "" );
+	void  init( CREF(QString) _groupName = "" );
 	virtual rbool load();
 	virtual rbool save() const;
 

@@ -127,15 +127,11 @@ QSettings& operator>> (QSettings& settings, LogEditTheme& theme)
 // --------------------------------------------------------------------------------
 LogEditStyle::LogEditStyle(): RDOBaseEditStyle()
 {
+	theme = new LogEditTheme();
 }
 
 LogEditStyle::~LogEditStyle()
 {
-}
-
-void LogEditStyle::initTheme()
-{
-	theme = new LogEditTheme;
 }
 
 LogEditStyle& LogEditStyle::operator =( const LogEditStyle& style )

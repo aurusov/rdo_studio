@@ -431,16 +431,13 @@ QSettings& operator>> (QSettings& settings, RDOEditorBaseEditTheme& theme)
 // --------------------------------------------------------------------------------
 RDOEditorBaseEditStyle::RDOEditorBaseEditStyle(): RDOBaseEditStyle()
 {
+	theme = new RDOEditorBaseEditTheme();
 }
 
 RDOEditorBaseEditStyle::~RDOEditorBaseEditStyle()
 {
 }
 
-void RDOEditorBaseEditStyle::initTheme()
-{
-	theme = new RDOEditorBaseEditTheme;
-}
 
 RDOEditorBaseEditStyle& RDOEditorBaseEditStyle::operator =( const RDOEditorBaseEditStyle& style )
 {

@@ -377,27 +377,16 @@ RDOBaseEditStyle::RDOBaseEditStyle():
 	tab( NULL ),
 	window( NULL )
 {
+	theme  = new RDOBaseEditTheme();
+	tab    = new RDOBaseEditTab();
+	window = new RDOBaseEditWindow();
+
 }
 
 RDOBaseEditStyle::~RDOBaseEditStyle()
 {
 	if ( tab )    { delete tab;    tab = NULL; };
 	if ( window ) { delete window; window = NULL; };
-}
-
-void RDOBaseEditStyle::initTheme()
-{
-	theme = new RDOBaseEditTheme;
-}
-
-void RDOBaseEditStyle::initTab()
-{
-	tab = new RDOBaseEditTab;
-}
-
-void RDOBaseEditStyle::initWindow()
-{
-	window = new RDOBaseEditWindow;
 }
 
 RDOBaseEditStyle& RDOBaseEditStyle::operator =( const RDOBaseEditStyle& style )
@@ -427,8 +416,6 @@ rbool RDOBaseEditStyle::operator !=( const RDOBaseEditStyle& style ) const
 void RDOBaseEditStyle::init( CREF(QString) _groupName )
 {
 	RDOStyleWithTheme::init( _groupName );
-	initTab();
-	initWindow();
 }
 
 rbool RDOBaseEditStyle::load()
