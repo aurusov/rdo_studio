@@ -70,7 +70,6 @@ public:
 	}
 
 protected:
-	CMutex mutex;
 	std::vector<TracerResParam*> params;
 	TracerResType* resType;
 	rbool erased;

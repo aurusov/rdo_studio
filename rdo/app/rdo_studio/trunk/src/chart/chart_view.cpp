@@ -113,9 +113,6 @@ ChartView::~ChartView()
 void ChartView::recalcLayout()
 {
 	RDOStudioChartDoc* doc = getDocument();
-	doc->m_mutex.Lock();
-
-	m_mutex.Lock();
 
 	QFontMetrics titleFontMetrics(m_fontTitle);
 	tstring str = doc->getTitle();
@@ -213,10 +210,6 @@ void ChartView::recalcLayout()
 	}
 
 	m_timeScale *= m_scaleKoeff;
-
-	m_mutex.Unlock();
-
-	doc->m_mutex.Unlock();
 }
 
 QScrollBar& ChartView::getHorzScrollBar()
@@ -229,7 +222,6 @@ QScrollBar& ChartView::getHorzScrollBar()
 void ChartView::updateScrollBars()
 {
 	RDOStudioChartDoc* doc = getDocument();
-	doc->m_mutex.Lock();
 
 	int size;
 	if (!doc->m_docTimes.empty())
@@ -252,8 +244,6 @@ void ChartView::updateScrollBars()
 	getHorzScrollBar().setRange   (0, m_SM_X.posMax);
 	getHorzScrollBar().setPageStep(m_SM_X.pageSize);
 	getHorzScrollBar().setValue   (m_SM_X.position);
-
-	doc->m_mutex.Unlock();
 }
 
 rbool ChartView::scrollHorizontally(rsint inc)
@@ -753,8 +743,6 @@ void ChartView::resizeEvent(QResizeEvent* pEvent)
 {
 	super::resizeEvent(pEvent);
 
-	m_mutex.Lock();
-
 	m_clientRect = QRect(QPoint(0, 0), pEvent->size());
 	if (getDocument())
 	{
@@ -762,8 +750,6 @@ void ChartView::resizeEvent(QResizeEvent* pEvent)
 		updateScrollBars();
 		//setZoom(zoom);
 	}
-
-	m_mutex.Unlock();
 }
 
 void ChartView::onChartTimeWrap()
@@ -840,8 +826,6 @@ void ChartView::setFonts(const rbool needRedraw)
 	if (!m_pStyle)
 		return;
 	
-	m_mutex.Lock();
-
 	RDOStudioChartViewTheme* pChartTheme = static_cast<RDOStudioChartViewTheme*>(m_pStyle->theme);
 
 	m_fontAxis = QFont(m_pStyle->font->name.c_str());
@@ -861,8 +845,6 @@ void ChartView::setFonts(const rbool needRedraw)
 	m_fontLegend.setItalic   (pChartTheme->legendStyle & RDOStyleFont::ITALIC   );
 	m_fontLegend.setUnderline(pChartTheme->legendStyle & RDOStyleFont::UNDERLINE);
 	m_fontLegend.setPointSize(m_pStyle->pFontsTicks->legendFontSize);
-
-	m_mutex.Unlock();
 }
 
 void ChartView::setStyle(RDOStudioChartViewStyle* pStyle, const rbool needRedraw)
@@ -897,7 +879,6 @@ void ChartView::onChartOptions()
 
 void ChartView::updateView()
 {
-	getDocument()->lock();
 	rbool lastvisible = maxXVisible();
 	recalcLayout();
 	updateScrollBars();
@@ -907,7 +888,6 @@ void ChartView::updateView()
 	}
 	parentWidget()->update();
 	updateScrollBars();
-	getDocument()->unlock();
 	onUpdateActions(isActivated());
 }
 
@@ -921,9 +901,6 @@ void ChartView::paintEvent(QPaintEvent*)
 	QPainter painter(this);
 
 	RDOStudioChartDoc* doc = getDocument();
-	doc->m_mutex.Lock();
-
-	m_mutex.Lock();
 
 	painter.fillRect(m_clientRect, m_pStyle->theme->backgroundColor);
 
@@ -948,10 +925,6 @@ void ChartView::paintEvent(QPaintEvent*)
 			(*it)->drawSerie(this, painter, m_chartRect);
 		}
 	}
-
-	m_mutex.Unlock();
-
-	doc->m_mutex.Unlock();
 }
 
 void ChartView::onViewZoomAuto()

@@ -96,10 +96,6 @@ RDOStudioChartDoc::RDOStudioChartDoc(const rbool preview)
 
 RDOStudioChartDoc::~RDOStudioChartDoc()
 {
-	g_pTracer->lock();
-
-	m_mutex.Lock();
-
 	for (std::vector<ChartSerie*>::iterator it = m_serieList.begin(); it != m_serieList.end(); it++)
 	{
 		(*it)->getSerie()->removeFromDoc(this);
@@ -109,10 +105,6 @@ RDOStudioChartDoc::~RDOStudioChartDoc()
 	{
 		g_pTracer->removeChart(this);
 	}
-
-	m_mutex.Unlock();
-
-	g_pTracer->unlock();
 }
 
 void RDOStudioChartDoc::attachView(ChartView* pView)
@@ -159,21 +151,15 @@ int RDOStudioChartDoc::getSerieIndex(ChartSerie* serie) const
 
 void RDOStudioChartDoc::incTimeEventsCount(TracerTimeNow* time)
 {
-	//mutex.Lock(); Document is locked from TracerBase::addTime
-	
 	if (!m_docTimes.empty() && m_docTimes.back() == time)
 	{
 		m_ticksCount++;
 		updateChartViews (UPDATE_TIMETICKS);
 	}
-	
-	//mutex.Unlock();
 }
 
 rbool RDOStudioChartDoc::newValueToSerieAdded(TracerValue* val)
 {
-	//mutex.Lock(); Document is locked from TracerSerie::addValue
-
 	if (m_docTimes.empty())
 	{
 		m_docTimes.push_back(val->modeltime);
@@ -195,15 +181,11 @@ rbool RDOStudioChartDoc::newValueToSerieAdded(TracerValue* val)
 	}
 	updateChartViews (UPDATE_NEWVALUE);
 
-	//mutex.Unlock();
-
 	return true;
 }
 
 int RDOStudioChartDoc::getMaxMarkerSize() const
 {
-	const_cast<CMutex&>(m_mutex).Lock();
-
 	int res = 0;
 	for (std::vector<ChartSerie*>::const_iterator it = m_serieList.begin(); it != m_serieList.end(); it++)
 	{
@@ -213,53 +195,36 @@ int RDOStudioChartDoc::getMaxMarkerSize() const
 		}
 	}
 
-	const_cast<CMutex&>(m_mutex).Unlock();
-
 	return res;
 }
 
 void RDOStudioChartDoc::addToViews(ChartView* pWidget)
 {
-	m_mutex.Lock();
-
 	m_widgetList.push_back(pWidget);
-
-	m_mutex.Unlock();
 }
 
 void RDOStudioChartDoc::removeFromViews(ChartView* pWidget)
 {
-	m_mutex.Lock();
-
 	std::vector<ChartView*>::iterator it = std::find(m_widgetList.begin(), m_widgetList.end(), pWidget);
 	if (it != m_widgetList.end())
 	{
 		m_widgetList.erase(it);
 	}
-
-	m_mutex.Unlock();
 }
 
 void RDOStudioChartDoc::updateChartViews(ruint updateType) const
 {
-	const_cast<CMutex&>(m_mutex).Lock();
-
 	for (std::vector<ChartView*>::const_iterator it = m_widgetList.begin(); it != m_widgetList.end(); ++it)
 	{
 		(*it)->onUserUpdateChartView(updateType);
 	}
-
-	const_cast<CMutex&>(m_mutex).Unlock();
 }
 
 void RDOStudioChartDoc::addSerie(TracerSerie* const serie)
 {
-	m_mutex.Lock();
-
 	if (serie && !serieExists(serie))
 	{
 		ChartSerie* docserie = new ChartSerie(serie);
-		docserie->lock();
 		ChartSerie::Options options(docserie->options());
 		options.color = selectColor();
 		options.markerType = selectMarker();
@@ -307,11 +272,8 @@ void RDOStudioChartDoc::addSerie(TracerSerie* const serie)
 			ASSERT(pView);
 			pView->m_pYAxis = docserie;
 		}
-		docserie->unlock();
 		updateChartViews (UPDATE_NEWSERIE);
 	}
-
-	m_mutex.Unlock();
 }
 
 /*void RDOStudioChartDoc::removeSerie( TracerSerie* const serie )
@@ -410,13 +372,7 @@ TracerSerieMarker RDOStudioChartDoc::selectMarker()
 
 rbool RDOStudioChartDoc::serieExists(const TracerSerie* serie) const
 {
-	const_cast<CMutex&>(m_mutex).Lock();
-
-	rbool res = boost::range::find_if(m_serieList, boost::bind(&ChartSerie::isTracerSerie, _1, serie)) != m_serieList.end();
-
-	const_cast<CMutex&>(m_mutex).Unlock();
-
-	return res;
+	return boost::range::find_if(m_serieList, boost::bind(&ChartSerie::isTracerSerie, _1, serie)) != m_serieList.end();
 }
 
 tstring RDOStudioChartDoc::getTitle() const

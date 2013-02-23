@@ -498,9 +498,7 @@ TracerTimeNow* TracerBase::addTime(CREF(tstring) time)
 		eventIndex++;
 		for (std::vector< RDOStudioChartDoc* >::iterator it = charts.begin(); it != charts.end(); ++it)
 		{
-			(*it)->lock();
 			(*it)->incTimeEventsCount(last);
-			(*it)->unlock();
 		}
 	}
 	return timeList.back();
@@ -617,8 +615,6 @@ void TracerBase::resultChanging(REF(tstring) line, TracerTimeNow* const time)
 
 void TracerBase::deleteTrace()
 {
-	mutex.Lock();
-
 	int count = resources.size();
 	int i;
 	for (i = 0; i < count; i++)
@@ -663,34 +659,24 @@ void TracerBase::deleteTrace()
 		++it;
 	}
 	timeList.clear();
-
-	mutex.Unlock();
 }
 
 void TracerBase::clear()
 {
-	mutex.Lock();
-
 	clearCharts();
 	deleteTrace();
 	if (tree)
 		tree->clear();
 	if (log)
 		log->view().clear();
-
-	mutex.Unlock();
 }
 
 void TracerBase::clearCharts()
 {
-	mutex.Lock();
-
 	while (!charts.empty())
 	{
 		charts.front()->getFirstView()->parentWidget()->parentWidget()->close();
 	}
-
-	mutex.Unlock();
 }
 
 void TracerBase::setLog(PTR(LogMainWnd) pTracerLog)
@@ -705,8 +691,6 @@ void TracerBase::setTree(PTR(ChartTree) pTreeCtrl)
 
 void TracerBase::getModelStructure(rdo::textstream& stream)
 {
-	mutex.Lock();
-
 	tstring s;
 
 	while (!stream.eof())
@@ -786,8 +770,6 @@ void TracerBase::getModelStructure(rdo::textstream& stream)
 		}
 	}
 
-	mutex.Unlock();
-
 	/*stream >> s;
 
 	if (s.find("$Resource_type") != string::npos) {
@@ -838,8 +820,6 @@ void TracerBase::getModelStructure(rdo::textstream& stream)
 
 void TracerBase::getTraceString(tstring trace_string)
 {
-	mutex.Lock();
-
 	if (log)
 	{
 		log->view().push_back(trace_string);
@@ -849,8 +829,6 @@ void TracerBase::getTraceString(tstring trace_string)
 	resource = NULL;
 
 	dispatchNextString(trace_string);
-
-	mutex.Unlock();
 
 	switch (action)
 	{
@@ -882,8 +860,6 @@ RDOStudioChartDoc* TracerBase::createNewChart()
 
 RDOStudioChartDoc* TracerBase::addSerieToChart(TracerSerie* const serie, RDOStudioChartDoc* chart)
 {
-	mutex.Lock();
-
 	if (!chart)
 	{
 		chart = createNewChart();
@@ -893,24 +869,16 @@ RDOStudioChartDoc* TracerBase::addSerieToChart(TracerSerie* const serie, RDOStud
 		chart->addSerie(serie);
 	}
 
-	mutex.Unlock();
-
 	return chart;
 }
 
 void TracerBase::addChart(RDOStudioChartDoc* const chart)
 {
-	mutex.Lock();
-
 	charts.push_back(chart);
-
-	mutex.Unlock();
 }
 
 void TracerBase::removeChart(RDOStudioChartDoc* chart)
 {
-	mutex.Lock();
-
 	for (std::vector<RDOStudioChartDoc*>::iterator it = charts.begin(); it != charts.end(); ++it)
 	{
 		if ((*it) == chart)
@@ -919,20 +887,14 @@ void TracerBase::removeChart(RDOStudioChartDoc* chart)
 			break;
 		}
 	}
-
-	mutex.Unlock();
 }
 
 void TracerBase::updateChartsStyles() const
 {
-	const_cast<CMutex&>(mutex).Lock();
-
 	BOOST_FOREACH(RDOStudioChartDoc * pDoc, charts)
 	{
 		pDoc->setStyle(&studioApp.getStyle()->style_chart);
 	}
-
-	const_cast<CMutex&>(mutex).Unlock();
 }
 
 void TracerBase::setModelName(CREF(QString) name) const

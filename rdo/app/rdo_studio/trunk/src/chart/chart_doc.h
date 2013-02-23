@@ -57,22 +57,10 @@ public:
 	//void removeSerie( TracerSerie* const serie );
 	rbool serieExists(const TracerSerie* serie) const;
 
-	void lock()
-	{
-		m_mutex.Lock();
-	}
-
-	void unlock()
-	{
-		m_mutex.Unlock();
-	}
-
 	void incTimeEventsCount(TracerTimeNow* time);
 	rbool newValueToSerieAdded(TracerValue* val);
 
 private:
-	CMutex m_mutex;
-
 	std::vector<ChartSerie*> m_serieList;
 	int getSerieIndex(ChartSerie* serie) const;
 	COLORREF selectColor();

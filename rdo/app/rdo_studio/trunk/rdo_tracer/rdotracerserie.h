@@ -105,8 +105,6 @@ public:
 	ExportData exportData();
 
 protected:
-	CMutex mutex;
-
 	TracerSerieKind serieKind;
 	tstring title;
 

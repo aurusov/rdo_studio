@@ -52,8 +52,6 @@ public:
 	QSize getLegendSize(const QFontMetrics& fm, const QRect& rect) const;
 	QSize drawLegend   (QPainter& painter, const QRect& rect, const QColor& textColor) const;
 
-	void  lock  ();
-	void  unlock();
 	rbool empty () const;
 
 protected:

@@ -68,8 +68,6 @@ TracerSerie::TracerSerie(TracerSerieKind _serieKind)
 
 TracerSerie::~TracerSerie()
 {
-	mutex.Lock();
-
 	valuesList::iterator it = values.begin();
 	while (it != values.end())
 	{
@@ -78,8 +76,6 @@ TracerSerie::~TracerSerie()
 	}
 	values.clear();
 	documents.clear();
-
-	mutex.Unlock();
 }
 ;
 
@@ -102,10 +98,6 @@ void TracerSerie::setTitle(CREF(tstring) value)
 void TracerSerie::addValue(TracerValue* const value)
 {
 	std::vector<RDOStudioChartDoc*>::iterator it;
-	for (it = documents.begin(); it != documents.end(); it++)
-		(*it)->lock();
-
-	mutex.Lock();
 
 	if (value->value < minValue || values.empty())
 		minValue = value->value;
@@ -117,26 +109,15 @@ void TracerSerie::addValue(TracerValue* const value)
 	value_count++;
 
 	std::for_each(documents.begin(), documents.end(), std::bind2nd(std::mem_fun1(&RDOStudioChartDoc::newValueToSerieAdded), value));
-
-	mutex.Unlock();
-
-	for (it = documents.begin(); it != documents.end(); it++)
-		(*it)->unlock();
 }
 
 void TracerSerie::getValueCount(int& count) const
 {
-	const_cast<CMutex&>(mutex).Lock();
-
 	count = value_count;
-
-	const_cast<CMutex&>(mutex).Unlock();
 }
 
 void TracerSerie::getCaptions(std::vector<tstring> &captions, const int val_count) const
 {
-	const_cast<CMutex&>(mutex).Lock();
-
 	if (!captions.empty())
 		captions.clear();
 	if (serieKind == RDOST_PREVIEW)
@@ -157,14 +138,10 @@ void TracerSerie::getCaptions(std::vector<tstring> &captions, const int val_coun
 			captions.push_back(rdo::format(formatstr.c_str(), valo));
 		}
 	}
-
-	const_cast<CMutex&>(mutex).Unlock();
 }
 
 void TracerSerie::getCaptionsInt(std::vector<tstring> &captions, const int val_count) const
 {
-	const_cast<CMutex&>(mutex).Lock();
-
 	TracerSerie::getCaptions(captions, val_count);
 
 	int real_val_count = val_count;
@@ -185,14 +162,10 @@ void TracerSerie::getCaptionsInt(std::vector<tstring> &captions, const int val_c
 		captions.push_back(rdo::format(formatstr.c_str(), valo));
 		valo += valoffset;
 	}
-
-	const_cast<CMutex&>(mutex).Unlock();
 }
 
 void TracerSerie::getCaptionsDouble(std::vector<tstring> &captions, const int val_count) const
 {
-	const_cast<CMutex&>(mutex).Lock();
-
 	TracerSerie::getCaptions(captions, val_count);
 
 	double valoffset = (maxValue - minValue) / (double)(val_count - 1);
@@ -210,8 +183,6 @@ void TracerSerie::getCaptionsDouble(std::vector<tstring> &captions, const int va
 	{
 		captions.push_back(rdo::format(formatstr.c_str(), valo));
 	}
-
-	const_cast<CMutex&>(mutex).Unlock();
 }
 
 void TracerSerie::getCaptionsBool(std::vector<tstring> &captions, const int val_count) const
@@ -223,14 +194,10 @@ void TracerSerie::getCaptionsBool(std::vector<tstring> &captions, const int val_
 
 void TracerSerie::getLastValue(TracerValue*& val) const
 {
-	const_cast<CMutex&>(mutex).Lock();
-
 	if (!values.size())
 		val = NULL;
 	else
 		val = values.back();
-
-	const_cast<CMutex&>(mutex).Unlock();
 }
 
 void TracerSerie::drawSerie(ChartView* const view,
@@ -242,8 +209,6 @@ void TracerSerie::drawSerie(ChartView* const view,
                             const rbool draw_marker,
                             const rbool transparent_marker) const
 {
-	const_cast<CMutex&>(mutex).Lock();
-
 	if (!values.empty())
 	{
 		painter.setPen(color);
@@ -401,8 +366,6 @@ void TracerSerie::drawSerie(ChartView* const view,
 			painter.drawPath(path);
 		}
 	}
-
-	const_cast<CMutex&>(mutex).Unlock();
 }
 
 void TracerSerie::drawMarker(QPainter& painter, const int x, const int y, TracerSerieMarker marker, const int markerSize) const
@@ -454,33 +417,23 @@ void TracerSerie::drawMarker(QPainter& painter, const int x, const int y, Tracer
 
 void TracerSerie::addToDoc(RDOStudioChartDoc* const doc)
 {
-	mutex.Lock();
-
 	if (doc && std::find(documents.begin(), documents.end(), doc) == documents.end())
 	{
 		documents.push_back(doc);
 	}
-
-	mutex.Unlock();
 }
 
 void TracerSerie::removeFromDoc(RDOStudioChartDoc* const doc)
 {
-	mutex.Lock();
-
 	std::vector<RDOStudioChartDoc*>::iterator it = std::find(documents.begin(), documents.end(), doc);
 	if (it != documents.end())
 	{
 		documents.erase(it);
 	}
-
-	mutex.Unlock();
 }
 
 rbool TracerSerie::activateFirstDoc() const
 {
-	const_cast<CMutex&>(mutex).Lock();
-
 	rbool result = false;
 	if (!documents.empty())
 	{
@@ -493,8 +446,6 @@ rbool TracerSerie::activateFirstDoc() const
 			result = true;
 		}
 	}
-
-	const_cast<CMutex&>(mutex).Unlock();
 
 	return result;
 }

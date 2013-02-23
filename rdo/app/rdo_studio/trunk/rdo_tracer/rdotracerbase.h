@@ -42,8 +42,6 @@ class LogMainWnd;
 class TracerBase: public RDOThreadGUI
 {
 private:
-	CMutex mutex;
-
 	LogMainWnd* log;
 	ChartTree* tree;
 
@@ -113,16 +111,6 @@ public:
 	rbool getDrawTrace() const
 	{
 		return drawTrace;
-	}
-
-	void lock()
-	{
-		mutex.Lock();
-	}
-
-	void unlock()
-	{
-		mutex.Unlock();
 	}
 };
 

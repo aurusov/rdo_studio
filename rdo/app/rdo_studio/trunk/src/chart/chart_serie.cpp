@@ -88,16 +88,6 @@ void ChartSerie::getCaptions(std::vector<tstring> &captions, const int val_count
 	m_pSerie->getCaptions(captions, val_count);
 }
 
-void ChartSerie::lock()
-{
-	m_pSerie->mutex.Lock();
-}
-
-void ChartSerie::unlock()
-{
-	m_pSerie->mutex.Unlock();
-}
-
 rbool ChartSerie::empty() const
 {
 	return m_pSerie->empty();

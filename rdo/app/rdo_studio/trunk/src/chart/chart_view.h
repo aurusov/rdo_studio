@@ -48,8 +48,6 @@ public:
 	void setPreviwMode(rbool value);
 
 private:
-	CMutex m_mutex;
-
 	COleDropTarget m_ddTarget;
 	TracerSerie*   m_pddSerie;
 

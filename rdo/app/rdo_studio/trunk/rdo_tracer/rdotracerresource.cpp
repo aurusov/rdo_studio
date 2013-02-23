@@ -44,8 +44,6 @@ TracerResParamInfo* TracerResParam::getParamInfo() const
 
 void TracerResParam::getCaptions(std::vector<tstring> &captions, const int val_count) const
 {
-	const_cast<CMutex&>(mutex).Lock();
-
 	switch (getParamInfo()->getParamType())
 	{
 	case RDOPT_INTEGER:
@@ -84,8 +82,6 @@ void TracerResParam::getCaptions(std::vector<tstring> &captions, const int val_c
 		break;
 	}
 	}
-
-	const_cast<CMutex&>(mutex).Unlock();
 }
 
 // --------------------------------------------------------------------------------
@@ -98,38 +94,26 @@ TracerResource::TracerResource(TracerResType* const type, CREF(tstring) name)
 	, Name(name)
 	, id(0)
 {
-	mutex.Lock();
-
 	int count = resType->getParamsCount();
 	for (int i = 0; i < count; i++)
 	{
 		addParam(new TracerResParam(this));
 	}
-
-	mutex.Unlock();
 }
 
 TracerResource::~TracerResource()
 {
-	mutex.Lock();
-
 	int count = params.size();
 	for (int i = 0; i < count; i++)
 	{
 		delete params.at(i);
 	}
-
-	mutex.Unlock();
 }
 
 void TracerResource::addParam(TracerResParam* const value)
 {
-	mutex.Lock();
-
 	value->setTitle(Name + "." + resType->getParamInfo(params.size())->Name);
 	params.push_back(value);
-
-	mutex.Unlock();
 }
 
 TracerResParam* TracerResource::getParam(unsigned int index) const
