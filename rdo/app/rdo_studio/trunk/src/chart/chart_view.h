@@ -119,7 +119,7 @@ private:
 
 	typedef  ActionActivatorWidget  super;
 
-	ChartView(QAbstractScrollArea* pParent, RDOStudioChartDoc* pDocument, const rbool preview /* = false*/); //! @todo qt
+	ChartView(QAbstractScrollArea* pParent, RDOStudioChartDoc* pDocument, const rbool preview);
 	virtual ~ChartView();
 
 	RDOStudioChartDoc* m_pDocument;
