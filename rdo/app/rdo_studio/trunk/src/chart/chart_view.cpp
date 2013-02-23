@@ -603,8 +603,8 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 
 void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 {
-	QBrush brush(m_pStyle->getTheme()->chartBgColor);
-	painter.setBrush(brush);
+	painter.setPen  (m_pStyle->getTheme()->defaultColor);
+	painter.setBrush(m_pStyle->getTheme()->chartBgColor);
 	painter.drawRect(chartRect);
 
 	if (doUnwrapTime())
