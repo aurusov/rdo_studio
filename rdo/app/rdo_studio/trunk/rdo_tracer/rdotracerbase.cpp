@@ -894,3 +894,8 @@ void TracerBase::setDrawTrace(const rbool value)
 		log->view().setDrawLog(value);
 	}
 }
+
+rbool TracerBase::getDrawTrace() const
+{
+	return drawTrace;
+}

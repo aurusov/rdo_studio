@@ -42,6 +42,35 @@ class LogMainWnd;
 
 class TracerBase: public RDOThreadGUI
 {
+public:
+	void setLog (PTR(LogMainWnd) pTracerLog);
+	void setTree(PTR(ChartTree) pTreeCtrl);
+
+	void startTrace();
+	void getModelStructure(rdo::textstream& stream);
+	void getTraceString(tstring trace_string);
+	tstring getNextValue(REF(tstring) line);
+	void registerClipboardFormat()
+	{
+		clipboardFormat = ::RegisterClipboardFormat(rdo::format(ID_RAO_CLIPBRD).c_str());
+	}
+	UINT const getClipboardFormat() const
+	{
+		return clipboardFormat;
+	}
+	RDOStudioChartDoc* createNewChart();
+	void addChart(RDOStudioChartDoc* const chart);
+	void removeChart(RDOStudioChartDoc* chart);
+	RDOStudioChartDoc* addSerieToChart(CREF(LPTracerSerie) pSerie, RDOStudioChartDoc* chart = NULL);
+	void updateChartsStyles() const;
+	void clear();void setModelName(CREF(QString) name) const;
+	void setDrawTrace(const rbool value);
+	rbool getDrawTrace() const;
+
+protected:
+	TracerBase(CREF(tstring) _thread_name, RDOKernelGUI* _kernel_gui);
+	virtual ~TracerBase();
+
 private:
 	LogMainWnd* log;
 	ChartTree* tree;
@@ -49,7 +78,9 @@ private:
 	TracerResParamInfo* getParam(rdo::textstream& stream);
 	TracerResParamInfo* getParamType(rdo::textstream& stream);
 
-	std::vector<LPTracerResType> resTypes;
+	typedef  std::vector<LPTracerResType>  ResTypeList;
+
+	ResTypeList resTypes;
 	void addResourceType(REF(tstring) s, rdo::textstream& stream);
 
 	std::vector<LPTracerResource> resources;
@@ -99,36 +130,6 @@ private:
 	std::vector<RDOStudioChartDoc*> charts;
 
 	rbool drawTrace;
-
-protected:
-	TracerBase(CREF(tstring) _thread_name, RDOKernelGUI* _kernel_gui);
-	virtual ~TracerBase();
-
-public:
-	void setLog (PTR(LogMainWnd) pTracerLog);void setTree(PTR(ChartTree) pTreeCtrl);
-
-	void startTrace();
-	void getModelStructure(rdo::textstream& stream);
-	void getTraceString(tstring trace_string);tstring getNextValue(REF(tstring) line);
-	void registerClipboardFormat()
-	{
-		clipboardFormat = ::RegisterClipboardFormat(rdo::format(ID_RAO_CLIPBRD).c_str());
-	}
-	UINT const getClipboardFormat() const
-	{
-		return clipboardFormat;
-	}
-	RDOStudioChartDoc* createNewChart();
-	void addChart(RDOStudioChartDoc* const chart);
-	void removeChart(RDOStudioChartDoc* chart);
-	RDOStudioChartDoc* addSerieToChart(CREF(LPTracerSerie) pSerie, RDOStudioChartDoc* chart = NULL);
-	void updateChartsStyles() const;
-	void clear();void setModelName(CREF(QString) name) const;
-	void setDrawTrace(const rbool value);
-	rbool getDrawTrace() const
-	{
-		return drawTrace;
-	}
 };
 
 }}} // namespace rdo::gui::tracer
