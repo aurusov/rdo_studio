@@ -33,8 +33,8 @@ public:
 	rbool operator ==(const RDOStyleFont& font) const;
 	rbool operator !=(const RDOStyleFont& font) const;
 
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
+	void load(QSettings& settings);
+	void save(QSettings& settings) const;
 
 	enum style { NONE = 0x00, BOLD = 0x01, ITALIC = 0x02, UNDERLINE = 0x04 };
 

@@ -80,8 +80,8 @@ public:
 	rbool operator ==( const RDOBaseEditTab& tab ) const;
 	rbool operator !=( const RDOBaseEditTab& tab ) const;
 
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
+	void load(QSettings& settings);
+	void save(QSettings& settings) const;
 
 	int tabSize;
 	int indentSize;
@@ -107,8 +107,8 @@ public:
 	rbool operator ==( const RDOBaseEditWindow& window ) const;
 	rbool operator !=( const RDOBaseEditWindow& window ) const;
 
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
+	void load(QSettings& settings);
+	void save(QSettings& settings) const;
 
 	rbool wordWrap;
 	rbool showHorzScrollBar;

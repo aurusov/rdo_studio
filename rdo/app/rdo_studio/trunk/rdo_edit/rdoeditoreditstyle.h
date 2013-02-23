@@ -77,8 +77,8 @@ public:
 	rbool operator ==( const RDOEditorEditAutoComplete& autoComplete ) const;
 	rbool operator !=( const RDOEditorEditAutoComplete& autoComplete ) const;
 
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
+	void load(QSettings& settings);
+	void save(QSettings& settings) const;
 
 	rbool useAutoComplete;
 	rbool showFullList;
@@ -100,8 +100,8 @@ public:
 	rbool operator ==( const RDOEditorEditMargin& margin ) const;
 	rbool operator !=( const RDOEditorEditMargin& margin ) const;
 
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
+	void load(QSettings& settings);
+	void save(QSettings& settings) const;
 
 	rbool fold;
 	rbool bookmark;

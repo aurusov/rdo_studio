@@ -59,8 +59,8 @@ public:
 	rbool operator ==(const RDOStudioChartViewFontsTicks& fonts_ticks) const;
 	rbool operator !=(const RDOStudioChartViewFontsTicks& fonts_ticks) const;
 
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
+	void load(QSettings& settings);
+	void save(QSettings& settings) const;
 
 	int titleFontSize;
 	int legendFontSize;
