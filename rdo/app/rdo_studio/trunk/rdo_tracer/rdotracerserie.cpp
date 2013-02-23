@@ -246,6 +246,8 @@ void TracerSerie::drawSerie(ChartView* const view,
 
 	if (!values.empty())
 	{
+		painter.setPen(color);
+		painter.setBrush(QBrush(color, transparent_marker ? Qt::NoBrush : Qt::SolidPattern));
 
 		valuesList::const_iterator it = std::find_if(values.begin(), values.end(), TracerSerieFindValue(view));
 
@@ -309,9 +311,6 @@ void TracerSerie::drawSerie(ChartView* const view,
 				}
 			}
 			lastx = std::min(lastx, rect.right() - 1);
-
-			QPen pen(color);
-			QBrush brush(color, transparent_marker ? Qt::NoBrush : Qt::SolidPattern);
 
 			QPainterPath path;
 			if (lastx >= rect.left() && draw_marker)
@@ -396,6 +395,7 @@ void TracerSerie::drawSerie(ChartView* const view,
 				path.lineTo(x, lasty);
 			}
 
+			painter.setBrush(Qt::NoBrush);
 			painter.drawPath(path);
 		}
 	}
