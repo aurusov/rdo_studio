@@ -544,12 +544,14 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 				{
 					str = rdo::format(formatstr.c_str(), valo);
 					tmprect.setLeft(x);
+					painter.setPen(m_pStyle->getTheme()->axisFgColor);
 					painter.drawText(tmprect, Qt::AlignLeft, QString::fromLocal8Bit(str.c_str()));
 					if (i != m_valueCountX - 1)
 					{
 						QPainterPath path;
 						path.moveTo(x, chartRect.bottom());
 						path.lineTo(x, chartRect.bottom() + 3);
+						painter.setPen(m_pStyle->getTheme()->defaultColor);
 						painter.drawPath(path);
 					}
 					valo += valoffset;
@@ -579,12 +581,14 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 
 				if (tmprect.left() > lastx)
 				{
+					painter.setPen(m_pStyle->getTheme()->axisFgColor);
 					painter.drawText(tmprect, Qt::AlignLeft, QString::fromLocal8Bit(str.c_str()));
 					if (tmprect.left() != chartRect.left() && tmprect.left() != chartRect.right())
 					{
 						QPainterPath path;
 						path.moveTo(tmprect.left(), chartRect.bottom());
 						path.lineTo(tmprect.left(), chartRect.bottom() + 3);
+						painter.setPen(m_pStyle->getTheme()->defaultColor);
 						painter.drawPath(path);
 					}
 					QSize size = painter.fontMetrics().boundingRect(QString::fromLocal8Bit(str.c_str())).size();
