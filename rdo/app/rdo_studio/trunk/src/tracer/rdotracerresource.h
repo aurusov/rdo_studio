@@ -15,6 +15,8 @@
 #include "app/rdo_studio/src/tracer/rdotracerserie.h"
 // --------------------------------------------------------------------------------
 
+namespace rdo { namespace gui { namespace tracer {
+
 // --------------------------------------------------------------------------------
 // -------------------- TracerResourceParam
 // --------------------------------------------------------------------------------
@@ -78,5 +80,7 @@ private:
 };
 
 typedef  rdo::intrusive_ptr<TracerResource>  LPTracerResource;
+
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERRESOURCE_H_

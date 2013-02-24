@@ -20,24 +20,19 @@
 #include "app/rdo_studio/resource.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- TracerBase
-// --------------------------------------------------------------------------------
+namespace rdo { namespace gui { namespace tracer {
+
 PREDECLARE_POINTER(TracerResourceType);
 PREDECLARE_POINTER(TracerResource);
 PREDECLARE_POINTER(TracerPattern);
 PREDECLARE_POINTER(TracerOperationBase);
 PREDECLARE_POINTER(TracerEvent);
 PREDECLARE_POINTER(TracerResult);
-class TracerTimeNow;
 PREDECLARE_POINTER(TracerSerie);
+class TracerTimeNow;
 class TracerResourceParamInfo;
-
 class ChartTree;
 class RDOStudioChartDoc;
-
-namespace rdo { namespace gui { namespace tracer {
-
 class LogMainWnd;
 
 class TracerBase: public RDOThreadGUI

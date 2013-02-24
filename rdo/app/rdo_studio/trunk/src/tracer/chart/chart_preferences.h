@@ -18,6 +18,8 @@
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 // --------------------------------------------------------------------------------
 
+namespace rdo { namespace gui { namespace tracer {
+
 class ChartPreferences
 	: public QDialog
 	, private Ui::ChartPreferencesDialog
@@ -54,6 +56,8 @@ private slots:
 	void onColorSelected(const QColor& color);
 	void onValueComboBox(int index);
 	void onCheckAllData();
-
 };
+
+}}} // namespace rdo::gui::tracer
+
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

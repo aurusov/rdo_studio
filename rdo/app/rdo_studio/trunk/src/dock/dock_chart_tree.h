@@ -19,7 +19,7 @@
 class DockChartTree: public DockFocusable
 {
 public:
-	typedef  ChartTree  context_type;
+	typedef  rdo::gui::tracer::ChartTree  context_type;
 
 	DockChartTree(PTR(QWidget) pParent);
 	virtual ~DockChartTree();

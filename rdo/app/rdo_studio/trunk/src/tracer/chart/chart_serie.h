@@ -16,9 +16,8 @@
 #include "app/rdo_studio/src/tracer/rdotracerserie.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- ChartSerie
-// --------------------------------------------------------------------------------
+namespace rdo { namespace gui { namespace tracer {
+
 class ChartView;
 
 class ChartSerie
@@ -58,5 +57,7 @@ protected:
 	LPTracerSerie m_pSerie;
 	Options       m_options;
 };
+
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_CHART_SERIE_H_

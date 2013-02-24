@@ -40,7 +40,7 @@ public:
 	rdoEditor::RDOEditorResultsStyle  style_results;
 	rdoEditCtrl::RDOFindEditStyle     style_find;
 	RDOStudioFrameStyle               style_frame;
-	RDOStudioChartViewStyle           style_chart;
+	rdo::gui::tracer::RDOStudioChartViewStyle style_chart;
 
 	rbool isMDIMaximazed() const { return true; }
 

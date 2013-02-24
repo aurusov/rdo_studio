@@ -243,7 +243,7 @@ private:
 	rdo::gui::tracer::LogStyle       style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
-	RDOStudioChartViewStyle          style_chart;
+	rdo::gui::tracer::RDOStudioChartViewStyle style_chart;
 	RDOStudioFrameStyle              style_frame;
 
 	PTR(rdoEditor::RDOEditorEdit)     preview_editor;
@@ -253,10 +253,10 @@ private:
 	PTR(rdoEditor::RDOEditorResults)  preview_results;
 	PTR(rdoEditCtrl::RDOFindEdit)     preview_find;
 
-	PTR(RDOStudioChartDoc)            preview_chart_doc;
-	PTR(ChartView)                    preview_chart;
-	std::vector<TracerTimeNow>        preview_times;
-	LPTracerSerie                     preview_serie;
+	PTR(rdo::gui::tracer::RDOStudioChartDoc)     preview_chart_doc;
+	PTR(rdo::gui::tracer::ChartView)             preview_chart;
+	std::vector<rdo::gui::tracer::TracerTimeNow> preview_times;
+	rdo::gui::tracer::LPTracerSerie              preview_serie;
 
 	PTR(FrameOptionsView)             preview_frame;
 

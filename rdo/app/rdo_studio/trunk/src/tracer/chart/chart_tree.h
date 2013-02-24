@@ -18,9 +18,8 @@
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- ChartTree
-// --------------------------------------------------------------------------------
+namespace rdo { namespace gui { namespace tracer {
+
 class RDODropSource: public COleDropSource
 {
 public:
@@ -114,5 +113,7 @@ private slots:
 	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int);
 	void onHelpContext();
 };
+
+}}} // namespace rdo::gui::tracer
 
 #endif // _APP_RDO_STUDIO_CHART_TREE_H_

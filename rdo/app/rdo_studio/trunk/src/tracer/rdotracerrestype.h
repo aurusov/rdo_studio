@@ -15,6 +15,8 @@
 #include "app/rdo_studio/src/tracer/chart/chart_tree_item.h"
 // --------------------------------------------------------------------------------
 
+namespace rdo { namespace gui { namespace tracer {
+
 // --------------------------------------------------------------------------------
 // -------------------- TracerResourceParamInfo
 // --------------------------------------------------------------------------------
@@ -85,5 +87,7 @@ private:
 };
 
 typedef rdo::intrusive_ptr<TracerResourceType> LPTracerResourceType;
+
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERRESTYPE_H_

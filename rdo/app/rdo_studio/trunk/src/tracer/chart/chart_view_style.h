@@ -15,6 +15,8 @@
 #include "app/rdo_studio/src/style.h"
 // --------------------------------------------------------------------------------
 
+namespace rdo { namespace gui { namespace tracer {
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartViewTheme
 // --------------------------------------------------------------------------------
@@ -94,5 +96,7 @@ public:
 
 	RDOStudioChartViewFontsTicks* pFontsTicks;
 };
+
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_CHART_VIEW_STYLE_H_

@@ -17,9 +17,8 @@
 #include "app/rdo_studio/src/tracer/rdotracerserie.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- TracerResult
-// --------------------------------------------------------------------------------
+namespace rdo { namespace gui { namespace tracer {
+
 class TracerResult: public TracerSerie
 {
 DECLARE_FACTORY(TracerResult)
@@ -50,5 +49,7 @@ private:
 };
 
 typedef  rdo::intrusive_ptr<TracerResult>  LPTracerResult;
+
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERRESULT_H_

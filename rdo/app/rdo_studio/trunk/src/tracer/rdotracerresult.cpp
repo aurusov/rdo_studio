@@ -21,9 +21,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// --------------------------------------------------------------------------------
-// -------------------- TracerResult
-// --------------------------------------------------------------------------------
+using namespace rdo::gui::tracer;
+
 TracerResult::TracerResult(CREF(QString) name, Kind kind, int id)
 	: TracerSerie(SK_RESULT)
 	, m_name(name)

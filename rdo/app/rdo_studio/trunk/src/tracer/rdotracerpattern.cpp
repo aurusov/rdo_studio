@@ -20,6 +20,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+using namespace rdo::gui::tracer;
+
 TracerPattern::TracerPattern(Kind kind)
 	: ChartTreeItem()
 	, m_kind(kind)

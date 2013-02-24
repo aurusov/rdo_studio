@@ -14,6 +14,8 @@
 #include "app/rdo_studio/src/tracer/chart/chart_tree_item.h"
 // --------------------------------------------------------------------------------
 
+using namespace rdo::gui::tracer;
+
 ChartTreeItem::ChartTreeItem(rbool drawable)
 	: m_pCtrlItem(NULL    )
 	, m_drawable (drawable)

@@ -23,6 +23,8 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdoStyle;
 
+namespace rdo { namespace gui { namespace tracer {
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartViewTheme
 // --------------------------------------------------------------------------------
@@ -137,8 +139,7 @@ RDOStudioChartViewFontsTicks::RDOStudioChartViewFontsTicks()
 }
 
 RDOStudioChartViewFontsTicks::~RDOStudioChartViewFontsTicks()
-{
-}
+{}
 
 RDOStudioChartViewFontsTicks& RDOStudioChartViewFontsTicks::operator =(const RDOStudioChartViewFontsTicks& fonts_ticks)
 {
@@ -188,6 +189,7 @@ QSettings& operator>> (QSettings& settings, RDOStudioChartViewFontsTicks& fonts_
 
 	return settings;
 }
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartViewStyle
 // --------------------------------------------------------------------------------
@@ -278,3 +280,5 @@ rbool RDOStudioChartViewStyle::save() const
 	}
 	return false;
 }
+
+}}} // namespace rdo::gui::tracer

@@ -17,6 +17,8 @@
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 // --------------------------------------------------------------------------------
 
+using namespace rdo::gui::tracer;
+
 ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 	: QDialog(pView)
 	, m_pView(pView)

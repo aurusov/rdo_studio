@@ -21,9 +21,8 @@
 #include "ui/qt/headers/scroll_bar/scroll_bar.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- ChartView
-// --------------------------------------------------------------------------------
+namespace rdo { namespace gui { namespace tracer {
+
 class RDOStudioChartViewStyle;
 PREDECLARE_POINTER(TracerSerie);
 class ChartSerie;
@@ -186,5 +185,7 @@ private:
 	virtual void  focusOutEvent  (PTR(QFocusEvent) pEvent);
 	virtual void  keyPressEvent  (PTR(QKeyEvent)   pEvent);
 };
+
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_CHART_VIEW_H_

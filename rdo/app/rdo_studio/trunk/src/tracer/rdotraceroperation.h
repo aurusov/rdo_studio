@@ -16,6 +16,8 @@
 #include "app/rdo_studio/src/tracer/rdotracerpattern.h"
 // --------------------------------------------------------------------------------
 
+namespace rdo { namespace gui { namespace tracer {
+
 // --------------------------------------------------------------------------------
 // -------------------- TracerOperationBase
 // --------------------------------------------------------------------------------
@@ -76,5 +78,7 @@ private:
 };
 
 typedef  rdo::intrusive_ptr<TracerEvent>  LPTracerEvent;
+
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACEROPERATION_H_

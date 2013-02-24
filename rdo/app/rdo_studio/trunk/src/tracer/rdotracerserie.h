@@ -19,9 +19,8 @@
 #include "app/rdo_studio/src/tracer/rdotracervalues.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- TracerSerie
-// --------------------------------------------------------------------------------
+namespace rdo { namespace gui { namespace tracer {
+
 class ChartView;
 class RDOStudioChartDoc;
 
@@ -107,5 +106,7 @@ private:
 };
 
 typedef  rdo::intrusive_ptr<TracerSerie>  LPTracerSerie;
+
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERSERIE_H_

@@ -21,6 +21,8 @@
 #define UPDATE_NEWVALUE  0x001
 #define UPDATE_TIMETICKS 0x002
 
+namespace rdo { namespace gui { namespace tracer {
+
 class TracerTimeNow;
 class TracerValue;
 class ChartSerie;
@@ -84,5 +86,7 @@ private:
 
 	void insertValue(TracerValue* pValue);
 };
+
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_CHART_DOC_H_

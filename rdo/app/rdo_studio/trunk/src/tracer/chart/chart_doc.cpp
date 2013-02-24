@@ -30,6 +30,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+using namespace rdo::gui::tracer;
+
 ruint RDOStudioChartDoc::s_titleIndex = 0;
 
 RDOStudioChartDoc::RDOStudioChartDoc(const rbool preview)

@@ -16,6 +16,8 @@
 #include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
+namespace rdo { namespace gui { namespace tracer {
+
 class ChartTreeItem: public rdo::counter_reference
 {
 DECLARE_FACTORY(ChartTreeItem)
@@ -35,5 +37,7 @@ private:
 };
 
 typedef  rdo::intrusive_ptr<ChartTreeItem>  LPChartTreeItem;
+
+}}} // namespace rdo::gui::tracer
 
 #endif // _APP_RDO_STUDIO_CHART_TREE_ITEM_H_

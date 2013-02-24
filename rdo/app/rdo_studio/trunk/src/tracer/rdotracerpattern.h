@@ -15,6 +15,8 @@
 #include "app/rdo_studio/src/tracer/chart/chart_tree_item.h"
 // --------------------------------------------------------------------------------
 
+namespace rdo { namespace gui { namespace tracer {
+
 class TracerPattern: public ChartTreeItem
 {
 DECLARE_FACTORY(TracerPattern)
@@ -42,5 +44,7 @@ private:
 };
 
 typedef  rdo::intrusive_ptr<TracerPattern>  LPTracerPattern;
+
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERPATTERN_H_

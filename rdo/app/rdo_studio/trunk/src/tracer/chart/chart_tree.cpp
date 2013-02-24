@@ -30,9 +30,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// --------------------------------------------------------------------------------
-// -------------------- ChartTree
-// --------------------------------------------------------------------------------
+using namespace rdo::gui::tracer;
+
 SCODE RDODropSource::GiveFeedback(DROPEFFECT dropEffect)
 {
 	return COleDropSource::GiveFeedback(dropEffect);
