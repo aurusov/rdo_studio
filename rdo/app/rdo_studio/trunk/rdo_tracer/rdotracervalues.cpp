@@ -23,44 +23,40 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 // -------------------- TracerTimeNow
 // --------------------------------------------------------------------------------
-TracerTimeNow::TracerTimeNow(const double _time)
-	: time(_time)
+TracerTimeNow::TracerTimeNow(const double time)
+	: time(time)
 {
 	eventCount = 0;
 }
 
-TracerTimeNow::TracerTimeNow(const double _time, const int _event_count)
-{
-	time = _time;
-	eventCount = _event_count;
-}
+TracerTimeNow::TracerTimeNow(const double time, const int eventCount)
+	: time(time)
+	, eventCount(eventCount)
+{}
 
-TracerTimeNow& TracerTimeNow::operator =(const TracerTimeNow& timenow)
+TracerTimeNow& TracerTimeNow::operator= (const TracerTimeNow& timeNow)
 {
-	time = timenow.time;
-	eventCount = timenow.eventCount;
+	time       = timeNow.time;
+	eventCount = timeNow.eventCount;
 
 	return *this;
 }
 
-rbool TracerTimeNow::operator ==(const TracerTimeNow& timenow) const
+rbool TracerTimeNow::operator== (const TracerTimeNow& timeNow) const
 {
-	return time == timenow.time && eventCount == timenow.eventCount;
+	return time == timeNow.time && eventCount == timeNow.eventCount;
 }
 
-rbool TracerTimeNow::operator !=(const TracerTimeNow& timenow) const
+rbool TracerTimeNow::operator!= (const TracerTimeNow& timeNow) const
 {
-	return !(*this == timenow);
+	return !(*this == timeNow);
 }
 
-rbool TracerTimeNow::compareTimes(const TracerTimeNow* timenow)
+rbool TracerTimeNow::compareTimes(const TracerTimeNow* pTimeNow)
 {
-	rbool res = false;
-	if (timenow)
-	{
-		res = (time >= timenow->time);
-	}
-	return res;
+	return pTimeNow
+		? time >= pTimeNow->time
+		: false;
 }
 
 // --------------------------------------------------------------------------------

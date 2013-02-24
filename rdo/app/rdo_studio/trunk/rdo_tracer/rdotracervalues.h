@@ -20,19 +20,17 @@
 class TracerTimeNow
 {
 public:
-	TracerTimeNow(const double _time = 0);
-	TracerTimeNow(const double _time, const int _event_count);
-	~TracerTimeNow()
-	{}
+	TracerTimeNow(const double time = 0);
+	TracerTimeNow(const double time, const int eventCount);
 
 	double time;
 	int eventCount;
 
-	TracerTimeNow& operator =(const TracerTimeNow& timenow);
-	rbool operator ==(const TracerTimeNow& timenow) const;
-	rbool operator !=(const TracerTimeNow& timenow) const;
+	TracerTimeNow& operator =(const TracerTimeNow& timeNow);
+	rbool operator ==(const TracerTimeNow& timeNow) const;
+	rbool operator !=(const TracerTimeNow& timeNow) const;
 
-	rbool compareTimes(const TracerTimeNow* timenow);
+	rbool compareTimes(const TracerTimeNow* pTimeNow);
 };
 
 // --------------------------------------------------------------------------------
