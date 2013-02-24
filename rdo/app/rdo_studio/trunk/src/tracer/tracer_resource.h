@@ -18,68 +18,68 @@
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResourceParam
+// -------------------- Param
 // --------------------------------------------------------------------------------
-class TracerResourceParamInfo;
-PREDECLARE_POINTER(TracerResource);
+class ParamInfo;
+PREDECLARE_POINTER(Resource);
 
-class TracerResourceParam: public TracerSerie
+class Param: public Serie
 {
-DECLARE_FACTORY(TracerResourceParam)
+DECLARE_FACTORY(Param)
 public:
-	CREF(LPTracerResource)   getResource () const;
-	TracerResourceParamInfo* getParamInfo() const;
+	CREF(LPResource) getResource () const;
+	ParamInfo*       getParamInfo() const;
 
 	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
 
 protected:
-	TracerResourceParamInfo* paramInfo;
-	LPTracerResource         m_pResource;
+	ParamInfo*  paramInfo;
+	LPResource  m_pResource;
 
 private:
-	TracerResourceParam(CREF(LPTracerResource) pResource);
-	virtual ~TracerResourceParam();
+	Param(CREF(LPResource) pResource);
+	virtual ~Param();
 };
 
-typedef  rdo::intrusive_ptr<TracerResourceParam>  LPTracerResourceParam;
+typedef  rdo::intrusive_ptr<Param>  LPParam;
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResource
+// -------------------- Resource
 // --------------------------------------------------------------------------------
-PREDECLARE_POINTER(TracerResourceType);
+PREDECLARE_POINTER(ResourceType);
 
-class TracerResource: public ChartTreeItem
+class Resource: public ChartTreeItem
 {
-DECLARE_FACTORY(TracerResource)
+DECLARE_FACTORY(Resource)
 public:
 	CREF(QString) getName() const;
 	void          setName(CREF(QString) name);
 
 	int getID() const;
 
-	CREF(LPTracerResourceType) getType() const;
+	CREF(LPResourceType) getType() const;
 
-	void addParam(CREF(LPTracerResourceParam) pParam);
-	LPTracerResourceParam getParam(unsigned int index) const;
-	int getParamIndex(CREF(LPTracerResourceParam) pParam) const;
-	void setParams(tstring& line, TracerTimeNow* const time, const int eventIndex, const rbool erasing = false);
+	void addParam(CREF(LPParam) pParam);
+	LPParam getParam(unsigned int index) const;
+	int getParamIndex(CREF(LPParam) pParam) const;
+	void setParams(tstring& line, Time* const time, const int eventIndex, const rbool erasing = false);
 	void setErased(const rbool value);
 	rbool isErased() const;
 
 private:
-	TracerResource(CREF(LPTracerResourceType) pResType, CREF(QString) name, int id);
-	virtual ~TracerResource();
+	Resource(CREF(LPResourceType) pResType, CREF(QString) name, int id);
+	virtual ~Resource();
 
-	typedef  std::vector<LPTracerResourceParam>  ResourceParamList;
+	typedef  std::vector<LPParam>  ResourceParamList;
 
-	QString               m_name;
-	int                   m_id;
-	ResourceParamList     m_paramList;
-	LPTracerResourceType  m_pResourceType;
-	rbool                 m_erased;
+	QString            m_name;
+	int                m_id;
+	ResourceParamList  m_paramList;
+	LPResourceType     m_pResourceType;
+	rbool              m_erased;
 };
 
-typedef  rdo::intrusive_ptr<TracerResource>  LPTracerResource;
+typedef  rdo::intrusive_ptr<Resource>  LPResource;
 
 }}} // namespace rdo::gui::tracer
 

@@ -177,15 +177,15 @@ void ChartTree::createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) i
 	item->setCtrlItem(pCtrlItem);
 }
 
-void ChartTree::addResourceType(CREF(LPTracerResourceType) pRTP)
+void ChartTree::addResourceType(CREF(LPResourceType) pRTP)
 {
 	ASSERT(pRTP);
 	createItem(m_rootRTP, pRTP, pRTP->getName(), IT_SUB_ROOT_2);
 }
 
-void ChartTree::addResource(CREF(LPTracerResource) pRSS)
+void ChartTree::addResource(CREF(LPResource) pRSS)
 {
-	LPTracerResourceType pRTP = pRSS->getType();
+	LPResourceType pRTP = pRSS->getType();
 	ASSERT(pRTP);
 	ASSERT(pRSS);
 	createItem(pRTP, pRSS, pRSS->getName(), IT_SUB_ROOT_3);
@@ -200,7 +200,7 @@ void ChartTree::addResource(CREF(LPTracerResource) pRSS)
 	updateResource(pRSS);
 }
 
-void ChartTree::updateResource(CREF(LPTracerResource) pRSS)
+void ChartTree::updateResource(CREF(LPResource) pRSS)
 {
 	if (pRSS->isErased())
 	{
@@ -212,18 +212,18 @@ void ChartTree::updateResource(CREF(LPTracerResource) pRSS)
 	}
 }
 
-void ChartTree::addPattern(CREF(LPTracerPattern) pPAT)
+void ChartTree::addPattern(CREF(LPPattern) pPAT)
 {
 	ASSERT(pPAT);
 	createItem(m_rootPAT, pPAT, pPAT->getName(), IT_SUB_ROOT_2);
 }
 
-void ChartTree::addOperation(CREF(LPTracerOperationBase) pOPR)
+void ChartTree::addOperation(CREF(LPOperationBase) pOPR)
 {
 	createItem(pOPR->getPattern(), pOPR, pOPR->getName(), IT_VALUE);
 }
 
-void ChartTree::addResult(CREF(LPTracerResult) pPMV)
+void ChartTree::addResult(CREF(LPResult) pPMV)
 {
 	createItem(m_rootPMV, pPMV, pPMV->getName(), IT_VALUE);
 }
@@ -247,7 +247,7 @@ void ChartTree::clear()
 
 void ChartTree::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
 {
-	LPTracerSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<TracerSerie>();
+	LPSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<Serie>();
 	if (pSerie)
 	{
 		g_pTracer->addSerieToChart(pSerie);
@@ -256,7 +256,7 @@ void ChartTree::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
 
 rbool ChartTree::findInCharts(PTR(QTreeWidgetItem) pCtrlItem) const
 {
-	LPTracerSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<TracerSerie>();
+	LPSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<Serie>();
 	if (pSerie)
 	{
 		return pSerie->activateFirstDoc();
@@ -353,7 +353,7 @@ void ChartTree::OnUpdateChartFindincharts(CCmdUI* pCmdUI)
 	rbool enable = false;
 	if (g_pTracer->getDrawTrace())
 	{
-		LPTracerSerie pSerie = getIfItemIsDrawable(getSelected()).object_dynamic_cast<TracerSerie>();
+		LPSerie pSerie = getIfItemIsDrawable(getSelected()).object_dynamic_cast<Serie>();
 		if (pSerie)
 		{
 			enable = pSerie->isInOneOrMoreDocs();

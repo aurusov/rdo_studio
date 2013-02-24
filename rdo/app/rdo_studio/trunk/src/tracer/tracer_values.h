@@ -17,41 +17,41 @@
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerTimeNow
+// -------------------- Time
 // --------------------------------------------------------------------------------
-class TracerTimeNow
+class Time
 {
 public:
-	TracerTimeNow(const double time = 0);
-	TracerTimeNow(const double time, const int eventCount);
+	Time(const double time = 0);
+	Time(const double time, const int eventCount);
 
 	double time;
 	int eventCount;
 
-	TracerTimeNow& operator =(const TracerTimeNow& timeNow);
-	rbool operator ==(const TracerTimeNow& timeNow) const;
-	rbool operator !=(const TracerTimeNow& timeNow) const;
+	Time& operator =(const Time& timeNow);
+	rbool operator ==(const Time& timeNow) const;
+	rbool operator !=(const Time& timeNow) const;
 
-	rbool compareTimes(const TracerTimeNow* pTimeNow);
+	rbool compareTimes(const Time* pTimeNow);
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerValue
+// -------------------- Value
 // --------------------------------------------------------------------------------
-class TracerValue
+class Value
 {
 public:
-	TracerValue(TracerTimeNow* const pTimeNow, const int eventID, const double value);
-	~TracerValue();
+	Value(Time* const pTimeNow, const int eventID, const double value);
+	~Value();
 
-	double               getValue    () const;
-	TracerTimeNow* const getModelTime() const;
-	int                  getEventID  () const;
+	double      getValue    () const;
+	Time* const getModelTime() const;
+	int         getEventID  () const;
 
 private:
-	double          m_value;
-	TracerTimeNow*  m_pModelTime;
-	int             m_eventID;
+	double  m_value;
+	Time*   m_pModelTime;
+	int     m_eventID;
 };
 
 }}} // namespace rdo::gui::tracer

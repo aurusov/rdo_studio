@@ -18,17 +18,17 @@
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioChartViewTheme
+// -------------------- ChartViewTheme
 // --------------------------------------------------------------------------------
-class RDOStudioChartViewTheme: public rdoStyle::RDOStyleTheme
+class ChartViewTheme: public rdoStyle::RDOStyleTheme
 {
 public:
-	RDOStudioChartViewTheme();
-	virtual ~RDOStudioChartViewTheme();
+	ChartViewTheme();
+	virtual ~ChartViewTheme();
 
-	RDOStudioChartViewTheme& operator =(const RDOStudioChartViewTheme& theme);
-	rbool operator ==(const RDOStudioChartViewTheme& theme) const;
-	rbool operator !=(const RDOStudioChartViewTheme& theme) const;
+	ChartViewTheme& operator =(const ChartViewTheme& theme);
+	rbool operator ==(const ChartViewTheme& theme) const;
+	rbool operator !=(const ChartViewTheme& theme) const;
 
 	virtual void load(QSettings& settings);
 	virtual void save(QSettings& settings) const;
@@ -42,24 +42,24 @@ public:
 	rdoStyle::RDOStyleFont::style titleStyle;
 	rdoStyle::RDOStyleFont::style legendStyle;
 
-	static RDOStudioChartViewTheme getDefaultTheme();
+	static ChartViewTheme getDefaultTheme();
 };
 
-QSettings& operator<< (QSettings& settings, const RDOStudioChartViewTheme& theme);
-QSettings& operator>> (QSettings& settings,       RDOStudioChartViewTheme& theme);
+QSettings& operator<< (QSettings& settings, const ChartViewTheme& theme);
+QSettings& operator>> (QSettings& settings,       ChartViewTheme& theme);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioChartViewFontsTicks
+// -------------------- ChartViewFontsTicks
 // --------------------------------------------------------------------------------
-class RDOStudioChartViewFontsTicks
+class ChartViewFontsTicks
 {
 public:
-	RDOStudioChartViewFontsTicks();
-	virtual ~RDOStudioChartViewFontsTicks();
+	ChartViewFontsTicks();
+	virtual ~ChartViewFontsTicks();
 
-	RDOStudioChartViewFontsTicks& operator =(const RDOStudioChartViewFontsTicks& fonts_ticks);
-	rbool operator ==(const RDOStudioChartViewFontsTicks& fonts_ticks) const;
-	rbool operator !=(const RDOStudioChartViewFontsTicks& fonts_ticks) const;
+	ChartViewFontsTicks& operator =(const ChartViewFontsTicks& fonts_ticks);
+	rbool operator ==(const ChartViewFontsTicks& fonts_ticks) const;
+	rbool operator !=(const ChartViewFontsTicks& fonts_ticks) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
@@ -69,32 +69,32 @@ public:
 	int tickWidth;
 };
 
-QSettings& operator<< (QSettings& settings, const RDOStudioChartViewFontsTicks& fonts_ticks);
-QSettings& operator>> (QSettings& settings,       RDOStudioChartViewFontsTicks& fonts_ticks);
+QSettings& operator<< (QSettings& settings, const ChartViewFontsTicks& fonts_ticks);
+QSettings& operator>> (QSettings& settings,       ChartViewFontsTicks& fonts_ticks);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioChartViewStyle
+// -------------------- ChartViewStyle
 // --------------------------------------------------------------------------------
-class RDOStudioChartViewStyle: public rdoStyle::RDOStyleWithTheme
+class ChartViewStyle: public rdoStyle::RDOStyleWithTheme
 {
 public:
-	RDOStudioChartViewStyle();
-	virtual ~RDOStudioChartViewStyle();
+	ChartViewStyle();
+	virtual ~ChartViewStyle();
 
-	RDOStudioChartViewStyle& operator =(const RDOStudioChartViewStyle& style);
-	rbool operator ==(const RDOStudioChartViewStyle& style) const;
-	rbool operator !=(const RDOStudioChartViewStyle& style) const;
+	ChartViewStyle& operator =(const ChartViewStyle& style);
+	rbool operator ==(const ChartViewStyle& style) const;
+	rbool operator !=(const ChartViewStyle& style) const;
 
 	void init(CREF(QString) _groupName = "");
 	virtual rbool load();
 	virtual rbool save() const;
 
-	RDOStudioChartViewTheme* getTheme()
+	ChartViewTheme* getTheme()
 	{
-		return static_cast<RDOStudioChartViewTheme*>(theme);
+		return static_cast<ChartViewTheme*>(theme);
 	}
 
-	RDOStudioChartViewFontsTicks* pFontsTicks;
+	ChartViewFontsTicks* pFontsTicks;
 };
 
 }}} // namespace rdo::gui::tracer

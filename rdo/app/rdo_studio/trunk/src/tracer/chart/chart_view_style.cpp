@@ -26,9 +26,9 @@ using namespace rdoStyle;
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioChartViewTheme
+// -------------------- ChartViewTheme
 // --------------------------------------------------------------------------------
-RDOStudioChartViewTheme::RDOStudioChartViewTheme()
+ChartViewTheme::ChartViewTheme()
 	: RDOStyleTheme()
 {
 	defaultColor    = QColor(0x80, 0x80, 0x80);
@@ -44,10 +44,10 @@ RDOStudioChartViewTheme::RDOStudioChartViewTheme()
 	legendStyle = RDOStyleFont::NONE;
 }
 
-RDOStudioChartViewTheme::~RDOStudioChartViewTheme()
+ChartViewTheme::~ChartViewTheme()
 {}
 
-RDOStudioChartViewTheme& RDOStudioChartViewTheme::operator =(const RDOStudioChartViewTheme& theme)
+ChartViewTheme& ChartViewTheme::operator =(const ChartViewTheme& theme)
 {
 //	defaultColor = theme.defaultColor;
 
@@ -65,7 +65,7 @@ RDOStudioChartViewTheme& RDOStudioChartViewTheme::operator =(const RDOStudioChar
 	return *this;
 }
 
-rbool RDOStudioChartViewTheme::operator ==(const RDOStudioChartViewTheme& theme) const
+rbool ChartViewTheme::operator ==(const ChartViewTheme& theme) const
 {
 	rbool flag = RDOStyleTheme::operator==(theme);
 	
@@ -79,30 +79,30 @@ rbool RDOStudioChartViewTheme::operator ==(const RDOStudioChartViewTheme& theme)
 	return flag;
 }
 
-rbool RDOStudioChartViewTheme::operator !=(const RDOStudioChartViewTheme& theme) const
+rbool ChartViewTheme::operator !=(const ChartViewTheme& theme) const
 {
 	return !(*this == theme);
 }
 
-void RDOStudioChartViewTheme::load(QSettings& settings)
+void ChartViewTheme::load(QSettings& settings)
 {
 	RDOStyleTheme::load(settings);
 	settings >> *this;
 }
 
-void RDOStudioChartViewTheme::save(REF(QSettings) settings) const
+void ChartViewTheme::save(REF(QSettings) settings) const
 {
 	RDOStyleTheme::save(settings);
 	settings << *this;
 }
 
-RDOStudioChartViewTheme RDOStudioChartViewTheme::getDefaultTheme()
+ChartViewTheme ChartViewTheme::getDefaultTheme()
 {
-	RDOStudioChartViewTheme theme;
+	ChartViewTheme theme;
 	return theme;
 }
 
-QSettings& operator<< (QSettings& settings, const RDOStudioChartViewTheme& theme)
+QSettings& operator<< (QSettings& settings, const ChartViewTheme& theme)
 {
 	settings.setValue("axis_fg_color", theme.axisFgColor.name());
 	settings.setValue("title_fg_color", theme.titleFGColor.name());
@@ -115,7 +115,7 @@ QSettings& operator<< (QSettings& settings, const RDOStudioChartViewTheme& theme
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, RDOStudioChartViewTheme& theme)
+QSettings& operator>> (QSettings& settings, ChartViewTheme& theme)
 {
 	theme.axisFgColor   = QColor(settings.value("axis_fg_color", theme.axisFgColor.name()).toString());
 	theme.titleFGColor  = QColor(settings.value("title_fg_color", theme.titleFGColor.name()).toString());
@@ -129,19 +129,19 @@ QSettings& operator>> (QSettings& settings, RDOStudioChartViewTheme& theme)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioChartViewFontsTicks
+// -------------------- ChartViewFontsTicks
 // --------------------------------------------------------------------------------
-RDOStudioChartViewFontsTicks::RDOStudioChartViewFontsTicks()
+ChartViewFontsTicks::ChartViewFontsTicks()
 {
 	titleFontSize  = 12;
 	legendFontSize = 8;
 	tickWidth      = 5;
 }
 
-RDOStudioChartViewFontsTicks::~RDOStudioChartViewFontsTicks()
+ChartViewFontsTicks::~ChartViewFontsTicks()
 {}
 
-RDOStudioChartViewFontsTicks& RDOStudioChartViewFontsTicks::operator =(const RDOStudioChartViewFontsTicks& fonts_ticks)
+ChartViewFontsTicks& ChartViewFontsTicks::operator =(const ChartViewFontsTicks& fonts_ticks)
 {
 	titleFontSize  = fonts_ticks.titleFontSize;
 	legendFontSize = fonts_ticks.legendFontSize;
@@ -150,29 +150,29 @@ RDOStudioChartViewFontsTicks& RDOStudioChartViewFontsTicks::operator =(const RDO
 	return *this;
 }
 
-rbool RDOStudioChartViewFontsTicks::operator ==(const RDOStudioChartViewFontsTicks& fonts_ticks) const
+rbool ChartViewFontsTicks::operator ==(const ChartViewFontsTicks& fonts_ticks) const
 {
 	return titleFontSize  == fonts_ticks.titleFontSize &&
 	       legendFontSize == fonts_ticks.legendFontSize &&
 	       tickWidth      == fonts_ticks.tickWidth;
 }
 
-rbool RDOStudioChartViewFontsTicks::operator !=(const RDOStudioChartViewFontsTicks& fonts_ticks) const
+rbool ChartViewFontsTicks::operator !=(const ChartViewFontsTicks& fonts_ticks) const
 {
 	return !(*this == fonts_ticks);
 }
 
-void RDOStudioChartViewFontsTicks::load(QSettings& settings)
+void ChartViewFontsTicks::load(QSettings& settings)
 {
 	settings >> *this;
 }
 
-void RDOStudioChartViewFontsTicks::save(QSettings& settings) const
+void ChartViewFontsTicks::save(QSettings& settings) const
 {
 	settings << *this;
 }
 
-QSettings& operator<< (QSettings& settings, const RDOStudioChartViewFontsTicks& fonts_ticks)
+QSettings& operator<< (QSettings& settings, const ChartViewFontsTicks& fonts_ticks)
 {
 	settings.setValue("title_font_size", fonts_ticks.titleFontSize);
 	settings.setValue("legend_font_size", fonts_ticks.legendFontSize);
@@ -181,7 +181,7 @@ QSettings& operator<< (QSettings& settings, const RDOStudioChartViewFontsTicks& 
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, RDOStudioChartViewFontsTicks& fonts_ticks)
+QSettings& operator>> (QSettings& settings, ChartViewFontsTicks& fonts_ticks)
 {
 	fonts_ticks.titleFontSize  = settings.value("title_font_size", fonts_ticks.titleFontSize).toInt();
 	fonts_ticks.legendFontSize = settings.value("legend_font_size", fonts_ticks.legendFontSize).toInt();
@@ -191,16 +191,16 @@ QSettings& operator>> (QSettings& settings, RDOStudioChartViewFontsTicks& fonts_
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioChartViewStyle
+// -------------------- ChartViewStyle
 // --------------------------------------------------------------------------------
-RDOStudioChartViewStyle::RDOStudioChartViewStyle()
+ChartViewStyle::ChartViewStyle()
 	: RDOStyleWithTheme()
 {
-	theme       = new RDOStudioChartViewTheme();
-	pFontsTicks = new RDOStudioChartViewFontsTicks();
+	theme       = new ChartViewTheme();
+	pFontsTicks = new ChartViewFontsTicks();
 }
 
-RDOStudioChartViewStyle::~RDOStudioChartViewStyle()
+ChartViewStyle::~ChartViewStyle()
 {
 	if (pFontsTicks)
 	{
@@ -209,12 +209,12 @@ RDOStudioChartViewStyle::~RDOStudioChartViewStyle()
 	}
 }
 
-RDOStudioChartViewStyle& RDOStudioChartViewStyle::operator =(const RDOStudioChartViewStyle& style)
+ChartViewStyle& ChartViewStyle::operator =(const ChartViewStyle& style)
 {
 	RDOStyleWithTheme::operator=(style);
 	if (theme && style.theme)
 	{
-		*static_cast<RDOStudioChartViewTheme*>(theme) = *static_cast<RDOStudioChartViewTheme*>(style.theme);
+		*static_cast<ChartViewTheme*>(theme) = *static_cast<ChartViewTheme*>(style.theme);
 	}
 	if (pFontsTicks && style.pFontsTicks)
 	{
@@ -223,12 +223,12 @@ RDOStudioChartViewStyle& RDOStudioChartViewStyle::operator =(const RDOStudioChar
 	return *this;
 }
 
-rbool RDOStudioChartViewStyle::operator ==(const RDOStudioChartViewStyle& style) const
+rbool ChartViewStyle::operator ==(const ChartViewStyle& style) const
 {
 	rbool flag = RDOStyleWithTheme::operator==(style);
 	if (theme && style.theme && flag)
 	{
-		flag &= *static_cast<RDOStudioChartViewTheme*>(theme) == *static_cast<RDOStudioChartViewTheme*>(style.theme);
+		flag &= *static_cast<ChartViewTheme*>(theme) == *static_cast<ChartViewTheme*>(style.theme);
 	}
 	if (pFontsTicks && style.pFontsTicks && flag)
 	{
@@ -237,18 +237,18 @@ rbool RDOStudioChartViewStyle::operator ==(const RDOStudioChartViewStyle& style)
 	return flag;
 }
 
-rbool RDOStudioChartViewStyle::operator !=(const RDOStudioChartViewStyle& style) const
+rbool ChartViewStyle::operator !=(const ChartViewStyle& style) const
 {
 	return !(*this == style);
 }
 
-void RDOStudioChartViewStyle::init(CREF(QString) _groupName)
+void ChartViewStyle::init(CREF(QString) _groupName)
 {
 	RDOStyleWithTheme::init(_groupName);
 	*font = rdoStyle::RDOStyleFont::getChartViewFont();
 }
 
-rbool RDOStudioChartViewStyle::load()
+rbool ChartViewStyle::load()
 {
 	if (RDOStyleWithTheme::load())
 	{
@@ -265,7 +265,7 @@ rbool RDOStudioChartViewStyle::load()
 	return false;
 }
 
-rbool RDOStudioChartViewStyle::save() const
+rbool ChartViewStyle::save() const
 {
 	if (RDOStyleWithTheme::save())
 	{

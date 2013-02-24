@@ -26,47 +26,47 @@ static char THIS_FILE[] = __FILE__;
 using namespace rdo::gui::tracer;
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResourceParam
+// -------------------- Param
 // --------------------------------------------------------------------------------
-TracerResourceParam::TracerResourceParam(CREF(LPTracerResource) pResource)
-	: TracerSerie(SK_PARAM)
+Param::Param(CREF(LPResource) pResource)
+	: Serie(SK_PARAM)
 	, m_pResource(pResource)
 {}
 
-TracerResourceParam::~TracerResourceParam()
+Param::~Param()
 {}
 
-CREF(LPTracerResource) TracerResourceParam::getResource() const
+CREF(LPResource) Param::getResource() const
 {
 	return m_pResource;
 }
 
-TracerResourceParamInfo* TracerResourceParam::getParamInfo() const
+ParamInfo* Param::getParamInfo() const
 {
-	LPTracerResourceParam pThis(const_cast<TracerResourceParam*>(this));
+	LPParam pThis(const_cast<Param*>(this));
 	int index = m_pResource->getParamIndex(pThis);
 	return index != -1
 		? m_pResource->getType()->getParamInfo(index)
 		: NULL;
 }
 
-void TracerResourceParam::getCaptions(std::vector<tstring>& captions, const int valueCount) const
+void Param::getCaptions(std::vector<tstring>& captions, const int valueCount) const
 {
 	switch (getParamInfo()->getParamType())
 	{
-	case TracerResourceParamInfo::PT_INTEGER:
-		TracerSerie::getCaptionsInt(captions, valueCount);
+	case ParamInfo::PT_INTEGER:
+		Serie::getCaptionsInt(captions, valueCount);
 		break;
 
-	case TracerResourceParamInfo::PT_REAL:
-		TracerSerie::getCaptionsDouble(captions, valueCount);
+	case ParamInfo::PT_REAL:
+		Serie::getCaptionsDouble(captions, valueCount);
 		break;
 
-	case TracerResourceParamInfo::PT_ENUMERATIVE:
-	case TracerResourceParamInfo::PT_BOOL:
-	case TracerResourceParamInfo::PT_STRING:
+	case ParamInfo::PT_ENUMERATIVE:
+	case ParamInfo::PT_BOOL:
+	case ParamInfo::PT_STRING:
 	{
-		TracerSerie::getCaptions(captions, valueCount);
+		Serie::getCaptions(captions, valueCount);
 		int delta = getParamInfo()->getEnumCount();
 		m_minValue = 0;
 		m_maxValue = delta - 1;
@@ -93,9 +93,9 @@ void TracerResourceParam::getCaptions(std::vector<tstring>& captions, const int 
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResource
+// -------------------- Resource
 // --------------------------------------------------------------------------------
-TracerResource::TracerResource(CREF(LPTracerResourceType) pResType, CREF(QString) name, int id)
+Resource::Resource(CREF(LPResourceType) pResType, CREF(QString) name, int id)
 	: ChartTreeItem()
 	, m_erased(false)
 	, m_pResourceType(pResType)
@@ -105,48 +105,48 @@ TracerResource::TracerResource(CREF(LPTracerResourceType) pResType, CREF(QString
 	int count = m_pResourceType->getParamsCount();
 	for (int i = 0; i < count; i++)
 	{
-		addParam(rdo::Factory<TracerResourceParam>::create(this));
+		addParam(rdo::Factory<Param>::create(this));
 	}
 }
 
-TracerResource::~TracerResource()
+Resource::~Resource()
 {}
 
-CREF(QString) TracerResource::getName() const
+CREF(QString) Resource::getName() const
 {
 	return m_name;
 }
 
-void TracerResource::setName(CREF(QString) name)
+void Resource::setName(CREF(QString) name)
 {
 	m_name = name;
 }
 
-int TracerResource::getID() const
+int Resource::getID() const
 {
 	return m_id;
 }
 
-CREF(LPTracerResourceType) TracerResource::getType() const
+CREF(LPResourceType) Resource::getType() const
 {
 	return m_pResourceType;
 }
 
-void TracerResource::addParam(CREF(LPTracerResourceParam) pParam)
+void Resource::addParam(CREF(LPParam) pParam)
 {
 	ASSERT(pParam);
 	pParam->setTitle(m_name + "." + m_pResourceType->getParamInfo(m_paramList.size())->getName());
 	m_paramList.push_back(pParam);
 }
 
-LPTracerResourceParam TracerResource::getParam(unsigned int index) const
+LPParam Resource::getParam(unsigned int index) const
 {
 	if (index >= m_paramList.size() || index < 0)
-		return LPTracerResourceParam();
+		return LPParam();
 	return m_paramList.at(index);
 }
 
-int TracerResource::getParamIndex(CREF(LPTracerResourceParam) pParam) const
+int Resource::getParamIndex(CREF(LPParam) pParam) const
 {
 	int count = m_paramList.size();
 	for (int i = 0; i < count; i++)
@@ -159,12 +159,12 @@ int TracerResource::getParamIndex(CREF(LPTracerResourceParam) pParam) const
 	return -1;
 }
 
-void TracerResource::setParams(tstring& line, TracerTimeNow* const pTime, const int eventIndex, const rbool erasing)
+void Resource::setParams(tstring& line, Time* const pTime, const int eventIndex, const rbool erasing)
 {
 	int count = m_paramList.size();
 	for (int i = 0; i < count; i++)
 	{
-		TracerValue* pPrevValue;
+		Value* pPrevValue;
 		m_paramList.at(i)->getLastValue(pPrevValue);
 		tstring nextValue = g_pTracer->getNextValue(line);
 		double newValue;
@@ -176,11 +176,11 @@ void TracerResource::setParams(tstring& line, TracerTimeNow* const pTime, const 
 		{
 			switch (m_pResourceType->getParamInfo(i)->getParamType())
 			{
-			case TracerResourceParamInfo::PT_BOOL:
+			case ParamInfo::PT_BOOL:
 				newValue = nextValue == _T("true") ? 1.0 : 0.0;
 				break;
 
-			case TracerResourceParamInfo::PT_STRING:
+			case ParamInfo::PT_STRING:
 				newValue = m_pResourceType->getParamInfo(i)->addStringValue(nextValue);
 				break;
 
@@ -190,12 +190,12 @@ void TracerResource::setParams(tstring& line, TracerTimeNow* const pTime, const 
 			}
 		}
 
-		TracerValue* pNewValue = new TracerValue(pTime, eventIndex, newValue);
+		Value* pNewValue = new Value(pTime, eventIndex, newValue);
 		m_paramList.at(i)->addValue(pNewValue);
 	}
 }
 
-void TracerResource::setErased(const rbool value)
+void Resource::setErased(const rbool value)
 {
 	if (m_erased != value)
 	{
@@ -203,7 +203,7 @@ void TracerResource::setErased(const rbool value)
 	}
 }
 
-rbool TracerResource::isErased() const
+rbool Resource::isErased() const
 {
 	return m_erased;
 }

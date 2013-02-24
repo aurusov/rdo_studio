@@ -23,9 +23,9 @@ static char THIS_FILE[] = __FILE__;
 using namespace rdo::gui::tracer;
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResourceParamInfo
+// -------------------- ParamInfo
 // --------------------------------------------------------------------------------
-TracerResourceParamInfo::TracerResourceParamInfo(const ParamType type)
+ParamInfo::ParamInfo(const ParamType type)
 	: m_paramType(type)
 	, m_enumValueList(NULL)
 {
@@ -35,7 +35,7 @@ TracerResourceParamInfo::TracerResourceParamInfo(const ParamType type)
 	}
 }
 
-TracerResourceParamInfo::~TracerResourceParamInfo()
+ParamInfo::~ParamInfo()
 {
 	if (m_enumValueList)
 	{
@@ -43,22 +43,22 @@ TracerResourceParamInfo::~TracerResourceParamInfo()
 	}
 }
 
-CREF(QString) TracerResourceParamInfo::getName() const
+CREF(QString) ParamInfo::getName() const
 {
 	return m_name;
 }
 
-void TracerResourceParamInfo::setName(CREF(QString) name)
+void ParamInfo::setName(CREF(QString) name)
 {
 	m_name = name;
 }
 
-TracerResourceParamInfo::ParamType TracerResourceParamInfo::getParamType() const
+ParamInfo::ParamType ParamInfo::getParamType() const
 {
 	return m_paramType;
 }
 
-int TracerResourceParamInfo::addEnumValue(CREF(tstring) value)
+int ParamInfo::addEnumValue(CREF(tstring) value)
 {
 	if (!m_enumValueList)
 		return -1;
@@ -66,7 +66,7 @@ int TracerResourceParamInfo::addEnumValue(CREF(tstring) value)
 	return m_enumValueList->size() - 1;
 }
 
-int TracerResourceParamInfo::addStringValue(CREF(tstring) value)
+int ParamInfo::addStringValue(CREF(tstring) value)
 {
 	if (!m_enumValueList)
 		return -1;
@@ -83,7 +83,7 @@ int TracerResourceParamInfo::addStringValue(CREF(tstring) value)
 
 static tstring nullStr = "";
 
-tstring TracerResourceParamInfo::getEnumValue(unsigned int index) const
+tstring ParamInfo::getEnumValue(unsigned int index) const
 {
 	if (!m_enumValueList)
 		return nullStr;
@@ -92,20 +92,20 @@ tstring TracerResourceParamInfo::getEnumValue(unsigned int index) const
 	return m_enumValueList->at(index);
 }
 
-int TracerResourceParamInfo::getEnumCount() const
+int ParamInfo::getEnumCount() const
 {
 	return m_enumValueList ? m_enumValueList->size() : 0;
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResourceType
+// -------------------- ResourceType
 // --------------------------------------------------------------------------------
-TracerResourceType::TracerResourceType(Kind kind)
+ResourceType::ResourceType(Kind kind)
 	: ChartTreeItem()
 	, m_kind(kind)
 {}
 
-TracerResourceType::~TracerResourceType()
+ResourceType::~ResourceType()
 {
 	int count = m_paramInfoList.size();
 	for (int i = 0; i < count; i++)
@@ -114,35 +114,35 @@ TracerResourceType::~TracerResourceType()
 	}
 }
 
-CREF(QString) TracerResourceType::getName() const
+CREF(QString) ResourceType::getName() const
 {
 	return m_name;
 }
 
-void TracerResourceType::setName(CREF(QString) name)
+void ResourceType::setName(CREF(QString) name)
 {
 	m_name = name;
 }
 
-TracerResourceType::Kind TracerResourceType::getKind() const
+ResourceType::Kind ResourceType::getKind() const
 {
 	return m_kind;
 }
 
-int TracerResourceType::addParamInfo(TracerResourceParamInfo* const value)
+int ResourceType::addParamInfo(ParamInfo* const value)
 {
 	m_paramInfoList.push_back(value);
 	return m_paramInfoList.size() - 1;
 }
 
-TracerResourceParamInfo* TracerResourceType::getParamInfo(unsigned int index) const
+ParamInfo* ResourceType::getParamInfo(unsigned int index) const
 {
 	if (index >= m_paramInfoList.size() || index < 0)
 		return NULL;
 	return m_paramInfoList.at(index);
 }
 
-int TracerResourceType::getParamsCount() const
+int ResourceType::getParamsCount() const
 {
 	return m_paramInfoList.size();
 }

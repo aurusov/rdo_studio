@@ -19,9 +19,9 @@
 
 namespace rdo { namespace gui { namespace tracer {
 
-class TracerResult: public TracerSerie
+class Result: public Serie
 {
-DECLARE_FACTORY(TracerResult)
+DECLARE_FACTORY(Result)
 public:
 	enum Kind
 	{
@@ -37,18 +37,18 @@ public:
 	int           getID  () const;
 
 	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
-	void setValue(tstring& line, TracerTimeNow* const time, const int eventIndex);
+	void setValue(tstring& line, Time* const time, const int eventIndex);
 
 private:
-	TracerResult(CREF(QString) name, Kind kind, int id);
-	virtual ~TracerResult();
+	Result(CREF(QString) name, Kind kind, int id);
+	virtual ~Result();
 
 	QString  m_name;
 	Kind     m_kind;
 	int      m_id;
 };
 
-typedef  rdo::intrusive_ptr<TracerResult>  LPTracerResult;
+typedef  rdo::intrusive_ptr<Result>  LPResult;
 
 }}} // namespace rdo::gui::tracer
 

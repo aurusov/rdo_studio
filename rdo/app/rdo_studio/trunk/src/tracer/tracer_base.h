@@ -22,17 +22,17 @@
 
 namespace rdo { namespace gui { namespace tracer {
 
-PREDECLARE_POINTER(TracerResourceType);
-PREDECLARE_POINTER(TracerResource);
-PREDECLARE_POINTER(TracerPattern);
-PREDECLARE_POINTER(TracerOperationBase);
-PREDECLARE_POINTER(TracerEvent);
-PREDECLARE_POINTER(TracerResult);
-PREDECLARE_POINTER(TracerSerie);
-class TracerTimeNow;
-class TracerResourceParamInfo;
+PREDECLARE_POINTER(ResourceType);
+PREDECLARE_POINTER(Resource);
+PREDECLARE_POINTER(Pattern);
+PREDECLARE_POINTER(OperationBase);
+PREDECLARE_POINTER(Event);
+PREDECLARE_POINTER(Result);
+PREDECLARE_POINTER(Serie);
+class Time;
+class ParamInfo;
 class ChartTree;
-class RDOStudioChartDoc;
+class ChartDoc;
 class LogMainWnd;
 
 class TracerBase: public RDOThreadGUI
@@ -47,10 +47,10 @@ public:
 	tstring getNextValue(REF(tstring) line);
 	void registerClipboardFormat();
 	UINT const getClipboardFormat() const;
-	RDOStudioChartDoc* createNewChart();
-	void addChart(RDOStudioChartDoc* const pDocument);
-	void removeChart(RDOStudioChartDoc* pDocument);
-	RDOStudioChartDoc* addSerieToChart(CREF(LPTracerSerie) pSerie, RDOStudioChartDoc* pDocument = NULL);
+	ChartDoc* createNewChart();
+	void addChart(ChartDoc* const pDocument);
+	void removeChart(ChartDoc* pDocument);
+	ChartDoc* addSerieToChart(CREF(LPSerie) pSerie, ChartDoc* pDocument = NULL);
 	void updateChartsStyles() const;
 	void clear();
 	void setModelName(CREF(QString) name) const;
@@ -65,17 +65,17 @@ private:
 	LogMainWnd* m_pLog;
 	ChartTree*  m_pChartTree;
 
-	TracerResourceParamInfo* getParam(rdo::textstream& stream);
-	TracerResourceParamInfo* getParamType(rdo::textstream& stream);
+	ParamInfo* getParam(rdo::textstream& stream);
+	ParamInfo* getParamType(rdo::textstream& stream);
 
-	typedef  std::vector<LPTracerResourceType>        ResourceTypeList;
-	typedef  std::vector<LPTracerResource>       ResourceList;
-	typedef  std::vector<LPTracerPattern>        PatternList;
-	typedef  std::vector<LPTracerOperationBase>  OperationBaseList;
-	typedef  std::vector<LPTracerEvent>          EventList;
-	typedef  std::vector<LPTracerResult>         ResultList;
-	typedef  std::list<TracerTimeNow*>           TimeList;
-	typedef  std::vector<RDOStudioChartDoc*>     DocumentList;
+	typedef  std::vector<LPResourceType>   ResourceTypeList;
+	typedef  std::vector<LPResource>       ResourceList;
+	typedef  std::vector<LPPattern>        PatternList;
+	typedef  std::vector<LPOperationBase>  OperationBaseList;
+	typedef  std::vector<LPEvent>          EventList;
+	typedef  std::vector<LPResult>         ResultList;
+	typedef  std::list<Time*>              TimeList;
+	typedef  std::vector<ChartDoc*>        DocumentList;
 
 	ResourceTypeList  m_resourceTypeList;
 	ResourceList      m_resourceList;
@@ -92,26 +92,26 @@ private:
 
 	void dispatchNextString(REF(tstring) line);
 
-	TracerTimeNow* addTime(CREF(tstring) time);
+	Time* addTime(CREF(tstring) time);
 	int m_eventIndex;
 
-	LPTracerOperationBase getOperation(REF(tstring) line);void startAction(REF(tstring) line, TracerTimeNow* const pTime);
-	void accomplishAction(REF(tstring) line, TracerTimeNow* const pTime);
-	void irregularEvent(REF(tstring) line, TracerTimeNow* const pTime);
-	void productionRule(REF(tstring) line, TracerTimeNow* const pTime);
+	LPOperationBase getOperation(REF(tstring) line);void startAction(REF(tstring) line, Time* const pTime);
+	void accomplishAction(REF(tstring) line, Time* const pTime);
+	void irregularEvent(REF(tstring) line, Time* const pTime);
+	void productionRule(REF(tstring) line, Time* const pTime);
 
-	LPTracerResource getResource(REF(tstring) line);
-	LPTracerResource resourceCreation(REF(tstring) line, TracerTimeNow* const pTime);
-	LPTracerResource resourceElimination(REF(tstring) line, TracerTimeNow* const pTime);
+	LPResource getResource(REF(tstring) line);
+	LPResource resourceCreation(REF(tstring) line, Time* const pTime);
+	LPResource resourceElimination(REF(tstring) line, Time* const pTime);
 	enum TracerResUpdateAction
 	{
 		RUA_NONE, RUA_ADD, RUA_UPDATE
 	};
 	TracerResUpdateAction m_updateAction;
-	LPTracerResource      m_pResource;
-	LPTracerResource resourceChanging(REF(tstring) line, TracerTimeNow* const pTime);
+	LPResource            m_pResource;
+	LPResource resourceChanging(REF(tstring) line, Time* const pTime);
 
-	LPTracerResult getResult(REF(tstring) line);void resultChanging(REF(tstring) line, TracerTimeNow* const pTime);
+	LPResult getResult(REF(tstring) line);void resultChanging(REF(tstring) line, Time* const pTime);
 
 	TimeList m_timeList;
 

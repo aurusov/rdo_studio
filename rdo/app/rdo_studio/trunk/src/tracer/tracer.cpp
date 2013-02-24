@@ -78,7 +78,7 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 	case RDOThread::RT_RUNTIME_MODEL_START_BEFORE:
 	{
 		clear();
-		RDOStudioChartDoc::resetTitleIndex();
+		ChartDoc::resetTitleIndex();
 		try
 		{
 			setModelName(g_pModel->getName());

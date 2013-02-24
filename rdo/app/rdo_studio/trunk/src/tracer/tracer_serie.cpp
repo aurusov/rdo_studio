@@ -41,13 +41,13 @@ public:
 		: m_pView(pView)
 	{}
 
-	rbool operator() (TracerValue* pValue);
+	rbool operator() (Value* pValue);
 
 private:
 	ChartView* m_pView;
 };
 
-rbool TracerSerieFindValue::operator() (TracerValue* pValue)
+rbool TracerSerieFindValue::operator() (Value* pValue)
 {
 	rbool res = pValue && pValue->getModelTime()->time >= m_pView->drawFromX().time;
 	if (m_pView->doUnwrapTime() && res && (pValue->getModelTime()->time == m_pView->drawFromX().time))
@@ -60,7 +60,7 @@ rbool TracerSerieFindValue::operator() (TracerValue* pValue)
 // --------------------------------------------------------------------------------
 // -------------------- TracerSerie
 // --------------------------------------------------------------------------------
-TracerSerie::TracerSerie(Kind _serieKind)
+Serie::Serie(Kind _serieKind)
 	: ChartTreeItem(true)
 	, m_kind(_serieKind)
 	, m_minValue(0)
@@ -68,7 +68,7 @@ TracerSerie::TracerSerie(Kind _serieKind)
 	, m_valueCount(0)
 {}
 
-TracerSerie::~TracerSerie()
+Serie::~Serie()
 {
 	ValuesList::iterator it = m_valueList.begin();
 	while (it != m_valueList.end())
@@ -80,27 +80,27 @@ TracerSerie::~TracerSerie()
 	m_documentList.clear();
 }
 
-CREF(QString) TracerSerie::getTitle() const
+CREF(QString) Serie::getTitle() const
 {
 	return m_title;
 }
 
-void TracerSerie::setTitle(CREF(QString) value)
+void Serie::setTitle(CREF(QString) value)
 {
 	m_title = value;
 }
 
-TracerSerie::Kind TracerSerie::getKind() const
+Serie::Kind Serie::getKind() const
 {
 	return m_kind;
 }
 
-rbool TracerSerie::isTemporaryResourceParam() const
+rbool Serie::isTemporaryResourceParam() const
 {
-	return m_kind == SK_PARAM && ((TracerResourceParam*)this)->getResource()->getType()->getKind() == TracerResourceType::RDOTK_TEMPORARY;
+	return m_kind == SK_PARAM && ((Param*)this)->getResource()->getType()->getKind() == ResourceType::RDOTK_TEMPORARY;
 }
 
-void TracerSerie::addValue(TracerValue* const pValue)
+void Serie::addValue(Value* const pValue)
 {
 	DocumentList::iterator it;
 
@@ -117,35 +117,35 @@ void TracerSerie::addValue(TracerValue* const pValue)
 
 	m_valueCount++;
 
-	std::for_each(m_documentList.begin(), m_documentList.end(), std::bind2nd(std::mem_fun1(&RDOStudioChartDoc::newValueToSerieAdded), pValue));
+	std::for_each(m_documentList.begin(), m_documentList.end(), std::bind2nd(std::mem_fun1(&ChartDoc::newValueToSerieAdded), pValue));
 }
 
-void TracerSerie::getValueCount(int& count) const
+void Serie::getValueCount(int& count) const
 {
 	count = m_valueCount;
 }
 
-rbool TracerSerie::empty() const
+rbool Serie::empty() const
 {
 	return m_valueList.empty();
 }
 
-TracerSerie::ValuesList::const_iterator TracerSerie::begin() const
+Serie::ValuesList::const_iterator Serie::begin() const
 {
 	return m_valueList.begin();
 }
 
-TracerSerie::ValuesList::const_iterator TracerSerie::end() const
+Serie::ValuesList::const_iterator Serie::end() const
 {
 	return m_valueList.end();
 }
 
-void TracerSerie::getCaptions(std::vector<tstring>& captions, const int valueCount) const
+void Serie::getCaptions(std::vector<tstring>& captions, const int valueCount) const
 {
 	if (!captions.empty())
 		captions.clear();
 
-	if (m_kind == TracerSerie::SK_PREVIEW)
+	if (m_kind == Serie::SK_PREVIEW)
 	{
 		double valoffset = (m_maxValue - m_minValue) / (double)(valueCount - 1);
 		double valo = m_minValue;
@@ -165,9 +165,9 @@ void TracerSerie::getCaptions(std::vector<tstring>& captions, const int valueCou
 	}
 }
 
-void TracerSerie::getCaptionsInt(std::vector<tstring>& captions, const int valueCount) const
+void Serie::getCaptionsInt(std::vector<tstring>& captions, const int valueCount) const
 {
-	TracerSerie::getCaptions(captions, valueCount);
+	Serie::getCaptions(captions, valueCount);
 
 	int real_val_count = valueCount;
 	if ((m_maxValue - m_minValue + 1) > real_val_count)
@@ -189,9 +189,9 @@ void TracerSerie::getCaptionsInt(std::vector<tstring>& captions, const int value
 	}
 }
 
-void TracerSerie::getCaptionsDouble(std::vector<tstring>& captions, const int valueCount) const
+void Serie::getCaptionsDouble(std::vector<tstring>& captions, const int valueCount) const
 {
-	TracerSerie::getCaptions(captions, valueCount);
+	Serie::getCaptions(captions, valueCount);
 
 	double valoffset = (m_maxValue - m_minValue) / (double)(valueCount - 1);
 	double valo = m_minValue;
@@ -210,14 +210,14 @@ void TracerSerie::getCaptionsDouble(std::vector<tstring>& captions, const int va
 	}
 }
 
-void TracerSerie::getCaptionsBool(std::vector<tstring>& captions, const int valueCount) const
+void Serie::getCaptionsBool(std::vector<tstring>& captions, const int valueCount) const
 {
-	TracerSerie::getCaptions(captions, valueCount);
+	Serie::getCaptions(captions, valueCount);
 	captions.push_back("FALSE");
 	captions.push_back("TRUE");
 }
 
-void TracerSerie::getLastValue(TracerValue*& pValue) const
+void Serie::getLastValue(Value*& pValue) const
 {
 	if (!m_valueList.size())
 		pValue = NULL;
@@ -225,7 +225,7 @@ void TracerSerie::getLastValue(TracerValue*& pValue) const
 		pValue = m_valueList.back();
 }
 
-void TracerSerie::drawSerie(ChartView* const pView,
+void Serie::drawSerie(ChartView* const pView,
                             QPainter& painter,
                             const QRect& rect,
                             const QColor& color,
@@ -284,7 +284,7 @@ void TracerSerie::drawSerie(ChartView* const pView,
 			lastX = std::min(lastX, rect.right());
 
 			int ticks = 0;
-			RDOStudioChartDoc::TimesList::const_iterator timeIt = pView->unwrapTimesList().begin();
+			ChartDoc::TimesList::const_iterator timeIt = pView->unwrapTimesList().begin();
 			if (pView->doUnwrapTime() && (*it)->getModelTime()->time >= pView->drawFromX().time)
 			{
 				if (*(*it)->getModelTime() == *(*timeIt))
@@ -358,7 +358,7 @@ void TracerSerie::drawSerie(ChartView* const pView,
 				}
 			}
 
-			rbool tempResourceErased = (m_kind == SK_PARAM && ((TracerResourceParam*)this)->getResource()->isErased());
+			rbool tempResourceErased = (m_kind == SK_PARAM && ((Param*)this)->getResource()->isErased());
 			rbool needContinue = !pView->doUnwrapTime() ? (m_valueList.size() > 1) : true;
 			if (tempResourceErased)
 			{
@@ -393,7 +393,7 @@ void TracerSerie::drawSerie(ChartView* const pView,
 	}
 }
 
-void TracerSerie::drawMarker(QPainter& painter, const int x, const int y, Marker marker, const int markerSize) const
+void Serie::drawMarker(QPainter& painter, const int x, const int y, Marker marker, const int markerSize) const
 {
 	float halfMarkerSize = float(markerSize) / 2.0;
 	QRectF rect(x - halfMarkerSize, y - halfMarkerSize, markerSize, markerSize);
@@ -440,7 +440,7 @@ void TracerSerie::drawMarker(QPainter& painter, const int x, const int y, Marker
 	}
 }
 
-void TracerSerie::addToDoc(RDOStudioChartDoc* const pDocument)
+void Serie::addToDoc(ChartDoc* const pDocument)
 {
 	if (pDocument && std::find(m_documentList.begin(), m_documentList.end(), pDocument) == m_documentList.end())
 	{
@@ -448,7 +448,7 @@ void TracerSerie::addToDoc(RDOStudioChartDoc* const pDocument)
 	}
 }
 
-void TracerSerie::removeFromDoc(RDOStudioChartDoc* const pDocument)
+void Serie::removeFromDoc(ChartDoc* const pDocument)
 {
 	DocumentList::iterator it = std::find(m_documentList.begin(), m_documentList.end(), pDocument);
 	if (it != m_documentList.end())
@@ -457,17 +457,17 @@ void TracerSerie::removeFromDoc(RDOStudioChartDoc* const pDocument)
 	}
 }
 
-rbool TracerSerie::isInOneOrMoreDocs() const
+rbool Serie::isInOneOrMoreDocs() const
 {
 	return !m_documentList.empty();
 }
 
-rbool TracerSerie::activateFirstDoc() const
+rbool Serie::activateFirstDoc() const
 {
 	rbool result = false;
 	if (!m_documentList.empty())
 	{
-		RDOStudioChartDoc* pDoc = m_documentList.front();
+		ChartDoc* pDoc = m_documentList.front();
 		if (pDoc)
 		{
 			ChartView* pView = pDoc->getFirstView();
@@ -480,7 +480,7 @@ rbool TracerSerie::activateFirstDoc() const
 	return result;
 }
 
-TracerSerie::ExportData TracerSerie::exportData()
+Serie::ExportData Serie::exportData()
 {
 	setlocale(LC_ALL, _T("rus"));
 
@@ -488,7 +488,7 @@ TracerSerie::ExportData TracerSerie::exportData()
 	exportData.reserve(m_valueList.size() + 1);
 	exportData.push_back(QString("%1;%2").arg(QString::fromStdWString(L"время")).arg(m_title));
 
-	BOOST_FOREACH(PTR(TracerValue) pValue, m_valueList)
+	BOOST_FOREACH(PTR(Value) pValue, m_valueList)
 	{
 		exportData.push_back(QString("%1;%2").arg(pValue->getModelTime()->time).arg(pValue->getValue()));
 	}

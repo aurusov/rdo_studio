@@ -23,20 +23,20 @@ static char THIS_FILE[] = __FILE__;
 using namespace rdo::gui::tracer;
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerTimeNow
+// -------------------- Time
 // --------------------------------------------------------------------------------
-TracerTimeNow::TracerTimeNow(const double time)
+Time::Time(const double time)
 	: time(time)
 {
 	eventCount = 0;
 }
 
-TracerTimeNow::TracerTimeNow(const double time, const int eventCount)
+Time::Time(const double time, const int eventCount)
 	: time(time)
 	, eventCount(eventCount)
 {}
 
-TracerTimeNow& TracerTimeNow::operator= (const TracerTimeNow& timeNow)
+Time& Time::operator= (const Time& timeNow)
 {
 	time       = timeNow.time;
 	eventCount = timeNow.eventCount;
@@ -44,17 +44,17 @@ TracerTimeNow& TracerTimeNow::operator= (const TracerTimeNow& timeNow)
 	return *this;
 }
 
-rbool TracerTimeNow::operator== (const TracerTimeNow& timeNow) const
+rbool Time::operator== (const Time& timeNow) const
 {
 	return time == timeNow.time && eventCount == timeNow.eventCount;
 }
 
-rbool TracerTimeNow::operator!= (const TracerTimeNow& timeNow) const
+rbool Time::operator!= (const Time& timeNow) const
 {
 	return !(*this == timeNow);
 }
 
-rbool TracerTimeNow::compareTimes(const TracerTimeNow* pTimeNow)
+rbool Time::compareTimes(const Time* pTimeNow)
 {
 	return pTimeNow
 		? time >= pTimeNow->time
@@ -62,28 +62,28 @@ rbool TracerTimeNow::compareTimes(const TracerTimeNow* pTimeNow)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerValue
+// -------------------- Value
 // --------------------------------------------------------------------------------
-TracerValue::TracerValue(TracerTimeNow* const pTimeNow, const int eventID, const double value)
+Value::Value(Time* const pTimeNow, const int eventID, const double value)
 	: m_value     (value   )
 	, m_pModelTime(pTimeNow)
 	, m_eventID   (eventID )
 {}
 
-TracerValue::~TracerValue()
+Value::~Value()
 {}
 
-double TracerValue::getValue() const
+double Value::getValue() const
 {
 	return m_value;
 }
 
-TracerTimeNow* const TracerValue::getModelTime() const
+Time* const Value::getModelTime() const
 {
 	return m_pModelTime;
 }
 
-int TracerValue::getEventID() const
+int Value::getEventID() const
 {
 	return m_eventID;
 }

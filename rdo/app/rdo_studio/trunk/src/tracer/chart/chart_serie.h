@@ -23,29 +23,29 @@ class ChartView;
 class ChartSerie
 {
 public:
-	ChartSerie(CREF(LPTracerSerie) pSerie);
+	ChartSerie(CREF(LPSerie) pSerie);
 	~ChartSerie();
 
 	struct Options
 	{
-		QString              title;
-		QColor               color;
-		TracerSerie::Marker  markerType;
-		int                  markerSize;
-		rbool                markerNeedDraw;
-		rbool                markerTransparent;
-		rbool                showInLegend;
+		QString        title;
+		QColor         color;
+		Serie::Marker  markerType;
+		int            markerSize;
+		rbool          markerNeedDraw;
+		rbool          markerTransparent;
+		rbool          showInLegend;
 
 		Options();
 		rbool operator== (CREF(Options) options) const;
 	};
 
-	CREF(LPTracerSerie) getSerie() const;
+	CREF(LPSerie) getSerie() const;
 
 	CREF(Options) options   () const;
 	void          setOptions(CREF(Options) options);
 
-	rbool isTracerSerie(CREF(LPTracerSerie) pSerie) const;
+	rbool isTracerSerie(CREF(LPSerie) pSerie) const;
 	void  drawSerie    (ChartView* const pView, QPainter& painter, const QRect& rect) const;
 	void  getCaptions  (std::vector<tstring>& captions, const int valueCount) const;
 	QSize getLegendSize(const QFontMetrics& fm, const QRect& rect) const;
@@ -54,8 +54,8 @@ public:
 	rbool empty () const;
 
 protected:
-	LPTracerSerie m_pSerie;
-	Options       m_options;
+	LPSerie  m_pSerie;
+	Options  m_options;
 };
 
 }}} // namespace rdo::gui::tracer

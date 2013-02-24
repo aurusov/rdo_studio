@@ -23,19 +23,19 @@
 
 namespace rdo { namespace gui { namespace tracer {
 
-class TracerTimeNow;
-class TracerValue;
+class Time;
+class Value;
 class ChartSerie;
-class RDOStudioChartViewStyle;
+class ChartViewStyle;
 
-class RDOStudioChartDoc
+class ChartDoc
 {
 public:
-	typedef  std::list<TracerTimeNow*> TimesList;
+	typedef  std::list<Time*>          TimesList;
 	typedef  std::vector<ChartSerie*>  SerieList;
 
-	RDOStudioChartDoc(const rbool preview = false);
-	virtual ~RDOStudioChartDoc();
+	ChartDoc(const rbool preview = false);
+	virtual ~ChartDoc();
 
 	void attachView(ChartView* pView);
 	ChartView* getFirstView();
@@ -45,15 +45,15 @@ public:
 	void    autoTitle();
 	static void resetTitleIndex();
 
-	void setStyle(RDOStudioChartViewStyle* pStyle);
+	void setStyle(ChartViewStyle* pStyle);
 
 	void updateAllViews();
 
-	void addSerie(CREF(LPTracerSerie) pSerie);
-	rbool serieExists(CREF(LPTracerSerie) pSerie) const;
+	void addSerie(CREF(LPSerie) pSerie);
+	rbool serieExists(CREF(LPSerie) pSerie) const;
 
-	void incTimeEventsCount(TracerTimeNow* time);
-	rbool newValueToSerieAdded(TracerValue* val);
+	void incTimeEventsCount(Time* time);
+	rbool newValueToSerieAdded(Value* val);
 
 	void addToViews     (ChartView* pWidget);
 	void removeFromViews(ChartView* pWidget);
@@ -80,11 +80,11 @@ private:
 
 	int getSerieIndex(ChartSerie* serie) const;
 	COLORREF selectColor();
-	TracerSerie::Marker selectMarker();
+	Serie::Marker selectMarker();
 
 	void updateChartViews(const UINT update_type) const;
 
-	void insertValue(TracerValue* pValue);
+	void insertValue(Value* pValue);
 };
 
 }}} // namespace rdo::gui::tracer

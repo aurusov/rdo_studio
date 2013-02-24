@@ -23,8 +23,8 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdo::gui::tracer;
 
-TracerResult::TracerResult(CREF(QString) name, Kind kind, int id)
-	: TracerSerie(SK_RESULT)
+Result::Result(CREF(QString) name, Kind kind, int id)
+	: Serie(SK_RESULT)
 	, m_name(name)
 	, m_kind(kind)
 	, m_id(id)
@@ -32,48 +32,48 @@ TracerResult::TracerResult(CREF(QString) name, Kind kind, int id)
 	setTitle(m_name);
 }
 
-TracerResult::~TracerResult()
+Result::~Result()
 {}
 
-CREF(QString) TracerResult::getName() const
+CREF(QString) Result::getName() const
 {
 	return m_name;
 }
 
-TracerResult::Kind TracerResult::getKind() const
+Result::Kind Result::getKind() const
 {
 	return m_kind;
 }
 
-int TracerResult::getID() const
+int Result::getID() const
 {
 	return m_id;
 }
 
-void TracerResult::getCaptions(std::vector<tstring>& captions, const int valueCount) const
+void Result::getCaptions(std::vector<tstring>& captions, const int valueCount) const
 {
 	switch (m_kind)
 	{
 	case RK_WATCHQUANT:
 	{
-		TracerSerie::getCaptionsInt(captions, valueCount);
+		Serie::getCaptionsInt(captions, valueCount);
 		break;
 	}
 	case RK_WATCHSTATE:
 	{
-		TracerSerie::getCaptionsBool(captions, valueCount);
+		Serie::getCaptionsBool(captions, valueCount);
 		break;
 	}
 	case RK_WATCHPAR:
 	case RK_WATCHVALUE:
 	{
-		TracerSerie::getCaptionsDouble(captions, valueCount);
+		Serie::getCaptionsDouble(captions, valueCount);
 		break;
 	}
 	}
 }
 
-void TracerResult::setValue(tstring& line, TracerTimeNow* const pTime, const int eventIndex)
+void Result::setValue(tstring& line, Time* const pTime, const int eventIndex)
 {
 	double newValue;
 	rdo::trim(line);
@@ -85,6 +85,6 @@ void TracerResult::setValue(tstring& line, TracerTimeNow* const pTime, const int
 	{
 		newValue = (line == "TRUE") ? 1 : 0;
 	}
-	TracerValue* pNewValue = new TracerValue(pTime, eventIndex, newValue);
+	Value* pNewValue = new Value(pTime, eventIndex, newValue);
 	addValue(pNewValue);
 }

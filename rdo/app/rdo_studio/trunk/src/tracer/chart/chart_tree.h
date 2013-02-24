@@ -33,11 +33,11 @@ private:
 	virtual SCODE GiveFeedback(DROPEFFECT dropEffect);
 };
 
-PREDECLARE_POINTER(TracerResourceType);
-PREDECLARE_POINTER(TracerResource);
-PREDECLARE_POINTER(TracerPattern);
-PREDECLARE_POINTER(TracerOperationBase);
-PREDECLARE_POINTER(TracerResult);
+PREDECLARE_POINTER(ResourceType);
+PREDECLARE_POINTER(Resource);
+PREDECLARE_POINTER(Pattern);
+PREDECLARE_POINTER(OperationBase);
+PREDECLARE_POINTER(Result);
 
 class ChartTree
 	: public QTreeWidget
@@ -49,16 +49,15 @@ public:
 	ChartTree(PTR(QWidget) pParent);
 	virtual ~ChartTree();
 
-	void setModelName   (CREF(QString) modelName);
-	void addResourceType(CREF(LPTracerResourceType)       pRTP);
-	void addResource    (CREF(LPTracerResource)      pRSS);
-	void updateResource (CREF(LPTracerResource)      pRSS);
-	void addPattern     (CREF(LPTracerPattern)       pPAT);
-	void addOperation   (CREF(LPTracerOperationBase) pOPR);
-	void addResult      (CREF(LPTracerResult)        pPMV);
-	void deleteChildren (CREF(LPChartTreeItem)       pParent);
+	void setModelName   (CREF(QString)    modelName);
+	void addResourceType(CREF(LPResourceType)  pRTP);
+	void addResource    (CREF(LPResource)      pRSS);
+	void updateResource (CREF(LPResource)      pRSS);
+	void addPattern     (CREF(LPPattern)       pPAT);
+	void addOperation   (CREF(LPOperationBase) pOPR);
+	void addResult      (CREF(LPResult)        pPMV);
+	void deleteChildren (CREF(LPChartTreeItem) pParent);
 	void clear();
-	//void addIrregularEvent( TracerOperation* opr );
 
 private:
 	typedef  QTreeWidget  parent_type;

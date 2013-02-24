@@ -962,20 +962,20 @@ void ViewPreferences::createPreview()
 	//preview_chart_doc->attachView(preview_chart);
 	//preview_chart->setStyle(&style_chart, false);
 	////initializing times vector
-	//preview_times.push_back(TracerTimeNow(0, 3));
-	//preview_times.push_back(TracerTimeNow(2, 3));
-	//preview_times.push_back(TracerTimeNow(4, 3));
-	//preview_times.push_back(TracerTimeNow(6, 3));
-	//preview_times.push_back(TracerTimeNow(8, 3));
-	//preview_times.push_back(TracerTimeNow(10, 3));
-	preview_serie = rdo::Factory<TracerSerie>::create();
+	//preview_times.push_back(Time(0, 3));
+	//preview_times.push_back(Time(2, 3));
+	//preview_times.push_back(Time(4, 3));
+	//preview_times.push_back(Time(6, 3));
+	//preview_times.push_back(Time(8, 3));
+	//preview_times.push_back(Time(10, 3));
+	preview_serie = rdo::Factory<Serie>::create();
 	//preview_serie.setTitle(rdo::format("значение 1"));
-	//preview_serie.addValue(new TracerValue(&preview_times.at(0), 2, 0));
-	//preview_serie.addValue(new TracerValue(&preview_times.at(1), 1, 1));
-	//preview_serie.addValue(new TracerValue(&preview_times.at(2), 0, 4));
-	//preview_serie.addValue(new TracerValue(&preview_times.at(3), 3, 3));
-	//preview_serie.addValue(new TracerValue(&preview_times.at(4), 1, 2));
-	//preview_serie.addValue(new TracerValue(&preview_times.at(5), 0, 3));
+	//preview_serie.addValue(new Value(&preview_times.at(0), 2, 0));
+	//preview_serie.addValue(new Value(&preview_times.at(1), 1, 1));
+	//preview_serie.addValue(new Value(&preview_times.at(2), 0, 4));
+	//preview_serie.addValue(new Value(&preview_times.at(3), 3, 3));
+	//preview_serie.addValue(new Value(&preview_times.at(4), 1, 2));
+	//preview_serie.addValue(new Value(&preview_times.at(5), 0, 3));
 	//preview_chart_doc->addSerie(&preview_serie);
 
 	//previewStackedWidget->addWidget(pViewQt);
@@ -1086,7 +1086,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, find_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
-	RDOStudioChartViewTheme* chart_theme = static_cast<RDOStudioChartViewTheme*>(style_chart.theme);
+	ChartViewTheme* chart_theme = static_cast<ChartViewTheme*>(style_chart.theme);
 	item = new StyleItem(IT_CHART, style_chart.font->size, style_chart.font->name);
 	item->properties.push_back(new StyleProperty(item, IT_CHART, chart_theme->defaultStyle, chart_theme->defaultColor, chart_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_CHART_AXIS, chart_theme->defaultStyle, chart_theme->axisFgColor, null_bg_color, null_fg_color, chart_theme->backgroundColor));

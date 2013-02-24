@@ -17,9 +17,9 @@
 
 namespace rdo { namespace gui { namespace tracer {
 
-class TracerPattern: public ChartTreeItem
+class Pattern: public ChartTreeItem
 {
-DECLARE_FACTORY(TracerPattern)
+DECLARE_FACTORY(Pattern)
 public:
 	enum Kind
 	{
@@ -36,14 +36,14 @@ public:
 	Kind getKind() const;
 
 private:
-	TracerPattern(Kind kind);
-	virtual ~TracerPattern();
+	Pattern(Kind kind);
+	virtual ~Pattern();
 
 	QString  m_name;
 	Kind     m_kind;
 };
 
-typedef  rdo::intrusive_ptr<TracerPattern>  LPTracerPattern;
+typedef  rdo::intrusive_ptr<Pattern>  LPPattern;
 
 }}} // namespace rdo::gui::tracer
 

@@ -22,25 +22,25 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdo::gui::tracer;
 
-TracerPattern::TracerPattern(Kind kind)
+Pattern::Pattern(Kind kind)
 	: ChartTreeItem()
 	, m_kind(kind)
 {}
 
-TracerPattern::~TracerPattern()
+Pattern::~Pattern()
 {}
 
-CREF(QString) TracerPattern::getName() const
+CREF(QString) Pattern::getName() const
 {
 	return m_name;
 }
 
-void TracerPattern::setName(CREF(QString) name)
+void Pattern::setName(CREF(QString) name)
 {
 	m_name = name;
 }
 
-TracerPattern::Kind TracerPattern::getKind() const
+Pattern::Kind Pattern::getKind() const
 {
 	return m_kind;
 }

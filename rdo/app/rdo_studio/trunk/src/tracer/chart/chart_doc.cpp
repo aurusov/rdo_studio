@@ -32,9 +32,9 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdo::gui::tracer;
 
-ruint RDOStudioChartDoc::s_titleIndex = 0;
+ruint ChartDoc::s_titleIndex = 0;
 
-RDOStudioChartDoc::RDOStudioChartDoc(const rbool preview)
+ChartDoc::ChartDoc(const rbool preview)
 	: m_minTimeOffset(1.7E+308)
 	, m_ticksCount(0)
 	, m_previewMode(preview)
@@ -45,7 +45,7 @@ RDOStudioChartDoc::RDOStudioChartDoc(const rbool preview)
 	}
 }
 
-RDOStudioChartDoc::~RDOStudioChartDoc()
+ChartDoc::~ChartDoc()
 {
 	for (std::vector<ChartSerie*>::iterator it = m_serieList.begin(); it != m_serieList.end(); it++)
 	{
@@ -57,38 +57,38 @@ RDOStudioChartDoc::~RDOStudioChartDoc()
 	}
 }
 
-CREF(RDOStudioChartDoc::TimesList) RDOStudioChartDoc::getTimes() const
+CREF(ChartDoc::TimesList) ChartDoc::getTimes() const
 {
 	return m_docTimes;
 }
 
-CREF(RDOStudioChartDoc::SerieList) RDOStudioChartDoc::getSerieList() const
+CREF(ChartDoc::SerieList) ChartDoc::getSerieList() const
 {
 	return m_serieList;
 }
 
-void RDOStudioChartDoc::attachView(ChartView* pView)
+void ChartDoc::attachView(ChartView* pView)
 {
 	m_viewList.push_back(pView);
 }
 
-ChartView* RDOStudioChartDoc::getFirstView()
+ChartView* ChartDoc::getFirstView()
 {
 	return m_viewList.empty() ? NULL : m_viewList.front();
 }
 
-void RDOStudioChartDoc::setStyle(RDOStudioChartViewStyle* pStyle)
+void ChartDoc::setStyle(ChartViewStyle* pStyle)
 {
 	ASSERT(pStyle);
 	boost::range::for_each(m_viewList, boost::bind(&ChartView::setStyle, _1, pStyle, true));
 }
 
-void RDOStudioChartDoc::updateAllViews()
+void ChartDoc::updateAllViews()
 {
 	boost::range::for_each(m_viewList, boost::bind(&ChartView::updateView, _1));
 }
 
-int RDOStudioChartDoc::getSerieIndex(ChartSerie* serie) const
+int ChartDoc::getSerieIndex(ChartSerie* serie) const
 {
 	int res = -1;
 	int index = 0;
@@ -103,7 +103,7 @@ int RDOStudioChartDoc::getSerieIndex(ChartSerie* serie) const
 	return res;
 }
 
-void RDOStudioChartDoc::incTimeEventsCount(TracerTimeNow* time)
+void ChartDoc::incTimeEventsCount(Time* time)
 {
 	if (!m_docTimes.empty() && m_docTimes.back() == time)
 	{
@@ -112,7 +112,7 @@ void RDOStudioChartDoc::incTimeEventsCount(TracerTimeNow* time)
 	}
 }
 
-rbool RDOStudioChartDoc::newValueToSerieAdded(TracerValue* val)
+rbool ChartDoc::newValueToSerieAdded(Value* val)
 {
 	if (m_docTimes.empty())
 	{
@@ -121,7 +121,7 @@ rbool RDOStudioChartDoc::newValueToSerieAdded(TracerValue* val)
 	}
 	else
 	{
-		TracerTimeNow* last = m_docTimes.back();
+		Time* last = m_docTimes.back();
 		if (last != val->getModelTime())
 		{
 			m_docTimes.push_back(val->getModelTime());
@@ -138,7 +138,7 @@ rbool RDOStudioChartDoc::newValueToSerieAdded(TracerValue* val)
 	return true;
 }
 
-int RDOStudioChartDoc::getMaxMarkerSize() const
+int ChartDoc::getMaxMarkerSize() const
 {
 	int res = 0;
 	for (std::vector<ChartSerie*>::const_iterator it = m_serieList.begin(); it != m_serieList.end(); it++)
@@ -152,22 +152,22 @@ int RDOStudioChartDoc::getMaxMarkerSize() const
 	return res;
 }
 
-int RDOStudioChartDoc::getTicksCount() const
+int ChartDoc::getTicksCount() const
 {
 	return m_ticksCount;
 }
 
-double RDOStudioChartDoc::getMinTimeOffset() const
+double ChartDoc::getMinTimeOffset() const
 {
 	return m_minTimeOffset;
 }
 
-void RDOStudioChartDoc::addToViews(ChartView* pWidget)
+void ChartDoc::addToViews(ChartView* pWidget)
 {
 	m_widgetList.push_back(pWidget);
 }
 
-void RDOStudioChartDoc::removeFromViews(ChartView* pWidget)
+void ChartDoc::removeFromViews(ChartView* pWidget)
 {
 	std::vector<ChartView*>::iterator it = std::find(m_widgetList.begin(), m_widgetList.end(), pWidget);
 	if (it != m_widgetList.end())
@@ -176,12 +176,12 @@ void RDOStudioChartDoc::removeFromViews(ChartView* pWidget)
 	}
 }
 
-void RDOStudioChartDoc::updateChartViews(ruint updateType) const
+void ChartDoc::updateChartViews(ruint updateType) const
 {
 	boost::range::for_each(m_widgetList, boost::bind(&ChartView::onUserUpdateChartView, _1, updateType));
 }
 
-void RDOStudioChartDoc::addSerie(CREF(LPTracerSerie) pSerie)
+void ChartDoc::addSerie(CREF(LPSerie) pSerie)
 {
 	if (pSerie && !serieExists(pSerie))
 	{
@@ -197,7 +197,7 @@ void RDOStudioChartDoc::addSerie(CREF(LPTracerSerie) pSerie)
 		{
 			TimesList::iterator lastDocIt = m_docTimes.end();
 			--lastDocIt;
-			TracerSerie::ValuesList::const_iterator first_serie = pSerie->begin();
+			Serie::ValuesList::const_iterator first_serie = pSerie->begin();
 			if ((*first_serie)->getModelTime()->time >= (*lastDocIt)->time)
 			{
 				m_insertedIt = m_docTimes.end();
@@ -212,7 +212,7 @@ void RDOStudioChartDoc::addSerie(CREF(LPTracerSerie) pSerie)
 		{
 			studioApp.BeginWaitCursor();
 
-			std::for_each(pSerie->begin(), pSerie->end(), boost::bind(&RDOStudioChartDoc::insertValue, this, _1));
+			std::for_each(pSerie->begin(), pSerie->end(), boost::bind(&ChartDoc::insertValue, this, _1));
 
 			studioApp.EndWaitCursor();
 		}
@@ -232,7 +232,7 @@ void RDOStudioChartDoc::addSerie(CREF(LPTracerSerie) pSerie)
 	}
 }
 
-COLORREF RDOStudioChartDoc::selectColor()
+COLORREF ChartDoc::selectColor()
 {
 	int count = m_serieList.size();
 	int mul = count / 15;
@@ -289,62 +289,62 @@ COLORREF RDOStudioChartDoc::selectColor()
 	return res;
 }
 
-TracerSerie::Marker RDOStudioChartDoc::selectMarker()
+Serie::Marker ChartDoc::selectMarker()
 {
 	int count = m_serieList.size();
 	int mul = count / 4;
 	int index = count - mul * 4;
-	TracerSerie::Marker res = TracerSerie::M_CIRCLE;
+	Serie::Marker res = Serie::M_CIRCLE;
 	switch (index)
 	{
 	case 0:
-		res = TracerSerie::M_CIRCLE;
+		res = Serie::M_CIRCLE;
 		break;
 	case 1:
-		res = TracerSerie::M_SQUARE;
+		res = Serie::M_SQUARE;
 		break;
 	case 2:
-		res = TracerSerie::M_TRIANG;
+		res = Serie::M_TRIANG;
 		break;
 	case 3:
-		res = TracerSerie::M_CROSS;
+		res = Serie::M_CROSS;
 		break;
 	};
 	return res;
 }
 
-rbool RDOStudioChartDoc::serieExists(CREF(LPTracerSerie) pSerie) const
+rbool ChartDoc::serieExists(CREF(LPSerie) pSerie) const
 {
 	return boost::range::find_if(m_serieList, boost::bind(&ChartSerie::isTracerSerie, _1, pSerie)) != m_serieList.end();
 }
 
-tstring RDOStudioChartDoc::getTitle() const
+tstring ChartDoc::getTitle() const
 {
 	return m_title;
 }
 
-void RDOStudioChartDoc::setTitle(CREF(tstring) title)
+void ChartDoc::setTitle(CREF(tstring) title)
 {
 	this->m_title = title;
 	getFirstView()->parentWidget()->setWindowTitle(QString::fromLocal8Bit(rdo::format(IDS_CHART_TITLE, this->m_title.c_str()).c_str()));
 }
 
-void RDOStudioChartDoc::autoTitle()
+void ChartDoc::autoTitle()
 {
 	tstring title = rdo::format("График%d", ++s_titleIndex);
 	setTitle(title);
 }
 
-void RDOStudioChartDoc::resetTitleIndex()
+void ChartDoc::resetTitleIndex()
 {
 	s_titleIndex = 0;
 }
 
-void RDOStudioChartDoc::insertValue(TracerValue* pValue)
+void ChartDoc::insertValue(Value* pValue)
 {
 	if (pValue)
 	{
-		RDOStudioChartDoc::TimesList::iterator it = std::find_if(m_insertedIt, m_docTimes.end(), std::bind2nd(std::mem_fun1(&TracerTimeNow::compareTimes), pValue->getModelTime()));
+		ChartDoc::TimesList::iterator it = std::find_if(m_insertedIt, m_docTimes.end(), std::bind2nd(std::mem_fun1(&Time::compareTimes), pValue->getModelTime()));
 		if (it == m_docTimes.end() || (*it) != pValue->getModelTime())
 		{
 			m_insertedIt = m_docTimes.insert(it, pValue->getModelTime());

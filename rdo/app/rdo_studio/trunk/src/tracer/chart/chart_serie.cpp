@@ -27,7 +27,7 @@ using namespace rdo::gui::tracer;
 // --------------------------------------------------------------------------------
 ChartSerie::Options::Options()
 	: color            (QColor(0x00, 0x00, 0x00))
-	, markerType       (TracerSerie::M_NONE)
+	, markerType       (Serie::M_NONE)
 	, markerSize       (4)
 	, markerNeedDraw   (true)
 	, markerTransparent(true)
@@ -48,7 +48,7 @@ rbool ChartSerie::Options::operator== (CREF(Options) options) const
 // --------------------------------------------------------------------------------
 // -------------------- ChartSerie
 // --------------------------------------------------------------------------------
-ChartSerie::ChartSerie(CREF(LPTracerSerie) pSerie)
+ChartSerie::ChartSerie(CREF(LPSerie) pSerie)
 	: m_pSerie(pSerie)
 {
 	if (m_pSerie)
@@ -60,7 +60,7 @@ ChartSerie::ChartSerie(CREF(LPTracerSerie) pSerie)
 ChartSerie::~ChartSerie()
 {}
 
-CREF(LPTracerSerie) ChartSerie::getSerie() const
+CREF(LPSerie) ChartSerie::getSerie() const
 {
 	return m_pSerie;
 }
@@ -75,7 +75,7 @@ void ChartSerie::setOptions(CREF(Options) options)
 	m_options = options;
 }
 
-rbool ChartSerie::isTracerSerie(CREF(LPTracerSerie) pSerie) const
+rbool ChartSerie::isTracerSerie(CREF(LPSerie) pSerie) const
 {
 	return m_pSerie == pSerie;
 }

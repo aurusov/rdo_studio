@@ -22,11 +22,11 @@
 namespace rdo { namespace gui { namespace tracer {
 
 class ChartView;
-class RDOStudioChartDoc;
+class ChartDoc;
 
-class TracerSerie: public ChartTreeItem
+class Serie: public ChartTreeItem
 {
-DECLARE_FACTORY(TracerSerie)
+DECLARE_FACTORY(Serie)
 public:
 	enum Kind
 	{
@@ -45,14 +45,14 @@ public:
 		M_CROSS
 	};
 
-	typedef std::list<TracerValue*> ValuesList;
+	typedef std::list<Value*> ValuesList;
 
 	CREF(QString) getTitle() const;
 	void          setTitle(CREF(QString) value);
 
 	Kind getKind() const;
 
-	void addValue(TracerValue* const value);
+	void addValue(Value* const value);
 	void getValueCount(int& count) const;
 
 	rbool empty() const;
@@ -60,7 +60,7 @@ public:
 	ValuesList::const_iterator begin() const;
 	ValuesList::const_iterator end  () const;
 
-	void getLastValue(TracerValue*& val) const;
+	void getLastValue(Value*& val) const;
 	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
 
 	void drawSerie(ChartView* const pView,
@@ -73,8 +73,8 @@ public:
 	               const rbool transparent_marker) const;
 	void drawMarker(QPainter& painter, const int x, const int y, Marker marker, const int markerSize) const;
 
-	void addToDoc(RDOStudioChartDoc* const pDocument);
-	void removeFromDoc(RDOStudioChartDoc* const pDocument);
+	void addToDoc(ChartDoc* const pDocument);
+	void removeFromDoc(ChartDoc* const pDocument);
 	rbool isInOneOrMoreDocs() const;
 
 	rbool activateFirstDoc() const;
@@ -83,8 +83,8 @@ public:
 	ExportData exportData();
 
 protected:
-	TracerSerie(Kind _serieKind = SK_PREVIEW);
-	virtual ~TracerSerie();
+	Serie(Kind _serieKind = SK_PREVIEW);
+	virtual ~Serie();
 
 	mutable double m_minValue;
 	mutable double m_maxValue;
@@ -94,7 +94,7 @@ protected:
 	void getCaptionsBool  (std::vector<tstring>& captions, const int valueCount) const;
 
 private:
-	typedef  std::vector<RDOStudioChartDoc*>  DocumentList;
+	typedef  std::vector<ChartDoc*>  DocumentList;
 
 	Kind          m_kind;
 	QString       m_title;
@@ -105,7 +105,7 @@ private:
 	rbool isTemporaryResourceParam() const;
 };
 
-typedef  rdo::intrusive_ptr<TracerSerie>  LPTracerSerie;
+typedef  rdo::intrusive_ptr<Serie>  LPSerie;
 
 }}} // namespace rdo::gui::tracer
 

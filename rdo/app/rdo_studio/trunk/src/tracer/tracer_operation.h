@@ -19,65 +19,65 @@
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerOperationBase
+// -------------------- OperationBase
 // --------------------------------------------------------------------------------
-class TracerOperationBase: public TracerSerie
+class OperationBase: public Serie
 {
-DECLARE_FACTORY(TracerOperationBase)
+DECLARE_FACTORY(OperationBase)
 public:
 	CREF(QString) getName() const;
 
-	LPTracerPattern getPattern() const;
+	LPPattern getPattern() const;
 
 	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
-	virtual void monitorTime(TracerTimeNow* const pTime, const int eventIndex);
+	virtual void monitorTime(Time* const pTime, const int eventIndex);
 
 protected:
-	TracerOperationBase(CREF(LPTracerPattern) pPattern, CREF(QString) name);
-	virtual ~TracerOperationBase();
+	OperationBase(CREF(LPPattern) pPattern, CREF(QString) name);
+	virtual ~OperationBase();
 
-	void incOperationsCount(TracerTimeNow* const pTime, const int eventIndex);
+	void incOperationsCount(Time* const pTime, const int eventIndex);
 
 private:
-	LPTracerPattern  m_pPattern;
-	QString          m_name;
+	LPPattern  m_pPattern;
+	QString    m_name;
 };
 
-typedef  rdo::intrusive_ptr<TracerOperationBase>  LPTracerOperationBase;
+typedef  rdo::intrusive_ptr<OperationBase>  LPOperationBase;
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerOperation
+// -------------------- Operation
 // --------------------------------------------------------------------------------
-class TracerOperation: public TracerOperationBase
+class Operation: public OperationBase
 {
-DECLARE_FACTORY(TracerOperation)
+DECLARE_FACTORY(Operation)
 public:
-	void start(TracerTimeNow* const pTime, const int eventIndex);
-	void accomplish(TracerTimeNow* const pTime, const int eventIndex);
+	void start(Time* const pTime, const int eventIndex);
+	void accomplish(Time* const pTime, const int eventIndex);
 
 private:
-	TracerOperation(CREF(LPTracerPattern) pPattern, CREF(QString) name);
-	virtual ~TracerOperation();
+	Operation(CREF(LPPattern) pPattern, CREF(QString) name);
+	virtual ~Operation();
 };
 
-typedef  rdo::intrusive_ptr<TracerOperation>  LPTracerOperation;
+typedef  rdo::intrusive_ptr<Operation>  LPOperation;
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerEvent
+// -------------------- Event
 // --------------------------------------------------------------------------------
-class TracerEvent: public TracerOperationBase
+class Event: public OperationBase
 {
-DECLARE_FACTORY(TracerEvent)
+DECLARE_FACTORY(Event)
 public:
-	void occurs(TracerTimeNow* const pTime, const int eventIndex);
-	virtual void monitorTime(TracerTimeNow* const pTime, const int eventIndex);
+	void occurs(Time* const pTime, const int eventIndex);
+	virtual void monitorTime(Time* const pTime, const int eventIndex);
 
 private:
-	TracerEvent(CREF(LPTracerPattern) pPattern, CREF(QString) name);
-	virtual ~TracerEvent();
+	Event(CREF(LPPattern) pPattern, CREF(QString) name);
+	virtual ~Event();
 };
 
-typedef  rdo::intrusive_ptr<TracerEvent>  LPTracerEvent;
+typedef  rdo::intrusive_ptr<Event>  LPEvent;
 
 }}} // namespace rdo::gui::tracer
 

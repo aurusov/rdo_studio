@@ -54,40 +54,40 @@ TracerBase::~TracerBase()
 	deleteTrace();
 }
 
-TracerResourceParamInfo* TracerBase::getParamType(rdo::textstream& stream)
+ParamInfo* TracerBase::getParamType(rdo::textstream& stream)
 {
-	boost::optional<TracerResourceParamInfo::ParamType> parType;
+	boost::optional<ParamInfo::ParamType> parType;
 
 	tstring parTypeName;
 	stream >> parTypeName;
 	if (parTypeName == "E")
 	{
-		parType = TracerResourceParamInfo::PT_ENUMERATIVE;
+		parType = ParamInfo::PT_ENUMERATIVE;
 	}
 	if (parTypeName == "I")
 	{
-		parType = TracerResourceParamInfo::PT_INTEGER;
+		parType = ParamInfo::PT_INTEGER;
 	}
 	else if (parTypeName == "R")
 	{
-		parType = TracerResourceParamInfo::PT_REAL;
+		parType = ParamInfo::PT_REAL;
 	}
 	else if (parTypeName == "B")
 	{
-		parType = TracerResourceParamInfo::PT_BOOL;
+		parType = ParamInfo::PT_BOOL;
 	}
 	else if (parTypeName == "A")
 	{
-		parType = TracerResourceParamInfo::PT_ARRAY;
+		parType = ParamInfo::PT_ARRAY;
 	}
 	else if (parTypeName == "S")
 	{
-		parType = TracerResourceParamInfo::PT_STRING;
+		parType = ParamInfo::PT_STRING;
 	}
 	ASSERT(parType.is_initialized());
 
-	TracerResourceParamInfo* pParam = new TracerResourceParamInfo(parType.get());
-	if (parType == TracerResourceParamInfo::PT_ENUMERATIVE)
+	ParamInfo* pParam = new ParamInfo(parType.get());
+	if (parType == ParamInfo::PT_ENUMERATIVE)
 	{
 		ruint enumCount;
 		stream >> enumCount;
@@ -101,33 +101,33 @@ TracerResourceParamInfo* TracerBase::getParamType(rdo::textstream& stream)
 			pParam->addEnumValue(enumName);
 		}
 	}
-	else if (parType == TracerResourceParamInfo::PT_BOOL)
+	else if (parType == ParamInfo::PT_BOOL)
 	{
 		pParam->addEnumValue(_T("false"));
 		pParam->addEnumValue(_T("true"));
 	}
-	else if (parType == TracerResourceParamInfo::PT_ARRAY)
+	else if (parType == ParamInfo::PT_ARRAY)
 	{
-		TracerResourceParamInfo* pArrayItem = getParamType(stream);
+		ParamInfo* pArrayItem = getParamType(stream);
 		UNUSED(pArrayItem);
 	}
 	return pParam;
 }
 
-TracerResourceParamInfo* TracerBase::getParam(rdo::textstream& stream)
+ParamInfo* TracerBase::getParam(rdo::textstream& stream)
 {
 	tstring paramType;
 	tstring paramName;
 	stream >> paramType;
 	stream >> paramName;
-	TracerResourceParamInfo* pParam = getParamType(stream);
+	ParamInfo* pParam = getParamType(stream);
 	pParam->setName(QString::fromLocal8Bit(paramName.c_str()));
 	return pParam;
 }
 
 void TracerBase::addResourceType(REF(tstring), rdo::textstream& stream)
 {
-	LPTracerResourceType pResourceType = rdo::Factory<TracerResourceType>::create(TracerResourceType::RDOTK_PERMANENT);
+	LPResourceType pResourceType = rdo::Factory<ResourceType>::create(ResourceType::RDOTK_PERMANENT);
 	tstring resourceTypeName;
 	stream >> resourceTypeName;
 	pResourceType->setName(QString::fromLocal8Bit(resourceTypeName.c_str()));
@@ -147,7 +147,7 @@ void TracerBase::addResource(REF(tstring) s, rdo::textstream& stream)
 	tstring resourceName;
 	stream >> resourceName;
 	stream >> resourceTypeID;
-	LPTracerResource pResource = rdo::Factory<TracerResource>::create(
+	LPResource pResource = rdo::Factory<Resource>::create(
 		m_resourceTypeList.at(resourceTypeID - 1),
 		QString::fromLocal8Bit(resourceName.c_str()),
 		atoi(s.c_str())
@@ -163,29 +163,29 @@ void TracerBase::addPattern(REF(tstring), rdo::textstream& stream)
 	stream >> patternName;
 	tstring patternType;
 	stream >> patternType;
-	TracerPattern::Kind kind;
+	Pattern::Kind kind;
 	if (patternType == "A")
 	{
-		kind = TracerPattern::PK_OPERATION;
+		kind = Pattern::PK_OPERATION;
 	}
 	else if (patternType == "I")
 	{
-		kind = TracerPattern::PK_EVENT;
+		kind = Pattern::PK_EVENT;
 	}
 	else if (patternType == "R")
 	{
-		kind = TracerPattern::PK_RULE;
+		kind = Pattern::PK_RULE;
 	}
 	else if (patternType == "K")
 	{
-		kind = TracerPattern::PK_KEYBOARD;
+		kind = Pattern::PK_KEYBOARD;
 	}
 	else
 	{
-		kind = TracerPattern::PK_UNDEFINED;
+		kind = Pattern::PK_UNDEFINED;
 	}
 
-	LPTracerPattern pPattern = rdo::Factory<TracerPattern>::create(kind);
+	LPPattern pPattern = rdo::Factory<Pattern>::create(kind);
 	pPattern->setName(QString::fromLocal8Bit(patternName.c_str()));
 
 	m_patternList.push_back(pPattern);
@@ -205,27 +205,27 @@ void TracerBase::addOperation(REF(tstring), rdo::textstream& stream)
 	stream >> operationName;
 	int patternID;
 	stream >> patternID;
-	LPTracerPattern pPattern = m_patternList.at(patternID - 1);
+	LPPattern pPattern = m_patternList.at(patternID - 1);
 
-	LPTracerOperationBase pOperationBase;
+	LPOperationBase pOperationBase;
 	QString name = QString::fromLocal8Bit(operationName.c_str());
 
-	if (pPattern->getKind() != TracerPattern::PK_RULE && pPattern->getKind() != TracerPattern::PK_EVENT)
+	if (pPattern->getKind() != Pattern::PK_RULE && pPattern->getKind() != Pattern::PK_EVENT)
 	{
-		pOperationBase = rdo::Factory<TracerOperation>::create(pPattern, name);
+		pOperationBase = rdo::Factory<Operation>::create(pPattern, name);
 	}
 	else
 	{
-		pOperationBase = rdo::Factory<TracerEvent>::create(pPattern, name);
+		pOperationBase = rdo::Factory<Event>::create(pPattern, name);
 	}
 
-	if (pPattern->getKind() != TracerPattern::PK_EVENT)
+	if (pPattern->getKind() != Pattern::PK_EVENT)
 	{
 		m_operationList.push_back(pOperationBase);
 	}
 	else
 	{
-		LPTracerEvent pEvent = pOperationBase.object_dynamic_cast<TracerEvent>();
+		LPEvent pEvent = pOperationBase.object_dynamic_cast<Event>();
 		ASSERT(pEvent);
 		m_eventList.push_back(pEvent);
 	}
@@ -239,30 +239,30 @@ void TracerBase::addResult(REF(tstring) s, rdo::textstream& stream)
 	stream >> resultID;
 	tstring resultKind;
 	stream >> resultKind;
-	TracerResult::Kind kind;
+	Result::Kind kind;
 	if (resultKind == "watch_par")
 	{
-		kind = TracerResult::RK_WATCHPAR;
+		kind = Result::RK_WATCHPAR;
 	}
 	else if (resultKind == "watch_state")
 	{
-		kind = TracerResult::RK_WATCHSTATE;
+		kind = Result::RK_WATCHSTATE;
 	}
 	else if (resultKind == "watch_quant")
 	{
-		kind = TracerResult::RK_WATCHQUANT;
+		kind = Result::RK_WATCHQUANT;
 	}
 	else if (resultKind == "watch_value")
 	{
-		kind = TracerResult::RK_WATCHVALUE;
+		kind = Result::RK_WATCHVALUE;
 	}
 	else
 	{
-		kind = TracerResult::RK_UNDEFINED;
+		kind = Result::RK_UNDEFINED;
 	}
-	ASSERT(kind != TracerResult::RK_UNDEFINED);
+	ASSERT(kind != Result::RK_UNDEFINED);
 
-	LPTracerResult pResult = rdo::Factory<TracerResult>::create(QString::fromLocal8Bit(s.c_str()), kind, resultID);
+	LPResult pResult = rdo::Factory<Result>::create(QString::fromLocal8Bit(s.c_str()), kind, resultID);
 	m_resultList.push_back(pResult);
 	m_pChartTree->addResult(pResult);
 }
@@ -273,7 +273,7 @@ void TracerBase::dispatchNextString(REF(tstring) line)
 		return;
 
 	tstring key = getNextValue(line);
-	TracerTimeNow* pTimeNow;
+	Time* pTimeNow;
 	if (key != "SO" && key.find("ST") == tstring::npos && key != "SD" && key.find("SE") == tstring::npos)
 	{
 		pTimeNow = addTime(getNextValue(line));
@@ -324,7 +324,7 @@ void TracerBase::dispatchNextString(REF(tstring) line)
 	else if (key == "RK" || key == "SRK")
 	{
 		tstring copy = line;
-		TracerResource* res = resourceChanging(line, pTimeNow);
+		Resource* res = resourceChanging(line, pTimeNow);
 		if (!res)
 		{
 			m_pResource = resourceCreation(copy, pTimeNow);
@@ -336,7 +336,7 @@ void TracerBase::dispatchNextString(REF(tstring) line)
 	{
 		rbool re = key == "RE" || key == "SRE";
 		tstring copy1 = line;
-		LPTracerResource pResource = resourceChanging(line, pTimeNow);
+		LPResource pResource = resourceChanging(line, pTimeNow);
 		if (!pResource)
 		{
 			tstring copy2 = copy1;
@@ -377,25 +377,25 @@ tstring TracerBase::getNextValue(REF(tstring) line)
 	return result;
 }
 
-TracerTimeNow* TracerBase::addTime(CREF(tstring) time)
+Time* TracerBase::addTime(CREF(tstring) time)
 {
 	double val = atof(time.c_str());
 	rbool empty = m_timeList.empty();
-	TracerTimeNow* pLastTime = NULL;
+	Time* pLastTime = NULL;
 	if (!empty)
 	{
 		pLastTime = m_timeList.back();
 	}
 	if (empty || pLastTime->time != val)
 	{
-		TracerTimeNow* pTimeNow = new TracerTimeNow(val);
+		Time* pTimeNow = new Time(val);
 		m_timeList.push_back(pTimeNow);
 		m_eventIndex = 0;
-		BOOST_FOREACH(const LPTracerOperationBase& pOperationBase, m_operationList)
+		BOOST_FOREACH(const LPOperationBase& pOperationBase, m_operationList)
 		{
 			pOperationBase->monitorTime(pTimeNow, m_eventIndex);
 		}
-		BOOST_FOREACH(const LPTracerEvent& pEvent, m_eventList)
+		BOOST_FOREACH(const LPEvent& pEvent, m_eventList)
 		{
 			pEvent->monitorTime(pTimeNow, m_eventIndex);
 		}
@@ -404,7 +404,7 @@ TracerTimeNow* TracerBase::addTime(CREF(tstring) time)
 	{
 		pLastTime->eventCount++;
 		m_eventIndex++;
-		BOOST_FOREACH(RDOStudioChartDoc* pDocument, m_documentList)
+		BOOST_FOREACH(ChartDoc* pDocument, m_documentList)
 		{
 			pDocument->incTimeEventsCount(pLastTime);
 		}
@@ -412,27 +412,27 @@ TracerTimeNow* TracerBase::addTime(CREF(tstring) time)
 	return m_timeList.back();
 }
 
-LPTracerOperationBase TracerBase::getOperation(REF(tstring) line)
+LPOperationBase TracerBase::getOperation(REF(tstring) line)
 {
 	getNextValue(line);
 	return m_operationList.at(atoi(getNextValue(line).c_str()) - 1);
 }
 
-void TracerBase::startAction(REF(tstring) line, TracerTimeNow* const pTime)
+void TracerBase::startAction(REF(tstring) line, Time* const pTime)
 {
-	LPTracerOperation pOperation = getOperation(line).object_dynamic_cast<TracerOperation>();
+	LPOperation pOperation = getOperation(line).object_dynamic_cast<Operation>();
 	ASSERT(pOperation);
 	pOperation->start(pTime, m_eventIndex);
 }
 
-void TracerBase::accomplishAction(REF(tstring) line, TracerTimeNow* const pTime)
+void TracerBase::accomplishAction(REF(tstring) line, Time* const pTime)
 {
-	LPTracerOperation pOperation = getOperation(line).object_dynamic_cast<TracerOperation>();
+	LPOperation pOperation = getOperation(line).object_dynamic_cast<Operation>();
 	ASSERT(pOperation);
 	pOperation->accomplish(pTime, m_eventIndex);
 }
 
-void TracerBase::irregularEvent(REF(tstring) line, TracerTimeNow* const pTime)
+void TracerBase::irregularEvent(REF(tstring) line, Time* const pTime)
 {
 #ifdef RDOSIM_COMPATIBLE
 	m_eventList.at(atoi(getNextValue(line).c_str()) - 1)->occurs(pTime, m_eventIndex);
@@ -441,20 +441,20 @@ void TracerBase::irregularEvent(REF(tstring) line, TracerTimeNow* const pTime)
 #endif
 }
 
-void TracerBase::productionRule(REF(tstring) line, TracerTimeNow* const pTime)
+void TracerBase::productionRule(REF(tstring) line, Time* const pTime)
 {
-	LPTracerEvent pEvent = getOperation(line).object_dynamic_cast<TracerEvent>();
+	LPEvent pEvent = getOperation(line).object_dynamic_cast<Event>();
 	ASSERT(pEvent);
 	pEvent->occurs(pTime, m_eventIndex);
 }
 
-LPTracerResource TracerBase::getResource(REF(tstring) line)
+LPResource TracerBase::getResource(REF(tstring) line)
 {
 	getNextValue(line);
-	LPTracerResource pResult;
+	LPResource pResult;
 	int findID = atoi(getNextValue(line).c_str());
 	int i = 0;
-	BOOST_FOREACH(const LPTracerResource& pResource, m_resourceList)
+	BOOST_FOREACH(const LPResource& pResource, m_resourceList)
 	{
 		if (pResource->getID() == findID && !pResource->isErased())
 		{
@@ -466,22 +466,22 @@ LPTracerResource TracerBase::getResource(REF(tstring) line)
 	return pResult;
 }
 
-LPTracerResource TracerBase::resourceCreation(REF(tstring) line, TracerTimeNow* const pTime)
+LPResource TracerBase::resourceCreation(REF(tstring) line, Time* const pTime)
 {
 	ruint typeID = atoi(getNextValue(line).c_str()) - 1;
 	ASSERT(typeID < m_resourceTypeList.size());
-	LPTracerResourceType pResourceType = m_resourceTypeList.at(typeID);
+	LPResourceType pResourceType = m_resourceTypeList.at(typeID);
 	int id = atoi(getNextValue(line).c_str());
-	LPTracerResource pResource = rdo::Factory<TracerResource>::create(pResourceType, QString("%1 #%2").arg(pResourceType->getName()).arg(id), id);
+	LPResource pResource = rdo::Factory<Resource>::create(pResourceType, QString("%1 #%2").arg(pResourceType->getName()).arg(id), id);
 	pResource->setParams(line, pTime, m_eventIndex);
 
 	m_resourceList.push_back(pResource);
 	return pResource;
 }
 
-LPTracerResource TracerBase::resourceElimination(REF(tstring) line, TracerTimeNow* const pTime)
+LPResource TracerBase::resourceElimination(REF(tstring) line, Time* const pTime)
 {
-	LPTracerResource pResource = getResource(line);
+	LPResource pResource = getResource(line);
 	if (!pResource)
 		return pResource;
 #ifdef RDOSIM_COMPATIBLE
@@ -493,9 +493,9 @@ LPTracerResource TracerBase::resourceElimination(REF(tstring) line, TracerTimeNo
 	return pResource;
 }
 
-LPTracerResource TracerBase::resourceChanging(REF(tstring) line, TracerTimeNow* const pTime)
+LPResource TracerBase::resourceChanging(REF(tstring) line, Time* const pTime)
 {
-	LPTracerResource pResource = getResource(line);
+	LPResource pResource = getResource(line);
 	if (pResource)
 	{
 		pResource->setParams(line, pTime, m_eventIndex);
@@ -503,11 +503,11 @@ LPTracerResource TracerBase::resourceChanging(REF(tstring) line, TracerTimeNow* 
 	return pResource;
 }
 
-LPTracerResult TracerBase::getResult(REF(tstring) line)
+LPResult TracerBase::getResult(REF(tstring) line)
 {
-	LPTracerResult pResult;
+	LPResult pResult;
 	int findid = atoi(getNextValue(line).c_str());
-	BOOST_FOREACH(const LPTracerResult& pResultItem, m_resultList)
+	BOOST_FOREACH(const LPResult& pResultItem, m_resultList)
 	{
 		if (pResultItem->getID() == findid)
 		{
@@ -518,7 +518,7 @@ LPTracerResult TracerBase::getResult(REF(tstring) line)
 	return pResult;
 }
 
-void TracerBase::resultChanging(REF(tstring) line, TracerTimeNow* const pTime)
+void TracerBase::resultChanging(REF(tstring) line, Time* const pTime)
 {
 	getResult(line)->setValue(line, pTime, m_eventIndex);
 }
@@ -556,7 +556,7 @@ void TracerBase::clear()
 
 void TracerBase::clearCharts()
 {
-	BOOST_FOREACH(RDOStudioChartDoc* pDocument, m_documentList)
+	BOOST_FOREACH(ChartDoc* pDocument, m_documentList)
 	{
 		pDocument->getFirstView()->parentWidget()->parentWidget()->close();
 	}
@@ -681,9 +681,9 @@ void TracerBase::getTraceString(tstring trace_string)
 	}
 }
 
-RDOStudioChartDoc* TracerBase::createNewChart()
+ChartDoc* TracerBase::createNewChart()
 {
-	RDOStudioChartDoc* pDoc = new RDOStudioChartDoc();
+	ChartDoc* pDoc = new ChartDoc();
 	ChartViewMainWnd* pView = new ChartViewMainWnd(NULL, pDoc, false);
 	studioApp.getIMainWnd()->addSubWindow(pView);
 	pDoc->attachView(&pView->view());
@@ -694,7 +694,7 @@ RDOStudioChartDoc* TracerBase::createNewChart()
 	return pDoc;
 }
 
-RDOStudioChartDoc* TracerBase::addSerieToChart(CREF(LPTracerSerie) pSerie, RDOStudioChartDoc* pDocument)
+ChartDoc* TracerBase::addSerieToChart(CREF(LPSerie) pSerie, ChartDoc* pDocument)
 {
 	if (!pDocument)
 	{
@@ -708,12 +708,12 @@ RDOStudioChartDoc* TracerBase::addSerieToChart(CREF(LPTracerSerie) pSerie, RDOSt
 	return pDocument;
 }
 
-void TracerBase::addChart(RDOStudioChartDoc* const pDocument)
+void TracerBase::addChart(ChartDoc* const pDocument)
 {
 	m_documentList.push_back(pDocument);
 }
 
-void TracerBase::removeChart(RDOStudioChartDoc* pDocument)
+void TracerBase::removeChart(ChartDoc* pDocument)
 {
 	DocumentList::iterator it = boost::range::find(m_documentList, pDocument);
 	if (it != m_documentList.end())
@@ -724,7 +724,7 @@ void TracerBase::removeChart(RDOStudioChartDoc* pDocument)
 
 void TracerBase::updateChartsStyles() const
 {
-	BOOST_FOREACH(RDOStudioChartDoc* pDocument, m_documentList)
+	BOOST_FOREACH(ChartDoc* pDocument, m_documentList)
 	{
 		pDocument->setStyle(&studioApp.getStyle()->style_chart);
 	}

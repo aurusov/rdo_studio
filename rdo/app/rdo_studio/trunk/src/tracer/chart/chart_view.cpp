@@ -40,7 +40,7 @@ using namespace rdoStyle;
 // --------------------------------------------------------------------------------
 // -------------------- ChartView
 // --------------------------------------------------------------------------------
-ChartView::ChartView(QAbstractScrollArea* pParent, RDOStudioChartDoc* pDocument, const rbool preview)
+ChartView::ChartView(QAbstractScrollArea* pParent, ChartDoc* pDocument, const rbool preview)
 	: super(pParent)
 	, m_pDocument(pDocument)
 	, m_bmpRect(0, 0, 0, 0)
@@ -158,12 +158,12 @@ int ChartView::chartShift() const
 	return m_chartShift;
 }
 
-CREF(TracerTimeNow) ChartView::drawFromX() const
+CREF(Time) ChartView::drawFromX() const
 {
 	return m_drawFromX;
 }
 
-CREF(TracerTimeNow) ChartView::drawToX() const
+CREF(Time) ChartView::drawToX() const
 {
 	return m_drawToX;
 }
@@ -178,19 +178,19 @@ int ChartView::drawToEventCount() const
 	return m_drawToEventCount;
 }
 
-CREF(RDOStudioChartDoc::TimesList) ChartView::unwrapTimesList() const
+CREF(ChartDoc::TimesList) ChartView::unwrapTimesList() const
 {
 	return m_unwrapTimesList;
 }
 
-const RDOStudioChartViewStyle* const ChartView::style() const
+const ChartViewStyle* const ChartView::style() const
 {
 	return m_pStyle;
 }
 
 void ChartView::recalcLayout()
 {
-	RDOStudioChartDoc* pDoc = getDocument();
+	ChartDoc* pDoc = getDocument();
 
 	QFontMetrics titleFontMetrics(m_fontTitle);
 	tstring str = pDoc->getTitle();
@@ -299,7 +299,7 @@ QScrollBar& ChartView::getHorzScrollBar()
 
 void ChartView::updateScrollBars()
 {
-	RDOStudioChartDoc* doc = getDocument();
+	ChartDoc* doc = getDocument();
 
 	int size;
 	if (!doc->getTimes().empty())
@@ -387,7 +387,7 @@ rbool ChartView::setTo(const int fromMaxPos)
 
 void ChartView::setFromTo()
 {
-	RDOStudioChartDoc* doc = getDocument();
+	ChartDoc* doc = getDocument();
 
 	m_drawFromX.eventCount = 0;
 	m_drawFromEventID = 0;
@@ -422,7 +422,7 @@ void ChartView::setFromTo()
 		int it_max_pos = 0;
 		rbool need_search_to = true;
 		int ticks = 0;
-		RDOStudioChartDoc::TimesList::const_iterator it;
+		ChartDoc::TimesList::const_iterator it;
 		for (it = doc->getTimes().begin(); it != doc->getTimes().end(); ++it)
 		{
 			it_pos = roundDouble(((*it)->time - doc->getTimes().front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks->tickWidth;
@@ -523,7 +523,7 @@ void ChartView::drawTitle(QPainter& painter, const QRect& chartRect)
 
 void ChartView::drawLegend(QPainter& painter, const QRect& legendRect)
 {
-	RDOStudioChartDoc* doc = getDocument();
+	ChartDoc* doc = getDocument();
 	QRect rect(legendRect);
 	painter.setFont(m_fontLegend);
 	BOOST_FOREACH(const ChartSerie* const pSerie, doc->getSerieList())
@@ -583,7 +583,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 	tmprect.setBottom(m_clientRect.bottom());
 	tmprect.setRight(m_clientRect.right() - 5);
 
-	RDOStudioChartDoc* pDoc = getDocument();
+	ChartDoc* pDoc = getDocument();
 	if (!pDoc->getTimes().empty())
 	{
 		tstring formatstr = "%.3f";
@@ -633,7 +633,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 			tstring str;
 			int lastx = 0;
 			QSize sz;
-			BOOST_FOREACH(const TracerTimeNow* const pTime, m_unwrapTimesList)
+			BOOST_FOREACH(const Time* const pTime, m_unwrapTimesList)
 			{
 				tmprect.setLeft(chartRect.left() + (LONG)((pTime->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks->tickWidth - m_chartShift));
 				tmprect.setLeft(std::min(tmprect.left(), chartRect.right() - 1));
@@ -690,7 +690,7 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 		QRect wrapRect(rect);
 
 		int ticks = 0;
-		RDOStudioChartDoc::TimesList::const_iterator it = m_unwrapTimesList.begin();
+		ChartDoc::TimesList::const_iterator it = m_unwrapTimesList.begin();
 		if (m_drawFromX == m_drawToX)
 		{
 			++it;
@@ -813,7 +813,7 @@ BOOL ChartView::OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoin
 	return TRUE;
 }
 
-RDOStudioChartDoc* ChartView::getDocument()
+ChartDoc* ChartView::getDocument()
 {
 	return m_pDocument;
 }
@@ -893,7 +893,7 @@ void ChartView::onViewZoomReset()
 	onUpdateActions(isActivated());
 }
 
-const RDOStudioChartViewStyle& ChartView::getStyle() const
+const ChartViewStyle& ChartView::getStyle() const
 {
 	return (*m_pStyle);
 }
@@ -905,7 +905,7 @@ void ChartView::setFonts(const rbool needRedraw)
 	if (!m_pStyle)
 		return;
 	
-	RDOStudioChartViewTheme* pChartTheme = static_cast<RDOStudioChartViewTheme*>(m_pStyle->theme);
+	ChartViewTheme* pChartTheme = static_cast<ChartViewTheme*>(m_pStyle->theme);
 
 	m_fontAxis = QFont(m_pStyle->font->name.c_str());
 	m_fontAxis.setBold     (pChartTheme->defaultStyle & RDOStyleFont::BOLD     );
@@ -926,7 +926,7 @@ void ChartView::setFonts(const rbool needRedraw)
 	m_fontLegend.setPointSize(m_pStyle->pFontsTicks->legendFontSize);
 }
 
-void ChartView::setStyle(RDOStudioChartViewStyle* pStyle, const rbool needRedraw)
+void ChartView::setStyle(ChartViewStyle* pStyle, const rbool needRedraw)
 {
 	m_pStyle = pStyle;
 
@@ -979,7 +979,7 @@ void ChartView::paintEvent(QPaintEvent*)
 {
 	QPainter painter(this);
 
-	RDOStudioChartDoc* doc = getDocument();
+	ChartDoc* doc = getDocument();
 
 	painter.fillRect(m_clientRect, m_pStyle->theme->backgroundColor);
 
@@ -1119,7 +1119,7 @@ void ChartView::mousePressEvent(QMouseEvent* pEvent)
 // --------------------------------------------------------------------------------
 // -------------------- ChartViewMainWnd
 // --------------------------------------------------------------------------------
-ChartViewMainWnd::ChartViewMainWnd(PTR(QWidget) pParent, PTR(RDOStudioChartDoc) pDocument, rbool preview)
+ChartViewMainWnd::ChartViewMainWnd(PTR(QWidget) pParent, PTR(ChartDoc) pDocument, rbool preview)
 	: super(pParent)
 {
 	setMinimumSize(400, 200);

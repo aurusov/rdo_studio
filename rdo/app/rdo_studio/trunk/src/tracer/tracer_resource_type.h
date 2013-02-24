@@ -18,9 +18,9 @@
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResourceParamInfo
+// -------------------- ParamInfo
 // --------------------------------------------------------------------------------
-class TracerResourceParamInfo
+class ParamInfo
 {
 public:
 	enum ParamType
@@ -33,8 +33,8 @@ public:
 		PT_STRING
 	};
 
-	TracerResourceParamInfo(const ParamType type);
-	virtual ~TracerResourceParamInfo();
+	ParamInfo(const ParamType type);
+	virtual ~ParamInfo();
 
 	CREF(QString) getName() const;
 	void          setName(CREF(QString) name);
@@ -55,11 +55,11 @@ private:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResourceType
+// -------------------- ResourceType
 // --------------------------------------------------------------------------------
-class TracerResourceType: public ChartTreeItem
+class ResourceType: public ChartTreeItem
 {
-DECLARE_FACTORY(TracerResourceType)
+DECLARE_FACTORY(ResourceType)
 public:
 	enum Kind
 	{
@@ -71,22 +71,22 @@ public:
 
 	Kind getKind() const;
 
-	int addParamInfo(TracerResourceParamInfo* const value);
-	TracerResourceParamInfo* getParamInfo(unsigned int index) const;
-	int getParamsCount() const;
+	int        addParamInfo(ParamInfo* const value);
+	ParamInfo* getParamInfo(unsigned int index) const;
+	int        getParamsCount() const;
 
 private:
-	TracerResourceType(Kind kind);
-	virtual ~TracerResourceType();
+	ResourceType(Kind kind);
+	virtual ~ResourceType();
 
-	typedef  std::vector<TracerResourceParamInfo*>  ParamInfoList;
+	typedef  std::vector<ParamInfo*>  ParamInfoList;
 
 	QString       m_name;
 	Kind          m_kind;
 	ParamInfoList m_paramInfoList;
 };
 
-typedef rdo::intrusive_ptr<TracerResourceType> LPTracerResourceType;
+typedef rdo::intrusive_ptr<ResourceType> LPResourceType;
 
 }}} // namespace rdo::gui::tracer
 

@@ -23,8 +23,11 @@
 
 namespace rdo { namespace gui { namespace tracer {
 
-class RDOStudioChartViewStyle;
-PREDECLARE_POINTER(TracerSerie);
+// --------------------------------------------------------------------------------
+// -------------------- ChartView
+// --------------------------------------------------------------------------------
+PREDECLARE_POINTER(Serie);
+class ChartViewStyle;
 class ChartSerie;
 
 class ChartView: public ActionActivatorWidget
@@ -32,14 +35,14 @@ class ChartView: public ActionActivatorWidget
 Q_OBJECT
 
 public:
-	ChartView(QAbstractScrollArea* pParent, RDOStudioChartDoc* pDocument, const rbool preview);
+	ChartView(QAbstractScrollArea* pParent, ChartDoc* pDocument, const rbool preview);
 	virtual ~ChartView();
 
-	RDOStudioChartDoc* getDocument();
-	void attachToDoc();
+	ChartDoc* getDocument();
+	void      attachToDoc();
 
-	const RDOStudioChartViewStyle& getStyle() const;
-	void setStyle(RDOStudioChartViewStyle* pStyle, const rbool needRedraw = true);
+	const ChartViewStyle& getStyle() const;
+	void setStyle(ChartViewStyle* pStyle, const rbool needRedraw = true);
 
 	void setPreviwMode(rbool value);
 
@@ -56,21 +59,21 @@ public:
 	rbool isDrawLegend () const;
 	void  setDrawLegend(rbool value);
 
-	long double         timeScale       () const;
-	int                 chartShift      () const;
-	CREF(TracerTimeNow) drawFromX       () const;
-	CREF(TracerTimeNow) drawToX         () const;
-	int                 drawFromEventID () const;
-	int                 drawToEventCount() const;
+	long double  timeScale       () const;
+	int          chartShift      () const;
+	CREF(Time)   drawFromX       () const;
+	CREF(Time)   drawToX         () const;
+	int          drawFromEventID () const;
+	int          drawToEventCount() const;
 
-	CREF(RDOStudioChartDoc::TimesList)   unwrapTimesList() const;
-	const RDOStudioChartViewStyle* const style          () const;
+	CREF(ChartDoc::TimesList)            unwrapTimesList() const;
+	const ChartViewStyle* const style          () const;
 
 	rbool doUnwrapTime () const;
 
 private:
 	COleDropTarget m_ddTarget;
-	LPTracerSerie  m_pddSerie;
+	LPSerie  m_pddSerie;
 
 	QRect m_bmpRect;
 	QRect m_clientRect;
@@ -92,13 +95,13 @@ private:
 	void        updateScrollBars  ();
 	rbool       scrollHorizontally(rsint inc);
 
-	long double    m_timeScale;
-	int            m_chartShift;
-	TracerTimeNow  m_drawFromX;
-	TracerTimeNow  m_drawToX;
-	int            m_drawFromEventID;
-	int            m_drawToEventCount;
-	RDOStudioChartDoc::TimesList m_unwrapTimesList;
+	long double         m_timeScale;
+	int                 m_chartShift;
+	Time                m_drawFromX;
+	Time                m_drawToX;
+	int                 m_drawFromEventID;
+	int                 m_drawToEventCount;
+	ChartDoc::TimesList m_unwrapTimesList;
 
 	rbool setTo(const int fromMaxPos);
 	void  setFromTo();
@@ -120,8 +123,8 @@ private:
 	rbool  m_zoomAutoFlag;
 	void setZoom(double new_zoom, const rbool force_update = false);
 
-	rbool                    m_previewMode;
-	RDOStudioChartViewStyle* m_pStyle;
+	rbool           m_previewMode;
+	ChartViewStyle* m_pStyle;
 
 	ChartSerie* m_pYAxis;
 	rbool       m_needDrawLegend;
@@ -135,7 +138,7 @@ private:
 
 	typedef  ActionActivatorWidget  super;
 
-	RDOStudioChartDoc* m_pDocument;
+	ChartDoc* m_pDocument;
 
 	virtual DROPEFFECT OnDragEnter(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
 	virtual void OnDragLeave();
@@ -172,7 +175,7 @@ private slots:
 class ChartViewMainWnd: public QAbstractScrollArea
 {
 public:
-	ChartViewMainWnd(PTR(QWidget) pParent, PTR(RDOStudioChartDoc) pDocument, rbool preview);
+	ChartViewMainWnd(PTR(QWidget) pParent, PTR(ChartDoc) pDocument, rbool preview);
 	virtual ~ChartViewMainWnd();
 
 	ChartView& view();
@@ -180,10 +183,10 @@ public:
 private:
 	typedef  QAbstractScrollArea  super;
 
-	virtual rbool viewportEvent  (PTR(QEvent)      pEvent);
-	virtual void  focusInEvent   (PTR(QFocusEvent) pEvent);
-	virtual void  focusOutEvent  (PTR(QFocusEvent) pEvent);
-	virtual void  keyPressEvent  (PTR(QKeyEvent)   pEvent);
+	virtual rbool viewportEvent(PTR(QEvent)      pEvent);
+	virtual void  focusInEvent (PTR(QFocusEvent) pEvent);
+	virtual void  focusOutEvent(PTR(QFocusEvent) pEvent);
+	virtual void  keyPressEvent(PTR(QKeyEvent)   pEvent);
 };
 
 }}} // namespace rdo::gui::tracer
