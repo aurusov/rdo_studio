@@ -96,22 +96,22 @@ rbool RDORule::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	onBeforeChoiceFrom(pRuntime);
 	pRuntime->inc_cnt_choice_from();
 	rbool result = choiceFrom(pRuntime);
-	if (result)
-	{
-		m_traceOFF = true;
-		LPRDORuntime pClone = pRuntime->clone();
-		ASSERT(pClone);
-		if (onDoOperation(pClone) != IBaseOperation::BOR_done)
-		{
-			/// @todo Реакция на плохой onDoOperation - это вообще-то спортный вопрос
-			return false;
-		}
-		if (pClone->equal(pRuntime))
-		{
-			result = false;
-		}
-		m_traceOFF = false;
-	}
+	//if (result)
+	//{
+	//	m_traceOFF = true;
+	//	LPRDORuntime pClone = pRuntime->clone();
+	//	ASSERT(pClone);
+	//	if (onDoOperation(pClone) != IBaseOperation::BOR_done)
+	//	{
+	//		/// @todo Реакция на плохой onDoOperation - это вообще-то спортный вопрос
+	//		return false;
+	//	}
+	//	if (pClone->equal(pRuntime))
+	//	{
+	//		result = false;
+	//	}
+	//	m_traceOFF = false;
+	//}
 	return result;
 }
 
