@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerbase.h
+  \file      tracer_base.h
   \author    Захаров Павел
   \date      01.04.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_TRACER_RDOTRACERBASE_H_
-#define _RDO_STUDIO_TRACER_RDOTRACERBASE_H_
+#ifndef _RDO_STUDIO_TRACER_BASE_H_
+#define _RDO_STUDIO_TRACER_BASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qstring.h>
@@ -125,4 +125,4 @@ private:
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_TRACER_RDOTRACERBASE_H_
+#endif // _RDO_STUDIO_TRACER_BASE_H_

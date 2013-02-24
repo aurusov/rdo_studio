@@ -747,75 +747,75 @@
 			Name=".tracer"
 			>
 			<File
-				RelativePath="..\..\src\tracer\rdotracer.cpp"
+				RelativePath="..\..\src\tracer\tracer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracer.h"
+				RelativePath="..\..\src\tracer\tracer.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracerbase.cpp"
+				RelativePath="..\..\src\tracer\tracer_base.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracerbase.h"
+				RelativePath="..\..\src\tracer\tracer_base.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotraceroperation.cpp"
+				RelativePath="..\..\src\tracer\tracer_operation.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotraceroperation.h"
+				RelativePath="..\..\src\tracer\tracer_operation.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracerpattern.cpp"
+				RelativePath="..\..\src\tracer\tracer_pattern.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracerpattern.h"
+				RelativePath="..\..\src\tracer\tracer_pattern.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracerresource.cpp"
+				RelativePath="..\..\src\tracer\tracer_resource.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracerresource.h"
+				RelativePath="..\..\src\tracer\tracer_resource.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracerrestype.cpp"
+				RelativePath="..\..\src\tracer\tracer_resource_type.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracerrestype.h"
+				RelativePath="..\..\src\tracer\tracer_resource_type.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracerresult.cpp"
+				RelativePath="..\..\src\tracer\tracer_result.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracerresult.h"
+				RelativePath="..\..\src\tracer\tracer_result.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracerserie.cpp"
+				RelativePath="..\..\src\tracer\tracer_serie.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracerserie.h"
+				RelativePath="..\..\src\tracer\tracer_serie.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracervalues.cpp"
+				RelativePath="..\..\src\tracer\tracer_values.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tracer\rdotracervalues.h"
+				RelativePath="..\..\src\tracer\tracer_values.h"
 				>
 			</File>
 			<Filter

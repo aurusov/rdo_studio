@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerrestype.h
+  \file      tracer_resource_type.h
   \author    Захаров Павел
   \date      11.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_TRACER_RDOTRACERRESTYPE_H_
-#define _RDO_STUDIO_TRACER_RDOTRACERRESTYPE_H_
+#ifndef _RDO_STUDIO_TRACER_RESOURCE_TYPE_H_
+#define _RDO_STUDIO_TRACER_RESOURCE_TYPE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -90,4 +90,4 @@ typedef rdo::intrusive_ptr<TracerResourceType> LPTracerResourceType;
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_TRACER_RDOTRACERRESTYPE_H_
+#endif // _RDO_STUDIO_TRACER_RESOURCE_TYPE_H_

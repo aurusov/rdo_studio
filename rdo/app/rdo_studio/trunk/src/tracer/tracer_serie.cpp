@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerserie.cpp
+  \file      tracer_serie.cpp
   \author    Захаров Павел
   \date      11.03.2003
   \brief     
@@ -13,10 +13,10 @@
 #include <algorithm>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/tracer/rdotracerserie.h"
-#include "app/rdo_studio/src/tracer/rdotracervalues.h"
-#include "app/rdo_studio/src/tracer/rdotracerresource.h"
-#include "app/rdo_studio/src/tracer/rdotracerrestype.h"
+#include "app/rdo_studio/src/tracer/tracer_serie.h"
+#include "app/rdo_studio/src/tracer/tracer_values.h"
+#include "app/rdo_studio/src/tracer/tracer_resource.h"
+#include "app/rdo_studio/src/tracer/tracer_resource_type.h"
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 #include "app/rdo_studio/src/application.h"

@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracer.cpp
+  \file      tracer.cpp
   \author    Захаров Павел
   \date      01.04.2003
   \brief     
@@ -18,7 +18,7 @@
 #include "app/rdo_studio/src/main_windows_base.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/thread.h"
-#include "app/rdo_studio/src/tracer/rdotracer.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 // --------------------------------------------------------------------------------
 

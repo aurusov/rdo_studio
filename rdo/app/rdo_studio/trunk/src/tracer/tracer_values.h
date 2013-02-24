@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracervalues.h
+  \file      tracer_values.h
   \author    Захаров Павел
   \date      11.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_TRACER_RDOTRACERVALUES_H_
-#define _RDO_STUDIO_TRACER_RDOTRACERVALUES_H_
+#ifndef _RDO_STUDIO_TRACER_VALUES_H_
+#define _RDO_STUDIO_TRACER_VALUES_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -56,4 +56,4 @@ private:
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_TRACER_RDOTRACERVALUES_H_
+#endif // _RDO_STUDIO_TRACER_VALUES_H_

@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerserie.h
+  \file      tracer_serie.h
   \author    Захаров Павел
   \date      11.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_TRACER_RDOTRACERSERIE_H_
-#define _RDO_STUDIO_TRACER_RDOTRACERSERIE_H_
+#ifndef _RDO_STUDIO_TRACER_SERIE_H_
+#define _RDO_STUDIO_TRACER_SERIE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
@@ -16,7 +16,7 @@
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_tree_item.h"
-#include "app/rdo_studio/src/tracer/rdotracervalues.h"
+#include "app/rdo_studio/src/tracer/tracer_values.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace tracer {
@@ -109,4 +109,4 @@ typedef  rdo::intrusive_ptr<TracerSerie>  LPTracerSerie;
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_TRACER_RDOTRACERSERIE_H_
+#endif // _RDO_STUDIO_TRACER_SERIE_H_

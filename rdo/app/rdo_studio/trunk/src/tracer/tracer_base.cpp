@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerbase.cpp
+  \file      tracer_base.cpp
   \author    Захаров Павел
   \date      01.04.2003
   \brief     
@@ -13,13 +13,13 @@
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm/find.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/tracer/rdotracerbase.h"
-#include "app/rdo_studio/src/tracer/rdotracerrestype.h"
-#include "app/rdo_studio/src/tracer/rdotracerresource.h"
-#include "app/rdo_studio/src/tracer/rdotracerpattern.h"
-#include "app/rdo_studio/src/tracer/rdotraceroperation.h"
-#include "app/rdo_studio/src/tracer/rdotracerresult.h"
-#include "app/rdo_studio/src/tracer/rdotracervalues.h"
+#include "app/rdo_studio/src/tracer/tracer_base.h"
+#include "app/rdo_studio/src/tracer/tracer_resource_type.h"
+#include "app/rdo_studio/src/tracer/tracer_resource.h"
+#include "app/rdo_studio/src/tracer/tracer_pattern.h"
+#include "app/rdo_studio/src/tracer/tracer_operation.h"
+#include "app/rdo_studio/src/tracer/tracer_result.h"
+#include "app/rdo_studio/src/tracer/tracer_values.h"
 #include "app/rdo_studio/src/tracer/logger/tracer_logger_main_wnd.h"
 #include "app/rdo_studio/src/tracer/chart/chart_tree.h"
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"

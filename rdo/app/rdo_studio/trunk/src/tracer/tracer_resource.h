@@ -1,18 +1,18 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerresource.h
+  \file      tracer_resource.h
   \author    Захаров Павел
   \date      11.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_TRACER_RDOTRACERRESOURCE_H_
-#define _RDO_STUDIO_TRACER_RDOTRACERRESOURCE_H_
+#ifndef _RDO_STUDIO_TRACER_RESOURCE_H_
+#define _RDO_STUDIO_TRACER_RESOURCE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/tracer/rdotracerserie.h"
+#include "app/rdo_studio/src/tracer/tracer_serie.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace tracer {
@@ -83,4 +83,4 @@ typedef  rdo::intrusive_ptr<TracerResource>  LPTracerResource;
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_TRACER_RDOTRACERRESOURCE_H_
+#endif // _RDO_STUDIO_TRACER_RESOURCE_H_

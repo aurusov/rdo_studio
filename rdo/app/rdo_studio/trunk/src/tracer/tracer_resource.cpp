@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerresource.cpp
+  \file      tracer_resource.cpp
   \author    Захаров Павел
   \date      11.03.2003
   \brief     
@@ -11,10 +11,10 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/tracer/rdotracerresource.h"
-#include "app/rdo_studio/src/tracer/rdotracerrestype.h"
-#include "app/rdo_studio/src/tracer/rdotracervalues.h"
-#include "app/rdo_studio/src/tracer/rdotracer.h"
+#include "app/rdo_studio/src/tracer/tracer_resource.h"
+#include "app/rdo_studio/src/tracer/tracer_resource_type.h"
+#include "app/rdo_studio/src/tracer/tracer_values.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

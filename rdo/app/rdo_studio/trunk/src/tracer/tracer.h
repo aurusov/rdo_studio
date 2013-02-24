@@ -1,20 +1,20 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracer.h
+  \file      tracer.h
   \author    Захаров Павел
   \date      01.04.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_TRACER_RDOTRACER_H_
-#define _RDO_STUDIO_TRACER_RDOTRACER_H_
+#ifndef _RDO_STUDIO_TRACER_H_
+#define _RDO_STUDIO_TRACER_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio/src/tracer/rdotracerbase.h"
+#include "app/rdo_studio/src/tracer/tracer_base.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -46,4 +46,4 @@ namespace rdo
 // --------------------------------------------------------------------------------
 extern rdo::gui::tracer::Tracer* g_pTracer;
 
-#endif // _RDO_STUDIO_TRACER_RDOTRACER_H_
+#endif // _RDO_STUDIO_TRACER_H_

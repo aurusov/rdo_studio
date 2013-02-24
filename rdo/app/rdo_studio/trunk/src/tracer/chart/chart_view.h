@@ -15,7 +15,7 @@
 #include <QtWidgets/qabstractscrollarea.h>
 #include <QtWidgets/qscrollbar.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/tracer/rdotracervalues.h"
+#include "app/rdo_studio/src/tracer/tracer_values.h"
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 #include "app/rdo_studio/src/action_activator/action_activator_widget.h"
 #include "ui/qt/headers/scroll_bar/scroll_bar.h"

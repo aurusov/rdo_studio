@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerresult.cpp
+  \file      tracer_result.cpp
   \author    Захаров Павел
   \date      11.03.2003
   \brief     
@@ -11,8 +11,8 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/tracer/rdotracerresult.h"
-#include "app/rdo_studio/src/tracer/rdotracervalues.h"
+#include "app/rdo_studio/src/tracer/tracer_result.h"
+#include "app/rdo_studio/src/tracer/tracer_values.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

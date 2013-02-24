@@ -14,12 +14,12 @@
 #include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_tree.h"
-#include "app/rdo_studio/src/tracer/rdotracer.h"
-#include "app/rdo_studio/src/tracer/rdotracerrestype.h"
-#include "app/rdo_studio/src/tracer/rdotracerresource.h"
-#include "app/rdo_studio/src/tracer/rdotracerpattern.h"
-#include "app/rdo_studio/src/tracer/rdotraceroperation.h"
-#include "app/rdo_studio/src/tracer/rdotracerresult.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
+#include "app/rdo_studio/src/tracer/tracer_resource_type.h"
+#include "app/rdo_studio/src/tracer/tracer_resource.h"
+#include "app/rdo_studio/src/tracer/tracer_pattern.h"
+#include "app/rdo_studio/src/tracer/tracer_operation.h"
+#include "app/rdo_studio/src/tracer/tracer_result.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_frm.h"
 // --------------------------------------------------------------------------------

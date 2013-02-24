@@ -1,19 +1,19 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotraceroperation.h
+  \file      tracer_operation.h
   \author    Захаров Павел
   \date      11.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_TRACER_RDOTRACEROPERATION_H_
-#define _RDO_STUDIO_TRACER_RDOTRACEROPERATION_H_
+#ifndef _RDO_STUDIO_TRACER_OPERATION_H_
+#define _RDO_STUDIO_TRACER_OPERATION_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/tracer/rdotracerserie.h"
-#include "app/rdo_studio/src/tracer/rdotracerpattern.h"
+#include "app/rdo_studio/src/tracer/tracer_serie.h"
+#include "app/rdo_studio/src/tracer/tracer_pattern.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace tracer {
@@ -81,4 +81,4 @@ typedef  rdo::intrusive_ptr<TracerEvent>  LPTracerEvent;
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_TRACER_RDOTRACEROPERATION_H_
+#endif // _RDO_STUDIO_TRACER_OPERATION_H_

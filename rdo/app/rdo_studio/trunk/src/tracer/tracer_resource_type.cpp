@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerrestype.cpp
+  \file      tracer_resource_type.cpp
   \author    Захаров Павел
   \date      11.03.2003
   \brief     
@@ -11,7 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/tracer/rdotracerrestype.h"
+#include "app/rdo_studio/src/tracer/tracer_resource_type.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

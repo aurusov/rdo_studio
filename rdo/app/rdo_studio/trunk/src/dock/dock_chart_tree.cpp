@@ -13,7 +13,7 @@
 #include <QtWidgets/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_chart_tree.h"
-#include "app/rdo_studio/src/tracer/rdotracer.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
 
 DockChartTree::DockChartTree(PTR(QWidget) pParent)
