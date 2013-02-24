@@ -35,22 +35,22 @@ static char THIS_FILE[] = __FILE__;
 class TracerSerieFindValue
 {
 public:
-	TracerSerieFindValue(ChartView* _view)
-		: view(_view)
+	TracerSerieFindValue(ChartView* pView)
+		: m_pView(pView)
 	{}
 
-	rbool operator ()(TracerValue* val);
+	rbool operator() (TracerValue* pValue);
 
 private:
-	ChartView* view;
+	ChartView* m_pView;
 };
 
-rbool TracerSerieFindValue::operator ()(TracerValue* val)
+rbool TracerSerieFindValue::operator() (TracerValue* pValue)
 {
-	rbool res = val && val->modeltime->time >= view->m_drawFromX.time;
-	if (view->doUnwrapTime() && res && (val->modeltime->time == view->m_drawFromX.time))
+	rbool res = pValue && pValue->modeltime->time >= m_pView->m_drawFromX.time;
+	if (m_pView->doUnwrapTime() && res && (pValue->modeltime->time == m_pView->m_drawFromX.time))
 	{
-		res = val->eventIndex >= view->m_drawFromEventIndex;
+		res = pValue->eventIndex >= m_pView->m_drawFromEventIndex;
 	}
 	return res;
 }
@@ -211,12 +211,12 @@ void TracerSerie::getCaptionsBool(std::vector<tstring>& captions, const int valu
 	captions.push_back("TRUE");
 }
 
-void TracerSerie::getLastValue(TracerValue*& val) const
+void TracerSerie::getLastValue(TracerValue*& pValue) const
 {
 	if (!m_valueList.size())
-		val = NULL;
+		pValue = NULL;
 	else
-		val = m_valueList.back();
+		pValue = m_valueList.back();
 }
 
 void TracerSerie::drawSerie(ChartView* const view,
