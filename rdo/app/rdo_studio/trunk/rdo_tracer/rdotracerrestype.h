@@ -16,50 +16,44 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResParamInfo
+// -------------------- TracerResourceParamInfo
 // --------------------------------------------------------------------------------
-enum TracerResParamType
-{
-	RDOPT_INTEGER   = 0,
-	RDOPT_REAL,
-	RDOPT_ENUMERATIVE,
-	RDOPT_BOOL,
-	RDOPT_ARRAY,
-	RDOPT_STRING
-};
-
-typedef std::vector<tstring> RDOStringVector;
-
-class TracerResParamInfo
+class TracerResourceParamInfo
 {
 public:
-	TracerResParamInfo(const TracerResParamType type);
-	virtual ~TracerResParamInfo();
+	enum ParamType
+	{
+		PT_INTEGER = 0,
+		PT_REAL,
+		PT_ENUMERATIVE,
+		PT_BOOL,
+		PT_ARRAY,
+		PT_STRING
+	};
+
+	TracerResourceParamInfo(const ParamType type);
+	virtual ~TracerResourceParamInfo();
 
 	CREF(QString) getName() const;
-	void setName(CREF(QString) name);
+	void          setName(CREF(QString) name);
 
-	TracerResParamType getParamType() const
-	{
-		return paramType;
-	}
-	int addEnumValue (CREF(tstring) value);int addStringValue(CREF(tstring) value);
-	tstring getEnumValue(unsigned int index) const;
-	int getEnumCount() const
-	{
-		return enumValues ? enumValues->size() : 0;
-	}
+	ParamType getParamType() const;
 
-protected:
-	RDOStringVector* enumValues;
-	TracerResParamType paramType;
+	int     addEnumValue  (CREF(tstring) value);
+	int     addStringValue(CREF(tstring) value);
+	tstring getEnumValue  (unsigned int index) const;
+	int     getEnumCount  () const;
 
 private:
-	QString m_name;
+	typedef std::vector<tstring> EnumValueList;
+
+	QString        m_name;
+	EnumValueList* m_enumValueList;
+	ParamType      m_paramType;
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResType
+// -------------------- TracerResourceType
 // --------------------------------------------------------------------------------
 class TracerResourceType: public ChartTreeItem
 {
@@ -70,26 +64,24 @@ public:
 		RDOTK_PERMANENT = 0, RDOTK_TEMPORARY
 	};
 
+	CREF(QString) getName() const;
+	void          setName(CREF(QString) name);
+
 	Kind getKind() const;
 
-	CREF(QString) getName() const;
-	void setName(CREF(QString) name);
-
-	int addParamInfo(TracerResParamInfo* const value);
-	TracerResParamInfo* getParamInfo(unsigned int index) const;
+	int addParamInfo(TracerResourceParamInfo* const value);
+	TracerResourceParamInfo* getParamInfo(unsigned int index) const;
 	int getParamsCount() const;
-
-protected:
-	typedef  std::vector<TracerResParamInfo*>  ParamInfoList;
-
-	ParamInfoList m_paramInfoList;
-	Kind          m_kind;
 
 private:
 	TracerResourceType(Kind kind);
 	virtual ~TracerResourceType();
 
-	QString m_name;
+	typedef  std::vector<TracerResourceParamInfo*>  ParamInfoList;
+
+	QString       m_name;
+	Kind          m_kind;
+	ParamInfoList m_paramInfoList;
 };
 
 typedef rdo::intrusive_ptr<TracerResourceType> LPTracerResourceType;

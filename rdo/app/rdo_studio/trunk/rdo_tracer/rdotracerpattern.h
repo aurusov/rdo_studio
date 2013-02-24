@@ -28,10 +28,10 @@ public:
 		PK_KEYBOARD
 	};
 
-	Kind getKind() const;
-
 	CREF(QString) getName() const;
-	void setName(CREF(QString) name);
+	void          setName(CREF(QString) name);
+
+	Kind getKind() const;
 
 private:
 	TracerPattern(Kind kind);

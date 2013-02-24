@@ -23,10 +23,10 @@ class TracerOperationBase: public TracerSerie
 {
 DECLARE_FACTORY(TracerOperationBase)
 public:
-	LPTracerPattern getPattern() const;
-
 	CREF(QString) getName() const;
 	void          setName(CREF(QString) name);
+
+	LPTracerPattern getPattern() const;
 
 	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
 	virtual void monitorTime(TracerTimeNow* const pTime, const int eventIndex);

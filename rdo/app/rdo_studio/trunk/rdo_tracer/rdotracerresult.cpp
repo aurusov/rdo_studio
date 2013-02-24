@@ -24,11 +24,17 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 // -------------------- TracerResult
 // --------------------------------------------------------------------------------
-TracerResult::TracerResult(const TracerResultKind kind)
-	: TracerSerie(RDOST_RESULT),
-	  resultKind(kind),
-	  id(0)
-{}
+TracerResult::TracerResult(CREF(QString) name, Kind kind, int id)
+	: TracerSerie(SK_RESULT)
+	, m_name(name)
+	, m_kind(kind)
+	, m_id(id)
+{
+	if (title.isEmpty())
+	{
+		title = m_name;
+	}
+}
 
 TracerResult::~TracerResult()
 {}
@@ -38,31 +44,32 @@ CREF(QString) TracerResult::getName() const
 	return m_name;
 }
 
-void TracerResult::setName(CREF(QString) name)
+TracerResult::Kind TracerResult::getKind() const
 {
-	m_name = name;
-	if (title.isEmpty())
-	{
-		title = m_name;
-	}
+	return m_kind;
+}
+
+int TracerResult::getID() const
+{
+	return m_id;
 }
 
 void TracerResult::getCaptions(std::vector<tstring>& captions, const int valueCount) const
 {
-	switch (resultKind)
+	switch (m_kind)
 	{
-	case RDORK_WATCHQUANT:
+	case RK_WATCHQUANT:
 	{
 		TracerSerie::getCaptionsInt(captions, valueCount);
 		break;
 	}
-	case RDORK_WATCHSTATE:
+	case RK_WATCHSTATE:
 	{
 		TracerSerie::getCaptionsBool(captions, valueCount);
 		break;
 	}
-	case RDORK_WATCHPAR:
-	case RDORK_WATCHVALUE:
+	case RK_WATCHPAR:
+	case RK_WATCHVALUE:
 	{
 		TracerSerie::getCaptionsDouble(captions, valueCount);
 		break;
@@ -70,19 +77,19 @@ void TracerResult::getCaptions(std::vector<tstring>& captions, const int valueCo
 	}
 }
 
-void TracerResult::setValue(tstring& line, TracerTimeNow* const time, const int eventIndex)
+void TracerResult::setValue(tstring& line, TracerTimeNow* const pTime, const int eventIndex)
 {
-	TracerValue* newvalue = new TracerValue(time, eventIndex);
-	double newval;
+	TracerValue* pNewValue = new TracerValue(pTime, eventIndex);
+	double newValue;
 	rdo::trim(line);
-	if (resultKind != RDORK_WATCHSTATE)
+	if (m_kind != RK_WATCHSTATE)
 	{
-		newval = atof(line.c_str());
+		newValue = atof(line.c_str());
 	}
 	else
 	{
-		newval = (line == "TRUE") ? 1 : 0;
+		newValue = (line == "TRUE") ? 1 : 0;
 	}
-	newvalue->value = newval;
-	addValue(newvalue);
+	pNewValue->value = newValue;
+	addValue(pNewValue);
 }

@@ -31,7 +31,7 @@ PREDECLARE_POINTER(TracerEvent);
 PREDECLARE_POINTER(TracerResult);
 class TracerTimeNow;
 PREDECLARE_POINTER(TracerSerie);
-class TracerResParamInfo;
+class TracerResourceParamInfo;
 
 class ChartTree;
 class RDOStudioChartDoc;
@@ -70,8 +70,8 @@ private:
 	LogMainWnd* m_pLog;
 	ChartTree*  m_pChartTree;
 
-	TracerResParamInfo* getParam(rdo::textstream& stream);
-	TracerResParamInfo* getParamType(rdo::textstream& stream);
+	TracerResourceParamInfo* getParam(rdo::textstream& stream);
+	TracerResourceParamInfo* getParamType(rdo::textstream& stream);
 
 	typedef  std::vector<LPTracerResourceType>        ResourceTypeList;
 	typedef  std::vector<LPTracerResource>       ResourceList;

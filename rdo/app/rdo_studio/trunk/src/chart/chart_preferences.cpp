@@ -48,11 +48,11 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 
 	insertColors(colorComboBox);
 
-	markerComboBox->addItem(QString::fromLocal8Bit("Нет"),         RDOSM_NONE);
-	markerComboBox->addItem(QString::fromLocal8Bit("Круг"),        RDOSM_CIRCLE);
-	markerComboBox->addItem(QString::fromLocal8Bit("Квадрат"),     RDOSM_SQUARE);
-	markerComboBox->addItem(QString::fromLocal8Bit("Треугольник"), RDOSM_TRIANG);
-	markerComboBox->addItem(QString::fromLocal8Bit("Крестик"),     RDOSM_CROSS);
+	markerComboBox->addItem(QString::fromLocal8Bit("Нет"),         TracerSerie::M_NONE);
+	markerComboBox->addItem(QString::fromLocal8Bit("Круг"),        TracerSerie::M_CIRCLE);
+	markerComboBox->addItem(QString::fromLocal8Bit("Квадрат"),     TracerSerie::M_SQUARE);
+	markerComboBox->addItem(QString::fromLocal8Bit("Треугольник"), TracerSerie::M_TRIANG);
+	markerComboBox->addItem(QString::fromLocal8Bit("Крестик"),     TracerSerie::M_CROSS);
 
 	connect(xValueLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onXValue(const QString&)));
 	connect(yValueLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onYValue(const QString&)));
@@ -141,7 +141,7 @@ void ChartPreferences::apply()
 		ChartSerie::Options options;
 		options.title = title.toLocal8Bit();
 		options.color = colorComboBox->itemData(colorComboBox->currentIndex(), Qt::UserRole).value<QColor>();
-		options.markerType = static_cast<TracerSerieMarker>(markerComboBox->itemData(markerComboBox->currentIndex(), Qt::UserRole).toInt());
+		options.markerType = static_cast<TracerSerie::Marker>(markerComboBox->itemData(markerComboBox->currentIndex(), Qt::UserRole).toInt());
 		options.markerSize = m_sizeMarker;
 		options.markerNeedDraw = showMarkerCheckBox->checkState();
 		options.markerTransparent = transparentMarkerCheckBox->checkState();

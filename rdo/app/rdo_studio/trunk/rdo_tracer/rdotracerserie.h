@@ -21,23 +21,6 @@
 // --------------------------------------------------------------------------------
 // -------------------- TracerSerie
 // --------------------------------------------------------------------------------
-enum TracerSerieKind
-{
-	RDOST_RESPARAM = 0,
-	RDOST_OPERATION,
-	RDOST_RESULT,
-	RDOST_PREVIEW
-};
-
-enum TracerSerieMarker
-{
-	RDOSM_NONE = 0,
-	RDOSM_CIRCLE,
-	RDOSM_SQUARE,
-	RDOSM_TRIANG,
-	RDOSM_CROSS
-};
-
 class ChartView;
 class RDOStudioChartDoc;
 class TracerValue;
@@ -48,16 +31,28 @@ typedef std::list<TracerValue*> valuesList;
 class TracerSerie: public ChartTreeItem
 {
 DECLARE_FACTORY(TracerSerie)
-friend class ChartSerie;
-
 public:
-	TracerSerieKind getSerieKind() const
+	enum Kind
 	{
-		return serieKind;
-	}
+		SK_PARAM = 0,
+		SK_OPERATION,
+		SK_RESULT,
+		SK_PREVIEW
+	};
+
+	enum Marker
+	{
+		M_NONE = 0,
+		M_CIRCLE,
+		M_SQUARE,
+		M_TRIANG,
+		M_CROSS
+	};
 
 	CREF(QString) getTitle() const;
-	void setTitle(CREF(QString) value);
+	void          setTitle(CREF(QString) value);
+
+	Kind getKind() const;
 
 	void addValue(TracerValue* const value);
 	void getValueCount(int& count) const;
@@ -83,11 +78,11 @@ public:
 	               QPainter& painter,
 	               const QRect& rect,
 	               const QColor& color,
-	               TracerSerieMarker marker,
+	               Marker marker,
 	               const int markerSize,
 	               const rbool draw_marker,
 	               const rbool transparent_marker) const;
-	void drawMarker(QPainter& painter, const int x, const int y, TracerSerieMarker marker, const int markerSize) const;
+	void drawMarker(QPainter& painter, const int x, const int y, Marker marker, const int markerSize) const;
 
 	void addToDoc(RDOStudioChartDoc* const doc);
 	void removeFromDoc(RDOStudioChartDoc* const doc);
@@ -102,10 +97,10 @@ public:
 	ExportData exportData();
 
 protected:
-	TracerSerie(TracerSerieKind _serieKind = RDOST_PREVIEW);
+	TracerSerie(Kind _serieKind = SK_PREVIEW);
 	virtual ~TracerSerie();
 
-	TracerSerieKind serieKind;
+	Kind m_kind;
 	QString         title;
 
 	valuesList values;

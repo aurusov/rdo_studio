@@ -64,7 +64,7 @@ private:
 	std::vector<ChartSerie*> m_serieList;
 	int getSerieIndex(ChartSerie* serie) const;
 	COLORREF selectColor();
-	TracerSerieMarker selectMarker();
+	TracerSerie::Marker selectMarker();
 
 	TimesList           m_docTimes;
 	TimesList::iterator m_insertedIt;

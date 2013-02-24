@@ -21,72 +21,82 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResParamInfo
+// -------------------- TracerResourceParamInfo
 // --------------------------------------------------------------------------------
-TracerResParamInfo::TracerResParamInfo(const TracerResParamType type)
-	: paramType(type),
-	  enumValues(NULL)
+TracerResourceParamInfo::TracerResourceParamInfo(const ParamType type)
+	: m_paramType(type)
+	, m_enumValueList(NULL)
 {
-	if (paramType == RDOPT_ENUMERATIVE || paramType == RDOPT_BOOL || paramType == RDOPT_STRING)
+	if (m_paramType == PT_ENUMERATIVE || m_paramType == PT_BOOL || m_paramType == PT_STRING)
 	{
-		enumValues = new RDOStringVector();
+		m_enumValueList = new EnumValueList();
 	}
 }
 
-TracerResParamInfo::~TracerResParamInfo()
+TracerResourceParamInfo::~TracerResourceParamInfo()
 {
-	if (enumValues)
+	if (m_enumValueList)
 	{
-		delete enumValues;
+		delete m_enumValueList;
 	}
 }
 
-CREF(QString) TracerResParamInfo::getName() const
+CREF(QString) TracerResourceParamInfo::getName() const
 {
 	return m_name;
 }
 
-void TracerResParamInfo::setName(CREF(QString) name)
+void TracerResourceParamInfo::setName(CREF(QString) name)
 {
 	m_name = name;
 }
 
-int TracerResParamInfo::addEnumValue(CREF(tstring) value)
+TracerResourceParamInfo::ParamType TracerResourceParamInfo::getParamType() const
 {
-	if (!enumValues)
-		return -1;
-	enumValues->push_back(value);
-	return enumValues->size() - 1;
+	return m_paramType;
 }
 
-int TracerResParamInfo::addStringValue(CREF(tstring) value)
+int TracerResourceParamInfo::addEnumValue(CREF(tstring) value)
 {
-	if (!enumValues)
+	if (!m_enumValueList)
+		return -1;
+	m_enumValueList->push_back(value);
+	return m_enumValueList->size() - 1;
+}
+
+int TracerResourceParamInfo::addStringValue(CREF(tstring) value)
+{
+	if (!m_enumValueList)
 		return -1;
 
-	RDOStringVector::const_iterator it = std::find(enumValues->begin(), enumValues->end(), value);
-	if (it != enumValues->end())
+	EnumValueList::const_iterator it = std::find(m_enumValueList->begin(), m_enumValueList->end(), value);
+	if (it != m_enumValueList->end())
 	{
-		return it - enumValues->begin();
+		return it - m_enumValueList->begin();
 	}
 
-	enumValues->push_back(value);
-	return enumValues->size() - 1;
+	m_enumValueList->push_back(value);
+	return m_enumValueList->size() - 1;
 }
 
 static tstring nullStr = "";
 
-tstring TracerResParamInfo::getEnumValue(unsigned int index) const
+tstring TracerResourceParamInfo::getEnumValue(unsigned int index) const
 {
-	if (!enumValues)
+	if (!m_enumValueList)
 		return nullStr;
-	if (index >= enumValues->size() || index < 0)
+	if (index >= m_enumValueList->size() || index < 0)
 		return nullStr;
-	return enumValues->at(index);
+	return m_enumValueList->at(index);
+}
+
+int TracerResourceParamInfo::getEnumCount() const
+{
+	return m_enumValueList ? m_enumValueList->size() : 0;
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResType
+// -------------------- TracerResourceType
 // --------------------------------------------------------------------------------
 TracerResourceType::TracerResourceType(Kind kind)
 	: ChartTreeItem()
@@ -102,11 +112,6 @@ TracerResourceType::~TracerResourceType()
 	}
 }
 
-TracerResourceType::Kind TracerResourceType::getKind() const
-{
-	return m_kind;
-}
-
 CREF(QString) TracerResourceType::getName() const
 {
 	return m_name;
@@ -117,13 +122,18 @@ void TracerResourceType::setName(CREF(QString) name)
 	m_name = name;
 }
 
-int TracerResourceType::addParamInfo(TracerResParamInfo* const value)
+TracerResourceType::Kind TracerResourceType::getKind() const
+{
+	return m_kind;
+}
+
+int TracerResourceType::addParamInfo(TracerResourceParamInfo* const value)
 {
 	m_paramInfoList.push_back(value);
 	return m_paramInfoList.size() - 1;
 }
 
-TracerResParamInfo* TracerResourceType::getParamInfo(unsigned int index) const
+TracerResourceParamInfo* TracerResourceType::getParamInfo(unsigned int index) const
 {
 	if (index >= m_paramInfoList.size() || index < 0)
 		return NULL;

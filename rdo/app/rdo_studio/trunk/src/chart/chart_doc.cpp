@@ -345,25 +345,25 @@ COLORREF RDOStudioChartDoc::selectColor()
 	return res;
 }
 
-TracerSerieMarker RDOStudioChartDoc::selectMarker()
+TracerSerie::Marker RDOStudioChartDoc::selectMarker()
 {
 	int count = m_serieList.size();
 	int mul = count / 4;
 	int index = count - mul * 4;
-	TracerSerieMarker res = RDOSM_CIRCLE;
+	TracerSerie::Marker res = TracerSerie::M_CIRCLE;
 	switch (index)
 	{
 	case 0:
-		res = RDOSM_CIRCLE;
+		res = TracerSerie::M_CIRCLE;
 		break;
 	case 1:
-		res = RDOSM_SQUARE;
+		res = TracerSerie::M_SQUARE;
 		break;
 	case 2:
-		res = RDOSM_TRIANG;
+		res = TracerSerie::M_TRIANG;
 		break;
 	case 3:
-		res = RDOSM_CROSS;
+		res = TracerSerie::M_CROSS;
 		break;
 	};
 	return res;

@@ -28,11 +28,6 @@ TracerPattern::TracerPattern(Kind kind)
 TracerPattern::~TracerPattern()
 {}
 
-TracerPattern::Kind TracerPattern::getKind() const
-{
-	return m_kind;
-}
-
 CREF(QString) TracerPattern::getName() const
 {
 	return m_name;
@@ -41,4 +36,9 @@ CREF(QString) TracerPattern::getName() const
 void TracerPattern::setName(CREF(QString) name)
 {
 	m_name = name;
+}
+
+TracerPattern::Kind TracerPattern::getKind() const
+{
+	return m_kind;
 }

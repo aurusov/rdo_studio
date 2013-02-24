@@ -58,9 +58,9 @@ rbool TracerSerieFindValue::operator ()(TracerValue* val)
 // --------------------------------------------------------------------------------
 // -------------------- TracerSerie
 // --------------------------------------------------------------------------------
-TracerSerie::TracerSerie(TracerSerieKind _serieKind)
+TracerSerie::TracerSerie(Kind _serieKind)
 	: ChartTreeItem(true)
-	, serieKind(_serieKind)
+	, m_kind(_serieKind)
 	, minValue(0)
 	, maxValue(0)
 	, value_count(0)
@@ -78,11 +78,6 @@ TracerSerie::~TracerSerie()
 	documents.clear();
 }
 
-rbool TracerSerie::isTemporaryResourceParam() const
-{
-	return serieKind == RDOST_RESPARAM && ((TracerResParam*)this)->getResource()->getType()->getKind() == TracerResourceType::RDOTK_TEMPORARY;
-}
-
 CREF(QString) TracerSerie::getTitle() const
 {
 	return title;
@@ -90,10 +85,17 @@ CREF(QString) TracerSerie::getTitle() const
 
 void TracerSerie::setTitle(CREF(QString) value)
 {
-	if (title != value)
-	{
-		title = value;
-	}
+	title = value;
+}
+
+TracerSerie::Kind TracerSerie::getKind() const
+{
+	return m_kind;
+}
+
+rbool TracerSerie::isTemporaryResourceParam() const
+{
+	return m_kind == SK_PARAM && ((TracerResourceParam*)this)->getResource()->getType()->getKind() == TracerResourceType::RDOTK_TEMPORARY;
 }
 
 void TracerSerie::addValue(TracerValue* const value)
@@ -121,7 +123,8 @@ void TracerSerie::getCaptions(std::vector<tstring>& captions, const int valueCou
 {
 	if (!captions.empty())
 		captions.clear();
-	if (serieKind == RDOST_PREVIEW)
+
+	if (m_kind == TracerSerie::SK_PREVIEW)
 	{
 		double valoffset = (maxValue - minValue) / (double)(valueCount - 1);
 		double valo = minValue;
@@ -205,7 +208,7 @@ void TracerSerie::drawSerie(ChartView* const view,
                             QPainter& painter,
                             const QRect& rect,
                             const QColor& color,
-                            TracerSerieMarker marker,
+                            Marker marker,
                             const int markerSize,
                             const rbool draw_marker,
                             const rbool transparent_marker) const
@@ -334,7 +337,7 @@ void TracerSerie::drawSerie(ChartView* const view,
 				}
 			}
 
-			rbool tempres_erased = (serieKind == RDOST_RESPARAM && ((TracerResParam*)this)->getResource()->isErased());
+			rbool tempres_erased = (m_kind == SK_PARAM && ((TracerResourceParam*)this)->getResource()->isErased());
 			rbool need_continue = !view->doUnwrapTime() ? (values.size() > 1) : true;
 			if (tempres_erased)
 			{
@@ -369,24 +372,24 @@ void TracerSerie::drawSerie(ChartView* const view,
 	}
 }
 
-void TracerSerie::drawMarker(QPainter& painter, const int x, const int y, TracerSerieMarker marker, const int markerSize) const
+void TracerSerie::drawMarker(QPainter& painter, const int x, const int y, Marker marker, const int markerSize) const
 {
 	float halfMarkerSize = float(markerSize) / 2.0;
 	QRectF rect(x - halfMarkerSize, y - halfMarkerSize, markerSize, markerSize);
 
 	switch (marker)
 	{
-	case RDOSM_CIRCLE:
+	case M_CIRCLE:
 	{
 		painter.drawEllipse(rect);
 		break;
 	}
-	case RDOSM_SQUARE:
+	case M_SQUARE:
 	{
 		painter.drawRect(rect);
 		break;
 	}
-	case RDOSM_TRIANG:
+	case M_TRIANG:
 	{
 		QPolygonF polygon;
 		polygon << QPointF(rect.left () + halfMarkerSize, rect.top());
@@ -399,7 +402,7 @@ void TracerSerie::drawMarker(QPainter& painter, const int x, const int y, Tracer
 		painter.drawPath(path);
 		break;
 	}
-	case RDOSM_CROSS:
+	case M_CROSS:
 	{
 		int delta = halfMarkerSize == int(halfMarkerSize)
 			? 1

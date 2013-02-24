@@ -29,13 +29,13 @@ public:
 
 	struct Options
 	{
-		QString            title;
-		QColor             color;
-		TracerSerieMarker  markerType;
-		int                markerSize;
-		rbool              markerNeedDraw;
-		rbool              markerTransparent;
-		rbool              showInLegend;
+		QString              title;
+		QColor               color;
+		TracerSerie::Marker  markerType;
+		int                  markerSize;
+		rbool                markerNeedDraw;
+		rbool                markerTransparent;
+		rbool                showInLegend;
 
 		Options();
 		rbool operator== (CREF(Options) options) const;

@@ -16,34 +16,30 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- TracerResParam
+// -------------------- TracerResourceParam
 // --------------------------------------------------------------------------------
-class TracerResParamInfo;
+class TracerResourceParamInfo;
 PREDECLARE_POINTER(TracerResource);
 
-class TracerResParam: public TracerSerie
+class TracerResourceParam: public TracerSerie
 {
-DECLARE_FACTORY(TracerResParam)
+DECLARE_FACTORY(TracerResourceParam)
 public:
-	CREF(LPTracerResource) getResource() const
-	{
-		return m_pResource;
-	}
-
-	TracerResParamInfo* getParamInfo() const;
+	CREF(LPTracerResource)   getResource () const;
+	TracerResourceParamInfo* getParamInfo() const;
 
 	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
 
 protected:
-	TracerResParamInfo* paramInfo;
-	LPTracerResource    m_pResource;
+	TracerResourceParamInfo* paramInfo;
+	LPTracerResource         m_pResource;
 
 private:
-	TracerResParam(CREF(LPTracerResource) pResource);
-	virtual ~TracerResParam();
+	TracerResourceParam(CREF(LPTracerResource) pResource);
+	virtual ~TracerResourceParam();
 };
 
-typedef  rdo::intrusive_ptr<TracerResParam>  LPTracerResParam;
+typedef  rdo::intrusive_ptr<TracerResourceParam>  LPTracerResourceParam;
 
 // --------------------------------------------------------------------------------
 // -------------------- TracerResource
@@ -54,36 +50,31 @@ class TracerResource: public ChartTreeItem
 {
 DECLARE_FACTORY(TracerResource)
 public:
-	int     id;
-
 	CREF(QString) getName() const;
-	void setName(CREF(QString) name);
+	void          setName(CREF(QString) name);
 
-	CREF(LPTracerResourceType) getType() const
-	{
-		return m_pResType;
-	}
+	int getID() const;
 
-	void addParam(CREF(LPTracerResParam) pParam);
-	LPTracerResParam getParam(unsigned int index) const;
-	int getParamIndex(CREF(LPTracerResParam) pParam) const;
+	CREF(LPTracerResourceType) getType() const;
+
+	void addParam(CREF(LPTracerResourceParam) pParam);
+	LPTracerResourceParam getParam(unsigned int index) const;
+	int getParamIndex(CREF(LPTracerResourceParam) pParam) const;
 	void setParams(tstring& line, TracerTimeNow* const time, const int eventIndex, const rbool erasing = false);
 	void setErased(const rbool value);
-	rbool isErased()
-	{
-		return erased;
-	}
-
-protected:
-	std::vector<LPTracerResParam> m_paramList;
-	LPTracerResourceType          m_pResType;
-	rbool erased;
+	rbool isErased() const;
 
 private:
-	TracerResource(CREF(LPTracerResourceType) pResType, CREF(QString) name);
+	TracerResource(CREF(LPTracerResourceType) pResType, CREF(QString) name, int id);
 	virtual ~TracerResource();
 
-	QString m_name;
+	typedef  std::vector<LPTracerResourceParam>  ResourceParamList;
+
+	QString               m_name;
+	int                   m_id;
+	ResourceParamList     m_paramList;
+	LPTracerResourceType  m_pResourceType;
+	rbool                 m_erased;
 };
 
 typedef  rdo::intrusive_ptr<TracerResource>  LPTracerResource;

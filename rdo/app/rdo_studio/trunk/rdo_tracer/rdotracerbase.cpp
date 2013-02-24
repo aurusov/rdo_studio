@@ -54,40 +54,40 @@ TracerBase::~TracerBase()
 	deleteTrace();
 }
 
-TracerResParamInfo* TracerBase::getParamType(rdo::textstream& stream)
+TracerResourceParamInfo* TracerBase::getParamType(rdo::textstream& stream)
 {
-	boost::optional < TracerResParamType > parType;
+	boost::optional<TracerResourceParamInfo::ParamType> parType;
 
 	tstring parTypeName;
 	stream >> parTypeName;
 	if (parTypeName == "E")
 	{
-		parType = RDOPT_ENUMERATIVE;
+		parType = TracerResourceParamInfo::PT_ENUMERATIVE;
 	}
 	if (parTypeName == "I")
 	{
-		parType = RDOPT_INTEGER;
+		parType = TracerResourceParamInfo::PT_INTEGER;
 	}
 	else if (parTypeName == "R")
 	{
-		parType = RDOPT_REAL;
+		parType = TracerResourceParamInfo::PT_REAL;
 	}
 	else if (parTypeName == "B")
 	{
-		parType = RDOPT_BOOL;
+		parType = TracerResourceParamInfo::PT_BOOL;
 	}
 	else if (parTypeName == "A")
 	{
-		parType = RDOPT_ARRAY;
+		parType = TracerResourceParamInfo::PT_ARRAY;
 	}
 	else if (parTypeName == "S")
 	{
-		parType = RDOPT_STRING;
+		parType = TracerResourceParamInfo::PT_STRING;
 	}
 	ASSERT(parType.is_initialized());
 
-	TracerResParamInfo* pParam = new TracerResParamInfo(parType.get());
-	if (parType == RDOPT_ENUMERATIVE)
+	TracerResourceParamInfo* pParam = new TracerResourceParamInfo(parType.get());
+	if (parType == TracerResourceParamInfo::PT_ENUMERATIVE)
 	{
 		ruint enumCount;
 		stream >> enumCount;
@@ -101,26 +101,26 @@ TracerResParamInfo* TracerBase::getParamType(rdo::textstream& stream)
 			pParam->addEnumValue(enumName);
 		}
 	}
-	else if (parType == RDOPT_BOOL)
+	else if (parType == TracerResourceParamInfo::PT_BOOL)
 	{
 		pParam->addEnumValue(_T("false"));
 		pParam->addEnumValue(_T("true"));
 	}
-	else if (parType == RDOPT_ARRAY)
+	else if (parType == TracerResourceParamInfo::PT_ARRAY)
 	{
-		TracerResParamInfo* pArrayItem = getParamType(stream);
+		TracerResourceParamInfo* pArrayItem = getParamType(stream);
 		UNUSED(pArrayItem);
 	}
 	return pParam;
 }
 
-TracerResParamInfo* TracerBase::getParam(rdo::textstream& stream)
+TracerResourceParamInfo* TracerBase::getParam(rdo::textstream& stream)
 {
 	tstring paramType;
 	tstring paramName;
 	stream >> paramType;
 	stream >> paramName;
-	TracerResParamInfo* pParam = getParamType(stream);
+	TracerResourceParamInfo* pParam = getParamType(stream);
 	pParam->setName(QString::fromLocal8Bit(paramName.c_str()));
 	return pParam;
 }
@@ -149,9 +149,9 @@ void TracerBase::addResource(REF(tstring) s, rdo::textstream& stream)
 	stream >> resourceTypeID;
 	LPTracerResource pResource = rdo::Factory<TracerResource>::create(
 		m_resourceTypeList.at(resourceTypeID - 1),
-		QString::fromLocal8Bit(resourceName.c_str())
+		QString::fromLocal8Bit(resourceName.c_str()),
+		atoi(s.c_str())
 	);
-	pResource->id = atoi(s.c_str());
 
 	m_resourceList.push_back(pResource);
 	m_pChartTree->addResource(pResource);
@@ -240,32 +240,30 @@ void TracerBase::addResult(REF(tstring) s, rdo::textstream& stream)
 	stream >> resultID;
 	tstring resultKind;
 	stream >> resultKind;
-	TracerResultKind resKind;
+	TracerResult::Kind kind;
 	if (resultKind == "watch_par")
 	{
-		resKind = RDORK_WATCHPAR;
+		kind = TracerResult::RK_WATCHPAR;
 	}
 	else if (resultKind == "watch_state")
 	{
-		resKind = RDORK_WATCHSTATE;
+		kind = TracerResult::RK_WATCHSTATE;
 	}
 	else if (resultKind == "watch_quant")
 	{
-		resKind = RDORK_WATCHQUANT;
+		kind = TracerResult::RK_WATCHQUANT;
 	}
 	else if (resultKind == "watch_value")
 	{
-		resKind = RDORK_WATCHVALUE;
+		kind = TracerResult::RK_WATCHVALUE;
 	}
 	else
 	{
-		resKind = RDORK_UNDEFINED;
+		kind = TracerResult::RK_UNDEFINED;
 	}
-	ASSERT(resKind != RDORK_UNDEFINED);
+	ASSERT(kind != TracerResult::RK_UNDEFINED);
 
-	LPTracerResult pResult = rdo::Factory<TracerResult>::create(resKind);
-	pResult->setName(QString::fromLocal8Bit(s.c_str()));
-	pResult->id = resultID;
+	LPTracerResult pResult = rdo::Factory<TracerResult>::create(QString::fromLocal8Bit(s.c_str()), kind, resultID);
 	m_resultList.push_back(pResult);
 	m_pChartTree->addResult(pResult);
 }
@@ -455,12 +453,11 @@ LPTracerResource TracerBase::getResource(REF(tstring) line)
 {
 	getNextValue(line);
 	LPTracerResource pResult;
-	int findid = atoi(getNextValue(line).c_str());
+	int findID = atoi(getNextValue(line).c_str());
 	int i = 0;
 	BOOST_FOREACH(const LPTracerResource& pResource, m_resourceList)
 	{
-		if (pResource->id == findid)
-		if (pResource->id == findid && !pResource->isErased())
+		if (pResource->getID() == findID && !pResource->isErased())
 		{
 			pResult = pResource;
 			break;
@@ -476,8 +473,7 @@ LPTracerResource TracerBase::resourceCreation(REF(tstring) line, TracerTimeNow* 
 	ASSERT(typeID < m_resourceTypeList.size());
 	LPTracerResourceType pResourceType = m_resourceTypeList.at(typeID);
 	int id = atoi(getNextValue(line).c_str());
-	LPTracerResource pResource = rdo::Factory<TracerResource>::create(pResourceType, QString("%1 #%2").arg(pResourceType->getName()).arg(id));
-	pResource->id = id;
+	LPTracerResource pResource = rdo::Factory<TracerResource>::create(pResourceType, QString("%1 #%2").arg(pResourceType->getName()).arg(id), id);
 	pResource->setParams(line, pTime, m_eventIndex);
 
 	m_resourceList.push_back(pResource);
@@ -514,7 +510,7 @@ LPTracerResult TracerBase::getResult(REF(tstring) line)
 	int findid = atoi(getNextValue(line).c_str());
 	BOOST_FOREACH(const LPTracerResult& pResultItem, m_resultList)
 	{
-		if (pResultItem->id == findid)
+		if (pResultItem->getID() == findid)
 		{
 			pResult = pResultItem;
 			break;

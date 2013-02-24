@@ -25,7 +25,7 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 ChartSerie::Options::Options()
 	: color            (QColor(0x00, 0x00, 0x00))
-	, markerType       (RDOSM_NONE)
+	, markerType       (TracerSerie::M_NONE)
 	, markerSize       (4)
 	, markerNeedDraw   (true)
 	, markerTransparent(true)

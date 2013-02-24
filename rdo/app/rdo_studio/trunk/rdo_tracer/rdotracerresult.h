@@ -20,38 +20,33 @@
 // --------------------------------------------------------------------------------
 // -------------------- TracerResult
 // --------------------------------------------------------------------------------
-enum TracerResultKind
-{
-	RDORK_UNDEFINED  = ~0,
-	RDORK_WATCHPAR   = 0,
-	RDORK_WATCHSTATE,
-	RDORK_WATCHQUANT,
-	RDORK_WATCHVALUE
-};
-
 class TracerResult: public TracerSerie
 {
 DECLARE_FACTORY(TracerResult)
 public:
-	int id;
-	TracerResultKind getResultKind() const
+	enum Kind
 	{
-		return resultKind;
-	}
+		RK_UNDEFINED  = ~0,
+		RK_WATCHPAR   = 0,
+		RK_WATCHSTATE,
+		RK_WATCHQUANT,
+		RK_WATCHVALUE
+	};
 
 	CREF(QString) getName() const;
-	void setName(CREF(QString) name);
+	Kind          getKind() const;
+	int           getID  () const;
 
 	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
 	void setValue(tstring& line, TracerTimeNow* const time, const int eventIndex);
 
-protected:
-	TracerResultKind resultKind;
-	QString m_name;
-
 private:
-	TracerResult(const TracerResultKind kind);
+	TracerResult(CREF(QString) name, Kind kind, int id);
 	virtual ~TracerResult();
+
+	QString  m_name;
+	Kind     m_kind;
+	int      m_id;
 };
 
 typedef  rdo::intrusive_ptr<TracerResult>  LPTracerResult;

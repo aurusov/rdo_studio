@@ -25,16 +25,16 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- TracerOperationBase
 // --------------------------------------------------------------------------------
 TracerOperationBase::TracerOperationBase(CREF(LPTracerPattern) pPattern)
-	: TracerSerie(RDOST_OPERATION)
+	: TracerSerie(SK_OPERATION)
 	, m_pPattern(pPattern)
 {}
 
 TracerOperationBase::~TracerOperationBase()
 {}
 
-LPTracerPattern TracerOperationBase::getPattern() const
+CREF(QString) TracerOperationBase::getName() const
 {
-	return m_pPattern;
+	return m_name;
 }
 
 void TracerOperationBase::setName(CREF(QString) name)
@@ -46,9 +46,9 @@ void TracerOperationBase::setName(CREF(QString) name)
 	}
 }
 
-CREF(QString) TracerOperationBase::getName() const
+LPTracerPattern TracerOperationBase::getPattern() const
 {
-	return m_name;
+	return m_pPattern;
 }
 
 void TracerOperationBase::incOperationsCount(TracerTimeNow* const pTime, const int eventIndex)
