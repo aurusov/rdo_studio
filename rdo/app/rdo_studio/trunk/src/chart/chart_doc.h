@@ -21,23 +21,17 @@
 #define UPDATE_NEWVALUE  0x001
 #define UPDATE_TIMETICKS 0x002
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioChartDoc
-// --------------------------------------------------------------------------------
 class TracerTimeNow;
 class TracerValue;
 class ChartSerie;
 class RDOStudioChartViewStyle;
 
-typedef std::list<TracerTimeNow*> TimesList;
-
 class RDOStudioChartDoc
 {
-friend class ChartView;
-friend class ChartPreferences;
-friend class RDOStudioChartDocInsertTime;
-
 public:
+	typedef  std::list<TracerTimeNow*> TimesList;
+	typedef  std::vector<ChartSerie*>  SerieList;
+
 	RDOStudioChartDoc(const rbool preview = false);
 	virtual ~RDOStudioChartDoc();
 
@@ -54,35 +48,41 @@ public:
 	void updateAllViews();
 
 	void addSerie(CREF(LPTracerSerie) pSerie);
-	//void removeSerie(CREF(LPTracerSerie) pSerie);
 	rbool serieExists(CREF(LPTracerSerie) pSerie) const;
 
 	void incTimeEventsCount(TracerTimeNow* time);
 	rbool newValueToSerieAdded(TracerValue* val);
 
+	void addToViews     (ChartView* pWidget);
+	void removeFromViews(ChartView* pWidget);
+
+	CREF(TimesList) getTimes    () const;
+	CREF(SerieList) getSerieList() const;
+
+	int    getMaxMarkerSize() const;
+	int    getTicksCount   () const;
+	double getMinTimeOffset() const;
+
 private:
-	std::vector<ChartSerie*> m_serieList;
+	TimesList            m_docTimes;
+	TimesList::iterator  m_insertedIt;
+	SerieList            m_serieList;
+	double               m_minTimeOffset;
+	int                  m_ticksCount;
+	rbool                m_previewMode;
+
+	std::vector<ChartView*> m_widgetList;
+	tstring                 m_title;
+	std::vector<ChartView*> m_viewList;
+	static ruint            s_titleIndex;
+
 	int getSerieIndex(ChartSerie* serie) const;
 	COLORREF selectColor();
 	TracerSerie::Marker selectMarker();
 
-	TimesList           m_docTimes;
-	TimesList::iterator m_insertedIt;
-	double              m_minTimeOffset;
-	int                 m_ticksCount;
-	rbool               m_previewMode;
-
-	int getMaxMarkerSize() const;
-
-	std::vector<ChartView*> m_widgetList;
-	void addToViews(ChartView* pWidget);
-	void removeFromViews(ChartView* pWidget);
-
 	void updateChartViews(const UINT update_type) const;
 
-	tstring                 m_title;
-	std::vector<ChartView*> m_viewList;
-	static ruint            s_titleIndex;
+	void insertValue(TracerValue* pValue);
 };
 
 #endif // _RDO_STUDIO_CHART_DOC_H_

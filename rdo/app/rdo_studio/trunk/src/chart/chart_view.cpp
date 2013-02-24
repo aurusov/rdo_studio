@@ -11,6 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
+#include <boost/foreach.hpp>
 #include <QtCore/qprocess.h>
 #include <QtGui/qevent.h>
 #include <QtGui/qclipboard.h>
@@ -48,7 +49,7 @@ ChartView::ChartView(QAbstractScrollArea* pParent, RDOStudioChartDoc* pDocument,
 	, m_timeWrapFlag(true)
 	, m_chartRect(0, 0, 0, 0)
 	, m_timeScale(0)
-	, m_drawFromEventIndex(0)
+	, m_drawFromEventID(0)
 	, m_drawToEventCount(0)
 	, m_chartShift(0)
 	, m_zoom(1)
@@ -109,12 +110,88 @@ ChartView::~ChartView()
 	delete m_pDocument;
 }
 
+int ChartView::getValueCountX() const
+{
+	return m_valueCountX;
+}
+
+void ChartView::setValueCountX(int value)
+{
+	m_valueCountX = value;
+}
+
+int ChartView::getValueCountY() const
+{
+	return m_valueCountY;
+}
+
+void ChartView::setValueCountY(int value)
+{
+	m_valueCountY = value;
+}
+
+void ChartView::setYAxis(ChartSerie* pSerie)
+{
+	ASSERT(pSerie);
+	m_pYAxis = pSerie;
+}
+
+rbool ChartView::isDrawLegend() const
+{
+	return m_needDrawLegend;
+}
+
+void ChartView::setDrawLegend(rbool value)
+{
+	m_needDrawLegend = value;
+}
+
+long double ChartView::timeScale() const
+{
+	return m_timeScale;
+}
+
+int ChartView::chartShift() const
+{
+	return m_chartShift;
+}
+
+CREF(TracerTimeNow) ChartView::drawFromX() const
+{
+	return m_drawFromX;
+}
+
+CREF(TracerTimeNow) ChartView::drawToX() const
+{
+	return m_drawToX;
+}
+
+int ChartView::drawFromEventID() const
+{
+	return m_drawFromEventID;
+}
+
+int ChartView::drawToEventCount() const
+{
+	return m_drawToEventCount;
+}
+
+CREF(RDOStudioChartDoc::TimesList) ChartView::unwrapTimesList() const
+{
+	return m_unwrapTimesList;
+}
+
+const RDOStudioChartViewStyle* const ChartView::style() const
+{
+	return m_pStyle;
+}
+
 void ChartView::recalcLayout()
 {
-	RDOStudioChartDoc* doc = getDocument();
+	RDOStudioChartDoc* pDoc = getDocument();
 
 	QFontMetrics titleFontMetrics(m_fontTitle);
-	tstring str = doc->getTitle();
+	tstring str = pDoc->getTitle();
 	QSize titleSize = !str.empty()
 		? titleFontMetrics.size(Qt::TextSingleLine, QString::fromLocal8Bit(str.c_str()))
 		: QSize(0, 0);
@@ -136,8 +213,8 @@ void ChartView::recalcLayout()
 	}
 	m_chartRect.setLeft(sizeMax.width() + 10);
 
-	str = !doc->m_docTimes.empty()
-		? rdo::format("%.3f", doc->m_docTimes.back()->time)
+	str = !pDoc->getTimes().empty()
+		? rdo::format("%.3f", pDoc->getTimes().back()->time)
 		: rdo::format("%.3f", 0);
 	QSize size = axisFontMetrics.boundingRect(QString::fromLocal8Bit(str.c_str())).size();
 	m_chartRect.setRight(m_clientRect.right() - size.width() - 5);
@@ -147,9 +224,9 @@ void ChartView::recalcLayout()
 	{
 		QFontMetrics legendFontMetrics(m_fontLegend);
 		int count = 0;
-		for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); ++it)
+		BOOST_FOREACH(const ChartSerie* const pSerie, pDoc->getSerieList())
 		{
-			size = (*it)->getLegendSize(legendFontMetrics, m_chartRect);
+			size = pSerie->getLegendSize(legendFontMetrics, m_chartRect);
 			if (size.width() && size.height())
 			{
 				if (size.width() > sizeMax.width())
@@ -165,7 +242,7 @@ void ChartView::recalcLayout()
 		}
 
 		m_legendRect.setTop(m_chartRect.top());
-		m_legendRect.setBottom(m_legendRect.top() + count * sizeMax.height() + 3 + doc->getMaxMarkerSize() / 2);
+		m_legendRect.setBottom(m_legendRect.top() + count * sizeMax.height() + 3 + pDoc->getMaxMarkerSize() / 2);
 		m_legendRect.setLeft(m_chartRect.left() + (m_chartRect.width() - sizeMax.width()) / 2);
 		m_legendRect.setRight(m_legendRect.left() + sizeMax.width());
 		m_chartRect.setTop(m_chartRect.top() + m_legendRect.height());
@@ -176,13 +253,13 @@ void ChartView::recalcLayout()
 		}
 	}
 
-	if (!doc->m_docTimes.empty())
+	if (!pDoc->getTimes().empty())
 	{
-		double timeRange = doc->m_docTimes.back()->time - doc->m_docTimes.front()->time;
+		double timeRange = pDoc->getTimes().back()->time - pDoc->getTimes().front()->time;
 		if (timeRange > 0)
 		{
-			long double timeScaleAuto = doUnwrapTime() ? (double)(m_chartRect.width() - m_pStyle->pFontsTicks->tickWidth * doc->m_ticksCount) / timeRange : (double)m_chartRect.width() / timeRange;
-			m_timeScale = (double)m_pStyle->pFontsTicks->tickWidth / doc->m_minTimeOffset;
+			long double timeScaleAuto = doUnwrapTime() ? (double)(m_chartRect.width() - m_pStyle->pFontsTicks->tickWidth * pDoc->getTicksCount()) / timeRange : (double)m_chartRect.width() / timeRange;
+			m_timeScale = (double)m_pStyle->pFontsTicks->tickWidth / pDoc->getMinTimeOffset();
 			m_zoomAuto = double(timeScaleAuto) / double(m_timeScale);
 			/*if (doUnwrapTime() && auto_zoom < 0) {
 			 auto_zoom = 1;
@@ -223,12 +300,12 @@ void ChartView::updateScrollBars()
 	RDOStudioChartDoc* doc = getDocument();
 
 	int size;
-	if (!doc->m_docTimes.empty())
+	if (!doc->getTimes().empty())
 	{
-		size = roundDouble((doc->m_docTimes.back()->time - doc->m_docTimes.front()->time) * double(m_timeScale));
+		size = roundDouble((doc->getTimes().back()->time - doc->getTimes().front()->time) * double(m_timeScale));
 		if (doUnwrapTime())
 		{
-			size += m_pStyle->pFontsTicks->tickWidth * doc->m_ticksCount;
+			size += m_pStyle->pFontsTicks->tickWidth * doc->getTicksCount();
 		}
 	}
 	else
@@ -311,7 +388,7 @@ void ChartView::setFromTo()
 	RDOStudioChartDoc* doc = getDocument();
 
 	m_drawFromX.eventCount = 0;
-	m_drawFromEventIndex = 0;
+	m_drawFromEventID = 0;
 	m_drawToX.eventCount = 0;
 	m_drawToEventCount = 0;
 	m_chartShift = 0;
@@ -321,14 +398,14 @@ void ChartView::setFromTo()
 	{
 		if (m_timeScale)
 		{
-			m_drawFromX.time = doc->m_docTimes.front()->time + (double)m_SM_X.position / double(m_timeScale);
+			m_drawFromX.time = doc->getTimes().front()->time + (double)m_SM_X.position / double(m_timeScale);
 			if (maxXVisible())
 			{
-				m_drawToX.time = doc->m_docTimes.back()->time;
+				m_drawToX.time = doc->getTimes().back()->time;
 			}
 			else
 			{
-				m_drawToX.time = doc->m_docTimes.front()->time + (double)(m_SM_X.position + m_chartRect.width()) / double(m_timeScale);
+				m_drawToX.time = doc->getTimes().front()->time + (double)(m_SM_X.position + m_chartRect.width()) / double(m_timeScale);
 			}
 		}
 		else
@@ -343,10 +420,10 @@ void ChartView::setFromTo()
 		int it_max_pos = 0;
 		rbool need_search_to = true;
 		int ticks = 0;
-		TimesList::iterator it;
-		for (it = doc->m_docTimes.begin(); it != doc->m_docTimes.end(); ++it)
+		RDOStudioChartDoc::TimesList::const_iterator it;
+		for (it = doc->getTimes().begin(); it != doc->getTimes().end(); ++it)
 		{
-			it_pos = roundDouble(((*it)->time - doc->m_docTimes.front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks->tickWidth;
+			it_pos = roundDouble(((*it)->time - doc->getTimes().front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks->tickWidth;
 			it_max_pos = it_pos + m_pStyle->pFontsTicks->tickWidth * (*it)->eventCount;
 			if (it_pos == m_SM_X.position)
 			{
@@ -357,8 +434,8 @@ void ChartView::setFromTo()
 			if (it_pos < m_SM_X.position && (it_max_pos >= m_SM_X.position))
 			{
 				m_drawFromX = *(*it);
-				m_drawFromEventIndex = (m_SM_X.position - it_pos) / m_pStyle->pFontsTicks->tickWidth;
-				m_chartShift = m_SM_X.position - (it_pos + m_drawFromEventIndex * m_pStyle->pFontsTicks->tickWidth);
+				m_drawFromEventID = (m_SM_X.position - it_pos) / m_pStyle->pFontsTicks->tickWidth;
+				m_chartShift = m_SM_X.position - (it_pos + m_drawFromEventID * m_pStyle->pFontsTicks->tickWidth);
 				need_search_to = setTo(it_max_pos);
 				break;
 			}
@@ -373,12 +450,12 @@ void ChartView::setFromTo()
 		m_unwrapTimesList.push_back(&m_drawFromX);
 		if (need_search_to)
 		{
-			if (it != doc->m_docTimes.end() && m_drawFromX == *(*it))
+			if (it != doc->getTimes().end() && m_drawFromX == *(*it))
 			{
 				ticks += (*it)->eventCount;
 				it++;
 			}
-			if (it == doc->m_docTimes.end() && !doc->m_docTimes.empty())
+			if (it == doc->getTimes().end() && !doc->getTimes().empty())
 			{
 				m_drawToX = m_drawFromX;
 				int delta = m_drawToX.eventCount * m_pStyle->pFontsTicks->tickWidth - m_chartRect.width();
@@ -399,9 +476,9 @@ void ChartView::setFromTo()
 				
 			}
 			int pos = m_SM_X.position + m_chartRect.width();
-			for (; it != doc->m_docTimes.end(); ++it)
+			for (; it != doc->getTimes().end(); ++it)
 			{
-				it_pos = roundDouble(((*it)->time - doc->m_docTimes.front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks->tickWidth;
+				it_pos = roundDouble(((*it)->time - doc->getTimes().front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks->tickWidth;
 				it_max_pos = it_pos + m_pStyle->pFontsTicks->tickWidth * (*it)->eventCount;
 				if (it_pos == pos)
 				{
@@ -447,9 +524,9 @@ void ChartView::drawLegend(QPainter& painter, const QRect& legendRect)
 	RDOStudioChartDoc* doc = getDocument();
 	QRect rect(legendRect);
 	painter.setFont(m_fontLegend);
-	for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); ++it)
+	BOOST_FOREACH(const ChartSerie* const pSerie, doc->getSerieList())
 	{
-		QSize size = (*it)->drawLegend(painter, rect, m_pStyle->getTheme()->legendFgColor);
+		QSize size = pSerie->drawLegend(painter, rect, m_pStyle->getTheme()->legendFgColor);
 		rect.setTop(rect.top() + size.height());
 	}
 }
@@ -504,8 +581,8 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 	tmprect.setBottom(m_clientRect.bottom());
 	tmprect.setRight(m_clientRect.right() - 5);
 
-	RDOStudioChartDoc* doc = getDocument();
-	if (!doc->m_docTimes.empty())
+	RDOStudioChartDoc* pDoc = getDocument();
+	if (!pDoc->getTimes().empty())
 	{
 		tstring formatstr = "%.3f";
 
@@ -554,12 +631,12 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 			tstring str;
 			int lastx = 0;
 			QSize sz;
-			for (TimesList::iterator it = m_unwrapTimesList.begin(); it != m_unwrapTimesList.end(); ++it)
+			BOOST_FOREACH(const TracerTimeNow* const pTime, m_unwrapTimesList)
 			{
-				tmprect.setLeft(chartRect.left() + (LONG)(((*it)->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks->tickWidth - m_chartShift));
+				tmprect.setLeft(chartRect.left() + (LONG)((pTime->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks->tickWidth - m_chartShift));
 				tmprect.setLeft(std::min(tmprect.left(), chartRect.right() - 1));
-				str = rdo::format(formatstr.c_str(), (*it)->time);
-				if (*(*it) == m_drawFromX)
+				str = rdo::format(formatstr.c_str(), pTime->time);
+				if (*pTime == m_drawFromX)
 				{
 					tmprect.setLeft(tmprect.left() + m_chartShift);
 				}
@@ -584,10 +661,10 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 					lastx = tmprect.left() + size.width();
 				}
 
-				ticks += (*it)->eventCount;
-				if (*(*it) == m_drawFromX)
+				ticks += pTime->eventCount;
+				if (*pTime == m_drawFromX)
 				{
-					ticks -= m_drawFromEventIndex;
+					ticks -= m_drawFromEventID;
 				}
 			}
 		}
@@ -611,7 +688,7 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 		QRect wrapRect(rect);
 
 		int ticks = 0;
-		TimesList::iterator it = m_unwrapTimesList.begin();
+		RDOStudioChartDoc::TimesList::const_iterator it = m_unwrapTimesList.begin();
 		if (m_drawFromX == m_drawToX)
 		{
 			++it;
@@ -628,7 +705,7 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 
 			if (*(*it) == m_drawFromX)
 			{
-				width -= m_drawFromEventIndex * m_pStyle->pFontsTicks->tickWidth + m_chartShift;
+				width -= m_drawFromEventID * m_pStyle->pFontsTicks->tickWidth + m_chartShift;
 			}
 			if (*(*it) == m_drawToX)
 			{
@@ -648,7 +725,7 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 			ticks += (*it)->eventCount;
 			if (*(*it) == m_drawFromX)
 			{
-				ticks -= m_drawFromEventIndex;
+				ticks -= m_drawFromEventID;
 			}
 		}
 	}
@@ -920,9 +997,9 @@ void ChartView::paintEvent(QPaintEvent*)
 		drawXAxis(painter, m_chartRect);
 		drawGrid(painter, m_chartRect);
 
-		for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); ++it)
+		BOOST_FOREACH(const ChartSerie* const pSerie, doc->getSerieList())
 		{
-			(*it)->drawSerie(this, painter, m_chartRect);
+			pSerie->drawSerie(this, painter, m_chartRect);
 		}
 	}
 }

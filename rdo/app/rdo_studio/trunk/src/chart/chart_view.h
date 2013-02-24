@@ -32,13 +32,10 @@ class ChartView: public ActionActivatorWidget
 {
 Q_OBJECT
 
-friend class TracerSerieFindValue;
-friend class ChartPreferences;
-friend class ChartViewMainWnd;
-friend class TracerSerie;
-friend class RDOStudioChartDoc;
-
 public:
+	ChartView(QAbstractScrollArea* pParent, RDOStudioChartDoc* pDocument, const rbool preview);
+	virtual ~ChartView();
+
 	RDOStudioChartDoc* getDocument();
 	void attachToDoc();
 
@@ -46,6 +43,31 @@ public:
 	void setStyle(RDOStudioChartViewStyle* pStyle, const rbool needRedraw = true);
 
 	void setPreviwMode(rbool value);
+
+	int  getValueCountX() const;
+	void setValueCountX(int value);
+	int  getValueCountY() const;
+	void setValueCountY(int value);
+
+	void updateView();
+	void onUserUpdateChartView(ruint updateType);
+
+	void setYAxis(ChartSerie* pSerie);
+
+	rbool isDrawLegend () const;
+	void  setDrawLegend(rbool value);
+
+	long double         timeScale       () const;
+	int                 chartShift      () const;
+	CREF(TracerTimeNow) drawFromX       () const;
+	CREF(TracerTimeNow) drawToX         () const;
+	int                 drawFromEventID () const;
+	int                 drawToEventCount() const;
+
+	CREF(RDOStudioChartDoc::TimesList)   unwrapTimesList() const;
+	const RDOStudioChartViewStyle* const style          () const;
+
+	rbool doUnwrapTime () const;
 
 private:
 	COleDropTarget m_ddTarget;
@@ -60,7 +82,6 @@ private:
 
 	rbool m_timeWrapFlag;
 	rbool canUnwrapTime() const;
-	rbool doUnwrapTime () const;
 
 	QRect m_chartRect;
 	void recalcLayout();
@@ -72,13 +93,13 @@ private:
 	void        updateScrollBars  ();
 	rbool       scrollHorizontally(rsint inc);
 
-	long double   m_timeScale;
-	TracerTimeNow m_drawFromX;
-	int           m_drawFromEventIndex;
-	TracerTimeNow m_drawToX;
-	int           m_drawToEventCount;
-	int           m_chartShift;
-	TimesList     m_unwrapTimesList;
+	long double    m_timeScale;
+	int            m_chartShift;
+	TracerTimeNow  m_drawFromX;
+	TracerTimeNow  m_drawToX;
+	int            m_drawFromEventID;
+	int            m_drawToEventCount;
+	RDOStudioChartDoc::TimesList m_unwrapTimesList;
 
 	rbool setTo(const int fromMaxPos);
 	void  setFromTo();
@@ -106,8 +127,6 @@ private:
 	ChartSerie* m_pYAxis;
 	rbool       m_needDrawLegend;
 
-	void updateView();
-
 	QFont   m_fontTitle;
 	QFont   m_fontLegend;
 	QFont   m_fontAxis;
@@ -116,9 +135,6 @@ private:
 	void onDraw();
 
 	typedef  ActionActivatorWidget  super;
-
-	ChartView(QAbstractScrollArea* pParent, RDOStudioChartDoc* pDocument, const rbool preview);
-	virtual ~ChartView();
 
 	RDOStudioChartDoc* m_pDocument;
 
@@ -132,8 +148,6 @@ private:
 	virtual void mousePressEvent(QMouseEvent*  pEvent);
 	virtual void keyPressEvent  (QKeyEvent*    pEvent);
 	virtual void wheelEvent     (QWheelEvent*  pEvent);
-
-	void onUserUpdateChartView(ruint updateType);
 
 	virtual void onUpdateActions(rbool activated);
 

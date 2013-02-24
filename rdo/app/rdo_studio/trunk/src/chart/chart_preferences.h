@@ -29,8 +29,8 @@ public:
 private:
 	PTR(QColorDialog) colorDlg;
 
-	int       m_ValCountX;
-	int       m_ValCountY;
+	int       m_valueCountX;
+	int       m_valueCountY;
 	QString   m_chartTitle;
 
 	int       m_sizeMarker;

@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/chart/chart_preferences.h"
 #include "app/rdo_studio/src/chart/chart_view.h"
@@ -23,25 +24,25 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 {
 	setupUi(this);
 
-	m_ValCountX  = m_pView->m_valueCountX;
-	m_ValCountY  = m_pView->m_valueCountY;
-	m_chartTitle = QString::fromLocal8Bit(m_pView->getDocument()->getTitle().c_str());
+	m_valueCountX = m_pView->getValueCountX();
+	m_valueCountY = m_pView->getValueCountY();
+	m_chartTitle  = QString::fromLocal8Bit(m_pView->getDocument()->getTitle().c_str());
 
 	titleLineEdit->setText(m_chartTitle);
 
 	yValueLineEdit->setValidator(new QIntValidator(2, 100, this));
-	yValueLineEdit->setText(QString::number(m_ValCountY));
+	yValueLineEdit->setText(QString::number(m_valueCountY));
 	xValueLineEdit->setValidator(new QIntValidator(2, 100, this));
-	xValueLineEdit->setText(QString::number(m_ValCountX));
+	xValueLineEdit->setText(QString::number(m_valueCountX));
 	
-	showLegendCheckBox->setChecked(m_pView->m_needDrawLegend ? Qt::Checked : Qt::Unchecked);
+	showLegendCheckBox->setChecked(m_pView->isDrawLegend() ? Qt::Checked : Qt::Unchecked);
 
 	RDOStudioChartDoc* doc = m_pView->getDocument();
 
-	for (std::vector<ChartSerie*>::iterator it = doc->m_serieList.begin(); it != doc->m_serieList.end(); it++)
+	BOOST_FOREACH(const ChartSerie* const pSerie, doc->getSerieList())
 	{
-		yTraceComboBox->addItem((*it)->getSerie()->getTitle());
-		valueComboBox->addItem((*it)->getSerie()->getTitle());
+		yTraceComboBox->addItem(pSerie->getSerie()->getTitle());
+		valueComboBox->addItem(pSerie->getSerie()->getTitle());
 	}
 
 	markerSizeLineEdit->setValidator(new QIntValidator(2, 6, this));
@@ -121,17 +122,13 @@ void ChartPreferences::insertColor(const QColor& color, const QString& colorName
 
 void ChartPreferences::apply()
 {
-	if(valueComboBox->currentIndex() != -1)
-	{
-		m_pView->m_pYAxis = m_pView->getDocument()->m_serieList.at(valueComboBox->currentIndex());
-	}
-	else
-	{
-		m_pView->m_pYAxis = NULL;
-	}
-	m_pView->m_needDrawLegend = showLegendCheckBox->checkState();
-	m_pView->m_valueCountX = m_ValCountX;
-	m_pView->m_valueCountY = m_ValCountY;
+	m_pView->setYAxis(valueComboBox->currentIndex() != -1
+		? m_pView->getDocument()->getSerieList().at(valueComboBox->currentIndex())
+		: NULL
+	);
+	m_pView->setDrawLegend(showLegendCheckBox->checkState());
+	m_pView->setValueCountX(m_valueCountX);
+	m_pView->setValueCountY(m_valueCountY);
 	m_pView->getDocument()->setTitle(m_chartTitle.toLocal8Bit().constData());
 
 	if (m_pSerie)
@@ -159,9 +156,9 @@ void ChartPreferences::onCheckAllData()
 	rbool transparentMarker = transparentMarkerCheckBox->checkState() == Qt::Checked ? true : false;
 
 	rbool titleFlag  = titleLineEdit->text() == QString::fromLocal8Bit(m_pView->getDocument()->getTitle().c_str()) ? true : false;
-	rbool yValueFlag = yValueLineEdit->text().toInt() == m_pView->m_valueCountX ? true : false;
-	rbool xValueFlag = xValueLineEdit->text().toInt() == m_pView->m_valueCountY ? true : false;
-	rbool showLegendFlag = legend == m_pView->m_needDrawLegend ? true : false;	
+	rbool yValueFlag = yValueLineEdit->text().toInt() == m_pView->getValueCountX() ? true : false;
+	rbool xValueFlag = xValueLineEdit->text().toInt() == m_pView->getValueCountY() ? true : false;
+	rbool showLegendFlag = legend == m_pView->isDrawLegend();
 	rbool showInLegendFlag = showInLegend == m_pSerie->options().showInLegend ? true : false;
 	rbool markerSizeFlag = markerSizeLineEdit->text().toInt() == m_pSerie->options().markerSize ? true : false;
 	rbool markerShowFlag = showMarker == m_pSerie->options().markerNeedDraw ? true : false;
@@ -170,7 +167,7 @@ void ChartPreferences::onCheckAllData()
 	rbool colorFlag = colorComboBox->itemData(colorComboBox->currentIndex(), Qt::UserRole).value<QColor>() == m_pSerie->options().color ? true : false;
 	rbool markerTypeFlag = markerComboBox->itemData(markerComboBox->currentIndex(), Qt::UserRole).toInt() == m_pSerie->options().markerType ? true : false;
 
-	if(titleFlag
+	if (titleFlag
 		&& yValueFlag
 		&& xValueFlag
 		&& showLegendFlag
@@ -205,12 +202,12 @@ void ChartPreferences::onApplyButton()
 
 void ChartPreferences::onXValue(const QString& text)
 {
-	m_ValCountX = text.toInt();
+	m_valueCountX = text.toInt();
 }
 
 void ChartPreferences::onYValue(const QString& text)
 {
-	m_ValCountY = text.toInt();
+	m_valueCountY = text.toInt();
 }
 
 void ChartPreferences::onTitle(const QString& text)
@@ -233,7 +230,7 @@ void ChartPreferences::onColorDialog()
 
 void ChartPreferences::onColorSelected(const QColor& color)
 {
-	if(colorComboBox->findData(color, Qt::UserRole) == -1)
+	if (colorComboBox->findData(color, Qt::UserRole) == -1)
 	{
 		insertColor(color, QString("[%1, %2, %3]").arg(color.red()).arg(color.green()).arg(color.blue()), colorComboBox);
 	}
@@ -243,7 +240,7 @@ void ChartPreferences::onColorSelected(const QColor& color)
 
 void ChartPreferences::onValueComboBox(int index)
 {
-	m_pSerie = m_pView->getDocument()->m_serieList.at(index);
+	m_pSerie = m_pView->getDocument()->getSerieList().at(index);
 
 	m_sizeMarker = m_pSerie->options().markerSize;
 	titleValueLineEdit->setText(m_pSerie->options().title);
@@ -252,10 +249,9 @@ void ChartPreferences::onValueComboBox(int index)
 	showInLegendCheckBox->setChecked(m_pSerie->options().showInLegend ? Qt::Checked : Qt::Unchecked);
 	markerSizeLineEdit->setText(QString::number(m_pSerie->options().markerSize));
 	markerComboBox->setCurrentIndex(markerComboBox->findData(m_pSerie->options().markerType));
-	if(colorComboBox->findData(m_pSerie->options().color, Qt::UserRole) == -1)
+	if (colorComboBox->findData(m_pSerie->options().color, Qt::UserRole) == -1)
 	{
 		insertColor(m_pSerie->options().color, QString("[%1, %2, %3]").arg(m_pSerie->options().color.red()).arg(m_pSerie->options().color.green()).arg(m_pSerie->options().color.blue()), colorComboBox);
 	}
 	colorComboBox->setCurrentIndex(colorComboBox->findData(m_pSerie->options().color, Qt::UserRole));
-
 }

@@ -12,8 +12,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 #include <boost/range/algorithm/find_if.hpp>
+#include <boost/range/algorithm/for_each.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/chart/chart_doc.h"
 #include "app/rdo_studio/src/chart/chart_view.h"
@@ -30,57 +30,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioChartDocInsertTime
-// --------------------------------------------------------------------------------
-class RDOStudioChartDocInsertTime
-{
-public:
-	RDOStudioChartDocInsertTime(RDOStudioChartDoc* _doc)
-		: doc(_doc)
-	{}
-
-	void operator ()(TracerValue* val);
-
-private:
-	RDOStudioChartDoc* doc;
-};
-
-void RDOStudioChartDocInsertTime::operator ()(TracerValue* val)
-{
-	if (val)
-	{
-		TimesList::iterator it = std::find_if(doc->m_insertedIt, doc->m_docTimes.end(), std::bind2nd(std::mem_fun1(&TracerTimeNow::compareTimes), val->getModelTime()));
-		if (it == doc->m_docTimes.end() || (*it) != val->getModelTime())
-		{
-			doc->m_insertedIt = doc->m_docTimes.insert(it, val->getModelTime());
-			doc->m_ticksCount += val->getModelTime()->eventCount;
-			double offl = 1.7E+308;
-			double offr = 1.7E+308;
-			if (it != doc->m_docTimes.end())
-			{
-				offr = (*it)->time - (*doc->m_insertedIt)->time;
-			}
-			if (doc->m_insertedIt != doc->m_docTimes.begin())
-			{
-				offl = (*doc->m_insertedIt)->time;
-				TimesList::iterator prev_it = doc->m_insertedIt;
-				prev_it--;
-				offl -= (*prev_it)->time;
-			}
-			double minoff = std::min(offl, offr);
-			if (minoff < doc->m_minTimeOffset)
-			{
-				doc->m_minTimeOffset = minoff;
-			}
-		}
-	}
-	//studioApp.m_pMainFrame->stepProgress();
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioChartDoc
-// --------------------------------------------------------------------------------
 ruint RDOStudioChartDoc::s_titleIndex = 0;
 
 RDOStudioChartDoc::RDOStudioChartDoc(const rbool preview)
@@ -106,6 +55,16 @@ RDOStudioChartDoc::~RDOStudioChartDoc()
 	}
 }
 
+CREF(RDOStudioChartDoc::TimesList) RDOStudioChartDoc::getTimes() const
+{
+	return m_docTimes;
+}
+
+CREF(RDOStudioChartDoc::SerieList) RDOStudioChartDoc::getSerieList() const
+{
+	return m_serieList;
+}
+
 void RDOStudioChartDoc::attachView(ChartView* pView)
 {
 	m_viewList.push_back(pView);
@@ -118,19 +77,13 @@ ChartView* RDOStudioChartDoc::getFirstView()
 
 void RDOStudioChartDoc::setStyle(RDOStudioChartViewStyle* pStyle)
 {
-	ASSERT (pStyle)
-	BOOST_FOREACH(ChartView * pView, m_viewList)
-	{
-		pView->setStyle(pStyle);
-	}
+	ASSERT(pStyle);
+	boost::range::for_each(m_viewList, boost::bind(&ChartView::setStyle, _1, pStyle, true));
 }
 
 void RDOStudioChartDoc::updateAllViews()
 {
-	BOOST_FOREACH(ChartView * pView, m_viewList)
-	{
-		pView->updateView();
-	}
+	boost::range::for_each(m_viewList, boost::bind(&ChartView::updateView, _1));
 }
 
 int RDOStudioChartDoc::getSerieIndex(ChartSerie* serie) const
@@ -197,6 +150,16 @@ int RDOStudioChartDoc::getMaxMarkerSize() const
 	return res;
 }
 
+int RDOStudioChartDoc::getTicksCount() const
+{
+	return m_ticksCount;
+}
+
+double RDOStudioChartDoc::getMinTimeOffset() const
+{
+	return m_minTimeOffset;
+}
+
 void RDOStudioChartDoc::addToViews(ChartView* pWidget)
 {
 	m_widgetList.push_back(pWidget);
@@ -213,35 +176,32 @@ void RDOStudioChartDoc::removeFromViews(ChartView* pWidget)
 
 void RDOStudioChartDoc::updateChartViews(ruint updateType) const
 {
-	for (std::vector<ChartView*>::const_iterator it = m_widgetList.begin(); it != m_widgetList.end(); ++it)
-	{
-		(*it)->onUserUpdateChartView(updateType);
-	}
+	boost::range::for_each(m_widgetList, boost::bind(&ChartView::onUserUpdateChartView, _1, updateType));
 }
 
 void RDOStudioChartDoc::addSerie(CREF(LPTracerSerie) pSerie)
 {
 	if (pSerie && !serieExists(pSerie))
 	{
-		ChartSerie* docserie = new ChartSerie(pSerie);
-		ChartSerie::Options options(docserie->options());
+		ChartSerie* pDocSerie = new ChartSerie(pSerie);
+		ChartSerie::Options options(pDocSerie->options());
 		options.color = selectColor();
 		options.markerType = selectMarker();
-		docserie->setOptions(options);
-		m_serieList.push_back(docserie);
+		pDocSerie->setOptions(options);
+		m_serieList.push_back(pDocSerie);
 		m_insertedIt = m_docTimes.begin();
 
 		if (!m_docTimes.empty() && !pSerie->empty())
 		{
-			TimesList::iterator last_doc = m_docTimes.end();
-			--last_doc;
+			TimesList::iterator lastDocIt = m_docTimes.end();
+			--lastDocIt;
 			TracerSerie::ValuesList::const_iterator first_serie = pSerie->begin();
-			if ((*first_serie)->getModelTime()->time >= (*last_doc)->time)
+			if ((*first_serie)->getModelTime()->time >= (*lastDocIt)->time)
 			{
 				m_insertedIt = m_docTimes.end();
-				if ((*first_serie)->getModelTime()->time == (*last_doc)->time)
+				if ((*first_serie)->getModelTime()->time == (*lastDocIt)->time)
 				{
-					m_insertedIt = last_doc;
+					m_insertedIt = lastDocIt;
 				}
 			}
 		}
@@ -250,13 +210,8 @@ void RDOStudioChartDoc::addSerie(CREF(LPTracerSerie) pSerie)
 		{
 			studioApp.BeginWaitCursor();
 
-			//int count;
-			//pSerie->getValueCount( count );
-			//studioApp.m_pMainFrame->beginProgress( 0, count );
+			std::for_each(pSerie->begin(), pSerie->end(), boost::bind(&RDOStudioChartDoc::insertValue, this, _1));
 
-			std::for_each(pSerie->begin(), pSerie->end(), RDOStudioChartDocInsertTime(this));
-
-			//studioApp.m_pMainFrame->endProgress();
 			studioApp.EndWaitCursor();
 		}
 		catch (...)
@@ -269,24 +224,11 @@ void RDOStudioChartDoc::addSerie(CREF(LPTracerSerie) pSerie)
 		{
 			ChartView* pView = getFirstView();
 			ASSERT(pView);
-			pView->m_pYAxis = docserie;
+			pView->setYAxis(pDocSerie);
 		}
-		updateChartViews (UPDATE_NEWSERIE);
+		updateChartViews(UPDATE_NEWSERIE);
 	}
 }
-
-/*void RDOStudioChartDoc::removeSerie(CREF(LPTracerSerie) pSerie)
- {
- if ( !pSerie ) return;
- vector<ChartSerie*>::iterator it = find_if( series.begin(), series.end(), bind2nd( mem_fun1(&ChartSerie::isTracerSerie), pSerie ) );
- if ( it != series.end() ) {
- (*it)->pSerie->removeFromDoc( this );
- //must be recalc of minTimeOffset && tickscount
- delete (*it);
- series.erase( it );
- updateChartViews();
- }
- }*/
 
 COLORREF RDOStudioChartDoc::selectColor()
 {
@@ -394,4 +336,35 @@ void RDOStudioChartDoc::autoTitle()
 void RDOStudioChartDoc::resetTitleIndex()
 {
 	s_titleIndex = 0;
+}
+
+void RDOStudioChartDoc::insertValue(TracerValue* pValue)
+{
+	if (pValue)
+	{
+		RDOStudioChartDoc::TimesList::iterator it = std::find_if(m_insertedIt, m_docTimes.end(), std::bind2nd(std::mem_fun1(&TracerTimeNow::compareTimes), pValue->getModelTime()));
+		if (it == m_docTimes.end() || (*it) != pValue->getModelTime())
+		{
+			m_insertedIt = m_docTimes.insert(it, pValue->getModelTime());
+			m_ticksCount += pValue->getModelTime()->eventCount;
+			double offl = 1.7E+308;
+			double offr = 1.7E+308;
+			if (it != m_docTimes.end())
+			{
+				offr = (*it)->time - (*m_insertedIt)->time;
+			}
+			if (m_insertedIt != m_docTimes.begin())
+			{
+				offl = (*m_insertedIt)->time;
+				TimesList::iterator prev_it = m_insertedIt;
+				prev_it--;
+				offl -= (*prev_it)->time;
+			}
+			double minoff = std::min(offl, offr);
+			if (minoff < m_minTimeOffset)
+			{
+				m_minTimeOffset = minoff;
+			}
+		}
+	}
 }

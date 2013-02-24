@@ -47,10 +47,10 @@ private:
 
 rbool TracerSerieFindValue::operator() (TracerValue* pValue)
 {
-	rbool res = pValue && pValue->getModelTime()->time >= m_pView->m_drawFromX.time;
-	if (m_pView->doUnwrapTime() && res && (pValue->getModelTime()->time == m_pView->m_drawFromX.time))
+	rbool res = pValue && pValue->getModelTime()->time >= m_pView->drawFromX().time;
+	if (m_pView->doUnwrapTime() && res && (pValue->getModelTime()->time == m_pView->drawFromX().time))
 	{
-		res = pValue->getEventID() >= m_pView->m_drawFromEventIndex;
+		res = pValue->getEventID() >= m_pView->drawFromEventID();
 	}
 	return res;
 }
@@ -247,11 +247,11 @@ void TracerSerie::drawSerie(ChartView* const pView,
 		rbool flag = it != m_valueList.end();
 		if (flag && !pView->doUnwrapTime())
 		{
-			flag = !(it == m_valueList.begin() && (*it)->getModelTime()->time > pView->m_drawToX.time);
+			flag = !(it == m_valueList.begin() && (*it)->getModelTime()->time > pView->drawToX().time);
 		}
 		else if (flag)
 		{
-			flag = !(it == m_valueList.begin() && ((*it)->getModelTime()->time > pView->m_drawToX.time || ((*it)->getModelTime()->time == pView->m_drawToX.time && (*it)->getEventID() > pView->m_drawToEventCount)));
+			flag = !(it == m_valueList.begin() && ((*it)->getModelTime()->time > pView->drawToX().time || ((*it)->getModelTime()->time == pView->drawToX().time && (*it)->getEventID() > pView->drawToEventCount())));
 		}
 
 		if (flag)
@@ -266,123 +266,123 @@ void TracerSerie::drawSerie(ChartView* const pView,
 			flag = it != m_valueList.begin();
 			if (flag && !pView->doUnwrapTime())
 			{
-				flag = (*it)->getModelTime()->time > pView->m_drawFromX.time;
+				flag = (*it)->getModelTime()->time > pView->drawFromX().time;
 			}
 			else if (flag)
 			{
-				flag = (*it)->getModelTime()->time > pView->m_drawFromX.time || ((*it)->getModelTime()->time == pView->m_drawFromX.time && (*it)->getEventID() > pView->m_drawFromEventIndex);
+				flag = (*it)->getModelTime()->time > pView->drawFromX().time || ((*it)->getModelTime()->time == pView->drawFromX().time && (*it)->getEventID() > pView->drawFromEventID());
 			}
 			if (flag)
 				--it;
 
-			int lasty = roundDouble((double)rect.bottom() - double(ky) * ((*it)->getValue() - m_minValue));
-			lasty = std::max(lasty, rect.top());
-			lasty = std::min(lasty, rect.bottom());
-			int lastx = rect.left() + roundDouble(((*it)->getModelTime()->time - pView->m_drawFromX.time) * double(pView->m_timeScale)) - pView->m_chartShift;
-			lastx = std::min(lastx, rect.right());
+			int lastY = roundDouble((double)rect.bottom() - double(ky) * ((*it)->getValue() - m_minValue));
+			lastY = std::max(lastY, rect.top());
+			lastY = std::min(lastY, rect.bottom());
+			int lastX = rect.left() + roundDouble(((*it)->getModelTime()->time - pView->drawFromX().time) * double(pView->timeScale())) - pView->chartShift();
+			lastX = std::min(lastX, rect.right());
 
 			int ticks = 0;
-			TimesList::iterator times_it = pView->m_unwrapTimesList.begin();
-			if (pView->doUnwrapTime() && (*it)->getModelTime()->time >= pView->m_drawFromX.time)
+			RDOStudioChartDoc::TimesList::const_iterator timeIt = pView->unwrapTimesList().begin();
+			if (pView->doUnwrapTime() && (*it)->getModelTime()->time >= pView->drawFromX().time)
 			{
-				if (*(*it)->getModelTime() == *(*times_it))
+				if (*(*it)->getModelTime() == *(*timeIt))
 				{
-					lastx += ((*it)->getEventID() - pView->m_drawFromEventIndex) * pView->m_pStyle->pFontsTicks->tickWidth;
+					lastX += ((*it)->getEventID() - pView->drawFromEventID()) * pView->style()->pFontsTicks->tickWidth;
 				}
 				else
 				{
-					while (times_it != pView->m_unwrapTimesList.end() && *(*it)->getModelTime() != *(*times_it))
+					while (timeIt != pView->unwrapTimesList().end() && *(*it)->getModelTime() != *(*timeIt))
 					{
-						ticks += (*times_it)->eventCount;
-						++times_it;
+						ticks += (*timeIt)->eventCount;
+						++timeIt;
 					}
-					lastx += (ticks + (*it)->getEventID() - pView->m_drawFromEventIndex) * pView->m_pStyle->pFontsTicks->tickWidth;
+					lastX += (ticks + (*it)->getEventID() - pView->drawFromEventID()) * pView->style()->pFontsTicks->tickWidth;
 				}
 			}
-			lastx = std::min(lastx, rect.right());
+			lastX = std::min(lastX, rect.right());
 
 			QPainterPath path;
-			if (lastx >= rect.left() && draw_marker)
+			if (lastX >= rect.left() && draw_marker)
 			{
-				drawMarker(painter, lastx, lasty, marker, markerSize);
-				path.moveTo(lastx, lasty);
+				drawMarker(painter, lastX, lastY, marker, markerSize);
+				path.moveTo(lastX, lastY);
 			}
 			else
-				path.moveTo(rect.left(), lasty);
+				path.moveTo(rect.left(), lastY);
 
-			int x = lastx, y = lasty;
+			int x = lastX, y = lastY;
 			if (pView->doUnwrapTime())
 			{
-				ticks -= pView->m_drawFromEventIndex;
+				ticks -= pView->drawFromEventID();
 			}
 			++it;
 			if (pView->doUnwrapTime() && it != m_valueList.end())
 			{
-				while (times_it != pView->m_unwrapTimesList.end() && *(*it)->getModelTime() != *(*times_it))
+				while (timeIt != pView->unwrapTimesList().end() && *(*it)->getModelTime() != *(*timeIt))
 				{
-					ticks += (*times_it)->eventCount;
-					++times_it;
+					ticks += (*timeIt)->eventCount;
+					++timeIt;
 				}
 			}
 
 			while (it != m_valueList.end()
-			        && ((!pView->doUnwrapTime() && (*it)->getModelTime()->time <= pView->m_drawToX.time)
+			        && ((!pView->doUnwrapTime() && (*it)->getModelTime()->time <= pView->drawToX().time)
 			                || (pView->doUnwrapTime()
-			                        && ((*it)->getModelTime()->time < pView->m_drawToX.time || ((*it)->getModelTime()->time == pView->m_drawToX.time && (*it)->getEventID() <= pView->m_drawToEventCount)))))
+			                        && ((*it)->getModelTime()->time < pView->drawToX().time || ((*it)->getModelTime()->time == pView->drawToX().time && (*it)->getEventID() <= pView->drawToEventCount())))))
 			{
 				y = roundDouble((double)rect.bottom() - double(ky) * ((*it)->getValue() - m_minValue));
 				y = std::max(y, rect.top());
 				y = std::min(y, rect.bottom());
-				x = rect.left() + roundDouble(((*it)->getModelTime()->time - pView->m_drawFromX.time) * double(pView->m_timeScale)) - pView->m_chartShift;
+				x = rect.left() + roundDouble(((*it)->getModelTime()->time - pView->drawFromX().time) * double(pView->timeScale())) - pView->chartShift();
 				if (pView->doUnwrapTime())
 				{
-					x += (ticks + (*it)->getEventID()) * pView->m_pStyle->pFontsTicks->tickWidth;
+					x += (ticks + (*it)->getEventID()) * pView->style()->pFontsTicks->tickWidth;
 				}
 				x = std::min(x, rect.right());
 				if (draw_marker)
 					drawMarker(painter, x, y, marker, markerSize);
-				path.lineTo(x, lasty);
+				path.lineTo(x, lastY);
 				path.lineTo(x, y);
-				lastx = x;
-				lasty = y;
+				lastX = x;
+				lastY = y;
 				++it;
 				if (pView->doUnwrapTime() && it != m_valueList.end())
 				{
-					while (times_it != pView->m_unwrapTimesList.end() && *(*it)->getModelTime() != *(*times_it))
+					while (timeIt != pView->unwrapTimesList().end() && *(*it)->getModelTime() != *(*timeIt))
 					{
-						ticks += (*times_it)->eventCount;
-						++times_it;
+						ticks += (*timeIt)->eventCount;
+						++timeIt;
 					}
 				}
 			}
 
-			rbool tempres_erased = (m_kind == SK_PARAM && ((TracerResourceParam*)this)->getResource()->isErased());
-			rbool need_continue = !pView->doUnwrapTime() ? (m_valueList.size() > 1) : true;
-			if (tempres_erased)
+			rbool tempResourceErased = (m_kind == SK_PARAM && ((TracerResourceParam*)this)->getResource()->isErased());
+			rbool needContinue = !pView->doUnwrapTime() ? (m_valueList.size() > 1) : true;
+			if (tempResourceErased)
 			{
 				if (!pView->doUnwrapTime())
 				{
-					need_continue = (it != m_valueList.end() && (*it)->getModelTime()->time > pView->m_drawToX.time);
+					needContinue = (it != m_valueList.end() && (*it)->getModelTime()->time > pView->drawToX().time);
 				}
 				else
 				{
-					need_continue = (it != m_valueList.end()
-					        && ((*it)->getModelTime()->time > pView->m_drawToX.time || ((*it)->getModelTime()->time == pView->m_drawToX.time && (*it)->getEventID() > pView->m_drawToEventCount)));
+					needContinue = (it != m_valueList.end()
+					        && ((*it)->getModelTime()->time > pView->drawToX().time || ((*it)->getModelTime()->time == pView->drawToX().time && (*it)->getEventID() > pView->drawToEventCount())));
 				}
 			}
 
-			if (need_continue)
+			if (needContinue)
 			{
-				if (pView->m_drawFromX == pView->m_drawToX)
+				if (pView->drawFromX() == pView->drawToX())
 				{
-					x = rect.left() + (pView->m_drawToEventCount - pView->m_drawFromEventIndex) * pView->m_pStyle->pFontsTicks->tickWidth;
+					x = rect.left() + (pView->drawToEventCount() - pView->drawFromEventID()) * pView->style()->pFontsTicks->tickWidth;
 					x = std::min(x, rect.right());
 				}
 				else
 				{
 					x = rect.right();
 				}
-				path.lineTo(x, lasty);
+				path.lineTo(x, lastY);
 			}
 
 			painter.setBrush(Qt::NoBrush);
