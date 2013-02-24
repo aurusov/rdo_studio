@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_CHART_VIEW_H_
-#define _RDO_STUDIO_CHART_VIEW_H_
+#ifndef _RDO_STUDIO_TRACER_CHART_VIEW_H_
+#define _RDO_STUDIO_TRACER_CHART_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtWidgets/qwidget.h>
@@ -188,4 +188,4 @@ private:
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_CHART_VIEW_H_
+#endif // _RDO_STUDIO_TRACER_CHART_VIEW_H_

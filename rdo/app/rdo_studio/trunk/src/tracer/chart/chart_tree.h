@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _APP_RDO_STUDIO_CHART_TREE_H_
-#define _APP_RDO_STUDIO_CHART_TREE_H_
+#ifndef _RDO_STUDIO_TRACER_CHART_TREE_H_
+#define _RDO_STUDIO_TRACER_CHART_TREE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtWidgets/qtreewidget.h>
@@ -116,4 +116,4 @@ private slots:
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _APP_RDO_STUDIO_CHART_TREE_H_
+#endif // _RDO_STUDIO_TRACER_CHART_TREE_H_

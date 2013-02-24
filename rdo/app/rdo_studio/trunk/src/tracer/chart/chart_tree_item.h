@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _APP_RDO_STUDIO_CHART_TREE_ITEM_H_
-#define _APP_RDO_STUDIO_CHART_TREE_ITEM_H_
+#ifndef _RDO_STUDIO_TRACER_CHART_TREE_ITEM_H_
+#define _RDO_STUDIO_TRACER_CHART_TREE_ITEM_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtWidgets/qtreewidget.h>
@@ -40,4 +40,4 @@ typedef  rdo::intrusive_ptr<ChartTreeItem>  LPChartTreeItem;
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _APP_RDO_STUDIO_CHART_TREE_ITEM_H_
+#endif // _RDO_STUDIO_TRACER_CHART_TREE_ITEM_H_

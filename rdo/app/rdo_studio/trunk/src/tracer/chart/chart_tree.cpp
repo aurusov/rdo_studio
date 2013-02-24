@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracertreectrl.cpp
+  \file      chart_tree.cpp
   \author    Захаров Павел
   \date      12.03.2003
   \brief     

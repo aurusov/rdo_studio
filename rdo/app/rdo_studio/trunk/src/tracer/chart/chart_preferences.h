@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/tracer/chart/chart_preferences.h
+  \file      chart_preferences.h
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      19.02.2013
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_CHART_PREFERENCES_H_
-#define _RDO_STUDIO_CHART_PREFERENCES_H_
+#ifndef _RDO_STUDIO_TRACER_CHART_PREFERENCES_H_
+#define _RDO_STUDIO_TRACER_CHART_PREFERENCES_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtWidgets/qdialog.h>
@@ -60,4 +60,4 @@ private slots:
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_VIEW_PREFERENCES_H_
+#endif // _RDO_STUDIO_TRACER_CHART_PREFERENCES_H_

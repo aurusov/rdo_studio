@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/tracer/chart/chart_preferences.cpp
+  \file      chart_preferences.cpp
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      19.02.2013
   \brief     

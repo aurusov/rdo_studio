@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_CHART_VIEW_STYLE_H_
-#define _RDO_STUDIO_CHART_VIEW_STYLE_H_
+#ifndef _RDO_STUDIO_TRACER_CHART_VIEW_STYLE_H_
+#define _RDO_STUDIO_TRACER_CHART_VIEW_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -99,4 +99,4 @@ public:
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_CHART_VIEW_STYLE_H_
+#endif // _RDO_STUDIO_TRACER_CHART_VIEW_STYLE_H_

@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_CHART_SERIE_H_
-#define _RDO_STUDIO_CHART_SERIE_H_
+#ifndef _RDO_STUDIO_TRACER_CHART_SERIE_H_
+#define _RDO_STUDIO_TRACER_CHART_SERIE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qpainter.h>
@@ -60,4 +60,4 @@ protected:
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_CHART_SERIE_H_
+#endif // _RDO_STUDIO_TRACER_CHART_SERIE_H_
