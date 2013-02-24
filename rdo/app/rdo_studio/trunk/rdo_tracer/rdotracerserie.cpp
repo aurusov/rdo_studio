@@ -47,10 +47,10 @@ private:
 
 rbool TracerSerieFindValue::operator() (TracerValue* pValue)
 {
-	rbool res = pValue && pValue->modeltime->time >= m_pView->m_drawFromX.time;
-	if (m_pView->doUnwrapTime() && res && (pValue->modeltime->time == m_pView->m_drawFromX.time))
+	rbool res = pValue && pValue->getModelTime()->time >= m_pView->m_drawFromX.time;
+	if (m_pView->doUnwrapTime() && res && (pValue->getModelTime()->time == m_pView->m_drawFromX.time))
 	{
-		res = pValue->eventIndex >= m_pView->m_drawFromEventIndex;
+		res = pValue->getEventID() >= m_pView->m_drawFromEventIndex;
 	}
 	return res;
 }
@@ -98,20 +98,24 @@ rbool TracerSerie::isTemporaryResourceParam() const
 	return m_kind == SK_PARAM && ((TracerResourceParam*)this)->getResource()->getType()->getKind() == TracerResourceType::RDOTK_TEMPORARY;
 }
 
-void TracerSerie::addValue(TracerValue* const value)
+void TracerSerie::addValue(TracerValue* const pValue)
 {
 	DocumentList::iterator it;
 
-	if (value->value < m_minValue || m_valueList.empty())
-		m_minValue = value->value;
-	if (value->value > m_maxValue || m_valueList.empty())
-		m_maxValue = value->value;
+	if (pValue->getValue() < m_minValue || m_valueList.empty())
+	{
+		m_minValue = pValue->getValue();
+	}
+	if (pValue->getValue() > m_maxValue || m_valueList.empty())
+	{
+		m_maxValue = pValue->getValue();
+	}
 
-	m_valueList.push_back(value);
+	m_valueList.push_back(pValue);
 
 	m_valueCount++;
 
-	std::for_each(m_documentList.begin(), m_documentList.end(), std::bind2nd(std::mem_fun1(&RDOStudioChartDoc::newValueToSerieAdded), value));
+	std::for_each(m_documentList.begin(), m_documentList.end(), std::bind2nd(std::mem_fun1(&RDOStudioChartDoc::newValueToSerieAdded), pValue));
 }
 
 void TracerSerie::getValueCount(int& count) const
@@ -219,7 +223,7 @@ void TracerSerie::getLastValue(TracerValue*& pValue) const
 		pValue = m_valueList.back();
 }
 
-void TracerSerie::drawSerie(ChartView* const view,
+void TracerSerie::drawSerie(ChartView* const pView,
                             QPainter& painter,
                             const QRect& rect,
                             const QColor& color,
@@ -233,7 +237,7 @@ void TracerSerie::drawSerie(ChartView* const view,
 		painter.setPen(color);
 		painter.setBrush(QBrush(color, transparent_marker ? Qt::NoBrush : Qt::SolidPattern));
 
-		ValuesList::const_iterator it = std::find_if(m_valueList.begin(), m_valueList.end(), TracerSerieFindValue(view));
+		ValuesList::const_iterator it = std::find_if(m_valueList.begin(), m_valueList.end(), TracerSerieFindValue(pView));
 
 		if (it == m_valueList.end() && !m_valueList.empty() && !isTemporaryResourceParam())
 		{
@@ -241,13 +245,13 @@ void TracerSerie::drawSerie(ChartView* const view,
 		}
 
 		rbool flag = it != m_valueList.end();
-		if (flag && !view->doUnwrapTime())
+		if (flag && !pView->doUnwrapTime())
 		{
-			flag = !(it == m_valueList.begin() && (*it)->modeltime->time > view->m_drawToX.time);
+			flag = !(it == m_valueList.begin() && (*it)->getModelTime()->time > pView->m_drawToX.time);
 		}
 		else if (flag)
 		{
-			flag = !(it == m_valueList.begin() && ((*it)->modeltime->time > view->m_drawToX.time || ((*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex > view->m_drawToEventCount)));
+			flag = !(it == m_valueList.begin() && ((*it)->getModelTime()->time > pView->m_drawToX.time || ((*it)->getModelTime()->time == pView->m_drawToX.time && (*it)->getEventID() > pView->m_drawToEventCount)));
 		}
 
 		if (flag)
@@ -260,39 +264,39 @@ void TracerSerie::drawSerie(ChartView* const view,
 				ky = 0;
 
 			flag = it != m_valueList.begin();
-			if (flag && !view->doUnwrapTime())
+			if (flag && !pView->doUnwrapTime())
 			{
-				flag = (*it)->modeltime->time > view->m_drawFromX.time;
+				flag = (*it)->getModelTime()->time > pView->m_drawFromX.time;
 			}
 			else if (flag)
 			{
-				flag = (*it)->modeltime->time > view->m_drawFromX.time || ((*it)->modeltime->time == view->m_drawFromX.time && (*it)->eventIndex > view->m_drawFromEventIndex);
+				flag = (*it)->getModelTime()->time > pView->m_drawFromX.time || ((*it)->getModelTime()->time == pView->m_drawFromX.time && (*it)->getEventID() > pView->m_drawFromEventIndex);
 			}
 			if (flag)
 				--it;
 
-			int lasty = roundDouble((double)rect.bottom() - double(ky) * ((*it)->value - m_minValue));
+			int lasty = roundDouble((double)rect.bottom() - double(ky) * ((*it)->getValue() - m_minValue));
 			lasty = std::max(lasty, rect.top());
 			lasty = std::min(lasty, rect.bottom());
-			int lastx = rect.left() + roundDouble(((*it)->modeltime->time - view->m_drawFromX.time) * double(view->m_timeScale)) - view->m_chartShift;
+			int lastx = rect.left() + roundDouble(((*it)->getModelTime()->time - pView->m_drawFromX.time) * double(pView->m_timeScale)) - pView->m_chartShift;
 			lastx = std::min(lastx, rect.right());
 
 			int ticks = 0;
-			TimesList::iterator times_it = view->m_unwrapTimesList.begin();
-			if (view->doUnwrapTime() && (*it)->modeltime->time >= view->m_drawFromX.time)
+			TimesList::iterator times_it = pView->m_unwrapTimesList.begin();
+			if (pView->doUnwrapTime() && (*it)->getModelTime()->time >= pView->m_drawFromX.time)
 			{
-				if (*(*it)->modeltime == *(*times_it))
+				if (*(*it)->getModelTime() == *(*times_it))
 				{
-					lastx += ((*it)->eventIndex - view->m_drawFromEventIndex) * view->m_pStyle->pFontsTicks->tickWidth;
+					lastx += ((*it)->getEventID() - pView->m_drawFromEventIndex) * pView->m_pStyle->pFontsTicks->tickWidth;
 				}
 				else
 				{
-					while (times_it != view->m_unwrapTimesList.end() && *(*it)->modeltime != *(*times_it))
+					while (times_it != pView->m_unwrapTimesList.end() && *(*it)->getModelTime() != *(*times_it))
 					{
 						ticks += (*times_it)->eventCount;
 						++times_it;
 					}
-					lastx += (ticks + (*it)->eventIndex - view->m_drawFromEventIndex) * view->m_pStyle->pFontsTicks->tickWidth;
+					lastx += (ticks + (*it)->getEventID() - pView->m_drawFromEventIndex) * pView->m_pStyle->pFontsTicks->tickWidth;
 				}
 			}
 			lastx = std::min(lastx, rect.right());
@@ -307,14 +311,14 @@ void TracerSerie::drawSerie(ChartView* const view,
 				path.moveTo(rect.left(), lasty);
 
 			int x = lastx, y = lasty;
-			if (view->doUnwrapTime())
+			if (pView->doUnwrapTime())
 			{
-				ticks -= view->m_drawFromEventIndex;
+				ticks -= pView->m_drawFromEventIndex;
 			}
 			++it;
-			if (view->doUnwrapTime() && it != m_valueList.end())
+			if (pView->doUnwrapTime() && it != m_valueList.end())
 			{
-				while (times_it != view->m_unwrapTimesList.end() && *(*it)->modeltime != *(*times_it))
+				while (times_it != pView->m_unwrapTimesList.end() && *(*it)->getModelTime() != *(*times_it))
 				{
 					ticks += (*times_it)->eventCount;
 					++times_it;
@@ -322,17 +326,17 @@ void TracerSerie::drawSerie(ChartView* const view,
 			}
 
 			while (it != m_valueList.end()
-			        && ((!view->doUnwrapTime() && (*it)->modeltime->time <= view->m_drawToX.time)
-			                || (view->doUnwrapTime()
-			                        && ((*it)->modeltime->time < view->m_drawToX.time || ((*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex <= view->m_drawToEventCount)))))
+			        && ((!pView->doUnwrapTime() && (*it)->getModelTime()->time <= pView->m_drawToX.time)
+			                || (pView->doUnwrapTime()
+			                        && ((*it)->getModelTime()->time < pView->m_drawToX.time || ((*it)->getModelTime()->time == pView->m_drawToX.time && (*it)->getEventID() <= pView->m_drawToEventCount)))))
 			{
-				y = roundDouble((double)rect.bottom() - double(ky) * ((*it)->value - m_minValue));
+				y = roundDouble((double)rect.bottom() - double(ky) * ((*it)->getValue() - m_minValue));
 				y = std::max(y, rect.top());
 				y = std::min(y, rect.bottom());
-				x = rect.left() + roundDouble(((*it)->modeltime->time - view->m_drawFromX.time) * double(view->m_timeScale)) - view->m_chartShift;
-				if (view->doUnwrapTime())
+				x = rect.left() + roundDouble(((*it)->getModelTime()->time - pView->m_drawFromX.time) * double(pView->m_timeScale)) - pView->m_chartShift;
+				if (pView->doUnwrapTime())
 				{
-					x += (ticks + (*it)->eventIndex) * view->m_pStyle->pFontsTicks->tickWidth;
+					x += (ticks + (*it)->getEventID()) * pView->m_pStyle->pFontsTicks->tickWidth;
 				}
 				x = std::min(x, rect.right());
 				if (draw_marker)
@@ -342,9 +346,9 @@ void TracerSerie::drawSerie(ChartView* const view,
 				lastx = x;
 				lasty = y;
 				++it;
-				if (view->doUnwrapTime() && it != m_valueList.end())
+				if (pView->doUnwrapTime() && it != m_valueList.end())
 				{
-					while (times_it != view->m_unwrapTimesList.end() && *(*it)->modeltime != *(*times_it))
+					while (times_it != pView->m_unwrapTimesList.end() && *(*it)->getModelTime() != *(*times_it))
 					{
 						ticks += (*times_it)->eventCount;
 						++times_it;
@@ -353,25 +357,25 @@ void TracerSerie::drawSerie(ChartView* const view,
 			}
 
 			rbool tempres_erased = (m_kind == SK_PARAM && ((TracerResourceParam*)this)->getResource()->isErased());
-			rbool need_continue = !view->doUnwrapTime() ? (m_valueList.size() > 1) : true;
+			rbool need_continue = !pView->doUnwrapTime() ? (m_valueList.size() > 1) : true;
 			if (tempres_erased)
 			{
-				if (!view->doUnwrapTime())
+				if (!pView->doUnwrapTime())
 				{
-					need_continue = (it != m_valueList.end() && (*it)->modeltime->time > view->m_drawToX.time);
+					need_continue = (it != m_valueList.end() && (*it)->getModelTime()->time > pView->m_drawToX.time);
 				}
 				else
 				{
 					need_continue = (it != m_valueList.end()
-					        && ((*it)->modeltime->time > view->m_drawToX.time || ((*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex > view->m_drawToEventCount)));
+					        && ((*it)->getModelTime()->time > pView->m_drawToX.time || ((*it)->getModelTime()->time == pView->m_drawToX.time && (*it)->getEventID() > pView->m_drawToEventCount)));
 				}
 			}
 
 			if (need_continue)
 			{
-				if (view->m_drawFromX == view->m_drawToX)
+				if (pView->m_drawFromX == pView->m_drawToX)
 				{
-					x = rect.left() + (view->m_drawToEventCount - view->m_drawFromEventIndex) * view->m_pStyle->pFontsTicks->tickWidth;
+					x = rect.left() + (pView->m_drawToEventCount - pView->m_drawFromEventIndex) * pView->m_pStyle->pFontsTicks->tickWidth;
 					x = std::min(x, rect.right());
 				}
 				else
@@ -484,7 +488,7 @@ TracerSerie::ExportData TracerSerie::exportData()
 
 	BOOST_FOREACH(PTR(TracerValue) pValue, m_valueList)
 	{
-		exportData.push_back(QString("%1;%2").arg(pValue->getModelTime()->time).arg(pValue->value));
+		exportData.push_back(QString("%1;%2").arg(pValue->getModelTime()->time).arg(pValue->getValue()));
 	}
 
 	setlocale(LC_NUMERIC, _T("eng"));

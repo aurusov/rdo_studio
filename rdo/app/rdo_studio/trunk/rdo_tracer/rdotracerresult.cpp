@@ -76,7 +76,6 @@ void TracerResult::getCaptions(std::vector<tstring>& captions, const int valueCo
 
 void TracerResult::setValue(tstring& line, TracerTimeNow* const pTime, const int eventIndex)
 {
-	TracerValue* pNewValue = new TracerValue(pTime, eventIndex);
 	double newValue;
 	rdo::trim(line);
 	if (m_kind != RK_WATCHSTATE)
@@ -87,6 +86,6 @@ void TracerResult::setValue(tstring& line, TracerTimeNow* const pTime, const int
 	{
 		newValue = (line == "TRUE") ? 1 : 0;
 	}
-	pNewValue->value = newValue;
+	TracerValue* pNewValue = new TracerValue(pTime, eventIndex, newValue);
 	addValue(pNewValue);
 }

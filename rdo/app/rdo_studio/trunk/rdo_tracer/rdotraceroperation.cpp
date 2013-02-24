@@ -47,10 +47,10 @@ LPTracerPattern TracerOperationBase::getPattern() const
 
 void TracerOperationBase::incOperationsCount(TracerTimeNow* const pTime, const int eventIndex)
 {
-	TracerValue* pNewValue = new TracerValue(pTime, eventIndex);
 	TracerValue* pPrevValue;
 	getLastValue(pPrevValue);
-	pNewValue->value = pPrevValue ? pPrevValue->value + 1 : 1;
+
+	TracerValue* pNewValue = new TracerValue(pTime, eventIndex, pPrevValue ? pPrevValue->getValue() + 1 : 1);
 	addValue(pNewValue);
 }
 
@@ -79,13 +79,12 @@ void TracerOperation::start(TracerTimeNow* const pTime, const int eventIndex)
 
 void TracerOperation::accomplish(TracerTimeNow* const pTime, const int eventIndex)
 {
-	TracerValue* lastval;
-	getLastValue(lastval);
-	if (lastval)
+	TracerValue* pLastValue;
+	getLastValue(pLastValue);
+	if (pLastValue)
 	{
-		TracerValue* newval = new TracerValue(pTime, eventIndex);
-		newval->value = lastval->value - 1;
-		addValue(newval);
+		TracerValue* pNewValue = new TracerValue(pTime, eventIndex, pLastValue->getValue() - 1);
+		addValue(pNewValue);
 	}
 }
 
@@ -106,24 +105,22 @@ void TracerEvent::occurs(TracerTimeNow* const pTime, const int eventIndex)
 
 void TracerEvent::monitorTime(TracerTimeNow* const pTime, const int eventIndex)
 {
-	TracerValue* prevval;
-	getLastValue(prevval);
-	TracerValue* newval = NULL;
-	if (prevval && prevval->value != 0)
+	TracerValue* pPrevValue;
+	getLastValue(pPrevValue);
+	TracerValue* pNewValue = NULL;
+	if (pPrevValue && pPrevValue->getValue() != 0)
 	{
-		if (*prevval->getModelTime() != *pTime)
+		if (*pPrevValue->getModelTime() != *pTime)
 		{
-			newval = new TracerValue(prevval->getModelTime(), prevval->getModelTime()->eventCount);
-			newval->value = 0;
+			pNewValue = new TracerValue(pPrevValue->getModelTime(), pPrevValue->getModelTime()->eventCount, 0);
 		}
 	}
-	if (!prevval)
+	if (!pPrevValue)
 	{
-		newval = new TracerValue(pTime, eventIndex);
-		newval->value = 0;
+		pNewValue = new TracerValue(pTime, eventIndex, 0);
 	}
-	if (newval)
+	if (pNewValue)
 	{
-		addValue(newval);
+		addValue(pNewValue);
 	}
 }

@@ -62,11 +62,26 @@ rbool TracerTimeNow::compareTimes(const TracerTimeNow* pTimeNow)
 // --------------------------------------------------------------------------------
 // -------------------- TracerValue
 // --------------------------------------------------------------------------------
-TracerValue::TracerValue(TracerTimeNow* const timenow, const int _eventIndex, const double _value)
-	: modeltime(timenow),
-	  eventIndex(_eventIndex),
-	  value(_value)
+TracerValue::TracerValue(TracerTimeNow* const pTimeNow, const int eventID, const double value)
+	: m_value     (value   )
+	, m_pModelTime(pTimeNow)
+	, m_eventID   (eventID )
 {}
 
 TracerValue::~TracerValue()
 {}
+
+double TracerValue::getValue() const
+{
+	return m_value;
+}
+
+TracerTimeNow* const TracerValue::getModelTime() const
+{
+	return m_pModelTime;
+}
+
+int TracerValue::getEventID() const
+{
+	return m_eventID;
+}

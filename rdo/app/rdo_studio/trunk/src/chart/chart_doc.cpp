@@ -50,11 +50,11 @@ void RDOStudioChartDocInsertTime::operator ()(TracerValue* val)
 {
 	if (val)
 	{
-		TimesList::iterator it = std::find_if(doc->m_insertedIt, doc->m_docTimes.end(), std::bind2nd(std::mem_fun1(&TracerTimeNow::compareTimes), val->modeltime));
-		if (it == doc->m_docTimes.end() || (*it) != val->modeltime)
+		TimesList::iterator it = std::find_if(doc->m_insertedIt, doc->m_docTimes.end(), std::bind2nd(std::mem_fun1(&TracerTimeNow::compareTimes), val->getModelTime()));
+		if (it == doc->m_docTimes.end() || (*it) != val->getModelTime())
 		{
-			doc->m_insertedIt = doc->m_docTimes.insert(it, val->modeltime);
-			doc->m_ticksCount += val->modeltime->eventCount;
+			doc->m_insertedIt = doc->m_docTimes.insert(it, val->getModelTime());
+			doc->m_ticksCount += val->getModelTime()->eventCount;
 			double offl = 1.7E+308;
 			double offr = 1.7E+308;
 			if (it != doc->m_docTimes.end())
@@ -161,17 +161,17 @@ rbool RDOStudioChartDoc::newValueToSerieAdded(TracerValue* val)
 {
 	if (m_docTimes.empty())
 	{
-		m_docTimes.push_back(val->modeltime);
-		m_ticksCount += val->modeltime->eventCount;
+		m_docTimes.push_back(val->getModelTime());
+		m_ticksCount += val->getModelTime()->eventCount;
 	}
 	else
 	{
 		TracerTimeNow* last = m_docTimes.back();
-		if (last != val->modeltime)
+		if (last != val->getModelTime())
 		{
-			m_docTimes.push_back(val->modeltime);
-			m_ticksCount += val->modeltime->eventCount;
-			double off = val->modeltime->time - last->time;
+			m_docTimes.push_back(val->getModelTime());
+			m_ticksCount += val->getModelTime()->eventCount;
+			double off = val->getModelTime()->time - last->time;
 			if (off < m_minTimeOffset)
 			{
 				m_minTimeOffset = off;
@@ -236,10 +236,10 @@ void RDOStudioChartDoc::addSerie(CREF(LPTracerSerie) pSerie)
 			TimesList::iterator last_doc = m_docTimes.end();
 			--last_doc;
 			TracerSerie::ValuesList::const_iterator first_serie = pSerie->begin();
-			if ((*first_serie)->modeltime->time >= (*last_doc)->time)
+			if ((*first_serie)->getModelTime()->time >= (*last_doc)->time)
 			{
 				m_insertedIt = m_docTimes.end();
-				if ((*first_serie)->modeltime->time == (*last_doc)->time)
+				if ((*first_serie)->getModelTime()->time == (*last_doc)->time)
 				{
 					m_insertedIt = last_doc;
 				}

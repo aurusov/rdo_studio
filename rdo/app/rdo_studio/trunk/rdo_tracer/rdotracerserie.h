@@ -64,7 +64,7 @@ public:
 	void getLastValue(TracerValue*& val) const;
 	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
 
-	void drawSerie(ChartView* const view,
+	void drawSerie(ChartView* const pView,
 	               QPainter& painter,
 	               const QRect& rect,
 	               const QColor& color,

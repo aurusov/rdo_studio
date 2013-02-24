@@ -168,7 +168,7 @@ void TracerResource::setParams(tstring& line, TracerTimeNow* const pTime, const 
 		double newValue;
 		if (erasing)
 		{
-			newValue = pPrevValue->value;
+			newValue = pPrevValue->getValue();
 		}
 		else
 		{
@@ -188,8 +188,7 @@ void TracerResource::setParams(tstring& line, TracerTimeNow* const pTime, const 
 			}
 		}
 
-		TracerValue* pNewValue = new TracerValue(pTime, eventIndex);
-		pNewValue->value = newValue;
+		TracerValue* pNewValue = new TracerValue(pTime, eventIndex, newValue);
 		m_paramList.at(i)->addValue(pNewValue);
 	}
 }

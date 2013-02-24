@@ -38,25 +38,18 @@ public:
 // --------------------------------------------------------------------------------
 class TracerValue
 {
-friend class TracerSerie;
-friend class RDOStudioChartDoc;
-friend class RDOStudioChartDocInsertTime;
-friend class RDOStudioChartDocInsertTime;
-friend class TracerSerieFindValue;
-
 public:
-	double value;
-	TracerValue(TracerTimeNow* const timenow, const int _eventIndex, const double _value = 0);
+	TracerValue(TracerTimeNow* const pTimeNow, const int eventID, const double value);
 	~TracerValue();
 
-	TracerTimeNow* const getModelTime() const
-	{
-		return modeltime;
-	}
+	double               getValue    () const;
+	TracerTimeNow* const getModelTime() const;
+	int                  getEventID  () const;
 
-protected:
-	TracerTimeNow* modeltime;
-	int eventIndex;
+private:
+	double          m_value;
+	TracerTimeNow*  m_pModelTime;
+	int             m_eventID;
 };
 
 #endif // _RDO_STUDIO_TRACER_RDOTRACERVALUES_H_
