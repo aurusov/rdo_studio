@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      log_view.h
+  \file      tracer_logger_view.h
   \authors   Захаров Павел
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.03.2003
@@ -8,15 +8,15 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_TRACER_CTRLS_LOG_VIEW_H_
-#define _RDO_STUDIO_TRACER_CTRLS_LOG_VIEW_H_
+#ifndef _RDO_STUDIO_TRACER_LOGGER_VIEW_H_
+#define _RDO_STUDIO_TRACER_LOGGER_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtWidgets/qwidget.h>
 #include <QtGui/qevent.h>
 #include <QtWidgets/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/tracer/ctrls/log_view_style.h"
+#include "app/rdo_studio/src/tracer/logger/tracer_logger_view_style.h"
 #include "app/rdo_studio/src/action_activator/action_activator_widget.h"
 #include "app/rdo_studio/src/dialog/find_dialog.h"
 #include "ui/qt/headers/scroll_bar/scroll_bar.h"
@@ -177,4 +177,4 @@ private slots:
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_TRACER_CTRLS_LOG_VIEW_H_
+#endif // _RDO_STUDIO_TRACER_LOGGER_VIEW_H_

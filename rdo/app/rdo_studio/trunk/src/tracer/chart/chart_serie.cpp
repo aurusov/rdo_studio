@@ -11,7 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/chart/chart_serie.h"
+#include "app/rdo_studio/src/tracer/chart/chart_serie.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

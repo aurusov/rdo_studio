@@ -15,11 +15,11 @@
 #include <boost/range/algorithm/find_if.hpp>
 #include <boost/range/algorithm/for_each.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/chart/chart_doc.h"
-#include "app/rdo_studio/src/chart/chart_view.h"
-#include "app/rdo_studio/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
-#include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
+#include "app/rdo_studio/src/tracer/chart/chart_doc.h"
+#include "app/rdo_studio/src/tracer/chart/chart_view.h"
+#include "app/rdo_studio/src/tracer/rdotracer.h"
+#include "app/rdo_studio/src/tracer/rdotracerserie.h"
+#include "app/rdo_studio/src/tracer/rdotracervalues.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
 // --------------------------------------------------------------------------------

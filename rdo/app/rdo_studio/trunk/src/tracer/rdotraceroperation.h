@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
-#include "app/rdo_studio/rdo_tracer/rdotracerpattern.h"
+#include "app/rdo_studio/src/tracer/rdotracerserie.h"
+#include "app/rdo_studio/src/tracer/rdotracerpattern.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------

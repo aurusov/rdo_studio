@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/chart/chart_preferences.cpp
+  \file      app/rdo_studio/src/tracer/chart/chart_preferences.cpp
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      19.02.2013
   \brief     
@@ -12,9 +12,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/chart/chart_preferences.h"
-#include "app/rdo_studio/src/chart/chart_view.h"
-#include "app/rdo_studio/src/chart/chart_doc.h"
+#include "app/rdo_studio/src/tracer/chart/chart_preferences.h"
+#include "app/rdo_studio/src/tracer/chart/chart_view.h"
+#include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 // --------------------------------------------------------------------------------
 
 ChartPreferences::ChartPreferences(PTR(ChartView) pView)

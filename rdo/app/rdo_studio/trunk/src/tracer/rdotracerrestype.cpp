@@ -11,7 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/rdo_tracer/rdotracerrestype.h"
+#include "app/rdo_studio/src/tracer/rdotracerrestype.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

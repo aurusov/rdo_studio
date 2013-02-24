@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      log_view.cpp
+  \file      tracer_logger_view.cpp
   \authors   Захаров Павел
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.03.2003
@@ -17,7 +17,7 @@
 #include <QtWidgets/qscrollbar.h>
 #include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/tracer/ctrls/log_view.h"
+#include "app/rdo_studio/src/tracer/logger/tracer_logger_view.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_frm.h"
 // --------------------------------------------------------------------------------

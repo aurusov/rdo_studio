@@ -15,8 +15,8 @@
 #include <list>
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/chart/chart_tree_item.h"
-#include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
+#include "app/rdo_studio/src/tracer/chart/chart_tree_item.h"
+#include "app/rdo_studio/src/tracer/rdotracervalues.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------

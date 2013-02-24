@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/chart/chart_serie.h"
-#include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
+#include "app/rdo_studio/src/tracer/chart/chart_serie.h"
+#include "app/rdo_studio/src/tracer/rdotracerserie.h"
 // --------------------------------------------------------------------------------
 
 #define WM_USER_UPDATE_CHART_VIEW WM_USER + 0x156

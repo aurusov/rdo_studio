@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/chart/chart_tree_item.h"
+#include "app/rdo_studio/src/tracer/chart/chart_tree_item.h"
 // --------------------------------------------------------------------------------
 
 class TracerPattern: public ChartTreeItem

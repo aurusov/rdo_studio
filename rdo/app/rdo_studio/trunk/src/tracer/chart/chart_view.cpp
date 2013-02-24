@@ -16,15 +16,15 @@
 #include <QtGui/qevent.h>
 #include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/chart/chart_view.h"
-#include "app/rdo_studio/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/src/tracer/chart/chart_view.h"
+#include "app/rdo_studio/src/tracer/rdotracer.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
 #include "app/rdo_studio/resource.h"
-#include "app/rdo_studio/src/chart/chart_view_style.h"
-#include "app/rdo_studio/src/chart/chart_serie.h"
+#include "app/rdo_studio/src/tracer/chart/chart_view_style.h"
+#include "app/rdo_studio/src/tracer/chart/chart_serie.h"
 #include "app/rdo_studio/src/main_frm.h"
-#include "app/rdo_studio/src/chart/chart_preferences.h"
+#include "app/rdo_studio/src/tracer/chart/chart_preferences.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

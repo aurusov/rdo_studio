@@ -13,12 +13,12 @@
 #include <algorithm>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/rdo_tracer/rdotracerserie.h"
-#include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
-#include "app/rdo_studio/rdo_tracer/rdotracerresource.h"
-#include "app/rdo_studio/rdo_tracer/rdotracerrestype.h"
-#include "app/rdo_studio/src/chart/chart_view.h"
-#include "app/rdo_studio/src/chart/chart_doc.h"
+#include "app/rdo_studio/src/tracer/rdotracerserie.h"
+#include "app/rdo_studio/src/tracer/rdotracervalues.h"
+#include "app/rdo_studio/src/tracer/rdotracerresource.h"
+#include "app/rdo_studio/src/tracer/rdotracerrestype.h"
+#include "app/rdo_studio/src/tracer/chart/chart_view.h"
+#include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
 // --------------------------------------------------------------------------------

@@ -14,12 +14,12 @@
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/main_windows_base.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/thread.h"
-#include "app/rdo_studio/src/chart/chart_doc.h"
+#include "app/rdo_studio/src/tracer/rdotracer.h"
+#include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

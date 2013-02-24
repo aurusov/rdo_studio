@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/chart/chart_preferences.h
+  \file      app/rdo_studio/src/tracer/chart/chart_preferences.h
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      19.02.2013
   \brief     
@@ -15,7 +15,7 @@
 #include <QtWidgets/qcolordialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_chart_preferences.h"
-#include "app/rdo_studio/src/chart/chart_doc.h"
+#include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 // --------------------------------------------------------------------------------
 
 class ChartPreferences

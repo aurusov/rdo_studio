@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/thread.h"
 #include "app/rdo_studio/src/model/model.h"
-#include "app/rdo_studio/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/src/tracer/rdotracer.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

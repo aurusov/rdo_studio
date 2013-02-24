@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio/rdo_tracer/rdotracerbase.h"
+#include "app/rdo_studio/src/tracer/rdotracerbase.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------

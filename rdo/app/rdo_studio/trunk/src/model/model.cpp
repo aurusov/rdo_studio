@@ -33,7 +33,7 @@
 #include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
 #include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
-#include "app/rdo_studio/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/src/tracer/rdotracer.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;
