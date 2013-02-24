@@ -282,19 +282,19 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 #endif
 	m_resourceListByTime.push_back(pResource);
 
-	m_db->insertRow("rss",QString("%1,1,'name','trace'")//костыль
-		.arg(pResource->getTraceID()));
-	int rss_id = m_db->queryExecIndex("rss");
-	int param_id = -1;
+	//m_db->insertRow("rss",QString("%1,1,'name','trace'")//костыль
+	//	.arg(pResource->getTraceID()));
+	//int rss_id = m_db->queryExecIndex("rss");
+	//int param_id = -1;
 
-	BOOST_FOREACH(const RDOValue& param, pResource->getParamList())
-	{
-		param.serializeInDB(*m_db);
-		m_db->insertRow("rss_param",QString("%1,%2,1,%3")//костыль
-			.arg(rss_id)
-			.arg(++param_id)
-			.arg(boost::any_cast<int>(m_db->popContext())));
-	}
+	//BOOST_FOREACH(const RDOValue& param, pResource->getParamList())
+	//{
+	//	param.serializeInDB(db);
+	//	db.insertRow("rss_param",QString("%1,%2,1,%3")//костыль
+	//		.arg(rss_id)
+	//		.arg(++param_id)
+	//		.arg(boost::any_cast<int>(db.popContext())));
+	//}
 }
 
 PTR(GeneralDB) RDORuntime::getDB()
