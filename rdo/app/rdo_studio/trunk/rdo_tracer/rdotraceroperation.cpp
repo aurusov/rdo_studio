@@ -24,10 +24,13 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 // -------------------- TracerOperationBase
 // --------------------------------------------------------------------------------
-TracerOperationBase::TracerOperationBase(CREF(LPTracerPattern) pPattern)
+TracerOperationBase::TracerOperationBase(CREF(LPTracerPattern) pPattern, CREF(QString) name)
 	: TracerSerie(SK_OPERATION)
 	, m_pPattern(pPattern)
-{}
+	, m_name(name)
+{
+	setTitle(m_name);
+}
 
 TracerOperationBase::~TracerOperationBase()
 {}
@@ -35,15 +38,6 @@ TracerOperationBase::~TracerOperationBase()
 CREF(QString) TracerOperationBase::getName() const
 {
 	return m_name;
-}
-
-void TracerOperationBase::setName(CREF(QString) name)
-{
-	m_name = name;
-	if (title.isEmpty())
-	{
-		title = m_name;
-	}
 }
 
 LPTracerPattern TracerOperationBase::getPattern() const
@@ -71,8 +65,8 @@ void TracerOperationBase::monitorTime(TracerTimeNow* const, const int)
 // --------------------------------------------------------------------------------
 // -------------------- TracerOperation
 // --------------------------------------------------------------------------------
-TracerOperation::TracerOperation(CREF(LPTracerPattern) pPattern)
-	: TracerOperationBase(pPattern)
+TracerOperation::TracerOperation(CREF(LPTracerPattern) pPattern, CREF(QString) name)
+	: TracerOperationBase(pPattern, name)
 {}
 
 TracerOperation::~TracerOperation()
@@ -98,8 +92,8 @@ void TracerOperation::accomplish(TracerTimeNow* const pTime, const int eventInde
 // --------------------------------------------------------------------------------
 // -------------------- TracerIrregularEvent
 // --------------------------------------------------------------------------------
-TracerEvent::TracerEvent(CREF(LPTracerPattern) pPattern)
-	: TracerOperationBase(pPattern)
+TracerEvent::TracerEvent(CREF(LPTracerPattern) pPattern, CREF(QString) name)
+	: TracerOperationBase(pPattern, name)
 {}
 
 TracerEvent::~TracerEvent()

@@ -16,6 +16,7 @@
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/chart/chart_tree_item.h"
+#include "app/rdo_studio/rdo_tracer/rdotracervalues.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -23,10 +24,6 @@
 // --------------------------------------------------------------------------------
 class ChartView;
 class RDOStudioChartDoc;
-class TracerValue;
-class TracerTimeNow;
-
-typedef std::list<TracerValue*> valuesList;
 
 class TracerSerie: public ChartTreeItem
 {
@@ -49,6 +46,8 @@ public:
 		M_CROSS
 	};
 
+	typedef std::list<TracerValue*> ValuesList;
+
 	CREF(QString) getTitle() const;
 	void          setTitle(CREF(QString) value);
 
@@ -56,20 +55,11 @@ public:
 
 	void addValue(TracerValue* const value);
 	void getValueCount(int& count) const;
-	rbool empty() const
-	{
-		return values.empty();
-	}
 
-	valuesList::const_iterator begin() const
-	{
-		return values.begin();
-	}
+	rbool empty() const;
 
-	valuesList::const_iterator end() const
-	{
-		return values.end();
-	}
+	ValuesList::const_iterator begin() const;
+	ValuesList::const_iterator end  () const;
 
 	void getLastValue(TracerValue*& val) const;
 	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
@@ -84,12 +74,9 @@ public:
 	               const rbool transparent_marker) const;
 	void drawMarker(QPainter& painter, const int x, const int y, Marker marker, const int markerSize) const;
 
-	void addToDoc(RDOStudioChartDoc* const doc);
-	void removeFromDoc(RDOStudioChartDoc* const doc);
-	rbool isInOneOrMoreDocs() const
-	{
-		return !documents.empty();
-	}
+	void addToDoc(RDOStudioChartDoc* const pDocument);
+	void removeFromDoc(RDOStudioChartDoc* const pDocument);
+	rbool isInOneOrMoreDocs() const;
 
 	rbool activateFirstDoc() const;
 
@@ -100,21 +87,24 @@ protected:
 	TracerSerie(Kind _serieKind = SK_PREVIEW);
 	virtual ~TracerSerie();
 
-	Kind m_kind;
-	QString         title;
-
-	valuesList values;
-	mutable double minValue;
-	mutable double maxValue;
-	int value_count;
-
-	rbool isTemporaryResourceParam() const;
-
-	std::vector<RDOStudioChartDoc*> documents;
+	mutable double m_minValue;
+	mutable double m_maxValue;
 
 	void getCaptionsInt   (std::vector<tstring>& captions, const int valueCount) const;
 	void getCaptionsDouble(std::vector<tstring>& captions, const int valueCount) const;
 	void getCaptionsBool  (std::vector<tstring>& captions, const int valueCount) const;
+
+private:
+	Kind     m_kind;
+	QString  m_title;
+
+	ValuesList     m_valueList;
+	int            m_valueCount;
+
+	rbool isTemporaryResourceParam() const;
+
+	typedef  std::vector<RDOStudioChartDoc*>  DocumentList;
+	DocumentList m_documentList;
 };
 
 typedef  rdo::intrusive_ptr<TracerSerie>  LPTracerSerie;

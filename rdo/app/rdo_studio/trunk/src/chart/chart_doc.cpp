@@ -235,7 +235,7 @@ void RDOStudioChartDoc::addSerie(CREF(LPTracerSerie) pSerie)
 		{
 			TimesList::iterator last_doc = m_docTimes.end();
 			--last_doc;
-			valuesList::const_iterator first_serie = pSerie->begin();
+			TracerSerie::ValuesList::const_iterator first_serie = pSerie->begin();
 			if ((*first_serie)->modeltime->time >= (*last_doc)->time)
 			{
 				m_insertedIt = m_docTimes.end();

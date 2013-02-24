@@ -61,31 +61,31 @@ rbool TracerSerieFindValue::operator ()(TracerValue* val)
 TracerSerie::TracerSerie(Kind _serieKind)
 	: ChartTreeItem(true)
 	, m_kind(_serieKind)
-	, minValue(0)
-	, maxValue(0)
-	, value_count(0)
+	, m_minValue(0)
+	, m_maxValue(0)
+	, m_valueCount(0)
 {}
 
 TracerSerie::~TracerSerie()
 {
-	valuesList::iterator it = values.begin();
-	while (it != values.end())
+	ValuesList::iterator it = m_valueList.begin();
+	while (it != m_valueList.end())
 	{
 		delete *it;
 		it++;
 	}
-	values.clear();
-	documents.clear();
+	m_valueList.clear();
+	m_documentList.clear();
 }
 
 CREF(QString) TracerSerie::getTitle() const
 {
-	return title;
+	return m_title;
 }
 
 void TracerSerie::setTitle(CREF(QString) value)
 {
-	title = value;
+	m_title = value;
 }
 
 TracerSerie::Kind TracerSerie::getKind() const
@@ -100,23 +100,38 @@ rbool TracerSerie::isTemporaryResourceParam() const
 
 void TracerSerie::addValue(TracerValue* const value)
 {
-	std::vector<RDOStudioChartDoc*>::iterator it;
+	DocumentList::iterator it;
 
-	if (value->value < minValue || values.empty())
-		minValue = value->value;
-	if (value->value > maxValue || values.empty())
-		maxValue = value->value;
+	if (value->value < m_minValue || m_valueList.empty())
+		m_minValue = value->value;
+	if (value->value > m_maxValue || m_valueList.empty())
+		m_maxValue = value->value;
 
-	values.push_back(value);
+	m_valueList.push_back(value);
 
-	value_count++;
+	m_valueCount++;
 
-	std::for_each(documents.begin(), documents.end(), std::bind2nd(std::mem_fun1(&RDOStudioChartDoc::newValueToSerieAdded), value));
+	std::for_each(m_documentList.begin(), m_documentList.end(), std::bind2nd(std::mem_fun1(&RDOStudioChartDoc::newValueToSerieAdded), value));
 }
 
 void TracerSerie::getValueCount(int& count) const
 {
-	count = value_count;
+	count = m_valueCount;
+}
+
+rbool TracerSerie::empty() const
+{
+	return m_valueList.empty();
+}
+
+TracerSerie::ValuesList::const_iterator TracerSerie::begin() const
+{
+	return m_valueList.begin();
+}
+
+TracerSerie::ValuesList::const_iterator TracerSerie::end() const
+{
+	return m_valueList.end();
 }
 
 void TracerSerie::getCaptions(std::vector<tstring>& captions, const int valueCount) const
@@ -126,10 +141,10 @@ void TracerSerie::getCaptions(std::vector<tstring>& captions, const int valueCou
 
 	if (m_kind == TracerSerie::SK_PREVIEW)
 	{
-		double valoffset = (maxValue - minValue) / (double)(valueCount - 1);
-		double valo = minValue;
+		double valoffset = (m_maxValue - m_minValue) / (double)(valueCount - 1);
+		double valo = m_minValue;
 		tstring formatstr = "%.3f";
-		if (value_count > 1)
+		if (m_valueCount > 1)
 		{
 			for (int i = 0; i < valueCount; i++)
 			{
@@ -149,17 +164,17 @@ void TracerSerie::getCaptionsInt(std::vector<tstring>& captions, const int value
 	TracerSerie::getCaptions(captions, valueCount);
 
 	int real_val_count = valueCount;
-	if ((maxValue - minValue + 1) > real_val_count)
+	if ((m_maxValue - m_minValue + 1) > real_val_count)
 	{
-		while ((int)((maxValue - minValue) / (real_val_count - 1)) != (double)((maxValue - minValue) / (real_val_count - 1)))
+		while ((int)((m_maxValue - m_minValue) / (real_val_count - 1)) != (double)((m_maxValue - m_minValue) / (real_val_count - 1)))
 			real_val_count--;
 	}
 	else
 	{
-		real_val_count = (int)(maxValue - minValue + 1);
+		real_val_count = (int)(m_maxValue - m_minValue + 1);
 	}
-	int valo = (int)minValue;
-	int valoffset = (int)((maxValue - minValue) / (real_val_count - 1));
+	int valo = (int)m_minValue;
+	int valoffset = (int)((m_maxValue - m_minValue) / (real_val_count - 1));
 	tstring formatstr = "%d";
 	for (int i = 0; i < real_val_count; i++)
 	{
@@ -172,10 +187,10 @@ void TracerSerie::getCaptionsDouble(std::vector<tstring>& captions, const int va
 {
 	TracerSerie::getCaptions(captions, valueCount);
 
-	double valoffset = (maxValue - minValue) / (double)(valueCount - 1);
-	double valo = minValue;
+	double valoffset = (m_maxValue - m_minValue) / (double)(valueCount - 1);
+	double valo = m_minValue;
 	tstring formatstr = "%.3f";
-	if (value_count > 1)
+	if (m_valueCount > 1)
 	{
 		for (int i = 0; i < valueCount; i++)
 		{
@@ -198,10 +213,10 @@ void TracerSerie::getCaptionsBool(std::vector<tstring>& captions, const int valu
 
 void TracerSerie::getLastValue(TracerValue*& val) const
 {
-	if (!values.size())
+	if (!m_valueList.size())
 		val = NULL;
 	else
-		val = values.back();
+		val = m_valueList.back();
 }
 
 void TracerSerie::drawSerie(ChartView* const view,
@@ -213,38 +228,38 @@ void TracerSerie::drawSerie(ChartView* const view,
                             const rbool draw_marker,
                             const rbool transparent_marker) const
 {
-	if (!values.empty())
+	if (!m_valueList.empty())
 	{
 		painter.setPen(color);
 		painter.setBrush(QBrush(color, transparent_marker ? Qt::NoBrush : Qt::SolidPattern));
 
-		valuesList::const_iterator it = std::find_if(values.begin(), values.end(), TracerSerieFindValue(view));
+		ValuesList::const_iterator it = std::find_if(m_valueList.begin(), m_valueList.end(), TracerSerieFindValue(view));
 
-		if (it == values.end() && !values.empty() && !isTemporaryResourceParam())
+		if (it == m_valueList.end() && !m_valueList.empty() && !isTemporaryResourceParam())
 		{
 			--it;
 		}
 
-		rbool flag = it != values.end();
+		rbool flag = it != m_valueList.end();
 		if (flag && !view->doUnwrapTime())
 		{
-			flag = !(it == values.begin() && (*it)->modeltime->time > view->m_drawToX.time);
+			flag = !(it == m_valueList.begin() && (*it)->modeltime->time > view->m_drawToX.time);
 		}
 		else if (flag)
 		{
-			flag = !(it == values.begin() && ((*it)->modeltime->time > view->m_drawToX.time || ((*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex > view->m_drawToEventCount)));
+			flag = !(it == m_valueList.begin() && ((*it)->modeltime->time > view->m_drawToX.time || ((*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex > view->m_drawToEventCount)));
 		}
 
 		if (flag)
 		{
 
 			long double ky;
-			if (maxValue != minValue)
-				ky = rect.height() / (maxValue - minValue);
+			if (m_maxValue != m_minValue)
+				ky = rect.height() / (m_maxValue - m_minValue);
 			else
 				ky = 0;
 
-			flag = it != values.begin();
+			flag = it != m_valueList.begin();
 			if (flag && !view->doUnwrapTime())
 			{
 				flag = (*it)->modeltime->time > view->m_drawFromX.time;
@@ -256,7 +271,7 @@ void TracerSerie::drawSerie(ChartView* const view,
 			if (flag)
 				--it;
 
-			int lasty = roundDouble((double)rect.bottom() - double(ky) * ((*it)->value - minValue));
+			int lasty = roundDouble((double)rect.bottom() - double(ky) * ((*it)->value - m_minValue));
 			lasty = std::max(lasty, rect.top());
 			lasty = std::min(lasty, rect.bottom());
 			int lastx = rect.left() + roundDouble(((*it)->modeltime->time - view->m_drawFromX.time) * double(view->m_timeScale)) - view->m_chartShift;
@@ -297,7 +312,7 @@ void TracerSerie::drawSerie(ChartView* const view,
 				ticks -= view->m_drawFromEventIndex;
 			}
 			++it;
-			if (view->doUnwrapTime() && it != values.end())
+			if (view->doUnwrapTime() && it != m_valueList.end())
 			{
 				while (times_it != view->m_unwrapTimesList.end() && *(*it)->modeltime != *(*times_it))
 				{
@@ -306,12 +321,12 @@ void TracerSerie::drawSerie(ChartView* const view,
 				}
 			}
 
-			while (it != values.end()
+			while (it != m_valueList.end()
 			        && ((!view->doUnwrapTime() && (*it)->modeltime->time <= view->m_drawToX.time)
 			                || (view->doUnwrapTime()
 			                        && ((*it)->modeltime->time < view->m_drawToX.time || ((*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex <= view->m_drawToEventCount)))))
 			{
-				y = roundDouble((double)rect.bottom() - double(ky) * ((*it)->value - minValue));
+				y = roundDouble((double)rect.bottom() - double(ky) * ((*it)->value - m_minValue));
 				y = std::max(y, rect.top());
 				y = std::min(y, rect.bottom());
 				x = rect.left() + roundDouble(((*it)->modeltime->time - view->m_drawFromX.time) * double(view->m_timeScale)) - view->m_chartShift;
@@ -327,7 +342,7 @@ void TracerSerie::drawSerie(ChartView* const view,
 				lastx = x;
 				lasty = y;
 				++it;
-				if (view->doUnwrapTime() && it != values.end())
+				if (view->doUnwrapTime() && it != m_valueList.end())
 				{
 					while (times_it != view->m_unwrapTimesList.end() && *(*it)->modeltime != *(*times_it))
 					{
@@ -338,16 +353,16 @@ void TracerSerie::drawSerie(ChartView* const view,
 			}
 
 			rbool tempres_erased = (m_kind == SK_PARAM && ((TracerResourceParam*)this)->getResource()->isErased());
-			rbool need_continue = !view->doUnwrapTime() ? (values.size() > 1) : true;
+			rbool need_continue = !view->doUnwrapTime() ? (m_valueList.size() > 1) : true;
 			if (tempres_erased)
 			{
 				if (!view->doUnwrapTime())
 				{
-					need_continue = (it != values.end() && (*it)->modeltime->time > view->m_drawToX.time);
+					need_continue = (it != m_valueList.end() && (*it)->modeltime->time > view->m_drawToX.time);
 				}
 				else
 				{
-					need_continue = (it != values.end()
+					need_continue = (it != m_valueList.end()
 					        && ((*it)->modeltime->time > view->m_drawToX.time || ((*it)->modeltime->time == view->m_drawToX.time && (*it)->eventIndex > view->m_drawToEventCount)));
 				}
 			}
@@ -419,29 +434,34 @@ void TracerSerie::drawMarker(QPainter& painter, const int x, const int y, Marker
 	}
 }
 
-void TracerSerie::addToDoc(RDOStudioChartDoc* const doc)
+void TracerSerie::addToDoc(RDOStudioChartDoc* const pDocument)
 {
-	if (doc && std::find(documents.begin(), documents.end(), doc) == documents.end())
+	if (pDocument && std::find(m_documentList.begin(), m_documentList.end(), pDocument) == m_documentList.end())
 	{
-		documents.push_back(doc);
+		m_documentList.push_back(pDocument);
 	}
 }
 
-void TracerSerie::removeFromDoc(RDOStudioChartDoc* const doc)
+void TracerSerie::removeFromDoc(RDOStudioChartDoc* const pDocument)
 {
-	std::vector<RDOStudioChartDoc*>::iterator it = std::find(documents.begin(), documents.end(), doc);
-	if (it != documents.end())
+	DocumentList::iterator it = std::find(m_documentList.begin(), m_documentList.end(), pDocument);
+	if (it != m_documentList.end())
 	{
-		documents.erase(it);
+		m_documentList.erase(it);
 	}
+}
+
+rbool TracerSerie::isInOneOrMoreDocs() const
+{
+	return !m_documentList.empty();
 }
 
 rbool TracerSerie::activateFirstDoc() const
 {
 	rbool result = false;
-	if (!documents.empty())
+	if (!m_documentList.empty())
 	{
-		RDOStudioChartDoc* pDoc = documents.front();
+		RDOStudioChartDoc* pDoc = m_documentList.front();
 		if (pDoc)
 		{
 			ChartView* pView = pDoc->getFirstView();
@@ -459,10 +479,10 @@ TracerSerie::ExportData TracerSerie::exportData()
 	setlocale(LC_ALL, _T("rus"));
 
 	ExportData exportData;
-	exportData.reserve(values.size() + 1);
-	exportData.push_back(QString("%1;%2").arg(QString::fromStdWString(L"время")).arg(title));
+	exportData.reserve(m_valueList.size() + 1);
+	exportData.push_back(QString("%1;%2").arg(QString::fromStdWString(L"время")).arg(m_title));
 
-	BOOST_FOREACH(PTR(TracerValue) pValue, values)
+	BOOST_FOREACH(PTR(TracerValue) pValue, m_valueList)
 	{
 		exportData.push_back(QString("%1;%2").arg(pValue->getModelTime()->time).arg(pValue->value));
 	}

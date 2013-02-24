@@ -30,10 +30,7 @@ TracerResult::TracerResult(CREF(QString) name, Kind kind, int id)
 	, m_kind(kind)
 	, m_id(id)
 {
-	if (title.isEmpty())
-	{
-		title = m_name;
-	}
+	setTitle(m_name);
 }
 
 TracerResult::~TracerResult()

@@ -66,8 +66,8 @@ void TracerResourceParam::getCaptions(std::vector<tstring>& captions, const int 
 	{
 		TracerSerie::getCaptions(captions, valueCount);
 		int delta = getParamInfo()->getEnumCount();
-		minValue = 0;
-		maxValue = delta - 1;
+		m_minValue = 0;
+		m_maxValue = delta - 1;
 		int real_val_count = valueCount;
 		if (delta > real_val_count)
 		{
@@ -78,7 +78,7 @@ void TracerResourceParam::getCaptions(std::vector<tstring>& captions, const int 
 		{
 			real_val_count = delta;
 		}
-		int valo = (int)minValue;
+		int valo = (int)m_minValue;
 		int valoffset = real_val_count != 1 ? (delta - 1) / (real_val_count - 1) : 0;
 		for (int i = 0; i < real_val_count; i++)
 		{

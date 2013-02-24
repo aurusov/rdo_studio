@@ -24,7 +24,6 @@ class TracerOperationBase: public TracerSerie
 DECLARE_FACTORY(TracerOperationBase)
 public:
 	CREF(QString) getName() const;
-	void          setName(CREF(QString) name);
 
 	LPTracerPattern getPattern() const;
 
@@ -32,7 +31,7 @@ public:
 	virtual void monitorTime(TracerTimeNow* const pTime, const int eventIndex);
 
 protected:
-	TracerOperationBase(CREF(LPTracerPattern) pPattern);
+	TracerOperationBase(CREF(LPTracerPattern) pPattern, CREF(QString) name);
 	virtual ~TracerOperationBase();
 
 	void incOperationsCount(TracerTimeNow* const pTime, const int eventIndex);
@@ -55,7 +54,7 @@ public:
 	void accomplish(TracerTimeNow* const pTime, const int eventIndex);
 
 private:
-	TracerOperation(CREF(LPTracerPattern) pPattern);
+	TracerOperation(CREF(LPTracerPattern) pPattern, CREF(QString) name);
 	virtual ~TracerOperation();
 };
 
@@ -72,7 +71,7 @@ public:
 	virtual void monitorTime(TracerTimeNow* const pTime, const int eventIndex);
 
 private:
-	TracerEvent(CREF(LPTracerPattern) pPattern);
+	TracerEvent(CREF(LPTracerPattern) pPattern, CREF(QString) name);
 	virtual ~TracerEvent();
 };
 

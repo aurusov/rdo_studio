@@ -208,17 +208,16 @@ void TracerBase::addOperation(REF(tstring), rdo::textstream& stream)
 	LPTracerPattern pPattern = m_patternList.at(patternID - 1);
 
 	LPTracerOperationBase pOperationBase;
+	QString name = QString::fromLocal8Bit(operationName.c_str());
 
 	if (pPattern->getKind() != TracerPattern::PK_RULE && pPattern->getKind() != TracerPattern::PK_EVENT)
 	{
-		pOperationBase = rdo::Factory<TracerOperation>::create(pPattern);
+		pOperationBase = rdo::Factory<TracerOperation>::create(pPattern, name);
 	}
 	else
 	{
-		pOperationBase = rdo::Factory<TracerEvent>::create(pPattern);
+		pOperationBase = rdo::Factory<TracerEvent>::create(pPattern, name);
 	}
-
-	pOperationBase->setName(QString::fromLocal8Bit(operationName.c_str()));
 
 	if (pPattern->getKind() != TracerPattern::PK_EVENT)
 	{
