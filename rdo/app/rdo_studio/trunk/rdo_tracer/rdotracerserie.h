@@ -95,16 +95,15 @@ protected:
 	void getCaptionsBool  (std::vector<tstring>& captions, const int valueCount) const;
 
 private:
-	Kind     m_kind;
-	QString  m_title;
+	typedef  std::vector<RDOStudioChartDoc*>  DocumentList;
 
-	ValuesList     m_valueList;
-	int            m_valueCount;
+	Kind          m_kind;
+	QString       m_title;
+	ValuesList    m_valueList;
+	int           m_valueCount;
+	DocumentList  m_documentList;
 
 	rbool isTemporaryResourceParam() const;
-
-	typedef  std::vector<RDOStudioChartDoc*>  DocumentList;
-	DocumentList m_documentList;
 };
 
 typedef  rdo::intrusive_ptr<TracerSerie>  LPTracerSerie;
