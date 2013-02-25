@@ -66,12 +66,6 @@ inline CREF(RDOResource::ParamList) RDOResource::getParamList() const
 	return m_paramList;
 }
 
-inline CREF(RDOValue) RDOResource::getParam(ruint index) const
-{
-	ASSERT(index < m_paramList.size());
-	return m_paramList[index];
-}
-
 inline REF(RDOValue) RDOResource::getParamRaw(ruint index)
 {
 	ASSERT(index < m_paramList.size());

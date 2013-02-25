@@ -194,4 +194,10 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 	m_paramList[index] = value;
 }
 
+CREF(RDOValue) RDOResource::getParam(ruint index) const
+{
+	ASSERT(index < m_paramList.size());
+	return m_paramList[index];
+}
+
 CLOSE_RDO_RUNTIME_NAMESPACE
