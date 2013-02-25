@@ -148,6 +148,8 @@ void ChartPreferences::apply()
 
 		m_pSerie->setOptions(options);
 	}
+
+	m_pView->repaint();
 }
 
 void ChartPreferences::onCheckAllData()
