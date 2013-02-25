@@ -262,7 +262,7 @@ BOOL RDOStudioApp::InitInstance()
 		}
 		else
 		{
-			openModelName = rdo::File::extractFilePath(RDOStudioApp::getFullExtName()) + openModelName;
+			openModelName = rdo::File::extractFilePath(qApp->applicationFilePath().toLocal8Bit().constData()) + openModelName;
 			if (rdo::File::exist(openModelName) && g_pModel->openModel(QString::fromLocal8Bit(openModelName.c_str())))
 			{
 				autoRun            = true;
@@ -399,29 +399,33 @@ rbool RDOStudioApp::shortToLongPath(CREF(tstring) shortPath, REF(tstring) longPa
 	}
 }
 
-tstring RDOStudioApp::getFullExtName()
+QString RDOStudioApp::getFullHelpFileName(CREF(QString) helpFileName) const
 {
-	return qApp->applicationFilePath().toLocal8Bit().constData();
-}
-
-tstring RDOStudioApp::getFullHelpFileName(tstring str) const
-{
-	tstring strTemp = chkHelpExist(str);
-	if (                       strTemp.size() < 3) return _T("");
-	if (chkHelpExist ("assistant.exe").size() < 3) return _T("");
-
-	return strTemp;
-}
-
-tstring RDOStudioApp::chkHelpExist(tstring fileName) const
-{
-	fileName.insert(0, rdo::File::extractFilePath(RDOStudioApp::getFullExtName()));
-	if (!rdo::File::exist(fileName))
+	QString result = chkHelpExist(helpFileName);
+	if (result.size() < 3)
 	{
-		QMessageBox::warning(studioApp.getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Невозможно найти файл справки '%1'.\r\nОн должен быть расположен в директории с RAO-studio.").arg(QString::fromLocal8Bit(fileName.c_str())));
-		return tstring();
+		result = QString();
 	}
-	return fileName;
+	if (chkHelpExist("assistant.exe").size() < 3)
+	{
+		result = QString();
+	}
+	return result;
+}
+
+QString RDOStudioApp::chkHelpExist(CREF(QString) helpFileName) const
+{
+	QString fullHelpFileName = QString("%1%2")
+		.arg(QString::fromLocal8Bit(rdo::File::extractFilePath(qApp->applicationFilePath().toLocal8Bit().constData()).c_str()))
+		.arg(helpFileName);
+
+	if (!QFile::exists(fullHelpFileName))
+	{
+		QMessageBox::warning(studioApp.getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Невозможно найти файл справки '%1'.\r\nОн должен быть расположен в директории с RAO-studio.").arg(helpFileName));
+		fullHelpFileName = QString();
+	}
+
+	return fullHelpFileName;
 }
 
 void RDOStudioApp::chkAndRunQtAssistant()
@@ -441,7 +445,7 @@ PTR(QProcess) RDOStudioApp::runQtAssistant() const
 	PTR(QProcess) pProcess = new QProcess;
 	QStringList args;
 	args << QString("-collectionFile")
-		<< QString(getFullHelpFileName().c_str())
+		<< getFullHelpFileName()
 		<< QString("-enableRemoteControl")
 		<< QString("-quiet");
 	pProcess->start(QString("assistant"), args);
@@ -543,7 +547,7 @@ void RDOStudioApp::setupFileAssociation()
 #ifdef Q_OS_WIN
 	QString fileTypeID("RAO.Project");
 	QString appParam(" -i \"%1\"");
-	QString appFullName(QString::fromLocal8Bit(RDOStudioApp::getFullExtName().c_str()));
+	QString appFullName = qApp->applicationFilePath();
 	appFullName.replace("/", "\\");
 
 	QSettings settings("HKEY_CURRENT_USER\\Software\\Classes", QSettings::NativeFormat);

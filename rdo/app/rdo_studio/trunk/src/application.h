@@ -69,13 +69,13 @@ public:
 
 	void           autoCloseByModel ();
 
-	static tstring getFullExtName      ();
-	tstring        getFullHelpFileName (tstring str = "RAO-help.qhc") const;
-	static rbool   shortToLongPath     (CREF(tstring) shortPath, REF(tstring) longPath);
-	tstring        chkHelpExist        (tstring fileName) const;
+	QString        getFullHelpFileName (CREF(QString) helpFileName = "RAO-help.qhc") const;
+	QString        chkHelpExist        (CREF(QString) helpFileName) const;
 	void           chkAndRunQtAssistant();
 	PTR(QProcess)  runQtAssistant      () const;
 	void           callQtAssistant     (CREF(QByteArray) ba);
+
+	static rbool   shortToLongPath     (CREF(tstring) shortPath, REF(tstring) longPath);
 
 	CREF(rdoEditor::LPRDOEditorEditStyle) getEditorEditStyle() const;
 
