@@ -326,7 +326,7 @@ tstring ChartDoc::getTitle() const
 void ChartDoc::setTitle(CREF(tstring) title)
 {
 	this->m_title = title;
-	getFirstView()->parentWidget()->setWindowTitle(QString::fromLocal8Bit(rdo::format(IDS_CHART_TITLE, this->m_title.c_str()).c_str()));
+	getFirstView()->parentWidget()->setWindowTitle(QString::fromStdWString(L"график: %1").arg(this->m_title.c_str()));
 }
 
 void ChartDoc::autoTitle()
