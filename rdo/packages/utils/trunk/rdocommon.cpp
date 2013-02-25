@@ -102,46 +102,30 @@ tstring format(ruint resource, REF(va_list) params)
 }
 #endif // COMPILER_VISUAL_STUDIO
 
-struct _toLower {
-	_toLower( std::locale loc ): m_loc(loc) {};
-	tchar operator()(tchar c) {
-		return std::tolower( c, m_loc );
-	}
-	std::locale m_loc;
-};
-
-void toLower( REF(tstring) str )
+void toLower(REF(tstring) str)
 {
-#ifdef COMPILER_VISUAL_STUDIO
-	_toLower tr1( std::locale("rus") );
-	std::transform( str.begin(), str.end(), str.begin(), tr1 );
-	_toLower tr2( std::locale("C") );
-#elif defined COMPILER_GCC
 	boost::algorithm::to_lower(str);
-#endif // COMPILER_VISUAL_STUDIO
 }
 
-void trim( REF(tstring) str )
+void trim(REF(tstring) str)
 {
-	static tchar szDelims[] = _T(" \t\n\r");
-	str.erase( 0, str.find_first_not_of( szDelims ) );
-	str.erase( str.find_last_not_of( szDelims ) + 1, tstring::npos );
+	boost::algorithm::trim(str);
 }
 
-void trimLeft( REF(tstring) str )
+void trimLeft(REF(tstring) str)
 {
-	static tchar szDelims[] = _T(" \t\n\r");
-	str.erase( 0, str.find_first_not_of( szDelims ) );
+	boost::algorithm::trim_left(str);
 }
 
-void trimRight( REF(tstring) str )
+void trimRight(REF(tstring) str)
 {
-	static tchar szDelims[] = _T(" \t\n\r");
-	str.erase( str.find_last_not_of( szDelims ) + 1, tstring::npos );
+	boost::algorithm::trim_right(str);
 }
 
 wstring toUnicode(CREF(astring) str)
 {
+	wstring result;
+
 	try
 	{
 		std::wostringstream wstm;
@@ -152,12 +136,12 @@ wstring toUnicode(CREF(astring) str)
 		{
 			wstm << ctfacet.widen(str[i]);
 		}
-		return wstm.str();
+		result = wstm.str();
 	}
 	catch (CREF(std::runtime_error))
-	{
-	return wstring();
-	}
+	{}
+
+	return result;
 }
 
 tstring extractFilePath(CREF(tstring) fileName)
