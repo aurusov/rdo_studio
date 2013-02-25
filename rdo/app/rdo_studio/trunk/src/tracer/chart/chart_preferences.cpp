@@ -33,9 +33,9 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 
 	titleLineEdit->setText(m_chartTitle);
 
-	yValueLineEdit->setValidator(new IntValidator(2, 100, this));
+	yValueLineEdit->setValidator(new rdo::gui::IntValidator(2, 100, this));
 	yValueLineEdit->setText(QString::number(m_valueCountY));
-	xValueLineEdit->setValidator(new IntValidator(2, 100, this));
+	xValueLineEdit->setValidator(new rdo::gui::IntValidator(2, 100, this));
 	xValueLineEdit->setText(QString::number(m_valueCountX));
 	
 	showLegendCheckBox->setChecked(m_pView->isDrawLegend() ? Qt::Checked : Qt::Unchecked);
@@ -48,7 +48,7 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 		valueComboBox->addItem(pSerie->getSerie()->getTitle());
 	}
 	
-	markerSizeLineEdit->setValidator(new IntValidator(2, 6, markerSizeLineEdit));
+	markerSizeLineEdit->setValidator(new rdo::gui::IntValidator(2, 6, markerSizeLineEdit));
 
 	insertColors(colorComboBox);
 

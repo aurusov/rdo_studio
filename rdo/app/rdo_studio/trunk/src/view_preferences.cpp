@@ -84,9 +84,9 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(checkBoxMarginBookmark, SIGNAL(stateChanged(int)), this, SLOT(onMarginBookmark(int)));
 	connect(checkBoxMarginLineNum, SIGNAL(stateChanged(int)), this, SLOT(onMarginLineNumber(int)));
 	//Вкладка "Табуляция"
-	tabSizeLineEdit->setValidator(new IntValidator(1, 100, this));
+	tabSizeLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
 	tabSizeLineEdit->setText(QString::number(style_editor.tab->tabSize));
-	indentSizeLineEdit->setValidator(new IntValidator(1, 100, this));
+	indentSizeLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
 	indentSizeLineEdit->setText(QString::number(style_editor.tab->indentSize));
 	connect(useTabSymbolCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onUseTabSymbol(int)));
 	connect(indentAsTabcheckBox, SIGNAL(stateChanged(int)), this, SLOT(onIndentAsTab(int)));
@@ -135,12 +135,12 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	italicCheckBox->setEnabled(false);
 	underlineCheckBox->setEnabled(false);
 
-	horzIndentLineEdit->setValidator(new IntValidator(1, 100, this));
+	horzIndentLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
 	horzIndentLineEdit->setText(QString::number(style_trace.borders->horzBorder));
-	vertIndentLineEdit->setValidator(new IntValidator(1, 100, this));
+	vertIndentLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
 	vertIndentLineEdit->setText(QString::number(style_trace.borders->vertBorder));
 
-	tickWidthLineEdit->setValidator(new IntValidator(1, 100, this));
+	tickWidthLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
 	tickWidthLineEdit->setText(QString::number(style_chart.pFontsTicks->tickWidth));
 
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));

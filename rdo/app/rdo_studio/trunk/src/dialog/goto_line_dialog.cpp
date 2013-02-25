@@ -25,7 +25,7 @@ GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount)
 
 	label->setText(QString::fromStdWString(L"Номер строки (1-%1):").arg(lineCount));
 
-	lineEdit->setValidator(new IntValidator(1, lineCount, this));
+	lineEdit->setValidator(new rdo::gui::IntValidator(1, lineCount, this));
 	lineEdit->setText(QString::number(m_line));
 	lineEdit->setFocus();
 	lineEdit->selectAll();
