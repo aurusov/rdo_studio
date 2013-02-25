@@ -16,7 +16,7 @@
 #include "app/rdo_studio/res/build_version.h"
 #include "app/rdo_studio/src/application.h"
 #include "simulator/report/build_edit_line_info.h"
-#include "ui/qt/headers/int_validator/int_validator.h"
+#include "ui/qt/headers/validator/int_validator.h"
 // --------------------------------------------------------------------------------
 using namespace rdo::simulation::report;
 using namespace rdoEditCtrl;

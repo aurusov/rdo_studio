@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dialog/goto_line_dialog.h"
-#include "ui/qt/headers/int_validator/int_validator.h"
+#include "ui/qt/headers/validator/int_validator.h"
 // --------------------------------------------------------------------------------
 
 GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount)

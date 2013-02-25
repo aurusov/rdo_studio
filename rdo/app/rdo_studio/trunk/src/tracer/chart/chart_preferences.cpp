@@ -15,7 +15,7 @@
 #include "app/rdo_studio/src/tracer/chart/chart_preferences.h"
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
-#include "ui/qt/headers/int_validator/int_validator.h"
+#include "ui/qt/headers/validator/int_validator.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::tracer;
