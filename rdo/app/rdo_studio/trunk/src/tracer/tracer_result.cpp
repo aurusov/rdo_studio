@@ -76,7 +76,7 @@ void Result::getCaptions(std::vector<tstring>& captions, const int valueCount) c
 void Result::setValue(tstring& line, Time* const pTime, const int eventIndex)
 {
 	double newValue;
-	rdo::trim(line);
+	boost::algorithm::trim(line);
 	if (m_kind != RK_WATCHSTATE)
 	{
 		newValue = atof(line.c_str());

@@ -90,8 +90,7 @@ tstring RDOEditorBaseEdit::convertToLexer(CREF(tstring) kw)
 		tstring::size_type pos2 = s.find(' ', pos1);
 		s.erase(pos1, pos2 - pos1);
 	}
-	tstring str_big = s;
-	rdo::toLower(s);
+	tstring str_big = boost::algorithm::to_lower_copy(s);
 	return str_big + " " + s;
 }
 

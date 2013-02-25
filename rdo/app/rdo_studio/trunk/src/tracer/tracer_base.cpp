@@ -373,7 +373,7 @@ tstring TracerBase::getNextValue(REF(tstring) line)
 		result = line.substr(posStart, posEnd - posStart);
 	}
 	line.erase(0, posEnd + 1);
-	rdo::trim(result);
+	boost::algorithm::trim(result);
 	return result;
 }
 

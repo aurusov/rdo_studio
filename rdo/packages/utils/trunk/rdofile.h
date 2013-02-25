@@ -52,6 +52,11 @@ public:
 	//! \result полное имя временного файла
 	static tstring getTempFileName();
 
+	//! Получение пути файла по его имени
+	//! \param fileName - полное имя файла
+	//! \result Путь к файлу, заканчивающийся '/' или '\' в зависимости от платформы
+	static tstring extractFilePath(CREF(tstring) fileName);
+
 	//! Удаляет пустоты (пробелы, табуляцию, переводы строк) в конце файла
 	//! \param name - имя файла
 	//! \result \b true, если всё прошло успешно

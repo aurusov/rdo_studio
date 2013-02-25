@@ -404,8 +404,7 @@ rbool LogStyle::getItemColors( CREF(tstring) item, LogColorPair* &colors ) const
 		return LogStyle::getDefaultColor(colors);
 	int posstart = item.find_first_not_of( ' ' );
 	int posend = item.find_first_of( ' ', posstart );
-	tstring key = item.substr( posstart, posend - posstart );
-	rdo::trim( key );
+	tstring key = boost::algorithm::trim_copy(item.substr(posstart, posend - posstart));
 	rbool res = true;
 	if ( theme ) {
 		if ( key == "ES" ) {

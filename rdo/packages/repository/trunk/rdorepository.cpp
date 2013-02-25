@@ -376,7 +376,7 @@ void RDOThreadRepository::closeModel()
 
 void RDOThreadRepository::extractName(CREF(tstring) fullName)
 {
-	m_modelPath = rdo::extractFilePath(fullName);
+	m_modelPath = rdo::File::extractFilePath(fullName);
 
 	tstring name = fullName;
 	tstring::size_type pos = name.find_last_of(_T('.'));

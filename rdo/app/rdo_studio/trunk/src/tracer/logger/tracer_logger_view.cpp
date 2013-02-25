@@ -348,8 +348,7 @@ void LogView::push_back(CREF(tstring) log)
 	{
 		rsint posstart = log.find_first_not_of(' ');
 		rsint posend   = log.find_first_of(' ', posstart);
-		tstring key  = log.substr(posstart, posend - posstart);
-		rdo::trim(key);
+		tstring key    = boost::algorithm::trim_copy(log.substr(posstart, posend - posstart));
 
 		LogColorPair* colors = NULL;
 
@@ -1042,8 +1041,7 @@ void LogView::onHelpContext()
 	{
 		rsint posstart = line.find_first_not_of(' ');
 		rsint posend   = line.find_first_of(' ', posstart);
-		keyword      = line.substr(posstart, posend - posstart);
-		rdo::trim(keyword);
+		keyword        = boost::algorithm::trim_copy(line.substr(posstart, posend - posstart));
 
 		if (!keyword.empty())
 		{

@@ -33,6 +33,7 @@
 #include <map>
 #include <list>
 #include <algorithm>
+#include <boost/algorithm/string.hpp>
 
 #include "utils/rdodebug.h"
 #include "utils/rdocommon.h"

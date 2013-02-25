@@ -112,6 +112,13 @@ tstring File::getTempFileName()
 #endif // COMPILER_GCC
 }
 
+tstring File::extractFilePath(CREF(tstring) fileName)
+{
+	boost::filesystem::path fullFileName(fileName);
+	tstring result = (fullFileName.make_preferred().parent_path() / boost::filesystem::path("/").make_preferred()).string();
+	return result;
+}
+
 rbool File::trimLeft(CREF(tstring) name)
 {
 	boost::filesystem::ifstream inputStream(name.c_str(), std::ios::binary);

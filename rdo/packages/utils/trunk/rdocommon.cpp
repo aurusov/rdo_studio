@@ -16,10 +16,6 @@
 #include <locale>
 #include <stdio.h>
 #include <stdarg.h>
-#include <algorithm>
-#include <boost/algorithm/string.hpp>
-#include <boost/range/algorithm/copy.hpp>
-#include <boost/filesystem.hpp>
 
 #ifdef COMPILER_VISUAL_STUDIO
 #	include <windows.h>
@@ -102,26 +98,6 @@ tstring format(ruint resource, REF(va_list) params)
 }
 #endif // COMPILER_VISUAL_STUDIO
 
-void toLower(REF(tstring) str)
-{
-	boost::algorithm::to_lower(str);
-}
-
-void trim(REF(tstring) str)
-{
-	boost::algorithm::trim(str);
-}
-
-void trimLeft(REF(tstring) str)
-{
-	boost::algorithm::trim_left(str);
-}
-
-void trimRight(REF(tstring) str)
-{
-	boost::algorithm::trim_right(str);
-}
-
 wstring toUnicode(CREF(astring) str)
 {
 	wstring result;
@@ -141,13 +117,6 @@ wstring toUnicode(CREF(astring) str)
 	catch (CREF(std::runtime_error))
 	{}
 
-	return result;
-}
-
-tstring extractFilePath(CREF(tstring) fileName)
-{
-	boost::filesystem::path fullFileName(fileName);
-	tstring result = (fullFileName.make_preferred().parent_path() / boost::filesystem::path("/").make_preferred()).string();
 	return result;
 }
 

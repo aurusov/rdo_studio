@@ -210,8 +210,7 @@ void LogEdit::appendLine(PTR(LogEditLineInfo) pLine)
 	{
 		setReadOnly(false);
 	}
-	tstring str = pLine->getMessage();
-	rdo::trimRight(str);
+	tstring str = boost::algorithm::trim_right_copy(pLine->getMessage());
 	str += "\r\n";
 	setCurrentPos(getLength());
 	appendText(QString::fromLocal8Bit(str.c_str()));

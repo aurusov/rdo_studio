@@ -248,7 +248,7 @@ BOOL RDOStudioApp::InitInstance()
 	rbool autoModel = false;
 	if (!openModelName.empty())
 	{
-		if (!rdo::extractFilePath(openModelName).empty())
+		if (!rdo::File::extractFilePath(openModelName).empty())
 		{
 			tstring longFileName;
 			if (shortToLongPath(openModelName, longFileName))
@@ -262,7 +262,7 @@ BOOL RDOStudioApp::InitInstance()
 		}
 		else
 		{
-			openModelName = rdo::extractFilePath(RDOStudioApp::getFullExtName()) + openModelName;
+			openModelName = rdo::File::extractFilePath(RDOStudioApp::getFullExtName()) + openModelName;
 			if (rdo::File::exist(openModelName) && g_pModel->openModel(QString::fromLocal8Bit(openModelName.c_str())))
 			{
 				autoRun            = true;
@@ -415,7 +415,7 @@ tstring RDOStudioApp::getFullHelpFileName(tstring str) const
 
 tstring RDOStudioApp::chkHelpExist(tstring fileName) const
 {
-	fileName.insert(0, rdo::extractFilePath(RDOStudioApp::getFullExtName()));
+	fileName.insert(0, rdo::File::extractFilePath(RDOStudioApp::getFullExtName()));
 	if (!rdo::File::exist(fileName))
 	{
 		QMessageBox::warning(studioApp.getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Невозможно найти файл справки '%1'.\r\nОн должен быть расположен в директории с RAO-studio.").arg(QString::fromLocal8Bit(fileName.c_str())));

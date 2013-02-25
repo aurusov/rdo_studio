@@ -78,35 +78,10 @@ OPEN_RDO_NAMESPACE
 	tstring format(ruint resource, REF(va_list) params);
 #endif // COMPILER_VISUAL_STUDIO
 
-	//! Перевод строки в нижний регистр
-	//! \param[in, out] str - изменяемая строка
-	//! \result Переведенная в нижний регистр строка
-	void toLower  (REF(tstring) str);
-
-	//! Отбрасывает пустоты (пробел, табуляция, перевод строки) в начале и конце строки
-	//! \param[in, out] str - изменяемая строка
-	//! \result Строка без пустот в начале и конце
-	void trim     (REF(tstring) str);
-
-	//! Отбрасывает пустоту (пробел, табуляция, перевод строки) в начале строки
-	//! \param[in, out] str - изменяемая строка
-	//! \result Строка без пустот в начале
-	void trimLeft (REF(tstring) str);
-
-	//! Отбрасывает пустоту (пробел, табуляция, перевод строки) в конце строки
-	//! \param[in, out] str - изменяемая строка
-	//! \result Строка без пустот в конце
-	void trimRight(REF(tstring) str);
-
 	//! Переводит строку в unicode
 	//! \param str - строка в ansi
 	//! \result Строка в unicode
 	wstring toUnicode(CREF(astring) str);
-
-	//! Получение пути файла по его имени
-	//! \param fileName - полное имя файла
-	//! \result Путь к файлу, заканчивающийся '/'
-	tstring extractFilePath(CREF(tstring) fileName);
 
 	//! Переводит значение в строку
 	//! \tparam T     - тип значения
