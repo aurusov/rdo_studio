@@ -248,33 +248,18 @@ BOOL RDOStudioApp::InitInstance()
 	rbool autoModel = false;
 	if (!openModelName.empty())
 	{
-		if (!rdo::File::extractFilePath(openModelName).empty())
+		openModelName = rdo::File::extractFilePath(qApp->applicationFilePath().toLocal8Bit().constData()) + openModelName;
+		if (rdo::File::exist(openModelName) && g_pModel->openModel(QString::fromLocal8Bit(openModelName.c_str())))
 		{
-			tstring longFileName;
-			if (shortToLongPath(openModelName, longFileName))
-			{
-				openModelName = longFileName;
-			}
-			if (g_pModel->openModel(QString::fromLocal8Bit(openModelName.c_str())))
-			{
-				autoModel = true;
-			}
+			autoRun            = true;
+			m_autoExitByModel  = true;
+			m_dontCloseIfError = true;
+			autoModel          = true;
 		}
 		else
 		{
-			openModelName = rdo::File::extractFilePath(qApp->applicationFilePath().toLocal8Bit().constData()) + openModelName;
-			if (rdo::File::exist(openModelName) && g_pModel->openModel(QString::fromLocal8Bit(openModelName.c_str())))
-			{
-				autoRun            = true;
-				m_autoExitByModel  = true;
-				m_dontCloseIfError = true;
-				autoModel          = true;
-			}
-			else
-			{
-				m_exitCode = rdo::simulation::report::EC_ModelNotFound;
-				return false;
-			}
+			m_exitCode = rdo::simulation::report::EC_ModelNotFound;
+			return false;
 		}
 	}
 	else
@@ -359,44 +344,6 @@ PTR(MainWindowBase) RDOStudioApp::getIMainWnd()
 REF(std::ofstream) RDOStudioApp::log()
 {
 	return m_log;
-}
-
-rbool RDOStudioApp::shortToLongPath(CREF(tstring) shortPath, REF(tstring) longPath)
-{
-	USES_CONVERSION;
-
-	LPSHELLFOLDER psfDesktop    = NULL;
-	ULONG         chEaten       = 0;
-	LPITEMIDLIST  pidlShellItem = NULL;
-	WCHAR         szLongPath[_MAX_PATH] = { 0 };
-
-	// Get the Desktop's shell folder interface
-	HRESULT hr = ::SHGetDesktopFolder(&psfDesktop);
-
-	LPWSTR  lpwShortPath = A2W(shortPath.c_str());
-
-	// Request an ID list (relative to the desktop) for the short pathname 
-	hr = psfDesktop->ParseDisplayName(NULL, NULL, lpwShortPath, &chEaten, &pidlShellItem, NULL);
-	psfDesktop->Release(); // Release the desktop's IShellFolder
-
-	if (FAILED(hr))
-	{
-		// If we couldn't get an ID list for short pathname, it must not exist.
-		longPath.empty();
-		return false;
-	}
-	else
-	{
-		// We did get an ID list, convert it to a long pathname
-		::SHGetPathFromIDListW(pidlShellItem, szLongPath);
-		// Free the ID list allocated by ParseDisplayName
-		LPMALLOC pMalloc = NULL;
-		::SHGetMalloc(&pMalloc);
-		pMalloc->Free(pidlShellItem);
-		pMalloc->Release();
-		longPath = W2A(szLongPath);
-		return true;
-	}
 }
 
 QString RDOStudioApp::getFullHelpFileName(CREF(QString) helpFileName) const

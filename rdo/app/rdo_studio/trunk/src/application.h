@@ -75,8 +75,6 @@ public:
 	PTR(QProcess)  runQtAssistant      () const;
 	void           callQtAssistant     (CREF(QByteArray) ba);
 
-	static rbool   shortToLongPath     (CREF(tstring) shortPath, REF(tstring) longPath);
-
 	CREF(rdoEditor::LPRDOEditorEditStyle) getEditorEditStyle() const;
 
 private:
