@@ -46,8 +46,8 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 		yTraceComboBox->addItem(pSerie->getSerie()->getTitle());
 		valueComboBox->addItem(pSerie->getSerie()->getTitle());
 	}
-
-	markerSizeLineEdit->setValidator(new QIntValidator(2, 6, this));
+	
+	markerSizeLineEdit->setValidator(new ChartIntValidator(2, 6, markerSizeLineEdit));
 
 	insertColors(colorComboBox);
 
@@ -138,7 +138,7 @@ void ChartPreferences::apply()
 		QString title = titleValueLineEdit->text();
 
 		ChartSerie::Options options;
-		options.title = title.toLocal8Bit();
+		options.title = title;
 		options.color = colorComboBox->itemData(colorComboBox->currentIndex(), Qt::UserRole).value<QColor>();
 		options.markerType = static_cast<Serie::Marker>(markerComboBox->itemData(markerComboBox->currentIndex(), Qt::UserRole).toInt());
 		options.markerSize = m_sizeMarker;
