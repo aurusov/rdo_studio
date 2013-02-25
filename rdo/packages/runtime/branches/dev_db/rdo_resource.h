@@ -16,6 +16,7 @@
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_value.h"
+#include "simulator/runtime/src/db/general_db.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -88,6 +89,8 @@ private:
 	ruint            m_referenceCount;
 	LPIResourceType  m_resType;
 	tstring          m_typeId;
+
+	PTR(GeneralDB)  m_db;
 
 	tstring traceTypeId();
 };
