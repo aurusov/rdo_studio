@@ -55,13 +55,13 @@ private:
 	class StringList
 	{
 	public:
-		typedef  std::list<tstring>            List;
+		typedef  std::list<QString>            List;
 		typedef  List::const_iterator          const_iterator;
 		typedef  List::const_reverse_iterator  const_reverse_iterator;
 
 		StringList();
 
-		void push_back(CREF(tstring) value);
+		void push_back(CREF(QString) value);
 
 		const_iterator begin() const;
 		const_iterator end  () const;
@@ -69,20 +69,20 @@ private:
 		const_reverse_iterator rbegin() const;
 		const_reverse_iterator rend  () const;
 
-		void               clear    ();
-		rsint              count    () const;
-		tstring::size_type maxLegth () const;
-		void               setCursor(rsint pos, rsint max);
+		void   clear    ();
+		rsint  count    () const;
+		rsint  maxLegth () const;
+		void   setCursor(rsint pos, rsint max);
 
 		const_iterator         findString (rsint index) const;
 		const_reverse_iterator rFindString(rsint index) const;
 
 	private:
-		List                m_list;
-		rsint               m_count;
-		List::iterator      m_cursorIt;
-		rsint               m_cursor;
-		tstring::size_type  m_maxLegth;
+		List            m_list;
+		rsint           m_count;
+		List::iterator  m_cursorIt;
+		rsint           m_cursor;
+		rsint           m_maxLegth;
 
 		void seek(rsint delta, REF(StringList::const_iterator) it) const;
 	};
@@ -127,14 +127,14 @@ private:
 	rbool                m_drawLog;
 	QFont                m_font;
 
-	rbool getItemColors(CREF(tstring) item, LogColorPair* &colors) const;
+	rbool getItemColors(CREF(QString) item, LogColorPair* &colors) const;
 	rbool getItemColors(rsint index, LogColorPair* &colors) const;
 
 	rsint selectedLine() const;
 	void  setSelectedLine(rsint selectedLine);
 
-	tstring     getString           (rsint index) const;
-	tstring     getSelected         () const;
+	QString     getString           (rsint index) const;
+	QString     getSelected         () const;
 
 	QScrollBar& getVertScrollBar    ();
 	QScrollBar& getHorzScrollBar    ();

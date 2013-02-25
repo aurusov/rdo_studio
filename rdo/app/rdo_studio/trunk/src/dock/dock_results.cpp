@@ -29,12 +29,12 @@ DockResults::DockResults(PTR(QWidget) pParent)
 DockResults::~DockResults()
 {}
 
-void DockResults::appendString(CREF(tstring) str)
+void DockResults::appendString(CREF(QString) str)
 {
 	int pos = getContext().getCurrentPos();
 	getContext().setCurrentPos(getContext().getLength());
 	getContext().setReadOnly  (false);
-	getContext().appendText   (QString::fromLocal8Bit(str.c_str()));
+	getContext().appendText   (str  );
 	getContext().setReadOnly  (true );
 	getContext().setCurrentPos(pos  );
 }

@@ -491,7 +491,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_RESULT_STRING:
 		{
 			msg.lock();
-			studioApp.getIMainWnd()->getDockResults().appendString(*static_cast<PTR(tstring)>(msg.param));
+			studioApp.getIMainWnd()->getDockResults().appendString(QString::fromLocal8Bit(static_cast<PTR(tstring)>(msg.param)->c_str()));
 			msg.unlock();
 			break;
 		}
@@ -500,17 +500,16 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 
 void RDOStudioModel::show_result()
 {
-	rdo::textstream model_results;
-	sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results);
-	tstring str = model_results.str();
-	if (!str.empty())
+	rdo::textstream modelResults;
+	sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &modelResults);
+	QString str = QString::fromLocal8Bit(modelResults.str().c_str());
+	if (!str.isEmpty())
 	{
 		rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::PMV);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 		if (!data.m_described)
 		{
-			//! @todo unicode
-			studioApp.getIMainWnd()->getDockDebug().appendString(_T("Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n"));
+			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n"));
 		}
 		studioApp.getIMainWnd()->getDockResults().getContext().clearAll();
 		studioApp.getIMainWnd()->getDockResults().raise();
@@ -560,8 +559,8 @@ rbool RDOStudioModel::openModel(CREF(QString) modelName)
 		rdo::binarystream stream;
 		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::PMV, stream);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
-		studioApp.getIMainWnd()->getDockResults().appendString(stream.str());
-		studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка модели... ok\n"));
+		studioApp.getIMainWnd()->getDockResults().appendString(QString::fromLocal8Bit(stream.str().c_str()));
+		studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Загрузка модели... ok\n"));
 		studioApp.setLastProjectName(getFullName());
 	}
 	else

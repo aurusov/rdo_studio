@@ -39,8 +39,8 @@ namespace rdo { namespace gui { namespace tracer {
 class LogCtrlFindInList
 {
 public:
-	LogCtrlFindInList(REF(rsint) checkCounter, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord);
-	rbool operator() (CREF(tstring) nextstr);
+	LogCtrlFindInList(REF(rsint) checkCounter, CREF(QString) strToFind, rbool matchCase, rbool matchWholeWord);
+	rbool operator() (CREF(QString) nextStr);
 
 private:
 	boost::optional<boost::regex> m_expression;
@@ -49,12 +49,12 @@ private:
 
 }}} // namespace rdo::gui::tracer
 
-LogCtrlFindInList::LogCtrlFindInList(REF(rsint) checkCounter, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord)
+LogCtrlFindInList::LogCtrlFindInList(REF(rsint) checkCounter, CREF(QString) strToFind, rbool matchCase, rbool matchWholeWord)
 	: m_checkCounter(checkCounter)
 {
-	tstring what = matchWholeWord
-		? rdo::format("^%s$",   strToFind.c_str())
-		: rdo::format(".*%s.*", strToFind.c_str());
+	QString what = matchWholeWord
+		? QString("^%1$").arg(strToFind)
+		: QString(".*%1.*").arg(strToFind);
 
 	boost::regex_constants::syntax_option_type regex_constants(boost::regex::perl);
 
@@ -65,13 +65,13 @@ LogCtrlFindInList::LogCtrlFindInList(REF(rsint) checkCounter, CREF(tstring) strT
 
 	try
 	{
-		m_expression = boost::regex(what, regex_constants);
+		m_expression = boost::regex(what.toLocal8Bit().constData(), regex_constants);
 	}
 	catch (const std::exception&)
 	{}
 }
 
-rbool LogCtrlFindInList::operator()(CREF(tstring) nextstr)
+rbool LogCtrlFindInList::operator()(CREF(QString) nextStr)
 {
 	++m_checkCounter;
 
@@ -80,10 +80,10 @@ rbool LogCtrlFindInList::operator()(CREF(tstring) nextstr)
 
 	try
 	{
-		rbool result = boost::regex_match(nextstr, m_expression.get());
+		rbool result = boost::regex_match(nextStr.toLocal8Bit().constData(), m_expression.get());
 		if (result)
 		{
-			TRACE1("found %s\n", nextstr.c_str());
+			TRACE1("found %s\n", nextStr.toLocal8Bit().constData());
 		}
 		return result;
 	}
@@ -102,7 +102,7 @@ LogView::StringList::StringList()
 	, m_maxLegth(0)
 {}
 
-void LogView::StringList::push_back(CREF(tstring) value)
+void LogView::StringList::push_back(CREF(QString) value)
 {
 	m_list.push_back(value);
 	++m_count;
@@ -150,7 +150,7 @@ rsint LogView::StringList::count() const
 	return m_count;
 }
 
-tstring::size_type LogView::StringList::maxLegth() const
+rsint LogView::StringList::maxLegth() const
 {
 	return m_maxLegth;
 }
@@ -370,7 +370,7 @@ void LogView::push_back(CREF(tstring) log)
 
 	rbool prevVisible = m_SM_Y.isVisible(m_strings.count() - 1);
 
-	m_strings.push_back(log);
+	m_strings.push_back(QString::fromLocal8Bit(log.c_str()));
 
 	rsint lastString = m_strings.count() - 1;
 	if (lastString == 1)
@@ -528,9 +528,9 @@ rbool LogView::getItemColors(rsint index, LogColorPair* &colors) const
 	return res;
 }
 
-rbool LogView::getItemColors(CREF(tstring) item, LogColorPair* &colors) const
+rbool LogView::getItemColors(CREF(QString) item, LogColorPair* &colors) const
 {
-	return m_logStyle->getItemColors(item, colors);
+	return m_logStyle->getItemColors(item.toLocal8Bit().constData(), colors);
 }
 
 rsint LogView::selectedLine() const
@@ -545,9 +545,9 @@ void LogView::setSelectedLine(rsint selectedLine)
 	updateCoordStatusBar(isActivated());
 }
 
-tstring LogView::getString(rsint index) const
+QString LogView::getString(rsint index) const
 {
-	tstring result;
+	QString result;
 
 	if (index >= 0 && index < m_strings.count())
 	{
@@ -557,7 +557,7 @@ tstring LogView::getString(rsint index) const
 	return result;
 }
 
-tstring LogView::getSelected() const
+QString LogView::getSelected() const
 {
 	return getString(selectedLine());
 }
@@ -731,12 +731,13 @@ void LogView::updateActionFind(rbool activated)
 		this, &LogView::onSearchFind
 	);
 
-	rbool findNextPrev = activated && !m_findSettings.what.empty();
+	rbool findNextPrev = activated && !m_findSettings.what.isEmpty();
 	updateAction(
 		pMainWindow->actSearchFindNext,
 		findNextPrev,
 		this, &LogView::onSearchFindNext
 	);
+
 	updateAction(
 		pMainWindow->actSearchFindPrevious,
 		findNextPrev,
@@ -901,10 +902,7 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 				painter.setBackgroundMode(Qt::TransparentMode);
 				painter.fillRect(rect, colors->backgroundColor);
 				painter.setPen  (colors->foregroundColor);
-				painter.drawText(
-					textRect,
-					QString::fromLocal8Bit(it->c_str())
-				);
+				painter.drawText(textRect, *it);
 				//End of main drawing cycle :)
 
 				if (i == selectedLine() && hasFocus())
@@ -1029,24 +1027,22 @@ void LogView::onUpdateActions(rbool activated)
 
 void LogView::onEditCopy()
 {
-	QApplication::clipboard()->setText(QString::fromLocal8Bit(getSelected().c_str()));
+	QApplication::clipboard()->setText(getSelected());
 }
 
 void LogView::onHelpContext()
 {
-	tstring line = getSelected();
+	QString line = getSelected().simplified();
 
-	tstring keyword = "trc";
-	if (!line.empty())
+	QString keyword("trc");
+	if (!line.isEmpty())
 	{
-		rsint posstart = line.find_first_not_of(' ');
-		rsint posend   = line.find_first_of(' ', posstart);
-		keyword        = boost::algorithm::trim_copy(line.substr(posstart, posend - posstart));
+		keyword = line.left(line.indexOf(' '));
 
-		if (!keyword.empty())
+		if (!keyword.isEmpty())
 		{
 			LogColorPair* colors;
-			if (!m_logStyle->getItemColors(keyword, colors))
+			if (!m_logStyle->getItemColors(keyword.toLocal8Bit().constData(), colors))
 			{
 				getItemColors(selectedLine(), colors);
 				if (*colors == m_logStyle->theme->sd)
@@ -1059,7 +1055,7 @@ void LogView::onHelpContext()
 
 	QByteArray ba;
 	ba.append("activateKeyword ");
-	ba.append(keyword.c_str());
+	ba.append(keyword);
 	ba.append("\n");
 	studioApp.callQtAssistant(ba);
 }

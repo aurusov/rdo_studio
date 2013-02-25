@@ -15,7 +15,6 @@
 // --------------------------------------------------------------------------------
 
 FindReplaceDialog::Settings::Settings()
-	: byWhat("")
 {}
 
 FindReplaceDialog::Settings::Settings(CREF(Settings) settings)
@@ -55,10 +54,10 @@ void FindReplaceDialog::setSettings(CREF(Settings) settings)
 {
 	m_settings = settings;
 
-	whatLineEdit->setText(QString::fromLocal8Bit(m_settings.what.c_str()));
+	whatLineEdit->setText(m_settings.what);
 	whatLineEdit->setFocus();
 	whatLineEdit->selectAll();
-	byWhatLineEdit->setText(QString::fromLocal8Bit(m_settings.byWhat.c_str()));
+	byWhatLineEdit->setText(m_settings.byWhat);
 	matchCase->setChecked(m_settings.matchCase);
 	wholeWord->setChecked(m_settings.matchWholeWord);
 }
@@ -85,9 +84,8 @@ void FindReplaceDialog::onWhatEdited(const QString& text)
 
 void FindReplaceDialog::onByWhatEdited(const QString& text)
 {
-	m_settings.byWhat = text.toLocal8Bit().constData();
+	m_settings.byWhat = text;
 }
-
 
 void FindReplaceDialog::onMatchCaseChanged(int value)
 {
