@@ -12,9 +12,14 @@ import argparse
 import subprocess
 import xml.dom.minidom
 
+import utils
+import compare
+
 ###############################################################################
 #                                 constant                                    #
 ###############################################################################
+
+APP_VERSION = u'0.7.0'
 
 # data about rdo apps
 app_directory      = u'.'
@@ -69,37 +74,8 @@ dividing_line = '---------------------------------------------------------------
 #                                 functions                                   #
 ###############################################################################
 
-def safe_encode(string, encoding):
-    return string.encode(encoding)
-
-
-def print_list_of_line(list, encoding):
-    for string in list:
-        print safe_encode(string, encoding)
-
-
-def cut_slash(list):
-    for index in range(len(list)):
-        list[index] = list[index].strip()
-        list[index] = list[index].replace('\n', '')
-        list[index] = list[index].rstrip()
-
-
-def get_files_list(dir):
-    dirs  = []
-    nfile = []
-    files = []
-    for dirname, dirnames, filenames in os.walk(dir):
-        dirs.append(dirname)
-        for subdirname in dirnames:
-            dirs.append(os.path.join(dirname, subdirname))
-        for filename in filenames:
-            files.append(os.path.join(dirname, filename))
-    return files
-
-
 def get_test_files(dir):
-    files = get_files_list(dir)
+    files = utils.get_files_list(dir)
     
     test_files = []
     
@@ -112,7 +88,7 @@ def get_test_files(dir):
 
 
 def get_executables(dir):
-    files = get_files_list(dir)
+    files = utils.get_files_list(dir)
 
     rdo_ex = u''
     rdo_test_ex = u''
@@ -144,33 +120,13 @@ def get_node_attribute_from_dom(dom, node_text, attribute_text):
     return attribute_text_data
 
 
-def wrap_the_string_in_quotes(string):
-
-    new_string = u'"' + string + u'"'
-    return new_string
-
-
-def compare_text_files(file1, file2):
-
-    file1_data = open(file1, 'r').readlines()
-    file2_data = open(file2, 'r').readlines()
-
-    cut_slash(file1_data)
-    cut_slash(file2_data)
-    
-    if cmp(file1_data, file2_data) == 0:
-        return True
-    
-    return False
-
-
 ###############################################################################
 #                                 main code                                   #
 ###############################################################################
 
 # parse console options
 
-parser = argparse.ArgumentParser(description = u'rdo executor of system tests:', version = u'0.7.0')
+parser = argparse.ArgumentParser(description = u'rdo executor of system tests:', version = APP_VERSION)
 parser.add_argument(u'-ad', action = 'store', dest = u'app_directory',   default = app_directory,   help = u'application directory')
 parser.add_argument(u'-md', action = 'store', dest = u'model_directory', default = model_directory, help = u'model directory')
 
@@ -196,7 +152,7 @@ bad_models = []
 
 if not os.path.exists(rdo_ex) or not os.path.exists(rdo_test_ex):
     print u'Build app not found. Critical error !!!'
-    sys.exit(EXIT_CODE_TERMINATION_ERROR)
+    sys.exit(APP_CODE_TERMINATION_ERROR)
 
 # search .rtestx files
 files = get_test_files(model_directory)
@@ -205,10 +161,10 @@ files.sort()
 print u'\nDEBUG INFO'
 
 print u'\nFind RDO executables    :'
-print_list_of_line(executables, sys.getfilesystemencoding())
+utils.print_list_of_line(executables, sys.getfilesystemencoding())
 
 print '\nFind test project files :'
-print_list_of_line(files, sys.getfilesystemencoding())
+utils.print_list_of_line(files, sys.getfilesystemencoding())
 
 # parse xml and start tests
 print u'\nSTARTED TEST CYCLE\n'
@@ -259,19 +215,19 @@ for task in files:
         except:
             exit_code = DEFAULT_EXIT_CODE
         
-        print u'Project              :', safe_encode(task, sys.getfilesystemencoding())
-        print u'Model file           :', safe_encode(model['name'], sys.getfilesystemencoding())
-        print u'Target               :', safe_encode(model['target'], sys.getfilesystemencoding())
-        print u'Exit code            :', safe_encode(model['exit_code'], sys.getfilesystemencoding())
-        print u'Trace file           :', safe_encode(model['trace'], sys.getfilesystemencoding())
-        print u'Result file          :', safe_encode(model['result'], sys.getfilesystemencoding())
-        print u'Log compilation file :', safe_encode(model['log_compilation'], sys.getfilesystemencoding())
+        print u'Project              :', utils.safe_encode(task, sys.getfilesystemencoding())
+        print u'Model file           :', utils.safe_encode(model['name'], sys.getfilesystemencoding())
+        print u'Target               :', utils.safe_encode(model['target'], sys.getfilesystemencoding())
+        print u'Exit code            :', utils.safe_encode(model['exit_code'], sys.getfilesystemencoding())
+        print u'Trace file           :', utils.safe_encode(model['trace'], sys.getfilesystemencoding())
+        print u'Result file          :', utils.safe_encode(model['result'], sys.getfilesystemencoding())
+        print u'Log compilation file :', utils.safe_encode(model['log_compilation'], sys.getfilesystemencoding())
 
         if len(etalons):
             print '\n', u'Etalons :', '\n'
         
         for etalon in etalons:
-            print u'source:', safe_encode(etalon['source'], sys.getfilesystemencoding()), u'target', safe_encode(etalon['target'], sys.getfilesystemencoding())
+            print u'source:', utils.safe_encode(etalon['source'], sys.getfilesystemencoding()), u'target', utils.safe_encode(etalon['target'], sys.getfilesystemencoding())
 
         print ''
 
@@ -289,8 +245,10 @@ for task in files:
         # select console target
         if model['target'] == TARGET_CONSOLE:
             # run rdo_console app on test model
-            command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model_file))
-            simulation_code = subprocess.call(safe_encode(command, CONSOLE_PARAM_ENCODING), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+            command = (rdo_ex + u' -i ' + utils.wrap_the_string_in_quotes(model_file))
+            simulation_code = subprocess.call(utils.safe_encode(command, CONSOLE_PARAM_ENCODING), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
             print u'SIMYLATION EXIT CODE :', simulation_code
 
             # check simulation exit code
@@ -306,11 +264,11 @@ for task in files:
             # nornal simulation check
             if simulation_code == RDO_CONSOLE_TERMINATION_NORMAL:
 
-                command = (rdo_test_ex + ' -T ' + wrap_the_string_in_quotes(etalon_trace) + ' -R ' + wrap_the_string_in_quotes(etalon_result) 
-                                       + ' -t ' + wrap_the_string_in_quotes(simulation_trace) + ' -r ' + wrap_the_string_in_quotes(simulation_result)
+                command = (rdo_test_ex + ' -T ' + utils.wrap_the_string_in_quotes(etalon_trace) + ' -R ' + utils.wrap_the_string_in_quotes(etalon_result)
+                                       + ' -t ' + utils.wrap_the_string_in_quotes(simulation_trace) + ' -r ' + utils.wrap_the_string_in_quotes(simulation_result)
                                        )
 
-                test_code = subprocess.call(safe_encode(command, CONSOLE_PARAM_ENCODING), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                test_code = subprocess.call(utils.safe_encode(command, CONSOLE_PARAM_ENCODING), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
                 check_exit_code_string = u'ERROR UNKNOWN'
 
@@ -346,7 +304,7 @@ for task in files:
                 simulation_log_file = dirname + RDO_CONSOLE_COMPILE_LOG_FILE_NAME
                 simulation_log_file_etalon = dirname + model['log_compilation']
 
-                res = compare_text_files(simulation_log_file, simulation_log_file_etalon)
+                res = compare.full(simulation_log_file, simulation_log_file_etalon)
 
                 check_message_cmp_string = u'ERROR'
 
@@ -365,8 +323,8 @@ for task in files:
             shutil.copytree(dirname, temp_directory_name, ignore=shutil.ignore_patterns(*IGNORE_PATTERNS))
             
             model_file    = temp_directory_name + model['name']
-            command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model_file) + u' -c')
-            convertor_exit_code = subprocess.call(safe_encode(command, 'UTF-8'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            command = (rdo_ex + u' -i ' + utils.wrap_the_string_in_quotes(model_file) + u' -c')
+            convertor_exit_code = subprocess.call(utils.safe_encode(command, 'UTF-8'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             print u'CONVERT EXIT CODE :', convertor_exit_code, u'\n'
 
             cycle_exit_code = APP_CODE_TERMINATION_NORMAL
@@ -376,7 +334,7 @@ for task in files:
                 for etalon in etalons:
                     source_file = temp_directory_name + etalon['source']
                     target_file = temp_directory_name + etalon['target']
-                    res = compare_text_files(source_file, target_file)
+                    res = compare.full(source_file, target_file)
                     
                     compare_string = u'ERROR'
                     
@@ -404,7 +362,7 @@ for task in files:
             G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
 
 print '\n', u'MODEL WITH ERRORS:'
-print_list_of_line(bad_models, sys.getfilesystemencoding())
+utils.print_list_of_line(bad_models, sys.getfilesystemencoding())
 print '\n', u'PYTHON EXIT CODE :', G_EXIT_CODE, '\n'
 
 sys.exit(G_EXIT_CODE)
