@@ -103,13 +103,12 @@ private:
 	//afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	//afx_msg void OnExportChart();
 	//afx_msg void OnUpdateExportChart( CCmdUI* pCmdUI );
-	afx_msg void OnAddToNewChart();
-	afx_msg void OnUpdateAddToNewChart( CCmdUI* pCmdUI );
 	afx_msg void OnUpdateChartFindincharts(CCmdUI* pCmdUI);
 	afx_msg void OnChartFindincharts();
 
 private slots:
 	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int);
+	void onAddToNewChart();
 	void onHelpContext();
 };
 

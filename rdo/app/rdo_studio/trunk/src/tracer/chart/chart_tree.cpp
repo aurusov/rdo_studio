@@ -40,8 +40,6 @@ SCODE RDODropSource::GiveFeedback(DROPEFFECT dropEffect)
 //! @todo qt
 //BEGIN_MESSAGE_MAP(ChartTree, RDOTreeCtrl)
 //	ON_WM_INITMENUPOPUP()
-//	ON_COMMAND(ID_CHART_ADDTONEWCHART, OnAddToNewChart)
-//	ON_UPDATE_COMMAND_UI(ID_CHART_ADDTONEWCHART, OnUpdateAddToNewChart)
 //	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnDragDrop)
 //	ON_WM_RBUTTONDOWN()
 //	ON_UPDATE_COMMAND_UI(ID_CHART_FINDINCHARTS, OnUpdateChartFindincharts)
@@ -272,14 +270,9 @@ PTR(QTreeWidgetItem) ChartTree::getSelected() const
 		: NULL;
 }
 
-void ChartTree::OnAddToNewChart()
+void ChartTree::onAddToNewChart()
 {
 	addToNewChart(getSelected());
-}
-
-void ChartTree::OnUpdateAddToNewChart(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(g_pTracer->getDrawTrace() && getIfItemIsDrawable(getSelected()));
 }
 
 void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
@@ -388,6 +381,12 @@ void ChartTree::onUpdateActions(rbool activated)
 		pMainWindow->actHelpContext,
 		activated,
 		this, &ChartTree::onHelpContext
+	);
+
+	updateAction(
+		pMainWindow->actChartAddToNewChart,
+		activated && g_pTracer->getDrawTrace() && getIfItemIsDrawable(getSelected()),
+		this, &ChartTree::onAddToNewChart
 	);
 }
 
