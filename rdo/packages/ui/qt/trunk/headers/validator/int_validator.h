@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _UI_QT_INTVALIDATOR_H_
-#define _UI_QT_INTVALIDATOR_H_
+#ifndef _UI_QT_VALIDATOR_INT_VALIDATOR_H_
+#define _UI_QT_VALIDATOR_INT_VALIDATOR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qvalidator>
@@ -33,4 +33,4 @@ public:
 	}
 };
 
-#endif // _UI_QT_INTVALIDATOR_H_
+#endif // _UI_QT_VALIDATOR_INT_VALIDATOR_H_

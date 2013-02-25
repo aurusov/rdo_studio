@@ -225,10 +225,10 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="int_validator"
+			Name=".validator"
 			>
 			<File
-				RelativePath="..\..\headers\int_validator\int_validator.h"
+				RelativePath="..\..\headers\validator\int_validator.h"
 				>
 			</File>
 		</Filter>
