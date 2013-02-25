@@ -82,7 +82,7 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 		try
 		{
 			setModelName(g_pModel->getName());
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Получение структуры модели..."));
+			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Получение структуры модели... "));
 			rdo::textstream model_structure;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
 			getModelStructure(model_structure);

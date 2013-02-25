@@ -31,11 +31,18 @@ DockFind::~DockFind()
 {}
 
 void DockFind::appendString(
-	CREF(tstring)                str,
+	CREF(QString)                str,
 	rdoModelObjects::RDOFileType fileType,
 	int lineNumber, int posInLine)
 {
-	PTR(rdo::simulation::report::LogEditLineInfo) pLine = new rdo::simulation::report::LogEditLineInfo(rdo::simulation::report::FileMessage(str, fileType, lineNumber, posInLine));
+	PTR(rdo::simulation::report::LogEditLineInfo) pLine = new rdo::simulation::report::LogEditLineInfo(
+		rdo::simulation::report::FileMessage(
+			str.toLocal8Bit().constData(),
+			fileType,
+			lineNumber,
+			posInLine
+		)
+	);
 	getContext().appendLine(pLine);
 }
 
