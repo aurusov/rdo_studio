@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 #include <boost/range/algorithm/copy.hpp>
+#include <boost/filesystem.hpp>
 
 #ifdef COMPILER_VISUAL_STUDIO
 #	include <windows.h>
@@ -159,34 +160,11 @@ wstring toUnicode(CREF(astring) str)
 	}
 }
 
-tstring extractFilePath( CREF(tstring) fileName )
+tstring extractFilePath(CREF(tstring) fileName)
 {
-	tstring s;
-	tstring::size_type pos = fileName.find_last_of( _T('\\') );
-	if ( pos == tstring::npos )
-	{
-		pos = fileName.find_last_of( _T('/') );
-	}
-	if ( pos == tstring::npos )
-	{
-		return _T("");
-	}
-	if ( pos != tstring::npos && pos < fileName.length() - 1 ) {
-		s.assign( &fileName[0], pos + 1 );
-		static tchar szDelims[] = _T(" \t\n\r");
-		s.erase( 0, s.find_first_not_of( szDelims ) );
-		s.erase( s.find_last_not_of( szDelims ) + 1, tstring::npos );
-	} else {
-		s = fileName;
-	}
-	pos = s.find_last_of( _T('\\') );
-	if ( pos == tstring::npos ) {
-		pos = s.find_last_of( _T('/') );
-	}
-	if ( pos != s.length() - 1 && s.length() ) {
-		s += _T("/");
-	}
-	return s;
+	boost::filesystem::path fullFileName(fileName);
+	tstring result = (fullFileName.make_preferred().parent_path() / boost::filesystem::path("/").make_preferred()).string();
+	return result;
 }
 
 CLOSE_RDO_NAMESPACE
