@@ -277,7 +277,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			QMessageBox::critical(
 				studioApp.getMainWnd(),
 				QString::fromStdWString(L"Ошибка открытия модели"),
-				QString::fromStdWString(L"Невозможно открыть модель '%1'.").arg(static_cast<PTR(tstring)>(msg.param)->c_str())
+				QString::fromStdWString(L"Невозможно открыть модель '%1'.").arg(QString::fromLocal8Bit(static_cast<PTR(tstring)>(msg.param)->c_str()))
 			);
 			break;
 		}
