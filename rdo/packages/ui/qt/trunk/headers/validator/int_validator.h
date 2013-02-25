@@ -15,6 +15,8 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
+namespace rdo { namespace gui {
+
 class IntValidator: public QIntValidator
 {
 public:
@@ -32,5 +34,7 @@ public:
 		return result;
 	}
 };
+
+}} // namespace rdo::gui
 
 #endif // _UI_QT_VALIDATOR_INT_VALIDATOR_H_
