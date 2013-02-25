@@ -30,21 +30,6 @@ public:
 
 private:
 
-	class ChartIntValidator : public QIntValidator
-	{
-		public:
-			ChartIntValidator(int bottom, int top, PTR(QObject) pParent)
-				: QIntValidator(bottom, top, pParent)
-			{}
-
-			QValidator::State validate(QString& input, int& pos) const
-			{
-				QIntValidator::State result(QIntValidator::validate(input, pos));
-				if (result == QValidator::Intermediate) result = QValidator::Invalid;
-				return result;
-			}
-	};
-
 	PTR(QColorDialog) colorDlg;
 
 	int       m_valueCountX;

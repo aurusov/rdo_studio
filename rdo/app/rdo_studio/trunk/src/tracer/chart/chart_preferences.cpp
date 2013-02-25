@@ -15,6 +15,7 @@
 #include "app/rdo_studio/src/tracer/chart/chart_preferences.h"
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
+#include "ui/qt/headers/int_validator/int_validator.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::tracer;
@@ -32,9 +33,9 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 
 	titleLineEdit->setText(m_chartTitle);
 
-	yValueLineEdit->setValidator(new QIntValidator(2, 100, this));
+	yValueLineEdit->setValidator(new IntValidator(2, 100, this));
 	yValueLineEdit->setText(QString::number(m_valueCountY));
-	xValueLineEdit->setValidator(new QIntValidator(2, 100, this));
+	xValueLineEdit->setValidator(new IntValidator(2, 100, this));
 	xValueLineEdit->setText(QString::number(m_valueCountX));
 	
 	showLegendCheckBox->setChecked(m_pView->isDrawLegend() ? Qt::Checked : Qt::Unchecked);
@@ -47,7 +48,7 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 		valueComboBox->addItem(pSerie->getSerie()->getTitle());
 	}
 	
-	markerSizeLineEdit->setValidator(new ChartIntValidator(2, 6, markerSizeLineEdit));
+	markerSizeLineEdit->setValidator(new IntValidator(2, 6, markerSizeLineEdit));
 
 	insertColors(colorComboBox);
 
