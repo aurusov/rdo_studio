@@ -561,24 +561,12 @@ IDR_RT_MANIFEST1        RT_MANIFEST             "res\\RAO-studio.manifest"
 
 STRINGTABLE 
 BEGIN
-    IDR_TOOLBAR_STYLEANDCOLOR "Стиль и цвет"
-    IDR_TOOLBAR_MAINFRAME   "Основные"
     IDR_TOOLBAR_EMPTY       "Команды"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_GENERATE             "\nСгенерировать модель"
-    ID_BTN_FILL_BRUSH       "\nФон"
-    ID_BTN_FILL_PEN         "\nЛиния"
-    ID_BTN_FILL_TEXT        "\nШрифт"
-END
-
-STRINGTABLE 
-BEGIN
     IDR_MAINFRAME           "RAO Studio"
-    IDR_MODEL_TYPE          "\nmodel\nModel Files\nRAO Model File (*.rdox)\n.rdox\nRAOStudio.Document\nRAO Document"
-    IDR_FILE_TOOLBAR        "Файл"
 END
 
 STRINGTABLE 
@@ -591,20 +579,11 @@ STRINGTABLE
 BEGIN
     ID_FILE_NEW             "\nНовая модель (Ctrl+N)"
     ID_FILE_OPEN            "\nОткрыть (Ctrl+O)"
-    ID_FILE_CLOSE           "Закрыть модель\nЗакрыть"
-    ID_FILE_SAVE_AS         "Записать модель под новым именем\nЗаписать под новым именем"
-    ID_FILE_PAGE_SETUP      "Изменить настройки печати\nНастройки печати"
 END
 
 STRINGTABLE 
 BEGIN
     ID_APP_EXIT             "Выход из приложения\nВыход"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_NEXT_PANE            "Переключиться на следующее окно\nСлед. окно"
-    ID_PREV_PANE            "Переключиться на предыдущее окно\nПред. окно"
 END
 
 STRINGTABLE 
@@ -632,94 +611,23 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MODEL_TOOLBAR       "Модель"
-    IDR_EDIT_TOOLBAR        "Редактирование"
-END
-
-STRINGTABLE 
-BEGIN
     ID_FILE_SAVE_ALL        "\nЗаписать всё"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_MODEL_FILETYPE       "РДО-проект (*.rdox)|*.rdox|РДО-конвертор (*.smr)|*.smr|Все файлы (*.*)|*.*||"
-    ID_OPTIONS              "Настройки"
-    ID_FINDINMODEL_BEGINMSG "Поиск '%s'...\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_COLORSTYLE_EDITOR_PLAINTEXT "обыкновенный текст"
-    IDS_COLORSTYLE_EDITOR_IDENTIFICATOR "переменная"
-    IDS_COLORSTYLE_EDITOR_KEYWORD "ключевое слово"
-    IDS_COLORSTYLE_EDITOR_FUNCTION "функция"
-    IDS_COLORSTYLE_EDITOR_TRACE "трассировка"
-    IDS_COLORSTYLE_EDITOR_COMMENT "комментарий"
-    IDS_COLORSTYLE_EDITOR_NUMBER "число"
-    IDS_COLORSTYLE_EDITOR_STRING "строка"
-    IDS_COLORSTYLE_EDITOR_OPERATOR "оператор"
-    IDS_COLORSTYLE_EDITOR_CARET "каретка"
-    IDS_COLORSTYLE_EDITOR_TEXTSELECTION "выделение"
-    IDS_COLORSTYLE_EDITOR_BOOKMARK "закладка"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_COLORSTYLE_EDITOR_FOLD "группа"
-    IDS_COLORSTYLE_EDITOR_ERROR "ошибка"
-    IDS_COLORSTYLE_LOG_ES   "Служебное событие (ES)"
-    IDS_COLORSTYLE_LOG_EB   "Начало действия (EB)"
-    IDS_COLORSTYLE_LOG_EF   "Окончание действия (EF)"
-    IDS_COLORSTYLE_LOG_EI   "Нерегулярное событие (EI)"
-    IDS_COLORSTYLE_LOG_ER   "Продукционное правило (ER)"
-    IDS_COLORSTYLE_LOG_RC   "Создание ресурса (RC)"
-    IDS_COLORSTYLE_LOG_RE   "Удаление ресурса (RE)"
-    IDS_COLORSTYLE_LOG_RK   "Изменение состояния ресурса (RK)"
-    IDS_COLORSTYLE_LOG_V    "Трассирока индекса (V)"
-    IDS_COLORSTYLE_LOG_STATUS "Статус окончания моделирования ($Status)"
-    IDS_COLORSTYLE_LOG_DPS  "Статистика по поиску на графе (DPS)"
-    IDS_COLORSTYLE_LOG_SB   "Начало поиска (SB)"
-    IDS_COLORSTYLE_LOG_SO   "Трассировка раскрываемой вершины (SO)"
-    IDS_COLORSTYLE_LOG_STN  "Признак вершины (STN)"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_MODEL_START          "Модель"
-    ID_RESOURCE_TYPES       "Типы ресурсов"
-    ID_PATTERNS             "Образцы"
-    ID_RESULTS              "Результаты"
     ID_RAO_CLIPBRD          "RAO Studio Serie"
-    IDS_MODEL_RUNTIMEERROR_STOPED "Модель остановлена из-за ошибки прогона"
 END
 
 STRINGTABLE 
 BEGIN
     ID_EDIT_CLEAR           "Удалить выделенное\nУдалить"
-    ID_EDIT_CLEAR_ALL       "Удалить всё\nУдалить всё"
     ID_EDIT_COPY            "Копировать в буфер обмена\nКопировать (Ctrl+C)"
     ID_EDIT_CUT             "Вырезать в буфер обмена\nВырезать (Ctrl+X)"
     ID_EDIT_PASTE           "Вставить из буфера обмена\nВставить (Ctrl+V)"
     ID_EDIT_SELECT_ALL      "Выделить весь документ\nВыбрать всё"
     ID_EDIT_UNDO            "Отменить последнее действие\nОтменить (Ctrl+Z)"
     ID_EDIT_REDO            "Повторить отмененное действие\nПовторить (Ctrl+Y)"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_FINDINMODEL_ENDMSG_COUNT "'%d' раз было найдено.\r\n"
-    ID_FINDINMODEL_ENDMSG_NOTFOUND "Не получилось найти строчку '%s'.\r\n"
-    IDS_PLUGIN_NAME         "Имя"
-    IDS_PLUGIN_VERSION      "Версия"
-    IDS_PLUGIN_RUNMODE      "Запускать с"
-    IDS_PLUGIN_RUNMODE_NOAUTO " "
-    IDS_PLUGIN_RUNMODE_STUDIOSTARTUP "Студия"
-    IDS_PLUGIN_RUNMODE_MODELSTARTUP "Модель"
-    IDS_PLUGIN_STATE        "Состояние"
-    IDS_PLUGIN_STATE_STOPED "остановлен"
-    IDS_PLUGIN_STATE_ACTIVE "запущен"
-    IDS_PLUGIN_DESCRIPTION  "Описание"
 END
 
 STRINGTABLE 
@@ -744,138 +652,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_COLORSTYLE_LOG_STD  "Признак вершины (STD)"
-    IDS_COLORSTYLE_LOG_STR  "Признак вершины (STR)"
-    IDS_COLORSTYLE_LOG_SRC  "Создание ресурса (при поиске) (SRC)"
-    IDS_COLORSTYLE_LOG_SRE  "Удаление ресурса (при поиске) (SRE)"
-    IDS_COLORSTYLE_LOG_SRK  "Изменение состояния ресурса (при поиске) (SRK)"
-    IDS_COLORSTYLE_LOG_SD   "Трассировка решения (SD)"
-    IDS_COLORSTYLE_LOG_SES  "Завершение поиска (SES)"
-    IDS_COLORSTYLE_LOG_SEN  "Завершение поиска (SEN)"
-    IDS_COLORSTYLE_LOG_SEM  "Завершение поиска (SEM)"
-    IDS_COLORSTYLE_LOG_SEF  "Завершение поиска (SEF)"
-    IDS_COLORSTYLE_LOG_SEU  "Завершение поиска (SEU)"
-    IDS_COLORSTYLE_CHART_AXIS "ось"
-    IDS_COLORSTYLE_CHART_TITLE "заголовок"
-    IDS_COLORSTYLE_CHART_LEGEND "легенда"
-    IDS_COLORSTYLE_CHART_CHART "график"
-    IDS_COLORSTYLE_CHART_TIME "время"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_COLORSTYLE_ALLWINDOW "Все окна"
-    IDS_COLORSTYLE_EDITOR   "Исходный текст"
-    IDS_COLORSTYLE_BUILD    "Окно компиляции"
-    IDS_COLORSTYLE_BUILD_TEXT "текст"
-    IDS_COLORSTYLE_BUILD_SELECTEDLINE "выделенная строка"
-    IDS_COLORSTYLE_DEBUG    "Окно отладки"
-    IDS_COLORSTYLE_LOG      "Окно трассировки"
-    IDS_COLORSTYLE_RESULTS  "Окно результатов"
-    IDS_COLORSTYLE_FIND     "Окно поиска"
-    IDS_COLORSTYLE_CHART    "Окно графиков"
-    IDS_COLORSTYLE_FIND_SEARCHTEXT "строка для поиска"
-    IDS_COLORSTYLE_EDITOR_SAMPLE 
-                            "{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"
-    IDS_COLORSTYLE_BUILD_SAMPLE1 "Компиляция..."
-    IDS_COLORSTYLE_BUILD_SAMPLE2 "Неправильное значение параметра: 4"
-    IDS_COLORSTYLE_BUILD_SAMPLE3 "найдено ошибок: 1, предупреждений: 0"
-    IDS_COLORSTYLE_DEBUG_SAMPLE 
-                            "Получение структуры модели...ok\nМодель запущена"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_COLORSTYLE_LOG_SAMPLE 
-                            "Простая строка\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19"
-    IDS_COLORSTYLE_RESULTS_SAMPLE 
-                            "Длина_очереди                2  194  0.675957  21.6506  0  4\r\nЗанятость_парикмахера         TRUE  96  0.877351  21.7041  0.0397544  0.918872\r\nВсего_обслужено              96\r\nПропускная_способность       1.99198\r\n"
-    IDS_COLORSTYLE_FIND_SAMPLE1 "Поиск '$Time'..."
-    IDS_COLORSTYLE_FIND_SAMPLE2 "$Time = Равномерный(0.25, 0.75)"
-    IDS_COLORSTYLE_FIND_SAMPLE3 "$Time = Нормальный(0.45, 0.2)"
-    IDS_COLORSTYLE_FIND_SAMPLE4 "'2' раз было найдено."
-    IDS_COLORSTYLE_CHART_SAMPLE1 "график 1"
-    IDS_COLORSTYLE_CHART_SAMPLE2 "значение 1"
-    IDS_COLORSTYLE_EDITOR_THEME_CURRENT "Текущий"
-    IDS_COLORSTYLE_EDITOR_THEME_DEFAULT "По умолчанию"
-    IDS_COLORSTYLE_EDITOR_THEME_CPP "C++"
-    IDS_COLORSTYLE_EDITOR_THEME_PASCAL "Pascal"
-    IDS_COLORSTYLE_EDITOR_THEME_HTML "HTML"
-    IDS_COLORSTYLE_EDITOR_THEME_CLASSIC "Классический"
-    IDS_COLORSTYLE_EDITOR_THEME_TWILIGHT "Яркий"
-    IDS_COLORSTYLE_EDITOR_THEME_OCEAN "Океан"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_FRAMES              "Кадры"
-    IDS_MODEL_LOADING_BEGIN "Загрузка модели...\n"
-    IDS_MODEL_LOADING_OK    "Загрузка модели... ok\n"
-    IDS_MODEL_LOADING_FAILD "Загрузка модели... failed\n"
-    IDS_MODEL_CANNOT_LOAD   "Невозможно загрузить %s (%s)\n"
-    IDS_MODEL_PATTERNS      "образцы"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_MODEL_STARTED       "Модель запущена\n"
-    IDS_MODEL_FINISHED      "Модель завершена\n"
-    IDS_MODEL_STOPED        "Модель остановлена пользователем\n"
-    IDS_TRACER_GETTING_MODEL_STRUCTURE "Получение структуры модели..."
-    IDS_COLORSTYLE_FRAME    "Окно анимации"
-    IDS_COLORSTYLE_FRAME_BORDER "цвет оконтовки"
-    IDS_COLORSTYLE_FRAME_BACKGROUND "цвет фона за пределами кадра"
-    IDS_MODEL_FILE_READONLY "%s - только чтение\n"
-    IDS_MODEL_DURATION      "Длительность прогона: %u мсек.\n"
-    IDS_MODEL_EVENTS        "события"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_CHART_TITLE         "график: %s"
-    IDS_CHART_OPTIONS       "Настройки графика"
-    IDS_CHART_OPTIONS_APPLY "Применить ?"
-    IDS_CHART_OPTIONS_INT_VERIFY "'%s' должно быть целым между %d и %d."
-END
-
-STRINGTABLE 
-BEGIN
     ID_MODEL_FRAME_NEXT     "\nСлед. кадр анимации"
-    IDS_ERROR               "ошибка"
-    IDS_WARNING             "предупреждение"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_MODEL_SHOWRATE_FMOREONE "Масштаб: %1.1f"
-    IDS_MODEL_SHOWRATE_FLESSONE "Масштаб: %1.10f"
-    IDS_MODEL_SHOWRATE_E    "Масштаб: %e"
-    IDS_MODEL_SHOWRATE_S    "Масштаб: %s"
-    IDS_COLORSTYLE_EDITOR_COLOR "цвет"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_MODEL_RESOURCETYPES "типы ресурсов"
-    IDS_MODEL_RESOURCES     "ресурсы"
-    IDS_MODEL_OPERATIONS    "операции"
-    IDS_MODEL_FRAMES        "кадры"
-    IDS_MODEL_FUNCTIONS     "функции"
-    IDS_MODEL_DPTS          "точки принятия решений"
-    IDS_MODEL_PMDS          "описание показателей"
-    IDS_MODEL_RUNTIMEERROR  "Ошибка прогона..."
-    IDS_MODEL_BUILDING_BEGIN "Компиляция..."
-    IDS_MODEL_BUILDING_RESULTS "найдено ошибок: %d, предупреждений: %d"
-    IDS_MODEL_RESOURCE_LOADING_BEGIN "Загрузка ресурсов для анимации...\n"
-    IDS_MODEL_RESOURCE_LOADING_NAME "Загрузка %s..."
-    IDS_MODEL_RESOURCE_LOADING_NAME_OK "ok\n"
-    IDS_MODEL_RESOURCE_LOADING_NAME_FAILED "failed\n"
-    IDS_MODEL_RESOURCE_LOADING_OK "Загрузка ресурсов для анимации...ok\n"
-END
-
-STRINGTABLE 
-BEGIN
-    IDR_ZOOM_TOOLBAR        "Масштаб"
 END
 
 STRINGTABLE 
