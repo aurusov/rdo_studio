@@ -969,19 +969,19 @@ void RDOStudioModel::afterModelStart()
 		studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка ресурсов для анимации...\n"));
 		studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
-		std::list< tstring > frames;
-		std::list< tstring > bitmaps;
+		std::list<tstring> frames;
+		std::list<tstring> bitmaps;
 		rdo::service::simulation::RDOThreadSimulator::GetList getListFrames (rdo::service::simulation::RDOThreadSimulator::GetList::frames,  &frames );
 		rdo::service::simulation::RDOThreadSimulator::GetList getListBitmaps(rdo::service::simulation::RDOThreadSimulator::GetList::bitmaps, &bitmaps);
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListFrames );
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
 		BOOST_FOREACH(const tstring& name, bitmaps)
 		{
-			m_frameManager.insertBitmap(name);
+			m_frameManager.insertBitmap(QString::fromLocal8Bit(name.c_str()));
 		}
 		BOOST_FOREACH(const tstring& name, frames)
 		{
-			m_frameManager.insertFrame(name);
+			m_frameManager.insertFrame(QString::fromLocal8Bit(name.c_str()));
 		}
 		m_timeNow = 0;
 		ruint initFrameNumber = kernel->simulator()->getInitialFrameNumber();
@@ -1108,9 +1108,9 @@ int RDOStudioModel::getFrameCount() const
 	return m_frameManager.count();
 }
 
-CPTR(char) RDOStudioModel::getFrameName(int index) const
+CREF(QString) RDOStudioModel::getFrameName(int index) const
 {
-	return m_frameManager.getFrameName(index).c_str();
+	return m_frameManager.getFrameName(index);
 }
 
 void RDOStudioModel::showFrame(int index)

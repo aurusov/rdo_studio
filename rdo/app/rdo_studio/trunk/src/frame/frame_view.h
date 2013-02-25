@@ -67,8 +67,8 @@ private:
 	void  elementSBMP       ( PTR(rdo::animation::ScaledBmpElement) pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
 	void  elementActive     ( PTR(rdo::animation::ActiveElement)    pElement, REF(rdo::gui::animation::AreaList) areaList);
 
-	static QPixmap getBitmap(CREF(tstring)              bitmapName,
-	                         CREF(tstring)              maskName,
+	static QPixmap getBitmap(CREF(QString)              bitmapName,
+	                         CREF(QString)              maskName,
 	                         CREF(rdo::gui::BitmapList) bitmapList,
 	                          REF(rdo::gui::BitmapList) bitmapGeneratedList);
 

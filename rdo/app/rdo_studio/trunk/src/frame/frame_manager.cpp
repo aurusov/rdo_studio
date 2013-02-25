@@ -79,10 +79,10 @@ rbool RDOStudioFrameManager::init()
 	return true;
 }
 
-void RDOStudioFrameManager::insertFrame(CREF(tstring) frameName)
+void RDOStudioFrameManager::insertFrame(CREF(QString) frameName)
 {
 	PTR(Frame) item = new Frame();
-	item->m_pTreeWidgetItem = studioApp.getIMainWnd()->getDockFrame().getContext().insertFrame(QString::fromLocal8Bit(frameName.c_str()));
+	item->m_pTreeWidgetItem = studioApp.getIMainWnd()->getDockFrame().getContext().insertFrame(frameName);
 	item->m_name            = frameName;
 	m_frameList.push_back(item);
 }
@@ -129,7 +129,7 @@ ruint RDOStudioFrameManager::findFrameIndex(CPTR(FrameAnimationContent) pContent
 	return ruint(~0);
 }
 
-CREF(tstring) RDOStudioFrameManager::getFrameName(ruint index) const
+CREF(QString) RDOStudioFrameManager::getFrameName(ruint index) const
 {
 	ASSERT(index < m_frameList.size());
 	return m_frameList[index]->m_name;
@@ -170,7 +170,7 @@ void RDOStudioFrameManager::areaDown(ruint frameIndex, CREF(QPoint) point) const
 	{
 		if (area.second.m_rect.contains(point))
 		{
-			tstring areaName = area.first;
+			tstring areaName = area.first.toLocal8Bit().constData();
 			g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &areaName);
 		}
 	}
@@ -184,7 +184,7 @@ PTR(FrameAnimationWnd) RDOStudioFrameManager::createView(ruint index)
 		pView = new FrameAnimationWnd(NULL);
 		studioApp.getIMainWnd()->addSubWindow(pView);
 		pView->parentWidget()->setWindowIcon (QIcon(QString::fromUtf8(":/images/images/mdi_frame.png")));
-		pView->parentWidget()->setWindowTitle(QString::fromLocal8Bit(rdo::format("кадр: %s", getFrameName(index).c_str()).c_str()));
+		pView->parentWidget()->setWindowTitle(QString::fromStdWString(L"кадр: %1").arg(getFrameName(index)));
 
 		m_frameList[index]->m_pView    = pView;
 		m_frameList[index]->m_pContent = pView->getContent();
@@ -292,16 +292,16 @@ void RDOStudioFrameManager::resetCurrentShowingFrame(ruint index)
 	}
 }
 
-void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
+void RDOStudioFrameManager::insertBitmap(CREF(QString) bitmapName)
 {
 	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
 		return;
 
-	studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка %1...").arg(QString::fromLocal8Bit(bitmapName.c_str())));
+	studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Загрузка %1...").arg(bitmapName));
 	studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
 	rdo::binarystream stream;
-	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName, stream);
+	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName.toLocal8Bit().constData(), stream);
 	g_pModel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
 	rbool ok = false;
@@ -316,7 +316,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 		}
 	}
 
-	studioApp.getIMainWnd()->getDockDebug().appendString(ok ? "ok\n" : "failed\n");
+	studioApp.getIMainWnd()->getDockDebug().appendString(ok ? " ok\n" : " failed\n");
 	studioApp.getIMainWnd()->getDockDebug().getContext().update();
 }
 

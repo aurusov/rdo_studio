@@ -65,11 +65,11 @@ public:
 	double  getShowRate          () const;
 	void    setShowRate          (double value);
 
-	int        getFrameCount   () const;
-	CPTR(char) getFrameName    (int index) const;
-	void       showFrame       (int index);
-	void       closeAllFrame   ();
-	rbool      hasModel        () const;
+	int           getFrameCount   () const;
+	CREF(QString) getFrameName    (int index) const;
+	void          showFrame       (int index);
+	void          closeAllFrame   ();
+	rbool         hasModel        () const;
 
 	 PTR(rdoEditor::RDOEditorTabCtrl) getTab();
 	CPTR(rdoEditor::RDOEditorTabCtrl) getTab() const;
