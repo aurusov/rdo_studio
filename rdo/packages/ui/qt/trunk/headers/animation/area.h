@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
-#include <QtCore/qrect.h>
+#include <QtCore/qrect>
+#include <QtCore/qstring>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo
@@ -27,7 +27,7 @@ namespace rdo
 			{
 				QRect  m_rect;
 			};
-			typedef  std::map<tstring, Area>  AreaList;
+			typedef  std::map<QString, Area>  AreaList;
 
 		} // namespace animation
 	} // namespace gui

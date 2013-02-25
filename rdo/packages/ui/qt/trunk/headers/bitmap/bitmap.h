@@ -12,9 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
-#include <QtGui/qpixmap.h>
+#include <QtGui/qpixmap>
+#include <QtCore/qstring>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
+#include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo
@@ -28,7 +29,7 @@ namespace rdo
 			static QImage  transparent(CREF(QImage)  bitmap, CREF(QImage)  mask);
 		};
 
-		typedef  std::map<tstring, QPixmap>  BitmapList;
+		typedef  std::map<QString, QPixmap>  BitmapList;
 
 	} // namespace gui
 } // namespace rdo
