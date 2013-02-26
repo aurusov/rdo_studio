@@ -193,9 +193,9 @@ void ChartView::recalcLayout()
 	ChartDoc* pDoc = getDocument();
 
 	QFontMetrics titleFontMetrics(m_fontTitle);
-	tstring str = pDoc->getTitle();
-	QSize titleSize = !str.empty()
-		? titleFontMetrics.size(Qt::TextSingleLine, QString::fromLocal8Bit(str.c_str()))
+	QString str = pDoc->getTitle();
+	QSize titleSize = !str.isEmpty()
+		? titleFontMetrics.size(Qt::TextSingleLine, str)
 		: QSize(0, 0);
 	m_chartRect.setTop(titleSize.height() + 5);
 
@@ -215,10 +215,13 @@ void ChartView::recalcLayout()
 	}
 	m_chartRect.setLeft(sizeMax.width() + 10);
 
-	str = !pDoc->getTimes().empty()
-		? rdo::format("%.3f", pDoc->getTimes().back()->time)
-		: rdo::format("%.3f", 0);
-	QSize size = axisFontMetrics.boundingRect(QString::fromLocal8Bit(str.c_str())).size();
+	str = QString("%1").arg(
+		!pDoc->getTimes().empty()
+			? pDoc->getTimes().back()->time
+			: 0.0,
+		0, 'f', 3
+	);
+	QSize size = axisFontMetrics.boundingRect(str).size();
 	m_chartRect.setRight(m_clientRect.right() - size.width() - 5);
 	m_chartRect.setBottom(m_clientRect.bottom() - size.height() - 7);
 
@@ -518,7 +521,7 @@ void ChartView::drawTitle(QPainter& painter, const QRect& chartRect)
 
 	painter.setFont(m_fontTitle);
 	painter.setPen(m_pStyle->getTheme()->titleFGColor);
-	painter.drawText(rect, Qt::AlignHCenter | Qt::AlignTop, QString::fromLocal8Bit(getDocument()->getTitle().c_str()));
+	painter.drawText(rect, Qt::AlignHCenter | Qt::AlignTop, getDocument()->getTitle());
 }
 
 void ChartView::drawLegend(QPainter& painter, const QRect& legendRect)

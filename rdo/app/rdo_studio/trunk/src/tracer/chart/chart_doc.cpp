@@ -318,20 +318,20 @@ rbool ChartDoc::serieExists(CREF(LPSerie) pSerie) const
 	return boost::range::find_if(m_serieList, boost::bind(&ChartSerie::isTracerSerie, _1, pSerie)) != m_serieList.end();
 }
 
-tstring ChartDoc::getTitle() const
+CREF(QString) ChartDoc::getTitle() const
 {
 	return m_title;
 }
 
-void ChartDoc::setTitle(CREF(tstring) title)
+void ChartDoc::setTitle(CREF(QString) title)
 {
-	this->m_title = title;
-	getFirstView()->parentWidget()->setWindowTitle(QString::fromStdWString(L"график: %1").arg(this->m_title.c_str()));
+	m_title = title;
+	getFirstView()->parentWidget()->setWindowTitle(QString::fromStdWString(L"график: %1").arg(m_title));
 }
 
 void ChartDoc::autoTitle()
 {
-	tstring title = rdo::format("График%d", ++s_titleIndex);
+	QString title = QString::fromStdWString(L"График%1").arg(++s_titleIndex);
 	setTitle(title);
 }
 

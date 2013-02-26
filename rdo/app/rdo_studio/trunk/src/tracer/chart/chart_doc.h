@@ -40,10 +40,10 @@ public:
 	void attachView(ChartView* pView);
 	ChartView* getFirstView();
 
-	tstring getTitle () const;
-	void    setTitle (CREF(tstring) title);
-	void    autoTitle();
-	static void resetTitleIndex();
+	CREF(QString) getTitle () const;
+	void          setTitle (CREF(QString) title);
+	void          autoTitle();
+	static void   resetTitleIndex();
 
 	void setStyle(ChartViewStyle* pStyle);
 
@@ -74,7 +74,7 @@ private:
 	rbool                m_previewMode;
 
 	std::vector<ChartView*> m_widgetList;
-	tstring                 m_title;
+	QString                 m_title;
 	std::vector<ChartView*> m_viewList;
 	static ruint            s_titleIndex;
 

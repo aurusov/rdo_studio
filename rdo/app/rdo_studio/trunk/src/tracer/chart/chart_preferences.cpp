@@ -29,7 +29,7 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 
 	m_valueCountX = m_pView->getValueCountX();
 	m_valueCountY = m_pView->getValueCountY();
-	m_chartTitle  = QString::fromLocal8Bit(m_pView->getDocument()->getTitle().c_str());
+	m_chartTitle  = m_pView->getDocument()->getTitle();
 
 	titleLineEdit->setText(m_chartTitle);
 
@@ -160,7 +160,7 @@ void ChartPreferences::onCheckAllData()
 	rbool showMarker = showMarkerCheckBox->checkState() == Qt::Checked ? true : false;
 	rbool transparentMarker = transparentMarkerCheckBox->checkState() == Qt::Checked ? true : false;
 
-	rbool titleFlag  = titleLineEdit->text() == QString::fromLocal8Bit(m_pView->getDocument()->getTitle().c_str()) ? true : false;
+	rbool titleFlag  = titleLineEdit->text() == m_pView->getDocument()->getTitle() ? true : false;
 	rbool yValueFlag = yValueLineEdit->text().toInt() == m_pView->getValueCountX() ? true : false;
 	rbool xValueFlag = xValueLineEdit->text().toInt() == m_pView->getValueCountY() ? true : false;
 	rbool showLegendFlag = legend == m_pView->isDrawLegend();
