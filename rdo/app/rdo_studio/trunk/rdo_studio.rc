@@ -66,7 +66,6 @@ END
 //
 
 IDR_TOOLBAR_EMPTY       BITMAP                  "res\\toolbar_empty.bmp"
-IDB_FRAME_OPTIONS_CTRL  BITMAP                  "res\\frameoptionsctrl.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

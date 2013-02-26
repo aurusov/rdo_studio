@@ -3,7 +3,6 @@
 // Used by rdo_studio.rc
 //
 #define IDR_MAINFRAME                   128
-#define IDB_FRAME_OPTIONS_CTRL          164
 #define IDR_RT_MANIFEST1                250
 #define IDR_TOOLBAR_EMPTY               265
 #define ID_CHART_ADDTONEWCHART          32771
