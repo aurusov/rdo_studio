@@ -350,9 +350,12 @@ QString RDOBaseEdit::getWordForFind() const
 {
 	return isSelected()
 		? QString::fromLocal8Bit(getSelection().c_str())
-		: m_pGroup && !m_pGroup->findStr.isEmpty()
-			? m_pGroup->findStr
-			: QString::fromLocal8Bit(getCurrentWord().c_str());
+		: !getCurrentWord().empty()
+			? QString::fromLocal8Bit(getCurrentWord().c_str())
+			: m_pGroup && !m_pGroup->findStr.isEmpty()
+				? m_pGroup->findStr
+				: QString();
+
 }
 
 CharacterRange RDOBaseEdit::getSelectionRange() const
