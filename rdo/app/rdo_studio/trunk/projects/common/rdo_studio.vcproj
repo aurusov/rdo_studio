@@ -1570,10 +1570,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\res\toolbar_empty.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\res\version.h"
 				>
 			</File>

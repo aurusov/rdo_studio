@@ -4,7 +4,6 @@
 //
 #define IDR_MAINFRAME                   128
 #define IDR_RT_MANIFEST1                250
-#define IDR_TOOLBAR_EMPTY               265
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_EDIT_UPPERCASE               32780
 #define ID_EDIT_LOWERCASE               32781
@@ -272,23 +271,11 @@
 #define ID_MODEL_FRAME_PREV             33263
 #define ID_MODEL_FRAME_NEXT             33264
 #define ID_VIEW_TOOLBAR_ZOOM_TOOLBAR    33281
-#define ID_MODEL_SPEED_SLIDER           33283
 #define ID_MODEL_RUNTIME_MAXSPEED       33284
 #define ID_MODEL_RUNTIME_JUMP           33285
 #define ID_MODEL_RUNTIME_SYNC           33286
 #define ID_MODEL_RUNTIME_PAUSE          33287
-#define ID_BTN_EMPTY                    33304
 #define ID_CHART_EXPORT                 33309
-#define IDS_DEVELOPERS                  34000
-#define IDS_ER_UNKNOWN                  35000
-#define IDS_TAB_BUILD                   40304
-#define IDS_TAB_DEBUG                   40305
-#define IDS_TAB_TRACE                   40306
-#define IDS_TAB_RESULT                  40307
-#define IDS_TAB_FIND                    40308
-#define IDS_TAB_TRACER                  40309
-#define IDS_TAB_FRAMES                  40310
-#define IDS_TAB_PAGECTRL                40311
 #define ID_RAO_CLIPBRD                  40918
 
 // Next default values for new objects

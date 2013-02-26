@@ -62,24 +62,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Bitmap
-//
-
-IDR_TOOLBAR_EMPTY       BITMAP                  "res\\toolbar_empty.bmp"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Toolbar
-//
-
-IDR_TOOLBAR_EMPTY TOOLBAR  16, 15
-BEGIN
-    BUTTON      ID_BTN_EMPTY
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Dialog Info
 //
 
@@ -560,11 +542,6 @@ IDR_RT_MANIFEST1        RT_MANIFEST             "res\\RAO-studio.manifest"
 
 STRINGTABLE 
 BEGIN
-    IDR_TOOLBAR_EMPTY       "Команды"
-END
-
-STRINGTABLE 
-BEGIN
     IDR_MAINFRAME           "RAO Studio"
 END
 
@@ -656,29 +633,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_DEVELOPERS          "RAO-Studio v1.1 (2009-2011 годы)\r\n\tЛущан Д.Н.\r\n\tУрусов А.В.\r\n\r\nRAO-Studio v1.0 (2003-2009 годы)\r\n\tЕмельянов В.В.\r\n\tБарс А.В.\r\n\tЗахаров П.А.\r\n\tУрусов А.В.\r\n\r\nRAO-Simulator v3.0 (1991-1999 годы)\r\n\tЕмельянов В.В.\r\n\tЯсиновский С.И.\r\n\tОвсянников М.В."
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_TAB_BUILD           "Компилятор"
-    IDS_TAB_DEBUG           "Вывод"
-    IDS_TAB_TRACE           "Трассировка"
-    IDS_TAB_RESULT          "Результаты"
-    IDS_TAB_FIND            "Поиск"
-    IDS_TAB_TRACER          "Графики"
-    IDS_TAB_FRAMES          "Анимация"
-    IDS_TAB_PAGECTRL        "РДО-Процесс"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_ER_UNKNOWN          "Неизвестная синтаксическая ошибка. Пример с ошибкой  можно высылать на http://rdo.rk9.bmstu.ru/bugs в категорию rdo-parser."
-END
-
-STRINGTABLE 
-BEGIN
-    ID_MODEL_SPEED_SLIDER   "\nСкорость имитатора"
     ID_MODEL_RUNTIME_MAXSPEED "\nБез анимации, максимальная скорость"
     ID_MODEL_RUNTIME_JUMP   "\nДискретная имитация"
     ID_MODEL_RUNTIME_SYNC   "\nСинхронная имитация"
@@ -686,34 +640,6 @@ BEGIN
 END
 
 #endif    // Russian resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-#pragma code_page(1252)
-#endif //_WIN32
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog Info
-//
-
-IDD_DIALOG_GEN_TYPE DLGINIT
-BEGIN
-    1137, 0x403, 11, 0
-0xeecf, 0xe220, 0xe5f0, 0xe5ec, 0xe8ed, "\000" 
-    1137, 0x403, 33, 0
-0xe5cd, 0xee20, 0xf2f1, 0xebe0, 0xf1ee, 0x20fc, 0xf0f2, 0xede0, 0xe0e7, 
-0xf2ea, 0xe2ee, 0xe220, 0xf120, 0xf1e8, 0xe5f2, 0xe5ec, "\000" 
-    0
-END
-
-#endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
