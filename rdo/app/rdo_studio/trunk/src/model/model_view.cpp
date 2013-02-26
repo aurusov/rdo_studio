@@ -82,7 +82,7 @@ REF(rdoEditor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
 
 void RDOStudioModelView::onSearchFindInModel()
 {
-	m_findSettings.what = m_pTabCtrl->getCurrentEdit()->getWordForFind();
+	m_findSettings.what = QString::fromLocal8Bit(m_pTabCtrl->getCurrentEdit()->getCurrentOrSelectedWord().c_str());
 
 	if (!m_pFindDialog)
 	{
