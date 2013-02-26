@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>262</width>
+    <width>259</width>
     <height>131</height>
    </rect>
   </property>
@@ -26,13 +26,13 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="../rdo_studio.qrc">:/frame_options_view/frame_options_view/frameoptionsview.bmp</pixmap>
+    <pixmap resource="../rdo_studio.qrc">:/images/images/frameoptionsctrl.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>11</x>
@@ -57,6 +57,19 @@
        <string>TextLabel</string>
       </property>
      </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
     </item>
     <item>
      <widget class="QLabel" name="englishSampleLabel">
