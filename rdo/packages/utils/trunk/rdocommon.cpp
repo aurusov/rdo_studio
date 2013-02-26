@@ -16,6 +16,7 @@
 #include <locale>
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdexcept>
 
 #ifdef COMPILER_VISUAL_STUDIO
 #	include <windows.h>
