@@ -20,6 +20,7 @@
 #include "thirdparty/scintilla/lexlib/WordList.h"
 #include "thirdparty/scintilla/rdo/LexRdo.h"
 #include "thirdparty/scintilla/rdo/WordListUtil.h"
+#include "thirdparty/scintilla/lexlib/CharacterSet.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -447,8 +448,18 @@ void RDOEditorEdit::onEditCompleteWord()
 
 	typedef std::vector<tstring> string_list;
 
+	class compare_class {
+	public:
+		bool operator()(tstring A, tstring B) {
+			return CompareNCaseInsensitive(A.c_str(), B.c_str(), A.length()) < 0;
+		}
+	};
+
+	compare_class functor;
+
 	WordListUtil getList(fullWordList);
 	string_list basicList = getList.getNearestWords(tstring());
+	std::sort(basicList.begin(), basicList.end(), functor);
 	for (string_list::const_iterator it = basicList.begin(); it != basicList.end(); ++it)
 	{
 		primaryKwList += *it;
@@ -481,7 +492,7 @@ void RDOEditorEdit::onEditCompleteWord()
 
 	string_list::const_iterator it = prioritySortedKwList.begin();
 	tstring stWord = *it;
-	std::sort(prioritySortedKwList.begin(), prioritySortedKwList.end());
+	std::sort(prioritySortedKwList.begin(), prioritySortedKwList.end(), functor);
 
 	tstring foundKeyWords = "";
 	for (string_list::const_iterator it = prioritySortedKwList.begin(); it != prioritySortedKwList.end(); ++it) 
@@ -493,6 +504,7 @@ void RDOEditorEdit::onEditCompleteWord()
 		}
 	}
 	LPCTSTR list;
+
 	if (static_cast<PTR(RDOEditorEditStyle)>(m_pStyle)->autoComplete->showFullList)
 	{
 		list = primaryKwList.c_str();
@@ -544,7 +556,6 @@ void RDOEditorEdit::onEditCompleteWord()
 		else
 		{
 			sendEditor      (SCI_AUTOCSHOW,   userPatternLength, (long)list);
-			sendEditorString(SCI_AUTOCSELECT, 0, startKeyWordScroll.c_str());
 			sendEditorString(SCI_AUTOCSELECT, 0, startKeyWord.c_str());
 		}
 	}
