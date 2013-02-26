@@ -448,14 +448,14 @@ void RDOEditorEdit::onEditCompleteWord()
 
 	typedef std::vector<tstring> string_list;
 
-	class compare_class {
+	class compare_string_scintilla {
 	public:
 		bool operator()(tstring A, tstring B) {
 			return CompareNCaseInsensitive(A.c_str(), B.c_str(), A.length()) < 0;
 		}
 	};
 
-	compare_class functor;
+	compare_string_scintilla functor;
 
 	WordListUtil getList(fullWordList);
 	string_list basicList = getList.getNearestWords(tstring());
