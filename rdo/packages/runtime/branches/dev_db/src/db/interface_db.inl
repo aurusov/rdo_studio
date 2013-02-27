@@ -9,13 +9,13 @@
 */
 
 template <class T>
-void pushContext           (T context)
+void IDB::pushContext           (T context)
 {
-	pushContxt(bany<T>(context));
+	pushContxt(boost::any(context));
 }
 
 template <class T>
-T popContext            ()
+T IDB::popContext            ()
 {
-	return any_cast<T>(popContxt());
+	return boost::any_cast<T>(popContxt());
 }
