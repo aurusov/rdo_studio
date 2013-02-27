@@ -96,11 +96,11 @@ void InitSructDB::generateCreateDBQuery()
 
 	m_queryList.push_back(
 		"CREATE TABLE param_of_type("
-		"id          serial,"
+		"id          integer NOT NULL,"
 		"param_name  VARCHAR(40) NOT NULL,"
 		"rtp_id      integer,"
 		"type_id     integer NOT NULL,"
-		"PRIMARY KEY (id),"
+		"PRIMARY KEY (id,rtp_id),"
 		"FOREIGN KEY (rtp_id) REFERENCES rtp(id),"
 		"FOREIGN KEY (type_id) REFERENCES list_of_types_of_params"
 		");");
@@ -246,11 +246,9 @@ void InitSructDB::generateCreateDBQuery()
 		"CREATE TABLE rss_param("
 		"rss_id   integer NOT NULL,"
 		"id       integer NOT NULL,"
-		"param_id integer NOT NULL,"
 		"value    integer NOT NULL,"
 		"PRIMARY KEY (id,rss_id),"
 		"FOREIGN KEY (rss_id) REFERENCES rss(id),"
-		"FOREIGN KEY (param_id) REFERENCES param_of_type(id),"
 		"FOREIGN KEY (value) REFERENCES rdo_value(value_id)"
 		");");
 }
