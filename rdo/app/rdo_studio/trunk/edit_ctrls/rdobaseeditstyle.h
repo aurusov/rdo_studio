@@ -131,8 +131,8 @@ public:
 	rbool operator !=( const RDOBaseEditStyle& style ) const;
 
 	void init( CREF(QString) _groupName = "" );
-	virtual rbool load();
-	virtual rbool save() const;
+	rbool load();
+	rbool save() const;
 
 	RDOBaseEditTab*    tab;
 	RDOBaseEditWindow* window;

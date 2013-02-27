@@ -128,8 +128,8 @@ public:
 	rbool operator !=( const RDOEditorEditStyle& style ) const;
 
 	void  init( CREF(QString) _groupName = "" );
-	virtual rbool load();
-	virtual rbool save() const;
+	rbool load();
+	rbool save() const;
 
 	RDOEditorEditAutoComplete* autoComplete;
 	RDOEditorEditMargin*       margin;

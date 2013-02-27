@@ -95,8 +95,8 @@ public:
 	rbool operator !=(const RDOStyle& style) const;
 
 	void init(CREF(QString) _groupName = "");
-	virtual rbool load();
-	virtual rbool save() const;
+	rbool load();
+	rbool save() const;
 
 	RDOStyleFont* font;
 };
@@ -115,8 +115,8 @@ public:
 	rbool operator !=(const RDOStyleWithTheme& style) const;
 
 	void init(CREF(QString) _groupName = "");
-	virtual rbool load();
-	virtual rbool save() const;
+	rbool load();
+	rbool save() const;
 
 	RDOStyleTheme* theme;
 };

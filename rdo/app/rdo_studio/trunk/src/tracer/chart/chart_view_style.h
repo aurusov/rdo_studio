@@ -86,8 +86,8 @@ public:
 	rbool operator !=(const ChartViewStyle& style) const;
 
 	void init(CREF(QString) _groupName = "");
-	virtual rbool load();
-	virtual rbool save() const;
+	rbool load();
+	rbool save() const;
 
 	ChartViewTheme* getTheme()
 	{

@@ -133,8 +133,8 @@ public:
 	rbool operator !=( const LogStyle& style ) const;
 
 	void  init( CREF(QString) _groupName = "" );
-	virtual rbool load();
-	virtual rbool save() const;
+	rbool load();
+	rbool save() const;
 
 	LogTheme*   theme;
 	LogBorders* borders;
