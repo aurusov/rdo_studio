@@ -244,7 +244,7 @@ void ViewPreferences::onMarginLineNumber(int state)
 
 void ViewPreferences::onUseTabSymbol(int state)
 {
-	style_editor.tab->backspaceUntabs = state;
+	style_editor.tab->useTabs = state;
 	checkAllData();
 }
 
@@ -265,9 +265,9 @@ void ViewPreferences::onEraseWithTab(bool state)
 	UNUSED(state);
 
 	if(eraseWithTabRadioButton->isChecked())
-		style_editor.tab->useTabs = true;
+		style_editor.tab->backspaceUntabs = true;
 	if(eraseWithIndentRadioButton->isChecked())
-		style_editor.tab->useTabs = false;
+		style_editor.tab->backspaceUntabs = false;
 	checkAllData();
 }
 
@@ -729,7 +729,7 @@ void ViewPreferences::updateDialog()
 	style_editor.autoComplete->showFullList
 		? radioButtonFullList->toggle()
 		: radioButtonNearestWords->toggle();	
-	useTabSymbolCheckBox->setCheckState(style_editor.tab->backspaceUntabs
+	useTabSymbolCheckBox->setCheckState(style_editor.tab->useTabs
 		? Qt::Checked
 		: Qt::Unchecked
 		);
@@ -741,7 +741,7 @@ void ViewPreferences::updateDialog()
 		? Qt::Checked
 		: Qt::Unchecked
 		);
-	style_editor.tab->useTabs
+	style_editor.tab->backspaceUntabs
 		? eraseWithTabRadioButton->toggle()
 		: eraseWithIndentRadioButton->toggle();
 
@@ -887,7 +887,8 @@ void ViewPreferences::updatePreview()
 
 	preview_debug->setEditorStyle(&style_debug);
 	preview_debug->repaint();
-
+	
+	//! todo падение при закрытии диалога
 	//preview_trace->view().setStyle(&style_trace);
 	//preview_trace->repaint();
 
