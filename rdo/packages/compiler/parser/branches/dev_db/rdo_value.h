@@ -46,10 +46,6 @@ public:
 	static LPRDOValue getIdentificator(CREF(tstring)     identificator);
 	static LPRDOValue getUnknow       (CREF(RDOParserSrcInfo) src_info);
 
-	#define DEFINE_SERIALIZE_RDO_VALUE(Table,Value)      \
-	db.insertRow(Table,QString("DEFAULT,%1").arg(Value));\
-	db.pushContext(db.queryExecIndex(Table));
-
 	virtual void serializeInDB(REF(IDB) db) const;
 
 private:
