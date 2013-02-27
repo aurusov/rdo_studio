@@ -186,6 +186,10 @@
 			RelativePath="..\..\headers\db\interface_db.h"
 			>
 		</File>
+		<File
+			RelativePath="..\..\src\db\interface_db.inl"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

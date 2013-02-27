@@ -16,6 +16,7 @@
 #include <list>
 #include <boost\any.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils\rdodebug.h"
 // --------------------------------------------------------------------------------
 
 class IDB
@@ -30,9 +31,14 @@ public:
 	virtual void queryExec     (const QueryList& query                       ) = 0;
 	virtual int  queryExecIndex(const QString& table                         ) = 0;
 
-	virtual void pushContext   (int context                                  ) = 0;
-	virtual bany popContext    (                                             ) = 0;
+	virtual void pushContxt    (CREF(bany) context                           ) = 0;
+	virtual bany popContxt     (                                             ) = 0;
 	virtual bool isEmptyContext(                                             ) = 0;
+
+	template <class T> void pushContext (T context);
+	template <class T> T popContext     ();
 };
+
+#include "simulator\runtime\src\db\interface_db.inl"
 
 #endif // _SIMULATOR_RUNTIME_SQL_INTERFACE_DB_H_

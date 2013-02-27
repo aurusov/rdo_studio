@@ -35,8 +35,8 @@ public:
 	virtual void queryExec     (const QueryList& query                       );
 
 	virtual int  queryExecIndex(const QString& table                         );
-	virtual void pushContext   (int context                                  );
-	virtual bany popContext    (                                             );
+	virtual void pushContxt    (CREF(bany) context                           );
+	virtual bany popContxt     (                                             );
 	virtual bool isEmptyContext(                                             );
 
 private:

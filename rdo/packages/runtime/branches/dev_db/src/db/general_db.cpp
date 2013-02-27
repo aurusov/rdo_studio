@@ -16,7 +16,6 @@
 #include <boost\foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator\runtime\src\db\general_db.h"
-#include "utils\rdodebug.h"
 // --------------------------------------------------------------------------------
 
 GeneralDB::GeneralDB(const QString& hostName, const QString& databaseName, const QString& userName, const QString& password, const int& port)
@@ -85,12 +84,12 @@ int GeneralDB::queryExecIndex(const QString& table)
 	return index;
 }
 
-void GeneralDB::pushContext(int context)
+void GeneralDB::pushContxt(CREF(bany) context)
 {
 	m_context = context;
 }
 
-IDB::bany GeneralDB::popContext()
+IDB::bany GeneralDB::popContxt()
 {
 	ASSERT(!m_context.empty());
 	bany i = m_context;
