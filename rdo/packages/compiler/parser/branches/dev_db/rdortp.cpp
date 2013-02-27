@@ -153,11 +153,16 @@ void RDORTPResType::serializeInDB(REF(IDB) db) const
 		.arg(QString::fromLocal8Bit(name().c_str()))
 		.arg(m_permanent ? "true" : "false"));
 
-	int index = db.queryExecIndex("rtp");
+	int indexRTP = db.queryExecIndex("rtp");
+	
+	std::vector<int> indexContainer;
+	indexContainer.push_back(indexRTP);
+	indexContainer.push_back(-1);
 
 	BOOST_FOREACH(CREF(LPRDORTPParam) param, m_params)
 	{
-		db.pushContext(index);
+		++indexContainer[1];
+		db.pushContext<std::vector<int>>(indexContainer);
 		param->serializeInDB(db);
 	}
 }

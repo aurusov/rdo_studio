@@ -294,7 +294,7 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 		m_db->insertRow("rss_param",QString("%1,%2,%3")
 			.arg(rss_id)
 			.arg(++param_id)
-			.arg(boost::any_cast<int>(m_db->popContext())));
+			.arg(m_db->popContext<int>()));
 	}
 }
 

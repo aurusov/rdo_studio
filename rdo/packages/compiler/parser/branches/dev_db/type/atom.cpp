@@ -209,7 +209,7 @@ void RDOType__int::serializeInDB(REF(IDB) db) const
 	}
 
 	db.insertRow("int",QString("DEFAULT,%1,NULL,NULL")
-		.arg(boost::any_cast<int>(db.popContext())));
+		.arg(db.popContext<int>()));
 
 	db.pushContext(db.queryExecIndex("int"));
 }
@@ -281,7 +281,7 @@ void RDOType__real::serializeInDB(REF(IDB) db) const
 	}
 
 	db.insertRow("real",QString("DEFAULT,%1,NULL,NULL")
-		.arg(boost::any_cast<int>(db.popContext())));
+		.arg(db.popContext<int>()));
 
 	db.pushContext(db.queryExecIndex("real"));
 }
@@ -352,7 +352,7 @@ void RDOType__string::serializeInDB(REF(IDB) db) const
 	}
 
 	db.insertRow("string",QString("DEFAULT,%1")
-		.arg(boost::any_cast<int>(db.popContext())));
+		.arg(db.popContext<int>()));
 
 	db.pushContext(db.queryExecIndex("string"));
 }
@@ -416,7 +416,7 @@ void RDOType__identificator::serializeInDB(REF(IDB) db) const
 	}
 
 	db.insertRow("identificator",QString("DEFAULT,%1")
-		.arg(boost::any_cast<int>(db.popContext())));
+		.arg(db.popContext<int>()));
 
 	db.pushContext(db.queryExecIndex("identificator"));
 }
@@ -487,7 +487,7 @@ void RDOType__bool::serializeInDB(REF(IDB) db) const
 	}
 
 	db.insertRow("bool",QString("DEFAULT,%1")
-		.arg(boost::any_cast<int>(db.popContext())));
+		.arg(db.popContext<int>()));
 
 	db.pushContext(db.queryExecIndex("bool"));
 }

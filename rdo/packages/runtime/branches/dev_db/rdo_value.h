@@ -106,7 +106,7 @@ public:
 
 	#define DEFINE_SERIALIZE_RDO_VALUE(Table,Value)      \
 	db.insertRow(Table,QString("DEFAULT,%1").arg(Value));\
-	db.pushContext(db.queryExecIndex(Table));
+	db.pushContext<int>(db.queryExecIndex(Table));
 
 	virtual void serializeInDB(REF(IDB) db) const;
 

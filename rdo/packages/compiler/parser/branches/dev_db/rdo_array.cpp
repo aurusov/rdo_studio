@@ -98,7 +98,7 @@ void RDOArrayValue::serializeInDB(REF(IDB) db) const
 		arrayItem->serializeInDB(db);
 		db.insertRow("array_value",QString("%1,DEFAULT,%2")
 			.arg(array_id)
-			.arg(boost::any_cast<int>(db.popContext())));
+			.arg(db.popContext<int>()));
 	}
 
 }
