@@ -11,20 +11,22 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
+#include <boost/filesystem.hpp>
 #include <QtCore/qprocess.h>
-#include <QtWidgets/qfiledialog.h>
 #include <QtCore/qtextstream.h>
+#include <QtWidgets/qfiledialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/tracer/chart/chart_tree.h"
+#include "app/rdo_studio/src/application.h"
+#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
+#include "app/rdo_studio/src/tracer/chart/chart_tree.h"
+#include "app/rdo_studio/src/tracer/chart/chart_serie.h"
 #include "app/rdo_studio/src/tracer/tracer_resource_type.h"
 #include "app/rdo_studio/src/tracer/tracer_resource.h"
 #include "app/rdo_studio/src/tracer/tracer_pattern.h"
 #include "app/rdo_studio/src/tracer/tracer_operation.h"
 #include "app/rdo_studio/src/tracer/tracer_result.h"
-#include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_frm.h"
-#include "app/rdo_studio/src/tracer/chart/chart_serie.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -287,12 +289,19 @@ void ChartTree::onChartExport()
 	if (exportData.empty())
 		return;
 
-	QFileDialog* dlg = new QFileDialog(this, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
-	dlg->setAcceptMode(QFileDialog::AcceptSave);
-	dlg->selectFile(pSerie->getTitle());
-	QString fileName = QFileDialog::getSaveFileName(dlg, QString::fromLocal8Bit("Сохранить"), dlg->directory().path(), QString::fromLocal8Bit("csv-файл (*.csv);;Все файлы (*.)"));
-	if(fileName.isEmpty())
+	boost::filesystem::path path =
+		boost::filesystem::path(g_pModel->getFullName().toLocal8Bit().constData()).parent_path() /
+		QString("%1.csv").arg(pSerie->getTitle()).toLocal8Bit().constData();
+
+	QString fileName = QFileDialog::getSaveFileName(
+		this,
+		QString::fromLocal8Bit("Сохранить"),
+		QString::fromLocal8Bit(path.string().c_str()),
+		QString::fromLocal8Bit("csv-файл (*.csv);;Все файлы (*.*)")
+	);
+	if (fileName.isEmpty())
 		return;
+
 	QFile data(fileName);
 	if (data.open(QIODevice::Text | QFile::WriteOnly | QFile::Truncate)) 
 	{
