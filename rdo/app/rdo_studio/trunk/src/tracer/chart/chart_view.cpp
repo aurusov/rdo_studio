@@ -20,7 +20,6 @@
 #include "app/rdo_studio/src/tracer/tracer.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
-#include "app/rdo_studio/resource.h"
 #include "app/rdo_studio/src/tracer/chart/chart_view_style.h"
 #include "app/rdo_studio/src/tracer/chart/chart_serie.h"
 #include "app/rdo_studio/src/main_frm.h"

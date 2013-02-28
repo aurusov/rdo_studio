@@ -17,7 +17,6 @@
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
-#include "app/rdo_studio/resource.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace tracer {

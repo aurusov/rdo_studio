@@ -29,7 +29,6 @@
 #include "app/rdo_studio/src/frame/frame_options_view.h"
 #include "app/rdo_studio/src/tracer/chart/chart_view_style.h"
 #include "app/rdo_studio/src/frame/frame_style.h"
-#include "app/rdo_studio/resource.h"
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
 // --------------------------------------------------------------------------------
 

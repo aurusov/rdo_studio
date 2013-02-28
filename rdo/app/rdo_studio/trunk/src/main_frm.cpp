@@ -25,7 +25,6 @@
 #include "app/rdo_studio/src/view_preferences.h"
 #include "app/rdo_studio/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
-#include "app/rdo_studio/resource.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
