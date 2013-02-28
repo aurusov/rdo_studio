@@ -73,7 +73,7 @@ public:
 
 private:
 	COleDropTarget m_ddTarget;
-	LPSerie  m_pddSerie;
+	Serie*  m_pddSerie;
 
 	QRect m_bmpRect;
 	QRect m_clientRect;
@@ -140,16 +140,14 @@ private:
 
 	ChartDoc* m_pDocument;
 
-	virtual DROPEFFECT OnDragEnter(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
-	virtual void OnDragLeave();
-	virtual DROPEFFECT OnDragOver(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
-	virtual BOOL OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point);
-
-	virtual void resizeEvent    (QResizeEvent* pEvent);
-	virtual void paintEvent     (QPaintEvent*  pEvent);
-	virtual void mousePressEvent(QMouseEvent*  pEvent);
-	virtual void keyPressEvent  (QKeyEvent*    pEvent);
-	virtual void wheelEvent     (QWheelEvent*  pEvent);
+	virtual void resizeEvent    (QResizeEvent*    pEvent);
+	virtual void paintEvent     (QPaintEvent*     pEvent);
+	virtual void mousePressEvent(QMouseEvent*     pEvent);
+	virtual void keyPressEvent  (QKeyEvent*       pEvent);
+	virtual void wheelEvent     (QWheelEvent*     pEvent);
+	virtual void dragEnterEvent (QDragEnterEvent* pEvent);
+	virtual void dropEvent      (QDropEvent*      pEvent);
+	virtual void dragLeaveEvent (QDragLeaveEvent * pEvent);
 
 	virtual void onUpdateActions(rbool activated);
 

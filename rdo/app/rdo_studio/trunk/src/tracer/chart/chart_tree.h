@@ -17,6 +17,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_tree_item.h"
 #include "app/rdo_studio/src/action_activator/action_activator.h"
+#include "app/rdo_studio/src/tracer/chart/chart_serie.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace tracer {
@@ -99,9 +100,7 @@ private:
 	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void onUpdateActions(rbool activated);
 
-	//! @todo qt
-	//void doDragDrop( ChartTreeItem* item, CPoint point );
-	//afx_msg void OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result );
+	void doDragDrop(LPSerie pSerie);
 
 private slots:
 	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int);

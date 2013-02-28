@@ -15,6 +15,7 @@
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextstream.h>
 #include <QtWidgets/qfiledialog.h>
+#include <QtGui/qdrag.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_frm.h"
@@ -113,39 +114,19 @@ LPChartTreeItem ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) 
 	return pRes;
 }
 
+void ChartTree::doDragDrop(LPSerie pSerie)
+{
+	quintptr address=(quintptr)pSerie.get();
+	QByteArray serieData(QString::number(address).toLatin1());
 
-//! @todo qt
-//void ChartTree::doDragDrop(ChartTreeItem* item, CPoint point)
-//{
-//	UNUSED(point);
-//
-//	UINT format = g_pTracer->getClipboardFormat();
-//	if (format) {
-//		TracerSerie** ptr = (TracerSerie**)::GlobalAlloc(LMEM_FIXED, sizeof(TracerSerie*));
-//		*ptr = (TracerSerie*)item;
-//		source.CacheGlobalData(CLIPFORMAT(format), ptr);
-//		source.DoDragDrop(DROPEFFECT_COPY, NULL, &dropsource);
-//		source.Empty();
-//		// Dont call ::GlobalFree(ptr), because
-//		// COleDataSource::Empty() calls ::ReleaseStgMedium() for
-//		// each allocated storage medium. By Microsoft's default
-//		// STGMEDIUM::punkForRelease == NULL,
-//		// so ::ReleaseStgMedium() calls ::GlobalFree()
-//		// for each allocated STGMEDIUM::TYMED_HGLOBAL.
-//		// ::GlobalFlags(ptr) returns GMEM_INVALID_HANDLE
-//		// if HGLOBAL is not a valid handle.
-//	}
-//}
-//
-//void ChartTree::OnDragDrop (NMHDR * pNotifyStruct, LRESULT* result)
-//{
-//	LPNMTREEVIEW lpnmtv = (LPNMTREEVIEW)pNotifyStruct;
-//	HTREEITEM hitem = lpnmtv->itemNew.hItem;
-//	ChartTreeItem* item = getIfItemIsDrawable(hitem);
-//	if (item )
-//		doDragDrop(item, lpnmtv->ptDrag);
-//	*result = 0;
-//}
+	QDrag *drag = new QDrag(this);
+	QMimeData *mimeData = new QMimeData;
+
+	mimeData->setData("ChartSerie", serieData);
+	drag->setMimeData(mimeData);
+
+	Qt::DropAction dropAction = drag->exec();
+}
 
 void ChartTree::setModelName(CREF(QString) modelName)
 {
@@ -388,7 +369,12 @@ void ChartTree::mousePressEvent(QMouseEvent* pEvent)
 	this->setCurrentItem(item);
 	onUpdateActions(isActivated());
 	if (pEvent->button() == Qt::LeftButton)
-	{
+	{ 
+		LPSerie pSerie = getIfItemIsDrawable(getSelected()).object_dynamic_cast<Serie>();
+		if(pSerie)
+		{
+			doDragDrop(pSerie);
+		}
 		parent_type::mousePressEvent(pEvent);
 	}
 	else if (pEvent->button() == Qt::RightButton)

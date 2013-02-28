@@ -64,6 +64,7 @@ ChartView::ChartView(QAbstractScrollArea* pParent, ChartDoc* pDocument, const rb
 	, m_needDrawLegend(true)
 	, m_pPopupMenu(NULL)
 {
+	setAcceptDrops(true);
 	connect(&getHorzScrollBar(), &QScrollBar::valueChanged, this, &ChartView::onHorzScrollBarValueChanged);
 
 	if (m_previewMode)
@@ -372,6 +373,39 @@ void ChartView::keyPressEvent(QKeyEvent* pEvent)
 void ChartView::wheelEvent(QWheelEvent*  pEvent)
 {
 	getHorzScrollBar().setValue(getHorzScrollBar().value() - m_SM_X.pageSize * (pEvent->delta() > 0 ? 1 : -1));
+}
+
+void ChartView::mousePressEvent(QMouseEvent* pEvent)
+{
+	if (pEvent->button() == Qt::RightButton && !m_previewMode)
+	{
+		m_pPopupMenu->exec(pEvent->globalPos());
+	}
+}
+
+void ChartView::dragEnterEvent(QDragEnterEvent* pEvent)
+{
+	if (pEvent->mimeData()->hasFormat("ChartSerie"))
+	{
+		QByteArray serieData = pEvent->mimeData()->data("ChartSerie");
+		m_pddSerie = (Serie*)serieData.toULongLong();	
+		if(!getDocument()->serieExists(m_pddSerie))
+		{
+			pEvent->acceptProposedAction();
+		}
+	}
+}
+
+void ChartView::dropEvent(QDropEvent* pEvent)
+{
+	getDocument()->addSerie(m_pddSerie);
+	m_pddSerie = NULL;
+	pEvent->acceptProposedAction();
+}
+
+void ChartView::dragLeaveEvent(QDragLeaveEvent* pEvent)
+{
+	m_pddSerie = NULL;
 }
 
 rbool ChartView::setTo(const int fromMaxPos)
@@ -760,61 +794,6 @@ void ChartView::setZoom(double new_zoom, const rbool force_update)
 	//}
 }
 
-DROPEFFECT ChartView::OnDragEnter(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point)
-{
-	UNUSED(dwKeyState);
-	UNUSED(point);
-
-	HGLOBAL glb = NULL;
-	UINT format = g_pTracer->getClipboardFormat();
-	if (pDataObject->IsDataAvailable(CLIPFORMAT(format)))
-	{
-		glb = pDataObject->GetGlobalData(CLIPFORMAT(format));
-		if (glb)
-		{
-			//! @todo qt
-			//m_pddSerie = *(TracerSerie**)::GlobalLock(glb);
-			::GlobalUnlock(glb);
-			::GlobalFree(glb);
-		}
-		if (!getDocument()->serieExists(m_pddSerie))
-		{
-			return DROPEFFECT_COPY;
-		}
-		else
-		{
-			m_pddSerie = NULL;
-		}
-	}
-	return DROPEFFECT_NONE;
-}
-
-void ChartView::OnDragLeave()
-{
-	m_pddSerie = NULL;
-}
-
-DROPEFFECT ChartView::OnDragOver(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point)
-{
-	UNUSED(dwKeyState);
-	UNUSED(point);
-
-	return (pDataObject->IsDataAvailable(CLIPFORMAT(g_pTracer->getClipboardFormat())) && m_pddSerie)
-		? DROPEFFECT_COPY
-		: DROPEFFECT_NONE;
-}
-
-BOOL ChartView::OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point)
-{
-	UNUSED(pDataObject);
-	UNUSED(dropEffect);
-	UNUSED(point);
-
-	getDocument()->addSerie(m_pddSerie);
-	m_pddSerie = NULL;
-	return TRUE;
-}
-
 ChartDoc* ChartView::getDocument()
 {
 	return m_pDocument;
@@ -1108,14 +1087,6 @@ void ChartView::onUpdateActions(rbool activated)
 		activated,
 		this, &ChartView::onHelpKeyword
 	);
-}
-
-void ChartView::mousePressEvent(QMouseEvent* pEvent)
-{
-	if (pEvent->button() == Qt::RightButton && !m_previewMode)
-	{
-		m_pPopupMenu->exec(pEvent->globalPos());
-	}
 }
 
 // --------------------------------------------------------------------------------
