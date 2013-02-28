@@ -12,9 +12,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/rdo_edit/rdoeditorbaseedit.h"
-#include "app/rdo_studio/res/ac_function.xpm"
-#include "app/rdo_studio/res/ac_data.xpm"
-#include "app/rdo_studio/res/ac_trace.xpm"
+#include "app/rdo_studio/res/scintilla/ac_function.xpm"
+#include "app/rdo_studio/res/scintilla/ac_data.xpm"
+#include "app/rdo_studio/res/scintilla/ac_trace.xpm"
 #include "thirdparty/scintilla/include/SciLexer.h"
 // --------------------------------------------------------------------------------
 

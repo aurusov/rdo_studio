@@ -1376,18 +1376,6 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
-				RelativePath="..\..\res\ac_data.xpm"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\ac_function.xpm"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\ac_trace.xpm"
-				>
-			</File>
-			<File
 				RelativePath="..\..\res\build_version.h"
 				>
 			</File>
@@ -2112,6 +2100,22 @@
 				</File>
 				<File
 					RelativePath="..\..\res\win32\rdo_studio.rc"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".scintilla"
+				>
+				<File
+					RelativePath="..\..\res\scintilla\ac_data.xpm"
+					>
+				</File>
+				<File
+					RelativePath="..\..\res\scintilla\ac_function.xpm"
+					>
+				</File>
+				<File
+					RelativePath="..\..\res\scintilla\ac_trace.xpm"
 					>
 				</File>
 			</Filter>
