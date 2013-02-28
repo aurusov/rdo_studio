@@ -47,10 +47,10 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(onCancelButton()));
 	connect(buttonApply, SIGNAL(clicked()), this, SLOT(onApplyButton()));
 	
-	m_setup           = studioApp.getFileAssociationSetup();
-	m_checkInFuture   = studioApp.getFileAssociationCheckInFuture();
-	m_openLastProject = studioApp.getOpenLastProject();
-	m_showFullName    = studioApp.getShowCaptionFullName();
+	m_setup           = g_pApp->getFileAssociationSetup();
+	m_checkInFuture   = g_pApp->getFileAssociationCheckInFuture();
+	m_openLastProject = g_pApp->getOpenLastProject();
+	m_showFullName    = g_pApp->getShowCaptionFullName();
 
 	style_editor.init();
 	style_build.init();
@@ -61,14 +61,14 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	style_chart.init();
 	style_frame.init();
 
-	style_editor  = studioApp.getStyle()->style_editor;
-	style_build   = studioApp.getStyle()->style_build;
-	style_debug   = studioApp.getStyle()->style_debug;
-	style_trace   = studioApp.getStyle()->style_trace;
-	style_results = studioApp.getStyle()->style_results;
-	style_find    = studioApp.getStyle()->style_find;
-	style_chart   = studioApp.getStyle()->style_chart;
-	style_frame   = studioApp.getStyle()->style_frame;
+	style_editor  = g_pApp->getStyle()->style_editor;
+	style_build   = g_pApp->getStyle()->style_build;
+	style_debug   = g_pApp->getStyle()->style_debug;
+	style_trace   = g_pApp->getStyle()->style_trace;
+	style_results = g_pApp->getStyle()->style_results;
+	style_find    = g_pApp->getStyle()->style_find;
+	style_chart   = g_pApp->getStyle()->style_chart;
+	style_frame   = g_pApp->getStyle()->style_frame;
 
 	fontComboBox->setEditable(false);
 	//Вкладка "Основные"
@@ -931,7 +931,7 @@ void ViewPreferences::createPreview()
 	previewStackedWidget->addWidget(preview_debug);
 
 	preview_trace = new LogMainWnd(previewStackedWidget->currentWidget());
-	preview_trace->view().setStyle(&studioApp.getStyle()->style_trace);
+	preview_trace->view().setStyle(&g_pApp->getStyle()->style_trace);
 	preview_trace->view().setFocusOnly(true);
 	preview_trace->view().setText(rdo::format("Простая строка\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19"));
 	preview_trace->view().selectLine(0);
@@ -1293,36 +1293,36 @@ PTR(ViewPreferences::StyleItem) ViewPreferences::getStyleItem()
 
 void ViewPreferences::apply()
 {
-	studioApp.getStyle()->style_editor  = style_editor;
-	studioApp.getStyle()->style_build   = style_build;
-	studioApp.getStyle()->style_debug   = style_debug;
-	studioApp.getStyle()->style_trace   = style_trace;
-	studioApp.getStyle()->style_results = style_results;
-	studioApp.getStyle()->style_find    = style_find;
-	studioApp.getStyle()->style_frame   = style_frame;
-	studioApp.getStyle()->style_chart   = style_chart;
-	studioApp.setFileAssociationSetup(m_setup);
-	studioApp.setFileAssociationCheckInFuture(m_checkInFuture);
-	studioApp.setOpenLastProject(m_openLastProject);
-	studioApp.setShowCaptionFullName(m_showFullName);
-	studioApp.getStyle()->updateAllStyles();
+	g_pApp->getStyle()->style_editor  = style_editor;
+	g_pApp->getStyle()->style_build   = style_build;
+	g_pApp->getStyle()->style_debug   = style_debug;
+	g_pApp->getStyle()->style_trace   = style_trace;
+	g_pApp->getStyle()->style_results = style_results;
+	g_pApp->getStyle()->style_find    = style_find;
+	g_pApp->getStyle()->style_frame   = style_frame;
+	g_pApp->getStyle()->style_chart   = style_chart;
+	g_pApp->setFileAssociationSetup(m_setup);
+	g_pApp->setFileAssociationCheckInFuture(m_checkInFuture);
+	g_pApp->setOpenLastProject(m_openLastProject);
+	g_pApp->setShowCaptionFullName(m_showFullName);
+	g_pApp->getStyle()->updateAllStyles();
 }
 
 void ViewPreferences::checkAllData()
 {
-	rbool setupFlag           = m_setup           == studioApp.getFileAssociationSetup() ? true : false;
-	rbool checkInFutureFlag   = m_checkInFuture   == studioApp.getFileAssociationCheckInFuture() ? true : false;
-	rbool openLastProjectFlag = m_openLastProject == studioApp.getOpenLastProject() ? true : false;
-	rbool showFullNameFlag    = m_showFullName    == studioApp.getShowCaptionFullName() ? true : false;
+	rbool setupFlag           = m_setup           == g_pApp->getFileAssociationSetup() ? true : false;
+	rbool checkInFutureFlag   = m_checkInFuture   == g_pApp->getFileAssociationCheckInFuture() ? true : false;
+	rbool openLastProjectFlag = m_openLastProject == g_pApp->getOpenLastProject() ? true : false;
+	rbool showFullNameFlag    = m_showFullName    == g_pApp->getShowCaptionFullName() ? true : false;
 
-	rbool style_editor_flag  = style_editor  == studioApp.getStyle()->style_editor ? true : false;
-	rbool style_build_flag   = style_build   == studioApp.getStyle()->style_build ? true : false;
-	rbool style_debug_flag   = style_debug   == studioApp.getStyle()->style_debug ? true : false;
-	rbool style_trace_flag   = style_trace   == studioApp.getStyle()->style_trace ? true : false;
-	rbool style_results_flag = style_results == studioApp.getStyle()->style_results ? true : false;
-	rbool style_find_flag    = style_find    == studioApp.getStyle()->style_find ? true : false;
-	rbool style_chart_flag   = style_chart   == studioApp.getStyle()->style_chart ? true : false;
-	rbool style_frame_flag   = style_frame   == studioApp.getStyle()->style_frame ? true : false;
+	rbool style_editor_flag  = style_editor  == g_pApp->getStyle()->style_editor ? true : false;
+	rbool style_build_flag   = style_build   == g_pApp->getStyle()->style_build ? true : false;
+	rbool style_debug_flag   = style_debug   == g_pApp->getStyle()->style_debug ? true : false;
+	rbool style_trace_flag   = style_trace   == g_pApp->getStyle()->style_trace ? true : false;
+	rbool style_results_flag = style_results == g_pApp->getStyle()->style_results ? true : false;
+	rbool style_find_flag    = style_find    == g_pApp->getStyle()->style_find ? true : false;
+	rbool style_chart_flag   = style_chart   == g_pApp->getStyle()->style_chart ? true : false;
+	rbool style_frame_flag   = style_frame   == g_pApp->getStyle()->style_frame ? true : false;
 
 	if(setupFlag
 		&& checkInFutureFlag

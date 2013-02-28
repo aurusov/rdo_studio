@@ -41,7 +41,7 @@
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioApp
 // --------------------------------------------------------------------------------
-RDOStudioApp studioApp;
+RDOStudioApp* g_pApp = NULL;
 
 #ifdef _DEBUG
 void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
@@ -71,15 +71,15 @@ void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QS
 
 	case QtWarningMsg:
 		TRACE1("Warning: %s\n", message.toLocal8Bit().constData());
-		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", message);
+		QMessageBox::warning(g_pApp->getMainWnd(), "QtWarning", message);
 		break;
 
 	case QtCriticalMsg:
-		QMessageBox::critical(studioApp.getMainWnd(), "QtCritical", message);
+		QMessageBox::critical(g_pApp->getMainWnd(), "QtCritical", message);
 		break;
 
 	case QtFatalMsg:
-		QMessageBox::critical(studioApp.getMainWnd(), "QtFatal", message);
+		QMessageBox::critical(g_pApp->getMainWnd(), "QtFatal", message);
 		break;
 	}
 
@@ -87,8 +87,8 @@ void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QS
 }
 #endif
 
-RDOStudioApp::RDOStudioApp()
-	: CWinApp()
+RDOStudioApp::RDOStudioApp(int& argc, char** argv)
+	: QApplication(argc, argv)
 	, m_pStudioGUI                  (NULL  )
 #ifdef RDO_MT
 	, m_pStudioMT                   (NULL  )
@@ -102,6 +102,8 @@ RDOStudioApp::RDOStudioApp()
 	, m_exitCode                    (rdo::simulation::report::EC_OK)
 	, m_pMainFrame                  (NULL  )
 {
+	g_pApp = this;
+
 #ifdef _DEBUG
 	qInstallMessageHandler(g_messageOutput);
 #endif
@@ -110,31 +112,7 @@ RDOStudioApp::RDOStudioApp()
 	setlocale(LC_NUMERIC, _T("eng"));
 
 	m_log.open(_T("log.txt"));
-}
 
-RDOStudioApp::~RDOStudioApp()
-{}
-
-BOOL RDOStudioApp::Run()
-{
-	int result = QMfcApp::run(this);
-	delete qApp;
-	return result;
-}
-
-BOOL RDOStudioApp::InitInstance()
-{
-	CWinApp::InitInstance();
-
-	if (::OleInitialize(NULL) != S_OK)
-		return FALSE;
-
-	free((PTR(void))m_pszProfileName);
-	m_pszProfileName = _tcsdup(_T(""));
-	free((PTR(void))m_pszRegistryKey);
-	m_pszRegistryKey = _tcsdup(_T("RAO-studio"));
-
-	QMfcApp::instance(this);
 	qApp->setQuitOnLastWindowClosed(true);
 
 	QApplication::setApplicationName("RAO-studio");
@@ -182,7 +160,6 @@ BOOL RDOStudioApp::InitInstance()
 	// Внутри создается объект модели
 	m_pMainFrame = new RDOStudioMainFrame();
 	m_pMainFrame->init();
-	m_pMainWnd = m_pMainFrame->c_wnd();
 	m_pMainFrame->show();
 
 #ifdef RDO_MT
@@ -206,11 +183,10 @@ BOOL RDOStudioApp::InitInstance()
 		("dont_close_if_error", "don't close application if model error detected")
 	;
 
-	std::vector<tstring> args = po::split_winmain(m_lpCmdLine);
 	po::variables_map vm;
 	try
 	{
-		po::store(po::command_line_parser(args).options(desc).run(), vm);
+		po::store(po::parse_command_line(argc, argv, desc), vm);
 		po::notify(vm);
 	}
 	catch (const std::exception&)
@@ -253,7 +229,7 @@ BOOL RDOStudioApp::InitInstance()
 		else
 		{
 			m_exitCode = rdo::simulation::report::EC_ModelNotFound;
-			return false;
+			return;
 		}
 	}
 	else
@@ -281,10 +257,11 @@ BOOL RDOStudioApp::InitInstance()
 		g_pModel->runModel();
 	}
 
-	return TRUE;
+	connect(&m_idleTimer, &QTimer::timeout, this, &RDOStudioApp::onIdle);
+	m_idleTimer.start(0);
 }
 
-int RDOStudioApp::ExitInstance()
+RDOStudioApp::~RDOStudioApp()
 {
 	m_pMainFrame = NULL;
 
@@ -304,14 +281,12 @@ int RDOStudioApp::ExitInstance()
 	// Роняем кернел и закрываем все треды
 	RDOKernel::close();
 
+	g_pApp = NULL;
+
 	if (m_autoExitByModel)
 	{
-		CWinApp::ExitInstance();
-		return m_exitCode;
-	}
-	else
-	{
-		return CWinApp::ExitInstance();
+		//! @todo qt
+		//return m_exitCode;
 	}
 }
 
@@ -362,7 +337,7 @@ QString RDOStudioApp::chkHelpExist(CREF(QString) helpFileName) const
 
 	if (!QFile::exists(fullHelpFileName))
 	{
-		QMessageBox::warning(studioApp.getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Невозможно найти файл справки '%1'.\r\nОн должен быть расположен в директории с RAO-studio.").arg(helpFileName));
+		QMessageBox::warning(g_pApp->getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Невозможно найти файл справки '%1'.\r\nОн должен быть расположен в директории с RAO-studio.").arg(helpFileName));
 		fullHelpFileName = QString();
 	}
 
@@ -503,7 +478,7 @@ void RDOStudioApp::setupFileAssociation()
 			openCommand.remove(pos, appParam.length());
 			if (openCommand != appFullName)
 			{
-				FileAssociationDialog dlg(studioApp.getMainWndUI());
+				FileAssociationDialog dlg(g_pApp->getMainWndUI());
 				mustBeRegistered = dlg.exec() == QDialog::Accepted;
 				setFileAssociationCheckInFuture(dlg.checkBox->isChecked());
 			}
@@ -545,30 +520,6 @@ void RDOStudioApp::autoCloseByModel()
 	}
 }
 
-BOOL RDOStudioApp::PreTranslateMessage(PTR(MSG) pMsg) 
-{
-	if (pMsg->message == WM_KEYDOWN)
-	{
-		//! @todo qt
-		//PTR(CMDIChildWnd) pChild = m_pMainFrame->MDIGetActive();
-		//if (pChild)
-		//{
-		//	PTR(CView) pView = pChild->GetActiveView();
-		//	if (dynamic_cast<PTR(RDOStudioFrameView)>(pView) && pView == pChild->GetFocus())
-		//	{
-		//		pView->SendMessage(pMsg->message, pMsg->wParam, pMsg->lParam);
-		//		return true;
-		//	}
-		//}
-	}
-	return CWinApp::PreTranslateMessage(pMsg);
-}
-
-BOOL RDOStudioApp::ProcessMessageFilter(int code, LPMSG lpMsg)
-{
-	return CWinApp::ProcessMessageFilter(code, lpMsg);
-}
-
 void RDOStudioApp::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam)
 {
 #ifdef RDO_MT
@@ -587,23 +538,12 @@ void RDOStudioApp::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void
 #endif
 }
 
-BOOL RDOStudioApp::OnIdle(LONG lCount)
+void RDOStudioApp::onIdle()
 {
 #ifdef RDO_MT
 	static_cast<PTR(RDOThreadStudioGUI)>(m_pStudioGUI)->processMessages();
-	CWinApp::OnIdle(lCount);
-	return true;
 #else
 	kernel->idle();
-	if (lCount > 10000)
-	{
-		return CWinApp::OnIdle(lCount);
-	}
-	else
-	{
-		CWinApp::OnIdle(lCount);
-		return true;
-	}
 #endif
 }
 

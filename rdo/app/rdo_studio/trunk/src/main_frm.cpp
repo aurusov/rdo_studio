@@ -313,8 +313,6 @@ void RDOStudioMainFrame::createInsertMenu()
 
 void RDOStudioMainFrame::init()
 {
-	m_thisCWnd.Attach(reinterpret_cast<HWND>(winId()));
-
 	// Кто-то должен поднять кернел и треды
 	new RDOStudioModel();
 
@@ -449,7 +447,7 @@ void RDOStudioMainFrame::onHelpWhatsNew()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/rdo_whats_new.htm\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }
 
 void RDOStudioMainFrame::onHelpAbout()

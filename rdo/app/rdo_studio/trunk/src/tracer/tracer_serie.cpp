@@ -466,7 +466,7 @@ rbool Serie::activateFirstDoc() const
 		{
 			ChartView* pView = pDoc->getFirstView();
 			ASSERT (pView)
-			studioApp.getIMainWnd()->activateSubWindow(pView->parentWidget()->parentWidget());
+			g_pApp->getIMainWnd()->activateSubWindow(pView->parentWidget()->parentWidget());
 			result = true;
 		}
 	}

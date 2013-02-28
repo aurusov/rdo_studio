@@ -307,7 +307,7 @@ LogView::LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle)
 {
 	if (!m_logStyle)
 	{
-		m_logStyle = &studioApp.getStyle()->style_trace;
+		m_logStyle = &g_pApp->getStyle()->style_trace;
 	}
 
 	connect(&getVertScrollBar(), &QScrollBar::valueChanged, this, &LogView::onVertScrollBarValueChanged);
@@ -321,7 +321,7 @@ LogView::LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle)
 	setFont();
 	updateScrollBars();
 
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 	m_pPopupMenu = new QMenu(this);
 	m_pPopupMenu->addAction(pMainWindow->actEditCopy);
@@ -716,7 +716,7 @@ void LogView::setFont()
 
 void LogView::updateActionFind(rbool activated)
 {
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(
@@ -741,7 +741,7 @@ void LogView::updateActionFind(rbool activated)
 
 void LogView::updateActionEditCopy(rbool activated)
 {
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(
@@ -757,7 +757,7 @@ void LogView::updateCoordStatusBar(rbool activated)
 		? QString("1 : %1").arg(selectedLine())
 		: QString();
 
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 	pMainWindow->statusBar()->update<StatusBar::SB_COORD>(coord);
 }
@@ -1000,7 +1000,7 @@ void LogView::onUpdateActions(rbool activated)
 {
 	repaintLine(selectedLine());
 
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(
@@ -1051,5 +1051,5 @@ void LogView::onHelpContext()
 	ba.append("activateKeyword ");
 	ba.append(keyword);
 	ba.append("\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }

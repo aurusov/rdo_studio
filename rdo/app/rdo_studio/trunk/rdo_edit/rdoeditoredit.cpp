@@ -56,7 +56,7 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView)
 	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
 	QObject::connect(this, SIGNAL(marginClicked(int, int, int)), this, SLOT(catchMarginClick(int, int, int)));
 
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 	m_pPopupMenu = new QMenu(this);
 	m_pPopupMenu->addMenu(pMainWindow->menuInsert);
@@ -409,10 +409,10 @@ void RDOEditorEdit::onEditCompleteWord()
 	tstring primaryKwList;
 	if (g_pModel->getTab())
 	{
-		//studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdo::service::simulation::RDOThreadCodeComp::GetCodeComp(tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), primaryKwList));
+		//g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdo::service::simulation::RDOThreadCodeComp::GetCodeComp(tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), primaryKwList));
 
 		rdo::service::simulation::RDOThreadSimulator::GetRTP RTPList;
-		studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &RTPList);
+		g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &RTPList);
 		std::vector< rdo::service::simulation::RDOThreadSimulator::RTP >::iterator rtp_it = RTPList.begin();
 		while (rtp_it != RTPList.end())
 		{
@@ -421,7 +421,7 @@ void RDOEditorEdit::onEditCompleteWord()
 		}
 
 		rdo::service::simulation::RDOThreadSimulator::GetRSS RSSList;
-		studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &RSSList);
+		g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &RSSList);
 		std::vector< rdo::service::simulation::RDOThreadSimulator::RSS >::iterator rss_it = RSSList.begin();
 		while (rss_it != RSSList.end())
 		{
@@ -656,14 +656,14 @@ void RDOEditorEdit::onHelpContext()
 	ba.append("activateKeyword ");
 	ba.append(keyword.c_str());
 	ba.append("\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }
 
 void RDOEditorEdit::onUpdateActions(rbool activated)
 {
 	super::onUpdateActions(activated);
 
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(
@@ -674,7 +674,7 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 
 	updateAction(
 		pMainWindow->actEditCompleteWord,
-		activated && studioApp.getStyle()->style_editor.autoComplete->useAutoComplete,
+		activated && g_pApp->getStyle()->style_editor.autoComplete->useAutoComplete,
 		this, &RDOEditorEdit::onEditCompleteWord
 	);
 

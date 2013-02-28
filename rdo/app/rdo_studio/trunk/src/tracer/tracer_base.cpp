@@ -679,7 +679,7 @@ ChartDoc* TracerBase::createNewChart()
 {
 	ChartDoc* pDoc = new ChartDoc();
 	ChartViewMainWnd* pView = new ChartViewMainWnd(NULL, pDoc, false);
-	studioApp.getIMainWnd()->addSubWindow(pView);
+	g_pApp->getIMainWnd()->addSubWindow(pView);
 	pDoc->attachView(&pView->view());
 	pDoc->autoTitle();
 
@@ -720,7 +720,7 @@ void TracerBase::updateChartsStyles() const
 {
 	BOOST_FOREACH(ChartDoc* pDocument, m_documentList)
 	{
-		pDocument->setStyle(&studioApp.getStyle()->style_chart);
+		pDocument->setStyle(&g_pApp->getStyle()->style_chart);
 	}
 }
 

@@ -56,7 +56,7 @@ RDOStudioFrameManager::RDOStudioFrameManager(CREF(OnChangeFrame) onChangeFrame)
 {
 	//! @todo А почему объект не удаляется ? Это происходит автоматически ?
 
-	studioApp.getIMainWnd()->connectOnActivateSubWindow(this);
+	g_pApp->getIMainWnd()->connectOnActivateSubWindow(this);
 }
 
 RDOStudioFrameManager::~RDOStudioFrameManager()
@@ -72,7 +72,7 @@ RDOStudioFrameManager::~RDOStudioFrameManager()
 rbool RDOStudioFrameManager::init()
 {
 	connect(
-		&studioApp.getIMainWnd()->getDockFrame().getContext(), &RDOStudioFrameTreeCtrl::itemDoubleClicked,
+		&g_pApp->getIMainWnd()->getDockFrame().getContext(), &RDOStudioFrameTreeCtrl::itemDoubleClicked,
 		this, &RDOStudioFrameManager::onTreeWidgetItemDoubleClicked
 	);
 
@@ -82,7 +82,7 @@ rbool RDOStudioFrameManager::init()
 void RDOStudioFrameManager::insertFrame(CREF(QString) frameName)
 {
 	PTR(Frame) item = new Frame();
-	item->m_pTreeWidgetItem = studioApp.getIMainWnd()->getDockFrame().getContext().insertFrame(frameName);
+	item->m_pTreeWidgetItem = g_pApp->getIMainWnd()->getDockFrame().getContext().insertFrame(frameName);
 	item->m_name            = frameName;
 	m_frameList.push_back(item);
 }
@@ -182,7 +182,7 @@ PTR(FrameAnimationWnd) RDOStudioFrameManager::createView(ruint index)
 	if (index != ~0)
 	{
 		pView = new FrameAnimationWnd(NULL);
-		studioApp.getIMainWnd()->addSubWindow(pView);
+		g_pApp->getIMainWnd()->addSubWindow(pView);
 		pView->parentWidget()->setWindowIcon (QIcon(QString::fromUtf8(":/images/images/mdi_frame.png")));
 		pView->parentWidget()->setWindowTitle(QString::fromStdWString(L"кадр: %1").arg(getFrameName(index)));
 
@@ -230,9 +230,9 @@ void RDOStudioFrameManager::closeAll()
 
 void RDOStudioFrameManager::clear()
 {
-	if (studioApp.getStyle())
+	if (g_pApp->getStyle())
 	{
-		studioApp.getIMainWnd()->getDockFrame().getContext().clear();
+		g_pApp->getIMainWnd()->getDockFrame().getContext().clear();
 	}
 	BOOST_FOREACH(Frame* pFrame, m_frameList)
 	{
@@ -269,15 +269,15 @@ void RDOStudioFrameManager::setCurrentShowingFrame(ruint index)
 	if (index == ruint(~0) || (index != ruint(~0) && index < count()))
 	{
 		m_currentShowingFrame = index;
-		if (studioApp.getStyle())
+		if (g_pApp->getStyle())
 		{
 			if (m_currentShowingFrame != ruint(~0))
 			{
-				studioApp.getIMainWnd()->getDockFrame().getContext().setCurrentItem(m_frameList[m_currentShowingFrame]->m_pTreeWidgetItem);
+				g_pApp->getIMainWnd()->getDockFrame().getContext().setCurrentItem(m_frameList[m_currentShowingFrame]->m_pTreeWidgetItem);
 			}
 			else
 			{
-				studioApp.getIMainWnd()->getDockFrame().getContext().setCurrentItem(NULL);
+				g_pApp->getIMainWnd()->getDockFrame().getContext().setCurrentItem(NULL);
 			}
 		}
 		m_onChangeFrame(index);
@@ -297,8 +297,8 @@ void RDOStudioFrameManager::insertBitmap(CREF(QString) bitmapName)
 	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
 		return;
 
-	studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Загрузка %1...").arg(bitmapName));
-	studioApp.getIMainWnd()->getDockDebug().getContext().update();
+	g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Загрузка %1...").arg(bitmapName));
+	g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 
 	rdo::binarystream stream;
 	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName.toLocal8Bit().constData(), stream);
@@ -316,8 +316,8 @@ void RDOStudioFrameManager::insertBitmap(CREF(QString) bitmapName)
 		}
 	}
 
-	studioApp.getIMainWnd()->getDockDebug().appendString(ok ? " ok\n" : " failed\n");
-	studioApp.getIMainWnd()->getDockDebug().getContext().update();
+	g_pApp->getIMainWnd()->getDockDebug().appendString(ok ? " ok\n" : " failed\n");
+	g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 }
 
 void RDOStudioFrameManager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint index)
@@ -452,6 +452,6 @@ void RDOStudioFrameManager::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pTree
 	}
 	else
 	{
-		studioApp.getIMainWnd()->activateSubWindow(pView->parentWidget());
+		g_pApp->getIMainWnd()->activateSubWindow(pView->parentWidget());
 	}
 }

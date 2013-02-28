@@ -81,7 +81,7 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 		this, SLOT(onTreeWidgetItemDoubleClicked(QTreeWidgetItem*, int))
 	);
 
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	m_pPopupMenu = new QMenu(pParent);
@@ -92,7 +92,8 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 
 ChartTree::~ChartTree()
 {
-	m_source.Empty();
+//! @todo qt
+//	m_source.Empty();
 }
 
 LPChartTreeItem ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const
@@ -322,7 +323,7 @@ void ChartTree::focusOutEvent(QFocusEvent* pEvent)
 
 void ChartTree::onUpdateActions(rbool activated)
 {
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(
@@ -354,7 +355,7 @@ void ChartTree::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }
 
 void ChartTree::mousePressEvent(QMouseEvent* pEvent)

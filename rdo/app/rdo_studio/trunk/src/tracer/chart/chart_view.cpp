@@ -69,7 +69,7 @@ ChartView::ChartView(QAbstractScrollArea* pParent, ChartDoc* pDocument, const rb
 
 	if (!m_previewMode)
 	{
-		setStyle(&studioApp.getStyle()->style_chart, false);
+		setStyle(&g_pApp->getStyle()->style_chart, false);
 	}
 
 	if (getDocument())
@@ -78,7 +78,7 @@ ChartView::ChartView(QAbstractScrollArea* pParent, ChartDoc* pDocument, const rb
 		updateScrollBars();
 	}
 
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	m_pPopupMenu = new QMenu(pParent);
@@ -999,7 +999,7 @@ void ChartView::onHelpKeyword()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }
 
 rbool ChartView::canUnwrapTime() const
@@ -1024,7 +1024,7 @@ rbool ChartView::maxXVisible() const
 
 void ChartView::onUpdateActions(rbool activated)
 {
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(

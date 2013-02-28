@@ -22,18 +22,18 @@
 
 namespace rdo { namespace gui { namespace tracer {
 
-class RDODropSource: public COleDropSource
-{
-public:
-	RDODropSource()
-		: COleDropSource()
-	{}
-	virtual ~RDODropSource()
-	{}
-
-private:
-	virtual SCODE GiveFeedback(DROPEFFECT dropEffect);
-};
+//class RDODropSource: public COleDropSource
+//{
+//public:
+//	RDODropSource()
+//		: COleDropSource()
+//	{}
+//	virtual ~RDODropSource()
+//	{}
+//
+//private:
+//	virtual SCODE GiveFeedback(DROPEFFECT dropEffect);
+//};
 
 PREDECLARE_POINTER(ResourceType);
 PREDECLARE_POINTER(Resource);
@@ -82,8 +82,8 @@ private:
 	LPChartTreeItem  m_rootPMV;
 	IconList         m_iconList;
 
-	COleDataSource m_source;
-	RDODropSource  m_dropsource;
+//	COleDataSource m_source;
+//	RDODropSource  m_dropsource;
 	QMenu*         m_pPopupMenu;
 
 	void createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType);

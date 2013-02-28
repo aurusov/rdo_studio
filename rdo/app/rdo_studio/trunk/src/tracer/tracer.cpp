@@ -34,7 +34,7 @@ static rbool s_clearAfterStop = false;
 // -------------------- Tracer
 // --------------------------------------------------------------------------------
 Tracer::Tracer()
-	: TracerBase("RDOStudioTracerGUI", static_cast<RDOKernelGUI*>(studioApp.m_pStudioGUI))
+	: TracerBase("RDOStudioTracerGUI", static_cast<RDOKernelGUI*>(g_pApp->m_pStudioGUI))
 {
 	s_clearAfterStop = false;
 
@@ -76,15 +76,15 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 		try
 		{
 			setModelName(g_pModel->getName());
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Получение структуры модели... "));
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Получение структуры модели... "));
 			rdo::textstream model_structure;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
 			getModelStructure(model_structure);
-			studioApp.getIMainWnd()->getDockDebug().appendString("ok\n");
+			g_pApp->getIMainWnd()->getDockDebug().appendString("ok\n");
 		}
 		catch (...)
 		{
-			studioApp.getIMainWnd()->getDockDebug().appendString("failed\n");
+			g_pApp->getIMainWnd()->getDockDebug().appendString("failed\n");
 		}
 		break;
 	}

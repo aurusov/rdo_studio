@@ -40,7 +40,7 @@ RDOStudioModelView::RDOStudioModelView(PTR(QWidget) pParent)
 	pLayout->setContentsMargins(0, 0, 0, 0);
 	pLayout->addWidget(m_pTabCtrl);
 
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 	pMainWindow->actSearchFindInModel->setEnabled(true);
 	connect(pMainWindow->actSearchFindInModel, SIGNAL(triggered(bool)), this, SLOT(onSearchFindInModel()));
@@ -48,7 +48,7 @@ RDOStudioModelView::RDOStudioModelView(PTR(QWidget) pParent)
 
 RDOStudioModelView::~RDOStudioModelView()
 {
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 	pMainWindow->actSearchFindInModel->setEnabled(false);
 	disconnect(pMainWindow->actSearchFindInModel, SIGNAL(triggered(bool)), this, SLOT(onSearchFindInModel()));
@@ -112,13 +112,13 @@ void RDOStudioModelView::onFindDlgClose()
 
 void RDOStudioModelView::onSearchFindAll()
 {
-	studioApp.getIMainWnd()->getDockFind().clear();
-	studioApp.getIMainWnd()->getDockFind().raise();
+	g_pApp->getIMainWnd()->getDockFind().clear();
+	g_pApp->getIMainWnd()->getDockFind().raise();
 	QString findStr       = m_findSettings.what;
 	rbool bMatchCase      = m_findSettings.matchCase;
 	rbool bMatchWholeWord = m_findSettings.matchWholeWord;
-	studioApp.getIMainWnd()->getDockFind().getContext().setKeyword(findStr, bMatchCase);
-	studioApp.getIMainWnd()->getDockFind().appendString(QString::fromStdWString(L"Поиск '%1'...\r\n").arg(findStr));
+	g_pApp->getIMainWnd()->getDockFind().getContext().setKeyword(findStr, bMatchCase);
+	g_pApp->getIMainWnd()->getDockFind().appendString(QString::fromStdWString(L"Поиск '%1'...\r\n").arg(findStr));
 	int count = 0;
 	for (int i = 0; i < m_pTabCtrl->count(); i++)
 	{
@@ -133,7 +133,7 @@ void RDOStudioModelView::onSearchFindAll()
 				int endPos = pEdit->isEndOfWord(pos);
 				ASSERT(endPos != -1);
 				line = pEdit->getLineFromPosition(pos);
-				studioApp.getIMainWnd()->getDockFind().appendString(
+				g_pApp->getIMainWnd()->getDockFind().appendString(
 					QString::fromLocal8Bit(pEdit->getLine(line).c_str()),
 					m_pTabCtrl->indexToType(i),
 					line,
@@ -149,5 +149,5 @@ void RDOStudioModelView::onSearchFindAll()
 	QString s = count
 		? QString(QString::fromStdWString(L"'%1' раз было найдено.\r\n").arg(count))
 		: QString(QString::fromStdWString(L"Не получилось найти строчку '%1'.\r\n").arg(findStr));
-	studioApp.getIMainWnd()->getDockFind().appendString(s);
+	g_pApp->getIMainWnd()->getDockFind().appendString(s);
 }

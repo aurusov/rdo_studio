@@ -65,7 +65,7 @@ void RDOStudioFrameTreeCtrl::focusOutEvent(QFocusEvent* pEvent)
 
 void RDOStudioFrameTreeCtrl::onUpdateActions(rbool activated)
 {
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(
@@ -79,5 +79,5 @@ void RDOStudioFrameTreeCtrl::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_frame.htm#frame\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }

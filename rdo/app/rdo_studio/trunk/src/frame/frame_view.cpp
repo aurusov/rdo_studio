@@ -30,7 +30,7 @@ FrameAnimationContent::FrameAnimationContent(PTR(QWidget) pParent)
 {
 	setAttribute(Qt::WA_NoSystemBackground, true);
 
-	m_bgColor = QColor(studioApp.getStyle()->style_frame.theme->backgroundColor);
+	m_bgColor = QColor(g_pApp->getStyle()->style_frame.theme->backgroundColor);
 
 	updateFont();
 }
@@ -68,7 +68,7 @@ void FrameAnimationContent::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::
 	QColor bgColor;
 	if (pFrame->m_bgColor.m_transparent)
 	{
-		bgColor = QColor(studioApp.getStyle()->style_frame.theme->backgroundColor);
+		bgColor = QColor(g_pApp->getStyle()->style_frame.theme->backgroundColor);
 	}
 	else
 	{
@@ -87,7 +87,7 @@ void FrameAnimationContent::init(CREF(QSize) size)
 
 void FrameAnimationContent::updateFont()
 {
-	PTR(RDOStudioFrameStyle) pStyle = &studioApp.getStyle()->style_frame;
+	PTR(RDOStudioFrameStyle) pStyle = &g_pApp->getStyle()->style_frame;
 	ASSERT(pStyle);
 
 	m_font = QFont(pStyle->font->name.c_str());
@@ -214,7 +214,7 @@ void FrameAnimationContent::drawBackground(CPTRC(rdo::animation::Frame) pFrame, 
 
 	if (!bgImage)
 	{
-		m_memDC.dc().setPen(QColor(studioApp.getStyle()->style_frame.theme->defaultColor));
+		m_memDC.dc().setPen(QColor(g_pApp->getStyle()->style_frame.theme->defaultColor));
 		m_memDC.dc().setBrush(m_bgColor);
 
 		const ruint pountListCount = 4;
@@ -599,7 +599,7 @@ rbool FrameAnimationWnd::event(QEvent* pEvent)
 		{
 			QByteArray ba;
 			ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/work_model/work_model_frame.htm\n");
-			studioApp.callQtAssistant(ba);
+			g_pApp->callQtAssistant(ba);
 		}
 
 		return true;
