@@ -84,7 +84,7 @@ private:
 	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void onUpdateActions(rbool activated);
 
-	void doDragDrop(LPSerie pSerie);
+	void doDragDrop(CREF(LPSerie) pSerie);
 
 private slots:
 	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int);

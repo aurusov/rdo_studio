@@ -99,7 +99,7 @@ LPChartTreeItem ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) 
 	return pRes;
 }
 
-void ChartTree::doDragDrop(LPSerie pSerie)
+void ChartTree::doDragDrop(CREF(LPSerie) pSerie)
 {
 	quintptr address=(quintptr)pSerie.get();
 	QByteArray serieData(QString::number(address).toLatin1());
@@ -109,8 +109,7 @@ void ChartTree::doDragDrop(LPSerie pSerie)
 
 	mimeData->setData("ChartSerie", serieData);
 	drag->setMimeData(mimeData);
-
-	Qt::DropAction dropAction = drag->exec();
+	drag->exec();
 }
 
 void ChartTree::setModelName(CREF(QString) modelName)
