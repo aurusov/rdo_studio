@@ -251,6 +251,7 @@ void RDOFRMSprite::insertRulet(CREF(LPRDOFRMRulet) pRulet)
 	std::pair<RuletList::const_iterator, rbool> result =
 		m_ruletList.insert(RuletList::value_type(pRulet->getIndex(), pRulet));
 	ASSERT(result.second);
+	UNUSED(result);
 }
 
 // --------------------------------------------------------------------------------

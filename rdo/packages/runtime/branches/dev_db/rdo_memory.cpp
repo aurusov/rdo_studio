@@ -27,6 +27,7 @@ void RDOMemory::createVariable(CREF(tstring) name, CREF(RDOValue) variable)
 		m_localMemory.insert(LocalMemory::value_type(name, variable));
 
 	ASSERT(result.second);
+	UNUSED(result);
 }
 
 RDOValue RDOMemory::getVariable(CREF(tstring) name) const

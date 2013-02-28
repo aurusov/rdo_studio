@@ -55,10 +55,10 @@ RDORuntime::RDORuntime(PTR(Error) pError)
 	, m_pStudioThread        (NULL               )
 	, m_pError         (pError  )
 	, m_currFuncTop          (0                  )
-	, m_currentTerm    (0       )
-	, m_pPreparingFrame(NULL    )
 	, m_resultList     (NULL    )
 	, m_resultListInfo (NULL    )
+	, m_currentTerm    (0       )
+	, m_pPreparingFrame(NULL    )
 {
 	ASSERT(m_pError);
 	m_pTerminateIfCalc = NULL;
