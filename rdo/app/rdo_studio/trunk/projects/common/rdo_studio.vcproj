@@ -1392,44 +1392,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\res\RAO-studio.manifest"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\RAO-studio.run.error.txt"
-				>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="copy RAO-studio.run.error.txt"
-						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.corba|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="copy RAO-studio.run.error.txt"
-						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.mt|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="copy RAO-studio.run.error.txt"
-						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\res\rdo_studio.ico"
 				>
 			</File>
@@ -1550,19 +1512,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\res\rdo_studio.rc2"
-				>
-			</File>
-			<File
 				RelativePath="..\..\rdo_studio.reg"
 				>
 			</File>
 			<File
 				RelativePath="..\..\Resource.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\resource.hm"
 				>
 			</File>
 			<File
