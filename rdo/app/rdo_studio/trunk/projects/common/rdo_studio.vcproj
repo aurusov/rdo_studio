@@ -1392,10 +1392,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\res\rdo_studio.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\..\res\rdo_studio.qrc"
 				>
 				<FileConfiguration
@@ -1456,58 +1452,6 @@
 						Description="RCC $(InputFileName)"
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name $(InputName) $(InputPath) -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\qrc_$(InputName).cpp&quot;&#x0D;&#x0A;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\qrc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\rdo_studio.rc"
-				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.corba|Win32"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.corba|Win32"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.mt|Win32"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.mt|Win32"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
 			</File>
@@ -2157,6 +2101,18 @@
 							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
 						/>
 					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name=".win32"
+				>
+				<File
+					RelativePath="..\..\res\win32\rdo_studio.ico"
+					>
+				</File>
+				<File
+					RelativePath="..\..\res\win32\rdo_studio.rc"
+					>
 				</File>
 			</Filter>
 		</Filter>
