@@ -41,8 +41,6 @@
 #include "utils/rdomacros.h"
 #include "utils/rdodebug.h"
 
-void appendMenu (PTR(CMenu) pFrom, const int from_index, PTR(CMenu) pTo);
-void eraseMenu  (PTR(CMenu) pFrom, const int from_index = -1 );
 int  roundDouble(const double val);
 
 #endif // _RDO_STUDIO_STDPCH_H_
