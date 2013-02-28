@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 #include <QtCore/qprocess.h>
+#include <QtWidgets/qfiledialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_tree.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
@@ -22,6 +23,7 @@
 #include "app/rdo_studio/src/tracer/tracer_result.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/tracer/chart/chart_serie.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -42,10 +44,6 @@ SCODE RDODropSource::GiveFeedback(DROPEFFECT dropEffect)
 //	ON_WM_INITMENUPOPUP()
 //	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnDragDrop)
 //	ON_WM_RBUTTONDOWN()
-//	ON_UPDATE_COMMAND_UI(ID_CHART_FINDINCHARTS, OnUpdateChartFindincharts)
-//	ON_COMMAND(ID_CHART_FINDINCHARTS, OnChartFindincharts)
-//	ON_COMMAND(ID_CHART_EXPORT, OnExportChart)
-//	ON_UPDATE_COMMAND_UI(ID_CHART_EXPORT, OnUpdateExportChart)
 //END_MESSAGE_MAP()
 
 Q_DECLARE_METATYPE(const ChartTreeItem*);
@@ -85,20 +83,13 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 		this, SLOT(onTreeWidgetItemDoubleClicked(QTreeWidgetItem*, int))
 	);
 
-	//! @todo qt
-	//popupMenu.CreatePopupMenu();
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
 
-	//if (AfxGetMainWnd())
-	//{
-	//	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-	//	if (mainMenu)
-	//	{
-	//		rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
-	//		int delta = maximized ? 1 : 0;
-
-	//		appendMenu(mainMenu->GetSubMenu(6 + delta), 2, &popupMenu);
-	//	}
-	//}
+	m_pPopupMenu = new QMenu(pParent);
+	m_pPopupMenu->addAction(pMainWindow->actChartFindInChart);
+	m_pPopupMenu->addAction(pMainWindow->actChartAddToNewChart);
+	m_pPopupMenu->addAction(pMainWindow->actChartExport);
 }
 
 ChartTree::~ChartTree()
@@ -119,14 +110,8 @@ LPChartTreeItem ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) 
 	return pRes;
 }
 
+
 //! @todo qt
-//void ChartTree::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
-//{
-//	RDOTreeCtrl::OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
-//	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
-//	if(pwndFrame) pwndFrame->SendMessage(WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu));
-//}
-//
 //void ChartTree::doDragDrop(ChartTreeItem* item, CPoint point)
 //{
 //	UNUSED(point);
@@ -286,62 +271,40 @@ void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 	}
 }
 
-//! @todo qt
-//void ChartTree::OnRButtonDown(UINT _nFlags, CPoint point)
-//{
-//	UNUSED(_nFlags);
-//
-//	UINT uFlags;
-//	HTREEITEM hitem = HitTest(point, &uFlags);
-//	if (hitem && (TVHT_ONITEM & uFlags)) {
-//		SelectItem(hitem);
-//	}
-//	if (GetFocus() != this)
-//		SetFocus();
-//	CPoint pos = point;
-//	ClientToScreen(&pos);
-//	if (popupMenu.m_hMenu) popupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this);
-//}
-//
-//void TracerTreeCtrl::OnExportChart()
-//{
-//	if (!g_pTracer->getDrawTrace())
-//		return;
-//
-//	PTR(TracerTreeItem) pItem = getIfItemIsDrawable(GetSelectedItem());
-//	if (!pItem)
-//		return;
-//
-//	PTR(TracerSerie) pSerie = static_cast<PTR(TracerSerie)>(pItem);
-//	ASSERT(pSerie);
-//	TracerSerie::ExportData exportData = pSerie->exportData();
-//	if (exportData.empty())
-//		return;
-//
-//	CString filter("csv-файл (*.csv)|*.csv|Все файлы (*.*)|*.*||");
-//	CFileDialog dlg(false, _T("csv"), pSerie->getTitle().c_str(), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, AfxGetMainWnd());
-//	if (dlg.DoModal() != IDOK)
-//		return;
-//
-//	CString fileName = dlg.GetPathName();
-//	std::ofstream stream(fileName);
-//	if (!stream.is_open())
-//		return;
-//
-//	BOOST_FOREACH(CREF(TracerSerie::ExportData::value_type) exportItem, exportData)
-//	{
-//		stream << exportItem << std::endl;
-//	}
-//
-//	stream.close();
-//}
-//
-//void TracerTreeCtrl::OnUpdateExportChart(CCmdUI* pCmdUI)
-//{
-//	pCmdUI->Enable(g_pTracer->getDrawTrace() && getIfItemIsDrawable(GetSelectedItem()) != NULL);
-//}
+void ChartTree::onChartExport()
+{
+	if (!g_pTracer->getDrawTrace())
+		return;
 
-void ChartTree::OnUpdateChartFindincharts(CCmdUI* pCmdUI)
+	LPChartTreeItem pItem = getIfItemIsDrawable(getSelected());
+	if (!pItem)
+		return;
+
+	LPSerie pSerie = pItem.object_dynamic_cast<Serie>();
+	ASSERT(pSerie);
+	Serie::ExportData exportData = pSerie->exportData();
+	if (exportData.empty())
+		return;
+
+	QFileDialog* dlg = new QFileDialog(this, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+	dlg->setAcceptMode(QFileDialog::AcceptSave);
+	dlg->selectFile(pSerie->getTitle());
+	QString fileName = QFileDialog::getSaveFileName(dlg, QString::fromLocal8Bit("Сохранить"), dlg->directory().path(), QString::fromLocal8Bit("csv-файл (*.csv);;Все файлы (*.)"));
+	if(fileName.isEmpty())
+		return;
+	QFile data(fileName);
+	if (data.open(QIODevice::Text | QFile::WriteOnly | QFile::Truncate)) 
+	{
+		BOOST_FOREACH(CREF(Serie::ExportData::value_type) exportItem, exportData)
+		{
+			data.write(exportItem.toLocal8Bit().constData());
+			data.write("\n");
+		}
+		data.close();
+	}
+}
+
+rbool ChartTree::onUpdateChartFindInCharts()
 {
 	rbool enable = false;
 	if (g_pTracer->getDrawTrace())
@@ -352,10 +315,10 @@ void ChartTree::OnUpdateChartFindincharts(CCmdUI* pCmdUI)
 			enable = pSerie->isInOneOrMoreDocs();
 		}
 	}
-	pCmdUI->Enable(enable);
+	return enable;
 }
 
-void ChartTree::OnChartFindincharts()
+void ChartTree::onChartFindInCharts()
 {
 	findInCharts(getSelected());
 }
@@ -388,6 +351,18 @@ void ChartTree::onUpdateActions(rbool activated)
 		activated && g_pTracer->getDrawTrace() && getIfItemIsDrawable(getSelected()),
 		this, &ChartTree::onAddToNewChart
 	);
+
+	updateAction(
+		pMainWindow->actChartFindInChart,
+		activated && onUpdateChartFindInCharts(),
+		this, &ChartTree::onChartFindInCharts
+	);
+
+	updateAction(
+		pMainWindow->actChartExport,
+		activated && g_pTracer->getDrawTrace() && (getIfItemIsDrawable(getSelected()) != NULL),
+		this, &ChartTree::onChartExport
+	);
 }
 
 void ChartTree::onHelpContext()
@@ -395,4 +370,19 @@ void ChartTree::onHelpContext()
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm\n");
 	studioApp.callQtAssistant(ba);
+}
+
+void ChartTree::mousePressEvent(QMouseEvent* pEvent)
+{
+	QTreeWidgetItem* item = itemAt(pEvent->pos());
+	this->setCurrentItem(item);
+	onUpdateActions(isActivated());
+	if (pEvent->button() == Qt::LeftButton)
+	{
+		parent_type::mousePressEvent(pEvent);
+	}
+	else if (pEvent->button() == Qt::RightButton)
+	{
+		m_pPopupMenu->exec(pEvent->globalPos());
+	}
 }

@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtWidgets/qtreewidget.h>
+#include <QtWidgets/qmenu.h>
 #include <QtGui/qicon.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_tree_item.h"
@@ -82,33 +83,31 @@ private:
 
 	COleDataSource m_source;
 	RDODropSource  m_dropsource;
-	CMenu          m_popupMenu;
+	QMenu*         m_pPopupMenu;
 
 	void createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType);
 
 	void  addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const;
 	rbool findInCharts (PTR(QTreeWidgetItem) pCtrlItem) const;
+	rbool onUpdateChartFindInCharts();
 
 	LPChartTreeItem      getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
 	PTR(QTreeWidgetItem) getSelected        () const;
 
 	virtual void focusInEvent   (QFocusEvent* pEvent);
 	virtual void focusOutEvent  (QFocusEvent* pEvent);
+	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void onUpdateActions(rbool activated);
 
 	//! @todo qt
 	//void doDragDrop( ChartTreeItem* item, CPoint point );
-	//afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
 	//afx_msg void OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result );
-	//afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	//afx_msg void OnExportChart();
-	//afx_msg void OnUpdateExportChart( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateChartFindincharts(CCmdUI* pCmdUI);
-	afx_msg void OnChartFindincharts();
 
 private slots:
 	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int);
 	void onAddToNewChart();
+	void onChartFindInCharts();
+	void onChartExport();
 	void onHelpContext();
 };
 
