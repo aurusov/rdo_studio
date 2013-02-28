@@ -1428,7 +1428,7 @@ void RDOBaseEdit::focusOutEvent(QFocusEvent* pEvent)
 
 void RDOBaseEdit::onUpdateActions(rbool activated)
 {
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(
@@ -1571,7 +1571,7 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 
 void RDOBaseEdit::updateActionFind(rbool activated)
 {
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(

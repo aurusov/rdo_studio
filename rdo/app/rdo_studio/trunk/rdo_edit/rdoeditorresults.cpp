@@ -55,7 +55,7 @@ void RDOEditorResults::onHelpContext()
 	ba.append("activateKeyword ");
 	ba.append(keyword.c_str());
 	ba.append("\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }
 
 void RDOEditorResults::mousePressEvent(QMouseEvent* pEvent)

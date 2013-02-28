@@ -25,7 +25,7 @@ using namespace rdo::gui::tracer;
 LogMainWnd::LogMainWnd(PTR(QWidget) pParent)
 	: QAbstractScrollArea(pParent)
 {
-	PTR(LogView) pLog = new LogView(this, &studioApp.getStyle()->style_trace);
+	PTR(LogView) pLog = new LogView(this, &g_pApp->getStyle()->style_trace);
 	pLog->show();
 
 	setViewport(pLog);

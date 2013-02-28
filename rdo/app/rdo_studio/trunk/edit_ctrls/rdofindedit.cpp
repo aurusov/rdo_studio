@@ -91,7 +91,7 @@ void RDOFindEdit::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_find\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }
 
 void RDOFindEdit::mousePressEvent(QMouseEvent* pEvent)
