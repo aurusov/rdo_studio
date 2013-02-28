@@ -77,8 +77,8 @@ public:
 	rbool operator ==( const RDOEditorEditAutoComplete& autoComplete ) const;
 	rbool operator !=( const RDOEditorEditAutoComplete& autoComplete ) const;
 
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
+	void load(QSettings& settings);
+	void save(QSettings& settings) const;
 
 	rbool useAutoComplete;
 	rbool showFullList;
@@ -100,8 +100,8 @@ public:
 	rbool operator ==( const RDOEditorEditMargin& margin ) const;
 	rbool operator !=( const RDOEditorEditMargin& margin ) const;
 
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
+	void load(QSettings& settings);
+	void save(QSettings& settings) const;
 
 	rbool fold;
 	rbool bookmark;
@@ -117,9 +117,6 @@ QSettings& operator>> (QSettings& settings,       RDOEditorEditMargin& margin);
 class RDOEditorEditStyle: public RDOEditorBaseEditStyle
 {
 protected:
-	virtual void initTheme();
-	virtual void initAutoComplete();
-	virtual void initMargin();
 
 public:
 
@@ -130,9 +127,9 @@ public:
 	rbool operator ==( const RDOEditorEditStyle& style ) const;
 	rbool operator !=( const RDOEditorEditStyle& style ) const;
 
-	virtual void  init( CREF(QString) _groupName = "" );
-	virtual rbool load();
-	virtual rbool save() const;
+	void  init( CREF(QString) _groupName = "" );
+	rbool load();
+	rbool save() const;
 
 	RDOEditorEditAutoComplete* autoComplete;
 	RDOEditorEditMargin*       margin;

@@ -14,12 +14,6 @@
 #include "app/rdo_studio/src/frame/frame_style.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdoStyle;
 
 // --------------------------------------------------------------------------------
@@ -64,16 +58,13 @@ RDOStudioFrameTheme RDOStudioFrameTheme::getDefaultTheme()
 // --------------------------------------------------------------------------------
 RDOStudioFrameStyle::RDOStudioFrameStyle(): RDOStyleWithTheme()
 {
+	theme = new RDOStudioFrameTheme();
 }
 
 RDOStudioFrameStyle::~RDOStudioFrameStyle()
 {
 }
 
-void RDOStudioFrameStyle::initTheme()
-{
-	theme = new RDOStudioFrameTheme;
-}
 
 RDOStudioFrameStyle& RDOStudioFrameStyle::operator =( const RDOStudioFrameStyle& style )
 {

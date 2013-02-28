@@ -40,15 +40,15 @@ public:
 	RDOStudioFrameManager(CREF(OnChangeFrame) onChangeFrame);
 	virtual ~RDOStudioFrameManager();
 
-	void insertFrame (CREF(tstring) frameName );
-	void insertBitmap(CREF(tstring) bitmapName);
+	void insertFrame (CREF(QString) frameName );
+	void insertBitmap(CREF(QString) bitmapName);
 
 	ruint findFrameIndex(CPTR(QTreeWidgetItem)       pTreeWidgetItem) const;
 	ruint findFrameIndex(CPTR(FrameAnimationWnd)     pView          ) const;
 	ruint findFrameIndex(CPTR(FrameAnimationContent) pContent       ) const;
 
 	rbool                   isShowing         () const;
-	CREF(tstring)           getFrameName      (ruint index) const;
+	CREF(QString)           getFrameName      (ruint index) const;
 	PTR(FrameAnimationWnd)  getFrameView      (ruint index) const;
 	PTR(FrameAnimationWnd)  getFrameViewFirst () const;
 	ruint                   count             () const;
@@ -80,7 +80,7 @@ private:
 		~Frame();
 
 		PTR(QTreeWidgetItem)           m_pTreeWidgetItem;
-		tstring                        m_name;
+		QString                        m_name;
 		PTR(FrameAnimationWnd)         m_pView;
 		PTR(FrameAnimationContent)     m_pContent;
 		rdo::gui::animation::AreaList  m_areaList;

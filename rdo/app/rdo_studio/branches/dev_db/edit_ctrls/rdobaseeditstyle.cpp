@@ -14,12 +14,6 @@
 #include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdoStyle;
 using namespace rdoEditCtrl;
 
@@ -377,27 +371,16 @@ RDOBaseEditStyle::RDOBaseEditStyle():
 	tab( NULL ),
 	window( NULL )
 {
+	theme  = new RDOBaseEditTheme();
+	tab    = new RDOBaseEditTab();
+	window = new RDOBaseEditWindow();
+
 }
 
 RDOBaseEditStyle::~RDOBaseEditStyle()
 {
 	if ( tab )    { delete tab;    tab = NULL; };
 	if ( window ) { delete window; window = NULL; };
-}
-
-void RDOBaseEditStyle::initTheme()
-{
-	theme = new RDOBaseEditTheme;
-}
-
-void RDOBaseEditStyle::initTab()
-{
-	tab = new RDOBaseEditTab;
-}
-
-void RDOBaseEditStyle::initWindow()
-{
-	window = new RDOBaseEditWindow;
 }
 
 RDOBaseEditStyle& RDOBaseEditStyle::operator =( const RDOBaseEditStyle& style )
@@ -427,8 +410,6 @@ rbool RDOBaseEditStyle::operator !=( const RDOBaseEditStyle& style ) const
 void RDOBaseEditStyle::init( CREF(QString) _groupName )
 {
 	RDOStyleWithTheme::init( _groupName );
-	initTab();
-	initWindow();
 }
 
 rbool RDOBaseEditStyle::load()

@@ -50,7 +50,7 @@ void RDOEditorTabCtrl::createPage(PTR(QWidget) pView, CREF(QString) name)
 
 	addTab(pPage, name);
 
-	pPage->setEditorStyle(&studioApp.getStyle()->style_editor);
+	pPage->setEditorStyle(&g_pApp->getStyle()->style_editor);
 	pPage->show();
 	//! @todo qt
 	//pPage->getContext().setPopupMenu(&pView->popupMenu);

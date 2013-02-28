@@ -33,18 +33,12 @@
 #include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
 #include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
-#include "app/rdo_studio/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;
 using namespace rdo::service::simulation;
 using namespace rdo::simulation::report;
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioModel::ModelTemplateItem
@@ -72,7 +66,7 @@ RDOStudioModel::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, ruin
 PTR(RDOStudioModel) g_pModel = NULL;
 
 RDOStudioModel::RDOStudioModel()
-	: RDOThreadGUI(_T("RDOThreadModelGUI"), static_cast<PTR(RDOKernelGUI)>(studioApp.m_pStudioGUI))
+	: RDOThreadGUI(_T("RDOThreadModelGUI"), static_cast<PTR(RDOKernelGUI)>(g_pApp->m_pStudioGUI))
 	, m_frameManager   (boost::bind(&RDOStudioModel::onChangeFrame, this, _1))
 	, m_GUI_HAS_MODEL  (false                     )
 	, m_GUI_CAN_RUN    (true                      )
@@ -93,7 +87,7 @@ RDOStudioModel::RDOStudioModel()
 {
 	g_pModel = this;
 
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	connect(pMainWindow->actFileNew,     SIGNAL(triggered(bool)), this, SLOT(onFileNew    ()));
@@ -115,7 +109,7 @@ RDOStudioModel::RDOStudioModel()
 	connect(pMainWindow->actModelShowRateDecFour, SIGNAL(triggered(bool)), this, SLOT(onModelShowRateDecFour()));
 	connect(pMainWindow->actModelShowRateDec,     SIGNAL(triggered(bool)), this, SLOT(onModelShowRateDec()));
 
-	connect(studioApp.getMainWndUI()->m_pModelSpeedSlider, SIGNAL(valueChanged(int)), this, SLOT(onModelSpeedValueChanged(int)));
+	connect(g_pApp->getMainWndUI()->m_pModelSpeedSlider, SIGNAL(valueChanged(int)), this, SLOT(onModelSpeedValueChanged(int)));
 
 	QActionGroup* runtimeGroup = new QActionGroup(this);
 	runtimeGroup->addAction(pMainWindow->actModelRuntimeMaxSpeed);
@@ -275,9 +269,9 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_REPOSITORY_MODEL_OPEN_ERROR:
 		{
 			QMessageBox::critical(
-				studioApp.getMainWnd(),
+				g_pApp->getMainWnd(),
 				QString::fromStdWString(L"Ошибка открытия модели"),
-				QString::fromStdWString(L"Невозможно открыть модель '%1'.").arg(static_cast<PTR(tstring)>(msg.param)->c_str())
+				QString::fromStdWString(L"Невозможно открыть модель '%1'.").arg(QString::fromLocal8Bit(static_cast<PTR(tstring)>(msg.param)->c_str()))
 			);
 			break;
 		}
@@ -321,21 +315,21 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_SHOWRATE, &m_showRate);
 			setSpeed(m_speed);
 			afterModelStart();
-			studioApp.getIMainWnd()->getDockDebug().raise();
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Модель запущена\n"));
-			studioApp.getIMainWnd()->getDockDebug().getContext().update();
+			g_pApp->getIMainWnd()->getDockDebug().raise();
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Модель запущена\n"));
+			g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 			int index = m_frameManager.getLastShowedFrame();
 			if (index != -1)
 			{
 				PTR(FrameAnimationWnd) pView = m_frameManager.getFrameView(index);
 				if (pView) pView->setFocus();
 			}
-			studioApp.getIMainWnd()->update_start();
+			g_pApp->getIMainWnd()->update_start();
 			break;
 		}
 		case RDOThread::RT_RUNTIME_MODEL_STOP_BEFORE:
 		{
-			studioApp.getIMainWnd()->update_stop();
+			g_pApp->getIMainWnd()->update_stop();
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
 			m_frameManager.clear();
 			SYSTEMTIME time_stop;
@@ -351,7 +345,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			}
 			if (delay != -1)
 			{
-				studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Длительность прогона: %1 мсек.\n").arg(delay));
+				g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Длительность прогона: %1 мсек.\n").arg(delay));
 			}
 			setCanRun   (true );
 			setIsRunning(false);
@@ -359,19 +353,19 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
 		{
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Модель завершена\n"));
-			studioApp.getIMainWnd()->getDockDebug().getContext().update();
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Модель завершена\n"));
+			g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 
 			show_result();
 
-			studioApp.autoCloseByModel();
+			g_pApp->autoCloseByModel();
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_BY_USER:
 		{
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Модель завершена\n"));
-			studioApp.getIMainWnd()->getDockDebug().getContext().update();
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Модель завершена\n"));
+			g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 
 			show_result();
 
@@ -381,17 +375,17 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		{
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 			show_result();
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Модель остановлена из-за ошибки прогона"));
-			studioApp.getIMainWnd()->getDockBuild().clear();
-			studioApp.getIMainWnd()->getDockBuild().raise();
-			studioApp.getIMainWnd()->getDockBuild().appendString(rdo::format(IDS_MODEL_RUNTIMEERROR));
-			std::vector< FileMessage > errors;
-			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Модель остановлена из-за ошибки прогона"));
+			g_pApp->getIMainWnd()->getDockBuild().clear();
+			g_pApp->getIMainWnd()->getDockBuild().raise();
+			g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromStdWString(L"Ошибка прогона..."));
+			std::vector<FileMessage> errors;
+			g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
 			BOOST_FOREACH(const FileMessage& message, errors)
 			{
-				studioApp.getIMainWnd()->getDockBuild().appendString(message);
+				g_pApp->getIMainWnd()->getDockBuild().appendString(message);
 				if (message.getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
@@ -406,19 +400,19 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 //				const_cast<PTR(rdoEditCtrl::RDOBuildEdit)>(output->getBuild())->showFirstError();
 			}
 
-			studioApp.autoCloseByModel();
+			g_pApp->autoCloseByModel();
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_OK:
 		{
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 			std::vector<FileMessage> errors;
-			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
+			g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
 			BOOST_FOREACH(const FileMessage& message, errors)
 			{
-				studioApp.getIMainWnd()->getDockBuild().appendString(message);
+				g_pApp->getIMainWnd()->getDockBuild().appendString(message);
 				if (message.getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
@@ -428,10 +422,12 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 					errors_cnt++;
 				}
 			}
-			studioApp.getIMainWnd()->getDockBuild().appendString(rdo::format(IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt));
+			g_pApp->getIMainWnd()->getDockBuild().appendString(
+				QString::fromStdWString(L"найдено ошибок: %1, предупреждений: %2").arg(errors_cnt).arg(warnings_cnt)
+			);
 			if (errors_cnt || warnings_cnt)
 			{
-//				studioApp.getIMainWnd()->getDockBuild().getContext().showFirstError();
+//				g_pApp->getIMainWnd()->getDockBuild().getContext().showFirstError();
 			}
 			m_buildState = BS_COMPLETE;
 			::GetSystemTime(&m_timeStart);
@@ -442,12 +438,12 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			setIsRunning(false);
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 			std::vector<FileMessage> errors;
-			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
+			g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
 			BOOST_FOREACH(const FileMessage& message, errors)
 			{
-				studioApp.getIMainWnd()->getDockBuild().appendString(message);
+				g_pApp->getIMainWnd()->getDockBuild().appendString(message);
 				if (message.getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
@@ -457,15 +453,17 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 					errors_cnt++;
 				}
 			}
-			studioApp.getIMainWnd()->getDockBuild().appendString(rdo::format(IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt));
+			g_pApp->getIMainWnd()->getDockBuild().appendString(
+				QString::fromStdWString(L"найдено ошибок: %1, предупреждений: %2").arg(errors_cnt).arg(warnings_cnt)
+			);
 			if (errors_cnt || warnings_cnt)
 			{
-				studioApp.getIMainWnd()->getDockBuild().getContext().showFirstError();
+				g_pApp->getIMainWnd()->getDockBuild().getContext().showFirstError();
 			}
 
 			setCanRun(true);
 			m_buildState  = BS_ERROR;
-			studioApp.autoCloseByModel();
+			g_pApp->autoCloseByModel();
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY:
@@ -477,21 +475,21 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_SIMULATOR_PARSE_STRING:
 		{
 			msg.lock();
-			studioApp.getIMainWnd()->getDockBuild().appendString(*static_cast<PTR(tstring)>(msg.param));
+			g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromLocal8Bit(static_cast<PTR(tstring)>(msg.param)->c_str()));
 			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_DEBUG_STRING:
 		{
 			msg.lock();
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit(static_cast<PTR(tstring)>(msg.param)->c_str()));
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit(static_cast<PTR(tstring)>(msg.param)->c_str()));
 			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_RESULT_STRING:
 		{
 			msg.lock();
-			studioApp.getIMainWnd()->getDockResults().appendString(*static_cast<PTR(tstring)>(msg.param));
+			g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromLocal8Bit(static_cast<PTR(tstring)>(msg.param)->c_str()));
 			msg.unlock();
 			break;
 		}
@@ -500,35 +498,34 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 
 void RDOStudioModel::show_result()
 {
-	rdo::textstream model_results;
-	sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &model_results);
-	tstring str = model_results.str();
-	if (!str.empty())
+	rdo::textstream modelResults;
+	sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &modelResults);
+	QString str = QString::fromLocal8Bit(modelResults.str().c_str());
+	if (!str.isEmpty())
 	{
 		rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::PMV);
-		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
+		g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 		if (!data.m_described)
 		{
-			//! @todo unicode
-			studioApp.getIMainWnd()->getDockDebug().appendString(_T("Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n"));
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n"));
 		}
-		studioApp.getIMainWnd()->getDockResults().getContext().clearAll();
-		studioApp.getIMainWnd()->getDockResults().raise();
-		studioApp.getIMainWnd()->getDockResults().appendString(str);
+		g_pApp->getIMainWnd()->getDockResults().getContext().clearAll();
+		g_pApp->getIMainWnd()->getDockResults().raise();
+		g_pApp->getIMainWnd()->getDockResults().appendString(str);
 	}
 }
 
 rbool RDOStudioModel::newModel(CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex)
 {
 	m_templateIndex = templateIndex;
-	studioApp.getIMainWnd()->getDockBuild  ().clear();
-	studioApp.getIMainWnd()->getDockDebug  ().clear();
-	studioApp.getIMainWnd()->getDockResults().clear();
-	studioApp.getIMainWnd()->getDockFind   ().clear();
+	g_pApp->getIMainWnd()->getDockBuild  ().clear();
+	g_pApp->getIMainWnd()->getDockDebug  ().clear();
+	g_pApp->getIMainWnd()->getDockResults().clear();
+	g_pApp->getIMainWnd()->getDockFind   ().clear();
 	rdo::repository::RDOThreadRepository::NewModel data;
 	data.m_name = modelName.toLocal8Bit().constData();
 	data.m_path = modelPath.toLocal8Bit().constData();
-	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_NEW, &data);
+	g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_NEW, &data);
 	return true;
 }
 
@@ -536,45 +533,45 @@ rbool RDOStudioModel::openModel(CREF(QString) modelName)
 {
 	if (isRunning())
 	{
-		QMessageBox::warning(studioApp.getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Работает модель. Перед открытием её необходимо остановить."));
+		QMessageBox::warning(g_pApp->getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Работает модель. Перед открытием её необходимо остановить."));
 		return false;
 	}
 	if (!closeModel())
 	{
 		return false;
 	}
-	studioApp.getIMainWnd()->getDockBuild  ().clear();
-	studioApp.getIMainWnd()->getDockDebug  ().clear();
-	studioApp.getIMainWnd()->getDockResults().clear();
-	studioApp.getIMainWnd()->getDockFind   ().clear();
-	studioApp.getIMainWnd()->getDockDebug().raise();
-	studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка модели...\n"));
-	studioApp.getIMainWnd()->getDockDebug().getContext().update();
+	g_pApp->getIMainWnd()->getDockBuild  ().clear();
+	g_pApp->getIMainWnd()->getDockDebug  ().clear();
+	g_pApp->getIMainWnd()->getDockResults().clear();
+	g_pApp->getIMainWnd()->getDockFind   ().clear();
+	g_pApp->getIMainWnd()->getDockDebug().raise();
+	g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Загрузка модели...\n"));
+	g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 	m_openError     = false;
 	m_smrEmptyError = false;
 	m_modelClosed   = false;
 	rdo::repository::RDOThreadRepository::OpenFile data(modelName.toLocal8Bit().constData());
-	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
+	g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
 	if (data.m_result && !m_openError && !m_smrEmptyError)
 	{
 		rdo::binarystream stream;
 		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::PMV, stream);
-		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
-		studioApp.getIMainWnd()->getDockResults().appendString(stream.str());
-		studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка модели... ok\n"));
-		studioApp.setLastProjectName(getFullName());
+		g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
+		g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromLocal8Bit(stream.str().c_str()));
+		g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Загрузка модели... ok\n"));
+		g_pApp->setLastProjectName(getFullName());
 	}
 	else
 	{
 		m_modelClosed = true;
 		if (m_smrEmptyError)
 		{
-			QMessageBox::critical(studioApp.getMainWnd(), _T("Ошибка открытия модели"), _T("В smr-файле не найдено имя модели"));
+			QMessageBox::critical(g_pApp->getMainWnd(), _T("Ошибка открытия модели"), _T("В smr-файле не найдено имя модели"));
 			closeModel();
 		}
 		else
 		{
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка модели... failed\n"));
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Загрузка модели... failed\n"));
 		}
 	}
 	return data.m_result;
@@ -583,7 +580,7 @@ rbool RDOStudioModel::openModel(CREF(QString) modelName)
 rbool RDOStudioModel::saveModel() const
 {
 	rbool res = true;
-	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_SAVE, &res);
+	g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_SAVE, &res);
 	return res;
 }
 
@@ -591,7 +588,7 @@ rbool RDOStudioModel::closeModel()
 {
 	if (isRunning())
 	{
-		QMessageBox::warning(studioApp.getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Работает модель. Перед закрытием её необходимо остановить."));
+		QMessageBox::warning(g_pApp->getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Работает модель. Перед закрытием её необходимо остановить."));
 		return false;
 	}
 
@@ -603,11 +600,11 @@ rbool RDOStudioModel::closeModel()
 	setHasModel(false);
 	resetView();
 	stopModel();
-	studioApp.getIMainWnd()->getDockBuild  ().clear();
-	studioApp.getIMainWnd()->getDockDebug  ().clear();
-	studioApp.getIMainWnd()->getDockResults().clear();
-	studioApp.getIMainWnd()->getDockFind   ().clear();
-	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_CLOSE);
+	g_pApp->getIMainWnd()->getDockBuild  ().clear();
+	g_pApp->getIMainWnd()->getDockDebug  ().clear();
+	g_pApp->getIMainWnd()->getDockResults().clear();
+	g_pApp->getIMainWnd()->getDockFind   ().clear();
+	g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_CLOSE);
 	return true;
 }
 
@@ -615,14 +612,14 @@ rbool RDOStudioModel::buildModel()
 {
 	if (hasModel() && !isRunning() && saveModel())
 	{
-		studioApp.getIMainWnd()->getDockBuild().clear();
-		studioApp.getIMainWnd()->getDockDebug().clear();
-		studioApp.getIMainWnd()->getDockResults().clear();
-		studioApp.getIMainWnd()->getDockBuild().raise();
-		studioApp.getIMainWnd()->getDockBuild().appendString(rdo::format(IDS_MODEL_BUILDING_BEGIN));
-		studioApp.getIMainWnd()->getDockBuild().getContext().update();
+		g_pApp->getIMainWnd()->getDockBuild().clear();
+		g_pApp->getIMainWnd()->getDockDebug().clear();
+		g_pApp->getIMainWnd()->getDockResults().clear();
+		g_pApp->getIMainWnd()->getDockBuild().raise();
+		g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromStdWString(L"Компиляция..."));
+		g_pApp->getIMainWnd()->getDockBuild().getContext().update();
 		m_buildState = BS_UNDEFINED;
-		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD);
+		g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD);
 		return m_buildState == BS_COMPLETE;
 	}
 	return false;
@@ -633,12 +630,12 @@ rbool RDOStudioModel::runModel()
 	if (buildModel())
 	{
 		setCanRun(false);
-		studioApp.getIMainWnd()->getDockBuild().clear();
-		studioApp.getIMainWnd()->getDockDebug().clear();
-		studioApp.getIMainWnd()->getDockResults().clear();
-		studioApp.getIMainWnd()->getDockBuild().raise();
-		studioApp.getIMainWnd()->getDockBuild().getContext().update();
-		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
+		g_pApp->getIMainWnd()->getDockBuild().clear();
+		g_pApp->getIMainWnd()->getDockDebug().clear();
+		g_pApp->getIMainWnd()->getDockResults().clear();
+		g_pApp->getIMainWnd()->getDockBuild().raise();
+		g_pApp->getIMainWnd()->getDockBuild().getContext().update();
+		g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
 		return true;
 	}
 	return false;
@@ -648,7 +645,7 @@ rbool RDOStudioModel::stopModel() const
 {
 	if (hasModel() && isRunning())
 	{
-		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_STOP);
+		g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_STOP);
 		return true;
 	}
 	return false;
@@ -659,7 +656,7 @@ void RDOStudioModel::createView()
 	ASSERT(m_pModelView == NULL);
 	m_pModelView = new RDOStudioModelView(NULL);
 	m_pModelView->setModel(this);
-	studioApp.getIMainWnd()->addSubWindow(m_pModelView);
+	g_pApp->getIMainWnd()->addSubWindow(m_pModelView);
 	m_pModelView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/mdi_model.png")));
 
 	for (int i = 0; i < m_pModelView->getTab().count(); i++)
@@ -688,7 +685,7 @@ void RDOStudioModel::newModelFromRepository()
 
 	createView();
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
-	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
+	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 	setName(QString::fromLocal8Bit(data_smr.m_name.c_str()));
 
 	ModelTemplateList::const_iterator templateIt = m_templateIndex.is_initialized()
@@ -725,7 +722,7 @@ void RDOStudioModel::newModelFromRepository()
 		}
 	}
 
-	studioApp.setLastProjectName(getFullName());
+	g_pApp->setLastProjectName(getFullName());
 	if (templateIt != m_modelTemplates.end())
 	{
 		saveModel();
@@ -741,15 +738,14 @@ void RDOStudioModel::openModelFromRepository()
 {
 	setHasModel(true);
 
-	PTR(CWnd) active = CWnd::GetActiveWindow();
 	createView();
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
-	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
+	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 	setName(QString::fromLocal8Bit(data_smr.m_name.c_str()));
 
 	int cnt = m_pModelView->getTab().count();
-	studioApp.getMainWndUI()->statusBar()->beginProgress(0, cnt * 2 + 1);
-	studioApp.getMainWndUI()->statusBar()->stepProgress();
+	g_pApp->getMainWndUI()->statusBar()->beginProgress(0, cnt * 2 + 1);
+	g_pApp->getMainWndUI()->statusBar()->stepProgress();
 	for (int i = 0; i < cnt; i++)
 	{
 		PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
@@ -761,17 +757,17 @@ void RDOStudioModel::openModelFromRepository()
 		if (m_pModelView->getTab().typeSupported(type))
 		{
 			rdo::repository::RDOThreadRepository::FileData fileData(type, stream);
-			studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
+			g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 		}
 		else
 		{
 			canLoad = false;
 		}
-		studioApp.getMainWndUI()->statusBar()->stepProgress();
+		g_pApp->getMainWndUI()->statusBar()->stepProgress();
 		if (canLoad)
 		{
 			rdo::repository::RDOThreadRepository::FileInfo data(type);
-			studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
+			g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 			rbool stream_error = stream.rdstate() & std::ios_base::failbit ? true : false;
 			if (!stream_error)
 			{
@@ -779,27 +775,27 @@ void RDOStudioModel::openModelFromRepository()
 				pEdit->setReadOnly(data.m_readOnly);
 				if (data.m_readOnly)
 				{
-					studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("%1 - только чтение\n").arg(tstring(data.m_name + data.m_extention).c_str()));
+					g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"%1 - только чтение\n").arg(tstring(data.m_name + data.m_extention).c_str()));
 				}
 			}
 			else
 			{
-				int obj = 0;
+				QString objName;
 				switch (type)
 				{
-				case rdoModelObjects::RTP: obj = IDS_MODEL_RESOURCETYPES; break;
-				case rdoModelObjects::RSS: obj = IDS_MODEL_RESOURCES;     break;
-				case rdoModelObjects::EVN: obj = IDS_MODEL_EVENTS;        break;
-				case rdoModelObjects::PAT: obj = IDS_MODEL_PATTERNS;      break;
-				case rdoModelObjects::DPT: obj = IDS_MODEL_DPTS;          break;
-				case rdoModelObjects::FRM: obj = IDS_MODEL_FRAMES;        break;
-				case rdoModelObjects::FUN: obj = IDS_MODEL_FUNCTIONS;     break;
-				case rdoModelObjects::PMD: obj = IDS_MODEL_PMDS;          break;
+				case rdoModelObjects::RTP: objName = QString::fromStdWString(L"типы ресурсов");          break;
+				case rdoModelObjects::RSS: objName = QString::fromStdWString(L"ресурсы");                break;
+				case rdoModelObjects::EVN: objName = QString::fromStdWString(L"события");                break;
+				case rdoModelObjects::PAT: objName = QString::fromStdWString(L"образцы");                break;
+				case rdoModelObjects::DPT: objName = QString::fromStdWString(L"точки принятия решений"); break;
+				case rdoModelObjects::FRM: objName = QString::fromStdWString(L"кадры");                  break;
+				case rdoModelObjects::FUN: objName = QString::fromStdWString(L"функции");                break;
+				case rdoModelObjects::PMD: objName = QString::fromStdWString(L"описание показателей");   break;
 				}
-				if (obj)
+				if (!objName.isEmpty())
 				{
-					studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Невозможно загрузить %1 (%2)\n").arg(rdo::format(obj).c_str()).arg(data.m_fullName.c_str()));
-					studioApp.getIMainWnd()->getDockDebug().getContext().update();
+					g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Невозможно загрузить %1 (%2)\n").arg(objName).arg(data.m_fullName.c_str()));
+					g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 				}
 				m_openError = true;
 			}
@@ -807,14 +803,12 @@ void RDOStudioModel::openModelFromRepository()
 		pEdit->setCurrentPos(0);
 		pEdit->setModifyFalse();
 		pEdit->clearUndoBuffer();
-		studioApp.getMainWndUI()->statusBar()->stepProgress();
+		g_pApp->getMainWndUI()->statusBar()->stepProgress();
 	}
-	studioApp.getMainWndUI()->statusBar()->endProgress();
+	g_pApp->getMainWndUI()->statusBar()->endProgress();
 
 	updateFrmDescribed();
 	updateActions();
-
-	if (active) active->SetFocus();
 }
 
 void RDOStudioModel::saveModelToRepository()
@@ -828,10 +822,10 @@ void RDOStudioModel::saveModelToRepository()
 		smr_edit->save(stream);
 		m_smrEmptyError = false;
 		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::SMR, stream);
-		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
+		g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
 		if (m_smrEmptyError)
 		{
-			QMessageBox::critical(studioApp.getMainWnd(), QString::fromStdWString(L"Ошибка записи модели"), QString::fromStdWString(L"В smr-файле не найдено имя модели, модель не будет записана"));
+			QMessageBox::critical(g_pApp->getMainWnd(), QString::fromStdWString(L"Ошибка записи модели"), QString::fromStdWString(L"В smr-файле не найдено имя модели, модель не будет записана"));
 			return;
 		}
 		smr_modified = true;
@@ -848,8 +842,8 @@ void RDOStudioModel::saveModelToRepository()
 	}
 	if (progress_cnt)
 	{
-		studioApp.getMainWndUI()->statusBar()->beginProgress(0, progress_cnt * 2 + 1);
-		studioApp.getMainWndUI()->statusBar()->stepProgress();
+		g_pApp->getMainWndUI()->statusBar()->beginProgress(0, progress_cnt * 2 + 1);
+		g_pApp->getMainWndUI()->statusBar()->stepProgress();
 		for (int i = 0; i < cnt; i++)
 		{
 			PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
@@ -857,7 +851,7 @@ void RDOStudioModel::saveModelToRepository()
 			{
 				rdo::binarystream stream;
 				pEdit->save(stream);
-				studioApp.getMainWndUI()->statusBar()->stepProgress();
+				g_pApp->getMainWndUI()->statusBar()->stepProgress();
 				rdoModelObjects::RDOFileType type = m_pModelView->getTab().indexToType(i);
 				switch (type)
 				{
@@ -872,24 +866,24 @@ void RDOStudioModel::saveModelToRepository()
 				case rdoModelObjects::PMD:
 					{
 						rdo::repository::RDOThreadRepository::FileData fileData(type, stream);
-						studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
+						g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
 						break;
 					}
 				default: break;
 				}
 				pEdit->setModifyFalse();
 			}
-			studioApp.getMainWndUI()->statusBar()->stepProgress();
+			g_pApp->getMainWndUI()->statusBar()->stepProgress();
 		}
-		studioApp.getMainWndUI()->statusBar()->endProgress();
+		g_pApp->getMainWndUI()->statusBar()->endProgress();
 		wasSaved = true;
 	}
 
 	rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
-	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
+	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(QString::fromLocal8Bit(data.m_name.c_str()));
 
-	studioApp.getMainWndUI()->insertMenuFileReopenItem(getFullName());
+	g_pApp->getMainWndUI()->insertMenuFileReopenItem(getFullName());
 
 	if (smr_modified)
 	{
@@ -901,7 +895,7 @@ void RDOStudioModel::saveModelToRepository()
 QString RDOStudioModel::getFullName() const
 {
 	rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
-	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
+	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	return QString::fromLocal8Bit(data.m_fullName.c_str());
 }
 
@@ -916,7 +910,7 @@ rbool RDOStudioModel::canCloseModel()
 	rbool result = true;
 	if (isModify())
 	{
-		switch (QMessageBox::question(studioApp.getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Сохранить модель ?"), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel))
+		switch (QMessageBox::question(g_pApp->getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Сохранить модель ?"), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel))
 		{
 			case QMessageBox::Yes   : result = saveModel(); break;
 			case QMessageBox::No    : result = true; break;
@@ -951,7 +945,7 @@ void RDOStudioModel::setName(CREF(QString) name)
 		if (m_pModelView)
 		{
 			m_pModelView->parentWidget()->setWindowTitle(QString::fromLocal8Bit("модель: %1").arg(
-				studioApp.getShowCaptionFullName()
+				g_pApp->getShowCaptionFullName()
 					? getFullName()
 					: m_name
 			));
@@ -965,23 +959,23 @@ void RDOStudioModel::afterModelStart()
 
 	if (isFrmDescribed())
 	{
-		studioApp.getIMainWnd()->getDockDebug().raise();
-		studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка ресурсов для анимации...\n"));
-		studioApp.getIMainWnd()->getDockDebug().getContext().update();
+		g_pApp->getIMainWnd()->getDockDebug().raise();
+		g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Загрузка ресурсов для анимации...\n"));
+		g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 
-		std::list< tstring > frames;
-		std::list< tstring > bitmaps;
+		std::list<tstring> frames;
+		std::list<tstring> bitmaps;
 		rdo::service::simulation::RDOThreadSimulator::GetList getListFrames (rdo::service::simulation::RDOThreadSimulator::GetList::frames,  &frames );
 		rdo::service::simulation::RDOThreadSimulator::GetList getListBitmaps(rdo::service::simulation::RDOThreadSimulator::GetList::bitmaps, &bitmaps);
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListFrames );
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
 		BOOST_FOREACH(const tstring& name, bitmaps)
 		{
-			m_frameManager.insertBitmap(name);
+			m_frameManager.insertBitmap(QString::fromLocal8Bit(name.c_str()));
 		}
 		BOOST_FOREACH(const tstring& name, frames)
 		{
-			m_frameManager.insertFrame(name);
+			m_frameManager.insertFrame(QString::fromLocal8Bit(name.c_str()));
 		}
 		m_timeNow = 0;
 		ruint initFrameNumber = kernel->simulator()->getInitialFrameNumber();
@@ -998,8 +992,8 @@ void RDOStudioModel::afterModelStart()
 				m_frameManager.getFrameView(initFrameNumber)->setFocus();
 			}
 		}
-		studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Загрузка ресурсов для анимации...ok\n"));
-		studioApp.getIMainWnd()->getDockDebug().getContext().update();
+		g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Загрузка ресурсов для анимации... ok\n"));
+		g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 	}
 	else
 	{
@@ -1014,7 +1008,7 @@ void RDOStudioModel::updateStyleOfAllModel() const
 	{
 		for (int i = 0; i < m_pModelView->getTab().count(); i++)
 		{
-			m_pModelView->getTab().getItemEdit(i)->setEditorStyle(&studioApp.getStyle()->style_editor);
+			m_pModelView->getTab().getItemEdit(i)->setEditorStyle(&g_pApp->getStyle()->style_editor);
 		}
 	}
 
@@ -1108,9 +1102,9 @@ int RDOStudioModel::getFrameCount() const
 	return m_frameManager.count();
 }
 
-CPTR(char) RDOStudioModel::getFrameName(int index) const
+CREF(QString) RDOStudioModel::getFrameName(int index) const
 {
-	return m_frameManager.getFrameName(index).c_str();
+	return m_frameManager.getFrameName(index);
 }
 
 void RDOStudioModel::showFrame(int index)
@@ -1142,7 +1136,7 @@ void RDOStudioModel::setCanRun(rbool value)
 
 void RDOStudioModel::updateActions()
 {
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	if (!pMainWindow)
 		return;
 
@@ -1185,9 +1179,9 @@ void RDOStudioModel::updateActions()
 		case rdo::runtime::RTM_BreakPoint: runTimeMode = QString::fromLocal8Bit("Точка останова: %1").arg(getLastBreakPointName()); break;
 		}
 	}
-	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_RUNTYPE>(runTimeMode);
+	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_RUNTYPE>(runTimeMode);
 
-	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SPEED>(
+	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SPEED>(
 		getRuntimeMode() != rdo::runtime::RTM_MaxSpeed || !isRunning()
 			? QString::fromStdWString(L"Скорость: %1%").arg(rsint(getSpeed() * 100))
 			: ""
@@ -1228,14 +1222,14 @@ void RDOStudioModel::updateActions()
 			break;
 		}
 	}
-	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SHOWRATE>(showRateStr);
+	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SHOWRATE>(showRateStr);
 }
 
 void RDOStudioModel::update()
 {
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
 
-	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_TIME>(QString::fromStdWString(L"Время: %1").arg(m_timeNow));
+	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_TIME>(QString::fromStdWString(L"Время: %1").arg(m_timeNow));
 
 	rdo::runtime::RunTimeMode rm;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &rm);
@@ -1243,7 +1237,7 @@ void RDOStudioModel::update()
 	{
 		if (rm == rdo::runtime::RTM_BreakPoint)
 		{
-			studioApp.getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit("Пауза в %1 из-за точки '%2'\n").arg(getTimeNow()).arg(getLastBreakPointName()));
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Пауза в %1 из-за точки '%2'\n").arg(getTimeNow()).arg(getLastBreakPointName()));
 		}
 		setRuntimeMode(rm);
 	}
@@ -1396,7 +1390,7 @@ CPTR(rdoEditor::RDOEditorTabCtrl) RDOStudioModel::getTab() const
 
 void RDOStudioModel::onFileNew()
 {
-	NewModelDialog dlg(studioApp.getMainWndUI());
+	NewModelDialog dlg(g_pApp->getMainWndUI());
 	if (dlg.exec() == QDialog::Accepted)
 	{
 		newModel(dlg.getModelName(), dlg.getModelPath() + dlg.getModelName(), dlg.getTemplateIndex());

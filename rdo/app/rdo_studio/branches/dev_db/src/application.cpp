@@ -34,20 +34,13 @@
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/thread.h"
 #include "app/rdo_studio/src/dialog/file_association_dialog.h"
-#include "app/rdo_studio/rdo_tracer/rdotracer.h"
-#include "thirdparty/qt-solutions/qtwinmigrate/src/qmfcapp.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioApp
 // --------------------------------------------------------------------------------
-RDOStudioApp studioApp;
+RDOStudioApp* g_pApp = NULL;
 
 #ifdef _DEBUG
 void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
@@ -77,15 +70,15 @@ void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QS
 
 	case QtWarningMsg:
 		TRACE1("Warning: %s\n", message.toLocal8Bit().constData());
-		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", message);
+		QMessageBox::warning(g_pApp->getMainWnd(), "QtWarning", message);
 		break;
 
 	case QtCriticalMsg:
-		QMessageBox::critical(studioApp.getMainWnd(), "QtCritical", message);
+		QMessageBox::critical(g_pApp->getMainWnd(), "QtCritical", message);
 		break;
 
 	case QtFatalMsg:
-		QMessageBox::critical(studioApp.getMainWnd(), "QtFatal", message);
+		QMessageBox::critical(g_pApp->getMainWnd(), "QtFatal", message);
 		break;
 	}
 
@@ -93,8 +86,8 @@ void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QS
 }
 #endif
 
-RDOStudioApp::RDOStudioApp()
-	: CWinApp()
+RDOStudioApp::RDOStudioApp(int& argc, char** argv)
+	: QApplication(argc, argv)
 	, m_pStudioGUI                  (NULL  )
 #ifdef RDO_MT
 	, m_pStudioMT                   (NULL  )
@@ -108,6 +101,8 @@ RDOStudioApp::RDOStudioApp()
 	, m_exitCode                    (rdo::simulation::report::EC_OK)
 	, m_pMainFrame                  (NULL  )
 {
+	g_pApp = this;
+
 #ifdef _DEBUG
 	qInstallMessageHandler(g_messageOutput);
 #endif
@@ -116,31 +111,7 @@ RDOStudioApp::RDOStudioApp()
 	setlocale(LC_NUMERIC, _T("eng"));
 
 	m_log.open(_T("log.txt"));
-}
 
-RDOStudioApp::~RDOStudioApp()
-{}
-
-BOOL RDOStudioApp::Run()
-{
-	int result = QMfcApp::run(this);
-	delete qApp;
-	return result;
-}
-
-BOOL RDOStudioApp::InitInstance()
-{
-	CWinApp::InitInstance();
-
-	if (::OleInitialize(NULL) != S_OK)
-		return FALSE;
-
-	free((PTR(void))m_pszProfileName);
-	m_pszProfileName = _tcsdup(_T(""));
-	free((PTR(void))m_pszRegistryKey);
-	m_pszRegistryKey = _tcsdup(_T("RAO-studio"));
-
-	QMfcApp::instance(this);
 	qApp->setQuitOnLastWindowClosed(true);
 
 	QApplication::setApplicationName("RAO-studio");
@@ -188,7 +159,6 @@ BOOL RDOStudioApp::InitInstance()
 	// Внутри создается объект модели
 	m_pMainFrame = new RDOStudioMainFrame();
 	m_pMainFrame->init();
-	m_pMainWnd = m_pMainFrame->c_wnd();
 	m_pMainFrame->show();
 
 #ifdef RDO_MT
@@ -212,11 +182,10 @@ BOOL RDOStudioApp::InitInstance()
 		("dont_close_if_error", "don't close application if model error detected")
 	;
 
-	std::vector<tstring> args = po::split_winmain(m_lpCmdLine);
 	po::variables_map vm;
 	try
 	{
-		po::store(po::command_line_parser(args).options(desc).run(), vm);
+		po::store(po::parse_command_line(argc, argv, desc), vm);
 		po::notify(vm);
 	}
 	catch (const std::exception&)
@@ -248,33 +217,18 @@ BOOL RDOStudioApp::InitInstance()
 	rbool autoModel = false;
 	if (!openModelName.empty())
 	{
-		if (!rdo::extractFilePath(openModelName).empty())
+		openModelName = rdo::File::extractFilePath(qApp->applicationFilePath().toLocal8Bit().constData()) + openModelName;
+		if (rdo::File::exist(openModelName) && g_pModel->openModel(QString::fromLocal8Bit(openModelName.c_str())))
 		{
-			tstring longFileName;
-			if (shortToLongPath(openModelName, longFileName))
-			{
-				openModelName = longFileName;
-			}
-			if (g_pModel->openModel(QString::fromLocal8Bit(openModelName.c_str())))
-			{
-				autoModel = true;
-			}
+			autoRun            = true;
+			m_autoExitByModel  = true;
+			m_dontCloseIfError = true;
+			autoModel          = true;
 		}
 		else
 		{
-			openModelName = rdo::extractFilePath(RDOStudioApp::getFullExtName()) + openModelName;
-			if (rdo::File::exist(openModelName) && g_pModel->openModel(QString::fromLocal8Bit(openModelName.c_str())))
-			{
-				autoRun            = true;
-				m_autoExitByModel  = true;
-				m_dontCloseIfError = true;
-				autoModel          = true;
-			}
-			else
-			{
-				m_exitCode = rdo::simulation::report::EC_ModelNotFound;
-				return false;
-			}
+			m_exitCode = rdo::simulation::report::EC_ModelNotFound;
+			return;
 		}
 	}
 	else
@@ -302,10 +256,11 @@ BOOL RDOStudioApp::InitInstance()
 		g_pModel->runModel();
 	}
 
-	return TRUE;
+	connect(&m_idleTimer, &QTimer::timeout, this, &RDOStudioApp::onIdle);
+	m_idleTimer.start(0);
 }
 
-int RDOStudioApp::ExitInstance()
+RDOStudioApp::~RDOStudioApp()
 {
 	m_pMainFrame = NULL;
 
@@ -325,14 +280,12 @@ int RDOStudioApp::ExitInstance()
 	// Роняем кернел и закрываем все треды
 	RDOKernel::close();
 
+	g_pApp = NULL;
+
 	if (m_autoExitByModel)
 	{
-		CWinApp::ExitInstance();
-		return m_exitCode;
-	}
-	else
-	{
-		return CWinApp::ExitInstance();
+		//! @todo qt
+		//return m_exitCode;
 	}
 }
 
@@ -361,67 +314,33 @@ REF(std::ofstream) RDOStudioApp::log()
 	return m_log;
 }
 
-rbool RDOStudioApp::shortToLongPath(CREF(tstring) shortPath, REF(tstring) longPath)
+QString RDOStudioApp::getFullHelpFileName(CREF(QString) helpFileName) const
 {
-	USES_CONVERSION;
-
-	LPSHELLFOLDER psfDesktop    = NULL;
-	ULONG         chEaten       = 0;
-	LPITEMIDLIST  pidlShellItem = NULL;
-	WCHAR         szLongPath[_MAX_PATH] = { 0 };
-
-	// Get the Desktop's shell folder interface
-	HRESULT hr = ::SHGetDesktopFolder(&psfDesktop);
-
-	LPWSTR  lpwShortPath = A2W(shortPath.c_str());
-
-	// Request an ID list (relative to the desktop) for the short pathname 
-	hr = psfDesktop->ParseDisplayName(NULL, NULL, lpwShortPath, &chEaten, &pidlShellItem, NULL);
-	psfDesktop->Release(); // Release the desktop's IShellFolder
-
-	if (FAILED(hr))
+	QString result = chkHelpExist(helpFileName);
+	if (result.size() < 3)
 	{
-		// If we couldn't get an ID list for short pathname, it must not exist.
-		longPath.empty();
-		return false;
+		result = QString();
 	}
-	else
+	if (chkHelpExist("assistant.exe").size() < 3)
 	{
-		// We did get an ID list, convert it to a long pathname
-		::SHGetPathFromIDListW(pidlShellItem, szLongPath);
-		// Free the ID list allocated by ParseDisplayName
-		LPMALLOC pMalloc = NULL;
-		::SHGetMalloc(&pMalloc);
-		pMalloc->Free(pidlShellItem);
-		pMalloc->Release();
-		longPath = W2A(szLongPath);
-		return true;
+		result = QString();
 	}
+	return result;
 }
 
-tstring RDOStudioApp::getFullExtName()
+QString RDOStudioApp::chkHelpExist(CREF(QString) helpFileName) const
 {
-	return qApp->applicationFilePath().toLocal8Bit().constData();
-}
+	QString fullHelpFileName = QString("%1%2")
+		.arg(QString::fromLocal8Bit(rdo::File::extractFilePath(qApp->applicationFilePath().toLocal8Bit().constData()).c_str()))
+		.arg(helpFileName);
 
-tstring RDOStudioApp::getFullHelpFileName(tstring str) const
-{
-	tstring strTemp = chkHelpExist(str);
-	if (                       strTemp.size() < 3) return _T("");
-	if (chkHelpExist ("assistant.exe").size() < 3) return _T("");
-
-	return strTemp;
-}
-
-tstring RDOStudioApp::chkHelpExist(tstring fileName) const
-{
-	fileName.insert(0, rdo::extractFilePath(RDOStudioApp::getFullExtName()));
-	if (!rdo::File::exist(fileName))
+	if (!QFile::exists(fullHelpFileName))
 	{
-		QMessageBox::warning(studioApp.getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Невозможно найти файл справки '%1'.\r\nОн должен быть расположен в директории с RAO-studio.").arg(QString::fromLocal8Bit(fileName.c_str())));
-		return tstring();
+		QMessageBox::warning(g_pApp->getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Невозможно найти файл справки '%1'.\r\nОн должен быть расположен в директории с RAO-studio.").arg(helpFileName));
+		fullHelpFileName = QString();
 	}
-	return fileName;
+
+	return fullHelpFileName;
 }
 
 void RDOStudioApp::chkAndRunQtAssistant()
@@ -441,7 +360,7 @@ PTR(QProcess) RDOStudioApp::runQtAssistant() const
 	PTR(QProcess) pProcess = new QProcess;
 	QStringList args;
 	args << QString("-collectionFile")
-		<< QString(getFullHelpFileName().c_str())
+		<< getFullHelpFileName()
 		<< QString("-enableRemoteControl")
 		<< QString("-quiet");
 	pProcess->start(QString("assistant"), args);
@@ -543,7 +462,7 @@ void RDOStudioApp::setupFileAssociation()
 #ifdef Q_OS_WIN
 	QString fileTypeID("RAO.Project");
 	QString appParam(" -i \"%1\"");
-	QString appFullName(QString::fromLocal8Bit(RDOStudioApp::getFullExtName().c_str()));
+	QString appFullName = qApp->applicationFilePath();
 	appFullName.replace("/", "\\");
 
 	QSettings settings("HKEY_CURRENT_USER\\Software\\Classes", QSettings::NativeFormat);
@@ -558,7 +477,7 @@ void RDOStudioApp::setupFileAssociation()
 			openCommand.remove(pos, appParam.length());
 			if (openCommand != appFullName)
 			{
-				FileAssociationDialog dlg(studioApp.getMainWndUI());
+				FileAssociationDialog dlg(g_pApp->getMainWndUI());
 				mustBeRegistered = dlg.exec() == QDialog::Accepted;
 				setFileAssociationCheckInFuture(dlg.checkBox->isChecked());
 			}
@@ -600,30 +519,6 @@ void RDOStudioApp::autoCloseByModel()
 	}
 }
 
-BOOL RDOStudioApp::PreTranslateMessage(PTR(MSG) pMsg) 
-{
-	if (pMsg->message == WM_KEYDOWN)
-	{
-		//! @todo qt
-		//PTR(CMDIChildWnd) pChild = m_pMainFrame->MDIGetActive();
-		//if (pChild)
-		//{
-		//	PTR(CView) pView = pChild->GetActiveView();
-		//	if (dynamic_cast<PTR(RDOStudioFrameView)>(pView) && pView == pChild->GetFocus())
-		//	{
-		//		pView->SendMessage(pMsg->message, pMsg->wParam, pMsg->lParam);
-		//		return true;
-		//	}
-		//}
-	}
-	return CWinApp::PreTranslateMessage(pMsg);
-}
-
-BOOL RDOStudioApp::ProcessMessageFilter(int code, LPMSG lpMsg)
-{
-	return CWinApp::ProcessMessageFilter(code, lpMsg);
-}
-
 void RDOStudioApp::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam)
 {
 #ifdef RDO_MT
@@ -642,23 +537,12 @@ void RDOStudioApp::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void
 #endif
 }
 
-BOOL RDOStudioApp::OnIdle(LONG lCount)
+void RDOStudioApp::onIdle()
 {
 #ifdef RDO_MT
 	static_cast<PTR(RDOThreadStudioGUI)>(m_pStudioGUI)->processMessages();
-	CWinApp::OnIdle(lCount);
-	return true;
 #else
 	kernel->idle();
-	if (lCount > 10000)
-	{
-		return CWinApp::OnIdle(lCount);
-	}
-	else
-	{
-		CWinApp::OnIdle(lCount);
-		return true;
-	}
 #endif
 }
 

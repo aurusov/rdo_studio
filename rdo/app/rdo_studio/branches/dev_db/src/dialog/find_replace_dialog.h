@@ -27,7 +27,8 @@ Q_OBJECT
 public:
 	struct Settings : public FindDialog::Settings
 	{
-		tstring byWhat;
+		QString byWhat;
+
 		Settings();
 		Settings(CREF(Settings) settings);
 	};

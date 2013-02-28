@@ -30,7 +30,7 @@ FrameAnimationContent::FrameAnimationContent(PTR(QWidget) pParent)
 {
 	setAttribute(Qt::WA_NoSystemBackground, true);
 
-	m_bgColor = QColor(studioApp.getStyle()->style_frame.theme->backgroundColor);
+	m_bgColor = QColor(g_pApp->getStyle()->style_frame.theme->backgroundColor);
 
 	updateFont();
 }
@@ -51,7 +51,7 @@ void FrameAnimationContent::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::
 	rbool imageFound = false;
 	if (pFrame->hasBgImage())
 	{
-		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(pFrame->m_bgImageName);
+		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(QString::fromLocal8Bit(pFrame->m_bgImageName.c_str()));
 		if (bmpIt != bitmapList.end())
 		{
 			size.setWidth (bmpIt->second.width ());
@@ -68,7 +68,7 @@ void FrameAnimationContent::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::
 	QColor bgColor;
 	if (pFrame->m_bgColor.m_transparent)
 	{
-		bgColor = QColor(studioApp.getStyle()->style_frame.theme->backgroundColor);
+		bgColor = QColor(g_pApp->getStyle()->style_frame.theme->backgroundColor);
 	}
 	else
 	{
@@ -87,7 +87,7 @@ void FrameAnimationContent::init(CREF(QSize) size)
 
 void FrameAnimationContent::updateFont()
 {
-	PTR(RDOStudioFrameStyle) pStyle = &studioApp.getStyle()->style_frame;
+	PTR(RDOStudioFrameStyle) pStyle = &g_pApp->getStyle()->style_frame;
 	ASSERT(pStyle);
 
 	m_font = QFont(pStyle->font->name.c_str());
@@ -204,7 +204,7 @@ void FrameAnimationContent::drawBackground(CPTRC(rdo::animation::Frame) pFrame, 
 	rbool bgImage = false;
 	if (pFrame->hasBgImage())
 	{
-		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(pFrame->m_bgImageName);
+		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(QString::fromLocal8Bit(pFrame->m_bgImageName.c_str()));
 		if (bmpIt != bitmapList.end())
 		{
 			m_memDC.dc().drawPixmap(0, 0, bmpIt->second);
@@ -214,7 +214,7 @@ void FrameAnimationContent::drawBackground(CPTRC(rdo::animation::Frame) pFrame, 
 
 	if (!bgImage)
 	{
-		m_memDC.dc().setPen(QColor(studioApp.getStyle()->style_frame.theme->defaultColor));
+		m_memDC.dc().setPen(QColor(g_pApp->getStyle()->style_frame.theme->defaultColor));
 		m_memDC.dc().setBrush(m_bgColor);
 
 		const ruint pountListCount = 4;
@@ -438,8 +438,8 @@ void FrameAnimationContent::elementBMP(
 	ASSERT(pElement);
 
 	QPixmap pixmap = FrameAnimationContent::getBitmap(
-		pElement->m_bmp_name,
-		pElement->hasMask() ? pElement->m_mask_name : tstring(),
+		QString::fromLocal8Bit(pElement->m_bmp_name.c_str()),
+		pElement->hasMask() ? QString::fromLocal8Bit(pElement->m_mask_name.c_str()) : QString(),
 		bitmapList,
 		bitmapGeneratedList
 	);
@@ -458,8 +458,8 @@ void FrameAnimationContent::elementSBMP(
 	ASSERT(pElement);
 
 	QPixmap pixmap = FrameAnimationContent::getBitmap(
-		pElement->m_bmp_name,
-		pElement->hasMask() ? pElement->m_mask_name : tstring(),
+		QString::fromLocal8Bit(pElement->m_bmp_name.c_str()),
+		pElement->hasMask() ? QString::fromLocal8Bit(pElement->m_mask_name.c_str()) : QString(),
 		bitmapList,
 		bitmapGeneratedList
 	);
@@ -471,8 +471,8 @@ void FrameAnimationContent::elementSBMP(
 }
 
 QPixmap FrameAnimationContent::getBitmap(
-	CREF(tstring)              bitmapName,
-	CREF(tstring)              maskName,
+	CREF(QString)              bitmapName,
+	CREF(QString)              maskName,
 	CREF(rdo::gui::BitmapList) bitmapList,
 	 REF(rdo::gui::BitmapList) bitmapGeneratedList)
 {
@@ -480,9 +480,9 @@ QPixmap FrameAnimationContent::getBitmap(
 	if (bmpIt == bitmapList.end())
 		return QPixmap();
 
-	if (!maskName.empty())
+	if (!maskName.isEmpty())
 	{
-		tstring maskedBitmapName(rdo::format(_T("%s%s"), bitmapName.c_str(), maskName.c_str()));
+		QString maskedBitmapName = QString("%1%2").arg(bitmapName).arg(maskName);
 
 		rdo::gui::BitmapList::const_iterator generatedIt = bitmapList.find(maskedBitmapName);
 		if (generatedIt != bitmapList.end())
@@ -517,11 +517,12 @@ void FrameAnimationContent::elementActive(PTR(rdo::animation::ActiveElement) pEl
 {
 	ASSERT(pElement);
 
-	rdo::gui::animation::AreaList::iterator it = areaList.find(pElement->m_opr_name);
+	QString oprName(QString::fromLocal8Bit(pElement->m_opr_name.c_str()));
+	rdo::gui::animation::AreaList::iterator it = areaList.find(oprName);
 	if (it == areaList.end())
 	{
 		std::pair<rdo::gui::animation::AreaList::iterator, rbool> result =
-			areaList.insert(rdo::gui::animation::AreaList::value_type(pElement->m_opr_name, rdo::gui::animation::Area()));
+			areaList.insert(rdo::gui::animation::AreaList::value_type(oprName, rdo::gui::animation::Area()));
 		ASSERT(result.second);
 		it = result.first;
 	}
@@ -598,7 +599,7 @@ rbool FrameAnimationWnd::event(QEvent* pEvent)
 		{
 			QByteArray ba;
 			ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/work_model/work_model_frame.htm\n");
-			studioApp.callQtAssistant(ba);
+			g_pApp->callQtAssistant(ba);
 		}
 
 		return true;

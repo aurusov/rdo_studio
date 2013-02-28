@@ -26,7 +26,7 @@ Q_OBJECT
 public:
 	struct Settings
 	{
-		tstring what;
+		QString what;
 		rbool   matchCase;
 		rbool   matchWholeWord;
 		rbool   searchDown;

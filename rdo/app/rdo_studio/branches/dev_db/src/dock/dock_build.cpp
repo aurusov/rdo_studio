@@ -33,22 +33,23 @@ DockBuild::DockBuild(PTR(QWidget) pParent)
 DockBuild::~DockBuild()
 {}
 
-void DockBuild::appendString(CREF(tstring) str)
+void DockBuild::appendString(CREF(QString) str)
 {
-	PTR(rdo::simulation::report::BuildEditLineInfo) pLine = new rdo::simulation::report::BuildEditLineInfo(str);
+	PTR(rdo::simulation::report::BuildEditLineInfo) pLine = new rdo::simulation::report::BuildEditLineInfo(str.toLocal8Bit().constData());
 	getContext().appendLine(pLine);
 }
 
 void DockBuild::appendString(CREF(rdo::simulation::report::FileMessage) message)
 {
-	if (message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == rdo::simulation::report::FileMessage::MT_WARNING && static_cast<PTR(rdoEditCtrl::RDOBuildEditTheme)>(studioApp.getStyle()->style_build.theme)->warning))
+	QString qMessage = QString::fromLocal8Bit(message.getText().c_str());
+	if (qMessage.contains(QString::fromStdWString(L"Сработало лицензионное ограничение")))
 	{
-		if (message.getText().find("Сработало лицензионное ограничение") != tstring::npos)
-		{
-			QMessageBox::critical(studioApp.getMainWnd(), QString::fromStdWString(L"Лицензионное ограничение"), QString::fromLocal8Bit(message.getText().c_str()));
-			return;
-		}
+		QMessageBox::critical(g_pApp->getMainWnd(), QString::fromStdWString(L"Лицензионное ограничение"), qMessage);
+		return;
+	}
 
+	if (message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == rdo::simulation::report::FileMessage::MT_WARNING && static_cast<PTR(rdoEditCtrl::RDOBuildEditTheme)>(g_pApp->getStyle()->style_build.theme)->warning))
+	{
 		PTR(rdo::simulation::report::BuildEditLineInfo) pLine = new rdo::simulation::report::BuildEditLineInfo(message);
 		getContext().appendLine(pLine);
 	}

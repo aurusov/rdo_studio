@@ -14,12 +14,6 @@
 #include "app/rdo_studio/edit_ctrls/rdologeditstyle.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdoEditCtrl;
 
 // --------------------------------------------------------------------------------
@@ -127,15 +121,11 @@ QSettings& operator>> (QSettings& settings, LogEditTheme& theme)
 // --------------------------------------------------------------------------------
 LogEditStyle::LogEditStyle(): RDOBaseEditStyle()
 {
+	theme = new LogEditTheme();
 }
 
 LogEditStyle::~LogEditStyle()
 {
-}
-
-void LogEditStyle::initTheme()
-{
-	theme = new LogEditTheme;
 }
 
 LogEditStyle& LogEditStyle::operator =( const LogEditStyle& style )

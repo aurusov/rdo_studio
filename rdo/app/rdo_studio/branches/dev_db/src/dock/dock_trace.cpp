@@ -13,7 +13,7 @@
 #include <QtWidgets/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_trace.h"
-#include "app/rdo_studio/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
 
 DockTrace::DockTrace(PTR(QWidget) pParent)

@@ -12,9 +12,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/rdo_edit/rdoeditorbaseedit.h"
-#include "app/rdo_studio/res/ac_function.xpm"
-#include "app/rdo_studio/res/ac_data.xpm"
-#include "app/rdo_studio/res/ac_trace.xpm"
+#include "app/rdo_studio/res/scintilla/ac_function.xpm"
+#include "app/rdo_studio/res/scintilla/ac_data.xpm"
+#include "app/rdo_studio/res/scintilla/ac_trace.xpm"
 #include "thirdparty/scintilla/include/SciLexer.h"
 // --------------------------------------------------------------------------------
 
@@ -90,8 +90,7 @@ tstring RDOEditorBaseEdit::convertToLexer(CREF(tstring) kw)
 		tstring::size_type pos2 = s.find(' ', pos1);
 		s.erase(pos1, pos2 - pos1);
 	}
-	tstring str_big = s;
-	rdo::toLower(s);
+	tstring str_big = boost::algorithm::to_lower_copy(s);
 	return str_big + " " + s;
 }
 

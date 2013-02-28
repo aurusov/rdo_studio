@@ -80,8 +80,8 @@ public:
 	rbool operator ==( const RDOBaseEditTab& tab ) const;
 	rbool operator !=( const RDOBaseEditTab& tab ) const;
 
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
+	void load(QSettings& settings);
+	void save(QSettings& settings) const;
 
 	int tabSize;
 	int indentSize;
@@ -107,8 +107,8 @@ public:
 	rbool operator ==( const RDOBaseEditWindow& window ) const;
 	rbool operator !=( const RDOBaseEditWindow& window ) const;
 
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
+	void load(QSettings& settings);
+	void save(QSettings& settings) const;
 
 	rbool wordWrap;
 	rbool showHorzScrollBar;
@@ -122,11 +122,6 @@ QSettings& operator>> (QSettings& settings,       RDOBaseEditWindow& window);
 // --------------------------------------------------------------------------------
 class RDOBaseEditStyle: public rdoStyle::RDOStyleWithTheme
 {
-protected:
-	virtual void initTheme();
-	virtual void initTab();
-	virtual void initWindow();
-
 public:
 	RDOBaseEditStyle();
 	virtual ~RDOBaseEditStyle();
@@ -135,9 +130,9 @@ public:
 	rbool operator ==( const RDOBaseEditStyle& style ) const;
 	rbool operator !=( const RDOBaseEditStyle& style ) const;
 
-	virtual void  init( CREF(QString) _groupName = "" );
-	virtual rbool load();
-	virtual rbool save() const;
+	void init( CREF(QString) _groupName = "" );
+	rbool load();
+	rbool save() const;
 
 	RDOBaseEditTab*    tab;
 	RDOBaseEditWindow* window;

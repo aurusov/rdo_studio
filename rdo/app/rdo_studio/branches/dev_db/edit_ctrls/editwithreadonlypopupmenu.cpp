@@ -19,7 +19,7 @@
 EditWithReadOnlyPopupMenu::EditWithReadOnlyPopupMenu(QWidget* pParent)
 	: m_pPopupMenu(NULL)
 {
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	m_pPopupMenu = new QMenu(pParent);

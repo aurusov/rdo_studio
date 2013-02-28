@@ -24,13 +24,12 @@
 #include "app/rdo_studio/edit_ctrls/rdobuildeditstyle.h"
 #include "app/rdo_studio/edit_ctrls/rdofindeditstyle.h"
 #include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
-#include "app/rdo_studio/src/tracer/ctrls/log_main_wnd.h"
+#include "app/rdo_studio/src/tracer/logger/tracer_logger_main_wnd.h"
 #include "app/rdo_studio/src/frame/frame_view.h"
 #include "app/rdo_studio/src/frame/frame_options_view.h"
-#include "app/rdo_studio/src/chart/chart_view_style.h"
+#include "app/rdo_studio/src/tracer/chart/chart_view_style.h"
 #include "app/rdo_studio/src/frame/frame_style.h"
-#include "app/rdo_studio/resource.h"
-#include "app/rdo_studio/src/chart/chart_view.h"
+#include "app/rdo_studio/src/tracer/chart/chart_view.h"
 // --------------------------------------------------------------------------------
 
 class ViewPreferences
@@ -243,7 +242,7 @@ private:
 	rdo::gui::tracer::LogStyle       style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
-	RDOStudioChartViewStyle          style_chart;
+	rdo::gui::tracer::ChartViewStyle style_chart;
 	RDOStudioFrameStyle              style_frame;
 
 	PTR(rdoEditor::RDOEditorEdit)     preview_editor;
@@ -253,10 +252,10 @@ private:
 	PTR(rdoEditor::RDOEditorResults)  preview_results;
 	PTR(rdoEditCtrl::RDOFindEdit)     preview_find;
 
-	PTR(RDOStudioChartDoc)            preview_chart_doc;
-	PTR(ChartView)                    preview_chart;
-	std::vector<TracerTimeNow>        preview_times;
-	TracerSerie                       preview_serie;
+	PTR(rdo::gui::tracer::ChartDoc)     preview_chart_doc;
+	PTR(rdo::gui::tracer::ChartView)    preview_chart;
+	std::vector<rdo::gui::tracer::Time> preview_times;
+	rdo::gui::tracer::LPSerie           preview_serie;
 
 	PTR(FrameOptionsView)             preview_frame;
 

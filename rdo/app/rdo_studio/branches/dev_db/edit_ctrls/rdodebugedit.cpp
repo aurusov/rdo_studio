@@ -18,12 +18,6 @@
 #include "thirdparty/scintilla/include/SciLexer.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdoEditCtrl;
 
 // --------------------------------------------------------------------------------
@@ -61,7 +55,7 @@ void RDODebugEdit::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_debug\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }
 
 void RDODebugEdit::mousePressEvent(QMouseEvent* pEvent)

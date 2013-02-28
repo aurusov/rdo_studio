@@ -19,12 +19,6 @@
 #include "app/rdo_studio/src/application.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#	define new DEBUG_NEW
-#undef THIS_FILE
-	static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdo::simulation::report;
 using namespace rdoEditCtrl;
 
@@ -111,7 +105,7 @@ void RDOBuildEdit::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_build\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }
 
 void RDOBuildEdit::mousePressEvent(QMouseEvent*  pEvent)

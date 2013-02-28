@@ -48,8 +48,6 @@ public:
 	void update_start();
 	void update_stop ();
 
-	PTR(CWnd) c_wnd() { return &m_thisCWnd; }
-
 	virtual void addSubWindow              (QWidget* pWidget);
 	virtual void activateSubWindow         (QWidget* pWidget);
 	virtual void connectOnActivateSubWindow(QObject* pObject);
@@ -93,7 +91,6 @@ private:
 	typedef  QMainWindow  parent_type;
 	typedef  QStringList  ReopenList;
 
-	CWnd            m_thisCWnd;
 	int             m_updateTimerID;
 	LPStatusBar     m_pStatusBar;
 	ReopenList      m_reopenList;

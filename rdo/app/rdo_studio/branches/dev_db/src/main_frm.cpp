@@ -24,16 +24,9 @@
 #include "app/rdo_studio/src/about.h"
 #include "app/rdo_studio/src/view_preferences.h"
 #include "app/rdo_studio/rdo_edit/rdoeditortabctrl.h"
-#include "app/rdo_studio/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio/resource.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioMainFrame::InsertMenuData
@@ -320,8 +313,6 @@ void RDOStudioMainFrame::createInsertMenu()
 
 void RDOStudioMainFrame::init()
 {
-	m_thisCWnd.Attach(reinterpret_cast<HWND>(winId()));
-
 	// Кто-то должен поднять кернел и треды
 	new RDOStudioModel();
 
@@ -456,7 +447,7 @@ void RDOStudioMainFrame::onHelpWhatsNew()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/rdo_whats_new.htm\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }
 
 void RDOStudioMainFrame::onHelpAbout()

@@ -16,12 +16,6 @@
 #include "app/rdo_studio/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdoEditor;
 
 // --------------------------------------------------------------------------------
@@ -61,7 +55,7 @@ void RDOEditorResults::onHelpContext()
 	ba.append("activateKeyword ");
 	ba.append(keyword.c_str());
 	ba.append("\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }
 
 void RDOEditorResults::mousePressEvent(QMouseEvent* pEvent)

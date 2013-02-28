@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dialog/goto_line_dialog.h"
+#include "ui/qt/headers/validator/int_validator.h"
 // --------------------------------------------------------------------------------
 
 GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount)
@@ -24,7 +25,7 @@ GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount)
 
 	label->setText(QString::fromStdWString(L"Номер строки (1-%1):").arg(lineCount));
 
-	lineEdit->setValidator(new QIntValidator(1, lineCount, this));
+	lineEdit->setValidator(new rdo::gui::IntValidator(1, lineCount, this));
 	lineEdit->setText(QString::number(m_line));
 	lineEdit->setFocus();
 	lineEdit->selectAll();

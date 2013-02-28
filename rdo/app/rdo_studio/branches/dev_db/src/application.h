@@ -13,6 +13,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
 #include <QtCore/qprocess.h>
+#include <QtCore/qtimer.h>
+#include <QtWidgets/qapplication.h>
 #include <QtWidgets/qmainwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
@@ -33,10 +35,10 @@ namespace rdo { namespace gui { namespace tracer {
 class Tracer;
 }}}
 
-class RDOStudioApp: public CWinApp
+class RDOStudioApp: public QApplication
 {
 public:
-	RDOStudioApp();
+	RDOStudioApp(int& argc, char** argv);
 	virtual ~RDOStudioApp();
 
 	PTR(RDOStudioMainFrame) getMainWndUI();
@@ -69,10 +71,8 @@ public:
 
 	void           autoCloseByModel ();
 
-	static tstring getFullExtName      ();
-	tstring        getFullHelpFileName (tstring str = "RAO-help.qhc") const;
-	static rbool   shortToLongPath     (CREF(tstring) shortPath, REF(tstring) longPath);
-	tstring        chkHelpExist        (tstring fileName) const;
+	QString        getFullHelpFileName (CREF(QString) helpFileName = "RAO-help.qhc") const;
+	QString        chkHelpExist        (CREF(QString) helpFileName) const;
 	void           chkAndRunQtAssistant();
 	PTR(QProcess)  runQtAssistant      () const;
 	void           callQtAssistant     (CREF(QByteArray) ba);
@@ -99,6 +99,7 @@ private:
 	QProcess*                              m_pAssistant;
 	PTR(RDOStudioMainFrame)                m_pMainFrame;
 	rdoEditor::LPRDOEditorEditStyle        m_pEditorEditStyle;
+	QTimer                                 m_idleTimer;
 
 	void setupFileAssociation();
 
@@ -106,16 +107,11 @@ private:
 	void convertSettings() const;
 #endif
 
-private:
-	virtual BOOL Run                 ();
-	virtual BOOL InitInstance        ();
-	virtual int  ExitInstance        ();
-	virtual BOOL PreTranslateMessage (PTR(MSG) pMsg);
-	virtual BOOL OnIdle              (LONG lCount);
-	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
+private slots:
+	void onIdle();
 };
 
 // --------------------------------------------------------------------------------
-extern RDOStudioApp studioApp;
+extern RDOStudioApp* g_pApp;
 
 #endif // _RDO_STUDIO_APPLICATION_H_

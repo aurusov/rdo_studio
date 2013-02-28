@@ -32,7 +32,7 @@ public:
 
 	void setEditorStyle(RDOFindEditStyle* pStyle);
 
-	void setKeyword(CREF(tstring) keyword, const rbool matchCase = false) const;
+	void setKeyword(CREF(QString) keyword, const rbool matchCase = false) const;
 
 private:
 	typedef  LogEdit  super;

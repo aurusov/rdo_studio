@@ -20,13 +20,8 @@
 #include "thirdparty/scintilla/lexlib/WordList.h"
 #include "thirdparty/scintilla/rdo/LexRdo.h"
 #include "thirdparty/scintilla/rdo/WordListUtil.h"
+#include "thirdparty/scintilla/lexlib/CharacterSet.h"
 // --------------------------------------------------------------------------------
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 using namespace rdoEditor;
 using namespace rdoEditCtrl;
@@ -61,7 +56,7 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView)
 	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
 	QObject::connect(this, SIGNAL(marginClicked(int, int, int)), this, SLOT(catchMarginClick(int, int, int)));
 
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 	m_pPopupMenu = new QMenu(this);
 	m_pPopupMenu->addMenu(pMainWindow->menuInsert);
@@ -414,10 +409,10 @@ void RDOEditorEdit::onEditCompleteWord()
 	tstring primaryKwList;
 	if (g_pModel->getTab())
 	{
-		//studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdo::service::simulation::RDOThreadCodeComp::GetCodeComp(tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), primaryKwList));
+		//g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdo::service::simulation::RDOThreadCodeComp::GetCodeComp(tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), primaryKwList));
 
 		rdo::service::simulation::RDOThreadSimulator::GetRTP RTPList;
-		studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &RTPList);
+		g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &RTPList);
 		std::vector< rdo::service::simulation::RDOThreadSimulator::RTP >::iterator rtp_it = RTPList.begin();
 		while (rtp_it != RTPList.end())
 		{
@@ -426,7 +421,7 @@ void RDOEditorEdit::onEditCompleteWord()
 		}
 
 		rdo::service::simulation::RDOThreadSimulator::GetRSS RSSList;
-		studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &RSSList);
+		g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &RSSList);
 		std::vector< rdo::service::simulation::RDOThreadSimulator::RSS >::iterator rss_it = RSSList.begin();
 		while (rss_it != RSSList.end())
 		{
@@ -447,8 +442,18 @@ void RDOEditorEdit::onEditCompleteWord()
 
 	typedef std::vector<tstring> string_list;
 
+	class compareStringScintilla {
+	public:
+		bool operator()(tstring A, tstring B) {
+			return CompareNCaseInsensitive(A.c_str(), B.c_str(), A.length()) < 0;
+		}
+	};
+
+	compareStringScintilla functor;
+
 	WordListUtil getList(fullWordList);
 	string_list basicList = getList.getNearestWords(tstring());
+	std::sort(basicList.begin(), basicList.end(), functor);
 	for (string_list::const_iterator it = basicList.begin(); it != basicList.end(); ++it)
 	{
 		primaryKwList += *it;
@@ -481,7 +486,7 @@ void RDOEditorEdit::onEditCompleteWord()
 
 	string_list::const_iterator it = prioritySortedKwList.begin();
 	tstring stWord = *it;
-	std::sort(prioritySortedKwList.begin(), prioritySortedKwList.end());
+	std::sort(prioritySortedKwList.begin(), prioritySortedKwList.end(), functor);
 
 	tstring foundKeyWords = "";
 	for (string_list::const_iterator it = prioritySortedKwList.begin(); it != prioritySortedKwList.end(); ++it) 
@@ -493,6 +498,7 @@ void RDOEditorEdit::onEditCompleteWord()
 		}
 	}
 	LPCTSTR list;
+
 	if (static_cast<PTR(RDOEditorEditStyle)>(m_pStyle)->autoComplete->showFullList)
 	{
 		list = primaryKwList.c_str();
@@ -544,7 +550,6 @@ void RDOEditorEdit::onEditCompleteWord()
 		else
 		{
 			sendEditor      (SCI_AUTOCSHOW,   userPatternLength, (long)list);
-			sendEditorString(SCI_AUTOCSELECT, 0, startKeyWordScroll.c_str());
 			sendEditorString(SCI_AUTOCSELECT, 0, startKeyWord.c_str());
 		}
 	}
@@ -651,14 +656,14 @@ void RDOEditorEdit::onHelpContext()
 	ba.append("activateKeyword ");
 	ba.append(keyword.c_str());
 	ba.append("\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }
 
 void RDOEditorEdit::onUpdateActions(rbool activated)
 {
 	super::onUpdateActions(activated);
 
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(
@@ -669,7 +674,7 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 
 	updateAction(
 		pMainWindow->actEditCompleteWord,
-		activated && studioApp.getStyle()->style_editor.autoComplete->useAutoComplete,
+		activated && g_pApp->getStyle()->style_editor.autoComplete->useAutoComplete,
 		this, &RDOEditorEdit::onEditCompleteWord
 	);
 

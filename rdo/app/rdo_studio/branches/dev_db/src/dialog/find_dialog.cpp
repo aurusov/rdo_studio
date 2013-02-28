@@ -15,8 +15,7 @@
 // --------------------------------------------------------------------------------
 
 FindDialog::Settings::Settings()
-	: what          ("")
-	, matchCase     (false)
+	: matchCase     (false)
 	, matchWholeWord(false)
 	, searchDown    (true )
 {}
@@ -56,7 +55,7 @@ void FindDialog::setSettings(CREF(Settings) settings)
 {
 	m_settings = settings;
 
-	lineEdit->setText(QString::fromLocal8Bit(m_settings.what.c_str()));
+	lineEdit->setText(m_settings.what);
 	lineEdit->setFocus();
 	lineEdit->selectAll();
 	matchCase->setChecked(m_settings.matchCase);
@@ -78,7 +77,7 @@ void FindDialog::onFindButton()
 
 void FindDialog::onWhatEdited(const QString& text)
 {
-	m_settings.what = text.toLocal8Bit().constData();
+	m_settings.what = text;
 }
 
 void FindDialog::onMatchCaseChanged(int value)

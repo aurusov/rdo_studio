@@ -17,9 +17,9 @@
 #include "app/rdo_studio/edit_ctrls/rdobuildeditstyle.h"
 #include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
 #include "app/rdo_studio/edit_ctrls/rdofindeditstyle.h"
-#include "app/rdo_studio/src/tracer/ctrls/log_view_style.h"
+#include "app/rdo_studio/src/tracer/logger/tracer_logger_view_style.h"
 #include "app/rdo_studio/src/style.h"
-#include "app/rdo_studio/src/chart/chart_view_style.h"
+#include "app/rdo_studio/src/tracer/chart/chart_view_style.h"
 #include "app/rdo_studio/src/frame/frame_style.h"
 #include "app/rdo_studio/src/dock/dock_build.h"
 #include "app/rdo_studio/src/dock/dock_debug.h"
@@ -40,7 +40,7 @@ public:
 	rdoEditor::RDOEditorResultsStyle  style_results;
 	rdoEditCtrl::RDOFindEditStyle     style_find;
 	RDOStudioFrameStyle               style_frame;
-	RDOStudioChartViewStyle           style_chart;
+	rdo::gui::tracer::ChartViewStyle  style_chart;
 
 	rbool isMDIMaximazed() const { return true; }
 

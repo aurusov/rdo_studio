@@ -25,12 +25,6 @@
 #include "thirdparty/scintilla/lexlib/WordList.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdoEditCtrl;
 using namespace rdoStyle;
 
@@ -169,6 +163,11 @@ void RDOBaseEdit::catchCharAdded(int ch)
 	{
 		autoIndent();
 	}
+}
+
+long RDOBaseEdit::sendEditorString(ruint msg, unsigned long wParam, CREF(QString) str) const
+{
+	return super::sends(msg, wParam, str.toLocal8Bit().constData());
 }
 
 int RDOBaseEdit::getNewMarker()
@@ -341,13 +340,16 @@ tstring RDOBaseEdit::getCurrentOrSelectedWord() const
 		: getCurrentWord();
 }
 
-tstring RDOBaseEdit::getWordForFind() const
+QString RDOBaseEdit::getWordForFind() const
 {
 	return isSelected()
-		? getSelection()
-		: m_pGroup && !m_pGroup->findStr.empty()
-			? m_pGroup->findStr
-			: getCurrentWord();
+		? QString::fromLocal8Bit(getSelection().c_str())
+		: !getCurrentWord().empty()
+			? QString::fromLocal8Bit(getCurrentWord().c_str())
+			: m_pGroup && !m_pGroup->findStr.isEmpty()
+				? m_pGroup->findStr
+				: QString();
+
 }
 
 CharacterRange RDOBaseEdit::getSelectionRange() const
@@ -376,7 +378,7 @@ void RDOBaseEdit::ensureRangeVisible(int posStart, int posEnd, rbool enforcePoli
 
 void RDOBaseEdit::onSearchFind() 
 {
-	m_findSettings.what = getCurrentOrSelectedWord();
+	m_findSettings.what = QString::fromLocal8Bit(getCurrentOrSelectedWord().c_str());
 
 	if (!m_pFindDialog)
 	{
@@ -389,7 +391,7 @@ void RDOBaseEdit::onSearchFind()
 
 	if(m_pGroup)
 	{
-		m_findSettings.what.empty() 
+		m_findSettings.what.isEmpty() 
 			? m_findSettings.what = m_pGroup->findStr
 			: m_pGroup->findStr = m_findSettings.what;
 		m_findReplaceSettings.searchDown = m_pGroup->bSearchDown;
@@ -422,7 +424,7 @@ void RDOBaseEdit::onFindDlgClose()
 void RDOBaseEdit::onSearchFindNext() 
 {
 	findNext(
-		m_pGroup->findStr.empty()
+		m_pGroup->findStr.isEmpty()
 			? m_findSettings.what
 			: m_pGroup->findStr,
 		m_findSettings.searchDown,
@@ -434,7 +436,7 @@ void RDOBaseEdit::onSearchFindNext()
 void RDOBaseEdit::onSearchFindPrevious() 
 {
 	findNext(
-		m_pGroup->findStr.empty()
+		m_pGroup->findStr.isEmpty()
 			? m_findSettings.what
 			: m_pGroup->findStr,
 		!m_findSettings.searchDown,
@@ -447,7 +449,7 @@ void RDOBaseEdit::onSearchFindNextCurrent()
 {
 	if (m_pGroup)
 	{
-		m_pGroup->findStr     = getCurrentWord();
+		m_pGroup->findStr     = QString::fromLocal8Bit(getCurrentWord().c_str());
 		m_pGroup->bSearchDown = true;
 		findNext(m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
 	}
@@ -457,13 +459,13 @@ void RDOBaseEdit::onSearchFindPreviousCurrent()
 {
 	if (m_pGroup)
 	{
-		m_pGroup->findStr     = getCurrentWord();
+		m_pGroup->findStr     = QString::fromLocal8Bit(getCurrentWord().c_str());
 		m_pGroup->bSearchDown = true;
 		findNext(m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
 	}
 }
 
-void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
+void RDOBaseEdit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
 	int findLen = findWhat.length();
 	if (!findLen)
@@ -495,7 +497,7 @@ void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchC
 	sendEditor(SCI_SETTARGETSTART, startPosition);
 	sendEditor(SCI_SETTARGETEND, endPosition);
 	sendEditor(SCI_SETSEARCHFLAGS, flags);
-	int posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat.c_str());
+	int posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
 	if (posFind == -1)
 	{
 		if (!searchDown)
@@ -510,13 +512,13 @@ void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchC
 		}
 		sendEditor(SCI_SETTARGETSTART, startPosition);
 		sendEditor(SCI_SETTARGETEND, endPosition);
-		posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat.c_str());
+		posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
 	}
 	if (posFind == -1)
 	{
 		m_firstFoundPos = -1;
 		m_haveFound     = false;
-		showFindWarning(QString::fromLocal8Bit(findWhat.c_str()));
+		showFindWarning(findWhat);
 		//! @todo возможно, надо убрать
 		setFocus();
 	}
@@ -530,7 +532,7 @@ void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchC
 		{
 			m_firstFoundPos = -1;
 			m_haveFound     = false;
-			showFindWarning(QString::fromLocal8Bit(findWhat.c_str()));
+			showFindWarning(findWhat);
 			//! @todo возможно, надо убрать
 			setFocus();
 			return;
@@ -545,7 +547,7 @@ void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchC
 
 void RDOBaseEdit::onSearchReplace() 
 {
-	m_findReplaceSettings.what = getCurrentOrSelectedWord();
+	m_findReplaceSettings.what = QString::fromLocal8Bit(getCurrentOrSelectedWord().c_str());
 
 	if (!m_pFindReplaceDialog)
 	{
@@ -560,7 +562,7 @@ void RDOBaseEdit::onSearchReplace()
 	
 	if(m_pGroup)
 	{
-		m_findReplaceSettings.what.empty() 
+		m_findReplaceSettings.what.isEmpty() 
 			? m_findReplaceSettings.what = m_pGroup->findStr
 			: m_pGroup->findStr = m_findReplaceSettings.what;
 		m_findReplaceSettings.searchDown = m_pGroup->bSearchDown;
@@ -623,7 +625,7 @@ void RDOBaseEdit::showFindWarning(CREF(QString) findWhat)
 	QMessageBox::warning(this, QString::fromStdWString(L"–езультаты поиска"), QString::fromStdWString(L"Ќевозможно найти строчку '%1'.").arg(findWhat));
 }
 
-void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
+void RDOBaseEdit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
 	if (m_haveFound)
 	{
@@ -637,14 +639,14 @@ void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool
 		sendEditor(SCI_SETTARGETSTART, cr.cpMin);
 		sendEditor(SCI_SETTARGETEND,   cr.cpMax);
 		int lenReplaced = replaceLen;
-		sendEditorString(SCI_REPLACETARGET, replaceLen, replaceWhat.c_str());
+		sendEditorString(SCI_REPLACETARGET, replaceLen, replaceWhat);
 		setSelection(cr.cpMin + lenReplaced, cr.cpMin);
 		m_haveFound = false;
 	}
 	findNext(findWhat, searchDown, matchCase, matchWholeWord);
 }
 
-void RDOBaseEdit::replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase, rbool matchWholeWord)
+void RDOBaseEdit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool matchCase, rbool matchWholeWord)
 {
 	int findLen = findWhat.length();
 	if (!findLen)
@@ -659,7 +661,7 @@ void RDOBaseEdit::replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rb
 	sendEditor(SCI_SETTARGETSTART, startPosition);
 	sendEditor(SCI_SETTARGETEND, endPosition);
 	sendEditor(SCI_SETSEARCHFLAGS, flags);
-	int posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat.c_str());
+	int posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
 
 	if ((posFind != -1) && (posFind <= endPosition))
 	{
@@ -669,21 +671,21 @@ void RDOBaseEdit::replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rb
 		{
 			int lenTarget = sendEditor(SCI_GETTARGETEND) - sendEditor(SCI_GETTARGETSTART);
 			int lenReplaced = replaceLen;
-			sendEditorString(SCI_REPLACETARGET, replaceLen, replaceWhat.c_str());
+			sendEditorString(SCI_REPLACETARGET, replaceLen, replaceWhat);
 			endPosition += lenReplaced - lenTarget;
 			lastMatch    = posFind + lenReplaced;
 			if (lenTarget <= 0)
 				++lastMatch;
 			sendEditor(SCI_SETTARGETSTART, lastMatch);
 			sendEditor(SCI_SETTARGETEND, endPosition);
-			posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat.c_str());
+			posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
 		}
 		setSelection(lastMatch, lastMatch);
 		sendEditor(SCI_ENDUNDOACTION);
 	}
 	else
 	{
-		showFindWarning(QString::fromLocal8Bit(findWhat.c_str()));
+		showFindWarning(findWhat);
 		//! @todo возможно, надо убрать
 		setFocus();
 	}
@@ -1377,7 +1379,7 @@ void RDOBaseEdit::onViewZoomReset()
 	onUpdateActions(isActivated());
 }
 
-int RDOBaseEdit::findPos(REF(tstring) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord) const
+int RDOBaseEdit::findPos(CREF(QString) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord) const
 {
 	int findLen = findWhat.length();
 	if (!findLen)
@@ -1391,7 +1393,7 @@ int RDOBaseEdit::findPos(REF(tstring) findWhat, const int startFromLine, const r
 	sendEditor(SCI_SETTARGETSTART, startPosition);
 	sendEditor(SCI_SETTARGETEND, endPosition);
 	sendEditor(SCI_SETSEARCHFLAGS, flags);
-	return sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat.c_str());
+	return sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
 }
 
 tstring RDOBaseEdit::getLine(const int line) const
@@ -1426,7 +1428,7 @@ void RDOBaseEdit::focusOutEvent(QFocusEvent* pEvent)
 
 void RDOBaseEdit::onUpdateActions(rbool activated)
 {
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(
@@ -1569,7 +1571,7 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 
 void RDOBaseEdit::updateActionFind(rbool activated)
 {
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(
@@ -1584,12 +1586,13 @@ void RDOBaseEdit::updateActionFind(rbool activated)
 		this, &RDOBaseEdit::onSearchReplace
 	);
 
-	rbool findNextPrev = activated && (!m_findReplaceSettings.what.empty() || !m_findSettings.what.empty() || (m_pGroup && !m_pGroup->findStr.empty()));
+	rbool findNextPrev = activated && (!m_findReplaceSettings.what.isEmpty() || !m_findSettings.what.isEmpty() || (m_pGroup && !m_pGroup->findStr.isEmpty()));
 	updateAction(
 		pMainWindow->actSearchFindNext,
 		findNextPrev,
 		this, &RDOBaseEdit::onSearchFindNext
 	);
+
 	updateAction(
 		pMainWindow->actSearchFindPrevious,
 		findNextPrev,
@@ -1601,6 +1604,7 @@ void RDOBaseEdit::updateActionFind(rbool activated)
 		activated,
 		this, &RDOBaseEdit::onSearchFindNextCurrent
 	);
+
 	updateAction(
 		pMainWindow->actSearchFindPreviousCurrent,
 		activated,

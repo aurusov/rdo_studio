@@ -33,8 +33,8 @@ public:
 	rbool operator ==(const RDOStyleFont& font) const;
 	rbool operator !=(const RDOStyleFont& font) const;
 
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
+	void load(QSettings& settings);
+	void save(QSettings& settings) const;
 
 	enum style { NONE = 0x00, BOLD = 0x01, ITALIC = 0x02, UNDERLINE = 0x04 };
 
@@ -86,8 +86,6 @@ OBJECT(RDOStyle)
 protected:
 	QString groupName;
 
-	virtual void initFont();
-
 public:
 	RDOStyle();
 	virtual ~RDOStyle();
@@ -96,9 +94,9 @@ public:
 	rbool operator ==(const RDOStyle& style) const;
 	rbool operator !=(const RDOStyle& style) const;
 
-	virtual void  init(CREF(QString) _groupName = "");
-	virtual rbool load();
-	virtual rbool save() const;
+	void init(CREF(QString) _groupName = "");
+	rbool load();
+	rbool save() const;
 
 	RDOStyleFont* font;
 };
@@ -108,9 +106,6 @@ public:
 // --------------------------------------------------------------------------------
 class RDOStyleWithTheme: public RDOStyle
 {
-protected:
-	virtual void initTheme();
-
 public:
 	RDOStyleWithTheme();
 	virtual ~RDOStyleWithTheme();
@@ -119,9 +114,9 @@ public:
 	rbool operator ==(const RDOStyleWithTheme& style) const;
 	rbool operator !=(const RDOStyleWithTheme& style) const;
 
-	virtual void  init(CREF(QString) _groupName = "");
-	virtual rbool load();
-	virtual rbool save() const;
+	void init(CREF(QString) _groupName = "");
+	rbool load();
+	rbool save() const;
 
 	RDOStyleTheme* theme;
 };

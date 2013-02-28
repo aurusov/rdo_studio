@@ -15,12 +15,6 @@
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdoStyle;
 
 // --------------------------------------------------------------------------------
@@ -206,9 +200,9 @@ QSettings& operator<< (QSettings& settings, const RDOStyleTheme& theme)
 
 QSettings& operator>> (QSettings& settings, RDOStyleTheme& theme)
 {
-	theme.defaultColor    = QColor(settings.value("default_color", QColor( 0x00, 0x00, 0x00 ).name()).toString());
-	theme.backgroundColor = QColor(settings.value("background_color", QColor( 0xFF, 0xFF, 0xFF ).name()).toString());
-	theme.defaultStyle    = static_cast<RDOStyleFont::style>(settings.value("default_style", RDOStyleFont::NONE).toInt());
+	theme.defaultColor    = QColor(settings.value("default_color", theme.defaultColor.name()).toString());
+	theme.backgroundColor = QColor(settings.value("background_color", theme.backgroundColor.name()).toString());
+	theme.defaultStyle    = static_cast<RDOStyleFont::style>(settings.value("default_style", theme.defaultStyle).toInt());
 
 	return settings;
 }
@@ -223,16 +217,12 @@ RDOStyle::RDOStyle():
 	groupName( "" ),
 	font( NULL )
 {
+	font = new RDOStyleFont();
 }
 
 RDOStyle::~RDOStyle()
 {
 	if ( font ) { delete font; font = NULL; };
-}
-
-void RDOStyle::initFont()
-{
-	font = new RDOStyleFont;
 }
 
 RDOStyle& RDOStyle::operator =( const RDOStyle& style )
@@ -265,7 +255,6 @@ void RDOStyle::init( CREF(QString) _groupName )
 			groupName.append("/");
 		}
 	}
-	initFont();
 }
 
 rbool RDOStyle::load()
@@ -299,16 +288,12 @@ RDOStyleWithTheme::RDOStyleWithTheme():
 	RDOStyle(),
 	theme( NULL )
 {
+	theme = new RDOStyleTheme();
 }
 
 RDOStyleWithTheme::~RDOStyleWithTheme()
 {
 	if ( theme ) { delete theme; theme = NULL; };
-}
-
-void RDOStyleWithTheme::initTheme()
-{
-	theme = new RDOStyleTheme;
 }
 
 RDOStyleWithTheme& RDOStyleWithTheme::operator =( const RDOStyleWithTheme& style )
@@ -334,7 +319,6 @@ rbool RDOStyleWithTheme::operator !=( const RDOStyleWithTheme& style ) const
 void RDOStyleWithTheme::init( CREF(QString) _groupName )
 {
 	RDOStyle::init( _groupName );
-	initTheme();
 }
 
 rbool RDOStyleWithTheme::load()

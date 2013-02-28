@@ -81,6 +81,7 @@
     <file>images/mdi_frame.png</file>
     <file>images/mdi_model.png</file>
     <file>images/about.png</file>
+    <file>images/frameoptionsctrl.png</file>   
   </qresource>
   <qresource prefix="/new_model_template">
     <file>new_model_template/template_4/template_4.dpt</file>
@@ -166,8 +167,5 @@
     <file>insert_menu_template/rtp_permanent.txt</file>
     <file>insert_menu_template/rtp_temporary.txt</file>
     <file>insert_menu_template/smr.txt</file>
-  </qresource>
-  <qresource prefix="/frame_options_view">
-    <file>frame_options_view/frameoptionsview.bmp</file>
   </qresource>
 </RCC>

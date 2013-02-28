@@ -13,14 +13,8 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/thread.h"
 #include "app/rdo_studio/src/model/model.h"
-#include "app/rdo_studio/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 #ifdef RDO_MT
 // --------------------------------------------------------------------------------

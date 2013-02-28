@@ -19,12 +19,6 @@
 #include "thirdparty/scintilla/rdo/LexFind.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdoEditCtrl;
 using namespace rdoStyle;
 
@@ -87,17 +81,17 @@ void RDOFindEdit::setEditorStyle(RDOFindEditStyle* pStyle)
 	sendEditor(SCI_STYLESETCHARACTERSET, SCE_FIND_KEYWORD, m_pStyle->font->characterSet);
 }
 
-void RDOFindEdit::setKeyword(CREF(tstring) keyword, const rbool matchCase) const
+void RDOFindEdit::setKeyword(CREF(QString) keyword, const rbool matchCase) const
 {
 	sendEditorString(SCI_SETPROPERTY, reinterpret_cast<unsigned long>("find_matchcase"), matchCase ? "1" : "0");
-	sendEditorString(SCI_SETKEYWORDS, SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX, keyword.c_str());
+	sendEditorString(SCI_SETKEYWORDS, SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX, keyword);
 }
 
 void RDOFindEdit::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_find\n");
-	studioApp.callQtAssistant(ba);
+	g_pApp->callQtAssistant(ba);
 }
 
 void RDOFindEdit::mousePressEvent(QMouseEvent* pEvent)

@@ -14,12 +14,6 @@
 #include "app/rdo_studio/edit_ctrls/rdobuildeditstyle.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdoEditCtrl;
 
 // --------------------------------------------------------------------------------
@@ -120,15 +114,11 @@ QSettings& operator>> (QSettings& settings, RDOBuildEditTheme& theme)
 // --------------------------------------------------------------------------------
 RDOBuildEditStyle::RDOBuildEditStyle(): LogEditStyle()
 {
+	theme = new RDOBuildEditTheme();
 }
 
 RDOBuildEditStyle::~RDOBuildEditStyle()
 {
-}
-
-void RDOBuildEditStyle::initTheme()
-{
-	theme = new RDOBuildEditTheme;
 }
 
 RDOBuildEditStyle& RDOBuildEditStyle::operator =( const RDOBuildEditStyle& style )

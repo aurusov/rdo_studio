@@ -52,8 +52,8 @@ public:
 		rbool   bMatchCase;
 		rbool   bMatchWholeWord;
 		rbool   bSearchDown;
-		tstring findStr;
-		tstring replaceStr;
+		QString findStr;
+		QString replaceStr;
 
 		Group();
 
@@ -119,9 +119,9 @@ public:
 	tstring getCurrentWord() const;
 	tstring getSelection  () const;
 	tstring getCurrentOrSelectedWord() const;
-	tstring getWordForFind() const;
+	QString getWordForFind() const;
 
-	int findPos(REF(tstring) findWhat, const int startFromLine = 0, const rbool matchCase = false, const rbool matchWholeWord = false) const;
+	int findPos(CREF(QString) findWhat, const int startFromLine = 0, const rbool matchCase = false, const rbool matchWholeWord = false) const;
 	tstring getLine(const int line) const;
 
 	void load(rdo::stream& stream);
@@ -133,6 +133,7 @@ protected:
 
 	long sendEditor      (ruint msg, unsigned long wParam = 0, long lParam = 0) const { return super::send (msg, wParam, lParam); }
 	long sendEditorString(ruint msg, unsigned long wParam, const char* str)     const { return super::sends(msg, wParam, str);    }
+	long sendEditorString(ruint msg, unsigned long wParam, CREF(QString) str)   const;
 
 	int  getNewMarker();
 	void defineMarker(int marker, int markerType, QColor fore, QColor back) const;
@@ -165,9 +166,9 @@ private:
 	void gotoLineEnsureVisible(int line) const;
 	void ensureRangeVisible(int posStart, int posEnd, rbool enforcePolicy = true) const;
 
-	void findNext  (REF(tstring) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
-	void replace   (REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
-	void replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase, rbool matchWholeWord);
+	void findNext  (CREF(QString) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
+	void replace   (CREF(QString) findWhat, CREF(QString) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
+	void replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool matchCase, rbool matchWholeWord);
 
 	int  indentOfBlock     (int line) const;
 	void setLineIndentation(int line, int indent) const;
