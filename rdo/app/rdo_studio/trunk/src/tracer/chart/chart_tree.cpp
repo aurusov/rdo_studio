@@ -13,6 +13,7 @@
 #include <boost/foreach.hpp>
 #include <QtCore/qprocess.h>
 #include <QtWidgets/qfiledialog.h>
+#include <QtCore/qtextstream.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_tree.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
@@ -295,10 +296,10 @@ void ChartTree::onChartExport()
 	QFile data(fileName);
 	if (data.open(QIODevice::Text | QFile::WriteOnly | QFile::Truncate)) 
 	{
+		QTextStream stream(&data);
 		BOOST_FOREACH(CREF(Serie::ExportData::value_type) exportItem, exportData)
 		{
-			data.write(exportItem.toLocal8Bit().constData());
-			data.write("\n");
+			stream << exportItem << endl;
 		}
 		data.close();
 	}
