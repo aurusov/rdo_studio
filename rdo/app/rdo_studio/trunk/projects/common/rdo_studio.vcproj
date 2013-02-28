@@ -1516,10 +1516,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Resource.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\res\version.h"
 				>
 			</File>
