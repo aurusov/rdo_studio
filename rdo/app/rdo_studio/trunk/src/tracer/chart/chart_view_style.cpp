@@ -15,12 +15,6 @@
 #include "app/rdo_studio/src/tracer/chart/chart_view_style.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdoStyle;
 
 namespace rdo { namespace gui { namespace tracer {

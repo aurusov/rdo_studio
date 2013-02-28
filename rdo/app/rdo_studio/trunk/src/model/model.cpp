@@ -40,12 +40,6 @@ using namespace rdoEditor;
 using namespace rdo::service::simulation;
 using namespace rdo::simulation::report;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioModel::ModelTemplateItem
 // --------------------------------------------------------------------------------

@@ -14,12 +14,6 @@
 #include "app/rdo_studio/src/tracer/logger/tracer_logger_view_style.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdo::gui::tracer;
 using namespace rdoStyle;
 

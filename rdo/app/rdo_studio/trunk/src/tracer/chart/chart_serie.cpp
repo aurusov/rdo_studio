@@ -14,12 +14,6 @@
 #include "app/rdo_studio/src/tracer/chart/chart_serie.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace rdo::gui::tracer;
 
 // --------------------------------------------------------------------------------
