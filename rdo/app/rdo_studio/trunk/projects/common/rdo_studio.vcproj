@@ -1443,10 +1443,6 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath="..\..\res\version.h"
-				>
-			</File>
 			<Filter
 				Name=".ui"
 				>
