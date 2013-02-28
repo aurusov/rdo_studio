@@ -1,5 +1,5 @@
-#ifndef _RDO_STUDIO_STDAFX_H_
-#define _RDO_STUDIO_STDAFX_H_
+#ifndef _RDO_STUDIO_STDPCH_H_
+#define _RDO_STUDIO_STDPCH_H_
 
 #ifndef WINVER               // Allow use of features specific to Windows XP or later.
 #define WINVER 0x0501        // Change this to the appropriate value to target other versions of Windows.
@@ -45,4 +45,4 @@ void appendMenu (PTR(CMenu) pFrom, const int from_index, PTR(CMenu) pTo);
 void eraseMenu  (PTR(CMenu) pFrom, const int from_index = -1 );
 int  roundDouble(const double val);
 
-#endif // _RDO_STUDIO_STDAFX_H_
+#endif // _RDO_STUDIO_STDPCH_H_
