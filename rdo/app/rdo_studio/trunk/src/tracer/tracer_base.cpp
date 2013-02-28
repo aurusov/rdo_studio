@@ -759,7 +759,7 @@ rbool TracerBase::getDrawTrace() const
 void TracerBase::registerClipboardFormat()
 {
 	//! @todo qt удалить
-	m_clipboardFormat = ::RegisterClipboardFormat(rdo::format(ID_RAO_CLIPBRD).c_str());
+	//m_clipboardFormat = ::RegisterClipboardFormat(rdo::format(ID_RAO_CLIPBRD).c_str());
 }
 
 UINT const TracerBase::getClipboardFormat() const
