@@ -114,8 +114,7 @@ public:
 
 void RDOParserSTDFUN::generate(CREF(tstring) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const
 {
-	tstring nameLower = name;
-	rdo::toLower(nameLower);
+	tstring nameLower = boost::algorithm::to_lower_copy(name);
 	generateReal(name,      pCalc, pReturnType, paramList);
 	generateReal(nameLower, pCalc, pReturnType, paramList);
 }
