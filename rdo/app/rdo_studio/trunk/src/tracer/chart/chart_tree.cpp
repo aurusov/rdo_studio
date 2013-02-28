@@ -276,9 +276,9 @@ void ChartTree::onChartExport()
 
 	QString fileName = QFileDialog::getSaveFileName(
 		this,
-		QString::fromLocal8Bit("Сохранить"),
-		QString::fromLocal8Bit(path.string().c_str()),
-		QString::fromLocal8Bit("csv-файл (*.csv);;Все файлы (*.*)")
+		QString::fromStdWString(L"Сохранить"),
+		QString::fromLocal8Bit (path.string().c_str()),
+		QString::fromStdWString(L"csv-файл (*.csv);;Все файлы (*.*)")
 	);
 	if (fileName.isEmpty())
 		return;
