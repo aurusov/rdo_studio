@@ -1512,10 +1512,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\rdo_studio.reg"
-				>
-			</File>
-			<File
 				RelativePath="..\..\res\version.h"
 				>
 			</File>
