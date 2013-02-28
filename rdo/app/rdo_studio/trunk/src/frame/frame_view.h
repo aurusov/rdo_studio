@@ -20,7 +20,6 @@
 #include "ui/qt/headers/memdc/memdc.h"
 #include "ui/qt/headers/animation/area.h"
 #include "ui/qt/headers/bitmap/bitmap.h"
-#include "thirdparty/qt-solutions/qtwinmigrate/src/qwinwidget.h"
 // --------------------------------------------------------------------------------
 
 class FrameAnimationContent: public QWidget

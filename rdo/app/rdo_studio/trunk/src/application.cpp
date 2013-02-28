@@ -35,7 +35,6 @@
 #include "app/rdo_studio/src/thread.h"
 #include "app/rdo_studio/src/dialog/file_association_dialog.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
-#include "thirdparty/qt-solutions/qtwinmigrate/src/qmfcapp.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
