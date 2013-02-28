@@ -32,16 +32,9 @@
 
 using namespace rdo::gui::tracer;
 
-SCODE RDODropSource::GiveFeedback(DROPEFFECT dropEffect)
-{
-	return COleDropSource::GiveFeedback(dropEffect);
-}
-
 //! @todo qt
 //BEGIN_MESSAGE_MAP(ChartTree, RDOTreeCtrl)
-//	ON_WM_INITMENUPOPUP()
 //	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnDragDrop)
-//	ON_WM_RBUTTONDOWN()
 //END_MESSAGE_MAP()
 
 Q_DECLARE_METATYPE(const ChartTreeItem*);
@@ -91,10 +84,7 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 }
 
 ChartTree::~ChartTree()
-{
-//! @todo qt
-//	m_source.Empty();
-}
+{}
 
 LPChartTreeItem ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const
 {
