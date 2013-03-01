@@ -988,14 +988,6 @@ border: none;
     <string>Расположить заголовками</string>
    </property>
   </action>
-  <action name="actWindowArrange">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Упорядочить свернутые</string>
-   </property>
-  </action>
   <action name="actModelShowRateIncFour">
    <property name="enabled">
     <bool>false</bool>
