@@ -13,9 +13,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <math.h>
 #include <boost/mpl/integral_c.hpp>
-#include <QtWidgets/qmainwindow.h>
-#include <QtWidgets/qslider.h>
-#include <QtCore/qsignalmapper.h>
+#include <QMainWindow>
+#include <QSlider>
+#include <QSignalMapper>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio/src/main_windows_base.h"

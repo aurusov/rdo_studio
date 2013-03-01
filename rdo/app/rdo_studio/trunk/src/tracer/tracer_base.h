@@ -11,7 +11,7 @@
 #define _RDO_STUDIO_TRACER_BASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtCore/qstring.h>
+#include <QString>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "utils/smart_ptr/intrusive_ptr.h"

@@ -11,8 +11,8 @@
 #define _RDO_STUDIO_VIEW_PREFERENCES_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qdialog.h>
-#include <QtWidgets/qcolordialog.h>
+#include <QDialog>
+#include <QColorDialog>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_view_preferenses.h"
 #include "app/rdo_studio/rdo_edit/rdoeditoredit.h"

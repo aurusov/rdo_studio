@@ -12,9 +12,9 @@
 #define _RDO_STUDIO_STATUS_BAR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qprogressbar.h>
-#include <QtWidgets/qmainwindow.h>
-#include <QtWidgets/qlabel.h>
+#include <QProgressBar>
+#include <QMainWindow>
+#include <QLabel>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include <utils/smart_ptr/intrusive_ptr.h>
 // --------------------------------------------------------------------------------

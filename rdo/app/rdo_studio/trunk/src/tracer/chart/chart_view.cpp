@@ -12,9 +12,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
 #include <boost/foreach.hpp>
-#include <QtCore/qprocess.h>
-#include <QtGui/qevent.h>
-#include <QtGui/qclipboard.h>
+#include <QProcess>
+#include <QEvent>
+#include <QClipboard>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
 #include "app/rdo_studio/src/tracer/tracer.h"

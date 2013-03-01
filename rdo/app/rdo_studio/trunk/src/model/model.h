@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/optional.hpp>
-#include <QtCore/qobject.h>
+#include <QObject>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "kernel/rdothread.h"

@@ -11,8 +11,8 @@
 #define _RDO_STUDIO_TRACER_CHART_PREFERENCES_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qdialog.h>
-#include <QtWidgets/qcolordialog.h>
+#include <QDialog>
+#include <QColorDialog>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_chart_preferences.h"
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"

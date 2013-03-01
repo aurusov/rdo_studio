@@ -13,10 +13,10 @@
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm/find.hpp>
-#include <QtCore/qprocess.h>
-#include <QtCore/qtextcodec.h>
-#include <QtCore/qsettings.h>
-#include <QtWidgets/qmdisubwindow.h>
+#include <QProcess>
+#include <QTextCodec>
+#include <QSettings>
+#include <QMdiSubWindow>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_frm.h"
 #include "app/rdo_studio/src/application.h"

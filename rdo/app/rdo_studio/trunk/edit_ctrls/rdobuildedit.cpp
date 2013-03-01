@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtCore/qprocess.h>
+#include <QProcess>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/report/build_edit_line_info.h"
 #include "app/rdo_studio/edit_ctrls/rdobuildedit.h"

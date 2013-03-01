@@ -11,7 +11,7 @@
 #define _RDO_STUDIO_TRACER_CHART_TREE_ITEM_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qtreewidget.h>
+#include <QTreeWidget>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------

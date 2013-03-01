@@ -13,8 +13,8 @@
 #include <limits>
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
-#include <QtWidgets/qmessagebox.h>
-#include <QtWidgets/qfiledialog.h>
+#include <QMessageBox>
+#include <QFileDialog>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "utils/rdoanimation.h"

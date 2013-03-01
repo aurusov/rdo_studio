@@ -11,7 +11,7 @@
 #define _RDO_STUDIO_MODEL_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qwidget.h>
+#include <QWidget>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/dialog/find_dialog.h"

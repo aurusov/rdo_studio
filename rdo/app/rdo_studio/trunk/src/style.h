@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
-#include <QtGui/qcolor.h>
-#include <QtCore/qsettings.h>
+#include <QColor>
+#include <QSettings>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------

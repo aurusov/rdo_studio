@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <boost/function.hpp>
-#include <QtGui/qcolor.h>
+#include <QColor>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"

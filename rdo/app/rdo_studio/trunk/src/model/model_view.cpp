@@ -11,8 +11,8 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <QtGui/qevent.h>
-#include <QtWidgets/qboxlayout.h>
+#include <QEvent>
+#include <QBoxLayout>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/model/model_view.h"
 #include "app/rdo_studio/src/application.h"

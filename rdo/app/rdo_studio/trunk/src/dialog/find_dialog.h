@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/function.hpp>
-#include <QtWidgets/qdialog.h>
+#include <QDialog>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_find_dialog.h"
 // --------------------------------------------------------------------------------

@@ -14,8 +14,8 @@
 #include <vector>
 #include <map>
 #include <memory>
-#include <QtWidgets/qmdisubwindow.h>
-#include <QtWidgets/qtreewidget.h>
+#include <QMdiSubWindow>
+#include <QTreeWidget>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "app/rdo_studio/src/frame/frame_view.h"

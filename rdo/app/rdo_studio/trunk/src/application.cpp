@@ -20,10 +20,10 @@
 	#pragma warning(default: 4100)
 #endif
 
-#include <QtCore/qprocess.h>
-#include <QtCore/qtextcodec.h>
-#include <QtCore/qsettings.h>
-#include <QtWidgets/qmessagebox.h>
+#include <QProcess>
+#include <QTextCodec>
+#include <QSettings>
+#include <QMessageBox>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"

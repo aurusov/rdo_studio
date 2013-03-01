@@ -13,9 +13,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
-#include <QtGui/qpainter.h>
-#include <QtWidgets/qscrollbar.h>
-#include <QtGui/qclipboard.h>
+#include <QPainter>
+#include <QScrollBar>
+#include <QClipboard>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/logger/tracer_logger_view.h"
 #include "app/rdo_studio/src/application.h"

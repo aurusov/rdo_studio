@@ -11,7 +11,7 @@
 #define _RDO_STUDIO_TRACER_CHART_SERIE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qpainter.h>
+#include <QPainter>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/tracer_serie.h"
 // --------------------------------------------------------------------------------

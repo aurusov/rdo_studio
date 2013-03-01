@@ -14,8 +14,8 @@
 #include <boost/range.hpp>
 #include <boost/range/algorithm/for_each.hpp>
 #include <boost/range/algorithm/find_if.hpp>
-#include <QtWidgets/qmessagebox.h>
-#include <QtGui/qclipboard.h>
+#include <QMessageBox>
+#include <QClipboard>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/edit_ctrls/rdobaseedit.h"
 #include "app/rdo_studio/src/application.h"

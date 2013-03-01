@@ -12,10 +12,10 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
-#include <QtCore/qprocess.h>
-#include <QtCore/qtextstream.h>
-#include <QtWidgets/qfiledialog.h>
-#include <QtGui/qdrag.h>
+#include <QProcess>
+#include <QTextStream>
+#include <QFileDialog>
+#include <QDrag>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_frm.h"

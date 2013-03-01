@@ -11,9 +11,9 @@
 #define _RDO_STUDIO_TRACER_CHART_TREE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qtreewidget.h>
-#include <QtWidgets/qmenu.h>
-#include <QtGui/qicon.h>
+#include <QTreeWidget>
+#include <QMenu>
+#include <QIcon>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_tree_item.h"
 #include "app/rdo_studio/src/action_activator/action_activator.h"

@@ -12,7 +12,7 @@
 #define _RDO_STUDIO_TRACER_LOGGER_MAIN_WND_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qabstractscrollarea.h>
+#include <QAbstractScrollArea>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/logger/tracer_logger_view.h"
 // --------------------------------------------------------------------------------

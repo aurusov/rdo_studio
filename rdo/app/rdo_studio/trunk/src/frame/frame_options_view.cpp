@@ -10,8 +10,8 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qlabel.h>
-#include <QtWidgets/qboxlayout.h>
+#include <QLabel>
+#include <QBoxLayout>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/frame/frame_options_view.h"
 #include "app/rdo_studio/src/application.h"

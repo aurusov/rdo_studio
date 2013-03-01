@@ -12,10 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
-#include <QtCore/qprocess.h>
-#include <QtCore/qtimer.h>
-#include <QtWidgets/qapplication.h>
-#include <QtWidgets/qmainwindow.h>
+#include <QProcess>
+#include <QTimer>
+#include <QApplication>
+#include <QMainWindow>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"

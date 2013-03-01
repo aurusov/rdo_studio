@@ -10,8 +10,8 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qaction.h>
-#include <QtWidgets/qmessagebox.h>
+#include <QAction>
+#include <QMessageBox>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_build.h"
 #include "app/rdo_studio/src/application.h"

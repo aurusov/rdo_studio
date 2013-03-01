@@ -12,8 +12,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
-#include <QtWidgets/qlayout.h>
-#include <QtGui/qpainter.h>
+#include <QLayout>
+#include <QPainter>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"

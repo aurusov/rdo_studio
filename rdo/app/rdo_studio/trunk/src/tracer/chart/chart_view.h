@@ -11,9 +11,9 @@
 #define _RDO_STUDIO_TRACER_CHART_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qwidget.h>
-#include <QtWidgets/qabstractscrollarea.h>
-#include <QtWidgets/qscrollbar.h>
+#include <QWidget>
+#include <QAbstractScrollArea>
+#include <QScrollBar>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/tracer_values.h"
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"

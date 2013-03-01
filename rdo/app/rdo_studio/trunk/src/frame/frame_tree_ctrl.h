@@ -11,7 +11,7 @@
 #define _RDO_STUDIO_FRAME_TREE_CTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qtreewidget.h>
+#include <QTreeWidget>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------

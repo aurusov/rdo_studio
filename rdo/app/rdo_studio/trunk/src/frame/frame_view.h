@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
-#include <QtWidgets/qwidget.h>
-#include <QtWidgets/qscrollarea.h>
-#include <QtGui/qevent.h>
+#include <QWidget>
+#include <QScrollArea>
+#include <QEvent>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdoanimation.h"
 #include "ui/qt/headers/memdc/memdc.h"
