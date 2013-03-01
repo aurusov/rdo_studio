@@ -45,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;NOMINMAX"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -64,7 +64,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -114,7 +113,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;NOMINMAX"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;NOMINMAX"
 				RuntimeLibrary="2"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -133,7 +132,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -180,7 +178,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../;../../../../thirdparty/corba/include"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;NOMINMAX"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -200,8 +198,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="COS4d.lib COSDynamic4d.lib omniCodeSets4d.lib omniDynamic4d.lib omniORB4d.lib omnisslTP4d.lib omnithreadd.lib ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories="../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -249,7 +245,7 @@
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../;../../../../thirdparty/corba/include"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;NOMINMAX"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;NOMINMAX"
 				RuntimeLibrary="2"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -267,8 +263,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="COS4.lib COSDynamic4.lib omniCodeSets4.lib omniDynamic4.lib omniORB4.lib omnisslTP4.lib omnithread.lib ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories="../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -315,7 +309,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../"
-				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;NOMINMAX"
+				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -334,8 +328,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="COS4d.lib COSDynamic4d.lib omniCodeSets4d.lib omniDynamic4d.lib omniORB4d.lib omnisslTP4d.lib omnithreadd.lib ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories="../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -383,7 +375,7 @@
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;NOMINMAX"
+				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;NOMINMAX"
 				RuntimeLibrary="2"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -401,8 +393,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="COS4.lib COSDynamic4.lib omniCodeSets4.lib omniDynamic4.lib omniORB4.lib omnisslTP4.lib omnithread.lib ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories="../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"

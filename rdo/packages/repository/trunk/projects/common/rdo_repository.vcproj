@@ -45,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;NOMINMAX"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -114,7 +114,7 @@
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;NOMINMAX"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;NOMINMAX"
 				RuntimeLibrary="2"
 				WarningLevel="4"
 			/>
@@ -177,7 +177,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../;../../../thirdparty/corba/include"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;NOMINMAX"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -243,7 +243,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../;../../../thirdparty/corba/include"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;NOMINMAX"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;NOMINMAX"
 				RuntimeLibrary="2"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -261,7 +261,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -308,7 +307,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../"
-				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;NOMINMAX"
+				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -374,7 +373,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;NOMINMAX"
+				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;NOMINMAX"
 				RuntimeLibrary="2"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -392,7 +391,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"

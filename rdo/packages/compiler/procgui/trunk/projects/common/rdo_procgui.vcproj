@@ -48,7 +48,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;NOMINMAX"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/procgui/pch.h"
@@ -69,7 +69,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -117,7 +116,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;NOMINMAX"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/procgui/pch.h"
@@ -138,7 +137,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -186,7 +184,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../../;../../../../../thirdparty/corba/include"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;NOMINMAX"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -208,7 +206,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories="../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -257,7 +254,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../../;../../../../../thirdparty/corba/include"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;NOMINMAX"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -279,7 +276,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories="../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -327,7 +323,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../../"
-				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;NOMINMAX"
+				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/procgui/pch.h"
@@ -348,7 +344,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -397,7 +392,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../../"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;NOMINMAX"
+				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -419,7 +414,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories="../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"
