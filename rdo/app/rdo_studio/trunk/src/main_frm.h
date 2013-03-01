@@ -30,6 +30,7 @@ class RDOStudioMainFrame
 	: public QMainWindow
 	, public MainWindowBase
 	, public Ui::MainWindow
+	, public ActionActivator
 {
 Q_OBJECT
 
@@ -121,6 +122,7 @@ private:
 	void onMenuFileReopen(QAction* pAction);
 
 	void updateInsertMenu(rbool enabled);
+	void onUpdateActions(rbool activated);
 };
 
 #endif // _RDO_STUDIO_MAIN_FRM_H_

@@ -695,28 +695,12 @@ void RDOStudioMainFrame::updateInsertMenu(rbool enabled)
 
 void RDOStudioMainFrame::onSubWindowActivated(QMdiSubWindow * window)
 {
-	QList<QMdiSubWindow *> windowList = mdiArea->subWindowList();
-	if (windowList.empty())
-	{
-		if (m_hasWindow)
-		{
-			actWindowTitleHorzontal->setEnabled(false);
-			actWindowCascade       ->setEnabled(false);
-			disconnect(actWindowTitleHorzontal, SIGNAL(triggered(bool)), mdiArea, SLOT(cascadeSubWindows()));
-			disconnect(actWindowCascade       , SIGNAL(triggered(bool)), mdiArea, SLOT(tileSubWindows   ()));
-			m_hasWindow = false;
-		}
-	}
-	else
-	{
-		if (!m_hasWindow)
-		{
-			actWindowTitleHorzontal->setEnabled(true);
-			actWindowCascade       ->setEnabled(true);
-			connect(actWindowTitleHorzontal, SIGNAL(triggered(bool)), mdiArea, SLOT(cascadeSubWindows()));
-			connect(actWindowCascade       , SIGNAL(triggered(bool)), mdiArea, SLOT(tileSubWindows   ()));
-			m_hasWindow = true;
-		}
-	}
+	onUpdateActions(!mdiArea->subWindowList().empty());
+}
+
+void RDOStudioMainFrame::onUpdateActions(rbool activated)
+{
+	updateAction(actWindowCascade       , activated, mdiArea, &QMdiArea::cascadeSubWindows);
+	updateAction(actWindowTitleHorzontal, activated, mdiArea, &QMdiArea::tileSubWindows   );
 }
 
