@@ -22,7 +22,7 @@ namespace rdoEditor {
 class RDOEditorEdit;
 }
 
-namespace rdoEditCtrl {
+namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
 // -------------------- LogEdit
@@ -72,6 +72,6 @@ private slots:
 	void catchModified   ();
 };
 
-} // namespace rdoEditCtrl
+}}} // namespace rdo::gui::editor
 
 #endif // _RDO_STUDIO_EDIT_CTRLS_RDOLOGEDIT_H_

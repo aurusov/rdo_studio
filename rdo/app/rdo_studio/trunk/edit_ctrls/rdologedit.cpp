@@ -21,7 +21,7 @@
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditCtrl;
+using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
 // -------------------- LogEdit

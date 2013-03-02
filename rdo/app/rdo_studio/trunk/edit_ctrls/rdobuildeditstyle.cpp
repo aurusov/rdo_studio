@@ -14,7 +14,7 @@
 #include "app/rdo_studio/edit_ctrls/rdobuildeditstyle.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditCtrl;
+using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditTheme
@@ -90,8 +90,7 @@ RDOBuildEditTheme RDOBuildEditTheme::getOceanTheme()
 	return theme;
 }
 
-namespace rdoEditCtrl
-{
+namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const RDOBuildEditTheme& theme)
 {
@@ -107,7 +106,7 @@ QSettings& operator>> (QSettings& settings, RDOBuildEditTheme& theme)
 	return settings;
 }
 
-} // namespace rdoEditCtrl
+}}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditStyle

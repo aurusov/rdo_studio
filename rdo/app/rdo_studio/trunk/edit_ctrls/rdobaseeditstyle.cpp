@@ -15,7 +15,7 @@
 // --------------------------------------------------------------------------------
 
 using namespace rdoStyle;
-using namespace rdoEditCtrl;
+using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
 // -------------------- EditBaseTheme
@@ -184,8 +184,7 @@ tstring EditBaseTheme::colorToHEX( const QColor color )
 	return rdo::format( "#%02X%02X%02X", color.red(), color.green(), color.blue() );
 }
 
-namespace rdoEditCtrl
-{
+namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const EditBaseTheme& theme)
 {
@@ -215,7 +214,7 @@ QSettings& operator>> (QSettings& settings, EditBaseTheme& theme)
 	return settings;
 }
 
-} // namespace rdoEditCtrl
+}}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
 // -------------------- EditBaseTab
@@ -271,8 +270,7 @@ void EditBaseTab::save(QSettings& settings) const
 	settings << *this;
 }
 
-namespace rdoEditCtrl
-{
+namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const EditBaseTab& tab)
 {
@@ -298,7 +296,7 @@ QSettings& operator>> (QSettings& settings, EditBaseTab& tab)
 	return settings;
 }
 
-} // namespace rdoEditCtrl
+}}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
 // -------------------- EditBaseWindow
@@ -342,8 +340,7 @@ void EditBaseWindow::save(QSettings& settings) const
 	settings << *this;
 }
 
-namespace rdoEditCtrl
-{
+namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const EditBaseWindow& window)
 {
@@ -361,7 +358,7 @@ QSettings& operator>> (QSettings& settings, EditBaseWindow& window)
 	return settings;
 }
 
-} // namespace rdoEditCtrl
+}}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
 // -------------------- EditBaseStyle

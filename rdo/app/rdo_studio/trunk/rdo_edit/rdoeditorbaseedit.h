@@ -21,7 +21,7 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorBaseEdit
 // --------------------------------------------------------------------------------
-class RDOEditorBaseEdit: public rdoEditCtrl::EditBase
+class RDOEditorBaseEdit: public rdo::gui::editor::EditBase
 {
 public:
 	RDOEditorBaseEdit(PTR(QWidget) pParent);
@@ -41,7 +41,7 @@ protected:
 	static tstring convertToLexer(CREF(tstring) kw);
 
 private:
-	typedef  rdoEditCtrl::EditBase  super;
+	typedef  rdo::gui::editor::EditBase  super;
 };
 
 } // namespace rdoEditor

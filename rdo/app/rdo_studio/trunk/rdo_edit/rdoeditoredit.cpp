@@ -24,7 +24,7 @@
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;
-using namespace rdoEditCtrl;
+using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEdit
@@ -594,7 +594,7 @@ void RDOEditorEdit::onInsertCommand(QObject* pObject)
 	);
 }
 
-CPTR(rdoEditCtrl::LogEdit) RDOEditorEdit::getLog() const
+CPTR(rdo::gui::editor::LogEdit) RDOEditorEdit::getLog() const
 {
 	return m_pLog;
 }

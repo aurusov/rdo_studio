@@ -15,7 +15,7 @@
 #include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoEditCtrl {
+namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
 // -------------------- LogEditTheme
@@ -58,6 +58,6 @@ public:
 	rbool operator !=( const LogEditStyle& style ) const;
 };
 
-} // namespace rdoEditCtrl
+}}} // namespace rdo::gui::editor
 
 #endif // _RDO_STUDIO_EDIT_CTRLS_RDOLOGEDITSTYLE_H_

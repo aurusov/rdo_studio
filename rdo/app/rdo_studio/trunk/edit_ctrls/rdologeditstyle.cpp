@@ -14,7 +14,7 @@
 #include "app/rdo_studio/edit_ctrls/rdologeditstyle.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditCtrl;
+using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
 // -------------------- LogEditTheme
@@ -97,8 +97,8 @@ LogEditTheme LogEditTheme::getOceanTheme()
 
 	return theme;
 }
-namespace rdoEditCtrl
-{
+
+namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const LogEditTheme& theme)
 {
@@ -114,7 +114,7 @@ QSettings& operator>> (QSettings& settings, LogEditTheme& theme)
 	return settings;
 }
 
-} // namespace rdoEditCtrl
+}}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
 // -------------------- LogEditStyle

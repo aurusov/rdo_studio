@@ -15,7 +15,7 @@
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;
-using namespace rdoEditCtrl;
+using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditTheme

@@ -15,7 +15,7 @@
 #include "thirdparty/scintilla/include/SciLexer.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditCtrl;
+using namespace rdo::gui::editor;
 using namespace rdoStyle;
 
 // --------------------------------------------------------------------------------
@@ -145,8 +145,7 @@ RDOFindEditTheme RDOFindEditTheme::getOceanTheme()
 	return theme;
 }
 
-namespace rdoEditCtrl
-{
+namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const RDOFindEditTheme& theme)
 {
@@ -164,7 +163,7 @@ QSettings& operator>> (QSettings& settings, RDOFindEditTheme& theme)
 	return settings;
 }
 
-} // namespace rdoEditCtrl
+}}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFindEditStyle

@@ -21,7 +21,7 @@
 #include "thirdparty/scintilla/rdo/LexFind.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditCtrl;
+using namespace rdo::gui::editor;
 using namespace rdoStyle;
 
 static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZÀàÁáÂâÃãÄäÅå¨¸ÆæÇçÈèÉéÊêËëÌìÍíÎîÏïĞğÑñÒòÓóÔôÕõÖö×÷ØøÙùÚúÛûÜüİıŞşßÿ";

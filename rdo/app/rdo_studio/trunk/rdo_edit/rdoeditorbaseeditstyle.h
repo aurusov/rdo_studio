@@ -23,7 +23,7 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorBaseEditTheme
 // --------------------------------------------------------------------------------
-class RDOEditorBaseEditTheme: public rdoEditCtrl::EditBaseTheme
+class RDOEditorBaseEditTheme: public rdo::gui::editor::EditBaseTheme
 {
 public:
 	RDOEditorBaseEditTheme();
@@ -77,7 +77,7 @@ QSettings& operator>> (QSettings& settings,       RDOEditorBaseEditTheme& theme)
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorBaseEditStyle
 // --------------------------------------------------------------------------------
-class RDOEditorBaseEditStyle: public rdoEditCtrl::EditBaseStyle
+class RDOEditorBaseEditStyle: public rdo::gui::editor::EditBaseStyle
 {
 public:
 	RDOEditorBaseEditStyle();

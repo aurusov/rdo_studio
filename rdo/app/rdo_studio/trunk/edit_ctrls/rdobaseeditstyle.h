@@ -16,7 +16,7 @@
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoEditCtrl {
+namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
 // -------------------- EditBaseTheme
@@ -138,6 +138,6 @@ public:
 	EditBaseWindow* window;
 };
 
-} // namespace rdoEditCtrl
+}}} // namespace rdo::gui::editor
 
 #endif // _RDO_STUDIO_EDIT_CTRLS_RDOBASEEDITSTYLE_H_

@@ -38,20 +38,20 @@ public:
 
 	void setErrorLine(int line = -1);
 
-	CPTR(rdoEditCtrl::LogEdit) getLog() const;
-	void setLog(REF(rdoEditCtrl::LogEdit) log);
+	CPTR(rdo::gui::editor::LogEdit) getLog() const;
+	void setLog(REF(rdo::gui::editor::LogEdit) log);
 
 	void setCanClearErrorLine(rbool value);
 
 private:
 	typedef  RDOEditorBaseEdit  super;
 
-	QWidget*               m_pView;
-	rdoEditCtrl::LogEdit*  m_pLog;
-	QMenu*                 m_pPopupMenu;
-	int                    m_sciFoldMarginID;
-	int                    m_sciMarkerError;
-	rbool                  m_canClearErrorLine;
+	QWidget*                    m_pView;
+	rdo::gui::editor::LogEdit*  m_pLog;
+	QMenu*                      m_pPopupMenu;
+	int                         m_sciFoldMarginID;
+	int                         m_sciMarkerError;
+	rbool                       m_canClearErrorLine;
 
 	void expand         (int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1) const;
 	void foldChanged    (int line, int levelNow, int levelPrev) const;

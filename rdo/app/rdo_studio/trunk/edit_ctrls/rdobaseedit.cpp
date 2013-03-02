@@ -27,7 +27,7 @@
 #include "thirdparty/scintilla/lexlib/WordList.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditCtrl;
+using namespace rdo::gui::editor;
 using namespace rdoStyle;
 
 // --------------------------------------------------------------------------------

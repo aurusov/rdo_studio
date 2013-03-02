@@ -22,7 +22,7 @@
 // --------------------------------------------------------------------------------
 
 using namespace rdo::simulation::report;
-using namespace rdoEditCtrl;
+using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEdit

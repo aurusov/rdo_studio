@@ -16,7 +16,7 @@
 #include "app/rdo_studio/edit_ctrls/editwithreadonlypopupmenu.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoEditCtrl {
+namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODebugEdit
@@ -38,6 +38,6 @@ private:
 	virtual void onHelpContext();
 };
 
-} // namespace rdoEditCtrl
+}}} // namespace rdo::gui::editor
 
 #endif // _RDO_STUDIO_EDIT_CTRLS_RDODEBUGEDIT_H_

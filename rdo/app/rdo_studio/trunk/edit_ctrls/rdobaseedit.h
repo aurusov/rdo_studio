@@ -26,7 +26,7 @@
 #include "app/rdo_studio/src/dialog/find_replace_dialog.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoEditCtrl {
+namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
 // -------------------- EditBase
@@ -253,6 +253,6 @@ signals:
 	void modifyChanged(bool value);
 };
 
-} // namespace rdoEditCtrl
+}}} // namespace rdo::gui::editor
 
 #endif // _RDO_STUDIO_EDIT_CTRLS_RDOBASEEDIT_H_
