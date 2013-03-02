@@ -49,7 +49,7 @@ LPFuzzySet FuzzySet::operator|| (CREF(LPFuzzySet) pSet)const
 		FuzzySet::FuzzySetDefinition::const_iterator it2 = pSet->find(it1->first);
 		if (it2 != pSet->end())
 		{
-			pFuzzySetResult->operator[](it1->first) = std::max(it1->second, it2->second);
+			pFuzzySetResult->operator[](it1->first) = (std::max)(it1->second, it2->second);
 		}
 		else
 		{
@@ -124,7 +124,7 @@ LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFun fun, CREF(LPFuzzySet)
 		}
 		else
 		{
-			values[rdo_value] = std::max(val->second, it->second);
+			values[rdo_value] = (std::max)(val->second, it->second);
 		}
 		++it;
 	}
@@ -156,7 +156,7 @@ LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFunP fun, PTR(void) pPara
 		}
 		else
 		{
-			values[rdo_value] = std::max(val->second, it->second);
+			values[rdo_value] = (std::max)(val->second, it->second);
 		}
 		++it;
 	}
