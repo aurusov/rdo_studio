@@ -64,20 +64,6 @@ OPEN_RDO_NAMESPACE
 	//! \result Отформатированная строчка
 	tstring format(CPTR(tchar) str, REF(va_list) params);
 
-#ifdef COMPILER_VISUAL_STUDIO
-	//! Формирование строки по формату, аналогично <a href="http://ru.wikipedia.org/wiki/Printf">printf</a>
-	//! \param  resource - номер строкового ресурса, который может содержать символы форматирования
-	//! \param  ...      - произвольный набор параметров
-	//! \result Отформатированная строчка
-	tstring format(ruint resource, ...);
-
-	//! Формирование строки по формату
-	//! \param  resource - номер строкового ресурса, который может содержать символы форматирования
-	//! \param  params   - определенный по формату набор параметров (вытащенный по формату из стека)
-	//! \result Отформатированная строчка
-	tstring format(ruint resource, REF(va_list) params);
-#endif // COMPILER_VISUAL_STUDIO
-
 	//! Переводит строку в unicode
 	//! \param str - строка в ansi
 	//! \result Строка в unicode

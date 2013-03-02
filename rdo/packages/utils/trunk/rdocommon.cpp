@@ -76,29 +76,6 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	return tstring( s.begin(), s.end() );
 }
 
-#ifdef COMPILER_VISUAL_STUDIO
-tstring format(ruint resource, ...)
-{
-	va_list params;
-	va_start( params, resource );
-	tstring res = format( resource, params );
-	va_end( params );
-	return res;
-}
-
-tstring format(ruint resource, REF(va_list) params)
-{
-	tchar buffer[1024];
-	HMODULE hModule = ::GetModuleHandle(NULL);
-	if (hModule)
-	{
-		if (LoadString(hModule, resource, buffer, sizeof(buffer)/sizeof(tchar)))
-		return format(buffer, params);
-	}
-	return _T("");
-}
-#endif // COMPILER_VISUAL_STUDIO
-
 wstring toUnicode(CREF(astring) str)
 {
 	wstring result;
