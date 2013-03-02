@@ -46,40 +46,25 @@ rbool File::read_only(CREF(tstring) name)
 
 rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fileName, REF(tstring) fileExt)
 {
-#if defined( COMPILER_VISUAL_STUDIO )
-	tchar _drive[_MAX_DRIVE];
-	tchar _dir  [_MAX_DIR  ];
-	tchar _name [_MAX_FNAME];
-	tchar _ext  [_MAX_EXT  ];
-
-#ifdef UNICODE
-	if (_wsplitpath_s(name.c_str(), _drive, _MAX_DRIVE, _dir, _MAX_DIR, _name, _MAX_FNAME, _ext, _MAX_EXT) != 0)
-#else
-	if (_splitpath_s(name.c_str(), _drive, _MAX_DRIVE, _dir, _MAX_DIR, _name, _MAX_FNAME, _ext, _MAX_EXT) != 0)
-#endif
-		return false;
-
-	fileDir  = rdo::format(_T("%s%s"), _drive, _dir);
-	fileName = _name;
-	fileExt  = _ext;
-#elif defined( COMPILER_GCC )
 	boost::filesystem::path from(name);
+	boost::filesystem::path parentDir(from.parent_path());
+	boost::filesystem::path rootName      = parentDir.root_name();
+	boost::filesystem::path rootDirectory = parentDir.root_directory();
+	if (parentDir != (rootName / rootDirectory))
+	{
+		parentDir /= rootDirectory;
+	}
+
 #ifdef UNICODE
-	fileDir = from.parent_path().wstring();
+	fileDir  = parentDir.wstring();
 	fileName = from.stem().wstring();
 	fileExt  = from.extension().wstring();
 #else
-	fileDir = from.parent_path().string();
+	fileDir  = parentDir.string();
 	fileName = from.stem().string();
 	fileExt  = from.extension().string();
 #endif // UNICODE
 
-	if(fileDir[fileDir.size() - 1] != _T('/'))
-	{
-		fileDir += _T("/");
-	}
-
-#endif // COMPILER_VISUAL_STUDIO
 	return true;
 }
 
