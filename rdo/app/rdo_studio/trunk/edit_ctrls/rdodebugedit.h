@@ -19,7 +19,7 @@
 namespace rdo { namespace gui { namespace editor {
 
 class Debug
-	: public EditBase
+	: public Edit
 	, public PopupMenu
 {
 public:
@@ -29,7 +29,7 @@ public:
 	void appendLine(CREF(QString) str);
 
 private:
-	typedef  EditBase  super;
+	typedef  Edit  super;
 
 	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void onHelpContext();

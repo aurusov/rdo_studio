@@ -31,32 +31,32 @@ using namespace rdo::gui::editor;
 using namespace rdoStyle;
 
 // --------------------------------------------------------------------------------
-// -------------------- EditBase::Group
+// -------------------- Edit::Group
 // ---------------------------------------------------------------------------
-EditBase::Group::Group()
+Edit::Group::Group()
 	: bMatchCase     (false)
 	, bMatchWholeWord(false)
 	, bSearchDown    (true )
 {}
 
-void EditBase::Group::insert(PTR(EditBase) pEdit)
+void Edit::Group::insert(PTR(Edit) pEdit)
 {
 	m_list.push_back(pEdit);
 }
 
-EditBase::Group::List::const_iterator EditBase::Group::begin() const
+Edit::Group::List::const_iterator Edit::Group::begin() const
 {
 	return m_list.begin();
 }
 
-EditBase::Group::List::const_iterator EditBase::Group::end() const
+Edit::Group::List::const_iterator Edit::Group::end() const
 {
 	return m_list.end();
 }
 
-EditBase::Group::List::const_iterator EditBase::Group::next(CREF(List::const_iterator) it) const
+Edit::Group::List::const_iterator Edit::Group::next(CREF(List::const_iterator) it) const
 {
-	EditBase::Group::List::const_iterator result(it);
+	Edit::Group::List::const_iterator result(it);
 	++result;
 	if (result == m_list.end())
 	{
@@ -65,9 +65,9 @@ EditBase::Group::List::const_iterator EditBase::Group::next(CREF(List::const_ite
 	return result;
 }
 
-EditBase::Group::List::const_iterator EditBase::Group::prev(CREF(List::const_iterator) it) const
+Edit::Group::List::const_iterator Edit::Group::prev(CREF(List::const_iterator) it) const
 {
-	EditBase::Group::List::const_iterator result(it);
+	Edit::Group::List::const_iterator result(it);
 	if (result == m_list.begin())
 	{
 		result = m_list.end();
@@ -76,18 +76,18 @@ EditBase::Group::List::const_iterator EditBase::Group::prev(CREF(List::const_ite
 	return result;
 }
 
-void EditBase::Group::for_each(CREF(this_method) fun) const
+void Edit::Group::for_each(CREF(this_method) fun) const
 {
 	boost::range::for_each(m_list, fun);
 }
 
-EditBase::Group::List::const_iterator EditBase::Group::find_if(CREF(this_predicate) fun) const
+Edit::Group::List::const_iterator Edit::Group::find_if(CREF(this_predicate) fun) const
 {
 	return boost::range::find_if(m_list, fun);
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- EditBase
+// -------------------- Edit
 // ---------------------------------------------------------------------------
 
 // ---------------
@@ -126,7 +126,7 @@ EditBase::Group::List::const_iterator EditBase::Group::find_if(CREF(this_predica
 
 // ---------------
 
-EditBase::EditBase(PTR(QWidget) pParent)
+Edit::Edit(PTR(QWidget) pParent)
 	: super               (pParent)
 	, m_markerCount       (0    )
 	, m_pStyle            (NULL )
@@ -151,15 +151,15 @@ EditBase::EditBase(PTR(QWidget) pParent)
 	sendEditor(SCI_USEPOPUP, 0);
 }
 
-EditBase::~EditBase()
+Edit::~Edit()
 {}
 
-void EditBase::catchNeedShown(int position, int length)
+void Edit::catchNeedShown(int position, int length)
 {
 	ensureRangeVisible(position, position + length, false);
 }
 
-void EditBase::catchCharAdded(int ch)
+void Edit::catchCharAdded(int ch)
 {
 	if (m_pStyle && m_pStyle->tab->autoIndent && (ch == '\r' || ch == '\n'))
 	{
@@ -167,30 +167,30 @@ void EditBase::catchCharAdded(int ch)
 	}
 }
 
-long EditBase::sendEditorString(ruint msg, unsigned long wParam, CREF(QString) str) const
+long Edit::sendEditorString(ruint msg, unsigned long wParam, CREF(QString) str) const
 {
 	return super::sends(msg, wParam, str.toLocal8Bit().constData());
 }
 
-int EditBase::getNewMarker()
+int Edit::getNewMarker()
 {
 	++m_markerCount;
 	return m_markerCount;
 }
 
-void EditBase::defineMarker(int marker, int markerType, QColor fore, QColor back) const
+void Edit::defineMarker(int marker, int markerType, QColor fore, QColor back) const
 {
 	sendEditor(SCI_MARKERDEFINE,  marker, markerType);
 	sendEditor(SCI_MARKERSETFORE, marker, convertColor(fore));
 	sendEditor(SCI_MARKERSETBACK, marker, convertColor(back));
 }
 
-const EditBaseStyle* EditBase::getEditorStyle() const
+const EditBaseStyle* Edit::getEditorStyle() const
 {
 	return m_pStyle;
 }
 
-void EditBase::setEditorStyle(EditBaseStyle* pStyle)
+void Edit::setEditorStyle(EditBaseStyle* pStyle)
 {
 	m_pStyle = pStyle;
 	if (!m_pStyle)
@@ -259,57 +259,57 @@ void EditBase::setEditorStyle(EditBaseStyle* pStyle)
 	sendEditor(SCI_SETHSCROLLBAR, m_pStyle->window->showHorzScrollBar);
 }
 
-void EditBase::setGroup(PTR(Group) pGroup)
+void Edit::setGroup(PTR(Group) pGroup)
 {
 	m_pGroup = pGroup;
 }
 
-void EditBase::onEditUndo() 
+void Edit::onEditUndo() 
 {
 	sendEditor(SCI_UNDO);
 }
 
-void EditBase::onEditRedo() 
+void Edit::onEditRedo() 
 {
 	sendEditor(SCI_REDO);
 }
 
-void EditBase::onEditCut() 
+void Edit::onEditCut() 
 {
 	sendEditor(SCI_CUT);
 }
 
-void EditBase::onEditCopy() 
+void Edit::onEditCopy() 
 {
 	sendEditor(SCI_COPY);
 }
 
-void EditBase::onEditPaste() 
+void Edit::onEditPaste() 
 {
 	sendEditor(SCI_PASTE);
 }
 
-void EditBase::onEditDel() 
+void Edit::onEditDel() 
 {
 	sendEditor(SCI_CLEAR);
 }
 
-void EditBase::onEditSelectAll() 
+void Edit::onEditSelectAll() 
 {
 	sendEditor(SCI_SELECTALL);
 }
 
-void EditBase::onEditUpperCase() 
+void Edit::onEditUpperCase() 
 {
 	sendEditor(SCI_UPPERCASE);
 }
 
-void EditBase::onEditLowerCase() 
+void Edit::onEditLowerCase() 
 {
 	sendEditor(SCI_LOWERCASE);
 }
 
-tstring EditBase::getCurrentWord() const
+tstring Edit::getCurrentWord() const
 {
 	int pos_begin = sendEditor(SCI_WORDSTARTPOSITION, getCurrentPos(), true);
 	int pos_end   = sendEditor(SCI_WORDENDPOSITION, getCurrentPos(), true);
@@ -325,7 +325,7 @@ tstring EditBase::getCurrentWord() const
 	return str;
 }
 
-tstring EditBase::getSelection() const
+tstring Edit::getSelection() const
 {
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
@@ -335,14 +335,14 @@ tstring EditBase::getSelection() const
 	return str;
 }
 
-tstring EditBase::getCurrentOrSelectedWord() const
+tstring Edit::getCurrentOrSelectedWord() const
 {
 	return isSelected()
 		? getSelection  ()
 		: getCurrentWord();
 }
 
-QString EditBase::getWordForFind() const
+QString Edit::getWordForFind() const
 {
 	return isSelected()
 		? QString::fromLocal8Bit(getSelection().c_str())
@@ -354,7 +354,7 @@ QString EditBase::getWordForFind() const
 
 }
 
-CharacterRange EditBase::getSelectionRange() const
+CharacterRange Edit::getSelectionRange() const
 {
 	CharacterRange crange;
 	crange.cpMin = sendEditor(SCI_GETSELECTIONSTART);
@@ -362,13 +362,13 @@ CharacterRange EditBase::getSelectionRange() const
 	return crange;
 }
 
-void EditBase::gotoLineEnsureVisible(int line) const
+void Edit::gotoLineEnsureVisible(int line) const
 {
 	sendEditor(SCI_ENSUREVISIBLEENFORCEPOLICY, line);
 	sendEditor(SCI_GOTOLINE, line);
 }
 
-void EditBase::ensureRangeVisible(int posStart, int posEnd, rbool enforcePolicy) const
+void Edit::ensureRangeVisible(int posStart, int posEnd, rbool enforcePolicy) const
 {
 	int lineStart = getLineFromPosition(posStart < posEnd ? posStart : posEnd);
 	int lineEnd   = getLineFromPosition(posStart > posEnd ? posStart : posEnd);
@@ -378,7 +378,7 @@ void EditBase::ensureRangeVisible(int posStart, int posEnd, rbool enforcePolicy)
 	}
 }
 
-void EditBase::onSearchFind() 
+void Edit::onSearchFind() 
 {
 	m_findSettings.what = QString::fromLocal8Bit(getCurrentOrSelectedWord().c_str());
 
@@ -386,8 +386,8 @@ void EditBase::onSearchFind()
 	{
 		m_pFindDialog = new FindDialog(
 			this,
-			boost::bind(&EditBase::onFindDlgFind,  this, _1),
-			boost::bind(&EditBase::onFindDlgClose, this)
+			boost::bind(&Edit::onFindDlgFind,  this, _1),
+			boost::bind(&Edit::onFindDlgClose, this)
 		);
 	}
 
@@ -407,7 +407,7 @@ void EditBase::onSearchFind()
 	m_pFindDialog->activateWindow();
 }
 
-void EditBase::onFindDlgFind(CREF(FindDialog::Settings) settings)
+void Edit::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
 	if (m_pGroup)
@@ -418,12 +418,12 @@ void EditBase::onFindDlgFind(CREF(FindDialog::Settings) settings)
 	updateActionFind(isActivated());
 }
 
-void EditBase::onFindDlgClose()
+void Edit::onFindDlgClose()
 {
 	m_pFindDialog = NULL;
 }
 
-void EditBase::onSearchFindNext() 
+void Edit::onSearchFindNext() 
 {
 	findNext(
 		m_pGroup->findStr.isEmpty()
@@ -435,7 +435,7 @@ void EditBase::onSearchFindNext()
 	);
 }
 
-void EditBase::onSearchFindPrevious() 
+void Edit::onSearchFindPrevious() 
 {
 	findNext(
 		m_pGroup->findStr.isEmpty()
@@ -447,7 +447,7 @@ void EditBase::onSearchFindPrevious()
 	);
 }
 
-void EditBase::onSearchFindNextCurrent() 
+void Edit::onSearchFindNextCurrent() 
 {
 	if (m_pGroup)
 	{
@@ -457,7 +457,7 @@ void EditBase::onSearchFindNextCurrent()
 	}
 }
 
-void EditBase::onSearchFindPreviousCurrent() 
+void Edit::onSearchFindPreviousCurrent() 
 {
 	if (m_pGroup)
 	{
@@ -467,7 +467,7 @@ void EditBase::onSearchFindPreviousCurrent()
 	}
 }
 
-void EditBase::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
+void Edit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
 	int findLen = findWhat.length();
 	if (!findLen)
@@ -547,7 +547,7 @@ void EditBase::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCas
 	}
 }
 
-void EditBase::onSearchReplace() 
+void Edit::onSearchReplace() 
 {
 	m_findReplaceSettings.what = QString::fromLocal8Bit(getCurrentOrSelectedWord().c_str());
 
@@ -555,10 +555,10 @@ void EditBase::onSearchReplace()
 	{
 		m_pFindReplaceDialog = new FindReplaceDialog(
 			this,
-			boost::bind(&EditBase::onFindReplaceDlgFind,       this, _1),
-			boost::bind(&EditBase::onFindReplaceDlgReplace,    this, _1),
-			boost::bind(&EditBase::onFindReplaceDlgReplaceAll, this, _1),
-			boost::bind(&EditBase::onFindReplaceDlgClose,      this)
+			boost::bind(&Edit::onFindReplaceDlgFind,       this, _1),
+			boost::bind(&Edit::onFindReplaceDlgReplace,    this, _1),
+			boost::bind(&Edit::onFindReplaceDlgReplaceAll, this, _1),
+			boost::bind(&Edit::onFindReplaceDlgClose,      this)
 		);
 	}
 	
@@ -578,7 +578,7 @@ void EditBase::onSearchReplace()
 	m_pFindReplaceDialog->activateWindow();
 }
 
-void EditBase::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) settings)
+void Edit::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
 	if (m_pGroup)
@@ -589,7 +589,7 @@ void EditBase::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) settings)
 	updateActionFind(isActivated());
 }
 
-void EditBase::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) settings)
+void Edit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
 	if (m_pGroup)
@@ -605,7 +605,7 @@ void EditBase::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) setting
 	updateActionFind(isActivated());
 }
 
-void EditBase::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings)
+void Edit::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
 	if (m_pGroup)
@@ -617,17 +617,17 @@ void EditBase::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) sett
 	updateActionFind(isActivated());
 }
 
-void EditBase::onFindReplaceDlgClose()
+void Edit::onFindReplaceDlgClose()
 {
 	m_pFindReplaceDialog = NULL;
 }
 
-void EditBase::showFindWarning(CREF(QString) findWhat)
+void Edit::showFindWarning(CREF(QString) findWhat)
 {
 	QMessageBox::warning(this, QString::fromStdWString(L"Результаты поиска"), QString::fromStdWString(L"Невозможно найти строчку '%1'.").arg(findWhat));
 }
 
-void EditBase::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
+void Edit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
 	if (m_haveFound)
 	{
@@ -648,7 +648,7 @@ void EditBase::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool 
 	findNext(findWhat, searchDown, matchCase, matchWholeWord);
 }
 
-void EditBase::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool matchCase, rbool matchWholeWord)
+void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool matchCase, rbool matchWholeWord)
 {
 	int findLen = findWhat.length();
 	if (!findLen)
@@ -693,7 +693,7 @@ void EditBase::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbo
 	}
 }
 
-void EditBase::clearAll()
+void Edit::clearAll()
 {
 	rbool readOnly = isReadOnly();
 	setReadOnly(false);
@@ -701,7 +701,7 @@ void EditBase::clearAll()
 	setReadOnly(readOnly);
 }
 
-rbool EditBase::bookmarkToggle(int line) const
+rbool Edit::bookmarkToggle(int line) const
 {
 	if (line == -1)
 	{
@@ -720,7 +720,7 @@ rbool EditBase::bookmarkToggle(int line) const
 	}
 }
 
-rbool EditBase::bookmarkNext(rbool canLoop, rbool fromCurrentLine) const
+rbool Edit::bookmarkNext(rbool canLoop, rbool fromCurrentLine) const
 {
 	rbool wasFound = false;
 	rbool wasLoop  = false;
@@ -747,7 +747,7 @@ rbool EditBase::bookmarkNext(rbool canLoop, rbool fromCurrentLine) const
 	return wasFound;
 }
 
-rbool EditBase::bookmarkPrev(rbool canLoop, rbool fromCurrentLine) const
+rbool Edit::bookmarkPrev(rbool canLoop, rbool fromCurrentLine) const
 {
 	rbool wasFound = false;
 	rbool wasLoop  = false;
@@ -775,18 +775,18 @@ rbool EditBase::bookmarkPrev(rbool canLoop, rbool fromCurrentLine) const
 	return wasFound;
 }
 
-void EditBase::bookmarkClearAll() const
+void Edit::bookmarkClearAll() const
 {
 	sendEditor(SCI_MARKERDELETEALL, m_sciMarkerBookmark);
 }
 
-rbool EditBase::hasBookmarks() const
+rbool Edit::hasBookmarks() const
 {
 	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerBookmark);
 	return nextLine >= 0;
 }
 
-void EditBase::onCopyAsRTF(QMimeData* pMimeData)
+void Edit::onCopyAsRTF(QMimeData* pMimeData)
 {
 	if (!isSelected())
 		return;
@@ -803,7 +803,7 @@ void EditBase::onCopyAsRTF(QMimeData* pMimeData)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- EditBase: some functions for RTF export ---------- BEGIN
+// -------------------- some functions for RTF export ---------- BEGIN
 // --------------------------------------------------------------------------------
 int GetHexChar(char ch) // 'H'
 {
@@ -951,10 +951,10 @@ void GetRTFStyleChange(char *delta, char *last, const char *current) // \f0\fs20
 	}
 }
 // --------------------------------------------------------------------------------
-// -------------------- EditBase: some functions for RTF export ---------- END
+// -------------------- some functions for RTF export ---------- END
 // --------------------------------------------------------------------------------
 
-tstring EditBase::saveAsRTF(int start, int end) const
+tstring Edit::saveAsRTF(int start, int end) const
 {
 	tstring saveStr;
 
@@ -1087,14 +1087,14 @@ tstring EditBase::saveAsRTF(int start, int end) const
 }
 #pragma warning(default: 4996)
 
-void EditBase::setCurrentPos(const int value) const
+void Edit::setCurrentPos(const int value) const
 {
 	sendEditor(SCI_SETCURRENTPOS, value);
 	sendEditor(SCI_SETSELECTIONSTART, value);
 	sendEditor(SCI_SETSELECTIONEND, value);
 }
 
-void EditBase::setCurrentPos(const int line, int pos_in_line, const rbool convert_rdo_tab) const
+void Edit::setCurrentPos(const int line, int pos_in_line, const rbool convert_rdo_tab) const
 {
 	int pos = getPositionFromLine(line);
 	int line_length = sendEditor(SCI_LINELENGTH, line);
@@ -1149,42 +1149,42 @@ void EditBase::setCurrentPos(const int line, int pos_in_line, const rbool conver
 	setCurrentPos(pos);
 }
 
-rbool EditBase::isLineVisible(const int line) const
+rbool Edit::isLineVisible(const int line) const
 {
 	int first_line = sendEditor(SCI_GETFIRSTVISIBLELINE);
 	int last_line = first_line + sendEditor(SCI_LINESONSCREEN);
 	return line >= first_line && line <= last_line;
 }
 
-void EditBase::appendText(CREF(QString) str) const
+void Edit::appendText(CREF(QString) str) const
 {
 	QByteArray text = str.toLocal8Bit();
 	sendEditorString(SCI_ADDTEXT, text.size(), text.constData());
 }
 
-void EditBase::scrollToLine(const int line) const
+void Edit::scrollToLine(const int line) const
 {
 	sendEditor(SCI_LINESCROLL, 0, line - sendEditor(SCI_GETFIRSTVISIBLELINE) - sendEditor(SCI_LINESONSCREEN)/3);
 	setCurrentPos(getPositionFromLine(line));
 }
 
-void EditBase::scrollToLine2(const int line) const
+void Edit::scrollToLine2(const int line) const
 {
 	sendEditor(SCI_LINESCROLL, 0, line);
 }
 
-void EditBase::scrollToCarret() const
+void Edit::scrollToCarret() const
 {
 	sendEditor(SCI_SCROLLCARET);
 }
 
-void EditBase::horzScrollToCurrentPos() const
+void Edit::horzScrollToCurrentPos() const
 {
 	setCurrentPos(getCurrentPos());
 	sendEditor(SCI_REPLACESEL, 0, 0);
 }
 
-void EditBase::load(rdo::stream& stream)
+void Edit::load(rdo::stream& stream)
 {
 	rbool readOnly = isReadOnly();
 	setReadOnly(false);
@@ -1194,7 +1194,7 @@ void EditBase::load(rdo::stream& stream)
 	setReadOnly(readOnly);
 }
 
-void EditBase::save(rdo::stream& stream) const
+void Edit::save(rdo::stream& stream) const
 {
 	int len = getLength();
 	std::vector<char> str;
@@ -1205,7 +1205,7 @@ void EditBase::save(rdo::stream& stream) const
 	stream.str(&str[0]); // qq
 }
 
-int EditBase::indentOfBlock(int line) const
+int Edit::indentOfBlock(int line) const
 {
 	if (line < 0)
 		return 0;
@@ -1213,7 +1213,7 @@ int EditBase::indentOfBlock(int line) const
 	return sendEditor(SCI_GETLINEINDENTATION, line);
 }
 
-void EditBase::setLineIndentation(int line, int indent) const
+void Edit::setLineIndentation(int line, int indent) const
 {
 	if (indent < 0) return;
 	CharacterRange crange = getSelectionRange();
@@ -1260,7 +1260,7 @@ void EditBase::setLineIndentation(int line, int indent) const
 	setSelection(crange.cpMin, crange.cpMax);
 }
 
-void EditBase::autoIndent() const
+void Edit::autoIndent() const
 {
 	CharacterRange crange = getSelectionRange();
 	int selStart      = crange.cpMin;
@@ -1274,29 +1274,29 @@ void EditBase::autoIndent() const
 	}
 }
 
-void EditBase::onSearchBookmarkToggle()
+void Edit::onSearchBookmarkToggle()
 {
 	bookmarkToggle();
 }
 
-void EditBase::onSearchBookmarkNext() const
+void Edit::onSearchBookmarkNext() const
 {
 	onSearchBookmarkNextPrev(
-		boost::bind(&EditBase::bookmarkNext, _1, _2, _3),
-		boost::bind(&EditBase::Group::next, m_pGroup, _1)
+		boost::bind(&Edit::bookmarkNext, _1, _2, _3),
+		boost::bind(&Edit::Group::next, m_pGroup, _1)
 	);
 }
 
-void EditBase::onSearchBookmarkPrev() const
+void Edit::onSearchBookmarkPrev() const
 {
 	onSearchBookmarkNextPrev(
-		boost::bind(&EditBase::bookmarkPrev, _1, _2, _3),
-		boost::bind(&EditBase::Group::prev, m_pGroup, _1)
+		boost::bind(&Edit::bookmarkPrev, _1, _2, _3),
+		boost::bind(&Edit::Group::prev, m_pGroup, _1)
 	);
 }
 
-void EditBase::onSearchBookmarkNextPrev(
-	const boost::function<rbool (const EditBase*, rbool, rbool)>& nextPrevFun,
+void Edit::onSearchBookmarkNextPrev(
+	const boost::function<rbool (const Edit*, rbool, rbool)>& nextPrevFun,
 	const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
 ) const
 {
@@ -1338,50 +1338,50 @@ void EditBase::onSearchBookmarkNextPrev(
 	}
 }
 
-void EditBase::onSearchBookmarkClearAll()
+void Edit::onSearchBookmarkClearAll()
 {
-	methodOfGroup(boost::bind(&EditBase::bookmarkClearAll, _1));
+	methodOfGroup(boost::bind(&Edit::bookmarkClearAll, _1));
 }
 
-void EditBase::onUpdateEditGUI()
-{
-	onUpdateActions(isActivated());
-}
-
-void EditBase::onViewShowWhiteSpace() 
-{
-	methodOfGroup(boost::bind(&EditBase::setViewWhiteSpace, _1, !isViewWhiteSpace()));
-}
-
-void EditBase::onViewShowEndOfLine() 
-{
-	methodOfGroup(boost::bind(&EditBase::setViewEndOfLine, _1, !isViewEndOfLine()));
-}
-
-void EditBase::onViewZoomChanged(int)
+void Edit::onUpdateEditGUI()
 {
 	onUpdateActions(isActivated());
 }
 
-void EditBase::onViewZoomInc()
+void Edit::onViewShowWhiteSpace() 
 {
-	methodOfGroup(boost::bind(&EditBase::zoomIn, _1));
+	methodOfGroup(boost::bind(&Edit::setViewWhiteSpace, _1, !isViewWhiteSpace()));
+}
+
+void Edit::onViewShowEndOfLine() 
+{
+	methodOfGroup(boost::bind(&Edit::setViewEndOfLine, _1, !isViewEndOfLine()));
+}
+
+void Edit::onViewZoomChanged(int)
+{
 	onUpdateActions(isActivated());
 }
 
-void EditBase::onViewZoomDec() 
+void Edit::onViewZoomInc()
 {
-	methodOfGroup(boost::bind(&EditBase::zoomOut, _1));
+	methodOfGroup(boost::bind(&Edit::zoomIn, _1));
 	onUpdateActions(isActivated());
 }
 
-void EditBase::onViewZoomReset() 
+void Edit::onViewZoomDec() 
 {
-	methodOfGroup(boost::bind(&EditBase::resetZoom, _1));
+	methodOfGroup(boost::bind(&Edit::zoomOut, _1));
 	onUpdateActions(isActivated());
 }
 
-int EditBase::findPos(CREF(QString) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord) const
+void Edit::onViewZoomReset() 
+{
+	methodOfGroup(boost::bind(&Edit::resetZoom, _1));
+	onUpdateActions(isActivated());
+}
+
+int Edit::findPos(CREF(QString) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord) const
 {
 	int findLen = findWhat.length();
 	if (!findLen)
@@ -1398,7 +1398,7 @@ int EditBase::findPos(CREF(QString) findWhat, const int startFromLine, const rbo
 	return sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
 }
 
-tstring EditBase::getLine(const int line) const
+tstring Edit::getLine(const int line) const
 {
 	int length = sendEditor(SCI_LINELENGTH, line);
 	tstring str;
@@ -1407,7 +1407,7 @@ tstring EditBase::getLine(const int line) const
 	return str;
 }
 
-void EditBase::onSearchGotoLine()
+void Edit::onSearchGotoLine()
 {
 	GoToLineDialog dialog(this, getCurrentLineNumber() + 1, getLineCount());
 	if (dialog.exec() == QDialog::Accepted)
@@ -1416,19 +1416,19 @@ void EditBase::onSearchGotoLine()
 	}
 }
 
-void EditBase::focusInEvent(QFocusEvent* pEvent)
+void Edit::focusInEvent(QFocusEvent* pEvent)
 {
 	super::focusInEvent(pEvent);
 	activate(pEvent);
 }
 
-void EditBase::focusOutEvent(QFocusEvent* pEvent)
+void Edit::focusOutEvent(QFocusEvent* pEvent)
 {
 	super::focusOutEvent(pEvent);
 	deactivate(pEvent);
 }
 
-void EditBase::onUpdateActions(rbool activated)
+void Edit::onUpdateActions(rbool activated)
 {
 	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
@@ -1436,114 +1436,114 @@ void EditBase::onUpdateActions(rbool activated)
 	updateAction(
 		pMainWindow->actEditUndo,
 		activated && sendEditor(SCI_CANUNDO),
-		this, &EditBase::onEditUndo
+		this, &Edit::onEditUndo
 	);
 	updateAction(
 		pMainWindow->actEditRedo,
 		activated && sendEditor(SCI_CANREDO),
-		this, &EditBase::onEditRedo
+		this, &Edit::onEditRedo
 	);
 	updateAction(
 		pMainWindow->actEditCut,
 		activated && !isReadOnly() && isSelected(),
-		this, &EditBase::onEditCut
+		this, &Edit::onEditCut
 	);
 	updateAction(
 		pMainWindow->actEditCopy,
 		activated && isSelected(),
-		this, &EditBase::onEditCopy
+		this, &Edit::onEditCopy
 	);
 	updateAction(
 		pMainWindow->actEditPaste,
 		activated && sendEditor(SCI_CANPASTE),
-		this, &EditBase::onEditPaste
+		this, &Edit::onEditPaste
 	);
 	updateAction(
 		pMainWindow->actEditDel,
 		activated && !isReadOnly() && (getCurrentPos() != getLength() || isSelected()),
-		this, &EditBase::onEditDel
+		this, &Edit::onEditDel
 	);
 	updateAction(
 		pMainWindow->actEditSelectAll,
 		activated && !isEmpty(),
-		this, &EditBase::onEditSelectAll
+		this, &Edit::onEditSelectAll
 	);
 	updateAction(
 		pMainWindow->actEditUpperCase,
 		activated && !isReadOnly() && isSelected(),
-		this, &EditBase::onEditUpperCase
+		this, &Edit::onEditUpperCase
 	);
 	updateAction(
 		pMainWindow->actEditLowerCase,
 		activated && !isReadOnly() && isSelected(),
-		this, &EditBase::onEditLowerCase
+		this, &Edit::onEditLowerCase
 	);
 	updateAction(
 		pMainWindow->actViewShowWhiteSpace,
 		activated,
-		this, &EditBase::onViewShowWhiteSpace
+		this, &Edit::onViewShowWhiteSpace
 	);
 	pMainWindow->actViewShowWhiteSpace->setChecked(isViewWhiteSpace());
 
 	updateAction(
 		pMainWindow->actViewShowEndOfLine,
 		activated,
-		this, &EditBase::onViewShowEndOfLine
+		this, &Edit::onViewShowEndOfLine
 	);
 	pMainWindow->actViewShowEndOfLine->setChecked(isViewEndOfLine());
 
 	updateAction(
 		pMainWindow->actHelpContext,
 		activated,
-		this, &EditBase::onHelpContext
+		this, &Edit::onHelpContext
 	);
 	updateAction(
 		pMainWindow->actViewZoomInc,
 		activated &&  getZoom() < 20,
-		this, &EditBase::onViewZoomInc
+		this, &Edit::onViewZoomInc
 	);
 	updateAction(
 		pMainWindow->actViewZoomDec,
 		activated && getZoom() > -10,
-		this, &EditBase::onViewZoomDec
+		this, &Edit::onViewZoomDec
 	);
 	updateAction(
 		pMainWindow->actViewZoomReset,
 		activated && getZoom(),
-		this, &EditBase::onViewZoomReset
+		this, &Edit::onViewZoomReset
 	);
 
-	rbool hasBookmark = predicateOfGroup(boost::bind(&EditBase::hasBookmarks, _1));
+	rbool hasBookmark = predicateOfGroup(boost::bind(&Edit::hasBookmarks, _1));
 
 	updateAction(
 		pMainWindow->actSearchBookmarkNext,
 		activated && hasBookmark,
-		this, &EditBase::onSearchBookmarkNext
+		this, &Edit::onSearchBookmarkNext
 	);
 	updateAction(
 		pMainWindow->actSearchBookmarkPrev,
 		activated && hasBookmark,
-		this, &EditBase::onSearchBookmarkPrev
+		this, &Edit::onSearchBookmarkPrev
 	);
 	updateAction(
 		pMainWindow->actSearchBookmarksToggle,
 		activated,
-		this, &EditBase::onSearchBookmarkToggle
+		this, &Edit::onSearchBookmarkToggle
 	);
 	updateAction(
 		pMainWindow->actSearchBookmarksClearAll,
 		activated && hasBookmark,
-		this, &EditBase::onSearchBookmarkClearAll
+		this, &Edit::onSearchBookmarkClearAll
 	);
 	updateAction(
 		pMainWindow->actSearchGotoLine,
 		activated,
-		this, &EditBase::onSearchGotoLine
+		this, &Edit::onSearchGotoLine
 	);
 	updateAction(
 		pMainWindow->actSearchFind,
 		activated,
-		this, &EditBase::onSearchFind
+		this, &Edit::onSearchFind
 	);
 
 	updateActionFind(activated);
@@ -1571,7 +1571,7 @@ void EditBase::onUpdateActions(rbool activated)
 	pMainWindow->statusBar()->update<StatusBar::SB_OVERWRITE>(overwrite);
 }
 
-void EditBase::updateActionFind(rbool activated)
+void Edit::updateActionFind(rbool activated)
 {
 	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
@@ -1579,74 +1579,74 @@ void EditBase::updateActionFind(rbool activated)
 	updateAction(
 		pMainWindow->actSearchFind,
 		activated && !isEmpty(),
-		this, &EditBase::onSearchFind
+		this, &Edit::onSearchFind
 	);
 
 	updateAction(
 		pMainWindow->actSearchReplace,
 		activated && !isEmpty() && !isReadOnly(),
-		this, &EditBase::onSearchReplace
+		this, &Edit::onSearchReplace
 	);
 
 	rbool findNextPrev = activated && (!m_findReplaceSettings.what.isEmpty() || !m_findSettings.what.isEmpty() || (m_pGroup && !m_pGroup->findStr.isEmpty()));
 	updateAction(
 		pMainWindow->actSearchFindNext,
 		findNextPrev,
-		this, &EditBase::onSearchFindNext
+		this, &Edit::onSearchFindNext
 	);
 
 	updateAction(
 		pMainWindow->actSearchFindPrevious,
 		findNextPrev,
-		this, &EditBase::onSearchFindPrevious
+		this, &Edit::onSearchFindPrevious
 	);
 
 	updateAction(
 		pMainWindow->actSearchFindNextCurrent,
 		activated,
-		this, &EditBase::onSearchFindNextCurrent
+		this, &Edit::onSearchFindNextCurrent
 	);
 
 	updateAction(
 		pMainWindow->actSearchFindPreviousCurrent,
 		activated,
-		this, &EditBase::onSearchFindPreviousCurrent
+		this, &Edit::onSearchFindPreviousCurrent
 	);
 }
 
-void EditBase::onUpdateModify()
+void Edit::onUpdateModify()
 {
 	emit modifyChanged(isModify());
 }
 
-rbool EditBase::isViewWhiteSpace() const
+rbool Edit::isViewWhiteSpace() const
 {
 	return sendEditor(SCI_GETVIEWWS) != SCWS_INVISIBLE;
 }
 
-void EditBase::setViewWhiteSpace(rbool value)
+void Edit::setViewWhiteSpace(rbool value)
 {
 	sendEditor(SCI_SETVIEWWS, value ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE);
 }
 
-rbool EditBase::isViewEndOfLine() const
+rbool Edit::isViewEndOfLine() const
 {
 	return sendEditor(SCI_GETVIEWEOL) ? true : false;
 }
 
-void EditBase::setViewEndOfLine(rbool value)
+void Edit::setViewEndOfLine(rbool value)
 {
 	sendEditor(SCI_SETVIEWEOL, value);
 }
 
-void EditBase::methodOfGroup(CREF(this_method) fun)
+void Edit::methodOfGroup(CREF(this_method) fun)
 {
 	m_pGroup
 		? m_pGroup->for_each(fun)
 		: fun(this);
 }
 
-rbool EditBase::predicateOfGroup(CREF(this_predicate) fun) const
+rbool Edit::predicateOfGroup(CREF(this_predicate) fun) const
 {
 	return m_pGroup
 		? m_pGroup->find_if(fun) != m_pGroup->end()

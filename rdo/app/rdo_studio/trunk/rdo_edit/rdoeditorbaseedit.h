@@ -18,7 +18,7 @@
 
 namespace rdo { namespace gui { namespace editor {
 
-class Parser: public EditBase
+class Parser: public Edit
 {
 public:
 	Parser(PTR(QWidget) pParent);
@@ -38,7 +38,7 @@ protected:
 	static tstring convertToLexer(CREF(tstring) kw);
 
 private:
-	typedef  EditBase  super;
+	typedef  Edit  super;
 };
 
 }}} // namespace rdo::gui::editor

@@ -40,7 +40,7 @@ public:
 	PTR(context_type) getItemEdit   (rdoModelObjects::RDOFileType type) const;
 
 private:
-	EditBase::Group m_group;
+	Edit::Group m_group;
 
 	void createPage(PTR(QWidget) pView, CREF(QString) name);
 };

@@ -24,7 +24,7 @@
 using namespace rdo::gui::editor;
 
 Log::Log(PTR(QWidget) pParent)
-	: EditBase  (pParent)
+	: Edit(pParent)
 	, m_currentLine(-1)
 {
 	setCurrentLine(-1);
@@ -74,7 +74,7 @@ Log::~Log()
 
 void Log::setEditorStyle(PTR(LogEditStyle) pStyle)
 {
-	EditBase::setEditorStyle(pStyle);
+	Edit::setEditorStyle(pStyle);
 	if (!m_pStyle)
 		return;
 
@@ -190,7 +190,7 @@ void Log::gotoNext()
 
 void Log::clearAll()
 {
-	EditBase::clearAll();
+	Edit::clearAll();
 	clearLines();
 }
 

@@ -28,25 +28,25 @@
 
 namespace rdo { namespace gui { namespace editor {
 
-class EditBase
+class Edit
 	: public ScintillaEditBase
 	, public ActionActivator
 {
 Q_OBJECT
 
 private:
-	typedef  boost::function<void (EditBase*)>         this_method;
-	typedef  boost::function<rbool (const EditBase*)>  this_predicate;
+	typedef  boost::function<void (Edit*)>         this_method;
+	typedef  boost::function<rbool (const Edit*)>  this_predicate;
 
 public:
-	EditBase(PTR(QWidget) pParent);
-	virtual ~EditBase();
+	Edit(PTR(QWidget) pParent);
+	virtual ~Edit();
 
 	//! @todo Вынести класс в отдельный модуль
 	class Group
 	{
 	public:
-		typedef std::vector<PTR(EditBase)> List;
+		typedef std::vector<PTR(Edit)> List;
 
 		rbool   bMatchCase;
 		rbool   bMatchWholeWord;
@@ -56,7 +56,7 @@ public:
 
 		Group();
 
-		void insert(PTR(EditBase) pEdit);
+		void insert(PTR(Edit) pEdit);
 
 		List::const_iterator begin() const;
 		List::const_iterator end  () const;
@@ -180,7 +180,7 @@ private:
 	void  setViewEndOfLine(rbool value);
 
 	void onSearchBookmarkNextPrev(
-		const boost::function<rbool (const EditBase*, rbool, rbool)>& nextPrevFun,
+		const boost::function<rbool (const Edit*, rbool, rbool)>& nextPrevFun,
 		const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
 	) const;
 

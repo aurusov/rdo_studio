@@ -22,7 +22,7 @@ namespace rdo { namespace gui { namespace editor {
 
 class Model;
 
-class Log: public EditBase
+class Log: public Edit
 {
 Q_OBJECT
 
