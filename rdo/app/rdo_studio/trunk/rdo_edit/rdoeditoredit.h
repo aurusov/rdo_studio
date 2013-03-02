@@ -23,35 +23,32 @@
 
 namespace rdo { namespace gui { namespace editor {
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOEditorEdit
-// --------------------------------------------------------------------------------
-class RDOEditorEdit: public RDOEditorBaseEdit
+class Model: public Parser
 {
 Q_OBJECT
 
 public:
-	RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);
-	virtual ~RDOEditorEdit();
+	Model(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);
+	virtual ~Model();
 
-	void setEditorStyle(PTR(RDOEditorEditStyle) pStyle);
+	void setEditorStyle(PTR(ModelStyle) pStyle);
 
 	void setErrorLine(int line = -1);
 
-	CPTR(rdo::gui::editor::Log) getLog() const;
-	void setLog(REF(rdo::gui::editor::Log) log);
+	CPTR(Log) getLog() const;
+	void setLog(REF(Log) log);
 
 	void setCanClearErrorLine(rbool value);
 
 private:
-	typedef  RDOEditorBaseEdit  super;
+	typedef  Parser  super;
 
-	QWidget*                    m_pView;
-	rdo::gui::editor::Log*  m_pLog;
-	QMenu*                      m_pPopupMenu;
-	int                         m_sciFoldMarginID;
-	int                         m_sciMarkerError;
-	rbool                       m_canClearErrorLine;
+	QWidget*  m_pView;
+	Log*      m_pLog;
+	QMenu*    m_pPopupMenu;
+	int       m_sciFoldMarginID;
+	int       m_sciMarkerError;
+	rbool     m_canClearErrorLine;
 
 	void expand         (int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1) const;
 	void foldChanged    (int line, int levelNow, int levelPrev) const;

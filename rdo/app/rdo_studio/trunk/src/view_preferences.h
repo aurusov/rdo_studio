@@ -238,19 +238,19 @@ private:
 	rbool m_openLastProject;
 	rbool m_showFullName;
 
-	rdo::gui::editor::RDOEditorEditStyle     style_editor;
+	rdo::gui::editor::ModelStyle     style_editor;
 	rdo::gui::editor::BuildStyle             style_build;
 	rdo::gui::editor::EditBaseStyle          style_debug;
-	rdo::gui::editor::RDOEditorResultsStyle  style_results;
+	rdo::gui::editor::ResultsStyle  style_results;
 	rdo::gui::editor::FindStyle              style_find;
 	rdo::gui::tracer::LogStyle               style_trace;
 	rdo::gui::tracer::ChartViewStyle         style_chart;
 	RDOStudioFrameStyle                      style_frame;
 
-	PTR(rdo::gui::editor::RDOEditorEdit)     preview_editor;
+	PTR(rdo::gui::editor::Model)     preview_editor;
 	PTR(rdo::gui::editor::Build)             preview_build;
 	PTR(rdo::gui::editor::Debug)             preview_debug;
-	PTR(rdo::gui::editor::RDOEditorResults)  preview_results;
+	PTR(rdo::gui::editor::Results)  preview_results;
 	PTR(rdo::gui::editor::Find)              preview_find;
 	PTR(rdo::gui::tracer::LogMainWnd)        preview_trace;
 	PTR(rdo::gui::tracer::ChartDoc)          preview_chart_doc;

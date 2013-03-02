@@ -20,7 +20,7 @@
 
 namespace rdo { namespace gui { namespace editor {
 
-class RDOEditorEdit;
+class Model;
 
 class Log: public EditBase
 {
@@ -50,7 +50,7 @@ protected:
 	void  setSciMarkerLine(rsint sciMarkerLine);
 
 protected:
-	virtual void updateEdit(PTR(RDOEditorEdit) pEdit, CPTR(LogEditLineInfo) pLineInfo);
+	virtual void updateEdit(PTR(Model) pEdit, CPTR(LogEditLineInfo) pLineInfo);
 
 	void  clearLines     ();
 	void  setSelectLine  (int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScroll = false);

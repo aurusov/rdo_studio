@@ -18,12 +18,9 @@
 
 using namespace rdo::gui::editor;
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOEditorResults
-// ---------------------------------------------------------------------------
-RDOEditorResults::RDOEditorResults(PTR(QWidget) pParent)
+Results::Results(PTR(QWidget) pParent)
 	: super(pParent)
-	, rdo::gui::editor::PopupMenu(pParent)
+	, PopupMenu(pParent)
 {
 	kw0 = "TRUE FALSE";
 	kw1 = "";
@@ -33,15 +30,15 @@ RDOEditorResults::RDOEditorResults(PTR(QWidget) pParent)
 	setReadOnly( true );
 }
 
-RDOEditorResults::~RDOEditorResults()
+Results::~Results()
 {}
 
-void RDOEditorResults::setEditorStyle(PTR(RDOEditorResultsStyle) pStyle)
+void Results::setEditorStyle(PTR(ResultsStyle) pStyle)
 {
 	super::setEditorStyle(pStyle);
 }
 
-void RDOEditorResults::onHelpContext()
+void Results::onHelpContext()
 {
 	tstring keyword = getCurrentOrSelectedWord();
 	tstring s = getAllKW();
@@ -58,7 +55,7 @@ void RDOEditorResults::onHelpContext()
 	g_pApp->callQtAssistant(ba);
 }
 
-void RDOEditorResults::mousePressEvent(QMouseEvent* pEvent)
+void Results::mousePressEvent(QMouseEvent* pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{

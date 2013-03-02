@@ -19,7 +19,7 @@
 namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorEditTheme
+// -------------------- ModelTheme
 // --------------------------------------------------------------------------------
 enum RDOFoldStyle {
 	RDOFOLDS_NONE = 0,
@@ -31,15 +31,15 @@ enum RDOFoldStyle {
 	RDOFOLDS_CIRCLECONNECTED
 };
 
-class RDOEditorEditTheme: public RDOEditorBaseEditTheme
+class ModelTheme: public ParserTheme
 {
 public:
-	RDOEditorEditTheme();
-	virtual ~RDOEditorEditTheme();
+	ModelTheme();
+	virtual ~ModelTheme();
 
-	RDOEditorEditTheme& operator =( const RDOEditorEditTheme& theme );
-	rbool operator ==( const RDOEditorEditTheme& theme ) const;
-	rbool operator !=( const RDOEditorEditTheme& theme ) const;
+	ModelTheme& operator =( const ModelTheme& theme );
+	rbool operator ==( const ModelTheme& theme ) const;
+	rbool operator !=( const ModelTheme& theme ) const;
 
 	virtual void load(QSettings& settings);
 	virtual void save(QSettings& settings) const;
@@ -52,30 +52,30 @@ public:
 	RDOFoldStyle foldStyle;
 	rbool        commentFold;
 
-	static RDOEditorEditTheme getDefaultTheme();
-	static RDOEditorEditTheme getCppTheme();
-	static RDOEditorEditTheme getPascalTheme();
-	static RDOEditorEditTheme getHtmlTheme();
-	static RDOEditorEditTheme getClassicTheme();
-	static RDOEditorEditTheme getTwilightTheme();
-	static RDOEditorEditTheme getOceanTheme();
+	static ModelTheme getDefaultTheme();
+	static ModelTheme getCppTheme();
+	static ModelTheme getPascalTheme();
+	static ModelTheme getHtmlTheme();
+	static ModelTheme getClassicTheme();
+	static ModelTheme getTwilightTheme();
+	static ModelTheme getOceanTheme();
 };
 
-QSettings& operator<< (QSettings& settings, const RDOEditorEditTheme& theme);
-QSettings& operator>> (QSettings& settings,       RDOEditorEditTheme& theme);
+QSettings& operator<< (QSettings& settings, const ModelTheme& theme);
+QSettings& operator>> (QSettings& settings,       ModelTheme& theme);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorEditAutoComplete
+// -------------------- ModelAutoComplete
 // --------------------------------------------------------------------------------
-class RDOEditorEditAutoComplete
+class ModelAutoComplete
 {
 public:
-	RDOEditorEditAutoComplete();
-	virtual ~RDOEditorEditAutoComplete();
+	ModelAutoComplete();
+	virtual ~ModelAutoComplete();
 
-	RDOEditorEditAutoComplete& operator =( const RDOEditorEditAutoComplete& autoComplete );
-	rbool operator ==( const RDOEditorEditAutoComplete& autoComplete ) const;
-	rbool operator !=( const RDOEditorEditAutoComplete& autoComplete ) const;
+	ModelAutoComplete& operator =( const ModelAutoComplete& autoComplete );
+	rbool operator ==( const ModelAutoComplete& autoComplete ) const;
+	rbool operator !=( const ModelAutoComplete& autoComplete ) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
@@ -84,21 +84,21 @@ public:
 	rbool showFullList;
 };
 
-QSettings& operator<< (QSettings& settings, const RDOEditorEditAutoComplete& auto_complete);
-QSettings& operator>> (QSettings& settings,       RDOEditorEditAutoComplete& auto_complete);
+QSettings& operator<< (QSettings& settings, const ModelAutoComplete& auto_complete);
+QSettings& operator>> (QSettings& settings,       ModelAutoComplete& auto_complete);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorEditMargin
+// -------------------- ModelMargin
 // --------------------------------------------------------------------------------
-class RDOEditorEditMargin
+class ModelMargin
 {
 public:
-	RDOEditorEditMargin();
-	virtual ~RDOEditorEditMargin();
+	ModelMargin();
+	virtual ~ModelMargin();
 
-	RDOEditorEditMargin& operator =( const RDOEditorEditMargin& margin );
-	rbool operator ==( const RDOEditorEditMargin& margin ) const;
-	rbool operator !=( const RDOEditorEditMargin& margin ) const;
+	ModelMargin& operator =( const ModelMargin& margin );
+	rbool operator ==( const ModelMargin& margin ) const;
+	rbool operator !=( const ModelMargin& margin ) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
@@ -108,31 +108,31 @@ public:
 	rbool lineNumber;
 };
 
-QSettings& operator<< (QSettings& settings, const RDOEditorEditMargin& margin);
-QSettings& operator>> (QSettings& settings,       RDOEditorEditMargin& margin);
+QSettings& operator<< (QSettings& settings, const ModelMargin& margin);
+QSettings& operator>> (QSettings& settings,       ModelMargin& margin);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorEditStyle
+// -------------------- ModelStyle
 // --------------------------------------------------------------------------------
-class RDOEditorEditStyle: public RDOEditorBaseEditStyle
+class ModelStyle: public ParserStyle
 {
 protected:
 
 public:
 
-	RDOEditorEditStyle();
-	virtual ~RDOEditorEditStyle();
+	ModelStyle();
+	virtual ~ModelStyle();
 
-	RDOEditorEditStyle& operator =( const RDOEditorEditStyle& style );
-	rbool operator ==( const RDOEditorEditStyle& style ) const;
-	rbool operator !=( const RDOEditorEditStyle& style ) const;
+	ModelStyle& operator =( const ModelStyle& style );
+	rbool operator ==( const ModelStyle& style ) const;
+	rbool operator !=( const ModelStyle& style ) const;
 
 	void  init( CREF(QString) _groupName = "" );
 	rbool load();
 	rbool save() const;
 
-	RDOEditorEditAutoComplete* autoComplete;
-	RDOEditorEditMargin*       margin;
+	ModelAutoComplete* autoComplete;
+	ModelMargin*       margin;
 
 	template <class CallbackFun>
 	void attachSubscriber(const CallbackFun& subscriber)
@@ -148,11 +148,11 @@ public:
 	}
 
 private:
-	typedef boost::signal<void (const RDOEditorEditStyle&)> SubscriberList;
+	typedef boost::signal<void (const ModelStyle&)> SubscriberList;
 	SubscriberList m_subscriberList;
 };
 
-DECLARE_POINTER(RDOEditorEditStyle)
+DECLARE_POINTER(ModelStyle)
 
 }}} // namespace rdo::gui::editor
 

@@ -16,8 +16,8 @@
 
 using namespace rdo::gui::editor;
 
-RDOEditorResultsStyle::RDOEditorResultsStyle(): RDOEditorBaseEditStyle()
+ResultsStyle::ResultsStyle(): ParserStyle()
 {}
 
-RDOEditorResultsStyle::~RDOEditorResultsStyle()
+ResultsStyle::~ResultsStyle()
 {}

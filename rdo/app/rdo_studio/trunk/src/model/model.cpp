@@ -250,7 +250,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		{
 			msg.lock();
 			PTR(rdo::repository::RDOThreadRepository::FileData) fdata = static_cast<PTR(rdo::repository::RDOThreadRepository::FileData)>(msg.param);
-			PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(fdata->m_type);
+			PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(fdata->m_type);
 			if (pEdit)
 			{
 				pEdit->save(fdata->m_stream);
@@ -663,7 +663,7 @@ void RDOStudioModel::createView()
 
 	for (int i = 0; i < m_pModelView->getTab().count(); i++)
 	{
-		PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
+		PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(i);
 		connect(pEdit, SIGNAL(modifyChanged(bool)), this, SLOT(onEditModifyChanged(bool)));
 	}
 }
@@ -674,7 +674,7 @@ void RDOStudioModel::resetView()
 	{
 		for (int i = 0; i < m_pModelView->getTab().count(); i++)
 		{
-			PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
+			PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(i);
 			disconnect(pEdit, SIGNAL(modifyChanged(bool)), this, SLOT(onEditModifyChanged(bool)));
 		}
 		m_pModelView->setModel(NULL);
@@ -696,7 +696,7 @@ void RDOStudioModel::newModelFromRepository()
 
 	for (int i = 0; i < m_pModelView->getTab().count(); i++)
 	{
-		PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
+		PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(i);
 		pEdit->setReadOnly(false);
 		pEdit->clearAll();
 		if (templateIt != m_modelTemplates.end())
@@ -730,7 +730,7 @@ void RDOStudioModel::newModelFromRepository()
 		saveModel();
 		for (int i = 0; i < m_pModelView->getTab().count(); i++)
 		{
-			PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
+			PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(i);
 			pEdit->clearUndoBuffer();
 		}
 	}
@@ -750,7 +750,7 @@ void RDOStudioModel::openModelFromRepository()
 	g_pApp->getMainWndUI()->statusBar()->stepProgress();
 	for (int i = 0; i < cnt; i++)
 	{
-		PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
+		PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(i);
 		pEdit->setReadOnly(false);
 		pEdit->clearAll();
 		rdo::binarystream stream;
@@ -817,7 +817,7 @@ void RDOStudioModel::saveModelToRepository()
 {
 	rbool smr_modified = false;
 	rbool wasSaved     = false;
-	PTR(RDOEditorEdit) smr_edit = m_pModelView->getTab().getItemEdit(rdoModelObjects::SMR);
+	PTR(Model) smr_edit = m_pModelView->getTab().getItemEdit(rdoModelObjects::SMR);
 	if (smr_edit->isModify())
 	{
 		rdo::binarystream stream;
@@ -848,7 +848,7 @@ void RDOStudioModel::saveModelToRepository()
 		g_pApp->getMainWndUI()->statusBar()->stepProgress();
 		for (int i = 0; i < cnt; i++)
 		{
-			PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
+			PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(i);
 			if (smr_modified || pEdit->isModify())
 			{
 				rdo::binarystream stream;
@@ -1374,7 +1374,7 @@ void RDOStudioModel::onChangeFrame(ruint)
 	updateActions();
 }
 
-PTR(rdo::gui::editor::RDOEditorTabCtrl) RDOStudioModel::getTab()
+PTR(rdo::gui::editor::ModelTabCtrl) RDOStudioModel::getTab()
 {
 	if (!m_pModelView)
 		return NULL;
@@ -1382,7 +1382,7 @@ PTR(rdo::gui::editor::RDOEditorTabCtrl) RDOStudioModel::getTab()
 	return &m_pModelView->getTab();
 }
 
-CPTR(rdo::gui::editor::RDOEditorTabCtrl) RDOStudioModel::getTab() const
+CPTR(rdo::gui::editor::ModelTabCtrl) RDOStudioModel::getTab() const
 {
 	if (!m_pModelView)
 		return NULL;

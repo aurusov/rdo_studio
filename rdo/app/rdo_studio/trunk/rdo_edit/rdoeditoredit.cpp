@@ -25,10 +25,7 @@
 
 using namespace rdo::gui::editor;
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOEditorEdit
-// ---------------------------------------------------------------------------
-RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView)
+Model::Model(PTR(QWidget) pParent, PTR(QWidget) pView)
 	: super              (pParent)
 	, m_pView            (pView  )
 	, m_pLog             (NULL   )
@@ -76,10 +73,10 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView)
 	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksClearAll);
 }
 
-RDOEditorEdit::~RDOEditorEdit()
+Model::~Model()
 {}
 
-void RDOEditorEdit::catchModified(int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev)
+void Model::catchModified(int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev)
 {
 	UNUSED(linesAdded);
 	UNUSED(length    );
@@ -96,7 +93,7 @@ void RDOEditorEdit::catchModified(int modificationType, int position, int length
 	}
 }
 
-void RDOEditorEdit::catchMarginClick(int position, int modifiers, int margin)
+void Model::catchMarginClick(int position, int modifiers, int margin)
 {
 	if (margin == m_sciFoldMarginID)
 	{
@@ -104,7 +101,7 @@ void RDOEditorEdit::catchMarginClick(int position, int modifiers, int margin)
 	}
 }
 
-void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
+void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 {
 	super::setEditorStyle(pStyle);
 	if (!m_pStyle)
@@ -112,7 +109,7 @@ void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 
 	// ----------
 	// Fold
-	RDOEditorEditTheme* theme = static_cast<RDOEditorEditTheme*>(m_pStyle->theme);
+	ModelTheme* theme = static_cast<ModelTheme*>(m_pStyle->theme);
 	QColor foldFgColor = theme->foldFgColor;
 	QColor foldBgColor = theme->foldBgColor;
 	switch (theme->foldStyle)
@@ -195,16 +192,16 @@ void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 
 	// ----------
 	// Margin
-	sendEditor(SCI_SETMARGINWIDTHN, 2, static_cast<RDOEditorEditStyle*>(m_pStyle)->margin->fold ? 16 : 0);
-	sendEditor(SCI_SETMARGINWIDTHN, 1, static_cast<RDOEditorEditStyle*>(m_pStyle)->margin->bookmark ? 16 : 0);
-	sendEditor(SCI_SETMARGINWIDTHN, 0, static_cast<RDOEditorEditStyle*>(m_pStyle)->margin->lineNumber ? 40 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 2, static_cast<ModelStyle*>(m_pStyle)->margin->fold ? 16 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 1, static_cast<ModelStyle*>(m_pStyle)->margin->bookmark ? 16 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 0, static_cast<ModelStyle*>(m_pStyle)->margin->lineNumber ? 40 : 0);
 
 	// ----------
 	// Error
-	defineMarker(m_sciMarkerError, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<RDOEditorEditTheme*>(m_pStyle->theme)->errorBgColor);
+	defineMarker(m_sciMarkerError, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<ModelTheme*>(m_pStyle->theme)->errorBgColor);
 }
 
-void RDOEditorEdit::expand(int& line, rbool doExpand, rbool force, int visLevels, int level) const
+void Model::expand(int& line, rbool doExpand, rbool force, int visLevels, int level) const
 {
 	int lineMaxSubord = sendEditor(SCI_GETLASTCHILD, line, level & SC_FOLDLEVELNUMBERMASK);
 	line++;
@@ -268,7 +265,7 @@ void RDOEditorEdit::expand(int& line, rbool doExpand, rbool force, int visLevels
 	}
 }
 
-void RDOEditorEdit::foldChanged(int line, int levelNow, int levelPrev) const
+void Model::foldChanged(int line, int levelNow, int levelPrev) const
 {
 	if (levelNow & SC_FOLDLEVELHEADERFLAG)
 	{
@@ -286,12 +283,12 @@ void RDOEditorEdit::foldChanged(int line, int levelNow, int levelPrev) const
 	}
 }
 
-void RDOEditorEdit::onToggleCurrentFold() const
+void Model::onToggleCurrentFold() const
 {
 	sendEditor(SCI_TOGGLEFOLD, getCurrentLineNumber());
 }
 
-void RDOEditorEdit::onToggleAllFolds() const
+void Model::onToggleAllFolds() const
 {
 	sendEditor(SCI_COLOURISE, 0, -1);
 	int maxLine = getLineCount();
@@ -329,7 +326,7 @@ void RDOEditorEdit::onToggleAllFolds() const
 	}
 }
 
-void RDOEditorEdit::foldMarginClick(int position, int modifiers) const
+void Model::foldMarginClick(int position, int modifiers) const
 {
 	int lineClick = getLineFromPosition(position);
 	if ((modifiers & SCMOD_SHIFT) && (modifiers & SCMOD_CTRL))
@@ -371,7 +368,7 @@ void RDOEditorEdit::foldMarginClick(int position, int modifiers) const
 	}
 }
 
-void RDOEditorEdit::onEditCommentSelection() const
+void Model::onEditCommentSelection() const
 {
 	if (!isSelected())
 		return;
@@ -399,9 +396,9 @@ void RDOEditorEdit::onEditCommentSelection() const
 	sendEditor(SCI_ENDUNDOACTION);
 }
 
-void RDOEditorEdit::onEditCompleteWord()
+void Model::onEditCompleteWord()
 {
-	if (!static_cast<RDOEditorEditStyle*>(m_pStyle)->autoComplete->useAutoComplete)
+	if (!static_cast<ModelStyle*>(m_pStyle)->autoComplete->useAutoComplete)
 		return;
 
 	setFocus();
@@ -498,7 +495,7 @@ void RDOEditorEdit::onEditCompleteWord()
 	}
 	LPCTSTR list;
 
-	if (static_cast<PTR(RDOEditorEditStyle)>(m_pStyle)->autoComplete->showFullList)
+	if (static_cast<PTR(ModelStyle)>(m_pStyle)->autoComplete->showFullList)
 	{
 		list = primaryKwList.c_str();
 	}
@@ -554,7 +551,7 @@ void RDOEditorEdit::onEditCompleteWord()
 	}
 }
 
-void RDOEditorEdit::setErrorLine(int line)
+void Model::setErrorLine(int line)
 {
 	clearErrorLine();
 	if (line == -1)
@@ -564,7 +561,7 @@ void RDOEditorEdit::setErrorLine(int line)
 	sendEditor(SCI_MARKERADD, line, m_sciMarkerError);
 }
 
-void RDOEditorEdit::clearErrorLine()
+void Model::clearErrorLine()
 {
 	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerError);
 	if (nextLine >= 0)
@@ -574,13 +571,13 @@ void RDOEditorEdit::clearErrorLine()
 	}
 }
 
-rbool RDOEditorEdit::hasErrorLine() const
+rbool Model::hasErrorLine() const
 {
 	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerError);
 	return nextLine >= 0;
 }
 
-void RDOEditorEdit::onInsertCommand(QObject* pObject)
+void Model::onInsertCommand(QObject* pObject)
 {
 	RDOStudioMainFrame::InsertMenuData* pInsertMenuData = dynamic_cast<RDOStudioMainFrame::InsertMenuData*>(pObject);
 	ASSERT(pInsertMenuData);
@@ -593,22 +590,22 @@ void RDOEditorEdit::onInsertCommand(QObject* pObject)
 	);
 }
 
-CPTR(rdo::gui::editor::Log) RDOEditorEdit::getLog() const
+CPTR(Log) Model::getLog() const
 {
 	return m_pLog;
 }
 
-void RDOEditorEdit::setLog(REF(Log) pLog)
+void Model::setLog(REF(Log) pLog)
 {
 	m_pLog = &pLog;
 }
 
-void RDOEditorEdit::setCanClearErrorLine(rbool value)
+void Model::setCanClearErrorLine(rbool value)
 {
 	m_canClearErrorLine = value;
 }
 
-void RDOEditorEdit::onGotoNext()
+void Model::onGotoNext()
 {
 	if (m_pLog)
 	{
@@ -616,7 +613,7 @@ void RDOEditorEdit::onGotoNext()
 	}
 }
 
-void RDOEditorEdit::onGotoPrev()
+void Model::onGotoPrev()
 {
 	if (m_pLog)
 	{
@@ -624,14 +621,14 @@ void RDOEditorEdit::onGotoPrev()
 	}
 }
 
-void RDOEditorEdit::onHelpContext()
+void Model::onHelpContext()
 {
 	tstring keyword = getCurrentOrSelectedWord();
 	tstring s = getAllKW();
 
 	if (s.find_first_of(keyword) == tstring::npos || keyword.empty())
 	{
-		RDOEditorTabCtrl* tab = g_pModel->getTab();
+		ModelTabCtrl* tab = g_pModel->getTab();
 		if (tab)
 		{
 			switch(tab->getCurrentRDOItem())
@@ -658,7 +655,7 @@ void RDOEditorEdit::onHelpContext()
 	g_pApp->callQtAssistant(ba);
 }
 
-void RDOEditorEdit::onUpdateActions(rbool activated)
+void Model::onUpdateActions(rbool activated)
 {
 	super::onUpdateActions(activated);
 
@@ -668,46 +665,46 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 	updateAction(
 		pMainWindow->actEditCommentSelection,
 		activated && isSelected(),
-		this, &RDOEditorEdit::onEditCommentSelection
+		this, &Model::onEditCommentSelection
 	);
 
 	updateAction(
 		pMainWindow->actEditCompleteWord,
 		activated && g_pApp->getStyle()->style_editor.autoComplete->useAutoComplete,
-		this, &RDOEditorEdit::onEditCompleteWord
+		this, &Model::onEditCompleteWord
 	);
 
 	updateAction(
 		pMainWindow->actViewToggleCurrentFold,
 		activated && !isEmpty(),
-		this, &RDOEditorEdit::onToggleCurrentFold
+		this, &Model::onToggleCurrentFold
 	);
 
 	updateAction(
 		pMainWindow->actViewToggleAllFolds,
 		activated && !isEmpty(),
-		this, &RDOEditorEdit::onToggleAllFolds
+		this, &Model::onToggleAllFolds
 	);
 
 	updateAction(
 		pMainWindow->actSearchLogNext,
 		activated && m_pLog,
-		this, &RDOEditorEdit::onGotoNext
+		this, &Model::onGotoNext
 	);
 
 	updateAction(
 		pMainWindow->actSearchLogPrev,
 		activated && m_pLog,
-		this, &RDOEditorEdit::onGotoPrev
+		this, &Model::onGotoPrev
 	);
 
 	pMainWindow->updateInsertMenu(
 		activated,
-		this, &RDOEditorEdit::onInsertCommand
+		this, &Model::onInsertCommand
 	);
 }
 
-void RDOEditorEdit::mousePressEvent(QMouseEvent*  pEvent)
+void Model::mousePressEvent(QMouseEvent*  pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{

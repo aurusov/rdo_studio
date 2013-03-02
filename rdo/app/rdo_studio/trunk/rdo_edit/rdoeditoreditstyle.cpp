@@ -17,9 +17,9 @@
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorEditTheme
+// -------------------- ModelTheme
 // --------------------------------------------------------------------------------
-RDOEditorEditTheme::RDOEditorEditTheme(): RDOEditorBaseEditTheme()
+ModelTheme::ModelTheme(): ParserTheme()
 {
 	foldFgColor = QColor( 0xFF, 0xFF, 0xFF );
 	foldBgColor = QColor( 0x00, 0x00, 0x00 );
@@ -30,13 +30,12 @@ RDOEditorEditTheme::RDOEditorEditTheme(): RDOEditorBaseEditTheme()
 	commentFold = false;
 }
 
-RDOEditorEditTheme::~RDOEditorEditTheme()
-{
-}
+ModelTheme::~ModelTheme()
+{}
 
-RDOEditorEditTheme& RDOEditorEditTheme::operator =( const RDOEditorEditTheme& theme )
+ModelTheme& ModelTheme::operator =( const ModelTheme& theme )
 {
-	RDOEditorBaseEditTheme::operator=( theme );
+	ParserTheme::operator=( theme );
 
 	foldFgColor = theme.foldFgColor;
 	foldBgColor = theme.foldBgColor;
@@ -49,9 +48,9 @@ RDOEditorEditTheme& RDOEditorEditTheme::operator =( const RDOEditorEditTheme& th
 	return *this;
 }
 
-rbool RDOEditorEditTheme::operator ==( const RDOEditorEditTheme& theme ) const
+rbool ModelTheme::operator ==( const ModelTheme& theme ) const
 {
-	rbool flag = RDOEditorBaseEditTheme::operator==( theme );
+	rbool flag = ParserTheme::operator==( theme );
 
 	if ( flag ) flag &= foldFgColor == theme.foldFgColor &&
 	                    foldBgColor == theme.foldBgColor &&
@@ -63,35 +62,35 @@ rbool RDOEditorEditTheme::operator ==( const RDOEditorEditTheme& theme ) const
 	return flag;
 }
 
-rbool RDOEditorEditTheme::operator !=( const RDOEditorEditTheme& theme ) const
+rbool ModelTheme::operator !=( const ModelTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOEditorEditTheme::load(QSettings& settings)
+void ModelTheme::load(QSettings& settings)
 {
-	RDOEditorBaseEditTheme::load(settings);
+	ParserTheme::load(settings);
 
 	settings >> *this;
 }
 
-void RDOEditorEditTheme::save(QSettings& settings ) const
+void ModelTheme::save(QSettings& settings ) const
 {
-	RDOEditorBaseEditTheme::save(settings);
+	ParserTheme::save(settings);
 
 	settings << *this;
 }
 
-RDOEditorEditTheme RDOEditorEditTheme::getDefaultTheme()
+ModelTheme ModelTheme::getDefaultTheme()
 {
-	RDOEditorEditTheme theme;
+	ModelTheme theme;
 	return theme;
 }
 
-RDOEditorEditTheme RDOEditorEditTheme::getCppTheme()
+ModelTheme ModelTheme::getCppTheme()
 {
-	RDOEditorEditTheme theme;
-	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getCppTheme();
+	ModelTheme theme;
+	*static_cast<ParserTheme*>(&theme) = ParserTheme::getCppTheme();
 
 	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
@@ -103,10 +102,10 @@ RDOEditorEditTheme RDOEditorEditTheme::getCppTheme()
 	return theme;
 }
 
-RDOEditorEditTheme RDOEditorEditTheme::getPascalTheme()
+ModelTheme ModelTheme::getPascalTheme()
 {
-	RDOEditorEditTheme theme;
-	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getPascalTheme();
+	ModelTheme theme;
+	*static_cast<ParserTheme*>(&theme) = ParserTheme::getPascalTheme();
 
 	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
@@ -118,10 +117,10 @@ RDOEditorEditTheme RDOEditorEditTheme::getPascalTheme()
 	return theme;
 }
 
-RDOEditorEditTheme RDOEditorEditTheme::getHtmlTheme()
+ModelTheme ModelTheme::getHtmlTheme()
 {
-	RDOEditorEditTheme theme;
-	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getHtmlTheme();
+	ModelTheme theme;
+	*static_cast<ParserTheme*>(&theme) = ParserTheme::getHtmlTheme();
 
 	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
@@ -133,10 +132,10 @@ RDOEditorEditTheme RDOEditorEditTheme::getHtmlTheme()
 	return theme;
 }
 
-RDOEditorEditTheme RDOEditorEditTheme::getClassicTheme()
+ModelTheme ModelTheme::getClassicTheme()
 {
-	RDOEditorEditTheme theme;
-	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getClassicTheme();
+	ModelTheme theme;
+	*static_cast<ParserTheme*>(&theme) = ParserTheme::getClassicTheme();
 
 	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
@@ -148,10 +147,10 @@ RDOEditorEditTheme RDOEditorEditTheme::getClassicTheme()
 	return theme;
 }
 
-RDOEditorEditTheme RDOEditorEditTheme::getTwilightTheme()
+ModelTheme ModelTheme::getTwilightTheme()
 {
-	RDOEditorEditTheme theme;
-	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getTwilightTheme();
+	ModelTheme theme;
+	*static_cast<ParserTheme*>(&theme) = ParserTheme::getTwilightTheme();
 
 	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
@@ -163,10 +162,10 @@ RDOEditorEditTheme RDOEditorEditTheme::getTwilightTheme()
 	return theme;
 }
 
-RDOEditorEditTheme RDOEditorEditTheme::getOceanTheme()
+ModelTheme ModelTheme::getOceanTheme()
 {
-	RDOEditorEditTheme theme;
-	*static_cast<RDOEditorBaseEditTheme*>(&theme) = RDOEditorBaseEditTheme::getOceanTheme();
+	ModelTheme theme;
+	*static_cast<ParserTheme*>(&theme) = ParserTheme::getOceanTheme();
 
 	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
 	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
@@ -180,7 +179,7 @@ RDOEditorEditTheme RDOEditorEditTheme::getOceanTheme()
 
 namespace rdo { namespace gui { namespace editor {
 
-QSettings& operator<< (QSettings& settings, const RDOEditorEditTheme& theme)
+QSettings& operator<< (QSettings& settings, const ModelTheme& theme)
 {
 	settings.setValue("fold_fg_color", theme.foldFgColor.name());
 	settings.setValue("fold_bg_color", theme.foldBgColor.name());
@@ -191,7 +190,7 @@ QSettings& operator<< (QSettings& settings, const RDOEditorEditTheme& theme)
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, RDOEditorEditTheme& theme)
+QSettings& operator>> (QSettings& settings, ModelTheme& theme)
 {
 	theme.foldFgColor  = QColor(settings.value("fold_fg_color", theme.foldFgColor.name()).toString());
 	theme.foldBgColor  = QColor(settings.value("fold_bg_color", theme.foldBgColor.name()).toString());
@@ -205,19 +204,18 @@ QSettings& operator>> (QSettings& settings, RDOEditorEditTheme& theme)
 }}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorEditAutoComplete
+// -------------------- ModelAutoComplete
 // --------------------------------------------------------------------------------
-RDOEditorEditAutoComplete::RDOEditorEditAutoComplete()
+ModelAutoComplete::ModelAutoComplete()
 {
 	useAutoComplete = true;
 	showFullList    = true;
 }
 
-RDOEditorEditAutoComplete::~RDOEditorEditAutoComplete()
-{
-}
+ModelAutoComplete::~ModelAutoComplete()
+{}
 
-RDOEditorEditAutoComplete& RDOEditorEditAutoComplete::operator =( const RDOEditorEditAutoComplete& autoComplete )
+ModelAutoComplete& ModelAutoComplete::operator =( const ModelAutoComplete& autoComplete )
 {
 	useAutoComplete = autoComplete.useAutoComplete;
 	showFullList    = autoComplete.showFullList;
@@ -225,30 +223,30 @@ RDOEditorEditAutoComplete& RDOEditorEditAutoComplete::operator =( const RDOEdito
 	return *this;
 }
 
-rbool RDOEditorEditAutoComplete::operator ==( const RDOEditorEditAutoComplete& autoComplete ) const
+rbool ModelAutoComplete::operator ==( const ModelAutoComplete& autoComplete ) const
 {
 	return useAutoComplete == autoComplete.useAutoComplete &&
 	       showFullList    == autoComplete.showFullList;
 }
 
-rbool RDOEditorEditAutoComplete::operator !=( const RDOEditorEditAutoComplete& autoComplete ) const
+rbool ModelAutoComplete::operator !=( const ModelAutoComplete& autoComplete ) const
 {
 	return !(*this == autoComplete);
 }
 
-void RDOEditorEditAutoComplete::load(QSettings& settings)
+void ModelAutoComplete::load(QSettings& settings)
 {
 	settings >> *this;
 }
 
-void RDOEditorEditAutoComplete::save(QSettings& settings) const
+void ModelAutoComplete::save(QSettings& settings) const
 {
 	settings << *this;
 }
 
 namespace rdo { namespace gui { namespace editor {
 
-QSettings& operator<< (QSettings& settings, const RDOEditorEditAutoComplete& auto_complete)
+QSettings& operator<< (QSettings& settings, const ModelAutoComplete& auto_complete)
 {
 	settings.setValue("use_auto_complete", auto_complete.useAutoComplete);
 	settings.setValue("show_full_list", auto_complete.showFullList);
@@ -256,7 +254,7 @@ QSettings& operator<< (QSettings& settings, const RDOEditorEditAutoComplete& aut
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, RDOEditorEditAutoComplete& auto_complete)
+QSettings& operator>> (QSettings& settings, ModelAutoComplete& auto_complete)
 {
 	auto_complete.useAutoComplete = settings.value("use_auto_complete", auto_complete.useAutoComplete).toBool() ? true : false;
 	auto_complete.showFullList    = settings.value("show_full_list", auto_complete.showFullList).toBool() ? true : false;
@@ -267,20 +265,19 @@ QSettings& operator>> (QSettings& settings, RDOEditorEditAutoComplete& auto_comp
 }}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorEditMargin
+// -------------------- ModelMargin
 // --------------------------------------------------------------------------------
-RDOEditorEditMargin::RDOEditorEditMargin()
+ModelMargin::ModelMargin()
 {
 	fold       = true;
 	bookmark   = true;
 	lineNumber = false;
 }
 
-RDOEditorEditMargin::~RDOEditorEditMargin()
-{
-}
+ModelMargin::~ModelMargin()
+{}
 
-RDOEditorEditMargin& RDOEditorEditMargin::operator =( const RDOEditorEditMargin& margin )
+ModelMargin& ModelMargin::operator =( const ModelMargin& margin )
 {
 	fold       = margin.fold;
 	bookmark   = margin.bookmark;
@@ -289,31 +286,31 @@ RDOEditorEditMargin& RDOEditorEditMargin::operator =( const RDOEditorEditMargin&
 	return *this;
 }
 
-rbool RDOEditorEditMargin::operator ==( const RDOEditorEditMargin& margin ) const
+rbool ModelMargin::operator ==( const ModelMargin& margin ) const
 {
 	return fold       == margin.fold &&
 	       bookmark   == margin.bookmark &&
 	       lineNumber == margin.lineNumber;
 }
 
-rbool RDOEditorEditMargin::operator !=( const RDOEditorEditMargin& margin ) const
+rbool ModelMargin::operator !=( const ModelMargin& margin ) const
 {
 	return !(*this == margin);
 }
 
-void RDOEditorEditMargin::load(QSettings& settings)
+void ModelMargin::load(QSettings& settings)
 {
 	settings >> *this;
 }
 
-void RDOEditorEditMargin::save(QSettings& settings) const
+void ModelMargin::save(QSettings& settings) const
 {
 	settings << *this;
 }
 
 namespace rdo { namespace gui { namespace editor {
 
-QSettings& operator<< (QSettings& settings, const RDOEditorEditMargin& margin)
+QSettings& operator<< (QSettings& settings, const ModelMargin& margin)
 {
 	settings.setValue("fold", margin.fold);
 	settings.setValue("bookmark", margin.bookmark);
@@ -322,7 +319,7 @@ QSettings& operator<< (QSettings& settings, const RDOEditorEditMargin& margin)
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, RDOEditorEditMargin& margin)
+QSettings& operator>> (QSettings& settings, ModelMargin& margin)
 {
 	margin.fold       = settings.value("fold", margin.fold).toBool() ? true : false;
 	margin.bookmark   = settings.value("bookmark", margin.bookmark).toBool() ? true : false;
@@ -334,56 +331,56 @@ QSettings& operator>> (QSettings& settings, RDOEditorEditMargin& margin)
 }}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorEditStyle
+// -------------------- ModelStyle
 // --------------------------------------------------------------------------------
-RDOEditorEditStyle::RDOEditorEditStyle():
-	RDOEditorBaseEditStyle(),
+ModelStyle::ModelStyle():
+	ParserStyle(),
 	autoComplete( NULL ),
 	margin( NULL )
 {
-	autoComplete = new RDOEditorEditAutoComplete();
-	margin = new RDOEditorEditMargin();
-	theme = new RDOEditorEditTheme();
+	autoComplete = new ModelAutoComplete();
+	margin = new ModelMargin();
+	theme = new ModelTheme();
 }
 
-RDOEditorEditStyle::~RDOEditorEditStyle()
+ModelStyle::~ModelStyle()
 {
 	if ( autoComplete ) { delete autoComplete; autoComplete = NULL; };
 	if ( margin )       { delete margin;       margin = NULL; };
 }
 
-RDOEditorEditStyle& RDOEditorEditStyle::operator =( const RDOEditorEditStyle& style )
+ModelStyle& ModelStyle::operator =( const ModelStyle& style )
 {
-	RDOEditorBaseEditStyle::operator=( style );
-	if ( theme        && style.theme )        *static_cast<RDOEditorEditTheme*>(theme) = *static_cast<RDOEditorEditTheme*>(style.theme);
+	ParserStyle::operator=( style );
+	if ( theme        && style.theme )        *static_cast<ModelTheme*>(theme) = *static_cast<ModelTheme*>(style.theme);
 	if ( autoComplete && style.autoComplete ) *autoComplete = *style.autoComplete;
 	if ( margin       && style.margin )       *margin       = *style.margin;
 
 	return *this;
 }
 
-rbool RDOEditorEditStyle::operator ==( const RDOEditorEditStyle& style ) const
+rbool ModelStyle::operator ==( const ModelStyle& style ) const
 {
-	rbool flag = RDOEditorBaseEditStyle::operator==( style );
-	if ( theme        && style.theme        && flag ) flag &= *static_cast<RDOEditorEditTheme*>(theme) == *static_cast<RDOEditorEditTheme*>(style.theme);
+	rbool flag = ParserStyle::operator==( style );
+	if ( theme        && style.theme        && flag ) flag &= *static_cast<ModelTheme*>(theme) == *static_cast<ModelTheme*>(style.theme);
 	if ( autoComplete && style.autoComplete && flag ) flag &= *autoComplete == *style.autoComplete;
 	if ( margin       && style.margin       && flag ) flag &= *margin       == *style.margin;
 	return flag;
 }
 
-rbool RDOEditorEditStyle::operator !=( const RDOEditorEditStyle& style ) const
+rbool ModelStyle::operator !=( const ModelStyle& style ) const
 {
 	return !(*this == style);
 }
 
-void RDOEditorEditStyle::init( CREF(QString) _groupName )
+void ModelStyle::init( CREF(QString) _groupName )
 {
-	RDOEditorBaseEditStyle::init( _groupName );
+	ParserStyle::init( _groupName );
 }
 
-rbool RDOEditorEditStyle::load()
+rbool ModelStyle::load()
 {
-	if ( RDOEditorBaseEditStyle::load() ) {
+	if ( ParserStyle::load() ) {
 		QSettings settings;
 		settings.beginGroup(groupName + "auto_complete");
 		if (autoComplete) autoComplete->load(settings);
@@ -396,9 +393,9 @@ rbool RDOEditorEditStyle::load()
 	return false;
 }
 
-rbool RDOEditorEditStyle::save() const
+rbool ModelStyle::save() const
 {
-	if ( RDOEditorBaseEditStyle::save() ) {
+	if ( ParserStyle::save() ) {
 		QSettings settings;
 		settings.beginGroup(groupName + "auto_complete");
 		if ( autoComplete ) autoComplete->save(settings);

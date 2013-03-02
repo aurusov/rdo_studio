@@ -19,21 +19,18 @@
 
 namespace rdo { namespace gui { namespace editor {
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOEditorResults
-// --------------------------------------------------------------------------------
-class RDOEditorResults
-	: public RDOEditorBaseEdit
-	, public rdo::gui::editor::PopupMenu
+class Results
+	: public Parser
+	, public PopupMenu
 {
 public:
-	RDOEditorResults(PTR(QWidget) pParent);
-	virtual ~RDOEditorResults();
+	Results(PTR(QWidget) pParent);
+	virtual ~Results();
 
-	void setEditorStyle(PTR(RDOEditorResultsStyle) pStyle);
+	void setEditorStyle(PTR(ResultsStyle) pStyle);
 
 private:
-	typedef  RDOEditorBaseEdit  super;
+	typedef  Parser  super;
 
 	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void onHelpContext();

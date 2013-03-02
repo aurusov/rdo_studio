@@ -23,7 +23,7 @@
 // -------------------- RDOStudioModelView
 // --------------------------------------------------------------------------------
 namespace rdo { namespace gui { namespace editor {
-	class RDOEditorTabCtrl;
+	class ModelTabCtrl;
 }}}
 
 class RDOStudioModelView
@@ -36,7 +36,7 @@ public:
 
 	void setModel(PTR(RDOStudioModel) pModel);
 
-	REF(rdo::gui::editor::RDOEditorTabCtrl) getTab();
+	REF(rdo::gui::editor::ModelTabCtrl) getTab();
 
 private:
 	typedef  QWidget  parent_type;
@@ -44,7 +44,7 @@ private:
 	FindDialog*          m_pFindDialog;
 	FindDialog::Settings m_findSettings;
 
-	PTR(rdo::gui::editor::RDOEditorTabCtrl) m_pTabCtrl;
+	PTR(rdo::gui::editor::ModelTabCtrl) m_pTabCtrl;
 	PTR(RDOStudioModel)                     m_pModel;
 
 	void closeEvent(PTR(QCloseEvent) event);

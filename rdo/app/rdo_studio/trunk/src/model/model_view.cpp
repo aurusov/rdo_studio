@@ -35,7 +35,7 @@ RDOStudioModelView::RDOStudioModelView(PTR(QWidget) pParent)
 	, m_pTabCtrl   (NULL)
 	, m_pFindDialog(NULL)
 {
-	m_pTabCtrl = new RDOEditorTabCtrl(this, this);
+	m_pTabCtrl = new ModelTabCtrl(this, this);
 
 	PTR(QVBoxLayout) pLayout = new QVBoxLayout(this);
 	pLayout->setSpacing(0);
@@ -77,7 +77,7 @@ void RDOStudioModelView::closeEvent(PTR(QCloseEvent) event)
 	}
 }
 
-REF(rdo::gui::editor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
+REF(rdo::gui::editor::ModelTabCtrl) RDOStudioModelView::getTab()
 {
 	return *m_pTabCtrl;
 }
@@ -124,7 +124,7 @@ void RDOStudioModelView::onSearchFindAll()
 	int count = 0;
 	for (int i = 0; i < m_pTabCtrl->count(); i++)
 	{
-		PTR(RDOEditorEdit) pEdit = m_pTabCtrl->getItemEdit(i);
+		PTR(Model) pEdit = m_pTabCtrl->getItemEdit(i);
 		int pos  = 0;
 		int line = 0;
 		while (pos != -1)

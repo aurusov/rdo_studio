@@ -20,13 +20,13 @@
 
 namespace rdo { namespace gui { namespace editor {
 
-class RDOEditorTabCtrl: public QTabWidget
+class ModelTabCtrl: public QTabWidget
 {
 public:
-	typedef RDOEditorEdit context_type;
+	typedef Model context_type;
 
-	RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView);
-	virtual ~RDOEditorTabCtrl();
+	ModelTabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView);
+	virtual ~ModelTabCtrl();
 
 	rdoModelObjects::RDOFileType indexToType(int index) const;
 	int   typeToIndex  (rdoModelObjects::RDOFileType type) const;
@@ -40,7 +40,7 @@ public:
 	PTR(context_type) getItemEdit   (rdoModelObjects::RDOFileType type) const;
 
 private:
-	rdo::gui::editor::EditBase::Group m_group;
+	EditBase::Group m_group;
 
 	void createPage(PTR(QWidget) pView, CREF(QString) name);
 };

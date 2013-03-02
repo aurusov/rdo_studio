@@ -17,11 +17,11 @@
 
 namespace rdo { namespace gui { namespace editor {
 
-class RDOEditorResultsStyle: public RDOEditorBaseEditStyle
+class ResultsStyle: public ParserStyle
 {
 public:
-	RDOEditorResultsStyle();
-	virtual ~RDOEditorResultsStyle();
+	ResultsStyle();
+	virtual ~ResultsStyle();
 };
 
 }}} // namespace rdo::gui::editor

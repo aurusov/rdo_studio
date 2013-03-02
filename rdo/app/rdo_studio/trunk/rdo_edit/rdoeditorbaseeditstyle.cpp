@@ -19,9 +19,9 @@ using namespace rdoStyle;
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorBaseEditTheme
+// -------------------- ParserTheme
 // --------------------------------------------------------------------------------
-RDOEditorBaseEditTheme::RDOEditorBaseEditTheme(): EditBaseTheme()
+ParserTheme::ParserTheme(): EditBaseTheme()
 {
 	defaultColor    = QColor( 0x80, 0x80, 0x80 );
 	identifierColor = QColor( 0x00, 0x00, 0x00 );
@@ -45,11 +45,11 @@ RDOEditorBaseEditTheme::RDOEditorBaseEditTheme(): EditBaseTheme()
 	operatorStyle   = RDOStyleFont::NONE;
 }
 
-RDOEditorBaseEditTheme::~RDOEditorBaseEditTheme()
+ParserTheme::~ParserTheme()
 {
 }
 
-RDOEditorBaseEditTheme& RDOEditorBaseEditTheme::operator =( const RDOEditorBaseEditTheme& theme )
+ParserTheme& ParserTheme::operator =( const ParserTheme& theme )
 {
 	EditBaseTheme::operator=( theme );
 
@@ -76,7 +76,7 @@ RDOEditorBaseEditTheme& RDOEditorBaseEditTheme::operator =( const RDOEditorBaseE
 	return *this;
 }
 
-rbool RDOEditorBaseEditTheme::operator ==( const RDOEditorBaseEditTheme& theme ) const
+rbool ParserTheme::operator ==( const ParserTheme& theme ) const
 {
 	rbool flag = EditBaseTheme::operator==( theme );
 
@@ -102,31 +102,31 @@ rbool RDOEditorBaseEditTheme::operator ==( const RDOEditorBaseEditTheme& theme )
 	return flag;
 }
 
-rbool RDOEditorBaseEditTheme::operator !=( const RDOEditorBaseEditTheme& theme ) const
+rbool ParserTheme::operator !=( const ParserTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOEditorBaseEditTheme::load(QSettings& settings)
+void ParserTheme::load(QSettings& settings)
 {
 	EditBaseTheme::load(settings);
 
 	settings >> *this;
 }
 
-void RDOEditorBaseEditTheme::save(QSettings& settings) const
+void ParserTheme::save(QSettings& settings) const
 {
 	EditBaseTheme::save(settings);
 
 	settings << *this;
 }
 
-rbool RDOEditorBaseEditTheme::styleDefault( const int styleType ) const
+rbool ParserTheme::styleDefault( const int styleType ) const
 {
 	return styleType == SCE_RDO_DEFAULT;
 }
 
-rbool RDOEditorBaseEditTheme::styleUsing( const int styleType ) const
+rbool ParserTheme::styleUsing( const int styleType ) const
 {
 	return styleType == SCE_RDO_DEFAULT      || styleType == SCE_RDO_IDENTIFIER   ||
 	       styleType == SCE_RDO_KEYWORD      || styleType == SCE_RDO_FUNCTION     ||
@@ -136,7 +136,7 @@ rbool RDOEditorBaseEditTheme::styleUsing( const int styleType ) const
 	       styleType == SCE_RDO_FRAME_COLOR;
 }
 
-rbool RDOEditorBaseEditTheme::styleBold( const int styleType ) const
+rbool ParserTheme::styleBold( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT     : return defaultStyle    & RDOStyleFont::BOLD ? true : false;
@@ -154,7 +154,7 @@ rbool RDOEditorBaseEditTheme::styleBold( const int styleType ) const
 	return false;
 }
 
-rbool RDOEditorBaseEditTheme::styleItalic( const int styleType ) const
+rbool ParserTheme::styleItalic( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT     : return defaultStyle    & RDOStyleFont::ITALIC ? true : false;
@@ -172,7 +172,7 @@ rbool RDOEditorBaseEditTheme::styleItalic( const int styleType ) const
 	return false;
 }
 
-tstring RDOEditorBaseEditTheme::styleFGColorToHEX( const int styleType ) const
+tstring ParserTheme::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT     : return colorToHEX( defaultColor );
@@ -190,15 +190,15 @@ tstring RDOEditorBaseEditTheme::styleFGColorToHEX( const int styleType ) const
 	return EditBaseTheme::styleFGColorToHEX( styleType );
 }
 
-RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getDefaultTheme()
+ParserTheme ParserTheme::getDefaultTheme()
 {
-	RDOEditorBaseEditTheme theme;
+	ParserTheme theme;
 	return theme;
 }
 
-RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getCppTheme()
+ParserTheme ParserTheme::getCppTheme()
 {
-	RDOEditorBaseEditTheme theme;
+	ParserTheme theme;
 	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getDefaultTheme();
 
 	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
@@ -224,9 +224,9 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getCppTheme()
 	return theme;
 }
 
-RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getPascalTheme()
+ParserTheme ParserTheme::getPascalTheme()
 {
-	RDOEditorBaseEditTheme theme;
+	ParserTheme theme;
 	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getDefaultTheme();
 
 	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
@@ -252,9 +252,9 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getPascalTheme()
 	return theme;
 }
 
-RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getHtmlTheme()
+ParserTheme ParserTheme::getHtmlTheme()
 {
-	RDOEditorBaseEditTheme theme;
+	ParserTheme theme;
 	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getDefaultTheme();
 
 	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
@@ -280,9 +280,9 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getHtmlTheme()
 	return theme;
 }
 
-RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
+ParserTheme ParserTheme::getClassicTheme()
 {
-	RDOEditorBaseEditTheme theme;
+	ParserTheme theme;
 	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getClassicTheme();
 
 	theme.identifierColor = QColor( 0xFF, 0xFF, 0x00 );
@@ -308,9 +308,9 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
 	return theme;
 }
 
-RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
+ParserTheme ParserTheme::getTwilightTheme()
 {
-	RDOEditorBaseEditTheme theme;
+	ParserTheme theme;
 	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getTwilightTheme();
 
 	theme.identifierColor = QColor( 0xFF, 0xFF, 0xFF );
@@ -336,9 +336,9 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
 	return theme;
 }
 
-RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
+ParserTheme ParserTheme::getOceanTheme()
 {
-	RDOEditorBaseEditTheme theme;
+	ParserTheme theme;
 	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getOceanTheme();
 
 	theme.identifierColor = QColor( 0x00, 0x00, 0xFF );
@@ -366,7 +366,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
 
 namespace rdo { namespace gui { namespace editor {
 
-QSettings& operator<< (QSettings& settings, const RDOEditorBaseEditTheme& theme)
+QSettings& operator<< (QSettings& settings, const ParserTheme& theme)
 {
 	settings.setValue("identifier_color", theme.identifierColor.name());
 	settings.setValue("keyword_color", theme.keywordColor.name());
@@ -391,7 +391,7 @@ QSettings& operator<< (QSettings& settings, const RDOEditorBaseEditTheme& theme)
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, RDOEditorBaseEditTheme& theme)
+QSettings& operator>> (QSettings& settings, ParserTheme& theme)
 {
 	theme.identifierColor        = QColor(settings.value("identifier_color", theme.identifierColor.name()).toString());
 	theme.keywordColor           = QColor(settings.value("keyword_color", theme.keywordColor.name()).toString());
@@ -419,34 +419,32 @@ QSettings& operator>> (QSettings& settings, RDOEditorBaseEditTheme& theme)
 }}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorBaseEditStyle
+// -------------------- ParserStyle
 // --------------------------------------------------------------------------------
-RDOEditorBaseEditStyle::RDOEditorBaseEditStyle(): EditBaseStyle()
+ParserStyle::ParserStyle(): EditBaseStyle()
 {
-	theme = new RDOEditorBaseEditTheme();
+	theme = new ParserTheme();
 }
 
-RDOEditorBaseEditStyle::~RDOEditorBaseEditStyle()
-{
-}
+ParserStyle::~ParserStyle()
+{}
 
-
-RDOEditorBaseEditStyle& RDOEditorBaseEditStyle::operator =( const RDOEditorBaseEditStyle& style )
+ParserStyle& ParserStyle::operator =( const ParserStyle& style )
 {
 	EditBaseStyle::operator=( style );
-	if ( theme && style.theme ) *static_cast<RDOEditorBaseEditTheme*>(theme) = *static_cast<RDOEditorBaseEditTheme*>(style.theme);
+	if ( theme && style.theme ) *static_cast<ParserTheme*>(theme) = *static_cast<ParserTheme*>(style.theme);
 
 	return *this;
 }
 
-rbool RDOEditorBaseEditStyle::operator ==( const RDOEditorBaseEditStyle& style ) const
+rbool ParserStyle::operator ==( const ParserStyle& style ) const
 {
 	rbool flag = EditBaseStyle::operator==( style );
-	if ( theme && style.theme && flag ) flag &= *static_cast<RDOEditorBaseEditTheme*>(theme) == *static_cast<RDOEditorBaseEditTheme*>(style.theme);
+	if ( theme && style.theme && flag ) flag &= *static_cast<ParserTheme*>(theme) == *static_cast<ParserTheme*>(style.theme);
 	return flag;
 }
 
-rbool RDOEditorBaseEditStyle::operator !=( const RDOEditorBaseEditStyle& style ) const
+rbool ParserStyle::operator !=( const ParserStyle& style ) const
 {
 	return !(*this == style);
 }

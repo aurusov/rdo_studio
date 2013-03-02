@@ -18,13 +18,13 @@
 
 namespace rdo { namespace gui { namespace editor {
 
-class RDOEditorBaseEdit: public EditBase
+class Parser: public EditBase
 {
 public:
-	RDOEditorBaseEdit(PTR(QWidget) pParent);
-	virtual ~RDOEditorBaseEdit();
+	Parser(PTR(QWidget) pParent);
+	virtual ~Parser();
 
-	void setEditorStyle(PTR(RDOEditorBaseEditStyle) pStyle);
+	void setEditorStyle(PTR(ParserStyle) pStyle);
 
 	void replaceCurrent(CREF(tstring) str, int changePosValue = -1) const;
 

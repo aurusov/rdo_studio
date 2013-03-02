@@ -19,7 +19,7 @@
 class DockResults: public DockFocusable
 {
 public:
-	typedef rdo::gui::editor::RDOEditorResults context_type;
+	typedef rdo::gui::editor::Results context_type;
 
 	DockResults(PTR(QWidget) pParent);
 	virtual ~DockResults();

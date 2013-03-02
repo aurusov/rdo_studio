@@ -906,7 +906,7 @@ void ViewPreferences::updatePreview()
 
 void ViewPreferences::createPreview()
 {
-	preview_editor = new RDOEditorEdit(previewStackedWidget->currentWidget(), previewStackedWidget->currentWidget());
+	preview_editor = new Model(previewStackedWidget->currentWidget(), previewStackedWidget->currentWidget());
 	ASSERT(preview_editor);
 	preview_editor->setEditorStyle(&style_editor);
 	preview_editor->setCanClearErrorLine(false);
@@ -937,7 +937,7 @@ void ViewPreferences::createPreview()
 	preview_trace->view().selectLine(0);
 	previewStackedWidget->addWidget(preview_trace);
 
-	preview_results = new RDOEditorResults(previewStackedWidget->currentWidget());
+	preview_results = new Results(previewStackedWidget->currentWidget());
 	preview_results->setEditorStyle(&style_results);
 	preview_results->setReadOnly(false);
 	preview_results->replaceCurrent(rdo::format("Длина_очереди                2  194  0.675957  21.6506  0  4\r\nЗанятость_парикмахера         TRUE  96  0.877351  21.7041  0.0397544  0.918872\r\nВсего_обслужено              96\r\nПропускная_способность       1.99198\r\n"), 0);
@@ -994,7 +994,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_ROOT, null_font_style, all_fg_color, all_bg_color));
 	style_list.push_back(item);
 
-	RDOEditorEditTheme* editor_theme = static_cast<RDOEditorEditTheme*>(style_editor.theme);
+	ModelTheme* editor_theme = static_cast<ModelTheme*>(style_editor.theme);
 	item = new StyleItem(IT_EDITOR, style_editor.font->size, style_editor.font->name, style_editor.window->wordWrap, style_editor.window->showHorzScrollBar, editor_theme->bookmarkStyle, editor_theme->foldStyle, editor_theme->commentFold);
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR, editor_theme->identifierStyle, editor_theme->identifierColor, editor_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, editor_theme->defaultStyle, editor_theme->defaultColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
@@ -1063,7 +1063,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_LOG_SEU, trace_theme->style, trace_theme->seu.foregroundColor, trace_theme->seu.backgroundColor));
 	style_list.push_back(item);
 
-	RDOEditorBaseEditTheme* results_theme = static_cast<RDOEditorBaseEditTheme*>(style_results.theme);
+	ParserTheme* results_theme = static_cast<ParserTheme*>(style_results.theme);
 	item = new StyleItem(IT_RESULT, style_results.font->size, style_results.font->name, style_results.window->wordWrap, style_results.window->showHorzScrollBar);
 	item->properties.push_back(new StyleProperty(item, IT_RESULT, results_theme->identifierStyle, results_theme->identifierColor, results_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, results_theme->defaultStyle, results_theme->defaultColor, null_bg_color, null_fg_color, results_theme->backgroundColor));

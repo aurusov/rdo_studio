@@ -21,17 +21,17 @@
 namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorBaseEditTheme
+// -------------------- ParserTheme
 // --------------------------------------------------------------------------------
-class RDOEditorBaseEditTheme: public rdo::gui::editor::EditBaseTheme
+class ParserTheme: public EditBaseTheme
 {
 public:
-	RDOEditorBaseEditTheme();
-	virtual ~RDOEditorBaseEditTheme();
+	ParserTheme();
+	virtual ~ParserTheme();
 
-	RDOEditorBaseEditTheme& operator =( const RDOEditorBaseEditTheme& theme );
-	rbool operator ==( const RDOEditorBaseEditTheme& theme ) const;
-	rbool operator !=( const RDOEditorBaseEditTheme& theme ) const;
+	ParserTheme& operator =( const ParserTheme& theme );
+	rbool operator ==( const ParserTheme& theme ) const;
+	rbool operator !=( const ParserTheme& theme ) const;
 
 	virtual void load(QSettings& settings);
 	virtual void save(QSettings& settings) const;
@@ -62,30 +62,30 @@ public:
 	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
 	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
-	static RDOEditorBaseEditTheme getDefaultTheme();
-	static RDOEditorBaseEditTheme getCppTheme();
-	static RDOEditorBaseEditTheme getPascalTheme();
-	static RDOEditorBaseEditTheme getHtmlTheme();
-	static RDOEditorBaseEditTheme getClassicTheme();
-	static RDOEditorBaseEditTheme getTwilightTheme();
-	static RDOEditorBaseEditTheme getOceanTheme();
+	static ParserTheme getDefaultTheme();
+	static ParserTheme getCppTheme();
+	static ParserTheme getPascalTheme();
+	static ParserTheme getHtmlTheme();
+	static ParserTheme getClassicTheme();
+	static ParserTheme getTwilightTheme();
+	static ParserTheme getOceanTheme();
 };
 
-QSettings& operator<< (QSettings& settings, const RDOEditorBaseEditTheme& theme);
-QSettings& operator>> (QSettings& settings,       RDOEditorBaseEditTheme& theme);
+QSettings& operator<< (QSettings& settings, const ParserTheme& theme);
+QSettings& operator>> (QSettings& settings,       ParserTheme& theme);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorBaseEditStyle
+// -------------------- ParserStyle
 // --------------------------------------------------------------------------------
-class RDOEditorBaseEditStyle: public rdo::gui::editor::EditBaseStyle
+class ParserStyle: public EditBaseStyle
 {
 public:
-	RDOEditorBaseEditStyle();
-	virtual ~RDOEditorBaseEditStyle();
+	ParserStyle();
+	virtual ~ParserStyle();
 
-	RDOEditorBaseEditStyle& operator =( const RDOEditorBaseEditStyle& style );
-	rbool operator ==( const RDOEditorBaseEditStyle& style ) const;
-	rbool operator !=( const RDOEditorBaseEditStyle& style ) const;
+	ParserStyle& operator =( const ParserStyle& style );
+	rbool operator ==( const ParserStyle& style ) const;
+	rbool operator !=( const ParserStyle& style ) const;
 };
 
 }}} // namespace rdo::gui::editor
