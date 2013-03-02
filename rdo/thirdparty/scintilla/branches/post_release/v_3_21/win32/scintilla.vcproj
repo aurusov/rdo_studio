@@ -48,7 +48,7 @@
 				PreprocessorDefinitions="RDO_ST;SCI_LEXER;WIN32;_DEBUG;_LIB;_UNISTD_H_;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
-				WarningLevel="4"
+				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -116,7 +116,7 @@
 				AdditionalIncludeDirectories="../../../;../../../thirdparty/scintilla/include;../../../thirdparty/scintilla/src;../../../thirdparty/scintilla/lexlib;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;"
 				PreprocessorDefinitions="RDO_ST;SCI_LEXER;WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
-				WarningLevel="4"
+				WarningLevel="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
