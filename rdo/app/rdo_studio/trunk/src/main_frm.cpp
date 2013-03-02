@@ -563,7 +563,7 @@ void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 	if (!pLog)
 		return;
 
-	rdoEditor::RDOEditorTabCtrl* pEditorTab = g_pModel->getTab();
+	rdo::gui::editor::RDOEditorTabCtrl* pEditorTab = g_pModel->getTab();
 	if (pEditorTab)
 	{
 		for (int i = 0; i < pEditorTab->count(); ++i)

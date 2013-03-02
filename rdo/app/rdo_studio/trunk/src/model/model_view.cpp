@@ -24,7 +24,7 @@
 #include "app/rdo_studio/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditor;
+using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioModelView
@@ -77,7 +77,7 @@ void RDOStudioModelView::closeEvent(PTR(QCloseEvent) event)
 	}
 }
 
-REF(rdoEditor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
+REF(rdo::gui::editor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
 {
 	return *m_pTabCtrl;
 }

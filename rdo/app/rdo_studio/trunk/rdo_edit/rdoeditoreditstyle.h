@@ -16,7 +16,7 @@
 #include "app/rdo_studio/rdo_edit/rdoeditorbaseeditstyle.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoEditor {
+namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditTheme
@@ -154,6 +154,6 @@ private:
 
 DECLARE_POINTER(RDOEditorEditStyle)
 
-} // namespace rdoEditor
+}}} // namespace rdo::gui::editor
 
 #endif // _RDO_STUDIO_RDO_EDIT_RDOEDITOREDITSTYLE_H_

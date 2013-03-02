@@ -18,7 +18,7 @@
 #include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoEditor {
+namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorBaseEditTheme
@@ -88,6 +88,6 @@ public:
 	rbool operator !=( const RDOEditorBaseEditStyle& style ) const;
 };
 
-} // namespace rdoEditor
+}}} // namespace rdo::gui::editor
 
 #endif // _RDO_STUDIO_RDO_EDIT_RDOEDITORBASEEDITSTYLE_H_

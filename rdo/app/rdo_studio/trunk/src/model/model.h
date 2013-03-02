@@ -26,9 +26,9 @@
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioModel
 // --------------------------------------------------------------------------------
-namespace rdoEditor {
+namespace rdo { namespace gui { namespace editor {
 	class RDOEditorTabCtrl;
-}
+}}}
 
 class RDOStudioModelView;
 
@@ -73,8 +73,8 @@ public:
 	void          closeAllFrame   ();
 	rbool         hasModel        () const;
 
-	 PTR(rdoEditor::RDOEditorTabCtrl) getTab();
-	CPTR(rdoEditor::RDOEditorTabCtrl) getTab() const;
+	 PTR(rdo::gui::editor::RDOEditorTabCtrl) getTab();
+	CPTR(rdo::gui::editor::RDOEditorTabCtrl) getTab() const;
 
 	void  updateStyleOfAllModel() const;
 	rbool isPrevModelClosed    () const;

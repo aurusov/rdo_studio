@@ -18,11 +18,9 @@
 #include "app/rdo_studio/edit_ctrls/rdologeditstyle.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoEditor {
-class RDOEditorEdit;
-}
-
 namespace rdo { namespace gui { namespace editor {
+
+class RDOEditorEdit;
 
 class Log: public EditBase
 {
@@ -52,7 +50,7 @@ protected:
 	void  setSciMarkerLine(rsint sciMarkerLine);
 
 protected:
-	virtual void updateEdit(PTR(rdoEditor::RDOEditorEdit) pEdit, CPTR(LogEditLineInfo) pLineInfo);
+	virtual void updateEdit(PTR(RDOEditorEdit) pEdit, CPTR(LogEditLineInfo) pLineInfo);
 
 	void  clearLines     ();
 	void  setSelectLine  (int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScroll = false);

@@ -21,7 +21,6 @@
 
 using namespace rdo::simulation::report;
 using namespace rdo::gui::editor;
-using namespace rdoEditor;
 using namespace rdo::gui::tracer;
 using namespace rdoStyle;
 

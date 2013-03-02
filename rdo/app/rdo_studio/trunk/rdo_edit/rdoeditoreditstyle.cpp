@@ -14,7 +14,6 @@
 #include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditor;
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
@@ -179,8 +178,7 @@ RDOEditorEditTheme RDOEditorEditTheme::getOceanTheme()
 	return theme;
 }
 
-namespace rdoEditor
-{
+namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const RDOEditorEditTheme& theme)
 {
@@ -204,7 +202,7 @@ QSettings& operator>> (QSettings& settings, RDOEditorEditTheme& theme)
 	return settings;
 }
 
-} // namespace rdoEditor
+}}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditAutoComplete
@@ -248,8 +246,7 @@ void RDOEditorEditAutoComplete::save(QSettings& settings) const
 	settings << *this;
 }
 
-namespace rdoEditor
-{
+namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const RDOEditorEditAutoComplete& auto_complete)
 {
@@ -267,7 +264,7 @@ QSettings& operator>> (QSettings& settings, RDOEditorEditAutoComplete& auto_comp
 	return settings;
 }
 
-} // namespace rdoEditor
+}}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditMargin
@@ -314,8 +311,7 @@ void RDOEditorEditMargin::save(QSettings& settings) const
 	settings << *this;
 }
 
-namespace rdoEditor
-{
+namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const RDOEditorEditMargin& margin)
 {
@@ -335,7 +331,7 @@ QSettings& operator>> (QSettings& settings, RDOEditorEditMargin& margin)
 	return settings;
 }
 
-} // namespace rdoEditor
+}}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditStyle

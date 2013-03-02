@@ -18,11 +18,8 @@
 #include "app/rdo_studio/rdo_edit/rdoeditoredit.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoEditor {
+namespace rdo { namespace gui { namespace editor {
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOEditorTabCtrl
-// --------------------------------------------------------------------------------
 class RDOEditorTabCtrl: public QTabWidget
 {
 public:
@@ -48,6 +45,6 @@ private:
 	void createPage(PTR(QWidget) pView, CREF(QString) name);
 };
 
-} // namespace rdoEditor
+}}} // namespace rdo::gui::editor
 
 #endif // _RDO_STUDIO_RDO_EDIT_RDOEDITORTABCTRL_H_

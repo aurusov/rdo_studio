@@ -14,15 +14,10 @@
 #include "app/rdo_studio/rdo_edit/rdoeditorresultsstyle.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditor;
+using namespace rdo::gui::editor;
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOEditorResultsStyle
-// --------------------------------------------------------------------------------
 RDOEditorResultsStyle::RDOEditorResultsStyle(): RDOEditorBaseEditStyle()
-{
-}
+{}
 
 RDOEditorResultsStyle::~RDOEditorResultsStyle()
-{
-}
+{}

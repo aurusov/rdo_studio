@@ -31,7 +31,7 @@ public:
 	virtual void showFirstError();
 
 protected:
-	virtual void updateEdit(rdoEditor::RDOEditorEdit* pEdit, const LogEditLineInfo* pLineInfo);
+	virtual void updateEdit(RDOEditorEdit* pEdit, const LogEditLineInfo* pLineInfo);
 
 private:
 	typedef  Log  super;

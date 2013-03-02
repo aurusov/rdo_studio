@@ -196,12 +196,12 @@ private:
 		rbool&                            horzscrollbar;
 		rbool&                            warning;
 		rdo::gui::editor::BookmarkStyle&  bookmarkstyle;
-		rdoEditor::RDOFoldStyle&          foldstyle;
+		rdo::gui::editor::RDOFoldStyle&   foldstyle;
 		rbool&                            commentfold;
 
 		PropertyList properties;
 
-		StyleItem(ItemType type, int& font_size, tstring& font_name, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::BookmarkStyle& bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
+		StyleItem(ItemType type, int& font_size, tstring& font_name, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::BookmarkStyle& bookmarkstyle = null_bookmarkstyle, rdo::gui::editor::RDOFoldStyle& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
 			: type(type)
 			, font_size(font_size)
 			, font_name(font_name)
@@ -229,7 +229,7 @@ private:
 	static rbool                            null_warning;
 	static rbool                            null_commentfold;
 	static rdo::gui::editor::BookmarkStyle  null_bookmarkstyle;
-	static rdoEditor::RDOFoldStyle          null_foldstyle;
+	static rdo::gui::editor::RDOFoldStyle   null_foldstyle;
 	static QColor                           null_fg_color;
 	static QColor                           null_bg_color;
 
@@ -238,21 +238,21 @@ private:
 	rbool m_openLastProject;
 	rbool m_showFullName;
 
-	rdoEditor::RDOEditorEditStyle       style_editor;
-	rdo::gui::editor::BuildStyle style_build;
-	rdo::gui::editor::EditBaseStyle     style_debug;
-	rdo::gui::tracer::LogStyle          style_trace;
-	rdoEditor::RDOEditorResultsStyle    style_results;
-	rdo::gui::editor::FindStyle  style_find;
-	rdo::gui::tracer::ChartViewStyle    style_chart;
-	RDOStudioFrameStyle                 style_frame;
+	rdo::gui::editor::RDOEditorEditStyle     style_editor;
+	rdo::gui::editor::BuildStyle             style_build;
+	rdo::gui::editor::EditBaseStyle          style_debug;
+	rdo::gui::tracer::LogStyle               style_trace;
+	rdo::gui::editor::RDOEditorResultsStyle  style_results;
+	rdo::gui::editor::FindStyle              style_find;
+	rdo::gui::tracer::ChartViewStyle         style_chart;
+	RDOStudioFrameStyle                      style_frame;
 
-	PTR(rdoEditor::RDOEditorEdit)       preview_editor;
-	PTR(rdo::gui::editor::Build) preview_build;
-	PTR(rdo::gui::editor::Debug) preview_debug;
-	PTR(rdo::gui::tracer::LogMainWnd)   preview_trace;
-	PTR(rdoEditor::RDOEditorResults)    preview_results;
-	PTR(rdo::gui::editor::Find)  preview_find;
+	PTR(rdo::gui::editor::RDOEditorEdit)    preview_editor;
+	PTR(rdo::gui::editor::Build)            preview_build;
+	PTR(rdo::gui::editor::Debug)            preview_debug;
+	PTR(rdo::gui::tracer::LogMainWnd)       preview_trace;
+	PTR(rdo::gui::editor::RDOEditorResults) preview_results;
+	PTR(rdo::gui::editor::Find)             preview_find;
 
 	PTR(rdo::gui::tracer::ChartDoc)     preview_chart_doc;
 	PTR(rdo::gui::tracer::ChartView)    preview_chart;

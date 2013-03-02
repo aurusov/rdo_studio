@@ -230,18 +230,18 @@ void Log::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScro
 				scrollToCarret();
 			}
 		}
-		PTR(rdoEditor::RDOEditorTabCtrl) pTab = g_pModel->getTab();
+		PTR(RDOEditorTabCtrl) pTab = g_pModel->getTab();
 		if (pTab)
 		{
 			if (pTab->getCurrentRDOItem() != pLineInfo->getFileType())
 			{
-				PTR(rdoEditor::RDOEditorEdit) pEdit = pTab->getCurrentEdit();
+				PTR(RDOEditorEdit) pEdit = pTab->getCurrentEdit();
 				if (!pEdit || (pEdit && pEdit->getLog() == this))
 				{
 					pTab->setCurrentRDOItem(pLineInfo->getFileType());
 				}
 			}
-			PTR(rdoEditor::RDOEditorEdit) pEdit = pTab->getCurrentEdit();
+			PTR(RDOEditorEdit) pEdit = pTab->getCurrentEdit();
 			if (pEdit && pEdit->getLog() == this)
 			{
 				updateEdit(pEdit, pLineInfo);
@@ -250,7 +250,7 @@ void Log::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScro
 	}
 }
 
-void Log::updateEdit(PTR(rdoEditor::RDOEditorEdit) pEdit, CPTR(LogEditLineInfo) pLineInfo)
+void Log::updateEdit(PTR(RDOEditorEdit) pEdit, CPTR(LogEditLineInfo) pLineInfo)
 {
 	pEdit->scrollToLine(pLineInfo->getLineNumber());
 	int pos = pEdit->getPositionFromLine(pLineInfo->getLineNumber()) + pLineInfo->getPosInLine();

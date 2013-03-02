@@ -19,12 +19,8 @@
 #include "thirdparty/scintilla/include/SciLexer.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditor;
+using namespace rdo::gui::editor;
 using namespace rdoStyle;
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOEditorBaseEdit
-// ---------------------------------------------------------------------------
 
 RDOEditorBaseEdit::RDOEditorBaseEdit(PTR(QWidget) pParent)
 	: super(pParent)

@@ -15,11 +15,8 @@
 #include "app/rdo_studio/rdo_edit/rdoeditorbaseeditstyle.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoEditor {
+namespace rdo { namespace gui { namespace editor {
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOEditorResultsStyle
-// --------------------------------------------------------------------------------
 class RDOEditorResultsStyle: public RDOEditorBaseEditStyle
 {
 public:
@@ -27,6 +24,6 @@ public:
 	virtual ~RDOEditorResultsStyle();
 };
 
-} // namespace rdoEditor
+}}} // namespace rdo::gui::editor
 
 #endif // _RDO_STUDIO_RDO_EDIT_RDOEDITORRESULTSSTYLE_H_

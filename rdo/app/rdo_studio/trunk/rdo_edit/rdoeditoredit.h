@@ -21,7 +21,7 @@
 #include "app/rdo_studio/edit_ctrls/rdologedit.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoEditor {
+namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorEdit
@@ -77,6 +77,6 @@ private slots:
 	void catchMarginClick(int position, int modifiers, int margin);
 };
 
-} // namespace rdoEditor
+}}} // namespace rdo::gui::editor
 
 #endif // _RDO_STUDIO_RDO_EDIT_RDOEDITOREDIT_H_

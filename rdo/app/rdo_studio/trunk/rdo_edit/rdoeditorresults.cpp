@@ -16,7 +16,7 @@
 #include "app/rdo_studio/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditor;
+using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorResults

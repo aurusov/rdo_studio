@@ -147,7 +147,7 @@ RDOStudioApp::RDOStudioApp(int& argc, char** argv)
 
 	g_pTracer = new rdo::gui::tracer::Tracer();
 
-	m_pEditorEditStyle = rdo::Factory<rdoEditor::RDOEditorEditStyle>::create();
+	m_pEditorEditStyle = rdo::Factory<rdo::gui::editor::RDOEditorEditStyle>::create();
 
 	// Внутри создается объект модели
 	m_pMainFrame = new RDOStudioMainFrame();
@@ -539,7 +539,7 @@ void RDOStudioApp::onIdle()
 #endif
 }
 
-CREF(rdoEditor::LPRDOEditorEditStyle) RDOStudioApp::getEditorEditStyle() const
+CREF(rdo::gui::editor::LPRDOEditorEditStyle) RDOStudioApp::getEditorEditStyle() const
 {
 	ASSERT(m_pEditorEditStyle);
 	return m_pEditorEditStyle;

@@ -23,7 +23,6 @@
 #include "thirdparty/scintilla/lexlib/CharacterSet.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditor;
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------

@@ -38,7 +38,7 @@
 #include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditor;
+using namespace rdo::gui::editor;
 using namespace rdo::service::simulation;
 using namespace rdo::simulation::report;
 
@@ -1374,7 +1374,7 @@ void RDOStudioModel::onChangeFrame(ruint)
 	updateActions();
 }
 
-PTR(rdoEditor::RDOEditorTabCtrl) RDOStudioModel::getTab()
+PTR(rdo::gui::editor::RDOEditorTabCtrl) RDOStudioModel::getTab()
 {
 	if (!m_pModelView)
 		return NULL;
@@ -1382,7 +1382,7 @@ PTR(rdoEditor::RDOEditorTabCtrl) RDOStudioModel::getTab()
 	return &m_pModelView->getTab();
 }
 
-CPTR(rdoEditor::RDOEditorTabCtrl) RDOStudioModel::getTab() const
+CPTR(rdo::gui::editor::RDOEditorTabCtrl) RDOStudioModel::getTab() const
 {
 	if (!m_pModelView)
 		return NULL;

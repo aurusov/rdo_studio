@@ -17,11 +17,8 @@
 #include "app/rdo_studio/src/main_windows_base.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditor;
+using namespace rdo::gui::editor;
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOEditorTabCtrl
-// --------------------------------------------------------------------------------
 RDOEditorTabCtrl::RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView)
 	: QTabWidget(pParent)
 {

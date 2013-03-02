@@ -94,7 +94,7 @@ void Build::showFirstError()
 	}
 }
 
-void Build::updateEdit(rdoEditor::RDOEditorEdit* pEdit, const LogEditLineInfo* pLineInfo)
+void Build::updateEdit(RDOEditorEdit* pEdit, const LogEditLineInfo* pLineInfo)
 {
 	super::updateEdit(pEdit, pLineInfo);
 	pEdit->setErrorLine(pLineInfo->getLineNumber());

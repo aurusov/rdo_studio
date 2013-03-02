@@ -79,7 +79,7 @@ public:
 	PTR(QProcess)  runQtAssistant      () const;
 	void           callQtAssistant     (CREF(QByteArray) ba);
 
-	CREF(rdoEditor::LPRDOEditorEditStyle) getEditorEditStyle() const;
+	CREF(rdo::gui::editor::LPRDOEditorEditStyle) getEditorEditStyle() const;
 
 private:
 #ifdef RDO_MT
@@ -100,7 +100,7 @@ private:
 	rdo::simulation::report::RDOExitCode   m_exitCode;
 	QProcess*                              m_pAssistant;
 	PTR(RDOStudioMainFrame)                m_pMainFrame;
-	rdoEditor::LPRDOEditorEditStyle        m_pEditorEditStyle;
+	rdo::gui::editor::LPRDOEditorEditStyle m_pEditorEditStyle;
 	QTimer                                 m_idleTimer;
 
 	void setupFileAssociation();

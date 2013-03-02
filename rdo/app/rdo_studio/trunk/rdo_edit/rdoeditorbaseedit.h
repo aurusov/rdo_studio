@@ -16,12 +16,9 @@
 #include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoEditor {
+namespace rdo { namespace gui { namespace editor {
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOEditorBaseEdit
-// --------------------------------------------------------------------------------
-class RDOEditorBaseEdit: public rdo::gui::editor::EditBase
+class RDOEditorBaseEdit: public EditBase
 {
 public:
 	RDOEditorBaseEdit(PTR(QWidget) pParent);
@@ -41,9 +38,9 @@ protected:
 	static tstring convertToLexer(CREF(tstring) kw);
 
 private:
-	typedef  rdo::gui::editor::EditBase  super;
+	typedef  EditBase  super;
 };
 
-} // namespace rdoEditor
+}}} // namespace rdo::gui::editor
 
 #endif // _RDO_STUDIO_RDO_EDIT_RDOEDITORBASEEDIT_H_
