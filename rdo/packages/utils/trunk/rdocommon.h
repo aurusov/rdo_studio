@@ -64,11 +64,6 @@ OPEN_RDO_NAMESPACE
 	//! \result Отформатированная строчка
 	tstring format(CPTR(tchar) str, REF(va_list) params);
 
-	//! Переводит строку в unicode
-	//! \param str - строка в ansi
-	//! \result Строка в unicode
-	wstring toUnicode(CREF(astring) str);
-
 	//! Переводит значение в строку
 	//! \tparam T     - тип значения
 	//! \param  value - значение
