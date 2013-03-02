@@ -15,7 +15,7 @@
 #include "thirdparty/scintilla/include/SciLexer.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoStyle;
+using namespace rdo::gui::style;
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
@@ -34,15 +34,15 @@ ParserTheme::ParserTheme(): EditTheme()
 	stringColor     = QColor( 0x80, 0x00, 0x80 );
 	operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
-	identifierStyle = RDOStyleFont::NONE;
-	keywordStyle    = RDOStyleFont::BOLD;
-	functionsStyle  = RDOStyleFont::BOLD;
-	traceStyle      = RDOStyleFont::BOLD;
-	colorStyle      = RDOStyleFont::BOLD;
-	commentStyle    = RDOStyleFont::ITALIC;
-	numberStyle     = RDOStyleFont::NONE;
-	stringStyle     = RDOStyleFont::NONE;
-	operatorStyle   = RDOStyleFont::NONE;
+	identifierStyle = StyleFont::NONE;
+	keywordStyle    = StyleFont::BOLD;
+	functionsStyle  = StyleFont::BOLD;
+	traceStyle      = StyleFont::BOLD;
+	colorStyle      = StyleFont::BOLD;
+	commentStyle    = StyleFont::ITALIC;
+	numberStyle     = StyleFont::NONE;
+	stringStyle     = StyleFont::NONE;
+	operatorStyle   = StyleFont::NONE;
 }
 
 ParserTheme::~ParserTheme()
@@ -139,17 +139,17 @@ rbool ParserTheme::styleUsing( const int styleType ) const
 rbool ParserTheme::styleBold( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_RDO_DEFAULT     : return defaultStyle    & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_IDENTIFIER  : return identifierStyle & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_KEYWORD     : return keywordStyle    & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_FUNCTION    : return functionsStyle  & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_TRACE       : return traceStyle      & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_FRAME_COLOR : return colorStyle      & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_COMMENT_CPP : return commentStyle    & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_COMMENT_LINE: return commentStyle    & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_NUMBER      : return numberStyle     & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_STRING      : return stringStyle     & RDOStyleFont::BOLD ? true : false;
-		case SCE_RDO_OPERATOR    : return operatorStyle   & RDOStyleFont::BOLD ? true : false;
+		case SCE_RDO_DEFAULT     : return defaultStyle    & StyleFont::BOLD ? true : false;
+		case SCE_RDO_IDENTIFIER  : return identifierStyle & StyleFont::BOLD ? true : false;
+		case SCE_RDO_KEYWORD     : return keywordStyle    & StyleFont::BOLD ? true : false;
+		case SCE_RDO_FUNCTION    : return functionsStyle  & StyleFont::BOLD ? true : false;
+		case SCE_RDO_TRACE       : return traceStyle      & StyleFont::BOLD ? true : false;
+		case SCE_RDO_FRAME_COLOR : return colorStyle      & StyleFont::BOLD ? true : false;
+		case SCE_RDO_COMMENT_CPP : return commentStyle    & StyleFont::BOLD ? true : false;
+		case SCE_RDO_COMMENT_LINE: return commentStyle    & StyleFont::BOLD ? true : false;
+		case SCE_RDO_NUMBER      : return numberStyle     & StyleFont::BOLD ? true : false;
+		case SCE_RDO_STRING      : return stringStyle     & StyleFont::BOLD ? true : false;
+		case SCE_RDO_OPERATOR    : return operatorStyle   & StyleFont::BOLD ? true : false;
 	}
 	return false;
 }
@@ -157,17 +157,17 @@ rbool ParserTheme::styleBold( const int styleType ) const
 rbool ParserTheme::styleItalic( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_RDO_DEFAULT     : return defaultStyle    & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_IDENTIFIER  : return identifierStyle & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_KEYWORD     : return keywordStyle    & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_FUNCTION    : return functionsStyle  & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_TRACE       : return traceStyle      & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_FRAME_COLOR : return colorStyle      & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_COMMENT_CPP : return commentStyle    & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_COMMENT_LINE: return commentStyle    & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_NUMBER      : return numberStyle     & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_STRING      : return stringStyle     & RDOStyleFont::ITALIC ? true : false;
-		case SCE_RDO_OPERATOR    : return operatorStyle   & RDOStyleFont::ITALIC ? true : false;
+		case SCE_RDO_DEFAULT     : return defaultStyle    & StyleFont::ITALIC ? true : false;
+		case SCE_RDO_IDENTIFIER  : return identifierStyle & StyleFont::ITALIC ? true : false;
+		case SCE_RDO_KEYWORD     : return keywordStyle    & StyleFont::ITALIC ? true : false;
+		case SCE_RDO_FUNCTION    : return functionsStyle  & StyleFont::ITALIC ? true : false;
+		case SCE_RDO_TRACE       : return traceStyle      & StyleFont::ITALIC ? true : false;
+		case SCE_RDO_FRAME_COLOR : return colorStyle      & StyleFont::ITALIC ? true : false;
+		case SCE_RDO_COMMENT_CPP : return commentStyle    & StyleFont::ITALIC ? true : false;
+		case SCE_RDO_COMMENT_LINE: return commentStyle    & StyleFont::ITALIC ? true : false;
+		case SCE_RDO_NUMBER      : return numberStyle     & StyleFont::ITALIC ? true : false;
+		case SCE_RDO_STRING      : return stringStyle     & StyleFont::ITALIC ? true : false;
+		case SCE_RDO_OPERATOR    : return operatorStyle   & StyleFont::ITALIC ? true : false;
 	}
 	return false;
 }
@@ -211,15 +211,15 @@ ParserTheme ParserTheme::getCppTheme()
 	theme.stringColor     = QColor( 0x00, 0x00, 0x00 );
 	theme.operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
-	theme.identifierStyle = RDOStyleFont::NONE;
-	theme.keywordStyle    = RDOStyleFont::NONE;
-	theme.functionsStyle  = RDOStyleFont::NONE;
-	theme.traceStyle      = RDOStyleFont::NONE;
-	theme.colorStyle      = RDOStyleFont::NONE;
-	theme.commentStyle    = RDOStyleFont::NONE;
-	theme.numberStyle     = RDOStyleFont::NONE;
-	theme.stringStyle     = RDOStyleFont::NONE;
-	theme.operatorStyle   = RDOStyleFont::NONE;
+	theme.identifierStyle = StyleFont::NONE;
+	theme.keywordStyle    = StyleFont::NONE;
+	theme.functionsStyle  = StyleFont::NONE;
+	theme.traceStyle      = StyleFont::NONE;
+	theme.colorStyle      = StyleFont::NONE;
+	theme.commentStyle    = StyleFont::NONE;
+	theme.numberStyle     = StyleFont::NONE;
+	theme.stringStyle     = StyleFont::NONE;
+	theme.operatorStyle   = StyleFont::NONE;
 
 	return theme;
 }
@@ -239,15 +239,15 @@ ParserTheme ParserTheme::getPascalTheme()
 	theme.stringColor     = QColor( 0x00, 0x00, 0x00 );
 	theme.operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
-	theme.identifierStyle = RDOStyleFont::NONE;
-	theme.keywordStyle    = RDOStyleFont::BOLD;
-	theme.functionsStyle  = RDOStyleFont::BOLD;
-	theme.traceStyle      = RDOStyleFont::BOLD;
-	theme.colorStyle      = RDOStyleFont::BOLD;
-	theme.commentStyle    = RDOStyleFont::ITALIC;
-	theme.numberStyle     = RDOStyleFont::NONE;
-	theme.stringStyle     = RDOStyleFont::NONE;
-	theme.operatorStyle   = RDOStyleFont::NONE;
+	theme.identifierStyle = StyleFont::NONE;
+	theme.keywordStyle    = StyleFont::BOLD;
+	theme.functionsStyle  = StyleFont::BOLD;
+	theme.traceStyle      = StyleFont::BOLD;
+	theme.colorStyle      = StyleFont::BOLD;
+	theme.commentStyle    = StyleFont::ITALIC;
+	theme.numberStyle     = StyleFont::NONE;
+	theme.stringStyle     = StyleFont::NONE;
+	theme.operatorStyle   = StyleFont::NONE;
 
 	return theme;
 }
@@ -267,15 +267,15 @@ ParserTheme ParserTheme::getHtmlTheme()
 	theme.stringColor     = QColor( 0x00, 0x00, 0xFF );
 	theme.operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
-	theme.identifierStyle = RDOStyleFont::NONE;
-	theme.keywordStyle    = RDOStyleFont::NONE;
-	theme.functionsStyle  = RDOStyleFont::NONE;
-	theme.traceStyle      = RDOStyleFont::NONE;
-	theme.colorStyle      = RDOStyleFont::NONE;
-	theme.commentStyle    = RDOStyleFont::NONE;
-	theme.numberStyle     = RDOStyleFont::NONE;
-	theme.stringStyle     = RDOStyleFont::NONE;
-	theme.operatorStyle   = RDOStyleFont::NONE;
+	theme.identifierStyle = StyleFont::NONE;
+	theme.keywordStyle    = StyleFont::NONE;
+	theme.functionsStyle  = StyleFont::NONE;
+	theme.traceStyle      = StyleFont::NONE;
+	theme.colorStyle      = StyleFont::NONE;
+	theme.commentStyle    = StyleFont::NONE;
+	theme.numberStyle     = StyleFont::NONE;
+	theme.stringStyle     = StyleFont::NONE;
+	theme.operatorStyle   = StyleFont::NONE;
 
 	return theme;
 }
@@ -295,15 +295,15 @@ ParserTheme ParserTheme::getClassicTheme()
 	theme.stringColor     = QColor( 0xFF, 0xFF, 0x00 );
 	theme.operatorColor   = QColor( 0xFF, 0xFF, 0x00 );
 
-	theme.identifierStyle = RDOStyleFont::NONE;
-	theme.keywordStyle    = RDOStyleFont::NONE;
-	theme.functionsStyle  = RDOStyleFont::NONE;
-	theme.traceStyle      = RDOStyleFont::NONE;
-	theme.colorStyle      = RDOStyleFont::NONE;
-	theme.commentStyle    = RDOStyleFont::NONE;
-	theme.numberStyle     = RDOStyleFont::NONE;
-	theme.stringStyle     = RDOStyleFont::NONE;
-	theme.operatorStyle   = RDOStyleFont::NONE;
+	theme.identifierStyle = StyleFont::NONE;
+	theme.keywordStyle    = StyleFont::NONE;
+	theme.functionsStyle  = StyleFont::NONE;
+	theme.traceStyle      = StyleFont::NONE;
+	theme.colorStyle      = StyleFont::NONE;
+	theme.commentStyle    = StyleFont::NONE;
+	theme.numberStyle     = StyleFont::NONE;
+	theme.stringStyle     = StyleFont::NONE;
+	theme.operatorStyle   = StyleFont::NONE;
 
 	return theme;
 }
@@ -323,15 +323,15 @@ ParserTheme ParserTheme::getTwilightTheme()
 	theme.stringColor     = QColor( 0xFF, 0xFF, 0xFF );
 	theme.operatorColor   = QColor( 0xFF, 0xFF, 0xFF );
 
-	theme.identifierStyle = RDOStyleFont::NONE;
-	theme.keywordStyle    = RDOStyleFont::BOLD;
-	theme.functionsStyle  = RDOStyleFont::BOLD;
-	theme.traceStyle      = static_cast<RDOStyleFont::style>(RDOStyleFont::BOLD | RDOStyleFont::ITALIC);
-	theme.colorStyle      = RDOStyleFont::BOLD;
-	theme.commentStyle    = RDOStyleFont::ITALIC;
-	theme.numberStyle     = RDOStyleFont::NONE;
-	theme.stringStyle     = RDOStyleFont::NONE;
-	theme.operatorStyle   = RDOStyleFont::NONE;
+	theme.identifierStyle = StyleFont::NONE;
+	theme.keywordStyle    = StyleFont::BOLD;
+	theme.functionsStyle  = StyleFont::BOLD;
+	theme.traceStyle      = static_cast<StyleFont::style>(StyleFont::BOLD | StyleFont::ITALIC);
+	theme.colorStyle      = StyleFont::BOLD;
+	theme.commentStyle    = StyleFont::ITALIC;
+	theme.numberStyle     = StyleFont::NONE;
+	theme.stringStyle     = StyleFont::NONE;
+	theme.operatorStyle   = StyleFont::NONE;
 
 	return theme;
 }
@@ -351,15 +351,15 @@ ParserTheme ParserTheme::getOceanTheme()
 	theme.stringColor     = QColor( 0x00, 0x00, 0xFF );
 	theme.operatorColor   = QColor( 0x00, 0x00, 0xFF );
 
-	theme.identifierStyle = RDOStyleFont::NONE;
-	theme.keywordStyle    = RDOStyleFont::BOLD;
-	theme.functionsStyle  = RDOStyleFont::BOLD;
-	theme.traceStyle      = RDOStyleFont::BOLD;
-	theme.colorStyle      = RDOStyleFont::BOLD;
-	theme.commentStyle    = RDOStyleFont::ITALIC;
-	theme.numberStyle     = RDOStyleFont::NONE;
-	theme.stringStyle     = RDOStyleFont::NONE;
-	theme.operatorStyle   = RDOStyleFont::NONE;
+	theme.identifierStyle = StyleFont::NONE;
+	theme.keywordStyle    = StyleFont::BOLD;
+	theme.functionsStyle  = StyleFont::BOLD;
+	theme.traceStyle      = StyleFont::BOLD;
+	theme.colorStyle      = StyleFont::BOLD;
+	theme.commentStyle    = StyleFont::ITALIC;
+	theme.numberStyle     = StyleFont::NONE;
+	theme.stringStyle     = StyleFont::NONE;
+	theme.operatorStyle   = StyleFont::NONE;
 
 	return theme;
 }
@@ -403,15 +403,15 @@ QSettings& operator>> (QSettings& settings, ParserTheme& theme)
 	theme.stringColor            = QColor(settings.value("string_color", theme.stringColor.name()).toString());
 	theme.operatorColor          = QColor(settings.value("operator_color", theme.operatorColor.name()).toString());
 
-	theme.identifierStyle        = static_cast<RDOStyleFont::style>(settings.value("identifier_style", theme.identifierStyle).toInt());
-	theme.keywordStyle           = static_cast<RDOStyleFont::style>(settings.value("keyword_style", theme.keywordStyle).toInt());
-	theme.functionsStyle         = static_cast<RDOStyleFont::style>(settings.value("functions_style", theme.functionsStyle).toInt());
-	theme.traceStyle             = static_cast<RDOStyleFont::style>(settings.value("trace_style", theme.traceStyle).toInt());
-	theme.colorStyle             = static_cast<RDOStyleFont::style>(settings.value("color_style", theme.colorStyle).toInt());
-	theme.commentStyle           = static_cast<RDOStyleFont::style>(settings.value("comment_style", theme.commentStyle).toInt());
-	theme.numberStyle            = static_cast<RDOStyleFont::style>(settings.value("number_style", theme.numberStyle).toInt());
-	theme.stringStyle            = static_cast<RDOStyleFont::style>(settings.value("string_style", theme.stringStyle).toInt());
-	theme.operatorStyle          = static_cast<RDOStyleFont::style>(settings.value("operator_style", theme.operatorStyle).toInt());
+	theme.identifierStyle        = static_cast<StyleFont::style>(settings.value("identifier_style", theme.identifierStyle).toInt());
+	theme.keywordStyle           = static_cast<StyleFont::style>(settings.value("keyword_style", theme.keywordStyle).toInt());
+	theme.functionsStyle         = static_cast<StyleFont::style>(settings.value("functions_style", theme.functionsStyle).toInt());
+	theme.traceStyle             = static_cast<StyleFont::style>(settings.value("trace_style", theme.traceStyle).toInt());
+	theme.colorStyle             = static_cast<StyleFont::style>(settings.value("color_style", theme.colorStyle).toInt());
+	theme.commentStyle           = static_cast<StyleFont::style>(settings.value("comment_style", theme.commentStyle).toInt());
+	theme.numberStyle            = static_cast<StyleFont::style>(settings.value("number_style", theme.numberStyle).toInt());
+	theme.stringStyle            = static_cast<StyleFont::style>(settings.value("string_style", theme.stringStyle).toInt());
+	theme.operatorStyle          = static_cast<StyleFont::style>(settings.value("operator_style", theme.operatorStyle).toInt());
 	
 	return settings;
 }

@@ -93,9 +93,9 @@ void FrameAnimationContent::updateFont()
 	ASSERT(pStyle);
 
 	m_font = QFont(pStyle->font->name.c_str());
-	m_font.setBold     (pStyle->theme->defaultStyle & rdoStyle::RDOStyleFont::BOLD      ? true : false);
-	m_font.setItalic   (pStyle->theme->defaultStyle & rdoStyle::RDOStyleFont::ITALIC    ? true : false);
-	m_font.setUnderline(pStyle->theme->defaultStyle & rdoStyle::RDOStyleFont::UNDERLINE ? true : false);
+	m_font.setBold     (pStyle->theme->defaultStyle & rdo::gui::style::StyleFont::BOLD      ? true : false);
+	m_font.setItalic   (pStyle->theme->defaultStyle & rdo::gui::style::StyleFont::ITALIC    ? true : false);
+	m_font.setUnderline(pStyle->theme->defaultStyle & rdo::gui::style::StyleFont::UNDERLINE ? true : false);
 	m_font.setPointSize(pStyle->font->size);
 }
 

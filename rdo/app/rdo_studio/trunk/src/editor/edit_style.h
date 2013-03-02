@@ -21,7 +21,7 @@ namespace rdo { namespace gui { namespace editor {
 // --------------------------------------------------------------------------------
 // -------------------- EditTheme
 // --------------------------------------------------------------------------------
-class EditTheme: public rdoStyle::RDOStyleTheme
+class EditTheme: public style::StyleTheme
 {
 public:
 	enum Bookmark
@@ -121,7 +121,7 @@ QSettings& operator>> (QSettings& settings,       EditWindow& window);
 // --------------------------------------------------------------------------------
 // -------------------- EditStyle
 // --------------------------------------------------------------------------------
-class EditStyle: public rdoStyle::RDOStyleWithTheme
+class EditStyle: public style::StyleWithTheme
 {
 public:
 	EditStyle();

@@ -15,12 +15,12 @@
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoStyle;
+namespace rdo { namespace gui { namespace style {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStyleFont
+// -------------------- StyleFont
 // --------------------------------------------------------------------------------
-RDOStyleFont::RDOStyleFont()
+StyleFont::StyleFont()
 {
 	name         = "Courier New";
 	size         = 10;
@@ -31,11 +31,10 @@ RDOStyleFont::RDOStyleFont()
 	}
 }
 
-RDOStyleFont::~RDOStyleFont()
-{
-}
+StyleFont::~StyleFont()
+{}
 
-RDOStyleFont& RDOStyleFont::operator =( const RDOStyleFont& font )
+StyleFont& StyleFont::operator =( const StyleFont& font )
 {
 	name         = font.name;
 	size         = font.size;
@@ -45,7 +44,7 @@ RDOStyleFont& RDOStyleFont::operator =( const RDOStyleFont& font )
 	return *this;
 }
 
-rbool RDOStyleFont::operator ==( const RDOStyleFont& font ) const
+rbool StyleFont::operator ==( const StyleFont& font ) const
 {
 	return name         == font.name &&
 	       size         == font.size &&
@@ -53,57 +52,57 @@ rbool RDOStyleFont::operator ==( const RDOStyleFont& font ) const
 	       characterSet == font.characterSet;
 }
 
-rbool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
+rbool StyleFont::operator !=( const StyleFont& font ) const
 {
 	return !(*this == font);
 }
 
-void RDOStyleFont::load(QSettings& settings)
+void StyleFont::load(QSettings& settings)
 {
 	settings >> *this;
 }
 
-void RDOStyleFont::save(QSettings& settings) const
+void StyleFont::save(QSettings& settings) const
 {
 	settings << *this;
 }
 
-RDOStyleFont RDOStyleFont::getDefaultFont()
+StyleFont StyleFont::getDefaultFont()
 {
-	RDOStyleFont font;
+	StyleFont font;
 	return font;
 }
 
-RDOStyleFont RDOStyleFont::getClassicFont()
+StyleFont StyleFont::getClassicFont()
 {
-	RDOStyleFont font;
+	StyleFont font;
 
 	font.name = "Fixedsys";
 
 	return font;
 }
 
-RDOStyleFont RDOStyleFont::getTracerLogFont()
+StyleFont StyleFont::getTracerLogFont()
 {
-	RDOStyleFont font;
+	StyleFont font;
 
 	font.name = "Courier";
 
 	return font;
 }
 
-RDOStyleFont RDOStyleFont::getChartViewFont()
+StyleFont StyleFont::getChartViewFont()
 {
-	RDOStyleFont font;
+	StyleFont font;
 
 	font.name = "Tahoma";
 
 	return font;
 }
 
-RDOStyleFont RDOStyleFont::getFrameFont()
+StyleFont StyleFont::getFrameFont()
 {
-	RDOStyleFont font;
+	StyleFont font;
 
 	font.name = _T("Verdana");
 	font.size = 8;
@@ -111,10 +110,7 @@ RDOStyleFont RDOStyleFont::getFrameFont()
 	return font;
 }
 
-namespace rdoStyle
-{
-
-QSettings& operator<< (QSettings& settings, const RDOStyleFont& font)
+QSettings& operator<< (QSettings& settings, const StyleFont& font)
 {
 	settings.setValue("name", QString::fromLocal8Bit(font.name.c_str()));
 	settings.setValue("size", font.size);
@@ -124,7 +120,7 @@ QSettings& operator<< (QSettings& settings, const RDOStyleFont& font)
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, RDOStyleFont& font)
+QSettings& operator>> (QSettings& settings, StyleFont& font)
 {
 	font.name         = settings.value("name", QString::fromLocal8Bit(font.name.c_str())).toString().toLocal8Bit().constData();
 	font.size         = settings.value("size", font.size).toInt();
@@ -137,23 +133,21 @@ QSettings& operator>> (QSettings& settings, RDOStyleFont& font)
 	return settings;
 }
 
-} // namespace rdoStyle
 // --------------------------------------------------------------------------------
-// -------------------- RDOStyleTheme
+// -------------------- StyleTheme
 // --------------------------------------------------------------------------------
-RDOStyleTheme::RDOStyleTheme()
+StyleTheme::StyleTheme()
 {
 	defaultColor    = QColor( 0x00, 0x00, 0x00 );
 	backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
 
-	defaultStyle = RDOStyleFont::NONE;
+	defaultStyle = StyleFont::NONE;
 }
 
-RDOStyleTheme::~RDOStyleTheme()
-{
-}
+StyleTheme::~StyleTheme()
+{}
 
-RDOStyleTheme& RDOStyleTheme::operator =( const RDOStyleTheme& theme )
+StyleTheme& StyleTheme::operator =( const StyleTheme& theme )
 {
 	defaultColor    = theme.defaultColor;
 	backgroundColor = theme.backgroundColor;
@@ -163,7 +157,7 @@ RDOStyleTheme& RDOStyleTheme::operator =( const RDOStyleTheme& theme )
 	return *this;
 }
 
-rbool RDOStyleTheme::operator ==( const RDOStyleTheme& theme ) const
+rbool StyleTheme::operator ==( const StyleTheme& theme ) const
 {
 	return defaultColor    == theme.defaultColor &&
 	       backgroundColor == theme.backgroundColor &&
@@ -171,25 +165,22 @@ rbool RDOStyleTheme::operator ==( const RDOStyleTheme& theme ) const
 	       defaultStyle == theme.defaultStyle;
 }
 
-rbool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
+rbool StyleTheme::operator !=( const StyleTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOStyleTheme::load(QSettings& settings)
+void StyleTheme::load(QSettings& settings)
 {
 	settings >> *this;
 }
 
-void RDOStyleTheme::save(QSettings& settings) const
+void StyleTheme::save(QSettings& settings) const
 {
 	settings << *this;
 }
 
-namespace rdoStyle
-{
-
-QSettings& operator<< (QSettings& settings, const RDOStyleTheme& theme)
+QSettings& operator<< (QSettings& settings, const StyleTheme& theme)
 {
 	settings.setValue("default_color", theme.defaultColor.name());
 	settings.setValue("background_color", theme.backgroundColor.name());
@@ -198,53 +189,50 @@ QSettings& operator<< (QSettings& settings, const RDOStyleTheme& theme)
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, RDOStyleTheme& theme)
+QSettings& operator>> (QSettings& settings, StyleTheme& theme)
 {
 	theme.defaultColor    = QColor(settings.value("default_color", theme.defaultColor.name()).toString());
 	theme.backgroundColor = QColor(settings.value("background_color", theme.backgroundColor.name()).toString());
-	theme.defaultStyle    = static_cast<RDOStyleFont::style>(settings.value("default_style", theme.defaultStyle).toInt());
+	theme.defaultStyle    = static_cast<StyleFont::style>(settings.value("default_style", theme.defaultStyle).toInt());
 
 	return settings;
 }
 
-} // namespace rdoStyle
-
-
 // --------------------------------------------------------------------------------
-// -------------------- RDOStyle
+// -------------------- Style
 // --------------------------------------------------------------------------------
-RDOStyle::RDOStyle():
-	groupName( "" ),
-	font( NULL )
+Style::Style()
+	: groupName()
+	, font     (NULL)
 {
-	font = new RDOStyleFont();
+	font = new StyleFont();
 }
 
-RDOStyle::~RDOStyle()
+Style::~Style()
 {
 	if ( font ) { delete font; font = NULL; };
 }
 
-RDOStyle& RDOStyle::operator =( const RDOStyle& style )
+Style& Style::operator =( const Style& style )
 {
 	if ( font && style.font ) *font = *style.font;
 
 	return *this;
 }
 
-rbool RDOStyle::operator ==( const RDOStyle& style ) const
+rbool Style::operator ==( const Style& style ) const
 {
 	rbool flag = true;
 	if ( font && style.font && flag ) flag &= *font == *style.font;
 	return flag;
 }
 
-rbool RDOStyle::operator !=( const RDOStyle& style ) const
+rbool Style::operator !=( const Style& style ) const
 {
 	return !(*this == style);
 }
 
-void RDOStyle::init( CREF(QString) _groupName )
+void Style::init( CREF(QString) _groupName )
 {
 	groupName = _groupName;
 	if (!groupName.isEmpty()) 
@@ -257,7 +245,7 @@ void RDOStyle::init( CREF(QString) _groupName )
 	}
 }
 
-rbool RDOStyle::load()
+rbool Style::load()
 {
 	if (!groupName.isEmpty()) {
 		QSettings settings;
@@ -269,7 +257,7 @@ rbool RDOStyle::load()
 	return false;
 }
 
-rbool RDOStyle::save() const
+rbool Style::save() const
 {
 	if (!groupName.isEmpty()) {
 		QSettings settings;
@@ -282,48 +270,48 @@ rbool RDOStyle::save() const
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStyleWithTheme
+// -------------------- StyleWithTheme
 // --------------------------------------------------------------------------------
-RDOStyleWithTheme::RDOStyleWithTheme():
-	RDOStyle(),
-	theme( NULL )
+StyleWithTheme::StyleWithTheme()
+	: Style()
+	, theme(NULL)
 {
-	theme = new RDOStyleTheme();
+	theme = new StyleTheme();
 }
 
-RDOStyleWithTheme::~RDOStyleWithTheme()
+StyleWithTheme::~StyleWithTheme()
 {
 	if ( theme ) { delete theme; theme = NULL; };
 }
 
-RDOStyleWithTheme& RDOStyleWithTheme::operator =( const RDOStyleWithTheme& style )
+StyleWithTheme& StyleWithTheme::operator =( const StyleWithTheme& style )
 {
-	RDOStyle::operator=( style );
+	Style::operator=( style );
 	if ( theme && style.theme ) *theme = *style.theme;
 
 	return *this;
 }
 
-rbool RDOStyleWithTheme::operator ==( const RDOStyleWithTheme& style ) const
+rbool StyleWithTheme::operator ==( const StyleWithTheme& style ) const
 {
-	rbool flag = RDOStyle::operator==( style );
+	rbool flag = Style::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *theme == *style.theme;
 	return flag;
 }
 
-rbool RDOStyleWithTheme::operator !=( const RDOStyleWithTheme& style ) const
+rbool StyleWithTheme::operator !=( const StyleWithTheme& style ) const
 {
 	return !(*this == style);
 }
 
-void RDOStyleWithTheme::init( CREF(QString) _groupName )
+void StyleWithTheme::init( CREF(QString) _groupName )
 {
-	RDOStyle::init( _groupName );
+	Style::init( _groupName );
 }
 
-rbool RDOStyleWithTheme::load()
+rbool StyleWithTheme::load()
 {
-	if (RDOStyle::load()) {
+	if (Style::load()) {
 		QSettings settings;
 		settings.beginGroup(groupName + "theme");
 		if (theme) theme->load(settings);
@@ -333,9 +321,9 @@ rbool RDOStyleWithTheme::load()
 	return false;
 }
 
-rbool RDOStyleWithTheme::save() const
+rbool StyleWithTheme::save() const
 {
-	if (RDOStyle::save()) {
+	if (Style::save()) {
 		QSettings settings;
 		settings.beginGroup(groupName + "theme");
 		if (theme) theme->save(settings);
@@ -344,3 +332,5 @@ rbool RDOStyleWithTheme::save() const
 	}
 	return false;
 }
+
+}}} // namespace rdo::gui::style

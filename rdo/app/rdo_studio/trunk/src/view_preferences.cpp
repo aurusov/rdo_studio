@@ -21,7 +21,7 @@
 
 using namespace rdo::simulation::report;
 using namespace rdo::gui::editor;
-using namespace rdoStyle;
+using namespace rdo::gui::style;
 
 rbool ViewPreferences::null_wordwrap      = false;
 rbool ViewPreferences::null_horzscrollbar = true;
@@ -36,7 +36,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	: QDialog(pParent)
 	, all_font_size(-1)
 	, all_font_name("")
-	, null_font_style(rdoStyle::RDOStyleFont::NONE)
+	, null_font_style(StyleFont::NONE)
 	, all_fg_color(0x00, 0x00, 0x00)
 	, all_bg_color(0xFF, 0xFF, 0xFF)
 {
@@ -444,10 +444,10 @@ void ViewPreferences::onFontBold(int state)
 	PTR(StyleProperty) prop = getStyleProperty();
 	if (prop && &prop->font_style != &null_font_style)
 	{
-		prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style & ~RDOStyleFont::BOLD);
+		prop->font_style = static_cast<StyleFont::style>(prop->font_style & ~StyleFont::BOLD);
 		if (state)
 		{
-			prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style | RDOStyleFont::BOLD);
+			prop->font_style = static_cast<StyleFont::style>(prop->font_style | StyleFont::BOLD);
 		}
 		updatePreview();
 	}
@@ -458,10 +458,10 @@ void ViewPreferences::onFontItalic(int state)
 	PTR(StyleProperty) prop = getStyleProperty();
 	if (prop && &prop->font_style != &null_font_style)
 	{
-		prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style & ~RDOStyleFont::ITALIC);
+		prop->font_style = static_cast<StyleFont::style>(prop->font_style & ~StyleFont::ITALIC);
 		if (state)
 		{
-			prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style | RDOStyleFont::ITALIC);
+			prop->font_style = static_cast<StyleFont::style>(prop->font_style | StyleFont::ITALIC);
 		}
 		updatePreview();
 	}
@@ -472,10 +472,10 @@ void ViewPreferences::onFontUnderline(int state)
 	PTR(StyleProperty) prop = getStyleProperty();
 	if (prop && &prop->font_style != &null_font_style)
 	{
-		prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style & ~RDOStyleFont::UNDERLINE);
+		prop->font_style = static_cast<StyleFont::style>(prop->font_style & ~StyleFont::UNDERLINE);
 		if (state)
 		{
-			prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style | RDOStyleFont::UNDERLINE);
+			prop->font_style = static_cast<StyleFont::style>(prop->font_style | StyleFont::UNDERLINE);
 		}
 		updatePreview();
 	}
@@ -776,15 +776,15 @@ void ViewPreferences::updateStyleTab()
 
 	if(boldCheckBox->isEnabled())
 	{
-		boldCheckBox->setCheckState((prop->font_style & RDOStyleFont::BOLD) != 0 ? Qt::Checked : Qt::Unchecked);
+		boldCheckBox->setCheckState((prop->font_style & StyleFont::BOLD) != 0 ? Qt::Checked : Qt::Unchecked);
 	}
 	if(italicCheckBox->isEnabled())
 	{
-		italicCheckBox->setCheckState((prop->font_style & RDOStyleFont::ITALIC) != 0 ? Qt::Checked : Qt::Unchecked);
+		italicCheckBox->setCheckState((prop->font_style & StyleFont::ITALIC) != 0 ? Qt::Checked : Qt::Unchecked);
 	}
 	if(underlineCheckBox->isEnabled())
 	{
-		underlineCheckBox->setCheckState((prop->font_style & RDOStyleFont::UNDERLINE) != 0 ? Qt::Checked : Qt::Unchecked);
+		underlineCheckBox->setCheckState((prop->font_style & StyleFont::UNDERLINE) != 0 ? Qt::Checked : Qt::Unchecked);
 	}
 	switch(prop->item->type)
 	{

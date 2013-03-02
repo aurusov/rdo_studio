@@ -14,13 +14,13 @@
 #include "app/rdo_studio/src/editor/edit_style.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoStyle;
+using namespace rdo::gui::style;
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
 // -------------------- EditTheme
 // --------------------------------------------------------------------------------
-EditTheme::EditTheme(): RDOStyleTheme()
+EditTheme::EditTheme(): StyleTheme()
 {
 	defaultColor    = QColor( 0x00, 0x00, 0x00 );
 	backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
@@ -30,7 +30,7 @@ EditTheme::EditTheme(): RDOStyleTheme()
 	bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
 	bookmarkBgColor  = QColor( 0x00, 0xFF, 0xFF );
 
-	defaultStyle  = RDOStyleFont::NONE;
+	defaultStyle  = StyleFont::NONE;
 	bookmarkStyle = EditTheme::B_CIRCLE;
 }
 
@@ -97,12 +97,12 @@ rbool EditTheme::styleUsing( const int styleType ) const
 
 rbool EditTheme::styleBold( const int /*styleType*/ ) const
 {
-	return defaultStyle & RDOStyleFont::BOLD ? true : false;
+	return defaultStyle & StyleFont::BOLD ? true : false;
 }
 
 rbool EditTheme::styleItalic( const int /*styleType*/ ) const
 {
-	return defaultStyle & RDOStyleFont::ITALIC ? true : false;
+	return defaultStyle & StyleFont::ITALIC ? true : false;
 }
 
 tstring EditTheme::styleFGColorToHEX( const int /*styleType*/ ) const
@@ -133,7 +133,7 @@ EditTheme EditTheme::getClassicTheme()
 	theme.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = QColor( 0x80, 0x80, 0x00 );
 
-	theme.defaultStyle  = RDOStyleFont::NONE;
+	theme.defaultStyle  = StyleFont::NONE;
 	theme.bookmarkStyle = EditTheme::B_CIRCLE;
 
 	return theme;
@@ -151,7 +151,7 @@ EditTheme EditTheme::getTwilightTheme()
 	theme.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = QColor( 0x00, 0x00, 0xFF );
 
-	theme.defaultStyle  = RDOStyleFont::NONE;
+	theme.defaultStyle  = StyleFont::NONE;
 	theme.bookmarkStyle = EditTheme::B_CIRCLE;
 
 	return theme;
@@ -169,7 +169,7 @@ EditTheme EditTheme::getOceanTheme()
 	theme.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = QColor( 0xBA, 0xCC, 0xFC );
 
-	theme.defaultStyle  = RDOStyleFont::NONE;
+	theme.defaultStyle  = StyleFont::NONE;
 	theme.bookmarkStyle = EditTheme::B_CIRCLE;
 
 	return theme;
@@ -204,7 +204,7 @@ QSettings& operator>> (QSettings& settings, EditTheme& theme)
 	theme.selectionBgColor = QColor(settings.value("selection_bg_color", theme.selectionBgColor.name()).toString());
 	theme.bookmarkFgColor  = QColor(settings.value("bookmark_fg_color", theme.bookmarkFgColor.name()).toString());
 	theme.bookmarkBgColor  = QColor(settings.value("bookmark_bg_color", theme.bookmarkBgColor.name()).toString());
-	theme.defaultStyle     = static_cast<RDOStyleFont::style>(settings.value("default_style", theme.defaultStyle).toInt());
+	theme.defaultStyle     = static_cast<StyleFont::style>(settings.value("default_style", theme.defaultStyle).toInt());
 	theme.bookmarkStyle    = static_cast<EditTheme::Bookmark>(settings.value("bookmark_style", theme.bookmarkStyle).toInt());
 	
 	return settings;
@@ -358,7 +358,7 @@ QSettings& operator>> (QSettings& settings, EditWindow& window)
 // -------------------- EditStyle
 // --------------------------------------------------------------------------------
 EditStyle::EditStyle()
-	: RDOStyleWithTheme()
+	: StyleWithTheme()
 	, tab   (NULL)
 	, window(NULL)
 {
@@ -375,7 +375,7 @@ EditStyle::~EditStyle()
 
 EditStyle& EditStyle::operator =( const EditStyle& style )
 {
-	RDOStyleWithTheme::operator=( style );
+	StyleWithTheme::operator=( style );
 	if ( theme  && style.theme )  *static_cast<EditTheme*>(theme) = *static_cast<EditTheme*>(style.theme);
 	if ( tab    && style.tab )    *tab    = *style.tab;
 	if ( window && style.window ) *window = *style.window;
@@ -385,7 +385,7 @@ EditStyle& EditStyle::operator =( const EditStyle& style )
 
 rbool EditStyle::operator ==( const EditStyle& style ) const
 {
-	rbool flag = RDOStyleWithTheme::operator==( style );
+	rbool flag = StyleWithTheme::operator==( style );
 	if ( theme  && style.theme  && flag ) flag &= *static_cast<EditTheme*>(theme) == *static_cast<EditTheme*>(style.theme);
 	if ( tab    && style.tab    && flag ) flag &= *tab    == *style.tab;
 	if ( window && style.window && flag ) flag &= *window == *style.window;
@@ -399,12 +399,12 @@ rbool EditStyle::operator !=( const EditStyle& style ) const
 
 void EditStyle::init( CREF(QString) _groupName )
 {
-	RDOStyleWithTheme::init( _groupName );
+	StyleWithTheme::init( _groupName );
 }
 
 rbool EditStyle::load()
 {
-	if ( RDOStyleWithTheme::load() ) {
+	if ( StyleWithTheme::load() ) {
 		QSettings settings;
 		settings.beginGroup(groupName + "tab");
 		if (tab)    tab->load(settings);
@@ -419,7 +419,7 @@ rbool EditStyle::load()
 
 rbool EditStyle::save() const
 {
-	if ( RDOStyleWithTheme::save() ) {
+	if ( StyleWithTheme::save() ) {
 		QSettings settings;
 		settings.beginGroup(groupName + "tab");
 		if (tab)    tab->save(settings);

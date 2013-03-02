@@ -20,7 +20,7 @@
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::editor;
-using namespace rdoStyle;
+using namespace rdo::gui::style;
 
 Parser::Parser(PTR(QWidget) pParent)
 	: super(pParent)
@@ -124,39 +124,39 @@ void Parser::setEditorStyle(PTR(ParserStyle) pStyle)
 
 	// ----------
 	// Styles
-	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_DEFAULT, static_cast<ModelTheme*>(m_pStyle->theme)->defaultStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_DEFAULT, static_cast<ModelTheme*>(m_pStyle->theme)->defaultStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_DEFAULT, static_cast<ModelTheme*>(m_pStyle->theme)->defaultStyle & RDOStyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_IDENTIFIER, static_cast<ModelTheme*>(m_pStyle->theme)->identifierStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_IDENTIFIER, static_cast<ModelTheme*>(m_pStyle->theme)->identifierStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_IDENTIFIER, static_cast<ModelTheme*>(m_pStyle->theme)->identifierStyle & RDOStyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_KEYWORD, static_cast<ModelTheme*>(m_pStyle->theme)->keywordStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_KEYWORD, static_cast<ModelTheme*>(m_pStyle->theme)->keywordStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_KEYWORD, static_cast<ModelTheme*>(m_pStyle->theme)->keywordStyle & RDOStyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_FUNCTION, static_cast<ModelTheme*>(m_pStyle->theme)->functionsStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_FUNCTION, static_cast<ModelTheme*>(m_pStyle->theme)->functionsStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_FUNCTION, static_cast<ModelTheme*>(m_pStyle->theme)->functionsStyle & RDOStyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_TRACE, static_cast<ModelTheme*>(m_pStyle->theme)->traceStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_TRACE, static_cast<ModelTheme*>(m_pStyle->theme)->traceStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_TRACE, static_cast<ModelTheme*>(m_pStyle->theme)->traceStyle & RDOStyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_FRAME_COLOR, static_cast<ModelTheme*>(m_pStyle->theme)->colorStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_FRAME_COLOR, static_cast<ModelTheme*>(m_pStyle->theme)->colorStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_FRAME_COLOR, static_cast<ModelTheme*>(m_pStyle->theme)->colorStyle & RDOStyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_COMMENT_CPP, static_cast<ModelTheme*>(m_pStyle->theme)->commentStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_COMMENT_CPP, static_cast<ModelTheme*>(m_pStyle->theme)->commentStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_COMMENT_CPP, static_cast<ModelTheme*>(m_pStyle->theme)->commentStyle & RDOStyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_COMMENT_LINE, static_cast<ModelTheme*>(m_pStyle->theme)->commentStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_COMMENT_LINE, static_cast<ModelTheme*>(m_pStyle->theme)->commentStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_COMMENT_LINE, static_cast<ModelTheme*>(m_pStyle->theme)->commentStyle & RDOStyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_NUMBER, static_cast<ModelTheme*>(m_pStyle->theme)->numberStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_NUMBER, static_cast<ModelTheme*>(m_pStyle->theme)->numberStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_NUMBER, static_cast<ModelTheme*>(m_pStyle->theme)->numberStyle & RDOStyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_STRING, static_cast<ModelTheme*>(m_pStyle->theme)->stringStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_STRING, static_cast<ModelTheme*>(m_pStyle->theme)->stringStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_STRING, static_cast<ModelTheme*>(m_pStyle->theme)->stringStyle & RDOStyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_OPERATOR, static_cast<ModelTheme*>(m_pStyle->theme)->operatorStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_OPERATOR, static_cast<ModelTheme*>(m_pStyle->theme)->operatorStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_OPERATOR, static_cast<ModelTheme*>(m_pStyle->theme)->operatorStyle & RDOStyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_DEFAULT, static_cast<ModelTheme*>(m_pStyle->theme)->defaultStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_DEFAULT, static_cast<ModelTheme*>(m_pStyle->theme)->defaultStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_DEFAULT, static_cast<ModelTheme*>(m_pStyle->theme)->defaultStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_IDENTIFIER, static_cast<ModelTheme*>(m_pStyle->theme)->identifierStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_IDENTIFIER, static_cast<ModelTheme*>(m_pStyle->theme)->identifierStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_IDENTIFIER, static_cast<ModelTheme*>(m_pStyle->theme)->identifierStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_KEYWORD, static_cast<ModelTheme*>(m_pStyle->theme)->keywordStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_KEYWORD, static_cast<ModelTheme*>(m_pStyle->theme)->keywordStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_KEYWORD, static_cast<ModelTheme*>(m_pStyle->theme)->keywordStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_FUNCTION, static_cast<ModelTheme*>(m_pStyle->theme)->functionsStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_FUNCTION, static_cast<ModelTheme*>(m_pStyle->theme)->functionsStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_FUNCTION, static_cast<ModelTheme*>(m_pStyle->theme)->functionsStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_TRACE, static_cast<ModelTheme*>(m_pStyle->theme)->traceStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_TRACE, static_cast<ModelTheme*>(m_pStyle->theme)->traceStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_TRACE, static_cast<ModelTheme*>(m_pStyle->theme)->traceStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_FRAME_COLOR, static_cast<ModelTheme*>(m_pStyle->theme)->colorStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_FRAME_COLOR, static_cast<ModelTheme*>(m_pStyle->theme)->colorStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_FRAME_COLOR, static_cast<ModelTheme*>(m_pStyle->theme)->colorStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_COMMENT_CPP, static_cast<ModelTheme*>(m_pStyle->theme)->commentStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_COMMENT_CPP, static_cast<ModelTheme*>(m_pStyle->theme)->commentStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_COMMENT_CPP, static_cast<ModelTheme*>(m_pStyle->theme)->commentStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_COMMENT_LINE, static_cast<ModelTheme*>(m_pStyle->theme)->commentStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_COMMENT_LINE, static_cast<ModelTheme*>(m_pStyle->theme)->commentStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_COMMENT_LINE, static_cast<ModelTheme*>(m_pStyle->theme)->commentStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_NUMBER, static_cast<ModelTheme*>(m_pStyle->theme)->numberStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_NUMBER, static_cast<ModelTheme*>(m_pStyle->theme)->numberStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_NUMBER, static_cast<ModelTheme*>(m_pStyle->theme)->numberStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_STRING, static_cast<ModelTheme*>(m_pStyle->theme)->stringStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_STRING, static_cast<ModelTheme*>(m_pStyle->theme)->stringStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_STRING, static_cast<ModelTheme*>(m_pStyle->theme)->stringStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_RDO_OPERATOR, static_cast<ModelTheme*>(m_pStyle->theme)->operatorStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_RDO_OPERATOR, static_cast<ModelTheme*>(m_pStyle->theme)->operatorStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_OPERATOR, static_cast<ModelTheme*>(m_pStyle->theme)->operatorStyle & StyleFont::UNDERLINE);
 
 	// ----------
 	// Font Name

@@ -166,14 +166,14 @@ private:
 		StyleItem* item;
 		int identificator;
 
-		rdoStyle::RDOStyleFont::style& font_style;
+		rdo::gui::style::StyleFont::style& font_style;
 
 		QColor& fg_color;
 		QColor& bg_color;
 		QColor& fg_disable_color;
 		QColor& bg_disable_color;
 
-		StyleProperty(StyleItem* item, int identificator, rdoStyle::RDOStyleFont::style& font_style, QColor& fg_color, QColor& bg_color, QColor& fg_disable_color = null_fg_color, QColor& bg_disable_color = null_bg_color)
+		StyleProperty(StyleItem* item, int identificator, rdo::gui::style::StyleFont::style& font_style, QColor& fg_color, QColor& bg_color, QColor& fg_disable_color = null_fg_color, QColor& bg_disable_color = null_bg_color)
 			: item(item)
 			, identificator(identificator)
 			, font_style(font_style)
@@ -223,7 +223,7 @@ private:
 	QColor      all_fg_color;
 	QColor      all_bg_color;
 
-	rdoStyle::RDOStyleFont::style                 null_font_style;
+	rdo::gui::style::StyleFont::style             null_font_style;
 	static rbool                                  null_wordwrap;
 	static rbool                                  null_horzscrollbar;
 	static rbool                                  null_warning;

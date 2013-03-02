@@ -29,7 +29,7 @@
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::tracer;
-using namespace rdoStyle;
+using namespace rdo::gui::style;
 
 // --------------------------------------------------------------------------------
 // -------------------- ChartView
@@ -884,21 +884,21 @@ void ChartView::setFonts(const rbool needRedraw)
 	ChartViewTheme* pChartTheme = static_cast<ChartViewTheme*>(m_pStyle->theme);
 
 	m_fontAxis = QFont(m_pStyle->font->name.c_str());
-	m_fontAxis.setBold     (pChartTheme->defaultStyle & RDOStyleFont::BOLD      ? true : false);
-	m_fontAxis.setItalic   (pChartTheme->defaultStyle & RDOStyleFont::ITALIC    ? true : false);
-	m_fontAxis.setUnderline(pChartTheme->defaultStyle & RDOStyleFont::UNDERLINE ? true : false);
+	m_fontAxis.setBold     (pChartTheme->defaultStyle & StyleFont::BOLD      ? true : false);
+	m_fontAxis.setItalic   (pChartTheme->defaultStyle & StyleFont::ITALIC    ? true : false);
+	m_fontAxis.setUnderline(pChartTheme->defaultStyle & StyleFont::UNDERLINE ? true : false);
 	m_fontAxis.setPointSize(m_pStyle->font->size);
 
 	m_fontTitle = QFont(m_pStyle->font->name.c_str());
-	m_fontTitle.setBold     (pChartTheme->titleStyle & RDOStyleFont::BOLD      ? true : false);
-	m_fontTitle.setItalic   (pChartTheme->titleStyle & RDOStyleFont::ITALIC    ? true : false);
-	m_fontTitle.setUnderline(pChartTheme->titleStyle & RDOStyleFont::UNDERLINE ? true : false);
+	m_fontTitle.setBold     (pChartTheme->titleStyle & StyleFont::BOLD      ? true : false);
+	m_fontTitle.setItalic   (pChartTheme->titleStyle & StyleFont::ITALIC    ? true : false);
+	m_fontTitle.setUnderline(pChartTheme->titleStyle & StyleFont::UNDERLINE ? true : false);
 	m_fontTitle.setPointSize(m_pStyle->pFontsTicks->titleFontSize);
 
 	m_fontLegend = QFont(m_pStyle->font->name.c_str());
-	m_fontLegend.setBold     (pChartTheme->legendStyle & RDOStyleFont::BOLD      ? true : false);
-	m_fontLegend.setItalic   (pChartTheme->legendStyle & RDOStyleFont::ITALIC    ? true : false);
-	m_fontLegend.setUnderline(pChartTheme->legendStyle & RDOStyleFont::UNDERLINE ? true : false);
+	m_fontLegend.setBold     (pChartTheme->legendStyle & StyleFont::BOLD      ? true : false);
+	m_fontLegend.setItalic   (pChartTheme->legendStyle & StyleFont::ITALIC    ? true : false);
+	m_fontLegend.setUnderline(pChartTheme->legendStyle & StyleFont::UNDERLINE ? true : false);
 	m_fontLegend.setPointSize(m_pStyle->pFontsTicks->legendFontSize);
 }
 

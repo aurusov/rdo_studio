@@ -16,7 +16,7 @@
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::editor;
-using namespace rdoStyle;
+using namespace rdo::gui::style;
 
 // --------------------------------------------------------------------------------
 // -------------------- FindTheme
@@ -24,7 +24,7 @@ using namespace rdoStyle;
 FindTheme::FindTheme(): LogTheme()
 {
 	keywordColor = QColor( 0x00, 0x00, 0x00 );
-	keywordStyle = RDOStyleFont::BOLD;
+	keywordStyle = StyleFont::BOLD;
 }
 
 FindTheme::~FindTheme()
@@ -81,8 +81,8 @@ rbool FindTheme::styleUsing( const int styleType ) const
 rbool FindTheme::styleBold( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_FIND_DEFAULT: return defaultStyle & RDOStyleFont::BOLD ? true : false;
-		case SCE_FIND_KEYWORD: return keywordStyle & RDOStyleFont::BOLD ? true : false;
+		case SCE_FIND_DEFAULT: return defaultStyle & StyleFont::BOLD ? true : false;
+		case SCE_FIND_KEYWORD: return keywordStyle & StyleFont::BOLD ? true : false;
 	}
 	return false;
 }
@@ -90,8 +90,8 @@ rbool FindTheme::styleBold( const int styleType ) const
 rbool FindTheme::styleItalic( const int styleType ) const
 {
 	switch ( styleType ) {
-		case SCE_FIND_DEFAULT: return defaultStyle & RDOStyleFont::ITALIC ? true : false;
-		case SCE_FIND_KEYWORD: return keywordStyle & RDOStyleFont::ITALIC ? true : false;
+		case SCE_FIND_DEFAULT: return defaultStyle & StyleFont::ITALIC ? true : false;
+		case SCE_FIND_KEYWORD: return keywordStyle & StyleFont::ITALIC ? true : false;
 	}
 	return false;
 }
@@ -117,7 +117,7 @@ FindTheme FindTheme::getClassicTheme()
 	*static_cast<LogTheme*>(&theme) = LogTheme::getClassicTheme();
 
 	theme.keywordColor = QColor( 0xFF, 0xFF, 0xFF );
-	theme.keywordStyle = RDOStyleFont::NONE;
+	theme.keywordStyle = StyleFont::NONE;
 
 	return theme;
 }
@@ -128,7 +128,7 @@ FindTheme FindTheme::getTwilightTheme()
 	*static_cast<LogTheme*>(&theme) = LogTheme::getTwilightTheme();
 
 	theme.keywordColor = QColor( 0x00, 0xFF, 0xFF );
-	theme.keywordStyle = RDOStyleFont::BOLD;
+	theme.keywordStyle = StyleFont::BOLD;
 
 	return theme;
 }
@@ -139,7 +139,7 @@ FindTheme FindTheme::getOceanTheme()
 	*static_cast<LogTheme*>(&theme) = LogTheme::getOceanTheme();
 
 	theme.keywordColor = QColor( 0x00, 0x00, 0x00 );
-	theme.keywordStyle = RDOStyleFont::BOLD;
+	theme.keywordStyle = StyleFont::BOLD;
 
 	return theme;
 }
@@ -157,7 +157,7 @@ QSettings& operator<< (QSettings& settings, const FindTheme& theme)
 QSettings& operator>> (QSettings& settings, FindTheme& theme)
 {
 	theme.keywordColor = QColor(settings.value("keyword_color", theme.keywordColor.name()).toString());
-	theme.keywordStyle = static_cast<RDOStyleFont::style>(settings.value("keyword_style", theme.keywordStyle).toInt());
+	theme.keywordStyle = static_cast<StyleFont::style>(settings.value("keyword_style", theme.keywordStyle).toInt());
 
 	return settings;
 }

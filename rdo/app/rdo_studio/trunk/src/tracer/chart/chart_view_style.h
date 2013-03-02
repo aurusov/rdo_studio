@@ -20,7 +20,7 @@ namespace rdo { namespace gui { namespace tracer {
 // --------------------------------------------------------------------------------
 // -------------------- ChartViewTheme
 // --------------------------------------------------------------------------------
-class ChartViewTheme: public rdoStyle::RDOStyleTheme
+class ChartViewTheme: public style::StyleTheme
 {
 public:
 	ChartViewTheme();
@@ -39,8 +39,8 @@ public:
 	QColor chartBgColor;
 	QColor timeBgColor;
 
-	rdoStyle::RDOStyleFont::style titleStyle;
-	rdoStyle::RDOStyleFont::style legendStyle;
+	style::StyleFont::style titleStyle;
+	style::StyleFont::style legendStyle;
 
 	static ChartViewTheme getDefaultTheme();
 };
@@ -75,7 +75,7 @@ QSettings& operator>> (QSettings& settings,       ChartViewFontsTicks& fonts_tic
 // --------------------------------------------------------------------------------
 // -------------------- ChartViewStyle
 // --------------------------------------------------------------------------------
-class ChartViewStyle: public rdoStyle::RDOStyleWithTheme
+class ChartViewStyle: public style::StyleWithTheme
 {
 public:
 	ChartViewStyle();

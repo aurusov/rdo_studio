@@ -19,7 +19,8 @@
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/style.h"
 // --------------------------------------------------------------------------------
-using namespace rdoStyle;
+
+using namespace rdo::gui::style;
 
 FrameOptionsView::FrameOptionsView(PTR(QWidget) pParent)
 	: QWidget(pParent)
@@ -36,9 +37,9 @@ void FrameOptionsView::setStyle(PTR(RDOStudioFrameStyle) style)
 
 	QFont font(QString::fromStdString(m_style->font->name), m_style->font->size);
 
-	font.setWeight((m_style->theme->defaultStyle & RDOStyleFont::BOLD) != 0 ? QFont::Bold : QFont::Normal);
-	font.setItalic((m_style->theme->defaultStyle & RDOStyleFont::ITALIC) != 0 ? true : false);
-	font.setUnderline((m_style->theme->defaultStyle & RDOStyleFont::UNDERLINE) != 0 ? true : false);
+	font.setWeight((m_style->theme->defaultStyle & StyleFont::BOLD) != 0 ? QFont::Bold : QFont::Normal);
+	font.setItalic((m_style->theme->defaultStyle & StyleFont::ITALIC) != 0 ? true : false);
+	font.setUnderline((m_style->theme->defaultStyle & StyleFont::UNDERLINE) != 0 ? true : false);
 
 	PTR(QPalette) fontPalette = new QPalette();
 	fontPalette->setColor(QPalette::WindowText, Qt::yellow);

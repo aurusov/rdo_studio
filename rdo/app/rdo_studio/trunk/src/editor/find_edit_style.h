@@ -35,7 +35,7 @@ public:
 
 	QColor keywordColor;
 
-	rdoStyle::RDOStyleFont::style keywordStyle;
+	style::StyleFont::style keywordStyle;
 
 	virtual rbool styleDefault( const int styleType ) const;
 	virtual rbool styleUsing( const int styleType ) const;

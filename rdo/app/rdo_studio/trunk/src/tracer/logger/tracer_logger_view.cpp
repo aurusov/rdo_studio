@@ -26,7 +26,7 @@
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::tracer;
-using namespace rdoStyle;
+using namespace rdo::gui::style;
 
 // --------------------------------------------------------------------------------
 // -------------------- LogCtrlFindInList
@@ -713,9 +713,9 @@ void LogView::setFont()
 	}
 
 	m_font = QFont(m_logStyle->font->name.c_str());
-	m_font.setBold     (m_logStyle->theme->style & rdoStyle::RDOStyleFont::BOLD      ? true : false);
-	m_font.setItalic   (m_logStyle->theme->style & rdoStyle::RDOStyleFont::ITALIC    ? true : false);
-	m_font.setUnderline(m_logStyle->theme->style & rdoStyle::RDOStyleFont::UNDERLINE ? true : false);
+	m_font.setBold     (m_logStyle->theme->style & StyleFont::BOLD      ? true : false);
+	m_font.setItalic   (m_logStyle->theme->style & StyleFont::ITALIC    ? true : false);
+	m_font.setUnderline(m_logStyle->theme->style & StyleFont::UNDERLINE ? true : false);
 	m_font.setPointSize(m_logStyle->font->size);
 
 	QFontMetrics fontMetrics(m_font);

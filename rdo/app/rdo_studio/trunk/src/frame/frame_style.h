@@ -18,7 +18,7 @@
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameTheme
 // --------------------------------------------------------------------------------
-class RDOStudioFrameTheme: public rdoStyle::RDOStyleTheme
+class RDOStudioFrameTheme: public rdo::gui::style::StyleTheme
 {
 public:
 	RDOStudioFrameTheme();
@@ -34,7 +34,7 @@ public:
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameStyle
 // --------------------------------------------------------------------------------
-class RDOStudioFrameStyle: public rdoStyle::RDOStyleWithTheme
+class RDOStudioFrameStyle: public rdo::gui::style::StyleWithTheme
 {
 public:
 	RDOStudioFrameStyle();

@@ -56,7 +56,7 @@ public:
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
 
-	rdoStyle::RDOStyleFont::style style;
+	style::StyleFont::style style;
 
 	LogColorPair defaultColor;
 	LogColorPair es;
@@ -119,7 +119,7 @@ QSettings& operator>> (QSettings& settings,       LogBorders& border);
 // --------------------------------------------------------------------------------
 //class RDOStudioOptionsStylesAndColors;
 
-class LogStyle: public rdoStyle::RDOStyle
+class LogStyle: public style::Style
 {
 //friend class RDOStudioOptionsStylesAndColors;
 

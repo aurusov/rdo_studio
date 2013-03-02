@@ -46,15 +46,15 @@ public:
 	QColor stringColor;
 	QColor operatorColor;
 
-	rdoStyle::RDOStyleFont::style identifierStyle;
-	rdoStyle::RDOStyleFont::style keywordStyle;
-	rdoStyle::RDOStyleFont::style functionsStyle;
-	rdoStyle::RDOStyleFont::style traceStyle;
-	rdoStyle::RDOStyleFont::style colorStyle;
-	rdoStyle::RDOStyleFont::style commentStyle;
-	rdoStyle::RDOStyleFont::style numberStyle;
-	rdoStyle::RDOStyleFont::style stringStyle;
-	rdoStyle::RDOStyleFont::style operatorStyle;
+	style::StyleFont::style identifierStyle;
+	style::StyleFont::style keywordStyle;
+	style::StyleFont::style functionsStyle;
+	style::StyleFont::style traceStyle;
+	style::StyleFont::style colorStyle;
+	style::StyleFont::style commentStyle;
+	style::StyleFont::style numberStyle;
+	style::StyleFont::style stringStyle;
+	style::StyleFont::style operatorStyle;
 
 	virtual rbool styleDefault( const int styleType ) const;
 	virtual rbool styleUsing( const int styleType ) const;

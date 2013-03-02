@@ -28,7 +28,7 @@
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::editor;
-using namespace rdoStyle;
+using namespace rdo::gui::style;
 
 // --------------------------------------------------------------------------------
 // -------------------- Edit::Group
@@ -206,12 +206,12 @@ void Edit::setEditorStyle(EditStyle* pStyle)
 
 	// ----------
 	// Styles
-	sendEditor(SCI_STYLESETBOLD     , STYLE_DEFAULT, theme->defaultStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , STYLE_DEFAULT, theme->defaultStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, STYLE_DEFAULT, theme->defaultStyle & RDOStyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_TEXT_DEFAULT, theme->defaultStyle & RDOStyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_TEXT_DEFAULT, theme->defaultStyle & RDOStyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_TEXT_DEFAULT, theme->defaultStyle & RDOStyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , STYLE_DEFAULT, theme->defaultStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , STYLE_DEFAULT, theme->defaultStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, STYLE_DEFAULT, theme->defaultStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_TEXT_DEFAULT, theme->defaultStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_TEXT_DEFAULT, theme->defaultStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_TEXT_DEFAULT, theme->defaultStyle & StyleFont::UNDERLINE);
 
 	// ----------
 	// Font Name

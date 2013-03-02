@@ -16,7 +16,7 @@
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::tracer;
-using namespace rdoStyle;
+using namespace rdo::gui::style;
 
 // --------------------------------------------------------------------------------
 // -------------------- LogColorPair
@@ -69,7 +69,7 @@ void LogColorPair::save(QSettings& settings, QString regParam) const
 // --------------------------------------------------------------------------------
 LogTheme::LogTheme()
 {
-	style = RDOStyleFont::NONE;
+	style = StyleFont::NONE;
 
 	es.foregroundColor = QColor( 0x8B, 0x00, 0x00 );
 	es.backgroundColor = QColor( 0xFF, 0xC0, 0xCB );
@@ -272,7 +272,7 @@ QSettings& operator<< (QSettings& settings, const LogTheme& theme)
 
 QSettings& operator>> (QSettings& settings, LogTheme& theme)
 {
-	theme.style = static_cast<RDOStyleFont::style>(settings.value("style", theme.style).toInt());
+	theme.style = static_cast<StyleFont::style>(settings.value("style", theme.style).toInt());
 	theme.defaultColor.load( settings, "defaultColor" );
 	theme.es.load ( settings, "es"  );
 	theme.eb.load ( settings, "eb"  );
@@ -371,7 +371,7 @@ QSettings& operator>> (QSettings& settings, LogBorders& border)
 // -------------------- LogStyle
 // --------------------------------------------------------------------------------
 LogStyle::LogStyle()
-	: RDOStyle()
+	: Style()
 	, theme   (NULL)
 	, borders (NULL)
 {
@@ -472,7 +472,7 @@ rbool LogStyle::getDefaultColor(LogColorPair* &colors) const
 
 LogStyle& LogStyle::operator =( const LogStyle& style )
 {
-	RDOStyle::operator=( style );
+	Style::operator=( style );
 	if ( theme   && style.theme )   *theme   = *style.theme;
 	if ( borders && style.borders ) *borders = *style.borders;
 
@@ -481,7 +481,7 @@ LogStyle& LogStyle::operator =( const LogStyle& style )
 
 rbool LogStyle::operator ==( const LogStyle& style ) const
 {
-	rbool flag = RDOStyle::operator==( style );
+	rbool flag = Style::operator==( style );
 	if ( theme   && style.theme   && flag ) flag &= *theme   == *style.theme;
 	if ( borders && style.borders && flag ) flag &= *borders == *style.borders;
 	return flag;
@@ -494,13 +494,13 @@ rbool LogStyle::operator !=( const LogStyle& style ) const
 
 void LogStyle::init( CREF(QString) _groupName )
 {
-	RDOStyle::init( _groupName );
-	*font = rdoStyle::RDOStyleFont::getTracerLogFont();
+	Style::init( _groupName );
+	*font = StyleFont::getTracerLogFont();
 }
 
 rbool LogStyle::load()
 {
-	if (RDOStyle::load()) {
+	if (Style::load()) {
 		QSettings settings;
 		settings.beginGroup(groupName + "theme");
 		if (theme)   theme->load(settings);
@@ -515,7 +515,7 @@ rbool LogStyle::load()
 
 rbool LogStyle::save() const
 {
-	if (RDOStyle::save()) {
+	if (Style::save()) {
 		QSettings settings;
 		settings.beginGroup(groupName + "theme");
 		if (theme)   theme->save(settings);
