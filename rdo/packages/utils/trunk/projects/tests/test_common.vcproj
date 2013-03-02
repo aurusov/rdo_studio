@@ -167,20 +167,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name=".resource"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
-				RelativePath="..\..\test\common\resource.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\test\common\resource_test.rc"
-				>
-			</File>
-		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

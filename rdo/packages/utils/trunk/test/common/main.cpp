@@ -19,28 +19,12 @@
 #include "utils/rdocommon.h"
 #include "utils/rdofile.h"
 #include "utils/rdotime.h"
-#include "utils/test/common/resource.h"
 // --------------------------------------------------------------------------------
 
 const tstring s_testFileName(_T("test_file"));
-const tstring s_resourceStr1(_T("test_101"));
-const tstring s_resourceStr2(_T("test_102 22"));
-const tstring s_resourceStr3(_T("test_103 test_101 33 test_102 22"));
 const ruint64 s_createTestLocalTime = 129557633912040000;
 
 BOOST_AUTO_TEST_SUITE(RDOCommon_Test)
-
-#ifdef OST_WINDOWS
-BOOST_AUTO_TEST_CASE(RDOCommon_ResourceFormat)
-{
-	tstring str1 = rdo::format(IDS_STRING101);
-	BOOST_CHECK(str1 == s_resourceStr1);
-	tstring str2 = rdo::format(IDS_STRING102, 22);
-	BOOST_CHECK(str2 == s_resourceStr2);
-	tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
-	BOOST_CHECK(str3 == s_resourceStr3);
-}
-#endif // OST_WINDOWS
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileCreate)
 {
