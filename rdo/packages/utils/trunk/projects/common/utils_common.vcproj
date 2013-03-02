@@ -334,6 +334,14 @@
 				RelativePath="..\..\rdotypes.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\warning_disable.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\warning_enable.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".debug"
