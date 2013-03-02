@@ -389,7 +389,7 @@ void Serie::drawSerie(ChartView* const pView,
 
 void Serie::drawMarker(QPainter& painter, const int x, const int y, Marker marker, const int markerSize) const
 {
-	float halfMarkerSize = float(markerSize) / 2.0;
+	float halfMarkerSize = float(markerSize) / 2.0f;
 	QRectF rect(x - halfMarkerSize, y - halfMarkerSize, markerSize, markerSize);
 
 	switch (marker)

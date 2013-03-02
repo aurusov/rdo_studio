@@ -39,6 +39,12 @@ public:
 	LogCtrlFindInList(REF(rsint) checkCounter, CREF(QString) strToFind, rbool matchCase, rbool matchWholeWord);
 	rbool operator() (CREF(QString) nextStr);
 
+	LogCtrlFindInList& operator= (CREF(LogCtrlFindInList))
+	{
+		NEVER_REACH_HERE;
+		return *this;
+	}
+
 private:
 	boost::optional<boost::regex> m_expression;
 	REF(rsint)                    m_checkCounter;
@@ -707,9 +713,9 @@ void LogView::setFont()
 	}
 
 	m_font = QFont(m_logStyle->font->name.c_str());
-	m_font.setBold     (m_logStyle->theme->style & rdoStyle::RDOStyleFont::BOLD     );
-	m_font.setItalic   (m_logStyle->theme->style & rdoStyle::RDOStyleFont::ITALIC   );
-	m_font.setUnderline(m_logStyle->theme->style & rdoStyle::RDOStyleFont::UNDERLINE);
+	m_font.setBold     (m_logStyle->theme->style & rdoStyle::RDOStyleFont::BOLD      ? true : false);
+	m_font.setItalic   (m_logStyle->theme->style & rdoStyle::RDOStyleFont::ITALIC    ? true : false);
+	m_font.setUnderline(m_logStyle->theme->style & rdoStyle::RDOStyleFont::UNDERLINE ? true : false);
 	m_font.setPointSize(m_logStyle->font->size);
 
 	QFontMetrics fontMetrics(m_font);

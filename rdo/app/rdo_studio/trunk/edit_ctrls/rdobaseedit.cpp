@@ -1314,7 +1314,7 @@ void RDOBaseEdit::onSearchBookmarkNextPrev(
 		Group::List::const_iterator it = std::find(m_pGroup->begin(), m_pGroup->end(), this);
 		ASSERT(it != m_pGroup->end());
 
-		while (true)
+		for (;;)
 		{
 			it = nextPrevGroup(it);
 

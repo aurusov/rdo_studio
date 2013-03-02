@@ -513,8 +513,8 @@ void RDOStudioMainFrame::addSubWindow(QWidget* pWidget)
 
 	static const float sizeScale = 0.9f;
 	QSize size(mdiArea->size());
-	size.setWidth (float(size.width ()) * sizeScale);
-	size.setHeight(float(size.height()) * sizeScale);
+	size.setWidth (int(float(size.width ()) * sizeScale));
+	size.setHeight(int(float(size.height()) * sizeScale));
 	pFrame->move  (frameList.size() * 4, frameList.size() * 4);
 	pFrame->resize(size);
 
@@ -695,7 +695,7 @@ void RDOStudioMainFrame::updateInsertMenu(rbool enabled)
 	}
 }
 
-void RDOStudioMainFrame::onSubWindowActivated(QMdiSubWindow * window)
+void RDOStudioMainFrame::onSubWindowActivated(QMdiSubWindow*)
 {
 	onUpdateActions(!mdiArea->subWindowList().empty());
 }
