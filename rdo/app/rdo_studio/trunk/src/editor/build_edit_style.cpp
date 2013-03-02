@@ -19,7 +19,7 @@ using namespace rdo::gui::editor;
 // --------------------------------------------------------------------------------
 // -------------------- BuildTheme
 // --------------------------------------------------------------------------------
-BuildTheme::BuildTheme(): LogEditTheme()
+BuildTheme::BuildTheme(): LogTheme()
 {
 	warning = true;
 }
@@ -30,7 +30,7 @@ BuildTheme::~BuildTheme()
 
 BuildTheme& BuildTheme::operator =( const BuildTheme& theme )
 {
-	LogEditTheme::operator=( theme );
+	LogTheme::operator=( theme );
 	warning = theme.warning;
 
 	return *this;
@@ -38,7 +38,7 @@ BuildTheme& BuildTheme::operator =( const BuildTheme& theme )
 
 rbool BuildTheme::operator ==( const BuildTheme& theme ) const
 {
-	rbool flag = LogEditTheme::operator==( theme );
+	rbool flag = LogTheme::operator==( theme );
 	if ( flag )	flag &= warning == theme.warning ? true : false;
 	return flag;
 }
@@ -50,13 +50,13 @@ rbool BuildTheme::operator !=( const BuildTheme& theme ) const
 
 void BuildTheme::load(QSettings& settings)
 {
-	LogEditTheme::load(settings);
+	LogTheme::load(settings);
 	settings >> *this;
 }
 
 void BuildTheme::save(QSettings& settings) const
 {
-	LogEditTheme::save(settings);
+	LogTheme::save(settings);
 	settings << *this;
 }
 
@@ -69,7 +69,7 @@ BuildTheme BuildTheme::getDefaultTheme()
 BuildTheme BuildTheme::getClassicTheme()
 {
 	BuildTheme theme;
-	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getClassicTheme();
+	*static_cast<LogTheme*>(&theme) = LogTheme::getClassicTheme();
 
 	return theme;
 }
@@ -77,7 +77,7 @@ BuildTheme BuildTheme::getClassicTheme()
 BuildTheme BuildTheme::getTwilightTheme()
 {
 	BuildTheme theme;
-	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getTwilightTheme();
+	*static_cast<LogTheme*>(&theme) = LogTheme::getTwilightTheme();
 
 	return theme;
 }
@@ -85,7 +85,7 @@ BuildTheme BuildTheme::getTwilightTheme()
 BuildTheme BuildTheme::getOceanTheme()
 {
 	BuildTheme theme;
-	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getOceanTheme();
+	*static_cast<LogTheme*>(&theme) = LogTheme::getOceanTheme();
 
 	return theme;
 }
@@ -111,7 +111,7 @@ QSettings& operator>> (QSettings& settings, BuildTheme& theme)
 // --------------------------------------------------------------------------------
 // -------------------- BuildStyle
 // --------------------------------------------------------------------------------
-BuildStyle::BuildStyle(): LogEditStyle()
+BuildStyle::BuildStyle(): LogStyle()
 {
 	theme = new BuildTheme();
 }
@@ -122,7 +122,7 @@ BuildStyle::~BuildStyle()
 
 BuildStyle& BuildStyle::operator =( const BuildStyle& style )
 {
-	LogEditStyle::operator=( style );
+	LogStyle::operator=( style );
 	if ( theme && style.theme ) *static_cast<BuildTheme*>(theme) = *static_cast<BuildTheme*>(style.theme);
 
 	return *this;
@@ -130,7 +130,7 @@ BuildStyle& BuildStyle::operator =( const BuildStyle& style )
 
 rbool BuildStyle::operator ==( const BuildStyle& style ) const
 {
-	rbool flag = LogEditStyle::operator==( style );
+	rbool flag = LogStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<BuildTheme*>(theme) == *static_cast<BuildTheme*>(style.theme);
 	return flag;
 }

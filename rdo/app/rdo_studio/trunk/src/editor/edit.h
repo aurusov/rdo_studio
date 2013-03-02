@@ -70,8 +70,8 @@ public:
 		List m_list;
 	};
 
-	const EditBaseStyle* getEditorStyle() const;
-	void setEditorStyle(EditBaseStyle* pStyle);
+	const EditStyle* getEditorStyle() const;
+	void setEditorStyle(EditStyle* pStyle);
 
 	void setGroup(PTR(Group) pGroup);
 
@@ -128,7 +128,7 @@ public:
 	tstring saveAsRTF(int start, int end) const;
 
 protected:
-	EditBaseStyle* m_pStyle;
+	EditStyle* m_pStyle;
 
 	long sendEditor      (ruint msg, unsigned long wParam = 0, long lParam = 0) const { return super::send (msg, wParam, lParam); }
 	long sendEditorString(ruint msg, unsigned long wParam, const char* str)     const { return super::sends(msg, wParam, str);    }

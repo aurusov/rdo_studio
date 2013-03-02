@@ -21,15 +21,14 @@
 
 using namespace rdo::simulation::report;
 using namespace rdo::gui::editor;
-using namespace rdo::gui::tracer;
 using namespace rdoStyle;
 
 rbool ViewPreferences::null_wordwrap      = false;
 rbool ViewPreferences::null_horzscrollbar = true;
 rbool ViewPreferences::null_warning       = true;
 rbool ViewPreferences::null_commentfold   = false;
-EditBaseTheme::Bookmark ViewPreferences::null_bookmarkstyle = EditBaseTheme::B_NONE;
-RDOFoldStyle            ViewPreferences::null_foldstyle     = RDOFOLDS_NONE;
+EditTheme::Bookmark ViewPreferences::null_bookmarkstyle = EditTheme::B_NONE;
+RDOFoldStyle        ViewPreferences::null_foldstyle     = RDOFOLDS_NONE;
 QColor ViewPreferences::null_fg_color = QColor(0x00, 0x00, 0x00);
 QColor ViewPreferences::null_bg_color = QColor(0xFF, 0xFF, 0xFF);
 
@@ -117,11 +116,11 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	switchPreviewComboBox->addItem("Chart",   IT_CHART);
 	switchPreviewComboBox->addItem("Frame",   IT_FRAME);
 
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Нет"),           EditBaseTheme::B_NONE);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Круг"),          EditBaseTheme::B_CIRCLE);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Прямоугольник"), EditBaseTheme::B_RECT);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Овал"),          EditBaseTheme::B_ROUNDRECT);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Стрелка"),       EditBaseTheme::B_ARROW);
+	bookmarkComboBox->addItem(QString::fromLocal8Bit("Нет"),           EditTheme::B_NONE);
+	bookmarkComboBox->addItem(QString::fromLocal8Bit("Круг"),          EditTheme::B_CIRCLE);
+	bookmarkComboBox->addItem(QString::fromLocal8Bit("Прямоугольник"), EditTheme::B_RECT);
+	bookmarkComboBox->addItem(QString::fromLocal8Bit("Овал"),          EditTheme::B_ROUNDRECT);
+	bookmarkComboBox->addItem(QString::fromLocal8Bit("Стрелка"),       EditTheme::B_ARROW);
 
 	foldComboBox->addItem(QString::fromLocal8Bit("Нет"),             RDOFOLDS_NONE);
 	foldComboBox->addItem(QString::fromLocal8Bit("Плюс"),            RDOFOLDS_PLUS);
@@ -543,7 +542,7 @@ void ViewPreferences::onWordWrap(int state)
 void ViewPreferences::onBookmark(int index)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->bookmarkstyle = static_cast<EditBaseTheme::Bookmark>(index);
+	item->bookmarkstyle = static_cast<EditTheme::Bookmark>(index);
 	updatePreview();
 }
 
@@ -930,7 +929,7 @@ void ViewPreferences::createPreview()
 	preview_debug->appendLine(QString::fromLocal8Bit("Получение структуры модели...ok\nМодель запущена"));
 	previewStackedWidget->addWidget(preview_debug);
 
-	preview_trace = new LogMainWnd(previewStackedWidget->currentWidget());
+	preview_trace = new rdo::gui::tracer::LogMainWnd(previewStackedWidget->currentWidget());
 	preview_trace->view().setStyle(&g_pApp->getStyle()->style_trace);
 	preview_trace->view().setFocusOnly(true);
 	preview_trace->view().setText(rdo::format("Простая строка\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19"));
@@ -970,7 +969,7 @@ void ViewPreferences::createPreview()
 	//preview_times.push_back(Time(6, 3));
 	//preview_times.push_back(Time(8, 3));
 	//preview_times.push_back(Time(10, 3));
-	preview_serie = rdo::Factory<Serie>::create();
+	preview_serie = rdo::Factory<rdo::gui::tracer::Serie>::create();
 	//preview_serie.setTitle(rdo::format("значение 1"));
 	//preview_serie.addValue(new Value(&preview_times.at(0), 2, 0));
 	//preview_serie.addValue(new Value(&preview_times.at(1), 1, 1));
@@ -1024,7 +1023,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, build_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
-	EditBaseTheme* debug_theme = static_cast<EditBaseTheme*>(style_debug.theme);
+	EditTheme* debug_theme = static_cast<EditTheme*>(style_debug.theme);
 	item = new StyleItem(IT_DEBUG, style_debug.font->size, style_debug.font->name, style_debug.window->wordWrap, style_debug.window->showHorzScrollBar);
 	item->properties.push_back(new StyleProperty(item, IT_DEBUG, debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor));
@@ -1033,7 +1032,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, debug_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
-	LogTheme* trace_theme = style_trace.theme;
+	rdo::gui::tracer::LogTheme* trace_theme = style_trace.theme;
 	item = new StyleItem(IT_LOG, style_trace.font->size, style_trace.font->name);
 	item->properties.push_back(new StyleProperty(item, IT_LOG, trace_theme->style, trace_theme->defaultColor.foregroundColor, trace_theme->defaultColor.backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_LOG_ES, trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor));
@@ -1088,7 +1087,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, find_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
-	ChartViewTheme* chart_theme = static_cast<ChartViewTheme*>(style_chart.theme);
+	rdo::gui::tracer::ChartViewTheme* chart_theme = static_cast<rdo::gui::tracer::ChartViewTheme*>(style_chart.theme);
 	item = new StyleItem(IT_CHART, style_chart.font->size, style_chart.font->name);
 	item->properties.push_back(new StyleProperty(item, IT_CHART, chart_theme->defaultStyle, chart_theme->defaultColor, chart_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_CHART_AXIS, chart_theme->defaultStyle, chart_theme->axisFgColor, null_bg_color, null_fg_color, chart_theme->backgroundColor));

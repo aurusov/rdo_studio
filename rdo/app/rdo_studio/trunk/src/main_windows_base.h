@@ -35,7 +35,7 @@ class MainWindowBase
 public:
 	rdo::gui::editor::ModelStyle      style_editor;
 	rdo::gui::editor::BuildStyle      style_build;
-	rdo::gui::editor::EditBaseStyle   style_debug;
+	rdo::gui::editor::EditStyle       style_debug;
 	rdo::gui::tracer::LogStyle        style_trace;
 	rdo::gui::editor::ResultsStyle    style_results;
 	rdo::gui::editor::FindStyle       style_find;

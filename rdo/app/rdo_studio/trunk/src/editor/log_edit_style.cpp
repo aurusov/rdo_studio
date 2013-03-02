@@ -17,81 +17,80 @@
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
-// -------------------- LogEditTheme
+// -------------------- LogTheme
 // --------------------------------------------------------------------------------
-LogEditTheme::LogEditTheme(): EditBaseTheme()
+LogTheme::LogTheme(): EditTheme()
 {
 	selectLineBgColor = QColor( 0x00, 0xC0, 0xEF );
 }
 
-LogEditTheme::~LogEditTheme()
-{
-}
+LogTheme::~LogTheme()
+{}
 
-LogEditTheme& LogEditTheme::operator =( const LogEditTheme& theme )
+LogTheme& LogTheme::operator =( const LogTheme& theme )
 {
-	EditBaseTheme::operator=( theme );
+	EditTheme::operator=( theme );
 	selectLineBgColor = theme.selectLineBgColor;
 
 	return *this;
 }
 
-rbool LogEditTheme::operator ==( const LogEditTheme& theme ) const
+rbool LogTheme::operator ==( const LogTheme& theme ) const
 {
-	rbool flag = EditBaseTheme::operator==( theme );
+	rbool flag = EditTheme::operator==( theme );
 	if ( flag )	flag &= selectLineBgColor == theme.selectLineBgColor ? true : false;
 	return flag;
 }
 
-rbool LogEditTheme::operator !=( const LogEditTheme& theme ) const
+rbool LogTheme::operator !=( const LogTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void LogEditTheme::load(QSettings& settings)
+void LogTheme::load(QSettings& settings)
 {
-	EditBaseTheme::load(settings);
+	EditTheme::load(settings);
 
 	settings >> *this;
 }
 
-void LogEditTheme::save(QSettings& settings) const
+void LogTheme::save(QSettings& settings) const
 {
-	EditBaseTheme::save(settings);
+	EditTheme::save(settings);
 
 	settings << *this;
 }
 
-LogEditTheme LogEditTheme::getDefaultTheme()
+LogTheme LogTheme::getDefaultTheme()
 {
-	LogEditTheme theme;
+	LogTheme theme;
 	return theme;
 }
 
-LogEditTheme LogEditTheme::getClassicTheme()
+LogTheme LogTheme::getClassicTheme()
 {
-	LogEditTheme theme;
-	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getClassicTheme();
+	LogTheme theme;
+	*static_cast<EditTheme*>(&theme) = EditTheme::getClassicTheme();
 
 	theme.selectLineBgColor = QColor( 0x00, 0xC0, 0xEF );
 
 	return theme;
 }
 
-LogEditTheme LogEditTheme::getTwilightTheme()
+LogTheme LogTheme::getTwilightTheme()
 {
-	LogEditTheme theme;
-	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getTwilightTheme();
+	LogTheme theme;
+	*static_cast<EditTheme*>(&theme) = EditTheme::getTwilightTheme();
 
 	theme.selectLineBgColor = QColor( 0x00, 0x96, 0xBB );
 
 	return theme;
 }
 
-LogEditTheme LogEditTheme::getOceanTheme()
+LogTheme LogTheme::getOceanTheme()
 {
-	LogEditTheme theme;
-	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getOceanTheme();
+	LogTheme theme;
+	*static_cast<EditTheme*>(&theme) = EditTheme::getOceanTheme();
 
 	theme.selectLineBgColor = QColor( 0xCA, 0xF4, 0xFF );
 
@@ -100,14 +99,14 @@ LogEditTheme LogEditTheme::getOceanTheme()
 
 namespace rdo { namespace gui { namespace editor {
 
-QSettings& operator<< (QSettings& settings, const LogEditTheme& theme)
+QSettings& operator<< (QSettings& settings, const LogTheme& theme)
 {
 	settings.setValue("select_line_bg_color", theme.selectLineBgColor.name());
 
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, LogEditTheme& theme)
+QSettings& operator>> (QSettings& settings, LogTheme& theme)
 {
 	theme.selectLineBgColor = QColor(settings.value("select_line_bg_color", theme.selectLineBgColor.name()).toString());
 
@@ -117,33 +116,32 @@ QSettings& operator>> (QSettings& settings, LogEditTheme& theme)
 }}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
-// -------------------- LogEditStyle
+// -------------------- LogStyle
 // --------------------------------------------------------------------------------
-LogEditStyle::LogEditStyle(): EditBaseStyle()
+LogStyle::LogStyle(): EditStyle()
 {
-	theme = new LogEditTheme();
+	theme = new LogTheme();
 }
 
-LogEditStyle::~LogEditStyle()
-{
-}
+LogStyle::~LogStyle()
+{}
 
-LogEditStyle& LogEditStyle::operator =( const LogEditStyle& style )
+LogStyle& LogStyle::operator =( const LogStyle& style )
 {
-	EditBaseStyle::operator=( style );
-	if ( theme && style.theme ) *static_cast<LogEditTheme*>(theme) = *static_cast<LogEditTheme*>(style.theme);
+	EditStyle::operator=( style );
+	if ( theme && style.theme ) *static_cast<LogTheme*>(theme) = *static_cast<LogTheme*>(style.theme);
 
 	return *this;
 }
 
-rbool LogEditStyle::operator ==( const LogEditStyle& style ) const
+rbool LogStyle::operator ==( const LogStyle& style ) const
 {
-	rbool flag = EditBaseStyle::operator==( style );
-	if ( theme && style.theme && flag ) flag &= *static_cast<LogEditTheme*>(theme) == *static_cast<LogEditTheme*>(style.theme);
+	rbool flag = EditStyle::operator==( style );
+	if ( theme && style.theme && flag ) flag &= *static_cast<LogTheme*>(theme) == *static_cast<LogTheme*>(style.theme);
 	return flag;
 }
 
-rbool LogEditStyle::operator !=( const LogEditStyle& style ) const
+rbool LogStyle::operator !=( const LogStyle& style ) const
 {
 	return !(*this == style);
 }

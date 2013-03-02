@@ -18,44 +18,44 @@
 namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
-// -------------------- LogEditTheme
+// -------------------- LogTheme
 // --------------------------------------------------------------------------------
-class LogEditTheme: public EditBaseTheme
+class LogTheme: public EditTheme
 {
 public:
-	LogEditTheme();
-	virtual ~LogEditTheme();
+	LogTheme();
+	virtual ~LogTheme();
 
-	LogEditTheme& operator =( const LogEditTheme& theme );
-	rbool operator ==( const LogEditTheme& theme ) const;
-	rbool operator !=( const LogEditTheme& theme ) const;
+	LogTheme& operator =( const LogTheme& theme );
+	rbool operator ==( const LogTheme& theme ) const;
+	rbool operator !=( const LogTheme& theme ) const;
 
 	virtual void load(QSettings& settings);
 	virtual void save(QSettings& settings) const;
 
 	QColor selectLineBgColor;
 
-	static LogEditTheme getDefaultTheme();
-	static LogEditTheme getClassicTheme();
-	static LogEditTheme getTwilightTheme();
-	static LogEditTheme getOceanTheme();
+	static LogTheme getDefaultTheme();
+	static LogTheme getClassicTheme();
+	static LogTheme getTwilightTheme();
+	static LogTheme getOceanTheme();
 };
 
-QSettings& operator<< (QSettings& settings, const LogEditTheme& theme);
-QSettings& operator>> (QSettings& settings,       LogEditTheme& theme);
+QSettings& operator<< (QSettings& settings, const LogTheme& theme);
+QSettings& operator>> (QSettings& settings,       LogTheme& theme);
 
 // --------------------------------------------------------------------------------
-// -------------------- LogEditStyle
+// -------------------- LogStyle
 // --------------------------------------------------------------------------------
-class LogEditStyle: public EditBaseStyle
+class LogStyle: public EditStyle
 {
 public:
-	LogEditStyle();
-	virtual ~LogEditStyle();
+	LogStyle();
+	virtual ~LogStyle();
 
-	LogEditStyle& operator =( const LogEditStyle& style );
-	rbool operator ==( const LogEditStyle& style ) const;
-	rbool operator !=( const LogEditStyle& style ) const;
+	LogStyle& operator =( const LogStyle& style );
+	rbool operator ==( const LogStyle& style ) const;
+	rbool operator !=( const LogStyle& style ) const;
 };
 
 }}} // namespace rdo::gui::editor

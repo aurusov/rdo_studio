@@ -20,7 +20,7 @@ namespace rdo { namespace gui { namespace editor {
 // --------------------------------------------------------------------------------
 // -------------------- FindTheme
 // --------------------------------------------------------------------------------
-class FindTheme: public LogEditTheme
+class FindTheme: public LogTheme
 {
 public:
 	FindTheme();
@@ -55,7 +55,7 @@ QSettings& operator>> (QSettings& settings,       FindTheme& theme);
 // --------------------------------------------------------------------------------
 // -------------------- FindStyle
 // --------------------------------------------------------------------------------
-class FindStyle: public LogEditStyle
+class FindStyle: public LogStyle
 {
 public:
 	FindStyle();

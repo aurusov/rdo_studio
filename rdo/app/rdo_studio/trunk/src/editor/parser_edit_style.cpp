@@ -21,7 +21,7 @@ using namespace rdo::gui::editor;
 // --------------------------------------------------------------------------------
 // -------------------- ParserTheme
 // --------------------------------------------------------------------------------
-ParserTheme::ParserTheme(): EditBaseTheme()
+ParserTheme::ParserTheme(): EditTheme()
 {
 	defaultColor    = QColor( 0x80, 0x80, 0x80 );
 	identifierColor = QColor( 0x00, 0x00, 0x00 );
@@ -51,7 +51,7 @@ ParserTheme::~ParserTheme()
 
 ParserTheme& ParserTheme::operator =( const ParserTheme& theme )
 {
-	EditBaseTheme::operator=( theme );
+	EditTheme::operator=( theme );
 
 	identifierColor = theme.identifierColor;
 	keywordColor    = theme.keywordColor;
@@ -78,7 +78,7 @@ ParserTheme& ParserTheme::operator =( const ParserTheme& theme )
 
 rbool ParserTheme::operator ==( const ParserTheme& theme ) const
 {
-	rbool flag = EditBaseTheme::operator==( theme );
+	rbool flag = EditTheme::operator==( theme );
 
 	if ( flag ) flag &= identifierColor == theme.identifierColor &&
 	                    keywordColor    == theme.keywordColor &&
@@ -109,14 +109,14 @@ rbool ParserTheme::operator !=( const ParserTheme& theme ) const
 
 void ParserTheme::load(QSettings& settings)
 {
-	EditBaseTheme::load(settings);
+	EditTheme::load(settings);
 
 	settings >> *this;
 }
 
 void ParserTheme::save(QSettings& settings) const
 {
-	EditBaseTheme::save(settings);
+	EditTheme::save(settings);
 
 	settings << *this;
 }
@@ -187,7 +187,7 @@ tstring ParserTheme::styleFGColorToHEX( const int styleType ) const
 		case SCE_RDO_STRING      : return colorToHEX( stringColor );
 		case SCE_RDO_OPERATOR    : return colorToHEX( operatorColor );
 	}
-	return EditBaseTheme::styleFGColorToHEX( styleType );
+	return EditTheme::styleFGColorToHEX( styleType );
 }
 
 ParserTheme ParserTheme::getDefaultTheme()
@@ -199,7 +199,7 @@ ParserTheme ParserTheme::getDefaultTheme()
 ParserTheme ParserTheme::getCppTheme()
 {
 	ParserTheme theme;
-	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getDefaultTheme();
+	*static_cast<EditTheme*>(&theme) = EditTheme::getDefaultTheme();
 
 	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
 	theme.keywordColor    = QColor( 0x00, 0x00, 0xFF );
@@ -227,7 +227,7 @@ ParserTheme ParserTheme::getCppTheme()
 ParserTheme ParserTheme::getPascalTheme()
 {
 	ParserTheme theme;
-	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getDefaultTheme();
+	*static_cast<EditTheme*>(&theme) = EditTheme::getDefaultTheme();
 
 	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
 	theme.keywordColor    = QColor( 0x00, 0x00, 0x00 );
@@ -255,7 +255,7 @@ ParserTheme ParserTheme::getPascalTheme()
 ParserTheme ParserTheme::getHtmlTheme()
 {
 	ParserTheme theme;
-	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getDefaultTheme();
+	*static_cast<EditTheme*>(&theme) = EditTheme::getDefaultTheme();
 
 	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
 	theme.keywordColor    = QColor( 0x80, 0x00, 0x80 );
@@ -283,7 +283,7 @@ ParserTheme ParserTheme::getHtmlTheme()
 ParserTheme ParserTheme::getClassicTheme()
 {
 	ParserTheme theme;
-	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getClassicTheme();
+	*static_cast<EditTheme*>(&theme) = EditTheme::getClassicTheme();
 
 	theme.identifierColor = QColor( 0xFF, 0xFF, 0x00 );
 	theme.keywordColor    = QColor( 0xFF, 0xFF, 0xFF );
@@ -311,7 +311,7 @@ ParserTheme ParserTheme::getClassicTheme()
 ParserTheme ParserTheme::getTwilightTheme()
 {
 	ParserTheme theme;
-	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getTwilightTheme();
+	*static_cast<EditTheme*>(&theme) = EditTheme::getTwilightTheme();
 
 	theme.identifierColor = QColor( 0xFF, 0xFF, 0xFF );
 	theme.keywordColor    = QColor( 0x00, 0xFF, 0xFF );
@@ -339,7 +339,7 @@ ParserTheme ParserTheme::getTwilightTheme()
 ParserTheme ParserTheme::getOceanTheme()
 {
 	ParserTheme theme;
-	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getOceanTheme();
+	*static_cast<EditTheme*>(&theme) = EditTheme::getOceanTheme();
 
 	theme.identifierColor = QColor( 0x00, 0x00, 0xFF );
 	theme.keywordColor    = QColor( 0x00, 0x00, 0x00 );
@@ -421,7 +421,7 @@ QSettings& operator>> (QSettings& settings, ParserTheme& theme)
 // --------------------------------------------------------------------------------
 // -------------------- ParserStyle
 // --------------------------------------------------------------------------------
-ParserStyle::ParserStyle(): EditBaseStyle()
+ParserStyle::ParserStyle(): EditStyle()
 {
 	theme = new ParserTheme();
 }
@@ -431,7 +431,7 @@ ParserStyle::~ParserStyle()
 
 ParserStyle& ParserStyle::operator =( const ParserStyle& style )
 {
-	EditBaseStyle::operator=( style );
+	EditStyle::operator=( style );
 	if ( theme && style.theme ) *static_cast<ParserTheme*>(theme) = *static_cast<ParserTheme*>(style.theme);
 
 	return *this;
@@ -439,7 +439,7 @@ ParserStyle& ParserStyle::operator =( const ParserStyle& style )
 
 rbool ParserStyle::operator ==( const ParserStyle& style ) const
 {
-	rbool flag = EditBaseStyle::operator==( style );
+	rbool flag = EditStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<ParserTheme*>(theme) == *static_cast<ParserTheme*>(style.theme);
 	return flag;
 }

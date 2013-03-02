@@ -72,7 +72,7 @@ Log::~Log()
 	clearLines();
 }
 
-void Log::setEditorStyle(PTR(LogEditStyle) pStyle)
+void Log::setEditorStyle(PTR(LogStyle) pStyle)
 {
 	Edit::setEditorStyle(pStyle);
 	if (!m_pStyle)
@@ -80,7 +80,7 @@ void Log::setEditorStyle(PTR(LogEditStyle) pStyle)
 
 	// ----------
 	// Selected Line
-	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<PTR(LogEditTheme)>(m_pStyle->theme)->selectLineBgColor);
+	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<PTR(LogTheme)>(m_pStyle->theme)->selectLineBgColor);
 }
 
 void Log::gotoPrev()

@@ -185,12 +185,12 @@ void Edit::defineMarker(int marker, int markerType, QColor fore, QColor back) co
 	sendEditor(SCI_MARKERSETBACK, marker, convertColor(back));
 }
 
-const EditBaseStyle* Edit::getEditorStyle() const
+const EditStyle* Edit::getEditorStyle() const
 {
 	return m_pStyle;
 }
 
-void Edit::setEditorStyle(EditBaseStyle* pStyle)
+void Edit::setEditorStyle(EditStyle* pStyle)
 {
 	m_pStyle = pStyle;
 	if (!m_pStyle)
@@ -198,7 +198,7 @@ void Edit::setEditorStyle(EditBaseStyle* pStyle)
 
 	// ----------
 	// Colors
-	EditBaseTheme* theme = static_cast<EditBaseTheme*>(m_pStyle->theme);
+	EditTheme* theme = static_cast<EditTheme*>(m_pStyle->theme);
 	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, convertColor(theme->defaultColor));
 	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, convertColor(theme->backgroundColor));
 	sendEditor(SCI_STYLESETFORE, SCE_TEXT_DEFAULT, convertColor(theme->defaultColor));
@@ -246,11 +246,11 @@ void Edit::setEditorStyle(EditBaseStyle* pStyle)
 	QColor bookmarkBgColor = theme->bookmarkBgColor;
 	switch (theme->bookmarkStyle)
 	{
-		case EditBaseTheme::B_NONE     : defineMarker(m_sciMarkerBookmark, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor); break;
-		case EditBaseTheme::B_CIRCLE   : defineMarker(m_sciMarkerBookmark, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor); break;
-		case EditBaseTheme::B_RECT     : defineMarker(m_sciMarkerBookmark, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor); break;
-		case EditBaseTheme::B_ROUNDRECT: defineMarker(m_sciMarkerBookmark, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor); break;
-		case EditBaseTheme::B_ARROW    : defineMarker(m_sciMarkerBookmark, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor); break;
+		case EditTheme::B_NONE     : defineMarker(m_sciMarkerBookmark, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor); break;
+		case EditTheme::B_CIRCLE   : defineMarker(m_sciMarkerBookmark, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor); break;
+		case EditTheme::B_RECT     : defineMarker(m_sciMarkerBookmark, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor); break;
+		case EditTheme::B_ROUNDRECT: defineMarker(m_sciMarkerBookmark, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor); break;
+		case EditTheme::B_ARROW    : defineMarker(m_sciMarkerBookmark, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor); break;
 	}
 
 	// ----------
@@ -986,7 +986,7 @@ tstring Edit::saveAsRTF(int start, int end) const
 	strncpy(*colors, "#000000", MAX_COLORDEF);
 #pragma warning(default: 4996)
 
-	EditBaseTheme* theme = static_cast<EditBaseTheme*>(m_pStyle->theme);
+	EditTheme* theme = static_cast<EditTheme*>(m_pStyle->theme);
 
 	for (int istyle = 0; istyle <= STYLE_DEFAULT; istyle++) {
 		if (theme->styleUsing(istyle)) {

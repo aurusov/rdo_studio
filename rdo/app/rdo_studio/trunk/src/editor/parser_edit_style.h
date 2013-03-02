@@ -23,7 +23,7 @@ namespace rdo { namespace gui { namespace editor {
 // --------------------------------------------------------------------------------
 // -------------------- ParserTheme
 // --------------------------------------------------------------------------------
-class ParserTheme: public EditBaseTheme
+class ParserTheme: public EditTheme
 {
 public:
 	ParserTheme();
@@ -77,7 +77,7 @@ QSettings& operator>> (QSettings& settings,       ParserTheme& theme);
 // --------------------------------------------------------------------------------
 // -------------------- ParserStyle
 // --------------------------------------------------------------------------------
-class ParserStyle: public EditBaseStyle
+class ParserStyle: public EditStyle
 {
 public:
 	ParserStyle();

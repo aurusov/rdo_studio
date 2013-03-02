@@ -18,9 +18,9 @@ using namespace rdoStyle;
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
-// -------------------- EditBaseTheme
+// -------------------- EditTheme
 // --------------------------------------------------------------------------------
-EditBaseTheme::EditBaseTheme(): RDOStyleTheme()
+EditTheme::EditTheme(): RDOStyleTheme()
 {
 	defaultColor    = QColor( 0x00, 0x00, 0x00 );
 	backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
@@ -31,14 +31,14 @@ EditBaseTheme::EditBaseTheme(): RDOStyleTheme()
 	bookmarkBgColor  = QColor( 0x00, 0xFF, 0xFF );
 
 	defaultStyle  = RDOStyleFont::NONE;
-	bookmarkStyle = EditBaseTheme::B_CIRCLE;
+	bookmarkStyle = EditTheme::B_CIRCLE;
 }
 
-EditBaseTheme::~EditBaseTheme()
+EditTheme::~EditTheme()
 {
 }
 
-EditBaseTheme& EditBaseTheme::operator =( const EditBaseTheme& theme )
+EditTheme& EditTheme::operator =( const EditTheme& theme )
 {
 	defaultColor    = theme.defaultColor;
 	backgroundColor = theme.backgroundColor;
@@ -55,7 +55,7 @@ EditBaseTheme& EditBaseTheme::operator =( const EditBaseTheme& theme )
 	return *this;
 }
 
-rbool EditBaseTheme::operator ==( const EditBaseTheme& theme ) const
+rbool EditTheme::operator ==( const EditTheme& theme ) const
 {
 	return defaultColor    == theme.defaultColor &&
 	       backgroundColor == theme.backgroundColor &&
@@ -70,60 +70,60 @@ rbool EditBaseTheme::operator ==( const EditBaseTheme& theme ) const
 	       bookmarkStyle == theme.bookmarkStyle;
 }
 
-rbool EditBaseTheme::operator !=( const EditBaseTheme& theme ) const
+rbool EditTheme::operator !=( const EditTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void EditBaseTheme::load(QSettings& settings)
+void EditTheme::load(QSettings& settings)
 {
 	settings >> *this;
 }
 
-void EditBaseTheme::save(QSettings& settings) const
+void EditTheme::save(QSettings& settings) const
 {
 	settings << *this;
 }
 
-rbool EditBaseTheme::styleDefault( const int styleType ) const
+rbool EditTheme::styleDefault( const int styleType ) const
 {
 	return styleType == STYLE_DEFAULT;
 }
 
-rbool EditBaseTheme::styleUsing( const int styleType ) const
+rbool EditTheme::styleUsing( const int styleType ) const
 {
 	return styleType == STYLE_DEFAULT;
 }
 
-rbool EditBaseTheme::styleBold( const int /*styleType*/ ) const
+rbool EditTheme::styleBold( const int /*styleType*/ ) const
 {
 	return defaultStyle & RDOStyleFont::BOLD ? true : false;
 }
 
-rbool EditBaseTheme::styleItalic( const int /*styleType*/ ) const
+rbool EditTheme::styleItalic( const int /*styleType*/ ) const
 {
 	return defaultStyle & RDOStyleFont::ITALIC ? true : false;
 }
 
-tstring EditBaseTheme::styleFGColorToHEX( const int /*styleType*/ ) const
+tstring EditTheme::styleFGColorToHEX( const int /*styleType*/ ) const
 {
 	return colorToHEX( defaultColor );
 }
 
-tstring EditBaseTheme::styleBGColorToHEX( const int /*styleType*/ ) const
+tstring EditTheme::styleBGColorToHEX( const int /*styleType*/ ) const
 {
 	return colorToHEX( backgroundColor );
 }
 
-EditBaseTheme EditBaseTheme::getDefaultTheme()
+EditTheme EditTheme::getDefaultTheme()
 {
-	EditBaseTheme theme;
+	EditTheme theme;
 	return theme;
 }
 
-EditBaseTheme EditBaseTheme::getClassicTheme()
+EditTheme EditTheme::getClassicTheme()
 {
-	EditBaseTheme theme;
+	EditTheme theme;
 
 	theme.defaultColor    = QColor( 0xFF, 0xFF, 0x00 );
 	theme.backgroundColor = QColor( 0x00, 0x00, 0x80 );
@@ -134,14 +134,14 @@ EditBaseTheme EditBaseTheme::getClassicTheme()
 	theme.bookmarkBgColor  = QColor( 0x80, 0x80, 0x00 );
 
 	theme.defaultStyle  = RDOStyleFont::NONE;
-	theme.bookmarkStyle = EditBaseTheme::B_CIRCLE;
+	theme.bookmarkStyle = EditTheme::B_CIRCLE;
 
 	return theme;
 }
 
-EditBaseTheme EditBaseTheme::getTwilightTheme()
+EditTheme EditTheme::getTwilightTheme()
 {
-	EditBaseTheme theme;
+	EditTheme theme;
 
 	theme.defaultColor    = QColor( 0xFF, 0xFF, 0xFF );
 	theme.backgroundColor = QColor( 0x00, 0x00, 0x00 );
@@ -152,14 +152,14 @@ EditBaseTheme EditBaseTheme::getTwilightTheme()
 	theme.bookmarkBgColor  = QColor( 0x00, 0x00, 0xFF );
 
 	theme.defaultStyle  = RDOStyleFont::NONE;
-	theme.bookmarkStyle = EditBaseTheme::B_CIRCLE;
+	theme.bookmarkStyle = EditTheme::B_CIRCLE;
 
 	return theme;
 }
 
-EditBaseTheme EditBaseTheme::getOceanTheme()
+EditTheme EditTheme::getOceanTheme()
 {
-	EditBaseTheme theme;
+	EditTheme theme;
 
 	theme.defaultColor    = QColor( 0x00, 0x00, 0xFF );
 	theme.backgroundColor = QColor( 0x00, 0xFF, 0xFF );
@@ -170,19 +170,19 @@ EditBaseTheme EditBaseTheme::getOceanTheme()
 	theme.bookmarkBgColor  = QColor( 0xBA, 0xCC, 0xFC );
 
 	theme.defaultStyle  = RDOStyleFont::NONE;
-	theme.bookmarkStyle = EditBaseTheme::B_CIRCLE;
+	theme.bookmarkStyle = EditTheme::B_CIRCLE;
 
 	return theme;
 }
 
-tstring EditBaseTheme::colorToHEX( const QColor color )
+tstring EditTheme::colorToHEX( const QColor color )
 {
 	return rdo::format( "#%02X%02X%02X", color.red(), color.green(), color.blue() );
 }
 
 namespace rdo { namespace gui { namespace editor {
 
-QSettings& operator<< (QSettings& settings, const EditBaseTheme& theme)
+QSettings& operator<< (QSettings& settings, const EditTheme& theme)
 {
 	settings.setValue("default_color", theme.defaultColor.name());
 	settings.setValue("background_color", theme.backgroundColor.name());
@@ -196,7 +196,7 @@ QSettings& operator<< (QSettings& settings, const EditBaseTheme& theme)
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, EditBaseTheme& theme)
+QSettings& operator>> (QSettings& settings, EditTheme& theme)
 {
 	theme.defaultColor     = QColor(settings.value("default_color", theme.defaultColor.name()).toString());
 	theme.backgroundColor  = QColor(settings.value("background_color", theme.backgroundColor.name()).toString());
@@ -205,7 +205,7 @@ QSettings& operator>> (QSettings& settings, EditBaseTheme& theme)
 	theme.bookmarkFgColor  = QColor(settings.value("bookmark_fg_color", theme.bookmarkFgColor.name()).toString());
 	theme.bookmarkBgColor  = QColor(settings.value("bookmark_bg_color", theme.bookmarkBgColor.name()).toString());
 	theme.defaultStyle     = static_cast<RDOStyleFont::style>(settings.value("default_style", theme.defaultStyle).toInt());
-	theme.bookmarkStyle    = static_cast<EditBaseTheme::Bookmark>(settings.value("bookmark_style", theme.bookmarkStyle).toInt());
+	theme.bookmarkStyle    = static_cast<EditTheme::Bookmark>(settings.value("bookmark_style", theme.bookmarkStyle).toInt());
 	
 	return settings;
 }
@@ -213,9 +213,9 @@ QSettings& operator>> (QSettings& settings, EditBaseTheme& theme)
 }}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
-// -------------------- EditBaseTab
+// -------------------- EditTab
 // --------------------------------------------------------------------------------
-EditBaseTab::EditBaseTab()
+EditTab::EditTab()
 {
 	tabSize         = 4;
 	indentSize      = 4;
@@ -225,11 +225,10 @@ EditBaseTab::EditBaseTab()
 	autoIndent      = true;
 }
 
-EditBaseTab::~EditBaseTab()
-{
-}
+EditTab::~EditTab()
+{}
 
-EditBaseTab& EditBaseTab::operator =( const EditBaseTab& tab )
+EditTab& EditTab::operator =( const EditTab& tab )
 {
 	tabSize         = tab.tabSize;
 	indentSize      = tab.indentSize;
@@ -241,7 +240,7 @@ EditBaseTab& EditBaseTab::operator =( const EditBaseTab& tab )
 	return *this;
 }
 
-rbool EditBaseTab::operator ==( const EditBaseTab& tab ) const
+rbool EditTab::operator ==( const EditTab& tab ) const
 {
 	return tabSize         == tab.tabSize &&
 	       indentSize      == tab.indentSize &&
@@ -251,24 +250,24 @@ rbool EditBaseTab::operator ==( const EditBaseTab& tab ) const
 	       autoIndent      == tab.autoIndent;
 }
 
-rbool EditBaseTab::operator !=( const EditBaseTab& tab ) const
+rbool EditTab::operator !=( const EditTab& tab ) const
 {
 	return !(*this == tab);
 }
 
-void EditBaseTab::load(QSettings& settings)
+void EditTab::load(QSettings& settings)
 {
 	settings >> *this;
 }
 
-void EditBaseTab::save(QSettings& settings) const
+void EditTab::save(QSettings& settings) const
 {
 	settings << *this;
 }
 
 namespace rdo { namespace gui { namespace editor {
 
-QSettings& operator<< (QSettings& settings, const EditBaseTab& tab)
+QSettings& operator<< (QSettings& settings, const EditTab& tab)
 {
 	settings.setValue("tab_size", tab.tabSize);
 	settings.setValue("indent_size", tab.indentSize);
@@ -280,7 +279,7 @@ QSettings& operator<< (QSettings& settings, const EditBaseTab& tab)
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, EditBaseTab& tab)
+QSettings& operator>> (QSettings& settings, EditTab& tab)
 {
 	tab.tabSize         = settings.value("tab_size", tab.tabSize).toInt();
 	tab.indentSize      = settings.value("indent_size", tab.indentSize).toInt();
@@ -295,19 +294,18 @@ QSettings& operator>> (QSettings& settings, EditBaseTab& tab)
 }}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
-// -------------------- EditBaseWindow
+// -------------------- EditWindow
 // --------------------------------------------------------------------------------
-EditBaseWindow::EditBaseWindow()
+EditWindow::EditWindow()
 {
 	wordWrap          = false;
 	showHorzScrollBar = true;
 }
 
-EditBaseWindow::~EditBaseWindow()
-{
-}
+EditWindow::~EditWindow()
+{}
 
-EditBaseWindow& EditBaseWindow::operator =( const EditBaseWindow& window )
+EditWindow& EditWindow::operator =( const EditWindow& window )
 {
 	wordWrap          = window.wordWrap;
 	showHorzScrollBar = window.showHorzScrollBar;
@@ -315,30 +313,30 @@ EditBaseWindow& EditBaseWindow::operator =( const EditBaseWindow& window )
 	return *this;
 }
 
-rbool EditBaseWindow::operator ==( const EditBaseWindow& window ) const
+rbool EditWindow::operator ==( const EditWindow& window ) const
 {
 	return wordWrap          == window.wordWrap &&
 	       showHorzScrollBar == window.showHorzScrollBar;
 }
 
-rbool EditBaseWindow::operator !=( const EditBaseWindow& window ) const
+rbool EditWindow::operator !=( const EditWindow& window ) const
 {
 	return !(*this == window);
 }
 
-void EditBaseWindow::load(QSettings& settings)
+void EditWindow::load(QSettings& settings)
 {
 	settings >> *this;
 }
 
-void EditBaseWindow::save(QSettings& settings) const
+void EditWindow::save(QSettings& settings) const
 {
 	settings << *this;
 }
 
 namespace rdo { namespace gui { namespace editor {
 
-QSettings& operator<< (QSettings& settings, const EditBaseWindow& window)
+QSettings& operator<< (QSettings& settings, const EditWindow& window)
 {
 	settings.setValue("word_wrap", window.wordWrap);
 	settings.setValue("show_horz_scroll_bar", window.showHorzScrollBar);
@@ -346,7 +344,7 @@ QSettings& operator<< (QSettings& settings, const EditBaseWindow& window)
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, EditBaseWindow& window)
+QSettings& operator>> (QSettings& settings, EditWindow& window)
 {
 	window.wordWrap          = settings.value("word_wrap", window.wordWrap).toBool() ? true : false;
 	window.showHorzScrollBar = settings.value("show_horz_scroll_bar", window.showHorzScrollBar).toBool() ? true : false;
@@ -357,55 +355,54 @@ QSettings& operator>> (QSettings& settings, EditBaseWindow& window)
 }}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
-// -------------------- EditBaseStyle
+// -------------------- EditStyle
 // --------------------------------------------------------------------------------
-EditBaseStyle::EditBaseStyle()
+EditStyle::EditStyle()
 	: RDOStyleWithTheme()
 	, tab   (NULL)
 	, window(NULL)
 {
-	theme  = new EditBaseTheme();
-	tab    = new EditBaseTab();
-	window = new EditBaseWindow();
-
+	theme  = new EditTheme();
+	tab    = new EditTab();
+	window = new EditWindow();
 }
 
-EditBaseStyle::~EditBaseStyle()
+EditStyle::~EditStyle()
 {
 	if ( tab )    { delete tab;    tab = NULL; };
 	if ( window ) { delete window; window = NULL; };
 }
 
-EditBaseStyle& EditBaseStyle::operator =( const EditBaseStyle& style )
+EditStyle& EditStyle::operator =( const EditStyle& style )
 {
 	RDOStyleWithTheme::operator=( style );
-	if ( theme  && style.theme )  *static_cast<EditBaseTheme*>(theme) = *static_cast<EditBaseTheme*>(style.theme);
+	if ( theme  && style.theme )  *static_cast<EditTheme*>(theme) = *static_cast<EditTheme*>(style.theme);
 	if ( tab    && style.tab )    *tab    = *style.tab;
 	if ( window && style.window ) *window = *style.window;
 
 	return *this;
 }
 
-rbool EditBaseStyle::operator ==( const EditBaseStyle& style ) const
+rbool EditStyle::operator ==( const EditStyle& style ) const
 {
 	rbool flag = RDOStyleWithTheme::operator==( style );
-	if ( theme  && style.theme  && flag ) flag &= *static_cast<EditBaseTheme*>(theme) == *static_cast<EditBaseTheme*>(style.theme);
+	if ( theme  && style.theme  && flag ) flag &= *static_cast<EditTheme*>(theme) == *static_cast<EditTheme*>(style.theme);
 	if ( tab    && style.tab    && flag ) flag &= *tab    == *style.tab;
 	if ( window && style.window && flag ) flag &= *window == *style.window;
 	return flag;
 }
 
-rbool EditBaseStyle::operator !=( const EditBaseStyle& style ) const
+rbool EditStyle::operator !=( const EditStyle& style ) const
 {
 	return !(*this == style);
 }
 
-void EditBaseStyle::init( CREF(QString) _groupName )
+void EditStyle::init( CREF(QString) _groupName )
 {
 	RDOStyleWithTheme::init( _groupName );
 }
 
-rbool EditBaseStyle::load()
+rbool EditStyle::load()
 {
 	if ( RDOStyleWithTheme::load() ) {
 		QSettings settings;
@@ -420,7 +417,7 @@ rbool EditBaseStyle::load()
 	return false;
 }
 
-rbool EditBaseStyle::save() const
+rbool EditStyle::save() const
 {
 	if ( RDOStyleWithTheme::save() ) {
 		QSettings settings;

@@ -33,7 +33,7 @@ public:
 	Log(PTR(QWidget) pParent);
 	virtual ~Log();
 
-	virtual void setEditorStyle(PTR(LogEditStyle) pStyle);
+	virtual void setEditorStyle(PTR(LogStyle) pStyle);
 
 	void gotoNext();
 	void gotoPrev();

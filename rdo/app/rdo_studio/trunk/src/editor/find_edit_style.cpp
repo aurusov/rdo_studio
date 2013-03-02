@@ -21,7 +21,7 @@ using namespace rdoStyle;
 // --------------------------------------------------------------------------------
 // -------------------- FindTheme
 // --------------------------------------------------------------------------------
-FindTheme::FindTheme(): LogEditTheme()
+FindTheme::FindTheme(): LogTheme()
 {
 	keywordColor = QColor( 0x00, 0x00, 0x00 );
 	keywordStyle = RDOStyleFont::BOLD;
@@ -32,7 +32,7 @@ FindTheme::~FindTheme()
 
 FindTheme& FindTheme::operator =( const FindTheme& theme )
 {
-	LogEditTheme::operator=( theme );
+	LogTheme::operator=( theme );
 
 	keywordColor = theme.keywordColor;
 	keywordStyle = theme.keywordStyle;
@@ -42,7 +42,7 @@ FindTheme& FindTheme::operator =( const FindTheme& theme )
 
 rbool FindTheme::operator ==( const FindTheme& theme ) const
 {
-	rbool flag = LogEditTheme::operator==( theme );
+	rbool flag = LogTheme::operator==( theme );
 
 	if ( flag ) flag &= keywordColor == theme.keywordColor &&
 	                    keywordStyle == theme.keywordStyle;
@@ -56,14 +56,14 @@ rbool FindTheme::operator !=( const FindTheme& theme ) const
 
 void FindTheme::load(QSettings& settings)
 {
-	LogEditTheme::load(settings);
+	LogTheme::load(settings);
 
 	settings >> *this;
 }
 
 void FindTheme::save(QSettings& settings) const
 {
-	LogEditTheme::save(settings);
+	LogTheme::save(settings);
 
 	settings << *this;
 }
@@ -102,7 +102,7 @@ tstring FindTheme::styleFGColorToHEX( const int styleType ) const
 		case SCE_FIND_DEFAULT: return colorToHEX( defaultColor );
 		case SCE_FIND_KEYWORD: return colorToHEX( keywordColor );
 	}
-	return LogEditTheme::styleFGColorToHEX( styleType );
+	return LogTheme::styleFGColorToHEX( styleType );
 }
 
 FindTheme FindTheme::getDefaultTheme()
@@ -114,7 +114,7 @@ FindTheme FindTheme::getDefaultTheme()
 FindTheme FindTheme::getClassicTheme()
 {
 	FindTheme theme;
-	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getClassicTheme();
+	*static_cast<LogTheme*>(&theme) = LogTheme::getClassicTheme();
 
 	theme.keywordColor = QColor( 0xFF, 0xFF, 0xFF );
 	theme.keywordStyle = RDOStyleFont::NONE;
@@ -125,7 +125,7 @@ FindTheme FindTheme::getClassicTheme()
 FindTheme FindTheme::getTwilightTheme()
 {
 	FindTheme theme;
-	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getTwilightTheme();
+	*static_cast<LogTheme*>(&theme) = LogTheme::getTwilightTheme();
 
 	theme.keywordColor = QColor( 0x00, 0xFF, 0xFF );
 	theme.keywordStyle = RDOStyleFont::BOLD;
@@ -136,7 +136,7 @@ FindTheme FindTheme::getTwilightTheme()
 FindTheme FindTheme::getOceanTheme()
 {
 	FindTheme theme;
-	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getOceanTheme();
+	*static_cast<LogTheme*>(&theme) = LogTheme::getOceanTheme();
 
 	theme.keywordColor = QColor( 0x00, 0x00, 0x00 );
 	theme.keywordStyle = RDOStyleFont::BOLD;
@@ -167,7 +167,7 @@ QSettings& operator>> (QSettings& settings, FindTheme& theme)
 // --------------------------------------------------------------------------------
 // -------------------- FindStyle
 // --------------------------------------------------------------------------------
-FindStyle::FindStyle(): LogEditStyle()
+FindStyle::FindStyle(): LogStyle()
 {
 	theme = new FindTheme();
 }
@@ -177,7 +177,7 @@ FindStyle::~FindStyle()
 
 FindStyle& FindStyle::operator =( const FindStyle& style )
 {
-	LogEditStyle::operator=( style );
+	LogStyle::operator=( style );
 	if ( theme && style.theme ) *static_cast<FindTheme*>(theme) = *static_cast<FindTheme*>(style.theme);
 
 	return *this;
@@ -185,7 +185,7 @@ FindStyle& FindStyle::operator =( const FindStyle& style )
 
 rbool FindStyle::operator ==( const FindStyle& style ) const
 {
-	rbool flag = LogEditStyle::operator==( style );
+	rbool flag = LogStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<FindTheme*>(theme) == *static_cast<FindTheme*>(style.theme);
 	return flag;
 }

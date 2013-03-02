@@ -20,7 +20,7 @@ namespace rdo { namespace gui { namespace editor {
 // --------------------------------------------------------------------------------
 // -------------------- BuildTheme
 // --------------------------------------------------------------------------------
-class BuildTheme: public LogEditTheme
+class BuildTheme: public LogTheme
 {
 public:
 	BuildTheme();
@@ -47,7 +47,7 @@ QSettings& operator>> (QSettings& settings,       BuildTheme& theme);
 // --------------------------------------------------------------------------------
 // -------------------- BuildStyle
 // --------------------------------------------------------------------------------
-class BuildStyle: public LogEditStyle
+class BuildStyle: public LogStyle
 {
 public:
 	BuildStyle();
