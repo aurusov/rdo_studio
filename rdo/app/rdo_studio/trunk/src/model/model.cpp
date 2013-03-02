@@ -399,7 +399,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			}
 			if (errors_cnt || warnings_cnt)
 			{
-//				const_cast<PTR(rdo::gui::editor::RDOBuildEdit)>(output->getBuild())->showFirstError();
+//				const_cast<PTR(rdo::gui::editor::Build)>(output->getBuild())->showFirstError();
 			}
 
 			g_pApp->autoCloseByModel();

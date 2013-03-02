@@ -24,18 +24,15 @@
 using namespace rdo::simulation::report;
 using namespace rdo::gui::editor;
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOBuildEdit
-// ---------------------------------------------------------------------------
-RDOBuildEdit::RDOBuildEdit(PTR(QWidget) pParent)
+Build::Build(PTR(QWidget) pParent)
 	: super(pParent)
-	, EditWithReadOnlyPopupMenu(pParent)
+	, PopupMenu(pParent)
 {}
 
-RDOBuildEdit::~RDOBuildEdit()
+Build::~Build()
 {}
 
-void RDOBuildEdit::showFirstError()
+void Build::showFirstError()
 {
 	setCurrentLine(getCurrentLine() + 1);
 	LogEditLineInfoList lines;
@@ -97,20 +94,20 @@ void RDOBuildEdit::showFirstError()
 	}
 }
 
-void RDOBuildEdit::updateEdit(rdoEditor::RDOEditorEdit* pEdit, const LogEditLineInfo* pLineInfo)
+void Build::updateEdit(rdoEditor::RDOEditorEdit* pEdit, const LogEditLineInfo* pLineInfo)
 {
 	super::updateEdit(pEdit, pLineInfo);
 	pEdit->setErrorLine(pLineInfo->getLineNumber());
 }
 
-void RDOBuildEdit::onHelpContext()
+void Build::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_build\n");
 	g_pApp->callQtAssistant(ba);
 }
 
-void RDOBuildEdit::mousePressEvent(QMouseEvent*  pEvent)
+void Build::mousePressEvent(QMouseEvent*  pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{

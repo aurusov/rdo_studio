@@ -19,23 +19,20 @@
 
 namespace rdo { namespace gui { namespace editor {
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOFindEdit
-// --------------------------------------------------------------------------------
-class RDOFindEdit
-	: public LogEdit
-	, public EditWithReadOnlyPopupMenu
+class Find
+	: public Log
+	, public PopupMenu
 {
 public:
-	RDOFindEdit(PTR(QWidget) pParent);
-	virtual ~RDOFindEdit();
+	Find(PTR(QWidget) pParent);
+	virtual ~Find();
 
-	void setEditorStyle(RDOFindEditStyle* pStyle);
+	void setEditorStyle(FindStyle* pStyle);
 
 	void setKeyword(CREF(QString) keyword, const rbool matchCase = false) const;
 
 private:
-	typedef  LogEdit  super;
+	typedef  Log  super;
 
 	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void onHelpContext();

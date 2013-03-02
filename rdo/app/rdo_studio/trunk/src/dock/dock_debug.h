@@ -19,7 +19,7 @@
 class DockDebug: public DockFocusable
 {
 public:
-	typedef rdo::gui::editor::RDODebugEdit context_type;
+	typedef rdo::gui::editor::Debug context_type;
 
 	DockDebug(PTR(QWidget) pParent);
 	virtual ~DockDebug();

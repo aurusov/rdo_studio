@@ -23,7 +23,7 @@ using namespace rdoEditor;
 // ---------------------------------------------------------------------------
 RDOEditorResults::RDOEditorResults(PTR(QWidget) pParent)
 	: super(pParent)
-	, EditWithReadOnlyPopupMenu(pParent)
+	, rdo::gui::editor::PopupMenu(pParent)
 {
 	kw0 = "TRUE FALSE";
 	kw1 = "";

@@ -26,12 +26,9 @@ using namespace rdoStyle;
 
 static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZÀàÁáÂâÃãÄäÅå¨¸ÆæÇçÈèÉéÊêËëÌìÍíÎîÏïĞğÑñÒòÓóÔôÕõÖö×÷ØøÙùÚúÛûÜüİıŞşßÿ";
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOFindEdit
-// ---------------------------------------------------------------------------
-RDOFindEdit::RDOFindEdit(PTR(QWidget) pParent)
+Find::Find(PTR(QWidget) pParent)
 	: super(pParent)
-	, EditWithReadOnlyPopupMenu(pParent)
+	, PopupMenu(pParent)
 {
 	sendEditor(SCI_SETLEXER, SCLEX_FIND);
 	//	int lexLanguage = sendEditor(SCI_GETLEXER);
@@ -39,10 +36,10 @@ RDOFindEdit::RDOFindEdit(PTR(QWidget) pParent)
 	sendEditorString(SCI_SETWORDCHARS, 0, wordCharacters);
 }
 
-RDOFindEdit::~RDOFindEdit()
+Find::~Find()
 {}
 
-void RDOFindEdit::setEditorStyle(RDOFindEditStyle* pStyle)
+void Find::setEditorStyle(FindStyle* pStyle)
 {
 	super::setEditorStyle(pStyle);
 	if (!m_pStyle)
@@ -52,7 +49,7 @@ void RDOFindEdit::setEditorStyle(RDOFindEditStyle* pStyle)
 
 	// ----------
 	// Colors
-	RDOFindEditTheme* theme = static_cast<RDOFindEditTheme*>(m_pStyle->theme);
+	FindTheme* theme = static_cast<FindTheme*>(m_pStyle->theme);
 	sendEditor(SCI_STYLESETFORE, SCE_FIND_DEFAULT, convertColor(theme->defaultColor));
 	sendEditor(SCI_STYLESETBACK, SCE_FIND_DEFAULT, convertColor(theme->backgroundColor));
 	sendEditor(SCI_STYLESETFORE, SCE_FIND_KEYWORD, convertColor(theme->keywordColor));
@@ -83,20 +80,20 @@ void RDOFindEdit::setEditorStyle(RDOFindEditStyle* pStyle)
 	sendEditor(SCI_STYLESETCHARACTERSET, SCE_FIND_KEYWORD, m_pStyle->font->characterSet);
 }
 
-void RDOFindEdit::setKeyword(CREF(QString) keyword, const rbool matchCase) const
+void Find::setKeyword(CREF(QString) keyword, const rbool matchCase) const
 {
 	sendEditorString(SCI_SETPROPERTY, reinterpret_cast<unsigned long>("find_matchcase"), matchCase ? "1" : "0");
 	sendEditorString(SCI_SETKEYWORDS, SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX, keyword);
 }
 
-void RDOFindEdit::onHelpContext()
+void Find::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_find\n");
 	g_pApp->callQtAssistant(ba);
 }
 
-void RDOFindEdit::mousePressEvent(QMouseEvent* pEvent)
+void Find::mousePressEvent(QMouseEvent* pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{

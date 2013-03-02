@@ -594,12 +594,12 @@ void RDOEditorEdit::onInsertCommand(QObject* pObject)
 	);
 }
 
-CPTR(rdo::gui::editor::LogEdit) RDOEditorEdit::getLog() const
+CPTR(rdo::gui::editor::Log) RDOEditorEdit::getLog() const
 {
 	return m_pLog;
 }
 
-void RDOEditorEdit::setLog(REF(LogEdit) pLog)
+void RDOEditorEdit::setLog(REF(Log) pLog)
 {
 	m_pLog = &pLog;
 }

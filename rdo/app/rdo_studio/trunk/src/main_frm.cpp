@@ -549,7 +549,7 @@ void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 	QDockWidget* pDock = dynamic_cast<QDockWidget*>(sender());
 	ASSERT(pDock);
 
-	rdo::gui::editor::LogEdit* pLog = NULL;
+	rdo::gui::editor::Log* pLog = NULL;
 
 	if (pDock == &getDockBuild())
 	{

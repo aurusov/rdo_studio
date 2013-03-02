@@ -24,10 +24,7 @@ class RDOEditorEdit;
 
 namespace rdo { namespace gui { namespace editor {
 
-// --------------------------------------------------------------------------------
-// -------------------- LogEdit
-// --------------------------------------------------------------------------------
-class LogEdit: public EditBase
+class Log: public EditBase
 {
 Q_OBJECT
 
@@ -35,8 +32,8 @@ public:
 	typedef rdo::simulation::report::LogEditLineInfo LogEditLineInfo;
 	typedef std::list<PTR(LogEditLineInfo)> LogEditLineInfoList;
 
-	LogEdit(PTR(QWidget) pParent);
-	virtual ~LogEdit();
+	Log(PTR(QWidget) pParent);
+	virtual ~Log();
 
 	virtual void setEditorStyle(PTR(LogEditStyle) pStyle);
 

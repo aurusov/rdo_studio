@@ -34,11 +34,11 @@ class MainWindowBase
 {
 public:
 	rdoEditor::RDOEditorEditStyle        style_editor;
-	rdo::gui::editor::RDOBuildEditStyle  style_build;
+	rdo::gui::editor::BuildStyle  style_build;
 	rdo::gui::editor::EditBaseStyle      style_debug;
 	rdo::gui::tracer::LogStyle           style_trace;
 	rdoEditor::RDOEditorResultsStyle     style_results;
-	rdo::gui::editor::RDOFindEditStyle   style_find;
+	rdo::gui::editor::FindStyle   style_find;
 	RDOStudioFrameStyle                  style_frame;
 	rdo::gui::tracer::ChartViewStyle     style_chart;
 

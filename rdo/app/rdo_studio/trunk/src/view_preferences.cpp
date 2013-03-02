@@ -918,7 +918,7 @@ void ViewPreferences::createPreview()
 	preview_editor->setErrorLine(preview_editor->getLineCount() - 1);
 	previewStackedWidget->addWidget(preview_editor);
 
-	preview_build = new RDOBuildEdit(previewStackedWidget->currentWidget());
+	preview_build = new Build(previewStackedWidget->currentWidget());
 	preview_build->setEditorStyle(&style_build);
 	preview_build->appendLine(new BuildEditLineInfo(rdo::format("Компиляция...")));
 	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage(rdo::format("Неправильное значение параметра: 4"), rdoModelObjects::PAT, 40, 0)));
@@ -926,7 +926,7 @@ void ViewPreferences::createPreview()
 	preview_build->gotoNext();
 	previewStackedWidget->addWidget(preview_build);
 
-	preview_debug = new RDODebugEdit(previewStackedWidget->currentWidget());
+	preview_debug = new Debug(previewStackedWidget->currentWidget());
 	preview_debug->setEditorStyle(&style_debug);
 	preview_debug->appendLine(QString::fromLocal8Bit("Получение структуры модели...ok\nМодель запущена"));
 	previewStackedWidget->addWidget(preview_debug);
@@ -945,7 +945,7 @@ void ViewPreferences::createPreview()
 	preview_results->setReadOnly(true);
 	previewStackedWidget->addWidget(preview_results);
 
-	preview_find = new RDOFindEdit(previewStackedWidget->currentWidget());
+	preview_find = new Find(previewStackedWidget->currentWidget());
 	preview_find->setEditorStyle(&style_find);
 	preview_find->setKeyword("$Time");
 	preview_find->appendLine(new LogEditLineInfo(rdo::format("Поиск '$Time'...")));
@@ -1015,7 +1015,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_ERROR, null_font_style, null_fg_color, editor_theme->errorBgColor));
 	style_list.push_back(item);
 
-	RDOBuildEditTheme* build_theme = static_cast<RDOBuildEditTheme*>(style_build.theme);
+	BuildTheme* build_theme = static_cast<BuildTheme*>(style_build.theme);
 	item = new StyleItem(IT_BUILD, style_build.font->size, style_build.font->name, style_build.window->wordWrap, style_build.window->showHorzScrollBar, null_bookmarkstyle, null_foldstyle, null_commentfold, build_theme->warning);
 	item->properties.push_back(new StyleProperty(item, IT_BUILD, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor));
@@ -1078,7 +1078,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, results_theme->bookmarkFgColor, results_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
-	RDOFindEditTheme* find_theme = static_cast<RDOFindEditTheme*>(style_find.theme);
+	FindTheme* find_theme = static_cast<FindTheme*>(style_find.theme);
 	item = new StyleItem(IT_FIND, style_find.font->size, style_find.font->name, style_find.window->wordWrap, style_find.window->showHorzScrollBar);
 	item->properties.push_back(new StyleProperty(item, IT_FIND, find_theme->defaultStyle, find_theme->defaultColor, find_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, find_theme->defaultStyle, find_theme->defaultColor, find_theme->backgroundColor));

@@ -18,16 +18,13 @@
 
 namespace rdo { namespace gui { namespace editor {
 
-// --------------------------------------------------------------------------------
-// -------------------- RDODebugEdit
-// --------------------------------------------------------------------------------
-class RDODebugEdit
+class Debug
 	: public EditBase
-	, public EditWithReadOnlyPopupMenu
+	, public PopupMenu
 {
 public:
-	RDODebugEdit(PTR(QWidget) pParent);
-	virtual ~RDODebugEdit();
+	Debug(PTR(QWidget) pParent);
+	virtual ~Debug();
 
 	void appendLine(CREF(QString) str);
 

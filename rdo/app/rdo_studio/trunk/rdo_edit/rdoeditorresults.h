@@ -24,7 +24,7 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 class RDOEditorResults
 	: public RDOEditorBaseEdit
-	, public EditWithReadOnlyPopupMenu
+	, public rdo::gui::editor::PopupMenu
 {
 public:
 	RDOEditorResults(PTR(QWidget) pParent);

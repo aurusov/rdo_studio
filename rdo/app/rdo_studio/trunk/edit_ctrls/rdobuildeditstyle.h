@@ -18,44 +18,44 @@
 namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOBuildEditTheme
+// -------------------- BuildTheme
 // --------------------------------------------------------------------------------
-class RDOBuildEditTheme: public LogEditTheme
+class BuildTheme: public LogEditTheme
 {
 public:
-	RDOBuildEditTheme();
-	virtual ~RDOBuildEditTheme();
+	BuildTheme();
+	virtual ~BuildTheme();
 
-	RDOBuildEditTheme& operator =( const RDOBuildEditTheme& theme );
-	rbool operator ==( const RDOBuildEditTheme& theme ) const;
-	rbool operator !=( const RDOBuildEditTheme& theme ) const;
+	BuildTheme& operator =( const BuildTheme& theme );
+	rbool operator ==( const BuildTheme& theme ) const;
+	rbool operator !=( const BuildTheme& theme ) const;
 
 	virtual void load(QSettings& settings);
 	virtual void save(QSettings& settings) const;
 
 	rbool warning;
 
-	static RDOBuildEditTheme getDefaultTheme();
-	static RDOBuildEditTheme getClassicTheme();
-	static RDOBuildEditTheme getTwilightTheme();
-	static RDOBuildEditTheme getOceanTheme();
+	static BuildTheme getDefaultTheme();
+	static BuildTheme getClassicTheme();
+	static BuildTheme getTwilightTheme();
+	static BuildTheme getOceanTheme();
 };
 
-QSettings& operator<< (QSettings& settings, const RDOBuildEditTheme& theme);
-QSettings& operator>> (QSettings& settings,       RDOBuildEditTheme& theme);
+QSettings& operator<< (QSettings& settings, const BuildTheme& theme);
+QSettings& operator>> (QSettings& settings,       BuildTheme& theme);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOBuildEditStyle
+// -------------------- BuildStyle
 // --------------------------------------------------------------------------------
-class RDOBuildEditStyle: public LogEditStyle
+class BuildStyle: public LogEditStyle
 {
 public:
-	RDOBuildEditStyle();
-	virtual ~RDOBuildEditStyle();
+	BuildStyle();
+	virtual ~BuildStyle();
 
-	RDOBuildEditStyle& operator =( const RDOBuildEditStyle& style );
-	rbool operator ==( const RDOBuildEditStyle& style ) const;
-	rbool operator !=( const RDOBuildEditStyle& style ) const;
+	BuildStyle& operator =( const BuildStyle& style );
+	rbool operator ==( const BuildStyle& style ) const;
+	rbool operator !=( const BuildStyle& style ) const;
 };
 
 }}} // namespace rdo::gui::editor

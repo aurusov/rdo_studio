@@ -18,17 +18,17 @@
 namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFindEditTheme
+// -------------------- FindTheme
 // --------------------------------------------------------------------------------
-class RDOFindEditTheme: public LogEditTheme
+class FindTheme: public LogEditTheme
 {
 public:
-	RDOFindEditTheme();
-	virtual ~RDOFindEditTheme();
+	FindTheme();
+	virtual ~FindTheme();
 
-	RDOFindEditTheme& operator =( const RDOFindEditTheme& theme );
-	rbool operator ==( const RDOFindEditTheme& theme ) const;
-	rbool operator !=( const RDOFindEditTheme& theme ) const;
+	FindTheme& operator =( const FindTheme& theme );
+	rbool operator ==( const FindTheme& theme ) const;
+	rbool operator !=( const FindTheme& theme ) const;
 
 	virtual void load(QSettings& settings);
 	virtual void save(QSettings& settings) const;
@@ -43,27 +43,27 @@ public:
 	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
 	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
-	static RDOFindEditTheme getDefaultTheme();
-	static RDOFindEditTheme getClassicTheme();
-	static RDOFindEditTheme getTwilightTheme();
-	static RDOFindEditTheme getOceanTheme();
+	static FindTheme getDefaultTheme();
+	static FindTheme getClassicTheme();
+	static FindTheme getTwilightTheme();
+	static FindTheme getOceanTheme();
 };
 
-QSettings& operator<< (QSettings& settings, const RDOFindEditTheme& theme);
-QSettings& operator>> (QSettings& settings,       RDOFindEditTheme& theme);
+QSettings& operator<< (QSettings& settings, const FindTheme& theme);
+QSettings& operator>> (QSettings& settings,       FindTheme& theme);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFindEditStyle
+// -------------------- FindStyle
 // --------------------------------------------------------------------------------
-class RDOFindEditStyle: public LogEditStyle
+class FindStyle: public LogEditStyle
 {
 public:
-	RDOFindEditStyle();
-	virtual ~RDOFindEditStyle();
+	FindStyle();
+	virtual ~FindStyle();
 
-	RDOFindEditStyle& operator =( const RDOFindEditStyle& style );
-	rbool operator ==( const RDOFindEditStyle& style ) const;
-	rbool operator !=( const RDOFindEditStyle& style ) const;
+	FindStyle& operator =( const FindStyle& style );
+	rbool operator ==( const FindStyle& style ) const;
+	rbool operator !=( const FindStyle& style ) const;
 };
 
 }}} // namespace rdo::gui::editor

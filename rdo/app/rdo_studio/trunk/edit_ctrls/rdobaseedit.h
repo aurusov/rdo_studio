@@ -28,9 +28,6 @@
 
 namespace rdo { namespace gui { namespace editor {
 
-// --------------------------------------------------------------------------------
-// -------------------- EditBase
-// --------------------------------------------------------------------------------
 class EditBase
 	: public ScintillaEditBase
 	, public ActionActivator

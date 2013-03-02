@@ -19,7 +19,7 @@
 class DockBuild: public DockFocusable
 {
 public:
-	typedef rdo::gui::editor::RDOBuildEdit context_type;
+	typedef rdo::gui::editor::Build context_type;
 
 	DockBuild(PTR(QWidget) pParent);
 	virtual ~DockBuild();

@@ -17,18 +17,18 @@
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOBuildEditTheme
+// -------------------- BuildTheme
 // --------------------------------------------------------------------------------
-RDOBuildEditTheme::RDOBuildEditTheme(): LogEditTheme()
+BuildTheme::BuildTheme(): LogEditTheme()
 {
 	warning = true;
 }
 
-RDOBuildEditTheme::~RDOBuildEditTheme()
+BuildTheme::~BuildTheme()
 {
 }
 
-RDOBuildEditTheme& RDOBuildEditTheme::operator =( const RDOBuildEditTheme& theme )
+BuildTheme& BuildTheme::operator =( const BuildTheme& theme )
 {
 	LogEditTheme::operator=( theme );
 	warning = theme.warning;
@@ -36,55 +36,55 @@ RDOBuildEditTheme& RDOBuildEditTheme::operator =( const RDOBuildEditTheme& theme
 	return *this;
 }
 
-rbool RDOBuildEditTheme::operator ==( const RDOBuildEditTheme& theme ) const
+rbool BuildTheme::operator ==( const BuildTheme& theme ) const
 {
 	rbool flag = LogEditTheme::operator==( theme );
 	if ( flag )	flag &= warning == theme.warning ? true : false;
 	return flag;
 }
 
-rbool RDOBuildEditTheme::operator !=( const RDOBuildEditTheme& theme ) const
+rbool BuildTheme::operator !=( const BuildTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOBuildEditTheme::load(QSettings& settings)
+void BuildTheme::load(QSettings& settings)
 {
 	LogEditTheme::load(settings);
 	settings >> *this;
 }
 
-void RDOBuildEditTheme::save(QSettings& settings) const
+void BuildTheme::save(QSettings& settings) const
 {
 	LogEditTheme::save(settings);
 	settings << *this;
 }
 
-RDOBuildEditTheme RDOBuildEditTheme::getDefaultTheme()
+BuildTheme BuildTheme::getDefaultTheme()
 {
-	RDOBuildEditTheme theme;
+	BuildTheme theme;
 	return theme;
 }
 
-RDOBuildEditTheme RDOBuildEditTheme::getClassicTheme()
+BuildTheme BuildTheme::getClassicTheme()
 {
-	RDOBuildEditTheme theme;
+	BuildTheme theme;
 	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getClassicTheme();
 
 	return theme;
 }
 
-RDOBuildEditTheme RDOBuildEditTheme::getTwilightTheme()
+BuildTheme BuildTheme::getTwilightTheme()
 {
-	RDOBuildEditTheme theme;
+	BuildTheme theme;
 	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getTwilightTheme();
 
 	return theme;
 }
 
-RDOBuildEditTheme RDOBuildEditTheme::getOceanTheme()
+BuildTheme BuildTheme::getOceanTheme()
 {
-	RDOBuildEditTheme theme;
+	BuildTheme theme;
 	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getOceanTheme();
 
 	return theme;
@@ -92,14 +92,14 @@ RDOBuildEditTheme RDOBuildEditTheme::getOceanTheme()
 
 namespace rdo { namespace gui { namespace editor {
 
-QSettings& operator<< (QSettings& settings, const RDOBuildEditTheme& theme)
+QSettings& operator<< (QSettings& settings, const BuildTheme& theme)
 {
 	settings.setValue("warning", theme.warning);
 
 	return settings;
 }
 
-QSettings& operator>> (QSettings& settings, RDOBuildEditTheme& theme)
+QSettings& operator>> (QSettings& settings, BuildTheme& theme)
 {
 	theme.warning = settings.value("warning", theme.warning).toBool() ? true : false;
 
@@ -109,33 +109,33 @@ QSettings& operator>> (QSettings& settings, RDOBuildEditTheme& theme)
 }}} // namespace rdo::gui::editor
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOBuildEditStyle
+// -------------------- BuildStyle
 // --------------------------------------------------------------------------------
-RDOBuildEditStyle::RDOBuildEditStyle(): LogEditStyle()
+BuildStyle::BuildStyle(): LogEditStyle()
 {
-	theme = new RDOBuildEditTheme();
+	theme = new BuildTheme();
 }
 
-RDOBuildEditStyle::~RDOBuildEditStyle()
+BuildStyle::~BuildStyle()
 {
 }
 
-RDOBuildEditStyle& RDOBuildEditStyle::operator =( const RDOBuildEditStyle& style )
+BuildStyle& BuildStyle::operator =( const BuildStyle& style )
 {
 	LogEditStyle::operator=( style );
-	if ( theme && style.theme ) *static_cast<RDOBuildEditTheme*>(theme) = *static_cast<RDOBuildEditTheme*>(style.theme);
+	if ( theme && style.theme ) *static_cast<BuildTheme*>(theme) = *static_cast<BuildTheme*>(style.theme);
 
 	return *this;
 }
 
-rbool RDOBuildEditStyle::operator ==( const RDOBuildEditStyle& style ) const
+rbool BuildStyle::operator ==( const BuildStyle& style ) const
 {
 	rbool flag = LogEditStyle::operator==( style );
-	if ( theme && style.theme && flag ) flag &= *static_cast<RDOBuildEditTheme*>(theme) == *static_cast<RDOBuildEditTheme*>(style.theme);
+	if ( theme && style.theme && flag ) flag &= *static_cast<BuildTheme*>(theme) == *static_cast<BuildTheme*>(style.theme);
 	return flag;
 }
 
-rbool RDOBuildEditStyle::operator !=( const RDOBuildEditStyle& style ) const
+rbool BuildStyle::operator !=( const BuildStyle& style ) const
 {
 	return !(*this == style);
 }

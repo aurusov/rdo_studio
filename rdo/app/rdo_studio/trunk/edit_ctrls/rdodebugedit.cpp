@@ -22,20 +22,17 @@
 
 using namespace rdo::gui::editor;
 
-// --------------------------------------------------------------------------------
-// -------------------- RDODebugEdit
-// ---------------------------------------------------------------------------
-RDODebugEdit::RDODebugEdit(PTR(QWidget) pParent)
+Debug::Debug(PTR(QWidget) pParent)
 	: super(pParent)
-	, EditWithReadOnlyPopupMenu(pParent)
+	, PopupMenu(pParent)
 {
 	setReadOnly(true);
 }
 
-RDODebugEdit::~RDODebugEdit()
+Debug::~Debug()
 {}
 
-void RDODebugEdit::appendLine(CREF(QString) str)
+void Debug::appendLine(CREF(QString) str)
 {
 	rbool readOnly = isReadOnly();
 	setReadOnly(false);
@@ -53,14 +50,14 @@ void RDODebugEdit::appendLine(CREF(QString) str)
 	onUpdateEditGUI();
 }
 
-void RDODebugEdit::onHelpContext()
+void Debug::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_debug\n");
 	g_pApp->callQtAssistant(ba);
 }
 
-void RDODebugEdit::mousePressEvent(QMouseEvent* pEvent)
+void Debug::mousePressEvent(QMouseEvent* pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{

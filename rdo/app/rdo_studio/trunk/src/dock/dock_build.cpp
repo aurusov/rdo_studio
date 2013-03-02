@@ -50,7 +50,7 @@ void DockBuild::appendString(CREF(rdo::simulation::report::FileMessage) message)
 		return;
 	}
 
-	if (message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == rdo::simulation::report::FileMessage::MT_WARNING && static_cast<PTR(rdo::gui::editor::RDOBuildEditTheme)>(g_pApp->getStyle()->style_build.theme)->warning))
+	if (message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == rdo::simulation::report::FileMessage::MT_WARNING && static_cast<PTR(rdo::gui::editor::BuildTheme)>(g_pApp->getStyle()->style_build.theme)->warning))
 	{
 		PTR(rdo::simulation::report::BuildEditLineInfo) pLine = new rdo::simulation::report::BuildEditLineInfo(message);
 		getContext().appendLine(pLine);

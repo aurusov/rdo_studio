@@ -38,8 +38,8 @@ public:
 
 	void setErrorLine(int line = -1);
 
-	CPTR(rdo::gui::editor::LogEdit) getLog() const;
-	void setLog(REF(rdo::gui::editor::LogEdit) log);
+	CPTR(rdo::gui::editor::Log) getLog() const;
+	void setLog(REF(rdo::gui::editor::Log) log);
 
 	void setCanClearErrorLine(rbool value);
 
@@ -47,7 +47,7 @@ private:
 	typedef  RDOEditorBaseEdit  super;
 
 	QWidget*                    m_pView;
-	rdo::gui::editor::LogEdit*  m_pLog;
+	rdo::gui::editor::Log*  m_pLog;
 	QMenu*                      m_pPopupMenu;
 	int                         m_sciFoldMarginID;
 	int                         m_sciMarkerError;

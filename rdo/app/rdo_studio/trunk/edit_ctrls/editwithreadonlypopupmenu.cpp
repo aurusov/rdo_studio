@@ -16,7 +16,9 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-EditWithReadOnlyPopupMenu::EditWithReadOnlyPopupMenu(QWidget* pParent)
+using namespace rdo::gui::editor;
+
+PopupMenu::PopupMenu(QWidget* pParent)
 	: m_pPopupMenu(NULL)
 {
 	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
@@ -36,5 +38,5 @@ EditWithReadOnlyPopupMenu::EditWithReadOnlyPopupMenu(QWidget* pParent)
 	m_pPopupMenu->addAction(pMainWindow->actSearchBookmarksClearAll);
 }
 
-EditWithReadOnlyPopupMenu::~EditWithReadOnlyPopupMenu()
+PopupMenu::~PopupMenu()
 {}

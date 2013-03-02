@@ -239,20 +239,20 @@ private:
 	rbool m_showFullName;
 
 	rdoEditor::RDOEditorEditStyle       style_editor;
-	rdo::gui::editor::RDOBuildEditStyle style_build;
+	rdo::gui::editor::BuildStyle style_build;
 	rdo::gui::editor::EditBaseStyle     style_debug;
 	rdo::gui::tracer::LogStyle          style_trace;
 	rdoEditor::RDOEditorResultsStyle    style_results;
-	rdo::gui::editor::RDOFindEditStyle  style_find;
+	rdo::gui::editor::FindStyle  style_find;
 	rdo::gui::tracer::ChartViewStyle    style_chart;
 	RDOStudioFrameStyle                 style_frame;
 
 	PTR(rdoEditor::RDOEditorEdit)       preview_editor;
-	PTR(rdo::gui::editor::RDOBuildEdit) preview_build;
-	PTR(rdo::gui::editor::RDODebugEdit) preview_debug;
+	PTR(rdo::gui::editor::Build) preview_build;
+	PTR(rdo::gui::editor::Debug) preview_debug;
 	PTR(rdo::gui::tracer::LogMainWnd)   preview_trace;
 	PTR(rdoEditor::RDOEditorResults)    preview_results;
-	PTR(rdo::gui::editor::RDOFindEdit)  preview_find;
+	PTR(rdo::gui::editor::Find)  preview_find;
 
 	PTR(rdo::gui::tracer::ChartDoc)     preview_chart_doc;
 	PTR(rdo::gui::tracer::ChartView)    preview_chart;

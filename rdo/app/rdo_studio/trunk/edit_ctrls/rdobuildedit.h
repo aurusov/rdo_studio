@@ -20,16 +20,13 @@
 
 namespace rdo { namespace gui { namespace editor {
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOBuildEdit
-// --------------------------------------------------------------------------------
-class RDOBuildEdit
-	: public LogEdit
-	, public EditWithReadOnlyPopupMenu
+class Build
+	: public Log
+	, public PopupMenu
 {
 public:
-	RDOBuildEdit(PTR(QWidget) pParent);
-	virtual ~RDOBuildEdit();
+	Build(PTR(QWidget) pParent);
+	virtual ~Build();
 
 	virtual void showFirstError();
 
@@ -37,7 +34,7 @@ protected:
 	virtual void updateEdit(rdoEditor::RDOEditorEdit* pEdit, const LogEditLineInfo* pLineInfo);
 
 private:
-	typedef  LogEdit  super;
+	typedef  Log  super;
 	typedef  rdo::simulation::report::FileMessage RDOSyntaxMessage;
 
 	virtual void mousePressEvent(QMouseEvent* pEvent);

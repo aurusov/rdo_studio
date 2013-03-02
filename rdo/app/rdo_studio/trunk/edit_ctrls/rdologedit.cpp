@@ -23,10 +23,7 @@
 
 using namespace rdo::gui::editor;
 
-// --------------------------------------------------------------------------------
-// -------------------- LogEdit
-// ---------------------------------------------------------------------------
-LogEdit::LogEdit(PTR(QWidget) pParent)
+Log::Log(PTR(QWidget) pParent)
 	: EditBase  (pParent)
 	, m_currentLine(-1)
 {
@@ -41,7 +38,7 @@ LogEdit::LogEdit(PTR(QWidget) pParent)
 	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified()));
 }
 
-void LogEdit::catchDoubleClick(int position, int line)
+void Log::catchDoubleClick(int position, int line)
 {
 	m_currentLine = line;
 
@@ -62,7 +59,7 @@ void LogEdit::catchDoubleClick(int position, int line)
 	sendEditor( SCI_SETSELECTIONEND  , position);
 }
 
-void LogEdit::catchModified()
+void Log::catchModified()
 {
 	if (hasSelectLine())
 	{
@@ -70,12 +67,12 @@ void LogEdit::catchModified()
 	}
 }
 
-LogEdit::~LogEdit()
+Log::~Log()
 {
 	clearLines();
 }
 
-void LogEdit::setEditorStyle(PTR(LogEditStyle) pStyle)
+void Log::setEditorStyle(PTR(LogEditStyle) pStyle)
 {
 	EditBase::setEditorStyle(pStyle);
 	if (!m_pStyle)
@@ -86,7 +83,7 @@ void LogEdit::setEditorStyle(PTR(LogEditStyle) pStyle)
 	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<PTR(LogEditTheme)>(m_pStyle->theme)->selectLineBgColor);
 }
 
-void LogEdit::gotoPrev()
+void Log::gotoPrev()
 {
 	m_currentLine--;
 	if (m_currentLine < 0)
@@ -123,32 +120,32 @@ void LogEdit::gotoPrev()
 	}
 }
 
-void LogEdit::getLines(REF(LogEditLineInfoList) lines) const
+void Log::getLines(REF(LogEditLineInfoList) lines) const
 {
 	lines = m_lines;
 }
 
-rsint LogEdit::getCurrentLine() const
+rsint Log::getCurrentLine() const
 {
 	return m_currentLine;
 }
 
-rsint LogEdit::getSciMarkerLine() const
+rsint Log::getSciMarkerLine() const
 {
 	return m_sciMarkerLine;
 }
 
-void LogEdit::setCurrentLine(rsint currentLine)
+void Log::setCurrentLine(rsint currentLine)
 {
 	m_currentLine = currentLine;
 }
 
-void LogEdit::setSciMarkerLine(rsint sciMarkerLine)
+void Log::setSciMarkerLine(rsint sciMarkerLine)
 {
 	m_sciMarkerLine = sciMarkerLine;
 }
 
-void LogEdit::gotoNext()
+void Log::gotoNext()
 {
 	m_currentLine++;
 	LogEditLineInfoList::iterator it = m_lines.begin();
@@ -191,13 +188,13 @@ void LogEdit::gotoNext()
 	}
 }
 
-void LogEdit::clearAll()
+void Log::clearAll()
 {
 	EditBase::clearAll();
 	clearLines();
 }
 
-void LogEdit::appendLine(PTR(LogEditLineInfo) pLine)
+void Log::appendLine(PTR(LogEditLineInfo) pLine)
 {
 	m_lines.push_back(pLine);
 	rbool readOnly = isReadOnly();
@@ -219,7 +216,7 @@ void LogEdit::appendLine(PTR(LogEditLineInfo) pLine)
 	onUpdateEditGUI();
 }
 
-void LogEdit::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScroll)
+void Log::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScroll)
 {
 	if (pLineInfo->getLineNumber() != -1)
 	{
@@ -253,7 +250,7 @@ void LogEdit::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, rbool use
 	}
 }
 
-void LogEdit::updateEdit(PTR(rdoEditor::RDOEditorEdit) pEdit, CPTR(LogEditLineInfo) pLineInfo)
+void Log::updateEdit(PTR(rdoEditor::RDOEditorEdit) pEdit, CPTR(LogEditLineInfo) pLineInfo)
 {
 	pEdit->scrollToLine(pLineInfo->getLineNumber());
 	int pos = pEdit->getPositionFromLine(pLineInfo->getLineNumber()) + pLineInfo->getPosInLine();
@@ -262,7 +259,7 @@ void LogEdit::updateEdit(PTR(rdoEditor::RDOEditorEdit) pEdit, CPTR(LogEditLineIn
 	pEdit->setFocus();
 }
 
-void LogEdit::clearSelectLine()
+void Log::clearSelectLine()
 {
 	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine);
 	if (nextLine >= 0)
@@ -272,13 +269,13 @@ void LogEdit::clearSelectLine()
 	}
 }
 
-rbool LogEdit::hasSelectLine() const
+rbool Log::hasSelectLine() const
 {
 	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine);
 	return nextLine >= 0;
 }
 
-void LogEdit::clearLines()
+void Log::clearLines()
 {
 	BOOST_FOREACH(LogEditLineInfo* pInfo, m_lines)
 	{

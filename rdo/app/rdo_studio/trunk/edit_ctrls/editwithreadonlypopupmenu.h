@@ -19,13 +19,17 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-class EditWithReadOnlyPopupMenu
+namespace rdo { namespace gui { namespace editor {
+
+class PopupMenu
 {
 protected:
-	EditWithReadOnlyPopupMenu(QWidget* pParent);
-	virtual ~EditWithReadOnlyPopupMenu();
+	PopupMenu(QWidget* pParent);
+	virtual ~PopupMenu();
 
 	QMenu* m_pPopupMenu;
 };
+
+}}} // namespace rdo::gui::editor
 
 #endif // _RDO_STUDIO_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
