@@ -21,17 +21,18 @@ namespace rdo { namespace gui { namespace editor {
 // --------------------------------------------------------------------------------
 // -------------------- EditBaseTheme
 // --------------------------------------------------------------------------------
-enum BookmarkStyle {
-	RDOBOOKMARKS_NONE = 0,
-	RDOBOOKMARKS_CIRCLE,
-	RDOBOOKMARKS_RECT,
-	RDOBOOKMARKS_ROUNDRECT,
-	RDOBOOKMARKS_ARROW
-};
-
 class EditBaseTheme: public rdoStyle::RDOStyleTheme
 {
 public:
+	enum Bookmark
+	{
+		B_NONE = 0,
+		B_CIRCLE,
+		B_RECT,
+		B_ROUNDRECT,
+		B_ARROW
+	};
+
 	EditBaseTheme();
 	virtual ~EditBaseTheme();
 
@@ -47,7 +48,7 @@ public:
 	QColor bookmarkFgColor;
 	QColor bookmarkBgColor;
 
-	BookmarkStyle bookmarkStyle;
+	Bookmark bookmarkStyle;
 
 	virtual rbool styleDefault( const int styleType ) const;
 	virtual rbool styleUsing( const int styleType ) const;

@@ -30,9 +30,8 @@ EditBaseTheme::EditBaseTheme(): RDOStyleTheme()
 	bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
 	bookmarkBgColor  = QColor( 0x00, 0xFF, 0xFF );
 
-	defaultStyle = RDOStyleFont::NONE;
-
-	bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+	defaultStyle  = RDOStyleFont::NONE;
+	bookmarkStyle = EditBaseTheme::B_CIRCLE;
 }
 
 EditBaseTheme::~EditBaseTheme()
@@ -134,9 +133,8 @@ EditBaseTheme EditBaseTheme::getClassicTheme()
 	theme.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = QColor( 0x80, 0x80, 0x00 );
 
-	theme.defaultStyle = RDOStyleFont::NONE;
-
-	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+	theme.defaultStyle  = RDOStyleFont::NONE;
+	theme.bookmarkStyle = EditBaseTheme::B_CIRCLE;
 
 	return theme;
 }
@@ -153,9 +151,8 @@ EditBaseTheme EditBaseTheme::getTwilightTheme()
 	theme.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = QColor( 0x00, 0x00, 0xFF );
 
-	theme.defaultStyle = RDOStyleFont::NONE;
-
-	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+	theme.defaultStyle  = RDOStyleFont::NONE;
+	theme.bookmarkStyle = EditBaseTheme::B_CIRCLE;
 
 	return theme;
 }
@@ -172,9 +169,8 @@ EditBaseTheme EditBaseTheme::getOceanTheme()
 	theme.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
 	theme.bookmarkBgColor  = QColor( 0xBA, 0xCC, 0xFC );
 
-	theme.defaultStyle = RDOStyleFont::NONE;
-
-	theme.bookmarkStyle = RDOBOOKMARKS_CIRCLE;
+	theme.defaultStyle  = RDOStyleFont::NONE;
+	theme.bookmarkStyle = EditBaseTheme::B_CIRCLE;
 
 	return theme;
 }
@@ -209,7 +205,7 @@ QSettings& operator>> (QSettings& settings, EditBaseTheme& theme)
 	theme.bookmarkFgColor  = QColor(settings.value("bookmark_fg_color", theme.bookmarkFgColor.name()).toString());
 	theme.bookmarkBgColor  = QColor(settings.value("bookmark_bg_color", theme.bookmarkBgColor.name()).toString());
 	theme.defaultStyle     = static_cast<RDOStyleFont::style>(settings.value("default_style", theme.defaultStyle).toInt());
-	theme.bookmarkStyle    = static_cast<BookmarkStyle>(settings.value("bookmark_style", theme.bookmarkStyle).toInt());
+	theme.bookmarkStyle    = static_cast<EditBaseTheme::Bookmark>(settings.value("bookmark_style", theme.bookmarkStyle).toInt());
 	
 	return settings;
 }

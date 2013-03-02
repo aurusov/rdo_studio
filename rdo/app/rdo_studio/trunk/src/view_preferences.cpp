@@ -28,8 +28,8 @@ rbool ViewPreferences::null_wordwrap      = false;
 rbool ViewPreferences::null_horzscrollbar = true;
 rbool ViewPreferences::null_warning       = true;
 rbool ViewPreferences::null_commentfold   = false;
-BookmarkStyle ViewPreferences::null_bookmarkstyle = RDOBOOKMARKS_NONE;
-RDOFoldStyle  ViewPreferences::null_foldstyle     = RDOFOLDS_NONE;
+EditBaseTheme::Bookmark ViewPreferences::null_bookmarkstyle = EditBaseTheme::B_NONE;
+RDOFoldStyle            ViewPreferences::null_foldstyle     = RDOFOLDS_NONE;
 QColor ViewPreferences::null_fg_color = QColor(0x00, 0x00, 0x00);
 QColor ViewPreferences::null_bg_color = QColor(0xFF, 0xFF, 0xFF);
 
@@ -117,11 +117,11 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	switchPreviewComboBox->addItem("Chart",   IT_CHART);
 	switchPreviewComboBox->addItem("Frame",   IT_FRAME);
 
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Нет"),           RDOBOOKMARKS_NONE);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Круг"),          RDOBOOKMARKS_CIRCLE);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Прямоугольник"), RDOBOOKMARKS_RECT);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Овал"),          RDOBOOKMARKS_ROUNDRECT);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Стрелка"),       RDOBOOKMARKS_ARROW);
+	bookmarkComboBox->addItem(QString::fromLocal8Bit("Нет"),           EditBaseTheme::B_NONE);
+	bookmarkComboBox->addItem(QString::fromLocal8Bit("Круг"),          EditBaseTheme::B_CIRCLE);
+	bookmarkComboBox->addItem(QString::fromLocal8Bit("Прямоугольник"), EditBaseTheme::B_RECT);
+	bookmarkComboBox->addItem(QString::fromLocal8Bit("Овал"),          EditBaseTheme::B_ROUNDRECT);
+	bookmarkComboBox->addItem(QString::fromLocal8Bit("Стрелка"),       EditBaseTheme::B_ARROW);
 
 	foldComboBox->addItem(QString::fromLocal8Bit("Нет"),             RDOFOLDS_NONE);
 	foldComboBox->addItem(QString::fromLocal8Bit("Плюс"),            RDOFOLDS_PLUS);
@@ -543,7 +543,7 @@ void ViewPreferences::onWordWrap(int state)
 void ViewPreferences::onBookmark(int index)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->bookmarkstyle = static_cast<BookmarkStyle>(index);
+	item->bookmarkstyle = static_cast<EditBaseTheme::Bookmark>(index);
 	updatePreview();
 }
 
