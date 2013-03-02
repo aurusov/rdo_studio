@@ -1208,15 +1208,15 @@ void RDOStudioModel::updateActions()
 				double showRate = g_pModel->getShowRate();
 				if (showRate < 1e-10 || showRate > 1e10)
 				{
-					showRateStr += QString::fromLocal8Bit(rdo::format("%e", showRate).c_str());
+					showRateStr += QString::number(showRate, 'e');
 				}
 				else if (showRate >= 1)
 				{
-					showRateStr += QString::fromLocal8Bit(rdo::format("%1.1f", showRate).c_str());
+					showRateStr += QString::number(showRate, 'f', 1);
 				}
 				else
 				{
-					showRateStr += QString::fromLocal8Bit(rdo::format("%1.10f", showRate).c_str());
+					showRateStr += QString::number(showRate, 'f', 10);
 				}
 			}
 			break;
