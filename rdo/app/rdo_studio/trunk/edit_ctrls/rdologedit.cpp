@@ -11,6 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
+#include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/report/error_code.h"
 #include "app/rdo_studio/edit_ctrls/rdologedit.h"
