@@ -14,6 +14,7 @@
 #include "utils/warning_disable.h"
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
+#include <boost/algorithm/string.hpp>
 #include <QPainter>
 #include <QScrollBar>
 #include <QClipboard>

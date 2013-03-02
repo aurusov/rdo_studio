@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/rdo_edit/rdoeditorbaseedit.h"
 #include "app/rdo_studio/res/scintilla/ac_function.xpm"

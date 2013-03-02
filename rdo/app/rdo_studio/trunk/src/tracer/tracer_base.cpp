@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm/find.hpp>
+#include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/tracer_base.h"
 #include "app/rdo_studio/src/tracer/tracer_resource_type.h"
