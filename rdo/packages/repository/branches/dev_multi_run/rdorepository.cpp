@@ -603,7 +603,7 @@ void RDOThreadRepository::beforeModelStart()
 	if (m_files[rdoModelObjects::TRC].m_described)
 	{
 		++m_runNumber;
-		tstring buffer = rdo::format("%i", m_runNumber);
+		tstring buffer = rdo::format(_T("%i"), m_runNumber);
 		m_traceFile.open((m_modelPath + buffer + getFileExtName(rdoModelObjects::TRC)).c_str(), std::ios::out | std::ios::binary);
 		if (m_traceFile.is_open())
 		{
@@ -624,7 +624,7 @@ void RDOThreadRepository::stopModel()
 	}
 	if (m_files[rdoModelObjects::PMV].m_described)
 	{
-		tstring buffer = rdo::format("%i", m_runNumber);
+		tstring buffer = rdo::format(_T("%i"), m_runNumber);
 		rdo::ofstream results_file;
 		results_file.open((m_modelPath + buffer + getFileExtName(rdoModelObjects::PMV)).c_str(), std::ios::out | std::ios::binary );
 		if (results_file.is_open())
