@@ -11,7 +11,9 @@
 #define _RDO_STUDIO_TRACER_LOGGER_VIEW_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QColor>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/style.h"
 // --------------------------------------------------------------------------------

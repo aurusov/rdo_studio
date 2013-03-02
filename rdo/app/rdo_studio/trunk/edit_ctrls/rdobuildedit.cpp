@@ -10,7 +10,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QProcess>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/report/build_edit_line_info.h"
 #include "app/rdo_studio/edit_ctrls/rdobuildedit.h"

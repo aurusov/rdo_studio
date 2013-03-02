@@ -11,8 +11,10 @@
 #define _RDO_STUDIO_MODEL_MODEL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <boost/optional.hpp>
 #include <QObject>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "kernel/rdothread.h"

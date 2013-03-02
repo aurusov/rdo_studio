@@ -11,8 +11,10 @@
 #define _RDO_STUDIO_RDO_EDIT_RDOEDITOREDIT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QWidget>
 #include <QMenu>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/rdo_edit/rdoeditorbaseedit.h"
 #include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"

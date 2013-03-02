@@ -12,9 +12,11 @@
 #define _RDO_STUDIO_STATUS_BAR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QProgressBar>
 #include <QMainWindow>
 #include <QLabel>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include <utils/smart_ptr/intrusive_ptr.h>
 // --------------------------------------------------------------------------------

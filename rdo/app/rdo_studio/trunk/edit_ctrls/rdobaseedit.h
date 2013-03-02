@@ -12,16 +12,18 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <vector>
 #include <boost/function.hpp>
 #include <QColor>
+#include "thirdparty/scintilla/qt/ScintillaEditBase/ScintillaEditBase.h"
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 #include "app/rdo_studio/src/dialog/find_dialog.h"
 #include "app/rdo_studio/src/dialog/find_replace_dialog.h"
-#include "thirdparty/scintilla/qt/ScintillaEditBase/ScintillaEditBase.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {

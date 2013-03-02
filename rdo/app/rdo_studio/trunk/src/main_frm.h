@@ -11,16 +11,18 @@
 #define _RDO_STUDIO_MAIN_FRM_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <math.h>
 #include <boost/mpl/integral_c.hpp>
 #include <QMainWindow>
 #include <QSlider>
 #include <QSignalMapper>
+#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_main_window.h"
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio/src/main_windows_base.h"
 #include "app/rdo_studio/src/status_bar.h"
-#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_main_window.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------

@@ -11,9 +11,11 @@
 #define _RDO_STUDIO_NEW_MODEL_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QDialog>
-// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_new_model_dialog.h"
+#include "utils/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
 class NewModelDialog

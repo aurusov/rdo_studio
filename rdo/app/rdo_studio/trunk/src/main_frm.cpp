@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm/find.hpp>
@@ -17,6 +18,7 @@
 #include <QTextCodec>
 #include <QSettings>
 #include <QMdiSubWindow>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_frm.h"
 #include "app/rdo_studio/src/application.h"

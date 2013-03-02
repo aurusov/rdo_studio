@@ -11,11 +11,13 @@
 #define _RDO_STUDIO_FRAME_MANAGER_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <vector>
 #include <map>
 #include <memory>
 #include <QMdiSubWindow>
 #include <QTreeWidget>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "app/rdo_studio/src/frame/frame_view.h"

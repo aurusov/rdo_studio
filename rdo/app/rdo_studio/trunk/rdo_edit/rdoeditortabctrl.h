@@ -11,7 +11,9 @@
 #define _RDO_STUDIO_RDO_EDIT_RDOEDITORTABCTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QTabWidget>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/rdo_edit/rdoeditoredit.h"
 // --------------------------------------------------------------------------------

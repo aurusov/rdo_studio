@@ -11,9 +11,11 @@
 #define _RDO_STUDIO_FRAME_OPTIONS_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QWidget>
-// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_frame_options_widget.h"
+#include "utils/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/frame/frame_style.h"
 // --------------------------------------------------------------------------------
 

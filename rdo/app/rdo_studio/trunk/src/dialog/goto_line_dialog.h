@@ -9,10 +9,13 @@
 
 #ifndef _RDO_STUDIO_GO_TO_NEXT_LINE_DIALOG_H_
 #define _RDO_STUDIO_GO_TO_NEXT_LINE_DIALOG_H_
+
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QDialog>
-// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_goto_line_dialog.h"
+#include "utils/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
 class GoToLineDialog

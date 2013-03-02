@@ -10,20 +10,13 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef COMPILER_VISUAL_STUDIO
-	#pragma warning(disable: 4100)
-#endif
-
+#include "utils/warning_disable.h"
 #include <boost/program_options.hpp>
-
-#ifdef COMPILER_VISUAL_STUDIO
-	#pragma warning(default: 4100)
-#endif
-
 #include <QProcess>
 #include <QTextCodec>
 #include <QSettings>
 #include <QMessageBox>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"

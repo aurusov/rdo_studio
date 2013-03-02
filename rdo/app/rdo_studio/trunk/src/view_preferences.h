@@ -11,10 +11,12 @@
 #define _RDO_STUDIO_VIEW_PREFERENCES_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QDialog>
 #include <QColorDialog>
-// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_view_preferenses.h"
+#include "utils/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
 #include "app/rdo_studio/edit_ctrls/rdodebugedit.h"

@@ -12,7 +12,9 @@
 #define _RDO_STUDIO_TRACER_LOGGER_MAIN_WND_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QAbstractScrollArea>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/logger/tracer_logger_view.h"
 // --------------------------------------------------------------------------------

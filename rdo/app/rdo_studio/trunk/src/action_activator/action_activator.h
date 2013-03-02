@@ -11,7 +11,9 @@
 #define _RDO_STUDIO_ACTION_ACTIVATOR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QFocusEvent>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 

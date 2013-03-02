@@ -11,11 +11,13 @@
 #define _RDO_STUDIO_APPLICATION_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <fstream>
 #include <QProcess>
 #include <QTimer>
 #include <QApplication>
 #include <QMainWindow>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
