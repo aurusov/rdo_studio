@@ -31,7 +31,7 @@ LPFuzzySet FuzzySet::operator&& (CREF(LPFuzzySet) pSet) const
 		FuzzySet::FuzzySetDefinition::const_iterator it2 = pSet->find(it1->first);
 		if (it2 != pSet->end())
 		{
-			pFuzzySetResult->operator[](it1->first) = std::min(it1->second, it2->second);
+			pFuzzySetResult->operator[](it1->first) = (std::min)(it1->second, it2->second);
 		}
 		++it1;
 	}
