@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdoeditortabctrl.cpp
+  \file      model_tab_ctrl.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/rdo_edit/rdoeditortabctrl.h"
+#include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
 // --------------------------------------------------------------------------------

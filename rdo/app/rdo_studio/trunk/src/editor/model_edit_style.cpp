@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdoeditoreditstyle.cpp
+  \file      model_edit_style.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
@@ -11,7 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"
+#include "app/rdo_studio/src/editor/model_edit_style.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::editor;

@@ -25,7 +25,7 @@
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/about.h"
 #include "app/rdo_studio/src/view_preferences.h"
-#include "app/rdo_studio/rdo_edit/rdoeditortabctrl.h"
+#include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------

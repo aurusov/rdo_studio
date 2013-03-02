@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdologedit.cpp
+  \file      log_edit.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.02.2003
   \brief     
@@ -14,10 +14,10 @@
 #include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/report/error_code.h"
-#include "app/rdo_studio/edit_ctrls/rdologedit.h"
+#include "app/rdo_studio/src/editor/log_edit.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/model/model.h"
-#include "app/rdo_studio/rdo_edit/rdoeditortabctrl.h"
+#include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 

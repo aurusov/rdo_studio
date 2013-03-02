@@ -7,14 +7,14 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_RDO_EDIT_RDOEDITORRESULTS_H_
-#define _RDO_STUDIO_RDO_EDIT_RDOEDITORRESULTS_H_
+#ifndef _RDO_STUDIO_EDITOR_PARSER_EDIT_H_
+#define _RDO_STUDIO_EDITOR_PARSER_EDIT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/rdo_edit/rdoeditorbaseedit.h"
-#include "app/rdo_studio/rdo_edit/rdoeditorresultsstyle.h"
-#include "app/rdo_studio/edit_ctrls/editwithreadonlypopupmenu.h"
+#include "app/rdo_studio/src/editor/parser_edit.h"
+#include "app/rdo_studio/src/editor/results_edit_style.h"
+#include "app/rdo_studio/src/editor/edit_popup_menu.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace editor {
@@ -38,4 +38,4 @@ private:
 
 }}} // namespace rdo::gui::editor
 
-#endif // _RDO_STUDIO_RDO_EDIT_RDOEDITORRESULTS_H_
+#endif // _RDO_STUDIO_EDITOR_PARSER_EDIT_H_

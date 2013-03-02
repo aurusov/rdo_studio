@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/rdo_edit/rdoeditorbaseedit.h"
+#include "app/rdo_studio/src/editor/parser_edit.h"
 #include "app/rdo_studio/res/scintilla/ac_function.xpm"
 #include "app/rdo_studio/res/scintilla/ac_data.xpm"
 #include "app/rdo_studio/res/scintilla/ac_trace.xpm"

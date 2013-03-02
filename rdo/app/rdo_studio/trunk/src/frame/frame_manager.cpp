@@ -23,7 +23,7 @@
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
 #include "app/rdo_studio/src/frame/frame_tree_ctrl.h"
-#include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
+#include "app/rdo_studio/src/editor/debug_edit.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------

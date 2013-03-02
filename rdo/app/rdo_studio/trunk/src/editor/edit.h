@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdobaseedit.h
+  \file      edit.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.02.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_EDIT_CTRLS_RDOBASEEDIT_H_
-#define _RDO_STUDIO_EDIT_CTRLS_RDOBASEEDIT_H_
+#ifndef _RDO_STUDIO_EDITOR_EDIT_H_
+#define _RDO_STUDIO_EDITOR_EDIT_H_
 
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
@@ -20,7 +20,7 @@
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
-#include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
+#include "app/rdo_studio/src/editor/edit_style.h"
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 #include "app/rdo_studio/src/dialog/find_dialog.h"
 #include "app/rdo_studio/src/dialog/find_replace_dialog.h"
@@ -252,4 +252,4 @@ signals:
 
 }}} // namespace rdo::gui::editor
 
-#endif // _RDO_STUDIO_EDIT_CTRLS_RDOBASEEDIT_H_
+#endif // _RDO_STUDIO_EDITOR_EDIT_H_

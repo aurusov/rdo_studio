@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_focusable.h"
-#include "app/rdo_studio/edit_ctrls/rdofindedit.h"
+#include "app/rdo_studio/src/editor/find_edit.h"
 // --------------------------------------------------------------------------------
 
 class DockFind: public DockFocusable

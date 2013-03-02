@@ -19,8 +19,8 @@
 #include "app/rdo_studio/src/model/model_view.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_windows_base.h"
-#include "app/rdo_studio/edit_ctrls/rdofindedit.h"
-#include "app/rdo_studio/rdo_edit/rdoeditortabctrl.h"
+#include "app/rdo_studio/src/editor/find_edit.h"
+#include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/src/main_frm.h"
 // --------------------------------------------------------------------------------
 

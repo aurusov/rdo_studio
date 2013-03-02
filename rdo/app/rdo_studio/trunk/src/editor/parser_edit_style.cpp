@@ -11,7 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/rdo_edit/rdoeditorbaseeditstyle.h"
+#include "app/rdo_studio/src/editor/parser_edit_style.h"
 #include "thirdparty/scintilla/include/SciLexer.h"
 // --------------------------------------------------------------------------------
 

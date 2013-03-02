@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdobuildedit.cpp
+  \file      build_edit.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.02.2003
   \brief     
@@ -15,8 +15,8 @@
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/report/build_edit_line_info.h"
-#include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
-#include "app/rdo_studio/rdo_edit/rdoeditoredit.h"
+#include "app/rdo_studio/src/editor/build_edit.h"
+#include "app/rdo_studio/src/editor/model_edit.h"
 #include "app/rdo_studio/src/main_frm.h"
 #include "app/rdo_studio/src/application.h"
 // --------------------------------------------------------------------------------

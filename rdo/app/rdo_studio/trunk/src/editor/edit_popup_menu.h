@@ -1,14 +1,14 @@
 /*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      editwithreadonlypopupmenu.h
+  \copyright (c) RDO-Team, 2013
+  \file      edit_popup_menu.h
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      25.01.2013
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
-#define _RDO_STUDIO_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
+#ifndef _RDO_STUDIO_EDITOR_EDIT_POPUP_MENU_H_
+#define _RDO_STUDIO_EDITOR_EDIT_POPUP_MENU_H_
 
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
@@ -32,4 +32,4 @@ protected:
 
 }}} // namespace rdo::gui::editor
 
-#endif // _RDO_STUDIO_EDIT_CTRLS_EDITWITHREADONLYPOPUPMENU_H_
+#endif // _RDO_STUDIO_EDITOR_EDIT_POPUP_MENU_H_

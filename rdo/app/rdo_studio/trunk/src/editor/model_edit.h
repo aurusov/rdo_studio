@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdoeditoredit.h
+  \file      model_edit.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_RDO_EDIT_RDOEDITOREDIT_H_
-#define _RDO_STUDIO_RDO_EDIT_RDOEDITOREDIT_H_
+#ifndef _RDO_STUDIO_EDITOR_MODEL_EDIT_H_
+#define _RDO_STUDIO_EDITOR_MODEL_EDIT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
@@ -16,9 +16,9 @@
 #include <QMenu>
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/rdo_edit/rdoeditorbaseedit.h"
-#include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"
-#include "app/rdo_studio/edit_ctrls/rdologedit.h"
+#include "app/rdo_studio/src/editor/parser_edit.h"
+#include "app/rdo_studio/src/editor/model_edit_style.h"
+#include "app/rdo_studio/src/editor/log_edit.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace editor {
@@ -76,4 +76,4 @@ private slots:
 
 }}} // namespace rdo::gui::editor
 
-#endif // _RDO_STUDIO_RDO_EDIT_RDOEDITOREDIT_H_
+#endif // _RDO_STUDIO_EDITOR_MODEL_EDIT_H_

@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdobaseedit.cpp
+  \file      edit.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.02.2003
   \brief     
@@ -19,7 +19,7 @@
 #include <QClipboard>
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/edit_ctrls/rdobaseedit.h"
+#include "app/rdo_studio/src/editor/edit.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_frm.h"
 #include "app/rdo_studio/src/dialog/goto_line_dialog.h"

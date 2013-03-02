@@ -1,21 +1,21 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdoeditortabctrl.h
+  \file      model_tab_ctrl.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_RDO_EDIT_RDOEDITORTABCTRL_H_
-#define _RDO_STUDIO_RDO_EDIT_RDOEDITORTABCTRL_H_
+#ifndef _RDO_STUDIO_MODEL_TAB_CTRL_H_
+#define _RDO_STUDIO_MODEL_TAB_CTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
 #include <QTabWidget>
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/rdo_edit/rdoeditoredit.h"
+#include "app/rdo_studio/src/editor/model_edit.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace editor {
@@ -47,4 +47,4 @@ private:
 
 }}} // namespace rdo::gui::editor
 
-#endif // _RDO_STUDIO_RDO_EDIT_RDOEDITORTABCTRL_H_
+#endif // _RDO_STUDIO_MODEL_TAB_CTRL_H_

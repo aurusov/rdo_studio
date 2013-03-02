@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_focusable.h"
-#include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
+#include "app/rdo_studio/src/editor/debug_edit.h"
 // --------------------------------------------------------------------------------
 
 class DockDebug: public DockFocusable

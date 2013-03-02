@@ -15,7 +15,7 @@
 #include <QColor>
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
+#include "app/rdo_studio/src/editor/edit_style.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace editor {

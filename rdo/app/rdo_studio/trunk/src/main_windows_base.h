@@ -12,11 +12,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"
-#include "app/rdo_studio/rdo_edit/rdoeditorresultsstyle.h"
-#include "app/rdo_studio/edit_ctrls/rdobuildeditstyle.h"
-#include "app/rdo_studio/edit_ctrls/rdobaseeditstyle.h"
-#include "app/rdo_studio/edit_ctrls/rdofindeditstyle.h"
+#include "app/rdo_studio/src/editor/model_edit_style.h"
+#include "app/rdo_studio/src/editor/results_edit_style.h"
+#include "app/rdo_studio/src/editor/build_edit_style.h"
+#include "app/rdo_studio/src/editor/edit_style.h"
+#include "app/rdo_studio/src/editor/find_edit_style.h"
 #include "app/rdo_studio/src/tracer/logger/tracer_logger_view_style.h"
 #include "app/rdo_studio/src/style.h"
 #include "app/rdo_studio/src/tracer/chart/chart_view_style.h"
@@ -33,14 +33,14 @@
 class MainWindowBase
 {
 public:
-	rdo::gui::editor::ModelStyle     style_editor;
-	rdo::gui::editor::BuildStyle             style_build;
-	rdo::gui::editor::EditBaseStyle          style_debug;
-	rdo::gui::tracer::LogStyle               style_trace;
-	rdo::gui::editor::ResultsStyle  style_results;
-	rdo::gui::editor::FindStyle              style_find;
-	RDOStudioFrameStyle                      style_frame;
-	rdo::gui::tracer::ChartViewStyle         style_chart;
+	rdo::gui::editor::ModelStyle      style_editor;
+	rdo::gui::editor::BuildStyle      style_build;
+	rdo::gui::editor::EditBaseStyle   style_debug;
+	rdo::gui::tracer::LogStyle        style_trace;
+	rdo::gui::editor::ResultsStyle    style_results;
+	rdo::gui::editor::FindStyle       style_find;
+	RDOStudioFrameStyle               style_frame;
+	rdo::gui::tracer::ChartViewStyle  style_chart;
 
 	rbool isMDIMaximazed() const { return true; }
 

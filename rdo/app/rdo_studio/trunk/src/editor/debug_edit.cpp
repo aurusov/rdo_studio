@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdodebugedit.cpp
+  \file      debug_edit.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.02.2003
   \brief     
@@ -14,7 +14,7 @@
 #include <QProcess>
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
+#include "app/rdo_studio/src/editor/debug_edit.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_frm.h"
 #include "thirdparty/scintilla/include/SciLexer.h"
