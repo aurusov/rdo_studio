@@ -11,7 +11,9 @@
 #define _UI_QT_VALIDATOR_INT_VALIDATOR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QtGui/qvalidator>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 

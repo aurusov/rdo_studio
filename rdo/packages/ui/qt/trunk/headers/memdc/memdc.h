@@ -11,8 +11,10 @@
 #define _UI_QT_MEMDC_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <QtGui/qpainter.h>
 #include <QtGui/qpixmap.h>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "ui/abstract/headers/memdc/memdc.h"
 // --------------------------------------------------------------------------------
