@@ -22,7 +22,7 @@ namespace rdoEditCtrl {
 // -------------------- RDODebugEdit
 // --------------------------------------------------------------------------------
 class RDODebugEdit
-	: public RDOBaseEdit
+	: public EditBase
 	, public EditWithReadOnlyPopupMenu
 {
 public:
@@ -32,7 +32,7 @@ public:
 	void appendLine(CREF(QString) str);
 
 private:
-	typedef  RDOBaseEdit  super;
+	typedef  EditBase  super;
 
 	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void onHelpContext();

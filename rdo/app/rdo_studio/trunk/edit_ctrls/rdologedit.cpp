@@ -27,7 +27,7 @@ using namespace rdoEditCtrl;
 // -------------------- LogEdit
 // ---------------------------------------------------------------------------
 LogEdit::LogEdit(PTR(QWidget) pParent)
-	: RDOBaseEdit  (pParent)
+	: EditBase  (pParent)
 	, m_currentLine(-1)
 {
 	setCurrentLine(-1);
@@ -77,7 +77,7 @@ LogEdit::~LogEdit()
 
 void LogEdit::setEditorStyle(PTR(LogEditStyle) pStyle)
 {
-	RDOBaseEdit::setEditorStyle(pStyle);
+	EditBase::setEditorStyle(pStyle);
 	if (!m_pStyle)
 		return;
 
@@ -193,7 +193,7 @@ void LogEdit::gotoNext()
 
 void LogEdit::clearAll()
 {
-	RDOBaseEdit::clearAll();
+	EditBase::clearAll();
 	clearLines();
 }
 

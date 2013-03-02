@@ -20,7 +20,7 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- LogEditTheme
 // --------------------------------------------------------------------------------
-class LogEditTheme: public RDOBaseEditTheme
+class LogEditTheme: public EditBaseTheme
 {
 public:
 	LogEditTheme();
@@ -47,7 +47,7 @@ QSettings& operator>> (QSettings& settings,       LogEditTheme& theme);
 // --------------------------------------------------------------------------------
 // -------------------- LogEditStyle
 // --------------------------------------------------------------------------------
-class LogEditStyle: public RDOBaseEditStyle
+class LogEditStyle: public EditBaseStyle
 {
 public:
 	LogEditStyle();

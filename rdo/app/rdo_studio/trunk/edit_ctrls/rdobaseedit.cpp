@@ -31,32 +31,32 @@ using namespace rdoEditCtrl;
 using namespace rdoStyle;
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOBaseEdit::Group
+// -------------------- EditBase::Group
 // ---------------------------------------------------------------------------
-RDOBaseEdit::Group::Group()
+EditBase::Group::Group()
 	: bMatchCase     (false)
 	, bMatchWholeWord(false)
 	, bSearchDown    (true )
 {}
 
-void RDOBaseEdit::Group::insert(PTR(RDOBaseEdit) pEdit)
+void EditBase::Group::insert(PTR(EditBase) pEdit)
 {
 	m_list.push_back(pEdit);
 }
 
-RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::begin() const
+EditBase::Group::List::const_iterator EditBase::Group::begin() const
 {
 	return m_list.begin();
 }
 
-RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::end() const
+EditBase::Group::List::const_iterator EditBase::Group::end() const
 {
 	return m_list.end();
 }
 
-RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::next(CREF(List::const_iterator) it) const
+EditBase::Group::List::const_iterator EditBase::Group::next(CREF(List::const_iterator) it) const
 {
-	RDOBaseEdit::Group::List::const_iterator result(it);
+	EditBase::Group::List::const_iterator result(it);
 	++result;
 	if (result == m_list.end())
 	{
@@ -65,9 +65,9 @@ RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::next(CREF(List::con
 	return result;
 }
 
-RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::prev(CREF(List::const_iterator) it) const
+EditBase::Group::List::const_iterator EditBase::Group::prev(CREF(List::const_iterator) it) const
 {
-	RDOBaseEdit::Group::List::const_iterator result(it);
+	EditBase::Group::List::const_iterator result(it);
 	if (result == m_list.begin())
 	{
 		result = m_list.end();
@@ -76,18 +76,18 @@ RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::prev(CREF(List::con
 	return result;
 }
 
-void RDOBaseEdit::Group::for_each(CREF(this_method) fun) const
+void EditBase::Group::for_each(CREF(this_method) fun) const
 {
 	boost::range::for_each(m_list, fun);
 }
 
-RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::find_if(CREF(this_predicate) fun) const
+EditBase::Group::List::const_iterator EditBase::Group::find_if(CREF(this_predicate) fun) const
 {
 	return boost::range::find_if(m_list, fun);
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOBaseEdit
+// -------------------- EditBase
 // ---------------------------------------------------------------------------
 
 // ---------------
@@ -126,7 +126,7 @@ RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::find_if(CREF(this_p
 
 // ---------------
 
-RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent)
+EditBase::EditBase(PTR(QWidget) pParent)
 	: super               (pParent)
 	, m_markerCount       (0    )
 	, m_pStyle            (NULL )
@@ -151,15 +151,15 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent)
 	sendEditor(SCI_USEPOPUP, 0);
 }
 
-RDOBaseEdit::~RDOBaseEdit()
+EditBase::~EditBase()
 {}
 
-void RDOBaseEdit::catchNeedShown(int position, int length)
+void EditBase::catchNeedShown(int position, int length)
 {
 	ensureRangeVisible(position, position + length, false);
 }
 
-void RDOBaseEdit::catchCharAdded(int ch)
+void EditBase::catchCharAdded(int ch)
 {
 	if (m_pStyle && m_pStyle->tab->autoIndent && (ch == '\r' || ch == '\n'))
 	{
@@ -167,30 +167,30 @@ void RDOBaseEdit::catchCharAdded(int ch)
 	}
 }
 
-long RDOBaseEdit::sendEditorString(ruint msg, unsigned long wParam, CREF(QString) str) const
+long EditBase::sendEditorString(ruint msg, unsigned long wParam, CREF(QString) str) const
 {
 	return super::sends(msg, wParam, str.toLocal8Bit().constData());
 }
 
-int RDOBaseEdit::getNewMarker()
+int EditBase::getNewMarker()
 {
 	++m_markerCount;
 	return m_markerCount;
 }
 
-void RDOBaseEdit::defineMarker(int marker, int markerType, QColor fore, QColor back) const
+void EditBase::defineMarker(int marker, int markerType, QColor fore, QColor back) const
 {
 	sendEditor(SCI_MARKERDEFINE,  marker, markerType);
 	sendEditor(SCI_MARKERSETFORE, marker, convertColor(fore));
 	sendEditor(SCI_MARKERSETBACK, marker, convertColor(back));
 }
 
-const RDOBaseEditStyle* RDOBaseEdit::getEditorStyle() const
+const EditBaseStyle* EditBase::getEditorStyle() const
 {
 	return m_pStyle;
 }
 
-void RDOBaseEdit::setEditorStyle(RDOBaseEditStyle* pStyle)
+void EditBase::setEditorStyle(EditBaseStyle* pStyle)
 {
 	m_pStyle = pStyle;
 	if (!m_pStyle)
@@ -198,7 +198,7 @@ void RDOBaseEdit::setEditorStyle(RDOBaseEditStyle* pStyle)
 
 	// ----------
 	// Colors
-	RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(m_pStyle->theme);
+	EditBaseTheme* theme = static_cast<EditBaseTheme*>(m_pStyle->theme);
 	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, convertColor(theme->defaultColor));
 	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, convertColor(theme->backgroundColor));
 	sendEditor(SCI_STYLESETFORE, SCE_TEXT_DEFAULT, convertColor(theme->defaultColor));
@@ -259,57 +259,57 @@ void RDOBaseEdit::setEditorStyle(RDOBaseEditStyle* pStyle)
 	sendEditor(SCI_SETHSCROLLBAR, m_pStyle->window->showHorzScrollBar);
 }
 
-void RDOBaseEdit::setGroup(PTR(Group) pGroup)
+void EditBase::setGroup(PTR(Group) pGroup)
 {
 	m_pGroup = pGroup;
 }
 
-void RDOBaseEdit::onEditUndo() 
+void EditBase::onEditUndo() 
 {
 	sendEditor(SCI_UNDO);
 }
 
-void RDOBaseEdit::onEditRedo() 
+void EditBase::onEditRedo() 
 {
 	sendEditor(SCI_REDO);
 }
 
-void RDOBaseEdit::onEditCut() 
+void EditBase::onEditCut() 
 {
 	sendEditor(SCI_CUT);
 }
 
-void RDOBaseEdit::onEditCopy() 
+void EditBase::onEditCopy() 
 {
 	sendEditor(SCI_COPY);
 }
 
-void RDOBaseEdit::onEditPaste() 
+void EditBase::onEditPaste() 
 {
 	sendEditor(SCI_PASTE);
 }
 
-void RDOBaseEdit::onEditDel() 
+void EditBase::onEditDel() 
 {
 	sendEditor(SCI_CLEAR);
 }
 
-void RDOBaseEdit::onEditSelectAll() 
+void EditBase::onEditSelectAll() 
 {
 	sendEditor(SCI_SELECTALL);
 }
 
-void RDOBaseEdit::onEditUpperCase() 
+void EditBase::onEditUpperCase() 
 {
 	sendEditor(SCI_UPPERCASE);
 }
 
-void RDOBaseEdit::onEditLowerCase() 
+void EditBase::onEditLowerCase() 
 {
 	sendEditor(SCI_LOWERCASE);
 }
 
-tstring RDOBaseEdit::getCurrentWord() const
+tstring EditBase::getCurrentWord() const
 {
 	int pos_begin = sendEditor(SCI_WORDSTARTPOSITION, getCurrentPos(), true);
 	int pos_end   = sendEditor(SCI_WORDENDPOSITION, getCurrentPos(), true);
@@ -325,7 +325,7 @@ tstring RDOBaseEdit::getCurrentWord() const
 	return str;
 }
 
-tstring RDOBaseEdit::getSelection() const
+tstring EditBase::getSelection() const
 {
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
@@ -335,14 +335,14 @@ tstring RDOBaseEdit::getSelection() const
 	return str;
 }
 
-tstring RDOBaseEdit::getCurrentOrSelectedWord() const
+tstring EditBase::getCurrentOrSelectedWord() const
 {
 	return isSelected()
 		? getSelection  ()
 		: getCurrentWord();
 }
 
-QString RDOBaseEdit::getWordForFind() const
+QString EditBase::getWordForFind() const
 {
 	return isSelected()
 		? QString::fromLocal8Bit(getSelection().c_str())
@@ -354,7 +354,7 @@ QString RDOBaseEdit::getWordForFind() const
 
 }
 
-CharacterRange RDOBaseEdit::getSelectionRange() const
+CharacterRange EditBase::getSelectionRange() const
 {
 	CharacterRange crange;
 	crange.cpMin = sendEditor(SCI_GETSELECTIONSTART);
@@ -362,13 +362,13 @@ CharacterRange RDOBaseEdit::getSelectionRange() const
 	return crange;
 }
 
-void RDOBaseEdit::gotoLineEnsureVisible(int line) const
+void EditBase::gotoLineEnsureVisible(int line) const
 {
 	sendEditor(SCI_ENSUREVISIBLEENFORCEPOLICY, line);
 	sendEditor(SCI_GOTOLINE, line);
 }
 
-void RDOBaseEdit::ensureRangeVisible(int posStart, int posEnd, rbool enforcePolicy) const
+void EditBase::ensureRangeVisible(int posStart, int posEnd, rbool enforcePolicy) const
 {
 	int lineStart = getLineFromPosition(posStart < posEnd ? posStart : posEnd);
 	int lineEnd   = getLineFromPosition(posStart > posEnd ? posStart : posEnd);
@@ -378,7 +378,7 @@ void RDOBaseEdit::ensureRangeVisible(int posStart, int posEnd, rbool enforcePoli
 	}
 }
 
-void RDOBaseEdit::onSearchFind() 
+void EditBase::onSearchFind() 
 {
 	m_findSettings.what = QString::fromLocal8Bit(getCurrentOrSelectedWord().c_str());
 
@@ -386,8 +386,8 @@ void RDOBaseEdit::onSearchFind()
 	{
 		m_pFindDialog = new FindDialog(
 			this,
-			boost::bind(&RDOBaseEdit::onFindDlgFind,  this, _1),
-			boost::bind(&RDOBaseEdit::onFindDlgClose, this)
+			boost::bind(&EditBase::onFindDlgFind,  this, _1),
+			boost::bind(&EditBase::onFindDlgClose, this)
 		);
 	}
 
@@ -407,7 +407,7 @@ void RDOBaseEdit::onSearchFind()
 	m_pFindDialog->activateWindow();
 }
 
-void RDOBaseEdit::onFindDlgFind(CREF(FindDialog::Settings) settings)
+void EditBase::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
 	if (m_pGroup)
@@ -418,12 +418,12 @@ void RDOBaseEdit::onFindDlgFind(CREF(FindDialog::Settings) settings)
 	updateActionFind(isActivated());
 }
 
-void RDOBaseEdit::onFindDlgClose()
+void EditBase::onFindDlgClose()
 {
 	m_pFindDialog = NULL;
 }
 
-void RDOBaseEdit::onSearchFindNext() 
+void EditBase::onSearchFindNext() 
 {
 	findNext(
 		m_pGroup->findStr.isEmpty()
@@ -435,7 +435,7 @@ void RDOBaseEdit::onSearchFindNext()
 	);
 }
 
-void RDOBaseEdit::onSearchFindPrevious() 
+void EditBase::onSearchFindPrevious() 
 {
 	findNext(
 		m_pGroup->findStr.isEmpty()
@@ -447,7 +447,7 @@ void RDOBaseEdit::onSearchFindPrevious()
 	);
 }
 
-void RDOBaseEdit::onSearchFindNextCurrent() 
+void EditBase::onSearchFindNextCurrent() 
 {
 	if (m_pGroup)
 	{
@@ -457,7 +457,7 @@ void RDOBaseEdit::onSearchFindNextCurrent()
 	}
 }
 
-void RDOBaseEdit::onSearchFindPreviousCurrent() 
+void EditBase::onSearchFindPreviousCurrent() 
 {
 	if (m_pGroup)
 	{
@@ -467,7 +467,7 @@ void RDOBaseEdit::onSearchFindPreviousCurrent()
 	}
 }
 
-void RDOBaseEdit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
+void EditBase::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
 	int findLen = findWhat.length();
 	if (!findLen)
@@ -547,7 +547,7 @@ void RDOBaseEdit::findNext(CREF(QString) findWhat, rbool searchDown, rbool match
 	}
 }
 
-void RDOBaseEdit::onSearchReplace() 
+void EditBase::onSearchReplace() 
 {
 	m_findReplaceSettings.what = QString::fromLocal8Bit(getCurrentOrSelectedWord().c_str());
 
@@ -555,10 +555,10 @@ void RDOBaseEdit::onSearchReplace()
 	{
 		m_pFindReplaceDialog = new FindReplaceDialog(
 			this,
-			boost::bind(&RDOBaseEdit::onFindReplaceDlgFind,       this, _1),
-			boost::bind(&RDOBaseEdit::onFindReplaceDlgReplace,    this, _1),
-			boost::bind(&RDOBaseEdit::onFindReplaceDlgReplaceAll, this, _1),
-			boost::bind(&RDOBaseEdit::onFindReplaceDlgClose,      this)
+			boost::bind(&EditBase::onFindReplaceDlgFind,       this, _1),
+			boost::bind(&EditBase::onFindReplaceDlgReplace,    this, _1),
+			boost::bind(&EditBase::onFindReplaceDlgReplaceAll, this, _1),
+			boost::bind(&EditBase::onFindReplaceDlgClose,      this)
 		);
 	}
 	
@@ -578,7 +578,7 @@ void RDOBaseEdit::onSearchReplace()
 	m_pFindReplaceDialog->activateWindow();
 }
 
-void RDOBaseEdit::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) settings)
+void EditBase::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
 	if (m_pGroup)
@@ -589,7 +589,7 @@ void RDOBaseEdit::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) setting
 	updateActionFind(isActivated());
 }
 
-void RDOBaseEdit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) settings)
+void EditBase::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
 	if (m_pGroup)
@@ -605,7 +605,7 @@ void RDOBaseEdit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) sett
 	updateActionFind(isActivated());
 }
 
-void RDOBaseEdit::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings)
+void EditBase::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
 	if (m_pGroup)
@@ -617,17 +617,17 @@ void RDOBaseEdit::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) s
 	updateActionFind(isActivated());
 }
 
-void RDOBaseEdit::onFindReplaceDlgClose()
+void EditBase::onFindReplaceDlgClose()
 {
 	m_pFindReplaceDialog = NULL;
 }
 
-void RDOBaseEdit::showFindWarning(CREF(QString) findWhat)
+void EditBase::showFindWarning(CREF(QString) findWhat)
 {
 	QMessageBox::warning(this, QString::fromStdWString(L"Результаты поиска"), QString::fromStdWString(L"Невозможно найти строчку '%1'.").arg(findWhat));
 }
 
-void RDOBaseEdit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
+void EditBase::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
 	if (m_haveFound)
 	{
@@ -648,7 +648,7 @@ void RDOBaseEdit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbo
 	findNext(findWhat, searchDown, matchCase, matchWholeWord);
 }
 
-void RDOBaseEdit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool matchCase, rbool matchWholeWord)
+void EditBase::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool matchCase, rbool matchWholeWord)
 {
 	int findLen = findWhat.length();
 	if (!findLen)
@@ -693,7 +693,7 @@ void RDOBaseEdit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, 
 	}
 }
 
-void RDOBaseEdit::clearAll()
+void EditBase::clearAll()
 {
 	rbool readOnly = isReadOnly();
 	setReadOnly(false);
@@ -701,7 +701,7 @@ void RDOBaseEdit::clearAll()
 	setReadOnly(readOnly);
 }
 
-rbool RDOBaseEdit::bookmarkToggle(int line) const
+rbool EditBase::bookmarkToggle(int line) const
 {
 	if (line == -1)
 	{
@@ -720,7 +720,7 @@ rbool RDOBaseEdit::bookmarkToggle(int line) const
 	}
 }
 
-rbool RDOBaseEdit::bookmarkNext(rbool canLoop, rbool fromCurrentLine) const
+rbool EditBase::bookmarkNext(rbool canLoop, rbool fromCurrentLine) const
 {
 	rbool wasFound = false;
 	rbool wasLoop  = false;
@@ -747,7 +747,7 @@ rbool RDOBaseEdit::bookmarkNext(rbool canLoop, rbool fromCurrentLine) const
 	return wasFound;
 }
 
-rbool RDOBaseEdit::bookmarkPrev(rbool canLoop, rbool fromCurrentLine) const
+rbool EditBase::bookmarkPrev(rbool canLoop, rbool fromCurrentLine) const
 {
 	rbool wasFound = false;
 	rbool wasLoop  = false;
@@ -775,18 +775,18 @@ rbool RDOBaseEdit::bookmarkPrev(rbool canLoop, rbool fromCurrentLine) const
 	return wasFound;
 }
 
-void RDOBaseEdit::bookmarkClearAll() const
+void EditBase::bookmarkClearAll() const
 {
 	sendEditor(SCI_MARKERDELETEALL, m_sciMarkerBookmark);
 }
 
-rbool RDOBaseEdit::hasBookmarks() const
+rbool EditBase::hasBookmarks() const
 {
 	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerBookmark);
 	return nextLine >= 0;
 }
 
-void RDOBaseEdit::onCopyAsRTF(QMimeData* pMimeData)
+void EditBase::onCopyAsRTF(QMimeData* pMimeData)
 {
 	if (!isSelected())
 		return;
@@ -803,7 +803,7 @@ void RDOBaseEdit::onCopyAsRTF(QMimeData* pMimeData)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOBaseEdit: some functions for RTF export ---------- BEGIN
+// -------------------- EditBase: some functions for RTF export ---------- BEGIN
 // --------------------------------------------------------------------------------
 int GetHexChar(char ch) // 'H'
 {
@@ -951,10 +951,10 @@ void GetRTFStyleChange(char *delta, char *last, const char *current) // \f0\fs20
 	}
 }
 // --------------------------------------------------------------------------------
-// -------------------- RDOBaseEdit: some functions for RTF export ---------- END
+// -------------------- EditBase: some functions for RTF export ---------- END
 // --------------------------------------------------------------------------------
 
-tstring RDOBaseEdit::saveAsRTF(int start, int end) const
+tstring EditBase::saveAsRTF(int start, int end) const
 {
 	tstring saveStr;
 
@@ -986,7 +986,7 @@ tstring RDOBaseEdit::saveAsRTF(int start, int end) const
 	strncpy(*colors, "#000000", MAX_COLORDEF);
 #pragma warning(default: 4996)
 
-	RDOBaseEditTheme* theme = static_cast<RDOBaseEditTheme*>(m_pStyle->theme);
+	EditBaseTheme* theme = static_cast<EditBaseTheme*>(m_pStyle->theme);
 
 	for (int istyle = 0; istyle <= STYLE_DEFAULT; istyle++) {
 		if (theme->styleUsing(istyle)) {
@@ -1087,14 +1087,14 @@ tstring RDOBaseEdit::saveAsRTF(int start, int end) const
 }
 #pragma warning(default: 4996)
 
-void RDOBaseEdit::setCurrentPos(const int value) const
+void EditBase::setCurrentPos(const int value) const
 {
 	sendEditor(SCI_SETCURRENTPOS, value);
 	sendEditor(SCI_SETSELECTIONSTART, value);
 	sendEditor(SCI_SETSELECTIONEND, value);
 }
 
-void RDOBaseEdit::setCurrentPos(const int line, int pos_in_line, const rbool convert_rdo_tab) const
+void EditBase::setCurrentPos(const int line, int pos_in_line, const rbool convert_rdo_tab) const
 {
 	int pos = getPositionFromLine(line);
 	int line_length = sendEditor(SCI_LINELENGTH, line);
@@ -1149,42 +1149,42 @@ void RDOBaseEdit::setCurrentPos(const int line, int pos_in_line, const rbool con
 	setCurrentPos(pos);
 }
 
-rbool RDOBaseEdit::isLineVisible(const int line) const
+rbool EditBase::isLineVisible(const int line) const
 {
 	int first_line = sendEditor(SCI_GETFIRSTVISIBLELINE);
 	int last_line = first_line + sendEditor(SCI_LINESONSCREEN);
 	return line >= first_line && line <= last_line;
 }
 
-void RDOBaseEdit::appendText(CREF(QString) str) const
+void EditBase::appendText(CREF(QString) str) const
 {
 	QByteArray text = str.toLocal8Bit();
 	sendEditorString(SCI_ADDTEXT, text.size(), text.constData());
 }
 
-void RDOBaseEdit::scrollToLine(const int line) const
+void EditBase::scrollToLine(const int line) const
 {
 	sendEditor(SCI_LINESCROLL, 0, line - sendEditor(SCI_GETFIRSTVISIBLELINE) - sendEditor(SCI_LINESONSCREEN)/3);
 	setCurrentPos(getPositionFromLine(line));
 }
 
-void RDOBaseEdit::scrollToLine2(const int line) const
+void EditBase::scrollToLine2(const int line) const
 {
 	sendEditor(SCI_LINESCROLL, 0, line);
 }
 
-void RDOBaseEdit::scrollToCarret() const
+void EditBase::scrollToCarret() const
 {
 	sendEditor(SCI_SCROLLCARET);
 }
 
-void RDOBaseEdit::horzScrollToCurrentPos() const
+void EditBase::horzScrollToCurrentPos() const
 {
 	setCurrentPos(getCurrentPos());
 	sendEditor(SCI_REPLACESEL, 0, 0);
 }
 
-void RDOBaseEdit::load(rdo::stream& stream)
+void EditBase::load(rdo::stream& stream)
 {
 	rbool readOnly = isReadOnly();
 	setReadOnly(false);
@@ -1194,7 +1194,7 @@ void RDOBaseEdit::load(rdo::stream& stream)
 	setReadOnly(readOnly);
 }
 
-void RDOBaseEdit::save(rdo::stream& stream) const
+void EditBase::save(rdo::stream& stream) const
 {
 	int len = getLength();
 	std::vector<char> str;
@@ -1205,7 +1205,7 @@ void RDOBaseEdit::save(rdo::stream& stream) const
 	stream.str(&str[0]); // qq
 }
 
-int RDOBaseEdit::indentOfBlock(int line) const
+int EditBase::indentOfBlock(int line) const
 {
 	if (line < 0)
 		return 0;
@@ -1213,7 +1213,7 @@ int RDOBaseEdit::indentOfBlock(int line) const
 	return sendEditor(SCI_GETLINEINDENTATION, line);
 }
 
-void RDOBaseEdit::setLineIndentation(int line, int indent) const
+void EditBase::setLineIndentation(int line, int indent) const
 {
 	if (indent < 0) return;
 	CharacterRange crange = getSelectionRange();
@@ -1260,7 +1260,7 @@ void RDOBaseEdit::setLineIndentation(int line, int indent) const
 	setSelection(crange.cpMin, crange.cpMax);
 }
 
-void RDOBaseEdit::autoIndent() const
+void EditBase::autoIndent() const
 {
 	CharacterRange crange = getSelectionRange();
 	int selStart      = crange.cpMin;
@@ -1274,29 +1274,29 @@ void RDOBaseEdit::autoIndent() const
 	}
 }
 
-void RDOBaseEdit::onSearchBookmarkToggle()
+void EditBase::onSearchBookmarkToggle()
 {
 	bookmarkToggle();
 }
 
-void RDOBaseEdit::onSearchBookmarkNext() const
+void EditBase::onSearchBookmarkNext() const
 {
 	onSearchBookmarkNextPrev(
-		boost::bind(&RDOBaseEdit::bookmarkNext, _1, _2, _3),
-		boost::bind(&RDOBaseEdit::Group::next, m_pGroup, _1)
+		boost::bind(&EditBase::bookmarkNext, _1, _2, _3),
+		boost::bind(&EditBase::Group::next, m_pGroup, _1)
 	);
 }
 
-void RDOBaseEdit::onSearchBookmarkPrev() const
+void EditBase::onSearchBookmarkPrev() const
 {
 	onSearchBookmarkNextPrev(
-		boost::bind(&RDOBaseEdit::bookmarkPrev, _1, _2, _3),
-		boost::bind(&RDOBaseEdit::Group::prev, m_pGroup, _1)
+		boost::bind(&EditBase::bookmarkPrev, _1, _2, _3),
+		boost::bind(&EditBase::Group::prev, m_pGroup, _1)
 	);
 }
 
-void RDOBaseEdit::onSearchBookmarkNextPrev(
-	const boost::function<rbool (const RDOBaseEdit*, rbool, rbool)>& nextPrevFun,
+void EditBase::onSearchBookmarkNextPrev(
+	const boost::function<rbool (const EditBase*, rbool, rbool)>& nextPrevFun,
 	const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
 ) const
 {
@@ -1338,50 +1338,50 @@ void RDOBaseEdit::onSearchBookmarkNextPrev(
 	}
 }
 
-void RDOBaseEdit::onSearchBookmarkClearAll()
+void EditBase::onSearchBookmarkClearAll()
 {
-	methodOfGroup(boost::bind(&RDOBaseEdit::bookmarkClearAll, _1));
+	methodOfGroup(boost::bind(&EditBase::bookmarkClearAll, _1));
 }
 
-void RDOBaseEdit::onUpdateEditGUI()
-{
-	onUpdateActions(isActivated());
-}
-
-void RDOBaseEdit::onViewShowWhiteSpace() 
-{
-	methodOfGroup(boost::bind(&RDOBaseEdit::setViewWhiteSpace, _1, !isViewWhiteSpace()));
-}
-
-void RDOBaseEdit::onViewShowEndOfLine() 
-{
-	methodOfGroup(boost::bind(&RDOBaseEdit::setViewEndOfLine, _1, !isViewEndOfLine()));
-}
-
-void RDOBaseEdit::onViewZoomChanged(int)
+void EditBase::onUpdateEditGUI()
 {
 	onUpdateActions(isActivated());
 }
 
-void RDOBaseEdit::onViewZoomInc()
+void EditBase::onViewShowWhiteSpace() 
 {
-	methodOfGroup(boost::bind(&RDOBaseEdit::zoomIn, _1));
+	methodOfGroup(boost::bind(&EditBase::setViewWhiteSpace, _1, !isViewWhiteSpace()));
+}
+
+void EditBase::onViewShowEndOfLine() 
+{
+	methodOfGroup(boost::bind(&EditBase::setViewEndOfLine, _1, !isViewEndOfLine()));
+}
+
+void EditBase::onViewZoomChanged(int)
+{
 	onUpdateActions(isActivated());
 }
 
-void RDOBaseEdit::onViewZoomDec() 
+void EditBase::onViewZoomInc()
 {
-	methodOfGroup(boost::bind(&RDOBaseEdit::zoomOut, _1));
+	methodOfGroup(boost::bind(&EditBase::zoomIn, _1));
 	onUpdateActions(isActivated());
 }
 
-void RDOBaseEdit::onViewZoomReset() 
+void EditBase::onViewZoomDec() 
 {
-	methodOfGroup(boost::bind(&RDOBaseEdit::resetZoom, _1));
+	methodOfGroup(boost::bind(&EditBase::zoomOut, _1));
 	onUpdateActions(isActivated());
 }
 
-int RDOBaseEdit::findPos(CREF(QString) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord) const
+void EditBase::onViewZoomReset() 
+{
+	methodOfGroup(boost::bind(&EditBase::resetZoom, _1));
+	onUpdateActions(isActivated());
+}
+
+int EditBase::findPos(CREF(QString) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord) const
 {
 	int findLen = findWhat.length();
 	if (!findLen)
@@ -1398,7 +1398,7 @@ int RDOBaseEdit::findPos(CREF(QString) findWhat, const int startFromLine, const 
 	return sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
 }
 
-tstring RDOBaseEdit::getLine(const int line) const
+tstring EditBase::getLine(const int line) const
 {
 	int length = sendEditor(SCI_LINELENGTH, line);
 	tstring str;
@@ -1407,7 +1407,7 @@ tstring RDOBaseEdit::getLine(const int line) const
 	return str;
 }
 
-void RDOBaseEdit::onSearchGotoLine()
+void EditBase::onSearchGotoLine()
 {
 	GoToLineDialog dialog(this, getCurrentLineNumber() + 1, getLineCount());
 	if (dialog.exec() == QDialog::Accepted)
@@ -1416,19 +1416,19 @@ void RDOBaseEdit::onSearchGotoLine()
 	}
 }
 
-void RDOBaseEdit::focusInEvent(QFocusEvent* pEvent)
+void EditBase::focusInEvent(QFocusEvent* pEvent)
 {
 	super::focusInEvent(pEvent);
 	activate(pEvent);
 }
 
-void RDOBaseEdit::focusOutEvent(QFocusEvent* pEvent)
+void EditBase::focusOutEvent(QFocusEvent* pEvent)
 {
 	super::focusOutEvent(pEvent);
 	deactivate(pEvent);
 }
 
-void RDOBaseEdit::onUpdateActions(rbool activated)
+void EditBase::onUpdateActions(rbool activated)
 {
 	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
@@ -1436,114 +1436,114 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 	updateAction(
 		pMainWindow->actEditUndo,
 		activated && sendEditor(SCI_CANUNDO),
-		this, &RDOBaseEdit::onEditUndo
+		this, &EditBase::onEditUndo
 	);
 	updateAction(
 		pMainWindow->actEditRedo,
 		activated && sendEditor(SCI_CANREDO),
-		this, &RDOBaseEdit::onEditRedo
+		this, &EditBase::onEditRedo
 	);
 	updateAction(
 		pMainWindow->actEditCut,
 		activated && !isReadOnly() && isSelected(),
-		this, &RDOBaseEdit::onEditCut
+		this, &EditBase::onEditCut
 	);
 	updateAction(
 		pMainWindow->actEditCopy,
 		activated && isSelected(),
-		this, &RDOBaseEdit::onEditCopy
+		this, &EditBase::onEditCopy
 	);
 	updateAction(
 		pMainWindow->actEditPaste,
 		activated && sendEditor(SCI_CANPASTE),
-		this, &RDOBaseEdit::onEditPaste
+		this, &EditBase::onEditPaste
 	);
 	updateAction(
 		pMainWindow->actEditDel,
 		activated && !isReadOnly() && (getCurrentPos() != getLength() || isSelected()),
-		this, &RDOBaseEdit::onEditDel
+		this, &EditBase::onEditDel
 	);
 	updateAction(
 		pMainWindow->actEditSelectAll,
 		activated && !isEmpty(),
-		this, &RDOBaseEdit::onEditSelectAll
+		this, &EditBase::onEditSelectAll
 	);
 	updateAction(
 		pMainWindow->actEditUpperCase,
 		activated && !isReadOnly() && isSelected(),
-		this, &RDOBaseEdit::onEditUpperCase
+		this, &EditBase::onEditUpperCase
 	);
 	updateAction(
 		pMainWindow->actEditLowerCase,
 		activated && !isReadOnly() && isSelected(),
-		this, &RDOBaseEdit::onEditLowerCase
+		this, &EditBase::onEditLowerCase
 	);
 	updateAction(
 		pMainWindow->actViewShowWhiteSpace,
 		activated,
-		this, &RDOBaseEdit::onViewShowWhiteSpace
+		this, &EditBase::onViewShowWhiteSpace
 	);
 	pMainWindow->actViewShowWhiteSpace->setChecked(isViewWhiteSpace());
 
 	updateAction(
 		pMainWindow->actViewShowEndOfLine,
 		activated,
-		this, &RDOBaseEdit::onViewShowEndOfLine
+		this, &EditBase::onViewShowEndOfLine
 	);
 	pMainWindow->actViewShowEndOfLine->setChecked(isViewEndOfLine());
 
 	updateAction(
 		pMainWindow->actHelpContext,
 		activated,
-		this, &RDOBaseEdit::onHelpContext
+		this, &EditBase::onHelpContext
 	);
 	updateAction(
 		pMainWindow->actViewZoomInc,
 		activated &&  getZoom() < 20,
-		this, &RDOBaseEdit::onViewZoomInc
+		this, &EditBase::onViewZoomInc
 	);
 	updateAction(
 		pMainWindow->actViewZoomDec,
 		activated && getZoom() > -10,
-		this, &RDOBaseEdit::onViewZoomDec
+		this, &EditBase::onViewZoomDec
 	);
 	updateAction(
 		pMainWindow->actViewZoomReset,
 		activated && getZoom(),
-		this, &RDOBaseEdit::onViewZoomReset
+		this, &EditBase::onViewZoomReset
 	);
 
-	rbool hasBookmark = predicateOfGroup(boost::bind(&RDOBaseEdit::hasBookmarks, _1));
+	rbool hasBookmark = predicateOfGroup(boost::bind(&EditBase::hasBookmarks, _1));
 
 	updateAction(
 		pMainWindow->actSearchBookmarkNext,
 		activated && hasBookmark,
-		this, &RDOBaseEdit::onSearchBookmarkNext
+		this, &EditBase::onSearchBookmarkNext
 	);
 	updateAction(
 		pMainWindow->actSearchBookmarkPrev,
 		activated && hasBookmark,
-		this, &RDOBaseEdit::onSearchBookmarkPrev
+		this, &EditBase::onSearchBookmarkPrev
 	);
 	updateAction(
 		pMainWindow->actSearchBookmarksToggle,
 		activated,
-		this, &RDOBaseEdit::onSearchBookmarkToggle
+		this, &EditBase::onSearchBookmarkToggle
 	);
 	updateAction(
 		pMainWindow->actSearchBookmarksClearAll,
 		activated && hasBookmark,
-		this, &RDOBaseEdit::onSearchBookmarkClearAll
+		this, &EditBase::onSearchBookmarkClearAll
 	);
 	updateAction(
 		pMainWindow->actSearchGotoLine,
 		activated,
-		this, &RDOBaseEdit::onSearchGotoLine
+		this, &EditBase::onSearchGotoLine
 	);
 	updateAction(
 		pMainWindow->actSearchFind,
 		activated,
-		this, &RDOBaseEdit::onSearchFind
+		this, &EditBase::onSearchFind
 	);
 
 	updateActionFind(activated);
@@ -1571,7 +1571,7 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 	pMainWindow->statusBar()->update<StatusBar::SB_OVERWRITE>(overwrite);
 }
 
-void RDOBaseEdit::updateActionFind(rbool activated)
+void EditBase::updateActionFind(rbool activated)
 {
 	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
@@ -1579,74 +1579,74 @@ void RDOBaseEdit::updateActionFind(rbool activated)
 	updateAction(
 		pMainWindow->actSearchFind,
 		activated && !isEmpty(),
-		this, &RDOBaseEdit::onSearchFind
+		this, &EditBase::onSearchFind
 	);
 
 	updateAction(
 		pMainWindow->actSearchReplace,
 		activated && !isEmpty() && !isReadOnly(),
-		this, &RDOBaseEdit::onSearchReplace
+		this, &EditBase::onSearchReplace
 	);
 
 	rbool findNextPrev = activated && (!m_findReplaceSettings.what.isEmpty() || !m_findSettings.what.isEmpty() || (m_pGroup && !m_pGroup->findStr.isEmpty()));
 	updateAction(
 		pMainWindow->actSearchFindNext,
 		findNextPrev,
-		this, &RDOBaseEdit::onSearchFindNext
+		this, &EditBase::onSearchFindNext
 	);
 
 	updateAction(
 		pMainWindow->actSearchFindPrevious,
 		findNextPrev,
-		this, &RDOBaseEdit::onSearchFindPrevious
+		this, &EditBase::onSearchFindPrevious
 	);
 
 	updateAction(
 		pMainWindow->actSearchFindNextCurrent,
 		activated,
-		this, &RDOBaseEdit::onSearchFindNextCurrent
+		this, &EditBase::onSearchFindNextCurrent
 	);
 
 	updateAction(
 		pMainWindow->actSearchFindPreviousCurrent,
 		activated,
-		this, &RDOBaseEdit::onSearchFindPreviousCurrent
+		this, &EditBase::onSearchFindPreviousCurrent
 	);
 }
 
-void RDOBaseEdit::onUpdateModify()
+void EditBase::onUpdateModify()
 {
 	emit modifyChanged(isModify());
 }
 
-rbool RDOBaseEdit::isViewWhiteSpace() const
+rbool EditBase::isViewWhiteSpace() const
 {
 	return sendEditor(SCI_GETVIEWWS) != SCWS_INVISIBLE;
 }
 
-void RDOBaseEdit::setViewWhiteSpace(rbool value)
+void EditBase::setViewWhiteSpace(rbool value)
 {
 	sendEditor(SCI_SETVIEWWS, value ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE);
 }
 
-rbool RDOBaseEdit::isViewEndOfLine() const
+rbool EditBase::isViewEndOfLine() const
 {
 	return sendEditor(SCI_GETVIEWEOL) ? true : false;
 }
 
-void RDOBaseEdit::setViewEndOfLine(rbool value)
+void EditBase::setViewEndOfLine(rbool value)
 {
 	sendEditor(SCI_SETVIEWEOL, value);
 }
 
-void RDOBaseEdit::methodOfGroup(CREF(this_method) fun)
+void EditBase::methodOfGroup(CREF(this_method) fun)
 {
 	m_pGroup
 		? m_pGroup->for_each(fun)
 		: fun(this);
 }
 
-rbool RDOBaseEdit::predicateOfGroup(CREF(this_predicate) fun) const
+rbool EditBase::predicateOfGroup(CREF(this_predicate) fun) const
 {
 	return m_pGroup
 		? m_pGroup->find_if(fun) != m_pGroup->end()

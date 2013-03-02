@@ -19,9 +19,9 @@
 namespace rdoEditCtrl {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOBaseEditTheme
+// -------------------- EditBaseTheme
 // --------------------------------------------------------------------------------
-enum RDOBookmarkStyle {
+enum BookmarkStyle {
 	RDOBOOKMARKS_NONE = 0,
 	RDOBOOKMARKS_CIRCLE,
 	RDOBOOKMARKS_RECT,
@@ -29,15 +29,15 @@ enum RDOBookmarkStyle {
 	RDOBOOKMARKS_ARROW
 };
 
-class RDOBaseEditTheme: public rdoStyle::RDOStyleTheme
+class EditBaseTheme: public rdoStyle::RDOStyleTheme
 {
 public:
-	RDOBaseEditTheme();
-	virtual ~RDOBaseEditTheme();
+	EditBaseTheme();
+	virtual ~EditBaseTheme();
 
-	RDOBaseEditTheme& operator =( const RDOBaseEditTheme& theme );
-	rbool operator ==( const RDOBaseEditTheme& theme ) const;
-	rbool operator !=( const RDOBaseEditTheme& theme ) const;
+	EditBaseTheme& operator =( const EditBaseTheme& theme );
+	rbool operator ==( const EditBaseTheme& theme ) const;
+	rbool operator !=( const EditBaseTheme& theme ) const;
 
 	virtual void load(QSettings& settings);
 	virtual void save(QSettings& settings) const;
@@ -47,7 +47,7 @@ public:
 	QColor bookmarkFgColor;
 	QColor bookmarkBgColor;
 
-	RDOBookmarkStyle bookmarkStyle;
+	BookmarkStyle bookmarkStyle;
 
 	virtual rbool styleDefault( const int styleType ) const;
 	virtual rbool styleUsing( const int styleType ) const;
@@ -56,29 +56,29 @@ public:
 	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 	virtual tstring styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
-	static RDOBaseEditTheme getDefaultTheme();
-	static RDOBaseEditTheme getClassicTheme();
-	static RDOBaseEditTheme getTwilightTheme();
-	static RDOBaseEditTheme getOceanTheme();
+	static EditBaseTheme getDefaultTheme();
+	static EditBaseTheme getClassicTheme();
+	static EditBaseTheme getTwilightTheme();
+	static EditBaseTheme getOceanTheme();
 
 	static tstring colorToHEX( const QColor color );
 };
 
-QSettings& operator<< (QSettings& settings, const RDOBaseEditTheme& theme);
-QSettings& operator>> (QSettings& settings,       RDOBaseEditTheme& theme);
+QSettings& operator<< (QSettings& settings, const EditBaseTheme& theme);
+QSettings& operator>> (QSettings& settings,       EditBaseTheme& theme);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOBaseEditTab
+// -------------------- EditBaseTab
 // --------------------------------------------------------------------------------
-class RDOBaseEditTab
+class EditBaseTab
 {
 public:
-	RDOBaseEditTab();
-	virtual ~RDOBaseEditTab();
+	EditBaseTab();
+	virtual ~EditBaseTab();
 
-	RDOBaseEditTab& operator =( const RDOBaseEditTab& tab );
-	rbool operator ==( const RDOBaseEditTab& tab ) const;
-	rbool operator !=( const RDOBaseEditTab& tab ) const;
+	EditBaseTab& operator =( const EditBaseTab& tab );
+	rbool operator ==( const EditBaseTab& tab ) const;
+	rbool operator !=( const EditBaseTab& tab ) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
@@ -91,21 +91,21 @@ public:
 	rbool autoIndent;
 };
 
-QSettings& operator<< (QSettings& settings, const RDOBaseEditTab& tab);
-QSettings& operator>> (QSettings& settings,       RDOBaseEditTab& tab);
+QSettings& operator<< (QSettings& settings, const EditBaseTab& tab);
+QSettings& operator>> (QSettings& settings,       EditBaseTab& tab);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOBaseEditWindow
+// -------------------- EditBaseWindow
 // --------------------------------------------------------------------------------
-class RDOBaseEditWindow
+class EditBaseWindow
 {
 public:
-	RDOBaseEditWindow();
-	virtual ~RDOBaseEditWindow();
+	EditBaseWindow();
+	virtual ~EditBaseWindow();
 
-	RDOBaseEditWindow& operator =( const RDOBaseEditWindow& window );
-	rbool operator ==( const RDOBaseEditWindow& window ) const;
-	rbool operator !=( const RDOBaseEditWindow& window ) const;
+	EditBaseWindow& operator =( const EditBaseWindow& window );
+	rbool operator ==( const EditBaseWindow& window ) const;
+	rbool operator !=( const EditBaseWindow& window ) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
@@ -114,28 +114,28 @@ public:
 	rbool showHorzScrollBar;
 };
 
-QSettings& operator<< (QSettings& settings, const RDOBaseEditWindow& window);
-QSettings& operator>> (QSettings& settings,       RDOBaseEditWindow& window);
+QSettings& operator<< (QSettings& settings, const EditBaseWindow& window);
+QSettings& operator>> (QSettings& settings,       EditBaseWindow& window);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOBaseEditStyle
+// -------------------- EditBaseStyle
 // --------------------------------------------------------------------------------
-class RDOBaseEditStyle: public rdoStyle::RDOStyleWithTheme
+class EditBaseStyle: public rdoStyle::RDOStyleWithTheme
 {
 public:
-	RDOBaseEditStyle();
-	virtual ~RDOBaseEditStyle();
+	EditBaseStyle();
+	virtual ~EditBaseStyle();
 
-	RDOBaseEditStyle& operator =( const RDOBaseEditStyle& style );
-	rbool operator ==( const RDOBaseEditStyle& style ) const;
-	rbool operator !=( const RDOBaseEditStyle& style ) const;
+	EditBaseStyle& operator =( const EditBaseStyle& style );
+	rbool operator ==( const EditBaseStyle& style ) const;
+	rbool operator !=( const EditBaseStyle& style ) const;
 
 	void init( CREF(QString) _groupName = "" );
 	rbool load();
 	rbool save() const;
 
-	RDOBaseEditTab*    tab;
-	RDOBaseEditWindow* window;
+	EditBaseTab*    tab;
+	EditBaseWindow* window;
 };
 
 } // namespace rdoEditCtrl

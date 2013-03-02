@@ -29,27 +29,27 @@
 namespace rdoEditCtrl {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOBaseEdit
+// -------------------- EditBase
 // --------------------------------------------------------------------------------
-class RDOBaseEdit
+class EditBase
 	: public ScintillaEditBase
 	, public ActionActivator
 {
 Q_OBJECT
 
 private:
-	typedef  boost::function<void (RDOBaseEdit*)>         this_method;
-	typedef  boost::function<rbool (const RDOBaseEdit*)>  this_predicate;
+	typedef  boost::function<void (EditBase*)>         this_method;
+	typedef  boost::function<rbool (const EditBase*)>  this_predicate;
 
 public:
-	RDOBaseEdit(PTR(QWidget) pParent);
-	virtual ~RDOBaseEdit();
+	EditBase(PTR(QWidget) pParent);
+	virtual ~EditBase();
 
 	//! @todo Вынести класс в отдельный модуль
 	class Group
 	{
 	public:
-		typedef std::vector<PTR(RDOBaseEdit)> List;
+		typedef std::vector<PTR(EditBase)> List;
 
 		rbool   bMatchCase;
 		rbool   bMatchWholeWord;
@@ -59,7 +59,7 @@ public:
 
 		Group();
 
-		void insert(PTR(RDOBaseEdit) pEdit);
+		void insert(PTR(EditBase) pEdit);
 
 		List::const_iterator begin() const;
 		List::const_iterator end  () const;
@@ -73,8 +73,8 @@ public:
 		List m_list;
 	};
 
-	const RDOBaseEditStyle* getEditorStyle() const;
-	void setEditorStyle(RDOBaseEditStyle* pStyle);
+	const EditBaseStyle* getEditorStyle() const;
+	void setEditorStyle(EditBaseStyle* pStyle);
 
 	void setGroup(PTR(Group) pGroup);
 
@@ -131,7 +131,7 @@ public:
 	tstring saveAsRTF(int start, int end) const;
 
 protected:
-	RDOBaseEditStyle* m_pStyle;
+	EditBaseStyle* m_pStyle;
 
 	long sendEditor      (ruint msg, unsigned long wParam = 0, long lParam = 0) const { return super::send (msg, wParam, lParam); }
 	long sendEditorString(ruint msg, unsigned long wParam, const char* str)     const { return super::sends(msg, wParam, str);    }
@@ -183,7 +183,7 @@ private:
 	void  setViewEndOfLine(rbool value);
 
 	void onSearchBookmarkNextPrev(
-		const boost::function<rbool (const RDOBaseEdit*, rbool, rbool)>& nextPrevFun,
+		const boost::function<rbool (const EditBase*, rbool, rbool)>& nextPrevFun,
 		const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
 	) const;
 

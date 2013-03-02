@@ -28,8 +28,8 @@ rbool ViewPreferences::null_wordwrap      = false;
 rbool ViewPreferences::null_horzscrollbar = true;
 rbool ViewPreferences::null_warning       = true;
 rbool ViewPreferences::null_commentfold   = false;
-RDOBookmarkStyle ViewPreferences::null_bookmarkstyle = RDOBOOKMARKS_NONE;
-RDOFoldStyle     ViewPreferences::null_foldstyle     = RDOFOLDS_NONE;
+BookmarkStyle ViewPreferences::null_bookmarkstyle = RDOBOOKMARKS_NONE;
+RDOFoldStyle  ViewPreferences::null_foldstyle     = RDOFOLDS_NONE;
 QColor ViewPreferences::null_fg_color = QColor(0x00, 0x00, 0x00);
 QColor ViewPreferences::null_bg_color = QColor(0xFF, 0xFF, 0xFF);
 
@@ -543,7 +543,7 @@ void ViewPreferences::onWordWrap(int state)
 void ViewPreferences::onBookmark(int index)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->bookmarkstyle = static_cast<RDOBookmarkStyle>(index);
+	item->bookmarkstyle = static_cast<BookmarkStyle>(index);
 	updatePreview();
 }
 
@@ -1024,7 +1024,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, build_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
-	RDOBaseEditTheme* debug_theme = static_cast<RDOBaseEditTheme*>(style_debug.theme);
+	EditBaseTheme* debug_theme = static_cast<EditBaseTheme*>(style_debug.theme);
 	item = new StyleItem(IT_DEBUG, style_debug.font->size, style_debug.font->name, style_debug.window->wordWrap, style_debug.window->showHorzScrollBar);
 	item->properties.push_back(new StyleProperty(item, IT_DEBUG, debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor));

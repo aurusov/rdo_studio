@@ -19,7 +19,7 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- LogEditTheme
 // --------------------------------------------------------------------------------
-LogEditTheme::LogEditTheme(): RDOBaseEditTheme()
+LogEditTheme::LogEditTheme(): EditBaseTheme()
 {
 	selectLineBgColor = QColor( 0x00, 0xC0, 0xEF );
 }
@@ -30,7 +30,7 @@ LogEditTheme::~LogEditTheme()
 
 LogEditTheme& LogEditTheme::operator =( const LogEditTheme& theme )
 {
-	RDOBaseEditTheme::operator=( theme );
+	EditBaseTheme::operator=( theme );
 	selectLineBgColor = theme.selectLineBgColor;
 
 	return *this;
@@ -38,7 +38,7 @@ LogEditTheme& LogEditTheme::operator =( const LogEditTheme& theme )
 
 rbool LogEditTheme::operator ==( const LogEditTheme& theme ) const
 {
-	rbool flag = RDOBaseEditTheme::operator==( theme );
+	rbool flag = EditBaseTheme::operator==( theme );
 	if ( flag )	flag &= selectLineBgColor == theme.selectLineBgColor ? true : false;
 	return flag;
 }
@@ -50,14 +50,14 @@ rbool LogEditTheme::operator !=( const LogEditTheme& theme ) const
 
 void LogEditTheme::load(QSettings& settings)
 {
-	RDOBaseEditTheme::load(settings);
+	EditBaseTheme::load(settings);
 
 	settings >> *this;
 }
 
 void LogEditTheme::save(QSettings& settings) const
 {
-	RDOBaseEditTheme::save(settings);
+	EditBaseTheme::save(settings);
 
 	settings << *this;
 }
@@ -71,7 +71,7 @@ LogEditTheme LogEditTheme::getDefaultTheme()
 LogEditTheme LogEditTheme::getClassicTheme()
 {
 	LogEditTheme theme;
-	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getClassicTheme();
+	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getClassicTheme();
 
 	theme.selectLineBgColor = QColor( 0x00, 0xC0, 0xEF );
 
@@ -81,7 +81,7 @@ LogEditTheme LogEditTheme::getClassicTheme()
 LogEditTheme LogEditTheme::getTwilightTheme()
 {
 	LogEditTheme theme;
-	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getTwilightTheme();
+	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getTwilightTheme();
 
 	theme.selectLineBgColor = QColor( 0x00, 0x96, 0xBB );
 
@@ -91,7 +91,7 @@ LogEditTheme LogEditTheme::getTwilightTheme()
 LogEditTheme LogEditTheme::getOceanTheme()
 {
 	LogEditTheme theme;
-	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getOceanTheme();
+	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getOceanTheme();
 
 	theme.selectLineBgColor = QColor( 0xCA, 0xF4, 0xFF );
 
@@ -119,7 +119,7 @@ QSettings& operator>> (QSettings& settings, LogEditTheme& theme)
 // --------------------------------------------------------------------------------
 // -------------------- LogEditStyle
 // --------------------------------------------------------------------------------
-LogEditStyle::LogEditStyle(): RDOBaseEditStyle()
+LogEditStyle::LogEditStyle(): EditBaseStyle()
 {
 	theme = new LogEditTheme();
 }
@@ -130,7 +130,7 @@ LogEditStyle::~LogEditStyle()
 
 LogEditStyle& LogEditStyle::operator =( const LogEditStyle& style )
 {
-	RDOBaseEditStyle::operator=( style );
+	EditBaseStyle::operator=( style );
 	if ( theme && style.theme ) *static_cast<LogEditTheme*>(theme) = *static_cast<LogEditTheme*>(style.theme);
 
 	return *this;
@@ -138,7 +138,7 @@ LogEditStyle& LogEditStyle::operator =( const LogEditStyle& style )
 
 rbool LogEditStyle::operator ==( const LogEditStyle& style ) const
 {
-	rbool flag = RDOBaseEditStyle::operator==( style );
+	rbool flag = EditBaseStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<LogEditTheme*>(theme) == *static_cast<LogEditTheme*>(style.theme);
 	return flag;
 }

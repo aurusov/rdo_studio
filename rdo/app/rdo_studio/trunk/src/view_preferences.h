@@ -195,13 +195,13 @@ private:
 		rbool&                         wordwrap;
 		rbool&                         horzscrollbar;
 		rbool&                         warning;
-		rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle;
+		rdoEditCtrl::BookmarkStyle&    bookmarkstyle;
 		rdoEditor::RDOFoldStyle&       foldstyle;
 		rbool&                         commentfold;
 
 		PropertyList properties;
 
-		StyleItem(ItemType type, int& font_size, tstring& font_name, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
+		StyleItem(ItemType type, int& font_size, tstring& font_name, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdoEditCtrl::BookmarkStyle& bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
 			: type(type)
 			, font_size(font_size)
 			, font_name(font_name)
@@ -228,7 +228,7 @@ private:
 	static rbool                         null_horzscrollbar;
 	static rbool                         null_warning;
 	static rbool                         null_commentfold;
-	static rdoEditCtrl::RDOBookmarkStyle null_bookmarkstyle;
+	static rdoEditCtrl::BookmarkStyle null_bookmarkstyle;
 	static rdoEditor::RDOFoldStyle       null_foldstyle;
 	static QColor                        null_fg_color;
 	static QColor                        null_bg_color;
@@ -240,7 +240,7 @@ private:
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;
-	rdoEditCtrl::RDOBaseEditStyle    style_debug;
+	rdoEditCtrl::EditBaseStyle    style_debug;
 	rdo::gui::tracer::LogStyle       style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;

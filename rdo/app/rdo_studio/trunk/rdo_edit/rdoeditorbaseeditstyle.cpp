@@ -22,7 +22,7 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorBaseEditTheme
 // --------------------------------------------------------------------------------
-RDOEditorBaseEditTheme::RDOEditorBaseEditTheme(): RDOBaseEditTheme()
+RDOEditorBaseEditTheme::RDOEditorBaseEditTheme(): EditBaseTheme()
 {
 	defaultColor    = QColor( 0x80, 0x80, 0x80 );
 	identifierColor = QColor( 0x00, 0x00, 0x00 );
@@ -52,7 +52,7 @@ RDOEditorBaseEditTheme::~RDOEditorBaseEditTheme()
 
 RDOEditorBaseEditTheme& RDOEditorBaseEditTheme::operator =( const RDOEditorBaseEditTheme& theme )
 {
-	RDOBaseEditTheme::operator=( theme );
+	EditBaseTheme::operator=( theme );
 
 	identifierColor = theme.identifierColor;
 	keywordColor    = theme.keywordColor;
@@ -79,7 +79,7 @@ RDOEditorBaseEditTheme& RDOEditorBaseEditTheme::operator =( const RDOEditorBaseE
 
 rbool RDOEditorBaseEditTheme::operator ==( const RDOEditorBaseEditTheme& theme ) const
 {
-	rbool flag = RDOBaseEditTheme::operator==( theme );
+	rbool flag = EditBaseTheme::operator==( theme );
 
 	if ( flag ) flag &= identifierColor == theme.identifierColor &&
 	                    keywordColor    == theme.keywordColor &&
@@ -110,14 +110,14 @@ rbool RDOEditorBaseEditTheme::operator !=( const RDOEditorBaseEditTheme& theme )
 
 void RDOEditorBaseEditTheme::load(QSettings& settings)
 {
-	RDOBaseEditTheme::load(settings);
+	EditBaseTheme::load(settings);
 
 	settings >> *this;
 }
 
 void RDOEditorBaseEditTheme::save(QSettings& settings) const
 {
-	RDOBaseEditTheme::save(settings);
+	EditBaseTheme::save(settings);
 
 	settings << *this;
 }
@@ -188,7 +188,7 @@ tstring RDOEditorBaseEditTheme::styleFGColorToHEX( const int styleType ) const
 		case SCE_RDO_STRING      : return colorToHEX( stringColor );
 		case SCE_RDO_OPERATOR    : return colorToHEX( operatorColor );
 	}
-	return RDOBaseEditTheme::styleFGColorToHEX( styleType );
+	return EditBaseTheme::styleFGColorToHEX( styleType );
 }
 
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getDefaultTheme()
@@ -200,7 +200,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getDefaultTheme()
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getCppTheme()
 {
 	RDOEditorBaseEditTheme theme;
-	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getDefaultTheme();
+	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getDefaultTheme();
 
 	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
 	theme.keywordColor    = QColor( 0x00, 0x00, 0xFF );
@@ -228,7 +228,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getCppTheme()
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getPascalTheme()
 {
 	RDOEditorBaseEditTheme theme;
-	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getDefaultTheme();
+	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getDefaultTheme();
 
 	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
 	theme.keywordColor    = QColor( 0x00, 0x00, 0x00 );
@@ -256,7 +256,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getPascalTheme()
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getHtmlTheme()
 {
 	RDOEditorBaseEditTheme theme;
-	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getDefaultTheme();
+	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getDefaultTheme();
 
 	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
 	theme.keywordColor    = QColor( 0x80, 0x00, 0x80 );
@@ -284,7 +284,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getHtmlTheme()
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
 {
 	RDOEditorBaseEditTheme theme;
-	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getClassicTheme();
+	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getClassicTheme();
 
 	theme.identifierColor = QColor( 0xFF, 0xFF, 0x00 );
 	theme.keywordColor    = QColor( 0xFF, 0xFF, 0xFF );
@@ -312,7 +312,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getClassicTheme()
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
 {
 	RDOEditorBaseEditTheme theme;
-	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getTwilightTheme();
+	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getTwilightTheme();
 
 	theme.identifierColor = QColor( 0xFF, 0xFF, 0xFF );
 	theme.keywordColor    = QColor( 0x00, 0xFF, 0xFF );
@@ -340,7 +340,7 @@ RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getTwilightTheme()
 RDOEditorBaseEditTheme RDOEditorBaseEditTheme::getOceanTheme()
 {
 	RDOEditorBaseEditTheme theme;
-	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getOceanTheme();
+	*static_cast<EditBaseTheme*>(&theme) = EditBaseTheme::getOceanTheme();
 
 	theme.identifierColor = QColor( 0x00, 0x00, 0xFF );
 	theme.keywordColor    = QColor( 0x00, 0x00, 0x00 );
@@ -423,7 +423,7 @@ QSettings& operator>> (QSettings& settings, RDOEditorBaseEditTheme& theme)
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorBaseEditStyle
 // --------------------------------------------------------------------------------
-RDOEditorBaseEditStyle::RDOEditorBaseEditStyle(): RDOBaseEditStyle()
+RDOEditorBaseEditStyle::RDOEditorBaseEditStyle(): EditBaseStyle()
 {
 	theme = new RDOEditorBaseEditTheme();
 }
@@ -435,7 +435,7 @@ RDOEditorBaseEditStyle::~RDOEditorBaseEditStyle()
 
 RDOEditorBaseEditStyle& RDOEditorBaseEditStyle::operator =( const RDOEditorBaseEditStyle& style )
 {
-	RDOBaseEditStyle::operator=( style );
+	EditBaseStyle::operator=( style );
 	if ( theme && style.theme ) *static_cast<RDOEditorBaseEditTheme*>(theme) = *static_cast<RDOEditorBaseEditTheme*>(style.theme);
 
 	return *this;
@@ -443,7 +443,7 @@ RDOEditorBaseEditStyle& RDOEditorBaseEditStyle::operator =( const RDOEditorBaseE
 
 rbool RDOEditorBaseEditStyle::operator ==( const RDOEditorBaseEditStyle& style ) const
 {
-	rbool flag = RDOBaseEditStyle::operator==( style );
+	rbool flag = EditBaseStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<RDOEditorBaseEditTheme*>(theme) == *static_cast<RDOEditorBaseEditTheme*>(style.theme);
 	return flag;
 }
