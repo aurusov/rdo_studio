@@ -87,11 +87,11 @@ LPFuzzySet MemberFunctionProperties::ext_binary(ExtBinaryFun fun, CREF(LPFuzzySe
 			FuzzySet::FuzzySetDefinition::iterator val = values.find(rdo_value);
 			if (val == values.end())
 			{
-				values[rdo_value] = std::min(it1->second, it2->second);
+				values[rdo_value] = (std::min)(it1->second, it2->second);
 			}
 			else
 			{
-				values[rdo_value] = std::max(val->second, std::min(it1->second, it2->second));
+				values[rdo_value] = (std::max)(val->second, (std::min)(it1->second, it2->second));
 			}
 			++it2;
 		}
