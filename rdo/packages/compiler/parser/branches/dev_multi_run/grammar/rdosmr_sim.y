@@ -101,10 +101,7 @@
 %token RDO_Monitor
 %token RDO_Animation
 %token RDO_NoChange
-%token RDO_MultiRun
 %token RDO_Run_Count
-%token RDO_Next
-%token RDO_Seek
 
 %token RDO_ProcessStart
 %token RDO_Decision_point
@@ -244,7 +241,7 @@ OPEN_RDO_PARSER_NAMESPACE
 smr_multirun
 	: '{' smr_multirun_body '}'
 	{
-		PARSER->getSMR()->setIterator();
+		PARSER->getSMR()->setIncrement();
 	}
 	;
 
@@ -258,7 +255,7 @@ smr_multirun_body_desc
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		if(pSMR->setCheck() )
+		if(pSMR->Check() )
 		{
 			tstring    eventName          = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
@@ -306,7 +303,7 @@ smr_multirun_body_desc
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		if(pSMR->setCheck() )
+		if(pSMR->Check() )
 		{
 			pSMR->setSeed(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOValue>($5)->value().getInt());
 		}
@@ -327,7 +324,7 @@ smr_multirun_body_desc
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		if(pSMR->setCheck() )
+		if(pSMR->Check() )
 		{
 			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
 			ASSERT(pLogic);

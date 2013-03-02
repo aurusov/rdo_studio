@@ -57,7 +57,7 @@ RDOSMR::RDOSMR()
 	, m_traceStartTime(rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
 	, m_traceEndTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
 	, m_runNumber     (0 )
-	, m_iterator      (0 )
+	, m_increment     (0 )
 	, m_runCount      (0 )
 {}
 
@@ -66,7 +66,7 @@ void RDOSMR::setRunCount(ruint value)
 	m_runCount = value;
 }
 
-void RDOSMR::setCount(ruint value)
+void RDOSMR::setRunNumber(ruint value)
 {
 	m_runNumber = value;
 }
@@ -76,9 +76,9 @@ void RDOSMR::setShowMode(rdo::service::simulation::ShowMode showMode)
 	m_showMode = showMode;
 }
 
-rbool RDOSMR::setCheck()
+rbool RDOSMR::Check()
 {
-	if (m_runNumber == m_iterator)
+	if (m_runNumber == m_increment)
 	{
 		return true;
 	}
@@ -88,9 +88,9 @@ rbool RDOSMR::setCheck()
 	}
 }
 
-void RDOSMR::setIterator()
+void RDOSMR::setIncrement()
 {
-	++m_iterator;
+	++m_increment;
 }
 
 void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
