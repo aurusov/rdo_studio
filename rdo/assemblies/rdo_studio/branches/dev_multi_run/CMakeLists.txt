@@ -8,7 +8,7 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
 
-PROJECT(rdo_nix_studio)
+PROJECT(rdo)
 
 MESSAGE(STATUS "Create RDO")
 
@@ -17,13 +17,18 @@ SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 # call system info script
 INCLUDE(FindOS)
-INCLUDE(add_boost_test)
+INCLUDE(add.boost.test)
 
 IF(NOT MSVC)
-    SET(CMAKE_C_FLAGS  "-Wall")
-    SET(CMAKE_CXX_FLAGS "-Wall")
+    SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 ELSE()
     STRING(REGEX REPLACE /W[0-4] /W4 CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+ENDIF(NOT MSVC)
+
+IF(NOT MSVC)
+    SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++0x")
 ENDIF(NOT MSVC)
 
 IF(NOT CMAKE_BUILD_TYPE)
@@ -31,11 +36,16 @@ IF(NOT CMAKE_BUILD_TYPE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
 IF(NOT MSVC)
-    SET(BUILD_SHARED_LIBS TRUE)
-#    SET(CDEFS "-m32 -o output32")
-    SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+    IF(NOT BUILD_SHARED_LIBS)
+        SET(BUILD_SHARED_LIBS ON)
+    ENDIF(NOT BUILD_SHARED_LIBS)
+#   SET(CDEFS "-m32 -o output32")
 ENDIF(NOT MSVC)
+
+SET(ENABLE_UNICODE FALSE)
+IF(NOT MSVC AND ENABLE_UNICODE)
+    ADD_DEFINITIONS(-DUNICODE)
+ENDIF(NOT MSVC AND ENABLE_UNICODE)
 
 SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
@@ -43,18 +53,66 @@ SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 # add the include folder to the include path
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
 
-IF(NOT MSVC)
-    INCLUDE(CTest)
-    ENABLE_TESTING()
-ENDIF(NOT MSVC)
+INCLUDE(CTest)
+ENABLE_TESTING()
 
 IF(MSVC)
     SET(Boost_USE_STATIC_LIBS    ON)
     SET(Boost_USE_MULTITHREADED  ON)
 ENDIF(MSVC)
 
+# enable folders for msvc
+SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
+
+SET(APPS_FOLDERS       ".apps")
+SET(TESTS_FOLDERS      ".tests")
+SET(LIBRARY_FOLDERS    ".modules")
+SET(THIRDPARTY_FOLDERS ".thirdparty")
+
+IF(WIN32)
+    IF(NOT BOOST_ROOT)
+        SET(BOOST_ROOT $ENV{BOOST_ROOT})
+    ENDIF()
+ENDIF(WIN32)
+
 # set base directory
 SET(RDO_BASE_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+IF(WIN32)
+    SET(PATH_STRING $ENV{PATH})
+    STRING(FIND "${PATH_STRING}" "thirdparty/bison_flex/bin" OUT)
+    IF(${OUT} GREATER -1)
+    ELSE()
+        SET(ENV{PATH} "$ENV{PATH};${RDO_BASE_DIRECTORY}/thirdparty/bison_flex/bin")
+    ENDIF()
+ENDIF(WIN32)
+
+SET(DOC_DIRECTORY ${RDO_BASE_DIRECTORY}/doc)
+
+SET(COMMON_FILES
+    ${DOC_DIRECTORY}/changes.txt
+    ${DOC_DIRECTORY}/configuring.environment.debian.txt
+    ${DOC_DIRECTORY}/install.boost.txt
+    ${DOC_DIRECTORY}/install.doxygen.txt
+    ${DOC_DIRECTORY}/install.mingw.txt
+    ${DOC_DIRECTORY}/install.qt.from.sources.txt
+    ${DOC_DIRECTORY}/rdodoc-src-html.doxyfile
+    ${DOC_DIRECTORY}/todo.txt
+    ${DOC_DIRECTORY}/coding.style.txt
+    ${DOC_DIRECTORY}/configuring.environment.opensuse.txt
+    ${DOC_DIRECTORY}/install.cmake.txt
+    ${DOC_DIRECTORY}/install.graphviz.txt
+    ${DOC_DIRECTORY}/install.qt.from.installer.txt
+    ${DOC_DIRECTORY}/make.project.txt
+    ${DOC_DIRECTORY}/system.test.txt
+    )
+
+SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
+
+SET(SCRIPT_FILES
+    ${SCRIPTS_DIRECTORY}/python/executor_of_system_tests.py
+    ${SCRIPTS_DIRECTORY}/statistics/statistics.sh
+    )
 
 SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
 
@@ -76,9 +134,7 @@ ADD_SUBDIRECTORY(${REPOSITORY_PATH})
 
 # Compile rdo_converter
 SET(CONVERTER_PATH ${RDO_BASE_DIRECTORY}/converter)
-#IF(MSVC)
-	ADD_SUBDIRECTORY(${CONVERTER_PATH})
-#ENDIF(MSVC)
+ADD_SUBDIRECTORY(${CONVERTER_PATH})
 
 # Compile rdo_lib
 SET(SIMULATOR_PATH ${RDO_BASE_DIRECTORY}/simulator)
@@ -86,3 +142,23 @@ ADD_SUBDIRECTORY(${SIMULATOR_PATH})
 
 SET(APLICATIONS_DIRECTORY ${RDO_BASE_DIRECTORY}/app)
 ADD_SUBDIRECTORY(${APLICATIONS_DIRECTORY})
+
+#==============================================================================
+#---------------------------------- info --------------------------------------
+#==============================================================================
+
+# build info
+SET(BUILD_INFO_BAR "====================================================================================")
+SET(NOOP_STRING "")
+
+MESSAGE(STATUS ${NOOP_STRING})
+MESSAGE(STATUS ${BUILD_INFO_BAR})
+MESSAGE(STATUS "Summary of the build:")
+MESSAGE(STATUS ${BUILD_INFO_BAR})
+MESSAGE(STATUS "ENABLE UNICODE:               ${ENABLE_UNICODE}")
+MESSAGE(STATUS ${BUILD_INFO_BAR})
+MESSAGE(STATUS "BUILD rdo console:            TRUE")
+MESSAGE(STATUS ${BUILD_INFO_BAR})
+MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
+MESSAGE(STATUS ${BUILD_INFO_BAR})
+MESSAGE(STATUS ${NOOP_STRING})
