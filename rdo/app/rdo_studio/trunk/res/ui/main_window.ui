@@ -184,7 +184,6 @@ border: none;
     </property>
     <addaction name="actWindowCascade"/>
     <addaction name="actWindowTitleHorzontal"/>
-    <addaction name="actWindowArrange"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
