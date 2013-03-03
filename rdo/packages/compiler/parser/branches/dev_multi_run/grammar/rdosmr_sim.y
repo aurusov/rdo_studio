@@ -248,94 +248,7 @@ smr_multirun
 
 smr_multirun_body
 	: /* empty */
-	| smr_multirun_body smr_multirun_body_desc
-	;
-
-smr_multirun_body_desc
-	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
-	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if(pSMR->Check() )
-		{
-			tstring    eventName          = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
-			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
-			LPRDOEvent pEvent             = PARSER->findEvent(eventName);
-			if (!pEvent)
-			{
-				PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
-			}
-
-			ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
-			if (arithmIt == pArithmList->getContainer().end())
-			{
-				PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
-			}
-
-			LPRDOFUNArithm pTimeArithm = *arithmIt;
-			ASSERT(pTimeArithm);
-			++arithmIt;
-
-			LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
-			ASSERT(pParamList);
-
-			while (arithmIt != pArithmList->getContainer().end())
-			{
-				pParamList->addItem(*arithmIt);
-				++arithmIt;
-			}
-
-			rdo::runtime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
-			pCalcTime->setSrcInfo(pTimeArithm->src_info());
-			ASSERT(pCalcTime);
-
-			LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
-			ASSERT(pBaseOperation);
-
-			rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
-			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
-			ASSERT(pEventPlan);
-			pEvent->setParamList(pParamList);
-			pEventPlan->setEvent(pBaseOperation);
-			pEvent->setInitCalc(pEventPlan);
-		}
-	}
-	| RDO_IDENTIF '.' RDO_Seed '=' RDO_INT_CONST
-	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if(pSMR->Check() )
-		{
-			pSMR->setSeed(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOValue>($5)->value().getInt());
-		}
-	}
-	| RDO_IDENTIF '.' RDO_Seed '=' error
-	{
-		PARSER->error().error(@4, @5, _T("Ожидается база генератора"));
-	}
-	| RDO_IDENTIF '.' RDO_Seed error
-	{
-		PARSER->error().error(@4, _T("Ожидается '='"));
-	}
-	| error
-	{
-		PARSER->error().error(@1, _T("Неизвестная ошибка"));
-	}
-	| RDO_Terminate_if fun_logic
-	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if(pSMR->Check() )
-		{
-			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
-			ASSERT(pLogic);
-			PARSER->getSMR()->setTerminateIf(pLogic);
-		}
-	}
-	| RDO_Terminate_if error
-	{
-		PARSER->error().error(@1, @2, _T("Ошибка логического выражения в терминальном условии"));
-	}
+	| smr_multirun_body smr_cond
 	;
 
 // --------------------------------------------------------------------------------
@@ -375,46 +288,51 @@ smr_cond
 	}
 	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
 	{
-		tstring    eventName          = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
-		LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($6);
-		LPRDOEvent pEvent             = PARSER->findEvent(eventName);
-		if (!pEvent)
+		LPRDOSMR pSMR = PARSER->getSMR();
+		ASSERT(pSMR);
+		if(pSMR->Check() )
 		{
-			PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
-		}
+			tstring    eventName          = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($6);
+			LPRDOEvent pEvent             = PARSER->findEvent(eventName);
+			if (!pEvent)
+			{
+				PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
+			}
 
-		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
-		if (arithmIt == pArithmList->getContainer().end())
-		{
-			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
-		}
+			ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
+			if (arithmIt == pArithmList->getContainer().end())
+			{
+				PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
+			}
 
-		LPRDOFUNArithm pTimeArithm = *arithmIt;
-		ASSERT(pTimeArithm);
-		++arithmIt;
-
-		LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
-		ASSERT(pParamList);
-
-		while (arithmIt != pArithmList->getContainer().end())
-		{
-			pParamList->addItem(*arithmIt);
+			LPRDOFUNArithm pTimeArithm = *arithmIt;
+			ASSERT(pTimeArithm);
 			++arithmIt;
+
+			LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
+			ASSERT(pParamList);
+
+			while (arithmIt != pArithmList->getContainer().end())
+			{
+				pParamList->addItem(*arithmIt);
+				++arithmIt;
+			}
+
+			rdo::runtime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
+			pCalcTime->setSrcInfo(pTimeArithm->src_info());
+			ASSERT(pCalcTime);
+
+			LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
+			ASSERT(pBaseOperation);
+
+			rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
+			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+			ASSERT(pEventPlan);
+			pEvent->setParamList(pParamList);
+			pEventPlan->setEvent(pBaseOperation);
+			pEvent->setInitCalc(pEventPlan);
 		}
-
-		rdo::runtime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
-		pCalcTime->setSrcInfo(pTimeArithm->src_info());
-		ASSERT(pCalcTime);
-
-		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
-		ASSERT(pBaseOperation);
-
-		rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
-		pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
-		ASSERT(pEventPlan);
-		pEvent->setParamList(pParamList);
-		pEventPlan->setEvent(pBaseOperation);
-		pEvent->setInitCalc(pEventPlan);
 	}
 	| smr_cond RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
 	| smr_cond RDO_Show_mode                  '=' smr_show_mode
@@ -435,7 +353,10 @@ smr_cond
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setFrameNumber(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+		if(pSMR->Check() )
+		{
+			pSMR->setFrameNumber(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+		}
 	}
 	| smr_cond RDO_Frame_number '=' error
 	{
@@ -469,13 +390,19 @@ smr_cond
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($4)->value().getDouble(), @4);
+		if(pSMR->Check() )
+		{
+			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($4)->value().getDouble(), @4);
+		}
 	}
 	| smr_cond RDO_Run_StartTime '=' RDO_INT_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+		if(pSMR->Check() )
+		{
+			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+		}
 	}
 	| smr_cond RDO_Run_StartTime '=' error
 	{
@@ -495,7 +422,10 @@ smr_cond
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+		if(pSMR->Check() )
+		{
+			pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+		}
 	}
 	| smr_cond RDO_Trace_StartTime '=' error
 	{
@@ -509,13 +439,19 @@ smr_cond
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($4)->value().getDouble(), @4);
+		if(pSMR->Check() )
+		{
+			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($4)->value().getDouble(), @4);
+		}
 	}
 	| smr_cond RDO_Trace_EndTime '=' RDO_INT_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+		if(pSMR->Check() )
+		{
+			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+		}
 	}
 	| smr_cond RDO_Trace_EndTime '=' error
 	{
@@ -527,9 +463,14 @@ smr_cond
 	}
 	| smr_cond RDO_Terminate_if fun_logic
 	{
-		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($3);
-		ASSERT(pLogic);
-		PARSER->getSMR()->setTerminateIf(pLogic);
+		LPRDOSMR pSMR = PARSER->getSMR();
+		ASSERT(pSMR);
+		if(pSMR->Check() )
+		{
+			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($3);
+			ASSERT(pLogic);
+			PARSER->getSMR()->setTerminateIf(pLogic);
+		}
 	}
 	| smr_cond RDO_Terminate_if error
 	{
@@ -539,9 +480,12 @@ smr_cond
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($4);
-		ASSERT(pLogic);
-		pSMR->insertBreakPoint(PARSER->stack().pop<RDOValue>($3)->src_info(), pLogic);
+		if(pSMR->Check() )
+		{
+			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($4);
+			ASSERT(pLogic);
+			pSMR->insertBreakPoint(PARSER->stack().pop<RDOValue>($3)->src_info(), pLogic);
+		}
 	}
 	| smr_cond RDO_Break_point RDO_IDENTIF error
 	{
@@ -553,9 +497,14 @@ smr_cond
 	}
 	| smr_cond RDO_IDENTIF '=' fun_arithm
 	{
-		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($4);
-		ASSERT(pArithm);
-		PARSER->getSMR()->setConstValue(PARSER->stack().pop<RDOValue>($2)->src_info(), pArithm);
+		LPRDOSMR pSMR = PARSER->getSMR();
+		ASSERT(pSMR);
+		if(pSMR->Check() )
+		{
+			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($4);
+			ASSERT(pArithm);
+			PARSER->getSMR()->setConstValue(PARSER->stack().pop<RDOValue>($2)->src_info(), pArithm);
+		}
 	}
 	| smr_cond RDO_IDENTIF '=' error
 	{
@@ -567,9 +516,14 @@ smr_cond
 	}
 	| smr_cond RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 	{
-		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($6);
-		ASSERT(pArithm);
-		PARSER->getSMR()->setResParValue(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOValue>($4)->src_info(), pArithm);
+		LPRDOSMR pSMR = PARSER->getSMR();
+		ASSERT(pSMR);
+		if(pSMR->Check() )
+		{
+			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($6);
+			ASSERT(pArithm);
+			PARSER->getSMR()->setResParValue(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOValue>($4)->src_info(), pArithm);
+		}
 	}
 	| smr_cond RDO_IDENTIF '.' RDO_IDENTIF '=' error
 	{
@@ -604,7 +558,10 @@ smr_cond
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setSeed(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOValue>($6)->value().getInt());
+		if(pSMR->Check() )
+		{
+			pSMR->setSeed(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOValue>($6)->value().getInt());
+		}
 	}
 	| smr_cond RDO_IDENTIF '.' RDO_Seed '=' error
 	{
