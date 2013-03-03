@@ -38,38 +38,38 @@
 #include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdo::gui::editor;
+using namespace rdo::gui::model;
 using namespace rdo::service::simulation;
 using namespace rdo::simulation::report;
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioModel::ModelTemplateItem
+// -------------------- Model::ModelTemplateItem
 // --------------------------------------------------------------------------------
-RDOStudioModel::ModelTemplateItem::ModelTemplateItem()
+Model::ModelTemplateItem::ModelTemplateItem()
 {}
 
-RDOStudioModel::ModelTemplateItem::ModelTemplateItem(CREF(ModelTemplateItem) copy)
+Model::ModelTemplateItem::ModelTemplateItem(CREF(ModelTemplateItem) copy)
 	: resName (copy.resName )
 	, position(copy.position)
 {}
 
-RDOStudioModel::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName)
+Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName)
 	: resName(resName)
 {}
 
-RDOStudioModel::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, ruint position)
+Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, ruint position)
 	: resName (resName )
 	, position(position)
 {}
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioModel
+// -------------------- Model
 // --------------------------------------------------------------------------------
-PTR(RDOStudioModel) g_pModel = NULL;
+PTR(Model) g_pModel = NULL;
 
-RDOStudioModel::RDOStudioModel()
+Model::Model()
 	: RDOThreadGUI(_T("RDOThreadModelGUI"), static_cast<PTR(RDOKernelGUI)>(g_pApp->m_pStudioGUI))
-	, m_frameManager   (boost::bind(&RDOStudioModel::onChangeFrame, this, _1))
+	, m_frameManager   (boost::bind(&Model::onChangeFrame, this, _1))
 	, m_GUI_HAS_MODEL  (false                     )
 	, m_GUI_CAN_RUN    (true                      )
 	, m_GUI_IS_RUNNING (false                     )
@@ -84,7 +84,7 @@ RDOStudioModel::RDOStudioModel()
 	, m_exitCode       (rdo::simulation::report::EC_ModelNotFound)
 	, m_modify         (false                     )
 	, m_buildState     (BS_UNDEFINED              )
-	, m_pModelView     (NULL                      )
+	, m_pView     (NULL                      )
 	, m_name           ("")
 {
 	g_pModel = this;
@@ -227,13 +227,13 @@ RDOStudioModel::RDOStudioModel()
 	after_constructor();
 }
 
-RDOStudioModel::~RDOStudioModel()
+Model::~Model()
 {
 	g_pModel = NULL;
 //	closeModel();
 }
 
-rbool RDOStudioModel::init()
+rbool Model::init()
 {
 	PTR(IInit) pFrameManagerInit = dynamic_cast<PTR(IInit)>(&m_frameManager);
 	ASSERT(pFrameManagerInit);
@@ -242,7 +242,7 @@ rbool RDOStudioModel::init()
 	return true;
 }
 
-void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
+void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 {
 	switch (msg.message)
 	{
@@ -250,7 +250,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		{
 			msg.lock();
 			PTR(rdo::repository::RDOThreadRepository::FileData) fdata = static_cast<PTR(rdo::repository::RDOThreadRepository::FileData)>(msg.param);
-			PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(fdata->m_type);
+			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(fdata->m_type);
 			if (pEdit)
 			{
 				pEdit->save(fdata->m_stream);
@@ -498,7 +498,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 	}
 }
 
-void RDOStudioModel::show_result()
+void Model::show_result()
 {
 	rdo::textstream modelResults;
 	sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &modelResults);
@@ -517,7 +517,7 @@ void RDOStudioModel::show_result()
 	}
 }
 
-rbool RDOStudioModel::newModel(CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex)
+rbool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex)
 {
 	m_templateIndex = templateIndex;
 	g_pApp->getIMainWnd()->getDockBuild  ().clear();
@@ -531,7 +531,7 @@ rbool RDOStudioModel::newModel(CREF(QString) modelName, CREF(QString) modelPath,
 	return true;
 }
 
-rbool RDOStudioModel::openModel(CREF(QString) modelName)
+rbool Model::openModel(CREF(QString) modelName)
 {
 	if (isRunning())
 	{
@@ -579,14 +579,14 @@ rbool RDOStudioModel::openModel(CREF(QString) modelName)
 	return data.m_result;
 }
 
-rbool RDOStudioModel::saveModel() const
+rbool Model::saveModel() const
 {
 	rbool res = true;
 	g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_SAVE, &res);
 	return res;
 }
 
-rbool RDOStudioModel::closeModel()
+rbool Model::closeModel()
 {
 	if (isRunning())
 	{
@@ -610,7 +610,7 @@ rbool RDOStudioModel::closeModel()
 	return true;
 }
 
-rbool RDOStudioModel::buildModel()
+rbool Model::buildModel()
 {
 	if (hasModel() && !isRunning() && saveModel())
 	{
@@ -627,7 +627,7 @@ rbool RDOStudioModel::buildModel()
 	return false;
 }
 
-rbool RDOStudioModel::runModel()
+rbool Model::runModel()
 {
 	if (buildModel())
 	{
@@ -643,7 +643,7 @@ rbool RDOStudioModel::runModel()
 	return false;
 }
 
-rbool RDOStudioModel::stopModel() const
+rbool Model::stopModel() const
 {
 	if (hasModel() && isRunning())
 	{
@@ -653,35 +653,35 @@ rbool RDOStudioModel::stopModel() const
 	return false;
 }
 
-void RDOStudioModel::createView()
+void Model::createView()
 {
-	ASSERT(m_pModelView == NULL);
-	m_pModelView = new RDOStudioModelView(NULL);
-	m_pModelView->setModel(this);
-	g_pApp->getIMainWnd()->addSubWindow(m_pModelView);
-	m_pModelView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/mdi_model.png")));
+	ASSERT(m_pView == NULL);
+	m_pView = new View(NULL);
+	m_pView->setModel(this);
+	g_pApp->getIMainWnd()->addSubWindow(m_pView);
+	m_pView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/mdi_model.png")));
 
-	for (int i = 0; i < m_pModelView->getTab().count(); i++)
+	for (int i = 0; i < m_pView->getTab().count(); i++)
 	{
-		PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(i);
+		PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
 		connect(pEdit, SIGNAL(modifyChanged(bool)), this, SLOT(onEditModifyChanged(bool)));
 	}
 }
 
-void RDOStudioModel::resetView()
+void Model::resetView()
 {
-	if (m_pModelView)
+	if (m_pView)
 	{
-		for (int i = 0; i < m_pModelView->getTab().count(); i++)
+		for (int i = 0; i < m_pView->getTab().count(); i++)
 		{
-			PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(i);
+			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
 			disconnect(pEdit, SIGNAL(modifyChanged(bool)), this, SLOT(onEditModifyChanged(bool)));
 		}
-		m_pModelView->setModel(NULL);
+		m_pView->setModel(NULL);
 	}
 }
 
-void RDOStudioModel::newModelFromRepository()
+void Model::newModelFromRepository()
 {
 	setHasModel(true);
 
@@ -694,14 +694,14 @@ void RDOStudioModel::newModelFromRepository()
 		? m_modelTemplates.find(*m_templateIndex)
 		: m_modelTemplates.end();
 
-	for (int i = 0; i < m_pModelView->getTab().count(); i++)
+	for (int i = 0; i < m_pView->getTab().count(); i++)
 	{
-		PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(i);
+		PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
 		pEdit->setReadOnly(false);
 		pEdit->clearAll();
 		if (templateIt != m_modelTemplates.end())
 		{
-			ModelTemplate::const_iterator it = templateIt->second.find(m_pModelView->getTab().indexToType(i));
+			ModelTemplate::const_iterator it = templateIt->second.find(m_pView->getTab().indexToType(i));
 			if (it != templateIt->second.end())
 			{
 				ASSERT(!it->second.resName.isEmpty())
@@ -728,15 +728,15 @@ void RDOStudioModel::newModelFromRepository()
 	if (templateIt != m_modelTemplates.end())
 	{
 		saveModel();
-		for (int i = 0; i < m_pModelView->getTab().count(); i++)
+		for (int i = 0; i < m_pView->getTab().count(); i++)
 		{
-			PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(i);
+			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
 			pEdit->clearUndoBuffer();
 		}
 	}
 }
 
-void RDOStudioModel::openModelFromRepository()
+void Model::openModelFromRepository()
 {
 	setHasModel(true);
 
@@ -745,18 +745,18 @@ void RDOStudioModel::openModelFromRepository()
 	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 	setName(QString::fromLocal8Bit(data_smr.m_name.c_str()));
 
-	int cnt = m_pModelView->getTab().count();
+	int cnt = m_pView->getTab().count();
 	g_pApp->getMainWndUI()->statusBar()->beginProgress(0, cnt * 2 + 1);
 	g_pApp->getMainWndUI()->statusBar()->stepProgress();
 	for (int i = 0; i < cnt; i++)
 	{
-		PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(i);
+		PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
 		pEdit->setReadOnly(false);
 		pEdit->clearAll();
 		rdo::binarystream stream;
 		rbool canLoad = true;
-		rdoModelObjects::RDOFileType type = m_pModelView->getTab().indexToType(i);
-		if (m_pModelView->getTab().typeSupported(type))
+		rdoModelObjects::RDOFileType type = m_pView->getTab().indexToType(i);
+		if (m_pView->getTab().typeSupported(type))
 		{
 			rdo::repository::RDOThreadRepository::FileData fileData(type, stream);
 			g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
@@ -813,15 +813,15 @@ void RDOStudioModel::openModelFromRepository()
 	updateActions();
 }
 
-void RDOStudioModel::saveModelToRepository()
+void Model::saveModelToRepository()
 {
 	rbool smr_modified = false;
 	rbool wasSaved     = false;
-	PTR(Model) smr_edit = m_pModelView->getTab().getItemEdit(rdoModelObjects::SMR);
-	if (smr_edit->isModify())
+	PTR(editor::Model) pSmrEdit = m_pView->getTab().getItemEdit(rdoModelObjects::SMR);
+	if (pSmrEdit->isModify())
 	{
 		rdo::binarystream stream;
-		smr_edit->save(stream);
+		pSmrEdit->save(stream);
 		m_smrEmptyError = false;
 		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::SMR, stream);
 		g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
@@ -833,11 +833,11 @@ void RDOStudioModel::saveModelToRepository()
 		smr_modified = true;
 	}
 
-	int cnt = m_pModelView->getTab().count();
+	int cnt = m_pView->getTab().count();
 	int progress_cnt = 0;
 	for (int i = 0; i < cnt; i++)
 	{
-		if (smr_modified || m_pModelView->getTab().getItemEdit(i)->isModify())
+		if (smr_modified || m_pView->getTab().getItemEdit(i)->isModify())
 		{
 			progress_cnt++;
 		}
@@ -848,13 +848,13 @@ void RDOStudioModel::saveModelToRepository()
 		g_pApp->getMainWndUI()->statusBar()->stepProgress();
 		for (int i = 0; i < cnt; i++)
 		{
-			PTR(Model) pEdit = m_pModelView->getTab().getItemEdit(i);
+			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
 			if (smr_modified || pEdit->isModify())
 			{
 				rdo::binarystream stream;
 				pEdit->save(stream);
 				g_pApp->getMainWndUI()->statusBar()->stepProgress();
-				rdoModelObjects::RDOFileType type = m_pModelView->getTab().indexToType(i);
+				rdoModelObjects::RDOFileType type = m_pView->getTab().indexToType(i);
 				switch (type)
 				{
 				case rdoModelObjects::RTP:
@@ -894,20 +894,20 @@ void RDOStudioModel::saveModelToRepository()
 	updateActions();
 }
 
-QString RDOStudioModel::getFullName() const
+QString Model::getFullName() const
 {
 	rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
 	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	return QString::fromLocal8Bit(data.m_fullName.c_str());
 }
 
-void RDOStudioModel::updateFrmDescribed()
+void Model::updateFrmDescribed()
 {
 //	frmDescribed = kernel->repository()->isDescribed(rdoModelObjects::FRM);
 	m_frmDescribed = true;
 }
 
-rbool RDOStudioModel::canCloseModel()
+rbool Model::canCloseModel()
 {
 	rbool result = true;
 	if (isModify())
@@ -922,21 +922,21 @@ rbool RDOStudioModel::canCloseModel()
 	return result;
 }
 
-void RDOStudioModel::closeModelFromRepository()
+void Model::closeModelFromRepository()
 {
 	setHasModel(false);
-	m_pModelView->parentWidget()->close();
-	m_pModelView  = NULL;
+	m_pView->parentWidget()->close();
+	m_pView  = NULL;
 	m_modelClosed = true;
 	setName("");
 }
 
-CREF(QString) RDOStudioModel::getName() const
+CREF(QString) Model::getName() const
 {
 	return m_name;
 }
 
-void RDOStudioModel::setName(CREF(QString) name)
+void Model::setName(CREF(QString) name)
 {
 	QString newName = name.trimmed();
 
@@ -944,9 +944,9 @@ void RDOStudioModel::setName(CREF(QString) name)
 	{
 		m_name = newName;
 
-		if (m_pModelView)
+		if (m_pView)
 		{
-			m_pModelView->parentWidget()->setWindowTitle(QString::fromLocal8Bit("модель: %1").arg(
+			m_pView->parentWidget()->setWindowTitle(QString::fromLocal8Bit("модель: %1").arg(
 				g_pApp->getShowCaptionFullName()
 					? getFullName()
 					: m_name
@@ -955,7 +955,7 @@ void RDOStudioModel::setName(CREF(QString) name)
 	}
 }
 
-void RDOStudioModel::afterModelStart()
+void Model::afterModelStart()
 {
 	m_frameManager.clear();
 
@@ -1004,25 +1004,25 @@ void RDOStudioModel::afterModelStart()
 	}
 }
 
-void RDOStudioModel::updateStyleOfAllModel() const
+void Model::updateStyleOfAllModel() const
 {
-	if (m_pModelView)
+	if (m_pView)
 	{
-		for (int i = 0; i < m_pModelView->getTab().count(); i++)
+		for (int i = 0; i < m_pView->getTab().count(); i++)
 		{
-			m_pModelView->getTab().getItemEdit(i)->setEditorStyle(&g_pApp->getStyle()->style_editor);
+			m_pView->getTab().getItemEdit(i)->setEditorStyle(&g_pApp->getStyle()->style_editor);
 		}
 	}
 
 	m_frameManager.updateStyles();
 }
 
-rbool RDOStudioModel::isPrevModelClosed() const
+rbool Model::isPrevModelClosed() const
 {
 	return m_modelClosed;
 }
 
-void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
+void Model::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 {
 	if (isRunning())
 	{
@@ -1046,19 +1046,19 @@ void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 	updateActions();
 }
 
-QString RDOStudioModel::getLastBreakPointName()
+QString Model::getLastBreakPointName()
 {
 	tstring str;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_LAST_BREAKPOINT, &str);
 	return QString::fromLocal8Bit(str.c_str());
 }
 
-double RDOStudioModel::getSpeed() const
+double Model::getSpeed() const
 {
 	return m_speed;
 }
 
-void RDOStudioModel::setSpeed(double persent)
+void Model::setSpeed(double persent)
 {
 	if (persent >= 0 && persent <= 1)
 	{
@@ -1071,12 +1071,12 @@ void RDOStudioModel::setSpeed(double persent)
 	}
 }
 
-double RDOStudioModel::getShowRate() const
+double Model::getShowRate() const
 {
 	return m_showRate;
 }
 
-void RDOStudioModel::setShowRate(double value)
+void Model::setShowRate(double value)
 {
 	if (!isRunning())
 		return;
@@ -1089,54 +1089,54 @@ void RDOStudioModel::setShowRate(double value)
 	}
 }
 
-void RDOStudioModel::onShowNextFrame()
+void Model::onShowNextFrame()
 {
 	m_frameManager.showNextFrame();
 }
 
-void RDOStudioModel::onShowPrevFrame()
+void Model::onShowPrevFrame()
 {
 	m_frameManager.showPrevFrame();
 }
 
-int RDOStudioModel::getFrameCount() const
+int Model::getFrameCount() const
 {
 	return m_frameManager.count();
 }
 
-CREF(QString) RDOStudioModel::getFrameName(int index) const
+CREF(QString) Model::getFrameName(int index) const
 {
 	return m_frameManager.getFrameName(index);
 }
 
-void RDOStudioModel::showFrame(int index)
+void Model::showFrame(int index)
 {
 	m_frameManager.showFrame(index);
 }
 
-void RDOStudioModel::closeAllFrame()
+void Model::closeAllFrame()
 {
 	m_frameManager.closeAll();
 }
 
-rbool RDOStudioModel::hasModel() const
+rbool Model::hasModel() const
 {
 	return m_GUI_HAS_MODEL;
 }
 
-void RDOStudioModel::setHasModel(rbool value)
+void Model::setHasModel(rbool value)
 {
 	m_GUI_HAS_MODEL = value;
 	updateActions();
 }
 
-void RDOStudioModel::setCanRun(rbool value)
+void Model::setCanRun(rbool value)
 {
 	m_GUI_CAN_RUN = value;
 	updateActions();
 }
 
-void RDOStudioModel::updateActions()
+void Model::updateActions()
 {
 	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	if (!pMainWindow)
@@ -1227,7 +1227,7 @@ void RDOStudioModel::updateActions()
 	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SHOWRATE>(showRateStr);
 }
 
-void RDOStudioModel::update()
+void Model::update()
 {
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
 
@@ -1279,9 +1279,9 @@ void RDOStudioModel::update()
 	}
 }
 
-rbool RDOStudioModel::isModify() const
+rbool Model::isModify() const
 {
-	if (!m_pModelView)
+	if (!m_pView)
 		return false;
 
 	rbool result = false;
@@ -1303,94 +1303,94 @@ rbool RDOStudioModel::isModify() const
 	return result;
 }
 
-rbool RDOStudioModel::canNew() const
+rbool Model::canNew() const
 {
 	return (canRun() || !hasModel());
 }
 
-rbool RDOStudioModel::canOpen() const
+rbool Model::canOpen() const
 {
 	return (canRun() || !hasModel());
 }
 
-rbool RDOStudioModel::canSave() const
+rbool Model::canSave() const
 {
 	return hasModel() && isModify();
 }
 
-rbool RDOStudioModel::canClose() const
+rbool Model::canClose() const
 {
 	return hasModel() && !isRunning();
 }
 
-rbool RDOStudioModel::canBuild() const
+rbool Model::canBuild() const
 {
 	return canRun();
 }
 
-rbool RDOStudioModel::canRun() const
+rbool Model::canRun() const
 {
 	return hasModel() && m_GUI_CAN_RUN;
 }
 
-rbool RDOStudioModel::isRunning() const
+rbool Model::isRunning() const
 {
 	return m_GUI_IS_RUNNING;
 }
 
-void RDOStudioModel::setIsRunning(rbool value)
+void Model::setIsRunning(rbool value)
 {
 	m_GUI_IS_RUNNING = value;
 	updateActions();
 }
 
-rbool RDOStudioModel::isFrmDescribed() const
+rbool Model::isFrmDescribed() const
 {
 	return m_frmDescribed;
 }
 
-double RDOStudioModel::getTimeNow() const
+double Model::getTimeNow() const
 {
 	return m_timeNow;
 }
 
-rdo::simulation::report::RDOExitCode RDOStudioModel::getExitCode() const
+rdo::simulation::report::RDOExitCode Model::getExitCode() const
 {
 	return m_exitCode;
 }
 
-rdo::runtime::RunTimeMode RDOStudioModel::getRuntimeMode() const
+rdo::runtime::RunTimeMode Model::getRuntimeMode() const
 {
 	return m_runtimeMode;
 }
 
-REF(RDOStudioFrameManager) RDOStudioModel::getFrameManager()
+REF(FrameManager) Model::getFrameManager()
 {
 	return m_frameManager;
 }
 
-void RDOStudioModel::onChangeFrame(ruint)
+void Model::onChangeFrame(ruint)
 {
 	updateActions();
 }
 
-PTR(rdo::gui::editor::ModelTabCtrl) RDOStudioModel::getTab()
+PTR(TabCtrl) Model::getTab()
 {
-	if (!m_pModelView)
+	if (!m_pView)
 		return NULL;
 
-	return &m_pModelView->getTab();
+	return &m_pView->getTab();
 }
 
-CPTR(rdo::gui::editor::ModelTabCtrl) RDOStudioModel::getTab() const
+CPTR(TabCtrl) Model::getTab() const
 {
-	if (!m_pModelView)
+	if (!m_pView)
 		return NULL;
 
-	return &m_pModelView->getTab();
+	return &m_pView->getTab();
 }
 
-void RDOStudioModel::onFileNew()
+void Model::onFileNew()
 {
 	NewModelDialog dlg(g_pApp->getMainWndUI());
 	if (dlg.exec() == QDialog::Accepted)
@@ -1399,82 +1399,82 @@ void RDOStudioModel::onFileNew()
 	}
 }
 
-void RDOStudioModel::onFileOpen()
+void Model::onFileOpen()
 {
 	openModel();
 }
 
-void RDOStudioModel::onFileClose()
+void Model::onFileClose()
 {
 	closeModel();
 }
 
-void RDOStudioModel::onFileSaveAll()
+void Model::onFileSaveAll()
 {
 	saveModel();
 }
 
-void RDOStudioModel::onModelBuild()
+void Model::onModelBuild()
 {
 	buildModel();
 }
 
-void RDOStudioModel::onModelRun()
+void Model::onModelRun()
 {
 	runModel();
 }
 
-void RDOStudioModel::onModelStop()
+void Model::onModelStop()
 {
 	stopModel();
 }
 
-void RDOStudioModel::onModelRuntimeMaxSpeed()
+void Model::onModelRuntimeMaxSpeed()
 {
 	setRuntimeMode(rdo::runtime::RTM_MaxSpeed);
 }
 
-void RDOStudioModel::onModelRuntimeJump()
+void Model::onModelRuntimeJump()
 {
 	setRuntimeMode(rdo::runtime::RTM_Jump);
 }
 
-void RDOStudioModel::onModelRuntimeSync()
+void Model::onModelRuntimeSync()
 {
 	setRuntimeMode(rdo::runtime::RTM_Sync);
 }
 
-void RDOStudioModel::onModelRuntimePause()
+void Model::onModelRuntimePause()
 {
 	setRuntimeMode(rdo::runtime::RTM_Pause);
 }
 
-void RDOStudioModel::onModelShowRateInc()
+void Model::onModelShowRateInc()
 {
 	setShowRate(getShowRate() * 1.5);
 }
 
-void RDOStudioModel::onModelShowRateIncFour()
+void Model::onModelShowRateIncFour()
 {
 	setShowRate(getShowRate() * 4);
 }
 
-void RDOStudioModel::onModelShowRateDecFour()
+void Model::onModelShowRateDecFour()
 {
 	setShowRate(getShowRate() / 4);
 }
 
-void RDOStudioModel::onModelShowRateDec()
+void Model::onModelShowRateDec()
 {
 	setShowRate(getShowRate() / 1.5);
 }
 
-void RDOStudioModel::onModelSpeedValueChanged(int value)
+void Model::onModelSpeedValueChanged(int value)
 {
 	setSpeed(log( double(value + 1) ) / log(101.0));
 }
 
-void RDOStudioModel::onEditModifyChanged(bool)
+void Model::onEditModifyChanged(bool)
 {
 	updateActions();
 }

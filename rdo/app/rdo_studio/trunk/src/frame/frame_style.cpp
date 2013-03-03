@@ -17,9 +17,9 @@
 using namespace rdo::gui::style;
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameTheme
+// -------------------- FrameTheme
 // --------------------------------------------------------------------------------
-RDOStudioFrameTheme::RDOStudioFrameTheme(): StyleTheme()
+FrameTheme::FrameTheme(): StyleTheme()
 {
 	defaultColor    = QColor( 0x00, 0x00, 0x00 );
 	backgroundColor = QColor( 0x00, 0x80, 0x80 );
@@ -27,66 +27,63 @@ RDOStudioFrameTheme::RDOStudioFrameTheme(): StyleTheme()
 	defaultStyle = StyleFont::NONE;
 }
 
-RDOStudioFrameTheme::~RDOStudioFrameTheme()
-{
-}
+FrameTheme::~FrameTheme()
+{}
 
-RDOStudioFrameTheme& RDOStudioFrameTheme::operator =( const RDOStudioFrameTheme& theme )
+FrameTheme& FrameTheme::operator =( const FrameTheme& theme )
 {
 	StyleTheme::operator=( theme );
 	return *this;
 }
 
-rbool RDOStudioFrameTheme::operator ==( const RDOStudioFrameTheme& theme ) const
+rbool FrameTheme::operator ==( const FrameTheme& theme ) const
 {
 	return StyleTheme::operator==( theme );
 }
 
-rbool RDOStudioFrameTheme::operator !=( const RDOStudioFrameTheme& theme ) const
+rbool FrameTheme::operator !=( const FrameTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-RDOStudioFrameTheme RDOStudioFrameTheme::getDefaultTheme()
+FrameTheme FrameTheme::getDefaultTheme()
 {
-	RDOStudioFrameTheme theme;
+	FrameTheme theme;
 	return theme;
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameStyle
+// -------------------- FrameStyle
 // --------------------------------------------------------------------------------
-RDOStudioFrameStyle::RDOStudioFrameStyle(): StyleWithTheme()
+FrameStyle::FrameStyle(): StyleWithTheme()
 {
-	theme = new RDOStudioFrameTheme();
+	theme = new FrameTheme();
 }
 
-RDOStudioFrameStyle::~RDOStudioFrameStyle()
-{
-}
+FrameStyle::~FrameStyle()
+{}
 
-
-RDOStudioFrameStyle& RDOStudioFrameStyle::operator =( const RDOStudioFrameStyle& style )
+FrameStyle& FrameStyle::operator =( const FrameStyle& style )
 {
 	StyleWithTheme::operator=( style );
-	if ( theme  && style.theme )  *static_cast<RDOStudioFrameTheme*>(theme) = *static_cast<RDOStudioFrameTheme*>(style.theme);
+	if ( theme  && style.theme )  *static_cast<FrameTheme*>(theme) = *static_cast<FrameTheme*>(style.theme);
 
 	return *this;
 }
 
-rbool RDOStudioFrameStyle::operator ==( const RDOStudioFrameStyle& style ) const
+rbool FrameStyle::operator ==( const FrameStyle& style ) const
 {
 	rbool flag = StyleWithTheme::operator==( style );
-	if ( theme  && style.theme && flag ) flag &= *static_cast<RDOStudioFrameTheme*>(theme) == *static_cast<RDOStudioFrameTheme*>(style.theme);
+	if ( theme  && style.theme && flag ) flag &= *static_cast<FrameTheme*>(theme) == *static_cast<FrameTheme*>(style.theme);
 	return flag;
 }
 
-rbool RDOStudioFrameStyle::operator !=( const RDOStudioFrameStyle& style ) const
+rbool FrameStyle::operator !=( const FrameStyle& style ) const
 {
 	return !(*this == style);
 }
 
-void RDOStudioFrameStyle::init( CREF(QString) _groupName )
+void FrameStyle::init( CREF(QString) _groupName )
 {
 	StyleWithTheme::init( _groupName );
 	*font = StyleFont::getFrameFont();

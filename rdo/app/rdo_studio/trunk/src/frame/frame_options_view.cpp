@@ -31,7 +31,7 @@ FrameOptionsView::FrameOptionsView(PTR(QWidget) pParent)
 	russianSampleLabel->setText(QString::fromLocal8Bit("Пример текста"));
 }
 
-void FrameOptionsView::setStyle(PTR(RDOStudioFrameStyle) style)
+void FrameOptionsView::setStyle(PTR(FrameStyle) style)
 {
 	m_style = style;
 

@@ -89,7 +89,7 @@ void FrameAnimationContent::init(CREF(QSize) size)
 
 void FrameAnimationContent::updateFont()
 {
-	PTR(RDOStudioFrameStyle) pStyle = &g_pApp->getStyle()->style_frame;
+	PTR(FrameStyle) pStyle = &g_pApp->getStyle()->style_frame;
 	ASSERT(pStyle);
 
 	m_font = QFont(pStyle->font->name.c_str());

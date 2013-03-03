@@ -766,7 +766,7 @@ void LogView::updateCoordStatusBar(rbool activated)
 		? QString("1 : %1").arg(selectedLine())
 		: QString();
 
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 	pMainWindow->statusBar()->update<StatusBar::SB_COORD>(coord);
 }
@@ -1009,7 +1009,7 @@ void LogView::onUpdateActions(rbool activated)
 {
 	repaintLine(selectedLine());
 
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(

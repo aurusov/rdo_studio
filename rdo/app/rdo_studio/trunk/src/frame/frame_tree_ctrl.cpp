@@ -65,7 +65,7 @@ void RDOStudioFrameTreeCtrl::focusOutEvent(QFocusEvent* pEvent)
 
 void RDOStudioFrameTreeCtrl::onUpdateActions(rbool activated)
 {
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(

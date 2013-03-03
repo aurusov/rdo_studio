@@ -25,10 +25,7 @@
 #include "app/rdo_studio/src/status_bar.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioMainFrame
-// --------------------------------------------------------------------------------
-class RDOStudioMainFrame
+class MainWindow
 	: public QMainWindow
 	, public MainWindowBase
 	, public Ui::MainWindow
@@ -37,8 +34,8 @@ class RDOStudioMainFrame
 Q_OBJECT
 
 public:
-	RDOStudioMainFrame();
-	virtual ~RDOStudioMainFrame();
+	MainWindow();
+	virtual ~MainWindow();
 
 	void init();
 

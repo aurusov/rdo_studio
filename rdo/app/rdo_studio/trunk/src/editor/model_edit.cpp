@@ -579,7 +579,7 @@ rbool Model::hasErrorLine() const
 
 void Model::onInsertCommand(QObject* pObject)
 {
-	RDOStudioMainFrame::InsertMenuData* pInsertMenuData = dynamic_cast<RDOStudioMainFrame::InsertMenuData*>(pObject);
+	MainWindow::InsertMenuData* pInsertMenuData = dynamic_cast<MainWindow::InsertMenuData*>(pObject);
 	ASSERT(pInsertMenuData);
 
 	replaceCurrent(
@@ -628,10 +628,10 @@ void Model::onHelpContext()
 
 	if (s.find_first_of(keyword) == tstring::npos || keyword.empty())
 	{
-		ModelTabCtrl* tab = g_pModel->getTab();
-		if (tab)
+		model::TabCtrl* pTab = g_pModel->getTab();
+		if (pTab)
 		{
-			switch(tab->getCurrentRDOItem())
+			switch(pTab->getCurrentRDOItem())
 			{
 			case rdoModelObjects::RTP: keyword = "rtp"; break;
 			case rdoModelObjects::RSS: keyword = "rss"; break;
@@ -659,7 +659,7 @@ void Model::onUpdateActions(rbool activated)
 {
 	super::onUpdateActions(activated);
 
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(

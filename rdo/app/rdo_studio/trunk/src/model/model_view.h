@@ -19,24 +19,21 @@
 #include "app/rdo_studio/src/dialog/find_dialog.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioModelView
-// --------------------------------------------------------------------------------
-namespace rdo { namespace gui { namespace editor {
-	class ModelTabCtrl;
-}}}
+namespace rdo { namespace gui { namespace model {
 
-class RDOStudioModelView
-	: public QWidget
+class TabCtrl;
+
+class View: public QWidget
 {
 Q_OBJECT
+
 public:
-	RDOStudioModelView(PTR(QWidget) pParent);
-	virtual ~RDOStudioModelView();
+	View(PTR(QWidget) pParent);
+	virtual ~View();
 
-	void setModel(PTR(RDOStudioModel) pModel);
+	void setModel(PTR(Model) pModel);
 
-	REF(rdo::gui::editor::ModelTabCtrl) getTab();
+	REF(TabCtrl) getTab();
 
 private:
 	typedef  QWidget  parent_type;
@@ -44,8 +41,8 @@ private:
 	FindDialog*          m_pFindDialog;
 	FindDialog::Settings m_findSettings;
 
-	PTR(rdo::gui::editor::ModelTabCtrl) m_pTabCtrl;
-	PTR(RDOStudioModel)                     m_pModel;
+	PTR(TabCtrl) m_pTabCtrl;
+	PTR(Model)   m_pModel;
 
 	void closeEvent(PTR(QCloseEvent) event);
 
@@ -56,7 +53,8 @@ private:
 
 private slots:
 	void onSearchFindInModel();
-
 };
+
+}}} // namespace rdo::gui::model
 
 #endif // RDOSTUDIOMODELVIEW_H

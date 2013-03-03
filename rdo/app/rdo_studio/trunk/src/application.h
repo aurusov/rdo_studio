@@ -29,7 +29,7 @@
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioApp
 // --------------------------------------------------------------------------------
-class RDOStudioMainFrame;
+class MainWindow;
 class RDOThreadStudio;
 class RDOThreadStudioGUI;
 
@@ -43,10 +43,10 @@ public:
 	RDOStudioApp(int& argc, char** argv);
 	virtual ~RDOStudioApp();
 
-	PTR(RDOStudioMainFrame) getMainWndUI();
-	PTR(QMainWindow)        getMainWnd ();
-	PTR(MainWindowBase)     getIMainWnd();
-	PTR(MainWindowBase)     getStyle   ();
+	PTR(MainWindow)      getMainWndUI();
+	PTR(QMainWindow)     getMainWnd  ();
+	PTR(MainWindowBase)  getIMainWnd ();
+	PTR(MainWindowBase)  getStyle    ();
 
 	//! см. описание RDOKernelGUI
 	//! Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы
@@ -99,7 +99,7 @@ private:
 	rbool                                  m_dontCloseIfError;
 	rdo::simulation::report::RDOExitCode   m_exitCode;
 	QProcess*                              m_pAssistant;
-	PTR(RDOStudioMainFrame)                m_pMainFrame;
+	PTR(MainWindow)                        m_pMainFrame;
 	rdo::gui::editor::LPModelStyle         m_pModelStyle;
 	QTimer                                 m_idleTimer;
 

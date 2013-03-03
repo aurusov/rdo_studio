@@ -17,9 +17,9 @@
 #include "app/rdo_studio/src/main_windows_base.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdo::gui::editor;
+using namespace rdo::gui::model;
 
-ModelTabCtrl::ModelTabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView)
+TabCtrl::TabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView)
 	: QTabWidget(pParent)
 {
 	createPage(pView, "RTP");
@@ -36,10 +36,10 @@ ModelTabCtrl::ModelTabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView)
 	setCurrentRDOItem(rdoModelObjects::RTP);
 }
 
-ModelTabCtrl::~ModelTabCtrl()
+TabCtrl::~TabCtrl()
 {}
 
-void ModelTabCtrl::createPage(PTR(QWidget) pView, CREF(QString) name)
+void TabCtrl::createPage(PTR(QWidget) pView, CREF(QString) name)
 {
 	PTR(context_type) pPage = new context_type(this, pView);
 
@@ -56,7 +56,7 @@ void ModelTabCtrl::createPage(PTR(QWidget) pView, CREF(QString) name)
 	pPage->setGroup(&m_group);
 }
 
-rdoModelObjects::RDOFileType ModelTabCtrl::indexToType(int index) const
+rdoModelObjects::RDOFileType TabCtrl::indexToType(int index) const
 {
 	switch (index)
 	{
@@ -74,7 +74,7 @@ rdoModelObjects::RDOFileType ModelTabCtrl::indexToType(int index) const
 	}
 }
 
-int ModelTabCtrl::typeToIndex(rdoModelObjects::RDOFileType type) const
+int TabCtrl::typeToIndex(rdoModelObjects::RDOFileType type) const
 {
 	switch (type)
 	{
@@ -92,14 +92,14 @@ int ModelTabCtrl::typeToIndex(rdoModelObjects::RDOFileType type) const
 	return -1;
 }
 
-void ModelTabCtrl::setCurrentRDOItem(rdoModelObjects::RDOFileType type)
+void TabCtrl::setCurrentRDOItem(rdoModelObjects::RDOFileType type)
 {
 	int index = typeToIndex(type);
 	if (index != -1)
 		setCurrentIndex(index);
 }
 
-PTR(ModelTabCtrl::context_type) ModelTabCtrl::getItemEdit(rdoModelObjects::RDOFileType type) const
+PTR(TabCtrl::context_type) TabCtrl::getItemEdit(rdoModelObjects::RDOFileType type) const
 {
 	int index = typeToIndex(type);
 	return index != -1
@@ -107,12 +107,12 @@ PTR(ModelTabCtrl::context_type) ModelTabCtrl::getItemEdit(rdoModelObjects::RDOFi
 		: NULL;
 }
 
-PTR(ModelTabCtrl::context_type) ModelTabCtrl::getCurrentEdit() const
+PTR(TabCtrl::context_type) TabCtrl::getCurrentEdit() const
 {
 	return static_cast<PTR(context_type)>(currentWidget());
 }
 
-PTR(ModelTabCtrl::context_type) ModelTabCtrl::getItemEdit(int index) const
+PTR(TabCtrl::context_type) TabCtrl::getItemEdit(int index) const
 {
 	return static_cast<PTR(context_type)>(widget(index));
 }

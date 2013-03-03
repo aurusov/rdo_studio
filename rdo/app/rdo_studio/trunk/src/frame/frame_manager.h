@@ -23,14 +23,11 @@
 #include "app/rdo_studio/src/frame/frame_view.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameManager
-// --------------------------------------------------------------------------------
 OPEN_RDO_ANIMATION_NAMESPACE
 struct Frame;
 CLOSE_RDO_ANIMATION_NAMESPACE
 
-class RDOStudioFrameManager
+class FrameManager
 	: public QObject
 	, public IInit
 {
@@ -39,8 +36,8 @@ Q_OBJECT
 public:
 	typedef  boost::function<void (ruint)>  OnChangeFrame;
 
-	RDOStudioFrameManager(CREF(OnChangeFrame) onChangeFrame);
-	virtual ~RDOStudioFrameManager();
+	FrameManager(CREF(OnChangeFrame) onChangeFrame);
+	virtual ~FrameManager();
 
 	void insertFrame (CREF(QString) frameName );
 	void insertBitmap(CREF(QString) bitmapName);

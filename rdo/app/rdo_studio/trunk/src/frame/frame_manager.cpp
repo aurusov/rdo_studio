@@ -27,28 +27,28 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameManager::Frame
+// -------------------- FrameManager::Frame
 // --------------------------------------------------------------------------------
-RDOStudioFrameManager::Frame::Frame()
+FrameManager::Frame::Frame()
 	: m_pTreeWidgetItem(NULL)
 	, m_pView          (NULL)
 	, m_pContent       (NULL)
 {}
 
-RDOStudioFrameManager::Frame::~Frame()
+FrameManager::Frame::~Frame()
 {
 	clear();
 }
 
-void RDOStudioFrameManager::Frame::clear()
+void FrameManager::Frame::clear()
 {
 	m_areaList.clear();
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameManager
+// -------------------- FrameManager
 // --------------------------------------------------------------------------------
-RDOStudioFrameManager::RDOStudioFrameManager(CREF(OnChangeFrame) onChangeFrame)
+FrameManager::FrameManager(CREF(OnChangeFrame) onChangeFrame)
 	: m_lastShowedFrame    (ruint(~0))
 	, m_currentShowingFrame(ruint(~0))
 	, m_changed            (false    )
@@ -59,7 +59,7 @@ RDOStudioFrameManager::RDOStudioFrameManager(CREF(OnChangeFrame) onChangeFrame)
 	g_pApp->getIMainWnd()->connectOnActivateSubWindow(this);
 }
 
-RDOStudioFrameManager::~RDOStudioFrameManager()
+FrameManager::~FrameManager()
 {
 	clear();
 
@@ -69,17 +69,17 @@ RDOStudioFrameManager::~RDOStudioFrameManager()
 	}
 }
 
-rbool RDOStudioFrameManager::init()
+rbool FrameManager::init()
 {
 	connect(
 		&g_pApp->getIMainWnd()->getDockFrame().getContext(), &RDOStudioFrameTreeCtrl::itemDoubleClicked,
-		this, &RDOStudioFrameManager::onTreeWidgetItemDoubleClicked
+		this, &FrameManager::onTreeWidgetItemDoubleClicked
 	);
 
 	return true;
 }
 
-void RDOStudioFrameManager::insertFrame(CREF(QString) frameName)
+void FrameManager::insertFrame(CREF(QString) frameName)
 {
 	PTR(Frame) item = new Frame();
 	item->m_pTreeWidgetItem = g_pApp->getIMainWnd()->getDockFrame().getContext().insertFrame(frameName);
@@ -87,7 +87,7 @@ void RDOStudioFrameManager::insertFrame(CREF(QString) frameName)
 	m_frameList.push_back(item);
 }
 
-ruint RDOStudioFrameManager::findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetItem) const
+ruint FrameManager::findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetItem) const
 {
 	ruint index = 0;
 	BOOST_FOREACH(const Frame* pFrame, m_frameList)
@@ -101,7 +101,7 @@ ruint RDOStudioFrameManager::findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetIte
 	return ruint(~0);
 }
 
-ruint RDOStudioFrameManager::findFrameIndex(CPTR(FrameAnimationWnd) pView) const
+ruint FrameManager::findFrameIndex(CPTR(FrameAnimationWnd) pView) const
 {
 	ruint index = 0;
 	BOOST_FOREACH(const Frame* pFrame, m_frameList)
@@ -115,7 +115,7 @@ ruint RDOStudioFrameManager::findFrameIndex(CPTR(FrameAnimationWnd) pView) const
 	return ruint(~0);
 }
 
-ruint RDOStudioFrameManager::findFrameIndex(CPTR(FrameAnimationContent) pContent) const
+ruint FrameManager::findFrameIndex(CPTR(FrameAnimationContent) pContent) const
 {
 	ruint index = 0;
 	BOOST_FOREACH(const Frame* pFrame, m_frameList)
@@ -129,19 +129,19 @@ ruint RDOStudioFrameManager::findFrameIndex(CPTR(FrameAnimationContent) pContent
 	return ruint(~0);
 }
 
-CREF(QString) RDOStudioFrameManager::getFrameName(ruint index) const
+CREF(QString) FrameManager::getFrameName(ruint index) const
 {
 	ASSERT(index < m_frameList.size());
 	return m_frameList[index]->m_name;
 }
 
-PTR(FrameAnimationWnd) RDOStudioFrameManager::getFrameView(ruint index) const
+PTR(FrameAnimationWnd) FrameManager::getFrameView(ruint index) const
 {
 	ASSERT(index < m_frameList.size());
 	return m_frameList[index]->m_pView;
 }
 
-PTR(FrameAnimationWnd) RDOStudioFrameManager::getFrameViewFirst() const
+PTR(FrameAnimationWnd) FrameManager::getFrameViewFirst() const
 {
 	if (m_frameList.empty())
 		return NULL;
@@ -149,19 +149,19 @@ PTR(FrameAnimationWnd) RDOStudioFrameManager::getFrameViewFirst() const
 	return m_frameList.front()->m_pView;
 }
 
-ruint RDOStudioFrameManager::count() const
+ruint FrameManager::count() const
 {
 	return m_frameList.size();
 }
 
-rbool RDOStudioFrameManager::isChanged()
+rbool FrameManager::isChanged()
 {
 	rbool res = m_changed;
 	m_changed = false;
 	return res;
 }
 
-void RDOStudioFrameManager::areaDown(ruint frameIndex, CREF(QPoint) point) const
+void FrameManager::areaDown(ruint frameIndex, CREF(QPoint) point) const
 {
 	ASSERT(frameIndex != ruint(~0) && frameIndex < m_frameList.size());
 
@@ -176,7 +176,7 @@ void RDOStudioFrameManager::areaDown(ruint frameIndex, CREF(QPoint) point) const
 	}
 }
 
-PTR(FrameAnimationWnd) RDOStudioFrameManager::createView(ruint index)
+PTR(FrameAnimationWnd) FrameManager::createView(ruint index)
 {
 	PTR(FrameAnimationWnd) pView = NULL;
 	if (index != ~0)
@@ -194,7 +194,7 @@ PTR(FrameAnimationWnd) RDOStudioFrameManager::createView(ruint index)
 	return pView;
 }
 
-rbool RDOStudioFrameManager::isShowing() const
+rbool FrameManager::isShowing() const
 {
 	BOOST_FOREACH(const Frame* pFrame, m_frameList)
 	{
@@ -204,7 +204,7 @@ rbool RDOStudioFrameManager::isShowing() const
 	return false;
 }
 
-void RDOStudioFrameManager::disconnectView(CPTR(FrameAnimationWnd) pView)
+void FrameManager::disconnectView(CPTR(FrameAnimationWnd) pView)
 {
 	ruint index = findFrameIndex(pView);
 	if (index != ~0)
@@ -214,7 +214,7 @@ void RDOStudioFrameManager::disconnectView(CPTR(FrameAnimationWnd) pView)
 	m_changed = true;
 }
 
-void RDOStudioFrameManager::closeAll()
+void FrameManager::closeAll()
 {
 	ruint backup = m_lastShowedFrame;
 	BOOST_FOREACH(Frame* pFrame, m_frameList)
@@ -228,7 +228,7 @@ void RDOStudioFrameManager::closeAll()
 	m_lastShowedFrame = backup;
 }
 
-void RDOStudioFrameManager::clear()
+void FrameManager::clear()
 {
 	if (g_pApp->getStyle())
 	{
@@ -251,12 +251,12 @@ void RDOStudioFrameManager::clear()
 	setCurrentShowingFrame(ruint(~0));
 }
 
-ruint RDOStudioFrameManager::getLastShowedFrame() const
+ruint FrameManager::getLastShowedFrame() const
 {
 	return m_lastShowedFrame;
 }
 
-void RDOStudioFrameManager::setLastShowedFrame(ruint index)
+void FrameManager::setLastShowedFrame(ruint index)
 {
 	if (index != ruint(~0) && index < count())
 	{
@@ -264,7 +264,7 @@ void RDOStudioFrameManager::setLastShowedFrame(ruint index)
 	}
 }
 
-void RDOStudioFrameManager::setCurrentShowingFrame(ruint index)
+void FrameManager::setCurrentShowingFrame(ruint index)
 {
 	if (index == ruint(~0) || (index != ruint(~0) && index < count()))
 	{
@@ -284,7 +284,7 @@ void RDOStudioFrameManager::setCurrentShowingFrame(ruint index)
 	}
 }
 
-void RDOStudioFrameManager::resetCurrentShowingFrame(ruint index)
+void FrameManager::resetCurrentShowingFrame(ruint index)
 {
 	if (index == m_currentShowingFrame)
 	{
@@ -292,7 +292,7 @@ void RDOStudioFrameManager::resetCurrentShowingFrame(ruint index)
 	}
 }
 
-void RDOStudioFrameManager::insertBitmap(CREF(QString) bitmapName)
+void FrameManager::insertBitmap(CREF(QString) bitmapName)
 {
 	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
 		return;
@@ -320,7 +320,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(QString) bitmapName)
 	g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 }
 
-void RDOStudioFrameManager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint index)
+void FrameManager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint index)
 {
 	if (index < count())
 	{
@@ -335,7 +335,7 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint
 	}
 }
 
-void RDOStudioFrameManager::showNextFrame()
+void FrameManager::showNextFrame()
 {
 	ruint cnt = count();
 	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame < cnt-1)
@@ -356,7 +356,7 @@ void RDOStudioFrameManager::showNextFrame()
 	}
 }
 
-void RDOStudioFrameManager::showPrevFrame()
+void FrameManager::showPrevFrame()
 {
 	ruint cnt = count();
 	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame != ruint(~0))
@@ -377,7 +377,7 @@ void RDOStudioFrameManager::showPrevFrame()
 	}
 }
 
-void RDOStudioFrameManager::showFrame(ruint index)
+void FrameManager::showFrame(ruint index)
 {
 	ruint cnt = count();
 	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt)
@@ -397,19 +397,19 @@ void RDOStudioFrameManager::showFrame(ruint index)
 	}
 }
 
-rbool RDOStudioFrameManager::canShowNextFrame() const
+rbool FrameManager::canShowNextFrame() const
 {
 	ruint cnt = count();
 	return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame == ruint(~0) || m_currentShowingFrame < cnt-1);
 }
 
-rbool RDOStudioFrameManager::canShowPrevFrame() const
+rbool FrameManager::canShowPrevFrame() const
 {
 	int cnt = count();
 	return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame != ruint(~0) && m_currentShowingFrame > 0);
 }
 
-void RDOStudioFrameManager::updateStyles() const
+void FrameManager::updateStyles() const
 {
 	BOOST_FOREACH(Frame* pFrame, m_frameList)
 	{
@@ -422,7 +422,7 @@ void RDOStudioFrameManager::updateStyles() const
 	}
 }
 
-void RDOStudioFrameManager::onSubWindowActivated(QMdiSubWindow* pWindow)
+void FrameManager::onSubWindowActivated(QMdiSubWindow* pWindow)
 {
 	if (!pWindow)
 		return;
@@ -436,7 +436,7 @@ void RDOStudioFrameManager::onSubWindowActivated(QMdiSubWindow* pWindow)
 	setCurrentShowingFrame(index);
 }
 
-void RDOStudioFrameManager::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pTreeWidgetItem, int)
+void FrameManager::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pTreeWidgetItem, int)
 {
 	if (g_pModel->getRuntimeMode() == rdo::runtime::RTM_MaxSpeed)
 		return;

@@ -16,33 +16,33 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameTheme
+// -------------------- FrameTheme
 // --------------------------------------------------------------------------------
-class RDOStudioFrameTheme: public rdo::gui::style::StyleTheme
+class FrameTheme: public rdo::gui::style::StyleTheme
 {
 public:
-	RDOStudioFrameTheme();
-	virtual ~RDOStudioFrameTheme();
+	FrameTheme();
+	virtual ~FrameTheme();
 
-	RDOStudioFrameTheme& operator =( const RDOStudioFrameTheme& theme );
-	rbool operator ==( const RDOStudioFrameTheme& theme ) const;
-	rbool operator !=( const RDOStudioFrameTheme& theme ) const;
+	FrameTheme& operator =( const FrameTheme& theme );
+	rbool operator ==( const FrameTheme& theme ) const;
+	rbool operator !=( const FrameTheme& theme ) const;
 
-	static RDOStudioFrameTheme getDefaultTheme();
+	static FrameTheme getDefaultTheme();
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameStyle
+// -------------------- FrameStyle
 // --------------------------------------------------------------------------------
-class RDOStudioFrameStyle: public rdo::gui::style::StyleWithTheme
+class FrameStyle: public rdo::gui::style::StyleWithTheme
 {
 public:
-	RDOStudioFrameStyle();
-	virtual ~RDOStudioFrameStyle();
+	FrameStyle();
+	virtual ~FrameStyle();
 
-	RDOStudioFrameStyle& operator =( const RDOStudioFrameStyle& style );
-	rbool operator ==( const RDOStudioFrameStyle& style ) const;
-	rbool operator !=( const RDOStudioFrameStyle& style ) const;
+	FrameStyle& operator =( const FrameStyle& style );
+	rbool operator ==( const FrameStyle& style ) const;
+	rbool operator !=( const FrameStyle& style ) const;
 
 	void init( CREF(QString) _groupName = "" );
 };

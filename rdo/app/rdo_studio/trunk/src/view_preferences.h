@@ -245,7 +245,7 @@ private:
 	rdo::gui::editor::FindStyle       style_find;
 	rdo::gui::tracer::LogStyle        style_trace;
 	rdo::gui::tracer::ChartViewStyle  style_chart;
-	RDOStudioFrameStyle               style_frame;
+	FrameStyle                        style_frame;
 
 	PTR(rdo::gui::editor::Model)     preview_editor;
 	PTR(rdo::gui::editor::Build)             preview_build;

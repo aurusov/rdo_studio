@@ -230,7 +230,7 @@ void Log::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScro
 				scrollToCarret();
 			}
 		}
-		PTR(ModelTabCtrl) pTab = g_pModel->getTab();
+		PTR(model::TabCtrl) pTab = g_pModel->getTab();
 		if (pTab)
 		{
 			if (pTab->getCurrentRDOItem() != pLineInfo->getFileType())

@@ -1026,7 +1026,7 @@ rbool ChartView::maxXVisible() const
 
 void ChartView::onUpdateActions(rbool activated)
 {
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(

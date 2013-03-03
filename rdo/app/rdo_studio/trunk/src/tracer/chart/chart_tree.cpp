@@ -314,7 +314,7 @@ void ChartTree::focusOutEvent(QFocusEvent* pEvent)
 
 void ChartTree::onUpdateActions(rbool activated)
 {
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(

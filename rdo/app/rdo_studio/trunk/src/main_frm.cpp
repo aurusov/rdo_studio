@@ -31,28 +31,28 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioMainFrame::InsertMenuData
+// -------------------- MainWindow::InsertMenuData
 // --------------------------------------------------------------------------------
-RDOStudioMainFrame::InsertMenuData::InsertMenuData(QObject* pParent, const QString& text, const Position& position)
+MainWindow::InsertMenuData::InsertMenuData(QObject* pParent, const QString& text, const Position& position)
 	: QObject   (pParent )
 	, m_text    (text    )
 	, m_position(position)
 {}
 
-const QString& RDOStudioMainFrame::InsertMenuData::text() const
+const QString& MainWindow::InsertMenuData::text() const
 {
 	return m_text;
 }
 
-const RDOStudioMainFrame::InsertMenuData::Position& RDOStudioMainFrame::InsertMenuData::position() const
+const MainWindow::InsertMenuData::Position& MainWindow::InsertMenuData::position() const
 {
 	return m_position;
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioMainFrame
+// -------------------- MainWindow
 // --------------------------------------------------------------------------------
-RDOStudioMainFrame::RDOStudioMainFrame()
+MainWindow::MainWindow()
 	: m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
 	, m_hasWindow(false)
@@ -69,16 +69,16 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	addAction(actSearchLogNext);
 	addAction(actSearchLogPrev);
 
-	connect(menuFileReopen, &QMenu::triggered,   this, &RDOStudioMainFrame::onMenuFileReopen);
+	connect(menuFileReopen, &QMenu::triggered,   this, &MainWindow::onMenuFileReopen);
 	connect(actFileExit,    &QAction::triggered, this, &QMainWindow::close);
 
-	connect(mdiArea, &QMdiArea::subWindowActivated, this, &RDOStudioMainFrame::onSubWindowActivated);
+	connect(mdiArea, &QMdiArea::subWindowActivated, this, &MainWindow::onSubWindowActivated);
 
-	connect(actViewSettings, &QAction::triggered, this, &RDOStudioMainFrame::onViewOptions);
-	connect(actHelpWhatsNew, &QAction::triggered, this, &RDOStudioMainFrame::onHelpWhatsNew);
-	connect(actHelpAbout,    &QAction::triggered, this, &RDOStudioMainFrame::onHelpAbout);
+	connect(actViewSettings, &QAction::triggered, this, &MainWindow::onViewOptions);
+	connect(actHelpWhatsNew, &QAction::triggered, this, &MainWindow::onHelpWhatsNew);
+	connect(actHelpAbout,    &QAction::triggered, this, &MainWindow::onHelpAbout);
 
-	connect(toolBarModel, &QToolBar::orientationChanged, this, &RDOStudioMainFrame::onToolBarModelOrientationChanged);
+	connect(toolBarModel, &QToolBar::orientationChanged, this, &MainWindow::onToolBarModelOrientationChanged);
 
 	Scintilla_LinkLexers();
 
@@ -87,15 +87,15 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 }
 
 //! todo не вызывается диструктор
-RDOStudioMainFrame::~RDOStudioMainFrame()
+MainWindow::~MainWindow()
 {}
 
-void RDOStudioMainFrame::createStatusBar()
+void MainWindow::createStatusBar()
 {
 	m_pStatusBar = rdo::Factory<StatusBar>::create(this);
 }
 
-void RDOStudioMainFrame::createToolBar()
+void MainWindow::createToolBar()
 {
 	m_pModelSpeedSlider = new QSlider(Qt::Horizontal, this);
 	m_pModelSpeedSlider->setRange(0, 100);
@@ -106,7 +106,7 @@ void RDOStudioMainFrame::createToolBar()
 	toolBarModel->insertSeparator(actModelFrameNext);
 }
 
-void RDOStudioMainFrame::createInsertMenu()
+void MainWindow::createInsertMenu()
 {
 	ASSERT(!m_pInsertMenuSignalMapper);
 	m_pInsertMenuSignalMapper = new QSignalMapper(this);
@@ -313,10 +313,10 @@ void RDOStudioMainFrame::createInsertMenu()
 	}
 }
 
-void RDOStudioMainFrame::init()
+void MainWindow::init()
 {
 	// Кто-то должен поднять кернел и треды
-	new RDOStudioModel();
+	new rdo::gui::model::Model();
 
 	style_editor.init( "editor" );
 	style_editor.load();
@@ -352,8 +352,8 @@ void RDOStudioMainFrame::init()
 	m_pDockResults = new DockResults(this);
 	m_pDockFind    = new DockFind   (this);
 
-	QObject::connect(m_pDockBuild, &QDockWidget::visibilityChanged, this, &RDOStudioMainFrame::onDockVisibleChanged);
-	QObject::connect(m_pDockFind,  &QDockWidget::visibilityChanged, this, &RDOStudioMainFrame::onDockVisibleChanged);
+	QObject::connect(m_pDockBuild, &QDockWidget::visibilityChanged, this, &MainWindow::onDockVisibleChanged);
+	QObject::connect(m_pDockFind,  &QDockWidget::visibilityChanged, this, &MainWindow::onDockVisibleChanged);
 
 	updateAllStyles();
 	addDockWidget(Qt::BottomDockWidgetArea, m_pDockBuild);
@@ -397,12 +397,12 @@ void RDOStudioMainFrame::init()
 	pModelInit->init();
 }
 
-void RDOStudioMainFrame::setVisible(rbool visible)
+void MainWindow::setVisible(rbool visible)
 {
 	parent_type::setVisible(visible);
 }
 
-void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
+void MainWindow::closeEvent(QCloseEvent* event)
 {
 	if (g_pModel && !g_pModel->closeModel())
 	{
@@ -423,13 +423,13 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 	}
 }
 
-void RDOStudioMainFrame::onViewOptions()
+void MainWindow::onViewOptions()
 {
 	ViewPreferences dlg(this);
 	dlg.exec();
 }
 
-void RDOStudioMainFrame::updateAllStyles()
+void MainWindow::updateAllStyles()
 {
 	g_pModel->updateStyleOfAllModel();
 	getDockBuild  ().getContext().setEditorStyle (&style_build  );
@@ -440,30 +440,30 @@ void RDOStudioMainFrame::updateAllStyles()
 	g_pTracer->updateChartsStyles();
 }
 
-CREF(LPStatusBar) RDOStudioMainFrame::statusBar() const
+CREF(LPStatusBar) MainWindow::statusBar() const
 {
 	return m_pStatusBar;
 }
 
-void RDOStudioMainFrame::onHelpWhatsNew()
+void MainWindow::onHelpWhatsNew()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/rdo_whats_new.htm\n");
 	g_pApp->callQtAssistant(ba);
 }
 
-void RDOStudioMainFrame::onHelpAbout()
+void MainWindow::onHelpAbout()
 {
 	About dlg(this);
 	dlg.exec();
 }
 
-void RDOStudioMainFrame::update_start()
+void MainWindow::update_start()
 {
 	m_updateTimerID = startTimer(1000 / 30);
 }
 
-void RDOStudioMainFrame::update_stop()
+void MainWindow::update_stop()
 {
 	if (m_updateTimerID)
 	{
@@ -472,7 +472,7 @@ void RDOStudioMainFrame::update_stop()
 	}
 }
 
-void RDOStudioMainFrame::timerEvent(QTimerEvent* event)
+void MainWindow::timerEvent(QTimerEvent* event)
 {
 	parent_type::timerEvent(event);
 
@@ -484,13 +484,13 @@ void RDOStudioMainFrame::timerEvent(QTimerEvent* event)
 	}
 }
 
-void RDOStudioMainFrame::showEvent(QShowEvent*)
+void MainWindow::showEvent(QShowEvent*)
 {}
 
-void RDOStudioMainFrame::hideEvent(QHideEvent*)
+void MainWindow::hideEvent(QHideEvent*)
 {}
 
-void RDOStudioMainFrame::addSubWindow(QWidget* pWidget)
+void MainWindow::addSubWindow(QWidget* pWidget)
 {
 	ASSERT(pWidget);
 
@@ -524,7 +524,7 @@ void RDOStudioMainFrame::addSubWindow(QWidget* pWidget)
 	}
 }
 
-void RDOStudioMainFrame::activateSubWindow(QWidget* pWidget)
+void MainWindow::activateSubWindow(QWidget* pWidget)
 {
 	QMdiSubWindow* pSubWindow = dynamic_cast<QMdiSubWindow*>(pWidget);
 	if (!pSubWindow)
@@ -533,7 +533,7 @@ void RDOStudioMainFrame::activateSubWindow(QWidget* pWidget)
 	mdiArea->setActiveSubWindow(pSubWindow);
 }
 
-void RDOStudioMainFrame::connectOnActivateSubWindow(QObject* pObject)
+void MainWindow::connectOnActivateSubWindow(QObject* pObject)
 {
 	ASSERT(mdiArea);
 	ASSERT(pObject);
@@ -541,7 +541,7 @@ void RDOStudioMainFrame::connectOnActivateSubWindow(QObject* pObject)
 	QObject::connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), pObject, SLOT(onSubWindowActivated(QMdiSubWindow*)));
 }
 
-void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
+void MainWindow::onDockVisibleChanged(rbool visible)
 {
 	if (!visible)
 		return;
@@ -563,7 +563,7 @@ void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 	if (!pLog)
 		return;
 
-	rdo::gui::editor::ModelTabCtrl* pEditorTab = g_pModel->getTab();
+	rdo::gui::model::TabCtrl* pEditorTab = g_pModel->getTab();
 	if (pEditorTab)
 	{
 		for (int i = 0; i < pEditorTab->count(); ++i)
@@ -573,12 +573,12 @@ void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 	}
 }
 
-void RDOStudioMainFrame::onToolBarModelOrientationChanged(Qt::Orientation orientation)
+void MainWindow::onToolBarModelOrientationChanged(Qt::Orientation orientation)
 {
 	m_pModelSpeedSlider->setOrientation(orientation);
 }
 
-void RDOStudioMainFrame::onMenuFileReopen(QAction* pAction)
+void MainWindow::onMenuFileReopen(QAction* pAction)
 {
 	QString menuName = pAction->text();
 	int pos = menuName.indexOf(' ');
@@ -597,7 +597,7 @@ void RDOStudioMainFrame::onMenuFileReopen(QAction* pAction)
 	}
 }
 
-void RDOStudioMainFrame::insertMenuFileReopenItem(CREF(QString) item)
+void MainWindow::insertMenuFileReopenItem(CREF(QString) item)
 {
 	if (!item.isEmpty())
 	{
@@ -620,7 +620,7 @@ void RDOStudioMainFrame::insertMenuFileReopenItem(CREF(QString) item)
 	}
 }
 
-void RDOStudioMainFrame::updateMenuFileReopen()
+void MainWindow::updateMenuFileReopen()
 {
 	menuFileReopen->clear();
 
@@ -638,7 +638,7 @@ void RDOStudioMainFrame::updateMenuFileReopen()
 	saveMenuFileReopen();
 }
 
-void RDOStudioMainFrame::loadMenuFileReopen()
+void MainWindow::loadMenuFileReopen()
 {
 	m_reopenList.clear();
 
@@ -665,7 +665,7 @@ void RDOStudioMainFrame::loadMenuFileReopen()
 	settings.endGroup();
 }
 
-void RDOStudioMainFrame::saveMenuFileReopen() const
+void MainWindow::saveMenuFileReopen() const
 {
 	QSettings settings;
 	settings.beginGroup("reopen");
@@ -679,7 +679,7 @@ void RDOStudioMainFrame::saveMenuFileReopen() const
 	settings.endGroup();
 }
 
-void RDOStudioMainFrame::updateInsertMenu(rbool enabled)
+void MainWindow::updateInsertMenu(rbool enabled)
 {
 	QList<QAction*> menuList = menuInsert->actions();
 	BOOST_FOREACH(const QAction* pMenu, menuList)
@@ -695,12 +695,12 @@ void RDOStudioMainFrame::updateInsertMenu(rbool enabled)
 	}
 }
 
-void RDOStudioMainFrame::onSubWindowActivated(QMdiSubWindow*)
+void MainWindow::onSubWindowActivated(QMdiSubWindow*)
 {
 	onUpdateActions(!mdiArea->subWindowList().empty());
 }
 
-void RDOStudioMainFrame::onUpdateActions(rbool activated)
+void MainWindow::onUpdateActions(rbool activated)
 {
 	updateAction(actWindowCascade       , activated, mdiArea, &QMdiArea::cascadeSubWindows);
 	updateAction(actWindowTitleHorzontal, activated, mdiArea, &QMdiArea::tileSubWindows   );

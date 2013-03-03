@@ -150,7 +150,7 @@ RDOStudioApp::RDOStudioApp(int& argc, char** argv)
 	m_pModelStyle = rdo::Factory<rdo::gui::editor::ModelStyle>::create();
 
 	// Внутри создается объект модели
-	m_pMainFrame = new RDOStudioMainFrame();
+	m_pMainFrame = new MainWindow();
 	m_pMainFrame->init();
 	m_pMainFrame->show();
 
@@ -282,7 +282,7 @@ RDOStudioApp::~RDOStudioApp()
 	}
 }
 
-PTR(RDOStudioMainFrame) RDOStudioApp::getMainWndUI()
+PTR(MainWindow) RDOStudioApp::getMainWndUI()
 {
 	return m_pMainFrame;
 }

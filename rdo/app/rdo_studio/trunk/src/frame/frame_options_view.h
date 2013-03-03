@@ -24,13 +24,13 @@ class FrameOptionsView
 	, private Ui::FrameOptionsWidget
 {
 private:
-	QFont   font;
-	RDOStudioFrameStyle* m_style;
+	QFont       font;
+	FrameStyle* m_style;
 
 public:
 	explicit FrameOptionsView(PTR(QWidget) pParent);
 
-	void setStyle(PTR(RDOStudioFrameStyle) style);
+	void setStyle(PTR(FrameStyle) style);
 };
 
 #endif // _RDO_STUDIO_FRAME_OPTIONS_VIEW_H_

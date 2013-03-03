@@ -1097,7 +1097,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_CHART_TIME, null_font_style, null_fg_color, chart_theme->timeBgColor));
 	style_list.push_back(item);
 
-	RDOStudioFrameTheme* frame_theme = static_cast<RDOStudioFrameTheme*>(style_frame.theme);
+	FrameTheme* frame_theme = static_cast<FrameTheme*>(style_frame.theme);
 	item = new StyleItem(IT_FRAME, style_frame.font->size, style_frame.font->name);
 	item->properties.push_back(new StyleProperty(item, IT_FRAME, frame_theme->defaultStyle, frame_theme->defaultColor, frame_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_FRAME_BORDER, frame_theme->defaultStyle, frame_theme->defaultColor, null_bg_color));

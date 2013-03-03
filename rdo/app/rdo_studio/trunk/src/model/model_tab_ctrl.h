@@ -18,15 +18,15 @@
 #include "app/rdo_studio/src/editor/model_edit.h"
 // --------------------------------------------------------------------------------
 
-namespace rdo { namespace gui { namespace editor {
+namespace rdo { namespace gui { namespace model {
 
-class ModelTabCtrl: public QTabWidget
+class TabCtrl: public QTabWidget
 {
 public:
-	typedef Model context_type;
+	typedef editor::Model context_type;
 
-	ModelTabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView);
-	virtual ~ModelTabCtrl();
+	TabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView);
+	virtual ~TabCtrl();
 
 	rdoModelObjects::RDOFileType indexToType(int index) const;
 	int   typeToIndex  (rdoModelObjects::RDOFileType type) const;
@@ -40,11 +40,11 @@ public:
 	PTR(context_type) getItemEdit   (rdoModelObjects::RDOFileType type) const;
 
 private:
-	Edit::Group m_group;
+	editor::Edit::Group m_group;
 
 	void createPage(PTR(QWidget) pView, CREF(QString) name);
 };
 
-}}} // namespace rdo::gui::editor
+}}} // namespace rdo::gui::model
 
 #endif // _RDO_STUDIO_MODEL_TAB_CTRL_H_
