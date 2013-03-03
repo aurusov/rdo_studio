@@ -750,7 +750,7 @@ void ViewPreferences::updateDialog()
 void ViewPreferences::updateStyleTab()
 {
 	PTR(StyleProperty) prop = getStyleProperty();
-	QString fontName = QString::fromStdWString(Lprop->item->font_name.c_str());
+	QString fontName = QString::fromLocal8Bit(prop->item->font_name.c_str());
 	if (!fontName.isEmpty())
 	{
 		fontComboBox->setCurrentFont(QFont(fontName));
@@ -955,8 +955,8 @@ void ViewPreferences::createPreview()
 
 	previewStackedWidget->addWidget(new QWidget(previewStackedWidget->currentWidget()));
 	//! @todo qt
-	//preview_chart_doc = new RDOStudioChartDoc(true);
-	//PTR(ChartViewMainWnd) pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
+	preview_chart_doc = new ChartDoc(true);
+	PTR(ChartViewMainWnd) pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
 
 	//preview_chart_doc->setTitle(rdo::format("график 1").c_str());
 	//preview_chart->setPreviwMode(true);
