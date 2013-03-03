@@ -116,7 +116,7 @@ void ChartTree::doDragDrop(CREF(LPSerie) pSerie)
 
 void ChartTree::setModelName(CREF(QString) modelName)
 {
-	m_root->getCtrlItem().setText(0, QString::fromLocal8Bit("Модель : %1").arg(modelName));
+	m_root->getCtrlItem().setText(0, QString("Модель : %1").arg(modelName));
 }
 
 void ChartTree::createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType)

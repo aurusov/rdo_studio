@@ -945,7 +945,7 @@ void Model::setName(CREF(QString) name)
 
 		if (m_pView)
 		{
-			m_pView->parentWidget()->setWindowTitle(QString::fromLocal8Bit("модель: %1").arg(
+			m_pView->parentWidget()->setWindowTitle(QString("модель: %1").arg(
 				g_pApp->getShowCaptionFullName()
 					? getFullName()
 					: m_name
@@ -1173,11 +1173,11 @@ void Model::updateActions()
 	{
 		switch (getRuntimeMode())
 		{
-		case rdo::runtime::RTM_MaxSpeed  : runTimeMode = QString::fromLocal8Bit("Без анимации"); break;
-		case rdo::runtime::RTM_Jump      : runTimeMode = QString::fromLocal8Bit("Дискретная имитация"); break;
-		case rdo::runtime::RTM_Sync      : runTimeMode = QString::fromLocal8Bit("Синхронная имитация"); break;
-		case rdo::runtime::RTM_Pause     : runTimeMode = QString::fromLocal8Bit("Пауза"); break;
-		case rdo::runtime::RTM_BreakPoint: runTimeMode = QString::fromLocal8Bit("Точка останова: %1").arg(getLastBreakPointName()); break;
+		case rdo::runtime::RTM_MaxSpeed  : runTimeMode = "Без анимации"; break;
+		case rdo::runtime::RTM_Jump      : runTimeMode = "Дискретная имитация"; break;
+		case rdo::runtime::RTM_Sync      : runTimeMode = "Синхронная имитация"; break;
+		case rdo::runtime::RTM_Pause     : runTimeMode = "Пауза"; break;
+		case rdo::runtime::RTM_BreakPoint: runTimeMode = QString("Точка останова: %1").arg(getLastBreakPointName()); break;
 		}
 	}
 	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_RUNTYPE>(runTimeMode);

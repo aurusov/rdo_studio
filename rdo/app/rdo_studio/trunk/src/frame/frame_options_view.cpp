@@ -28,8 +28,8 @@ OptionsView::OptionsView(PTR(QWidget) pParent)
 	, m_style(NULL)
 {
 	setupUi(this);
-	englishSampleLabel->setText(QString::fromLocal8Bit("Sample of drawing text"));
-	russianSampleLabel->setText(QString::fromLocal8Bit("Пример текста"));
+	englishSampleLabel->setText("Sample of drawing text");
+	russianSampleLabel->setText("Пример текста");
 }
 
 void OptionsView::setStyle(PTR(FrameStyle) style)
