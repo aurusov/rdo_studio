@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2013
   \file      new_model_dialog.cpp
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      04.01.2013
   \brief     
   \indent    4T
@@ -61,7 +61,7 @@ void NewModelDialog::updateUI()
 	rbool error = true;
 	if (modelName->text().isEmpty())
 	{
-		labelError->setText(QString::fromStdWString(L"Íåîáõîäèìî óêàçàòü èìÿ ìîäåëè"));
+		labelError->setText("ÐÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ ÑƒÐºÐ°Ð·Ð°Ñ‚ÑŒ Ð¸Ð¼Ñ Ð¼Ð¾Ð´ÐµÐ»Ð¸");
 	}
 	else
 	{
@@ -70,14 +70,14 @@ void NewModelDialog::updateUI()
 		if (fileInfo.exists())
 		{
 			QString info = fileInfo.isDir()
-				? QString::fromStdWString(L"Òàêàÿ äèðåêòîðèÿ óæå ñóùåñòâóåò: '%1'")
-				: QString::fromStdWString(L"Òàêîé ôàéë óæå ñóùåñòâóåò: '%1'");
+				? "Ð¢Ð°ÐºÐ°Ñ Ð´Ð¸Ñ€ÐµÐºÑ‚Ð¾Ñ€Ð¸Ñ ÑƒÐ¶Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚: '%1'"
+				: "Ð¢Ð°ÐºÐ¾Ð¹ Ñ„Ð°Ð¹Ð» ÑƒÐ¶Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚: '%1'";
 
 			labelError->setText(info.arg(fullName));
 		}
 		else
 		{
-			labelError->setText(QString::fromStdWString(L"Áóäåò ñîçäàíà äèðåêòîðèÿ: '%1'").arg(fullName));
+			labelError->setText(QString("Ð‘ÑƒÐ´ÐµÑ‚ ÑÐ¾Ð·Ð´Ð°Ð½Ð° Ð´Ð¸Ñ€ÐµÐºÑ‚Ð¾Ñ€Ð¸Ñ: '%1'").arg(fullName));
 			error = false;
 		}
 	}
@@ -91,7 +91,7 @@ void NewModelDialog::onPathButtonClicked()
 {
 	QString path = QFileDialog::getExistingDirectory(
 		this,
-		QString::fromStdWString(L"Âûáîð äèðåêòîðèè äëÿ ìîäåëè"),
+		"Ð’Ñ‹Ð±Ð¾Ñ€ Ð´Ð¸Ñ€ÐµÐºÑ‚Ð¾Ñ€Ð¸Ð¸ Ð´Ð»Ñ Ð¼Ð¾Ð´ÐµÐ»Ð¸",
 		modelPath->text(),
 		QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks
 	);

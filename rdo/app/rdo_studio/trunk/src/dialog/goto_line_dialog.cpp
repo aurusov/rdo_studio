@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2013
   \file      goto_line_dialog.cpp
-  \author    Ðîìàíîâ ßðîñëàâ (robot.xet@gmail.com)
+  \author    Ð Ð¾Ð¼Ð°Ð½Ð¾Ð² Ð¯Ñ€Ð¾ÑÐ»Ð°Ð² (robot.xet@gmail.com)
   \date      04.01.2013
   \brief     
   \indent    4T
@@ -23,7 +23,7 @@ GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount)
 
 	layout()->setSizeConstraint(QLayout::SetFixedSize);
 
-	label->setText(QString::fromStdWString(L"Íîìåð ñòðîêè (1-%1):").arg(lineCount));
+	label->setText(QString("ÐÐ¾Ð¼ÐµÑ€ ÑÑ‚Ñ€Ð¾ÐºÐ¸ (1-%1):").arg(lineCount));
 
 	lineEdit->setValidator(new rdo::gui::IntValidator(1, lineCount, this));
 	lineEdit->setText(QString::number(m_line));
