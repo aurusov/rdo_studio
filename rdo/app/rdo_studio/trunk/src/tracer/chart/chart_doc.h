@@ -81,7 +81,7 @@ private:
 	static ruint            s_titleIndex;
 
 	int getSerieIndex(ChartSerie* serie) const;
-	COLORREF selectColor();
+	QColor selectColor() const;
 	Serie::Marker selectMarker();
 
 	void updateChartViews(Update updateType) const;
