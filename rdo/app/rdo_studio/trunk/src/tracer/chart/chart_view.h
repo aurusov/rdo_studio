@@ -54,7 +54,7 @@ public:
 	void setValueCountY(int value);
 
 	void updateView();
-	void onUserUpdateChartView(ruint updateType);
+	void onUserUpdateChartView(ChartDoc::Update updateType);
 
 	void setYAxis(ChartSerie* pSerie);
 

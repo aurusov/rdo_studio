@@ -815,9 +815,9 @@ void ChartView::onChartTimeWrap()
 	onUpdateActions(isActivated());
 }
 
-void ChartView::onUserUpdateChartView(ruint updateType)
+void ChartView::onUserUpdateChartView(ChartDoc::Update updateType)
 {
-	if (doUnwrapTime() || updateType != UPDATE_TIMETICKS)
+	if (doUnwrapTime() || updateType != ChartDoc::U_TIME_TICKS)
 	{
 		updateView();
 	}

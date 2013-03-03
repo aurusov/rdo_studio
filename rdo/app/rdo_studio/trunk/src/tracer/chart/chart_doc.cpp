@@ -102,7 +102,7 @@ void ChartDoc::incTimeEventsCount(Time* time)
 	if (!m_docTimes.empty() && m_docTimes.back() == time)
 	{
 		m_ticksCount++;
-		updateChartViews (UPDATE_TIMETICKS);
+		updateChartViews(U_TIME_TICKS);
 	}
 }
 
@@ -127,7 +127,7 @@ rbool ChartDoc::newValueToSerieAdded(Value* val)
 			}
 		}
 	}
-	updateChartViews (UPDATE_NEWVALUE);
+	updateChartViews(U_NEW_VALUE);
 
 	return true;
 }
@@ -170,7 +170,7 @@ void ChartDoc::removeFromViews(ChartView* pWidget)
 	}
 }
 
-void ChartDoc::updateChartViews(ruint updateType) const
+void ChartDoc::updateChartViews(Update updateType) const
 {
 	boost::range::for_each(m_widgetList, boost::bind(&ChartView::onUserUpdateChartView, _1, updateType));
 }
@@ -225,7 +225,7 @@ void ChartDoc::addSerie(CREF(LPSerie) pSerie)
 			ASSERT(pView);
 			pView->setYAxis(pDocSerie);
 		}
-		updateChartViews(UPDATE_NEWSERIE);
+		updateChartViews(U_NEW_SERIE);
 	}
 }
 
