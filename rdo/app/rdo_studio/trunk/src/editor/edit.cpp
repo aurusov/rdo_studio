@@ -1652,3 +1652,8 @@ rbool Edit::predicateOfGroup(CREF(this_predicate) fun) const
 		? m_pGroup->find_if(fun) != m_pGroup->end()
 		: fun(this);
 }
+
+ruint Edit::convertColor(CREF(QColor) color)
+{
+	ruint color.red() | color.green() << 8 | color.blue() << 16;
+}

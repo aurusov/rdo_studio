@@ -145,10 +145,7 @@ protected:
 
 	virtual void onUpdateActions(rbool activated);
 
-	static COLORREF convertColor(CREF(QColor) color)
-	{
-		return RGB(color.red(), color.green(), color.blue());
-	}
+	static ruint convertColor(CREF(QColor) color);
 
 protected slots:
 	        void onUpdateEditGUI();
