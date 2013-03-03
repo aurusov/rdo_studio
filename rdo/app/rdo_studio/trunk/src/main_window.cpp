@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      main_window.cpp
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -86,7 +86,7 @@ MainWindow::MainWindow()
 	updateMenuFileReopen();
 }
 
-//! todo íå âûçûâàåòñÿ äèñòðóêòîð
+//! todo Ð½Ðµ Ð²Ñ‹Ð·Ñ‹Ð²Ð°ÐµÑ‚ÑÑ Ð´Ð¸ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€
 MainWindow::~MainWindow()
 {}
 
@@ -271,7 +271,7 @@ void MainWindow::createInsertMenu()
 	menuList.push_back(std::make_pair("", MenuItemList()));
 	menuList.push_back(
 		std::make_pair(
-			QString::fromStdWString(L"Âñòðîåííûå ôóíêöèè"),
+			"Ð’ÑÑ‚Ñ€Ð¾ÐµÐ½Ð½Ñ‹Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸",
 			MenuItemList("Abs")("ArcCos")("ArcSin")("ArcTan")("Cos")("Cotan")("Exist")("Exp")("Floor")("For_All")("Frac")
 				("IAbs")("IMax")("IMin")("Int")("IntPower")("Ln")("Log10")("Log2")("LogN")("Max")("Min")("Not_Exist")
 				("Not_For_All")("Power")("Round")("Select")("Sin")("Sqrt")("Tan")
@@ -279,14 +279,14 @@ void MainWindow::createInsertMenu()
 	);
 	menuList.push_back(
 		std::make_pair(
-			QString::fromStdWString(L"Ïðîöåäóðíûé ÿçûê"),
+			"ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð½Ñ‹Ð¹ ÑÐ·Ñ‹Ðº",
 			MenuItemList
 				(MenuItem("if", "algo_if.txt", 4))
 				("else")
 				(MenuItem("if-else", "algo_if_else.txt", 4))
 				(MenuItem("for", "algo_for.txt", 5))
 				("return")
-				(MenuItem(QString::fromLocal8Bit("Ëîêàëüíàÿ ïåðåìåííàÿ"), "algo_local_variable.txt"))
+				(MenuItem("Ð›Ð¾ÐºÐ°Ð»ÑŒÐ½Ð°Ñ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð°Ñ", "algo_local_variable.txt"))
 		)
 	);
 
@@ -315,7 +315,7 @@ void MainWindow::createInsertMenu()
 
 void MainWindow::init()
 {
-	// Êòî-òî äîëæåí ïîäíÿòü êåðíåë è òðåäû
+	// ÐšÑ‚Ð¾-Ñ‚Ð¾ Ð´Ð¾Ð»Ð¶ÐµÐ½ Ð¿Ð¾Ð´Ð½ÑÑ‚ÑŒ ÐºÐµÑ€Ð½ÐµÐ» Ð¸ Ñ‚Ñ€ÐµÐ´Ñ‹
 	new rdo::gui::model::Model();
 
 	style_editor.init( "editor" );
@@ -369,7 +369,7 @@ void MainWindow::init()
 	tabifyDockWidget(m_pDockChartTree, m_pDockFrame);
 	m_pDockChartTree->raise();
 
-	PTR(QMenu) pMenuDockView = new QMenu(QString::fromStdWString(L"Îêíà"));
+	PTR(QMenu) pMenuDockView = new QMenu("ÐžÐºÐ½Ð°");
 	ASSERT(pMenuDockView);
 	menuView->insertMenu(actViewSettings, pMenuDockView);
 	pMenuDockView->addAction(m_pDockBuild->toggleViewAction());
@@ -380,7 +380,7 @@ void MainWindow::init()
 	pMenuDockView->addAction(m_pDockChartTree->toggleViewAction());
 	pMenuDockView->addAction(m_pDockFrame->toggleViewAction());
 
-	PTR(QMenu) pMenuToolbarView = new QMenu(QString::fromStdWString(L"Ïàíåëè"));
+	PTR(QMenu) pMenuToolbarView = new QMenu("ÐŸÐ°Ð½ÐµÐ»Ð¸");
 	ASSERT(pMenuToolbarView);
 	menuView->insertMenu(actViewSettings, pMenuToolbarView);
 	pMenuToolbarView->addAction(toolBarFile->toggleViewAction());

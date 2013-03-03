@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      app/rdo_studio/src/view_preferences.h
-  \author    Романов Ярослав (robot.xet@gmail.com)
+  \author    Р РѕРјР°РЅРѕРІ РЇСЂРѕСЃР»Р°РІ (robot.xet@gmail.com)
   \date      27.11.2012
   \brief     
   \indent    4T
@@ -261,7 +261,7 @@ private:
 
 	typedef PTR(QTreeWidgetItem) treeItem;
 
-	//Все окна
+	//Р’СЃРµ РѕРєРЅР°
 	treeItem m_pRoot;
 	treeItem m_pText;
 	treeItem m_pCompile;
@@ -272,7 +272,7 @@ private:
 	treeItem m_pChart;
 	treeItem m_pAnimation;
 
-	//Исходный текст
+	//РСЃС…РѕРґРЅС‹Р№ С‚РµРєСЃС‚
 	treeItem m_pPlainText;
 	treeItem m_pVariable;
 	treeItem m_pKeyword;
@@ -289,20 +289,20 @@ private:
 	treeItem m_pGroup;
 	treeItem m_pError;
 
-	//Окно компиляции
+	//РћРєРЅРѕ РєРѕРјРїРёР»СЏС†РёРё
 	treeItem m_pTextCompile;
 	treeItem m_pSelectedString;
 	treeItem m_pCaretCompile;
 	treeItem m_pSelectionCompile;
 	treeItem m_pBookmarkCompile;
 
-	//Окно отладки
+	//РћРєРЅРѕ РѕС‚Р»Р°РґРєРё
 	treeItem m_pTextDebug;
 	treeItem m_pCaretDebug;
 	treeItem m_pSelectionDebug;
 	treeItem m_pBookmarkDebug;
 
-	//Окно трассировки
+	//РћРєРЅРѕ С‚СЂР°СЃСЃРёСЂРѕРІРєРё
 	treeItem m_pES;
 	treeItem m_pEB;
 	treeItem m_pEF;
@@ -329,7 +329,7 @@ private:
 	treeItem m_pSEF;
 	treeItem m_pSEU;
 
-	//Окно результатов
+	//РћРєРЅРѕ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ
 	treeItem m_pPlainTextResult;
 	treeItem m_pVariableResult;
 	treeItem m_pKeywordResult;
@@ -340,7 +340,7 @@ private:
 	treeItem m_pSelectionResult;
 	treeItem m_pBookmarkResult;
 
-	//Окно поиска
+	//РћРєРЅРѕ РїРѕРёСЃРєР°
 	treeItem m_pTextSearch;
 	treeItem m_pStringSearch;
 	treeItem m_pSelectedStringSearch;
@@ -348,14 +348,14 @@ private:
 	treeItem m_pSelectionSearch;
 	treeItem m_pBookmarkSearch;
 
-	//Окно графиков
+	//РћРєРЅРѕ РіСЂР°С„РёРєРѕРІ
 	treeItem m_pAxis;
 	treeItem m_pTitle;
 	treeItem m_pLegend;
 	treeItem m_pGraph;
 	treeItem m_pTime;
 
-	//Окно анимации
+	//РћРєРЅРѕ Р°РЅРёРјР°С†РёРё
 	treeItem m_pEdgingColor;
 	treeItem m_pBackgroundColor;
 

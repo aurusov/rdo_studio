@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      application.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -123,7 +123,7 @@ Application::Application(int& argc, char** argv)
 	m_openLastProject     = settings.value("general/last_project_auto_open", true).toBool();
 	m_showCaptionFullName = settings.value("general/show_caption_full_name", false).toBool();
 
-	// Кто-то должен поднять кернел и треды
+	// РљС‚Рѕ-С‚Рѕ РґРѕР»Р¶РµРЅ РїРѕРґРЅСЏС‚СЊ РєРµСЂРЅРµР» Рё С‚СЂРµРґС‹
 	RDOKernel::init();
 #ifdef RDO_MT
 	m_pStudioGUI = new ThreadStudioGUI();
@@ -147,7 +147,7 @@ Application::Application(int& argc, char** argv)
 
 	m_pModelStyle = rdo::Factory<rdo::gui::editor::ModelStyle>::create();
 
-	// Внутри создается объект модели
+	// Р’РЅСѓС‚СЂРё СЃРѕР·РґР°РµС‚СЃСЏ РѕР±СЉРµРєС‚ РјРѕРґРµР»Рё
 	m_pMainFrame = new MainWindow();
 	m_pMainFrame->init();
 	m_pMainFrame->show();
@@ -268,7 +268,7 @@ Application::~Application()
 	}
 #endif
 
-	// Роняем кернел и закрываем все треды
+	// Р РѕРЅСЏРµРј РєРµСЂРЅРµР» Рё Р·Р°РєСЂС‹РІР°РµРј РІСЃРµ С‚СЂРµРґС‹
 	RDOKernel::close();
 
 	g_pApp = NULL;
@@ -327,7 +327,7 @@ QString Application::chkHelpExist(CREF(QString) helpFileName) const
 
 	if (!QFile::exists(fullHelpFileName))
 	{
-		QMessageBox::warning(g_pApp->getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Невозможно найти файл справки '%1'.\r\nОн должен быть расположен в директории с RAO-studio.").arg(helpFileName));
+		QMessageBox::warning(g_pApp->getMainWnd(), "RAO-Studio", QString("РќРµРІРѕР·РјРѕР¶РЅРѕ РЅР°Р№С‚Рё С„Р°Р№Р» СЃРїСЂР°РІРєРё '%1'.\r\nРћРЅ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ СЂР°СЃРїРѕР»РѕР¶РµРЅ РІ РґРёСЂРµРєС‚РѕСЂРёРё СЃ RAO-studio.").arg(helpFileName));
 		fullHelpFileName = QString();
 	}
 
@@ -811,7 +811,7 @@ void Application::convertSettings() const
 		convertor.convert<QColor>("style/find/theme/caretColor",        "style/find/theme/caret_color");
 		convertor.convert<QColor>("style/find/theme/defaultColor",      "style/find/theme/default_color");
 		convertor.convert<int>   ("style/find/theme/defaultStyle",      "style/find/theme/default_style");
-		convertor.convert<QColor>("style/find/theme/keywordColor",      "style/find/theme/keyword_сolor");
+		convertor.convert<QColor>("style/find/theme/keywordColor",      "style/find/theme/keyword_СЃolor");
 		convertor.convert<int>   ("style/find/theme/keywordStyle",      "style/find/theme/keyword_style");
 		convertor.convert<QColor>("style/find/theme/selectionBgColor",  "style/find/theme/selection_bg_color");
 		convertor.convert<QColor>("style/find/theme/selectLineBgColor", "style/find/theme/select_line_bg_color");

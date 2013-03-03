@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      app/rdo_studio/src/view_preferences.cpp
-  \author    Ðîìàíîâ ßðîñëàâ (robot.xet@gmail.com)
+  \author    Ð Ð¾Ð¼Ð°Ð½Ð¾Ð² Ð¯Ñ€Ð¾ÑÐ»Ð°Ð² (robot.xet@gmail.com)
   \date      27.11.2012
   \brief     
   \indent    4T
@@ -70,19 +70,19 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	style_frame   = g_pApp->getStyle()->style_frame;
 
 	fontComboBox->setEditable(false);
-	//Âêëàäêà "Îñíîâíûå"
+	//Ð’ÐºÐ»Ð°Ð´ÐºÐ° "ÐžÑÐ½Ð¾Ð²Ð½Ñ‹Ðµ"
 	connect(setupCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onSetup(int)));
 	connect(checkInFutureCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onCheckInFuture(int)));
 	connect(openLastProjectCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onOpenLastProject(int)));
 	connect(showFullNameCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onShowFullName(int)));
-	//Âêëàäêà "Ðåäàêòîð"
+	//Ð’ÐºÐ»Ð°Ð´ÐºÐ° "Ð ÐµÐ´Ð°ÐºÑ‚Ð¾Ñ€"
 	connect(checkBoxCodeCompUse, SIGNAL(stateChanged(int)), this, SLOT(onCodeCompUse(int)));
 	connect(radioButtonFullList, SIGNAL(toggled(bool)), this, SLOT(onCodeCompShowFullList(bool)));
 	connect(radioButtonNearestWords, SIGNAL(toggled(bool)), this, SLOT(onCodeCompShowFullList(bool)));
 	connect(checkBoxMarginFold, SIGNAL(stateChanged(int)), this, SLOT(onMarginFold(int)));
 	connect(checkBoxMarginBookmark, SIGNAL(stateChanged(int)), this, SLOT(onMarginBookmark(int)));
 	connect(checkBoxMarginLineNum, SIGNAL(stateChanged(int)), this, SLOT(onMarginLineNumber(int)));
-	//Âêëàäêà "Òàáóëÿöèÿ"
+	//Ð’ÐºÐ»Ð°Ð´ÐºÐ° "Ð¢Ð°Ð±ÑƒÐ»ÑÑ†Ð¸Ñ"
 	tabSizeLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
 	tabSizeLineEdit->setText(QString::number(style_editor.tab->tabSize));
 	indentSizeLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
@@ -93,7 +93,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(eraseWithTabRadioButton, SIGNAL(toggled(bool)), this, SLOT(onEraseWithTab(bool)));
 	connect(tabSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onTabSize(const QString&)));
 	connect(indentSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onIndentSize(const QString&)));
-	//Âêëàäêà "Ñòèëü è öâåò"
+	//Ð’ÐºÐ»Ð°Ð´ÐºÐ° "Ð¡Ñ‚Ð¸Ð»ÑŒ Ð¸ Ñ†Ð²ÐµÑ‚"
 	stackedWidget->setCurrentWidget(pageRoot);
 
 	PTR(QPalette) palette = new QPalette();
@@ -116,19 +116,19 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	switchPreviewComboBox->addItem("Chart",   IT_CHART);
 	switchPreviewComboBox->addItem("Frame",   IT_FRAME);
 
-	bookmarkComboBox->addItem(QString::fromStdWString(L"Íåò"),           EditTheme::B_NONE);
-	bookmarkComboBox->addItem(QString::fromStdWString(L"Êðóã"),          EditTheme::B_CIRCLE);
-	bookmarkComboBox->addItem(QString::fromStdWString(L"Ïðÿìîóãîëüíèê"), EditTheme::B_RECT);
-	bookmarkComboBox->addItem(QString::fromStdWString(L"Îâàë"),          EditTheme::B_ROUNDRECT);
-	bookmarkComboBox->addItem(QString::fromStdWString(L"Ñòðåëêà"),       EditTheme::B_ARROW);
+	bookmarkComboBox->addItem("ÐÐµÑ‚",           EditTheme::B_NONE);
+	bookmarkComboBox->addItem("ÐšÑ€ÑƒÐ³",          EditTheme::B_CIRCLE);
+	bookmarkComboBox->addItem("ÐŸÑ€ÑÐ¼Ð¾ÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸Ðº", EditTheme::B_RECT);
+	bookmarkComboBox->addItem("ÐžÐ²Ð°Ð»",          EditTheme::B_ROUNDRECT);
+	bookmarkComboBox->addItem("Ð¡Ñ‚Ñ€ÐµÐ»ÐºÐ°",       EditTheme::B_ARROW);
 
-	foldComboBox->addItem(QString::fromStdWString(L"Íåò"),             ModelTheme::F_NONE);
-	foldComboBox->addItem(QString::fromStdWString(L"Ïëþñ"),            ModelTheme::F_PLUS);
-	foldComboBox->addItem(QString::fromStdWString(L"Ïëþñ + ëèíèÿ"),    ModelTheme::F_PLUSCONNECTED);
-	foldComboBox->addItem(QString::fromStdWString(L"Ñòðåëêà"),         ModelTheme::F_ARROW);
-	foldComboBox->addItem(QString::fromStdWString(L"Ñòðåëêà + ëèíèÿ"), ModelTheme::F_ARROWCONNECTED);
-	foldComboBox->addItem(QString::fromStdWString(L"Êâàäðàò + ëèíèÿ"), ModelTheme::F_BOXCONNECTED);
-	foldComboBox->addItem(QString::fromStdWString(L"Êðóã + ëèíèÿ"),    ModelTheme::F_CIRCLECONNECTED);
+	foldComboBox->addItem("ÐÐµÑ‚",             ModelTheme::F_NONE);
+	foldComboBox->addItem("ÐŸÐ»ÑŽÑ",            ModelTheme::F_PLUS);
+	foldComboBox->addItem("ÐŸÐ»ÑŽÑ + Ð»Ð¸Ð½Ð¸Ñ",    ModelTheme::F_PLUSCONNECTED);
+	foldComboBox->addItem("Ð¡Ñ‚Ñ€ÐµÐ»ÐºÐ°",         ModelTheme::F_ARROW);
+	foldComboBox->addItem("Ð¡Ñ‚Ñ€ÐµÐ»ÐºÐ° + Ð»Ð¸Ð½Ð¸Ñ", ModelTheme::F_ARROWCONNECTED);
+	foldComboBox->addItem("ÐšÐ²Ð°Ð´Ñ€Ð°Ñ‚ + Ð»Ð¸Ð½Ð¸Ñ", ModelTheme::F_BOXCONNECTED);
+	foldComboBox->addItem("ÐšÑ€ÑƒÐ³ + Ð»Ð¸Ð½Ð¸Ñ",    ModelTheme::F_CIRCLECONNECTED);
 
 	boldCheckBox->setEnabled(false);
 	italicCheckBox->setEnabled(false);
@@ -887,7 +887,7 @@ void ViewPreferences::updatePreview()
 	preview_debug->setEditorStyle(&style_debug);
 	preview_debug->repaint();
 	
-	//! todo ïàäåíèå ïðè çàêðûòèè äèàëîãà
+	//! todo Ð¿Ð°Ð´ÐµÐ½Ð¸Ðµ Ð¿Ñ€Ð¸ Ð·Ð°ÐºÑ€Ñ‹Ñ‚Ð¸Ð¸ Ð´Ð¸Ð°Ð»Ð¾Ð³Ð°
 	//preview_trace->view().setStyle(&style_trace);
 	//preview_trace->repaint();
 
@@ -918,47 +918,47 @@ void ViewPreferences::createPreview()
 
 	preview_build = new Build(previewStackedWidget->currentWidget());
 	preview_build->setEditorStyle(&style_build);
-	preview_build->appendLine(new BuildEditLineInfo(rdo::format("Êîìïèëÿöèÿ...")));
-	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage(rdo::format("Íåïðàâèëüíîå çíà÷åíèå ïàðàìåòðà: 4"), rdoModelObjects::PAT, 40, 0)));
-	preview_build->appendLine(new BuildEditLineInfo(rdo::format("íàéäåíî îøèáîê: 1, ïðåäóïðåæäåíèé: 0")));
+	preview_build->appendLine(new BuildEditLineInfo(QString("ÐšÐ¾Ð¼Ð¿Ð¸Ð»ÑÑ†Ð¸Ñ...").toLocal8Bit().constData()));
+	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage(QString("ÐÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð°: 4").toLocal8Bit().constData(), rdoModelObjects::PAT, 40, 0)));
+	preview_build->appendLine(new BuildEditLineInfo(QString("Ð½Ð°Ð¹Ð´ÐµÐ½Ð¾ Ð¾ÑˆÐ¸Ð±Ð¾Ðº: 1, Ð¿Ñ€ÐµÐ´ÑƒÐ¿Ñ€ÐµÐ¶Ð´ÐµÐ½Ð¸Ð¹: 0").toLocal8Bit().constData()));
 	preview_build->gotoNext();
 	previewStackedWidget->addWidget(preview_build);
 
 	preview_debug = new Debug(previewStackedWidget->currentWidget());
 	preview_debug->setEditorStyle(&style_debug);
-	preview_debug->appendLine(QString::fromStdWString(L"Ïîëó÷åíèå ñòðóêòóðû ìîäåëè...ok\nÌîäåëü çàïóùåíà"));
+	preview_debug->appendLine("ÐŸÐ¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ðµ ÑÑ‚Ñ€ÑƒÐºÑ‚ÑƒÑ€Ñ‹ Ð¼Ð¾Ð´ÐµÐ»Ð¸...ok\nÐœÐ¾Ð´ÐµÐ»ÑŒ Ð·Ð°Ð¿ÑƒÑ‰ÐµÐ½Ð°");
 	previewStackedWidget->addWidget(preview_debug);
 
 	preview_trace = new rdo::gui::tracer::LogMainWnd(previewStackedWidget->currentWidget());
 	preview_trace->view().setStyle(&g_pApp->getStyle()->style_trace);
 	preview_trace->view().setFocusOnly(true);
-	preview_trace->view().setText(rdo::format("Ïðîñòàÿ ñòðîêà\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19"));
+	preview_trace->view().setText(QString("ÐŸÑ€Ð¾ÑÑ‚Ð°Ñ ÑÑ‚Ñ€Ð¾ÐºÐ°\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19").toLocal8Bit().constData());
 	preview_trace->view().selectLine(0);
 	previewStackedWidget->addWidget(preview_trace);
 
 	preview_results = new Results(previewStackedWidget->currentWidget());
 	preview_results->setEditorStyle(&style_results);
 	preview_results->setReadOnly(false);
-	preview_results->replaceCurrent(rdo::format("Äëèíà_î÷åðåäè                2  194  0.675957  21.6506  0  4\r\nÇàíÿòîñòü_ïàðèêìàõåðà         TRUE  96  0.877351  21.7041  0.0397544  0.918872\r\nÂñåãî_îáñëóæåíî              96\r\nÏðîïóñêíàÿ_ñïîñîáíîñòü       1.99198\r\n"), 0);
+	preview_results->replaceCurrent(QString("Ð”Ð»Ð¸Ð½Ð°_Ð¾Ñ‡ÐµÑ€ÐµÐ´Ð¸                2  194  0.675957  21.6506  0  4\r\nÐ—Ð°Ð½ÑÑ‚Ð¾ÑÑ‚ÑŒ_Ð¿Ð°Ñ€Ð¸ÐºÐ¼Ð°Ñ…ÐµÑ€Ð°         TRUE  96  0.877351  21.7041  0.0397544  0.918872\r\nÐ’ÑÐµÐ³Ð¾_Ð¾Ð±ÑÐ»ÑƒÐ¶ÐµÐ½Ð¾              96\r\nÐŸÑ€Ð¾Ð¿ÑƒÑÐºÐ½Ð°Ñ_ÑÐ¿Ð¾ÑÐ¾Ð±Ð½Ð¾ÑÑ‚ÑŒ       1.99198\r\n").toLocal8Bit().constData(), 0);
 	preview_results->setReadOnly(true);
 	previewStackedWidget->addWidget(preview_results);
 
 	preview_find = new Find(previewStackedWidget->currentWidget());
 	preview_find->setEditorStyle(&style_find);
 	preview_find->setKeyword("$Time");
-	preview_find->appendLine(new LogEditLineInfo(rdo::format("Ïîèñê '$Time'...")));
-	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(rdo::format("$Time = Ðàâíîìåðíûé(0.25, 0.75)"), rdoModelObjects::PAT, 3, 0)));
-	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(rdo::format("$Time = Íîðìàëüíûé(0.45, 0.2)"), rdoModelObjects::PAT, 13, 0)));
-	preview_find->appendLine(new LogEditLineInfo(rdo::format("'2' ðàç áûëî íàéäåíî.")));
+	preview_find->appendLine(new LogEditLineInfo(QString("ÐŸÐ¾Ð¸ÑÐº '$Time'...").toLocal8Bit().constData()));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(QString("$Time = Ð Ð°Ð²Ð½Ð¾Ð¼ÐµÑ€Ð½Ñ‹Ð¹(0.25, 0.75)").toLocal8Bit().constData(), rdoModelObjects::PAT, 3, 0)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(QString("$Time = ÐÐ¾Ñ€Ð¼Ð°Ð»ÑŒÐ½Ñ‹Ð¹(0.45, 0.2)").toLocal8Bit().constData(), rdoModelObjects::PAT, 13, 0)));
+	preview_find->appendLine(new LogEditLineInfo(QString("'2' Ñ€Ð°Ð· Ð±Ñ‹Ð»Ð¾ Ð½Ð°Ð¹Ð´ÐµÐ½Ð¾.").toLocal8Bit().constData()));
 	preview_find->gotoNext();
 	previewStackedWidget->addWidget(preview_find);
 
 	previewStackedWidget->addWidget(new QWidget(previewStackedWidget->currentWidget()));
 	//! @todo qt
-	preview_chart_doc = new ChartDoc(true);
-	PTR(ChartViewMainWnd) pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
+	//preview_chart_doc = new ChartDoc(true);
+	//PTR(ChartViewMainWnd) pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
 
-	//preview_chart_doc->setTitle(rdo::format("ãðàôèê 1").c_str());
+	//preview_chart_doc->setTitle(rdo::format("Ð³Ñ€Ð°Ñ„Ð¸Ðº 1").c_str());
 	//preview_chart->setPreviwMode(true);
 	//preview_chart_doc->attachView(preview_chart);
 	//preview_chart->setStyle(&style_chart, false);
@@ -970,7 +970,7 @@ void ViewPreferences::createPreview()
 	//preview_times.push_back(Time(8, 3));
 	//preview_times.push_back(Time(10, 3));
 	preview_serie = rdo::Factory<rdo::gui::tracer::Serie>::create();
-	//preview_serie.setTitle(rdo::format("çíà÷åíèå 1"));
+	//preview_serie.setTitle(rdo::format("Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ 1"));
 	//preview_serie.addValue(new Value(&preview_times.at(0), 2, 0));
 	//preview_serie.addValue(new Value(&preview_times.at(1), 1, 1));
 	//preview_serie.addValue(new Value(&preview_times.at(2), 0, 4));
@@ -1112,98 +1112,98 @@ void ViewPreferences::createTree()
 	treeWidget->setRootIsDecorated(false);
 
 	m_pRoot = new QTreeWidgetItem(treeWidget);
-	m_pRoot->setText(0, QString::fromStdWString(L"Âñå îêíà"));
+	m_pRoot->setText(0, "Ð’ÑÐµ Ð¾ÐºÐ½Ð°");
 	m_pRoot->setData(0, Qt::UserRole, IT_ROOT);
 
-	m_pText      = createTreeItem(m_pRoot, QString::fromStdWString(L"Èñõîäíûé òåêñò"),   IT_EDITOR);
-	m_pCompile   = createTreeItem(m_pRoot, QString::fromStdWString(L"Îêíî êîìïèëÿöèè"),  IT_BUILD);
-	m_pDebug     = createTreeItem(m_pRoot, QString::fromStdWString(L"Îêíî îòëàäêè"),     IT_DEBUG);
-	m_pTrace     = createTreeItem(m_pRoot, QString::fromStdWString(L"Îêíî òðàññèðîâêè"), IT_LOG);
-	m_pResult    = createTreeItem(m_pRoot, QString::fromStdWString(L"Îêíî ðåçóëüòàòîâ"), IT_RESULT);
-	m_pSearch    = createTreeItem(m_pRoot, QString::fromStdWString(L"Îêíî ïîèñêà"),      IT_FIND);
-	m_pChart     = createTreeItem(m_pRoot, QString::fromStdWString(L"Îêíî ãðàôèêîâ"),    IT_CHART);
-	m_pAnimation = createTreeItem(m_pRoot, QString::fromStdWString(L"Îêíî àíèìàöèè"),    IT_FRAME);
+	m_pText      = createTreeItem(m_pRoot, "Ð˜ÑÑ…Ð¾Ð´Ð½Ñ‹Ð¹ Ñ‚ÐµÐºÑÑ‚",   IT_EDITOR);
+	m_pCompile   = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ ÐºÐ¾Ð¼Ð¿Ð¸Ð»ÑÑ†Ð¸Ð¸",  IT_BUILD);
+	m_pDebug     = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ Ð¾Ñ‚Ð»Ð°Ð´ÐºÐ¸",     IT_DEBUG);
+	m_pTrace     = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ Ñ‚Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ¸", IT_LOG);
+	m_pResult    = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð¾Ð²", IT_RESULT);
+	m_pSearch    = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ Ð¿Ð¾Ð¸ÑÐºÐ°",      IT_FIND);
+	m_pChart     = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ Ð³Ñ€Ð°Ñ„Ð¸ÐºÐ¾Ð²",    IT_CHART);
+	m_pAnimation = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ Ð°Ð½Ð¸Ð¼Ð°Ñ†Ð¸Ð¸",    IT_FRAME);
 
 	m_pRoot->setExpanded(true);
 
-	m_pPlainText = createTreeItem(m_pText, QString::fromStdWString(L"Îáûêíîâåííûé òåêñò"), IT_EDITOR_PLAINTEXT);
-	m_pVariable  = createTreeItem(m_pText, QString::fromStdWString(L"Ïåðåìåííàÿ"),         IT_EDITOR_IDENTIFICATOR);
-	m_pKeyword   = createTreeItem(m_pText, QString::fromStdWString(L"Êëþ÷åâîå ñëîâî"),     IT_EDITOR_KEYWORD);
-	m_pFunction  = createTreeItem(m_pText, QString::fromStdWString(L"Ôóíêöèÿ"),            IT_EDITOR_FUNCTION);
-	m_pTraceText = createTreeItem(m_pText, QString::fromStdWString(L"Òðàññèðîâêà"),        IT_EDITOR_TRACE);
-	m_pColor     = createTreeItem(m_pText, QString::fromStdWString(L"Öâåò"),               IT_EDITOR_COLOR);
-	m_pComment   = createTreeItem(m_pText, QString::fromStdWString(L"Êîììåíòàðèè"),        IT_EDITOR_COMMENT);
-	m_pNumber    = createTreeItem(m_pText, QString::fromStdWString(L"×èñëî"),              IT_EDITOR_NUMBER);
-	m_pString    = createTreeItem(m_pText, QString::fromStdWString(L"Ñòðîêà"),             IT_EDITOR_STRING);
-	m_pOperator  = createTreeItem(m_pText, QString::fromStdWString(L"Îïåðàòîð"),           IT_EDITOR_OPERATOR);
-	m_pCaret     = createTreeItem(m_pText, QString::fromStdWString(L"Êàðåòêà"),            IT_EDITOR_CARET);
-	m_pSelection = createTreeItem(m_pText, QString::fromStdWString(L"Âûäåëåíèå"),          IT_EDITOR_TEXTSELECTION);
-	m_pBookmark  = createTreeItem(m_pText, QString::fromStdWString(L"Çàêëàäêà"),           IT_EDITOR_BOOKMARK);
-	m_pGroup     = createTreeItem(m_pText, QString::fromStdWString(L"Ãðóïïà"),             IT_EDITOR_FOLD);
-	m_pError     = createTreeItem(m_pText, QString::fromStdWString(L"Îøèáêà"),             IT_EDITOR_ERROR);
+	m_pPlainText = createTreeItem(m_pText, "ÐžÐ±Ñ‹ÐºÐ½Ð¾Ð²ÐµÐ½Ð½Ñ‹Ð¹ Ñ‚ÐµÐºÑÑ‚", IT_EDITOR_PLAINTEXT);
+	m_pVariable  = createTreeItem(m_pText, "ÐŸÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð°Ñ",         IT_EDITOR_IDENTIFICATOR);
+	m_pKeyword   = createTreeItem(m_pText, "ÐšÐ»ÑŽÑ‡ÐµÐ²Ð¾Ðµ ÑÐ»Ð¾Ð²Ð¾",     IT_EDITOR_KEYWORD);
+	m_pFunction  = createTreeItem(m_pText, "Ð¤ÑƒÐ½ÐºÑ†Ð¸Ñ",            IT_EDITOR_FUNCTION);
+	m_pTraceText = createTreeItem(m_pText, "Ð¢Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ°",        IT_EDITOR_TRACE);
+	m_pColor     = createTreeItem(m_pText, "Ð¦Ð²ÐµÑ‚",               IT_EDITOR_COLOR);
+	m_pComment   = createTreeItem(m_pText, "ÐšÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð¸",        IT_EDITOR_COMMENT);
+	m_pNumber    = createTreeItem(m_pText, "Ð§Ð¸ÑÐ»Ð¾",              IT_EDITOR_NUMBER);
+	m_pString    = createTreeItem(m_pText, "Ð¡Ñ‚Ñ€Ð¾ÐºÐ°",             IT_EDITOR_STRING);
+	m_pOperator  = createTreeItem(m_pText, "ÐžÐ¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€",           IT_EDITOR_OPERATOR);
+	m_pCaret     = createTreeItem(m_pText, "ÐšÐ°Ñ€ÐµÑ‚ÐºÐ°",            IT_EDITOR_CARET);
+	m_pSelection = createTreeItem(m_pText, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ",          IT_EDITOR_TEXTSELECTION);
+	m_pBookmark  = createTreeItem(m_pText, "Ð—Ð°ÐºÐ»Ð°Ð´ÐºÐ°",           IT_EDITOR_BOOKMARK);
+	m_pGroup     = createTreeItem(m_pText, "Ð“Ñ€ÑƒÐ¿Ð¿Ð°",             IT_EDITOR_FOLD);
+	m_pError     = createTreeItem(m_pText, "ÐžÑˆÐ¸Ð±ÐºÐ°",             IT_EDITOR_ERROR);
 
-	m_pTextCompile      = createTreeItem(m_pCompile, QString::fromStdWString(L"Òåêñò"),             IT_BUILD_TEXT);
-	m_pSelectedString   = createTreeItem(m_pCompile, QString::fromStdWString(L"Âûäåëåííàÿ ñòðîêà"), IT_BUILD_SELECTEDLINE);
-	m_pCaretCompile     = createTreeItem(m_pCompile, QString::fromStdWString(L"Êàðåòêà"),           IT_EDITOR_CARET);
-	m_pSelectionCompile = createTreeItem(m_pCompile, QString::fromStdWString(L"Âûäåëåíèå"),         IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkCompile  = createTreeItem(m_pCompile, QString::fromStdWString(L"Çàêëàäêà"),          IT_EDITOR_BOOKMARK);
+	m_pTextCompile      = createTreeItem(m_pCompile, "Ð¢ÐµÐºÑÑ‚",             IT_BUILD_TEXT);
+	m_pSelectedString   = createTreeItem(m_pCompile, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð½Ð°Ñ ÑÑ‚Ñ€Ð¾ÐºÐ°", IT_BUILD_SELECTEDLINE);
+	m_pCaretCompile     = createTreeItem(m_pCompile, "ÐšÐ°Ñ€ÐµÑ‚ÐºÐ°",           IT_EDITOR_CARET);
+	m_pSelectionCompile = createTreeItem(m_pCompile, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ",         IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkCompile  = createTreeItem(m_pCompile, "Ð—Ð°ÐºÐ»Ð°Ð´ÐºÐ°",          IT_EDITOR_BOOKMARK);
 
-	m_pTextDebug      = createTreeItem(m_pDebug, QString::fromStdWString(L"Òåêñò"),     IT_BUILD_TEXT);
-	m_pCaretDebug     = createTreeItem(m_pDebug, QString::fromStdWString(L"Êàðåòêà"),   IT_EDITOR_CARET);
-	m_pSelectionDebug = createTreeItem(m_pDebug, QString::fromStdWString(L"Âûäåëåíèå"), IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkDebug  = createTreeItem(m_pDebug, QString::fromStdWString(L"Çàêëàäêà"),  IT_EDITOR_BOOKMARK);
+	m_pTextDebug      = createTreeItem(m_pDebug, "Ð¢ÐµÐºÑÑ‚",     IT_BUILD_TEXT);
+	m_pCaretDebug     = createTreeItem(m_pDebug, "ÐšÐ°Ñ€ÐµÑ‚ÐºÐ°",   IT_EDITOR_CARET);
+	m_pSelectionDebug = createTreeItem(m_pDebug, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ", IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkDebug  = createTreeItem(m_pDebug, "Ð—Ð°ÐºÐ»Ð°Ð´ÐºÐ°",  IT_EDITOR_BOOKMARK);
 
-	m_pES     = createTreeItem(m_pTrace, QString::fromStdWString(L"Ñëóæåáíîå ñîáûòèå (ES)"),                         IT_LOG_ES);
-	m_pEB     = createTreeItem(m_pTrace, QString::fromStdWString(L"Íà÷àëî äåéñòâèÿ (EB)"),                           IT_LOG_EB);
-	m_pEF     = createTreeItem(m_pTrace, QString::fromStdWString(L"Îêîí÷àíèå äåéñòâèÿ (EF)"),                        IT_LOG_EF);
-	m_pEI     = createTreeItem(m_pTrace, QString::fromStdWString(L"Íåðåãóëÿðíîå ñîáûòèå (EI)"),                      IT_LOG_EI);
-	m_pER     = createTreeItem(m_pTrace, QString::fromStdWString(L"Ïðîäóêöèîííîå ïðàâèëî (ER)"),                     IT_LOG_ER);
-	m_pRC     = createTreeItem(m_pTrace, QString::fromStdWString(L"Ñîçäàíèå ðåñóðñà (RC)"),                          IT_LOG_RC);
-	m_pRE     = createTreeItem(m_pTrace, QString::fromStdWString(L"Óäàëåíèå ðåñóðñà (RE)"),                          IT_LOG_RE);
-	m_pRK     = createTreeItem(m_pTrace, QString::fromStdWString(L"Èçìåíåíèå ñîñòîÿíèÿ ðåñóðñà (RK)"),               IT_LOG_RK);
-	m_pV      = createTreeItem(m_pTrace, QString::fromStdWString(L"Òðàññèðîâêà èíäåêñà (V)"),                        IT_LOG_V);
-	m_pStatus = createTreeItem(m_pTrace, QString::fromStdWString(L"Ñòàòóñ îêîí÷àíèÿ ìîäåëèðîâàíèÿ ($Status)"),       IT_LOG_STATUS);
-	m_pDPS    = createTreeItem(m_pTrace, QString::fromStdWString(L"Ñòàòèñòèêà ïî ïîèñêó íà ãðàôå (DPS)"),            IT_LOG_DPS);
-	m_pSB     = createTreeItem(m_pTrace, QString::fromStdWString(L"Íà÷àëî ïîèñêà (SB)"),                             IT_LOG_SB);
-	m_pSO     = createTreeItem(m_pTrace, QString::fromStdWString(L"Òðàññèðîâêà ðàñêðûâàåìîé âåðøèíû (SO)"),          IT_LOG_SO);
-	m_pSTN    = createTreeItem(m_pTrace, QString::fromStdWString(L"Ïðèçíàê âåðøèíû (STN)"),                          IT_LOG_STN);
-	m_pSTD    = createTreeItem(m_pTrace, QString::fromStdWString(L"Ïðèçíàê âåðøèíû (STD)"),                          IT_LOG_STD);
-	m_pSTR    = createTreeItem(m_pTrace, QString::fromStdWString(L"Ïðèçíàê âåðøèíû (STR)"),                          IT_LOG_STR);
-	m_pSRC    = createTreeItem(m_pTrace, QString::fromStdWString(L"Ñîçäàíèå ðåñóðñà (ïðè ïîèñêå) (SRC)"),            IT_LOG_SRC);
-	m_pSRE    = createTreeItem(m_pTrace, QString::fromStdWString(L"Óäàëåíèå ðåñóðñà (ïðè ïîèñêå) (SRE)"),            IT_LOG_SRE);
-	m_pSRK    = createTreeItem(m_pTrace, QString::fromStdWString(L"Èçìåíåíèå ñîñòîÿíèÿ ðåñóðñà (ïðè ïîèñêå) (SRK)"), IT_LOG_SRK);
-	m_pSD     = createTreeItem(m_pTrace, QString::fromStdWString(L"Òðàññèðîâêà ðåøåíèÿ (SD)"),                       IT_LOG_SD);
-	m_pSES    = createTreeItem(m_pTrace, QString::fromStdWString(L"Çàâåðøåíèå ïîèñêà (SES)"),                        IT_LOG_SES);
-	m_pSEN    = createTreeItem(m_pTrace, QString::fromStdWString(L"Çàâåðøåíèå ïîèñêà (SEN)"),                        IT_LOG_SEN);
-	m_pSEM    = createTreeItem(m_pTrace, QString::fromStdWString(L"Çàâåðøåíèå ïîèñêà (SEM)"),                        IT_LOG_SEM);
-	m_pSEF    = createTreeItem(m_pTrace, QString::fromStdWString(L"Çàâåðøåíèå ïîèñêà (SEF)"),                        IT_LOG_SEF);
-	m_pSEU    = createTreeItem(m_pTrace, QString::fromStdWString(L"Çàâåðøåíèå ïîèñêà (SEU)"),                        IT_LOG_SEU);
+	m_pES     = createTreeItem(m_pTrace, "Ð¡Ð»ÑƒÐ¶ÐµÐ±Ð½Ð¾Ðµ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ðµ (ES)",                         IT_LOG_ES);
+	m_pEB     = createTreeItem(m_pTrace, "ÐÐ°Ñ‡Ð°Ð»Ð¾ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ (EB)",                           IT_LOG_EB);
+	m_pEF     = createTreeItem(m_pTrace, "ÐžÐºÐ¾Ð½Ñ‡Ð°Ð½Ð¸Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ (EF)",                        IT_LOG_EF);
+	m_pEI     = createTreeItem(m_pTrace, "ÐÐµÑ€ÐµÐ³ÑƒÐ»ÑÑ€Ð½Ð¾Ðµ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ðµ (EI)",                      IT_LOG_EI);
+	m_pER     = createTreeItem(m_pTrace, "ÐŸÑ€Ð¾Ð´ÑƒÐºÑ†Ð¸Ð¾Ð½Ð½Ð¾Ðµ Ð¿Ñ€Ð°Ð²Ð¸Ð»Ð¾ (ER)",                     IT_LOG_ER);
+	m_pRC     = createTreeItem(m_pTrace, "Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ñ€ÐµÑÑƒÑ€ÑÐ° (RC)",                          IT_LOG_RC);
+	m_pRE     = createTreeItem(m_pTrace, "Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ Ñ€ÐµÑÑƒÑ€ÑÐ° (RE)",                          IT_LOG_RE);
+	m_pRK     = createTreeItem(m_pTrace, "Ð˜Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ñ Ñ€ÐµÑÑƒÑ€ÑÐ° (RK)",               IT_LOG_RK);
+	m_pV      = createTreeItem(m_pTrace, "Ð¢Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ° Ð¸Ð½Ð´ÐµÐºÑÐ° (V)",                        IT_LOG_V);
+	m_pStatus = createTreeItem(m_pTrace, "Ð¡Ñ‚Ð°Ñ‚ÑƒÑ Ð¾ÐºÐ¾Ð½Ñ‡Ð°Ð½Ð¸Ñ Ð¼Ð¾Ð´ÐµÐ»Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ ($Status)",       IT_LOG_STATUS);
+	m_pDPS    = createTreeItem(m_pTrace, "Ð¡Ñ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÐ° Ð¿Ð¾ Ð¿Ð¾Ð¸ÑÐºÑƒ Ð½Ð° Ð³Ñ€Ð°Ñ„Ðµ (DPS)",            IT_LOG_DPS);
+	m_pSB     = createTreeItem(m_pTrace, "ÐÐ°Ñ‡Ð°Ð»Ð¾ Ð¿Ð¾Ð¸ÑÐºÐ° (SB)",                             IT_LOG_SB);
+	m_pSO     = createTreeItem(m_pTrace, "Ð¢Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ° Ñ€Ð°ÑÐºÑ€Ñ‹Ð²Ð°ÐµÐ¼Ð¾Ð¹ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹ (SO)",          IT_LOG_SO);
+	m_pSTN    = createTreeItem(m_pTrace, "ÐŸÑ€Ð¸Ð·Ð½Ð°Ðº Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹ (STN)",                          IT_LOG_STN);
+	m_pSTD    = createTreeItem(m_pTrace, "ÐŸÑ€Ð¸Ð·Ð½Ð°Ðº Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹ (STD)",                          IT_LOG_STD);
+	m_pSTR    = createTreeItem(m_pTrace, "ÐŸÑ€Ð¸Ð·Ð½Ð°Ðº Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹ (STR)",                          IT_LOG_STR);
+	m_pSRC    = createTreeItem(m_pTrace, "Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ñ€ÐµÑÑƒÑ€ÑÐ° (Ð¿Ñ€Ð¸ Ð¿Ð¾Ð¸ÑÐºÐµ) (SRC)",            IT_LOG_SRC);
+	m_pSRE    = createTreeItem(m_pTrace, "Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ Ñ€ÐµÑÑƒÑ€ÑÐ° (Ð¿Ñ€Ð¸ Ð¿Ð¾Ð¸ÑÐºÐµ) (SRE)",            IT_LOG_SRE);
+	m_pSRK    = createTreeItem(m_pTrace, "Ð˜Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ñ Ñ€ÐµÑÑƒÑ€ÑÐ° (Ð¿Ñ€Ð¸ Ð¿Ð¾Ð¸ÑÐºÐµ) (SRK)", IT_LOG_SRK);
+	m_pSD     = createTreeItem(m_pTrace, "Ð¢Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ° Ñ€ÐµÑˆÐµÐ½Ð¸Ñ (SD)",                       IT_LOG_SD);
+	m_pSES    = createTreeItem(m_pTrace, "Ð—Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð¸ÑÐºÐ° (SES)",                        IT_LOG_SES);
+	m_pSEN    = createTreeItem(m_pTrace, "Ð—Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð¸ÑÐºÐ° (SEN)",                        IT_LOG_SEN);
+	m_pSEM    = createTreeItem(m_pTrace, "Ð—Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð¸ÑÐºÐ° (SEM)",                        IT_LOG_SEM);
+	m_pSEF    = createTreeItem(m_pTrace, "Ð—Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð¸ÑÐºÐ° (SEF)",                        IT_LOG_SEF);
+	m_pSEU    = createTreeItem(m_pTrace, "Ð—Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð¸ÑÐºÐ° (SEU)",                        IT_LOG_SEU);
 
-	m_pPlainTextResult = createTreeItem(m_pResult, QString::fromStdWString(L"Èñõîäíûé òåêñò"), IT_EDITOR_PLAINTEXT);
-	m_pVariableResult  = createTreeItem(m_pResult, QString::fromStdWString(L"Ïåðåìåííàÿ"),     IT_EDITOR_IDENTIFICATOR);
-	m_pKeywordResult   = createTreeItem(m_pResult, QString::fromStdWString(L"Êëþ÷åâîå ñëîâî"), IT_EDITOR_KEYWORD);
-	m_pNumberResult    = createTreeItem(m_pResult, QString::fromStdWString(L"×èñëî"),          IT_EDITOR_NUMBER);
-	m_pStringResult    = createTreeItem(m_pResult, QString::fromStdWString(L"Ñòðîêà"),         IT_EDITOR_STRING);
-	m_pOperatorResult  = createTreeItem(m_pResult, QString::fromStdWString(L"Îïåðàòîð"),       IT_EDITOR_OPERATOR);
-	m_pCaretResult     = createTreeItem(m_pResult, QString::fromStdWString(L"Êàðåòêà"),        IT_EDITOR_CARET);
-	m_pSelectionResult = createTreeItem(m_pResult, QString::fromStdWString(L"Âûäåëåíèå"),      IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkResult  = createTreeItem(m_pResult, QString::fromStdWString(L"Çàêëàäêà"),       IT_EDITOR_BOOKMARK);
+	m_pPlainTextResult = createTreeItem(m_pResult, "Ð˜ÑÑ…Ð¾Ð´Ð½Ñ‹Ð¹ Ñ‚ÐµÐºÑÑ‚", IT_EDITOR_PLAINTEXT);
+	m_pVariableResult  = createTreeItem(m_pResult, "ÐŸÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð°Ñ",     IT_EDITOR_IDENTIFICATOR);
+	m_pKeywordResult   = createTreeItem(m_pResult, "ÐšÐ»ÑŽÑ‡ÐµÐ²Ð¾Ðµ ÑÐ»Ð¾Ð²Ð¾", IT_EDITOR_KEYWORD);
+	m_pNumberResult    = createTreeItem(m_pResult, "Ð§Ð¸ÑÐ»Ð¾",          IT_EDITOR_NUMBER);
+	m_pStringResult    = createTreeItem(m_pResult, "Ð¡Ñ‚Ñ€Ð¾ÐºÐ°",         IT_EDITOR_STRING);
+	m_pOperatorResult  = createTreeItem(m_pResult, "ÐžÐ¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€",       IT_EDITOR_OPERATOR);
+	m_pCaretResult     = createTreeItem(m_pResult, "ÐšÐ°Ñ€ÐµÑ‚ÐºÐ°",        IT_EDITOR_CARET);
+	m_pSelectionResult = createTreeItem(m_pResult, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ",      IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkResult  = createTreeItem(m_pResult, "Ð—Ð°ÐºÐ»Ð°Ð´ÐºÐ°",       IT_EDITOR_BOOKMARK);
 
-	m_pTextSearch           = createTreeItem(m_pSearch, QString::fromStdWString(L"Òåêñò"),             IT_BUILD_TEXT);
-	m_pStringSearch         = createTreeItem(m_pSearch, QString::fromStdWString(L"Ñòðîêà äëÿ ïîèñêà"), IT_FIND_SEARCHTEXT);
-	m_pSelectedStringSearch = createTreeItem(m_pSearch, QString::fromStdWString(L"Âûäåëåííàÿ ñòðîêà"), IT_BUILD_SELECTEDLINE);
-	m_pCaretSearch          = createTreeItem(m_pSearch, QString::fromStdWString(L"Êàðåòêà"),           IT_EDITOR_CARET);
-	m_pSelectionSearch      = createTreeItem(m_pSearch, QString::fromStdWString(L"Âûäåëåíèå"),         IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkSearch       = createTreeItem(m_pSearch, QString::fromStdWString(L"Çàêëàäêà"),          IT_EDITOR_BOOKMARK);
+	m_pTextSearch           = createTreeItem(m_pSearch, "Ð¢ÐµÐºÑÑ‚",             IT_BUILD_TEXT);
+	m_pStringSearch         = createTreeItem(m_pSearch, "Ð¡Ñ‚Ñ€Ð¾ÐºÐ° Ð´Ð»Ñ Ð¿Ð¾Ð¸ÑÐºÐ°", IT_FIND_SEARCHTEXT);
+	m_pSelectedStringSearch = createTreeItem(m_pSearch, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð½Ð°Ñ ÑÑ‚Ñ€Ð¾ÐºÐ°", IT_BUILD_SELECTEDLINE);
+	m_pCaretSearch          = createTreeItem(m_pSearch, "ÐšÐ°Ñ€ÐµÑ‚ÐºÐ°",           IT_EDITOR_CARET);
+	m_pSelectionSearch      = createTreeItem(m_pSearch, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ",         IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkSearch       = createTreeItem(m_pSearch, "Ð—Ð°ÐºÐ»Ð°Ð´ÐºÐ°",          IT_EDITOR_BOOKMARK);
 
-	m_pAxis   = createTreeItem(m_pChart, QString::fromStdWString(L"Îñü"),       IT_CHART_AXIS);
-	m_pTitle  = createTreeItem(m_pChart, QString::fromStdWString(L"Çàãîëîâîê"), IT_CHART_TITLE);
-	m_pLegend = createTreeItem(m_pChart, QString::fromStdWString(L"Ëåãåíäà"),   IT_CHART_LEGEND);
-	m_pGraph  = createTreeItem(m_pChart, QString::fromStdWString(L"Ãðàôèê"),    IT_CHART_CHART);
-	m_pTime   = createTreeItem(m_pChart, QString::fromStdWString(L"Âðåìÿ"),     IT_CHART_TIME);
+	m_pAxis   = createTreeItem(m_pChart, "ÐžÑÑŒ",       IT_CHART_AXIS);
+	m_pTitle  = createTreeItem(m_pChart, "Ð—Ð°Ð³Ð¾Ð»Ð¾Ð²Ð¾Ðº", IT_CHART_TITLE);
+	m_pLegend = createTreeItem(m_pChart, "Ð›ÐµÐ³ÐµÐ½Ð´Ð°",   IT_CHART_LEGEND);
+	m_pGraph  = createTreeItem(m_pChart, "Ð“Ñ€Ð°Ñ„Ð¸Ðº",    IT_CHART_CHART);
+	m_pTime   = createTreeItem(m_pChart, "Ð’Ñ€ÐµÐ¼Ñ",     IT_CHART_TIME);
 
-	m_pEdgingColor     = createTreeItem(m_pAnimation, QString::fromStdWString(L"Öâåò îêàíòîâêè"),               IT_FRAME_BORDER);
-	m_pBackgroundColor = createTreeItem(m_pAnimation, QString::fromStdWString(L"Öâåò ôîíà çà ïðåäåëàìè êàäðà"), IT_FRAME_BACKGROUND);
+	m_pEdgingColor     = createTreeItem(m_pAnimation, "Ð¦Ð²ÐµÑ‚ Ð¾ÐºÐ°Ð½Ñ‚Ð¾Ð²ÐºÐ¸",               IT_FRAME_BORDER);
+	m_pBackgroundColor = createTreeItem(m_pAnimation, "Ð¦Ð²ÐµÑ‚ Ñ„Ð¾Ð½Ð° Ð·Ð° Ð¿Ñ€ÐµÐ´ÐµÐ»Ð°Ð¼Ð¸ ÐºÐ°Ð´Ñ€Ð°", IT_FRAME_BACKGROUND);
 
 	treeWidget->setCurrentItem(m_pRoot);
 }

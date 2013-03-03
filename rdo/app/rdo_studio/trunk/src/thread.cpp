@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2006-2012
   \file      app/rdo_studio/src/thread.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      15.07.2006
   \brief     
   \indent    4T

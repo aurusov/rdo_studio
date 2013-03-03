@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2006-2012
   \file      app/rdo_studio/src/thread.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      15.07.2006
   \brief     
   \indent    4T
@@ -25,7 +25,7 @@ class ThreadStudio: public RDOThread
 friend class Application;
 protected:
 	ThreadStudio();
-	virtual ~ThreadStudio() {}; // Чтобы нельзя было удалить через delete
+	virtual ~ThreadStudio() {}; // Р§С‚РѕР±С‹ РЅРµР»СЊР·СЏ Р±С‹Р»Рѕ СѓРґР°Р»РёС‚СЊ С‡РµСЂРµР· delete
 	virtual void proc( RDOMessageInfo& msg );
 };
 
@@ -37,7 +37,7 @@ class ThreadStudioGUI: public RDOKernelGUI
 friend class Application;
 protected:
 	ThreadStudioGUI();
-	virtual ~ThreadStudioGUI() {}; // Чтобы нельзя было удалить через delete
+	virtual ~ThreadStudioGUI() {}; // Р§С‚РѕР±С‹ РЅРµР»СЊР·СЏ Р±С‹Р»Рѕ СѓРґР°Р»РёС‚СЊ С‡РµСЂРµР· delete
 };
 #endif
 
