@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      app/rdo_studio/src/model/model_view.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -116,7 +116,7 @@ void View::onSearchFindAll()
 	rbool bMatchCase      = m_findSettings.matchCase;
 	rbool bMatchWholeWord = m_findSettings.matchWholeWord;
 	g_pApp->getIMainWnd()->getDockFind().getContext().setKeyword(findStr, bMatchCase);
-	g_pApp->getIMainWnd()->getDockFind().appendString(QString::fromStdWString(L"Поиск '%1'...\r\n").arg(findStr));
+	g_pApp->getIMainWnd()->getDockFind().appendString(QString("РџРѕРёСЃРє '%1'...\r\n").arg(findStr));
 	int count = 0;
 	for (int i = 0; i < m_pTabCtrl->count(); i++)
 	{
@@ -145,7 +145,7 @@ void View::onSearchFindAll()
 	m_pFindDialog = NULL;
 
 	QString s = count
-		? QString(QString::fromStdWString(L"'%1' раз было найдено.\r\n").arg(count))
-		: QString(QString::fromStdWString(L"Не получилось найти строчку '%1'.\r\n").arg(findStr));
+		? QString(QString("'%1' СЂР°Р· Р±С‹Р»Рѕ РЅР°Р№РґРµРЅРѕ.\r\n").arg(count))
+		: QString(QString("РќРµ РїРѕР»СѓС‡РёР»РѕСЃСЊ РЅР°Р№С‚Рё СЃС‚СЂРѕС‡РєСѓ '%1'.\r\n").arg(findStr));
 	g_pApp->getIMainWnd()->getDockFind().appendString(s);
 }
