@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      application.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -11,43 +11,45 @@
 #define _RDO_STUDIO_APPLICATION_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <fstream>
-#include <QtCore/qprocess.h>
-#include <QtCore/qtimer.h>
-#include <QtWidgets/qapplication.h>
-#include <QtWidgets/qmainwindow.h>
+#include <QProcess>
+#include <QTimer>
+#include <QApplication>
+#include <QMainWindow>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio/src/main_windows_base.h"
-#include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"
+#include "app/rdo_studio/src/main_window_base.h"
+#include "app/rdo_studio/src/editor/model_edit_style.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioApp
 // --------------------------------------------------------------------------------
-class RDOStudioMainFrame;
-class RDOThreadStudio;
-class RDOThreadStudioGUI;
+class MainWindow;
+class ThreadStudio;
+class ThreadStudioGUI;
 
 namespace rdo { namespace gui { namespace tracer {
 class Tracer;
 }}}
 
-class RDOStudioApp: public QApplication
+class Application: public QApplication
 {
 public:
-	RDOStudioApp(int& argc, char** argv);
-	virtual ~RDOStudioApp();
+	Application(int& argc, char** argv);
+	virtual ~Application();
 
-	PTR(RDOStudioMainFrame) getMainWndUI();
-	PTR(QMainWindow)        getMainWnd ();
-	PTR(MainWindowBase)     getIMainWnd();
-	PTR(MainWindowBase)     getStyle   ();
+	PTR(MainWindow)      getMainWndUI();
+	PTR(QMainWindow)     getMainWnd  ();
+	PTR(MainWindowBase)  getIMainWnd ();
+	PTR(MainWindowBase)  getStyle    ();
 
-	//! см. описание RDOKernelGUI
-	//! Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы
+	//! СЃРј. РѕРїРёСЃР°РЅРёРµ RDOKernelGUI
+	//! Р“Р»Р°РІРЅР°СЏ С‚СЂРµРґР° СЃР°РјРѕРіРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ, С‚.Рµ. РєРµСЂРЅРµС‚ РґР»СЏ win32-gui, РЅРѕ РЅРµ РєРµСЂРЅРµР» СЃРёСЃС‚РµРјС‹
 	PTR(RDOThread)          m_pStudioGUI;
 
 	REF(std::ofstream)      log();
@@ -77,14 +79,14 @@ public:
 	PTR(QProcess)  runQtAssistant      () const;
 	void           callQtAssistant     (CREF(QByteArray) ba);
 
-	CREF(rdoEditor::LPRDOEditorEditStyle) getEditorEditStyle() const;
+	CREF(rdo::gui::editor::LPModelStyle) getModelStyle() const;
 
 private:
 #ifdef RDO_MT
-	// Используется для рассылки широковещательных уведомлений из приложения.
-	// При этом, не происходит остановки работы самого приложения, и имеется возможность
-	// обрабатывать новые присылаемые приложению сообщения.
-	PTR(RDOThreadStudio) m_pStudioMT;
+	// РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ СЂР°СЃСЃС‹Р»РєРё С€РёСЂРѕРєРѕРІРµС‰Р°С‚РµР»СЊРЅС‹С… СѓРІРµРґРѕРјР»РµРЅРёР№ РёР· РїСЂРёР»РѕР¶РµРЅРёСЏ.
+	// РџСЂРё СЌС‚РѕРј, РЅРµ РїСЂРѕРёСЃС…РѕРґРёС‚ РѕСЃС‚Р°РЅРѕРІРєРё СЂР°Р±РѕС‚С‹ СЃР°РјРѕРіРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ, Рё РёРјРµРµС‚СЃСЏ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ
+	// РѕР±СЂР°Р±Р°С‚С‹РІР°С‚СЊ РЅРѕРІС‹Рµ РїСЂРёСЃС‹Р»Р°РµРјС‹Рµ РїСЂРёР»РѕР¶РµРЅРёСЋ СЃРѕРѕР±С‰РµРЅРёСЏ.
+	PTR(ThreadStudio) m_pStudioMT;
 #endif
 
 	std::ofstream                          m_log;
@@ -97,8 +99,8 @@ private:
 	rbool                                  m_dontCloseIfError;
 	rdo::simulation::report::RDOExitCode   m_exitCode;
 	QProcess*                              m_pAssistant;
-	PTR(RDOStudioMainFrame)                m_pMainFrame;
-	rdoEditor::LPRDOEditorEditStyle        m_pEditorEditStyle;
+	PTR(MainWindow)                        m_pMainFrame;
+	rdo::gui::editor::LPModelStyle         m_pModelStyle;
 	QTimer                                 m_idleTimer;
 
 	void setupFileAssociation();
@@ -112,6 +114,6 @@ private slots:
 };
 
 // --------------------------------------------------------------------------------
-extern RDOStudioApp* g_pApp;
+extern Application* g_pApp;
 
 #endif // _RDO_STUDIO_APPLICATION_H_

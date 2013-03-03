@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      dock_build.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      30.09.2012
   \brief     
   \indent    4T
@@ -13,13 +13,13 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_focusable.h"
-#include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
+#include "app/rdo_studio/src/editor/build_edit.h"
 // --------------------------------------------------------------------------------
 
 class DockBuild: public DockFocusable
 {
 public:
-	typedef rdoEditCtrl::RDOBuildEdit context_type;
+	typedef rdo::gui::editor::Build context_type;
 
 	DockBuild(PTR(QWidget) pParent);
 	virtual ~DockBuild();

@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      frame_manager.h
-  \author    ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
+  \author    –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
   \date      28.03.2003
   \brief     
   \indent    4T
@@ -11,24 +11,25 @@
 #define _RDO_STUDIO_FRAME_MANAGER_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <vector>
 #include <map>
 #include <memory>
-#include <QtWidgets/qmdisubwindow.h>
-#include <QtWidgets/qtreewidget.h>
+#include <QMdiSubWindow>
+#include <QTreeWidget>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "app/rdo_studio/src/frame/frame_view.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameManager
-// --------------------------------------------------------------------------------
 OPEN_RDO_ANIMATION_NAMESPACE
 struct Frame;
 CLOSE_RDO_ANIMATION_NAMESPACE
 
-class RDOStudioFrameManager
+namespace rdo { namespace gui { namespace frame {
+
+class Manager
 	: public QObject
 	, public IInit
 {
@@ -37,29 +38,29 @@ Q_OBJECT
 public:
 	typedef  boost::function<void (ruint)>  OnChangeFrame;
 
-	RDOStudioFrameManager(CREF(OnChangeFrame) onChangeFrame);
-	virtual ~RDOStudioFrameManager();
+	Manager(CREF(OnChangeFrame) onChangeFrame);
+	virtual ~Manager();
 
 	void insertFrame (CREF(QString) frameName );
 	void insertBitmap(CREF(QString) bitmapName);
 
-	ruint findFrameIndex(CPTR(QTreeWidgetItem)       pTreeWidgetItem) const;
-	ruint findFrameIndex(CPTR(FrameAnimationWnd)     pView          ) const;
-	ruint findFrameIndex(CPTR(FrameAnimationContent) pContent       ) const;
+	ruint findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetItem) const;
+	ruint findFrameIndex(CPTR(View)            pView          ) const;
+	ruint findFrameIndex(CPTR(Content)         pContent       ) const;
 
-	rbool                   isShowing         () const;
-	CREF(QString)           getFrameName      (ruint index) const;
-	PTR(FrameAnimationWnd)  getFrameView      (ruint index) const;
-	PTR(FrameAnimationWnd)  getFrameViewFirst () const;
-	ruint                   count             () const;
-	rbool                   isChanged         ();
+	rbool          isShowing         () const;
+	CREF(QString)  getFrameName      (ruint index) const;
+	PTR(View)      getFrameView      (ruint index) const;
+	PTR(View)      getFrameViewFirst () const;
+	ruint          count             () const;
+	rbool          isChanged         ();
 
-	void                    areaDown          (ruint frameIndex, CREF(QPoint) point) const;
+	void           areaDown          (ruint frameIndex, CREF(QPoint) point) const;
 
-	PTR(FrameAnimationWnd)  createView    (ruint index);
-	void                    disconnectView(CPTR(FrameAnimationWnd) pView);
-	void                    closeAll      ();
-	void                    clear         ();
+	PTR(View)  createView    (ruint index);
+	void       disconnectView(CPTR(View) pView);
+	void       closeAll      ();
+	void       clear         ();
 
 	ruint getLastShowedFrame      () const;
 	void  setLastShowedFrame      (ruint index);
@@ -81,8 +82,8 @@ private:
 
 		PTR(QTreeWidgetItem)           m_pTreeWidgetItem;
 		QString                        m_name;
-		PTR(FrameAnimationWnd)         m_pView;
-		PTR(FrameAnimationContent)     m_pContent;
+		PTR(View)                      m_pView;
+		PTR(Content)                   m_pContent;
 		rdo::gui::animation::AreaList  m_areaList;
 
 	private:
@@ -104,5 +105,7 @@ private slots:
 	void onSubWindowActivated         (QMdiSubWindow* pWindow);
 	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pTreeWidgetItem, int);
 };
+
+}}} // namespace rdo::gui::frame
 
 #endif // _RDO_STUDIO_FRAME_MANAGER_H_

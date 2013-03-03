@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      dock_find.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      04.10.2012
   \brief     
   \indent    4T
@@ -13,13 +13,13 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_focusable.h"
-#include "app/rdo_studio/edit_ctrls/rdofindedit.h"
+#include "app/rdo_studio/src/editor/find_edit.h"
 // --------------------------------------------------------------------------------
 
 class DockFind: public DockFocusable
 {
 public:
-	typedef rdoEditCtrl::RDOFindEdit context_type;
+	typedef rdo::gui::editor::Find context_type;
 
 	DockFind(PTR(QWidget) pParent);
 	virtual ~DockFind();

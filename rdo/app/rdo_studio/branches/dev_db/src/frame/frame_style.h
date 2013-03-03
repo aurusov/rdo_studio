@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      frame_style.h
-  \author    ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
+  \author    –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
   \date      18.04.2003
   \brief     
   \indent    4T
@@ -15,36 +15,40 @@
 #include "app/rdo_studio/src/style.h"
 // --------------------------------------------------------------------------------
 
+namespace rdo { namespace gui { namespace frame {
+
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameTheme
+// -------------------- FrameTheme
 // --------------------------------------------------------------------------------
-class RDOStudioFrameTheme: public rdoStyle::RDOStyleTheme
+class FrameTheme: public rdo::gui::style::StyleTheme
 {
 public:
-	RDOStudioFrameTheme();
-	virtual ~RDOStudioFrameTheme();
+	FrameTheme();
+	virtual ~FrameTheme();
 
-	RDOStudioFrameTheme& operator =( const RDOStudioFrameTheme& theme );
-	rbool operator ==( const RDOStudioFrameTheme& theme ) const;
-	rbool operator !=( const RDOStudioFrameTheme& theme ) const;
+	FrameTheme& operator =( const FrameTheme& theme );
+	rbool operator ==( const FrameTheme& theme ) const;
+	rbool operator !=( const FrameTheme& theme ) const;
 
-	static RDOStudioFrameTheme getDefaultTheme();
+	static FrameTheme getDefaultTheme();
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameStyle
+// -------------------- FrameStyle
 // --------------------------------------------------------------------------------
-class RDOStudioFrameStyle: public rdoStyle::RDOStyleWithTheme
+class FrameStyle: public rdo::gui::style::StyleWithTheme
 {
 public:
-	RDOStudioFrameStyle();
-	virtual ~RDOStudioFrameStyle();
+	FrameStyle();
+	virtual ~FrameStyle();
 
-	RDOStudioFrameStyle& operator =( const RDOStudioFrameStyle& style );
-	rbool operator ==( const RDOStudioFrameStyle& style ) const;
-	rbool operator !=( const RDOStudioFrameStyle& style ) const;
+	FrameStyle& operator =( const FrameStyle& style );
+	rbool operator ==( const FrameStyle& style ) const;
+	rbool operator !=( const FrameStyle& style ) const;
 
 	void init( CREF(QString) _groupName = "" );
 };
+
+}}} // namespace rdo::gui::frame
 
 #endif // _RDO_STUDIO_FRAME_STYLE_H_

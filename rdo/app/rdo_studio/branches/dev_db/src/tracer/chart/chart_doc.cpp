@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      chart_doc.cpp
-  \author    Захаров Павел
+  \author    Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -21,7 +21,7 @@
 #include "app/rdo_studio/src/tracer/tracer_serie.h"
 #include "app/rdo_studio/src/tracer/tracer_values.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_windows_base.h"
+#include "app/rdo_studio/src/main_window_base.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::tracer;
@@ -102,7 +102,7 @@ void ChartDoc::incTimeEventsCount(Time* time)
 	if (!m_docTimes.empty() && m_docTimes.back() == time)
 	{
 		m_ticksCount++;
-		updateChartViews (UPDATE_TIMETICKS);
+		updateChartViews(U_TIME_TICKS);
 	}
 }
 
@@ -127,7 +127,7 @@ rbool ChartDoc::newValueToSerieAdded(Value* val)
 			}
 		}
 	}
-	updateChartViews (UPDATE_NEWVALUE);
+	updateChartViews(U_NEW_VALUE);
 
 	return true;
 }
@@ -170,7 +170,7 @@ void ChartDoc::removeFromViews(ChartView* pWidget)
 	}
 }
 
-void ChartDoc::updateChartViews(ruint updateType) const
+void ChartDoc::updateChartViews(Update updateType) const
 {
 	boost::range::for_each(m_widgetList, boost::bind(&ChartView::onUserUpdateChartView, _1, updateType));
 }
@@ -225,62 +225,62 @@ void ChartDoc::addSerie(CREF(LPSerie) pSerie)
 			ASSERT(pView);
 			pView->setYAxis(pDocSerie);
 		}
-		updateChartViews(UPDATE_NEWSERIE);
+		updateChartViews(U_NEW_SERIE);
 	}
 }
 
-COLORREF ChartDoc::selectColor()
+QColor ChartDoc::selectColor() const
 {
 	int count = m_serieList.size();
 	int mul = count / 15;
 	int index = count - mul * 16;
-	COLORREF res = RGB(0, 0, 0);
+	QColor res = QColor(0, 0, 0);
 	switch (index)
 	{
 	case 0:
-		res = RGB(0x00, 0x80, 0x00);
+		res = QColor(0x00, 0x80, 0x00);
 		break;
 	case 1:
-		res = RGB(0x00, 0x00, 0x80);
+		res = QColor(0x00, 0x00, 0x80);
 		break;
 	case 2:
-		res = RGB(0x80, 0x80, 0x80);
+		res = QColor(0x80, 0x80, 0x80);
 		break;
 	case 3:
-		res = RGB(0x80, 0x00, 0x80);
+		res = QColor(0x80, 0x00, 0x80);
 		break;
 	case 4:
-		res = RGB(0xFF, 0x00, 0x00);
+		res = QColor(0xFF, 0x00, 0x00);
 		break;
 	case 5:
-		res = RGB(0x00, 0xFF, 0x00);
+		res = QColor(0x00, 0xFF, 0x00);
 		break;
 	case 6:
-		res = RGB(0x00, 0x00, 0x00);
+		res = QColor(0x00, 0x00, 0x00);
 		break;
 	case 7:
-		res = RGB(0x80, 0x80, 0x00);
+		res = QColor(0x80, 0x80, 0x00);
 		break;
 	case 8:
-		res = RGB(0xC0, 0xC0, 0xC0);
+		res = QColor(0xC0, 0xC0, 0xC0);
 		break;
 	case 9:
-		res = RGB(0x80, 0x00, 0x00);
+		res = QColor(0x80, 0x00, 0x00);
 		break;
 	case 10:
-		res = RGB(0x00, 0x80, 0x80);
+		res = QColor(0x00, 0x80, 0x80);
 		break;
 	case 11:
-		res = RGB(0xFF, 0xFF, 0x00);
+		res = QColor(0xFF, 0xFF, 0x00);
 		break;
 	case 12:
-		res = RGB(0x00, 0x00, 0xFF);
+		res = QColor(0x00, 0x00, 0xFF);
 		break;
 	case 13:
-		res = RGB(0xFF, 0x00, 0xFF);
+		res = QColor(0xFF, 0x00, 0xFF);
 		break;
 	case 14:
-		res = RGB(0x00, 0xFF, 0xFF);
+		res = QColor(0x00, 0xFF, 0xFF);
 		break;
 	};
 	return res;
@@ -323,12 +323,12 @@ CREF(QString) ChartDoc::getTitle() const
 void ChartDoc::setTitle(CREF(QString) title)
 {
 	m_title = title;
-	getFirstView()->parentWidget()->setWindowTitle(QString::fromStdWString(L"график: %1").arg(m_title));
+	getFirstView()->parentWidget()->setWindowTitle(QString("РіСЂР°С„РёРє: %1").arg(m_title));
 }
 
 void ChartDoc::autoTitle()
 {
-	QString title = QString::fromStdWString(L"График%1").arg(++s_titleIndex);
+	QString title = QString("Р“СЂР°С„РёРє%1").arg(++s_titleIndex);
 	setTitle(title);
 }
 

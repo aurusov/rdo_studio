@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      chart_doc.h
-  \author    Захаров Павел
+  \author    Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -16,11 +16,6 @@
 #include "app/rdo_studio/src/tracer/tracer_serie.h"
 // --------------------------------------------------------------------------------
 
-#define WM_USER_UPDATE_CHART_VIEW WM_USER + 0x156
-#define UPDATE_NEWSERIE  0x000
-#define UPDATE_NEWVALUE  0x001
-#define UPDATE_TIMETICKS 0x002
-
 namespace rdo { namespace gui { namespace tracer {
 
 class Time;
@@ -31,6 +26,13 @@ class ChartViewStyle;
 class ChartDoc
 {
 public:
+	enum Update
+	{
+		U_NEW_SERIE,
+		U_NEW_VALUE,
+		U_TIME_TICKS,
+	};
+
 	typedef  std::list<Time*>          TimesList;
 	typedef  std::vector<ChartSerie*>  SerieList;
 
@@ -79,10 +81,10 @@ private:
 	static ruint            s_titleIndex;
 
 	int getSerieIndex(ChartSerie* serie) const;
-	COLORREF selectColor();
+	QColor selectColor() const;
 	Serie::Marker selectMarker();
 
-	void updateChartViews(const UINT update_type) const;
+	void updateChartViews(Update updateType) const;
 
 	void insertValue(Value* pValue);
 };

@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2006-2012
   \file      app/rdo_studio/src/thread.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      15.07.2006
   \brief     
   \indent    4T
@@ -18,53 +18,27 @@
 
 #ifdef RDO_MT
 // --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudio
+// -------------------- ThreadStudio
 // --------------------------------------------------------------------------------
-class RDOThreadStudio: public RDOThread
+class ThreadStudio: public RDOThread
 {
-friend class RDOStudioApp;
+friend class Application;
 protected:
-	RDOThreadStudio();
-	virtual ~RDOThreadStudio() {}; // Чтобы нельзя было удалить через delete
+	ThreadStudio();
+	virtual ~ThreadStudio() {}; // Р§С‚РѕР±С‹ РЅРµР»СЊР·СЏ Р±С‹Р»Рѕ СѓРґР°Р»РёС‚СЊ С‡РµСЂРµР· delete
 	virtual void proc( RDOMessageInfo& msg );
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudioGUI
+// -------------------- ThreadStudioGUI
 // --------------------------------------------------------------------------------
-class RDOThreadStudioGUI: public RDOKernelGUI
+class ThreadStudioGUI: public RDOKernelGUI
 {
-friend class RDOStudioApp;
+friend class Application;
 protected:
-	RDOThreadStudioGUI();
-	virtual ~RDOThreadStudioGUI() {}; // Чтобы нельзя было удалить через delete
+	ThreadStudioGUI();
+	virtual ~ThreadStudioGUI() {}; // Р§С‚РѕР±С‹ РЅРµР»СЊР·СЏ Р±С‹Р»Рѕ СѓРґР°Р»РёС‚СЊ С‡РµСЂРµР· delete
 };
 #endif
-
-/*
-// --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudio1
-// --------------------------------------------------------------------------------
-class RDOThreadStudio1: public RDOThreadMT
-{
-friend class RDOStudioApp;
-protected:
-	RDOThreadStudio1();
-	virtual ~RDOThreadStudio1() {}; // Чтобы нельзя было удалить через delete
-	virtual void proc( RDOMessageInfo& msg );
-};
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudio2
-// --------------------------------------------------------------------------------
-class RDOThreadStudio2: public RDOThreadMT
-{
-friend class RDOStudioApp;
-protected:
-	RDOThreadStudio2();
-	virtual ~RDOThreadStudio2() {}; // Чтобы нельзя было удалить через delete
-	virtual void proc( RDOMessageInfo& msg );
-};
-*/
 
 #endif // _RDO_STUDIO_THREAD_H_

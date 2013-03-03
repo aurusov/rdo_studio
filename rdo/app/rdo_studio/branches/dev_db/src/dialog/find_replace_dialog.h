@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2013
   \file      find_replace_dialog.h
-  \author    Романов Ярослав (robot.xet@gmail.com)
+  \author    Р РѕРјР°РЅРѕРІ РЇСЂРѕСЃР»Р°РІ (robot.xet@gmail.com)
   \date      11.01.2013
   \brief     
   \indent    4T
@@ -11,10 +11,12 @@
 #define _RDO_STUDIO_DIALOG_FIND_REPLACE_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <boost/function.hpp>
-#include <QtWidgets/qdialog.h>
-// ----------------------------------------------------------------------- SYNOPSIS
+#include <QDialog>
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_find_replace_dialog.h"
+#include "utils/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dialog/find_dialog.h"
 // --------------------------------------------------------------------------------
 

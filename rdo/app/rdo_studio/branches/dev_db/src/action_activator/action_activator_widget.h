@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2013
   \file      action_activator_widget.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      01.01.2013
   \brief     
   \indent    4T
@@ -11,7 +11,9 @@
 #define _RDO_STUDIO_ACTION_ACTIVATOR_WIDGET_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qwidget.h>
+#include "utils/warning_disable.h"
+#include <QWidget>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------

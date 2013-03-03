@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      chart_view.h
-  \author    Захаров Павел
+  \author    Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -11,9 +11,11 @@
 #define _RDO_STUDIO_TRACER_CHART_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qwidget.h>
-#include <QtWidgets/qabstractscrollarea.h>
-#include <QtWidgets/qscrollbar.h>
+#include "utils/warning_disable.h"
+#include <QWidget>
+#include <QAbstractScrollArea>
+#include <QScrollBar>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/tracer_values.h"
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
@@ -52,7 +54,7 @@ public:
 	void setValueCountY(int value);
 
 	void updateView();
-	void onUserUpdateChartView(ruint updateType);
+	void onUserUpdateChartView(ChartDoc::Update updateType);
 
 	void setYAxis(ChartSerie* pSerie);
 

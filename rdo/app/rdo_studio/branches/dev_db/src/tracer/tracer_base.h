@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      tracer_base.h
-  \author    Захаров Павел
+  \author    Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
   \date      01.04.2003
   \brief     
   \indent    4T
@@ -11,7 +11,9 @@
 #define _RDO_STUDIO_TRACER_BASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtCore/qstring.h>
+#include "utils/warning_disable.h"
+#include <QString>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "utils/smart_ptr/intrusive_ptr.h"

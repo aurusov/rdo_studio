@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      chart_preferences.h
-  \author    Романов Ярослав (robot.xet@gmail.com)
+  \author    Р РѕРјР°РЅРѕРІ РЇСЂРѕСЃР»Р°РІ (robot.xet@gmail.com)
   \date      19.02.2013
   \brief     
   \indent    4T
@@ -11,10 +11,12 @@
 #define _RDO_STUDIO_TRACER_CHART_PREFERENCES_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qdialog.h>
-#include <QtWidgets/qcolordialog.h>
-// ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/warning_disable.h"
+#include <QDialog>
+#include <QColorDialog>
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_chart_preferences.h"
+#include "utils/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 // --------------------------------------------------------------------------------
 

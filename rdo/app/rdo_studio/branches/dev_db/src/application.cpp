@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      application.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -10,27 +10,20 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef COMPILER_VISUAL_STUDIO
-	#pragma warning(disable: 4100)
-#endif
-
+#include "utils/warning_disable.h"
 #include <boost/program_options.hpp>
-
-#ifdef COMPILER_VISUAL_STUDIO
-	#pragma warning(default: 4100)
-#endif
-
-#include <QtCore/qprocess.h>
-#include <QtCore/qtextcodec.h>
-#include <QtCore/qsettings.h>
-#include <QtWidgets/qmessagebox.h>
+#include <QProcess>
+#include <QTextCodec>
+#include <QSettings>
+#include <QMessageBox>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/thread.h"
 #include "app/rdo_studio/src/dialog/file_association_dialog.h"
@@ -40,7 +33,7 @@
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioApp
 // --------------------------------------------------------------------------------
-RDOStudioApp* g_pApp = NULL;
+Application* g_pApp = NULL;
 
 #ifdef _DEBUG
 void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
@@ -86,7 +79,7 @@ void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QS
 }
 #endif
 
-RDOStudioApp::RDOStudioApp(int& argc, char** argv)
+Application::Application(int& argc, char** argv)
 	: QApplication(argc, argv)
 	, m_pStudioGUI                  (NULL  )
 #ifdef RDO_MT
@@ -107,10 +100,10 @@ RDOStudioApp::RDOStudioApp(int& argc, char** argv)
 	qInstallMessageHandler(g_messageOutput);
 #endif
 
-	setlocale(LC_ALL,     _T("rus"));
-	setlocale(LC_NUMERIC, _T("eng"));
+	setlocale(LC_ALL,     "rus");
+	setlocale(LC_NUMERIC, "eng");
 
-	m_log.open(_T("log.txt"));
+	m_log.open("log.txt");
 
 	qApp->setQuitOnLastWindowClosed(true);
 
@@ -130,10 +123,10 @@ RDOStudioApp::RDOStudioApp(int& argc, char** argv)
 	m_openLastProject     = settings.value("general/last_project_auto_open", true).toBool();
 	m_showCaptionFullName = settings.value("general/show_caption_full_name", false).toBool();
 
-	// Кто-то должен поднять кернел и треды
+	// РљС‚Рѕ-С‚Рѕ РґРѕР»Р¶РµРЅ РїРѕРґРЅСЏС‚СЊ РєРµСЂРЅРµР» Рё С‚СЂРµРґС‹
 	RDOKernel::init();
 #ifdef RDO_MT
-	m_pStudioGUI = new RDOThreadStudioGUI();
+	m_pStudioGUI = new ThreadStudioGUI();
 #else
 	m_pStudioGUI = kernel;
 #endif
@@ -147,17 +140,15 @@ RDOStudioApp::RDOStudioApp(int& argc, char** argv)
 #endif
 
 #ifdef RDO_MT
-	m_pStudioMT = new RDOThreadStudio();
+	m_pStudioMT = new ThreadStudio();
 #endif
-//	new RDOThreadStudio1();
-//	new RDOThreadStudio2();
 
 	g_pTracer = new rdo::gui::tracer::Tracer();
 
-	m_pEditorEditStyle = rdo::Factory<rdoEditor::RDOEditorEditStyle>::create();
+	m_pModelStyle = rdo::Factory<rdo::gui::editor::ModelStyle>::create();
 
-	// Внутри создается объект модели
-	m_pMainFrame = new RDOStudioMainFrame();
+	// Р’РЅСѓС‚СЂРё СЃРѕР·РґР°РµС‚СЃСЏ РѕР±СЉРµРєС‚ РјРѕРґРµР»Рё
+	m_pMainFrame = new MainWindow();
 	m_pMainFrame->init();
 	m_pMainFrame->show();
 
@@ -256,11 +247,11 @@ RDOStudioApp::RDOStudioApp(int& argc, char** argv)
 		g_pModel->runModel();
 	}
 
-	connect(&m_idleTimer, &QTimer::timeout, this, &RDOStudioApp::onIdle);
+	connect(&m_idleTimer, &QTimer::timeout, this, &Application::onIdle);
 	m_idleTimer.start(0);
 }
 
-RDOStudioApp::~RDOStudioApp()
+Application::~Application()
 {
 	m_pMainFrame = NULL;
 
@@ -272,12 +263,12 @@ RDOStudioApp::~RDOStudioApp()
 	if (m_pStudioGUI)
 	{
 		m_pStudioGUI->sendMessage(m_pStudioGUI, RDOThread::RT_THREAD_CLOSE);
-		delete static_cast<PTR(RDOThreadStudioGUI)>(m_pStudioGUI);
+		delete static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI);
 		m_pStudioGUI = NULL;
 	}
 #endif
 
-	// Роняем кернел и закрываем все треды
+	// Р РѕРЅСЏРµРј РєРµСЂРЅРµР» Рё Р·Р°РєСЂС‹РІР°РµРј РІСЃРµ С‚СЂРµРґС‹
 	RDOKernel::close();
 
 	g_pApp = NULL;
@@ -289,32 +280,32 @@ RDOStudioApp::~RDOStudioApp()
 	}
 }
 
-PTR(RDOStudioMainFrame) RDOStudioApp::getMainWndUI()
+PTR(MainWindow) Application::getMainWndUI()
 {
 	return m_pMainFrame;
 }
 
-PTR(QMainWindow) RDOStudioApp::getMainWnd()
+PTR(QMainWindow) Application::getMainWnd()
 {
 	return m_pMainFrame;
 }
 
-PTR(MainWindowBase) RDOStudioApp::getStyle()
+PTR(MainWindowBase) Application::getStyle()
 {
 	return m_pMainFrame;
 }
 
-PTR(MainWindowBase) RDOStudioApp::getIMainWnd()
+PTR(MainWindowBase) Application::getIMainWnd()
 {
 	return m_pMainFrame;
 }
 
-REF(std::ofstream) RDOStudioApp::log()
+REF(std::ofstream) Application::log()
 {
 	return m_log;
 }
 
-QString RDOStudioApp::getFullHelpFileName(CREF(QString) helpFileName) const
+QString Application::getFullHelpFileName(CREF(QString) helpFileName) const
 {
 	QString result = chkHelpExist(helpFileName);
 	if (result.size() < 3)
@@ -328,7 +319,7 @@ QString RDOStudioApp::getFullHelpFileName(CREF(QString) helpFileName) const
 	return result;
 }
 
-QString RDOStudioApp::chkHelpExist(CREF(QString) helpFileName) const
+QString Application::chkHelpExist(CREF(QString) helpFileName) const
 {
 	QString fullHelpFileName = QString("%1%2")
 		.arg(QString::fromLocal8Bit(rdo::File::extractFilePath(qApp->applicationFilePath().toLocal8Bit().constData()).c_str()))
@@ -336,14 +327,14 @@ QString RDOStudioApp::chkHelpExist(CREF(QString) helpFileName) const
 
 	if (!QFile::exists(fullHelpFileName))
 	{
-		QMessageBox::warning(g_pApp->getMainWnd(), "RAO-Studio", QString::fromStdWString(L"Невозможно найти файл справки '%1'.\r\nОн должен быть расположен в директории с RAO-studio.").arg(helpFileName));
+		QMessageBox::warning(g_pApp->getMainWnd(), "RAO-Studio", QString("РќРµРІРѕР·РјРѕР¶РЅРѕ РЅР°Р№С‚Рё С„Р°Р№Р» СЃРїСЂР°РІРєРё '%1'.\r\nРћРЅ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ СЂР°СЃРїРѕР»РѕР¶РµРЅ РІ РґРёСЂРµРєС‚РѕСЂРёРё СЃ RAO-studio.").arg(helpFileName));
 		fullHelpFileName = QString();
 	}
 
 	return fullHelpFileName;
 }
 
-void RDOStudioApp::chkAndRunQtAssistant()
+void Application::chkAndRunQtAssistant()
 {
 	if (!m_pAssistant)
 	{
@@ -355,7 +346,7 @@ void RDOStudioApp::chkAndRunQtAssistant()
 		m_pAssistant = runQtAssistant();
 }
 
-PTR(QProcess) RDOStudioApp::runQtAssistant() const
+PTR(QProcess) Application::runQtAssistant() const
 {
 	PTR(QProcess) pProcess = new QProcess;
 	QStringList args;
@@ -367,7 +358,7 @@ PTR(QProcess) RDOStudioApp::runQtAssistant() const
 	return pProcess;
 }
 
-void RDOStudioApp::callQtAssistant(CREF(QByteArray) ba)
+void Application::callQtAssistant(CREF(QByteArray) ba)
 {
 	chkAndRunQtAssistant();
 	if (m_pAssistant->state() != m_pAssistant->Running)
@@ -376,12 +367,12 @@ void RDOStudioApp::callQtAssistant(CREF(QByteArray) ba)
 	m_pAssistant->write(ba);
 }
 
-rbool RDOStudioApp::getFileAssociationSetup() const
+rbool Application::getFileAssociationSetup() const
 {
 	return m_fileAssociationSetup;
 }
 
-void RDOStudioApp::setFileAssociationSetup(rbool value)
+void Application::setFileAssociationSetup(rbool value)
 {
 	m_fileAssociationSetup = value;
 	QSettings settings;
@@ -392,12 +383,12 @@ void RDOStudioApp::setFileAssociationSetup(rbool value)
 	}
 }
 
-rbool RDOStudioApp::getFileAssociationCheckInFuture() const
+rbool Application::getFileAssociationCheckInFuture() const
 {
 	return m_fileAssociationCheckInFuture;
 }
 
-void RDOStudioApp::setFileAssociationCheckInFuture(rbool value)
+void Application::setFileAssociationCheckInFuture(rbool value)
 {
 	if (m_fileAssociationCheckInFuture != value)
 	{
@@ -407,12 +398,12 @@ void RDOStudioApp::setFileAssociationCheckInFuture(rbool value)
 	}
 }
 
-rbool RDOStudioApp::getOpenLastProject() const
+rbool Application::getOpenLastProject() const
 {
 	return m_openLastProject;
 }
 
-void RDOStudioApp::setOpenLastProject(rbool value)
+void Application::setOpenLastProject(rbool value)
 {
 	if (m_openLastProject != value)
 	{
@@ -422,12 +413,12 @@ void RDOStudioApp::setOpenLastProject(rbool value)
 	}
 }
 
-CREF(QString) RDOStudioApp::getLastProjectName() const
+CREF(QString) Application::getLastProjectName() const
 {
 	return m_lastProjectName;
 }
 
-void RDOStudioApp::setLastProjectName(CREF(QString) projectName)
+void Application::setLastProjectName(CREF(QString) projectName)
 {
 	m_pMainFrame->insertMenuFileReopenItem(projectName);
 	if (m_lastProjectName != projectName)
@@ -441,12 +432,12 @@ void RDOStudioApp::setLastProjectName(CREF(QString) projectName)
 	}
 }
 
-rbool RDOStudioApp::getShowCaptionFullName() const
+rbool Application::getShowCaptionFullName() const
 {
 	return m_showCaptionFullName;
 }
 
-void RDOStudioApp::setShowCaptionFullName(rbool value)
+void Application::setShowCaptionFullName(rbool value)
 {
 	if (m_showCaptionFullName != value)
 	{
@@ -457,7 +448,7 @@ void RDOStudioApp::setShowCaptionFullName(rbool value)
 	}
 }
 
-void RDOStudioApp::setupFileAssociation()
+void Application::setupFileAssociation()
 {
 #ifdef Q_OS_WIN
 	QString fileTypeID("RAO.Project");
@@ -508,7 +499,7 @@ void RDOStudioApp::setupFileAssociation()
 #endif
 }
 
-void RDOStudioApp::autoCloseByModel()
+void Application::autoCloseByModel()
 {
 	if (m_autoExitByModel)
 	{
@@ -519,12 +510,12 @@ void RDOStudioApp::autoCloseByModel()
 	}
 }
 
-void RDOStudioApp::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam)
+void Application::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam)
 {
 #ifdef RDO_MT
 	PTR(CEvent) pEvent = m_pStudioMT->manualMessageFrom(message, pParam);
 	while (::WaitForSingleObject(pEvent->m_hObject, 0) == WAIT_TIMEOUT) {
-		static_cast<PTR(RDOThreadStudioGUI)>(m_pStudioGUI)->processMessages();
+		static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI)->processMessages();
 		if (m_pMainFrame) {
 			m_pMainFrame->UpdateWindow();
 		} else {
@@ -537,19 +528,19 @@ void RDOStudioApp::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void
 #endif
 }
 
-void RDOStudioApp::onIdle()
+void Application::onIdle()
 {
 #ifdef RDO_MT
-	static_cast<PTR(RDOThreadStudioGUI)>(m_pStudioGUI)->processMessages();
+	static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI)->processMessages();
 #else
 	kernel->idle();
 #endif
 }
 
-CREF(rdoEditor::LPRDOEditorEditStyle) RDOStudioApp::getEditorEditStyle() const
+CREF(rdo::gui::editor::LPModelStyle) Application::getModelStyle() const
 {
-	ASSERT(m_pEditorEditStyle);
-	return m_pEditorEditStyle;
+	ASSERT(m_pModelStyle);
+	return m_pModelStyle;
 }
 
 #ifdef Q_OS_WIN
@@ -637,7 +628,7 @@ private:
 	}
 };
 
-void RDOStudioApp::convertSettings() const
+void Application::convertSettings() const
 {
 	Convertor convertor;
 
@@ -820,7 +811,7 @@ void RDOStudioApp::convertSettings() const
 		convertor.convert<QColor>("style/find/theme/caretColor",        "style/find/theme/caret_color");
 		convertor.convert<QColor>("style/find/theme/defaultColor",      "style/find/theme/default_color");
 		convertor.convert<int>   ("style/find/theme/defaultStyle",      "style/find/theme/default_style");
-		convertor.convert<QColor>("style/find/theme/keywordColor",      "style/find/theme/keyword_сolor");
+		convertor.convert<QColor>("style/find/theme/keywordColor",      "style/find/theme/keyword_СЃolor");
 		convertor.convert<int>   ("style/find/theme/keywordStyle",      "style/find/theme/keyword_style");
 		convertor.convert<QColor>("style/find/theme/selectionBgColor",  "style/find/theme/selection_bg_color");
 		convertor.convert<QColor>("style/find/theme/selectLineBgColor", "style/find/theme/select_line_bg_color");

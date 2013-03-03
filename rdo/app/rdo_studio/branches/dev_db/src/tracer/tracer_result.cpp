@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      tracer_result.cpp
-  \author    Захаров Павел
+  \author    Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
   \date      11.03.2003
   \brief     
   \indent    4T
@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/tracer_result.h"
 #include "app/rdo_studio/src/tracer/tracer_values.h"

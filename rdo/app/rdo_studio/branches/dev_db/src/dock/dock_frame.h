@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      dock_frame.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      07.10.2012
   \brief     
   \indent    4T
@@ -19,7 +19,7 @@
 class DockFrame: public DockFocusable
 {
 public:
-	typedef  RDOStudioFrameTreeCtrl  context_type;
+	typedef  rdo::gui::frame::TreeCtrl  context_type;
 
 	DockFrame(PTR(QWidget) pParent);
 	virtual ~DockFrame();

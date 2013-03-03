@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2013
   \file      goto_line_dialog.h
-  \author    Романов Ярослав (robot.xet@gmail.com)
+  \author    Р РѕРјР°РЅРѕРІ РЇСЂРѕСЃР»Р°РІ (robot.xet@gmail.com)
   \date      04.01.2013
   \brief     
   \indent    4T
@@ -9,10 +9,13 @@
 
 #ifndef _RDO_STUDIO_GO_TO_NEXT_LINE_DIALOG_H_
 #define _RDO_STUDIO_GO_TO_NEXT_LINE_DIALOG_H_
+
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qdialog.h>
-// ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/warning_disable.h"
+#include <QDialog>
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_goto_line_dialog.h"
+#include "utils/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
 class GoToLineDialog

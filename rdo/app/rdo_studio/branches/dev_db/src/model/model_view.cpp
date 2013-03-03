@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      app/rdo_studio/src/model/model_view.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -10,57 +10,55 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <boost/bind.hpp>
-#include <QtGui/qevent.h>
-#include <QtWidgets/qboxlayout.h>
+#include <QEvent>
+#include <QBoxLayout>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/model/model_view.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_windows_base.h"
-#include "app/rdo_studio/edit_ctrls/rdofindedit.h"
-#include "app/rdo_studio/rdo_edit/rdoeditortabctrl.h"
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/editor/find_edit.h"
+#include "app/rdo_studio/src/model/model_tab_ctrl.h"
+#include "app/rdo_studio/src/main_window.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoEditor;
+using namespace rdo::gui::model;
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioModelView
-// --------------------------------------------------------------------------------
-RDOStudioModelView::RDOStudioModelView(PTR(QWidget) pParent)
+View::View(PTR(QWidget) pParent)
 	: parent_type(pParent)
 	, m_pModel     (NULL)
 	, m_pTabCtrl   (NULL)
 	, m_pFindDialog(NULL)
 {
-	m_pTabCtrl = new RDOEditorTabCtrl(this, this);
+	m_pTabCtrl = new TabCtrl(this, this);
 
 	PTR(QVBoxLayout) pLayout = new QVBoxLayout(this);
 	pLayout->setSpacing(0);
 	pLayout->setContentsMargins(0, 0, 0, 0);
 	pLayout->addWidget(m_pTabCtrl);
 
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 	pMainWindow->actSearchFindInModel->setEnabled(true);
 	connect(pMainWindow->actSearchFindInModel, SIGNAL(triggered(bool)), this, SLOT(onSearchFindInModel()));
 }
 
-RDOStudioModelView::~RDOStudioModelView()
+View::~View()
 {
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 	pMainWindow->actSearchFindInModel->setEnabled(false);
 	disconnect(pMainWindow->actSearchFindInModel, SIGNAL(triggered(bool)), this, SLOT(onSearchFindInModel()));
 }
 
-void RDOStudioModelView::setModel(PTR(RDOStudioModel) pModel)
+void View::setModel(PTR(Model) pModel)
 {
 	ASSERT(m_pModel != pModel);
 	m_pModel = pModel;
 }
 
-void RDOStudioModelView::closeEvent(PTR(QCloseEvent) event)
+void View::closeEvent(PTR(QCloseEvent) event)
 {
 	if (m_pModel)
 	{
@@ -75,12 +73,12 @@ void RDOStudioModelView::closeEvent(PTR(QCloseEvent) event)
 	}
 }
 
-REF(rdoEditor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
+REF(TabCtrl) View::getTab()
 {
 	return *m_pTabCtrl;
 }
 
-void RDOStudioModelView::onSearchFindInModel()
+void View::onSearchFindInModel()
 {
 	m_findSettings.what = m_pTabCtrl->getCurrentEdit()->getWordForFind();
 
@@ -88,8 +86,8 @@ void RDOStudioModelView::onSearchFindInModel()
 	{
 		m_pFindDialog = new FindDialog(
 			this,
-			boost::bind(&RDOStudioModelView::onFindDlgFind, this, _1),
-			boost::bind(&RDOStudioModelView::onFindDlgClose, this)
+			boost::bind(&View::onFindDlgFind, this, _1),
+			boost::bind(&View::onFindDlgClose, this)
 		);
 	}
 
@@ -99,18 +97,18 @@ void RDOStudioModelView::onSearchFindInModel()
 	m_pFindDialog->activateWindow();
 }
 
-void RDOStudioModelView::onFindDlgFind(CREF(FindDialog::Settings) settings)
+void View::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
 	onSearchFindAll();
 }
 
-void RDOStudioModelView::onFindDlgClose()
+void View::onFindDlgClose()
 {
 	m_pFindDialog = NULL;
 }
 
-void RDOStudioModelView::onSearchFindAll()
+void View::onSearchFindAll()
 {
 	g_pApp->getIMainWnd()->getDockFind().clear();
 	g_pApp->getIMainWnd()->getDockFind().raise();
@@ -118,11 +116,11 @@ void RDOStudioModelView::onSearchFindAll()
 	rbool bMatchCase      = m_findSettings.matchCase;
 	rbool bMatchWholeWord = m_findSettings.matchWholeWord;
 	g_pApp->getIMainWnd()->getDockFind().getContext().setKeyword(findStr, bMatchCase);
-	g_pApp->getIMainWnd()->getDockFind().appendString(QString::fromStdWString(L"Поиск '%1'...\r\n").arg(findStr));
+	g_pApp->getIMainWnd()->getDockFind().appendString(QString("РџРѕРёСЃРє '%1'...\r\n").arg(findStr));
 	int count = 0;
 	for (int i = 0; i < m_pTabCtrl->count(); i++)
 	{
-		PTR(RDOEditorEdit) pEdit = m_pTabCtrl->getItemEdit(i);
+		PTR(editor::Model) pEdit = m_pTabCtrl->getItemEdit(i);
 		int pos  = 0;
 		int line = 0;
 		while (pos != -1)
@@ -147,7 +145,7 @@ void RDOStudioModelView::onSearchFindAll()
 	m_pFindDialog = NULL;
 
 	QString s = count
-		? QString(QString::fromStdWString(L"'%1' раз было найдено.\r\n").arg(count))
-		: QString(QString::fromStdWString(L"Не получилось найти строчку '%1'.\r\n").arg(findStr));
+		? QString(QString("'%1' СЂР°Р· Р±С‹Р»Рѕ РЅР°Р№РґРµРЅРѕ.\r\n").arg(count))
+		: QString(QString("РќРµ РїРѕР»СѓС‡РёР»РѕСЃСЊ РЅР°Р№С‚Рё СЃС‚СЂРѕС‡РєСѓ '%1'.\r\n").arg(findStr));
 	g_pApp->getIMainWnd()->getDockFind().appendString(s);
 }

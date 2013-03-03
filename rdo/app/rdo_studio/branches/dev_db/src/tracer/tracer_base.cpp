@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      tracer_base.cpp
-  \author    Захаров Павел
+  \author    Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
   \date      01.04.2003
   \brief     
   \indent    4T
@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm/find.hpp>
+#include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/tracer_base.h"
 #include "app/rdo_studio/src/tracer/tracer_resource_type.h"
@@ -25,7 +26,7 @@
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_windows_base.h"
+#include "app/rdo_studio/src/main_window_base.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::tracer;
@@ -97,8 +98,8 @@ ParamInfo* TracerBase::getParamType(rdo::textstream& stream)
 	}
 	else if (parType == ParamInfo::PT_BOOL)
 	{
-		pParam->addEnumValue(_T("false"));
-		pParam->addEnumValue(_T("true"));
+		pParam->addEnumValue("false");
+		pParam->addEnumValue("true");
 	}
 	else if (parType == ParamInfo::PT_ARRAY)
 	{
@@ -355,11 +356,11 @@ tstring TracerBase::getNextValue(REF(tstring) line)
 	int posStart = line.find_first_not_of(' ');
 	int posEnd;
 	tstring result;
-	if (line[posStart] == _T('['))
+	if (line[posStart] == '[')
 	{
-		//! @todo Массив просто игнорируется, график по нему не строится. Заплатка.
+		//! @todo РњР°СЃСЃРёРІ РїСЂРѕСЃС‚Рѕ РёРіРЅРѕСЂРёСЂСѓРµС‚СЃСЏ, РіСЂР°С„РёРє РїРѕ РЅРµРјСѓ РЅРµ СЃС‚СЂРѕРёС‚СЃСЏ. Р—Р°РїР»Р°С‚РєР°.
 		posEnd = line.find_first_of(']', posStart);
-		result = _T("0");
+		result = "0";
 	}
 	else
 	{
@@ -752,7 +753,7 @@ rbool TracerBase::getDrawTrace() const
 
 void TracerBase::registerClipboardFormat()
 {
-	//! @todo qt удалить
+	//! @todo qt СѓРґР°Р»РёС‚СЊ
 	//m_clipboardFormat = ::RegisterClipboardFormat(rdo::format(ID_RAO_CLIPBRD).c_str());
 }
 

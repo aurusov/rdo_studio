@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      frame_tree_ctrl.cpp
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      28.03.2003
-  \brief     Äåðåâî êàäðîâ àíèìàöèè
+  \brief     Ð”ÐµÑ€ÐµÐ²Ð¾ ÐºÐ°Ð´Ñ€Ð¾Ð² Ð°Ð½Ð¸Ð¼Ð°Ñ†Ð¸Ð¸
   \indent    4T
 */
 
@@ -14,10 +14,12 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/frame/frame_tree_ctrl.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_window.h"
 // --------------------------------------------------------------------------------
 
-RDOStudioFrameTreeCtrl::RDOStudioFrameTreeCtrl(PTR(QWidget) pParent)
+using namespace rdo::gui::frame;
+
+TreeCtrl::TreeCtrl(PTR(QWidget) pParent)
 	: parent_type(pParent)
 {
 	setColumnCount    (1);
@@ -25,15 +27,15 @@ RDOStudioFrameTreeCtrl::RDOStudioFrameTreeCtrl(PTR(QWidget) pParent)
 	setRootIsDecorated(false);
 
 	m_pRootItem = new QTreeWidgetItem(this);
-	m_pRootItem->setText(0, QString::fromStdWString(L"Êàäðû"));
+	m_pRootItem->setText(0, "ÐšÐ°Ð´Ñ€Ñ‹");
 	m_pRootItem->setIcon(0, QIcon(QString::fromUtf8(":/images/images/tree_frame_root.png")));
 	addTopLevelItem(m_pRootItem);
 }
 
-RDOStudioFrameTreeCtrl::~RDOStudioFrameTreeCtrl()
+TreeCtrl::~TreeCtrl()
 {}
 
-PTR(QTreeWidgetItem) RDOStudioFrameTreeCtrl::insertFrame(CREF(QString) name)
+PTR(QTreeWidgetItem) TreeCtrl::insertFrame(CREF(QString) name)
 {
 	PTR(QTreeWidgetItem) pItem = new QTreeWidgetItem(m_pRootItem);
 	ASSERT(pItem);
@@ -42,7 +44,7 @@ PTR(QTreeWidgetItem) RDOStudioFrameTreeCtrl::insertFrame(CREF(QString) name)
 	return pItem;
 }
 
-void RDOStudioFrameTreeCtrl::clear()
+void TreeCtrl::clear()
 {
 	QList<PTR(QTreeWidgetItem)> children = m_pRootItem->takeChildren();
 	BOOST_FOREACH(PTR(QTreeWidgetItem) item, children)
@@ -51,31 +53,31 @@ void RDOStudioFrameTreeCtrl::clear()
 	}
 }
 
-void RDOStudioFrameTreeCtrl::focusInEvent(QFocusEvent* pEvent)
+void TreeCtrl::focusInEvent(QFocusEvent* pEvent)
 {
 	parent_type::focusInEvent(pEvent);
 	activate(pEvent);
 }
 
-void RDOStudioFrameTreeCtrl::focusOutEvent(QFocusEvent* pEvent)
+void TreeCtrl::focusOutEvent(QFocusEvent* pEvent)
 {
 	parent_type::focusOutEvent(pEvent);
 	deactivate(pEvent);
 }
 
-void RDOStudioFrameTreeCtrl::onUpdateActions(rbool activated)
+void TreeCtrl::onUpdateActions(rbool activated)
 {
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(
 		pMainWindow->actHelpContext,
 		activated,
-		this, &RDOStudioFrameTreeCtrl::onHelpContext
+		this, &TreeCtrl::onHelpContext
 	);
 }
 
-void RDOStudioFrameTreeCtrl::onHelpContext()
+void TreeCtrl::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_frame.htm#frame\n");

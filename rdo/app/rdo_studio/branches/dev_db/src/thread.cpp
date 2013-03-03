@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2006-2012
   \file      app/rdo_studio/src/thread.cpp
-  \author    ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
+  \author    –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
   \date      15.07.2006
   \brief     
   \indent    4T
@@ -18,14 +18,14 @@
 
 #ifdef RDO_MT
 // --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudio
+// -------------------- ThreadStudio
 // --------------------------------------------------------------------------------
-RDOThreadStudio::RDOThreadStudio(): RDOThread( "RDOThreadStudio", RDOThread::threadFun )
+ThreadStudio::ThreadStudio(): RDOThread( "ThreadStudio", RDOThread::threadFun )
 {
 	after_constructor();
 }
 
-void RDOThreadStudio::proc( RDOMessageInfo& msg )
+void ThreadStudio::proc( RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
 		case RT_STUDIO_MODEL_NEW  :
@@ -43,50 +43,10 @@ void RDOThreadStudio::proc( RDOMessageInfo& msg )
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudioGUI
+// -------------------- ThreadStudioGUI
 // --------------------------------------------------------------------------------
-RDOThreadStudioGUI::RDOThreadStudioGUI(): RDOKernelGUI( "RDOThreadStudioGUI" )
+ThreadStudioGUI::ThreadStudioGUI(): RDOKernelGUI( "ThreadStudioGUI" )
 {
 	after_constructor();
 }
 #endif
-
-/*
-// --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudio1
-// --------------------------------------------------------------------------------
-RDOThreadStudio1::RDOThreadStudio1(): RDOThreadMT( "RDOThreadStudio1" )
-{
-	notifies.push_back( RT_RUNTIME_TRACE_STRING );
-	after_constructor();
-}
-
-void RDOThreadStudio1::proc( RDOMessageInfo& msg )
-{
-	switch ( msg.message ) {
-		case RT_RUNTIME_TRACE_STRING: {
-//			::Sleep( 1000 );
-			break;
-		}
-	}
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudio2
-// --------------------------------------------------------------------------------
-RDOThreadStudio2::RDOThreadStudio2(): RDOThreadMT( "RDOThreadStudio2" )
-{
-	notifies.push_back( RT_RUNTIME_TRACE_STRING );
-	after_constructor();
-}
-
-void RDOThreadStudio2::proc( RDOMessageInfo& msg )
-{
-	switch ( msg.message ) {
-		case RT_RUNTIME_TRACE_STRING: {
-//			::Sleep( 1000 );
-			break;
-		}
-	}
-}
-*/

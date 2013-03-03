@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2013
   \file      action_activator.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      01.01.2013
   \brief     
   \indent    4T
@@ -11,7 +11,9 @@
 #define _RDO_STUDIO_ACTION_ACTIVATOR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qevent.h>
+#include "utils/warning_disable.h"
+#include <QFocusEvent>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 

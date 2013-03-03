@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      app/rdo_studio/src/style.h
-  \author    ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
+  \author    –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
   \date      27.03.2003
   \brief     
   \indent    4T
@@ -11,27 +11,29 @@
 #define _RDO_STUDIO_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <string>
-#include <QtGui/qcolor.h>
-#include <QtCore/qsettings.h>
+#include <QColor>
+#include <QSettings>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoStyle {
+namespace rdo { namespace gui { namespace style {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStyleFont
+// -------------------- StyleFont
 // --------------------------------------------------------------------------------
-class RDOStyleFont
+class StyleFont
 {
 public:
-	RDOStyleFont();
-	virtual ~RDOStyleFont();
+	StyleFont();
+	virtual ~StyleFont();
 
-	RDOStyleFont& operator =(const RDOStyleFont& font);
-	rbool operator ==(const RDOStyleFont& font) const;
-	rbool operator !=(const RDOStyleFont& font) const;
+	StyleFont& operator =(const StyleFont& font);
+	rbool operator ==(const StyleFont& font) const;
+	rbool operator !=(const StyleFont& font) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
@@ -43,28 +45,28 @@ public:
 	int         codepage;
 	int         characterSet;
 
-	static RDOStyleFont getDefaultFont();
-	static RDOStyleFont getClassicFont();
-	static RDOStyleFont getTracerLogFont();
-	static RDOStyleFont getChartViewFont();
-	static RDOStyleFont getFrameFont();
+	static StyleFont getDefaultFont();
+	static StyleFont getClassicFont();
+	static StyleFont getTracerLogFont();
+	static StyleFont getChartViewFont();
+	static StyleFont getFrameFont();
 };
 
-QSettings& operator<< (QSettings& settings, const RDOStyleFont& font);
-QSettings& operator>> (QSettings& settings,       RDOStyleFont& font);
+QSettings& operator<< (QSettings& settings, const StyleFont& font);
+QSettings& operator>> (QSettings& settings,       StyleFont& font);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStyleTheme
+// -------------------- StyleTheme
 // --------------------------------------------------------------------------------
-class RDOStyleTheme
+class StyleTheme
 {
 public:
-	RDOStyleTheme();
-	virtual ~RDOStyleTheme();
+	StyleTheme();
+	virtual ~StyleTheme();
 
-	RDOStyleTheme& operator =(const RDOStyleTheme& theme);
-	rbool operator ==(const RDOStyleTheme& theme) const;
-	rbool operator !=(const RDOStyleTheme& theme) const;
+	StyleTheme& operator =(const StyleTheme& theme);
+	rbool operator ==(const StyleTheme& theme) const;
+	rbool operator !=(const StyleTheme& theme) const;
 
 	virtual void load(QSettings& settings);
 	virtual void save(QSettings& settings) const;
@@ -72,55 +74,55 @@ public:
 	QColor defaultColor;
 	QColor backgroundColor;
 
-	rdoStyle::RDOStyleFont::style defaultStyle;
+	StyleFont::style defaultStyle;
 };
 
-QSettings& operator<< (QSettings& settings, const RDOStyleTheme& theme);
-QSettings& operator>> (QSettings& settings,       RDOStyleTheme& theme);
+QSettings& operator<< (QSettings& settings, const StyleTheme& theme);
+QSettings& operator>> (QSettings& settings,       StyleTheme& theme);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStyle
+// -------------------- Style
 // --------------------------------------------------------------------------------
-OBJECT(RDOStyle)
+OBJECT(Style)
 {
+public:
+	Style();
+	virtual ~Style();
+
+	Style& operator =(const Style& style);
+	rbool operator ==(const Style& style) const;
+	rbool operator !=(const Style& style) const;
+
+	void init(CREF(QString) _groupName = "");
+	rbool load();
+	rbool save() const;
+
+	StyleFont* font;
+
 protected:
 	QString groupName;
-
-public:
-	RDOStyle();
-	virtual ~RDOStyle();
-
-	RDOStyle& operator =(const RDOStyle& style);
-	rbool operator ==(const RDOStyle& style) const;
-	rbool operator !=(const RDOStyle& style) const;
-
-	void init(CREF(QString) _groupName = "");
-	rbool load();
-	rbool save() const;
-
-	RDOStyleFont* font;
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStyleWithTheme
+// -------------------- StyleWithTheme
 // --------------------------------------------------------------------------------
-class RDOStyleWithTheme: public RDOStyle
+class StyleWithTheme: public Style
 {
 public:
-	RDOStyleWithTheme();
-	virtual ~RDOStyleWithTheme();
+	StyleWithTheme();
+	virtual ~StyleWithTheme();
 
-	RDOStyleWithTheme& operator =(const RDOStyleWithTheme& style);
-	rbool operator ==(const RDOStyleWithTheme& style) const;
-	rbool operator !=(const RDOStyleWithTheme& style) const;
+	StyleWithTheme& operator =(const StyleWithTheme& style);
+	rbool operator ==(const StyleWithTheme& style) const;
+	rbool operator !=(const StyleWithTheme& style) const;
 
 	void init(CREF(QString) _groupName = "");
 	rbool load();
 	rbool save() const;
 
-	RDOStyleTheme* theme;
+	StyleTheme* theme;
 };
 
-} // namespace rdoStyle
+}}} // namespace rdo::gui::style
 
 #endif // _RDO_STUDIO_STYLE_H_

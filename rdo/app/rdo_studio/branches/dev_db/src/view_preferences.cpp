@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      app/rdo_studio/src/view_preferences.cpp
-  \author    Ðîìàíîâ ßðîñëàâ (robot.xet@gmail.com)
+  \author    Ð Ð¾Ð¼Ð°Ð½Ð¾Ð² Ð¯Ñ€Ð¾ÑÐ»Ð°Ð² (robot.xet@gmail.com)
   \date      27.11.2012
   \brief     
   \indent    4T
@@ -18,18 +18,18 @@
 #include "simulator/report/build_edit_line_info.h"
 #include "ui/qt/headers/validator/int_validator.h"
 // --------------------------------------------------------------------------------
+
 using namespace rdo::simulation::report;
-using namespace rdoEditCtrl;
-using namespace rdoEditor;
+using namespace rdo::gui::editor;
+using namespace rdo::gui::style;
 using namespace rdo::gui::tracer;
-using namespace rdoStyle;
 
 rbool ViewPreferences::null_wordwrap      = false;
 rbool ViewPreferences::null_horzscrollbar = true;
 rbool ViewPreferences::null_warning       = true;
 rbool ViewPreferences::null_commentfold   = false;
-RDOBookmarkStyle ViewPreferences::null_bookmarkstyle = RDOBOOKMARKS_NONE;
-RDOFoldStyle     ViewPreferences::null_foldstyle     = RDOFOLDS_NONE;
+EditTheme::Bookmark ViewPreferences::null_bookmarkstyle = EditTheme::B_NONE;
+ModelTheme::Fold    ViewPreferences::null_foldstyle     = ModelTheme::F_NONE;
 QColor ViewPreferences::null_fg_color = QColor(0x00, 0x00, 0x00);
 QColor ViewPreferences::null_bg_color = QColor(0xFF, 0xFF, 0xFF);
 
@@ -37,7 +37,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	: QDialog(pParent)
 	, all_font_size(-1)
 	, all_font_name("")
-	, null_font_style(rdoStyle::RDOStyleFont::NONE)
+	, null_font_style(StyleFont::NONE)
 	, all_fg_color(0x00, 0x00, 0x00)
 	, all_bg_color(0xFF, 0xFF, 0xFF)
 {
@@ -71,19 +71,19 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	style_frame   = g_pApp->getStyle()->style_frame;
 
 	fontComboBox->setEditable(false);
-	//Âêëàäêà "Îñíîâíûå"
+	//Ð’ÐºÐ»Ð°Ð´ÐºÐ° "ÐžÑÐ½Ð¾Ð²Ð½Ñ‹Ðµ"
 	connect(setupCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onSetup(int)));
 	connect(checkInFutureCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onCheckInFuture(int)));
 	connect(openLastProjectCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onOpenLastProject(int)));
 	connect(showFullNameCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onShowFullName(int)));
-	//Âêëàäêà "Ðåäàêòîð"
+	//Ð’ÐºÐ»Ð°Ð´ÐºÐ° "Ð ÐµÐ´Ð°ÐºÑ‚Ð¾Ñ€"
 	connect(checkBoxCodeCompUse, SIGNAL(stateChanged(int)), this, SLOT(onCodeCompUse(int)));
 	connect(radioButtonFullList, SIGNAL(toggled(bool)), this, SLOT(onCodeCompShowFullList(bool)));
 	connect(radioButtonNearestWords, SIGNAL(toggled(bool)), this, SLOT(onCodeCompShowFullList(bool)));
 	connect(checkBoxMarginFold, SIGNAL(stateChanged(int)), this, SLOT(onMarginFold(int)));
 	connect(checkBoxMarginBookmark, SIGNAL(stateChanged(int)), this, SLOT(onMarginBookmark(int)));
 	connect(checkBoxMarginLineNum, SIGNAL(stateChanged(int)), this, SLOT(onMarginLineNumber(int)));
-	//Âêëàäêà "Òàáóëÿöèÿ"
+	//Ð’ÐºÐ»Ð°Ð´ÐºÐ° "Ð¢Ð°Ð±ÑƒÐ»ÑÑ†Ð¸Ñ"
 	tabSizeLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
 	tabSizeLineEdit->setText(QString::number(style_editor.tab->tabSize));
 	indentSizeLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
@@ -94,7 +94,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(eraseWithTabRadioButton, SIGNAL(toggled(bool)), this, SLOT(onEraseWithTab(bool)));
 	connect(tabSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onTabSize(const QString&)));
 	connect(indentSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onIndentSize(const QString&)));
-	//Âêëàäêà "Ñòèëü è öâåò"
+	//Ð’ÐºÐ»Ð°Ð´ÐºÐ° "Ð¡Ñ‚Ð¸Ð»ÑŒ Ð¸ Ñ†Ð²ÐµÑ‚"
 	stackedWidget->setCurrentWidget(pageRoot);
 
 	PTR(QPalette) palette = new QPalette();
@@ -117,19 +117,19 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	switchPreviewComboBox->addItem("Chart",   IT_CHART);
 	switchPreviewComboBox->addItem("Frame",   IT_FRAME);
 
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Íåò"),           RDOBOOKMARKS_NONE);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Êðóã"),          RDOBOOKMARKS_CIRCLE);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Ïðÿìîóãîëüíèê"), RDOBOOKMARKS_RECT);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Îâàë"),          RDOBOOKMARKS_ROUNDRECT);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Ñòðåëêà"),       RDOBOOKMARKS_ARROW);
+	bookmarkComboBox->addItem("ÐÐµÑ‚",           EditTheme::B_NONE);
+	bookmarkComboBox->addItem("ÐšÑ€ÑƒÐ³",          EditTheme::B_CIRCLE);
+	bookmarkComboBox->addItem("ÐŸÑ€ÑÐ¼Ð¾ÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸Ðº", EditTheme::B_RECT);
+	bookmarkComboBox->addItem("ÐžÐ²Ð°Ð»",          EditTheme::B_ROUNDRECT);
+	bookmarkComboBox->addItem("Ð¡Ñ‚Ñ€ÐµÐ»ÐºÐ°",       EditTheme::B_ARROW);
 
-	foldComboBox->addItem(QString::fromLocal8Bit("Íåò"),             RDOFOLDS_NONE);
-	foldComboBox->addItem(QString::fromLocal8Bit("Ïëþñ"),            RDOFOLDS_PLUS);
-	foldComboBox->addItem(QString::fromLocal8Bit("Ïëþñ + ëèíèÿ"),    RDOFOLDS_PLUSCONNECTED);
-	foldComboBox->addItem(QString::fromLocal8Bit("Ñòðåëêà"),         RDOFOLDS_ARROW);
-	foldComboBox->addItem(QString::fromLocal8Bit("Ñòðåëêà + ëèíèÿ"), RDOFOLDS_ARROWCONNECTED);
-	foldComboBox->addItem(QString::fromLocal8Bit("Êâàäðàò + ëèíèÿ"), RDOFOLDS_BOXCONNECTED);
-	foldComboBox->addItem(QString::fromLocal8Bit("Êðóã + ëèíèÿ"),    RDOFOLDS_CIRCLECONNECTED);
+	foldComboBox->addItem("ÐÐµÑ‚",             ModelTheme::F_NONE);
+	foldComboBox->addItem("ÐŸÐ»ÑŽÑ",            ModelTheme::F_PLUS);
+	foldComboBox->addItem("ÐŸÐ»ÑŽÑ + Ð»Ð¸Ð½Ð¸Ñ",    ModelTheme::F_PLUSCONNECTED);
+	foldComboBox->addItem("Ð¡Ñ‚Ñ€ÐµÐ»ÐºÐ°",         ModelTheme::F_ARROW);
+	foldComboBox->addItem("Ð¡Ñ‚Ñ€ÐµÐ»ÐºÐ° + Ð»Ð¸Ð½Ð¸Ñ", ModelTheme::F_ARROWCONNECTED);
+	foldComboBox->addItem("ÐšÐ²Ð°Ð´Ñ€Ð°Ñ‚ + Ð»Ð¸Ð½Ð¸Ñ", ModelTheme::F_BOXCONNECTED);
+	foldComboBox->addItem("ÐšÑ€ÑƒÐ³ + Ð»Ð¸Ð½Ð¸Ñ",    ModelTheme::F_CIRCLECONNECTED);
 
 	boldCheckBox->setEnabled(false);
 	italicCheckBox->setEnabled(false);
@@ -197,7 +197,7 @@ void ViewPreferences::onApplyButton()
 
 void ViewPreferences::onCodeCompUse(int state)
 {
-	style_editor.autoComplete->useAutoComplete = state;
+	style_editor.autoComplete->useAutoComplete = state == Qt::Checked ? true : false;
 	
 	switch(state)
 	{
@@ -226,37 +226,37 @@ void ViewPreferences::onCodeCompShowFullList(bool state)
 
 void ViewPreferences::onMarginFold(int state)
 {
-	style_editor.margin->fold = state;
+	style_editor.margin->fold = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onMarginBookmark(int state)
 {
-	style_editor.margin->bookmark = state;
+	style_editor.margin->bookmark = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onMarginLineNumber(int state)
 {
-	style_editor.margin->lineNumber = state;
+	style_editor.margin->lineNumber = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onUseTabSymbol(int state)
 {
-	style_editor.tab->useTabs = state;
+	style_editor.tab->useTabs = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onIndentAsTab(int state)
 {
-	style_editor.tab->tabIndents = state;
+	style_editor.tab->tabIndents = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onAutoIndent(int state)
 {
-	style_editor.tab->autoIndent = state;
+	style_editor.tab->autoIndent = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
@@ -285,25 +285,25 @@ void ViewPreferences::onIndentSize(const QString& text)
 
 void ViewPreferences::onSetup(int state)
 {
-	m_setup = state;
+	m_setup = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onCheckInFuture(int state)
 {
-	m_checkInFuture = state;
+	m_checkInFuture = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onOpenLastProject(int state)
 {
-	m_openLastProject = state;
+	m_openLastProject = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onShowFullName(int state)
 {
-	m_showFullName = state;
+	m_showFullName = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
@@ -445,10 +445,10 @@ void ViewPreferences::onFontBold(int state)
 	PTR(StyleProperty) prop = getStyleProperty();
 	if (prop && &prop->font_style != &null_font_style)
 	{
-		prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style & ~RDOStyleFont::BOLD);
+		prop->font_style = static_cast<StyleFont::style>(prop->font_style & ~StyleFont::BOLD);
 		if (state)
 		{
-			prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style | RDOStyleFont::BOLD);
+			prop->font_style = static_cast<StyleFont::style>(prop->font_style | StyleFont::BOLD);
 		}
 		updatePreview();
 	}
@@ -459,10 +459,10 @@ void ViewPreferences::onFontItalic(int state)
 	PTR(StyleProperty) prop = getStyleProperty();
 	if (prop && &prop->font_style != &null_font_style)
 	{
-		prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style & ~RDOStyleFont::ITALIC);
+		prop->font_style = static_cast<StyleFont::style>(prop->font_style & ~StyleFont::ITALIC);
 		if (state)
 		{
-			prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style | RDOStyleFont::ITALIC);
+			prop->font_style = static_cast<StyleFont::style>(prop->font_style | StyleFont::ITALIC);
 		}
 		updatePreview();
 	}
@@ -473,10 +473,10 @@ void ViewPreferences::onFontUnderline(int state)
 	PTR(StyleProperty) prop = getStyleProperty();
 	if (prop && &prop->font_style != &null_font_style)
 	{
-		prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style & ~RDOStyleFont::UNDERLINE);
+		prop->font_style = static_cast<StyleFont::style>(prop->font_style & ~StyleFont::UNDERLINE);
 		if (state)
 		{
-			prop->font_style = static_cast<RDOStyleFont::style>(prop->font_style | RDOStyleFont::UNDERLINE);
+			prop->font_style = static_cast<StyleFont::style>(prop->font_style | StyleFont::UNDERLINE);
 		}
 		updatePreview();
 	}
@@ -485,14 +485,14 @@ void ViewPreferences::onFontUnderline(int state)
 void ViewPreferences::onHorzScroll(int state)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->horzscrollbar = state;
+	item->horzscrollbar = state == Qt::Checked ? true : false;
 	updatePreview();
 }
 
 void ViewPreferences::onWordWrap(int state)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->wordwrap = state;
+	item->wordwrap = state == Qt::Checked ? true : false;
 		
 	switch(item->type)
 	{
@@ -521,19 +521,19 @@ void ViewPreferences::onWordWrap(int state)
 		switch(item->type)
 		{
 		case IT_EDITOR:
-			item->horzscrollbar = horzScrollEditorCheckBox->checkState();
+			item->horzscrollbar = horzScrollEditorCheckBox->checkState() == Qt::Checked ? true : false;
 			break;
 		case IT_BUILD:
-			item->horzscrollbar = horzScrollBuildCheckBox->checkState();
+			item->horzscrollbar = horzScrollBuildCheckBox->checkState() == Qt::Checked ? true : false;
 			break;
 		case IT_DEBUG:
-			item->horzscrollbar = horzScrollDebugCheckBox->checkState();
+			item->horzscrollbar = horzScrollDebugCheckBox->checkState() == Qt::Checked ? true : false;
 			break;
 		case IT_RESULT:
-			item->horzscrollbar = horzScrollResultsCheckBox->checkState();
+			item->horzscrollbar = horzScrollResultsCheckBox->checkState() == Qt::Checked ? true : false;
 			break;
 		case IT_FIND:
-			item->horzscrollbar = horzScrollFindCheckBox->checkState();
+			item->horzscrollbar = horzScrollFindCheckBox->checkState() == Qt::Checked ? true : false;
 			break;
 		}
 	}
@@ -543,14 +543,14 @@ void ViewPreferences::onWordWrap(int state)
 void ViewPreferences::onBookmark(int index)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->bookmarkstyle = static_cast<RDOBookmarkStyle>(index);
+	item->bookmarkstyle = static_cast<EditTheme::Bookmark>(index);
 	updatePreview();
 }
 
 void ViewPreferences::onFold(int index)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->foldstyle = static_cast<RDOFoldStyle>(index);
+	item->foldstyle = static_cast<ModelTheme::Fold>(index);
 	updatePreview();
 }
 
@@ -777,15 +777,15 @@ void ViewPreferences::updateStyleTab()
 
 	if(boldCheckBox->isEnabled())
 	{
-		boldCheckBox->setCheckState((prop->font_style & RDOStyleFont::BOLD) != 0 ? Qt::Checked : Qt::Unchecked);
+		boldCheckBox->setCheckState((prop->font_style & StyleFont::BOLD) != 0 ? Qt::Checked : Qt::Unchecked);
 	}
 	if(italicCheckBox->isEnabled())
 	{
-		italicCheckBox->setCheckState((prop->font_style & RDOStyleFont::ITALIC) != 0 ? Qt::Checked : Qt::Unchecked);
+		italicCheckBox->setCheckState((prop->font_style & StyleFont::ITALIC) != 0 ? Qt::Checked : Qt::Unchecked);
 	}
 	if(underlineCheckBox->isEnabled())
 	{
-		underlineCheckBox->setCheckState((prop->font_style & RDOStyleFont::UNDERLINE) != 0 ? Qt::Checked : Qt::Unchecked);
+		underlineCheckBox->setCheckState((prop->font_style & StyleFont::UNDERLINE) != 0 ? Qt::Checked : Qt::Unchecked);
 	}
 	switch(prop->item->type)
 	{
@@ -851,6 +851,45 @@ void ViewPreferences::updateStyleTab()
 		titleComboBox->setCurrentIndex(titleComboBox->findText(QString::number(style_chart.pFontsTicks->titleFontSize)));
 		legendComboBox->setCurrentIndex(legendComboBox->findText(QString::number(style_chart.pFontsTicks->legendFontSize)));
 		tickWidthLineEdit->setText(QString::number(style_chart.pFontsTicks->tickWidth));
+		switch(prop->identificator)
+		{
+		case IT_CHART:
+			fgColorComboBox->setEnabled(true);
+			bgColorComboBox->setEnabled(true);
+			fgColorToolButton->setEnabled(true);
+			bgColorToolButton->setEnabled(true);
+			break;
+		case IT_CHART_AXIS:
+			fgColorComboBox->setEnabled(true);
+			bgColorComboBox->setEnabled(false);
+			fgColorToolButton->setEnabled(true);
+			bgColorToolButton->setEnabled(false);			
+			break;
+		case IT_CHART_TITLE:
+			fgColorComboBox->setEnabled(true);
+			bgColorComboBox->setEnabled(false);
+			fgColorToolButton->setEnabled(true);
+			bgColorToolButton->setEnabled(false);
+			break;
+		case IT_CHART_CHART:
+			fgColorComboBox->setEnabled(false);
+			bgColorComboBox->setEnabled(true);
+			fgColorToolButton->setEnabled(false);
+			bgColorToolButton->setEnabled(true);
+			break;
+		case IT_CHART_LEGEND:
+			fgColorComboBox->setEnabled(true);
+			bgColorComboBox->setEnabled(false);
+			fgColorToolButton->setEnabled(true);
+			bgColorToolButton->setEnabled(false);
+			break;
+		case IT_CHART_TIME:
+			fgColorComboBox->setEnabled(false);
+			bgColorComboBox->setEnabled(true);
+			fgColorToolButton->setEnabled(false);
+			bgColorToolButton->setEnabled(true);
+			break;
+		}
 		break;
 	case IT_FRAME:
 		switch(prop->identificator)
@@ -874,6 +913,7 @@ void ViewPreferences::updateStyleTab()
 			bgColorToolButton->setEnabled(true);
 			break;
 		}
+		break;
 	}
 }
 
@@ -888,7 +928,7 @@ void ViewPreferences::updatePreview()
 	preview_debug->setEditorStyle(&style_debug);
 	preview_debug->repaint();
 	
-	//! todo ïàäåíèå ïðè çàêðûòèè äèàëîãà
+	//! todo Ð¿Ð°Ð´ÐµÐ½Ð¸Ðµ Ð¿Ñ€Ð¸ Ð·Ð°ÐºÑ€Ñ‹Ñ‚Ð¸Ð¸ Ð´Ð¸Ð°Ð»Ð¾Ð³Ð°
 	//preview_trace->view().setStyle(&style_trace);
 	//preview_trace->repaint();
 
@@ -898,6 +938,8 @@ void ViewPreferences::updatePreview()
 	preview_find->setEditorStyle(&style_find);
 	preview_find->repaint();
 
+	preview_chart->setStyle(&style_chart, true);
+
 	preview_frame->setStyle(&style_frame);
 	preview_frame->repaint();
 
@@ -906,83 +948,81 @@ void ViewPreferences::updatePreview()
 
 void ViewPreferences::createPreview()
 {
-	preview_editor = new RDOEditorEdit(previewStackedWidget->currentWidget(), previewStackedWidget->currentWidget());
+	preview_editor = new Model(previewStackedWidget->currentWidget(), previewStackedWidget->currentWidget());
 	ASSERT(preview_editor);
 	preview_editor->setEditorStyle(&style_editor);
 	preview_editor->setCanClearErrorLine(false);
-	preview_editor->appendText(QString::fromLocal8Bit("{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"));
+	preview_editor->appendText(QString("{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"));
 	preview_editor->scrollToLine(0);
 	preview_editor->setReadOnly(true);
 	preview_editor->bookmarkToggle();
 	preview_editor->setErrorLine(preview_editor->getLineCount() - 1);
 	previewStackedWidget->addWidget(preview_editor);
 
-	preview_build = new RDOBuildEdit(previewStackedWidget->currentWidget());
+	preview_build = new Build(previewStackedWidget->currentWidget());
 	preview_build->setEditorStyle(&style_build);
-	preview_build->appendLine(new BuildEditLineInfo(rdo::format("Êîìïèëÿöèÿ...")));
-	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage(rdo::format("Íåïðàâèëüíîå çíà÷åíèå ïàðàìåòðà: 4"), rdoModelObjects::PAT, 40, 0)));
-	preview_build->appendLine(new BuildEditLineInfo(rdo::format("íàéäåíî îøèáîê: 1, ïðåäóïðåæäåíèé: 0")));
+	preview_build->appendLine(new BuildEditLineInfo(QString("ÐšÐ¾Ð¼Ð¿Ð¸Ð»ÑÑ†Ð¸Ñ...").toLocal8Bit().constData()));
+	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage(QString("ÐÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð°: 4").toLocal8Bit().constData(), rdoModelObjects::PAT, 40, 0)));
+	preview_build->appendLine(new BuildEditLineInfo(QString("Ð½Ð°Ð¹Ð´ÐµÐ½Ð¾ Ð¾ÑˆÐ¸Ð±Ð¾Ðº: 1, Ð¿Ñ€ÐµÐ´ÑƒÐ¿Ñ€ÐµÐ¶Ð´ÐµÐ½Ð¸Ð¹: 0").toLocal8Bit().constData()));
 	preview_build->gotoNext();
 	previewStackedWidget->addWidget(preview_build);
 
-	preview_debug = new RDODebugEdit(previewStackedWidget->currentWidget());
+	preview_debug = new Debug(previewStackedWidget->currentWidget());
 	preview_debug->setEditorStyle(&style_debug);
-	preview_debug->appendLine(QString::fromLocal8Bit("Ïîëó÷åíèå ñòðóêòóðû ìîäåëè...ok\nÌîäåëü çàïóùåíà"));
+	preview_debug->appendLine("ÐŸÐ¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ðµ ÑÑ‚Ñ€ÑƒÐºÑ‚ÑƒÑ€Ñ‹ Ð¼Ð¾Ð´ÐµÐ»Ð¸...ok\nÐœÐ¾Ð´ÐµÐ»ÑŒ Ð·Ð°Ð¿ÑƒÑ‰ÐµÐ½Ð°");
 	previewStackedWidget->addWidget(preview_debug);
 
-	preview_trace = new LogMainWnd(previewStackedWidget->currentWidget());
+	preview_trace = new rdo::gui::tracer::LogMainWnd(previewStackedWidget->currentWidget());
 	preview_trace->view().setStyle(&g_pApp->getStyle()->style_trace);
 	preview_trace->view().setFocusOnly(true);
-	preview_trace->view().setText(rdo::format("Ïðîñòàÿ ñòðîêà\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19"));
+	preview_trace->view().setText(QString("ÐŸÑ€Ð¾ÑÑ‚Ð°Ñ ÑÑ‚Ñ€Ð¾ÐºÐ°\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19").toLocal8Bit().constData());
 	preview_trace->view().selectLine(0);
 	previewStackedWidget->addWidget(preview_trace);
 
-	preview_results = new RDOEditorResults(previewStackedWidget->currentWidget());
+	preview_results = new Results(previewStackedWidget->currentWidget());
 	preview_results->setEditorStyle(&style_results);
 	preview_results->setReadOnly(false);
-	preview_results->replaceCurrent(rdo::format("Äëèíà_î÷åðåäè                2  194  0.675957  21.6506  0  4\r\nÇàíÿòîñòü_ïàðèêìàõåðà         TRUE  96  0.877351  21.7041  0.0397544  0.918872\r\nÂñåãî_îáñëóæåíî              96\r\nÏðîïóñêíàÿ_ñïîñîáíîñòü       1.99198\r\n"), 0);
+	preview_results->replaceCurrent(QString("Ð”Ð»Ð¸Ð½Ð°_Ð¾Ñ‡ÐµÑ€ÐµÐ´Ð¸                2  194  0.675957  21.6506  0  4\r\nÐ—Ð°Ð½ÑÑ‚Ð¾ÑÑ‚ÑŒ_Ð¿Ð°Ñ€Ð¸ÐºÐ¼Ð°Ñ…ÐµÑ€Ð°         TRUE  96  0.877351  21.7041  0.0397544  0.918872\r\nÐ’ÑÐµÐ³Ð¾_Ð¾Ð±ÑÐ»ÑƒÐ¶ÐµÐ½Ð¾              96\r\nÐŸÑ€Ð¾Ð¿ÑƒÑÐºÐ½Ð°Ñ_ÑÐ¿Ð¾ÑÐ¾Ð±Ð½Ð¾ÑÑ‚ÑŒ       1.99198\r\n").toLocal8Bit().constData(), 0);
 	preview_results->setReadOnly(true);
 	previewStackedWidget->addWidget(preview_results);
 
-	preview_find = new RDOFindEdit(previewStackedWidget->currentWidget());
+	preview_find = new Find(previewStackedWidget->currentWidget());
 	preview_find->setEditorStyle(&style_find);
 	preview_find->setKeyword("$Time");
-	preview_find->appendLine(new LogEditLineInfo(rdo::format("Ïîèñê '$Time'...")));
-	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(rdo::format("$Time = Ðàâíîìåðíûé(0.25, 0.75)"), rdoModelObjects::PAT, 3, 0)));
-	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(rdo::format("$Time = Íîðìàëüíûé(0.45, 0.2)"), rdoModelObjects::PAT, 13, 0)));
-	preview_find->appendLine(new LogEditLineInfo(rdo::format("'2' ðàç áûëî íàéäåíî.")));
+	preview_find->appendLine(new LogEditLineInfo(QString("ÐŸÐ¾Ð¸ÑÐº '$Time'...").toLocal8Bit().constData()));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(QString("$Time = Ð Ð°Ð²Ð½Ð¾Ð¼ÐµÑ€Ð½Ñ‹Ð¹(0.25, 0.75)").toLocal8Bit().constData(), rdoModelObjects::PAT, 3, 0)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(QString("$Time = ÐÐ¾Ñ€Ð¼Ð°Ð»ÑŒÐ½Ñ‹Ð¹(0.45, 0.2)").toLocal8Bit().constData(), rdoModelObjects::PAT, 13, 0)));
+	preview_find->appendLine(new LogEditLineInfo(QString("'2' Ñ€Ð°Ð· Ð±Ñ‹Ð»Ð¾ Ð½Ð°Ð¹Ð´ÐµÐ½Ð¾.").toLocal8Bit().constData()));
 	preview_find->gotoNext();
 	previewStackedWidget->addWidget(preview_find);
 
-	previewStackedWidget->addWidget(new QWidget(previewStackedWidget->currentWidget()));
-	//! @todo qt
-	//preview_chart_doc = new RDOStudioChartDoc(true);
-	//PTR(ChartViewMainWnd) pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
-
-	//preview_chart_doc->setTitle(rdo::format("ãðàôèê 1").c_str());
-	//preview_chart->setPreviwMode(true);
-	//preview_chart_doc->attachView(preview_chart);
-	//preview_chart->setStyle(&style_chart, false);
+	preview_chart_doc = new ChartDoc(true);
+	PTR(ChartViewMainWnd) pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
+	preview_chart = &pViewQt->view();
+	preview_chart_doc->attachView(preview_chart);
+	preview_chart_doc->setTitle(QString("Ð³Ñ€Ð°Ñ„Ð¸Ðº 1"));
+	preview_chart->setPreviwMode(true);
+	preview_chart->setStyle(&style_chart, false);
 	////initializing times vector
-	//preview_times.push_back(Time(0, 3));
-	//preview_times.push_back(Time(2, 3));
-	//preview_times.push_back(Time(4, 3));
-	//preview_times.push_back(Time(6, 3));
-	//preview_times.push_back(Time(8, 3));
-	//preview_times.push_back(Time(10, 3));
-	preview_serie = rdo::Factory<Serie>::create();
-	//preview_serie.setTitle(rdo::format("çíà÷åíèå 1"));
-	//preview_serie.addValue(new Value(&preview_times.at(0), 2, 0));
-	//preview_serie.addValue(new Value(&preview_times.at(1), 1, 1));
-	//preview_serie.addValue(new Value(&preview_times.at(2), 0, 4));
-	//preview_serie.addValue(new Value(&preview_times.at(3), 3, 3));
-	//preview_serie.addValue(new Value(&preview_times.at(4), 1, 2));
-	//preview_serie.addValue(new Value(&preview_times.at(5), 0, 3));
-	//preview_chart_doc->addSerie(&preview_serie);
+	preview_times.push_back(Time(0, 3));
+	preview_times.push_back(Time(2, 3));
+	preview_times.push_back(Time(4, 3));
+	preview_times.push_back(Time(6, 3));
+	preview_times.push_back(Time(8, 3));
+	preview_times.push_back(Time(10, 3));
+	preview_serie = rdo::Factory<rdo::gui::tracer::Serie>::create();
+	preview_serie->setTitle(QString("Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ 1"));
+	preview_serie->addValue(new Value(&preview_times.at(0), 2, 0));
+	preview_serie->addValue(new Value(&preview_times.at(1), 1, 1));
+	preview_serie->addValue(new Value(&preview_times.at(2), 0, 4));
+	preview_serie->addValue(new Value(&preview_times.at(3), 3, 3));
+	preview_serie->addValue(new Value(&preview_times.at(4), 1, 2));
+	preview_serie->addValue(new Value(&preview_times.at(5), 0, 3));
+	preview_chart_doc->addSerie(preview_serie);
 
-	//previewStackedWidget->addWidget(pViewQt);
+	previewStackedWidget->addWidget(pViewQt);
 
-	preview_frame = new FrameOptionsView(previewStackedWidget->currentWidget());
+	preview_frame = new rdo::gui::frame::OptionsView(previewStackedWidget->currentWidget());
 	preview_frame->setStyle(&style_frame);
 	previewStackedWidget->addWidget(preview_frame);
 }
@@ -994,7 +1034,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_ROOT, null_font_style, all_fg_color, all_bg_color));
 	style_list.push_back(item);
 
-	RDOEditorEditTheme* editor_theme = static_cast<RDOEditorEditTheme*>(style_editor.theme);
+	ModelTheme* editor_theme = static_cast<ModelTheme*>(style_editor.theme);
 	item = new StyleItem(IT_EDITOR, style_editor.font->size, style_editor.font->name, style_editor.window->wordWrap, style_editor.window->showHorzScrollBar, editor_theme->bookmarkStyle, editor_theme->foldStyle, editor_theme->commentFold);
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR, editor_theme->identifierStyle, editor_theme->identifierColor, editor_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, editor_theme->defaultStyle, editor_theme->defaultColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
@@ -1014,7 +1054,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_ERROR, null_font_style, null_fg_color, editor_theme->errorBgColor));
 	style_list.push_back(item);
 
-	RDOBuildEditTheme* build_theme = static_cast<RDOBuildEditTheme*>(style_build.theme);
+	BuildTheme* build_theme = static_cast<BuildTheme*>(style_build.theme);
 	item = new StyleItem(IT_BUILD, style_build.font->size, style_build.font->name, style_build.window->wordWrap, style_build.window->showHorzScrollBar, null_bookmarkstyle, null_foldstyle, null_commentfold, build_theme->warning);
 	item->properties.push_back(new StyleProperty(item, IT_BUILD, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor));
@@ -1024,7 +1064,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, build_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
-	RDOBaseEditTheme* debug_theme = static_cast<RDOBaseEditTheme*>(style_debug.theme);
+	EditTheme* debug_theme = static_cast<EditTheme*>(style_debug.theme);
 	item = new StyleItem(IT_DEBUG, style_debug.font->size, style_debug.font->name, style_debug.window->wordWrap, style_debug.window->showHorzScrollBar);
 	item->properties.push_back(new StyleProperty(item, IT_DEBUG, debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor));
@@ -1033,7 +1073,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, debug_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
-	LogTheme* trace_theme = style_trace.theme;
+	rdo::gui::tracer::LogTheme* trace_theme = style_trace.theme;
 	item = new StyleItem(IT_LOG, style_trace.font->size, style_trace.font->name);
 	item->properties.push_back(new StyleProperty(item, IT_LOG, trace_theme->style, trace_theme->defaultColor.foregroundColor, trace_theme->defaultColor.backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_LOG_ES, trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor));
@@ -1063,7 +1103,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_LOG_SEU, trace_theme->style, trace_theme->seu.foregroundColor, trace_theme->seu.backgroundColor));
 	style_list.push_back(item);
 
-	RDOEditorBaseEditTheme* results_theme = static_cast<RDOEditorBaseEditTheme*>(style_results.theme);
+	ParserTheme* results_theme = static_cast<ParserTheme*>(style_results.theme);
 	item = new StyleItem(IT_RESULT, style_results.font->size, style_results.font->name, style_results.window->wordWrap, style_results.window->showHorzScrollBar);
 	item->properties.push_back(new StyleProperty(item, IT_RESULT, results_theme->identifierStyle, results_theme->identifierColor, results_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, results_theme->defaultStyle, results_theme->defaultColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
@@ -1077,7 +1117,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, results_theme->bookmarkFgColor, results_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
-	RDOFindEditTheme* find_theme = static_cast<RDOFindEditTheme*>(style_find.theme);
+	FindTheme* find_theme = static_cast<FindTheme*>(style_find.theme);
 	item = new StyleItem(IT_FIND, style_find.font->size, style_find.font->name, style_find.window->wordWrap, style_find.window->showHorzScrollBar);
 	item->properties.push_back(new StyleProperty(item, IT_FIND, find_theme->defaultStyle, find_theme->defaultColor, find_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, find_theme->defaultStyle, find_theme->defaultColor, find_theme->backgroundColor));
@@ -1088,7 +1128,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, find_theme->bookmarkBgColor));
 	style_list.push_back(item);
 
-	ChartViewTheme* chart_theme = static_cast<ChartViewTheme*>(style_chart.theme);
+	rdo::gui::tracer::ChartViewTheme* chart_theme = static_cast<rdo::gui::tracer::ChartViewTheme*>(style_chart.theme);
 	item = new StyleItem(IT_CHART, style_chart.font->size, style_chart.font->name);
 	item->properties.push_back(new StyleProperty(item, IT_CHART, chart_theme->defaultStyle, chart_theme->defaultColor, chart_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_CHART_AXIS, chart_theme->defaultStyle, chart_theme->axisFgColor, null_bg_color, null_fg_color, chart_theme->backgroundColor));
@@ -1098,7 +1138,7 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_CHART_TIME, null_font_style, null_fg_color, chart_theme->timeBgColor));
 	style_list.push_back(item);
 
-	RDOStudioFrameTheme* frame_theme = static_cast<RDOStudioFrameTheme*>(style_frame.theme);
+	rdo::gui::frame::FrameTheme* frame_theme = static_cast<rdo::gui::frame::FrameTheme*>(style_frame.theme);
 	item = new StyleItem(IT_FRAME, style_frame.font->size, style_frame.font->name);
 	item->properties.push_back(new StyleProperty(item, IT_FRAME, frame_theme->defaultStyle, frame_theme->defaultColor, frame_theme->backgroundColor));
 	item->properties.push_back(new StyleProperty(item, IT_FRAME_BORDER, frame_theme->defaultStyle, frame_theme->defaultColor, null_bg_color));
@@ -1113,98 +1153,98 @@ void ViewPreferences::createTree()
 	treeWidget->setRootIsDecorated(false);
 
 	m_pRoot = new QTreeWidgetItem(treeWidget);
-	m_pRoot->setText(0, QString::fromLocal8Bit("Âñå îêíà"));
+	m_pRoot->setText(0, "Ð’ÑÐµ Ð¾ÐºÐ½Ð°");
 	m_pRoot->setData(0, Qt::UserRole, IT_ROOT);
 
-	m_pText      = createTreeItem(m_pRoot, QString::fromLocal8Bit("Èñõîäíûé òåêñò"),   IT_EDITOR);
-	m_pCompile   = createTreeItem(m_pRoot, QString::fromLocal8Bit("Îêíî êîìïèëÿöèè"),  IT_BUILD);
-	m_pDebug     = createTreeItem(m_pRoot, QString::fromLocal8Bit("Îêíî îòëàäêè"),     IT_DEBUG);
-	m_pTrace     = createTreeItem(m_pRoot, QString::fromLocal8Bit("Îêíî òðàññèðîâêè"), IT_LOG);
-	m_pResult    = createTreeItem(m_pRoot, QString::fromLocal8Bit("Îêíî ðåçóëüòàòîâ"), IT_RESULT);
-	m_pSearch    = createTreeItem(m_pRoot, QString::fromLocal8Bit("Îêíî ïîèñêà"),      IT_FIND);
-	m_pChart     = createTreeItem(m_pRoot, QString::fromLocal8Bit("Îêíî ãðàôèêîâ"),    IT_CHART);
-	m_pAnimation = createTreeItem(m_pRoot, QString::fromLocal8Bit("Îêíî àíèìàöèè"),    IT_FRAME);
+	m_pText      = createTreeItem(m_pRoot, "Ð˜ÑÑ…Ð¾Ð´Ð½Ñ‹Ð¹ Ñ‚ÐµÐºÑÑ‚",   IT_EDITOR);
+	m_pCompile   = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ ÐºÐ¾Ð¼Ð¿Ð¸Ð»ÑÑ†Ð¸Ð¸",  IT_BUILD);
+	m_pDebug     = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ Ð¾Ñ‚Ð»Ð°Ð´ÐºÐ¸",     IT_DEBUG);
+	m_pTrace     = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ Ñ‚Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ¸", IT_LOG);
+	m_pResult    = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð¾Ð²", IT_RESULT);
+	m_pSearch    = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ Ð¿Ð¾Ð¸ÑÐºÐ°",      IT_FIND);
+	m_pChart     = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ Ð³Ñ€Ð°Ñ„Ð¸ÐºÐ¾Ð²",    IT_CHART);
+	m_pAnimation = createTreeItem(m_pRoot, "ÐžÐºÐ½Ð¾ Ð°Ð½Ð¸Ð¼Ð°Ñ†Ð¸Ð¸",    IT_FRAME);
 
 	m_pRoot->setExpanded(true);
 
-	m_pPlainText = createTreeItem(m_pText, QString::fromLocal8Bit("Îáûêíîâåííûé òåêñò"), IT_EDITOR_PLAINTEXT);
-	m_pVariable  = createTreeItem(m_pText, QString::fromLocal8Bit("Ïåðåìåííàÿ"),         IT_EDITOR_IDENTIFICATOR);
-	m_pKeyword   = createTreeItem(m_pText, QString::fromLocal8Bit("Êëþ÷åâîå ñëîâî"),     IT_EDITOR_KEYWORD);
-	m_pFunction  = createTreeItem(m_pText, QString::fromLocal8Bit("Ôóíêöèÿ"),            IT_EDITOR_FUNCTION);
-	m_pTraceText = createTreeItem(m_pText, QString::fromLocal8Bit("Òðàññèðîâêà"),        IT_EDITOR_TRACE);
-	m_pColor     = createTreeItem(m_pText, QString::fromLocal8Bit("Öâåò"),               IT_EDITOR_COLOR);
-	m_pComment   = createTreeItem(m_pText, QString::fromLocal8Bit("Êîììåíòàðèè"),        IT_EDITOR_COMMENT);
-	m_pNumber    = createTreeItem(m_pText, QString::fromLocal8Bit("×èñëî"),              IT_EDITOR_NUMBER);
-	m_pString    = createTreeItem(m_pText, QString::fromLocal8Bit("Ñòðîêà"),             IT_EDITOR_STRING);
-	m_pOperator  = createTreeItem(m_pText, QString::fromLocal8Bit("Îïåðàòîð"),           IT_EDITOR_OPERATOR);
-	m_pCaret     = createTreeItem(m_pText, QString::fromLocal8Bit("Êàðåòêà"),            IT_EDITOR_CARET);
-	m_pSelection = createTreeItem(m_pText, QString::fromLocal8Bit("Âûäåëåíèå"),          IT_EDITOR_TEXTSELECTION);
-	m_pBookmark  = createTreeItem(m_pText, QString::fromLocal8Bit("Çàêëàäêà"),           IT_EDITOR_BOOKMARK);
-	m_pGroup     = createTreeItem(m_pText, QString::fromLocal8Bit("Ãðóïïà"),             IT_EDITOR_FOLD);
-	m_pError     = createTreeItem(m_pText, QString::fromLocal8Bit("Îøèáêà"),             IT_EDITOR_ERROR);
+	m_pPlainText = createTreeItem(m_pText, "ÐžÐ±Ñ‹ÐºÐ½Ð¾Ð²ÐµÐ½Ð½Ñ‹Ð¹ Ñ‚ÐµÐºÑÑ‚", IT_EDITOR_PLAINTEXT);
+	m_pVariable  = createTreeItem(m_pText, "ÐŸÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð°Ñ",         IT_EDITOR_IDENTIFICATOR);
+	m_pKeyword   = createTreeItem(m_pText, "ÐšÐ»ÑŽÑ‡ÐµÐ²Ð¾Ðµ ÑÐ»Ð¾Ð²Ð¾",     IT_EDITOR_KEYWORD);
+	m_pFunction  = createTreeItem(m_pText, "Ð¤ÑƒÐ½ÐºÑ†Ð¸Ñ",            IT_EDITOR_FUNCTION);
+	m_pTraceText = createTreeItem(m_pText, "Ð¢Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ°",        IT_EDITOR_TRACE);
+	m_pColor     = createTreeItem(m_pText, "Ð¦Ð²ÐµÑ‚",               IT_EDITOR_COLOR);
+	m_pComment   = createTreeItem(m_pText, "ÐšÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð¸",        IT_EDITOR_COMMENT);
+	m_pNumber    = createTreeItem(m_pText, "Ð§Ð¸ÑÐ»Ð¾",              IT_EDITOR_NUMBER);
+	m_pString    = createTreeItem(m_pText, "Ð¡Ñ‚Ñ€Ð¾ÐºÐ°",             IT_EDITOR_STRING);
+	m_pOperator  = createTreeItem(m_pText, "ÐžÐ¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€",           IT_EDITOR_OPERATOR);
+	m_pCaret     = createTreeItem(m_pText, "ÐšÐ°Ñ€ÐµÑ‚ÐºÐ°",            IT_EDITOR_CARET);
+	m_pSelection = createTreeItem(m_pText, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ",          IT_EDITOR_TEXTSELECTION);
+	m_pBookmark  = createTreeItem(m_pText, "Ð—Ð°ÐºÐ»Ð°Ð´ÐºÐ°",           IT_EDITOR_BOOKMARK);
+	m_pGroup     = createTreeItem(m_pText, "Ð“Ñ€ÑƒÐ¿Ð¿Ð°",             IT_EDITOR_FOLD);
+	m_pError     = createTreeItem(m_pText, "ÐžÑˆÐ¸Ð±ÐºÐ°",             IT_EDITOR_ERROR);
 
-	m_pTextCompile      = createTreeItem(m_pCompile, QString::fromLocal8Bit("Òåêñò"),             IT_BUILD_TEXT);
-	m_pSelectedString   = createTreeItem(m_pCompile, QString::fromLocal8Bit("Âûäåëåííàÿ ñòðîêà"), IT_BUILD_SELECTEDLINE);
-	m_pCaretCompile     = createTreeItem(m_pCompile, QString::fromLocal8Bit("Êàðåòêà"),           IT_EDITOR_CARET);
-	m_pSelectionCompile = createTreeItem(m_pCompile, QString::fromLocal8Bit("Âûäåëåíèå"),         IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkCompile  = createTreeItem(m_pCompile, QString::fromLocal8Bit("Çàêëàäêà"),          IT_EDITOR_BOOKMARK);
+	m_pTextCompile      = createTreeItem(m_pCompile, "Ð¢ÐµÐºÑÑ‚",             IT_BUILD_TEXT);
+	m_pSelectedString   = createTreeItem(m_pCompile, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð½Ð°Ñ ÑÑ‚Ñ€Ð¾ÐºÐ°", IT_BUILD_SELECTEDLINE);
+	m_pCaretCompile     = createTreeItem(m_pCompile, "ÐšÐ°Ñ€ÐµÑ‚ÐºÐ°",           IT_EDITOR_CARET);
+	m_pSelectionCompile = createTreeItem(m_pCompile, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ",         IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkCompile  = createTreeItem(m_pCompile, "Ð—Ð°ÐºÐ»Ð°Ð´ÐºÐ°",          IT_EDITOR_BOOKMARK);
 
-	m_pTextDebug      = createTreeItem(m_pDebug, QString::fromLocal8Bit("Òåêñò"),     IT_BUILD_TEXT);
-	m_pCaretDebug     = createTreeItem(m_pDebug, QString::fromLocal8Bit("Êàðåòêà"),   IT_EDITOR_CARET);
-	m_pSelectionDebug = createTreeItem(m_pDebug, QString::fromLocal8Bit("Âûäåëåíèå"), IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkDebug  = createTreeItem(m_pDebug, QString::fromLocal8Bit("Çàêëàäêà"),  IT_EDITOR_BOOKMARK);
+	m_pTextDebug      = createTreeItem(m_pDebug, "Ð¢ÐµÐºÑÑ‚",     IT_BUILD_TEXT);
+	m_pCaretDebug     = createTreeItem(m_pDebug, "ÐšÐ°Ñ€ÐµÑ‚ÐºÐ°",   IT_EDITOR_CARET);
+	m_pSelectionDebug = createTreeItem(m_pDebug, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ", IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkDebug  = createTreeItem(m_pDebug, "Ð—Ð°ÐºÐ»Ð°Ð´ÐºÐ°",  IT_EDITOR_BOOKMARK);
 
-	m_pES     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Ñëóæåáíîå ñîáûòèå (ES)"),                         IT_LOG_ES);
-	m_pEB     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Íà÷àëî äåéñòâèÿ (EB)"),                           IT_LOG_EB);
-	m_pEF     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Îêîí÷àíèå äåéñòâèÿ (EF)"),                        IT_LOG_EF);
-	m_pEI     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Íåðåãóëÿðíîå ñîáûòèå (EI)"),                      IT_LOG_EI);
-	m_pER     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Ïðîäóêöèîííîå ïðàâèëî (ER)"),                     IT_LOG_ER);
-	m_pRC     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Ñîçäàíèå ðåñóðñà (RC)"),                          IT_LOG_RC);
-	m_pRE     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Óäàëåíèå ðåñóðñà (RE)"),                          IT_LOG_RE);
-	m_pRK     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Èçìåíåíèå ñîñòîÿíèÿ ðåñóðñà (RK)"),               IT_LOG_RK);
-	m_pV      = createTreeItem(m_pTrace, QString::fromLocal8Bit("Òðàññèðîâêà èíäåêñà (V)"),                        IT_LOG_V);
-	m_pStatus = createTreeItem(m_pTrace, QString::fromLocal8Bit("Ñòàòóñ îêîí÷àíèÿ ìîäåëèðîâàíèÿ ($Status)"),       IT_LOG_STATUS);
-	m_pDPS    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Ñòàòèñòèêà ïî ïîèñêó íà ãðàôå (DPS)"),            IT_LOG_DPS);
-	m_pSB     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Íà÷àëî ïîèñêà (SB)"),                             IT_LOG_SB);
-	m_pSO     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Òðàññèðîâêà ðàñêðûâàåìîé âåðøèíû (SO)"),          IT_LOG_SO);
-	m_pSTN    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Ïðèçíàê âåðøèíû (STN)"),                          IT_LOG_STN);
-	m_pSTD    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Ïðèçíàê âåðøèíû (STD)"),                          IT_LOG_STD);
-	m_pSTR    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Ïðèçíàê âåðøèíû (STR)"),                          IT_LOG_STR);
-	m_pSRC    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Ñîçäàíèå ðåñóðñà (ïðè ïîèñêå) (SRC)"),            IT_LOG_SRC);
-	m_pSRE    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Óäàëåíèå ðåñóðñà (ïðè ïîèñêå) (SRE)"),            IT_LOG_SRE);
-	m_pSRK    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Èçìåíåíèå ñîñòîÿíèÿ ðåñóðñà (ïðè ïîèñêå) (SRK)"), IT_LOG_SRK);
-	m_pSD     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Òðàññèðîâêà ðåøåíèÿ (SD)"),                       IT_LOG_SD);
-	m_pSES    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Çàâåðøåíèå ïîèñêà (SES)"),                        IT_LOG_SES);
-	m_pSEN    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Çàâåðøåíèå ïîèñêà (SEN)"),                        IT_LOG_SEN);
-	m_pSEM    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Çàâåðøåíèå ïîèñêà (SEM)"),                        IT_LOG_SEM);
-	m_pSEF    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Çàâåðøåíèå ïîèñêà (SEF)"),                        IT_LOG_SEF);
-	m_pSEU    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Çàâåðøåíèå ïîèñêà (SEU)"),                        IT_LOG_SEU);
+	m_pES     = createTreeItem(m_pTrace, "Ð¡Ð»ÑƒÐ¶ÐµÐ±Ð½Ð¾Ðµ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ðµ (ES)",                         IT_LOG_ES);
+	m_pEB     = createTreeItem(m_pTrace, "ÐÐ°Ñ‡Ð°Ð»Ð¾ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ (EB)",                           IT_LOG_EB);
+	m_pEF     = createTreeItem(m_pTrace, "ÐžÐºÐ¾Ð½Ñ‡Ð°Ð½Ð¸Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ (EF)",                        IT_LOG_EF);
+	m_pEI     = createTreeItem(m_pTrace, "ÐÐµÑ€ÐµÐ³ÑƒÐ»ÑÑ€Ð½Ð¾Ðµ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ðµ (EI)",                      IT_LOG_EI);
+	m_pER     = createTreeItem(m_pTrace, "ÐŸÑ€Ð¾Ð´ÑƒÐºÑ†Ð¸Ð¾Ð½Ð½Ð¾Ðµ Ð¿Ñ€Ð°Ð²Ð¸Ð»Ð¾ (ER)",                     IT_LOG_ER);
+	m_pRC     = createTreeItem(m_pTrace, "Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ñ€ÐµÑÑƒÑ€ÑÐ° (RC)",                          IT_LOG_RC);
+	m_pRE     = createTreeItem(m_pTrace, "Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ Ñ€ÐµÑÑƒÑ€ÑÐ° (RE)",                          IT_LOG_RE);
+	m_pRK     = createTreeItem(m_pTrace, "Ð˜Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ñ Ñ€ÐµÑÑƒÑ€ÑÐ° (RK)",               IT_LOG_RK);
+	m_pV      = createTreeItem(m_pTrace, "Ð¢Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ° Ð¸Ð½Ð´ÐµÐºÑÐ° (V)",                        IT_LOG_V);
+	m_pStatus = createTreeItem(m_pTrace, "Ð¡Ñ‚Ð°Ñ‚ÑƒÑ Ð¾ÐºÐ¾Ð½Ñ‡Ð°Ð½Ð¸Ñ Ð¼Ð¾Ð´ÐµÐ»Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ ($Status)",       IT_LOG_STATUS);
+	m_pDPS    = createTreeItem(m_pTrace, "Ð¡Ñ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÐ° Ð¿Ð¾ Ð¿Ð¾Ð¸ÑÐºÑƒ Ð½Ð° Ð³Ñ€Ð°Ñ„Ðµ (DPS)",            IT_LOG_DPS);
+	m_pSB     = createTreeItem(m_pTrace, "ÐÐ°Ñ‡Ð°Ð»Ð¾ Ð¿Ð¾Ð¸ÑÐºÐ° (SB)",                             IT_LOG_SB);
+	m_pSO     = createTreeItem(m_pTrace, "Ð¢Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ° Ñ€Ð°ÑÐºÑ€Ñ‹Ð²Ð°ÐµÐ¼Ð¾Ð¹ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹ (SO)",          IT_LOG_SO);
+	m_pSTN    = createTreeItem(m_pTrace, "ÐŸÑ€Ð¸Ð·Ð½Ð°Ðº Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹ (STN)",                          IT_LOG_STN);
+	m_pSTD    = createTreeItem(m_pTrace, "ÐŸÑ€Ð¸Ð·Ð½Ð°Ðº Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹ (STD)",                          IT_LOG_STD);
+	m_pSTR    = createTreeItem(m_pTrace, "ÐŸÑ€Ð¸Ð·Ð½Ð°Ðº Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹ (STR)",                          IT_LOG_STR);
+	m_pSRC    = createTreeItem(m_pTrace, "Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ñ€ÐµÑÑƒÑ€ÑÐ° (Ð¿Ñ€Ð¸ Ð¿Ð¾Ð¸ÑÐºÐµ) (SRC)",            IT_LOG_SRC);
+	m_pSRE    = createTreeItem(m_pTrace, "Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ Ñ€ÐµÑÑƒÑ€ÑÐ° (Ð¿Ñ€Ð¸ Ð¿Ð¾Ð¸ÑÐºÐµ) (SRE)",            IT_LOG_SRE);
+	m_pSRK    = createTreeItem(m_pTrace, "Ð˜Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ñ Ñ€ÐµÑÑƒÑ€ÑÐ° (Ð¿Ñ€Ð¸ Ð¿Ð¾Ð¸ÑÐºÐµ) (SRK)", IT_LOG_SRK);
+	m_pSD     = createTreeItem(m_pTrace, "Ð¢Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ° Ñ€ÐµÑˆÐµÐ½Ð¸Ñ (SD)",                       IT_LOG_SD);
+	m_pSES    = createTreeItem(m_pTrace, "Ð—Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð¸ÑÐºÐ° (SES)",                        IT_LOG_SES);
+	m_pSEN    = createTreeItem(m_pTrace, "Ð—Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð¸ÑÐºÐ° (SEN)",                        IT_LOG_SEN);
+	m_pSEM    = createTreeItem(m_pTrace, "Ð—Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð¸ÑÐºÐ° (SEM)",                        IT_LOG_SEM);
+	m_pSEF    = createTreeItem(m_pTrace, "Ð—Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð¸ÑÐºÐ° (SEF)",                        IT_LOG_SEF);
+	m_pSEU    = createTreeItem(m_pTrace, "Ð—Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð¸ÑÐºÐ° (SEU)",                        IT_LOG_SEU);
 
-	m_pPlainTextResult = createTreeItem(m_pResult, QString::fromLocal8Bit("Èñõîäíûé òåêñò"), IT_EDITOR_PLAINTEXT);
-	m_pVariableResult  = createTreeItem(m_pResult, QString::fromLocal8Bit("Ïåðåìåííàÿ"),     IT_EDITOR_IDENTIFICATOR);
-	m_pKeywordResult   = createTreeItem(m_pResult, QString::fromLocal8Bit("Êëþ÷åâîå ñëîâî"), IT_EDITOR_KEYWORD);
-	m_pNumberResult    = createTreeItem(m_pResult, QString::fromLocal8Bit("×èñëî"),          IT_EDITOR_NUMBER);
-	m_pStringResult    = createTreeItem(m_pResult, QString::fromLocal8Bit("Ñòðîêà"),         IT_EDITOR_STRING);
-	m_pOperatorResult  = createTreeItem(m_pResult, QString::fromLocal8Bit("Îïåðàòîð"),       IT_EDITOR_OPERATOR);
-	m_pCaretResult     = createTreeItem(m_pResult, QString::fromLocal8Bit("Êàðåòêà"),        IT_EDITOR_CARET);
-	m_pSelectionResult = createTreeItem(m_pResult, QString::fromLocal8Bit("Âûäåëåíèå"),      IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkResult  = createTreeItem(m_pResult, QString::fromLocal8Bit("Çàêëàäêà"),       IT_EDITOR_BOOKMARK);
+	m_pPlainTextResult = createTreeItem(m_pResult, "Ð˜ÑÑ…Ð¾Ð´Ð½Ñ‹Ð¹ Ñ‚ÐµÐºÑÑ‚", IT_EDITOR_PLAINTEXT);
+	m_pVariableResult  = createTreeItem(m_pResult, "ÐŸÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð°Ñ",     IT_EDITOR_IDENTIFICATOR);
+	m_pKeywordResult   = createTreeItem(m_pResult, "ÐšÐ»ÑŽÑ‡ÐµÐ²Ð¾Ðµ ÑÐ»Ð¾Ð²Ð¾", IT_EDITOR_KEYWORD);
+	m_pNumberResult    = createTreeItem(m_pResult, "Ð§Ð¸ÑÐ»Ð¾",          IT_EDITOR_NUMBER);
+	m_pStringResult    = createTreeItem(m_pResult, "Ð¡Ñ‚Ñ€Ð¾ÐºÐ°",         IT_EDITOR_STRING);
+	m_pOperatorResult  = createTreeItem(m_pResult, "ÐžÐ¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€",       IT_EDITOR_OPERATOR);
+	m_pCaretResult     = createTreeItem(m_pResult, "ÐšÐ°Ñ€ÐµÑ‚ÐºÐ°",        IT_EDITOR_CARET);
+	m_pSelectionResult = createTreeItem(m_pResult, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ",      IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkResult  = createTreeItem(m_pResult, "Ð—Ð°ÐºÐ»Ð°Ð´ÐºÐ°",       IT_EDITOR_BOOKMARK);
 
-	m_pTextSearch           = createTreeItem(m_pSearch, QString::fromLocal8Bit("Òåêñò"),             IT_BUILD_TEXT);
-	m_pStringSearch         = createTreeItem(m_pSearch, QString::fromLocal8Bit("Ñòðîêà äëÿ ïîèñêà"), IT_FIND_SEARCHTEXT);
-	m_pSelectedStringSearch = createTreeItem(m_pSearch, QString::fromLocal8Bit("Âûäåëåííàÿ ñòðîêà"), IT_BUILD_SELECTEDLINE);
-	m_pCaretSearch          = createTreeItem(m_pSearch, QString::fromLocal8Bit("Êàðåòêà"),           IT_EDITOR_CARET);
-	m_pSelectionSearch      = createTreeItem(m_pSearch, QString::fromLocal8Bit("Âûäåëåíèå"),         IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkSearch       = createTreeItem(m_pSearch, QString::fromLocal8Bit("Çàêëàäêà"),          IT_EDITOR_BOOKMARK);
+	m_pTextSearch           = createTreeItem(m_pSearch, "Ð¢ÐµÐºÑÑ‚",             IT_BUILD_TEXT);
+	m_pStringSearch         = createTreeItem(m_pSearch, "Ð¡Ñ‚Ñ€Ð¾ÐºÐ° Ð´Ð»Ñ Ð¿Ð¾Ð¸ÑÐºÐ°", IT_FIND_SEARCHTEXT);
+	m_pSelectedStringSearch = createTreeItem(m_pSearch, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð½Ð°Ñ ÑÑ‚Ñ€Ð¾ÐºÐ°", IT_BUILD_SELECTEDLINE);
+	m_pCaretSearch          = createTreeItem(m_pSearch, "ÐšÐ°Ñ€ÐµÑ‚ÐºÐ°",           IT_EDITOR_CARET);
+	m_pSelectionSearch      = createTreeItem(m_pSearch, "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ",         IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkSearch       = createTreeItem(m_pSearch, "Ð—Ð°ÐºÐ»Ð°Ð´ÐºÐ°",          IT_EDITOR_BOOKMARK);
 
-	m_pAxis   = createTreeItem(m_pChart, QString::fromLocal8Bit("Îñü"),       IT_CHART_AXIS);
-	m_pTitle  = createTreeItem(m_pChart, QString::fromLocal8Bit("Çàãîëîâîê"), IT_CHART_TITLE);
-	m_pLegend = createTreeItem(m_pChart, QString::fromLocal8Bit("Ëåãåíäà"),   IT_CHART_LEGEND);
-	m_pGraph  = createTreeItem(m_pChart, QString::fromLocal8Bit("Ãðàôèê"),    IT_CHART_CHART);
-	m_pTime   = createTreeItem(m_pChart, QString::fromLocal8Bit("Âðåìÿ"),     IT_CHART_TIME);
+	m_pAxis   = createTreeItem(m_pChart, "ÐžÑÑŒ",       IT_CHART_AXIS);
+	m_pTitle  = createTreeItem(m_pChart, "Ð—Ð°Ð³Ð¾Ð»Ð¾Ð²Ð¾Ðº", IT_CHART_TITLE);
+	m_pLegend = createTreeItem(m_pChart, "Ð›ÐµÐ³ÐµÐ½Ð´Ð°",   IT_CHART_LEGEND);
+	m_pGraph  = createTreeItem(m_pChart, "Ð“Ñ€Ð°Ñ„Ð¸Ðº",    IT_CHART_CHART);
+	m_pTime   = createTreeItem(m_pChart, "Ð’Ñ€ÐµÐ¼Ñ",     IT_CHART_TIME);
 
-	m_pEdgingColor     = createTreeItem(m_pAnimation, QString::fromLocal8Bit("Öâåò îêàíòîâêè"),               IT_FRAME_BORDER);
-	m_pBackgroundColor = createTreeItem(m_pAnimation, QString::fromLocal8Bit("Öâåò ôîíà çà ïðåäåëàìè êàäðà"), IT_FRAME_BACKGROUND);
+	m_pEdgingColor     = createTreeItem(m_pAnimation, "Ð¦Ð²ÐµÑ‚ Ð¾ÐºÐ°Ð½Ñ‚Ð¾Ð²ÐºÐ¸",               IT_FRAME_BORDER);
+	m_pBackgroundColor = createTreeItem(m_pAnimation, "Ð¦Ð²ÐµÑ‚ Ñ„Ð¾Ð½Ð° Ð·Ð° Ð¿Ñ€ÐµÐ´ÐµÐ»Ð°Ð¼Ð¸ ÐºÐ°Ð´Ñ€Ð°", IT_FRAME_BACKGROUND);
 
 	treeWidget->setCurrentItem(m_pRoot);
 }

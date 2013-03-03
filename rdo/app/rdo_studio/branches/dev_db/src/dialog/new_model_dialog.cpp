@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2013
   \file      new_model_dialog.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      04.01.2013
   \brief     
   \indent    4T
@@ -10,8 +10,10 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtCore/qdir.h>
-#include <QtWidgets/qfiledialog.h>
+#include "utils/warning_disable.h"
+#include <QDir>
+#include <QFileDialog>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dialog/new_model_dialog.h"
 // --------------------------------------------------------------------------------
@@ -59,7 +61,7 @@ void NewModelDialog::updateUI()
 	rbool error = true;
 	if (modelName->text().isEmpty())
 	{
-		labelError->setText(QString::fromStdWString(L"Необходимо указать имя модели"));
+		labelError->setText("РќРµРѕР±С…РѕРґРёРјРѕ СѓРєР°Р·Р°С‚СЊ РёРјСЏ РјРѕРґРµР»Рё");
 	}
 	else
 	{
@@ -68,14 +70,14 @@ void NewModelDialog::updateUI()
 		if (fileInfo.exists())
 		{
 			QString info = fileInfo.isDir()
-				? QString::fromStdWString(L"Такая директория уже существует: '%1'")
-				: QString::fromStdWString(L"Такой файл уже существует: '%1'");
+				? "РўР°РєР°СЏ РґРёСЂРµРєС‚РѕСЂРёСЏ СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚: '%1'"
+				: "РўР°РєРѕР№ С„Р°Р№Р» СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚: '%1'";
 
 			labelError->setText(info.arg(fullName));
 		}
 		else
 		{
-			labelError->setText(QString::fromStdWString(L"Будет создана директория: '%1'").arg(fullName));
+			labelError->setText(QString("Р‘СѓРґРµС‚ СЃРѕР·РґР°РЅР° РґРёСЂРµРєС‚РѕСЂРёСЏ: '%1'").arg(fullName));
 			error = false;
 		}
 	}
@@ -89,7 +91,7 @@ void NewModelDialog::onPathButtonClicked()
 {
 	QString path = QFileDialog::getExistingDirectory(
 		this,
-		QString::fromStdWString(L"Выбор директории для модели"),
+		"Р’С‹Р±РѕСЂ РґРёСЂРµРєС‚РѕСЂРёРё РґР»СЏ РјРѕРґРµР»Рё",
 		modelPath->text(),
 		QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks
 	);

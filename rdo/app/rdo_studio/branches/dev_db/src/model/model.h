@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      app/rdo_studio/src/model/model.h
-  \author    ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
+  \author    –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -11,8 +11,10 @@
 #define _RDO_STUDIO_MODEL_MODEL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <boost/optional.hpp>
-#include <QtCore/qobject.h>
+#include <QObject>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "kernel/rdothread.h"
@@ -21,27 +23,23 @@
 #include "app/rdo_studio/src/application.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioModel
-// --------------------------------------------------------------------------------
-namespace rdoEditor {
-	class RDOEditorTabCtrl;
-}
+namespace rdo { namespace gui { namespace model {
 
-class RDOStudioModelView;
+class TabCtrl;
+class View;
 
-class RDOStudioModel
+class Model
 	: public QObject
 	, public RDOThreadGUI
 	, public IInit
 {
 Q_OBJECT
 
-friend class RDOThreadStudioGUI;
+friend class ThreadStudioGUI;
 
 public:
-	RDOStudioModel();
-	virtual ~RDOStudioModel();
+	Model();
+	virtual ~Model();
 
 	rbool openModel (CREF(QString) modelName = QString());
 	rbool runModel  ();
@@ -71,13 +69,13 @@ public:
 	void          closeAllFrame   ();
 	rbool         hasModel        () const;
 
-	 PTR(rdoEditor::RDOEditorTabCtrl) getTab();
-	CPTR(rdoEditor::RDOEditorTabCtrl) getTab() const;
+	 PTR(TabCtrl) getTab();
+	CPTR(TabCtrl) getTab() const;
 
 	void  updateStyleOfAllModel() const;
 	rbool isPrevModelClosed    () const;
 
-	REF(RDOStudioFrameManager) getFrameManager();
+	REF(rdo::gui::frame::Manager) getFrameManager();
 	void onChangeFrame(ruint index);
 
 protected:
@@ -91,11 +89,11 @@ private:
 		BS_ERROR
 	};
 
-	RDOStudioFrameManager                  m_frameManager;
-	boost::optional<ruint>                 m_templateIndex;
-	rbool                                  m_GUI_HAS_MODEL;
-	rbool                                  m_GUI_CAN_RUN;
-	rbool                                  m_GUI_IS_RUNNING;
+	rdo::gui::frame::Manager  m_frameManager;
+	boost::optional<ruint>    m_templateIndex;
+	rbool                     m_GUI_HAS_MODEL;
+	rbool                     m_GUI_CAN_RUN;
+	rbool                     m_GUI_IS_RUNNING;
 
 	void setHasModel  (rbool value);
 	void setCanRun    (rbool value);
@@ -125,7 +123,7 @@ private:
 	rdo::runtime::RunTimeMode              m_runtimeMode;
 	rdo::simulation::report::RDOExitCode   m_exitCode;
 	mutable rbool                          m_modify;
-	RDOStudioModelView*                    m_pModelView;
+	View*                                  m_pView;
 	QString                                m_name;
 
 	rbool newModel  (CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex);
@@ -192,7 +190,9 @@ private slots:
 	void onEditModifyChanged(bool value);
 };
 
+}}} // namespace rdo::gui::model
+
 // --------------------------------------------------------------------------------
-extern PTR(RDOStudioModel) g_pModel;
+extern rdo::gui::model::Model* g_pModel;
 
 #endif // _RDO_STUDIO_MODEL_MODEL_H_

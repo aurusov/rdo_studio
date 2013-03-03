@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      tracer_logger_main_wnd.h
-  \authors   Захаров Павел
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      12.03.2003
   \brief     
   \indent    4T
@@ -12,7 +12,9 @@
 #define _RDO_STUDIO_TRACER_LOGGER_MAIN_WND_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qabstractscrollarea.h>
+#include "utils/warning_disable.h"
+#include <QAbstractScrollArea>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/logger/tracer_logger_view.h"
 // --------------------------------------------------------------------------------

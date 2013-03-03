@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      frame_tree_ctrl.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      28.03.2003
-  \brief     Дерево кадров анимации
+  \brief     Р”РµСЂРµРІРѕ РєР°РґСЂРѕРІ Р°РЅРёРјР°С†РёРё
   \indent    4T
 */
 
@@ -11,20 +11,24 @@
 #define _RDO_STUDIO_FRAME_TREE_CTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qtreewidget.h>
+#include "utils/warning_disable.h"
+#include <QTreeWidget>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
 
-class RDOStudioFrameTreeCtrl
+namespace rdo { namespace gui { namespace frame {
+
+class TreeCtrl
 	: public QTreeWidget
 	, public ActionActivator
 {
 Q_OBJECT
 
 public:
-	RDOStudioFrameTreeCtrl(PTR(QWidget) pParent);
-	virtual ~RDOStudioFrameTreeCtrl();
+	TreeCtrl(PTR(QWidget) pParent);
+	virtual ~TreeCtrl();
 
 	PTR(QTreeWidgetItem) insertFrame(CREF(QString) name);
 
@@ -42,5 +46,7 @@ private:
 private slots:
 	void onHelpContext();
 };
+
+}}} // namespace rdo::gui::frame
 
 #endif // _RDO_STUDIO_FRAME_TREE_CTRL_H_

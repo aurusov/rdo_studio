@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      chart_view_style.h
-  \author    Çàõàðîâ Ïàâåë
+  \author    Ð—Ð°Ñ…Ð°Ñ€Ð¾Ð² ÐŸÐ°Ð²ÐµÐ»
   \date      28.03.2003
   \brief     
   \indent    4T
@@ -20,7 +20,7 @@ namespace rdo { namespace gui { namespace tracer {
 // --------------------------------------------------------------------------------
 // -------------------- ChartViewTheme
 // --------------------------------------------------------------------------------
-class ChartViewTheme: public rdoStyle::RDOStyleTheme
+class ChartViewTheme: public style::StyleTheme
 {
 public:
 	ChartViewTheme();
@@ -39,8 +39,8 @@ public:
 	QColor chartBgColor;
 	QColor timeBgColor;
 
-	rdoStyle::RDOStyleFont::style titleStyle;
-	rdoStyle::RDOStyleFont::style legendStyle;
+	style::StyleFont::style titleStyle;
+	style::StyleFont::style legendStyle;
 
 	static ChartViewTheme getDefaultTheme();
 };
@@ -75,7 +75,7 @@ QSettings& operator>> (QSettings& settings,       ChartViewFontsTicks& fonts_tic
 // --------------------------------------------------------------------------------
 // -------------------- ChartViewStyle
 // --------------------------------------------------------------------------------
-class ChartViewStyle: public rdoStyle::RDOStyleWithTheme
+class ChartViewStyle: public style::StyleWithTheme
 {
 public:
 	ChartViewStyle();

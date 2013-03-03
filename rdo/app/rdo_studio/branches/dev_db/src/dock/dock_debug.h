@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      dock_debug.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      03.10.2012
   \brief     
   \indent    4T
@@ -13,13 +13,13 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_focusable.h"
-#include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
+#include "app/rdo_studio/src/editor/debug_edit.h"
 // --------------------------------------------------------------------------------
 
 class DockDebug: public DockFocusable
 {
 public:
-	typedef rdoEditCtrl::RDODebugEdit context_type;
+	typedef rdo::gui::editor::Debug context_type;
 
 	DockDebug(PTR(QWidget) pParent);
 	virtual ~DockDebug();

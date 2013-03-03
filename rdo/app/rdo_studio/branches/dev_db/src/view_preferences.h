@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      app/rdo_studio/src/view_preferences.h
-  \author    Романов Ярослав (robot.xet@gmail.com)
+  \author    Р РѕРјР°РЅРѕРІ РЇСЂРѕСЃР»Р°РІ (robot.xet@gmail.com)
   \date      27.11.2012
   \brief     
   \indent    4T
@@ -11,19 +11,21 @@
 #define _RDO_STUDIO_VIEW_PREFERENCES_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qdialog.h>
-#include <QtWidgets/qcolordialog.h>
-// ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/warning_disable.h"
+#include <QDialog>
+#include <QColorDialog>
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_view_preferenses.h"
-#include "app/rdo_studio/rdo_edit/rdoeditoredit.h"
-#include "app/rdo_studio/edit_ctrls/rdobuildedit.h"
-#include "app/rdo_studio/edit_ctrls/rdodebugedit.h"
-#include "app/rdo_studio/edit_ctrls/rdofindedit.h"
-#include "app/rdo_studio/rdo_edit/rdoeditoreditstyle.h"
-#include "app/rdo_studio/rdo_edit/rdoeditorresultsstyle.h"
-#include "app/rdo_studio/edit_ctrls/rdobuildeditstyle.h"
-#include "app/rdo_studio/edit_ctrls/rdofindeditstyle.h"
-#include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
+#include "utils/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio/src/editor/model_edit.h"
+#include "app/rdo_studio/src/editor/build_edit.h"
+#include "app/rdo_studio/src/editor/debug_edit.h"
+#include "app/rdo_studio/src/editor/find_edit.h"
+#include "app/rdo_studio/src/editor/model_edit_style.h"
+#include "app/rdo_studio/src/editor/results_edit_style.h"
+#include "app/rdo_studio/src/editor/build_edit_style.h"
+#include "app/rdo_studio/src/editor/find_edit_style.h"
+#include "app/rdo_studio/src/editor/results_edit.h"
 #include "app/rdo_studio/src/tracer/logger/tracer_logger_main_wnd.h"
 #include "app/rdo_studio/src/frame/frame_view.h"
 #include "app/rdo_studio/src/frame/frame_options_view.h"
@@ -164,14 +166,14 @@ private:
 		StyleItem* item;
 		int identificator;
 
-		rdoStyle::RDOStyleFont::style& font_style;
+		rdo::gui::style::StyleFont::style& font_style;
 
 		QColor& fg_color;
 		QColor& bg_color;
 		QColor& fg_disable_color;
 		QColor& bg_disable_color;
 
-		StyleProperty(StyleItem* item, int identificator, rdoStyle::RDOStyleFont::style& font_style, QColor& fg_color, QColor& bg_color, QColor& fg_disable_color = null_fg_color, QColor& bg_disable_color = null_bg_color)
+		StyleProperty(StyleItem* item, int identificator, rdo::gui::style::StyleFont::style& font_style, QColor& fg_color, QColor& bg_color, QColor& fg_disable_color = null_fg_color, QColor& bg_disable_color = null_bg_color)
 			: item(item)
 			, identificator(identificator)
 			, font_style(font_style)
@@ -187,19 +189,19 @@ private:
 	class StyleItem
 	{
 	public:
-		ItemType                       type;
-		int&                           font_size;
-		tstring&                       font_name;
-		rbool&                         wordwrap;
-		rbool&                         horzscrollbar;
-		rbool&                         warning;
-		rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle;
-		rdoEditor::RDOFoldStyle&       foldstyle;
-		rbool&                         commentfold;
+		ItemType                                type;
+		int&                                    font_size;
+		tstring&                                font_name;
+		rbool&                                  wordwrap;
+		rbool&                                  horzscrollbar;
+		rbool&                                  warning;
+		rdo::gui::editor::EditTheme::Bookmark&  bookmarkstyle;
+		rdo::gui::editor::ModelTheme::Fold&     foldstyle;
+		rbool&                                  commentfold;
 
 		PropertyList properties;
 
-		StyleItem(ItemType type, int& font_size, tstring& font_name, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
+		StyleItem(ItemType type, int& font_size, tstring& font_name, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::EditTheme::Bookmark& bookmarkstyle = null_bookmarkstyle, rdo::gui::editor::ModelTheme::Fold& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
 			: type(type)
 			, font_size(font_size)
 			, font_name(font_name)
@@ -221,47 +223,45 @@ private:
 	QColor      all_fg_color;
 	QColor      all_bg_color;
 
-	rdoStyle::RDOStyleFont::style        null_font_style;
-	static rbool                         null_wordwrap;
-	static rbool                         null_horzscrollbar;
-	static rbool                         null_warning;
-	static rbool                         null_commentfold;
-	static rdoEditCtrl::RDOBookmarkStyle null_bookmarkstyle;
-	static rdoEditor::RDOFoldStyle       null_foldstyle;
-	static QColor                        null_fg_color;
-	static QColor                        null_bg_color;
+	rdo::gui::style::StyleFont::style             null_font_style;
+	static rbool                                  null_wordwrap;
+	static rbool                                  null_horzscrollbar;
+	static rbool                                  null_warning;
+	static rbool                                  null_commentfold;
+	static rdo::gui::editor::EditTheme::Bookmark  null_bookmarkstyle;
+	static rdo::gui::editor::ModelTheme::Fold     null_foldstyle;
+	static QColor                                 null_fg_color;
+	static QColor                                 null_bg_color;
 
 	rbool m_setup;
 	rbool m_checkInFuture;
 	rbool m_openLastProject;
 	rbool m_showFullName;
 
-	rdoEditor::RDOEditorEditStyle    style_editor;
-	rdoEditCtrl::RDOBuildEditStyle   style_build;
-	rdoEditCtrl::RDOBaseEditStyle    style_debug;
-	rdo::gui::tracer::LogStyle       style_trace;
-	rdoEditor::RDOEditorResultsStyle style_results;
-	rdoEditCtrl::RDOFindEditStyle    style_find;
-	rdo::gui::tracer::ChartViewStyle style_chart;
-	RDOStudioFrameStyle              style_frame;
+	rdo::gui::editor::ModelStyle      style_editor;
+	rdo::gui::editor::BuildStyle      style_build;
+	rdo::gui::editor::EditStyle       style_debug;
+	rdo::gui::editor::ResultsStyle    style_results;
+	rdo::gui::editor::FindStyle       style_find;
+	rdo::gui::tracer::LogStyle        style_trace;
+	rdo::gui::tracer::ChartViewStyle  style_chart;
+	rdo::gui::frame::FrameStyle       style_frame;
 
-	PTR(rdoEditor::RDOEditorEdit)     preview_editor;
-	PTR(rdoEditCtrl::RDOBuildEdit)    preview_build;
-	PTR(rdoEditCtrl::RDODebugEdit)    preview_debug;
-	PTR(rdo::gui::tracer::LogMainWnd) preview_trace;
-	PTR(rdoEditor::RDOEditorResults)  preview_results;
-	PTR(rdoEditCtrl::RDOFindEdit)     preview_find;
-
-	PTR(rdo::gui::tracer::ChartDoc)     preview_chart_doc;
-	PTR(rdo::gui::tracer::ChartView)    preview_chart;
-	std::vector<rdo::gui::tracer::Time> preview_times;
-	rdo::gui::tracer::LPSerie           preview_serie;
-
-	PTR(FrameOptionsView)             preview_frame;
+	PTR(rdo::gui::editor::Model)         preview_editor;
+	PTR(rdo::gui::editor::Build)         preview_build;
+	PTR(rdo::gui::editor::Debug)         preview_debug;
+	PTR(rdo::gui::editor::Results)       preview_results;
+	PTR(rdo::gui::editor::Find)          preview_find;
+	PTR(rdo::gui::tracer::LogMainWnd)    preview_trace;
+	PTR(rdo::gui::tracer::ChartDoc)      preview_chart_doc;
+	PTR(rdo::gui::tracer::ChartView)     preview_chart;
+	std::vector<rdo::gui::tracer::Time>  preview_times;
+	rdo::gui::tracer::LPSerie            preview_serie;
+	PTR(rdo::gui::frame::OptionsView)    preview_frame;
 
 	typedef PTR(QTreeWidgetItem) treeItem;
 
-	//Все окна
+	//Р’СЃРµ РѕРєРЅР°
 	treeItem m_pRoot;
 	treeItem m_pText;
 	treeItem m_pCompile;
@@ -272,7 +272,7 @@ private:
 	treeItem m_pChart;
 	treeItem m_pAnimation;
 
-	//Исходный текст
+	//РСЃС…РѕРґРЅС‹Р№ С‚РµРєСЃС‚
 	treeItem m_pPlainText;
 	treeItem m_pVariable;
 	treeItem m_pKeyword;
@@ -289,20 +289,20 @@ private:
 	treeItem m_pGroup;
 	treeItem m_pError;
 
-	//Окно компиляции
+	//РћРєРЅРѕ РєРѕРјРїРёР»СЏС†РёРё
 	treeItem m_pTextCompile;
 	treeItem m_pSelectedString;
 	treeItem m_pCaretCompile;
 	treeItem m_pSelectionCompile;
 	treeItem m_pBookmarkCompile;
 
-	//Окно отладки
+	//РћРєРЅРѕ РѕС‚Р»Р°РґРєРё
 	treeItem m_pTextDebug;
 	treeItem m_pCaretDebug;
 	treeItem m_pSelectionDebug;
 	treeItem m_pBookmarkDebug;
 
-	//Окно трассировки
+	//РћРєРЅРѕ С‚СЂР°СЃСЃРёСЂРѕРІРєРё
 	treeItem m_pES;
 	treeItem m_pEB;
 	treeItem m_pEF;
@@ -329,7 +329,7 @@ private:
 	treeItem m_pSEF;
 	treeItem m_pSEU;
 
-	//Окно результатов
+	//РћРєРЅРѕ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ
 	treeItem m_pPlainTextResult;
 	treeItem m_pVariableResult;
 	treeItem m_pKeywordResult;
@@ -340,7 +340,7 @@ private:
 	treeItem m_pSelectionResult;
 	treeItem m_pBookmarkResult;
 
-	//Окно поиска
+	//РћРєРЅРѕ РїРѕРёСЃРєР°
 	treeItem m_pTextSearch;
 	treeItem m_pStringSearch;
 	treeItem m_pSelectedStringSearch;
@@ -348,14 +348,14 @@ private:
 	treeItem m_pSelectionSearch;
 	treeItem m_pBookmarkSearch;
 
-	//Окно графиков
+	//РћРєРЅРѕ РіСЂР°С„РёРєРѕРІ
 	treeItem m_pAxis;
 	treeItem m_pTitle;
 	treeItem m_pLegend;
 	treeItem m_pGraph;
 	treeItem m_pTime;
 
-	//Окно анимации
+	//РћРєРЅРѕ Р°РЅРёРјР°С†РёРё
 	treeItem m_pEdgingColor;
 	treeItem m_pBackgroundColor;
 

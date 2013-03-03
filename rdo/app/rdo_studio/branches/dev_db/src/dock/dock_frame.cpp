@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      dock_frame.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      07.10.2012
   \brief     
   \indent    4T
@@ -10,13 +10,15 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qaction.h>
+#include "utils/warning_disable.h"
+#include <QAction>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_frame.h"
 // --------------------------------------------------------------------------------
 
 DockFrame::DockFrame(PTR(QWidget) pParent)
-	: DockFocusable(QString::fromStdWString(L"Анимация"), pParent)
+	: DockFocusable("РђРЅРёРјР°С†РёСЏ", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(150, 300));

@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2003-2013
   \file      status_bar.cpp
-  \authors   Захаров Павел
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      09.04.2003
   \brief     
   \indent    4T
@@ -11,7 +11,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qstatusbar.h>
+#include "utils/warning_disable.h"
+#include <QStatusBar>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/status_bar.h"
 // --------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      app/rdo_studio/src/about.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      18.08.2012
   \brief     
   \indent    4T
@@ -23,17 +23,17 @@ About::About(PTR(QWidget) pParent)
 	QString limitation;
 
 #ifdef RDO_LICENSE_ACADEMIC
-		limitation += QString::fromStdWString(L"не для коммерческого использования");
+		limitation += "РЅРµ РґР»СЏ РєРѕРјРјРµСЂС‡РµСЃРєРѕРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ";
 #endif
 
 #ifdef RDO_LIMIT_RES
 		if (!limitation.isEmpty())
 			limitation += ", ";
 
-		limitation += QString::fromStdWString(L"ограниченная версия");
+		limitation += "РѕРіСЂР°РЅРёС‡РµРЅРЅР°СЏ РІРµСЂСЃРёСЏ";
 #endif
 
-	version->setText(QString::fromStdWString(L"Система имитационного моделирования\n\nRAO-studio   %1%2-version 1.1 (build %3)%4")
+	version->setText(QString("РЎРёСЃС‚РµРјР° РёРјРёС‚Р°С†РёРѕРЅРЅРѕРіРѕ РјРѕРґРµР»РёСЂРѕРІР°РЅРёСЏ\n\nRAO-studio   %1%2-version 1.1 (build %3)%4")
 
 #ifdef RDO_MT
 		.arg("mt")

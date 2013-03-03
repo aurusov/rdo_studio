@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      dock_results.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      03.10.2012
   \brief     
   \indent    4T
@@ -13,13 +13,13 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_focusable.h"
-#include "app/rdo_studio/rdo_edit/rdoeditorresults.h"
+#include "app/rdo_studio/src/editor/results_edit.h"
 // --------------------------------------------------------------------------------
 
 class DockResults: public DockFocusable
 {
 public:
-	typedef rdoEditor::RDOEditorResults context_type;
+	typedef rdo::gui::editor::Results context_type;
 
 	DockResults(PTR(QWidget) pParent);
 	virtual ~DockResults();

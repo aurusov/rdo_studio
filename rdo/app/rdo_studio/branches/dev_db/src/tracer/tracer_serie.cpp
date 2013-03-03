@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      tracer_serie.cpp
-  \author    Çàõàðîâ Ïàâåë
+  \author    Ð—Ð°Ñ…Ð°Ñ€Ð¾Ð² ÐŸÐ°Ð²ÐµÐ»
   \date      11.03.2003
   \brief     
   \indent    4T
@@ -20,7 +20,7 @@
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_windows_base.h"
+#include "app/rdo_studio/src/main_window_base.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::tracer;
@@ -389,7 +389,7 @@ void Serie::drawSerie(ChartView* const pView,
 
 void Serie::drawMarker(QPainter& painter, const int x, const int y, Marker marker, const int markerSize) const
 {
-	float halfMarkerSize = float(markerSize) / 2.0;
+	float halfMarkerSize = float(markerSize) / 2.0f;
 	QRectF rect(x - halfMarkerSize, y - halfMarkerSize, markerSize, markerSize);
 
 	switch (marker)
@@ -476,18 +476,18 @@ rbool Serie::activateFirstDoc() const
 
 Serie::ExportData Serie::exportData()
 {
-	setlocale(LC_ALL, _T("rus"));
+	setlocale(LC_ALL, "rus");
 
 	ExportData exportData;
 	exportData.reserve(m_valueList.size() + 1);
-	exportData.push_back(QString("%1;%2").arg(QString::fromStdWString(L"âðåìÿ")).arg(m_title));
+	exportData.push_back(QString("%1;%2").arg("Ð²Ñ€ÐµÐ¼Ñ").arg(m_title));
 
 	BOOST_FOREACH(PTR(Value) pValue, m_valueList)
 	{
 		exportData.push_back(QString("%1;%2").arg(pValue->getModelTime()->time).arg(pValue->getValue()));
 	}
 
-	setlocale(LC_NUMERIC, _T("eng"));
+	setlocale(LC_NUMERIC, "eng");
 
 	return exportData;
 }

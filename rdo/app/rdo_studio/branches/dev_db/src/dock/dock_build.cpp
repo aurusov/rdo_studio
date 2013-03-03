@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      dock_build.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      30.09.2012
   \brief     
   \indent    4T
@@ -10,8 +10,10 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qaction.h>
-#include <QtWidgets/qmessagebox.h>
+#include "utils/warning_disable.h"
+#include <QAction>
+#include <QMessageBox>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_build.h"
 #include "app/rdo_studio/src/application.h"
@@ -20,7 +22,7 @@
 // --------------------------------------------------------------------------------
 
 DockBuild::DockBuild(PTR(QWidget) pParent)
-	: DockFocusable(QString::fromStdWString(L"Компилятор"), pParent)
+	: DockFocusable("РљРѕРјРїРёР»СЏС‚РѕСЂ", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 150));
@@ -42,13 +44,13 @@ void DockBuild::appendString(CREF(QString) str)
 void DockBuild::appendString(CREF(rdo::simulation::report::FileMessage) message)
 {
 	QString qMessage = QString::fromLocal8Bit(message.getText().c_str());
-	if (qMessage.contains(QString::fromStdWString(L"Сработало лицензионное ограничение")))
+	if (qMessage.contains("РЎСЂР°Р±РѕС‚Р°Р»Рѕ Р»РёС†РµРЅР·РёРѕРЅРЅРѕРµ РѕРіСЂР°РЅРёС‡РµРЅРёРµ"))
 	{
-		QMessageBox::critical(g_pApp->getMainWnd(), QString::fromStdWString(L"Лицензионное ограничение"), qMessage);
+		QMessageBox::critical(g_pApp->getMainWnd(), "Р›РёС†РµРЅР·РёРѕРЅРЅРѕРµ РѕРіСЂР°РЅРёС‡РµРЅРёРµ", qMessage);
 		return;
 	}
 
-	if (message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == rdo::simulation::report::FileMessage::MT_WARNING && static_cast<PTR(rdoEditCtrl::RDOBuildEditTheme)>(g_pApp->getStyle()->style_build.theme)->warning))
+	if (message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == rdo::simulation::report::FileMessage::MT_WARNING && static_cast<PTR(rdo::gui::editor::BuildTheme)>(g_pApp->getStyle()->style_build.theme)->warning))
 	{
 		PTR(rdo::simulation::report::BuildEditLineInfo) pLine = new rdo::simulation::report::BuildEditLineInfo(message);
 		getContext().appendLine(pLine);

@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      chart_view.cpp
-  \author    «‡ı‡Ó‚ œ‡‚ÂÎ
+  \author    –ó–∞—Ö–∞—Ä–æ–≤ –ü–∞–≤–µ–ª
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -10,24 +10,25 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <algorithm>
 #include <boost/foreach.hpp>
-#include <QtCore/qprocess.h>
-#include <QtGui/qevent.h>
-#include <QtGui/qclipboard.h>
+#include <QProcess>
+#include <QEvent>
+#include <QClipboard>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_windows_base.h"
 #include "app/rdo_studio/src/tracer/chart/chart_view_style.h"
 #include "app/rdo_studio/src/tracer/chart/chart_serie.h"
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/tracer/chart/chart_preferences.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::tracer;
-using namespace rdoStyle;
+using namespace rdo::gui::style;
 
 // --------------------------------------------------------------------------------
 // -------------------- ChartView
@@ -396,7 +397,7 @@ void ChartView::dropEvent(QDropEvent* pEvent)
 	pEvent->acceptProposedAction();
 }
 
-void ChartView::dragLeaveEvent(QDragLeaveEvent* pEvent)
+void ChartView::dragLeaveEvent(QDragLeaveEvent*)
 {
 	m_pddSerie = NULL;
 }
@@ -814,9 +815,9 @@ void ChartView::onChartTimeWrap()
 	onUpdateActions(isActivated());
 }
 
-void ChartView::onUserUpdateChartView(ruint updateType)
+void ChartView::onUserUpdateChartView(ChartDoc::Update updateType)
 {
-	if (doUnwrapTime() || updateType != UPDATE_TIMETICKS)
+	if (doUnwrapTime() || updateType != ChartDoc::U_TIME_TICKS)
 	{
 		updateView();
 	}
@@ -882,21 +883,21 @@ void ChartView::setFonts(const rbool needRedraw)
 	ChartViewTheme* pChartTheme = static_cast<ChartViewTheme*>(m_pStyle->theme);
 
 	m_fontAxis = QFont(m_pStyle->font->name.c_str());
-	m_fontAxis.setBold     (pChartTheme->defaultStyle & RDOStyleFont::BOLD     );
-	m_fontAxis.setItalic   (pChartTheme->defaultStyle & RDOStyleFont::ITALIC   );
-	m_fontAxis.setUnderline(pChartTheme->defaultStyle & RDOStyleFont::UNDERLINE);
+	m_fontAxis.setBold     (pChartTheme->defaultStyle & StyleFont::BOLD      ? true : false);
+	m_fontAxis.setItalic   (pChartTheme->defaultStyle & StyleFont::ITALIC    ? true : false);
+	m_fontAxis.setUnderline(pChartTheme->defaultStyle & StyleFont::UNDERLINE ? true : false);
 	m_fontAxis.setPointSize(m_pStyle->font->size);
 
 	m_fontTitle = QFont(m_pStyle->font->name.c_str());
-	m_fontTitle.setBold     (pChartTheme->titleStyle & RDOStyleFont::BOLD     );
-	m_fontTitle.setItalic   (pChartTheme->titleStyle & RDOStyleFont::ITALIC   );
-	m_fontTitle.setUnderline(pChartTheme->titleStyle & RDOStyleFont::UNDERLINE);
+	m_fontTitle.setBold     (pChartTheme->titleStyle & StyleFont::BOLD      ? true : false);
+	m_fontTitle.setItalic   (pChartTheme->titleStyle & StyleFont::ITALIC    ? true : false);
+	m_fontTitle.setUnderline(pChartTheme->titleStyle & StyleFont::UNDERLINE ? true : false);
 	m_fontTitle.setPointSize(m_pStyle->pFontsTicks->titleFontSize);
 
 	m_fontLegend = QFont(m_pStyle->font->name.c_str());
-	m_fontLegend.setBold     (pChartTheme->legendStyle & RDOStyleFont::BOLD     );
-	m_fontLegend.setItalic   (pChartTheme->legendStyle & RDOStyleFont::ITALIC   );
-	m_fontLegend.setUnderline(pChartTheme->legendStyle & RDOStyleFont::UNDERLINE);
+	m_fontLegend.setBold     (pChartTheme->legendStyle & StyleFont::BOLD      ? true : false);
+	m_fontLegend.setItalic   (pChartTheme->legendStyle & StyleFont::ITALIC    ? true : false);
+	m_fontLegend.setUnderline(pChartTheme->legendStyle & StyleFont::UNDERLINE ? true : false);
 	m_fontLegend.setPointSize(m_pStyle->pFontsTicks->legendFontSize);
 }
 
@@ -1024,7 +1025,7 @@ rbool ChartView::maxXVisible() const
 
 void ChartView::onUpdateActions(rbool activated)
 {
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(

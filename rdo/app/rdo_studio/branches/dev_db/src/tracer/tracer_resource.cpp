@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      tracer_resource.cpp
-  \author    Çàõàðîâ Ïàâåë
+  \author    Ð—Ð°Ñ…Ð°Ñ€Ð¾Ð² ÐŸÐ°Ð²ÐµÐ»
   \date      11.03.2003
   \brief     
   \indent    4T
@@ -171,7 +171,7 @@ void Resource::setParams(tstring& line, Time* const pTime, const int eventIndex,
 			switch (m_pResourceType->getParamInfo(i)->getParamType())
 			{
 			case ParamInfo::PT_BOOL:
-				newValue = nextValue == _T("true") ? 1.0 : 0.0;
+				newValue = nextValue == "true" ? 1.0 : 0.0;
 				break;
 
 			case ParamInfo::PT_STRING:

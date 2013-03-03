@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      tracer_logger_view_style.h
-  \author    Захаров Павел
+  \author    Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
   \date      12.03.2003
   \brief     
   \indent    4T
@@ -11,7 +11,9 @@
 #define _RDO_STUDIO_TRACER_LOGGER_VIEW_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qcolor.h>
+#include "utils/warning_disable.h"
+#include <QColor>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/style.h"
 // --------------------------------------------------------------------------------
@@ -54,7 +56,7 @@ public:
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
 
-	rdoStyle::RDOStyleFont::style style;
+	style::StyleFont::style style;
 
 	LogColorPair defaultColor;
 	LogColorPair es;
@@ -115,12 +117,8 @@ QSettings& operator>> (QSettings& settings,       LogBorders& border);
 // --------------------------------------------------------------------------------
 // -------------------- LogStyle
 // --------------------------------------------------------------------------------
-//class RDOStudioOptionsStylesAndColors;
-
-class LogStyle: public rdoStyle::RDOStyle
+class LogStyle: public style::Style
 {
-//friend class RDOStudioOptionsStylesAndColors;
-
 public:
 	LogStyle();
 	virtual ~LogStyle();

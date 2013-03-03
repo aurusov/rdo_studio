@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      chart_serie.h
-  \author    Захаров Павел
+  \author    Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
   \date      31.03.2003
   \brief     
   \indent    4T
@@ -11,7 +11,9 @@
 #define _RDO_STUDIO_TRACER_CHART_SERIE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qpainter.h>
+#include "utils/warning_disable.h"
+#include <QPainter>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/tracer_serie.h"
 // --------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2013
   \file      new_model_dialog.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      04.01.2013
   \brief     
   \indent    4T
@@ -11,9 +11,11 @@
 #define _RDO_STUDIO_NEW_MODEL_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtWidgets/qdialog.h>
-// ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/warning_disable.h"
+#include <QDialog>
 #include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_new_model_dialog.h"
+#include "utils/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
 class NewModelDialog

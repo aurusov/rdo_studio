@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      chart_tree.cpp
-  \author    «‡ı‡Ó‚ œ‡‚ÂÎ
+  \author    –ó–∞—Ö–∞—Ä–æ–≤ –ü–∞–≤–µ–ª
   \date      12.03.2003
   \brief     
   \indent    4T
@@ -10,15 +10,17 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
-#include <QtCore/qprocess.h>
-#include <QtCore/qtextstream.h>
-#include <QtWidgets/qfiledialog.h>
-#include <QtGui/qdrag.h>
+#include <QProcess>
+#include <QTextStream>
+#include <QFileDialog>
+#include <QDrag>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
 #include "app/rdo_studio/src/tracer/chart/chart_tree.h"
@@ -60,12 +62,12 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 	m_rootPMV = rdo::Factory<ChartTreeItem>::create();
 
 	m_root->setCtrlItem(new QTreeWidgetItem(this));
-	m_root->getCtrlItem().setText(0, QString::fromStdWString(L"ÃÓ‰ÂÎ¸"));
+	m_root->getCtrlItem().setText(0, "–ú–æ–¥–µ–ª—å");
 	m_root->getCtrlItem().setIcon(0, m_iconList[IT_ROOT]);
 
-	createItem(m_root, m_rootRTP, QString::fromStdWString(L"“ËÔ˚ ÂÒÛÒÓ‚"), IT_SUB_ROOT_1);
-	createItem(m_root, m_rootPAT, QString::fromStdWString(L"Œ·‡Áˆ˚"),       IT_SUB_ROOT_1);
-	createItem(m_root, m_rootPMV, QString::fromStdWString(L"–ÂÁÛÎ¸Ú‡Ú˚"),    IT_SUB_ROOT_1);
+	createItem(m_root, m_rootRTP, "–¢–∏–ø—ã —Ä–µ—Å—É—Ä—Å–æ–≤", IT_SUB_ROOT_1);
+	createItem(m_root, m_rootPAT, "–û–±—Ä–∞–∑—Ü—ã",       IT_SUB_ROOT_1);
+	createItem(m_root, m_rootPMV, "–†–µ–∑—É–ª—å—Ç–∞—Ç—ã",    IT_SUB_ROOT_1);
 
 	m_root->getCtrlItem().setExpanded(true);
 
@@ -114,7 +116,7 @@ void ChartTree::doDragDrop(CREF(LPSerie) pSerie)
 
 void ChartTree::setModelName(CREF(QString) modelName)
 {
-	m_root->getCtrlItem().setText(0, QString::fromLocal8Bit("ÃÓ‰ÂÎ¸ : %1").arg(modelName));
+	m_root->getCtrlItem().setText(0, QString("–ú–æ–¥–µ–ª—å : %1").arg(modelName));
 }
 
 void ChartTree::createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType)
@@ -193,7 +195,7 @@ void ChartTree::clear()
 	deleteChildren(m_rootRTP);
 	deleteChildren(m_rootPAT);
 	deleteChildren(m_rootPMV);
-	m_root->getCtrlItem().setText(0, QString::fromStdWString(L"ÃÓ‰ÂÎ¸"));
+	m_root->getCtrlItem().setText(0, "–ú–æ–¥–µ–ª—å");
 }
 
 void ChartTree::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
@@ -260,9 +262,9 @@ void ChartTree::onChartExport()
 
 	QString fileName = QFileDialog::getSaveFileName(
 		this,
-		QString::fromStdWString(L"—Óı‡ÌËÚ¸"),
-		QString::fromLocal8Bit (path.string().c_str()),
-		QString::fromStdWString(L"csv-Ù‡ÈÎ (*.csv);;¬ÒÂ Ù‡ÈÎ˚ (*.*)")
+		"–°–æ—Ö—Ä–∞–Ω–∏—Ç—å",
+		QString::fromLocal8Bit(path.string().c_str()),
+		"csv-—Ñ–∞–π–ª (*.csv);;–í—Å–µ —Ñ–∞–π–ª—ã (*.*)"
 	);
 	if (fileName.isEmpty())
 		return;
@@ -312,7 +314,7 @@ void ChartTree::focusOutEvent(QFocusEvent* pEvent)
 
 void ChartTree::onUpdateActions(rbool activated)
 {
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(

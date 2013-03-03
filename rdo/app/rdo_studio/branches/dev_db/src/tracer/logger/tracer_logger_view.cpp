@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      tracer_logger_view.cpp
-  \authors   Захаров Павел
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      12.03.2003
   \brief
   \indent    4T
@@ -11,19 +11,22 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
-#include <QtGui/qpainter.h>
-#include <QtWidgets/qscrollbar.h>
-#include <QtGui/qclipboard.h>
+#include <boost/algorithm/string.hpp>
+#include <QPainter>
+#include <QScrollBar>
+#include <QClipboard>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/logger/tracer_logger_view.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_window.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::tracer;
-using namespace rdoStyle;
+using namespace rdo::gui::style;
 
 // --------------------------------------------------------------------------------
 // -------------------- LogCtrlFindInList
@@ -35,6 +38,12 @@ class LogCtrlFindInList
 public:
 	LogCtrlFindInList(REF(rsint) checkCounter, CREF(QString) strToFind, rbool matchCase, rbool matchWholeWord);
 	rbool operator() (CREF(QString) nextStr);
+
+	LogCtrlFindInList& operator= (CREF(LogCtrlFindInList))
+	{
+		NEVER_REACH_HERE;
+		return *this;
+	}
 
 private:
 	boost::optional<boost::regex> m_expression;
@@ -704,9 +713,9 @@ void LogView::setFont()
 	}
 
 	m_font = QFont(m_logStyle->font->name.c_str());
-	m_font.setBold     (m_logStyle->theme->style & rdoStyle::RDOStyleFont::BOLD     );
-	m_font.setItalic   (m_logStyle->theme->style & rdoStyle::RDOStyleFont::ITALIC   );
-	m_font.setUnderline(m_logStyle->theme->style & rdoStyle::RDOStyleFont::UNDERLINE);
+	m_font.setBold     (m_logStyle->theme->style & StyleFont::BOLD      ? true : false);
+	m_font.setItalic   (m_logStyle->theme->style & StyleFont::ITALIC    ? true : false);
+	m_font.setUnderline(m_logStyle->theme->style & StyleFont::UNDERLINE ? true : false);
 	m_font.setPointSize(m_logStyle->font->size);
 
 	QFontMetrics fontMetrics(m_font);
@@ -757,7 +766,7 @@ void LogView::updateCoordStatusBar(rbool activated)
 		? QString("1 : %1").arg(selectedLine())
 		: QString();
 
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 	pMainWindow->statusBar()->update<StatusBar::SB_COORD>(coord);
 }
@@ -1000,7 +1009,7 @@ void LogView::onUpdateActions(rbool activated)
 {
 	repaintLine(selectedLine());
 
-	RDOStudioMainFrame* pMainWindow = g_pApp->getMainWndUI();
+	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	updateAction(
@@ -1014,7 +1023,7 @@ void LogView::onUpdateActions(rbool activated)
 	updateCoordStatusBar(activated);
 
 	pMainWindow->statusBar()->update<StatusBar::SB_MODIFY>(activated
-		? QString::fromStdWString(L"Только чтение")
+		? "РўРѕР»СЊРєРѕ С‡С‚РµРЅРёРµ"
 		: QString()
 	);
 }

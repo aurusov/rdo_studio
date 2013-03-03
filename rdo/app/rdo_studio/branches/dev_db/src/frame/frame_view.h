@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      frame_view.h
-  \author    ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
+  \author    –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
   \date      06.03.2003
   \brief     
   \indent    4T
@@ -11,10 +11,12 @@
 #define _RDO_STUDIO_FRAME_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <map>
-#include <QtWidgets/qwidget.h>
-#include <QtWidgets/qscrollarea.h>
-#include <QtGui/qevent.h>
+#include <QWidget>
+#include <QScrollArea>
+#include <QEvent>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdoanimation.h"
 #include "ui/qt/headers/memdc/memdc.h"
@@ -22,15 +24,20 @@
 #include "ui/qt/headers/bitmap/bitmap.h"
 // --------------------------------------------------------------------------------
 
-class FrameAnimationContent: public QWidget
+namespace rdo { namespace gui { namespace frame {
+
+// --------------------------------------------------------------------------------
+// -------------------- Content
+// --------------------------------------------------------------------------------
+class Content: public QWidget
 {
 private:
 	Q_OBJECT
 	typedef  QWidget  parent_type;
 
 public:
-	FrameAnimationContent(PTR(QWidget) pParent);
-	virtual ~FrameAnimationContent();
+	Content(PTR(QWidget) pParent);
+	virtual ~Content();
 
 	void update    (CPTRC(rdo::animation::Frame)         pFrame,
 	                 CREF(rdo::gui::BitmapList)          bitmapList,
@@ -78,19 +85,19 @@ private:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- FrameAnimationWnd
+// -------------------- View
 // --------------------------------------------------------------------------------
-class FrameAnimationWnd: public QScrollArea
+class View: public QScrollArea
 {
 private:
 	Q_OBJECT
 	typedef  QScrollArea  parent_type;
 
 public:
-	FrameAnimationWnd(PTR(QWidget) pParent);
-	virtual ~FrameAnimationWnd();
+	View(PTR(QWidget) pParent);
+	virtual ~View();
 
-	PTR(FrameAnimationContent) getContent();
+	PTR(Content) getContent();
 
 	using QWidget::update;
 
@@ -106,5 +113,7 @@ private:
 
 	virtual rbool event(QEvent* pEvent);
 };
+
+}}} // namespace rdo::gui::frame
 
 #endif // _RDO_STUDIO_FRAME_VIEW_H_
