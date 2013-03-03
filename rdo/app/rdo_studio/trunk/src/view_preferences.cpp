@@ -197,7 +197,7 @@ void ViewPreferences::onApplyButton()
 
 void ViewPreferences::onCodeCompUse(int state)
 {
-	style_editor.autoComplete->useAutoComplete = state;
+	style_editor.autoComplete->useAutoComplete = state == Qt::Checked ? true : false;
 	
 	switch(state)
 	{
@@ -226,37 +226,37 @@ void ViewPreferences::onCodeCompShowFullList(bool state)
 
 void ViewPreferences::onMarginFold(int state)
 {
-	style_editor.margin->fold = state;
+	style_editor.margin->fold = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onMarginBookmark(int state)
 {
-	style_editor.margin->bookmark = state;
+	style_editor.margin->bookmark = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onMarginLineNumber(int state)
 {
-	style_editor.margin->lineNumber = state;
+	style_editor.margin->lineNumber = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onUseTabSymbol(int state)
 {
-	style_editor.tab->useTabs = state;
+	style_editor.tab->useTabs = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onIndentAsTab(int state)
 {
-	style_editor.tab->tabIndents = state;
+	style_editor.tab->tabIndents = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onAutoIndent(int state)
 {
-	style_editor.tab->autoIndent = state;
+	style_editor.tab->autoIndent = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
@@ -285,25 +285,25 @@ void ViewPreferences::onIndentSize(const QString& text)
 
 void ViewPreferences::onSetup(int state)
 {
-	m_setup = state;
+	m_setup = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onCheckInFuture(int state)
 {
-	m_checkInFuture = state;
+	m_checkInFuture = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onOpenLastProject(int state)
 {
-	m_openLastProject = state;
+	m_openLastProject = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onShowFullName(int state)
 {
-	m_showFullName = state;
+	m_showFullName = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
@@ -485,14 +485,14 @@ void ViewPreferences::onFontUnderline(int state)
 void ViewPreferences::onHorzScroll(int state)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->horzscrollbar = state;
+	item->horzscrollbar = state == Qt::Checked ? true : false;
 	updatePreview();
 }
 
 void ViewPreferences::onWordWrap(int state)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->wordwrap = state;
+	item->wordwrap = state == Qt::Checked ? true : false;
 		
 	switch(item->type)
 	{
@@ -521,19 +521,19 @@ void ViewPreferences::onWordWrap(int state)
 		switch(item->type)
 		{
 		case IT_EDITOR:
-			item->horzscrollbar = horzScrollEditorCheckBox->checkState();
+			item->horzscrollbar = horzScrollEditorCheckBox->checkState() == Qt::Checked ? true : false;
 			break;
 		case IT_BUILD:
-			item->horzscrollbar = horzScrollBuildCheckBox->checkState();
+			item->horzscrollbar = horzScrollBuildCheckBox->checkState() == Qt::Checked ? true : false;
 			break;
 		case IT_DEBUG:
-			item->horzscrollbar = horzScrollDebugCheckBox->checkState();
+			item->horzscrollbar = horzScrollDebugCheckBox->checkState() == Qt::Checked ? true : false;
 			break;
 		case IT_RESULT:
-			item->horzscrollbar = horzScrollResultsCheckBox->checkState();
+			item->horzscrollbar = horzScrollResultsCheckBox->checkState() == Qt::Checked ? true : false;
 			break;
 		case IT_FIND:
-			item->horzscrollbar = horzScrollFindCheckBox->checkState();
+			item->horzscrollbar = horzScrollFindCheckBox->checkState() == Qt::Checked ? true : false;
 			break;
 		}
 	}
@@ -851,6 +851,45 @@ void ViewPreferences::updateStyleTab()
 		titleComboBox->setCurrentIndex(titleComboBox->findText(QString::number(style_chart.pFontsTicks->titleFontSize)));
 		legendComboBox->setCurrentIndex(legendComboBox->findText(QString::number(style_chart.pFontsTicks->legendFontSize)));
 		tickWidthLineEdit->setText(QString::number(style_chart.pFontsTicks->tickWidth));
+		switch(prop->identificator)
+		{
+		case IT_CHART:
+			fgColorComboBox->setEnabled(true);
+			bgColorComboBox->setEnabled(true);
+			fgColorToolButton->setEnabled(true);
+			bgColorToolButton->setEnabled(true);
+			break;
+		case IT_CHART_AXIS:
+			fgColorComboBox->setEnabled(true);
+			bgColorComboBox->setEnabled(false);
+			fgColorToolButton->setEnabled(true);
+			bgColorToolButton->setEnabled(false);			
+			break;
+		case IT_CHART_TITLE:
+			fgColorComboBox->setEnabled(true);
+			bgColorComboBox->setEnabled(false);
+			fgColorToolButton->setEnabled(true);
+			bgColorToolButton->setEnabled(false);
+			break;
+		case IT_CHART_CHART:
+			fgColorComboBox->setEnabled(false);
+			bgColorComboBox->setEnabled(true);
+			fgColorToolButton->setEnabled(false);
+			bgColorToolButton->setEnabled(true);
+			break;
+		case IT_CHART_LEGEND:
+			fgColorComboBox->setEnabled(true);
+			bgColorComboBox->setEnabled(false);
+			fgColorToolButton->setEnabled(true);
+			bgColorToolButton->setEnabled(false);
+			break;
+		case IT_CHART_TIME:
+			fgColorComboBox->setEnabled(false);
+			bgColorComboBox->setEnabled(true);
+			fgColorToolButton->setEnabled(false);
+			bgColorToolButton->setEnabled(true);
+			break;
+		}
 		break;
 	case IT_FRAME:
 		switch(prop->identificator)
@@ -874,6 +913,7 @@ void ViewPreferences::updateStyleTab()
 			bgColorToolButton->setEnabled(true);
 			break;
 		}
+		break;
 	}
 }
 
