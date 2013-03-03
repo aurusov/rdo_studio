@@ -15,6 +15,8 @@
 #include "app/rdo_studio/src/style.h"
 // --------------------------------------------------------------------------------
 
+namespace rdo { namespace gui { namespace frame {
+
 // --------------------------------------------------------------------------------
 // -------------------- FrameTheme
 // --------------------------------------------------------------------------------
@@ -46,5 +48,7 @@ public:
 
 	void init( CREF(QString) _groupName = "" );
 };
+
+}}} // namespace rdo::gui::frame
 
 #endif // _RDO_STUDIO_FRAME_STYLE_H_

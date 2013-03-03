@@ -19,7 +19,7 @@
 class DockFrame: public DockFocusable
 {
 public:
-	typedef  FrameTreeCtrl  context_type;
+	typedef  rdo::gui::frame::TreeCtrl  context_type;
 
 	DockFrame(PTR(QWidget) pParent);
 	virtual ~DockFrame();

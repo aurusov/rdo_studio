@@ -24,15 +24,20 @@
 #include "ui/qt/headers/bitmap/bitmap.h"
 // --------------------------------------------------------------------------------
 
-class FrameAnimationContent: public QWidget
+namespace rdo { namespace gui { namespace frame {
+
+// --------------------------------------------------------------------------------
+// -------------------- Content
+// --------------------------------------------------------------------------------
+class Content: public QWidget
 {
 private:
 	Q_OBJECT
 	typedef  QWidget  parent_type;
 
 public:
-	FrameAnimationContent(PTR(QWidget) pParent);
-	virtual ~FrameAnimationContent();
+	Content(PTR(QWidget) pParent);
+	virtual ~Content();
 
 	void update    (CPTRC(rdo::animation::Frame)         pFrame,
 	                 CREF(rdo::gui::BitmapList)          bitmapList,
@@ -80,19 +85,19 @@ private:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- FrameAnimationWnd
+// -------------------- View
 // --------------------------------------------------------------------------------
-class FrameAnimationWnd: public QScrollArea
+class View: public QScrollArea
 {
 private:
 	Q_OBJECT
 	typedef  QScrollArea  parent_type;
 
 public:
-	FrameAnimationWnd(PTR(QWidget) pParent);
-	virtual ~FrameAnimationWnd();
+	View(PTR(QWidget) pParent);
+	virtual ~View();
 
-	PTR(FrameAnimationContent) getContent();
+	PTR(Content) getContent();
 
 	using QWidget::update;
 
@@ -108,5 +113,7 @@ private:
 
 	virtual rbool event(QEvent* pEvent);
 };
+
+}}} // namespace rdo::gui::frame
 
 #endif // _RDO_STUDIO_FRAME_VIEW_H_

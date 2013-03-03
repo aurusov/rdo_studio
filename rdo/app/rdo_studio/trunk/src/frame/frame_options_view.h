@@ -19,7 +19,9 @@
 #include "app/rdo_studio/src/frame/frame_style.h"
 // --------------------------------------------------------------------------------
 
-class FrameOptionsView 
+namespace rdo { namespace gui { namespace frame {
+
+class OptionsView 
 	: public  QWidget
 	, private Ui::FrameOptionsWidget
 {
@@ -28,9 +30,11 @@ private:
 	FrameStyle* m_style;
 
 public:
-	explicit FrameOptionsView(PTR(QWidget) pParent);
+	explicit OptionsView(PTR(QWidget) pParent);
 
 	void setStyle(PTR(FrameStyle) style);
 };
+
+}}} // namespace rdo::gui::frame
 
 #endif // _RDO_STUDIO_FRAME_OPTIONS_VIEW_H_

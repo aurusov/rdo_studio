@@ -39,7 +39,7 @@ public:
 	rdo::gui::tracer::LogStyle        style_trace;
 	rdo::gui::editor::ResultsStyle    style_results;
 	rdo::gui::editor::FindStyle       style_find;
-	FrameStyle                        style_frame;
+	rdo::gui::frame::FrameStyle       style_frame;
 	rdo::gui::tracer::ChartViewStyle  style_chart;
 
 	rbool isMDIMaximazed() const { return true; }

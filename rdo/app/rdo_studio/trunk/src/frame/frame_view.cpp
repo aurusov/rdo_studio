@@ -25,7 +25,12 @@
 #include "app/rdo_studio/src/main_window_base.h"
 // --------------------------------------------------------------------------------
 
-FrameAnimationContent::FrameAnimationContent(PTR(QWidget) pParent)
+using namespace rdo::gui::frame;
+
+// --------------------------------------------------------------------------------
+// -------------------- Content
+// --------------------------------------------------------------------------------
+Content::Content(PTR(QWidget) pParent)
 	: parent_type(pParent)
 	, m_size     (QSize (0, 0))
 	, m_pos      (QPoint(0, 0))
@@ -37,15 +42,15 @@ FrameAnimationContent::FrameAnimationContent(PTR(QWidget) pParent)
 	updateFont();
 }
 
-FrameAnimationContent::~FrameAnimationContent()
+Content::~Content()
 {}
 
-rbool FrameAnimationContent::valid() const
+rbool Content::valid() const
 {
 	return m_memDC.valid();
 }
 
-void FrameAnimationContent::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
+void Content::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
 {
 	ASSERT(pFrame);
 
@@ -81,13 +86,13 @@ void FrameAnimationContent::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::
 	init(size);
 }
 
-void FrameAnimationContent::init(CREF(QSize) size)
+void Content::init(CREF(QSize) size)
 {
 	m_memDC.resize(size.width(), size.height());
 	setMinimumSize(size);
 }
 
-void FrameAnimationContent::updateFont()
+void Content::updateFont()
 {
 	PTR(FrameStyle) pStyle = &g_pApp->getStyle()->style_frame;
 	ASSERT(pStyle);
@@ -99,18 +104,18 @@ void FrameAnimationContent::updateFont()
 	m_font.setPointSize(pStyle->font->size);
 }
 
-void FrameAnimationContent::setBGColor(CREF(QColor) color)
+void Content::setBGColor(CREF(QColor) color)
 {
 	m_bgColor = color;
 }
 
-void FrameAnimationContent::resizeEvent(QResizeEvent* pEvent)
+void Content::resizeEvent(QResizeEvent* pEvent)
 {
 	m_size = pEvent->size();
 	parent_type::resizeEvent(pEvent);
 }
 
-void FrameAnimationContent::paintEvent(QPaintEvent* pEvent)
+void Content::paintEvent(QPaintEvent* pEvent)
 {
 	UNUSED(pEvent);
 
@@ -120,7 +125,7 @@ void FrameAnimationContent::paintEvent(QPaintEvent* pEvent)
 	parent_type::paintEvent(pEvent);
 }
 
-void FrameAnimationContent::mousePressEvent(QMouseEvent* pEvent)
+void Content::mousePressEvent(QMouseEvent* pEvent)
 {
 	ASSERT(pEvent);
 	if (pEvent->button() == Qt::LeftButton)
@@ -135,7 +140,7 @@ void FrameAnimationContent::mousePressEvent(QMouseEvent* pEvent)
 	parent_type::mousePressEvent(pEvent);
 }
 
-void FrameAnimationContent::onDraw(REF(QPainter) painter)
+void Content::onDraw(REF(QPainter) painter)
 {
 	if (valid())
 	{
@@ -156,7 +161,7 @@ void FrameAnimationContent::onDraw(REF(QPainter) painter)
 	}
 }
 
-void FrameAnimationContent::update(
+void Content::update(
 	CPTRC(rdo::animation::Frame)         pFrame,
 	 CREF(rdo::gui::BitmapList)          bitmapList,
 	  REF(rdo::gui::BitmapList)          bitmapGeneratedList,
@@ -199,7 +204,7 @@ void FrameAnimationContent::update(
 	parent_type::update();
 }
 
-void FrameAnimationContent::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
+void Content::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
 {
 	ASSERT(pFrame);
 
@@ -235,13 +240,13 @@ void FrameAnimationContent::drawBackground(CPTRC(rdo::animation::Frame) pFrame, 
 }
 
 template <class F>
-void FrameAnimationContent::drawColoredElement(CPTR(rdo::animation::ColoredElement) pColor, F drawMethod)
+void Content::drawColoredElement(CPTR(rdo::animation::ColoredElement) pColor, F drawMethod)
 {
 	setColors(pColor);
 	drawMethod(m_memDC.dc());
 }
 
-void FrameAnimationContent::setColors(CPTR(rdo::animation::ColoredElement) pColor)
+void Content::setColors(CPTR(rdo::animation::ColoredElement) pColor)
 {
 	ASSERT(pColor);
 	if (!pColor->m_foreground.m_transparent)
@@ -271,7 +276,7 @@ void FrameAnimationContent::setColors(CPTR(rdo::animation::ColoredElement) pColo
 	}
 }
 
-void FrameAnimationContent::elementText(PTR(rdo::animation::TextElement) pElement)
+void Content::elementText(PTR(rdo::animation::TextElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -311,7 +316,7 @@ void FrameAnimationContent::elementText(PTR(rdo::animation::TextElement) pElemen
 	m_memDC.dc().drawText(rect, flags, QString::fromLocal8Bit(pElement->m_text.c_str()), &rect);
 }
 
-void FrameAnimationContent::elementRect(PTR(rdo::animation::RectElement) pElement)
+void Content::elementRect(PTR(rdo::animation::RectElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -327,7 +332,7 @@ void FrameAnimationContent::elementRect(PTR(rdo::animation::RectElement) pElemen
 	);
 }
 
-void FrameAnimationContent::elementRoundRect(PTR(rdo::animation::RoundRectElement) pElement)
+void Content::elementRoundRect(PTR(rdo::animation::RoundRectElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -348,7 +353,7 @@ void FrameAnimationContent::elementRoundRect(PTR(rdo::animation::RoundRectElemen
 	);
 }
 
-void FrameAnimationContent::elementLine(PTR(rdo::animation::LineElement) pElement)
+void Content::elementLine(PTR(rdo::animation::LineElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -362,7 +367,7 @@ void FrameAnimationContent::elementLine(PTR(rdo::animation::LineElement) pElemen
 	}
 }
 
-void FrameAnimationContent::elementTriang(PTR(rdo::animation::TriangElement) pElement)
+void Content::elementTriang(PTR(rdo::animation::TriangElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -388,7 +393,7 @@ void FrameAnimationContent::elementTriang(PTR(rdo::animation::TriangElement) pEl
 	);
 }
 
-void FrameAnimationContent::elementCircle(PTR(rdo::animation::CircleElement) pElement)
+void Content::elementCircle(PTR(rdo::animation::CircleElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -410,7 +415,7 @@ void FrameAnimationContent::elementCircle(PTR(rdo::animation::CircleElement) pEl
 	);
 }
 
-void FrameAnimationContent::elementEllipse(PTR(rdo::animation::EllipseElement) pElement)
+void Content::elementEllipse(PTR(rdo::animation::EllipseElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -432,14 +437,14 @@ void FrameAnimationContent::elementEllipse(PTR(rdo::animation::EllipseElement) p
 	);
 }
 
-void FrameAnimationContent::elementBMP(
+void Content::elementBMP(
 	 PTR(rdo::animation::BmpElement) pElement,
 	CREF(rdo::gui::BitmapList)       bitmapList,
 	 REF(rdo::gui::BitmapList)       bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
-	QPixmap pixmap = FrameAnimationContent::getBitmap(
+	QPixmap pixmap = Content::getBitmap(
 		QString::fromLocal8Bit(pElement->m_bmp_name.c_str()),
 		pElement->hasMask() ? QString::fromLocal8Bit(pElement->m_mask_name.c_str()) : QString(),
 		bitmapList,
@@ -452,14 +457,14 @@ void FrameAnimationContent::elementBMP(
 	}
 }
 
-void FrameAnimationContent::elementSBMP(
+void Content::elementSBMP(
 	 PTR(rdo::animation::ScaledBmpElement) pElement,
 	CREF(rdo::gui::BitmapList)             bitmapList,
 	 REF(rdo::gui::BitmapList)             bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
-	QPixmap pixmap = FrameAnimationContent::getBitmap(
+	QPixmap pixmap = Content::getBitmap(
 		QString::fromLocal8Bit(pElement->m_bmp_name.c_str()),
 		pElement->hasMask() ? QString::fromLocal8Bit(pElement->m_mask_name.c_str()) : QString(),
 		bitmapList,
@@ -472,7 +477,7 @@ void FrameAnimationContent::elementSBMP(
 	}
 }
 
-QPixmap FrameAnimationContent::getBitmap(
+QPixmap Content::getBitmap(
 	CREF(QString)              bitmapName,
 	CREF(QString)              maskName,
 	CREF(rdo::gui::BitmapList) bitmapList,
@@ -515,7 +520,7 @@ QPixmap FrameAnimationContent::getBitmap(
 	return bmpIt->second;
 }
 
-void FrameAnimationContent::elementActive(PTR(rdo::animation::ActiveElement) pElement, REF(rdo::gui::animation::AreaList) areaList)
+void Content::elementActive(PTR(rdo::animation::ActiveElement) pElement, REF(rdo::gui::animation::AreaList) areaList)
 {
 	ASSERT(pElement);
 
@@ -537,9 +542,9 @@ void FrameAnimationContent::elementActive(PTR(rdo::animation::ActiveElement) pEl
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- FrameAnimationWnd
+// -------------------- View
 // --------------------------------------------------------------------------------
-FrameAnimationWnd::FrameAnimationWnd(PTR(QWidget) pParent)
+View::View(PTR(QWidget) pParent)
 	: parent_type(pParent)
 {
 	setAutoFillBackground(false);
@@ -550,14 +555,14 @@ FrameAnimationWnd::FrameAnimationWnd(PTR(QWidget) pParent)
 	setFrameShadow(QFrame::Plain  );
 	setFrameShape (QFrame::NoFrame);
 
-	m_pContent = new FrameAnimationContent(this);
+	m_pContent = new Content(this);
 	ASSERT(m_pContent);
 	setWidget(m_pContent);
 
 	updateFont();
 }
 
-FrameAnimationWnd::~FrameAnimationWnd()
+View::~View()
 {
 	ruint index = g_pModel->getFrameManager().findFrameIndex(this);
 	if (index != ruint(~0))
@@ -567,14 +572,14 @@ FrameAnimationWnd::~FrameAnimationWnd()
 	}
 }
 
-PTR(FrameAnimationContent) FrameAnimationWnd::getContent()
+PTR(Content) View::getContent()
 {
-	PTR(FrameAnimationContent) pContent = static_cast<PTR(FrameAnimationContent)>(widget());
+	PTR(Content) pContent = static_cast<PTR(Content)>(widget());
 	ASSERT(pContent);
 	return pContent;
 }
 
-void FrameAnimationWnd::update(
+void View::update(
 	CPTRC(rdo::animation::Frame)         pFrame,
 	 CREF(rdo::gui::BitmapList)          bitmapList,
 	  REF(rdo::gui::BitmapList)          bitmapGeneratedList,
@@ -584,12 +589,12 @@ void FrameAnimationWnd::update(
 	getContent()->update(pFrame, bitmapList, bitmapGeneratedList, areaList);
 }
 
-void FrameAnimationWnd::updateFont()
+void View::updateFont()
 {
 	getContent()->updateFont();
 }
 
-rbool FrameAnimationWnd::event(QEvent* pEvent)
+rbool View::event(QEvent* pEvent)
 {
 	if (pEvent->type() == QEvent::KeyPress || pEvent->type() == QEvent::ShortcutOverride)
 	{

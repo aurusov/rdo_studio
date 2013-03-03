@@ -20,9 +20,10 @@
 #include "app/rdo_studio/src/style.h"
 // --------------------------------------------------------------------------------
 
+using namespace rdo::gui::frame;
 using namespace rdo::gui::style;
 
-FrameOptionsView::FrameOptionsView(PTR(QWidget) pParent)
+OptionsView::OptionsView(PTR(QWidget) pParent)
 	: QWidget(pParent)
 	, m_style(NULL)
 {
@@ -31,7 +32,7 @@ FrameOptionsView::FrameOptionsView(PTR(QWidget) pParent)
 	russianSampleLabel->setText(QString::fromLocal8Bit("Пример текста"));
 }
 
-void FrameOptionsView::setStyle(PTR(FrameStyle) style)
+void OptionsView::setStyle(PTR(FrameStyle) style)
 {
 	m_style = style;
 

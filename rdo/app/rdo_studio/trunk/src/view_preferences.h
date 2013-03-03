@@ -245,19 +245,19 @@ private:
 	rdo::gui::editor::FindStyle       style_find;
 	rdo::gui::tracer::LogStyle        style_trace;
 	rdo::gui::tracer::ChartViewStyle  style_chart;
-	FrameStyle                        style_frame;
+	rdo::gui::frame::FrameStyle       style_frame;
 
-	PTR(rdo::gui::editor::Model)     preview_editor;
-	PTR(rdo::gui::editor::Build)             preview_build;
-	PTR(rdo::gui::editor::Debug)             preview_debug;
-	PTR(rdo::gui::editor::Results)  preview_results;
-	PTR(rdo::gui::editor::Find)              preview_find;
-	PTR(rdo::gui::tracer::LogMainWnd)        preview_trace;
-	PTR(rdo::gui::tracer::ChartDoc)          preview_chart_doc;
-	PTR(rdo::gui::tracer::ChartView)         preview_chart;
-	std::vector<rdo::gui::tracer::Time>      preview_times;
-	rdo::gui::tracer::LPSerie                preview_serie;
-	PTR(FrameOptionsView)                    preview_frame;
+	PTR(rdo::gui::editor::Model)         preview_editor;
+	PTR(rdo::gui::editor::Build)         preview_build;
+	PTR(rdo::gui::editor::Debug)         preview_debug;
+	PTR(rdo::gui::editor::Results)       preview_results;
+	PTR(rdo::gui::editor::Find)          preview_find;
+	PTR(rdo::gui::tracer::LogMainWnd)    preview_trace;
+	PTR(rdo::gui::tracer::ChartDoc)      preview_chart_doc;
+	PTR(rdo::gui::tracer::ChartView)     preview_chart;
+	std::vector<rdo::gui::tracer::Time>  preview_times;
+	rdo::gui::tracer::LPSerie            preview_serie;
+	PTR(rdo::gui::frame::OptionsView)    preview_frame;
 
 	typedef PTR(QTreeWidgetItem) treeItem;
 

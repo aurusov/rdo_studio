@@ -75,7 +75,7 @@ public:
 	void  updateStyleOfAllModel() const;
 	rbool isPrevModelClosed    () const;
 
-	REF(FrameManager) getFrameManager();
+	REF(rdo::gui::frame::Manager) getFrameManager();
 	void onChangeFrame(ruint index);
 
 protected:
@@ -89,11 +89,11 @@ private:
 		BS_ERROR
 	};
 
-	FrameManager                  m_frameManager;
-	boost::optional<ruint>        m_templateIndex;
-	rbool                         m_GUI_HAS_MODEL;
-	rbool                         m_GUI_CAN_RUN;
-	rbool                         m_GUI_IS_RUNNING;
+	rdo::gui::frame::Manager  m_frameManager;
+	boost::optional<ruint>    m_templateIndex;
+	rbool                     m_GUI_HAS_MODEL;
+	rbool                     m_GUI_CAN_RUN;
+	rbool                     m_GUI_IS_RUNNING;
 
 	void setHasModel  (rbool value);
 	void setCanRun    (rbool value);

@@ -18,15 +18,17 @@
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
 
-class FrameTreeCtrl
+namespace rdo { namespace gui { namespace frame {
+
+class TreeCtrl
 	: public QTreeWidget
 	, public ActionActivator
 {
 Q_OBJECT
 
 public:
-	FrameTreeCtrl(PTR(QWidget) pParent);
-	virtual ~FrameTreeCtrl();
+	TreeCtrl(PTR(QWidget) pParent);
+	virtual ~TreeCtrl();
 
 	PTR(QTreeWidgetItem) insertFrame(CREF(QString) name);
 
@@ -44,5 +46,7 @@ private:
 private slots:
 	void onHelpContext();
 };
+
+}}} // namespace rdo::gui::frame
 
 #endif // _RDO_STUDIO_FRAME_TREE_CTRL_H_

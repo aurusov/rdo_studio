@@ -322,7 +322,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			int index = m_frameManager.getLastShowedFrame();
 			if (index != -1)
 			{
-				PTR(FrameAnimationWnd) pView = m_frameManager.getFrameView(index);
+				PTR(rdo::gui::frame::View) pView = m_frameManager.getFrameView(index);
 				if (pView) pView->setFocus();
 			}
 			g_pApp->getIMainWnd()->update_start();
@@ -987,7 +987,7 @@ void Model::afterModelStart()
 		m_frameManager.setLastShowedFrame(initFrameNumber);
 		if (getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && initFrameNumber < m_frameManager.count())
 		{
-			PTR(FrameAnimationWnd) pView = m_frameManager.createView(initFrameNumber);
+			PTR(rdo::gui::frame::View) pView = m_frameManager.createView(initFrameNumber);
 			if (pView)
 			{
 				m_frameManager.getFrameView(initFrameNumber)->setFocus();
@@ -1033,7 +1033,7 @@ void Model::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 			case rdo::runtime::RTM_MaxSpeed: closeAllFrame(); break;
 			default:
 			{
-				PTR(FrameAnimationWnd) pView = m_frameManager.getFrameViewFirst();
+				PTR(rdo::gui::frame::View) pView = m_frameManager.getFrameViewFirst();
 				if (!pView)
 				{
 					m_frameManager.createView(m_frameManager.getLastShowedFrame());
@@ -1253,7 +1253,7 @@ void Model::update()
 		{
 			break;
 		}
-		PTR(FrameAnimationWnd) pView = m_frameManager.getFrameView(i);
+		PTR(rdo::gui::frame::View) pView = m_frameManager.getFrameView(i);
 		if (pView)
 		{
 			//! @todo qt: переделать модель отрисовки.
@@ -1363,7 +1363,7 @@ rdo::runtime::RunTimeMode Model::getRuntimeMode() const
 	return m_runtimeMode;
 }
 
-REF(FrameManager) Model::getFrameManager()
+REF(rdo::gui::frame::Manager) Model::getFrameManager()
 {
 	return m_frameManager;
 }

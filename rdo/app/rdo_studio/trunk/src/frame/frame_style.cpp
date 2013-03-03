@@ -14,6 +14,7 @@
 #include "app/rdo_studio/src/frame/frame_style.h"
 // --------------------------------------------------------------------------------
 
+using namespace rdo::gui::frame;
 using namespace rdo::gui::style;
 
 // --------------------------------------------------------------------------------
