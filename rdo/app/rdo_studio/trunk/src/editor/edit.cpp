@@ -1655,5 +1655,5 @@ rbool Edit::predicateOfGroup(CREF(this_predicate) fun) const
 
 ruint Edit::convertColor(CREF(QColor) color)
 {
-	ruint color.red() | color.green() << 8 | color.blue() << 16;
+	return color.red() | color.green() << 8 | color.blue() << 16;
 }
