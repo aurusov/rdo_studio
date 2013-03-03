@@ -2161,14 +2161,6 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath="..\..\src\warning_disable.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\warning_enable.h"
-				>
-			</File>
 			<Filter
 				Name=".action_activator"
 				>
