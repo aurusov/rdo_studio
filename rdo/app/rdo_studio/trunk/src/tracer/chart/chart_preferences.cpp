@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      chart_preferences.cpp
-  \author    –ÓÏ‡ÌÓ‚ ﬂÓÒÎ‡‚ (robot.xet@gmail.com)
+  \author    –†–æ–º–∞–Ω–æ–≤ –Ø—Ä–æ—Å–ª–∞–≤ (robot.xet@gmail.com)
   \date      19.02.2013
   \brief     
   \indent    4T
@@ -52,11 +52,11 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 
 	insertColors(colorComboBox);
 
-	markerComboBox->addItem(QString::fromLocal8Bit("ÕÂÚ"),         Serie::M_NONE);
-	markerComboBox->addItem(QString::fromLocal8Bit(" Û„"),        Serie::M_CIRCLE);
-	markerComboBox->addItem(QString::fromLocal8Bit(" ‚‡‰‡Ú"),     Serie::M_SQUARE);
-	markerComboBox->addItem(QString::fromLocal8Bit("“ÂÛ„ÓÎ¸ÌËÍ"), Serie::M_TRIANG);
-	markerComboBox->addItem(QString::fromLocal8Bit(" ÂÒÚËÍ"),     Serie::M_CROSS);
+	markerComboBox->addItem(QString::fromLocal8Bit("–ù–µ—Ç"),         Serie::M_NONE);
+	markerComboBox->addItem(QString::fromLocal8Bit("–ö—Ä—É–≥"),        Serie::M_CIRCLE);
+	markerComboBox->addItem(QString::fromLocal8Bit("–ö–≤–∞–¥—Ä–∞—Ç"),     Serie::M_SQUARE);
+	markerComboBox->addItem(QString::fromLocal8Bit("–¢—Ä–µ—É–≥–æ–ª—å–Ω–∏–∫"), Serie::M_TRIANG);
+	markerComboBox->addItem(QString::fromLocal8Bit("–ö—Ä–µ—Å—Ç–∏–∫"),     Serie::M_CROSS);
 
 	connect(xValueLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onXValue(const QString&)));
 	connect(yValueLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onYValue(const QString&)));

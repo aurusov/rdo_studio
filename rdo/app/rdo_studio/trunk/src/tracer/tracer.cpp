@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      tracer.cpp
-  \author    Çàõàðîâ Ïàâåë
+  \author    Ð—Ð°Ñ…Ð°Ñ€Ð¾Ð² ÐŸÐ°Ð²ÐµÐ»
   \date      01.04.2003
   \brief     
   \indent    4T
@@ -76,7 +76,7 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 		try
 		{
 			setModelName(g_pModel->getName());
-			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Ïîëó÷åíèå ñòðóêòóðû ìîäåëè... "));
+			g_pApp->getIMainWnd()->getDockDebug().appendString("ÐŸÐ¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ðµ ÑÑ‚Ñ€ÑƒÐºÑ‚ÑƒÑ€Ñ‹ Ð¼Ð¾Ð´ÐµÐ»Ð¸... ");
 			rdo::textstream model_structure;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
 			getModelStructure(model_structure);

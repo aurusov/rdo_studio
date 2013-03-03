@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      tracer_logger_view.h
-  \authors   Захаров Павел
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      12.03.2003
   \brief     
   \indent    4T

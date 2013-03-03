@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      tracer_serie.cpp
-  \author    Захаров Павел
+  \author    Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
   \date      11.03.2003
   \brief     
   \indent    4T
@@ -480,7 +480,7 @@ Serie::ExportData Serie::exportData()
 
 	ExportData exportData;
 	exportData.reserve(m_valueList.size() + 1);
-	exportData.push_back(QString("%1;%2").arg(QString::fromStdWString(L"время")).arg(m_title));
+	exportData.push_back(QString("%1;%2").arg("РІСЂРµРјСЏ").arg(m_title));
 
 	BOOST_FOREACH(PTR(Value) pValue, m_valueList)
 	{

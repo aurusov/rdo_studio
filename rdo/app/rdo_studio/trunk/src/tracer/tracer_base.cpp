@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      tracer_base.cpp
-  \author    Захаров Павел
+  \author    Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
   \date      01.04.2003
   \brief     
   \indent    4T
@@ -358,7 +358,7 @@ tstring TracerBase::getNextValue(REF(tstring) line)
 	tstring result;
 	if (line[posStart] == _T('['))
 	{
-		//! @todo Массив просто игнорируется, график по нему не строится. Заплатка.
+		//! @todo РњР°СЃСЃРёРІ РїСЂРѕСЃС‚Рѕ РёРіРЅРѕСЂРёСЂСѓРµС‚СЃСЏ, РіСЂР°С„РёРє РїРѕ РЅРµРјСѓ РЅРµ СЃС‚СЂРѕРёС‚СЃСЏ. Р—Р°РїР»Р°С‚РєР°.
 		posEnd = line.find_first_of(']', posStart);
 		result = _T("0");
 	}
@@ -753,7 +753,7 @@ rbool TracerBase::getDrawTrace() const
 
 void TracerBase::registerClipboardFormat()
 {
-	//! @todo qt удалить
+	//! @todo qt СѓРґР°Р»РёС‚СЊ
 	//m_clipboardFormat = ::RegisterClipboardFormat(rdo::format(ID_RAO_CLIPBRD).c_str());
 }
 

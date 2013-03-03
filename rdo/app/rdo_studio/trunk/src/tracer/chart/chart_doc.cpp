@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      chart_doc.cpp
-  \author    Захаров Павел
+  \author    Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -323,12 +323,12 @@ CREF(QString) ChartDoc::getTitle() const
 void ChartDoc::setTitle(CREF(QString) title)
 {
 	m_title = title;
-	getFirstView()->parentWidget()->setWindowTitle(QString::fromStdWString(L"график: %1").arg(m_title));
+	getFirstView()->parentWidget()->setWindowTitle(QString("РіСЂР°С„РёРє: %1").arg(m_title));
 }
 
 void ChartDoc::autoTitle()
 {
-	QString title = QString::fromStdWString(L"График%1").arg(++s_titleIndex);
+	QString title = QString("Р“СЂР°С„РёРє%1").arg(++s_titleIndex);
 	setTitle(title);
 }
 

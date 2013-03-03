@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      chart_tree.cpp
-  \author    Захаров Павел
+  \author    Р—Р°С…Р°СЂРѕРІ РџР°РІРµР»
   \date      12.03.2003
   \brief     
   \indent    4T
@@ -62,12 +62,12 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 	m_rootPMV = rdo::Factory<ChartTreeItem>::create();
 
 	m_root->setCtrlItem(new QTreeWidgetItem(this));
-	m_root->getCtrlItem().setText(0, QString::fromStdWString(L"Модель"));
+	m_root->getCtrlItem().setText(0, "РњРѕРґРµР»СЊ");
 	m_root->getCtrlItem().setIcon(0, m_iconList[IT_ROOT]);
 
-	createItem(m_root, m_rootRTP, QString::fromStdWString(L"Типы ресурсов"), IT_SUB_ROOT_1);
-	createItem(m_root, m_rootPAT, QString::fromStdWString(L"Образцы"),       IT_SUB_ROOT_1);
-	createItem(m_root, m_rootPMV, QString::fromStdWString(L"Результаты"),    IT_SUB_ROOT_1);
+	createItem(m_root, m_rootRTP, "РўРёРїС‹ СЂРµСЃСѓСЂСЃРѕРІ", IT_SUB_ROOT_1);
+	createItem(m_root, m_rootPAT, "РћР±СЂР°Р·С†С‹",       IT_SUB_ROOT_1);
+	createItem(m_root, m_rootPMV, "Р РµР·СѓР»СЊС‚Р°С‚С‹",    IT_SUB_ROOT_1);
 
 	m_root->getCtrlItem().setExpanded(true);
 
@@ -116,7 +116,7 @@ void ChartTree::doDragDrop(CREF(LPSerie) pSerie)
 
 void ChartTree::setModelName(CREF(QString) modelName)
 {
-	m_root->getCtrlItem().setText(0, QString::fromLocal8Bit("Модель : %1").arg(modelName));
+	m_root->getCtrlItem().setText(0, QString::fromLocal8Bit("РњРѕРґРµР»СЊ : %1").arg(modelName));
 }
 
 void ChartTree::createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType)
@@ -195,7 +195,7 @@ void ChartTree::clear()
 	deleteChildren(m_rootRTP);
 	deleteChildren(m_rootPAT);
 	deleteChildren(m_rootPMV);
-	m_root->getCtrlItem().setText(0, QString::fromStdWString(L"Модель"));
+	m_root->getCtrlItem().setText(0, "РњРѕРґРµР»СЊ");
 }
 
 void ChartTree::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
@@ -262,9 +262,9 @@ void ChartTree::onChartExport()
 
 	QString fileName = QFileDialog::getSaveFileName(
 		this,
-		QString::fromStdWString(L"Сохранить"),
-		QString::fromLocal8Bit (path.string().c_str()),
-		QString::fromStdWString(L"csv-файл (*.csv);;Все файлы (*.*)")
+		"РЎРѕС…СЂР°РЅРёС‚СЊ",
+		QString::fromLocal8Bit(path.string().c_str()),
+		"csv-С„Р°Р№Р» (*.csv);;Р’СЃРµ С„Р°Р№Р»С‹ (*.*)"
 	);
 	if (fileName.isEmpty())
 		return;
