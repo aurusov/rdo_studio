@@ -117,12 +117,8 @@ QSettings& operator>> (QSettings& settings,       LogBorders& border);
 // --------------------------------------------------------------------------------
 // -------------------- LogStyle
 // --------------------------------------------------------------------------------
-//class RDOStudioOptionsStylesAndColors;
-
 class LogStyle: public style::Style
 {
-//friend class RDOStudioOptionsStylesAndColors;
-
 public:
 	LogStyle();
 	virtual ~LogStyle();

@@ -142,8 +142,6 @@ Application::Application(int& argc, char** argv)
 #ifdef RDO_MT
 	m_pStudioMT = new ThreadStudio();
 #endif
-//	new RDOThreadStudio1();
-//	new RDOThreadStudio2();
 
 	g_pTracer = new rdo::gui::tracer::Tracer();
 

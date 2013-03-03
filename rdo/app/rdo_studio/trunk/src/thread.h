@@ -41,30 +41,4 @@ protected:
 };
 #endif
 
-/*
-// --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudio1
-// --------------------------------------------------------------------------------
-class RDOThreadStudio1: public RDOThreadMT
-{
-friend class RDOStudioApp;
-protected:
-	RDOThreadStudio1();
-	virtual ~RDOThreadStudio1() {}; // Чтобы нельзя было удалить через delete
-	virtual void proc( RDOMessageInfo& msg );
-};
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudio2
-// --------------------------------------------------------------------------------
-class RDOThreadStudio2: public RDOThreadMT
-{
-friend class RDOStudioApp;
-protected:
-	RDOThreadStudio2();
-	virtual ~RDOThreadStudio2() {}; // Чтобы нельзя было удалить через delete
-	virtual void proc( RDOMessageInfo& msg );
-};
-*/
-
 #endif // _RDO_STUDIO_THREAD_H_
