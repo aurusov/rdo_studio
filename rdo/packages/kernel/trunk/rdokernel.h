@@ -37,7 +37,7 @@ CLOSE_RDO_REPOSITORY_NAMESPACE
 class RDOKernel: public RDOThreadMT
 {
 friend void RDOThread::broadcastMessage( RDOTreadMessage message, void* param, rbool lock );
-friend class RDOStudioApp;
+friend class Application;
 
 protected:
 	RDOKernel();           // —оздание и удаление через статические методы

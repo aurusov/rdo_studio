@@ -33,7 +33,7 @@
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioApp
 // --------------------------------------------------------------------------------
-RDOStudioApp* g_pApp = NULL;
+Application* g_pApp = NULL;
 
 #ifdef _DEBUG
 void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
@@ -79,7 +79,7 @@ void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QS
 }
 #endif
 
-RDOStudioApp::RDOStudioApp(int& argc, char** argv)
+Application::Application(int& argc, char** argv)
 	: QApplication(argc, argv)
 	, m_pStudioGUI                  (NULL  )
 #ifdef RDO_MT
@@ -249,11 +249,11 @@ RDOStudioApp::RDOStudioApp(int& argc, char** argv)
 		g_pModel->runModel();
 	}
 
-	connect(&m_idleTimer, &QTimer::timeout, this, &RDOStudioApp::onIdle);
+	connect(&m_idleTimer, &QTimer::timeout, this, &Application::onIdle);
 	m_idleTimer.start(0);
 }
 
-RDOStudioApp::~RDOStudioApp()
+Application::~Application()
 {
 	m_pMainFrame = NULL;
 
@@ -282,32 +282,32 @@ RDOStudioApp::~RDOStudioApp()
 	}
 }
 
-PTR(MainWindow) RDOStudioApp::getMainWndUI()
+PTR(MainWindow) Application::getMainWndUI()
 {
 	return m_pMainFrame;
 }
 
-PTR(QMainWindow) RDOStudioApp::getMainWnd()
+PTR(QMainWindow) Application::getMainWnd()
 {
 	return m_pMainFrame;
 }
 
-PTR(MainWindowBase) RDOStudioApp::getStyle()
+PTR(MainWindowBase) Application::getStyle()
 {
 	return m_pMainFrame;
 }
 
-PTR(MainWindowBase) RDOStudioApp::getIMainWnd()
+PTR(MainWindowBase) Application::getIMainWnd()
 {
 	return m_pMainFrame;
 }
 
-REF(std::ofstream) RDOStudioApp::log()
+REF(std::ofstream) Application::log()
 {
 	return m_log;
 }
 
-QString RDOStudioApp::getFullHelpFileName(CREF(QString) helpFileName) const
+QString Application::getFullHelpFileName(CREF(QString) helpFileName) const
 {
 	QString result = chkHelpExist(helpFileName);
 	if (result.size() < 3)
@@ -321,7 +321,7 @@ QString RDOStudioApp::getFullHelpFileName(CREF(QString) helpFileName) const
 	return result;
 }
 
-QString RDOStudioApp::chkHelpExist(CREF(QString) helpFileName) const
+QString Application::chkHelpExist(CREF(QString) helpFileName) const
 {
 	QString fullHelpFileName = QString("%1%2")
 		.arg(QString::fromLocal8Bit(rdo::File::extractFilePath(qApp->applicationFilePath().toLocal8Bit().constData()).c_str()))
@@ -336,7 +336,7 @@ QString RDOStudioApp::chkHelpExist(CREF(QString) helpFileName) const
 	return fullHelpFileName;
 }
 
-void RDOStudioApp::chkAndRunQtAssistant()
+void Application::chkAndRunQtAssistant()
 {
 	if (!m_pAssistant)
 	{
@@ -348,7 +348,7 @@ void RDOStudioApp::chkAndRunQtAssistant()
 		m_pAssistant = runQtAssistant();
 }
 
-PTR(QProcess) RDOStudioApp::runQtAssistant() const
+PTR(QProcess) Application::runQtAssistant() const
 {
 	PTR(QProcess) pProcess = new QProcess;
 	QStringList args;
@@ -360,7 +360,7 @@ PTR(QProcess) RDOStudioApp::runQtAssistant() const
 	return pProcess;
 }
 
-void RDOStudioApp::callQtAssistant(CREF(QByteArray) ba)
+void Application::callQtAssistant(CREF(QByteArray) ba)
 {
 	chkAndRunQtAssistant();
 	if (m_pAssistant->state() != m_pAssistant->Running)
@@ -369,12 +369,12 @@ void RDOStudioApp::callQtAssistant(CREF(QByteArray) ba)
 	m_pAssistant->write(ba);
 }
 
-rbool RDOStudioApp::getFileAssociationSetup() const
+rbool Application::getFileAssociationSetup() const
 {
 	return m_fileAssociationSetup;
 }
 
-void RDOStudioApp::setFileAssociationSetup(rbool value)
+void Application::setFileAssociationSetup(rbool value)
 {
 	m_fileAssociationSetup = value;
 	QSettings settings;
@@ -385,12 +385,12 @@ void RDOStudioApp::setFileAssociationSetup(rbool value)
 	}
 }
 
-rbool RDOStudioApp::getFileAssociationCheckInFuture() const
+rbool Application::getFileAssociationCheckInFuture() const
 {
 	return m_fileAssociationCheckInFuture;
 }
 
-void RDOStudioApp::setFileAssociationCheckInFuture(rbool value)
+void Application::setFileAssociationCheckInFuture(rbool value)
 {
 	if (m_fileAssociationCheckInFuture != value)
 	{
@@ -400,12 +400,12 @@ void RDOStudioApp::setFileAssociationCheckInFuture(rbool value)
 	}
 }
 
-rbool RDOStudioApp::getOpenLastProject() const
+rbool Application::getOpenLastProject() const
 {
 	return m_openLastProject;
 }
 
-void RDOStudioApp::setOpenLastProject(rbool value)
+void Application::setOpenLastProject(rbool value)
 {
 	if (m_openLastProject != value)
 	{
@@ -415,12 +415,12 @@ void RDOStudioApp::setOpenLastProject(rbool value)
 	}
 }
 
-CREF(QString) RDOStudioApp::getLastProjectName() const
+CREF(QString) Application::getLastProjectName() const
 {
 	return m_lastProjectName;
 }
 
-void RDOStudioApp::setLastProjectName(CREF(QString) projectName)
+void Application::setLastProjectName(CREF(QString) projectName)
 {
 	m_pMainFrame->insertMenuFileReopenItem(projectName);
 	if (m_lastProjectName != projectName)
@@ -434,12 +434,12 @@ void RDOStudioApp::setLastProjectName(CREF(QString) projectName)
 	}
 }
 
-rbool RDOStudioApp::getShowCaptionFullName() const
+rbool Application::getShowCaptionFullName() const
 {
 	return m_showCaptionFullName;
 }
 
-void RDOStudioApp::setShowCaptionFullName(rbool value)
+void Application::setShowCaptionFullName(rbool value)
 {
 	if (m_showCaptionFullName != value)
 	{
@@ -450,7 +450,7 @@ void RDOStudioApp::setShowCaptionFullName(rbool value)
 	}
 }
 
-void RDOStudioApp::setupFileAssociation()
+void Application::setupFileAssociation()
 {
 #ifdef Q_OS_WIN
 	QString fileTypeID("RAO.Project");
@@ -501,7 +501,7 @@ void RDOStudioApp::setupFileAssociation()
 #endif
 }
 
-void RDOStudioApp::autoCloseByModel()
+void Application::autoCloseByModel()
 {
 	if (m_autoExitByModel)
 	{
@@ -512,7 +512,7 @@ void RDOStudioApp::autoCloseByModel()
 	}
 }
 
-void RDOStudioApp::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam)
+void Application::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam)
 {
 #ifdef RDO_MT
 	PTR(CEvent) pEvent = m_pStudioMT->manualMessageFrom(message, pParam);
@@ -530,7 +530,7 @@ void RDOStudioApp::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void
 #endif
 }
 
-void RDOStudioApp::onIdle()
+void Application::onIdle()
 {
 #ifdef RDO_MT
 	static_cast<PTR(RDOThreadStudioGUI)>(m_pStudioGUI)->processMessages();
@@ -539,7 +539,7 @@ void RDOStudioApp::onIdle()
 #endif
 }
 
-CREF(rdo::gui::editor::LPModelStyle) RDOStudioApp::getModelStyle() const
+CREF(rdo::gui::editor::LPModelStyle) Application::getModelStyle() const
 {
 	ASSERT(m_pModelStyle);
 	return m_pModelStyle;
@@ -630,7 +630,7 @@ private:
 	}
 };
 
-void RDOStudioApp::convertSettings() const
+void Application::convertSettings() const
 {
 	Convertor convertor;
 

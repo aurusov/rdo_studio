@@ -17,7 +17,7 @@
 #include "app/rdo_studio/src/main_window.h"
 // --------------------------------------------------------------------------------
 
-RDOStudioFrameTreeCtrl::RDOStudioFrameTreeCtrl(PTR(QWidget) pParent)
+FrameTreeCtrl::FrameTreeCtrl(PTR(QWidget) pParent)
 	: parent_type(pParent)
 {
 	setColumnCount    (1);
@@ -30,10 +30,10 @@ RDOStudioFrameTreeCtrl::RDOStudioFrameTreeCtrl(PTR(QWidget) pParent)
 	addTopLevelItem(m_pRootItem);
 }
 
-RDOStudioFrameTreeCtrl::~RDOStudioFrameTreeCtrl()
+FrameTreeCtrl::~FrameTreeCtrl()
 {}
 
-PTR(QTreeWidgetItem) RDOStudioFrameTreeCtrl::insertFrame(CREF(QString) name)
+PTR(QTreeWidgetItem) FrameTreeCtrl::insertFrame(CREF(QString) name)
 {
 	PTR(QTreeWidgetItem) pItem = new QTreeWidgetItem(m_pRootItem);
 	ASSERT(pItem);
@@ -42,7 +42,7 @@ PTR(QTreeWidgetItem) RDOStudioFrameTreeCtrl::insertFrame(CREF(QString) name)
 	return pItem;
 }
 
-void RDOStudioFrameTreeCtrl::clear()
+void FrameTreeCtrl::clear()
 {
 	QList<PTR(QTreeWidgetItem)> children = m_pRootItem->takeChildren();
 	BOOST_FOREACH(PTR(QTreeWidgetItem) item, children)
@@ -51,19 +51,19 @@ void RDOStudioFrameTreeCtrl::clear()
 	}
 }
 
-void RDOStudioFrameTreeCtrl::focusInEvent(QFocusEvent* pEvent)
+void FrameTreeCtrl::focusInEvent(QFocusEvent* pEvent)
 {
 	parent_type::focusInEvent(pEvent);
 	activate(pEvent);
 }
 
-void RDOStudioFrameTreeCtrl::focusOutEvent(QFocusEvent* pEvent)
+void FrameTreeCtrl::focusOutEvent(QFocusEvent* pEvent)
 {
 	parent_type::focusOutEvent(pEvent);
 	deactivate(pEvent);
 }
 
-void RDOStudioFrameTreeCtrl::onUpdateActions(rbool activated)
+void FrameTreeCtrl::onUpdateActions(rbool activated)
 {
 	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
@@ -71,11 +71,11 @@ void RDOStudioFrameTreeCtrl::onUpdateActions(rbool activated)
 	updateAction(
 		pMainWindow->actHelpContext,
 		activated,
-		this, &RDOStudioFrameTreeCtrl::onHelpContext
+		this, &FrameTreeCtrl::onHelpContext
 	);
 }
 
-void RDOStudioFrameTreeCtrl::onHelpContext()
+void FrameTreeCtrl::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_frame.htm#frame\n");

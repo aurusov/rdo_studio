@@ -18,15 +18,15 @@
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
 
-class RDOStudioFrameTreeCtrl
+class FrameTreeCtrl
 	: public QTreeWidget
 	, public ActionActivator
 {
 Q_OBJECT
 
 public:
-	RDOStudioFrameTreeCtrl(PTR(QWidget) pParent);
-	virtual ~RDOStudioFrameTreeCtrl();
+	FrameTreeCtrl(PTR(QWidget) pParent);
+	virtual ~FrameTreeCtrl();
 
 	PTR(QTreeWidgetItem) insertFrame(CREF(QString) name);
 

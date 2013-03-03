@@ -37,11 +37,11 @@ namespace rdo { namespace gui { namespace tracer {
 class Tracer;
 }}}
 
-class RDOStudioApp: public QApplication
+class Application: public QApplication
 {
 public:
-	RDOStudioApp(int& argc, char** argv);
-	virtual ~RDOStudioApp();
+	Application(int& argc, char** argv);
+	virtual ~Application();
 
 	PTR(MainWindow)      getMainWndUI();
 	PTR(QMainWindow)     getMainWnd  ();
@@ -114,6 +114,6 @@ private slots:
 };
 
 // --------------------------------------------------------------------------------
-extern RDOStudioApp* g_pApp;
+extern Application* g_pApp;
 
 #endif // _RDO_STUDIO_APPLICATION_H_

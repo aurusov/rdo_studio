@@ -16,7 +16,7 @@
 
 int main(int argc, char** argv)
 {
-	RDOStudioApp app(argc, argv);
+	Application app(argc, argv);
 
 	return app.exec();
 }

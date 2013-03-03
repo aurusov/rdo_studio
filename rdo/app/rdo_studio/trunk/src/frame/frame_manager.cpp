@@ -72,7 +72,7 @@ FrameManager::~FrameManager()
 rbool FrameManager::init()
 {
 	connect(
-		&g_pApp->getIMainWnd()->getDockFrame().getContext(), &RDOStudioFrameTreeCtrl::itemDoubleClicked,
+		&g_pApp->getIMainWnd()->getDockFrame().getContext(), &FrameTreeCtrl::itemDoubleClicked,
 		this, &FrameManager::onTreeWidgetItemDoubleClicked
 	);
 

@@ -22,7 +22,7 @@
 // --------------------------------------------------------------------------------
 class RDOThreadStudio: public RDOThread
 {
-friend class RDOStudioApp;
+friend class Application;
 protected:
 	RDOThreadStudio();
 	virtual ~RDOThreadStudio() {}; // Чтобы нельзя было удалить через delete
@@ -34,7 +34,7 @@ protected:
 // --------------------------------------------------------------------------------
 class RDOThreadStudioGUI: public RDOKernelGUI
 {
-friend class RDOStudioApp;
+friend class Application;
 protected:
 	RDOThreadStudioGUI();
 	virtual ~RDOThreadStudioGUI() {}; // Чтобы нельзя было удалить через delete
