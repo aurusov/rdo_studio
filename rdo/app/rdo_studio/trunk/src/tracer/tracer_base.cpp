@@ -98,8 +98,8 @@ ParamInfo* TracerBase::getParamType(rdo::textstream& stream)
 	}
 	else if (parType == ParamInfo::PT_BOOL)
 	{
-		pParam->addEnumValue(_T("false"));
-		pParam->addEnumValue(_T("true"));
+		pParam->addEnumValue("false");
+		pParam->addEnumValue("true");
 	}
 	else if (parType == ParamInfo::PT_ARRAY)
 	{
@@ -356,11 +356,11 @@ tstring TracerBase::getNextValue(REF(tstring) line)
 	int posStart = line.find_first_not_of(' ');
 	int posEnd;
 	tstring result;
-	if (line[posStart] == _T('['))
+	if (line[posStart] == '[')
 	{
 		//! @todo Массив просто игнорируется, график по нему не строится. Заплатка.
 		posEnd = line.find_first_of(']', posStart);
-		result = _T("0");
+		result = "0";
 	}
 	else
 	{

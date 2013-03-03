@@ -67,7 +67,7 @@ Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, ruint positio
 PTR(Model) g_pModel = NULL;
 
 Model::Model()
-	: RDOThreadGUI(_T("RDOThreadModelGUI"), static_cast<PTR(RDOKernelGUI)>(g_pApp->m_pStudioGUI))
+	: RDOThreadGUI("RDOThreadModelGUI", static_cast<PTR(RDOKernelGUI)>(g_pApp->m_pStudioGUI))
 	, m_frameManager   (boost::bind(&Model::onChangeFrame, this, _1))
 	, m_GUI_HAS_MODEL  (false                     )
 	, m_GUI_CAN_RUN    (true                      )
@@ -567,7 +567,7 @@ rbool Model::openModel(CREF(QString) modelName)
 		m_modelClosed = true;
 		if (m_smrEmptyError)
 		{
-			QMessageBox::critical(g_pApp->getMainWnd(), _T("Ошибка открытия модели"), _T("В smr-файле не найдено имя модели"));
+			QMessageBox::critical(g_pApp->getMainWnd(), "Ошибка открытия модели", "В smr-файле не найдено имя модели");
 			closeModel();
 		}
 		else

@@ -45,7 +45,7 @@ void Results::onHelpContext()
 
 	if (s.find_first_of(keyword) == tstring::npos || keyword.empty())
 	{
-		keyword = _T("pmv");
+		keyword = "pmv";
 	}
 
 	QByteArray ba;

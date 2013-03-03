@@ -104,7 +104,7 @@ StyleFont StyleFont::getFrameFont()
 {
 	StyleFont font;
 
-	font.name = _T("Verdana");
+	font.name = "Verdana";
 	font.size = 8;
 
 	return font;

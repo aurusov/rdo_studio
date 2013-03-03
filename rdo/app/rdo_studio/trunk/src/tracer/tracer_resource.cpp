@@ -171,7 +171,7 @@ void Resource::setParams(tstring& line, Time* const pTime, const int eventIndex,
 			switch (m_pResourceType->getParamInfo(i)->getParamType())
 			{
 			case ParamInfo::PT_BOOL:
-				newValue = nextValue == _T("true") ? 1.0 : 0.0;
+				newValue = nextValue == "true" ? 1.0 : 0.0;
 				break;
 
 			case ParamInfo::PT_STRING:
