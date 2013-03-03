@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      frame_tree_ctrl.cpp
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      28.03.2003
-  \brief     Äåðåâî êàäðîâ àíèìàöèè
+  \brief     Ð”ÐµÑ€ÐµÐ²Ð¾ ÐºÐ°Ð´Ñ€Ð¾Ð² Ð°Ð½Ð¸Ð¼Ð°Ñ†Ð¸Ð¸
   \indent    4T
 */
 
@@ -27,7 +27,7 @@ TreeCtrl::TreeCtrl(PTR(QWidget) pParent)
 	setRootIsDecorated(false);
 
 	m_pRootItem = new QTreeWidgetItem(this);
-	m_pRootItem->setText(0, QString::fromStdWString(L"Êàäðû"));
+	m_pRootItem->setText(0, "ÐšÐ°Ð´Ñ€Ñ‹");
 	m_pRootItem->setIcon(0, QIcon(QString::fromUtf8(":/images/images/tree_frame_root.png")));
 	addTopLevelItem(m_pRootItem);
 }

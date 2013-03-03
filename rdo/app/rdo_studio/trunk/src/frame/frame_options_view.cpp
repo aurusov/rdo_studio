@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2013
   \file      frame_options_view.cpp
-  \author    Романов Ярослав (robot.xet@gmail.com)
+  \author    Р РѕРјР°РЅРѕРІ РЇСЂРѕСЃР»Р°РІ (robot.xet@gmail.com)
   \date      07.02.2013
   \brief     
   \indent    4T
@@ -29,7 +29,7 @@ OptionsView::OptionsView(PTR(QWidget) pParent)
 {
 	setupUi(this);
 	englishSampleLabel->setText(QString::fromLocal8Bit("Sample of drawing text"));
-	russianSampleLabel->setText(QString::fromLocal8Bit("Пример текста"));
+	russianSampleLabel->setText(QString::fromLocal8Bit("РџСЂРёРјРµСЂ С‚РµРєСЃС‚Р°"));
 }
 
 void OptionsView::setStyle(PTR(FrameStyle) style)

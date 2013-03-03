@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      frame_manager.cpp
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
-  \authors   Êîïíèí Àíäðåé (kopninandrey@gmail.com)
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
+  \authors   ÐšÐ¾Ð¿Ð½Ð¸Ð½ ÐÐ½Ð´Ñ€ÐµÐ¹ (kopninandrey@gmail.com)
   \date      28.03.2003
-  \brief     Îòðèñîâêà êàäðîâ àíèìàöèè
+  \brief     ÐžÑ‚Ñ€Ð¸ÑÐ¾Ð²ÐºÐ° ÐºÐ°Ð´Ñ€Ð¾Ð² Ð°Ð½Ð¸Ð¼Ð°Ñ†Ð¸Ð¸
   \indent    4T
 */
 
@@ -56,7 +56,7 @@ Manager::Manager(CREF(OnChangeFrame) onChangeFrame)
 	, m_changed            (false    )
 	, m_onChangeFrame      (onChangeFrame)
 {
-	//! @todo À ïî÷åìó îáúåêò íå óäàëÿåòñÿ ? Ýòî ïðîèñõîäèò àâòîìàòè÷åñêè ?
+	//! @todo Ð Ð¿Ð¾Ñ‡ÐµÐ¼Ñƒ Ð¾Ð±ÑŠÐµÐºÑ‚ Ð½Ðµ ÑƒÐ´Ð°Ð»ÑÐµÑ‚ÑÑ ? Ð­Ñ‚Ð¾ Ð¿Ñ€Ð¾Ð¸ÑÑ…Ð¾Ð´Ð¸Ñ‚ Ð°Ð²Ñ‚Ð¾Ð¼Ð°Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸ ?
 
 	g_pApp->getIMainWnd()->connectOnActivateSubWindow(this);
 }
@@ -186,7 +186,7 @@ PTR(View) Manager::createView(ruint index)
 		pView = new View(NULL);
 		g_pApp->getIMainWnd()->addSubWindow(pView);
 		pView->parentWidget()->setWindowIcon (QIcon(QString::fromUtf8(":/images/images/mdi_frame.png")));
-		pView->parentWidget()->setWindowTitle(QString::fromStdWString(L"êàäð: %1").arg(getFrameName(index)));
+		pView->parentWidget()->setWindowTitle(QString("ÐºÐ°Ð´Ñ€: %1").arg(getFrameName(index)));
 
 		m_frameList[index]->m_pView    = pView;
 		m_frameList[index]->m_pContent = pView->getContent();
@@ -299,7 +299,7 @@ void Manager::insertBitmap(CREF(QString) bitmapName)
 	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
 		return;
 
-	g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdWString(L"Çàãðóçêà %1...").arg(bitmapName));
+	g_pApp->getIMainWnd()->getDockDebug().appendString(QString("Ð—Ð°Ð³Ñ€ÑƒÐ·ÐºÐ° %1...").arg(bitmapName));
 	g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 
 	rdo::binarystream stream;
