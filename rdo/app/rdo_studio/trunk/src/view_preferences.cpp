@@ -22,6 +22,7 @@
 using namespace rdo::simulation::report;
 using namespace rdo::gui::editor;
 using namespace rdo::gui::style;
+using namespace rdo::gui::tracer;
 
 rbool ViewPreferences::null_wordwrap      = false;
 rbool ViewPreferences::null_horzscrollbar = true;
@@ -897,6 +898,8 @@ void ViewPreferences::updatePreview()
 	preview_find->setEditorStyle(&style_find);
 	preview_find->repaint();
 
+	preview_chart->setStyle(&style_chart, true);
+
 	preview_frame->setStyle(&style_frame);
 	preview_frame->repaint();
 
@@ -953,33 +956,31 @@ void ViewPreferences::createPreview()
 	preview_find->gotoNext();
 	previewStackedWidget->addWidget(preview_find);
 
-	previewStackedWidget->addWidget(new QWidget(previewStackedWidget->currentWidget()));
-	//! @todo qt
-	//preview_chart_doc = new ChartDoc(true);
-	//PTR(ChartViewMainWnd) pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
-
-	//preview_chart_doc->setTitle(rdo::format("график 1").c_str());
-	//preview_chart->setPreviwMode(true);
-	//preview_chart_doc->attachView(preview_chart);
-	//preview_chart->setStyle(&style_chart, false);
+	preview_chart_doc = new ChartDoc(true);
+	PTR(ChartViewMainWnd) pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
+	preview_chart = &pViewQt->view();
+	preview_chart_doc->attachView(preview_chart);
+	preview_chart_doc->setTitle(QString("график 1"));
+	preview_chart->setPreviwMode(true);
+	preview_chart->setStyle(&style_chart, false);
 	////initializing times vector
-	//preview_times.push_back(Time(0, 3));
-	//preview_times.push_back(Time(2, 3));
-	//preview_times.push_back(Time(4, 3));
-	//preview_times.push_back(Time(6, 3));
-	//preview_times.push_back(Time(8, 3));
-	//preview_times.push_back(Time(10, 3));
+	preview_times.push_back(Time(0, 3));
+	preview_times.push_back(Time(2, 3));
+	preview_times.push_back(Time(4, 3));
+	preview_times.push_back(Time(6, 3));
+	preview_times.push_back(Time(8, 3));
+	preview_times.push_back(Time(10, 3));
 	preview_serie = rdo::Factory<rdo::gui::tracer::Serie>::create();
-	//preview_serie.setTitle(rdo::format("значение 1"));
-	//preview_serie.addValue(new Value(&preview_times.at(0), 2, 0));
-	//preview_serie.addValue(new Value(&preview_times.at(1), 1, 1));
-	//preview_serie.addValue(new Value(&preview_times.at(2), 0, 4));
-	//preview_serie.addValue(new Value(&preview_times.at(3), 3, 3));
-	//preview_serie.addValue(new Value(&preview_times.at(4), 1, 2));
-	//preview_serie.addValue(new Value(&preview_times.at(5), 0, 3));
-	//preview_chart_doc->addSerie(&preview_serie);
+	preview_serie->setTitle(QString("значение 1"));
+	preview_serie->addValue(new Value(&preview_times.at(0), 2, 0));
+	preview_serie->addValue(new Value(&preview_times.at(1), 1, 1));
+	preview_serie->addValue(new Value(&preview_times.at(2), 0, 4));
+	preview_serie->addValue(new Value(&preview_times.at(3), 3, 3));
+	preview_serie->addValue(new Value(&preview_times.at(4), 1, 2));
+	preview_serie->addValue(new Value(&preview_times.at(5), 0, 3));
+	preview_chart_doc->addSerie(preview_serie);
 
-	//previewStackedWidget->addWidget(pViewQt);
+	previewStackedWidget->addWidget(pViewQt);
 
 	preview_frame = new rdo::gui::frame::OptionsView(previewStackedWidget->currentWidget());
 	preview_frame->setStyle(&style_frame);
