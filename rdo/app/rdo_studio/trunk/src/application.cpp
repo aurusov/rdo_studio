@@ -23,7 +23,7 @@
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/thread.h"
 #include "app/rdo_studio/src/dialog/file_association_dialog.h"

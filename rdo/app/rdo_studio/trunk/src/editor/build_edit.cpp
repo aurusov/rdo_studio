@@ -17,7 +17,7 @@
 #include "simulator/report/build_edit_line_info.h"
 #include "app/rdo_studio/src/editor/build_edit.h"
 #include "app/rdo_studio/src/editor/model_edit.h"
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/application.h"
 // --------------------------------------------------------------------------------
 

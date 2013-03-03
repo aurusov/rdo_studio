@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      main_frm.h
+  \file      main_window.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MAIN_FRM_H_
-#define _RDO_STUDIO_MAIN_FRM_H_
+#ifndef _RDO_STUDIO_MAIN_WINDOW_H_
+#define _RDO_STUDIO_MAIN_WINDOW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
@@ -21,7 +21,7 @@
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
-#include "app/rdo_studio/src/main_windows_base.h"
+#include "app/rdo_studio/src/main_window_base.h"
 #include "app/rdo_studio/src/status_bar.h"
 // --------------------------------------------------------------------------------
 
@@ -124,4 +124,4 @@ private:
 	void onUpdateActions(rbool activated);
 };
 
-#endif // _RDO_STUDIO_MAIN_FRM_H_
+#endif // _RDO_STUDIO_MAIN_WINDOW_H_

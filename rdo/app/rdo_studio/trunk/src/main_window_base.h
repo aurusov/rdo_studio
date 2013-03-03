@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      main_windows_base.h
+  \file      main_window_base.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      01.09.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MAIN_WINDOWS_BASE_H_
-#define _RDO_STUDIO_MAIN_WINDOWS_BASE_H_
+#ifndef _RDO_STUDIO_MAIN_WINDOW_BASE_H_
+#define _RDO_STUDIO_MAIN_WINDOW_BASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -71,4 +71,4 @@ protected:
 	PTR(DockFrame)      m_pDockFrame;
 };
 
-#endif // _RDO_STUDIO_MAIN_WINDOWS_BASE_H_
+#endif // _RDO_STUDIO_MAIN_WINDOW_BASE_H_

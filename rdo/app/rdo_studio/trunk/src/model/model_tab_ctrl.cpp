@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_windows_base.h"
+#include "app/rdo_studio/src/main_window_base.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::model;

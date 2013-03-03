@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      main_frm.cpp
+  \file      main_window.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
@@ -20,7 +20,7 @@
 #include <QMdiSubWindow>
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/about.h"

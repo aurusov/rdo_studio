@@ -11,7 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include "app/rdo_studio/src/editor/edit_popup_menu.h"
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/application.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------

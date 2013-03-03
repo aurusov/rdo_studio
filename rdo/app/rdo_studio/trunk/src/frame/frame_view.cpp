@@ -22,7 +22,7 @@
 #include "app/rdo_studio/src/frame/frame_view.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_windows_base.h"
+#include "app/rdo_studio/src/main_window_base.h"
 // --------------------------------------------------------------------------------
 
 FrameAnimationContent::FrameAnimationContent(PTR(QWidget) pParent)

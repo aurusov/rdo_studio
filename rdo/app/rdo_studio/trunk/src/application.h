@@ -22,7 +22,7 @@
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio/src/main_windows_base.h"
+#include "app/rdo_studio/src/main_window_base.h"
 #include "app/rdo_studio/src/editor/model_edit_style.h"
 // --------------------------------------------------------------------------------
 

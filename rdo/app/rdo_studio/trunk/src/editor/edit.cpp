@@ -21,7 +21,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/editor/edit.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/dialog/goto_line_dialog.h"
 #include "thirdparty/scintilla/include/SciLexer.h"
 #include "thirdparty/scintilla/lexlib/WordList.h"

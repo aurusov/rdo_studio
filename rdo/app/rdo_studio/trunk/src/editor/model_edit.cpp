@@ -15,7 +15,7 @@
 #include "app/rdo_studio/src/editor/model_edit.h"
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "thirdparty/scintilla/lexlib/WordList.h"
 #include "thirdparty/scintilla/rdo/LexRdo.h"

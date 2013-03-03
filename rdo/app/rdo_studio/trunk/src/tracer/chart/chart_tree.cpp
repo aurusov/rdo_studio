@@ -20,7 +20,7 @@
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_frm.h"
+#include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
 #include "app/rdo_studio/src/tracer/chart/chart_tree.h"
