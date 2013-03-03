@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      dock_trace_tree.cpp
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      06.10.2012
   \brief     
   \indent    4T
@@ -19,7 +19,7 @@
 // --------------------------------------------------------------------------------
 
 DockChartTree::DockChartTree(PTR(QWidget) pParent)
-	: DockFocusable(QString::fromStdWString(L"Ãðàôèêè"), pParent)
+	: DockFocusable("Ð“Ñ€Ð°Ñ„Ð¸ÐºÐ¸", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(200, 300));

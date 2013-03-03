@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      dock_frame.cpp
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      07.10.2012
   \brief     
   \indent    4T
@@ -18,7 +18,7 @@
 // --------------------------------------------------------------------------------
 
 DockFrame::DockFrame(PTR(QWidget) pParent)
-	: DockFocusable(QString::fromStdWString(L"Àíèìàöèÿ"), pParent)
+	: DockFocusable("ÐÐ½Ð¸Ð¼Ð°Ñ†Ð¸Ñ", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(150, 300));

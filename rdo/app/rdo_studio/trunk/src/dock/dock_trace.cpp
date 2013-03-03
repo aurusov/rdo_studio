@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      dock_trace.cpp
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      04.10.2012
   \brief     
   \indent    4T
@@ -19,7 +19,7 @@
 // --------------------------------------------------------------------------------
 
 DockTrace::DockTrace(PTR(QWidget) pParent)
-	: DockFocusable(QString::fromStdWString(L"Òðàññèðîâêà"), pParent)
+	: DockFocusable("Ð¢Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ°", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 150));

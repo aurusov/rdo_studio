@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      dock_build.cpp
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      30.09.2012
   \brief     
   \indent    4T
@@ -22,7 +22,7 @@
 // --------------------------------------------------------------------------------
 
 DockBuild::DockBuild(PTR(QWidget) pParent)
-	: DockFocusable(QString::fromStdWString(L"Êîìïèëÿòîð"), pParent)
+	: DockFocusable("ÐšÐ¾Ð¼Ð¿Ð¸Ð»ÑÑ‚Ð¾Ñ€", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 150));
@@ -44,9 +44,9 @@ void DockBuild::appendString(CREF(QString) str)
 void DockBuild::appendString(CREF(rdo::simulation::report::FileMessage) message)
 {
 	QString qMessage = QString::fromLocal8Bit(message.getText().c_str());
-	if (qMessage.contains(QString::fromStdWString(L"Ñðàáîòàëî ëèöåíçèîííîå îãðàíè÷åíèå")))
+	if (qMessage.contains("Ð¡Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð»Ð¾ Ð»Ð¸Ñ†ÐµÐ½Ð·Ð¸Ð¾Ð½Ð½Ð¾Ðµ Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ðµ"))
 	{
-		QMessageBox::critical(g_pApp->getMainWnd(), QString::fromStdWString(L"Ëèöåíçèîííîå îãðàíè÷åíèå"), qMessage);
+		QMessageBox::critical(g_pApp->getMainWnd(), "Ð›Ð¸Ñ†ÐµÐ½Ð·Ð¸Ð¾Ð½Ð½Ð¾Ðµ Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ðµ", qMessage);
 		return;
 	}
 
