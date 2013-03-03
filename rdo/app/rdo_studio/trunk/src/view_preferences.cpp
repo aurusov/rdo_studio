@@ -116,19 +116,19 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	switchPreviewComboBox->addItem("Chart",   IT_CHART);
 	switchPreviewComboBox->addItem("Frame",   IT_FRAME);
 
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Нет"),           EditTheme::B_NONE);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Круг"),          EditTheme::B_CIRCLE);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Прямоугольник"), EditTheme::B_RECT);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Овал"),          EditTheme::B_ROUNDRECT);
-	bookmarkComboBox->addItem(QString::fromLocal8Bit("Стрелка"),       EditTheme::B_ARROW);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Нет"),           EditTheme::B_NONE);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Круг"),          EditTheme::B_CIRCLE);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Прямоугольник"), EditTheme::B_RECT);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Овал"),          EditTheme::B_ROUNDRECT);
+	bookmarkComboBox->addItem(QString::fromStdWString(L"Стрелка"),       EditTheme::B_ARROW);
 
-	foldComboBox->addItem(QString::fromLocal8Bit("Нет"),             ModelTheme::F_NONE);
-	foldComboBox->addItem(QString::fromLocal8Bit("Плюс"),            ModelTheme::F_PLUS);
-	foldComboBox->addItem(QString::fromLocal8Bit("Плюс + линия"),    ModelTheme::F_PLUSCONNECTED);
-	foldComboBox->addItem(QString::fromLocal8Bit("Стрелка"),         ModelTheme::F_ARROW);
-	foldComboBox->addItem(QString::fromLocal8Bit("Стрелка + линия"), ModelTheme::F_ARROWCONNECTED);
-	foldComboBox->addItem(QString::fromLocal8Bit("Квадрат + линия"), ModelTheme::F_BOXCONNECTED);
-	foldComboBox->addItem(QString::fromLocal8Bit("Круг + линия"),    ModelTheme::F_CIRCLECONNECTED);
+	foldComboBox->addItem(QString::fromStdWString(L"Нет"),             ModelTheme::F_NONE);
+	foldComboBox->addItem(QString::fromStdWString(L"Плюс"),            ModelTheme::F_PLUS);
+	foldComboBox->addItem(QString::fromStdWString(L"Плюс + линия"),    ModelTheme::F_PLUSCONNECTED);
+	foldComboBox->addItem(QString::fromStdWString(L"Стрелка"),         ModelTheme::F_ARROW);
+	foldComboBox->addItem(QString::fromStdWString(L"Стрелка + линия"), ModelTheme::F_ARROWCONNECTED);
+	foldComboBox->addItem(QString::fromStdWString(L"Квадрат + линия"), ModelTheme::F_BOXCONNECTED);
+	foldComboBox->addItem(QString::fromStdWString(L"Круг + линия"),    ModelTheme::F_CIRCLECONNECTED);
 
 	boldCheckBox->setEnabled(false);
 	italicCheckBox->setEnabled(false);
@@ -750,7 +750,7 @@ void ViewPreferences::updateDialog()
 void ViewPreferences::updateStyleTab()
 {
 	PTR(StyleProperty) prop = getStyleProperty();
-	QString fontName = QString::fromLocal8Bit(prop->item->font_name.c_str());
+	QString fontName = QString::fromStdWString(Lprop->item->font_name.c_str());
 	if (!fontName.isEmpty())
 	{
 		fontComboBox->setCurrentFont(QFont(fontName));
@@ -909,7 +909,7 @@ void ViewPreferences::createPreview()
 	ASSERT(preview_editor);
 	preview_editor->setEditorStyle(&style_editor);
 	preview_editor->setCanClearErrorLine(false);
-	preview_editor->appendText(QString::fromLocal8Bit("{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"));
+	preview_editor->appendText(QString("{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"));
 	preview_editor->scrollToLine(0);
 	preview_editor->setReadOnly(true);
 	preview_editor->bookmarkToggle();
@@ -926,7 +926,7 @@ void ViewPreferences::createPreview()
 
 	preview_debug = new Debug(previewStackedWidget->currentWidget());
 	preview_debug->setEditorStyle(&style_debug);
-	preview_debug->appendLine(QString::fromLocal8Bit("Получение структуры модели...ok\nМодель запущена"));
+	preview_debug->appendLine(QString::fromStdWString(L"Получение структуры модели...ok\nМодель запущена"));
 	previewStackedWidget->addWidget(preview_debug);
 
 	preview_trace = new rdo::gui::tracer::LogMainWnd(previewStackedWidget->currentWidget());
@@ -1112,98 +1112,98 @@ void ViewPreferences::createTree()
 	treeWidget->setRootIsDecorated(false);
 
 	m_pRoot = new QTreeWidgetItem(treeWidget);
-	m_pRoot->setText(0, QString::fromLocal8Bit("Все окна"));
+	m_pRoot->setText(0, QString::fromStdWString(L"Все окна"));
 	m_pRoot->setData(0, Qt::UserRole, IT_ROOT);
 
-	m_pText      = createTreeItem(m_pRoot, QString::fromLocal8Bit("Исходный текст"),   IT_EDITOR);
-	m_pCompile   = createTreeItem(m_pRoot, QString::fromLocal8Bit("Окно компиляции"),  IT_BUILD);
-	m_pDebug     = createTreeItem(m_pRoot, QString::fromLocal8Bit("Окно отладки"),     IT_DEBUG);
-	m_pTrace     = createTreeItem(m_pRoot, QString::fromLocal8Bit("Окно трассировки"), IT_LOG);
-	m_pResult    = createTreeItem(m_pRoot, QString::fromLocal8Bit("Окно результатов"), IT_RESULT);
-	m_pSearch    = createTreeItem(m_pRoot, QString::fromLocal8Bit("Окно поиска"),      IT_FIND);
-	m_pChart     = createTreeItem(m_pRoot, QString::fromLocal8Bit("Окно графиков"),    IT_CHART);
-	m_pAnimation = createTreeItem(m_pRoot, QString::fromLocal8Bit("Окно анимации"),    IT_FRAME);
+	m_pText      = createTreeItem(m_pRoot, QString::fromStdWString(L"Исходный текст"),   IT_EDITOR);
+	m_pCompile   = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно компиляции"),  IT_BUILD);
+	m_pDebug     = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно отладки"),     IT_DEBUG);
+	m_pTrace     = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно трассировки"), IT_LOG);
+	m_pResult    = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно результатов"), IT_RESULT);
+	m_pSearch    = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно поиска"),      IT_FIND);
+	m_pChart     = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно графиков"),    IT_CHART);
+	m_pAnimation = createTreeItem(m_pRoot, QString::fromStdWString(L"Окно анимации"),    IT_FRAME);
 
 	m_pRoot->setExpanded(true);
 
-	m_pPlainText = createTreeItem(m_pText, QString::fromLocal8Bit("Обыкновенный текст"), IT_EDITOR_PLAINTEXT);
-	m_pVariable  = createTreeItem(m_pText, QString::fromLocal8Bit("Переменная"),         IT_EDITOR_IDENTIFICATOR);
-	m_pKeyword   = createTreeItem(m_pText, QString::fromLocal8Bit("Ключевое слово"),     IT_EDITOR_KEYWORD);
-	m_pFunction  = createTreeItem(m_pText, QString::fromLocal8Bit("Функция"),            IT_EDITOR_FUNCTION);
-	m_pTraceText = createTreeItem(m_pText, QString::fromLocal8Bit("Трассировка"),        IT_EDITOR_TRACE);
-	m_pColor     = createTreeItem(m_pText, QString::fromLocal8Bit("Цвет"),               IT_EDITOR_COLOR);
-	m_pComment   = createTreeItem(m_pText, QString::fromLocal8Bit("Комментарии"),        IT_EDITOR_COMMENT);
-	m_pNumber    = createTreeItem(m_pText, QString::fromLocal8Bit("Число"),              IT_EDITOR_NUMBER);
-	m_pString    = createTreeItem(m_pText, QString::fromLocal8Bit("Строка"),             IT_EDITOR_STRING);
-	m_pOperator  = createTreeItem(m_pText, QString::fromLocal8Bit("Оператор"),           IT_EDITOR_OPERATOR);
-	m_pCaret     = createTreeItem(m_pText, QString::fromLocal8Bit("Каретка"),            IT_EDITOR_CARET);
-	m_pSelection = createTreeItem(m_pText, QString::fromLocal8Bit("Выделение"),          IT_EDITOR_TEXTSELECTION);
-	m_pBookmark  = createTreeItem(m_pText, QString::fromLocal8Bit("Закладка"),           IT_EDITOR_BOOKMARK);
-	m_pGroup     = createTreeItem(m_pText, QString::fromLocal8Bit("Группа"),             IT_EDITOR_FOLD);
-	m_pError     = createTreeItem(m_pText, QString::fromLocal8Bit("Ошибка"),             IT_EDITOR_ERROR);
+	m_pPlainText = createTreeItem(m_pText, QString::fromStdWString(L"Обыкновенный текст"), IT_EDITOR_PLAINTEXT);
+	m_pVariable  = createTreeItem(m_pText, QString::fromStdWString(L"Переменная"),         IT_EDITOR_IDENTIFICATOR);
+	m_pKeyword   = createTreeItem(m_pText, QString::fromStdWString(L"Ключевое слово"),     IT_EDITOR_KEYWORD);
+	m_pFunction  = createTreeItem(m_pText, QString::fromStdWString(L"Функция"),            IT_EDITOR_FUNCTION);
+	m_pTraceText = createTreeItem(m_pText, QString::fromStdWString(L"Трассировка"),        IT_EDITOR_TRACE);
+	m_pColor     = createTreeItem(m_pText, QString::fromStdWString(L"Цвет"),               IT_EDITOR_COLOR);
+	m_pComment   = createTreeItem(m_pText, QString::fromStdWString(L"Комментарии"),        IT_EDITOR_COMMENT);
+	m_pNumber    = createTreeItem(m_pText, QString::fromStdWString(L"Число"),              IT_EDITOR_NUMBER);
+	m_pString    = createTreeItem(m_pText, QString::fromStdWString(L"Строка"),             IT_EDITOR_STRING);
+	m_pOperator  = createTreeItem(m_pText, QString::fromStdWString(L"Оператор"),           IT_EDITOR_OPERATOR);
+	m_pCaret     = createTreeItem(m_pText, QString::fromStdWString(L"Каретка"),            IT_EDITOR_CARET);
+	m_pSelection = createTreeItem(m_pText, QString::fromStdWString(L"Выделение"),          IT_EDITOR_TEXTSELECTION);
+	m_pBookmark  = createTreeItem(m_pText, QString::fromStdWString(L"Закладка"),           IT_EDITOR_BOOKMARK);
+	m_pGroup     = createTreeItem(m_pText, QString::fromStdWString(L"Группа"),             IT_EDITOR_FOLD);
+	m_pError     = createTreeItem(m_pText, QString::fromStdWString(L"Ошибка"),             IT_EDITOR_ERROR);
 
-	m_pTextCompile      = createTreeItem(m_pCompile, QString::fromLocal8Bit("Текст"),             IT_BUILD_TEXT);
-	m_pSelectedString   = createTreeItem(m_pCompile, QString::fromLocal8Bit("Выделенная строка"), IT_BUILD_SELECTEDLINE);
-	m_pCaretCompile     = createTreeItem(m_pCompile, QString::fromLocal8Bit("Каретка"),           IT_EDITOR_CARET);
-	m_pSelectionCompile = createTreeItem(m_pCompile, QString::fromLocal8Bit("Выделение"),         IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkCompile  = createTreeItem(m_pCompile, QString::fromLocal8Bit("Закладка"),          IT_EDITOR_BOOKMARK);
+	m_pTextCompile      = createTreeItem(m_pCompile, QString::fromStdWString(L"Текст"),             IT_BUILD_TEXT);
+	m_pSelectedString   = createTreeItem(m_pCompile, QString::fromStdWString(L"Выделенная строка"), IT_BUILD_SELECTEDLINE);
+	m_pCaretCompile     = createTreeItem(m_pCompile, QString::fromStdWString(L"Каретка"),           IT_EDITOR_CARET);
+	m_pSelectionCompile = createTreeItem(m_pCompile, QString::fromStdWString(L"Выделение"),         IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkCompile  = createTreeItem(m_pCompile, QString::fromStdWString(L"Закладка"),          IT_EDITOR_BOOKMARK);
 
-	m_pTextDebug      = createTreeItem(m_pDebug, QString::fromLocal8Bit("Текст"),     IT_BUILD_TEXT);
-	m_pCaretDebug     = createTreeItem(m_pDebug, QString::fromLocal8Bit("Каретка"),   IT_EDITOR_CARET);
-	m_pSelectionDebug = createTreeItem(m_pDebug, QString::fromLocal8Bit("Выделение"), IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkDebug  = createTreeItem(m_pDebug, QString::fromLocal8Bit("Закладка"),  IT_EDITOR_BOOKMARK);
+	m_pTextDebug      = createTreeItem(m_pDebug, QString::fromStdWString(L"Текст"),     IT_BUILD_TEXT);
+	m_pCaretDebug     = createTreeItem(m_pDebug, QString::fromStdWString(L"Каретка"),   IT_EDITOR_CARET);
+	m_pSelectionDebug = createTreeItem(m_pDebug, QString::fromStdWString(L"Выделение"), IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkDebug  = createTreeItem(m_pDebug, QString::fromStdWString(L"Закладка"),  IT_EDITOR_BOOKMARK);
 
-	m_pES     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Служебное событие (ES)"),                         IT_LOG_ES);
-	m_pEB     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Начало действия (EB)"),                           IT_LOG_EB);
-	m_pEF     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Окончание действия (EF)"),                        IT_LOG_EF);
-	m_pEI     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Нерегулярное событие (EI)"),                      IT_LOG_EI);
-	m_pER     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Продукционное правило (ER)"),                     IT_LOG_ER);
-	m_pRC     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Создание ресурса (RC)"),                          IT_LOG_RC);
-	m_pRE     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Удаление ресурса (RE)"),                          IT_LOG_RE);
-	m_pRK     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Изменение состояния ресурса (RK)"),               IT_LOG_RK);
-	m_pV      = createTreeItem(m_pTrace, QString::fromLocal8Bit("Трассировка индекса (V)"),                        IT_LOG_V);
-	m_pStatus = createTreeItem(m_pTrace, QString::fromLocal8Bit("Статус окончания моделирования ($Status)"),       IT_LOG_STATUS);
-	m_pDPS    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Статистика по поиску на графе (DPS)"),            IT_LOG_DPS);
-	m_pSB     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Начало поиска (SB)"),                             IT_LOG_SB);
-	m_pSO     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Трассировка раскрываемой вершины (SO)"),          IT_LOG_SO);
-	m_pSTN    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Признак вершины (STN)"),                          IT_LOG_STN);
-	m_pSTD    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Признак вершины (STD)"),                          IT_LOG_STD);
-	m_pSTR    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Признак вершины (STR)"),                          IT_LOG_STR);
-	m_pSRC    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Создание ресурса (при поиске) (SRC)"),            IT_LOG_SRC);
-	m_pSRE    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Удаление ресурса (при поиске) (SRE)"),            IT_LOG_SRE);
-	m_pSRK    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Изменение состояния ресурса (при поиске) (SRK)"), IT_LOG_SRK);
-	m_pSD     = createTreeItem(m_pTrace, QString::fromLocal8Bit("Трассировка решения (SD)"),                       IT_LOG_SD);
-	m_pSES    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Завершение поиска (SES)"),                        IT_LOG_SES);
-	m_pSEN    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Завершение поиска (SEN)"),                        IT_LOG_SEN);
-	m_pSEM    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Завершение поиска (SEM)"),                        IT_LOG_SEM);
-	m_pSEF    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Завершение поиска (SEF)"),                        IT_LOG_SEF);
-	m_pSEU    = createTreeItem(m_pTrace, QString::fromLocal8Bit("Завершение поиска (SEU)"),                        IT_LOG_SEU);
+	m_pES     = createTreeItem(m_pTrace, QString::fromStdWString(L"Служебное событие (ES)"),                         IT_LOG_ES);
+	m_pEB     = createTreeItem(m_pTrace, QString::fromStdWString(L"Начало действия (EB)"),                           IT_LOG_EB);
+	m_pEF     = createTreeItem(m_pTrace, QString::fromStdWString(L"Окончание действия (EF)"),                        IT_LOG_EF);
+	m_pEI     = createTreeItem(m_pTrace, QString::fromStdWString(L"Нерегулярное событие (EI)"),                      IT_LOG_EI);
+	m_pER     = createTreeItem(m_pTrace, QString::fromStdWString(L"Продукционное правило (ER)"),                     IT_LOG_ER);
+	m_pRC     = createTreeItem(m_pTrace, QString::fromStdWString(L"Создание ресурса (RC)"),                          IT_LOG_RC);
+	m_pRE     = createTreeItem(m_pTrace, QString::fromStdWString(L"Удаление ресурса (RE)"),                          IT_LOG_RE);
+	m_pRK     = createTreeItem(m_pTrace, QString::fromStdWString(L"Изменение состояния ресурса (RK)"),               IT_LOG_RK);
+	m_pV      = createTreeItem(m_pTrace, QString::fromStdWString(L"Трассировка индекса (V)"),                        IT_LOG_V);
+	m_pStatus = createTreeItem(m_pTrace, QString::fromStdWString(L"Статус окончания моделирования ($Status)"),       IT_LOG_STATUS);
+	m_pDPS    = createTreeItem(m_pTrace, QString::fromStdWString(L"Статистика по поиску на графе (DPS)"),            IT_LOG_DPS);
+	m_pSB     = createTreeItem(m_pTrace, QString::fromStdWString(L"Начало поиска (SB)"),                             IT_LOG_SB);
+	m_pSO     = createTreeItem(m_pTrace, QString::fromStdWString(L"Трассировка раскрываемой вершины (SO)"),          IT_LOG_SO);
+	m_pSTN    = createTreeItem(m_pTrace, QString::fromStdWString(L"Признак вершины (STN)"),                          IT_LOG_STN);
+	m_pSTD    = createTreeItem(m_pTrace, QString::fromStdWString(L"Признак вершины (STD)"),                          IT_LOG_STD);
+	m_pSTR    = createTreeItem(m_pTrace, QString::fromStdWString(L"Признак вершины (STR)"),                          IT_LOG_STR);
+	m_pSRC    = createTreeItem(m_pTrace, QString::fromStdWString(L"Создание ресурса (при поиске) (SRC)"),            IT_LOG_SRC);
+	m_pSRE    = createTreeItem(m_pTrace, QString::fromStdWString(L"Удаление ресурса (при поиске) (SRE)"),            IT_LOG_SRE);
+	m_pSRK    = createTreeItem(m_pTrace, QString::fromStdWString(L"Изменение состояния ресурса (при поиске) (SRK)"), IT_LOG_SRK);
+	m_pSD     = createTreeItem(m_pTrace, QString::fromStdWString(L"Трассировка решения (SD)"),                       IT_LOG_SD);
+	m_pSES    = createTreeItem(m_pTrace, QString::fromStdWString(L"Завершение поиска (SES)"),                        IT_LOG_SES);
+	m_pSEN    = createTreeItem(m_pTrace, QString::fromStdWString(L"Завершение поиска (SEN)"),                        IT_LOG_SEN);
+	m_pSEM    = createTreeItem(m_pTrace, QString::fromStdWString(L"Завершение поиска (SEM)"),                        IT_LOG_SEM);
+	m_pSEF    = createTreeItem(m_pTrace, QString::fromStdWString(L"Завершение поиска (SEF)"),                        IT_LOG_SEF);
+	m_pSEU    = createTreeItem(m_pTrace, QString::fromStdWString(L"Завершение поиска (SEU)"),                        IT_LOG_SEU);
 
-	m_pPlainTextResult = createTreeItem(m_pResult, QString::fromLocal8Bit("Исходный текст"), IT_EDITOR_PLAINTEXT);
-	m_pVariableResult  = createTreeItem(m_pResult, QString::fromLocal8Bit("Переменная"),     IT_EDITOR_IDENTIFICATOR);
-	m_pKeywordResult   = createTreeItem(m_pResult, QString::fromLocal8Bit("Ключевое слово"), IT_EDITOR_KEYWORD);
-	m_pNumberResult    = createTreeItem(m_pResult, QString::fromLocal8Bit("Число"),          IT_EDITOR_NUMBER);
-	m_pStringResult    = createTreeItem(m_pResult, QString::fromLocal8Bit("Строка"),         IT_EDITOR_STRING);
-	m_pOperatorResult  = createTreeItem(m_pResult, QString::fromLocal8Bit("Оператор"),       IT_EDITOR_OPERATOR);
-	m_pCaretResult     = createTreeItem(m_pResult, QString::fromLocal8Bit("Каретка"),        IT_EDITOR_CARET);
-	m_pSelectionResult = createTreeItem(m_pResult, QString::fromLocal8Bit("Выделение"),      IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkResult  = createTreeItem(m_pResult, QString::fromLocal8Bit("Закладка"),       IT_EDITOR_BOOKMARK);
+	m_pPlainTextResult = createTreeItem(m_pResult, QString::fromStdWString(L"Исходный текст"), IT_EDITOR_PLAINTEXT);
+	m_pVariableResult  = createTreeItem(m_pResult, QString::fromStdWString(L"Переменная"),     IT_EDITOR_IDENTIFICATOR);
+	m_pKeywordResult   = createTreeItem(m_pResult, QString::fromStdWString(L"Ключевое слово"), IT_EDITOR_KEYWORD);
+	m_pNumberResult    = createTreeItem(m_pResult, QString::fromStdWString(L"Число"),          IT_EDITOR_NUMBER);
+	m_pStringResult    = createTreeItem(m_pResult, QString::fromStdWString(L"Строка"),         IT_EDITOR_STRING);
+	m_pOperatorResult  = createTreeItem(m_pResult, QString::fromStdWString(L"Оператор"),       IT_EDITOR_OPERATOR);
+	m_pCaretResult     = createTreeItem(m_pResult, QString::fromStdWString(L"Каретка"),        IT_EDITOR_CARET);
+	m_pSelectionResult = createTreeItem(m_pResult, QString::fromStdWString(L"Выделение"),      IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkResult  = createTreeItem(m_pResult, QString::fromStdWString(L"Закладка"),       IT_EDITOR_BOOKMARK);
 
-	m_pTextSearch           = createTreeItem(m_pSearch, QString::fromLocal8Bit("Текст"),             IT_BUILD_TEXT);
-	m_pStringSearch         = createTreeItem(m_pSearch, QString::fromLocal8Bit("Строка для поиска"), IT_FIND_SEARCHTEXT);
-	m_pSelectedStringSearch = createTreeItem(m_pSearch, QString::fromLocal8Bit("Выделенная строка"), IT_BUILD_SELECTEDLINE);
-	m_pCaretSearch          = createTreeItem(m_pSearch, QString::fromLocal8Bit("Каретка"),           IT_EDITOR_CARET);
-	m_pSelectionSearch      = createTreeItem(m_pSearch, QString::fromLocal8Bit("Выделение"),         IT_EDITOR_TEXTSELECTION);
-	m_pBookmarkSearch       = createTreeItem(m_pSearch, QString::fromLocal8Bit("Закладка"),          IT_EDITOR_BOOKMARK);
+	m_pTextSearch           = createTreeItem(m_pSearch, QString::fromStdWString(L"Текст"),             IT_BUILD_TEXT);
+	m_pStringSearch         = createTreeItem(m_pSearch, QString::fromStdWString(L"Строка для поиска"), IT_FIND_SEARCHTEXT);
+	m_pSelectedStringSearch = createTreeItem(m_pSearch, QString::fromStdWString(L"Выделенная строка"), IT_BUILD_SELECTEDLINE);
+	m_pCaretSearch          = createTreeItem(m_pSearch, QString::fromStdWString(L"Каретка"),           IT_EDITOR_CARET);
+	m_pSelectionSearch      = createTreeItem(m_pSearch, QString::fromStdWString(L"Выделение"),         IT_EDITOR_TEXTSELECTION);
+	m_pBookmarkSearch       = createTreeItem(m_pSearch, QString::fromStdWString(L"Закладка"),          IT_EDITOR_BOOKMARK);
 
-	m_pAxis   = createTreeItem(m_pChart, QString::fromLocal8Bit("Ось"),       IT_CHART_AXIS);
-	m_pTitle  = createTreeItem(m_pChart, QString::fromLocal8Bit("Заголовок"), IT_CHART_TITLE);
-	m_pLegend = createTreeItem(m_pChart, QString::fromLocal8Bit("Легенда"),   IT_CHART_LEGEND);
-	m_pGraph  = createTreeItem(m_pChart, QString::fromLocal8Bit("График"),    IT_CHART_CHART);
-	m_pTime   = createTreeItem(m_pChart, QString::fromLocal8Bit("Время"),     IT_CHART_TIME);
+	m_pAxis   = createTreeItem(m_pChart, QString::fromStdWString(L"Ось"),       IT_CHART_AXIS);
+	m_pTitle  = createTreeItem(m_pChart, QString::fromStdWString(L"Заголовок"), IT_CHART_TITLE);
+	m_pLegend = createTreeItem(m_pChart, QString::fromStdWString(L"Легенда"),   IT_CHART_LEGEND);
+	m_pGraph  = createTreeItem(m_pChart, QString::fromStdWString(L"График"),    IT_CHART_CHART);
+	m_pTime   = createTreeItem(m_pChart, QString::fromStdWString(L"Время"),     IT_CHART_TIME);
 
-	m_pEdgingColor     = createTreeItem(m_pAnimation, QString::fromLocal8Bit("Цвет окантовки"),               IT_FRAME_BORDER);
-	m_pBackgroundColor = createTreeItem(m_pAnimation, QString::fromLocal8Bit("Цвет фона за пределами кадра"), IT_FRAME_BACKGROUND);
+	m_pEdgingColor     = createTreeItem(m_pAnimation, QString::fromStdWString(L"Цвет окантовки"),               IT_FRAME_BORDER);
+	m_pBackgroundColor = createTreeItem(m_pAnimation, QString::fromStdWString(L"Цвет фона за пределами кадра"), IT_FRAME_BACKGROUND);
 
 	treeWidget->setCurrentItem(m_pRoot);
 }
