@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      find_edit.cpp
-  \author    Óğóñîâ Àíäğåé (rdo@rk9.bmstu.ru)
+  \author    Ğ£Ñ€ÑƒÑĞ¾Ğ² ĞĞ½Ğ´Ñ€ĞµĞ¹ (rdo@rk9.bmstu.ru)
   \date      28.02.2003
   \brief     
   \indent    4T
@@ -24,7 +24,7 @@
 using namespace rdo::gui::editor;
 using namespace rdo::gui::style;
 
-static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZÀàÁáÂâÃãÄäÅå¨¸ÆæÇçÈèÉéÊêËëÌìÍíÎîÏïĞğÑñÒòÓóÔôÕõÖö×÷ØøÙùÚúÛûÜüİıŞşßÿ";
+static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZĞĞ°Ğ‘Ğ±Ğ’Ğ²Ğ“Ğ³Ğ”Ğ´Ğ•ĞµĞÑ‘Ğ–Ğ¶Ğ—Ğ·Ğ˜Ğ¸Ğ™Ğ¹ĞšĞºĞ›Ğ»ĞœĞ¼ĞĞ½ĞĞ¾ĞŸĞ¿Ğ Ñ€Ğ¡ÑĞ¢Ñ‚Ğ£ÑƒĞ¤Ñ„Ğ¥Ñ…Ğ¦Ñ†Ğ§Ñ‡Ğ¨ÑˆĞ©Ñ‰ĞªÑŠĞ«Ñ‹Ğ¬ÑŒĞ­ÑĞ®ÑĞ¯Ñ";
 
 Find::Find(PTR(QWidget) pParent)
 	: super(pParent)

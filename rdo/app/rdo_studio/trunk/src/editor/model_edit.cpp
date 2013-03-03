@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      model_edit.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -412,7 +412,7 @@ void Model::onEditCompleteWord()
 		std::vector< rdo::service::simulation::RDOThreadSimulator::RTP >::iterator rtp_it = RTPList.begin();
 		while (rtp_it != RTPList.end())
 		{
-			// Что-то делаем
+			// Р§С‚Рѕ-С‚Рѕ РґРµР»Р°РµРј
 			++rtp_it;
 		}
 
@@ -421,7 +421,7 @@ void Model::onEditCompleteWord()
 		std::vector< rdo::service::simulation::RDOThreadSimulator::RSS >::iterator rss_it = RSSList.begin();
 		while (rss_it != RSSList.end())
 		{
-			// Что-то делаем
+			// Р§С‚Рѕ-С‚Рѕ РґРµР»Р°РµРј
 			++rss_it;
 		}
 	}

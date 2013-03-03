@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      edit.cpp
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      28.02.2003
   \brief     
   \indent    4T
@@ -521,7 +521,7 @@ void Edit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, r
 		m_firstFoundPos = -1;
 		m_haveFound     = false;
 		showFindWarning(findWhat);
-		//! @todo âîçìîæíî, íàäî óáðàòü
+		//! @todo Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾, Ð½Ð°Ð´Ð¾ ÑƒÐ±Ñ€Ð°Ñ‚ÑŒ
 		setFocus();
 	}
 	else
@@ -535,7 +535,7 @@ void Edit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, r
 			m_firstFoundPos = -1;
 			m_haveFound     = false;
 			showFindWarning(findWhat);
-			//! @todo âîçìîæíî, íàäî óáðàòü
+			//! @todo Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾, Ð½Ð°Ð´Ð¾ ÑƒÐ±Ñ€Ð°Ñ‚ÑŒ
 			setFocus();
 			return;
 		}
@@ -624,7 +624,7 @@ void Edit::onFindReplaceDlgClose()
 
 void Edit::showFindWarning(CREF(QString) findWhat)
 {
-	QMessageBox::warning(this, QString::fromStdWString(L"Ðåçóëüòàòû ïîèñêà"), QString::fromStdWString(L"Íåâîçìîæíî íàéòè ñòðî÷êó '%1'.").arg(findWhat));
+	QMessageBox::warning(this, "Ð ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ñ‹ Ð¿Ð¾Ð¸ÑÐºÐ°", QString("ÐÐµÐ²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð½Ð°Ð¹Ñ‚Ð¸ ÑÑ‚Ñ€Ð¾Ñ‡ÐºÑƒ '%1'.").arg(findWhat));
 }
 
 void Edit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
@@ -688,7 +688,7 @@ void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool m
 	else
 	{
 		showFindWarning(findWhat);
-		//! @todo âîçìîæíî, íàäî óáðàòü
+		//! @todo Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾, Ð½Ð°Ð´Ð¾ ÑƒÐ±Ñ€Ð°Ñ‚ÑŒ
 		setFocus();
 	}
 }
@@ -798,7 +798,7 @@ void Edit::onCopyAsRTF(QMimeData* pMimeData)
 
 	QByteArray ba;
 	ba.append(result.c_str());
-	//! @todo äëÿ ëèíóõà íàäî áóäåò èñïîëüçîâàòü "text/rtf" ?
+	//! @todo Ð´Ð»Ñ Ð»Ð¸Ð½ÑƒÑ…Ð° Ð½Ð°Ð´Ð¾ Ð±ÑƒÐ´ÐµÑ‚ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ "text/rtf" ?
 	pMimeData->setData("Rich Text Format", ba);
 }
 
@@ -1550,9 +1550,9 @@ void Edit::onUpdateActions(rbool activated)
 
 	QString modify = activated
 		? isReadOnly()
-			? QString::fromStdWString(L"Òîëüêî ÷òåíèå")
+			? "Ð¢Ð¾Ð»ÑŒÐºÐ¾ Ñ‡Ñ‚ÐµÐ½Ð¸Ðµ"
 			: isModify()
-				? QString::fromStdWString(L"Èçìåí¸í")
+				? "Ð˜Ð·Ð¼ÐµÐ½Ñ‘Ð½"
 				: QString()
 		: QString();
 
@@ -1565,7 +1565,7 @@ void Edit::onUpdateActions(rbool activated)
 	pMainWindow->statusBar()->update<StatusBar::SB_COORD>(coord);
 
 	QString overwrite = activated && sendEditor(SCI_GETOVERTYPE)
-		? QString::fromStdWString(L"Çàìåíà")
+		? "Ð—Ð°Ð¼ÐµÐ½Ð°"
 		: QString();
 
 	pMainWindow->statusBar()->update<StatusBar::SB_OVERWRITE>(overwrite);

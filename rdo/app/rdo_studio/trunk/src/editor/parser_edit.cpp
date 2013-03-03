@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      rdoeditorbaseedit.cpp
-  \author    Óğóñîâ Àíäğåé (rdo@rk9.bmstu.ru)
+  \author    Ğ£Ñ€ÑƒÑĞ¾Ğ² ĞĞ½Ğ´Ñ€ĞµĞ¹ (rdo@rk9.bmstu.ru)
   \date      14.03.2003
   \brief     
   \indent    4T
@@ -40,7 +40,7 @@ ADVANCE?0 SEIZE?0 RELEASE?0 GENERATE?0 QUEUE?0 DEPART?0 ASSIGN?0 TERMINATE?0 \
 set?0 Show_mode?0 Show_rate?0 some?0 Statistic_file?0 such_as?0 table?0 temporary?0 \
 Terminate_if?0 text?0 Time_now?0 Trace_EndTime?2 Trace_file?2 Trace_StartTime?2 triang?0 triangular?0 \
 uniform?0 until?0 value?0 watch_par?0 watch_quant?0 watch_state?0 watch_value?0 with_max?0 \
-with_min?0 YES?0 Seed?0 Ñèñòåìíîå_âğåìÿ?0 not?0 if?0 else?0 for?0 return?0 break?0 result?0 ruler?0 space?0 string?0 bool?0 true?0 false?0 \
+with_min?0 YES?0 Seed?0 Ğ¡Ğ¸ÑÑ‚ĞµĞ¼Ğ½Ğ¾Ğµ_Ğ²Ñ€ĞµĞ¼Ñ?0 not?0 if?0 else?0 for?0 return?0 break?0 result?0 ruler?0 space?0 string?0 bool?0 true?0 false?0 \
 External_Model?0 external_model?0 $Priority?0 $Parent?0 prior?0 cf?0 Terminate_counter?0 typedef?0 $Typedef?0")
 	, kw1("Abs?1 ArcCos?1 ArcSin?1 ArcTan?1 Cos?1 Cotan?1 Exist?1 Exp?1 Floor?1 For_All?1 Frac?1 \
 GetRelResNumber?1 GetResNumber?1 IAbs?1 IMax?1 IMin?1 Int?1 IntPower?1 Ln?1 Log10?1 Log2?1 LogN?1 Max?1 Min?1 \
@@ -62,7 +62,7 @@ Not_Exist?1 Not_For_All?1 Power?1 Round?1 Sin?1 Sqrt?1 Tan?1 Select?1 Size?1 Emp
 	sendEditorString(SCI_SETKEYWORDS, 2, Parser::convertToLexer(kw2).c_str());
 	sendEditorString(SCI_SETKEYWORDS, 3, Parser::convertToLexer(kw3).c_str());
 
-	static PTR(char) s_wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZÀàÁáÂâÃãÄäÅå¨¸ÆæÇçÈèÉéÊêËëÌìÍíÎîÏïĞğÑñÒòÓóÔôÕõÖö×÷ØøÙùÚúÛûÜüİıŞşßÿ";
+	static PTR(char) s_wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZĞĞ°Ğ‘Ğ±Ğ’Ğ²Ğ“Ğ³Ğ”Ğ´Ğ•ĞµĞÑ‘Ğ–Ğ¶Ğ—Ğ·Ğ˜Ğ¸Ğ™Ğ¹ĞšĞºĞ›Ğ»ĞœĞ¼ĞĞ½ĞĞ¾ĞŸĞ¿Ğ Ñ€Ğ¡ÑĞ¢Ñ‚Ğ£ÑƒĞ¤Ñ„Ğ¥Ñ…Ğ¦Ñ†Ğ§Ñ‡Ğ¨ÑˆĞ©Ñ‰ĞªÑŠĞ«Ñ‹Ğ¬ÑŒĞ­ÑĞ®ÑĞ¯Ñ";
 
 	sendEditorString(SCI_SETWORDCHARS, 0, s_wordCharacters);
 	sendEditor(SCI_REGISTERIMAGE, 0, reinterpret_cast<long>(xpm_ac_function));

@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
   \file      edit.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      28.02.2003
   \brief     
   \indent    4T
@@ -42,7 +42,7 @@ public:
 	Edit(PTR(QWidget) pParent);
 	virtual ~Edit();
 
-	//! @todo Вынести класс в отдельный модуль
+	//! @todo Р’С‹РЅРµСЃС‚Рё РєР»Р°СЃСЃ РІ РѕС‚РґРµР»СЊРЅС‹Р№ РјРѕРґСѓР»СЊ
 	class Group
 	{
 	public:
