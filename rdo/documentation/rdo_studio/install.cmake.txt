@@ -1,4 +1,4 @@
-﻿CMake - the cross-platform, open-source build system
+CMake - the cross-platform, open-source build system
 
     После переноса РДО на POSIX-совместимые ОС CMake должна стать основным инструментом генерации файлов управления сборкой системы.
 

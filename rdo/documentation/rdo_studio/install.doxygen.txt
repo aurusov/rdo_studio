@@ -1,4 +1,4 @@
-﻿Doxygen - Generate documentation from source code
+Doxygen - Generate documentation from source code
 
 В РДО используется для автоматического получения документации по исходному коду системы.
 

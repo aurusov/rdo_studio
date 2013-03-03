@@ -1,4 +1,4 @@
-﻿MinGW - Minimalist GNU for Windows
+MinGW - Minimalist GNU for Windows
 
 Используется для компиляции исходников под виндой через gcc.
 

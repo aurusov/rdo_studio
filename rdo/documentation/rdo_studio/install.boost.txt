@@ -1,4 +1,4 @@
-﻿Boost - The Boost C++ libraries are a set of free software libraries that extend the functionality of C++.
+Boost - The Boost C++ libraries are a set of free software libraries that extend the functionality of C++.
 
     Используется в исходном коде РДО.
 

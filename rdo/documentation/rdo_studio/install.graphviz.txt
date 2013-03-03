@@ -1,4 +1,4 @@
-﻿Graphviz - Graph Visualization Software
+Graphviz - Graph Visualization Software
 
 В РДО используется doxygen'ом и bison'ом для построения диаграмм.
 
