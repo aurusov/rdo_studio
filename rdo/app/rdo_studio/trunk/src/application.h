@@ -30,8 +30,8 @@
 // -------------------- RDOStudioApp
 // --------------------------------------------------------------------------------
 class MainWindow;
-class RDOThreadStudio;
-class RDOThreadStudioGUI;
+class ThreadStudio;
+class ThreadStudioGUI;
 
 namespace rdo { namespace gui { namespace tracer {
 class Tracer;
@@ -86,7 +86,7 @@ private:
 	// Используется для рассылки широковещательных уведомлений из приложения.
 	// При этом, не происходит остановки работы самого приложения, и имеется возможность
 	// обрабатывать новые присылаемые приложению сообщения.
-	PTR(RDOThreadStudio) m_pStudioMT;
+	PTR(ThreadStudio) m_pStudioMT;
 #endif
 
 	std::ofstream                          m_log;

@@ -35,7 +35,7 @@ class Model
 {
 Q_OBJECT
 
-friend class RDOThreadStudioGUI;
+friend class ThreadStudioGUI;
 
 public:
 	Model();

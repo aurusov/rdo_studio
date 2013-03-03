@@ -126,7 +126,7 @@ Application::Application(int& argc, char** argv)
 	// Кто-то должен поднять кернел и треды
 	RDOKernel::init();
 #ifdef RDO_MT
-	m_pStudioGUI = new RDOThreadStudioGUI();
+	m_pStudioGUI = new ThreadStudioGUI();
 #else
 	m_pStudioGUI = kernel;
 #endif
@@ -140,7 +140,7 @@ Application::Application(int& argc, char** argv)
 #endif
 
 #ifdef RDO_MT
-	m_pStudioMT = new RDOThreadStudio();
+	m_pStudioMT = new ThreadStudio();
 #endif
 //	new RDOThreadStudio1();
 //	new RDOThreadStudio2();
@@ -265,7 +265,7 @@ Application::~Application()
 	if (m_pStudioGUI)
 	{
 		m_pStudioGUI->sendMessage(m_pStudioGUI, RDOThread::RT_THREAD_CLOSE);
-		delete static_cast<PTR(RDOThreadStudioGUI)>(m_pStudioGUI);
+		delete static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI);
 		m_pStudioGUI = NULL;
 	}
 #endif
@@ -517,7 +517,7 @@ void Application::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void)
 #ifdef RDO_MT
 	PTR(CEvent) pEvent = m_pStudioMT->manualMessageFrom(message, pParam);
 	while (::WaitForSingleObject(pEvent->m_hObject, 0) == WAIT_TIMEOUT) {
-		static_cast<PTR(RDOThreadStudioGUI)>(m_pStudioGUI)->processMessages();
+		static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI)->processMessages();
 		if (m_pMainFrame) {
 			m_pMainFrame->UpdateWindow();
 		} else {
@@ -533,7 +533,7 @@ void Application::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void)
 void Application::onIdle()
 {
 #ifdef RDO_MT
-	static_cast<PTR(RDOThreadStudioGUI)>(m_pStudioGUI)->processMessages();
+	static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI)->processMessages();
 #else
 	kernel->idle();
 #endif

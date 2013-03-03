@@ -18,14 +18,14 @@
 
 #ifdef RDO_MT
 // --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudio
+// -------------------- ThreadStudio
 // --------------------------------------------------------------------------------
-RDOThreadStudio::RDOThreadStudio(): RDOThread( "RDOThreadStudio", RDOThread::threadFun )
+ThreadStudio::ThreadStudio(): RDOThread( "ThreadStudio", RDOThread::threadFun )
 {
 	after_constructor();
 }
 
-void RDOThreadStudio::proc( RDOMessageInfo& msg )
+void ThreadStudio::proc( RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
 		case RT_STUDIO_MODEL_NEW  :
@@ -43,9 +43,9 @@ void RDOThreadStudio::proc( RDOMessageInfo& msg )
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudioGUI
+// -------------------- ThreadStudioGUI
 // --------------------------------------------------------------------------------
-RDOThreadStudioGUI::RDOThreadStudioGUI(): RDOKernelGUI( "RDOThreadStudioGUI" )
+ThreadStudioGUI::ThreadStudioGUI(): RDOKernelGUI( "ThreadStudioGUI" )
 {
 	after_constructor();
 }

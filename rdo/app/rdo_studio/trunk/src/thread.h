@@ -18,26 +18,26 @@
 
 #ifdef RDO_MT
 // --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudio
+// -------------------- ThreadStudio
 // --------------------------------------------------------------------------------
-class RDOThreadStudio: public RDOThread
+class ThreadStudio: public RDOThread
 {
 friend class Application;
 protected:
-	RDOThreadStudio();
-	virtual ~RDOThreadStudio() {}; // Чтобы нельзя было удалить через delete
+	ThreadStudio();
+	virtual ~ThreadStudio() {}; // Чтобы нельзя было удалить через delete
 	virtual void proc( RDOMessageInfo& msg );
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOThreadStudioGUI
+// -------------------- ThreadStudioGUI
 // --------------------------------------------------------------------------------
-class RDOThreadStudioGUI: public RDOKernelGUI
+class ThreadStudioGUI: public RDOKernelGUI
 {
 friend class Application;
 protected:
-	RDOThreadStudioGUI();
-	virtual ~RDOThreadStudioGUI() {}; // Чтобы нельзя было удалить через delete
+	ThreadStudioGUI();
+	virtual ~ThreadStudioGUI() {}; // Чтобы нельзя было удалить через delete
 };
 #endif
 
