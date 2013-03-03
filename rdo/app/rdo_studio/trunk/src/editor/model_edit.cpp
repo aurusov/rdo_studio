@@ -114,7 +114,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 	QColor foldBgColor = theme->foldBgColor;
 	switch (theme->foldStyle)
 	{
-	case RDOFOLDS_NONE:
+	case ModelTheme::F_NONE:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_EMPTY, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_EMPTY, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor);
@@ -124,7 +124,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor);
 		break;
 
-	case RDOFOLDS_PLUS:
+	case ModelTheme::F_PLUS:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_PLUS , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor);
@@ -134,7 +134,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor);
 		break;
 
-	case RDOFOLDS_PLUSCONNECTED:
+	case ModelTheme::F_PLUSCONNECTED:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS  , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_PLUS   , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE  , foldFgColor, foldBgColor);
@@ -144,7 +144,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER, foldFgColor, foldBgColor);
 		break;
 
-	case RDOFOLDS_ARROW:
+	case ModelTheme::F_ARROW:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY    , foldFgColor, foldBgColor);
@@ -154,7 +154,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY    , foldFgColor, foldBgColor);
 		break;
 
-	case RDOFOLDS_ARROWCONNECTED:
+	case ModelTheme::F_ARROWCONNECTED:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE    , foldFgColor, foldBgColor);
@@ -164,7 +164,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER  , foldFgColor, foldBgColor);
 		break;
 
-	case RDOFOLDS_BOXCONNECTED:
+	case ModelTheme::F_BOXCONNECTED:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_BOXMINUS, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_BOXPLUS , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE   , foldFgColor, foldBgColor);
@@ -174,7 +174,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER , foldFgColor, foldBgColor);
 		break;
 
-	case RDOFOLDS_CIRCLECONNECTED:
+	case ModelTheme::F_CIRCLECONNECTED:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_CIRCLEMINUS, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_CIRCLEPLUS , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE      , foldFgColor, foldBgColor);

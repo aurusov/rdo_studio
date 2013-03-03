@@ -21,19 +21,20 @@ namespace rdo { namespace gui { namespace editor {
 // --------------------------------------------------------------------------------
 // -------------------- ModelTheme
 // --------------------------------------------------------------------------------
-enum RDOFoldStyle {
-	RDOFOLDS_NONE = 0,
-	RDOFOLDS_PLUS,
-	RDOFOLDS_PLUSCONNECTED,
-	RDOFOLDS_ARROW,
-	RDOFOLDS_ARROWCONNECTED,
-	RDOFOLDS_BOXCONNECTED,
-	RDOFOLDS_CIRCLECONNECTED
-};
-
 class ModelTheme: public ParserTheme
 {
 public:
+	enum Fold
+	{
+		F_NONE = 0,
+		F_PLUS,
+		F_PLUSCONNECTED,
+		F_ARROW,
+		F_ARROWCONNECTED,
+		F_BOXCONNECTED,
+		F_CIRCLECONNECTED
+	};
+
 	ModelTheme();
 	virtual ~ModelTheme();
 
@@ -46,11 +47,9 @@ public:
 
 	QColor foldFgColor;
 	QColor foldBgColor;
-
 	QColor errorBgColor;
-
-	RDOFoldStyle foldStyle;
-	rbool        commentFold;
+	Fold   foldStyle;
+	rbool  commentFold;
 
 	static ModelTheme getDefaultTheme();
 	static ModelTheme getCppTheme();

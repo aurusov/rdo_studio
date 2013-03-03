@@ -28,7 +28,7 @@ rbool ViewPreferences::null_horzscrollbar = true;
 rbool ViewPreferences::null_warning       = true;
 rbool ViewPreferences::null_commentfold   = false;
 EditTheme::Bookmark ViewPreferences::null_bookmarkstyle = EditTheme::B_NONE;
-RDOFoldStyle        ViewPreferences::null_foldstyle     = RDOFOLDS_NONE;
+ModelTheme::Fold    ViewPreferences::null_foldstyle     = ModelTheme::F_NONE;
 QColor ViewPreferences::null_fg_color = QColor(0x00, 0x00, 0x00);
 QColor ViewPreferences::null_bg_color = QColor(0xFF, 0xFF, 0xFF);
 
@@ -122,13 +122,13 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	bookmarkComboBox->addItem(QString::fromLocal8Bit("Овал"),          EditTheme::B_ROUNDRECT);
 	bookmarkComboBox->addItem(QString::fromLocal8Bit("Стрелка"),       EditTheme::B_ARROW);
 
-	foldComboBox->addItem(QString::fromLocal8Bit("Нет"),             RDOFOLDS_NONE);
-	foldComboBox->addItem(QString::fromLocal8Bit("Плюс"),            RDOFOLDS_PLUS);
-	foldComboBox->addItem(QString::fromLocal8Bit("Плюс + линия"),    RDOFOLDS_PLUSCONNECTED);
-	foldComboBox->addItem(QString::fromLocal8Bit("Стрелка"),         RDOFOLDS_ARROW);
-	foldComboBox->addItem(QString::fromLocal8Bit("Стрелка + линия"), RDOFOLDS_ARROWCONNECTED);
-	foldComboBox->addItem(QString::fromLocal8Bit("Квадрат + линия"), RDOFOLDS_BOXCONNECTED);
-	foldComboBox->addItem(QString::fromLocal8Bit("Круг + линия"),    RDOFOLDS_CIRCLECONNECTED);
+	foldComboBox->addItem(QString::fromLocal8Bit("Нет"),             ModelTheme::F_NONE);
+	foldComboBox->addItem(QString::fromLocal8Bit("Плюс"),            ModelTheme::F_PLUS);
+	foldComboBox->addItem(QString::fromLocal8Bit("Плюс + линия"),    ModelTheme::F_PLUSCONNECTED);
+	foldComboBox->addItem(QString::fromLocal8Bit("Стрелка"),         ModelTheme::F_ARROW);
+	foldComboBox->addItem(QString::fromLocal8Bit("Стрелка + линия"), ModelTheme::F_ARROWCONNECTED);
+	foldComboBox->addItem(QString::fromLocal8Bit("Квадрат + линия"), ModelTheme::F_BOXCONNECTED);
+	foldComboBox->addItem(QString::fromLocal8Bit("Круг + линия"),    ModelTheme::F_CIRCLECONNECTED);
 
 	boldCheckBox->setEnabled(false);
 	italicCheckBox->setEnabled(false);
@@ -549,7 +549,7 @@ void ViewPreferences::onBookmark(int index)
 void ViewPreferences::onFold(int index)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->foldstyle = static_cast<RDOFoldStyle>(index);
+	item->foldstyle = static_cast<ModelTheme::Fold>(index);
 	updatePreview();
 }
 

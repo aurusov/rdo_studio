@@ -26,7 +26,7 @@ ModelTheme::ModelTheme(): ParserTheme()
 
 	errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
-	foldStyle   = RDOFOLDS_PLUS;
+	foldStyle   = F_PLUS;
 	commentFold = false;
 }
 
@@ -96,7 +96,7 @@ ModelTheme ModelTheme::getCppTheme()
 	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
 	theme.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
-	theme.foldStyle   = RDOFOLDS_PLUS;
+	theme.foldStyle   = F_PLUS;
 	theme.commentFold = false;
 
 	return theme;
@@ -111,7 +111,7 @@ ModelTheme ModelTheme::getPascalTheme()
 	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
 	theme.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
-	theme.foldStyle   = RDOFOLDS_PLUS;
+	theme.foldStyle   = F_PLUS;
 	theme.commentFold = false;
 
 	return theme;
@@ -126,7 +126,7 @@ ModelTheme ModelTheme::getHtmlTheme()
 	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
 	theme.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
-	theme.foldStyle   = RDOFOLDS_PLUS;
+	theme.foldStyle   = F_PLUS;
 	theme.commentFold = false;
 
 	return theme;
@@ -141,7 +141,7 @@ ModelTheme ModelTheme::getClassicTheme()
 	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
 	theme.errorBgColor = QColor( 0xE6, 0x05, 0xF8 );
 
-	theme.foldStyle   = RDOFOLDS_PLUS;
+	theme.foldStyle   = F_PLUS;
 	theme.commentFold = false;
 
 	return theme;
@@ -156,7 +156,7 @@ ModelTheme ModelTheme::getTwilightTheme()
 	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
 	theme.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
-	theme.foldStyle   = RDOFOLDS_PLUS;
+	theme.foldStyle   = F_PLUS;
 	theme.commentFold = false;
 
 	return theme;
@@ -171,7 +171,7 @@ ModelTheme ModelTheme::getOceanTheme()
 	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
 	theme.errorBgColor = QColor( 0xFF, 0xFF, 0x00 );
 
-	theme.foldStyle   = RDOFOLDS_PLUS;
+	theme.foldStyle   = F_PLUS;
 	theme.commentFold = false;
 
 	return theme;
@@ -195,7 +195,7 @@ QSettings& operator>> (QSettings& settings, ModelTheme& theme)
 	theme.foldFgColor  = QColor(settings.value("fold_fg_color", theme.foldFgColor.name()).toString());
 	theme.foldBgColor  = QColor(settings.value("fold_bg_color", theme.foldBgColor.name()).toString());
 	theme.errorBgColor = QColor(settings.value("error_bg_color", theme.errorBgColor.name()).toString());
-	theme.foldStyle    = (RDOFoldStyle)settings.value("fold_style", theme.foldStyle).toInt();
+	theme.foldStyle    = (ModelTheme::Fold)settings.value("fold_style", theme.foldStyle).toInt();
 	theme.commentFold  = settings.value("comment_fold", theme.commentFold).toBool() ? true : false;
 
 	return settings;
