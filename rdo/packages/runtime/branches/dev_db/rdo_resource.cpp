@@ -76,7 +76,7 @@ LPRDOResource RDOResource::clone(CREF(LPRDORuntime) pRuntime) const
 	return pResource;
 }
 
-tstring RDOResource::getTypeId()
+tstring RDOResource::getTypeId() const
 {
 	rdo::ostringstream str;
 	str << m_type;
@@ -196,6 +196,67 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 
 CREF(RDOValue) RDOResource::getParam(ruint index) const
 {
+	QSqlQuery query;
+
+	int traceID = getTraceID();
+	query.exec(QString("select value from rss_param where rss_id=%1 and id=%2;")
+		.arg(traceID)
+		.arg(index));
+	query.next();
+	int value_id = query.value(query.record().indexOf("value")).toInt();
+
+	query.exec(QString("select relname from pg_class, rdo_value where pg_class.relfilenode=rdo_value.table_id and rdo_value.value_id=%1;")
+		.arg(value_id));
+	query.next();
+	QString table_name = query.value(query.record().indexOf("relname")).toString();
+
+	query.exec(QString("select vv from %1 where id=%2;")
+		.arg(table_name)
+		.arg(value_id));
+	query.next();
+
+	QVariant varValue = query.value(query.record().indexOf("vv"));
+
+	if (table_name == QString("int_rv"))
+	{
+		return RDOValue(varValue.toInt());
+	}
+	else if (table_name == QString("real_rv"))
+	{
+		return RDOValue(varValue.toDouble());
+	}
+	else if (table_name == QString("enum_rv"))
+	{
+		query.exec(QString("select enum_valid_value.vv_str \
+							from param_of_type, enum_valid_value \
+							where param_of_type.rtp_id=%1 and param_of_type.id=%2 and param_of_type.type_id=enum_valid_value.enum_id;")
+					.arg(boost::lexical_cast<int>(getTypeId()))
+					.arg(index));
+
+		LPRDOEnumType pRDOEnumType = rdo::Factory<RDOEnumType>::create();
+
+		for (int i = 0; i < query.size(); ++i)
+		{
+			query.next();
+			pRDOEnumType->add(query.value(query.record().indexOf("vv_str")).toString().toLocal8Bit().constData());
+		}
+		RDOValue asdasdf = RDOValue(pRDOEnumType,varValue.toString().toLocal8Bit().constData());
+		return asdasdf;
+	}
+	else if (table_name == QString("bool_rv"))
+	{
+		return RDOValue(varValue.toBool());
+	}
+	else if (table_name == QString("string_rv"))
+	{
+		return RDOValue(varValue.toString().toLocal8Bit().constData());
+	}
+	else if (table_name == QString("identificator_rv"))
+	{
+		return RDOValue(varValue.toString().toLocal8Bit().constData());
+	}
+
+	//throw RDOValueException("Данная величина не может быть считана из базы данных");
 	ASSERT(index < m_paramList.size());
 	return m_paramList[index];
 }
