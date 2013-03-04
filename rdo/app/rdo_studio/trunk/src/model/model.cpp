@@ -776,7 +776,7 @@ void Model::openModelFromRepository()
 				pEdit->setReadOnly(data.m_readOnly);
 				if (data.m_readOnly)
 				{
-					g_pApp->getIMainWnd()->getDockDebug().appendString(QString("%1 - только чтение\n").arg(tstring(data.m_name + data.m_extention).c_str()));
+					g_pApp->getIMainWnd()->getDockDebug().appendString(QString("%1 - только чтение\n").arg(QString::fromLocal8Bit(tstring(data.m_name + data.m_extention).c_str())));
 				}
 			}
 			else
@@ -795,7 +795,7 @@ void Model::openModelFromRepository()
 				}
 				if (!objName.isEmpty())
 				{
-					g_pApp->getIMainWnd()->getDockDebug().appendString(QString("Невозможно загрузить %1 (%2)\n").arg(objName).arg(data.m_fullName.c_str()));
+					g_pApp->getIMainWnd()->getDockDebug().appendString(QString("Невозможно загрузить %1 (%2)\n").arg(objName).arg(QString::fromLocal8Bit(data.m_fullName.c_str())));
 					g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 				}
 				m_openError = true;
