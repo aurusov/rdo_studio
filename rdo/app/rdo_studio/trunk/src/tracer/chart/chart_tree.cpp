@@ -34,11 +34,6 @@
 
 using namespace rdo::gui::tracer;
 
-//! @todo qt
-//BEGIN_MESSAGE_MAP(ChartTree, RDOTreeCtrl)
-//	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnDragDrop)
-//END_MESSAGE_MAP()
-
 Q_DECLARE_METATYPE(const ChartTreeItem*);
 
 ChartTree::ChartTree(PTR(QWidget) pParent)
