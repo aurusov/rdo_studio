@@ -71,7 +71,7 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
-	m_pPopupMenu = new QMenu(pParent);
+	m_pPopupMenu = new QMenu(this);
 	m_pPopupMenu->addAction(pMainWindow->actChartCreate);
 	m_pPopupMenu->addAction(pMainWindow->actChartExport);
 }
