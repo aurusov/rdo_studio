@@ -66,17 +66,14 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 
 	m_root->getCtrlItem().setExpanded(true);
 
-	connect(
-		this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
-		this, SLOT(onTreeWidgetItemDoubleClicked(QTreeWidgetItem*, int))
-	);
+	connect(this, &ChartTree::itemDoubleClicked, this, &ChartTree::onTreeWidgetItemDoubleClicked);
 
 	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
 	m_pPopupMenu = new QMenu(pParent);
-	m_pPopupMenu->addAction(pMainWindow->actChartFindInChart);
-	m_pPopupMenu->addAction(pMainWindow->actChartAddToNewChart);
+	m_pPopupMenu->addAction(pMainWindow->actChartCreate);
+	m_pPopupMenu->addAction(pMainWindow->actChartActivateExisting);
 	m_pPopupMenu->addAction(pMainWindow->actChartExport);
 }
 
@@ -193,7 +190,7 @@ void ChartTree::clear()
 	m_root->getCtrlItem().setText(0, "Модель");
 }
 
-void ChartTree::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
+void ChartTree::createChart(PTR(QTreeWidgetItem) pCtrlItem) const
 {
 	LPSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<Serie>();
 	if (pSerie)
@@ -202,7 +199,7 @@ void ChartTree::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
 	}
 }
 
-rbool ChartTree::findInCharts(PTR(QTreeWidgetItem) pCtrlItem) const
+rbool ChartTree::activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const
 {
 	LPSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<Serie>();
 	if (pSerie)
@@ -220,9 +217,9 @@ PTR(QTreeWidgetItem) ChartTree::getSelected() const
 		: NULL;
 }
 
-void ChartTree::onAddToNewChart()
+void ChartTree::onChartCreate()
 {
-	addToNewChart(getSelected());
+	createChart(getSelected());
 }
 
 void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
@@ -230,9 +227,9 @@ void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 	if (!g_pTracer->getDrawTrace())
 		return;
 
-	if (!findInCharts(pCtrlItem))
+	if (!activateExistingChart(pCtrlItem))
 	{
-		addToNewChart(pCtrlItem);
+		createChart(pCtrlItem);
 	}
 }
 
@@ -276,7 +273,7 @@ void ChartTree::onChartExport()
 	}
 }
 
-rbool ChartTree::onUpdateChartFindInCharts()
+rbool ChartTree::onUpdateActivateExistingChart() const
 {
 	rbool enable = false;
 	if (g_pTracer->getDrawTrace())
@@ -290,9 +287,9 @@ rbool ChartTree::onUpdateChartFindInCharts()
 	return enable;
 }
 
-void ChartTree::onChartFindInCharts()
+void ChartTree::onChartActivateExisting()
 {
-	findInCharts(getSelected());
+	activateExistingChart(getSelected());
 }
 
 void ChartTree::focusInEvent(QFocusEvent* pEvent)
@@ -319,15 +316,15 @@ void ChartTree::onUpdateActions(rbool activated)
 	);
 
 	updateAction(
-		pMainWindow->actChartAddToNewChart,
+		pMainWindow->actChartCreate,
 		activated && g_pTracer->getDrawTrace() && getIfItemIsDrawable(getSelected()),
-		this, &ChartTree::onAddToNewChart
+		this, &ChartTree::onChartCreate
 	);
 
 	updateAction(
-		pMainWindow->actChartFindInChart,
-		activated && onUpdateChartFindInCharts(),
-		this, &ChartTree::onChartFindInCharts
+		pMainWindow->actChartActivateExisting,
+		activated && onUpdateActivateExistingChart(),
+		this, &ChartTree::onChartActivateExisting
 	);
 
 	updateAction(
