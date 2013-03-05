@@ -93,6 +93,7 @@ Application::Application(int& argc, char** argv)
 	, m_dontCloseIfError            (false )
 	, m_exitCode                    (rdo::simulation::report::EC_OK)
 	, m_pMainFrame                  (NULL  )
+	, m_pAssistant                  (NULL  )
 {
 	g_pApp = this;
 
