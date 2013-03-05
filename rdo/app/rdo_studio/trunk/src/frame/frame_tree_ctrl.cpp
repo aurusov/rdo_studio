@@ -61,8 +61,8 @@ void TreeCtrl::focusInEvent(QFocusEvent* pEvent)
 
 void TreeCtrl::focusOutEvent(QFocusEvent* pEvent)
 {
-	parent_type::focusOutEvent(pEvent);
 	deactivate(pEvent);
+	parent_type::focusOutEvent(pEvent);
 }
 
 void TreeCtrl::onUpdateActions(rbool activated)

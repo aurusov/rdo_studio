@@ -280,8 +280,8 @@ void ChartTree::focusInEvent(QFocusEvent* pEvent)
 
 void ChartTree::focusOutEvent(QFocusEvent* pEvent)
 {
-	parent_type::focusOutEvent(pEvent);
 	deactivate(pEvent);
+	parent_type::focusOutEvent(pEvent);
 }
 
 void ChartTree::onUpdateActions(rbool activated)
