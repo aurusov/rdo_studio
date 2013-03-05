@@ -22,6 +22,7 @@ def read_result_data(name):
 
     return file_data
 
+
 def read_trace_data(name):
     file_data_temp = open(name, u'r').readlines()
     utils.cut_slash(file_data_temp)
@@ -38,7 +39,8 @@ def read_trace_data(name):
             push = True
 
     return file_data
-    
+
+
 def full(file1, file2):
     file1_data = open(file1, 'r').readlines()
     file2_data = open(file2, 'r').readlines()
@@ -51,6 +53,7 @@ def full(file1, file2):
 
     return False
 
+
 def result(file1, file2):
     file1_data = read_result_data(file1)
     file2_data = read_result_data(file2)
@@ -59,6 +62,7 @@ def result(file1, file2):
         return True
 
     return False
+
 
 def trace(file1, file2):
     file1_data = read_trace_data(file1)
