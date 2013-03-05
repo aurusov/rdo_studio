@@ -310,12 +310,6 @@ void ChartTree::onUpdateActions(rbool activated)
 	ASSERT(pMainWindow);
 
 	updateAction(
-		pMainWindow->actHelpContext,
-		activated,
-		this, &ChartTree::onHelpContext
-	);
-
-	updateAction(
 		pMainWindow->actChartCreate,
 		activated && g_pTracer->getDrawTrace() && getIfItemIsDrawable(getSelected()),
 		this, &ChartTree::onChartCreate
@@ -331,6 +325,12 @@ void ChartTree::onUpdateActions(rbool activated)
 		pMainWindow->actChartExport,
 		activated && g_pTracer->getDrawTrace() && (getIfItemIsDrawable(getSelected()) != NULL),
 		this, &ChartTree::onChartExport
+	);
+
+	updateAction(
+		pMainWindow->actHelpContext,
+		activated,
+		this, &ChartTree::onHelpContext
 	);
 }
 
