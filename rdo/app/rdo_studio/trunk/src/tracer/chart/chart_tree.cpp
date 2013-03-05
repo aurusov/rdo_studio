@@ -217,11 +217,6 @@ PTR(QTreeWidgetItem) ChartTree::getSelected() const
 		: NULL;
 }
 
-void ChartTree::onChartCreate()
-{
-	createChart(getSelected());
-}
-
 void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 {
 	if (!g_pTracer->getDrawTrace())
@@ -231,6 +226,30 @@ void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 	{
 		createChart(pCtrlItem);
 	}
+}
+
+void ChartTree::onChartCreate()
+{
+	createChart(getSelected());
+}
+
+void ChartTree::onChartActivateExisting()
+{
+	activateExistingChart(getSelected());
+}
+
+rbool ChartTree::canActivateExistingChart() const
+{
+	rbool enable = false;
+	if (g_pTracer->getDrawTrace())
+	{
+		LPSerie pSerie = getIfItemIsDrawable(getSelected()).object_dynamic_cast<Serie>();
+		if (pSerie)
+		{
+			enable = pSerie->isInOneOrMoreDocs();
+		}
+	}
+	return enable;
 }
 
 void ChartTree::onChartExport()
@@ -271,25 +290,6 @@ void ChartTree::onChartExport()
 		}
 		data.close();
 	}
-}
-
-void ChartTree::onChartActivateExisting()
-{
-	activateExistingChart(getSelected());
-}
-
-rbool ChartTree::canActivateExistingChart() const
-{
-	rbool enable = false;
-	if (g_pTracer->getDrawTrace())
-	{
-		LPSerie pSerie = getIfItemIsDrawable(getSelected()).object_dynamic_cast<Serie>();
-		if (pSerie)
-		{
-			enable = pSerie->isInOneOrMoreDocs();
-		}
-	}
-	return enable;
 }
 
 void ChartTree::focusInEvent(QFocusEvent* pEvent)
