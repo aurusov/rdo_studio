@@ -23,25 +23,24 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+RDOValue foo()
+{
+	LPRDOEnumType pRDOEnumType = rdo::Factory<RDOEnumType>::create();
+
+	pRDOEnumType->add(_T("first_record"));
+	pRDOEnumType->add(_T("second_record"));
+
+	RDOValue tempObject = RDOValue(pRDOEnumType,_T("second_record"));
+	return tempObject;
+}
+
 BOOST_AUTO_TEST_SUITE(RDOValue_Test)
 
 BOOST_AUTO_TEST_CASE(RDOValue_String)
 {
-	const tstring str1 = _T("qqq");
-	RDOValue value1(str1);
-	BOOST_CHECK(value1.getString  () == str1);
-	BOOST_CHECK(value1.getAsString() == str1);
-
-	RDOValue value2 = value1;
-	BOOST_CHECK(value2.getString  () == str1);
-	BOOST_CHECK(value2.getAsString() == str1);
-	BOOST_CHECK(value2 == value1);
-
-	const tstring str2 = _T("aaa");
-	value2 += str2;
-	BOOST_CHECK(value2.getString  () == str1 + str2);
-	BOOST_CHECK(value2.getAsString() == str1 + str2);
-	}
+	RDOValue a = foo();
+	int i = 1;
+}
 
 
 BOOST_AUTO_TEST_SUITE_END() // RDOValue_Test
