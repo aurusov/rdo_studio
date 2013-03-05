@@ -16,9 +16,7 @@
 #ifdef COMPILER_GCC
 	#include <float.h>
 #endif // COMPILER_GCC
-#include "utils/warning_disable.h"
 #include <boost/thread.hpp>
-#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdobase.h"
 #include "simulator/runtime/calc/operation/operation_type.h"

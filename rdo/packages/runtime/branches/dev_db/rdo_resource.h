@@ -73,7 +73,7 @@ public:
 	tstring         traceResourceState  (char prefix, CREF(LPRDORuntime) pRuntime);
 	REF(RDOValue)   getParamRaw         (ruint index                             );
 	void            setParam            (ruint index, CREF(RDOValue) value       );
-	tstring         getTypeId           () const;
+	tstring         getTypeId           ();
 	tstring         traceParametersValue();
 	virtual tstring whoAreYou           ();
 	void            incRef              ();
