@@ -273,7 +273,12 @@ void ChartTree::onChartExport()
 	}
 }
 
-rbool ChartTree::onUpdateActivateExistingChart() const
+void ChartTree::onChartActivateExisting()
+{
+	activateExistingChart(getSelected());
+}
+
+rbool ChartTree::canActivateExistingChart() const
 {
 	rbool enable = false;
 	if (g_pTracer->getDrawTrace())
@@ -285,11 +290,6 @@ rbool ChartTree::onUpdateActivateExistingChart() const
 		}
 	}
 	return enable;
-}
-
-void ChartTree::onChartActivateExisting()
-{
-	activateExistingChart(getSelected());
 }
 
 void ChartTree::focusInEvent(QFocusEvent* pEvent)
@@ -317,13 +317,13 @@ void ChartTree::onUpdateActions(rbool activated)
 
 	updateAction(
 		pMainWindow->actChartActivateExisting,
-		activated && onUpdateActivateExistingChart(),
+		activated && canActivateExistingChart(),
 		this, &ChartTree::onChartActivateExisting
 	);
 
 	updateAction(
 		pMainWindow->actChartExport,
-		activated && g_pTracer->getDrawTrace() && (getIfItemIsDrawable(getSelected()) != NULL),
+		activated && g_pTracer->getDrawTrace() && getIfItemIsDrawable(getSelected()),
 		this, &ChartTree::onChartExport
 	);
 

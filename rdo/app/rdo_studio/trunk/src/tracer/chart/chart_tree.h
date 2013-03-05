@@ -74,9 +74,9 @@ private:
 
 	void createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType);
 
-	void  createChart          (PTR(QTreeWidgetItem) pCtrlItem) const;
-	rbool activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const;
-	rbool onUpdateActivateExistingChart() const;
+	void  createChart             (PTR(QTreeWidgetItem) pCtrlItem) const;
+	rbool activateExistingChart   (PTR(QTreeWidgetItem) pCtrlItem) const;
+	rbool canActivateExistingChart() const;
 
 	LPChartTreeItem      getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
 	PTR(QTreeWidgetItem) getSelected        () const;
