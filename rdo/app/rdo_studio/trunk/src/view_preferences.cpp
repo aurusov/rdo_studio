@@ -34,7 +34,7 @@ QColor ViewPreferences::null_fg_color = QColor(0x00, 0x00, 0x00);
 QColor ViewPreferences::null_bg_color = QColor(0xFF, 0xFF, 0xFF);
 
 ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
-	: QDialog(pParent)
+	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, all_font_size(-1)
 	, all_font_name("")
 	, null_font_style(StyleFont::NONE)
@@ -690,6 +690,27 @@ void ViewPreferences::onTickWidth(const QString& text)
 {
 	style_chart.pFontsTicks->tickWidth = text.toInt();
 	updatePreview();
+}
+
+void ViewPreferences::onHelpContext()
+{
+	QByteArray ba;
+	switch (tabWidget->currentIndex())
+	{
+	case 0:
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_general.htm\n");
+		break;
+	case 1:
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm\n");
+		break;
+	case 2:
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_tabs.htm\n");
+		break;
+	case 3:
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm\n");
+		break;
+	}
+	g_pApp->callQtAssistant(ba);
 }
 
 void ViewPreferences::updateDialog()
@@ -1379,4 +1400,10 @@ void ViewPreferences::checkAllData()
 		buttonApply->setEnabled(false);
 	else
 		buttonApply->setEnabled(true);
+}
+
+void ViewPreferences::keyPressEvent(QKeyEvent* pEvent)
+{
+	if(QKeySequence(pEvent->key()) == QKeySequence::HelpContents)
+		onHelpContext();
 }

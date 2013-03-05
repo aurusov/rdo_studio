@@ -94,6 +94,8 @@ private slots:
 	void onLegendSize(int index);
 	void onTickWidth(const QString& text);
 
+	void onHelpContext();
+
 private:
 	enum ItemType
 	{
@@ -373,6 +375,8 @@ private:
 	
 	void apply();
 	void checkAllData();
+
+	void keyPressEvent(QKeyEvent* pEvent);
 };
 
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_
