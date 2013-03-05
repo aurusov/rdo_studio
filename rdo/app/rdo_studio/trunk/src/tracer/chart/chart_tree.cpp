@@ -73,7 +73,6 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 
 	m_pPopupMenu = new QMenu(pParent);
 	m_pPopupMenu->addAction(pMainWindow->actChartCreate);
-	m_pPopupMenu->addAction(pMainWindow->actChartActivateExisting);
 	m_pPopupMenu->addAction(pMainWindow->actChartExport);
 }
 
@@ -233,25 +232,6 @@ void ChartTree::onChartCreate()
 	createChart(getSelected());
 }
 
-void ChartTree::onChartActivateExisting()
-{
-	activateExistingChart(getSelected());
-}
-
-rbool ChartTree::canActivateExistingChart() const
-{
-	rbool enable = false;
-	if (g_pTracer->getDrawTrace())
-	{
-		LPSerie pSerie = getIfItemIsDrawable(getSelected()).object_dynamic_cast<Serie>();
-		if (pSerie)
-		{
-			enable = pSerie->isInOneOrMoreDocs();
-		}
-	}
-	return enable;
-}
-
 void ChartTree::onChartExport()
 {
 	if (!g_pTracer->getDrawTrace())
@@ -313,12 +293,6 @@ void ChartTree::onUpdateActions(rbool activated)
 		pMainWindow->actChartCreate,
 		activated && g_pTracer->getDrawTrace() && getIfItemIsDrawable(getSelected()),
 		this, &ChartTree::onChartCreate
-	);
-
-	updateAction(
-		pMainWindow->actChartActivateExisting,
-		activated && canActivateExistingChart(),
-		this, &ChartTree::onChartActivateExisting
 	);
 
 	updateAction(

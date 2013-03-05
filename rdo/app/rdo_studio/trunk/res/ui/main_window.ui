@@ -171,7 +171,6 @@ border: none;
      <string>График</string>
     </property>
     <addaction name="actChartCreate"/>
-    <addaction name="actChartActivateExisting"/>
     <addaction name="actChartExport"/>
     <addaction name="separator"/>
     <addaction name="actChartTimeWrap"/>
@@ -934,14 +933,6 @@ border: none;
    </property>
    <property name="text">
     <string>Пред. кадр анимации</string>
-   </property>
-  </action>
-  <action name="actChartActivateExisting">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Показать</string>
    </property>
   </action>
   <action name="actChartCreate">
