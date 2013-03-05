@@ -417,8 +417,12 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 		{
 			switch (rdovalue.typeID())
 			{
-			case RDOType::t_enum: if (m_pType == rdovalue.m_pType) return __get<ruint>() == rdovalue.__get<ruint>(); break;
-			default             : break;
+			case RDOType::t_enum: 
+				if (m_pType->typeID() == rdovalue.m_pType->typeID() && getEnum()->getValues() == rdovalue.getEnum()->getValues())
+					return __get<ruint>() == rdovalue.__get<ruint>();
+				break;
+			default:
+				break;
 			}
 			break;
 		}

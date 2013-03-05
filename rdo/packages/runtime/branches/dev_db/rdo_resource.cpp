@@ -188,13 +188,9 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 	case RDOType::t_identificator : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromLocal8Bit(value.getAsString().c_str()))); break;
 	default                       : throw RDOValueException("Данная величина не может быть записана в базу данных");
 	}
-//------
-	ASSERT(index < m_paramList.size());
-	setState(CS_Keep);
-	m_paramList[index] = value;
 }
 
-CREF(RDOValue) RDOResource::getParam(ruint index) const
+RDOValue RDOResource::getParam(ruint index) const
 {
 	QSqlQuery query;
 
@@ -240,8 +236,8 @@ CREF(RDOValue) RDOResource::getParam(ruint index) const
 			query.next();
 			pRDOEnumType->add(query.value(query.record().indexOf("vv_str")).toString().toLocal8Bit().constData());
 		}
-		RDOValue asdasdf = RDOValue(pRDOEnumType,varValue.toString().toLocal8Bit().constData());
-		return asdasdf;
+
+		return RDOValue(pRDOEnumType,varValue.toString().toLocal8Bit().constData());
 	}
 	else if (table_name == QString("bool_rv"))
 	{

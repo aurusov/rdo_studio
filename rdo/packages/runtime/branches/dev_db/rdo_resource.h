@@ -57,7 +57,7 @@ public:
 	rbool operator!= (REF(RDOResource) other);
 
 	ConvertStatus          getState    (                           ) const;
-	CREF(RDOValue)         getParam    (ruint index                ) const;
+	RDOValue               getParam    (ruint index                ) const;
 	rbool                  checkType   (ruint type                 ) const;
 	rbool                  canFree     (                           ) const;
 	CREF(LPIResourceType)  getResType  (                           ) const;
