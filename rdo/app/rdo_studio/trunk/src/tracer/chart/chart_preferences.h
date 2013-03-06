@@ -47,6 +47,9 @@ private:
 	void ChartPreferences::insertColor(const QColor& color, const QString& colorName, QComboBox* colorBox);
 	void apply();
 
+	void onHelpContext();
+	void keyPressEvent(QKeyEvent* pEvent);
+
 private slots:
 	void onOkButton();
 	void onCancelButton();
