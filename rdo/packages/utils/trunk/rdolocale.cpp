@@ -43,7 +43,7 @@ void init()
 	std::locale::global(sourceCodeLocale);
 
 #ifdef COMPILER_VISUAL_STUDIO
-	setlocale(LC_ALL, "Russian_Russia.1251");
+	setlocale(LC_ALL, ".ACP");
 #endif
 }
 
