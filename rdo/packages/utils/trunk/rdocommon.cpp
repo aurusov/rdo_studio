@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <locale>
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdexcept>
