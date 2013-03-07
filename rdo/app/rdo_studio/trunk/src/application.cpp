@@ -101,9 +101,6 @@ Application::Application(int& argc, char** argv)
 	qInstallMessageHandler(g_messageOutput);
 #endif
 
-	setlocale(LC_ALL,     "rus");
-	setlocale(LC_NUMERIC, "eng");
-
 	m_log.open("log.txt");
 
 	qApp->setQuitOnLastWindowClosed(true);
