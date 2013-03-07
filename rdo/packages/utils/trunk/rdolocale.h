@@ -1,25 +1,52 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      rdolocale.h
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
+  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.10.2012
   \brief     Настройка локали для РДО
   \indent    4T
 */
 
-#ifndef _RDO_LOCALE_H_
-#define _RDO_LOCALE_H_
+#ifndef _UTILS_LOCALE_H_
+#define _UTILS_LOCALE_H_
 
 // ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
+#include <boost/locale.hpp>
+#include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo
+{
+	void setup_locale();
 
-void setup_locale();
+	namespace locale
+	{
+		void init();
 
-CLOSE_RDO_NAMESPACE
+		class generator
+		{
+		public:
+			generator();
 
-#endif // _RDO_LOCALE_H_
+			std::locale get(const std::string& name);
+
+			std::locale system();
+			std::locale cp1251();
+			std::locale utf8  ();
+
+		private:
+			boost::locale::generator m_generator;
+		};
+
+		generator& list();
+		std::string convert(const std::string& txt, const std::locale& from, const std::locale& to);
+
+	} // namespace locale
+} // namespace rdo
+
+#endif // _UTILS_LOCALE_H_
