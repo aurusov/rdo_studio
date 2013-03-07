@@ -44,7 +44,7 @@ namespace rdo
 		};
 
 		generator& list();
-		std::string convert(const std::string& txt, const std::locale& from, const std::locale& to);
+		std::string convert(const std::string& txt, const std::locale& to, const std::locale& from = std::locale());
 
 	} // namespace locale
 } // namespace rdo

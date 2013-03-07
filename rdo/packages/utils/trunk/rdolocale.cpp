@@ -81,7 +81,7 @@ generator& list()
 	return gen;
 }
 
-std::string convert(const std::string& txt, const std::locale& from, const std::locale& to)
+std::string convert(const std::string& txt, const std::locale& to, const std::locale& from)
 {
 	std::string result;
 	try
