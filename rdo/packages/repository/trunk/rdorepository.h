@@ -20,10 +20,9 @@
 #include "kernel/rdothread.h"
 #include "utils/rdostream.h"
 #include "utils/rdocommon.h"
-#include "repository/namespace.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_REPOSITORY_NAMESPACE
+namespace rdo { namespace repository {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOThreadRepository
@@ -208,6 +207,6 @@ protected:
 	void loadBMP(REF(tstring) name, REF(rdo::stream) stream) const;
 };
 
-CLOSE_RDO_REPOSITORY_NAMESPACE
+}} // namespace rdo::repository
 
 #endif // _RDOREPOSITORYFILE_H_

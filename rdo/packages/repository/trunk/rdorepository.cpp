@@ -20,7 +20,7 @@
 #include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_REPOSITORY_NAMESPACE
+namespace rdo { namespace repository {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOThreadRepository
@@ -727,4 +727,4 @@ rbool RDOThreadRepository::isDeleteIfEmpty(rdoModelObjects::RDOFileType type) co
 	return it->second.m_deleteIfEmpty;
 }
 
-CLOSE_RDO_REPOSITORY_NAMESPACE
+}} // namespace rdo::repository
