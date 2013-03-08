@@ -36,12 +36,19 @@ void locale::init()
 	rdo::locale& locale = get();
 
 	std::locale sourceCodeLocale = locale.cp1251();
-	std::string s = std::use_facet<boost::locale::info>(sourceCodeLocale).name();
 	std::locale::global(sourceCodeLocale);
 
 #ifdef COMPILER_VISUAL_STUDIO
 	setlocale(LC_ALL, ".ACP");
 #endif
+
+	std::locale C99_out_locale(std::locale::classic(), new boost::math::nonfinite_num_put<char>);
+	std::locale C99_in_locale (std::locale::classic(), new boost::math::nonfinite_num_get<char>);
+
+	std::cout.imbue(C99_out_locale);
+	std::cerr.imbue(C99_out_locale);
+	std::clog.imbue(C99_out_locale);
+	std::cin.imbue (C99_in_locale );
 }
 
 locale& locale::get()
