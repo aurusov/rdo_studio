@@ -26,11 +26,9 @@ OPEN_RDO_REPOSITORY_NAMESPACE
 // -------------------- RDOThreadRepository
 // --------------------------------------------------------------------------------
 RDOThreadRepository::RDOThreadRepository()
-	: RDOThreadMT    (_T("RDOThreadRepository"))
-	, m_modelName    (_T("")                   )
-	, m_modelPath    (_T("")                   )
-	, m_hasModel     (false                    )
-	, m_realOnlyInDlg(false                    )
+	: RDOThreadMT    ("RDOThreadRepository")
+	, m_hasModel     (false                )
+	, m_realOnlyInDlg(false                )
 {
 	notifies.push_back(RT_STUDIO_MODEL_NEW                  );
 	notifies.push_back(RT_STUDIO_MODEL_OPEN                 );
@@ -47,20 +45,20 @@ RDOThreadRepository::RDOThreadRepository()
 	notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        );
 	notifies.push_back(RT_RUNTIME_TRACE_STRING              );
 
-	m_files[rdoModelObjects::RDOX].m_extention = _T(".rdox");
-	m_files[rdoModelObjects::RTP ].m_extention = _T(".rtp");
-	m_files[rdoModelObjects::RSS ].m_extention = _T(".rss");
-	m_files[rdoModelObjects::EVN ].m_extention = _T(".evn");
-	m_files[rdoModelObjects::PAT ].m_extention = _T(".pat");
-	m_files[rdoModelObjects::DPT ].m_extention = _T(".dpt");
-	m_files[rdoModelObjects::PRC ].m_extention = _T(".prc");
-	m_files[rdoModelObjects::PRCX].m_extention = _T(".prcx");
-	m_files[rdoModelObjects::FRM ].m_extention = _T(".frm");
-	m_files[rdoModelObjects::FUN ].m_extention = _T(".fun");
-	m_files[rdoModelObjects::SMR ].m_extention = _T(".smr");
-	m_files[rdoModelObjects::PMD ].m_extention = _T(".pmd");
-	m_files[rdoModelObjects::PMV ].m_extention = _T(".pmv");
-	m_files[rdoModelObjects::TRC ].m_extention = _T(".trc");
+	m_files[rdoModelObjects::RDOX].m_extention = ".rdox";
+	m_files[rdoModelObjects::RTP ].m_extention = ".rtp";
+	m_files[rdoModelObjects::RSS ].m_extention = ".rss";
+	m_files[rdoModelObjects::EVN ].m_extention = ".evn";
+	m_files[rdoModelObjects::PAT ].m_extention = ".pat";
+	m_files[rdoModelObjects::DPT ].m_extention = ".dpt";
+	m_files[rdoModelObjects::PRC ].m_extention = ".prc";
+	m_files[rdoModelObjects::PRCX].m_extention = ".prcx";
+	m_files[rdoModelObjects::FRM ].m_extention = ".frm";
+	m_files[rdoModelObjects::FUN ].m_extention = ".fun";
+	m_files[rdoModelObjects::SMR ].m_extention = ".smr";
+	m_files[rdoModelObjects::PMD ].m_extention = ".pmd";
+	m_files[rdoModelObjects::PMV ].m_extention = ".pmv";
+	m_files[rdoModelObjects::TRC ].m_extention = ".trc";
 
 //	m_files[rdoModelObjects::OPR].deleteifempty = true;
 //	m_files[rdoModelObjects::DPT].deleteifempty = true;
@@ -219,14 +217,14 @@ void RDOThreadRepository::newModel(CPTRC(NewModel) data)
 		if (data)
 		{
 			tstring path = data->m_path;
-			tstring::size_type pos = path.find_last_of(_T('\\'));
+			tstring::size_type pos = path.find_last_of('\\');
 			if (pos == tstring::npos)
 			{
-				pos = path.find_last_of(_T('/'));
+				pos = path.find_last_of('/');
 			}
 			if (pos != path.length() - 1)
 			{
-				path += _T('\\');
+				path += '\\';
 			}
 			extractName(path + data->m_name + m_files[rdoModelObjects::RDOX].m_extention);
 			if (!rdo::File::exist(path))
@@ -237,8 +235,8 @@ void RDOThreadRepository::newModel(CPTRC(NewModel) data)
 		}
 		else
 		{
-			m_modelName = _T("noname");
-			m_modelPath = _T("");
+			m_modelName = "noname";
+			m_modelPath = "";
 		}
 		STL_FOR_ALL(m_files, it)
 		{
@@ -316,7 +314,7 @@ rbool RDOThreadRepository::openModel(CREF(tstring) modelFileName)
 			}
 			else
 			{
-				setName(_T(""));
+				setName("");
 				broadcastMessage(RT_REPOSITORY_MODEL_OPEN_ERROR, const_cast<PTR(tstring)>(&modelFileName));
 			}
 		}
@@ -356,8 +354,8 @@ void RDOThreadRepository::realCloseModel()
 	{
 		m_hasModel = false;
 		broadcastMessage(RT_REPOSITORY_MODEL_CLOSE);
-		m_modelName = _T("");
-		m_modelPath = _T("");
+		m_modelName = "";
+		m_modelPath = "";
 		resetModelNames();
 	}
 }
@@ -379,20 +377,20 @@ void RDOThreadRepository::extractName(CREF(tstring) fullName)
 	m_modelPath = rdo::File::extractFilePath(fullName);
 
 	tstring name = fullName;
-	tstring::size_type pos = name.find_last_of(_T('.'));
+	tstring::size_type pos = name.find_last_of('.');
 	if (pos != tstring::npos)
 	{
 		tstring s;
 		s.assign(&name[0], pos);
 		name = s;
 	}
-	static tchar szDelims[] = _T(" \t\n\r");
+	static tchar szDelims[] = " \t\n\r";
 	name.erase(0, name.find_first_not_of(szDelims));
 	name.erase(name.find_last_not_of(szDelims) + 1, tstring::npos);
-	pos = name.find_last_of(_T('\\'));
+	pos = name.find_last_of('\\');
 	if (pos == tstring::npos)
 	{
-		pos = name.find_last_of(_T('/'));
+		pos = name.find_last_of('/');
 	}
 	if (pos != tstring::npos)
 	{
@@ -401,19 +399,19 @@ void RDOThreadRepository::extractName(CREF(tstring) fullName)
 	}
 	else
 	{
-		setName(_T(""));
+		setName("");
 	}
 }
 
 void RDOThreadRepository::setName(CREF(tstring) name)
 {
 	m_modelName = name;
-	static tchar szDelims[] = _T(" \t\n\r");
+	static tchar szDelims[] = " \t\n\r";
 	m_modelName.erase(0, m_modelName.find_first_not_of(szDelims));
 	m_modelName.erase(m_modelName.find_last_not_of(szDelims) + 1, tstring::npos);
 	if (m_modelName.empty())
 	{
-		m_modelPath = _T("");
+		m_modelPath = "";
 		resetModelNames();
 	}
 }
@@ -516,12 +514,12 @@ void RDOThreadRepository::createRDOX()
 	if (!rdo::File::exist(rdoxFileName))
 	{
 		pugi::xml_document doc;
-		pugi::xml_node      rootNode           = doc.append_child(_T("Settings"));
-		pugi::xml_node      versionNode        = rootNode.append_child(_T("Version"));
-		pugi::xml_attribute projectVersionAttr = versionNode.append_attribute(_T("ProjectVersion"));
-		pugi::xml_attribute smrVersionAttr     = versionNode.append_attribute(_T("SMRVersion"));
-		projectVersionAttr.set_value(_T("2"));
-		smrVersionAttr    .set_value(_T("2"));
+		pugi::xml_node      rootNode           = doc.append_child("Settings");
+		pugi::xml_node      versionNode        = rootNode.append_child("Version");
+		pugi::xml_attribute projectVersionAttr = versionNode.append_attribute("ProjectVersion");
+		pugi::xml_attribute smrVersionAttr     = versionNode.append_attribute("SMRVersion");
+		projectVersionAttr.set_value("2");
+		smrVersionAttr    .set_value("2");
 
 		rdo::ofstream ofs(rdoxFileName.c_str());
 		if (ofs.good())
@@ -549,7 +547,7 @@ void RDOThreadRepository::save(rdoModelObjects::RDOFileType type, REF(rdo::strea
 
 void RDOThreadRepository::loadBMP(REF(tstring) name, REF(rdo::stream) stream) const
 {
-	tstring file_name = m_modelPath + name + _T(".bmp");
+	tstring file_name = m_modelPath + name + ".bmp";
 	if (rdo::File::exist(file_name))
 	{
 		std::ifstream file(file_name.c_str(), std::ios::in | std::ios::binary);
@@ -565,17 +563,17 @@ void RDOThreadRepository::loadBMP(REF(tstring) name, REF(rdo::stream) stream) co
 
 void RDOThreadRepository::writeModelFilesInfo(REF(rdo::ofstream) stream) const
 {
-	stream << _T("Results_file   = ") << getFileExtName(rdoModelObjects::PMV) << _T("    ") << rdo::Time::local().asString() << std::endl;
-	stream << _T("Run_file       = ") << getFileExtName(rdoModelObjects::SMR) << std::endl;
-	stream << _T("Model_name     = ") << getFileName(rdoModelObjects::SMR) << std::endl;
-	stream << _T("Resource_file  = ") << getFileName(rdoModelObjects::RSS) << getExtention(rdoModelObjects::RSS) << std::endl;
+	stream << "Results_file   = " << getFileExtName(rdoModelObjects::PMV) << "    " << rdo::Time::local().asString() << std::endl;
+	stream << "Run_file       = " << getFileExtName(rdoModelObjects::SMR) << std::endl;
+	stream << "Model_name     = " << getFileName(rdoModelObjects::SMR) << std::endl;
+	stream << "Resource_file  = " << getFileName(rdoModelObjects::RSS) << getExtention(rdoModelObjects::RSS) << std::endl;
 }
 
 rbool RDOThreadRepository::createFile(CREF(tstring) name, CREF(tstring) ext, REF(rdo::ofstream) stream) const
 {
 	stringstream backupDirName;
 	backupDirName << m_modelPath
-	              << boost::basic_format<tchar>(_T("%1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d %7$s.%8$s"))
+	              << boost::basic_format<tchar>("%1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d %7$s.%8$s")
 	                 % m_systemTime.date().year ()
 	                 % m_systemTime.date().month()
 	                 % m_systemTime.date().day  ()
@@ -608,7 +606,7 @@ void RDOThreadRepository::beforeModelStart()
 			rdo::textstream model_structure;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
 			m_traceFile << std::endl << model_structure.str() << std::endl;
-			m_traceFile << _T("$Tracing") << std::endl;
+			m_traceFile << "$Tracing" << std::endl;
 		}
 	}
 }
@@ -629,7 +627,7 @@ void RDOThreadRepository::stopModel()
 			rdo::textstream stream;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS_INFO, &stream);
 			results_file << std::endl << stream.str() << std::endl;
-			stream.str(_T(""));
+			stream.str("");
 			stream.clear();
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &stream);
 			results_file << std::endl << stream.str() << std::endl;
@@ -642,7 +640,7 @@ void RDOThreadRepository::trace(CREF(tstring) message)
 	if (m_traceFile.is_open())
 	{
 		m_traceFile.write(message.c_str(), message.length());
-		m_traceFile.write(_T("\n"), 1);
+		m_traceFile.write("\n", 1);
 		m_traceFile.flush();
 	}
 }

@@ -71,7 +71,7 @@ public:
 		rbool    m_readOnly;
 		rbool    m_result;
 
-		OpenFile(CREF(tstring) name = _T(""), rbool readOnly = false)
+		OpenFile(CREF(tstring) name = "", rbool readOnly = false)
 			: m_name    (name    )
 			, m_readOnly(readOnly)
 			, m_result  (false   )
@@ -82,7 +82,7 @@ public:
 		tstring  m_name;
 		tstring  m_path;
 
-		NewModel(CREF(tstring) name = _T(""), CREF(tstring) path = _T(""))
+		NewModel(CREF(tstring) name = "", CREF(tstring) path = "")
 			: m_name(name)
 			, m_path(path)
 		{}
@@ -97,9 +97,9 @@ public:
 		rbool                         m_described;
 
 		FileInfo(  rdoModelObjects::RDOFileType type      = rdoModelObjects::SMR
-		         , CREF(tstring)                name      = _T("")
-		         , CREF(tstring)                fullName  = _T("")
-		         , CREF(tstring)                extention = _T("smr")
+		         , CREF(tstring)                name      = ""
+		         , CREF(tstring)                fullName  = ""
+		         , CREF(tstring)                extention = "smr"
 		         , rbool                        readOnly  = false
 		         , rbool                        described = false
 		)
@@ -123,16 +123,15 @@ private:
 		rbool    m_readOnly;
 
 		fileInfo()
-			: m_extention    (_T(""))
-			, m_deleteIfEmpty(false )
-			, m_readOnly     (false )
+			: m_deleteIfEmpty(false)
+			, m_readOnly     (false)
 		{
 			resetname();
 		}
 
 		void resetname()
 		{
-			m_fileName  = _T("");
+			m_fileName  = "";
 			m_described = false;
 			m_mustExist = true;
 		}
@@ -189,8 +188,8 @@ protected:
 	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	void  newModel  (CPTRC(NewModel) data                  );
-	rbool openModel (CREF(tstring)   modelFileName = _T(""));
+	void  newModel  (CPTRC(NewModel) data              );
+	rbool openModel (CREF(tstring)   modelFileName = "");
 	void  closeModel();
 	rbool saveModel ();
 
