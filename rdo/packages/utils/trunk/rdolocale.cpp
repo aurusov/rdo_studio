@@ -31,14 +31,11 @@ void setup_locale()
 	std::cin.imbue(C99_in_locale);
 }
 
-namespace locale
+void locale::init()
 {
+	rdo::locale& locale = get();
 
-void init()
-{
-	generator& gen = list();
-
-	std::locale sourceCodeLocale = gen.cp1251();
+	std::locale sourceCodeLocale = locale.cp1251();
 	std::string s = std::use_facet<boost::locale::info>(sourceCodeLocale).name();
 	std::locale::global(sourceCodeLocale);
 
@@ -47,7 +44,13 @@ void init()
 #endif
 }
 
-generator::generator()
+locale& locale::get()
+{
+	static rdo::locale locale;
+	return locale;
+}
+
+locale::locale()
 {
 	m_generator.locale_cache_enabled(true);
 	system();
@@ -55,48 +58,58 @@ generator::generator()
 	utf8  ();
 }
 
-std::locale generator::get(const std::string& name)
+std::locale locale::generate(const std::string& name)
 {
 	return m_generator.generate(name);
 }
 
-std::locale generator::system()
+std::locale locale::system()
 {
-	return get("");
+	return generate("");
 }
 
-std::locale generator::cp1251()
+std::locale locale::cp1251()
 {
-	return get("ru_RU.CP1251");
+	return generate("ru_RU.CP1251");
 }
 
-std::locale generator::utf8()
+std::locale locale::utf8()
 {
-	return get("ru_RU.UTF-8");
+	return generate("ru_RU.UTF-8");
 }
 
-generator& list()
+std::string locale::convert(const std::string& txt, const std::locale& to, const std::locale& from)
 {
-	static generator gen;
-	return gen;
+	return convert(txt, std::use_facet<boost::locale::info>(to).encoding(), std::use_facet<boost::locale::info>(from).encoding());
 }
 
-std::string convert(const std::string& txt, const std::locale& to, const std::locale& from)
+std::string locale::convert(const std::string& txt, const std::string& to, const std::string& from)
 {
 	std::string result;
 	try
 	{
-		result = boost::locale::conv::between(
-			txt,
-			std::use_facet<boost::locale::info>(to).encoding(),
-			std::use_facet<boost::locale::info>(from).encoding()
-		);
+		result = boost::locale::conv::between(txt, to, from);
 	}
-	catch (const boost::locale::conv::conversion_error& e)
+	catch (const boost::locale::conv::conversion_error&)
 	{}
-	catch (const boost::locale::conv::invalid_charset_error& e)
+	catch (const boost::locale::conv::invalid_charset_error&)
 	{}
 	return result;
 }
 
-}} // namespace rdo::locale
+std::string locale::convertToCLocale(const std::string& txt, const std::locale& from) const
+{
+	std::string cLocale = setlocale(LC_ALL, NULL);
+
+#ifdef COMPILER_VISUAL_STUDIO
+	std::string::size_type pos = cLocale.find('.');
+	if (pos != std::string::npos)
+	{
+		cLocale = "CP" + cLocale.substr(pos + 1);
+	}
+#endif
+
+	return convert(txt, cLocale, std::use_facet<boost::locale::info>(from).encoding());
+}
+
+} // namespace rdo

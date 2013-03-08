@@ -24,29 +24,28 @@ namespace rdo
 {
 	void setup_locale();
 
-	namespace locale
+	class locale
 	{
-		void init();
+	public:
+		static void    init();
+		static locale& get ();
 
-		class generator
-		{
-		public:
-			generator();
+		std::locale generate(const std::string& name);
 
-			std::locale get(const std::string& name);
+		std::locale system();
+		std::locale cp1251();
+		std::locale utf8  ();
 
-			std::locale system();
-			std::locale cp1251();
-			std::locale utf8  ();
+		static std::string convert         (const std::string& txt, const std::locale& to, const std::locale& from = std::locale());
+		static std::string convert         (const std::string& txt, const std::string& to, const std::string& from);
+		       std::string convertToCLocale(const std::string& txt, const std::locale& from = std::locale()) const;
 
-		private:
-			boost::locale::generator m_generator;
-		};
+	private:
+		locale();
 
-		generator& list();
-		std::string convert(const std::string& txt, const std::locale& to, const std::locale& from = std::locale());
+		boost::locale::generator  m_generator;
+	};
 
-	} // namespace locale
 } // namespace rdo
 
 #endif // _UTILS_LOCALE_H_
