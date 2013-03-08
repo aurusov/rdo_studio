@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDOREPOSITORYFILE_H_
-#define _RDOREPOSITORYFILE_H_
+#ifndef _RDOREPOSITORY_H_
+#define _RDOREPOSITORY_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
@@ -209,4 +209,4 @@ protected:
 
 }} // namespace rdo::repository
 
-#endif // _RDOREPOSITORYFILE_H_
+#endif // _RDOREPOSITORY_H_
