@@ -4,7 +4,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
-#include "repository/namespace.h"
 #include "simulator/runtime/namespace.h"
 #include "simulator/service/namespace.h"
 // --------------------------------------------------------------------------------
@@ -30,9 +29,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOThreadRunTime;
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-OPEN_RDO_REPOSITORY_NAMESPACE
+namespace rdo { namespace repository {
 class RDOThreadRepository;
-CLOSE_RDO_REPOSITORY_NAMESPACE
+}} // namespace rdo::repository
 
 class RDOKernel: public RDOThreadMT
 {
