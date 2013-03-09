@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      ui/qt/pch/stdpch.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      11.07
-  \brief     pch-файл
+  \brief     pch-С„Р°Р№Р»
   \indent    4T
 */
 

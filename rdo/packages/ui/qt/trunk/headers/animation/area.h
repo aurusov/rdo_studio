@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      ui/qt/headers/animation/area.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      15.07.2012
-  \brief     Активная область окна анимации
+  \brief     РђРєС‚РёРІРЅР°СЏ РѕР±Р»Р°СЃС‚СЊ РѕРєРЅР° Р°РЅРёРјР°С†РёРё
   \indent    4T
 */
 

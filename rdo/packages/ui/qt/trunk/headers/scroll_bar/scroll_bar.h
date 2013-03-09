@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2013
   \file      scroll_bar.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      22.02.2013
-  \brief     Информация о скролбаре
+  \brief     РРЅС„РѕСЂРјР°С†РёСЏ Рѕ СЃРєСЂРѕР»Р±Р°СЂРµ
   \indent    4T
 */
 

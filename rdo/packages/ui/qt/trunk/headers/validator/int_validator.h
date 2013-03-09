@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2013
   \file      int_validator.h
-  \author    Романов Ярослав (rdo@rk9.bmstu.ru)
+  \author    Р РѕРјР°РЅРѕРІ РЇСЂРѕСЃР»Р°РІ (rdo@rk9.bmstu.ru)
   \date      25.02.2013
-  \brief     QIntValidator для настроек
+  \brief     QIntValidator РґР»СЏ РЅР°СЃС‚СЂРѕРµРє
   \indent    4T
 */
 
