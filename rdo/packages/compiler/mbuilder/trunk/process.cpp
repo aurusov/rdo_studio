@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdodpt.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -23,11 +23,11 @@ OPEN_COMPILER_MBUILDER_NAMESPACE
 // --------------------------------------------------------------------------------
 void BlockForQueue::createRes(RDOResType rtp, CREF(tstring) res_name)
 {
-	// Получили список всех ресурсов
+	// РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 	RDOResourceList rssList(parser::RDOParser::s_parser());
-	// Создадим ресурс
+	// РЎРѕР·РґР°РґРёРј СЂРµСЃСѓСЂСЃ
 	RDOResource rss(rtp, res_name);
-	// Добавим его в систему
+	// Р”РѕР±Р°РІРёРј РµРіРѕ РІ СЃРёСЃС‚РµРјСѓ
 	rssList.append<parser::RDORSSResource>(rss);
 }
 
@@ -35,15 +35,15 @@ rbool BlockForQueue::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) in
 {
 	UNUSED(info);
 
-	// "длина_очереди"
+	// "РґР»РёРЅР°_РѕС‡РµСЂРµРґРё"
 	tstring rtp_param_name = rdo::runtime::RDOPROCQueue::getQueueParamName();
-	// Тип найден, проверим его на наличие параметра "длина_очереди"
+	// РўРёРї РЅР°Р№РґРµРЅ, РїСЂРѕРІРµСЂРёРј РµРіРѕ РЅР° РЅР°Р»РёС‡РёРµ РїР°СЂР°РјРµС‚СЂР° "РґР»РёРЅР°_РѕС‡РµСЂРµРґРё"
 	if (!rtp.m_params[rtp_param_name].exist())
-		parser::RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет параметра integer '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
+		parser::RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format(_T("РЈ С‚РёРїР° СЂРµСЃСѓСЂСЃР° '%s' РЅРµС‚ РїР°СЂР°РјРµС‚СЂР° integer '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
 
 	CREF(RDOResType::Param) param = rtp.m_params[rtp_param_name];
 	if (param.typeID() != rdo::runtime::RDOType::t_int)
-		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является параметром int"), rtp.name().c_str(), rtp_param_name.c_str()));
+		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format(_T("РЈ С‚РёРїР° СЂРµСЃСѓСЂСЃР° '%s' РїР°СЂР°РјРµС‚СЂ '%s' РЅРµ СЏРІР»СЏРµС‚СЃСЏ РїР°СЂР°РјРµС‚СЂРѕРј int"), rtp.name().c_str(), rtp_param_name.c_str()));
 
 	parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp.name());
 	ASSERT(pResType);
@@ -54,25 +54,25 @@ rbool BlockForQueue::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) in
 
 RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(parser::RDOParserSrcInfo) info)
 {
-	// "длина_очереди"
+	// "РґР»РёРЅР°_РѕС‡РµСЂРµРґРё"
 	tstring rtp_param_name = rdo::runtime::RDOPROCQueue::getQueueParamName();
-	// значение длины очереди по умолчанию
+	// Р·РЅР°С‡РµРЅРёРµ РґР»РёРЅС‹ РѕС‡РµСЂРµРґРё РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 	parser::LPRDOValue pDefaultValue = rdo::Factory<parser::RDOValue>::create(
 		rdo::explicit_value<ruint>(rdo::runtime::RDOPROCQueue::getDefaultValue()),
 		info
 	);
 	ASSERT(pDefaultValue);
-	// Получили список всех типов ресурсов
+	// РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ
 	RDOResTypeList rtpList(parser::RDOParser::s_parser());
-	// Создадим тип ресурса
+	// РЎРѕР·РґР°РґРёРј С‚РёРї СЂРµСЃСѓСЂСЃР°
 	RDOResType rtp(rtp_name);
-	// Создадим параметр типа integer
+	// РЎРѕР·РґР°РґРёРј РїР°СЂР°РјРµС‚СЂ С‚РёРїР° integer
 	RDOResType::Param param(rtp_param_name, rdo::Factory<parser::RDOType__int>::create(), pDefaultValue);
 	rtp.m_params.append(param);
-	// Добавим тип ресурса
+	// Р”РѕР±Р°РІРёРј С‚РёРї СЂРµСЃСѓСЂСЃР°
 	if (!rtpList.append(rtp))
 	{
-		parser::RDOParser::s_parser()->error().error(info, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
+		parser::RDOParser::s_parser()->error().error(info, rdo::format(_T("РћС€РёР±РєР° СЃРѕР·РґР°РЅРёСЏ С‚РёРїР° СЂРµСЃСѓСЂСЃР°: %s"), rtp_name.c_str()));
 	}
 	else
 	{
@@ -88,25 +88,25 @@ RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(parser::RDOPar
 // --------------------------------------------------------------------------------
 rbool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info)
 {
-	// "Состояние"
+	// "РЎРѕСЃС‚РѕСЏРЅРёРµ"
 	tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
-	// "Свободен"
+	// "РЎРІРѕР±РѕРґРµРЅ"
 	tstring rtp_state_free = rdo::runtime::RDOPROCBlockForSeize::getStateEnumFree();
-	// "Занят"
+	// "Р—Р°РЅСЏС‚"
 	tstring rtp_state_buzy = rdo::runtime::RDOPROCBlockForSeize::getStateEnumBuzy();
-	// Тип найден, проверим его на наличие перечислимого параметра
+	// РўРёРї РЅР°Р№РґРµРЅ, РїСЂРѕРІРµСЂРёРј РµРіРѕ РЅР° РЅР°Р»РёС‡РёРµ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ РїР°СЂР°РјРµС‚СЂР°
 	if (!rtp.m_params[rtp_param_name].exist())
-		parser::RDOParser::s_parser()->error().error(info, rdo::format(_T("У типа ресурса '%s' нет параметра перечислимого типа '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
+		parser::RDOParser::s_parser()->error().error(info, rdo::format(_T("РЈ С‚РёРїР° СЂРµСЃСѓСЂСЃР° '%s' РЅРµС‚ РїР°СЂР°РјРµС‚СЂР° РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР° '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
 
 	CREF(RDOResType::Param) param = rtp.m_params[rtp_param_name];
-	// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
-	// Для начала проверим тип параметра
+	// РџР°СЂР°РјРµС‚СЂ РЎРѕСЃС‚РѕСЏРЅРёРµ РµСЃС‚СЊ, РЅР°РґРѕ РїСЂРѕРІРµСЂРёС‚СЊ, С‡С‚РѕР±С‹ РІ РЅРµРј Р±С‹Р»Рё Р·РЅР°С‡РµРЅРёСЏ РЎРІРѕР±РѕРґРµРЅ Рё Р—Р°РЅСЏС‚
+	// Р”Р»СЏ РЅР°С‡Р°Р»Р° РїСЂРѕРІРµСЂРёРј С‚РёРї РїР°СЂР°РјРµС‚СЂР°
 	if (param.typeID() != rdo::runtime::RDOType::t_enum)
-		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа"), rtp.name().c_str(), rtp_param_name.c_str()));
+		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format(_T("РЈ С‚РёРїР° СЂРµСЃСѓСЂСЃР° '%s' РїР°СЂР°РјРµС‚СЂ '%s' РЅРµ СЏРІР»СЏРµС‚СЃСЏ РїР°СЂР°РјРµС‚СЂРѕРј РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР°"), rtp.name().c_str(), rtp_param_name.c_str()));
 
-	// Теперь проверим сами значения
+	// РўРµРїРµСЂСЊ РїСЂРѕРІРµСЂРёРј СЃР°РјРё Р·РЅР°С‡РµРЅРёСЏ
 	if (!param.getEnum()->getEnums()->exist(rtp_state_free) || !param.getEnum()->getEnums()->exist(rtp_state_buzy))
-		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format(_T("У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s"), rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str()));
+		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format(_T("РЈ С‚РёРїР° СЂРµСЃСѓСЂСЃР° '%s' РїРµСЂРµС‡РёСЃР»РёРјС‹Р№ РїР°СЂР°РјРµС‚СЂ '%s' РґРѕР»Р¶РµРЅ РёРјРµС‚СЊ РєР°Рє РјРёРЅРёРјСѓРј РґРІР° РѕР±СЏР·Р°С‚РµР»СЊРЅС‹С… Р·РЅР°С‡РµРЅРёСЏ: %s Рё %s"), rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str()));
 
 	parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp.name());
 	ASSERT(pResType);
@@ -117,29 +117,29 @@ rbool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) in
 
 void BlockForSeize::createRes(RDOResType rtp, CREF(tstring) res_name)
 {
-	// Получили список всех ресурсов
+	// РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 	RDOResourceList rssList(parser::RDOParser::s_parser());
-	// Создадим ресурс
+	// РЎРѕР·РґР°РґРёРј СЂРµСЃСѓСЂСЃ
 	RDOResource rss(rtp, res_name);
-	// Добавим его в систему
+	// Р”РѕР±Р°РІРёРј РµРіРѕ РІ СЃРёСЃС‚РµРјСѓ
 	rssList.append<parser::RDORSSResource>(rss);
 }
 
 void BlockForSeize::reobjectRes(RDOResType rtp, CREF(tstring) res_name)
 {
-	// Получили список всех ресурсов
+	// РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 	RDOResourceList rssList(parser::RDOParser::s_parser());
-	// Создадим ресурс
+	// РЎРѕР·РґР°РґРёРј СЂРµСЃСѓСЂСЃ
 	RDOResource rssNew(rtp, res_name);
-	// Добавим его в систему
+	// Р”РѕР±Р°РІРёРј РµРіРѕ РІ СЃРёСЃС‚РµРјСѓ
 	rssList.replace<parser::RDORSSResource>(rssNew);
 }
 
 RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(parser::RDOParserSrcInfo) info)
 {
-	// "Состояние"
+	// "РЎРѕСЃС‚РѕСЏРЅРёРµ"
 	tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
-	// "Свободен"
+	// "РЎРІРѕР±РѕРґРµРЅ"
 	tstring rtp_state_free = rdo::runtime::RDOPROCBlockForSeize::getStateEnumFree();
 	parser::LPRDOValue pDefaultValue = rdo::Factory<parser::RDOValue>::create(
 		rdo::explicit_value<tstring>(rtp_state_free),
@@ -147,24 +147,24 @@ RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(parser::RDOPar
 	);
 	ASSERT(pDefaultValue);
 	pDefaultValue->setSrcText(rtp_state_free);
-	// "Занят"
+	// "Р—Р°РЅСЏС‚"
 	tstring rtp_state_buzy = rdo::runtime::RDOPROCBlockForSeize::getStateEnumBuzy();
 
-	// Получили список всех типов ресурсов
+	// РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ
 	RDOResTypeList rtpList(parser::RDOParser::s_parser());
-	// Создадим тип ресурса
+	// РЎРѕР·РґР°РґРёРј С‚РёРї СЂРµСЃСѓСЂСЃР°
 	RDOResType rtp(rtp_name);
-	// Создадим параметр перечислимого типа - "Состояние"
+	// РЎРѕР·РґР°РґРёРј РїР°СЂР°РјРµС‚СЂ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР° - "РЎРѕСЃС‚РѕСЏРЅРёРµ"
 	RDOResType::Param param(
 		rtp_param_name,
 		rdo::runtime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy),
 		pDefaultValue
 	);
 	rtp.m_params.append(param);
-	// Добавим тип ресурса
+	// Р”РѕР±Р°РІРёРј С‚РёРї СЂРµСЃСѓСЂСЃР°
 	if (!rtpList.append(rtp))
 	{
-		parser::RDOParser::s_parser()->error().error(info, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
+		parser::RDOParser::s_parser()->error().error(info, rdo::format(_T("РћС€РёР±РєР° СЃРѕР·РґР°РЅРёСЏ С‚РёРїР° СЂРµСЃСѓСЂСЃР°: %s"), rtp_name.c_str()));
 	}
 	else
 	{
