@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      show_mode.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      16.02.2012
-  \brief     Режимы анимации
+  \brief     Р РµР¶РёРјС‹ Р°РЅРёРјР°С†РёРё
   \indent    4T
 */
 
@@ -18,12 +18,12 @@
 
 OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 
-//! Режимы анимации
+//! Р РµР¶РёРјС‹ Р°РЅРёРјР°С†РёРё
 enum ShowMode
 {
-	SM_NoShow,    //!< Без анимации
-	SM_Animation, //!< С анимацией
-	SM_Monitor    //!< Анимация и модель на паузе
+	SM_NoShow,    //!< Р‘РµР· Р°РЅРёРјР°С†РёРё
+	SM_Animation, //!< РЎ Р°РЅРёРјР°С†РёРµР№
+	SM_Monitor    //!< РђРЅРёРјР°С†РёСЏ Рё РјРѕРґРµР»СЊ РЅР° РїР°СѓР·Рµ
 };
 
 CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
