@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
   \file      ui/abstract/headers/memdc/memdc.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      11.07.2012
-  \brief     Абстрактный DeviceContext, созданный в памяти
+  \brief     РђР±СЃС‚СЂР°РєС‚РЅС‹Р№ DeviceContext, СЃРѕР·РґР°РЅРЅС‹Р№ РІ РїР°РјСЏС‚Рё
   \indent    4T
 */
 
