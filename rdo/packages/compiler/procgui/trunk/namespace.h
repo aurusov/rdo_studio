@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      simulator/compiler/procgui/namespace.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      08.04.2012
-  \brief     Пространство имен rdo::compiler::gui
+  \brief     РџСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РёРјРµРЅ rdo::compiler::gui
   \indent    4T
 */
 
@@ -15,7 +15,7 @@
 // --------------------------------------------------------------------------------
 
 //! \namespace  rdo::compiler::gui
-//! \brief      Пространство имен rdo::compiler::gui
+//! \brief      РџСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РёРјРµРЅ rdo::compiler::gui
 #define  OPEN_COMPILER_GUI_NAMESPACE  namespace rdo { namespace compiler { namespace gui {
 #define CLOSE_COMPILER_GUI_NAMESPACE  }}};
 

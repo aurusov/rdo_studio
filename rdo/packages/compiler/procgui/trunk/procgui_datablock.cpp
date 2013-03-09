@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      procgui_datablock.cpp
-  \author    Шувалов Андрей
+  \author    РЁСѓРІР°Р»РѕРІ РђРЅРґСЂРµР№
   \date      04.05.2011
   \brief     
   \indent    4T
