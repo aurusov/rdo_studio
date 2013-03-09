@@ -3,6 +3,7 @@
 
 #include <ctype.h>
 #include "utils/rdotypes.h"
+#include "utils/rdolocale.h"
 #include "thirdparty/scintilla/include/ILexer.h"
 #include "thirdparty/scintilla/lexlib/LexerModule.h"
 
@@ -23,9 +24,9 @@ static inline bool isRDOLexerSuchAsIdentifierStyle( char ch )
 
 static inline bool isRDOLexerIdentifier( char ch )
 {
-	if ( (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
-	     (ch >= 'а' && ch <= 'я') || (ch >= 'А' && ch <= 'Я') || ch == 'Ё' || ch == 'ё' ||
-	     ch == '_' || ch == '$' || isRDOLexerSuchAsIdentifierStyle(ch) || isdigit((rbyte)ch) ) return true;
+	std::locale locale = rdo::locale::get().c();
+	if (std::isalpha((rbyte)ch, locale) || std::isdigit((rbyte)ch, locale) ||
+		ch == '_' || ch == '$' || isRDOLexerSuchAsIdentifierStyle(ch)) return true;
 	return false;
 }
 
