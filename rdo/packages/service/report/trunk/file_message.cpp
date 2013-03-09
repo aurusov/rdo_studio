@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      file_message.cpp
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
+  \authors   РџСЂРѕР№РґР°РєРѕРІ Р•РІРіРµРЅРёР№ (lord.tiran@gmail.com)
   \date      1.10.2012
-  \brief     Файловое сообщение
+  \brief     Р¤Р°Р№Р»РѕРІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ
   \indent    4T
 */
 

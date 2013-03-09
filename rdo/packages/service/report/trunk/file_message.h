@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      file_message.h
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
+  \authors   РџСЂРѕР№РґР°РєРѕРІ Р•РІРіРµРЅРёР№ (lord.tiran@gmail.com)
   \date      1.10.2012
-  \brief     Файловое сообщение
+  \brief     Р¤Р°Р№Р»РѕРІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ
   \indent    4T
 */
 
@@ -20,7 +20,7 @@
 
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
-//! Файловое сообщение
+//! Р¤Р°Р№Р»РѕРІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ
 class FileMessage
 {
 public:
@@ -30,12 +30,12 @@ public:
 		MT_WARNING
 	};
 
-	//! Конструктор сообщения
-	//! \param message - текст сообщение
-	//! \param file    - файл, в котором найдена ошибка
-	//! \param line    - номер строки с ошибкой
-	//! \param pos     - позиция ошибки в строке
-	//! \param type    - тип сообщения. Значение по умолчанию \b MT_ERROR
+	//! РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃРѕРѕР±С‰РµРЅРёСЏ
+	//! \param message - С‚РµРєСЃС‚ СЃРѕРѕР±С‰РµРЅРёРµ
+	//! \param file    - С„Р°Р№Р», РІ РєРѕС‚РѕСЂРѕРј РЅР°Р№РґРµРЅР° РѕС€РёР±РєР°
+	//! \param line    - РЅРѕРјРµСЂ СЃС‚СЂРѕРєРё СЃ РѕС€РёР±РєРѕР№
+	//! \param pos     - РїРѕР·РёС†РёСЏ РѕС€РёР±РєРё РІ СЃС‚СЂРѕРєРµ
+	//! \param type    - С‚РёРї СЃРѕРѕР±С‰РµРЅРёСЏ. Р—РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ \b MT_ERROR
 	FileMessage(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR);
 
 	tstring getText    () const;
@@ -47,11 +47,11 @@ public:
 	void setText(CREF(tstring) text);
 
 private:
-	tstring                      m_text; //!< Текст сообщения
-	rdoModelObjects::RDOFileType m_file; //!< Файл с ошибкой
-	ruint                        m_line; //!< Номер строки с ошибкой
-	ruint                        m_pos;  //!< Позиция ошибки в строке
-	Type                         m_type; //!<  Тип сообщения
+	tstring                      m_text; //!< РўРµРєСЃС‚ СЃРѕРѕР±С‰РµРЅРёСЏ
+	rdoModelObjects::RDOFileType m_file; //!< Р¤Р°Р№Р» СЃ РѕС€РёР±РєРѕР№
+	ruint                        m_line; //!< РќРѕРјРµСЂ СЃС‚СЂРѕРєРё СЃ РѕС€РёР±РєРѕР№
+	ruint                        m_pos;  //!< РџРѕР·РёС†РёСЏ РѕС€РёР±РєРё РІ СЃС‚СЂРѕРєРµ
+	Type                         m_type; //!<  РўРёРї СЃРѕРѕР±С‰РµРЅРёСЏ
 };
 
 CLOSE_RDO_SIMULATION_REPORT_NAMESPACE

@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      rdo_log_edit_line_info.cpp
-  \authors   Евгений Пройдаков (lord.tiran@gmail.com)
+  \authors   Р•РІРіРµРЅРёР№ РџСЂРѕР№РґР°РєРѕРІ (lord.tiran@gmail.com)
   \date      12.08.2012
   \brief     
   \indent    4T

@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      simulator/report/namespace.h
-  \authors   Евгений Пройдаков (lord.tiran@gmail.com)
+  \authors   Р•РІРіРµРЅРёР№ РџСЂРѕР№РґР°РєРѕРІ (lord.tiran@gmail.com)
   \date      15.02.2012
-  \brief     Пространство имен rdo::simulation::report
+  \brief     РџСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РёРјРµРЅ rdo::simulation::report
   \indent    4T
 */
 
@@ -15,7 +15,7 @@
 // --------------------------------------------------------------------------------
 
 //! \namespace  rdo::simulation::report
-//! \brief      Пространство имён отчетов - report
+//! \brief      РџСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РёРјС‘РЅ РѕС‚С‡РµС‚РѕРІ - report
 #define  OPEN_RDO_SIMULATION_REPORT_NAMESPACE  namespace rdo { namespace simulation { namespace report {
 #define CLOSE_RDO_SIMULATION_REPORT_NAMESPACE  }}};
 

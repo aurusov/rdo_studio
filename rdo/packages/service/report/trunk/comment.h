@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      comment.h
-  \authors   Евгений Пройдаков (lord.tiran@gmail.com)
+  \authors   Р•РІРіРµРЅРёР№ РџСЂРѕР№РґР°РєРѕРІ (lord.tiran@gmail.com)
   \date      12.08.2012
   \brief     
   \indent    4T
@@ -15,7 +15,7 @@
 #include "utils/rdotypes.h"
 // --------------------------------------------------------------------------------
 
-#define WARNING_STRING _T("предупреждение")
-#define ERROR_STRING   _T("ошибка")
+#define WARNING_STRING _T("РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ")
+#define ERROR_STRING   _T("РѕС€РёР±РєР°")
 
 #endif // _SIMULATOR_REPORT_COMMENT_H_
