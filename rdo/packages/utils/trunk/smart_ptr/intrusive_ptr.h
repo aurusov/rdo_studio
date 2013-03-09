@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      intrusive_ptr.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      08.06.2010
   \brief     
   \indent    4T
@@ -40,13 +40,13 @@ public:
 
 	REF(this_type) operator= (CREF(this_type) sptr);
 
-	//! Сравнивает по указателям
+	//! РЎСЂР°РІРЅРёРІР°РµС‚ РїРѕ СѓРєР°Р·Р°С‚РµР»СЏРј
 	template <class P>
 	rbool operator== (CREF(intrusive_ptr<P>) sptr) const;
 	template <class P>
 	rbool operator!= (CREF(intrusive_ptr<P>) sptr) const;
 
-	//! Сравнивает по значениям
+	//! РЎСЂР°РІРЅРёРІР°РµС‚ РїРѕ Р·РЅР°С‡РµРЅРёСЏРј
 	template<class P>
 	rbool compare(CREF(intrusive_ptr<P>) sptr) const;
 
@@ -74,7 +74,7 @@ public:
 	template <class P>
 	interface_ptr<P> interface_dynamic_cast() const;
 
-	/// @todo переместить в protected
+	/// @todo РїРµСЂРµРјРµСЃС‚РёС‚СЊ РІ protected
 	PTR(T)   get();
 	CPTR(T)  get() const;
 

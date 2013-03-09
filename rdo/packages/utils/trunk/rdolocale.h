@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      rdolocale.h
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   РџСЂРѕР№РґР°РєРѕРІ Р•РІРіРµРЅРёР№ (lord.tiran@gmail.com)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      20.10.2012
-  \brief     Настройка локали для РДО
+  \brief     РќР°СЃС‚СЂРѕР№РєР° Р»РѕРєР°Р»Рё РґР»СЏ Р Р”Рћ
   \indent    4T
 */
 

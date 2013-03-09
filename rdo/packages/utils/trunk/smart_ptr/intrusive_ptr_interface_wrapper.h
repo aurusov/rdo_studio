@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      intrusive_ptr_interface_wrapper.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      22.09.2011
   \brief     
   \indent    4T
@@ -18,8 +18,8 @@
 
 OPEN_RDO_NAMESPACE
 
-//! Оборачивает умный указатель в интерфейс
-//! tparam T - тип объекта, на который ссылается указатель
+//! РћР±РѕСЂР°С‡РёРІР°РµС‚ СѓРјРЅС‹Р№ СѓРєР°Р·Р°С‚РµР»СЊ РІ РёРЅС‚РµСЂС„РµР№СЃ
+//! tparam T - С‚РёРї РѕР±СЉРµРєС‚Р°, РЅР° РєРѕС‚РѕСЂС‹Р№ СЃСЃС‹Р»Р°РµС‚СЃСЏ СѓРєР°Р·Р°С‚РµР»СЊ
 template <class T>
 class intrusive_ptr_interface_wrapper: public rdo::intrusive_ptr<T>, public rdo::IRefCounter
 {

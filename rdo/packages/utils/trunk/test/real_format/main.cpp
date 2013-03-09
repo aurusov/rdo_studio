@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      main.cpp
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
+  \author    РџСЂРѕР№РґР°РєРѕРІ Р•РІРіРµРЅРёР№ (lord.tiran@gmail.com)
   \date      13.05.2012
-  \brief     Тест точности вывода дробных чисел
+  \brief     РўРµСЃС‚ С‚РѕС‡РЅРѕСЃС‚Рё РІС‹РІРѕРґР° РґСЂРѕР±РЅС‹С… С‡РёСЃРµР»
   \indent    4T
 */
 

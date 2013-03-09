@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdocommon.inl
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      13.06.2009
-  \brief     Общесистемные функции и типы
+  \brief     РћР±С‰РµСЃРёСЃС‚РµРјРЅС‹Рµ С„СѓРЅРєС†РёРё Рё С‚РёРїС‹
   \indent    4T
 */
 

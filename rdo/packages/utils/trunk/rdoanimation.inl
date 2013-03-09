@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoanimation.inl
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Копнин Андрей (kopninandrey@gmail.com)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   РљРѕРїРЅРёРЅ РђРЅРґСЂРµР№ (kopninandrey@gmail.com)
   \date      13.06.2009
-  \brief     Описание объектов анимации, которые передаются от симулятора к GUI для отрисовки
+  \brief     РћРїРёСЃР°РЅРёРµ РѕР±СЉРµРєС‚РѕРІ Р°РЅРёРјР°С†РёРё, РєРѕС‚РѕСЂС‹Рµ РїРµСЂРµРґР°СЋС‚СЃСЏ РѕС‚ СЃРёРјСѓР»СЏС‚РѕСЂР° Рє GUI РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё
   \indent    4T
 */
 

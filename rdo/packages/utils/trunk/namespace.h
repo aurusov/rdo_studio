@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      utils/namespace.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      13.06.2009
-  \brief     Декларация namespace'ов
+  \brief     Р”РµРєР»Р°СЂР°С†РёСЏ namespace'РѕРІ
   \indent    4T
 */
 
@@ -15,12 +15,12 @@
 // --------------------------------------------------------------------------------
 
 //! \namespace rdo
-//! \brief     Базовое пространство имён
+//! \brief     Р‘Р°Р·РѕРІРѕРµ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РёРјС‘РЅ
 #define  OPEN_RDO_NAMESPACE  namespace rdo {
 #define CLOSE_RDO_NAMESPACE  };
 
 //! \namespace rdo::animation
-//! \brief     Пространство имён анимации
+//! \brief     РџСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РёРјС‘РЅ Р°РЅРёРјР°С†РёРё
 #define  OPEN_RDO_ANIMATION_NAMESPACE  namespace rdo { namespace animation {
 #define CLOSE_RDO_ANIMATION_NAMESPACE  }};
 

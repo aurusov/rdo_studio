@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2011
  * filename : rdointerface.inl
- * author   : Урусов Андрей
+ * author   : РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№
  * date     : 12.08.2011
  * bref     : 
  * indent   : 4T

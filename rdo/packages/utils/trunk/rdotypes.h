@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdotypes.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   РџСЂРѕР№РґР°РєРѕРІ Р•РІРіРµРЅРёР№ (lord.tiran@gmail.com)
   \date      18.04.2009
-  \brief     Объявление базовый типов
+  \brief     РћР±СЉСЏРІР»РµРЅРёРµ Р±Р°Р·РѕРІС‹Р№ С‚РёРїРѕРІ
   \indent    4T
 */
 
@@ -30,60 +30,60 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-//! Тип символа
+//! РўРёРї СЃРёРјРІРѕР»Р°
 #ifndef UNICODE
 typedef  char                        tchar;
 #else
 typedef  wchar_t                     tchar;
 #endif
 
-//! Тип строки
+//! РўРёРї СЃС‚СЂРѕРєРё
 typedef  std::basic_string<tchar>    tstring;
 
-//! ANSI-строка
+//! ANSI-СЃС‚СЂРѕРєР°
 typedef  std::basic_string<char>     astring;
 
-//! Unicode-строка
+//! Unicode-СЃС‚СЂРѕРєР°
 typedef  std::basic_string<wchar_t>  wstring;
 
-//! Булевский тип
+//! Р‘СѓР»РµРІСЃРєРёР№ С‚РёРї
 typedef  bool                        rbool;
 
-//! Целый знаковый тип
+//! Р¦РµР»С‹Р№ Р·РЅР°РєРѕРІС‹Р№ С‚РёРї
 typedef  signed int                  rsint;
 
-//! Целый беззнаковый тип
+//! Р¦РµР»С‹Р№ Р±РµР·Р·РЅР°РєРѕРІС‹Р№ С‚РёРї
 typedef  unsigned int                ruint;
 
-//! Целый знаковый 32-х битный тип
+//! Р¦РµР»С‹Р№ Р·РЅР°РєРѕРІС‹Р№ 32-С… Р±РёС‚РЅС‹Р№ С‚РёРї
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef  long                    rsint32;
 #elif defined COMPILER_GCC
 	typedef  int32_t                 rsint32;
 #endif
 
-//! Целый беззнаковый 32-х битный тип
+//! Р¦РµР»С‹Р№ Р±РµР·Р·РЅР°РєРѕРІС‹Р№ 32-С… Р±РёС‚РЅС‹Р№ С‚РёРї
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef  unsigned long           ruint32;
 #elif defined COMPILER_GCC
 	typedef  uint32_t                ruint32;
 #endif
 
-//! Целый знаковый 64-х битный тип
+//! Р¦РµР»С‹Р№ Р·РЅР°РєРѕРІС‹Р№ 64-С… Р±РёС‚РЅС‹Р№ С‚РёРї
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef  signed long long int    rsint64;
 #elif defined COMPILER_GCC
 	typedef  int64_t                 rsint64;
 #endif
 
-//! Целый беззнаковый 64-х битный тип
+//! Р¦РµР»С‹Р№ Р±РµР·Р·РЅР°РєРѕРІС‹Р№ 64-С… Р±РёС‚РЅС‹Р№ С‚РёРї
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef  unsigned long long int  ruint64;
 #elif defined COMPILER_GCC
 	typedef  uint64_t                ruint64;
 #endif
 
-//! Тип байта
+//! РўРёРї Р±Р°Р№С‚Р°
 typedef  unsigned char               rbyte;
 
 #endif // _UTILS_RDOTYPES_H_

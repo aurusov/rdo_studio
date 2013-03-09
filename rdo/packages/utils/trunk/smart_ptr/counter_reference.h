@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      counter_reference.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      12.06.2010
   \brief     
   \indent    4T
@@ -24,7 +24,7 @@ class counter_reference
 template<class T> friend class intrusive_ptr;
 template<class T> friend class RefCounter;
 public:
-	//! Инициализиреут счетчик нулём
+	//! РРЅРёС†РёР°Р»РёР·РёСЂРµСѓС‚ СЃС‡РµС‚С‡РёРє РЅСѓР»С‘Рј
 	counter_reference();
 	virtual ~counter_reference();
 

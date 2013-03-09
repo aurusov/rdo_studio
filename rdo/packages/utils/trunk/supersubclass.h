@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      supersubclass.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      08.03.2010
-  \brief     основан на классе Conversion из Александреску
+  \brief     РѕСЃРЅРѕРІР°РЅ РЅР° РєР»Р°СЃСЃРµ Conversion РёР· РђР»РµРєСЃР°РЅРґСЂРµСЃРєСѓ
   \indent    4T
 */
 

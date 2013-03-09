@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      platform.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   РџСЂРѕР№РґР°РєРѕРІ Р•РІРіРµРЅРёР№ (lord.tiran@gmail.com)
   \date      04.09.2011
-  \brief     Определение платформы и компилятора
+  \brief     РћРїСЂРµРґРµР»РµРЅРёРµ РїР»Р°С‚С„РѕСЂРјС‹ Рё РєРѕРјРїРёР»СЏС‚РѕСЂР°
   \indent    4T
 */
 

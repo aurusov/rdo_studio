@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      rdolocale.cpp
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
+  \author    РџСЂРѕР№РґР°РєРѕРІ Р•РІРіРµРЅРёР№ (lord.tiran@gmail.com)
   \date      20.10.2012
-  \brief     Настройка локали для РДО
+  \brief     РќР°СЃС‚СЂРѕР№РєР° Р»РѕРєР°Р»Рё РґР»СЏ Р Р”Рћ
   \indent    4T
 */
 
