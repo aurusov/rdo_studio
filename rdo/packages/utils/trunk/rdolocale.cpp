@@ -35,7 +35,7 @@ void locale::init()
 {
 	rdo::locale& locale = get();
 
-	std::locale sourceCodeLocale = locale.cp1251();
+	std::locale sourceCodeLocale = locale.utf8();
 	std::locale::global(sourceCodeLocale);
 
 #ifdef COMPILER_VISUAL_STUDIO
