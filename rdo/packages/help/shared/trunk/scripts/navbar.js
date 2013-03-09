@@ -1,4 +1,4 @@
-﻿var str = '<TABLE class="navigation" cellpadding="0"><TR class="navigation">'
+var str = '<TABLE class="navigation" cellpadding="0"><TR class="navigation">'
 var tdi = '<TD class="navigation" align=left width="26">';
 var tdt = '<TD class="navigation" align=middle valign=middle nowrap style="padding-left: 5px; padding-right: 5px">';
 var len = document.anchors.length;
