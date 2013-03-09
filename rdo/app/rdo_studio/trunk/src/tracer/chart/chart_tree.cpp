@@ -248,13 +248,13 @@ void ChartTree::onChartExport()
 		return;
 
 	boost::filesystem::path path =
-		boost::filesystem::path(g_pModel->getFullName().toLocal8Bit().constData()).parent_path() /
-		QString("%1.csv").arg(pSerie->getTitle()).toLocal8Bit().constData();
+		boost::filesystem::path(g_pModel->getFullName().toStdString()).parent_path() /
+		QString("%1.csv").arg(pSerie->getTitle()).toStdString();
 
 	QString fileName = QFileDialog::getSaveFileName(
 		this,
 		"Сохранить",
-		QString::fromLocal8Bit(path.string().c_str()),
+		QString::fromStdString(path.string()),
 		"csv-файл (*.csv);;Все файлы (*.*)"
 	);
 	if (fileName.isEmpty())

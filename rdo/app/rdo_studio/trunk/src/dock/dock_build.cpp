@@ -37,13 +37,13 @@ DockBuild::~DockBuild()
 
 void DockBuild::appendString(CREF(QString) str)
 {
-	PTR(rdo::simulation::report::BuildEditLineInfo) pLine = new rdo::simulation::report::BuildEditLineInfo(str.toLocal8Bit().constData());
+	PTR(rdo::simulation::report::BuildEditLineInfo) pLine = new rdo::simulation::report::BuildEditLineInfo(str.toStdString());
 	getContext().appendLine(pLine);
 }
 
 void DockBuild::appendString(CREF(rdo::simulation::report::FileMessage) message)
 {
-	QString qMessage = QString::fromLocal8Bit(message.getText().c_str());
+	QString qMessage = QString::fromStdString(message.getText());
 	if (qMessage.contains("Сработало лицензионное ограничение"))
 	{
 		QMessageBox::critical(g_pApp->getMainWnd(), "Лицензионное ограничение", qMessage);

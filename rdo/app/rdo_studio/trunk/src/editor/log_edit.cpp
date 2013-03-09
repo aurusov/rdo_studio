@@ -205,7 +205,7 @@ void Log::appendLine(PTR(LogEditLineInfo) pLine)
 	tstring str = boost::algorithm::trim_right_copy(pLine->getMessage());
 	str += "\r\n";
 	setCurrentPos(getLength());
-	appendText(QString::fromLocal8Bit(str.c_str()));
+	appendText(QString::fromStdString(str));
 	pLine->setPosInLog(getLength());
 	scrollToLine2(getLineCount());
 	setCurrentPos(pLine->getPosInLog());

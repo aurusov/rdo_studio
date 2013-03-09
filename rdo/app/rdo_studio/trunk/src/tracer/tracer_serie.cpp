@@ -476,7 +476,7 @@ rbool Serie::activateFirstDoc() const
 
 Serie::ExportData Serie::exportData()
 {
-	setlocale(LC_ALL, "rus");
+//	setlocale(LC_ALL, "rus");
 
 	ExportData exportData;
 	exportData.reserve(m_valueList.size() + 1);
@@ -487,7 +487,7 @@ Serie::ExportData Serie::exportData()
 		exportData.push_back(QString("%1;%2").arg(pValue->getModelTime()->time).arg(pValue->getValue()));
 	}
 
-	setlocale(LC_NUMERIC, "eng");
+//	setlocale(LC_NUMERIC, "eng");
 
 	return exportData;
 }

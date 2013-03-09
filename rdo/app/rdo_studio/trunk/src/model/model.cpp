@@ -272,7 +272,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			QMessageBox::critical(
 				g_pApp->getMainWnd(),
 				"Ошибка открытия модели",
-				QString("Невозможно открыть модель '%1'.").arg(QString::fromLocal8Bit(static_cast<PTR(tstring)>(msg.param)->c_str()))
+				QString("Невозможно открыть модель '%1'.").arg(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)))
 			);
 			break;
 		}
@@ -476,21 +476,21 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_SIMULATOR_PARSE_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromLocal8Bit(static_cast<PTR(tstring)>(msg.param)->c_str()));
+			g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)));
 			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_DEBUG_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromLocal8Bit(static_cast<PTR(tstring)>(msg.param)->c_str()));
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)));
 			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_RESULT_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromLocal8Bit(static_cast<PTR(tstring)>(msg.param)->c_str()));
+			g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)));
 			msg.unlock();
 			break;
 		}
@@ -501,7 +501,7 @@ void Model::show_result()
 {
 	rdo::textstream modelResults;
 	sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &modelResults);
-	QString str = QString::fromLocal8Bit(modelResults.str().c_str());
+	QString str = QString::fromStdString(modelResults.str());
 	if (!str.isEmpty())
 	{
 		rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::PMV);
@@ -558,7 +558,7 @@ rbool Model::openModel(CREF(QString) modelName)
 		rdo::binarystream stream;
 		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::PMV, stream);
 		g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
-		g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromLocal8Bit(stream.str().c_str()));
+		g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(stream.str()));
 		g_pApp->getIMainWnd()->getDockDebug().appendString("Загрузка модели... ok\n");
 		g_pApp->setLastProjectName(getFullName());
 	}
@@ -1049,7 +1049,7 @@ QString Model::getLastBreakPointName()
 {
 	tstring str;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_LAST_BREAKPOINT, &str);
-	return QString::fromLocal8Bit(str.c_str());
+	return QString::fromStdString(str);
 }
 
 double Model::getSpeed() const
