@@ -85,6 +85,11 @@ std::locale locale::utf8()
 	return generate("ru_RU.UTF-8");
 }
 
+std::locale locale::c()
+{
+	return generate(setlocale(LC_ALL, NULL));
+}
+
 std::string locale::convert(const std::string& txt, const std::locale& to, const std::locale& from)
 {
 	return convert(txt, std::use_facet<boost::locale::info>(to).encoding(), std::use_facet<boost::locale::info>(from).encoding());
@@ -104,7 +109,17 @@ std::string locale::convert(const std::string& txt, const std::string& to, const
 	return result;
 }
 
-std::string locale::convertToCLocale(const std::string& txt, const std::locale& from) const
+std::string locale::convertToCLocale(const std::string& txt, const std::locale& from)
+{
+	return convert(txt, getCLocaleName(), std::use_facet<boost::locale::info>(from).encoding());
+}
+
+std::string locale::convertFromCLocale(const std::string& txt, const std::locale& to)
+{
+	return convert(txt, std::use_facet<boost::locale::info>(to).encoding(), getCLocaleName());
+}
+
+std::string locale::getCLocaleName()
 {
 	std::string cLocale = setlocale(LC_ALL, NULL);
 
@@ -116,7 +131,7 @@ std::string locale::convertToCLocale(const std::string& txt, const std::locale& 
 	}
 #endif
 
-	return convert(txt, cLocale, std::use_facet<boost::locale::info>(from).encoding());
+	return cLocale;
 }
 
 } // namespace rdo
