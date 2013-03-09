@@ -1,4 +1,4 @@
-﻿# history
+# history
 # 2010.12.1		
 #
 
