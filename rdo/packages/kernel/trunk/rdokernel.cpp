@@ -53,14 +53,14 @@ void RDOKernel::close()
 #ifdef RDO_MT
 	CEvent* thread_destroy = kernel->thread_destroy;
 
-	// Дожидаетмся окончания обработки RT_THREAD_CLOSE
+	// Р”РѕР¶РёРґР°РµС‚РјСЃСЏ РѕРєРѕРЅС‡Р°РЅРёСЏ РѕР±СЂР°Р±РѕС‚РєРё RT_THREAD_CLOSE
 	CEvent* event = kernel->manualMessageFrom( RDOThread::RT_THREAD_CLOSE );
 	while ( ::WaitForSingleObject( event->m_hObject, 0 ) == WAIT_TIMEOUT ) {
 		kernel->processMessages();
 	}
 	delete event;
 
-	// Дожидаемся диструктора
+	// Р”РѕР¶РёРґР°РµРјСЃСЏ РґРёСЃС‚СЂСѓРєС‚РѕСЂР°
 	thread_destroy->Lock();
 	delete thread_destroy;
 #endif
@@ -83,7 +83,7 @@ void RDOKernel::start()
 void RDOKernel::proc( RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
-		// Закрыть все треды
+		// Р—Р°РєСЂС‹С‚СЊ РІСЃРµ С‚СЂРµРґС‹
 		case RT_THREAD_CLOSE: {
 #ifdef TR_TRACE
 			trace( thread_name + " stop begin" );
@@ -140,7 +140,7 @@ void RDOKernel::idle()
 {
 	std::list< RDOThread* >::iterator it = threads.begin();
 	while ( it != threads.end() ) {
-		// it_next используется из-за того, что в RDOThreadRunTime->idle() м.б. удален RDOThreadRunTime и убран из threads
+		// it_next РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РёР·-Р·Р° С‚РѕРіРѕ, С‡С‚Рѕ РІ RDOThreadRunTime->idle() Рј.Р±. СѓРґР°Р»РµРЅ RDOThreadRunTime Рё СѓР±СЂР°РЅ РёР· threads
 		std::list< RDOThread* >::iterator it_next = it;
 		++it_next;
 		(*it)->idle();
@@ -172,9 +172,9 @@ void RDOKernel::registration( RDOThread* thread )
 				threads.push_back( thread );
 			} else {
 				threads_mutex.Unlock();
-				// Не будем регистрировать треду, если она GUI, для tread_id которой уже есть другая треда.
-				// Эта 'другая' треда должна быть RDOKernelGUI, чтобы самой поймать регистрицаию текущей
-				// и раздавать ей сообщения.
+				// РќРµ Р±СѓРґРµРј СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊ С‚СЂРµРґСѓ, РµСЃР»Рё РѕРЅР° GUI, РґР»СЏ tread_id РєРѕС‚РѕСЂРѕР№ СѓР¶Рµ РµСЃС‚СЊ РґСЂСѓРіР°СЏ С‚СЂРµРґР°.
+				// Р­С‚Р° 'РґСЂСѓРіР°СЏ' С‚СЂРµРґР° РґРѕР»Р¶РЅР° Р±С‹С‚СЊ RDOKernelGUI, С‡С‚РѕР±С‹ СЃР°РјРѕР№ РїРѕР№РјР°С‚СЊ СЂРµРіРёСЃС‚СЂРёС†Р°РёСЋ С‚РµРєСѓС‰РµР№
+				// Рё СЂР°Р·РґР°РІР°С‚СЊ РµР№ СЃРѕРѕР±С‰РµРЅРёСЏ.
 				return;
 			}
 		} else
@@ -277,7 +277,7 @@ RDOKernelGUI::~RDOKernelGUI()
 void RDOKernelGUI::proc( RDOMessageInfo& msg )
 {
 	switch ( msg.message ) {
-		// Удалить прикрепленные треды
+		// РЈРґР°Р»РёС‚СЊ РїСЂРёРєСЂРµРїР»РµРЅРЅС‹Рµ С‚СЂРµРґС‹
 		case RT_THREAD_CLOSE: {
 #ifdef TR_TRACE
 			trace( thread_name + " stop begin" );
@@ -313,7 +313,7 @@ void RDOKernelGUI::proc( RDOMessageInfo& msg )
 	}
 	std::list< RDOThread* >::iterator it = threads.begin();
 	while ( it != threads.end() ) {
-		// it_next используется из-за того, что в RDOThreadRunTime->idle() м.б. удален RDOThreadRunTime и убран из threads
+		// it_next РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РёР·-Р·Р° С‚РѕРіРѕ, С‡С‚Рѕ РІ RDOThreadRunTime->idle() Рј.Р±. СѓРґР°Р»РµРЅ RDOThreadRunTime Рё СѓР±СЂР°РЅ РёР· threads
 		std::list< RDOThread* >::iterator it_next = it;
 		++it_next;
 		if ( *it != msg.from ) {
@@ -327,7 +327,7 @@ void RDOKernelGUI::idle()
 {
 	std::list< RDOThread* >::iterator it = threads.begin();
 	while ( it != threads.end() ) {
-		// it_next используется из-за того, что в RDOThreadRunTime->idle() м.б. удален RDOThreadRunTime и убран из threads
+		// it_next РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РёР·-Р·Р° С‚РѕРіРѕ, С‡С‚Рѕ РІ RDOThreadRunTime->idle() Рј.Р±. СѓРґР°Р»РµРЅ RDOThreadRunTime Рё СѓР±СЂР°РЅ РёР· threads
 		std::list< RDOThread* >::iterator it_next = it;
 		++it_next;
 		(*it)->idle();

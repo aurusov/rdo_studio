@@ -47,7 +47,7 @@ RDOThread::RDOThread(CREF(tstring) _thread_name, RDOThreadFun _thread_fun)
 	, idle_cnt         (0           )
 	, thread_fun       (_thread_fun )
 	, thread_win       (NULL        )
-	, thread_destroy   (new CEvent()) // thread_destroy удаляется после деструктора объекта
+	, thread_destroy   (new CEvent()) // thread_destroy СѓРґР°Р»СЏРµС‚СЃСЏ РїРѕСЃР»Рµ РґРµСЃС‚СЂСѓРєС‚РѕСЂР° РѕР±СЉРµРєС‚Р°
 	, broadcast_waiting(false       )
 	, was_start        (false       )
 	, was_close        (false       )
@@ -70,7 +70,7 @@ RDOThread::RDOThread(CREF(tstring) _thread_name)
 #ifdef TR_TRACE
 	trace(thread_name + _T("::") + thread_name);
 #endif
-	// Чтобы треда не получала ниодного сообщения. RT_THREAD_CLOSE обрабатывается автоматически
+	// Р§С‚РѕР±С‹ С‚СЂРµРґР° РЅРµ РїРѕР»СѓС‡Р°Р»Р° РЅРёРѕРґРЅРѕРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ. RT_THREAD_CLOSE РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё
 	notifies.push_back(RT_THREAD_CLOSE);
 #ifdef RDO_MT
 	for (ruint i = 0; i < 10; i++)
@@ -186,7 +186,7 @@ rbool RDOThread::processMessages()
 			messages_mutex.Unlock();
 			if (this != getKernel())
 				sendMessage(getKernel(), RT_THREAD_DISCONNECTION);
-			// Отпускаем вызывающие треды
+			// РћС‚РїСѓСЃРєР°РµРј РІС‹Р·С‹РІР°СЋС‰РёРµ С‚СЂРµРґС‹
 			messages_mutex.Lock();
 			if (msg.type == RDOThread::RDOMessageInfo::send || msg.type == RDOThread::RDOMessageInfo::manual)
 				msg.send_event->SetEvent();
