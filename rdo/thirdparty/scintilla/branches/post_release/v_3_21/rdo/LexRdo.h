@@ -24,7 +24,7 @@ static inline bool isRDOLexerSuchAsIdentifierStyle( char ch )
 static inline bool isRDOLexerIdentifier( char ch )
 {
 	if ( (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
-	     (ch >= '‡' && ch <= 'ˇ') || (ch >= '¿' && ch <= 'ﬂ') || ch == '®' || ch == '∏' ||
+	     (ch >= '–∞' && ch <= '—è') || (ch >= '–ê' && ch <= '–Ø') || ch == '–Å' || ch == '—ë' ||
 	     ch == '_' || ch == '$' || isRDOLexerSuchAsIdentifierStyle(ch) || isdigit((rbyte)ch) ) return true;
 	return false;
 }

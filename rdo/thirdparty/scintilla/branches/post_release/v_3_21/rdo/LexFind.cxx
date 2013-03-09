@@ -27,14 +27,14 @@
 static inline char RDOMakeUpperCase( char ch )
 {
 	if ( ch >= 'a' && ch <= 'z' ) return static_cast<char>( ch - 'a' + 'A' );
-	if ( ch >= '‡' && ch <= 'ˇ' ) return static_cast<char>( ch - '‡' + '¿' );
+	if ( ch >= '–∞' && ch <= '—è' ) return static_cast<char>( ch - '–∞' + '–ê' );
 	return ch;
 }
 
 static inline char RDOMakeLowerCase( char ch )
 {
 	if ( ch >= 'A' && ch <= 'Z' ) return static_cast<char>( ch - 'A' + 'a' );
-	if ( ch >= '¿' && ch <= 'ﬂ' ) return static_cast<char>( ch - '¿' + '‡' );
+	if ( ch >= '–ê' && ch <= '–Ø' ) return static_cast<char>( ch - '–ê' + '–∞' );
 	return ch;
 }
 
