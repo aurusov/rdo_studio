@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdopmd.y
-  \authors   ¡‡Ò ¿ÎÂÍÒ‡Ì‰
-  \authors   ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
+  \authors   –ë–∞—Ä—Å –ê–ª–µ–∫—Å–∞–Ω–¥—Ä
+  \authors   –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -268,31 +268,31 @@ pmd_result
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' error
 	{
-		CONVERTER->error().error(@5, @6, _T("ŒÊË‰‡ÂÚÒˇ ËÏˇ Ô‡‡ÏÂÚ‡"));
+		CONVERTER->error().error(@5, @6, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è –ø–∞—Ä–∞–º–µ—Ç—Ä–∞"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@4, _T("ŒÊË‰‡ÂÚÒˇ '.'"));
+		CONVERTER->error().error(@4, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è '.'"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par error
 	{
-		CONVERTER->error().error(@3, @4, _T("œÓÒÎÂ ÍÎ˛˜Â‚Ó„Ó ÒÎÓ‚‡ watch_par ÓÊË‰‡ÂÚÒˇ ËÏˇ ÂÒÛÒ‡"));
+		CONVERTER->error().error(@3, @4, _T("–ü–æ—Å–ª–µ –∫–ª—é—á–µ–≤–æ–≥–æ —Å–ª–æ–≤–∞ watch_par –æ–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è —Ä–µ—Å—É—Ä—Å–∞"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace error
 	{
-		CONVERTER->error().error(@2, @3, _T("ŒÊË‰‡ÂÚÒˇ ÚËÔ ÔÓÍ‡Á‡ÚÂÎˇ"));
+		CONVERTER->error().error(@2, @3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è —Ç–∏–ø –ø–æ–∫–∞–∑–∞—Ç–µ–ª—è"));
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@1, @2, _T("ŒÊË‰‡ÂÚÒˇ ÔËÁÌ‡Í Ú‡ÒÒËÓ‚ÍË ËÎË ÚËÔ ÔÓÍ‡Á‡ÚÂÎˇ"));
+		CONVERTER->error().error(@1, @2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –ø—Ä–∏–∑–Ω–∞–∫ —Ç—Ä–∞—Å—Å–∏—Ä–æ–≤–∫–∏ –∏–ª–∏ —Ç–∏–ø –ø–æ–∫–∞–∑–∞—Ç–µ–ª—è"));
 	}
 	| RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@1, @2, _T("ŒÊË‰‡ÂÚÒˇ ':'"));
+		CONVERTER->error().error(@1, @2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è ':'"));
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ËÏˇ ÔÓÍ‡Á‡ÚÂÎˇ"));
+		CONVERTER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è –ø–æ–∫–∞–∑–∞—Ç–µ–ª—è"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state fun_logic
 	{
@@ -302,7 +302,7 @@ pmd_result
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state error
 	{
-		CONVERTER->error().error(@3, @4, _T("œÓÒÎÂ ÍÎ˛˜Â‚Ó„Ó ÒÎÓ‚‡ watch_state ÓÊË‰‡ÂÚÒˇ ÎÓ„Ë˜ÂÒÍÓÂ ‚˚‡ÊÂÌËÂ"));
+		CONVERTER->error().error(@3, @4, _T("–ü–æ—Å–ª–µ –∫–ª—é—á–µ–≤–æ–≥–æ —Å–ª–æ–≤–∞ watch_state –æ–∂–∏–¥–∞–µ—Ç—Å—è –ª–æ–≥–∏—á–µ—Å–∫–æ–µ –≤—ã—Ä–∞–∂–µ–Ω–∏–µ"));
 	}
 	| pmd_result_watch_quant_begin fun_logic
 	{
@@ -322,11 +322,11 @@ pmd_result
 	}
 	| pmd_result_watch_quant_begin error
 	{
-		CONVERTER->error().error(@1, @2, _T("œÓÒÎÂ ËÏÂÌË ÚËÔ‡ ÓÊË‰‡ÂÚÒˇ ÎÓ„Ë˜ÂÒÍÓÂ ‚˚‡ÊÂÌËÂ"));
+		CONVERTER->error().error(@1, @2, _T("–ü–æ—Å–ª–µ –∏–º–µ–Ω–∏ —Ç–∏–ø–∞ –æ–∂–∏–¥–∞–µ—Ç—Å—è –ª–æ–≥–∏—á–µ—Å–∫–æ–µ –≤—ã—Ä–∞–∂–µ–Ω–∏–µ"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_quant error
 	{
-		CONVERTER->error().error(@3, @4, _T("œÓÒÎÂ ÍÎ˛˜Â‚Ó„Ó ÒÎÓ‚‡ watch_quant ÓÊË‰‡ÂÚÒˇ ÚËÔ ÂÒÛÒ‡"));
+		CONVERTER->error().error(@3, @4, _T("–ü–æ—Å–ª–µ –∫–ª—é—á–µ–≤–æ–≥–æ —Å–ª–æ–≤–∞ watch_quant –æ–∂–∏–¥–∞–µ—Ç—Å—è —Ç–∏–ø —Ä–µ—Å—É—Ä—Å–∞"));
 	}
 	| pmd_result_watch_value_begin fun_logic fun_arithm
 	{
@@ -350,19 +350,19 @@ pmd_result
 	}
 	| pmd_result_watch_value_begin fun_logic error
 	{
-		CONVERTER->error().error(@2, @3, _T("œÓÒÎÂ ÎÓ„Ë˜ÂÒÍÓ„Ó ÓÊË‰‡ÂÚÒˇ ‡ËÙÏÂÚË˜ÂÒÍÓÂ ‚˚‡ÊÂÌËÂ"));
+		CONVERTER->error().error(@2, @3, _T("–ü–æ—Å–ª–µ –ª–æ–≥–∏—á–µ—Å–∫–æ–≥–æ –æ–∂–∏–¥–∞–µ—Ç—Å—è –∞—Ä–∏—Ñ–º–µ—Ç–∏—á–µ—Å–∫–æ–µ –≤—ã—Ä–∞–∂–µ–Ω–∏–µ"));
 	}
 	| pmd_result_watch_value_begin RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, @3, _T("œÓÒÎÂ ÎÓ„Ë˜ÂÒÍÓ„Ó ÓÊË‰‡ÂÚÒˇ ‡ËÙÏÂÚË˜ÂÒÍÓÂ ‚˚‡ÊÂÌËÂ"));
+		CONVERTER->error().error(@2, @3, _T("–ü–æ—Å–ª–µ –ª–æ–≥–∏—á–µ—Å–∫–æ–≥–æ –æ–∂–∏–¥–∞–µ—Ç—Å—è –∞—Ä–∏—Ñ–º–µ—Ç–∏—á–µ—Å–∫–æ–µ –≤—ã—Ä–∞–∂–µ–Ω–∏–µ"));
 	}
 	| pmd_result_watch_value_begin error
 	{
-		CONVERTER->error().error(@1, @2, _T("œÓÒÎÂ ËÏÂÌË ÚËÔ‡ ÓÊË‰‡ÂÚÒˇ ÎÓ„Ë˜ÂÒÍÓÂ ‚˚‡ÊÂÌËÂ"));
+		CONVERTER->error().error(@1, @2, _T("–ü–æ—Å–ª–µ –∏–º–µ–Ω–∏ —Ç–∏–ø–∞ –æ–∂–∏–¥–∞–µ—Ç—Å—è –ª–æ–≥–∏—á–µ—Å–∫–æ–µ –≤—ã—Ä–∞–∂–µ–Ω–∏–µ"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_value error
 	{
-		CONVERTER->error().error(@3, @4, _T("œÓÒÎÂ ÍÎ˛˜Â‚Ó„Ó ÒÎÓ‚‡ watch_value ÓÊË‰‡ÂÚÒˇ ÚËÔ ÂÒÛÒ‡"));
+		CONVERTER->error().error(@3, @4, _T("–ü–æ—Å–ª–µ –∫–ª—é—á–µ–≤–æ–≥–æ —Å–ª–æ–≤–∞ watch_value –æ–∂–∏–¥–∞–µ—Ç—Å—è —Ç–∏–ø —Ä–µ—Å—É—Ä—Å–∞"));
 	}
 	| RDO_IDENTIF_COLON RDO_get_value fun_arithm
 	{
@@ -372,7 +372,7 @@ pmd_result
 	}
 	| RDO_IDENTIF_COLON RDO_get_value error
 	{
-		CONVERTER->error().error(@2, @3, _T("œÓÒÎÂ ÍÎ˛˜Â‚Ó„Ó ÒÎÓ‚‡ get_value ÓÊË‰‡ÂÚÒˇ ‡ËÙÏÂÚË˜ÂÒÍÓÂ ‚˚‡ÊÂÌËÂ"));
+		CONVERTER->error().error(@2, @3, _T("–ü–æ—Å–ª–µ –∫–ª—é—á–µ–≤–æ–≥–æ —Å–ª–æ–≤–∞ get_value –æ–∂–∏–¥–∞–µ—Ç—Å—è –∞—Ä–∏—Ñ–º–µ—Ç–∏—á–µ—Å–∫–æ–µ –≤—ã—Ä–∞–∂–µ–Ω–∏–µ"));
 	}
 	;
 
@@ -384,18 +384,18 @@ pmd_end
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos;
 		pos.m_last_seek = pos.m_first_seek;
-		CONVERTER->error().error(pos, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $Results"));
+		CONVERTER->error().error(pos, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $Results"));
 	}
 	| RDO_Results pmd_body error
 	{
-		CONVERTER->error().error(@3, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $End"));
+		CONVERTER->error().error(@3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $End"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Œ·˘ËÂ ÒÓÒÚ‡‚Ì˚Â ÚÓÍÂÌ˚ ‰Îˇ ‚ÒÂı Ó·˙ÂÍÚÓ‚ –ƒŒ
+// -------------------- –û–±—â–∏–µ —Å–æ—Å—Ç–∞–≤–Ω—ã–µ —Ç–æ–∫–µ–Ω—ã –¥–ª—è –≤—Å–µ—Ö –æ–±—ä–µ–∫—Ç–æ–≤ –†–î–û
 // --------------------------------------------------------------------------------
-// -------------------- ÀÓ„Ë˜ÂÒÍËÂ ‚˚‡ÊÂÌËˇ
+// -------------------- –õ–æ–≥–∏—á–µ—Å–∫–∏–µ –≤—ã—Ä–∞–∂–µ–Ω–∏—è
 // --------------------------------------------------------------------------------
 fun_logic_eq
 	: '='
@@ -531,16 +531,16 @@ fun_logic
 	}
 	| '[' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| '(' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- ¿ËÙÏÂÚË˜ÂÒÍËÂ ‚˚‡ÊÂÌËˇ
+// -------------------- –ê—Ä–∏—Ñ–º–µ—Ç–∏—á–µ—Å–∫–∏–µ –≤—ã—Ä–∞–∂–µ–Ω–∏—è
 // --------------------------------------------------------------------------------
 fun_arithm
 	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
@@ -617,7 +617,7 @@ fun_arithm
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- ‘ÛÌÍˆËË Ë ÔÓÒÎÂ‰Ó‚‡ÚÂÎ¸ÌÓÒÚË
+// -------------------- –§—É–Ω–∫—Ü–∏–∏ –∏ –ø–æ—Å–ª–µ–¥–æ–≤–∞—Ç–µ–ª—å–Ω–æ—Å—Ç–∏
 // --------------------------------------------------------------------------------
 fun_arithm_func_call
 	: RDO_IDENTIF '(' ')'
@@ -646,7 +646,7 @@ fun_arithm_func_call
 	}
 	| RDO_IDENTIF '(' error
 	{
-		CONVERTER->error().error(@3, _T("Œ¯Ë·Í‡ ‚ Ô‡‡ÏÂÚ‡ı ÙÛÌÍˆËË"));
+		CONVERTER->error().error(@3, _T("–û—à–∏–±–∫–∞ –≤ –ø–∞—Ä–∞–º–µ—Ç—Ä–∞—Ö —Ñ—É–Ω–∫—Ü–∏–∏"));
 	}
 	;
 
@@ -673,16 +673,16 @@ fun_arithm_func_call_pars
 	}
 	| fun_arithm_func_call_pars error
 	{
-		CONVERTER->error().error(@2, _T("Œ¯Ë·Í‡ ‚ ‡ËÙÏÂÚË˜ÂÒÍÓÏ ‚˚‡ÊÂÌËË"));
+		CONVERTER->error().error(@2, _T("–û—à–∏–±–∫–∞ –≤ –∞—Ä–∏—Ñ–º–µ—Ç–∏—á–µ—Å–∫–æ–º –≤—ã—Ä–∞–∂–µ–Ω–∏–∏"));
 	}
 	| fun_arithm_func_call_pars ',' error
 	{
-		CONVERTER->error().error(@3, _T("Œ¯Ë·Í‡ ‚ ‡ËÙÏÂÚË˜ÂÒÍÓÏ ‚˚‡ÊÂÌËË"));
+		CONVERTER->error().error(@3, _T("–û—à–∏–±–∫–∞ –≤ –∞—Ä–∏—Ñ–º–µ—Ç–∏—á–µ—Å–∫–æ–º –≤—ã—Ä–∞–∂–µ–Ω–∏–∏"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- √ÛÔÔÓ‚˚Â ‚˚‡ÊÂÌËˇ
+// -------------------- –ì—Ä—É–ø–ø–æ–≤—ã–µ –≤—ã—Ä–∞–∂–µ–Ω–∏—è
 // --------------------------------------------------------------------------------
 fun_group_keyword
 	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
@@ -700,11 +700,11 @@ fun_group_header
 	}
 	| fun_group_keyword '(' error
 	{
-		CONVERTER->error().error(@3, _T("ŒÊË‰‡ÂÚÒˇ ËÏˇ ÚËÔ‡"));
+		CONVERTER->error().error(@3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è —Ç–∏–ø–∞"));
 	}
 	| fun_group_keyword error
 	{
-		CONVERTER->error().error(@1, _T("œÓÒÎÂ ËÏÂÌË ÙÛÌÍˆËË ÓÊË‰‡ÂÚÒˇ ÓÍÚ˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@1, _T("–ü–æ—Å–ª–µ –∏–º–µ–Ω–∏ —Ñ—É–Ω–∫—Ü–∏–∏ –æ–∂–∏–¥–∞–µ—Ç—Å—è –æ–∫—Ç—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	;
 
@@ -731,15 +731,15 @@ fun_group
 	}
 	| fun_group_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_group_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_group_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ‚ ÎÓ„Ë˜ÂÒÍÓÏ ‚˚‡ÊÂÌËË"));
+		CONVERTER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –≤ –ª–æ–≥–∏—á–µ—Å–∫–æ–º –≤—ã—Ä–∞–∂–µ–Ω–∏–∏"));
 	}
 	;
 
@@ -758,11 +758,11 @@ fun_select_header
 	}
 	| RDO_Select '(' error
 	{
-		CONVERTER->error().error(@3, _T("ŒÊË‰‡ÂÚÒˇ ËÏˇ ÚËÔ‡"));
+		CONVERTER->error().error(@3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è —Ç–∏–ø–∞"));
 	}
 	| RDO_Select error
 	{
-		CONVERTER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ÓÍÚ˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –æ–∫—Ç—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	;
 
@@ -793,15 +793,15 @@ fun_select_body
 	}
 	| fun_select_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_select_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_select_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ‚ ÎÓ„Ë˜ÂÒÍÓÏ ‚˚‡ÊÂÌËË"));
+		CONVERTER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –≤ –ª–æ–≥–∏—á–µ—Å–∫–æ–º –≤—ã—Ä–∞–∂–µ–Ω–∏–∏"));
 	}
 	;
 
@@ -826,11 +826,11 @@ fun_select_logic
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Œ¯Ë·Í‡ ‚ ÎÓ„Ë˜ÂÒÍÓÏ ‚˚‡ÊÂÌËË"));
+		CONVERTER->error().error(@4, @5, _T("–û—à–∏–±–∫–∞ –≤ –ª–æ–≥–∏—á–µ—Å–∫–æ–º –≤—ã—Ä–∞–∂–µ–Ω–∏–∏"));
 	}
 	| fun_select_body '.' fun_select_keyword error
 	{
-		CONVERTER->error().error(@3, _T("ŒÊË‰‡ÂÚÒˇ ÓÍÚ˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –æ–∫—Ç—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
@@ -844,19 +844,19 @@ fun_select_logic
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
-		CONVERTER->error().error(@4, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@4, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_select_body '.' RDO_Empty error
 	{
-		CONVERTER->error().error(@3, _T("ŒÊË‰‡ÂÚÒˇ ÓÍÚ˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –æ–∫—Ç—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_select_body '.' error
 	{
-		CONVERTER->error().error(@2, @3, _T("ŒÊË‰‡ÂÚÒˇ ÏÂÚÓ‰ ÒÔËÒÍ‡ ÂÒÛÒÓ‚"));
+		CONVERTER->error().error(@2, @3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –º–µ—Ç–æ–¥ —Å–ø–∏—Å–∫–∞ —Ä–µ—Å—É—Ä—Å–æ–≤"));
 	}
 	| fun_select_body error
 	{
-		CONVERTER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ '.' (ÚÓ˜Í‡) ‰Îˇ ‚˚ÁÓ‚‡ ÏÂÚÓ‰‡ ÒÔËÒÍ‡ ÂÒÛÒÓ‚"));
+		CONVERTER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è '.' (—Ç–æ—á–∫–∞) –¥–ª—è –≤—ã–∑–æ–≤–∞ –º–µ—Ç–æ–¥–∞ —Å–ø–∏—Å–∫–∞ —Ä–µ—Å—É—Ä—Å–æ–≤"));
 	}
 	;
 
@@ -873,11 +873,11 @@ fun_select_arithm
 	}
 	| fun_select_body '.' RDO_Size error
 	{
-		CONVERTER->error().error(@3, _T("ŒÊË‰‡ÂÚÒˇ ÓÍÚ˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –æ–∫—Ç—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_select_body '.' RDO_Size '(' error
 	{
-		CONVERTER->error().error(@4, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		CONVERTER->error().error(@4, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	;
 

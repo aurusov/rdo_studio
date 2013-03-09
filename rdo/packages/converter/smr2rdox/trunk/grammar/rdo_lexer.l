@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_lexer.h
-  \authors   Áàðñ Àëåêñàíäð
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \authors   Ð‘Ð°Ñ€Ñ ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -357,7 +357,7 @@ set					return(RDO_set);
 
 "}"|"*/"				{
 	LEXER->loc_delta_pos(YYLeng());
-	CONVERTER->error().error(rdo::converter::smr2rdox::RDOParserSrcInfo(), _T("Íå íàéäåíî íà÷àëî êîììåíòàðèÿ"));
+	CONVERTER->error().error(rdo::converter::smr2rdox::RDOParserSrcInfo(), _T("ÐÐµ Ð½Ð°Ð¹Ð´ÐµÐ½Ð¾ Ð½Ð°Ñ‡Ð°Ð»Ð¾ ÐºÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ñ"));
 }
 
 [\r\n\t ]+
@@ -446,13 +446,13 @@ false {
 	return RDO_BOOL_CONST;
 }
 
-([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-zÀ-ßà-ÿ\xB8_][A-Za-zÀ-ßà-ÿ\xB80-9_$]*
+([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-zÐ-Ð¯Ð°-Ñ\xB8_][A-Za-zÐ-Ð¯Ð°-Ñ\xB80-9_$]*
 {
 	LEXER->setvalue(NULL);
 	return RDO_IDENTIF_BAD;
 }
 
-[A-Za-zÀ-ßà-ÿ\xB8_$][A-Za-zÀ-ßà-ÿ\xB80-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange {
+[A-Za-zÐ-Ð¯Ð°-Ñ\xB8_$][A-Za-zÐ-Ð¯Ð°-Ñ\xB80-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
@@ -476,7 +476,7 @@ false {
 	return RDO_IDENTIF_NoChange_NoChange;
 }
 
-[A-Za-zÀ-ßà-ÿ\xB8_$][A-Za-zÀ-ßà-ÿ\xB80-9_$]*[\r\n\t ]+NoChange {
+[A-Za-zÐ-Ð¯Ð°-Ñ\xB8_$][A-Za-zÐ-Ð¯Ð°-Ñ\xB80-9_$]*[\r\n\t ]+NoChange {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
@@ -500,7 +500,7 @@ false {
 	return RDO_IDENTIF_NoChange;
 }
 
-[A-Za-zÀ-ßà-ÿ\xB8_$][A-Za-zÀ-ßà-ÿ\xB80-9_$]*[\r\n\t ]*\: {
+[A-Za-zÐ-Ð¯Ð°-Ñ\xB8_$][A-Za-zÐ-Ð¯Ð°-Ñ\xB80-9_$]*[\r\n\t ]*\: {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
@@ -524,7 +524,7 @@ false {
 	return RDO_IDENTIF_COLON;
 }
 
-[A-Za-zÀ-ßà-ÿ\xB8_$][A-Za-zÀ-ßà-ÿ\xB80-9_$]* {
+[A-Za-zÐ-Ð¯Ð°-Ñ\xB8_$][A-Za-zÐ-Ð¯Ð°-Ñ\xB80-9_$]* {
 	tstring name(YYText());
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
 

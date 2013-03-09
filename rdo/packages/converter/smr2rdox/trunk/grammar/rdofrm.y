@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdofrm.y
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -253,19 +253,19 @@ typedef rdo::runtime::LPRDOFRMSpace                 LPRDOFRMSpace;
 %%
 
 // --------------------------------------------------------------------------------
-// -------------------- Основной цикл
+// -------------------- РћСЃРЅРѕРІРЅРѕР№ С†РёРєР»
 // --------------------------------------------------------------------------------
 frm_main
 	: /* empty */
 	| frm_main frm_end
 	| error
 	{
-		CONVERTER->error().error(@1, _T("Неизвестная ошибка"));
+		CONVERTER->error().error(@1, _T("РќРµРёР·РІРµСЃС‚РЅР°СЏ РѕС€РёР±РєР°"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Фрейм
+// -------------------- Р¤СЂРµР№Рј
 // --------------------------------------------------------------------------------
 frm_begin
 	: RDO_Frame RDO_IDENTIF
@@ -292,7 +292,7 @@ frm_begin
 	}
 	| RDO_Frame RDO_IDENTIF RDO_Show_if error
 	{
-		CONVERTER->error().error(@4, _T("Ошибка в логическом выражении"))
+		CONVERTER->error().error(@4, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"))
 	}
 	;
 
@@ -305,7 +305,7 @@ frm_background
 		ASSERT(pBgColor);
 		if (pBgColor->getType() != RDOFRMColor::CT_TRANSPARENT && pBgColor->getType() != RDOFRMColor::CT_RGB)
 		{
-			CONVERTER->error().error(@4, _T("Цвет фона не может быть указан ссылкой на последнее значение"));
+			CONVERTER->error().error(@4, _T("Р¦РІРµС‚ С„РѕРЅР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓРєР°Р·Р°РЅ СЃСЃС‹Р»РєРѕР№ РЅР° РїРѕСЃР»РµРґРЅРµРµ Р·РЅР°С‡РµРЅРёРµ"));
 		}
 		pFrame->frame()->setBackgroundColor(pBgColor);
 		$$ = CONVERTER->stack().push(pFrame);
@@ -318,11 +318,11 @@ frm_background
 	}
 	| frm_begin RDO_Back_picture error
 	{
-		CONVERTER->error().error(@3, _T("После ключевого слова $Back_picture ожидается знак равенства"));
+		CONVERTER->error().error(@3, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° $Back_picture РѕР¶РёРґР°РµС‚СЃСЏ Р·РЅР°Рє СЂР°РІРµРЅСЃС‚РІР°"));
 	}
 	| frm_begin error
 	{
-		CONVERTER->error().error(@2, _T("После имени кадра ожидается ключевое слово $Back_picture"));
+		CONVERTER->error().error(@2, _T("РџРѕСЃР»Рµ РёРјРµРЅРё РєР°РґСЂР° РѕР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Back_picture"));
 	}
 	;
 
@@ -347,19 +347,19 @@ frm_backpicture
 	}
 	| frm_background RDO_INT_CONST RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@4, _T("Описание заголовка кадра окончено, ожидается ключевое слово $Show"));
+		CONVERTER->error().error(@4, _T("РћРїРёСЃР°РЅРёРµ Р·Р°РіРѕР»РѕРІРєР° РєР°РґСЂР° РѕРєРѕРЅС‡РµРЅРѕ, РѕР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Show"));
 	}
 	| frm_background RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@3, _T("Описание заголовка кадра окончено, ожидается ключевое слово $Show"));
+		CONVERTER->error().error(@3, _T("РћРїРёСЃР°РЅРёРµ Р·Р°РіРѕР»РѕРІРєР° РєР°РґСЂР° РѕРєРѕРЅС‡РµРЅРѕ, РѕР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Show"));
 	}
 	| frm_background RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@2, _T("После ширины кадра необходимо указать его высоту"));
+		CONVERTER->error().error(@2, _T("РџРѕСЃР»Рµ С€РёСЂРёРЅС‹ РєР°РґСЂР° РЅРµРѕР±С…РѕРґРёРјРѕ СѓРєР°Р·Р°С‚СЊ РµРіРѕ РІС‹СЃРѕС‚Сѓ"));
 	}
 	| frm_background
 	{
-		CONVERTER->error().error(@1, _T("Необходимо указать имя фоновой картинки или размер кадра"));
+		CONVERTER->error().error(@1, _T("РќРµРѕР±С…РѕРґРёРјРѕ СѓРєР°Р·Р°С‚СЊ РёРјСЏ С„РѕРЅРѕРІРѕР№ РєР°СЂС‚РёРЅРєРё РёР»Рё СЂР°Р·РјРµСЂ РєР°РґСЂР°"));
 	}
 	;
 
@@ -409,7 +409,7 @@ frm_show
 	}
 	| RDO_Show_if error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в логическом выражении"))
+		CONVERTER->error().error(@2, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"))
 	}
 	;
 
@@ -438,7 +438,7 @@ frm_end
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Элементы
+// -------------------- Р­Р»РµРјРµРЅС‚С‹
 // --------------------------------------------------------------------------------
 frm_color
 	: RDO_color_transparent
@@ -525,15 +525,15 @@ frm_color
 	}
 	| '<' RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@4, _T("Найдены все составляющие цвета, ожидается '>'"));
+		CONVERTER->error().error(@4, _T("РќР°Р№РґРµРЅС‹ РІСЃРµ СЃРѕСЃС‚Р°РІР»СЏСЋС‰РёРµ С†РІРµС‚Р°, РѕР¶РёРґР°РµС‚СЃСЏ '>'"));
 	}
 	| '<' RDO_INT_CONST RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@3, @4, _T("Ожидается синяя составляющая цвета"));
+		CONVERTER->error().error(@3, @4, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃРёРЅСЏСЏ СЃРѕСЃС‚Р°РІР»СЏСЋС‰Р°СЏ С†РІРµС‚Р°"));
 	}
 	| '<' RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается зеленая составляющая цвета"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·РµР»РµРЅР°СЏ СЃРѕСЃС‚Р°РІР»СЏСЋС‰Р°СЏ С†РІРµС‚Р°"));
 	}
 	| '<' fun_arithm ',' fun_arithm ',' fun_arithm '>'
 	{
@@ -553,27 +553,27 @@ frm_color
 	}
 	| '<' fun_arithm ',' fun_arithm ',' fun_arithm error
 	{
-		CONVERTER->error().error(@6, _T("Найдены все составляющие цвета, ожидается '>'"));
+		CONVERTER->error().error(@6, _T("РќР°Р№РґРµРЅС‹ РІСЃРµ СЃРѕСЃС‚Р°РІР»СЏСЋС‰РёРµ С†РІРµС‚Р°, РѕР¶РёРґР°РµС‚СЃСЏ '>'"));
 	}
 	| '<' fun_arithm ',' fun_arithm ',' error
 	{
-		CONVERTER->error().error(@5, @6, _T("Ожидается синяя составляющая цвета"));
+		CONVERTER->error().error(@5, @6, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃРёРЅСЏСЏ СЃРѕСЃС‚Р°РІР»СЏСЋС‰Р°СЏ С†РІРµС‚Р°"));
 	}
 	| '<' fun_arithm ',' fun_arithm error
 	{
-		CONVERTER->error().error(@4, _T("После зеленой составляющей цвета ожидается запятая"));
+		CONVERTER->error().error(@4, _T("РџРѕСЃР»Рµ Р·РµР»РµРЅРѕР№ СЃРѕСЃС‚Р°РІР»СЏСЋС‰РµР№ С†РІРµС‚Р° РѕР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| '<' fun_arithm ',' error
 	{
-		CONVERTER->error().error(@3, @4, _T("Ожидается зеленая составляющая цвета"));
+		CONVERTER->error().error(@3, @4, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·РµР»РµРЅР°СЏ СЃРѕСЃС‚Р°РІР»СЏСЋС‰Р°СЏ С†РІРµС‚Р°"));
 	}
 	| '<' fun_arithm error
 	{
-		CONVERTER->error().error(@2, _T("После красной составляющей цвета ожидается запятая"));
+		CONVERTER->error().error(@2, _T("РџРѕСЃР»Рµ РєСЂР°СЃРЅРѕР№ СЃРѕСЃС‚Р°РІР»СЏСЋС‰РµР№ С†РІРµС‚Р° РѕР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| '<' error
 	{
-		CONVERTER->error().error(@1, _T("После '<' ожидается красная составляющая цвета"));
+		CONVERTER->error().error(@1, _T("РџРѕСЃР»Рµ '<' РѕР¶РёРґР°РµС‚СЃСЏ РєСЂР°СЃРЅР°СЏ СЃРѕСЃС‚Р°РІР»СЏСЋС‰Р°СЏ С†РІРµС‚Р°"));
 	}
 	;
 
@@ -595,17 +595,17 @@ frm_postype
 		int rilet_id = CONVERTER->stack().pop<RDOValue>($2)->value().getInt();
 		if (rilet_id <= 0)
 		{
-			CONVERTER->error().error(@2, _T("Номер рулетки должен быть больше нуля"));
+			CONVERTER->error().error(@2, _T("РќРѕРјРµСЂ СЂСѓР»РµС‚РєРё РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ"));
 		}
 		if (!RUNTIME->lastFrame()->findRulet(rilet_id))
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Рулетки с номером '%d' не существует"), rilet_id));
+			CONVERTER->error().error(@2, rdo::format(_T("Р СѓР»РµС‚РєРё СЃ РЅРѕРјРµСЂРѕРј '%d' РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), rilet_id));
 		}
 		$$ = RDOFRMPosition::PT_RULET + rilet_id;
 	}
 	| '#' error
 	{
-		CONVERTER->error().error(@1, _T("После '#' ожидается целочисленный номер рулетки"));
+		CONVERTER->error().error(@1, _T("РџРѕСЃР»Рµ '#' РѕР¶РёРґР°РµС‚СЃСЏ С†РµР»РѕС‡РёСЃР»РµРЅРЅС‹Р№ РЅРѕРјРµСЂ СЂСѓР»РµС‚РєРё"));
 	}
 	;
 
@@ -621,7 +621,7 @@ frm_postype_wh
 	: frm_postype;
 	| '='
 	{
-		CONVERTER->error().error(@1, _T("Нельзя использовать данное выравнивание для ширины или высоты"));
+		CONVERTER->error().error(@1, _T("РќРµР»СЊР·СЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґР°РЅРЅРѕРµ РІС‹СЂР°РІРЅРёРІР°РЅРёРµ РґР»СЏ С€РёСЂРёРЅС‹ РёР»Рё РІС‹СЃРѕС‚С‹"));
 	}
 	;
 
@@ -669,8 +669,8 @@ frm_ruler
 		LPRDOFRMRulet pRulet = RUNTIME->lastFrame()->findRulet(CONVERTER->stack().pop<RDOValue>($3)->value().getInt());
 		if (pRulet)
 		{
-			CONVERTER->error().push_only(@3, rdo::format(_T("Рулетка с номером '%d' уже существует"), CONVERTER->stack().pop<RDOValue>($3)->value().getInt()));
-			CONVERTER->error().push_only(pRulet->src_info(), _T("См. первое определение"));
+			CONVERTER->error().push_only(@3, rdo::format(_T("Р СѓР»РµС‚РєР° СЃ РЅРѕРјРµСЂРѕРј '%d' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), CONVERTER->stack().pop<RDOValue>($3)->value().getInt()));
+			CONVERTER->error().push_only(pRulet->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 			CONVERTER->error().push_done();
 		}
 		LPRDOFRMPosition pX = CONVERTER->stack().pop<RDOFRMPosition>($5);
@@ -679,11 +679,11 @@ frm_ruler
 		ASSERT(pY);
 		if (pX->getType() != RDOFRMPosition::PT_ABSOLUTE)
 		{
-			CONVERTER->error().error(@5, _T("Координаты рулетки должны быть абсолютными"));
+			CONVERTER->error().error(@5, _T("РљРѕРѕСЂРґРёРЅР°С‚С‹ СЂСѓР»РµС‚РєРё РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ Р°Р±СЃРѕР»СЋС‚РЅС‹РјРё"));
 		}
 		if (pY->getType() != RDOFRMPosition::PT_ABSOLUTE)
 		{
-			CONVERTER->error().error(@7, _T("Координаты рулетки должны быть абсолютными"));
+			CONVERTER->error().error(@7, _T("РљРѕРѕСЂРґРёРЅР°С‚С‹ СЂСѓР»РµС‚РєРё РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ Р°Р±СЃРѕР»СЋС‚РЅС‹РјРё"));
 		}
 		pRulet = rdo::Factory<RDOFRMRulet>::create(RDOParserSrcInfo(@1), CONVERTER->stack().pop<RDOValue>($3)->value().getInt(), pX, pY);
 		ASSERT(pRulet);
@@ -691,31 +691,31 @@ frm_ruler
 	}
 	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается ']'"));
+		CONVERTER->error().error(@7, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@6, @7, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё Y"));
 	}
 	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_ruler '[' RDO_INT_CONST ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@4, @5, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё X"));
 	}
 	| RDO_ruler '[' RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_ruler '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается номер рулетки"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РЅРѕРјРµСЂ СЂСѓР»РµС‚РєРё"));
 	}
 	| RDO_ruler error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '['"));
 	}
 	;
 
@@ -736,39 +736,39 @@ frm_space
 	}
 	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается ']'"));
+		CONVERTER->error().error(@9, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается высота"));
+		CONVERTER->error().error(@8, @9, _T("РћР¶РёРґР°РµС‚СЃСЏ РІС‹СЃРѕС‚Р°"));
 	}
 	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается ширина"));
+		CONVERTER->error().error(@6, @7, _T("РћР¶РёРґР°РµС‚СЃСЏ С€РёСЂРёРЅР°"));
 	}
 	| RDO_space '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_space '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё Y"));
 	}
 	| RDO_space '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_space '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё X"));
 	}
 	| RDO_space error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '['"));
 	}
 	;
 
@@ -852,55 +852,55 @@ frm_text_common
 */
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		CONVERTER->error().error(@13, _T("Ожидается запятая"));
+		CONVERTER->error().error(@13, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
-		CONVERTER->error().error(@12, @13, _T("Ожидается цвет текста"));
+		CONVERTER->error().error(@12, @13, _T("РћР¶РёРґР°РµС‚СЃСЏ С†РІРµС‚ С‚РµРєСЃС‚Р°"));
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается запятая"));
+		CONVERTER->error().error(@11, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается цвет фона"));
+		CONVERTER->error().error(@10, @11, _T("РћР¶РёРґР°РµС‚СЃСЏ С†РІРµС‚ С„РѕРЅР°"));
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается высота"));
+		CONVERTER->error().error(@8, @9, _T("РћР¶РёРґР°РµС‚СЃСЏ РІС‹СЃРѕС‚Р°"));
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается ширина"));
+		CONVERTER->error().error(@6, @7, _T("РћР¶РёРґР°РµС‚СЃСЏ С€РёСЂРёРЅР°"));
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_text '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё Y"));
 	}
 	| RDO_text '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_text '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё X"));
 	}
 	| RDO_text error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '['"));
 	}
 	;
 
@@ -937,15 +937,15 @@ frm_text
 	}
 	| frm_text_common frm_text_align fun_arithm error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается ']'"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| frm_text_common frm_text_align RDO_STRING_CONST error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается ']'"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| frm_text_common frm_text_align error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается параметр ресурса или строка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ РїР°СЂР°РјРµС‚СЂ СЂРµСЃСѓСЂСЃР° РёР»Рё СЃС‚СЂРѕРєР°"));
 	}
 	;
 
@@ -1004,39 +1004,39 @@ frm_bitmap
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается ']'"));
+		CONVERTER->error().error(@9, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается имя маски для картинки"));
+		CONVERTER->error().error(@8, @9, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РјР°СЃРєРё РґР»СЏ РєР°СЂС‚РёРЅРєРё"));
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается ']'"));
+		CONVERTER->error().error(@7, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается имя картинки"));
+		CONVERTER->error().error(@6, @7, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РєР°СЂС‚РёРЅРєРё"));
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_bitmap '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё Y"));
 	}
 	| RDO_bitmap '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_bitmap '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё X"));
 	}
 	| RDO_bitmap error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '['"));
 	}
 	;
 
@@ -1103,55 +1103,55 @@ frm_s_bmp
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@13, _T("Ожидается ']'"));
+		CONVERTER->error().error(@13, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' error
 	{
-		CONVERTER->error().error(@12, @13, _T("Ожидается имя маски для картинки"));
+		CONVERTER->error().error(@12, @13, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РјР°СЃРєРё РґР»СЏ РєР°СЂС‚РёРЅРєРё"));
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается ']'"));
+		CONVERTER->error().error(@11, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается имя картинки"));
+		CONVERTER->error().error(@10, @11, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РєР°СЂС‚РёРЅРєРё"));
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается высота"));
+		CONVERTER->error().error(@8, @9, _T("РћР¶РёРґР°РµС‚СЃСЏ РІС‹СЃРѕС‚Р°"));
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается ширина"));
+		CONVERTER->error().error(@6, @7, _T("РћР¶РёРґР°РµС‚СЃСЏ С€РёСЂРёРЅР°"));
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё Y"));
 	}
 	| RDO_s_bmp '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_s_bmp '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё X"));
 	}
 	| RDO_s_bmp error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '['"));
 	}
 	;
 
@@ -1338,55 +1338,55 @@ frm_rect
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		CONVERTER->error().error(@13, _T("Ожидается ']'"));
+		CONVERTER->error().error(@13, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
-		CONVERTER->error().error(@12, @13, _T("Ожидается цвет линии прямоугольника"));
+		CONVERTER->error().error(@12, @13, _T("РћР¶РёРґР°РµС‚СЃСЏ С†РІРµС‚ Р»РёРЅРёРё РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР°"));
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается запятая"));
+		CONVERTER->error().error(@11, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается цвет фона"));
+		CONVERTER->error().error(@10, @11, _T("РћР¶РёРґР°РµС‚СЃСЏ С†РІРµС‚ С„РѕРЅР°"));
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается высота"));
+		CONVERTER->error().error(@8, @9, _T("РћР¶РёРґР°РµС‚СЃСЏ РІС‹СЃРѕС‚Р°"));
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается ширина"));
+		CONVERTER->error().error(@6, @7, _T("РћР¶РёРґР°РµС‚СЃСЏ С€РёСЂРёРЅР°"));
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_rect '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё Y"));
 	}
 	| RDO_rect '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_rect '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё X"));
 	}
 	| RDO_rect error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '['"));
 	}
 	;
 
@@ -1429,55 +1429,55 @@ frm_r_rect
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		CONVERTER->error().error(@13, _T("Ожидается ']'"));
+		CONVERTER->error().error(@13, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
-		CONVERTER->error().error(@12, @13, _T("Ожидается цвет линии прямоугольника"));
+		CONVERTER->error().error(@12, @13, _T("РћР¶РёРґР°РµС‚СЃСЏ С†РІРµС‚ Р»РёРЅРёРё РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР°"));
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается запятая"));
+		CONVERTER->error().error(@11, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается цвет фона"));
+		CONVERTER->error().error(@10, @11, _T("РћР¶РёРґР°РµС‚СЃСЏ С†РІРµС‚ С„РѕРЅР°"));
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается высота"));
+		CONVERTER->error().error(@8, @9, _T("РћР¶РёРґР°РµС‚СЃСЏ РІС‹СЃРѕС‚Р°"));
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается ширина"));
+		CONVERTER->error().error(@6, @7, _T("РћР¶РёРґР°РµС‚СЃСЏ С€РёСЂРёРЅР°"));
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_r_rect '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё Y"));
 	}
 	| RDO_r_rect '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_r_rect '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё X"));
 	}
 	| RDO_r_rect error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '['"));
 	}
 	;
 
@@ -1520,55 +1520,55 @@ frm_ellipse
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		CONVERTER->error().error(@13, _T("Ожидается ']'"));
+		CONVERTER->error().error(@13, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
-		CONVERTER->error().error(@12, @13, _T("Ожидается цвет линии эллипса"));
+		CONVERTER->error().error(@12, @13, _T("РћР¶РёРґР°РµС‚СЃСЏ С†РІРµС‚ Р»РёРЅРёРё СЌР»Р»РёРїСЃР°"));
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается запятая"));
+		CONVERTER->error().error(@11, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается цвет фона"));
+		CONVERTER->error().error(@10, @11, _T("РћР¶РёРґР°РµС‚СЃСЏ С†РІРµС‚ С„РѕРЅР°"));
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается высота"));
+		CONVERTER->error().error(@8, @9, _T("РћР¶РёРґР°РµС‚СЃСЏ РІС‹СЃРѕС‚Р°"));
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается ширина"));
+		CONVERTER->error().error(@6, @7, _T("РћР¶РёРґР°РµС‚СЃСЏ С€РёСЂРёРЅР°"));
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_ellipse '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё Y"));
 	}
 	| RDO_ellipse '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_ellipse '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё X"));
 	}
 	| RDO_ellipse error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '['"));
 	}
 	;
 
@@ -1608,47 +1608,47 @@ frm_line
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается ']'"));
+		CONVERTER->error().error(@11, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается цвет линии"));
+		CONVERTER->error().error(@10, @11, _T("РћР¶РёРґР°РµС‚СЃСЏ С†РІРµС‚ Р»РёРЅРёРё"));
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается Y2"));
+		CONVERTER->error().error(@8, @9, _T("РћР¶РёРґР°РµС‚СЃСЏ Y2"));
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается X2"));
+		CONVERTER->error().error(@6, @7, _T("РћР¶РёРґР°РµС‚СЃСЏ X2"));
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_line '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается Y1"));
+		CONVERTER->error().error(@4, @5, _T("РћР¶РёРґР°РµС‚СЃСЏ Y1"));
 	}
 	| RDO_line '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_line '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается X1"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ X1"));
 	}
 	| RDO_line error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '['"));
 	}
 	;
 
@@ -1695,71 +1695,71 @@ frm_triang
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color error
 	{
-		CONVERTER->error().error(@17, _T("Ожидается ']'"));
+		CONVERTER->error().error(@17, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' error
 	{
-		CONVERTER->error().error(@16, @17, _T("Ожидается цвет линии"));
+		CONVERTER->error().error(@16, @17, _T("РћР¶РёРґР°РµС‚СЃСЏ С†РІРµС‚ Р»РёРЅРёРё"));
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
 	{
-		CONVERTER->error().error(@15, _T("Ожидается запятая"));
+		CONVERTER->error().error(@15, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@14, @15, _T("Ожидается цвет треугольника"));
+		CONVERTER->error().error(@14, @15, _T("РћР¶РёРґР°РµС‚СЃСЏ С†РІРµС‚ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР°"));
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@13, _T("Ожидается запятая"));
+		CONVERTER->error().error(@13, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@12, @13, _T("Ожидается Y3"));
+		CONVERTER->error().error(@12, @13, _T("РћР¶РёРґР°РµС‚СЃСЏ Y3"));
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается запятая"));
+		CONVERTER->error().error(@11, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается X3"));
+		CONVERTER->error().error(@10, @11, _T("РћР¶РёРґР°РµС‚СЃСЏ X3"));
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается Y2"));
+		CONVERTER->error().error(@8, @9, _T("РћР¶РёРґР°РµС‚СЃСЏ Y2"));
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается X2"));
+		CONVERTER->error().error(@6, @7, _T("РћР¶РёРґР°РµС‚СЃСЏ X2"));
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_triang '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается Y1"));
+		CONVERTER->error().error(@4, @5, _T("РћР¶РёРґР°РµС‚СЃСЏ Y1"));
 	}
 	| RDO_triang '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_triang '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается X1"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ X1"));
 	}
 	| RDO_triang error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '['"));
 	}
 	;
 
@@ -1789,15 +1789,15 @@ frm_active
 			LPRDODPTFreeActivity pActivity = CONVERTER->findDPTFreeActivity(oprName);
 			if (!pActivity)
 			{
-				CONVERTER->error().error(@2, rdo::format(_T("Опереация '%s' не найдена"), oprName.c_str()));
+				CONVERTER->error().error(@2, rdo::format(_T("РћРїРµСЂРµР°С†РёСЏ '%s' РЅРµ РЅР°Р№РґРµРЅР°"), oprName.c_str()));
 			}
 			else
 			{
 				if (pActivity->pattern()->getType() != RDOPATPattern::PT_Keyboard)
 				{
-					CONVERTER->error().push_only(@2, rdo::format(_T("Активность '%s' должна быть клавиатурной"), pActivity->name().c_str()));
-					CONVERTER->error().push_only(pActivity->src_info(), _T("См. акивность"));
-					CONVERTER->error().push_only(pActivity->pattern()->src_info(), _T("См. образец"));
+					CONVERTER->error().push_only(@2, rdo::format(_T("РђРєС‚РёРІРЅРѕСЃС‚СЊ '%s' РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РєР»Р°РІРёР°С‚СѓСЂРЅРѕР№"), pActivity->name().c_str()));
+					CONVERTER->error().push_only(pActivity->src_info(), _T("РЎРј. Р°РєРёРІРЅРѕСЃС‚СЊ"));
+					CONVERTER->error().push_only(pActivity->pattern()->src_info(), _T("РЎРј. РѕР±СЂР°Р·РµС†"));
 					CONVERTER->error().push_done();
 				}
 			}
@@ -1806,9 +1806,9 @@ frm_active
 		{
 			if (pOperation->pattern()->getType() != RDOPATPattern::PT_Keyboard)
 			{
-				CONVERTER->error().push_only(@2, rdo::format(_T("Операция '%s' должна быть клавиатурной"), pOperation->name().c_str()));
-				CONVERTER->error().push_only(pOperation->src_info(), _T("См. операцию"));
-				CONVERTER->error().push_only(pOperation->pattern()->src_info(), _T("См. образец"));
+				CONVERTER->error().push_only(@2, rdo::format(_T("РћРїРµСЂР°С†РёСЏ '%s' РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РєР»Р°РІРёР°С‚СѓСЂРЅРѕР№"), pOperation->name().c_str()));
+				CONVERTER->error().push_only(pOperation->src_info(), _T("РЎРј. РѕРїРµСЂР°С†РёСЋ"));
+				CONVERTER->error().push_only(pOperation->pattern()->src_info(), _T("РЎРј. РѕР±СЂР°Р·РµС†"));
 				CONVERTER->error().push_done();
 			}
 		}
@@ -1826,50 +1826,50 @@ frm_active
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@10, _T("Ожидается ']'"));
+		CONVERTER->error().error(@10, _T("РћР¶РёРґР°РµС‚СЃСЏ ']'"));
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@9, @10, _T("Ожидается высота"));
+		CONVERTER->error().error(@9, @10, _T("РћР¶РёРґР°РµС‚СЃСЏ РІС‹СЃРѕС‚Р°"));
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@8, _T("Ожидается запятая"));
+		CONVERTER->error().error(@8, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@7, @8, _T("Ожидается ширина"));
+		CONVERTER->error().error(@7, @8, _T("РћР¶РёРґР°РµС‚СЃСЏ С€РёСЂРёРЅР°"));
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@6, _T("Ожидается запятая"));
+		CONVERTER->error().error(@6, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@5, @6, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@5, @6, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё Y"));
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается запятая"));
+		CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РїСЏС‚Р°СЏ"));
 	}
 	| RDO_active RDO_IDENTIF '[' error
 	{
-		CONVERTER->error().error(@3, @4, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@3, @4, _T("РћР¶РёРґР°РµС‚СЃСЏ РєРѕРѕСЂРґРёРЅР°С‚Р° РїРѕ РѕСЃРё X"));
 	}
 	| RDO_active RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается '['"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ '['"));
 	}
 	| RDO_active error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается имя клавиатурной операции"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РєР»Р°РІРёР°С‚СѓСЂРЅРѕР№ РѕРїРµСЂР°С†РёРё"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Общие составные токены для всех объектов РДО
+// -------------------- РћР±С‰РёРµ СЃРѕСЃС‚Р°РІРЅС‹Рµ С‚РѕРєРµРЅС‹ РґР»СЏ РІСЃРµС… РѕР±СЉРµРєС‚РѕРІ Р Р”Рћ
 // --------------------------------------------------------------------------------
-// -------------------- Логические выражения
+// -------------------- Р›РѕРіРёС‡РµСЃРєРёРµ РІС‹СЂР°Р¶РµРЅРёСЏ
 // --------------------------------------------------------------------------------
 fun_logic_eq
 	: '='
@@ -2005,16 +2005,16 @@ fun_logic
 	}
 	| '[' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| '(' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Арифметические выражения
+// -------------------- РђСЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ РІС‹СЂР°Р¶РµРЅРёСЏ
 // --------------------------------------------------------------------------------
 fun_arithm
 	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
@@ -2091,7 +2091,7 @@ fun_arithm
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Функции и последовательности
+// -------------------- Р¤СѓРЅРєС†РёРё Рё РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
 // --------------------------------------------------------------------------------
 fun_arithm_func_call
 	: RDO_IDENTIF '(' ')'
@@ -2120,7 +2120,7 @@ fun_arithm_func_call
 	}
 	| RDO_IDENTIF '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в параметрах функции"));
+		CONVERTER->error().error(@3, _T("РћС€РёР±РєР° РІ РїР°СЂР°РјРµС‚СЂР°С… С„СѓРЅРєС†РёРё"));
 	}
 	;
 
@@ -2147,16 +2147,16 @@ fun_arithm_func_call_pars
 	}
 	| fun_arithm_func_call_pars error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@2, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	| fun_arithm_func_call_pars ',' error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@3, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Групповые выражения
+// -------------------- Р“СЂСѓРїРїРѕРІС‹Рµ РІС‹СЂР°Р¶РµРЅРёСЏ
 // --------------------------------------------------------------------------------
 fun_group_keyword
 	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
@@ -2174,11 +2174,11 @@ fun_group_header
 	}
 	| fun_group_keyword '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С‚РёРїР°"));
 	}
 	| fun_group_keyword error
 	{
-		CONVERTER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@1, _T("РџРѕСЃР»Рµ РёРјРµРЅРё С„СѓРЅРєС†РёРё РѕР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	;
 
@@ -2205,15 +2205,15 @@ fun_group
 	}
 	| fun_group_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_group_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_group_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	;
 
@@ -2232,11 +2232,11 @@ fun_select_header
 	}
 	| RDO_Select '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С‚РёРїР°"));
 	}
 	| RDO_Select error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	;
 
@@ -2267,15 +2267,15 @@ fun_select_body
 	}
 	| fun_select_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	;
 
@@ -2300,11 +2300,11 @@ fun_select_logic
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@4, @5, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	| fun_select_body '.' fun_select_keyword error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
@@ -2318,19 +2318,19 @@ fun_select_logic
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_body '.' RDO_Empty error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_body '.' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РјРµС‚РѕРґ СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ"));
 	}
 	| fun_select_body error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '.' (С‚РѕС‡РєР°) РґР»СЏ РІС‹Р·РѕРІР° РјРµС‚РѕРґР° СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ"));
 	}
 	;
 
@@ -2347,11 +2347,11 @@ fun_select_arithm
 	}
 	| fun_select_body '.' RDO_Size error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_body '.' RDO_Size '(' error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	;
 

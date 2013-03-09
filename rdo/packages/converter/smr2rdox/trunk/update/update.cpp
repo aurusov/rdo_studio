@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      update.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      29.10.2010
   \brief     
   \indent    4T
@@ -233,7 +233,7 @@ void UpdateMove::apply(REF(LPIDocument) pDocument) const
 	{
 		if (m_posFromEnd < pos)
 		{
-			//! Удалили перед собой, сдвинемся к началу
+			//! РЈРґР°Р»РёР»Рё РїРµСЂРµРґ СЃРѕР±РѕР№, СЃРґРІРёРЅРµРјСЃСЏ Рє РЅР°С‡Р°Р»Сѓ
 			pos -= m_posFromEnd - m_posFromBegin;
 		}
 	}
@@ -249,7 +249,7 @@ void UpdateMove::insert(IDocument::Type type, CREF(Position) to, ruint size)
 	{
 		if (to.begin())
 		{
-			//! Вставка до, сдвинемся к концу
+			//! Р’СЃС‚Р°РІРєР° РґРѕ, СЃРґРІРёРЅРµРјСЃСЏ Рє РєРѕРЅС†Сѓ
 			m_posFromBegin += size;
 			m_posFromEnd   += size;
 		}
@@ -257,23 +257,23 @@ void UpdateMove::insert(IDocument::Type type, CREF(Position) to, ruint size)
 		{
 			if (to < m_posFromBegin && m_posFromBegin != m_posFromEnd)
 			{
-				//! Вставка до, сдвинемся к концу
+				//! Р’СЃС‚Р°РІРєР° РґРѕ, СЃРґРІРёРЅРµРјСЃСЏ Рє РєРѕРЅС†Сѓ
 				m_posFromBegin += size;
 				m_posFromEnd   += size;
 			}
 			else if (to == m_posFromBegin && to + size <= m_posFromEnd && m_posFromBegin != m_posFromEnd)
 			{
-				//! Вставка внутри, расширим конец
+				//! Р’СЃС‚Р°РІРєР° РІРЅСѓС‚СЂРё, СЂР°СЃС€РёСЂРёРј РєРѕРЅРµС†
 				m_posFromEnd += size;
 			}
 			else if (to == m_posFromBegin && m_posFromBegin == m_posFromEnd)
 			{
-				//! Вставка в пустой интервал, расширим конец
+				//! Р’СЃС‚Р°РІРєР° РІ РїСѓСЃС‚РѕР№ РёРЅС‚РµСЂРІР°Р», СЂР°СЃС€РёСЂРёРј РєРѕРЅРµС†
 				m_posFromEnd += size;
 			}
 			else if (to > m_posFromBegin && to <= m_posFromEnd)
 			{
-				//! Вставка внутрь, расширим конец
+				//! Р’СЃС‚Р°РІРєР° РІРЅСѓС‚СЂСЊ, СЂР°СЃС€РёСЂРёРј РєРѕРЅРµС†
 				m_posFromEnd += size;
 			}
 		}
@@ -285,7 +285,7 @@ void UpdateMove::insert(IDocument::Type type, CREF(Position) to, ruint size)
 		{
 			if (to.begin() || to <= m_posTo)
 			{
-				//! Вставка до, сдвинемся к концу
+				//! Р’СЃС‚Р°РІРєР° РґРѕ, СЃРґРІРёРЅРµРјСЃСЏ Рє РєРѕРЅС†Сѓ
 				m_posTo += size;
 			}
 		}
@@ -298,13 +298,13 @@ void UpdateMove::remove(IDocument::Type type, CREF(Position) from, CREF(Position
 	{
 		if (to < m_posFromBegin)
 		{
-			//! Удаление до, сдвинемся к началу
+			//! РЈРґР°Р»РµРЅРёРµ РґРѕ, СЃРґРІРёРЅРµРјСЃСЏ Рє РЅР°С‡Р°Р»Сѓ
 			m_posFromBegin -= to - from;
 			m_posFromEnd   -= to - from;
 		}
 		else if (m_posFromBegin <= from && to <= m_posFromEnd)
 		{
-			//! Удаление внутри, подрежем конец
+			//! РЈРґР°Р»РµРЅРёРµ РІРЅСѓС‚СЂРё, РїРѕРґСЂРµР¶РµРј РєРѕРЅРµС†
 			m_posFromEnd -= to - from;
 		}
 	}
@@ -315,7 +315,7 @@ void UpdateMove::remove(IDocument::Type type, CREF(Position) from, CREF(Position
 		{
 			if (to < m_posTo)
 			{
-				//! Удаление до, сдвинемся к началу
+				//! РЈРґР°Р»РµРЅРёРµ РґРѕ, СЃРґРІРёРЅРµРјСЃСЏ Рє РЅР°С‡Р°Р»Сѓ
 				m_posTo -= to - from;
 			}
 		}
@@ -349,45 +349,45 @@ void UpdateSwap::dump(REF(LPIDocument) pDocument) const
 
 void UpdateSwap::apply(REF(LPIDocument) pDocument) const
 {
-	//! Запомним значения
+	//! Р—Р°РїРѕРјРЅРёРј Р·РЅР°С‡РµРЅРёСЏ
 	tstring cut1 = pDocument->get(m_file, m_pos1Begin.get(), m_pos1End.get());
 	tstring cut2 = pDocument->get(m_file, m_pos2Begin.get(), m_pos2End.get());
 
-	//! Удалим первый интервал
+	//! РЈРґР°Р»РёРј РїРµСЂРІС‹Р№ РёРЅС‚РµСЂРІР°Р»
 	pDocument->remove(m_file, m_pos1Begin.get(), m_pos1End.get());
 
 	Position pos2Begin = m_pos2Begin;
 	Position pos2End   = m_pos2End;
 	if (m_pos1End <= pos2Begin)
 	{
-		//! Удаление перед вторым интервалом, сдвинемся к началу
+		//! РЈРґР°Р»РµРЅРёРµ РїРµСЂРµРґ РІС‚РѕСЂС‹Рј РёРЅС‚РµСЂРІР°Р»РѕРј, СЃРґРІРёРЅРµРјСЃСЏ Рє РЅР°С‡Р°Р»Сѓ
 		pos2Begin -= m_pos1End - m_pos1Begin;
 		pos2End   -= m_pos1End - m_pos1Begin;
 	}
 
-	//! Удалим второй интервал
+	//! РЈРґР°Р»РёРј РІС‚РѕСЂРѕР№ РёРЅС‚РµСЂРІР°Р»
 	pDocument->remove(m_file, pos2Begin.get(), pos2End.get());
 
 	Position pos1Begin = m_pos1Begin;
 	Position pos1End   = m_pos1End;
 	if (pos2End <= pos1Begin)
 	{
-		//! Удаление перед первым интервалом, сдвинемся к началу
+		//! РЈРґР°Р»РµРЅРёРµ РїРµСЂРµРґ РїРµСЂРІС‹Рј РёРЅС‚РµСЂРІР°Р»РѕРј, СЃРґРІРёРЅРµРјСЃСЏ Рє РЅР°С‡Р°Р»Сѓ
 		pos1Begin -= pos2End - pos2Begin;
 		pos1End   -= pos2End - pos2Begin;
 	}
 
-	//! Вставка первого буффера на место второго
+	//! Р’СЃС‚Р°РІРєР° РїРµСЂРІРѕРіРѕ Р±СѓС„С„РµСЂР° РЅР° РјРµСЃС‚Рѕ РІС‚РѕСЂРѕРіРѕ
 	pDocument->insert(m_file, pos2Begin.get(), cut1);
 
 	if (pos2Begin <= pos1Begin)
 	{
-		//! Вставка перед первым интервалом, сдвинемся к концу
+		//! Р’СЃС‚Р°РІРєР° РїРµСЂРµРґ РїРµСЂРІС‹Рј РёРЅС‚РµСЂРІР°Р»РѕРј, СЃРґРІРёРЅРµРјСЃСЏ Рє РєРѕРЅС†Сѓ
 		pos1Begin += cut1.length();
 		pos1End   += cut1.length();
 	}
 
-	//! Вставка второго буффера на место первого
+	//! Р’СЃС‚Р°РІРєР° РІС‚РѕСЂРѕРіРѕ Р±СѓС„С„РµСЂР° РЅР° РјРµСЃС‚Рѕ РїРµСЂРІРѕРіРѕ
 	pDocument->insert(m_file, pos1Begin.get(), cut2);
 }
 

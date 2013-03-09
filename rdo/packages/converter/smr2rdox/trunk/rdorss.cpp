@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdorss.cpp
-  \authors   Áàðñ Àëåêñàíäð
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \authors   Ð‘Ð°Ñ€Ñ ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -58,8 +58,8 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 
 	if (m_currParam == getType()->getParams().end())
 	{
-		Converter::s_converter()->error().push_only(pParam->src_info(), _T("Ñëèøêîì ìíîãî ïàðàìåòðîâ"));
-		Converter::s_converter()->error().push_only(getType()->src_info(), _T("Ñì. òèï ðåñóðñà"));
+		Converter::s_converter()->error().push_only(pParam->src_info(), _T("Ð¡Ð»Ð¸ÑˆÐºÐ¾Ð¼ Ð¼Ð½Ð¾Ð³Ð¾ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð²"));
+		Converter::s_converter()->error().push_only(getType()->src_info(), _T("Ð¡Ð¼. Ñ‚Ð¸Ð¿ Ñ€ÐµÑÑƒÑ€ÑÐ°"));
 		Converter::s_converter()->error().push_done();
 	}
 	try
@@ -68,8 +68,8 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 		{
 			if (!(*m_currParam)->getDefault()->defined())
 			{
-				Converter::s_converter()->error().push_only(pParam->src_info(), _T("Íåâîçìîæíî èñïîëüçîâàòü '*', ê.ò. îòñóòñòâóåò çíà÷åíèå ïî óìîë÷àíèþ"));
-				Converter::s_converter()->error().push_only((*m_currParam)->getType()->src_info(), _T("Ñì. îïèñàíèå ïàðàìåòðà"));
+				Converter::s_converter()->error().push_only(pParam->src_info(), _T("ÐÐµÐ²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ '*', Ðº.Ñ‚. Ð¾Ñ‚ÑÑƒÑ‚ÑÑ‚Ð²ÑƒÐµÑ‚ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ"));
+				Converter::s_converter()->error().push_only((*m_currParam)->getType()->src_info(), _T("Ð¡Ð¼. Ð¾Ð¿Ð¸ÑÐ°Ð½Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð°"));
 				Converter::s_converter()->error().push_done();
 			}
 			m_paramList.push_back(Param((*m_currParam)->getDefault()));
@@ -83,7 +83,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 	}
 	catch(REF(RDOSyntaxException))
 	{
-		Converter::s_converter()->error().modify(rdo::format(_T("Äëÿ ïàðàìåòðà '%s': "), (*m_currParam)->name().c_str()));
+		Converter::s_converter()->error().modify(rdo::format(_T("Ð”Ð»Ñ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° '%s': "), (*m_currParam)->name().c_str()));
 	}
 }
 
@@ -103,7 +103,7 @@ rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
 	ASSERT(pCalc);
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());
-	srcInfo.setSrcText(_T("Ñîçäàíèå ðåñóðñà ") + src_text());
+	srcInfo.setSrcText(_T("Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ñ€ÐµÑÑƒÑ€ÑÐ° ") + src_text());
 	pCalc->setSrcInfo(srcInfo);
 	return pCalc;
 }
@@ -126,7 +126,7 @@ rdo::runtime::LPRDOCalc RDOPROCResource::createCalc() const
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
 	ASSERT(pCalc);
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());
-	srcInfo.setSrcText(_T("Ñîçäàíèå ðåñóðñà ") + src_text());
+	srcInfo.setSrcText(_T("Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ñ€ÐµÑÑƒÑ€ÑÐ° ") + src_text());
 	pCalc->setSrcInfo(srcInfo);
 	return pCalc;
 }

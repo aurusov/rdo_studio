@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdodpt.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -312,7 +312,7 @@ class RDOPROCBlockForQueue: public RDOPROCOperator
 protected:
 	RDOPROCBlockForQueue(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name);
 
-	//! m_parserForRuntime служит для передачи информации о параметре "Состояние" ресурса
+	//! m_parserForRuntime СЃР»СѓР¶РёС‚ РґР»СЏ РїРµСЂРµРґР°С‡Рё РёРЅС„РѕСЂРјР°С†РёРё Рѕ РїР°СЂР°РјРµС‚СЂРµ "РЎРѕСЃС‚РѕСЏРЅРёРµ" СЂРµСЃСѓСЂСЃР°
 	rdo::runtime::parser_for_Queue m_parserForRuntime;
 };
 
@@ -362,7 +362,7 @@ class RDOPROCBlockForSeize: public RDOPROCOperator
 protected:
 	RDOPROCBlockForSeize(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name);
 
-	//! m_parserForRuntime служит для передачи информации о параметре "Состояние" ресурса
+	//! m_parserForRuntime СЃР»СѓР¶РёС‚ РґР»СЏ РїРµСЂРµРґР°С‡Рё РёРЅС„РѕСЂРјР°С†РёРё Рѕ РїР°СЂР°РјРµС‚СЂРµ "РЎРѕСЃС‚РѕСЏРЅРёРµ" СЂРµСЃСѓСЂСЃР°
 	rdo::runtime::parser_for_Seize m_parserForRuntime;
 };
 

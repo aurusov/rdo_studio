@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_value.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -33,14 +33,14 @@ RDOValue::RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
 	, m_type          (type        )
 {}
 
-// Для t_identificator известно только имя, но не тип
+// Р”Р»СЏ t_identificator РёР·РІРµСЃС‚РЅРѕ С‚РѕР»СЊРєРѕ РёРјСЏ, РЅРѕ РЅРµ С‚РёРї
 RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (rdo::runtime::RDOValue(src_info.src_text(), rdo::runtime::g_identificator))
 	, m_type          (rdo::Factory<RDOType__identificator>::create())
 {}
 
-// Неопределенный тип
+// РќРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ С‚РёРї
 RDOValue::RDOValue()
 	: RDOParserSrcInfo()
 	, m_value         (rdo::runtime::RDOValue(rdo::runtime::g_unknow.object_parent_cast<rdo::runtime::RDOType>()))

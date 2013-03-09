@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdofun.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -58,7 +58,7 @@ void RDOFUNDoubleToIntByResult::roundCalc()
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- Набор макросов для генерации логических и арифметических выражений
+// -------------------- РќР°Р±РѕСЂ РјР°РєСЂРѕСЃРѕРІ РґР»СЏ РіРµРЅРµСЂР°С†РёРё Р»РѕРіРёС‡РµСЃРєРёС… Рё Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёС… РІС‹СЂР°Р¶РµРЅРёР№
 // --------------------------------------------------------------------------------
 #define CREATE_CALC(CALC, OPR) \
 rdo::runtime::LPRDOCalcConst pConstCalc1 = m_pCalc.object_dynamic_cast<rdo::runtime::RDOCalcConst>(); \
@@ -131,7 +131,7 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm)
 	}
 	if (!m_pCalc)
 	{
-		Converter::s_converter()->error().error(src_info(), rdo::format(_T("Ожидается логическое выражение, найдено: %s"), src_text().c_str()));
+		Converter::s_converter()->error().error(src_info(), rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ Р»РѕРіРёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ, РЅР°Р№РґРµРЅРѕ: %s"), src_text().c_str()));
 	}
 }
 
@@ -152,11 +152,11 @@ RDOFUNLogic::RDOFUNLogic(CREF(rdo::runtime::LPRDOCalc) pCalc, rbool hideWarning)
 		{
 			if (pConstCalc->calcValue(Converter::s_converter()->runtime()).getAsBool())
 			{
-				Converter::s_converter()->error().warning(pConstCalc->srcInfo(), rdo::format(_T("Логическое выражение всегда истинно: %s"), pConstCalc->srcInfo().src_text().c_str()));
+				Converter::s_converter()->error().warning(pConstCalc->srcInfo(), rdo::format(_T("Р›РѕРіРёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ РІСЃРµРіРґР° РёСЃС‚РёРЅРЅРѕ: %s"), pConstCalc->srcInfo().src_text().c_str()));
 			}
 			else
 			{
-				Converter::s_converter()->error().warning(pConstCalc->srcInfo(), rdo::format(_T("Логическое выражение всегда ложно: %s"), pConstCalc->srcInfo().src_text().c_str()));
+				Converter::s_converter()->error().warning(pConstCalc->srcInfo(), rdo::format(_T("Р›РѕРіРёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ РІСЃРµРіРґР° Р»РѕР¶РЅРѕ: %s"), pConstCalc->srcInfo().src_text().c_str()));
 			}
 		}
 	}
@@ -269,7 +269,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 		return;
 	}
 
-	if (pValue->value().getIdentificator() == _T("Time_now") || pValue->value().getIdentificator() == _T("time_now") || pValue->value().getIdentificator() == _T("Системное_время") || pValue->value().getIdentificator() == _T("системное_время"))
+	if (pValue->value().getIdentificator() == _T("Time_now") || pValue->value().getIdentificator() == _T("time_now") || pValue->value().getIdentificator() == _T("РЎРёСЃС‚РµРјРЅРѕРµ_РІСЂРµРјСЏ") || pValue->value().getIdentificator() == _T("СЃРёСЃС‚РµРјРЅРѕРµ_РІСЂРµРјСЏ"))
 	{
 		m_pValue = rdo::Factory<RDOValue>::create(rdo::Factory<RDOType__real>::create().object_parent_cast<RDOType>());
 		m_pCalc  = rdo::Factory<rdo::runtime::RDOCalcGetTimeNow>::create();
@@ -291,8 +291,8 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 		return;
 	}
 
-	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+	//! Р’РѕР·РјРѕР¶РЅРѕ, С‡С‚Рѕ СЌС‚Рѕ Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР°, С‚РѕР»СЊРєРѕ РѕРґРЅРѕ Рё С‚РѕР¶Рµ Р·РЅР°С‡РµРЅРёРµ РјРѕР¶РµС‚ РІСЃС‚СЂРµС‡Р°С‚СЊСЃСЏ РІ СЂР°Р·РЅС‹С…
+	//! РїРµСЂРµС‡РёСЃР»РёРјС‹С… С‚РёРїР°С…, РїРѕСЌС‚РѕРјСѓ РєР°РєРѕР№ РёРјРµРЅРЅРѕ РёР· РЅРёС… РІС‹Р±СЂР°С‚СЊ - РІРѕРїСЂРѕСЃ
 	{ErrorBlockMonicker errorBlockMonicker;
 		CREF(Converter::PreCastTypeList) typeList = Converter::s_converter()->getPreCastTypeList();
 		STL_FOR_ALL_CONST(typeList, it)
@@ -306,7 +306,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 		}
 	}
 
-	//! Ищем параметр релевантного ресурса
+	//! РС‰РµРј РїР°СЂР°РјРµС‚СЂ СЂРµР»РµРІР°РЅС‚РЅРѕРіРѕ СЂРµСЃСѓСЂСЃР°
 	if (Converter::s_converter()->getFileToParse() == rdo::converter::smr2rdox::PAT_IN)
 	{
 		LPRDOPATPattern pPattern = Converter::s_converter()->getLastPATPattern();
@@ -322,7 +322,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 		}
 	}
 
-	//! Ищем параметры паттерна или функции по имени
+	//! РС‰РµРј РїР°СЂР°РјРµС‚СЂС‹ РїР°С‚С‚РµСЂРЅР° РёР»Рё С„СѓРЅРєС†РёРё РїРѕ РёРјРµРЅРё
 	LPRDOParam pFunctionParam;
 	switch (Converter::s_converter()->getFileToParse())
 	{
@@ -331,12 +331,12 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 	default                              : break;
 	}
 
-	//! Ищем константы по имени
+	//! РС‰РµРј РєРѕРЅСЃС‚Р°РЅС‚С‹ РїРѕ РёРјРµРЅРё
 	LPRDOFUNConstant pConstant = Converter::s_converter()->findFUNConstant(pValue->value().getIdentificator());
 
 	if (pConstant && pFunctionParam)
 	{
-		Converter::s_converter()->error().error(src_info(), rdo::format(_T("Имя параметра образца совпадает с именем константы: %s"), pValue->value().getIdentificator().c_str()));
+		Converter::s_converter()->error().error(src_info(), rdo::format(_T("РРјСЏ РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р° СЃРѕРІРїР°РґР°РµС‚ СЃ РёРјРµРЅРµРј РєРѕРЅСЃС‚Р°РЅС‚С‹: %s"), pValue->value().getIdentificator().c_str()));
 	}
 
 	if (pConstant)
@@ -347,11 +347,11 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 		return;
 	}
 
-	//! Ищем последовательность по имени
+	//! РС‰РµРј РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ РїРѕ РёРјРµРЅРё
 	LPRDOFUNSequence pSequence = Converter::s_converter()->findFUNSequence(pValue->value().getIdentificator());
 	if (pSequence && pFunctionParam)
 	{
-		Converter::s_converter()->error().error(src_info(), rdo::format(_T("Имя параметра образца совпадает с именем последовательности: %s"), pValue->value().getIdentificator().c_str()));
+		Converter::s_converter()->error().error(src_info(), rdo::format(_T("РРјСЏ РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р° СЃРѕРІРїР°РґР°РµС‚ СЃ РёРјРµРЅРµРј РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё: %s"), pValue->value().getIdentificator().c_str()));
 	}
 
 	if (pSequence)
@@ -368,7 +368,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 
 	if (pFunctionParam)
 	{
-		//! Это параметр
+		//! Р­С‚Рѕ РїР°СЂР°РјРµС‚СЂ
 		m_pValue = rdo::Factory<RDOValue>::create(pFunctionParam->getType()->type());
 		switch (Converter::s_converter()->getFileToParse())
 		{
@@ -383,7 +383,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 		return;
 	}
 
-	Converter::s_converter()->error().error(pValue->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pValue->value().getIdentificator().c_str()));
+	Converter::s_converter()->error().error(pValue->src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ: %s"), pValue->value().getIdentificator().c_str()));
 }
 
 void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
@@ -392,11 +392,11 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 	LPRDORSSResource pResource = Converter::s_converter()->findRSSResource(pResName->value().getIdentificator());
 	if (pResource)
 	{
-		//! Это ресурс с закладки RSS
+		//! Р­С‚Рѕ СЂРµСЃСѓСЂСЃ СЃ Р·Р°РєР»Р°РґРєРё RSS
 		ruint parNumb = pResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 		{
-			Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), pParName->value().getIdentificator().c_str()));
+			Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СЂРµСЃСѓСЂСЃР°: %s"), pParName->value().getIdentificator().c_str()));
 		}
 		if (pResource->getType()->isPermanent())
 		{
@@ -408,21 +408,21 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 		}
 		else
 		{
-			Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Нельзя использовать временный ресурс: %s"), pResName->value().getIdentificator().c_str()));
+			Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("РќРµР»СЊР·СЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РІСЂРµРјРµРЅРЅС‹Р№ СЂРµСЃСѓСЂСЃ: %s"), pResName->value().getIdentificator().c_str()));
 		}
 		m_pCalc->setSrcInfo(src_info());
 		m_pValue = rdo::Factory<RDOValue>::create(pResource->getType()->findRTPParam(pParName->value().getIdentificator())->getType()->type());
 		return;
 	}
-	//! Это не ресурс, но возможно, ресурс внутри групповой функции
+	//! Р­С‚Рѕ РЅРµ СЂРµСЃСѓСЂСЃ, РЅРѕ РІРѕР·РјРѕР¶РЅРѕ, СЂРµСЃСѓСЂСЃ РІРЅСѓС‚СЂРё РіСЂСѓРїРїРѕРІРѕР№ С„СѓРЅРєС†РёРё
 	else if (!Converter::s_converter()->getFUNGroupStack().empty() && Converter::s_converter()->getFUNGroupStack().back()->getResType()->name() == pResName->value().getIdentificator())
 	{
-		//! Это ресурс внутри групповой функции
+		//! Р­С‚Рѕ СЂРµСЃСѓСЂСЃ РІРЅСѓС‚СЂРё РіСЂСѓРїРїРѕРІРѕР№ С„СѓРЅРєС†РёРё
 		LPRDOFUNGroup pFUNGroup = Converter::s_converter()->getFUNGroupStack().back();
 		ruint         parNumb   = pFUNGroup->getResType()->getRTPParamNumber(pParName->value().getIdentificator());
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 		{
-			Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), pParName->value().getIdentificator().c_str()));
+			Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СЂРµСЃСѓСЂСЃР°: %s"), pParName->value().getIdentificator().c_str()));
 		}
 		m_pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
 		m_pCalc->setSrcInfo(src_info());
@@ -431,94 +431,94 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 	}
 	else
 	{
-		//! Возможно, это релевантный ресурс
+		//! Р’РѕР·РјРѕР¶РЅРѕ, СЌС‚Рѕ СЂРµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ
 		switch (Converter::s_converter()->getFileToParse())
 		{
 		case rdo::converter::smr2rdox::PAT_IN:
 			if (Converter::s_converter()->getLastPATPattern() && Converter::s_converter()->getLastPATPattern()->findRelevantResource(pResName->value().getIdentificator()))
 			{
-				//! Это релевантный ресурс где-то в паттерне (with_min-common-choice, $Time, $Body)
+				//! Р­С‚Рѕ СЂРµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ РіРґРµ-С‚Рѕ РІ РїР°С‚С‚РµСЂРЅРµ (with_min-common-choice, $Time, $Body)
 				LPRDOPATPattern       pPattern          = Converter::s_converter()->getLastPATPattern();
 				LPRDORelevantResource pRelevantResource = pPattern->findRelevantResource(pResName->value().getIdentificator());
 				if (!pPattern->m_pCurrRelRes)
 				{
-					//! Внутри with_min-common-choice или $Time
+					//! Р’РЅСѓС‚СЂРё with_min-common-choice РёР»Рё $Time
 					if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_NonExist || pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Create)
 					{
-						Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s"), pRelevantResource->name().c_str()));
+						Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Р РµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅ, С‚.Рє. РѕРЅ РµС‰Рµ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚: %s"), pRelevantResource->name().c_str()));
 					}
 				}
 				else
 				{
-					//! Внутри $Body
-					//! Проверяем использование неинициализированного рел.ресурса (pRelevantResource) в Choice from другом рел.ресурсе (pPattern->m_pCurrRelRes)
+					//! Р’РЅСѓС‚СЂРё $Body
+					//! РџСЂРѕРІРµСЂСЏРµРј РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РЅРµРёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅРЅРѕРіРѕ СЂРµР».СЂРµСЃСѓСЂСЃР° (pRelevantResource) РІ Choice from РґСЂСѓРіРѕРј СЂРµР».СЂРµСЃСѓСЂСЃРµ (pPattern->m_pCurrRelRes)
 					if (pPattern->m_pCurrRelRes->isChoiceFromState())
 					{
 						if (!pRelevantResource->m_alreadyHaveConverter && !pRelevantResource->isDirect())
 						{
-							Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Релевантный ресурс не определен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from"), pRelevantResource->name().c_str()));
+							Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Р РµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ РЅРµ РѕРїСЂРµРґРµР»РµРЅ: %s. Р•РіРѕ РЅРµР»СЊР·СЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РІ СѓСЃР»РѕРІРёСЏС… РІС‹Р±РѕСЂР° РґСЂСѓРіРёС… СЂРµСЃСѓСЂСЃРѕРІ РґРѕ РµРіРѕ СЃРѕР±СЃС‚РІРµРЅРЅРѕРіРѕ Choice from"), pRelevantResource->name().c_str()));
 						}
 						if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_NonExist)
 						{
-							Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Релевантный ресурс в начале операции не существует (NonExist): %s"), pRelevantResource->name().c_str()));
+							Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Р РµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ РІ РЅР°С‡Р°Р»Рµ РѕРїРµСЂР°С†РёРё РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ (NonExist): %s"), pRelevantResource->name().c_str()));
 						}
 						if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Create)
 						{
-							Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Сразу после создания (Create) релевантный ресурс '%s' можно использовать только в конверторах, но не в условии выбора"), pRelevantResource->name().c_str()));
+							Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("РЎСЂР°Р·Сѓ РїРѕСЃР»Рµ СЃРѕР·РґР°РЅРёСЏ (Create) СЂРµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ '%s' РјРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ С‚РѕР»СЊРєРѕ РІ РєРѕРЅРІРµСЂС‚РѕСЂР°С…, РЅРѕ РЅРµ РІ СѓСЃР»РѕРІРёРё РІС‹Р±РѕСЂР°"), pRelevantResource->name().c_str()));
 						}
 					}
-					//! Проверяем использование временного рел.ресурса внутри конвертора другого рел.ресурса
+					//! РџСЂРѕРІРµСЂСЏРµРј РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РІСЂРµРјРµРЅРЅРѕРіРѕ СЂРµР».СЂРµСЃСѓСЂСЃР° РІРЅСѓС‚СЂРё РєРѕРЅРІРµСЂС‚РѕСЂР° РґСЂСѓРіРѕРіРѕ СЂРµР».СЂРµСЃСѓСЂСЃР°
 					if (pRelevantResource->getType()->isTemporary())
 					{
-						//! В конверторе начала
+						//! Р’ РєРѕРЅРІРµСЂС‚РѕСЂРµ РЅР°С‡Р°Р»Р°
 						if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::convertBegin)
 						{
 							if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Create && !pRelevantResource->m_alreadyHaveConverter)
 							{
-								Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Релевантный ресурс нельзя использовать до его создания (Create): %s"), pRelevantResource->name().c_str()));
+								Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Р РµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ РЅРµР»СЊР·СЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґРѕ РµРіРѕ СЃРѕР·РґР°РЅРёСЏ (Create): %s"), pRelevantResource->name().c_str()));
 							}
 							if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Erase && pRelevantResource->m_alreadyHaveConverter)
 							{
-								Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Релевантный ресурс нельзя использовать после удаления (Erase): %s"), pRelevantResource->name().c_str()));
+								Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Р РµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ РЅРµР»СЊР·СЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РїРѕСЃР»Рµ СѓРґР°Р»РµРЅРёСЏ (Erase): %s"), pRelevantResource->name().c_str()));
 							}
 							if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_NonExist)
 							{
-								Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Релевантный ресурс не существует в этом конверторе (NonExist): %s"), pRelevantResource->name().c_str()));
+								Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Р РµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ РІ СЌС‚РѕРј РєРѕРЅРІРµСЂС‚РѕСЂРµ (NonExist): %s"), pRelevantResource->name().c_str()));
 							}
 						}
-						//! В конверторе конца
+						//! Р’ РєРѕРЅРІРµСЂС‚РѕСЂРµ РєРѕРЅС†Р°
 						if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::convertEnd)
 						{
 							if (pRelevantResource->m_statusEnd == rdo::runtime::RDOResource::CS_Create && !pRelevantResource->m_alreadyHaveConverter)
 							{
-								Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Релевантный ресурс нельзя использовать до его создания (Create): %s"), pRelevantResource->name().c_str()));
+								Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Р РµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ РЅРµР»СЊР·СЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґРѕ РµРіРѕ СЃРѕР·РґР°РЅРёСЏ (Create): %s"), pRelevantResource->name().c_str()));
 							}
 							if (pRelevantResource->m_statusEnd == rdo::runtime::RDOResource::CS_Erase && pRelevantResource->m_alreadyHaveConverter)
 							{
-								Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Релевантный ресурс нельзя использовать после удаления (Erase): %s"), pRelevantResource->name().c_str()));
+								Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Р РµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ РЅРµР»СЊР·СЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РїРѕСЃР»Рµ СѓРґР°Р»РµРЅРёСЏ (Erase): %s"), pRelevantResource->name().c_str()));
 							}
 							if (pRelevantResource->m_statusEnd == rdo::runtime::RDOResource::CS_NonExist)
 							{
-								Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Релевантный ресурс не существует в этом конверторе (NonExist): %s"), pRelevantResource->name().c_str()));
+								Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Р РµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ РІ СЌС‚РѕРј РєРѕРЅРІРµСЂС‚РѕСЂРµ (NonExist): %s"), pRelevantResource->name().c_str()));
 							}
 						}
 					}
-					//! Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
+					//! РџСЂРѕРІРµСЂСЏРµРј РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РµС‰Рµ РЅРµ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅРЅРѕРіРѕ (С‚РѕР»СЊРєРѕ РґР»СЏ Create) РїР°СЂР°РјРµС‚СЂР° СЂРµР». СЂРµСЃСѓСЂСЃР° РІ РµРіРѕ Р¶Рµ РєРѕРЅРІРµСЂС‚РѕСЂРµ
 					LPRDORTPParam pParam = pPattern->m_pCurrRelRes->getType()->findRTPParam(pParName->value().getIdentificator());
 					if (pParam && pPattern->m_pCurrRelRes->name() == pResName->value().getIdentificator())
 					{
-						//! В конверторе начала
+						//! Р’ РєРѕРЅРІРµСЂС‚РѕСЂРµ РЅР°С‡Р°Р»Р°
 						if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::convertBegin && pPattern->m_pCurrRelRes->m_statusBegin == rdo::runtime::RDOResource::CS_Create)
 						{
 							if (!pPattern->m_pCurrRelRes->getParamSetList().find(pParName->value().getIdentificator()))
 							{
 								if (!pParam->getDefault()->defined())
 								{
-									Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по умолчанию в типе ресурса"), pParName->value().getIdentificator().c_str()));
+									Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("РџР°СЂР°РјРµС‚СЂ '%s' РµС‰Рµ РЅРµ РѕРїСЂРµРґРµР»РµРЅ, РµРјСѓ РЅРµРѕР±С…РѕРґРёРјРѕ РїСЂРёСЃРІРѕРёС‚СЊ Р·РЅР°С‡РµРЅРёРµ РІ С‚РµРєСѓС‰РµРј РєРѕРЅРІРµСЂС‚РѕСЂРµ РёР»Рё СѓРєР°Р·Р°С‚СЊ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РІ С‚РёРїРµ СЂРµСЃСѓСЂСЃР°"), pParName->value().getIdentificator().c_str()));
 								}
 							}
 						}
-						//! В конверторе конца
+						//! Р’ РєРѕРЅРІРµСЂС‚РѕСЂРµ РєРѕРЅС†Р°
 						if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::convertEnd && pPattern->m_pCurrRelRes->m_statusEnd == rdo::runtime::RDOResource::CS_Create)
 						{
 							if (!pPattern->m_pCurrRelRes->getParamSetList().find(pParName->value().getIdentificator()))
@@ -527,7 +527,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 								{
 									if (!pParam->getDefault()->defined())
 									{
-										Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по умолчанию в типе ресурса"), pParName->value().getIdentificator().c_str()));
+										Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("РџР°СЂР°РјРµС‚СЂ '%s' РµС‰Рµ РЅРµ РѕРїСЂРµРґРµР»РµРЅ, РµРјСѓ РЅРµРѕР±С…РѕРґРёРјРѕ РїСЂРёСЃРІРѕРёС‚СЊ Р·РЅР°С‡РµРЅРёРµ РІ С‚РµРєСѓС‰РµРј РєРѕРЅРІРµСЂС‚РѕСЂРµ РёР»Рё СѓРєР°Р·Р°С‚СЊ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РІ С‚РёРїРµ СЂРµСЃСѓСЂСЃР°"), pParName->value().getIdentificator().c_str()));
 									}
 								}
 							}
@@ -537,7 +537,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 				ruint parNumb = pRelevantResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
 				if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 				{
-					Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), pParName->value().getIdentificator().c_str()));
+					Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СЂРµСЃСѓСЂСЃР°: %s"), pParName->value().getIdentificator().c_str()));
 				}
 				m_pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
 				m_pCalc->setSrcInfo(src_info());
@@ -551,12 +551,12 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 			{
 				LPRDOPATPattern pPattern = Converter::s_converter()->getLastDPTSearch()->getLastActivity()->pattern();
 				if (pPattern && pPattern->findRelevantResource(pResName->value().getIdentificator())) {
-					//! Это ресурс, который используется в DPT (condition, term_condition, evaluate_by, value before, value after)
+					//! Р­С‚Рѕ СЂРµСЃСѓСЂСЃ, РєРѕС‚РѕСЂС‹Р№ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ DPT (condition, term_condition, evaluate_by, value before, value after)
 					LPRDORelevantResource pRelevantResource = pPattern->findRelevantResource(pResName->value().getIdentificator());
 					ruint                 parNumb           = pRelevantResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
 					if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 					{
-						Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), pParName->value().getIdentificator().c_str()));
+						Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СЂРµСЃСѓСЂСЃР°: %s"), pParName->value().getIdentificator().c_str()));
 					}
 					m_pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
 					m_pCalc->setSrcInfo(src_info());
@@ -568,12 +568,12 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 			{
 				LPRDOPATPattern pPattern = Converter::s_converter()->getLastDPTPrior()->getLastActivity()->pattern();
 				if (pPattern && pPattern->findRelevantResource(pResName->value().getIdentificator())) {
-					//! Это ресурс, который используется в выражении приоритета активности DPTPrior
+					//! Р­С‚Рѕ СЂРµСЃСѓСЂСЃ, РєРѕС‚РѕСЂС‹Р№ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ РІС‹СЂР°Р¶РµРЅРёРё РїСЂРёРѕСЂРёС‚РµС‚Р° Р°РєС‚РёРІРЅРѕСЃС‚Рё DPTPrior
 					LPRDORelevantResource pRelevantResource = pPattern->findRelevantResource(pResName->value().getIdentificator());
 					ruint                 parNumb           = pRelevantResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
 					if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 					{
-						Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), pParName->value().getIdentificator().c_str()));
+						Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СЂРµСЃСѓСЂСЃР°: %s"), pParName->value().getIdentificator().c_str()));
 					}
 					m_pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
 					m_pCalc->setSrcInfo(src_info());
@@ -587,7 +587,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 			break;
 		}
 	}
-	Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Неизвестный ресурс: %s"), pResName->value().getIdentificator().c_str()));
+	Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ: %s"), pResName->value().getIdentificator().c_str()));
 }
 
 RDOFUNArithm::CastResult RDOFUNArithm::beforeCastValue(LPRDOFUNArithm pSecond)
@@ -629,45 +629,45 @@ LPRDOType RDOFUNArithm::getPreType(CREF(LPRDOFUNArithm) pSecond)
 {
 	if (typeID() == rdo::runtime::RDOType::t_unknow)
 	{
-		Converter::s_converter()->error().error(src_info(), rdo::format(_T("Внутренная ошибка парсера: неопределенное значение арифметического выражения: %s"), src_text().c_str()));
+		Converter::s_converter()->error().error(src_info(), rdo::format(_T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°: РЅРµРѕРїСЂРµРґРµР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРіРѕ РІС‹СЂР°Р¶РµРЅРёСЏ: %s"), src_text().c_str()));
 	}
 	if (pSecond->typeID() == rdo::runtime::RDOType::t_unknow)
 	{
-		Converter::s_converter()->error().error(pSecond->src_info(), rdo::format(_T("Внутренная ошибка парсера: неопределенное значение арифметического выражения: %s"), pSecond->src_text().c_str()));
+		Converter::s_converter()->error().error(pSecond->src_info(), rdo::format(_T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°: РЅРµРѕРїСЂРµРґРµР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРіРѕ РІС‹СЂР°Р¶РµРЅРёСЏ: %s"), pSecond->src_text().c_str()));
 	}
 	if (typeID() == rdo::runtime::RDOType::t_identificator)
 	{
-		Converter::s_converter()->error().error(src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), value()->value().getIdentificator().c_str()));
+		Converter::s_converter()->error().error(src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ: %s"), value()->value().getIdentificator().c_str()));
 	}
 	if (pSecond->typeID() == rdo::runtime::RDOType::t_identificator)
 	{
-		Converter::s_converter()->error().error(pSecond->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pSecond->value()->value().getIdentificator().c_str()));
+		Converter::s_converter()->error().error(pSecond->src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ: %s"), pSecond->value()->value().getIdentificator().c_str()));
 	}
 
-	/// @todo смущают два одинаковых src_info(), проверить и доказать правильность
+	/// @todo СЃРјСѓС‰Р°СЋС‚ РґРІР° РѕРґРёРЅР°РєРѕРІС‹С… src_info(), РїСЂРѕРІРµСЂРёС‚СЊ Рё РґРѕРєР°Р·Р°С‚СЊ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ
 	return type()->type_cast(pSecond->type(), pSecond->src_info(), src_info(), src_info());
 }
 
 LPRDOFUNArithm RDOFUNArithm::operator+ (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_ARITHM(Plus, +, _T("Ну не могу я сложить %s и %s"));
+	GENERATE_ARITHM(Plus, +, _T("РќСѓ РЅРµ РјРѕРіСѓ СЏ СЃР»РѕР¶РёС‚СЊ %s Рё %s"));
 }
 
 LPRDOFUNArithm RDOFUNArithm::operator- (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_ARITHM(Minus, -, _T("Нельзя из %s вычесть %s"));
+	GENERATE_ARITHM(Minus, -, _T("РќРµР»СЊР·СЏ РёР· %s РІС‹С‡РµСЃС‚СЊ %s"));
 }
 
 LPRDOFUNArithm RDOFUNArithm::operator* (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_ARITHM(Mult, *, _T("Нельзя %s умножить на %s"));
+	GENERATE_ARITHM(Mult, *, _T("РќРµР»СЊР·СЏ %s СѓРјРЅРѕР¶РёС‚СЊ РЅР° %s"));
 }
 
 LPRDOFUNArithm RDOFUNArithm::operator/ (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_ARITHM_CALC(Div, /, _T("Нельзя %s разделить на %s"));
-	/// @todo перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
-	//! Ответ: с умножением надо делать тоже самое, только непонятно как
+	GENERATE_ARITHM_CALC(Div, /, _T("РќРµР»СЊР·СЏ %s СЂР°Р·РґРµР»РёС‚СЊ РЅР° %s"));
+	/// @todo РїРµСЂРµРІРѕРґ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ РІ С†РµР»РѕРµ РїСЂРё РґРµР»РµРЅРёРё. Рђ С‡С‚Рѕ РґРµР»Р°С‚СЊ СЃ СѓРјРЅРѕР¶РµРЅРёРµРј Рё С‚.Рґ. ?
+	//! РћС‚РІРµС‚: СЃ СѓРјРЅРѕР¶РµРЅРёРµРј РЅР°РґРѕ РґРµР»Р°С‚СЊ С‚РѕР¶Рµ СЃР°РјРѕРµ, С‚РѕР»СЊРєРѕ РЅРµРїРѕРЅСЏС‚РЅРѕ РєР°Рє
 	if (pNewType->type()->typeID() == rdo::runtime::RDOType::t_int)
 	{
 		rdo::runtime::LPRDOCalc pNewCalcDiv = pNewCalc;
@@ -689,32 +689,32 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (CREF(LPRDOFUNArithm) pSecond)
 
 LPRDOFUNLogic RDOFUNArithm::operator< (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_LOGIC_FROM_ARITHM(IsLess, <, _T("Нельзя сравнивать %s и %s"));
+	GENERATE_LOGIC_FROM_ARITHM(IsLess, <, _T("РќРµР»СЊР·СЏ СЃСЂР°РІРЅРёРІР°С‚СЊ %s Рё %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator> (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_LOGIC_FROM_ARITHM(IsGreater, >, _T("Нельзя сравнивать %s и %s"));
+	GENERATE_LOGIC_FROM_ARITHM(IsGreater, >, _T("РќРµР»СЊР·СЏ СЃСЂР°РІРЅРёРІР°С‚СЊ %s Рё %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator<= (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_LOGIC_FROM_ARITHM(IsLEQ, <=, _T("Нельзя сравнивать %s и %s"));
+	GENERATE_LOGIC_FROM_ARITHM(IsLEQ, <=, _T("РќРµР»СЊР·СЏ СЃСЂР°РІРЅРёРІР°С‚СЊ %s Рё %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator>= (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_LOGIC_FROM_ARITHM(IsGEQ, >, _T("Нельзя сравнивать %s и %s"));
+	GENERATE_LOGIC_FROM_ARITHM(IsGEQ, >, _T("РќРµР»СЊР·СЏ СЃСЂР°РІРЅРёРІР°С‚СЊ %s Рё %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator== (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_LOGIC_FROM_ARITHM(IsEqual, ==, _T("Нельзя сравнивать %s и %s"));
+	GENERATE_LOGIC_FROM_ARITHM(IsEqual, ==, _T("РќРµР»СЊР·СЏ СЃСЂР°РІРЅРёРІР°С‚СЊ %s Рё %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator!= (CREF(LPRDOFUNArithm) pSecond)
 {
-	GENERATE_LOGIC_FROM_ARITHM(IsNotEqual, !=, _T("Нельзя сравнивать %s и %s"));
+	GENERATE_LOGIC_FROM_ARITHM(IsNotEqual, !=, _T("РќРµР»СЊР·СЏ СЃСЂР°РІРЅРёРІР°С‚СЊ %s Рё %s"));
 }
 
 void RDOFUNArithm::checkParamType(CREF(LPRDOTypeParam) pType)
@@ -754,12 +754,12 @@ rdo::runtime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPRDOTypeParam) pForType)
 	}
 	else if (typeID() == rdo::runtime::RDOType::t_identificator && !pForType)
 	{
-		Converter::s_converter()->error().error(src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), value()->value().getAsString().c_str()));
+		Converter::s_converter()->error().error(src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ: %s"), value()->value().getAsString().c_str()));
 	}
 
 	if (!pForType)
 	{
-		Converter::s_converter()->error().error(src_info(), _T("Неизвестный тип параметра"));
+		Converter::s_converter()->error().error(src_info(), _T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї РїР°СЂР°РјРµС‚СЂР°"));
 	}
 
 	rdo::runtime::LPRDOCalc pNewCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pForType->value_cast(rdo::Factory<RDOValue>::create(src_info()))->value());
@@ -822,7 +822,7 @@ RDOFUNConstant::RDOFUNConstant(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypePa
 	if (!getDefault() || !getDefault()->defined())
 	{
 		ASSERT(pType);
-		Converter::s_converter()->error().error(pType->src_info(), _T("Константа должна иметь значение"));
+		Converter::s_converter()->error().error(pType->src_info(), _T("РљРѕРЅСЃС‚Р°РЅС‚Р° РґРѕР»Р¶РЅР° РёРјРµС‚СЊ Р·РЅР°С‡РµРЅРёРµ"));
 	}
 
 	m_number = Converter::s_converter()->getFUNCONST_id();
@@ -835,7 +835,7 @@ RDOFUNConstant::~RDOFUNConstant()
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNParams
 // --------------------------------------------------------------------------------
-// Параметры, с которыми функция вызывается
+// РџР°СЂР°РјРµС‚СЂС‹, СЃ РєРѕС‚РѕСЂС‹РјРё С„СѓРЅРєС†РёСЏ РІС‹Р·С‹РІР°РµС‚СЃСЏ
 // --------------------------------------------------------------------------------
 RDOFUNParams::RDOFUNParams()
 	: RDOParserSrcInfo()
@@ -869,7 +869,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 	ruint nParams = pFunction->getParams().size();
 	if (nParams != m_paramList.size())
 	{
-		Converter::s_converter()->error().error(src_info(), rdo::format(_T("Неверное количество параметров функции: %s"), funName.c_str()));
+		Converter::s_converter()->error().error(src_info(), rdo::format(_T("РќРµРІРµСЂРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РїР°СЂР°РјРµС‚СЂРѕРІ С„СѓРЅРєС†РёРё: %s"), funName.c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcFunctionCaller pFuncCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(pFunction->getFunctionCalc());
@@ -899,7 +899,7 @@ LPRDOFUNArithm RDOFUNParams::createSeqCall(CREF(tstring) seqName)
 	LPRDOFUNSequence pSequence = Converter::s_converter()->findFUNSequence(seqName);
 	if (!pSequence)
 	{
-		Converter::s_converter()->error().error(m_funseqName, rdo::format(_T("Неопределенная функция или последовательность: %s"), seqName.c_str()));
+		Converter::s_converter()->error().error(m_funseqName, rdo::format(_T("РќРµРѕРїСЂРµРґРµР»РµРЅРЅР°СЏ С„СѓРЅРєС†РёСЏ РёР»Рё РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ: %s"), seqName.c_str()));
 	}
 	LPRDOFUNParams pThis(this);
 	ASSERT(pThis);
@@ -909,7 +909,7 @@ LPRDOFUNArithm RDOFUNParams::createSeqCall(CREF(tstring) seqName)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- Последовательности
+// -------------------- РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNSequence
 // --------------------------------------------------------------------------------
@@ -959,14 +959,14 @@ void RDOFUNSequence::initCalcSrcInfo()
 	if (m_pInitCalc)
 	{
 		rdo::runtime::RDOSrcInfo srcInfo(m_pHeader->src_info());
-		srcInfo.setSrcText(_T("Установка базы последовательности ") + m_pHeader->src_info().src_text());
+		srcInfo.setSrcText(_T("РЈСЃС‚Р°РЅРѕРІРєР° Р±Р°Р·С‹ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё ") + m_pHeader->src_info().src_text());
 		m_pInitCalc->setSrcInfo(srcInfo);
 	}
 	m_pNextCalc->setSrcInfo(m_pHeader->src_info());
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- Датчики случайных чисел
+// -------------------- Р”Р°С‚С‡РёРєРё СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNSequenceUniform
 // --------------------------------------------------------------------------------
@@ -975,7 +975,7 @@ RDOFUNSequenceUniform::RDOFUNSequenceUniform(CREF(LPRDOFUNSequenceHeader) pHeade
 {
 	if (m_pHeader->getType()->type()->typeID() == rdo::runtime::RDOType::t_enum)
 	{
-		Converter::s_converter()->error().error(src_info(), _T("Последовательность типа uniform не может возвращять значения перечислимого типа"));
+		Converter::s_converter()->error().error(src_info(), _T("РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ С‚РёРїР° uniform РЅРµ РјРѕР¶РµС‚ РІРѕР·РІСЂР°С‰СЏС‚СЊ Р·РЅР°С‡РµРЅРёСЏ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР°"));
 	}
 }
 
@@ -992,7 +992,7 @@ LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(REF(LPRDOFUNParams) pParamL
 {
 	if (pParamList->getParamList().size() != 2)
 	{
-		Converter::s_converter()->error().error(seq_src_info, rdo::format(_T("Для равномерного закона распределения '%s' нужно указать два параметра: минимальную и максимальную границы диапазона"), name().c_str()));
+		Converter::s_converter()->error().error(seq_src_info, rdo::format(_T("Р”Р»СЏ СЂР°РІРЅРѕРјРµСЂРЅРѕРіРѕ Р·Р°РєРѕРЅР° СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ '%s' РЅСѓР¶РЅРѕ СѓРєР°Р·Р°С‚СЊ РґРІР° РїР°СЂР°РјРµС‚СЂР°: РјРёРЅРёРјР°Р»СЊРЅСѓСЋ Рё РјР°РєСЃРёРјР°Р»СЊРЅСѓСЋ РіСЂР°РЅРёС†С‹ РґРёР°РїР°Р·РѕРЅР°"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -1013,7 +1013,7 @@ LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(REF(LPRDOFUNParams) pParamL
 	pArithm->setSrcInfo(seq_src_info);
 	if (pArithm->typeID() == rdo::runtime::RDOType::t_enum)
 	{
-		Converter::s_converter()->error().error(src_info(), _T("Внутренняя ошибка парсера"));
+		Converter::s_converter()->error().error(src_info(), _T("Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°"));
 	}
 	return pArithm;
 }
@@ -1026,7 +1026,7 @@ RDOFUNSequenceExponential::RDOFUNSequenceExponential(CREF(LPRDOFUNSequenceHeader
 {
 	if (m_pHeader->getType()->type()->typeID() != rdo::runtime::RDOType::t_int && m_pHeader->getType()->type()->typeID() != rdo::runtime::RDOType::t_real)
 	{
-		Converter::s_converter()->error().error(src_info(), rdo::format(_T("Последовательность '%s' может возвращять значения только целого или вещественного типа"), src_text().c_str()));
+		Converter::s_converter()->error().error(src_info(), rdo::format(_T("РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ '%s' РјРѕР¶РµС‚ РІРѕР·РІСЂР°С‰СЏС‚СЊ Р·РЅР°С‡РµРЅРёСЏ С‚РѕР»СЊРєРѕ С†РµР»РѕРіРѕ РёР»Рё РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ С‚РёРїР°"), src_text().c_str()));
 	}
 }
 
@@ -1043,7 +1043,7 @@ LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(REF(LPRDOFUNParams) pPa
 {
 	if (pParamList->getParamList().size() != 1)
 	{
-		Converter::s_converter()->error().error(seq_src_info, rdo::format(_T("Для экспоненциального закона распределения '%s' нужно указать один параметр: математическое ожидание"), name().c_str()));
+		Converter::s_converter()->error().error(seq_src_info, rdo::format(_T("Р”Р»СЏ СЌРєСЃРїРѕРЅРµРЅС†РёР°Р»СЊРЅРѕРіРѕ Р·Р°РєРѕРЅР° СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ '%s' РЅСѓР¶РЅРѕ СѓРєР°Р·Р°С‚СЊ РѕРґРёРЅ РїР°СЂР°РјРµС‚СЂ: РјР°С‚РµРјР°С‚РёС‡РµСЃРєРѕРµ РѕР¶РёРґР°РЅРёРµ"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -1062,7 +1062,7 @@ LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(REF(LPRDOFUNParams) pPa
 	pArithm->setSrcInfo(seq_src_info);
 	if (pArithm->typeID() == rdo::runtime::RDOType::t_enum)
 	{
-		Converter::s_converter()->error().error(src_info(), _T("Внутренняя ошибка парсера"));
+		Converter::s_converter()->error().error(src_info(), _T("Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°"));
 	}
 	return pArithm;
 }
@@ -1075,7 +1075,7 @@ RDOFUNSequenceNormal::RDOFUNSequenceNormal(CREF(LPRDOFUNSequenceHeader) pHeader,
 {
 	if (m_pHeader->getType()->type()->typeID() == rdo::runtime::RDOType::t_enum)
 	{
-		Converter::s_converter()->error().error(src_info(), _T("Последовательность типа normal не может возвращять значения перечислимого типа"));
+		Converter::s_converter()->error().error(src_info(), _T("РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ С‚РёРїР° normal РЅРµ РјРѕР¶РµС‚ РІРѕР·РІСЂР°С‰СЏС‚СЊ Р·РЅР°С‡РµРЅРёСЏ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР°"));
 	}
 }
 
@@ -1092,7 +1092,7 @@ LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(REF(LPRDOFUNParams) pParamLi
 {
 	if (pParamList->getParamList().size() != 2)
 	{
-		Converter::s_converter()->error().error(seq_src_info, rdo::format(_T("Для нормального закона распределения '%s' нужно указать два параметра: математическое ожидание и среднее квадратическое отклонение"), name().c_str()));
+		Converter::s_converter()->error().error(seq_src_info, rdo::format(_T("Р”Р»СЏ РЅРѕСЂРјР°Р»СЊРЅРѕРіРѕ Р·Р°РєРѕРЅР° СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ '%s' РЅСѓР¶РЅРѕ СѓРєР°Р·Р°С‚СЊ РґРІР° РїР°СЂР°РјРµС‚СЂР°: РјР°С‚РµРјР°С‚РёС‡РµСЃРєРѕРµ РѕР¶РёРґР°РЅРёРµ Рё СЃСЂРµРґРЅРµРµ РєРІР°РґСЂР°С‚РёС‡РµСЃРєРѕРµ РѕС‚РєР»РѕРЅРµРЅРёРµ"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -1113,13 +1113,13 @@ LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(REF(LPRDOFUNParams) pParamLi
 	pArithm->setSrcInfo(seq_src_info);
 	if (pArithm->typeID() == rdo::runtime::RDOType::t_enum)
 	{
-		Converter::s_converter()->error().error(src_info(), _T("Внутренняя ошибка парсера"));
+		Converter::s_converter()->error().error(src_info(), _T("Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°"));
 	}
 	return pArithm;
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- Гистограмма
+// -------------------- Р“РёСЃС‚РѕРіСЂР°РјРјР°
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNSequenceByHist
 // --------------------------------------------------------------------------------
@@ -1131,7 +1131,7 @@ LPRDOFUNArithm RDOFUNSequenceByHist::createCallCalc(REF(LPRDOFUNParams) pParamLi
 {
 	if (pParamList->getParamList().size() != 0)
 	{
-		Converter::s_converter()->error().error(src_info, rdo::format(_T("Гистограмма '%s' должна вызываться без параметров"), name().c_str()));
+		Converter::s_converter()->error().error(src_info, rdo::format(_T("Р“РёСЃС‚РѕРіСЂР°РјРјР° '%s' РґРѕР»Р¶РЅР° РІС‹Р·С‹РІР°С‚СЊСЃСЏ Р±РµР· РїР°СЂР°РјРµС‚СЂРѕРІ"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -1163,19 +1163,19 @@ void RDOFUNSequenceByHistReal::addReal(CREF(LPRDOValue) pFrom, CREF(LPRDOValue) 
 
 	if (!m_to.empty() && pFrom->value() != m_to.back())
 	{
-		Converter::s_converter()->error().error(pFrom->src_info(), _T("Начало интервала должно совпадать с окончанием предыдущего"));
+		Converter::s_converter()->error().error(pFrom->src_info(), _T("РќР°С‡Р°Р»Рѕ РёРЅС‚РµСЂРІР°Р»Р° РґРѕР»Р¶РЅРѕ СЃРѕРІРїР°РґР°С‚СЊ СЃ РѕРєРѕРЅС‡Р°РЅРёРµРј РїСЂРµРґС‹РґСѓС‰РµРіРѕ"));
 	}
 	if (pFrom->value() > pTo->value())
 	{
-		Converter::s_converter()->error().error(pTo->src_info(), _T("Начало интервала должно быть меньше его конца"));
+		Converter::s_converter()->error().error(pTo->src_info(), _T("РќР°С‡Р°Р»Рѕ РёРЅС‚РµСЂРІР°Р»Р° РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РјРµРЅСЊС€Рµ РµРіРѕ РєРѕРЅС†Р°"));
 	}
 	if (pFreq->value() == 0)
 	{
-		Converter::s_converter()->error().warning(pFreq->src_info(), _T("Относительная вероятность должна быть больше нуля"));
+		Converter::s_converter()->error().warning(pFreq->src_info(), _T("РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ"));
 	}
 	else if (pFreq->value() < 0)
 	{
-		Converter::s_converter()->error().error(pFreq->src_info(), _T("Относительная вероятность должна быть больше нуля"));
+		Converter::s_converter()->error().error(pFreq->src_info(), _T("РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ"));
 	}
 	m_pHeader->getType()->value_cast(pFrom);
 	m_pHeader->getType()->value_cast(pTo  );
@@ -1215,17 +1215,17 @@ void RDOFUNSequenceByHistEnum::addEnum(CREF(LPRDOValue) pValue, CREF(LPRDOValue)
 
 	if (pFreq->value() == 0)
 	{
-		Converter::s_converter()->error().warning(pFreq->src_info(), _T("Относительная вероятность должна быть больше нуля"));
+		Converter::s_converter()->error().warning(pFreq->src_info(), _T("РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ"));
 	}
 	else if (pFreq->value() < 0)
 	{
-		Converter::s_converter()->error().error(pFreq->src_info(), _T("Относительная вероятность должна быть больше нуля"));
+		Converter::s_converter()->error().error(pFreq->src_info(), _T("РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ"));
 	}
 	m_pHeader->getType()->value_cast(pValue);
 	rdo::runtime::RDOValue enum_id = m_pHeader->getType()->value_cast(pValue)->value();
 	if (std::find(m_values.begin(), m_values.end(), enum_id) != m_values.end())
 	{
-		Converter::s_converter()->error().error(pValue->src_info(), rdo::format(_T("Перечислимое значение определено дважды: %s"), pValue->value().getIdentificator().c_str()));
+		Converter::s_converter()->error().error(pValue->src_info(), rdo::format(_T("РџРµСЂРµС‡РёСЃР»РёРјРѕРµ Р·РЅР°С‡РµРЅРёРµ РѕРїСЂРµРґРµР»РµРЅРѕ РґРІР°Р¶РґС‹: %s"), pValue->value().getIdentificator().c_str()));
 	}
 	m_values.push_back(enum_id);
 	m_freq  .push_back(pFreq->value());
@@ -1246,7 +1246,7 @@ void RDOFUNSequenceByHistEnum::createCalcs()
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- Перечень значений
+// -------------------- РџРµСЂРµС‡РµРЅСЊ Р·РЅР°С‡РµРЅРёР№
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNSequenceEnumerative
 // --------------------------------------------------------------------------------
@@ -1254,7 +1254,7 @@ LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pPa
 {
 	if (pParamList->getParamList().size() != 0)
 	{
-		Converter::s_converter()->error().error(src_info, rdo::format(_T("Перечисление '%s' должно вызываться без параметров"), name().c_str()));
+		Converter::s_converter()->error().error(src_info, rdo::format(_T("РџРµСЂРµС‡РёСЃР»РµРЅРёРµ '%s' РґРѕР»Р¶РЅРѕ РІС‹Р·С‹РІР°С‚СЊСЃСЏ Р±РµР· РїР°СЂР°РјРµС‚СЂРѕРІ"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -1284,7 +1284,7 @@ void RDOFUNSequenceEnumerative::createCalcs()
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- Функции
+// -------------------- Р¤СѓРЅРєС†РёРё
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNFunctionListElement
 // --------------------------------------------------------------------------------
@@ -1365,7 +1365,7 @@ rdo::runtime::LPRDOCalcConst RDOFUNFunctionListElementEq::createResultCalc(CREF(
 {
 	UNUSED(pRetType);
 
-	Converter::s_converter()->error().error(src_pos, _T("Внутренная ошибка парсера: RDOFUNFunctionListElementEq::createResultCalc"));
+	Converter::s_converter()->error().error(src_pos, _T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°: RDOFUNFunctionListElementEq::createResultCalc"));
 	NEVER_REACH_HERE;
 	return NULL;
 }
@@ -1433,8 +1433,8 @@ void RDOFUNFunction::add(CREF(LPRDOParam) pParam)
 	LPRDOParam pParamPrev = findFUNFunctionParam(pParam->name());
 	if (pParamPrev)
 	{
-		Converter::s_converter()->error().push_only(pParam->src_info(), rdo::format(_T("Параметр уже существует: %s"), pParam->name().c_str()));
-		Converter::s_converter()->error().push_only(pParamPrev->src_info(), _T("См. первое определение"));
+		Converter::s_converter()->error().push_only(pParam->src_info(), rdo::format(_T("РџР°СЂР°РјРµС‚СЂ СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚: %s"), pParam->name().c_str()));
+		Converter::s_converter()->error().push_only(pParamPrev->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		Converter::s_converter()->error().push_done();
 	}
 	m_paramList.push_back(pParam); 
@@ -1454,15 +1454,15 @@ void RDOFUNFunction::createListCalc()
 {
 	if (!m_pReturn->getDefault()->defined())
 	{
-		Converter::s_converter()->error().error(m_pReturn->src_info(), rdo::format(_T("Функция '%s' должна иметь значение по умолчанию"), name().c_str()));
+		Converter::s_converter()->error().error(m_pReturn->src_info(), rdo::format(_T("Р¤СѓРЅРєС†РёСЏ '%s' РґРѕР»Р¶РЅР° РёРјРµС‚СЊ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ"), name().c_str()));
 	}
 	if (m_paramList.empty())
 	{
-		Converter::s_converter()->error().error(src_info(), rdo::format(_T("Функция '%s' должна иметь параметры, т.к. её тип list"), name().c_str()));
+		Converter::s_converter()->error().error(src_info(), rdo::format(_T("Р¤СѓРЅРєС†РёСЏ '%s' РґРѕР»Р¶РЅР° РёРјРµС‚СЊ РїР°СЂР°РјРµС‚СЂС‹, С‚.Рє. РµС‘ С‚РёРї list"), name().c_str()));
 	}
 	if (m_elementList.empty())
 	{
-		Converter::s_converter()->error().warning(src_info(), rdo::format(_T("Функция '%s' не содержит списка"), name().c_str()));
+		Converter::s_converter()->error().warning(src_info(), rdo::format(_T("Р¤СѓРЅРєС†РёСЏ '%s' РЅРµ СЃРѕРґРµСЂР¶РёС‚ СЃРїРёСЃРєР°"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcConst pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturn->getDefault()->value());
@@ -1485,7 +1485,7 @@ void RDOFUNFunction::createListCalc()
 			if (elem_it == m_elementList.end())
 			{
 				--elem_it;
-				Converter::s_converter()->error().error((*elem_it)->src_info(), rdo::format(_T("Ожидается значение для параметра '%s'"), pParam->name().c_str()));
+				Converter::s_converter()->error().error((*elem_it)->src_info(), rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ РґР»СЏ РїР°СЂР°РјРµС‚СЂР° '%s'"), pParam->name().c_str()));
 			}
 			LPRDOFUNFunctionListElement pListElement = *elem_it;
 			ASSERT(pListElement);
@@ -1493,7 +1493,7 @@ void RDOFUNFunction::createListCalc()
 			{
 				if ((param_it + 1) == m_paramList.end())
 				{
-					Converter::s_converter()->error().error(pListElement->src_info(), rdo::format(_T("Перед знаком равенства ожидается значение для параметра: %s"),pParam->name().c_str()));
+					Converter::s_converter()->error().error(pListElement->src_info(), rdo::format(_T("РџРµСЂРµРґ Р·РЅР°РєРѕРј СЂР°РІРµРЅСЃС‚РІР° РѕР¶РёРґР°РµС‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ РґР»СЏ РїР°СЂР°РјРµС‚СЂР°: %s"),pParam->name().c_str()));
 				}
 				else
 				{
@@ -1505,7 +1505,7 @@ void RDOFUNFunction::createListCalc()
 						str += (*param_it)->src_text();
 						++param_it;
 					}
-					Converter::s_converter()->error().error(pListElement->src_info(), rdo::format(_T("Перед знаком равенства ожидаются значения для параметров: %s"), str.c_str()));
+					Converter::s_converter()->error().error(pListElement->src_info(), rdo::format(_T("РџРµСЂРµРґ Р·РЅР°РєРѕРј СЂР°РІРµРЅСЃС‚РІР° РѕР¶РёРґР°СЋС‚СЃСЏ Р·РЅР°С‡РµРЅРёСЏ РґР»СЏ РїР°СЂР°РјРµС‚СЂРѕРІ: %s"), str.c_str()));
 				}
 			}
 			rdo::runtime::LPRDOCalcFuncParam pFuncParam   = rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(currParamNumber, pParam->src_info());
@@ -1523,17 +1523,17 @@ void RDOFUNFunction::createListCalc()
 		{
 			--elem_it;
 			--param_it;
-			Converter::s_converter()->error().error((*elem_it)->src_info(), rdo::format(_T("После значения для параметра '%s' ожидается знак равенства"), (*param_it)->name().c_str()));
+			Converter::s_converter()->error().error((*elem_it)->src_info(), rdo::format(_T("РџРѕСЃР»Рµ Р·РЅР°С‡РµРЅРёСЏ РґР»СЏ РїР°СЂР°РјРµС‚СЂР° '%s' РѕР¶РёРґР°РµС‚СЃСЏ Р·РЅР°Рє СЂР°РІРµРЅСЃС‚РІР°"), (*param_it)->name().c_str()));
 		}
 		if (!(*elem_it)->isEquivalence())
 		{
-			Converter::s_converter()->error().error((*elem_it)->src_info(), rdo::format(_T("Слишком много значений, вместо '%s' ожидается знак равенства"), (*elem_it)->src_text().c_str()));
+			Converter::s_converter()->error().error((*elem_it)->src_info(), rdo::format(_T("РЎР»РёС€РєРѕРј РјРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёР№, РІРјРµСЃС‚Рѕ '%s' РѕР¶РёРґР°РµС‚СЃСЏ Р·РЅР°Рє СЂР°РІРµРЅСЃС‚РІР°"), (*elem_it)->src_text().c_str()));
 		}
 		++elem_it;
 		if (elem_it == m_elementList.end())
 		{
 			--elem_it;
-			Converter::s_converter()->error().error((*elem_it)->src_info(), rdo::format(_T("После знака равенства ожидается значение функции '%s'"), name().c_str()));
+			Converter::s_converter()->error().error((*elem_it)->src_info(), rdo::format(_T("РџРѕСЃР»Рµ Р·РЅР°РєР° СЂР°РІРµРЅСЃС‚РІР° РѕР¶РёРґР°РµС‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ С„СѓРЅРєС†РёРё '%s'"), name().c_str()));
 		}
 		rdo::runtime::LPRDOCalcConst pResultCalc = (*elem_it)->createResultCalc(m_pReturn->getType(), (*elem_it)->src_info());
 		pFunListCalc->addCase(pCaseCalc, pResultCalc);
@@ -1549,7 +1549,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	{
 		if ((*it)->isEquivalence())
 		{
-			Converter::s_converter()->error().error((*it)->src_info(), _T("Символ '=' недопустим в табличной функции"));
+			Converter::s_converter()->error().error((*it)->src_info(), _T("РЎРёРјРІРѕР» '=' РЅРµРґРѕРїСѓСЃС‚РёРј РІ С‚Р°Р±Р»РёС‡РЅРѕР№ С„СѓРЅРєС†РёРё"));
 		}
 		++it;
 	}
@@ -1587,27 +1587,27 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 				LPRDOTypeIntRange pRange = pFunctionParam->getType()->type().object_static_cast<RDOTypeIntRange>();
 				if (pRange->range()->getMin()->value().getInt() != 1)
 				{
-					Converter::s_converter()->error().error(pRange->range()->src_info(), rdo::format(_T("Минимальное значение диапазона должно быть 1, текущий диапазон [%d..%d]"), pRange->range()->getMin()->value().getInt(), pRange->range()->getMax()->value().getInt()));
+					Converter::s_converter()->error().error(pRange->range()->src_info(), rdo::format(_T("РњРёРЅРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РґРёР°РїР°Р·РѕРЅР° РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 1, С‚РµРєСѓС‰РёР№ РґРёР°РїР°Р·РѕРЅ [%d..%d]"), pRange->range()->getMin()->value().getInt(), pRange->range()->getMax()->value().getInt()));
 				}
 				range *= pRange->range()->getMax()->value().getInt() - pRange->range()->getMin()->value().getInt() + 1;
 			}
 			else
 			{
-				Converter::s_converter()->error().error(pFunctionParam->getType()->src_info(), _T("Для параметра табличной функции должен быть задан допустимый диапазон"));
+				Converter::s_converter()->error().error(pFunctionParam->getType()->src_info(), _T("Р”Р»СЏ РїР°СЂР°РјРµС‚СЂР° С‚Р°Р±Р»РёС‡РЅРѕР№ С„СѓРЅРєС†РёРё РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р·Р°РґР°РЅ РґРѕРїСѓСЃС‚РёРјС‹Р№ РґРёР°РїР°Р·РѕРЅ"));
 			}
 			break;
 		case rdo::runtime::RDOType::t_enum:
 			range *= pFunctionParam->getType()->type().object_static_cast<RDOEnumType>()->getEnums()->getValues().size();
 			break;
 		default:
-			Converter::s_converter()->error().error(pFunctionParam->getType()->src_info(), _T("Параметр табличной функции может быть целого или перечислимого типа"));
+			Converter::s_converter()->error().error(pFunctionParam->getType()->src_info(), _T("РџР°СЂР°РјРµС‚СЂ С‚Р°Р±Р»РёС‡РЅРѕР№ С„СѓРЅРєС†РёРё РјРѕР¶РµС‚ Р±С‹С‚СЊ С†РµР»РѕРіРѕ РёР»Рё РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР°"));
 		}
 		pCalc = pCalcAdd;
 	}
 
 	if (m_elementList.size() != range)
 	{
-		Converter::s_converter()->error().error(elements_pos, rdo::format(_T("Неверное количество элементов табличной функции '%s': %d, требуется %d"), name().c_str(), m_elementList.size(), range));
+		Converter::s_converter()->error().error(elements_pos, rdo::format(_T("РќРµРІРµСЂРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ С‚Р°Р±Р»РёС‡РЅРѕР№ С„СѓРЅРєС†РёРё '%s': %d, С‚СЂРµР±СѓРµС‚СЃСЏ %d"), name().c_str(), m_elementList.size(), range));
 	}
 
 	rdo::runtime::LPRDOFuncTableCalc pFuncTableCalc = rdo::Factory<rdo::runtime::RDOFuncTableCalc>::create(pCalc);
@@ -1642,12 +1642,12 @@ void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) /* body_src_in
 		rdo::runtime::LPRDOCalcConst pConditionLast = pLogicCalc.object_dynamic_cast<rdo::runtime::RDOCalcConst>();
 		if (trueConst)
 		{
-			Converter::s_converter()->error().warning(m_calculateIfList[i]->getCondition()->src_info(), rdo::format(_T("Условие не используется: %s"), m_calculateIfList[i]->getCondition()->src_text().c_str()));
-			Converter::s_converter()->error().warning(pCondition->srcInfo(), rdo::format(_T("Последнее рабочее условие функции: %s"), pCondition->srcInfo().src_text().c_str()));
+			Converter::s_converter()->error().warning(m_calculateIfList[i]->getCondition()->src_info(), rdo::format(_T("РЈСЃР»РѕРІРёРµ РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ: %s"), m_calculateIfList[i]->getCondition()->src_text().c_str()));
+			Converter::s_converter()->error().warning(pCondition->srcInfo(), rdo::format(_T("РџРѕСЃР»РµРґРЅРµРµ СЂР°Р±РѕС‡РµРµ СѓСЃР»РѕРІРёРµ С„СѓРЅРєС†РёРё: %s"), pCondition->srcInfo().src_text().c_str()));
 		}
 		else if (!pConditionLast || pConditionLast->calcValue(Converter::s_converter()->runtime()).getAsBool())
 		{
-			//! Игнорируем чистые false-условия предыдущей проверкой
+			//! РРіРЅРѕСЂРёСЂСѓРµРј С‡РёСЃС‚С‹Рµ false-СѓСЃР»РѕРІРёСЏ РїСЂРµРґС‹РґСѓС‰РµР№ РїСЂРѕРІРµСЂРєРѕР№
 			pFunAlgorithmicCalc->addCalcIf(pLogicCalc, m_calculateIfList[i]->getAction()->createCalc(m_pReturn->getType()));
 			cnt++;
 		}
@@ -1660,7 +1660,7 @@ void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) /* body_src_in
 	}
 	if (!cnt)
 	{
-		Converter::s_converter()->error().warning(src_info(), rdo::format(_T("Отсутствует тело функции '%s'"), name().c_str()));
+		Converter::s_converter()->error().warning(src_info(), rdo::format(_T("РћС‚СЃСѓС‚СЃС‚РІСѓРµС‚ С‚РµР»Рѕ С„СѓРЅРєС†РёРё '%s'"), name().c_str()));
 	}
 	if (!trueConst)
 	{
@@ -1678,7 +1678,7 @@ void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) /* body_src_in
 	}
 	if (!defaultFlag)
 	{
-		//! Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
+		//! РџСЂРёСЃРІРѕРёС‚СЊ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРµ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, РµСЃР»Рё РѕРЅРѕ РЅРµ Р·Р°РґР°РЅРѕ РІ СЏРІРЅРѕРј РІРёРґРµ
 		rdo::runtime::LPRDOCalcConst pCalcCondition = rdo::Factory<rdo::runtime::RDOCalcConst>::create(1);
 		rdo::runtime::LPRDOCalcConst pCalcAction    = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturn->getType()->type()->get_default()->value());
 		ASSERT(pCalcCondition);
@@ -1686,7 +1686,7 @@ void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) /* body_src_in
 		pCalcCondition->setSrcInfo(m_pReturn->getType()->src_info());
 		pCalcAction->setSrcInfo(m_pReturn->getType()->src_info());
 		pFunAlgorithmicCalc->addCalcIf(pCalcCondition, pCalcAction);
-		Converter::s_converter()->error().warning(src_info(), rdo::format(_T("Для функции '%s' неопределено значение по умолчанию"), name().c_str()));
+		Converter::s_converter()->error().warning(src_info(), rdo::format(_T("Р”Р»СЏ С„СѓРЅРєС†РёРё '%s' РЅРµРѕРїСЂРµРґРµР»РµРЅРѕ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ"), name().c_str()));
 	}
 	setFunctionCalc(pFunAlgorithmicCalc);
 }
@@ -1708,7 +1708,7 @@ void RDOFUNGroup::init(CREF(RDOParserSrcInfo) res_info)
 	m_pResType = Converter::s_converter()->findRTPResType(res_info.src_text());
 	if (!m_pResType)
 	{
-		Converter::s_converter()->error().error(res_info, rdo::format(_T("Неизвестный тип ресурса: %s"), res_info.src_text().c_str()));
+		Converter::s_converter()->error().error(res_info, rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї СЂРµСЃСѓСЂСЃР°: %s"), res_info.src_text().c_str()));
 	}
 	Converter::s_converter()->insertFUNGroup(this);
 }
@@ -1730,7 +1730,7 @@ LPRDOFUNLogic RDOFUNGroupLogic::createFunLogic(REF(LPRDOFUNLogic) pCondition)
 	case fgt_notexist : setSrcText(_T("NotExist(")  + getResType()->name() + _T(": ") + pCondition->src_text() + _T(")")); calc = rdo::Factory<rdo::runtime::RDOFunCalcNotExist >::create(getResType()->getNumber(), pCondition->getCalc()); break;
 	case fgt_forall   : setSrcText(_T("ForAll(")    + getResType()->name() + _T(": ") + pCondition->src_text() + _T(")")); calc = rdo::Factory<rdo::runtime::RDOFunCalcForAll   >::create(getResType()->getNumber(), pCondition->getCalc()); break;
 	case fgt_notforall: setSrcText(_T("NotForAll(") + getResType()->name() + _T(": ") + pCondition->src_text() + _T(")")); calc = rdo::Factory<rdo::runtime::RDOFunCalcNotForAll>::create(getResType()->getNumber(), pCondition->getCalc()); break;
-	default: Converter::s_converter()->error().error(src_info(), _T("Внутренная ошибка: несуществующий тип функции"));
+	default: Converter::s_converter()->error().error(src_info(), _T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР°: РЅРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ С‚РёРї С„СѓРЅРєС†РёРё"));
 	}
 	Converter::s_converter()->getFUNGroupStack().pop_back();
 	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(calc, false);
@@ -1745,20 +1745,20 @@ RDOFUNSelect::RDOFUNSelect(CREF(RDOParserSrcInfo) res_info)
 	: RDOFUNGroup(RDOParserSrcInfo(res_info.src_text()))
 {}
 
-//! Сам Select как выборка по типу и условию
+//! РЎР°Рј Select РєР°Рє РІС‹Р±РѕСЂРєР° РїРѕ С‚РёРїСѓ Рё СѓСЃР»РѕРІРёСЋ
 void RDOFUNSelect::initSelect(LPRDOFUNLogic pCondition)
 {
-	//! @warning rdo::runtime::LPRDOFunCalcSelect в рантайме меняет сигнатуру
-	//! Для конвертора знать про рантайм не обязательно, поэтому не создаём объект m_pCalcSelect
-	//! Конвертор проверялся на пятнашках, где вместо Exist использовался
-	//! $Condition Select(Фишка: Фишка.Номер <> Фишка.Местоположение).Exist(1 == 2)
-	//! Метод createFunSelectGroup отработал с нулевым m_pCalcSelect
+	//! @warning rdo::runtime::LPRDOFunCalcSelect РІ СЂР°РЅС‚Р°Р№РјРµ РјРµРЅСЏРµС‚ СЃРёРіРЅР°С‚СѓСЂСѓ
+	//! Р”Р»СЏ РєРѕРЅРІРµСЂС‚РѕСЂР° Р·РЅР°С‚СЊ РїСЂРѕ СЂР°РЅС‚Р°Р№Рј РЅРµ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ, РїРѕСЌС‚РѕРјСѓ РЅРµ СЃРѕР·РґР°С‘Рј РѕР±СЉРµРєС‚ m_pCalcSelect
+	//! РљРѕРЅРІРµСЂС‚РѕСЂ РїСЂРѕРІРµСЂСЏР»СЃСЏ РЅР° РїСЏС‚РЅР°С€РєР°С…, РіРґРµ РІРјРµСЃС‚Рѕ Exist РёСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ
+	//! $Condition Select(Р¤РёС€РєР°: Р¤РёС€РєР°.РќРѕРјРµСЂ <> Р¤РёС€РєР°.РњРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРµ).Exist(1 == 2)
+	//! РњРµС‚РѕРґ createFunSelectGroup РѕС‚СЂР°Р±РѕС‚Р°Р» СЃ РЅСѓР»РµРІС‹Рј m_pCalcSelect
 
 	//m_pCalcSelect = rdo::Factory<rdo::runtime::RDOFunCalcSelect>::create(getResType()->getNumber(), pCondition->getCalc());
 	//m_pCalcSelect->setSrcInfo(pCondition->src_info());
 }
 
-//! Групповая функция над выборкой Select'а
+//! Р“СЂСѓРїРїРѕРІР°СЏ С„СѓРЅРєС†РёСЏ РЅР°Рґ РІС‹Р±РѕСЂРєРѕР№ Select'Р°
 LPRDOFUNLogic RDOFUNSelect::createFunSelectGroup(RDOFUNGroupLogic::FunGroupType funType, REF(LPRDOFUNLogic) pCondition)
 {
 	ASSERT(pCondition);
@@ -1769,7 +1769,7 @@ LPRDOFUNLogic RDOFUNSelect::createFunSelectGroup(RDOFUNGroupLogic::FunGroupType 
 	case RDOFUNGroupLogic::fgt_notexist : setSrcText(src_text() + _T(".NotExist(")  + pCondition->src_text() + _T(")")); calc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotExist >::create(m_pCalcSelect, pCondition->getCalc()); break;
 	case RDOFUNGroupLogic::fgt_forall   : setSrcText(src_text() + _T(".ForAll(")    + pCondition->src_text() + _T(")")); calc = rdo::Factory<rdo::runtime::RDOFunCalcSelectForAll   >::create(m_pCalcSelect, pCondition->getCalc()); break;
 	case RDOFUNGroupLogic::fgt_notforall: setSrcText(src_text() + _T(".NotForAll(") + pCondition->src_text() + _T(")")); calc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotForAll>::create(m_pCalcSelect, pCondition->getCalc()); break;
-	default: Converter::s_converter()->error().error(pCondition->src_info(), _T("Внутренная ошибка: неизвестный метод для списка ресурсов"));
+	default: Converter::s_converter()->error().error(pCondition->src_info(), _T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР°: РЅРµРёР·РІРµСЃС‚РЅС‹Р№ РјРµС‚РѕРґ РґР»СЏ СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ"));
 	}
 	Converter::s_converter()->getFUNGroupStack().pop_back();
 	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(calc, false);

@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdorss.y
-  \authors   Áàðñ Àëåêñàíäð
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \authors   Ð‘Ð°Ñ€Ñ ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -217,23 +217,23 @@ rss_main
 	| rss_resources_begin rss_resources rss_resources_end
 	| rss_resources_begin rss_resources
 	{
-		CONVERTER->error().error(@2, _T("Ïîñëå îïèñàíèÿ âñåõ ðåñóðñîâ îæèäàåòñÿ êëþ÷åâîå ñëîâî $End"));
+		CONVERTER->error().error(@2, _T("ÐŸÐ¾ÑÐ»Ðµ Ð¾Ð¿Ð¸ÑÐ°Ð½Ð¸Ñ Ð²ÑÐµÑ… Ñ€ÐµÑÑƒÑ€ÑÐ¾Ð² Ð¾Ð¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ ÐºÐ»ÑŽÑ‡ÐµÐ²Ð¾Ðµ ÑÐ»Ð¾Ð²Ð¾ $End"));
 	}
 	| error
 	{
 		if (!CONVERTER->isHaveKWResources())
 		{
-			CONVERTER->error().error(@1, _T("Îæèäàåòñÿ êëþ÷åâîå ñëîâî $Resources"));
+			CONVERTER->error().error(@1, _T("ÐžÐ¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ ÐºÐ»ÑŽÑ‡ÐµÐ²Ð¾Ðµ ÑÐ»Ð¾Ð²Ð¾ $Resources"));
 		}
 		else
 		{
 			if (CONVERTER->isHaveKWResourcesEnd())
 			{
-				CONVERTER->error().error(@1, _T("Ðåñóðñû óæå îïðåäåëåíû"));
+				CONVERTER->error().error(@1, _T("Ð ÐµÑÑƒÑ€ÑÑ‹ ÑƒÐ¶Ðµ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ñ‹"));
 			}
 			else
 			{
-				CONVERTER->error().error(@1, _T("Íåèçâåñòíàÿ îøèáêà"));
+				CONVERTER->error().error(@1, _T("ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ð°Ñ Ð¾ÑˆÐ¸Ð±ÐºÐ°"));
 			}
 		}
 	}
@@ -265,7 +265,7 @@ rss_res_descr
 		ASSERT(pResource);
 		if (!pResource->defined())
 		{
-			CONVERTER->error().error(@3, rdo::format(_T("Çàäàíû íå âñå ïàðàìåòðû ðåñóðñà: %s"), pResource->name().c_str()));
+			CONVERTER->error().error(@3, rdo::format(_T("Ð—Ð°Ð´Ð°Ð½Ñ‹ Ð½Ðµ Ð²ÑÐµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ñ€ÐµÑÑƒÑ€ÑÐ°: %s"), pResource->name().c_str()));
 		}
 		pResource->setTrace($2 != 0);
 	}
@@ -279,13 +279,13 @@ rss_res_type
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(pType->value().getIdentificator());
 		if (!pResType)
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Íåèçâåñòíûé òèï ðåñóðñà: %s"), pType->value().getIdentificator().c_str()));
+			CONVERTER->error().error(@2, rdo::format(_T("ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ñ‹Ð¹ Ñ‚Ð¸Ð¿ Ñ€ÐµÑÑƒÑ€ÑÐ°: %s"), pType->value().getIdentificator().c_str()));
 		}
 		LPRDORSSResource pResourceExist = CONVERTER->findRSSResource(pName->value().getIdentificator());
 		if (pResourceExist)
 		{
-			CONVERTER->error().push_only(pName->src_info(), rdo::format(_T("Ðåñóðñ '%s' óæå ñóùåñòâóåò"), pName->value().getIdentificator().c_str()));
-			CONVERTER->error().push_only(pResourceExist->src_info(), _T("Ñì. ïåðâîå îïðåäåëåíèå"));
+			CONVERTER->error().push_only(pName->src_info(), rdo::format(_T("Ð ÐµÑÑƒÑ€Ñ '%s' ÑƒÐ¶Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚"), pName->value().getIdentificator().c_str()));
+			CONVERTER->error().push_only(pResourceExist->src_info(), _T("Ð¡Ð¼. Ð¿ÐµÑ€Ð²Ð¾Ðµ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð¸Ðµ"));
 			CONVERTER->error().push_done();
 		}
 		LPRDORSSResource pResource = rdo::Factory<RDORSSResource>::create(CONVERTER, pName->src_info(), pResType);
@@ -293,15 +293,15 @@ rss_res_type
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@2, _T("Îæèäàåòñÿ òèï ðåñóðñà"));
+		CONVERTER->error().error(@2, _T("ÐžÐ¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ñ‚Ð¸Ð¿ Ñ€ÐµÑÑƒÑ€ÑÐ°"));
 	}
 	| ':'
 	{
-		CONVERTER->error().error(@1, _T("Ïåðåä äâîåòî÷èåì îæèäàåòñÿ èìÿ ðåñóðñà"));
+		CONVERTER->error().error(@1, _T("ÐŸÐµÑ€ÐµÐ´ Ð´Ð²Ð¾ÐµÑ‚Ð¾Ñ‡Ð¸ÐµÐ¼ Ð¾Ð¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ð¸Ð¼Ñ Ñ€ÐµÑÑƒÑ€ÑÐ°"));
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, _T("Îæèäàåòñÿ èìÿ ðåñóðñà"));
+		CONVERTER->error().error(@1, _T("ÐžÐ¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ð¸Ð¼Ñ Ñ€ÐµÑÑƒÑ€ÑÐ°"));
 	}
 	;
 
@@ -325,7 +325,7 @@ rss_value
 	| RDO_IDENTIF       {CONVERTER->getLastRSSResource()->addParam(CONVERTER->stack().pop<RDOValue>($1));}
 	| error
 	{
-		CONVERTER->error().error(@1, rdo::format(_T("Íåïðàâèëüíîå çíà÷åíèå ïàðàìåòðà: %s"), LEXER->YYText()));
+		CONVERTER->error().error(@1, rdo::format(_T("ÐÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð°: %s"), LEXER->YYText()));
 	}
 	;
 

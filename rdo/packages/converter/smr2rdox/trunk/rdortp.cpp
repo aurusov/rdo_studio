@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdortp.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -51,7 +51,7 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 {
 	if (findRTPParam(param->name()))
 	{
-		Converter::s_converter()->error().error(param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()));
+		Converter::s_converter()->error().error(param->src_info(), rdo::format("РџР°СЂР°РјРµС‚СЂ СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚: %s", param->name().c_str()));
 	}
 	m_params.push_back(param);
 }
@@ -90,7 +90,7 @@ void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 
 /*
 // --------------------------------------------------------------------------------
-// -------------------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
+// -------------------- RDORTPFuzzyMembershiftFun - С„-РёСЏ РїСЂРёРЅР°РґР»РµР¶РЅРѕСЃС‚Рё РЅРµС‡РµС‚РєРѕРіРѕ С‚РµСЂРјР°
 // --------------------------------------------------------------------------------
 RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(Converter) pParser):
 	RDOParserObject(pParser)
@@ -108,7 +108,7 @@ RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(Converter) pParser):
 	}
 }
 // --------------------------------------------------------------------------------
-// -------------------- RDORTPFuzzyTerm - нечеткий термин
+// -------------------- RDORTPFuzzyTerm - РЅРµС‡РµС‚РєРёР№ С‚РµСЂРјРёРЅ
 // --------------------------------------------------------------------------------
 RDORTPFuzzyTerm::RDORTPFuzzyTerm(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
 	RDOParserObject(pParser)

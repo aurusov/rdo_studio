@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_value.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -46,9 +46,9 @@ private:
 	explicit RDOValue(CREF(rdo::runtime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
 	         RDOValue(CREF(LPRDOValue) pValue);
 	         RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
-	// Для t_identificator известно только имя, но не тип
+	// Р”Р»СЏ t_identificator РёР·РІРµСЃС‚РЅРѕ С‚РѕР»СЊРєРѕ РёРјСЏ, РЅРѕ РЅРµ С‚РёРї
 	explicit RDOValue(CREF(RDOParserSrcInfo) src_info);
-	// Неопределенный тип
+	// РќРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ С‚РёРї
 	         RDOValue();
 
 	rdo::runtime::RDOValue m_value;

@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_logic_dptfree.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      07.11.2009
   \brief     DPTFree
   \indent    4T
@@ -20,8 +20,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class   RDODPTFree
-  \brief   Свободная точка принятия решений
-  \todo    избавиться от нее
+  \brief   РЎРІРѕР±РѕРґРЅР°СЏ С‚РѕС‡РєР° РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№
+  \todo    РёР·Р±Р°РІРёС‚СЊСЃСЏ РѕС‚ РЅРµРµ
 */
 class RDODPTFree: public RDOLogicSimple, public RDOPatternPrior
 {

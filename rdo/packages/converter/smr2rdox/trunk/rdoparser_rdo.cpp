@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoparser_rdo.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -115,7 +115,7 @@ void RDOParserRSSPost::parse(PTR(Converter) pParser)
 {
 	ASSERT(pParser);
 
-	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
+	//! Р’ СЂРµР¶РёРјРµ СЃРѕРІРјРµСЃС‚РёРјРѕСЃС‚Рё СЃРѕ СЃС‚Р°СЂС‹Рј Р Р”Рћ СЃРѕР·РґР°РµРј СЂРµСЃСѓСЂСЃС‹ РїРѕ РЅРѕРјРµСЂР°Рј РёС… С‚РёРїРѕРІ, Р° РЅРµ РїРѕ РЅРѕРјРµСЂР°Рј СЃР°РјРёС… СЂРµСЃСѓСЂСЃРѕРІ РёР· RSS
 #ifdef RDOSIM_COMPATIBLE
 	STL_FOR_ALL_CONST(pParser->getRTPResType(), rtp_it)
 	{
@@ -352,7 +352,7 @@ void RDOParserSTDFUN::parse(PTR(Converter) pParser)
 	fun->setFunctionCalc(rdo::Factory<Function_D_D>::create<Function_D_D::function_type>(tan));
 
 	// -----------------------------------------
-	// И для маленьких букв
+	// Р РґР»СЏ РјР°Р»РµРЅСЊРєРёС… Р±СѓРєРІ
 	// -----------------------------------------
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("abs"), pRealReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), realType);

@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdosmr_file.y
-  \authors   ¡‡Ò ¿ÎÂÍÒ‡Ì‰
-  \authors   ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
+  \authors   –ë–∞—Ä—Å –ê–ª–µ–∫—Å–∞–Ω–¥—Ä
+  \authors   –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -221,11 +221,11 @@ smr_model
 	}
 	| RDO_Model_name '=' error
 	{
-		CONVERTER->error().error( @2, @3, "ŒÊË‰‡ÂÚÒˇ ËÏˇ ÏÓ‰ÂÎË" );
+		CONVERTER->error().error( @2, @3, "–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è –º–æ–¥–µ–ª–∏" );
 	}
 	| RDO_Model_name error
 	{
-		CONVERTER->error().error( @1, "ŒÊË‰‡ÂÚÒˇ '='" );
+		CONVERTER->error().error( @1, "–û–∂–∏–¥–∞–µ—Ç—Å—è '='" );
 	}
 	;
 
@@ -239,11 +239,11 @@ smr_descr
 	}
 	| smr_descr RDO_Resource_file '=' error
 	{
-		CONVERTER->error().error( @3, @4, "ŒÊË‰‡ÂÚÒˇ ËÏˇ Ù‡ÈÎ‡ ÂÒÛÒÓ‚" );
+		CONVERTER->error().error( @3, @4, "–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è —Ñ–∞–π–ª–∞ —Ä–µ—Å—É—Ä—Å–æ–≤" );
 	}
 	| smr_descr RDO_Resource_file error
 	{
-		CONVERTER->error().error( @2, "ŒÊË‰‡ÂÚÒˇ '='" );
+		CONVERTER->error().error( @2, "–û–∂–∏–¥–∞–µ—Ç—Å—è '='" );
 	}
 	| smr_descr RDO_OprIev_file '=' RDO_IDENTIF
 	{
@@ -253,11 +253,11 @@ smr_descr
 	}
 	| smr_descr RDO_OprIev_file '=' error
 	{
-		CONVERTER->error().error( @3, @4, "ŒÊË‰‡ÂÚÒˇ ËÏˇ Ù‡ÈÎ‡ ÓÔÂ‡ˆËÈ" );
+		CONVERTER->error().error( @3, @4, "–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è —Ñ–∞–π–ª–∞ –æ–ø–µ—Ä–∞—Ü–∏–π" );
 	}
 	| smr_descr RDO_OprIev_file error
 	{
-		CONVERTER->error().error( @2, "ŒÊË‰‡ÂÚÒˇ '='" );
+		CONVERTER->error().error( @2, "–û–∂–∏–¥–∞–µ—Ç—Å—è '='" );
 	}
 	| smr_descr RDO_Frame_file '=' RDO_IDENTIF
 	{
@@ -267,11 +267,11 @@ smr_descr
 	}
 	| smr_descr RDO_Frame_file '=' error
 	{
-		CONVERTER->error().error( @3, @4, "ŒÊË‰‡ÂÚÒˇ ËÏˇ Ù‡ÈÎ‡ ‡ÌËÏ‡ˆËË" );
+		CONVERTER->error().error( @3, @4, "–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è —Ñ–∞–π–ª–∞ –∞–Ω–∏–º–∞—Ü–∏–∏" );
 	}
 	| smr_descr RDO_Frame_file error
 	{
-		CONVERTER->error().error( @2, "ŒÊË‰‡ÂÚÒˇ '='" );
+		CONVERTER->error().error( @2, "–û–∂–∏–¥–∞–µ—Ç—Å—è '='" );
 	}
 	| smr_descr RDO_Statistic_file '=' RDO_IDENTIF
 	{
@@ -281,11 +281,11 @@ smr_descr
 	}
 	| smr_descr RDO_Statistic_file '=' error
 	{
-		CONVERTER->error().error( @3, @4, "ŒÊË‰‡ÂÚÒˇ ËÏˇ Ù‡ÈÎ‡ ÒÓ·Ë‡ÂÏ˚ı ÔÓÍ‡Á‡ÚÂÎÂÈ" );
+		CONVERTER->error().error( @3, @4, "–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è —Ñ–∞–π–ª–∞ —Å–æ–±–∏—Ä–∞–µ–º—ã—Ö –ø–æ–∫–∞–∑–∞—Ç–µ–ª–µ–π" );
 	}
 	| smr_descr RDO_Statistic_file error
 	{
-		CONVERTER->error().error( @2, "ŒÊË‰‡ÂÚÒˇ '='" );
+		CONVERTER->error().error( @2, "–û–∂–∏–¥–∞–µ—Ç—Å—è '='" );
 	}
 	| smr_descr RDO_Results_file '=' RDO_IDENTIF
 	{
@@ -295,11 +295,11 @@ smr_descr
 	}
 	| smr_descr RDO_Results_file '=' error
 	{
-		CONVERTER->error().error( @3, @4, "ŒÊË‰‡ÂÚÒˇ ËÏˇ Ù‡ÈÎ‡ ÂÁÛÎ¸Ú‡ÚÓ‚" );
+		CONVERTER->error().error( @3, @4, "–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è —Ñ–∞–π–ª–∞ —Ä–µ–∑—É–ª—å—Ç–∞—Ç–æ–≤" );
 	}
 	| smr_descr RDO_Results_file error
 	{
-		CONVERTER->error().error( @2, "ŒÊË‰‡ÂÚÒˇ '='" );
+		CONVERTER->error().error( @2, "–û–∂–∏–¥–∞–µ—Ç—Å—è '='" );
 	}
 	| smr_descr RDO_Trace_file '=' RDO_IDENTIF
 	{
@@ -309,11 +309,11 @@ smr_descr
 	}
 	| smr_descr RDO_Trace_file '=' error
 	{
-		CONVERTER->error().error( @3, @4, "ŒÊË‰‡ÂÚÒˇ ËÏˇ Ù‡ÈÎ‡ Ú‡ÒÒËÓ‚ÍË" );
+		CONVERTER->error().error( @3, @4, "–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è —Ñ–∞–π–ª–∞ —Ç—Ä–∞—Å—Å–∏—Ä–æ–≤–∫–∏" );
 	}
 	| smr_descr RDO_Trace_file error
 	{
-		CONVERTER->error().error( @2, "ŒÊË‰‡ÂÚÒˇ '='" );
+		CONVERTER->error().error( @2, "–û–∂–∏–¥–∞–µ—Ç—Å—è '='" );
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
 	{
@@ -325,15 +325,15 @@ smr_descr
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' error
 	{
-		CONVERTER->error().error( @4, @5, "ŒÊË‰‡ÂÚÒˇ ÔÛÚ¸ Ë Ì‡Á‚‡ÌËÂ ‚ÌÂ¯ÌÂÈ ÏÓ‰ÂÎË" );
+		CONVERTER->error().error( @4, @5, "–û–∂–∏–¥–∞–µ—Ç—Å—è –ø—É—Ç—å –∏ –Ω–∞–∑–≤–∞–Ω–∏–µ –≤–Ω–µ—à–Ω–µ–π –º–æ–¥–µ–ª–∏" );
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF error
 	{
-		CONVERTER->error().error( @3, "ŒÊË‰‡ÂÚÒˇ '='" );
+		CONVERTER->error().error( @3, "–û–∂–∏–¥–∞–µ—Ç—Å—è '='" );
 	}
 	| smr_descr RDO_External_Model error
 	{
-		CONVERTER->error().error( @2, "ŒÊË‰‡ÂÚÒˇ ÔÒÂ‚‰ÓÌËÏ ‚ÌÂ¯ÂÈ ÏÓ‰ÂÎË" );
+		CONVERTER->error().error( @2, "–û–∂–∏–¥–∞–µ—Ç—Å—è –ø—Å–µ–≤–¥–æ–Ω–∏–º –≤–Ω–µ—à–µ–π –º–æ–¥–µ–ª–∏" );
 	}
 	| smr_descr error
 	;

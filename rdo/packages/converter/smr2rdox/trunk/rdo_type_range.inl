@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_type_range.inl
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      10.02.2010
   \brief     
   \indent    4T
@@ -33,11 +33,11 @@ inline void RDOTypeRangeRange::checkRange() const
 {
 	if (m_pMinValue->typeID() != m_pMaxValue->typeID())
 	{
-		rdo::converter::smr2rdox::g_error().error(m_pMaxValue->src_info(), rdo::format(_T("Границы диапазона должны быть одного типа, найдено: [%s] .. [%s]"), m_pMinValue->type()->name().c_str(), m_pMaxValue->type()->name().c_str()));
+		rdo::converter::smr2rdox::g_error().error(m_pMaxValue->src_info(), rdo::format(_T("Р“СЂР°РЅРёС†С‹ РґРёР°РїР°Р·РѕРЅР° РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РѕРґРЅРѕРіРѕ С‚РёРїР°, РЅР°Р№РґРµРЅРѕ: [%s] .. [%s]"), m_pMinValue->type()->name().c_str(), m_pMaxValue->type()->name().c_str()));
 	}
 	if (m_pMinValue->value() > m_pMaxValue->value())
 	{
-		rdo::converter::smr2rdox::g_error().error(m_pMaxValue->src_info(), _T("Левая граница диапазона должна быть меньше правой"));
+		rdo::converter::smr2rdox::g_error().error(m_pMaxValue->src_info(), _T("Р›РµРІР°СЏ РіСЂР°РЅРёС†Р° РґРёР°РїР°Р·РѕРЅР° РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РјРµРЅСЊС€Рµ РїСЂР°РІРѕР№"));
 	}
 }
 
@@ -47,12 +47,12 @@ inline void RDOTypeRangeRange::checkValue(CREF(LPRDOValue) pValue) const
 	{
 		if (pValue->src_filetype() == src_filetype() && pValue->src_pos().m_last_line == src_pos().m_last_line)
 		{
-			rdo::converter::smr2rdox::g_error().error(pValue->src_info(), rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_pMinValue->value().getAsString().c_str(), m_pMaxValue->value().getAsString().c_str(), pValue->value().getAsString().c_str()));
+			rdo::converter::smr2rdox::g_error().error(pValue->src_info(), rdo::format(_T("Р—РЅР°С‡РµРЅРёРµ РІС‹С…РѕРґРёС‚ Р·Р° РґРѕРїСѓСЃС‚РёРјС‹Р№ РґРёР°РїР°Р·РѕРЅ [%s..%s]: %s"), m_pMinValue->value().getAsString().c_str(), m_pMaxValue->value().getAsString().c_str(), pValue->value().getAsString().c_str()));
 		}
 		else
 		{
-			rdo::converter::smr2rdox::g_error().push_only(pValue->src_info(), rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_pMinValue->value().getAsString().c_str(), m_pMaxValue->value().getAsString().c_str(), pValue->value().getAsString().c_str()));
-			rdo::converter::smr2rdox::g_error().push_only(src_info(),         rdo::format(_T("См. описание диапазона")));
+			rdo::converter::smr2rdox::g_error().push_only(pValue->src_info(), rdo::format(_T("Р—РЅР°С‡РµРЅРёРµ РІС‹С…РѕРґРёС‚ Р·Р° РґРѕРїСѓСЃС‚РёРјС‹Р№ РґРёР°РїР°Р·РѕРЅ [%s..%s]: %s"), m_pMinValue->value().getAsString().c_str(), m_pMaxValue->value().getAsString().c_str(), pValue->value().getAsString().c_str()));
+			rdo::converter::smr2rdox::g_error().push_only(src_info(),         rdo::format(_T("РЎРј. РѕРїРёСЃР°РЅРёРµ РґРёР°РїР°Р·РѕРЅР°")));
 			rdo::converter::smr2rdox::g_error().push_done();
 		}
 	}

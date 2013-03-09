@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoproc_rtp.y
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -223,9 +223,9 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // -------------------- General part
 // --------------------------------------------------------------------------------
 dptrtp_main:
-	| dptrtp_main RDO_Decision_point error RDO_End {@1} /* заглушка для $Decision_point */
-	| dptrtp_main RDO_Activities     error RDO_End      /* заглушка для $Activities     */
-	| dptrtp_main RDO_Process        error RDO_End      /* заглушка для $Process        */
+	| dptrtp_main RDO_Decision_point error RDO_End {@1} /* Р·Р°РіР»СѓС€РєР° РґР»СЏ $Decision_point */
+	| dptrtp_main RDO_Activities     error RDO_End      /* Р·Р°РіР»СѓС€РєР° РґР»СЏ $Activities     */
+	| dptrtp_main RDO_Process        error RDO_End      /* Р·Р°РіР»СѓС€РєР° РґР»СЏ $Process        */
 	;
 
 // --------------------------------------------------------------------------------

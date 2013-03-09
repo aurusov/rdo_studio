@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoproc_rss.y
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -225,8 +225,8 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // -------------------- General part
 // --------------------------------------------------------------------------------
 dptrtp_main:
-	| dptrtp_main RDO_Decision_point error RDO_End /* заглушка для $Decision_point */
-	| dptrtp_main RDO_Activities error RDO_End     /* заглушка для $Activities     */
+	| dptrtp_main RDO_Decision_point error RDO_End /* Р·Р°РіР»СѓС€РєР° РґР»СЏ $Decision_point */
+	| dptrtp_main RDO_Activities error RDO_End     /* Р·Р°РіР»СѓС€РєР° РґР»СЏ $Activities     */
 	| dptrtp_main dpt_process_end
 	;
 
@@ -270,22 +270,22 @@ dpt_process_line
 	| RDO_QUEUE dpt_queue_param
 	| RDO_QUEUE error
 	{
-		CONVERTER->error().error(@1, rdo::format(_T("Ожидается имя ресурса для сбора статистики по очереди")));
+		CONVERTER->error().error(@1, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ СЂРµСЃСѓСЂСЃР° РґР»СЏ СЃР±РѕСЂР° СЃС‚Р°С‚РёСЃС‚РёРєРё РїРѕ РѕС‡РµСЂРµРґРё")));
 	}
 	| RDO_DEPART dpt_depart_param
 	| RDO_DEPART error
 	{
-		CONVERTER->error().error(@1, rdo::format(_T("Ожидается имя ресурса для сбора статистики по очереди")));
+		CONVERTER->error().error(@1, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ СЂРµСЃСѓСЂСЃР° РґР»СЏ СЃР±РѕСЂР° СЃС‚Р°С‚РёСЃС‚РёРєРё РїРѕ РѕС‡РµСЂРµРґРё")));
 	}
 	| RDO_SEIZE dpt_seize_param
 	| RDO_SEIZE error
 	{
-		CONVERTER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
+		CONVERTER->error().error(@1, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРёСЃРѕРє СЂРµСЃСѓСЂСЃРѕРІ, РѕР±СЉРµРґРёРЅСЏРµРјС‹С… РІ Р±Р»РѕРє, С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ")));
 	}
 	| RDO_RELEASE dpt_release_param
 	| RDO_RELEASE error
 	{
-		CONVERTER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
+		CONVERTER->error().error(@1, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРёСЃРѕРє СЂРµСЃСѓСЂСЃРѕРІ, РѕР±СЉРµРґРёРЅСЏРµРјС‹С… РІ Р±Р»РѕРє, С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ")));
 	}
 	;
 
@@ -295,7 +295,7 @@ dpt_queue_param
 	}
 	| RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@1, _T("Ошибка в имени ресурса"));
+		CONVERTER->error().error(@1, _T("РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°"));
 	}
 	;
 
@@ -305,7 +305,7 @@ dpt_depart_param
 	}
 	| RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@1, _T("Ошибка в имени ресурса"));
+		CONVERTER->error().error(@1, _T("РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°"));
 	}
 	;
 
@@ -318,7 +318,7 @@ dpt_seize_param
 	}
 	| dpt_seize_param error
 	{
-		CONVERTER->error().error(@1, _T("Ошибка в имени ресурса"));
+		CONVERTER->error().error(@1, _T("РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°"));
 	}
 	;
 
@@ -331,7 +331,7 @@ dpt_release_param
 	}
 	| dpt_release_param error
 	{
-		CONVERTER->error().error(@1, _T("Ошибка в имени ресурса"));
+		CONVERTER->error().error(@1, _T("РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°"));
 	}
 	;
 

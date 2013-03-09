@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoparser.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -418,7 +418,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 				YYLTYPE pos;
 				pos.m_last_line = 0;
 				pos.m_last_pos  = 0;
-				error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': уже существует\n"), backupPath.string().c_str()));
+				error().error(RDOParserSrcInfo(pos), rdo::format(_T("РћС€РёР±РєР° СЃРѕР·РґР°РЅРёСЏ backup-РґРёСЂРµРєС‚РѕСЂРёРё '%s': СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚\n"), backupPath.string().c_str()));
 			}
 		}
 		catch (CREF(boost::system::error_code) ex)
@@ -435,7 +435,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 			YYLTYPE pos;
 			pos.m_last_line = 0;
 			pos.m_last_pos  = 0;
-			error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': %s\n"), backupPath.string().c_str(), message.c_str()));
+			error().error(RDOParserSrcInfo(pos), rdo::format(_T("РћС€РёР±РєР° СЃРѕР·РґР°РЅРёСЏ backup-РґРёСЂРµРєС‚РѕСЂРёРё '%s': %s\n"), backupPath.string().c_str(), message.c_str()));
 		}
 
 		STL_FOR_ALL(fileList, it)
@@ -520,23 +520,23 @@ void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 	LPRDOFUNConstant pConstant = findFUNConstant(src_info.src_text());
 	if (pConstant)
 	{
-		error().push_only(src_info, rdo::format(_T("Константа '%s' уже существует"), src_info.src_text().c_str()));
+		error().push_only(src_info, rdo::format(_T("РљРѕРЅСЃС‚Р°РЅС‚Р° '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
 //		parser->error(_T("Second appearance of the same constant name: ") + *(_cons->getName()));
-		error().push_only(pConstant->src_info(), _T("См. первое определение"));
+		error().push_only(pConstant->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		error().push_done();
 	}
 	LPRDOFUNSequence pSequence = findFUNSequence(src_info.src_text());
 	if (pSequence)
 	{
-		error().push_only(src_info, rdo::format(_T("Последовательность '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pSequence->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format(_T("РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+		error().push_only(pSequence->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		error().push_done();
 	}
 	LPRDOFUNFunction pFunction = findFUNFunction(src_info.src_text());
 	if (pFunction)
 	{
-		error().push_only(src_info, rdo::format(_T("Функция '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pFunction->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format(_T("Р¤СѓРЅРєС†РёСЏ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+		error().push_only(pFunction->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		error().push_done();
 	}
 }
@@ -548,8 +548,8 @@ void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if((*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
 		if (it_search_act != (*it_search)->getActivities().end())
 		{
-			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error().push_only((*it_search_act)->src_info(), _T("См. первое определение"));
+			error().push_only(src_info, rdo::format(_T("РђРєС‚РёРІРЅРѕСЃС‚СЊ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+			error().push_only((*it_search_act)->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 			error().push_done();
 //			error(_T("Activity name: ") + *_name + _T(" already defined"));
 		}
@@ -559,8 +559,8 @@ void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if((*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
 		if (it_some_act != (*it_some)->getActivities().end())
 		{
-			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error().push_only((*it_some_act)->src_info(), _T("См. первое определение"));
+			error().push_only(src_info, rdo::format(_T("РђРєС‚РёРІРЅРѕСЃС‚СЊ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+			error().push_only((*it_some_act)->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 			error().push_done();
 		}
 	}
@@ -569,23 +569,23 @@ void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if((*it_prior)->getActivities().begin(), (*it_prior)->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
 		if (it_prior_act != (*it_prior)->getActivities().end())
 		{
-			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error().push_only((*it_prior_act)->src_info(), _T("См. первое определение"));
+			error().push_only(src_info, rdo::format(_T("РђРєС‚РёРІРЅРѕСЃС‚СЊ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+			error().push_only((*it_prior_act)->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 			error().push_done();
 		}
 	}
 	LPRDODPTFreeActivity pFreeActivity = findDPTFreeActivity(src_info.src_text());
 	if (pFreeActivity)
 	{
-		error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pFreeActivity->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format(_T("РђРєС‚РёРІРЅРѕСЃС‚СЊ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+		error().push_only(pFreeActivity->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		error().push_done();
 	}
 	LPRDOOPROperation pOperation = findOPROperation(src_info.src_text());
 	if (pOperation)
 	{
-		error().push_only(src_info, rdo::format(_T("Операция '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pOperation->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format(_T("РћРїРµСЂР°С†РёСЏ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+		error().push_only(pOperation->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		error().push_done();
 	}
 }
@@ -594,22 +594,22 @@ void Converter::checkDPTName(CREF(RDOParserSrcInfo) src_info)
 {
 	if (src_info.src_text().empty())
 	{
-		// Актуально для операций и свободных блоков активностей
+		// РђРєС‚СѓР°Р»СЊРЅРѕ РґР»СЏ РѕРїРµСЂР°С†РёР№ Рё СЃРІРѕР±РѕРґРЅС‹С… Р±Р»РѕРєРѕРІ Р°РєС‚РёРІРЅРѕСЃС‚РµР№
 		return;
 	}
 	DPTSearchList::const_iterator search_it = std::find_if(getDPTSearchs().begin(), getDPTSearchs().end(), compareName<RDODPTSearch>(src_info.src_text()));
 	if (search_it != getDPTSearchs().end())
 	{
-		error().push_only(src_info, rdo::format(_T("Точка '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only((*search_it)->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format(_T("РўРѕС‡РєР° '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+		error().push_only((*search_it)->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		error().push_done();
 //		error(src_info, _T("DPT name: ") + src_info.src_text() + _T(" already defined"));
 	}
 	DPTSomeList::const_iterator some_it = std::find_if(getDPTSomes().begin(), getDPTSomes().end(), compareName<RDODPTSome>(src_info.src_text()));
 	if (some_it != getDPTSomes().end())
 	{
-		error().push_only(src_info, rdo::format(_T("Точка '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only((*some_it)->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format(_T("РўРѕС‡РєР° '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+		error().push_only((*some_it)->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		error().push_done();
 	}
 }

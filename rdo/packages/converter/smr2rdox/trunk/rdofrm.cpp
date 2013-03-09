@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdofrm.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -85,7 +85,7 @@ void RDOFRMFrame::onAfterBackPicture(ruint lastSeek)
 
 	LPDocUpdate pFrameConditionBeginInsert = rdo::Factory<UpdateInsert>::create(
 		lastSeek,
-		_T("\n// Условие показа фрейма\nif (!(")
+		_T("\n// РЈСЃР»РѕРІРёРµ РїРѕРєР°Р·Р° С„СЂРµР№РјР°\nif (!(")
 	);
 	ASSERT(pFrameConditionBeginInsert);
 	Converter::s_converter()->insertDocUpdate(pFrameConditionBeginInsert);
