@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      app/rdo_console/controller_console_options.cpp
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
+  \author    РџСЂРѕР№РґР°РєРѕРІ Р•РІРіРµРЅРёР№ (lord.tiran@gmail.com)
   \date      26.10.2011
-  \brief     Консольная версия RDO
+  \brief     РљРѕРЅСЃРѕР»СЊРЅР°СЏ РІРµСЂСЃРёСЏ RDO
   \indent    4T
 */
 

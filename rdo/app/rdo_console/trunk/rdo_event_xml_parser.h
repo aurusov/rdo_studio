@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      app/rdo_console/rdo_event_xml_parser.h
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
+  \author    РџСЂРѕР№РґР°РєРѕРІ Р•РІРіРµРЅРёР№ (lord.tiran@gmail.com)
   \date      26.11.2012
-  \brief     Консольная версия RDO
+  \brief     РљРѕРЅСЃРѕР»СЊРЅР°СЏ РІРµСЂСЃРёСЏ RDO
   \indent    4T
 */
 
