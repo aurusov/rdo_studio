@@ -15,6 +15,7 @@
 #include "repository/rdorepository.h"
 #include "utils/rdofile.h"
 #include "utils/rdotime.h"
+#include "utils/rdolocale.h"
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"
 #include "thirdparty/pugixml/src/pugixml.hpp"
@@ -563,10 +564,10 @@ void RDOThreadRepository::loadBMP(REF(tstring) name, REF(rdo::stream) stream) co
 
 void RDOThreadRepository::writeModelFilesInfo(REF(rdo::ofstream) stream) const
 {
-	stream << "Results_file   = " << getFileExtName(rdoModelObjects::PMV) << "    " << rdo::Time::local().asString() << std::endl;
-	stream << "Run_file       = " << getFileExtName(rdoModelObjects::SMR) << std::endl;
-	stream << "Model_name     = " << getFileName(rdoModelObjects::SMR) << std::endl;
-	stream << "Resource_file  = " << getFileName(rdoModelObjects::RSS) << getExtention(rdoModelObjects::RSS) << std::endl;
+	stream << "Results_file   = " << rdo::locale::convertFromCLocale(getFileExtName(rdoModelObjects::PMV)) << "    " << rdo::Time::local().asString() << std::endl;
+	stream << "Run_file       = " << rdo::locale::convertFromCLocale(getFileExtName(rdoModelObjects::SMR)) << std::endl;
+	stream << "Model_name     = " << rdo::locale::convertFromCLocale(getFileName(rdoModelObjects::SMR)) << std::endl;
+	stream << "Resource_file  = " << rdo::locale::convertFromCLocale(getFileName(rdoModelObjects::RSS)) << getExtention(rdoModelObjects::RSS) << std::endl;
 }
 
 rbool RDOThreadRepository::createFile(CREF(tstring) name, CREF(tstring) ext, REF(rdo::ofstream) stream) const
