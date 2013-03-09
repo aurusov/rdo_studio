@@ -143,9 +143,7 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) 
 			}
 			else
 			{
-				setlocale(LC_NUMERIC, "rus");
 				m_streamTable << rdo::format(_T("%f"), pGetValue->getValue().getDouble()) << _T("\t");
-				setlocale(LC_NUMERIC, "eng");
 			}
 			tableWrite = true;
 		}
