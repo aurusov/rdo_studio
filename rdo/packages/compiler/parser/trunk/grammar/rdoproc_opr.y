@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoproc_opr.y
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      24.03.2008
-  \brief     Синтаксис процессов. based on rdodpt_opr.y
+  \brief     РЎРёРЅС‚Р°РєСЃРёСЃ РїСЂРѕС†РµСЃСЃРѕРІ. based on rdodpt_opr.y
   \indent    4T
 */
 
@@ -262,7 +262,7 @@ dpt_process_begin
 		LPRDOPROCProcess pProcess = PARSER->getLastPROCProcess();
 		if (pProcess && !pProcess->closed())
 		{
-			PARSER->error().error(pProcess->src_info(), _T("Незакрыт предыдущий блок $Process"));
+			PARSER->error().error(pProcess->src_info(), _T("РќРµР·Р°РєСЂС‹С‚ РїСЂРµРґС‹РґСѓС‰РёР№ Р±Р»РѕРє $Process"));
 		}
 
 		tstring transactName = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
@@ -274,7 +274,7 @@ dpt_process_begin
 	}
 	| RDO_Process error
 	{
-		PARSER->error().error(@2, @2, _T("Ошибка в процессе!"));
+		PARSER->error().error(@2, @2, _T("РћС€РёР±РєР° РІ РїСЂРѕС†РµСЃСЃРµ!"));
 	}
 	;
 
@@ -299,11 +299,11 @@ dpt_process_condition
 	}
 	| RDO_Condition error
 	{
-		PARSER->error().error(@2, @2, _T("После ключевого слова $Condition ожидается условие активации процесса"));
+		PARSER->error().error(@2, @2, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° $Condition РѕР¶РёРґР°РµС‚СЃСЏ СѓСЃР»РѕРІРёРµ Р°РєС‚РёРІР°С†РёРё РїСЂРѕС†РµСЃСЃР°"));
 	}
 	| error
 	{
-		PARSER->error().error(@1, _T("Ожидается ключевое слово $Condition"));
+		PARSER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Condition"));
 	}
 	;
 
@@ -315,16 +315,16 @@ dpt_process_prior
 		ASSERT(pArithm);
 		if (!PARSER->getLastPROCProcess()->setPrior(pArithm))
 		{
-			PARSER->error().error(@2, _T("Процесс не может иметь приоритет"));
+			PARSER->error().error(@2, _T("РџСЂРѕС†РµСЃСЃ РЅРµ РјРѕР¶РµС‚ РёРјРµС‚СЊ РїСЂРёРѕСЂРёС‚РµС‚"));
 		}
 	}
 	| RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета процесса"))
+		PARSER->error().error(@1, @2, _T("РћС€РёР±РєР° РѕРїРёСЃР°РЅРёСЏ РїСЂРёРѕСЂРёС‚РµС‚Р° РїСЂРѕС†РµСЃСЃР°"))
 	}
 	| error
 	{
-		PARSER->error().error(@1, @1, _T("Ожидается ключевое слово $Priority"))
+		PARSER->error().error(@1, @1, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Priority"))
 	}
 	;
 
@@ -336,7 +336,7 @@ dpt_process_input
 dpt_process_line
 	: RDO_IDENTIF
 	{
-		PARSER->error().error(@1, rdo::format(_T("Неизвестный оператор '%s'"), PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str()));
+		PARSER->error().error(@1, rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ '%s'"), PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str()));
 	}
 	| planning_statement
 	{
@@ -383,7 +383,7 @@ dpt_process_line
 		rbool traceFlag     = true;
 
 		std::vector<rdo::runtime::RDOValue> paramList;
-		//! \error вместо настоящих значений параметров транзакта просто 0
+		//! \error РІРјРµСЃС‚Рѕ РЅР°СЃС‚РѕСЏС‰РёС… Р·РЅР°С‡РµРЅРёР№ РїР°СЂР°РјРµС‚СЂРѕРІ С‚СЂР°РЅР·Р°РєС‚Р° РїСЂРѕСЃС‚Рѕ 0
 		paramList.push_back(rdo::runtime::RDOValue(0.0));
 
 		rdo::runtime::LPRDOCalcCreateResource pCreateAndGoOnTransactCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
@@ -406,7 +406,7 @@ dpt_process_line
 	}
 	| RDO_GENERATE error
 	{
-		PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+		PARSER->error().error(@2, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	| RDO_TERMINATE dpt_term_param
 	{
@@ -416,7 +416,7 @@ dpt_process_line
 	}
 	| RDO_TERMINATE error
 	{
-		PARSER->error().error(@1, _T("Ошибка в параметре оператора TERMINATE"));
+		PARSER->error().error(@1, _T("РћС€РёР±РєР° РІ РїР°СЂР°РјРµС‚СЂРµ РѕРїРµСЂР°С‚РѕСЂР° TERMINATE"));
 	}
 	| RDO_ADVANCE fun_arithm
 	{
@@ -426,7 +426,7 @@ dpt_process_line
 	}
 	| RDO_ADVANCE error
 	{
-		PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+		PARSER->error().error(@2, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	| RDO_QUEUE dpt_queue_param
 	{
@@ -438,7 +438,7 @@ dpt_process_line
 	}
 	| RDO_QUEUE error
 	{
-		PARSER->error().error(@1, _T("Ожидается имя ресурса для сбора статистики по очереди"));
+		PARSER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ СЂРµСЃСѓСЂСЃР° РґР»СЏ СЃР±РѕСЂР° СЃС‚Р°С‚РёСЃС‚РёРєРё РїРѕ РѕС‡РµСЂРµРґРё"));
 	}
 	| RDO_DEPART dpt_depart_param
 	{
@@ -450,7 +450,7 @@ dpt_process_line
 	}
 	| RDO_DEPART error
 	{
-		PARSER->error().error(@1, _T("Ожидается имя ресурса для сбора статистики по очереди"));
+		PARSER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ СЂРµСЃСѓСЂСЃР° РґР»СЏ СЃР±РѕСЂР° СЃС‚Р°С‚РёСЃС‚РёРєРё РїРѕ РѕС‡РµСЂРµРґРё"));
 	}
 	| RDO_SEIZE dpt_seize_param
 	{
@@ -462,7 +462,7 @@ dpt_process_line
 	}
 	| RDO_SEIZE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
+		PARSER->error().error(@1, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРёСЃРѕРє СЂРµСЃСѓСЂСЃРѕРІ, РѕР±СЉРµРґРёРЅСЏРµРјС‹С… РІ Р±Р»РѕРє, С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ")));
 	}
 	| RDO_RELEASE dpt_release_param
 	{
@@ -474,14 +474,14 @@ dpt_process_line
 	}
 	| RDO_RELEASE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
+		PARSER->error().error(@1, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРёСЃРѕРє СЂРµСЃСѓСЂСЃРѕРІ, РѕР±СЉРµРґРёРЅСЏРµРјС‹С… РІ Р±Р»РѕРє, С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ")));
 	}
 	| RDO_ASSIGN dpt_assign_param
 	{
 	}
 	| RDO_ASSIGN error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается строка изменения параметра")));
+		PARSER->error().error(@1, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ СЃС‚СЂРѕРєР° РёР·РјРµРЅРµРЅРёСЏ РїР°СЂР°РјРµС‚СЂР°")));
 	}
 	;
 
@@ -494,13 +494,13 @@ planning_statement
 		LPRDOEvent pEvent = PARSER->findEvent(eventName);
 		if (!pEvent)
 		{
-			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
+			PARSER->error().error(@1, rdo::format(_T("РџРѕРїС‹С‚РєР° Р·Р°РїР»Р°РЅРёСЂРѕРІР°С‚СЊ РЅРµРёР·РІРµСЃС‚РЅРѕРµ СЃРѕР±С‹С‚РёРµ: %s"), eventName.c_str()));
 		}
 
 		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
 		if (arithmIt == pArithmList->getContainer().end())
 		{
-			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
+			PARSER->error().error(@1, rdo::format(_T("РќРµ СѓРєР°Р·Р°РЅРѕ РІСЂРµРјСЏ РїР»Р°РЅРёСЂРѕРІР°РЅРёСЏ СЃРѕР±С‹С‚РёСЏ: %s"), eventName.c_str()));
 		}
 
 		LPRDOFUNArithm pTimeArithm = *arithmIt;
@@ -523,7 +523,7 @@ planning_statement
 		ASSERT(pCalcTime);
 
 		rdo::runtime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
-		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ СЃРѕР±С‹С‚РёСЏ %s РІ РјРѕРјРµРЅС‚ РІСЂРµРјРµРЅРё %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
@@ -531,19 +531,19 @@ planning_statement
 	}
 	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' error
 	{
-		PARSER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
+		PARSER->error().error(@7, _T("РќРµ РЅР°Р№РґРµРЅ СЃРёРјРІРѕР» РѕРєРѕРЅС‡Р°РЅРёСЏ РёРЅСЃС‚СЂСѓРєС†РёРё - С‚РѕС‡РєР° СЃ Р·Р°РїСЏС‚РѕР№"));
 	}
 	| RDO_IDENTIF '.' RDO_Planning '(' error
 	{
-		PARSER->error().error(@5, _T("Ошибка в арифметическом выражении"));
+		PARSER->error().error(@5, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	| RDO_IDENTIF '.' RDO_Planning error
 	{
-		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
+		PARSER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕС‚РєСЂС‹РІР°СЋС‰Р°СЏ СЃРєРѕР±РєР°"));
 	}
 	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list error
 	{
-		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
+		PARSER->error().error(@6, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏ СЃРєРѕР±РєР°"));
 	}
 	;
 
@@ -554,11 +554,11 @@ stopping_statement
 		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
 		if (!pEvent)
 		{
-			PARSER->error().error(@1, rdo::format(_T("Попытка остановить неизвестное событие: %s"), eventName.c_str()));
+			PARSER->error().error(@1, rdo::format(_T("РџРѕРїС‹С‚РєР° РѕСЃС‚Р°РЅРѕРІРёС‚СЊ РЅРµРёР·РІРµСЃС‚РЅРѕРµ СЃРѕР±С‹С‚РёРµ: %s"), eventName.c_str()));
 		}
 
 		rdo::runtime::LPRDOCalcEventStop pCalc = rdo::Factory<rdo::runtime::RDOCalcEventStop>::create();
-		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format(_T("Остановка события %s"), eventName.c_str())));
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format(_T("РћСЃС‚Р°РЅРѕРІРєР° СЃРѕР±С‹С‚РёСЏ %s"), eventName.c_str())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
@@ -566,7 +566,7 @@ stopping_statement
 	}
 	| RDO_IDENTIF '.' RDO_Stopping '(' ')' error
 	{
-		PARSER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
+		PARSER->error().error(@4, _T("РќРµ РЅР°Р№РґРµРЅ СЃРёРјРІРѕР» РѕРєРѕРЅС‡Р°РЅРёСЏ РёРЅСЃС‚СЂСѓРєС†РёРё - С‚РѕС‡РєР° СЃ Р·Р°РїСЏС‚РѕР№"));
 	}
 	;
 
@@ -582,7 +582,7 @@ dpt_queue_param
 	}
 	| RDO_IDENTIF error
 	{
-		PARSER->error().error(@1, _T("Ошибка в миени очереди"))
+		PARSER->error().error(@1, _T("РћС€РёР±РєР° РІ РјРёРµРЅРё РѕС‡РµСЂРµРґРё"))
 	}
 	;
 
@@ -598,7 +598,7 @@ dpt_depart_param
 	}
 	| RDO_IDENTIF error 
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"))
+		PARSER->error().error(@1, _T("РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°"))
 	}
 	;
 
@@ -623,12 +623,12 @@ dpt_term_param
 		}
 		else
 		{
-			PARSER->error().error(@1, _T("Ошибка, для оператора TERMINATE можно использовать только арифметические выражения целого типа"));
+			PARSER->error().error(@1, _T("РћС€РёР±РєР°, РґР»СЏ РѕРїРµСЂР°С‚РѕСЂР° TERMINATE РјРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ С‚РѕР»СЊРєРѕ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ РІС‹СЂР°Р¶РµРЅРёСЏ С†РµР»РѕРіРѕ С‚РёРїР°"));
 		}
 	}
 	| fun_arithm error
 	{
-		PARSER->error().error(@1, _T("Ошибка, после оператора TERMINATE может быть указано только арифметическое выражение целого типа"))
+		PARSER->error().error(@1, _T("РћС€РёР±РєР°, РїРѕСЃР»Рµ РѕРїРµСЂР°С‚РѕСЂР° TERMINATE РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓРєР°Р·Р°РЅРѕ С‚РѕР»СЊРєРѕ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ С†РµР»РѕРіРѕ С‚РёРїР°"))
 	}
 	;
 
@@ -651,7 +651,7 @@ dpt_seize_param
 	}
 	| dpt_seize_param error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		PARSER->error().error(@1, _T("РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°"));
 	}
 	;
 
@@ -674,7 +674,7 @@ dpt_release_param
 	}
 	| dpt_release_param error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		PARSER->error().error(@1, _T("РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°"));
 	}
 	;
 
@@ -685,16 +685,16 @@ dpt_assign_param
 		tstring param = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
 		rdo::compiler::mbuilder::RDOResType rtp;
 
-		// Получили список всех ресурсов
+		// РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 
-		// Если ресурс существует, берем его тип и проверяем наличие параметра
+		// Р•СЃР»Рё СЂРµСЃСѓСЂСЃ СЃСѓС‰РµСЃС‚РІСѓРµС‚, Р±РµСЂРµРј РµРіРѕ С‚РёРї Рё РїСЂРѕРІРµСЂСЏРµРј РЅР°Р»РёС‡РёРµ РїР°СЂР°РјРµС‚СЂР°
 		if (rssList[res].exist())
 		{
 			rtp = rssList[res].getType();
 			if(!rtp.m_params[param].exist())
 			{
-				PARSER->error().error(@1, rdo::format(_T("Ссылка на неизвестный параметр ресурса: %s.%s"), res.c_str(), param.c_str()));
+				PARSER->error().error(@1, rdo::format(_T("РЎСЃС‹Р»РєР° РЅР° РЅРµРёР·РІРµСЃС‚РЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СЂРµСЃСѓСЂСЃР°: %s.%s"), res.c_str(), param.c_str()));
 			}
 		
 			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
@@ -722,7 +722,7 @@ dpt_assign_param
 		}
 		else
 		{
-			PARSER->error().error(@1, rdo::format(_T("Ссылка на неизвестный ресурс: %s"), res.c_str()));
+			PARSER->error().error(@1, rdo::format(_T("РЎСЃС‹Р»РєР° РЅР° РЅРµРёР·РІРµСЃС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ: %s"), res.c_str()));
 		}
 	}
 	;
@@ -735,9 +735,9 @@ dpt_process_end
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Общие составные токены для всех объектов РДО
+// -------------------- РћР±С‰РёРµ СЃРѕСЃС‚Р°РІРЅС‹Рµ С‚РѕРєРµРЅС‹ РґР»СЏ РІСЃРµС… РѕР±СЉРµРєС‚РѕРІ Р Р”Рћ
 // --------------------------------------------------------------------------------
-// -------------------- Описание переменной
+// -------------------- РћРїРёСЃР°РЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№
 // --------------------------------------------------------------------------------
 param_value
 	: RDO_INT_CONST
@@ -778,7 +778,7 @@ param_array_value
 	}
 	| '[' array_item error
 	{
-		PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
+		PARSER->error().error(@2, _T("РњР°СЃСЃРёРІ РґРѕР»Р¶РµРЅ Р·Р°РєСЂС‹РІР°С‚СЊСЃСЏ СЃРєРѕР±РєРѕР№"));
 	}
 	;
 
@@ -811,7 +811,7 @@ array_item
 		ASSERT(pValue);
 		pArrayValue->insertItem(pValue);
 		$$ = PARSER->stack().push(pArrayValue);
-		PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), pValue->value().getAsString().c_str()));
+		PARSER->error().warning(@1, rdo::format(_T("РџСЂРѕРїСѓС‰РµРЅР° Р·Р°РїСЏС‚Р°СЏ РїРµСЂРµРґ: %s"), pValue->value().getAsString().c_str()));
 	}
 	;
 
@@ -831,17 +831,17 @@ param_value_default
 		RDOParserSrcInfo src_info(@1, @2, true);
 		if (src_info.src_pos().point())
 		{
-			PARSER->error().error(src_info, _T("Не указано значение по умолчанию"));
+			PARSER->error().error(src_info, _T("РќРµ СѓРєР°Р·Р°РЅРѕ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ"));
 		}
 		else
 		{
-			PARSER->error().error(src_info, _T("Неверное значение по умолчанию"));
+			PARSER->error().error(src_info, _T("РќРµРІРµСЂРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ"));
 		}
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Логические выражения
+// -------------------- Р›РѕРіРёС‡РµСЃРєРёРµ РІС‹СЂР°Р¶РµРЅРёСЏ
 // --------------------------------------------------------------------------------
 fun_logic_eq
 	: RDO_eq { $$ = RDO_eq; }
@@ -965,16 +965,16 @@ fun_logic
 	}
 	| '[' fun_logic error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| '(' fun_logic error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Арифметические выражения
+// -------------------- РђСЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ РІС‹СЂР°Р¶РµРЅРёСЏ
 // --------------------------------------------------------------------------------
 fun_arithm
 	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
@@ -1070,7 +1070,7 @@ fun_arithm
 		}
 		else
 		{
-			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
+			PARSER->error().error(@1, rdo::format(_T("'%s' РЅРµ СЏРІР»СЏРµС‚СЃСЏ РјР°СЃСЃРёРІРѕРј."), pValue->value().getIdentificator().c_str()));
 		}
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
@@ -1101,7 +1101,7 @@ fun_arithm
 		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
 		if (!pArrayType)
 		{
-			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
+			PARSER->error().error(@1, rdo::format(_T("'%s' РЅРµ СЏРІР»СЏРµС‚СЃСЏ РјР°СЃСЃРёРІРѕРј."), pValue->value().getIdentificator().c_str()));
 		}
 
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
@@ -1121,7 +1121,7 @@ fun_arithm
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Функции и последовательности
+// -------------------- Р¤СѓРЅРєС†РёРё Рё РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
 // --------------------------------------------------------------------------------
 fun_arithm_func_call
 	: RDO_IDENTIF '(' arithm_list ')'
@@ -1142,7 +1142,7 @@ fun_arithm_func_call
 	}
 	| RDO_IDENTIF '(' error
 	{
-		PARSER->error().error(@3, _T("Ошибка в параметрах функции"));
+		PARSER->error().error(@3, _T("РћС€РёР±РєР° РІ РїР°СЂР°РјРµС‚СЂР°С… С„СѓРЅРєС†РёРё"));
 	}
 	;
 
@@ -1179,12 +1179,12 @@ arithm_list_body
 	}
 	| arithm_list_body ',' error
 	{
-		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+		PARSER->error().error(@3, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Групповые выражения
+// -------------------- Р“СЂСѓРїРїРѕРІС‹Рµ РІС‹СЂР°Р¶РµРЅРёСЏ
 // --------------------------------------------------------------------------------
 fun_group_keyword
 	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
@@ -1202,11 +1202,11 @@ fun_group_header
 	}
 	| fun_group_keyword '(' error
 	{
-		PARSER->error().error(@3, _T("Ожидается имя типа"));
+		PARSER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С‚РёРїР°"));
 	}
 	| fun_group_keyword error
 	{
-		PARSER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
+		PARSER->error().error(@1, _T("РџРѕСЃР»Рµ РёРјРµРЅРё С„СѓРЅРєС†РёРё РѕР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	;
 
@@ -1231,15 +1231,15 @@ fun_group
 	}
 	| fun_group_header fun_logic error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_group_header RDO_NoCheck error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_group_header error
 	{
-		PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		PARSER->error().error(@1, @2, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	;
 
@@ -1258,11 +1258,11 @@ fun_select_header
 	}
 	| RDO_Select '(' error
 	{
-		PARSER->error().error(@3, _T("Ожидается имя типа"));
+		PARSER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С‚РёРїР°"));
 	}
 	| RDO_Select error
 	{
-		PARSER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
+		PARSER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	;
 
@@ -1290,15 +1290,15 @@ fun_select_body
 	}
 	| fun_select_header fun_logic error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_header RDO_NoCheck error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_header error
 	{
-		PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		PARSER->error().error(@1, @2, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	;
 
@@ -1323,11 +1323,11 @@ fun_select_logic
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
-		PARSER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
+		PARSER->error().error(@4, @5, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	| fun_select_body '.' fun_select_keyword error
 	{
-		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		PARSER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
@@ -1341,19 +1341,19 @@ fun_select_logic
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
-		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_body '.' RDO_Empty error
 	{
-		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		PARSER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_body '.' error
 	{
-		PARSER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
+		PARSER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РјРµС‚РѕРґ СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ"));
 	}
 	| fun_select_body error
 	{
-		PARSER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
+		PARSER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '.' (С‚РѕС‡РєР°) РґР»СЏ РІС‹Р·РѕРІР° РјРµС‚РѕРґР° СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ"));
 	}
 	;
 
@@ -1370,11 +1370,11 @@ fun_select_arithm
 	}
 	| fun_select_body '.' RDO_Size error
 	{
-		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		PARSER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_body '.' RDO_Size '(' error
 	{
-		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	;
 

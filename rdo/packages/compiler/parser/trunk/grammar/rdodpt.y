@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdodpt.y
-  \authors   ¡‡Ò ¿ÎÂÍÒ‡Ì‰
-  \authors   ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
-  \authors   ÀÛ˘‡Ì ƒÏËÚËÈ (dluschan@rk9.bmstu.ru)
+  \authors   –ë–∞—Ä—Å –ê–ª–µ–∫—Å–∞–Ω–¥—Ä
+  \authors   –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
+  \authors   –õ—É—â–∞–Ω –î–º–∏—Ç—Ä–∏–π (dluschan@rk9.bmstu.ru)
   \date      20.02.2003
-  \brief     —ËÌÚ‡ÍÒËÒ ÚÓ˜ÂÍ ÔËÌˇÚËˇ Â¯ÂÌËÈ DPT
+  \brief     –°–∏–Ω—Ç–∞–∫—Å–∏—Å —Ç–æ—á–µ–∫ –ø—Ä–∏–Ω—è—Ç–∏—è —Ä–µ—à–µ–Ω–∏–π DPT
   \indent    4T
 */
 
@@ -255,7 +255,7 @@ dpt_main
 	}
 	| error
 	{
-		PARSER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ÓÔËÒ‡ÌËÂ ÚÓ˜ÍË ÔËÌˇÚËˇ Â¯ÂÌËÈ"));
+		PARSER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –æ–ø–∏—Å–∞–Ω–∏–µ —Ç–æ—á–∫–∏ –ø—Ä–∏–Ω—è—Ç–∏—è —Ä–µ—à–µ–Ω–∏–π"));
 	}
 	;
 
@@ -273,7 +273,7 @@ dpt_search_trace
 	}
 	| RDO_trace
 	{
-		PARSER->error().error(@1, _T("ƒ‡ÌÌ˚È ÔËÁÌ‡Í Ú‡ÒÒËÓ‚ÍË ÌÂ ËÒÔÓÎ¸ÁÛÂÚÒˇ ‚ ÚÓ˜ÍÂ ÚËÔ‡ search"));
+		PARSER->error().error(@1, _T("–î–∞–Ω–Ω—ã–π –ø—Ä–∏–∑–Ω–∞–∫ —Ç—Ä–∞—Å—Å–∏—Ä–æ–≤–∫–∏ –Ω–µ –∏—Å–ø–æ–ª—å–∑—É–µ—Ç—Å—è –≤ —Ç–æ—á–∫–µ —Ç–∏–ø–∞ search"));
 	}
 	| RDO_trace_stat
 	{
@@ -300,7 +300,7 @@ dpt_search_parent
 	}
 	| RDO_Parent error
 	{
-		PARSER->error().error(@1, _T("Œ¯Ë·Í‡ ‚ ËÏÂÌË Ó‰ËÚÂÎ¸ÒÍÓÈ ÚÓ˜ÍË"));
+		PARSER->error().error(@1, _T("–û—à–∏–±–∫–∞ –≤ –∏–º–µ–Ω–∏ —Ä–æ–¥–∏—Ç–µ–ª—å—Å–∫–æ–π —Ç–æ—á–∫–∏"));
 	}
 	;
 
@@ -319,11 +319,11 @@ dpt_search_begin
 			LPRDODPTSome   pParentDPTSome   = PARSER->findDPTSome  (pParentName->value().getIdentificator());
 			if (!pParentDPTPrior && !pParentDPTSearch && !pParentDPTSome)
 			{
-				PARSER->error().error(@1, rdo::format(_T("ÕÂ Ì‡È‰ÂÌ‡ Ó‰ËÚÂÒÍ‡ˇ ÚÓ˜Í‡ %s"), pParentName->value().getIdentificator().c_str()));
+				PARSER->error().error(@1, rdo::format(_T("–ù–µ –Ω–∞–π–¥–µ–Ω–∞ —Ä–æ–¥–∏—Ç–µ—Å–∫–∞—è —Ç–æ—á–∫–∞ %s"), pParentName->value().getIdentificator().c_str()));
 			}
 			if (pParentDPTSearch)
 			{
-				PARSER->error().error(@1, _T("“Ó˜Í‡ ÔËÌˇÚËˇ Â¯ÂÌËÈ ÚËÔ‡ search ÏÓÊÂÚ ÒÓ‰ÂÊ‡Ú¸ ÎË¯¸ ‡ÍÚË‚ÌÓÒÚË ÚËÔ‡ rule Ë ÌÂ ÏÓÊÂÚ ·˚Ú¸ ÛÍ‡Á‡Ì‡ ‚ Í‡˜ÂÒÚ‚Â Ó‰ËÚÂÎ¸ÒÍÓÈ ÚÓ˜ÍË"));
+				PARSER->error().error(@1, _T("–¢–æ—á–∫–∞ –ø—Ä–∏–Ω—è—Ç–∏—è —Ä–µ—à–µ–Ω–∏–π —Ç–∏–ø–∞ search –º–æ–∂–µ—Ç —Å–æ–¥–µ—Ä–∂–∞—Ç—å –ª–∏—à—å –∞–∫—Ç–∏–≤–Ω–æ—Å—Ç–∏ —Ç–∏–ø–∞ rule –∏ –Ω–µ –º–æ–∂–µ—Ç –±—ã—Ç—å —É–∫–∞–∑–∞–Ω–∞ –≤ –∫–∞—á–µ—Å—Ç–≤–µ —Ä–æ–¥–∏—Ç–µ–ª—å—Å–∫–æ–π —Ç–æ—á–∫–∏"));
 			}
 			else if (pParentDPTPrior)
 			{
@@ -347,15 +347,15 @@ dpt_search_begin
 	}
 	| RDO_Decision_point RDO_IDENTIF_COLON error
 	{
-		PARSER->error().error(@2, @3, _T("ŒÊË‰‡ÂÚÒˇ ÚËÔ ÚÓ˜ÍË"));
+		PARSER->error().error(@2, @3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è —Ç–∏–ø —Ç–æ—á–∫–∏"));
 	}
 	| RDO_Decision_point RDO_IDENTIF error
 	{
-		PARSER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ ‰‚ÓÂÚÓ˜ËÂ"));
+		PARSER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –¥–≤–æ–µ—Ç–æ—á–∏–µ"));
 	}
 	| RDO_Decision_point error
 	{
-		PARSER->error().error(@1, @2, _T("œÓÒÎÂ ÍÎ˛˜Â‚Ó„Ó ÒÎÓ‚‡ $Decision_point ÓÊË‰‡ÂÚÒˇ ËÏˇ ÚÓ˜ÍË"));
+		PARSER->error().error(@1, @2, _T("–ü–æ—Å–ª–µ –∫–ª—é—á–µ–≤–æ–≥–æ —Å–ª–æ–≤–∞ $Decision_point –æ–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è —Ç–æ—á–∫–∏"));
 	}
 	;
 
@@ -376,11 +376,11 @@ dpt_search_condition
 	}
 	| dpt_search_begin RDO_Condition error
 	{
-		PARSER->error().error(@2, @3, _T("œÓÒÎÂ ÍÎ˛˜Â‚Ó„Ó ÒÎÓ‚‡ $Condition ÓÊË‰‡ÂÚÒˇ ÛÒÎÓ‚ËÂ Ì‡˜‡Î‡ ÔÓËÒÍ‡ (Ì‡˜‡Î¸Ì‡ˇ ‚Â¯ËÌ‡)"));
+		PARSER->error().error(@2, @3, _T("–ü–æ—Å–ª–µ –∫–ª—é—á–µ–≤–æ–≥–æ —Å–ª–æ–≤–∞ $Condition –æ–∂–∏–¥–∞–µ—Ç—Å—è —É—Å–ª–æ–≤–∏–µ –Ω–∞—á–∞–ª–∞ –ø–æ–∏—Å–∫–∞ (–Ω–∞—á–∞–ª—å–Ω–∞—è –≤–µ—Ä—à–∏–Ω–∞)"));
 	}
 	| dpt_search_begin error
 	{
-		PARSER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $Condition"));
+		PARSER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $Condition"));
 	}
 	;
 
@@ -392,16 +392,16 @@ dpt_search_prior
 		ASSERT(pArithm);
 		if (!PARSER->getLastDPTSearch()->setPrior(pArithm))
 		{
-			PARSER->error().error(@3, _T("“Ó˜Í‡ ÔËÌˇÚËˇ Â¯ÂÌËÈ ÔÓÍ‡ ÌÂ ÏÓÊÂÚ ËÏÂÚ¸ ÔËÓËÚÂÚ"));
+			PARSER->error().error(@3, _T("–¢–æ—á–∫–∞ –ø—Ä–∏–Ω—è—Ç–∏—è —Ä–µ—à–µ–Ω–∏–π –ø–æ–∫–∞ –Ω–µ –º–æ–∂–µ—Ç –∏–º–µ—Ç—å –ø—Ä–∏–æ—Ä–∏—Ç–µ—Ç"));
 		}
 	}
 	| dpt_search_condition RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ÓÔËÒ‡ÌËˇ ÔËÓËÚÂÚ‡ ÚÓ˜ÍË ÔËÌˇÚËˇ Â¯ÂÌËÈ"))
+		PARSER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –æ–ø–∏—Å–∞–Ω–∏—è –ø—Ä–∏–æ—Ä–∏—Ç–µ—Ç–∞ —Ç–æ—á–∫–∏ –ø—Ä–∏–Ω—è—Ç–∏—è —Ä–µ—à–µ–Ω–∏–π"))
 	}
 	| dpt_search_condition error
 	{
-		PARSER->error().error(@1, @2, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $Priority"))
+		PARSER->error().error(@1, @2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $Priority"))
 	}
 	;
 
@@ -422,11 +422,11 @@ dpt_search_term
 	}
 	| dpt_search_prior RDO_Term_condition error
 	{
-		PARSER->error().error(@2, @3, _T("œÓÒÎÂ ÍÎ˛˜Â‚Ó„Ó ÒÎÓ‚‡ $Term_condition ÓÊË‰‡ÂÚÒˇ ÛÒÎÓ‚ËÂ ÓÒÚ‡ÌÓ‚ÍË ÔÓËÒÍ‡ (ÍÓÌÂ˜Ì‡ˇ ‚Â¯ËÌ‡)"));
+		PARSER->error().error(@2, @3, _T("–ü–æ—Å–ª–µ –∫–ª—é—á–µ–≤–æ–≥–æ —Å–ª–æ–≤–∞ $Term_condition –æ–∂–∏–¥–∞–µ—Ç—Å—è —É—Å–ª–æ–≤–∏–µ –æ—Å—Ç–∞–Ω–æ–≤–∫–∏ –ø–æ–∏—Å–∫–∞ (–∫–æ–Ω–µ—á–Ω–∞—è –≤–µ—Ä—à–∏–Ω–∞)"));
 	}
 	| dpt_search_prior error
 	{
-		PARSER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $Term_condition"));
+		PARSER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $Term_condition"));
 	}
 	;
 
@@ -440,11 +440,11 @@ dpt_search_evaluate
 	}
 	| dpt_search_term RDO_Evaluate_by error
 	{
-		PARSER->error().error(@2, @3, _T("œÓÒÎÂ ÍÎ˛˜Â‚Ó„Ó ÒÎÓ‚‡ $Evaluate_by ÓÊË‰‡ÂÚÒˇ ÓˆÂÌÓ˜Ì‡ˇ ÙÛÌÍˆËˇ, Ì‡ÔËÏÂ, 0 ‰Îˇ ÔÓËÒÍ‡ ‚ ¯ËËÌÛ"));
+		PARSER->error().error(@2, @3, _T("–ü–æ—Å–ª–µ –∫–ª—é—á–µ–≤–æ–≥–æ —Å–ª–æ–≤–∞ $Evaluate_by –æ–∂–∏–¥–∞–µ—Ç—Å—è –æ—Ü–µ–Ω–æ—á–Ω–∞—è —Ñ—É–Ω–∫—Ü–∏—è, –Ω–∞–ø—Ä–∏–º–µ—Ä, 0 –¥–ª—è –ø–æ–∏—Å–∫–∞ –≤ —à–∏—Ä–∏–Ω—É"));
 	}
 	| dpt_search_term error
 	{
-		PARSER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $Evaluate_by"));
+		PARSER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $Evaluate_by"));
 	}
 	;
 
@@ -465,15 +465,15 @@ dp_searcht_compare
 	}
 	| dpt_search_evaluate RDO_Compare_tops '=' error
 	{
-		PARSER->error().error(@3, @4, _T("ŒÊË‰‡ÂÚÒˇ ÂÊËÏ Á‡ÔÓÏËÌ‡ÌËˇ ÔÓÈ‰ÂÌÌ˚ı ‚Â¯ËÌ (YES ËÎË NO)"));
+		PARSER->error().error(@3, @4, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è —Ä–µ–∂–∏–º –∑–∞–ø–æ–º–∏–Ω–∞–Ω–∏—è –ø—Ä–æ–π–¥–µ–Ω–Ω—ã—Ö –≤–µ—Ä—à–∏–Ω (YES –∏–ª–∏ NO)"));
 	}
 	| dpt_search_evaluate RDO_Compare_tops error
 	{
-		PARSER->error().error(@2, @3, _T("ŒÊË‰‡ÂÚÒˇ ÁÌ‡Í ‡‚ÂÌÒÚ‚‡"));
+		PARSER->error().error(@2, @3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–Ω–∞–∫ —Ä–∞–≤–µ–Ω—Å—Ç–≤–∞"));
 	}
 	| dpt_search_evaluate error
 	{
-		PARSER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $Compare_tops"));
+		PARSER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $Compare_tops"));
 	}
 	;
 
@@ -490,7 +490,7 @@ dpt_search_descr_param
 		LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
 		if (!pConstant || !pConstant->defined())
 		{
-			PARSER->error().error(@2, _T("œ‡‡ÏÂÚ ÏÓÊÂÚ ·˚Ú¸ ÚÓÎ¸ÍÓ ÍÓÌÒÚ‡ÌÚÓÈ"));
+			PARSER->error().error(@2, _T("–ü–∞—Ä–∞–º–µ—Ç—Ä –º–æ–∂–µ—Ç –±—ã—Ç—å —Ç–æ–ª—å–∫–æ –∫–æ–Ω—Å—Ç–∞–Ω—Ç–æ–π"));
 		}
 		LPRDOValue pValue = rdo::Factory<RDOValue>::create(pConstant);
 		ASSERT(pValue);
@@ -498,7 +498,7 @@ dpt_search_descr_param
 	}
 	| dpt_search_descr_param error
 	{
-		PARSER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ÓÔËÒ‡ÌËˇ Ô‡‡ÏÂÚ‡ Ó·‡Áˆ‡"))
+		PARSER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –æ–ø–∏—Å–∞–Ω–∏—è –ø–∞—Ä–∞–º–µ—Ç—Ä–∞ –æ–±—Ä–∞–∑—Ü–∞"))
 	}
 	;
 
@@ -517,11 +517,11 @@ dpt_search_descr_value
 	}
 	| RDO_value_before error
 	{
-		PARSER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ‚ ‡ËÙÏÂÚË˜ÂÒÍÓÏ ‚˚‡ÊÂÌËË"));
+		PARSER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –≤ –∞—Ä–∏—Ñ–º–µ—Ç–∏—á–µ—Å–∫–æ–º –≤—ã—Ä–∞–∂–µ–Ω–∏–∏"));
 	}
 	| RDO_value_after error
 	{
-		PARSER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ‚ ‡ËÙÏÂÚË˜ÂÒÍÓÏ ‚˚‡ÊÂÌËË"));
+		PARSER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –≤ –∞—Ä–∏—Ñ–º–µ—Ç–∏—á–µ—Å–∫–æ–º –≤—ã—Ä–∞–∂–µ–Ω–∏–∏"));
 	}
 	;
 
@@ -540,15 +540,15 @@ dpt_search_name
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		PARSER->error().error(@1, @2, _T("ŒÊË‰‡ÂÚÒˇ ËÏˇ Ó·‡Áˆ‡"));
+		PARSER->error().error(@1, @2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è –æ–±—Ä–∞–∑—Ü–∞"));
 	}
 	| RDO_IDENTIF
 	{
-		PARSER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ':'"));
+		PARSER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è ':'"));
 	}
 	| error
 	{
-		PARSER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ËÏˇ ‡ÍÚË‚ÌÓÒÚË"));
+		PARSER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è –∞–∫—Ç–∏–≤–Ω–æ—Å—Ç–∏"));
 	}
 	;
 
@@ -567,7 +567,7 @@ dpt_searcht_activity
 	}
 	| dpt_searcht_activity dpt_search_name dpt_search_descr_param error
 	{
-		PARSER->error().error(@3, @4, _T("ŒÊË‰‡˛ÚÒˇ ÍÎ˛˜Â‚˚Â ÒÎÓ‚‡ value before ËÎË value after Ë ÒÚÓËÏÓÒÚ¸ ÔËÏÂÌÂÌËˇ Ô‡‚ËÎ‡"));
+		PARSER->error().error(@3, @4, _T("–û–∂–∏–¥–∞—é—Ç—Å—è –∫–ª—é—á–µ–≤—ã–µ —Å–ª–æ–≤–∞ value before –∏–ª–∏ value after –∏ —Å—Ç–æ–∏–º–æ—Å—Ç—å –ø—Ä–∏–º–µ–Ω–µ–Ω–∏—è –ø—Ä–∞–≤–∏–ª–∞"));
 	}
 	;
 
@@ -578,7 +578,7 @@ dpt_search_header
 	}
 	| dp_searcht_compare error
 	{
-		PARSER->error().error(@1, @2, _T("œÓÒÎÂ ÂÊËÏ‡ Á‡ÔÓÏËÌ‡ÌËˇ ÔÓÈ‰ÂÌÌ˚ı ‚Â¯ËÌ ÓÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $Activities"));
+		PARSER->error().error(@1, @2, _T("–ü–æ—Å–ª–µ —Ä–µ–∂–∏–º–∞ –∑–∞–ø–æ–º–∏–Ω–∞–Ω–∏—è –ø—Ä–æ–π–¥–µ–Ω–Ω—ã—Ö –≤–µ—Ä—à–∏–Ω –æ–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $Activities"));
 	}
 	;
 
@@ -592,7 +592,7 @@ dpt_search_end
 	}
 	| dpt_search_header
 	{
-		PARSER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $End"));
+		PARSER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $End"));
 	}
 	;
 
@@ -614,15 +614,15 @@ dpt_some_trace
 	}
 	| RDO_trace_stat
 	{
-		PARSER->error().error(@1, _T("ƒ‡ÌÌ˚È ÔËÁÌ‡Í Ú‡ÒÒËÓ‚ÍË ÌÂ ËÒÔÓÎ¸ÁÛÂÚÒˇ ‚ ÚÓ˜ÍÂ ÚËÔ‡ some"));
+		PARSER->error().error(@1, _T("–î–∞–Ω–Ω—ã–π –ø—Ä–∏–∑–Ω–∞–∫ —Ç—Ä–∞—Å—Å–∏—Ä–æ–≤–∫–∏ –Ω–µ –∏—Å–ø–æ–ª—å–∑—É–µ—Ç—Å—è –≤ —Ç–æ—á–∫–µ —Ç–∏–ø–∞ some"));
 	}
 	| RDO_trace_tops
 	{
-		PARSER->error().error(@1, _T("ƒ‡ÌÌ˚È ÔËÁÌ‡Í Ú‡ÒÒËÓ‚ÍË ÌÂ ËÒÔÓÎ¸ÁÛÂÚÒˇ ‚ ÚÓ˜ÍÂ ÚËÔ‡ some"));
+		PARSER->error().error(@1, _T("–î–∞–Ω–Ω—ã–π –ø—Ä–∏–∑–Ω–∞–∫ —Ç—Ä–∞—Å—Å–∏—Ä–æ–≤–∫–∏ –Ω–µ –∏—Å–ø–æ–ª—å–∑—É–µ—Ç—Å—è –≤ —Ç–æ—á–∫–µ —Ç–∏–ø–∞ some"));
 	}
 	| RDO_trace_all
 	{
-		PARSER->error().error(@1, _T("ƒ‡ÌÌ˚È ÔËÁÌ‡Í Ú‡ÒÒËÓ‚ÍË ÌÂ ËÒÔÓÎ¸ÁÛÂÚÒˇ ‚ ÚÓ˜ÍÂ ÚËÔ‡ some"));
+		PARSER->error().error(@1, _T("–î–∞–Ω–Ω—ã–π –ø—Ä–∏–∑–Ω–∞–∫ —Ç—Ä–∞—Å—Å–∏—Ä–æ–≤–∫–∏ –Ω–µ –∏—Å–ø–æ–ª—å–∑—É–µ—Ç—Å—è –≤ —Ç–æ—á–∫–µ —Ç–∏–ø–∞ some"));
 	}
 	;
 
@@ -637,7 +637,7 @@ dpt_some_parent
 	}
 	| RDO_Parent error
 	{
-		PARSER->error().error(@1, _T("Œ¯Ë·Í‡ ‚ ËÏÂÌË Ó‰ËÚÂÎ¸ÒÍÓÈ ÚÓ˜ÍË"));
+		PARSER->error().error(@1, _T("–û—à–∏–±–∫–∞ –≤ –∏–º–µ–Ω–∏ —Ä–æ–¥–∏—Ç–µ–ª—å—Å–∫–æ–π —Ç–æ—á–∫–∏"));
 	}
 	;
 
@@ -656,11 +656,11 @@ dpt_some_begin
 			LPRDODPTSome   pParentDPTSome   = PARSER->findDPTSome  (pParentName->value().getIdentificator());
 			if (!pParentDPTPrior && !pParentDPTSearch && !pParentDPTSome)
 			{
-				PARSER->error().error(@1, rdo::format(_T("ÕÂ Ì‡È‰ÂÌ‡ Ó‰ËÚÂÒÍ‡ˇ ÚÓ˜Í‡ %s"), pParentName->value().getIdentificator().c_str()));
+				PARSER->error().error(@1, rdo::format(_T("–ù–µ –Ω–∞–π–¥–µ–Ω–∞ —Ä–æ–¥–∏—Ç–µ—Å–∫–∞—è —Ç–æ—á–∫–∞ %s"), pParentName->value().getIdentificator().c_str()));
 			}
 			if (pParentDPTSearch)
 			{
-				PARSER->error().error(@5, @1, _T("“Ó˜Í‡ ÔËÌˇÚËˇ Â¯ÂÌËÈ ÚËÔ‡ search ÏÓÊÂÚ ÒÓ‰ÂÊ‡Ú¸ ÎË¯¸ ‡ÍÚË‚ÌÓÒÚË ÚËÔ‡ rule Ë ÌÂ ÏÓÊÂÚ ·˚Ú¸ ÛÍ‡Á‡Ì‡ ‚ Í‡˜ÂÒÚ‚Â Ó‰ËÚÂÎ¸ÒÍÓÈ ÚÓ˜ÍË"));
+				PARSER->error().error(@5, @1, _T("–¢–æ—á–∫–∞ –ø—Ä–∏–Ω—è—Ç–∏—è —Ä–µ—à–µ–Ω–∏–π —Ç–∏–ø–∞ search –º–æ–∂–µ—Ç —Å–æ–¥–µ—Ä–∂–∞—Ç—å –ª–∏—à—å –∞–∫—Ç–∏–≤–Ω–æ—Å—Ç–∏ —Ç–∏–ø–∞ rule –∏ –Ω–µ –º–æ–∂–µ—Ç –±—ã—Ç—å —É–∫–∞–∑–∞–Ω–∞ –≤ –∫–∞—á–µ—Å—Ç–≤–µ —Ä–æ–¥–∏—Ç–µ–ª—å—Å–∫–æ–π —Ç–æ—á–∫–∏"));
 			}
 			else if (pParentDPTPrior)
 			{
@@ -701,7 +701,7 @@ dpt_some_condition
 	}
 	| dpt_some_begin RDO_Condition error
 	{
-		PARSER->error().error(@2, @3, _T("œÓÒÎÂ ÍÎ˛˜Â‚Ó„Ó ÒÎÓ‚‡ $Condition ÓÊË‰‡ÂÚÒˇ ÛÒÎÓ‚ËÂ Á‡ÔÛÒÍ‡ ÚÓ˜ÍË"));
+		PARSER->error().error(@2, @3, _T("–ü–æ—Å–ª–µ –∫–ª—é—á–µ–≤–æ–≥–æ —Å–ª–æ–≤–∞ $Condition –æ–∂–∏–¥–∞–µ—Ç—Å—è —É—Å–ª–æ–≤–∏–µ –∑–∞–ø—É—Å–∫–∞ —Ç–æ—á–∫–∏"));
 	}
 	| dpt_some_begin
 	{
@@ -729,7 +729,7 @@ dpt_some_multi
 	}
 	| dpt_some_condition RDO_Multithreading error
 	{
-		PARSER->error().error(@2, @3, _T("œÓÒÎÂ ÍÎ˛˜Â‚Ó„Ó ÒÎÓ‚‡ $Multithreading ÓÊË‰‡ÂÚÒˇ ÁÌ‡Í ‡‚ÂÌÒÚ‚‡ Ë ÒÎÓ‚Ó YES ËÎË NO"));
+		PARSER->error().error(@2, @3, _T("–ü–æ—Å–ª–µ –∫–ª—é—á–µ–≤–æ–≥–æ —Å–ª–æ–≤–∞ $Multithreading –æ–∂–∏–¥–∞–µ—Ç—Å—è –∑–Ω–∞–∫ —Ä–∞–≤–µ–Ω—Å—Ç–≤–∞ –∏ —Å–ª–æ–≤–æ YES –∏–ª–∏ NO"));
 	}
 	| dpt_some_condition
 	{
@@ -748,16 +748,16 @@ dpt_some_prior
 		ASSERT(pArithm);
 		if (!PARSER->getLastDPTSome()->setPrior(pArithm))
 		{
-			PARSER->error().error(@3, _T("“Ó˜Í‡ ÔËÌˇÚËˇ Â¯ÂÌËÈ ÔÓÍ‡ ÌÂ ÏÓÊÂÚ ËÏÂÚ¸ ÔËÓËÚÂÚ"));
+			PARSER->error().error(@3, _T("–¢–æ—á–∫–∞ –ø—Ä–∏–Ω—è—Ç–∏—è —Ä–µ—à–µ–Ω–∏–π –ø–æ–∫–∞ –Ω–µ –º–æ–∂–µ—Ç –∏–º–µ—Ç—å –ø—Ä–∏–æ—Ä–∏—Ç–µ—Ç"));
 		}
 	}
 	| dpt_some_multi RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ÓÔËÒ‡ÌËˇ ÔËÓËÚÂÚ‡ ÚÓ˜ÍË ÔËÌˇÚËˇ Â¯ÂÌËÈ"))
+		PARSER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –æ–ø–∏—Å–∞–Ω–∏—è –ø—Ä–∏–æ—Ä–∏—Ç–µ—Ç–∞ —Ç–æ—á–∫–∏ –ø—Ä–∏–Ω—è—Ç–∏—è —Ä–µ—à–µ–Ω–∏–π"))
 	}
 	| dpt_some_multi error
 	{
-		PARSER->error().error(@1, @2, _T("œÓÒÎÂ ÒÎÓ‚‡ $Condition ÓÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $Multithreading"))
+		PARSER->error().error(@1, @2, _T("–ü–æ—Å–ª–µ —Å–ª–æ–≤–∞ $Condition –æ–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $Multithreading"))
 	}
 	;
 
@@ -776,15 +776,15 @@ dpt_some_name
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		PARSER->error().error(@1, @2, _T("ŒÊË‰‡ÂÚÒˇ ËÏˇ Ó·‡Áˆ‡"));
+		PARSER->error().error(@1, @2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è –æ–±—Ä–∞–∑—Ü–∞"));
 	}
 	| RDO_IDENTIF
 	{
-		PARSER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ':'"));
+		PARSER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è ':'"));
 	}
 	| error
 	{
-		PARSER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ËÏˇ ‡ÍÚË‚ÌÓÒÚË"));
+		PARSER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è –∞–∫—Ç–∏–≤–Ω–æ—Å—Ç–∏"));
 	}
 	;
 
@@ -819,7 +819,7 @@ dpt_some_descr_param
 		LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
 		if (!pConstant || !pConstant->defined())
 		{
-			PARSER->error().error(@2, _T("œ‡‡ÏÂÚ ÏÓÊÂÚ ·˚Ú¸ ÚÓÎ¸ÍÓ ÍÓÌÒÚ‡ÌÚÓÈ"));
+			PARSER->error().error(@2, _T("–ü–∞—Ä–∞–º–µ—Ç—Ä –º–æ–∂–µ—Ç –±—ã—Ç—å —Ç–æ–ª—å–∫–æ –∫–æ–Ω—Å—Ç–∞–Ω—Ç–æ–π"));
 		}
 		LPRDOValue pValue = rdo::Factory<RDOValue>::create(pConstant);
 		ASSERT(pValue);
@@ -827,7 +827,7 @@ dpt_some_descr_param
 	}
 	| dpt_some_descr_param error
 	{
-		PARSER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ÓÔËÒ‡ÌËˇ Ô‡‡ÏÂÚ‡ Ó·‡Áˆ‡"))
+		PARSER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –æ–ø–∏—Å–∞–Ω–∏—è –ø–∞—Ä–∞–º–µ—Ç—Ä–∞ –æ–±—Ä–∞–∑—Ü–∞"))
 	}
 	;
 
@@ -853,7 +853,7 @@ dpt_some_header
 	}
 	| dpt_some_prior error
 	{
-		PARSER->error().error(@1, @2, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $Activities"));
+		PARSER->error().error(@1, @2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $Activities"));
 	}
 	;
 
@@ -867,7 +867,7 @@ dpt_some_end
 	}
 	| dpt_some_header
 	{
-		PARSER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $End"));
+		PARSER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $End"));
 	}
 	;
 
@@ -889,15 +889,15 @@ dpt_prior_trace
 	}
 	| RDO_trace_stat
 	{
-		PARSER->error().error(@1, _T("ƒ‡ÌÌ˚È ÔËÁÌ‡Í Ú‡ÒÒËÓ‚ÍË ÌÂ ËÒÔÓÎ¸ÁÛÂÚÒˇ ‚ ÚÓ˜ÍÂ ÚËÔ‡ prior"));
+		PARSER->error().error(@1, _T("–î–∞–Ω–Ω—ã–π –ø—Ä–∏–∑–Ω–∞–∫ —Ç—Ä–∞—Å—Å–∏—Ä–æ–≤–∫–∏ –Ω–µ –∏—Å–ø–æ–ª—å–∑—É–µ—Ç—Å—è –≤ —Ç–æ—á–∫–µ —Ç–∏–ø–∞ prior"));
 	}
 	| RDO_trace_tops
 	{
-		PARSER->error().error(@1, _T("ƒ‡ÌÌ˚È ÔËÁÌ‡Í Ú‡ÒÒËÓ‚ÍË ÌÂ ËÒÔÓÎ¸ÁÛÂÚÒˇ ‚ ÚÓ˜ÍÂ ÚËÔ‡ prior"));
+		PARSER->error().error(@1, _T("–î–∞–Ω–Ω—ã–π –ø—Ä–∏–∑–Ω–∞–∫ —Ç—Ä–∞—Å—Å–∏—Ä–æ–≤–∫–∏ –Ω–µ –∏—Å–ø–æ–ª—å–∑—É–µ—Ç—Å—è –≤ —Ç–æ—á–∫–µ —Ç–∏–ø–∞ prior"));
 	}
 	| RDO_trace_all
 	{
-		PARSER->error().error(@1, _T("ƒ‡ÌÌ˚È ÔËÁÌ‡Í Ú‡ÒÒËÓ‚ÍË ÌÂ ËÒÔÓÎ¸ÁÛÂÚÒˇ ‚ ÚÓ˜ÍÂ ÚËÔ‡ prior"));
+		PARSER->error().error(@1, _T("–î–∞–Ω–Ω—ã–π –ø—Ä–∏–∑–Ω–∞–∫ —Ç—Ä–∞—Å—Å–∏—Ä–æ–≤–∫–∏ –Ω–µ –∏—Å–ø–æ–ª—å–∑—É–µ—Ç—Å—è –≤ —Ç–æ—á–∫–µ —Ç–∏–ø–∞ prior"));
 	}
 	;
 
@@ -912,14 +912,14 @@ dpt_prior_parent
 	}
 	| RDO_Parent error
 	{
-		PARSER->error().error(@1, _T("Œ¯Ë·Í‡ ‚ ËÏÂÌË Ó‰ËÚÂÎ¸ÒÍÓÈ ÚÓ˜ÍË"));
+		PARSER->error().error(@1, _T("–û—à–∏–±–∫–∞ –≤ –∏–º–µ–Ω–∏ —Ä–æ–¥–∏—Ç–µ–ª—å—Å–∫–æ–π —Ç–æ—á–∫–∏"));
 	}
 	;
 
 dpt_prior_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_parent dpt_prior_trace
 	{
-		//! @todo ‡ „‰Â ÔËÁÌ‡Í Ú‡ÒÒËÓ‚ÍË ‰Îˇ prior ?
+		//! @todo –∞ –≥–¥–µ –ø—Ä–∏–∑–Ω–∞–∫ —Ç—Ä–∞—Å—Å–∏—Ä–æ–≤–∫–∏ –¥–ª—è prior ?
 		LPRDOValue pName       = PARSER->stack().pop<RDOValue>($2);
 		LPRDOValue pParentName = PARSER->stack().pop<RDOValue>($4);
 		ASSERT(pName);
@@ -932,11 +932,11 @@ dpt_prior_begin
 			LPRDODPTSome   pParentDPTSome   = PARSER->findDPTSome  (pParentName->value().getIdentificator());
 			if (!pParentDPTPrior && !pParentDPTSome && !pParentDPTSearch)
 			{
-				PARSER->error().error(@1, rdo::format(_T("ÕÂ Ì‡È‰ÂÌ‡ Ó‰ËÚÂÒÍ‡ˇ ÚÓ˜Í‡ %s"), pParentName->value().getIdentificator().c_str()));
+				PARSER->error().error(@1, rdo::format(_T("–ù–µ –Ω–∞–π–¥–µ–Ω–∞ —Ä–æ–¥–∏—Ç–µ—Å–∫–∞—è —Ç–æ—á–∫–∞ %s"), pParentName->value().getIdentificator().c_str()));
 			}
 			if (pParentDPTSearch)
 			{
-				PARSER->error().error(@5, @1, _T("“Ó˜Í‡ ÔËÌˇÚËˇ Â¯ÂÌËÈ ÚËÔ‡ search ÏÓÊÂÚ ÒÓ‰ÂÊ‡Ú¸ ÎË¯¸ ‡ÍÚË‚ÌÓÒÚË ÚËÔ‡ rule Ë ÌÂ ÏÓÊÂÚ ·˚Ú¸ ÛÍ‡Á‡Ì‡ ‚ Í‡˜ÂÒÚ‚Â Ó‰ËÚÂÎ¸ÒÍÓÈ ÚÓ˜ÍË"));
+				PARSER->error().error(@5, @1, _T("–¢–æ—á–∫–∞ –ø—Ä–∏–Ω—è—Ç–∏—è —Ä–µ—à–µ–Ω–∏–π —Ç–∏–ø–∞ search –º–æ–∂–µ—Ç —Å–æ–¥–µ—Ä–∂–∞—Ç—å –ª–∏—à—å –∞–∫—Ç–∏–≤–Ω–æ—Å—Ç–∏ —Ç–∏–ø–∞ rule –∏ –Ω–µ –º–æ–∂–µ—Ç –±—ã—Ç—å —É–∫–∞–∑–∞–Ω–∞ –≤ –∫–∞—á–µ—Å—Ç–≤–µ —Ä–æ–¥–∏—Ç–µ–ª—å—Å–∫–æ–π —Ç–æ—á–∫–∏"));
 			}
 			else if (pParentDPTPrior)
 			{
@@ -977,7 +977,7 @@ dpt_prior_condition
 	}
 	| dpt_prior_begin RDO_Condition error
 	{
-		PARSER->error().error(@2, @3, _T("œÓÒÎÂ ÍÎ˛˜Â‚Ó„Ó ÒÎÓ‚‡ $Condition ÓÊË‰‡ÂÚÒˇ ÛÒÎÓ‚ËÂ Á‡ÔÛÒÍ‡ ÚÓ˜ÍË"));
+		PARSER->error().error(@2, @3, _T("–ü–æ—Å–ª–µ –∫–ª—é—á–µ–≤–æ–≥–æ —Å–ª–æ–≤–∞ $Condition –æ–∂–∏–¥–∞–µ—Ç—Å—è —É—Å–ª–æ–≤–∏–µ –∑–∞–ø—É—Å–∫–∞ —Ç–æ—á–∫–∏"));
 	}
 	| dpt_prior_begin
 	{
@@ -996,16 +996,16 @@ dpt_prior_prior
 		ASSERT(pArithm);
 		if (!PARSER->getLastDPTPrior()->setPrior(pArithm))
 		{
-			PARSER->error().error(@3, _T("“Ó˜Í‡ ÔËÌˇÚËˇ Â¯ÂÌËÈ ÔÓÍ‡ ÌÂ ÏÓÊÂÚ ËÏÂÚ¸ ÔËÓËÚÂÚ"));
+			PARSER->error().error(@3, _T("–¢–æ—á–∫–∞ –ø—Ä–∏–Ω—è—Ç–∏—è —Ä–µ—à–µ–Ω–∏–π –ø–æ–∫–∞ –Ω–µ –º–æ–∂–µ—Ç –∏–º–µ—Ç—å –ø—Ä–∏–æ—Ä–∏—Ç–µ—Ç"));
 		}
 	}
 	| dpt_prior_condition RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ÓÔËÒ‡ÌËˇ ÔËÓËÚÂÚ‡ ÚÓ˜ÍË ÔËÌˇÚËˇ Â¯ÂÌËÈ"))
+		PARSER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –æ–ø–∏—Å–∞–Ω–∏—è –ø—Ä–∏–æ—Ä–∏—Ç–µ—Ç–∞ —Ç–æ—á–∫–∏ –ø—Ä–∏–Ω—è—Ç–∏—è —Ä–µ—à–µ–Ω–∏–π"))
 	}
 	| dpt_some_condition error
 	{
-		PARSER->error().error(@1, @2, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $Priority"))
+		PARSER->error().error(@1, @2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $Priority"))
 	}
 	;
 
@@ -1024,15 +1024,15 @@ dpt_prior_name
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		PARSER->error().error(@1, @2, _T("ŒÊË‰‡ÂÚÒˇ ËÏˇ Ó·‡Áˆ‡"));
+		PARSER->error().error(@1, @2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è –æ–±—Ä–∞–∑—Ü–∞"));
 	}
 	| RDO_IDENTIF
 	{
-		PARSER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ':'"));
+		PARSER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è ':'"));
 	}
 	| error
 	{
-		PARSER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ËÏˇ ‡ÍÚË‚ÌÓÒÚË"));
+		PARSER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è –∞–∫—Ç–∏–≤–Ω–æ—Å—Ç–∏"));
 	}
 	;
 
@@ -1067,7 +1067,7 @@ dpt_prior_descr_param
 		LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
 		if (!pConstant || !pConstant->defined())
 		{
-			PARSER->error().error(@2, _T("œ‡‡ÏÂÚ ÏÓÊÂÚ ·˚Ú¸ ÚÓÎ¸ÍÓ ÍÓÌÒÚ‡ÌÚÓÈ"));
+			PARSER->error().error(@2, _T("–ü–∞—Ä–∞–º–µ—Ç—Ä –º–æ–∂–µ—Ç –±—ã—Ç—å —Ç–æ–ª—å–∫–æ –∫–æ–Ω—Å—Ç–∞–Ω—Ç–æ–π"));
 		}
 		LPRDOValue pValue = rdo::Factory<RDOValue>::create(pConstant);
 		ASSERT(pValue);
@@ -1075,7 +1075,7 @@ dpt_prior_descr_param
 	}
 	| dpt_prior_descr_param error
 	{
-		PARSER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ÓÔËÒ‡ÌËˇ Ô‡‡ÏÂÚ‡ Ó·‡Áˆ‡"))
+		PARSER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –æ–ø–∏—Å–∞–Ω–∏—è –ø–∞—Ä–∞–º–µ—Ç—Ä–∞ –æ–±—Ä–∞–∑—Ü–∞"))
 	}
 	;
 
@@ -1087,16 +1087,16 @@ dpt_prior_activ_prior
 		ASSERT(pArithm);
 		if (!PARSER->getLastDPTPrior()->getLastActivity()->setPrior(pArithm))
 		{
-			PARSER->error().error(@3, _T("¿ÍÚË‚ÌÓÒÚ¸ ÌÂ ÏÓÊÂÚ ËÏÂÚ¸ ÔËÓËÚÂÚ"));
+			PARSER->error().error(@3, _T("–ê–∫—Ç–∏–≤–Ω–æ—Å—Ç—å –Ω–µ –º–æ–∂–µ—Ç –∏–º–µ—Ç—å –ø—Ä–∏–æ—Ä–∏—Ç–µ—Ç"));
 		}
 	}
 	| RDO_CF '=' error
 	{
-		PARSER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ÓÔËÒ‡ÌËˇ ÔËÓËÚÂÚ‡ ‡ÍÚË‚ÌÓÒÚË"))
+		PARSER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –æ–ø–∏—Å–∞–Ω–∏—è –ø—Ä–∏–æ—Ä–∏—Ç–µ—Ç–∞ –∞–∫—Ç–∏–≤–Ω–æ—Å—Ç–∏"))
 	}
 	| RDO_CF error
 	{
-		PARSER->error().error(@1, @2, _T("Œ¯Ë·Í‡: ÓÊË‰‡ÂÚÒˇ ÁÌ‡Í ‡‚ÂÌÒÚ‚‡"))
+		PARSER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞: –æ–∂–∏–¥–∞–µ—Ç—Å—è –∑–Ω–∞–∫ —Ä–∞–≤–µ–Ω—Å—Ç–≤–∞"))
 	}
 	;
 
@@ -1122,7 +1122,7 @@ dpt_prior_header
 	}
 	| dpt_prior_prior error
 	{
-		PARSER->error().error(@1, @2, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $Activities"));
+		PARSER->error().error(@1, @2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $Activities"));
 	}
 	;
 
@@ -1136,14 +1136,14 @@ dpt_prior_end
 	}
 	| dpt_prior_header
 	{
-		PARSER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ÍÎ˛˜Â‚ÓÂ ÒÎÓ‚Ó $End"));
+		PARSER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∫–ª—é—á–µ–≤–æ–µ —Å–ª–æ–≤–æ $End"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Œ·˘ËÂ ÒÓÒÚ‡‚Ì˚Â ÚÓÍÂÌ˚ ‰Îˇ ‚ÒÂı Ó·˙ÂÍÚÓ‚ –ƒŒ
+// -------------------- –û–±—â–∏–µ —Å–æ—Å—Ç–∞–≤–Ω—ã–µ —Ç–æ–∫–µ–Ω—ã –¥–ª—è –≤—Å–µ—Ö –æ–±—ä–µ–∫—Ç–æ–≤ –†–î–û
 // --------------------------------------------------------------------------------
-// -------------------- ŒÔËÒ‡ÌËÂ ÔÂÂÏÂÌÌÓÈ
+// -------------------- –û–ø–∏—Å–∞–Ω–∏–µ –ø–µ—Ä–µ–º–µ–Ω–Ω–æ–π
 // --------------------------------------------------------------------------------
 param_value
 	: RDO_INT_CONST
@@ -1184,7 +1184,7 @@ param_array_value
 	}
 	| '[' array_item error
 	{
-		PARSER->error().error(@2, _T("Ã‡ÒÒË‚ ‰ÓÎÊÂÌ Á‡Í˚‚‡Ú¸Òˇ ÒÍÓ·ÍÓÈ"));
+		PARSER->error().error(@2, _T("–ú–∞—Å—Å–∏–≤ –¥–æ–ª–∂–µ–Ω –∑–∞–∫—Ä—ã–≤–∞—Ç—å—Å—è —Å–∫–æ–±–∫–æ–π"));
 	}
 	;
 
@@ -1217,7 +1217,7 @@ array_item
 		ASSERT(pValue);
 		pArrayValue->insertItem(pValue);
 		$$ = PARSER->stack().push(pArrayValue);
-		PARSER->error().warning(@1, rdo::format(_T("œÓÔÛ˘ÂÌ‡ Á‡ÔˇÚ‡ˇ ÔÂÂ‰: %s"), pValue->value().getAsString().c_str()));
+		PARSER->error().warning(@1, rdo::format(_T("–ü—Ä–æ–ø—É—â–µ–Ω–∞ –∑–∞–ø—è—Ç–∞—è –ø–µ—Ä–µ–¥: %s"), pValue->value().getAsString().c_str()));
 	}
 	;
 
@@ -1237,17 +1237,17 @@ param_value_default
 		RDOParserSrcInfo src_info(@1, @2, true);
 		if (src_info.src_pos().point())
 		{
-			PARSER->error().error(src_info, _T("ÕÂ ÛÍ‡Á‡ÌÓ ÁÌ‡˜ÂÌËÂ ÔÓ ÛÏÓÎ˜‡ÌË˛"));
+			PARSER->error().error(src_info, _T("–ù–µ —É–∫–∞–∑–∞–Ω–æ –∑–Ω–∞—á–µ–Ω–∏–µ –ø–æ —É–º–æ–ª—á–∞–Ω–∏—é"));
 		}
 		else
 		{
-			PARSER->error().error(src_info, _T("ÕÂ‚ÂÌÓÂ ÁÌ‡˜ÂÌËÂ ÔÓ ÛÏÓÎ˜‡ÌË˛"));
+			PARSER->error().error(src_info, _T("–ù–µ–≤–µ—Ä–Ω–æ–µ –∑–Ω–∞—á–µ–Ω–∏–µ –ø–æ —É–º–æ–ª—á–∞–Ω–∏—é"));
 		}
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- ÀÓ„Ë˜ÂÒÍËÂ ‚˚‡ÊÂÌËˇ
+// -------------------- –õ–æ–≥–∏—á–µ—Å–∫–∏–µ –≤—ã—Ä–∞–∂–µ–Ω–∏—è
 // --------------------------------------------------------------------------------
 fun_logic_eq
 	: RDO_eq { $$ = RDO_eq; }
@@ -1371,16 +1371,16 @@ fun_logic
 	}
 	| '[' fun_logic error
 	{
-		PARSER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| '(' fun_logic error
 	{
-		PARSER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- ¿ËÙÏÂÚË˜ÂÒÍËÂ ‚˚‡ÊÂÌËˇ
+// -------------------- –ê—Ä–∏—Ñ–º–µ—Ç–∏—á–µ—Å–∫–∏–µ –≤—ã—Ä–∞–∂–µ–Ω–∏—è
 // --------------------------------------------------------------------------------
 fun_arithm
 	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
@@ -1476,7 +1476,7 @@ fun_arithm
 		}
 		else
 		{
-			PARSER->error().error(@1, rdo::format(_T("'%s' ÌÂ ˇ‚ÎˇÂÚÒˇ Ï‡ÒÒË‚ÓÏ."), pValue->value().getIdentificator().c_str()));
+			PARSER->error().error(@1, rdo::format(_T("'%s' –Ω–µ —è–≤–ª—è–µ—Ç—Å—è –º–∞—Å—Å–∏–≤–æ–º."), pValue->value().getIdentificator().c_str()));
 		}
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
@@ -1507,7 +1507,7 @@ fun_arithm
 		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
 		if (!pArrayType)
 		{
-			PARSER->error().error(@1, rdo::format(_T("'%s' ÌÂ ˇ‚ÎˇÂÚÒˇ Ï‡ÒÒË‚ÓÏ."), pValue->value().getIdentificator().c_str()));
+			PARSER->error().error(@1, rdo::format(_T("'%s' –Ω–µ —è–≤–ª—è–µ—Ç—Å—è –º–∞—Å—Å–∏–≤–æ–º."), pValue->value().getIdentificator().c_str()));
 		}
 
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
@@ -1527,7 +1527,7 @@ fun_arithm
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- ‘ÛÌÍˆËË Ë ÔÓÒÎÂ‰Ó‚‡ÚÂÎ¸ÌÓÒÚË
+// -------------------- –§—É–Ω–∫—Ü–∏–∏ –∏ –ø–æ—Å–ª–µ–¥–æ–≤–∞—Ç–µ–ª—å–Ω–æ—Å—Ç–∏
 // --------------------------------------------------------------------------------
 fun_arithm_func_call
 	: RDO_IDENTIF '(' arithm_list ')'
@@ -1548,7 +1548,7 @@ fun_arithm_func_call
 	}
 	| RDO_IDENTIF '(' error
 	{
-		PARSER->error().error(@3, _T("Œ¯Ë·Í‡ ‚ Ô‡‡ÏÂÚ‡ı ÙÛÌÍˆËË"));
+		PARSER->error().error(@3, _T("–û—à–∏–±–∫–∞ –≤ –ø–∞—Ä–∞–º–µ—Ç—Ä–∞—Ö —Ñ—É–Ω–∫—Ü–∏–∏"));
 	}
 	;
 
@@ -1585,12 +1585,12 @@ arithm_list_body
 	}
 	| arithm_list_body ',' error
 	{
-		PARSER->error().error(@3, _T("Œ¯Ë·Í‡ ‚ ‡ËÙÏÂÚË˜ÂÒÍÓÏ ‚˚‡ÊÂÌËË"));
+		PARSER->error().error(@3, _T("–û—à–∏–±–∫–∞ –≤ –∞—Ä–∏—Ñ–º–µ—Ç–∏—á–µ—Å–∫–æ–º –≤—ã—Ä–∞–∂–µ–Ω–∏–∏"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- √ÛÔÔÓ‚˚Â ‚˚‡ÊÂÌËˇ
+// -------------------- –ì—Ä—É–ø–ø–æ–≤—ã–µ –≤—ã—Ä–∞–∂–µ–Ω–∏—è
 // --------------------------------------------------------------------------------
 fun_group_keyword
 	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
@@ -1608,11 +1608,11 @@ fun_group_header
 	}
 	| fun_group_keyword '(' error
 	{
-		PARSER->error().error(@3, _T("ŒÊË‰‡ÂÚÒˇ ËÏˇ ÚËÔ‡"));
+		PARSER->error().error(@3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è —Ç–∏–ø–∞"));
 	}
 	| fun_group_keyword error
 	{
-		PARSER->error().error(@1, _T("œÓÒÎÂ ËÏÂÌË ÙÛÌÍˆËË ÓÊË‰‡ÂÚÒˇ ÓÍÚ˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@1, _T("–ü–æ—Å–ª–µ –∏–º–µ–Ω–∏ —Ñ—É–Ω–∫—Ü–∏–∏ –æ–∂–∏–¥–∞–µ—Ç—Å—è –æ–∫—Ç—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	;
 
@@ -1637,15 +1637,15 @@ fun_group
 	}
 	| fun_group_header fun_logic error
 	{
-		PARSER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_group_header RDO_NoCheck error
 	{
-		PARSER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_group_header error
 	{
-		PARSER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ‚ ÎÓ„Ë˜ÂÒÍÓÏ ‚˚‡ÊÂÌËË"));
+		PARSER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –≤ –ª–æ–≥–∏—á–µ—Å–∫–æ–º –≤—ã—Ä–∞–∂–µ–Ω–∏–∏"));
 	}
 	;
 
@@ -1664,11 +1664,11 @@ fun_select_header
 	}
 	| RDO_Select '(' error
 	{
-		PARSER->error().error(@3, _T("ŒÊË‰‡ÂÚÒˇ ËÏˇ ÚËÔ‡"));
+		PARSER->error().error(@3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∏–º—è —Ç–∏–ø–∞"));
 	}
 	| RDO_Select error
 	{
-		PARSER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ ÓÍÚ˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –æ–∫—Ç—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	;
 
@@ -1696,15 +1696,15 @@ fun_select_body
 	}
 	| fun_select_header fun_logic error
 	{
-		PARSER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_select_header RDO_NoCheck error
 	{
-		PARSER->error().error(@2, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@2, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_select_header error
 	{
-		PARSER->error().error(@1, @2, _T("Œ¯Ë·Í‡ ‚ ÎÓ„Ë˜ÂÒÍÓÏ ‚˚‡ÊÂÌËË"));
+		PARSER->error().error(@1, @2, _T("–û—à–∏–±–∫–∞ –≤ –ª–æ–≥–∏—á–µ—Å–∫–æ–º –≤—ã—Ä–∞–∂–µ–Ω–∏–∏"));
 	}
 	;
 
@@ -1729,11 +1729,11 @@ fun_select_logic
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
-		PARSER->error().error(@4, @5, _T("Œ¯Ë·Í‡ ‚ ÎÓ„Ë˜ÂÒÍÓÏ ‚˚‡ÊÂÌËË"));
+		PARSER->error().error(@4, @5, _T("–û—à–∏–±–∫–∞ –≤ –ª–æ–≥–∏—á–µ—Å–∫–æ–º –≤—ã—Ä–∞–∂–µ–Ω–∏–∏"));
 	}
 	| fun_select_body '.' fun_select_keyword error
 	{
-		PARSER->error().error(@3, _T("ŒÊË‰‡ÂÚÒˇ ÓÍÚ˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –æ–∫—Ç—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
@@ -1747,19 +1747,19 @@ fun_select_logic
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
-		PARSER->error().error(@4, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@4, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_select_body '.' RDO_Empty error
 	{
-		PARSER->error().error(@3, _T("ŒÊË‰‡ÂÚÒˇ ÓÍÚ˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –æ–∫—Ç—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_select_body '.' error
 	{
-		PARSER->error().error(@2, @3, _T("ŒÊË‰‡ÂÚÒˇ ÏÂÚÓ‰ ÒÔËÒÍ‡ ÂÒÛÒÓ‚"));
+		PARSER->error().error(@2, @3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –º–µ—Ç–æ–¥ —Å–ø–∏—Å–∫–∞ —Ä–µ—Å—É—Ä—Å–æ–≤"));
 	}
 	| fun_select_body error
 	{
-		PARSER->error().error(@1, _T("ŒÊË‰‡ÂÚÒˇ '.' (ÚÓ˜Í‡) ‰Îˇ ‚˚ÁÓ‚‡ ÏÂÚÓ‰‡ ÒÔËÒÍ‡ ÂÒÛÒÓ‚"));
+		PARSER->error().error(@1, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è '.' (—Ç–æ—á–∫–∞) –¥–ª—è –≤—ã–∑–æ–≤–∞ –º–µ—Ç–æ–¥–∞ —Å–ø–∏—Å–∫–∞ —Ä–µ—Å—É—Ä—Å–æ–≤"));
 	}
 	;
 
@@ -1776,11 +1776,11 @@ fun_select_arithm
 	}
 	| fun_select_body '.' RDO_Size error
 	{
-		PARSER->error().error(@3, _T("ŒÊË‰‡ÂÚÒˇ ÓÍÚ˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@3, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –æ–∫—Ç—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	| fun_select_body '.' RDO_Size '(' error
 	{
-		PARSER->error().error(@4, _T("ŒÊË‰‡ÂÚÒˇ Á‡Í˚‚‡˛˘‡ˇÒˇ ÒÍÓ·Í‡"));
+		PARSER->error().error(@4, _T("–û–∂–∏–¥–∞–µ—Ç—Å—è –∑–∞–∫—Ä—ã–≤–∞—é—â–∞—è—Å—è —Å–∫–æ–±–∫–∞"));
 	}
 	;
 

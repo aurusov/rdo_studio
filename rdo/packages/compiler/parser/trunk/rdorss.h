@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdorss.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Романов Ярослав (robot.xet@gmail.com)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р РѕРјР°РЅРѕРІ РЇСЂРѕСЃР»Р°РІ (robot.xet@gmail.com)
   \date      
   \brief     
   \indent    4T
@@ -61,7 +61,7 @@ public:
 		}
 
 	private:
-		//! \todo использовать RDOCalc вместо RDOValue
+		//! \todo РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ RDOCalc РІРјРµСЃС‚Рѕ RDOValue
 		LPRDOValue m_pValue;
 	};
 	typedef std::vector<Param> ParamList;

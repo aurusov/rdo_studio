@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdorss.cpp
-  \authors   Áàðñ Àëåêñàíäð
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
-  \authors   Ðîìàíîâ ßðîñëàâ (robot.xet@gmail.com)
+  \authors   Ð‘Ð°Ñ€Ñ ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
+  \authors   Ð Ð¾Ð¼Ð°Ð½Ð¾Ð² Ð¯Ñ€Ð¾ÑÐ»Ð°Ð² (robot.xet@gmail.com)
   \date      
   \brief     
   \indent    4T
@@ -66,7 +66,7 @@ Context::FindResult RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchEx
 	ruint parNumb = getType()->getRTPParamNumber(pValue->value().getIdentificator());
 	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 	{
-		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Íåèçâåñòíûé ïàðàìåòð ðåñóðñà: %s"), pValue->value().getIdentificator().c_str()));
+		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ñ‹Ð¹ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ Ñ€ÐµÑÑƒÑ€ÑÐ°: %s"), pValue->value().getIdentificator().c_str()));
 	}
 
 	LPRDORTPParam pParam = getType()->findRTPParam(pValue->value().getIdentificator());
@@ -93,8 +93,8 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 
 	if (m_currParam == getType()->getParams().end())
 	{
-		RDOParser::s_parser()->error().push_only(pParam->src_info(), _T("Ñëèøêîì ìíîãî ïàðàìåòðîâ"));
-		RDOParser::s_parser()->error().push_only(getType()->src_info(), _T("Ñì. òèï ðåñóðñà"));
+		RDOParser::s_parser()->error().push_only(pParam->src_info(), _T("Ð¡Ð»Ð¸ÑˆÐºÐ¾Ð¼ Ð¼Ð½Ð¾Ð³Ð¾ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð²"));
+		RDOParser::s_parser()->error().push_only(getType()->src_info(), _T("Ð¡Ð¼. Ñ‚Ð¸Ð¿ Ñ€ÐµÑÑƒÑ€ÑÐ°"));
 		RDOParser::s_parser()->error().push_done();
 	}
 	try
@@ -103,9 +103,9 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 		{
 			if (!(*m_currParam)->getDefault()->defined())
 			{
-				RDOParser::s_parser()->error().push_only(pParam->src_info(), _T("Íåâîçìîæíî èñïîëüçîâàòü '*', ê.ò. îòñóòñòâóåò çíà÷åíèå ïî óìîë÷àíèþ"));
-				/// @todo src_info() áåç ïàðàìåòðà RDOParserSrcInfo()
-				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), _T("Ñì. îïèñàíèå ïàðàìåòðà"));
+				RDOParser::s_parser()->error().push_only(pParam->src_info(), _T("ÐÐµÐ²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ '*', Ðº.Ñ‚. Ð¾Ñ‚ÑÑƒÑ‚ÑÑ‚Ð²ÑƒÐµÑ‚ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ"));
+				/// @todo src_info() Ð±ÐµÐ· Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° RDOParserSrcInfo()
+				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), _T("Ð¡Ð¼. Ð¾Ð¿Ð¸ÑÐ°Ð½Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð°"));
 				RDOParser::s_parser()->error().push_done();
 			}
 			m_paramList.push_back(Param((*m_currParam)->getDefault()));
@@ -135,7 +135,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 	}
 	catch(REF(RDOSyntaxException))
 	{
-		RDOParser::s_parser()->error().modify(rdo::format(_T("Äëÿ ïàðàìåòðà '%s': "), (*m_currParam)->name().c_str()));
+		RDOParser::s_parser()->error().modify(rdo::format(_T("Ð”Ð»Ñ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° '%s': "), (*m_currParam)->name().c_str()));
 	}
 }
 
@@ -160,7 +160,7 @@ rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 	);
 	ASSERT(pCalc);
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());
-	srcInfo.setSrcText(_T("Ñîçäàíèå ðåñóðñà ") + src_text());
+	srcInfo.setSrcText(_T("Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ñ€ÐµÑÑƒÑ€ÑÐ° ") + src_text());
 	pCalc->setSrcInfo(srcInfo);
 	return pCalc;
 }

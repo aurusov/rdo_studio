@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      simulator/compiler/parser/rdo_logic_base.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Клеванец Игорь (impus@hotbox.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   РљР»РµРІР°РЅРµС† РРіРѕСЂСЊ (impus@hotbox.ru)
   \date      5.02.2012
-  \brief     Базовый класс для точек принятия решений
+  \brief     Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ РґР»СЏ С‚РѕС‡РµРє РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№
   \indent    4T
 */
 

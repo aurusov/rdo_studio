@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdodpt.cpp
-  \authors   Áàðñ Àëåêñàíäð
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \authors   Ð‘Ð°Ñ€Ñ ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      11.06.2006
-  \brief     Òî÷êè ïðèíÿòèÿ ðåøåíèé
+  \brief     Ð¢Ð¾Ñ‡ÐºÐ¸ Ð¿Ñ€Ð¸Ð½ÑÑ‚Ð¸Ñ Ñ€ÐµÑˆÐµÐ½Ð¸Ð¹
   \indent    4T
 */
 
@@ -54,7 +54,7 @@ RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSr
 	m_pPattern = RDOParser::s_parser()->findPATPattern(pattern_src_info.src_text());
 	if (!m_pPattern)
 	{
-		RDOParser::s_parser()->error().error(pattern_src_info, rdo::format(_T("Íå íàéäåí îáðàçåö: %s"), pattern_src_info.src_text().c_str()));
+		RDOParser::s_parser()->error().error(pattern_src_info, rdo::format(_T("ÐÐµ Ð½Ð°Ð¹Ð´ÐµÐ½ Ð¾Ð±Ñ€Ð°Ð·ÐµÑ†: %s"), pattern_src_info.src_text().c_str()));
 	}
 	RDOParser::s_parser()->contextStack()->push(this);
 	RDOParser::s_parser()->insertDPTActivity(this);
@@ -82,13 +82,13 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 	{
 		if (pParam->src_pos().m_first_line == src_pos().m_first_line)
 		{
-			RDOParser::s_parser()->error().push_only(pParam->src_pos(), rdo::format(_T("Ñëèøêîì ìíîãî ïàðàìåòðîâ äëÿ îáðàçöà '%s' ïðè îïèñàíèè àêòèâíîñòè '%s'"), m_pPattern->name().c_str(), name().c_str()));
-			RDOParser::s_parser()->error().push_only(m_pPattern->src_info(), _T("Ñì. îáðàçåö"));
+			RDOParser::s_parser()->error().push_only(pParam->src_pos(), rdo::format(_T("Ð¡Ð»Ð¸ÑˆÐºÐ¾Ð¼ Ð¼Ð½Ð¾Ð³Ð¾ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð² Ð´Ð»Ñ Ð¾Ð±Ñ€Ð°Ð·Ñ†Ð° '%s' Ð¿Ñ€Ð¸ Ð¾Ð¿Ð¸ÑÐ°Ð½Ð¸Ð¸ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸ '%s'"), m_pPattern->name().c_str(), name().c_str()));
+			RDOParser::s_parser()->error().push_only(m_pPattern->src_info(), _T("Ð¡Ð¼. Ð¾Ð±Ñ€Ð°Ð·ÐµÑ†"));
 			RDOParser::s_parser()->error().push_done();
 		}
 		else
 		{
-			RDOParser::s_parser()->error().error(pParam->src_pos(), _T("Èìÿ àêòèâíîñòè äîëæíî çàêàí÷èâàòüñÿ äâîåòî÷èåì"));
+			RDOParser::s_parser()->error().error(pParam->src_pos(), _T("Ð˜Ð¼Ñ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð·Ð°ÐºÐ°Ð½Ñ‡Ð¸Ð²Ð°Ñ‚ÑŒÑÑ Ð´Ð²Ð¾ÐµÑ‚Ð¾Ñ‡Ð¸ÐµÐ¼"));
 		}
 	}
 	rdo::runtime::RDOValue val;
@@ -97,8 +97,8 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 	{
 		if (!pPatternParam->getDefault()->defined())
 		{
-			RDOParser::s_parser()->error().push_only(pParam->src_pos(), rdo::format(_T("Íåò çíà÷åíèÿ ïî óìîë÷àíèþ äëÿ ïàðàìåòðà '%s'"), pPatternParam->src_text().c_str()));
-			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Ñì. ïàðàìåòð '%s', òèï '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pParam->src_pos(), rdo::format(_T("ÐÐµÑ‚ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ Ð´Ð»Ñ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° '%s'"), pPatternParam->src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Ð¡Ð¼. Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ '%s', Ñ‚Ð¸Ð¿ '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
 			RDOParser::s_parser()->error().push_done();
 		}
 		val = pPatternParam->getDefault()->value();
@@ -113,7 +113,7 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 		rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
 	);
 	ASSERT(pSetParamCalc);
-	pSetParamCalc->setSrcInfo(RDOParserSrcInfo(pParam->getPosAsYY(), rdo::format(_T("Ïàðàìåòð îáðàçöà %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), pParam->value().getAsString().c_str())));
+	pSetParamCalc->setSrcInfo(RDOParserSrcInfo(pParam->getPosAsYY(), rdo::format(_T("ÐŸÐ°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ Ð¾Ð±Ñ€Ð°Ð·Ñ†Ð° %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), pParam->value().getAsString().c_str())));
 	m_pActivity->addParamCalc(pSetParamCalc);
 	m_currParam++;
 }
@@ -123,11 +123,11 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 	if (m_pPattern->m_paramList.size() > m_currParam)
 	{
 		LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
-		RDOParser::s_parser()->error().push_only(param_pos, rdo::format(_T("Óêàçàíû íå âñå ïàðàìåòðà îáðàçöà '%s':"), m_pPattern->src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(param_pos, rdo::format(_T("Ð£ÐºÐ°Ð·Ð°Ð½Ñ‹ Ð½Ðµ Ð²ÑÐµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° Ð¾Ð±Ñ€Ð°Ð·Ñ†Ð° '%s':"), m_pPattern->src_text().c_str()));
 		for (ruint i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
 		{
 			pPatternParam = m_pPattern->m_paramList.at(i);
-			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Îæèäàåìûé ïàðàìåòð '%s' èìååò òèï '%s'"), pPatternParam->name().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("ÐžÐ¶Ð¸Ð´Ð°ÐµÐ¼Ñ‹Ð¹ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ '%s' Ð¸Ð¼ÐµÐµÑ‚ Ñ‚Ð¸Ð¿ '%s'"), pPatternParam->name().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
 		}
 		RDOParser::s_parser()->error().push_done();
 	}
@@ -137,8 +137,8 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 		ASSERT(pKeyboard);
 		if (!pKeyboard->hasHotKey())
 		{
-			RDOParser::s_parser()->error().push_only(param_pos, _T("Äëÿ àêòèâíîñòè äîëæíà áûòü óêàçàíà êëàâèøà"));
-			RDOParser::s_parser()->error().push_only(m_pPattern->src_info(), _T("Ñì. îáðàçåö"));
+			RDOParser::s_parser()->error().push_only(param_pos, _T("Ð”Ð»Ñ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸ Ð´Ð¾Ð»Ð¶Ð½Ð° Ð±Ñ‹Ñ‚ÑŒ ÑƒÐºÐ°Ð·Ð°Ð½Ð° ÐºÐ»Ð°Ð²Ð¸ÑˆÐ°"));
+			RDOParser::s_parser()->error().push_only(m_pPattern->src_info(), _T("Ð¡Ð¼. Ð¾Ð±Ñ€Ð°Ð·ÐµÑ†"));
 			RDOParser::s_parser()->error().push_done();
 		}
 	}
@@ -176,8 +176,8 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 		break;
 
 	default:
-		RDOParser::s_parser()->error().push_only(this->src_info(), _T("Íåèçâåñòíûé òèï îáðàçöà"));
-		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("Ñì. îáðàçåö"));
+		RDOParser::s_parser()->error().push_only(this->src_info(), _T("ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ñ‹Ð¹ Ñ‚Ð¸Ð¿ Ð¾Ð±Ñ€Ð°Ð·Ñ†Ð°"));
+		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("Ð¡Ð¼. Ð¾Ð±Ñ€Ð°Ð·ÐµÑ†"));
 		RDOParser::s_parser()->error().push_done();
 	}
 }
@@ -189,8 +189,8 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Keyboard)
 	{
-		RDOParser::s_parser()->error().push_only(hotkey_pos, _T("Ãîðÿ÷èå êëàâèøè èñïîëüçóþòñÿ òîëüêî â êëàâèàòóðíûõ îïåðàöèÿõ"));
-		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("Ñì. îáðàçåö"));
+		RDOParser::s_parser()->error().push_only(hotkey_pos, _T("Ð“Ð¾Ñ€ÑÑ‡Ð¸Ðµ ÐºÐ»Ð°Ð²Ð¸ÑˆÐ¸ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÑŽÑ‚ÑÑ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð² ÐºÐ»Ð°Ð²Ð¸Ð°Ñ‚ÑƒÑ€Ð½Ñ‹Ñ… Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸ÑÑ…"));
+		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("Ð¡Ð¼. Ð¾Ð±Ñ€Ð°Ð·ÐµÑ†"));
 		RDOParser::s_parser()->error().push_done();
 	}
 	LPIKeyboard pKeyboard = m_pActivity;
@@ -201,21 +201,21 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 		break;
 
 	case rdo::runtime::RDOKeyboard::addhk_already:
-		RDOParser::s_parser()->error().error(hotkey_pos, rdo::format(_T("Äëÿ àêòèâíîñòè '%s' êëàâèøà óæå íàçíà÷åíà"), src_text().c_str()));
+		RDOParser::s_parser()->error().error(hotkey_pos, rdo::format(_T("Ð”Ð»Ñ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸ '%s' ÐºÐ»Ð°Ð²Ð¸ÑˆÐ° ÑƒÐ¶Ðµ Ð½Ð°Ð·Ð½Ð°Ñ‡ÐµÐ½Ð°"), src_text().c_str()));
 		break;
 
 	case rdo::runtime::RDOKeyboard::addhk_notfound:
-		RDOParser::s_parser()->error().error(hotkey_pos, rdo::format(_T("Íåèçâåñòíàÿ êëàâèøà: %s"), hotKey.c_str()));
+		RDOParser::s_parser()->error().error(hotkey_pos, rdo::format(_T("ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ð°Ñ ÐºÐ»Ð°Ð²Ð¸ÑˆÐ°: %s"), hotKey.c_str()));
 		break;
 
 	case rdo::runtime::RDOKeyboard::addhk_dont:
-		RDOParser::s_parser()->error().push_only(src_info(), rdo::format(_T("Îïåðàöèÿ '%s' íå ÿâëÿåòñÿ êëàâèàòóðíîé"), src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("Ñì. îáðàçåö"));
+		RDOParser::s_parser()->error().push_only(src_info(), rdo::format(_T("ÐžÐ¿ÐµÑ€Ð°Ñ†Ð¸Ñ '%s' Ð½Ðµ ÑÐ²Ð»ÑÐµÑ‚ÑÑ ÐºÐ»Ð°Ð²Ð¸Ð°Ñ‚ÑƒÑ€Ð½Ð¾Ð¹"), src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("Ð¡Ð¼. Ð¾Ð±Ñ€Ð°Ð·ÐµÑ†"));
 		RDOParser::s_parser()->error().push_done();
 		break;
 
 	default:
-		RDOParser::s_parser()->error().error(src_info(), _T("Âíóòðåííàÿ îøèáêà: RDOOPROperation::addHotKey"));
+		RDOParser::s_parser()->error().error(src_info(), _T("Ð’Ð½ÑƒÑ‚Ñ€ÐµÐ½Ð½Ð°Ñ Ð¾ÑˆÐ¸Ð±ÐºÐ°: RDOOPROperation::addHotKey"));
 	}
 }
 
@@ -260,7 +260,7 @@ Context::FindResult RDODPTSome::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
 
-	//! Ïîèñê íå íóæåí, äîáàâëåí äëÿ ïîðÿäêà, ÷òîáû êîíòåêñò àêòèâíîñòè áûë íà ñòåêå ïîñëå êîíòåêñòà òî÷êè
+	//! ÐŸÐ¾Ð¸ÑÐº Ð½Ðµ Ð½ÑƒÐ¶ÐµÐ½, Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½ Ð´Ð»Ñ Ð¿Ð¾Ñ€ÑÐ´ÐºÐ°, Ñ‡Ñ‚Ð¾Ð±Ñ‹ ÐºÐ¾Ð½Ñ‚ÐµÐºÑÑ‚ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸ Ð±Ñ‹Ð» Ð½Ð° ÑÑ‚ÐµÐºÐµ Ð¿Ð¾ÑÐ»Ðµ ÐºÐ¾Ð½Ñ‚ÐµÐºÑÑ‚Ð° Ñ‚Ð¾Ñ‡ÐºÐ¸
 	return Context::FindResult();
 }
 
@@ -285,7 +285,7 @@ Context::FindResult RDODPTPrior::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
 
-	//! Ïîèñê íå íóæåí, äîáàâëåí äëÿ ïîðÿäêà, ÷òîáû êîíòåêñò àêòèâíîñòè áûë íà ñòåêå ïîñëå êîíòåêñòà òî÷êè
+	//! ÐŸÐ¾Ð¸ÑÐº Ð½Ðµ Ð½ÑƒÐ¶ÐµÐ½, Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½ Ð´Ð»Ñ Ð¿Ð¾Ñ€ÑÐ´ÐºÐ°, Ñ‡Ñ‚Ð¾Ð±Ñ‹ ÐºÐ¾Ð½Ñ‚ÐµÐºÑÑ‚ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸ Ð±Ñ‹Ð» Ð½Ð° ÑÑ‚ÐµÐºÐµ Ð¿Ð¾ÑÐ»Ðµ ÐºÐ¾Ð½Ñ‚ÐµÐºÑÑ‚Ð° Ñ‚Ð¾Ñ‡ÐºÐ¸
 	return Context::FindResult();
 }
 
@@ -298,17 +298,17 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Rule)
 	{
-		RDOParser::s_parser()->error().push_only(this->src_info(), _T("Òîëüêî ïðîäóêöèîííûå ïðàâèëà ìîãóò áûòü èñïîëüçîâàíû â òî÷êå ïðèíÿòèÿ ðåøåíèé òèïà search"));
-		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("Ñì. îáðàçåö"));
+		RDOParser::s_parser()->error().push_only(this->src_info(), _T("Ð¢Ð¾Ð»ÑŒÐºÐ¾ Ð¿Ñ€Ð¾Ð´ÑƒÐºÑ†Ð¸Ð¾Ð½Ð½Ñ‹Ðµ Ð¿Ñ€Ð°Ð²Ð¸Ð»Ð° Ð¼Ð¾Ð³ÑƒÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ñ‹ Ð² Ñ‚Ð¾Ñ‡ÐºÐµ Ð¿Ñ€Ð¸Ð½ÑÑ‚Ð¸Ñ Ñ€ÐµÑˆÐµÐ½Ð¸Ð¹ Ñ‚Ð¸Ð¿Ð° search"));
+		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("Ð¡Ð¼. Ð¾Ð±Ñ€Ð°Ð·ÐµÑ†"));
 		RDOParser::s_parser()->error().push_done();
 	}
 	for (RDOPATPattern::RelResList::const_iterator it = pattern()->rel_res_begin(); it != pattern()->rel_res_end(); ++it)
 	{
 		if (((*it)->m_statusBegin == rdo::runtime::RDOResource::CS_Create) || ((*it)->m_statusBegin == rdo::runtime::RDOResource::CS_Erase))
 		{
-			RDOParser::s_parser()->error().push_only(this->src_info(), rdo::format(_T("Â ïðîäóêöèîííîì ïðàâèëå '%s' íåëüçÿ ñîçäàâàòü èëè óäàëÿòü ðåñóðñû, ò.ê. îíî èñïîëüçóåòñÿ â òî÷êå òèïà search"), src_text().c_str()));
-			RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("Ñì. îáðàçåö"));
-			RDOParser::s_parser()->error().push_only((*it)->src_info(), _T("Ñì. ðåëåâàíòíûé ðåñóðñ"));
+			RDOParser::s_parser()->error().push_only(this->src_info(), rdo::format(_T("Ð’ Ð¿Ñ€Ð¾Ð´ÑƒÐºÑ†Ð¸Ð¾Ð½Ð½Ð¾Ð¼ Ð¿Ñ€Ð°Ð²Ð¸Ð»Ðµ '%s' Ð½ÐµÐ»ÑŒÐ·Ñ ÑÐ¾Ð·Ð´Ð°Ð²Ð°Ñ‚ÑŒ Ð¸Ð»Ð¸ ÑƒÐ´Ð°Ð»ÑÑ‚ÑŒ Ñ€ÐµÑÑƒÑ€ÑÑ‹, Ñ‚.Ðº. Ð¾Ð½Ð¾ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ Ð² Ñ‚Ð¾Ñ‡ÐºÐµ Ñ‚Ð¸Ð¿Ð° search"), src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("Ð¡Ð¼. Ð¾Ð±Ñ€Ð°Ð·ÐµÑ†"));
+			RDOParser::s_parser()->error().push_only((*it)->src_info(), _T("Ð¡Ð¼. Ñ€ÐµÐ»ÐµÐ²Ð°Ð½Ñ‚Ð½Ñ‹Ð¹ Ñ€ÐµÑÑƒÑ€Ñ"));
 			RDOParser::s_parser()->error().push_done();
 		}
 	}
@@ -346,7 +346,7 @@ Context::FindResult RDODPTSearch::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
 
-	//! Ïîèñê íå íóæåí, äîáàâëåí äëÿ ïîðÿäêà, ÷òîáû êîíòåêñò àêòèâíîñòè áûë íà ñòåêå ïîñëå êîíòåêñòà òî÷êè
+	//! ÐŸÐ¾Ð¸ÑÐº Ð½Ðµ Ð½ÑƒÐ¶ÐµÐ½, Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½ Ð´Ð»Ñ Ð¿Ð¾Ñ€ÑÐ´ÐºÐ°, Ñ‡Ñ‚Ð¾Ð±Ñ‹ ÐºÐ¾Ð½Ñ‚ÐµÐºÑÑ‚ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸ Ð±Ñ‹Ð» Ð½Ð° ÑÑ‚ÐµÐºÐµ Ð¿Ð¾ÑÐ»Ðµ ÐºÐ¾Ð½Ñ‚ÐµÐºÑÑ‚Ð° Ñ‚Ð¾Ñ‡ÐºÐ¸
 	return Context::FindResult();
 }
 
@@ -382,7 +382,7 @@ void RDODPTSearch::end()
 	}
 	m_closed = true;
 
-	//! @todo ïðîâåðèòü, ìîæíî ëè èçáàâèòüñÿ îò ïîâòîðåíèÿ ýòîé ñòðîêè. Óæå åñòü â RDOLogicBase::end()
+	//! @todo Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ, Ð¼Ð¾Ð¶Ð½Ð¾ Ð»Ð¸ Ð¸Ð·Ð±Ð°Ð²Ð¸Ñ‚ÑŒÑÑ Ð¾Ñ‚ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€ÐµÐ½Ð¸Ñ ÑÑ‚Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐ¸. Ð£Ð¶Ðµ ÐµÑÑ‚ÑŒ Ð² RDOLogicBase::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 

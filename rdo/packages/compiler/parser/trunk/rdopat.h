@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdopat.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -253,7 +253,7 @@ public:
 	}
 
 protected:
-	//! Конструктор вызывается из RDOPatternKeyboard
+	//! РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РІС‹Р·С‹РІР°РµС‚СЃСЏ РёР· RDOPatternKeyboard
 	RDOPatternOperation(rbool trace, CREF(RDOParserSrcInfo) name_src_info);
 
 	virtual void rel_res_insert (CREF(LPRDORelevantResource) pRelevantResource);
@@ -332,9 +332,9 @@ public:
 	        CREF(tstring)   name   () const  { return src_text(); };
 	virtual LPRDORTPResType getType() const = 0;
 
-	virtual rdo::runtime::LPRDOCalc                  createPreSelectRelResCalc           () = 0; //! Предварительный выбор ресурсов в самом списке рел. ресурсов
-	virtual rdo::runtime::LPRDOCalc                  createSelectResourceChoiceCalc      () = 0; //! Самый обыкновенный choice from + first/with_min/with_max
-	virtual rdo::runtime::LPRDOCalc                  createSelectFirstResourceChoiceCalc () = 0; //! common first, который не пашет
+	virtual rdo::runtime::LPRDOCalc                  createPreSelectRelResCalc           () = 0; //! РџСЂРµРґРІР°СЂРёС‚РµР»СЊРЅС‹Р№ РІС‹Р±РѕСЂ СЂРµСЃСѓСЂСЃРѕРІ РІ СЃР°РјРѕРј СЃРїРёСЃРєРµ СЂРµР». СЂРµСЃСѓСЂСЃРѕРІ
+	virtual rdo::runtime::LPRDOCalc                  createSelectResourceChoiceCalc      () = 0; //! РЎР°РјС‹Р№ РѕР±С‹РєРЅРѕРІРµРЅРЅС‹Р№ choice from + first/with_min/with_max
+	virtual rdo::runtime::LPRDOCalc                  createSelectFirstResourceChoiceCalc () = 0; //! common first, РєРѕС‚РѕСЂС‹Р№ РЅРµ РїР°С€РµС‚
 	virtual rdo::runtime::LPIRDOSelectResourceCommon createSelectResourceCommonChoiceCalc() = 0; //! common with_min/with_max
 
 	virtual rbool isDirect() const = 0;
@@ -431,7 +431,7 @@ public:
 	{
 		switch (m_type)
 		{
-		case rdo::runtime::RDOSelectResourceCalc::order_empty   : return _T("<правило_выбора_не_указано>");
+		case rdo::runtime::RDOSelectResourceCalc::order_empty   : return _T("<РїСЂР°РІРёР»Рѕ_РІС‹Р±РѕСЂР°_РЅРµ_СѓРєР°Р·Р°РЅРѕ>");
 		case rdo::runtime::RDOSelectResourceCalc::order_first   : return _T("first");
 		case rdo::runtime::RDOSelectResourceCalc::order_with_min: return _T("with_min");
 		case rdo::runtime::RDOSelectResourceCalc::order_with_max: return _T("with_max");
@@ -449,7 +449,7 @@ private:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDORelevantResourceDirect - по имени ресурса
+// -------------------- RDORelevantResourceDirect - РїРѕ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°
 // --------------------------------------------------------------------------------
 class RDORelevantResourceDirect: public RDORelevantResource
 {
@@ -474,7 +474,7 @@ private:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDORelevantResourceByType - по имени типа
+// -------------------- RDORelevantResourceByType - РїРѕ РёРјРµРЅРё С‚РёРїР°
 // --------------------------------------------------------------------------------
 class RDORelevantResourceByType: public RDORelevantResource
 {
