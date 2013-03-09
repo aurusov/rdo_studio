@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_select.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      16.05.2007
-  \brief     Калки команды Select
+  \brief     РљР°Р»РєРё РєРѕРјР°РЅРґС‹ Select
   \indent    4T
 */
 
@@ -22,7 +22,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовая групповая функция
+//! Р‘Р°Р·РѕРІР°СЏ РіСЂСѓРїРїРѕРІР°СЏ С„СѓРЅРєС†РёСЏ
 CALC_SUB(RDOFunCalcSelect, RDOFunCalcGroup)
 {
 DECLARE_FACTORY(RDOFunCalcSelect)
@@ -40,7 +40,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Базовая класс для операторов Select
+//! Р‘Р°Р·РѕРІР°СЏ РєР»Р°СЃСЃ РґР»СЏ РѕРїРµСЂР°С‚РѕСЂРѕРІ Select
 CALC_SUB(RDOFunCalcSelectBase, RDOFunCalc)
 {
 protected:
@@ -52,7 +52,7 @@ protected:
 
 /*!
   \def     DEFINE_CALC_SELECT_GROUP
-  \brief   Select-группа
+  \brief   Select-РіСЂСѓРїРїР°
 */
 #define DEFINE_CALC_SELECT_GROUP(CalcName) \
 CALC_SUB(RDOFunCalcSelect##CalcName, RDOFunCalcSelectBase) \
@@ -67,7 +67,7 @@ private: \
 
 /*!
   \def     DEFINE_CALC_SELECT_METHOD
-  \brief   Select-метод
+  \brief   Select-РјРµС‚РѕРґ
 */
 #define DEFINE_CALC_SELECT_METHOD(CalcName) \
 CALC_SUB(RDOFunCalcSelect##CalcName, RDOFunCalcSelectBase) \
@@ -82,43 +82,43 @@ private: \
 
 /*!
   \class   RDOFunCalcSelectExist
-  \brief   Квантор существования
+  \brief   РљРІР°РЅС‚РѕСЂ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёСЏ
 */
 DEFINE_CALC_SELECT_GROUP(Exist);
 
 /*!
   \class   RDOFunCalcSelectNotExist
-  \brief   Обратный квантор существования
+  \brief   РћР±СЂР°С‚РЅС‹Р№ РєРІР°РЅС‚РѕСЂ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёСЏ
 */
 DEFINE_CALC_SELECT_GROUP (NotExist );
 
 /*!
   \class   RDOFunCalcSelectForAll
-  \brief   Проверка условия для каждого элемента множества
+  \brief   РџСЂРѕРІРµСЂРєР° СѓСЃР»РѕРІРёСЏ РґР»СЏ РєР°Р¶РґРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РјРЅРѕР¶РµСЃС‚РІР°
 */
 DEFINE_CALC_SELECT_GROUP (ForAll   );
 
 /*!
   \class   RDOFunCalcSelectNotForAll
-  \brief   Обратная проверка условия для каждого элемента множества
+  \brief   РћР±СЂР°С‚РЅР°СЏ РїСЂРѕРІРµСЂРєР° СѓСЃР»РѕРІРёСЏ РґР»СЏ РєР°Р¶РґРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РјРЅРѕР¶РµСЃС‚РІР°
 */
 DEFINE_CALC_SELECT_GROUP (NotForAll);
 
 /*!
   \class   RDOFunCalcSelectEmpty
-  \brief   Проверка множества на пустоту
+  \brief   РџСЂРѕРІРµСЂРєР° РјРЅРѕР¶РµСЃС‚РІР° РЅР° РїСѓСЃС‚РѕС‚Сѓ
 */
 DEFINE_CALC_SELECT_METHOD(Empty    );
 
 /*!
   \class   RDOFunCalcSelectSize
-  \brief   Размер множества
+  \brief   Р Р°Р·РјРµСЂ РјРЅРѕР¶РµСЃС‚РІР°
 */
 DEFINE_CALC_SELECT_METHOD(Size     );
 
 /*!
   \class   RDOFunCalcSelectArray
-  \brief   Получение массива из множества
+  \brief   РџРѕР»СѓС‡РµРЅРёРµ РјР°СЃСЃРёРІР° РёР· РјРЅРѕР¶РµСЃС‚РІР°
 */
 DEFINE_CALC_SELECT_METHOD(Array    );
 

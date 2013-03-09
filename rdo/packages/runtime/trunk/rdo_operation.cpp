@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_operation.cpp
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
-  \authors   Ëóùàí Äìèòðèé (dluschan@rk9.bmstu.ru)
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
+  \authors   Ð›ÑƒÑ‰Ð°Ð½ Ð”Ð¼Ð¸Ñ‚Ñ€Ð¸Ð¹ (dluschan@rk9.bmstu.ru)
   \date      18.08.2010
-  \brief     Îïåðàöèè
+  \brief     ÐžÐ¿ÐµÑ€Ð°Ñ†Ð¸Ð¸
   \indent    4T
 */
 
@@ -58,7 +58,7 @@ RDOOperation::~RDOOperation()
 
 rbool RDOOperation::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
-	// Åñëè îïåðàöèÿ ìîæåò íà÷àòüñÿ, òî ñîçäàòü å¸ êëîí è ïîìåñòèòü åãî â ñïèñîê
+	// Ð•ÑÐ»Ð¸ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ñ Ð¼Ð¾Ð¶ÐµÑ‚ Ð½Ð°Ñ‡Ð°Ñ‚ÑŒÑÑ, Ñ‚Ð¾ ÑÐ¾Ð·Ð´Ð°Ñ‚ÑŒ ÐµÑ‘ ÐºÐ»Ð¾Ð½ Ð¸ Ð¿Ð¾Ð¼ÐµÑÑ‚Ð¸Ñ‚ÑŒ ÐµÐ³Ð¾ Ð² ÑÐ¿Ð¸ÑÐ¾Ðº
 	onBeforeChoiceFrom(pRuntime);
 	pRuntime->inc_cnt_choice_from();
 	return choiceFrom(pRuntime);
@@ -78,7 +78,7 @@ void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
 	UNUSED(pParam);
 
-	// Âûïîëíÿåì ñîáûòèå êîíöà îïåðàöèè-êëîíà
+	// Ð’Ñ‹Ð¿Ð¾Ð»Ð½ÑÐµÐ¼ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ðµ ÐºÐ¾Ð½Ñ†Ð° Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¸-ÐºÐ»Ð¾Ð½Ð°
 	pRuntime->inc_cnt_events();
 	onBeforeOperationEnd(pRuntime);
 	convertEnd(pRuntime);

@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      searchtrace.cpp
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      11.06.2006
-  \brief     Òðàññèðîâêà DPTSearch
+  \brief     Ð¢Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ° DPTSearch
   \indent    4T
 */
 
@@ -75,7 +75,7 @@ void RDODPTSearchTrace::onSearchResultNotFound(CREF(LPRDORuntime) pRuntime, Tree
 // --------------------------------------------------------------------------------
 void TreeNodeTrace::onSearchOpenNode(CREF(LPRDORuntime) pRuntime)
 {
-	/// @todo èñïîëüçîâàòü ÿâíûé cast
+	/// @todo Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ ÑÐ²Ð½Ñ‹Ð¹ cast
 	RDODPTSearchTrace* dpTrace = (RDODPTSearchTrace *)m_root->m_dp;
 	if (dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all)
 	{

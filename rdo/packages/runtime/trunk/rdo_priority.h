@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_priority.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      04.11.2009
-  \brief     Описание приоритета активностей. Используется при сортировке БЗ.
+  \brief     РћРїРёСЃР°РЅРёРµ РїСЂРёРѕСЂРёС‚РµС‚Р° Р°РєС‚РёРІРЅРѕСЃС‚РµР№. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РїСЂРё СЃРѕСЂС‚РёСЂРѕРІРєРµ Р‘Р—.
   \indent    4T
 */
 
@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class     RDOPatternPrior
-  \brief     Приоритет паттерна
+  \brief     РџСЂРёРѕСЂРёС‚РµС‚ РїР°С‚С‚РµСЂРЅР°
 */
 class RDOPatternPrior: public IPriority
 {
@@ -43,7 +43,7 @@ private:
 
 /*!
   \class     RDODPTActivityCompare
-  \brief     Компаратор приоритетов активностей
+  \brief     РљРѕРјРїР°СЂР°С‚РѕСЂ РїСЂРёРѕСЂРёС‚РµС‚РѕРІ Р°РєС‚РёРІРЅРѕСЃС‚РµР№
 */
 class RDODPTActivityCompare
 {

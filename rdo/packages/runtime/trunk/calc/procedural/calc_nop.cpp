@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_nop.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      17.12.2011
-  \brief     Пустая операция
+  \brief     РџСѓСЃС‚Р°СЏ РѕРїРµСЂР°С†РёСЏ
   \indent    4T
 */
 

@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_sequence.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      13.03.2011
-  \brief     Последовательности
+  \brief     РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
   \indent    4T
 */
 
@@ -20,7 +20,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Инициализация последовательности псевдослучайных чисел
+//! РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РїСЃРµРІРґРѕСЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
 CALC(RDOCalcSeqInit)
 {
 DECLARE_FACTORY(RDOCalcSeqInit)
@@ -37,7 +37,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Вычисляет следующее значение последовательности псевдослучайных чисел
+//! Р’С‹С‡РёСЃР»СЏРµС‚ СЃР»РµРґСѓСЋС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РїСЃРµРІРґРѕСЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
 CALC_SUB(RDOCalcSeqNext, RDOFunCalc)
 {
 public:
@@ -59,7 +59,7 @@ protected:
 	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime) = 0;
 };
 
-//! Псевдослучайное распределение
+//! РџСЃРµРІРґРѕСЃР»СѓС‡Р°Р№РЅРѕРµ СЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ
 template<class T>
 class RDOCalcRandomDistribution: public RDOCalcSeqNext
 {
@@ -74,7 +74,7 @@ private:
 
 /*!
   \def     DEFINE_RANDON_DISTRIBUTION
-  \brief   Макрос для разных законов распределения
+  \brief   РњР°РєСЂРѕСЃ РґР»СЏ СЂР°Р·РЅС‹С… Р·Р°РєРѕРЅРѕРІ СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ
 */
 #define DEFINE_RANDON_DISTRIBUTION(CalcName, Distribution)                  \
 CALC_SUB(RDOCalcSeqNext##CalcName, RDOCalcRandomDistribution<Distribution>) \
@@ -90,31 +90,31 @@ private:                                                                    \
 
 /*!
   \class   RDOCalcSeqNextUniform
-  \brief   Следующее значение псевдослучайной величины, распределенной равномерно
+  \brief   РЎР»РµРґСѓСЋС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РїСЃРµРІРґРѕСЃР»СѓС‡Р°Р№РЅРѕР№ РІРµР»РёС‡РёРЅС‹, СЂР°СЃРїСЂРµРґРµР»РµРЅРЅРѕР№ СЂР°РІРЅРѕРјРµСЂРЅРѕ
 */
 DEFINE_RANDON_DISTRIBUTION(Uniform, RandGeneratorUniform);
 
 /*!
   \class   RDOCalcSeqNextNormal
-  \brief   Следующее значение псевдослучайной величины, распределенной по нормальному закону
+  \brief   РЎР»РµРґСѓСЋС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РїСЃРµРІРґРѕСЃР»СѓС‡Р°Р№РЅРѕР№ РІРµР»РёС‡РёРЅС‹, СЂР°СЃРїСЂРµРґРµР»РµРЅРЅРѕР№ РїРѕ РЅРѕСЂРјР°Р»СЊРЅРѕРјСѓ Р·Р°РєРѕРЅСѓ
 */
 DEFINE_RANDON_DISTRIBUTION(Normal, RandGeneratorNormal);
 
 /*!
   \class   RDOCalcSeqNextExponential
-  \brief   Следующее значение псевдослучайной величины, распределенной по экспоненциальному закону
+  \brief   РЎР»РµРґСѓСЋС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РїСЃРµРІРґРѕСЃР»СѓС‡Р°Р№РЅРѕР№ РІРµР»РёС‡РёРЅС‹, СЂР°СЃРїСЂРµРґРµР»РµРЅРЅРѕР№ РїРѕ СЌРєСЃРїРѕРЅРµРЅС†РёР°Р»СЊРЅРѕРјСѓ Р·Р°РєРѕРЅСѓ
 */
 DEFINE_RANDON_DISTRIBUTION(Exponential, RandGeneratorExponential);
 
 /*!
   \class   RDOCalcSeqNextTriangular
-  \brief   Следующее значение псевдослучайной величины, распределенной по треугольному закону
+  \brief   РЎР»РµРґСѓСЋС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РїСЃРµРІРґРѕСЃР»СѓС‡Р°Р№РЅРѕР№ РІРµР»РёС‡РёРЅС‹, СЂР°СЃРїСЂРµРґРµР»РµРЅРЅРѕР№ РїРѕ С‚СЂРµСѓРіРѕР»СЊРЅРѕРјСѓ Р·Р°РєРѕРЅСѓ
 */
 DEFINE_RANDON_DISTRIBUTION(Triangular, RandGeneratorTriangular);
 
 /*!
   \class   RDOCalcSeqNextByHist
-  \brief   Следующее значение псевдослучайной величины, распределенной по заданной гистограмме
+  \brief   РЎР»РµРґСѓСЋС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РїСЃРµРІРґРѕСЃР»СѓС‡Р°Р№РЅРѕР№ РІРµР»РёС‡РёРЅС‹, СЂР°СЃРїСЂРµРґРµР»РµРЅРЅРѕР№ РїРѕ Р·Р°РґР°РЅРЅРѕР№ РіРёСЃС‚РѕРіСЂР°РјРјРµ
 */
 DEFINE_RANDON_DISTRIBUTION(ByHist, RandGeneratorCommonNext);
 

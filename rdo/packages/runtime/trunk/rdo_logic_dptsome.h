@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_logic_dptsome.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      04.11.2009
   \brief     DPTSome
   \indent    4T
@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class   RDODPTSome
-  \brief   Точка принятия решений DPTSome
+  \brief   РўРѕС‡РєР° РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ DPTSome
 */
 class RDODPTSome: public RDOLogicSimple, public RDOPatternPrior
 {

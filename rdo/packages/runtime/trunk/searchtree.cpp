@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      searchtree.cpp
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      11.06.2006
-  \brief     Èíòåðôåéñ IDPTSearchTraceStatistics
+  \brief     Ð˜Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹Ñ IDPTSearchTraceStatistics
   \indent    4T
 */
 
@@ -28,7 +28,7 @@ TreeRoot::TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
 	, m_rootNode          (NULL    )
 	, m_targetNode        (NULL    )
 	, m_theRealSimulator  (pRuntime)
-	, m_nodesInGraphCount (1       ) //! Ó÷¸ò íà÷àëüíîé âåðøèíû
+	, m_nodesInGraphCount (1       ) //! Ð£Ñ‡Ñ‘Ñ‚ Ð½Ð°Ñ‡Ð°Ð»ÑŒÐ½Ð¾Ð¹ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹
 	, m_expandedNodesCount(0       )
 	, m_fullNodesCount    (0       )
 	, m_sizeof_dpt        (0       )
@@ -72,11 +72,11 @@ void TreeNode::ExpandChildren()
 	m_root->m_sizeof_dpt -= (m_pRuntime->getSizeofSim() + sizeof(TreeNode)) * m_children.size();
 	rdo::deleteAllObjects(m_children);
 
-	// Âûâåëè ñòàòèñòèêó
+	// Ð’Ñ‹Ð²ÐµÐ»Ð¸ ÑÑ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÑƒ
 	onSearchOpenNode(m_root->m_theRealSimulator);
 
-	// Ïðîâåðèëè íà êîíå÷íóþ âåðøèíó
-	/// @todo âîçìîæíî, íàäî ïðîâåðèòü âñå âåðøèíû â ñïèñêå OPEN
+	// ÐŸÑ€Ð¾Ð²ÐµÑ€Ð¸Ð»Ð¸ Ð½Ð° ÐºÐ¾Ð½ÐµÑ‡Ð½ÑƒÑŽ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñƒ
+	/// @todo Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾, Ð½Ð°Ð´Ð¾ Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ Ð²ÑÐµ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹ Ð² ÑÐ¿Ð¸ÑÐºÐµ OPEN
 	if (m_root->m_dp->TermCondition(m_pRuntime))
 	{
 		m_root->m_targetNode = this;
@@ -86,10 +86,10 @@ void TreeNode::ExpandChildren()
 		return;
 	}
 
-	// Òîëüêî äëÿ ñòàòèñòèêè
+	// Ð¢Ð¾Ð»ÑŒÐºÐ¾ Ð´Ð»Ñ ÑÑ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÐ¸
 	m_root->m_expandedNodesCount++;
 
-	// Áåãàåì ïî âñåì àêòèâíîñòÿì ñàìîé òî÷êè
+	// Ð‘ÐµÐ³Ð°ÐµÐ¼ Ð¿Ð¾ Ð²ÑÐµÐ¼ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚ÑÐ¼ ÑÐ°Ð¼Ð¾Ð¹ Ñ‚Ð¾Ñ‡ÐºÐ¸
 	for (RDODPTSearch::ActivityList::iterator i = m_root->m_dp->m_activityList.begin(); i != m_root->m_dp->m_activityList.end(); ++i)
 	{
 		m_currAct       = *i;
@@ -97,63 +97,63 @@ void TreeNode::ExpandChildren()
 #ifdef _DEBUG
 		if (m_pChildRuntime->checkState())
 		{
-			TRACE1(_T("ñîñòîÿíèå, node = %d\n"), m_number);
+			TRACE1(_T("ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ðµ, node = %d\n"), m_number);
 		}
 #endif
 		m_root->m_sizeof_dpt += m_pChildRuntime->getSizeofSim();
 		m_currAct->rule()->onBeforeChoiceFrom(m_pChildRuntime);
 		if (!m_currAct->rule()->choiceFrom(m_pChildRuntime))
 		{
-			// Íå ïðîøåë Choice from, óäàëÿåì ñèìóëÿòîð è ïåðåõîäèì ê äðóãîé àêòèâíîñòè.
-			/// @todo à çà÷åì óäàëÿòü ñèìóëÿòîð, âåäü ÁÄ íå ïîìåíÿëàñü ?
-			// Òàêîå áóäåò âîçìîæíî, åñëè ïðè ïîäãîòîâêå ïàðàìåòðîâ ïàòòåðíà áóäåò
-			// âûçûâàòüñÿ calc, íà êîòîðîì âåñèò óâåäîìëåíèå ïî âûçîâó äëÿ äðóãîãî
-			// îáúåêòà, êîòîðûé áóäóò ìåíÿòüñÿ ïàðàìåòðû ðåñóðñîâ
-			// Ïîêà òàêèõ ñëîæíûõ âçàèìîäåéñòâèé â ñèñòåìå íåò.
+			// ÐÐµ Ð¿Ñ€Ð¾ÑˆÐµÐ» Choice from, ÑƒÐ´Ð°Ð»ÑÐµÐ¼ ÑÐ¸Ð¼ÑƒÐ»ÑÑ‚Ð¾Ñ€ Ð¸ Ð¿ÐµÑ€ÐµÑ…Ð¾Ð´Ð¸Ð¼ Ðº Ð´Ñ€ÑƒÐ³Ð¾Ð¹ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸.
+			/// @todo Ð° Ð·Ð°Ñ‡ÐµÐ¼ ÑƒÐ´Ð°Ð»ÑÑ‚ÑŒ ÑÐ¸Ð¼ÑƒÐ»ÑÑ‚Ð¾Ñ€, Ð²ÐµÐ´ÑŒ Ð‘Ð” Ð½Ðµ Ð¿Ð¾Ð¼ÐµÐ½ÑÐ»Ð°ÑÑŒ ?
+			// Ð¢Ð°ÐºÐ¾Ðµ Ð±ÑƒÐ´ÐµÑ‚ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾, ÐµÑÐ»Ð¸ Ð¿Ñ€Ð¸ Ð¿Ð¾Ð´Ð³Ð¾Ñ‚Ð¾Ð²ÐºÐµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð² Ð¿Ð°Ñ‚Ñ‚ÐµÑ€Ð½Ð° Ð±ÑƒÐ´ÐµÑ‚
+			// Ð²Ñ‹Ð·Ñ‹Ð²Ð°Ñ‚ÑŒÑÑ calc, Ð½Ð° ÐºÐ¾Ñ‚Ð¾Ñ€Ð¾Ð¼ Ð²ÐµÑÐ¸Ñ‚ ÑƒÐ²ÐµÐ´Ð¾Ð¼Ð»ÐµÐ½Ð¸Ðµ Ð¿Ð¾ Ð²Ñ‹Ð·Ð¾Ð²Ñƒ Ð´Ð»Ñ Ð´Ñ€ÑƒÐ³Ð¾Ð³Ð¾
+			// Ð¾Ð±ÑŠÐµÐºÑ‚Ð°, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ð±ÑƒÐ´ÑƒÑ‚ Ð¼ÐµÐ½ÑÑ‚ÑŒÑÑ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ñ€ÐµÑÑƒÑ€ÑÐ¾Ð²
+			// ÐŸÐ¾ÐºÐ° Ñ‚Ð°ÐºÐ¸Ñ… ÑÐ»Ð¾Ð¶Ð½Ñ‹Ñ… Ð²Ð·Ð°Ð¸Ð¼Ð¾Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ð¹ Ð² ÑÐ¸ÑÑ‚ÐµÐ¼Ðµ Ð½ÐµÑ‚.
 			m_root->m_sizeof_dpt -= m_pChildRuntime->getSizeofSim();
 			m_pChildRuntime = NULL;
 		}
 		else
 		{
-			// Òîëüêî äëÿ ñòàòèñòèêè
+			// Ð¢Ð¾Ð»ÑŒÐºÐ¾ Ð´Ð»Ñ ÑÑ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÐ¸
 			m_root->m_fullNodesCount++;
-			// Ðàñ÷èòàòü ñòîèìîñòü ïðèìåíåíèÿ ïðàâèëà (value before)
+			// Ð Ð°ÑÑ‡Ð¸Ñ‚Ð°Ñ‚ÑŒ ÑÑ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒ Ð¿Ñ€Ð¸Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ Ð¿Ñ€Ð°Ð²Ð¸Ð»Ð° (value before)
 			if (m_currAct->valueTime() == IDPTSearchActivity::vt_before)
 			{
 				m_newCostRule = m_currAct->cost(m_pChildRuntime);
 			}
-			// Âûïîëíèòü ñàìî ïðàâèëî (ðàñêðûòü âåðøèíó)
+			// Ð’Ñ‹Ð¿Ð¾Ð»Ð½Ð¸Ñ‚ÑŒ ÑÐ°Ð¼Ð¾ Ð¿Ñ€Ð°Ð²Ð¸Ð»Ð¾ (Ñ€Ð°ÑÐºÑ€Ñ‹Ñ‚ÑŒ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñƒ)
 			m_currAct->rule()->onBeforeRule(m_pChildRuntime);
 			m_currAct->rule()->convertRule(m_pChildRuntime);
 			m_currAct->rule()->onAfterRule(m_pChildRuntime, true);
 
-			// Ðàñ÷èòàòü ñòîèìîñòü ïðèìåíåíèÿ ïðàâèëà (value after)
+			// Ð Ð°ÑÑ‡Ð¸Ñ‚Ð°Ñ‚ÑŒ ÑÑ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒ Ð¿Ñ€Ð¸Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ Ð¿Ñ€Ð°Ð²Ð¸Ð»Ð° (value after)
 			if (m_currAct->valueTime() == IDPTSearchActivity::vt_after)
 			{
 				m_newCostRule = m_currAct->cost(m_pChildRuntime);
 			}
-			// Ðàñ÷èòàëè ñòîèìîñòü ïóòè äî òåêóùåé âåðøèíû
+			// Ð Ð°ÑÑ‡Ð¸Ñ‚Ð°Ð»Ð¸ ÑÑ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒ Ð¿ÑƒÑ‚Ð¸ Ð´Ð¾ Ñ‚ÐµÐºÑƒÑ‰ÐµÐ¹ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹
 			m_newCostPath = m_costPath + m_newCostRule;
-			// Ðàñ÷èòàëè ñòîèìîñòü ïóòè äî öåëè ñ ó÷åòîì îöåíêè
-			// Èìåííî ïî ýòîìó çíà÷åíèþ è äîëæåí óïîðÿäî÷èâàòüñÿ ñïèñîê OPEN
+			// Ð Ð°ÑÑ‡Ð¸Ñ‚Ð°Ð»Ð¸ ÑÑ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒ Ð¿ÑƒÑ‚Ð¸ Ð´Ð¾ Ñ†ÐµÐ»Ð¸ Ñ ÑƒÑ‡ÐµÑ‚Ð¾Ð¼ Ð¾Ñ†ÐµÐ½ÐºÐ¸
+			// Ð˜Ð¼ÐµÐ½Ð½Ð¾ Ð¿Ð¾ ÑÑ‚Ð¾Ð¼Ñƒ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸ÑŽ Ð¸ Ð´Ð¾Ð»Ð¶ÐµÐ½ ÑƒÐ¿Ð¾Ñ€ÑÐ´Ð¾Ñ‡Ð¸Ð²Ð°Ñ‚ÑŒÑÑ ÑÐ¿Ð¸ÑÐ¾Ðº OPEN
 			m_newCostRest = m_newCostPath + m_root->m_dp->EvaluateBy(m_pChildRuntime);
 
-			// Íàäî ëè ñðàâíèâàòü âåðøèíû (çàïîìèíàòü óæå ïðîéäåííûå)
-			// Àëãîðèòì ñìåíû ðîäèòåëÿ
+			// ÐÐ°Ð´Ð¾ Ð»Ð¸ ÑÑ€Ð°Ð²Ð½Ð¸Ð²Ð°Ñ‚ÑŒ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹ (Ð·Ð°Ð¿Ð¾Ð¼Ð¸Ð½Ð°Ñ‚ÑŒ ÑƒÐ¶Ðµ Ð¿Ñ€Ð¾Ð¹Ð´ÐµÐ½Ð½Ñ‹Ðµ)
+			// ÐÐ»Ð³Ð¾Ñ€Ð¸Ñ‚Ð¼ ÑÐ¼ÐµÐ½Ñ‹ Ñ€Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ñ
 			if (m_root->m_dp->NeedCompareTops())
 			{
 				TreeNode* loser = NULL;
 				NodeFoundInfo res = m_root->m_rootNode->CheckIfExistBetter(m_pChildRuntime, m_newCostPath, &loser);
 				if (res == nfi_found_better)
 				{
-					// Â ãðàôå åñòü áîëåå ëó÷øàÿ âåðøèíà, ò.å. òåêóùàÿ àêòèâíîñòü
-					// îòðàáîòàëà õóæå (äîðîæå) äî îäíîãî è òîãî æå ñîñòîÿíèÿ.
-					// Ãðàô ïåðåñòðàèâàòü íå íàäî.
-					// Âûâåëè òðàññèðîâêó ðàñêðûòîé âåðøèíû.
+					// Ð’ Ð³Ñ€Ð°Ñ„Ðµ ÐµÑÑ‚ÑŒ Ð±Ð¾Ð»ÐµÐµ Ð»ÑƒÑ‡ÑˆÐ°Ñ Ð²ÐµÑ€ÑˆÐ¸Ð½Ð°, Ñ‚.Ðµ. Ñ‚ÐµÐºÑƒÑ‰Ð°Ñ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚ÑŒ
+					// Ð¾Ñ‚Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð»Ð° Ñ…ÑƒÐ¶Ðµ (Ð´Ð¾Ñ€Ð¾Ð¶Ðµ) Ð´Ð¾ Ð¾Ð´Ð½Ð¾Ð³Ð¾ Ð¸ Ñ‚Ð¾Ð³Ð¾ Ð¶Ðµ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ñ.
+					// Ð“Ñ€Ð°Ñ„ Ð¿ÐµÑ€ÐµÑÑ‚Ñ€Ð°Ð¸Ð²Ð°Ñ‚ÑŒ Ð½Ðµ Ð½Ð°Ð´Ð¾.
+					// Ð’Ñ‹Ð²ÐµÐ»Ð¸ Ñ‚Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÑƒ Ñ€Ð°ÑÐºÑ€Ñ‹Ñ‚Ð¾Ð¹ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹.
 					onSearchNodeInfoDeleted(m_root->m_theRealSimulator);
 					m_root->m_sizeof_dpt -= m_pChildRuntime->getSizeofSim();
 					m_pChildRuntime = NULL;
-					// Ïåðåõîäèì ê ñëåäóþùåé àêòèâíîñòè
+					// ÐŸÐµÑ€ÐµÑ…Ð¾Ð´Ð¸Ð¼ Ðº ÑÐ»ÐµÐ´ÑƒÑŽÑ‰ÐµÐ¹ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸
 					continue;
 				}
 				else if (res == nfi_found_loser)
@@ -167,11 +167,11 @@ void TreeNode::ExpandChildren()
 						loser->m_pRuntime->showResources(loser->m_number);
 					}
 #endif
-					// Ñìåíà ðîäèòåëÿ
-					// Â ãðàôå íàøëàñü âåðøèíà (loser) ñ áîëåå ïëîõîé ñòîèìîñòüþ ïóòè,
-					// ò.å. òåêóùàÿ àêòèâíîñòü îòðàáîòàëà ëó÷øå (äåøåâëå).
-					// Íåîáõîäèìî ïåðåñòðîèòü ãðàô
-					// Ñíà÷àëà îòðûâàåì âñþ âåòêó îò ñòàðîãî ðîäèòåëÿ loser->parent
+					// Ð¡Ð¼ÐµÐ½Ð° Ñ€Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ñ
+					// Ð’ Ð³Ñ€Ð°Ñ„Ðµ Ð½Ð°ÑˆÐ»Ð°ÑÑŒ Ð²ÐµÑ€ÑˆÐ¸Ð½Ð° (loser) Ñ Ð±Ð¾Ð»ÐµÐµ Ð¿Ð»Ð¾Ñ…Ð¾Ð¹ ÑÑ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒÑŽ Ð¿ÑƒÑ‚Ð¸,
+					// Ñ‚.Ðµ. Ñ‚ÐµÐºÑƒÑ‰Ð°Ñ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚ÑŒ Ð¾Ñ‚Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð»Ð° Ð»ÑƒÑ‡ÑˆÐµ (Ð´ÐµÑˆÐµÐ²Ð»Ðµ).
+					// ÐÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ Ð¿ÐµÑ€ÐµÑÑ‚Ñ€Ð¾Ð¸Ñ‚ÑŒ Ð³Ñ€Ð°Ñ„
+					// Ð¡Ð½Ð°Ñ‡Ð°Ð»Ð° Ð¾Ñ‚Ñ€Ñ‹Ð²Ð°ÐµÐ¼ Ð²ÑÑŽ Ð²ÐµÑ‚ÐºÑƒ Ð¾Ñ‚ ÑÑ‚Ð°Ñ€Ð¾Ð³Ð¾ Ñ€Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ñ loser->parent
 					loser->m_parent->m_children.erase(std::find(loser->m_parent->m_children.begin(), loser->m_parent->m_children.end(), loser));
 #ifdef _DEBUG
 					if (m_number == 294)
@@ -179,28 +179,28 @@ void TreeNode::ExpandChildren()
 						TRACE1(_T("loser->m_parent->m_children.size() after erase = %d\n"), loser->m_parent->m_children.size());
 					}
 #endif
-					// Òåïåðü ïåðåñ÷èòûâàåì ñòîèìîñòü ýòîé âåðøèíû è âñåõ å¸ ïîòîìêîâ
-					/// @todo: à íåò ëè òóò îøèáêè, ò.ê. costPath ó ñòàðîé âåðøèíû,
-					// ïîäñ÷èòàííàÿ êàê costPath + newCostRule, ìîæåò íå ñîâïàñòü
-					// èç-çà newCostRule èç-çà ðàçíûõ ñòîèìîñòåé ïðèìåíåíèÿ ïðàâèë,
-					// ò.å. ñíà÷ëà íàäî îáíîâèòü loser->costRule (ñì. íèæå), à ïîòîì
-					// âûçûâàòü loser->ReCostSubTree( costPath )
+					// Ð¢ÐµÐ¿ÐµÑ€ÑŒ Ð¿ÐµÑ€ÐµÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÐ¼ ÑÑ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒ ÑÑ‚Ð¾Ð¹ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹ Ð¸ Ð²ÑÐµÑ… ÐµÑ‘ Ð¿Ð¾Ñ‚Ð¾Ð¼ÐºÐ¾Ð²
+					/// @todo: Ð° Ð½ÐµÑ‚ Ð»Ð¸ Ñ‚ÑƒÑ‚ Ð¾ÑˆÐ¸Ð±ÐºÐ¸, Ñ‚.Ðº. costPath Ñƒ ÑÑ‚Ð°Ñ€Ð¾Ð¹ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹,
+					// Ð¿Ð¾Ð´ÑÑ‡Ð¸Ñ‚Ð°Ð½Ð½Ð°Ñ ÐºÐ°Ðº costPath + newCostRule, Ð¼Ð¾Ð¶ÐµÑ‚ Ð½Ðµ ÑÐ¾Ð²Ð¿Ð°ÑÑ‚ÑŒ
+					// Ð¸Ð·-Ð·Ð° newCostRule Ð¸Ð·-Ð·Ð° Ñ€Ð°Ð·Ð½Ñ‹Ñ… ÑÑ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÐµÐ¹ Ð¿Ñ€Ð¸Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ Ð¿Ñ€Ð°Ð²Ð¸Ð»,
+					// Ñ‚.Ðµ. ÑÐ½Ð°Ñ‡Ð»Ð° Ð½Ð°Ð´Ð¾ Ð¾Ð±Ð½Ð¾Ð²Ð¸Ñ‚ÑŒ loser->costRule (ÑÐ¼. Ð½Ð¸Ð¶Ðµ), Ð° Ð¿Ð¾Ñ‚Ð¾Ð¼
+					// Ð²Ñ‹Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ loser->ReCostSubTree( costPath )
 					loser->ReCostSubTree(m_costPath);
-					// Ìåíÿåì ðîäèòåëÿ íà òåêóùóþ âåðøèíó
+					// ÐœÐµÐ½ÑÐµÐ¼ Ñ€Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ñ Ð½Ð° Ñ‚ÐµÐºÑƒÑ‰ÑƒÑŽ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñƒ
 					loser->m_parent   = this;
-					// Ïðèñâàåâàåì åé íîâûé íîìåð
+					// ÐŸÑ€Ð¸ÑÐ²Ð°ÐµÐ²Ð°ÐµÐ¼ ÐµÐ¹ Ð½Ð¾Ð²Ñ‹Ð¹ Ð½Ð¾Ð¼ÐµÑ€
 					loser->m_number   = m_root->getNewNodeNumber();
-					// Îáíîâëÿåì ñòîèìîñòè
+					// ÐžÐ±Ð½Ð¾Ð²Ð»ÑÐµÐ¼ ÑÑ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚Ð¸
 					loser->m_costPath = m_newCostPath;
 					loser->m_costRest = m_newCostRest;
 					loser->m_costRule = m_newCostRule;
-					// Ìåíÿåì óêàçàòåëü íà íîâóþ àêòèâíîñòü
+					// ÐœÐµÐ½ÑÐµÐ¼ ÑƒÐºÐ°Ð·Ð°Ñ‚ÐµÐ»ÑŒ Ð½Ð° Ð½Ð¾Ð²ÑƒÑŽ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚ÑŒ
 					loser->m_activity = m_currAct;
-					// Òîæå, íî òîëüêî äëÿ ïðàâèëüíîãî âûâîäà ñòàòèñòèêè
+					// Ð¢Ð¾Ð¶Ðµ, Ð½Ð¾ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð´Ð»Ñ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾Ð³Ð¾ Ð²Ñ‹Ð²Ð¾Ð´Ð° ÑÑ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÐ¸
 					loser->m_currAct  = m_currAct;
-					// Âûâîäèì òðàññèðîâêó ïî ñìåíå ðîäèòåëÿ
+					// Ð’Ñ‹Ð²Ð¾Ð´Ð¸Ð¼ Ñ‚Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÑƒ Ð¿Ð¾ ÑÐ¼ÐµÐ½Ðµ Ñ€Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ñ
 					loser->onSearchNodeInfoReplaced(m_root->m_theRealSimulator);
-					// Äîáàâëÿåì â ñïèñîê ïîòîìêîâ òåêóùåé
+					// Ð”Ð¾Ð±Ð°Ð²Ð»ÑÐµÐ¼ Ð² ÑÐ¿Ð¸ÑÐ¾Ðº Ð¿Ð¾Ñ‚Ð¾Ð¼ÐºÐ¾Ð² Ñ‚ÐµÐºÑƒÑ‰ÐµÐ¹
 					m_children.push_back(loser);
 					m_root->m_sizeof_dpt -= m_pChildRuntime->getSizeofSim();
 					m_pChildRuntime = NULL;
@@ -210,22 +210,22 @@ void TreeNode::ExpandChildren()
 						loser->m_pRuntime->showResources(loser->m_number);
 					}
 #endif
-					// Ïåðåõîäèì ê ñëåäóþùåé àêòèâíîñòè
+					// ÐŸÐµÑ€ÐµÑ…Ð¾Ð´Ð¸Ð¼ Ðº ÑÐ»ÐµÐ´ÑƒÑŽÑ‰ÐµÐ¹ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸
 					continue;
 				}
 			}
 
-			// Íå íàøëè â ãðàôå òàêîãî ñîñòîÿíèÿ
-			// Åãî íàäî çàïîìíèòü. Ñîçäàäèì äëÿ ýòîãî íîâóþ âåðøèíó
+			// ÐÐµ Ð½Ð°ÑˆÐ»Ð¸ Ð² Ð³Ñ€Ð°Ñ„Ðµ Ñ‚Ð°ÐºÐ¾Ð³Ð¾ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ñ
+			// Ð•Ð³Ð¾ Ð½Ð°Ð´Ð¾ Ð·Ð°Ð¿Ð¾Ð¼Ð½Ð¸Ñ‚ÑŒ. Ð¡Ð¾Ð·Ð´Ð°Ð´Ð¸Ð¼ Ð´Ð»Ñ ÑÑ‚Ð¾Ð³Ð¾ Ð½Ð¾Ð²ÑƒÑŽ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñƒ
 			TreeNode* tn = createChildTreeNode();
 			m_root->m_nodesInGraphCount++;
 			tn->m_costPath = m_newCostPath;
 			tn->m_costRest = m_newCostRest;
 			tn->m_costRule = m_newCostRule;
 			tn->m_currAct  = m_currAct;
-			// Âûâåäåì òðàññèðîâêó
+			// Ð’Ñ‹Ð²ÐµÐ´ÐµÐ¼ Ñ‚Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÑƒ
 			tn->onSearchNodeInfoNew(m_root->m_theRealSimulator);
-			// Äîáàâèì ê ñïèñêó ïîòîìêîâ òåêóùåé
+			// Ð”Ð¾Ð±Ð°Ð²Ð¸Ð¼ Ðº ÑÐ¿Ð¸ÑÐºÑƒ Ð¿Ð¾Ñ‚Ð¾Ð¼ÐºÐ¾Ð² Ñ‚ÐµÐºÑƒÑ‰ÐµÐ¹
 			m_children.push_back(tn);
 /*
 			if(!root->m_dp->TermCondition(pChildRuntime))
@@ -235,14 +235,14 @@ void TreeNode::ExpandChildren()
 				root->targetNode = tn;
 			}
 */
-			// Äîáàâèì â ñïèñîê OPEN
+			// Ð”Ð¾Ð±Ð°Ð²Ð¸Ð¼ Ð² ÑÐ¿Ð¸ÑÐ¾Ðº OPEN
 			m_root->m_OPEN.push_back(tn);
 		}
 	}
-	// Óäàëèì òåêóùóþ âåðøèíó èç ñïèñêà OPEN
+	// Ð£Ð´Ð°Ð»Ð¸Ð¼ Ñ‚ÐµÐºÑƒÑ‰ÑƒÑŽ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñƒ Ð¸Ð· ÑÐ¿Ð¸ÑÐºÐ° OPEN
 	m_root->m_OPEN.erase(std::find(m_root->m_OPEN.begin(), m_root->m_OPEN.end(), this));
 
-	// Îòñîðòèðóåì âñå âåðøèíû â ñïèñêå OPEN
+	// ÐžÑ‚ÑÐ¾Ñ€Ñ‚Ð¸Ñ€ÑƒÐµÐ¼ Ð²ÑÐµ Ð²ÐµÑ€ÑˆÐ¸Ð½Ñ‹ Ð² ÑÐ¿Ð¸ÑÐºÐµ OPEN
 	std::sort(m_root->m_OPEN.begin(), m_root->m_OPEN.end(), compareNodes);
 }
 

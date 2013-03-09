@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoprocess_i.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      31.07.2009
   \brief     RDOProcess interface
   \indent    4T
@@ -25,7 +25,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 /*!
   \interface IPROCBlock
-  \brief     Интерфейс IPROCBlock
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IPROCBlock
 */
 class IPROCBlock
 {
@@ -50,7 +50,7 @@ public:
 
 /*!
   \interface IPROCProcess
-  \brief     Интерфейс IPROCProcess
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IPROCProcess
 */
 class IPROCProcess
 {

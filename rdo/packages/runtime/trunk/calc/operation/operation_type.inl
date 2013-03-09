@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      operation_type.inl
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      26.07.2011
-  \brief     Тип операции: арифметическое или логическое выражение
+  \brief     РўРёРї РѕРїРµСЂР°С†РёРё: Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРµ РёР»Рё Р»РѕРіРёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ
   \indent    4T
 */
 

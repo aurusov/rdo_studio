@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      result_group.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      04.03.2011
-  \brief     Группы собираемых показателей
+  \brief     Р“СЂСѓРїРїС‹ СЃРѕР±РёСЂР°РµРјС‹С… РїРѕРєР°Р·Р°С‚РµР»РµР№
   \indent    4T
 */
 

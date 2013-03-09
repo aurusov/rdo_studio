@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdotrace.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      11.06.2006
-  \brief     Трассировщик
+  \brief     РўСЂР°СЃСЃРёСЂРѕРІС‰РёРє
   \indent    4T
 */
 
@@ -38,7 +38,7 @@ PREDECLARE_POINTER(RDORuntime);
 
 /*!
   \class     RDOEndL
-  \brief     Рассылает броадкастом строку трассировки
+  \brief     Р Р°СЃСЃС‹Р»Р°РµС‚ Р±СЂРѕР°РґРєР°СЃС‚РѕРј СЃС‚СЂРѕРєСѓ С‚СЂР°СЃСЃРёСЂРѕРІРєРё
 */
 class RDOEndL
 {
@@ -50,7 +50,7 @@ inline rdo::ostream &operator << (rdo::ostream &stream, RDOEndL& rdoEndL);
 
 /*!
   \class     RDOTrace
-  \brief     Формирует строки трассировки
+  \brief     Р¤РѕСЂРјРёСЂСѓРµС‚ СЃС‚СЂРѕРєРё С‚СЂР°СЃСЃРёСЂРѕРІРєРё
 */
 class RDOTrace
 {
@@ -108,7 +108,7 @@ private:
 
 /*!
   \class     RDOTraceableObject
-  \brief     Трассируемый объект
+  \brief     РўСЂР°СЃСЃРёСЂСѓРµРјС‹Р№ РѕР±СЉРµРєС‚
 */
 class RDOTraceableObject: public ITrace
 {
@@ -140,7 +140,7 @@ private:
 
 /*!
   \class     RDOResultTrace
-  \brief     Трассируемый показатель
+  \brief     РўСЂР°СЃСЃРёСЂСѓРµРјС‹Р№ РїРѕРєР°Р·Р°С‚РµР»СЊ
 */
 class RDOResultTrace: public RDOTraceableObject, public IResultTrace, public IResultTraceValue
 {

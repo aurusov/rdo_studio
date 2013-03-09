@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      main.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   РџСЂРѕР№РґР°РєРѕРІ Р•РІРіРµРЅРёР№ (lord.tiran@gmail.com)
   \date      28.09.2009
-  \brief     Тест логик
+  \brief     РўРµСЃС‚ Р»РѕРіРёРє
   \indent    4T
 */
 

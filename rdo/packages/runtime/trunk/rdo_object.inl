@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_object.inl
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      06.08.2011
-  \brief     Определение базового класса для всех объектов RDORuntime
+  \brief     РћРїСЂРµРґРµР»РµРЅРёРµ Р±Р°Р·РѕРІРѕРіРѕ РєР»Р°СЃСЃР° РґР»СЏ РІСЃРµС… РѕР±СЉРµРєС‚РѕРІ RDORuntime
   \indent    4T
 */
 

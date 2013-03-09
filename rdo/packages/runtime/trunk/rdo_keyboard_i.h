@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_keyboard_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      01.08.2009
-  \brief     Интерфейс клавиатурной операции
+  \brief     РРЅС‚РµСЂС„РµР№СЃ РєР»Р°РІРёР°С‚СѓСЂРЅРѕР№ РѕРїРµСЂР°С†РёРё
   \indent    4T
 */
 
@@ -25,18 +25,18 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 /*!
   \interface IKeyboard
-  \brief     Интерфейс клавиатурной операции
+  \brief     РРЅС‚РµСЂС„РµР№СЃ РєР»Р°РІРёР°С‚СѓСЂРЅРѕР№ РѕРїРµСЂР°С†РёРё
 */
 class IKeyboard
 {
 public:
-	//! Статуc нажатия клавиши
+	//! РЎС‚Р°С‚Сѓc РЅР°Р¶Р°С‚РёСЏ РєР»Р°РІРёС€Рё
 	enum AddHotKeyResult
 	{
-		addhk_ok,       //!< клавиша нажата
-		addhk_already,  //!< клавиша уже нажата
-		addhk_notfound, //!< клавиша не найдена
-		addhk_dont	    //!< клавиша не нажата
+		addhk_ok,       //!< РєР»Р°РІРёС€Р° РЅР°Р¶Р°С‚Р°
+		addhk_already,  //!< РєР»Р°РІРёС€Р° СѓР¶Рµ РЅР°Р¶Р°С‚Р°
+		addhk_notfound, //!< РєР»Р°РІРёС€Р° РЅРµ РЅР°Р№РґРµРЅР°
+		addhk_dont	    //!< РєР»Р°РІРёС€Р° РЅРµ РЅР°Р¶Р°С‚Р°
 	};
 	virtual rbool           hasHotKey() const = 0;
 	virtual AddHotKeyResult addHotKey(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(tstring) hotKey) = 0;

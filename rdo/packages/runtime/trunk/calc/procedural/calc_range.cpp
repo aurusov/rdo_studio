@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_range.cpp
-  \authors   ¡‡Ò ¿ÎÂÍÒ‡Ì‰
-  \authors   ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
+  \authors   –ë–∞—Ä—Å –ê–ª–µ–∫—Å–∞–Ω–¥—Ä
+  \authors   –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
   \date      26.12.2011
-  \brief     œÓ‚ÂÍ‡ Ì‡ ‰Ë‡Ô‡ÁÓÌ
+  \brief     –ü—Ä–æ–≤–µ—Ä–∫–∞ –Ω–∞ –¥–∏–∞–ø–∞–∑–æ–Ω
   \indent    4T
 */
 
@@ -37,7 +37,7 @@ RDOValue RDOCalcCheckRange::doCalc(CREF(LPRDORuntime) pRuntime)
 	RDOValue value = m_pCalc->calcValue(pRuntime);
 	if (value < m_minValue || value > m_maxValue)
 	{
-		pRuntime->error().push(rdo::format(_T("«Ì‡˜ÂÌËÂ ‚˚ıÓ‰ËÚ Á‡ ‰ÓÔÛÒÚËÏ˚È ‰Ë‡Ô‡ÁÓÌ [%s..%s]: %s"), m_minValue.getAsString().c_str(), m_maxValue.getAsString().c_str(), value.getAsString().c_str()), srcInfo());
+		pRuntime->error().push(rdo::format(_T("–ó–Ω–∞—á–µ–Ω–∏–µ –≤—ã—Ö–æ–¥–∏—Ç –∑–∞ –¥–æ–ø—É—Å—Ç–∏–º—ã–π –¥–∏–∞–ø–∞–∑–æ–Ω [%s..%s]: %s"), m_minValue.getAsString().c_str(), m_maxValue.getAsString().c_str(), value.getAsString().c_str()), srcInfo());
 	}
 	return value;
 }

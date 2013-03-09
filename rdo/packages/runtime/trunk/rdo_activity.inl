@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_activity.inl
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      13.04.2008
-  \brief     Описание базового класса для событий и активностей -- RDOActivity
+  \brief     РћРїРёСЃР°РЅРёРµ Р±Р°Р·РѕРІРѕРіРѕ РєР»Р°СЃСЃР° РґР»СЏ СЃРѕР±С‹С‚РёР№ Рё Р°РєС‚РёРІРЅРѕСЃС‚РµР№ -- RDOActivity
   \indent    4T
 */
 

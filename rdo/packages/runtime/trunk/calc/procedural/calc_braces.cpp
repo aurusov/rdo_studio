@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_braces.cpp
-  \author    Чирков Михаил
+  \author    Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
   \date      16.04.2011
-  \brief     Список инструкций в стиле C++
+  \brief     РЎРїРёСЃРѕРє РёРЅСЃС‚СЂСѓРєС†РёР№ РІ СЃС‚РёР»Рµ C++
   \indent    4T
 */
 

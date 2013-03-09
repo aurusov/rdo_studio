@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_relevant.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      28.12.2009
-  \brief     RDOCalc для подбора релевантных ресурсов
+  \brief     RDOCalc РґР»СЏ РїРѕРґР±РѕСЂР° СЂРµР»РµРІР°РЅС‚РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ
   \indent    4T
 */
 
@@ -19,7 +19,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Получить ресурс по ID релевантного ресурса
+//! РџРѕР»СѓС‡РёС‚СЊ СЂРµСЃСѓСЂСЃ РїРѕ ID СЂРµР»РµРІР°РЅС‚РЅРѕРіРѕ СЂРµСЃСѓСЂСЃР°
 CALC(RDOGetResourceByRelevantResourceID)
 {
 DECLARE_FACTORY(RDOGetResourceByRelevantResourceID)
@@ -33,8 +33,8 @@ private:
 
 /*!
   \class   RDOSetRelResParamCalc
-  \tparam  equalType Тип присваивания
-  \brief   Установка значения параметра релевантного ресурса
+  \tparam  equalType РўРёРї РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
+  \brief   РЈСЃС‚Р°РЅРѕРІРєР° Р·РЅР°С‡РµРЅРёСЏ РїР°СЂР°РјРµС‚СЂР° СЂРµР»РµРІР°РЅС‚РЅРѕРіРѕ СЂРµСЃСѓСЂСЃР°
 */
 template <EqualType equalType>
 class RDOSetRelResParamCalc: public RDOCalc
@@ -51,7 +51,7 @@ protected:
 	DECLARE_ICalc;
 };
 
-//! Удаление релевантного ресурса
+//! РЈРґР°Р»РµРЅРёРµ СЂРµР»РµРІР°РЅС‚РЅРѕРіРѕ СЂРµСЃСѓСЂСЃР°
 CALC(RDOEraseResRelCalc)
 {
 DECLARE_FACTORY(RDOEraseResRelCalc)
@@ -67,7 +67,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Возвращает ресурс групповой функции
+//! Р’РѕР·РІСЂР°С‰Р°РµС‚ СЂРµСЃСѓСЂСЃ РіСЂСѓРїРїРѕРІРѕР№ С„СѓРЅРєС†РёРё
 CALC(RDOCalcGetGroupFunctionResource)
 {
 DECLARE_FACTORY(RDOCalcGetGroupFunctionResource)

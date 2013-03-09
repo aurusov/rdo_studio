@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_pattern.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      13.04.2008
-  \brief     Описание базового класса для образцов всех типов активностей и событий
+  \brief     РћРїРёСЃР°РЅРёРµ Р±Р°Р·РѕРІРѕРіРѕ РєР»Р°СЃСЃР° РґР»СЏ РѕР±СЂР°Р·С†РѕРІ РІСЃРµС… С‚РёРїРѕРІ Р°РєС‚РёРІРЅРѕСЃС‚РµР№ Рё СЃРѕР±С‹С‚РёР№
   \indent    4T
 */
 
@@ -27,7 +27,7 @@ class RDOKeyboard;
 
 /*!
   \class     RDOPattern
-  \brief     Базовый класс для паттернов активностей и событий
+  \brief     Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РїР°С‚С‚РµСЂРЅРѕРІ Р°РєС‚РёРІРЅРѕСЃС‚РµР№ Рё СЃРѕР±С‹С‚РёР№
 */
 OBJECT(RDOPattern)
 	IS  INSTANCE_OF(RDORuntimeObject  )
@@ -55,7 +55,7 @@ protected:
 
 /*!
   \class     RDOPatternEvent
-  \brief     Паттерн событий
+  \brief     РџР°С‚С‚РµСЂРЅ СЃРѕР±С‹С‚РёР№
 */
 CLASS(RDOPatternEvent): INSTANCE_OF(RDOPattern)
 {
@@ -88,7 +88,7 @@ DECLARE_POINTER(RDOPatternEvent);
 
 /*!
   \class     RDOPatternRule
-  \brief     Паттерн активностей типа rule
+  \brief     РџР°С‚С‚РµСЂРЅ Р°РєС‚РёРІРЅРѕСЃС‚РµР№ С‚РёРїР° rule
 */
 CLASS(RDOPatternRule): INSTANCE_OF(RDOPattern)
 {
@@ -123,7 +123,7 @@ DECLARE_POINTER(RDOPatternRule);
 
 /*!
   \class     RDOPatternOperation
-  \brief     Паттерн активностей типа operation
+  \brief     РџР°С‚С‚РµСЂРЅ Р°РєС‚РёРІРЅРѕСЃС‚РµР№ С‚РёРїР° operation
 */
 CLASS(RDOPatternOperation): INSTANCE_OF(RDOPattern)
 {
@@ -172,7 +172,7 @@ DECLARE_POINTER(RDOPatternOperation);
 
 /*!
   \class     RDOPatternKeyboard
-  \brief     Паттерн активностей типа keyboard
+  \brief     РџР°С‚С‚РµСЂРЅ Р°РєС‚РёРІРЅРѕСЃС‚РµР№ С‚РёРїР° keyboard
 */
 CLASS(RDOPatternKeyboard): INSTANCE_OF(RDOPatternOperation)
 {

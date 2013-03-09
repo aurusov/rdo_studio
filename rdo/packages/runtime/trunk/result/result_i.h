@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      result_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      28.07.2009
-  \brief     Интерфейсы собираемых показателей
+  \brief     РРЅС‚РµСЂС„РµР№СЃС‹ СЃРѕР±РёСЂР°РµРјС‹С… РїРѕРєР°Р·Р°С‚РµР»РµР№
   \indent    4T
 */
 
@@ -21,7 +21,7 @@
 
 /*!
   \interface IResult
-  \brief     Базовый интерфейс собираемого показателя
+  \brief     Р‘Р°Р·РѕРІС‹Р№ РёРЅС‚РµСЂС„РµР№СЃ СЃРѕР±РёСЂР°РµРјРѕРіРѕ РїРѕРєР°Р·Р°С‚РµР»СЏ
 */
 class IResult
 {
@@ -38,7 +38,7 @@ public:
 
 /*!
   \interface IResultWatchQuant
-  \brief     Интерфейс собираемого показателя WatchQuant
+  \brief     РРЅС‚РµСЂС„РµР№СЃ СЃРѕР±РёСЂР°РµРјРѕРіРѕ РїРѕРєР°Р·Р°С‚РµР»СЏ WatchQuant
 */
 class IResultWatchQuant
 {
@@ -51,7 +51,7 @@ public:
 
 /*!
   \interface IResultWatchValue
-  \brief     Интерфейс собираемого показателя WatchValue
+  \brief     РРЅС‚РµСЂС„РµР№СЃ СЃРѕР±РёСЂР°РµРјРѕРіРѕ РїРѕРєР°Р·Р°С‚РµР»СЏ WatchValue
 */
 class IResultWatchValue
 {
@@ -68,7 +68,7 @@ public:
 
 /*!
   \interface IResultGetValue
-  \brief     Интерфейс собираемого показателя GetValue
+  \brief     РРЅС‚РµСЂС„РµР№СЃ СЃРѕР±РёСЂР°РµРјРѕРіРѕ РїРѕРєР°Р·Р°С‚РµР»СЏ GetValue
 */
 class IResultGetValue
 {

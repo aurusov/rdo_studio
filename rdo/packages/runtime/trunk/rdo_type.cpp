@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_type.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      22.06.2008
-  \brief     Базовый тип данных
+  \brief     Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РґР°РЅРЅС‹С…
   \indent    4T
 */
 
@@ -17,53 +17,53 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/// @todo внимание макрос!
+/// @todo РІРЅРёРјР°РЅРёРµ РјР°РєСЂРѕСЃ!
 
 /*!
   \def       DEFINE_ATOM_TYPE_DEFAULT_VALUE
-  \brief     Макрос для определения значений по умолчанию для простых (атомарных) типов данных
+  \brief     РњР°РєСЂРѕСЃ РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРёСЏ Р·РЅР°С‡РµРЅРёР№ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РґР»СЏ РїСЂРѕСЃС‚С‹С… (Р°С‚РѕРјР°СЂРЅС‹С…) С‚РёРїРѕРІ РґР°РЅРЅС‹С…
 */
 #define DEFINE_ATOM_TYPE_DEFAULT_VALUE(Type) rdo::intrusive_ptr<RDOType__##Type> g_##Type = rdo::Factory<RDOType__##Type>::create();
 
 /*!
   \var       g_unknow
-  \brief     Значение типа unknow по умолчанию
+  \brief     Р—РЅР°С‡РµРЅРёРµ С‚РёРїР° unknow РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 */
 DEFINE_ATOM_TYPE_DEFAULT_VALUE(unknow);
 
 /*!
   \var       g_void
-  \brief     Значение типа void по умолчанию
+  \brief     Р—РЅР°С‡РµРЅРёРµ С‚РёРїР° void РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 */
 DEFINE_ATOM_TYPE_DEFAULT_VALUE(void);
 
 /*!
   \var       g_identificator
-  \brief     Значение типа identificator по умолчанию
+  \brief     Р—РЅР°С‡РµРЅРёРµ С‚РёРїР° identificator РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 */
 DEFINE_ATOM_TYPE_DEFAULT_VALUE(identificator);
 
 /*!
   \var       g_int
-  \brief     Значение типа int по умолчанию
+  \brief     Р—РЅР°С‡РµРЅРёРµ С‚РёРїР° int РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 */
 DEFINE_ATOM_TYPE_DEFAULT_VALUE(int);
 
 /*!
   \var       g_real
-  \brief     Значение типа real по умолчанию
+  \brief     Р—РЅР°С‡РµРЅРёРµ С‚РёРїР° real РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 */
 DEFINE_ATOM_TYPE_DEFAULT_VALUE(real);
 
 /*!
   \var       g_bool
-  \brief     Значение типа bool по умолчанию
+  \brief     Р—РЅР°С‡РµРЅРёРµ С‚РёРїР° bool РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 */
 DEFINE_ATOM_TYPE_DEFAULT_VALUE(bool);
 
 /*!
   \var       g_string
-  \brief     Значение типа string по умолчанию
+  \brief     Р—РЅР°С‡РµРЅРёРµ С‚РёРїР° string РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 */
 DEFINE_ATOM_TYPE_DEFAULT_VALUE(string);
 

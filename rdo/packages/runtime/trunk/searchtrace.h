@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      searchtrace.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      11.06.2006
-  \brief     Трассировка DPTSearch
+  \brief     РўСЂР°СЃСЃРёСЂРѕРІРєР° DPTSearch
   \indent    4T
 */
 
@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class   RDODPTSearchTrace
-  \brief   Трассировка точки принятия решений DPTSearch
+  \brief   РўСЂР°СЃСЃРёСЂРѕРІРєР° С‚РѕС‡РєРё РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ DPTSearch
 */
 class RDODPTSearchTrace: public RDODPTSearch, public RDOTraceableObject, public IDPTSearchTraceStatistics
 {
@@ -37,7 +37,7 @@ QUERY_INTERFACE_END
 public:
 	/*!
 	  \enum  DPT_TraceFlag
-	  \brief статусы трассировки для точек DPTSearch
+	  \brief СЃС‚Р°С‚СѓСЃС‹ С‚СЂР°СЃСЃРёСЂРѕРІРєРё РґР»СЏ С‚РѕС‡РµРє DPTSearch
 	*/
 	enum DPT_TraceFlag
 	{
@@ -54,7 +54,7 @@ public:
 	void onSearchResultNotFound(CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot);
 	TreeRoot* createTreeRoot   (CREF(LPRDORuntime) pRuntime);
 
-	ruint calc_cnt; // Количество запусков
+	ruint calc_cnt; // РљРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РїСѓСЃРєРѕРІ
 	ruint calc_res_found_cnt;
 	std::list<double> calc_times;
 	std::list<double> calc_cost;
@@ -75,7 +75,7 @@ private:
 
 /*!
   \class   TreeRootTrace
-  \brief   Трассировка корня графа состояний точки принятия решений DPTSearch
+  \brief   РўСЂР°СЃСЃРёСЂРѕРІРєР° РєРѕСЂРЅСЏ РіСЂР°С„Р° СЃРѕСЃС‚РѕСЏРЅРёР№ С‚РѕС‡РєРё РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ DPTSearch
 */
 class TreeRootTrace: public TreeRoot
 {
@@ -88,7 +88,7 @@ public:
 
 /*!
   \class   TreeNodeTrace
-  \brief   Трассировка узла графа состояний точки принятия решений DPTSearch
+  \brief   РўСЂР°СЃСЃРёСЂРѕРІРєР° СѓР·Р»Р° РіСЂР°С„Р° СЃРѕСЃС‚РѕСЏРЅРёР№ С‚РѕС‡РєРё РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ DPTSearch
 */
 class TreeNodeTrace: public TreeNode
 {

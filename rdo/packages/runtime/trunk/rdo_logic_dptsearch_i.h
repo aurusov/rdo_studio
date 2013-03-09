@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_logic_dptsearch_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      08.08.2009
   \brief     DPTSearch
   \indent    4T
@@ -18,7 +18,7 @@
 
 /*!
   \interface IDPTSearchLogic
-  \brief     Инерфейс IDPTSearchLogic
+  \brief     РРЅРµСЂС„РµР№СЃ IDPTSearchLogic
 */
 class IDPTSearchLogic
 {

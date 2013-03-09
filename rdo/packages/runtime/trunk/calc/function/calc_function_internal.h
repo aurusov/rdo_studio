@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_function_internal.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      13.03.2011
-  \brief     Стандартные функции языка
+  \brief     РЎС‚Р°РЅРґР°СЂС‚РЅС‹Рµ С„СѓРЅРєС†РёРё СЏР·С‹РєР°
   \indent    4T
 */
 
@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class std_fun_one_param {};
 class std_fun_two_param {};
 
-//! Функция с одним параметром
+//! Р¤СѓРЅРєС†РёСЏ СЃ РѕРґРЅРёРј РїР°СЂР°РјРµС‚СЂРѕРј
 template <class RT, class P1>
 class std_fun1
 {
@@ -35,7 +35,7 @@ public:
 	typedef  std_fun_one_param  param_count;
 };
 
-//! Функция с двумя параметрами
+//! Р¤СѓРЅРєС†РёСЏ СЃ РґРІСѓРјСЏ РїР°СЂР°РјРµС‚СЂР°РјРё
 template <class RT, class P1, class P2>
 class std_fun2
 {
@@ -56,7 +56,7 @@ struct GetParam<double> { static double getParam(CREF(LPRDORuntime) pRuntime, ru
 template <>
 struct GetParam<int>    { static int    getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
 
-//! Функции из пространства имен std C++
+//! Р¤СѓРЅРєС†РёРё РёР· РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІР° РёРјРµРЅ std C++
 template <class F>
 class RDOFunCalcStd: public RDOFunCalc
 {

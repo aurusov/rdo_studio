@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      calc_create_resource.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      10.02.2012
-  \brief     RDOCalc для создания ресурсов
+  \brief     RDOCalc РґР»СЏ СЃРѕР·РґР°РЅРёСЏ СЂРµСЃСѓСЂСЃРѕРІ
   \indent    4T
 */
 
@@ -20,16 +20,16 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Создание нового ресурса
+//! РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ СЂРµСЃСѓСЂСЃР°
 CALC(RDOCalcCreateResource)
 {
 DECLARE_FACTORY(RDOCalcCreateResource)
 private:
-	//! relResID == ~0 для ресурсов, создаваемых при инициализации модели
+	//! relResID == ~0 РґР»СЏ СЂРµСЃСѓСЂСЃРѕРІ, СЃРѕР·РґР°РІР°РµРјС‹С… РїСЂРё РёРЅРёС†РёР°Р»РёР·Р°С†РёРё РјРѕРґРµР»Рё
 	RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID = ~0);
 
 	LPIResourceType        m_pResType;
-	//! \todo m_paramsCalcs должен стать контейнером RDOCalc
+	//! \todo m_paramsCalcs РґРѕР»Р¶РµРЅ СЃС‚Р°С‚СЊ РєРѕРЅС‚РµР№РЅРµСЂРѕРј RDOCalc
 	std::vector<RDOValue>  m_paramsCalcs;
 	rbool                  m_traceFlag;
 	rbool                  m_permanentFlag;

@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoprocess.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \authors   etc.
   \date      11.06.2006
-  \brief     Процесснные операторы РДО
+  \brief     РџСЂРѕС†РµСЃСЃРЅРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹ Р Р”Рћ
   \indent    4T
 */
 
@@ -26,7 +26,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class   RDOPROCBlock
-  \brief   Базовый класс для процессных блоков (операторов) РДО
+  \brief   Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РїСЂРѕС†РµСЃСЃРЅС‹С… Р±Р»РѕРєРѕРІ (РѕРїРµСЂР°С‚РѕСЂРѕРІ) Р Р”Рћ
 */
 class RDOPROCBlock: public IPROCBlock, public IInit, CAST_TO_UNKNOWN
 {
@@ -52,7 +52,7 @@ protected:
 
 /*!
   \class   RDOPROCProcess
-  \brief   Процесс в РДО
+  \brief   РџСЂРѕС†РµСЃСЃ РІ Р Р”Рћ
 */
 class RDOPROCProcess: public RDOLogicSimple, public IPROCProcess, public RDOPatternPrior
 {
@@ -81,7 +81,7 @@ PREDECLARE_POINTER(RDOPROCResource);
 
 /*!
   \class   RDOPROCTransact
-  \brief   Транзакт в РДО
+  \brief   РўСЂР°РЅР·Р°РєС‚ РІ Р Р”Рћ
 */
 CLASS_PARENT_OF(RDOPROCTransact, RDOResource)
 {
@@ -105,7 +105,7 @@ private:
 
 /*!
   \class   RDOPROCResource
-  \brief   Процессный ресурс РДО - обслуживает транзакты в процессах
+  \brief   РџСЂРѕС†РµСЃСЃРЅС‹Р№ СЂРµСЃСѓСЂСЃ Р Р”Рћ - РѕР±СЃР»СѓР¶РёРІР°РµС‚ С‚СЂР°РЅР·Р°РєС‚С‹ РІ РїСЂРѕС†РµСЃСЃР°С…
 */
 CLASS_PARENT_OF(RDOPROCResource, RDOResource)
 {
@@ -125,15 +125,15 @@ private:
 	virtual ~RDOPROCResource();
 };
 
-//! Тип РДО-ресурсов для создания ресуров-транзактов
-//! \details Создает ресурсы, которые могут быть релевантны активностям и 
-//!          событиям, а также обслуживать транзакты в процессах
+//! РўРёРї Р Р”Рћ-СЂРµСЃСѓСЂСЃРѕРІ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ СЂРµСЃСѓСЂРѕРІ-С‚СЂР°РЅР·Р°РєС‚РѕРІ
+//! \details РЎРѕР·РґР°РµС‚ СЂРµСЃСѓСЂСЃС‹, РєРѕС‚РѕСЂС‹Рµ РјРѕРіСѓС‚ Р±С‹С‚СЊ СЂРµР»РµРІР°РЅС‚РЅС‹ Р°РєС‚РёРІРЅРѕСЃС‚СЏРј Рё 
+//!          СЃРѕР±С‹С‚РёСЏРј, Р° С‚Р°РєР¶Рµ РѕР±СЃР»СѓР¶РёРІР°С‚СЊ С‚СЂР°РЅР·Р°РєС‚С‹ РІ РїСЂРѕС†РµСЃСЃР°С…
 typedef  RDOResourceTypeBase<RDOPROCTransact>         RDOResourceTypeTransact;
 typedef  rdo::intrusive_ptr<RDOResourceTypeTransact>  LPRDOResourceTypeTransact;
 
-//! Тип ресурсов для создания ресурсов-ресурсов (который свободен/занят с точки зрения процесснорго подхода)
-//! \details Создает ресурсы, которые могут быть релевантны активностям и 
-//!          событиям, а также становиться процесс-ресурсами (свободен/занят) в процессах
+//! РўРёРї СЂРµСЃСѓСЂСЃРѕРІ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ СЂРµСЃСѓСЂСЃРѕРІ-СЂРµСЃСѓСЂСЃРѕРІ (РєРѕС‚РѕСЂС‹Р№ СЃРІРѕР±РѕРґРµРЅ/Р·Р°РЅСЏС‚ СЃ С‚РѕС‡РєРё Р·СЂРµРЅРёСЏ РїСЂРѕС†РµСЃСЃРЅРѕСЂРіРѕ РїРѕРґС…РѕРґР°)
+//! \details РЎРѕР·РґР°РµС‚ СЂРµСЃСѓСЂСЃС‹, РєРѕС‚РѕСЂС‹Рµ РјРѕРіСѓС‚ Р±С‹С‚СЊ СЂРµР»РµРІР°РЅС‚РЅС‹ Р°РєС‚РёРІРЅРѕСЃС‚СЏРј Рё 
+//!          СЃРѕР±С‹С‚РёСЏРј, Р° С‚Р°РєР¶Рµ СЃС‚Р°РЅРѕРІРёС‚СЊСЃСЏ РїСЂРѕС†РµСЃСЃ-СЂРµСЃСѓСЂСЃР°РјРё (СЃРІРѕР±РѕРґРµРЅ/Р·Р°РЅСЏС‚) РІ РїСЂРѕС†РµСЃСЃР°С…
 typedef  RDOResourceTypeBase<RDOPROCResource>         RDOResourceTypeProccess;
 typedef  rdo::intrusive_ptr<RDOResourceTypeProccess>  LPRDOResourceTypeProccess;
 

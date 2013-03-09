@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_array.h
-  \author    Чирков Михаил
+  \author    Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
   \date      03.12.2010
-  \brief     Агрегатный тип данных - массив
+  \brief     РђРіСЂРµРіР°С‚РЅС‹Р№ С‚РёРї РґР°РЅРЅС‹С… - РјР°СЃСЃРёРІ
   \indent    4T
 */
 
@@ -18,7 +18,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Размер массива
+//! Р Р°Р·РјРµСЂ РјР°СЃСЃРёРІР°
 CALC(RDOCalcArraySize)
 {
 DECLARE_FACTORY(RDOCalcArraySize)
@@ -30,7 +30,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Возвращает элемент массива
+//! Р’РѕР·РІСЂР°С‰Р°РµС‚ СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР°
 CALC(RDOCalcArrayItem)
 {
 DECLARE_FACTORY(RDOCalcArrayItem)
@@ -43,7 +43,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Устанавливает элемент массива
+//! РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР°
 CALC(RDOCalcSetArrayItem)
 {
 	DECLARE_FACTORY(RDOCalcSetArrayItem)

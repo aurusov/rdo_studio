@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_resource.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      16.04.2008
-  \brief     Ресурсы в runtime
+  \brief     Р РµСЃСѓСЂСЃС‹ РІ runtime
   \indent    4T
 */
 
@@ -25,16 +25,16 @@ PREDECLARE_OBJECT_INTERFACE(IResourceType);
 
 /*!
   \class   RDOResource
-  \brief   "обычные" ресурсы моделей
-  \details Ресурсы, которые могут быть релевантны активностям и
- * событиям, но не могут использоваться в процессах
+  \brief   "РѕР±С‹С‡РЅС‹Рµ" СЂРµСЃСѓСЂСЃС‹ РјРѕРґРµР»РµР№
+  \details Р РµСЃСѓСЂСЃС‹, РєРѕС‚РѕСЂС‹Рµ РјРѕРіСѓС‚ Р±С‹С‚СЊ СЂРµР»РµРІР°РЅС‚РЅС‹ Р°РєС‚РёРІРЅРѕСЃС‚СЏРј Рё
+ * СЃРѕР±С‹С‚РёСЏРј, РЅРѕ РЅРµ РјРѕРіСѓС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РІ РїСЂРѕС†РµСЃСЃР°С…
 */
 OBJECT(RDOResource) IS INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
 {
 public:
 	/*!
 	  \enum  ConvertStatus
-	  \brief статусы конверторов релевантных ресурсов
+	  \brief СЃС‚Р°С‚СѓСЃС‹ РєРѕРЅРІРµСЂС‚РѕСЂРѕРІ СЂРµР»РµРІР°РЅС‚РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ
 	*/
 	enum ConvertStatus
 	{

@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      queue_depart.inl
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      12.02.2012
-  \brief     Процессные операторы QUEUE и DEPART
+  \brief     РџСЂРѕС†РµСЃСЃРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹ QUEUE Рё DEPART
   \indent    4T
 */
 
@@ -32,7 +32,7 @@ inline ruint RDOPROCQueue::getDefaultValue()
 
 inline tstring RDOPROCQueue::getQueueParamName()
 {
-	return _T("длина_очереди");
+	return _T("РґР»РёРЅР°_РѕС‡РµСЂРµРґРё");
 }
 
 // --------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ inline ruint RDOPROCDepart::getDefaultValue()
 
 inline tstring RDOPROCDepart::getDepartParamName()
 {
-	return _T("длина_очереди");
+	return _T("РґР»РёРЅР°_РѕС‡РµСЂРµРґРё");
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

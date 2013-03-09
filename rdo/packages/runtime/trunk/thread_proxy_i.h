@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      thread_proxy_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      05.03.2011
-  \brief     Интерфейс IThreadProxy
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IThreadProxy
   \indent    4T
 */
 
@@ -18,7 +18,7 @@
 
 /*!
   \interface IThreadProxy
-  \brief     Интерфейс IThreadProxy
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IThreadProxy
 */
 OBJECT_INTERFACE(IThreadProxy)
 {

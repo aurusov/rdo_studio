@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/runtime/rdo_object.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      30.01.2007
-  \brief     Определение базового класса для всех объектов RDORuntime
+  \brief     РћРїСЂРµРґРµР»РµРЅРёРµ Р±Р°Р·РѕРІРѕРіРѕ РєР»Р°СЃСЃР° РґР»СЏ РІСЃРµС… РѕР±СЉРµРєС‚РѕРІ RDORuntime
   \indent    4T
 */
 
@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class     RDORuntimeObject
-  \brief     Базовый класс для объектов Runtime
+  \brief     Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РѕР±СЉРµРєС‚РѕРІ Runtime
 */
 class RDORuntimeObject
 {
@@ -33,7 +33,7 @@ public:
 	virtual ~RDORuntimeObject();
 };
 
-/// @todo удалить комментарии
+/// @todo СѓРґР°Р»РёС‚СЊ РєРѕРјРјРµРЅС‚Р°СЂРёРё
 
 //class RDORuntimeObject
 //{
@@ -55,8 +55,8 @@ public:
 //	PTR(RDORuntimeParent) m_parent;
 //
 //private:
-//	size_t        m_object_size; // Размер текущего объекта
-//	static size_t s_memory_size; // Сумма размеров всех объектов
+//	size_t        m_object_size; // Р Р°Р·РјРµСЂ С‚РµРєСѓС‰РµРіРѕ РѕР±СЉРµРєС‚Р°
+//	static size_t s_memory_size; // РЎСѓРјРјР° СЂР°Р·РјРµСЂРѕРІ РІСЃРµС… РѕР±СЉРµРєС‚РѕРІ
 //};
 
 // --------------------------------------------------------------------------------
@@ -93,8 +93,8 @@ public:
 //		if (it != m_childList.rend())
 //		{
 ////			TRACE( "remove object: %d\n", object );
-//			// Команда it.base() приводит реверсивный итератор к нормальному,
-//			// но перед этим необходимо сделать инкремент
+//			// РљРѕРјР°РЅРґР° it.base() РїСЂРёРІРѕРґРёС‚ СЂРµРІРµСЂСЃРёРІРЅС‹Р№ РёС‚РµСЂР°С‚РѕСЂ Рє РЅРѕСЂРјР°Р»СЊРЅРѕРјСѓ,
+//			// РЅРѕ РїРµСЂРµРґ СЌС‚РёРј РЅРµРѕР±С…РѕРґРёРјРѕ СЃРґРµР»Р°С‚СЊ РёРЅРєСЂРµРјРµРЅС‚
 //			it++;
 //			m_childList.erase(it.base());
 //		}
@@ -121,14 +121,14 @@ public:
 
 /*!
   \class     RDOSrcInfo
-  \brief     Исходная информация
+  \brief     РСЃС…РѕРґРЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ
 */
 class RDOSrcInfo
 {
 public:
 	/*!
 	  \struct    Position
-	  \brief     Позиция в тексте
+	  \brief     РџРѕР·РёС†РёСЏ РІ С‚РµРєСЃС‚Рµ
 	*/
 	struct Position
 	{

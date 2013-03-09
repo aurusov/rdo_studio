@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_function.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      17.12.2011
-  \brief     Функции с закладки FUN
+  \brief     Р¤СѓРЅРєС†РёРё СЃ Р·Р°РєР»Р°РґРєРё FUN
   \indent    4T
 */
 
@@ -32,7 +32,7 @@ void RDOFunCalc::addRetCalc(CREF(LPRDOCalc) pCalc)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuncTableCalc
 // --------------------------------------------------------------------------------
-// Функция типа таблица
+// Р¤СѓРЅРєС†РёСЏ С‚РёРїР° С‚Р°Р±Р»РёС†Р°
 // --------------------------------------------------------------------------------
 RDOFuncTableCalc::RDOFuncTableCalc(CREF(LPRDOCalc) pArgument)
 	: m_pArgument(pArgument)
@@ -54,7 +54,7 @@ RDOValue RDOFuncTableCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunListCalc
 // --------------------------------------------------------------------------------
-// Функция типа список
+// Р¤СѓРЅРєС†РёСЏ С‚РёРїР° СЃРїРёСЃРѕРє
 // --------------------------------------------------------------------------------
 RDOFunListCalc::RDOFunListCalc(CREF(LPRDOCalcConst) pDefaultValue)
 	: m_pDefaultValue(pDefaultValue)
@@ -110,8 +110,8 @@ RDOValue RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 		++actionIt;
 	}
 
-	// До сюда дело дойти не должно, т.к. последний conditions должен быть значением по молчанию
-	pRuntime->error().push(_T("Внутренная ошибка, RDOFunAlgorithmicCalc"), srcInfo());
+	// Р”Рѕ СЃСЋРґР° РґРµР»Рѕ РґРѕР№С‚Рё РЅРµ РґРѕР»Р¶РЅРѕ, С‚.Рє. РїРѕСЃР»РµРґРЅРёР№ conditions РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р·РЅР°С‡РµРЅРёРµРј РїРѕ РјРѕР»С‡Р°РЅРёСЋ
+	pRuntime->error().push(_T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР°, RDOFunAlgorithmicCalc"), srcInfo());
 	return RDOValue();
 }
 

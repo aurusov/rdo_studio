@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_rule.cpp
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
-  \authors   Ëóùàí Äìèòðèé (dluschan@rk9.bmstu.ru)
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
+  \authors   Ð›ÑƒÑ‰Ð°Ð½ Ð”Ð¼Ð¸Ñ‚Ñ€Ð¸Ð¹ (dluschan@rk9.bmstu.ru)
   \date      18.08.2010
-  \brief     Ïðîäóêöèîííûå ïðàâèëà
+  \brief     ÐŸÑ€Ð¾Ð´ÑƒÐºÑ†Ð¸Ð¾Ð½Ð½Ñ‹Ðµ Ð¿Ñ€Ð°Ð²Ð¸Ð»Ð°
   \indent    4T
 */
 
@@ -103,7 +103,7 @@ rbool RDORule::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 		ASSERT(pClone);
 		if (onDoOperation(pClone) != IBaseOperation::BOR_done)
 		{
-			/// @todo Ðåàêöèÿ íà ïëîõîé onDoOperation - ýòî âîîáùå-òî ñïîðòíûé âîïðîñ
+			/// @todo Ð ÐµÐ°ÐºÑ†Ð¸Ñ Ð½Ð° Ð¿Ð»Ð¾Ñ…Ð¾Ð¹ onDoOperation - ÑÑ‚Ð¾ Ð²Ð¾Ð¾Ð±Ñ‰Ðµ-Ñ‚Ð¾ ÑÐ¿Ð¾Ñ€Ñ‚Ð½Ñ‹Ð¹ Ð²Ð¾Ð¿Ñ€Ð¾Ñ
 			return false;
 		}
 		if (pClone->equal(pRuntime))

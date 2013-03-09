@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_dptsearch_activity.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      08.08.2009
-  \brief     Активности точки принятия решения DPTSearch
+  \brief     РђРєС‚РёРІРЅРѕСЃС‚Рё С‚РѕС‡РєРё РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёСЏ DPTSearch
   \indent    4T
 */
 

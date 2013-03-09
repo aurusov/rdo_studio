@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_priority_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      01.08.2009
-  \brief     Интерфейс IPriority
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IPriority
   \indent    4T
 */
 
@@ -25,7 +25,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 /*!
   \interface IPriority
-  \brief     Интерфейс IPriority
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IPriority
 */
 class IPriority
 {

@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/runtime/rdo_value.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      22.06.2008
   \brief     RDOValue
   \indent    4T
@@ -79,7 +79,7 @@ RDOValue RDOValue::clone() const
 	//	return RDOValue(pCloneValue->type(), pCloneValue);
 	//}
 
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод clone()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ clone()"));
 }
 
 tstring RDOValue::onPointerAsString() const
@@ -122,7 +122,7 @@ tstring RDOValue::onPointerAsString() const
 	//	return pValue->getAsString();
 	//}
 
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод getAsString()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ getAsString()"));
 }
 
 rbool RDOValue::onPointerEqual(CREF(RDOValue) rdovalue) const
@@ -149,7 +149,7 @@ rbool RDOValue::onPointerEqual(CREF(RDOValue) rdovalue) const
 		}
 	}
 
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerEqual()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ onPointerEqual()"));
 }
 
 REF(RDOValue) RDOValue::onPointerPlus(CREF(RDOValue) rdovalue)
@@ -190,7 +190,7 @@ REF(RDOValue) RDOValue::onPointerPlus(CREF(RDOValue) rdovalue)
 	//	}
 	//}
 
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerPlus()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ onPointerPlus()"));
 }
 
 REF(RDOValue) RDOValue::onPointerMinus(CREF(RDOValue) rdovalue)
@@ -231,7 +231,7 @@ REF(RDOValue) RDOValue::onPointerMinus(CREF(RDOValue) rdovalue)
 	//	}
 	//}
 
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerMinus()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ onPointerMinus()"));
 }
 
 REF(RDOValue) RDOValue::onPointerMult(CREF(RDOValue) rdovalue)
@@ -253,7 +253,7 @@ REF(RDOValue) RDOValue::onPointerMult(CREF(RDOValue) rdovalue)
 	//	}
 	//}
 
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerMult()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ onPointerMult()"));
 }
 
 REF(RDOValue) RDOValue::onPointerDiv(CREF(RDOValue) rdovalue)
@@ -275,7 +275,7 @@ REF(RDOValue) RDOValue::onPointerDiv(CREF(RDOValue) rdovalue)
 	//	}
 	//}
 
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerMult()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ onPointerMult()"));
 }
 
 rsint RDOValue::onPointerGetInt() const
@@ -290,7 +290,7 @@ rsint RDOValue::onPointerGetInt() const
 	//	return MemberFunctionProperties::defuzzyfication(pThisValue).getInt();
 	//}
 
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerGetInt()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ onPointerGetInt()"));
 }
 
 ruint RDOValue::onPointerGetUInt() const
@@ -305,7 +305,7 @@ ruint RDOValue::onPointerGetUInt() const
 	//	return (ruint)MemberFunctionProperties::defuzzyfication(pThisValue).getInt();
 	//}
 
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerGetUInt()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ onPointerGetUInt()"));
 }
 
 rbool RDOValue::onPointerAnd(CREF(RDOValue) rdovalue) const
@@ -326,7 +326,7 @@ rbool RDOValue::onPointerAnd(CREF(RDOValue) rdovalue) const
 	//	}
 	//}
 
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerAnd()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ onPointerAnd()"));
 }
 
 rbool RDOValue::onPointerOr(CREF(RDOValue) rdovalue) const
@@ -347,7 +347,7 @@ rbool RDOValue::onPointerOr(CREF(RDOValue) rdovalue) const
 	//	}
 	//}
 
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerOr()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ onPointerOr()"));
 }
 
 RDOValue RDOValue::onPointerUMinus() const
@@ -362,7 +362,7 @@ RDOValue RDOValue::onPointerUMinus() const
 	//	return RDOValue(pCloneValue->type(), MemberFunctionProperties::u_minus(pCloneValue));
 	//}
 
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerUMinus()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ onPointerUMinus()"));
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

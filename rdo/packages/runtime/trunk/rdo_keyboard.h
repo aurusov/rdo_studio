@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_keyboard.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      18.08.2010
-  \brief     Клавиатурные операции
+  \brief     РљР»Р°РІРёР°С‚СѓСЂРЅС‹Рµ РѕРїРµСЂР°С†РёРё
   \indent    4T
 */
 
@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class     RDOKeyboard
-  \brief     Клавиатурная операция
+  \brief     РљР»Р°РІРёР°С‚СѓСЂРЅР°СЏ РѕРїРµСЂР°С†РёСЏ
 */
 class RDOKeyboard: public RDOOperation, public IKeyboard
 {

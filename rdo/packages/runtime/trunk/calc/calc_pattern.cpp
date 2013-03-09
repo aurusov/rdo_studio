@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_pattern.cpp
-  \author    Барс Александр
+  \author    Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
   \date      20.12.2011
-  \brief     Калки для паттернов
+  \brief     РљР°Р»РєРё РґР»СЏ РїР°С‚С‚РµСЂРЅРѕРІ
   \indent    4T
 */
 

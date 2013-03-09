@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_event.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      26.05.2010
-  \brief     RDOCalc для планирования и остановки событий
+  \brief     RDOCalc РґР»СЏ РїР»Р°РЅРёСЂРѕРІР°РЅРёСЏ Рё РѕСЃС‚Р°РЅРѕРІРєРё СЃРѕР±С‹С‚РёР№
   \indent    4T
 */
 
@@ -18,7 +18,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовая калка для управления событиями
+//! Р‘Р°Р·РѕРІР°СЏ РєР°Р»РєР° РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ СЃРѕР±С‹С‚РёСЏРјРё
 CALC(RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEvent)
@@ -31,7 +31,7 @@ protected:
 	LPIBaseOperation m_pEvent;
 };
 
-//! Планирование события
+//! РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ СЃРѕР±С‹С‚РёСЏ
 CALC_SUB(RDOCalcEventPlan, RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEventPlan)
@@ -43,7 +43,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Остановка события
+//! РћСЃС‚Р°РЅРѕРІРєР° СЃРѕР±С‹С‚РёСЏ
 CALC_SUB(RDOCalcEventStop, RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEventStop)

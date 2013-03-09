@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_unary.inl
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      21.03.2011
-  \brief     Унарные операторы
+  \brief     РЈРЅР°СЂРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹
   \indent    4T
 */
 

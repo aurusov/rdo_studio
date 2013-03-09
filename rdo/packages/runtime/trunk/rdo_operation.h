@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_operation.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      18.08.2010
-  \brief     Операции
+  \brief     РћРїРµСЂР°С†РёРё
   \indent    4T
 */
 
@@ -26,7 +26,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class     RDOOperation
-  \brief     Операция - модифицированное продукционное правило
+  \brief     РћРїРµСЂР°С†РёСЏ - РјРѕРґРёС„РёС†РёСЂРѕРІР°РЅРЅРѕРµ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРµ РїСЂР°РІРёР»Рѕ
 */
 class RDOOperation: public IBaseOperation, public IOperation, public RDOActivityPattern<RDOPatternOperation>, public RDOPatternPrior, public IOperationTrace
 {

@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_activity_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      01.08.2009
-  \brief     Интерфейс IActivity
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IActivity
   \indent    4T
 */
 
@@ -18,7 +18,7 @@
 
 /*!
   \interface IActivity
-  \brief     Интерфейс IActivity
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IActivity
 */
 class IActivity
 {
@@ -35,7 +35,7 @@ public:
 
 /*!
   \interface IActivityTrace
-  \brief     Интерфейс IActivityTrace
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IActivityTrace
 */
 class IActivityTrace
 {
@@ -50,7 +50,7 @@ public:
 
 /*!
   \interface IActivityPatternTrace
-  \brief     Интерфейс IActivityPatternTrace
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IActivityPatternTrace
 */
 class IActivityPatternTrace
 {

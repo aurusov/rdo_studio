@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_select.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      16.05.2007
-  \brief     Калки команды Select
+  \brief     РљР°Р»РєРё РєРѕРјР°РЅРґС‹ Select
   \indent    4T
 */
 

@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoframe.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Копнин Андрей (kopninandrey@gmail.com)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   РљРѕРїРЅРёРЅ РђРЅРґСЂРµР№ (kopninandrey@gmail.com)
   \date      07.12.2008
-  \brief     Кадры РДО модели
+  \brief     РљР°РґСЂС‹ Р Р”Рћ РјРѕРґРµР»Рё
   \indent    4T
 */
 
@@ -26,7 +26,7 @@ PREDECLARE_POINTER(RDOFRMItem);
 
 /*!
   \interface IRDOFRMItemGetBitmap
-  \brief     Интерфейс запроса картинок у элемента анимации
+  \brief     РРЅС‚РµСЂС„РµР№СЃ Р·Р°РїСЂРѕСЃР° РєР°СЂС‚РёРЅРѕРє Сѓ СЌР»РµРјРµРЅС‚Р° Р°РЅРёРјР°С†РёРё
 */
 OBJECT_INTERFACE(IRDOFRMItemGetBitmap)
 {
@@ -46,7 +46,7 @@ protected:
 
 /*!
   \class     RDOFRMSprite
-  \brief     Спрайт. Владеет и запускает на исполнение основные команды анимации
+  \brief     РЎРїСЂР°Р№С‚. Р’Р»Р°РґРµРµС‚ Рё Р·Р°РїСѓСЃРєР°РµС‚ РЅР° РёСЃРїРѕР»РЅРµРЅРёРµ РѕСЃРЅРѕРІРЅС‹Рµ РєРѕРјР°РЅРґС‹ Р°РЅРёРјР°С†РёРё
 */
 CALC(RDOFRMSprite)
 	IS  INSTANCE_OF      (RDORuntimeObject    )
@@ -57,7 +57,7 @@ DECLARE_FACTORY(RDOFRMSprite)
 public:
 	/*!
 	  \class     RDOFRMPosition
-	  \brief     Позиция
+	  \brief     РџРѕР·РёС†РёСЏ
 	*/
 	OBJECT(RDOFRMPosition) IS INSTANCE_OF(RDORuntimeObject)
 	{
@@ -65,7 +65,7 @@ public:
 	public:
 		/*!
 		  \enum      PositionType
-		  \brief     Тип позици
+		  \brief     РўРёРї РїРѕР·РёС†Рё
 		*/
 		enum PositionType
 		{
@@ -97,13 +97,13 @@ public:
 
 	/*!
 	  \class     RDOFRMColor
-	  \brief     Объект-цвет
+	  \brief     РћР±СЉРµРєС‚-С†РІРµС‚
 	*/
 	OBJECT(RDOFRMColor) IS INSTANCE_OF(RDORuntimeObject)
 	{
 	DECLARE_FACTORY(RDOFRMColor)
 	public:
-		//! @brief  Цвет фигуры
+		//! @brief  Р¦РІРµС‚ С„РёРіСѓСЂС‹
 		enum ColorType
 		{
 			CT_NONE,
@@ -135,7 +135,7 @@ public:
 
 	/*!
 	  \class     RDOFRMRulet
-	  \brief     Рулетка. Используется для позиционирования
+	  \brief     Р СѓР»РµС‚РєР°. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ РїРѕР·РёС†РёРѕРЅРёСЂРѕРІР°РЅРёСЏ
 	*/
 	CALC(RDOFRMRulet)
 	{
@@ -145,7 +145,7 @@ public:
 		CREF(LPRDOFRMPosition) getX() const;
 		CREF(LPRDOFRMPosition) getY() const;
 
-		//! @todo Добавлен для обратной совместимости
+		//! @todo Р”РѕР±Р°РІР»РµРЅ РґР»СЏ РѕР±СЂР°С‚РЅРѕР№ СЃРѕРІРјРµСЃС‚РёРјРѕСЃС‚Рё
 		CREF(RDOSrcInfo) src_info() const;
 
 	private:
@@ -208,8 +208,8 @@ DECLARE_POINTER(RDOFRMSprite);
 
 /*!
   \class     RDOFRMBoundingItem
-  \brief     Объект-четырехугольник
-  \details   В парсере не создается
+  \brief     РћР±СЉРµРєС‚-С‡РµС‚С‹СЂРµС…СѓРіРѕР»СЊРЅРёРє
+  \details   Р’ РїР°СЂСЃРµСЂРµ РЅРµ СЃРѕР·РґР°РµС‚СЃСЏ
 */
 class RDOFRMBoundingItem
 {
@@ -233,8 +233,8 @@ private:
 
 /*!
   \class     RDOFRMColoredItem
-  \brief     Объект с цветом
-  \details   В парсере не создается
+  \brief     РћР±СЉРµРєС‚ СЃ С†РІРµС‚РѕРј
+  \details   Р’ РїР°СЂСЃРµСЂРµ РЅРµ СЃРѕР·РґР°РµС‚СЃСЏ
 */
 class RDOFRMColoredItem
 {
@@ -256,7 +256,7 @@ private:
 
 /*!
   \class     RDOFRMItem
-  \brief     Базовый класс для всех элементов
+  \brief     Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РІСЃРµС… СЌР»РµРјРµРЅС‚РѕРІ
 */
 CALC(RDOFRMItem)
 {
@@ -273,7 +273,7 @@ private:
 
 /*!
   \def       RDOFRM_ITEM(A)
-  \brief     Декларация наследника \a RDOFRMItem
+  \brief     Р”РµРєР»Р°СЂР°С†РёСЏ РЅР°СЃР»РµРґРЅРёРєР° \a RDOFRMItem
 */
 #define RDOFRM_ITEM(A) \
 PREDECLARE_POINTER(A); \
@@ -281,7 +281,7 @@ CLASS(A): INSTANCE_OF(RDOFRMItem)
 
 /*!
   \class     RDOFRMText
-  \brief     Текст
+  \brief     РўРµРєСЃС‚
 */
 RDOFRM_ITEM(RDOFRMText)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
@@ -316,7 +316,7 @@ private:
 
 /*!
   \class     RDOFRMBitmapBase
-  \brief     Базовый класс для картинок
+  \brief     Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РєР°СЂС‚РёРЅРѕРє
 */
 RDOFRM_ITEM(RDOFRMBitmapBase)
 	IS IMPLEMENTATION_OF(IRDOFRMItemGetBitmap)
@@ -334,7 +334,7 @@ private:
 
 /*!
   \class     RDOFRMBitmap
-  \brief     Картинка
+  \brief     РљР°СЂС‚РёРЅРєР°
 */
 CLASS(RDOFRMBitmap): INSTANCE_OF(RDOFRMBitmapBase)
 {
@@ -359,7 +359,7 @@ DECLARE_POINTER(RDOFRMBitmap)
 
 /*!
   \class     RDOFRMBitmapStretch
-  \brief     Масштабируемая картинка
+  \brief     РњР°СЃС€С‚Р°Р±РёСЂСѓРµРјР°СЏ РєР°СЂС‚РёРЅРєР°
 */
 CLASS(RDOFRMBitmapStretch):
 		INSTANCE_OF(RDOFRMBitmapBase  )
@@ -385,7 +385,7 @@ DECLARE_POINTER(RDOFRMBitmapStretch);
 
 /*!
   \class     RDOFRMRect
-  \brief     Объект прямоугольник
+  \brief     РћР±СЉРµРєС‚ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє
 */
 RDOFRM_ITEM(RDOFRMRect)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
@@ -409,7 +409,7 @@ private:
 
 /*!
   \class     RDOFRMRectRound
-  \brief     Прямоугольник со скругленными углами
+  \brief     РџСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє СЃРѕ СЃРєСЂСѓРіР»РµРЅРЅС‹РјРё СѓРіР»Р°РјРё
 */
 RDOFRM_ITEM(RDOFRMRectRound)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
@@ -433,7 +433,7 @@ private:
 
 /*!
   \class     RDOFRMCircle
-  \brief     Окружность
+  \brief     РћРєСЂСѓР¶РЅРѕСЃС‚СЊ
 */
 RDOFRM_ITEM(RDOFRMCircle) IS INSTANCE_OF(RDOFRMColoredItem)
 {
@@ -458,7 +458,7 @@ private:
 
 /*!
   \class     RDOFRMEllipse
-  \brief     Эллипс
+  \brief     Р­Р»Р»РёРїСЃ
 */
 RDOFRM_ITEM(RDOFRMEllipse)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
@@ -482,7 +482,7 @@ private:
 
 /*!
   \class     RDOFRMLine
-  \brief     Линия
+  \brief     Р›РёРЅРёСЏ
 */
 RDOFRM_ITEM(RDOFRMLine) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
@@ -505,7 +505,7 @@ private:
 
 /*!
   \class     RDOFRMTriang
-  \brief     Треугольник
+  \brief     РўСЂРµСѓРіРѕР»СЊРЅРёРє
 */
 RDOFRM_ITEM(RDOFRMTriang) AND INSTANCE_OF(RDOFRMColoredItem)
 {
@@ -536,7 +536,7 @@ private:
 
 /*!
   \class     RDOFRMActive
-  \brief     Активная область
+  \brief     РђРєС‚РёРІРЅР°СЏ РѕР±Р»Р°СЃС‚СЊ
 */
 RDOFRM_ITEM(RDOFRMActive) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
@@ -559,7 +559,7 @@ private:
 
 /*!
   \class     RDOFRMSpace
-  \brief     Пустота
+  \brief     РџСѓСЃС‚РѕС‚Р°
 */
 RDOFRM_ITEM(RDOFRMSpace) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
@@ -579,7 +579,7 @@ private:
 
 /*!
   \class     RDOFRMFrame
-  \brief     Фрейм. Формирует кадр анимации
+  \brief     Р¤СЂРµР№Рј. Р¤РѕСЂРјРёСЂСѓРµС‚ РєР°РґСЂ Р°РЅРёРјР°С†РёРё
 */
 CLASS(RDOFRMFrame):
 	INSTANCE_OF(RDOFRMSprite)
@@ -593,7 +593,7 @@ public:
 
 	void setBackgroundColor(CREF(LPRDOFRMColor) pBgColor);
 
-	//! @todo Нужно спрятатть в приват и поправить симулятор, из которого метод вызывается
+	//! @todo РќСѓР¶РЅРѕ СЃРїСЂСЏС‚Р°С‚С‚СЊ РІ РїСЂРёРІР°С‚ Рё РїРѕРїСЂР°РІРёС‚СЊ СЃРёРјСѓР»СЏС‚РѕСЂ, РёР· РєРѕС‚РѕСЂРѕРіРѕ РјРµС‚РѕРґ РІС‹Р·С‹РІР°РµС‚СЃСЏ
 	DECLARE_IRDOFRMItemGetBitmap;
 
 private:

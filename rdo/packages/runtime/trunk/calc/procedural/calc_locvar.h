@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_locvar.h
-  \author    Чирков Михаил
+  \author    Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
   \date      03.12.2010
-  \brief     Локальные переменные
+  \brief     Р›РѕРєР°Р»СЊРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ
   \indent    4T
 */
 
@@ -18,7 +18,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Создание локальной переменной
+//! РЎРѕР·РґР°РЅРёРµ Р»РѕРєР°Р»СЊРЅРѕР№ РїРµСЂРµРјРµРЅРЅРѕР№
 CALC(RDOCalcCreateLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcCreateLocalVariable)
@@ -31,7 +31,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Получение значения локальной переменной
+//! РџРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ Р»РѕРєР°Р»СЊРЅРѕР№ РїРµСЂРµРјРµРЅРЅРѕР№
 CALC(RDOCalcGetLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcGetLocalVariable)
@@ -43,7 +43,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Установка значения локальной переменной
+//! РЈСЃС‚Р°РЅРѕРІРєР° Р·РЅР°С‡РµРЅРёСЏ Р»РѕРєР°Р»СЊРЅРѕР№ РїРµСЂРµРјРµРЅРЅРѕР№
 template <EqualType equalType>
 class RDOCalcSetLocalVariable: public RDOCalc
 {
@@ -58,7 +58,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Список локальных переменных
+//! РЎРїРёСЃРѕРє Р»РѕРєР°Р»СЊРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С…
 CALC(RDOCalcLocalVariableList)
 {
 DECLARE_FACTORY(RDOCalcLocalVariableList)

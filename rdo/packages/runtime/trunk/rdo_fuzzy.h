@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_fuzzy.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      22.06.2008
-  \brief     Нечеткая логика
+  \brief     РќРµС‡РµС‚РєР°СЏ Р»РѕРіРёРєР°
   \indent    4T
 */
 
@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(FuzzySet);
 PREDECLARE_POINTER(DefineArea);
-//! Область определения
+//! РћР±Р»Р°СЃС‚СЊ РѕРїСЂРµРґРµР»РµРЅРёСЏ
 
 OBJECT(DefineArea)
 {
@@ -34,7 +34,7 @@ public:
 	typedef  boost::icl::interval<RDOValue>::type IntervalType;
 	typedef  boost::icl::interval_set<RDOValue> Domain;
 	
-	DefineArea (); // типа бесконечность
+	DefineArea (); // С‚РёРїР° Р±РµСЃРєРѕРЅРµС‡РЅРѕСЃС‚СЊ
 	virtual ~DefineArea();
 private:
 	DefineArea(CREF(RDOValue));// 1 element
@@ -43,7 +43,7 @@ private:
 	Domain m_domain;
 };
 
-//! Нечеткое множество
+//! РќРµС‡РµС‚РєРѕРµ РјРЅРѕР¶РµСЃС‚РІРѕ
 OBJECT(FuzzySet)
 {
 DECLARE_FACTORY(FuzzySet);
@@ -51,9 +51,9 @@ public:
 	typedef  std::pair<RDOValue, double>                              FuzzyItem;
 	typedef  std::map<FuzzyItem::first_type, FuzzyItem::second_type>  FuzzySetDefinition;
 
-	LPFuzzySet                                append     (CREF(RDOValue) rdovalue, double appertain); // вставка с проверкой значения, если такое же есть - не вставит
+	LPFuzzySet                                append     (CREF(RDOValue) rdovalue, double appertain); // РІСЃС‚Р°РІРєР° СЃ РїСЂРѕРІРµСЂРєРѕР№ Р·РЅР°С‡РµРЅРёСЏ, РµСЃР»Рё С‚Р°РєРѕРµ Р¶Рµ РµСЃС‚СЊ - РЅРµ РІСЃС‚Р°РІРёС‚
 	LPFuzzySet                                operator() (CREF(RDOValue) rdovalue, double appertain);
-	REF(double)                               operator[] (CREF(RDOValue) rdovalue); // вставка без проверки значения
+	REF(double)                               operator[] (CREF(RDOValue) rdovalue); // РІСЃС‚Р°РІРєР° Р±РµР· РїСЂРѕРІРµСЂРєРё Р·РЅР°С‡РµРЅРёСЏ
 	FuzzySetDefinition::const_iterator        find       (CREF(RDOValue) rdovalue) const;
 	FuzzyItem                                 findValue  (CREF(RDOValue) rdovalue) const;
 	FuzzySetDefinition::const_iterator        begin      () const;
@@ -88,7 +88,7 @@ private:
 PREDECLARE_POINTER(RDOValue);
 PREDECLARE_POINTER(RDOLingvoVariable);
 
-//! Свойства НМ:
+//! РЎРІРѕР№СЃС‚РІР° РќРњ:
 class MemberFunctionProperties
 {
 public:
@@ -101,7 +101,7 @@ public:
 	/* 3.118*/  static LPFuzzySet u_scale(CREF(LPFuzzySet) pSet, double scale);
 	/* 3.119*/  static LPFuzzySet u_log  (CREF(LPFuzzySet) pSet);
 
-	/* 3.39 */  static LPFuzzySet a_mult    (CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2); // не работает пока
+	/* 3.39 */  static LPFuzzySet a_mult    (CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2); // РЅРµ СЂР°Р±РѕС‚Р°РµС‚ РїРѕРєР°
 	/* 3.48 */  static LPFuzzySet alpha     (CREF(LPFuzzySet) pSet,  double appertain);
 	/* 3.62 */  static LPFuzzySet supplement(CREF(LPFuzzySet) pSet);
 	/* 3.78 */  static LPFuzzySet a_con     (CREF(LPFuzzySet) pSet);
@@ -116,7 +116,7 @@ public:
 	/* 3.83 */  static LPFuzzySet ext_binary(ExtBinaryFun fun, CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2);
 
 };
-// ! Терм
+// ! РўРµСЂРј
 
 OBJECT (RDOFuzzyTerm)
 {
@@ -135,7 +135,7 @@ private:
 	Term m_term;
 };
 
-// !Лингвистическая переменная
+// !Р›РёРЅРіРІРёСЃС‚РёС‡РµСЃРєР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ
 
 OBJECT (RDOLingvoVariable)
 {

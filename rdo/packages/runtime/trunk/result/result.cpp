@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      result.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      29.01.2007
-  \brief     Собираемые при моделированиии показатели
+  \brief     РЎРѕР±РёСЂР°РµРјС‹Рµ РїСЂРё РјРѕРґРµР»РёСЂРѕРІР°РЅРёРёРё РїРѕРєР°Р·Р°С‚РµР»Рё
   \indent    4T
 */
 
@@ -65,7 +65,7 @@ inline rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<T>
 	}
 	else
 	{
-		stream << _T("нет данных");
+		stream << _T("РЅРµС‚ РґР°РЅРЅС‹С…");
 	}
 	return stream;
 }
@@ -79,7 +79,7 @@ inline rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<do
 	}
 	else
 	{
-		stream << _T("нет данных");
+		stream << _T("РЅРµС‚ РґР°РЅРЅС‹С…");
 	}
 	return stream;
 }
@@ -205,15 +205,15 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("par")
-		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << ResultStreamItem<tstring> (count > 0, traceValue())
-		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double>  (count > 0, average     )
-		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<RDOValue>(count > 0, minValue    )
-		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<RDOValue>(count > 0, maxValue    )
-		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
-		<< _T("\t") << _T("Стд.откл.:")  << _T("\t") << ResultStreamItem<double>  (varianceEnable, stdDeviation)
-		<< _T("\t") << _T("К.вар.%:")    << _T("\t") << ResultStreamItem<double>  (averageEnable,  cv          )
-		<< _T("\t") << _T("Медиана:")    << _T("\t") << ResultStreamItem<double>  (count > 0,      median      )
+		<< _T("\t") << _T("РўРёРї:")        << _T("\t") << _T("par")
+		<< _T("\t") << _T("РџРѕСЃР».Р·РЅР°С‡.:") << _T("\t") << ResultStreamItem<tstring> (count > 0, traceValue())
+		<< _T("\t") << _T("РЎСЂ.Р·РЅР°С‡.:")   << _T("\t") << ResultStreamItem<double>  (count > 0, average     )
+		<< _T("\t") << _T("РњРёРЅ.Р·РЅР°С‡.:")  << _T("\t") << ResultStreamItem<RDOValue>(count > 0, minValue    )
+		<< _T("\t") << _T("РњР°РєСЃ.Р·РЅР°С‡.:") << _T("\t") << ResultStreamItem<RDOValue>(count > 0, maxValue    )
+		<< _T("\t") << _T("Р§РёСЃР».РЅР°Р±.:")  << _T("\t") << count
+		<< _T("\t") << _T("РЎС‚Рґ.РѕС‚РєР».:")  << _T("\t") << ResultStreamItem<double>  (varianceEnable, stdDeviation)
+		<< _T("\t") << _T("Рљ.РІР°СЂ.%:")    << _T("\t") << ResultStreamItem<double>  (averageEnable,  cv          )
+		<< _T("\t") << _T("РњРµРґРёР°РЅР°:")    << _T("\t") << ResultStreamItem<double>  (count > 0,      median      )
 		<< _T('\n');
 }
 
@@ -298,12 +298,12 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("state")
-		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << traceValue()
-		<< _T("\t") << _T("% соотв.:")   << _T("\t") << boost::format(_T("%1.6f")) % average
-		<< _T("\t") << _T("Мин.длит.:")  << _T("\t") << boost::format(_T("%1.6f")) % (count > 0 ? (boost::accumulators::min)(m_acc) : 0)
-		<< _T("\t") << _T("Макс.длит.:") << _T("\t") << boost::format(_T("%1.6f")) % (count > 0 ? (boost::accumulators::max)(m_acc) : 0)
-		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
+		<< _T("\t") << _T("РўРёРї:")        << _T("\t") << _T("state")
+		<< _T("\t") << _T("РџРѕСЃР».Р·РЅР°С‡.:") << _T("\t") << traceValue()
+		<< _T("\t") << _T("% СЃРѕРѕС‚РІ.:")   << _T("\t") << boost::format(_T("%1.6f")) % average
+		<< _T("\t") << _T("РњРёРЅ.РґР»РёС‚.:")  << _T("\t") << boost::format(_T("%1.6f")) % (count > 0 ? (boost::accumulators::min)(m_acc) : 0)
+		<< _T("\t") << _T("РњР°РєСЃ.РґР»РёС‚.:") << _T("\t") << boost::format(_T("%1.6f")) % (count > 0 ? (boost::accumulators::max)(m_acc) : 0)
+		<< _T("\t") << _T("Р§РёСЃР».РЅР°Р±.:")  << _T("\t") << count
 		<< _T('\n');
 }
 
@@ -414,15 +414,15 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("quant")
-		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << ResultStreamItem<tstring>(true, traceValue())
-		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double> (true, average     )
-		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<int>    (true, (int)(boost::accumulators::min)(m_acc))
-		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<int>    (true, (int)(boost::accumulators::max)(m_acc))
-		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
-		<< _T("\t") << _T("Стд.откл.:")  << _T("\t") << ResultStreamItem<double> (varianceEnable, stdDeviation)
-		<< _T("\t") << _T("К.вар.%:")    << _T("\t") << ResultStreamItem<double> (averageEnable,  cv          )
-		<< _T("\t") << _T("Медиана:")    << _T("\t") << ResultStreamItem<double> (count > 0,      median      )
+		<< _T("\t") << _T("РўРёРї:")        << _T("\t") << _T("quant")
+		<< _T("\t") << _T("РџРѕСЃР».Р·РЅР°С‡.:") << _T("\t") << ResultStreamItem<tstring>(true, traceValue())
+		<< _T("\t") << _T("РЎСЂ.Р·РЅР°С‡.:")   << _T("\t") << ResultStreamItem<double> (true, average     )
+		<< _T("\t") << _T("РњРёРЅ.Р·РЅР°С‡.:")  << _T("\t") << ResultStreamItem<int>    (true, (int)(boost::accumulators::min)(m_acc))
+		<< _T("\t") << _T("РњР°РєСЃ.Р·РЅР°С‡.:") << _T("\t") << ResultStreamItem<int>    (true, (int)(boost::accumulators::max)(m_acc))
+		<< _T("\t") << _T("Р§РёСЃР».РЅР°Р±.:")  << _T("\t") << count
+		<< _T("\t") << _T("РЎС‚Рґ.РѕС‚РєР».:")  << _T("\t") << ResultStreamItem<double> (varianceEnable, stdDeviation)
+		<< _T("\t") << _T("Рљ.РІР°СЂ.%:")    << _T("\t") << ResultStreamItem<double> (averageEnable,  cv          )
+		<< _T("\t") << _T("РњРµРґРёР°РЅР°:")    << _T("\t") << ResultStreamItem<double> (count > 0,      median      )
 		<< _T('\n');
 }
 
@@ -492,14 +492,14 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("value")
-		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double>  (count > 0, average )
-		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<RDOValue>(count > 0, minValue)
-		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<RDOValue>(count > 0, maxValue)
-		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
-		<< _T("\t") << _T("Стд.откл.:")  << _T("\t") << ResultStreamItem<double>  (varianceEnable, stdDeviation)
-		<< _T("\t") << _T("К.вар.%:")    << _T("\t") << ResultStreamItem<double>  (averageEnable,  cv          )
-		<< _T("\t") << _T("Медиана:")    << _T("\t") << ResultStreamItem<double>  (count > 0,      median      )
+		<< _T("\t") << _T("РўРёРї:")        << _T("\t") << _T("value")
+		<< _T("\t") << _T("РЎСЂ.Р·РЅР°С‡.:")   << _T("\t") << ResultStreamItem<double>  (count > 0, average )
+		<< _T("\t") << _T("РњРёРЅ.Р·РЅР°С‡.:")  << _T("\t") << ResultStreamItem<RDOValue>(count > 0, minValue)
+		<< _T("\t") << _T("РњР°РєСЃ.Р·РЅР°С‡.:") << _T("\t") << ResultStreamItem<RDOValue>(count > 0, maxValue)
+		<< _T("\t") << _T("Р§РёСЃР».РЅР°Р±.:")  << _T("\t") << count
+		<< _T("\t") << _T("РЎС‚Рґ.РѕС‚РєР».:")  << _T("\t") << ResultStreamItem<double>  (varianceEnable, stdDeviation)
+		<< _T("\t") << _T("Рљ.РІР°СЂ.%:")    << _T("\t") << ResultStreamItem<double>  (averageEnable,  cv          )
+		<< _T("\t") << _T("РњРµРґРёР°РЅР°:")    << _T("\t") << ResultStreamItem<double>  (count > 0,      median      )
 		<< _T('\n');
 }
 
@@ -514,7 +514,7 @@ void RDOPMDWatchValue::checkResourceErased(CREF(LPRDOResource) pResource)
 	{
 		m_currValue  = m_pArithmCalc->calcValue(m_pRuntime);
 		m_wasChanged = true;
-		traceResult(); /// @todo убрать отсюда ? (и перенести DECLARE_IResultTrace в приват)
+		traceResult(); /// @todo СѓР±СЂР°С‚СЊ РѕС‚СЃСЋРґР° ? (Рё РїРµСЂРµРЅРµСЃС‚Рё DECLARE_IResultTrace РІ РїСЂРёРІР°С‚)
 //		pRuntime->getTracer()->writeResult(pRuntime, this);
 		m_acc(m_currValue.getDouble());
 		return;
@@ -572,8 +572,8 @@ void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << _T("Тип:")      << _T("\t") << _T("get_value")
-		<< _T("\t") << _T("Значение:") << _T("\t") << m_value.getAsString()
+		<< _T("\t") << _T("РўРёРї:")      << _T("\t") << _T("get_value")
+		<< _T("\t") << _T("Р—РЅР°С‡РµРЅРёРµ:") << _T("\t") << m_value.getAsString()
 		<< _T('\n');
 }
 

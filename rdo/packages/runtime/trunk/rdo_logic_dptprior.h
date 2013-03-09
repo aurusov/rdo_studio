@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_logic_dptprior.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      04.11.2009
   \brief     DPTPrior
   \indent    4T
@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class   RDOOrderDPTPrior
-  \brief   Дисциплина очереди для приоритетных логик БЗ
+  \brief   Р”РёСЃС†РёРїР»РёРЅР° РѕС‡РµСЂРµРґРё РґР»СЏ РїСЂРёРѕСЂРёС‚РµС‚РЅС‹С… Р»РѕРіРёРє Р‘Р—
 */
 class RDOOrderDPTPrior
 {
@@ -30,7 +30,7 @@ public:
 
 /*!
   \class   RDOLogicDPTPrior
-  \brief   Логика БЗ для DPTPrior
+  \brief   Р›РѕРіРёРєР° Р‘Р— РґР»СЏ DPTPrior
 */
 class RDOLogicDPTPrior: public RDOLogic<RDOOrderDPTPrior>
 {
@@ -46,7 +46,7 @@ protected:
 
 /*!
   \class   RDODPTPrior
-  \brief   Точка принятия решений DPTPrior
+  \brief   РўРѕС‡РєР° РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ DPTPrior
 */
 class RDODPTPrior: public RDOLogicDPTPrior, public RDOPatternPrior
 {

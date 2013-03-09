@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdodptrtime.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      16.05.2007
-  \brief     Runtime трассировка для DPTSearch
+  \brief     Runtime С‚СЂР°СЃСЃРёСЂРѕРІРєР° РґР»СЏ DPTSearch
   \indent    4T
 */
 
@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class   RDODPTSearchRuntime
-  \brief   потомок RDODPTSearch
+  \brief   РїРѕС‚РѕРјРѕРє RDODPTSearch
 */
 class RDODPTSearchRuntime: public RDODPTSearchTrace
 {

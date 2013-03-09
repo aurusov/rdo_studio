@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/runtime/rdo_matrix.cpp
-  \authors   Чирков Михаил
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      01.10.2010
-  \brief     Матрица
+  \brief     РњР°С‚СЂРёС†Р°
   \indent    4T
 */
 
@@ -97,7 +97,7 @@ CREF(RDOValue) RDOMatrixValue::getItem(CREF(RDOValue) index) const
 	ruint ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
-		throw RDORuntimeException(_T("Выход за пределы матрицы"));
+		throw RDORuntimeException(_T("Р’С‹С…РѕРґ Р·Р° РїСЂРµРґРµР»С‹ РјР°С‚СЂРёС†С‹"));
 	}
 	return m_container[ind];
 }
@@ -107,7 +107,7 @@ void RDOMatrixValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 	ruint ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
-		throw RDORuntimeException(_T("Выход за пределы матрицы"));
+		throw RDORuntimeException(_T("Р’С‹С…РѕРґ Р·Р° РїСЂРµРґРµР»С‹ РјР°С‚СЂРёС†С‹"));
 	}
 	m_container[ind] = item;
 }

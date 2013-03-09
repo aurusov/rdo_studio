@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      generate.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      12.02.2012
-  \brief     Процессный оператор GENERATE
+  \brief     РџСЂРѕС†РµСЃСЃРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ GENERATE
   \indent    4T
 */
 
@@ -56,7 +56,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class   RDOPROCGenerate
-  \brief   Процессный блок GENERATE
+  \brief   РџСЂРѕС†РµСЃСЃРЅС‹Р№ Р±Р»РѕРє GENERATE
 */
 class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation, public IInternalStatisticsManager
 {

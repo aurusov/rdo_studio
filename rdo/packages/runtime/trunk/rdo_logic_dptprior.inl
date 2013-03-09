@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_logic_dptprior.inl
-  \author    Ëóùàí Äìèòðèé (dluschan@rk9.bmstu.ru)
+  \author    Ð›ÑƒÑ‰Ð°Ð½ Ð”Ð¼Ð¸Ñ‚Ñ€Ð¸Ð¹ (dluschan@rk9.bmstu.ru)
   \date      04.11.2009
   \brief     DPTPrior
   \indent    4T
@@ -43,7 +43,7 @@ inline LPIBaseOperation RDOOrderDPTPrior::sort(CREF(LPRDORuntime) pRuntime, REF(
 				RDOValue value = pPriorCalc->calcValue(pRuntime);
 				if (value < 0.0 || value > 1.0)
 				{
-					pRuntime->error().push(rdo::format(_T("Ïðèîðèòåò àêòèâíîñòè âûøåë çà ïðåäåëû äèàïàçîíà [0..1]: %s"), value.getAsString().c_str()), pPriorCalc->srcInfo());
+					pRuntime->error().push(rdo::format(_T("ÐŸÑ€Ð¸Ð¾Ñ€Ð¸Ñ‚ÐµÑ‚ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸ Ð²Ñ‹ÑˆÐµÐ» Ð·Ð° Ð¿Ñ€ÐµÐ´ÐµÐ»Ñ‹ Ð´Ð¸Ð°Ð¿Ð°Ð·Ð¾Ð½Ð° [0..1]: %s"), value.getAsString().c_str()), pPriorCalc->srcInfo());
 				}
 			}
 		}

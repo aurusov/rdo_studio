@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_pattern.cpp
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
-  \authors   Ëóùàí Äìèòðèé (dluschan@rk9.bmstu.ru)
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
+  \authors   Ð›ÑƒÑ‰Ð°Ð½ Ð”Ð¼Ð¸Ñ‚Ñ€Ð¸Ð¹ (dluschan@rk9.bmstu.ru)
   \date      13.04.2008
-  \brief     Îïèñàíèå áàçîâîãî êëàññà äëÿ îáðàçöîâ âñåõ òèïîâ àêòèâíîñòåé è ñîáûòèé
+  \brief     ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ Ð±Ð°Ð·Ð¾Ð²Ð¾Ð³Ð¾ ÐºÐ»Ð°ÑÑÐ° Ð´Ð»Ñ Ð¾Ð±Ñ€Ð°Ð·Ñ†Ð¾Ð² Ð²ÑÐµÑ… Ñ‚Ð¸Ð¿Ð¾Ð² Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚ÐµÐ¹ Ð¸ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ð¹
   \indent    4T
 */
 
@@ -48,7 +48,7 @@ double RDOPatternEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 		return time_next;
 	}
 
-	pRuntime->error().push(rdo::format(_T("Ïîïûòêà çàïëàíèðîâàòü ñîáûòèå â ïðîøëîì. Âûðàæåíèå âðåìåíè äëÿ $Time èìååò îòðèöàòåëüíîå çíà÷åíèå: %f"), time_next), m_timeCalc->srcInfo());
+	pRuntime->error().push(rdo::format(_T("ÐŸÐ¾Ð¿Ñ‹Ñ‚ÐºÐ° Ð·Ð°Ð¿Ð»Ð°Ð½Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ðµ Ð² Ð¿Ñ€Ð¾ÑˆÐ»Ð¾Ð¼. Ð’Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ðµ Ð²Ñ€ÐµÐ¼ÐµÐ½Ð¸ Ð´Ð»Ñ $Time Ð¸Ð¼ÐµÐµÑ‚ Ð¾Ñ‚Ñ€Ð¸Ñ†Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ: %f"), time_next), m_timeCalc->srcInfo());
 	return 0;
 }
 
@@ -104,7 +104,7 @@ double RDOPatternOperation::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 	{
 		return time_next;
 	}
-	pRuntime->error().push(rdo::format(_T("Ïîïûòêà çàïëàíèðîâàòü îêîí÷àíèå îïåðàöèè â ïðîøëîì. Âûðàæåíèå âðåìåíè äëÿ $Time èìååò îòðèöàòåëüíîå çíà÷åíèå: %f"), time_next), m_timeCalc->srcInfo());
+	pRuntime->error().push(rdo::format(_T("ÐŸÐ¾Ð¿Ñ‹Ñ‚ÐºÐ° Ð·Ð°Ð¿Ð»Ð°Ð½Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð¾ÐºÐ¾Ð½Ñ‡Ð°Ð½Ð¸Ðµ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¸ Ð² Ð¿Ñ€Ð¾ÑˆÐ»Ð¾Ð¼. Ð’Ñ‹Ñ€Ð°Ð¶ÐµÐ½Ð¸Ðµ Ð²Ñ€ÐµÐ¼ÐµÐ½Ð¸ Ð´Ð»Ñ $Time Ð¸Ð¼ÐµÐµÑ‚ Ð¾Ñ‚Ñ€Ð¸Ñ†Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ: %f"), time_next), m_timeCalc->srcInfo());
 	return 0;
 }
 

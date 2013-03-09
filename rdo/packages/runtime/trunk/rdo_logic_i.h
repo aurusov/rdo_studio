@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_logic_i.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      30.07.2009
-  \brief     Интерфейс ILogic
+  \brief     РРЅС‚РµСЂС„РµР№СЃ ILogic
   \indent    4T
 */
 
@@ -26,7 +26,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 /*!
   \interface ILogic
-  \brief     Логика в РДО - правила логического вывода для контейнеров IBaseOperationContainer
+  \brief     Р›РѕРіРёРєР° РІ Р Р”Рћ - РїСЂР°РІРёР»Р° Р»РѕРіРёС‡РµСЃРєРѕРіРѕ РІС‹РІРѕРґР° РґР»СЏ РєРѕРЅС‚РµР№РЅРµСЂРѕРІ IBaseOperationContainer
 */
 class ILogic
 {
@@ -43,7 +43,7 @@ public:
 
 /*!
   \interface IBaseOperationContainer
-  \brief     Иерархические контейнеры активностей. См. паттерн "Компоновщик"
+  \brief     РРµСЂР°СЂС…РёС‡РµСЃРєРёРµ РєРѕРЅС‚РµР№РЅРµСЂС‹ Р°РєС‚РёРІРЅРѕСЃС‚РµР№. РЎРј. РїР°С‚С‚РµСЂРЅ "РљРѕРјРїРѕРЅРѕРІС‰РёРє"
 */
 class IBaseOperationContainer
 {

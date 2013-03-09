@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_resource.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      19.12.2011
-  \brief     Калки для ресурсов
+  \brief     РљР°Р»РєРё РґР»СЏ СЂРµСЃСѓСЂСЃРѕРІ
   \indent    4T
 */
 
@@ -19,14 +19,14 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Вспомогательный класс для вытаскивания ресурса по ID и оборачивания его в RDOValue
+//! Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РІС‹С‚Р°СЃРєРёРІР°РЅРёСЏ СЂРµСЃСѓСЂСЃР° РїРѕ ID Рё РѕР±РѕСЂР°С‡РёРІР°РЅРёСЏ РµРіРѕ РІ RDOValue
 class RDOCalcGetResourceHelper
 {
 public:
 	static rbool getResource(CREF(LPRDORuntime) pRuntime, ruint resourceID, REF(RDOValue) result);
 };
 
-//! Получение ресурса по ID
+//! РџРѕР»СѓС‡РµРЅРёРµ СЂРµСЃСѓСЂСЃР° РїРѕ ID
 CALC(RDOCalcGetResourceByID)
 {
 DECLARE_FACTORY(RDOCalcGetResourceByID)
@@ -38,7 +38,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Получение параметр ресурса по калку ресурса и ID параметра
+//! РџРѕР»СѓС‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂ СЂРµСЃСѓСЂСЃР° РїРѕ РєР°Р»РєСѓ СЂРµСЃСѓСЂСЃР° Рё ID РїР°СЂР°РјРµС‚СЂР°
 CALC(RDOCalcGetResourceParam)
 {
 DECLARE_FACTORY(RDOCalcGetResourceParam)
@@ -51,7 +51,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Параметры несуществующего ресурса
+//! РџР°СЂР°РјРµС‚СЂС‹ РЅРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ СЂРµСЃСѓСЂСЃР°
 CALC(RDOCalcGetUnknowResParam)
 {
 DECLARE_FACTORY(RDOCalcGetUnknowResParam)
@@ -64,7 +64,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Установка значения параметра ресурса перед моделированием из SMR
+//! РЈСЃС‚Р°РЅРѕРІРєР° Р·РЅР°С‡РµРЅРёСЏ РїР°СЂР°РјРµС‚СЂР° СЂРµСЃСѓСЂСЃР° РїРµСЂРµРґ РјРѕРґРµР»РёСЂРѕРІР°РЅРёРµРј РёР· SMR
 CALC(RDOSetResourceParamCalc)
 {
 DECLARE_FACTORY(RDOSetResourceParamCalc)

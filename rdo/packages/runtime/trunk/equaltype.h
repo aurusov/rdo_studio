@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      equaltype.h
-  \author    Чирков Михаил
+  \author    Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
   \date      03.12.2010
-  \brief     Типы операторов сравнения
+  \brief     РўРёРїС‹ РѕРїРµСЂР°С‚РѕСЂРѕРІ СЃСЂР°РІРЅРµРЅРёСЏ
   \indent    4T
 */
 
@@ -19,7 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \enum    EqualType
-  \brief   Типы сравнений
+  \brief   РўРёРїС‹ СЃСЂР°РІРЅРµРЅРёР№
 */
 enum EqualType
 {

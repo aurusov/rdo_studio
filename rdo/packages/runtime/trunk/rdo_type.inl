@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_type.inl
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      18.04.2009
-  \brief     Базовый тип данных
+  \brief     Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РґР°РЅРЅС‹С…
   \indent    4T
 */
 

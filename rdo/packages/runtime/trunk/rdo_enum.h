@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_enum.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      22.06.2008
-  \brief     Перечисления
+  \brief     РџРµСЂРµС‡РёСЃР»РµРЅРёСЏ
   \indent    4T
 */
 
@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class     RDOEnumType
-  \brief     Тип перечисления
+  \brief     РўРёРї РїРµСЂРµС‡РёСЃР»РµРЅРёСЏ
 */
 class RDOEnumType: public RDOType
 {

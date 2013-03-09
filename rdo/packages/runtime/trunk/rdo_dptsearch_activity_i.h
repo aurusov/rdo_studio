@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_dptsearch_activity_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      08.08.2009
-  \brief     Интерфейс активности точки принятия решения DPTSearch
+  \brief     РРЅС‚РµСЂС„РµР№СЃ Р°РєС‚РёРІРЅРѕСЃС‚Рё С‚РѕС‡РєРё РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёСЏ DPTSearch
   \indent    4T
 */
 
@@ -25,16 +25,16 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 /*!
   \interface IDPTSearchActivity
-  \brief     Интерфейс активности точки принятия решения DPTSearch
+  \brief     РРЅС‚РµСЂС„РµР№СЃ Р°РєС‚РёРІРЅРѕСЃС‚Рё С‚РѕС‡РєРё РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёСЏ DPTSearch
 */
 class IDPTSearchActivity
 {
 public:
-	//! Время вычисления функции стоимости пути
+	//! Р’СЂРµРјСЏ РІС‹С‡РёСЃР»РµРЅРёСЏ С„СѓРЅРєС†РёРё СЃС‚РѕРёРјРѕСЃС‚Рё РїСѓС‚Рё
 	enum ValueTime
 	{
-		vt_before, //!< до выполнения активности
-		vt_after   //!< после выполнения активности
+		vt_before, //!< РґРѕ РІС‹РїРѕР»РЅРµРЅРёСЏ Р°РєС‚РёРІРЅРѕСЃС‚Рё
+		vt_after   //!< РїРѕСЃР»Рµ РІС‹РїРѕР»РЅРµРЅРёСЏ Р°РєС‚РёРІРЅРѕСЃС‚Рё
 	};
 
 	virtual REF(LPIRule) rule     ()                                          = 0;

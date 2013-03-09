@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      calc_create_resource.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      10.02.2012
-  \brief     RDOCalc для создания ресурсов
+  \brief     RDOCalc РґР»СЏ СЃРѕР·РґР°РЅРёСЏ СЂРµСЃСѓСЂСЃРѕРІ
   \indent    4T
 */
 
@@ -36,7 +36,7 @@ RDOCalcCreateResource::RDOCalcCreateResource(
 	, m_relResID     (relResID     )
 {
 	m_paramsCalcs.insert(m_paramsCalcs.begin(), rParamsCalcs.begin(), rParamsCalcs.end());
-	// попытка создавать постоянные ресурсы динамически
+	// РїРѕРїС‹С‚РєР° СЃРѕР·РґР°РІР°С‚СЊ РїРѕСЃС‚РѕСЏРЅРЅС‹Рµ СЂРµСЃСѓСЂСЃС‹ РґРёРЅР°РјРёС‡РµСЃРєРё
 	ASSERT(m_relResID == ~0 || (m_relResID != ~0 && !m_permanentFlag));
 }
 

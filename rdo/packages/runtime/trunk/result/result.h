@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      result.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      29.01.2007
-  \brief     Собираемые при моделированиии показатели
+  \brief     РЎРѕР±РёСЂР°РµРјС‹Рµ РїСЂРё РјРѕРґРµР»РёСЂРѕРІР°РЅРёРёРё РїРѕРєР°Р·Р°С‚РµР»Рё
   \indent    4T
 */
 
@@ -49,8 +49,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class     RDOPMDResult
-  \brief     Базовый собираемый показатель
-  \todo      Дать классу адекватное англоязычное имя
+  \brief     Р‘Р°Р·РѕРІС‹Р№ СЃРѕР±РёСЂР°РµРјС‹Р№ РїРѕРєР°Р·Р°С‚РµР»СЊ
+  \todo      Р”Р°С‚СЊ РєР»Р°СЃСЃСѓ Р°РґРµРєРІР°С‚РЅРѕРµ Р°РЅРіР»РѕСЏР·С‹С‡РЅРѕРµ РёРјСЏ
 */
 class RDOPMDResult: public RDOResultTrace, public IName
 {
@@ -71,7 +71,7 @@ private:
 
 /*!
   \class     RDOPMDWatchPar
-  \brief     Собираемый показатель типа WatchPar
+  \brief     РЎРѕР±РёСЂР°РµРјС‹Р№ РїРѕРєР°Р·Р°С‚РµР»СЊ С‚РёРїР° WatchPar
 */
 class RDOPMDWatchPar: public RDOPMDResult, public IResult, public IModelStructure, public INotify
 {
@@ -137,7 +137,7 @@ private:
 
 /*!
   \class     RDOPMDWatchState
-  \brief     Собираемый показатель типа WatchState
+  \brief     РЎРѕР±РёСЂР°РµРјС‹Р№ РїРѕРєР°Р·Р°С‚РµР»СЊ С‚РёРїР° WatchState
 */
 class RDOPMDWatchState: public RDOPMDResult, public IResult, public IModelStructure
 {
@@ -193,7 +193,7 @@ private:
 
 /*!
   \class     RDOPMDWatchQuant
-  \brief     Собираемый показатель типа WatchQuant
+  \brief     РЎРѕР±РёСЂР°РµРјС‹Р№ РїРѕРєР°Р·Р°С‚РµР»СЊ С‚РёРїР° WatchQuant
 */
 class RDOPMDWatchQuant: public RDOPMDResult, public IResult, public IResultWatchQuant, public IModelStructure
 {
@@ -257,7 +257,7 @@ private:
 
 /*!
   \class     RDOPMDWatchValue
-  \brief     Собираемый показатель типа WatchValue
+  \brief     РЎРѕР±РёСЂР°РµРјС‹Р№ РїРѕРєР°Р·Р°С‚РµР»СЊ С‚РёРїР° WatchValue
 */
 class RDOPMDWatchValue: public RDOPMDResult, public IResult, public IResultWatchValue, public IModelStructure
 {
@@ -300,7 +300,7 @@ private:
 
 /*!
   \class     RDOPMDGetValue
-  \brief     Собираемый показатель типа GetValue
+  \brief     РЎРѕР±РёСЂР°РµРјС‹Р№ РїРѕРєР°Р·Р°С‚РµР»СЊ С‚РёРїР° GetValue
 */
 class RDOPMDGetValue: public RDOPMDResult, public IResult, public IResultGetValue, public IModelStructure
 {

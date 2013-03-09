@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/runtime/rdo_array.h
-  \authors   Чирков Михаил
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      14.12.2009
-  \brief     Массив
+  \brief     РњР°СЃСЃРёРІ
   \indent    4T
 */
 
@@ -27,7 +27,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 PREDECLARE_POINTER(RDOArrayType    );
 PREDECLARE_POINTER(RDOArrayIterator);
 
-//! Элемент массива
+//! Р­Р»РµРјРµРЅС‚ РјР°СЃСЃРёРІР°
 OBJECT(RDOArrayValue)
 {
 DECLARE_FACTORY(RDOArrayValue)
@@ -57,7 +57,7 @@ private:
 	LPRDOArrayType  m_pArrayType;
 };
 
-//! Итератор массива
+//! РС‚РµСЂР°С‚РѕСЂ РјР°СЃСЃРёРІР°
 class RDOArrayIterator: public RDOType
 {
 DECLARE_FACTORY(RDOArrayIterator)
@@ -81,7 +81,7 @@ private:
 	Iterator  m_iterator;
 };
 
-//! Тип массив
+//! РўРёРї РјР°СЃСЃРёРІ
 class RDOArrayType: public RDOType
 {
 DECLARE_FACTORY(RDOArrayType);

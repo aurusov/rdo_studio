@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_simulator.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      19.04.2008
-  \brief     Симулятор РДО
+  \brief     РЎРёРјСѓР»СЏС‚РѕСЂ Р Р”Рћ
   \indent    4T
 */
 
@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class     RDOSimulator
-  \brief     Один из базовых классов для RDORuntime
+  \brief     РћРґРёРЅ РёР· Р±Р°Р·РѕРІС‹С… РєР»Р°СЃСЃРѕРІ РґР»СЏ RDORuntime
 */
 CLASS(RDOSimulator): INSTANCE_OF (RDOSimulatorBase)
 {
@@ -37,11 +37,11 @@ public:
 
 	tstring          writeActivitiesStructure(REF(ruint) counter);
 
-	/// @todo Найти к чему относится этот комментарий
-	// Для DPT необходимо перекрыть две нижеследующие функции:
-	// 1. Создает клон RDOSimulator с копиями всех ресурсов, но не более
+	/// @todo РќР°Р№С‚Рё Рє С‡РµРјСѓ РѕС‚РЅРѕСЃРёС‚СЃСЏ СЌС‚РѕС‚ РєРѕРјРјРµРЅС‚Р°СЂРёР№
+	// Р”Р»СЏ DPT РЅРµРѕР±С…РѕРґРёРјРѕ РїРµСЂРµРєСЂС‹С‚СЊ РґРІРµ РЅРёР¶РµСЃР»РµРґСѓСЋС‰РёРµ С„СѓРЅРєС†РёРё:
+	// 1. РЎРѕР·РґР°РµС‚ РєР»РѕРЅ RDOSimulator СЃ РєРѕРїРёСЏРјРё РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ, РЅРѕ РЅРµ Р±РѕР»РµРµ
 	// virtual PTR(RDOSimulator) clone()                   = 0;
-	// 2. Сравнение двух симуляторов по ресурсам
+	// 2. РЎСЂР°РІРЅРµРЅРёРµ РґРІСѓС… СЃРёРјСѓР»СЏС‚РѕСЂРѕРІ РїРѕ СЂРµСЃСѓСЂСЃР°Рј
 	// virtual rbool operator== (CREF(RDOSimulator) other) = 0;
 
 	ruint getSizeofSim() const;
@@ -51,7 +51,7 @@ public:
 protected:
 	void appendBaseOperation(LPIBaseOperationContainer pLogic, CREF(LPIBaseOperation) pBaseOperation);
 
-	// Инициализирует нерегулярные события и блоки GENERATE: задает время первого срабатывания
+	// РРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ РЅРµСЂРµРіСѓР»СЏСЂРЅС‹Рµ СЃРѕР±С‹С‚РёСЏ Рё Р±Р»РѕРєРё GENERATE: Р·Р°РґР°РµС‚ РІСЂРµРјСЏ РїРµСЂРІРѕРіРѕ СЃСЂР°Р±Р°С‚С‹РІР°РЅРёСЏ
 	virtual void preProcess();
 
 	virtual void onResetResult     () = 0;

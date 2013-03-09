@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_function.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      17.12.2011
-  \brief     Функции с закладки FUN
+  \brief     Р¤СѓРЅРєС†РёРё СЃ Р·Р°РєР»Р°РґРєРё FUN
   \indent    4T
 */
 
@@ -18,7 +18,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовый файл функций с закладки FUN
+//! Р‘Р°Р·РѕРІС‹Р№ С„Р°Р№Р» С„СѓРЅРєС†РёР№ СЃ Р·Р°РєР»Р°РґРєРё FUN
 CALC(RDOFunCalc)
 {
 public:
@@ -28,7 +28,7 @@ protected:
 	RDOFunCalc();
 };
 
-//! Табличная функция
+//! РўР°Р±Р»РёС‡РЅР°СЏ С„СѓРЅРєС†РёСЏ
 CALC_SUB(RDOFuncTableCalc, RDOFunCalc)
 {
 DECLARE_FACTORY(RDOFuncTableCalc)
@@ -46,7 +46,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Функция типа список
+//! Р¤СѓРЅРєС†РёСЏ С‚РёРїР° СЃРїРёСЃРѕРє
 CALC_SUB(RDOFunListCalc, RDOFunCalc)
 {
 DECLARE_FACTORY(RDOFunListCalc)
@@ -65,7 +65,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Алгоритмическая функция
+//! РђР»РіРѕСЂРёС‚РјРёС‡РµСЃРєР°СЏ С„СѓРЅРєС†РёСЏ
 CALC_SUB(RDOFunAlgorithmicCalc, RDOFunCalc)
 {
 DECLARE_FACTORY(RDOFunAlgorithmicCalc)
@@ -81,7 +81,7 @@ protected:
 	DECLARE_ICalc;
 };
 
-//! Параметр функции
+//! РџР°СЂР°РјРµС‚СЂ С„СѓРЅРєС†РёРё
 CALC(RDOCalcFuncParam)
 {
 DECLARE_FACTORY(RDOCalcFuncParam)
@@ -93,7 +93,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Получение константы с закладки FUN
+//! РџРѕР»СѓС‡РµРЅРёРµ РєРѕРЅСЃС‚Р°РЅС‚С‹ СЃ Р·Р°РєР»Р°РґРєРё FUN
 CALC(RDOCalcGetConst)
 {
 DECLARE_FACTORY(RDOCalcGetConst)
@@ -105,7 +105,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Инициализация константы
+//! РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєРѕРЅСЃС‚Р°РЅС‚С‹
 CALC(RDOCalcSetConst)
 {
 DECLARE_FACTORY(RDOCalcSetConst)
@@ -118,7 +118,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Вызов функции (function-caller)
+//! Р’С‹Р·РѕРІ С„СѓРЅРєС†РёРё (function-caller)
 CALC(RDOCalcFunctionCaller)
 {
 DECLARE_FACTORY(RDOCalcFunctionCaller)

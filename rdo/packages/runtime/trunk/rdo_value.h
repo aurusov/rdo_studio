@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/runtime/rdo_value.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      22.06.2008
   \brief     RDOValue
   \indent    4T
@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(RDOEnumType);
 
-//! Значение переменных в РДО
+//! Р—РЅР°С‡РµРЅРёРµ РїРµСЂРµРјРµРЅРЅС‹С… РІ Р Р”Рћ
 class RDOValue
 {
 public:
@@ -111,7 +111,7 @@ public:
 	//void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
 
 private:
-	//! Строковый тип данных
+	//! РЎС‚СЂРѕРєРѕРІС‹Р№ С‚РёРї РґР°РЅРЅС‹С…
 	OBJECT(string_class) IS INSTANCE_OF(tstring)
 	{
 	public:
@@ -119,12 +119,12 @@ private:
 		rdo::intrusive_ptr<string_class> clone() const;
 	};
 
-	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
+	//! РўРёРї РєРѕРЅС‚РµР№РЅРµСЂР° Р·РЅР°С‡РµРЅРёСЏ, СЂР°Р·РјРµСЂ РѕРїСЂРµРґРµР»СЏРµС‚СЃСЏ РїРѕ РјР°РєСЃРёРјР°Р»СЊРЅРѕРјСѓ СЂР°Р·РјРµСЂСѓ С‚РёРїР° РґР°РЅРЅС‹С…
 	typedef rbyte Value[sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>)];
 
-	Value       m_value;     //!< контейнер значения
-	LPRDOType   m_pType;     //!< тип значения
-	rbool       m_undefined; //!< неопределенность значения
+	Value       m_value;     //!< РєРѕРЅС‚РµР№РЅРµСЂ Р·РЅР°С‡РµРЅРёСЏ
+	LPRDOType   m_pType;     //!< С‚РёРї Р·РЅР°С‡РµРЅРёСЏ
+	rbool       m_undefined; //!< РЅРµРѕРїСЂРµРґРµР»РµРЅРЅРѕСЃС‚СЊ Р·РЅР°С‡РµРЅРёСЏ
 
 	void set        (CREF(RDOValue) rdovalue);
 	void deleteValue();

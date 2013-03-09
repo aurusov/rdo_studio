@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_braces.h
-  \author    Чирков Михаил
+  \author    Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
   \date      16.04.2011
-  \brief     Список инструкций в стиле C++
+  \brief     РЎРїРёСЃРѕРє РёРЅСЃС‚СЂСѓРєС†РёР№ РІ СЃС‚РёР»Рµ C++
   \indent    4T
 */
 
@@ -17,7 +17,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Открывающая скобка
+//! РћС‚РєСЂС‹РІР°СЋС‰Р°СЏ СЃРєРѕР±РєР°
 CALC(RDOCalcOpenBrace)
 {
 DECLARE_FACTORY(RDOCalcOpenBrace)
@@ -27,7 +27,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Закрывающая скобка
+//! Р—Р°РєСЂС‹РІР°СЋС‰Р°СЏ СЃРєРѕР±РєР°
 CALC(RDOCalcCloseBrace)
 {
 DECLARE_FACTORY(RDOCalcCloseBrace)
@@ -37,7 +37,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Окончание функции
+//! РћРєРѕРЅС‡Р°РЅРёРµ С„СѓРЅРєС†РёРё
 CALC(RDOCalcFunEnd)
 {
 DECLARE_FACTORY(RDOCalcFunEnd)

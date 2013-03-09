@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      main.cpp
-  \authors   Чирков Михаил
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
+  \authors   РџСЂРѕР№РґР°РєРѕРІ Р•РІРіРµРЅРёР№ (lord.tiran@gmail.com)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      01.10.2010
-  \brief     Тест матриц
+  \brief     РўРµСЃС‚ РјР°С‚СЂРёС†
   \indent    4T
 */
 
@@ -243,7 +243,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestSetItem)
 	{
 		if (!ex.message().empty())
 		{
-			found = ex.message() == _T("Выход за пределы матрицы");
+			found = ex.message() == _T("Р’С‹С…РѕРґ Р·Р° РїСЂРµРґРµР»С‹ РјР°С‚СЂРёС†С‹");
 		}
 	}
 
@@ -275,7 +275,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestGetItem)
 	{
 		if (!ex.message().empty())
 		{
-			found = ex.message() == _T("Выход за пределы матрицы");
+			found = ex.message() == _T("Р’С‹С…РѕРґ Р·Р° РїСЂРµРґРµР»С‹ РјР°С‚СЂРёС†С‹");
 		}
 	}
 

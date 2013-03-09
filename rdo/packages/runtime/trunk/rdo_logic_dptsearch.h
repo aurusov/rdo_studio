@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_logic_dptsearch.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      29.04.2008
   \brief     DPTSearch
   \indent    4T
@@ -26,7 +26,7 @@ class TreeRoot;
 
 /*!
   \class   RDODPTSearch
-  \brief   Точка принятия решений DPTSearch
+  \brief   РўРѕС‡РєР° РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ DPTSearch
 */
 class RDODPTSearch: public RDOLogicSimple, public IDPTSearchLogic, public RDOPatternPrior
 {

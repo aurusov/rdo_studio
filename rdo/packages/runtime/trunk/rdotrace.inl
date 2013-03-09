@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdotrace.inl
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      06.08.2011
-  \brief     Трассировщик
+  \brief     РўСЂР°СЃСЃРёСЂРѕРІС‰РёРє
   \indent    4T
 */
 

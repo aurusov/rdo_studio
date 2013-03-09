@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_process.cpp
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      10.03.2011
-  \brief     RDOCalc для передачи управления в процесс из БЗ и событий
+  \brief     RDOCalc РґР»СЏ РїРµСЂРµРґР°С‡Рё СѓРїСЂР°РІР»РµРЅРёСЏ РІ РїСЂРѕС†РµСЃСЃ РёР· Р‘Р— Рё СЃРѕР±С‹С‚РёР№
   \indent    4T
 */
 
@@ -29,15 +29,15 @@ RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock, rsint relResNu
 
 RDOValue RDOCalcProcessControl::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	//по m_relResNum нужно найти ресурс (m_Transact) и передать его в процесс
+	//РїРѕ m_relResNum РЅСѓР¶РЅРѕ РЅР°Р№С‚Рё СЂРµСЃСѓСЂСЃ (m_Transact) Рё РїРµСЂРµРґР°С‚СЊ РµРіРѕ РІ РїСЂРѕС†РµСЃСЃ
 	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResNum);
 	LPRDOResource pResource = pRuntime->getResourceByID(resID);
-	/// @todo проверить, можно ли перенести проверку в парсер, чтобы сделать object_static_cast вместо object_dynamic_cast
+	/// @todo РїСЂРѕРІРµСЂРёС‚СЊ, РјРѕР¶РЅРѕ Р»Рё РїРµСЂРµРЅРµСЃС‚Рё РїСЂРѕРІРµСЂРєСѓ РІ РїР°СЂСЃРµСЂ, С‡С‚РѕР±С‹ СЃРґРµР»Р°С‚СЊ object_static_cast РІРјРµСЃС‚Рѕ object_dynamic_cast
 	LPRDOPROCTransact pTransact = pResource.object_dynamic_cast<RDOPROCTransact>();
 	if (pTransact)
 	{
 		pTransact->setBlock(m_Block);
-		// Записываем в конец списка этого блока перемещаемый транзакт
+		// Р—Р°РїРёСЃС‹РІР°РµРј РІ РєРѕРЅРµС† СЃРїРёСЃРєР° СЌС‚РѕРіРѕ Р±Р»РѕРєР° РїРµСЂРµРјРµС‰Р°РµРјС‹Р№ С‚СЂР°РЅР·Р°РєС‚
 		m_Block.query_cast<IPROCBlock>()->transactGoIn(pTransact);
 	}
 

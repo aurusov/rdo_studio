@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_resource.h
-  \authors   ¡‡Ò ¿ÎÂÍÒ‡Ì‰
-  \authors   ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
+  \authors   –ë–∞—Ä—Å –ê–ª–µ–∫—Å–∞–Ω–¥—Ä
+  \authors   –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
   \date      19.12.2011
-  \brief      ‡ÎÍË ‰Îˇ ÂÒÛÒÓ‚
+  \brief     –ö–∞–ª–∫–∏ –¥–ª—è —Ä–µ—Å—É—Ä—Å–æ–≤
   \indent    4T
 */
 
@@ -48,7 +48,7 @@ RDOValue RDOCalcGetResourceByID::doCalc(CREF(LPRDORuntime) pRuntime)
 	RDOValue value;
 	if (!RDOCalcGetResourceHelper::getResource(pRuntime, m_resourceID, value))
 	{
-		pRuntime->error().push(_T("ÕÂ Ì‡È‰ÂÌ ÂÒÛÒ"), srcInfo());
+		pRuntime->error().push(_T("–ù–µ –Ω–∞–π–¥–µ–Ω —Ä–µ—Å—É—Ä—Å"), srcInfo());
 	}
 	return value;
 }
@@ -80,7 +80,7 @@ RDOCalcGetUnknowResParam::RDOCalcGetUnknowResParam(CREF(tstring) resName, CREF(t
 
 RDOValue RDOCalcGetUnknowResParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->error().push(rdo::format(_T("œÓÔ˚ÚÍ‡ ËÒÔÓÎ¸ÁÓ‚‡Ú¸ ÌÂÒÛ˘ÂÒÚ‚Û˛˘ËÈ ÂÒÛÒ: %s.%s"), m_resName.c_str(), m_parName.c_str()), srcInfo());
+	pRuntime->error().push(rdo::format(_T("–ü–æ–ø—ã—Ç–∫–∞ –∏—Å–ø–æ–ª—å–∑–æ–≤–∞—Ç—å –Ω–µ—Å—É—â–µ—Å—Ç–≤—É—é—â–∏–π —Ä–µ—Å—É—Ä—Å: %s.%s"), m_resName.c_str(), m_parName.c_str()), srcInfo());
 	return RDOValue();
 }
 

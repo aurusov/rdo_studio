@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_memory.cpp
-  \author    Чирков Михаил
+  \author    Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
   \date      02.12.2010
-  \brief     Память
+  \brief     РџР°РјСЏС‚СЊ
   \indent    4T
 */
 

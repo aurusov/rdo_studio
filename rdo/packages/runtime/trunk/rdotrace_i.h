@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdotrace_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      28.07.2009
-  \brief     Интерфейс ITrace
+  \brief     РРЅС‚РµСЂС„РµР№СЃ ITrace
   \indent    4T
 */
 
@@ -17,7 +17,7 @@
 
 /*!
   \interface ITrace
-  \brief     Интерфейс ITrace
+  \brief     РРЅС‚РµСЂС„РµР№СЃ ITrace
 */
 class ITrace
 {
@@ -42,7 +42,7 @@ public:
 
 /*!
   \interface IResultTraceValue
-  \brief     Интерфейс IResultTraceValue
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IResultTraceValue
 */
 class IResultTraceValue
 {
@@ -55,7 +55,7 @@ public:
 
 /*!
   \interface IResultTrace
-  \brief     Интерфейс IResultTrace
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IResultTrace
 */
 class IResultTrace
 {

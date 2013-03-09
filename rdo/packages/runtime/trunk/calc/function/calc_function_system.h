@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_function_system.h
-  \author    Барс Александр
+  \author    Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
   \date      20.12.2011
-  \brief     Системные функции
+  \brief     РЎРёСЃС‚РµРјРЅС‹Рµ С„СѓРЅРєС†РёРё
   \indent    4T
 */
 
@@ -17,14 +17,14 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Получение текущего модельного времени
+//! РџРѕР»СѓС‡РµРЅРёРµ С‚РµРєСѓС‰РµРіРѕ РјРѕРґРµР»СЊРЅРѕРіРѕ РІСЂРµРјРµРЅРё
 CALC(RDOCalcGetTimeNow)
 {
 DECLARE_FACTORY(RDOCalcGetTimeNow)
 DECLARE_ICalc;
 };
 
-//! Получение реального времени работы модели
+//! РџРѕР»СѓС‡РµРЅРёРµ СЂРµР°Р»СЊРЅРѕРіРѕ РІСЂРµРјРµРЅРё СЂР°Р±РѕС‚С‹ РјРѕРґРµР»Рё
 CALC(RDOCalcGetSeconds)
 {
 DECLARE_FACTORY(RDOCalcGetSeconds)

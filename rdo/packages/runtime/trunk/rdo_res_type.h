@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_res_type.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      07.06.2011
-  \brief     Типы ресурсов в rdo::runtime
+  \brief     РўРёРїС‹ СЂРµСЃСѓСЂСЃРѕРІ РІ rdo::runtime
   \indent    4T
 */
 
@@ -20,8 +20,8 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Описывает РДО-тип ресурса (RTP), который суть фабрика для РДО-ресурсов
-//! tparam T - ресурс, который будет создаваться данной фабрикой
+//! РћРїРёСЃС‹РІР°РµС‚ Р Р”Рћ-С‚РёРї СЂРµСЃСѓСЂСЃР° (RTP), РєРѕС‚РѕСЂС‹Р№ СЃСѓС‚СЊ С„Р°Р±СЂРёРєР° РґР»СЏ Р Р”Рћ-СЂРµСЃСѓСЂСЃРѕРІ
+//! tparam T - СЂРµСЃСѓСЂСЃ, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ СЃРѕР·РґР°РІР°С‚СЊСЃСЏ РґР°РЅРЅРѕР№ С„Р°Р±СЂРёРєРѕР№
 template <class T>
 CLASS_PARENT_OF(RDOResourceTypeBase, RDOType)
 	IS  IMPLEMENTATION_OF(IResourceType     )
@@ -33,17 +33,17 @@ public:
 	typedef  T  value_type;
 
 private:
-	//! Конструктор
-	//! \param number - Целочисленный идентификатор
+	//! РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+	//! \param number - Р¦РµР»РѕС‡РёСЃР»РµРЅРЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ
 	RDOResourceTypeBase(ruint number);
 	virtual ~RDOResourceTypeBase();
 
 	DECLARE_IResourceType;
 };
 
-//! Тип ресурсов для создания обычных ресурсов РДО
-//! \details Создает ресурсы, которые могут быть релевантны активностям и
-//!          событиям, но не могут использоваться в процессах
+//! РўРёРї СЂРµСЃСѓСЂСЃРѕРІ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РѕР±С‹С‡РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ Р Р”Рћ
+//! \details РЎРѕР·РґР°РµС‚ СЂРµСЃСѓСЂСЃС‹, РєРѕС‚РѕСЂС‹Рµ РјРѕРіСѓС‚ Р±С‹С‚СЊ СЂРµР»РµРІР°РЅС‚РЅС‹ Р°РєС‚РёРІРЅРѕСЃС‚СЏРј Рё
+//!          СЃРѕР±С‹С‚РёСЏРј, РЅРѕ РЅРµ РјРѕРіСѓС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РІ РїСЂРѕС†РµСЃСЃР°С…
 typedef  RDOResourceTypeBase<RDOResource>     RDOResourceType;
 typedef  rdo::intrusive_ptr<RDOResourceType>  LPRDOResourceType;
 

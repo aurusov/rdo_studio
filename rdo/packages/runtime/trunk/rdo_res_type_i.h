@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_res_type_i.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      05.06.2011
-  \brief     Интерфейс для типов ресурсов
-  \details   Типы ресурсов - фабрики ресурсов. См. паттерн "Фабричный метод"
+  \brief     РРЅС‚РµСЂС„РµР№СЃ РґР»СЏ С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ
+  \details   РўРёРїС‹ СЂРµСЃСѓСЂСЃРѕРІ - С„Р°Р±СЂРёРєРё СЂРµСЃСѓСЂСЃРѕРІ. РЎРј. РїР°С‚С‚РµСЂРЅ "Р¤Р°Р±СЂРёС‡РЅС‹Р№ РјРµС‚РѕРґ"
   \indent    4T
 */
 
@@ -24,7 +24,7 @@ PREDECLARE_POINTER(RDOResource);
 
 /*!
   \interface IResourceType
-  \brief     Предоставляет фабричный метод createRes()
+  \brief     РџСЂРµРґРѕСЃС‚Р°РІР»СЏРµС‚ С„Р°Р±СЂРёС‡РЅС‹Р№ РјРµС‚РѕРґ createRes()
 */
 OBJECT_INTERFACE(IResourceType)
 {

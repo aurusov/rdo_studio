@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      advance.inl
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      12.02.2012
-  \brief     Процессный оператор ADVANCE
+  \brief     РџСЂРѕС†РµСЃСЃРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ ADVANCE
   \indent    4T
 */
 
@@ -26,7 +26,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class   RDOPROCAdvance
-  \brief   Процессный блок ADVANCE
+  \brief   РџСЂРѕС†РµСЃСЃРЅС‹Р№ Р±Р»РѕРє ADVANCE
 */
 class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation, public IInternalStatisticsManager
 {
@@ -42,8 +42,8 @@ protected:
 
 	/*!
 	  \struct  LeaveTr
-	  \brief   Время ухода транзакта
-	  \todo    что это?
+	  \brief   Р’СЂРµРјСЏ СѓС…РѕРґР° С‚СЂР°РЅР·Р°РєС‚Р°
+	  \todo    С‡С‚Рѕ СЌС‚Рѕ?
 	*/
 	struct LeaveTr
 	{

@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_fuzzy.inl
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      18.04.2009
-  \brief     Нечеткая логика
+  \brief     РќРµС‡РµС‚РєР°СЏ Р»РѕРіРёРєР°
   \indent    4T
 */
 

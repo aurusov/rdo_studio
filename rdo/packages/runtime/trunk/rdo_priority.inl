@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_priority.inl
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      03.10.2009
-  \brief     Описание приоритета активностей. Используется при сортировке БЗ.
+  \brief     РћРїРёСЃР°РЅРёРµ РїСЂРёРѕСЂРёС‚РµС‚Р° Р°РєС‚РёРІРЅРѕСЃС‚РµР№. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РїСЂРё СЃРѕСЂС‚РёСЂРѕРІРєРµ Р‘Р—.
   \indent    4T
 */
 

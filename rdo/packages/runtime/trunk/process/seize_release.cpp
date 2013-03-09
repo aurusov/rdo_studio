@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      seize_release.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      12.02.2012
-  \brief     Процессные операторы SEIZE и RELEASE
+  \brief     РџСЂРѕС†РµСЃСЃРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹ SEIZE Рё RELEASE
   \indent    4T
 */
 
@@ -32,8 +32,8 @@ RDOPROCBlockForSeize::RDOPROCBlockForSeize(LPIPROCProcess process, std::vector <
 
 void RDOPROCBlockForSeize::_onStart(CREF(LPRDORuntime) pRuntime)
 {
-	/// @todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
-	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
+	/// @todo: РµСЃР»Рё РїРѕС‚СЂРµР±СѓРµС‚СЃСЏ СЃС‚РѕРёС‚СЊ РґРµСЂРµРІСЊСЏ, РІРµСЂС€РёРЅР°РјРё РєРѕС‚РѕСЂС‹С… Р±СѓРґСѓС‚ РїРѕР»РЅС‹Рµ СЃРЅРёРјРєРё Р‘Р”,
+	// РєР°Рє РїСЂРё DPT search, С‚Рѕ РёРЅРёС†РёР°Р»РёР·Р°С†РёСЋ Р°С‚СЂРёР±СѓС‚РѕРІ РЅР°РґРѕ Р±СѓРґРµС‚ РґРµР»Р°С‚СЊ РІ checkOperation
 	std::vector<parser_for_Seize>::iterator it1 = fromParser.begin();
 	while (it1 != fromParser.end())
 	{
@@ -66,7 +66,7 @@ rbool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	ruint Size_Seizes = forRes.size();
 	for (ruint i = 0; i < Size_Seizes; i++)
 	{
-		// если свободен
+		// РµСЃР»Рё СЃРІРѕР±РѕРґРµРЅ
 		if (forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_free)
 		{
 			ruint idBlocksTransact    = m_transacts.front()->getTraceID();
@@ -148,7 +148,7 @@ rbool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 		{
 			if(forRes[i].rss == m_transacts.front()->getRes())
 			{
-				// Занят
+				// Р—Р°РЅСЏС‚
 				if (forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_buzy)
 				{
 					RDOTrace* tracer = pRuntime->getTracer();
@@ -160,10 +160,10 @@ rbool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 					}				
 					return true;
 				}		
-				// Не Занят и не свободен
+				// РќРµ Р—Р°РЅСЏС‚ Рё РЅРµ СЃРІРѕР±РѕРґРµРЅ
 				if (forRes[i].rss->getParam(forRes[i].Id_param) != forRes[i].enum_free)
 				{
-					//Удаляем транзакт
+					//РЈРґР°Р»СЏРµРј С‚СЂР°РЅР·Р°РєС‚
 					RDOTrace* tracer = pRuntime->getTracer();
 					TRACE3(_T("%7.1f RELEASES_Bad-%d, resId = %d\n"), pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
 					LPRDOPROCTransact transact = m_transacts.front();

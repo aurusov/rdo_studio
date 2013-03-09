@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/runtime/pch.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      11.06.2006
-  \brief     Включение стандартных заголовочных файлов C++ и РДО
+  \brief     Р’РєР»СЋС‡РµРЅРёРµ СЃС‚Р°РЅРґР°СЂС‚РЅС‹С… Р·Р°РіРѕР»РѕРІРѕС‡РЅС‹С… С„Р°Р№Р»РѕРІ C++ Рё Р Р”Рћ
   \indent    4T
 */
 

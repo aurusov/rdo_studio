@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_exception.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      22.06.2008
-  \brief     Определение исключений
+  \brief     РћРїСЂРµРґРµР»РµРЅРёРµ РёСЃРєР»СЋС‡РµРЅРёР№
   \indent    4T
 */
 
@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class     RDOException
-  \brief     Ошибка
+  \brief     РћС€РёР±РєР°
 */
 class RDOException
 {
@@ -37,7 +37,7 @@ private:
 
 /*!
   \class     RDORuntimeException
-  \brief     Ошибка времени выполнения
+  \brief     РћС€РёР±РєР° РІСЂРµРјРµРЅРё РІС‹РїРѕР»РЅРµРЅРёСЏ
 */
 class RDORuntimeException: public RDOException
 {
@@ -48,7 +48,7 @@ public:
 
 /*!
   \class     RDOTypeException
-  \brief     Ошибка в типе
+  \brief     РћС€РёР±РєР° РІ С‚РёРїРµ
 */
 class RDOTypeException: public RDORuntimeException
 {
@@ -59,7 +59,7 @@ public:
 
 /*!
   \class     RDOValueException
-  \brief     Ошибка в значении
+  \brief     РћС€РёР±РєР° РІ Р·РЅР°С‡РµРЅРёРё
 */
 class RDOValueException: public RDORuntimeException
 {
@@ -70,7 +70,7 @@ public:
 
 /*!
   \class     RDOValueException
-  \brief     Ошибка - значение не определено
+  \brief     РћС€РёР±РєР° - Р·РЅР°С‡РµРЅРёРµ РЅРµ РѕРїСЂРµРґРµР»РµРЅРѕ
 */
 class RDOUndefinedException: public RDORuntimeException
 {
@@ -81,7 +81,7 @@ public:
 
 /*!
   \class     RDOInternalException
-  \brief     Внутренняя ошибка
+  \brief     Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°
 */
 class RDOInternalException: public RDORuntimeException
 {

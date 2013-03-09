@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/runtime/rdo_logic.inl
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
-  \authors   Ëóùàí Äìèòðèé (dluschan@rk9.bmstu.ru)
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
+  \authors   Ð›ÑƒÑ‰Ð°Ð½ Ð”Ð¼Ð¸Ñ‚Ñ€Ð¸Ð¹ (dluschan@rk9.bmstu.ru)
   \date      03.10.2009
-  \brief     Ëîãèêà - êîíòåéíåð ÁÇ
+  \brief     Ð›Ð¾Ð³Ð¸ÐºÐ° - ÐºÐ¾Ð½Ñ‚ÐµÐ¹Ð½ÐµÑ€ Ð‘Ð—
   \indent    4T
 */
 
@@ -24,11 +24,11 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/// @todo íå ñòîèò ëè çäåñü ïåðåéòè íà ôóíêòîðû?
+/// @todo Ð½Ðµ ÑÑ‚Ð¾Ð¸Ñ‚ Ð»Ð¸ Ð·Ð´ÐµÑÑŒ Ð¿ÐµÑ€ÐµÐ¹Ñ‚Ð¸ Ð½Ð° Ñ„ÑƒÐ½ÐºÑ‚Ð¾Ñ€Ñ‹?
 
 /*!
   \def   LOGIC_FOR_ALL()
-  \brief Èòåðàöèÿ ïî ëîãèêè ÁÇ
+  \brief Ð˜Ñ‚ÐµÑ€Ð°Ñ†Ð¸Ñ Ð¿Ð¾ Ð»Ð¾Ð³Ð¸ÐºÐ¸ Ð‘Ð—
 */
 #define LOGIC_FOR_ALL() STL_FOR_ALL(m_childList, it)
 
@@ -66,7 +66,7 @@ inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, REF(Base
 				RDOValue value = pPriorCalc->calcValue(pRuntime);
 				if (value < 0.0 || value > 1.0)
 				{
-					pRuntime->error().push(rdo::format(_T("Ïðèîðèòåò àêòèâíîñòè âûøåë çà ïðåäåëû äèàïàçîíà [0..1]: %s"), value.getAsString().c_str()), pPriorCalc->srcInfo());
+					pRuntime->error().push(rdo::format(_T("ÐŸÑ€Ð¸Ð¾Ñ€Ð¸Ñ‚ÐµÑ‚ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸ Ð²Ñ‹ÑˆÐµÐ» Ð·Ð° Ð¿Ñ€ÐµÐ´ÐµÐ»Ñ‹ Ð´Ð¸Ð°Ð¿Ð°Ð·Ð¾Ð½Ð° [0..1]: %s"), value.getAsString().c_str()), pPriorCalc->srcInfo());
 				}
 			}
 		}

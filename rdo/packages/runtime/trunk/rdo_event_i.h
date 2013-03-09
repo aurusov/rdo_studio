@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_event_i.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      23.05.2010
-  \brief     Интерфейс событий
+  \brief     РРЅС‚РµСЂС„РµР№СЃ СЃРѕР±С‹С‚РёР№
   \indent    4T
 */
 
@@ -17,8 +17,8 @@
 
 /*!
   \interface IEvent
-  \brief     Интерфейс событий
-  \todo      что это?
+  \brief     РРЅС‚РµСЂС„РµР№СЃ СЃРѕР±С‹С‚РёР№
+  \todo      С‡С‚Рѕ СЌС‚Рѕ?
 */
 class IEvent
 {

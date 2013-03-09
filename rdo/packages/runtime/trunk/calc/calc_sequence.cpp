@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_sequence.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      13.03.2011
-  \brief     Последовательности
+  \brief     РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
   \indent    4T
 */
 
@@ -70,7 +70,7 @@ RDOValue RDOCalcSeqNextUniform::getNextValue(CREF(LPRDORuntime) pRuntime)
 	if (from > to)
 	{
 		pRuntime->error().push(
-			rdo::format(_T("Для последовательности типа uniform нижняя граница диапазона должна быть меньше либо равна верхней, текущие значения: %s..%s")
+			rdo::format(_T("Р”Р»СЏ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё С‚РёРїР° uniform РЅРёР¶РЅСЏСЏ РіСЂР°РЅРёС†Р° РґРёР°РїР°Р·РѕРЅР° РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РјРµРЅСЊС€Рµ Р»РёР±Рѕ СЂР°РІРЅР° РІРµСЂС…РЅРµР№, С‚РµРєСѓС‰РёРµ Р·РЅР°С‡РµРЅРёСЏ: %s..%s")
 				, from.getAsString().c_str()
 				, to  .getAsString().c_str())
 			, srcInfo()
@@ -106,7 +106,7 @@ RDOValue RDOCalcSeqNextTriangular::getNextValue(CREF(LPRDORuntime) pRuntime)
 	if ((from > top) || (top > to))
 	{
 		pRuntime->error().push(
-			rdo::format(_T("Для треуголного закона распределения нужно указать левую границу, точку под высотой треугольника, правую границу: %s, %s, %s")
+			rdo::format(_T("Р”Р»СЏ С‚СЂРµСѓРіРѕР»РЅРѕРіРѕ Р·Р°РєРѕРЅР° СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ РЅСѓР¶РЅРѕ СѓРєР°Р·Р°С‚СЊ Р»РµРІСѓСЋ РіСЂР°РЅРёС†Сѓ, С‚РѕС‡РєСѓ РїРѕРґ РІС‹СЃРѕС‚РѕР№ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР°, РїСЂР°РІСѓСЋ РіСЂР°РЅРёС†Сѓ: %s, %s, %s")
 				, from.getAsString().c_str()
 				, top.getAsString().c_str()
 				, to.getAsString().c_str())

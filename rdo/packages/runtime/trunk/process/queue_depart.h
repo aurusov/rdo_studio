@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      queue_depart.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      12.02.2012
-  \brief     Процессные операторы QUEUE и DEPART
+  \brief     РџСЂРѕС†РµСЃСЃРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹ QUEUE Рё DEPART
   \indent    4T
 */
 
@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \struct  runtime_for_Queue
-  \brief   Вспомогательный класс для оператора QUEUE в Runtime
+  \brief   Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РѕРїРµСЂР°С‚РѕСЂР° QUEUE РІ Runtime
 */
 struct runtime_for_Queue
 {
@@ -36,7 +36,7 @@ struct runtime_for_Queue
 
 /*!
   \struct  parser_for_Queue
-  \brief   Вспомогательный класс для оператора QUEUE в Parser
+  \brief   Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РѕРїРµСЂР°С‚РѕСЂР° QUEUE РІ Parser
 */
 struct parser_for_Queue
 {
@@ -46,7 +46,7 @@ struct parser_for_Queue
 
 /*!
   \class   RDOPROCBlockForQueue
-  \brief   Вспомогательный класс для процессного оператора QUEUE
+  \brief   Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РїСЂРѕС†РµСЃСЃРЅРѕРіРѕ РѕРїРµСЂР°С‚РѕСЂР° QUEUE
 */
 class RDOPROCBlockForQueue: public RDOPROCBlock
 {
@@ -60,7 +60,7 @@ protected:
 
 /*!
   \class   RDOPROCQueue
-  \brief   Процессный блок QUEUE
+  \brief   РџСЂРѕС†РµСЃСЃРЅС‹Р№ Р±Р»РѕРє QUEUE
 */
 class RDOPROCQueue: public RDOPROCBlockForQueue, public IBaseOperation
 {
@@ -82,7 +82,7 @@ private:
 
 /*!
   \class   RDOPROCDepart
-  \brief   Процессный блок DEPART
+  \brief   РџСЂРѕС†РµСЃСЃРЅС‹Р№ Р±Р»РѕРє DEPART
 */
 class RDOPROCDepart: public RDOPROCBlockForQueue, public IBaseOperation
 {

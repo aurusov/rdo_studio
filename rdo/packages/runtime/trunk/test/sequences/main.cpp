@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      main.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Клеванец Игорь (impus@hotbox.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   РљР»РµРІР°РЅРµС† РРіРѕСЂСЊ (impus@hotbox.ru)
   \date      2.10.2011
-  \brief     Тест законов распределения
+  \brief     РўРµСЃС‚ Р·Р°РєРѕРЅРѕРІ СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ
   \indent    4T
 */
 
@@ -34,29 +34,29 @@ typedef std::vector<double> Container;
 typedef std::vector<ruint>  ContainerInt;
 typedef const tstring contstr;
 
-const long int g_seed                 = 123456789;                  //!< база генератора
-contstr        g_filePath             = _T("../../test/sequences/");//!< путь к файлам относительно проекта
-contstr        g_fileNormalName       = _T("data_normal.txt");      //!< файл данных
-contstr        g_fileUniformName      = _T("data_uniform.txt");     //!< файл данных
-contstr        g_fileExponentialName  = _T("data_exponential.txt"); //!< файл данных
-contstr        g_fileTriangularName   = _T("data_trinagular.txt");  //!< файл данных
+const long int g_seed                 = 123456789;                  //!< Р±Р°Р·Р° РіРµРЅРµСЂР°С‚РѕСЂР°
+contstr        g_filePath             = _T("../../test/sequences/");//!< РїСѓС‚СЊ Рє С„Р°Р№Р»Р°Рј РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ РїСЂРѕРµРєС‚Р°
+contstr        g_fileNormalName       = _T("data_normal.txt");      //!< С„Р°Р№Р» РґР°РЅРЅС‹С…
+contstr        g_fileUniformName      = _T("data_uniform.txt");     //!< С„Р°Р№Р» РґР°РЅРЅС‹С…
+contstr        g_fileExponentialName  = _T("data_exponential.txt"); //!< С„Р°Р№Р» РґР°РЅРЅС‹С…
+contstr        g_fileTriangularName   = _T("data_trinagular.txt");  //!< С„Р°Р№Р» РґР°РЅРЅС‹С…
 
-const ruint    g_count                = 100000;                     //!< количество генерируемых данных
-const double   g_main                 = 10.0;                       //!< параметр закона экспоненциального и нормального
-const double   g_var                  = 1.0;                        //!< параметр закона нормального
-const double   g_from                 = 1.0;                        //!< параметр закона равномерного и треугольного
-const double   g_to                   = 7.0;                        //!< параметр закона равномерного и треугольного
-const double   g_top                  = 5.0;                        //!< параметр закона треугольного
+const ruint    g_count                = 100000;                     //!< РєРѕР»РёС‡РµСЃС‚РІРѕ РіРµРЅРµСЂРёСЂСѓРµРјС‹С… РґР°РЅРЅС‹С…
+const double   g_main                 = 10.0;                       //!< РїР°СЂР°РјРµС‚СЂ Р·Р°РєРѕРЅР° СЌРєСЃРїРѕРЅРµРЅС†РёР°Р»СЊРЅРѕРіРѕ Рё РЅРѕСЂРјР°Р»СЊРЅРѕРіРѕ
+const double   g_var                  = 1.0;                        //!< РїР°СЂР°РјРµС‚СЂ Р·Р°РєРѕРЅР° РЅРѕСЂРјР°Р»СЊРЅРѕРіРѕ
+const double   g_from                 = 1.0;                        //!< РїР°СЂР°РјРµС‚СЂ Р·Р°РєРѕРЅР° СЂР°РІРЅРѕРјРµСЂРЅРѕРіРѕ Рё С‚СЂРµСѓРіРѕР»СЊРЅРѕРіРѕ
+const double   g_to                   = 7.0;                        //!< РїР°СЂР°РјРµС‚СЂ Р·Р°РєРѕРЅР° СЂР°РІРЅРѕРјРµСЂРЅРѕРіРѕ Рё С‚СЂРµСѓРіРѕР»СЊРЅРѕРіРѕ
+const double   g_top                  = 5.0;                        //!< РїР°СЂР°РјРµС‚СЂ Р·Р°РєРѕРЅР° С‚СЂРµСѓРіРѕР»СЊРЅРѕРіРѕ
 #if defined(ARCHITECTURE_X86)
-const ruint    g_precision            = 20;                         //!< точность вещественного числа при выводе в поток
+const ruint    g_precision            = 20;                         //!< С‚РѕС‡РЅРѕСЃС‚СЊ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ С‡РёСЃР»Р° РїСЂРё РІС‹РІРѕРґРµ РІ РїРѕС‚РѕРє
 #elif defined(ARCHITECTURE_AMD64) || defined(ARCHITECTURE_ARM)
-const ruint    g_precision            = 14;                         //!< точность вещественного числа при выводе в поток
+const ruint    g_precision            = 14;                         //!< С‚РѕС‡РЅРѕСЃС‚СЊ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ С‡РёСЃР»Р° РїСЂРё РІС‹РІРѕРґРµ РІ РїРѕС‚РѕРє
 #endif
 
-const ruint    g_countOfExamples      = 2000;                       //!< количество чисел в выборке
-const ruint    g_countOfR             = 39;                         //!< число разрядов
-const double   pi                     = 3.141592653;                //!< фундаментальная константа
-const double   g_ksiEtalon            = 50.9985;                    //!< табличное значение. 95% вероятность того, что это действительно тот самый закон распределения
+const ruint    g_countOfExamples      = 2000;                       //!< РєРѕР»РёС‡РµСЃС‚РІРѕ С‡РёСЃРµР» РІ РІС‹Р±РѕСЂРєРµ
+const ruint    g_countOfR             = 39;                         //!< С‡РёСЃР»Рѕ СЂР°Р·СЂСЏРґРѕРІ
+const double   pi                     = 3.141592653;                //!< С„СѓРЅРґР°РјРµРЅС‚Р°Р»СЊРЅР°СЏ РєРѕРЅСЃС‚Р°РЅС‚Р°
+const double   g_ksiEtalon            = 50.9985;                    //!< С‚Р°Р±Р»РёС‡РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ. 95% РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ С‚РѕРіРѕ, С‡С‚Рѕ СЌС‚Рѕ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ С‚РѕС‚ СЃР°РјС‹Р№ Р·Р°РєРѕРЅ СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ
 
 // --------------------------------------------------------------------------------
 // -------Templates
@@ -160,26 +160,26 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 {
 	Container x;
 	x.reserve(g_countOfR + 1);
-	double elem = (right-left)/(g_countOfR*1.0);	//расстояние между точками на прямой
+	double elem = (right-left)/(g_countOfR*1.0);	//СЂР°СЃСЃС‚РѕСЏРЅРёРµ РјРµР¶РґСѓ С‚РѕС‡РєР°РјРё РЅР° РїСЂСЏРјРѕР№
 
 	for (ruint i = 0; i < g_countOfR + 1; ++i)
 	{
 		x.push_back(left + elem*i);
 	}
 
-	Container vb;									//контейнер для хранения выборки
+	Container vb;									//РєРѕРЅС‚РµР№РЅРµСЂ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РІС‹Р±РѕСЂРєРё
 	vb.reserve(g_countOfExamples);
 
-	G sequence(g_seed);								//выборка
+	G sequence(g_seed);								//РІС‹Р±РѕСЂРєР°
 	for (ruint i = 0; i < g_countOfExamples; ++i)
 	{
 		vb.push_back(binderSeq.operator()(&sequence));
 	}
 
-	Container f_vb;									//контейнер для храниения количества попаданий на интервал
+	Container f_vb;									//РєРѕРЅС‚РµР№РЅРµСЂ РґР»СЏ С…СЂР°РЅРёРµРЅРёСЏ РєРѕР»РёС‡РµСЃС‚РІР° РїРѕРїР°РґР°РЅРёР№ РЅР° РёРЅС‚РµСЂРІР°Р»
 	f_vb.reserve(g_countOfR);
 
-	for(ruint i = 0; i < g_countOfR; ++i)			//нахождение количества попаданий на интервал
+	for(ruint i = 0; i < g_countOfR; ++i)			//РЅР°С…РѕР¶РґРµРЅРёРµ РєРѕР»РёС‡РµСЃС‚РІР° РїРѕРїР°РґР°РЅРёР№ РЅР° РёРЅС‚РµСЂРІР°Р»
 	{
 		ruint freq = 0;
 		for(ruint k = 0; k < g_countOfExamples; ++k)

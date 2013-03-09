@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/runtime/rdo_value.inl
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      24.07.2008
   \brief     RDOValue
   \indent    4T
@@ -327,7 +327,7 @@ inline tstring RDOValue::getAsString() const
 	case RDOType::t_pointer      : return onPointerAsString();
 	default                      : break;
 	}
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод getAsString()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ getAsString()"));
 }
 
 inline tstring RDOValue::getAsStringForTrace() const
@@ -345,7 +345,7 @@ inline tstring RDOValue::getAsStringForTrace() const
 	case RDOType::t_pointer: return onPointerAsString();
 	default                : break;
 	}
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод getAsStringForTrace()"));
+	throw RDOValueException(_T("Р”Р»СЏ rdo::runtime::RDOValue РЅРµ РѕРїСЂРµРґРµР»РµРЅ РјРµС‚РѕРґ getAsStringForTrace()"));
 }
 
 inline void RDOValue::set(CREF(RDOValue) rdovalue)

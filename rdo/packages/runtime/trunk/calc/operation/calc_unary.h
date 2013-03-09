@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_unary.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      13.03.2011
-  \brief     Унарные операторы
+  \brief     РЈРЅР°СЂРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹
   \indent    4T
 */
 
@@ -19,7 +19,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовый класс для унарного оператора
+//! Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ РґР»СЏ СѓРЅР°СЂРЅРѕРіРѕ РѕРїРµСЂР°С‚РѕСЂР°
 class RDOCalcUnaryBase: public RDOCalc
 {
 public:
@@ -34,10 +34,10 @@ protected:
 
 /*!
   \class   RDOCalcUnary
-  \tparam  ret_type  Возвращаемое значение
-  \tparam  pOperator Оператор
-  \tparam  CalcType  Тип бинарного оператора
-  \brief   Базовый унарный оператор
+  \tparam  ret_type  Р’РѕР·РІСЂР°С‰Р°РµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ
+  \tparam  pOperator РћРїРµСЂР°С‚РѕСЂ
+  \tparam  CalcType  РўРёРї Р±РёРЅР°СЂРЅРѕРіРѕ РѕРїРµСЂР°С‚РѕСЂР°
+  \brief   Р‘Р°Р·РѕРІС‹Р№ СѓРЅР°СЂРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ
 */
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
 class RDOCalcUnary: public RDOCalcUnaryBase
@@ -57,13 +57,13 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Унарный оператор плюс
+//! РЈРЅР°СЂРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ РїР»СЋСЃ
 typedef RDOCalcUnary<RDOValue, &RDOValue::operator-, OperatorType::OT_ARITHM> RDOCalcUMinus;
 
-//! Оператор праобразования вещественного числа в целое
+//! РћРїРµСЂР°С‚РѕСЂ РїСЂР°РѕР±СЂР°Р·РѕРІР°РЅРёСЏ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ С‡РёСЃР»Р° РІ С†РµР»РѕРµ
 typedef RDOCalcUnary<rsint,    &RDOValue::getInt   , OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
 
-//! Преобразование вещественного в целое по типу lvalue
+//! РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ РІ С†РµР»РѕРµ РїРѕ С‚РёРїСѓ lvalue
 CALC_SUB(RDOCalcDoubleToIntByResult, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcDoubleToIntByResult)
@@ -79,7 +79,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Приведение к целому
+//! РџСЂРёРІРµРґРµРЅРёРµ Рє С†РµР»РѕРјСѓ
 CALC_SUB(RDOCalcInt, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcInt)

@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_runtime.cpp
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
-  \authors   Ëóùàí Äìèòðèé (dluschan@rk9.bmstu.ru)
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
+  \authors   Ð›ÑƒÑ‰Ð°Ð½ Ð”Ð¼Ð¸Ñ‚Ñ€Ð¸Ð¹ (dluschan@rk9.bmstu.ru)
   \date      16.05.2007
   \brief     RDORuntime implementation
   \indent    4T
@@ -216,11 +216,11 @@ void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 	LPRDOResource res = m_resourceListByID.at(resourceID);
 	if (!res)
 	{
-		error().push(rdo::format(_T("Âðåìåííûé ðåñóðñ óæå óäàëåí. Âîçìîæíî, îí óäàëåí ðàíåå â ýòîì æå îáðàçöå. Èìÿ ðåëåâàíòíîãî ðåñóðñà: %s"), pCalc ? pCalc->getName().c_str() : _T("íåèçâåñòíîå èìÿ")), pCalc->srcInfo());
+		error().push(rdo::format(_T("Ð’Ñ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ð¹ Ñ€ÐµÑÑƒÑ€Ñ ÑƒÐ¶Ðµ ÑƒÐ´Ð°Ð»ÐµÐ½. Ð’Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾, Ð¾Ð½ ÑƒÐ´Ð°Ð»ÐµÐ½ Ñ€Ð°Ð½ÐµÐµ Ð² ÑÑ‚Ð¾Ð¼ Ð¶Ðµ Ð¾Ð±Ñ€Ð°Ð·Ñ†Ðµ. Ð˜Ð¼Ñ Ñ€ÐµÐ»ÐµÐ²Ð°Ð½Ñ‚Ð½Ð¾Ð³Ð¾ Ñ€ÐµÑÑƒÑ€ÑÐ°: %s"), pCalc ? pCalc->getName().c_str() : _T("Ð½ÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ð¾Ðµ Ð¸Ð¼Ñ")), pCalc->srcInfo());
 	}
 	if (!res->canFree())
 	{
-		error().push(_T("Íåâîçìîæíî óäàëèòü ðåñóðñ, ò.ê. îí åùå èñïîëüçóåòñÿ"), pCalc->srcInfo());
+		error().push(_T("ÐÐµÐ²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ ÑƒÐ´Ð°Ð»Ð¸Ñ‚ÑŒ Ñ€ÐµÑÑƒÑ€Ñ, Ñ‚.Ðº. Ð¾Ð½ ÐµÑ‰Ðµ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ"), pCalc->srcInfo());
 	}
 	else
 	{
@@ -231,7 +231,7 @@ void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 			++it;
 		}
 		m_resourceListByID.at(resourceID) = NULL;
-		// Äèñòðóêòîð ðåñóðñà âûçûâàåòñÿ â std::list::erase, êîòîðûé âûçûâàåòñÿ èç std::list::remove
+		// Ð”Ð¸ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€ Ñ€ÐµÑÑƒÑ€ÑÐ° Ð²Ñ‹Ð·Ñ‹Ð²Ð°ÐµÑ‚ÑÑ Ð² std::list::erase, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ð²Ñ‹Ð·Ñ‹Ð²Ð°ÐµÑ‚ÑÑ Ð¸Ð· std::list::remove
 		m_resourceListByTime.remove(res);
 		notify().fireMessage(Notify::RO_BEFOREDELETE, (void*)res->getTraceID());
 		onResourceErase(res);
@@ -255,7 +255,7 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 		else
 		{
 			error().push(RDOSyntaxMessage(
-				_T("Âíóòðåííÿÿ îøèáêà: insertNewResource"),
+				_T("Ð’Ð½ÑƒÑ‚Ñ€ÐµÐ½Ð½ÑÑ Ð¾ÑˆÐ¸Ð±ÐºÐ°: insertNewResource"),
 				rdoModelObjects::PAT,
 				0,
 				0
@@ -266,7 +266,7 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 	if (m_resourceListByID.size() >= 200)
 	{
 		error().push(RDOSyntaxMessage(
-			_T("Ñðàáîòàëî ëèöåíçèîííîå îãðàíè÷åíèå íà êîëè÷åñòâî ðåñóðñîâ. Îáðàòèòåñü çà ïðèîáðèòåíèåì ïîëíîé âåðñèè"),
+			_T("Ð¡Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð»Ð¾ Ð»Ð¸Ñ†ÐµÐ½Ð·Ð¸Ð¾Ð½Ð½Ð¾Ðµ Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ðµ Ð½Ð° ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ñ€ÐµÑÑƒÑ€ÑÐ¾Ð². ÐžÐ±Ñ€Ð°Ñ‚Ð¸Ñ‚ÐµÑÑŒ Ð·Ð° Ð¿Ñ€Ð¸Ð¾Ð±Ñ€Ð¸Ñ‚ÐµÐ½Ð¸ÐµÐ¼ Ð¿Ð¾Ð»Ð½Ð¾Ð¹ Ð²ÐµÑ€ÑÐ¸Ð¸"),
 			rdoModelObjects::PAT,
 			0,
 			0
@@ -347,7 +347,7 @@ void RDORuntime::onInit()
 
 void RDORuntime::onDestroy()
 {
-	/// @todo Äèìà, ïî÷åìó ó ïåðâîãî ðåñóðñà ñ÷åò÷èê íà 1 áîëüøå, ÷åì ó äðóãèõ ?
+	/// @todo Ð”Ð¸Ð¼Ð°, Ð¿Ð¾Ñ‡ÐµÐ¼Ñƒ Ñƒ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾ Ñ€ÐµÑÑƒÑ€ÑÐ° ÑÑ‡ÐµÑ‚Ñ‡Ð¸Ðº Ð½Ð° 1 Ð±Ð¾Ð»ÑŒÑˆÐµ, Ñ‡ÐµÐ¼ Ñƒ Ð´Ñ€ÑƒÐ³Ð¸Ñ… ?
 	m_resourceListByTime.clear();
 	m_resourceListByID.clear();
 
@@ -394,7 +394,7 @@ void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 		}
 		else
 		{
-			// âñòàâêà ðåñóðñà â êîíòåéíåð m_resourceListByID íîâîãî RDORuntime ïðîèçîéäåò â åãî êîíñòðóêòîðå
+			// Ð²ÑÑ‚Ð°Ð²ÐºÐ° Ñ€ÐµÑÑƒÑ€ÑÐ° Ð² ÐºÐ¾Ð½Ñ‚ÐµÐ¹Ð½ÐµÑ€ m_resourceListByID Ð½Ð¾Ð²Ð¾Ð³Ð¾ RDORuntime Ð¿Ñ€Ð¾Ð¸Ð·Ð¾Ð¹Ð´ÐµÑ‚ Ð² ÐµÐ³Ð¾ ÐºÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€Ðµ
 			pOther->m_resourceListByID.at(i)->clone(this);
 			m_sizeofSim += sizeof(RDOResource) + sizeof(void*) * 2;
 		}

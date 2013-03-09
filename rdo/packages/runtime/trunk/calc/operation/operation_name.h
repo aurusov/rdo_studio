@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      operation_name.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      13.03.2011
-  \brief     Название операции
+  \brief     РќР°Р·РІР°РЅРёРµ РѕРїРµСЂР°С†РёРё
   \indent    4T
 */
 
@@ -22,8 +22,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class   OperatorName
-  \tparam  opr_type Тип операции
-  \brief   Регистрирует имена операций
+  \tparam  opr_type РўРёРї РѕРїРµСЂР°С†РёРё
+  \brief   Р РµРіРёСЃС‚СЂРёСЂСѓРµС‚ РёРјРµРЅР° РѕРїРµСЂР°С†РёР№
 */
 template <typename opr_type>
 class OperatorName

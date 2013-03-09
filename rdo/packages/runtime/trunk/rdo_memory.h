@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_memory.h
-  \author    Чирков Михаил
+  \author    Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
   \date      02.12.2010
-  \brief     Память
+  \brief     РџР°РјСЏС‚СЊ
   \indent    4T
 */
 
@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class     RDOMemory
-  \brief     Память
+  \brief     РџР°РјСЏС‚СЊ
 */
 OBJECT(RDOMemory)
 {
@@ -43,7 +43,7 @@ private:
 
 /*!
   \class     RDOMemoryStack
-  \brief     Стэк памяти
+  \brief     РЎС‚СЌРє РїР°РјСЏС‚Рё
 */
 OBJECT(RDOMemoryStack)
 {

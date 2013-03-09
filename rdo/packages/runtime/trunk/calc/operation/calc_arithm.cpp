@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_arithm.cpp
-  \authors   Áàðñ Àëåêñàíäð
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \authors   Ð‘Ð°Ñ€Ñ ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      13.03.2011
-  \brief     Àðèôìåòè÷åñêèå îïåðàöèè
+  \brief     ÐÑ€Ð¸Ñ„Ð¼ÐµÑ‚Ð¸Ñ‡ÐµÑÐºÐ¸Ðµ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¸
   \indent    4T
 */
 
@@ -28,7 +28,7 @@ RDOValue RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
 	RDOValue right = m_pRight->calcValue(pRuntime);
 	if (right == 0)
 	{
-		pRuntime->error().push(_T("Äåëåíèå íà íîëü"), srcInfo());
+		pRuntime->error().push(_T("Ð”ÐµÐ»ÐµÐ½Ð¸Ðµ Ð½Ð° Ð½Ð¾Ð»ÑŒ"), srcInfo());
 	}
 	return m_pLeft->calcValue(pRuntime) / right;
 }

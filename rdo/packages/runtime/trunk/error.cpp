@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      error.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      09.01.2012
   \brief     
   \indent    4T

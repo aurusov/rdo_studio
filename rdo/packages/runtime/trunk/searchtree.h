@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      searchtree.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      11.06.2006
-  \brief     Граф состояний DPTSearch как дерево
+  \brief     Р“СЂР°С„ СЃРѕСЃС‚РѕСЏРЅРёР№ DPTSearch РєР°Рє РґРµСЂРµРІРѕ
   \indent    4T
 */
 
@@ -23,8 +23,8 @@ class TreeNode;
 
 /*!
   \class   TreeRoot
-  \brief   Корень дерева DPT
-  \details С помощью createRootTreeNode создает реальный узер-корень
+  \brief   РљРѕСЂРµРЅСЊ РґРµСЂРµРІР° DPT
+  \details РЎ РїРѕРјРѕС‰СЊСЋ createRootTreeNode СЃРѕР·РґР°РµС‚ СЂРµР°Р»СЊРЅС‹Р№ СѓР·РµСЂ-РєРѕСЂРµРЅСЊ
 */
 class TreeRoot
 {
@@ -56,7 +56,7 @@ private:
 
 /*!
   \class   TreeNode
-  \brief   Узел графа DPT
+  \brief   РЈР·РµР» РіСЂР°С„Р° DPT
 */
 class TreeNode
 {
@@ -67,17 +67,17 @@ public:
 	std::vector<TreeNode*> m_children;
 	TreeNode*              m_parent;
 	TreeRoot*              m_root;
-	LPIDPTSearchActivity   m_activity; // активность (currAct), которую применил предок при создании this
+	LPIDPTSearchActivity   m_activity; // Р°РєС‚РёРІРЅРѕСЃС‚СЊ (currAct), РєРѕС‚РѕСЂСѓСЋ РїСЂРёРјРµРЅРёР» РїСЂРµРґРѕРє РїСЂРё СЃРѕР·РґР°РЅРёРё this
 	double                 m_costRule;
 	double                 m_costPath;
 	double                 m_costRest;
-	int                    m_number; // Номер узла
+	int                    m_number; // РќРѕРјРµСЂ СѓР·Р»Р°
 
 	void ExpandChildren();
 
 	/*!
 	  \class   NodeFoundInfo
-	  \brief   Оценка найденной вершины
+	  \brief   РћС†РµРЅРєР° РЅР°Р№РґРµРЅРЅРѕР№ РІРµСЂС€РёРЅС‹
 	*/
 	enum NodeFoundInfo
 	{
@@ -86,7 +86,7 @@ public:
 		nfi_found_loser  = 2
 	};
 
-	/// @todo задокументировать функцию
+	/// @todo Р·Р°РґРѕРєСѓРјРµРЅС‚РёСЂРѕРІР°С‚СЊ С„СѓРЅРєС†РёСЋ
 	// return 0 - no such simulator, 1 - exist better, 2 - exist not better
 	NodeFoundInfo CheckIfExistBetter(CREF(LPRDORuntime) pChildRuntime, double useCost, TreeNode** better );
 	void ReCostSubTree(double cost);
@@ -94,7 +94,7 @@ public:
 protected:
 	TreeNode(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) pParent, PTR(TreeRoot) pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt);
 
-	LPIDPTSearchActivity  m_currAct; // вершина пытается применять различные активности
+	LPIDPTSearchActivity  m_currAct; // РІРµСЂС€РёРЅР° РїС‹С‚Р°РµС‚СЃСЏ РїСЂРёРјРµРЅСЏС‚СЊ СЂР°Р·Р»РёС‡РЅС‹Рµ Р°РєС‚РёРІРЅРѕСЃС‚Рё
 	LPRDORuntime          m_pChildRuntime;
 
 	double m_newCostPath;

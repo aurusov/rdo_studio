@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_logic_dptsearch.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      29.04.2008
   \brief     DPTSearch
   \indent    4T
@@ -43,7 +43,7 @@ RDODPTSearch::~RDODPTSearch()
 
 IBaseOperation::BOResult RDODPTSearch::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
-	// Начало поиска: вывели трасировку, обновили статистику
+	// РќР°С‡Р°Р»Рѕ РїРѕРёСЃРєР°: РІС‹РІРµР»Рё С‚СЂР°СЃРёСЂРѕРІРєСѓ, РѕР±РЅРѕРІРёР»Рё СЃС‚Р°С‚РёСЃС‚РёРєСѓ
 	onSearchBegin(pRuntime);
 	treeRoot = createTreeRoot(pRuntime);
 	treeRoot->createRootTreeNode(pRuntime->clone());
@@ -57,7 +57,7 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 	ruint32 time_begin = ::GetTickCount();
 	for (;;)
 	{
-		// Возмем для раскрытия первую вершину из списка OPEN
+		// Р’РѕР·РјРµРј РґР»СЏ СЂР°СЃРєСЂС‹С‚РёСЏ РїРµСЂРІСѓСЋ РІРµСЂС€РёРЅСѓ РёР· СЃРїРёСЃРєР° OPEN
 		TreeNode* curr = *(treeRoot->m_OPEN.begin());
 		curr->ExpandChildren();
 		if (treeRoot->m_OPEN.empty() || treeRoot->m_targetNode) break;
@@ -72,9 +72,9 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 	rbool success = treeRoot->m_targetNode ? true : false;
 	if (success)
 	{
-		// Нашли решение, собрали путь
+		// РќР°С€Р»Рё СЂРµС€РµРЅРёРµ, СЃРѕР±СЂР°Р»Рё РїСѓС‚СЊ
 		std::list<TreeNode*> bestPath;
-//		TRACE( "решение... \n" );
+//		TRACE( "СЂРµС€РµРЅРёРµ... \n" );
 		for (TreeNode* i = treeRoot->m_targetNode; i->m_parent; i = i->m_parent)
 		{
 #ifdef _DEBUG
@@ -82,10 +82,10 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 #endif
 			bestPath.push_front(i);
 		}
-//		TRACE( "решение... done\n" );
-		// Отработали предварительные действия: вывели трассировку
+//		TRACE( "СЂРµС€РµРЅРёРµ... done\n" );
+		// РћС‚СЂР°Р±РѕС‚Р°Р»Рё РїСЂРµРґРІР°СЂРёС‚РµР»СЊРЅС‹Рµ РґРµР№СЃС‚РІРёСЏ: РІС‹РІРµР»Рё С‚СЂР°СЃСЃРёСЂРѕРІРєСѓ
 		onSearchDecisionHeader(treeRoot->m_theRealSimulator);
-		// Отработали рулы
+		// РћС‚СЂР°Р±РѕС‚Р°Р»Рё СЂСѓР»С‹
 		for (std::list<TreeNode*>::iterator ii = bestPath.begin(); ii != bestPath.end(); ++ii)
 		{
 			TreeNode* node = (*ii);
@@ -94,15 +94,15 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 			node->m_activity->rule()->onBeforeRule      (treeRoot->m_theRealSimulator);
 			node->m_activity->rule()->convertRule       (treeRoot->m_theRealSimulator);
 			node->m_activity->rule()->onAfterRule       (treeRoot->m_theRealSimulator, true);
-			// Отработали каждую вершину: вывели трассировку
+			// РћС‚СЂР°Р±РѕС‚Р°Р»Рё РєР°Р¶РґСѓСЋ РІРµСЂС€РёРЅСѓ: РІС‹РІРµР»Рё С‚СЂР°СЃСЃРёСЂРѕРІРєСѓ
 			onSearchDecision(treeRoot->m_theRealSimulator, node);
 		}
-		// Отработали завершающие действия: вывели трассировку, обновили статистику по поиску
+		// РћС‚СЂР°Р±РѕС‚Р°Р»Рё Р·Р°РІРµСЂС€Р°СЋС‰РёРµ РґРµР№СЃС‚РІРёСЏ: РІС‹РІРµР»Рё С‚СЂР°СЃСЃРёСЂРѕРІРєСѓ, РѕР±РЅРѕРІРёР»Рё СЃС‚Р°С‚РёСЃС‚РёРєСѓ РїРѕ РїРѕРёСЃРєСѓ
 		onSearchResultSuccess(treeRoot->m_theRealSimulator, treeRoot);
 	}
 	else
 	{
-		// Неудачное завершение поиска: вывели статистику
+		// РќРµСѓРґР°С‡РЅРѕРµ Р·Р°РІРµСЂС€РµРЅРёРµ РїРѕРёСЃРєР°: РІС‹РІРµР»Рё СЃС‚Р°С‚РёСЃС‚РёРєСѓ
 		onSearchResultNotFound(treeRoot->m_theRealSimulator, treeRoot);
 	}
 	delete treeRoot->m_rootNode;

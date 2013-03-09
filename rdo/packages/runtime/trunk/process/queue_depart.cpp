@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      queue_depart.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      12.02.2012
-  \brief     Процессные операторы QUEUE и DEPART
+  \brief     РџСЂРѕС†РµСЃСЃРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹ QUEUE Рё DEPART
   \indent    4T
 */
 

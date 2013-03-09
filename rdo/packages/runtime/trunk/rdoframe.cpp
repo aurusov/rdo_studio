@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoframe.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Копнин Андрей (kopninandrey@gmail.com)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   РљРѕРїРЅРёРЅ РђРЅРґСЂРµР№ (kopninandrey@gmail.com)
   \date      07.12.2008
-  \brief     Кадры РДО модели
+  \brief     РљР°РґСЂС‹ Р Р”Рћ РјРѕРґРµР»Рё
   \indent    4T
 */
 

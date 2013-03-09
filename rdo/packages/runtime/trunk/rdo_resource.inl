@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_resource.inl
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      15.06.2011
   \brief     RDOResource inline implementation
   \indent    4T
@@ -22,7 +22,7 @@ inline void RDOResource::setRuntime(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 
-	/// @todo походу надо удалить метод
+	/// @todo РїРѕС…РѕРґСѓ РЅР°РґРѕ СѓРґР°Р»РёС‚СЊ РјРµС‚РѕРґ
 	NEVER_REACH_HERE;
 }
 

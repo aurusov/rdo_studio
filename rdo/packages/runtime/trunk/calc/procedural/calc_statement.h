@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_statement.h
-  \authors   Чирков Михаил
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \authors   Поподьянец Евгений (kurt.gigacore@gmail.com)
+  \authors   Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
+  \authors   РџРѕРїРѕРґСЊСЏРЅРµС† Р•РІРіРµРЅРёР№ (kurt.gigacore@gmail.com)
   \date      16.04.2011
-  \brief     Инструкции
+  \brief     РРЅСЃС‚СЂСѓРєС†РёРё
   \indent    4T
 */
 
@@ -20,8 +20,8 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Пустая операция
-//! @todo заменить на CalcNop ?
+//! РџСѓСЃС‚Р°СЏ РѕРїРµСЂР°С†РёСЏ
+//! @todo Р·Р°РјРµРЅРёС‚СЊ РЅР° CalcNop ?
 CALC(RDOCalcNoChange)
 {
 DECLARE_FACTORY(RDOCalcNoChange)
@@ -30,7 +30,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Условный оператор if () then {}
+//! РЈСЃР»РѕРІРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ if () then {}
 CALC(RDOCalcIf)
 {
 DECLARE_FACTORY(RDOCalcIf)
@@ -51,7 +51,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Оператор цикла for
+//! РћРїРµСЂР°С‚РѕСЂ С†РёРєР»Р° for
 CALC(RDOCalcFor)
 {
 DECLARE_FACTORY(RDOCalcFor)
@@ -69,7 +69,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Оператор возврата return
+//! РћРїРµСЂР°С‚РѕСЂ РІРѕР·РІСЂР°С‚Р° return
 CALC(RDOCalcFunReturn)
 {
 DECLARE_FACTORY(RDOCalcFunReturn)
@@ -80,7 +80,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Оператор возврата break
+//! РћРїРµСЂР°С‚РѕСЂ РІРѕР·РІСЂР°С‚Р° break
 CALC(RDOCalcFunBreak)
 {
 DECLARE_FACTORY(RDOCalcFunBreak)
@@ -90,7 +90,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Простой список операторов
+//! РџСЂРѕСЃС‚РѕР№ СЃРїРёСЃРѕРє РѕРїРµСЂР°С‚РѕСЂРѕРІ
 CALC(RDOCalcBaseStatementList)
 {
 DECLARE_FACTORY(RDOCalcBaseStatementList)
@@ -106,7 +106,7 @@ protected:
 	DECLARE_ICalc;
 };
 
-//! Останавливаемый список операторов
+//! РћСЃС‚Р°РЅР°РІР»РёРІР°РµРјС‹Р№ СЃРїРёСЃРѕРє РѕРїРµСЂР°С‚РѕСЂРѕРІ
 CALC_SUB(RDOCalcStatementList, RDOCalcBaseStatementList)
 {
 DECLARE_FACTORY(RDOCalcStatementList)
@@ -116,7 +116,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Ловушка для break
+//! Р›РѕРІСѓС€РєР° РґР»СЏ break
 CALC(RDOCalcBreakCatch)
 {
 DECLARE_FACTORY(RDOCalcBreakCatch)
@@ -131,7 +131,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Ловушка для return
+//! Р›РѕРІСѓС€РєР° РґР»СЏ return
 CALC(RDOCalcReturnCatch)
 {
 DECLARE_FACTORY(RDOCalcReturnCatch)

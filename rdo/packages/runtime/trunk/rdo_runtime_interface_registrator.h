@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_runtime_interface_registrator.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      29.07.2009
-  \brief     Глобальная регистрация интерфейсов
+  \brief     Р“Р»РѕР±Р°Р»СЊРЅР°СЏ СЂРµРіРёСЃС‚СЂР°С†РёСЏ РёРЅС‚РµСЂС„РµР№СЃРѕРІ
   \indent    4T
 */
 

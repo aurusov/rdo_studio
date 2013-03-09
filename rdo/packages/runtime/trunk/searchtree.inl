@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      searchtree.inl
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      22.07.2011
-  \brief     Интерфейс IDPTSearchTraceStatistics
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IDPTSearchTraceStatistics
   \indent    4T
 */
 
@@ -56,7 +56,7 @@ inline void TreeNode::onSearchNodeInfoNew(CREF(LPRDORuntime) pRuntime)
 
 /*!
   \fn      rbool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
-  \brief   функция сравнения вершин графа для сортировки списка OPEN
+  \brief   С„СѓРЅРєС†РёСЏ СЃСЂР°РІРЅРµРЅРёСЏ РІРµСЂС€РёРЅ РіСЂР°С„Р° РґР»СЏ СЃРѕСЂС‚РёСЂРѕРІРєРё СЃРїРёСЃРєР° OPEN
 */
 inline rbool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
 {

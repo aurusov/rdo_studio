@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdotrace.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      11.06.2006
-  \brief     Трассировщик
+  \brief     РўСЂР°СЃСЃРёСЂРѕРІС‰РёРє
   \indent    4T
 */
 
@@ -47,7 +47,7 @@ double doubleToString(double value)
 #endif
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTrace - Формирует строки трассировки
+// -------------------- RDOTrace - Р¤РѕСЂРјРёСЂСѓРµС‚ СЃС‚СЂРѕРєРё С‚СЂР°СЃСЃРёСЂРѕРІРєРё
 // --------------------------------------------------------------------------------
 void RDOTrace::writeSearchBegin(double currentTime, tstring decisionPointId)
 {
@@ -335,10 +335,10 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 {
 	if (isNull()) return;
 
-	// Статус
+	// РЎС‚Р°С‚СѓСЃ
 	getOStream() << _T("$Status = ") << status << _T(" ") << pRuntime->getCurrentTime() << std::endl << getEOL();
 
-	// Статистика по поиску на графе
+	// РЎС‚Р°С‚РёСЃС‚РёРєР° РїРѕ РїРѕРёСЃРєСѓ РЅР° РіСЂР°С„Рµ
 	IBaseOperationContainer::CIterator it = pRuntime->m_pMetaLogic->begin();
 	while (it != pRuntime->m_pMetaLogic->end())
 	{
@@ -347,7 +347,7 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 		{
 			LPITrace dp_trace = dp_stat;
 			ASSERT(dp_trace);
-			// Информация о точке
+			// РРЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕС‡РєРµ
 			getOStream() << std::endl << getEOL();
 			getOStream() << _T("DPS_C")
 			             << _T("  ") << dp_trace->getTraceID()
@@ -356,20 +356,20 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 			             << std::endl << getEOL();
 			if (dp_stat->getCalcCnt())
 			{
-				// Время поиска
+				// Р’СЂРµРјСЏ РїРѕРёСЃРєР°
 				double d_min = 0;
 				double d_max = 0;
 				double d_med = 0;
 				dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_TIMES, d_min, d_max, d_med);
 				getOStream() << rdo::format(_T("DPS_TM %0.3f  %0.3f  %0.3f"), d_med, d_min, d_max) << std::endl << getEOL();
 
-				// Используемая память
+				// РСЃРїРѕР»СЊР·СѓРµРјР°СЏ РїР°РјСЏС‚СЊ
 				ruint ui_min = 0;
 				ruint ui_max = 0;
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_MEMORY, ui_min, ui_max, d_med);
 				getOStream() << rdo::format(_T("DPS_ME %0.0f  %u  %u"), d_med, ui_min, ui_max) << std::endl << getEOL();
 
-				// Стоимость решения
+				// РЎС‚РѕРёРјРѕСЃС‚СЊ СЂРµС€РµРЅРёСЏ
 				dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_COST, d_min, d_max, d_med);
 				getOStream() << _T("DPS_CO")
 				             << _T(" ")  << d_med
@@ -377,19 +377,19 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 				             << _T("  ") << d_max
 				             << std::endl << getEOL();
 
-				// Количество раскрытых вершин
+				// РљРѕР»РёС‡РµСЃС‚РІРѕ СЂР°СЃРєСЂС‹С‚С‹С… РІРµСЂС€РёРЅ
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_EXPENDED, ui_min, ui_max, d_med);
 				getOStream() << rdo::format(_T("DPS_TO %0.0f  %u  %u"), d_med, ui_min, ui_max) << std::endl << getEOL();
 
-				// Количество вершин в графе
+				// РљРѕР»РёС‡РµСЃС‚РІРѕ РІРµСЂС€РёРЅ РІ РіСЂР°С„Рµ
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_IN_GRAPH, ui_min, ui_max, d_med);
 				getOStream() << rdo::format(_T("DPS_TT %0.0f  %u  %u"), d_med, ui_min, ui_max) << std::endl << getEOL();
 
-				// Количество включавшихся в граф вершин (вершины, соответствующие одному и тому же состоянию системы, могут включаться в граф неоднократно, если порождается вершина с меньшей стоимостью пути)
+				// РљРѕР»РёС‡РµСЃС‚РІРѕ РІРєР»СЋС‡Р°РІС€РёС…СЃСЏ РІ РіСЂР°С„ РІРµСЂС€РёРЅ (РІРµСЂС€РёРЅС‹, СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРµ РѕРґРЅРѕРјСѓ Рё С‚РѕРјСѓ Р¶Рµ СЃРѕСЃС‚РѕСЏРЅРёСЋ СЃРёСЃС‚РµРјС‹, РјРѕРіСѓС‚ РІРєР»СЋС‡Р°С‚СЊСЃСЏ РІ РіСЂР°С„ РЅРµРѕРґРЅРѕРєСЂР°С‚РЅРѕ, РµСЃР»Рё РїРѕСЂРѕР¶РґР°РµС‚СЃСЏ РІРµСЂС€РёРЅР° СЃ РјРµРЅСЊС€РµР№ СЃС‚РѕРёРјРѕСЃС‚СЊСЋ РїСѓС‚Рё)
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES, ui_min, ui_max, d_med);
 				getOStream() << rdo::format(_T("DPS_TI %0.0f  %u  %u"), d_med, ui_min, ui_max) << std::endl << getEOL();
 
-				// Общее количество порожденных вершин-преемников
+				// РћР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕСЂРѕР¶РґРµРЅРЅС‹С… РІРµСЂС€РёРЅ-РїСЂРµРµРјРЅРёРєРѕРІ
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_FULL, ui_min, ui_max, d_med);
 				getOStream() << rdo::format(_T("DPS_TG %0.0f  %u  %u"), d_med, ui_min, ui_max) << std::endl << getEOL();
 			}
@@ -397,7 +397,7 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 		++it;
 	}
 
-	// Используемая память
+	// РСЃРїРѕР»СЊР·СѓРµРјР°СЏ РїР°РјСЏС‚СЊ
 	getOStream() << std::endl << getEOL();
 	getOStream() << _T("DPS_MM ") << pRuntime->memory_get() << std::endl << getEOL();
 }

@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_model_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      28.07.2009
-  \brief     Интерфейсы IModelStructure и IName
+  \brief     РРЅС‚РµСЂС„РµР№СЃС‹ IModelStructure Рё IName
   \indent    4T
 */
 
@@ -18,14 +18,14 @@
 
 /*!
   \interface IModelStructure
-  \brief     Интерфейс структуры модели, используется для записи стукруры в файл трассировки
+  \brief     РРЅС‚РµСЂС„РµР№СЃ СЃС‚СЂСѓРєС‚СѓСЂС‹ РјРѕРґРµР»Рё, РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ Р·Р°РїРёСЃРё СЃС‚СѓРєСЂСѓСЂС‹ РІ С„Р°Р№Р» С‚СЂР°СЃСЃРёСЂРѕРІРєРё
 */
 class IModelStructure
 {
 public:
 	/*!
-	  \brief      Записать структу модели в поток
-	  \param[out] stream выходной поток
+	  \brief      Р—Р°РїРёСЃР°С‚СЊ СЃС‚СЂСѓРєС‚Сѓ РјРѕРґРµР»Рё РІ РїРѕС‚РѕРє
+	  \param[out] stream РІС‹С…РѕРґРЅРѕР№ РїРѕС‚РѕРє
 	*/
 	virtual void writeModelStructure(REF(rdo::ostream) stream) const = 0;
 };
@@ -35,14 +35,14 @@ public:
 
 /*!
   \interface IName
-  \brief     Интерфейс имени объекта
+  \brief     РРЅС‚РµСЂС„РµР№СЃ РёРјРµРЅРё РѕР±СЉРµРєС‚Р°
 */
 class IName
 {
 public:
 	/*!
-	  \brief  Получить имя объекта
-	  \return имя объекта
+	  \brief  РџРѕР»СѓС‡РёС‚СЊ РёРјСЏ РѕР±СЉРµРєС‚Р°
+	  \return РёРјСЏ РѕР±СЉРµРєС‚Р°
 	*/
 	virtual CREF(tstring) name() const = 0;
 };

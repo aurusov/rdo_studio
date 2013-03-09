@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_binary.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      13.03.2011
-  \brief     Бинарные операторы
+  \brief     Р‘РёРЅР°СЂРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹
   \indent    4T
 */
 
@@ -19,7 +19,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовый класс для бинарных операторов
+//! Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ РґР»СЏ Р±РёРЅР°СЂРЅС‹С… РѕРїРµСЂР°С‚РѕСЂРѕРІ
 class RDOCalcBinaryBase: public RDOCalc
 {
 public:
@@ -33,7 +33,7 @@ protected:
 	LPRDOCalc  m_pRight;
 };
 
-//! Константный бинарный оператор RDOValue
+//! РљРѕРЅСЃС‚Р°РЅС‚РЅС‹Р№ Р±РёРЅР°СЂРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ RDOValue
 template <typename ret_type, ret_type (RDOValue::*pMethod)(CREF(RDOValue)) const>
 struct BinaryOperatorConstP1
 {
@@ -42,7 +42,7 @@ struct BinaryOperatorConstP1
 	static method_type method();
 };
 
-//! Неконстантный бинарный оператор RDOValue
+//! РќРµРєРѕРЅСЃС‚Р°РЅС‚РЅС‹Р№ Р±РёРЅР°СЂРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ RDOValue
 template <typename ret_type, ret_type (RDOValue::*pMethod)(CREF(RDOValue))>
 struct BinaryOperatorNonConstP1
 {
@@ -53,10 +53,10 @@ struct BinaryOperatorNonConstP1
 
 /*!
   \class   RDOCalcBinary
-  \tparam  ret_type  Возвращаемое значение
-  \tparam  pOperator Оператор
-  \tparam  CalcType  Тип бинарного оператора
-  \brief   Бинарный оператор
+  \tparam  ret_type  Р’РѕР·РІСЂР°С‰Р°РµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ
+  \tparam  pOperator РћРїРµСЂР°С‚РѕСЂ
+  \tparam  CalcType  РўРёРї Р±РёРЅР°СЂРЅРѕРіРѕ РѕРїРµСЂР°С‚РѕСЂР°
+  \brief   Р‘РёРЅР°СЂРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ
 */
 template <class F, typename OperatorType::Type CalcType>
 class RDOCalcBinary: public RDOCalcBinaryBase
@@ -76,11 +76,11 @@ protected:
 	RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
 private:
-	//! Выполняет бинарную операцию \ref value_operator над \ref m_pLeft и \ref m_pRight
-	//! \param pRuntime - указатель на объект runtime'а.
-	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
+	//! Р’С‹РїРѕР»РЅСЏРµС‚ Р±РёРЅР°СЂРЅСѓСЋ РѕРїРµСЂР°С†РёСЋ \ref value_operator РЅР°Рґ \ref m_pLeft Рё \ref m_pRight
+	//! \param pRuntime - СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РѕР±СЉРµРєС‚ runtime'Р°.
+	//!                   РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ РґРѕСЃС‚СѓРїР° Рє Р‘Р” РјРѕРґРµР»Рё, СЃРёСЃС‚РµРјРЅРѕРјСѓ РІСЂРµРјРµРЅРё, РіРµРЅРµСЂР°С†РёРё РѕС€РёР±РѕРє Рё РґСЂ.
 	//! \exception RDORuntimeException
-	//! \result Вычесленное калком значение
+	//! \result Р’С‹С‡РµСЃР»РµРЅРЅРѕРµ РєР°Р»РєРѕРј Р·РЅР°С‡РµРЅРёРµ
 	DECLARE_ICalc;
 };
 

@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_pattern.h
-  \author    Барс Александр
+  \author    Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
   \date      20.12.2011
-  \brief     Калки для паттернов
+  \brief     РљР°Р»РєРё РґР»СЏ РїР°С‚С‚РµСЂРЅРѕРІ
   \indent    4T
 */
 
@@ -17,7 +17,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Установка параметра паттерна
+//! РЈСЃС‚Р°РЅРѕРІРєР° РїР°СЂР°РјРµС‚СЂР° РїР°С‚С‚РµСЂРЅР°
 CALC(RDOSetPatternParamCalc)
 {
 DECLARE_FACTORY(RDOSetPatternParamCalc)
@@ -30,7 +30,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Получение параметра паттерна
+//! РџРѕР»СѓС‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° РїР°С‚С‚РµСЂРЅР°
 CALC(RDOCalcPatParam)
 {
 DECLARE_FACTORY(RDOCalcPatParam)

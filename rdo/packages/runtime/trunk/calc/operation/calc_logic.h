@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_logic.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      13.03.2011
-  \brief     Логические операторы
+  \brief     Р›РѕРіРёС‡РµСЃРєРёРµ РѕРїРµСЂР°С‚РѕСЂС‹
   \indent    4T
 */
 
@@ -20,7 +20,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Оператор логическое И
+//! РћРїРµСЂР°С‚РѕСЂ Р»РѕРіРёС‡РµСЃРєРѕРµ Р
 class RDOCalcAnd: public RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator&& >, OperatorType::OT_LOGIC>
 {
 DECLARE_FACTORY(RDOCalcAnd)
@@ -35,7 +35,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Оператор логическое ИЛИ
+//! РћРїРµСЂР°С‚РѕСЂ Р»РѕРіРёС‡РµСЃРєРѕРµ РР›Р
 class RDOCalcOr: public RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator|| >, OperatorType::OT_LOGIC>
 {
 DECLARE_FACTORY(RDOCalcOr)
@@ -50,7 +50,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Оператор отрицания
+//! РћРїРµСЂР°С‚РѕСЂ РѕС‚СЂРёС†Р°РЅРёСЏ
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef RDOCalcUnary<rbool, (&RDOValue::operator!), OperatorType::OT_LOGIC> RDOCalcNot;         DECLARE_POINTER(RDOCalcNot);
 #endif
@@ -58,7 +58,7 @@ private:
 	typedef RDOCalcUnary<rbool,  &RDOValue::operator!,  OperatorType::OT_LOGIC> RDOCalcNot;         DECLARE_POINTER(RDOCalcNot);
 #endif
 
-//! Оператор равенства
+//! РћРїРµСЂР°С‚РѕСЂ СЂР°РІРµРЅСЃС‚РІР°
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef RDOCalcBinary<BinaryOperatorConstP1<rbool, (&RDOValue::operator==) >, OperatorType::OT_LOGIC> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
 #endif
@@ -66,7 +66,7 @@ private:
 	typedef RDOCalcBinary<BinaryOperatorConstP1<rbool,  &RDOValue::operator== >,  OperatorType::OT_LOGIC> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
 #endif
 
-//! Оператор неравенства
+//! РћРїРµСЂР°С‚РѕСЂ РЅРµСЂР°РІРµРЅСЃС‚РІР°
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef RDOCalcBinary<BinaryOperatorConstP1<rbool, (&RDOValue::operator!=) >, OperatorType::OT_LOGIC> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
 #endif
@@ -74,7 +74,7 @@ private:
 	typedef RDOCalcBinary<BinaryOperatorConstP1<rbool,  &RDOValue::operator!= >,  OperatorType::OT_LOGIC> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
 #endif
 
-//! Оператор меньше
+//! РћРїРµСЂР°С‚РѕСЂ РјРµРЅСЊС€Рµ
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef RDOCalcBinary<BinaryOperatorConstP1<rbool, (&RDOValue::operator<) >, OperatorType::OT_LOGIC> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
 #endif
@@ -82,7 +82,7 @@ private:
 	typedef RDOCalcBinary<BinaryOperatorConstP1<rbool,  &RDOValue::operator< >,  OperatorType::OT_LOGIC> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
 #endif
 
-//! Оператор больше
+//! РћРїРµСЂР°С‚РѕСЂ Р±РѕР»СЊС€Рµ
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef RDOCalcBinary<BinaryOperatorConstP1<rbool, (&RDOValue::operator>) >, OperatorType::OT_LOGIC> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
 #endif
@@ -90,7 +90,7 @@ private:
 	typedef RDOCalcBinary<BinaryOperatorConstP1<rbool,  &RDOValue::operator> >,  OperatorType::OT_LOGIC> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
 #endif
 
-//! Оператор меньше или равно
+//! РћРїРµСЂР°С‚РѕСЂ РјРµРЅСЊС€Рµ РёР»Рё СЂР°РІРЅРѕ
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef RDOCalcBinary<BinaryOperatorConstP1<rbool, (&RDOValue::operator<=) >, OperatorType::OT_LOGIC> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
 #endif
@@ -98,7 +98,7 @@ private:
 	typedef RDOCalcBinary<BinaryOperatorConstP1<rbool,  &RDOValue::operator<= >,  OperatorType::OT_LOGIC> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
 #endif
 
-//! Оператор больше или равно
+//! РћРїРµСЂР°С‚РѕСЂ Р±РѕР»СЊС€Рµ РёР»Рё СЂР°РІРЅРѕ
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef RDOCalcBinary<BinaryOperatorConstP1<rbool, (&RDOValue::operator>=) >, OperatorType::OT_LOGIC> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
 #endif

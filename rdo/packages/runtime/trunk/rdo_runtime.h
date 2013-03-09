@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_runtime.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      16.05.2007
   \brief     RDORuntime
   \indent    4T
@@ -44,7 +44,7 @@ CLOSE_RDO_ANIMATION_NAMESPACE
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Результаты моделирования
+//! Р РµР·СѓР»СЊС‚Р°С‚С‹ РјРѕРґРµР»РёСЂРѕРІР°РЅРёСЏ
 class RDOResults
 {
 public:
@@ -69,7 +69,7 @@ PREDECLARE_POINTER(RDOFRMFrame);
 class RDOCalcCreateResource;
 PREDECLARE_POINTER(RDOEraseResRelCalc);
 
-//! Симулятор, вычислитель, рантайм машина
+//! РЎРёРјСѓР»СЏС‚РѕСЂ, РІС‹С‡РёСЃР»РёС‚РµР»СЊ, СЂР°РЅС‚Р°Р№Рј РјР°С€РёРЅР°
 CLASS(RDORuntime): INSTANCE_OF(RDOSimulatorTrace)
 {
 DECLARE_FACTORY(RDORuntime);
@@ -81,13 +81,13 @@ public:
 	typedef  std::vector<LPIResultTrace>      LPIResultTraceList;
 	typedef  std::vector<LPIResultWatchValue> LPIResultWatchValueList;
 
-	//! Подписка на внутренние сообщения
+	//! РџРѕРґРїРёСЃРєР° РЅР° РІРЅСѓС‚СЂРµРЅРЅРёРµ СЃРѕРѕР±С‰РµРЅРёСЏ
 	REF(Notify) notify();
 
-	//! Формирование ошибок рантайма
+	//! Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ РѕС€РёР±РѕРє СЂР°РЅС‚Р°Р№РјР°
 	REF(Error) error();
 
-	//! Горячие клавиши
+	//! Р“РѕСЂСЏС‡РёРµ РєР»Р°РІРёС€Рё
 	REF(RDOHotKey) hotkey();
 
 	LPRDORuntime clone   () const;
@@ -123,7 +123,7 @@ public:
 
 	void addInitCalc(CREF(LPRDOCalc) initCalc);
 
-	// Параметры ресурса
+	// РџР°СЂР°РјРµС‚СЂС‹ СЂРµСЃСѓСЂСЃР°
 	REF(RDOValue) getResParamValRaw(ruint resID, ruint paramID);
 	void          setResParamVal   (ruint resID, ruint paramID, CREF(RDOValue) value);
 
@@ -176,7 +176,7 @@ public:
 
 	/*!
 	  \enum      FunBreakFlag
-	  \brief     Флаг остановки функции
+	  \brief     Р¤Р»Р°Рі РѕСЃС‚Р°РЅРѕРІРєРё С„СѓРЅРєС†РёРё
 	*/
 	enum FunBreakFlag
 	{
@@ -214,8 +214,8 @@ private:
 	typedef  std::vector<LPRDOResource>  ResourceListByID;
 	typedef  std::list  <LPRDOResource>  ResourceListByTime;
 
-	ResourceListByID    m_resourceListByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
-	ResourceListByTime  m_resourceListByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
+	ResourceListByID    m_resourceListByID;      // Р’СЃРµ СЂРµСЃСѓСЂСЃС‹ СЃРёРјСѓР»СЏС‚РѕСЂР°, РґР°Р¶Рµ NULL (NULL СЃС‚РѕРёС‚ РЅР° РјРµСЃС‚Рµ СѓР¶Рµ СѓРґР°Р»РµРЅРЅРѕРіРѕ РІСЂРµРјРµРЅРЅРѕРіРѕ СЂРµСЃСѓСЂСЃР°)
+	ResourceListByTime  m_resourceListByTime;    // РћРЅРё Р¶Рµ, С‚РѕР»СЊРєРѕ СѓРїРѕСЂСЏРґРѕС‡РµРЅС‹ РїРѕ РІСЂРµРјРµРЅРё СЃРѕР·РґР°РЅРёСЏ Рё Р±РµР· NULL-РѕРІ
 	CalcList            m_initCalcList;
 	LPRDOMemoryStack    m_pMemoryStack;
 	FunBreakFlag        m_funBreakFlag;
@@ -230,7 +230,7 @@ private:
 	State  m_state;
 #endif
 
-	//! Точка останова
+	//! РўРѕС‡РєР° РѕСЃС‚Р°РЅРѕРІР°
 	OBJECT(BreakPoint) IS INSTANCE_OF(RDORuntimeObject)
 	{
 	DECLARE_FACTORY(BreakPoint)

@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simtrace.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      11.06.2006
-  \brief     Трассировка симулятора
+  \brief     РўСЂР°СЃСЃРёСЂРѕРІРєР° СЃРёРјСѓР»СЏС‚РѕСЂР°
   \indent    4T
 */
 
@@ -28,7 +28,7 @@ PREDECLARE_POINTER(RDOSimulatorTrace);
 
 /*!
   \class     RDOSimulatorTrace
-  \brief     Трассировщик симулятора
+  \brief     РўСЂР°СЃСЃРёСЂРѕРІС‰РёРє СЃРёРјСѓР»СЏС‚РѕСЂР°
 */
 CLASS(RDOSimulatorTrace): INSTANCE_OF(RDOSimulator)
 {

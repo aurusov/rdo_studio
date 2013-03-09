@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_res_type.inl
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      24.09.2011
-  \brief     Типы ресурсов в rdo::runtime
+  \brief     РўРёРїС‹ СЂРµСЃСѓСЂСЃРѕРІ РІ rdo::runtime
   \indent    4T
 */
 

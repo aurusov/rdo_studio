@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_process.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      10.03.2011
-  \brief     RDOCalc для передачи управления в процесс из БЗ и событий
+  \brief     RDOCalc РґР»СЏ РїРµСЂРµРґР°С‡Рё СѓРїСЂР°РІР»РµРЅРёСЏ РІ РїСЂРѕС†РµСЃСЃ РёР· Р‘Р— Рё СЃРѕР±С‹С‚РёР№
   \indent    4T
 */
 
@@ -22,7 +22,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Передача транзакта в процесс и его запуск
+//! РџРµСЂРµРґР°С‡Р° С‚СЂР°РЅР·Р°РєС‚Р° РІ РїСЂРѕС†РµСЃСЃ Рё РµРіРѕ Р·Р°РїСѓСЃРє
 CALC(RDOCalcProcessControl)
 {
 DECLARE_FACTORY(RDOCalcProcessControl)
@@ -35,7 +35,7 @@ private:
 	rsint         m_relResNum;
 };
 
-//! Выполнение блока ASSIGN в процессе
+//! Р’С‹РїРѕР»РЅРµРЅРёРµ Р±Р»РѕРєР° ASSIGN РІ РїСЂРѕС†РµСЃСЃРµ
 CALC(RDOCalcProcAssign)
 {
 DECLARE_FACTORY(RDOCalcProcAssign)
@@ -48,7 +48,7 @@ private:
 	ruint     m_param;
 };
 
-//! Получение значения терминального счетчика
+//! РџРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ С‚РµСЂРјРёРЅР°Р»СЊРЅРѕРіРѕ СЃС‡РµС‚С‡РёРєР°
 CALC(RDOCalcGetTermNow)
 {
 DECLARE_FACTORY(RDOCalcGetTermNow)

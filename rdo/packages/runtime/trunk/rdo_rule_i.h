@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_rule_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      01.08.2009
-  \brief     Интерфейс продукционных правил
+  \brief     РРЅС‚РµСЂС„РµР№СЃ РїСЂРѕРґСѓРєС†РёРѕРЅРЅС‹С… РїСЂР°РІРёР»
   \indent    4T
 */
 
@@ -25,7 +25,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 /*!
   \interface IRule
-  \brief     Интерфейс продукционного правила
+  \brief     РРЅС‚РµСЂС„РµР№СЃ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРіРѕ РїСЂР°РІРёР»Р°
 */
 class IRule
 {

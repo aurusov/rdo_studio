@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_resource.cpp
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
-  \authors   Ëóùàí Äìèòðèé (dluschan@rk9.bmstu.ru)
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
+  \authors   Ð›ÑƒÑ‰Ð°Ð½ Ð”Ð¼Ð¸Ñ‚Ñ€Ð¸Ð¹ (dluschan@rk9.bmstu.ru)
   \date      16.04.2008
   \brief     RDOResource implementation
   \indent    4T
@@ -34,7 +34,7 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList,
 	appendParams(paramList.begin(), paramList.end());
 }
 
-/// @todo êîïèðóþùèé êîíñòðóêòîð íå èñïîëüçóåòñÿ - íóæåí ëè îí?
+/// @todo ÐºÐ¾Ð¿Ð¸Ñ€ÑƒÑŽÑ‰Ð¸Ð¹ ÐºÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€ Ð½Ðµ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ - Ð½ÑƒÐ¶ÐµÐ½ Ð»Ð¸ Ð¾Ð½?
 RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
 	: RDORuntimeObject   (                 )
 	, RDOTraceableObject (copy.traceable(), copy.getTraceID(), copy.traceId())
@@ -48,7 +48,7 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
 {
 	UNUSED(pRuntime);
 	appendParams(copy.m_paramList.begin(), copy.m_paramList.end());
-/// @todo ïîñìîòðåòü history è ïðèíÿòü ðåøåíèå î êîììåíòàðèè
+/// @todo Ð¿Ð¾ÑÐ¼Ð¾Ñ‚Ñ€ÐµÑ‚ÑŒ history Ð¸ Ð¿Ñ€Ð¸Ð½ÑÑ‚ÑŒ Ñ€ÐµÑˆÐµÐ½Ð¸Ðµ Ð¾ ÐºÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð¸
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
 }
 

@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simtrace.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      11.06.2006
-  \brief     Трассировка симулятора
+  \brief     РўСЂР°СЃСЃРёСЂРѕРІРєР° СЃРёРјСѓР»СЏС‚РѕСЂР°
   \indent    4T
 */
 

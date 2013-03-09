@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_choice_from.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      13.03.2011
-  \brief     RDOCalc для подбора релевантных ресурсов и создания ресурсов
+  \brief     RDOCalc РґР»СЏ РїРѕРґР±РѕСЂР° СЂРµР»РµРІР°РЅС‚РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ Рё СЃРѕР·РґР°РЅРёСЏ СЂРµСЃСѓСЂСЃРѕРІ
   \indent    4T
 */
 
@@ -19,17 +19,17 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Выбор ресурсов
+//! Р’С‹Р±РѕСЂ СЂРµСЃСѓСЂСЃРѕРІ
 CALC(RDOSelectResourceCalc)
 {
 public:
-	//! Способ выбора релевантного ресурса
+	//! РЎРїРѕСЃРѕР± РІС‹Р±РѕСЂР° СЂРµР»РµРІР°РЅС‚РЅРѕРіРѕ СЂРµСЃСѓСЂСЃР°
 	enum Type
 	{
-		order_empty = 0, //!< Способ выбора не задан
-		order_first,     //!< Первый попавшийся (без предварительной сортировки)
-		order_with_min,  //!< С минимальным значением выражения
-		order_with_max   //!< С максимальным значением выражения
+		order_empty = 0, //!< РЎРїРѕСЃРѕР± РІС‹Р±РѕСЂР° РЅРµ Р·Р°РґР°РЅ
+		order_first,     //!< РџРµСЂРІС‹Р№ РїРѕРїР°РІС€РёР№СЃСЏ (Р±РµР· РїСЂРµРґРІР°СЂРёС‚РµР»СЊРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРё)
+		order_with_min,  //!< РЎ РјРёРЅРёРјР°Р»СЊРЅС‹Рј Р·РЅР°С‡РµРЅРёРµРј РІС‹СЂР°Р¶РµРЅРёСЏ
+		order_with_max   //!< РЎ РјР°РєСЃРёРјР°Р»СЊРЅС‹Рј Р·РЅР°С‡РµРЅРёРµРј РІС‹СЂР°Р¶РµРЅРёСЏ
 	};
 
 	typedef  ruint                        ResourceID;
@@ -45,7 +45,7 @@ protected:
 	Type        m_orderType;
 };
 
-//! RDOCalc для оператора !Exist()
+//! RDOCalc РґР»СЏ РѕРїРµСЂР°С‚РѕСЂР° !Exist()
 CALC_SUB(RDOSelectResourceNonExistCalc, RDOSelectResourceCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceNonExistCalc)
@@ -54,7 +54,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Выбор релевантного ресурса по имени ресурса
+//! Р’С‹Р±РѕСЂ СЂРµР»РµРІР°РЅС‚РЅРѕРіРѕ СЂРµСЃСѓСЂСЃР° РїРѕ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°
 CALC_SUB(RDOSelectResourceDirectCalc, RDOSelectResourceCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceDirectCalc)
@@ -68,7 +68,7 @@ protected:
 	DECLARE_ICalc;
 };
 
-//! Выбор релевантного ресурса по типу
+//! Р’С‹Р±РѕСЂ СЂРµР»РµРІР°РЅС‚РЅРѕРіРѕ СЂРµСЃСѓСЂСЃР° РїРѕ С‚РёРїСѓ
 CALC_SUB(RDOSelectResourceByTypeCalc, RDOSelectResourceCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceByTypeCalc)
@@ -80,7 +80,7 @@ protected:
 	DECLARE_ICalc;
 };
 
-//! Интерфейс для выбора релевантных ресурсов
+//! РРЅС‚РµСЂС„РµР№СЃ РґР»СЏ РІС‹Р±РѕСЂР° СЂРµР»РµРІР°РЅС‚РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ
 OBJECT_INTERFACE(IRDOSelectResourceCommon)
 {
 DECLARE_FACTORY(IRDOSelectResourceCommon)
@@ -94,7 +94,7 @@ protected:
 	virtual ~IRDOSelectResourceCommon();
 };
 
-//! Выбор
+//! Р’С‹Р±РѕСЂ
 CALC(RDOSelectResourceCommonCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceCommonCalc)
@@ -115,7 +115,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Выбор по имени ресурса
+//! Р’С‹Р±РѕСЂ РїРѕ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°
 CALC_SUB(RDOSelectResourceDirectCommonCalc, RDOSelectResourceDirectCalc)
 	AND IMPLEMENTATION_OF(IRDOSelectResourceCommon)
 {
@@ -129,7 +129,7 @@ private:
 	virtual ~RDOSelectResourceDirectCommonCalc();
 };
 
-//! Выбор по типу
+//! Р’С‹Р±РѕСЂ РїРѕ С‚РёРїСѓ
 CALC_SUB(RDOSelectResourceByTypeCommonCalc, RDOSelectResourceByTypeCalc)
 	AND IMPLEMENTATION_OF(IRDOSelectResourceCommon)
 {

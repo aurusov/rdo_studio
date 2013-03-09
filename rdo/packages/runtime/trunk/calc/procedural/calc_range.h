@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_range.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      26.12.2011
-  \brief     Проверка на диапазон
+  \brief     РџСЂРѕРІРµСЂРєР° РЅР° РґРёР°РїР°Р·РѕРЅ
   \indent    4T
 */
 
@@ -18,7 +18,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Проверка на диапазон
+//! РџСЂРѕРІРµСЂРєР° РЅР° РґРёР°РїР°Р·РѕРЅ
 CALC(RDOCalcCheckRange)
 {
 DECLARE_FACTORY(RDOCalcCheckRange)

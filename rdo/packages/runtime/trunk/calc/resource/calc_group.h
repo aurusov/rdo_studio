@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_group.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      16.05.2007
-  \brief     Калки для группы ресурсов одного типа
+  \brief     РљР°Р»РєРё РґР»СЏ РіСЂСѓРїРїС‹ СЂРµСЃСѓСЂСЃРѕРІ РѕРґРЅРѕРіРѕ С‚РёРїР°
   \indent    4T
 */
 
@@ -19,7 +19,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовый класс для групповых калков
+//! Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РіСЂСѓРїРїРѕРІС‹С… РєР°Р»РєРѕРІ
 CALC_SUB(RDOFunCalcGroup, RDOFunCalc)
 {
 protected:
@@ -31,7 +31,7 @@ protected:
 
 /*!
   \def     DEFINE_CALC_GROUP
-  \brief   Групповые калки
+  \brief   Р“СЂСѓРїРїРѕРІС‹Рµ РєР°Р»РєРё
 */
 #define DEFINE_CALC_GROUP(CalcName)                                \
 CALC_SUB(RDOFunCalc##CalcName, RDOFunCalcGroup)                    \
@@ -46,25 +46,25 @@ private:                                                           \
 
 /*!
   \class   RDOFunCalcExist
-  \brief   Логический предикат существования
+  \brief   Р›РѕРіРёС‡РµСЃРєРёР№ РїСЂРµРґРёРєР°С‚ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёСЏ
 */
 DEFINE_CALC_GROUP(Exist);
 
 /*!
   \class   RDOFunCalcNotExist
-  \brief   Логический предикат отрицания существования
+  \brief   Р›РѕРіРёС‡РµСЃРєРёР№ РїСЂРµРґРёРєР°С‚ РѕС‚СЂРёС†Р°РЅРёСЏ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёСЏ
 */
 DEFINE_CALC_GROUP(NotExist);
 
 /*!
   \class   RDOFunCalcForAll
-  \brief   Логический предикат общности
+  \brief   Р›РѕРіРёС‡РµСЃРєРёР№ РїСЂРµРґРёРєР°С‚ РѕР±С‰РЅРѕСЃС‚Рё
 */
 DEFINE_CALC_GROUP(ForAll);
 
 /*!
   \class   RDOFunCalcNotForAll
-  \brief   Логический предикат отрицания общности
+  \brief   Р›РѕРіРёС‡РµСЃРєРёР№ РїСЂРµРґРёРєР°С‚ РѕС‚СЂРёС†Р°РЅРёСЏ РѕР±С‰РЅРѕСЃС‚Рё
 */
 DEFINE_CALC_GROUP(NotForAll);
 

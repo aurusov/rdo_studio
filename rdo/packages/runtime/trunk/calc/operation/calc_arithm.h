@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_arithm.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      13.03.2011
-  \brief     Арифметические операции
+  \brief     РђСЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ РѕРїРµСЂР°С†РёРё
   \indent    4T
 */
 
@@ -18,19 +18,19 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Оператор присваивания
+//! РћРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
 typedef RDOCalcBinary<BinaryOperatorNonConstP1<REF(RDOValue), &RDOValue::operator= >, OperatorType::OT_ARITHM> RDOCalcSet;  DECLARE_POINTER(RDOCalcSet);
 
-//! Бинарный оператор плюс
+//! Р‘РёРЅР°СЂРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ РїР»СЋСЃ
 typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator+ >, OperatorType::OT_ARITHM> RDOCalcPlus;  DECLARE_POINTER(RDOCalcPlus);
 
-//! Бинарный оператор минус
+//! Р‘РёРЅР°СЂРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ РјРёРЅСѓСЃ
 typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator- >, OperatorType::OT_ARITHM> RDOCalcMinus; DECLARE_POINTER(RDOCalcMinus);
 
-//! Бинарный оператор умножить
+//! Р‘РёРЅР°СЂРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ СѓРјРЅРѕР¶РёС‚СЊ
 typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator* >, OperatorType::OT_ARITHM> RDOCalcMult;  DECLARE_POINTER(RDOCalcMult);
 
-//! Бинарный оператор разделить
+//! Р‘РёРЅР°СЂРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ СЂР°Р·РґРµР»РёС‚СЊ
 class RDOCalcDiv: public RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator/ >, OperatorType::OT_ARITHM>
 {
 DECLARE_FACTORY(RDOCalcDiv);
@@ -43,7 +43,7 @@ private:
 };
 DECLARE_POINTER(RDOCalcDiv);
 
-//! Бинарный оператор сложения по перечислению
+//! Р‘РёРЅР°СЂРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ СЃР»РѕР¶РµРЅРёСЏ РїРѕ РїРµСЂРµС‡РёСЃР»РµРЅРёСЋ
 CALC_SUB(RDOCalcPlusEnumSafe, RDOCalcPlus)
 {
 DECLARE_FACTORY(RDOCalcPlusEnumSafe)
@@ -53,7 +53,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Бинарный оператор умножить по перечислению
+//! Р‘РёРЅР°СЂРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ СѓРјРЅРѕР¶РёС‚СЊ РїРѕ РїРµСЂРµС‡РёСЃР»РµРЅРёСЋ
 CALC_SUB(RDOCalcMultEnumSafe, RDOCalcMult)
 {
 DECLARE_FACTORY(RDOCalcMultEnumSafe)

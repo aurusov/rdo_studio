@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_type.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      22.06.2008
-  \brief     Базовый тип данных
+  \brief     Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РґР°РЅРЅС‹С…
   \indent    4T
 */
 
@@ -24,14 +24,14 @@ class RDOValue;
 
 /*!
   \class     RDOType
-  \brief     Базовый тип данных РДО
+  \brief     Р‘Р°Р·РѕРІС‹Р№ С‚РёРї РґР°РЅРЅС‹С… Р Р”Рћ
 */
 OBJECT(RDOType)
 {
 public:
 	/*!
 	  \enum      TypeID
-	  \brief     Идентификатор типа данных
+	  \brief     РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С‚РёРїР° РґР°РЅРЅС‹С…
 	*/
 	enum TypeID
 	{
@@ -55,10 +55,10 @@ private:
 	TypeID  m_typeID;
 };
 
-/// @todo внимание макрос!
+/// @todo РІРЅРёРјР°РЅРёРµ РјР°РєСЂРѕСЃ!
 /*!
   \def       DEFINE_ATOM_TYPE
-  \brief     Макрос для определения простых (атомарных) типов данных
+  \brief     РњР°РєСЂРѕСЃ РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРёСЏ РїСЂРѕСЃС‚С‹С… (Р°С‚РѕРјР°СЂРЅС‹С…) С‚РёРїРѕРІ РґР°РЅРЅС‹С…
 */
 #define DEFINE_ATOM_TYPE(Type)        \
 class RDOType__##Type: public RDOType \
@@ -72,43 +72,43 @@ extern rdo::intrusive_ptr<RDOType__##Type> g_##Type;
 
 /*!
   \class     RDOType__unknow
-  \brief     Атомарный неизвестный тип данных
+  \brief     РђС‚РѕРјР°СЂРЅС‹Р№ РЅРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї РґР°РЅРЅС‹С…
 */
 DEFINE_ATOM_TYPE(unknow);
 
 /*!
   \class     RDOType__void
-  \brief     Атомарный пусто тип данных
+  \brief     РђС‚РѕРјР°СЂРЅС‹Р№ РїСѓСЃС‚Рѕ С‚РёРї РґР°РЅРЅС‹С…
 */
 DEFINE_ATOM_TYPE(void);
 
 /*!
   \class     RDOType__identificator
-  \brief     Атомарный тип данных идентификатор
+  \brief     РђС‚РѕРјР°СЂРЅС‹Р№ С‚РёРї РґР°РЅРЅС‹С… РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ
 */
 DEFINE_ATOM_TYPE(identificator);
 
 /*!
   \class     RDOType__int
-  \brief     Атомарный целочисленный тип данных
+  \brief     РђС‚РѕРјР°СЂРЅС‹Р№ С†РµР»РѕС‡РёСЃР»РµРЅРЅС‹Р№ С‚РёРї РґР°РЅРЅС‹С…
 */
 DEFINE_ATOM_TYPE(int);
 
 /*!
   \class     RDOType__real
-  \brief     Атомарный вещественный тип данных
+  \brief     РђС‚РѕРјР°СЂРЅС‹Р№ РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№ С‚РёРї РґР°РЅРЅС‹С…
 */
 DEFINE_ATOM_TYPE(real);
 
 /*!
   \class     RDOType__bool
-  \brief     Атомарный логический тип данных
+  \brief     РђС‚РѕРјР°СЂРЅС‹Р№ Р»РѕРіРёС‡РµСЃРєРёР№ С‚РёРї РґР°РЅРЅС‹С…
 */
 DEFINE_ATOM_TYPE(bool);
 
 /*!
   \class     RDOType__string
-  \brief     Атомарный строковый тип данных
+  \brief     РђС‚РѕРјР°СЂРЅС‹Р№ СЃС‚СЂРѕРєРѕРІС‹Р№ С‚РёРї РґР°РЅРЅС‹С…
 */
 DEFINE_ATOM_TYPE(string);
 

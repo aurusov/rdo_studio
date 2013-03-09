@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      hotkey.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      09.01.2012
   \brief     
   \indent    4T
@@ -120,7 +120,7 @@ RDOHotKey::KeyDownList::~KeyDownList()
 
 rbool RDOHotKey::KeyDownList::down(CREF(KeyCode) keyCode)
 {
-	// Если нажаты VK_SHIFT или VK_CONTROL, то сбросим буфер клавиатуры
+	// Р•СЃР»Рё РЅР°Р¶Р°С‚С‹ VK_SHIFT РёР»Рё VK_CONTROL, С‚Рѕ СЃР±СЂРѕСЃРёРј Р±СѓС„РµСЂ РєР»Р°РІРёР°С‚СѓСЂС‹
 	if (keyCode == VK_SHIFT || keyCode == VK_CONTROL)
 	{
 		KeyList::iterator it = m_keyList.begin();
@@ -136,7 +136,7 @@ rbool RDOHotKey::KeyDownList::down(CREF(KeyCode) keyCode)
 			}
 		}
 	}
-	// Подсчитаем сколько раз клавиша уже в буфере
+	// РџРѕРґСЃС‡РёС‚Р°РµРј СЃРєРѕР»СЊРєРѕ СЂР°Р· РєР»Р°РІРёС€Р° СѓР¶Рµ РІ Р±СѓС„РµСЂРµ
 	int cnt = 0;
 	KeyList::iterator it = m_keyList.begin();
 	while (it != m_keyList.end())
@@ -147,7 +147,7 @@ rbool RDOHotKey::KeyDownList::down(CREF(KeyCode) keyCode)
 		}
 		++it;
 	}
-	// Добавим клавишу в буфер
+	// Р”РѕР±Р°РІРёРј РєР»Р°РІРёС€Сѓ РІ Р±СѓС„РµСЂ
 	if (cnt < 4)
 	{
 		m_keyList.push_back(keyCode);
@@ -158,7 +158,7 @@ rbool RDOHotKey::KeyDownList::down(CREF(KeyCode) keyCode)
 
 void RDOHotKey::KeyDownList::up(CREF(KeyCode) keyCode)
 {
-	// Если отжаты VK_SHIFT или VK_CONTROL, то сбросим удалим их из буфера
+	// Р•СЃР»Рё РѕС‚Р¶Р°С‚С‹ VK_SHIFT РёР»Рё VK_CONTROL, С‚Рѕ СЃР±СЂРѕСЃРёРј СѓРґР°Р»РёРј РёС… РёР· Р±СѓС„РµСЂР°
 	//if (keyCode == VK_SHIFT || keyCode == VK_CONTROL)
 	//{
 		KeyList::iterator it = m_keyList.begin();
@@ -181,7 +181,7 @@ rbool RDOHotKey::KeyDownList::isPressed(CREF(KeyCode) keyCode, rbool shift, rboo
 	if (keyCode == 0) return false;
 	rbool shift_found   = false;
 	rbool control_found = false;
-	// Найдем VK_SHIFT и/или VK_CONTROL в буфере
+	// РќР°Р№РґРµРј VK_SHIFT Рё/РёР»Рё VK_CONTROL РІ Р±СѓС„РµСЂРµ
 	KeyList::iterator it = m_keyList.begin();
 	while (it != m_keyList.end())
 	{
@@ -197,8 +197,8 @@ rbool RDOHotKey::KeyDownList::isPressed(CREF(KeyCode) keyCode, rbool shift, rboo
 		}
 		++it;
 	}
-	// Теперь найдем саму клавишу в буфере
-	// Удалим её из буфера перед выходом
+	// РўРµРїРµСЂСЊ РЅР°Р№РґРµРј СЃР°РјСѓ РєР»Р°РІРёС€Сѓ РІ Р±СѓС„РµСЂРµ
+	// РЈРґР°Р»РёРј РµС‘ РёР· Р±СѓС„РµСЂР° РїРµСЂРµРґ РІС‹С…РѕРґРѕРј
 	if (shift_found == shift && control_found == control)
 	{
 		KeyList::iterator it = m_keyList.begin();

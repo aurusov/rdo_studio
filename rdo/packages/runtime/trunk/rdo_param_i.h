@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_param_i.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      09.12.2010
-  \brief     Интерфейс IParam
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IParam
   \indent    4T
 */
 
@@ -25,8 +25,8 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 /*!
   \interface IParam
-  \brief     Интерфейс для параметров
-  \todo      перевести все параметры в РДО на этот интерфейс
+  \brief     РРЅС‚РµСЂС„РµР№СЃ РґР»СЏ РїР°СЂР°РјРµС‚СЂРѕРІ
+  \todo      РїРµСЂРµРІРµСЃС‚Рё РІСЃРµ РїР°СЂР°РјРµС‚СЂС‹ РІ Р Р”Рћ РЅР° СЌС‚РѕС‚ РёРЅС‚РµСЂС„РµР№СЃ
 */
 class IParam
 {

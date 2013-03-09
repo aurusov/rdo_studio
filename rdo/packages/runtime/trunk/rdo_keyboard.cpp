@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_keyboard.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      18.08.2010
-  \brief     Клавиатурные операции
+  \brief     РљР»Р°РІРёР°С‚СѓСЂРЅС‹Рµ РѕРїРµСЂР°С†РёРё
   \indent    4T
 */
 
@@ -16,7 +16,7 @@
 // --------------------------------------------------------------------------------
 
 #ifdef OST_LINUX
-	//! @todo А что на самом деле делать под линухами ?
+	//! @todo Рђ С‡С‚Рѕ РЅР° СЃР°РјРѕРј РґРµР»Рµ РґРµР»Р°С‚СЊ РїРѕРґ Р»РёРЅСѓС…Р°РјРё ?
 	const ruint VK_SHIFT   = 0x10;
 	const ruint VK_CONTROL = 0x11;
 #endif

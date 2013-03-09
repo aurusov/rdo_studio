@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2009-2012
   \file      main.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      01.05.2012
-  \brief     Тест для калков
+  \brief     РўРµСЃС‚ РґР»СЏ РєР°Р»РєРѕРІ
   \indent    4T
 */
 
@@ -93,9 +93,9 @@ BOOST_AUTO_TEST_CASE(RDOCalc_RecursSimulator)
 				: m_value(value)
 			{}
 
-			//! Важно, чтобы тип был int, а не int&
-			//! Иначе результаты обоих функций будут по 1
-			//! А сейчас 1 и 120
+			//! Р’Р°Р¶РЅРѕ, С‡С‚РѕР±С‹ С‚РёРї Р±С‹Р» int, Р° РЅРµ int&
+			//! РРЅР°С‡Рµ СЂРµР·СѓР»СЊС‚Р°С‚С‹ РѕР±РѕРёС… С„СѓРЅРєС†РёР№ Р±СѓРґСѓС‚ РїРѕ 1
+			//! Рђ СЃРµР№С‡Р°СЃ 1 Рё 120
 			int value() 
 			{
 				return m_value;
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 
 		static LPRDOCalc create(MultOrder order)
 		{
-			//! ручная набивка тела функции вида
+			//! СЂСѓС‡РЅР°СЏ РЅР°Р±РёРІРєР° С‚РµР»Р° С„СѓРЅРєС†РёРё РІРёРґР°
 			//! 
 			//! int fun(int param)
 			//! {
@@ -217,12 +217,12 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 				}
 				BOOST_CHECK(pParamValue);
 
-				//! Вызов fun(param - 1)
+				//! Р’С‹Р·РѕРІ fun(param - 1)
 				LPRDOCalc pFunctionCaller = caller(pReturnCatch, pParamValue);
 				BOOST_CHECK(pFunctionCaller);
 
 				//! fun(param - 1) * param
-				//! или 
+				//! РёР»Рё 
 				//! param * fun(param - 1)
 				LPRDOCalc pMult;
 				switch (order)
@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 		}
 
 	private:
-		//! ручная набивка вызова функции int fun(5)
+		//! СЂСѓС‡РЅР°СЏ РЅР°Р±РёРІРєР° РІС‹Р·РѕРІР° С„СѓРЅРєС†РёРё int fun(5)
 		static LPRDOCalc externalCaller(CREF(LPRDOCalc) pBody)
 		{
 			LPRDOCalc pParam = rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(5)));

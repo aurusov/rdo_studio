@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_fuzzy.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      24.07.2008
-  \brief     Нечеткая логика
+  \brief     РќРµС‡РµС‚РєР°СЏ Р»РѕРіРёРєР°
   \indent    4T
 */
 
@@ -23,7 +23,7 @@ LPFuzzySet FuzzySet::operator&& (CREF(LPFuzzySet) pSet) const
 {
 	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create();
 	ASSERT(pFuzzySetResult);
-	// Найдем только пересекающие элементы и выберем минимальную функцию принадлежности
+	// РќР°Р№РґРµРј С‚РѕР»СЊРєРѕ РїРµСЂРµСЃРµРєР°СЋС‰РёРµ СЌР»РµРјРµРЅС‚С‹ Рё РІС‹Р±РµСЂРµРј РјРёРЅРёРјР°Р»СЊРЅСѓСЋ С„СѓРЅРєС†РёСЋ РїСЂРёРЅР°РґР»РµР¶РЅРѕСЃС‚Рё
 	FuzzySetDefinition::const_iterator it1 = begin();
 	while (it1 != end())
 	{
@@ -41,8 +41,8 @@ LPFuzzySet FuzzySet::operator|| (CREF(LPFuzzySet) pSet)const
 {
 	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create();
 	ASSERT(pFuzzySetResult);
-	// Объединим элементы двух множеств
-	// Если элемент одновременно принадлежит обоим множествам, то выберем максимальную функцию принадлежности
+	// РћР±СЉРµРґРёРЅРёРј СЌР»РµРјРµРЅС‚С‹ РґРІСѓС… РјРЅРѕР¶РµСЃС‚РІ
+	// Р•СЃР»Рё СЌР»РµРјРµРЅС‚ РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ РїСЂРёРЅР°РґР»РµР¶РёС‚ РѕР±РѕРёРј РјРЅРѕР¶РµСЃС‚РІР°Рј, С‚Рѕ РІС‹Р±РµСЂРµРј РјР°РєСЃРёРјР°Р»СЊРЅСѓСЋ С„СѓРЅРєС†РёСЋ РїСЂРёРЅР°РґР»РµР¶РЅРѕСЃС‚Рё
 	FuzzySetDefinition::const_iterator it1 = begin();
 	while (it1 != end())
 	{
@@ -53,7 +53,7 @@ LPFuzzySet FuzzySet::operator|| (CREF(LPFuzzySet) pSet)const
 		}
 		else
 		{
-			// Не нашли пары
+			// РќРµ РЅР°С€Р»Рё РїР°СЂС‹
 			pFuzzySetResult->operator[](it1->first) = it1->second;
 		}
 		++it1;
@@ -64,15 +64,15 @@ LPFuzzySet FuzzySet::operator|| (CREF(LPFuzzySet) pSet)const
 		FuzzySetDefinition::const_iterator it1 = find(it2->first);
 		if (it1 == end())
 		{
-			// Не нашли пары
+			// РќРµ РЅР°С€Р»Рё РїР°СЂС‹
 			pFuzzySetResult->operator[](it2->first) = it2->second;
 		}
 		++it2;
 	}
 	return pFuzzySetResult;
 }
-/// @todo комментарии в *.h
-//! Декартово произведение (попарное) элементов двух множест с применением произвольной функции fun
+/// @todo РєРѕРјРјРµРЅС‚Р°СЂРёРё РІ *.h
+//! Р”РµРєР°СЂС‚РѕРІРѕ РїСЂРѕРёР·РІРµРґРµРЅРёРµ (РїРѕРїР°СЂРЅРѕРµ) СЌР»РµРјРµРЅС‚РѕРІ РґРІСѓС… РјРЅРѕР¶РµСЃС‚ СЃ РїСЂРёРјРµРЅРµРЅРёРµРј РїСЂРѕРёР·РІРѕР»СЊРЅРѕР№ С„СѓРЅРєС†РёРё fun
 LPFuzzySet MemberFunctionProperties::ext_binary(ExtBinaryFun fun, CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2)
 {
 	FuzzySet::FuzzySetDefinition values;
@@ -109,7 +109,7 @@ LPFuzzySet MemberFunctionProperties::ext_binary(ExtBinaryFun fun, CREF(LPFuzzySe
 	return LPFuzzySet();
 }
 
-//! Преобразование элементов через произвольную функцию fun
+//! РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ С‡РµСЂРµР· РїСЂРѕРёР·РІРѕР»СЊРЅСѓСЋ С„СѓРЅРєС†РёСЋ fun
 LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFun fun, CREF(LPFuzzySet) pSet)
 {
 	FuzzySet::FuzzySetDefinition values;
@@ -244,7 +244,7 @@ LPFuzzySet MemberFunctionProperties::a_mult(CREF(LPFuzzySet) pSet1, CREF(LPFuzzy
 	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create();
 	ASSERT(pFuzzySetResult);
 
-	// Найдем только пересекающие элементы и перемножим функции принадлежности
+	// РќР°Р№РґРµРј С‚РѕР»СЊРєРѕ РїРµСЂРµСЃРµРєР°СЋС‰РёРµ СЌР»РµРјРµРЅС‚С‹ Рё РїРµСЂРµРјРЅРѕР¶РёРј С„СѓРЅРєС†РёРё РїСЂРёРЅР°РґР»РµР¶РЅРѕСЃС‚Рё
 	FuzzySet::FuzzySetDefinition::const_iterator it1 = pSet1->begin();
 	for (it1 = pSet1->begin(); it1 != pSet1->end(); ++it1)
 	{
@@ -267,7 +267,7 @@ LPFuzzySet MemberFunctionProperties::alpha(CREF(LPFuzzySet) pSet,double appertai
 
 	FuzzySet::FuzzySetDefinition::const_iterator it = pSet->begin();
 
-	// Найдем отсечку
+	// РќР°Р№РґРµРј РѕС‚СЃРµС‡РєСѓ
 	while (it != pSet->end())
 	{
 		if (it->second >= appertain)
@@ -298,7 +298,7 @@ LPFuzzySet MemberFunctionProperties::a_pow(LPFuzzySet pSet, double power)
 	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pSet);
 	ASSERT(pFuzzySetResult);
 
-	// Возведём в степень
+	// Р’РѕР·РІРµРґС‘Рј РІ СЃС‚РµРїРµРЅСЊ
 	FuzzySet::FuzzySetDefinition::iterator it = pFuzzySetResult->begin();
 	while (it != pFuzzySetResult->end())
 	{

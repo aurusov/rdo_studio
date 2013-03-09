@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      notify.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      08.01.2012
   \brief     
   \indent    4T
@@ -20,11 +20,11 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Передача сообщений между объектами
+//! РџРµСЂРµРґР°С‡Р° СЃРѕРѕР±С‰РµРЅРёР№ РјРµР¶РґСѓ РѕР±СЉРµРєС‚Р°РјРё
 class Notify
 {
 public:
-	//! Типы сообщений
+	//! РўРёРїС‹ СЃРѕРѕР±С‰РµРЅРёР№
 	enum Type
 	{
 		RO_BEFOREDELETE = 0

@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      result_group.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      04.03.2011
-  \brief     Группы собираемых показателей
+  \brief     Р“СЂСѓРїРїС‹ СЃРѕР±РёСЂР°РµРјС‹С… РїРѕРєР°Р·Р°С‚РµР»РµР№
   \indent    4T
 */
 
@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class     RDOPMDResultGroup
-  \brief     Группа собираемых при моделировании показателей
+  \brief     Р“СЂСѓРїРїР° СЃРѕР±РёСЂР°РµРјС‹С… РїСЂРё РјРѕРґРµР»РёСЂРѕРІР°РЅРёРё РїРѕРєР°Р·Р°С‚РµР»РµР№
 */
 class RDOPMDResultGroup: public IResult, public IResultGroup
 {
@@ -36,7 +36,7 @@ private:
 
 	/*!
 	  \enum      State
-	  \brief     Состояние группы показателей
+	  \brief     РЎРѕСЃС‚РѕСЏРЅРёРµ РіСЂСѓРїРїС‹ РїРѕРєР°Р·Р°С‚РµР»РµР№
 	*/
 	enum State
 	{

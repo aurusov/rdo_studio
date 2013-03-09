@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_watch.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      04.03.2011
-  \brief     Собираемые показатели
+  \brief     РЎРѕР±РёСЂР°РµРјС‹Рµ РїРѕРєР°Р·Р°С‚РµР»Рё
   \indent    4T
 */
 
@@ -18,7 +18,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Начало сбора статистики по группе показателей
+//! РќР°С‡Р°Р»Рѕ СЃР±РѕСЂР° СЃС‚Р°С‚РёСЃС‚РёРєРё РїРѕ РіСЂСѓРїРїРµ РїРѕРєР°Р·Р°С‚РµР»РµР№
 CALC(RDOCalcWatchGroupStart)
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStart)
@@ -31,7 +31,7 @@ protected:
 	DECLARE_ICalc;
 };
 
-//! Окончание сбора статистики по группе показателей
+//! РћРєРѕРЅС‡Р°РЅРёРµ СЃР±РѕСЂР° СЃС‚Р°С‚РёСЃС‚РёРєРё РїРѕ РіСЂСѓРїРїРµ РїРѕРєР°Р·Р°С‚РµР»РµР№
 CALC(RDOCalcWatchGroupStop)
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStop)

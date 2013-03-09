@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      seize_release.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      12.02.2012
-  \brief     Процессные операторы SEIZE и RELEASE
+  \brief     РџСЂРѕС†РµСЃСЃРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹ SEIZE Рё RELEASE
   \indent    4T
 */
 
@@ -26,7 +26,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \struct  runtime_for_Seize
-  \brief   Вспомогательный класс для оператора SEIZE в Runtime
+  \brief   Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РѕРїРµСЂР°С‚РѕСЂР° SEIZE РІ Runtime
 */
 struct runtime_for_Seize
 {
@@ -39,7 +39,7 @@ struct runtime_for_Seize
 
 /*!
   \struct  parser_for_Seize
-  \brief   Вспомогательный класс для оператора SEIZE в Parser
+  \brief   Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РѕРїРµСЂР°С‚РѕСЂР° SEIZE РІ Parser
 */
 struct parser_for_Seize
 {
@@ -49,7 +49,7 @@ struct parser_for_Seize
 
 /*!
   \class   RDOPROCBlockForSeize
-  \brief   Вспомогательный класс для процессного оператора SEIZE
+  \brief   Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РєР»Р°СЃСЃ РґР»СЏ РїСЂРѕС†РµСЃСЃРЅРѕРіРѕ РѕРїРµСЂР°С‚РѕСЂР° SEIZE
 */
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
@@ -69,7 +69,7 @@ protected:
 
 /*!
   \class   RDOPROCSeize
-  \brief   Процессный блок SEIZE
+  \brief   РџСЂРѕС†РµСЃСЃРЅС‹Р№ Р±Р»РѕРє SEIZE
 */
 class RDOPROCSeize: public RDOPROCBlockForSeize, public IBaseOperation
 {
@@ -92,7 +92,7 @@ private:
 
 /*!
   \class   RDOPROCRelease
-  \brief   Процессный блок RELEASE
+  \brief   РџСЂРѕС†РµСЃСЃРЅС‹Р№ Р±Р»РѕРє RELEASE
 */
 class RDOPROCRelease: public RDOPROCBlockForSeize, public IBaseOperation
 {

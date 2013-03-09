@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_statement.cpp
-  \authors   Чирков Михаил
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      16.04.2011
-  \brief     Инструкции
+  \brief     РРЅСЃС‚СЂСѓРєС†РёРё
   \indent    4T
 */
 

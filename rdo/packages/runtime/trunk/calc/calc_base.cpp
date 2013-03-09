@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_base.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      16.05.2007
-  \brief     Вычислитель
+  \brief     Р’С‹С‡РёСЃР»РёС‚РµР»СЊ
   \indent    4T
 */
 
@@ -41,7 +41,7 @@ RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 		else if (src_text().length() < 500)
 		{
 			TRACE(_T("calc: %s\n"), src_text().c_str());
-			if (src_text() == _T("класс"))
+			if (src_text() == _T("РєР»Р°СЃСЃ"))
 			{
 				TRACE(_T("calc: %s\n"), src_text().c_str());
 			}
@@ -58,7 +58,7 @@ RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 	}
 	catch (CREF(RDORuntimeException) ex)
 	{
-		tstring message = rdo::format(_T("<Модельное время: %f>, '%s'"), pRuntime->getTimeNow(), m_srcInfo.src_text().c_str());
+		tstring message = rdo::format(_T("<РњРѕРґРµР»СЊРЅРѕРµ РІСЂРµРјСЏ: %f>, '%s'"), pRuntime->getTimeNow(), m_srcInfo.src_text().c_str());
 		if (!ex.message().empty())
 		{
 			message = rdo::format(_T("%s: %s"), message.c_str(), ex.message().c_str());

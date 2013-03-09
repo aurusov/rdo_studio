@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_activity.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      13.04.2008
-  \brief     Описание базового класса для событий и активностей -- RDOActivity
+  \brief     РћРїРёСЃР°РЅРёРµ Р±Р°Р·РѕРІРѕРіРѕ РєР»Р°СЃСЃР° РґР»СЏ СЃРѕР±С‹С‚РёР№ Рё Р°РєС‚РёРІРЅРѕСЃС‚РµР№ -- RDOActivity
   \indent    4T
 */
 
@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class   RDOActivity
-  \brief   Активность БЗ
+  \brief   РђРєС‚РёРІРЅРѕСЃС‚СЊ Р‘Р—
 */
 class RDOActivity: public RDOTraceableObject, public IActivity, public IActivityTrace, CAST_TO_UNKNOWN
 {
@@ -39,8 +39,8 @@ protected:
 	virtual ~RDOActivity();
 
 	tstring                   m_oprName;
-	std::list<LPRDOResource>  m_relevantResources; // Список релевантных ресурсов
-	std::vector<ruint>        m_relResID;          // Содержит список id ресурсов, которые стали релевантными образцу
+	std::list<LPRDOResource>  m_relevantResources; // РЎРїРёСЃРѕРє СЂРµР»РµРІР°РЅС‚РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ
+	std::vector<ruint>        m_relResID;          // РЎРѕРґРµСЂР¶РёС‚ СЃРїРёСЃРѕРє id СЂРµСЃСѓСЂСЃРѕРІ, РєРѕС‚РѕСЂС‹Рµ СЃС‚Р°Р»Рё СЂРµР»РµРІР°РЅС‚РЅС‹РјРё РѕР±СЂР°Р·С†Сѓ
 	std::vector<LPRDOCalc>    m_paramsCalcs;
 
 	void setPatternParameters              (CREF(LPRDORuntime) pRuntime);
@@ -57,7 +57,7 @@ private:
 
 /*!
   \class   RDOActivityPattern
-  \brief   Образец активности БЗ
+  \brief   РћР±СЂР°Р·РµС† Р°РєС‚РёРІРЅРѕСЃС‚Рё Р‘Р—
 */
 template<class T>
 class RDOActivityPattern: public RDOActivity, public IModelStructure, public IActivityPatternTrace

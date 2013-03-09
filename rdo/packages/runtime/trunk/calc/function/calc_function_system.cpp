@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_function_system.cpp
-  \author    Барс Александр
+  \author    Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
   \date      20.12.2011
-  \brief     Системные функции
+  \brief     РЎРёСЃС‚РµРјРЅС‹Рµ С„СѓРЅРєС†РёРё
   \indent    4T
 */
 

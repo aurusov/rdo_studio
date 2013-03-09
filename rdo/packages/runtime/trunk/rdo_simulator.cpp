@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_simulator.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      19.04.2008
-  \brief     Симулятор РДО
+  \brief     РЎРёРјСѓР»СЏС‚РѕСЂ Р Р”Рћ
   \indent    4T
 */
 
@@ -52,7 +52,7 @@ rbool RDOSimulator::doOperation()
 	rbool res;
 	if (getMustContinueOpr())
 	{
-		// Есть действие, которое необходимо продолжить. Используется в DPT
+		// Р•СЃС‚СЊ РґРµР№СЃС‚РІРёРµ, РєРѕС‚РѕСЂРѕРµ РЅРµРѕР±С…РѕРґРёРјРѕ РїСЂРѕРґРѕР»Р¶РёС‚СЊ. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ DPT
 		IBaseOperation::BOResult result = getMustContinueOpr()->onContinue(pRuntime);
 		if (result != IBaseOperation::BOR_must_continue)
 		{
@@ -63,7 +63,7 @@ rbool RDOSimulator::doOperation()
 	else
 	{
 		rbool foundPlaned = false;
-		// Отработаем все запланированные на данный момент события
+		// РћС‚СЂР°Р±РѕС‚Р°РµРј РІСЃРµ Р·Р°РїР»Р°РЅРёСЂРѕРІР°РЅРЅС‹Рµ РЅР° РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ СЃРѕР±С‹С‚РёСЏ
 		if (!m_checkOperation && !m_timePoints.empty())
 		{
 			m_checkOperation = true;
@@ -74,12 +74,12 @@ rbool RDOSimulator::doOperation()
 				if (pList && !pList->empty())
 				{
 #ifdef RDOSIM_COMPATIBLE
-					// Дисциплина списка текущих событий LIFO
+					// Р”РёСЃС†РёРїР»РёРЅР° СЃРїРёСЃРєР° С‚РµРєСѓС‰РёС… СЃРѕР±С‹С‚РёР№ LIFO
 					LPIBaseOperation pOperation = pList->back().m_opr;
 					PTR(void)        pParam     = pList->back().m_param;
 					pList->pop_back();
 #else
-					// Дисциплина списка текущих событий FIFO
+					// Р”РёСЃС†РёРїР»РёРЅР° СЃРїРёСЃРєР° С‚РµРєСѓС‰РёС… СЃРѕР±С‹С‚РёР№ FIFO
 					LPIBaseOperation pOperation = pList->front().m_opr;
 					PTR(void)        pParam     = pList->front().m_param;
 					pList->pop_front();
@@ -103,8 +103,8 @@ rbool RDOSimulator::doOperation()
 		res = foundPlaned;
 		if (!foundPlaned)
 		{
-			// Не нашли запланированное событие
-			// Проверить все возможные события и действия, вызвать первое, которое может быть вызвано
+			// РќРµ РЅР°С€Р»Рё Р·Р°РїР»Р°РЅРёСЂРѕРІР°РЅРЅРѕРµ СЃРѕР±С‹С‚РёРµ
+			// РџСЂРѕРІРµСЂРёС‚СЊ РІСЃРµ РІРѕР·РјРѕР¶РЅС‹Рµ СЃРѕР±С‹С‚РёСЏ Рё РґРµР№СЃС‚РІРёСЏ, РІС‹Р·РІР°С‚СЊ РїРµСЂРІРѕРµ, РєРѕС‚РѕСЂРѕРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РІС‹Р·РІР°РЅРѕ
 			LPIBaseOperation pMetaLogic = m_pMetaLogic.query_cast<IBaseOperation>();
 			try
 			{

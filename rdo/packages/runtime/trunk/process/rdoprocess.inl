@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoprocess.inl
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      24.07.2011
-  \brief     Процессы
+  \brief     РџСЂРѕС†РµСЃСЃС‹
   \indent    4T
 */
 

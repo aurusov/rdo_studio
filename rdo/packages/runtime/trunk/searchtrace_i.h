@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      searchtrace_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      30.07.2009
-  \brief     Интерфейс IDPTSearchTraceStatistics
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IDPTSearchTraceStatistics
   \indent    4T
 */
 
@@ -17,14 +17,14 @@
 
 /*!
   \interface IDPTSearchTraceStatistics
-  \brief     Интерфейс IDPTSearchTraceStatistics
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IDPTSearchTraceStatistics
 */
 class IDPTSearchTraceStatistics
 {
 public:
 	/*!
 	  \enum      Type
-	  \brief     Тип статистики точки принятия решений DPTSearch
+	  \brief     РўРёРї СЃС‚Р°С‚РёСЃС‚РёРєРё С‚РѕС‡РєРё РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ DPTSearch
 	*/
 	enum Type
 	{

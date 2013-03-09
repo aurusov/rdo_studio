@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      operation_name.inl
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      13.03.2011
-  \brief     Название операции
+  \brief     РќР°Р·РІР°РЅРёРµ РѕРїРµСЂР°С†РёРё
   \indent    4T
 */
 

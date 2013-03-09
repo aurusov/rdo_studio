@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_const.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      17.12.2011
-  \brief     Пустая операция
+  \brief     РџСѓСЃС‚Р°СЏ РѕРїРµСЂР°С†РёСЏ
   \indent    4T
 */
 
@@ -18,30 +18,30 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
-  \defgroup calc_const Константный калк
+  \defgroup calc_const РљРѕРЅСЃС‚Р°РЅС‚РЅС‹Р№ РєР°Р»Рє
   \class    RDOCalcConst
-  \brief    Константа
-  \details  Возвращает константное значение
+  \brief    РљРѕРЅСЃС‚Р°РЅС‚Р°
+  \details  Р’РѕР·РІСЂР°С‰Р°РµС‚ РєРѕРЅСЃС‚Р°РЅС‚РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ
   \ingroup  calc calc_const
 */
 CALC(RDOCalcConst)
 {
 DECLARE_FACTORY(RDOCalcConst)
 public:
-	//! Возвращает хранимую константу, может быть использован в parser-time
-	//! \result Значение константы
+	//! Р’РѕР·РІСЂР°С‰Р°РµС‚ С…СЂР°РЅРёРјСѓСЋ РєРѕРЅСЃС‚Р°РЅС‚Сѓ, РјРѕР¶РµС‚ Р±С‹С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅ РІ parser-time
+	//! \result Р—РЅР°С‡РµРЅРёРµ РєРѕРЅСЃС‚Р°РЅС‚С‹
 	CREF(RDOValue) getValue() const;
 
 private:
-	//! Инициализируется указанным значением переменную базового класса \ref RDOCalc::m_value
-	//! \param value - Значение константы
+	//! РРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚СЃСЏ СѓРєР°Р·Р°РЅРЅС‹Рј Р·РЅР°С‡РµРЅРёРµРј РїРµСЂРµРјРµРЅРЅСѓСЋ Р±Р°Р·РѕРІРѕРіРѕ РєР»Р°СЃСЃР° \ref RDOCalc::m_value
+	//! \param value - Р—РЅР°С‡РµРЅРёРµ РєРѕРЅСЃС‚Р°РЅС‚С‹
 	RDOCalcConst(CREF(RDOValue) value);
 
 	RDOValue m_value;
 
-	//! Возвращает значение константы
-	//! \param pRuntime - Не используется
-	//! \result Значение константы
+	//! Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РєРѕРЅСЃС‚Р°РЅС‚С‹
+	//! \param pRuntime - РќРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ
+	//! \result Р—РЅР°С‡РµРЅРёРµ РєРѕРЅСЃС‚Р°РЅС‚С‹
 	DECLARE_ICalc;
 };
 

@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/runtime/rdo_matrix.h
-  \authors   Чирков Михаил
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      01.10.2010
-  \brief     Матрица
+  \brief     РњР°С‚СЂРёС†Р°
   \indent    4T
 */
 
@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 PREDECLARE_POINTER(RDOMatrixType    );
 PREDECLARE_POINTER(RDOMatrixIterator);
 
-//! Элемент матрицы
+//! Р­Р»РµРјРµРЅС‚ РјР°С‚СЂРёС†С‹
 OBJECT(RDOMatrixValue)
 {
 DECLARE_FACTORY(RDOMatrixValue)
@@ -55,7 +55,7 @@ private:
 	LPRDOMatrixType  m_pMatrixType;
 };
 
-//! Итератор матрицы
+//! РС‚РµСЂР°С‚РѕСЂ РјР°С‚СЂРёС†С‹
 class RDOMatrixIterator: public RDOType
 {
 DECLARE_FACTORY(RDOMatrixIterator)
@@ -79,7 +79,7 @@ private:
 	Iterator  m_iterator;
 };
 
-//! Тип матрица
+//! РўРёРї РјР°С‚СЂРёС†Р°
 class RDOMatrixType: public RDOType
 {
 DECLARE_FACTORY(RDOMatrixType);

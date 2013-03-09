@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_random_distribution.inl
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \author    Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      02.08.2011
-  \brief     Датчики псевдослучайных чисел
+  \brief     Р”Р°С‚С‡РёРєРё РїСЃРµРІРґРѕСЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
   \indent    4T
 */
 
@@ -48,8 +48,8 @@ inline double RandGenerator::u01()
 	zi = ((lowprd & 65535) - MODLUS) + ((hi31 & 32767) << 16) + (hi31 >> 15);
 	if (zi < 0) zi += MODLUS;
 	m_seed = zi;
-	//return ((zi >> 7) + 1) / 16777216.0;     // Так в примере на FORTRAN imho
-	return (((zi >> 7) | 1) + 1) / 16777216.0; // Так в примере на C
+	//return ((zi >> 7) + 1) / 16777216.0;     // РўР°Рє РІ РїСЂРёРјРµСЂРµ РЅР° FORTRAN imho
+	return (((zi >> 7) | 1) + 1) / 16777216.0; // РўР°Рє РІ РїСЂРёРјРµСЂРµ РЅР° C
 #endif
 }
 

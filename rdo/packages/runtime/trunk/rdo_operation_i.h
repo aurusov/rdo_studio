@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_operation_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      30.07.2009
-  \brief     Интерфейс операции
+  \brief     РРЅС‚РµСЂС„РµР№СЃ РѕРїРµСЂР°С†РёРё
   \indent    4T
 */
 
@@ -25,7 +25,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 /*!
   \interface IOperation
-  \brief     Интерфейс модифицированного продукционного правила
+  \brief     РРЅС‚РµСЂС„РµР№СЃ РјРѕРґРёС„РёС†РёСЂРѕРІР°РЅРЅРѕРіРѕ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРіРѕ РїСЂР°РІРёР»Р°
 */
 class IOperation
 {
@@ -54,7 +54,7 @@ public:
 
 /*!
   \interface IOperationTrace
-  \brief     Интерфейс IOperationTrace
+  \brief     РРЅС‚РµСЂС„РµР№СЃ IOperationTrace
 */
 class IOperationTrace
 {

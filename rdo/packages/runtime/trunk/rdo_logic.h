@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/runtime/rdo_logic.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      23.04.2008
-  \brief     Логика - контейнер БЗ
+  \brief     Р›РѕРіРёРєР° - РєРѕРЅС‚РµР№РЅРµСЂ Р‘Р—
   \indent    4T
 */
 
@@ -27,8 +27,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
   \class   RDOLogic
-  \tparam  Order Дисциплина очереди
-  \brief   Базовый класс для логик РДО
+  \tparam  Order Р”РёСЃС†РёРїР»РёРЅР° РѕС‡РµСЂРµРґРё
+  \brief   Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ РґР»СЏ Р»РѕРіРёРє Р Р”Рћ
 */
 template <class Order>
 class RDOLogic: public IBaseOperation, public IBaseOperationContainer, public ILogic, CAST_TO_UNKNOWN
@@ -68,7 +68,7 @@ private:
 
 /*!
   \class   RDOOrderSimple
-  \brief   Простая дисциплина очереди для логик БЗ
+  \brief   РџСЂРѕСЃС‚Р°СЏ РґРёСЃС†РёРїР»РёРЅР° РѕС‡РµСЂРµРґРё РґР»СЏ Р»РѕРіРёРє Р‘Р—
 */
 class RDOOrderSimple
 {
@@ -78,7 +78,7 @@ public:
 
 /*!
   \class   RDOOrderMeta
-  \brief   Дисциплина очереди для мета-логики БЗ
+  \brief   Р”РёСЃС†РёРїР»РёРЅР° РѕС‡РµСЂРµРґРё РґР»СЏ РјРµС‚Р°-Р»РѕРіРёРєРё Р‘Р—
 */
 class RDOOrderMeta
 {
@@ -88,8 +88,8 @@ public:
 
 /*!
   \class   RDOLogicSimple
-  \brief   Простая логика БЗ
-  \details Используется в DPRSome
+  \brief   РџСЂРѕСЃС‚Р°СЏ Р»РѕРіРёРєР° Р‘Р—
+  \details РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ DPRSome
 */
 class RDOLogicSimple: public RDOLogic<RDOOrderSimple>
 {
@@ -105,7 +105,7 @@ protected:
 
 /*!
   \class   RDOLogicMeta
-  \brief   Мета-логика БЗ
+  \brief   РњРµС‚Р°-Р»РѕРіРёРєР° Р‘Р—
 */
 class RDOLogicMeta: public RDOLogic<RDOOrderMeta>
 {
