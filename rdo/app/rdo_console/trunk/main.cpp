@@ -47,7 +47,7 @@ int main(int argc, PTR(char) argv[])
 {
 	ruint exitCode = TERMINATION_NORMAL;
 
-	rdo::setup_locale();
+	rdo::locale::init();
 
 	boost::posix_time::ptime startTime = boost::posix_time::microsec_clock::local_time();
 
