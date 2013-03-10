@@ -122,14 +122,15 @@ std::string locale::convertFromCLocale(const std::string& txt, const std::locale
 
 std::string locale::getCLocaleName()
 {
-	std::string cLocale = setlocale(LC_ALL, NULL);
-
 #ifdef COMPILER_VISUAL_STUDIO
+	std::string cLocale = setlocale(LC_ALL, NULL);
 	std::string::size_type pos = cLocale.find('.');
 	if (pos != std::string::npos)
 	{
 		cLocale = "CP" + cLocale.substr(pos + 1);
 	}
+#else
+	std::string cLocale = "CP1251";
 #endif
 
 	return cLocale;
