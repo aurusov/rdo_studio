@@ -39,11 +39,11 @@ rbool BlockForQueue::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) in
 	tstring rtp_param_name = rdo::runtime::RDOPROCQueue::getQueueParamName();
 	// Тип найден, проверим его на наличие параметра "длина_очереди"
 	if (!rtp.m_params[rtp_param_name].exist())
-		parser::RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет параметра integer '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
+		parser::RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' нет параметра integer '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
 
 	CREF(RDOResType::Param) param = rtp.m_params[rtp_param_name];
 	if (param.typeID() != rdo::runtime::RDOType::t_int)
-		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является параметром int"), rtp.name().c_str(), rtp_param_name.c_str()));
+		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format("У типа ресурса '%s' параметр '%s' не является параметром int", rtp.name().c_str(), rtp_param_name.c_str()));
 
 	parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp.name());
 	ASSERT(pResType);
@@ -72,7 +72,7 @@ RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(parser::RDOPar
 	// Добавим тип ресурса
 	if (!rtpList.append(rtp))
 	{
-		parser::RDOParser::s_parser()->error().error(info, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
+		parser::RDOParser::s_parser()->error().error(info, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()));
 	}
 	else
 	{
@@ -96,17 +96,17 @@ rbool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) in
 	tstring rtp_state_buzy = rdo::runtime::RDOPROCBlockForSeize::getStateEnumBuzy();
 	// Тип найден, проверим его на наличие перечислимого параметра
 	if (!rtp.m_params[rtp_param_name].exist())
-		parser::RDOParser::s_parser()->error().error(info, rdo::format(_T("У типа ресурса '%s' нет параметра перечислимого типа '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
+		parser::RDOParser::s_parser()->error().error(info, rdo::format("У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
 
 	CREF(RDOResType::Param) param = rtp.m_params[rtp_param_name];
 	// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 	// Для начала проверим тип параметра
 	if (param.typeID() != rdo::runtime::RDOType::t_enum)
-		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа"), rtp.name().c_str(), rtp_param_name.c_str()));
+		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format("У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа", rtp.name().c_str(), rtp_param_name.c_str()));
 
 	// Теперь проверим сами значения
 	if (!param.getEnum()->getEnums()->exist(rtp_state_free) || !param.getEnum()->getEnums()->exist(rtp_state_buzy))
-		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format(_T("У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s"), rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str()));
+		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format("У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str()));
 
 	parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp.name());
 	ASSERT(pResType);
@@ -164,7 +164,7 @@ RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(parser::RDOPar
 	// Добавим тип ресурса
 	if (!rtpList.append(rtp))
 	{
-		parser::RDOParser::s_parser()->error().error(info, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
+		parser::RDOParser::s_parser()->error().error(info, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()));
 	}
 	else
 	{
