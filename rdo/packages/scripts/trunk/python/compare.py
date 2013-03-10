@@ -7,7 +7,12 @@
 import sys
 import utils
 
-def read_result_data(name):
+# compate type
+COMPARE_FULL   = u'FULL'
+COMPARE_TRACE  = u'TRACE'
+COMPARE_RESULT = u'RESULT'
+
+def _read_result_data(name):
     file_data_temp = open(name, u'r').readlines()
     utils.cut_slash(file_data_temp)
     
@@ -23,7 +28,7 @@ def read_result_data(name):
     return file_data
 
 
-def read_trace_data(name):
+def _read_trace_data(name):
     file_data_temp = open(name, u'r').readlines()
     utils.cut_slash(file_data_temp)
 
@@ -55,8 +60,8 @@ def full(file1, file2):
 
 
 def result(file1, file2):
-    file1_data = read_result_data(file1)
-    file2_data = read_result_data(file2)
+    file1_data = _read_result_data(file1)
+    file2_data = _read_result_data(file2)
     
     if cmp(file1_data, file2_data) == 0:
         return True
@@ -65,12 +70,20 @@ def result(file1, file2):
 
 
 def trace(file1, file2):
-    file1_data = read_trace_data(file1)
-    file2_data = read_trace_data(file2)
-
-    print "size: ", len(file1_data), " : ", len(file2_data)
+    file1_data = _read_trace_data(file1)
+    file2_data = _read_trace_data(file2)
     
     if cmp(file1_data, file2_data) == 0:
         return True
 
+    return False
+
+def files(file1, file2, type):
+    if   type == COMPARE_FULL:
+        return full(file1, file2)
+    elif type == COMPARE_TRACE:
+        return trace(file1, file2)
+    elif type == COMPARE_RESULT:
+        return result(file1, file2)
+    
     return False
