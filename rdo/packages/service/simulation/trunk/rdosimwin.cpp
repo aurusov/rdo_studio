@@ -108,25 +108,25 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 	{
 		//! Obtain a reference to the root context of the Name service:
 		CORBA::Object_var obj;
-		obj = orb->resolve_initial_references(_T("NameService"));
+		obj = orb->resolve_initial_references("NameService");
 		
 		//! Narrow the reference returned.
 		rootContext = CosNaming::NamingContext::_narrow(obj);
 		if (CORBA::is_nil(rootContext))
 		{
-			TRACE(_T("Failed to narrow the root naming context."));
+			TRACE("Failed to narrow the root naming context.");
 			return 0;
 		}
 	}
 	catch (REF(CORBA::NO_RESOURCES))
 	{
-		TRACE(_T("Caught NO_RESOURCES exception. You must configure omniORB with the location of the naming service."));
+		TRACE("Caught NO_RESOURCES exception. You must configure omniORB with the location of the naming service.");
 		return 0;
 	}
 	catch (REF(CORBA::ORB::InvalidName))
 	{
 		//! This should not happen!
-		TRACE(_T("Service required is invalid [does not exist]."));
+		TRACE("Service required is invalid [does not exist].");
 		return 0;
 	}
 
@@ -135,8 +135,8 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 		//! Bind a context called "test" to the root context:
 		CosNaming::Name contextName;
 		contextName.length(1);
-		contextName[0].id   = (CPTR(char)) _T("RDO");         //! string copied
-		contextName[0].kind = (CPTR(char)) _T("RDO_context"); //! string copied
+		contextName[0].id   = (CPTR(char)) "RDO";         //! string copied
+		contextName[0].kind = (CPTR(char)) "RDO_context"; //! string copied
 	
 		//! Note on kind: The kind field is used to indicate the type
 		//! of the object. This is to avoid conventions such as that used
@@ -160,7 +160,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 			
 			if (CORBA::is_nil(testContext))
 			{
-				TRACE(_T("Failed to narrow naming context."));
+				TRACE("Failed to narrow naming context.");
 				return 0;
 			}
 		}
@@ -173,7 +173,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 		//! parser.parse();
 
 		objectName[0].id   = ModelName;
-		objectName[0].kind = (CPTR(char)) _T("Object");
+		objectName[0].kind = (CPTR(char)) "Object";
 
 		try
 		{
@@ -196,13 +196,13 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 	}
 	catch(REF(CORBA::TRANSIENT))
 	{
-		TRACE(_T("Caught system exception TRANSIENT -- unable to contact the naming service."));
-		TRACE(_T("Make sure the naming server is running and that omniORB is configured correctly."));
+		TRACE("Caught system exception TRANSIENT -- unable to contact the naming service.");
+		TRACE("Make sure the naming server is running and that omniORB is configured correctly.");
 		return 0;
 	}
 	catch(REF(CORBA::SystemException) ex)
 	{
-		TRACE1(_T("Caught a CORBA:: %s while using the naming service."), ex._name());
+		TRACE1("Caught a CORBA:: %s while using the naming service.", ex._name());
 		return 0;
 	}
 	
@@ -216,7 +216,7 @@ ruint RDOThreadCorba::corbaRunThreadFun(PTR(void) pParam)
 		int argc = 0;
 		g_orb = CORBA::ORB_init(argc, NULL);
 		
-		CORBA::Object_var obj = g_orb->resolve_initial_references(_T("RootPOA"));
+		CORBA::Object_var obj = g_orb->resolve_initial_references("RootPOA");
 		PortableServer::POA_var poa = PortableServer::POA::_narrow(obj);
 		
 		PTR(RDOCorba_i) myrdocorba = new RDOCorba_i();
@@ -227,8 +227,8 @@ ruint RDOThreadCorba::corbaRunThreadFun(PTR(void) pParam)
 		//! the naming service.
 		obj = myrdocorba->_this();
 
-		CPTR(char) ModelName = _T("ЦЕХ");
-		//! CPTR(char) ModelName = _T("СКЛАД");
+		CPTR(char) ModelName = "ЦЕХ";
+		//! CPTR(char) ModelName = "СКЛАД";
 
 		if (!bindObjectToName(g_orb, obj, ModelName))
 		{
@@ -246,15 +246,15 @@ ruint RDOThreadCorba::corbaRunThreadFun(PTR(void) pParam)
 	}
 	catch(REF(CORBA::SystemException) ex)
 	{
-		TRACE1(_T("Caught CORBA::%s"), ex._name());
+		TRACE1("Caught CORBA::%s", ex._name());
 	}
 	catch(REF(CORBA::Exception))
 	{
-		TRACE(_T("Caught CORBA::Exception: "));
+		TRACE("Caught CORBA::Exception: ");
 	}	
 	catch(REF(omniORB::fatalException) fe)
 	{
-		TRACE3(_T("Caught omniORB::fatalException: file: %s, line: %d, mesg: %s "), fe.file(), fe.line(), fe.errmsg());
+		TRACE3("Caught omniORB::fatalException: file: %s, line: %d, mesg: %s ", fe.file(), fe.line(), fe.errmsg());
 	}
 	
 	return 0;
@@ -262,8 +262,8 @@ ruint RDOThreadCorba::corbaRunThreadFun(PTR(void) pParam)
 
 
 RDOThreadCorba::RDOThreadCorba()
-	: RDOThreadMT             (_T("RDOThreadCorba"))
-	, thread_corbaRunThreadFun(NULL                )
+	: RDOThreadMT             ("RDOThreadCorba")
+	, thread_corbaRunThreadFun(NULL            )
 {
 	//! Место для регистации сообщений корбе
 	after_constructor();
@@ -277,7 +277,7 @@ void RDOThreadCorba::proc(REF(RDOMessageInfo) msg)
 void RDOThreadCorba::start()
 {
 #ifdef TR_TRACE
-	trace(thread_name + _T(" corba begin"));
+	trace(thread_name + " corba begin");
 #endif
 
 	//! Место для запуска корбы
@@ -286,7 +286,7 @@ void RDOThreadCorba::start()
 	thread_corbaRunThreadFun->ResumeThread();
 
 #ifdef TR_TRACE
-	trace(thread_name + _T(" corba end"));
+	trace(thread_name + " corba end");
 #endif
 }
 
@@ -305,7 +305,7 @@ void RDOThreadCorba::idle()
 void RDOThreadCorba::stop()
 {
 #ifdef TR_TRACE
-	trace(thread_name + _T(" stop begin"));
+	trace(thread_name + " stop begin");
 #endif
 	//! Место для остановки корбы
 	if (g_orb != CORBA::ORB::_nil())
@@ -348,7 +348,7 @@ void RDOThreadCorba::stop()
 
 	RDOThread::stop();
 #ifdef TR_TRACE
-	trace(thread_name + _T(" stop end"));
+	trace(thread_name + " stop end");
 #endif
 }
 
@@ -389,7 +389,7 @@ public:
 				break;
 			}
 		}
-		m_stream.str(_T(""));
+		m_stream.str("");
 	}
 
 	RDORuntimeTracer(PTR(RDOThreadSimulator) pSimulator)
@@ -450,7 +450,7 @@ private:
 				break;
 			}
 		}
-		m_buffer.str(_T(""));
+		m_buffer.str("");
 	}
 };
 
@@ -485,7 +485,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOThreadRunTime
 // --------------------------------------------------------------------------------
 RDOThreadRunTime::RDOThreadRunTime()
-	: RDOThreadMT   (_T("RDOThreadRunTime"))
+	: RDOThreadMT   ("RDOThreadRunTime")
 	, m_pSimulator  (NULL                  )
 	, m_runtimeError(false                 )
 {
@@ -620,7 +620,7 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 void RDOThreadRunTime::start()
 {
 #ifdef TR_TRACE
-	trace(thread_name + _T(" start begin"));
+	trace(thread_name + " start begin");
 #endif
 
 	broadcastMessage(RT_RUNTIME_MODEL_START_BEFORE);
@@ -632,10 +632,10 @@ void RDOThreadRunTime::start()
 	//! Creating tracer and results
 	pTracer = new rdo::service::simulation::RDORuntimeTracer(m_pSimulator);
 
-	m_pSimulator->m_resultString.str(_T(""));
+	m_pSimulator->m_resultString.str("");
 	pResults = new rdo::service::simulation::RDOSimResulter(m_pSimulator, m_pSimulator->m_resultString);
 
-	m_pSimulator->m_resultInfoString.str(_T(""));
+	m_pSimulator->m_resultInfoString.str("");
 	pResultsInfo = new rdo::service::simulation::RDOSimResultInformer(m_pSimulator->m_resultInfoString);
 
 	//! RDO config initialization
@@ -669,7 +669,7 @@ void RDOThreadRunTime::start()
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
-		tstring mess = ex.getType() + _T(" : ") + ex.message();
+		tstring mess = ex.getType() + " : " + ex.message();
 		RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
 	}
 
@@ -679,7 +679,7 @@ void RDOThreadRunTime::start()
 	}
 
 #ifdef TR_TRACE
-	trace(thread_name + _T(" start end, runing simulation"));
+	trace(thread_name + " start end, runing simulation");
 #endif
 }
 
@@ -692,7 +692,7 @@ void RDOThreadRunTime::idle()
 		return;
 	}
 #endif
-//	TRACE(_T("R. %d, %d, %d, %d\n"), ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId());
+//	TRACE("R. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId());
 	try
 	{
 		if (m_runtimeError || !m_pSimulator->m_pRuntime->rdoNext())
@@ -710,12 +710,12 @@ void RDOThreadRunTime::idle()
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
-		tstring mess = ex.getType() + _T(" : ") + ex.message();
+		tstring mess = ex.getType() + " : " + ex.message();
 		RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
 	}
 //	catch (...) {
 //		m_runtimeError = true;
-//		TRACE(_T("******************************** Ошибка rdoNext()\n"));
+//		TRACE("******************************** Ошибка rdoNext()\n");
 //		m_pSimulator->m_pRuntime->onRuntimeError();
 //	}
 }
@@ -725,21 +725,21 @@ void RDOThreadRunTime::writeResultsInfo()
 	switch (m_pSimulator->m_pRuntime->m_whyStop)
 	{
 		case rdo::simulation::report::EC_OK:
-			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("NORMAL_TERMINATION");
+			m_pSimulator->m_pRuntime->getResultsInfo() << "$Status = " << "NORMAL_TERMINATION";
 			break;
 		case rdo::simulation::report::EC_NoMoreEvents:
-			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("NO_MORE_EVENTS");
+			m_pSimulator->m_pRuntime->getResultsInfo() << "$Status = " << "NO_MORE_EVENTS";
 			break;
 		case rdo::simulation::report::EC_RunTimeError:
-			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("RUN_TIME_ERROR");
+			m_pSimulator->m_pRuntime->getResultsInfo() << "$Status = " << "RUN_TIME_ERROR";
 			break;
 		case rdo::simulation::report::EC_UserBreak:
-			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("USER_BREAK");
+			m_pSimulator->m_pRuntime->getResultsInfo() << "$Status = " << "USER_BREAK";
 			break;
 		default:
 			break;
 	}
-	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << _T("$Result_values  0  ") << m_pSimulator->m_pRuntime->getTimeNow();
+	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "$Result_values  0  " << m_pSimulator->m_pRuntime->getTimeNow();
 	
 	rdo::Time time;
 	
@@ -752,55 +752,55 @@ void RDOThreadRunTime::writeResultsInfo()
 	
 	if (delay != -1)
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << _T("  ") << delay / 1000.0;
+		m_pSimulator->m_pRuntime->getResultsInfo() << "  " << delay / 1000.0;
 	}
 	else
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << _T("  ?");
+		m_pSimulator->m_pRuntime->getResultsInfo() << "  ?";
 	}
-	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << _T("  EventCount           ") << m_pSimulator->m_pRuntime->get_cnt_events() << _T("  ") << (double)m_pSimulator->m_pRuntime->get_cnt_events() / m_pSimulator->m_pRuntime->getTimeNow() << _T("  ");
+	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "  EventCount           " << m_pSimulator->m_pRuntime->get_cnt_events() << "  " << (double)m_pSimulator->m_pRuntime->get_cnt_events() / m_pSimulator->m_pRuntime->getTimeNow() << "  ";
 	if (delay != -1)
 	{
 		m_pSimulator->m_pRuntime->getResultsInfo() << (ruint)((double)m_pSimulator->m_pRuntime->get_cnt_events() / delay * 1000);
 	}
 	else
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << _T("?");
+		m_pSimulator->m_pRuntime->getResultsInfo() << "?";
 	}
 	
-	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << _T("  OperRuleCheckCounter ") << m_pSimulator->m_pRuntime->get_cnt_choice_from() << _T("  ") << (double)m_pSimulator->m_pRuntime->get_cnt_choice_from() / m_pSimulator->m_pRuntime->getTimeNow() << _T("  ");
+	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "  OperRuleCheckCounter " << m_pSimulator->m_pRuntime->get_cnt_choice_from() << "  " << (double)m_pSimulator->m_pRuntime->get_cnt_choice_from() / m_pSimulator->m_pRuntime->getTimeNow() << "  ";
 	if (delay != -1)
 	{
 		m_pSimulator->m_pRuntime->getResultsInfo() << (ruint)((double)m_pSimulator->m_pRuntime->get_cnt_choice_from() / delay * 1000);
 	}
 	else
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << _T("?");
+		m_pSimulator->m_pRuntime->getResultsInfo() << "?";
 	}
-	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << _T("  AExpCalcCounter      ") << m_pSimulator->m_pRuntime->get_cnt_calc_arithm() << _T("  ") << (double)m_pSimulator->m_pRuntime->get_cnt_calc_arithm() / m_pSimulator->m_pRuntime->getTimeNow() << _T("  ");
+	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "  AExpCalcCounter      " << m_pSimulator->m_pRuntime->get_cnt_calc_arithm() << "  " << (double)m_pSimulator->m_pRuntime->get_cnt_calc_arithm() / m_pSimulator->m_pRuntime->getTimeNow() << "  ";
 	if (delay != -1)
 	{
 		m_pSimulator->m_pRuntime->getResultsInfo() << (ruint)((double)m_pSimulator->m_pRuntime->get_cnt_calc_arithm() / delay * 1000);
 	}
 	else
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << _T("?");
+		m_pSimulator->m_pRuntime->getResultsInfo() << "?";
 	}
-	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << _T("  BExpCalcCounter      ") << m_pSimulator->m_pRuntime->get_cnt_calc_logic() << _T("  ") << (double)m_pSimulator->m_pRuntime->get_cnt_calc_logic() / m_pSimulator->m_pRuntime->getTimeNow() << _T("  ");
+	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "  BExpCalcCounter      " << m_pSimulator->m_pRuntime->get_cnt_calc_logic() << "  " << (double)m_pSimulator->m_pRuntime->get_cnt_calc_logic() / m_pSimulator->m_pRuntime->getTimeNow() << "  ";
 	if (delay != -1)
 	{
 		m_pSimulator->m_pRuntime->getResultsInfo() << (ruint)((double)m_pSimulator->m_pRuntime->get_cnt_calc_logic() / delay * 1000);
 	}
 	else
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << _T("?");
+		m_pSimulator->m_pRuntime->getResultsInfo() << "?";
 	}
 }
 
 void RDOThreadRunTime::stop()
 {
 #ifdef TR_TRACE
-	trace(thread_name + _T(" stop begin"));
+	trace(thread_name + " stop begin");
 #endif
 
 	try
@@ -817,7 +817,7 @@ void RDOThreadRunTime::stop()
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
-		tstring mess = ex.getType() + _T(" : ") + ex.message();
+		tstring mess = ex.getType() + " : " + ex.message();
 		RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
 	}
 
@@ -826,7 +826,7 @@ void RDOThreadRunTime::stop()
 	RDOThread::stop();
 
 #ifdef TR_TRACE
-	trace(thread_name + _T(" stop end"));
+	trace(thread_name + " stop end");
 #endif
 }
 
@@ -860,8 +860,8 @@ OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 // -------------------- RDOThreadSimulator
 // --------------------------------------------------------------------------------
 RDOThreadSimulator::RDOThreadSimulator()
-	: RDOThreadMT     (_T("RDOThreadSimulator")       )
-	, m_pThreadRuntime(NULL                           )
+	: RDOThreadMT     ("RDOThreadSimulator"          )
+	, m_pThreadRuntime(NULL                          )
 	, m_exitCode      (rdo::simulation::report::EC_OK)
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
@@ -1111,7 +1111,7 @@ rbool RDOThreadSimulator::parseModel()
 	}
 	catch (REF(rdo::runtime::RDORuntimeException) ex)
 	{
-		tstring mess = ex.getType() + _T(" : ") + ex.message();
+		tstring mess = ex.getType() + " : " + ex.message();
 		broadcastMessage(RT_SIMULATOR_PARSE_STRING, &mess);
 		m_exitCode = rdo::simulation::report::EC_ParserError;
 		broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
@@ -1195,7 +1195,7 @@ void RDOThreadSimulator::closeModel()
 	catch (...)
 	{
 		m_pRuntime = NULL;
-		TRACE(_T("******************************** Ошибка удаления m_pRuntime\n"));
+		TRACE("******************************** Ошибка удаления m_pRuntime\n");
 	}
 */
 	m_pRuntime = NULL;
@@ -1210,7 +1210,7 @@ void RDOThreadSimulator::closeModel()
 	catch (...)
 	{
 		m_pParser = NULL;
-		TRACE(_T("******************************** Ошибка удаления m_pParser\n"));
+		TRACE("******************************** Ошибка удаления m_pParser\n");
 	}
 }
 
@@ -1245,7 +1245,7 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdo::con
 			{
 				broadcastMessage(RT_CONVERTOR_ERROR);
 
-				tstring mess(_T("Ошибка конвертора\n"));
+				tstring mess("Ошибка конвертора\n");
 				broadcastMessage(RT_DEBUG_STRING, &mess);
 				CREF(rdo::converter::smr2rdox::Error::ErrorList) errorList = converter.error().getList();
 				BOOST_AUTO(it, errorList.begin());
@@ -1598,8 +1598,8 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS
 // -------------------- RDOThreadCodeComp
 // --------------------------------------------------------------------------------
 RDOThreadCodeComp::RDOThreadCodeComp()
-	: RDOThreadMT(_T("RDOThreadCodeComp"))
-	, m_pParser  (NULL                   )
+	: RDOThreadMT("RDOThreadCodeComp")
+	, m_pParser  (NULL               )
 {
 //	notifies.push_back(RT_CODECOMP_GET_DATA);
 	after_constructor();
