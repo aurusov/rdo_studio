@@ -976,7 +976,7 @@ void Model::afterModelStart()
 		}
 		BOOST_FOREACH(const tstring& name, frames)
 		{
-			m_frameManager.insertFrame(QString::fromLocal8Bit(name.c_str()));
+			m_frameManager.insertFrame(QString::fromStdString(name));
 		}
 		m_timeNow = 0;
 		ruint initFrameNumber = kernel->simulator()->getInitialFrameNumber();
