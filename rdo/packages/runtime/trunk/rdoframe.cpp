@@ -326,7 +326,7 @@ RDOValue RDOFRMText::doCalc(CREF(LPRDORuntime) pRuntime)
 		}
 		catch (CREF(RDOUndefinedException))
 		{
-			t = _T("#");
+			t = "#";
 		}
 	}
 
@@ -763,7 +763,7 @@ RDOValue RDOFRMSpace::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 RDOFRMFrame::RDOFRMFrame(CREF(RDOSrcInfo) srcInfo)
 	: RDOFRMSprite (srcInfo)
-	, m_picFileName(_T("") )
+	, m_picFileName("" )
 	, m_width      (800    )
 	, m_height     (600    )
 	{}
@@ -808,7 +808,7 @@ void RDOFRMFrame::setBackPicture(CREF(tstring) picFileName)
 
 void RDOFRMFrame::setBackPicture(int width, int height)
 {
-	m_picFileName = _T("");
+	m_picFileName = "";
 	m_width       = width;
 	m_height      = height;
 }

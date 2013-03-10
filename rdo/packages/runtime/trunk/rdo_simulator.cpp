@@ -145,7 +145,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 		LPIModelStructure pModelStructure = *it;
 		if (pModelStructure && (pModelStructure.query_cast<IRule>() || pModelStructure.query_cast<IOperation>()))
 		{
-			stream << counter++ << _T(" ");
+			stream << counter++ << " ";
 			pModelStructure->writeModelStructure(stream);
 		}
 		++it;
@@ -162,7 +162,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 		LPIModelStructure pModelStructure = *it;
 		if (pModelStructure && pModelStructure.query_cast<IEvent>())
 		{
-			stream << _counter++ << _T(" ");
+			stream << _counter++ << " ";
 			counter++;
 			pModelStructure->writeModelStructure(stream);
 		}

@@ -32,7 +32,7 @@ rbool RDOPROCTerminate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
-	TRACE1(_T("%7.1f TERMINATE\n"), pRuntime->getCurrentTime());
+	TRACE1("%7.1f TERMINATE\n", pRuntime->getCurrentTime());
 	LPRDOPROCTransact transact = m_transacts.front();
 	ASSERT(transact);
 	transact->setState(RDOResource::CS_Erase);

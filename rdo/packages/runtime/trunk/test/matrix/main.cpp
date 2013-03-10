@@ -47,7 +47,7 @@ tstring getString(CREF(rdo::runtime::LPRDOMatrixValue) pMatrix, CREF(rdo::runtim
 	{
 		return pIt->getValue().getAsString();
 	}
-	return _T("");
+	return "";
 }
 
 tstring getString(CREF(rdo::runtime::RDOValue) it, CREF(rdo::runtime::RDOValue) end)
@@ -56,12 +56,12 @@ tstring getString(CREF(rdo::runtime::RDOValue) it, CREF(rdo::runtime::RDOValue) 
 	{
 		return it.getAsString();
 	}
-	return _T("");
+	return "";
 }
 
 BOOST_AUTO_TEST_CASE(MatrixTestCreate)
 {
-	BOOST_CHECK(createMatrix(Container()(1)(2)(3)).second.getAsString() == _T("[1, 2, 3]"));
+	BOOST_CHECK(createMatrix(Container()(1)(2)(3)).second.getAsString() == "[1, 2, 3]");
 }
 
 BOOST_AUTO_TEST_CASE(MatrixTestInsert)
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestInsert)
 
 	matrix1.first->insert(matrix1.first->begin()->next(), matrix2.first->begin(), matrix2.first->end());
 
-	BOOST_CHECK(matrix1.second.getAsString() == _T("[1, 4, 5, 6, 2, 3]"));
+	BOOST_CHECK(matrix1.second.getAsString() == "[1, 4, 5, 6, 2, 3]");
 }
 
 BOOST_AUTO_TEST_CASE(MatrixTestErase)
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestErase)
 
 	matrix.first->erase(matrix.first->begin()->next(), matrix.first->begin()->preInc(3));
 
-	BOOST_CHECK(matrix.second.getAsString() == _T("[1]"));
+	BOOST_CHECK(matrix.second.getAsString() == "[1]");
 }
 
 BOOST_AUTO_TEST_CASE(MatrixTestIteratorPrePlus)
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPrePlus)
 	{
 		result += getString(matrix.first, pIt->preInc(1));
 	}
-	BOOST_CHECK(result == _T("23"));
+	BOOST_CHECK(result == "23");
 }
 
 BOOST_AUTO_TEST_CASE(MatrixTestIteratorPostPlus)
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPostPlus)
 	{
 		result += getString(matrix.first, pIt->postInc(1));
 	}
-	BOOST_CHECK(result == _T("123"));
+	BOOST_CHECK(result == "123");
 }
 
 BOOST_AUTO_TEST_CASE(MatrixTestIteratorPreMinus)
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPreMinus)
 	}
 	while (!pIt->equal(matrix.first->begin()));
 
-	BOOST_CHECK(result == _T("321"));
+	BOOST_CHECK(result == "321");
 }
 
 BOOST_AUTO_TEST_CASE(MatrixTestIteratorPostMinus)
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPostMinus)
 	}
 	while (!pIt->equal(matrix.first->begin()));
 
-	BOOST_CHECK(result == _T("32"));
+	BOOST_CHECK(result == "32");
 }
 
 BOOST_AUTO_TEST_CASE(MatrixTestValuePrePlus)
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePrePlus)
 	{
 		result += getString(++it, end);
 	}
-	BOOST_CHECK(result == _T("23"));
+	BOOST_CHECK(result == "23");
 }
 
 BOOST_AUTO_TEST_CASE(MatrixTestValuePostPlus)
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePostPlus)
 	{
 		result += getString(it++, end);
 	}
-	BOOST_CHECK(result == _T("123"));
+	BOOST_CHECK(result == "123");
 }
 
 BOOST_AUTO_TEST_CASE(MatrixTestValuePreMinus)
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePreMinus)
 		result += getString(--it, end);
 	}
 	while (it != begin);
-	BOOST_CHECK(result == _T("321"));
+	BOOST_CHECK(result == "321");
 }
 
 BOOST_AUTO_TEST_CASE(MatrixTestValuePostMinus)
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePostMinus)
 		result += getString(it--, end);
 	}
 	while (it != begin);
-	BOOST_CHECK(result == _T("32"));
+	BOOST_CHECK(result == "32");
 }
 
 BOOST_AUTO_TEST_CASE(MatrixTestSetItem)
@@ -229,7 +229,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestSetItem)
 	rdo::runtime::RDOValue value(item);
 	matrix.first->setItem(index, value);
 
-	BOOST_CHECK(matrix.second.getAsString() == _T("[1, 48, 3]"));
+	BOOST_CHECK(matrix.second.getAsString() == "[1, 48, 3]");
 
 	ind         = 3;
 	index       = ind;
@@ -243,7 +243,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestSetItem)
 	{
 		if (!ex.message().empty())
 		{
-			found = ex.message() == _T("Выход за пределы матрицы");
+			found = ex.message() == "Выход за пределы матрицы";
 		}
 	}
 
@@ -261,7 +261,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestGetItem)
 	rdo::runtime::RDOValue index(ind);
 	rdo::runtime::RDOValue value(matrix.first->getItem(index));
 
-	BOOST_CHECK(value.getAsString() == _T("48"));
+	BOOST_CHECK(value.getAsString() == "48");
 
 	ind         = 3;
 	index       = ind;
@@ -275,7 +275,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestGetItem)
 	{
 		if (!ex.message().empty())
 		{
-			found = ex.message() == _T("Выход за пределы матрицы");
+			found = ex.message() == "Выход за пределы матрицы";
 		}
 	}
 

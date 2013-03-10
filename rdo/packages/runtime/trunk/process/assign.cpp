@@ -34,7 +34,7 @@ rbool RDOPROCAssign::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 IBaseOperation::BOResult RDOPROCAssign::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
 	pAssignCalc->calcValue(pRuntime);
-	TRACE1(_T("%7.1f ASSIGN\n"), pRuntime->getCurrentTime());
+	TRACE1("%7.1f ASSIGN\n", pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }

@@ -98,7 +98,7 @@ template <class F, typename OperatorType::Type CalcType>
 inline RDOSrcInfo RDOCalcBinary<F, CalcType>::getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 {
 	RDOSrcInfo srcInfo;
-	srcInfo.setSrcInfo(pLeft->srcInfo(), rdo::format(_T(" %s "), OperatorName<typename F::method_type>::name(F::method()).c_str()), pRight->srcInfo());
+	srcInfo.setSrcInfo(pLeft->srcInfo(), rdo::format(" %s ", OperatorName<typename F::method_type>::name(F::method()).c_str()), pRight->srcInfo());
 	return srcInfo;
 }
 

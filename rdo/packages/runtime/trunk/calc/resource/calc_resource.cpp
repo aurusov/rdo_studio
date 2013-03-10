@@ -48,7 +48,7 @@ RDOValue RDOCalcGetResourceByID::doCalc(CREF(LPRDORuntime) pRuntime)
 	RDOValue value;
 	if (!RDOCalcGetResourceHelper::getResource(pRuntime, m_resourceID, value))
 	{
-		pRuntime->error().push(_T("Не найден ресурс"), srcInfo());
+		pRuntime->error().push("Не найден ресурс", srcInfo());
 	}
 	return value;
 }
@@ -80,7 +80,7 @@ RDOCalcGetUnknowResParam::RDOCalcGetUnknowResParam(CREF(tstring) resName, CREF(t
 
 RDOValue RDOCalcGetUnknowResParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->error().push(rdo::format(_T("Попытка использовать несуществующий ресурс: %s.%s"), m_resName.c_str(), m_parName.c_str()), srcInfo());
+	pRuntime->error().push(rdo::format("Попытка использовать несуществующий ресурс: %s.%s", m_resName.c_str(), m_parName.c_str()), srcInfo());
 	return RDOValue();
 }
 

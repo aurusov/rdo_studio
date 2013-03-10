@@ -26,7 +26,7 @@ tstring doubleToString(double value)
 {
 	rdo::ostringstream _str;
 	_str << value;
-	tstring::size_type pos = _str.str().find(_T("e"));
+	tstring::size_type pos = _str.str().find("e");
 	if (pos != tstring::npos)
 	{
 		tstring __str = _str.str();
@@ -54,7 +54,7 @@ void RDOTrace::writeSearchBegin(double currentTime, tstring decisionPointId)
 	if (!canTrace())
 		return;
 
-	getOStream() << _T("SB ") << currentTime << _T(" ") << decisionPointId.c_str() << std::endl << getEOL();
+	getOStream() << "SB " << currentTime << " " << decisionPointId.c_str() << std::endl << getEOL();
 }
 
 void RDOTrace::writeSearchDecisionHeader()
@@ -62,7 +62,7 @@ void RDOTrace::writeSearchDecisionHeader()
 	if (!canTrace())
 		return;
 
-	getOStream() << _T("SD") << std::endl << getEOL();
+	getOStream() << "SD" << std::endl << getEOL();
 }
 
 void RDOTrace::writeSearchDecision(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) node)
@@ -78,9 +78,9 @@ void RDOTrace::writeSearchDecision(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) no
 	ASSERT(activityPatternTrace);
 
 	getOStream() << node->m_number
-	             << _T(" ") << trace->traceId()
-	             << _T(" ") << activityPatternTrace->tracePatternId()
-	             << _T(" ") << activityTrace->traceResourcesListNumbers(pRuntime, true)
+	             << " " << trace->traceId()
+	             << " " << activityPatternTrace->tracePatternId()
+	             << " " << activityTrace->traceResourcesListNumbers(pRuntime, true)
 	             << std::endl << getEOL();
 }
 
@@ -97,10 +97,10 @@ void RDOTrace::writeSearchOpenNode(int nodeCount, int parentCount, double pathCo
 	if (!canTrace())
 		return;
 
-	getOStream() << _T("SO ") << nodeCount
-	             << _T(" ") << doubleToString(parentCount)
-	             << _T(" ") << doubleToString(pathCost)
-	             << _T(" ") << doubleToString(restCost) << std::endl << getEOL();
+	getOStream() << "SO " << nodeCount
+	             << " " << doubleToString(parentCount)
+	             << " " << doubleToString(pathCost)
+	             << " " << doubleToString(restCost) << std::endl << getEOL();
 }
 
 void RDOTrace::writeSearchNodeInfo(char sign, PTR(TreeNodeTrace) node)
@@ -120,15 +120,15 @@ void RDOTrace::writeSearchNodeInfo(char sign, PTR(TreeNodeTrace) node)
 		ASSERT(activityPatternTrace);
 
 		getOStream().precision(4);
-		getOStream() << _T("ST") << sign
-		             << _T(" ") << ((sign != 'D') ? node->m_number : node->m_root->getNodesCound())
-		             << _T(" ") << ((sign != 'D') ? node->m_parent->m_number : node->m_number)
-		             << _T(" ") << ((sign != 'D') ? doubleToString(node->m_costPath) : doubleToString(node->m_newCostPath))
-		             << _T(" ") << ((sign != 'D') ? doubleToString(node->m_costRest) : doubleToString(node->m_newCostRest))
-		             << _T(" ") << trace->traceId()
-		             << _T(" ") << activityPatternTrace->tracePatternId()
-		             << _T(" ") << ((sign != 'D') ? doubleToString(node->m_costRule) : doubleToString(node->m_newCostRule))
-		             << _T(" ") << activityTrace->traceResourcesListNumbers(pRuntime, true)
+		getOStream() << "ST" << sign
+		             << " " << ((sign != 'D') ? node->m_number : node->m_root->getNodesCound())
+		             << " " << ((sign != 'D') ? node->m_parent->m_number : node->m_number)
+		             << " " << ((sign != 'D') ? doubleToString(node->m_costPath) : doubleToString(node->m_newCostPath))
+		             << " " << ((sign != 'D') ? doubleToString(node->m_costRest) : doubleToString(node->m_newCostRest))
+		             << " " << trace->traceId()
+		             << " " << activityPatternTrace->tracePatternId()
+		             << " " << ((sign != 'D') ? doubleToString(node->m_costRule) : doubleToString(node->m_newCostRule))
+		             << " " << activityTrace->traceResourcesListNumbers(pRuntime, true)
 		             << std::endl << getEOL();
 
 		PTR(RDODPTSearchTrace) dpTrace = static_cast<PTR(RDODPTSearchTrace)>(node->m_root->m_dp);
@@ -153,20 +153,20 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 
 	static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_times.push_back(sec_delay);
 
-	getOStream() << _T("SE") << letter
-	             << _T(" ") << simTr->getCurrentTime()
-	             << _T(" ") << sec_delay            // realTime
-	             << _T(" ") << treeRoot->m_sizeof_dpt // memUsed
-	             << _T(" ") << (letter == 'S' ? treeRoot->m_targetNode->m_costPath : 0)
-	             << _T(" ") << treeRoot->m_expandedNodesCount
-	             << _T(" ") << treeRoot->m_nodesInGraphCount
-	             << _T(" ") << treeRoot->getNodesCound()
-	             << _T(" ") << treeRoot->m_fullNodesCount 
+	getOStream() << "SE" << letter
+	             << " " << simTr->getCurrentTime()
+	             << " " << sec_delay            // realTime
+	             << " " << treeRoot->m_sizeof_dpt // memUsed
+	             << " " << (letter == 'S' ? treeRoot->m_targetNode->m_costPath : 0)
+	             << " " << treeRoot->m_expandedNodesCount
+	             << " " << treeRoot->m_nodesInGraphCount
+	             << " " << treeRoot->getNodesCound()
+	             << " " << treeRoot->m_fullNodesCount 
 	             << std::endl << getEOL();
 	if (letter == 'S') {
-		getOStream() << _T("ES")
-		             << _T(" ") << simTr->getCurrentTime()
-		             << _T(" 4")
+		getOStream() << "ES"
+		             << " " << simTr->getCurrentTime()
+		             << " 4"
 		             << std::endl << getEOL();
 		static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_cost.push_back(treeRoot->m_targetNode->m_costPath);
 		static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_nodes.push_back(treeRoot->getNodesCound());
@@ -217,10 +217,10 @@ void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntim
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(activityPatternTrace);
 
-		getOStream() << _T("EI ") << pRuntime->getCurrentTime()
-		             << _T(" ")   << trace->traceId() 
-		             << _T(" ")   << activityPatternTrace->tracePatternId() 
-		             << _T(" ")   << activityTrace->traceResourcesListNumbers(pRuntime, true)
+		getOStream() << "EI " << pRuntime->getCurrentTime()
+		             << " "   << trace->traceId() 
+		             << " "   << activityPatternTrace->tracePatternId() 
+		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, true)
 		             << std::endl << getEOL();
 	}
 
@@ -244,11 +244,11 @@ void RDOTrace::writeRule(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(activityPatternTrace);
 		int operId = pRuntime->getFreeOperationId();
-		getOStream() << _T("ER ") << pRuntime->getCurrentTime()
-		             << _T(" ")   << operId
-		             << _T(" ")   << trace->traceId() 
-		             << _T(" ")   << activityPatternTrace->tracePatternId()
-		             << _T(" ")   << activityTrace->traceResourcesListNumbers(pRuntime, false)
+		getOStream() << "ER " << pRuntime->getCurrentTime()
+		             << " "   << operId
+		             << " "   << trace->traceId() 
+		             << " "   << activityPatternTrace->tracePatternId()
+		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, false)
 		             << std::endl << getEOL();
 		pRuntime->freeOperationId(operId);
 	}
@@ -271,11 +271,11 @@ void RDOTrace::writeAfterOperationBegin(CREF(LPIBaseOperation) opr, CREF(LPRDORu
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(operationTrace);
 		ASSERT(activityPatternTrace);
-		getOStream() << _T("EB ") << pRuntime->getCurrentTime()
-		             << _T(" ")   << operationTrace->traceOperId()
-		             << _T(" ")   << trace->traceId()
-		             << _T(" ")   << activityPatternTrace->tracePatternId()
-		             << _T(" ")   << activityTrace->traceResourcesListNumbers(pRuntime, false)
+		getOStream() << "EB " << pRuntime->getCurrentTime()
+		             << " "   << operationTrace->traceOperId()
+		             << " "   << trace->traceId()
+		             << " "   << activityPatternTrace->tracePatternId()
+		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, false)
 		             << std::endl << getEOL(); 
 	}
 	getOStream() << activityTrace->traceResourcesList('\0', pRuntime) << getEOL();
@@ -297,11 +297,11 @@ void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, CREF(LPRDORunt
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(operationTrace);
 		ASSERT(activityPatternTrace);
-		getOStream() << _T("EF ") << pRuntime->getCurrentTime() 
-		             << _T(" ")   << operationTrace->traceOperId() 
-		             << _T(" ")   << trace->traceId() 
-		             << _T(" ")   << activityPatternTrace->tracePatternId() 
-		             << _T(" ")   << activityTrace->traceResourcesListNumbers(pRuntime, false)
+		getOStream() << "EF " << pRuntime->getCurrentTime() 
+		             << " "   << operationTrace->traceOperId() 
+		             << " "   << trace->traceId() 
+		             << " "   << activityPatternTrace->tracePatternId() 
+		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, false)
 		             << std::endl << getEOL();
 	}
 	getOStream() << activityTrace->traceResourcesList('\0', pRuntime) << getEOL();
@@ -311,24 +311,24 @@ void RDOTrace::writeTraceBegin(CREF(LPRDORuntime) pRuntime)
 {
 	if (isNull()) return;
 
-	getOStream() << _T("ES ") << pRuntime->getCurrentTime() 
-      << _T(" 1") << std::endl << getEOL();
+	getOStream() << "ES " << pRuntime->getCurrentTime() 
+      << " 1" << std::endl << getEOL();
 }
 
 void RDOTrace::writeModelBegin(CREF(LPRDORuntime) pRuntime)
 {
 	if (isNull()) return;
 
-	getOStream() << _T("ES ") << pRuntime->getCurrentTime() 
-      << _T(" 3") << std::endl << getEOL();
+	getOStream() << "ES " << pRuntime->getCurrentTime() 
+      << " 3" << std::endl << getEOL();
 }
 
 void RDOTrace::writeTraceEnd(CREF(LPRDORuntime) pRuntime)
 {
 	if (isNull()) return;
 
-   getOStream() << _T("ES ") << pRuntime->getCurrentTime() 
-      << _T(" 2") << std::endl << getEOL();
+   getOStream() << "ES " << pRuntime->getCurrentTime() 
+      << " 2" << std::endl << getEOL();
 }
 
 void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
@@ -336,7 +336,7 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 	if (isNull()) return;
 
 	// Статус
-	getOStream() << _T("$Status = ") << status << _T(" ") << pRuntime->getCurrentTime() << std::endl << getEOL();
+	getOStream() << "$Status = " << status << " " << pRuntime->getCurrentTime() << std::endl << getEOL();
 
 	// Статистика по поиску на графе
 	IBaseOperationContainer::CIterator it = pRuntime->m_pMetaLogic->begin();
@@ -349,10 +349,10 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 			ASSERT(dp_trace);
 			// Информация о точке
 			getOStream() << std::endl << getEOL();
-			getOStream() << _T("DPS_C")
-			             << _T("  ") << dp_trace->getTraceID()
-			             << _T("  ") << dp_stat->getCalcCnt()
-			             << _T("  ") << dp_stat->getCalcResFoundCnt()
+			getOStream() << "DPS_C"
+			             << "  " << dp_trace->getTraceID()
+			             << "  " << dp_stat->getCalcCnt()
+			             << "  " << dp_stat->getCalcResFoundCnt()
 			             << std::endl << getEOL();
 			if (dp_stat->getCalcCnt())
 			{
@@ -361,37 +361,37 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 				double d_max = 0;
 				double d_med = 0;
 				dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_TIMES, d_min, d_max, d_med);
-				getOStream() << rdo::format(_T("DPS_TM %0.3f  %0.3f  %0.3f"), d_med, d_min, d_max) << std::endl << getEOL();
+				getOStream() << rdo::format("DPS_TM %0.3f  %0.3f  %0.3f", d_med, d_min, d_max) << std::endl << getEOL();
 
 				// Используемая память
 				ruint ui_min = 0;
 				ruint ui_max = 0;
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_MEMORY, ui_min, ui_max, d_med);
-				getOStream() << rdo::format(_T("DPS_ME %0.0f  %u  %u"), d_med, ui_min, ui_max) << std::endl << getEOL();
+				getOStream() << rdo::format("DPS_ME %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
 				// Стоимость решения
 				dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_COST, d_min, d_max, d_med);
-				getOStream() << _T("DPS_CO")
-				             << _T(" ")  << d_med
-				             << _T("  ") << d_min
-				             << _T("  ") << d_max
+				getOStream() << "DPS_CO"
+				             << " "  << d_med
+				             << "  " << d_min
+				             << "  " << d_max
 				             << std::endl << getEOL();
 
 				// Количество раскрытых вершин
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_EXPENDED, ui_min, ui_max, d_med);
-				getOStream() << rdo::format(_T("DPS_TO %0.0f  %u  %u"), d_med, ui_min, ui_max) << std::endl << getEOL();
+				getOStream() << rdo::format("DPS_TO %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
 				// Количество вершин в графе
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_IN_GRAPH, ui_min, ui_max, d_med);
-				getOStream() << rdo::format(_T("DPS_TT %0.0f  %u  %u"), d_med, ui_min, ui_max) << std::endl << getEOL();
+				getOStream() << rdo::format("DPS_TT %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
 				// Количество включавшихся в граф вершин (вершины, соответствующие одному и тому же состоянию системы, могут включаться в граф неоднократно, если порождается вершина с меньшей стоимостью пути)
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES, ui_min, ui_max, d_med);
-				getOStream() << rdo::format(_T("DPS_TI %0.0f  %u  %u"), d_med, ui_min, ui_max) << std::endl << getEOL();
+				getOStream() << rdo::format("DPS_TI %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
 				// Общее количество порожденных вершин-преемников
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_FULL, ui_min, ui_max, d_med);
-				getOStream() << rdo::format(_T("DPS_TG %0.0f  %u  %u"), d_med, ui_min, ui_max) << std::endl << getEOL();
+				getOStream() << rdo::format("DPS_TG %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 			}
 		}
 		++it;
@@ -399,7 +399,7 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 
 	// Используемая память
 	getOStream() << std::endl << getEOL();
-	getOStream() << _T("DPS_MM ") << pRuntime->memory_get() << std::endl << getEOL();
+	getOStream() << "DPS_MM " << pRuntime->memory_get() << std::endl << getEOL();
 }
 
 void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok)
@@ -407,9 +407,9 @@ void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok)
 	if (!canTrace())
 		return;
 
-	getOStream() << _T("V  ")  << pRuntime->getCurrentTime() 
-		<< _T(" ") << pok->traceId() 
-		<< _T("  ") << pok->traceValue() << std::endl << getEOL();
+	getOStream() << "V  "  << pRuntime->getCurrentTime() 
+		<< " " << pok->traceId() 
+		<< "  " << pok->traceValue() << std::endl << getEOL();
 }
 
 // --------------------------------------------------------------------------------

@@ -142,7 +142,7 @@ inline RDOLingvoVariable::RDOLingvoVariable(CREF(LPRDOFuzzyTerm) term, nameOfVar
 	m_set.insert(make_pair(term->getName(), term->getFuzzySetDefinition()));
 }
 inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOValue)pDefineAreaValue, CREF(LPRDOLingvoVariable) variable)
-	: m_name(_T("activated"))
+	: m_name("activated")
 {
 	LPDefineArea   defineArea    = rdo::Factory<DefineArea>::create(pDefineAreaValue);
 	LPFuzzySet     setOfVariable = rdo::Factory<FuzzySet>::create(defineArea);

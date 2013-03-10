@@ -53,7 +53,7 @@ public:
 class RDOTypeException: public RDORuntimeException
 {
 public:
-	RDOTypeException(CREF(tstring) message = _T(""));
+	RDOTypeException(CREF(tstring) message = "");
 	virtual tstring getType() const;
 };
 
@@ -64,7 +64,7 @@ public:
 class RDOValueException: public RDORuntimeException
 {
 public:
-	RDOValueException(CREF(tstring) message = _T(""));
+	RDOValueException(CREF(tstring) message = "");
 	virtual tstring getType() const;
 };
 

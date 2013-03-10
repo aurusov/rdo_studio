@@ -23,17 +23,17 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 inline tstring RDOPROCBlockForSeize::getStateParamName()
 {
-	return _T("Состояние");
+	return "Состояние";
 }
 
 inline tstring RDOPROCBlockForSeize::getStateEnumFree()
 {
-	return _T("Свободен");
+	return "Свободен";
 }
 
 inline tstring RDOPROCBlockForSeize::getStateEnumBuzy()
 {
-	return _T("Занят");
+	return "Занят";
 }
 
 // --------------------------------------------------------------------------------

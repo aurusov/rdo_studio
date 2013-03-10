@@ -64,7 +64,7 @@ inline RDOValue RDOCalcRandomDistribution<T>::doCalc(CREF(LPRDORuntime) pRuntime
 //				if ( res >= m_range.get().m_min && res <= m_range.get().m_max ) return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
 //				res = gen->next( pRuntime->getFuncArgument(0), pRuntime->getFuncArgument(1) );
 //			}
-//			pRuntime->error().push(_T("Не удается получить значение, попадающее в назначенный диапазон"), this);
+//			pRuntime->error().push("Не удается получить значение, попадающее в назначенный диапазон", this);
 //			return res_real ? m_range.get().m_min : static_cast<int>(m_range.get().m_min);
 	}
 	else

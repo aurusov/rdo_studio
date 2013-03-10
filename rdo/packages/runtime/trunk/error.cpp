@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 void Error::push(CREF(RDOSyntaxMessage) message)
 {
 	m_errorList.push_back(message);
-	throw RDORuntimeException(_T(""));
+	throw RDORuntimeException("");
 }
 
 void Error::push(CREF(tstring) message, CREF(RDOSrcInfo) srcInfo)

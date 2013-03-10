@@ -36,21 +36,21 @@ RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 /*
 		if (src_text().empty())
 		{
-			TRACE(_T("%d\n"), sizeof(tstring));
+			TRACE("%d\n", sizeof(tstring));
 		}
 		else if (src_text().length() < 500)
 		{
-			TRACE(_T("calc: %s\n"), src_text().c_str());
-			if (src_text() == _T("класс"))
+			TRACE("calc: %s\n", src_text().c_str());
+			if (src_text() == "класс")
 			{
-				TRACE(_T("calc: %s\n"), src_text().c_str());
+				TRACE("calc: %s\n", src_text().c_str());
 			}
 		}
 		else 
 		{
 			tstring str = src_text();
 			str.resize(500);
-			TRACE(_T("calc: %s\n"), str.c_str());
+			TRACE("calc: %s\n", str.c_str());
 		}
 */
 #endif
@@ -58,10 +58,10 @@ RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 	}
 	catch (CREF(RDORuntimeException) ex)
 	{
-		tstring message = rdo::format(_T("<Модельное время: %f>, '%s'"), pRuntime->getTimeNow(), m_srcInfo.src_text().c_str());
+		tstring message = rdo::format("<Модельное время: %f>, '%s'", pRuntime->getTimeNow(), m_srcInfo.src_text().c_str());
 		if (!ex.message().empty())
 		{
-			message = rdo::format(_T("%s: %s"), message.c_str(), ex.message().c_str());
+			message = rdo::format("%s: %s", message.c_str(), ex.message().c_str());
 		}
 		rdo::simulation::report::FileMessage error(
 			message,

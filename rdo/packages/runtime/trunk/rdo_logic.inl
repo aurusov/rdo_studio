@@ -66,7 +66,7 @@ inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, REF(Base
 				RDOValue value = pPriorCalc->calcValue(pRuntime);
 				if (value < 0.0 || value > 1.0)
 				{
-					pRuntime->error().push(rdo::format(_T("Приоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), pPriorCalc->srcInfo());
+					pRuntime->error().push(rdo::format("Приоритет активности вышел за пределы диапазона [0..1]: %s", value.getAsString().c_str()), pPriorCalc->srcInfo());
 				}
 			}
 		}

@@ -55,7 +55,7 @@ inline rbool RDOSrcInfo::Position::point() const
 // -------------------- RDOSrcInfo
 // --------------------------------------------------------------------------------
 inline RDOSrcInfo::RDOSrcInfo()
-	: m_text_data(_T("")              )
+	: m_text_data(""              )
 	, m_file_type(rdoModelObjects::TRC)
 {}
 

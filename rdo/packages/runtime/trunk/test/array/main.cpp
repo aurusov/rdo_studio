@@ -47,7 +47,7 @@ tstring getString(CREF(rdo::runtime::LPRDOArrayValue) pArray, CREF(rdo::runtime:
 	{
 		return pIt->getValue().getAsString();
 	}
-	return _T("");
+	return "";
 }
 
 tstring getString(CREF(rdo::runtime::RDOValue) it, CREF(rdo::runtime::RDOValue) end)
@@ -56,12 +56,12 @@ tstring getString(CREF(rdo::runtime::RDOValue) it, CREF(rdo::runtime::RDOValue) 
 	{
 		return it.getAsString();
 	}
-	return _T("");
+	return "";
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestCreate)
 {
-	BOOST_CHECK(createArray(Container()(1)(2)(3)).second.getAsString() == _T("[1, 2, 3]"));
+	BOOST_CHECK(createArray(Container()(1)(2)(3)).second.getAsString() == "[1, 2, 3]");
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestInsert)
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestInsert)
 
 	array1.first->insert(array1.first->begin()->next(), array2.first->begin(), array2.first->end());
 
-	BOOST_CHECK(array1.second.getAsString() == _T("[1, 4, 5, 6, 2, 3]"));
+	BOOST_CHECK(array1.second.getAsString() == "[1, 4, 5, 6, 2, 3]");
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestErase)
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestErase)
 
 	array.first->erase(array.first->begin()->next(), array.first->begin()->preInc(3));
 
-	BOOST_CHECK(array.second.getAsString() == _T("[1]"));
+	BOOST_CHECK(array.second.getAsString() == "[1]");
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestIteratorPrePlus)
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestIteratorPrePlus)
 	{
 		result += getString(array.first, pIt->preInc(1));
 	}
-	BOOST_CHECK(result == _T("23"));
+	BOOST_CHECK(result == "23");
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestIteratorPostPlus)
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestIteratorPostPlus)
 	{
 		result += getString(array.first, pIt->postInc(1));
 	}
-	BOOST_CHECK(result == _T("123"));
+	BOOST_CHECK(result == "123");
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestIteratorPreMinus)
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestIteratorPreMinus)
 	}
 	while (!pIt->equal(array.first->begin()));
 
-	BOOST_CHECK(result == _T("321"));
+	BOOST_CHECK(result == "321");
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestIteratorPostMinus)
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestIteratorPostMinus)
 	}
 	while (!pIt->equal(array.first->begin()));
 
-	BOOST_CHECK(result == _T("32"));
+	BOOST_CHECK(result == "32");
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestValuePrePlus)
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePrePlus)
 	{
 		result += getString(++it, end);
 	}
-	BOOST_CHECK(result == _T("23"));
+	BOOST_CHECK(result == "23");
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestValuePostPlus)
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePostPlus)
 	{
 		result += getString(it++, end);
 	}
-	BOOST_CHECK(result == _T("123"));
+	BOOST_CHECK(result == "123");
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestValuePreMinus)
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePreMinus)
 		result += getString(--it, end);
 	}
 	while (it != begin);
-	BOOST_CHECK(result == _T("321"));
+	BOOST_CHECK(result == "321");
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestValuePostMinus)
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePostMinus)
 		result += getString(it--, end);
 	}
 	while (it != begin);
-	BOOST_CHECK(result == _T("32"));
+	BOOST_CHECK(result == "32");
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestSetItem)
@@ -229,7 +229,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestSetItem)
 	rdo::runtime::RDOValue value(item);
 	array.first->setItem(index, value);
 
-	BOOST_CHECK(array.second.getAsString() == _T("[1, 48, 3]"));
+	BOOST_CHECK(array.second.getAsString() == "[1, 48, 3]");
 
 	ind         = 3;
 	index       = ind;
@@ -243,7 +243,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestSetItem)
 	{
 		if (!ex.message().empty())
 		{
-			found = ex.message() == _T("Выход за пределы массива");
+			found = ex.message() == "Выход за пределы массива";
 		}
 	}
 
@@ -261,7 +261,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
 	rdo::runtime::RDOValue index(ind);
 	rdo::runtime::RDOValue value(array.first->getItem(index));
 
-	BOOST_CHECK(value.getAsString() == _T("48"));
+	BOOST_CHECK(value.getAsString() == "48");
 
 	ind         = 3;
 	index       = ind;
@@ -275,7 +275,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
 	{
 		if (!ex.message().empty())
 		{
-			found = ex.message() == _T("Выход за пределы массива");
+			found = ex.message() == "Выход за пределы массива";
 		}
 	}
 

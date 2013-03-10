@@ -35,11 +35,11 @@ typedef std::vector<ruint>  ContainerInt;
 typedef const tstring contstr;
 
 const long int g_seed                 = 123456789;                  //!< база генератора
-contstr        g_filePath             = _T("../../test/sequences/");//!< путь к файлам относительно проекта
-contstr        g_fileNormalName       = _T("data_normal.txt");      //!< файл данных
-contstr        g_fileUniformName      = _T("data_uniform.txt");     //!< файл данных
-contstr        g_fileExponentialName  = _T("data_exponential.txt"); //!< файл данных
-contstr        g_fileTriangularName   = _T("data_trinagular.txt");  //!< файл данных
+contstr        g_filePath             = "../../test/sequences/";//!< путь к файлам относительно проекта
+contstr        g_fileNormalName       = "data_normal.txt";      //!< файл данных
+contstr        g_fileUniformName      = "data_uniform.txt";     //!< файл данных
+contstr        g_fileExponentialName  = "data_exponential.txt"; //!< файл данных
+contstr        g_fileTriangularName   = "data_trinagular.txt";  //!< файл данных
 
 const ruint    g_count                = 100000;                     //!< количество генерируемых данных
 const double   g_main                 = 10.0;                       //!< параметр закона экспоненциального и нормального

@@ -70,7 +70,7 @@ RDOValue RDOCalcSeqNextUniform::getNextValue(CREF(LPRDORuntime) pRuntime)
 	if (from > to)
 	{
 		pRuntime->error().push(
-			rdo::format(_T("Для последовательности типа uniform нижняя граница диапазона должна быть меньше либо равна верхней, текущие значения: %s..%s")
+			rdo::format("Для последовательности типа uniform нижняя граница диапазона должна быть меньше либо равна верхней, текущие значения: %s..%s"
 				, from.getAsString().c_str()
 				, to  .getAsString().c_str())
 			, srcInfo()
@@ -106,7 +106,7 @@ RDOValue RDOCalcSeqNextTriangular::getNextValue(CREF(LPRDORuntime) pRuntime)
 	if ((from > top) || (top > to))
 	{
 		pRuntime->error().push(
-			rdo::format(_T("Для треуголного закона распределения нужно указать левую границу, точку под высотой треугольника, правую границу: %s, %s, %s")
+			rdo::format("Для треуголного закона распределения нужно указать левую границу, точку под высотой треугольника, правую границу: %s, %s, %s"
 				, from.getAsString().c_str()
 				, top.getAsString().c_str()
 				, to.getAsString().c_str())

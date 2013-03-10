@@ -129,7 +129,7 @@ public:
 	REF(tstring) traceId() const;
 
 protected:
-	RDOTraceableObject(rbool trace, ruint id = NONE, tstring str = _T(""));
+	RDOTraceableObject(rbool trace, ruint id = NONE, tstring str = "");
 	virtual ~RDOTraceableObject();
 
 private:

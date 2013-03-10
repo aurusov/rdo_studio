@@ -72,19 +72,19 @@ void RDOMatrixValue::erase(CREF(LPRDOMatrixIterator) pFirst, CREF(LPRDOMatrixIte
 
 tstring RDOMatrixValue::getAsString() const
 {
-	tstring result(_T("["));
+	tstring result("[");
 	STL_FOR_ALL_CONST(m_container, it)
 	{
 		if (it == m_container.begin())
 		{
-			result = rdo::format(_T("%s%s"), result.c_str(), it->getAsString().c_str());
+			result = rdo::format("%s%s", result.c_str(), it->getAsString().c_str());
 		}
 		else
 		{
-			result = rdo::format(_T("%s, %s"), result.c_str(), it->getAsString().c_str());
+			result = rdo::format("%s, %s", result.c_str(), it->getAsString().c_str());
 		}
 	}
-	return rdo::format(_T("%s]"), result.c_str());
+	return rdo::format("%s]", result.c_str());
 }
 
 ruint RDOMatrixValue::size() const
@@ -97,7 +97,7 @@ CREF(RDOValue) RDOMatrixValue::getItem(CREF(RDOValue) index) const
 	ruint ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
-		throw RDORuntimeException(_T("Выход за пределы матрицы"));
+		throw RDORuntimeException("Выход за пределы матрицы");
 	}
 	return m_container[ind];
 }
@@ -107,7 +107,7 @@ void RDOMatrixValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 	ruint ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
-		throw RDORuntimeException(_T("Выход за пределы матрицы"));
+		throw RDORuntimeException("Выход за пределы матрицы");
 	}
 	m_container[ind] = item;
 }

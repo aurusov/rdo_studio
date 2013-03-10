@@ -36,7 +36,7 @@ inline RDORuntimeException::RDORuntimeException(CREF(tstring) message)
 
 inline tstring RDORuntimeException::getType() const
 {
-	return _T("RDO Runtime Error");
+	return "RDO Runtime Error";
 }
 
 // --------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ inline RDOTypeException::RDOTypeException(CREF(tstring) message)
 
 inline tstring RDOTypeException::getType() const
 {
-	return _T("RDOType Error");
+	return "RDOType Error";
 }
 
 // --------------------------------------------------------------------------------
@@ -60,19 +60,19 @@ inline RDOValueException::RDOValueException(CREF(tstring) message)
 
 inline tstring RDOValueException::getType() const
 {
-	return _T("RDOValue Error");
+	return "RDOValue Error";
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOUndefinedException
 // --------------------------------------------------------------------------------
 inline RDOUndefinedException::RDOUndefinedException()
-	: RDORuntimeException(_T(""))
+	: RDORuntimeException("")
 {}
 
 inline tstring RDOUndefinedException::getType() const
 {
-	return _T("RDOValue Undefined Error");
+	return "RDOValue Undefined Error";
 }
 
 // --------------------------------------------------------------------------------
@@ -84,7 +84,7 @@ inline RDOInternalException::RDOInternalException(CREF(tstring) message)
 
 inline tstring RDOInternalException::getType() const
 {
-	return _T("RDO Internal Error");
+	return "RDO Internal Error";
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

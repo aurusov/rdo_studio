@@ -76,9 +76,9 @@ rbool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 			PTR(RDOTrace) tracer = pRuntime->getTracer();
 			forRes[i].rss->setParam(forRes[i].Id_param, forRes[i].enum_buzy);
-			TRACE3(_T("%7.1f SEIZES-%d, resId = %d\n"), pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
+			TRACE3("%7.1f SEIZES-%d, resId = %d\n", pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
 			if (!tracer->isNull())
-				tracer->getOStream() << forRes[i].rss->traceResourceState(_T('\0'), pRuntime) << tracer->getEOL();
+				tracer->getOStream() << forRes[i].rss->traceResourceState('\0', pRuntime) << tracer->getEOL();
 
 			m_transacts.front()->setRes(forRes[i].rss);
 			return true;
@@ -152,7 +152,7 @@ rbool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 				if (forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_buzy)
 				{
 					RDOTrace* tracer = pRuntime->getTracer();
-					TRACE3(_T("%7.1f RELEASES-%d, resId = %d\n"), pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
+					TRACE3("%7.1f RELEASES-%d, resId = %d\n", pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
 					forRes[i].rss->setParam(forRes[i].Id_param, forRes[i].enum_free);
 					if (!tracer->isNull())
 					{
@@ -165,7 +165,7 @@ rbool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 				{
 					//Удаляем транзакт
 					RDOTrace* tracer = pRuntime->getTracer();
-					TRACE3(_T("%7.1f RELEASES_Bad-%d, resId = %d\n"), pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
+					TRACE3("%7.1f RELEASES_Bad-%d, resId = %d\n", pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
 					LPRDOPROCTransact transact = m_transacts.front();
 					ASSERT(transact);
 					transact->setState(RDOResource::CS_Erase);

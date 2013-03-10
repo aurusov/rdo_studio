@@ -213,20 +213,20 @@ LPFuzzySet MemberFunctionProperties::u_log  (CREF(LPFuzzySet) pSet)             
 tstring FuzzySet::getAsString() const
 {
 	if (empty())
-		return _T("[empty value]");
+		return "[empty value]";
 
-	tstring res = _T("");
+	tstring res = "";
 	FuzzySetDefinition::const_iterator it = begin();
 	while (it != end())
 	{
 		rbool output = it->second > 0.0;
 		if (output)
-			res += rdo::format(_T("<%s/%.2lf>"), it->first.getAsString().c_str(), it->second);
+			res += rdo::format("<%s/%.2lf>", it->first.getAsString().c_str(), it->second);
 
 		++it;
 
 		if (output && it != end())
-			res += _T(" ");
+			res += " ";
 	}
 	return res;
 }

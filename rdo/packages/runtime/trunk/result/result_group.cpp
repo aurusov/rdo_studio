@@ -48,8 +48,8 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
 			ASSERT(pThreadProxy);
 			rdo::repository::RDOThreadRepository::CreateFileInfo file(
-				boost::str(boost::format(_T("- %1% - full")) % m_name),
-				_T("txt"),
+				boost::str(boost::format("- %1% - full") % m_name),
+				"txt",
 				m_streamFull
 			);
 			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
@@ -59,8 +59,8 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
 			ASSERT(pThreadProxy);
 			rdo::repository::RDOThreadRepository::CreateFileInfo file(
-				boost::str(boost::format(_T("- %1% - table")) % m_name),
-				_T("txt"),
+				boost::str(boost::format("- %1% - table") % m_name),
+				"txt",
 				m_streamTable
 			);
 			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
@@ -73,7 +73,7 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 					{
 						LPIName pName = pGetValue;
 						ASSERT(pName);
-						m_streamTable << pName->name() << _T("\t");
+						m_streamTable << pName->name() << "\t";
 					}
 				}
 				m_streamTable << std::endl;
@@ -106,7 +106,7 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) 
 	if (!m_name.empty())
 	{
 		double timeStop = pRuntime->getCurrentTime();
-		boost::format header(_T("---> %1%, %2$1.6f -> %3$1.6f = %4$1.6f\n"));
+		boost::format header("---> %1%, %2$1.6f -> %3$1.6f = %4$1.6f\n");
 		header
 			% m_name
 			% m_timeStart
@@ -139,11 +139,11 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) 
 		{
 			if (pGetValue->getValue().typeID() != RDOType::t_real)
 			{
-				m_streamTable << pGetValue->getValue().getAsString() << _T("\t");
+				m_streamTable << pGetValue->getValue().getAsString() << "\t";
 			}
 			else
 			{
-				m_streamTable << rdo::format(_T("%f"), pGetValue->getValue().getDouble()) << _T("\t");
+				m_streamTable << rdo::format("%f", pGetValue->getValue().getDouble()) << "\t";
 			}
 			tableWrite = true;
 		}
@@ -156,7 +156,7 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) 
 
 	if (!m_name.empty())
 	{
-		boost::format footer(_T("<--- %1%\n"));
+		boost::format footer("<--- %1%\n");
 		footer % m_name;
 		stream << footer.str();
 		if (m_streamFull.is_open())

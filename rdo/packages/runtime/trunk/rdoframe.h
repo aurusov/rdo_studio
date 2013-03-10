@@ -325,7 +325,7 @@ protected:
 	tstring m_pictFilename;
 	tstring m_maskFilename;
 
-	RDOFRMBitmapBase(CREF(LPRDOFRMSprite) pSprite, CREF(tstring) pictFilename, CREF(tstring) maskFilename = _T(""));
+	RDOFRMBitmapBase(CREF(LPRDOFRMSprite) pSprite, CREF(tstring) pictFilename, CREF(tstring) maskFilename = "");
 	virtual ~RDOFRMBitmapBase();
 
 private:
@@ -345,7 +345,7 @@ private:
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
 		CREF(tstring)                        pictFilename,
-		CREF(tstring)                        maskFilename = _T("")
+		CREF(tstring)                        maskFilename = ""
 	);
 	virtual ~RDOFRMBitmap();
 
@@ -374,7 +374,7 @@ private:
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
 		CREF(tstring)                        pictFilename,
-		CREF(tstring)                        maskFilename = _T("")
+		CREF(tstring)                        maskFilename = ""
 	);
 	virtual ~RDOFRMBitmapStretch();
 

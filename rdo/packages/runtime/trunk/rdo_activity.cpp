@@ -109,7 +109,7 @@ tstring RDOActivity::traceResourcesListNumbers(CREF(LPRDORuntime) pRuntime, rboo
 	UNUSED(show_create_index);
 #endif
 	rdo::ostringstream res;
-	res << m_relevantResources.size() << _T(" ");
+	res << m_relevantResources.size() << " ";
 	for (std::list<LPRDOResource>::const_iterator i = m_relevantResources.begin(); i != m_relevantResources.end(); ++i)
 	{
 #ifdef RDOSIM_COMPATIBLE
@@ -119,11 +119,11 @@ tstring RDOActivity::traceResourcesListNumbers(CREF(LPRDORuntime) pRuntime, rboo
 		if (*i)
 		{
 #endif
-			res << _T(" ") << (*i)->traceId();
+			res << " " << (*i)->traceId();
 		}
 		else
 		{
-			res << _T(" 0");
+			res << " 0";
 		}
 	}
 	return res.str();

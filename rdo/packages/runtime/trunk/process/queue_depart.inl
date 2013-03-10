@@ -32,7 +32,7 @@ inline ruint RDOPROCQueue::getDefaultValue()
 
 inline tstring RDOPROCQueue::getQueueParamName()
 {
-	return _T("длина_очереди");
+	return "длина_очереди";
 }
 
 // --------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ inline ruint RDOPROCDepart::getDefaultValue()
 
 inline tstring RDOPROCDepart::getDepartParamName()
 {
-	return _T("длина_очереди");
+	return "длина_очереди";
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

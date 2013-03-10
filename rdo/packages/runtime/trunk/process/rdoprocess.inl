@@ -51,7 +51,7 @@ inline void RDOPROCTransact::setBlock(CREF(LPIPROCBlock) block)
 // --------------------------------------------------------------------------------
 inline tstring RDOPROCResource::whoAreYou()
 {
-	return _T("procRes");
+	return "procRes";
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

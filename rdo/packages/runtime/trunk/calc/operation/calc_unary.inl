@@ -61,7 +61,7 @@ inline RDOSrcInfo RDOCalcUnary<ret_type, pOperator, CalcType>::getStaticSrcInfo(
 {
 	RDOSrcInfo srcInfo(pUnaryCalc->srcInfo());
 	srcInfo.setSrcPos (position);
-	srcInfo.setSrcText(rdo::format(_T("%s(%s)"), OperatorName<ret_type (RDOValue::*)() const>::name(pOperator).c_str(), pUnaryCalc->srcInfo().src_text().c_str()));
+	srcInfo.setSrcText(rdo::format("%s(%s)", OperatorName<ret_type (RDOValue::*)() const>::name(pOperator).c_str(), pUnaryCalc->srcInfo().src_text().c_str()));
 	return srcInfo;
 }
 

@@ -140,7 +140,7 @@ void compareChr(CREF(T1) param1, CREF(T2) param2)
 
 BOOST_AUTO_TEST_CASE(RDOValue_String)
 {
-	const tstring str1 = _T("qqq");
+	const tstring str1 = "qqq";
 	RDOValue value1(str1);
 	BOOST_CHECK(value1.getString  () == str1);
 	BOOST_CHECK(value1.getAsString() == str1);
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_String)
 	BOOST_CHECK(value2.getAsString() == str1);
 	BOOST_CHECK(value2 == value1);
 
-	const tstring str2 = _T("aaa");
+	const tstring str2 = "aaa";
 	value2 += str2;
 	BOOST_CHECK(value2.getString  () == str1 + str2);
 	BOOST_CHECK(value2.getAsString() == str1 + str2);
@@ -372,12 +372,12 @@ BOOST_AUTO_TEST_CASE(RDOValue_Enum)
 	LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
 	BOOST_CHECK(pEnum);
 	BOOST_CHECK(pEnum->empty());
-	pEnum->add(_T("test0"));
-	pEnum->add(_T("test1"));
-	pEnum->add(_T("test2"));
-	pEnum->add(_T("test3"));
-	BOOST_CHECK(pEnum->findEnum(_T("test1")) == 1);
-	BOOST_CHECK(pEnum->exist   (_T("test3"))     );
+	pEnum->add("test0");
+	pEnum->add("test1");
+	pEnum->add("test2");
+	pEnum->add("test3");
+	BOOST_CHECK(pEnum->findEnum("test1") == 1);
+	BOOST_CHECK(pEnum->exist   ("test3")     );
 
 	RDOValue value(pEnum);
 	BOOST_CHECK(value.typeID      () == RDOType::t_enum);
@@ -440,42 +440,42 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_ruint)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Rsint_String)
 {
-	compareStr<rsint, tstring>(10, _T("abc"));
+	compareStr<rsint, tstring>(10, "abc");
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_String)
 {
-	compareStr<ruint, tstring>(10, _T("abc"));
+	compareStr<ruint, tstring>(10, "abc");
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Double_String)
 {
-	compareStr<double, tstring>(10, _T("abc"));
+	compareStr<double, tstring>(10, "abc");
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Rsint)
 {
-	compareChr<rsint, tchar>(10, _T('a'));
+	compareChr<rsint, tchar>(10, 'a');
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Ruint)
 {
-	compareChr<ruint, tchar>(10, _T('a'));
+	compareChr<ruint, tchar>(10, 'a');
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Double)
 {
-	compareChr<double, tchar>(10, _T('a'));
+	compareChr<double, tchar>(10, 'a');
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_String_Char)
 {
-	compareStr<tchar, tstring>(_T('a'), _T("abc"));
+	compareStr<tchar, tstring>('a', "abc");
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
 {
-	tstring str = _T("abc");
+	tstring str = "abc";
 	RDOValue value1(str, g_identificator);
 	BOOST_CHECK(value1.typeID() == RDOType::t_identificator);
 	tstring iden = value1.getIdentificator();
@@ -483,7 +483,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
 	iden = value1.getAsString();
 	BOOST_CHECK(iden == str);
 
-	tstring str2 =_T("dba");
+	tstring str2 ="dba";
 	RDOValue value2(str2, g_identificator);
 	BOOST_CHECK(value1 != value2);
 
@@ -504,8 +504,8 @@ BOOST_AUTO_TEST_CASE(RDOValue_Undefined)
 	testUndef<rsint>  (10       );
 	testUndef<ruint>  (10       );
 	testUndef<double> (10.5     );
-	testUndef<tstring>(_T("abc"));
-	testUndef<tchar>  (_T('a')  );
+	testUndef<tstring>("abc");
+	testUndef<tchar>  ('a'  );
 	testUndef<rbool>  (true     );
 
 	rsint val1 = 10;
@@ -534,7 +534,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 	std::vector<RDOValue> paramList;
 	paramList.push_back(RDOValue(1      ));
 	paramList.push_back(RDOValue(2.2    ));
-	paramList.push_back(RDOValue(_T("3")));
+	paramList.push_back(RDOValue("3"));
 
 	LPRDOResource pResource = pResourceFactory->createRes(pRuntime, pRuntime->getResourceId(), paramList, true, true);
 	BOOST_CHECK(pResource);

@@ -37,7 +37,7 @@ RDOValue RDOCalcCheckRange::doCalc(CREF(LPRDORuntime) pRuntime)
 	RDOValue value = m_pCalc->calcValue(pRuntime);
 	if (value < m_minValue || value > m_maxValue)
 	{
-		pRuntime->error().push(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_minValue.getAsString().c_str(), m_maxValue.getAsString().c_str(), value.getAsString().c_str()), srcInfo());
+		pRuntime->error().push(rdo::format("Значение выходит за допустимый диапазон [%s..%s]: %s", m_minValue.getAsString().c_str(), m_maxValue.getAsString().c_str(), value.getAsString().c_str()), srcInfo());
 	}
 	return value;
 }

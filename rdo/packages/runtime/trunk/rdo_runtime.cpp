@@ -130,7 +130,7 @@ LPRDOCalc RDORuntime::findBreakPoint(CREF(tstring) name)
 
 tstring RDORuntime::getLastBreakPointName() const
 {
-	return m_pLastActiveBreakPoint ? m_pLastActiveBreakPoint->getName() + _T(": ") + m_pLastActiveBreakPoint->getCalc()->srcInfo().src_text() : _T("");
+	return m_pLastActiveBreakPoint ? m_pLastActiveBreakPoint->getName() + ": " + m_pLastActiveBreakPoint->getCalc()->srcInfo().src_text() : "";
 }
 
 void RDORuntime::setConstValue(ruint constID, CREF(RDOValue) constValue)
@@ -187,23 +187,23 @@ rbool RDORuntime::checkState()
 
 void RDORuntime::showResources(int node) const
 {
-	TRACE1(_T("------------- %d:\n"), node);
+	TRACE1("------------- %d:\n", node);
 	int index = 0;
 	ResourceListByID::const_iterator it = m_resourceListByID.begin();
 	while (it != m_resourceListByID.end())
 	{
 		if (*it)
 		{
-			TRACE1(_T("%d. "), index);
+			TRACE1("%d. ", index);
 			for (ruint i = 0; i < (*it)->paramsCount(); ++i)
 			{
-				TRACE1(_T("%s "), (*it)->getParam(i).getAsString().c_str());
+				TRACE1("%s ", (*it)->getParam(i).getAsString().c_str());
 			}
-			TRACE(_T("\n"));
+			TRACE("\n");
 		}
 		else
 		{
-			TRACE1(_T("%d. NULL\n"), index);
+			TRACE1("%d. NULL\n", index);
 		}
 		++index;
 		++it;
@@ -216,11 +216,11 @@ void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 	LPRDOResource res = m_resourceListByID.at(resourceID);
 	if (!res)
 	{
-		error().push(rdo::format(_T("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s"), pCalc ? pCalc->getName().c_str() : _T("неизвестное имя")), pCalc->srcInfo());
+		error().push(rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s", pCalc ? pCalc->getName().c_str() : "неизвестное имя"), pCalc->srcInfo());
 	}
 	if (!res->canFree())
 	{
-		error().push(_T("Невозможно удалить ресурс, т.к. он еще используется"), pCalc->srcInfo());
+		error().push("Невозможно удалить ресурс, т.к. он еще используется", pCalc->srcInfo());
 	}
 	else
 	{
@@ -255,7 +255,7 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 		else
 		{
 			error().push(RDOSyntaxMessage(
-				_T("Внутренняя ошибка: insertNewResource"),
+				"Внутренняя ошибка: insertNewResource",
 				rdoModelObjects::PAT,
 				0,
 				0
@@ -266,7 +266,7 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 	if (m_resourceListByID.size() >= 200)
 	{
 		error().push(RDOSyntaxMessage(
-			_T("Сработало лицензионное ограничение на количество ресурсов. Обратитесь за приобритением полной версии"),
+			"Сработало лицензионное ограничение на количество ресурсов. Обратитесь за приобритением полной версии",
 			rdoModelObjects::PAT,
 			0,
 			0
@@ -472,10 +472,10 @@ void RDORuntime::writeExitCode()
 	tstring status;
 	switch (m_whyStop)
 	{
-	case rdo::simulation::report::EC_OK           : status = _T("NORMAL_TERMINATION"); break;
-	case rdo::simulation::report::EC_NoMoreEvents : status = _T("NO_MORE_EVENTS");     break;
-	case rdo::simulation::report::EC_RunTimeError : status = _T("RUN_TIME_ERROR");     break;
-	case rdo::simulation::report::EC_UserBreak    : status = _T("USER_BREAK");         break;
+	case rdo::simulation::report::EC_OK           : status = "NORMAL_TERMINATION"; break;
+	case rdo::simulation::report::EC_NoMoreEvents : status = "NO_MORE_EVENTS";     break;
+	case rdo::simulation::report::EC_RunTimeError : status = "RUN_TIME_ERROR";     break;
+	case rdo::simulation::report::EC_UserBreak    : status = "USER_BREAK";         break;
 	default: NEVER_REACH_HERE;
 	}
 

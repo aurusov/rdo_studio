@@ -53,7 +53,7 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(CREF(LPRDORuntime) pRunti
 {
 	if (!m_transacts.empty())
 	{
-		//		TRACE1(_T("%7.1f ADVANCE BEGIN\n"), pRuntime->getCurrentTime());
+		//		TRACE1("%7.1f ADVANCE BEGIN\n", pRuntime->getCurrentTime());
 		double timeLeave = pDelayCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime();
 		leave_list.push_back(LeaveTr(m_transacts.front(), timeLeave));
 		m_transacts.erase(m_transacts.begin());
@@ -72,7 +72,7 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(CREF(LPRDORuntime) pRunti
 		{
 			if (tnow >= it->timeLeave)
 			{
-				//				TRACE1(_T("%7.1f ADVANCE END\n"), it->timeLeave);
+				//				TRACE1("%7.1f ADVANCE END\n", it->timeLeave);
 				it->transact->next();
 				leave_list.erase(it);
 				return IBaseOperation::BOR_planned_and_run;

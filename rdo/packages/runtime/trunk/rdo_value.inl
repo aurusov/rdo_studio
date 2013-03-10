@@ -48,8 +48,8 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType)
 	case RDOType::t_real          : __get<double>() = 0; break;
 	case RDOType::t_enum          : __get<ruint> () = 0; break;
 	case RDOType::t_bool          : __get<rbool> () = false; break;
-	case RDOType::t_string        : new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(_T(""))); break;
-	case RDOType::t_identificator : new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(_T(""))); break;
+	case RDOType::t_string        : new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class("")); break;
+	case RDOType::t_identificator : new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class("")); break;
 	default                       : throw RDOValueException();
 	}
 	setUndefined(true);
@@ -318,34 +318,34 @@ inline tstring RDOValue::getAsString() const
 
 	switch (typeID())
 	{
-	case RDOType::t_int          : return rdo::format(_T("%d"), __get<int>());
+	case RDOType::t_int          : return rdo::format("%d", __get<int>());
 	case RDOType::t_real         : return rdo::toString(__get<double>());
 	case RDOType::t_enum         : return __enumT()->getValues().at(__get<ruint>());
-	case RDOType::t_bool         : return __get<rbool>() ? _T("true") : _T("false");
+	case RDOType::t_bool         : return __get<rbool>() ? "true" : "false";
 	case RDOType::t_string       : return __stringV();
 	case RDOType::t_identificator: return __stringV();
 	case RDOType::t_pointer      : return onPointerAsString();
 	default                      : break;
 	}
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод getAsString()"));
+	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод getAsString()");
 }
 
 inline tstring RDOValue::getAsStringForTrace() const
 {
 	if (!m_undefined)
-		return _T("#");
+		return "#";
 
 	switch (typeID())
 	{
-	case RDOType::t_int    : return rdo::format(_T("%d"), __get<int>());
+	case RDOType::t_int    : return rdo::format("%d", __get<int>());
 	case RDOType::t_real   : return rdo::toString(__get<double>());
-	case RDOType::t_enum   : return rdo::format(_T("%d"), __get<ruint>());
-	case RDOType::t_bool   : return __get<rbool>() ? _T("true") : _T("false");
+	case RDOType::t_enum   : return rdo::format("%d", __get<ruint>());
+	case RDOType::t_bool   : return __get<rbool>() ? "true" : "false";
 	case RDOType::t_string : return __stringV();
 	case RDOType::t_pointer: return onPointerAsString();
 	default                : break;
 	}
-	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод getAsStringForTrace()"));
+	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод getAsStringForTrace()");
 }
 
 inline void RDOValue::set(CREF(RDOValue) rdovalue)

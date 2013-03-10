@@ -44,12 +44,12 @@ inline CREF(OperatorName<RDOValue (RDOValue::*)(CREF(RDOValue)) const>::NameList
 	static NameList s_nameList;
 	if (s_nameList.empty())
 	{
-		s_nameList.push_back(OprItem(&RDOValue::operator+,  _T("+"  )));
-		s_nameList.push_back(OprItem(&RDOValue::operator-,  _T("-"  )));
-		s_nameList.push_back(OprItem(&RDOValue::operator*,  _T("*"  )));
-		s_nameList.push_back(OprItem(&RDOValue::operator/,  _T("/"  )));
-		s_nameList.push_back(OprItem(&RDOValue::operator&&, _T("and")));
-		s_nameList.push_back(OprItem(&RDOValue::operator||, _T("or" )));
+		s_nameList.push_back(OprItem(&RDOValue::operator+,  "+"));
+		s_nameList.push_back(OprItem(&RDOValue::operator-,  "-"));
+		s_nameList.push_back(OprItem(&RDOValue::operator*,  "*"));
+		s_nameList.push_back(OprItem(&RDOValue::operator/,  "/"));
+		s_nameList.push_back(OprItem(&RDOValue::operator&&, "and"));
+		s_nameList.push_back(OprItem(&RDOValue::operator||, "or"));
 	}
 	return s_nameList;
 }
@@ -60,12 +60,12 @@ inline CREF(OperatorName<rbool (RDOValue::*)(CREF(RDOValue)) const>::NameList) O
 	static NameList s_nameList;
 	if (s_nameList.empty())
 	{
-		s_nameList.push_back(OprItem(&RDOValue::operator==, _T("==")));
-		s_nameList.push_back(OprItem(&RDOValue::operator!=, _T("<>")));
-		s_nameList.push_back(OprItem(&RDOValue::operator<,  _T("<" )));
-		s_nameList.push_back(OprItem(&RDOValue::operator>,  _T(">" )));
-		s_nameList.push_back(OprItem(&RDOValue::operator<=, _T("<=")));
-		s_nameList.push_back(OprItem(&RDOValue::operator>=, _T(">=")));
+		s_nameList.push_back(OprItem(&RDOValue::operator==, "=="));
+		s_nameList.push_back(OprItem(&RDOValue::operator!=, "<>"));
+		s_nameList.push_back(OprItem(&RDOValue::operator<,  "<"));
+		s_nameList.push_back(OprItem(&RDOValue::operator>,  ">"));
+		s_nameList.push_back(OprItem(&RDOValue::operator<=, "<="));
+		s_nameList.push_back(OprItem(&RDOValue::operator>=, ">="));
 	}
 	return s_nameList;
 }
@@ -76,7 +76,7 @@ inline CREF(OperatorName<rbool (RDOValue::*)() const>::NameList) OperatorName<rb
 	static NameList s_nameList;
 	if (s_nameList.empty())
 	{
-		s_nameList.push_back(OprItem(&RDOValue::operator!, _T("!")));
+		s_nameList.push_back(OprItem(&RDOValue::operator!, "!"));
 	}
 	return s_nameList;
 }
@@ -87,7 +87,7 @@ inline CREF(OperatorName<RDOValue (RDOValue::*)() const>::NameList) OperatorName
 	static NameList s_nameList;
 	if (s_nameList.empty())
 	{
-		s_nameList.push_back(OprItem(&RDOValue::operator-, _T("-")));
+		s_nameList.push_back(OprItem(&RDOValue::operator-, "-"));
 	}
 	return s_nameList;
 }
@@ -98,7 +98,7 @@ inline CREF(OperatorName<rsint (RDOValue::*)() const>::NameList) OperatorName<rs
 	static NameList s_nameList;
 	if (s_nameList.empty())
 	{
-		s_nameList.push_back(OprItem(&RDOValue::getInt, _T("getInt")));
+		s_nameList.push_back(OprItem(&RDOValue::getInt, "getInt"));
 	}
 	return s_nameList;
 }
