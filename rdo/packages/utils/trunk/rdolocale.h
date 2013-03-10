@@ -37,10 +37,11 @@ namespace rdo
 		std::locale utf8  ();
 		std::locale c     ();
 
-		static std::string convert           (const std::string& txt, const std::locale& to, const std::locale& from = std::locale());
-		static std::string convert           (const std::string& txt, const std::string& to, const std::string& from);
-		static std::string convertToCLocale  (const std::string& txt, const std::locale& from = std::locale());
-		static std::string convertFromCLocale(const std::string& txt, const std::locale& to = std::locale());
+		static std::string  convert           (const std::string& txt, const std::locale& to, const std::locale& from = std::locale());
+		static std::string  convert           (const std::string& txt, const std::string& to, const std::string& from);
+		static std::string  convertToCLocale  (const std::string& txt, const std::locale& from = std::locale());
+		static std::string  convertFromCLocale(const std::string& txt, const std::locale& to = std::locale());
+		static unsigned int length            (const std::string& txt, const std::locale& locale = std::locale());
 
 	private:
 		locale();

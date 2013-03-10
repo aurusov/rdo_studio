@@ -136,4 +136,9 @@ std::string locale::getCLocaleName()
 	return cLocale;
 }
 
+unsigned int locale::length(const std::string& txt, const std::locale& locale)
+{
+	return boost::locale::conv::to_utf<wchar_t>(txt, locale).length();
+}
+
 } // namespace rdo
