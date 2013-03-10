@@ -28,13 +28,13 @@ ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[]) :
 {
 	po::options_description options_header(program_description);
 	
-	po::options_description options_general(_T("General options"));
+	po::options_description options_general("General options");
 	createGeneralOptions(options_general);
 	
-	po::options_description options_convertor(_T("Convertor options"));
+	po::options_description options_convertor("Convertor options");
 	createConvertorOptions(options_convertor);
 
-	po::options_description options_additional(_T("Compatibility options (skipped in console version)"));
+	po::options_description options_additional("Compatibility options (skipped in console version)");
 	createAdditionalOptions(options_additional);
 	
 	m_options.add(options_header);
@@ -49,7 +49,7 @@ ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[]) :
 	}
 	catch (CREF(std::exception) e)
 	{
-		std::cout << _T("command line error: ") << e.what() << std::endl;
+		std::cout << "command line error: " << e.what() << std::endl;
 	}
 }
 
@@ -67,7 +67,7 @@ void ControllerConsoleOptions::parseOptions()
 	}
 	else if (m_variables.count(LANGUAGE_COMMAND))
 	{
-		std::cout << _T("rdo language v") + RDO_LANGUAGE_VERSION << _T(" ( supported rdox )") << std::endl;
+		std::cout << "rdo language v" + RDO_LANGUAGE_VERSION << " ( supported rdox )" << std::endl;
 		m_help = true;
 	}
 	else if (m_variables.count(VERSION_COMMAND))
@@ -88,7 +88,7 @@ const tstring ControllerConsoleOptions::getModelFileName()
 		tstring modelFileName = m_variables[MODEL_COMMAND].as<tstring>();
 		return modelFileName;
 	}
-	return _T("");
+	return "";
 }
 
 const tstring ControllerConsoleOptions::getScriptFileName()
@@ -98,7 +98,7 @@ const tstring ControllerConsoleOptions::getScriptFileName()
 		tstring eventsFileName = m_variables[SCRIPT_COMMAND].as<tstring>();
 		return eventsFileName;
 	}
-	return _T("");
+	return "";
 }
 
 rbool ControllerConsoleOptions::helpQuery()

@@ -18,63 +18,63 @@
 // --------------------------------------------------------------------------------
 
 #ifdef OST_WINDOWS
-const tstring SYSTEM_OS = _T("Windows");
+const tstring SYSTEM_OS = "Windows";
 #elif defined( OST_LINUX )
-const tstring SYSTEM_OS = _T("Linux");
+const tstring SYSTEM_OS = "Linux";
 #endif // OST_WINDOWS
 
 #ifdef ARCHITECTURE_AMD64
-const tstring SYSTEM_ARCHITECTURES = _T("AMD64");
+const tstring SYSTEM_ARCHITECTURES = "AMD64";
 #elif defined( ARCHITECTURE_X86 )
-const tstring SYSTEM_ARCHITECTURES = _T("x86");
+const tstring SYSTEM_ARCHITECTURES = "x86";
 #elif defined( ARCHITECTURE_ARM )
-const tstring SYSTEM_ARCHITECTURES = _T("arm");
+const tstring SYSTEM_ARCHITECTURES = "arm";
 #endif // ARCHITECTURE_AMD64
 
 // Input param constant
-const tstring MODEL_COMMAND                 = _T("input");
-const tstring SCRIPT_COMMAND                = _T("script");
-const tstring HELP_COMMAND                  = _T("help");
-const tstring VERSION_COMMAND               = _T("version");
-const tstring LANGUAGE_COMMAND              = _T("language");
-const tstring CONVERTOR_COMMAND             = _T("convert");
+const tstring MODEL_COMMAND                 = "input";
+const tstring SCRIPT_COMMAND                = "script";
+const tstring HELP_COMMAND                  = "help";
+const tstring VERSION_COMMAND               = "version";
+const tstring LANGUAGE_COMMAND              = "language";
+const tstring CONVERTOR_COMMAND             = "convert";
 
-const tstring AUTO_RUN_COMMAND              = _T("autorun");
-const tstring AUTO_EXIT_COMMAND             = _T("autoexit");
-const tstring DONT_CLOSE_IF_ERROR_COMMAND   = _T("dont_close_if_error");
-const tstring PLUGIN_START_COMMAND          = _T("pluginstart");
-const tstring PLUGIN_AUTO_EXIT_COMMAND      = _T("pluginautoexit");
+const tstring AUTO_RUN_COMMAND              = "autorun";
+const tstring AUTO_EXIT_COMMAND             = "autoexit";
+const tstring DONT_CLOSE_IF_ERROR_COMMAND   = "dont_close_if_error";
+const tstring PLUGIN_START_COMMAND          = "pluginstart";
+const tstring PLUGIN_AUTO_EXIT_COMMAND      = "pluginautoexit";
 
-const tstring MODEL_COMMAND_SHORT           = _T("i");
-const tstring SCRIPT_COMMAND_SHORT          = _T("s");
-const tstring HELP_COMMAND_SHORT            = _T("h");
-const tstring VERSION_COMMAND_SHORT         = _T("v");
-const tstring LANGUAGE_COMMAND_SHORT        = _T("l");
-const tstring CONVERTOR_COMMAND_SHORT       = _T("c");
+const tstring MODEL_COMMAND_SHORT           = "i";
+const tstring SCRIPT_COMMAND_SHORT          = "s";
+const tstring HELP_COMMAND_SHORT            = "h";
+const tstring VERSION_COMMAND_SHORT         = "v";
+const tstring LANGUAGE_COMMAND_SHORT        = "l";
+const tstring CONVERTOR_COMMAND_SHORT       = "c";
 
 // Input param comment
-const tstring MODEL_COMMENT                 = _T(": path to model file");
-const tstring SCRIPT_COMMENT                = _T(": path to script file");
-const tstring HELP_COMMENT                  = _T(": display help message");
-const tstring VERSION_COMMENT               = _T(": display program version");
-const tstring LANGUAGE_COMMENT              = _T(": display language version of rdo");
+const tstring MODEL_COMMENT                 = ": path to model file";
+const tstring SCRIPT_COMMENT                = ": path to script file";
+const tstring HELP_COMMENT                  = ": display help message";
+const tstring VERSION_COMMENT               = ": display program version";
+const tstring LANGUAGE_COMMENT              = ": display language version of rdo";
 
-const tstring CONVERTOR_COMMENT             = _T(": run convertor smr to rdox");
+const tstring CONVERTOR_COMMENT             = ": run convertor smr to rdox";
 
-const tstring AUTO_RUN_COMMENT              = _T(": autostart program");
-const tstring AUTO_EXIT_COMMENT             = _T(": autoexit program");
-const tstring DONT_CLOSE_IF_ERROR_COMMENT   = _T(": don't close if error");
-const tstring PLUGIN_START_COMMENT          = _T(": start plugin");
-const tstring PLUGIN_AUTO_EXIT_COMMENT      = _T(": plugin auto exit");
+const tstring AUTO_RUN_COMMENT              = ": autostart program";
+const tstring AUTO_EXIT_COMMENT             = ": autoexit program";
+const tstring DONT_CLOSE_IF_ERROR_COMMENT   = ": don't close if error";
+const tstring PLUGIN_START_COMMENT          = ": start plugin";
+const tstring PLUGIN_AUTO_EXIT_COMMENT      = ": plugin auto exit";
 
 // Auxiliary constants
-const tstring PROGRAM_VERSION               = _T("1.0.6");
-const tstring RDO_LANGUAGE_VERSION          = _T("2.0");
+const tstring PROGRAM_VERSION               = "1.0.6";
+const tstring RDO_LANGUAGE_VERSION          = "2.0";
 
-const tstring RDO_SITE                      = _T("( http://rdo.rk9.bmstu.ru )");
-const tstring PROGRAM_NAME                  = _T("rdo console studio");
+const tstring RDO_SITE                      = "( http://rdo.rk9.bmstu.ru )";
+const tstring PROGRAM_NAME                  = "rdo console studio";
 
-const tstring NOP_STRING   = _T(" ");
-const tstring COMMA_STRING = _T(",");
+const tstring NOP_STRING   = " ";
+const tstring COMMA_STRING = ",";
 
 #endif // _RDO_CONTROLLER_CONSOLE_OPTIONS_CONFIG_H_

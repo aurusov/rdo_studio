@@ -24,7 +24,7 @@ using namespace rdo::simulation::report;
 #define MUTEXT_PROTECTION(A) boost::lock_guard<boost::mutex> lg_##__LINE__(A);
 
 console_controller::console_controller()
-	: RDOThread(_T("RDOThreadStudioConsoleController"))
+	: RDOThread("RDOThreadStudioConsoleController")
 	, m_state(SS_UNDEFINED)
 	, m_converted(false)
 	, m_buildError(false)

@@ -36,7 +36,7 @@ namespace fs = boost::filesystem;
 typedef std::list<tstring> string_list;
 typedef rdo::event_xml_parser::event_container event_container;
 
-const tstring LOG_FILE_NAME = _T("log.txt");
+const tstring LOG_FILE_NAME = "log.txt";
 
 void read_events(REF(std::istream) stream, REF(event_container) container);
 void write_build_log(REF(std::ostream) stream, CREF(string_list) list);
@@ -66,12 +66,12 @@ int main(int argc, PTR(char) argv[])
 	}
 	else if (!model_exist)
 	{
-		std::cerr << _T("Model file does not exist") << std::endl;
+		std::cerr << "Model file does not exist" << std::endl;
 		exit(TERMINATION_WITH_AN_ERROR_NO_MODEL);
 	}
 	else if (!event_exist && !events_file_name.empty())
 	{
-		std::cerr << _T("Events file does not exist") << std::endl;
+		std::cerr << "Events file does not exist" << std::endl;
 		exit(TERMINATION_WITH_AN_ERROR_NO_EVENTS);
 	}
 
@@ -126,7 +126,7 @@ int main(int argc, PTR(char) argv[])
 
 		write_build_log(stream, buildList);
 
-		std::cerr << _T("Build model error") << std::endl;
+		std::cerr << "Build model error" << std::endl;
 		exitCode = TERMINATION_WITH_AN_ERROR_PARSE_MODEL_ERROR;
 	}
 	else
@@ -141,12 +141,12 @@ int main(int argc, PTR(char) argv[])
 
 	if (simulationSuccessfully)
 	{
-		std::cout << _T("Simulation finished successfully") << std::endl;
+		std::cout << "Simulation finished successfully" << std::endl;
 		exitCode = TERMINATION_NORMAL;
 	}
 	else
 	{
-		std::cout << _T("Simulation completed with errors") << std::endl;
+		std::cout << "Simulation completed with errors" << std::endl;
 	}
 	return exitCode;
 }
@@ -194,7 +194,7 @@ bool run(PTR(rdo::console_controller) pAppController, REF(event_container) conta
 
 		if (pAppController->runtimeError())
 		{
-			std::cout << _T("Run-time error") << std::endl;
+			std::cout << "Run-time error" << std::endl;
 			exit(TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR);
 		}
         process_event(pAppController, container);
