@@ -61,7 +61,7 @@ UpdateInsert::UpdateInsert(CREF(Position) pos, CREF(tstring) value, IDocument::T
 
 void UpdateInsert::dump(REF(LPIDocument) pDocument) const
 {
-	tstring log = rdo::format(_T("update insert <%d>, %d, '%s', dump: '%s'\n")
+	tstring log = rdo::format("update insert <%d>, %d, '%s', dump: '%s'\n"
 		, m_file
 		, m_pos.get()
 		, m_value.c_str()
@@ -113,7 +113,7 @@ UpdateDelete::UpdateDelete(CREF(Position) posFrom, CREF(Position) posTo)
 
 void UpdateDelete::dump(REF(LPIDocument) pDocument) const
 {
-	tstring log = rdo::format(_T("update delete <%d>, [%d - %d), dump: '%s'\n")
+	tstring log = rdo::format("update delete <%d>, [%d - %d), dump: '%s'\n"
 		, m_file
 		, m_posFrom.get()
 		, m_posTo.get()
@@ -170,10 +170,10 @@ UpdateReplace::UpdateReplace(CREF(Position) posFrom, CREF(Position) posTo, CREF(
 
 void UpdateReplace::dump(REF(LPIDocument) pDocument) const
 {
-	TRACE(_T("update replace...\n"));
+	TRACE("update replace...\n");
 	pDelete->dump(pDocument);
 	pInsert->dump(pDocument);
-	TRACE(_T("update replace... ok\n"));
+	TRACE("update replace... ok\n");
 }
 
 void UpdateReplace::apply(REF(LPIDocument) pDocument) const
@@ -212,7 +212,7 @@ UpdateMove::UpdateMove(CREF(Position) posFromBegin, CREF(Position) posFromEnd, C
 
 void UpdateMove::dump(REF(LPIDocument) pDocument) const
 {
-	tstring log = rdo::format(_T("update move <%d->%d>, [%d - %d) '%s', %d\n")
+	tstring log = rdo::format("update move <%d->%d>, [%d - %d) '%s', %d\n"
 		, m_fileFrom
 		, m_file
 		, m_posFromBegin.get()
@@ -335,7 +335,7 @@ UpdateSwap::UpdateSwap(CREF(Position) pos1Begin, CREF(Position) pos1End, CREF(Po
 
 void UpdateSwap::dump(REF(LPIDocument) pDocument) const
 {
-	tstring log = rdo::format(_T("update swap <%d>: [%d, %d) <-> [%d - %d), '%s' <-> '%s'\n")
+	tstring log = rdo::format("update swap <%d>: [%d, %d) <-> [%d - %d), '%s' <-> '%s'\n"
 		, m_file
 		, m_pos1Begin.get()
 		, m_pos1End.get()

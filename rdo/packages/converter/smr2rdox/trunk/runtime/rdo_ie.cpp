@@ -32,7 +32,7 @@ double RDOPatternIrregEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 	{
 		return time_next;
 	}
-	pRuntime->error().push(rdo::format(_T("Попытка запланировать событие в прошлом. Выражение времени для $Time имеет отрицательное значение: %f"), time_next), m_timeCalc->srcInfo());
+	pRuntime->error().push(rdo::format("Попытка запланировать событие в прошлом. Выражение времени для $Time имеет отрицательное значение: %f", time_next), m_timeCalc->srcInfo());
 	return 0;
 }
 

@@ -332,7 +332,7 @@ set					return(RDO_set);
 "{"						{
 	BEGIN(comment_rdo);
 
-	rdo::converter::smr2rdox::LPDocUpdate pReplace = rdo::Factory<rdo::converter::smr2rdox::UpdateReplace>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1, _T("/*"));
+	rdo::converter::smr2rdox::LPDocUpdate pReplace = rdo::Factory<rdo::converter::smr2rdox::UpdateReplace>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1, "/*");
 	ASSERT(pReplace);
 	CONVERTER->insertDocUpdate(pReplace);
 };
@@ -342,7 +342,7 @@ set					return(RDO_set);
 <comment_rdo>"}"		{
 	BEGIN(INITIAL);
 
-	rdo::converter::smr2rdox::LPDocUpdate pReplace = rdo::Factory<rdo::converter::smr2rdox::UpdateReplace>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1, _T("*/"));
+	rdo::converter::smr2rdox::LPDocUpdate pReplace = rdo::Factory<rdo::converter::smr2rdox::UpdateReplace>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1, "*/");
 	ASSERT(pReplace);
 	CONVERTER->insertDocUpdate(pReplace);
 };
@@ -357,7 +357,7 @@ set					return(RDO_set);
 
 "}"|"*/"				{
 	LEXER->loc_delta_pos(YYLeng());
-	CONVERTER->error().error(rdo::converter::smr2rdox::RDOParserSrcInfo(), _T("Не найдено начало комментария"));
+	CONVERTER->error().error(rdo::converter::smr2rdox::RDOParserSrcInfo(), "Не найдено начало комментария");
 }
 
 [\r\n\t ]+

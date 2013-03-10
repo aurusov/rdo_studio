@@ -217,23 +217,23 @@ rss_main
 	| rss_resources_begin rss_resources rss_resources_end
 	| rss_resources_begin rss_resources
 	{
-		CONVERTER->error().error(@2, _T("После описания всех ресурсов ожидается ключевое слово $End"));
+		CONVERTER->error().error(@2, "После описания всех ресурсов ожидается ключевое слово $End");
 	}
 	| error
 	{
 		if (!CONVERTER->isHaveKWResources())
 		{
-			CONVERTER->error().error(@1, _T("Ожидается ключевое слово $Resources"));
+			CONVERTER->error().error(@1, "Ожидается ключевое слово $Resources");
 		}
 		else
 		{
 			if (CONVERTER->isHaveKWResourcesEnd())
 			{
-				CONVERTER->error().error(@1, _T("Ресурсы уже определены"));
+				CONVERTER->error().error(@1, "Ресурсы уже определены");
 			}
 			else
 			{
-				CONVERTER->error().error(@1, _T("Неизвестная ошибка"));
+				CONVERTER->error().error(@1, "Неизвестная ошибка");
 			}
 		}
 	}
@@ -265,7 +265,7 @@ rss_res_descr
 		ASSERT(pResource);
 		if (!pResource->defined())
 		{
-			CONVERTER->error().error(@3, rdo::format(_T("Заданы не все параметры ресурса: %s"), pResource->name().c_str()));
+			CONVERTER->error().error(@3, rdo::format("Заданы не все параметры ресурса: %s", pResource->name().c_str()));
 		}
 		pResource->setTrace($2 != 0);
 	}
@@ -279,13 +279,13 @@ rss_res_type
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(pType->value().getIdentificator());
 		if (!pResType)
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Неизвестный тип ресурса: %s"), pType->value().getIdentificator().c_str()));
+			CONVERTER->error().error(@2, rdo::format("Неизвестный тип ресурса: %s", pType->value().getIdentificator().c_str()));
 		}
 		LPRDORSSResource pResourceExist = CONVERTER->findRSSResource(pName->value().getIdentificator());
 		if (pResourceExist)
 		{
-			CONVERTER->error().push_only(pName->src_info(), rdo::format(_T("Ресурс '%s' уже существует"), pName->value().getIdentificator().c_str()));
-			CONVERTER->error().push_only(pResourceExist->src_info(), _T("См. первое определение"));
+			CONVERTER->error().push_only(pName->src_info(), rdo::format("Ресурс '%s' уже существует", pName->value().getIdentificator().c_str()));
+			CONVERTER->error().push_only(pResourceExist->src_info(), "См. первое определение");
 			CONVERTER->error().push_done();
 		}
 		LPRDORSSResource pResource = rdo::Factory<RDORSSResource>::create(CONVERTER, pName->src_info(), pResType);
@@ -293,15 +293,15 @@ rss_res_type
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается тип ресурса"));
+		CONVERTER->error().error(@2, "Ожидается тип ресурса");
 	}
 	| ':'
 	{
-		CONVERTER->error().error(@1, _T("Перед двоеточием ожидается имя ресурса"));
+		CONVERTER->error().error(@1, "Перед двоеточием ожидается имя ресурса");
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается имя ресурса"));
+		CONVERTER->error().error(@1, "Ожидается имя ресурса");
 	}
 	;
 
@@ -317,7 +317,7 @@ rss_values
 	;
 
 rss_value
-	: '*'               {CONVERTER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, _T("*"))));}
+	: '*'               {CONVERTER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*")));}
 	| RDO_INT_CONST     {CONVERTER->getLastRSSResource()->addParam(CONVERTER->stack().pop<RDOValue>($1));}
 	| RDO_REAL_CONST    {CONVERTER->getLastRSSResource()->addParam(CONVERTER->stack().pop<RDOValue>($1));}
 	| RDO_BOOL_CONST    {CONVERTER->getLastRSSResource()->addParam(CONVERTER->stack().pop<RDOValue>($1));}
@@ -325,7 +325,7 @@ rss_value
 	| RDO_IDENTIF       {CONVERTER->getLastRSSResource()->addParam(CONVERTER->stack().pop<RDOValue>($1));}
 	| error
 	{
-		CONVERTER->error().error(@1, rdo::format(_T("Неправильное значение параметра: %s"), LEXER->YYText()));
+		CONVERTER->error().error(@1, rdo::format("Неправильное значение параметра: %s", LEXER->YYText()));
 	}
 	;
 

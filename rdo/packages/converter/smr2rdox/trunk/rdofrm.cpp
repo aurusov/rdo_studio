@@ -49,14 +49,14 @@ void RDOFRMFrame::setShowIfBlock(CREF(Seek) firstSeek)
 	{
 		LPDocUpdate pOpenBraceInsert = rdo::Factory<UpdateInsert>::create(
 			*m_firstSeek,
-			_T("\n{")
+			"\n{"
 		);
 		ASSERT(pOpenBraceInsert);
 		Converter::s_converter()->insertDocUpdate(pOpenBraceInsert);
 
 		LPDocUpdate pCloseBraceInsert = rdo::Factory<UpdateInsert>::create(
 			*m_lastSeek,
-			_T("\n}")
+			"\n}"
 		);
 		ASSERT(pCloseBraceInsert);
 		Converter::s_converter()->insertDocUpdate(pCloseBraceInsert);
@@ -85,7 +85,7 @@ void RDOFRMFrame::onAfterBackPicture(ruint lastSeek)
 
 	LPDocUpdate pFrameConditionBeginInsert = rdo::Factory<UpdateInsert>::create(
 		lastSeek,
-		_T("\n// Условие показа фрейма\nif (!(")
+		"\n// Условие показа фрейма\nif (!("
 	);
 	ASSERT(pFrameConditionBeginInsert);
 	Converter::s_converter()->insertDocUpdate(pFrameConditionBeginInsert);
@@ -100,7 +100,7 @@ void RDOFRMFrame::onAfterBackPicture(ruint lastSeek)
 
 	LPDocUpdate pFrameConditionEndInsert = rdo::Factory<UpdateInsert>::create(
 		lastSeek,
-		_T("))\n   return;\n")
+		"))\n   return;\n"
 	);
 	ASSERT(pFrameConditionEndInsert);
 	Converter::s_converter()->insertDocUpdate(pFrameConditionEndInsert);

@@ -49,7 +49,7 @@ RDORSSResource::RDORSSResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) sr
 
 void RDORSSResource::writeModelStructure(REF(std::ostream) stream) const
 {
-	stream << (getID() + 1) << _T(" ") << name() << _T(" ") << getType()->getNumber() << std::endl;
+	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
 }
 
 void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
@@ -58,18 +58,18 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 
 	if (m_currParam == getType()->getParams().end())
 	{
-		Converter::s_converter()->error().push_only(pParam->src_info(), _T("Слишком много параметров"));
-		Converter::s_converter()->error().push_only(getType()->src_info(), _T("См. тип ресурса"));
+		Converter::s_converter()->error().push_only(pParam->src_info(), "Слишком много параметров");
+		Converter::s_converter()->error().push_only(getType()->src_info(), "См. тип ресурса");
 		Converter::s_converter()->error().push_done();
 	}
 	try
 	{
-		if (pParam->value().getAsString() == _T("*"))
+		if (pParam->value().getAsString() == "*")
 		{
 			if (!(*m_currParam)->getDefault()->defined())
 			{
-				Converter::s_converter()->error().push_only(pParam->src_info(), _T("Невозможно использовать '*', к.т. отсутствует значение по умолчанию"));
-				Converter::s_converter()->error().push_only((*m_currParam)->getType()->src_info(), _T("См. описание параметра"));
+				Converter::s_converter()->error().push_only(pParam->src_info(), "Невозможно использовать '*', к.т. отсутствует значение по умолчанию");
+				Converter::s_converter()->error().push_only((*m_currParam)->getType()->src_info(), "См. описание параметра");
 				Converter::s_converter()->error().push_done();
 			}
 			m_paramList.push_back(Param((*m_currParam)->getDefault()));
@@ -83,7 +83,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 	}
 	catch(REF(RDOSyntaxException))
 	{
-		Converter::s_converter()->error().modify(rdo::format(_T("Для параметра '%s': "), (*m_currParam)->name().c_str()));
+		Converter::s_converter()->error().modify(rdo::format("Для параметра '%s': ", (*m_currParam)->name().c_str()));
 	}
 }
 
@@ -103,7 +103,7 @@ rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
 	ASSERT(pCalc);
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());
-	srcInfo.setSrcText(_T("Создание ресурса ") + src_text());
+	srcInfo.setSrcText("Создание ресурса " + src_text());
 	pCalc->setSrcInfo(srcInfo);
 	return pCalc;
 }
@@ -126,7 +126,7 @@ rdo::runtime::LPRDOCalc RDOPROCResource::createCalc() const
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
 	ASSERT(pCalc);
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());
-	srcInfo.setSrcText(_T("Создание ресурса ") + src_text());
+	srcInfo.setSrcText("Создание ресурса " + src_text());
 	pCalc->setSrcInfo(srcInfo);
 	return pCalc;
 }

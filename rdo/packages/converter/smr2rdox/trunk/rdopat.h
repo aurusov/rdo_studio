@@ -157,11 +157,11 @@ private:
 	{
 		switch (type)
 		{
-		case PT_IE       : return _T("нерегулярное событие");
-		case PT_Rule     : return _T("продукционное правило");
-		case PT_Operation: return _T("операция");
-		case PT_Keyboard : return _T("клавиатурная операция");
-		default          : return _T("неизвестный");
+		case PT_IE       : return "нерегулярное событие";
+		case PT_Rule     : return "продукционное правило";
+		case PT_Operation: return "операция";
+		case PT_Keyboard : return "клавиатурная операция";
+		default          : return "неизвестный";
 		}
 	}
 
@@ -180,7 +180,7 @@ public:
 
 	virtual char getModelStructureLetter() const
 	{
-		return _T('I');
+		return 'I';
 	};
 	virtual PatType getType() const
 	{
@@ -206,7 +206,7 @@ public:
 
 	virtual char getModelStructureLetter() const
 	{
-		return _T('R');
+		return 'R';
 	};
 	virtual PatType getType() const
 	{
@@ -234,7 +234,7 @@ public:
 
 	virtual char getModelStructureLetter() const
 	{
-		return _T('A');
+		return 'A';
 	};
 	virtual PatType getType() const
 	{
@@ -272,7 +272,7 @@ DECLARE_FACTORY(RDOPatternKeyboard)
 public:
 	virtual char getModelStructureLetter() const
 	{
-		return _T('K');
+		return 'K';
 	};
 	virtual PatType getType() const
 	{
@@ -421,10 +421,10 @@ public:
 	{
 		switch (m_type)
 		{
-		case rdo::runtime::RDOSelectResourceCalc::order_empty   : return _T("<правило_выбора_не_указано>");
-		case rdo::runtime::RDOSelectResourceCalc::order_first   : return _T("first");
-		case rdo::runtime::RDOSelectResourceCalc::order_with_min: return _T("with_min");
-		case rdo::runtime::RDOSelectResourceCalc::order_with_max: return _T("with_max");
+		case rdo::runtime::RDOSelectResourceCalc::order_empty   : return "<правило_выбора_не_указано>";
+		case rdo::runtime::RDOSelectResourceCalc::order_first   : return "first";
+		case rdo::runtime::RDOSelectResourceCalc::order_with_min: return "with_min";
+		case rdo::runtime::RDOSelectResourceCalc::order_with_max: return "with_max";
 		default                                               : NEVER_REACH_HERE;
 		}
 		return tstring();

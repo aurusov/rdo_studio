@@ -268,31 +268,31 @@ pmd_result
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' error
 	{
-		CONVERTER->error().error(@5, @6, _T("Ожидается имя параметра"));
+		CONVERTER->error().error(@5, @6, "Ожидается имя параметра");
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается '.'"));
+		CONVERTER->error().error(@4, "Ожидается '.'");
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par error
 	{
-		CONVERTER->error().error(@3, @4, _T("После ключевого слова watch_par ожидается имя ресурса"));
+		CONVERTER->error().error(@3, @4, "После ключевого слова watch_par ожидается имя ресурса");
 	}
 	| RDO_IDENTIF_COLON pmd_trace error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается тип показателя"));
+		CONVERTER->error().error(@2, @3, "Ожидается тип показателя");
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ожидается признак трассировки или тип показателя"));
+		CONVERTER->error().error(@1, @2, "Ожидается признак трассировки или тип показателя");
 	}
 	| RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ожидается ':'"));
+		CONVERTER->error().error(@1, @2, "Ожидается ':'");
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается имя показателя"));
+		CONVERTER->error().error(@1, "Ожидается имя показателя");
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state fun_logic
 	{
@@ -302,7 +302,7 @@ pmd_result
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state error
 	{
-		CONVERTER->error().error(@3, @4, _T("После ключевого слова watch_state ожидается логическое выражение"));
+		CONVERTER->error().error(@3, @4, "После ключевого слова watch_state ожидается логическое выражение");
 	}
 	| pmd_result_watch_quant_begin fun_logic
 	{
@@ -322,11 +322,11 @@ pmd_result
 	}
 	| pmd_result_watch_quant_begin error
 	{
-		CONVERTER->error().error(@1, @2, _T("После имени типа ожидается логическое выражение"));
+		CONVERTER->error().error(@1, @2, "После имени типа ожидается логическое выражение");
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_quant error
 	{
-		CONVERTER->error().error(@3, @4, _T("После ключевого слова watch_quant ожидается тип ресурса"));
+		CONVERTER->error().error(@3, @4, "После ключевого слова watch_quant ожидается тип ресурса");
 	}
 	| pmd_result_watch_value_begin fun_logic fun_arithm
 	{
@@ -350,19 +350,19 @@ pmd_result
 	}
 	| pmd_result_watch_value_begin fun_logic error
 	{
-		CONVERTER->error().error(@2, @3, _T("После логического ожидается арифметическое выражение"));
+		CONVERTER->error().error(@2, @3, "После логического ожидается арифметическое выражение");
 	}
 	| pmd_result_watch_value_begin RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, @3, _T("После логического ожидается арифметическое выражение"));
+		CONVERTER->error().error(@2, @3, "После логического ожидается арифметическое выражение");
 	}
 	| pmd_result_watch_value_begin error
 	{
-		CONVERTER->error().error(@1, @2, _T("После имени типа ожидается логическое выражение"));
+		CONVERTER->error().error(@1, @2, "После имени типа ожидается логическое выражение");
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_value error
 	{
-		CONVERTER->error().error(@3, @4, _T("После ключевого слова watch_value ожидается тип ресурса"));
+		CONVERTER->error().error(@3, @4, "После ключевого слова watch_value ожидается тип ресурса");
 	}
 	| RDO_IDENTIF_COLON RDO_get_value fun_arithm
 	{
@@ -372,7 +372,7 @@ pmd_result
 	}
 	| RDO_IDENTIF_COLON RDO_get_value error
 	{
-		CONVERTER->error().error(@2, @3, _T("После ключевого слова get_value ожидается арифметическое выражение"));
+		CONVERTER->error().error(@2, @3, "После ключевого слова get_value ожидается арифметическое выражение");
 	}
 	;
 
@@ -384,11 +384,11 @@ pmd_end
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos;
 		pos.m_last_seek = pos.m_first_seek;
-		CONVERTER->error().error(pos, _T("Ожидается ключевое слово $Results"));
+		CONVERTER->error().error(pos, "Ожидается ключевое слово $Results");
 	}
 	| RDO_Results pmd_body error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается ключевое слово $End"));
+		CONVERTER->error().error(@3, "Ожидается ключевое слово $End");
 	}
 	;
 
@@ -400,7 +400,7 @@ pmd_end
 fun_logic_eq
 	: '='
 	{
-		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, _T("="));
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, "=");
 		ASSERT(pInsert);
 		CONVERTER->insertDocUpdate(pInsert);
 
@@ -508,7 +508,7 @@ fun_logic
 		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
 		pLogic->setSrcPos (@1, @3);
-		pLogic->setSrcText(_T("[") + pLogic->src_text() + _T("]"));
+		pLogic->setSrcText("[" + pLogic->src_text() + "]");
 		$$ = CONVERTER->stack().push(pLogic);
 	}
 	| '(' fun_logic ')'
@@ -516,7 +516,7 @@ fun_logic
 		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
 		pLogic->setSrcPos (@1, @3);
-		pLogic->setSrcText(_T("(") + pLogic->src_text() + _T(")"));
+		pLogic->setSrcText("(" + pLogic->src_text() + ")");
 		$$ = CONVERTER->stack().push(pLogic);
 	}
 	| RDO_not fun_logic
@@ -526,16 +526,16 @@ fun_logic
 		LPRDOFUNLogic pLogicNot = pLogic->operator_not();
 		ASSERT(pLogicNot);
 		pLogicNot->setSrcPos (@1, @2);
-		pLogicNot->setSrcText(_T("not ") + pLogic->src_text());
+		pLogicNot->setSrcText("not " + pLogic->src_text());
 		$$ = CONVERTER->stack().push(pLogicNot);
 	}
 	| '[' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| '(' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	;
 
@@ -597,7 +597,7 @@ fun_arithm
 		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
 		pArithm->setSrcPos (@1, @3);
-		pArithm->setSrcText(_T("(") + pArithm->src_text() + _T(")"));
+		pArithm->setSrcText("(" + pArithm->src_text() + ")");
 		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| '-' fun_arithm %prec RDO_UMINUS
@@ -606,7 +606,7 @@ fun_arithm
 		ASSERT(pArithm);
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
-		info.setSrcText(_T("-") + pArithm->src_text());
+		info.setSrcText("-" + pArithm->src_text());
 		$$ = CONVERTER->stack().push(
 			rdo::Factory<RDOFUNArithm>::create(
 				rdo::Factory<RDOValue>::create(pArithm->type(), info),
@@ -627,7 +627,7 @@ fun_arithm_func_call
 		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
-		pFunParams->setSrcText(funName + _T("()"));
+		pFunParams->setSrcText(funName + "()");
 		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
 		ASSERT(pArithm);
 		$$ = CONVERTER->stack().push(pArithm);
@@ -639,14 +639,14 @@ fun_arithm_func_call
 		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
-		pFunParams->setSrcText(funName + _T("(") + pFunParams->src_text() + _T(")"));
+		pFunParams->setSrcText(funName + "(" + pFunParams->src_text() + ")");
 		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
 		ASSERT(pArithm);
 		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| RDO_IDENTIF '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в параметрах функции"));
+		CONVERTER->error().error(@3, "Ошибка в параметрах функции");
 	}
 	;
 
@@ -667,17 +667,17 @@ fun_arithm_func_call_pars
 		LPRDOFUNArithm pArithm    = CONVERTER->stack().pop<RDOFUNArithm>($3);
 		ASSERT(pFunParams);
 		ASSERT(pArithm   );
-		pFunParams->setSrcText  (pFunParams->src_text() + _T(", ") + pArithm->src_text());
+		pFunParams->setSrcText  (pFunParams->src_text() + ", " + pArithm->src_text());
 		pFunParams->addParameter(pArithm);
 		$$ = CONVERTER->stack().push(pFunParams);
 	}
 	| fun_arithm_func_call_pars error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@2, "Ошибка в арифметическом выражении");
 	}
 	| fun_arithm_func_call_pars ',' error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@3, "Ошибка в арифметическом выражении");
 	}
 	;
 
@@ -700,11 +700,11 @@ fun_group_header
 	}
 	| fun_group_keyword '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
+		CONVERTER->error().error(@3, "Ожидается имя типа");
 	}
 	| fun_group_keyword error
 	{
-		CONVERTER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@1, "После имени функции ожидается октрывающаяся скобка");
 	}
 	;
 
@@ -726,20 +726,20 @@ fun_group
 		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(1), false);
 		ASSERT(pTrueLogic);
 		pTrueLogic->setSrcPos (@2);
-		pTrueLogic->setSrcText(_T("NoCheck"));
+		pTrueLogic->setSrcText("NoCheck");
 		$$ = CONVERTER->stack().push(pGroupFun->createFunLogic(pTrueLogic));
 	}
 	| fun_group_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_group_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_group_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@1, @2, "Ошибка в логическом выражении");
 	}
 	;
 
@@ -753,16 +753,16 @@ fun_select_header
 		ASSERT(pValue);
 		LPRDOFUNSelect pSelect = rdo::Factory<RDOFUNSelect>::create(pValue->src_info());
 		ASSERT(pSelect);
-		pSelect->setSrcText(_T("Select(") + pValue->value().getIdentificator() + _T(": "));
+		pSelect->setSrcText("Select(" + pValue->value().getIdentificator() + ": ");
 		$$ = CONVERTER->stack().push(pSelect);
 	}
 	| RDO_Select '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
+		CONVERTER->error().error(@3, "Ожидается имя типа");
 	}
 	| RDO_Select error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@1, "Ожидается октрывающаяся скобка");
 	}
 	;
 
@@ -773,7 +773,7 @@ fun_select_body
 		LPRDOFUNLogic  pLogic  = CONVERTER->stack().pop<RDOFUNLogic> ($2);
 		ASSERT(pSelect);
 		ASSERT(pLogic );
-		pSelect->setSrcText(pSelect->src_text() + pLogic->src_text() + _T(")"));
+		pSelect->setSrcText(pSelect->src_text() + pLogic->src_text() + ")");
 		pSelect->initSelect(pLogic);
 		$$ = CONVERTER->stack().push(pSelect);
 	}
@@ -781,8 +781,8 @@ fun_select_body
 	{
 		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
-		RDOParserSrcInfo logicInfo(@2, _T("NoCheck"));
-		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + _T(")"));
+		RDOParserSrcInfo logicInfo(@2, "NoCheck");
+		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + ")");
 		rdo::runtime::LPRDOCalcConst pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(1);
 		ASSERT(pCalc);
 		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, true);
@@ -793,15 +793,15 @@ fun_select_body
 	}
 	| fun_select_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_select_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_select_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@1, @2, "Ошибка в логическом выражении");
 	}
 	;
 
@@ -826,37 +826,37 @@ fun_select_logic
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@4, @5, "Ошибка в логическом выражении");
 	}
 	| fun_select_body '.' fun_select_keyword error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
 		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
 		pSelect->setSrcPos(@1, @5);
-		RDOParserSrcInfo emptyInfo(@3, @5, _T("Empty()"));
+		RDOParserSrcInfo emptyInfo(@3, @5, "Empty()");
 		LPRDOFUNLogic pLogic = pSelect->createFunSelectEmpty(emptyInfo);
 		ASSERT(pLogic);
 		$$ = CONVERTER->stack().push(pLogic);
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@4, "Ожидается закрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Empty error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
+		CONVERTER->error().error(@2, @3, "Ожидается метод списка ресурсов");
 	}
 	| fun_select_body error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
+		CONVERTER->error().error(@1, "Ожидается '.' (точка) для вызова метода списка ресурсов");
 	}
 	;
 
@@ -866,18 +866,18 @@ fun_select_arithm
 		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
 		pSelect->setSrcPos(@1, @5);
-		RDOParserSrcInfo sizeInfo(@3, @5, _T("Size()"));
+		RDOParserSrcInfo sizeInfo(@3, @5, "Size()");
 		LPRDOFUNArithm pArithm = pSelect->createFunSelectSize(sizeInfo);
 		ASSERT(pArithm);
 		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| fun_select_body '.' RDO_Size error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Size '(' error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@4, "Ожидается закрывающаяся скобка");
 	}
 	;
 

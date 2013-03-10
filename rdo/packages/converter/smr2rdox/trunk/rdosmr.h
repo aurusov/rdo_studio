@@ -55,11 +55,11 @@ public:
 	tstring getFile(CREF(tstring) file_type) const
 	{
 		StringTable::const_iterator it = m_files.find(file_type);
-		return it != m_files.end() ? it->second : _T("");
+		return it != m_files.end() ? it->second : "";
 	}
 	tstring modelName() const
 	{
-		return getFile(_T("Model_name"));
+		return getFile("Model_name");
 	}
 	void setExternalModelName(CREF(tstring) alias, CREF(tstring) modelID)
 	{
@@ -68,7 +68,7 @@ public:
 	tstring getExternalModelName(CREF(tstring) alias) const
 	{
 		StringTable::const_iterator it = m_extModelList.find(alias);
-		return it != m_extModelList.end() ? it->second : _T("");
+		return it != m_extModelList.end() ? it->second : "";
 	}
 	CREF(StringTable) getExternalModelList() const
 	{

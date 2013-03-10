@@ -87,7 +87,7 @@ void Error::modify(CREF(tstring) message)
 	{
 		tstring new_text = message + m_errors.front().getText();
 		m_errors.front().setText(new_text);
-		throw rdo::converter::smr2rdox::RDOSyntaxException(_T(""));
+		throw rdo::converter::smr2rdox::RDOSyntaxException("");
 	}
 }
 

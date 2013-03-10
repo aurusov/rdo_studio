@@ -88,7 +88,7 @@ void Document::convert()
 
 #ifdef DUMP_DOCUMENT
 		{
-			TRACE(_T("=================\n"));
+			TRACE("=================\n");
 			STL_FOR_ALL_CONST(m_updateContainer, it)
 			{
 				if (!it->second)
@@ -150,23 +150,23 @@ tstring Document::getName(TypeOut typeOut) const
 	tstring extention;
 	switch (typeOut)
 	{
-	case rdo::converter::smr2rdox::PAT_OUT: extention = _T("pat"); break;
-	case rdo::converter::smr2rdox::RTP_OUT: extention = _T("rtp"); break;
-	case rdo::converter::smr2rdox::RSS_OUT: extention = _T("rss"); break;
-	case rdo::converter::smr2rdox::FRM_OUT: extention = _T("frm"); break;
-	case rdo::converter::smr2rdox::FUN_OUT: extention = _T("fun"); break;
-	case rdo::converter::smr2rdox::DPT_OUT: extention = _T("dpt"); break;
-	case rdo::converter::smr2rdox::SMR_OUT: extention = _T("smr"); break;
-	case rdo::converter::smr2rdox::PMD_OUT: extention = _T("pmd"); break;
-	case rdo::converter::smr2rdox::PMV_OUT: extention = _T("pmv"); break;
-	case rdo::converter::smr2rdox::TRC_OUT: extention = _T("trc"); break;
-	case rdo::converter::smr2rdox::EVN_OUT: extention = _T("evn"); break;
-	case rdo::converter::smr2rdox::PRC_OUT: extention = _T("prc"); break;
+	case rdo::converter::smr2rdox::PAT_OUT: extention = "pat"; break;
+	case rdo::converter::smr2rdox::RTP_OUT: extention = "rtp"; break;
+	case rdo::converter::smr2rdox::RSS_OUT: extention = "rss"; break;
+	case rdo::converter::smr2rdox::FRM_OUT: extention = "frm"; break;
+	case rdo::converter::smr2rdox::FUN_OUT: extention = "fun"; break;
+	case rdo::converter::smr2rdox::DPT_OUT: extention = "dpt"; break;
+	case rdo::converter::smr2rdox::SMR_OUT: extention = "smr"; break;
+	case rdo::converter::smr2rdox::PMD_OUT: extention = "pmd"; break;
+	case rdo::converter::smr2rdox::PMV_OUT: extention = "pmv"; break;
+	case rdo::converter::smr2rdox::TRC_OUT: extention = "trc"; break;
+	case rdo::converter::smr2rdox::EVN_OUT: extention = "evn"; break;
+	case rdo::converter::smr2rdox::PRC_OUT: extention = "prc"; break;
 	default: NEVER_REACH_HERE;
 	}
 
 	boost::filesystem::path fileName(boost::filesystem::path(m_filePath) / m_modelName);
-	fileName.replace_extension(rdo::format(_T(".%s"), extention.c_str()));
+	fileName.replace_extension(rdo::format(".%s", extention.c_str()));
 	return fileName.string();
 }
 

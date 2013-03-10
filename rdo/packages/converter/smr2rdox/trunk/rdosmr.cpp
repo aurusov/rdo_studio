@@ -57,7 +57,7 @@ RDOSMR::RDOSMR(CREF(tstring) modelName)
 	, m_traceStartTime(rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
 	, m_traceEndTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
 {
-	setFile(_T("Model_name"), modelName);
+	setFile("Model_name", modelName);
 	Converter::s_converter()->setSMR(this);
 }
 
@@ -70,11 +70,11 @@ void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
 {
 	if (value <= 0)
 	{
-		Converter::s_converter()->error().error(pos, _T("Номер кадра должен быть больше нуля"));
+		Converter::s_converter()->error().error(pos, "Номер кадра должен быть больше нуля");
 	}
 	if (Converter::s_converter()->getNumberFrame() < (ruint)value)
 	{
-		Converter::s_converter()->error().error(pos, rdo::format(_T("Несуществующий кадр: %d"), value));
+		Converter::s_converter()->error().error(pos, rdo::format("Несуществующий кадр: %d", value));
 	}
 	m_frameNumber = value;
 }
@@ -83,7 +83,7 @@ void RDOSMR::setShowRate(double value, CREF(YYLTYPE) pos)
 {
 	if (value < 0)
 	{
-		Converter::s_converter()->error().error(pos, _T("Масштаб должен быть больше нуля"));
+		Converter::s_converter()->error().error(pos, "Масштаб должен быть больше нуля");
 	}
 	m_showRate = value;
 }
@@ -92,7 +92,7 @@ void RDOSMR::setRunStartTime(double value, CREF(YYLTYPE) pos)
 {
 	if (value < 0)
 	{
-		Converter::s_converter()->error().error(pos, _T("Начальное модельное время должно быть больше нуля"));
+		Converter::s_converter()->error().error(pos, "Начальное модельное время должно быть больше нуля");
 	}
 	m_runStartTime = value;
 }
@@ -101,12 +101,12 @@ void RDOSMR::setTraceStartTime(double value, CREF(YYLTYPE) pos)
 {
 	if (value < 0)
 	{
-		Converter::s_converter()->error().error(pos, _T("Начальное время трассировки должно быть больше нуля"));
+		Converter::s_converter()->error().error(pos, "Начальное время трассировки должно быть больше нуля");
 	}
 	if (getTraceEndTime() != rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceEndTime() <= value)
 	{
-		Converter::s_converter()->error().push_only(pos, _T("Начальное время трассировки должно быть меньше конечного"));
-		Converter::s_converter()->error().push_only(m_traceEndTime_pos, _T("См. конечное время трассировки"));
+		Converter::s_converter()->error().push_only(pos, "Начальное время трассировки должно быть меньше конечного");
+		Converter::s_converter()->error().push_only(m_traceEndTime_pos, "См. конечное время трассировки");
 		Converter::s_converter()->error().push_done();
 	}
 	m_traceStartTime     = value;
@@ -117,12 +117,12 @@ void RDOSMR::setTraceEndTime(double value, CREF(YYLTYPE) pos)
 {
 	if (value < 0)
 	{
-		Converter::s_converter()->error().error(pos, _T("Конечное время трассировки должно быть больше нуля"));
+		Converter::s_converter()->error().error(pos, "Конечное время трассировки должно быть больше нуля");
 	}
 	if (getTraceStartTime() != rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceStartTime() >= value)
 	{
-		Converter::s_converter()->error().push_only(pos, _T("Конечное время трассировки должно быть больше начального"));
-		Converter::s_converter()->error().push_only(m_traceStartTime_pos, _T("См. начальное время трассировки"));
+		Converter::s_converter()->error().push_only(pos, "Конечное время трассировки должно быть больше начального");
+		Converter::s_converter()->error().push_only(m_traceStartTime_pos, "См. начальное время трассировки");
 		Converter::s_converter()->error().push_done();
 	}
 	m_traceEndTime     = value;
@@ -133,8 +133,8 @@ void RDOSMR::setTerminateIf(REF(LPRDOFUNLogic) pLogic)
 {
 	if (m_pTerminateIf)
 	{
-		Converter::s_converter()->error().push_only(pLogic->src_info(), _T("Terminate_if уже определен"));
-		Converter::s_converter()->error().push_only(m_pTerminateIf->src_info(), _T("См. первое определение"));
+		Converter::s_converter()->error().push_only(pLogic->src_info(), "Terminate_if уже определен");
+		Converter::s_converter()->error().push_only(m_pTerminateIf->src_info(), "См. первое определение");
 		Converter::s_converter()->error().push_done();
 	}
 	m_pTerminateIf = pLogic;
@@ -146,7 +146,7 @@ void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm
 	LPRDOFUNConstant pConstant = Converter::s_converter()->findFUNConstant(const_info.src_text());
 	if (!pConstant)
 	{
-		Converter::s_converter()->error().error(const_info, rdo::format(_T("Константа '%s' не найдена"), const_info.src_text().c_str()));
+		Converter::s_converter()->error().error(const_info, rdo::format("Константа '%s' не найдена", const_info.src_text().c_str()));
 	}
 	ASSERT(pArithm);
 	pArithm->checkParamType(pConstant->getType());
@@ -160,14 +160,14 @@ void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcIn
 	LPRDORSSResource pResource = Converter::s_converter()->findRSSResource(res_info.src_text());
 	if (!pResource)
 	{
-		Converter::s_converter()->error().error(res_info.src_info(), rdo::format(_T("Ресурс '%s' не найден"), res_info.src_text().c_str()));
+		Converter::s_converter()->error().error(res_info.src_info(), rdo::format("Ресурс '%s' не найден", res_info.src_text().c_str()));
 	}
 	LPRDORTPParam pParam = pResource->getType()->findRTPParam(par_info.src_text());
 	if (!pParam)
 	{
-		Converter::s_converter()->error().push_only(par_info.src_info(), rdo::format(_T("Параметр '%s' не найден"), par_info.src_text().c_str()));
-		Converter::s_converter()->error().push_only(pResource->src_info(), _T("См. ресурс"));
-		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
+		Converter::s_converter()->error().push_only(par_info.src_info(), rdo::format("Параметр '%s' не найден", par_info.src_text().c_str()));
+		Converter::s_converter()->error().push_only(pResource->src_info(), "См. ресурс");
+		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), "См. тип ресурса");
 		Converter::s_converter()->error().push_done();
 	}
 	ASSERT(pArithm);
@@ -175,7 +175,7 @@ void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcIn
 	ruint                 parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
 	rdo::runtime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getType());
 	Converter::s_converter()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
-	Converter::s_converter()->insertChanges(res_info.src_text() + _T(".") + par_info.src_text(), pArithm->src_text());
+	Converter::s_converter()->insertChanges(res_info.src_text() + "." + par_info.src_text(), pArithm->src_text());
 }
 
 void RDOSMR::setSeed(CREF(RDOParserSrcInfo) seq_info, int base)
@@ -183,10 +183,10 @@ void RDOSMR::setSeed(CREF(RDOParserSrcInfo) seq_info, int base)
 	LPRDOFUNSequence pSequence = Converter::s_converter()->findFUNSequence(seq_info.src_text());
 	if (!pSequence)
 	{
-		Converter::s_converter()->error().error(seq_info, rdo::format(_T("Последовательность '%s' не найдена"), seq_info.src_text().c_str()));
+		Converter::s_converter()->error().error(seq_info, rdo::format("Последовательность '%s' не найдена", seq_info.src_text().c_str()));
 	}
 	pSequence->getInitCalc()->setBase(base);
-	Converter::s_converter()->insertChanges(pSequence->src_text() + _T(".Seed"), rdo::format(_T("%d"), base));
+	Converter::s_converter()->insertChanges(pSequence->src_text() + ".Seed", rdo::format("%d", base));
 }
 
 void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, REF(LPRDOFUNLogic) pLogic)
@@ -195,8 +195,8 @@ void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, REF(LPRDOFUNLogic
 	{
 		if ((*it)->src_text() == src_info.src_text())
 		{
-			Converter::s_converter()->error().push_only(src_info, rdo::format(_T("Точка останова с именем '%s' уже существует"), src_info.src_text().c_str()));
-			Converter::s_converter()->error().push_only((*it)->src_info(), _T("См. первое определение"));
+			Converter::s_converter()->error().push_only(src_info, rdo::format("Точка останова с именем '%s' уже существует", src_info.src_text().c_str()));
+			Converter::s_converter()->error().push_only((*it)->src_info(), "См. первое определение");
 			Converter::s_converter()->error().push_done();
 		}
 	}

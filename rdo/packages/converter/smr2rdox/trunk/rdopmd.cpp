@@ -44,8 +44,8 @@ RDOPMDResult::RDOPMDResult(CREF(RDOParserSrcInfo) src_info)
 	LPRDOPMDResult pResult = Converter::s_converter()->findPMDResult(src_text());
 	if (pResult)
 	{
-		Converter::s_converter()->error().push_only(this->src_info(), rdo::format(_T("Показатель '%s' уже существует"), src_text().c_str()));
-		Converter::s_converter()->error().push_only(pResult->src_info(), _T("См. первое определение"));
+		Converter::s_converter()->error().push_only(this->src_info(), rdo::format("Показатель '%s' уже существует", src_text().c_str()));
+		Converter::s_converter()->error().push_only(pResult->src_info(), "См. первое определение");
 		Converter::s_converter()->error().push_done();
 	}
 }
@@ -75,29 +75,29 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CRE
 	LPRDORSSResource pResource = Converter::s_converter()->findRSSResource(res_src_info.src_text());
 	if (!pResource)
 	{
-		Converter::s_converter()->error().error(res_src_info, rdo::format(_T("Ресурс '%s' не найден"), res_src_info.src_text().c_str()));
+		Converter::s_converter()->error().error(res_src_info, rdo::format("Ресурс '%s' не найден", res_src_info.src_text().c_str()));
 	}
 /*
 	if (!pResource->getType()->isPermanent())
 	{
-		Converter::s_converter()->error().push_only(res_src_info, _T("Наблюдать (watch_par) можно только за параметром постоянного ресурса"));
-		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
+		Converter::s_converter()->error().push_only(res_src_info, "Наблюдать (watch_par) можно только за параметром постоянного ресурса");
+		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), "См. тип ресурса");
 		Converter::s_converter()->error().push_done();
 	}
 */
 	LPRDORTPParam pParam = pResource->getType()->findRTPParam(par_src_info.src_text());
 	if (!pParam)
 	{
-		Converter::s_converter()->error().push_only(par_src_info, rdo::format(_T("Параметр '%s' не найден"), par_src_info.src_text().c_str()));
-		Converter::s_converter()->error().push_only(pResource->src_info(), _T("См. ресурс"));
-		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
+		Converter::s_converter()->error().push_only(par_src_info, rdo::format("Параметр '%s' не найден", par_src_info.src_text().c_str()));
+		Converter::s_converter()->error().push_only(pResource->src_info(), "См. ресурс");
+		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), "См. тип ресурса");
 		Converter::s_converter()->error().push_done();
 	}
 	rdo::runtime::RDOType::TypeID typeID = pParam->getType()->type()->typeID();
 	if (typeID != rdo::runtime::RDOType::t_int && typeID != rdo::runtime::RDOType::t_real)
 	{
-		Converter::s_converter()->error().push_only(par_src_info, _T("Наблюдать можно только за параметром целого или вещественного типа"));
-		Converter::s_converter()->error().push_only(pParam->getType()->src_info(), _T("См. тип параметра"));
+		Converter::s_converter()->error().push_only(par_src_info, "Наблюдать можно только за параметром целого или вещественного типа");
+		Converter::s_converter()->error().push_only(pParam->getType()->src_info(), "См. тип параметра");
 		Converter::s_converter()->error().push_done();
 	}
 	endOfCreation(RF(rdo::runtime::RDOPMDWatchPar)::create(Converter::s_converter()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
@@ -121,12 +121,12 @@ RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParser
 	LPRDORTPResType pResType = Converter::s_converter()->findRTPResType(res_type_src_info.src_text());
 	if (!pResType)
 	{
-		Converter::s_converter()->error().error(res_type_src_info, rdo::format(_T("Тип ресурса '%s' не найден"), res_type_src_info.src_text().c_str()));
+		Converter::s_converter()->error().error(res_type_src_info, rdo::format("Тип ресурса '%s' не найден", res_type_src_info.src_text().c_str()));
 	}
 	if (!pResType->isTemporary())
 	{
-		Converter::s_converter()->error().push_only(res_type_src_info, _T("Показатель собирает информацию по временным ресурсам (temporary)"));
-		Converter::s_converter()->error().push_only(pResType->src_info(), _T("См. тип ресурса"));
+		Converter::s_converter()->error().push_only(res_type_src_info, "Показатель собирает информацию по временным ресурсам (temporary)");
+		Converter::s_converter()->error().push_only(pResType->src_info(), "См. тип ресурса");
 		Converter::s_converter()->error().push_done();
 	}
 }

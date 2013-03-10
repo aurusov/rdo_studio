@@ -31,12 +31,12 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 		rbool    m_error;
 
 		RDOSMRFileInfo()
-			: m_modelName    (_T(""))
-			, m_resourceFile (_T(""))
-			, m_frameFile    (_T(""))
-			, m_statisticFile(_T(""))
-			, m_resultsFile  (_T(""))
-			, m_traceFile    (_T(""))
+			: m_modelName    ("")
+			, m_resourceFile ("")
+			, m_frameFile    ("")
+			, m_statisticFile("")
+			, m_resultsFile  ("")
+			, m_traceFile    ("")
 			, m_error        (false )
 		{}
 	};

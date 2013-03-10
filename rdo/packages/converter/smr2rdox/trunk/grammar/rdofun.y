@@ -226,11 +226,11 @@ fun_list
 	{
 		if (CONVERTER->getFUNConstants().empty())
 		{
-			CONVERTER->error().error(@1, _T("Ожидается описание функции, последовательности или константы"));
+			CONVERTER->error().error(@1, "Ожидается описание функции, последовательности или константы");
 		}
 		else
 		{
-			CONVERTER->error().error(@1, _T("Ожидается описание функции или последовательности"));
+			CONVERTER->error().error(@1, "Ожидается описание функции или последовательности");
 		}
 	}
 	;
@@ -243,7 +243,7 @@ fun_consts
 	| RDO_Constant fun_const_body RDO_End
 	| RDO_Constant fun_const_body
 	{
-		CONVERTER->error().error(@2, _T("После описания констант ожидается ключевое слово $End"));
+		CONVERTER->error().error(@2, "После описания констант ожидается ключевое слово $End");
 	}
 	;
 
@@ -252,7 +252,7 @@ fun_const_body
 	| fun_const_body fun_const_param_desc
 	| fun_const_body error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается описание константы"));
+		CONVERTER->error().error(@2, "Ожидается описание константы");
 	}
 	;
 
@@ -270,11 +270,11 @@ fun_const_param_desc
 	}
 	| RDO_IDENTIF_COLON
 	{
-		CONVERTER->error().error(@1, _T("Ожидается тип константы"));
+		CONVERTER->error().error(@1, "Ожидается тип константы");
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка описания типа константы"));
+		CONVERTER->error().error(@2, "Ошибка описания типа константы");
 	}
 	;
 
@@ -287,7 +287,7 @@ fun_func_seq
 	| fun_func_seq fun_seq_descr
 	| fun_func_seq RDO_Constant
 	{
-		CONVERTER->error().error(@2, _T("Константы долны быть описаны первыми, перед функциями и последовательностями"));
+		CONVERTER->error().error(@2, "Константы долны быть описаны первыми, перед функциями и последовательностями");
 	}
 	;
 
@@ -300,7 +300,7 @@ fun_func_descr
 	{
 		LPRDOFUNFunction pFunction = CONVERTER->stack().pop<RDOFUNFunction>($1);
 		ASSERT(pFunction);
-		CONVERTER->error().error(@2, rdo::format(_T("Ожидается ключевое слово $Type с указанием типа функции '%s'"), pFunction->name().c_str()));
+		CONVERTER->error().error(@2, rdo::format("Ожидается ключевое слово $Type с указанием типа функции '%s'", pFunction->name().c_str()));
 	}
 	;
 
@@ -320,11 +320,11 @@ fun_func_header
 	| RDO_Function RDO_IDENTIF_COLON error
 	{
 		tstring name = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
-		CONVERTER->error().error(@3, rdo::format(_T("Ожидается тип возвращаемого значения функции '%s'"), name.c_str()));
+		CONVERTER->error().error(@3, rdo::format("Ожидается тип возвращаемого значения функции '%s'", name.c_str()));
 	}
 	| RDO_Function error
 	{
-		CONVERTER->error().error(@2, _T("После ключевого слова $Function ожидается имя фунции"));
+		CONVERTER->error().error(@2, "После ключевого слова $Function ожидается имя фунции");
 	}
 	;
 
@@ -346,11 +346,11 @@ fun_func_params
 	}
 	| fun_func_params RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается тип параметра функции"));
+		CONVERTER->error().error(@3, "Ожидается тип параметра функции");
 	}
 	| fun_func_params error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается описание параметра функции в формате <имя>: <тип>"));
+		CONVERTER->error().error(@2, "Ожидается описание параметра функции в формате <имя>: <тип>");
 	}
 	;
 
@@ -375,35 +375,35 @@ fun_func_footer
 	}
 	| RDO_Type '=' RDO_algorithmic fun_func_parameters RDO_Body fun_func_algorithmic_body error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается ключевое слово $End"));
+		CONVERTER->error().error(@7, "Ожидается ключевое слово $End");
 	}
 	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается ключевое слово $End"));
+		CONVERTER->error().error(@7, "Ожидается ключевое слово $End");
 	}
 	| RDO_Type '=' RDO_table fun_func_parameters RDO_Body fun_func_list_body error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается ключевое слово $End"));
+		CONVERTER->error().error(@7, "Ожидается ключевое слово $End");
 	}
 	| RDO_Type '=' RDO_algorithmic error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается ключевое слово $Parameters"));
+		CONVERTER->error().error(@4, "Ожидается ключевое слово $Parameters");
 	}
 	| RDO_Type '=' RDO_list error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается ключевое слово $Parameters"));
+		CONVERTER->error().error(@4, "Ожидается ключевое слово $Parameters");
 	}
 	| RDO_Type '=' RDO_table error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается ключевое слово $Parameters"));
+		CONVERTER->error().error(@4, "Ожидается ключевое слово $Parameters");
 	}
 	| RDO_Type '=' error
 	{
-		CONVERTER->error().error(@3, _T("Неизвестный тип функции"));
+		CONVERTER->error().error(@3, "Неизвестный тип функции");
 	}
 	| RDO_Type error
 	{
-		CONVERTER->error().error(@2, _T("После ключевого слова $Type ожидается тип функции"));
+		CONVERTER->error().error(@2, "После ключевого слова $Type ожидается тип функции");
 	}
 	;
 
@@ -426,9 +426,9 @@ fun_func_calc_name
 	: RDO_IDENTIF
 	{
 		tstring name = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
-		if (name != CONVERTER->getLastFUNFunction()->name() && name != _T("result"))
+		if (name != CONVERTER->getLastFUNFunction()->name() && name != "result")
 		{
-			CONVERTER->error().error(@1, rdo::format(_T("Ожидается имя функции '%s'"), CONVERTER->getLastFUNFunction()->name().c_str()));
+			CONVERTER->error().error(@1, rdo::format("Ожидается имя функции '%s'", CONVERTER->getLastFUNFunction()->name().c_str()));
 		}
 	}
 	;
@@ -439,21 +439,21 @@ fun_func_algorithmic_calc_if
 		LPDocUpdate pIFReplace = rdo::Factory<UpdateReplace>::create(
 			@1.m_first_seek,
 			@1.m_last_seek,
-			_T("if")
+			"if"
 		);
 		ASSERT(pIFReplace);
 		CONVERTER->insertDocUpdate(pIFReplace);
 
 		LPDocUpdate pIFInsertOpenBrace = rdo::Factory<UpdateInsert>::create(
 			@2.m_first_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pIFInsertOpenBrace);
 		CONVERTER->insertDocUpdate(pIFInsertOpenBrace);
 
 		LPDocUpdate pIFInsertCloseBrace = rdo::Factory<UpdateInsert>::create(
 			@2.m_last_seek,
-			_T(")")
+			")"
 		);
 		ASSERT(pIFInsertCloseBrace);
 		CONVERTER->insertDocUpdate(pIFInsertCloseBrace);
@@ -461,21 +461,21 @@ fun_func_algorithmic_calc_if
 		LPDocUpdate pReturnReplace = rdo::Factory<UpdateReplace>::create(
 			@3.m_first_seek,
 			@4.m_last_seek,
-			_T("return")
+			"return"
 		);
 		ASSERT(pReturnReplace);
 		CONVERTER->insertDocUpdate(pReturnReplace);
 
 		LPDocUpdate pSemicolonInsert = rdo::Factory<UpdateInsert>::create(
 			@5.m_last_seek,
-			_T(";")
+			";"
 		);
 		ASSERT(pSemicolonInsert);
 		CONVERTER->insertDocUpdate(pSemicolonInsert);
 
 		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
-		pLogic->setSrcText(_T("Calculate_if ") + pLogic->src_text());
+		pLogic->setSrcText("Calculate_if " + pLogic->src_text());
 		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($5);
 		ASSERT(pArithm);
 		LPRDOFUNCalculateIf pCalculateIf = rdo::Factory<RDOFUNCalculateIf>::create(pLogic, pArithm);
@@ -484,12 +484,12 @@ fun_func_algorithmic_calc_if
 	}
 	| fun_func_calc_if fun_logic fun_func_calc_name '=' error
 	{
-		CONVERTER->error().error(@5, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@5, "Ошибка в арифметическом выражении");
 	}
 	| fun_func_calc_name '=' fun_arithm
 	{
 		rdo::runtime::LPRDOCalc pCondition = rdo::Factory<rdo::runtime::RDOCalcConst>::create(1);
-		RDOParserSrcInfo logic_src_info(_T("Calculate_if 1 = 1"));
+		RDOParserSrcInfo logic_src_info("Calculate_if 1 = 1");
 		logic_src_info.setSrcPos( @1.m_first_line, @1.m_first_pos, @1.m_first_line, @1.m_first_pos );
 		pCondition->setSrcInfo( logic_src_info );
 		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCondition, true);
@@ -502,27 +502,27 @@ fun_func_algorithmic_calc_if
 	}
 	| fun_func_calc_name '=' error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@3, "Ошибка в арифметическом выражении");
 	}
 	| fun_func_calc_if fun_logic fun_func_calc_name error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается '='"));
+		CONVERTER->error().error(@4, "Ожидается '='");
 	}
 	| fun_func_calc_name error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается '='"));
+		CONVERTER->error().error(@2, "Ожидается '='");
 	}
 	| fun_func_calc_if fun_logic error
 	{
-		CONVERTER->error().error(@2, @3, _T("После логического выражения ожидается <имя_функции> = <результат_функции>"));
+		CONVERTER->error().error(@2, @3, "После логического выражения ожидается <имя_функции> = <результат_функции>");
 	}
 	| fun_func_calc_if error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@2, "Ошибка в логическом выражении");
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается ключевое слово Calculate_if"));
+		CONVERTER->error().error(@1, "Ожидается ключевое слово Calculate_if");
 	}
 	;
 
@@ -587,23 +587,23 @@ fun_seq_header
 	}
 	| RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type '=' error
 	{
-		CONVERTER->error().error(@6, _T("После знака равенства ожидается тип последовательности"));
+		CONVERTER->error().error(@6, "После знака равенства ожидается тип последовательности");
 	}
 	| RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type error
 	{
-		CONVERTER->error().error(@5, _T("После ключевого слова $Type ожидается знак равенства и тип последовательности"));
+		CONVERTER->error().error(@5, "После ключевого слова $Type ожидается знак равенства и тип последовательности");
 	}
 	| RDO_Sequence RDO_IDENTIF_COLON param_type error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается ключевое слово $Type"));
+		CONVERTER->error().error(@4, "Ожидается ключевое слово $Type");
 	}
 	| RDO_Sequence RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@2, @3, _T("После имени последовательности ожидается тип возвращаемого значения"));
+		CONVERTER->error().error(@2, @3, "После имени последовательности ожидается тип возвращаемого значения");
 	}
 	| RDO_Sequence error
 	{
-		CONVERTER->error().error(@1, @2, _T("После ключевого слова $Sequence ожидаются имя и тип результата последовательности в формате '<имя> : <тип>'"));
+		CONVERTER->error().error(@1, @2, "После ключевого слова $Sequence ожидаются имя и тип результата последовательности в формате '<имя> : <тип>'");
 	}
 	;
 
@@ -631,11 +631,11 @@ fun_seq_uniform
 	}
 	| fun_seq_header RDO_uniform RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@4, _T("После базы ожидается ключевое слово $End"));
+		CONVERTER->error().error(@4, "После базы ожидается ключевое слово $End");
 	}
 	| fun_seq_header RDO_uniform error
 	{
-		CONVERTER->error().error(@3, _T("После типа последовательности ожидается база генератора или ключевое слово $End"));
+		CONVERTER->error().error(@3, "После типа последовательности ожидается база генератора или ключевое слово $End");
 	}
 	;
 
@@ -660,11 +660,11 @@ fun_seq_exponential
 	}
 	| fun_seq_header RDO_exponential RDO_INT_CONST error
 	{
-		CONVERTER->error().error( @4, _T("После базы ожидается ключевое слово $End"));
+		CONVERTER->error().error( @4, "После базы ожидается ключевое слово $End");
 	}
 	| fun_seq_header RDO_exponential error
 	{
-		CONVERTER->error().error( @3, _T("После типа последовательности ожидается база генератора или ключевое слово $End"));
+		CONVERTER->error().error( @3, "После типа последовательности ожидается база генератора или ключевое слово $End");
 	}
 	;
 
@@ -689,11 +689,11 @@ fun_seq_normal
 	}
 	| fun_seq_header RDO_normal RDO_INT_CONST error
 	{
-		CONVERTER->error().error( @4, _T("После базы ожидается ключевое слово $End"));
+		CONVERTER->error().error( @4, "После базы ожидается ключевое слово $End");
 	}
 	| fun_seq_header RDO_normal error
 	{
-		CONVERTER->error().error( @3, _T("После типа последовательности ожидается база генератора или ключевое слово $End"));
+		CONVERTER->error().error( @3, "После типа последовательности ожидается база генератора или ключевое слово $End");
 	}
 	;
 
@@ -719,11 +719,11 @@ fun_seq_by_hist_header
 	}
 	| fun_seq_header RDO_by_hist RDO_INT_CONST error
 	{
-		CONVERTER->error().error( @4, _T("После базы ожидается ключевое слово $Body"));
+		CONVERTER->error().error( @4, "После базы ожидается ключевое слово $Body");
 	}
 	| fun_seq_header RDO_by_hist error
 	{
-		CONVERTER->error().error( @3, _T("После типа последовательности ожидается база генератора или ключевое слово $Body"));
+		CONVERTER->error().error( @3, "После типа последовательности ожидается база генератора или ключевое слово $Body");
 	}
 	;
 
@@ -734,11 +734,11 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
 		if ( pHeader->getHeader()->getType()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()) );
 		}
 		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
@@ -750,11 +750,11 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
 		if ( pHeader->getHeader()->getType()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
+			CONVERTER->error().error( @3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()) );
 		}
 		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
@@ -766,11 +766,11 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
 		if ( pHeader->getHeader()->getType()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()) );
 		}
 		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
@@ -782,11 +782,11 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
 		if ( pHeader->getHeader()->getType()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()) );
 		}
 		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
@@ -798,7 +798,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
 		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
@@ -810,11 +810,11 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
 		if ( pHeader->getHeader()->getType()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()) );
 		}
 		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
@@ -826,11 +826,11 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
 		if ( pHeader->getHeader()->getType()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
+			CONVERTER->error().error( @3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()) );
 		}
 		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
@@ -842,7 +842,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
 		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
@@ -856,7 +856,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getType()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()) );
 		}
 		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
@@ -869,7 +869,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getType()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
+			CONVERTER->error().error( @3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()) );
 		}
 		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
@@ -882,7 +882,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getType()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()) );
 		}
 		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
@@ -895,7 +895,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getType()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()) );
 		}
 		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
@@ -915,7 +915,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getType()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()) );
 		}
 		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
@@ -928,7 +928,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getType()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
+			CONVERTER->error().error( @3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()) );
 		}
 		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
@@ -946,9 +946,9 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if (pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int)
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
-		CONVERTER->error().error( @2, @3, _T("Ожидается конец диапазона") );
+		CONVERTER->error().error( @2, @3, "Ожидается конец диапазона" );
 	}
 	| fun_seq_by_hist_header RDO_INT_CONST error
 	{
@@ -956,9 +956,9 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
-		CONVERTER->error().error( @2, @3, _T("Ожидается конец диапазона") );
+		CONVERTER->error().error( @2, @3, "Ожидается конец диапазона" );
 	}
 	| fun_seq_by_hist_header RDO_REAL_CONST RDO_REAL_CONST error
 	{
@@ -966,9 +966,9 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
-		CONVERTER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+		CONVERTER->error().error( @3, @4, "Ожидается относительная вероятность" );
 	}
 	| fun_seq_by_hist_header RDO_INT_CONST RDO_REAL_CONST error
 	{
@@ -976,9 +976,9 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
-		CONVERTER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+		CONVERTER->error().error( @3, @4, "Ожидается относительная вероятность" );
 	}
 	| fun_seq_by_hist_header RDO_REAL_CONST RDO_INT_CONST error
 	{
@@ -986,9 +986,9 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
-		CONVERTER->error().error( @3, @4, _T("Ожидается относительная вероятность"));
+		CONVERTER->error().error( @3, @4, "Ожидается относительная вероятность");
 	}
 	| fun_seq_by_hist_header RDO_INT_CONST RDO_INT_CONST error
 	{
@@ -996,39 +996,39 @@ fun_seq_by_hist_body_real
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
-		CONVERTER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+		CONVERTER->error().error( @3, @4, "Ожидается относительная вероятность" );
 	}
 	| fun_seq_by_hist_body_real RDO_REAL_CONST error
 	{
-		CONVERTER->error().error( @2, @3, _T("Ожидается конец диапазона") );
+		CONVERTER->error().error( @2, @3, "Ожидается конец диапазона" );
 	}
 	| fun_seq_by_hist_body_real RDO_INT_CONST error
 	{
-		CONVERTER->error().error( @2, @3, _T("Ожидается конец диапазона") );
+		CONVERTER->error().error( @2, @3, "Ожидается конец диапазона" );
 	}
 	| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_REAL_CONST error
 	{
-		CONVERTER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+		CONVERTER->error().error( @3, @4, "Ожидается относительная вероятность" );
 	}
 	| fun_seq_by_hist_body_real RDO_INT_CONST RDO_REAL_CONST error
 	{
-		CONVERTER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+		CONVERTER->error().error( @3, @4, "Ожидается относительная вероятность" );
 	}
 	| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_INT_CONST error
 	{
-		CONVERTER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+		CONVERTER->error().error( @3, @4, "Ожидается относительная вероятность" );
 	}
 	| fun_seq_by_hist_body_real RDO_INT_CONST RDO_INT_CONST error
 	{
-		CONVERTER->error().error( @3, @4, _T("Ожидается относительная вероятность") );
+		CONVERTER->error().error( @3, @4, "Ожидается относительная вероятность" );
 	}
 	| fun_seq_by_hist_header RDO_End
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = CONVERTER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		CONVERTER->error().error( pHeader->src_info(), rdo::format(_T("Последовательность '%s' не должна быть пустой"), pHeader->src_text().c_str()) );
+		CONVERTER->error().error( pHeader->src_info(), rdo::format("Последовательность '%s' не должна быть пустой", pHeader->src_text().c_str()) );
 	}
 	;
 
@@ -1039,7 +1039,7 @@ fun_seq_by_hist_body_enum
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_enum )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
 		LPRDOFUNSequenceByHistEnum pSequence = rdo::Factory<RDOFUNSequenceByHistEnum>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3));
 		ASSERT(pSequence);
@@ -1051,7 +1051,7 @@ fun_seq_by_hist_body_enum
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_enum )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
 		LPRDOFUNSequenceByHistEnum pSequence = rdo::Factory<RDOFUNSequenceByHistEnum>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3));
 		ASSERT(pSequence);
@@ -1077,25 +1077,25 @@ fun_seq_by_hist_body_enum
 		ASSERT(pHeader);
 		if ( pHeader->getHeader()->getType()->type()->typeID() != rdo::runtime::RDOType::t_enum )
 		{
-			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+			CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
-		CONVERTER->error().error( @2, @3, rdo::format(_T("Ожидается относительная вероятность для значения: %s"), CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator().c_str()) );
+		CONVERTER->error().error( @2, @3, rdo::format("Ожидается относительная вероятность для значения: %s", CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator().c_str()) );
 	}
 	| fun_seq_by_hist_body_enum RDO_IDENTIF error
 	{
-		CONVERTER->error().error( @2, @3, rdo::format(_T("Ожидается относительная вероятность для значения: %s"), CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator().c_str()) );
+		CONVERTER->error().error( @2, @3, rdo::format("Ожидается относительная вероятность для значения: %s", CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator().c_str()) );
 	}
 	| fun_seq_by_hist_body_enum RDO_REAL_CONST error
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = CONVERTER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 	}
 	| fun_seq_by_hist_body_enum RDO_INT_CONST error
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = CONVERTER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
+		CONVERTER->error().error( @2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getType()->src_text().c_str()) );
 	}
 	;
 
@@ -1116,19 +1116,19 @@ fun_seq_by_hist
 	}
 	| fun_seq_by_hist_body_real error
 	{
-		CONVERTER->error().error( @2, _T("Ошибка в описании последовательности") );
+		CONVERTER->error().error( @2, "Ошибка в описании последовательности" );
 	}
 	| fun_seq_by_hist_body_enum error
 	{
-		CONVERTER->error().error( @2, _T("Ошибка в описании последовательности") );
+		CONVERTER->error().error( @2, "Ошибка в описании последовательности" );
 	}
 	| fun_seq_by_hist_body_real
 	{
-		CONVERTER->error().error( @1, _T("Ожидается ключевое слово $End") );
+		CONVERTER->error().error( @1, "Ожидается ключевое слово $End" );
 	}
 	| fun_seq_by_hist_body_enum
 	{
-		CONVERTER->error().error( @1, _T("Ожидается ключевое слово $End") );
+		CONVERTER->error().error( @1, "Ожидается ключевое слово $End" );
 	}
 	;
 
@@ -1147,7 +1147,7 @@ fun_seq_enumerative
 	{
 		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = CONVERTER->stack().pop<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader>($1);
 		ASSERT(pHeader);
-		CONVERTER->error().error( pHeader->src_info(), rdo::format(_T("Последовательность '%s' не должна быть пустой"), pHeader->src_text().c_str()) );
+		CONVERTER->error().error( pHeader->src_info(), rdo::format("Последовательность '%s' не должна быть пустой", pHeader->src_text().c_str()) );
 	}
 	;
 
@@ -1155,15 +1155,15 @@ fun_seq_enumerative_header
 	: fun_seq_header RDO_enumerative RDO_Body
 	| fun_seq_header RDO_enumerative RDO_INT_CONST error
 	{
-		CONVERTER->error().error( @3, _T("У последовательности типа enumerative нет базы генератора") );
+		CONVERTER->error().error( @3, "У последовательности типа enumerative нет базы генератора" );
 	}
 	| fun_seq_header RDO_enumerative RDO_Parameters error
 	{
-		CONVERTER->error().error( @3, _T("У последовательности типа enumerative нет параметров") );
+		CONVERTER->error().error( @3, "У последовательности типа enumerative нет параметров" );
 	}
 	| fun_seq_header RDO_enumerative error
 	{
-		CONVERTER->error().error( @3, _T("После типа последовательности ожидается ключевое слово $Body") );
+		CONVERTER->error().error( @3, "После типа последовательности ожидается ключевое слово $Body" );
 	}
 	;
 
@@ -1245,7 +1245,7 @@ fun_seq_enumerative_body
 	}
 	| fun_seq_enumerative_body error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ожидается элемент последовательности или ключевое слово $End"));
+		CONVERTER->error().error(@1, @2, "Ожидается элемент последовательности или ключевое слово $End");
 	}
 	;
 
@@ -1255,7 +1255,7 @@ fun_seq_enumerative_body
 param_type
 	: RDO_integer param_type_range
 	{
-		LPDocUpdate pReplace = rdo::Factory<UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("int"));
+		LPDocUpdate pReplace = rdo::Factory<UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, "int");
 		ASSERT(pReplace);
 		//CONVERTER->insertDocUpdate(pReplace);
 
@@ -1266,7 +1266,7 @@ param_type
 			if (pRange->getMin()->typeID() != rdo::runtime::RDOType::t_int ||
 			    pRange->getMax()->typeID() != rdo::runtime::RDOType::t_int)
 			{
-				CONVERTER->error().error(@2, _T("Диапазон целого типа должен быть целочисленным"));
+				CONVERTER->error().error(@2, "Диапазон целого типа должен быть целочисленным");
 			}
 			LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 			ASSERT(pIntRange);
@@ -1362,31 +1362,31 @@ param_type_range
 	}
 	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST error
 	{
-		CONVERTER->error().error(@4, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@4, "Диапазон задан неверно");
 	}
 	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@4, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@4, "Диапазон задан неверно");
 	}
 	| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST error
 	{
-		CONVERTER->error().error(@4, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@4, "Диапазон задан неверно");
 	}
 	| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@4, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@4, "Диапазон задан неверно");
 	}
 	| '[' RDO_REAL_CONST RDO_dblpoint error
 	{
-		CONVERTER->error().error(@4, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@4, "Диапазон задан неверно");
 	}
 	| '[' RDO_INT_CONST RDO_dblpoint error
 	{
-		CONVERTER->error().error(@4, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@4, "Диапазон задан неверно");
 	}
 	| '[' error
 	{
-		CONVERTER->error().error(@2, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@2, "Диапазон задан неверно");
 	}
 	;
 
@@ -1399,7 +1399,7 @@ param_type_enum
 	}
 	| '(' param_type_enum_list error
 	{
-		CONVERTER->error().error(@2, _T("Перечисление должно заканчиваться скобкой"));
+		CONVERTER->error().error(@2, "Перечисление должно заканчиваться скобкой");
 	}
 	;
 
@@ -1423,7 +1423,7 @@ param_type_enum_list
 		}
 		else
 		{
-			CONVERTER->error().error(@3, _T("Ошибка в описании значений перечислимого типа"));
+			CONVERTER->error().error(@3, "Ошибка в описании значений перечислимого типа");
 		}
 	}
 	| param_type_enum_list RDO_IDENTIF
@@ -1434,36 +1434,36 @@ param_type_enum_list
 			ASSERT(pEnum);
 			pEnum->add(CONVERTER->stack().pop<RDOValue>($2));
 			$$ = CONVERTER->stack().push(pEnum);
-			CONVERTER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator().c_str()));
+			CONVERTER->error().warning(@1, rdo::format("Пропущена запятая перед: %s", CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator().c_str()));
 		}
 		else
 		{
-			CONVERTER->error().error(@2, _T("Ошибка в описании значений перечислимого типа"));
+			CONVERTER->error().error(@2, "Ошибка в описании значений перечислимого типа");
 		}
 	}
 	| param_type_enum_list ',' RDO_INT_CONST
 	{
-		CONVERTER->error().error(@3, _T("Значение перечислимого типа не может быть цифрой"));
+		CONVERTER->error().error(@3, "Значение перечислимого типа не может быть цифрой");
 	}
 	| param_type_enum_list ',' RDO_REAL_CONST
 	{
-		CONVERTER->error().error(@3, _T("Значение перечислимого типа не может быть цифрой"));
+		CONVERTER->error().error(@3, "Значение перечислимого типа не может быть цифрой");
 	}
 	| param_type_enum_list RDO_INT_CONST
 	{
-		CONVERTER->error().error(@2, _T("Значение перечислимого типа не может быть цифрой"));
+		CONVERTER->error().error(@2, "Значение перечислимого типа не может быть цифрой");
 	}
 	| param_type_enum_list RDO_REAL_CONST
 	{
-		CONVERTER->error().error(@2, _T("Значение перечислимого типа не может быть цифрой"));
+		CONVERTER->error().error(@2, "Значение перечислимого типа не может быть цифрой");
 	}
 	| RDO_INT_CONST
 	{
-		CONVERTER->error().error(@1, _T("Значение перечислимого типа не может начинаться с цифры"));
+		CONVERTER->error().error(@1, "Значение перечислимого типа не может начинаться с цифры");
 	}
 	| RDO_REAL_CONST
 	{
-		CONVERTER->error().error(@1, _T("Значение перечислимого типа не может начинаться с цифры"));
+		CONVERTER->error().error(@1, "Значение перечислимого типа не может начинаться с цифры");
 	}
 	;
 
@@ -1475,12 +1475,12 @@ param_type_such_as
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
+			CONVERTER->error().error(@2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()));
 		}
 		LPRDORTPParam pRTPParam = pResType->findRTPParam(param);
 		if (!pRTPParam)
 		{
-			CONVERTER->error().error(@4, rdo::format(_T("Ссылка на неизвестный параметр ресурса: %s.%s"), type.c_str(), param.c_str()));
+			CONVERTER->error().error(@4, rdo::format("Ссылка на неизвестный параметр ресурса: %s.%s", type.c_str(), param.c_str()));
 		}
 		LPRDOParam pParam = pRTPParam.object_parent_cast<RDOParam>();
 		ASSERT(pParam);
@@ -1494,7 +1494,7 @@ param_type_such_as
 		LPRDOFUNConstant pConstant = CONVERTER->findFUNConstant(constName);
 		if (!pConstant)
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Ссылка на несуществующую константу: %s"), constName.c_str()));
+			CONVERTER->error().error(@2, rdo::format("Ссылка на несуществующую константу: %s", constName.c_str()));
 		}
 		LPRDOParam pParam = pConstant.object_parent_cast<RDOParam>();
 		ASSERT(pParam);
@@ -1508,16 +1508,16 @@ param_type_such_as
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
+			CONVERTER->error().error(@2, rdo::format("Ссылка на неизвестный тип ресурса: %s", type.c_str()));
 		}
 		else
 		{
-			CONVERTER->error().error(@4, _T("Ошибка при указании параметра"));
+			CONVERTER->error().error(@4, "Ошибка при указании параметра");
 		}
 	}
 	| RDO_such_as error
 	{
-		CONVERTER->error().error(@2, _T("После ключевого слова such_as необходимо указать тип и параметер ресурса для ссылки"));
+		CONVERTER->error().error(@2, "После ключевого слова such_as необходимо указать тип и параметер ресурса для ссылки");
 	}
 	;
 
@@ -1551,11 +1551,11 @@ param_value_default
 		RDOParserSrcInfo src_info(@1, @2, true);
 		if (src_info.src_pos().point())
 		{
-			CONVERTER->error().error(src_info, _T("Не указано значение по умолчанию"));
+			CONVERTER->error().error(src_info, "Не указано значение по умолчанию");
 		}
 		else
 		{
-			CONVERTER->error().error(src_info, _T("Неверное значение по умолчанию"));
+			CONVERTER->error().error(src_info, "Неверное значение по умолчанию");
 		}
 	}
 	;
@@ -1568,7 +1568,7 @@ param_value_default
 fun_logic_eq
 	: '='
 	{
-		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, _T("="));
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, "=");
 		ASSERT(pInsert);
 		CONVERTER->insertDocUpdate(pInsert);
 
@@ -1676,7 +1676,7 @@ fun_logic
 		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
 		pLogic->setSrcPos (@1, @3);
-		pLogic->setSrcText(_T("[") + pLogic->src_text() + _T("]"));
+		pLogic->setSrcText("[" + pLogic->src_text() + "]");
 		$$ = CONVERTER->stack().push(pLogic);
 	}
 	| '(' fun_logic ')'
@@ -1684,7 +1684,7 @@ fun_logic
 		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
 		pLogic->setSrcPos (@1, @3);
-		pLogic->setSrcText(_T("(") + pLogic->src_text() + _T(")"));
+		pLogic->setSrcText("(" + pLogic->src_text() + ")");
 		$$ = CONVERTER->stack().push(pLogic);
 	}
 	| RDO_not fun_logic
@@ -1694,16 +1694,16 @@ fun_logic
 		LPRDOFUNLogic pLogicNot = pLogic->operator_not();
 		ASSERT(pLogicNot);
 		pLogicNot->setSrcPos (@1, @2);
-		pLogicNot->setSrcText(_T("not ") + pLogic->src_text());
+		pLogicNot->setSrcText("not " + pLogic->src_text());
 		$$ = CONVERTER->stack().push(pLogicNot);
 	}
 	| '[' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| '(' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	;
 
@@ -1765,7 +1765,7 @@ fun_arithm
 		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
 		pArithm->setSrcPos (@1, @3);
-		pArithm->setSrcText(_T("(") + pArithm->src_text() + _T(")"));
+		pArithm->setSrcText("(" + pArithm->src_text() + ")");
 		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| '-' fun_arithm %prec RDO_UMINUS
@@ -1774,7 +1774,7 @@ fun_arithm
 		ASSERT(pArithm);
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
-		info.setSrcText(_T("-") + pArithm->src_text());
+		info.setSrcText("-" + pArithm->src_text());
 		$$ = CONVERTER->stack().push(
 			rdo::Factory<RDOFUNArithm>::create(
 				rdo::Factory<RDOValue>::create(pArithm->type(), info),
@@ -1795,7 +1795,7 @@ fun_arithm_func_call
 		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
-		pFunParams->setSrcText(funName + _T("()"));
+		pFunParams->setSrcText(funName + "()");
 		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
 		ASSERT(pArithm);
 		$$ = CONVERTER->stack().push(pArithm);
@@ -1807,14 +1807,14 @@ fun_arithm_func_call
 		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
-		pFunParams->setSrcText(funName + _T("(") + pFunParams->src_text() + _T(")"));
+		pFunParams->setSrcText(funName + "(" + pFunParams->src_text() + ")");
 		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
 		ASSERT(pArithm);
 		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| RDO_IDENTIF '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в параметрах функции"));
+		CONVERTER->error().error(@3, "Ошибка в параметрах функции");
 	}
 	;
 
@@ -1835,17 +1835,17 @@ fun_arithm_func_call_pars
 		LPRDOFUNArithm pArithm    = CONVERTER->stack().pop<RDOFUNArithm>($3);
 		ASSERT(pFunParams);
 		ASSERT(pArithm   );
-		pFunParams->setSrcText  (pFunParams->src_text() + _T(", ") + pArithm->src_text());
+		pFunParams->setSrcText  (pFunParams->src_text() + ", " + pArithm->src_text());
 		pFunParams->addParameter(pArithm);
 		$$ = CONVERTER->stack().push(pFunParams);
 	}
 	| fun_arithm_func_call_pars error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@2, "Ошибка в арифметическом выражении");
 	}
 	| fun_arithm_func_call_pars ',' error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@3, "Ошибка в арифметическом выражении");
 	}
 	;
 
@@ -1868,11 +1868,11 @@ fun_group_header
 	}
 	| fun_group_keyword '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
+		CONVERTER->error().error(@3, "Ожидается имя типа");
 	}
 	| fun_group_keyword error
 	{
-		CONVERTER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@1, "После имени функции ожидается октрывающаяся скобка");
 	}
 	;
 
@@ -1894,20 +1894,20 @@ fun_group
 		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(1), false);
 		ASSERT(pTrueLogic);
 		pTrueLogic->setSrcPos (@2);
-		pTrueLogic->setSrcText(_T("NoCheck"));
+		pTrueLogic->setSrcText("NoCheck");
 		$$ = CONVERTER->stack().push(pGroupFun->createFunLogic(pTrueLogic));
 	}
 	| fun_group_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_group_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_group_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@1, @2, "Ошибка в логическом выражении");
 	}
 	;
 
@@ -1921,16 +1921,16 @@ fun_select_header
 		ASSERT(pValue);
 		LPRDOFUNSelect pSelect = rdo::Factory<RDOFUNSelect>::create(pValue->src_info());
 		ASSERT(pSelect);
-		pSelect->setSrcText(_T("Select(") + pValue->value().getIdentificator() + _T(": "));
+		pSelect->setSrcText("Select(" + pValue->value().getIdentificator() + ": ");
 		$$ = CONVERTER->stack().push(pSelect);
 	}
 	| RDO_Select '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
+		CONVERTER->error().error(@3, "Ожидается имя типа");
 	}
 	| RDO_Select error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@1, "Ожидается октрывающаяся скобка");
 	}
 	;
 
@@ -1941,7 +1941,7 @@ fun_select_body
 		LPRDOFUNLogic  pLogic  = CONVERTER->stack().pop<RDOFUNLogic> ($2);
 		ASSERT(pSelect);
 		ASSERT(pLogic );
-		pSelect->setSrcText(pSelect->src_text() + pLogic->src_text() + _T(")"));
+		pSelect->setSrcText(pSelect->src_text() + pLogic->src_text() + ")");
 		pSelect->initSelect(pLogic);
 		$$ = CONVERTER->stack().push(pSelect);
 	}
@@ -1949,8 +1949,8 @@ fun_select_body
 	{
 		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
-		RDOParserSrcInfo logicInfo(@2, _T("NoCheck"));
-		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + _T(")"));
+		RDOParserSrcInfo logicInfo(@2, "NoCheck");
+		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + ")");
 		rdo::runtime::LPRDOCalcConst pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(1);
 		ASSERT(pCalc);
 		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, true);
@@ -1961,15 +1961,15 @@ fun_select_body
 	}
 	| fun_select_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_select_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_select_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@1, @2, "Ошибка в логическом выражении");
 	}
 	;
 
@@ -1994,37 +1994,37 @@ fun_select_logic
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@4, @5, "Ошибка в логическом выражении");
 	}
 	| fun_select_body '.' fun_select_keyword error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
 		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
 		pSelect->setSrcPos(@1, @5);
-		RDOParserSrcInfo emptyInfo(@3, @5, _T("Empty()"));
+		RDOParserSrcInfo emptyInfo(@3, @5, "Empty()");
 		LPRDOFUNLogic pLogic = pSelect->createFunSelectEmpty(emptyInfo);
 		ASSERT(pLogic);
 		$$ = CONVERTER->stack().push(pLogic);
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@4, "Ожидается закрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Empty error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
+		CONVERTER->error().error(@2, @3, "Ожидается метод списка ресурсов");
 	}
 	| fun_select_body error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
+		CONVERTER->error().error(@1, "Ожидается '.' (точка) для вызова метода списка ресурсов");
 	}
 	;
 
@@ -2034,18 +2034,18 @@ fun_select_arithm
 		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
 		pSelect->setSrcPos(@1, @5);
-		RDOParserSrcInfo sizeInfo(@3, @5, _T("Size()"));
+		RDOParserSrcInfo sizeInfo(@3, @5, "Size()");
 		LPRDOFUNArithm pArithm = pSelect->createFunSelectSize(sizeInfo);
 		ASSERT(pArithm);
 		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| fun_select_body '.' RDO_Size error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Size '(' error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@4, "Ожидается закрывающаяся скобка");
 	}
 	;
 

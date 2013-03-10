@@ -151,7 +151,7 @@ void Converter::insertChanges(CREF(tstring) name, CREF(tstring) value)
 tstring Converter::getChanges() const
 {
 	rdo::textstream stream;
-	stream << _T("$Changes") << std::endl;
+	stream << "$Changes" << std::endl;
 	ruint changes_max_length = 0;
 	STL_FOR_ALL_CONST(m_changes, change_it)
 	{
@@ -162,12 +162,12 @@ tstring Converter::getChanges() const
 	}
 	STL_FOR_ALL_CONST(m_changes, change_it)
 	{
-		stream << _T("  ") << change_it->m_name;
+		stream << "  " << change_it->m_name;
 		for (ruint i = change_it->m_name.length(); i < changes_max_length; i++)
 		{
-			stream << _T(" ");
+			stream << " ";
 		}
-		stream << _T("  = ") << change_it->m_value << std::endl;
+		stream << "  = " << change_it->m_value << std::endl;
 	}
 	return stream.str();
 }
@@ -180,21 +180,21 @@ tstring Converter::getModelStructure()
 	modelStructure << getChanges();
 
 	// RTP
-	modelStructure << std::endl << std::endl << _T("$Resource_type") << std::endl;
+	modelStructure << std::endl << std::endl << "$Resource_type" << std::endl;
 	STL_FOR_ALL_CONST(m_allRTPResType, rtp_it)
 	{
 		(*rtp_it)->writeModelStructure(modelStructure);
 	}
 
 	// RSS
-	modelStructure << std::endl << _T("$Resources") << std::endl;
+	modelStructure << std::endl << "$Resources" << std::endl;
 	STL_FOR_ALL_CONST(m_allRSSResource, rss_it)
 	{
 		(*rss_it)->writeModelStructure(modelStructure);
 	}
 
 	// PAT
-	modelStructure << std::endl << _T("$Pattern") << std::endl;
+	modelStructure << std::endl << "$Pattern" << std::endl;
 	STL_FOR_ALL_CONST(m_allPATPattern, pat_it)
 	{
 		(*pat_it)->writeModelStructure(modelStructure);
@@ -202,7 +202,7 @@ tstring Converter::getModelStructure()
 
 	// OPR/DPT
 	ruint counter = 1;
-	modelStructure << std::endl << _T("$Activities") << std::endl;
+	modelStructure << std::endl << "$Activities" << std::endl;
 	modelStructure << m_pRuntime->writeActivitiesStructure(counter);
 
 	// DPT only
@@ -212,12 +212,12 @@ tstring Converter::getModelStructure()
 		{
 			LPRDODPTSearchActivity pSearchActivity = m_allDPTSearch.at(i)->getActivities().at(j);
 			ASSERT(pSearchActivity);
-			modelStructure << counter++ << _T(" ") << pSearchActivity->name() << _T(" ") << pSearchActivity->pattern()->getPatternId() << std::endl;
+			modelStructure << counter++ << " " << pSearchActivity->name() << " " << pSearchActivity->pattern()->getPatternId() << std::endl;
 		}
 	}
 
 	// PMD
-	modelStructure << std::endl << _T("$Watching") << std::endl;
+	modelStructure << std::endl << "$Watching" << std::endl;
 	ruint watching_max_length = 0;
 	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
 	{
@@ -241,9 +241,9 @@ tstring Converter::getModelStructure()
 		{
 			if (trace->traceable())
 			{
-				modelStructure << _T("  ") << name->name();
+				modelStructure << "  " << name->name();
 				for (ruint i = name->name().length(); i < watching_max_length + 2; i++)
-					modelStructure << _T(" ");
+					modelStructure << " ";
 
 				structure->writeModelStructure(modelStructure);
 			}
@@ -270,7 +270,7 @@ void RDOParserSMRInfo::insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn ty
 	if (fileName.empty())
 		return;
 
-	tstring fullFileName = rdo::format(_T("%s%s.%s"), modelPath.c_str(), fileName.c_str(), fileExt.c_str());
+	tstring fullFileName = rdo::format("%s%s.%s", modelPath.c_str(), fileName.c_str(), fileExt.c_str());
 
 	if (rdo::File::exist(fullFileName))
 	{
@@ -303,19 +303,19 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(tstring) mod
 	if (!rdo::File::splitpath(smrFullFileName, smrFilePath, smrFileName, smrFileExt))
 		return false;
 
-	modelName = getSMR()->getFile(_T("Model_name"));
+	modelName = getSMR()->getFile("Model_name");
 
-	insertFileName(rdo::converter::smr2rdox::PAT_IN, smrFilePath, modelName, smrFileName, modelName,                               _T("pat"));
-	insertFileName(rdo::converter::smr2rdox::RTP_IN, smrFilePath, modelName, smrFileName, modelName,                               _T("rtp"));
-	insertFileName(rdo::converter::smr2rdox::RSS_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Resource_file")),  _T("rss"));
-	insertFileName(rdo::converter::smr2rdox::OPR_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("OprIev_file")  ),  _T("opr"));
-	insertFileName(rdo::converter::smr2rdox::FRM_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Frame_file")   ),  _T("frm"));
-	insertFileName(rdo::converter::smr2rdox::FUN_IN, smrFilePath, modelName, smrFileName, modelName,                               _T("fun"));
-	insertFileName(rdo::converter::smr2rdox::DPT_IN, smrFilePath, modelName, smrFileName, modelName,                               _T("dpt"));
-	insertFileName(rdo::converter::smr2rdox::PMD_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Statistic_file")), _T("pmd"));
-	insertFileName(rdo::converter::smr2rdox::SMR_IN, smrFilePath, modelName, smrFileName, smrFileName,                             _T("smr"));
-	insertFileName(rdo::converter::smr2rdox::PMV_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Results_file")  ), _T("pmv"));
-	insertFileName(rdo::converter::smr2rdox::TRC_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile(_T("Trace_file")    ), _T("trc"));
+	insertFileName(rdo::converter::smr2rdox::PAT_IN, smrFilePath, modelName, smrFileName, modelName,                               "pat");
+	insertFileName(rdo::converter::smr2rdox::RTP_IN, smrFilePath, modelName, smrFileName, modelName,                               "rtp");
+	insertFileName(rdo::converter::smr2rdox::RSS_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Resource_file"),  "rss");
+	insertFileName(rdo::converter::smr2rdox::OPR_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("OprIev_file"  ),  "opr");
+	insertFileName(rdo::converter::smr2rdox::FRM_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Frame_file"   ),  "frm");
+	insertFileName(rdo::converter::smr2rdox::FUN_IN, smrFilePath, modelName, smrFileName, modelName,                               "fun");
+	insertFileName(rdo::converter::smr2rdox::DPT_IN, smrFilePath, modelName, smrFileName, modelName,                               "dpt");
+	insertFileName(rdo::converter::smr2rdox::PMD_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Statistic_file"), "pmd");
+	insertFileName(rdo::converter::smr2rdox::SMR_IN, smrFilePath, modelName, smrFileName, smrFileName,                             "smr");
+	insertFileName(rdo::converter::smr2rdox::PMV_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Results_file"  ), "pmv");
+	insertFileName(rdo::converter::smr2rdox::TRC_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Trace_file"    ), "trc");
 
 	return true;
 }
@@ -334,12 +334,12 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 			if (!pSMRParser->parseSMR(smrFullFileName, modelName))
 				return CNV_NONE;
 
-			info.m_modelName     = pSMRParser->getSMR()->getFile(_T("Model_name")    );
-			info.m_resourceFile  = pSMRParser->getSMR()->getFile(_T("Resource_file") );
-			info.m_frameFile     = pSMRParser->getSMR()->getFile(_T("Frame_file")    );
-			info.m_statisticFile = pSMRParser->getSMR()->getFile(_T("Statistic_file"));
-			info.m_resultsFile   = pSMRParser->getSMR()->getFile(_T("Results_file")  );
-			info.m_traceFile     = pSMRParser->getSMR()->getFile(_T("Trace_file")    );
+			info.m_modelName     = pSMRParser->getSMR()->getFile("Model_name"    );
+			info.m_resourceFile  = pSMRParser->getSMR()->getFile("Resource_file" );
+			info.m_frameFile     = pSMRParser->getSMR()->getFile("Frame_file"    );
+			info.m_statisticFile = pSMRParser->getSMR()->getFile("Statistic_file");
+			info.m_resultsFile   = pSMRParser->getSMR()->getFile("Results_file"  );
+			info.m_traceFile     = pSMRParser->getSMR()->getFile("Trace_file"    );
 			info.m_error         = false;
 		}
 		catch (REF(RDOSyntaxException))
@@ -401,7 +401,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 	{
 		boost::posix_time::ptime time(boost::posix_time::second_clock::local_time());
 		std::stringstream backupDirName;
-		backupDirName << boost::format(_T("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d"))
+		backupDirName << boost::format("backup %1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d")
 		                 % time.date().year ()
 		                 % time.date().month()
 		                 % time.date().day  ()
@@ -418,15 +418,15 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 				YYLTYPE pos;
 				pos.m_last_line = 0;
 				pos.m_last_pos  = 0;
-				error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': уже существует\n"), backupPath.string().c_str()));
+				error().error(RDOParserSrcInfo(pos), rdo::format("Ошибка создания backup-директории '%s': уже существует\n", backupPath.string().c_str()));
 			}
 		}
 		catch (CREF(boost::system::error_code) ex)
 		{
 			tstring message = ex.message();
-			if (message.find(_T("boost")) == 0)
+			if (message.find("boost") == 0)
 			{
-				BOOST_AUTO(pos, message.find(_T(' ')));
+				BOOST_AUTO(pos, message.find(' '));
 				if (pos != tstring::npos)
 				{
 					message = message.substr(pos + 1);
@@ -435,7 +435,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 			YYLTYPE pos;
 			pos.m_last_line = 0;
 			pos.m_last_pos  = 0;
-			error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': %s\n"), backupPath.string().c_str(), message.c_str()));
+			error().error(RDOParserSrcInfo(pos), rdo::format("Ошибка создания backup-директории '%s': %s\n", backupPath.string().c_str(), message.c_str()));
 		}
 
 		STL_FOR_ALL(fileList, it)
@@ -482,7 +482,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 	m_pDocument->close();
 
 	boost::filesystem::path rdoxFile(fullPath / modelName);
-	rdoxFile.replace_extension(_T(".rdox"));
+	rdoxFile.replace_extension(".rdox");
 	if (!createRDOX(rdoxFile.string()))
 	{
 		return CNV_ERROR;
@@ -499,12 +499,12 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 rbool RDOParserModel::createRDOX(CREF(tstring) smrFileName) const
 {
 	pugi::xml_document doc;
-	pugi::xml_node      rootNode           = doc.append_child(_T("Settings"));
-	pugi::xml_node      versionNode        = rootNode.append_child(_T("Version"));
-	pugi::xml_attribute projectVersionAttr = versionNode.append_attribute(_T("ProjectVersion"));
-	pugi::xml_attribute smrVersionAttr     = versionNode.append_attribute(_T("SMRVersion"));
-	projectVersionAttr.set_value(_T("2"));
-	smrVersionAttr    .set_value(_T("2"));
+	pugi::xml_node      rootNode           = doc.append_child("Settings");
+	pugi::xml_node      versionNode        = rootNode.append_child("Version");
+	pugi::xml_attribute projectVersionAttr = versionNode.append_attribute("ProjectVersion");
+	pugi::xml_attribute smrVersionAttr     = versionNode.append_attribute("SMRVersion");
+	projectVersionAttr.set_value("2");
+	smrVersionAttr    .set_value("2");
 
 	std::ofstream ofs(smrFileName.c_str());
 	if (!ofs.good())
@@ -520,23 +520,23 @@ void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 	LPRDOFUNConstant pConstant = findFUNConstant(src_info.src_text());
 	if (pConstant)
 	{
-		error().push_only(src_info, rdo::format(_T("Константа '%s' уже существует"), src_info.src_text().c_str()));
-//		parser->error(_T("Second appearance of the same constant name: ") + *(_cons->getName()));
-		error().push_only(pConstant->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format("Константа '%s' уже существует", src_info.src_text().c_str()));
+//		parser->error("Second appearance of the same constant name: " + *(_cons->getName()));
+		error().push_only(pConstant->src_info(), "См. первое определение");
 		error().push_done();
 	}
 	LPRDOFUNSequence pSequence = findFUNSequence(src_info.src_text());
 	if (pSequence)
 	{
-		error().push_only(src_info, rdo::format(_T("Последовательность '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pSequence->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format("Последовательность '%s' уже существует", src_info.src_text().c_str()));
+		error().push_only(pSequence->src_info(), "См. первое определение");
 		error().push_done();
 	}
 	LPRDOFUNFunction pFunction = findFUNFunction(src_info.src_text());
 	if (pFunction)
 	{
-		error().push_only(src_info, rdo::format(_T("Функция '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pFunction->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format("Функция '%s' уже существует", src_info.src_text().c_str()));
+		error().push_only(pFunction->src_info(), "См. первое определение");
 		error().push_done();
 	}
 }
@@ -548,10 +548,10 @@ void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if((*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
 		if (it_search_act != (*it_search)->getActivities().end())
 		{
-			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error().push_only((*it_search_act)->src_info(), _T("См. первое определение"));
+			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
+			error().push_only((*it_search_act)->src_info(), "См. первое определение");
 			error().push_done();
-//			error(_T("Activity name: ") + *_name + _T(" already defined"));
+//			error("Activity name: " + *_name + " already defined");
 		}
 	}
 	STL_FOR_ALL_CONST(getDPTSomes(), it_some)
@@ -559,8 +559,8 @@ void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if((*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
 		if (it_some_act != (*it_some)->getActivities().end())
 		{
-			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error().push_only((*it_some_act)->src_info(), _T("См. первое определение"));
+			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
+			error().push_only((*it_some_act)->src_info(), "См. первое определение");
 			error().push_done();
 		}
 	}
@@ -569,23 +569,23 @@ void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if((*it_prior)->getActivities().begin(), (*it_prior)->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
 		if (it_prior_act != (*it_prior)->getActivities().end())
 		{
-			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error().push_only((*it_prior_act)->src_info(), _T("См. первое определение"));
+			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
+			error().push_only((*it_prior_act)->src_info(), "См. первое определение");
 			error().push_done();
 		}
 	}
 	LPRDODPTFreeActivity pFreeActivity = findDPTFreeActivity(src_info.src_text());
 	if (pFreeActivity)
 	{
-		error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pFreeActivity->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
+		error().push_only(pFreeActivity->src_info(), "См. первое определение");
 		error().push_done();
 	}
 	LPRDOOPROperation pOperation = findOPROperation(src_info.src_text());
 	if (pOperation)
 	{
-		error().push_only(src_info, rdo::format(_T("Операция '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pOperation->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format("Операция '%s' уже существует", src_info.src_text().c_str()));
+		error().push_only(pOperation->src_info(), "См. первое определение");
 		error().push_done();
 	}
 }
@@ -600,16 +600,16 @@ void Converter::checkDPTName(CREF(RDOParserSrcInfo) src_info)
 	DPTSearchList::const_iterator search_it = std::find_if(getDPTSearchs().begin(), getDPTSearchs().end(), compareName<RDODPTSearch>(src_info.src_text()));
 	if (search_it != getDPTSearchs().end())
 	{
-		error().push_only(src_info, rdo::format(_T("Точка '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only((*search_it)->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format("Точка '%s' уже существует", src_info.src_text().c_str()));
+		error().push_only((*search_it)->src_info(), "См. первое определение");
 		error().push_done();
-//		error(src_info, _T("DPT name: ") + src_info.src_text() + _T(" already defined"));
+//		error(src_info, "DPT name: " + src_info.src_text() + " already defined");
 	}
 	DPTSomeList::const_iterator some_it = std::find_if(getDPTSomes().begin(), getDPTSomes().end(), compareName<RDODPTSome>(src_info.src_text()));
 	if (some_it != getDPTSomes().end())
 	{
-		error().push_only(src_info, rdo::format(_T("Точка '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only((*some_it)->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format("Точка '%s' уже существует", src_info.src_text().c_str()));
+		error().push_only((*some_it)->src_info(), "См. первое определение");
 		error().push_done();
 	}
 }

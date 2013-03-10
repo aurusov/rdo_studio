@@ -260,7 +260,7 @@ frm_main
 	| frm_main frm_end
 	| error
 	{
-		CONVERTER->error().error(@1, _T("Неизвестная ошибка"));
+		CONVERTER->error().error(@1, "Неизвестная ошибка");
 	}
 	;
 
@@ -292,7 +292,7 @@ frm_begin
 	}
 	| RDO_Frame RDO_IDENTIF RDO_Show_if error
 	{
-		CONVERTER->error().error(@4, _T("Ошибка в логическом выражении"))
+		CONVERTER->error().error(@4, "Ошибка в логическом выражении")
 	}
 	;
 
@@ -305,7 +305,7 @@ frm_background
 		ASSERT(pBgColor);
 		if (pBgColor->getType() != RDOFRMColor::CT_TRANSPARENT && pBgColor->getType() != RDOFRMColor::CT_RGB)
 		{
-			CONVERTER->error().error(@4, _T("Цвет фона не может быть указан ссылкой на последнее значение"));
+			CONVERTER->error().error(@4, "Цвет фона не может быть указан ссылкой на последнее значение");
 		}
 		pFrame->frame()->setBackgroundColor(pBgColor);
 		$$ = CONVERTER->stack().push(pFrame);
@@ -318,11 +318,11 @@ frm_background
 	}
 	| frm_begin RDO_Back_picture error
 	{
-		CONVERTER->error().error(@3, _T("После ключевого слова $Back_picture ожидается знак равенства"));
+		CONVERTER->error().error(@3, "После ключевого слова $Back_picture ожидается знак равенства");
 	}
 	| frm_begin error
 	{
-		CONVERTER->error().error(@2, _T("После имени кадра ожидается ключевое слово $Back_picture"));
+		CONVERTER->error().error(@2, "После имени кадра ожидается ключевое слово $Back_picture");
 	}
 	;
 
@@ -347,19 +347,19 @@ frm_backpicture
 	}
 	| frm_background RDO_INT_CONST RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@4, _T("Описание заголовка кадра окончено, ожидается ключевое слово $Show"));
+		CONVERTER->error().error(@4, "Описание заголовка кадра окончено, ожидается ключевое слово $Show");
 	}
 	| frm_background RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@3, _T("Описание заголовка кадра окончено, ожидается ключевое слово $Show"));
+		CONVERTER->error().error(@3, "Описание заголовка кадра окончено, ожидается ключевое слово $Show");
 	}
 	| frm_background RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@2, _T("После ширины кадра необходимо указать его высоту"));
+		CONVERTER->error().error(@2, "После ширины кадра необходимо указать его высоту");
 	}
 	| frm_background
 	{
-		CONVERTER->error().error(@1, _T("Необходимо указать имя фоновой картинки или размер кадра"));
+		CONVERTER->error().error(@1, "Необходимо указать имя фоновой картинки или размер кадра");
 	}
 	;
 
@@ -383,19 +383,19 @@ frm_show
 		LPDocUpdate pShowIfReplace = rdo::Factory<UpdateReplace>::create(
 			@1.m_first_seek,
 			@1.m_last_seek,
-			_T("if")
+			"if"
 		);
 		ASSERT(pShowIfReplace);
 		CONVERTER->insertDocUpdate(pShowIfReplace);
 
 		LPDocUpdate pOpenBraceInsert = rdo::Factory<UpdateInsert>::create(
 			@2.m_first_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceInsert);
 		CONVERTER->insertDocUpdate(pOpenBraceInsert);
 
-		tstring closeBrace(_T(")"));
+		tstring closeBrace(")");
 		LPDocUpdate pCloseBraceInsert = rdo::Factory<UpdateInsert>::create(
 			@2.m_last_seek,
 			closeBrace
@@ -409,7 +409,7 @@ frm_show
 	}
 	| RDO_Show_if error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в логическом выражении"))
+		CONVERTER->error().error(@2, "Ошибка в логическом выражении")
 	}
 	;
 
@@ -525,15 +525,15 @@ frm_color
 	}
 	| '<' RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@4, _T("Найдены все составляющие цвета, ожидается '>'"));
+		CONVERTER->error().error(@4, "Найдены все составляющие цвета, ожидается '>'");
 	}
 	| '<' RDO_INT_CONST RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@3, @4, _T("Ожидается синяя составляющая цвета"));
+		CONVERTER->error().error(@3, @4, "Ожидается синяя составляющая цвета");
 	}
 	| '<' RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается зеленая составляющая цвета"));
+		CONVERTER->error().error(@2, @3, "Ожидается зеленая составляющая цвета");
 	}
 	| '<' fun_arithm ',' fun_arithm ',' fun_arithm '>'
 	{
@@ -553,27 +553,27 @@ frm_color
 	}
 	| '<' fun_arithm ',' fun_arithm ',' fun_arithm error
 	{
-		CONVERTER->error().error(@6, _T("Найдены все составляющие цвета, ожидается '>'"));
+		CONVERTER->error().error(@6, "Найдены все составляющие цвета, ожидается '>'");
 	}
 	| '<' fun_arithm ',' fun_arithm ',' error
 	{
-		CONVERTER->error().error(@5, @6, _T("Ожидается синяя составляющая цвета"));
+		CONVERTER->error().error(@5, @6, "Ожидается синяя составляющая цвета");
 	}
 	| '<' fun_arithm ',' fun_arithm error
 	{
-		CONVERTER->error().error(@4, _T("После зеленой составляющей цвета ожидается запятая"));
+		CONVERTER->error().error(@4, "После зеленой составляющей цвета ожидается запятая");
 	}
 	| '<' fun_arithm ',' error
 	{
-		CONVERTER->error().error(@3, @4, _T("Ожидается зеленая составляющая цвета"));
+		CONVERTER->error().error(@3, @4, "Ожидается зеленая составляющая цвета");
 	}
 	| '<' fun_arithm error
 	{
-		CONVERTER->error().error(@2, _T("После красной составляющей цвета ожидается запятая"));
+		CONVERTER->error().error(@2, "После красной составляющей цвета ожидается запятая");
 	}
 	| '<' error
 	{
-		CONVERTER->error().error(@1, _T("После '<' ожидается красная составляющая цвета"));
+		CONVERTER->error().error(@1, "После '<' ожидается красная составляющая цвета");
 	}
 	;
 
@@ -595,17 +595,17 @@ frm_postype
 		int rilet_id = CONVERTER->stack().pop<RDOValue>($2)->value().getInt();
 		if (rilet_id <= 0)
 		{
-			CONVERTER->error().error(@2, _T("Номер рулетки должен быть больше нуля"));
+			CONVERTER->error().error(@2, "Номер рулетки должен быть больше нуля");
 		}
 		if (!RUNTIME->lastFrame()->findRulet(rilet_id))
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Рулетки с номером '%d' не существует"), rilet_id));
+			CONVERTER->error().error(@2, rdo::format("Рулетки с номером '%d' не существует", rilet_id));
 		}
 		$$ = RDOFRMPosition::PT_RULET + rilet_id;
 	}
 	| '#' error
 	{
-		CONVERTER->error().error(@1, _T("После '#' ожидается целочисленный номер рулетки"));
+		CONVERTER->error().error(@1, "После '#' ожидается целочисленный номер рулетки");
 	}
 	;
 
@@ -621,7 +621,7 @@ frm_postype_wh
 	: frm_postype;
 	| '='
 	{
-		CONVERTER->error().error(@1, _T("Нельзя использовать данное выравнивание для ширины или высоты"));
+		CONVERTER->error().error(@1, "Нельзя использовать данное выравнивание для ширины или высоты");
 	}
 	;
 
@@ -669,8 +669,8 @@ frm_ruler
 		LPRDOFRMRulet pRulet = RUNTIME->lastFrame()->findRulet(CONVERTER->stack().pop<RDOValue>($3)->value().getInt());
 		if (pRulet)
 		{
-			CONVERTER->error().push_only(@3, rdo::format(_T("Рулетка с номером '%d' уже существует"), CONVERTER->stack().pop<RDOValue>($3)->value().getInt()));
-			CONVERTER->error().push_only(pRulet->src_info(), _T("См. первое определение"));
+			CONVERTER->error().push_only(@3, rdo::format("Рулетка с номером '%d' уже существует", CONVERTER->stack().pop<RDOValue>($3)->value().getInt()));
+			CONVERTER->error().push_only(pRulet->src_info(), "См. первое определение");
 			CONVERTER->error().push_done();
 		}
 		LPRDOFRMPosition pX = CONVERTER->stack().pop<RDOFRMPosition>($5);
@@ -679,11 +679,11 @@ frm_ruler
 		ASSERT(pY);
 		if (pX->getType() != RDOFRMPosition::PT_ABSOLUTE)
 		{
-			CONVERTER->error().error(@5, _T("Координаты рулетки должны быть абсолютными"));
+			CONVERTER->error().error(@5, "Координаты рулетки должны быть абсолютными");
 		}
 		if (pY->getType() != RDOFRMPosition::PT_ABSOLUTE)
 		{
-			CONVERTER->error().error(@7, _T("Координаты рулетки должны быть абсолютными"));
+			CONVERTER->error().error(@7, "Координаты рулетки должны быть абсолютными");
 		}
 		pRulet = rdo::Factory<RDOFRMRulet>::create(RDOParserSrcInfo(@1), CONVERTER->stack().pop<RDOValue>($3)->value().getInt(), pX, pY);
 		ASSERT(pRulet);
@@ -691,31 +691,31 @@ frm_ruler
 	}
 	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается ']'"));
+		CONVERTER->error().error(@7, "Ожидается ']'");
 	}
 	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@6, @7, "Ожидается координата по оси Y");
 	}
 	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, "Ожидается запятая");
 	}
 	| RDO_ruler '[' RDO_INT_CONST ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@4, @5, "Ожидается координата по оси X");
 	}
 	| RDO_ruler '[' RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, "Ожидается запятая");
 	}
 	| RDO_ruler '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается номер рулетки"));
+		CONVERTER->error().error(@2, @3, "Ожидается номер рулетки");
 	}
 	| RDO_ruler error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, "Ожидается '['");
 	}
 	;
 
@@ -736,39 +736,39 @@ frm_space
 	}
 	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается ']'"));
+		CONVERTER->error().error(@9, "Ожидается ']'");
 	}
 	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается высота"));
+		CONVERTER->error().error(@8, @9, "Ожидается высота");
 	}
 	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, "Ожидается запятая");
 	}
 	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается ширина"));
+		CONVERTER->error().error(@6, @7, "Ожидается ширина");
 	}
 	| RDO_space '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, "Ожидается запятая");
 	}
 	| RDO_space '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, "Ожидается координата по оси Y");
 	}
 	| RDO_space '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, "Ожидается запятая");
 	}
 	| RDO_space '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, "Ожидается координата по оси X");
 	}
 	| RDO_space error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, "Ожидается '['");
 	}
 	;
 
@@ -785,7 +785,7 @@ frm_text_common
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -852,55 +852,55 @@ frm_text_common
 */
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		CONVERTER->error().error(@13, _T("Ожидается запятая"));
+		CONVERTER->error().error(@13, "Ожидается запятая");
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
-		CONVERTER->error().error(@12, @13, _T("Ожидается цвет текста"));
+		CONVERTER->error().error(@12, @13, "Ожидается цвет текста");
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается запятая"));
+		CONVERTER->error().error(@11, "Ожидается запятая");
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается цвет фона"));
+		CONVERTER->error().error(@10, @11, "Ожидается цвет фона");
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, "Ожидается запятая");
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается высота"));
+		CONVERTER->error().error(@8, @9, "Ожидается высота");
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, "Ожидается запятая");
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается ширина"));
+		CONVERTER->error().error(@6, @7, "Ожидается ширина");
 	}
 	| RDO_text '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, "Ожидается запятая");
 	}
 	| RDO_text '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, "Ожидается координата по оси Y");
 	}
 	| RDO_text '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, "Ожидается запятая");
 	}
 	| RDO_text '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, "Ожидается координата по оси X");
 	}
 	| RDO_text error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, "Ожидается '['");
 	}
 	;
 
@@ -910,7 +910,7 @@ frm_text
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@4.m_first_seek,
 			@4.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -925,7 +925,7 @@ frm_text
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@4.m_first_seek,
 			@4.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -937,15 +937,15 @@ frm_text
 	}
 	| frm_text_common frm_text_align fun_arithm error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается ']'"));
+		CONVERTER->error().error(@3, "Ожидается ']'");
 	}
 	| frm_text_common frm_text_align RDO_STRING_CONST error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается ']'"));
+		CONVERTER->error().error(@3, "Ожидается ']'");
 	}
 	| frm_text_common frm_text_align error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается параметр ресурса или строка"));
+		CONVERTER->error().error(@2, "Ожидается параметр ресурса или строка");
 	}
 	;
 
@@ -955,7 +955,7 @@ frm_bitmap
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -963,7 +963,7 @@ frm_bitmap
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@8.m_first_seek,
 			@8.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -981,7 +981,7 @@ frm_bitmap
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -989,7 +989,7 @@ frm_bitmap
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@10.m_first_seek,
 			@10.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1004,39 +1004,39 @@ frm_bitmap
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается ']'"));
+		CONVERTER->error().error(@9, "Ожидается ']'");
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается имя маски для картинки"));
+		CONVERTER->error().error(@8, @9, "Ожидается имя маски для картинки");
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается ']'"));
+		CONVERTER->error().error(@7, "Ожидается ']'");
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается имя картинки"));
+		CONVERTER->error().error(@6, @7, "Ожидается имя картинки");
 	}
 	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, "Ожидается запятая");
 	}
 	| RDO_bitmap '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, "Ожидается координата по оси Y");
 	}
 	| RDO_bitmap '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, "Ожидается запятая");
 	}
 	| RDO_bitmap '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, "Ожидается координата по оси X");
 	}
 	| RDO_bitmap error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, "Ожидается '['");
 	}
 	;
 
@@ -1046,7 +1046,7 @@ frm_s_bmp
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -1054,7 +1054,7 @@ frm_s_bmp
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@12.m_first_seek,
 			@12.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1076,7 +1076,7 @@ frm_s_bmp
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -1084,7 +1084,7 @@ frm_s_bmp
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@14.m_first_seek,
 			@14.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1103,55 +1103,55 @@ frm_s_bmp
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@13, _T("Ожидается ']'"));
+		CONVERTER->error().error(@13, "Ожидается ']'");
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' error
 	{
-		CONVERTER->error().error(@12, @13, _T("Ожидается имя маски для картинки"));
+		CONVERTER->error().error(@12, @13, "Ожидается имя маски для картинки");
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается ']'"));
+		CONVERTER->error().error(@11, "Ожидается ']'");
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается имя картинки"));
+		CONVERTER->error().error(@10, @11, "Ожидается имя картинки");
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, "Ожидается запятая");
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается высота"));
+		CONVERTER->error().error(@8, @9, "Ожидается высота");
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, "Ожидается запятая");
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается ширина"));
+		CONVERTER->error().error(@6, @7, "Ожидается ширина");
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, "Ожидается запятая");
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, "Ожидается координата по оси Y");
 	}
 	| RDO_s_bmp '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, "Ожидается запятая");
 	}
 	| RDO_s_bmp '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, "Ожидается координата по оси X");
 	}
 	| RDO_s_bmp error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, "Ожидается '['");
 	}
 	;
 
@@ -1161,7 +1161,7 @@ frm_rect
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -1169,7 +1169,7 @@ frm_rect
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@14.m_first_seek,
 			@14.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1197,7 +1197,7 @@ frm_rect
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -1205,7 +1205,7 @@ frm_rect
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@12.m_first_seek,
 			@12.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1233,7 +1233,7 @@ frm_rect
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -1241,7 +1241,7 @@ frm_rect
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@10.m_first_seek,
 			@10.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1269,7 +1269,7 @@ frm_rect
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -1277,7 +1277,7 @@ frm_rect
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@8.m_first_seek,
 			@8.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1305,7 +1305,7 @@ frm_rect
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -1313,7 +1313,7 @@ frm_rect
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@6.m_first_seek,
 			@6.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1338,55 +1338,55 @@ frm_rect
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		CONVERTER->error().error(@13, _T("Ожидается ']'"));
+		CONVERTER->error().error(@13, "Ожидается ']'");
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
-		CONVERTER->error().error(@12, @13, _T("Ожидается цвет линии прямоугольника"));
+		CONVERTER->error().error(@12, @13, "Ожидается цвет линии прямоугольника");
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается запятая"));
+		CONVERTER->error().error(@11, "Ожидается запятая");
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается цвет фона"));
+		CONVERTER->error().error(@10, @11, "Ожидается цвет фона");
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, "Ожидается запятая");
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается высота"));
+		CONVERTER->error().error(@8, @9, "Ожидается высота");
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, "Ожидается запятая");
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается ширина"));
+		CONVERTER->error().error(@6, @7, "Ожидается ширина");
 	}
 	| RDO_rect '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, "Ожидается запятая");
 	}
 	| RDO_rect '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, "Ожидается координата по оси Y");
 	}
 	| RDO_rect '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, "Ожидается запятая");
 	}
 	| RDO_rect '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, "Ожидается координата по оси X");
 	}
 	| RDO_rect error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, "Ожидается '['");
 	}
 	;
 
@@ -1396,7 +1396,7 @@ frm_r_rect
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -1404,7 +1404,7 @@ frm_r_rect
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@14.m_first_seek,
 			@14.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1429,55 +1429,55 @@ frm_r_rect
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		CONVERTER->error().error(@13, _T("Ожидается ']'"));
+		CONVERTER->error().error(@13, "Ожидается ']'");
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
-		CONVERTER->error().error(@12, @13, _T("Ожидается цвет линии прямоугольника"));
+		CONVERTER->error().error(@12, @13, "Ожидается цвет линии прямоугольника");
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается запятая"));
+		CONVERTER->error().error(@11, "Ожидается запятая");
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается цвет фона"));
+		CONVERTER->error().error(@10, @11, "Ожидается цвет фона");
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, "Ожидается запятая");
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается высота"));
+		CONVERTER->error().error(@8, @9, "Ожидается высота");
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, "Ожидается запятая");
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается ширина"));
+		CONVERTER->error().error(@6, @7, "Ожидается ширина");
 	}
 	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, "Ожидается запятая");
 	}
 	| RDO_r_rect '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, "Ожидается координата по оси Y");
 	}
 	| RDO_r_rect '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, "Ожидается запятая");
 	}
 	| RDO_r_rect '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, "Ожидается координата по оси X");
 	}
 	| RDO_r_rect error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, "Ожидается '['");
 	}
 	;
 
@@ -1487,7 +1487,7 @@ frm_ellipse
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -1495,7 +1495,7 @@ frm_ellipse
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@14.m_first_seek,
 			@14.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1520,55 +1520,55 @@ frm_ellipse
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		CONVERTER->error().error(@13, _T("Ожидается ']'"));
+		CONVERTER->error().error(@13, "Ожидается ']'");
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
-		CONVERTER->error().error(@12, @13, _T("Ожидается цвет линии эллипса"));
+		CONVERTER->error().error(@12, @13, "Ожидается цвет линии эллипса");
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается запятая"));
+		CONVERTER->error().error(@11, "Ожидается запятая");
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается цвет фона"));
+		CONVERTER->error().error(@10, @11, "Ожидается цвет фона");
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, "Ожидается запятая");
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается высота"));
+		CONVERTER->error().error(@8, @9, "Ожидается высота");
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, "Ожидается запятая");
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается ширина"));
+		CONVERTER->error().error(@6, @7, "Ожидается ширина");
 	}
 	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, "Ожидается запятая");
 	}
 	| RDO_ellipse '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@4, @5, "Ожидается координата по оси Y");
 	}
 	| RDO_ellipse '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, "Ожидается запятая");
 	}
 	| RDO_ellipse '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@2, @3, "Ожидается координата по оси X");
 	}
 	| RDO_ellipse error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, "Ожидается '['");
 	}
 	;
 
@@ -1578,7 +1578,7 @@ frm_line
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -1586,7 +1586,7 @@ frm_line
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@12.m_first_seek,
 			@12.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1608,47 +1608,47 @@ frm_line
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается ']'"));
+		CONVERTER->error().error(@11, "Ожидается ']'");
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается цвет линии"));
+		CONVERTER->error().error(@10, @11, "Ожидается цвет линии");
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, "Ожидается запятая");
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается Y2"));
+		CONVERTER->error().error(@8, @9, "Ожидается Y2");
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, "Ожидается запятая");
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается X2"));
+		CONVERTER->error().error(@6, @7, "Ожидается X2");
 	}
 	| RDO_line '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, "Ожидается запятая");
 	}
 	| RDO_line '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается Y1"));
+		CONVERTER->error().error(@4, @5, "Ожидается Y1");
 	}
 	| RDO_line '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, "Ожидается запятая");
 	}
 	| RDO_line '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается X1"));
+		CONVERTER->error().error(@2, @3, "Ожидается X1");
 	}
 	| RDO_line error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, "Ожидается '['");
 	}
 	;
 
@@ -1658,7 +1658,7 @@ frm_triang
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -1666,7 +1666,7 @@ frm_triang
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@18.m_first_seek,
 			@18.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1695,71 +1695,71 @@ frm_triang
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color error
 	{
-		CONVERTER->error().error(@17, _T("Ожидается ']'"));
+		CONVERTER->error().error(@17, "Ожидается ']'");
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' error
 	{
-		CONVERTER->error().error(@16, @17, _T("Ожидается цвет линии"));
+		CONVERTER->error().error(@16, @17, "Ожидается цвет линии");
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
 	{
-		CONVERTER->error().error(@15, _T("Ожидается запятая"));
+		CONVERTER->error().error(@15, "Ожидается запятая");
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@14, @15, _T("Ожидается цвет треугольника"));
+		CONVERTER->error().error(@14, @15, "Ожидается цвет треугольника");
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@13, _T("Ожидается запятая"));
+		CONVERTER->error().error(@13, "Ожидается запятая");
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@12, @13, _T("Ожидается Y3"));
+		CONVERTER->error().error(@12, @13, "Ожидается Y3");
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@11, _T("Ожидается запятая"));
+		CONVERTER->error().error(@11, "Ожидается запятая");
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@10, @11, _T("Ожидается X3"));
+		CONVERTER->error().error(@10, @11, "Ожидается X3");
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@9, _T("Ожидается запятая"));
+		CONVERTER->error().error(@9, "Ожидается запятая");
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@8, @9, _T("Ожидается Y2"));
+		CONVERTER->error().error(@8, @9, "Ожидается Y2");
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@7, _T("Ожидается запятая"));
+		CONVERTER->error().error(@7, "Ожидается запятая");
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@6, @7, _T("Ожидается X2"));
+		CONVERTER->error().error(@6, @7, "Ожидается X2");
 	}
 	| RDO_triang '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@5, _T("Ожидается запятая"));
+		CONVERTER->error().error(@5, "Ожидается запятая");
 	}
 	| RDO_triang '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается Y1"));
+		CONVERTER->error().error(@4, @5, "Ожидается Y1");
 	}
 	| RDO_triang '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается запятая"));
+		CONVERTER->error().error(@3, "Ожидается запятая");
 	}
 	| RDO_triang '[' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается X1"));
+		CONVERTER->error().error(@2, @3, "Ожидается X1");
 	}
 	| RDO_triang error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '['"));
+		CONVERTER->error().error(@1, "Ожидается '['");
 	}
 	;
 
@@ -1769,7 +1769,7 @@ frm_active
 		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@3.m_first_seek,
 			@3.m_last_seek,
-			_T("(")
+			"("
 		);
 		ASSERT(pOpenBraceReplace);
 		CONVERTER->insertDocUpdate(pOpenBraceReplace);
@@ -1777,7 +1777,7 @@ frm_active
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@11.m_first_seek,
 			@11.m_last_seek,
-			_T(");")
+			");"
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1789,15 +1789,15 @@ frm_active
 			LPRDODPTFreeActivity pActivity = CONVERTER->findDPTFreeActivity(oprName);
 			if (!pActivity)
 			{
-				CONVERTER->error().error(@2, rdo::format(_T("Опереация '%s' не найдена"), oprName.c_str()));
+				CONVERTER->error().error(@2, rdo::format("Опереация '%s' не найдена", oprName.c_str()));
 			}
 			else
 			{
 				if (pActivity->pattern()->getType() != RDOPATPattern::PT_Keyboard)
 				{
-					CONVERTER->error().push_only(@2, rdo::format(_T("Активность '%s' должна быть клавиатурной"), pActivity->name().c_str()));
-					CONVERTER->error().push_only(pActivity->src_info(), _T("См. акивность"));
-					CONVERTER->error().push_only(pActivity->pattern()->src_info(), _T("См. образец"));
+					CONVERTER->error().push_only(@2, rdo::format("Активность '%s' должна быть клавиатурной", pActivity->name().c_str()));
+					CONVERTER->error().push_only(pActivity->src_info(), "См. акивность");
+					CONVERTER->error().push_only(pActivity->pattern()->src_info(), "См. образец");
 					CONVERTER->error().push_done();
 				}
 			}
@@ -1806,9 +1806,9 @@ frm_active
 		{
 			if (pOperation->pattern()->getType() != RDOPATPattern::PT_Keyboard)
 			{
-				CONVERTER->error().push_only(@2, rdo::format(_T("Операция '%s' должна быть клавиатурной"), pOperation->name().c_str()));
-				CONVERTER->error().push_only(pOperation->src_info(), _T("См. операцию"));
-				CONVERTER->error().push_only(pOperation->pattern()->src_info(), _T("См. образец"));
+				CONVERTER->error().push_only(@2, rdo::format("Операция '%s' должна быть клавиатурной", pOperation->name().c_str()));
+				CONVERTER->error().push_only(pOperation->src_info(), "См. операцию");
+				CONVERTER->error().push_only(pOperation->pattern()->src_info(), "См. образец");
 				CONVERTER->error().push_done();
 			}
 		}
@@ -1826,43 +1826,43 @@ frm_active
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@10, _T("Ожидается ']'"));
+		CONVERTER->error().error(@10, "Ожидается ']'");
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
-		CONVERTER->error().error(@9, @10, _T("Ожидается высота"));
+		CONVERTER->error().error(@9, @10, "Ожидается высота");
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
-		CONVERTER->error().error(@8, _T("Ожидается запятая"));
+		CONVERTER->error().error(@8, "Ожидается запятая");
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@7, @8, _T("Ожидается ширина"));
+		CONVERTER->error().error(@7, @8, "Ожидается ширина");
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy error
 	{
-		CONVERTER->error().error(@6, _T("Ожидается запятая"));
+		CONVERTER->error().error(@6, "Ожидается запятая");
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' error
 	{
-		CONVERTER->error().error(@5, @6, _T("Ожидается координата по оси Y"));
+		CONVERTER->error().error(@5, @6, "Ожидается координата по оси Y");
 	}
 	| RDO_active RDO_IDENTIF '[' frm_position_xy error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается запятая"));
+		CONVERTER->error().error(@4, "Ожидается запятая");
 	}
 	| RDO_active RDO_IDENTIF '[' error
 	{
-		CONVERTER->error().error(@3, @4, _T("Ожидается координата по оси X"));
+		CONVERTER->error().error(@3, @4, "Ожидается координата по оси X");
 	}
 	| RDO_active RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается '['"));
+		CONVERTER->error().error(@2, "Ожидается '['");
 	}
 	| RDO_active error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается имя клавиатурной операции"));
+		CONVERTER->error().error(@1, "Ожидается имя клавиатурной операции");
 	}
 	;
 
@@ -1874,7 +1874,7 @@ frm_active
 fun_logic_eq
 	: '='
 	{
-		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, _T("="));
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, "=");
 		ASSERT(pInsert);
 		CONVERTER->insertDocUpdate(pInsert);
 
@@ -1982,7 +1982,7 @@ fun_logic
 		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
 		pLogic->setSrcPos (@1, @3);
-		pLogic->setSrcText(_T("[") + pLogic->src_text() + _T("]"));
+		pLogic->setSrcText("[" + pLogic->src_text() + "]");
 		$$ = CONVERTER->stack().push(pLogic);
 	}
 	| '(' fun_logic ')'
@@ -1990,7 +1990,7 @@ fun_logic
 		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
 		pLogic->setSrcPos (@1, @3);
-		pLogic->setSrcText(_T("(") + pLogic->src_text() + _T(")"));
+		pLogic->setSrcText("(" + pLogic->src_text() + ")");
 		$$ = CONVERTER->stack().push(pLogic);
 	}
 	| RDO_not fun_logic
@@ -2000,16 +2000,16 @@ fun_logic
 		LPRDOFUNLogic pLogicNot = pLogic->operator_not();
 		ASSERT(pLogicNot);
 		pLogicNot->setSrcPos (@1, @2);
-		pLogicNot->setSrcText(_T("not ") + pLogic->src_text());
+		pLogicNot->setSrcText("not " + pLogic->src_text());
 		$$ = CONVERTER->stack().push(pLogicNot);
 	}
 	| '[' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| '(' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	;
 
@@ -2071,7 +2071,7 @@ fun_arithm
 		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
 		pArithm->setSrcPos (@1, @3);
-		pArithm->setSrcText(_T("(") + pArithm->src_text() + _T(")"));
+		pArithm->setSrcText("(" + pArithm->src_text() + ")");
 		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| '-' fun_arithm %prec RDO_UMINUS
@@ -2080,7 +2080,7 @@ fun_arithm
 		ASSERT(pArithm);
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
-		info.setSrcText(_T("-") + pArithm->src_text());
+		info.setSrcText("-" + pArithm->src_text());
 		$$ = CONVERTER->stack().push(
 			rdo::Factory<RDOFUNArithm>::create(
 				rdo::Factory<RDOValue>::create(pArithm->type(), info),
@@ -2101,7 +2101,7 @@ fun_arithm_func_call
 		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
-		pFunParams->setSrcText(funName + _T("()"));
+		pFunParams->setSrcText(funName + "()");
 		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
 		ASSERT(pArithm);
 		$$ = CONVERTER->stack().push(pArithm);
@@ -2113,14 +2113,14 @@ fun_arithm_func_call
 		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
-		pFunParams->setSrcText(funName + _T("(") + pFunParams->src_text() + _T(")"));
+		pFunParams->setSrcText(funName + "(" + pFunParams->src_text() + ")");
 		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
 		ASSERT(pArithm);
 		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| RDO_IDENTIF '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в параметрах функции"));
+		CONVERTER->error().error(@3, "Ошибка в параметрах функции");
 	}
 	;
 
@@ -2141,17 +2141,17 @@ fun_arithm_func_call_pars
 		LPRDOFUNArithm pArithm    = CONVERTER->stack().pop<RDOFUNArithm>($3);
 		ASSERT(pFunParams);
 		ASSERT(pArithm   );
-		pFunParams->setSrcText  (pFunParams->src_text() + _T(", ") + pArithm->src_text());
+		pFunParams->setSrcText  (pFunParams->src_text() + ", " + pArithm->src_text());
 		pFunParams->addParameter(pArithm);
 		$$ = CONVERTER->stack().push(pFunParams);
 	}
 	| fun_arithm_func_call_pars error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@2, "Ошибка в арифметическом выражении");
 	}
 	| fun_arithm_func_call_pars ',' error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@3, "Ошибка в арифметическом выражении");
 	}
 	;
 
@@ -2174,11 +2174,11 @@ fun_group_header
 	}
 	| fun_group_keyword '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
+		CONVERTER->error().error(@3, "Ожидается имя типа");
 	}
 	| fun_group_keyword error
 	{
-		CONVERTER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@1, "После имени функции ожидается октрывающаяся скобка");
 	}
 	;
 
@@ -2200,20 +2200,20 @@ fun_group
 		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(1), false);
 		ASSERT(pTrueLogic);
 		pTrueLogic->setSrcPos (@2);
-		pTrueLogic->setSrcText(_T("NoCheck"));
+		pTrueLogic->setSrcText("NoCheck");
 		$$ = CONVERTER->stack().push(pGroupFun->createFunLogic(pTrueLogic));
 	}
 	| fun_group_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_group_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_group_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@1, @2, "Ошибка в логическом выражении");
 	}
 	;
 
@@ -2227,16 +2227,16 @@ fun_select_header
 		ASSERT(pValue);
 		LPRDOFUNSelect pSelect = rdo::Factory<RDOFUNSelect>::create(pValue->src_info());
 		ASSERT(pSelect);
-		pSelect->setSrcText(_T("Select(") + pValue->value().getIdentificator() + _T(": "));
+		pSelect->setSrcText("Select(" + pValue->value().getIdentificator() + ": ");
 		$$ = CONVERTER->stack().push(pSelect);
 	}
 	| RDO_Select '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
+		CONVERTER->error().error(@3, "Ожидается имя типа");
 	}
 	| RDO_Select error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@1, "Ожидается октрывающаяся скобка");
 	}
 	;
 
@@ -2247,7 +2247,7 @@ fun_select_body
 		LPRDOFUNLogic  pLogic  = CONVERTER->stack().pop<RDOFUNLogic> ($2);
 		ASSERT(pSelect);
 		ASSERT(pLogic );
-		pSelect->setSrcText(pSelect->src_text() + pLogic->src_text() + _T(")"));
+		pSelect->setSrcText(pSelect->src_text() + pLogic->src_text() + ")");
 		pSelect->initSelect(pLogic);
 		$$ = CONVERTER->stack().push(pSelect);
 	}
@@ -2255,8 +2255,8 @@ fun_select_body
 	{
 		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
-		RDOParserSrcInfo logicInfo(@2, _T("NoCheck"));
-		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + _T(")"));
+		RDOParserSrcInfo logicInfo(@2, "NoCheck");
+		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + ")");
 		rdo::runtime::LPRDOCalcConst pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(1);
 		ASSERT(pCalc);
 		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, true);
@@ -2267,15 +2267,15 @@ fun_select_body
 	}
 	| fun_select_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_select_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_select_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@1, @2, "Ошибка в логическом выражении");
 	}
 	;
 
@@ -2300,37 +2300,37 @@ fun_select_logic
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@4, @5, "Ошибка в логическом выражении");
 	}
 	| fun_select_body '.' fun_select_keyword error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
 		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
 		pSelect->setSrcPos(@1, @5);
-		RDOParserSrcInfo emptyInfo(@3, @5, _T("Empty()"));
+		RDOParserSrcInfo emptyInfo(@3, @5, "Empty()");
 		LPRDOFUNLogic pLogic = pSelect->createFunSelectEmpty(emptyInfo);
 		ASSERT(pLogic);
 		$$ = CONVERTER->stack().push(pLogic);
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@4, "Ожидается закрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Empty error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
+		CONVERTER->error().error(@2, @3, "Ожидается метод списка ресурсов");
 	}
 	| fun_select_body error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
+		CONVERTER->error().error(@1, "Ожидается '.' (точка) для вызова метода списка ресурсов");
 	}
 	;
 
@@ -2340,18 +2340,18 @@ fun_select_arithm
 		LPRDOFUNSelect pSelect = CONVERTER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
 		pSelect->setSrcPos(@1, @5);
-		RDOParserSrcInfo sizeInfo(@3, @5, _T("Size()"));
+		RDOParserSrcInfo sizeInfo(@3, @5, "Size()");
 		LPRDOFUNArithm pArithm = pSelect->createFunSelectSize(sizeInfo);
 		ASSERT(pArithm);
 		$$ = CONVERTER->stack().push(pArithm);
 	}
 	| fun_select_body '.' RDO_Size error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Size '(' error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@4, "Ожидается закрывающаяся скобка");
 	}
 	;
 
