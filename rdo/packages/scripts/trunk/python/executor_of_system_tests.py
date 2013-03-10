@@ -230,7 +230,7 @@ for task in files:
             print '\n', u'Etalons :', '\n'
         
         for etalon in etalons:
-            print u'SOURCE:  ', etalon['source'], u'  TARGET:  ', etalon['target'], u'  TYPE:  ',   etalon['type']
+            print u'SOURCE:  ', utils.safe_encode(etalon['source'], sys.getfilesystemencoding()), u'  TARGET:  ', utils.safe_encode(etalon['target'], sys.getfilesystemencoding()), u'  TYPE:  ',   etalon['type']
 
         print ''
 
