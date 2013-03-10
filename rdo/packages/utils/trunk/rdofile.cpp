@@ -33,14 +33,10 @@ OPEN_RDO_NAMESPACE
 rbool File::read_only(CREF(tstring) name)
 {
 #ifdef COMPILER_VISUAL_STUDIO
-#ifdef UNICODE
-	return _waccess_s(name.c_str(), 04) == 0 && _waccess_s(name.c_str(), 06) == -1;
-#else
 	return _access(name.c_str(), 04) == 0 && _access(name.c_str(), 06) == -1;
-#endif
 #endif  // COMPILER_VISUAL_STUDIO
 #ifdef COMPILER_GCC
-	return access((char*)name.c_str(), R_OK) == 0 && access((char*)name.c_str(), W_OK) == -1;
+	return access(name.c_str(), R_OK) == 0 && access(name.c_str(), W_OK) == -1;
 #endif // COMPILER_GCC
 }
 
@@ -55,15 +51,9 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 		parentDir /= rootDirectory;
 	}
 
-#ifdef UNICODE
-	fileDir  = parentDir.wstring();
-	fileName = from.stem().wstring();
-	fileExt  = from.extension().wstring();
-#else
 	fileDir  = parentDir.string();
 	fileName = from.stem().string();
 	fileExt  = from.extension().string();
-#endif // UNICODE
 
 	return true;
 }
@@ -87,11 +77,7 @@ tstring File::getTempFileName()
 #endif // COMPILER_VISUAL_STUDIO
 #ifdef COMPILER_GCC
 	boost::uuids::random_generator random_gen;
-#ifdef UNICODE
-	tstring tempFileName = tstring("/tmp/rdo_temp_file_num_") + boost::uuids::to_wstring(random_gen());
-#else
 	tstring tempFileName = tstring("/tmp/rdo_temp_file_num_") + boost::uuids::to_string(random_gen());
-#endif // UNICODE
 	create(tempFileName);
 	return tempFileName;
 #endif // COMPILER_GCC

@@ -51,20 +51,12 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	while ( size == -1 ) {
 #ifdef COMPILER_VISUAL_STUDIO
 #	pragma warning(disable: 4996)
-#ifdef UNICODE
-		size = _vsnwprintf( &s[0], s.size(), str, params );
-#else
 		size = _vsnprintf( &s[0], s.size(), str, params );
-#endif
 #	pragma warning(default: 4996)
 #endif  // COMPILER_VISUAL_STUDIO
 
 #ifdef COMPILER_GCC
-#ifdef UNICODE
-		size = vswprintf( &s[0], s.size(), str, params );
-#else
 		size = vsnprintf( &s[0], s.size(), str, params );
-#endif
 #endif // COMPILER_GCC
 		if ( size == -1 )
 		{
