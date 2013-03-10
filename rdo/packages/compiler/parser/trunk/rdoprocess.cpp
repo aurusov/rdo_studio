@@ -65,8 +65,8 @@ void proc_opr_error(PTR(char) message)
 
 // -------------------- RDOPROCProcess
 // --------------------------------------------------------------------------------
-tstring RDOPROCProcess::s_name_prefix = _T("");
-tstring RDOPROCProcess::s_name_sufix  = _T("s");
+tstring RDOPROCProcess::s_name_prefix = "";
+tstring RDOPROCProcess::s_name_sufix  = "s";
 
 RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(tstring) name, LPRDORTPResType transactType)
 	: RDOParserSrcInfo(info        )
@@ -173,7 +173,7 @@ void RDOPROCQueue::createRuntime()
 	}
 	else
 	{
-		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format(_T("Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс '%s'"), m_resourceName.c_str()));
+		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс '%s'", m_resourceName.c_str()));
 	}
 	m_pRuntime = RF(rdo::runtime::RDOPROCQueue)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
 	ASSERT(m_pRuntime);
@@ -211,7 +211,7 @@ void RDOPROCDepart::createRuntime()
 	}	
 	else
 	{
-		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format(_T("Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс '%s'"), m_resourceName.c_str()));
+		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс '%s'", m_resourceName.c_str()));
 	}
 	m_pRuntime = RF(rdo::runtime::RDOPROCDepart)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
 	ASSERT(m_pRuntime);
@@ -256,7 +256,7 @@ void RDOPROCSeize::createRuntime()
 			// проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
-				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет параметра перечислимого типа '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
+				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
 			}
 			rdo::runtime::parser_for_Seize bbb;
 			bbb.Id_res   = pResource->getID();
@@ -265,7 +265,7 @@ void RDOPROCSeize::createRuntime()
 		}
 		else
 		{
-			RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format(_T("Внутренняя ошибка RDOPROCSeize: не нашли parser-ресурс '%s'"), it->c_str()));
+			RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Внутренняя ошибка RDOPROCSeize: не нашли parser-ресурс '%s'", it->c_str()));
 		}
 	}
 
@@ -276,7 +276,7 @@ void RDOPROCSeize::createRuntime()
 	}
 	else
 	{
-		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), _T("Внутренняя ошибка: блок Seize не содержит ресурсов"));
+		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), "Внутренняя ошибка: блок Seize не содержит ресурсов");
 	}
 }
 
@@ -310,7 +310,7 @@ void RDOPROCRelease::createRuntime()
 			//! проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
-				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет параметра перечислимого типа '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
+				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
 			}
 			rdo::runtime::parser_for_Seize bbb;
 			bbb.Id_res   = pResource->getID();
@@ -319,7 +319,7 @@ void RDOPROCRelease::createRuntime()
 		}
 		else
 		{
-			RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format(_T("Внутренняя ошибка RDOPROCRelease: не нашли parser-ресурс '%s'"), it->c_str()));
+			RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Внутренняя ошибка RDOPROCRelease: не нашли parser-ресурс '%s'", it->c_str()));
 		}
 	}
 
@@ -330,7 +330,7 @@ void RDOPROCRelease::createRuntime()
 	}
 	else
 	{
-		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), _T("Внутренняя ошибка: блок Release не содержит ресурсов"));
+		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), "Внутренняя ошибка: блок Release не содержит ресурсов");
 	}
 }
 

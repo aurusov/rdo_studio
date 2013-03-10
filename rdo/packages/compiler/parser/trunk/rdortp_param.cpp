@@ -35,7 +35,7 @@ CREF(tstring) RDORTPParam::name() const
 
 void RDORTPParam::writeModelStructure(REF(rdo::ostream) stream) const
 {
-	stream << name() << _T(" ");
+	stream << name() << " ";
 	getTypeInfo()->type()->writeModelStructure(stream);
 }
 

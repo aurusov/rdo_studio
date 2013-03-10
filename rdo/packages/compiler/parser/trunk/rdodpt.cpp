@@ -54,7 +54,7 @@ RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSr
 	m_pPattern = RDOParser::s_parser()->findPATPattern(pattern_src_info.src_text());
 	if (!m_pPattern)
 	{
-		RDOParser::s_parser()->error().error(pattern_src_info, rdo::format(_T("Не найден образец: %s"), pattern_src_info.src_text().c_str()));
+		RDOParser::s_parser()->error().error(pattern_src_info, rdo::format("Не найден образец: %s", pattern_src_info.src_text().c_str()));
 	}
 	RDOParser::s_parser()->contextStack()->push(this);
 	RDOParser::s_parser()->insertDPTActivity(this);
@@ -82,23 +82,23 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 	{
 		if (pParam->src_pos().m_first_line == src_pos().m_first_line)
 		{
-			RDOParser::s_parser()->error().push_only(pParam->src_pos(), rdo::format(_T("Слишком много параметров для образца '%s' при описании активности '%s'"), m_pPattern->name().c_str(), name().c_str()));
-			RDOParser::s_parser()->error().push_only(m_pPattern->src_info(), _T("См. образец"));
+			RDOParser::s_parser()->error().push_only(pParam->src_pos(), rdo::format("Слишком много параметров для образца '%s' при описании активности '%s'", m_pPattern->name().c_str(), name().c_str()));
+			RDOParser::s_parser()->error().push_only(m_pPattern->src_info(), "См. образец");
 			RDOParser::s_parser()->error().push_done();
 		}
 		else
 		{
-			RDOParser::s_parser()->error().error(pParam->src_pos(), _T("Имя активности должно заканчиваться двоеточием"));
+			RDOParser::s_parser()->error().error(pParam->src_pos(), "Имя активности должно заканчиваться двоеточием");
 		}
 	}
 	rdo::runtime::RDOValue val;
 	LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
-	if (pParam->value().getAsString() == _T("*"))
+	if (pParam->value().getAsString() == "*")
 	{
 		if (!pPatternParam->getDefault()->defined())
 		{
-			RDOParser::s_parser()->error().push_only(pParam->src_pos(), rdo::format(_T("Нет значения по умолчанию для параметра '%s'"), pPatternParam->src_text().c_str()));
-			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pParam->src_pos(), rdo::format("Нет значения по умолчанию для параметра '%s'", pPatternParam->src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("См. параметр '%s', тип '%s'", pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
 			RDOParser::s_parser()->error().push_done();
 		}
 		val = pPatternParam->getDefault()->value();
@@ -113,7 +113,7 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 		rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
 	);
 	ASSERT(pSetParamCalc);
-	pSetParamCalc->setSrcInfo(RDOParserSrcInfo(pParam->getPosAsYY(), rdo::format(_T("Параметр образца %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), pParam->value().getAsString().c_str())));
+	pSetParamCalc->setSrcInfo(RDOParserSrcInfo(pParam->getPosAsYY(), rdo::format("Параметр образца %s.%s = %s", m_pPattern->name().c_str(), pPatternParam->name().c_str(), pParam->value().getAsString().c_str())));
 	m_pActivity->addParamCalc(pSetParamCalc);
 	m_currParam++;
 }
@@ -123,11 +123,11 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 	if (m_pPattern->m_paramList.size() > m_currParam)
 	{
 		LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
-		RDOParser::s_parser()->error().push_only(param_pos, rdo::format(_T("Указаны не все параметра образца '%s':"), m_pPattern->src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(param_pos, rdo::format("Указаны не все параметра образца '%s':", m_pPattern->src_text().c_str()));
 		for (ruint i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
 		{
 			pPatternParam = m_pPattern->m_paramList.at(i);
-			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Ожидаемый параметр '%s' имеет тип '%s'"), pPatternParam->name().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("Ожидаемый параметр '%s' имеет тип '%s'", pPatternParam->name().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
 		}
 		RDOParser::s_parser()->error().push_done();
 	}
@@ -137,8 +137,8 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 		ASSERT(pKeyboard);
 		if (!pKeyboard->hasHotKey())
 		{
-			RDOParser::s_parser()->error().push_only(param_pos, _T("Для активности должна быть указана клавиша"));
-			RDOParser::s_parser()->error().push_only(m_pPattern->src_info(), _T("См. образец"));
+			RDOParser::s_parser()->error().push_only(param_pos, "Для активности должна быть указана клавиша");
+			RDOParser::s_parser()->error().push_only(m_pPattern->src_info(), "См. образец");
 			RDOParser::s_parser()->error().push_done();
 		}
 	}
@@ -176,8 +176,8 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 		break;
 
 	default:
-		RDOParser::s_parser()->error().push_only(this->src_info(), _T("Неизвестный тип образца"));
-		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("См. образец"));
+		RDOParser::s_parser()->error().push_only(this->src_info(), "Неизвестный тип образца");
+		RDOParser::s_parser()->error().push_only(pattern()->src_info(), "См. образец");
 		RDOParser::s_parser()->error().push_done();
 	}
 }
@@ -189,8 +189,8 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Keyboard)
 	{
-		RDOParser::s_parser()->error().push_only(hotkey_pos, _T("Горячие клавиши используются только в клавиатурных операциях"));
-		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("См. образец"));
+		RDOParser::s_parser()->error().push_only(hotkey_pos, "Горячие клавиши используются только в клавиатурных операциях");
+		RDOParser::s_parser()->error().push_only(pattern()->src_info(), "См. образец");
 		RDOParser::s_parser()->error().push_done();
 	}
 	LPIKeyboard pKeyboard = m_pActivity;
@@ -201,21 +201,21 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 		break;
 
 	case rdo::runtime::RDOKeyboard::addhk_already:
-		RDOParser::s_parser()->error().error(hotkey_pos, rdo::format(_T("Для активности '%s' клавиша уже назначена"), src_text().c_str()));
+		RDOParser::s_parser()->error().error(hotkey_pos, rdo::format("Для активности '%s' клавиша уже назначена", src_text().c_str()));
 		break;
 
 	case rdo::runtime::RDOKeyboard::addhk_notfound:
-		RDOParser::s_parser()->error().error(hotkey_pos, rdo::format(_T("Неизвестная клавиша: %s"), hotKey.c_str()));
+		RDOParser::s_parser()->error().error(hotkey_pos, rdo::format("Неизвестная клавиша: %s", hotKey.c_str()));
 		break;
 
 	case rdo::runtime::RDOKeyboard::addhk_dont:
-		RDOParser::s_parser()->error().push_only(src_info(), rdo::format(_T("Операция '%s' не является клавиатурной"), src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("См. образец"));
+		RDOParser::s_parser()->error().push_only(src_info(), rdo::format("Операция '%s' не является клавиатурной", src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(pattern()->src_info(), "См. образец");
 		RDOParser::s_parser()->error().push_done();
 		break;
 
 	default:
-		RDOParser::s_parser()->error().error(src_info(), _T("Внутренная ошибка: RDOOPROperation::addHotKey"));
+		RDOParser::s_parser()->error().error(src_info(), "Внутренная ошибка: RDOOPROperation::addHotKey");
 	}
 }
 
@@ -298,17 +298,17 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Rule)
 	{
-		RDOParser::s_parser()->error().push_only(this->src_info(), _T("Только продукционные правила могут быть использованы в точке принятия решений типа search"));
-		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("См. образец"));
+		RDOParser::s_parser()->error().push_only(this->src_info(), "Только продукционные правила могут быть использованы в точке принятия решений типа search");
+		RDOParser::s_parser()->error().push_only(pattern()->src_info(), "См. образец");
 		RDOParser::s_parser()->error().push_done();
 	}
 	for (RDOPATPattern::RelResList::const_iterator it = pattern()->rel_res_begin(); it != pattern()->rel_res_end(); ++it)
 	{
 		if (((*it)->m_statusBegin == rdo::runtime::RDOResource::CS_Create) || ((*it)->m_statusBegin == rdo::runtime::RDOResource::CS_Erase))
 		{
-			RDOParser::s_parser()->error().push_only(this->src_info(), rdo::format(_T("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search"), src_text().c_str()));
-			RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("См. образец"));
-			RDOParser::s_parser()->error().push_only((*it)->src_info(), _T("См. релевантный ресурс"));
+			RDOParser::s_parser()->error().push_only(this->src_info(), rdo::format("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search", src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pattern()->src_info(), "См. образец");
+			RDOParser::s_parser()->error().push_only((*it)->src_info(), "См. релевантный ресурс");
 			RDOParser::s_parser()->error().push_done();
 		}
 	}

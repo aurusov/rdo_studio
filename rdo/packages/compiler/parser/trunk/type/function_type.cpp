@@ -58,8 +58,8 @@ LPRDOType FunctionParamType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcI
 	LPFunctionParamType pFromParamType = pFrom.object_dynamic_cast<FunctionParamType>();
 	if (!pFromParamType)
 	{
-		parser::g_error().push_only(src_info,    rdo::format(_T("Ожидаеются параметры вызова, найдено: %s"), from_src_info.src_text().c_str()));
-		parser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+		parser::g_error().push_only(src_info,    rdo::format("Ожидаеются параметры вызова, найдено: %s", from_src_info.src_text().c_str()));
+		parser::g_error().push_only(to_src_info, rdo::format("См. тип: %s", to_src_info.src_text().c_str()));
 		parser::g_error().push_done();
 	}
 
@@ -67,7 +67,7 @@ LPRDOType FunctionParamType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcI
 	{
 		RDOParser::s_parser()->error().error(
 			src_info,
-			rdo::format(_T("Неверное количество параметров: %s"), from_src_info.src_text().c_str())
+			rdo::format("Неверное количество параметров: %s", from_src_info.src_text().c_str())
 		);
 	}
 

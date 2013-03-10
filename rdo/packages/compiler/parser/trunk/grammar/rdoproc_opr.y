@@ -262,7 +262,7 @@ dpt_process_begin
 		LPRDOPROCProcess pProcess = PARSER->getLastPROCProcess();
 		if (pProcess && !pProcess->closed())
 		{
-			PARSER->error().error(pProcess->src_info(), _T("Незакрыт предыдущий блок $Process"));
+			PARSER->error().error(pProcess->src_info(), "Незакрыт предыдущий блок $Process");
 		}
 
 		tstring transactName = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
@@ -274,7 +274,7 @@ dpt_process_begin
 	}
 	| RDO_Process error
 	{
-		PARSER->error().error(@2, @2, _T("Ошибка в процессе!"));
+		PARSER->error().error(@2, @2, "Ошибка в процессе!");
 	}
 	;
 
@@ -299,11 +299,11 @@ dpt_process_condition
 	}
 	| RDO_Condition error
 	{
-		PARSER->error().error(@2, @2, _T("После ключевого слова $Condition ожидается условие активации процесса"));
+		PARSER->error().error(@2, @2, "После ключевого слова $Condition ожидается условие активации процесса");
 	}
 	| error
 	{
-		PARSER->error().error(@1, _T("Ожидается ключевое слово $Condition"));
+		PARSER->error().error(@1, "Ожидается ключевое слово $Condition");
 	}
 	;
 
@@ -315,16 +315,16 @@ dpt_process_prior
 		ASSERT(pArithm);
 		if (!PARSER->getLastPROCProcess()->setPrior(pArithm))
 		{
-			PARSER->error().error(@2, _T("Процесс не может иметь приоритет"));
+			PARSER->error().error(@2, "Процесс не может иметь приоритет");
 		}
 	}
 	| RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета процесса"))
+		PARSER->error().error(@1, @2, "Ошибка описания приоритета процесса")
 	}
 	| error
 	{
-		PARSER->error().error(@1, @1, _T("Ожидается ключевое слово $Priority"))
+		PARSER->error().error(@1, @1, "Ожидается ключевое слово $Priority")
 	}
 	;
 
@@ -336,7 +336,7 @@ dpt_process_input
 dpt_process_line
 	: RDO_IDENTIF
 	{
-		PARSER->error().error(@1, rdo::format(_T("Неизвестный оператор '%s'"), PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str()));
+		PARSER->error().error(@1, rdo::format("Неизвестный оператор '%s'", PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str()));
 	}
 	| planning_statement
 	{
@@ -344,7 +344,7 @@ dpt_process_line
 		ASSERT(pCalc);
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(
 			PARSER->getLastPROCProcess(),
-			_T("Event planning from process"),
+			"Event planning from process",
 			pCalc
 		);
 		ASSERT(pBlock);
@@ -356,7 +356,7 @@ dpt_process_line
 		ASSERT(pCalc);
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(
 			PARSER->getLastPROCProcess(),
-			_T("Event stop from process"),
+			"Event stop from process",
 			pCalc
 		);
 		ASSERT(pBlock);
@@ -396,7 +396,7 @@ dpt_process_line
 
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCGenerate>::create(
 			pProc,
-			_T("GENERATE"),
+			"GENERATE",
 			pCalcTime,
 			pCreateAndGoOnTransactCalc
 		);
@@ -406,7 +406,7 @@ dpt_process_line
 	}
 	| RDO_GENERATE error
 	{
-		PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+		PARSER->error().error(@2, "Ошибка в арифметическом выражении");
 	}
 	| RDO_TERMINATE dpt_term_param
 	{
@@ -416,21 +416,21 @@ dpt_process_line
 	}
 	| RDO_TERMINATE error
 	{
-		PARSER->error().error(@1, _T("Ошибка в параметре оператора TERMINATE"));
+		PARSER->error().error(@1, "Ошибка в параметре оператора TERMINATE");
 	}
 	| RDO_ADVANCE fun_arithm
 	{
-		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAdvance>::create(PARSER->getLastPROCProcess(), _T("ADVANCE"), PARSER->stack().pop<RDOFUNArithm>($2)->createCalc());
+		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAdvance>::create(PARSER->getLastPROCProcess(), "ADVANCE", PARSER->stack().pop<RDOFUNArithm>($2)->createCalc());
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
 	}
 	| RDO_ADVANCE error
 	{
-		PARSER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+		PARSER->error().error(@2, "Ошибка в арифметическом выражении");
 	}
 	| RDO_QUEUE dpt_queue_param
 	{
-		TRACE(_T("QUEUE dpt_queue_param\n"));
+		TRACE("QUEUE dpt_queue_param\n");
 		LPRDOPROCQueue pQueue = PARSER->stack().pop<RDOPROCQueue>($2);
 		ASSERT(pQueue);
 		pQueue->createRuntime();
@@ -438,11 +438,11 @@ dpt_process_line
 	}
 	| RDO_QUEUE error
 	{
-		PARSER->error().error(@1, _T("Ожидается имя ресурса для сбора статистики по очереди"));
+		PARSER->error().error(@1, "Ожидается имя ресурса для сбора статистики по очереди");
 	}
 	| RDO_DEPART dpt_depart_param
 	{
-		TRACE(_T("DEPART dpt_depart_param\n"));
+		TRACE("DEPART dpt_depart_param\n");
 		LPRDOPROCDepart pDepart = PARSER->stack().pop<RDOPROCDepart>($2);
 		ASSERT(pDepart);
 		pDepart->createRuntime();
@@ -450,11 +450,11 @@ dpt_process_line
 	}
 	| RDO_DEPART error
 	{
-		PARSER->error().error(@1, _T("Ожидается имя ресурса для сбора статистики по очереди"));
+		PARSER->error().error(@1, "Ожидается имя ресурса для сбора статистики по очереди");
 	}
 	| RDO_SEIZE dpt_seize_param
 	{
-		TRACE(_T("SEIZE dpt_seize_param\n"));
+		TRACE("SEIZE dpt_seize_param\n");
 		LPRDOPROCSeize pSeize = PARSER->stack().pop<RDOPROCSeize>($2);
 		ASSERT(pSeize);
 		pSeize->createRuntime();
@@ -462,11 +462,11 @@ dpt_process_line
 	}
 	| RDO_SEIZE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
+		PARSER->error().error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
 	}
 	| RDO_RELEASE dpt_release_param
 	{
-		TRACE(_T("RELEASE dpt_release_param\n"));
+		TRACE("RELEASE dpt_release_param\n");
 		LPRDOPROCRelease pRelease = PARSER->stack().pop<RDOPROCRelease>($2);
 		ASSERT(pRelease);
 		pRelease->createRuntime();
@@ -474,14 +474,14 @@ dpt_process_line
 	}
 	| RDO_RELEASE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
+		PARSER->error().error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
 	}
 	| RDO_ASSIGN dpt_assign_param
 	{
 	}
 	| RDO_ASSIGN error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается строка изменения параметра")));
+		PARSER->error().error(@1, rdo::format("Ожидается строка изменения параметра"));
 	}
 	;
 
@@ -494,13 +494,13 @@ planning_statement
 		LPRDOEvent pEvent = PARSER->findEvent(eventName);
 		if (!pEvent)
 		{
-			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
+			PARSER->error().error(@1, rdo::format("Попытка запланировать неизвестное событие: %s", eventName.c_str()));
 		}
 
 		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
 		if (arithmIt == pArithmList->getContainer().end())
 		{
-			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
+			PARSER->error().error(@1, rdo::format("Не указано время планирования события: %s", eventName.c_str()));
 		}
 
 		LPRDOFUNArithm pTimeArithm = *arithmIt;
@@ -523,7 +523,7 @@ planning_statement
 		ASSERT(pCalcTime);
 
 		rdo::runtime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
-		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
@@ -531,19 +531,19 @@ planning_statement
 	}
 	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' error
 	{
-		PARSER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
+		PARSER->error().error(@7, "Не найден символ окончания инструкции - точка с запятой");
 	}
 	| RDO_IDENTIF '.' RDO_Planning '(' error
 	{
-		PARSER->error().error(@5, _T("Ошибка в арифметическом выражении"));
+		PARSER->error().error(@5, "Ошибка в арифметическом выражении");
 	}
 	| RDO_IDENTIF '.' RDO_Planning error
 	{
-		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
+		PARSER->error().error(@4, "Ожидается открывающая скобка");
 	}
 	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list error
 	{
-		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
+		PARSER->error().error(@6, "Ожидается закрывающая скобка");
 	}
 	;
 
@@ -554,11 +554,11 @@ stopping_statement
 		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
 		if (!pEvent)
 		{
-			PARSER->error().error(@1, rdo::format(_T("Попытка остановить неизвестное событие: %s"), eventName.c_str()));
+			PARSER->error().error(@1, rdo::format("Попытка остановить неизвестное событие: %s", eventName.c_str()));
 		}
 
 		rdo::runtime::LPRDOCalcEventStop pCalc = rdo::Factory<rdo::runtime::RDOCalcEventStop>::create();
-		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format(_T("Остановка события %s"), eventName.c_str())));
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Остановка события %s", eventName.c_str())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
@@ -566,7 +566,7 @@ stopping_statement
 	}
 	| RDO_IDENTIF '.' RDO_Stopping '(' ')' error
 	{
-		PARSER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
+		PARSER->error().error(@4, "Не найден символ окончания инструкции - точка с запятой");
 	}
 	;
 
@@ -574,15 +574,15 @@ dpt_queue_param
 	: RDO_IDENTIF
 	{
 		tstring res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-		TRACE1(_T("%s _good\n"), res_name.c_str());
-		LPRDOPROCQueue pQueue = rdo::Factory<RDOPROCQueue>::create(PARSER->getLastPROCProcess(), _T("QUEUE"));
+		TRACE1("%s _good\n", res_name.c_str());
+		LPRDOPROCQueue pQueue = rdo::Factory<RDOPROCQueue>::create(PARSER->getLastPROCProcess(), "QUEUE");
 		ASSERT(pQueue);
 		pQueue->setResource(res_name);
 		$$ = PARSER->stack().push(pQueue);
 	}
 	| RDO_IDENTIF error
 	{
-		PARSER->error().error(@1, _T("Ошибка в миени очереди"))
+		PARSER->error().error(@1, "Ошибка в миени очереди")
 	}
 	;
 
@@ -590,15 +590,15 @@ dpt_depart_param
 	: RDO_IDENTIF
 	{
 		tstring res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-		TRACE1(_T("%s _good\n"), res_name.c_str());
-		LPRDOPROCDepart pDepart = rdo::Factory<RDOPROCDepart>::create(PARSER->getLastPROCProcess(), _T("DEPART"));
+		TRACE1("%s _good\n", res_name.c_str());
+		LPRDOPROCDepart pDepart = rdo::Factory<RDOPROCDepart>::create(PARSER->getLastPROCProcess(), "DEPART");
 		ASSERT(pDepart);
 		pDepart->setResource(res_name);
 		$$ = PARSER->stack().push(pDepart);
 	}
 	| RDO_IDENTIF error 
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"))
+		PARSER->error().error(@1, "Ошибка в имени ресурса")
 	}
 	;
 
@@ -606,7 +606,7 @@ dpt_term_param
 	: /* empty */
 	{
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0));
-		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), pCalc);
+		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), "TERMINATE", pCalc);
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
 	}
@@ -617,18 +617,18 @@ dpt_term_param
 		if (pArithm->typeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int)
 		{
 			rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(NULL);
-			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), pCalc);
+			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), "TERMINATE", pCalc);
 			ASSERT(pBlock);
 			$$ = PARSER->stack().push(pBlock);
 		}
 		else
 		{
-			PARSER->error().error(@1, _T("Ошибка, для оператора TERMINATE можно использовать только арифметические выражения целого типа"));
+			PARSER->error().error(@1, "Ошибка, для оператора TERMINATE можно использовать только арифметические выражения целого типа");
 		}
 	}
 	| fun_arithm error
 	{
-		PARSER->error().error(@1, _T("Ошибка, после оператора TERMINATE может быть указано только арифметическое выражение целого типа"))
+		PARSER->error().error(@1, "Ошибка, после оператора TERMINATE может быть указано только арифметическое выражение целого типа")
 	}
 	;
 
@@ -636,7 +636,7 @@ dpt_seize_param
 	: RDO_IDENTIF
 	{
 		tstring        res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-		LPRDOPROCSeize pSeize   = rdo::Factory<RDOPROCSeize>::create(PARSER->getLastPROCProcess(), _T("SEIZE"));
+		LPRDOPROCSeize pSeize   = rdo::Factory<RDOPROCSeize>::create(PARSER->getLastPROCProcess(), "SEIZE");
 		ASSERT(pSeize);
 		pSeize->addResource(res_name);
 		$$ = PARSER->stack().push(pSeize);
@@ -651,7 +651,7 @@ dpt_seize_param
 	}
 	| dpt_seize_param error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		PARSER->error().error(@1, "Ошибка в имени ресурса");
 	}
 	;
 
@@ -659,7 +659,7 @@ dpt_release_param
 	: RDO_IDENTIF
 	{
 		tstring          res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-		LPRDOPROCRelease pRelease = rdo::Factory<RDOPROCRelease>::create(PARSER->getLastPROCProcess(), _T("RELEASE"));
+		LPRDOPROCRelease pRelease = rdo::Factory<RDOPROCRelease>::create(PARSER->getLastPROCProcess(), "RELEASE");
 		ASSERT(pRelease);
 		pRelease->addResource(res_name);
 		$$ = PARSER->stack().push(pRelease);
@@ -674,7 +674,7 @@ dpt_release_param
 	}
 	| dpt_release_param error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		PARSER->error().error(@1, "Ошибка в имени ресурса");
 	}
 	;
 
@@ -694,7 +694,7 @@ dpt_assign_param
 			rtp = rssList[res].getType();
 			if(!rtp.m_params[param].exist())
 			{
-				PARSER->error().error(@1, rdo::format(_T("Ссылка на неизвестный параметр ресурса: %s.%s"), res.c_str(), param.c_str()));
+				PARSER->error().error(@1, rdo::format("Ссылка на неизвестный параметр ресурса: %s.%s", res.c_str(), param.c_str()));
 			}
 		
 			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
@@ -716,13 +716,13 @@ dpt_assign_param
 			rdo::runtime::LPRDOCalcProcAssign pAssignCalc = rdo::Factory<rdo::runtime::RDOCalcProcAssign>::create(pCalc, res, par);
 			ASSERT(pAssignCalc);
 
-			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(PARSER->getLastPROCProcess(), _T("ASSIGN"), pAssignCalc);
+			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(PARSER->getLastPROCProcess(), "ASSIGN", pAssignCalc);
 			ASSERT(pBlock);
 			$$ = PARSER->stack().push(pBlock);
 		}
 		else
 		{
-			PARSER->error().error(@1, rdo::format(_T("Ссылка на неизвестный ресурс: %s"), res.c_str()));
+			PARSER->error().error(@1, rdo::format("Ссылка на неизвестный ресурс: %s", res.c_str()));
 		}
 	}
 	;
@@ -778,7 +778,7 @@ param_array_value
 	}
 	| '[' array_item error
 	{
-		PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
+		PARSER->error().error(@2, "Массив должен закрываться скобкой");
 	}
 	;
 
@@ -811,7 +811,7 @@ array_item
 		ASSERT(pValue);
 		pArrayValue->insertItem(pValue);
 		$$ = PARSER->stack().push(pArrayValue);
-		PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), pValue->value().getAsString().c_str()));
+		PARSER->error().warning(@1, rdo::format("Пропущена запятая перед: %s", pValue->value().getAsString().c_str()));
 	}
 	;
 
@@ -831,11 +831,11 @@ param_value_default
 		RDOParserSrcInfo src_info(@1, @2, true);
 		if (src_info.src_pos().point())
 		{
-			PARSER->error().error(src_info, _T("Не указано значение по умолчанию"));
+			PARSER->error().error(src_info, "Не указано значение по умолчанию");
 		}
 		else
 		{
-			PARSER->error().error(src_info, _T("Неверное значение по умолчанию"));
+			PARSER->error().error(src_info, "Неверное значение по умолчанию");
 		}
 	}
 	;
@@ -943,7 +943,7 @@ fun_logic
 		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
 		pLogic->setSrcPos (@1, @3);
-		pLogic->setSrcText(_T("[") + pLogic->src_text() + _T("]"));
+		pLogic->setSrcText("[" + pLogic->src_text() + "]");
 		$$ = PARSER->stack().push(pLogic);
 	}
 	| '(' fun_logic ')'
@@ -951,7 +951,7 @@ fun_logic
 		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
 		ASSERT(pLogic);
 		pLogic->setSrcPos (@1, @3);
-		pLogic->setSrcText(_T("(") + pLogic->src_text() + _T(")"));
+		pLogic->setSrcText("(" + pLogic->src_text() + ")");
 		$$ = PARSER->stack().push(pLogic);
 	}
 	| RDO_not fun_logic
@@ -965,11 +965,11 @@ fun_logic
 	}
 	| '[' fun_logic error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| '(' fun_logic error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	;
 
@@ -988,7 +988,7 @@ fun_arithm
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
 	| '*' 
 	{
-		LPRDOValue pValue = rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, _T("*")));
+		LPRDOValue pValue = rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*"));
 		ASSERT(pValue);
 		LPExpression pExpression = rdo::Factory<Expression>::create(pValue);
 		ASSERT(pExpression);
@@ -1043,7 +1043,7 @@ fun_arithm
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
 		pArithm->setSrcPos (@1, @3);
-		pArithm->setSrcText(_T("(") + pArithm->src_text() + _T(")"));
+		pArithm->setSrcText("(" + pArithm->src_text() + ")");
 		$$ = PARSER->stack().push(pArithm);
 	}
 	| '-' fun_arithm %prec RDO_UMINUS
@@ -1070,7 +1070,7 @@ fun_arithm
 		}
 		else
 		{
-			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
+			PARSER->error().error(@1, rdo::format("'%s' не является массивом.", pValue->value().getIdentificator().c_str()));
 		}
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
@@ -1101,7 +1101,7 @@ fun_arithm
 		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
 		if (!pArrayType)
 		{
-			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
+			PARSER->error().error(@1, rdo::format("'%s' не является массивом.", pValue->value().getIdentificator().c_str()));
 		}
 
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
@@ -1135,14 +1135,14 @@ fun_arithm_func_call
 
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
-		pFunParams->setSrcText(funName + _T("(") + pArithmContainer->src_text() + _T(")"));
+		pFunParams->setSrcText(funName + "(" + pArithmContainer->src_text() + ")");
 		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
 		ASSERT(pArithm);
 		$$ = PARSER->stack().push(pArithm);
 	}
 	| RDO_IDENTIF '(' error
 	{
-		PARSER->error().error(@3, _T("Ошибка в параметрах функции"));
+		PARSER->error().error(@3, "Ошибка в параметрах функции");
 	}
 	;
 
@@ -1173,13 +1173,13 @@ arithm_list_body
 		LPRDOFUNArithm    pArithm          = PARSER->stack().pop<RDOFUNArithm>($3);
 		ASSERT (pArithmContainer);
 		ASSERT (pArithm);
-		pArithmContainer->setSrcText(pArithmContainer->src_text() + _T(", ") + pArithm->src_text());
+		pArithmContainer->setSrcText(pArithmContainer->src_text() + ", " + pArithm->src_text());
 		pArithmContainer->addItem   (pArithm);
 		$$ = PARSER->stack().push(pArithmContainer);
 	}
 	| arithm_list_body ',' error
 	{
-		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+		PARSER->error().error(@3, "Ошибка в арифметическом выражении");
 	}
 	;
 
@@ -1202,11 +1202,11 @@ fun_group_header
 	}
 	| fun_group_keyword '(' error
 	{
-		PARSER->error().error(@3, _T("Ожидается имя типа"));
+		PARSER->error().error(@3, "Ожидается имя типа");
 	}
 	| fun_group_keyword error
 	{
-		PARSER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
+		PARSER->error().error(@1, "После имени функции ожидается октрывающаяся скобка");
 	}
 	;
 
@@ -1225,21 +1225,21 @@ fun_group
 		LPRDOFUNGroupLogic pGroupFun = PARSER->stack().pop<RDOFUNGroupLogic>($1);
 		ASSERT(pGroupFun);
 		pGroupFun->setSrcPos(@1, @3);
-		LPRDOFUNLogic pTrueLogic = RDOFUNLogic::generateTrue(RDOParserSrcInfo(@2, _T("NoCheck")));
+		LPRDOFUNLogic pTrueLogic = RDOFUNLogic::generateTrue(RDOParserSrcInfo(@2, "NoCheck"));
 		ASSERT(pTrueLogic);
 		$$ = PARSER->stack().push(pGroupFun->createFunLogic(pTrueLogic));
 	}
 	| fun_group_header fun_logic error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_group_header RDO_NoCheck error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_group_header error
 	{
-		PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		PARSER->error().error(@1, @2, "Ошибка в логическом выражении");
 	}
 	;
 
@@ -1253,16 +1253,16 @@ fun_select_header
 		ASSERT(pValue);
 		LPRDOFUNSelect pSelect   = rdo::Factory<RDOFUNSelect>::create(pValue->src_info());
 		ASSERT(pSelect);
-		pSelect->setSrcText(_T("Select(") + pValue->value().getIdentificator() + _T(": "));
+		pSelect->setSrcText("Select(" + pValue->value().getIdentificator() + ": ");
 		$$ = PARSER->stack().push(pSelect);
 	}
 	| RDO_Select '(' error
 	{
-		PARSER->error().error(@3, _T("Ожидается имя типа"));
+		PARSER->error().error(@3, "Ожидается имя типа");
 	}
 	| RDO_Select error
 	{
-		PARSER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
+		PARSER->error().error(@1, "Ожидается октрывающаяся скобка");
 	}
 	;
 
@@ -1273,7 +1273,7 @@ fun_select_body
 		LPRDOFUNLogic  pLogic  = PARSER->stack().pop<RDOFUNLogic> ($2);
 		ASSERT(pSelect);
 		ASSERT(pLogic );
-		pSelect->setSrcText(pSelect->src_text() + pLogic->src_text() + _T(")"));
+		pSelect->setSrcText(pSelect->src_text() + pLogic->src_text() + ")");
 		pSelect->initSelect(pLogic);
 		$$ = PARSER->stack().push(pSelect);
 	}
@@ -1281,8 +1281,8 @@ fun_select_body
 	{
 		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
-		RDOParserSrcInfo info(@2, _T("NoCheck"));
-		pSelect->setSrcText(pSelect->src_text() + info.src_text() + _T(")"));
+		RDOParserSrcInfo info(@2, "NoCheck");
+		pSelect->setSrcText(pSelect->src_text() + info.src_text() + ")");
 		LPRDOFUNLogic pTrueLogic = RDOFUNLogic::generateTrue(info);
 		ASSERT(pTrueLogic);
 		pSelect->initSelect(pTrueLogic);
@@ -1290,15 +1290,15 @@ fun_select_body
 	}
 	| fun_select_header fun_logic error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_select_header RDO_NoCheck error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@2, "Ожидается закрывающаяся скобка");
 	}
 	| fun_select_header error
 	{
-		PARSER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		PARSER->error().error(@1, @2, "Ошибка в логическом выражении");
 	}
 	;
 
@@ -1323,37 +1323,37 @@ fun_select_logic
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
-		PARSER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
+		PARSER->error().error(@4, @5, "Ошибка в логическом выражении");
 	}
 	| fun_select_body '.' fun_select_keyword error
 	{
-		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		PARSER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
 		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
 		pSelect->setSrcPos(@1, @5);
-		RDOParserSrcInfo emptyInfo(@3, @5, _T("Empty()"));
+		RDOParserSrcInfo emptyInfo(@3, @5, "Empty()");
 		LPRDOFUNLogic pLogic = pSelect->createFunSelectEmpty(emptyInfo);
 		ASSERT(pLogic);
 		$$ = PARSER->stack().push(pLogic);
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
-		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@4, "Ожидается закрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Empty error
 	{
-		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		PARSER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' error
 	{
-		PARSER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
+		PARSER->error().error(@2, @3, "Ожидается метод списка ресурсов");
 	}
 	| fun_select_body error
 	{
-		PARSER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
+		PARSER->error().error(@1, "Ожидается '.' (точка) для вызова метода списка ресурсов");
 	}
 	;
 
@@ -1363,18 +1363,18 @@ fun_select_arithm
 		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
 		ASSERT(pSelect);
 		pSelect->setSrcPos(@1, @5);
-		RDOParserSrcInfo sizeInfo(@3, @5, _T("Size()"));
+		RDOParserSrcInfo sizeInfo(@3, @5, "Size()");
 		LPRDOFUNArithm pArithm = pSelect->createFunSelectSize(sizeInfo);
 		ASSERT(pArithm);
 		$$ = PARSER->stack().push(pArithm);
 	}
 	| fun_select_body '.' RDO_Size error
 	{
-		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		PARSER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Size '(' error
 	{
-		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		PARSER->error().error(@4, "Ожидается закрывающаяся скобка");
 	}
 	;
 

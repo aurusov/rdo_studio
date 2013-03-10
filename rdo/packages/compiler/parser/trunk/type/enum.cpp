@@ -46,7 +46,7 @@ RDOEnumType::~RDOEnumType()
 
 tstring RDOEnumType::name() const
 {
-	tstring str = _T("(");
+	tstring str = "(";
 	rdo::runtime::RDOEnumType::const_iterator it = getEnums()->begin();
 	while (it != getEnums()->end())
 	{
@@ -54,10 +54,10 @@ tstring RDOEnumType::name() const
 		++it;
 		if (it != getEnums()->end())
 		{
-			str += _T(", ");
+			str += ", ";
 		}
 	}
-	str += _T(")");
+	str += ")";
 	return str;
 }
 
@@ -75,17 +75,17 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 			//! Типы разные, сгенерим ошибку
 			if (pEnum.compare(from.object_static_cast<RDOEnumType>()))
 			{
-				parser::g_error().push_only(src_info,     _T("Используются различные перечислимые типы с одинаковыми значениями"));
+				parser::g_error().push_only(src_info,     "Используются различные перечислимые типы с одинаковыми значениями");
 				parser::g_error().push_only(to_src_info,   to_src_info.src_text());
-				parser::g_error().push_only(src_info,     _T("и"));
+				parser::g_error().push_only(src_info,     "и");
 				parser::g_error().push_only(from_src_info, from_src_info.src_text());
-				parser::g_error().push_only(src_info,     _T("Возможно, удобнее использовать первый из них как перечислимый, а второй как such_as на него, тогда параметры можно будет сравнивать и присваивать"));
+				parser::g_error().push_only(src_info,     "Возможно, удобнее использовать первый из них как перечислимый, а второй как such_as на него, тогда параметры можно будет сравнивать и присваивать");
 			}
 			else
 			{
-				parser::g_error().push_only(src_info,     _T("Несоответствие перечислимых типов"));
+				parser::g_error().push_only(src_info,     "Несоответствие перечислимых типов");
 				parser::g_error().push_only(to_src_info,   to_src_info.src_text());
-				parser::g_error().push_only(src_info,     _T("и"));
+				parser::g_error().push_only(src_info,     "и");
 				parser::g_error().push_only(from_src_info, from_src_info.src_text());
 			}
 			parser::g_error().push_done();
@@ -99,12 +99,12 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 				LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
 				return pEnum;
 			}
-			parser::g_error().error(src_info, rdo::format(_T("Значение '%s' не является элементом перечислимого типа %s"), from_src_info.src_text().c_str(), to_src_info.src_text().c_str()));
+			parser::g_error().error(src_info, rdo::format("Значение '%s' не является элементом перечислимого типа %s", from_src_info.src_text().c_str(), to_src_info.src_text().c_str()));
 			break;
 		}
 		default:
-			parser::g_error().push_only(src_info,    rdo::format(_T("Ожидается значение перечислимого типа, найдено: %s"), from_src_info.src_text().c_str()));
-			parser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+			parser::g_error().push_only(src_info,    rdo::format("Ожидается значение перечислимого типа, найдено: %s", from_src_info.src_text().c_str()));
+			parser::g_error().push_only(to_src_info, rdo::format("См. тип: %s", to_src_info.src_text().c_str()));
 			parser::g_error().push_done();
 			break;
 	}
@@ -165,8 +165,8 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 
 	if (!pToValue || pToValue->typeID() == rdo::runtime::RDOType::t_unknow)
 	{
-		parser::g_error().push_only(src_info,    rdo::format(_T("Неверное значение параметра перечислимого типа: %s"), pFrom->src_info().src_text().c_str()));
-		parser::g_error().push_only(to_src_info, rdo::format(_T("Возможные значения: %s"), name().c_str()));
+		parser::g_error().push_only(src_info,    rdo::format("Неверное значение параметра перечислимого типа: %s", pFrom->src_info().src_text().c_str()));
+		parser::g_error().push_only(to_src_info, rdo::format("Возможные значения: %s", name().c_str()));
 		parser::g_error().push_done();
 	}
 	return pToValue;
@@ -197,7 +197,7 @@ void RDOEnumType::add(CREF(LPRDOValue) pNext)
 
 	if (getEnums()->findEnum(pNext->value().getAsString()) != rdo::runtime::RDOEnumType::END)
 	{
-		parser::g_error().error(pNext->src_info(), rdo::format(_T("Значение перечислимого типа уже существует: %s"), pNext->src_text().c_str()));
+		parser::g_error().error(pNext->src_info(), rdo::format("Значение перечислимого типа уже существует: %s", pNext->src_text().c_str()));
 	}
 	getEnums()->add(pNext->value().getAsString());
 }

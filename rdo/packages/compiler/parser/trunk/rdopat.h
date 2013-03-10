@@ -191,7 +191,7 @@ public:
 
 	virtual char getModelStructureLetter() const
 	{
-		return _T('I');
+		return 'I';
 	}
 	virtual PatType getType() const
 	{
@@ -217,7 +217,7 @@ public:
 
 	virtual char getModelStructureLetter() const
 	{
-		return _T('R');
+		return 'R';
 	};
 	virtual PatType getType() const
 	{
@@ -245,7 +245,7 @@ public:
 
 	virtual char getModelStructureLetter() const
 	{
-		return _T('A');
+		return 'A';
 	};
 	virtual PatType getType() const
 	{
@@ -283,7 +283,7 @@ DECLARE_FACTORY(RDOPatternKeyboard)
 public:
 	virtual char getModelStructureLetter() const
 	{
-		return _T('K');
+		return 'K';
 	};
 	virtual PatType getType() const
 	{
@@ -431,10 +431,10 @@ public:
 	{
 		switch (m_type)
 		{
-		case rdo::runtime::RDOSelectResourceCalc::order_empty   : return _T("<правило_выбора_не_указано>");
-		case rdo::runtime::RDOSelectResourceCalc::order_first   : return _T("first");
-		case rdo::runtime::RDOSelectResourceCalc::order_with_min: return _T("with_min");
-		case rdo::runtime::RDOSelectResourceCalc::order_with_max: return _T("with_max");
+		case rdo::runtime::RDOSelectResourceCalc::order_empty   : return "<правило_выбора_не_указано>";
+		case rdo::runtime::RDOSelectResourceCalc::order_first   : return "first";
+		case rdo::runtime::RDOSelectResourceCalc::order_with_min: return "with_min";
+		case rdo::runtime::RDOSelectResourceCalc::order_with_max: return "with_max";
 		default                                                 : NEVER_REACH_HERE;
 		}
 		return tstring();

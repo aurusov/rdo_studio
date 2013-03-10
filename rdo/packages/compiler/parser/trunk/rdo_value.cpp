@@ -150,7 +150,7 @@ rbool RDOValue::constant() const
 		return true;
 	}
 
-	if (m_value.typeID() == rdo::runtime::RDOType::t_identificator && m_value.getIdentificator() == _T("*"))
+	if (m_value.typeID() == rdo::runtime::RDOType::t_identificator && m_value.getIdentificator() == "*")
 	{
 		return true;
 	}

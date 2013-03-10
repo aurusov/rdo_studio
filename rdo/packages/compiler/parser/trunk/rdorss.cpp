@@ -66,7 +66,7 @@ Context::FindResult RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchEx
 	ruint parNumb = getType()->getRTPParamNumber(pValue->value().getIdentificator());
 	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 	{
-		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), pValue->value().getIdentificator().c_str()));
+		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format("Неизвестный параметр ресурса: %s", pValue->value().getIdentificator().c_str()));
 	}
 
 	LPRDORTPParam pParam = getType()->findRTPParam(pValue->value().getIdentificator());
@@ -84,7 +84,7 @@ Context::FindResult RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchEx
 
 void RDORSSResource::writeModelStructure(REF(rdo::ostream) stream) const
 {
-	stream << (getID() + 1) << _T(" ") << name() << _T(" ") << getType()->getNumber() << std::endl;
+	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
 }
 
 void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
@@ -93,25 +93,25 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 
 	if (m_currParam == getType()->getParams().end())
 	{
-		RDOParser::s_parser()->error().push_only(pParam->src_info(), _T("Слишком много параметров"));
-		RDOParser::s_parser()->error().push_only(getType()->src_info(), _T("См. тип ресурса"));
+		RDOParser::s_parser()->error().push_only(pParam->src_info(), "Слишком много параметров");
+		RDOParser::s_parser()->error().push_only(getType()->src_info(), "См. тип ресурса");
 		RDOParser::s_parser()->error().push_done();
 	}
 	try
 	{
-		if (pParam->value().getAsString() == _T("*"))
+		if (pParam->value().getAsString() == "*")
 		{
 			if (!(*m_currParam)->getDefault()->defined())
 			{
-				RDOParser::s_parser()->error().push_only(pParam->src_info(), _T("Невозможно использовать '*', к.т. отсутствует значение по умолчанию"));
+				RDOParser::s_parser()->error().push_only(pParam->src_info(), "Невозможно использовать '*', к.т. отсутствует значение по умолчанию");
 				/// @todo src_info() без параметра RDOParserSrcInfo()
-				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), _T("См. описание параметра"));
+				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), "См. описание параметра");
 				RDOParser::s_parser()->error().push_done();
 			}
 			m_paramList.push_back(Param((*m_currParam)->getDefault()));
 			m_currParam++;
 		}
-		else if (pParam->value().getAsString() == _T("#"))
+		else if (pParam->value().getAsString() == "#")
 		{
 			LPRDOValue pValue = (*m_currParam)->getDefault()->defined()
 				? (*m_currParam)->getDefault()
@@ -135,7 +135,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 	}
 	catch(REF(RDOSyntaxException))
 	{
-		RDOParser::s_parser()->error().modify(rdo::format(_T("Для параметра '%s': "), (*m_currParam)->name().c_str()));
+		RDOParser::s_parser()->error().modify(rdo::format("Для параметра '%s': ", (*m_currParam)->name().c_str()));
 	}
 }
 
@@ -160,7 +160,7 @@ rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 	);
 	ASSERT(pCalc);
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());
-	srcInfo.setSrcText(_T("Создание ресурса ") + src_text());
+	srcInfo.setSrcText("Создание ресурса " + src_text());
 	pCalc->setSrcInfo(srcInfo);
 	return pCalc;
 }
