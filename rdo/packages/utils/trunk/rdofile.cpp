@@ -46,9 +46,9 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 	boost::filesystem::path parentDir(from.parent_path());
 	boost::filesystem::path rootName      = parentDir.root_name();
 	boost::filesystem::path rootDirectory = parentDir.root_directory();
-	if (parentDir != (rootName / rootDirectory))
+	if ((rootName.empty() && rootDirectory.empty()) || parentDir != (rootName / rootDirectory))
 	{
-		parentDir /= rootDirectory;
+		parentDir /= boost::filesystem::path("/").make_preferred();
 	}
 
 	fileDir  = parentDir.string();
