@@ -24,9 +24,9 @@
 
 #ifdef TR_TRACE
 #ifdef RDO_MT
-std::fstream file(_T("C:\\rdo_kernel_mt.log"), std::ios_base::in | std::ios_base::out | std::ios_base::trunc);
+std::fstream file("C:\\rdo_kernel_mt.log", std::ios_base::in | std::ios_base::out | std::ios_base::trunc);
 #else
-std::fstream file(_T("C:\\rdo_kernel_st.log"), std::ios_base::in | std::ios_base::out | std::ios_base::trunc);
+std::fstream file("C:\\rdo_kernel_st.log", std::ios_base::in | std::ios_base::out | std::ios_base::trunc);
 #endif
 
 void RDOThread::trace(CREF(tstring) str)
@@ -68,7 +68,7 @@ RDOThread::RDOThread(CREF(tstring) _thread_name)
 #endif // RDO_MT
 {
 #ifdef TR_TRACE
-	trace(thread_name + _T("::") + thread_name);
+	trace(thread_name + "::" + thread_name);
 #endif
 	// Чтобы треда не получала ниодного сообщения. RT_THREAD_CLOSE обрабатывается автоматически
 	notifies.push_back(RT_THREAD_CLOSE);
@@ -88,8 +88,8 @@ RDOThread::RDOThread(CREF(tstring) _thread_name)
 RDOThread::~RDOThread()
 {
 #ifdef TR_TRACE
-	trace(rdo::format(_T("%s (%d)::~%s"), thread_name.c_str(), thread_id, thread_name.c_str()));
-//	trace(thread_name + _T("::~") + thread_name);
+	trace(rdo::format("%s (%d)::~%s", thread_name.c_str(), thread_id, thread_name.c_str()));
+//	trace(thread_name + "::~" + thread_name);
 #endif
 
 #ifdef RDO_MT
@@ -176,7 +176,7 @@ rbool RDOThread::processMessages()
 		messages.erase(messages.begin());
 		messages_mutex.Unlock();
 #ifdef TR_TRACE
-		RDOThread::trace((msg.type == RDOThread::RDOMessageInfo::post ? _T("-------(post)--- ") : _T("---------------- ")) + messageToString(msg.message) + _T(": ") + (msg.from ? msg.from->thread_name : _T("NULL")) + _T(" -> ") + thread_name);
+		RDOThread::trace((msg.type == RDOThread::RDOMessageInfo::post ? "-------(post)--- " : "---------------- ") + messageToString(msg.message) + ": " + (msg.from ? msg.from->thread_name : "NULL") + " -> " + thread_name);
 #endif
 		proc(msg);
 		if (msg.message == RT_THREAD_CLOSE)
