@@ -446,13 +446,13 @@ false {
 	return RDO_BOOL_CONST;
 }
 
-([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-zА-Яа-я\xB8_][A-Za-zА-Яа-я\xB80-9_$]*
+([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-z\xA8\xB8\xC0-\xFF_][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*
 {
 	LEXER->setvalue(NULL);
 	return RDO_IDENTIF_BAD;
 }
 
-[A-Za-zА-Яа-я\xB8_$][A-Za-zА-Яа-я\xB80-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange {
+[A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
@@ -476,7 +476,7 @@ false {
 	return RDO_IDENTIF_NoChange_NoChange;
 }
 
-[A-Za-zА-Яа-я\xB8_$][A-Za-zА-Яа-я\xB80-9_$]*[\r\n\t ]+NoChange {
+[A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*[\r\n\t ]+NoChange {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
@@ -500,7 +500,7 @@ false {
 	return RDO_IDENTIF_NoChange;
 }
 
-[A-Za-zА-Яа-я\xB8_$][A-Za-zА-Яа-я\xB80-9_$]*[\r\n\t ]*\: {
+[A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*[\r\n\t ]*\: {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
@@ -524,7 +524,7 @@ false {
 	return RDO_IDENTIF_COLON;
 }
 
-[A-Za-zА-Яа-я\xB8_$][A-Za-zА-Яа-я\xB80-9_$]* {
+[A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]* {
 	tstring name(YYText());
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
 
