@@ -15,7 +15,7 @@
 #include "utils/rdotypes.h"
 // --------------------------------------------------------------------------------
 
-#define WARNING_STRING _T("предупреждение")
-#define ERROR_STRING   _T("ошибка")
+#define WARNING_STRING "предупреждение"
+#define ERROR_STRING   "ошибка"
 
 #endif // _SIMULATOR_REPORT_COMMENT_H_
