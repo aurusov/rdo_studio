@@ -63,6 +63,8 @@ protected:
 	RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace);
 	virtual ~RDOPMDResult();
 
+	static void printLeft(REF(rdo::ostream) stream, CREF(tstring) txt);
+
 	DECLARE_IName;
 
 private:

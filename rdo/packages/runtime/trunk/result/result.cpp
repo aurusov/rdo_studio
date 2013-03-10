@@ -20,6 +20,7 @@
 	#include <float.h>
 #endif // COMPILER_GCC
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdolocale.h"
 #include "simulator/runtime/result/result.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -100,6 +101,18 @@ RDOPMDResult::~RDOPMDResult()
 CREF(tstring) RDOPMDResult::name() const
 {
 	return m_name;
+}
+
+void RDOPMDResult::printLeft(REF(rdo::ostream) stream, CREF(tstring) txt)
+{
+	stream << txt;
+
+	rsint spaceCnt = 30 - (rsint)rdo::locale::length(txt);
+	if (spaceCnt > 0)
+	{
+		stream.width(spaceCnt);
+		stream << " ";
+	}
 }
 
 // --------------------------------------------------------------------------------
@@ -203,8 +216,8 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 	RDOValue minValue = RDOValue::fromDouble(m_currentValue.rdoValue.type(), (boost::accumulators::min)(m_acc));
 	RDOValue maxValue = RDOValue::fromDouble(m_currentValue.rdoValue.type(), (boost::accumulators::max)(m_acc));
 
-	stream.width(30);
-	stream << std::left << name()
+	printLeft(stream, name());
+	stream
 		<< "\t" << "Тип:"        << "\t" << "par"
 		<< "\t" << "Посл.знач.:" << "\t" << ResultStreamItem<tstring> (count > 0, traceValue())
 		<< "\t" << "Ср.знач.:"   << "\t" << ResultStreamItem<double>  (count > 0, average     )
@@ -296,8 +309,8 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	double average  = boost::accumulators::sum(m_acc) / (currTime - m_timeBegin);
 	ruint  count    = boost::accumulators::count(m_acc);
 
-	stream.width(30);
-	stream << std::left << name()
+	printLeft(stream, name());
+	stream
 		<< "\t" << "Тип:"        << "\t" << "state"
 		<< "\t" << "Посл.знач.:" << "\t" << traceValue()
 		<< "\t" << "% соотв.:"   << "\t" << boost::format("%1.6f") % average
@@ -412,8 +425,8 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 		? boost::accumulators::weighted_median(m_acc)
 		: 0.0;
 
-	stream.width(30);
-	stream << std::left << name()
+	printLeft(stream, name());
+	stream
 		<< "\t" << "Тип:"        << "\t" << "quant"
 		<< "\t" << "Посл.знач.:" << "\t" << ResultStreamItem<tstring>(true, traceValue())
 		<< "\t" << "Ср.знач.:"   << "\t" << ResultStreamItem<double> (true, average     )
@@ -490,8 +503,8 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	RDOValue minValue = RDOValue::fromDouble(m_currValue.type(), (boost::accumulators::min)(m_acc));
 	RDOValue maxValue = RDOValue::fromDouble(m_currValue.type(), (boost::accumulators::max)(m_acc));
 
-	stream.width(30);
-	stream << std::left << name()
+	printLeft(stream, name());
+	stream
 		<< "\t" << "Тип:"        << "\t" << "value"
 		<< "\t" << "Ср.знач.:"   << "\t" << ResultStreamItem<double>  (count > 0, average )
 		<< "\t" << "Мин.знач.:"  << "\t" << ResultStreamItem<RDOValue>(count > 0, minValue)
@@ -570,8 +583,8 @@ void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 		m_wasFinalCalc = true;
 	}
 
-	stream.width(30);
-	stream << std::left << name()
+	printLeft(stream, name());
+	stream
 		<< "\t" << "Тип:"      << "\t" << "get_value"
 		<< "\t" << "Значение:" << "\t" << m_value.getAsString()
 		<< '\n';
