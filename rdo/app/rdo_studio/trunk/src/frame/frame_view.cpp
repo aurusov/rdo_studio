@@ -313,7 +313,7 @@ void Content::elementText(PTR(rdo::animation::TextElement) pElement)
 		pElement->m_size.m_height
 	);
 
-	m_memDC.dc().drawText(rect, flags, QString::fromLocal8Bit(pElement->m_text.c_str()), &rect);
+	m_memDC.dc().drawText(rect, flags, QString::fromStdString(pElement->m_text), &rect);
 }
 
 void Content::elementRect(PTR(rdo::animation::RectElement) pElement)
@@ -524,7 +524,7 @@ void Content::elementActive(PTR(rdo::animation::ActiveElement) pElement, REF(rdo
 {
 	ASSERT(pElement);
 
-	QString oprName(QString::fromLocal8Bit(pElement->m_opr_name.c_str()));
+	QString oprName(QString::fromStdString(pElement->m_opr_name));
 	rdo::gui::animation::AreaList::iterator it = areaList.find(oprName);
 	if (it == areaList.end())
 	{
