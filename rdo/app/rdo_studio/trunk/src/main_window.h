@@ -90,12 +90,15 @@ public:
 private:
 	typedef  QMainWindow  parent_type;
 	typedef  QStringList  ReopenList;
+	typedef std::map<QMdiSubWindow*, QAction*> SubWindows;
 
+	SubWindows      m_pSubWindows;
 	int             m_updateTimerID;
 	LPStatusBar     m_pStatusBar;
 	ReopenList      m_reopenList;
 	QSignalMapper*  m_pInsertMenuSignalMapper;
 	bool            m_hasWindow;
+	QAction*        m_pSeparator;
 
 	void createStatusBar ();
 	void createToolBar   ();
@@ -109,6 +112,7 @@ private:
 	virtual void showEvent (QShowEvent*  event);
 	virtual void hideEvent (QHideEvent*  event);
 	virtual void timerEvent(QTimerEvent* event);
+	bool eventFilter(QObject *target, QEvent *event);
 
 	void onSubWindowActivated(QMdiSubWindow*);
 	void onViewOptions ();
@@ -122,6 +126,9 @@ private:
 
 	void updateInsertMenu(rbool enabled);
 	void onUpdateActions(rbool activated);
+
+	void addNewAction(QMdiSubWindow* window);
+	void removeExcessActions();
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOW_H_
