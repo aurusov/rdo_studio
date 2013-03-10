@@ -43,13 +43,13 @@ void locale::init()
 	setlocale(LC_ALL, ".ACP");
 #endif
 
-	std::locale C99_out_locale(std::locale::classic(), new boost::math::nonfinite_num_put<char>);
-	std::locale C99_in_locale (std::locale::classic(), new boost::math::nonfinite_num_get<char>);
+	std::locale C99_out_locale(sourceCodeLocale, new boost::math::nonfinite_num_put<char>);
+	std::locale C99_in_locale (sourceCodeLocale, new boost::math::nonfinite_num_get<char>);
 
-	std::cout.imbue(C99_out_locale);
-	std::cerr.imbue(C99_out_locale);
-	std::clog.imbue(C99_out_locale);
-	std::cin.imbue (C99_in_locale );
+	std::cout.imbue(sourceCodeLocale);
+	std::cerr.imbue(sourceCodeLocale);
+	std::clog.imbue(sourceCodeLocale);
+	std::cin.imbue (sourceCodeLocale);
 }
 
 locale& locale::get()
