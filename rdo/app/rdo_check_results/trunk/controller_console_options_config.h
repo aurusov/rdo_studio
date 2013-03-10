@@ -18,33 +18,33 @@
 // --------------------------------------------------------------------------------
 
 // Input param constant
-const tstring ETALON_TRACE_COMMAND          = _T("etalon-trace");
-const tstring ETALON_RESULT_COMMAND         = _T("etalon-result");
-const tstring TRACE_COMMAND                 = _T("trace");
-const tstring RESULT_COMMAND                = _T("result");
-const tstring HELP_COMMAND                 = _T("help");
-const tstring VERSION_COMMAND               = _T("version");
+const tstring ETALON_TRACE_COMMAND          = "etalon-trace";
+const tstring ETALON_RESULT_COMMAND         = "etalon-result";
+const tstring TRACE_COMMAND                 = "trace";
+const tstring RESULT_COMMAND                = "result";
+const tstring HELP_COMMAND                 = "help";
+const tstring VERSION_COMMAND               = "version";
 
-const tstring ETALON_TRACE_COMMAND_SHORT    = _T("T");
-const tstring ETALON_RESULT_COMMAND_SHORT   = _T("R");
-const tstring TRACE_COMMAND_SHORT           = _T("t");
-const tstring RESULT_COMMAND_SHORT          = _T("r");
-const tstring HELP_COMMAND_SHORT            = _T("h");
-const tstring VERSION_COMMAND_SHORT         = _T("v");
+const tstring ETALON_TRACE_COMMAND_SHORT    = "T";
+const tstring ETALON_RESULT_COMMAND_SHORT   = "R";
+const tstring TRACE_COMMAND_SHORT           = "t";
+const tstring RESULT_COMMAND_SHORT          = "r";
+const tstring HELP_COMMAND_SHORT            = "h";
+const tstring VERSION_COMMAND_SHORT         = "v";
 
 // Input param comment
-const tstring ETALON_TRACE_COMMENT          = _T(": path to the etalon trace");
-const tstring ETALON_RESULT_COMMENT         = _T(": path to the etalon result");
-const tstring TRACE_COMMENT                 = _T(": path to the trace");
-const tstring RESULT_COMMENT                = _T(": path to the result");
-const tstring HELP_COMMENT                  = _T(": display help message");
-const tstring VERSION_COMMENT               = _T(": display program version");
+const tstring ETALON_TRACE_COMMENT          = ": path to the etalon trace";
+const tstring ETALON_RESULT_COMMENT         = ": path to the etalon result";
+const tstring TRACE_COMMENT                 = ": path to the trace";
+const tstring RESULT_COMMENT                = ": path to the result";
+const tstring HELP_COMMENT                  = ": display help message";
+const tstring VERSION_COMMENT               = ": display program version";
 
 // Auxiliary constants
-const tstring PROGRAM_VERSION               = _T("0.5.0");
-const tstring PROGRAM_NAME                  = _T("rdo check results");
+const tstring PROGRAM_VERSION               = "0.5.0";
+const tstring PROGRAM_NAME                  = "rdo check results";
 
-const tstring NOP_STRING                    = _T(" ");
-const tstring COMMA_STRING                  = _T(",");
+const tstring NOP_STRING                    = " ";
+const tstring COMMA_STRING                  = ",";
 
 #endif // _RDO_CONTROLLER_CONSOLE_OPTIONS_CONFIG_H_

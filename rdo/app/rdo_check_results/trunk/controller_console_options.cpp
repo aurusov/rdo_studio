@@ -23,7 +23,7 @@ RDOControllerConsoleOptions::RDOControllerConsoleOptions(int argc, char *argv[])
 {
 	po::options_description options_header(program_description);
 	
-	po::options_description options_general(_T("General options"));
+	po::options_description options_general("General options");
 	createGeneralOptions(options_general);
 	
 	m_options.add(options_header);
@@ -36,7 +36,7 @@ RDOControllerConsoleOptions::RDOControllerConsoleOptions(int argc, char *argv[])
 	}
 	catch (CREF(std::exception) e)
 	{
-		std::cout << _T("command line error: ") << e.what() << std::endl;
+		std::cout << "command line error: " << e.what() << std::endl;
 	}
 }
 

@@ -124,11 +124,11 @@ bool compare_result(CREF(tstring) etalon_result, CREF(tstring) result)
 
 void test_model(CREF(tstring) etalon_trace, CREF(tstring) etalon_result, CREF(tstring) simulation_trace, CREF(tstring) simulation_result)
 {	
-	TEST_ERROR(fs::exists(etalon_trace), _T("etalon_trace not found"), TERMINATION_ERROR_FILE_NOT_FOUND);
-	TEST_ERROR(fs::exists(etalon_result), _T("etalon_result not found"), TERMINATION_ERROR_FILE_NOT_FOUND);
+	TEST_ERROR(fs::exists(etalon_trace), "etalon_trace not found", TERMINATION_ERROR_FILE_NOT_FOUND);
+	TEST_ERROR(fs::exists(etalon_result), "etalon_result not found", TERMINATION_ERROR_FILE_NOT_FOUND);
 
-	TEST_ERROR(fs::exists(simulation_trace), _T("simulation_trace not found"), TERMINATION_ERROR_FILE_NOT_FOUND);
-	TEST_ERROR(fs::exists(simulation_result), _T("simulation_result not found"), TERMINATION_ERROR_FILE_NOT_FOUND);
+	TEST_ERROR(fs::exists(simulation_trace), "simulation_trace not found", TERMINATION_ERROR_FILE_NOT_FOUND);
+	TEST_ERROR(fs::exists(simulation_result), "simulation_result not found", TERMINATION_ERROR_FILE_NOT_FOUND);
 	
 	rbool compare_trace_status = compare_trace(etalon_trace, simulation_trace);
 	rbool compare_result_status = compare_result(etalon_result, simulation_result);
@@ -168,17 +168,17 @@ int main(int argc, PTR(char) argv[])
 	}
 	else
 	{
-		std::cout << _T("Not enough of input data") << std::endl;
+		std::cout << "Not enough of input data" << std::endl;
 		g_state = TERMINATION_ERROR_INVALID_INPUT;
 	}
 	
 	if(!g_state)
 	{
-		std::cout <<  _T("Test is completed successfully") << std::endl;
+		std::cout <<  "Test is completed successfully" << std::endl;
 	}
 	else
 	{
-		std::cout <<  _T("Test is completed with an error") << std::endl;
+		std::cout <<  "Test is completed with an error" << std::endl;
 	}
 
 	return g_state;
