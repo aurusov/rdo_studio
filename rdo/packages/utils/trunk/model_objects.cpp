@@ -16,20 +16,20 @@ OPEN_RDO_MODEL_OBJECTS_NAMESPACE
 
 tstring getFileTypeString(RDOFileType type)
 {
-	tstring string(_T(""));
+	tstring string("");
 	switch ( type ) {
-			case RTP : string = _T("RTP") ; break;
-			case RSS : string = _T("RSS") ; break;
-			case EVN : string = _T("EVN") ; break;
-			case PAT : string = _T("PAT") ; break;
-			case DPT : string = _T("DPT") ; break;
-			case PRC : string = _T("PRC") ; break;
-			case PRCX: string = _T("PRCX"); break;
-			case FRM : string = _T("FRM") ; break;
-			case FUN : string = _T("FUN") ; break;
-			case SMR : string = _T("SMR") ; break;
-			case PMD : string = _T("PMD") ; break;
-			default: string = _T("");
+			case RTP : string = "RTP" ; break;
+			case RSS : string = "RSS" ; break;
+			case EVN : string = "EVN" ; break;
+			case PAT : string = "PAT" ; break;
+			case DPT : string = "DPT" ; break;
+			case PRC : string = "PRC" ; break;
+			case PRCX: string = "PRCX"; break;
+			case FRM : string = "FRM" ; break;
+			case FUN : string = "FUN" ; break;
+			case SMR : string = "SMR" ; break;
+			case PMD : string = "PMD" ; break;
+			default: string = "";
 	}
 	return string;
 }

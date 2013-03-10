@@ -58,7 +58,7 @@
 #define ASSERT(A) \
 	if (!(A)) \
 	{ \
-		::OutputDebugString(rdo::format(_T("ASSERT: line %d, source '%s', condition '%s'\n"), __LINE__, __FILE__, #A).c_str()); \
+		::OutputDebugString(rdo::format("ASSERT: line %d, source '%s', condition '%s'\n", __LINE__, __FILE__, #A).c_str()); \
 		::DebugBreak(); \
 	}
 

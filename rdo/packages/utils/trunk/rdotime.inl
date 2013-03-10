@@ -38,7 +38,7 @@ inline tstring Time::asString() const
 {
 	if (m_value == Time::invalid())
 	{
-		return _T("[INVALID]");
+		return "[INVALID]";
 	}
 	else
 	{

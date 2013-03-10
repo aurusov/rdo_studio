@@ -26,7 +26,7 @@ OPEN_RDO_NAMESPACE
 
 inline rbool File::create(CREF(tstring) name)
 {
-	return create(name, _T(""));
+	return create(name, "");
 }
 
 inline rbool File::create(CREF(tstring) name, CREF(tstring) content)

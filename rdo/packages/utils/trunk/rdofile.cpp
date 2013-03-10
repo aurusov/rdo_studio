@@ -88,9 +88,9 @@ tstring File::getTempFileName()
 #ifdef COMPILER_GCC
 	boost::uuids::random_generator random_gen;
 #ifdef UNICODE
-	tstring tempFileName = tstring(_T("/tmp/rdo_temp_file_num_")) + boost::uuids::to_wstring(random_gen());
+	tstring tempFileName = tstring("/tmp/rdo_temp_file_num_") + boost::uuids::to_wstring(random_gen());
 #else
-	tstring tempFileName = tstring(_T("/tmp/rdo_temp_file_num_")) + boost::uuids::to_string(random_gen());
+	tstring tempFileName = tstring("/tmp/rdo_temp_file_num_") + boost::uuids::to_string(random_gen());
 #endif // UNICODE
 	create(tempFileName);
 	return tempFileName;
@@ -122,7 +122,7 @@ rbool File::trimLeft(CREF(tstring) name)
 
 		if (empty)
 		{
-			if (byte != _T(' ') && byte != _T('\t') && byte != _T('\n') && byte != _T('\r'))
+			if (byte != ' ' && byte != '\t' && byte != '\n' && byte != '\r')
 			{
 				empty = false;
 			}

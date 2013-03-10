@@ -313,7 +313,7 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		//! \param point     - координата левого верхнего угла картинки
 		//! \param bmp_name  - имя файла картинки
 		//! \param mask_name - имя файла маски картинки, может отсутствовать
-		BmpElement(CREF(Point) point, CREF(tstring) bmp_name, CREF(tstring) mask_name = _T(""));
+		BmpElement(CREF(Point) point, CREF(tstring) bmp_name, CREF(tstring) mask_name = "");
 
 		//! \details Возвращает \b true, если маска указана
 		rbool hasMask() const;
@@ -330,7 +330,7 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		//! \param rect      - координаты и размер фигуры
 		//! \param bmp_name  - имя файла картинки
 		//! \param mask_name - имя файла маски картинки, может отсутствовать
-		ScaledBmpElement(CREF(BoundedElement) rect, CREF(tstring) bmp_name, CREF(tstring) mask_name = _T(""));
+		ScaledBmpElement(CREF(BoundedElement) rect, CREF(tstring) bmp_name, CREF(tstring) mask_name = "");
 
 		//! \details Возвращает \b true, если маска указана
 		rbool hasMask() const;

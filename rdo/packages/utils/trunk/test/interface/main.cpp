@@ -21,18 +21,18 @@
 
 #define DISABLE_CONSOLE_OUTPUT
 
-const tstring strIMy1            = _T("void fun1():  ");
-const tstring strIMy2            = _T("void fun2():  ");
-const tstring strIMy3            = _T("void fun3():  ");
-const tstring strMyClass1Create  = _T("MyClass1():"   );
-const tstring strMyClass1Destroy = _T("~MyClass1():"  );
-const tstring strMyClass2Create  = _T("MyClass2():"   );
-const tstring strMyClass2Destroy = _T("~MyClass2():"  );
-const tstring strMyClass3Create  = _T("MyClass3():"   );
-const tstring strMyClass3Destroy = _T("~MyClass3():"  );
-const tchar   initFValue         = _T('1');
-const tchar   initSValue         = _T('2');
-const tchar   initTValue         = _T('3');
+const tstring strIMy1            = "void fun1():  ";
+const tstring strIMy2            = "void fun2():  ";
+const tstring strIMy3            = "void fun3():  ";
+const tstring strMyClass1Create  = "MyClass1():";
+const tstring strMyClass1Destroy = "~MyClass1():";
+const tstring strMyClass2Create  = "MyClass2():";
+const tstring strMyClass2Destroy = "~MyClass2():";
+const tstring strMyClass3Create  = "MyClass3():";
+const tstring strMyClass3Destroy = "~MyClass3():";
+const tchar   initFValue         = '1';
+const tchar   initSValue         = '2';
+const tchar   initTValue         = '3';
 
 typedef std::list<tstring> LogList;
 LogList s_logList;
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 		myInterfaceList.push_back(smptr);
 		myInterfaceList.push_back(smptr2);
 
-		tchar symbolT = _T('0');
+		tchar symbolT = '0';
 		STL_FOR_ALL_CONST(myInterfaceList, it)
 		{
 			rdo::Interface<IMy1> ptr1;
