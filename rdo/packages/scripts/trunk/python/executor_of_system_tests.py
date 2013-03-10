@@ -111,6 +111,7 @@ def get_node_attribute_from_dom(dom, node_text, attribute_text):
 
 
 def compare_etalons(etalons, basedir):
+    cycle_exit_code = APP_CODE_TERMINATION_NORMAL
     for etalon in etalons:
         source_file = basedir + etalon['source']
         target_file = basedir + etalon['target']
@@ -123,9 +124,10 @@ def compare_etalons(etalons, basedir):
             compare_string = u'OK'
         else:
             cycle_exit_code = APP_CODE_TERMINATION_ERROR
-                  
-        print u'COMPARE:  ', etalon['source'], u'  AND  ', etalon['target'], u':  ', compare_string
+
+        print u'COMPARE:  ', utils.safe_encode(etalon['source'], sys.getfilesystemencoding()), u'  AND  ', utils.safe_encode(etalon['target'], sys.getfilesystemencoding()), u':  ', compare_string
     
+    return cycle_exit_code
     
 ###############################################################################
 #                                 main code                                   #
@@ -260,9 +262,8 @@ for task in files:
             if simulation_code == RDO_CONSOLE_TERMINATION_NORMAL:
 
                 try:
-                    cycle_exit_code = APP_CODE_TERMINATION_NORMAL            
                     # compare etalons
-                    compare_etalons(etalons, dirname)
+                    cycle_exit_code = compare_etalons(etalons, dirname)
 
                 except:
                     cycle_exit_code = APP_CODE_TERMINATION_ERROR
@@ -308,9 +309,9 @@ for task in files:
                 print u'CONVERT EXIT CODE :', convertor_exit_code, u'\n'
                 
                 if convertor_exit_code == exit_code:
-                    cycle_exit_code = APP_CODE_TERMINATION_NORMAL
-                    compare_etalons(etalons, temp_directory_name)
-                    shutil.rmtree(temp_directory_name)
+                    cycle_exit_code = compare_etalons(etalons, temp_directory_name)
+                
+                shutil.rmtree(temp_directory_name)
             except:
                 cycle_exit_code = APP_CODE_TERMINATION_ERROR
 
