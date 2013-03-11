@@ -373,7 +373,7 @@ void LogView::push_back(CREF(tstring) log)
 
 	rbool prevVisible = m_SM_Y.isVisible(m_strings.count() - 1);
 
-	m_strings.push_back(QString::fromLocal8Bit(log.c_str()));
+	m_strings.push_back(QString::fromStdString(log));
 
 	rsint lastString = m_strings.count() - 1;
 	if (lastString == 1)

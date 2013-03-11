@@ -1424,8 +1424,8 @@ void Edit::focusInEvent(QFocusEvent* pEvent)
 
 void Edit::focusOutEvent(QFocusEvent* pEvent)
 {
-	super::focusOutEvent(pEvent);
 	deactivate(pEvent);
+	super::focusOutEvent(pEvent);
 }
 
 void Edit::onUpdateActions(rbool activated)

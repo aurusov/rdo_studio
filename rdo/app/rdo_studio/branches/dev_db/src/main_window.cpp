@@ -56,6 +56,7 @@ MainWindow::MainWindow()
 	: m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
 	, m_hasWindow(false)
+	, m_pSeparator(NULL)
 {
 	setupUi(this);
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
@@ -695,14 +696,72 @@ void MainWindow::updateInsertMenu(rbool enabled)
 	}
 }
 
-void MainWindow::onSubWindowActivated(QMdiSubWindow*)
+void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
 {
+	if (window && m_pSubWindows.find(window) == m_pSubWindows.end())
+	{
+		addNewAction(window);
+	}
+	removeExcessActions();
 	onUpdateActions(!mdiArea->subWindowList().empty());
+}
+
+void MainWindow::addNewAction(QMdiSubWindow* window)
+{
+	QList<QMdiSubWindow *> windowList = mdiArea->subWindowList();
+
+	if (windowList.count() == 1)
+		m_pSeparator = menuWindow->addSeparator();
+
+	window->installEventFilter(this);
+
+	QAction* pAction = menuWindow->addAction(window->windowTitle());
+	m_pSubWindows[window] = pAction;
+	//QObject::connect(pAction, &QAction::triggered, boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window));
+}
+
+void MainWindow::removeExcessActions()
+{
+	QList<QMdiSubWindow *> windowList = mdiArea->subWindowList();
+
+	for (SubWindows::iterator it = m_pSubWindows.begin(); it != m_pSubWindows.end();)
+	{
+		if (!windowList.contains(it->first))
+		{
+			//QObject::disconnect(pAction, &QAction::triggered, boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window));
+			menuWindow->removeAction(it->second);
+			m_pSubWindows.erase(it++);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
+	if (m_pSeparator && windowList.empty())
+	{
+		menuWindow->removeAction(m_pSeparator);
+		m_pSeparator = NULL;
+	}
 }
 
 void MainWindow::onUpdateActions(rbool activated)
 {
 	updateAction(actWindowCascade       , activated, mdiArea, &QMdiArea::cascadeSubWindows);
 	updateAction(actWindowTitleHorzontal, activated, mdiArea, &QMdiArea::tileSubWindows   );
+}
+
+bool MainWindow::eventFilter(QObject *target, QEvent *event)
+{
+	if (QMdiSubWindow* pSubWindow = static_cast<QMdiSubWindow*>(target))
+	{
+		if (event->type() == QEvent::WindowTitleChange && m_pSubWindows.find(pSubWindow) != m_pSubWindows.end())
+		{
+			m_pSubWindows[pSubWindow]->setText(pSubWindow->windowTitle());
+			return true;
+		}
+	}
+
+	return parent_type::eventFilter(target, event);
 }
 

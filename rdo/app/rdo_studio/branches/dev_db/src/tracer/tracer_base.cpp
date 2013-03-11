@@ -116,7 +116,7 @@ ParamInfo* TracerBase::getParam(rdo::textstream& stream)
 	stream >> paramType;
 	stream >> paramName;
 	ParamInfo* pParam = getParamType(stream);
-	pParam->setName(QString::fromLocal8Bit(paramName.c_str()));
+	pParam->setName(QString::fromStdString(paramName));
 	return pParam;
 }
 
@@ -125,7 +125,7 @@ void TracerBase::addResourceType(REF(tstring), rdo::textstream& stream)
 	LPResourceType pResourceType = rdo::Factory<ResourceType>::create(ResourceType::RDOTK_PERMANENT);
 	tstring resourceTypeName;
 	stream >> resourceTypeName;
-	pResourceType->setName(QString::fromLocal8Bit(resourceTypeName.c_str()));
+	pResourceType->setName(QString::fromStdString(resourceTypeName));
 	int paramCount;
 	stream >> paramCount;
 	for (int i = 0; i < paramCount; i++)
@@ -144,7 +144,7 @@ void TracerBase::addResource(REF(tstring) s, rdo::textstream& stream)
 	stream >> resourceTypeID;
 	LPResource pResource = rdo::Factory<Resource>::create(
 		m_resourceTypeList.at(resourceTypeID - 1),
-		QString::fromLocal8Bit(resourceName.c_str()),
+		QString::fromStdString(resourceName),
 		atoi(s.c_str())
 	);
 
@@ -181,7 +181,7 @@ void TracerBase::addPattern(REF(tstring), rdo::textstream& stream)
 	}
 
 	LPPattern pPattern = rdo::Factory<Pattern>::create(kind);
-	pPattern->setName(QString::fromLocal8Bit(patternName.c_str()));
+	pPattern->setName(QString::fromStdString(patternName));
 
 	m_patternList.push_back(pPattern);
 	m_pChartTree->addPattern(pPattern);
@@ -203,7 +203,7 @@ void TracerBase::addOperation(REF(tstring), rdo::textstream& stream)
 	LPPattern pPattern = m_patternList.at(patternID - 1);
 
 	LPOperationBase pOperationBase;
-	QString name = QString::fromLocal8Bit(operationName.c_str());
+	QString name = QString::fromStdString(operationName);
 
 	if (pPattern->getKind() != Pattern::PK_RULE && pPattern->getKind() != Pattern::PK_EVENT)
 	{
@@ -257,7 +257,7 @@ void TracerBase::addResult(REF(tstring) s, rdo::textstream& stream)
 	}
 	ASSERT(kind != Result::RK_UNDEFINED);
 
-	LPResult pResult = rdo::Factory<Result>::create(QString::fromLocal8Bit(s.c_str()), kind, resultID);
+	LPResult pResult = rdo::Factory<Result>::create(QString::fromStdString(s), kind, resultID);
 	m_resultList.push_back(pResult);
 	m_pChartTree->addResult(pResult);
 }

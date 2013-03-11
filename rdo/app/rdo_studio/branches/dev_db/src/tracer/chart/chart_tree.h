@@ -74,9 +74,8 @@ private:
 
 	void createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType);
 
-	void  addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const;
-	rbool findInCharts (PTR(QTreeWidgetItem) pCtrlItem) const;
-	rbool onUpdateChartFindInCharts();
+	void  createChart          (PTR(QTreeWidgetItem) pCtrlItem) const;
+	rbool activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const;
 
 	LPChartTreeItem      getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
 	PTR(QTreeWidgetItem) getSelected        () const;
@@ -90,8 +89,7 @@ private:
 
 private slots:
 	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int);
-	void onAddToNewChart();
-	void onChartFindInCharts();
+	void onChartCreate();
 	void onChartExport();
 	void onHelpContext();
 };

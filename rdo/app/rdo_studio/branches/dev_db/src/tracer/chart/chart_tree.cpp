@@ -34,11 +34,6 @@
 
 using namespace rdo::gui::tracer;
 
-//! @todo qt
-//BEGIN_MESSAGE_MAP(ChartTree, RDOTreeCtrl)
-//	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnDragDrop)
-//END_MESSAGE_MAP()
-
 Q_DECLARE_METATYPE(const ChartTreeItem*);
 
 ChartTree::ChartTree(PTR(QWidget) pParent)
@@ -71,17 +66,13 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 
 	m_root->getCtrlItem().setExpanded(true);
 
-	connect(
-		this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
-		this, SLOT(onTreeWidgetItemDoubleClicked(QTreeWidgetItem*, int))
-	);
+	connect(this, &ChartTree::itemDoubleClicked, this, &ChartTree::onTreeWidgetItemDoubleClicked);
 
 	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
 
-	m_pPopupMenu = new QMenu(pParent);
-	m_pPopupMenu->addAction(pMainWindow->actChartFindInChart);
-	m_pPopupMenu->addAction(pMainWindow->actChartAddToNewChart);
+	m_pPopupMenu = new QMenu(this);
+	m_pPopupMenu->addAction(pMainWindow->actChartCreate);
 	m_pPopupMenu->addAction(pMainWindow->actChartExport);
 }
 
@@ -198,7 +189,7 @@ void ChartTree::clear()
 	m_root->getCtrlItem().setText(0, "Модель");
 }
 
-void ChartTree::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
+void ChartTree::createChart(PTR(QTreeWidgetItem) pCtrlItem) const
 {
 	LPSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<Serie>();
 	if (pSerie)
@@ -207,7 +198,7 @@ void ChartTree::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
 	}
 }
 
-rbool ChartTree::findInCharts(PTR(QTreeWidgetItem) pCtrlItem) const
+rbool ChartTree::activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const
 {
 	LPSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<Serie>();
 	if (pSerie)
@@ -225,20 +216,20 @@ PTR(QTreeWidgetItem) ChartTree::getSelected() const
 		: NULL;
 }
 
-void ChartTree::onAddToNewChart()
-{
-	addToNewChart(getSelected());
-}
-
 void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 {
 	if (!g_pTracer->getDrawTrace())
 		return;
 
-	if (!findInCharts(pCtrlItem))
+	if (!activateExistingChart(pCtrlItem))
 	{
-		addToNewChart(pCtrlItem);
+		createChart(pCtrlItem);
 	}
+}
+
+void ChartTree::onChartCreate()
+{
+	createChart(getSelected());
 }
 
 void ChartTree::onChartExport()
@@ -257,13 +248,13 @@ void ChartTree::onChartExport()
 		return;
 
 	boost::filesystem::path path =
-		boost::filesystem::path(g_pModel->getFullName().toLocal8Bit().constData()).parent_path() /
-		QString("%1.csv").arg(pSerie->getTitle()).toLocal8Bit().constData();
+		boost::filesystem::path(g_pModel->getFullName().toStdString()).parent_path() /
+		QString("%1.csv").arg(pSerie->getTitle()).toStdString();
 
 	QString fileName = QFileDialog::getSaveFileName(
 		this,
 		"Сохранить",
-		QString::fromLocal8Bit(path.string().c_str()),
+		QString::fromStdString(path.string()),
 		"csv-файл (*.csv);;Все файлы (*.*)"
 	);
 	if (fileName.isEmpty())
@@ -281,25 +272,6 @@ void ChartTree::onChartExport()
 	}
 }
 
-rbool ChartTree::onUpdateChartFindInCharts()
-{
-	rbool enable = false;
-	if (g_pTracer->getDrawTrace())
-	{
-		LPSerie pSerie = getIfItemIsDrawable(getSelected()).object_dynamic_cast<Serie>();
-		if (pSerie)
-		{
-			enable = pSerie->isInOneOrMoreDocs();
-		}
-	}
-	return enable;
-}
-
-void ChartTree::onChartFindInCharts()
-{
-	findInCharts(getSelected());
-}
-
 void ChartTree::focusInEvent(QFocusEvent* pEvent)
 {
 	parent_type::focusInEvent(pEvent);
@@ -308,8 +280,8 @@ void ChartTree::focusInEvent(QFocusEvent* pEvent)
 
 void ChartTree::focusOutEvent(QFocusEvent* pEvent)
 {
-	parent_type::focusOutEvent(pEvent);
 	deactivate(pEvent);
+	parent_type::focusOutEvent(pEvent);
 }
 
 void ChartTree::onUpdateActions(rbool activated)
@@ -318,27 +290,21 @@ void ChartTree::onUpdateActions(rbool activated)
 	ASSERT(pMainWindow);
 
 	updateAction(
-		pMainWindow->actHelpContext,
-		activated,
-		this, &ChartTree::onHelpContext
-	);
-
-	updateAction(
-		pMainWindow->actChartAddToNewChart,
+		pMainWindow->actChartCreate,
 		activated && g_pTracer->getDrawTrace() && getIfItemIsDrawable(getSelected()),
-		this, &ChartTree::onAddToNewChart
-	);
-
-	updateAction(
-		pMainWindow->actChartFindInChart,
-		activated && onUpdateChartFindInCharts(),
-		this, &ChartTree::onChartFindInCharts
+		this, &ChartTree::onChartCreate
 	);
 
 	updateAction(
 		pMainWindow->actChartExport,
-		activated && g_pTracer->getDrawTrace() && (getIfItemIsDrawable(getSelected()) != NULL),
+		activated && g_pTracer->getDrawTrace() && getIfItemIsDrawable(getSelected()),
 		this, &ChartTree::onChartExport
+	);
+
+	updateAction(
+		pMainWindow->actHelpContext,
+		activated,
+		this, &ChartTree::onHelpContext
 	);
 }
 

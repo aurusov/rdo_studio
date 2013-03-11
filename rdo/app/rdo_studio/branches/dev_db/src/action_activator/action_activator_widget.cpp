@@ -29,6 +29,6 @@ void ActionActivatorWidget::focusInEvent(QFocusEvent* pEvent)
 
 void ActionActivatorWidget::focusOutEvent(QFocusEvent* pEvent)
 {
-	QWidget::focusOutEvent(pEvent);
 	deactivate(pEvent);
+	QWidget::focusOutEvent(pEvent);
 }

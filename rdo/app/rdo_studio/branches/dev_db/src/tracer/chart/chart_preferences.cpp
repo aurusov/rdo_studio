@@ -16,12 +16,13 @@
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
 #include "ui/qt/headers/validator/int_validator.h"
+#include "app/rdo_studio/src/application.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo::gui::tracer;
 
 ChartPreferences::ChartPreferences(PTR(ChartView) pView)
-	: QDialog(pView)
+	: QDialog(pView, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, m_pView(pView)
 	, m_pSerie(NULL)
 {
@@ -38,7 +39,7 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 	xValueLineEdit->setValidator(new rdo::gui::IntValidator(2, 100, this));
 	xValueLineEdit->setText(QString::number(m_valueCountX));
 	
-	showLegendCheckBox->setChecked(m_pView->isDrawLegend() ? Qt::Checked : Qt::Unchecked);
+	showLegendCheckBox->setChecked(m_pView->isDrawLegend());
 
 	ChartDoc* doc = m_pView->getDocument();
 
@@ -129,7 +130,7 @@ void ChartPreferences::apply()
 		? m_pView->getDocument()->getSerieList().at(valueComboBox->currentIndex())
 		: NULL
 	);
-	m_pView->setDrawLegend(showLegendCheckBox->checkState());
+	m_pView->setDrawLegend(showLegendCheckBox->checkState() == Qt::Checked ? true : false);
 	m_pView->setValueCountX(m_valueCountX);
 	m_pView->setValueCountY(m_valueCountY);
 	m_pView->getDocument()->setTitle(m_chartTitle.toLocal8Bit().constData());
@@ -143,14 +144,22 @@ void ChartPreferences::apply()
 		options.color = colorComboBox->itemData(colorComboBox->currentIndex(), Qt::UserRole).value<QColor>();
 		options.markerType = static_cast<Serie::Marker>(markerComboBox->itemData(markerComboBox->currentIndex(), Qt::UserRole).toInt());
 		options.markerSize = m_sizeMarker;
-		options.markerNeedDraw = showMarkerCheckBox->checkState();
-		options.markerTransparent = transparentMarkerCheckBox->checkState();
-		options.showInLegend = showInLegendCheckBox->checkState();
+		options.markerNeedDraw = showMarkerCheckBox->checkState() == Qt::Checked ? true : false;
+		options.markerTransparent = transparentMarkerCheckBox->checkState() == Qt::Checked ? true : false;
+		options.showInLegend = showInLegendCheckBox->checkState() == Qt::Checked ? true : false;
 
 		m_pSerie->setOptions(options);
 	}
 
 	m_pView->repaint();
+}
+
+void ChartPreferences::onHelpContext()
+{
+	QByteArray ba;
+	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm#options\n");
+	g_pApp->callQtAssistant(ba);
+
 }
 
 void ChartPreferences::onCheckAllData()
@@ -249,9 +258,9 @@ void ChartPreferences::onValueComboBox(int index)
 
 	m_sizeMarker = m_pSerie->options().markerSize;
 	titleValueLineEdit->setText(m_pSerie->options().title);
-	showMarkerCheckBox->setChecked(m_pSerie->options().markerNeedDraw ? Qt::Checked : Qt::Unchecked);
-	transparentMarkerCheckBox->setChecked(m_pSerie->options().markerTransparent ? Qt::Checked : Qt::Unchecked);
-	showInLegendCheckBox->setChecked(m_pSerie->options().showInLegend ? Qt::Checked : Qt::Unchecked);
+	showMarkerCheckBox->setChecked(m_pSerie->options().markerNeedDraw);
+	transparentMarkerCheckBox->setChecked(m_pSerie->options().markerTransparent);
+	showInLegendCheckBox->setChecked(m_pSerie->options().showInLegend);
 	markerSizeLineEdit->setText(QString::number(m_pSerie->options().markerSize));
 	markerComboBox->setCurrentIndex(markerComboBox->findData(m_pSerie->options().markerType));
 	if (colorComboBox->findData(m_pSerie->options().color, Qt::UserRole) == -1)
@@ -259,4 +268,10 @@ void ChartPreferences::onValueComboBox(int index)
 		insertColor(m_pSerie->options().color, QString("[%1, %2, %3]").arg(m_pSerie->options().color.red()).arg(m_pSerie->options().color.green()).arg(m_pSerie->options().color.blue()), colorComboBox);
 	}
 	colorComboBox->setCurrentIndex(colorComboBox->findData(m_pSerie->options().color, Qt::UserRole));
+}
+
+void ChartPreferences::keyPressEvent(QKeyEvent* pEvent)
+{
+	if(QKeySequence(pEvent->key()) == QKeySequence::HelpContents)
+		onHelpContext();
 }

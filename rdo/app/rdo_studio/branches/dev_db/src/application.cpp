@@ -93,15 +93,13 @@ Application::Application(int& argc, char** argv)
 	, m_dontCloseIfError            (false )
 	, m_exitCode                    (rdo::simulation::report::EC_OK)
 	, m_pMainFrame                  (NULL  )
+	, m_pAssistant                  (NULL  )
 {
 	g_pApp = this;
 
 #ifdef _DEBUG
 	qInstallMessageHandler(g_messageOutput);
 #endif
-
-	setlocale(LC_ALL,     "rus");
-	setlocale(LC_NUMERIC, "eng");
 
 	m_log.open("log.txt");
 

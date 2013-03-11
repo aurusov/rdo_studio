@@ -170,8 +170,7 @@ border: none;
     <property name="title">
      <string>График</string>
     </property>
-    <addaction name="actChartFindInChart"/>
-    <addaction name="actChartAddToNewChart"/>
+    <addaction name="actChartCreate"/>
     <addaction name="actChartExport"/>
     <addaction name="separator"/>
     <addaction name="actChartTimeWrap"/>
@@ -936,20 +935,12 @@ border: none;
     <string>Пред. кадр анимации</string>
    </property>
   </action>
-  <action name="actChartFindInChart">
+  <action name="actChartCreate">
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Поиск на графике</string>
-   </property>
-  </action>
-  <action name="actChartAddToNewChart">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Добавить на новый график</string>
+    <string>Создать</string>
    </property>
   </action>
   <action name="actChartTimeWrap">

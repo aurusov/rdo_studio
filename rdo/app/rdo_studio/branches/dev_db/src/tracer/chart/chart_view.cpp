@@ -200,7 +200,7 @@ void ChartView::recalcLayout()
 		m_pYAxis->getCaptions(m_captionList, m_valueCountY);
 		for (std::vector<tstring>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)
 		{
-			QRect rect = axisFontMetrics.boundingRect(QString::fromLocal8Bit(it->c_str()));
+			QRect rect = axisFontMetrics.boundingRect(QString::fromStdString(*it));
 			if (rect.width() > sizeMax.width())
 			{
 				sizeMax.setWidth(rect.width());
@@ -584,7 +584,7 @@ void ChartView::drawYAxis(QPainter& painter, const QRect& chartRect, const Chart
 			for (std::vector<tstring>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)
 			{
 				index++;
-				painter.drawText(tmprect, Qt::AlignRight, QString::fromLocal8Bit(it->c_str()));
+				painter.drawText(tmprect, Qt::AlignRight, QString::fromStdString(*it));
 				if (index != 1 && index < count)
 				{
 					QPainterPath path;
@@ -633,7 +633,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 			int x = chartRect.left();
 			tstring str = rdo::format(formatstr.c_str(), valo);
 			tmprect.setLeft(x);
-			painter.drawText(tmprect, Qt::AlignLeft, QString::fromLocal8Bit(str.c_str()));
+			painter.drawText(tmprect, Qt::AlignLeft, QString::fromStdString(str));
 			valo += valoffset;
 			x += widthoffset;
 			if (valoffset)
@@ -643,7 +643,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 					str = rdo::format(formatstr.c_str(), valo);
 					tmprect.setLeft(x);
 					painter.setPen(m_pStyle->getTheme()->axisFgColor);
-					painter.drawText(tmprect, Qt::AlignLeft, QString::fromLocal8Bit(str.c_str()));
+					painter.drawText(tmprect, Qt::AlignLeft, QString::fromStdString(str));
 					if (i != m_valueCountX - 1)
 					{
 						QPainterPath path;
@@ -680,7 +680,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 				if (tmprect.left() > lastx)
 				{
 					painter.setPen(m_pStyle->getTheme()->axisFgColor);
-					painter.drawText(tmprect, Qt::AlignLeft, QString::fromLocal8Bit(str.c_str()));
+					painter.drawText(tmprect, Qt::AlignLeft, QString::fromStdString(str));
 					if (tmprect.left() != chartRect.left() && tmprect.left() != chartRect.right())
 					{
 						QPainterPath path;
@@ -689,7 +689,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 						painter.setPen(m_pStyle->getTheme()->defaultColor);
 						painter.drawPath(path);
 					}
-					QSize size = painter.fontMetrics().boundingRect(QString::fromLocal8Bit(str.c_str())).size();
+					QSize size = painter.fontMetrics().boundingRect(QString::fromStdString(str)).size();
 					lastx = tmprect.left() + size.width();
 				}
 
