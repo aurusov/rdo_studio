@@ -74,7 +74,6 @@ SET(SCINTILLA_SRC
     src/Editor.h
     src/ExternalLexer.cxx
     src/ExternalLexer.h
-    src/files.txt
     src/FontQuality.h
     src/Indicator.cxx
     src/Indicator.h
