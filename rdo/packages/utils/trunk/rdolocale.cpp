@@ -40,7 +40,8 @@ void locale::init()
 	std::locale::global(sourceCodeLocale);
 
 #ifdef COMPILER_VISUAL_STUDIO
-	setlocale(LC_ALL, ".ACP");
+	setlocale(LC_ALL,     ".ACP");
+	setlocale(LC_NUMERIC, "eng" );
 #endif
 
 	std::locale C99_out_locale(sourceCodeLocale, new boost::math::nonfinite_num_put<char>);
@@ -122,18 +123,7 @@ std::string locale::convertFromCLocale(const std::string& txt, const std::locale
 
 std::string locale::getCLocaleName()
 {
-#ifdef COMPILER_VISUAL_STUDIO
-	std::string cLocale = setlocale(LC_ALL, NULL);
-	std::string::size_type pos = cLocale.find('.');
-	if (pos != std::string::npos)
-	{
-		cLocale = "CP" + cLocale.substr(pos + 1);
-	}
-#else
-	std::string cLocale = "CP1251";
-#endif
-
-	return cLocale;
+	return "CP1251";
 }
 
 unsigned int locale::length(const std::string& txt, const std::locale& locale)
