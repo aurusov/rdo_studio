@@ -56,10 +56,16 @@ locale& locale::get()
 
 locale::locale()
 {
+#ifdef COMPILER_VISUAL_STUDIO
+	m_modelLocale = std::locale("Russian_Russia.1251");
+#endif
+
 	m_generator.locale_cache_enabled(true);
 	system();
 	cp1251();
 	utf8  ();
+	c     ();
+	model ();
 }
 
 std::locale locale::generate(const std::string& name)
@@ -90,7 +96,7 @@ std::locale locale::c()
 std::locale locale::model()
 {
 #ifdef COMPILER_VISUAL_STUDIO
-	return generate("CP1251");
+	return m_modelLocale;
 #else
 	return cp1251();
 #endif

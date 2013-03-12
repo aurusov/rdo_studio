@@ -49,6 +49,10 @@ namespace rdo
 
 		boost::locale::generator  m_generator;
 
+#ifdef COMPILER_VISUAL_STUDIO
+		std::locale               m_modelLocale;
+#endif
+
 		static std::string getCLocaleName();
 	};
 
