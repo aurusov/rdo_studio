@@ -40,8 +40,7 @@ void locale::init()
 	std::locale::global(sourceCodeLocale);
 
 #ifdef COMPILER_VISUAL_STUDIO
-	setlocale(LC_ALL,     ".ACP");
-	setlocale(LC_NUMERIC, "eng" );
+	setlocale(LC_ALL, ".ACP");
 #endif
 
 	std::locale C99_out_locale(sourceCodeLocale, new boost::math::nonfinite_num_put<char>);
