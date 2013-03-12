@@ -51,7 +51,6 @@ locale::locale()
 	system();
 	cp1251();
 	utf8  ();
-	c     ();
 	model ();
 }
 
@@ -73,11 +72,6 @@ std::locale locale::cp1251()
 std::locale locale::utf8()
 {
 	return generate("ru_RU.UTF-8");
-}
-
-std::locale locale::c()
-{
-	return generate(setlocale(LC_ALL, NULL));
 }
 
 std::locale locale::model()
