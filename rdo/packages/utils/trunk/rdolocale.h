@@ -31,7 +31,6 @@ namespace rdo
 		std::locale generate(const std::string& name);
 
 		std::locale system();
-		std::locale cp1251();
 		std::locale utf8  ();
 		std::locale model ();
 

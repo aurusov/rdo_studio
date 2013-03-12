@@ -49,7 +49,6 @@ locale::locale()
 
 	m_generator.locale_cache_enabled(true);
 	system();
-	cp1251();
 	utf8  ();
 	model ();
 }
@@ -64,11 +63,6 @@ std::locale locale::system()
 	return generate("");
 }
 
-std::locale locale::cp1251()
-{
-	return generate("ru_RU.CP1251");
-}
-
 std::locale locale::utf8()
 {
 	return generate("ru_RU.UTF-8");
@@ -79,7 +73,7 @@ std::locale locale::model()
 #ifdef COMPILER_VISUAL_STUDIO
 	return m_modelLocale;
 #else
-	return cp1251();
+	return generate("ru_RU.CP1251");
 #endif
 }
 
