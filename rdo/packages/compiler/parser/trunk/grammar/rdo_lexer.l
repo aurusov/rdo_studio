@@ -12,6 +12,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/lexical_cast.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdolocale.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
@@ -358,36 +359,73 @@ sprite                         return(RDO_sprite_call);
 ([+-]?[0-9]+"..") {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("..");
-	tstring value(n1, 0, pos);
+	tstring yText(n1, 0, pos);
 	unput('.');
 	unput('.');
 	LEXER->loc_delta_pos(-2);
 	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(
-		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, value) : rdo::compiler::parser::RDOParserSrcInfo(value)
+		LEXER->m_lploc
+			? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, yText)
+			: rdo::compiler::parser::RDOParserSrcInfo(yText)
 	);
 	ASSERT(pType);
+
 	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
-	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(atoi(value.c_str()), pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()), pType)));
+	int value = boost::lexical_cast<int>(yText);
+	LEXER->setvalue(PARSER->stack().push(
+		rdo::Factory<rdo::compiler::parser::RDOValue>::create(
+			value,
+			pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()),
+			pType
+		)
+	));
 	return RDO_INT_CONST;
 }
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
+
+	tstring yText = YYText();
+
 	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__real>(
-		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdo::compiler::parser::RDOParserSrcInfo(YYText())
+		LEXER->m_lploc
+			? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, yText)
+			: rdo::compiler::parser::RDOParserSrcInfo(yText)
 	);
 	ASSERT(pType);
+
 	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
-	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(atof(YYText()), pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()), pType)));
+	double value = boost::lexical_cast<double>(yText);
+	LEXER->setvalue(PARSER->stack().push(
+		rdo::Factory<rdo::compiler::parser::RDOValue>::create(
+			value,
+			pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()),
+			pType
+		)
+	));
+
 	return RDO_REAL_CONST;
 }
 
 [+-]?[0-9]+ {
+
+	tstring yText = YYText();
+
 	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(
-		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdo::compiler::parser::RDOParserSrcInfo(YYText())
+		LEXER->m_lploc
+			? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, yText)
+			: rdo::compiler::parser::RDOParserSrcInfo(yText)
 	);
 	ASSERT(pType);
+
 	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
-	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(atoi(YYText()), pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()), pType)));
+	int value = boost::lexical_cast<int>(yText);
+	LEXER->setvalue(PARSER->stack().push(
+		rdo::Factory<rdo::compiler::parser::RDOValue>::create(
+			value,
+			pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()),
+			pType
+		)
+	));
 	return RDO_INT_CONST;
 }
 
