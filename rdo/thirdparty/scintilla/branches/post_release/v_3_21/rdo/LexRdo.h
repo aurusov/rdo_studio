@@ -24,7 +24,7 @@ static inline bool isRDOLexerSuchAsIdentifierStyle( char ch )
 
 static inline bool isRDOLexerIdentifier( char ch )
 {
-	std::locale locale = rdo::locale::get().c();
+	std::locale locale = rdo::locale::get().model();
 	if (std::isalpha((rbyte)ch, locale) || std::isdigit((rbyte)ch, locale) ||
 		ch == '_' || ch == '$' || isRDOLexerSuchAsIdentifierStyle(ch)) return true;
 	return false;
