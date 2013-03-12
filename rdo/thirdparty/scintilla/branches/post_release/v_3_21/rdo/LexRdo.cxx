@@ -25,7 +25,9 @@
 #include "SciLexer.h"
 #include "CharacterSet.h"
 
-static void lexerRDOSyntaxColor( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
+namespace rdo { namespace gui { namespace lexer {
+
+static void SyntaxColor( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
 {
 	WordList& keywords  = *keywordlists[0];
 	WordList& functions = *keywordlists[1];
@@ -42,7 +44,7 @@ static void lexerRDOSyntaxColor( unsigned int startPos, int length, int initStyl
 		if ( sc.state == SCE_RDO_OPERATOR ) {
 			sc.SetState( SCE_RDO_DEFAULT );
 		} else if ( sc.state == SCE_RDO_IDENTIFIER ) {
-			if ( !isRDOLexerIdentifier(sc.ch) ) {
+			if ( !isIdentifier(sc.ch) ) {
 				char s[100];
 				sc.GetCurrent( s, sizeof(s) );
 				if ( keywords.InList(s) ) {
@@ -87,9 +89,9 @@ static void lexerRDOSyntaxColor( unsigned int startPos, int length, int initStyl
 				sc.SetState( SCE_RDO_COMMENT_LINE );
 			} else if ( isdigit(sc.ch) || ((sc.ch == '-' || sc.ch == '+') && isdigit(sc.chNext)) ) {
 				sc.SetState( SCE_RDO_NUMBER );
-			} else if ( isRDOLexerOperator(sc.ch) ) {
+			} else if ( isOperator(sc.ch) ) {
 				sc.SetState( SCE_RDO_OPERATOR );
-			} else if ( isRDOLexerIdentifier(sc.ch) )
+			} else if ( isIdentifier(sc.ch) )
 				sc.SetState( SCE_RDO_IDENTIFIER );
 		}
 
@@ -98,7 +100,7 @@ static void lexerRDOSyntaxColor( unsigned int startPos, int length, int initStyl
 	sc.Complete();
 }
 
-static void lexerRDOSyntaxFold( unsigned int startPos, int length, int initStyle, WordList *[], Accessor &styler )
+static void SyntaxFold( unsigned int startPos, int length, int initStyle, WordList *[], Accessor &styler )
 {
 	unsigned int endPos = startPos + length;
 	int visibleChars = 0;
@@ -156,4 +158,23 @@ static void lexerRDOSyntaxFold( unsigned int startPos, int length, int initStyle
 	styler.SetLevel(lineCurrent, levelPrev | flagsNext);
 }
 
-LexerModule lexerRDOSyntax(SCLEX_RDO, lexerRDOSyntaxColor, "rdo", lexerRDOSyntaxFold);
+bool isOperator(char ch)
+{
+	if ( ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == ':' ||
+	     ch == '[' || ch == ']' || ch == '(' || ch == ')' || ch == ',' ||
+	     ch == '<' || ch == '>' || ch == '=' || ch == '.' || ch == '!' ||
+	     ch == '{' || ch == '}' || ch == ';') return true;
+	return false;
+}
+
+bool isIdentifier( char ch )
+{
+	std::locale locale = rdo::locale::get().model();
+	if (std::isalpha((rbyte)ch, locale) || std::isdigit((rbyte)ch, locale) ||
+		ch == '_' || ch == '$' || ch == '%') return true;
+	return false;
+}
+
+}}} // namespace rdo::gui::lexer
+
+LexerModule lexerRDOSyntax(SCLEX_RDO, rdo::gui::lexer::SyntaxColor, "rdo", rdo::gui::lexer::SyntaxFold);

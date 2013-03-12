@@ -466,7 +466,7 @@ void Model::onEditCompleteWord()
 
 	int startPos = currentPos;
 
-	while ((startPos > 0) && isRDOLexerIdentifier(currentLine[startPos - 1]))
+	while ((startPos > 0) && rdo::gui::lexer::isIdentifier(currentLine[startPos - 1]))
 	{
 		startPos--;
 	}

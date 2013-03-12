@@ -7,28 +7,12 @@
 #include "thirdparty/scintilla/include/ILexer.h"
 #include "thirdparty/scintilla/lexlib/LexerModule.h"
 
-static inline bool isRDOLexerOperator( char ch )
-{
-	if ( ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == ':' ||
-	     ch == '[' || ch == ']' || ch == '(' || ch == ')' || ch == ',' ||
-	     ch == '<' || ch == '>' || ch == '=' || ch == '.' || ch == '!' ||
-	     ch == '{' || ch == '}' || ch == ';') return true;
-	return false;
-}
+namespace rdo { namespace gui { namespace lexer {
 
-static inline bool isRDOLexerSuchAsIdentifierStyle( char ch )
-{
-	if ( ch == '%' ) return true;
-	return false;
-}
+bool isOperator  (char ch);
+bool isIdentifier(char ch);
 
-static inline bool isRDOLexerIdentifier( char ch )
-{
-	std::locale locale = rdo::locale::get().model();
-	if (std::isalpha((rbyte)ch, locale) || std::isdigit((rbyte)ch, locale) ||
-		ch == '_' || ch == '$' || isRDOLexerSuchAsIdentifierStyle(ch)) return true;
-	return false;
-}
+}}} // namespace rdo::gui::lexer
 
 extern LexerModule lexerRDOSyntax;
 
