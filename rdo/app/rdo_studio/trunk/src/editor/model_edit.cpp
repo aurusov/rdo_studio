@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdolocale.h"
 #include "app/rdo_studio/src/editor/model_edit.h"
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/src/application.h"
@@ -466,7 +467,8 @@ void Model::onEditCompleteWord()
 
 	int startPos = currentPos;
 
-	while ((startPos > 0) && rdo::gui::lexer::isIdentifier(currentLine[startPos - 1]))
+	std::locale locale = rdo::locale::get().model();
+	while ((startPos > 0) && rdo::gui::lexer::isIdentifier(currentLine[startPos - 1], locale))
 	{
 		startPos--;
 	}

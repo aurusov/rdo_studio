@@ -25,6 +25,8 @@
 #include "SciLexer.h"
 #include "CharacterSet.h"
 
+#include "utils/rdolocale.h"
+
 namespace rdo { namespace gui { namespace lexer {
 
 void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* keywordlists[], Accessor& styler)
@@ -38,6 +40,8 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 
 	StyleContext sc(startPos, length, initStyle, styler);
 
+	std::locale locale = rdo::locale::get().model();
+
 	bool flag = sc.More();
 	for (; flag; sc.Forward())
 	{
@@ -48,7 +52,7 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 		}
 		else if (sc.state == SCE_RDO_IDENTIFIER)
 		{
-			if (!isIdentifier(sc.ch))
+			if (!isIdentifier(sc.ch, locale))
 			{
 				char s[100];
 				sc.GetCurrent(s, sizeof(s));
@@ -124,7 +128,7 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 			{
 				sc.SetState(SCE_RDO_OPERATOR);
 			}
-			else if (isIdentifier(sc.ch))
+			else if (isIdentifier(sc.ch, locale))
 				sc.SetState(SCE_RDO_IDENTIFIER);
 		}
 
@@ -217,9 +221,8 @@ bool isOperator(char ch)
 		ch == '{' || ch == '}' || ch == '.';
 }
 
-bool isIdentifier(char ch)
+bool isIdentifier(char ch, const std::locale& locale)
 {
-	std::locale locale = rdo::locale::get().model();
 	return 
 		std::isalpha((rbyte)ch, locale) ||
 		std::isdigit((rbyte)ch, locale) ||
