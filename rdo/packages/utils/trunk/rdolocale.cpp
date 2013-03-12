@@ -39,10 +39,6 @@ void locale::init()
 	std::locale sourceCodeLocale = locale.utf8();
 	std::locale::global(sourceCodeLocale);
 
-#ifdef COMPILER_VISUAL_STUDIO
-	setlocale(LC_ALL, ".ACP");
-#endif
-
 	std::locale C99_out_locale(sourceCodeLocale, new boost::math::nonfinite_num_put<char>);
 	std::locale C99_in_locale (sourceCodeLocale, new boost::math::nonfinite_num_get<char>);
 
@@ -89,6 +85,15 @@ std::locale locale::utf8()
 std::locale locale::c()
 {
 	return generate(setlocale(LC_ALL, NULL));
+}
+
+std::locale locale::model()
+{
+#ifdef COMPILER_VISUAL_STUDIO
+	return generate("CP1251");
+#else
+	return cp1251();
+#endif
 }
 
 std::string locale::convert(const std::string& txt, const std::locale& to, const std::locale& from)

@@ -36,6 +36,7 @@ namespace rdo
 		std::locale cp1251();
 		std::locale utf8  ();
 		std::locale c     ();
+		std::locale model ();
 
 		static std::string  convert           (const std::string& txt, const std::locale& to, const std::locale& from = std::locale());
 		static std::string  convert           (const std::string& txt, const std::string& to, const std::string& from);
