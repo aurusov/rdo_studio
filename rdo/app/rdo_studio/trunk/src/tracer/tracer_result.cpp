@@ -11,6 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/tracer_result.h"
 #include "app/rdo_studio/src/tracer/tracer_values.h"
@@ -74,7 +75,7 @@ void Result::setValue(tstring& line, Time* const pTime, const int eventIndex)
 	boost::algorithm::trim(line);
 	if (m_kind != RK_WATCHSTATE)
 	{
-		newValue = atof(line.c_str());
+		newValue = boost::lexical_cast<double>(line);
 	}
 	else
 	{

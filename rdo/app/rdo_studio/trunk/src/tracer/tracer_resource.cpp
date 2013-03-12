@@ -179,7 +179,7 @@ void Resource::setParams(tstring& line, Time* const pTime, const int eventIndex,
 				break;
 
 			default:
-				newValue = atof(nextValue.c_str());
+				newValue = boost::lexical_cast<double>(nextValue);
 				break;
 			}
 		}

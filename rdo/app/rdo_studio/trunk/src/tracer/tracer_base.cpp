@@ -145,7 +145,7 @@ void TracerBase::addResource(REF(tstring) s, rdo::textstream& stream)
 	LPResource pResource = rdo::Factory<Resource>::create(
 		m_resourceTypeList.at(resourceTypeID - 1),
 		QString::fromStdString(resourceName),
-		atoi(s.c_str())
+		boost::lexical_cast<int>(s)
 	);
 
 	m_resourceList.push_back(pResource);
@@ -269,7 +269,7 @@ void TracerBase::dispatchNextString(REF(tstring) line)
 
 	tstring key = getNextValue(line);
 	Time* pTimeNow;
-	if (key != "SO" && key.find("ST") == tstring::npos && key != "SD" && key.find("SE") == tstring::npos)
+	if (key != "SO" && key.find("ST") == tstring::npos && key != "SD" && key.find("SE") == tstring::npos && key != "$Status")
 	{
 		pTimeNow = addTime(getNextValue(line));
 	}
@@ -374,7 +374,7 @@ tstring TracerBase::getNextValue(REF(tstring) line)
 
 Time* TracerBase::addTime(CREF(tstring) time)
 {
-	double val = atof(time.c_str());
+	double val = boost::lexical_cast<double>(time);
 	rbool empty = m_timeList.empty();
 	Time* pLastTime = NULL;
 	if (!empty)
@@ -410,7 +410,7 @@ Time* TracerBase::addTime(CREF(tstring) time)
 LPOperationBase TracerBase::getOperation(REF(tstring) line)
 {
 	getNextValue(line);
-	return m_operationList.at(atoi(getNextValue(line).c_str()) - 1);
+	return m_operationList.at(boost::lexical_cast<int>(getNextValue(line)) - 1);
 }
 
 void TracerBase::startAction(REF(tstring) line, Time* const pTime)
@@ -430,9 +430,9 @@ void TracerBase::accomplishAction(REF(tstring) line, Time* const pTime)
 void TracerBase::irregularEvent(REF(tstring) line, Time* const pTime)
 {
 #ifdef RDOSIM_COMPATIBLE
-	m_eventList.at(atoi(getNextValue(line).c_str()) - 1)->occurs(pTime, m_eventIndex);
+	m_eventList.at(boost::lexical_cast<int>(getNextValue(line)) - 1)->occurs(pTime, m_eventIndex);
 #else
-	m_eventList.at(atoi(getNextValue(line).c_str()) - 1)->occurs(pTime, m_eventIndex);
+	m_eventList.at(boost::lexical_cast<int>(getNextValue(line)) - 1)->occurs(pTime, m_eventIndex);
 #endif
 }
 
@@ -447,7 +447,7 @@ LPResource TracerBase::getResource(REF(tstring) line)
 {
 	getNextValue(line);
 	LPResource pResult;
-	int findID = atoi(getNextValue(line).c_str());
+	int findID = boost::lexical_cast<int>(getNextValue(line));
 	int i = 0;
 	BOOST_FOREACH(const LPResource& pResource, m_resourceList)
 	{
@@ -463,10 +463,10 @@ LPResource TracerBase::getResource(REF(tstring) line)
 
 LPResource TracerBase::resourceCreation(REF(tstring) line, Time* const pTime)
 {
-	ruint typeID = atoi(getNextValue(line).c_str()) - 1;
+	ruint typeID = boost::lexical_cast<int>(getNextValue(line)) - 1;
 	ASSERT(typeID < m_resourceTypeList.size());
 	LPResourceType pResourceType = m_resourceTypeList.at(typeID);
-	int id = atoi(getNextValue(line).c_str());
+	int id = boost::lexical_cast<int>(getNextValue(line));
 	LPResource pResource = rdo::Factory<Resource>::create(pResourceType, QString("%1 #%2").arg(pResourceType->getName()).arg(id), id);
 	pResource->setParams(line, pTime, m_eventIndex);
 
@@ -501,7 +501,7 @@ LPResource TracerBase::resourceChanging(REF(tstring) line, Time* const pTime)
 LPResult TracerBase::getResult(REF(tstring) line)
 {
 	LPResult pResult;
-	int findid = atoi(getNextValue(line).c_str());
+	int findid = boost::lexical_cast<int>(getNextValue(line));
 	BOOST_FOREACH(const LPResult& pResultItem, m_resultList)
 	{
 		if (pResultItem->getID() == findid)
