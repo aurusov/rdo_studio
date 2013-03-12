@@ -368,18 +368,18 @@ set					return(RDO_set);
 ([+-]?[0-9]+"..") {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("..");
-	tstring value(n1, 0, pos);
+	tstring yText(n1, 0, pos);
 	unput('.');
 	unput('.');
 	LEXER->loc_delta_pos(-2);
 
 	LEXER->setvalue(CONVERTER->stack().push(
 		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
-			atoi(value.c_str()),
+			boost::lexical_cast<int>(yText),
 			rdo::Factory<rdo::converter::smr2rdox::RDOType__int>::create(),
 			LEXER->m_lploc
-				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, value)
-				: rdo::converter::smr2rdox::RDOParserSrcInfo(value)
+				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, yText)
+				: rdo::converter::smr2rdox::RDOParserSrcInfo(yText)
 		)
 	));
 
@@ -388,13 +388,15 @@ set					return(RDO_set);
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
 
+	tstring yText = YYText();
+
 	LEXER->setvalue(CONVERTER->stack().push(
 		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
-			atof(YYText()),
+			boost::lexical_cast<double>(yText),
 			rdo::Factory<rdo::converter::smr2rdox::RDOType__real>::create(),
 			LEXER->m_lploc
-				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, YYText())
-				: rdo::converter::smr2rdox::RDOParserSrcInfo(YYText())
+				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, yText)
+				: rdo::converter::smr2rdox::RDOParserSrcInfo(yText)
 		)
 	));
 
@@ -403,13 +405,15 @@ set					return(RDO_set);
 
 [+-]?[0-9]+ {
 
+	tstring yText = YYText();
+
 	LEXER->setvalue(CONVERTER->stack().push(
 		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
-			atoi(YYText()),
+			boost::lexical_cast<int>(yText),
 			rdo::Factory<rdo::converter::smr2rdox::RDOType__int>::create(),
 			LEXER->m_lploc
-				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, YYText())
-				: rdo::converter::smr2rdox::RDOParserSrcInfo(YYText())
+				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, yText)
+				: rdo::converter::smr2rdox::RDOParserSrcInfo(yText)
 		)
 	));
 
