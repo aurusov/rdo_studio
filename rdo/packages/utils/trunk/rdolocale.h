@@ -22,8 +22,6 @@
 
 namespace rdo
 {
-	void setup_locale();
-
 	class locale
 	{
 	public:
