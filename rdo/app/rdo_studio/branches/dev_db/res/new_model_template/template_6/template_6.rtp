@@ -1,0 +1,19 @@
+$Resource_type Парикмахерские: permanent
+$Parameters
+	количество_в_очереди: integer
+$End
+
+$Resource_type Клиенты : temporary
+$Parameters
+	тип      : ( Мальчик, Девочка )
+	состояние: ( Пришел, Начал_стрижку )
+$End
+
+$Resource_type Парикмахеры: permanent
+$Parameters
+	состояние_парикмахера : ( Свободен, Занят ) = Свободен
+	количество_обслуженных: integer
+	длительность_min      : integer
+	длительность_max      : integer
+	тип_клиента           : such_as Клиенты.тип
+$End
