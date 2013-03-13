@@ -8,6 +8,8 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/format.hpp>
 #include <boost/filesystem.hpp>
@@ -433,13 +435,26 @@ void RDOThreadRepository::loadFile(CREF(tstring) fileName, REF(rdo::stream) stre
 			}
 			if (stream.isBinary())
 			{
-				std::ifstream file(rdo::locale::convertToWStr(fileName).c_str(), std::ios::in | std::ios::binary);
+				std::ifstream file(
+#ifdef COMPILER_VISUAL_STUDIO
+					rdo::locale::convertToWStr(fileName).c_str()
+#else
+					fileName.c_str()
+#endif
+					, std::ios::in | std::ios::binary
+				);
 				stream << file.rdbuf();
 				file.close();
 			}
 			else
 			{
-				std::ifstream file(rdo::locale::convertToWStr(fileName).c_str());
+				std::ifstream file(
+#ifdef COMPILER_VISUAL_STUDIO
+					rdo::locale::convertToWStr(fileName).c_str()
+#else
+					fileName.c_str()
+#endif
+				);
 				stream << file.rdbuf();
 				file.close();
 			}
