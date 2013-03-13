@@ -39,7 +39,7 @@ void DockFind::appendString(
 {
 	PTR(rdo::simulation::report::LogEditLineInfo) pLine = new rdo::simulation::report::LogEditLineInfo(
 		rdo::simulation::report::FileMessage(
-			str.toLocal8Bit().constData(),
+			str.toStdString(),
 			fileType,
 			lineNumber,
 			posInLine

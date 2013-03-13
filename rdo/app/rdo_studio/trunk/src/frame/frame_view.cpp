@@ -58,7 +58,7 @@ void Content::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapLis
 	rbool imageFound = false;
 	if (pFrame->hasBgImage())
 	{
-		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(QString::fromLocal8Bit(pFrame->m_bgImageName.c_str()));
+		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(QString::fromStdString(pFrame->m_bgImageName));
 		if (bmpIt != bitmapList.end())
 		{
 			size.setWidth (bmpIt->second.width ());
@@ -211,7 +211,7 @@ void Content::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui:
 	rbool bgImage = false;
 	if (pFrame->hasBgImage())
 	{
-		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(QString::fromLocal8Bit(pFrame->m_bgImageName.c_str()));
+		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(QString::fromStdString(pFrame->m_bgImageName));
 		if (bmpIt != bitmapList.end())
 		{
 			m_memDC.dc().drawPixmap(0, 0, bmpIt->second);
@@ -445,8 +445,8 @@ void Content::elementBMP(
 	ASSERT(pElement);
 
 	QPixmap pixmap = Content::getBitmap(
-		QString::fromLocal8Bit(pElement->m_bmp_name.c_str()),
-		pElement->hasMask() ? QString::fromLocal8Bit(pElement->m_mask_name.c_str()) : QString(),
+		QString::fromStdString(pElement->m_bmp_name),
+		pElement->hasMask() ? QString::fromStdString(pElement->m_mask_name) : QString(),
 		bitmapList,
 		bitmapGeneratedList
 	);
@@ -465,8 +465,8 @@ void Content::elementSBMP(
 	ASSERT(pElement);
 
 	QPixmap pixmap = Content::getBitmap(
-		QString::fromLocal8Bit(pElement->m_bmp_name.c_str()),
-		pElement->hasMask() ? QString::fromLocal8Bit(pElement->m_mask_name.c_str()) : QString(),
+		QString::fromStdString(pElement->m_bmp_name),
+		pElement->hasMask() ? QString::fromStdString(pElement->m_mask_name) : QString(),
 		bitmapList,
 		bitmapGeneratedList
 	);

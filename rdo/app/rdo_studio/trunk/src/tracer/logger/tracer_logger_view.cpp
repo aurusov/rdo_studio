@@ -68,7 +68,7 @@ LogCtrlFindInList::LogCtrlFindInList(REF(rsint) checkCounter, CREF(QString) strT
 
 	try
 	{
-		m_expression = boost::regex(what.toLocal8Bit().constData(), regex_constants);
+		m_expression = boost::regex(what.toStdString(), regex_constants);
 	}
 	catch (const std::exception&)
 	{}
@@ -83,10 +83,10 @@ rbool LogCtrlFindInList::operator()(CREF(QString) nextStr)
 
 	try
 	{
-		rbool result = boost::regex_match(nextStr.toLocal8Bit().constData(), m_expression.get());
+		rbool result = boost::regex_match(nextStr.toStdString(), m_expression.get());
 		if (result)
 		{
-			TRACE1("found %s\n", nextStr.toLocal8Bit().constData());
+			TRACE1("found %s\n", nextStr.toStdString().c_str());
 		}
 		return result;
 	}
@@ -533,7 +533,7 @@ rbool LogView::getItemColors(rsint index, LogColorPair &colors) const
 
 rbool LogView::getItemColors(CREF(QString) item, LogColorPair &colors) const
 {
-	return m_logStyle->getItemColors(item.toLocal8Bit().constData(), colors);
+	return m_logStyle->getItemColors(item.toStdString(), colors);
 }
 
 rsint LogView::selectedLine() const
@@ -1044,7 +1044,7 @@ void LogView::onHelpContext()
 		if (!keyword.isEmpty())
 		{
 			LogColorPair colors;
-			if (!m_logStyle->getItemColors(keyword.toLocal8Bit().constData(), colors))
+			if (!m_logStyle->getItemColors(keyword.toStdString(), colors))
 			{
 				getItemColors(selectedLine(), colors);
 				if (colors == m_logStyle->sd)

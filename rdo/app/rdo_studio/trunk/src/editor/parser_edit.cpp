@@ -201,13 +201,13 @@ void Parser::setEditorStyle(PTR(ParserStyle) pStyle)
 	sendEditor(SCI_STYLESETCHARACTERSET, SCE_RDO_OPERATOR, m_pStyle->font.characterSet);
 }
 
-void Parser::replaceCurrent(CREF(tstring) str, int changePosValue) const
+void Parser::replaceCurrent(CREF(QString) str, int changePosValue) const
 {
 	int pos = changePosValue != -1
 		? getCurrentPos()
 		: 0;
 
-	sendEditor(SCI_REPLACESEL, 0, (long)str.c_str());
+	sendEditorString(SCI_REPLACESEL, 0, str);
 
 	if (changePosValue != -1)
 	{

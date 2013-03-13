@@ -133,7 +133,7 @@ void ChartPreferences::apply()
 	m_pView->setDrawLegend(showLegendCheckBox->checkState() == Qt::Checked ? true : false);
 	m_pView->setValueCountX(m_valueCountX);
 	m_pView->setValueCountY(m_valueCountY);
-	m_pView->getDocument()->setTitle(m_chartTitle.toLocal8Bit().constData());
+	m_pView->getDocument()->setTitle(m_chartTitle);
 
 	if (m_pSerie)
 	{
@@ -177,7 +177,7 @@ void ChartPreferences::onCheckAllData()
 	rbool markerSizeFlag = markerSizeLineEdit->text().toInt() == m_pSerie->options().markerSize ? true : false;
 	rbool markerShowFlag = showMarker == m_pSerie->options().markerNeedDraw ? true : false;
 	rbool markerTransparentFlag = transparentMarker == m_pSerie->options().markerTransparent ? true : false;
-	rbool titleValueFlag = titleValueLineEdit->text().toLocal8Bit().constData() == m_pSerie->options().title ? true : false;
+	rbool titleValueFlag = titleValueLineEdit->text() == m_pSerie->options().title;
 	rbool colorFlag = colorComboBox->itemData(colorComboBox->currentIndex(), Qt::UserRole).value<QColor>() == m_pSerie->options().color ? true : false;
 	rbool markerTypeFlag = markerComboBox->itemData(markerComboBox->currentIndex(), Qt::UserRole).toInt() == m_pSerie->options().markerType ? true : false;
 

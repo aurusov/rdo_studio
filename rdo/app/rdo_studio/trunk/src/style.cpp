@@ -112,7 +112,7 @@ StyleFont StyleFont::getFrameFont()
 
 QSettings& operator<< (QSettings& settings, const StyleFont& font)
 {
-	settings.setValue("name", QString::fromLocal8Bit(font.name.c_str()));
+	settings.setValue("name", QString::fromStdString(font.name));
 	settings.setValue("size", font.size);
 	settings.setValue("codepage", font.codepage);
 	settings.setValue("character_set", font.characterSet);
@@ -122,7 +122,7 @@ QSettings& operator<< (QSettings& settings, const StyleFont& font)
 
 QSettings& operator>> (QSettings& settings, StyleFont& font)
 {
-	font.name         = settings.value("name", QString::fromLocal8Bit(font.name.c_str())).toString().toLocal8Bit().constData();
+	font.name         = settings.value("name", QString::fromStdString(font.name)).toString().toStdString();
 	font.size         = settings.value("size", font.size).toInt();
 	font.codepage     = settings.value("codepage", font.codepage).toInt();
 	font.characterSet = settings.value("character_set", font.characterSet).toInt();

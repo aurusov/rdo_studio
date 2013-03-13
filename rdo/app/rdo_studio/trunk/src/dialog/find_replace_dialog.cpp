@@ -79,7 +79,7 @@ void FindReplaceDialog::onReplaceAllButton()
 
 void FindReplaceDialog::onWhatEdited(const QString& text)
 {
-	m_settings.what = text.toLocal8Bit().constData();
+	m_settings.what = text;
 }
 
 void FindReplaceDialog::onByWhatEdited(const QString& text)

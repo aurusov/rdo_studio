@@ -132,7 +132,7 @@ void View::onSearchFindAll()
 				ASSERT(endPos != -1);
 				line = pEdit->getLineFromPosition(pos);
 				g_pApp->getIMainWnd()->getDockFind().appendString(
-					QString::fromLocal8Bit(pEdit->getLine(line).c_str()),
+					QString::fromStdString(pEdit->getLine(line)),
 					m_pTabCtrl->indexToType(i),
 					line,
 					endPos - pEdit->getPositionFromLine(line)

@@ -206,8 +206,8 @@ Application::Application(int& argc, char** argv)
 	rbool autoModel = false;
 	if (!openModelName.empty())
 	{
-		openModelName = rdo::File::extractFilePath(qApp->applicationFilePath().toLocal8Bit().constData()) + openModelName;
-		if (rdo::File::exist(openModelName) && g_pModel->openModel(QString::fromLocal8Bit(openModelName.c_str())))
+		openModelName = rdo::File::extractFilePath(qApp->applicationFilePath().toStdString()) + openModelName;
+		if (rdo::File::exist(openModelName) && g_pModel->openModel(QString::fromStdString(openModelName)))
 		{
 			autoRun            = true;
 			m_autoExitByModel  = true;
@@ -320,7 +320,7 @@ QString Application::getFullHelpFileName(CREF(QString) helpFileName) const
 QString Application::chkHelpExist(CREF(QString) helpFileName) const
 {
 	QString fullHelpFileName = QString("%1%2")
-		.arg(QString::fromLocal8Bit(rdo::File::extractFilePath(qApp->applicationFilePath().toLocal8Bit().constData()).c_str()))
+		.arg(QString::fromStdString(rdo::File::extractFilePath(qApp->applicationFilePath().toStdString())))
 		.arg(helpFileName);
 
 	if (!QFile::exists(fullHelpFileName))

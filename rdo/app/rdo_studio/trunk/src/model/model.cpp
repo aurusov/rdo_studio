@@ -293,7 +293,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 				"РДО-проект (*.rdox);;РДО-конвертор (*.smr);;Все файлы (*.*)"
 			);
 			data->m_result   = !modelName.isEmpty();
-			data->m_name     = modelName.toLocal8Bit().constData();
+			data->m_name     = modelName.toStdString();
 			data->m_readOnly = false;
 
 			msg.unlock();
@@ -524,8 +524,8 @@ rbool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, ruint te
 	g_pApp->getIMainWnd()->getDockResults().clear();
 	g_pApp->getIMainWnd()->getDockFind   ().clear();
 	rdo::repository::RDOThreadRepository::NewModel data;
-	data.m_name = modelName.toLocal8Bit().constData();
-	data.m_path = modelPath.toLocal8Bit().constData();
+	data.m_name = modelName.toStdString();
+	data.m_path = modelPath.toStdString();
 	g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_NEW, &data);
 	return true;
 }
@@ -551,7 +551,7 @@ rbool Model::openModel(CREF(QString) modelName)
 	m_openError     = false;
 	m_smrEmptyError = false;
 	m_modelClosed   = false;
-	rdo::repository::RDOThreadRepository::OpenFile data(modelName.toLocal8Bit().constData());
+	rdo::repository::RDOThreadRepository::OpenFile data(modelName.toStdString());
 	g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
 	if (data.m_result && !m_openError && !m_smrEmptyError)
 	{
@@ -687,7 +687,7 @@ void Model::newModelFromRepository()
 	createView();
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
-	setName(QString::fromLocal8Bit(data_smr.m_name.c_str()));
+	setName(QString::fromStdString(data_smr.m_name));
 
 	ModelTemplateList::const_iterator templateIt = m_templateIndex.is_initialized()
 		? m_modelTemplates.find(*m_templateIndex)
@@ -708,11 +708,11 @@ void Model::newModelFromRepository()
 				QFile   file(it->second.resName);
 				if (file.open(QIODevice::ReadOnly) && file.isOpen())
 				{
-					resourceData = QString::fromLocal8Bit(file.readAll());
+					resourceData = file.readAll();
 				}
 				if (!resourceData.isEmpty())
 				{
-					pEdit->replaceCurrent(resourceData.toLocal8Bit().constData());
+					pEdit->replaceCurrent(resourceData);
 					pEdit->scrollToLine(0);
 					if (it->second.position.is_initialized())
 					{
@@ -742,7 +742,7 @@ void Model::openModelFromRepository()
 	createView();
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
-	setName(QString::fromLocal8Bit(data_smr.m_name.c_str()));
+	setName(QString::fromStdString(data_smr.m_name));
 
 	int cnt = m_pView->getTab().count();
 	g_pApp->getMainWndUI()->statusBar()->beginProgress(0, cnt * 2 + 1);
@@ -776,7 +776,7 @@ void Model::openModelFromRepository()
 				pEdit->setReadOnly(data.m_readOnly);
 				if (data.m_readOnly)
 				{
-					g_pApp->getIMainWnd()->getDockDebug().appendString(QString("%1 - только чтение\n").arg(QString::fromLocal8Bit(tstring(data.m_name + data.m_extention).c_str())));
+					g_pApp->getIMainWnd()->getDockDebug().appendString(QString("%1 - только чтение\n").arg(QString::fromStdString(tstring(data.m_name + data.m_extention))));
 				}
 			}
 			else
@@ -795,7 +795,7 @@ void Model::openModelFromRepository()
 				}
 				if (!objName.isEmpty())
 				{
-					g_pApp->getIMainWnd()->getDockDebug().appendString(QString("Невозможно загрузить %1 (%2)\n").arg(objName).arg(QString::fromLocal8Bit(data.m_fullName.c_str())));
+					g_pApp->getIMainWnd()->getDockDebug().appendString(QString("Невозможно загрузить %1 (%2)\n").arg(objName).arg(QString::fromStdString(data.m_fullName)));
 					g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 				}
 				m_openError = true;
@@ -882,7 +882,7 @@ void Model::saveModelToRepository()
 
 	rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
 	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
-	setName(QString::fromLocal8Bit(data.m_name.c_str()));
+	setName(QString::fromStdString(data.m_name));
 
 	g_pApp->getMainWndUI()->insertMenuFileReopenItem(getFullName());
 
@@ -897,7 +897,7 @@ QString Model::getFullName() const
 {
 	rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
 	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
-	return QString::fromLocal8Bit(data.m_fullName.c_str());
+	return QString::fromStdString(data.m_fullName);
 }
 
 void Model::updateFrmDescribed()
@@ -972,7 +972,7 @@ void Model::afterModelStart()
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
 		BOOST_FOREACH(const tstring& name, bitmaps)
 		{
-			m_frameManager.insertBitmap(QString::fromLocal8Bit(name.c_str()));
+			m_frameManager.insertBitmap(QString::fromStdString(name));
 		}
 		BOOST_FOREACH(const tstring& name, frames)
 		{

@@ -345,9 +345,9 @@ tstring Edit::getCurrentOrSelectedWord() const
 QString Edit::getWordForFind() const
 {
 	return isSelected()
-		? QString::fromLocal8Bit(getSelection().c_str())
+		? QString::fromStdString(getSelection())
 		: !getCurrentWord().empty()
-			? QString::fromLocal8Bit(getCurrentWord().c_str())
+			? QString::fromStdString(getCurrentWord())
 			: m_pGroup && !m_pGroup->findStr.isEmpty()
 				? m_pGroup->findStr
 				: QString();
@@ -380,7 +380,7 @@ void Edit::ensureRangeVisible(int posStart, int posEnd, rbool enforcePolicy) con
 
 void Edit::onSearchFind() 
 {
-	m_findSettings.what = QString::fromLocal8Bit(getCurrentOrSelectedWord().c_str());
+	m_findSettings.what = QString::fromStdString(getCurrentOrSelectedWord());
 
 	if (!m_pFindDialog)
 	{
@@ -451,7 +451,7 @@ void Edit::onSearchFindNextCurrent()
 {
 	if (m_pGroup)
 	{
-		m_pGroup->findStr     = QString::fromLocal8Bit(getCurrentWord().c_str());
+		m_pGroup->findStr     = QString::fromStdString(getCurrentWord());
 		m_pGroup->bSearchDown = true;
 		findNext(m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
 	}
@@ -461,7 +461,7 @@ void Edit::onSearchFindPreviousCurrent()
 {
 	if (m_pGroup)
 	{
-		m_pGroup->findStr     = QString::fromLocal8Bit(getCurrentWord().c_str());
+		m_pGroup->findStr     = QString::fromStdString(getCurrentWord());
 		m_pGroup->bSearchDown = true;
 		findNext(m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
 	}
@@ -549,7 +549,7 @@ void Edit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, r
 
 void Edit::onSearchReplace() 
 {
-	m_findReplaceSettings.what = QString::fromLocal8Bit(getCurrentOrSelectedWord().c_str());
+	m_findReplaceSettings.what = QString::fromStdString(getCurrentOrSelectedWord());
 
 	if (!m_pFindReplaceDialog)
 	{

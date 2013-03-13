@@ -395,45 +395,44 @@ void ViewPreferences::onFontType(int index)
 {
 	UNUSED(index);
 
-	QString name = fontComboBox->currentFont().family();
-	QByteArray text = name.toLocal8Bit();
+	tstring name = fontComboBox->currentFont().family().toStdString();
 
 	switch(getStyleItem()->type)
 	{
 	case IT_ROOT:
-		all_font_name = name.toLocal8Bit().constData();
-		style_editor.font.name  = text.constData();
-		style_build.font.name   = text.constData();
-		style_debug.font.name   = text.constData();
-		style_trace.font.name   = text.constData();
-		style_results.font.name = text.constData();
-		style_find.font.name    = text.constData();
-		style_chart.font.name   = text.constData();
-		style_frame.font.name   = text.constData();
+		all_font_name = name;
+		style_editor.font.name  = name;
+		style_build.font.name   = name;
+		style_debug.font.name   = name;
+		style_trace.font.name   = name;
+		style_results.font.name = name;
+		style_find.font.name    = name;
+		style_chart.font.name   = name;
+		style_frame.font.name   = name;
 		break;
 	case IT_EDITOR:
-		style_editor.font.name = text.constData();
+		style_editor.font.name = name;
 		break;
 	case IT_BUILD:
-		style_build.font.name = text.constData();
+		style_build.font.name = name;
 		break;
 	case IT_DEBUG:
-		style_debug.font.name   = text.constData();
+		style_debug.font.name   = name;
 		break;
 	case IT_LOG:
-		style_trace.font.name = text.constData();
+		style_trace.font.name = name;
 		break;
 	case IT_RESULT:
-		style_results.font.name = text.constData();
+		style_results.font.name = name;
 		break;
 	case IT_FIND:
-		style_find.font.name    = text.constData();
+		style_find.font.name    = name;
 		break;
 	case IT_CHART:
-		style_chart.font.name   = text.constData();
+		style_chart.font.name   = name;
 		break;
 	case IT_FRAME:
-		style_frame.font.name   = text.constData();
+		style_frame.font.name   = name;
 		break;
 	}
 
@@ -772,7 +771,7 @@ void ViewPreferences::updateDialog()
 void ViewPreferences::updateStyleTab()
 {
 	PTR(StyleProperty) prop = getStyleProperty();
-	QString fontName = QString::fromLocal8Bit(prop->item->font_name.c_str());
+	QString fontName = QString::fromStdString(prop->item->font_name);
 	if (!fontName.isEmpty())
 	{
 		fontComboBox->setCurrentFont(QFont(fontName));
@@ -830,13 +829,13 @@ void ViewPreferences::updateStyleTab()
 		   (all_font_name == style_debug.font.name)   &&
 		   (all_font_name == style_build.font.name)   &&
 		   (all_font_name == style_find.font.name)    &&
-	       (all_font_name == style_frame.font.name)   &&
-	       (all_font_name == style_results.font.name) &&
+		   (all_font_name == style_frame.font.name)   &&
+		   (all_font_name == style_results.font.name) &&
 		   (all_font_name == style_trace.font.name)   &&
 		   (all_font_name == style_chart.font.name)
 		)
 		{
-			fontComboBox->setCurrentFont(QFont(QString::fromLocal8Bit(all_font_name.c_str())));
+			fontComboBox->setCurrentFont(QFont(QString::fromStdString(all_font_name)));
 		}
 		else
 			fontComboBox->setCurrentIndex(-1);
@@ -884,7 +883,7 @@ void ViewPreferences::updateStyleTab()
 			fgColorComboBox->setEnabled(true);
 			bgColorComboBox->setEnabled(false);
 			fgColorToolButton->setEnabled(true);
-			bgColorToolButton->setEnabled(false);			
+			bgColorToolButton->setEnabled(false);
 			break;
 		case IT_CHART_TITLE:
 			fgColorComboBox->setEnabled(true);
@@ -925,7 +924,7 @@ void ViewPreferences::updateStyleTab()
 			fgColorComboBox->setEnabled(true);
 			bgColorComboBox->setEnabled(false);
 			fgColorToolButton->setEnabled(true);
-			bgColorToolButton->setEnabled(false);			
+			bgColorToolButton->setEnabled(false);
 			break;
 		case IT_FRAME_BACKGROUND:
 			fgColorComboBox->setEnabled(false);
@@ -973,7 +972,7 @@ void ViewPreferences::createPreview()
 	ASSERT(preview_editor);
 	preview_editor->setEditorStyle(&style_editor);
 	preview_editor->setCanClearErrorLine(false);
-	preview_editor->appendText(QString("{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources"));
+	preview_editor->appendText("{ comments }\n$Pattern pattern_name : operation trace\n$Relevant_resources\n  rel_res2  : res_type2     Keep    Keep\n  rel_res1  : res_type1     Create  NoChange\n$Time = Abs(rel_res2.par1 - rel_res2.par3)\n{...}\n$End\n\ntext [ 10, 20, ... = 'text' ]\n\n$Re levant_resources");
 	preview_editor->scrollToLine(0);
 	preview_editor->setReadOnly(true);
 	preview_editor->bookmarkToggle();
@@ -982,9 +981,9 @@ void ViewPreferences::createPreview()
 
 	preview_build = new Build(previewStackedWidget->currentWidget());
 	preview_build->setEditorStyle(&style_build);
-	preview_build->appendLine(new BuildEditLineInfo(QString("Компиляция...").toLocal8Bit().constData()));
-	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage(QString("Неправильное значение параметра: 4").toLocal8Bit().constData(), rdoModelObjects::PAT, 40, 0)));
-	preview_build->appendLine(new BuildEditLineInfo(QString("найдено ошибок: 1, предупреждений: 0").toLocal8Bit().constData()));
+	preview_build->appendLine(new BuildEditLineInfo("Компиляция..."));
+	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage("Неправильное значение параметра: 4", rdoModelObjects::PAT, 40, 0)));
+	preview_build->appendLine(new BuildEditLineInfo("найдено ошибок: 1, предупреждений: 0"));
 	preview_build->gotoNext();
 	previewStackedWidget->addWidget(preview_build);
 
@@ -996,24 +995,24 @@ void ViewPreferences::createPreview()
 	preview_trace = new rdo::gui::tracer::LogMainWnd(previewStackedWidget->currentWidget());
 	preview_trace->view().setStyle(&g_pApp->getStyle()->style_trace);
 	preview_trace->view().setFocusOnly(true);
-	preview_trace->view().setText(QString("Простая строка\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19").toLocal8Bit().constData());
+	preview_trace->view().setText("Простая строка\nES 0 3\nEB 0 1 1 2 2 1 2\nEF 0.335153 1 1 2 2 1 2\nEI 0.427752 1 1 2 1 2\nER 1.07933 2 2 3 1 3\nRC 0.427752 2 2 0 0.427752 0\nRE 0.335153 2 2\nRK 0.427752 1 1 1 1 1\nV  0.427752 1  1\n$Status = USER_BREAK    607.228\nDPS_C  1  1  1\nSB 0 1\nSO 1 0 0 0\nSTN 3 1 3 6 2 1 3 2  5 6\nSTD 4 3 7 11 1 1 4 2  5 6\nSTR 5 2 8 12 2 1 4 2  1 6\nSRC 0 1 1 1 4\nSRE 0 1 2 2 4\nSRK 0 1 2 2 2\nSD\nSES 0 0.065 397312 10 8 13 13 19\nSEN 0 0.065 397312 10 8 13 13 19\nSEM 0 0.065 397312 10 8 13 13 19\nSEF 0 0.065 397312 10 8 13 13 19\nSEU 0 0.065 397312 10 8 13 13 19");
 	preview_trace->view().selectLine(0);
 	previewStackedWidget->addWidget(preview_trace);
 
 	preview_results = new Results(previewStackedWidget->currentWidget());
 	preview_results->setEditorStyle(&style_results);
 	preview_results->setReadOnly(false);
-	preview_results->replaceCurrent(QString("Длина_очереди                2  194  0.675957  21.6506  0  4\r\nЗанятость_парикмахера         TRUE  96  0.877351  21.7041  0.0397544  0.918872\r\nВсего_обслужено              96\r\nПропускная_способность       1.99198\r\n").toLocal8Bit().constData(), 0);
+	preview_results->replaceCurrent("Длина_очереди                2  194  0.675957  21.6506  0  4\r\nЗанятость_парикмахера         TRUE  96  0.877351  21.7041  0.0397544  0.918872\r\nВсего_обслужено              96\r\nПропускная_способность       1.99198\r\n", 0);
 	preview_results->setReadOnly(true);
 	previewStackedWidget->addWidget(preview_results);
 
 	preview_find = new Find(previewStackedWidget->currentWidget());
 	preview_find->setEditorStyle(&style_find);
 	preview_find->setKeyword("$Time");
-	preview_find->appendLine(new LogEditLineInfo(QString("Поиск '$Time'...").toLocal8Bit().constData()));
-	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(QString("$Time = Равномерный(0.25, 0.75)").toLocal8Bit().constData(), rdoModelObjects::PAT, 3, 0)));
-	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage(QString("$Time = Нормальный(0.45, 0.2)").toLocal8Bit().constData(), rdoModelObjects::PAT, 13, 0)));
-	preview_find->appendLine(new LogEditLineInfo(QString("'2' раз было найдено.").toLocal8Bit().constData()));
+	preview_find->appendLine(new LogEditLineInfo("Поиск '$Time'..."));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Равномерный(0.25, 0.75)", rdoModelObjects::PAT, 3, 0)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Нормальный(0.45, 0.2)", rdoModelObjects::PAT, 13, 0)));
+	preview_find->appendLine(new LogEditLineInfo("'2' раз было найдено."));
 	preview_find->gotoNext();
 	previewStackedWidget->addWidget(preview_find);
 

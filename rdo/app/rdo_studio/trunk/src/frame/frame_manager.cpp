@@ -172,7 +172,7 @@ void Manager::areaDown(ruint frameIndex, CREF(QPoint) point) const
 	{
 		if (area.second.m_rect.contains(point))
 		{
-			tstring areaName = area.first.toLocal8Bit().constData();
+			tstring areaName = area.first.toStdString();
 			g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &areaName);
 		}
 	}
@@ -303,11 +303,11 @@ void Manager::insertBitmap(CREF(QString) bitmapName)
 	g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 
 	rdo::binarystream stream;
-	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName.toLocal8Bit().constData(), stream);
+	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName.toStdString(), stream);
 	g_pModel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
 	rbool ok = false;
-	QPixmap pixmap(QString::fromLocal8Bit(data.m_name.c_str()));
+	QPixmap pixmap(QString::fromStdString(data.m_name));
 	if (!pixmap.isNull())
 	{
 		std::pair<rdo::gui::BitmapList::const_iterator, rbool> result =

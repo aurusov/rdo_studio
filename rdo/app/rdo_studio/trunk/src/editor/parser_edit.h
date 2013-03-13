@@ -26,7 +26,7 @@ public:
 
 	void setEditorStyle(PTR(ParserStyle) pStyle);
 
-	void replaceCurrent(CREF(tstring) str, int changePosValue = -1) const;
+	void replaceCurrent(CREF(QString) str, int changePosValue = -1) const;
 
 protected:
 	tstring kw0;

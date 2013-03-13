@@ -543,7 +543,7 @@ void Model::onEditCompleteWord()
 		if (useReplace)
 		{
 			setSelection  (getCurrentPos(), getCurrentPos() - userPatternLength);
-			replaceCurrent(startKeyWord);
+			replaceCurrent(QString::fromStdString(startKeyWord));
 		}
 		else
 		{
@@ -585,7 +585,7 @@ void Model::onInsertCommand(QObject* pObject)
 	ASSERT(pInsertMenuData);
 
 	replaceCurrent(
-		pInsertMenuData->text().toLocal8Bit().constData(),
+		pInsertMenuData->text(),
 		pInsertMenuData->position().is_initialized()
 			? pInsertMenuData->position().get()
 			: -1
