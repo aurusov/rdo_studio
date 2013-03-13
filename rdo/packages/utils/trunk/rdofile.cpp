@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
 #   include <Windows.h>
+#   include <io.h>
 #else
 #   include <unistd.h>
 #endif // COMPILER_VISUAL_STUDIO
@@ -30,6 +31,24 @@
 
 OPEN_RDO_NAMESPACE
 
+rbool File::create(CREF(tstring) name)
+{
+	return create(name, "");
+}
+
+rbool File::create(CREF(tstring) name, CREF(tstring) content)
+{
+	boost::filesystem::fstream file(name.c_str(), std::ios::out | std::ios::binary);
+	file << content.c_str() << std::endl;
+	file.close();
+	return true;
+}
+
+rbool File::exist(CREF(tstring) name)
+{
+	return  boost::filesystem::exists(name.c_str());
+}
+
 rbool File::read_only(CREF(tstring) name)
 {
 #ifdef COMPILER_VISUAL_STUDIO
@@ -38,6 +57,11 @@ rbool File::read_only(CREF(tstring) name)
 #ifdef COMPILER_GCC
 	return access(name.c_str(), R_OK) == 0 && access(name.c_str(), W_OK) == -1;
 #endif // COMPILER_GCC
+}
+
+rbool File::unlink(CREF(tstring) name)
+{
+	return boost::filesystem::remove(name.c_str());
 }
 
 rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fileName, REF(tstring) fileExt)
