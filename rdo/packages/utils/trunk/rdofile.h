@@ -65,6 +65,4 @@ public:
 
 CLOSE_RDO_NAMESPACE
 
-#include "utils/rdofile.inl"
-
 #endif // _UTILS_RDOFILE_H_
