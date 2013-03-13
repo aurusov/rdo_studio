@@ -39,6 +39,7 @@ namespace rdo
 		static std::string  convertToCLocale  (const std::string& txt, const std::locale& from = std::locale());
 		static std::string  convertFromCLocale(const std::string& txt, const std::locale& to = std::locale());
 		static unsigned int length            (const std::string& txt, const std::locale& locale = std::locale());
+		static std::wstring convertToWStr     (const std::string& txt, const std::locale& locale = std::locale());
 
 	private:
 		locale();
