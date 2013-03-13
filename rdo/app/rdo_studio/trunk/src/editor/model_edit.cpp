@@ -110,12 +110,12 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 
 	// ----------
 	// Fold
-	ModelTheme* theme = static_cast<ModelTheme*>(m_pStyle->theme);
-	QColor foldFgColor = theme->foldFgColor;
-	QColor foldBgColor = theme->foldBgColor;
-	switch (theme->foldStyle)
+	ModelStyle* style = static_cast<ModelStyle*>(m_pStyle);
+	QColor foldFgColor = style->foldFgColor;
+	QColor foldBgColor = style->foldBgColor;
+	switch (style->foldStyle)
 	{
-	case ModelTheme::F_NONE:
+	case ModelStyle::F_NONE:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_EMPTY, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_EMPTY, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor);
@@ -125,7 +125,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor);
 		break;
 
-	case ModelTheme::F_PLUS:
+	case ModelStyle::F_PLUS:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_PLUS , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor);
@@ -135,7 +135,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor);
 		break;
 
-	case ModelTheme::F_PLUSCONNECTED:
+	case ModelStyle::F_PLUSCONNECTED:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS  , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_PLUS   , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE  , foldFgColor, foldBgColor);
@@ -145,7 +145,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER, foldFgColor, foldBgColor);
 		break;
 
-	case ModelTheme::F_ARROW:
+	case ModelStyle::F_ARROW:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY    , foldFgColor, foldBgColor);
@@ -155,7 +155,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY    , foldFgColor, foldBgColor);
 		break;
 
-	case ModelTheme::F_ARROWCONNECTED:
+	case ModelStyle::F_ARROWCONNECTED:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE    , foldFgColor, foldBgColor);
@@ -165,7 +165,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER  , foldFgColor, foldBgColor);
 		break;
 
-	case ModelTheme::F_BOXCONNECTED:
+	case ModelStyle::F_BOXCONNECTED:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_BOXMINUS, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_BOXPLUS , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE   , foldFgColor, foldBgColor);
@@ -175,7 +175,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER , foldFgColor, foldBgColor);
 		break;
 
-	case ModelTheme::F_CIRCLECONNECTED:
+	case ModelStyle::F_CIRCLECONNECTED:
 		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_CIRCLEMINUS, foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_CIRCLEPLUS , foldFgColor, foldBgColor);
 		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE      , foldFgColor, foldBgColor);
@@ -188,18 +188,18 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 	tstring cf_prop("CommentFold");
 	tstring cf_val_1("1");
 	tstring cf_val_0("0");
-	sendEditorString(SCI_SETPROPERTY, reinterpret_cast<unsigned long>(cf_prop.c_str()), theme->commentFold ? cf_val_1.c_str() : cf_val_0.c_str());
+	sendEditorString(SCI_SETPROPERTY, reinterpret_cast<unsigned long>(cf_prop.c_str()), style->commentFold ? cf_val_1.c_str() : cf_val_0.c_str());
 	sendEditor(SCI_COLOURISE, 0, -1);
 
 	// ----------
 	// Margin
-	sendEditor(SCI_SETMARGINWIDTHN, 2, static_cast<ModelStyle*>(m_pStyle)->margin->fold ? 16 : 0);
-	sendEditor(SCI_SETMARGINWIDTHN, 1, static_cast<ModelStyle*>(m_pStyle)->margin->bookmark ? 16 : 0);
-	sendEditor(SCI_SETMARGINWIDTHN, 0, static_cast<ModelStyle*>(m_pStyle)->margin->lineNumber ? 40 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 2, static_cast<ModelStyle*>(m_pStyle)->margin.fold ? 16 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 1, static_cast<ModelStyle*>(m_pStyle)->margin.bookmark ? 16 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 0, static_cast<ModelStyle*>(m_pStyle)->margin.lineNumber ? 40 : 0);
 
 	// ----------
 	// Error
-	defineMarker(m_sciMarkerError, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<ModelTheme*>(m_pStyle->theme)->errorBgColor);
+	defineMarker(m_sciMarkerError, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<ModelStyle*>(m_pStyle)->errorBgColor);
 }
 
 void Model::expand(int& line, rbool doExpand, rbool force, int visLevels, int level) const
@@ -399,7 +399,7 @@ void Model::onEditCommentSelection() const
 
 void Model::onEditCompleteWord()
 {
-	if (!static_cast<ModelStyle*>(m_pStyle)->autoComplete->useAutoComplete)
+	if (!static_cast<ModelStyle*>(m_pStyle)->autoComplete.useAutoComplete)
 		return;
 
 	setFocus();
@@ -497,7 +497,7 @@ void Model::onEditCompleteWord()
 	}
 	LPCTSTR list;
 
-	if (static_cast<PTR(ModelStyle)>(m_pStyle)->autoComplete->showFullList)
+	if (static_cast<PTR(ModelStyle)>(m_pStyle)->autoComplete.showFullList)
 	{
 		list = primaryKwList.c_str();
 	}
@@ -672,7 +672,7 @@ void Model::onUpdateActions(rbool activated)
 
 	updateAction(
 		pMainWindow->actEditCompleteWord,
-		activated && g_pApp->getStyle()->style_editor.autoComplete->useAutoComplete,
+		activated && g_pApp->getStyle()->style_editor.autoComplete.useAutoComplete,
 		this, &Model::onEditCompleteWord
 	);
 

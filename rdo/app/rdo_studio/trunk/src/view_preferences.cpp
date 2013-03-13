@@ -28,8 +28,8 @@ rbool ViewPreferences::null_wordwrap      = false;
 rbool ViewPreferences::null_horzscrollbar = true;
 rbool ViewPreferences::null_warning       = true;
 rbool ViewPreferences::null_commentfold   = false;
-EditTheme::Bookmark ViewPreferences::null_bookmarkstyle = EditTheme::B_NONE;
-ModelTheme::Fold    ViewPreferences::null_foldstyle     = ModelTheme::F_NONE;
+EditStyle::Bookmark ViewPreferences::null_bookmarkstyle = EditStyle::B_NONE;
+ModelStyle::Fold    ViewPreferences::null_foldstyle     = ModelStyle::F_NONE;
 QColor ViewPreferences::null_fg_color = QColor(0x00, 0x00, 0x00);
 QColor ViewPreferences::null_bg_color = QColor(0xFF, 0xFF, 0xFF);
 
@@ -85,9 +85,9 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(checkBoxMarginLineNum, SIGNAL(stateChanged(int)), this, SLOT(onMarginLineNumber(int)));
 	//Вкладка "Табуляция"
 	tabSizeLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
-	tabSizeLineEdit->setText(QString::number(style_editor.tab->tabSize));
+	tabSizeLineEdit->setText(QString::number(style_editor.tab.tabSize));
 	indentSizeLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
-	indentSizeLineEdit->setText(QString::number(style_editor.tab->indentSize));
+	indentSizeLineEdit->setText(QString::number(style_editor.tab.indentSize));
 	connect(useTabSymbolCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onUseTabSymbol(int)));
 	connect(indentAsTabcheckBox, SIGNAL(stateChanged(int)), this, SLOT(onIndentAsTab(int)));
 	connect(autoIndentCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onAutoIndent(int)));
@@ -117,31 +117,31 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	switchPreviewComboBox->addItem("Chart",   IT_CHART);
 	switchPreviewComboBox->addItem("Frame",   IT_FRAME);
 
-	bookmarkComboBox->addItem("Нет",           EditTheme::B_NONE);
-	bookmarkComboBox->addItem("Круг",          EditTheme::B_CIRCLE);
-	bookmarkComboBox->addItem("Прямоугольник", EditTheme::B_RECT);
-	bookmarkComboBox->addItem("Овал",          EditTheme::B_ROUNDRECT);
-	bookmarkComboBox->addItem("Стрелка",       EditTheme::B_ARROW);
+	bookmarkComboBox->addItem("Нет",           EditStyle::B_NONE);
+	bookmarkComboBox->addItem("Круг",          EditStyle::B_CIRCLE);
+	bookmarkComboBox->addItem("Прямоугольник", EditStyle::B_RECT);
+	bookmarkComboBox->addItem("Овал",          EditStyle::B_ROUNDRECT);
+	bookmarkComboBox->addItem("Стрелка",       EditStyle::B_ARROW);
 
-	foldComboBox->addItem("Нет",             ModelTheme::F_NONE);
-	foldComboBox->addItem("Плюс",            ModelTheme::F_PLUS);
-	foldComboBox->addItem("Плюс + линия",    ModelTheme::F_PLUSCONNECTED);
-	foldComboBox->addItem("Стрелка",         ModelTheme::F_ARROW);
-	foldComboBox->addItem("Стрелка + линия", ModelTheme::F_ARROWCONNECTED);
-	foldComboBox->addItem("Квадрат + линия", ModelTheme::F_BOXCONNECTED);
-	foldComboBox->addItem("Круг + линия",    ModelTheme::F_CIRCLECONNECTED);
+	foldComboBox->addItem("Нет",             ModelStyle::F_NONE);
+	foldComboBox->addItem("Плюс",            ModelStyle::F_PLUS);
+	foldComboBox->addItem("Плюс + линия",    ModelStyle::F_PLUSCONNECTED);
+	foldComboBox->addItem("Стрелка",         ModelStyle::F_ARROW);
+	foldComboBox->addItem("Стрелка + линия", ModelStyle::F_ARROWCONNECTED);
+	foldComboBox->addItem("Квадрат + линия", ModelStyle::F_BOXCONNECTED);
+	foldComboBox->addItem("Круг + линия",    ModelStyle::F_CIRCLECONNECTED);
 
 	boldCheckBox->setEnabled(false);
 	italicCheckBox->setEnabled(false);
 	underlineCheckBox->setEnabled(false);
 
 	horzIndentLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
-	horzIndentLineEdit->setText(QString::number(style_trace.borders->horzBorder));
+	horzIndentLineEdit->setText(QString::number(style_trace.borders.horzBorder));
 	vertIndentLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
-	vertIndentLineEdit->setText(QString::number(style_trace.borders->vertBorder));
+	vertIndentLineEdit->setText(QString::number(style_trace.borders.vertBorder));
 
 	tickWidthLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
-	tickWidthLineEdit->setText(QString::number(style_chart.pFontsTicks->tickWidth));
+	tickWidthLineEdit->setText(QString::number(style_chart.pFontsTicks.tickWidth));
 
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
 	connect(switchPreviewComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchPreviewComboBox(int)));
@@ -197,7 +197,7 @@ void ViewPreferences::onApplyButton()
 
 void ViewPreferences::onCodeCompUse(int state)
 {
-	style_editor.autoComplete->useAutoComplete = state == Qt::Checked ? true : false;
+	style_editor.autoComplete.useAutoComplete = state == Qt::Checked ? true : false;
 	
 	switch(state)
 	{
@@ -218,45 +218,45 @@ void ViewPreferences::onCodeCompShowFullList(bool state)
 	UNUSED(state);
 
 	if(radioButtonFullList->isChecked())
-		style_editor.autoComplete->showFullList = true;
+		style_editor.autoComplete.showFullList = true;
 	if(radioButtonNearestWords->isChecked())
-		style_editor.autoComplete->showFullList = false;
+		style_editor.autoComplete.showFullList = false;
 	checkAllData();
 }
 
 void ViewPreferences::onMarginFold(int state)
 {
-	style_editor.margin->fold = state == Qt::Checked ? true : false;
+	style_editor.margin.fold = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onMarginBookmark(int state)
 {
-	style_editor.margin->bookmark = state == Qt::Checked ? true : false;
+	style_editor.margin.bookmark = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onMarginLineNumber(int state)
 {
-	style_editor.margin->lineNumber = state == Qt::Checked ? true : false;
+	style_editor.margin.lineNumber = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onUseTabSymbol(int state)
 {
-	style_editor.tab->useTabs = state == Qt::Checked ? true : false;
+	style_editor.tab.useTabs = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onIndentAsTab(int state)
 {
-	style_editor.tab->tabIndents = state == Qt::Checked ? true : false;
+	style_editor.tab.tabIndents = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
 void ViewPreferences::onAutoIndent(int state)
 {
-	style_editor.tab->autoIndent = state == Qt::Checked ? true : false;
+	style_editor.tab.autoIndent = state == Qt::Checked ? true : false;
 	checkAllData();
 }
 
@@ -265,21 +265,21 @@ void ViewPreferences::onEraseWithTab(bool state)
 	UNUSED(state);
 
 	if(eraseWithTabRadioButton->isChecked())
-		style_editor.tab->backspaceUntabs = true;
+		style_editor.tab.backspaceUntabs = true;
 	if(eraseWithIndentRadioButton->isChecked())
-		style_editor.tab->backspaceUntabs = false;
+		style_editor.tab.backspaceUntabs = false;
 	checkAllData();
 }
 
 void ViewPreferences::onTabSize(const QString& text)
 {
-	style_editor.tab->tabSize = text.toInt();
+	style_editor.tab.tabSize = text.toInt();
 	checkAllData();
 }
 
 void ViewPreferences::onIndentSize(const QString& text)
 {
-	style_editor.tab->indentSize = text.toInt();
+	style_editor.tab.indentSize = text.toInt();
 	checkAllData();
 }
 
@@ -353,38 +353,38 @@ void ViewPreferences::onFontSize(int index)
 	{
 	case IT_ROOT:
 		all_font_size = size;
-		style_editor.font->size  = size;
-		style_build.font->size   = size;
-		style_debug.font->size   = size;
-		style_trace.font->size   = size;
-		style_results.font->size = size;
-		style_find.font->size    = size;
-		style_chart.font->size   = size;
-		style_frame.font->size   = size;
+		style_editor.font.size  = size;
+		style_build.font.size   = size;
+		style_debug.font.size   = size;
+		style_trace.font.size   = size;
+		style_results.font.size = size;
+		style_find.font.size    = size;
+		style_chart.font.size   = size;
+		style_frame.font.size   = size;
 		break;
 	case IT_EDITOR:
-		style_editor.font->size = size;
+		style_editor.font.size = size;
 		break;
 	case IT_BUILD:
-		style_build.font->size = size;
+		style_build.font.size = size;
 		break;
 	case IT_DEBUG:
-		style_debug.font->size   = size;
+		style_debug.font.size   = size;
 		break;
 	case IT_LOG:
-		style_trace.font->size = size;
+		style_trace.font.size = size;
 		break;
 	case IT_RESULT:
-		style_results.font->size = size;
+		style_results.font.size = size;
 		break;
 	case IT_FIND:
-		style_find.font->size    = size;
+		style_find.font.size    = size;
 		break;
 	case IT_CHART:
-		style_chart.font->size   = size;
+		style_chart.font.size   = size;
 		break;
 	case IT_FRAME:
-		style_frame.font->size   = size;
+		style_frame.font.size   = size;
 		break;
 	}
 
@@ -402,38 +402,38 @@ void ViewPreferences::onFontType(int index)
 	{
 	case IT_ROOT:
 		all_font_name = name.toLocal8Bit().constData();
-		style_editor.font->name  = text.constData();
-		style_build.font->name   = text.constData();
-		style_debug.font->name   = text.constData();
-		style_trace.font->name   = text.constData();
-		style_results.font->name = text.constData();
-		style_find.font->name    = text.constData();
-		style_chart.font->name   = text.constData();
-		style_frame.font->name   = text.constData();
+		style_editor.font.name  = text.constData();
+		style_build.font.name   = text.constData();
+		style_debug.font.name   = text.constData();
+		style_trace.font.name   = text.constData();
+		style_results.font.name = text.constData();
+		style_find.font.name    = text.constData();
+		style_chart.font.name   = text.constData();
+		style_frame.font.name   = text.constData();
 		break;
 	case IT_EDITOR:
-		style_editor.font->name = text.constData();
+		style_editor.font.name = text.constData();
 		break;
 	case IT_BUILD:
-		style_build.font->name = text.constData();
+		style_build.font.name = text.constData();
 		break;
 	case IT_DEBUG:
-		style_debug.font->name   = text.constData();
+		style_debug.font.name   = text.constData();
 		break;
 	case IT_LOG:
-		style_trace.font->name = text.constData();
+		style_trace.font.name = text.constData();
 		break;
 	case IT_RESULT:
-		style_results.font->name = text.constData();
+		style_results.font.name = text.constData();
 		break;
 	case IT_FIND:
-		style_find.font->name    = text.constData();
+		style_find.font.name    = text.constData();
 		break;
 	case IT_CHART:
-		style_chart.font->name   = text.constData();
+		style_chart.font.name   = text.constData();
 		break;
 	case IT_FRAME:
-		style_frame.font->name   = text.constData();
+		style_frame.font.name   = text.constData();
 		break;
 	}
 
@@ -543,14 +543,14 @@ void ViewPreferences::onWordWrap(int state)
 void ViewPreferences::onBookmark(int index)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->bookmarkstyle = static_cast<EditTheme::Bookmark>(index);
+	item->bookmarkstyle = static_cast<EditStyle::Bookmark>(index);
 	updatePreview();
 }
 
 void ViewPreferences::onFold(int index)
 {
 	PTR(StyleItem) item = getStyleItem();
-	item->foldstyle = static_cast<ModelTheme::Fold>(index);
+	item->foldstyle = static_cast<ModelStyle::Fold>(index);
 	updatePreview();
 }
 
@@ -570,13 +570,13 @@ void ViewPreferences::onWarning(int state)
 
 void ViewPreferences::onHorzIndent(const QString& text)
 {
-	style_trace.borders->horzBorder = text.toInt();
+	style_trace.borders.horzBorder = text.toInt();
 	updatePreview();
 }
 
 void ViewPreferences::onVertIndent(const QString& text)
 {
-	style_trace.borders->vertBorder = text.toInt();
+	style_trace.borders.vertBorder = text.toInt();
 	updatePreview();
 }
 
@@ -675,20 +675,20 @@ void ViewPreferences::onBgColorSelected(const QColor& color)
 void ViewPreferences::onTitleSize(int index)
 {
 	UNUSED(index);
-	style_chart.pFontsTicks->titleFontSize = titleComboBox->currentText().toInt();
+	style_chart.pFontsTicks.titleFontSize = titleComboBox->currentText().toInt();
 	updatePreview();
 }
 
 void ViewPreferences::onLegendSize(int index)
 {
 	UNUSED(index);
-	style_chart.pFontsTicks->legendFontSize = legendComboBox->currentText().toInt();
+	style_chart.pFontsTicks.legendFontSize = legendComboBox->currentText().toInt();
 	updatePreview();
 }
 
 void ViewPreferences::onTickWidth(const QString& text)
 {
-	style_chart.pFontsTicks->tickWidth = text.toInt();
+	style_chart.pFontsTicks.tickWidth = text.toInt();
 	updatePreview();
 }
 
@@ -731,38 +731,38 @@ void ViewPreferences::updateDialog()
 		? Qt::Checked
 		: Qt::Unchecked
 		);
-	checkBoxCodeCompUse->setCheckState(style_editor.autoComplete->useAutoComplete
+	checkBoxCodeCompUse->setCheckState(style_editor.autoComplete.useAutoComplete
 		? Qt::Checked
 		: Qt::Unchecked
 		);
-	checkBoxMarginFold->setCheckState(style_editor.margin->fold
+	checkBoxMarginFold->setCheckState(style_editor.margin.fold
 		? Qt::Checked
 		: Qt::Unchecked
 		);
-	checkBoxMarginBookmark->setCheckState(style_editor.margin->bookmark
+	checkBoxMarginBookmark->setCheckState(style_editor.margin.bookmark
 		? Qt::Checked
 		: Qt::Unchecked
 		);
-	checkBoxMarginLineNum->setCheckState(style_editor.margin->lineNumber
+	checkBoxMarginLineNum->setCheckState(style_editor.margin.lineNumber
 		? Qt::Checked
 		: Qt::Unchecked
 		);
-	style_editor.autoComplete->showFullList
+	style_editor.autoComplete.showFullList
 		? radioButtonFullList->toggle()
 		: radioButtonNearestWords->toggle();	
-	useTabSymbolCheckBox->setCheckState(style_editor.tab->useTabs
+	useTabSymbolCheckBox->setCheckState(style_editor.tab.useTabs
 		? Qt::Checked
 		: Qt::Unchecked
 		);
-	indentAsTabcheckBox->setCheckState(style_editor.tab->tabIndents
+	indentAsTabcheckBox->setCheckState(style_editor.tab.tabIndents
 		? Qt::Checked
 		: Qt::Unchecked
 		);
-	autoIndentCheckBox->setCheckState(style_editor.tab->autoIndent
+	autoIndentCheckBox->setCheckState(style_editor.tab.autoIndent
 		? Qt::Checked
 		: Qt::Unchecked
 		);
-	style_editor.tab->backspaceUntabs
+	style_editor.tab.backspaceUntabs
 		? eraseWithTabRadioButton->toggle()
 		: eraseWithIndentRadioButton->toggle();
 
@@ -811,14 +811,14 @@ void ViewPreferences::updateStyleTab()
 	switch(prop->item->type)
 	{
 	case IT_ROOT:
-		if((all_font_size == style_editor.font->size)  &&
-		   (all_font_size == style_debug.font->size)   &&
-		   (all_font_size == style_build.font->size)   &&
-		   (all_font_size == style_find.font->size)    &&
-		   (all_font_size == style_frame.font->size)   &&
-		   (all_font_size == style_results.font->size) &&
-		   (all_font_size == style_trace.font->size)   &&
-		   (all_font_size == style_chart.font->size)
+		if((all_font_size == style_editor.font.size)  &&
+		   (all_font_size == style_debug.font.size)   &&
+		   (all_font_size == style_build.font.size)   &&
+		   (all_font_size == style_find.font.size)    &&
+		   (all_font_size == style_frame.font.size)   &&
+		   (all_font_size == style_results.font.size) &&
+		   (all_font_size == style_trace.font.size)   &&
+		   (all_font_size == style_chart.font.size)
 		)
 		{
 			fontSizeComboBox->setCurrentIndex(fontSizeComboBox->findText(QString::number(prop->item->font_size)));
@@ -826,14 +826,14 @@ void ViewPreferences::updateStyleTab()
 		else
 			fontSizeComboBox->setCurrentIndex(-1);
 		
-		if((all_font_name == style_editor.font->name)  &&
-		   (all_font_name == style_debug.font->name)   &&
-		   (all_font_name == style_build.font->name)   &&
-		   (all_font_name == style_find.font->name)    &&
-	       (all_font_name == style_frame.font->name)   &&
-	       (all_font_name == style_results.font->name) &&
-		   (all_font_name == style_trace.font->name)   &&
-		   (all_font_name == style_chart.font->name)
+		if((all_font_name == style_editor.font.name)  &&
+		   (all_font_name == style_debug.font.name)   &&
+		   (all_font_name == style_build.font.name)   &&
+		   (all_font_name == style_find.font.name)    &&
+	       (all_font_name == style_frame.font.name)   &&
+	       (all_font_name == style_results.font.name) &&
+		   (all_font_name == style_trace.font.name)   &&
+		   (all_font_name == style_chart.font.name)
 		)
 		{
 			fontComboBox->setCurrentFont(QFont(QString::fromLocal8Bit(all_font_name.c_str())));
@@ -857,8 +857,8 @@ void ViewPreferences::updateStyleTab()
 		horzScrollDebugCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
 		break;
 	case IT_LOG:
-		vertIndentLineEdit->setText(QString::number(style_trace.borders->vertBorder));
-		horzIndentLineEdit->setText(QString::number(style_trace.borders->horzBorder));
+		vertIndentLineEdit->setText(QString::number(style_trace.borders.vertBorder));
+		horzIndentLineEdit->setText(QString::number(style_trace.borders.horzBorder));
 		break;
 	case IT_RESULT:
 		wordWrapResultsCheckBox->setCheckState(prop->item->wordwrap ? Qt::Checked : Qt::Unchecked);
@@ -869,9 +869,9 @@ void ViewPreferences::updateStyleTab()
 		horzScrollFindCheckBox->setCheckState(prop->item->horzscrollbar ? Qt::Checked : Qt::Unchecked);
 		break;
 	case IT_CHART:
-		titleComboBox->setCurrentIndex(titleComboBox->findText(QString::number(style_chart.pFontsTicks->titleFontSize)));
-		legendComboBox->setCurrentIndex(legendComboBox->findText(QString::number(style_chart.pFontsTicks->legendFontSize)));
-		tickWidthLineEdit->setText(QString::number(style_chart.pFontsTicks->tickWidth));
+		titleComboBox->setCurrentIndex(titleComboBox->findText(QString::number(style_chart.pFontsTicks.titleFontSize)));
+		legendComboBox->setCurrentIndex(legendComboBox->findText(QString::number(style_chart.pFontsTicks.legendFontSize)));
+		tickWidthLineEdit->setText(QString::number(style_chart.pFontsTicks.tickWidth));
 		switch(prop->identificator)
 		{
 		case IT_CHART:
@@ -1055,115 +1055,107 @@ void ViewPreferences::createStyles()
 	item->properties.push_back(new StyleProperty(item, IT_ROOT, null_font_style, all_fg_color, all_bg_color));
 	style_list.push_back(item);
 
-	ModelTheme* editor_theme = static_cast<ModelTheme*>(style_editor.theme);
-	item = new StyleItem(IT_EDITOR, style_editor.font->size, style_editor.font->name, style_editor.window->wordWrap, style_editor.window->showHorzScrollBar, editor_theme->bookmarkStyle, editor_theme->foldStyle, editor_theme->commentFold);
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR, editor_theme->identifierStyle, editor_theme->identifierColor, editor_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, editor_theme->defaultStyle, editor_theme->defaultColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_IDENTIFICATOR, editor_theme->identifierStyle, editor_theme->identifierColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_KEYWORD, editor_theme->keywordStyle, editor_theme->keywordColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_FUNCTION, editor_theme->functionsStyle, editor_theme->functionsColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TRACE, editor_theme->traceStyle, editor_theme->traceColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_COLOR, editor_theme->colorStyle, editor_theme->colorColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_COMMENT, editor_theme->commentStyle, editor_theme->commentColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_NUMBER, editor_theme->numberStyle, editor_theme->numberColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_STRING, editor_theme->stringStyle, editor_theme->stringColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_OPERATOR, editor_theme->operatorStyle, editor_theme->operatorColor, null_bg_color, null_fg_color, editor_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, editor_theme->caretColor, null_bg_color));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, editor_theme->selectionBgColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, editor_theme->bookmarkFgColor, editor_theme->bookmarkBgColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_FOLD, null_font_style, editor_theme->foldFgColor, editor_theme->foldBgColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_ERROR, null_font_style, null_fg_color, editor_theme->errorBgColor));
+	item = new StyleItem(IT_EDITOR, style_editor.font.size, style_editor.font.name, style_editor.window.wordWrap, style_editor.window.showHorzScrollBar, style_editor.bookmarkStyle, style_editor.foldStyle, style_editor.commentFold);
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR, style_editor.identifierStyle, style_editor.identifierColor, style_editor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, style_editor.defaultStyle, style_editor.defaultColor, null_bg_color, null_fg_color, style_editor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_IDENTIFICATOR, style_editor.identifierStyle, style_editor.identifierColor, null_bg_color, null_fg_color, style_editor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_KEYWORD, style_editor.keywordStyle, style_editor.keywordColor, null_bg_color, null_fg_color, style_editor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_FUNCTION, style_editor.functionsStyle, style_editor.functionsColor, null_bg_color, null_fg_color, style_editor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TRACE, style_editor.traceStyle, style_editor.traceColor, null_bg_color, null_fg_color, style_editor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_COLOR, style_editor.colorStyle, style_editor.colorColor, null_bg_color, null_fg_color, style_editor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_COMMENT, style_editor.commentStyle, style_editor.commentColor, null_bg_color, null_fg_color, style_editor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_NUMBER, style_editor.numberStyle, style_editor.numberColor, null_bg_color, null_fg_color, style_editor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_STRING, style_editor.stringStyle, style_editor.stringColor, null_bg_color, null_fg_color, style_editor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_OPERATOR, style_editor.operatorStyle, style_editor.operatorColor, null_bg_color, null_fg_color, style_editor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, style_editor.caretColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, style_editor.selectionBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, style_editor.bookmarkFgColor, style_editor.bookmarkBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_FOLD, null_font_style, style_editor.foldFgColor, style_editor.foldBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_ERROR, null_font_style, null_fg_color, style_editor.errorBgColor));
 	style_list.push_back(item);
 
-	BuildTheme* build_theme = static_cast<BuildTheme*>(style_build.theme);
-	item = new StyleItem(IT_BUILD, style_build.font->size, style_build.font->name, style_build.window->wordWrap, style_build.window->showHorzScrollBar, null_bookmarkstyle, null_foldstyle, null_commentfold, build_theme->warning);
-	item->properties.push_back(new StyleProperty(item, IT_BUILD, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, build_theme->defaultStyle, build_theme->defaultColor, build_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style, null_fg_color, build_theme->selectLineBgColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, build_theme->caretColor, null_bg_color));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, build_theme->selectionBgColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, build_theme->bookmarkBgColor));
+	item = new StyleItem(IT_BUILD, style_build.font.size, style_build.font.name, style_build.window.wordWrap, style_build.window.showHorzScrollBar, null_bookmarkstyle, null_foldstyle, null_commentfold, style_build.warning);
+	item->properties.push_back(new StyleProperty(item, IT_BUILD, style_build.defaultStyle, style_build.defaultColor, style_build.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, style_build.defaultStyle, style_build.defaultColor, style_build.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style, null_fg_color, style_build.selectLineBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, style_build.caretColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, style_build.selectionBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, style_build.bookmarkBgColor));
 	style_list.push_back(item);
 
-	EditTheme* debug_theme = static_cast<EditTheme*>(style_debug.theme);
-	item = new StyleItem(IT_DEBUG, style_debug.font->size, style_debug.font->name, style_debug.window->wordWrap, style_debug.window->showHorzScrollBar);
-	item->properties.push_back(new StyleProperty(item, IT_DEBUG, debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, debug_theme->defaultStyle, debug_theme->defaultColor, debug_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, debug_theme->caretColor, null_bg_color));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, debug_theme->selectionBgColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, debug_theme->bookmarkBgColor));
+	item = new StyleItem(IT_DEBUG, style_debug.font.size, style_debug.font.name, style_debug.window.wordWrap, style_debug.window.showHorzScrollBar);
+	item->properties.push_back(new StyleProperty(item, IT_DEBUG, style_debug.defaultStyle, style_debug.defaultColor, style_debug.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, style_debug.defaultStyle, style_debug.defaultColor, style_debug.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, style_debug.caretColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, style_debug.selectionBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, style_debug.bookmarkBgColor));
 	style_list.push_back(item);
 
-	rdo::gui::tracer::LogTheme* trace_theme = style_trace.theme;
-	item = new StyleItem(IT_LOG, style_trace.font->size, style_trace.font->name);
-	item->properties.push_back(new StyleProperty(item, IT_LOG, trace_theme->style, trace_theme->defaultColor.foregroundColor, trace_theme->defaultColor.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_ES, trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_EB, trace_theme->style, trace_theme->eb.foregroundColor, trace_theme->eb.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_EF, trace_theme->style, trace_theme->ef.foregroundColor, trace_theme->ef.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_EI, trace_theme->style, trace_theme->ei.foregroundColor, trace_theme->ei.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_ER, trace_theme->style, trace_theme->er.foregroundColor, trace_theme->er.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_RC, trace_theme->style, trace_theme->rc.foregroundColor, trace_theme->rc.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_RE, trace_theme->style, trace_theme->re.foregroundColor, trace_theme->re.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_RK, trace_theme->style, trace_theme->rk.foregroundColor, trace_theme->rk.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_V, trace_theme->style, trace_theme->v.foregroundColor, trace_theme->v.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_STATUS, trace_theme->style, trace_theme->s.foregroundColor, trace_theme->s.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_DPS, trace_theme->style, trace_theme->dps.foregroundColor, trace_theme->dps.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SB, trace_theme->style, trace_theme->sb.foregroundColor, trace_theme->sb.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SO, trace_theme->style, trace_theme->so.foregroundColor, trace_theme->so.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_STN, trace_theme->style, trace_theme->stn.foregroundColor, trace_theme->stn.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_STD, trace_theme->style, trace_theme->std.foregroundColor, trace_theme->std.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_STR, trace_theme->style, trace_theme->str.foregroundColor, trace_theme->str.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SRC, trace_theme->style, trace_theme->src.foregroundColor, trace_theme->src.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SRE, trace_theme->style, trace_theme->sre.foregroundColor, trace_theme->sre.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SRK, trace_theme->style, trace_theme->srk.foregroundColor, trace_theme->srk.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SD, trace_theme->style, trace_theme->sd.foregroundColor, trace_theme->sd.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SES, trace_theme->style, trace_theme->ses.foregroundColor, trace_theme->ses.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SEN, trace_theme->style, trace_theme->sen.foregroundColor, trace_theme->sen.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SEM, trace_theme->style, trace_theme->sem.foregroundColor, trace_theme->sem.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SEF, trace_theme->style, trace_theme->sef.foregroundColor, trace_theme->sef.backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_LOG_SEU, trace_theme->style, trace_theme->seu.foregroundColor, trace_theme->seu.backgroundColor));
+	item = new StyleItem(IT_LOG, style_trace.font.size, style_trace.font.name);
+	item->properties.push_back(new StyleProperty(item, IT_LOG, style_trace.fontStyle, style_trace.defaultColor.foregroundColor, style_trace.defaultColor.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_ES, style_trace.fontStyle, style_trace.es.foregroundColor, style_trace.es.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_EB, style_trace.fontStyle, style_trace.eb.foregroundColor, style_trace.eb.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_EF, style_trace.fontStyle, style_trace.ef.foregroundColor, style_trace.ef.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_EI, style_trace.fontStyle, style_trace.ei.foregroundColor, style_trace.ei.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_ER, style_trace.fontStyle, style_trace.er.foregroundColor, style_trace.er.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_RC, style_trace.fontStyle, style_trace.rc.foregroundColor, style_trace.rc.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_RE, style_trace.fontStyle, style_trace.re.foregroundColor, style_trace.re.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_RK, style_trace.fontStyle, style_trace.rk.foregroundColor, style_trace.rk.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_V, style_trace.fontStyle, style_trace.v.foregroundColor, style_trace.v.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_STATUS, style_trace.fontStyle, style_trace.s.foregroundColor, style_trace.s.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_DPS, style_trace.fontStyle, style_trace.dps.foregroundColor, style_trace.dps.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SB, style_trace.fontStyle, style_trace.sb.foregroundColor, style_trace.sb.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SO, style_trace.fontStyle, style_trace.so.foregroundColor, style_trace.so.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_STN, style_trace.fontStyle, style_trace.stn.foregroundColor, style_trace.stn.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_STD, style_trace.fontStyle, style_trace.std.foregroundColor, style_trace.std.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_STR, style_trace.fontStyle, style_trace.str.foregroundColor, style_trace.str.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SRC, style_trace.fontStyle, style_trace.src.foregroundColor, style_trace.src.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SRE, style_trace.fontStyle, style_trace.sre.foregroundColor, style_trace.sre.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SRK, style_trace.fontStyle, style_trace.srk.foregroundColor, style_trace.srk.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SD, style_trace.fontStyle, style_trace.sd.foregroundColor, style_trace.sd.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SES, style_trace.fontStyle, style_trace.ses.foregroundColor, style_trace.ses.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SEN, style_trace.fontStyle, style_trace.sen.foregroundColor, style_trace.sen.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SEM, style_trace.fontStyle, style_trace.sem.foregroundColor, style_trace.sem.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SEF, style_trace.fontStyle, style_trace.sef.foregroundColor, style_trace.sef.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_LOG_SEU, style_trace.fontStyle, style_trace.seu.foregroundColor, style_trace.seu.backgroundColor));
 	style_list.push_back(item);
 
-	ParserTheme* results_theme = static_cast<ParserTheme*>(style_results.theme);
-	item = new StyleItem(IT_RESULT, style_results.font->size, style_results.font->name, style_results.window->wordWrap, style_results.window->showHorzScrollBar);
-	item->properties.push_back(new StyleProperty(item, IT_RESULT, results_theme->identifierStyle, results_theme->identifierColor, results_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, results_theme->defaultStyle, results_theme->defaultColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_IDENTIFICATOR, results_theme->identifierStyle, results_theme->identifierColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_KEYWORD, results_theme->keywordStyle, results_theme->keywordColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_NUMBER, results_theme->numberStyle, results_theme->numberColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_STRING, results_theme->stringStyle, results_theme->stringColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_OPERATOR, results_theme->operatorStyle, results_theme->operatorColor, null_bg_color, null_fg_color, results_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, results_theme->caretColor, null_bg_color));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, results_theme->selectionBgColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, results_theme->bookmarkFgColor, results_theme->bookmarkBgColor));
+	item = new StyleItem(IT_RESULT, style_results.font.size, style_results.font.name, style_results.window.wordWrap, style_results.window.showHorzScrollBar);
+	item->properties.push_back(new StyleProperty(item, IT_RESULT, style_results.identifierStyle, style_results.identifierColor, style_results.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_PLAINTEXT, style_results.defaultStyle, style_results.defaultColor, null_bg_color, null_fg_color, style_results.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_IDENTIFICATOR, style_results.identifierStyle, style_results.identifierColor, null_bg_color, null_fg_color, style_results.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_KEYWORD, style_results.keywordStyle, style_results.keywordColor, null_bg_color, null_fg_color, style_results.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_NUMBER, style_results.numberStyle, style_results.numberColor, null_bg_color, null_fg_color, style_results.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_STRING, style_results.stringStyle, style_results.stringColor, null_bg_color, null_fg_color, style_results.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_OPERATOR, style_results.operatorStyle, style_results.operatorColor, null_bg_color, null_fg_color, style_results.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, style_results.caretColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, style_results.selectionBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, style_results.bookmarkFgColor, style_results.bookmarkBgColor));
 	style_list.push_back(item);
 
-	FindTheme* find_theme = static_cast<FindTheme*>(style_find.theme);
-	item = new StyleItem(IT_FIND, style_find.font->size, style_find.font->name, style_find.window->wordWrap, style_find.window->showHorzScrollBar);
-	item->properties.push_back(new StyleProperty(item, IT_FIND, find_theme->defaultStyle, find_theme->defaultColor, find_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, find_theme->defaultStyle, find_theme->defaultColor, find_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_FIND_SEARCHTEXT, find_theme->keywordStyle, find_theme->keywordColor, null_bg_color, null_fg_color, find_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style, null_fg_color, find_theme->selectLineBgColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, find_theme->caretColor, null_bg_color));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, find_theme->selectionBgColor));
-	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, find_theme->bookmarkBgColor));
+	item = new StyleItem(IT_FIND, style_find.font.size, style_find.font.name, style_find.window.wordWrap, style_find.window.showHorzScrollBar);
+	item->properties.push_back(new StyleProperty(item, IT_FIND, style_find.defaultStyle, style_find.defaultColor, style_find.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_TEXT, style_find.defaultStyle, style_find.defaultColor, style_find.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_FIND_SEARCHTEXT, style_find.keywordStyle, style_find.keywordColor, null_bg_color, null_fg_color, style_find.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_BUILD_SELECTEDLINE, null_font_style, null_fg_color, style_find.selectLineBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_CARET, null_font_style, style_find.caretColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_TEXTSELECTION, null_font_style, null_fg_color, style_find.selectionBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_EDITOR_BOOKMARK, null_font_style, null_fg_color, style_find.bookmarkBgColor));
 	style_list.push_back(item);
 
-	rdo::gui::tracer::ChartViewTheme* chart_theme = static_cast<rdo::gui::tracer::ChartViewTheme*>(style_chart.theme);
-	item = new StyleItem(IT_CHART, style_chart.font->size, style_chart.font->name);
-	item->properties.push_back(new StyleProperty(item, IT_CHART, chart_theme->defaultStyle, chart_theme->defaultColor, chart_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_CHART_AXIS, chart_theme->defaultStyle, chart_theme->axisFgColor, null_bg_color, null_fg_color, chart_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_CHART_TITLE, chart_theme->titleStyle, chart_theme->titleFGColor, null_bg_color, null_fg_color, chart_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_CHART_LEGEND, chart_theme->legendStyle, chart_theme->legendFgColor, null_bg_color, null_fg_color, chart_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_CHART_CHART, null_font_style, null_fg_color, chart_theme->chartBgColor));
-	item->properties.push_back(new StyleProperty(item, IT_CHART_TIME, null_font_style, null_fg_color, chart_theme->timeBgColor));
+	item = new StyleItem(IT_CHART, style_chart.font.size, style_chart.font.name);
+	item->properties.push_back(new StyleProperty(item, IT_CHART, style_chart.defaultStyle, style_chart.defaultColor, style_chart.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_AXIS, style_chart.defaultStyle, style_chart.axisFgColor, null_bg_color, null_fg_color, style_chart.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_TITLE, style_chart.titleStyle, style_chart.titleFGColor, null_bg_color, null_fg_color, style_chart.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_LEGEND, style_chart.legendStyle, style_chart.legendFgColor, null_bg_color, null_fg_color, style_chart.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_CHART, null_font_style, null_fg_color, style_chart.chartBgColor));
+	item->properties.push_back(new StyleProperty(item, IT_CHART_TIME, null_font_style, null_fg_color, style_chart.timeBgColor));
 	style_list.push_back(item);
 
-	rdo::gui::frame::FrameTheme* frame_theme = static_cast<rdo::gui::frame::FrameTheme*>(style_frame.theme);
-	item = new StyleItem(IT_FRAME, style_frame.font->size, style_frame.font->name);
-	item->properties.push_back(new StyleProperty(item, IT_FRAME, frame_theme->defaultStyle, frame_theme->defaultColor, frame_theme->backgroundColor));
-	item->properties.push_back(new StyleProperty(item, IT_FRAME_BORDER, frame_theme->defaultStyle, frame_theme->defaultColor, null_bg_color));
-	item->properties.push_back(new StyleProperty(item, IT_FRAME_BACKGROUND, frame_theme->defaultStyle, null_fg_color, frame_theme->backgroundColor));
+	item = new StyleItem(IT_FRAME, style_frame.font.size, style_frame.font.name);
+	item->properties.push_back(new StyleProperty(item, IT_FRAME, style_frame.defaultStyle, style_frame.defaultColor, style_frame.backgroundColor));
+	item->properties.push_back(new StyleProperty(item, IT_FRAME_BORDER, style_frame.defaultStyle, style_frame.defaultColor, null_bg_color));
+	item->properties.push_back(new StyleProperty(item, IT_FRAME_BACKGROUND, style_frame.defaultStyle, null_fg_color, style_frame.backgroundColor));
 	style_list.push_back(item);
 }
 

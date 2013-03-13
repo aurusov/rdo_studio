@@ -18,41 +18,6 @@
 namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
-// -------------------- FindTheme
-// --------------------------------------------------------------------------------
-class FindTheme: public LogTheme
-{
-public:
-	FindTheme();
-	virtual ~FindTheme();
-
-	FindTheme& operator =( const FindTheme& theme );
-	rbool operator ==( const FindTheme& theme ) const;
-	rbool operator !=( const FindTheme& theme ) const;
-
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
-
-	QColor keywordColor;
-
-	style::StyleFont::style keywordStyle;
-
-	virtual rbool styleDefault( const int styleType ) const;
-	virtual rbool styleUsing( const int styleType ) const;
-	virtual rbool styleBold( const int styleType = STYLE_DEFAULT ) const;
-	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
-
-	static FindTheme getDefaultTheme();
-	static FindTheme getClassicTheme();
-	static FindTheme getTwilightTheme();
-	static FindTheme getOceanTheme();
-};
-
-QSettings& operator<< (QSettings& settings, const FindTheme& theme);
-QSettings& operator>> (QSettings& settings,       FindTheme& theme);
-
-// --------------------------------------------------------------------------------
 // -------------------- FindStyle
 // --------------------------------------------------------------------------------
 class FindStyle: public LogStyle
@@ -64,7 +29,28 @@ public:
 	FindStyle& operator =( const FindStyle& style );
 	rbool operator ==( const FindStyle& style ) const;
 	rbool operator !=( const FindStyle& style ) const;
+
+	virtual void loadStyle(QSettings& settings);
+	virtual void saveStyle(QSettings& settings) const;
+
+	virtual rbool styleDefault( const int styleType ) const;
+	virtual rbool styleUsing( const int styleType ) const;
+	virtual rbool styleBold( const int styleType = STYLE_DEFAULT ) const;
+	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
+	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+
+	static FindStyle getDefaultStyle();
+	static FindStyle getClassicStyle();
+	static FindStyle getTwilightStyle();
+	static FindStyle getOceanStyle();
+
+	QColor keywordColor;
+
+	style::StyleFont::style keywordStyle;
 };
+
+QSettings& operator<< (QSettings& settings, const FindStyle& style);
+QSettings& operator>> (QSettings& settings,       FindStyle& style);
 
 }}} // namespace rdo::gui::editor
 

@@ -17,103 +17,11 @@
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
-// -------------------- BuildTheme
-// --------------------------------------------------------------------------------
-BuildTheme::BuildTheme(): LogTheme()
-{
-	warning = true;
-}
-
-BuildTheme::~BuildTheme()
-{
-}
-
-BuildTheme& BuildTheme::operator =( const BuildTheme& theme )
-{
-	LogTheme::operator=( theme );
-	warning = theme.warning;
-
-	return *this;
-}
-
-rbool BuildTheme::operator ==( const BuildTheme& theme ) const
-{
-	rbool flag = LogTheme::operator==( theme );
-	if ( flag )	flag &= warning == theme.warning ? true : false;
-	return flag;
-}
-
-rbool BuildTheme::operator !=( const BuildTheme& theme ) const
-{
-	return !(*this == theme);
-}
-
-void BuildTheme::load(QSettings& settings)
-{
-	LogTheme::load(settings);
-	settings >> *this;
-}
-
-void BuildTheme::save(QSettings& settings) const
-{
-	LogTheme::save(settings);
-	settings << *this;
-}
-
-BuildTheme BuildTheme::getDefaultTheme()
-{
-	BuildTheme theme;
-	return theme;
-}
-
-BuildTheme BuildTheme::getClassicTheme()
-{
-	BuildTheme theme;
-	*static_cast<LogTheme*>(&theme) = LogTheme::getClassicTheme();
-
-	return theme;
-}
-
-BuildTheme BuildTheme::getTwilightTheme()
-{
-	BuildTheme theme;
-	*static_cast<LogTheme*>(&theme) = LogTheme::getTwilightTheme();
-
-	return theme;
-}
-
-BuildTheme BuildTheme::getOceanTheme()
-{
-	BuildTheme theme;
-	*static_cast<LogTheme*>(&theme) = LogTheme::getOceanTheme();
-
-	return theme;
-}
-
-namespace rdo { namespace gui { namespace editor {
-
-QSettings& operator<< (QSettings& settings, const BuildTheme& theme)
-{
-	settings.setValue("warning", theme.warning);
-
-	return settings;
-}
-
-QSettings& operator>> (QSettings& settings, BuildTheme& theme)
-{
-	theme.warning = settings.value("warning", theme.warning).toBool() ? true : false;
-
-	return settings;
-}
-
-}}} // namespace rdo::gui::editor
-
-// --------------------------------------------------------------------------------
 // -------------------- BuildStyle
 // --------------------------------------------------------------------------------
 BuildStyle::BuildStyle(): LogStyle()
 {
-	theme = new BuildTheme();
+	warning = true;
 }
 
 BuildStyle::~BuildStyle()
@@ -123,7 +31,7 @@ BuildStyle::~BuildStyle()
 BuildStyle& BuildStyle::operator =( const BuildStyle& style )
 {
 	LogStyle::operator=( style );
-	if ( theme && style.theme ) *static_cast<BuildTheme*>(theme) = *static_cast<BuildTheme*>(style.theme);
+	warning = style.warning;
 
 	return *this;
 }
@@ -131,7 +39,7 @@ BuildStyle& BuildStyle::operator =( const BuildStyle& style )
 rbool BuildStyle::operator ==( const BuildStyle& style ) const
 {
 	rbool flag = LogStyle::operator==( style );
-	if ( theme && style.theme && flag ) flag &= *static_cast<BuildTheme*>(theme) == *static_cast<BuildTheme*>(style.theme);
+	if ( flag )	flag &= warning == style.warning ? true : false;
 	return flag;
 }
 
@@ -139,3 +47,63 @@ rbool BuildStyle::operator !=( const BuildStyle& style ) const
 {
 	return !(*this == style);
 }
+
+void BuildStyle::loadStyle(QSettings& settings)
+{
+	LogStyle::loadStyle(settings);
+	settings >> *this;
+}
+
+void BuildStyle::saveStyle(QSettings& settings) const
+{
+	LogStyle::saveStyle(settings);
+	settings << *this;
+}
+
+BuildStyle BuildStyle::getDefaultStyle()
+{
+	BuildStyle style;
+	return style;
+}
+
+BuildStyle BuildStyle::getClassicStyle()
+{
+	BuildStyle style;
+	*static_cast<LogStyle*>(&style) = LogStyle::getClassicStyle();
+
+	return style;
+}
+
+BuildStyle BuildStyle::getTwilightStyle()
+{
+	BuildStyle style;
+	*static_cast<LogStyle*>(&style) = LogStyle::getTwilightStyle();
+
+	return style;
+}
+
+BuildStyle BuildStyle::getOceanStyle()
+{
+	BuildStyle style;
+	*static_cast<LogStyle*>(&style) = LogStyle::getOceanStyle();
+
+	return style;
+}
+
+namespace rdo { namespace gui { namespace editor {
+
+	QSettings& operator<< (QSettings& settings, const BuildStyle& style)
+	{
+		settings.setValue("warning", style.warning);
+
+		return settings;
+	}
+
+	QSettings& operator>> (QSettings& settings, BuildStyle& style)
+	{
+		style.warning = settings.value("warning", style.warning).toBool() ? true : false;
+
+		return settings;
+	}
+
+}}} // namespace rdo::gui::editor

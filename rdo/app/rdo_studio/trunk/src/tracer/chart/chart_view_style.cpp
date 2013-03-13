@@ -20,109 +20,6 @@ using namespace rdo::gui::style;
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- ChartViewTheme
-// --------------------------------------------------------------------------------
-ChartViewTheme::ChartViewTheme()
-	: StyleTheme()
-{
-	defaultColor    = QColor(0x80, 0x80, 0x80);
-	backgroundColor = QColor(0xFF, 0xFF, 0xFF);
-
-	axisFgColor   = QColor(0x00, 0x00, 0x80);
-	titleFGColor  = QColor(0x80, 0x00, 0x00);
-	legendFgColor = QColor(0x58, 0x46, 0x3A);
-	chartBgColor  = QColor(0xF3, 0xFC, 0xFC);
-	timeBgColor   = QColor(0xBA, 0xEB, 0xEB);
-
-	titleStyle  = StyleFont::BOLD;
-	legendStyle = StyleFont::NONE;
-}
-
-ChartViewTheme::~ChartViewTheme()
-{}
-
-ChartViewTheme& ChartViewTheme::operator =(const ChartViewTheme& theme)
-{
-//	defaultColor = theme.defaultColor;
-
-	StyleTheme::operator=(theme);
-
-	axisFgColor   = theme.axisFgColor;
-	titleFGColor  = theme.titleFGColor;
-	legendFgColor = theme.legendFgColor;
-	chartBgColor  = theme.chartBgColor;
-	timeBgColor   = theme.timeBgColor;
-
-	titleStyle  = theme.titleStyle;
-	legendStyle = theme.legendStyle;
-
-	return *this;
-}
-
-rbool ChartViewTheme::operator ==(const ChartViewTheme& theme) const
-{
-	rbool flag = StyleTheme::operator==(theme);
-	
-	if (flag) flag &= axisFgColor   == theme.axisFgColor &&
-	                  titleFGColor  == theme.titleFGColor &&
-	                  legendFgColor == theme.legendFgColor &&
-	                  chartBgColor  == theme.chartBgColor &&
-	                  timeBgColor   == theme.timeBgColor &&
-	                  titleStyle    == theme.titleStyle &&
-	                  legendStyle   == theme.legendStyle;
-	return flag;
-}
-
-rbool ChartViewTheme::operator !=(const ChartViewTheme& theme) const
-{
-	return !(*this == theme);
-}
-
-void ChartViewTheme::load(QSettings& settings)
-{
-	StyleTheme::load(settings);
-	settings >> *this;
-}
-
-void ChartViewTheme::save(REF(QSettings) settings) const
-{
-	StyleTheme::save(settings);
-	settings << *this;
-}
-
-ChartViewTheme ChartViewTheme::getDefaultTheme()
-{
-	ChartViewTheme theme;
-	return theme;
-}
-
-QSettings& operator<< (QSettings& settings, const ChartViewTheme& theme)
-{
-	settings.setValue("axis_fg_color", theme.axisFgColor.name());
-	settings.setValue("title_fg_color", theme.titleFGColor.name());
-	settings.setValue("legend_fg_color", theme.legendFgColor.name());
-	settings.setValue("chart_bg_color", theme.chartBgColor.name());
-	settings.setValue("time_bg_color", theme.timeBgColor.name());
-	settings.setValue("title_style", theme.titleStyle);
-	settings.setValue("legend_style", theme.legendStyle);
-
-	return settings;
-}
-
-QSettings& operator>> (QSettings& settings, ChartViewTheme& theme)
-{
-	theme.axisFgColor   = QColor(settings.value("axis_fg_color", theme.axisFgColor.name()).toString());
-	theme.titleFGColor  = QColor(settings.value("title_fg_color", theme.titleFGColor.name()).toString());
-	theme.legendFgColor = QColor(settings.value("legend_fg_color", theme.legendFgColor.name()).toString());
-	theme.chartBgColor  = QColor(settings.value("chart_bg_color", theme.chartBgColor.name()).toString());
-	theme.timeBgColor   = QColor(settings.value("time_bg_color", theme.timeBgColor.name()).toString());
-	theme.titleStyle    = static_cast<StyleFont::style>(settings.value("title_style", theme.titleStyle).toInt());
-	theme.legendStyle   = static_cast<StyleFont::style>(settings.value("legend_style", theme.legendStyle).toInt());
-
-	return settings;
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- ChartViewFontsTicks
 // --------------------------------------------------------------------------------
 ChartViewFontsTicks::ChartViewFontsTicks()
@@ -188,46 +85,59 @@ QSettings& operator>> (QSettings& settings, ChartViewFontsTicks& fonts_ticks)
 // -------------------- ChartViewStyle
 // --------------------------------------------------------------------------------
 ChartViewStyle::ChartViewStyle()
-	: StyleWithTheme()
+	: StyleBase()
+	, pFontsTicks()
 {
-	theme       = new ChartViewTheme();
-	pFontsTicks = new ChartViewFontsTicks();
+	defaultColor    = QColor(0x80, 0x80, 0x80);
+	backgroundColor = QColor(0xFF, 0xFF, 0xFF);
+
+	axisFgColor   = QColor(0x00, 0x00, 0x80);
+	titleFGColor  = QColor(0x80, 0x00, 0x00);
+	legendFgColor = QColor(0x58, 0x46, 0x3A);
+	chartBgColor  = QColor(0xF3, 0xFC, 0xFC);
+	timeBgColor   = QColor(0xBA, 0xEB, 0xEB);
+
+	titleStyle  = StyleFont::BOLD;
+	legendStyle = StyleFont::NONE;
 }
 
 ChartViewStyle::~ChartViewStyle()
 {
-	if (pFontsTicks)
-	{
-		delete pFontsTicks;
-		pFontsTicks = NULL;
-	}
 }
 
 ChartViewStyle& ChartViewStyle::operator =(const ChartViewStyle& style)
 {
-	StyleWithTheme::operator=(style);
-	if (theme && style.theme)
-	{
-		*static_cast<ChartViewTheme*>(theme) = *static_cast<ChartViewTheme*>(style.theme);
-	}
-	if (pFontsTicks && style.pFontsTicks)
-	{
-		*pFontsTicks = *style.pFontsTicks;
-	}
+	StyleBase::operator=(style);
+	//	defaultColor = style.defaultColor;
+
+	axisFgColor   = style.axisFgColor;
+	titleFGColor  = style.titleFGColor;
+	legendFgColor = style.legendFgColor;
+	chartBgColor  = style.chartBgColor;
+	timeBgColor   = style.timeBgColor;
+
+	titleStyle  = style.titleStyle;
+	legendStyle = style.legendStyle;
+
+	pFontsTicks = style.pFontsTicks;
+
 	return *this;
 }
 
 rbool ChartViewStyle::operator ==(const ChartViewStyle& style) const
 {
-	rbool flag = StyleWithTheme::operator==(style);
-	if (theme && style.theme && flag)
-	{
-		flag &= *static_cast<ChartViewTheme*>(theme) == *static_cast<ChartViewTheme*>(style.theme);
-	}
-	if (pFontsTicks && style.pFontsTicks && flag)
-	{
-		flag &= *pFontsTicks == *style.pFontsTicks;
-	}
+	rbool flag = StyleBase::operator==(style);
+
+	flag &= pFontsTicks == style.pFontsTicks;
+
+	if (flag) flag &= axisFgColor   == style.axisFgColor &&
+		titleFGColor  == style.titleFGColor &&
+		legendFgColor == style.legendFgColor &&
+		chartBgColor  == style.chartBgColor &&
+		timeBgColor   == style.timeBgColor &&
+		titleStyle    == style.titleStyle &&
+		legendStyle   == style.legendStyle;
+
 	return flag;
 }
 
@@ -238,22 +148,18 @@ rbool ChartViewStyle::operator !=(const ChartViewStyle& style) const
 
 void ChartViewStyle::init(CREF(QString) _groupName)
 {
-	StyleWithTheme::init(_groupName);
-	*font = StyleFont::getChartViewFont();
+	StyleBase::init(_groupName);
+	font = StyleFont::getChartViewFont();
 }
 
 rbool ChartViewStyle::load()
 {
-	if (StyleWithTheme::load())
+	if (StyleBase::load())
 	{
-		if (pFontsTicks)
-		{
-			QSettings settings;
-			settings.beginGroup(groupName + "fonts_ticks");
-			pFontsTicks->load(settings);
-			settings.endGroup();
-
-		}
+		QSettings settings;
+		settings.beginGroup(groupName + "fonts_ticks");
+		pFontsTicks.load(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;
@@ -261,18 +167,58 @@ rbool ChartViewStyle::load()
 
 rbool ChartViewStyle::save() const
 {
-	if (StyleWithTheme::save())
+	if (StyleBase::save())
 	{
-		if (pFontsTicks)
-		{
-			QSettings settings;
-			settings.beginGroup(groupName + "fonts_ticks");
-			pFontsTicks->save(settings);
-			settings.endGroup();
-		}
+		QSettings settings;
+		settings.beginGroup(groupName + "fonts_ticks");
+		pFontsTicks.save(settings);
+		settings.endGroup();
 		return true;
 	}
 	return false;
 }
 
+void ChartViewStyle::loadStyle(QSettings& settings)
+{
+	StyleBase::loadStyle(settings);
+	settings >> *this;
+}
+
+void ChartViewStyle::saveStyle(REF(QSettings) settings) const
+{
+	StyleBase::saveStyle(settings);
+	settings << *this;
+}
+
+ChartViewStyle ChartViewStyle::getDefaultStyle()
+{
+	ChartViewStyle style;
+	return style;
+}
+
+QSettings& operator<< (QSettings& settings, const ChartViewStyle& style)
+{
+	settings.setValue("axis_fg_color", style.axisFgColor.name());
+	settings.setValue("title_fg_color", style.titleFGColor.name());
+	settings.setValue("legend_fg_color", style.legendFgColor.name());
+	settings.setValue("chart_bg_color", style.chartBgColor.name());
+	settings.setValue("time_bg_color", style.timeBgColor.name());
+	settings.setValue("title_style", style.titleStyle);
+	settings.setValue("legend_style", style.legendStyle);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, ChartViewStyle& style)
+{
+	style.axisFgColor   = QColor(settings.value("axis_fg_color", style.axisFgColor.name()).toString());
+	style.titleFGColor  = QColor(settings.value("title_fg_color", style.titleFGColor.name()).toString());
+	style.legendFgColor = QColor(settings.value("legend_fg_color", style.legendFgColor.name()).toString());
+	style.chartBgColor  = QColor(settings.value("chart_bg_color", style.chartBgColor.name()).toString());
+	style.timeBgColor   = QColor(settings.value("time_bg_color", style.timeBgColor.name()).toString());
+	style.titleStyle    = static_cast<StyleFont::style>(settings.value("title_style", style.titleStyle).toInt());
+	style.legendStyle   = static_cast<StyleFont::style>(settings.value("legend_style", style.legendStyle).toInt());
+
+	return settings;
+}
 }}} // namespace rdo::gui::tracer

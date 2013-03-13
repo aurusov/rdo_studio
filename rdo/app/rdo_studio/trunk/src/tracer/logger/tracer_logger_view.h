@@ -91,11 +91,11 @@ private:
 
 	struct SubitemColors
 	{
-		typedef std::map<rsint, PTR(LogColorPair)> List;
+		typedef std::map<rsint, LogColorPair> List;
 
 		List              m_colorList;
 		rbool             m_addingSubitems;
-		PTR(LogColorPair) m_parentColor;
+		LogColorPair m_parentColor;
 
 		SubitemColors();
 		SubitemColors(CREF(SubitemColors) subitemColors);
@@ -129,8 +129,8 @@ private:
 	rbool                m_drawLog;
 	QFont                m_font;
 
-	rbool getItemColors(CREF(QString) item, LogColorPair* &colors) const;
-	rbool getItemColors(rsint index, LogColorPair* &colors) const;
+	rbool getItemColors(CREF(QString) item, LogColorPair &colors) const;
+	rbool getItemColors(rsint index, LogColorPair &colors) const;
 
 	rsint selectedLine() const;
 	void  setSelectedLine(rsint selectedLine);

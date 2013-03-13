@@ -197,13 +197,13 @@ private:
 		rbool&                                  wordwrap;
 		rbool&                                  horzscrollbar;
 		rbool&                                  warning;
-		rdo::gui::editor::EditTheme::Bookmark&  bookmarkstyle;
-		rdo::gui::editor::ModelTheme::Fold&     foldstyle;
+		rdo::gui::editor::EditStyle::Bookmark&  bookmarkstyle;
+		rdo::gui::editor::ModelStyle::Fold&     foldstyle;
 		rbool&                                  commentfold;
 
 		PropertyList properties;
 
-		StyleItem(ItemType type, int& font_size, tstring& font_name, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::EditTheme::Bookmark& bookmarkstyle = null_bookmarkstyle, rdo::gui::editor::ModelTheme::Fold& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
+		StyleItem(ItemType type, int& font_size, tstring& font_name, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::EditStyle::Bookmark& bookmarkstyle = null_bookmarkstyle, rdo::gui::editor::ModelStyle::Fold& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
 			: type(type)
 			, font_size(font_size)
 			, font_name(font_name)
@@ -230,8 +230,8 @@ private:
 	static rbool                                  null_horzscrollbar;
 	static rbool                                  null_warning;
 	static rbool                                  null_commentfold;
-	static rdo::gui::editor::EditTheme::Bookmark  null_bookmarkstyle;
-	static rdo::gui::editor::ModelTheme::Fold     null_foldstyle;
+	static rdo::gui::editor::EditStyle::Bookmark  null_bookmarkstyle;
+	static rdo::gui::editor::ModelStyle::Fold     null_foldstyle;
 	static QColor                                 null_fg_color;
 	static QColor                                 null_bg_color;
 

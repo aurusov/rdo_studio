@@ -56,72 +56,39 @@ QSettings& operator<< (QSettings& settings, const StyleFont& font);
 QSettings& operator>> (QSettings& settings,       StyleFont& font);
 
 // --------------------------------------------------------------------------------
-// -------------------- StyleTheme
+// -------------------- StyleBase
 // --------------------------------------------------------------------------------
-class StyleTheme
+OBJECT(StyleBase)
 {
 public:
-	StyleTheme();
-	virtual ~StyleTheme();
+	StyleBase();
+	virtual ~StyleBase();
 
-	StyleTheme& operator =(const StyleTheme& theme);
-	rbool operator ==(const StyleTheme& theme) const;
-	rbool operator !=(const StyleTheme& theme) const;
-
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
-
-	QColor defaultColor;
-	QColor backgroundColor;
-
-	StyleFont::style defaultStyle;
-};
-
-QSettings& operator<< (QSettings& settings, const StyleTheme& theme);
-QSettings& operator>> (QSettings& settings,       StyleTheme& theme);
-
-// --------------------------------------------------------------------------------
-// -------------------- Style
-// --------------------------------------------------------------------------------
-OBJECT(Style)
-{
-public:
-	Style();
-	virtual ~Style();
-
-	Style& operator =(const Style& style);
-	rbool operator ==(const Style& style) const;
-	rbool operator !=(const Style& style) const;
+	StyleBase& operator =(const StyleBase& style);
+	rbool operator ==(const StyleBase& style) const;
+	rbool operator !=(const StyleBase& style) const;
 
 	void init(CREF(QString) _groupName = "");
 	rbool load();
 	rbool save() const;
 
-	StyleFont* font;
+	virtual void loadStyle(QSettings& settings);
+	virtual void saveStyle(QSettings& settings) const;
+
+	StyleFont font;
+	StyleFont::style defaultStyle;
+
+	QColor defaultColor;
+	QColor backgroundColor;
+
+
 
 protected:
 	QString groupName;
 };
 
-// --------------------------------------------------------------------------------
-// -------------------- StyleWithTheme
-// --------------------------------------------------------------------------------
-class StyleWithTheme: public Style
-{
-public:
-	StyleWithTheme();
-	virtual ~StyleWithTheme();
-
-	StyleWithTheme& operator =(const StyleWithTheme& style);
-	rbool operator ==(const StyleWithTheme& style) const;
-	rbool operator !=(const StyleWithTheme& style) const;
-
-	void init(CREF(QString) _groupName = "");
-	rbool load();
-	rbool save() const;
-
-	StyleTheme* theme;
-};
+QSettings& operator<< (QSettings& settings, const StyleBase& style);
+QSettings& operator>> (QSettings& settings,       StyleBase& style);
 
 }}} // namespace rdo::gui::style
 

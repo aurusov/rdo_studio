@@ -18,37 +18,6 @@
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- ChartViewTheme
-// --------------------------------------------------------------------------------
-class ChartViewTheme: public style::StyleTheme
-{
-public:
-	ChartViewTheme();
-	virtual ~ChartViewTheme();
-
-	ChartViewTheme& operator =(const ChartViewTheme& theme);
-	rbool operator ==(const ChartViewTheme& theme) const;
-	rbool operator !=(const ChartViewTheme& theme) const;
-
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
-
-	QColor axisFgColor;
-	QColor titleFGColor;
-	QColor legendFgColor;
-	QColor chartBgColor;
-	QColor timeBgColor;
-
-	style::StyleFont::style titleStyle;
-	style::StyleFont::style legendStyle;
-
-	static ChartViewTheme getDefaultTheme();
-};
-
-QSettings& operator<< (QSettings& settings, const ChartViewTheme& theme);
-QSettings& operator>> (QSettings& settings,       ChartViewTheme& theme);
-
-// --------------------------------------------------------------------------------
 // -------------------- ChartViewFontsTicks
 // --------------------------------------------------------------------------------
 class ChartViewFontsTicks
@@ -75,7 +44,7 @@ QSettings& operator>> (QSettings& settings,       ChartViewFontsTicks& fonts_tic
 // --------------------------------------------------------------------------------
 // -------------------- ChartViewStyle
 // --------------------------------------------------------------------------------
-class ChartViewStyle: public style::StyleWithTheme
+class ChartViewStyle: public style::StyleBase
 {
 public:
 	ChartViewStyle();
@@ -89,13 +58,25 @@ public:
 	rbool load();
 	rbool save() const;
 
-	ChartViewTheme* getTheme()
-	{
-		return static_cast<ChartViewTheme*>(theme);
-	}
+	virtual void loadStyle(QSettings& settings);
+	virtual void saveStyle(QSettings& settings) const;
 
-	ChartViewFontsTicks* pFontsTicks;
+	QColor axisFgColor;
+	QColor titleFGColor;
+	QColor legendFgColor;
+	QColor chartBgColor;
+	QColor timeBgColor;
+
+	style::StyleFont::style titleStyle;
+	style::StyleFont::style legendStyle;
+
+	static ChartViewStyle getDefaultStyle();
+
+	ChartViewFontsTicks pFontsTicks;
 };
+
+QSettings& operator<< (QSettings& settings, const ChartViewStyle& style);
+QSettings& operator>> (QSettings& settings,       ChartViewStyle& style);
 
 }}} // namespace rdo::gui::tracer
 

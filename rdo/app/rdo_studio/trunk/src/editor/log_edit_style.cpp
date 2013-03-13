@@ -17,110 +17,11 @@
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
-// -------------------- LogTheme
-// --------------------------------------------------------------------------------
-LogTheme::LogTheme(): EditTheme()
-{
-	selectLineBgColor = QColor( 0x00, 0xC0, 0xEF );
-}
-
-LogTheme::~LogTheme()
-{}
-
-LogTheme& LogTheme::operator =( const LogTheme& theme )
-{
-	EditTheme::operator=( theme );
-	selectLineBgColor = theme.selectLineBgColor;
-
-	return *this;
-}
-
-rbool LogTheme::operator ==( const LogTheme& theme ) const
-{
-	rbool flag = EditTheme::operator==( theme );
-	if ( flag )	flag &= selectLineBgColor == theme.selectLineBgColor ? true : false;
-	return flag;
-}
-
-rbool LogTheme::operator !=( const LogTheme& theme ) const
-{
-	return !(*this == theme);
-}
-
-void LogTheme::load(QSettings& settings)
-{
-	EditTheme::load(settings);
-
-	settings >> *this;
-}
-
-void LogTheme::save(QSettings& settings) const
-{
-	EditTheme::save(settings);
-
-	settings << *this;
-}
-
-LogTheme LogTheme::getDefaultTheme()
-{
-	LogTheme theme;
-	return theme;
-}
-
-LogTheme LogTheme::getClassicTheme()
-{
-	LogTheme theme;
-	*static_cast<EditTheme*>(&theme) = EditTheme::getClassicTheme();
-
-	theme.selectLineBgColor = QColor( 0x00, 0xC0, 0xEF );
-
-	return theme;
-}
-
-LogTheme LogTheme::getTwilightTheme()
-{
-	LogTheme theme;
-	*static_cast<EditTheme*>(&theme) = EditTheme::getTwilightTheme();
-
-	theme.selectLineBgColor = QColor( 0x00, 0x96, 0xBB );
-
-	return theme;
-}
-
-LogTheme LogTheme::getOceanTheme()
-{
-	LogTheme theme;
-	*static_cast<EditTheme*>(&theme) = EditTheme::getOceanTheme();
-
-	theme.selectLineBgColor = QColor( 0xCA, 0xF4, 0xFF );
-
-	return theme;
-}
-
-namespace rdo { namespace gui { namespace editor {
-
-QSettings& operator<< (QSettings& settings, const LogTheme& theme)
-{
-	settings.setValue("select_line_bg_color", theme.selectLineBgColor.name());
-
-	return settings;
-}
-
-QSettings& operator>> (QSettings& settings, LogTheme& theme)
-{
-	theme.selectLineBgColor = QColor(settings.value("select_line_bg_color", theme.selectLineBgColor.name()).toString());
-
-	return settings;
-}
-
-}}} // namespace rdo::gui::editor
-
-// --------------------------------------------------------------------------------
 // -------------------- LogStyle
 // --------------------------------------------------------------------------------
 LogStyle::LogStyle(): EditStyle()
 {
-	theme = new LogTheme();
+	selectLineBgColor = QColor( 0x00, 0xC0, 0xEF );
 }
 
 LogStyle::~LogStyle()
@@ -129,7 +30,7 @@ LogStyle::~LogStyle()
 LogStyle& LogStyle::operator =( const LogStyle& style )
 {
 	EditStyle::operator=( style );
-	if ( theme && style.theme ) *static_cast<LogTheme*>(theme) = *static_cast<LogTheme*>(style.theme);
+	selectLineBgColor = style.selectLineBgColor;
 
 	return *this;
 }
@@ -137,11 +38,75 @@ LogStyle& LogStyle::operator =( const LogStyle& style )
 rbool LogStyle::operator ==( const LogStyle& style ) const
 {
 	rbool flag = EditStyle::operator==( style );
-	if ( theme && style.theme && flag ) flag &= *static_cast<LogTheme*>(theme) == *static_cast<LogTheme*>(style.theme);
-	return flag;
+	
+	return flag && selectLineBgColor == style.selectLineBgColor;
 }
 
 rbool LogStyle::operator !=( const LogStyle& style ) const
 {
 	return !(*this == style);
 }
+
+void LogStyle::loadStyle(QSettings& settings)
+{
+	EditStyle::loadStyle(settings);
+	settings >> *this;
+}
+
+void LogStyle::saveStyle(QSettings& settings) const
+{
+	EditStyle::saveStyle(settings);
+	settings << *this;
+}
+
+LogStyle LogStyle::getDefaultStyle()
+{
+	LogStyle style;
+	return style;
+}
+
+LogStyle LogStyle::getClassicStyle()
+{
+	LogStyle style;
+	*static_cast<EditStyle*>(&style) = EditStyle::getClassicStyle();
+
+	style.selectLineBgColor = QColor( 0x00, 0xC0, 0xEF );
+
+	return style;
+}
+
+LogStyle LogStyle::getTwilightStyle()
+{
+	LogStyle style;
+	*static_cast<EditStyle*>(&style) = EditStyle::getTwilightStyle();
+
+	style.selectLineBgColor = QColor( 0x00, 0x96, 0xBB );
+
+	return style;
+}
+
+LogStyle LogStyle::getOceanStyle()
+{
+	LogStyle style;
+	*static_cast<EditStyle*>(&style) = EditStyle::getOceanStyle();
+
+	style.selectLineBgColor = QColor( 0xCA, 0xF4, 0xFF );
+
+	return style;
+}
+
+namespace rdo { namespace gui { namespace editor {
+
+	QSettings& operator<< (QSettings& settings, const LogStyle& style)
+	{
+		settings.setValue("select_line_bg_color", style.selectLineBgColor.name());
+		return settings;
+	}
+
+	QSettings& operator>> (QSettings& settings, LogStyle& style)
+	{
+		style.selectLineBgColor = QColor(settings.value("select_line_bg_color", style.selectLineBgColor.name()).toString());
+		return settings;
+	}
+
+}}} // namespace rdo::gui::editor

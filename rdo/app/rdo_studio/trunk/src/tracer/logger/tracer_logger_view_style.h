@@ -41,22 +41,54 @@ public:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- LogTheme
+// -------------------- LogBorders
 // --------------------------------------------------------------------------------
-class LogTheme
+class LogBorders
 {
 public:
-	LogTheme();
-	virtual ~LogTheme();
+	LogBorders();
+	virtual ~LogBorders();
 
-	LogTheme& operator =( const LogTheme& theme );
-	rbool operator ==( const LogTheme& theme ) const;
-	rbool operator !=( const LogTheme& theme ) const;
+	LogBorders& operator =( const LogBorders& borders );
+	rbool operator ==( const LogBorders& borders ) const;
+	rbool operator !=( const LogBorders& borders ) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
 
-	style::StyleFont::style style;
+	int vertBorder;
+	int horzBorder;
+};
+
+QSettings& operator<< (QSettings& settings, const LogBorders& border);
+QSettings& operator>> (QSettings& settings,       LogBorders& border);
+
+// --------------------------------------------------------------------------------
+// -------------------- LogStyle
+// --------------------------------------------------------------------------------
+class LogStyle: public style::StyleBase
+{
+public:
+	LogStyle();
+	virtual ~LogStyle();
+
+	virtual rbool getItemColors( int index,          LogColorPair &colors ) const;
+	virtual rbool getItemColors( CREF(tstring) item, LogColorPair &colors ) const;
+
+	LogStyle& operator =( const LogStyle& style );
+	rbool operator ==( const LogStyle& style ) const;
+	rbool operator !=( const LogStyle& style ) const;
+
+	void  init( CREF(QString) _groupName = "" );
+	rbool load();
+	rbool save() const;
+
+	void loadStyle(QSettings& settings);
+	void saveStyle(QSettings& settings) const;
+
+	static LogStyle getDefaultStyle();
+
+	style::StyleFont::style fontStyle;
 
 	LogColorPair defaultColor;
 	LogColorPair es;
@@ -85,62 +117,15 @@ public:
 	LogColorPair sef;
 	LogColorPair seu;
 
-	static LogTheme getDefaultTheme();
-};
-
-QSettings& operator<< (QSettings& settings, const LogTheme& theme);
-QSettings& operator>> (QSettings& settings,       LogTheme& theme);
-
-// --------------------------------------------------------------------------------
-// -------------------- LogBorders
-// --------------------------------------------------------------------------------
-class LogBorders
-{
-public:
-	LogBorders();
-	virtual ~LogBorders();
-
-	LogBorders& operator =( const LogBorders& borders );
-	rbool operator ==( const LogBorders& borders ) const;
-	rbool operator !=( const LogBorders& borders ) const;
-
-	void load(QSettings& settings);
-	void save(QSettings& settings) const;
-
-	int vertBorder;
-	int horzBorder;
-};
-
-QSettings& operator<< (QSettings& settings, const LogBorders& border);
-QSettings& operator>> (QSettings& settings,       LogBorders& border);
-
-// --------------------------------------------------------------------------------
-// -------------------- LogStyle
-// --------------------------------------------------------------------------------
-class LogStyle: public style::Style
-{
-public:
-	LogStyle();
-	virtual ~LogStyle();
-
-	virtual rbool getItemColors( int index, LogColorPair* &colors ) const;
-	virtual rbool getItemColors( CREF(tstring) item, LogColorPair* &colors ) const;
-
-	LogStyle& operator =( const LogStyle& style );
-	rbool operator ==( const LogStyle& style ) const;
-	rbool operator !=( const LogStyle& style ) const;
-
-	void  init( CREF(QString) _groupName = "" );
-	rbool load();
-	rbool save() const;
-
-	LogTheme*   theme;
-	LogBorders* borders;
+	LogBorders borders;
 
 private:
 
-	rbool getDefaultColor(LogColorPair* &colors) const;
+	rbool getDefaultColor(LogColorPair &colors) const;
 };
+
+QSettings& operator<< (QSettings& settings, const LogStyle& style);
+QSettings& operator>> (QSettings& settings,       LogStyle& style);
 
 }}} // namespace rdo::gui::tracer
 

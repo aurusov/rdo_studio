@@ -17,52 +17,6 @@
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace editor {
-
-// --------------------------------------------------------------------------------
-// -------------------- ModelTheme
-// --------------------------------------------------------------------------------
-class ModelTheme: public ParserTheme
-{
-public:
-	enum Fold
-	{
-		F_NONE = 0,
-		F_PLUS,
-		F_PLUSCONNECTED,
-		F_ARROW,
-		F_ARROWCONNECTED,
-		F_BOXCONNECTED,
-		F_CIRCLECONNECTED
-	};
-
-	ModelTheme();
-	virtual ~ModelTheme();
-
-	ModelTheme& operator =( const ModelTheme& theme );
-	rbool operator ==( const ModelTheme& theme ) const;
-	rbool operator !=( const ModelTheme& theme ) const;
-
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
-
-	QColor foldFgColor;
-	QColor foldBgColor;
-	QColor errorBgColor;
-	Fold   foldStyle;
-	rbool  commentFold;
-
-	static ModelTheme getDefaultTheme();
-	static ModelTheme getCppTheme();
-	static ModelTheme getPascalTheme();
-	static ModelTheme getHtmlTheme();
-	static ModelTheme getClassicTheme();
-	static ModelTheme getTwilightTheme();
-	static ModelTheme getOceanTheme();
-};
-
-QSettings& operator<< (QSettings& settings, const ModelTheme& theme);
-QSettings& operator>> (QSettings& settings,       ModelTheme& theme);
-
 // --------------------------------------------------------------------------------
 // -------------------- ModelAutoComplete
 // --------------------------------------------------------------------------------
@@ -118,6 +72,16 @@ class ModelStyle: public ParserStyle
 protected:
 
 public:
+	enum Fold
+	{
+		F_NONE = 0,
+		F_PLUS,
+		F_PLUSCONNECTED,
+		F_ARROW,
+		F_ARROWCONNECTED,
+		F_BOXCONNECTED,
+		F_CIRCLECONNECTED
+	};
 
 	ModelStyle();
 	virtual ~ModelStyle();
@@ -130,28 +94,32 @@ public:
 	rbool load();
 	rbool save() const;
 
-	ModelAutoComplete* autoComplete;
-	ModelMargin*       margin;
+	ModelAutoComplete autoComplete;
+	ModelMargin       margin;
 
-	template <class CallbackFun>
-	void attachSubscriber(const CallbackFun& subscriber)
-	{
-		m_subscriberList.connect(subscriber);
-		subscriber(*this);
-	}
+	virtual void loadStyle(QSettings& settings);
+	virtual void saveStyle(QSettings& settings) const;
 
-	template <class CallbackFun>
-	void detachSubscriber(const CallbackFun& subscriber)
-	{
-		m_subscriberList.disconnect(subscriber);
-	}
+	QColor foldFgColor;
+	QColor foldBgColor;
+	QColor errorBgColor;
+	Fold   foldStyle;
+	rbool  commentFold;
 
-private:
-	typedef boost::signal<void (const ModelStyle&)> SubscriberList;
-	SubscriberList m_subscriberList;
+	static ModelStyle getDefaultStyle();
+	static ModelStyle getCppStyle();
+	static ModelStyle getPascalStyle();
+	static ModelStyle getHtmlStyle();
+	static ModelStyle getClassicStyle();
+	static ModelStyle getTwilightStyle();
+	static ModelStyle getOceanStyle();
+
 };
 
 DECLARE_POINTER(ModelStyle)
+
+QSettings& operator<< (QSettings& settings, const ModelStyle& style);
+QSettings& operator>> (QSettings& settings,       ModelStyle& style);
 
 }}} // namespace rdo::gui::editor
 

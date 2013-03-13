@@ -264,7 +264,7 @@ void LogView::StringList::seek(rsint delta, REF(StringList::const_iterator) it) 
 // --------------------------------------------------------------------------------
 LogView::SubitemColors::SubitemColors()
 	: m_addingSubitems(false)
-	, m_parentColor   (NULL )
+	, m_parentColor   ()
 {}
 
 LogView::SubitemColors::SubitemColors(CREF(SubitemColors) subitemColors)
@@ -353,7 +353,7 @@ void LogView::push_back(CREF(tstring) log)
 		rsint posend   = log.find_first_of(' ', posstart);
 		tstring key    = boost::algorithm::trim_copy(log.substr(posstart, posend - posstart));
 
-		LogColorPair* colors = NULL;
+		LogColorPair colors;
 
 		if (m_logStyle->getItemColors(key, colors))
 		{
@@ -515,7 +515,7 @@ void LogView::setDrawLog(rbool value)
 	}
 }
 
-rbool LogView::getItemColors(rsint index, LogColorPair* &colors) const
+rbool LogView::getItemColors(rsint index, LogColorPair &colors) const
 {
 	rbool res = true;
 	SubitemColors::List::const_iterator it = m_subitemColors.m_colorList.find(index);
@@ -531,7 +531,7 @@ rbool LogView::getItemColors(rsint index, LogColorPair* &colors) const
 	return res;
 }
 
-rbool LogView::getItemColors(CREF(QString) item, LogColorPair* &colors) const
+rbool LogView::getItemColors(CREF(QString) item, LogColorPair &colors) const
 {
 	return m_logStyle->getItemColors(item.toLocal8Bit().constData(), colors);
 }
@@ -585,7 +585,7 @@ void LogView::updateScrollBars()
 	m_SM_Y.posMax   = (std::max)(0, m_strings.count() - m_SM_Y.pageSize);
 	m_SM_Y.position = (std::min)(m_SM_Y.position, m_SM_Y.posMax);
 
-	m_SM_X.pageSize = (m_clientRect.width() - m_logStyle->borders->horzBorder) / m_charWidth;
+	m_SM_X.pageSize = (m_clientRect.width() - m_logStyle->borders.horzBorder) / m_charWidth;
 	m_SM_X.posMax   = (std::max)(0, rsint(m_strings.maxLegth()) - m_SM_X.pageSize);
 	m_SM_X.position = (std::min)(m_SM_X.position, m_SM_X.posMax);
 
@@ -712,14 +712,14 @@ void LogView::setFont()
 		return;
 	}
 
-	m_font = QFont(m_logStyle->font->name.c_str());
-	m_font.setBold     (m_logStyle->theme->style & StyleFont::BOLD      ? true : false);
-	m_font.setItalic   (m_logStyle->theme->style & StyleFont::ITALIC    ? true : false);
-	m_font.setUnderline(m_logStyle->theme->style & StyleFont::UNDERLINE ? true : false);
-	m_font.setPointSize(m_logStyle->font->size);
+	m_font = QFont(m_logStyle->font.name.c_str());
+	m_font.setBold     (m_logStyle->fontStyle & StyleFont::BOLD      ? true : false);
+	m_font.setItalic   (m_logStyle->fontStyle & StyleFont::ITALIC    ? true : false);
+	m_font.setUnderline(m_logStyle->fontStyle & StyleFont::UNDERLINE ? true : false);
+	m_font.setPointSize(m_logStyle->font.size);
 
 	QFontMetrics fontMetrics(m_font);
-	m_lineHeight = fontMetrics.height() + 2 * m_logStyle->borders->vertBorder;
+	m_lineHeight = fontMetrics.height() + 2 * m_logStyle->borders.vertBorder;
 	m_charWidth  = fontMetrics.averageCharWidth(); // fontMetrics.maxWidth()
 }
 
@@ -870,15 +870,15 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 			}
 			rsint lastLine = (std::min)(m_strings.count() - 1, m_SM_Y.position + mul - 1);
 
-			LogColorPair* colors = NULL;
+			LogColorPair colors;
 
 			rsint y = m_lineHeight * (-m_SM_Y.position + firstLine - 1);
 			QRect rect(m_charWidth * (-m_SM_X.position), y, pEvent->rect().width() + m_charWidth * m_SM_X.position, m_lineHeight);
 			QRect textRect(
-				rect.left  () + m_logStyle->borders->horzBorder,
-				rect.top   () + m_logStyle->borders->vertBorder,
-				rect.width () - m_logStyle->borders->horzBorder * 2,
-				rect.height() - m_logStyle->borders->vertBorder * 2
+				rect.left  () + m_logStyle->borders.horzBorder,
+				rect.top   () + m_logStyle->borders.vertBorder,
+				rect.width () - m_logStyle->borders.horzBorder * 2,
+				rect.height() - m_logStyle->borders.vertBorder * 2
 			);
 
 			StringList::const_iterator it = m_strings.findString(firstLine);
@@ -893,9 +893,8 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 				}
 				else
 				{
-					colors = new LogColorPair();
-					colors->foregroundColor = palette().color(QPalette::HighlightedText);
-					colors->backgroundColor = palette().color(QPalette::Highlight);
+					colors.foregroundColor = palette().color(QPalette::HighlightedText);
+					colors.backgroundColor = palette().color(QPalette::Highlight);
 				}
 
 				rect    .translate(0, m_lineHeight);
@@ -903,8 +902,8 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 
 				//Main drawing cycle
 				painter.setBackgroundMode(Qt::TransparentMode);
-				painter.fillRect(rect, colors->backgroundColor);
-				painter.setPen  (colors->foregroundColor);
+				painter.fillRect(rect, colors.backgroundColor);
+				painter.setPen  (colors.foregroundColor);
 				painter.drawText(textRect, *it);
 				//End of main drawing cycle :)
 
@@ -923,11 +922,11 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 
 				++it;
 
-				if (i == selectedLine() && !m_focusOnly && colors)
-				{
-					delete colors;
-					colors = NULL;
-				}
+				//! @todo необходимо ли, когда colors не указатель?
+				//if (i == selectedLine() && !m_focusOnly)
+				//{
+				//	colors = NULL;
+				//}
 			}
 
 			getItemColors("", colors);
@@ -937,18 +936,18 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 				rect.bottom(),
 				pEvent->rect().width(),
 				pEvent->rect().height() - rect.bottom(),
-				colors->backgroundColor
+				colors.backgroundColor
 			);
 		}
 	}
 	else
 	{
-		LogColorPair* colors = NULL;
+		LogColorPair colors;
 		getItemColors("", colors);
 
 		painter.fillRect(
 			m_clientRect,
-			colors->backgroundColor
+			colors.backgroundColor
 		);
 	}
 
@@ -1044,11 +1043,11 @@ void LogView::onHelpContext()
 
 		if (!keyword.isEmpty())
 		{
-			LogColorPair* colors;
+			LogColorPair colors;
 			if (!m_logStyle->getItemColors(keyword.toLocal8Bit().constData(), colors))
 			{
 				getItemColors(selectedLine(), colors);
-				if (*colors == m_logStyle->theme->sd)
+				if (colors == m_logStyle->sd)
 				{
 					keyword = "SD";
 				}

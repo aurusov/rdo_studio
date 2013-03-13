@@ -18,33 +18,6 @@
 namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
-// -------------------- BuildTheme
-// --------------------------------------------------------------------------------
-class BuildTheme: public LogTheme
-{
-public:
-	BuildTheme();
-	virtual ~BuildTheme();
-
-	BuildTheme& operator =( const BuildTheme& theme );
-	rbool operator ==( const BuildTheme& theme ) const;
-	rbool operator !=( const BuildTheme& theme ) const;
-
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
-
-	rbool warning;
-
-	static BuildTheme getDefaultTheme();
-	static BuildTheme getClassicTheme();
-	static BuildTheme getTwilightTheme();
-	static BuildTheme getOceanTheme();
-};
-
-QSettings& operator<< (QSettings& settings, const BuildTheme& theme);
-QSettings& operator>> (QSettings& settings,       BuildTheme& theme);
-
-// --------------------------------------------------------------------------------
 // -------------------- BuildStyle
 // --------------------------------------------------------------------------------
 class BuildStyle: public LogStyle
@@ -56,7 +29,20 @@ public:
 	BuildStyle& operator =( const BuildStyle& style );
 	rbool operator ==( const BuildStyle& style ) const;
 	rbool operator !=( const BuildStyle& style ) const;
+
+	virtual void loadStyle(QSettings& settings);
+	virtual void saveStyle(QSettings& settings) const;
+
+	rbool warning;
+
+	static BuildStyle getDefaultStyle();
+	static BuildStyle getClassicStyle();
+	static BuildStyle getTwilightStyle();
+	static BuildStyle getOceanStyle();
 };
+
+QSettings& operator<< (QSettings& settings, const BuildStyle& style);
+QSettings& operator>> (QSettings& settings,       BuildStyle& style);
 
 }}} // namespace rdo::gui::editor
 

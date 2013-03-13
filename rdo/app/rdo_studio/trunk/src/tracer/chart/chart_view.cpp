@@ -257,8 +257,8 @@ void ChartView::recalcLayout()
 		double timeRange = pDoc->getTimes().back()->time - pDoc->getTimes().front()->time;
 		if (timeRange > 0)
 		{
-			long double timeScaleAuto = doUnwrapTime() ? (double)(m_chartRect.width() - m_pStyle->pFontsTicks->tickWidth * pDoc->getTicksCount()) / timeRange : (double)m_chartRect.width() / timeRange;
-			m_timeScale = (double)m_pStyle->pFontsTicks->tickWidth / pDoc->getMinTimeOffset();
+			long double timeScaleAuto = doUnwrapTime() ? (double)(m_chartRect.width() - m_pStyle->pFontsTicks.tickWidth * pDoc->getTicksCount()) / timeRange : (double)m_chartRect.width() / timeRange;
+			m_timeScale = (double)m_pStyle->pFontsTicks.tickWidth / pDoc->getMinTimeOffset();
 			m_zoomAuto = double(timeScaleAuto) / double(m_timeScale);
 			/*if (doUnwrapTime() && auto_zoom < 0) {
 			 auto_zoom = 1;
@@ -304,7 +304,7 @@ void ChartView::updateScrollBars()
 		size = roundDouble((doc->getTimes().back()->time - doc->getTimes().front()->time) * double(m_timeScale));
 		if (doUnwrapTime())
 		{
-			size += m_pStyle->pFontsTicks->tickWidth * doc->getTicksCount();
+			size += m_pStyle->pFontsTicks.tickWidth * doc->getTicksCount();
 		}
 	}
 	else
@@ -405,7 +405,7 @@ void ChartView::dragLeaveEvent(QDragLeaveEvent*)
 rbool ChartView::setTo(const int fromMaxPos)
 {
 	rbool res = true;
-	int delta = (fromMaxPos - m_SM_X.position - m_chartRect.width()) / m_pStyle->pFontsTicks->tickWidth;
+	int delta = (fromMaxPos - m_SM_X.position - m_chartRect.width()) / m_pStyle->pFontsTicks.tickWidth;
 	if (delta >= 0)
 	{
 		res = false;
@@ -455,8 +455,8 @@ void ChartView::setFromTo()
 		ChartDoc::TimesList::const_iterator it;
 		for (it = doc->getTimes().begin(); it != doc->getTimes().end(); ++it)
 		{
-			it_pos = roundDouble(((*it)->time - doc->getTimes().front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks->tickWidth;
-			it_max_pos = it_pos + m_pStyle->pFontsTicks->tickWidth * (*it)->eventCount;
+			it_pos = roundDouble(((*it)->time - doc->getTimes().front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks.tickWidth;
+			it_max_pos = it_pos + m_pStyle->pFontsTicks.tickWidth * (*it)->eventCount;
 			if (it_pos == m_SM_X.position)
 			{
 				m_drawFromX = *(*it);
@@ -466,8 +466,8 @@ void ChartView::setFromTo()
 			if (it_pos < m_SM_X.position && (it_max_pos >= m_SM_X.position))
 			{
 				m_drawFromX = *(*it);
-				m_drawFromEventID = (m_SM_X.position - it_pos) / m_pStyle->pFontsTicks->tickWidth;
-				m_chartShift = m_SM_X.position - (it_pos + m_drawFromEventID * m_pStyle->pFontsTicks->tickWidth);
+				m_drawFromEventID = (m_SM_X.position - it_pos) / m_pStyle->pFontsTicks.tickWidth;
+				m_chartShift = m_SM_X.position - (it_pos + m_drawFromEventID * m_pStyle->pFontsTicks.tickWidth);
 				need_search_to = setTo(it_max_pos);
 				break;
 			}
@@ -490,13 +490,13 @@ void ChartView::setFromTo()
 			if (it == doc->getTimes().end() && !doc->getTimes().empty())
 			{
 				m_drawToX = m_drawFromX;
-				int delta = m_drawToX.eventCount * m_pStyle->pFontsTicks->tickWidth - m_chartRect.width();
-				m_drawToEventCount = delta >= 0 ? roundDouble((double)delta / (double)m_pStyle->pFontsTicks->tickWidth) : m_drawToX.eventCount;
-				it_max_pos = m_drawToX.eventCount * m_pStyle->pFontsTicks->tickWidth;
+				int delta = m_drawToX.eventCount * m_pStyle->pFontsTicks.tickWidth - m_chartRect.width();
+				m_drawToEventCount = delta >= 0 ? roundDouble((double)delta / (double)m_pStyle->pFontsTicks.tickWidth) : m_drawToX.eventCount;
+				it_max_pos = m_drawToX.eventCount * m_pStyle->pFontsTicks.tickWidth;
 				if (it_max_pos > m_chartRect.width())
 				{
-					m_drawToEventCount = (it_max_pos - m_chartRect.width()) / m_pStyle->pFontsTicks->tickWidth;
-					if (m_drawToEventCount * m_pStyle->pFontsTicks->tickWidth < m_chartRect.width())
+					m_drawToEventCount = (it_max_pos - m_chartRect.width()) / m_pStyle->pFontsTicks.tickWidth;
+					if (m_drawToEventCount * m_pStyle->pFontsTicks.tickWidth < m_chartRect.width())
 					{
 						m_drawToEventCount++;
 					}
@@ -510,8 +510,8 @@ void ChartView::setFromTo()
 			int pos = m_SM_X.position + m_chartRect.width();
 			for (; it != doc->getTimes().end(); ++it)
 			{
-				it_pos = roundDouble(((*it)->time - doc->getTimes().front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks->tickWidth;
-				it_max_pos = it_pos + m_pStyle->pFontsTicks->tickWidth * (*it)->eventCount;
+				it_pos = roundDouble(((*it)->time - doc->getTimes().front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks.tickWidth;
+				it_max_pos = it_pos + m_pStyle->pFontsTicks.tickWidth * (*it)->eventCount;
 				if (it_pos == pos)
 				{
 					m_drawToX = *(*it);
@@ -520,8 +520,8 @@ void ChartView::setFromTo()
 				if (it_pos < pos && it_max_pos >= pos)
 				{
 					m_drawToX = *(*it);
-					m_drawToEventCount = (pos - it_pos) / m_pStyle->pFontsTicks->tickWidth;
-					if (it_pos + m_drawToEventCount * m_pStyle->pFontsTicks->tickWidth < pos)
+					m_drawToEventCount = (pos - it_pos) / m_pStyle->pFontsTicks.tickWidth;
+					if (it_pos + m_drawToEventCount * m_pStyle->pFontsTicks.tickWidth < pos)
 					{
 						m_drawToEventCount++;
 					}
@@ -547,7 +547,7 @@ void ChartView::drawTitle(QPainter& painter, const QRect& chartRect)
 	rect.setBottom(chartRect.top());
 
 	painter.setFont(m_fontTitle);
-	painter.setPen(m_pStyle->getTheme()->titleFGColor);
+	painter.setPen(m_pStyle->titleFGColor);
 	painter.drawText(rect, Qt::AlignHCenter | Qt::AlignTop, getDocument()->getTitle());
 }
 
@@ -558,7 +558,7 @@ void ChartView::drawLegend(QPainter& painter, const QRect& legendRect)
 	painter.setFont(m_fontLegend);
 	BOOST_FOREACH(const ChartSerie* const pSerie, doc->getSerieList())
 	{
-		QSize size = pSerie->drawLegend(painter, rect, m_pStyle->getTheme()->legendFgColor);
+		QSize size = pSerie->drawLegend(painter, rect, m_pStyle->legendFgColor);
 		rect.setTop(rect.top() + size.height());
 	}
 }
@@ -575,7 +575,7 @@ void ChartView::drawYAxis(QPainter& painter, const QRect& chartRect, const Chart
 		if (count)
 		{
 			painter.setFont(m_fontAxis);
-			painter.setPen(m_pStyle->getTheme()->axisFgColor);
+			painter.setPen(m_pStyle->axisFgColor);
 
 			int count = m_captionList.size();
 			int heightoffset = roundDouble((double)chartRect.height() / (double)(count - 1));
@@ -619,7 +619,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 		tstring formatstr = "%.3f";
 
 		painter.setFont(m_fontAxis);
-		painter.setPen(m_pStyle->getTheme()->axisFgColor);
+		painter.setPen(m_pStyle->axisFgColor);
 
 		if (!doUnwrapTime())
 		{
@@ -642,14 +642,14 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 				{
 					str = rdo::format(formatstr.c_str(), valo);
 					tmprect.setLeft(x);
-					painter.setPen(m_pStyle->getTheme()->axisFgColor);
+					painter.setPen(m_pStyle->axisFgColor);
 					painter.drawText(tmprect, Qt::AlignLeft, QString::fromStdString(str));
 					if (i != m_valueCountX - 1)
 					{
 						QPainterPath path;
 						path.moveTo(x, chartRect.bottom());
 						path.lineTo(x, chartRect.bottom() + 3);
-						painter.setPen(m_pStyle->getTheme()->defaultColor);
+						painter.setPen(m_pStyle->defaultColor);
 						painter.drawPath(path);
 					}
 					valo += valoffset;
@@ -665,7 +665,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 			QSize sz;
 			BOOST_FOREACH(const Time* const pTime, m_unwrapTimesList)
 			{
-				tmprect.setLeft(chartRect.left() + (LONG)((pTime->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks->tickWidth - m_chartShift));
+				tmprect.setLeft(chartRect.left() + (LONG)((pTime->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks.tickWidth - m_chartShift));
 				tmprect.setLeft(std::min(tmprect.left(), chartRect.right() - 1));
 				str = rdo::format(formatstr.c_str(), pTime->time);
 				if (*pTime == m_drawFromX)
@@ -679,14 +679,14 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 
 				if (tmprect.left() > lastx)
 				{
-					painter.setPen(m_pStyle->getTheme()->axisFgColor);
+					painter.setPen(m_pStyle->axisFgColor);
 					painter.drawText(tmprect, Qt::AlignLeft, QString::fromStdString(str));
 					if (tmprect.left() != chartRect.left() && tmprect.left() != chartRect.right())
 					{
 						QPainterPath path;
 						path.moveTo(tmprect.left(), chartRect.bottom());
 						path.lineTo(tmprect.left(), chartRect.bottom() + 3);
-						painter.setPen(m_pStyle->getTheme()->defaultColor);
+						painter.setPen(m_pStyle->defaultColor);
 						painter.drawPath(path);
 					}
 					QSize size = painter.fontMetrics().boundingRect(QString::fromStdString(str)).size();
@@ -707,14 +707,14 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 {
 	QRect rect(chartRect);
 	rect.adjust(0, 0, -1, -1);
-	painter.setPen  (m_pStyle->getTheme()->defaultColor);
-	painter.setBrush(m_pStyle->getTheme()->chartBgColor);
+	painter.setPen  (m_pStyle->defaultColor);
+	painter.setBrush(m_pStyle->chartBgColor);
 	painter.drawRect(rect);
 
 	if (doUnwrapTime())
 	{
 		painter.setPen(Qt::NoPen);
-		painter.setBrush(m_pStyle->getTheme()->timeBgColor);
+		painter.setBrush(m_pStyle->timeBgColor);
 
 		rect.adjust(1, 1, 0, 0);
 		QRect wrapRect(rect);
@@ -728,20 +728,20 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 
 		for (; it != m_unwrapTimesList.end(); ++it)
 		{
-			int width = (*it)->eventCount * m_pStyle->pFontsTicks->tickWidth;
+			int width = (*it)->eventCount * m_pStyle->pFontsTicks.tickWidth;
 
 			wrapRect.setLeft(std::max(
-				rect.left() + (int)(((*it)->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks->tickWidth - m_chartShift),
+				rect.left() + (int)(((*it)->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks.tickWidth - m_chartShift),
 				rect.left()
 			));
 
 			if (*(*it) == m_drawFromX)
 			{
-				width -= m_drawFromEventID * m_pStyle->pFontsTicks->tickWidth + m_chartShift;
+				width -= m_drawFromEventID * m_pStyle->pFontsTicks.tickWidth + m_chartShift;
 			}
 			if (*(*it) == m_drawToX)
 			{
-				width = m_drawToEventCount * m_pStyle->pFontsTicks->tickWidth;
+				width = m_drawToEventCount * m_pStyle->pFontsTicks.tickWidth;
 			}
 
 			wrapRect.setRight(std::min(
@@ -879,26 +879,24 @@ void ChartView::setFonts(const rbool needRedraw)
 
 	if (!m_pStyle)
 		return;
-	
-	ChartViewTheme* pChartTheme = static_cast<ChartViewTheme*>(m_pStyle->theme);
 
-	m_fontAxis = QFont(m_pStyle->font->name.c_str());
-	m_fontAxis.setBold     (pChartTheme->defaultStyle & StyleFont::BOLD      ? true : false);
-	m_fontAxis.setItalic   (pChartTheme->defaultStyle & StyleFont::ITALIC    ? true : false);
-	m_fontAxis.setUnderline(pChartTheme->defaultStyle & StyleFont::UNDERLINE ? true : false);
-	m_fontAxis.setPointSize(m_pStyle->font->size);
+	m_fontAxis = QFont(m_pStyle->font.name.c_str());
+	m_fontAxis.setBold     (m_pStyle->defaultStyle & StyleFont::BOLD      ? true : false);
+	m_fontAxis.setItalic   (m_pStyle->defaultStyle & StyleFont::ITALIC    ? true : false);
+	m_fontAxis.setUnderline(m_pStyle->defaultStyle & StyleFont::UNDERLINE ? true : false);
+	m_fontAxis.setPointSize(m_pStyle->font.size);
 
-	m_fontTitle = QFont(m_pStyle->font->name.c_str());
-	m_fontTitle.setBold     (pChartTheme->titleStyle & StyleFont::BOLD      ? true : false);
-	m_fontTitle.setItalic   (pChartTheme->titleStyle & StyleFont::ITALIC    ? true : false);
-	m_fontTitle.setUnderline(pChartTheme->titleStyle & StyleFont::UNDERLINE ? true : false);
-	m_fontTitle.setPointSize(m_pStyle->pFontsTicks->titleFontSize);
+	m_fontTitle = QFont(m_pStyle->font.name.c_str());
+	m_fontTitle.setBold     (m_pStyle->titleStyle & StyleFont::BOLD      ? true : false);
+	m_fontTitle.setItalic   (m_pStyle->titleStyle & StyleFont::ITALIC    ? true : false);
+	m_fontTitle.setUnderline(m_pStyle->titleStyle & StyleFont::UNDERLINE ? true : false);
+	m_fontTitle.setPointSize(m_pStyle->pFontsTicks.titleFontSize);
 
-	m_fontLegend = QFont(m_pStyle->font->name.c_str());
-	m_fontLegend.setBold     (pChartTheme->legendStyle & StyleFont::BOLD      ? true : false);
-	m_fontLegend.setItalic   (pChartTheme->legendStyle & StyleFont::ITALIC    ? true : false);
-	m_fontLegend.setUnderline(pChartTheme->legendStyle & StyleFont::UNDERLINE ? true : false);
-	m_fontLegend.setPointSize(m_pStyle->pFontsTicks->legendFontSize);
+	m_fontLegend = QFont(m_pStyle->font.name.c_str());
+	m_fontLegend.setBold     (m_pStyle->legendStyle & StyleFont::BOLD      ? true : false);
+	m_fontLegend.setItalic   (m_pStyle->legendStyle & StyleFont::ITALIC    ? true : false);
+	m_fontLegend.setUnderline(m_pStyle->legendStyle & StyleFont::UNDERLINE ? true : false);
+	m_fontLegend.setPointSize(m_pStyle->pFontsTicks.legendFontSize);
 }
 
 void ChartView::setStyle(ChartViewStyle* pStyle, const rbool needRedraw)
@@ -956,7 +954,7 @@ void ChartView::paintEvent(QPaintEvent*)
 
 	ChartDoc* doc = getDocument();
 
-	painter.fillRect(m_clientRect, m_pStyle->theme->backgroundColor);
+	painter.fillRect(m_clientRect, m_pStyle->backgroundColor);
 
 	drawTitle(painter, m_chartRect);
 
@@ -967,7 +965,7 @@ void ChartView::paintEvent(QPaintEvent*)
 			drawLegend(painter, m_legendRect);
 		}
 
-		painter.setPen(m_pStyle->getTheme()->defaultColor);
+		painter.setPen(m_pStyle->defaultColor);
 
 		drawYAxis(painter, m_chartRect, m_pYAxis);
 		setFromTo();

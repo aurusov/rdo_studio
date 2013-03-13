@@ -161,7 +161,7 @@ void Edit::catchNeedShown(int position, int length)
 
 void Edit::catchCharAdded(int ch)
 {
-	if (m_pStyle && m_pStyle->tab->autoIndent && (ch == '\r' || ch == '\n'))
+	if (m_pStyle && m_pStyle->tab.autoIndent && (ch == '\r' || ch == '\n'))
 	{
 		autoIndent();
 	}
@@ -198,65 +198,65 @@ void Edit::setEditorStyle(EditStyle* pStyle)
 
 	// ----------
 	// Colors
-	EditTheme* theme = static_cast<EditTheme*>(m_pStyle->theme);
-	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, convertColor(theme->defaultColor));
-	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, convertColor(theme->backgroundColor));
-	sendEditor(SCI_STYLESETFORE, SCE_TEXT_DEFAULT, convertColor(theme->defaultColor));
-	sendEditor(SCI_STYLESETBACK, SCE_TEXT_DEFAULT, convertColor(theme->backgroundColor));
+	EditStyle* style = static_cast<EditStyle*>(m_pStyle);
+	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, convertColor(style->defaultColor));
+	sendEditor(SCI_STYLESETBACK, STYLE_DEFAULT, convertColor(style->backgroundColor));
+	sendEditor(SCI_STYLESETFORE, SCE_TEXT_DEFAULT, convertColor(style->defaultColor));
+	sendEditor(SCI_STYLESETBACK, SCE_TEXT_DEFAULT, convertColor(style->backgroundColor));
 
 	// ----------
 	// Styles
-	sendEditor(SCI_STYLESETBOLD     , STYLE_DEFAULT, theme->defaultStyle & StyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , STYLE_DEFAULT, theme->defaultStyle & StyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, STYLE_DEFAULT, theme->defaultStyle & StyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_TEXT_DEFAULT, theme->defaultStyle & StyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_TEXT_DEFAULT, theme->defaultStyle & StyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_TEXT_DEFAULT, theme->defaultStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , STYLE_DEFAULT, style->defaultStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , STYLE_DEFAULT, style->defaultStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, STYLE_DEFAULT, style->defaultStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_TEXT_DEFAULT, style->defaultStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_TEXT_DEFAULT, style->defaultStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_TEXT_DEFAULT, style->defaultStyle & StyleFont::UNDERLINE);
 
 	// ----------
 	// Font Name
-	sendEditorString(SCI_STYLESETFONT, STYLE_DEFAULT, m_pStyle->font->name.c_str());
+	sendEditorString(SCI_STYLESETFONT, STYLE_DEFAULT, m_pStyle->font.name.c_str());
 
 	// ----------
 	// Font Size
-	sendEditor(SCI_STYLESETSIZE, STYLE_DEFAULT, m_pStyle->font->size);
+	sendEditor(SCI_STYLESETSIZE, STYLE_DEFAULT, m_pStyle->font.size);
 
 	// ----------
 	// Codepage and Characterset
-	sendEditor(SCI_SETCODEPAGE, m_pStyle->font->codepage);
-	sendEditor(SCI_STYLESETCHARACTERSET, STYLE_DEFAULT, m_pStyle->font->characterSet);
+	sendEditor(SCI_SETCODEPAGE, m_pStyle->font.codepage);
+	sendEditor(SCI_STYLESETCHARACTERSET, STYLE_DEFAULT, m_pStyle->font.characterSet);
 
 	// ----------
 	// Tabs
-	sendEditor(SCI_SETTABWIDTH, m_pStyle->tab->tabSize);
-	sendEditor(SCI_SETINDENT, m_pStyle->tab->indentSize);
-	sendEditor(SCI_SETUSETABS, m_pStyle->tab->useTabs);
-	sendEditor(SCI_SETTABINDENTS, m_pStyle->tab->tabIndents);
-	sendEditor(SCI_SETBACKSPACEUNINDENTS, !m_pStyle->tab->backspaceUntabs);
+	sendEditor(SCI_SETTABWIDTH, m_pStyle->tab.tabSize);
+	sendEditor(SCI_SETINDENT, m_pStyle->tab.indentSize);
+	sendEditor(SCI_SETUSETABS, m_pStyle->tab.useTabs);
+	sendEditor(SCI_SETTABINDENTS, m_pStyle->tab.tabIndents);
+	sendEditor(SCI_SETBACKSPACEUNINDENTS, !m_pStyle->tab.backspaceUntabs);
 
 	// ----------
 	// Caret
-	sendEditor(SCI_SETCARETFORE, convertColor(theme->caretColor));
-	sendEditor(SCI_SETSELBACK, true, convertColor(theme->selectionBgColor));
+	sendEditor(SCI_SETCARETFORE, convertColor(style->caretColor));
+	sendEditor(SCI_SETSELBACK, true, convertColor(style->selectionBgColor));
 	sendEditor(SCI_SETCARETWIDTH, 1);
 
 	// ----------
 	// Bookmark
-	QColor bookmarkFgColor = theme->bookmarkFgColor;
-	QColor bookmarkBgColor = theme->bookmarkBgColor;
-	switch (theme->bookmarkStyle)
+	QColor bookmarkFgColor = style->bookmarkFgColor;
+	QColor bookmarkBgColor = style->bookmarkBgColor;
+	switch (style->bookmarkStyle)
 	{
-		case EditTheme::B_NONE     : defineMarker(m_sciMarkerBookmark, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor); break;
-		case EditTheme::B_CIRCLE   : defineMarker(m_sciMarkerBookmark, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor); break;
-		case EditTheme::B_RECT     : defineMarker(m_sciMarkerBookmark, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor); break;
-		case EditTheme::B_ROUNDRECT: defineMarker(m_sciMarkerBookmark, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor); break;
-		case EditTheme::B_ARROW    : defineMarker(m_sciMarkerBookmark, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor); break;
+		case EditStyle::B_NONE     : defineMarker(m_sciMarkerBookmark, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor); break;
+		case EditStyle::B_CIRCLE   : defineMarker(m_sciMarkerBookmark, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor); break;
+		case EditStyle::B_RECT     : defineMarker(m_sciMarkerBookmark, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor); break;
+		case EditStyle::B_ROUNDRECT: defineMarker(m_sciMarkerBookmark, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor); break;
+		case EditStyle::B_ARROW    : defineMarker(m_sciMarkerBookmark, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor); break;
 	}
 
 	// ----------
 	// Window
-	sendEditor(SCI_SETWRAPMODE, m_pStyle->window->wordWrap ? SC_WRAP_WORD : SC_WRAP_NONE);
-	sendEditor(SCI_SETHSCROLLBAR, m_pStyle->window->showHorzScrollBar);
+	sendEditor(SCI_SETWRAPMODE, m_pStyle->window.wordWrap ? SC_WRAP_WORD : SC_WRAP_NONE);
+	sendEditor(SCI_SETHSCROLLBAR, m_pStyle->window.showHorzScrollBar);
 }
 
 void Edit::setGroup(PTR(Group) pGroup)
@@ -979,31 +979,31 @@ tstring Edit::saveAsRTF(int start, int end) const
 	saveStr += RTF_FONTDEFOPEN;
 
 #pragma warning(disable: 4996)
-	strncpy(*fonts, m_pStyle->font->name.c_str(), MAX_FONTDEF);
+	strncpy(*fonts, m_pStyle->font.name.c_str(), MAX_FONTDEF);
 #pragma warning(default: 4996)
-	saveStr += rdo::format(RTF_FONTDEF, 0, m_pStyle->font->characterSet, m_pStyle->font->name.c_str());
+	saveStr += rdo::format(RTF_FONTDEF, 0, m_pStyle->font.characterSet, m_pStyle->font.name.c_str());
 #pragma warning(disable: 4996)
 	strncpy(*colors, "#000000", MAX_COLORDEF);
 #pragma warning(default: 4996)
 
-	EditTheme* theme = static_cast<EditTheme*>(m_pStyle->theme);
+	EditStyle* style = static_cast<EditStyle*>(m_pStyle);
 
 	for (int istyle = 0; istyle <= STYLE_DEFAULT; istyle++) {
-		if (theme->styleUsing(istyle)) {
+		if (style->styleUsing(istyle)) {
 #pragma warning(disable: 4996)
 			sprintf(lastStyle, RTF_SETFONTFACE "%d", fontCount-1);
-			sprintf(lastStyle + strlen(lastStyle), RTF_SETFONTSIZE "%d", m_pStyle->font->size * 2);
+			sprintf(lastStyle + strlen(lastStyle), RTF_SETFONTSIZE "%d", m_pStyle->font.size * 2);
 #pragma warning(default: 4996)
-			if (theme->styleDefault(istyle)) {
+			if (style->styleDefault(istyle)) {
 #pragma warning(disable: 4996)
-				strncpy(colors[colorCount++], theme->styleBGColorToHEX(istyle).c_str(), MAX_COLORDEF);
+				strncpy(colors[colorCount++], style->styleBGColorToHEX(istyle).c_str(), MAX_COLORDEF);
 #pragma warning(default: 4996)
 			}
 #pragma warning(disable: 4996)
-			strncpy(colors[colorCount++], theme->styleFGColorToHEX(istyle).c_str(), MAX_COLORDEF);
+			strncpy(colors[colorCount++], style->styleFGColorToHEX(istyle).c_str(), MAX_COLORDEF);
 #pragma warning(default: 4996)
-			rbool bold   = theme->styleBold(istyle);
-			rbool italic = theme->styleItalic(istyle);
+			rbool bold   = style->styleBold(istyle);
+			rbool italic = style->styleItalic(istyle);
 #pragma warning(disable: 4996)
 			sprintf(lastStyle + strlen(lastStyle), RTF_SETCOLOR "%d", colorCount-1);
 			sprintf(lastStyle + strlen(lastStyle), RTF_SETBACKGROUND "%d", 1);
@@ -1020,10 +1020,10 @@ tstring Edit::saveAsRTF(int start, int end) const
 		saveStr += rdo::format(RTF_COLORDEF, GetHexByte(colors[i] + 1), GetHexByte(colors[i] + 3), GetHexByte(colors[i] + 5));
 	}
 
-	saveStr += rdo::format(RTF_COLORDEFCLOSE RTF_HEADERCLOSE RTF_BODYOPEN RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0 ", m_pStyle->font->size * 2);
+	saveStr += rdo::format(RTF_COLORDEFCLOSE RTF_HEADERCLOSE RTF_BODYOPEN RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0 ", m_pStyle->font.size * 2);
 
 #pragma warning(disable: 4996)
-	sprintf(lastStyle, RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0" RTF_SETBACKGROUND "0" RTF_BOLD_OFF RTF_ITALIC_OFF, m_pStyle->font->size * 2);
+	sprintf(lastStyle, RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0" RTF_SETBACKGROUND "0" RTF_BOLD_OFF RTF_ITALIC_OFF, m_pStyle->font.size * 2);
 #pragma warning(default: 4996)
 
 	tstring::size_type prevLength = saveStr.length();
@@ -1032,7 +1032,7 @@ tstring Edit::saveAsRTF(int start, int end) const
 	for (i = start; i < end; i++)
 	{
 		int m_pStyle = sendEditor(SCI_GETSTYLEAT, i);
-		if (!theme->styleUsing(m_pStyle))
+		if (!style->styleUsing(m_pStyle))
 		{
 			continue;
 		}
@@ -1118,7 +1118,7 @@ void Edit::setCurrentPos(const int line, int pos_in_line, const rbool convert_rd
 
 	if (canUseLine && convert_rdo_tab)
 	{
-		int tab_size = m_pStyle ? m_pStyle->tab->tabSize : 8;
+		int tab_size = m_pStyle ? m_pStyle->tab.tabSize : 8;
 		int spaces = 0;
 		for (int i = 0; i < line_length; i++)
 		{

@@ -19,9 +19,9 @@ using namespace rdo::gui::style;
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
-// -------------------- ParserTheme
+// -------------------- ParserStyle
 // --------------------------------------------------------------------------------
-ParserTheme::ParserTheme(): EditTheme()
+ParserStyle::ParserStyle(): EditStyle()
 {
 	defaultColor    = QColor( 0x80, 0x80, 0x80 );
 	identifierColor = QColor( 0x00, 0x00, 0x00 );
@@ -45,98 +45,97 @@ ParserTheme::ParserTheme(): EditTheme()
 	operatorStyle   = StyleFont::NONE;
 }
 
-ParserTheme::~ParserTheme()
+ParserStyle::~ParserStyle()
+{}
+
+ParserStyle& ParserStyle::operator =( const ParserStyle& style )
 {
-}
+	EditStyle::operator=( style );
 
-ParserTheme& ParserTheme::operator =( const ParserTheme& theme )
-{
-	EditTheme::operator=( theme );
+	identifierColor = style.identifierColor;
+	keywordColor    = style.keywordColor;
+	functionsColor  = style.functionsColor;
+	traceColor      = style.traceColor;
+	colorColor      = style.colorColor;
+	commentColor    = style.commentColor;
+	numberColor     = style.numberColor;
+	stringColor     = style.stringColor;
+	operatorColor   = style.operatorColor;
 
-	identifierColor = theme.identifierColor;
-	keywordColor    = theme.keywordColor;
-	functionsColor  = theme.functionsColor;
-	traceColor      = theme.traceColor;
-	colorColor      = theme.colorColor;
-	commentColor    = theme.commentColor;
-	numberColor     = theme.numberColor;
-	stringColor     = theme.stringColor;
-	operatorColor   = theme.operatorColor;
-
-	identifierStyle = theme.identifierStyle;
-	keywordStyle    = theme.keywordStyle;
-	functionsStyle  = theme.functionsStyle;
-	traceStyle      = theme.traceStyle;
-	colorStyle      = theme.colorStyle;
-	commentStyle    = theme.commentStyle;
-	numberStyle     = theme.numberStyle;
-	stringStyle     = theme.stringStyle;
-	operatorStyle   = theme.operatorStyle;
+	identifierStyle = style.identifierStyle;
+	keywordStyle    = style.keywordStyle;
+	functionsStyle  = style.functionsStyle;
+	traceStyle      = style.traceStyle;
+	colorStyle      = style.colorStyle;
+	commentStyle    = style.commentStyle;
+	numberStyle     = style.numberStyle;
+	stringStyle     = style.stringStyle;
+	operatorStyle   = style.operatorStyle;
 
 	return *this;
 }
 
-rbool ParserTheme::operator ==( const ParserTheme& theme ) const
+rbool ParserStyle::operator ==( const ParserStyle& style ) const
 {
-	rbool flag = EditTheme::operator==( theme );
+	rbool flag = EditStyle::operator==( style );
+	if ( flag ) flag &= identifierColor == style.identifierColor &&
+		keywordColor    == style.keywordColor &&
+		functionsColor  == style.functionsColor &&
+		traceColor      == style.traceColor &&
+		colorColor      == style.colorColor &&
+		commentColor    == style.commentColor &&
+		numberColor     == style.numberColor &&
+		stringColor     == style.stringColor &&
+		operatorColor   == style.operatorColor &&
 
-	if ( flag ) flag &= identifierColor == theme.identifierColor &&
-	                    keywordColor    == theme.keywordColor &&
-	                    functionsColor  == theme.functionsColor &&
-	                    traceColor      == theme.traceColor &&
-	                    colorColor      == theme.colorColor &&
-	                    commentColor    == theme.commentColor &&
-	                    numberColor     == theme.numberColor &&
-	                    stringColor     == theme.stringColor &&
-	                    operatorColor   == theme.operatorColor &&
+		identifierStyle == style.identifierStyle &&
+		keywordStyle    == style.keywordStyle &&
+		functionsStyle  == style.functionsStyle &&
+		traceStyle      == style.traceStyle &&
+		colorStyle      == style.colorStyle &&
+		commentStyle    == style.commentStyle &&
+		numberStyle     == style.numberStyle &&
+		stringStyle     == style.stringStyle &&
+		operatorStyle   == style.operatorStyle;
 
-	                    identifierStyle == theme.identifierStyle &&
-	                    keywordStyle    == theme.keywordStyle &&
-	                    functionsStyle  == theme.functionsStyle &&
-	                    traceStyle      == theme.traceStyle &&
-	                    colorStyle      == theme.colorStyle &&
-	                    commentStyle    == theme.commentStyle &&
-	                    numberStyle     == theme.numberStyle &&
-	                    stringStyle     == theme.stringStyle &&
-	                    operatorStyle   == theme.operatorStyle;
 	return flag;
 }
 
-rbool ParserTheme::operator !=( const ParserTheme& theme ) const
+rbool ParserStyle::operator !=( const ParserStyle& style ) const
 {
-	return !(*this == theme);
+	return !(*this == style);
 }
 
-void ParserTheme::load(QSettings& settings)
+void ParserStyle::loadStyle(QSettings& settings)
 {
-	EditTheme::load(settings);
+	EditStyle::loadStyle(settings);
 
 	settings >> *this;
 }
 
-void ParserTheme::save(QSettings& settings) const
+void ParserStyle::saveStyle(QSettings& settings) const
 {
-	EditTheme::save(settings);
+	EditStyle::saveStyle(settings);
 
 	settings << *this;
 }
 
-rbool ParserTheme::styleDefault( const int styleType ) const
+rbool ParserStyle::styleDefault( const int styleType ) const
 {
 	return styleType == SCE_RDO_DEFAULT;
 }
 
-rbool ParserTheme::styleUsing( const int styleType ) const
+rbool ParserStyle::styleUsing( const int styleType ) const
 {
 	return styleType == SCE_RDO_DEFAULT      || styleType == SCE_RDO_IDENTIFIER   ||
-	       styleType == SCE_RDO_KEYWORD      || styleType == SCE_RDO_FUNCTION     ||
-	       styleType == SCE_RDO_TRACE        || styleType == SCE_RDO_COMMENT_CPP  ||
-	       styleType == SCE_RDO_COMMENT_LINE || styleType == SCE_RDO_NUMBER       ||
-	       styleType == SCE_RDO_STRING       || styleType == SCE_RDO_OPERATOR     ||
-	       styleType == SCE_RDO_FRAME_COLOR;
+		styleType == SCE_RDO_KEYWORD      || styleType == SCE_RDO_FUNCTION     ||
+		styleType == SCE_RDO_TRACE        || styleType == SCE_RDO_COMMENT_CPP  ||
+		styleType == SCE_RDO_COMMENT_LINE || styleType == SCE_RDO_NUMBER       ||
+		styleType == SCE_RDO_STRING       || styleType == SCE_RDO_OPERATOR     ||
+		styleType == SCE_RDO_FRAME_COLOR;
 }
 
-rbool ParserTheme::styleBold( const int styleType ) const
+rbool ParserStyle::styleBold( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT     : return defaultStyle    & StyleFont::BOLD ? true : false;
@@ -154,7 +153,7 @@ rbool ParserTheme::styleBold( const int styleType ) const
 	return false;
 }
 
-rbool ParserTheme::styleItalic( const int styleType ) const
+rbool ParserStyle::styleItalic( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT     : return defaultStyle    & StyleFont::ITALIC ? true : false;
@@ -172,7 +171,7 @@ rbool ParserTheme::styleItalic( const int styleType ) const
 	return false;
 }
 
-tstring ParserTheme::styleFGColorToHEX( const int styleType ) const
+tstring ParserStyle::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT     : return colorToHEX( defaultColor );
@@ -187,264 +186,233 @@ tstring ParserTheme::styleFGColorToHEX( const int styleType ) const
 		case SCE_RDO_STRING      : return colorToHEX( stringColor );
 		case SCE_RDO_OPERATOR    : return colorToHEX( operatorColor );
 	}
-	return EditTheme::styleFGColorToHEX( styleType );
+	return EditStyle::styleFGColorToHEX( styleType );
 }
 
-ParserTheme ParserTheme::getDefaultTheme()
+ParserStyle ParserStyle::getDefaultStyle()
 {
-	ParserTheme theme;
-	return theme;
+	ParserStyle style;
+	return style;
 }
 
-ParserTheme ParserTheme::getCppTheme()
+ParserStyle ParserStyle::getCppStyle()
 {
-	ParserTheme theme;
-	*static_cast<EditTheme*>(&theme) = EditTheme::getDefaultTheme();
+	ParserStyle style;
+	*static_cast<EditStyle*>(&style) = EditStyle::getDefaultStyle();
 
-	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
-	theme.keywordColor    = QColor( 0x00, 0x00, 0xFF );
-	theme.functionsColor  = QColor( 0x00, 0x00, 0xFF );
-	theme.traceColor      = QColor( 0x00, 0x00, 0xFF );
-	theme.colorColor      = QColor( 0x00, 0x00, 0xFF );
-	theme.commentColor    = QColor( 0x00, 0x80, 0x00 );
-	theme.numberColor     = QColor( 0x00, 0x00, 0x00 );
-	theme.stringColor     = QColor( 0x00, 0x00, 0x00 );
-	theme.operatorColor   = QColor( 0x00, 0x00, 0x00 );
+	style.identifierColor = QColor( 0x00, 0x00, 0x00 );
+	style.keywordColor    = QColor( 0x00, 0x00, 0xFF );
+	style.functionsColor  = QColor( 0x00, 0x00, 0xFF );
+	style.traceColor      = QColor( 0x00, 0x00, 0xFF );
+	style.colorColor      = QColor( 0x00, 0x00, 0xFF );
+	style.commentColor    = QColor( 0x00, 0x80, 0x00 );
+	style.numberColor     = QColor( 0x00, 0x00, 0x00 );
+	style.stringColor     = QColor( 0x00, 0x00, 0x00 );
+	style.operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
-	theme.identifierStyle = StyleFont::NONE;
-	theme.keywordStyle    = StyleFont::NONE;
-	theme.functionsStyle  = StyleFont::NONE;
-	theme.traceStyle      = StyleFont::NONE;
-	theme.colorStyle      = StyleFont::NONE;
-	theme.commentStyle    = StyleFont::NONE;
-	theme.numberStyle     = StyleFont::NONE;
-	theme.stringStyle     = StyleFont::NONE;
-	theme.operatorStyle   = StyleFont::NONE;
+	style.identifierStyle = StyleFont::NONE;
+	style.keywordStyle    = StyleFont::NONE;
+	style.functionsStyle  = StyleFont::NONE;
+	style.traceStyle      = StyleFont::NONE;
+	style.colorStyle      = StyleFont::NONE;
+	style.commentStyle    = StyleFont::NONE;
+	style.numberStyle     = StyleFont::NONE;
+	style.stringStyle     = StyleFont::NONE;
+	style.operatorStyle   = StyleFont::NONE;
 
-	return theme;
+	return style;
 }
 
-ParserTheme ParserTheme::getPascalTheme()
+ParserStyle ParserStyle::getPascalStyle()
 {
-	ParserTheme theme;
-	*static_cast<EditTheme*>(&theme) = EditTheme::getDefaultTheme();
+	ParserStyle style;
+	*static_cast<EditStyle*>(&style) = EditStyle::getDefaultStyle();
 
-	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
-	theme.keywordColor    = QColor( 0x00, 0x00, 0x00 );
-	theme.functionsColor  = QColor( 0x00, 0x00, 0x00 );
-	theme.traceColor      = QColor( 0x00, 0x00, 0x00 );
-	theme.colorColor      = QColor( 0x00, 0x00, 0x00 );
-	theme.commentColor    = QColor( 0x00, 0x00, 0x80 );
-	theme.numberColor     = QColor( 0x00, 0x00, 0x00 );
-	theme.stringColor     = QColor( 0x00, 0x00, 0x00 );
-	theme.operatorColor   = QColor( 0x00, 0x00, 0x00 );
+	style.identifierColor = QColor( 0x00, 0x00, 0x00 );
+	style.keywordColor    = QColor( 0x00, 0x00, 0x00 );
+	style.functionsColor  = QColor( 0x00, 0x00, 0x00 );
+	style.traceColor      = QColor( 0x00, 0x00, 0x00 );
+	style.colorColor      = QColor( 0x00, 0x00, 0x00 );
+	style.commentColor    = QColor( 0x00, 0x00, 0x80 );
+	style.numberColor     = QColor( 0x00, 0x00, 0x00 );
+	style.stringColor     = QColor( 0x00, 0x00, 0x00 );
+	style.operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
-	theme.identifierStyle = StyleFont::NONE;
-	theme.keywordStyle    = StyleFont::BOLD;
-	theme.functionsStyle  = StyleFont::BOLD;
-	theme.traceStyle      = StyleFont::BOLD;
-	theme.colorStyle      = StyleFont::BOLD;
-	theme.commentStyle    = StyleFont::ITALIC;
-	theme.numberStyle     = StyleFont::NONE;
-	theme.stringStyle     = StyleFont::NONE;
-	theme.operatorStyle   = StyleFont::NONE;
+	style.identifierStyle = StyleFont::NONE;
+	style.keywordStyle    = StyleFont::BOLD;
+	style.functionsStyle  = StyleFont::BOLD;
+	style.traceStyle      = StyleFont::BOLD;
+	style.colorStyle      = StyleFont::BOLD;
+	style.commentStyle    = StyleFont::ITALIC;
+	style.numberStyle     = StyleFont::NONE;
+	style.stringStyle     = StyleFont::NONE;
+	style.operatorStyle   = StyleFont::NONE;
 
-	return theme;
+	return style;
 }
 
-ParserTheme ParserTheme::getHtmlTheme()
+ParserStyle ParserStyle::getHtmlStyle()
 {
-	ParserTheme theme;
-	*static_cast<EditTheme*>(&theme) = EditTheme::getDefaultTheme();
+	ParserStyle style;
+	*static_cast<EditStyle*>(&style) = EditStyle::getDefaultStyle();
 
-	theme.identifierColor = QColor( 0x00, 0x00, 0x00 );
-	theme.keywordColor    = QColor( 0x80, 0x00, 0x80 );
-	theme.functionsColor  = QColor( 0xFF, 0x00, 0x00 );
-	theme.traceColor      = QColor( 0xFF, 0x00, 0x00 );
-	theme.colorColor      = QColor( 0xFF, 0x00, 0x00 );
-	theme.commentColor    = QColor( 0x00, 0x80, 0x00 );
-	theme.numberColor     = QColor( 0x00, 0x00, 0xFF );
-	theme.stringColor     = QColor( 0x00, 0x00, 0xFF );
-	theme.operatorColor   = QColor( 0x00, 0x00, 0x00 );
+	style.identifierColor = QColor( 0x00, 0x00, 0x00 );
+	style.keywordColor    = QColor( 0x80, 0x00, 0x80 );
+	style.functionsColor  = QColor( 0xFF, 0x00, 0x00 );
+	style.traceColor      = QColor( 0xFF, 0x00, 0x00 );
+	style.colorColor      = QColor( 0xFF, 0x00, 0x00 );
+	style.commentColor    = QColor( 0x00, 0x80, 0x00 );
+	style.numberColor     = QColor( 0x00, 0x00, 0xFF );
+	style.stringColor     = QColor( 0x00, 0x00, 0xFF );
+	style.operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
-	theme.identifierStyle = StyleFont::NONE;
-	theme.keywordStyle    = StyleFont::NONE;
-	theme.functionsStyle  = StyleFont::NONE;
-	theme.traceStyle      = StyleFont::NONE;
-	theme.colorStyle      = StyleFont::NONE;
-	theme.commentStyle    = StyleFont::NONE;
-	theme.numberStyle     = StyleFont::NONE;
-	theme.stringStyle     = StyleFont::NONE;
-	theme.operatorStyle   = StyleFont::NONE;
+	style.identifierStyle = StyleFont::NONE;
+	style.keywordStyle    = StyleFont::NONE;
+	style.functionsStyle  = StyleFont::NONE;
+	style.traceStyle      = StyleFont::NONE;
+	style.colorStyle      = StyleFont::NONE;
+	style.commentStyle    = StyleFont::NONE;
+	style.numberStyle     = StyleFont::NONE;
+	style.stringStyle     = StyleFont::NONE;
+	style.operatorStyle   = StyleFont::NONE;
 
-	return theme;
+	return style;
 }
 
-ParserTheme ParserTheme::getClassicTheme()
+ParserStyle ParserStyle::getClassicStyle()
 {
-	ParserTheme theme;
-	*static_cast<EditTheme*>(&theme) = EditTheme::getClassicTheme();
+	ParserStyle style;
+	*static_cast<EditStyle*>(&style) = EditStyle::getClassicStyle();
 
-	theme.identifierColor = QColor( 0xFF, 0xFF, 0x00 );
-	theme.keywordColor    = QColor( 0xFF, 0xFF, 0xFF );
-	theme.functionsColor  = QColor( 0xFF, 0xFF, 0xFF );
-	theme.traceColor      = QColor( 0xFF, 0xFF, 0xFF );
-	theme.colorColor      = QColor( 0xFF, 0xFF, 0xFF );
-	theme.commentColor    = QColor( 0xC0, 0xC0, 0xC0 );
-	theme.numberColor     = QColor( 0xFF, 0xFF, 0x00 );
-	theme.stringColor     = QColor( 0xFF, 0xFF, 0x00 );
-	theme.operatorColor   = QColor( 0xFF, 0xFF, 0x00 );
+	style.identifierColor = QColor( 0xFF, 0xFF, 0x00 );
+	style.keywordColor    = QColor( 0xFF, 0xFF, 0xFF );
+	style.functionsColor  = QColor( 0xFF, 0xFF, 0xFF );
+	style.traceColor      = QColor( 0xFF, 0xFF, 0xFF );
+	style.colorColor      = QColor( 0xFF, 0xFF, 0xFF );
+	style.commentColor    = QColor( 0xC0, 0xC0, 0xC0 );
+	style.numberColor     = QColor( 0xFF, 0xFF, 0x00 );
+	style.stringColor     = QColor( 0xFF, 0xFF, 0x00 );
+	style.operatorColor   = QColor( 0xFF, 0xFF, 0x00 );
 
-	theme.identifierStyle = StyleFont::NONE;
-	theme.keywordStyle    = StyleFont::NONE;
-	theme.functionsStyle  = StyleFont::NONE;
-	theme.traceStyle      = StyleFont::NONE;
-	theme.colorStyle      = StyleFont::NONE;
-	theme.commentStyle    = StyleFont::NONE;
-	theme.numberStyle     = StyleFont::NONE;
-	theme.stringStyle     = StyleFont::NONE;
-	theme.operatorStyle   = StyleFont::NONE;
+	style.identifierStyle = StyleFont::NONE;
+	style.keywordStyle    = StyleFont::NONE;
+	style.functionsStyle  = StyleFont::NONE;
+	style.traceStyle      = StyleFont::NONE;
+	style.colorStyle      = StyleFont::NONE;
+	style.commentStyle    = StyleFont::NONE;
+	style.numberStyle     = StyleFont::NONE;
+	style.stringStyle     = StyleFont::NONE;
+	style.operatorStyle   = StyleFont::NONE;
 
-	return theme;
+	return style;
 }
 
-ParserTheme ParserTheme::getTwilightTheme()
+ParserStyle ParserStyle::getTwilightStyle()
 {
-	ParserTheme theme;
-	*static_cast<EditTheme*>(&theme) = EditTheme::getTwilightTheme();
+	ParserStyle style;
+	*static_cast<EditStyle*>(&style) = EditStyle::getTwilightStyle();
 
-	theme.identifierColor = QColor( 0xFF, 0xFF, 0xFF );
-	theme.keywordColor    = QColor( 0x00, 0xFF, 0xFF );
-	theme.functionsColor  = QColor( 0xFF, 0xFF, 0x00 );
-	theme.traceColor      = QColor( 0x00, 0xFF, 0x00 );
-	theme.colorColor      = QColor( 0x00, 0xFF, 0x00 );
-	theme.commentColor    = QColor( 0xC0, 0xC0, 0xC0 );
-	theme.numberColor     = QColor( 0xC0, 0xC0, 0xC0 );
-	theme.stringColor     = QColor( 0xFF, 0xFF, 0xFF );
-	theme.operatorColor   = QColor( 0xFF, 0xFF, 0xFF );
+	style.identifierColor = QColor( 0xFF, 0xFF, 0xFF );
+	style.keywordColor    = QColor( 0x00, 0xFF, 0xFF );
+	style.functionsColor  = QColor( 0xFF, 0xFF, 0x00 );
+	style.traceColor      = QColor( 0x00, 0xFF, 0x00 );
+	style.colorColor      = QColor( 0x00, 0xFF, 0x00 );
+	style.commentColor    = QColor( 0xC0, 0xC0, 0xC0 );
+	style.numberColor     = QColor( 0xC0, 0xC0, 0xC0 );
+	style.stringColor     = QColor( 0xFF, 0xFF, 0xFF );
+	style.operatorColor   = QColor( 0xFF, 0xFF, 0xFF );
 
-	theme.identifierStyle = StyleFont::NONE;
-	theme.keywordStyle    = StyleFont::BOLD;
-	theme.functionsStyle  = StyleFont::BOLD;
-	theme.traceStyle      = static_cast<StyleFont::style>(StyleFont::BOLD | StyleFont::ITALIC);
-	theme.colorStyle      = StyleFont::BOLD;
-	theme.commentStyle    = StyleFont::ITALIC;
-	theme.numberStyle     = StyleFont::NONE;
-	theme.stringStyle     = StyleFont::NONE;
-	theme.operatorStyle   = StyleFont::NONE;
+	style.identifierStyle = StyleFont::NONE;
+	style.keywordStyle    = StyleFont::BOLD;
+	style.functionsStyle  = StyleFont::BOLD;
+	style.traceStyle      = static_cast<StyleFont::style>(StyleFont::BOLD | StyleFont::ITALIC);
+	style.colorStyle      = StyleFont::BOLD;
+	style.commentStyle    = StyleFont::ITALIC;
+	style.numberStyle     = StyleFont::NONE;
+	style.stringStyle     = StyleFont::NONE;
+	style.operatorStyle   = StyleFont::NONE;
 
-	return theme;
+	return style;
 }
 
-ParserTheme ParserTheme::getOceanTheme()
+ParserStyle ParserStyle::getOceanStyle()
 {
-	ParserTheme theme;
-	*static_cast<EditTheme*>(&theme) = EditTheme::getOceanTheme();
+	ParserStyle style;
+	*static_cast<EditStyle*>(&style) = EditStyle::getOceanStyle();
 
-	theme.identifierColor = QColor( 0x00, 0x00, 0xFF );
-	theme.keywordColor    = QColor( 0x00, 0x00, 0x00 );
-	theme.functionsColor  = QColor( 0x00, 0x00, 0x00 );
-	theme.traceColor      = QColor( 0x00, 0x00, 0x00 );
-	theme.colorColor      = QColor( 0x00, 0x00, 0x00 );
-	theme.commentColor    = QColor( 0x00, 0x80, 0x80 );
-	theme.numberColor     = QColor( 0x00, 0x00, 0xFF );
-	theme.stringColor     = QColor( 0x00, 0x00, 0xFF );
-	theme.operatorColor   = QColor( 0x00, 0x00, 0xFF );
+	style.identifierColor = QColor( 0x00, 0x00, 0xFF );
+	style.keywordColor    = QColor( 0x00, 0x00, 0x00 );
+	style.functionsColor  = QColor( 0x00, 0x00, 0x00 );
+	style.traceColor      = QColor( 0x00, 0x00, 0x00 );
+	style.colorColor      = QColor( 0x00, 0x00, 0x00 );
+	style.commentColor    = QColor( 0x00, 0x80, 0x80 );
+	style.numberColor     = QColor( 0x00, 0x00, 0xFF );
+	style.stringColor     = QColor( 0x00, 0x00, 0xFF );
+	style.operatorColor   = QColor( 0x00, 0x00, 0xFF );
 
-	theme.identifierStyle = StyleFont::NONE;
-	theme.keywordStyle    = StyleFont::BOLD;
-	theme.functionsStyle  = StyleFont::BOLD;
-	theme.traceStyle      = StyleFont::BOLD;
-	theme.colorStyle      = StyleFont::BOLD;
-	theme.commentStyle    = StyleFont::ITALIC;
-	theme.numberStyle     = StyleFont::NONE;
-	theme.stringStyle     = StyleFont::NONE;
-	theme.operatorStyle   = StyleFont::NONE;
+	style.identifierStyle = StyleFont::NONE;
+	style.keywordStyle    = StyleFont::BOLD;
+	style.functionsStyle  = StyleFont::BOLD;
+	style.traceStyle      = StyleFont::BOLD;
+	style.colorStyle      = StyleFont::BOLD;
+	style.commentStyle    = StyleFont::ITALIC;
+	style.numberStyle     = StyleFont::NONE;
+	style.stringStyle     = StyleFont::NONE;
+	style.operatorStyle   = StyleFont::NONE;
 
-	return theme;
+	return style;
 }
 
 namespace rdo { namespace gui { namespace editor {
 
-QSettings& operator<< (QSettings& settings, const ParserTheme& theme)
-{
-	settings.setValue("identifier_color", theme.identifierColor.name());
-	settings.setValue("keyword_color", theme.keywordColor.name());
-	settings.setValue("functions_color", theme.functionsColor.name());
-	settings.setValue("trace_color", theme.traceColor.name());
-	settings.setValue("color_color", theme.colorColor.name());
-	settings.setValue("comment_color", theme.commentColor.name());
-	settings.setValue("number_color", theme.numberColor.name());
-	settings.setValue("string_color", theme.stringColor.name());
-	settings.setValue("operator_color", theme.operatorColor.name());
+	QSettings& operator<< (QSettings& settings, const ParserStyle& style)
+	{
+		settings.setValue("identifier_color", style.identifierColor.name());
+		settings.setValue("keyword_color", style.keywordColor.name());
+		settings.setValue("functions_color", style.functionsColor.name());
+		settings.setValue("trace_color", style.traceColor.name());
+		settings.setValue("color_color", style.colorColor.name());
+		settings.setValue("comment_color", style.commentColor.name());
+		settings.setValue("number_color", style.numberColor.name());
+		settings.setValue("string_color", style.stringColor.name());
+		settings.setValue("operator_color", style.operatorColor.name());
 
-	settings.setValue("identifier_style", theme.identifierStyle);
-	settings.setValue("keyword_style", theme.keywordStyle);
-	settings.setValue("functions_style", theme.functionsStyle);
-	settings.setValue("trace_style", theme.traceStyle);
-	settings.setValue("color_style", theme.colorStyle);
-	settings.setValue("comment_style", theme.commentStyle);
-	settings.setValue("number_style", theme.numberStyle);
-	settings.setValue("string_style", theme.stringStyle);
-	settings.setValue("operator_style", theme.operatorStyle);
+		settings.setValue("identifier_style", style.identifierStyle);
+		settings.setValue("keyword_style", style.keywordStyle);
+		settings.setValue("functions_style", style.functionsStyle);
+		settings.setValue("trace_style", style.traceStyle);
+		settings.setValue("color_style", style.colorStyle);
+		settings.setValue("comment_style", style.commentStyle);
+		settings.setValue("number_style", style.numberStyle);
+		settings.setValue("string_style", style.stringStyle);
+		settings.setValue("operator_style", style.operatorStyle);
 
-	return settings;
-}
+		return settings;
+	}
 
-QSettings& operator>> (QSettings& settings, ParserTheme& theme)
-{
-	theme.identifierColor        = QColor(settings.value("identifier_color", theme.identifierColor.name()).toString());
-	theme.keywordColor           = QColor(settings.value("keyword_color", theme.keywordColor.name()).toString());
-	theme.functionsColor         = QColor(settings.value("functions_color", theme.functionsColor.name()).toString());
-	theme.traceColor             = QColor(settings.value("trace_color", theme.traceColor.name()).toString());
-	theme.colorColor             = QColor(settings.value("color_color", theme.colorColor.name()).toString());
-	theme.commentColor           = QColor(settings.value("comment_color", theme.commentColor.name()).toString());
-	theme.numberColor            = QColor(settings.value("number_color", theme.numberColor.name()).toString());
-	theme.stringColor            = QColor(settings.value("string_color", theme.stringColor.name()).toString());
-	theme.operatorColor          = QColor(settings.value("operator_color", theme.operatorColor.name()).toString());
+	QSettings& operator>> (QSettings& settings, ParserStyle& style)
+	{
+		style.identifierColor        = QColor(settings.value("identifier_color", style.identifierColor.name()).toString());
+		style.keywordColor           = QColor(settings.value("keyword_color", style.keywordColor.name()).toString());
+		style.functionsColor         = QColor(settings.value("functions_color", style.functionsColor.name()).toString());
+		style.traceColor             = QColor(settings.value("trace_color", style.traceColor.name()).toString());
+		style.colorColor             = QColor(settings.value("color_color", style.colorColor.name()).toString());
+		style.commentColor           = QColor(settings.value("comment_color", style.commentColor.name()).toString());
+		style.numberColor            = QColor(settings.value("number_color", style.numberColor.name()).toString());
+		style.stringColor            = QColor(settings.value("string_color", style.stringColor.name()).toString());
+		style.operatorColor          = QColor(settings.value("operator_color", style.operatorColor.name()).toString());
 
-	theme.identifierStyle        = static_cast<StyleFont::style>(settings.value("identifier_style", theme.identifierStyle).toInt());
-	theme.keywordStyle           = static_cast<StyleFont::style>(settings.value("keyword_style", theme.keywordStyle).toInt());
-	theme.functionsStyle         = static_cast<StyleFont::style>(settings.value("functions_style", theme.functionsStyle).toInt());
-	theme.traceStyle             = static_cast<StyleFont::style>(settings.value("trace_style", theme.traceStyle).toInt());
-	theme.colorStyle             = static_cast<StyleFont::style>(settings.value("color_style", theme.colorStyle).toInt());
-	theme.commentStyle           = static_cast<StyleFont::style>(settings.value("comment_style", theme.commentStyle).toInt());
-	theme.numberStyle            = static_cast<StyleFont::style>(settings.value("number_style", theme.numberStyle).toInt());
-	theme.stringStyle            = static_cast<StyleFont::style>(settings.value("string_style", theme.stringStyle).toInt());
-	theme.operatorStyle          = static_cast<StyleFont::style>(settings.value("operator_style", theme.operatorStyle).toInt());
-	
-	return settings;
-}
+		style.identifierStyle        = static_cast<StyleFont::style>(settings.value("identifier_style", style.identifierStyle).toInt());
+		style.keywordStyle           = static_cast<StyleFont::style>(settings.value("keyword_style", style.keywordStyle).toInt());
+		style.functionsStyle         = static_cast<StyleFont::style>(settings.value("functions_style", style.functionsStyle).toInt());
+		style.traceStyle             = static_cast<StyleFont::style>(settings.value("trace_style", style.traceStyle).toInt());
+		style.colorStyle             = static_cast<StyleFont::style>(settings.value("color_style", style.colorStyle).toInt());
+		style.commentStyle           = static_cast<StyleFont::style>(settings.value("comment_style", style.commentStyle).toInt());
+		style.numberStyle            = static_cast<StyleFont::style>(settings.value("number_style", style.numberStyle).toInt());
+		style.stringStyle            = static_cast<StyleFont::style>(settings.value("string_style", style.stringStyle).toInt());
+		style.operatorStyle          = static_cast<StyleFont::style>(settings.value("operator_style", style.operatorStyle).toInt());
+
+		return settings;
+	}
 
 }}} // namespace rdo::gui::editor
-
-// --------------------------------------------------------------------------------
-// -------------------- ParserStyle
-// --------------------------------------------------------------------------------
-ParserStyle::ParserStyle(): EditStyle()
-{
-	theme = new ParserTheme();
-}
-
-ParserStyle::~ParserStyle()
-{}
-
-ParserStyle& ParserStyle::operator =( const ParserStyle& style )
-{
-	EditStyle::operator=( style );
-	if ( theme && style.theme ) *static_cast<ParserTheme*>(theme) = *static_cast<ParserTheme*>(style.theme);
-
-	return *this;
-}
-
-rbool ParserStyle::operator ==( const ParserStyle& style ) const
-{
-	rbool flag = EditStyle::operator==( style );
-	if ( theme && style.theme && flag ) flag &= *static_cast<ParserTheme*>(theme) == *static_cast<ParserTheme*>(style.theme);
-	return flag;
-}
-
-rbool ParserStyle::operator !=( const ParserStyle& style ) const
-{
-	return !(*this == style);
-}

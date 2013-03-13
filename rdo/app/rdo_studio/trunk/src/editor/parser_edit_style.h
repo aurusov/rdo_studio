@@ -21,20 +21,34 @@
 namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
-// -------------------- ParserTheme
+// -------------------- ParserStyle
 // --------------------------------------------------------------------------------
-class ParserTheme: public EditTheme
+class ParserStyle: public EditStyle
 {
 public:
-	ParserTheme();
-	virtual ~ParserTheme();
+	ParserStyle();
+	virtual ~ParserStyle();
 
-	ParserTheme& operator =( const ParserTheme& theme );
-	rbool operator ==( const ParserTheme& theme ) const;
-	rbool operator !=( const ParserTheme& theme ) const;
+	ParserStyle& operator =( const ParserStyle& style );
+	rbool operator ==( const ParserStyle& style ) const;
+	rbool operator !=( const ParserStyle& style ) const;
 
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
+	virtual void loadStyle(QSettings& settings);
+	virtual void saveStyle(QSettings& settings) const;
+
+	virtual rbool styleDefault( const int styleType ) const;
+	virtual rbool styleUsing( const int styleType ) const;
+	virtual rbool styleBold( const int styleType = STYLE_DEFAULT ) const;
+	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
+	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+
+	static ParserStyle getDefaultStyle();
+	static ParserStyle getCppStyle();
+	static ParserStyle getPascalStyle();
+	static ParserStyle getHtmlStyle();
+	static ParserStyle getClassicStyle();
+	static ParserStyle getTwilightStyle();
+	static ParserStyle getOceanStyle();
 
 	QColor identifierColor;
 	QColor keywordColor;
@@ -56,37 +70,11 @@ public:
 	style::StyleFont::style stringStyle;
 	style::StyleFont::style operatorStyle;
 
-	virtual rbool styleDefault( const int styleType ) const;
-	virtual rbool styleUsing( const int styleType ) const;
-	virtual rbool styleBold( const int styleType = STYLE_DEFAULT ) const;
-	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
-	static ParserTheme getDefaultTheme();
-	static ParserTheme getCppTheme();
-	static ParserTheme getPascalTheme();
-	static ParserTheme getHtmlTheme();
-	static ParserTheme getClassicTheme();
-	static ParserTheme getTwilightTheme();
-	static ParserTheme getOceanTheme();
 };
 
-QSettings& operator<< (QSettings& settings, const ParserTheme& theme);
-QSettings& operator>> (QSettings& settings,       ParserTheme& theme);
-
-// --------------------------------------------------------------------------------
-// -------------------- ParserStyle
-// --------------------------------------------------------------------------------
-class ParserStyle: public EditStyle
-{
-public:
-	ParserStyle();
-	virtual ~ParserStyle();
-
-	ParserStyle& operator =( const ParserStyle& style );
-	rbool operator ==( const ParserStyle& style ) const;
-	rbool operator !=( const ParserStyle& style ) const;
-};
+QSettings& operator<< (QSettings& settings, const ParserStyle& style);
+QSettings& operator>> (QSettings& settings,       ParserStyle& style);
 
 }}} // namespace rdo::gui::editor
 

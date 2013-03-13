@@ -18,9 +18,9 @@ using namespace rdo::gui::frame;
 using namespace rdo::gui::style;
 
 // --------------------------------------------------------------------------------
-// -------------------- FrameTheme
+// -------------------- FrameStyle
 // --------------------------------------------------------------------------------
-FrameTheme::FrameTheme(): StyleTheme()
+FrameStyle::FrameStyle(): StyleBase()
 {
 	defaultColor    = QColor( 0x00, 0x00, 0x00 );
 	backgroundColor = QColor( 0x00, 0x80, 0x80 );
@@ -28,54 +28,20 @@ FrameTheme::FrameTheme(): StyleTheme()
 	defaultStyle = StyleFont::NONE;
 }
 
-FrameTheme::~FrameTheme()
-{}
-
-FrameTheme& FrameTheme::operator =( const FrameTheme& theme )
-{
-	StyleTheme::operator=( theme );
-	return *this;
-}
-
-rbool FrameTheme::operator ==( const FrameTheme& theme ) const
-{
-	return StyleTheme::operator==( theme );
-}
-
-rbool FrameTheme::operator !=( const FrameTheme& theme ) const
-{
-	return !(*this == theme);
-}
-
-FrameTheme FrameTheme::getDefaultTheme()
-{
-	FrameTheme theme;
-	return theme;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- FrameStyle
-// --------------------------------------------------------------------------------
-FrameStyle::FrameStyle(): StyleWithTheme()
-{
-	theme = new FrameTheme();
-}
-
 FrameStyle::~FrameStyle()
 {}
 
 FrameStyle& FrameStyle::operator =( const FrameStyle& style )
 {
-	StyleWithTheme::operator=( style );
-	if ( theme  && style.theme )  *static_cast<FrameTheme*>(theme) = *static_cast<FrameTheme*>(style.theme);
+	StyleBase::operator=( style );
 
 	return *this;
 }
 
 rbool FrameStyle::operator ==( const FrameStyle& style ) const
 {
-	rbool flag = StyleWithTheme::operator==( style );
-	if ( theme  && style.theme && flag ) flag &= *static_cast<FrameTheme*>(theme) == *static_cast<FrameTheme*>(style.theme);
+	rbool flag = StyleBase::operator==( style );
+
 	return flag;
 }
 
@@ -86,6 +52,12 @@ rbool FrameStyle::operator !=( const FrameStyle& style ) const
 
 void FrameStyle::init( CREF(QString) _groupName )
 {
-	StyleWithTheme::init( _groupName );
-	*font = StyleFont::getFrameFont();
+	StyleBase::init( _groupName );
+	font = StyleFont::getFrameFont();
+}
+
+FrameStyle FrameStyle::getDefaultStyle()
+{
+	FrameStyle style;
+	return style;
 }

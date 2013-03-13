@@ -17,193 +17,6 @@
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
-// -------------------- ModelTheme
-// --------------------------------------------------------------------------------
-ModelTheme::ModelTheme(): ParserTheme()
-{
-	foldFgColor = QColor( 0xFF, 0xFF, 0xFF );
-	foldBgColor = QColor( 0x00, 0x00, 0x00 );
-
-	errorBgColor = QColor( 0xFF, 0x80, 0x80 );
-
-	foldStyle   = F_PLUS;
-	commentFold = false;
-}
-
-ModelTheme::~ModelTheme()
-{}
-
-ModelTheme& ModelTheme::operator =( const ModelTheme& theme )
-{
-	ParserTheme::operator=( theme );
-
-	foldFgColor = theme.foldFgColor;
-	foldBgColor = theme.foldBgColor;
-
-	errorBgColor = theme.errorBgColor;
-
-	foldStyle   = theme.foldStyle;
-	commentFold = theme.commentFold;
-
-	return *this;
-}
-
-rbool ModelTheme::operator ==( const ModelTheme& theme ) const
-{
-	rbool flag = ParserTheme::operator==( theme );
-
-	if ( flag ) flag &= foldFgColor == theme.foldFgColor &&
-	                    foldBgColor == theme.foldBgColor &&
-
-	                    errorBgColor == theme.errorBgColor &&
-
-	                    foldStyle   == theme.foldStyle &&
-	                    commentFold == theme.commentFold;
-	return flag;
-}
-
-rbool ModelTheme::operator !=( const ModelTheme& theme ) const
-{
-	return !(*this == theme);
-}
-
-void ModelTheme::load(QSettings& settings)
-{
-	ParserTheme::load(settings);
-
-	settings >> *this;
-}
-
-void ModelTheme::save(QSettings& settings ) const
-{
-	ParserTheme::save(settings);
-
-	settings << *this;
-}
-
-ModelTheme ModelTheme::getDefaultTheme()
-{
-	ModelTheme theme;
-	return theme;
-}
-
-ModelTheme ModelTheme::getCppTheme()
-{
-	ModelTheme theme;
-	*static_cast<ParserTheme*>(&theme) = ParserTheme::getCppTheme();
-
-	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
-
-	theme.foldStyle   = F_PLUS;
-	theme.commentFold = false;
-
-	return theme;
-}
-
-ModelTheme ModelTheme::getPascalTheme()
-{
-	ModelTheme theme;
-	*static_cast<ParserTheme*>(&theme) = ParserTheme::getPascalTheme();
-
-	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
-
-	theme.foldStyle   = F_PLUS;
-	theme.commentFold = false;
-
-	return theme;
-}
-
-ModelTheme ModelTheme::getHtmlTheme()
-{
-	ModelTheme theme;
-	*static_cast<ParserTheme*>(&theme) = ParserTheme::getHtmlTheme();
-
-	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
-
-	theme.foldStyle   = F_PLUS;
-	theme.commentFold = false;
-
-	return theme;
-}
-
-ModelTheme ModelTheme::getClassicTheme()
-{
-	ModelTheme theme;
-	*static_cast<ParserTheme*>(&theme) = ParserTheme::getClassicTheme();
-
-	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = QColor( 0xE6, 0x05, 0xF8 );
-
-	theme.foldStyle   = F_PLUS;
-	theme.commentFold = false;
-
-	return theme;
-}
-
-ModelTheme ModelTheme::getTwilightTheme()
-{
-	ModelTheme theme;
-	*static_cast<ParserTheme*>(&theme) = ParserTheme::getTwilightTheme();
-
-	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
-
-	theme.foldStyle   = F_PLUS;
-	theme.commentFold = false;
-
-	return theme;
-}
-
-ModelTheme ModelTheme::getOceanTheme()
-{
-	ModelTheme theme;
-	*static_cast<ParserTheme*>(&theme) = ParserTheme::getOceanTheme();
-
-	theme.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
-	theme.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
-	theme.errorBgColor = QColor( 0xFF, 0xFF, 0x00 );
-
-	theme.foldStyle   = F_PLUS;
-	theme.commentFold = false;
-
-	return theme;
-}
-
-namespace rdo { namespace gui { namespace editor {
-
-QSettings& operator<< (QSettings& settings, const ModelTheme& theme)
-{
-	settings.setValue("fold_fg_color", theme.foldFgColor.name());
-	settings.setValue("fold_bg_color", theme.foldBgColor.name());
-	settings.setValue("error_bg_color", theme.errorBgColor.name());
-	settings.setValue("fold_style", theme.foldStyle);
-	settings.setValue("comment_fold", theme.commentFold);
-
-	return settings;
-}
-
-QSettings& operator>> (QSettings& settings, ModelTheme& theme)
-{
-	theme.foldFgColor  = QColor(settings.value("fold_fg_color", theme.foldFgColor.name()).toString());
-	theme.foldBgColor  = QColor(settings.value("fold_bg_color", theme.foldBgColor.name()).toString());
-	theme.errorBgColor = QColor(settings.value("error_bg_color", theme.errorBgColor.name()).toString());
-	theme.foldStyle    = (ModelTheme::Fold)settings.value("fold_style", theme.foldStyle).toInt();
-	theme.commentFold  = settings.value("comment_fold", theme.commentFold).toBool() ? true : false;
-
-	return settings;
-}
-
-}}} // namespace rdo::gui::editor
-
-// --------------------------------------------------------------------------------
 // -------------------- ModelAutoComplete
 // --------------------------------------------------------------------------------
 ModelAutoComplete::ModelAutoComplete()
@@ -335,26 +148,35 @@ QSettings& operator>> (QSettings& settings, ModelMargin& margin)
 // --------------------------------------------------------------------------------
 ModelStyle::ModelStyle():
 	ParserStyle(),
-	autoComplete( NULL ),
-	margin( NULL )
+	autoComplete(),
+	margin()
 {
-	autoComplete = new ModelAutoComplete();
-	margin = new ModelMargin();
-	theme = new ModelTheme();
+	foldFgColor = QColor( 0xFF, 0xFF, 0xFF );
+	foldBgColor = QColor( 0x00, 0x00, 0x00 );
+
+	errorBgColor = QColor( 0xFF, 0x80, 0x80 );
+
+	foldStyle   = F_PLUS;
+	commentFold = false;
 }
 
 ModelStyle::~ModelStyle()
 {
-	if ( autoComplete ) { delete autoComplete; autoComplete = NULL; };
-	if ( margin )       { delete margin;       margin = NULL; };
 }
 
 ModelStyle& ModelStyle::operator =( const ModelStyle& style )
 {
 	ParserStyle::operator=( style );
-	if ( theme        && style.theme )        *static_cast<ModelTheme*>(theme) = *static_cast<ModelTheme*>(style.theme);
-	if ( autoComplete && style.autoComplete ) *autoComplete = *style.autoComplete;
-	if ( margin       && style.margin )       *margin       = *style.margin;
+	
+	foldFgColor = style.foldFgColor;
+	foldBgColor = style.foldBgColor;
+
+	errorBgColor = style.errorBgColor;
+
+	foldStyle   = style.foldStyle;
+	commentFold = style.commentFold;
+	autoComplete = style.autoComplete;
+	margin       = style.margin;
 
 	return *this;
 }
@@ -362,9 +184,13 @@ ModelStyle& ModelStyle::operator =( const ModelStyle& style )
 rbool ModelStyle::operator ==( const ModelStyle& style ) const
 {
 	rbool flag = ParserStyle::operator==( style );
-	if ( theme        && style.theme        && flag ) flag &= *static_cast<ModelTheme*>(theme) == *static_cast<ModelTheme*>(style.theme);
-	if ( autoComplete && style.autoComplete && flag ) flag &= *autoComplete == *style.autoComplete;
-	if ( margin       && style.margin       && flag ) flag &= *margin       == *style.margin;
+	flag &= autoComplete == style.autoComplete;
+	flag &= margin       == style.margin;
+	if ( flag ) flag &= foldFgColor == style.foldFgColor &&
+		foldBgColor == style.foldBgColor &&
+		errorBgColor == style.errorBgColor &&
+		foldStyle   == style.foldStyle &&
+		commentFold == style.commentFold;
 	return flag;
 }
 
@@ -383,10 +209,10 @@ rbool ModelStyle::load()
 	if ( ParserStyle::load() ) {
 		QSettings settings;
 		settings.beginGroup(groupName + "auto_complete");
-		if (autoComplete) autoComplete->load(settings);
+		autoComplete.load(settings);
 		settings.endGroup();
 		settings.beginGroup(groupName + "margin");
-		if (margin)       margin->load(settings);
+		margin.load(settings);
 		settings.endGroup();
 		return true;
 	}
@@ -398,12 +224,148 @@ rbool ModelStyle::save() const
 	if ( ParserStyle::save() ) {
 		QSettings settings;
 		settings.beginGroup(groupName + "auto_complete");
-		if ( autoComplete ) autoComplete->save(settings);
+		autoComplete.save(settings);
 		settings.endGroup();
 		settings.beginGroup(groupName + "margin");
-		if ( margin )       margin->save(settings);
+		margin.save(settings);
 		settings.endGroup();
 		return true;
 	}
 	return false;
 }
+
+void ModelStyle::loadStyle(QSettings& settings)
+{
+	ParserStyle::loadStyle(settings);
+
+	settings >> *this;
+}
+
+void ModelStyle::saveStyle(QSettings& settings ) const
+{
+	ParserStyle::saveStyle(settings);
+
+	settings << *this;
+}
+
+ModelStyle ModelStyle::getDefaultStyle()
+{
+	ModelStyle style;
+	return style;
+}
+
+ModelStyle ModelStyle::getCppStyle()
+{
+	ModelStyle style;
+	*static_cast<ParserStyle*>(&style) = ParserStyle::getCppStyle();
+
+	style.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
+	style.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
+	style.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
+
+	style.foldStyle   = F_PLUS;
+	style.commentFold = false;
+
+	return style;
+}
+
+ModelStyle ModelStyle::getPascalStyle()
+{
+	ModelStyle style;
+	*static_cast<ParserStyle*>(&style) = ParserStyle::getPascalStyle();
+
+	style.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
+	style.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
+	style.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
+
+	style.foldStyle   = F_PLUS;
+	style.commentFold = false;
+
+	return style;
+}
+
+ModelStyle ModelStyle::getHtmlStyle()
+{
+	ModelStyle style;
+	*static_cast<ParserStyle*>(&style) = ParserStyle::getHtmlStyle();
+
+	style.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
+	style.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
+	style.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
+
+	style.foldStyle   = F_PLUS;
+	style.commentFold = false;
+
+	return style;
+}
+
+ModelStyle ModelStyle::getClassicStyle()
+{
+	ModelStyle style;
+	*static_cast<ParserStyle*>(&style) = ParserStyle::getClassicStyle();
+
+	style.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
+	style.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
+	style.errorBgColor = QColor( 0xE6, 0x05, 0xF8 );
+
+	style.foldStyle   = F_PLUS;
+	style.commentFold = false;
+
+	return style;
+}
+
+ModelStyle ModelStyle::getTwilightStyle()
+{
+	ModelStyle style;
+	*static_cast<ParserStyle*>(&style) = ParserStyle::getTwilightStyle();
+
+	style.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
+	style.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
+	style.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
+
+	style.foldStyle   = F_PLUS;
+	style.commentFold = false;
+
+	return style;
+}
+
+ModelStyle ModelStyle::getOceanStyle()
+{
+	ModelStyle style;
+	*static_cast<ParserStyle*>(&style) = ParserStyle::getOceanStyle();
+
+	style.foldFgColor  = QColor( 0xFF, 0xFF, 0xFF );
+	style.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
+	style.errorBgColor = QColor( 0xFF, 0xFF, 0x00 );
+
+	style.foldStyle   = F_PLUS;
+	style.commentFold = false;
+
+	return style;
+}
+
+namespace rdo { namespace gui { namespace editor {
+
+	QSettings& operator<< (QSettings& settings, const ModelStyle& style)
+	{
+		settings.setValue("fold_fg_color", style.foldFgColor.name());
+		settings.setValue("fold_bg_color", style.foldBgColor.name());
+		settings.setValue("error_bg_color", style.errorBgColor.name());
+		settings.setValue("fold_style", style.foldStyle);
+		settings.setValue("comment_fold", style.commentFold);
+
+		return settings;
+	}
+
+	QSettings& operator>> (QSettings& settings, ModelStyle& style)
+	{
+		style.foldFgColor  = QColor(settings.value("fold_fg_color", style.foldFgColor.name()).toString());
+		style.foldBgColor  = QColor(settings.value("fold_bg_color", style.foldBgColor.name()).toString());
+		style.errorBgColor = QColor(settings.value("error_bg_color", style.errorBgColor.name()).toString());
+		style.foldStyle    = (ModelStyle::Fold)settings.value("fold_style", style.foldStyle).toInt();
+		style.commentFold  = settings.value("comment_fold", style.commentFold).toBool() ? true : false;
+
+		return settings;
+	}
+
+}}} // namespace rdo::gui::editor

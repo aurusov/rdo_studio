@@ -37,7 +37,7 @@ Content::Content(PTR(QWidget) pParent)
 {
 	setAttribute(Qt::WA_NoSystemBackground, true);
 
-	m_bgColor = QColor(g_pApp->getStyle()->style_frame.theme->backgroundColor);
+	m_bgColor = QColor(g_pApp->getStyle()->style_frame.backgroundColor);
 
 	updateFont();
 }
@@ -75,7 +75,7 @@ void Content::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapLis
 	QColor bgColor;
 	if (pFrame->m_bgColor.m_transparent)
 	{
-		bgColor = QColor(g_pApp->getStyle()->style_frame.theme->backgroundColor);
+		bgColor = QColor(g_pApp->getStyle()->style_frame.backgroundColor);
 	}
 	else
 	{
@@ -97,11 +97,11 @@ void Content::updateFont()
 	PTR(FrameStyle) pStyle = &g_pApp->getStyle()->style_frame;
 	ASSERT(pStyle);
 
-	m_font = QFont(pStyle->font->name.c_str());
-	m_font.setBold     (pStyle->theme->defaultStyle & rdo::gui::style::StyleFont::BOLD      ? true : false);
-	m_font.setItalic   (pStyle->theme->defaultStyle & rdo::gui::style::StyleFont::ITALIC    ? true : false);
-	m_font.setUnderline(pStyle->theme->defaultStyle & rdo::gui::style::StyleFont::UNDERLINE ? true : false);
-	m_font.setPointSize(pStyle->font->size);
+	m_font = QFont(pStyle->font.name.c_str());
+	m_font.setBold     (pStyle->defaultStyle & rdo::gui::style::StyleFont::BOLD      ? true : false);
+	m_font.setItalic   (pStyle->defaultStyle & rdo::gui::style::StyleFont::ITALIC    ? true : false);
+	m_font.setUnderline(pStyle->defaultStyle & rdo::gui::style::StyleFont::UNDERLINE ? true : false);
+	m_font.setPointSize(pStyle->font.size);
 }
 
 void Content::setBGColor(CREF(QColor) color)
@@ -221,7 +221,7 @@ void Content::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui:
 
 	if (!bgImage)
 	{
-		m_memDC.dc().setPen(QColor(g_pApp->getStyle()->style_frame.theme->defaultColor));
+		m_memDC.dc().setPen(QColor(g_pApp->getStyle()->style_frame.defaultColor));
 		m_memDC.dc().setBrush(m_bgColor);
 
 		const ruint pountListCount = 4;

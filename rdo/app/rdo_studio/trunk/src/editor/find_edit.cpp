@@ -49,35 +49,35 @@ void Find::setEditorStyle(FindStyle* pStyle)
 
 	// ----------
 	// Colors
-	FindTheme* theme = static_cast<FindTheme*>(m_pStyle->theme);
-	sendEditor(SCI_STYLESETFORE, SCE_FIND_DEFAULT, convertColor(theme->defaultColor));
-	sendEditor(SCI_STYLESETBACK, SCE_FIND_DEFAULT, convertColor(theme->backgroundColor));
-	sendEditor(SCI_STYLESETFORE, SCE_FIND_KEYWORD, convertColor(theme->keywordColor));
-	sendEditor(SCI_STYLESETBACK, SCE_FIND_KEYWORD, convertColor(theme->backgroundColor));
+	FindStyle* style = static_cast<FindStyle*>(m_pStyle);
+	sendEditor(SCI_STYLESETFORE, SCE_FIND_DEFAULT, convertColor(style->defaultColor));
+	sendEditor(SCI_STYLESETBACK, SCE_FIND_DEFAULT, convertColor(style->backgroundColor));
+	sendEditor(SCI_STYLESETFORE, SCE_FIND_KEYWORD, convertColor(style->keywordColor));
+	sendEditor(SCI_STYLESETBACK, SCE_FIND_KEYWORD, convertColor(style->backgroundColor));
 
 	// ----------
 	// Styles
-	sendEditor(SCI_STYLESETBOLD     , SCE_FIND_DEFAULT, theme->defaultStyle & StyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_FIND_DEFAULT, theme->defaultStyle & StyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_FIND_DEFAULT, theme->defaultStyle & StyleFont::UNDERLINE);
-	sendEditor(SCI_STYLESETBOLD     , SCE_FIND_KEYWORD, theme->keywordStyle & StyleFont::BOLD     );
-	sendEditor(SCI_STYLESETITALIC   , SCE_FIND_KEYWORD, theme->keywordStyle & StyleFont::ITALIC   );
-	sendEditor(SCI_STYLESETUNDERLINE, SCE_FIND_KEYWORD, theme->keywordStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_FIND_DEFAULT, style->defaultStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_FIND_DEFAULT, style->defaultStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_FIND_DEFAULT, style->defaultStyle & StyleFont::UNDERLINE);
+	sendEditor(SCI_STYLESETBOLD     , SCE_FIND_KEYWORD, style->keywordStyle & StyleFont::BOLD     );
+	sendEditor(SCI_STYLESETITALIC   , SCE_FIND_KEYWORD, style->keywordStyle & StyleFont::ITALIC   );
+	sendEditor(SCI_STYLESETUNDERLINE, SCE_FIND_KEYWORD, style->keywordStyle & StyleFont::UNDERLINE);
 
 	// ----------
 	// Font Name
-	sendEditorString(SCI_STYLESETFONT, SCE_FIND_DEFAULT, m_pStyle->font->name.c_str());
-	sendEditorString(SCI_STYLESETFONT, SCE_FIND_KEYWORD, m_pStyle->font->name.c_str());
+	sendEditorString(SCI_STYLESETFONT, SCE_FIND_DEFAULT, m_pStyle->font.name.c_str());
+	sendEditorString(SCI_STYLESETFONT, SCE_FIND_KEYWORD, m_pStyle->font.name.c_str());
 
 	// ----------
 	// Font Size
-	sendEditor(SCI_STYLESETSIZE, SCE_FIND_DEFAULT, m_pStyle->font->size);
-	sendEditor(SCI_STYLESETSIZE, SCE_FIND_KEYWORD, m_pStyle->font->size);
+	sendEditor(SCI_STYLESETSIZE, SCE_FIND_DEFAULT, m_pStyle->font.size);
+	sendEditor(SCI_STYLESETSIZE, SCE_FIND_KEYWORD, m_pStyle->font.size);
 
 	// ----------
 	// Codepage and Characterset
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_FIND_DEFAULT, m_pStyle->font->characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_FIND_KEYWORD, m_pStyle->font->characterSet);
+	sendEditor(SCI_STYLESETCHARACTERSET, SCE_FIND_DEFAULT, m_pStyle->font.characterSet);
+	sendEditor(SCI_STYLESETCHARACTERSET, SCE_FIND_KEYWORD, m_pStyle->font.characterSet);
 }
 
 void Find::setKeyword(CREF(QString) keyword, const rbool matchCase) const

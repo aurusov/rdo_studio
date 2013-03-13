@@ -18,25 +18,9 @@
 namespace rdo { namespace gui { namespace frame {
 
 // --------------------------------------------------------------------------------
-// -------------------- FrameTheme
-// --------------------------------------------------------------------------------
-class FrameTheme: public rdo::gui::style::StyleTheme
-{
-public:
-	FrameTheme();
-	virtual ~FrameTheme();
-
-	FrameTheme& operator =( const FrameTheme& theme );
-	rbool operator ==( const FrameTheme& theme ) const;
-	rbool operator !=( const FrameTheme& theme ) const;
-
-	static FrameTheme getDefaultTheme();
-};
-
-// --------------------------------------------------------------------------------
 // -------------------- FrameStyle
 // --------------------------------------------------------------------------------
-class FrameStyle: public rdo::gui::style::StyleWithTheme
+class FrameStyle: public rdo::gui::style::StyleBase
 {
 public:
 	FrameStyle();
@@ -45,6 +29,8 @@ public:
 	FrameStyle& operator =( const FrameStyle& style );
 	rbool operator ==( const FrameStyle& style ) const;
 	rbool operator !=( const FrameStyle& style ) const;
+
+	static FrameStyle getDefaultStyle();
 
 	void init( CREF(QString) _groupName = "" );
 };

@@ -36,11 +36,11 @@ void OptionsView::setStyle(PTR(FrameStyle) style)
 {
 	m_style = style;
 
-	QFont font(QString::fromStdString(m_style->font->name), m_style->font->size);
+	QFont font(QString::fromStdString(m_style->font.name), m_style->font.size);
 
-	font.setWeight((m_style->theme->defaultStyle & StyleFont::BOLD) != 0 ? QFont::Bold : QFont::Normal);
-	font.setItalic((m_style->theme->defaultStyle & StyleFont::ITALIC) != 0 ? true : false);
-	font.setUnderline((m_style->theme->defaultStyle & StyleFont::UNDERLINE) != 0 ? true : false);
+	font.setWeight((m_style->defaultStyle & StyleFont::BOLD) != 0 ? QFont::Bold : QFont::Normal);
+	font.setItalic((m_style->defaultStyle & StyleFont::ITALIC) != 0 ? true : false);
+	font.setUnderline((m_style->defaultStyle & StyleFont::UNDERLINE) != 0 ? true : false);
 
 	PTR(QPalette) fontPalette = new QPalette();
 	fontPalette->setColor(QPalette::WindowText, Qt::yellow);
@@ -49,10 +49,10 @@ void OptionsView::setStyle(PTR(FrameStyle) style)
 	englishSampleLabel->setFont(font);
 	russianSampleLabel->setFont(font);
 
-	pictureLabel->setStyleSheet("border: 1px solid "+m_style->theme->defaultColor.name()+";");
+	pictureLabel->setStyleSheet("border: 1px solid "+m_style->defaultColor.name()+";");
 
 	PTR(QPalette) palette = new QPalette();
-	palette->setColor(QPalette::Background, m_style->theme->backgroundColor);
+	palette->setColor(QPalette::Background, m_style->backgroundColor);
 	setAutoFillBackground(true);
 	setPalette(*palette);
 }

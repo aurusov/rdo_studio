@@ -18,201 +18,6 @@ using namespace rdo::gui::style;
 using namespace rdo::gui::editor;
 
 // --------------------------------------------------------------------------------
-// -------------------- EditTheme
-// --------------------------------------------------------------------------------
-EditTheme::EditTheme(): StyleTheme()
-{
-	defaultColor    = QColor( 0x00, 0x00, 0x00 );
-	backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
-
-	caretColor       = QColor( 0x00, 0x00, 0x00 );
-	selectionBgColor = QColor( 0xC0, 0xC0, 0xC0 );
-	bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
-	bookmarkBgColor  = QColor( 0x00, 0xFF, 0xFF );
-
-	defaultStyle  = StyleFont::NONE;
-	bookmarkStyle = EditTheme::B_CIRCLE;
-}
-
-EditTheme::~EditTheme()
-{
-}
-
-EditTheme& EditTheme::operator =( const EditTheme& theme )
-{
-	defaultColor    = theme.defaultColor;
-	backgroundColor = theme.backgroundColor;
-
-	caretColor       = theme.caretColor;
-	selectionBgColor = theme.selectionBgColor;
-	bookmarkFgColor  = theme.bookmarkFgColor;
-	bookmarkBgColor  = theme.bookmarkBgColor;
-
-	defaultStyle = theme.defaultStyle;
-
-	bookmarkStyle = theme.bookmarkStyle;
-
-	return *this;
-}
-
-rbool EditTheme::operator ==( const EditTheme& theme ) const
-{
-	return defaultColor    == theme.defaultColor &&
-	       backgroundColor == theme.backgroundColor &&
-
-	       caretColor       == theme.caretColor &&
-	       selectionBgColor == theme.selectionBgColor &&
-	       bookmarkFgColor  == theme.bookmarkFgColor &&
-	       bookmarkBgColor  == theme.bookmarkBgColor &&
-
-	       defaultStyle == theme.defaultStyle &&
-
-	       bookmarkStyle == theme.bookmarkStyle;
-}
-
-rbool EditTheme::operator !=( const EditTheme& theme ) const
-{
-	return !(*this == theme);
-}
-
-void EditTheme::load(QSettings& settings)
-{
-	settings >> *this;
-}
-
-void EditTheme::save(QSettings& settings) const
-{
-	settings << *this;
-}
-
-rbool EditTheme::styleDefault( const int styleType ) const
-{
-	return styleType == STYLE_DEFAULT;
-}
-
-rbool EditTheme::styleUsing( const int styleType ) const
-{
-	return styleType == STYLE_DEFAULT;
-}
-
-rbool EditTheme::styleBold( const int /*styleType*/ ) const
-{
-	return defaultStyle & StyleFont::BOLD ? true : false;
-}
-
-rbool EditTheme::styleItalic( const int /*styleType*/ ) const
-{
-	return defaultStyle & StyleFont::ITALIC ? true : false;
-}
-
-tstring EditTheme::styleFGColorToHEX( const int /*styleType*/ ) const
-{
-	return colorToHEX( defaultColor );
-}
-
-tstring EditTheme::styleBGColorToHEX( const int /*styleType*/ ) const
-{
-	return colorToHEX( backgroundColor );
-}
-
-EditTheme EditTheme::getDefaultTheme()
-{
-	EditTheme theme;
-	return theme;
-}
-
-EditTheme EditTheme::getClassicTheme()
-{
-	EditTheme theme;
-
-	theme.defaultColor    = QColor( 0xFF, 0xFF, 0x00 );
-	theme.backgroundColor = QColor( 0x00, 0x00, 0x80 );
-
-	theme.caretColor       = QColor( 0xFF, 0xFF, 0x00 );
-	theme.selectionBgColor = QColor( 0x00, 0x00, 0x40 );
-	theme.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = QColor( 0x80, 0x80, 0x00 );
-
-	theme.defaultStyle  = StyleFont::NONE;
-	theme.bookmarkStyle = EditTheme::B_CIRCLE;
-
-	return theme;
-}
-
-EditTheme EditTheme::getTwilightTheme()
-{
-	EditTheme theme;
-
-	theme.defaultColor    = QColor( 0xFF, 0xFF, 0xFF );
-	theme.backgroundColor = QColor( 0x00, 0x00, 0x00 );
-
-	theme.caretColor       = QColor( 0xFF, 0xFF, 0xFF );
-	theme.selectionBgColor = QColor( 0x70, 0x70, 0x70 );
-	theme.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = QColor( 0x00, 0x00, 0xFF );
-
-	theme.defaultStyle  = StyleFont::NONE;
-	theme.bookmarkStyle = EditTheme::B_CIRCLE;
-
-	return theme;
-}
-
-EditTheme EditTheme::getOceanTheme()
-{
-	EditTheme theme;
-
-	theme.defaultColor    = QColor( 0x00, 0x00, 0xFF );
-	theme.backgroundColor = QColor( 0x00, 0xFF, 0xFF );
-
-	theme.caretColor       = QColor( 0x00, 0x00, 0x00 );
-	theme.selectionBgColor = QColor( 0xC0, 0xC0, 0xD0 );
-	theme.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
-	theme.bookmarkBgColor  = QColor( 0xBA, 0xCC, 0xFC );
-
-	theme.defaultStyle  = StyleFont::NONE;
-	theme.bookmarkStyle = EditTheme::B_CIRCLE;
-
-	return theme;
-}
-
-tstring EditTheme::colorToHEX( const QColor color )
-{
-	return rdo::format( "#%02X%02X%02X", color.red(), color.green(), color.blue() );
-}
-
-namespace rdo { namespace gui { namespace editor {
-
-QSettings& operator<< (QSettings& settings, const EditTheme& theme)
-{
-	settings.setValue("default_color", theme.defaultColor.name());
-	settings.setValue("background_color", theme.backgroundColor.name());
-	settings.setValue("caret_color", theme.caretColor.name());
-	settings.setValue("selection_bg_color", theme.selectionBgColor.name());
-	settings.setValue("bookmark_fg_color", theme.bookmarkFgColor.name());
-	settings.setValue("bookmark_bg_color", theme.bookmarkBgColor.name());
-	settings.setValue("default_style", theme.defaultStyle);
-	settings.setValue("bookmark_style", theme.bookmarkStyle);
-
-	return settings;
-}
-
-QSettings& operator>> (QSettings& settings, EditTheme& theme)
-{
-	theme.defaultColor     = QColor(settings.value("default_color", theme.defaultColor.name()).toString());
-	theme.backgroundColor  = QColor(settings.value("background_color", theme.backgroundColor.name()).toString());
-	theme.caretColor       = QColor(settings.value("caret_color", theme.caretColor.name()).toString());
-	theme.selectionBgColor = QColor(settings.value("selection_bg_color", theme.selectionBgColor.name()).toString());
-	theme.bookmarkFgColor  = QColor(settings.value("bookmark_fg_color", theme.bookmarkFgColor.name()).toString());
-	theme.bookmarkBgColor  = QColor(settings.value("bookmark_bg_color", theme.bookmarkBgColor.name()).toString());
-	theme.defaultStyle     = static_cast<StyleFont::style>(settings.value("default_style", theme.defaultStyle).toInt());
-	theme.bookmarkStyle    = static_cast<EditTheme::Bookmark>(settings.value("bookmark_style", theme.bookmarkStyle).toInt());
-	
-	return settings;
-}
-
-}}} // namespace rdo::gui::editor
-
-// --------------------------------------------------------------------------------
 // -------------------- EditTab
 // --------------------------------------------------------------------------------
 EditTab::EditTab()
@@ -358,38 +163,62 @@ QSettings& operator>> (QSettings& settings, EditWindow& window)
 // -------------------- EditStyle
 // --------------------------------------------------------------------------------
 EditStyle::EditStyle()
-	: StyleWithTheme()
-	, tab   (NULL)
-	, window(NULL)
+	: StyleBase()
+	, tab   ()
+	, window()
 {
-	theme  = new EditTheme();
-	tab    = new EditTab();
-	window = new EditWindow();
+	defaultColor    = QColor( 0x00, 0x00, 0x00 );
+	backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
+
+	caretColor       = QColor( 0x00, 0x00, 0x00 );
+	selectionBgColor = QColor( 0xC0, 0xC0, 0xC0 );
+	bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
+	bookmarkBgColor  = QColor( 0x00, 0xFF, 0xFF );
+
+	defaultStyle  = StyleFont::NONE;
+	bookmarkStyle = EditStyle::B_CIRCLE;
 }
 
 EditStyle::~EditStyle()
 {
-	if ( tab )    { delete tab;    tab = NULL; };
-	if ( window ) { delete window; window = NULL; };
 }
 
 EditStyle& EditStyle::operator =( const EditStyle& style )
 {
-	StyleWithTheme::operator=( style );
-	if ( theme  && style.theme )  *static_cast<EditTheme*>(theme) = *static_cast<EditTheme*>(style.theme);
-	if ( tab    && style.tab )    *tab    = *style.tab;
-	if ( window && style.window ) *window = *style.window;
+	StyleBase::operator=( style );
+	
+	defaultColor    = style.defaultColor;
+	backgroundColor = style.backgroundColor;
+
+	caretColor       = style.caretColor;
+	selectionBgColor = style.selectionBgColor;
+	bookmarkFgColor  = style.bookmarkFgColor;
+	bookmarkBgColor  = style.bookmarkBgColor;
+
+	defaultStyle = style.defaultStyle;
+
+	bookmarkStyle = style.bookmarkStyle;
+	
+	tab    = style.tab;
+	window = style.window;
 
 	return *this;
 }
 
 rbool EditStyle::operator ==( const EditStyle& style ) const
 {
-	rbool flag = StyleWithTheme::operator==( style );
-	if ( theme  && style.theme  && flag ) flag &= *static_cast<EditTheme*>(theme) == *static_cast<EditTheme*>(style.theme);
-	if ( tab    && style.tab    && flag ) flag &= *tab    == *style.tab;
-	if ( window && style.window && flag ) flag &= *window == *style.window;
-	return flag;
+	rbool flag = StyleBase::operator==( style );
+	flag &= tab    == style.tab;
+	flag &= window == style.window;
+	return flag &&
+		defaultColor     == style.defaultColor &&
+		backgroundColor  == style.backgroundColor &&
+		caretColor       == style.caretColor &&
+		selectionBgColor == style.selectionBgColor &&
+		bookmarkFgColor  == style.bookmarkFgColor &&
+		bookmarkBgColor  == style.bookmarkBgColor &&
+		defaultStyle     == style.defaultStyle &&
+		bookmarkStyle    == style.bookmarkStyle;
 }
 
 rbool EditStyle::operator !=( const EditStyle& style ) const
@@ -399,18 +228,18 @@ rbool EditStyle::operator !=( const EditStyle& style ) const
 
 void EditStyle::init( CREF(QString) _groupName )
 {
-	StyleWithTheme::init( _groupName );
+	StyleBase::init( _groupName );
 }
 
 rbool EditStyle::load()
 {
-	if ( StyleWithTheme::load() ) {
+	if ( StyleBase::load() ) {
 		QSettings settings;
 		settings.beginGroup(groupName + "tab");
-		if (tab)    tab->load(settings);
+		tab.load(settings);
 		settings.endGroup();
 		settings.beginGroup(groupName + "window");
-		if (window) window->load(settings);
+		window.load(settings);
 		settings.endGroup();
 		return true;
 	}
@@ -419,15 +248,152 @@ rbool EditStyle::load()
 
 rbool EditStyle::save() const
 {
-	if ( StyleWithTheme::save() ) {
+	if ( StyleBase::save() ) {
 		QSettings settings;
 		settings.beginGroup(groupName + "tab");
-		if (tab)    tab->save(settings);
+		tab.save(settings);
 		settings.endGroup();
 		settings.beginGroup(groupName + "window");
-		if (window) window->save(settings);
+		window.save(settings);
 		settings.endGroup();
 		return true;
 	}
 	return false;
 }
+
+void EditStyle::loadStyle(QSettings& settings)
+{
+	settings >> *this;
+}
+
+void EditStyle::saveStyle(QSettings& settings) const
+{
+	settings << *this;
+}
+
+rbool EditStyle::styleDefault( const int styleType ) const
+{
+	return styleType == STYLE_DEFAULT;
+}
+
+rbool EditStyle::styleUsing( const int styleType ) const
+{
+	return styleType == STYLE_DEFAULT;
+}
+
+rbool EditStyle::styleBold( const int /*styleType*/ ) const
+{
+	return defaultStyle & StyleFont::BOLD ? true : false;
+}
+
+rbool EditStyle::styleItalic( const int /*styleType*/ ) const
+{
+	return defaultStyle & StyleFont::ITALIC ? true : false;
+}
+
+tstring EditStyle::styleFGColorToHEX( const int /*styleType*/ ) const
+{
+	return colorToHEX( defaultColor );
+}
+
+tstring EditStyle::styleBGColorToHEX( const int /*styleType*/ ) const
+{
+	return colorToHEX( backgroundColor );
+}
+
+EditStyle EditStyle::getDefaultStyle()
+{
+	EditStyle style;
+	return style;
+}
+
+EditStyle EditStyle::getClassicStyle()
+{
+	EditStyle style;
+
+	style.defaultColor    = QColor( 0xFF, 0xFF, 0x00 );
+	style.backgroundColor = QColor( 0x00, 0x00, 0x80 );
+
+	style.caretColor       = QColor( 0xFF, 0xFF, 0x00 );
+	style.selectionBgColor = QColor( 0x00, 0x00, 0x40 );
+	style.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
+	style.bookmarkBgColor  = QColor( 0x80, 0x80, 0x00 );
+
+	style.defaultStyle  = StyleFont::NONE;
+	style.bookmarkStyle = EditStyle::B_CIRCLE;
+
+	return style;
+}
+
+EditStyle EditStyle::getTwilightStyle()
+{
+	EditStyle style;
+
+	style.defaultColor    = QColor( 0xFF, 0xFF, 0xFF );
+	style.backgroundColor = QColor( 0x00, 0x00, 0x00 );
+
+	style.caretColor       = QColor( 0xFF, 0xFF, 0xFF );
+	style.selectionBgColor = QColor( 0x70, 0x70, 0x70 );
+	style.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
+	style.bookmarkBgColor  = QColor( 0x00, 0x00, 0xFF );
+
+	style.defaultStyle  = StyleFont::NONE;
+	style.bookmarkStyle = EditStyle::B_CIRCLE;
+
+	return style;
+}
+
+EditStyle EditStyle::getOceanStyle()
+{
+	EditStyle style;
+
+	style.defaultColor    = QColor( 0x00, 0x00, 0xFF );
+	style.backgroundColor = QColor( 0x00, 0xFF, 0xFF );
+
+	style.caretColor       = QColor( 0x00, 0x00, 0x00 );
+	style.selectionBgColor = QColor( 0xC0, 0xC0, 0xD0 );
+	style.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
+	style.bookmarkBgColor  = QColor( 0xBA, 0xCC, 0xFC );
+
+	style.defaultStyle  = StyleFont::NONE;
+	style.bookmarkStyle = EditStyle::B_CIRCLE;
+
+	return style;
+}
+
+tstring EditStyle::colorToHEX( const QColor color )
+{
+	return rdo::format( "#%02X%02X%02X", color.red(), color.green(), color.blue() );
+}
+
+namespace rdo { namespace gui { namespace editor {
+
+QSettings& operator<< (QSettings& settings, const EditStyle& style)
+{
+	settings.setValue("default_color", style.defaultColor.name());
+	settings.setValue("background_color", style.backgroundColor.name());
+	settings.setValue("caret_color", style.caretColor.name());
+	settings.setValue("selection_bg_color", style.selectionBgColor.name());
+	settings.setValue("bookmark_fg_color", style.bookmarkFgColor.name());
+	settings.setValue("bookmark_bg_color", style.bookmarkBgColor.name());
+	settings.setValue("default_style", style.defaultStyle);
+	settings.setValue("bookmark_style", style.bookmarkStyle);
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, EditStyle& style)
+{
+	style.defaultColor     = QColor(settings.value("default_color", style.defaultColor.name()).toString());
+	style.backgroundColor  = QColor(settings.value("background_color", style.backgroundColor.name()).toString());
+	style.caretColor       = QColor(settings.value("caret_color", style.caretColor.name()).toString());
+	style.selectionBgColor = QColor(settings.value("selection_bg_color", style.selectionBgColor.name()).toString());
+	style.bookmarkFgColor  = QColor(settings.value("bookmark_fg_color", style.bookmarkFgColor.name()).toString());
+	style.bookmarkBgColor  = QColor(settings.value("bookmark_bg_color", style.bookmarkBgColor.name()).toString());
+	style.defaultStyle     = static_cast<StyleFont::style>(settings.value("default_style", style.defaultStyle).toInt());
+	style.bookmarkStyle    = static_cast<EditStyle::Bookmark>(settings.value("bookmark_style", style.bookmarkStyle).toInt());
+
+	return settings;
+}
+
+}}} // namespace rdo::gui::editor

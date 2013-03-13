@@ -80,7 +80,7 @@ void Log::setEditorStyle(PTR(LogStyle) pStyle)
 
 	// ----------
 	// Selected Line
-	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<PTR(LogTheme)>(m_pStyle->theme)->selectLineBgColor);
+	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<PTR(LogStyle)>(m_pStyle)->selectLineBgColor);
 }
 
 void Log::gotoPrev()

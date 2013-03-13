@@ -283,7 +283,7 @@ void Serie::drawSerie(ChartView* const pView,
 			{
 				if (*(*it)->getModelTime() == *(*timeIt))
 				{
-					lastX += ((*it)->getEventID() - pView->drawFromEventID()) * pView->style()->pFontsTicks->tickWidth;
+					lastX += ((*it)->getEventID() - pView->drawFromEventID()) * pView->style()->pFontsTicks.tickWidth;
 				}
 				else
 				{
@@ -292,7 +292,7 @@ void Serie::drawSerie(ChartView* const pView,
 						ticks += (*timeIt)->eventCount;
 						++timeIt;
 					}
-					lastX += (ticks + (*it)->getEventID() - pView->drawFromEventID()) * pView->style()->pFontsTicks->tickWidth;
+					lastX += (ticks + (*it)->getEventID() - pView->drawFromEventID()) * pView->style()->pFontsTicks.tickWidth;
 				}
 			}
 			lastX = std::min(lastX, rect.right());
@@ -332,7 +332,7 @@ void Serie::drawSerie(ChartView* const pView,
 				x = rect.left() + roundDouble(((*it)->getModelTime()->time - pView->drawFromX().time) * double(pView->timeScale())) - pView->chartShift();
 				if (pView->doUnwrapTime())
 				{
-					x += (ticks + (*it)->getEventID()) * pView->style()->pFontsTicks->tickWidth;
+					x += (ticks + (*it)->getEventID()) * pView->style()->pFontsTicks.tickWidth;
 				}
 				x = std::min(x, rect.right());
 				if (draw_marker)
@@ -371,7 +371,7 @@ void Serie::drawSerie(ChartView* const pView,
 			{
 				if (pView->drawFromX() == pView->drawToX())
 				{
-					x = rect.left() + (pView->drawToEventCount() - pView->drawFromEventID()) * pView->style()->pFontsTicks->tickWidth;
+					x = rect.left() + (pView->drawToEventCount() - pView->drawFromEventID()) * pView->style()->pFontsTicks.tickWidth;
 					x = std::min(x, rect.right());
 				}
 				else

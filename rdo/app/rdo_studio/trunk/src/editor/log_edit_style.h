@@ -18,33 +18,6 @@
 namespace rdo { namespace gui { namespace editor {
 
 // --------------------------------------------------------------------------------
-// -------------------- LogTheme
-// --------------------------------------------------------------------------------
-class LogTheme: public EditTheme
-{
-public:
-	LogTheme();
-	virtual ~LogTheme();
-
-	LogTheme& operator =( const LogTheme& theme );
-	rbool operator ==( const LogTheme& theme ) const;
-	rbool operator !=( const LogTheme& theme ) const;
-
-	virtual void load(QSettings& settings);
-	virtual void save(QSettings& settings) const;
-
-	QColor selectLineBgColor;
-
-	static LogTheme getDefaultTheme();
-	static LogTheme getClassicTheme();
-	static LogTheme getTwilightTheme();
-	static LogTheme getOceanTheme();
-};
-
-QSettings& operator<< (QSettings& settings, const LogTheme& theme);
-QSettings& operator>> (QSettings& settings,       LogTheme& theme);
-
-// --------------------------------------------------------------------------------
 // -------------------- LogStyle
 // --------------------------------------------------------------------------------
 class LogStyle: public EditStyle
@@ -56,7 +29,20 @@ public:
 	LogStyle& operator =( const LogStyle& style );
 	rbool operator ==( const LogStyle& style ) const;
 	rbool operator !=( const LogStyle& style ) const;
+
+	virtual void loadStyle(QSettings& settings);
+	virtual void saveStyle(QSettings& settings) const;
+
+	static LogStyle getDefaultStyle();
+	static LogStyle getClassicStyle();
+	static LogStyle getTwilightStyle();
+	static LogStyle getOceanStyle();
+
+	QColor selectLineBgColor;
 };
+
+QSettings& operator<< (QSettings& settings, const LogStyle& style);
+QSettings& operator>> (QSettings& settings,       LogStyle& style);
 
 }}} // namespace rdo::gui::editor
 
