@@ -27,6 +27,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "utils/rdocommon.h"
+#include "utils/rdolocale.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
@@ -38,15 +39,15 @@ rbool File::create(CREF(tstring) name)
 
 rbool File::create(CREF(tstring) name, CREF(tstring) content)
 {
-	boost::filesystem::fstream file(name.c_str(), std::ios::out | std::ios::binary);
-	file << content.c_str() << std::endl;
+	boost::filesystem::fstream file(rdo::locale::convertToWStr(name).c_str(), std::ios::out | std::ios::binary);
+	file << content << std::endl;
 	file.close();
 	return true;
 }
 
 rbool File::exist(CREF(tstring) name)
 {
-	return  boost::filesystem::exists(name.c_str());
+	return  boost::filesystem::exists(rdo::locale::convertToWStr(name));
 }
 
 rbool File::read_only(CREF(tstring) name)
@@ -61,7 +62,7 @@ rbool File::read_only(CREF(tstring) name)
 
 rbool File::unlink(CREF(tstring) name)
 {
-	return boost::filesystem::remove(name.c_str());
+	return boost::filesystem::remove(rdo::locale::convertToWStr(name));
 }
 
 rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fileName, REF(tstring) fileExt)
@@ -116,7 +117,7 @@ tstring File::extractFilePath(CREF(tstring) fileName)
 
 rbool File::trimLeft(CREF(tstring) name)
 {
-	boost::filesystem::ifstream inputStream(name.c_str(), std::ios::binary);
+	boost::filesystem::ifstream inputStream(rdo::locale::convertToWStr(name).c_str(), std::ios::binary);
 	std::stringstream sstream;
 
 	if (!inputStream.good())
@@ -128,7 +129,7 @@ rbool File::trimLeft(CREF(tstring) name)
 	while (!inputStream.eof())
 	{
 		char byte;
-	inputStream.get(byte);
+		inputStream.get(byte);
 
 		if (empty)
 		{
@@ -146,7 +147,7 @@ rbool File::trimLeft(CREF(tstring) name)
 
 	inputStream.close();
 
-	boost::filesystem::path to  (name);
+	boost::filesystem::path to(name);
 
 	try
 	{
@@ -154,7 +155,7 @@ rbool File::trimLeft(CREF(tstring) name)
 		{
 			return false;
 		}
-	boost::filesystem::ofstream outStream(name.c_str(), std::ios::binary);
+		boost::filesystem::ofstream outStream(name.c_str(), std::ios::binary);
 		outStream << sstream.str();
 	}
 	catch (CREF(boost::system::error_code))
