@@ -37,7 +37,6 @@ SET(HEADER_FILES
 SET(INLITE_FILES
 	rdoanimation.inl
 	rdocommon.inl
-	rdofile.inl
 	rdointerface.inl
 	rdotime.inl
 	stack.inl
@@ -103,7 +102,6 @@ SOURCE_GROUP(".debug" FILES
 
 SOURCE_GROUP(".file" FILES 
 	rdofile.h
-	rdofile.inl
 	rdofile.cpp
 	)
 

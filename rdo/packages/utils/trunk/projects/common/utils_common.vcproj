@@ -366,10 +366,6 @@
 				RelativePath="..\..\rdofile.h"
 				>
 			</File>
-			<File
-				RelativePath="..\..\rdofile.inl"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name=".time"
