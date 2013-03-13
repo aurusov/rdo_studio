@@ -26,12 +26,6 @@
 #include "simulator/runtime/rdo_random_distribution.h"
 // --------------------------------------------------------------------------------
 
-#ifdef COMPILER_VISUAL_STUDIO
-	#define  __SCANF  sscanf_s
-#else  // not COMPILER_VISUAL_STUDIO
-	#define  __SCANF  sscanf
-#endif // COMPILER_VISUAL_STUDIO
-
 typedef std::vector<double> Container;
 typedef std::vector<ruint>  ContainerInt;
 typedef const tstring contstr;
