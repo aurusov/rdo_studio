@@ -13,6 +13,7 @@
 #include "utils/warning_disable.h"
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
+#include <boost/function.hpp>
 #include <boost/range/algorithm/find.hpp>
 #include <QProcess>
 #include <QTextCodec>
@@ -717,7 +718,7 @@ void MainWindow::addNewAction(QMdiSubWindow* window)
 
 	QAction* pAction = menuWindow->addAction(window->windowTitle());
 	m_pSubWindows[window] = pAction;
-	//QObject::connect(pAction, &QAction::triggered, boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window));
+	QObject::connect(pAction, &QAction::triggered, boost::function<void()>(boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window)));
 }
 
 void MainWindow::removeExcessActions()
@@ -728,7 +729,7 @@ void MainWindow::removeExcessActions()
 	{
 		if (!windowList.contains(it->first))
 		{
-			//QObject::disconnect(pAction, &QAction::triggered, boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window));
+			QObject::disconnect(it->second, &QAction::triggered, NULL, NULL);
 			menuWindow->removeAction(it->second);
 			m_pSubWindows.erase(it++);
 		}
