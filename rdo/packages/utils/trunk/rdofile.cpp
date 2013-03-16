@@ -39,7 +39,7 @@ rbool File::create(CREF(tstring) name)
 
 rbool File::create(CREF(tstring) name, CREF(tstring) content)
 {
-	boost::filesystem::fstream file(rdo::locale::convertToWStr(name).c_str(), std::ios::out | std::ios::binary);
+	boost::filesystem::fstream file(rdo::locale::convertToWStr(name), std::ios::out | std::ios::binary);
 	file << content << std::endl;
 	file.close();
 	return true;
@@ -117,7 +117,7 @@ tstring File::extractFilePath(CREF(tstring) fileName)
 
 rbool File::trimLeft(CREF(tstring) name)
 {
-	boost::filesystem::ifstream inputStream(rdo::locale::convertToWStr(name).c_str(), std::ios::binary);
+	boost::filesystem::ifstream inputStream(rdo::locale::convertToWStr(name), std::ios::binary);
 	std::stringstream sstream;
 
 	if (!inputStream.good())
@@ -155,7 +155,7 @@ rbool File::trimLeft(CREF(tstring) name)
 		{
 			return false;
 		}
-		boost::filesystem::ofstream outStream(name.c_str(), std::ios::binary);
+		boost::filesystem::ofstream outStream(name, std::ios::binary);
 		outStream << sstream.str();
 	}
 	catch (CREF(boost::system::error_code))
