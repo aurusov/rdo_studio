@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdosmr.h
-  \authors   Áàðñ Àëåêñàíäð
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \authors   Ð‘Ð°Ñ€Ñ ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -50,7 +50,7 @@ public:
 	tstring getExternalModelName(CREF(tstring) alias) const
 	{
 		StringTable::const_iterator it = m_extModelList.find(alias);
-		return it != m_extModelList.end() ? it->second : _T("");
+		return it != m_extModelList.end() ? it->second : "";
 	}
 	CREF(StringTable) getExternalModelList() const
 	{

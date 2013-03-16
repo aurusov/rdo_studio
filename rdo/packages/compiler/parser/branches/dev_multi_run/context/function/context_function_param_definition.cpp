@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      context_param_definition.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      08.12.2012
-  \brief     Контекст описания параметров функции
+  \brief     РљРѕРЅС‚РµРєСЃС‚ РѕРїРёСЃР°РЅРёСЏ РїР°СЂР°РјРµС‚СЂРѕРІ С„СѓРЅРєС†РёРё
   \indent    4T
 */
 

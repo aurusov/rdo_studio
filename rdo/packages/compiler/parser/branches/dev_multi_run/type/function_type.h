@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      function_type.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      04.12.2012
-  \brief     Тип функции
+  \brief     РўРёРї С„СѓРЅРєС†РёРё
   \indent    4T
 */
 

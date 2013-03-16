@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      rdoprocess.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      21.02.2012
-  \brief     Процессы
+  \brief     РџСЂРѕС†РµСЃСЃС‹
   \indent    4T
 */
 
@@ -65,8 +65,8 @@ void proc_opr_error(PTR(char) message)
 
 // -------------------- RDOPROCProcess
 // --------------------------------------------------------------------------------
-tstring RDOPROCProcess::s_name_prefix = _T("");
-tstring RDOPROCProcess::s_name_sufix  = _T("s");
+tstring RDOPROCProcess::s_name_prefix = "";
+tstring RDOPROCProcess::s_name_sufix  = "s";
 
 RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(tstring) name, LPRDORTPResType transactType)
 	: RDOParserSrcInfo(info        )
@@ -162,18 +162,18 @@ void RDOPROCQueue::createRuntime()
 	if (pResource)
 	{
 		tstring res_name = pResource->name();
-		//! Получили список всех ресурсов
+		//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 		rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
-		//! Создадим тип ресурса
+		//! РЎРѕР·РґР°РґРёРј С‚РёРї СЂРµСЃСѓСЂСЃР°
 		rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
-		//! "длина_очереди"
+		//! "РґР»РёРЅР°_РѕС‡РµСЂРµРґРё"
 		tstring rtp_param_name      = rdo::runtime::RDOPROCQueue::getQueueParamName();
 		m_parserForRuntime.Id_res   = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtp_param_name].id();
 	}
 	else
 	{
-		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format(_T("Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс '%s'"), m_resourceName.c_str()));
+		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° RDOPROCQueue: РЅРµ РЅР°С€Р»Рё parser-СЂРµСЃСѓСЂСЃ '%s'", m_resourceName.c_str()));
 	}
 	m_pRuntime = RF(rdo::runtime::RDOPROCQueue)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
 	ASSERT(m_pRuntime);
@@ -200,18 +200,18 @@ void RDOPROCDepart::createRuntime()
 	if (pResource)
 	{
 		tstring res_name = pResource->name();
-		//! Получили список всех ресурсов
+		//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 		rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
-		//! Создадим тип ресурса
+		//! РЎРѕР·РґР°РґРёРј С‚РёРї СЂРµСЃСѓСЂСЃР°
 		rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
-		//! "длина_очереди"
+		//! "РґР»РёРЅР°_РѕС‡РµСЂРµРґРё"
 		tstring rtp_param_name      = rdo::runtime::RDOPROCDepart::getDepartParamName();
 		m_parserForRuntime.Id_res   = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtp_param_name].id(); 
 	}	
 	else
 	{
-		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format(_T("Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс '%s'"), m_resourceName.c_str()));
+		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° RDOPROCQueue: РЅРµ РЅР°С€Р»Рё parser-СЂРµСЃСѓСЂСЃ '%s'", m_resourceName.c_str()));
 	}
 	m_pRuntime = RF(rdo::runtime::RDOPROCDepart)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
 	ASSERT(m_pRuntime);
@@ -247,16 +247,16 @@ void RDOPROCSeize::createRuntime()
 		if (pResource)
 		{
 			tstring res_name = pResource->name();
-			// Получили список всех ресурсов
+			// РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 			rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
-			// Создадим тип ресурса
+			// РЎРѕР·РґР°РґРёРј С‚РёРї СЂРµСЃСѓСЂСЃР°
 			rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
-			// "Состояние"
+			// "РЎРѕСЃС‚РѕСЏРЅРёРµ"
 			tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
-			// проверим его на наличие перечислимого параметра
+			// РїСЂРѕРІРµСЂРёРј РµРіРѕ РЅР° РЅР°Р»РёС‡РёРµ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ РїР°СЂР°РјРµС‚СЂР°
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
-				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет параметра перечислимого типа '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
+				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format("РЈ С‚РёРїР° СЂРµСЃСѓСЂСЃР° '%s' РЅРµС‚ РїР°СЂР°РјРµС‚СЂР° РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР° '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
 			}
 			rdo::runtime::parser_for_Seize bbb;
 			bbb.Id_res   = pResource->getID();
@@ -265,7 +265,7 @@ void RDOPROCSeize::createRuntime()
 		}
 		else
 		{
-			RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format(_T("Внутренняя ошибка RDOPROCSeize: не нашли parser-ресурс '%s'"), it->c_str()));
+			RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° RDOPROCSeize: РЅРµ РЅР°С€Р»Рё parser-СЂРµСЃСѓСЂСЃ '%s'", it->c_str()));
 		}
 	}
 
@@ -276,7 +276,7 @@ void RDOPROCSeize::createRuntime()
 	}
 	else
 	{
-		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), _T("Внутренняя ошибка: блок Seize не содержит ресурсов"));
+		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), "Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°: Р±Р»РѕРє Seize РЅРµ СЃРѕРґРµСЂР¶РёС‚ СЂРµСЃСѓСЂСЃРѕРІ");
 	}
 }
 
@@ -301,16 +301,16 @@ void RDOPROCRelease::createRuntime()
 		if (pResource)
 		{
 			tstring res_name = pResource->name();
-			//! Получили список всех ресурсов
+			//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 			rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
-			//! Создадим тип ресурса
+			//! РЎРѕР·РґР°РґРёРј С‚РёРї СЂРµСЃСѓСЂСЃР°
 			rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
-			//! "Состояние"
+			//! "РЎРѕСЃС‚РѕСЏРЅРёРµ"
 			tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
-			//! проверим его на наличие перечислимого параметра
+			//! РїСЂРѕРІРµСЂРёРј РµРіРѕ РЅР° РЅР°Р»РёС‡РёРµ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ РїР°СЂР°РјРµС‚СЂР°
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
-				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет параметра перечислимого типа '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
+				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format("РЈ С‚РёРїР° СЂРµСЃСѓСЂСЃР° '%s' РЅРµС‚ РїР°СЂР°РјРµС‚СЂР° РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР° '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
 			}
 			rdo::runtime::parser_for_Seize bbb;
 			bbb.Id_res   = pResource->getID();
@@ -319,7 +319,7 @@ void RDOPROCRelease::createRuntime()
 		}
 		else
 		{
-			RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format(_T("Внутренняя ошибка RDOPROCRelease: не нашли parser-ресурс '%s'"), it->c_str()));
+			RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° RDOPROCRelease: РЅРµ РЅР°С€Р»Рё parser-СЂРµСЃСѓСЂСЃ '%s'", it->c_str()));
 		}
 	}
 
@@ -330,7 +330,7 @@ void RDOPROCRelease::createRuntime()
 	}
 	else
 	{
-		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), _T("Внутренняя ошибка: блок Release не содержит ресурсов"));
+		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), "Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°: Р±Р»РѕРє Release РЅРµ СЃРѕРґРµСЂР¶РёС‚ СЂРµСЃСѓСЂСЃРѕРІ");
 	}
 }
 

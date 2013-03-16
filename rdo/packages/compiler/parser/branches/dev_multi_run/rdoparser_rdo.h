@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoparser_rdo.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -111,7 +111,7 @@ private:
 		: RDOParserItem(rdoModelObjects::RTP, NULL, NULL, NULL)
 	{}
 
-	//! Cоздание типов ресурсов в runtime
+	//! CРѕР·РґР°РЅРёРµ С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ РІ runtime
 	virtual void parse(CREF(LPRDOParser) pParser);
 };
 

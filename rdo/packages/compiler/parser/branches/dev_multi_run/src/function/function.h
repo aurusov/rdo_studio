@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      function.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      14.12.2012
-  \brief     РДО-функция на уровне парсера
+  \brief     Р Р”Рћ-С„СѓРЅРєС†РёСЏ РЅР° СѓСЂРѕРІРЅРµ РїР°СЂСЃРµСЂР°
   \indent    4T
 */
 

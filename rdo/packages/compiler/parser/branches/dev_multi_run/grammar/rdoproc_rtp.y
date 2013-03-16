@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoproc_rtp.y
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      24.03.2008
-  \brief     Сбор типов транзактов процесса
+  \brief     РЎР±РѕСЂ С‚РёРїРѕРІ С‚СЂР°РЅР·Р°РєС‚РѕРІ РїСЂРѕС†РµСЃСЃР°
   \indent    4T
 */
 
@@ -243,22 +243,22 @@ prc_rtp_main
 	| prc_rtp_main RDO_Process RDO_IDENTIF RDO_IDENTIF error RDO_End
 	{
 		tstring rtp_name       = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
-		tstring rtp_param_name = _T("Время_создания");
+		tstring rtp_param_name = "Р’СЂРµРјСЏ_СЃРѕР·РґР°РЅРёСЏ";
 
-		// Получили список всех типов ресурсов
+		// РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ
 		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
-		// Найти тип ресурса, если его нет, то создать
+		// РќР°Р№С‚Рё С‚РёРї СЂРµСЃСѓСЂСЃР°, РµСЃР»Рё РµРіРѕ РЅРµС‚, С‚Рѕ СЃРѕР·РґР°С‚СЊ
 		if (!rtpList[rtp_name].exist())
 		{
-			// Создадим тип ресурса-транзакта
+			// РЎРѕР·РґР°РґРёРј С‚РёРї СЂРµСЃСѓСЂСЃР°-С‚СЂР°РЅР·Р°РєС‚Р°
 			rdo::compiler::mbuilder::RDOResType rtp(rtp_name, rdo::compiler::mbuilder::RDOResType::rt_temporary);
-			// Добавим параметр Время_создания
+			// Р”РѕР±Р°РІРёРј РїР°СЂР°РјРµС‚СЂ Р’СЂРµРјСЏ_СЃРѕР·РґР°РЅРёСЏ
 			rdo::compiler::mbuilder::RDOResType::Param param(rtp_param_name, rdo::Factory<RDOType__real>::create());
 			rtp.m_params.append(param);
-			// Добавим тип ресурса
+			// Р”РѕР±Р°РІРёРј С‚РёРї СЂРµСЃСѓСЂСЃР°
 			if (!rtpList.append(rtp))
 			{
-				PARSER->error().error(@2, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
+				PARSER->error().error(@2, rdo::format("РћС€РёР±РєР° СЃРѕР·РґР°РЅРёСЏ С‚РёРїР° СЂРµСЃСѓСЂСЃР°: %s", rtp_name.c_str()));
 			}
 			LPRDORTPResType pResType = PARSER->findRTPResType(rtp_name);
 			ASSERT(pResType);
@@ -266,18 +266,18 @@ prc_rtp_main
 		}
 		else
 		{
-			// Тип найден, проверим его на наличие вещественного параметра
+			// РўРёРї РЅР°Р№РґРµРЅ, РїСЂРѕРІРµСЂРёРј РµРіРѕ РЅР° РЅР°Р»РёС‡РёРµ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ РїР°СЂР°РјРµС‚СЂР°
 			CREF(rdo::compiler::mbuilder::RDOResType) rtp = rtpList[rtp_name];
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
-				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет требуемого параметра '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
+				PARSER->error().error(rtp.src_info(), rdo::format("РЈ С‚РёРїР° СЂРµСЃСѓСЂСЃР° '%s' РЅРµС‚ С‚СЂРµР±СѓРµРјРѕРіРѕ РїР°СЂР°РјРµС‚СЂР° '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
 			}
-			// Параметр есть, надо проверить на тип
+			// РџР°СЂР°РјРµС‚СЂ РµСЃС‚СЊ, РЅР°РґРѕ РїСЂРѕРІРµСЂРёС‚СЊ РЅР° С‚РёРї
 			if (rtp.m_params[rtp_param_name].typeID() != rdo::runtime::RDOType::t_real)
 			{
-				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является вещественным типом"), rtp.name().c_str(), rtp_param_name.c_str()));
+				PARSER->error().error(rtp.src_info(), rdo::format("РЈ С‚РёРїР° СЂРµСЃСѓСЂСЃР° '%s' РїР°СЂР°РјРµС‚СЂ '%s' РЅРµ СЏРІР»СЏРµС‚СЃСЏ РІРµС‰РµСЃС‚РІРµРЅРЅС‹Рј С‚РёРїРѕРј", rtp.name().c_str(), rtp_param_name.c_str()));
 			}
-			// Тип ресурса подходит в качестве типа транзакта
+			// РўРёРї СЂРµСЃСѓСЂСЃР° РїРѕРґС…РѕРґРёС‚ РІ РєР°С‡РµСЃС‚РІРµ С‚РёРїР° С‚СЂР°РЅР·Р°РєС‚Р°
 			LPRDORTPResType pResType = PARSER->findRTPResType(rtp_name);
 			pResType->setType(RDORTPResType::procTran);
 		}

@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/compiler/parser/rdo_value.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -45,38 +45,38 @@ public:
 	static LPRDOValue getUnknow       (CREF(RDOParserSrcInfo) src_info);
 
 private:
-	// Неопределенный тип
+	// РќРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ С‚РёРї
 	RDOValue();
 
-	// Для t_identificator известно только имя, но не тип
+	// Р”Р»СЏ t_identificator РёР·РІРµСЃС‚РЅРѕ С‚РѕР»СЊРєРѕ РёРјСЏ, РЅРѕ РЅРµ С‚РёРї
 	RDOValue(CREF(RDOParserSrcInfo) src_info);
 
-	// От копии
+	// РћС‚ РєРѕРїРёРё
 	RDOValue(CREF(LPRDOValue) pValue);
 
-	// Он стандартных типов
+	// РћРЅ СЃС‚Р°РЅРґР°СЂС‚РЅС‹С… С‚РёРїРѕРІ
 	RDOValue(CREF(rdo::explicit_value<rsint>)   value, CREF(RDOParserSrcInfo) src_info);
 	RDOValue(CREF(rdo::explicit_value<ruint>)   value, CREF(RDOParserSrcInfo) src_info);
 	RDOValue(CREF(rdo::explicit_value<double>)  value, CREF(RDOParserSrcInfo) src_info);
 	RDOValue(CREF(rdo::explicit_value<tstring>) value, CREF(RDOParserSrcInfo) src_info);
 
-	// От типа
+	// РћС‚ С‚РёРїР°
 	RDOValue(CREF(LPTypeInfo) pType);
 	RDOValue(CREF(LPTypeInfo) pType, CREF(RDOParserSrcInfo) src_info);
 
-	// От типа и объекта
+	// РћС‚ С‚РёРїР° Рё РѕР±СЉРµРєС‚Р°
 	template <class T>
 	RDOValue(CREF(LPTypeInfo) pType, CREF(rdo::intrusive_ptr<T>) pObject);
 	template <class T>
 	RDOValue(CREF(LPTypeInfo) pType, CREF(rdo::intrusive_ptr<T>) pObject, CREF(RDOParserSrcInfo) src_info);
 
-	// От рантайм RDOValue
+	// РћС‚ СЂР°РЅС‚Р°Р№Рј RDOValue
 	RDOValue(CREF(rdo::runtime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType);
 
  	template <class T>
 	void setPointer(CREF(rdo::intrusive_ptr<T>) pObject);
 
-	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
+	//! РўРёРї РєРѕРЅС‚РµР№РЅРµСЂР° Р·РЅР°С‡РµРЅРёСЏ, СЂР°Р·РјРµСЂ РѕРїСЂРµРґРµР»СЏРµС‚СЃСЏ РїРѕ РјР°РєСЃРёРјР°Р»СЊРЅРѕРјСѓ СЂР°Р·РјРµСЂСѓ С‚РёРїР° РґР°РЅРЅС‹С…
 	typedef rbyte Value[sizeof(rdo::intrusive_ptr_interface_wrapper<RDOValue>)];
 
 	Value                  m_buffer;

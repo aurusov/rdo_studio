@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      function.h
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      14.12.2012
-  \brief     ÐÄÎ-ôóíêöèÿ íà óðîâíå ïàðñåðà
+  \brief     Ð Ð”Ðž-Ñ„ÑƒÐ½ÐºÑ†Ð¸Ñ Ð½Ð° ÑƒÑ€Ð¾Ð²Ð½Ðµ Ð¿Ð°Ñ€ÑÐµÑ€Ð°
   \indent    4T
 */
 
@@ -83,8 +83,8 @@ void Function::onPushParam(CREF(LPRDOParam) pParam)
 	LPRDOParam pParamPrev = findParam(pParam->name());
 	if (pParamPrev)
 	{
-		RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format(_T("Ïàðàìåòð óæå îïðåäåë¸í: %s"), pParam->name().c_str()));
-		RDOParser::s_parser()->error().push_only(pParamPrev->src_info(), _T("Ñì. ïåðâîå îïðåäåëåíèå"));
+		RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format("ÐŸÐ°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ ÑƒÐ¶Ðµ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»Ñ‘Ð½: %s", pParam->name().c_str()));
+		RDOParser::s_parser()->error().push_only(pParamPrev->src_info(), "Ð¡Ð¼. Ð¿ÐµÑ€Ð²Ð¾Ðµ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð¸Ðµ");
 		RDOParser::s_parser()->error().push_done();
 	}
 	m_paramList.push_back(pParam); 
@@ -156,9 +156,9 @@ Context::FindResult Function::onFindContext(CREF(LPRDOValue) pValue) const
 		{
 			RDOParser::s_parser()->error().push_only(
 				pValue->src_info(),
-				rdo::format(_T("Òèï ïàðàìåòðà '%s' îïðåäåë¸í íåâåðíî"), pValue->src_info().src_text().c_str())
+				rdo::format("Ð¢Ð¸Ð¿ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° '%s' Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»Ñ‘Ð½ Ð½ÐµÐ²ÐµÑ€Ð½Ð¾", pValue->src_info().src_text().c_str())
 			);
-			RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), _T("Ñì. îïèñàíèå òèïà"));
+			RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), "Ð¡Ð¼. Ð¾Ð¿Ð¸ÑÐ°Ð½Ð¸Ðµ Ñ‚Ð¸Ð¿Ð°");
 			RDOParser::s_parser()->error().push_done();
 		}
 		ParamID paramID = findParamID(pValue->value().getIdentificator());

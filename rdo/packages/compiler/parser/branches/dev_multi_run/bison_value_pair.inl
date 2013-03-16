@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011-2012
   \file      bison_value_pair.inl
-  \authors   Чирков Михаил
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р§РёСЂРєРѕРІ РњРёС…Р°РёР»
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      02.12.2010
   \brief     
   \indent    4T

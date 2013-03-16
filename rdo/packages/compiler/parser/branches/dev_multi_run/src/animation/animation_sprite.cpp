@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      animation_sprite.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      14.12.2012
-  \brief     Спрайт анимации в парсере
+  \brief     РЎРїСЂР°Р№С‚ Р°РЅРёРјР°С†РёРё РІ РїР°СЂСЃРµСЂРµ
   \indent    4T
 */
 

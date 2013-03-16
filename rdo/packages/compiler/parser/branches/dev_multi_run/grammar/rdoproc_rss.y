@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoproc_rss.y
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      24.03.2008
-  \brief     Сбор ресурсов из процессов. based on rdodpt_rss.y
+  \brief     РЎР±РѕСЂ СЂРµСЃСѓСЂСЃРѕРІ РёР· РїСЂРѕС†РµСЃСЃРѕРІ. based on rdodpt_rss.y
   \indent    4T
 */
 
@@ -286,50 +286,50 @@ dpt_process_line
 	| RDO_QUEUE dpt_queue_param
 	| RDO_QUEUE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается имя ресурса для сбора статистики по очереди")));
+		PARSER->error().error(@1, rdo::format("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ СЂРµСЃСѓСЂСЃР° РґР»СЏ СЃР±РѕСЂР° СЃС‚Р°С‚РёСЃС‚РёРєРё РїРѕ РѕС‡РµСЂРµРґРё"));
 	}
 	| RDO_DEPART dpt_depart_param
 	| RDO_DEPART error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается имя ресурса для сбора статистики по очереди")));
+		PARSER->error().error(@1, rdo::format("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ СЂРµСЃСѓСЂСЃР° РґР»СЏ СЃР±РѕСЂР° СЃС‚Р°С‚РёСЃС‚РёРєРё РїРѕ РѕС‡РµСЂРµРґРё"));
 	}
 	| RDO_SEIZE dpt_seize_param
 	| RDO_SEIZE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
+		PARSER->error().error(@1, rdo::format("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРёСЃРѕРє СЂРµСЃСѓСЂСЃРѕРІ, РѕР±СЉРµРґРёРЅСЏРµРјС‹С… РІ Р±Р»РѕРє, С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ"));
 	}
 	| RDO_RELEASE dpt_release_param
 	| RDO_RELEASE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
+		PARSER->error().error(@1, rdo::format("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРёСЃРѕРє СЂРµСЃСѓСЂСЃРѕРІ, РѕР±СЉРµРґРёРЅСЏРµРјС‹С… РІ Р±Р»РѕРє, С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ"));
 	}
 	;
 
 dpt_queue_param
 	: RDO_IDENTIF
 	{
-		//! Имя ресурса
+		//! РРјСЏ СЂРµСЃСѓСЂСЃР°
 		tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @1;
-		// Получили список всех ресурсов
+		// РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
-		//! Получили список всех типов ресурсов
+		//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ
 		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
-		tstring rtp_name = _T("QDEPART");
-		tstring q_name   = _T("Очередь_") + res_name;
-		//! Если ресурс существует, берем его тип и проверяем
+		tstring rtp_name = "QDEPART";
+		tstring q_name   = "РћС‡РµСЂРµРґСЊ_" + res_name;
+		//! Р•СЃР»Рё СЂРµСЃСѓСЂСЃ СЃСѓС‰РµСЃС‚РІСѓРµС‚, Р±РµСЂРµРј РµРіРѕ С‚РёРї Рё РїСЂРѕРІРµСЂСЏРµРј
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
 			rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, info);
 			LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 			ASSERT(pResult);
-			pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
+			pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("РґР»РёРЅР°_РѕС‡РµСЂРµРґРё")));
 		}
 		else
 		{
-			//! Если тип "QDEPART" существует
+			//! Р•СЃР»Рё С‚РёРї "QDEPART" СЃСѓС‰РµСЃС‚РІСѓРµС‚
 			if (rtpList[rtp_name].exist())
 			{
 				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
@@ -338,7 +338,7 @@ dpt_queue_param
 					rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
 					LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 					ASSERT(pResult);
-					pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
+					pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("РґР»РёРЅР°_РѕС‡РµСЂРµРґРё")));
 				}
 			}
 			else
@@ -349,30 +349,30 @@ dpt_queue_param
 					rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
 					LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 					ASSERT(pResult);
-					pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
+					pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("РґР»РёРЅР°_РѕС‡РµСЂРµРґРё")));
 				}
 			}
 		}
 	}
 	| RDO_IDENTIF error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		PARSER->error().error(@1, "РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°");
 	}
 	;
 
 dpt_depart_param
 	: RDO_IDENTIF
 	{
-		//! Имя ресурса
+		//! РРјСЏ СЂРµСЃСѓСЂСЃР°
 		tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @1;
-		//! Получили список всех ресурсов
+		//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
-		//! Получили список всех типов ресурсов
+		//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ
 		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
-		tstring rtp_name = _T("QDEPART");
-		//! Если ресурс существует, берем его тип и проверяем
+		tstring rtp_name = "QDEPART";
+		//! Р•СЃР»Рё СЂРµСЃСѓСЂСЃ СЃСѓС‰РµСЃС‚РІСѓРµС‚, Р±РµСЂРµРј РµРіРѕ С‚РёРї Рё РїСЂРѕРІРµСЂСЏРµРј
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
@@ -400,41 +400,41 @@ dpt_depart_param
 	}
 	| RDO_IDENTIF error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		PARSER->error().error(@1, "РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°");
 	}
 	;
 
 dpt_seize_param
 	: RDO_IDENTIF
 	{
-		//! Имя ресурса
+		//! РРјСЏ СЂРµСЃСѓСЂСЃР°
 		tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @1;
-		//! Получили список всех ресурсов
+		//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
-		//! Если ресурс существует, берем его тип и проверяем
+		//! Р•СЃР»Рё СЂРµСЃСѓСЂСЃ СЃСѓС‰РµСЃС‚РІСѓРµС‚, Р±РµСЂРµРј РµРіРѕ С‚РёРї Рё РїСЂРѕРІРµСЂСЏРµРј
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
 			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
 			{
-				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
+				//! \todo РїСЂРёРЅСЏС‚РёРµ СЂРµС€РµРЅРёСЏ РѕР± РёР·РјРµРЅРµРЅРёРё С‚РёРїР° РґРѕР»Р¶РЅРѕ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РІ rdoproc_rtp.y
 				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 				{
-					//здесь нужно переделать тип ресурса, а не ресурс
+					//Р·РґРµСЃСЊ РЅСѓР¶РЅРѕ РїРµСЂРµРґРµР»Р°С‚СЊ С‚РёРї СЂРµСЃСѓСЂСЃР°, Р° РЅРµ СЂРµСЃСѓСЂСЃ
 					rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
 			}
 		}
 		else
 		{
-			//! Ресурс не найден, сформировать имя типа по имени ресурса
-			//! Сформировать имя типа по имени ресурса
+			//! Р РµСЃСѓСЂСЃ РЅРµ РЅР°Р№РґРµРЅ, СЃС„РѕСЂРјРёСЂРѕРІР°С‚СЊ РёРјСЏ С‚РёРїР° РїРѕ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°
+			//! РЎС„РѕСЂРјРёСЂРѕРІР°С‚СЊ РёРјСЏ С‚РёРїР° РїРѕ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°
 			tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
-			//! Получили список всех типов ресурсов
+			//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
-			//! Нашли тип ресурса
+			//! РќР°С€Р»Рё С‚РёРї СЂРµСЃСѓСЂСЃР°
 			if (rtpList[rtp_name].exist())
 			{
 				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
@@ -452,19 +452,19 @@ dpt_seize_param
 	}
 	| dpt_seize_param ',' RDO_IDENTIF
 	{
-		//! Имя ресурса
+		//! РРјСЏ СЂРµСЃСѓСЂСЃР°
 		tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @3;
-		//! Получили список всех ресурсов
+		//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
-		//! Если ресурс существует, берем его тип и проверяем
+		//! Р•СЃР»Рё СЂРµСЃСѓСЂСЃ СЃСѓС‰РµСЃС‚РІСѓРµС‚, Р±РµСЂРµРј РµРіРѕ С‚РёРї Рё РїСЂРѕРІРµСЂСЏРµРј
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
 			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
 			{
-				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
+				//! \todo РїСЂРёРЅСЏС‚РёРµ СЂРµС€РµРЅРёСЏ РѕР± РёР·РјРµРЅРµРЅРёРё С‚РёРїР° РґРѕР»Р¶РЅРѕ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РІ rdoproc_rtp.y
 				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 				{
 					rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
@@ -473,12 +473,12 @@ dpt_seize_param
 		}
 		else
 		{
-			//! Ресурс не найден, сформировать имя типа по имени ресурса
-			//! Сформировать имя типа по имени ресурса
+			//! Р РµСЃСѓСЂСЃ РЅРµ РЅР°Р№РґРµРЅ, СЃС„РѕСЂРјРёСЂРѕРІР°С‚СЊ РёРјСЏ С‚РёРїР° РїРѕ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°
+			//! РЎС„РѕСЂРјРёСЂРѕРІР°С‚СЊ РёРјСЏ С‚РёРїР° РїРѕ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°
 			tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
-			//! Получили список всех типов ресурсов
+			//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
-			//! Нашли тип ресурса
+			//! РќР°С€Р»Рё С‚РёРї СЂРµСЃСѓСЂСЃР°
 			if (rtpList[rtp_name].exist())
 			{
 				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
@@ -496,17 +496,17 @@ dpt_seize_param
 	}
 	| dpt_seize_param error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		PARSER->error().error(@1, "РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°");
 	}
 	;
 
 dpt_release_param
 	: RDO_IDENTIF
 	{
-		//! Имя ресурса
+		//! РРјСЏ СЂРµСЃСѓСЂСЃР°
 		tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @1;
-		//! Получили список всех ресурсов
+		//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
 		if (rssList[res_name].exist())
@@ -514,7 +514,7 @@ dpt_release_param
 			rtp = rssList[res_name].getType();
 			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
 			{
-				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
+				//! \todo РїСЂРёРЅСЏС‚РёРµ СЂРµС€РµРЅРёСЏ РѕР± РёР·РјРµРЅРµРЅРёРё С‚РёРїР° РґРѕР»Р¶РЅРѕ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РІ rdoproc_rtp.y
 				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 				{
 					rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
@@ -523,12 +523,12 @@ dpt_release_param
 		}
 		else
 		{
-			//! Ресурс не найден, сформировать имя типа по имени ресурса
-			//! Сформировать имя типа по имени ресурса
+			//! Р РµСЃСѓСЂСЃ РЅРµ РЅР°Р№РґРµРЅ, СЃС„РѕСЂРјРёСЂРѕРІР°С‚СЊ РёРјСЏ С‚РёРїР° РїРѕ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°
+			//! РЎС„РѕСЂРјРёСЂРѕРІР°С‚СЊ РёРјСЏ С‚РёРїР° РїРѕ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°
 			tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
-			//! Получили список всех типов ресурсов
+			//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
-			//! Нашли тип ресурса
+			//! РќР°С€Р»Рё С‚РёРї СЂРµСЃСѓСЂСЃР°
 			if (rtpList[rtp_name].exist())
 			{
 				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
@@ -546,19 +546,19 @@ dpt_release_param
 	}
 	| dpt_release_param ',' RDO_IDENTIF
 	{
-		//! Имя ресурса
+		//! РРјСЏ СЂРµСЃСѓСЂСЃР°
 		tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @3;
-		//! Получили список всех ресурсов
+		//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
-		//! Если ресурс существует берем его тип и проверяем
+		//! Р•СЃР»Рё СЂРµСЃСѓСЂСЃ СЃСѓС‰РµСЃС‚РІСѓРµС‚ Р±РµСЂРµРј РµРіРѕ С‚РёРї Рё РїСЂРѕРІРµСЂСЏРµРј
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
 			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
 			{
-				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
+				//! \todo РїСЂРёРЅСЏС‚РёРµ СЂРµС€РµРЅРёСЏ РѕР± РёР·РјРµРЅРµРЅРёРё С‚РёРїР° РґРѕР»Р¶РЅРѕ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РІ rdoproc_rtp.y
 				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 				{
 					rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
@@ -567,12 +567,12 @@ dpt_release_param
 		}
 		else
 		{
-			//! Ресурс не найден, сформировать имя типа по имени ресурса
-			//! Сформировать имя типа по имени ресурса
+			//! Р РµСЃСѓСЂСЃ РЅРµ РЅР°Р№РґРµРЅ, СЃС„РѕСЂРјРёСЂРѕРІР°С‚СЊ РёРјСЏ С‚РёРїР° РїРѕ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°
+			//! РЎС„РѕСЂРјРёСЂРѕРІР°С‚СЊ РёРјСЏ С‚РёРїР° РїРѕ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°
 			tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
-			//! Получили список всех типов ресурсов
+			//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
-			//! Нашли тип ресурса
+			//! РќР°С€Р»Рё С‚РёРї СЂРµСЃСѓСЂСЃР°
 			if (rtpList[rtp_name].exist())
 			{
 				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
@@ -590,7 +590,7 @@ dpt_release_param
 	}
 	| dpt_release_param error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		PARSER->error().error(@1, "РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРµСЃСѓСЂСЃР°");
 	}
 	;
 

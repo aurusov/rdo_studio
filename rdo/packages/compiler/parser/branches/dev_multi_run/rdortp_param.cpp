@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdortp_param.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -35,7 +35,7 @@ CREF(tstring) RDORTPParam::name() const
 
 void RDORTPParam::writeModelStructure(REF(rdo::ostream) stream) const
 {
-	stream << name() << _T(" ");
+	stream << name() << " ";
 	getTypeInfo()->type()->writeModelStructure(stream);
 }
 
