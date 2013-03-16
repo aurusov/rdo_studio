@@ -186,10 +186,8 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 {
 	if (!m_projectName.m_rdox)
 	{
-		rdo::textstream smrStream;
-		loadFile(getFullFileName(rdoModelObjects::SMR), smrStream, true, true, m_files[rdoModelObjects::SMR].m_readOnly);
 		rdo::converter::smr2rdox::RDOSMRFileInfo fileInfo;
-		kernel->simulator()->parseSMRFileInfo(smrStream, fileInfo);
+		kernel->simulator()->parseSMRFileInfo(fileInfo);
 		if (fileInfo.m_error)
 		{
 			if (fileInfo.m_modelName.empty())
