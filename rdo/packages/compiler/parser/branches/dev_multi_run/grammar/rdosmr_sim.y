@@ -275,17 +275,6 @@ smr_show_mode
 smr_cond
 	: /* empty */
 	| smr_cond smr_multirun
-	| smr_cond RDO_Run_Count '=' RDO_INT_CONST ';'
-	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		rsint count = PARSER->stack().pop<RDOValue>($4)->value().getInt();
-		if (count < 0)
-		{
-			PARSER->error().error(@4, _T("Число прогонов должно быть больше нуля"));
-		}
-		pSMR->setRunCount(ruint(count));
-	}
 	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
