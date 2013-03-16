@@ -8,8 +8,6 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-// ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/format.hpp>
 #include <boost/filesystem.hpp>
@@ -435,26 +433,13 @@ void RDOThreadRepository::loadFile(CREF(tstring) fileName, REF(rdo::stream) stre
 			}
 			if (stream.isBinary())
 			{
-				std::ifstream file(
-#ifdef COMPILER_VISUAL_STUDIO
-					rdo::locale::convertToWStr(fileName).c_str()
-#else
-					fileName.c_str()
-#endif
-					, std::ios::in | std::ios::binary
-				);
+				std::ifstream file(rdo::locale::convertToWStr(fileName).c_str(), std::ios::in | std::ios::binary);
 				stream << file.rdbuf();
 				file.close();
 			}
 			else
 			{
-				std::ifstream file(
-#ifdef COMPILER_VISUAL_STUDIO
-					rdo::locale::convertToWStr(fileName).c_str()
-#else
-					fileName.c_str()
-#endif
-				);
+				std::ifstream file(rdo::locale::convertToWStr(fileName).c_str());
 				stream << file.rdbuf();
 				file.close();
 			}
@@ -501,26 +486,13 @@ void RDOThreadRepository::saveFile(CREF(tstring) fileName, REF(rdo::stream) stre
 		{
 			if (stream.isBinary())
 			{
-				rdo::ofstream file(
-#ifdef COMPILER_VISUAL_STUDIO
-					rdo::locale::convertToWStr(fileName).c_str()
-#else
-					fileName.c_str()
-#endif
-					, std::ios::out | std::ios::binary
-				);
+				rdo::ofstream file(rdo::locale::convertToWStr(fileName).c_str(), std::ios::out | std::ios::binary);
 				file << stream.rdbuf();
 				file.close();
 			}
 			else
 			{
-				rdo::ofstream file(
-#ifdef COMPILER_VISUAL_STUDIO
-					rdo::locale::convertToWStr(fileName).c_str()
-#else
-					fileName.c_str()
-#endif
-				);
+				rdo::ofstream file(rdo::locale::convertToWStr(fileName).c_str());
 				file << stream.rdbuf();
 				file.close();
 			}
@@ -579,14 +551,7 @@ void RDOThreadRepository::loadBMP(REF(tstring) name, REF(rdo::stream) stream) co
 	tstring fileName = m_modelPath + name + ".bmp";
 	if (rdo::File::exist(fileName))
 	{
-		std::ifstream file(
-#ifdef COMPILER_VISUAL_STUDIO
-			rdo::locale::convertToWStr(fileName).c_str()
-#else
-			fileName.c_str()
-#endif
-			, std::ios::in | std::ios::binary
-		);
+		std::ifstream file(rdo::locale::convertToWStr(fileName).c_str(), std::ios::in | std::ios::binary);
 		stream << file.rdbuf();
 		file.close();
 		name = fileName;
@@ -621,14 +586,7 @@ rbool RDOThreadRepository::createFile(CREF(tstring) name, CREF(tstring) ext, REF
 	                 ;
 
 	tstring fullFileName = backupDirName.str();
-	stream.open(
-#ifdef COMPILER_VISUAL_STUDIO
-		rdo::locale::convertToWStr(fullFileName).c_str()
-#else
-		fullFileName.c_str()
-#endif
-		, std::ios::out | std::ios::binary
-	);
+	stream.open(rdo::locale::convertToWStr(fullFileName).c_str(), std::ios::out | std::ios::binary);
 	return stream.is_open();
 }
 
@@ -642,15 +600,7 @@ void RDOThreadRepository::beforeModelStart()
 	}
 	if (m_files[rdoModelObjects::TRC].m_described)
 	{
-		tstring fullFileName = getFullFileName(rdoModelObjects::TRC);
-		m_traceFile.open(
-#ifdef COMPILER_VISUAL_STUDIO
-			rdo::locale::convertToWStr(fullFileName).c_str()
-#else
-			fullFileName.c_str()
-#endif
-			, std::ios::out | std::ios::binary
-		);
+		m_traceFile.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::TRC)).c_str(), std::ios::out | std::ios::binary);
 		if (m_traceFile.is_open())
 		{
 			writeModelFilesInfo(m_traceFile);
@@ -671,15 +621,7 @@ void RDOThreadRepository::stopModel()
 	if (m_files[rdoModelObjects::PMV].m_described)
 	{
 		rdo::ofstream results_file;
-		tstring fullFileName = getFullFileName(rdoModelObjects::PMV);
-		results_file.open(
-#ifdef COMPILER_VISUAL_STUDIO
-			rdo::locale::convertToWStr(fullFileName).c_str()
-#else
-			fullFileName.c_str()
-#endif
-			, std::ios::out | std::ios::binary
-		);
+		results_file.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::PMV)).c_str(), std::ios::out | std::ios::binary);
 		if (results_file.is_open())
 		{
 			writeModelFilesInfo(results_file);
