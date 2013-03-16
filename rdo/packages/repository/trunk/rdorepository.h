@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
 #include <string>
-#include <fstream>
+#include <boost/filesystem/fstream.hpp>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -54,11 +54,11 @@ public:
 	};
 	struct CreateFileInfo: public boost::noncopyable
 	{
-		tstring            m_name;
-		tstring            m_ext;
-		REF(rdo::ofstream) m_stream;
+		tstring                          m_name;
+		tstring                          m_ext;
+		REF(boost::filesystem::ofstream) m_stream;
 
-		CreateFileInfo(CREF(tstring) name, CREF(tstring) ext, REF(rdo::ofstream) stream)
+		CreateFileInfo(CREF(tstring) name, CREF(tstring) ext, REF(boost::filesystem::ofstream) stream)
 			: m_name  (name  )
 			, m_ext   (ext   )
 			, m_stream(stream)
@@ -156,14 +156,14 @@ private:
 
 	typedef boost::posix_time::ptime SystemTime;
 
-	tstring        m_modelName;
-	tstring        m_modelPath;
-	rbool          m_hasModel;
-	rdo::ofstream  m_traceFile;
-	FileList       m_files;
-	rbool          m_realOnlyInDlg;
-	ProjectName    m_projectName;
-	SystemTime     m_systemTime;
+	tstring                      m_modelName;
+	tstring                      m_modelPath;
+	rbool                        m_hasModel;
+	boost::filesystem::ofstream  m_traceFile;
+	FileList                     m_files;
+	rbool                        m_realOnlyInDlg;
+	ProjectName                  m_projectName;
+	SystemTime                   m_systemTime;
 
 	void      resetModelNames ();
 	FindModel updateModelNames();
@@ -176,12 +176,12 @@ private:
 	void      loadFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;
 	void      saveFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool deleteIfEmpty = false) const;
 
-	rbool     createFile(CREF(tstring) name, CREF(tstring) ext, REF(rdo::ofstream) stream) const;
+	rbool     createFile(CREF(tstring) name, CREF(tstring) ext, REF(boost::filesystem::ofstream) stream) const;
 
 	void      beforeModelStart   ();
 	void      stopModel          ();
 	void      trace              (CREF(tstring) message);
-	void      writeModelFilesInfo(REF(rdo::ofstream) stream) const;
+	void      writeModelFilesInfo(REF(boost::filesystem::ofstream) stream) const;
 
 protected:
 	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete

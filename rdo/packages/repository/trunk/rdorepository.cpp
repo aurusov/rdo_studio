@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/format.hpp>
-#include <boost/filesystem.hpp>
+#include <boost/filesystem/operations.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "repository/rdorepository.h"
 #include "utils/rdofile.h"
@@ -433,20 +433,20 @@ void RDOThreadRepository::loadFile(CREF(tstring) fileName, REF(rdo::stream) stre
 			}
 			if (stream.isBinary())
 			{
-				std::ifstream file(rdo::locale::convertToWStr(fileName).c_str(), std::ios::in | std::ios::binary);
+				boost::filesystem::ifstream file(rdo::locale::convertToWStr(fileName), std::ios::in | std::ios::binary);
 				stream << file.rdbuf();
 				file.close();
 			}
 			else
 			{
-				std::ifstream file(rdo::locale::convertToWStr(fileName).c_str());
+				boost::filesystem::ifstream file(rdo::locale::convertToWStr(fileName));
 				stream << file.rdbuf();
 				file.close();
 			}
 /*
 			if (stream.getOpenMode() & std::ios::binary*)
 			{
-				std::ifstream file(rdo::locale::convertToWStr(fileName).c_str(), std::ios::in | std::ios::binary);
+				boost::filesystem::ifstream file(rdo::locale::convertToWStr(fileName), std::ios::in | std::ios::binary);
 				file.seekg(0, std::ios::end);
 				int len = file.tellg();
 				file.seekg(0, std::ios::beg);
@@ -456,7 +456,7 @@ void RDOThreadRepository::loadFile(CREF(tstring) fileName, REF(rdo::stream) stre
 			}
 			else
 			{
-				std::ifstream file(rdo::locale::convertToWStr(fileName).c_str());
+				boost::filesystem::ifstream file(rdo::locale::convertToWStr(fileName));
 				stream << file.rdbuf();
 				file.close();
 			}
@@ -486,13 +486,13 @@ void RDOThreadRepository::saveFile(CREF(tstring) fileName, REF(rdo::stream) stre
 		{
 			if (stream.isBinary())
 			{
-				rdo::ofstream file(rdo::locale::convertToWStr(fileName).c_str(), std::ios::out | std::ios::binary);
+				boost::filesystem::ofstream file(rdo::locale::convertToWStr(fileName), std::ios::out | std::ios::binary);
 				file << stream.rdbuf();
 				file.close();
 			}
 			else
 			{
-				rdo::ofstream file(rdo::locale::convertToWStr(fileName).c_str());
+				boost::filesystem::ofstream file(rdo::locale::convertToWStr(fileName));
 				file << stream.rdbuf();
 				file.close();
 			}
@@ -522,7 +522,7 @@ void RDOThreadRepository::createRDOX()
 		projectVersionAttr.set_value("2");
 		smrVersionAttr    .set_value("2");
 
-		rdo::ofstream ofs(rdoxFileName.c_str());
+		boost::filesystem::ofstream ofs(rdoxFileName);
 		if (ofs.good())
 		{
 			doc.save(ofs);
@@ -551,7 +551,7 @@ void RDOThreadRepository::loadBMP(REF(tstring) name, REF(rdo::stream) stream) co
 	tstring fileName = m_modelPath + name + ".bmp";
 	if (rdo::File::exist(fileName))
 	{
-		std::ifstream file(rdo::locale::convertToWStr(fileName).c_str(), std::ios::in | std::ios::binary);
+		boost::filesystem::ifstream file(rdo::locale::convertToWStr(fileName), std::ios::in | std::ios::binary);
 		stream << file.rdbuf();
 		file.close();
 		name = fileName;
@@ -562,7 +562,7 @@ void RDOThreadRepository::loadBMP(REF(tstring) name, REF(rdo::stream) stream) co
 	}
 }
 
-void RDOThreadRepository::writeModelFilesInfo(REF(rdo::ofstream) stream) const
+void RDOThreadRepository::writeModelFilesInfo(REF(boost::filesystem::ofstream) stream) const
 {
 	stream << "Results_file   = " << getFileExtName(rdoModelObjects::PMV) << "    " << rdo::Time::local().asString() << std::endl;
 	stream << "Run_file       = " << getFileExtName(rdoModelObjects::SMR) << std::endl;
@@ -570,7 +570,7 @@ void RDOThreadRepository::writeModelFilesInfo(REF(rdo::ofstream) stream) const
 	stream << "Resource_file  = " << getFileName(rdoModelObjects::RSS) << getExtention(rdoModelObjects::RSS) << std::endl;
 }
 
-rbool RDOThreadRepository::createFile(CREF(tstring) name, CREF(tstring) ext, REF(rdo::ofstream) stream) const
+rbool RDOThreadRepository::createFile(CREF(tstring) name, CREF(tstring) ext, REF(boost::filesystem::ofstream) stream) const
 {
 	stringstream backupDirName;
 	backupDirName << m_modelPath
@@ -586,7 +586,7 @@ rbool RDOThreadRepository::createFile(CREF(tstring) name, CREF(tstring) ext, REF
 	                 ;
 
 	tstring fullFileName = backupDirName.str();
-	stream.open(rdo::locale::convertToWStr(fullFileName).c_str(), std::ios::out | std::ios::binary);
+	stream.open(rdo::locale::convertToWStr(fullFileName), std::ios::out | std::ios::binary);
 	return stream.is_open();
 }
 
@@ -600,7 +600,7 @@ void RDOThreadRepository::beforeModelStart()
 	}
 	if (m_files[rdoModelObjects::TRC].m_described)
 	{
-		m_traceFile.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::TRC)).c_str(), std::ios::out | std::ios::binary);
+		m_traceFile.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::TRC)), std::ios::out | std::ios::binary);
 		if (m_traceFile.is_open())
 		{
 			writeModelFilesInfo(m_traceFile);
@@ -620,8 +620,8 @@ void RDOThreadRepository::stopModel()
 	}
 	if (m_files[rdoModelObjects::PMV].m_described)
 	{
-		rdo::ofstream results_file;
-		results_file.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::PMV)).c_str(), std::ios::out | std::ios::binary);
+		boost::filesystem::ofstream results_file;
+		results_file.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::PMV)), std::ios::out | std::ios::binary);
 		if (results_file.is_open())
 		{
 			writeModelFilesInfo(results_file);
