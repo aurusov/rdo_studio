@@ -1,8 +1,7 @@
-<HTML>
+﻿<HTML>
 <HEAD>
 <TITLE>Объект прогона</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
-<META http-equiv="Content-type" content="text/html; charset=utf-8" />
 <SCRIPT>
 function toggle_display(e)
 {
@@ -17,39 +16,14 @@ function toggle_display(e)
 <BODY>
 	<DIV>
 		<H1>ОБЪЕКТ ПРОГОНА</H1>
-		<P>В <B>объекте прогона</B> (с расширением <FONT class="syntax">.smr</FONT>) указывают ряд необходимых для управления <A href="../rdo_terms.htm#run">прогоном</A> данных и режимов. Этот объект состоит из двух частей. Первая часть содержит имена файлов, содержащих необходимые <A href="../rdo_terms.htm#object">объекты</A> и режимы прогона.</P>
-		<P>Первой лексемой объекта должно быть зарезервированное слово <FONT class="syntax">Model_name</FONT>, за которым после знака равенства должно следовать имя модели. Имя модели - это <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>, оно не должно совпадать с ранее определенными именами.</P>
-		<P><BR>Далее в <B>первой части объекта</B> в произвольном порядке записываются дескрипторы, описывающие имена объектов и режимы. Формат дескриптора следующий:</P>
+		<P>В <B>объекте прогона</B> (с расширением <FONT class="syntax">.smr</FONT>) указывают ряд необходимых для управления <A href="../rdo_terms.htm#run">прогоном</A> данных и режимов. Этот объект состоит из двух частей. Первая часть содержит режимы прогона.</P>
+		<P><BR>Далее в <B>первой части объекта</B> в произвольном порядке записываются дескрипторы, описывающие режимы. Формат дескриптора следующий:</P>
 		<PRE class="syntax">&lt;зарезервированное_слово&gt; = &lt;значение&gt;</PRE>
 		<P>Ниже приведены имена зарезервированных слов и возможных значений с пояснениями.</P>
 		<TABLE class="visible" style="width: 95.5%">
 			<TR valign="top">
 				<TH align="left" width="20%">Зарезервированное слово</TH>
 				<TH align="left" width="80%">Описание</TH>
-			</TR>
-			<TR valign="top"><A name="resource_file"></A>
-				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Resource_file</FONT></TD>
-				<TD class="visible" width="80%">Задает имя объекта ресурсов. Значением является имя файла объекта без расширения.</TD>
-			</TR>
-			<TR valign="top"><A name="opriev_file"></A>
-				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">OprIev_file</FONT></TD>
-				<TD class="visible" width="80%">Задает имя объекта операций. Значением является имя файла объекта без расширения.</TD>
-			</TR>
-			<TR valign="top"><A name="frame_file"></A>
-				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Frame_file</FONT></TD>
-				<TD class="visible" width="80%">Задает имя объекта кадров. Значением является имя файла объекта без расширения. Если дескриптор не указан, кадры не загружаются и не могут быть отображены.</TD>
-			</TR>
-			<TR valign="top"><A name="statistic_file"></A>
-				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Statistic_file</FONT></TD>
-				<TD class="visible" width="80%">Задает имя объекта описания результирующих показателей. Значением является имя файла объекта без расширения. Если дескриптор не указан, результирующие показатели не собираются.</TD>
-			</TR>
-			<TR valign="top"><A name="results_file"></A>
-				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Results_file</FONT></TD>
-				<TD class="visible" width="80%">Задает имя объекта результатов. Значением является имя файла объекта без расширения. Если дескриптор не указан, объект не создается.</TD>
-			</TR>
-			<TR valign="top"><A name="trace_file"></A>
-				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Trace_file</FONT></TD>
-				<TD class="visible" width="80%">Задает имя объекта трассировки. Значением является имя файла объекта без расширения. Если дескриптор не указан, объект не создается.</TD>
 			</TR>
 			<TR valign="top"><A name="show_mode"></A>
 				<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Show_mode</FONT></TD>
@@ -83,8 +57,8 @@ function toggle_display(e)
 				<TD class="visible" width="80%">Задает время окончания выдачи информации в объект трассировки. Указывается вещественной численной константой. Значение по умолчанию - 10.0Е+30.</TD>
 			</TR>
 		</TABLE>
-		<P>Указание имен файлов <A href="../rdo_base/rdo_base_resources.htm">объектов ресурсов</A>&nbsp; в первой части объекта прогона обязательно. Остальные дескрипторы могут отсутствовать. В этом случае используется значение по умолчанию.</P>
-		<P><BR><B>Во второй части объекта</B> задают в произвольном порядке <A href="#break_pnt">точки останова</A>, <A href="#term_cond">условие окончания прогона</A>, <A href="#const_new">новые начальные значения констант</A>, <A href="#res_param_new">параметров ресурсов</A> и <A href="#seed_new">баз генераторов последовательностей</A>.
+		<P>Дескрипторы могут отсутствовать. В этом случае используется значение по умолчанию.</P>
+		<P><BR><B>Во второй части объекта</B> задают в произвольном порядке <A href="#break_pnt">точки останова</A>, <A href="#term_cond">условие окончания прогона</A>, <A href="#const_new">новые начальные значения констант</A>, <A href="#res_param_new">параметров ресурсов</A>, <A href="#seed_new">баз генераторов последовательностей</A>, а также можно задать <A href="#multirun">серию экспериментов</A>.
 		<P><BR><A name="term_cond"></A>Задание <B>условия окончания прогона</B> имеет следующий формат:</P>
 		<PRE class="syntax">Terminate_if &lt;логическое_выражение&gt;</PRE>
 		<P>Прогон будет автоматически завершен в тот момент, когда значением указанного логического выражения станет ИСТИНА.</P>
@@ -103,16 +77,17 @@ function toggle_display(e)
 		<P><BR><A name="seed_new"></A>Формат задания <B>нового начального значения базы генераторов последовательности</B>:</P>
 		<PRE class="syntax">&lt;имя_последовательности&gt;.Seed = &lt;значение&gt;</PRE>
 		<P>Имя последовательности - это одно из имен, указанных в <A href="rdo_obj_const_fun_sec.htm">объекте констант</A> при описании последовательностей. Оно идентифицирует последовательность, для которой задается значение базы. Значение задают <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A> целого типа в диапазоне -2147483647…2147483647.</P>
+		<P><BR><A name="multirun"></A>Формат задания <B>серии экспериментов</B>:</P>
+		<PRE class="syntax">
+{
+  <объект прогона>
+}
+		</PRE>
+		В объект прогона могут входить дискрипторы как с первой части, так и со второй.
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="samples">Model_name = example
-Resource_file = example
-OprIev_file = example
-Frame_file = example
-Statistic_file = example
-Results_file = example
-Trace_file = example
-Show_mode = Animation
+		<PRE class="samples">Show_mode      = NoShow
+Show_rate      = 3600.0
 
 Terminate_if Ресурс_2.Параметр_5 = Занят and
              Ресурс_1.Параметр_1 &gt; 10
@@ -125,6 +100,25 @@ Terminate_if Ресурс_2.Параметр_5 = Занят and
 
 Последовательность_4.Seed = 363252</PRE>
 		</DIV>
+		<A href="" class="ref" onclick="return toggle_display(v2);"><H4>Пример задания серии экспериментов</H4></A>
+		<DIV style="display:none" id="v2">
+		<PRE class="samples">
+Show_mode      = NoShow
+Show_rate      = 3600.0
+
+{
+	Образец_прихода_клиента.planning( time_now )
+	Интервал_прихода.seed = 987654323
+	Terminate_if Time_now >= 12 * 7 * 60
+}
+
+{
+	Образец_прихода_клиента.planning( time_now )
+	Интервал_прихода.seed = 123549
+	Terminate_if Time_now >= 12 * 7 * 60
+}
+		</PRE>
+		</DIV>
 		<H4>См. также</H4>
 		<P><A href="../rdo_base/rdo_base_res_types.htm">Типы ресурсов</A></P>
 		<P><A href="../rdo_base/rdo_base_resources.htm">Описание ресурсов</A></P>
@@ -134,4 +128,3 @@ Terminate_if Ресурс_2.Параметр_5 = Занят and
 	</DIV>
 	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>
-</HTML>
