@@ -91,6 +91,7 @@ rbool RDOSMR::Check()
 void RDOSMR::setIncrement()
 {
 	++m_increment;
+	m_runCount = m_increment;
 }
 
 void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
