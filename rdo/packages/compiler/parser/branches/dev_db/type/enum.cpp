@@ -202,4 +202,39 @@ void RDOEnumType::add(CREF(LPRDOValue) pNext)
 	getEnums()->add(pNext->value().getAsString());
 }
 
+rdo::runtime::LPRDOEnumType RDOEnumType::getEnums() const
+{
+	return m_pType.object_static_cast<rdo::runtime::RDOEnumType>();
+}
+
+rbool RDOEnumType::operator== (CREF(RDOEnumType) pEnumType) const
+{
+	return getEnums()->getValues() == pEnumType.getEnums()->getValues();
+}
+
+rbool RDOEnumType::operator!= (CREF(RDOEnumType) pEnumType) const
+{
+	return !operator==(pEnumType);
+}
+
+void RDOEnumType::serializeInDB(REF(IDB) db) const
+{
+	if (db.isEmptyContext())
+	{
+		get_default().serializeInDB(db);
+	}
+
+	db.insertRow("enum",QString("DEFAULT,%1")
+		.arg(db.popContext<int>()));
+	int enum_id = db.queryExecIndex("enum");
+
+	for (ruint i = 0; i < getEnums()->getValues().size(); i++)
+	{
+		db.insertRow("enum_valid_value",QString("%1,DEFAULT,'%2',%3")
+			.arg(enum_id)
+			.arg(QString::fromLocal8Bit(getEnums()->getValues().at(i).c_str()))
+			.arg(i));
+	}
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

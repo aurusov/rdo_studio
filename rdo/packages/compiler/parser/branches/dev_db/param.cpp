@@ -47,6 +47,21 @@ void RDOParam::checkDefault()
 	}
 }
 
+CREF(tstring) RDOParam::name() const
+{
+	return src_info().src_text();
+}
+
+LPTypeInfo RDOParam::getTypeInfo() const
+{
+	return m_pType;
+}
+
+CREF(LPRDOValue) RDOParam::getDefault () const
+{
+	return m_pDefault;
+}
+
 Context::FindResult RDOParam::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pSwitchExpression);

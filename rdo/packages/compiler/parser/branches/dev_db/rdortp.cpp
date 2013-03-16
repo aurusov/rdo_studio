@@ -3,6 +3,7 @@
   \file      rdortp.cpp
   \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
   \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      11.06.2006
   \brief     РўРёРїС‹ СЂРµСЃСѓСЂСЃРѕРІ
   \indent    4T
@@ -11,6 +12,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -35,6 +37,62 @@ void rtperror(PTR(char) message)
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
 // --------------------------------------------------------------------------------
+rsint RDORTPResType::getNumber() const
+{
+	return m_number;
+}
+
+rbool RDORTPResType::isPermanent() const
+{
+	return m_permanent;
+}
+
+rbool RDORTPResType::isTemporary() const
+{
+	return !m_permanent;
+}
+
+CREF(RDORTPResType::ParamList) RDORTPResType::getParams() const
+{
+	return m_params;
+}
+
+CREF(rdo::runtime::LPIResourceType) RDORTPResType::getRuntimeResType() const
+{
+	ASSERT(m_pRuntimeResType);
+	return m_pRuntimeResType;
+}
+
+void RDORTPResType::setType(TypeRDOResType type)
+{
+	//! \todo вывести ошибку вместо ASSERT()
+	ASSERT(!(m_type == procRes && type == procTran));
+	ASSERT(!(m_type == procTran && type == procRes));
+	m_type = type;
+}
+
+void RDORTPResType::end()
+{
+	switch (m_type)
+	{
+	case simple:
+		m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceType>::create(m_number).interface_cast<rdo::runtime::IResourceType>();
+		break;
+	case procRes:
+		m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeProccess>::create(m_number).interface_cast<rdo::runtime::IResourceType>();
+		break;
+	case procTran:
+		m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeTransact>::create(m_number).interface_cast<rdo::runtime::IResourceType>();
+		break;
+	default:
+		NEVER_REACH_HERE;
+	}
+	ASSERT(m_pRuntimeResType);
+	m_pType = m_pRuntimeResType;
+	ASSERT(m_pType);
+}
+
+
 RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, TypeRDOResType type)
 	: RDOParserSrcInfo(src_info            )
 	, m_number        (pParser->getRTP_id())
@@ -86,6 +144,26 @@ void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream) const
 	{
 		stream << "  " << (i+1) << " ";
 		getParams().at(i)->writeModelStructure(stream);
+	}
+}
+
+void RDORTPResType::serializeInDB(REF(IDB) db) const
+{
+	db.insertRow("rtp",QString("DEFAULT,'%1',%2")
+		.arg(QString::fromLocal8Bit(name().c_str()))
+		.arg(m_permanent ? "true" : "false"));
+
+	int indexRTP = db.queryExecIndex("rtp");
+	
+	std::vector<int> indexContainer;
+	indexContainer.push_back(indexRTP);
+	indexContainer.push_back(-1);
+
+	BOOST_FOREACH(CREF(LPRDORTPParam) param, m_params)
+	{
+		++indexContainer[1];
+		db.pushContext<std::vector<int>>(indexContainer);
+		param->serializeInDB(db);
 	}
 }
 

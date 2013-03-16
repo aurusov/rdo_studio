@@ -115,6 +115,11 @@ RDOValue::RDOValue(CREF(rdo::runtime::RDOValue) value, CREF(RDOParserSrcInfo) sr
 	ASSERT(m_pType);
 }
 
+void RDOValue::serializeInDB(REF(IDB) db) const
+{
+	value().serializeInDB(db);
+}
+
 CREF(LPTypeInfo) RDOValue::typeInfo() const
 {
 	return m_pType;

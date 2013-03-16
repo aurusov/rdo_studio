@@ -17,6 +17,7 @@
 #include "simulator/compiler/parser/rdoparser_error.h"
 #include "simulator/runtime/calc/operation/calc_unary.h"
 #include "simulator/runtime/rdo_resource.h"
+#include "simulator/runtime/headers/db/interface_db.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -77,6 +78,11 @@ void RDOType__unknow::writeModelStructure(REF(rdo::ostream) stream) const
 	NEVER_REACH_HERE;
 }
 
+void RDOType__unknow::serializeInDB(REF(IDB) db) const
+{
+	NEVER_REACH_HERE;
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__void
 // --------------------------------------------------------------------------------
@@ -122,6 +128,11 @@ void RDOType__void::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	UNUSED(stream);
 	parser::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать void-тип в отчет");
+	NEVER_REACH_HERE;
+}
+
+void RDOType__void::serializeInDB(REF(IDB) db) const
+{
 	NEVER_REACH_HERE;
 }
 
@@ -190,6 +201,19 @@ void RDOType__int::writeModelStructure(REF(rdo::ostream) stream) const
 	stream << "I" << std::endl;
 }
 
+void RDOType__int::serializeInDB(REF(IDB) db) const
+{
+	if (db.isEmptyContext())
+	{
+		get_default().serializeInDB(db);
+	}
+
+	db.insertRow("int",QString("DEFAULT,%1,NULL,NULL")
+		.arg(db.popContext<int>()));
+
+	db.pushContext(db.queryExecIndex("int"));
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__real
 // --------------------------------------------------------------------------------
@@ -247,6 +271,19 @@ rdo::runtime::RDOValue RDOType__real::get_default() const
 void RDOType__real::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << "R" << std::endl;
+}
+
+void RDOType__real::serializeInDB(REF(IDB) db) const
+{
+	if (db.isEmptyContext())
+	{
+		get_default().serializeInDB(db);
+	}
+
+	db.insertRow("real",QString("DEFAULT,%1,NULL,NULL")
+		.arg(db.popContext<int>()));
+
+	db.pushContext(db.queryExecIndex("real"));
 }
 
 // --------------------------------------------------------------------------------
@@ -307,6 +344,19 @@ void RDOType__string::writeModelStructure(REF(rdo::ostream) stream) const
 	stream << "S" << std::endl;
 }
 
+void RDOType__string::serializeInDB(REF(IDB) db) const
+{
+	if (db.isEmptyContext())
+	{
+		get_default().serializeInDB(db);
+	}
+
+	db.insertRow("string",QString("DEFAULT,%1")
+		.arg(db.popContext<int>()));
+
+	db.pushContext(db.queryExecIndex("string"));
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__identificator
 // --------------------------------------------------------------------------------
@@ -356,6 +406,19 @@ void RDOType__identificator::writeModelStructure(REF(rdo::ostream) stream) const
 	UNUSED(stream);
 	parser::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать тип идектификатор в отчет");
 	NEVER_REACH_HERE;
+}
+
+void RDOType__identificator::serializeInDB(REF(IDB) db) const
+{
+	if (db.isEmptyContext())
+	{
+		get_default().serializeInDB(db);
+	}
+
+	db.insertRow("identificator",QString("DEFAULT,%1")
+		.arg(db.popContext<int>()));
+
+	db.pushContext(db.queryExecIndex("identificator"));
 }
 
 // --------------------------------------------------------------------------------
@@ -414,6 +477,19 @@ rdo::runtime::RDOValue RDOType__bool::get_default() const
 void RDOType__bool::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << "B" << std::endl;
+}
+
+void RDOType__bool::serializeInDB(REF(IDB) db) const
+{
+	if (db.isEmptyContext())
+	{
+		get_default().serializeInDB(db);
+	}
+
+	db.insertRow("bool",QString("DEFAULT,%1")
+		.arg(db.popContext<int>()));
+
+	db.pushContext(db.queryExecIndex("bool"));
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

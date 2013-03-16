@@ -39,4 +39,22 @@ void RDORTPParam::writeModelStructure(REF(rdo::ostream) stream) const
 	getTypeInfo()->type()->writeModelStructure(stream);
 }
 
+void RDORTPParam::serializeInDB(REF(IDB) db) const
+{
+	std::vector<int> indexContainer = db.popContext<std::vector<int>>();
+
+	LPRDOValue def_val = getDefault();
+	if (def_val->defined())
+	{
+		def_val->serializeInDB(db);
+	}
+
+	getTypeInfo()->type()->serializeInDB(db);
+	db.insertRow("param_of_type",QString("%1,'%2',%3,%4")
+			.arg(indexContainer[1])
+			.arg(QString::fromLocal8Bit(name().c_str()))
+			.arg(indexContainer[0])
+			.arg(db.popContext<int>()));
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

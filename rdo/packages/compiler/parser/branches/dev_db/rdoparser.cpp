@@ -11,11 +11,14 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_rdo.h"
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/rdorss.h"
+#include "simulator/compiler/parser/rdortp.h"
+#include "simulator/runtime/src/db/init_struct_db.h"
 #include "simulator/runtime/calc/calc_process.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
 #include "simulator/runtime/calc/function/calc_function_system.h"
@@ -422,6 +425,11 @@ void RDOParser::parse()
 		it->second->parse(this);
 		m_parser_item = NULL;
 		it++;
+	}
+
+	BOOST_FOREACH(const LPRDORTPResType& pResType, getRTPResTypes())
+	{
+		pResType->serializeInDB(*(runtime()->getDB()));
 	}
 }
 

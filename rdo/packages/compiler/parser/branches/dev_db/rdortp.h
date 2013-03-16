@@ -81,6 +81,8 @@ public:
 
 	void writeModelStructure(REF(rdo::ostream) stream) const;
 
+	virtual void serializeInDB(REF(IDB) db) const;
+
 	DECLARE_IType;
 
 private:
@@ -221,7 +223,5 @@ DECLARE_POINTER(RDORTPResType);
 //};
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#include "simulator/compiler/parser/rdortp.inl"
 
 #endif // _RDORTP_H_

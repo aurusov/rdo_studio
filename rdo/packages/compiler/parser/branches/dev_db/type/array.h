@@ -36,6 +36,8 @@ private:
 	RDOArrayType         (CREF(LPTypeInfo) pItemType, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOArrayType();
 
+	virtual void serializeInDB(REF(IDB) db) const;
+
 	LPTypeInfo m_pItemType;
 
 	DECLARE_IType;

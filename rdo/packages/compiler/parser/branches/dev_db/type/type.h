@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_model_i.h"
 #include "simulator/compiler/parser/type/type_i.h"
+#include "simulator/runtime/type/type_db_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -22,11 +23,12 @@ class RDOType
 	: public virtual rdo::counter_reference
 	, public IType
 	, public IModelStructure
+	, public rdo::runtime::ISerializeTypeInDB
 {
 DECLARE_FACTORY(RDOType)
 public:
-	virtual CREF(rdo::runtime::LPRDOType)    type() const = 0;
-	virtual rdo::runtime::RDOType::TypeID  typeID() const = 0;;
+	virtual CREF(rdo::runtime::LPRDOType)   type() const = 0;
+	virtual rdo::runtime::RDOType::TypeID typeID() const = 0;
 
 protected:
 	RDOType();
