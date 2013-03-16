@@ -166,7 +166,7 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 		{
 			msg.lock();
 			PTR(CreateFileInfo) data = static_cast<PTR(CreateFileInfo)>(msg.param);
-			createFile(data->m_name, data->m_ext, data->m_stream);
+			createFile(data->m_name, data->m_stream);
 			msg.unlock();
 			break;
 		}
@@ -568,7 +568,7 @@ void RDOThreadRepository::writeModelFilesInfo(REF(boost::filesystem::ofstream) s
 	stream << "Resource_file  = " << getFileName(rdoModelObjects::RSS) << getExtention(rdoModelObjects::RSS) << std::endl;
 }
 
-rbool RDOThreadRepository::createFile(CREF(tstring) name, CREF(tstring) ext, REF(boost::filesystem::ofstream) stream) const
+rbool RDOThreadRepository::createFile(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream) const
 {
 	stringstream backupDirName;
 	backupDirName << m_modelPath
@@ -579,8 +579,8 @@ rbool RDOThreadRepository::createFile(CREF(tstring) name, CREF(tstring) ext, REF
 	                 % m_systemTime.time_of_day().hours  ()
 	                 % m_systemTime.time_of_day().minutes()
 	                 % m_systemTime.time_of_day().seconds()
-	                 % name
-	                 % ext
+	                 % name.filename()
+	                 % name.extension()
 	                 ;
 
 	tstring fullFileName = backupDirName.str();

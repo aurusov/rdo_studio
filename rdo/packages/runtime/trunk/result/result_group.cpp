@@ -48,8 +48,7 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
 			ASSERT(pThreadProxy);
 			rdo::repository::RDOThreadRepository::CreateFileInfo file(
-				boost::str(boost::format("- %1% - full") % m_name),
-				"txt",
+				boost::str(boost::format("- %1% - full.txt") % m_name),
 				m_streamFull
 			);
 			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
@@ -59,8 +58,7 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
 			ASSERT(pThreadProxy);
 			rdo::repository::RDOThreadRepository::CreateFileInfo file(
-				boost::str(boost::format("- %1% - table") % m_name),
-				"txt",
+				boost::str(boost::format("- %1% - table.txt") % m_name),
 				m_streamTable
 			);
 			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);

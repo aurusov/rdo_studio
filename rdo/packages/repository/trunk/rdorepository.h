@@ -54,13 +54,11 @@ public:
 	};
 	struct CreateFileInfo: public boost::noncopyable
 	{
-		tstring                          m_name;
-		tstring                          m_ext;
+		boost::filesystem::path          m_name;
 		REF(boost::filesystem::ofstream) m_stream;
 
-		CreateFileInfo(CREF(tstring) name, CREF(tstring) ext, REF(boost::filesystem::ofstream) stream)
+		CreateFileInfo(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream)
 			: m_name  (name  )
-			, m_ext   (ext   )
 			, m_stream(stream)
 		{}
 	};
@@ -176,7 +174,7 @@ private:
 	void      loadFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;
 	void      saveFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool deleteIfEmpty = false) const;
 
-	rbool     createFile(CREF(tstring) name, CREF(tstring) ext, REF(boost::filesystem::ofstream) stream) const;
+	rbool     createFile(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream) const;
 
 	void      beforeModelStart   ();
 	void      stopModel          ();
