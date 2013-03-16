@@ -84,15 +84,11 @@ public:
 	};
 
 	ModelStyle();
-	virtual ~ModelStyle();
+	~ModelStyle();
 
 	ModelStyle& operator =( const ModelStyle& style );
 	rbool operator ==( const ModelStyle& style ) const;
 	rbool operator !=( const ModelStyle& style ) const;
-
-	void  init( CREF(QString) _groupName = "" );
-	rbool load();
-	rbool save() const;
 
 	ModelAutoComplete autoComplete;
 	ModelMargin       margin;

@@ -26,6 +26,7 @@ FrameStyle::FrameStyle(): StyleBase()
 	backgroundColor = QColor( 0x00, 0x80, 0x80 );
 
 	defaultStyle = StyleFont::NONE;
+	font = StyleFont::getFrameFont();
 }
 
 FrameStyle::~FrameStyle()
@@ -48,12 +49,6 @@ rbool FrameStyle::operator ==( const FrameStyle& style ) const
 rbool FrameStyle::operator !=( const FrameStyle& style ) const
 {
 	return !(*this == style);
-}
-
-void FrameStyle::init( CREF(QString) _groupName )
-{
-	StyleBase::init( _groupName );
-	font = StyleFont::getFrameFont();
 }
 
 FrameStyle FrameStyle::getDefaultStyle()

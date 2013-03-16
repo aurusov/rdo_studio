@@ -27,14 +27,11 @@ class ParserStyle: public EditStyle
 {
 public:
 	ParserStyle();
-	virtual ~ParserStyle();
+	~ParserStyle();
 
 	ParserStyle& operator =( const ParserStyle& style );
 	rbool operator ==( const ParserStyle& style ) const;
 	rbool operator !=( const ParserStyle& style ) const;
-
-	rbool load();
-	rbool save() const;
 
 	void loadStyle(QSettings& settings);
 	void saveStyle(QSettings& settings) const;

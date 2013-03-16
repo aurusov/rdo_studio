@@ -85,15 +85,11 @@ public:
 	};
 
 	EditStyle();
-	virtual ~EditStyle();
+	~EditStyle();
 
 	EditStyle& operator =( const EditStyle& style );
 	rbool operator ==( const EditStyle& style ) const;
 	rbool operator !=( const EditStyle& style ) const;
-
-	void init( CREF(QString) _groupName = "" );
-	rbool load();
-	rbool save() const;
 
 	void loadStyle(QSettings& settings);
 	void saveStyle(QSettings& settings) const;

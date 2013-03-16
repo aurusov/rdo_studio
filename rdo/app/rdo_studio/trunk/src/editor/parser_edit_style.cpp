@@ -105,42 +105,24 @@ rbool ParserStyle::operator !=( const ParserStyle& style ) const
 	return !(*this == style);
 }
 
-rbool ParserStyle::load()
-{
-	if ( EditStyle::load() ) {
-		QSettings settings;
-		settings.beginGroup(groupName + "theme");
-		loadStyle(settings);
-		settings.endGroup();
-		return true;
-	}
-	return false;
-}
-
-rbool ParserStyle::save() const
-{
-	if ( EditStyle::save() ) {
-		QSettings settings;
-		settings.beginGroup(groupName + "theme");
-		saveStyle(settings);
-		settings.endGroup();
-		return true;
-	}
-	return false;
-}
-
 void ParserStyle::loadStyle(QSettings& settings)
 {
 	EditStyle::loadStyle(settings);
 
+	settings.beginGroup("theme");
 	settings >> *this;
+	settings.endGroup();
+	
 }
 
 void ParserStyle::saveStyle(QSettings& settings) const
 {
 	EditStyle::saveStyle(settings);
 
+	settings.beginGroup("theme");
 	settings << *this;
+	settings.endGroup();
+	
 }
 
 rbool ParserStyle::styleDefault( const int styleType ) const

@@ -199,56 +199,34 @@ rbool ModelStyle::operator !=( const ModelStyle& style ) const
 	return !(*this == style);
 }
 
-void ModelStyle::init( CREF(QString) _groupName )
-{
-	ParserStyle::init( _groupName );
-}
-
-rbool ModelStyle::load()
-{
-	if (ParserStyle::load()) {
-		QSettings settings;
-		settings.beginGroup(groupName + "theme");
-		loadStyle(settings);
-		settings.endGroup();
-		settings.beginGroup(groupName + "auto_complete");
-		autoComplete.load(settings);
-		settings.endGroup();
-		settings.beginGroup(groupName + "margin");
-		margin.load(settings);
-		settings.endGroup();
-		return true;
-	}
-	return false;
-}
-
-rbool ModelStyle::save() const
-{
-	if ( ParserStyle::save() ) {
-		QSettings settings;
-		settings.beginGroup(groupName + "auto_complete");
-		autoComplete.save(settings);
-		settings.endGroup();
-		settings.beginGroup(groupName + "margin");
-		margin.save(settings);
-		settings.endGroup();
-		return true;
-	}
-	return false;
-}
-
 void ModelStyle::loadStyle(QSettings& settings)
 {
 	ParserStyle::loadStyle(settings);
 
+	settings.beginGroup("theme");
 	settings >> *this;
+	settings.endGroup();
+	settings.beginGroup("auto_complete");
+	autoComplete.load(settings);
+	settings.endGroup();
+	settings.beginGroup("margin");
+	margin.load(settings);
+	settings.endGroup();
 }
 
 void ModelStyle::saveStyle(QSettings& settings ) const
 {
 	ParserStyle::saveStyle(settings);
 
+	settings.beginGroup("theme");
 	settings << *this;
+	settings.endGroup();
+	settings.beginGroup("auto_complete");
+	autoComplete.save(settings);
+	settings.endGroup();
+	settings.beginGroup("margin");
+	margin.save(settings);
+	settings.endGroup();
 }
 
 ModelStyle ModelStyle::getDefaultStyle()

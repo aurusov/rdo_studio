@@ -62,15 +62,11 @@ OBJECT(StyleBase)
 {
 public:
 	StyleBase();
-	virtual ~StyleBase();
+	~StyleBase();
 
 	StyleBase& operator =(const StyleBase& style);
 	rbool operator ==(const StyleBase& style) const;
 	rbool operator !=(const StyleBase& style) const;
-
-	void init(CREF(QString) _groupName = "");
-	rbool load();
-	rbool save() const;
 
 	void loadStyle(QSettings& settings);
 	void saveStyle(QSettings& settings) const;
@@ -80,11 +76,6 @@ public:
 
 	QColor defaultColor;
 	QColor backgroundColor;
-
-
-
-protected:
-	QString groupName;
 };
 
 QSettings& operator<< (QSettings& settings, const StyleBase& style);

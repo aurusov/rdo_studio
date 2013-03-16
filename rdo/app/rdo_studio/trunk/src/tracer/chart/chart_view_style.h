@@ -48,15 +48,13 @@ class ChartViewStyle: public style::StyleBase
 {
 public:
 	ChartViewStyle();
-	virtual ~ChartViewStyle();
+	~ChartViewStyle();
 
 	ChartViewStyle& operator =(const ChartViewStyle& style);
 	rbool operator ==(const ChartViewStyle& style) const;
 	rbool operator !=(const ChartViewStyle& style) const;
 
 	void init(CREF(QString) _groupName = "");
-	rbool load();
-	rbool save() const;
 
 	void loadStyle(QSettings& settings);
 	void saveStyle(QSettings& settings) const;

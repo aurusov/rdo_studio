@@ -24,7 +24,7 @@ class LogStyle: public EditStyle
 {
 public:
 	LogStyle();
-	virtual ~LogStyle();
+	~LogStyle();
 
 	LogStyle& operator =( const LogStyle& style );
 	rbool operator ==( const LogStyle& style ) const;

@@ -24,14 +24,11 @@ class FindStyle: public LogStyle
 {
 public:
 	FindStyle();
-	virtual ~FindStyle();
+	~FindStyle();
 
 	FindStyle& operator =( const FindStyle& style );
 	rbool operator ==( const FindStyle& style ) const;
 	rbool operator !=( const FindStyle& style ) const;
-
-	rbool load();
-	rbool save() const;
 
 	void loadStyle(QSettings& settings);
 	void saveStyle(QSettings& settings) const;

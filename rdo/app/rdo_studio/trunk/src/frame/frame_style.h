@@ -24,7 +24,7 @@ class FrameStyle: public rdo::gui::style::StyleBase
 {
 public:
 	FrameStyle();
-	virtual ~FrameStyle();
+	~FrameStyle();
 
 	FrameStyle& operator =( const FrameStyle& style );
 	rbool operator ==( const FrameStyle& style ) const;

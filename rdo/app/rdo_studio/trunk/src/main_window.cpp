@@ -320,33 +320,44 @@ void MainWindow::init()
 	// Кто-то должен поднять кернел и треды
 	new rdo::gui::model::Model();
 
-	style_editor.init( "editor" );
-	style_editor.load();
+	QSettings settings;
+	settings.beginGroup("style");
+	
+	settings.beginGroup("editor");
+	style_editor.loadStyle(settings);
+	settings.endGroup();
 
-	style_build.init( "build" );
+	settings.beginGroup("build");
 	style_build.window.wordWrap          = true;
 	style_build.window.showHorzScrollBar = false;
-	style_build.load();
+	style_build.loadStyle(settings);
+	settings.endGroup();
 
-	style_debug.init( "debug" );
+	settings.beginGroup("debug");
 	style_debug.window.wordWrap          = true;
 	style_debug.window.showHorzScrollBar = false;
-	style_debug.load();
+	style_debug.loadStyle(settings);
+	settings.endGroup();
 
-	style_trace.init( "trace" );
-	style_trace.load();
+	settings.beginGroup("trace");
+	style_trace.loadStyle(settings);
+	settings.endGroup();
 
-	style_results.init( "results" );
-	style_results.load();
+	settings.beginGroup("results");
+	style_results.loadStyle(settings);
+	settings.endGroup();
 
-	style_find.init( "find" );
-	style_find.load();
+	settings.beginGroup("find");
+	style_find.loadStyle(settings);
+	settings.endGroup();
 
-	style_frame.init( "frame" );
-	style_frame.load();
+	settings.beginGroup("frame");
+	style_frame.loadStyle(settings);
+	settings.endGroup();
 
-	style_chart.init( "chart" );
-	style_chart.load();
+	settings.beginGroup("chart");
+	style_chart.loadStyle(settings);
+	settings.endGroup();
 
 	m_pDockBuild   = new DockBuild  (this);
 	m_pDockDebug   = new DockDebug  (this);
@@ -414,14 +425,41 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	if (event->isAccepted())
 	{
 		update_stop();
-		style_editor.save();
-		style_build.save();
-		style_debug.save();
-		style_trace.save();
-		style_results.save();
-		style_find.save();
-		style_frame.save();
-		style_chart.save();
+		
+		QSettings settings;
+		settings.beginGroup("style");
+
+		settings.beginGroup("editor");
+		style_editor.saveStyle(settings);
+		settings.endGroup();
+		
+		settings.beginGroup("build");
+		style_build.saveStyle(settings);
+		settings.endGroup();
+		
+		settings.beginGroup("debug");
+		style_debug.saveStyle(settings);
+		settings.endGroup();
+		
+		settings.beginGroup("trace");
+		style_trace.saveStyle(settings);
+		settings.endGroup();
+
+		settings.beginGroup("results");
+		style_results.saveStyle(settings);
+		settings.endGroup();
+
+		settings.beginGroup("find");
+		style_find.saveStyle(settings);
+		settings.endGroup();
+
+		settings.beginGroup("frame");
+		style_frame.saveStyle(settings);
+		settings.endGroup();
+
+		settings.beginGroup("chart");
+		style_chart.saveStyle(settings);
+		settings.endGroup();
 	}
 }
 

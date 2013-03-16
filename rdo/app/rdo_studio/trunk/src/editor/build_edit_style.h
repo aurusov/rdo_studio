@@ -24,14 +24,11 @@ class BuildStyle: public LogStyle
 {
 public:
 	BuildStyle();
-	virtual ~BuildStyle();
+	~BuildStyle();
 
 	BuildStyle& operator =( const BuildStyle& style );
 	rbool operator ==( const BuildStyle& style ) const;
 	rbool operator !=( const BuildStyle& style ) const;
-
-	rbool load();
-	rbool save() const;
 
 	void loadStyle(QSettings& settings);
 	void saveStyle(QSettings& settings) const;

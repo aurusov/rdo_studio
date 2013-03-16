@@ -70,7 +70,7 @@ class LogStyle: public style::StyleBase
 {
 public:
 	LogStyle();
-	virtual ~LogStyle();
+	~LogStyle();
 
 	virtual rbool getItemColors( int index,          LogColorPair &colors ) const;
 	virtual rbool getItemColors( CREF(tstring) item, LogColorPair &colors ) const;
@@ -78,10 +78,6 @@ public:
 	LogStyle& operator =( const LogStyle& style );
 	rbool operator ==( const LogStyle& style ) const;
 	rbool operator !=( const LogStyle& style ) const;
-
-	void  init( CREF(QString) _groupName = "" );
-	rbool load();
-	rbool save() const;
 
 	void loadStyle(QSettings& settings);
 	void saveStyle(QSettings& settings) const;

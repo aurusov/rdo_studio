@@ -99,6 +99,8 @@ ChartViewStyle::ChartViewStyle()
 
 	titleStyle  = StyleFont::BOLD;
 	legendStyle = StyleFont::NONE;
+
+	font = StyleFont::getChartViewFont();
 }
 
 ChartViewStyle::~ChartViewStyle()
@@ -146,48 +148,27 @@ rbool ChartViewStyle::operator !=(const ChartViewStyle& style) const
 	return !(*this == style);
 }
 
-void ChartViewStyle::init(CREF(QString) _groupName)
-{
-	StyleBase::init(_groupName);
-	font = StyleFont::getChartViewFont();
-}
-
-rbool ChartViewStyle::load()
-{
-	if (StyleBase::load())
-	{
-		QSettings settings;
-		settings.beginGroup(groupName + "fonts_ticks");
-		pFontsTicks.load(settings);
-		settings.endGroup();
-		return true;
-	}
-	return false;
-}
-
-rbool ChartViewStyle::save() const
-{
-	if (StyleBase::save())
-	{
-		QSettings settings;
-		settings.beginGroup(groupName + "fonts_ticks");
-		pFontsTicks.save(settings);
-		settings.endGroup();
-		return true;
-	}
-	return false;
-}
-
 void ChartViewStyle::loadStyle(QSettings& settings)
 {
 	StyleBase::loadStyle(settings);
+
+	settings.beginGroup("theme");
 	settings >> *this;
+	settings.endGroup();
+	settings.beginGroup("fonts_ticks");
+	pFontsTicks.load(settings);
+	settings.endGroup();	
 }
 
 void ChartViewStyle::saveStyle(REF(QSettings) settings) const
 {
 	StyleBase::saveStyle(settings);
+	settings.beginGroup("theme");
 	settings << *this;
+	settings.endGroup();
+	settings.beginGroup("fonts_ticks");
+	pFontsTicks.save(settings);
+	settings.endGroup();	
 }
 
 ChartViewStyle ChartViewStyle::getDefaultStyle()

@@ -213,6 +213,8 @@ LogStyle::LogStyle()
 
 	borders.vertBorder = 1;
 	borders.horzBorder = 2;
+
+	font = StyleFont::getTracerLogFont();
 }
 
 LogStyle::~LogStyle()
@@ -371,50 +373,28 @@ rbool LogStyle::operator !=( const LogStyle& style ) const
 	return !(*this == style);
 }
 
-void LogStyle::init( CREF(QString) _groupName )
-{
-	StyleBase::init( _groupName );
-	font = StyleFont::getTracerLogFont();
-}
-
-rbool LogStyle::load()
-{
-	if (StyleBase::load()) {
-		QSettings settings;
-		settings.beginGroup(groupName + "style");
-		loadStyle(settings);
-		settings.endGroup();
-		settings.beginGroup(groupName + "borders");
-		borders.load(settings);
-		settings.endGroup();
-		return true;
-	}
-	return false;
-}
-
-rbool LogStyle::save() const
-{
-	if (StyleBase::save()) {
-		QSettings settings;
-		settings.beginGroup(groupName + "style");
-		saveStyle(settings);
-		settings.endGroup();
-		settings.beginGroup(groupName + "borders");
-		borders.save(settings);
-		settings.endGroup();
-		return true;
-	}
-	return false;
-}
-
 void LogStyle::loadStyle(QSettings& settings)
 {
+	StyleBase::loadStyle(settings);
+
+	settings.beginGroup("theme");
 	settings >> *this;
+	settings.endGroup();
+	settings.beginGroup("borders");
+	borders.load(settings);
+	settings.endGroup();
 }
 
 void LogStyle::saveStyle(QSettings& settings) const
 {
+	StyleBase::saveStyle(settings);
+
+	settings.beginGroup("theme");
 	settings << *this;
+	settings.endGroup();
+	settings.beginGroup("borders");
+	borders.save(settings);
+	settings.endGroup();
 }
 
 LogStyle LogStyle::getDefaultStyle()
