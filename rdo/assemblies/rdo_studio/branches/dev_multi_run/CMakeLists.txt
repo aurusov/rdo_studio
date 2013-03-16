@@ -13,6 +13,7 @@ PROJECT(rdo)
 MESSAGE(STATUS "Create RDO")
 
 # work with cmake
+SET(CMAKE_PREFIX_PATH $ENV{QTDIR}/lib/cmake)
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 # call system info script
@@ -127,6 +128,10 @@ ADD_SUBDIRECTORY(${KERNEL_PATH})
 # Compile XML plugin
 SET(XML_PUGIXML_PATH ${RDO_BASE_DIRECTORY}/thirdparty/pugixml/scripts)
 ADD_SUBDIRECTORY(${XML_PUGIXML_PATH})
+
+# Compile scintilla editor
+SET(SCINTILLA_PATH ${RDO_BASE_DIRECTORY}/thirdparty/scintilla)
+ADD_SUBDIRECTORY(${SCINTILLA_PATH})
 
 # Compile the rdo_repository
 SET(REPOSITORY_PATH ${RDO_BASE_DIRECTORY}/repository)
