@@ -30,8 +30,8 @@ public:
 	rbool operator ==( const LogStyle& style ) const;
 	rbool operator !=( const LogStyle& style ) const;
 
-	virtual void loadStyle(QSettings& settings);
-	virtual void saveStyle(QSettings& settings) const;
+	void loadStyle(QSettings& settings);
+	void saveStyle(QSettings& settings) const;
 
 	static LogStyle getDefaultStyle();
 	static LogStyle getClassicStyle();

@@ -48,6 +48,29 @@ rbool BuildStyle::operator !=( const BuildStyle& style ) const
 	return !(*this == style);
 }
 
+rbool BuildStyle::load()
+{
+	if ( EditStyle::load() ) {
+		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		loadStyle(settings);
+		settings.endGroup();
+		return true;
+	}
+	return false;
+}
+
+rbool BuildStyle::save() const
+{
+	if ( EditStyle::save() ) {
+		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		saveStyle(settings);
+		settings.endGroup();
+	}
+	return false;
+}
+
 void BuildStyle::loadStyle(QSettings& settings)
 {
 	LogStyle::loadStyle(settings);

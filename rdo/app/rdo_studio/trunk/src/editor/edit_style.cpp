@@ -235,6 +235,9 @@ rbool EditStyle::load()
 {
 	if ( StyleBase::load() ) {
 		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		loadStyle(settings);
+		settings.endGroup();
 		settings.beginGroup(groupName + "tab");
 		tab.load(settings);
 		settings.endGroup();
@@ -250,6 +253,9 @@ rbool EditStyle::save() const
 {
 	if ( StyleBase::save() ) {
 		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		saveStyle(settings);
+		settings.endGroup();
 		settings.beginGroup(groupName + "tab");
 		tab.save(settings);
 		settings.endGroup();
@@ -263,11 +269,13 @@ rbool EditStyle::save() const
 
 void EditStyle::loadStyle(QSettings& settings)
 {
+	StyleBase::loadStyle(settings);
 	settings >> *this;
 }
 
 void EditStyle::saveStyle(QSettings& settings) const
 {
+	StyleBase::saveStyle(settings);
 	settings << *this;
 }
 

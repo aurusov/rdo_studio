@@ -95,8 +95,8 @@ public:
 	rbool load();
 	rbool save() const;
 
-	virtual void loadStyle(QSettings& settings);
-	virtual void saveStyle(QSettings& settings) const;
+	void loadStyle(QSettings& settings);
+	void saveStyle(QSettings& settings) const;
 
 	virtual rbool styleDefault( const int styleType ) const;
 	virtual rbool styleUsing( const int styleType ) const;

@@ -30,8 +30,11 @@ public:
 	rbool operator ==( const FindStyle& style ) const;
 	rbool operator !=( const FindStyle& style ) const;
 
-	virtual void loadStyle(QSettings& settings);
-	virtual void saveStyle(QSettings& settings) const;
+	rbool load();
+	rbool save() const;
+
+	void loadStyle(QSettings& settings);
+	void saveStyle(QSettings& settings) const;
 
 	virtual rbool styleDefault( const int styleType ) const;
 	virtual rbool styleUsing( const int styleType ) const;

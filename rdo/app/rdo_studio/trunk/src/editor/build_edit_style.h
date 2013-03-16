@@ -30,8 +30,11 @@ public:
 	rbool operator ==( const BuildStyle& style ) const;
 	rbool operator !=( const BuildStyle& style ) const;
 
-	virtual void loadStyle(QSettings& settings);
-	virtual void saveStyle(QSettings& settings) const;
+	rbool load();
+	rbool save() const;
+
+	void loadStyle(QSettings& settings);
+	void saveStyle(QSettings& settings) const;
 
 	rbool warning;
 

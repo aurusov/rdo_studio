@@ -33,8 +33,11 @@ public:
 	rbool operator ==( const ParserStyle& style ) const;
 	rbool operator !=( const ParserStyle& style ) const;
 
-	virtual void loadStyle(QSettings& settings);
-	virtual void saveStyle(QSettings& settings) const;
+	rbool load();
+	rbool save() const;
+
+	void loadStyle(QSettings& settings);
+	void saveStyle(QSettings& settings) const;
 
 	virtual rbool styleDefault( const int styleType ) const;
 	virtual rbool styleUsing( const int styleType ) const;
@@ -69,8 +72,6 @@ public:
 	style::StyleFont::style numberStyle;
 	style::StyleFont::style stringStyle;
 	style::StyleFont::style operatorStyle;
-
-
 };
 
 QSettings& operator<< (QSettings& settings, const ParserStyle& style);

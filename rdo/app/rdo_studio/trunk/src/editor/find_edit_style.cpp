@@ -131,10 +131,33 @@ FindStyle FindStyle::getOceanStyle()
 	return style;
 }
 
+rbool FindStyle::load()
+{
+	if ( EditStyle::load() ) {
+		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		loadStyle(settings);
+		settings.endGroup();
+		return true;
+	}
+	return false;
+}
+
+rbool FindStyle::save() const
+{
+	if ( EditStyle::save() ) {
+		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		saveStyle(settings);
+		settings.endGroup();
+		return true;
+	}
+	return false;
+}
+
 void FindStyle::loadStyle(QSettings& settings)
 {
 	LogStyle::loadStyle(settings);
-
 	settings >> *this;
 }
 

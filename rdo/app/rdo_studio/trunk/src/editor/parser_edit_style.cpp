@@ -77,8 +77,9 @@ ParserStyle& ParserStyle::operator =( const ParserStyle& style )
 
 rbool ParserStyle::operator ==( const ParserStyle& style ) const
 {
-	rbool flag = EditStyle::operator==( style );
-	if ( flag ) flag &= identifierColor == style.identifierColor &&
+	
+	return EditStyle::operator==( style ) &&
+		identifierColor == style.identifierColor &&
 		keywordColor    == style.keywordColor &&
 		functionsColor  == style.functionsColor &&
 		traceColor      == style.traceColor &&
@@ -97,13 +98,35 @@ rbool ParserStyle::operator ==( const ParserStyle& style ) const
 		numberStyle     == style.numberStyle &&
 		stringStyle     == style.stringStyle &&
 		operatorStyle   == style.operatorStyle;
-
-	return flag;
 }
 
 rbool ParserStyle::operator !=( const ParserStyle& style ) const
 {
 	return !(*this == style);
+}
+
+rbool ParserStyle::load()
+{
+	if ( EditStyle::load() ) {
+		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		loadStyle(settings);
+		settings.endGroup();
+		return true;
+	}
+	return false;
+}
+
+rbool ParserStyle::save() const
+{
+	if ( EditStyle::save() ) {
+		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		saveStyle(settings);
+		settings.endGroup();
+		return true;
+	}
+	return false;
 }
 
 void ParserStyle::loadStyle(QSettings& settings)

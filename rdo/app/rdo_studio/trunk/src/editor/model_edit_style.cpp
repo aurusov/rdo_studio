@@ -206,8 +206,11 @@ void ModelStyle::init( CREF(QString) _groupName )
 
 rbool ModelStyle::load()
 {
-	if ( ParserStyle::load() ) {
+	if (ParserStyle::load()) {
 		QSettings settings;
+		settings.beginGroup(groupName + "theme");
+		loadStyle(settings);
+		settings.endGroup();
 		settings.beginGroup(groupName + "auto_complete");
 		autoComplete.load(settings);
 		settings.endGroup();

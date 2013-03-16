@@ -72,8 +72,8 @@ public:
 	rbool load();
 	rbool save() const;
 
-	virtual void loadStyle(QSettings& settings);
-	virtual void saveStyle(QSettings& settings) const;
+	void loadStyle(QSettings& settings);
+	void saveStyle(QSettings& settings) const;
 
 	StyleFont font;
 	StyleFont::style defaultStyle;
