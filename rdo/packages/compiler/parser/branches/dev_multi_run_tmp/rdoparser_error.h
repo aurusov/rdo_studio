@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoparser_error.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      09.02.2010
-  \brief     основан на rdoparser.h/cpp
+  \brief     РѕСЃРЅРѕРІР°РЅ РЅР° rdoparser.h/cpp
   \indent    4T
 */
 
@@ -31,7 +31,7 @@ public:
    RDOSyntaxException(CREF(tstring) message)
 	   : RDOException(message)
    {}
-   virtual tstring getType() const { return _T("RDO Syntax Error"); }
+   virtual tstring getType() const { return "RDO Syntax Error"; }
 };
 
 // --------------------------------------------------------------------------------

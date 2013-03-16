@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      simulator/compiler/parser/rdo_logic.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Клеванец Игорь (impus@hotbox.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   РљР»РµРІР°РЅРµС† РРіРѕСЂСЊ (impus@hotbox.ru)
   \date      31.01.2012
-  \brief     Логика парсера
+  \brief     Р›РѕРіРёРєР° РїР°СЂСЃРµСЂР°
   \indent    4T
 */
 

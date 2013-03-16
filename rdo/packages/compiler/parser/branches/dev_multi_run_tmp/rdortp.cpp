@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdortp.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      11.06.2006
-  \brief     Типы ресурсов
+  \brief     РўРёРїС‹ СЂРµСЃСѓСЂСЃРѕРІ
   \indent    4T
 */
 
@@ -56,7 +56,7 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 {
 	if (findRTPParam(param->name()))
 	{
-		RDOParser::s_parser()->error().error(param->src_info(), rdo::format(_T("Параметр уже существует: %s"), param->name().c_str()));
+		RDOParser::s_parser()->error().error(param->src_info(), rdo::format("РџР°СЂР°РјРµС‚СЂ СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚: %s", param->name().c_str()));
 	}
 	m_params.push_back(param);
 }
@@ -106,20 +106,20 @@ LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo)
 		{	
 			LPRDOType pThisRTPType(const_cast<PTR(RDORTPResType)>(this));
 
-			//! Это один и тот же тип
+			//! Р­С‚Рѕ РѕРґРёРЅ Рё С‚РѕС‚ Р¶Рµ С‚РёРї
 			if (pThisRTPType == pFrom)
 				return pThisRTPType;
 
-			//! Типы разные, сгенерим ошибку
-			parser::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
+			//! РўРёРїС‹ СЂР°Р·РЅС‹Рµ, СЃРіРµРЅРµСЂРёРј РѕС€РёР±РєСѓ
+			parser::g_error().push_only(src_info,    "РќРµСЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ");
 			parser::g_error().push_only(to_src_info, to_src_info.src_text());
 			parser::g_error().push_done();
 			break;
 		}
 	default:
 		{
-			parser::g_error().push_only(src_info,    rdo::format(_T("Ожидается тип ресурса, найдено: %s"), from_src_info.src_text().c_str()));
-			parser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+			parser::g_error().push_only(src_info,    rdo::format("РћР¶РёРґР°РµС‚СЃСЏ С‚РёРї СЂРµСЃСѓСЂСЃР°, РЅР°Р№РґРµРЅРѕ: %s", from_src_info.src_text().c_str()));
+			parser::g_error().push_only(to_src_info, rdo::format("РЎРј. С‚РёРї: %s", to_src_info.src_text().c_str()));
 			parser::g_error().push_done();
 			break;
 		}
@@ -137,19 +137,19 @@ LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 	{
 		LPRDOType pThisType = const_cast<PTR(RDORTPResType)>(this);
 
-		//! Это один и тот же тип
+		//! Р­С‚Рѕ РѕРґРёРЅ Рё С‚РѕС‚ Р¶Рµ С‚РёРї
 		if (pThisType == pRTPResType.object_parent_cast<RDOType>())
 			return pFrom;
 
-		//! Типы разные, сгенерим ошибку
-		parser::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
-		parser::g_error().push_only(to_src_info,  rdo::format(  _T("Ожидается: %s"), to_src_info.src_text().c_str()));
-		parser::g_error().push_only(src_info,  rdo::format(  _T("Пришел: %s"), pFrom->src_text().c_str()));
+		//! РўРёРїС‹ СЂР°Р·РЅС‹Рµ, СЃРіРµРЅРµСЂРёРј РѕС€РёР±РєСѓ
+		parser::g_error().push_only(src_info,    "РќРµСЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ");
+		parser::g_error().push_only(to_src_info,  rdo::format(  "РћР¶РёРґР°РµС‚СЃСЏ: %s", to_src_info.src_text().c_str()));
+		parser::g_error().push_only(src_info,  rdo::format(  "РџСЂРёС€РµР»: %s", pFrom->src_text().c_str()));
 		parser::g_error().push_only(to_src_info, to_src_info.src_text());
 		parser::g_error().push_done();
 	}
-	parser::g_error().push_only(src_info,    rdo::format(_T("Ожидается ресурс, найдено: %s"), pFrom->src_text().c_str()));
-	parser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+	parser::g_error().push_only(src_info,    rdo::format("РћР¶РёРґР°РµС‚СЃСЏ СЂРµСЃСѓСЂСЃ, РЅР°Р№РґРµРЅРѕ: %s", pFrom->src_text().c_str()));
+	parser::g_error().push_only(to_src_info, rdo::format("РЎРј. С‚РёРї: %s", to_src_info.src_text().c_str()));
 	parser::g_error().push_done();
 
 	return LPRDOValue(NULL);
@@ -176,14 +176,14 @@ Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExp
 	{
 		RDOParser::s_parser()->error().error(
 			pSwitchExpression->src_info(),
-			rdo::format(_T("Недопустимое использование типа ресурса: %s"), src_text().c_str())
+			rdo::format("РќРµРґРѕРїСѓСЃС‚РёРјРѕРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ С‚РёРїР° СЂРµСЃСѓСЂСЃР°: %s", src_text().c_str())
 		);
 	}
 
 	ruint parNumb = getRTPParamNumber(pValue->value().getIdentificator());
 	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 	{
-		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), pValue->value().getIdentificator().c_str()));
+		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СЂРµСЃСѓСЂСЃР°: %s", pValue->value().getIdentificator().c_str()));
 	}
 
 	LPRDORTPParam pParam = findRTPParam(pValue->value().getIdentificator());
@@ -201,7 +201,7 @@ Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExp
 
 /*
 // --------------------------------------------------------------------------------
-// -------------------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
+// -------------------- RDORTPFuzzyMembershiftFun - С„-РёСЏ РїСЂРёРЅР°РґР»РµР¶РЅРѕСЃС‚Рё РЅРµС‡РµС‚РєРѕРіРѕ С‚РµСЂРјР°
 // --------------------------------------------------------------------------------
 RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(CREF(LPRDOParser) pParser):
 	RDOParserObject(pParser)
@@ -219,7 +219,7 @@ RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(CREF(LPRDOParser) pParser):
 	}
 }
 // --------------------------------------------------------------------------------
-// -------------------- RDORTPFuzzyTerm - нечеткий термин
+// -------------------- RDORTPFuzzyTerm - РЅРµС‡РµС‚РєРёР№ С‚РµСЂРјРёРЅ
 // --------------------------------------------------------------------------------
 RDORTPFuzzyTerm::RDORTPFuzzyTerm(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
 	RDOParserObject(pParser)

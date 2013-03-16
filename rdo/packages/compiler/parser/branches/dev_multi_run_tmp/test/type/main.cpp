@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      main.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      14.03.2010
-  \brief     Тест типов парсера
+  \brief     РўРµСЃС‚ С‚РёРїРѕРІ РїР°СЂСЃРµСЂР°
   \indent    4T
 */
 
@@ -16,7 +16,7 @@
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/type/atom.h"
-#include "simulator/runtime/rdo_resource.h" //! @todo непонятный инклюд, но нужен чтобы собиралось
+#include "simulator/runtime/rdo_resource.h" //! @todo РЅРµРїРѕРЅСЏС‚РЅС‹Р№ РёРЅРєР»СЋРґ, РЅРѕ РЅСѓР¶РµРЅ С‡С‚РѕР±С‹ СЃРѕР±РёСЂР°Р»РѕСЃСЊ
 // --------------------------------------------------------------------------------
 
 BOOST_AUTO_TEST_SUITE(RDOParserType_Test)

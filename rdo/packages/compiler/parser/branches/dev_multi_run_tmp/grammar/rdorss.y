@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdorss.y
-  \authors   Áàðñ Àëåêñàíäð
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \authors   Ð‘Ð°Ñ€Ñ ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      20.02.2003
-  \brief     Ñèíòàêñèñ ðåñóðñîâ
+  \brief     Ð¡Ð¸Ð½Ñ‚Ð°ÐºÑÐ¸Ñ Ñ€ÐµÑÑƒÑ€ÑÐ¾Ð²
   \indent    4T
 */
 
@@ -231,23 +231,23 @@ rss_main
 	| rss_resources_begin rss_resources rss_resources_end
 	| rss_resources_begin rss_resources
 	{
-		PARSER->error().error(@2, _T("Ïîñëå îïèñàíèÿ âñåõ ðåñóðñîâ îæèäàåòñÿ êëþ÷åâîå ñëîâî $End"));
+		PARSER->error().error(@2, "ÐŸÐ¾ÑÐ»Ðµ Ð¾Ð¿Ð¸ÑÐ°Ð½Ð¸Ñ Ð²ÑÐµÑ… Ñ€ÐµÑÑƒÑ€ÑÐ¾Ð² Ð¾Ð¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ ÐºÐ»ÑŽÑ‡ÐµÐ²Ð¾Ðµ ÑÐ»Ð¾Ð²Ð¾ $End");
 	}
 	| error
 	{
 		if (!PARSER->isHaveKWResources())
 		{
-			PARSER->error().error(@1, _T("Îæèäàåòñÿ êëþ÷åâîå ñëîâî $Resources"));
+			PARSER->error().error(@1, "ÐžÐ¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ ÐºÐ»ÑŽÑ‡ÐµÐ²Ð¾Ðµ ÑÐ»Ð¾Ð²Ð¾ $Resources");
 		}
 		else
 		{
 			if (PARSER->isHaveKWResourcesEnd())
 			{
-				PARSER->error().error(@1, _T("Ðåñóðñû óæå îïðåäåëåíû"));
+				PARSER->error().error(@1, "Ð ÐµÑÑƒÑ€ÑÑ‹ ÑƒÐ¶Ðµ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ñ‹");
 			}
 			else
 			{
-				PARSER->error().error(@1, _T("Íåèçâåñòíàÿ îøèáêà"));
+				PARSER->error().error(@1, "ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ð°Ñ Ð¾ÑˆÐ¸Ð±ÐºÐ°");
 			}
 		}
 	}
@@ -279,7 +279,7 @@ rss_res_descr
 		ASSERT(pResource);
 		if (!pResource->defined())
 		{
-			PARSER->error().error(@3, rdo::format(_T("Çàäàíû íå âñå ïàðàìåòðû ðåñóðñà: %s"), pResource->name().c_str()));
+			PARSER->error().error(@3, rdo::format("Ð—Ð°Ð´Ð°Ð½Ñ‹ Ð½Ðµ Ð²ÑÐµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ñ€ÐµÑÑƒÑ€ÑÐ°: %s", pResource->name().c_str()));
 		}
 		pResource->setTrace($2 != 0);
 		pResource->end();
@@ -297,13 +297,13 @@ rss_res_type
 		LPRDORTPResType pResType = PARSER->findRTPResType(pType->value().getIdentificator());
 		if (!pResType)
 		{
-			PARSER->error().error(@2, rdo::format(_T("Íåèçâåñòíûé òèï ðåñóðñà: %s"), pType->value().getIdentificator().c_str()));
+			PARSER->error().error(@2, rdo::format("ÐÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ñ‹Ð¹ Ñ‚Ð¸Ð¿ Ñ€ÐµÑÑƒÑ€ÑÐ°: %s", pType->value().getIdentificator().c_str()));
 		}
 		LPRDORSSResource pResourceExist = PARSER->findRSSResource(pName->value().getIdentificator());
 		if (pResourceExist)
 		{
-			PARSER->error().push_only(pName->src_info(), rdo::format(_T("Ðåñóðñ '%s' óæå ñóùåñòâóåò"), pName->value().getIdentificator().c_str()));
-			PARSER->error().push_only(pResourceExist->src_info(), _T("Ñì. ïåðâîå îïðåäåëåíèå"));
+			PARSER->error().push_only(pName->src_info(), rdo::format("Ð ÐµÑÑƒÑ€Ñ '%s' ÑƒÐ¶Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚", pName->value().getIdentificator().c_str()));
+			PARSER->error().push_only(pResourceExist->src_info(), "Ð¡Ð¼. Ð¿ÐµÑ€Ð²Ð¾Ðµ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð¸Ðµ");
 			PARSER->error().push_done();
 		}
 		LPRDORSSResource pResource = pResType->createRes(PARSER, pName->src_info());
@@ -311,15 +311,15 @@ rss_res_type
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		PARSER->error().error(@2, _T("Îæèäàåòñÿ òèï ðåñóðñà"));
+		PARSER->error().error(@2, "ÐžÐ¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ñ‚Ð¸Ð¿ Ñ€ÐµÑÑƒÑ€ÑÐ°");
 	}
 	| ':'
 	{
-		PARSER->error().error(@1, _T("Ïåðåä äâîåòî÷èåì îæèäàåòñÿ èìÿ ðåñóðñà"));
+		PARSER->error().error(@1, "ÐŸÐµÑ€ÐµÐ´ Ð´Ð²Ð¾ÐµÑ‚Ð¾Ñ‡Ð¸ÐµÐ¼ Ð¾Ð¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ð¸Ð¼Ñ Ñ€ÐµÑÑƒÑ€ÑÐ°");
 	}
 	| error
 	{
-		PARSER->error().error(@1, _T("Îæèäàåòñÿ èìÿ ðåñóðñà"));
+		PARSER->error().error(@1, "ÐžÐ¶Ð¸Ð´Ð°ÐµÑ‚ÑÑ Ð¸Ð¼Ñ Ñ€ÐµÑÑƒÑ€ÑÐ°");
 	}
 	;
 
@@ -335,8 +335,8 @@ rss_values
 	;
 
 rss_value
-	: '*'               {PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, _T("*"))));}
-	| '#'               {PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, _T("#"))));}
+	: '*'               {PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*")));}
+	| '#'               {PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "#")));}
 	| RDO_INT_CONST     {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
 	| RDO_REAL_CONST    {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
 	| RDO_BOOL_CONST    {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
@@ -345,12 +345,12 @@ rss_value
 	| param_array_value {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
 	| error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Íåïðàâèëüíîå çíà÷åíèå ïàðàìåòðà: %s"), LEXER->YYText()));
+		PARSER->error().error(@1, rdo::format("ÐÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð°: %s", LEXER->YYText()));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Îïèñàíèå ïåðåìåííîé
+// -------------------- ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð¾Ð¹
 // --------------------------------------------------------------------------------
 param_value
 	: RDO_INT_CONST
@@ -391,7 +391,7 @@ param_array_value
 	}
 	| '[' array_item error
 	{
-		PARSER->error().error(@2, _T("Ìàññèâ äîëæåí çàêðûâàòüñÿ ñêîáêîé"));
+		PARSER->error().error(@2, "ÐœÐ°ÑÑÐ¸Ð² Ð´Ð¾Ð»Ð¶ÐµÐ½ Ð·Ð°ÐºÑ€Ñ‹Ð²Ð°Ñ‚ÑŒÑÑ ÑÐºÐ¾Ð±ÐºÐ¾Ð¹");
 	}
 	;
 
@@ -424,7 +424,7 @@ array_item
 		ASSERT(pValue);
 		pArrayValue->insertItem(pValue);
 		$$ = PARSER->stack().push(pArrayValue);
-		PARSER->error().warning(@1, rdo::format(_T("Ïðîïóùåíà çàïÿòàÿ ïåðåä: %s"), pValue->value().getAsString().c_str()));
+		PARSER->error().warning(@1, rdo::format("ÐŸÑ€Ð¾Ð¿ÑƒÑ‰ÐµÐ½Ð° Ð·Ð°Ð¿ÑÑ‚Ð°Ñ Ð¿ÐµÑ€ÐµÐ´: %s", pValue->value().getAsString().c_str()));
 	}
 	;
 

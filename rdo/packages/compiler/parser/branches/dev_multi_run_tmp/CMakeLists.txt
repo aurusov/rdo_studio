@@ -23,7 +23,7 @@ ENDIF(NOT FLEX_FOUND)
 
 SET(GRAMMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
 
-CONFIGURE_FILE(${CMAKE_MODULE_PATH}/rdogramma.h.cmake ${GRAMMA_PATH}/rdogramma.h)
+CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/cmake/rdogramma.h.cmake ${GRAMMA_PATH}/rdogramma.h)
 
 BISON_TARGET(rdortp ${GRAMMA_PATH}/rdortp.y ${GRAMMA_PATH}/rdogramrtp.cpp COMPILE_FLAGS "-g -v -prtp")
 BISON_TARGET(rdodpt ${GRAMMA_PATH}/rdodpt.y ${GRAMMA_PATH}/rdogramdpt.cpp COMPILE_FLAGS "-g -v -pdpt")

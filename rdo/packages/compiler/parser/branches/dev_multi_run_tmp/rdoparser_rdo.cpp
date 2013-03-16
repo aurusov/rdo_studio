@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoparser_rdo.cpp
-  \authors   Áàðñ Àëåêñàíäð
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \authors   Ð‘Ð°Ñ€Ñ ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -142,7 +142,7 @@ void RDOParserRSSPost::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
 
-	//! Â ðåæèìå ñîâìåñòèìîñòè ñî ñòàðûì ÐÄÎ ñîçäàåì ðåñóðñû ïî íîìåðàì èõ òèïîâ, à íå ïî íîìåðàì ñàìèõ ðåñóðñîâ èç RSS
+	//! Ð’ Ñ€ÐµÐ¶Ð¸Ð¼Ðµ ÑÐ¾Ð²Ð¼ÐµÑÑ‚Ð¸Ð¼Ð¾ÑÑ‚Ð¸ ÑÐ¾ ÑÑ‚Ð°Ñ€Ñ‹Ð¼ Ð Ð”Ðž ÑÐ¾Ð·Ð´Ð°ÐµÐ¼ Ñ€ÐµÑÑƒÑ€ÑÑ‹ Ð¿Ð¾ Ð½Ð¾Ð¼ÐµÑ€Ð°Ð¼ Ð¸Ñ… Ñ‚Ð¸Ð¿Ð¾Ð², Ð° Ð½Ðµ Ð¿Ð¾ Ð½Ð¾Ð¼ÐµÑ€Ð°Ð¼ ÑÐ°Ð¼Ð¸Ñ… Ñ€ÐµÑÑƒÑ€ÑÐ¾Ð² Ð¸Ð· RSS
 #ifdef RDOSIM_COMPATIBLE
 	STL_FOR_ALL_CONST(pParser->getRTPResType(), rtp_it)
 	{
@@ -175,7 +175,7 @@ void RDOParserSMRPost::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
 
-	//! Ïëàíèðîâàíèå ñîáûòèé, îïèñàííûõ â SMR
+	//! ÐŸÐ»Ð°Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ð¹, Ð¾Ð¿Ð¸ÑÐ°Ð½Ð½Ñ‹Ñ… Ð² SMR
 	STL_FOR_ALL_CONST(pParser->getEvents(), eventIt)
 	{
 		LPRDOEvent pEvent = *eventIt;
@@ -196,7 +196,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
 
-	//! Ïîçäíåå ñâÿçûâàíèå äëÿ ïëàíèðîâàíèÿ ñîáûòèé
+	//! ÐŸÐ¾Ð·Ð´Ð½ÐµÐµ ÑÐ²ÑÐ·Ñ‹Ð²Ð°Ð½Ð¸Ðµ Ð´Ð»Ñ Ð¿Ð»Ð°Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ð¹
 	STL_FOR_ALL_CONST(pParser->getEvents(), eventIt)
 	{
 		LPRDOEvent pEvent = *eventIt;
@@ -206,7 +206,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 		{
 			STL_FOR_ALL_CONST(pEvent->getCalcList(), calcIt)
 			{
-				pParser->error().push_only((*calcIt)->srcInfo(), rdo::format(_T("Ïîïûòêà çàïëàíèðîâàòü íåèçâåñòíîå ñîáûòèå: %s"), pEvent->name().c_str()));
+				pParser->error().push_only((*calcIt)->srcInfo(), rdo::format("ÐŸÐ¾Ð¿Ñ‹Ñ‚ÐºÐ° Ð·Ð°Ð¿Ð»Ð°Ð½Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð½ÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ð¾Ðµ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ðµ: %s", pEvent->name().c_str()));
 			}
 			pParser->error().push_done();
 		}
@@ -214,12 +214,12 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 		{
 			STL_FOR_ALL_CONST(pEvent->getCalcList(), calcIt)
 			{
-				pParser->error().push_only((*calcIt)->srcInfo(), rdo::format(_T("Ïàòòåðí %s íå ÿâëÿåòñÿ ñîáûòèåì: %s"), pEvent->name().c_str()));
+				pParser->error().push_only((*calcIt)->srcInfo(), rdo::format("ÐŸÐ°Ñ‚Ñ‚ÐµÑ€Ð½ %s Ð½Ðµ ÑÐ²Ð»ÑÐµÑ‚ÑÑ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸ÐµÐ¼: %s", pEvent->name().c_str()));
 			}
 			pParser->error().push_done();
 		}
 
-		//! \todo èçáàâèòüñÿ îò ðóäèìåíòà getRegular()
+		//! \todo Ð¸Ð·Ð±Ð°Ð²Ð¸Ñ‚ÑŒÑÑ Ð¾Ñ‚ Ñ€ÑƒÐ´Ð¸Ð¼ÐµÐ½Ñ‚Ð° getRegular()
 		if (pEvent->getRegular())
 		{
 			LPIBaseOperation pRuntimeEvent = pPattern->getPatRuntime<rdo::runtime::RDOPatternEvent>()->createActivity(pParser->runtime()->m_pMetaLogic, pParser->runtime(), pEvent->name());
@@ -242,12 +242,12 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 					rdo::runtime::LPRDOCalc pSetParamCalc;
 					LPRDOParam pPatternParam = pPattern->m_paramList[m_currParam];
 					ASSERT(pPatternParam);
-					if (pParam->typeInfo()->src_info().src_text() == _T("*"))
+					if (pParam->typeInfo()->src_info().src_text() == "*")
 					{
 						if (!pPatternParam->getDefault()->defined())
 						{
-							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Íåò çíà÷åíèÿ ïî óìîë÷àíèþ äëÿ ïàðàìåòðà '%s'"), pPatternParam->src_text().c_str()));
-							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Ñì. ïàðàìåòð '%s', òèï '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("ÐÐµÑ‚ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ Ð´Ð»Ñ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° '%s'", pPatternParam->src_text().c_str()));
+							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("Ð¡Ð¼. Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ '%s', Ñ‚Ð¸Ð¿ '%s'", pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
 							RDOParser::s_parser()->error().push_done();
 						}
 						rdo::runtime::RDOValue val = pPatternParam->getDefault()->value();
@@ -274,7 +274,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 				}
 				else
 				{
-					RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format(_T("Ñëèøêîì ìíîãî ïàðàìåòðîâ äëÿ ñîáûòèÿ '%s' ïðè ïëàíèðîâàíèè ñîáûòèÿ '%s'"), pEvent->name().c_str(), pEvent->name().c_str()));
+					RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format("Ð¡Ð»Ð¸ÑˆÐºÐ¾Ð¼ Ð¼Ð½Ð¾Ð³Ð¾ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð² Ð´Ð»Ñ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ñ '%s' Ð¿Ñ€Ð¸ Ð¿Ð»Ð°Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ð¸ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ñ '%s'", pEvent->name().c_str(), pEvent->name().c_str()));
 					RDOParser::s_parser()->error().push_done();
 				}
 			}
@@ -282,7 +282,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 		}
 		else
 		{
-			NEVER_REACH_HERE; //ïîòîìó ÷òî íåðåãóëÿðíûõ ñîáûòèé áîëüøå íåò
+			NEVER_REACH_HERE; //Ð¿Ð¾Ñ‚Ð¾Ð¼Ñƒ Ñ‡Ñ‚Ð¾ Ð½ÐµÑ€ÐµÐ³ÑƒÐ»ÑÑ€Ð½Ñ‹Ñ… ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ð¹ Ð±Ð¾Ð»ÑŒÑˆÐµ Ð½ÐµÑ‚
 		}
 	}
 }
@@ -296,10 +296,10 @@ void RDOParserRTPPost::parse(CREF(LPRDOParser) pParser)
 
 	STL_FOR_ALL_CONST(pParser->getRTPResTypes(), RTPResTypeIt)
 	{
-		// Âçÿòü î÷åðåäíîé òèï ðåñóðñà â ïàðñåðå
+		// Ð’Ð·ÑÑ‚ÑŒ Ð¾Ñ‡ÐµÑ€ÐµÐ´Ð½Ð¾Ð¹ Ñ‚Ð¸Ð¿ Ñ€ÐµÑÑƒÑ€ÑÐ° Ð² Ð¿Ð°Ñ€ÑÐµÑ€Ðµ
 		LPRDORTPResType pResType = *RTPResTypeIt;
 
-		// Ñîçäàòü ñîîòâåòñòâóþùèé òèï ðåñóðñîâ â ðàíòàéìå
+		// Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ ÑÐ¾Ð¾Ñ‚Ð²ÐµÑ‚ÑÑ‚Ð²ÑƒÑŽÑ‰Ð¸Ð¹ Ñ‚Ð¸Ð¿ Ñ€ÐµÑÑƒÑ€ÑÐ¾Ð² Ð² Ñ€Ð°Ð½Ñ‚Ð°Ð¹Ð¼Ðµ
 		pResType->end();
 	}
 }

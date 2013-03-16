@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      simulator/compiler/parser/type/type_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      06.12.2012
   \brief     
   \indent    4T
@@ -40,7 +40,7 @@ public:
 		CREF(RDOParserSrcInfo) to_src_info,
 		CREF(RDOParserSrcInfo) src_info
 	) const = 0;
-	//! calc_cast вызывается строго после type_cast, поэтому никаких RDOParserSrcInfo не передается
+	//! calc_cast РІС‹Р·С‹РІР°РµС‚СЃСЏ СЃС‚СЂРѕРіРѕ РїРѕСЃР»Рµ type_cast, РїРѕСЌС‚РѕРјСѓ РЅРёРєР°РєРёС… RDOParserSrcInfo РЅРµ РїРµСЂРµРґР°РµС‚СЃСЏ
 	virtual rdo::runtime::LPRDOCalc calc_cast(
 		CREF(rdo::runtime::LPRDOCalc) pCalc,
 		CREF(LPRDOType)               pType

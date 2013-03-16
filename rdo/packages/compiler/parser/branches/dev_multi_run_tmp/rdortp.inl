@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      rdortp.inl
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      09.03.2012
-  \brief     Типы ресурсов
+  \brief     РўРёРїС‹ СЂРµСЃСѓСЂСЃРѕРІ
   \indent    4T
 */
 
@@ -49,7 +49,7 @@ inline CREF(rdo::runtime::LPIResourceType) RDORTPResType::getRuntimeResType() co
 
 inline void RDORTPResType::setType(TypeRDOResType type)
 {
-	//! \todo вывести ошибку вместо ASSERT()
+	//! \todo РІС‹РІРµСЃС‚Рё РѕС€РёР±РєСѓ РІРјРµСЃС‚Рѕ ASSERT()
 	ASSERT(!(m_type == procRes && type == procTran));
 	ASSERT(!(m_type == procTran && type == procRes));
 	m_type = type;

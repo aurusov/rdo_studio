@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      local_variable.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      16.10.2010
   \brief     
   \indent    4T
@@ -30,7 +30,7 @@ LocalVariable::LocalVariable(CREF(LPRDOValue) pName, CREF(LPExpression) pExpress
 
 	if (m_pExpression->typeInfo()->type()->typeID() == rdo::runtime::RDOType::t_unknow)
 	{
-		parser::g_error().error(m_pExpression->typeInfo()->src_info(), _T("У данного типа нет значения поумолчанию"));
+		parser::g_error().error(m_pExpression->typeInfo()->src_info(), "РЈ РґР°РЅРЅРѕРіРѕ С‚РёРїР° РЅРµС‚ Р·РЅР°С‡РµРЅРёСЏ РїРѕСѓРјРѕР»С‡Р°РЅРёСЋ");
 	}
 }
 
@@ -79,8 +79,8 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 
 	if (pExistItem)
 	{
-		parser::g_error().push_only(pVariable->getSrcInfo(),  rdo::format(_T("Переменная %s уже объявлена"), pVariable->getName().c_str()));
-		parser::g_error().push_only(pExistItem->getSrcInfo(), _T("См. первое описание"));
+		parser::g_error().push_only(pVariable->getSrcInfo(),  rdo::format("РџРµСЂРµРјРµРЅРЅР°СЏ %s СѓР¶Рµ РѕР±СЉСЏРІР»РµРЅР°", pVariable->getName().c_str()));
+		parser::g_error().push_only(pExistItem->getSrcInfo(), "РЎРј. РїРµСЂРІРѕРµ РѕРїРёСЃР°РЅРёРµ");
 		parser::g_error().push_done();
 	}
 

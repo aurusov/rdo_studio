@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      animation_frame.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      Фрейм анимации в парсере
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \date      Р¤СЂРµР№Рј Р°РЅРёРјР°С†РёРё РІ РїР°СЂСЃРµСЂРµ
   \brief     
   \indent    4T
 */

@@ -2,10 +2,10 @@
   \copyright (c) RDO-Team, 2011
   \file      rdosmr_file.y
   \dotfile   rdogramsmr_file.dot "SMR file tree"
-  \authors   ¡‡Ò ¿ÎÂÍÒ‡Ì‰
-  \authors   ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
+  \authors   –ë–∞—Ä—Å –ê–ª–µ–∫—Å–∞–Ω–¥—Ä
+  \authors   –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
   \date      20.02.2003
-  \brief     —ËÌÚ‡ÍÒËÒ ÓÔËÒ‡ÌËˇ Ù‡ÈÎÓ‚ ÏÓ‰ÂÎË
+  \brief     –°–∏–Ω—Ç–∞–∫—Å–∏—Å –æ–ø–∏—Å–∞–Ω–∏—è —Ñ–∞–π–ª–æ–≤ –º–æ–¥–µ–ª–∏
   \indent    4T
 */
 
@@ -242,15 +242,15 @@ smr_descr
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' error
 	{
-		PARSER->error().error( @4, @5, "ŒÊË‰‡ÂÚÒˇ ÔÛÚ¸ Ë Ì‡Á‚‡ÌËÂ ‚ÌÂ¯ÌÂÈ ÏÓ‰ÂÎË" );
+		PARSER->error().error( @4, @5, "–û–∂–∏–¥–∞–µ—Ç—Å—è –ø—É—Ç—å –∏ –Ω–∞–∑–≤–∞–Ω–∏–µ –≤–Ω–µ—à–Ω–µ–π –º–æ–¥–µ–ª–∏" );
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF error
 	{
-		PARSER->error().error( @3, "ŒÊË‰‡ÂÚÒˇ '='" );
+		PARSER->error().error( @3, "–û–∂–∏–¥–∞–µ—Ç—Å—è '='" );
 	}
 	| smr_descr RDO_External_Model error
 	{
-		PARSER->error().error( @2, "ŒÊË‰‡ÂÚÒˇ ÔÒÂ‚‰ÓÌËÏ ‚ÌÂ¯ÂÈ ÏÓ‰ÂÎË" );
+		PARSER->error().error( @2, "–û–∂–∏–¥–∞–µ—Ç—Å—è –ø—Å–µ–≤–¥–æ–Ω–∏–º –≤–Ω–µ—à–µ–π –º–æ–¥–µ–ª–∏" );
 	}
 	| smr_descr error
 	;

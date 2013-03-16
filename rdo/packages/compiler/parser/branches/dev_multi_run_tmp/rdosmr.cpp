@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdosmr.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -98,11 +98,11 @@ void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
 {
 	if (value <= 0)
 	{
-		RDOParser::s_parser()->error().error(pos, _T("Номер кадра должен быть больше нуля"));
+		RDOParser::s_parser()->error().error(pos, "РќРѕРјРµСЂ РєР°РґСЂР° РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ");
 	}
 	if (RDOParser::s_parser()->runtime()->m_frameList.size() + 1 <= (ruint)value)
 	{
-		RDOParser::s_parser()->error().error(pos, rdo::format(_T("Несуществующий кадр: %d"), value));
+		RDOParser::s_parser()->error().error(pos, rdo::format("РќРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ РєР°РґСЂ: %d", value));
 	}
 	m_frameNumber = value;
 }
@@ -111,7 +111,7 @@ void RDOSMR::setShowRate(double value, CREF(YYLTYPE) pos)
 {
 	if (value < 0)
 	{
-		RDOParser::s_parser()->error().error(pos, _T("Масштаб должен быть больше нуля"));
+		RDOParser::s_parser()->error().error(pos, "РњР°СЃС€С‚Р°Р± РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ");
 	}
 	m_showRate = value;
 }
@@ -120,7 +120,7 @@ void RDOSMR::setRunStartTime(double value, CREF(YYLTYPE) pos)
 {
 	if (value < 0)
 	{
-		RDOParser::s_parser()->error().error(pos, _T("Начальное модельное время должно быть больше нуля"));
+		RDOParser::s_parser()->error().error(pos, "РќР°С‡Р°Р»СЊРЅРѕРµ РјРѕРґРµР»СЊРЅРѕРµ РІСЂРµРјСЏ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ");
 	}
 	m_runStartTime = value;
 }
@@ -129,12 +129,12 @@ void RDOSMR::setTraceStartTime(double value, CREF(YYLTYPE) pos)
 {
 	if (value < 0)
 	{
-		RDOParser::s_parser()->error().error(pos, _T("Начальное время трассировки должно быть больше нуля"));
+		RDOParser::s_parser()->error().error(pos, "РќР°С‡Р°Р»СЊРЅРѕРµ РІСЂРµРјСЏ С‚СЂР°СЃСЃРёСЂРѕРІРєРё РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ");
 	}
 	if (getTraceEndTime() != rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceEndTime() <= value)
 	{
-		RDOParser::s_parser()->error().push_only(pos, _T("Начальное время трассировки должно быть меньше конечного"));
-		RDOParser::s_parser()->error().push_only(m_traceEndTime_pos, _T("См. конечное время трассировки"));
+		RDOParser::s_parser()->error().push_only(pos, "РќР°С‡Р°Р»СЊРЅРѕРµ РІСЂРµРјСЏ С‚СЂР°СЃСЃРёСЂРѕРІРєРё РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РјРµРЅСЊС€Рµ РєРѕРЅРµС‡РЅРѕРіРѕ");
+		RDOParser::s_parser()->error().push_only(m_traceEndTime_pos, "РЎРј. РєРѕРЅРµС‡РЅРѕРµ РІСЂРµРјСЏ С‚СЂР°СЃСЃРёСЂРѕРІРєРё");
 		RDOParser::s_parser()->error().push_done();
 	}
 	m_traceStartTime     = value;
@@ -145,12 +145,12 @@ void RDOSMR::setTraceEndTime(double value, CREF(YYLTYPE) pos)
 {
 	if (value < 0)
 	{
-		RDOParser::s_parser()->error().error(pos, _T("Конечное время трассировки должно быть больше нуля"));
+		RDOParser::s_parser()->error().error(pos, "РљРѕРЅРµС‡РЅРѕРµ РІСЂРµРјСЏ С‚СЂР°СЃСЃРёСЂРѕРІРєРё РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ");
 	}
 	if (getTraceStartTime() != rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceStartTime() >= value)
 	{
-		RDOParser::s_parser()->error().push_only(pos, _T("Конечное время трассировки должно быть больше начального"));
-		RDOParser::s_parser()->error().push_only(m_traceStartTime_pos, _T("См. начальное время трассировки"));
+		RDOParser::s_parser()->error().push_only(pos, "РљРѕРЅРµС‡РЅРѕРµ РІСЂРµРјСЏ С‚СЂР°СЃСЃРёСЂРѕРІРєРё РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅР°С‡Р°Р»СЊРЅРѕРіРѕ");
+		RDOParser::s_parser()->error().push_only(m_traceStartTime_pos, "РЎРј. РЅР°С‡Р°Р»СЊРЅРѕРµ РІСЂРµРјСЏ С‚СЂР°СЃСЃРёСЂРѕРІРєРё");
 		RDOParser::s_parser()->error().push_done();
 	}
 	m_traceEndTime     = value;
@@ -161,8 +161,8 @@ void RDOSMR::setTerminateIf(REF(LPRDOFUNLogic) pLogic)
 {
 	if (m_pTerminateIf)
 	{
-		RDOParser::s_parser()->error().push_only(pLogic->src_info(), _T("Terminate_if уже определен"));
-		RDOParser::s_parser()->error().push_only(m_pTerminateIf->src_info(), _T("См. первое определение"));
+		RDOParser::s_parser()->error().push_only(pLogic->src_info(), "Terminate_if СѓР¶Рµ РѕРїСЂРµРґРµР»РµРЅ");
+		RDOParser::s_parser()->error().push_only(m_pTerminateIf->src_info(), "РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ");
 		RDOParser::s_parser()->error().push_done();
 	}
 	m_pTerminateIf = pLogic;
@@ -174,7 +174,7 @@ void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm
 	LPRDOFUNConstant pConstant = RDOParser::s_parser()->findFUNConstant(const_info.src_text());
 	if (!pConstant)
 	{
-		RDOParser::s_parser()->error().error(const_info, rdo::format(_T("Константа '%s' не найдена"), const_info.src_text().c_str()));
+		RDOParser::s_parser()->error().error(const_info, rdo::format("РљРѕРЅСЃС‚Р°РЅС‚Р° '%s' РЅРµ РЅР°Р№РґРµРЅР°", const_info.src_text().c_str()));
 	}
 	ASSERT(pArithm);
 	pArithm->checkParamType(pConstant->getTypeInfo());
@@ -188,14 +188,14 @@ void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcIn
 	LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource(res_info.src_text());
 	if (!pResource)
 	{
-		RDOParser::s_parser()->error().error(res_info.src_info(), rdo::format(_T("Ресурс '%s' не найден"), res_info.src_text().c_str()));
+		RDOParser::s_parser()->error().error(res_info.src_info(), rdo::format("Р РµСЃСѓСЂСЃ '%s' РЅРµ РЅР°Р№РґРµРЅ", res_info.src_text().c_str()));
 	}
 	LPRDORTPParam pParam = pResource->getType()->findRTPParam(par_info.src_text());
 	if (!pParam)
 	{
-		RDOParser::s_parser()->error().push_only(par_info.src_info(), rdo::format(_T("Параметр '%s' не найден"), par_info.src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pResource->src_info(), _T("См. ресурс"));
-		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
+		RDOParser::s_parser()->error().push_only(par_info.src_info(), rdo::format("РџР°СЂР°РјРµС‚СЂ '%s' РЅРµ РЅР°Р№РґРµРЅ", par_info.src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(pResource->src_info(), "РЎРј. СЂРµСЃСѓСЂСЃ");
+		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), "РЎРј. С‚РёРї СЂРµСЃСѓСЂСЃР°");
 		RDOParser::s_parser()->error().push_done();
 	}
 	ASSERT(pArithm);
@@ -203,7 +203,7 @@ void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcIn
 	ruint                 parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
 	rdo::runtime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getTypeInfo());
 	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
-	RDOParser::s_parser()->insertChanges(res_info.src_text() + _T(".") + par_info.src_text(), pArithm->src_text());
+	RDOParser::s_parser()->insertChanges(res_info.src_text() + "." + par_info.src_text(), pArithm->src_text());
 }
 
 void RDOSMR::setSeed(CREF(RDOParserSrcInfo) seq_info, int base)
@@ -211,10 +211,10 @@ void RDOSMR::setSeed(CREF(RDOParserSrcInfo) seq_info, int base)
 	LPRDOFUNSequence pSequence = RDOParser::s_parser()->findFUNSequence(seq_info.src_text());
 	if (!pSequence)
 	{
-		RDOParser::s_parser()->error().error(seq_info, rdo::format(_T("Последовательность '%s' не найдена"), seq_info.src_text().c_str()));
+		RDOParser::s_parser()->error().error(seq_info, rdo::format("РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ '%s' РЅРµ РЅР°Р№РґРµРЅР°", seq_info.src_text().c_str()));
 	}
 	pSequence->getInitCalc()->setBase(base);
-	RDOParser::s_parser()->insertChanges(pSequence->src_text() + _T(".Seed"), rdo::format(_T("%d"), base));
+	RDOParser::s_parser()->insertChanges(pSequence->src_text() + ".Seed", rdo::format("%d", base));
 }
 
 void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, REF(LPRDOFUNLogic) pLogic)
@@ -223,8 +223,8 @@ void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, REF(LPRDOFUNLogic
 	{
 		if ((*it)->src_text() == src_info.src_text())
 		{
-			RDOParser::s_parser()->error().push_only(src_info, rdo::format(_T("Точка останова с именем '%s' уже существует"), src_info.src_text().c_str()));
-			RDOParser::s_parser()->error().push_only((*it)->src_info(), _T("См. первое определение"));
+			RDOParser::s_parser()->error().push_only(src_info, rdo::format("РўРѕС‡РєР° РѕСЃС‚Р°РЅРѕРІР° СЃ РёРјРµРЅРµРј '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚", src_info.src_text().c_str()));
+			RDOParser::s_parser()->error().push_only((*it)->src_info(), "РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ");
 			RDOParser::s_parser()->error().push_done();
 		}
 	}

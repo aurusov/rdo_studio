@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      param.cpp
-  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      09.01.2011
   \brief     
   \indent    4T
@@ -62,7 +62,7 @@ Context::FindResult RDOParam::onSwitchContext(CREF(LPExpression) pSwitchExpressi
 
 	RDOParser::s_parser()->error().error(
 		pSwitchExpression->src_info(),
-		rdo::format(_T("Òèï ïàðàìåòðà '%s' îïðåäåë¸í íåâåðíî"), pSwitchExpression->src_info().src_text().c_str())
+		rdo::format("Ð¢Ð¸Ð¿ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° '%s' Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»Ñ‘Ð½ Ð½ÐµÐ²ÐµÑ€Ð½Ð¾", pSwitchExpression->src_info().src_text().c_str())
 	);
 
 	return FindResult();

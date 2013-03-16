@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdopmd.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -56,12 +56,12 @@ void RDOPMDResult::endOfCreation(CREF(LPIResult) pResult)
 	LPRDOResultGroup pResultGroup = pContext->cast<RDOResultGroup>();
 	if (!pResultGroup)
 	{
-		//! Показатель создаётся не в контексте группы
-		//! Такое может быть из rdoproc_rss.y
-		pResultGroup = RDOParser::s_parser()->findResultGroup(_T(""));
+		//! РџРѕРєР°Р·Р°С‚РµР»СЊ СЃРѕР·РґР°С‘С‚СЃСЏ РЅРµ РІ РєРѕРЅС‚РµРєСЃС‚Рµ РіСЂСѓРїРїС‹
+		//! РўР°РєРѕРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РёР· rdoproc_rss.y
+		pResultGroup = RDOParser::s_parser()->findResultGroup("");
 		if (!pResultGroup)
 		{
-			//! Нет даже группы по умолчанию
+			//! РќРµС‚ РґР°Р¶Рµ РіСЂСѓРїРїС‹ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 			pResultGroup = rdo::Factory<RDOResultGroup>::create();
 			ASSERT(pResultGroup);
 			pResultGroup->init(RDOParserSrcInfo());
@@ -94,8 +94,8 @@ void RDOResultGroup::init(CREF(RDOParserSrcInfo) src_info)
 	LPRDOResultGroup pResultGroupFound = RDOParser::s_parser()->findResultGroup(name());
 	if (pResultGroupFound)
 	{
-		RDOParser::s_parser()->error().push_only(src_info, rdo::format(_T("Группа показателей '%s' уже существует"), src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pResultGroupFound->src_info(), _T("См. первое определение"));
+		RDOParser::s_parser()->error().push_only(src_info, rdo::format("Р“СЂСѓРїРїР° РїРѕРєР°Р·Р°С‚РµР»РµР№ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚", src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(pResultGroupFound->src_info(), "РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ");
 		RDOParser::s_parser()->error().push_done();
 	}
 	RDOParser::s_parser()->insertResultGroup(this);
@@ -120,8 +120,8 @@ void RDOResultGroup::append(CREF(LPRDOPMDResult) pResult)
 	LPRDOPMDResult pResultFound = find(pResult->name());
 	if (pResultFound)
 	{
-		RDOParser::s_parser()->error().push_only(pResult->src_info(), rdo::format(_T("Показатель '%s' уже существует"), pResult->src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pResultFound->src_info(), _T("См. первое определение"));
+		RDOParser::s_parser()->error().push_only(pResult->src_info(), rdo::format("РџРѕРєР°Р·Р°С‚РµР»СЊ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚", pResult->src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(pResultFound->src_info(), "РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ");
 		RDOParser::s_parser()->error().push_done();
 	}
 	m_resultList.push_back(pResult);
@@ -156,29 +156,29 @@ void RDOPMDWatchPar::init(rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF
 	LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource(res_src_info.src_text());
 	if (!pResource)
 	{
-		RDOParser::s_parser()->error().error(res_src_info, rdo::format(_T("Ресурс '%s' не найден"), res_src_info.src_text().c_str()));
+		RDOParser::s_parser()->error().error(res_src_info, rdo::format("Р РµСЃСѓСЂСЃ '%s' РЅРµ РЅР°Р№РґРµРЅ", res_src_info.src_text().c_str()));
 	}
 /*
 	if (!pResource->getType()->isPermanent())
 	{
-		RDOParser::s_parser()->error().push_only(res_src_info, _T("Наблюдать (watch_par) можно только за параметром постоянного ресурса"));
-		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
+		RDOParser::s_parser()->error().push_only(res_src_info, "РќР°Р±Р»СЋРґР°С‚СЊ (watch_par) РјРѕР¶РЅРѕ С‚РѕР»СЊРєРѕ Р·Р° РїР°СЂР°РјРµС‚СЂРѕРј РїРѕСЃС‚РѕСЏРЅРЅРѕРіРѕ СЂРµСЃСѓСЂСЃР°");
+		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), "РЎРј. С‚РёРї СЂРµСЃСѓСЂСЃР°");
 		RDOParser::s_parser()->error().push_done();
 	}
 */
 	LPRDORTPParam pParam = pResource->getType()->findRTPParam(par_src_info.src_text());
 	if (!pParam)
 	{
-		RDOParser::s_parser()->error().push_only(par_src_info, rdo::format(_T("Параметр '%s' не найден"), par_src_info.src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pResource->src_info(), _T("См. ресурс"));
-		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
+		RDOParser::s_parser()->error().push_only(par_src_info, rdo::format("РџР°СЂР°РјРµС‚СЂ '%s' РЅРµ РЅР°Р№РґРµРЅ", par_src_info.src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(pResource->src_info(), "РЎРј. СЂРµСЃСѓСЂСЃ");
+		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), "РЎРј. С‚РёРї СЂРµСЃСѓСЂСЃР°");
 		RDOParser::s_parser()->error().push_done();
 	}
 	rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
 	if (typeID != rdo::runtime::RDOType::t_int && typeID != rdo::runtime::RDOType::t_real)
 	{
-		RDOParser::s_parser()->error().push_only(par_src_info, _T("Наблюдать можно только за параметром целого или вещественного типа"));
-		RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), _T("См. тип параметра"));
+		RDOParser::s_parser()->error().push_only(par_src_info, "РќР°Р±Р»СЋРґР°С‚СЊ РјРѕР¶РЅРѕ С‚РѕР»СЊРєРѕ Р·Р° РїР°СЂР°РјРµС‚СЂРѕРј С†РµР»РѕРіРѕ РёР»Рё РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ С‚РёРїР°");
+		RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), "РЎРј. С‚РёРї РїР°СЂР°РјРµС‚СЂР°");
 		RDOParser::s_parser()->error().push_done();
 	}
 	endOfCreation(RF(rdo::runtime::RDOPMDWatchPar)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
@@ -208,12 +208,12 @@ RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParser
 	LPRDORTPResType pResType = RDOParser::s_parser()->findRTPResType(res_type_src_info.src_text());
 	if (!pResType)
 	{
-		RDOParser::s_parser()->error().error(res_type_src_info, rdo::format(_T("Тип ресурса '%s' не найден"), res_type_src_info.src_text().c_str()));
+		RDOParser::s_parser()->error().error(res_type_src_info, rdo::format("РўРёРї СЂРµСЃСѓСЂСЃР° '%s' РЅРµ РЅР°Р№РґРµРЅ", res_type_src_info.src_text().c_str()));
 	}
 	if (!pResType->isTemporary())
 	{
-		RDOParser::s_parser()->error().push_only(res_type_src_info, _T("Показатель собирает информацию по временным ресурсам (temporary)"));
-		RDOParser::s_parser()->error().push_only(pResType->src_info(), _T("См. тип ресурса"));
+		RDOParser::s_parser()->error().push_only(res_type_src_info, "РџРѕРєР°Р·Р°С‚РµР»СЊ СЃРѕР±РёСЂР°РµС‚ РёРЅС„РѕСЂРјР°С†РёСЋ РїРѕ РІСЂРµРјРµРЅРЅС‹Рј СЂРµСЃСѓСЂСЃР°Рј (temporary)");
+		RDOParser::s_parser()->error().push_only(pResType->src_info(), "РЎРј. С‚РёРї СЂРµСЃСѓСЂСЃР°");
 		RDOParser::s_parser()->error().push_done();
 	}
 }

@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      animation_frame.cpp
-  \authors   Áàðñ Àëåêñàíäð
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
-  \date      Ôðåéì àíèìàöèè â ïàðñåðå
+  \authors   Ð‘Ð°Ñ€Ñ ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
+  \date      Ð¤Ñ€ÐµÐ¹Ð¼ Ð°Ð½Ð¸Ð¼Ð°Ñ†Ð¸Ð¸ Ð² Ð¿Ð°Ñ€ÑÐµÑ€Ðµ
   \brief     
   \indent    4T
 */
@@ -55,9 +55,9 @@ Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
-	//! Êîä èç RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
-	//! Çà÷åì îí íóæåí - íåïîíÿòíî
-	//! Åãî çàäà÷à - ñãåíåðèòü èñêëþ÷åíèå â ðàíòàéìå, ïî÷åìó ýòî íå ñäåëàòü â ïàðñåðå ?
+	//! ÐšÐ¾Ð´ Ð¸Ð· RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
+	//! Ð—Ð°Ñ‡ÐµÐ¼ Ð¾Ð½ Ð½ÑƒÐ¶ÐµÐ½ - Ð½ÐµÐ¿Ð¾Ð½ÑÑ‚Ð½Ð¾
+	//! Ð•Ð³Ð¾ Ð·Ð°Ð´Ð°Ñ‡Ð° - ÑÐ³ÐµÐ½ÐµÑ€Ð¸Ñ‚ÑŒ Ð¸ÑÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ðµ Ð² Ñ€Ð°Ð½Ñ‚Ð°Ð¹Ð¼Ðµ, Ð¿Ð¾Ñ‡ÐµÐ¼Ñƒ ÑÑ‚Ð¾ Ð½Ðµ ÑÐ´ÐµÐ»Ð°Ñ‚ÑŒ Ð² Ð¿Ð°Ñ€ÑÐµÑ€Ðµ ?
 
 	//if (RDOParser::s_parser()->getLastFRMFrame() && RDOParser::s_parser()->getLastFRMFrame()->frame()->getLastShow() && RDOParser::s_parser()->getLastFRMFrame()->frame()->getLastShow()->isShowIf())
 	//{

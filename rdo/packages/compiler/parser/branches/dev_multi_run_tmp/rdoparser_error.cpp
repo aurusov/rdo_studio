@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoparser_error.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      09.02.2010
-  \brief     основан на rdoparser.h/cpp
+  \brief     РѕСЃРЅРѕРІР°РЅ РЅР° rdoparser.h/cpp
   \indent    4T
 */
 
@@ -87,7 +87,7 @@ void Error::modify(CREF(tstring) message)
 	{
 		tstring new_text = message + m_errorList.front().getText();;
 		m_errorList.front().setText(new_text); 
-		throw RDOSyntaxException(_T(""));
+		throw RDOSyntaxException("");
 	}
 }
 

@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      animation_base.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      14.12.2012
-  \brief     Базовый класс объектов анимации парсера
+  \brief     Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ РѕР±СЉРµРєС‚РѕРІ Р°РЅРёРјР°С†РёРё РїР°СЂСЃРµСЂР°
   \indent    4T
 */
 
