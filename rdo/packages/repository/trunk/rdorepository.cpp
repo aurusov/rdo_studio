@@ -570,9 +570,9 @@ void RDOThreadRepository::writeModelFilesInfo(REF(boost::filesystem::ofstream) s
 
 rbool RDOThreadRepository::createFile(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream) const
 {
-	stringstream backupDirName;
+	std::stringstream backupDirName;
 	backupDirName << m_modelPath
-	              << boost::basic_format<tchar>("%1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d %7$s.%8$s")
+	              << boost::format("%1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d %7$s.%8$s")
 	                 % m_systemTime.date().year ()
 	                 % m_systemTime.date().month()
 	                 % m_systemTime.date().day  ()
