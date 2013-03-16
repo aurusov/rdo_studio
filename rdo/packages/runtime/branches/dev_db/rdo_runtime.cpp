@@ -18,6 +18,7 @@
 	#include <float.h>
 #endif // COMPILER_GCC
 #include <iomanip>
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdodebug.h"
 #include "utils/rdoanimation.h"
@@ -33,6 +34,7 @@
 #include "simulator/runtime/rdodptrtime.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/resource/calc_relevant.h"
+#include "simulator/runtime/src/db/init_struct_db.h"
 // --------------------------------------------------------------------------------
 
 typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
@@ -70,11 +72,16 @@ RDORuntime::~RDORuntime()
 void RDORuntime::init()
 {
 	memory_insert(sizeof(RDORuntime));
+
+	InitSructDB::dropDB();
+	InitSructDB::createDB();
+	m_db = new InitSructDB();
 }
 
 void RDORuntime::deinit()
 {
 	onDestroy();
+	delete m_db;
 }
 
 void RDORuntime::setStudioThread(PTR(RDOThread) pStudioThread)
@@ -274,6 +281,26 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 	}
 #endif
 	m_resourceListByTime.push_back(pResource);
+
+	m_db->insertRow("rss",QString("%1,%2,'name','trace'")//костыль
+		.arg(pResource->getTraceID())
+		.arg(boost::lexical_cast<int>(pResource->getTypeId())));
+	int rss_id = m_db->queryExecIndex("rss");
+	int param_id = -1;
+
+	BOOST_FOREACH(const RDOValue& param, pResource->getParamList())
+	{
+		param.serializeInDB(*m_db);
+		m_db->insertRow("rss_param",QString("%1,%2,%3")
+			.arg(rss_id)
+			.arg(++param_id)
+			.arg(m_db->popContext<int>()));
+	}
+}
+
+PTR(GeneralDB) RDORuntime::getDB()
+{
+	return m_db;
 }
 
 void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer pLogic, CREF(LPIEvent) pEvent)

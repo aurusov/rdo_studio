@@ -16,6 +16,7 @@
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_value.h"
+#include "simulator/runtime/src/db/general_db.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -56,7 +57,7 @@ public:
 	rbool operator!= (REF(RDOResource) other);
 
 	ConvertStatus          getState    (                           ) const;
-	CREF(RDOValue)         getParam    (ruint index                ) const;
+	RDOValue               getParam    (ruint index                ) const;
 	rbool                  checkType   (ruint type                 ) const;
 	rbool                  canFree     (                           ) const;
 	CREF(LPIResourceType)  getResType  (                           ) const;
@@ -72,7 +73,7 @@ public:
 	tstring         traceResourceState  (char prefix, CREF(LPRDORuntime) pRuntime);
 	REF(RDOValue)   getParamRaw         (ruint index                             );
 	void            setParam            (ruint index, CREF(RDOValue) value       );
-	tstring         getTypeId           ();
+	tstring         getTypeId           () const;
 	tstring         traceParametersValue();
 	virtual tstring whoAreYou           ();
 	void            incRef              ();
@@ -88,6 +89,8 @@ private:
 	ruint            m_referenceCount;
 	LPIResourceType  m_resType;
 	tstring          m_typeId;
+
+	PTR(GeneralDB)  m_db;
 
 	tstring traceTypeId();
 };

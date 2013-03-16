@@ -15,6 +15,7 @@
 #include "simulator/runtime/rdo_array.h"
 #include "simulator/runtime/rdo_matrix.h"
 #include "simulator/runtime/rdo_fuzzy.h"
+#include "simulator/runtime/headers/db/interface_db.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -363,6 +364,21 @@ RDOValue RDOValue::onPointerUMinus() const
 	//}
 
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerUMinus()");
+}
+
+void RDOValue::serializeInDB(REF(IDB) db) const
+{
+	switch (typeID())
+	{
+	case RDOType::t_unknow        : break;
+	case RDOType::t_int           : DEFINE_SERIALIZE_RDO_VALUE("int_rv"          ,                                           getInt     ()          ); break;
+	case RDOType::t_real          : DEFINE_SERIALIZE_RDO_VALUE("real_rv"         ,                                           getDouble  ()          ); break;
+	case RDOType::t_enum          : DEFINE_SERIALIZE_RDO_VALUE("enum_rv"         ,QString("'%1'").arg(QString::fromLocal8Bit(getAsString().c_str()))); break;
+	case RDOType::t_bool          : DEFINE_SERIALIZE_RDO_VALUE("bool_rv"         ,QString("'%1'").arg(QString::fromLocal8Bit(getAsString().c_str()))); break;
+	case RDOType::t_string        : DEFINE_SERIALIZE_RDO_VALUE("string_rv"       ,QString("'%1'").arg(QString::fromLocal8Bit(getString  ().c_str()))); break;
+	case RDOType::t_identificator : DEFINE_SERIALIZE_RDO_VALUE("identificator_rv",QString("'%1'").arg(QString::fromLocal8Bit(getAsString().c_str()))); break;
+	default                       : throw RDOValueException("Данная величина не может быть записана в базу данных");
+	}
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
