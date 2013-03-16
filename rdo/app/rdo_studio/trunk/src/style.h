@@ -68,9 +68,6 @@ public:
 	rbool operator ==(const StyleBase& style) const;
 	rbool operator !=(const StyleBase& style) const;
 
-	void loadStyle(QSettings& settings);
-	void saveStyle(QSettings& settings) const;
-
 	StyleFont font;
 	StyleFont::style defaultStyle;
 

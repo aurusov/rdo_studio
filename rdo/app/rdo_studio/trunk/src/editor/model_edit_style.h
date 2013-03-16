@@ -93,9 +93,6 @@ public:
 	ModelAutoComplete autoComplete;
 	ModelMargin       margin;
 
-	void loadStyle(QSettings& settings);
-	void saveStyle(QSettings& settings) const;
-
 	QColor foldFgColor;
 	QColor foldBgColor;
 	QColor errorBgColor;

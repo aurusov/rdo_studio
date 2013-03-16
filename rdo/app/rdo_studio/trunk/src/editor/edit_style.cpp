@@ -226,36 +226,6 @@ rbool EditStyle::operator !=( const EditStyle& style ) const
 	return !(*this == style);
 }
 
-void EditStyle::loadStyle(QSettings& settings)
-{
-	StyleBase::loadStyle(settings);	
-	
-	settings.beginGroup("theme");
-	settings >> *this;
-	settings.endGroup();
-	settings.beginGroup("tab");
-	tab.load(settings);
-	settings.endGroup();
-	settings.beginGroup("window");
-	window.load(settings);
-	settings.endGroup();
-}
-
-void EditStyle::saveStyle(QSettings& settings) const
-{
-	StyleBase::saveStyle(settings);
-	
-	settings.beginGroup("theme");
-	settings << *this;
-	settings.endGroup();
-	settings.beginGroup("tab");
-	tab.save(settings);
-	settings.endGroup();
-	settings.beginGroup("window");
-	window.save(settings);
-	settings.endGroup();
-}
-
 rbool EditStyle::styleDefault( const int styleType ) const
 {
 	return styleType == STYLE_DEFAULT;
@@ -355,6 +325,16 @@ namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const EditStyle& style)
 {
+	settings << static_cast<StyleBase>(style);
+
+	settings.beginGroup("tab");
+	settings << style.tab;
+	settings.endGroup();
+	settings.beginGroup("window");
+	settings << style.window;
+	settings.endGroup();
+
+	settings.beginGroup("theme");
 	settings.setValue("default_color", style.defaultColor.name());
 	settings.setValue("background_color", style.backgroundColor.name());
 	settings.setValue("caret_color", style.caretColor.name());
@@ -363,12 +343,23 @@ QSettings& operator<< (QSettings& settings, const EditStyle& style)
 	settings.setValue("bookmark_bg_color", style.bookmarkBgColor.name());
 	settings.setValue("default_style", style.defaultStyle);
 	settings.setValue("bookmark_style", style.bookmarkStyle);
+	settings.endGroup();
 
 	return settings;
 }
 
 QSettings& operator>> (QSettings& settings, EditStyle& style)
 {
+	settings >> static_cast<StyleBase&>(style);	
+	
+	settings.beginGroup("tab");
+	settings >> style.tab;
+	settings.endGroup();
+	settings.beginGroup("window");
+	settings >> style.window;
+	settings.endGroup();
+
+	settings.beginGroup("theme");
 	style.defaultColor     = QColor(settings.value("default_color", style.defaultColor.name()).toString());
 	style.backgroundColor  = QColor(settings.value("background_color", style.backgroundColor.name()).toString());
 	style.caretColor       = QColor(settings.value("caret_color", style.caretColor.name()).toString());
@@ -377,6 +368,7 @@ QSettings& operator>> (QSettings& settings, EditStyle& style)
 	style.bookmarkBgColor  = QColor(settings.value("bookmark_bg_color", style.bookmarkBgColor.name()).toString());
 	style.defaultStyle     = static_cast<StyleFont::style>(settings.value("default_style", style.defaultStyle).toInt());
 	style.bookmarkStyle    = static_cast<EditStyle::Bookmark>(settings.value("bookmark_style", style.bookmarkStyle).toInt());
+	settings.endGroup();
 
 	return settings;
 }

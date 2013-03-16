@@ -131,41 +131,31 @@ FindStyle FindStyle::getOceanStyle()
 	return style;
 }
 
-void FindStyle::loadStyle(QSettings& settings)
-{
-	LogStyle::loadStyle(settings);
-	
-	settings.beginGroup("theme");
-	settings >> *this;
-	settings.endGroup();
-}
-
-void FindStyle::saveStyle(QSettings& settings) const
-{
-	LogStyle::saveStyle(settings);
-
-	settings.beginGroup("theme");
-	settings << *this;
-	settings.endGroup();
-	
-}
-
 namespace rdo { namespace gui { namespace editor {
 
-	QSettings& operator<< (QSettings& settings, const FindStyle& style)
-	{
-		settings.setValue("keyword_color", style.keywordColor.name());
-		settings.setValue("keyword_style", style.keywordStyle);
+QSettings& operator<< (QSettings& settings, const FindStyle& style)
+{
+	settings << static_cast<LogStyle>(style);
 
-		return settings;
-	}
+	settings.beginGroup("theme");
+	settings.setValue("keyword_color", style.keywordColor.name());
+	settings.setValue("keyword_style", style.keywordStyle);
+	settings.endGroup();
 
-	QSettings& operator>> (QSettings& settings, FindStyle& style)
-	{
-		style.keywordColor = QColor(settings.value("keyword_color", style.keywordColor.name()).toString());
-		style.keywordStyle = static_cast<StyleFont::style>(settings.value("keyword_style", style.keywordStyle).toInt());
 
-		return settings;
-	}
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, FindStyle& style)
+{
+	settings >> static_cast<LogStyle&>(style);
+
+	settings.beginGroup("theme");
+	style.keywordColor = QColor(settings.value("keyword_color", style.keywordColor.name()).toString());
+	style.keywordStyle = static_cast<StyleFont::style>(settings.value("keyword_style", style.keywordStyle).toInt());
+	settings.endGroup();
+
+	return settings;
+}
 
 }}} // namespace rdo::gui::editor

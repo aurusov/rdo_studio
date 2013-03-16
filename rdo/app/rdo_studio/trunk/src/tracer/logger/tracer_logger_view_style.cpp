@@ -373,30 +373,6 @@ rbool LogStyle::operator !=( const LogStyle& style ) const
 	return !(*this == style);
 }
 
-void LogStyle::loadStyle(QSettings& settings)
-{
-	StyleBase::loadStyle(settings);
-
-	settings.beginGroup("theme");
-	settings >> *this;
-	settings.endGroup();
-	settings.beginGroup("borders");
-	borders.load(settings);
-	settings.endGroup();
-}
-
-void LogStyle::saveStyle(QSettings& settings) const
-{
-	StyleBase::saveStyle(settings);
-
-	settings.beginGroup("theme");
-	settings << *this;
-	settings.endGroup();
-	settings.beginGroup("borders");
-	borders.save(settings);
-	settings.endGroup();
-}
-
 LogStyle LogStyle::getDefaultStyle()
 {
 	LogStyle style;
@@ -407,6 +383,9 @@ namespace rdo { namespace gui { namespace tracer {
 
 QSettings& operator<< (QSettings& settings, const LogStyle& style)
 {
+	settings << static_cast<StyleBase>(style);
+
+	settings.beginGroup("theme");
 	settings.setValue("style", style.fontStyle);
 	style.defaultColor.save( settings, "defaultColor" );
 	style.es.save ( settings, "es"  );
@@ -434,12 +413,21 @@ QSettings& operator<< (QSettings& settings, const LogStyle& style)
 	style.sem.save( settings, "sem" );
 	style.sef.save( settings, "sef" );
 	style.seu.save( settings, "seu" );
+	settings.endGroup();
+
+	settings.beginGroup("borders");
+	settings << style.borders;
+	settings.endGroup();
+
 
 	return settings;
 }
 
 QSettings& operator>> (QSettings& settings, LogStyle& style)
 {
+	settings >> static_cast<StyleBase&>(style);
+
+	settings.beginGroup("theme");
 	style.fontStyle = static_cast<StyleFont::style>(settings.value("style", style.fontStyle).toInt());
 	style.defaultColor.load( settings, "defaultColor" );
 	style.es.load ( settings, "es"  );
@@ -467,6 +455,11 @@ QSettings& operator>> (QSettings& settings, LogStyle& style)
 	style.sem.load( settings, "sem" );
 	style.sef.load( settings, "sef" );
 	style.seu.load( settings, "seu" );
+	settings.endGroup();
+
+	settings.beginGroup("borders");
+	settings >> style.borders;
+	settings.endGroup();
 
 	return settings;
 }

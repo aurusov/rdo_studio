@@ -148,29 +148,6 @@ rbool ChartViewStyle::operator !=(const ChartViewStyle& style) const
 	return !(*this == style);
 }
 
-void ChartViewStyle::loadStyle(QSettings& settings)
-{
-	StyleBase::loadStyle(settings);
-
-	settings.beginGroup("theme");
-	settings >> *this;
-	settings.endGroup();
-	settings.beginGroup("fonts_ticks");
-	pFontsTicks.load(settings);
-	settings.endGroup();	
-}
-
-void ChartViewStyle::saveStyle(REF(QSettings) settings) const
-{
-	StyleBase::saveStyle(settings);
-	settings.beginGroup("theme");
-	settings << *this;
-	settings.endGroup();
-	settings.beginGroup("fonts_ticks");
-	pFontsTicks.save(settings);
-	settings.endGroup();	
-}
-
 ChartViewStyle ChartViewStyle::getDefaultStyle()
 {
 	ChartViewStyle style;
@@ -179,6 +156,9 @@ ChartViewStyle ChartViewStyle::getDefaultStyle()
 
 QSettings& operator<< (QSettings& settings, const ChartViewStyle& style)
 {
+	settings << static_cast<StyleBase>(style);
+
+	settings.beginGroup("theme");
 	settings.setValue("axis_fg_color", style.axisFgColor.name());
 	settings.setValue("title_fg_color", style.titleFGColor.name());
 	settings.setValue("legend_fg_color", style.legendFgColor.name());
@@ -186,12 +166,20 @@ QSettings& operator<< (QSettings& settings, const ChartViewStyle& style)
 	settings.setValue("time_bg_color", style.timeBgColor.name());
 	settings.setValue("title_style", style.titleStyle);
 	settings.setValue("legend_style", style.legendStyle);
+	settings.endGroup();
+
+	settings.beginGroup("fonts_ticks");
+	settings << style.pFontsTicks;
+	settings.endGroup();
 
 	return settings;
 }
 
 QSettings& operator>> (QSettings& settings, ChartViewStyle& style)
 {
+	settings >> static_cast<StyleBase&>(style);
+
+	settings.beginGroup("theme");	
 	style.axisFgColor   = QColor(settings.value("axis_fg_color", style.axisFgColor.name()).toString());
 	style.titleFGColor  = QColor(settings.value("title_fg_color", style.titleFGColor.name()).toString());
 	style.legendFgColor = QColor(settings.value("legend_fg_color", style.legendFgColor.name()).toString());
@@ -199,6 +187,11 @@ QSettings& operator>> (QSettings& settings, ChartViewStyle& style)
 	style.timeBgColor   = QColor(settings.value("time_bg_color", style.timeBgColor.name()).toString());
 	style.titleStyle    = static_cast<StyleFont::style>(settings.value("title_style", style.titleStyle).toInt());
 	style.legendStyle   = static_cast<StyleFont::style>(settings.value("legend_style", style.legendStyle).toInt());
+	settings.endGroup();
+
+	settings.beginGroup("fonts_ticks");
+	settings >> style.pFontsTicks;
+	settings.endGroup();
 
 	return settings;
 }

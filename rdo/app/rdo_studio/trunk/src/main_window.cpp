@@ -324,39 +324,41 @@ void MainWindow::init()
 	settings.beginGroup("style");
 	
 	settings.beginGroup("editor");
-	style_editor.loadStyle(settings);
+	settings >> style_editor;
 	settings.endGroup();
 
 	settings.beginGroup("build");
 	style_build.window.wordWrap          = true;
 	style_build.window.showHorzScrollBar = false;
-	style_build.loadStyle(settings);
+	settings >> style_build;
 	settings.endGroup();
 
 	settings.beginGroup("debug");
 	style_debug.window.wordWrap          = true;
 	style_debug.window.showHorzScrollBar = false;
-	style_debug.loadStyle(settings);
+	settings >> style_debug;
 	settings.endGroup();
 
 	settings.beginGroup("trace");
-	style_trace.loadStyle(settings);
+	settings >> style_trace;
 	settings.endGroup();
 
 	settings.beginGroup("results");
-	style_results.loadStyle(settings);
+	settings >> style_results;
 	settings.endGroup();
 
 	settings.beginGroup("find");
-	style_find.loadStyle(settings);
+	settings >> style_find;
 	settings.endGroup();
 
 	settings.beginGroup("frame");
-	style_frame.loadStyle(settings);
+	settings >> style_frame;
 	settings.endGroup();
 
 	settings.beginGroup("chart");
-	style_chart.loadStyle(settings);
+	settings >> style_chart;
+	settings.endGroup();
+
 	settings.endGroup();
 
 	m_pDockBuild   = new DockBuild  (this);
@@ -430,35 +432,35 @@ void MainWindow::closeEvent(QCloseEvent* event)
 		settings.beginGroup("style");
 
 		settings.beginGroup("editor");
-		style_editor.saveStyle(settings);
+		settings << style_editor;
 		settings.endGroup();
 		
 		settings.beginGroup("build");
-		style_build.saveStyle(settings);
+		settings << style_build;
 		settings.endGroup();
 		
 		settings.beginGroup("debug");
-		style_debug.saveStyle(settings);
+		settings << style_debug;
 		settings.endGroup();
 		
 		settings.beginGroup("trace");
-		style_trace.saveStyle(settings);
+		settings << style_trace;
 		settings.endGroup();
 
 		settings.beginGroup("results");
-		style_results.saveStyle(settings);
+		settings << style_results;
 		settings.endGroup();
 
 		settings.beginGroup("find");
-		style_find.saveStyle(settings);
+		settings << style_find;
 		settings.endGroup();
 
 		settings.beginGroup("frame");
-		style_frame.saveStyle(settings);
+		settings << style_frame;
 		settings.endGroup();
 
 		settings.beginGroup("chart");
-		style_chart.saveStyle(settings);
+		settings << style_chart;
 		settings.endGroup();
 	}
 }

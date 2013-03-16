@@ -48,26 +48,6 @@ rbool BuildStyle::operator !=( const BuildStyle& style ) const
 	return !(*this == style);
 }
 
-void BuildStyle::loadStyle(QSettings& settings)
-{
-	LogStyle::loadStyle(settings);
-
-	settings.beginGroup("theme");
-	settings >> *this;
-	settings.endGroup();
-	
-}
-
-void BuildStyle::saveStyle(QSettings& settings) const
-{
-	LogStyle::saveStyle(settings);
-
-	settings.beginGroup("theme");
-	settings << *this;
-	settings.endGroup();
-	
-}
-
 BuildStyle BuildStyle::getDefaultStyle()
 {
 	BuildStyle style;
@@ -100,18 +80,26 @@ BuildStyle BuildStyle::getOceanStyle()
 
 namespace rdo { namespace gui { namespace editor {
 
-	QSettings& operator<< (QSettings& settings, const BuildStyle& style)
-	{
-		settings.setValue("warning", style.warning);
+QSettings& operator<< (QSettings& settings, const BuildStyle& style)
+{
+	settings << static_cast<LogStyle>(style);
 
-		return settings;
-	}
+	settings.beginGroup("theme");
+	settings.setValue("warning", style.warning);
+	settings.endGroup();
 
-	QSettings& operator>> (QSettings& settings, BuildStyle& style)
-	{
-		style.warning = settings.value("warning", style.warning).toBool() ? true : false;
+	return settings;
+}
 
-		return settings;
-	}
+QSettings& operator>> (QSettings& settings, BuildStyle& style)
+{
+	settings >> static_cast<LogStyle&>(style);
+
+	settings.beginGroup("theme");
+	style.warning = settings.value("warning", style.warning).toBool() ? true : false;
+	settings.endGroup();
+
+	return settings;
+}
 
 }}} // namespace rdo::gui::editor

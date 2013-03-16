@@ -105,26 +105,6 @@ rbool ParserStyle::operator !=( const ParserStyle& style ) const
 	return !(*this == style);
 }
 
-void ParserStyle::loadStyle(QSettings& settings)
-{
-	EditStyle::loadStyle(settings);
-
-	settings.beginGroup("theme");
-	settings >> *this;
-	settings.endGroup();
-	
-}
-
-void ParserStyle::saveStyle(QSettings& settings) const
-{
-	EditStyle::saveStyle(settings);
-
-	settings.beginGroup("theme");
-	settings << *this;
-	settings.endGroup();
-	
-}
-
 rbool ParserStyle::styleDefault( const int styleType ) const
 {
 	return styleType == SCE_RDO_DEFAULT;
@@ -370,54 +350,62 @@ ParserStyle ParserStyle::getOceanStyle()
 
 namespace rdo { namespace gui { namespace editor {
 
-	QSettings& operator<< (QSettings& settings, const ParserStyle& style)
-	{
-		settings.setValue("identifier_color", style.identifierColor.name());
-		settings.setValue("keyword_color", style.keywordColor.name());
-		settings.setValue("functions_color", style.functionsColor.name());
-		settings.setValue("trace_color", style.traceColor.name());
-		settings.setValue("color_color", style.colorColor.name());
-		settings.setValue("comment_color", style.commentColor.name());
-		settings.setValue("number_color", style.numberColor.name());
-		settings.setValue("string_color", style.stringColor.name());
-		settings.setValue("operator_color", style.operatorColor.name());
+QSettings& operator<< (QSettings& settings, const ParserStyle& style)
+{
+	settings << static_cast<EditStyle>(style);
 
-		settings.setValue("identifier_style", style.identifierStyle);
-		settings.setValue("keyword_style", style.keywordStyle);
-		settings.setValue("functions_style", style.functionsStyle);
-		settings.setValue("trace_style", style.traceStyle);
-		settings.setValue("color_style", style.colorStyle);
-		settings.setValue("comment_style", style.commentStyle);
-		settings.setValue("number_style", style.numberStyle);
-		settings.setValue("string_style", style.stringStyle);
-		settings.setValue("operator_style", style.operatorStyle);
+	settings.beginGroup("theme");	
+	settings.setValue("identifier_color", style.identifierColor.name());
+	settings.setValue("keyword_color", style.keywordColor.name());
+	settings.setValue("functions_color", style.functionsColor.name());
+	settings.setValue("trace_color", style.traceColor.name());
+	settings.setValue("color_color", style.colorColor.name());
+	settings.setValue("comment_color", style.commentColor.name());
+	settings.setValue("number_color", style.numberColor.name());
+	settings.setValue("string_color", style.stringColor.name());
+	settings.setValue("operator_color", style.operatorColor.name());
 
-		return settings;
-	}
+	settings.setValue("identifier_style", style.identifierStyle);
+	settings.setValue("keyword_style", style.keywordStyle);
+	settings.setValue("functions_style", style.functionsStyle);
+	settings.setValue("trace_style", style.traceStyle);
+	settings.setValue("color_style", style.colorStyle);
+	settings.setValue("comment_style", style.commentStyle);
+	settings.setValue("number_style", style.numberStyle);
+	settings.setValue("string_style", style.stringStyle);
+	settings.setValue("operator_style", style.operatorStyle);
+	settings.endGroup();
 
-	QSettings& operator>> (QSettings& settings, ParserStyle& style)
-	{
-		style.identifierColor        = QColor(settings.value("identifier_color", style.identifierColor.name()).toString());
-		style.keywordColor           = QColor(settings.value("keyword_color", style.keywordColor.name()).toString());
-		style.functionsColor         = QColor(settings.value("functions_color", style.functionsColor.name()).toString());
-		style.traceColor             = QColor(settings.value("trace_color", style.traceColor.name()).toString());
-		style.colorColor             = QColor(settings.value("color_color", style.colorColor.name()).toString());
-		style.commentColor           = QColor(settings.value("comment_color", style.commentColor.name()).toString());
-		style.numberColor            = QColor(settings.value("number_color", style.numberColor.name()).toString());
-		style.stringColor            = QColor(settings.value("string_color", style.stringColor.name()).toString());
-		style.operatorColor          = QColor(settings.value("operator_color", style.operatorColor.name()).toString());
+	return settings;
+}
 
-		style.identifierStyle        = static_cast<StyleFont::style>(settings.value("identifier_style", style.identifierStyle).toInt());
-		style.keywordStyle           = static_cast<StyleFont::style>(settings.value("keyword_style", style.keywordStyle).toInt());
-		style.functionsStyle         = static_cast<StyleFont::style>(settings.value("functions_style", style.functionsStyle).toInt());
-		style.traceStyle             = static_cast<StyleFont::style>(settings.value("trace_style", style.traceStyle).toInt());
-		style.colorStyle             = static_cast<StyleFont::style>(settings.value("color_style", style.colorStyle).toInt());
-		style.commentStyle           = static_cast<StyleFont::style>(settings.value("comment_style", style.commentStyle).toInt());
-		style.numberStyle            = static_cast<StyleFont::style>(settings.value("number_style", style.numberStyle).toInt());
-		style.stringStyle            = static_cast<StyleFont::style>(settings.value("string_style", style.stringStyle).toInt());
-		style.operatorStyle          = static_cast<StyleFont::style>(settings.value("operator_style", style.operatorStyle).toInt());
+QSettings& operator>> (QSettings& settings, ParserStyle& style)
+{
+	settings >> static_cast<EditStyle&>(style);
 
-		return settings;
-	}
+	settings.beginGroup("theme");
+	style.identifierColor        = QColor(settings.value("identifier_color", style.identifierColor.name()).toString());
+	style.keywordColor           = QColor(settings.value("keyword_color", style.keywordColor.name()).toString());
+	style.functionsColor         = QColor(settings.value("functions_color", style.functionsColor.name()).toString());
+	style.traceColor             = QColor(settings.value("trace_color", style.traceColor.name()).toString());
+	style.colorColor             = QColor(settings.value("color_color", style.colorColor.name()).toString());
+	style.commentColor           = QColor(settings.value("comment_color", style.commentColor.name()).toString());
+	style.numberColor            = QColor(settings.value("number_color", style.numberColor.name()).toString());
+	style.stringColor            = QColor(settings.value("string_color", style.stringColor.name()).toString());
+	style.operatorColor          = QColor(settings.value("operator_color", style.operatorColor.name()).toString());
+
+	style.identifierStyle        = static_cast<StyleFont::style>(settings.value("identifier_style", style.identifierStyle).toInt());
+	style.keywordStyle           = static_cast<StyleFont::style>(settings.value("keyword_style", style.keywordStyle).toInt());
+	style.functionsStyle         = static_cast<StyleFont::style>(settings.value("functions_style", style.functionsStyle).toInt());
+	style.traceStyle             = static_cast<StyleFont::style>(settings.value("trace_style", style.traceStyle).toInt());
+	style.colorStyle             = static_cast<StyleFont::style>(settings.value("color_style", style.colorStyle).toInt());
+	style.commentStyle           = static_cast<StyleFont::style>(settings.value("comment_style", style.commentStyle).toInt());
+	style.numberStyle            = static_cast<StyleFont::style>(settings.value("number_style", style.numberStyle).toInt());
+	style.stringStyle            = static_cast<StyleFont::style>(settings.value("string_style", style.stringStyle).toInt());
+	style.operatorStyle          = static_cast<StyleFont::style>(settings.value("operator_style", style.operatorStyle).toInt());
+	settings.endGroup();
+
+	return settings;
+}
 
 }}} // namespace rdo::gui::editor

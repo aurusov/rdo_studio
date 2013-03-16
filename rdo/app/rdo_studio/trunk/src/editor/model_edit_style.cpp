@@ -199,36 +199,6 @@ rbool ModelStyle::operator !=( const ModelStyle& style ) const
 	return !(*this == style);
 }
 
-void ModelStyle::loadStyle(QSettings& settings)
-{
-	ParserStyle::loadStyle(settings);
-
-	settings.beginGroup("theme");
-	settings >> *this;
-	settings.endGroup();
-	settings.beginGroup("auto_complete");
-	autoComplete.load(settings);
-	settings.endGroup();
-	settings.beginGroup("margin");
-	margin.load(settings);
-	settings.endGroup();
-}
-
-void ModelStyle::saveStyle(QSettings& settings ) const
-{
-	ParserStyle::saveStyle(settings);
-
-	settings.beginGroup("theme");
-	settings << *this;
-	settings.endGroup();
-	settings.beginGroup("auto_complete");
-	autoComplete.save(settings);
-	settings.endGroup();
-	settings.beginGroup("margin");
-	margin.save(settings);
-	settings.endGroup();
-}
-
 ModelStyle ModelStyle::getDefaultStyle()
 {
 	ModelStyle style;
@@ -327,26 +297,51 @@ ModelStyle ModelStyle::getOceanStyle()
 
 namespace rdo { namespace gui { namespace editor {
 
-	QSettings& operator<< (QSettings& settings, const ModelStyle& style)
-	{
-		settings.setValue("fold_fg_color", style.foldFgColor.name());
-		settings.setValue("fold_bg_color", style.foldBgColor.name());
-		settings.setValue("error_bg_color", style.errorBgColor.name());
-		settings.setValue("fold_style", style.foldStyle);
-		settings.setValue("comment_fold", style.commentFold);
+QSettings& operator<< (QSettings& settings, const ModelStyle& style)
+{
+	settings << static_cast<ParserStyle>(style);
 
-		return settings;
-	}
+	settings.beginGroup("theme");
+	settings.setValue("fold_fg_color", style.foldFgColor.name());
+	settings.setValue("fold_bg_color", style.foldBgColor.name());
+	settings.setValue("error_bg_color", style.errorBgColor.name());
+	settings.setValue("fold_style", style.foldStyle);
+	settings.setValue("comment_fold", style.commentFold);
+	settings.endGroup();
 
-	QSettings& operator>> (QSettings& settings, ModelStyle& style)
-	{
-		style.foldFgColor  = QColor(settings.value("fold_fg_color", style.foldFgColor.name()).toString());
-		style.foldBgColor  = QColor(settings.value("fold_bg_color", style.foldBgColor.name()).toString());
-		style.errorBgColor = QColor(settings.value("error_bg_color", style.errorBgColor.name()).toString());
-		style.foldStyle    = (ModelStyle::Fold)settings.value("fold_style", style.foldStyle).toInt();
-		style.commentFold  = settings.value("comment_fold", style.commentFold).toBool() ? true : false;
+	settings.beginGroup("auto_complete");
+	settings << style.autoComplete;
+	settings.endGroup();
 
-		return settings;
-	}
+	settings.beginGroup("margin");
+	settings << style.margin;
+	settings.endGroup();
+
+
+	return settings;
+}
+
+QSettings& operator>> (QSettings& settings, ModelStyle& style)
+{
+	settings >> static_cast<ParserStyle&>(style);
+
+	settings.beginGroup("theme");
+	style.foldFgColor  = QColor(settings.value("fold_fg_color", style.foldFgColor.name()).toString());
+	style.foldBgColor  = QColor(settings.value("fold_bg_color", style.foldBgColor.name()).toString());
+	style.errorBgColor = QColor(settings.value("error_bg_color", style.errorBgColor.name()).toString());
+	style.foldStyle    = (ModelStyle::Fold)settings.value("fold_style", style.foldStyle).toInt();
+	style.commentFold  = settings.value("comment_fold", style.commentFold).toBool() ? true : false;
+	settings.endGroup();
+
+	settings.beginGroup("auto_complete");
+	settings >> style.autoComplete;
+	settings.endGroup();
+
+	settings.beginGroup("margin");
+	settings >> style.margin;
+	settings.endGroup();
+
+	return settings;
+}
 
 }}} // namespace rdo::gui::editor

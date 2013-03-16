@@ -91,9 +91,6 @@ public:
 	rbool operator ==( const EditStyle& style ) const;
 	rbool operator !=( const EditStyle& style ) const;
 
-	void loadStyle(QSettings& settings);
-	void saveStyle(QSettings& settings) const;
-
 	virtual rbool styleDefault( const int styleType ) const;
 	virtual rbool styleUsing( const int styleType ) const;
 	virtual rbool styleBold( const int styleType = STYLE_DEFAULT ) const;

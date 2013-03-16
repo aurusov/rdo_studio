@@ -54,11 +54,6 @@ public:
 	rbool operator ==(const ChartViewStyle& style) const;
 	rbool operator !=(const ChartViewStyle& style) const;
 
-	void init(CREF(QString) _groupName = "");
-
-	void loadStyle(QSettings& settings);
-	void saveStyle(QSettings& settings) const;
-
 	QColor axisFgColor;
 	QColor titleFGColor;
 	QColor legendFgColor;

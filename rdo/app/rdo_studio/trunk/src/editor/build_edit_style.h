@@ -30,9 +30,6 @@ public:
 	rbool operator ==( const BuildStyle& style ) const;
 	rbool operator !=( const BuildStyle& style ) const;
 
-	void loadStyle(QSettings& settings);
-	void saveStyle(QSettings& settings) const;
-
 	rbool warning;
 
 	static BuildStyle getDefaultStyle();
