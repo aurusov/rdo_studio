@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      simulator/runtime/namespace.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      15.02.2012
-  \brief     Пространство имен rdo::service::simulation
+  \brief     РџСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РёРјРµРЅ rdo::service::simulation
   \indent    4T
 */
 
@@ -17,7 +17,7 @@
 // --------------------------------------------------------------------------------
 
 //! \namespace  rdo::service::simulation
-//! \brief      Пространство имён симулятора
+//! \brief      РџСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РёРјС‘РЅ СЃРёРјСѓР»СЏС‚РѕСЂР°
 #define  OPEN_RDO_SERVICE_SIMULATION_NAMESPACE  namespace rdo { namespace service { namespace simulation {
 #define CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE  }}};
 

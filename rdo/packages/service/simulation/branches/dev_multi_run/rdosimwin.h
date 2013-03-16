@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdosimwin.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -86,7 +86,7 @@ public:
 	RDOThreadCorba();
 	
 private:
-	virtual ~RDOThreadCorba() {}; //! Чтобы нельзя было удалить через delete
+	virtual ~RDOThreadCorba() {}; //! Р§С‚РѕР±С‹ РЅРµР»СЊР·СЏ Р±С‹Р»Рѕ СѓРґР°Р»РёС‚СЊ С‡РµСЂРµР· delete
 	virtual void proc(REF(RDOMessageInfo) msg);
 	virtual void idle();
 	virtual void start();
@@ -147,7 +147,7 @@ private:
 	ruint64                                            m_timeStart;
 
 	RDOThreadRunTime();
-	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
+	virtual ~RDOThreadRunTime() //! Р§С‚РѕР±С‹ РЅРµР»СЊР·СЏ Р±С‹Р»Рѕ СѓРґР°Р»РёС‚СЊ С‡РµСЂРµР· delete
 	{};
 
 	virtual void proc   (REF(RDOMessageInfo) msg);
@@ -235,7 +235,7 @@ private:
 #endif // CORBA_ENABLE
 
 protected:
-	virtual ~RDOThreadSimulator(); //! Чтобы нельзя было удалить через delete помещаем его в protected
+	virtual ~RDOThreadSimulator(); //! Р§С‚РѕР±С‹ РЅРµР»СЊР·СЏ Р±С‹Р»Рѕ СѓРґР°Р»РёС‚СЊ С‡РµСЂРµР· delete РїРѕРјРµС‰Р°РµРј РµРіРѕ РІ protected
 
 	virtual void proc(REF(RDOMessageInfo) msg);
 
@@ -289,7 +289,7 @@ class RDOThreadCodeComp: public RDOThreadMT
 protected:
 	rdo::compiler::parser::LPRDOParser m_pParser;
 
-	virtual ~RDOThreadCodeComp(); //! Чтобы нельзя было удалить через delete помещаем его в protected
+	virtual ~RDOThreadCodeComp(); //! Р§С‚РѕР±С‹ РЅРµР»СЊР·СЏ Р±С‹Р»Рѕ СѓРґР°Р»РёС‚СЊ С‡РµСЂРµР· delete РїРѕРјРµС‰Р°РµРј РµРіРѕ РІ protected
 	virtual void proc(REF(RDOMessageInfo) msg);
 
 public:
