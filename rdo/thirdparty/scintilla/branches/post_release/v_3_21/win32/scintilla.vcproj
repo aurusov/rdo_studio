@@ -381,34 +381,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".rdo"
-			>
-			<File
-				RelativePath="..\rdo\LexFind.cxx"
-				>
-			</File>
-			<File
-				RelativePath="..\rdo\LexFind.h"
-				>
-			</File>
-			<File
-				RelativePath="..\rdo\LexRdo.cxx"
-				>
-			</File>
-			<File
-				RelativePath="..\rdo\LexRdo.h"
-				>
-			</File>
-			<File
-				RelativePath="..\rdo\WordListUtil.cxx"
-				>
-			</File>
-			<File
-				RelativePath="..\rdo\WordListUtil.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name=".lexlib"
 			>
 			<File
