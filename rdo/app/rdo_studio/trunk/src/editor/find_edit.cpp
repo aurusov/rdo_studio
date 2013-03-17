@@ -15,7 +15,7 @@
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/editor/find_edit.h"
-#include "app/rdo_studio/src/editor/lexer/LexFind.h"
+#include "app/rdo_studio/src/editor/lexer/lexer_find.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"
 #include "thirdparty/scintilla/include/SciLexer.h"

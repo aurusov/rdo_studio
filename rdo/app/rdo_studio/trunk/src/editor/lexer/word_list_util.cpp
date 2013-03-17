@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      WordListUtil.cxx
+  \file      word_list_util.cpp
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      29.09.2012
   \brief     
@@ -15,7 +15,7 @@
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdotypes.h"
-#include "app/rdo_studio/src/editor/lexer/WordListUtil.h"
+#include "app/rdo_studio/src/editor/lexer/word_list_util.h"
 // --------------------------------------------------------------------------------
 
 WordListUtil::WordListUtil(const WordList& wordlist)

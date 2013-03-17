@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2013
-  \file      LexRdo.h
+  \file      lexer_model.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_EDITOR_LEXER_LEXRDO_H_
-#define _RDO_STUDIO_EDITOR_LEXER_LEXRDO_H_
+#ifndef _RDO_STUDIO_EDITOR_LEXER_MODEL_H_
+#define _RDO_STUDIO_EDITOR_LEXER_MODEL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <locale>
@@ -26,4 +26,4 @@ bool isIdentifier(char ch, const std::locale& locale);
 
 extern LexerModule lexerRDOSyntax;
 
-#endif // _RDO_STUDIO_EDITOR_LEXER_LEXRDO_H_
+#endif // _RDO_STUDIO_EDITOR_LEXER_MODEL_H_

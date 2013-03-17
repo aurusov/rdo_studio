@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2013
-  \file      LexFind.cxx
+  \file      lexer_find.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.02.2003
   \brief     
@@ -17,8 +17,8 @@
 #include <stdarg.h>
 #include <assert.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/editor/lexer/LexFind.h"
-#include "app/rdo_studio/src/editor/lexer/LexRdo.h"
+#include "app/rdo_studio/src/editor/lexer/lexer_find.h"
+#include "app/rdo_studio/src/editor/lexer/lexer_model.h"
 #include "thirdparty/scintilla/include/Platform.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
 #include "thirdparty/scintilla/include/SciLexer.h"

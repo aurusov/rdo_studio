@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      WordListUtil.h
+  \file      word_list_util.h
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      29.09.2012
   \brief     
   \indent    4T
 */
 
-#ifndef _THIRDPARTY_SCINTILLA_WORDLISTUTIL_H_
-#define _THIRDPARTY_SCINTILLA_WORDLISTUTIL_H_
+#ifndef _RDO_STUDIO_EDITOR_LEXER_WORD_LIST_UTIL_H_
+#define _RDO_STUDIO_EDITOR_LEXER_WORD_LIST_UTIL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
@@ -26,4 +26,4 @@ private:
 	const WordList& wl;
 };
 
-#endif //_THIRDPARTY_SCINTILLA_WORDLISTUTIL_H_
+#endif // _RDO_STUDIO_EDITOR_LEXER_WORD_LIST_UTIL_H_

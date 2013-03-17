@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2013
-  \file      LexRdo.cxx
+  \file      lexer_model.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
@@ -18,7 +18,7 @@
 #include <assert.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdolocale.h"
-#include "app/rdo_studio/src/editor/lexer/LexRdo.h"
+#include "app/rdo_studio/src/editor/lexer/lexer_model.h"
 #include "thirdparty/scintilla/include/Platform.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
 #include "thirdparty/scintilla/include/SciLexer.h"
