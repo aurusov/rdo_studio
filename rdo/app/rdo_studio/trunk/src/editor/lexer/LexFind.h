@@ -1,11 +1,21 @@
-#ifndef LEXFIND_H
-#define LEXFIND_H
+/*!
+  \copyright (c) RDO-Team, 2003-2013
+  \file      LexFind.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_EDITOR_LEXER_LEXFIND_H_
+#define _RDO_STUDIO_EDITOR_LEXER_LEXFIND_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "thirdparty/scintilla/include/ILexer.h"
 #include "thirdparty/scintilla/lexlib/LexerModule.h"
-
-#define SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX 4
+// --------------------------------------------------------------------------------
 
 extern LexerModule lexerRDOFind;
 
-#endif // LEXFIND_H
+#endif // _RDO_STUDIO_EDITOR_LEXER_LEXFIND_H_

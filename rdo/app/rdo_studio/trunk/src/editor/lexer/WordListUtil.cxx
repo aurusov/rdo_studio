@@ -1,19 +1,21 @@
 /*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      WordListUtil.cpp
+  \copyright (c) RDO-Team, 2012
+  \file      WordListUtil.cxx
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      29.09.2012
   \brief     
   \indent    4T
 */
 
+// ---------------------------------------------------------------------------- PCH
+#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdotypes.h"
-#include "thirdparty/scintilla/rdo/WordListUtil.h"
+#include "app/rdo_studio/src/editor/lexer/WordListUtil.h"
 // --------------------------------------------------------------------------------
 
 WordListUtil::WordListUtil(const WordList& wordlist)

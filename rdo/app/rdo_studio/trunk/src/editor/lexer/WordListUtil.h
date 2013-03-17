@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2003-2012
+  \copyright (c) RDO-Team, 2012
   \file      WordListUtil.h
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      29.09.2012

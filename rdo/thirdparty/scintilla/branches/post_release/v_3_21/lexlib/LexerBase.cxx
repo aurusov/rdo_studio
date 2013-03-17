@@ -12,8 +12,6 @@
 #include <assert.h>
 #include <ctype.h>
 
-#include "thirdparty/scintilla/rdo/LexFind.h"
-
 #include "ILexer.h"
 #include "Scintilla.h"
 #include "SciLexer.h"

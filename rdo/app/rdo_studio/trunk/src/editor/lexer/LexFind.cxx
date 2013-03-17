@@ -1,28 +1,31 @@
-// Scintilla source code edit control
-/** @file LexFind.cxx
- ** Lexer for find results.
- ** Written by Andrey Urusov.
- **/
-// Copyright 1998-2001 by Neil Hodgson <neilh@scintilla.org>
-// The License.txt file describes the conditions under which this software may be distributed.
+/*!
+  \copyright (c) RDO-Team, 2003-2013
+  \file      LexFind.cxx
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
 
+// ---------------------------------------------------------------------------- PCH
+#include "app/rdo_studio/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <assert.h>
-
-#include "LexFind.h"
-#include "LexRdo.h"
-
-#include "Platform.h"
-
-#include "WordList.h"
-#include "LexAccessor.h"
-#include "Accessor.h"
-#include "Scintilla.h"
-#include "SciLexer.h"
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio/src/editor/lexer/LexFind.h"
+#include "app/rdo_studio/src/editor/lexer/LexRdo.h"
+#include "thirdparty/scintilla/include/Platform.h"
+#include "thirdparty/scintilla/lexlib/WordList.h"
+#include "thirdparty/scintilla/lexlib/LexAccessor.h"
+#include "thirdparty/scintilla/lexlib/Accessor.h"
+#include "thirdparty/scintilla/include/Scintilla.h"
+#include "thirdparty/scintilla/include/SciLexer.h"
+// --------------------------------------------------------------------------------
 
 static inline char RDOMakeUpperCase( char ch )
 {
