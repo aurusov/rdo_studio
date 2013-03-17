@@ -1,0 +1,6 @@
+1) Скачать qt5 из http://qt-project.org/downloads
+
+2) Установить в /opt/qt/5.*.*
+
+3) Добавить переменную окружения QTDIR=/opt/qt/5.*.*/5.*.*/(gcc/gcc64)
+
