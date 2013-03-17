@@ -20,12 +20,12 @@
 #include "utils/rdolocale.h"
 #include "app/rdo_studio/src/editor/lexer/LexRdo.h"
 #include "thirdparty/scintilla/include/Platform.h"
+#include "thirdparty/scintilla/include/Scintilla.h"
+#include "thirdparty/scintilla/include/SciLexer.h"
 #include "thirdparty/scintilla/lexlib/WordList.h"
 #include "thirdparty/scintilla/lexlib/LexAccessor.h"
 #include "thirdparty/scintilla/lexlib/Accessor.h"
 #include "thirdparty/scintilla/lexlib/StyleContext.h"
-#include "thirdparty/scintilla/include/Scintilla.h"
-#include "thirdparty/scintilla/include/SciLexer.h"
 #include "thirdparty/scintilla/lexlib/CharacterSet.h"
 // --------------------------------------------------------------------------------
 

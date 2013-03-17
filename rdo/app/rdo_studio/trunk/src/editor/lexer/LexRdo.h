@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <locale>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
 #include "thirdparty/scintilla/include/ILexer.h"
 #include "thirdparty/scintilla/lexlib/LexerModule.h"
 // --------------------------------------------------------------------------------

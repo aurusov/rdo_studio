@@ -20,11 +20,11 @@
 #include "app/rdo_studio/src/editor/lexer/LexFind.h"
 #include "app/rdo_studio/src/editor/lexer/LexRdo.h"
 #include "thirdparty/scintilla/include/Platform.h"
+#include "thirdparty/scintilla/include/Scintilla.h"
+#include "thirdparty/scintilla/include/SciLexer.h"
 #include "thirdparty/scintilla/lexlib/WordList.h"
 #include "thirdparty/scintilla/lexlib/LexAccessor.h"
 #include "thirdparty/scintilla/lexlib/Accessor.h"
-#include "thirdparty/scintilla/include/Scintilla.h"
-#include "thirdparty/scintilla/include/SciLexer.h"
 // --------------------------------------------------------------------------------
 
 static inline char RDOMakeUpperCase( char ch )

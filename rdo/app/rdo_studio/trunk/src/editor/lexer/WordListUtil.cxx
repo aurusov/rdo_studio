@@ -22,17 +22,17 @@ WordListUtil::WordListUtil(const WordList& wordlist)
 	: wl(wordlist)
 {}
 
-std::vector<tstring> WordListUtil::getNearestWords(const tstring& userPattern) const
+std::vector<std::string> WordListUtil::getNearestWords(const std::string& userPattern) const
 {
 	struct PriorityResultItem
 	{
-		tstring  value;
-		float    priority;
+		std::string  value;
+		float        priority;
 
 		PriorityResultItem()
 			: priority(0.0)
 		{}
-		PriorityResultItem(const tstring& value, float priority)
+		PriorityResultItem(const std::string& value, float priority)
 			: value   (value   )
 			, priority(priority)
 		{}
@@ -45,7 +45,7 @@ std::vector<tstring> WordListUtil::getNearestWords(const tstring& userPattern) c
 		}
 	};
 
-	typedef  std::vector<tstring>  result_type;
+	typedef  std::vector<std::string>  result_type;
 	result_type result;
 
 	if (wl.words == 0)
