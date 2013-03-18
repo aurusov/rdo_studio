@@ -8,6 +8,8 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOSequencesTest
@@ -20,15 +22,9 @@
 #include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
-#include "utils/platform.h"
+#include "utils/rdolocale.h"
 #include "simulator/runtime/rdo_random_distribution.h"
 // --------------------------------------------------------------------------------
-
-#ifdef COMPILER_VISUAL_STUDIO
-	#define  __SCANF  sscanf_s
-#else  // not COMPILER_VISUAL_STUDIO
-	#define  __SCANF  sscanf
-#endif // COMPILER_VISUAL_STUDIO
 
 typedef std::vector<double> Container;
 typedef std::vector<ruint>  ContainerInt;
@@ -304,6 +300,8 @@ BOOST_AUTO_TEST_SUITE(RDOSequencesTest)
 // --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
 {
+	rdo::locale::init();
+
 	onGenerateData<rdo::runtime::RandGeneratorNormal>
 		(boost::bind(&rdo::runtime::RandGeneratorNormal::next, _1, g_main, g_var), g_filePath + g_fileNormalName);
 }
