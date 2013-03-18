@@ -31,8 +31,6 @@ public:
 	rbool operator !=( const FrameStyle& style ) const;
 
 	static FrameStyle getDefaultStyle();
-
-	void init( CREF(QString) _groupName = "" );
 };
 
 }}} // namespace rdo::gui::frame
