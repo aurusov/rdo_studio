@@ -352,7 +352,7 @@ namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const ParserStyle& style)
 {
-	settings << static_cast<EditStyle>(style);
+	settings << static_cast<const EditStyle&>(style);
 
 	settings.beginGroup("theme");	
 	settings.setValue("identifier_color", style.identifierColor.name());

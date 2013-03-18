@@ -135,7 +135,7 @@ namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const FindStyle& style)
 {
-	settings << static_cast<LogStyle>(style);
+	settings << static_cast<const LogStyle&>(style);
 
 	settings.beginGroup("theme");
 	settings.setValue("keyword_color", style.keywordColor.name());

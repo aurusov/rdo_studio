@@ -325,7 +325,7 @@ namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const EditStyle& style)
 {
-	settings << static_cast<StyleBase>(style);
+	settings << static_cast<const StyleBase&>(style);
 
 	settings.beginGroup("tab");
 	settings << style.tab;

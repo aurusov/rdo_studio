@@ -87,7 +87,7 @@ namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const LogStyle& style)
 {
-	settings << static_cast<EditStyle>(style);
+	settings << static_cast<const EditStyle&>(style);
 	
 	settings.beginGroup("theme");
 	settings.setValue("select_line_bg_color", style.selectLineBgColor.name());

@@ -299,7 +299,7 @@ namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const ModelStyle& style)
 {
-	settings << static_cast<ParserStyle>(style);
+	settings << static_cast<const ParserStyle&>(style);
 
 	settings.beginGroup("theme");
 	settings.setValue("fold_fg_color", style.foldFgColor.name());

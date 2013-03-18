@@ -82,7 +82,7 @@ namespace rdo { namespace gui { namespace editor {
 
 QSettings& operator<< (QSettings& settings, const BuildStyle& style)
 {
-	settings << static_cast<LogStyle>(style);
+	settings << static_cast<const LogStyle&>(style);
 
 	settings.beginGroup("theme");
 	settings.setValue("warning", style.warning);

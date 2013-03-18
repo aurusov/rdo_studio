@@ -383,7 +383,7 @@ namespace rdo { namespace gui { namespace tracer {
 
 QSettings& operator<< (QSettings& settings, const LogStyle& style)
 {
-	settings << static_cast<StyleBase>(style);
+	settings << static_cast<const StyleBase&>(style);
 
 	settings.beginGroup("theme");
 	settings.setValue("style", style.fontStyle);

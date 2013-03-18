@@ -156,7 +156,7 @@ ChartViewStyle ChartViewStyle::getDefaultStyle()
 
 QSettings& operator<< (QSettings& settings, const ChartViewStyle& style)
 {
-	settings << static_cast<StyleBase>(style);
+	settings << static_cast<const StyleBase&>(style);
 
 	settings.beginGroup("theme");
 	settings.setValue("axis_fg_color", style.axisFgColor.name());
