@@ -17,7 +17,6 @@
 
 #include <QApplication>
 #include <QDrag>
-#include <QInputContext>
 #include <QMimeData>
 #include <QMenu>
 #include <QScrollBar>
