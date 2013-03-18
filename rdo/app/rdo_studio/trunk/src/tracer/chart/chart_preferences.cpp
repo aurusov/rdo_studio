@@ -157,7 +157,15 @@ void ChartPreferences::apply()
 void ChartPreferences::onHelpContext()
 {
 	QByteArray ba;
-	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm#options\n");
+	switch(tabWidget->currentIndex())
+	{
+	case 0:
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm#chart\n");
+		break;
+	case 1:
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm#series\n");
+		break;
+	}
 	g_pApp->callQtAssistant(ba);
 
 }
