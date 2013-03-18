@@ -44,15 +44,6 @@ SET(LEXLIB_FILES
     lexlib/WordList.h
     )
 
-SET(RDO_FILES
-    rdo/LexFind.cxx
-    rdo/LexFind.h
-    rdo/LexRdo.cxx
-    rdo/LexRdo.h
-    rdo/WordListUtil.cxx
-    rdo/WordListUtil.h
-    )
-
 SET(SCINTILLA_SRC
     src/AutoComplete.cxx
     src/AutoComplete.h
