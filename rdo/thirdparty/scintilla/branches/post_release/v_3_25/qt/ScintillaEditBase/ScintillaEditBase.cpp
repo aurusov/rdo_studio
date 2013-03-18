@@ -13,6 +13,7 @@
 #include "PlatQt.h"
 
 #include <QApplication>
+#include <QInputContext>
 #include <QPainter>
 #include <QScrollBar>
 #include <QTextFormat>

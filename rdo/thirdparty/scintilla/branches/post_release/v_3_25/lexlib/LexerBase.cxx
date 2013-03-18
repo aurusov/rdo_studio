@@ -29,7 +29,7 @@ using namespace Scintilla;
 
 LexerBase::LexerBase() {
 	for (int wl = 0; wl < numWordLists; wl++)
-		keyWordLists[wl] = new WordList(wl == SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX);
+		keyWordLists[wl] = new WordList;
 	keyWordLists[numWordLists] = 0;
 }
 

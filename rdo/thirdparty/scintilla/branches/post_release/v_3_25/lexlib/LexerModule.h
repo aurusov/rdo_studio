@@ -8,8 +8,6 @@
 #ifndef LEXERMODULE_H
 #define LEXERMODULE_H
 
-#define SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX 4
-
 #ifdef SCI_NAMESPACE
 namespace Scintilla {
 #endif
