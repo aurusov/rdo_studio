@@ -462,6 +462,8 @@ void MainWindow::closeEvent(QCloseEvent* event)
 		settings.beginGroup("chart");
 		settings << style_chart;
 		settings.endGroup();
+
+		settings.endGroup();
 	}
 }
 
