@@ -24,15 +24,13 @@ class FrameStyle: public rdo::gui::style::StyleBase
 {
 public:
 	FrameStyle();
-	virtual ~FrameStyle();
+	~FrameStyle();
 
 	FrameStyle& operator =( const FrameStyle& style );
 	rbool operator ==( const FrameStyle& style ) const;
 	rbool operator !=( const FrameStyle& style ) const;
 
 	static FrameStyle getDefaultStyle();
-
-	void init( CREF(QString) _groupName = "" );
 };
 
 }}} // namespace rdo::gui::frame

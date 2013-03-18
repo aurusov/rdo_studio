@@ -52,15 +52,6 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	m_openLastProject = g_pApp->getOpenLastProject();
 	m_showFullName    = g_pApp->getShowCaptionFullName();
 
-	style_editor.init();
-	style_build.init();
-	style_debug.init();
-	style_trace.init();
-	style_results.init();
-	style_find.init();
-	style_chart.init();
-	style_frame.init();
-
 	style_editor  = g_pApp->getStyle()->style_editor;
 	style_build   = g_pApp->getStyle()->style_build;
 	style_debug   = g_pApp->getStyle()->style_debug;

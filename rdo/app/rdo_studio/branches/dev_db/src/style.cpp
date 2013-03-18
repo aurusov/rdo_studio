@@ -137,8 +137,7 @@ QSettings& operator>> (QSettings& settings, StyleFont& font)
 // -------------------- StyleBase
 // --------------------------------------------------------------------------------
 StyleBase::StyleBase()
-	: groupName()
-	, font()
+	: font()
 {
 	defaultColor    = QColor( 0x00, 0x00, 0x00 );
 	backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
@@ -176,73 +175,32 @@ rbool StyleBase::operator !=( const StyleBase& style ) const
 	return !(*this == style);
 }
 
-void StyleBase::init( CREF(QString) _groupName )
-{
-	groupName = _groupName;
-	if (!groupName.isEmpty()) 
-	{
-		groupName.prepend("style/");
-		if(groupName.lastIndexOf("/") != groupName.length() - 1)
-		{
-			groupName.append("/");
-		}
-	}
-}
-
-rbool StyleBase::load()
-{
-	if (!groupName.isEmpty()) {
-		QSettings settings;
-		settings.beginGroup(groupName + "font");
-		font.load(settings);
-		settings.endGroup();
-		settings.beginGroup(groupName + "theme");
-		loadStyle(settings);
-		settings.endGroup();
-		return true;
-	}
-	return false;
-}
-
-rbool StyleBase::save() const
-{
-	if (!groupName.isEmpty()) {
-		QSettings settings;
-		settings.beginGroup(groupName + "font");
-		font.save(settings);
-		settings.endGroup();
-		settings.beginGroup(groupName + "theme");
-		saveStyle(settings);
-		settings.endGroup();
-		return true;
-	}
-	return false;
-}
-
-void StyleBase::loadStyle(QSettings& settings)
-{
-	settings >> *this;
-}
-
-void StyleBase::saveStyle(QSettings& settings) const
-{
-	settings << *this;
-}
-
 QSettings& operator<< (QSettings& settings, const StyleBase& style)
 {
+	settings.beginGroup("font");
+	settings << style.font;
+	settings.endGroup();
+
+	settings.beginGroup("theme");
 	settings.setValue("default_color", style.defaultColor.name());
 	settings.setValue("background_color", style.backgroundColor.name());
 	settings.setValue("default_style", style.defaultStyle);
+	settings.endGroup();
 
 	return settings;
 }
 
 QSettings& operator>> (QSettings& settings, StyleBase& style)
 {
+	settings.beginGroup("font");
+	settings >> style.font;
+	settings.endGroup();
+
+	settings.beginGroup("theme");
 	style.defaultColor    = QColor(settings.value("default_color", style.defaultColor.name()).toString());
 	style.backgroundColor = QColor(settings.value("background_color", style.backgroundColor.name()).toString());
 	style.defaultStyle    = static_cast<StyleFont::style>(settings.value("default_style", style.defaultStyle).toInt());
+	settings.endGroup();
 
 	return settings;
 }

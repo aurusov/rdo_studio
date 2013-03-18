@@ -21,7 +21,7 @@ class ResultsStyle: public ParserStyle
 {
 public:
 	ResultsStyle();
-	virtual ~ResultsStyle();
+	~ResultsStyle();
 };
 
 }}} // namespace rdo::gui::editor

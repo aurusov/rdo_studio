@@ -47,18 +47,6 @@ rbool LogStyle::operator !=( const LogStyle& style ) const
 	return !(*this == style);
 }
 
-void LogStyle::loadStyle(QSettings& settings)
-{
-	EditStyle::loadStyle(settings);
-	settings >> *this;
-}
-
-void LogStyle::saveStyle(QSettings& settings) const
-{
-	EditStyle::saveStyle(settings);
-	settings << *this;
-}
-
 LogStyle LogStyle::getDefaultStyle()
 {
 	LogStyle style;
@@ -97,16 +85,25 @@ LogStyle LogStyle::getOceanStyle()
 
 namespace rdo { namespace gui { namespace editor {
 
-	QSettings& operator<< (QSettings& settings, const LogStyle& style)
-	{
-		settings.setValue("select_line_bg_color", style.selectLineBgColor.name());
-		return settings;
-	}
+QSettings& operator<< (QSettings& settings, const LogStyle& style)
+{
+	settings << static_cast<const EditStyle&>(style);
+	
+	settings.beginGroup("theme");
+	settings.setValue("select_line_bg_color", style.selectLineBgColor.name());
+	settings.endGroup();
+	return settings;
+}
 
-	QSettings& operator>> (QSettings& settings, LogStyle& style)
-	{
-		style.selectLineBgColor = QColor(settings.value("select_line_bg_color", style.selectLineBgColor.name()).toString());
-		return settings;
-	}
+QSettings& operator>> (QSettings& settings, LogStyle& style)
+{
+	settings >> static_cast<EditStyle&>(style);
+	
+	settings.beginGroup("theme");
+	style.selectLineBgColor = QColor(settings.value("select_line_bg_color", style.selectLineBgColor.name()).toString());
+	settings.endGroup();
+
+	return settings;
+}
 
 }}} // namespace rdo::gui::editor

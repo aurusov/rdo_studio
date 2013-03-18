@@ -213,6 +213,8 @@ LogStyle::LogStyle()
 
 	borders.vertBorder = 1;
 	borders.horzBorder = 2;
+
+	font = StyleFont::getTracerLogFont();
 }
 
 LogStyle::~LogStyle()
@@ -371,52 +373,6 @@ rbool LogStyle::operator !=( const LogStyle& style ) const
 	return !(*this == style);
 }
 
-void LogStyle::init( CREF(QString) _groupName )
-{
-	StyleBase::init( _groupName );
-	font = StyleFont::getTracerLogFont();
-}
-
-rbool LogStyle::load()
-{
-	if (StyleBase::load()) {
-		QSettings settings;
-		settings.beginGroup(groupName + "style");
-		loadStyle(settings);
-		settings.endGroup();
-		settings.beginGroup(groupName + "borders");
-		borders.load(settings);
-		settings.endGroup();
-		return true;
-	}
-	return false;
-}
-
-rbool LogStyle::save() const
-{
-	if (StyleBase::save()) {
-		QSettings settings;
-		settings.beginGroup(groupName + "style");
-		saveStyle(settings);
-		settings.endGroup();
-		settings.beginGroup(groupName + "borders");
-		borders.save(settings);
-		settings.endGroup();
-		return true;
-	}
-	return false;
-}
-
-void LogStyle::loadStyle(QSettings& settings)
-{
-	settings >> *this;
-}
-
-void LogStyle::saveStyle(QSettings& settings) const
-{
-	settings << *this;
-}
-
 LogStyle LogStyle::getDefaultStyle()
 {
 	LogStyle style;
@@ -427,6 +383,9 @@ namespace rdo { namespace gui { namespace tracer {
 
 QSettings& operator<< (QSettings& settings, const LogStyle& style)
 {
+	settings << static_cast<const StyleBase&>(style);
+
+	settings.beginGroup("theme");
 	settings.setValue("style", style.fontStyle);
 	style.defaultColor.save( settings, "defaultColor" );
 	style.es.save ( settings, "es"  );
@@ -454,12 +413,21 @@ QSettings& operator<< (QSettings& settings, const LogStyle& style)
 	style.sem.save( settings, "sem" );
 	style.sef.save( settings, "sef" );
 	style.seu.save( settings, "seu" );
+	settings.endGroup();
+
+	settings.beginGroup("borders");
+	settings << style.borders;
+	settings.endGroup();
+
 
 	return settings;
 }
 
 QSettings& operator>> (QSettings& settings, LogStyle& style)
 {
+	settings >> static_cast<StyleBase&>(style);
+
+	settings.beginGroup("theme");
 	style.fontStyle = static_cast<StyleFont::style>(settings.value("style", style.fontStyle).toInt());
 	style.defaultColor.load( settings, "defaultColor" );
 	style.es.load ( settings, "es"  );
@@ -487,6 +455,11 @@ QSettings& operator>> (QSettings& settings, LogStyle& style)
 	style.sem.load( settings, "sem" );
 	style.sef.load( settings, "sef" );
 	style.seu.load( settings, "seu" );
+	settings.endGroup();
+
+	settings.beginGroup("borders");
+	settings >> style.borders;
+	settings.endGroup();
 
 	return settings;
 }

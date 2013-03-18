@@ -24,14 +24,11 @@ class LogStyle: public EditStyle
 {
 public:
 	LogStyle();
-	virtual ~LogStyle();
+	~LogStyle();
 
 	LogStyle& operator =( const LogStyle& style );
 	rbool operator ==( const LogStyle& style ) const;
 	rbool operator !=( const LogStyle& style ) const;
-
-	virtual void loadStyle(QSettings& settings);
-	virtual void saveStyle(QSettings& settings) const;
 
 	static LogStyle getDefaultStyle();
 	static LogStyle getClassicStyle();

@@ -13,14 +13,14 @@
 #include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdolocale.h"
-#include "app/rdo_studio/src/editor/model_edit.h"
-#include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"
+#include "app/rdo_studio/src/editor/model_edit.h"
+#include "app/rdo_studio/src/editor/lexer/lexer_model.h"
+#include "app/rdo_studio/src/editor/lexer/word_list_util.h"
+#include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "thirdparty/scintilla/lexlib/WordList.h"
-#include "thirdparty/scintilla/rdo/LexRdo.h"
-#include "thirdparty/scintilla/rdo/WordListUtil.h"
 #include "thirdparty/scintilla/lexlib/CharacterSet.h"
 // --------------------------------------------------------------------------------
 

@@ -13,6 +13,7 @@
 #include "utils/warning_disable.h"
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
+#include <boost/function.hpp>
 #include <boost/range/algorithm/find.hpp>
 #include <QProcess>
 #include <QTextCodec>
@@ -319,33 +320,46 @@ void MainWindow::init()
 	// Кто-то должен поднять кернел и треды
 	new rdo::gui::model::Model();
 
-	style_editor.init( "editor" );
-	style_editor.load();
+	QSettings settings;
+	settings.beginGroup("style");
+	
+	settings.beginGroup("editor");
+	settings >> style_editor;
+	settings.endGroup();
 
-	style_build.init( "build" );
+	settings.beginGroup("build");
 	style_build.window.wordWrap          = true;
 	style_build.window.showHorzScrollBar = false;
-	style_build.load();
+	settings >> style_build;
+	settings.endGroup();
 
-	style_debug.init( "debug" );
+	settings.beginGroup("debug");
 	style_debug.window.wordWrap          = true;
 	style_debug.window.showHorzScrollBar = false;
-	style_debug.load();
+	settings >> style_debug;
+	settings.endGroup();
 
-	style_trace.init( "trace" );
-	style_trace.load();
+	settings.beginGroup("trace");
+	settings >> style_trace;
+	settings.endGroup();
 
-	style_results.init( "results" );
-	style_results.load();
+	settings.beginGroup("results");
+	settings >> style_results;
+	settings.endGroup();
 
-	style_find.init( "find" );
-	style_find.load();
+	settings.beginGroup("find");
+	settings >> style_find;
+	settings.endGroup();
 
-	style_frame.init( "frame" );
-	style_frame.load();
+	settings.beginGroup("frame");
+	settings >> style_frame;
+	settings.endGroup();
 
-	style_chart.init( "chart" );
-	style_chart.load();
+	settings.beginGroup("chart");
+	settings >> style_chart;
+	settings.endGroup();
+
+	settings.endGroup();
 
 	m_pDockBuild   = new DockBuild  (this);
 	m_pDockDebug   = new DockDebug  (this);
@@ -413,14 +427,43 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	if (event->isAccepted())
 	{
 		update_stop();
-		style_editor.save();
-		style_build.save();
-		style_debug.save();
-		style_trace.save();
-		style_results.save();
-		style_find.save();
-		style_frame.save();
-		style_chart.save();
+		
+		QSettings settings;
+		settings.beginGroup("style");
+
+		settings.beginGroup("editor");
+		settings << style_editor;
+		settings.endGroup();
+		
+		settings.beginGroup("build");
+		settings << style_build;
+		settings.endGroup();
+		
+		settings.beginGroup("debug");
+		settings << style_debug;
+		settings.endGroup();
+		
+		settings.beginGroup("trace");
+		settings << style_trace;
+		settings.endGroup();
+
+		settings.beginGroup("results");
+		settings << style_results;
+		settings.endGroup();
+
+		settings.beginGroup("find");
+		settings << style_find;
+		settings.endGroup();
+
+		settings.beginGroup("frame");
+		settings << style_frame;
+		settings.endGroup();
+
+		settings.beginGroup("chart");
+		settings << style_chart;
+		settings.endGroup();
+
+		settings.endGroup();
 	}
 }
 
@@ -717,7 +760,7 @@ void MainWindow::addNewAction(QMdiSubWindow* window)
 
 	QAction* pAction = menuWindow->addAction(window->windowTitle());
 	m_pSubWindows[window] = pAction;
-	//QObject::connect(pAction, &QAction::triggered, boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window));
+	QObject::connect(pAction, &QAction::triggered, boost::function<void()>(boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window)));
 }
 
 void MainWindow::removeExcessActions()
@@ -728,7 +771,7 @@ void MainWindow::removeExcessActions()
 	{
 		if (!windowList.contains(it->first))
 		{
-			//QObject::disconnect(pAction, &QAction::triggered, boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window));
+			QObject::disconnect(it->second, &QAction::triggered, NULL, NULL);
 			menuWindow->removeAction(it->second);
 			m_pSubWindows.erase(it++);
 		}

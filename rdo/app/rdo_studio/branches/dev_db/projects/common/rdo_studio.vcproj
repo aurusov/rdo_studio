@@ -3389,6 +3389,34 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name=".lexer"
+				>
+				<File
+					RelativePath="..\..\src\editor\lexer\lexer_find.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\editor\lexer\lexer_find.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\editor\lexer\lexer_model.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\editor\lexer\lexer_model.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\editor\lexer\word_list_util.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\editor\lexer\word_list_util.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
