@@ -416,6 +416,10 @@
 			Name=".repository"
 			>
 			<File
+				RelativePath="..\..\namespace.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\rdorepository.cpp"
 				>
 			</File>
