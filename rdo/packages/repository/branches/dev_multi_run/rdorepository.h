@@ -1,29 +1,28 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdorepository.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
 */
 
-#ifndef _RDOREPOSITORYFILE_H_
-#define _RDOREPOSITORYFILE_H_
+#ifndef _RDOREPOSITORY_H_
+#define _RDOREPOSITORY_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
 #include <string>
-#include <fstream>
+#include <boost/filesystem/fstream.hpp>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "utils/rdostream.h"
 #include "utils/rdocommon.h"
-#include "repository/namespace.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_REPOSITORY_NAMESPACE
+namespace rdo { namespace repository {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOThreadRepository
@@ -55,13 +54,11 @@ public:
 	};
 	struct CreateFileInfo: public boost::noncopyable
 	{
-		tstring            m_name;
-		tstring            m_ext;
-		REF(rdo::ofstream) m_stream;
+		boost::filesystem::path          m_name;
+		REF(boost::filesystem::ofstream) m_stream;
 
-		CreateFileInfo(CREF(tstring) name, CREF(tstring) ext, REF(rdo::ofstream) stream)
+		CreateFileInfo(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream)
 			: m_name  (name  )
-			, m_ext   (ext   )
 			, m_stream(stream)
 		{}
 	};
@@ -71,7 +68,7 @@ public:
 		rbool    m_readOnly;
 		rbool    m_result;
 
-		OpenFile(CREF(tstring) name = _T(""), rbool readOnly = false)
+		OpenFile(CREF(tstring) name = "", rbool readOnly = false)
 			: m_name    (name    )
 			, m_readOnly(readOnly)
 			, m_result  (false   )
@@ -82,7 +79,7 @@ public:
 		tstring  m_name;
 		tstring  m_path;
 
-		NewModel(CREF(tstring) name = _T(""), CREF(tstring) path = _T(""))
+		NewModel(CREF(tstring) name = "", CREF(tstring) path = "")
 			: m_name(name)
 			, m_path(path)
 		{}
@@ -97,9 +94,9 @@ public:
 		rbool                         m_described;
 
 		FileInfo(  rdoModelObjects::RDOFileType type      = rdoModelObjects::SMR
-		         , CREF(tstring)                name      = _T("")
-		         , CREF(tstring)                fullName  = _T("")
-		         , CREF(tstring)                extention = _T("smr")
+		         , CREF(tstring)                name      = ""
+		         , CREF(tstring)                fullName  = ""
+		         , CREF(tstring)                extention = "smr"
 		         , rbool                        readOnly  = false
 		         , rbool                        described = false
 		)
@@ -123,16 +120,15 @@ private:
 		rbool    m_readOnly;
 
 		fileInfo()
-			: m_extention    (_T(""))
-			, m_deleteIfEmpty(false )
-			, m_readOnly     (false )
+			: m_deleteIfEmpty(false)
+			, m_readOnly     (false)
 		{
 			resetname();
 		}
 
 		void resetname()
 		{
-			m_fileName  = _T("");
+			m_fileName  = "";
 			m_described = false;
 			m_mustExist = true;
 		}
@@ -158,19 +154,18 @@ private:
 
 	typedef boost::posix_time::ptime SystemTime;
 
-	tstring        m_modelName;
-	tstring        m_modelPath;
-	rbool          m_hasModel;
-	rdo::ofstream  m_traceFile;
-	FileList       m_files;
-	rbool          m_realOnlyInDlg;
-	ProjectName    m_projectName;
-	SystemTime     m_systemTime;
+	tstring                      m_modelName;
+	tstring                      m_modelPath;
+	rbool                        m_hasModel;
+	boost::filesystem::ofstream  m_traceFile;
+	FileList                     m_files;
+	rbool                        m_realOnlyInDlg;
+	ProjectName                  m_projectName;
+	SystemTime                   m_systemTime;
 	ruint          m_runNumber;
 
 	void      resetModelNames ();
 	FindModel updateModelNames();
-	rbool     saveAsDlg       ();
 	rbool     canCloseModel   ();
 	void      realCloseModel  ();
 	void      extractName     (CREF(tstring) fullName);
@@ -180,22 +175,21 @@ private:
 	void      loadFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;
 	void      saveFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool deleteIfEmpty = false) const;
 
-	rbool     createFile(CREF(tstring) name, CREF(tstring) ext, REF(rdo::ofstream) stream) const;
+	rbool     createFile(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream) const;
 
 	void      beforeModelStart   ();
 	void      stopModel          ();
 	void      trace              (CREF(tstring) message);
-	void      writeModelFilesInfo(REF(rdo::ofstream) stream) const;
+	void      writeModelFilesInfo(REF(boost::filesystem::ofstream) stream) const;
 
 protected:
-	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete
+	virtual ~RDOThreadRepository(); // Р§С‚РѕР±С‹ РЅРµР»СЊР·СЏ Р±С‹Р»Рѕ СѓРґР°Р»РёС‚СЊ С‡РµСЂРµР· delete
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	void  newModel   (CPTRC(NewModel) data                  );
-	rbool openModel  (CREF(tstring)   modelFileName = _T(""));
-	void  closeModel ();
-	rbool saveModel  ();
-	void  saveAsModel();
+	void  newModel  (CPTRC(NewModel) data              );
+	rbool openModel (CREF(tstring)   modelFileName = "");
+	void  closeModel();
+	rbool saveModel ();
 
 	void load(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream);
 	void save(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream) const;
@@ -212,6 +206,6 @@ protected:
 	void loadBMP(REF(tstring) name, REF(rdo::stream) stream) const;
 };
 
-CLOSE_RDO_REPOSITORY_NAMESPACE
+}} // namespace rdo::repository
 
-#endif // _RDOREPOSITORYFILE_H_
+#endif // _RDOREPOSITORY_H_
