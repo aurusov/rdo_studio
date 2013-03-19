@@ -22,6 +22,7 @@ using namespace rdo::simulation::report;
 using namespace rdo::gui::editor;
 using namespace rdo::gui::style;
 using namespace rdo::gui::tracer;
+using namespace rdo::gui::frame;
 
 rbool ViewPreferences::null_wordwrap      = false;
 rbool ViewPreferences::null_horzscrollbar = true;
@@ -163,6 +164,7 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(titleComboBox, SIGNAL(activated(int)), this, SLOT(onTitleSize(int)));
 	connect(legendComboBox, SIGNAL(activated(int)), this, SLOT(onLegendSize(int)));
 	connect(tickWidthLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onTickWidth(const QString&)));
+	connect(themeComboBox, SIGNAL(activated(int)), this, SLOT(onThemeComboBox(int)));
 
 	connect(tabSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
 	connect(indentSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
@@ -702,6 +704,232 @@ void ViewPreferences::onTickWidth(const QString& text)
 	updatePreview();
 }
 
+void ViewPreferences::onThemeComboBox(int index)
+{
+	switch (getStyleProperty()->item->type) 
+	{
+	case IT_ROOT:
+		if (index == 1) {
+			style_editor = ModelStyle::getDefaultStyle();
+			style_build = BuildStyle::getDefaultStyle();
+			style_debug = EditStyle::getDefaultStyle();
+			style_trace = rdo::gui::tracer::LogStyle::getDefaultStyle();
+			style_results = ResultsStyle::getDefaultStyle();
+			style_find = FindStyle::getDefaultStyle();
+			style_chart = ChartViewStyle::getDefaultStyle();
+			style_frame = FrameStyle::getDefaultStyle();
+			style_editor.font  = StyleFont::getDefaultFont();
+			style_build.font   = StyleFont::getDefaultFont();
+			style_debug.font   = StyleFont::getDefaultFont();
+			style_trace.font   = StyleFont::getTracerLogFont();
+			style_results.font = StyleFont::getDefaultFont();
+			style_find.font    = StyleFont::getDefaultFont();
+			style_chart.font   = StyleFont::getChartViewFont();
+			style_frame.font   = StyleFont::getFrameFont();
+		}
+		break;
+	case IT_EDITOR:
+		switch (index) 
+		{
+		case 1: style_editor = ModelStyle::getDefaultStyle();  style_editor.font = StyleFont::getDefaultFont(); break;
+		case 2: style_editor = ModelStyle::getCppStyle();      style_editor.font = StyleFont::getDefaultFont(); break;
+		case 3: style_editor = ModelStyle::getPascalStyle();   style_editor.font = StyleFont::getDefaultFont(); break;
+		case 4: style_editor = ModelStyle::getHtmlStyle();     style_editor.font = StyleFont::getDefaultFont(); break;
+		case 5: style_editor = ModelStyle::getClassicStyle();  style_editor.font = StyleFont::getClassicFont(); break;
+		case 6: style_editor = ModelStyle::getTwilightStyle(); style_editor.font = StyleFont::getDefaultFont(); break;
+		case 7: style_editor = ModelStyle::getOceanStyle();    style_editor.font = StyleFont::getDefaultFont(); break;
+		}
+		break;
+	case IT_BUILD:
+		switch (index)
+		{
+		case 1: style_build = BuildStyle::getDefaultStyle();  style_build.font = StyleFont::getDefaultFont(); break;
+		case 2: style_build = BuildStyle::getClassicStyle();  style_build.font = StyleFont::getClassicFont(); break;
+		case 3: style_build = BuildStyle::getTwilightStyle(); style_build.font = StyleFont::getDefaultFont(); break;
+		case 4: style_build = BuildStyle::getOceanStyle();    style_build.font = StyleFont::getDefaultFont(); break;
+		}
+		break;
+	case IT_DEBUG:
+		switch (index)
+		{
+		case 1: style_debug = EditStyle::getDefaultStyle();  style_debug.font = StyleFont::getDefaultFont(); break;
+		case 2: style_debug = EditStyle::getClassicStyle();  style_debug.font = StyleFont::getClassicFont(); break;
+		case 3: style_debug = EditStyle::getTwilightStyle(); style_debug.font = StyleFont::getDefaultFont(); break;
+		case 4: style_debug = EditStyle::getOceanStyle();    style_debug.font = StyleFont::getDefaultFont(); break;
+		}
+		break;
+	case IT_LOG:
+		switch (index)
+		{
+		case 1: style_trace = rdo::gui::tracer::LogStyle::getDefaultStyle(); style_trace.font = StyleFont::getTracerLogFont(); break;
+		}
+		break;
+	case IT_RESULT:
+		switch (index)
+		{
+		case 1: style_results = ResultsStyle::getDefaultStyle();  style_results.font = StyleFont::getDefaultFont(); break;
+		case 2: style_results = ResultsStyle::getCppStyle();      style_results.font = StyleFont::getDefaultFont(); break;
+		case 3: style_results = ResultsStyle::getPascalStyle();   style_results.font = StyleFont::getDefaultFont(); break;
+		case 4: style_results = ResultsStyle::getHtmlStyle();     style_results.font = StyleFont::getDefaultFont(); break;
+		case 5: style_results = ResultsStyle::getClassicStyle();  style_results.font = StyleFont::getClassicFont(); break;
+		case 6: style_results = ResultsStyle::getTwilightStyle(); style_results.font = StyleFont::getDefaultFont(); break;
+		case 7: style_results = ResultsStyle::getOceanStyle();    style_results.font = StyleFont::getDefaultFont(); break;
+		}
+		break;
+	case IT_FIND:
+		switch (index)
+		{
+		case 1: style_find = FindStyle::getDefaultStyle();  style_find.font = StyleFont::getDefaultFont(); break;
+		case 2: style_find = FindStyle::getClassicStyle();  style_find.font = StyleFont::getClassicFont(); break;
+		case 3: style_find = FindStyle::getTwilightStyle(); style_find.font = StyleFont::getDefaultFont(); break;
+		case 4: style_find = FindStyle::getOceanStyle();    style_find.font = StyleFont::getDefaultFont(); break;
+		}
+		break;
+	case IT_CHART:
+		switch (index)
+		{
+		case 1: style_chart = ChartViewStyle::getDefaultStyle(); style_chart.font = StyleFont::getChartViewFont(); break;
+		}
+		break;
+	case IT_FRAME:
+		switch (index)
+		{
+		case 1: style_frame = FrameStyle::getDefaultStyle(); style_frame.font = StyleFont::getFrameFont(); break;
+		}
+		break;
+	default: break;
+	}
+	updatePreview();
+}
+
+void ViewPreferences::updateTheme()
+{
+	switch (getStyleProperty()->item->type)
+	{
+	case IT_ROOT:
+		if ( style_editor == ModelStyle::getDefaultStyle() &&
+			style_build == BuildStyle::getDefaultStyle() &&
+			style_debug == EditStyle::getDefaultStyle() &&
+			style_trace == rdo::gui::tracer::LogStyle::getDefaultStyle() &&
+			style_results == ResultsStyle::getDefaultStyle() &&
+			style_find == FindStyle::getDefaultStyle() &&
+			style_chart == ChartViewStyle::getDefaultStyle() &&
+			style_frame == FrameStyle::getDefaultStyle() &&
+			style_editor.font == StyleFont::getDefaultFont() &&
+			style_build.font == StyleFont::getDefaultFont() &&
+			style_debug.font == StyleFont::getDefaultFont() &&
+			style_trace.font == StyleFont::getTracerLogFont() &&
+			style_results.font == StyleFont::getDefaultFont() &&
+			style_find.font == StyleFont::getDefaultFont() &&
+			style_chart.font == StyleFont::getChartViewFont() &&
+			style_frame.font == StyleFont::getFrameFont()) {
+				themeComboBox->setCurrentIndex(1);
+		} else {
+			themeComboBox->setCurrentIndex(0);
+		}
+		break;
+	case IT_EDITOR:
+		if ( style_editor == ModelStyle::getDefaultStyle() && style_editor.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(1);
+		} else if ( style_editor == ModelStyle::getCppStyle() && style_editor.font == StyleFont::getDefaultFont() ) {
+			themeComboBox->setCurrentIndex(2);
+		} else if ( style_editor == ModelStyle::getPascalStyle() && style_editor.font == StyleFont::getDefaultFont() ) {
+			themeComboBox->setCurrentIndex(3);
+		} else if ( style_editor == ModelStyle::getHtmlStyle() && style_editor.font == StyleFont::getDefaultFont() ) {
+			themeComboBox->setCurrentIndex(4);
+		} else if ( style_editor == ModelStyle::getClassicStyle() && style_editor.font == StyleFont::getClassicFont() ) {
+			themeComboBox->setCurrentIndex(5);
+		} else if ( style_editor == ModelStyle::getTwilightStyle() && style_editor.font == StyleFont::getDefaultFont() ) {
+			themeComboBox->setCurrentIndex(6);
+		} else if ( style_editor == ModelStyle::getOceanStyle() && style_editor.font == StyleFont::getDefaultFont() ) {
+			themeComboBox->setCurrentIndex(7);
+		} else {
+			themeComboBox->setCurrentIndex(0);
+		}
+		break;
+	case IT_BUILD:
+		if ( style_build == BuildStyle::getDefaultStyle() && style_build.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(1);
+		} else if ( style_build == BuildStyle::getClassicStyle() && style_build.font == StyleFont::getClassicFont()) {
+			themeComboBox->setCurrentIndex(2);
+		} else if ( style_build == BuildStyle::getTwilightStyle() && style_build.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(3);
+		} else if ( style_build == BuildStyle::getOceanStyle() && style_build.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(4);
+		} else {
+			themeComboBox->setCurrentIndex(0);
+		}
+		break;
+	case IT_DEBUG: 
+		if ( style_debug == EditStyle::getDefaultStyle() && style_debug.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(1);
+		} else if ( style_debug == EditStyle::getClassicStyle() && style_debug.font == StyleFont::getClassicFont()) {
+			themeComboBox->setCurrentIndex(2);
+		} else if ( style_debug == EditStyle::getTwilightStyle() && style_debug.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(3);
+		} else if ( style_debug == EditStyle::getOceanStyle() && style_debug.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(4);
+		} else {
+			themeComboBox->setCurrentIndex(0);
+		}
+		break;
+	case IT_LOG:
+		if ( style_trace == rdo::gui::tracer::LogStyle::getDefaultStyle() && style_trace.font == StyleFont::getTracerLogFont()) {
+			themeComboBox->setCurrentIndex(1);
+		} else {
+			themeComboBox->setCurrentIndex(0);
+		}
+		break;
+	case IT_RESULT:
+		if ( style_results == ResultsStyle::getDefaultStyle() && style_results.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(1);
+		} else if ( style_results == ResultsStyle::getCppStyle() && style_results.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(2);
+		} else if ( style_results == ResultsStyle::getPascalStyle() && style_results.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(3);
+		} else if ( style_results == ResultsStyle::getHtmlStyle() && style_results.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(4);
+		} else if ( style_results == ResultsStyle::getClassicStyle() && style_results.font == StyleFont::getClassicFont()) {
+			themeComboBox->setCurrentIndex(5);
+		} else if ( style_results == ResultsStyle::getTwilightStyle() && style_results.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(6);
+		} else if ( style_results == ResultsStyle::getOceanStyle() && style_results.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(7);
+		} else {
+			themeComboBox->setCurrentIndex(0);
+		}
+		break;
+	case IT_FIND:
+		if ( style_find == FindStyle::getDefaultStyle() && style_find.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(1);
+		} else if ( style_find == FindStyle::getClassicStyle() && style_find.font == StyleFont::getClassicFont()) {
+			themeComboBox->setCurrentIndex(2);
+		} else if ( style_find == FindStyle::getTwilightStyle() && style_find.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(3);
+		} else if ( style_find == FindStyle::getOceanStyle() && style_find.font == StyleFont::getDefaultFont()) {
+			themeComboBox->setCurrentIndex(4);
+		} else {
+			themeComboBox->setCurrentIndex(0);
+		}
+		break;
+	case IT_CHART:
+		if ( style_chart == ChartViewStyle::getDefaultStyle() && style_chart.font == StyleFont::getChartViewFont()) {
+			themeComboBox->setCurrentIndex(1);
+		} else {
+			themeComboBox->setCurrentIndex(0);
+		}
+		break;
+	case IT_FRAME:
+		if ( style_frame == FrameStyle::getDefaultStyle() && style_frame.font == StyleFont::getFrameFont()) {
+			themeComboBox->setCurrentIndex(1);
+		} else {
+			themeComboBox->setCurrentIndex(0);
+		}
+		break;
+	default: break;
+	}
+}
+
 void ViewPreferences::onHelpContext()
 {
 	QByteArray ba;
@@ -944,6 +1172,43 @@ void ViewPreferences::updateStyleTab()
 			bgColorToolButton->setEnabled(true);
 			break;
 		}
+		break;
+	}
+	updateThemeComboBox(prop);
+	updateTheme();
+}
+
+void ViewPreferences::updateThemeComboBox(PTR(StyleProperty) prop)
+{
+	themeComboBox->clear();
+	switch(prop->item->type)
+	{
+	case IT_ROOT:
+	case IT_LOG:
+	case IT_CHART:
+	case IT_FRAME:
+		themeComboBox->addItem("Текущий", ST_CURRENT);
+		themeComboBox->addItem("По умолчанию", ST_DEFAULT);
+		break;
+	case IT_EDITOR:
+	case IT_RESULT:
+		themeComboBox->addItem("Текущий", ST_CURRENT);
+		themeComboBox->addItem("По умолчанию", ST_DEFAULT);
+		themeComboBox->addItem("C++", ST_CPP);
+		themeComboBox->addItem("Pascal", ST_PASCAL);
+		themeComboBox->addItem("HTML", ST_HTML);
+		themeComboBox->addItem("Классический", ST_CLASSIC);
+		themeComboBox->addItem("Яркий", ST_TWILIGHT);
+		themeComboBox->addItem("Океан", ST_OCEAN);
+		break;
+	case IT_BUILD:
+	case IT_DEBUG:
+	case IT_FIND:
+		themeComboBox->addItem("Текущий", ST_CURRENT);
+		themeComboBox->addItem("По умолчанию", ST_DEFAULT);
+		themeComboBox->addItem("Классический", ST_CLASSIC);
+		themeComboBox->addItem("Яркий", ST_TWILIGHT);
+		themeComboBox->addItem("Океан", ST_OCEAN);
 		break;
 	}
 }
