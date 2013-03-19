@@ -28,7 +28,6 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDOValue
 // --------------------------------------------------------------------------------
 OBJECT(RDOValue) IS INSTANCE_OF(RDOParserSrcInfo)
-	AND INSTANCE_OF(rdo::runtime::ISerializeTypeInDB)
 {
 DECLARE_FACTORY(RDOValue);
 public:
@@ -46,7 +45,7 @@ public:
 	static LPRDOValue getIdentificator(CREF(tstring)     identificator);
 	static LPRDOValue getUnknow       (CREF(RDOParserSrcInfo) src_info);
 
-	virtual void serializeInDB(REF(IDB) db) const;
+	void serializeInDB(REF(IDB) db) const;
 
 private:
 	// Неопределенный тип
