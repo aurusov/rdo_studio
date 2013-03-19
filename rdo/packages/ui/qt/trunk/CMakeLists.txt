@@ -15,7 +15,6 @@ SET(HEADER_FILES
     headers/bitmap/bitmap.h
     headers/memdc/memdc.h
     headers/scroll_bar/scroll_bar.h
-    headers/validator/int_validator.h
     pch/stdpch.h
     )
 
