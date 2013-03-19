@@ -34,9 +34,9 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 
 	titleLineEdit->setText(m_chartTitle);
 
-	yValueLineEdit->setValidator(new rdo::gui::IntValidator(2, 100, this));
+	yValueLineEdit->setValidator(new QIntValidator(2, 100, this));
 	yValueLineEdit->setText(QString::number(m_valueCountY));
-	xValueLineEdit->setValidator(new rdo::gui::IntValidator(2, 100, this));
+	xValueLineEdit->setValidator(new QIntValidator(2, 100, this));
 	xValueLineEdit->setText(QString::number(m_valueCountX));
 	
 	showLegendCheckBox->setChecked(m_pView->isDrawLegend());
@@ -49,7 +49,7 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 		valueComboBox->addItem(pSerie->getSerie()->getTitle());
 	}
 	
-	markerSizeLineEdit->setValidator(new rdo::gui::IntValidator(2, 6, markerSizeLineEdit));
+	markerSizeLineEdit->setValidator(new QIntValidator(2, 6, markerSizeLineEdit));
 
 	insertColors(colorComboBox);
 
@@ -85,6 +85,10 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 	connect(markerComboBox,            SIGNAL(activated(int)), this, SLOT(onCheckAllData()));
 	connect(titleValueLineEdit,        SIGNAL(textEdited(const QString&)), this, SLOT(onCheckAllData()));
 	connect(colorComboBox,             SIGNAL(activated(int)), this, SLOT(onCheckAllData()));
+
+	connect(xValueLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
+	connect(yValueLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
+	connect(markerSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
 
 	applyButton->setEnabled(false);
 }
@@ -220,6 +224,18 @@ void ChartPreferences::onApplyButton()
 {
 	apply();
 	applyButton->setEnabled(false);
+}
+
+void ChartPreferences::onCheckInput(const QString& text)
+{
+	UNUSED(text);
+
+	rbool check = yValueLineEdit->text().toInt() >= 2 &&
+		xValueLineEdit->text().toInt() >= 2 &&
+		markerSizeLineEdit->text().toInt() >= 2;
+
+	okButton->setEnabled(check);
+	applyButton->setEnabled(check);
 }
 
 void ChartPreferences::onXValue(const QString& text)

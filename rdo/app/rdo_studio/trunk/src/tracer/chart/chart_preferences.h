@@ -62,6 +62,7 @@ private slots:
 	void onColorSelected(const QColor& color);
 	void onValueComboBox(int index);
 	void onCheckAllData();
+	void onCheckInput(const QString& text);
 };
 
 }}} // namespace rdo::gui::tracer

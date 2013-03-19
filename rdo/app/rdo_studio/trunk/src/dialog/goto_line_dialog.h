@@ -34,6 +34,7 @@ private:
 
 private slots:
 	void onOkButtonClicked();
+	void onCheckInput(const QString& text);
 };
 
 #endif // _RDO_STUDIO_GO_TO_NEXT_LINE_DIALOG_H_

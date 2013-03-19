@@ -16,7 +16,6 @@
 #include "app/rdo_studio/res/build_version.h"
 #include "app/rdo_studio/src/application.h"
 #include "simulator/report/build_edit_line_info.h"
-#include "ui/qt/headers/validator/int_validator.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo::simulation::report;
@@ -75,9 +74,9 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(checkBoxMarginBookmark, SIGNAL(stateChanged(int)), this, SLOT(onMarginBookmark(int)));
 	connect(checkBoxMarginLineNum, SIGNAL(stateChanged(int)), this, SLOT(onMarginLineNumber(int)));
 	//Вкладка "Табуляция"
-	tabSizeLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
+	tabSizeLineEdit->setValidator(new QIntValidator(1, 100, this));
 	tabSizeLineEdit->setText(QString::number(style_editor.tab.tabSize));
-	indentSizeLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
+	indentSizeLineEdit->setValidator(new QIntValidator(1, 100, this));
 	indentSizeLineEdit->setText(QString::number(style_editor.tab.indentSize));
 	connect(useTabSymbolCheckBox, SIGNAL(stateChanged(int)), this, SLOT(onUseTabSymbol(int)));
 	connect(indentAsTabcheckBox, SIGNAL(stateChanged(int)), this, SLOT(onIndentAsTab(int)));
@@ -126,12 +125,12 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	italicCheckBox->setEnabled(false);
 	underlineCheckBox->setEnabled(false);
 
-	horzIndentLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
+	horzIndentLineEdit->setValidator(new QIntValidator(1, 100, this));
 	horzIndentLineEdit->setText(QString::number(style_trace.borders.horzBorder));
-	vertIndentLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
+	vertIndentLineEdit->setValidator(new QIntValidator(1, 100, this));
 	vertIndentLineEdit->setText(QString::number(style_trace.borders.vertBorder));
 
-	tickWidthLineEdit->setValidator(new rdo::gui::IntValidator(1, 100, this));
+	tickWidthLineEdit->setValidator(new QIntValidator(1, 100, this));
 	tickWidthLineEdit->setText(QString::number(style_chart.pFontsTicks.tickWidth));
 
 	connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(onTreeWidgetItemActivated(QTreeWidgetItem*, int)));
@@ -165,6 +164,13 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(legendComboBox, SIGNAL(activated(int)), this, SLOT(onLegendSize(int)));
 	connect(tickWidthLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onTickWidth(const QString&)));
 
+	connect(tabSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
+	connect(indentSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
+	connect(horzIndentLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
+	connect(vertIndentLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
+	connect(tickWidthLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
+
+
 	updateDialog();
 	checkAllData();
 }
@@ -184,6 +190,20 @@ void ViewPreferences::onApplyButton()
 {
 	apply();
 	buttonApply->setEnabled(false);
+}
+
+void ViewPreferences::onCheckInput(const QString& text)
+{
+	UNUSED(text);
+
+	rbool check = tabSizeLineEdit->text().toInt() >= 1 &&
+		indentSizeLineEdit->text().toInt() >= 1 &&
+		horzIndentLineEdit->text().toInt() >= 1 &&
+		vertIndentLineEdit->text().toInt() >= 1 &&
+		tickWidthLineEdit->text().toInt() >= 1;
+		
+	buttonOk->setEnabled(check);
+	buttonApply->setEnabled(check);
 }
 
 void ViewPreferences::onCodeCompUse(int state)

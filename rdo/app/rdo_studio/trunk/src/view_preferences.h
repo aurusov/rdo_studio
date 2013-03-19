@@ -51,6 +51,8 @@ private slots:
 	void onCancelButton();
 	void onApplyButton();
 
+	void onCheckInput(const QString& text);
+
 	void onSetup(int state);
 	void onCheckInFuture(int state);
 	void onOpenLastProject(int state);
