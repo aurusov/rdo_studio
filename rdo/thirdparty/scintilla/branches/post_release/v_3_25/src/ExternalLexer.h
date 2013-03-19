@@ -8,7 +8,7 @@
 #ifndef EXTERNALLEXER_H
 #define EXTERNALLEXER_H
 
-#if PLAT_WIN
+#if PLAT_WIN > 0
 #define EXT_LEXER_DECL __stdcall
 #else
 #define EXT_LEXER_DECL
