@@ -188,10 +188,16 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 	case RDOType::t_identificator : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromLocal8Bit(value.getAsString().c_str()))); break;
 	default                       : throw RDOValueException("Данная величина не может быть записана в базу данных");
 	}
+
+	ASSERT(index < m_paramList.size());
+	setState(CS_Keep);
+	m_paramList[index] = value;
 }
 
-RDOValue RDOResource::getParam(ruint index) const
+RDOValue RDOResource::getParam(ruint index)
 {
+	ASSERT(index < m_paramList.size());
+
 	QSqlQuery query;
 
 	int traceID = getTraceID();
@@ -215,44 +221,54 @@ RDOValue RDOResource::getParam(ruint index) const
 
 	if (table_name == QString("int_rv"))
 	{
-		return RDOValue(varValue.toInt());
+		int varValueInt = varValue.toInt();
+		if (varValueInt != m_paramList[index].getInt())
+		{
+			m_paramList[index] = RDOValue(varValueInt);
+		}
 	}
 	else if (table_name == QString("real_rv"))
 	{
-		return RDOValue(varValue.toDouble());
+		double varValueDouble = varValue.toDouble();
+		if (varValueDouble != m_paramList[index].getDouble())
+		{
+			m_paramList[index] = RDOValue(varValueDouble);
+		}
 	}
 	else if (table_name == QString("enum_rv"))
 	{
-		query.exec(QString("select enum_valid_value.vv_str \
-							from param_of_type, enum_valid_value \
-							where param_of_type.rtp_id=%1 and param_of_type.id=%2 and param_of_type.type_id=enum_valid_value.enum_id;")
-					.arg(boost::lexical_cast<int>(getTypeId()))
-					.arg(index));
-
-		LPRDOEnumType pRDOEnumType = rdo::Factory<RDOEnumType>::create();
-
-		for (int i = 0; i < query.size(); ++i)
-		{
-			query.next();
-			pRDOEnumType->add(query.value(query.record().indexOf("vv_str")).toString().toLocal8Bit().constData());
+		tstring varValueEnum = varValue.toString().toLocal8Bit().constData();
+		if (varValueEnum != m_paramList[index].getString())
+		{	
+			m_paramList[index] = RDOValue(m_paramList[index].type().object_static_cast<RDOEnumType>(),varValueEnum);
 		}
-
-		return RDOValue(pRDOEnumType,varValue.toString().toLocal8Bit().constData());
 	}
 	else if (table_name == QString("bool_rv"))
 	{
-		return RDOValue(varValue.toBool());
+		bool varValueBool = varValue.toBool();
+		if (varValueBool != m_paramList[index].getBool())
+		{
+			m_paramList[index] = RDOValue(varValueBool);
+		}
 	}
 	else if (table_name == QString("string_rv"))
 	{
-		return RDOValue(varValue.toString().toLocal8Bit().constData());
+		tstring varValueString = varValue.toString().toLocal8Bit().constData();
+		if (varValueString != m_paramList[index].getString())
+		{
+			m_paramList[index] = RDOValue(varValueString);
+		}
 	}
 	else if (table_name == QString("identificator_rv"))
 	{
-		return RDOValue(varValue.toString().toLocal8Bit().constData());
+		tstring varValueIdentificator = varValue.toString().toLocal8Bit().constData();
+		if (varValueIdentificator != m_paramList[index].getString())
+		{
+			m_paramList[index] = RDOValue(varValueIdentificator);
+		}
 	}
 
-	throw RDOValueException("Данная величина не может быть считана из базы данных");
+	return m_paramList[index];
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
