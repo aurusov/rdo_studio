@@ -194,7 +194,7 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 	m_paramList[index] = value;
 }
 
-RDOValue RDOResource::getParam(ruint index)
+CREF(RDOValue) RDOResource::getParam(ruint index)
 {
 	ASSERT(index < m_paramList.size());
 
@@ -237,9 +237,9 @@ RDOValue RDOResource::getParam(ruint index)
 	}
 	else if (table_name == QString("enum_rv"))
 	{
-		tstring varValueEnum = varValue.toString().toLocal8Bit().constData();
+		tstring varValueEnum = varValue.toString().toStdString();
 		if (varValueEnum != m_paramList[index].getAsString())
-		{	
+		{
 			m_paramList[index] = RDOValue(m_paramList[index].type().object_static_cast<RDOEnumType>(),varValueEnum);
 		}
 	}
@@ -253,7 +253,7 @@ RDOValue RDOResource::getParam(ruint index)
 	}
 	else if (table_name == QString("string_rv"))
 	{
-		tstring varValueString = varValue.toString().toLocal8Bit().constData();
+		tstring varValueString = varValue.toString().toStdString();
 		if (varValueString != m_paramList[index].getString())
 		{
 			m_paramList[index] = RDOValue(varValueString);
@@ -261,7 +261,7 @@ RDOValue RDOResource::getParam(ruint index)
 	}
 	else if (table_name == QString("identificator_rv"))
 	{
-		tstring varValueIdentificator = varValue.toString().toLocal8Bit().constData();
+		tstring varValueIdentificator = varValue.toString().toStdString();
 		if (varValueIdentificator != m_paramList[index].getIdentificator())
 		{
 			m_paramList[index] = RDOValue(varValueIdentificator);
