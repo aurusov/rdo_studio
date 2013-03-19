@@ -224,14 +224,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name=".validator"
-			>
-			<File
-				RelativePath="..\..\headers\validator\int_validator.h"
-				>
-			</File>
-		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
