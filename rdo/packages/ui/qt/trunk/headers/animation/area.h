@@ -13,8 +13,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
 #include <map>
-#include <QtCore/qrect>
-#include <QtCore/qstring>
+#include <QRect>
+#include <QString>
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
