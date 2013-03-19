@@ -180,12 +180,12 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 	switch (value.typeID())
 	{
 	case RDOType::t_unknow        : break;
-	case RDOType::t_int           : DEFINE_RDO_VALUE(                                           value.getInt     ()          ); break;
-	case RDOType::t_real          : DEFINE_RDO_VALUE(                                           value.getDouble  ()          ); break;
-	case RDOType::t_enum          : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromLocal8Bit(value.getAsString().c_str()))); break;
-	case RDOType::t_bool          : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromLocal8Bit(value.getAsString().c_str()))); break;
-	case RDOType::t_string        : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromLocal8Bit(value.getString  ().c_str()))); break;
-	case RDOType::t_identificator : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromLocal8Bit(value.getAsString().c_str()))); break;
+	case RDOType::t_int           : DEFINE_RDO_VALUE(                                           value.getInt     ()  ); break;
+	case RDOType::t_real          : DEFINE_RDO_VALUE(                                           value.getDouble  ()  ); break;
+	case RDOType::t_enum          : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
+	case RDOType::t_bool          : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
+	case RDOType::t_string        : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromStdString(value.getString  ()))); break;
+	case RDOType::t_identificator : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
 	default                       : throw RDOValueException("Данная величина не может быть записана в базу данных");
 	}
 
@@ -238,7 +238,7 @@ RDOValue RDOResource::getParam(ruint index)
 	else if (table_name == QString("enum_rv"))
 	{
 		tstring varValueEnum = varValue.toString().toLocal8Bit().constData();
-		if (varValueEnum != m_paramList[index].getString())
+		if (varValueEnum != m_paramList[index].getAsString())
 		{	
 			m_paramList[index] = RDOValue(m_paramList[index].type().object_static_cast<RDOEnumType>(),varValueEnum);
 		}
@@ -262,7 +262,7 @@ RDOValue RDOResource::getParam(ruint index)
 	else if (table_name == QString("identificator_rv"))
 	{
 		tstring varValueIdentificator = varValue.toString().toLocal8Bit().constData();
-		if (varValueIdentificator != m_paramList[index].getString())
+		if (varValueIdentificator != m_paramList[index].getIdentificator())
 		{
 			m_paramList[index] = RDOValue(varValueIdentificator);
 		}

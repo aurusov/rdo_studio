@@ -232,7 +232,7 @@ void RDOEnumType::serializeInDB(REF(IDB) db) const
 	{
 		db.insertRow("enum_valid_value",QString("%1,DEFAULT,'%2',%3")
 			.arg(enum_id)
-			.arg(QString::fromLocal8Bit(getEnums()->getValues().at(i).c_str()))
+			.arg(QString::fromStdString(getEnums()->getValues().at(i)))
 			.arg(i));
 	}
 }

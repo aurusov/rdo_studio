@@ -52,7 +52,7 @@ void RDORTPParam::serializeInDB(REF(IDB) db) const
 	getTypeInfo()->type()->serializeInDB(db);
 	db.insertRow("param_of_type",QString("%1,'%2',%3,%4")
 			.arg(indexContainer[1])
-			.arg(QString::fromLocal8Bit(name().c_str()))
+			.arg(QString::fromStdString(name()))
 			.arg(indexContainer[0])
 			.arg(db.popContext<int>()));
 }
