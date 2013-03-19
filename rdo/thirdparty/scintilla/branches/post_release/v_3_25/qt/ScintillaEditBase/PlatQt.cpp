@@ -1089,7 +1089,7 @@ public:
 
 	virtual Function FindFunction(const char *name) {
 		if (lib) {
-			void *fnAddress = lib->resolve(name);
+			void *fnAddress = (void*)lib->resolve(name);
 			return static_cast<Function>(fnAddress);
 		}
 		return NULL;
