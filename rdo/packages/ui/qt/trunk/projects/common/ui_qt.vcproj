@@ -46,7 +46,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../../"
+				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;NOMINMAX"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -113,7 +113,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../"
+				AdditionalIncludeDirectories="../../../../;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
