@@ -19,7 +19,7 @@
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/type/info.h"
 #include "simulator/runtime/rdo_value.h"
-#include "simulator/runtime/type/type_db_i.h"
+#include "simulator/runtime/headers/type/type_db_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

@@ -14,8 +14,9 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 
 #include "simulator/compiler/parser/type/type.h"
-#include "simulator/runtime/type/type_db_i.h"
-#include "simulator/runtime/headers/db/interface_db.h"// --------------------------------------------------------------------------------
+#include "simulator/runtime/headers/type/type_db_i.h"
+#include "simulator/runtime/headers/db/interface_db.h"
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
