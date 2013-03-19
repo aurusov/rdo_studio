@@ -11,11 +11,11 @@
 #define _UI_QT_BITMAP_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/warning_disable.h"
 #include <map>
 #include <QPixmap>
 #include <QString>
 #include "utils/warning_enable.h"
-#include "utils/warning_disable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
