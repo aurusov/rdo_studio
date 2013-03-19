@@ -14,7 +14,7 @@
 #include "utils/warning_disable.h"
 #include <boost/function.hpp>
 #include <QDialog>
-#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_find_dialog.h"
+#include "ui_find_dialog.h"
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------

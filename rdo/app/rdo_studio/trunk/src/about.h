@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
 #include <QDialog>
-#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_about.h"
+#include "ui_about.h"
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
