@@ -1,0 +1,6 @@
+#ifndef RDO_STUDIO_RES_BUILD_VERSION_H
+#define RDO_STUDIO_RES_BUILD_VERSION_H
+
+static const QString g_buildVersion("${CMAKE_SVN_VERSION}");
+
+#endif // RDO_STUDIO_RES_BUILD_VERSION_H

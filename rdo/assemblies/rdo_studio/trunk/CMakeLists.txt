@@ -108,6 +108,26 @@ SET(COMMON_FILES
     ${DOC_DIRECTORY}/system.test.txt
     )
 
+#==============================================================================
+
+FIND_PACKAGE(Subversion)
+
+IF(NOT SUBVERSION_FOUND)
+    MESSAGE(FATAL_ERROR "SUBVERSION NOT FOUND")
+ENDIF()
+
+SET(SVN_RES TRUE)
+
+SET(FILE_VERSION "${CMAKE_CURRENT_BINARY_DIR}/svn.version.txt")
+EXECUTE_PROCESS(COMMAND svnversion -n ${RDO_BASE_DIRECTORY} RESULT_VARIABLE ${SVN_RES} OUTPUT_FILE ${FILE_VERSION})
+
+FILE(READ ${FILE_VERSION} READ_DATA)
+STRING(REPLACE "\n" "" CMAKE_SVN_VERSION ${READ_DATA})
+
+MESSAGE(STATUS "SVN VERSION: ${CMAKE_SVN_VERSION}")
+
+#==============================================================================
+    
 SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
 
 SET(SCRIPT_FILES
