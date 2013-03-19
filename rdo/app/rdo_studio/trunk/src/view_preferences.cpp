@@ -959,9 +959,8 @@ void ViewPreferences::updatePreview()
 	preview_debug->setEditorStyle(&style_debug);
 	preview_debug->repaint();
 	
-	//! todo падение при закрытии диалога
-	//preview_trace->view().setStyle(&style_trace);
-	//preview_trace->repaint();
+	preview_trace->view().setStyle(&style_trace);
+	preview_trace->repaint();
 
 	preview_results->setEditorStyle(&style_results);
 	preview_results->repaint();
