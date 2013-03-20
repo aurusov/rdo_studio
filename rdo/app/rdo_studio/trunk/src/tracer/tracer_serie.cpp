@@ -111,7 +111,7 @@ void Serie::addValue(Value* const pValue)
 
 	m_valueCount++;
 
-	std::for_each(m_documentList.begin(), m_documentList.end(), std::bind2nd(std::mem_fun1(&ChartDoc::newValueToSerieAdded), pValue));
+	std::for_each(m_documentList.begin(), m_documentList.end(), boost::bind(&ChartDoc::newValueToSerieAdded, _1, pValue));
 }
 
 void Serie::getValueCount(int& count) const
