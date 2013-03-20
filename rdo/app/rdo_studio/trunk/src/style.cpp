@@ -26,9 +26,12 @@ StyleFont::StyleFont()
 	size         = 10;
 	codepage     = 0;
 	characterSet = 1;
+
+#ifdef OST_WINDOWS
 	if ( PRIMARYLANGID(GetSystemDefaultLangID()) == LANG_RUSSIAN ) {
 		characterSet = SC_CHARSET_CYRILLIC;
 	}
+#endif
 }
 
 StyleFont::~StyleFont()
