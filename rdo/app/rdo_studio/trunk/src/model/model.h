@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
 #include <boost/optional.hpp>
+#include <boost/chrono.hpp>
 #include <QObject>
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -108,23 +109,23 @@ private:
 	rbool  canBuild  () const;
 	rbool  canRun    () const;
 
-	SYSTEMTIME                             m_timeStart;
-	BuildState                             m_buildState;
+	boost::chrono::system_clock::time_point m_timeStart;
+	BuildState                              m_buildState;
 
-	mutable rbool                          m_openError;
-	mutable rbool                          m_smrEmptyError;
-	mutable rbool                          m_modelClosed;
+	mutable rbool                           m_openError;
+	mutable rbool                           m_smrEmptyError;
+	mutable rbool                           m_modelClosed;
 
-	rbool                                  m_frmDescribed;
-	double                                 m_timeNow;
-	double                                 m_speed;
-	double                                 m_showRate;
-	rbool                                  m_tempPause;
-	rdo::runtime::RunTimeMode              m_runtimeMode;
-	rdo::simulation::report::RDOExitCode   m_exitCode;
-	mutable rbool                          m_modify;
-	View*                                  m_pView;
-	QString                                m_name;
+	rbool                                   m_frmDescribed;
+	double                                  m_timeNow;
+	double                                  m_speed;
+	double                                  m_showRate;
+	rbool                                   m_tempPause;
+	rdo::runtime::RunTimeMode               m_runtimeMode;
+	rdo::simulation::report::RDOExitCode    m_exitCode;
+	mutable rbool                           m_modify;
+	View*                                   m_pView;
+	QString                                 m_name;
 
 	rbool newModel  (CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex);
 	rbool saveModel () const;
