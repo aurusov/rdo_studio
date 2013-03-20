@@ -239,7 +239,7 @@ LogView::StringList::const_reverse_iterator LogView::StringList::rFindString(rsi
 	return rit;
 }
 
-void LogView::StringList::seek(rsint delta, REF(StringList::const_iterator) it) const
+void LogView::StringList::seek(rsint delta, REF(const_iterator) it) const
 {
 	ASSERT(it != m_list.end());
 
