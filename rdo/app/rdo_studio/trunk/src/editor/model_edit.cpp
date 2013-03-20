@@ -495,7 +495,7 @@ void Model::onEditCompleteWord()
 			foundKeyWords += " ";
 		}
 	}
-	char* list;
+	const char* list;
 
 	if (static_cast<PTR(ModelStyle)>(m_pStyle)->autoComplete.showFullList)
 	{
