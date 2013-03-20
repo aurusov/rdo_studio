@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
 #include <boost/foreach.hpp>
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/tracer_serie.h"
 #include "app/rdo_studio/src/tracer/tracer_values.h"
