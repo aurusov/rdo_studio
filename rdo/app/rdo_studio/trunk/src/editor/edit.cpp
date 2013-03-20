@@ -815,6 +815,10 @@ int GetHexByte(const char *hexbyte) // "HH"
 	return (GetHexChar(*hexbyte) << 4) | GetHexChar(hexbyte[1]);
 }
 
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(disable: 4996)
+#endif
+
 void GetRTFStyleChange(char *delta, char *last, const char *current) // \f0\fs20\cf0\highlight0\b0\i0
 {
 	int lastLen = strlen(last), offset = 2, lastOffset, currentOffset, len;
@@ -829,14 +833,12 @@ void GetRTFStyleChange(char *delta, char *last, const char *current) // \f0\fs20
 	if (lastOffset != currentOffset ||        // change
 	        strncmp(last + offset, current + offset, lastOffset - offset)) {
 		if (lastOffset != currentOffset) {
-			memmove (last + currentOffset, last + lastOffset, lastLen - lastOffset + 1);
+			memmove(last + currentOffset, last + lastOffset, lastLen - lastOffset + 1);
 			lastLen += currentOffset - lastOffset;
 		}
 		len = currentOffset - offset;
 		memcpy(last + offset, current + offset, len);
-#pragma warning(disable: 4996)
-		strcat (delta, RTF_SETFONTFACE);
-#pragma warning(default: 4996)
+		strcat(delta, RTF_SETFONTFACE);
 		lastOffset = strlen(delta);
 		memcpy(delta + lastOffset, last + offset, len);
 		delta[lastOffset + len] = '\0';
@@ -852,14 +854,12 @@ void GetRTFStyleChange(char *delta, char *last, const char *current) // \f0\fs20
 	if (lastOffset != currentOffset ||        // change
 	        strncmp(last + offset, current + offset, lastOffset - offset)) {
 		if (lastOffset != currentOffset) {
-			memmove (last + currentOffset, last + lastOffset, lastLen - lastOffset + 1);
+			memmove(last + currentOffset, last + lastOffset, lastLen - lastOffset + 1);
 			lastLen += currentOffset - lastOffset;
 		}
 		len = currentOffset - offset;
 		memcpy(last + offset, current + offset, len);
-#pragma warning(disable: 4996)
 		strcat (delta, RTF_SETFONTSIZE);
-#pragma warning(default: 4996)
 		lastOffset = strlen(delta);
 		memcpy(delta + lastOffset, last + offset, len);
 		delta[lastOffset + len] = '\0';
@@ -875,14 +875,12 @@ void GetRTFStyleChange(char *delta, char *last, const char *current) // \f0\fs20
 	if (lastOffset != currentOffset ||        // change
 	        strncmp(last + offset, current + offset, lastOffset - offset)) {
 		if (lastOffset != currentOffset) {
-			memmove (last + currentOffset, last + lastOffset, lastLen - lastOffset + 1);
+			memmove(last + currentOffset, last + lastOffset, lastLen - lastOffset + 1);
 			lastLen += currentOffset - lastOffset;
 		}
 		len = currentOffset - offset;
 		memcpy(last + offset, current + offset, len);
-#pragma warning(disable: 4996)
 		strcat (delta, RTF_SETCOLOR);
-#pragma warning(default: 4996)
 		lastOffset = strlen(delta);
 		memcpy(delta + lastOffset, last + offset, len);
 		delta[lastOffset + len] = '\0';
@@ -898,14 +896,12 @@ void GetRTFStyleChange(char *delta, char *last, const char *current) // \f0\fs20
 	if (lastOffset != currentOffset ||        // change
 	        strncmp(last + offset, current + offset, lastOffset - offset)) {
 		if (lastOffset != currentOffset) {
-			memmove (last + currentOffset, last + lastOffset, lastLen - lastOffset + 1);
+			memmove(last + currentOffset, last + lastOffset, lastLen - lastOffset + 1);
 			lastLen += currentOffset - lastOffset;
 		}
 		len = currentOffset - offset;
 		memcpy(last + offset, current + offset, len);
-#pragma warning(disable: 4996)
-		strcat (delta, RTF_SETBACKGROUND);
-#pragma warning(default: 4996)
+		strcat(delta, RTF_SETBACKGROUND);
 		lastOffset = strlen(delta);
 		memcpy(delta + lastOffset, last + offset, len);
 		delta[lastOffset + len] = '\0';
@@ -914,17 +910,13 @@ void GetRTFStyleChange(char *delta, char *last, const char *current) // \f0\fs20
 	// bold
 	if (last[offset] != current[offset]) {
 		if (current[offset] == '\\') { // turn on
-			memmove (last + offset, last + offset + 1, lastLen-- - offset);
-#pragma warning(disable: 4996)
+			memmove(last + offset, last + offset + 1, lastLen-- - offset);
 			strcat (delta, RTF_BOLD_ON);
-#pragma warning(default: 4996)
 			offset += 2;
 		} else { // turn off
 			memmove (last + offset + 1, last + offset, ++lastLen - offset);
 			last[offset] = '0';
-#pragma warning(disable: 4996)
-			strcat (delta, RTF_BOLD_OFF);
-#pragma warning(default: 4996)
+			strcat(delta, RTF_BOLD_OFF);
 			offset += 3;
 		}
 	} else
@@ -932,16 +924,12 @@ void GetRTFStyleChange(char *delta, char *last, const char *current) // \f0\fs20
 	// italic
 	if (last[offset] != current[offset]) {
 		if (current[offset] == '\\') { // turn on
-			memmove (last + offset, last + offset + 1, lastLen-- - offset);
-#pragma warning(disable: 4996)
+			memmove(last + offset, last + offset + 1, lastLen-- - offset);
 			strcat (delta, RTF_ITALIC_ON);
-#pragma warning(default: 4996)
 		} else { // turn off
-			memmove (last + offset + 1, last + offset, ++lastLen - offset);
+			memmove(last + offset + 1, last + offset, ++lastLen - offset);
 			last[offset] = '0';
-#pragma warning(disable: 4996)
-			strcat (delta, RTF_ITALIC_OFF);
-#pragma warning(default: 4996)
+			strcat(delta, RTF_ITALIC_OFF);
 		}
 	}
 	if (*delta) {
@@ -950,6 +938,7 @@ void GetRTFStyleChange(char *delta, char *last, const char *current) // \f0\fs20
 		delta[lastOffset + 1] = '\0';
 	}
 }
+
 // --------------------------------------------------------------------------------
 // -------------------- some functions for RTF export ---------- END
 // --------------------------------------------------------------------------------
@@ -978,39 +967,27 @@ tstring Edit::saveAsRTF(int start, int end) const
 	saveStr += RTF_HEADEROPEN;
 	saveStr += RTF_FONTDEFOPEN;
 
-#pragma warning(disable: 4996)
 	strncpy(*fonts, m_pStyle->font.name.c_str(), MAX_FONTDEF);
-#pragma warning(default: 4996)
 	saveStr += rdo::format(RTF_FONTDEF, 0, m_pStyle->font.characterSet, m_pStyle->font.name.c_str());
-#pragma warning(disable: 4996)
 	strncpy(*colors, "#000000", MAX_COLORDEF);
-#pragma warning(default: 4996)
 
 	EditStyle* style = static_cast<EditStyle*>(m_pStyle);
 
 	for (int istyle = 0; istyle <= STYLE_DEFAULT; istyle++) {
 		if (style->styleUsing(istyle)) {
-#pragma warning(disable: 4996)
 			sprintf(lastStyle, RTF_SETFONTFACE "%d", fontCount-1);
 			sprintf(lastStyle + strlen(lastStyle), RTF_SETFONTSIZE "%d", m_pStyle->font.size * 2);
-#pragma warning(default: 4996)
 			if (style->styleDefault(istyle)) {
-#pragma warning(disable: 4996)
 				strncpy(colors[colorCount++], style->styleBGColorToHEX(istyle).c_str(), MAX_COLORDEF);
-#pragma warning(default: 4996)
 			}
-#pragma warning(disable: 4996)
 			strncpy(colors[colorCount++], style->styleFGColorToHEX(istyle).c_str(), MAX_COLORDEF);
-#pragma warning(default: 4996)
 			rbool bold   = style->styleBold(istyle);
 			rbool italic = style->styleItalic(istyle);
-#pragma warning(disable: 4996)
 			sprintf(lastStyle + strlen(lastStyle), RTF_SETCOLOR "%d", colorCount-1);
 			sprintf(lastStyle + strlen(lastStyle), RTF_SETBACKGROUND "%d", 1);
 			strcat(lastStyle, bold ? RTF_BOLD_ON : RTF_BOLD_OFF);
 			strcat(lastStyle, italic ? RTF_ITALIC_ON : RTF_ITALIC_OFF);
 			strncpy(styles[istyle], lastStyle, MAX_STYLEDEF);
-#pragma warning(default: 4996)
 		}
 	}
 	saveStr += RTF_FONTDEFCLOSE;
@@ -1022,9 +999,7 @@ tstring Edit::saveAsRTF(int start, int end) const
 
 	saveStr += rdo::format(RTF_COLORDEFCLOSE RTF_HEADERCLOSE RTF_BODYOPEN RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0 ", m_pStyle->font.size * 2);
 
-#pragma warning(disable: 4996)
 	sprintf(lastStyle, RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0" RTF_SETBACKGROUND "0" RTF_BOLD_OFF RTF_ITALIC_OFF, m_pStyle->font.size * 2);
-#pragma warning(default: 4996)
 
 	tstring::size_type prevLength = saveStr.length();
 	rbool prevCR = false;
@@ -1085,7 +1060,9 @@ tstring Edit::saveAsRTF(int start, int end) const
 
 	return saveStr;
 }
-#pragma warning(default: 4996)
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(default: 4996)
+#endif
 
 void Edit::setCurrentPos(const int value) const
 {
