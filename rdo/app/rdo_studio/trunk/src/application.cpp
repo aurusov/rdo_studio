@@ -92,8 +92,8 @@ Application::Application(int& argc, char** argv)
 	, m_autoExitByModel             (false )
 	, m_dontCloseIfError            (false )
 	, m_exitCode                    (rdo::simulation::report::EC_OK)
-	, m_pMainFrame                  (NULL  )
 	, m_pAssistant                  (NULL  )
+	, m_pMainFrame                  (NULL  )
 {
 	g_pApp = this;
 
