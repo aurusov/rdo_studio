@@ -110,6 +110,7 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 		}
 		case RT_RUNTIME_MODEL_START_BEFORE:
 		{
+			++m_runNumber;
 			beforeModelStart();
 			break;
 		}
@@ -600,9 +601,6 @@ void RDOThreadRepository::beforeModelStart()
 	if (m_files[rdoModelObjects::TRC].m_described)
 	{
 		m_traceFile.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::TRC)), std::ios::out | std::ios::binary);
-		++m_runNumber;
-		tstring buffer = rdo::format("%i", m_runNumber);
-		m_traceFile.open((m_modelPath + buffer + getFileExtName(rdoModelObjects::TRC)).c_str(), std::ios::out | std::ios::binary);
 		if (m_traceFile.is_open())
 		{
 			writeModelFilesInfo(m_traceFile);
@@ -624,9 +622,6 @@ void RDOThreadRepository::stopModel()
 	{
 		boost::filesystem::ofstream results_file;
 		results_file.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::PMV)), std::ios::out | std::ios::binary);
-		tstring buffer = rdo::format("%i", m_runNumber);
-		rdo::ofstream results_file;
-		results_file.open((m_modelPath + buffer + getFileExtName(rdoModelObjects::PMV)).c_str(), std::ios::out | std::ios::binary );
 		if (results_file.is_open())
 		{
 			writeModelFilesInfo(results_file);
@@ -680,13 +675,13 @@ tstring RDOThreadRepository::getFileExtName(rdoModelObjects::RDOFileType type) c
 	{
 		NEVER_REACH_HERE;
 	}
-
 	return it->second.m_fileName + it->second.m_extention;
 }
 
 tstring RDOThreadRepository::getFullFileName(rdoModelObjects::RDOFileType type) const
 {
-	return m_modelPath + getFileExtName(type);
+	tstring buffer = rdo::format("%i", m_runNumber);
+	return m_modelPath + buffer + getFileExtName(type);
 }
 
 rbool RDOThreadRepository::isReadOnly(rdoModelObjects::RDOFileType type) const
