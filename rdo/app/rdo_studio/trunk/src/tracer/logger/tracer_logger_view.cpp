@@ -178,7 +178,8 @@ void LogView::StringList::setCursor(rsint pos, rsint max)
 	else
 	{
 		rsint delta = pos - m_cursor;
-		seek(delta, m_cursorIt);
+		const_iterator it(m_cursorIt);
+		seek(delta, it);
 	}
 	m_cursor = pos;
 }
