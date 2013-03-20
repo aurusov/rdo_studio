@@ -15,6 +15,7 @@
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
+#include <boost/numeric/conversion/bounds.hpp>
 #include <QMessageBox>
 #include <QFileDialog>
 #include "utils/warning_enable.h"
@@ -1071,7 +1072,7 @@ void Model::setShowRate(double value)
 	if (!isRunning())
 		return;
 
-	if (value >= DBL_MIN && value <= DBL_MAX)
+	if (value >= boost::numeric::bounds<double>::lowest() && value <= boost::numeric::bounds<double>::highest())
 	{
 		m_showRate = value;
 		sendMessage(kernel->runtime(), RT_RUNTIME_SET_SHOWRATE, &m_showRate);
@@ -1151,10 +1152,10 @@ void Model::updateActions()
 	pMainWindow->actModelRuntimePause->setChecked   (getRuntimeMode() == rdo::runtime::RTM_Pause || getRuntimeMode() == rdo::runtime::RTM_BreakPoint);
 
 	rbool canShowRate = isRunning() && getRuntimeMode() == rdo::runtime::RTM_Sync;
-	pMainWindow->actModelShowRateInc->setEnabled    (canShowRate && getShowRate() * 1.5 <= DBL_MAX);
-	pMainWindow->actModelShowRateIncFour->setEnabled(canShowRate && getShowRate() * 4.0 <= DBL_MAX);
-	pMainWindow->actModelShowRateDecFour->setEnabled(canShowRate && getShowRate() / 4.0 >= DBL_MIN);
-	pMainWindow->actModelShowRateDec->setEnabled    (canShowRate && getShowRate() / 1.5 >= DBL_MIN);
+	pMainWindow->actModelShowRateInc->setEnabled    (canShowRate && getShowRate() * 1.5 <= boost::numeric::bounds<double>::highest());
+	pMainWindow->actModelShowRateIncFour->setEnabled(canShowRate && getShowRate() * 4.0 <= boost::numeric::bounds<double>::highest());
+	pMainWindow->actModelShowRateDecFour->setEnabled(canShowRate && getShowRate() / 4.0 >= boost::numeric::bounds<double>::lowest());
+	pMainWindow->actModelShowRateDec->setEnabled    (canShowRate && getShowRate() / 1.5 >= boost::numeric::bounds<double>::lowest());
 
 	pMainWindow->actModelFrameNext->setEnabled(m_frameManager.canShowNextFrame());
 	pMainWindow->actModelFramePrev->setEnabled(m_frameManager.canShowPrevFrame());
