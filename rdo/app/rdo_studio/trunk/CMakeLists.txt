@@ -86,7 +86,29 @@ SET(HEADER_FILES
     src/view_preferences.h
     )
 
-SET(HEADER_QT_FILES ${HEADER_FILES})
+SET(HEADER_QT_FILES
+    src/about.h
+    src/dialog/file_association_dialog.h
+    src/dialog/find_dialog.h
+    src/dialog/find_replace_dialog.h
+    src/dialog/goto_line_dialog.h
+    src/dialog/new_model_dialog.h
+    src/dock/dock_focusable.h
+    src/editor/edit.h
+    src/editor/log_edit.h
+    src/editor/model_edit.h
+    src/frame/frame_manager.h
+    src/frame/frame_tree_ctrl.h
+    src/frame/frame_view.h
+    src/main_window.h
+    src/model/model.h
+    src/model/model_view.h
+    src/tracer/chart/chart_preferences.h
+    src/tracer/chart/chart_tree.h
+    src/tracer/chart/chart_view.h
+    src/tracer/logger/tracer_logger_view.h
+    src/view_preferences.h
+    )
 
 SET(SOURCE_FILES
     src/about.cpp
