@@ -665,7 +665,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 			QSize sz;
 			BOOST_FOREACH(const Time* const pTime, m_unwrapTimesList)
 			{
-				tmprect.setLeft(chartRect.left() + (LONG)((pTime->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks.tickWidth - m_chartShift));
+				tmprect.setLeft(chartRect.left() + (int)((pTime->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks.tickWidth - m_chartShift));
 				tmprect.setLeft(std::min(tmprect.left(), chartRect.right() - 1));
 				str = rdo::format(formatstr.c_str(), pTime->time);
 				if (*pTime == m_drawFromX)
