@@ -233,49 +233,50 @@ OPEN_RDO_PARSER_NAMESPACE
 %left RDO_not
 %left RDO_UMINUS
 
-%start smr_cond
+%start smr_main
 
 %%
 // --------------------------------------------------------------------------------
-// --------------------MultiRun
+// --------------------smr_main
 // --------------------------------------------------------------------------------
-smr_multirun
-	: '{' smr_multirun_body '}'
+smr_main
+	: smr_launch
+	| smr_launch_set
+	;
+
+smr_launch_set
+	: /* empty */
+	| smr_launch_set smr_launch_single_of_set
+	;
+
+smr_launch_single_of_set
+	: '{' smr_launch '}'
 	{
 		PARSER->getSMR()->setIncrement();
 	}
 	;
 
-smr_multirun_body
+smr_launch
 	: /* empty */
-	| smr_multirun_body smr_cond
+	| smr_launch smr_launch_line
 	;
 
-// --------------------------------------------------------------------------------
-// --------------------ShowMode
-// --------------------------------------------------------------------------------
-smr_show_mode
-	: RDO_NoShow
-	{
-		$$ = rdo::service::simulation::SM_NoShow;
-	}
-	| RDO_Monitor
-	{
-		$$ = rdo::service::simulation::SM_Monitor;
-	}
-	| RDO_Animation
-	{
-		$$ = rdo::service::simulation::SM_Animation;
-	}
+smr_launch_line
+	: smr_launch_line_terminate_if
+	| smr_launch_line_break_point
+	| smr_launch_line_event_planning
+	| smr_launch_line_run_startTime
+	| smr_launch_line_trace_endTime
+	| smr_launch_line_trace_startTime
+	| smr_launch_line_arithm
+	| smr_launch_line_show_mode
+	| smr_launch_line_show_rate
+	| smr_launch_line_frame_number
+	| smr_launch_line_seed
 	;
 
-// --------------------------------------------------------------------------------
-// --------------------smr_cond
-// --------------------------------------------------------------------------------
-smr_cond
-	: /* empty */
-	| smr_cond smr_multirun
-	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
+smr_launch_line_event_planning
+	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
@@ -323,22 +324,31 @@ smr_cond
 			pEvent->setInitCalc(pEventPlan);
 		}
 	}
-	| smr_cond RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
-	| smr_cond RDO_Show_mode                  '=' smr_show_mode
+;
+
+smr_launch_line_external_model
+	: RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
+	;
+
+smr_launch_line_show_mode
+	: RDO_Show_mode                  '=' smr_show_mode
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
 		pSMR->setShowMode((rdo::service::simulation::ShowMode)$4);
 	}
-	| smr_cond RDO_Show_mode '=' error
+	| RDO_Show_mode '=' error
 	{
 		PARSER->error().error(@3, @4, "Ожидается режим анимации");
 	}
-	| smr_cond RDO_Show_mode error
+	| RDO_Show_mode error
 	{
 		PARSER->error().error(@2, "Ожидается '='");
 	}
-	| smr_cond RDO_Frame_number '=' RDO_INT_CONST
+	;
+
+smr_launch_line_frame_number
+	: RDO_Frame_number '=' RDO_INT_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
@@ -347,35 +357,41 @@ smr_cond
 			pSMR->setFrameNumber(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
 		}
 	}
-	| smr_cond RDO_Frame_number '=' error
+	| RDO_Frame_number '=' error
 	{
 		PARSER->error().error(@3, @4, "Ожидается начальный номер кадра");
 	}
-	| smr_cond RDO_Frame_number error
+	| RDO_Frame_number error
 	{
 		PARSER->error().error(@2, "Ожидается '='");
 	}
-	| smr_cond RDO_Show_rate '=' RDO_REAL_CONST
+	;
+
+smr_launch_line_show_rate
+	: RDO_Show_rate '=' RDO_REAL_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
 		pSMR->setShowRate(PARSER->stack().pop<RDOValue>($4)->value().getDouble(), @4);
 	}
-	| smr_cond RDO_Show_rate '=' RDO_INT_CONST
+	| RDO_Show_rate '=' RDO_INT_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
 		pSMR->setShowRate(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
 	}
-	| smr_cond RDO_Show_rate '=' error
+	| RDO_Show_rate '=' error
 	{
 		PARSER->error().error(@3, @4, "Ожидается масштабный коэффициент");
 	}
-	| smr_cond RDO_Show_rate error
+	| RDO_Show_rate error
 	{
 		PARSER->error().error(@2, "Ожидается '='");
 	}
-	| smr_cond RDO_Run_StartTime '=' RDO_REAL_CONST
+	;
+
+smr_launch_line_run_startTime
+	: RDO_Run_StartTime '=' RDO_REAL_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
@@ -384,7 +400,7 @@ smr_cond
 			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($4)->value().getDouble(), @4);
 		}
 	}
-	| smr_cond RDO_Run_StartTime '=' RDO_INT_CONST
+	| RDO_Run_StartTime '=' RDO_INT_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
@@ -393,21 +409,24 @@ smr_cond
 			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
 		}
 	}
-	| smr_cond RDO_Run_StartTime '=' error
+	| RDO_Run_StartTime '=' error
 	{
 		PARSER->error().error(@3, @4, "Ожидается начальное модельное время");
 	}
-	| smr_cond RDO_Run_StartTime error
+	| RDO_Run_StartTime error
 	{
 		PARSER->error().error(@2, "Ожидается '='");
 	}
-	| smr_cond RDO_Trace_StartTime '=' RDO_REAL_CONST
+	;
+
+smr_launch_line_trace_startTime
+	: RDO_Trace_StartTime '=' RDO_REAL_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
 		pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($4)->value().getDouble(), @4);
 	}
-	| smr_cond RDO_Trace_StartTime '=' RDO_INT_CONST
+	| RDO_Trace_StartTime '=' RDO_INT_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
@@ -416,15 +435,18 @@ smr_cond
 			pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
 		}
 	}
-	| smr_cond RDO_Trace_StartTime '=' error
+	| RDO_Trace_StartTime '=' error
 	{
 		PARSER->error().error(@3, @4, "Ожидается начальное время трассировки");
 	}
-	| smr_cond RDO_Trace_StartTime error
+	| RDO_Trace_StartTime error
 	{
 		PARSER->error().error(@2, "Ожидается '='");
 	}
-	| smr_cond RDO_Trace_EndTime '=' RDO_REAL_CONST
+	;
+
+smr_launch_line_trace_endTime
+	: RDO_Trace_EndTime '=' RDO_REAL_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
@@ -433,7 +455,7 @@ smr_cond
 			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($4)->value().getDouble(), @4);
 		}
 	}
-	| smr_cond RDO_Trace_EndTime '=' RDO_INT_CONST
+	| RDO_Trace_EndTime '=' RDO_INT_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
@@ -442,15 +464,18 @@ smr_cond
 			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
 		}
 	}
-	| smr_cond RDO_Trace_EndTime '=' error
+	| RDO_Trace_EndTime '=' error
 	{
 		PARSER->error().error(@3, @4, "Ожидается конечное время трассировки");
 	}
-	| smr_cond RDO_Trace_EndTime error
+	| RDO_Trace_EndTime error
 	{
 		PARSER->error().error(@2, "Ожидается '='");
 	}
-	| smr_cond RDO_Terminate_if fun_logic
+	;
+
+smr_launch_line_terminate_if
+	: RDO_Terminate_if fun_logic
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
@@ -461,11 +486,14 @@ smr_cond
 			PARSER->getSMR()->setTerminateIf(pLogic);
 		}
 	}
-	| smr_cond RDO_Terminate_if error
+	| RDO_Terminate_if error
 	{
 		PARSER->error().error(@2, @3, "Ошибка логического выражения в терминальном условии");
 	}
-	| smr_cond RDO_Break_point RDO_IDENTIF fun_logic
+	;
+
+smr_launch_line_break_point
+	: RDO_Break_point RDO_IDENTIF fun_logic
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
@@ -476,15 +504,18 @@ smr_cond
 			pSMR->insertBreakPoint(PARSER->stack().pop<RDOValue>($3)->src_info(), pLogic);
 		}
 	}
-	| smr_cond RDO_Break_point RDO_IDENTIF error
+	| RDO_Break_point RDO_IDENTIF error
 	{
 		PARSER->error().error(@4, "Ошибка логического выражения в точке останова");
 	}
-	| smr_cond RDO_Break_point error
+	| RDO_Break_point error
 	{
 		PARSER->error().error(@2, @3, "Ожидается имя точки останова");
 	}
-	| smr_cond RDO_IDENTIF '=' fun_arithm
+	;
+
+smr_launch_line_arithm
+	: RDO_IDENTIF '=' fun_arithm
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
@@ -495,15 +526,15 @@ smr_cond
 			PARSER->getSMR()->setConstValue(PARSER->stack().pop<RDOValue>($2)->src_info(), pArithm);
 		}
 	}
-	| smr_cond RDO_IDENTIF '=' error
+	| RDO_IDENTIF '=' error
 	{
 		PARSER->error().error(@3, @4, "Ошибка в арифметическом выражении");
 	}
-	| smr_cond RDO_IDENTIF error
+	| RDO_IDENTIF error
 	{
 		PARSER->error().error(@2, "Ожидается '='");
 	}
-	| smr_cond RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
+	| RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
@@ -514,15 +545,15 @@ smr_cond
 			PARSER->getSMR()->setResParValue(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOValue>($4)->src_info(), pArithm);
 		}
 	}
-	| smr_cond RDO_IDENTIF '.' RDO_IDENTIF '=' error
+	| RDO_IDENTIF '.' RDO_IDENTIF '=' error
 	{
 		PARSER->error().error(@5, @6, "Ошибка в арифметическом выражении");
 	}
-	| smr_cond RDO_IDENTIF '.' RDO_IDENTIF error
+	| RDO_IDENTIF '.' RDO_IDENTIF error
 	{
 		PARSER->error().error(@4, "Ожидается '='");
 	}
-	| smr_cond RDO_IDENTIF '.' error
+	| RDO_IDENTIF '.' error
 	{
 		tstring name = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDORSSResource pResource = PARSER->findRSSResource(name);
@@ -543,7 +574,10 @@ smr_cond
 			}
 		}
 	}
-	| smr_cond RDO_IDENTIF '.' RDO_Seed '=' RDO_INT_CONST
+	;
+
+smr_launch_line_seed
+	: RDO_IDENTIF '.' RDO_Seed '=' RDO_INT_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
@@ -552,17 +586,35 @@ smr_cond
 			pSMR->setSeed(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOValue>($6)->value().getInt());
 		}
 	}
-	| smr_cond RDO_IDENTIF '.' RDO_Seed '=' error
+	| RDO_IDENTIF '.' RDO_Seed '=' error
 	{
 		PARSER->error().error(@5, @6, "Ожидается база генератора");
 	}
-	| smr_cond RDO_IDENTIF '.' RDO_Seed error
+	| RDO_IDENTIF '.' RDO_Seed error
 	{
 		PARSER->error().error(@4, "Ожидается '='");
 	}
-	| smr_cond error
+	| error
 	{
 		PARSER->error().error(@2, "Неизвестная ошибка");
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// --------------------ShowMode
+// --------------------------------------------------------------------------------
+smr_show_mode
+	: RDO_NoShow
+	{
+		$$ = rdo::service::simulation::SM_NoShow;
+	}
+	| RDO_Monitor
+	{
+		$$ = rdo::service::simulation::SM_Monitor;
+	}
+	| RDO_Animation
+	{
+		$$ = rdo::service::simulation::SM_Animation;
 	}
 	;
 
