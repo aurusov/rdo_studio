@@ -43,8 +43,8 @@ private:
 	PTR(ChartView)  m_pView;
 	PTR(ChartSerie) m_pSerie;
 
-	void ChartPreferences::insertColors(QComboBox* colorBox);
-	void ChartPreferences::insertColor(const QColor& color, const QString& colorName, QComboBox* colorBox);
+	void insertColors(QComboBox* colorBox);
+	void insertColor(const QColor& color, const QString& colorName, QComboBox* colorBox);
 	void apply();
 
 	void onHelpContext();
