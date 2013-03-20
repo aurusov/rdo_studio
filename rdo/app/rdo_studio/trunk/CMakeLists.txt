@@ -292,6 +292,10 @@ ADD_DEPENDENCIES(rdo_studio rdo_simulator_report)
 ADD_DEPENDENCIES(rdo_studio rdo_ui_abstract)
 ADD_DEPENDENCIES(rdo_studio rdo_ui_qt)
 
+TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Widgets_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Core_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Gui_LIBRARIES})
+
 TARGET_LINK_LIBRARIES(rdo_studio ${Boost_PROGRAM_OPTIONS_LIBRARY})
 TARGET_LINK_LIBRARIES(rdo_studio ${Boost_THREAD_LIBRARY})
 
