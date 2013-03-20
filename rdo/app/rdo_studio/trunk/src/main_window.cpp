@@ -405,8 +405,6 @@ void MainWindow::init()
 
 	menuView->insertSeparator(actViewSettings);
 
-	g_pTracer->registerClipboardFormat();
-
 	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(g_pModel);
 	ASSERT(pModelInit);
 	pModelInit->init();
