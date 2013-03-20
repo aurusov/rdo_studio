@@ -14,7 +14,7 @@
 #include "utils/warning_disable.h"
 #include <QDialog>
 #include <QColorDialog>
-#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_view_preferenses.h"
+#include "ui_view_preferenses.h"
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/editor/model_edit.h"
