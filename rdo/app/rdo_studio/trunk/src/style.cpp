@@ -129,10 +129,12 @@ QSettings& operator>> (QSettings& settings, StyleFont& font)
 	font.size         = settings.value("size", font.size).toInt();
 	font.codepage     = settings.value("codepage", font.codepage).toInt();
 	font.characterSet = settings.value("character_set", font.characterSet).toInt();
+#ifdef OST_WINDOWS
 	if (font.characterSet == RUSSIAN_CHARSET)
 	{
 		font.characterSet = SC_CHARSET_CYRILLIC;
 	}
+#endif
 	return settings;
 }
 
