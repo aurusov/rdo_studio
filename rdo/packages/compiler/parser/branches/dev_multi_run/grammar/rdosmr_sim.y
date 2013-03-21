@@ -324,7 +324,7 @@ smr_launch_line_event_planning
 			pEvent->setInitCalc(pEventPlan);
 		}
 	}
-;
+	;
 
 smr_launch_line_external_model
 	: RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
