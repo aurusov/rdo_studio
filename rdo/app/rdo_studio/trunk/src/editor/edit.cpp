@@ -126,7 +126,7 @@ Edit::Group::List::const_iterator Edit::Group::find_if(CREF(this_predicate) fun)
 
 // ---------------
 
-Edit::Edit(PTR(QWidget) pParent)
+Edit::Edit(QWidget* pParent)
 	: super               (pParent)
 	, m_markerCount       (0    )
 	, m_pStyle            (NULL )

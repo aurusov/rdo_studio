@@ -21,7 +21,7 @@ class DockBuild: public DockFocusable
 public:
 	typedef rdo::gui::editor::Build context_type;
 
-	DockBuild(PTR(QWidget) pParent);
+	DockBuild(QWidget* pParent);
 	virtual ~DockBuild();
 
 	void appendString(CREF(QString) str);

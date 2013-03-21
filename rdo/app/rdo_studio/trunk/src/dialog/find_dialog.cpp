@@ -27,7 +27,7 @@ FindDialog::Settings::Settings(CREF(Settings) settings)
 	, searchDown    (settings.searchDown    )
 {}
 
-FindDialog::FindDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback, CREF(OnCloseCallback) onCloseCallback)
+FindDialog::FindDialog(QWidget* pParent, const OnFindCallback& onFindCallback, OnCloseCallback& onCloseCallback)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, m_onFindCallback (onFindCallback )
 	, m_onCloseCallback(onCloseCallback)

@@ -23,7 +23,7 @@
 using namespace rdo::gui::frame;
 using namespace rdo::gui::style;
 
-OptionsView::OptionsView(PTR(QWidget) pParent)
+OptionsView::OptionsView(QWidget* pParent)
 	: QWidget(pParent)
 	, m_style(NULL)
 {

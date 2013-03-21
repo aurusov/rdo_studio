@@ -40,7 +40,7 @@ public:
 	typedef  boost::function<void (const Settings&)>  OnFindCallback;
 	typedef  boost::function<void ()>                 OnCloseCallback;
 
-	FindDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback, CREF(OnCloseCallback) onCloseCallback);
+	FindDialog(QWidget* pParent, const OnFindCallback& onFindCallback, const OnCloseCallback& onCloseCallback);
 	virtual ~FindDialog();
 
 	void setSettings(CREF(Settings) settings);

@@ -14,7 +14,7 @@
 #include "app/rdo_studio/src/dialog/goto_line_dialog.h"
 // --------------------------------------------------------------------------------
 
-GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount)
+GoToLineDialog::GoToLineDialog(QWidget* pParent, int line, int lineCount)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, m_line (line   )
 {

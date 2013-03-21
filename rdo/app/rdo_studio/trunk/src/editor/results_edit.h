@@ -24,7 +24,7 @@ class Results
 	, public PopupMenu
 {
 public:
-	Results(PTR(QWidget) pParent);
+	Results(QWidget* pParent);
 	virtual ~Results();
 
 	void setEditorStyle(PTR(ResultsStyle) pStyle);

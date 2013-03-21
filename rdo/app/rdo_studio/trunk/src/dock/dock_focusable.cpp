@@ -14,7 +14,7 @@
 #include "app/rdo_studio/src/dock/dock_focusable.h"
 // --------------------------------------------------------------------------------
 
-DockFocusable::DockFocusable(CREF(QString) title, PTR(QWidget) pParent)
+DockFocusable::DockFocusable(const QString& title, QWidget* pParent)
 	: super(title, pParent)
 {
 	connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(onVisibilityChanged(bool)));

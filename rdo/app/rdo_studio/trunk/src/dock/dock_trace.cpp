@@ -18,7 +18,7 @@
 #include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
 
-DockTrace::DockTrace(PTR(QWidget) pParent)
+DockTrace::DockTrace(QWidget* pParent)
 	: DockFocusable("Трассировка", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);

@@ -25,7 +25,7 @@ class FileAssociationDialog
 Q_OBJECT
 
 public:
-	FileAssociationDialog(PTR(QWidget) pParent);
+	FileAssociationDialog(QWidget* pParent);
 	virtual ~FileAssociationDialog();
 };
 

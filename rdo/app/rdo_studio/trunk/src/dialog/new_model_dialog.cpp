@@ -18,7 +18,7 @@
 #include "app/rdo_studio/src/dialog/new_model_dialog.h"
 // --------------------------------------------------------------------------------
 
-NewModelDialog::NewModelDialog(PTR(QWidget) pParent)
+NewModelDialog::NewModelDialog(QWidget* pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
 	setupUi(this);

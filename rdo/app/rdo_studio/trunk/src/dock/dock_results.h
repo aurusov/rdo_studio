@@ -21,7 +21,7 @@ class DockResults: public DockFocusable
 public:
 	typedef rdo::gui::editor::Results context_type;
 
-	DockResults(PTR(QWidget) pParent);
+	DockResults(QWidget* pParent);
 	virtual ~DockResults();
 
 	void appendString(CREF(QString) str);

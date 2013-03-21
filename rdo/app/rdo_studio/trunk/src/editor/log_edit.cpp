@@ -23,7 +23,7 @@
 
 using namespace rdo::gui::editor;
 
-Log::Log(PTR(QWidget) pParent)
+Log::Log(QWidget* pParent)
 	: Edit(pParent)
 	, m_currentLine(-1)
 {

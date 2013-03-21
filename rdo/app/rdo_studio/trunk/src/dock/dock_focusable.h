@@ -23,7 +23,7 @@ Q_OBJECT
 public:
 	typedef  QDockWidget  super;
 
-	DockFocusable(CREF(QString) title, PTR(QWidget) pParent);
+	DockFocusable(const QString& title, QWidget* pParent);
 	virtual ~DockFocusable();
 
 private slots:

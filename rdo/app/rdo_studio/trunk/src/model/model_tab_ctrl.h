@@ -25,7 +25,7 @@ class TabCtrl: public QTabWidget
 public:
 	typedef editor::Model context_type;
 
-	TabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView);
+	TabCtrl(QWidget* pParent, QWidget* pView);
 	virtual ~TabCtrl();
 
 	rdoModelObjects::RDOFileType indexToType(int index) const;
@@ -42,7 +42,7 @@ public:
 private:
 	editor::Edit::Group m_group;
 
-	void createPage(PTR(QWidget) pView, CREF(QString) name);
+	void createPage(QWidget* pView, const QString& name);
 };
 
 }}} // namespace rdo::gui::model

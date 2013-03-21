@@ -17,7 +17,7 @@
 #include "app/rdo_studio/src/dock/dock_debug.h"
 // --------------------------------------------------------------------------------
 
-DockDebug::DockDebug(PTR(QWidget) pParent)
+DockDebug::DockDebug(QWidget* pParent)
 	: DockFocusable("Вывод", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);

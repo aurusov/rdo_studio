@@ -21,7 +21,7 @@ class DockFind: public DockFocusable
 public:
 	typedef rdo::gui::editor::Find context_type;
 
-	DockFind(PTR(QWidget) pParent);
+	DockFind(QWidget* pParent);
 	virtual ~DockFind();
 
 	void appendString(

@@ -36,7 +36,7 @@ using namespace rdo::gui::tracer;
 
 Q_DECLARE_METATYPE(const ChartTreeItem*);
 
-ChartTree::ChartTree(PTR(QWidget) pParent)
+ChartTree::ChartTree(QWidget* pParent)
 	: parent_type(pParent)
 {
 	setColumnCount    (1);

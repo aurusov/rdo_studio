@@ -33,7 +33,7 @@ ModelStyle::Fold    ViewPreferences::null_foldstyle     = ModelStyle::F_NONE;
 QColor ViewPreferences::null_fg_color = QColor(0x00, 0x00, 0x00);
 QColor ViewPreferences::null_bg_color = QColor(0xFF, 0xFF, 0xFF);
 
-ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
+ViewPreferences::ViewPreferences(QWidget* pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, all_font_size(-1)
 	, all_font_name("")

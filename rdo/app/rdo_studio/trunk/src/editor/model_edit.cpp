@@ -26,7 +26,7 @@
 
 using namespace rdo::gui::editor;
 
-Model::Model(PTR(QWidget) pParent, PTR(QWidget) pView)
+Model::Model(QWidget* pParent, QWidget* pView)
 	: super              (pParent)
 	, m_pView            (pView  )
 	, m_pLog             (NULL   )

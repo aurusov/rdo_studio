@@ -37,7 +37,7 @@ class ChartTree
 Q_OBJECT
 
 public:
-	ChartTree(PTR(QWidget) pParent);
+	ChartTree(QWidget* pParent);
 	virtual ~ChartTree();
 
 	void setModelName   (CREF(QString)    modelName);

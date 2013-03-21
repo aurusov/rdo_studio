@@ -24,7 +24,7 @@ class Find
 	, public PopupMenu
 {
 public:
-	Find(PTR(QWidget) pParent);
+	Find(QWidget* pParent);
 	virtual ~Find();
 
 	void setEditorStyle(FindStyle* pStyle);

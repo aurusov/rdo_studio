@@ -26,7 +26,7 @@ using namespace rdo::gui::style;
 
 static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZАаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя";
 
-Find::Find(PTR(QWidget) pParent)
+Find::Find(QWidget* pParent)
 	: super(pParent)
 	, PopupMenu(pParent)
 {

@@ -40,7 +40,7 @@ class ViewPreferences
 {
 Q_OBJECT
 public:
-	explicit ViewPreferences(PTR(QWidget) pParent = NULL);
+	explicit ViewPreferences(QWidget* pParent = NULL);
 
 private slots:
 	void onOkButton();

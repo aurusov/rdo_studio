@@ -24,7 +24,7 @@
 using namespace rdo::simulation::report;
 using namespace rdo::gui::editor;
 
-Build::Build(PTR(QWidget) pParent)
+Build::Build(QWidget* pParent)
 	: super(pParent)
 	, PopupMenu(pParent)
 {}

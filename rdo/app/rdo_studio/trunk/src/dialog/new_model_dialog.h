@@ -25,7 +25,7 @@ class NewModelDialog
 Q_OBJECT
 
 public:
-	NewModelDialog(PTR(QWidget) pParent);
+	NewModelDialog(QWidget* pParent);
 	virtual ~NewModelDialog();
 
 	QString getModelName() const;

@@ -30,7 +30,7 @@ using namespace rdo::gui::frame;
 // --------------------------------------------------------------------------------
 // -------------------- Content
 // --------------------------------------------------------------------------------
-Content::Content(PTR(QWidget) pParent)
+Content::Content(QWidget* pParent)
 	: parent_type(pParent)
 	, m_size     (QSize (0, 0))
 	, m_pos      (QPoint(0, 0))
@@ -544,7 +544,7 @@ void Content::elementActive(PTR(rdo::animation::ActiveElement) pElement, REF(rdo
 // --------------------------------------------------------------------------------
 // -------------------- View
 // --------------------------------------------------------------------------------
-View::View(PTR(QWidget) pParent)
+View::View(QWidget* pParent)
 	: parent_type(pParent)
 {
 	setAutoFillBackground(false);

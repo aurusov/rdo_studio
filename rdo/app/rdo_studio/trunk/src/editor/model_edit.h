@@ -28,7 +28,7 @@ class Model: public Parser
 Q_OBJECT
 
 public:
-	Model(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);
+	Model(QWidget* pParent, QWidget* pView = NULL);
 	virtual ~Model();
 
 	void setEditorStyle(PTR(ModelStyle) pStyle);

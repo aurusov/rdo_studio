@@ -17,7 +17,7 @@
 #include "app/rdo_studio/src/dock/dock_results.h"
 // --------------------------------------------------------------------------------
 
-DockResults::DockResults(PTR(QWidget) pParent)
+DockResults::DockResults(QWidget* pParent)
 	: DockFocusable("Результаты", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);

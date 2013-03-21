@@ -18,7 +18,7 @@
 
 using namespace rdo::gui::editor;
 
-Results::Results(PTR(QWidget) pParent)
+Results::Results(QWidget* pParent)
 	: super(pParent)
 	, PopupMenu(pParent)
 {

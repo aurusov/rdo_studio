@@ -21,7 +21,7 @@
 #include "simulator/report/build_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
-DockBuild::DockBuild(PTR(QWidget) pParent)
+DockBuild::DockBuild(QWidget* pParent)
 	: DockFocusable("Компилятор", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);

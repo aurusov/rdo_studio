@@ -30,7 +30,7 @@ private:
 	FrameStyle* m_style;
 
 public:
-	explicit OptionsView(PTR(QWidget) pParent);
+	explicit OptionsView(QWidget* pParent);
 
 	void setStyle(PTR(FrameStyle) style);
 };

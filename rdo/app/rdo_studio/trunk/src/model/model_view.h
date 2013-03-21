@@ -28,7 +28,7 @@ class View: public QWidget
 Q_OBJECT
 
 public:
-	View(PTR(QWidget) pParent);
+	View(QWidget* pParent);
 	virtual ~View();
 
 	void setModel(PTR(Model) pModel);

@@ -25,7 +25,7 @@ class Build
 	, public PopupMenu
 {
 public:
-	Build(PTR(QWidget) pParent);
+	Build(QWidget* pParent);
 	virtual ~Build();
 
 	virtual void showFirstError();

@@ -23,7 +23,7 @@ class ActionActivatorWidget
 	, public ActionActivator
 {
 protected:
-	ActionActivatorWidget(PTR(QWidget) pParent);
+	ActionActivatorWidget(QWidget* pParent);
 	virtual ~ActionActivatorWidget();
 
 	virtual void focusInEvent (QFocusEvent* pEvent);

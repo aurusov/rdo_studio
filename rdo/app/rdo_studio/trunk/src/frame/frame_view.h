@@ -36,7 +36,7 @@ private:
 	typedef  QWidget  parent_type;
 
 public:
-	Content(PTR(QWidget) pParent);
+	Content(QWidget* pParent);
 	virtual ~Content();
 
 	void update    (CPTRC(rdo::animation::Frame)         pFrame,
@@ -94,7 +94,7 @@ private:
 	typedef  QScrollArea  parent_type;
 
 public:
-	View(PTR(QWidget) pParent);
+	View(QWidget* pParent);
 	virtual ~View();
 
 	PTR(Content) getContent();
@@ -109,7 +109,7 @@ public:
 	              REF(rdo::gui::animation::AreaList) areaList);
 
 private:
-	PTR(QWidget) m_pContent;
+	QWidget* m_pContent;
 
 	virtual rbool event(QEvent* pEvent);
 };

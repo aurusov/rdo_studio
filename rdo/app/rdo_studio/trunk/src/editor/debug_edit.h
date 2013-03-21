@@ -23,7 +23,7 @@ class Debug
 	, public PopupMenu
 {
 public:
-	Debug(PTR(QWidget) pParent);
+	Debug(QWidget* pParent);
 	virtual ~Debug();
 
 	void appendLine(CREF(QString) str);

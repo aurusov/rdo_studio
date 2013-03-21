@@ -22,7 +22,7 @@
 
 using namespace rdo::gui::editor;
 
-Debug::Debug(PTR(QWidget) pParent)
+Debug::Debug(QWidget* pParent)
 	: super(pParent)
 	, PopupMenu(pParent)
 {

@@ -175,7 +175,7 @@ private slots:
 class ChartViewMainWnd: public QAbstractScrollArea
 {
 public:
-	ChartViewMainWnd(PTR(QWidget) pParent, PTR(ChartDoc) pDocument, rbool preview);
+	ChartViewMainWnd(QWidget* pParent, ChartDoc* pDocument, rbool preview);
 	virtual ~ChartViewMainWnd();
 
 	ChartView& view();

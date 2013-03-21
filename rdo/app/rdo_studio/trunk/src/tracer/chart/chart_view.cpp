@@ -1084,7 +1084,7 @@ void ChartView::onUpdateActions(rbool activated)
 // --------------------------------------------------------------------------------
 // -------------------- ChartViewMainWnd
 // --------------------------------------------------------------------------------
-ChartViewMainWnd::ChartViewMainWnd(PTR(QWidget) pParent, PTR(ChartDoc) pDocument, rbool preview)
+ChartViewMainWnd::ChartViewMainWnd(QWidget* pParent, ChartDoc* pDocument, rbool preview)
 	: super(pParent)
 {
 	setMinimumSize(400, 200);

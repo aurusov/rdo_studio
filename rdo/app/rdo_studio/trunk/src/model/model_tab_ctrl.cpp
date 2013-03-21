@@ -19,7 +19,7 @@
 
 using namespace rdo::gui::model;
 
-TabCtrl::TabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView)
+TabCtrl::TabCtrl(QWidget* pParent, QWidget* pView)
 	: QTabWidget(pParent)
 {
 	createPage(pView, "RTP");
@@ -39,7 +39,7 @@ TabCtrl::TabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView)
 TabCtrl::~TabCtrl()
 {}
 
-void TabCtrl::createPage(PTR(QWidget) pView, CREF(QString) name)
+void TabCtrl::createPage(QWidget* pView, const QString& name)
 {
 	PTR(context_type) pPage = new context_type(this, pView);
 

@@ -22,7 +22,7 @@ using namespace rdo::gui::tracer;
 // --------------------------------------------------------------------------------
 // -------------------- LogMainWnd
 // --------------------------------------------------------------------------------
-LogMainWnd::LogMainWnd(PTR(QWidget) pParent)
+LogMainWnd::LogMainWnd(QWidget* pParent)
 	: QAbstractScrollArea(pParent)
 {
 	PTR(LogView) pLog = new LogView(this, &g_pApp->getStyle()->style_trace);
