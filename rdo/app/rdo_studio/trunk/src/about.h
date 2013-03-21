@@ -23,7 +23,7 @@ class About: public QDialog, private Ui::AboutDialog
 Q_OBJECT
 
 public:
-	explicit About(PTR(QWidget) pParent = NULL);
+	explicit About(QWidget* pParent = NULL);
 };
 
 #endif // _RDO_STUDIO_ABOUT_H_
