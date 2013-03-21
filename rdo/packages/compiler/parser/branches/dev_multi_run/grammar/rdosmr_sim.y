@@ -317,7 +317,7 @@ smr_launch_line_event_planning
 			ASSERT(pBaseOperation);
 
 			rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
-			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
 			ASSERT(pEventPlan);
 			pEvent->setParamList(pParamList);
 			pEventPlan->setEvent(pBaseOperation);
@@ -335,11 +335,11 @@ smr_launch_line_show_mode
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setShowMode((rdo::service::simulation::ShowMode)$4);
+		pSMR->setShowMode((rdo::service::simulation::ShowMode)$3);
 	}
 	| RDO_Show_mode '=' error
 	{
-		PARSER->error().error(@3, @4, "Ожидается режим анимации");
+		PARSER->error().error(@2, @3, "Ожидается режим анимации");
 	}
 	| RDO_Show_mode error
 	{
@@ -354,12 +354,12 @@ smr_launch_line_frame_number
 		ASSERT(pSMR);
 		if(pSMR->Check() )
 		{
-			pSMR->setFrameNumber(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+			pSMR->setFrameNumber(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 		}
 	}
 	| RDO_Frame_number '=' error
 	{
-		PARSER->error().error(@3, @4, "Ожидается начальный номер кадра");
+		PARSER->error().error(@2, @3, "Ожидается начальный номер кадра");
 	}
 	| RDO_Frame_number error
 	{
@@ -372,21 +372,21 @@ smr_launch_line_show_rate
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setShowRate(PARSER->stack().pop<RDOValue>($4)->value().getDouble(), @4);
+		pSMR->setShowRate(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
 	}
 	| RDO_Show_rate '=' RDO_INT_CONST
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setShowRate(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+		pSMR->setShowRate(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 	}
 	| RDO_Show_rate '=' error
 	{
-		PARSER->error().error(@3, @4, "Ожидается масштабный коэффициент");
+		PARSER->error().error(@2, @3, "Ожидается масштабный коэффициент");
 	}
 	| RDO_Show_rate error
 	{
-		PARSER->error().error(@2, "Ожидается '='");
+		PARSER->error().error(@1, "Ожидается '='");
 	}
 	;
 
@@ -397,7 +397,7 @@ smr_launch_line_run_startTime
 		ASSERT(pSMR);
 		if(pSMR->Check() )
 		{
-			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($4)->value().getDouble(), @4);
+			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
 		}
 	}
 	| RDO_Run_StartTime '=' RDO_INT_CONST
@@ -406,16 +406,16 @@ smr_launch_line_run_startTime
 		ASSERT(pSMR);
 		if(pSMR->Check() )
 		{
-			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 		}
 	}
 	| RDO_Run_StartTime '=' error
 	{
-		PARSER->error().error(@3, @4, "Ожидается начальное модельное время");
+		PARSER->error().error(@2, @3, "Ожидается начальное модельное время");
 	}
 	| RDO_Run_StartTime error
 	{
-		PARSER->error().error(@2, "Ожидается '='");
+		PARSER->error().error(@1, "Ожидается '='");
 	}
 	;
 
@@ -424,7 +424,7 @@ smr_launch_line_trace_startTime
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($4)->value().getDouble(), @4);
+		pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
 	}
 	| RDO_Trace_StartTime '=' RDO_INT_CONST
 	{
@@ -432,16 +432,16 @@ smr_launch_line_trace_startTime
 		ASSERT(pSMR);
 		if(pSMR->Check() )
 		{
-			pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+			pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 		}
 	}
 	| RDO_Trace_StartTime '=' error
 	{
-		PARSER->error().error(@3, @4, "Ожидается начальное время трассировки");
+		PARSER->error().error(@2, @3, "Ожидается начальное время трассировки");
 	}
 	| RDO_Trace_StartTime error
 	{
-		PARSER->error().error(@2, "Ожидается '='");
+		PARSER->error().error(@1, "Ожидается '='");
 	}
 	;
 
@@ -452,7 +452,7 @@ smr_launch_line_trace_endTime
 		ASSERT(pSMR);
 		if(pSMR->Check() )
 		{
-			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($4)->value().getDouble(), @4);
+			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
 		}
 	}
 	| RDO_Trace_EndTime '=' RDO_INT_CONST
@@ -461,16 +461,16 @@ smr_launch_line_trace_endTime
 		ASSERT(pSMR);
 		if(pSMR->Check() )
 		{
-			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 		}
 	}
 	| RDO_Trace_EndTime '=' error
 	{
-		PARSER->error().error(@3, @4, "Ожидается конечное время трассировки");
+		PARSER->error().error(@2, @3, "Ожидается конечное время трассировки");
 	}
 	| RDO_Trace_EndTime error
 	{
-		PARSER->error().error(@2, "Ожидается '='");
+		PARSER->error().error(@1, "Ожидается '='");
 	}
 	;
 
@@ -481,14 +481,14 @@ smr_launch_line_terminate_if
 		ASSERT(pSMR);
 		if(pSMR->Check() )
 		{
-			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($3);
+			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
 			ASSERT(pLogic);
 			PARSER->getSMR()->setTerminateIf(pLogic);
 		}
 	}
 	| RDO_Terminate_if error
 	{
-		PARSER->error().error(@2, @3, "Ошибка логического выражения в терминальном условии");
+		PARSER->error().error(@1, @2, "Ошибка логического выражения в терминальном условии");
 	}
 	;
 
@@ -499,18 +499,18 @@ smr_launch_line_break_point
 		ASSERT(pSMR);
 		if(pSMR->Check() )
 		{
-			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($4);
+			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($3);
 			ASSERT(pLogic);
-			pSMR->insertBreakPoint(PARSER->stack().pop<RDOValue>($3)->src_info(), pLogic);
+			pSMR->insertBreakPoint(PARSER->stack().pop<RDOValue>($2)->src_info(), pLogic);
 		}
 	}
 	| RDO_Break_point RDO_IDENTIF error
 	{
-		PARSER->error().error(@4, "Ошибка логического выражения в точке останова");
+		PARSER->error().error(@3, "Ошибка логического выражения в точке останова");
 	}
 	| RDO_Break_point error
 	{
-		PARSER->error().error(@2, @3, "Ожидается имя точки останова");
+		PARSER->error().error(@1, @2, "Ожидается имя точки останова");
 	}
 	;
 
@@ -521,18 +521,18 @@ smr_launch_line_arithm
 		ASSERT(pSMR);
 		if(pSMR->Check() )
 		{
-			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($4);
+			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 			ASSERT(pArithm);
-			PARSER->getSMR()->setConstValue(PARSER->stack().pop<RDOValue>($2)->src_info(), pArithm);
+			PARSER->getSMR()->setConstValue(PARSER->stack().pop<RDOValue>($1)->src_info(), pArithm);
 		}
 	}
 	| RDO_IDENTIF '=' error
 	{
-		PARSER->error().error(@3, @4, "Ошибка в арифметическом выражении");
+		PARSER->error().error(@2, @3, "Ошибка в арифметическом выражении");
 	}
 	| RDO_IDENTIF error
 	{
-		PARSER->error().error(@2, "Ожидается '='");
+		PARSER->error().error(@1, "Ожидается '='");
 	}
 	| RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 	{
@@ -540,37 +540,37 @@ smr_launch_line_arithm
 		ASSERT(pSMR);
 		if(pSMR->Check() )
 		{
-			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($6);
+			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
 			ASSERT(pArithm);
-			PARSER->getSMR()->setResParValue(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOValue>($4)->src_info(), pArithm);
+			PARSER->getSMR()->setResParValue(PARSER->stack().pop<RDOValue>($1)->src_info(), PARSER->stack().pop<RDOValue>($3)->src_info(), pArithm);
 		}
 	}
 	| RDO_IDENTIF '.' RDO_IDENTIF '=' error
 	{
-		PARSER->error().error(@5, @6, "Ошибка в арифметическом выражении");
+		PARSER->error().error(@4, @5, "Ошибка в арифметическом выражении");
 	}
 	| RDO_IDENTIF '.' RDO_IDENTIF error
 	{
-		PARSER->error().error(@4, "Ожидается '='");
+		PARSER->error().error(@3, "Ожидается '='");
 	}
 	| RDO_IDENTIF '.' error
 	{
-		tstring name = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		tstring name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		LPRDORSSResource pResource = PARSER->findRSSResource(name);
 		if (pResource)
 		{
-			PARSER->error().error(@3, @4, "Ожидается параметр");
+			PARSER->error().error(@2, @3, "Ожидается параметр");
 		}
 		else
 		{
 			LPRDOFUNSequence pSequence = PARSER->findFUNSequence(name);
 			if (pSequence)
 			{
-				PARSER->error().error(@3, @4, "Ожидается ключевое слово Seed");
+				PARSER->error().error(@2, @3, "Ожидается ключевое слово Seed");
 			}
 			else
 			{
-				PARSER->error().error(@2, "Неизвестный параметр или последовательность");
+				PARSER->error().error(@1, "Неизвестный параметр или последовательность");
 			}
 		}
 	}
@@ -583,20 +583,20 @@ smr_launch_line_seed
 		ASSERT(pSMR);
 		if(pSMR->Check() )
 		{
-			pSMR->setSeed(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOValue>($6)->value().getInt());
+			pSMR->setSeed(PARSER->stack().pop<RDOValue>($1)->src_info(), PARSER->stack().pop<RDOValue>($5)->value().getInt());
 		}
 	}
 	| RDO_IDENTIF '.' RDO_Seed '=' error
 	{
-		PARSER->error().error(@5, @6, "Ожидается база генератора");
+		PARSER->error().error(@4, @5, "Ожидается база генератора");
 	}
 	| RDO_IDENTIF '.' RDO_Seed error
 	{
-		PARSER->error().error(@4, "Ожидается '='");
+		PARSER->error().error(@3, "Ожидается '='");
 	}
 	| error
 	{
-		PARSER->error().error(@2, "Неизвестная ошибка");
+		PARSER->error().error(@1, "Неизвестная ошибка");
 	}
 	;
 
