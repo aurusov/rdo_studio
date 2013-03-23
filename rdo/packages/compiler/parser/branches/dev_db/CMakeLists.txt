@@ -133,7 +133,6 @@ SET(INLITE_FILES
     rdoparser_lexer.inl
     rdopatpreparse.inl
     rdo_value.inl
-    rdortp.inl
     # context path
     context/context.inl
     # type path
