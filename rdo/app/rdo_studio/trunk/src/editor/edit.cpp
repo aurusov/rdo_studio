@@ -19,6 +19,7 @@
 #include <QClipboard>
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdolocale.h"
 #include "app/rdo_studio/src/editor/edit.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"
@@ -330,7 +331,7 @@ tstring Edit::getSelection() const
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
 	sendEditor(SCI_GETSELTEXT, 0, (long)selection);
-	tstring str(selection);
+	tstring str = rdo::locale::convertFromCLocale(selection);
 	delete[] selection;
 	return str;
 }
