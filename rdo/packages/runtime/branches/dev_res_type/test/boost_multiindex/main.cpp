@@ -10,6 +10,7 @@
 #include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/random_access_index.hpp>
+#include <boost/multi_index/sequenced_index.hpp>
 
 #include <boost/shared_ptr.hpp>
 
@@ -20,30 +21,65 @@ using boost::multi_index::member;
 
 struct employee
 {
-  int  id;
-  boost::shared_ptr<int> param;
+  int         id;
+  std::string name;
+  int         age;
 
-  employee(int id, boost::shared_ptr<int> i):id(id),param(i){}
+  employee(int id_,std::string name_,int age_):id(id_),name(name_),age(age_){}
 
-  bool operator<(const employee& e)const{return id<e.id;}
-
-employee& operator=(const employee& right) {
-  if (this == &right) {
-    return *this;
+  friend std::ostream& operator<<(std::ostream& os,const employee& e)
+  {
+    os<<e.id<<" "<<e.name<<" "<<e.age<<std::endl;
+    return os;
   }
-  param = right.param;
-  return *this;
-}
-
 };
 
+/* tags for accessing the corresponding indices of employee_set */
+
+struct id{};
+struct name{};
+struct age{};
+
+/* see Compiler specifics: Use of member_offset for info on
+ * BOOST_MULTI_INDEX_MEMBER
+ */
+
+/* Define a multi_index_container of employees with following indices:
+ *   - a unique index sorted by employee::int,
+ *   - a non-unique index sorted by employee::name,
+ *   - a non-unique index sorted by employee::age.
+ */
+
 typedef multi_index_container<
-	employee,
-	indexed_by<
-		random_access<>,
-		ordered_unique<member<employee,int,&employee::id>>
-	>
-	> employee_set;
+  employee,
+  indexed_by<
+    random_access<>, 
+    ordered_unique<
+      tag<id>,  BOOST_MULTI_INDEX_MEMBER(employee,int,id)>,
+    ordered_non_unique<
+      tag<name>,BOOST_MULTI_INDEX_MEMBER(employee,std::string,name)>,
+	  sequenced<>,
+    ordered_non_unique<
+      tag<age>, BOOST_MULTI_INDEX_MEMBER(employee,int,age)> >
+> employee_set;
+
+template<typename Tag,typename MultiIndexContainer>
+void print_out_by(
+ const MultiIndexContainer& s,
+ Tag* =0 /* fixes a MSVC++ 6.0 bug with implicit template function parms */
+)
+{
+  /* obtain a reference to the index tagged by Tag */
+
+  const typename boost::multi_index::index<MultiIndexContainer,Tag>::type& i=
+    get<Tag>(s);
+
+  typedef typename MultiIndexContainer::value_type value_type;
+
+  /* dump the elements of the index to cout */
+
+  std::copy(i.begin(),i.end(),std::ostream_iterator<value_type>(std::cout));
+}
 
 
 class {
@@ -56,30 +92,47 @@ BOOST_AUTO_TEST_SUITE(multiindex_test)
 
 BOOST_AUTO_TEST_CASE(always_true)
 {
-	employee_set es;
+	  employee_set es;
 
-	boost::shared_ptr<int> i1(new int(5));
-	boost::shared_ptr<int> i2(new int(6));
+  es.push_back(employee(0,"Joe",31));
+  es.push_back(employee(2,"John",40));
 
-	es.push_back(employee(3, i1));
-	es.push_back(employee(1, i2));
+  /* next insertion will fail, as there is an employee with
+   * the same ID
+   */
 
-	for (int i=0; i<es.size(); i++)
+  es.push_back(employee(2,"Aristotle",2387));
+
+  es.push_back(employee(3,"Albert",20));
+  es.push_back(employee(1,"Robert",27));
+  es.push_back(employee(4,"John",57));
+
+  /* list the employees sorted by ID, name and age */
+
+  std::cout<<"by ID"<<std::endl;
+  print_out_by<id>(es);
+  std::cout<<std::endl;
+
+  std::cout<<"by name"<<std::endl;
+  print_out_by<name>(es);
+  std::cout<<std::endl;
+
+  std::cout<<"by age"<<std::endl;
+  print_out_by<age>(es);
+  std::cout<<std::endl;
+
+//  boost::multi_index::index<employee_set,id>::type& oo = get<id>(es);
+
+//  boost::multi_index::index<employee_set,id>::type::iterator t = oo.begin();
+
+  	for (int i=0; i<es.size(); i++)
 	{
-		std::cout << es[i].id << "	" << es[i].param << std::endl;
+		std::cout << es[i].id << "	" << es[i].name << std::endl;
+//		t++;
 	}
 
-	std::cout << std::endl;
 
-	i2 = nullPtr;
-	es.push_back(employee(2, i2));
-	
-	for (int i=0; i<es.size(); i++)
-	{
-		std::cout << es[i].id << "	" << es[i].param << std::endl;
-	}
-
-	BOOST_CHECK(es.size()==3);
+  BOOST_CHECK(true);
 
 }
 
