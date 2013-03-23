@@ -369,9 +369,9 @@ void ChartView::wheelEvent(QWheelEvent*  pEvent)
 	getHorzScrollBar().setValue(getHorzScrollBar().value() - m_SM_X.pageSize * (pEvent->delta() > 0 ? 1 : -1));
 }
 
-void ChartView::mousePressEvent(QMouseEvent* pEvent)
+void ChartView::contextMenuEvent(QContextMenuEvent* pEvent)
 {
-	if (pEvent->button() == Qt::RightButton && !m_previewMode)
+	if (!m_previewMode)
 	{
 		m_pPopupMenu->exec(pEvent->globalPos());
 	}

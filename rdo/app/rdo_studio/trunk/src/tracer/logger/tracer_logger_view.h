@@ -159,11 +159,12 @@ private:
 	void        onFindDlgFind       (CREF(FindDialog::Settings) settings);
 	void        onFindDlgClose      ();
 
-	virtual void resizeEvent    (QResizeEvent* pEvent);
-	virtual void paintEvent     (QPaintEvent*  pEvent);
-	virtual void keyPressEvent  (QKeyEvent*    pEvent);
-	virtual void wheelEvent     (QWheelEvent*  pEvent);
-	virtual void mousePressEvent(QMouseEvent*  pEvent);
+	virtual void resizeEvent     (QResizeEvent* pEvent);
+	virtual void paintEvent      (QPaintEvent*  pEvent);
+	virtual void keyPressEvent   (QKeyEvent*    pEvent);
+	virtual void wheelEvent      (QWheelEvent*  pEvent);
+	virtual void mousePressEvent (QMouseEvent*  pEvent);
+	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
 
 	virtual void onUpdateActions(rbool activated);
 

@@ -999,10 +999,11 @@ void LogView::mousePressEvent(QMouseEvent* pEvent)
 	{
 		selectLine((std::min)(m_SM_Y.position + pEvent->pos().y() / m_lineHeight, m_strings.count() - 1));
 	}
-	else if (pEvent->button() == Qt::RightButton)
-	{
-		m_pPopupMenu->exec(pEvent->globalPos());
-	}
+}
+
+void LogView::contextMenuEvent(QContextMenuEvent* pEvent)
+{
+	m_pPopupMenu->exec(pEvent->globalPos());
 }
 
 void LogView::onUpdateActions(rbool activated)

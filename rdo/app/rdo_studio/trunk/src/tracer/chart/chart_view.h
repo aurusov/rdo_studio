@@ -142,14 +142,14 @@ private:
 
 	ChartDoc* m_pDocument;
 
-	virtual void resizeEvent    (QResizeEvent*    pEvent);
-	virtual void paintEvent     (QPaintEvent*     pEvent);
-	virtual void mousePressEvent(QMouseEvent*     pEvent);
-	virtual void keyPressEvent  (QKeyEvent*       pEvent);
-	virtual void wheelEvent     (QWheelEvent*     pEvent);
-	virtual void dragEnterEvent (QDragEnterEvent* pEvent);
-	virtual void dropEvent      (QDropEvent*      pEvent);
-	virtual void dragLeaveEvent (QDragLeaveEvent * pEvent);
+	virtual void resizeEvent     (QResizeEvent*    pEvent);
+	virtual void paintEvent      (QPaintEvent*     pEvent);
+	virtual void contextMenuEvent(QContextMenuEvent*     pEvent);
+	virtual void keyPressEvent   (QKeyEvent*       pEvent);
+	virtual void wheelEvent      (QWheelEvent*     pEvent);
+	virtual void dragEnterEvent  (QDragEnterEvent* pEvent);
+	virtual void dropEvent       (QDropEvent*      pEvent);
+	virtual void dragLeaveEvent  (QDragLeaveEvent * pEvent);
 
 	virtual void onUpdateActions(rbool activated);
 

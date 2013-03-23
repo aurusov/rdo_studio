@@ -329,8 +329,9 @@ void ChartTree::mousePressEvent(QMouseEvent* pEvent)
 		}
 		parent_type::mousePressEvent(pEvent);
 	}
-	else if (pEvent->button() == Qt::RightButton)
-	{
-		m_pPopupMenu->exec(pEvent->globalPos());
-	}
+}
+
+void ChartTree::contextMenuEvent(QContextMenuEvent* pEvent)
+{
+	m_pPopupMenu->exec(pEvent->globalPos());
 }

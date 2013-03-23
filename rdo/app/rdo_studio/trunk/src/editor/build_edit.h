@@ -37,8 +37,8 @@ private:
 	typedef  Log  super;
 	typedef  rdo::simulation::report::FileMessage RDOSyntaxMessage;
 
-	virtual void mousePressEvent(QMouseEvent* pEvent);
-	virtual void onHelpContext  ();
+	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
+	virtual void onHelpContext   ();
 };
 
 }}} // namespace rdo::gui::editor

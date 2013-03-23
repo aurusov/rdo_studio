@@ -93,14 +93,7 @@ void Find::onHelpContext()
 	g_pApp->callQtAssistant(ba);
 }
 
-void Find::mousePressEvent(QMouseEvent* pEvent)
+void Find::contextMenuEvent(QContextMenuEvent* pEvent)
 {
-	if (pEvent->button() == Qt::LeftButton)
-	{
-		super::mousePressEvent(pEvent);
-	}
-	else if (pEvent->button() == Qt::RightButton)
-	{
-		m_pPopupMenu->exec(pEvent->globalPos());
-	}
+	m_pPopupMenu->exec(pEvent->globalPos());
 }

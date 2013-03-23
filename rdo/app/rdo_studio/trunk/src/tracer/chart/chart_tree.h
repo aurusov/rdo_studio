@@ -80,10 +80,11 @@ private:
 	LPChartTreeItem      getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
 	PTR(QTreeWidgetItem) getSelected        () const;
 
-	virtual void focusInEvent   (QFocusEvent* pEvent);
-	virtual void focusOutEvent  (QFocusEvent* pEvent);
-	virtual void mousePressEvent(QMouseEvent* pEvent);
-	virtual void onUpdateActions(rbool activated);
+	virtual void focusInEvent    (QFocusEvent* pEvent);
+	virtual void focusOutEvent   (QFocusEvent* pEvent);
+	virtual void mousePressEvent (QMouseEvent* pEvent);
+	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
+	virtual void onUpdateActions (rbool activated);
 
 	void doDragDrop(CREF(LPSerie) pSerie);
 

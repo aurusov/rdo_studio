@@ -34,7 +34,7 @@ public:
 private:
 	typedef  Log  super;
 
-	virtual void mousePressEvent(QMouseEvent* pEvent);
+	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
 	virtual void onHelpContext();
 };
 
