@@ -3,7 +3,7 @@
   \file      rdortp.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   ����� ������� (dluschan@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      11.06.2006
   \brief     Типы ресурсов
   \indent    4T
@@ -65,7 +65,7 @@ CREF(rdo::runtime::LPIResourceType) RDORTPResType::getRuntimeResType() const
 
 void RDORTPResType::setType(TypeRDOResType type)
 {
-	//! \todo ������� ������ ������ ASSERT()
+	//! \todo вывести ошибку вместо ASSERT()
 	ASSERT(!(m_type == procRes && type == procTran));
 	ASSERT(!(m_type == procTran && type == procRes));
 	m_type = type;
