@@ -236,7 +236,6 @@ void InitSructDB::generateCreateDBQuery()
 		"CREATE TABLE rss("
 		"id      integer NOT NULL,"
 		"rtp_id  integer NOT NULL,"
-		"name    VARCHAR(40) NOT NULL,"
 		"trace   VARCHAR(10) NOT NULL,"
 		"PRIMARY KEY (id),"
 		"FOREIGN KEY (rtp_id) REFERENCES rtp(id)"

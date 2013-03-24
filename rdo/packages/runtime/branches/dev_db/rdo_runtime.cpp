@@ -282,7 +282,7 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 #endif
 	m_resourceListByTime.push_back(pResource);
 
-	m_db->insertRow("rss",QString("%1,%2,'name','trace'")//костыль
+	m_db->insertRow("rss",QString("%1,%2,'trace'")//костыль
 		.arg(pResource->getTraceID())
 		.arg(boost::lexical_cast<int>(pResource->getTypeId())));
 	int rss_id = m_db->queryExecIndex("rss");
