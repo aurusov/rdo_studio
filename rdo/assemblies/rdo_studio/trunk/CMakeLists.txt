@@ -103,6 +103,7 @@ SET(COMMON_FILES
     ${DOC_DIRECTORY}/configuring.environment.opensuse.txt
     ${DOC_DIRECTORY}/install.cmake.txt
     ${DOC_DIRECTORY}/install.graphviz.txt
+    ${DOC_DIRECTORY}/install.qt.linux.txt
     ${DOC_DIRECTORY}/install.qt.from.installer.txt
     ${DOC_DIRECTORY}/make.project.txt
     ${DOC_DIRECTORY}/system.test.txt
