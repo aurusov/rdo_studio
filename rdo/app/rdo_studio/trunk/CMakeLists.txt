@@ -184,7 +184,7 @@ SET(SCINTILLA_FILES
     res/scintilla/ac_function.xpm
     res/scintilla/ac_trace.xpm
     )
-    
+
 SET(QT_FORMS
     res/ui/about.ui
     res/ui/chart_preferences.ui
@@ -197,12 +197,12 @@ SET(QT_FORMS
     res/ui/new_model_dialog.ui
     res/ui/view_preferenses.ui
     )
-    
+
 SET(WIN32_RES
     res/win32/rdo_studio.ico
     res/win32/rdo_studio.rc
     )
-    
+
 SET(IMAGE_FILES
     res/images/about.png
     res/images/dock_build.png
@@ -288,8 +288,15 @@ SET(IMAGE_FILES
     res/images/view_zoom_reset_d.png
     )
 
-QT5_WRAP_CPP(GENERATED_MOC_SOURCES ${HEADER_QT_FILES})
-QT5_WRAP_UI (GENERATED_QT_FORMS_HEADERS ${QT_FORMS})
+SET(QT_MOC_FLAGS)
+QT5_GET_MOC_FLAGS(QT_MOC_FLAGS)
+
+SET(GENERATED_MOC_SOURCES)
+FOREACH(HEADER_QT_FILES_IT ${HEADER_QT_FILES})
+    QT5_WRAP_CPP(GENERATED_MOC_SOURCES_IT ${HEADER_QT_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/stdpch.h" "-futils/warning_disable.h" "-fapp/rdo_studio/${HEADER_QT_FILES_IT}")
+    SET(GENERATED_MOC_SOURCES ${GENERATED_MOC_SOURCES} ${GENERATED_MOC_SOURCES_IT})
+ENDFOREACH()
+QT5_WRAP_UI(GENERATED_QT_FORMS_HEADERS ${QT_FORMS})
 
 ADD_EXECUTABLE(rdo_studio
     ${HEADER_FILES}
@@ -314,6 +321,7 @@ ADD_DEPENDENCIES(rdo_studio rdo_simulator)
 ADD_DEPENDENCIES(rdo_studio rdo_simulator_report)
 ADD_DEPENDENCIES(rdo_studio rdo_ui_abstract)
 ADD_DEPENDENCIES(rdo_studio rdo_ui_qt)
+ADD_DEPENDENCIES(rdo_studio scintilla)
 
 TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Widgets_LIBRARIES})
 TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Core_LIBRARIES})
@@ -329,6 +337,7 @@ TARGET_LINK_LIBRARIES(rdo_studio rdo_simulator)
 TARGET_LINK_LIBRARIES(rdo_studio rdo_simulator_report)
 TARGET_LINK_LIBRARIES(rdo_studio rdo_ui_abstract)
 TARGET_LINK_LIBRARIES(rdo_studio rdo_ui_qt)
+TARGET_LINK_LIBRARIES(rdo_studio scintilla)
 
 IF(MSVC) # lotions for windows #
 
@@ -359,7 +368,7 @@ SOURCE_GROUP(".image" FILES
 SOURCE_GROUP(".doc" FILES
     ${COMMON_FILES}
     )
-    
+
 SOURCE_GROUP(".script" FILES
     ${SCRIPT_FILES}
     )
