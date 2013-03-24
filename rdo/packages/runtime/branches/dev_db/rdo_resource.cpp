@@ -9,9 +9,9 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
+#include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/pch/stdpch.h"
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
