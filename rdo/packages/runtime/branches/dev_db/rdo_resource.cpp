@@ -276,9 +276,11 @@ CREF(RDOValue) RDOResource::getParam(ruint index)
 
 void RDOResource::serializeInDB() const
 {
-	m_db->insertRow("rss",QString("%1,%2,'trace'")//костыль
+	bool a = traceable();
+	m_db->insertRow("rss",QString("%1,%2,%3")
 		.arg(getTraceID())
-		.arg(boost::lexical_cast<int>(getTypeId())));
+		.arg(boost::lexical_cast<int>(getTypeId()))
+		.arg(a ? "true" : "false"));
 	int rss_id = m_db->queryExecIndex("rss");
 	int param_id = -1;
 
