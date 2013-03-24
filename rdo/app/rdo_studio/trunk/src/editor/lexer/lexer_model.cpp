@@ -42,8 +42,6 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 
 	StyleContext sc(startPos, length, initStyle, styler);
 
-	std::locale locale = rdo::locale::get().model();
-
 	bool flag = sc.More();
 	for (; flag; sc.Forward())
 	{
@@ -54,7 +52,7 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 		}
 		else if (sc.state == SCE_RDO_IDENTIFIER)
 		{
-			if (!isIdentifier(sc.ch, locale))
+			if (!isIdentifier(sc.ch))
 			{
 				char s[100];
 				sc.GetCurrent(s, sizeof(s));
@@ -79,7 +77,7 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 		}
 		else if (sc.state == SCE_RDO_NUMBER)
 		{
-			if (!std::isdigit((ruint)sc.ch, locale) && sc.ch != '.' && !(sc.ch == 'e' || sc.ch == 'E') && !((sc.ch == '+' || sc.ch == '-') && (sc.chPrev == 'e' || sc.chPrev == 'E')))
+			if (!isdigit(sc.ch) && sc.ch != '.' && !(sc.ch == 'e' || sc.ch == 'E') && !((sc.ch == '+' || sc.ch == '-') && (sc.chPrev == 'e' || sc.chPrev == 'E')))
 			{
 				sc.SetState(SCE_RDO_DEFAULT);
 			}
@@ -122,7 +120,7 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 			{
 				sc.SetState(SCE_RDO_COMMENT_LINE);
 			}
-			else if (std::isdigit((ruint)sc.ch, locale) || ((sc.ch == '-' || sc.ch == '+') && std::isdigit((ruint)sc.chNext, locale)))
+			else if (isdigit(sc.ch) || ((sc.ch == '-' || sc.ch == '+') && isdigit(sc.chNext)))
 			{
 				sc.SetState(SCE_RDO_NUMBER);
 			}
@@ -130,7 +128,7 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 			{
 				sc.SetState(SCE_RDO_OPERATOR);
 			}
-			else if (isIdentifier(sc.ch, locale))
+			else if (isIdentifier(sc.ch))
 				sc.SetState(SCE_RDO_IDENTIFIER);
 		}
 
@@ -223,7 +221,7 @@ bool isOperator(int ch)
 		ch == '{' || ch == '}' || ch == '.';
 }
 
-bool isIdentifier(int ch, const std::locale&)
+bool isIdentifier(int ch)
 {
 	return 
 		iswalnum(ch) ||

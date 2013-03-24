@@ -467,8 +467,7 @@ void Model::onEditCompleteWord()
 
 	int startPos = currentPos;
 
-	std::locale locale = rdo::locale::get().model();
-	while ((startPos > 0) && rdo::gui::lexer::isIdentifier(currentLine[startPos - 1], locale))
+    while ((startPos > 0) && rdo::gui::lexer::isIdentifier(currentLine[startPos - 1]))
 	{
 		startPos--;
 	}

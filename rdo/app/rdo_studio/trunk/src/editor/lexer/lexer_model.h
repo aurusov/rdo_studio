@@ -20,7 +20,7 @@
 namespace rdo { namespace gui { namespace lexer {
 
 bool isOperator  (int ch);
-bool isIdentifier(int ch, const std::locale& locale);
+bool isIdentifier(int ch);
 
 }}} // namespace rdo::gui::lexer
 
