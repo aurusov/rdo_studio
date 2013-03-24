@@ -50,7 +50,6 @@ locale::locale()
 	m_generator.locale_cache_enabled(true);
 	system();
 	utf8  ();
-	model ();
 }
 
 std::locale locale::generate(const std::string& name)
@@ -66,15 +65,6 @@ std::locale locale::system()
 std::locale locale::utf8()
 {
 	return generate("ru_RU.UTF-8");
-}
-
-std::locale locale::model()
-{
-#ifdef COMPILER_VISUAL_STUDIO
-	return m_modelLocale;
-#else
-	return generate("ru_RU.CP1251");
-#endif
 }
 
 std::string locale::convert(const std::string& txt, const std::locale& to, const std::locale& from)
