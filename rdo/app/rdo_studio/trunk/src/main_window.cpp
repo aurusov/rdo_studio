@@ -23,12 +23,15 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/about.h"
 #include "app/rdo_studio/src/view_preferences.h"
+#include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
+#include "app/rdo_studio/src/editor/lexer/lexer_find.h"
+#include "app/rdo_studio/src/editor/lexer/lexer_model.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
+#include "thirdparty/scintilla/src/Catalogue.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -82,6 +85,8 @@ MainWindow::MainWindow()
 
 	connect(toolBarModel, &QToolBar::orientationChanged, this, &MainWindow::onToolBarModelOrientationChanged);
 
+	Catalogue::AddLexerModule(&lexerRDOSyntax);
+	Catalogue::AddLexerModule(&lexerRDOFind);
 	Scintilla_LinkLexers();
 
 	loadMenuFileReopen  ();
