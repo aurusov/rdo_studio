@@ -96,7 +96,7 @@ Edit::Group::List::const_iterator Edit::Group::find_if(CREF(this_predicate) fun)
 
 #define RTF_HEADEROPEN    "{\\rtf1\\ansi\\deff0\\deftab720"
 #define RTF_FONTDEFOPEN   "{\\fonttbl"
-#define RTF_FONTDEF       "{\\f%d\\fnil\\fcharset%u %s;}"
+#define RTF_FONTDEF       "{\\f%d\\fnil %s;}"
 #define RTF_FONTDEFCLOSE  "}"
 #define RTF_COLORDEFOPEN  "{\\colortbl"
 #define RTF_COLORDEF      "\\red%d\\green%d\\blue%d;"
@@ -170,7 +170,7 @@ void Edit::catchCharAdded(int ch)
 
 long Edit::sendEditorString(ruint msg, unsigned long wParam, CREF(QString) str) const
 {
-	return super::sends(msg, wParam, str.toLocal8Bit().constData());
+	return super::sends(msg, wParam, str.toStdString().c_str());
 }
 
 int Edit::getNewMarker()
@@ -224,8 +224,7 @@ void Edit::setEditorStyle(EditStyle* pStyle)
 
 	// ----------
 	// Codepage and Characterset
-	sendEditor(SCI_SETCODEPAGE, m_pStyle->font.codepage);
-	sendEditor(SCI_STYLESETCHARACTERSET, STYLE_DEFAULT, m_pStyle->font.characterSet);
+	sendEditor(SCI_SETCODEPAGE, SC_CP_UTF8);
 
 	// ----------
 	// Tabs
@@ -969,7 +968,7 @@ tstring Edit::saveAsRTF(int start, int end) const
 	saveStr += RTF_FONTDEFOPEN;
 
 	strncpy(*fonts, m_pStyle->font.name.c_str(), MAX_FONTDEF);
-	saveStr += rdo::format(RTF_FONTDEF, 0, m_pStyle->font.characterSet, m_pStyle->font.name.c_str());
+	saveStr += rdo::format(RTF_FONTDEF, 0, m_pStyle->font.name.c_str());
 	strncpy(*colors, "#000000", MAX_COLORDEF);
 
 	EditStyle* style = static_cast<EditStyle*>(m_pStyle);
@@ -1136,8 +1135,8 @@ rbool Edit::isLineVisible(const int line) const
 
 void Edit::appendText(CREF(QString) str) const
 {
-	QByteArray text = str.toLocal8Bit();
-	sendEditorString(SCI_ADDTEXT, text.size(), text.constData());
+	std::string text = str.toStdString();
+	sendEditorString(SCI_ADDTEXT, text.length(), text.c_str());
 }
 
 void Edit::scrollToLine(const int line) const
@@ -1167,7 +1166,8 @@ void Edit::load(rdo::stream& stream)
 	rbool readOnly = isReadOnly();
 	setReadOnly(false);
 
-	sendEditorString(SCI_ADDTEXT, stream.str().length(), &stream.str()[0]);
+	std::string text = rdo::locale::convertFromCLocale(stream.str());
+	sendEditorString(SCI_ADDTEXT, text.length(), text.c_str());
 
 	setReadOnly(readOnly);
 }
@@ -1178,9 +1178,8 @@ void Edit::save(rdo::stream& stream) const
 	std::vector<char> str;
 	str.resize(len + 1);
 	sendEditorString(SCI_GETTEXT, len + 1, &str[0]);
-//	str[len] = "\0";
-//	str.resize(len);
-	stream.str(&str[0]); // qq
+	std::string text = rdo::locale::convertToCLocale(&str[0]);
+	stream.str(text);
 }
 
 int Edit::indentOfBlock(int line) const

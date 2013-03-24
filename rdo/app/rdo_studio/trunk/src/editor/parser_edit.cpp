@@ -185,20 +185,6 @@ void Parser::setEditorStyle(PTR(ParserStyle) pStyle)
 	sendEditor(SCI_STYLESETSIZE, SCE_RDO_NUMBER, m_pStyle->font.size);
 	sendEditor(SCI_STYLESETSIZE, SCE_RDO_STRING, m_pStyle->font.size);
 	sendEditor(SCI_STYLESETSIZE, SCE_RDO_OPERATOR, m_pStyle->font.size);
-
-	// ----------
-	// Codepage and Characterset
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_RDO_DEFAULT, m_pStyle->font.characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_RDO_IDENTIFIER, m_pStyle->font.characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_RDO_KEYWORD, m_pStyle->font.characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_RDO_FUNCTION, m_pStyle->font.characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_RDO_TRACE, m_pStyle->font.characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_RDO_FRAME_COLOR, m_pStyle->font.characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_RDO_COMMENT_CPP, m_pStyle->font.characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_RDO_COMMENT_LINE, m_pStyle->font.characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_RDO_NUMBER, m_pStyle->font.characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_RDO_STRING, m_pStyle->font.characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_RDO_OPERATOR, m_pStyle->font.characterSet);
 }
 
 void Parser::replaceCurrent(CREF(QString) str, int changePosValue) const

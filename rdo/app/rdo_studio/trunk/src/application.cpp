@@ -667,8 +667,6 @@ void Application::convertSettings() const
 	{
 		convertor.convert<rbool>("style/build/build/warning", "style/build/build/warning");
 
-		convertor.convert<int>    ("style/build/font/characterSet", "style/build/font/character_set");
-		convertor.convert<int>    ("style/build/font/codepage",     "style/build/font/codepage");
 		convertor.convert<QString>("style/build/font/name",         "style/build/font/name");
 		convertor.convert<int>    ("style/build/font/size",         "style/build/font/size");
 
@@ -692,8 +690,6 @@ void Application::convertSettings() const
 		convertor.convert<bool>  ("style/build/window/showHorzScrollBar", "style/build/window/show_horz_scroll_bar");
 		convertor.convert<bool>  ("style/build/window/wordWrap",          "style/build/window/word_wrap");
 
-		convertor.convert<int>    ("style/chart/font/characterSet", "style/chart/font/character_set");
-		convertor.convert<int>    ("style/chart/font/codepage",     "style/chart/font/codepage");
 		convertor.convert<QString>("style/chart/font/name",         "style/chart/font/name");
 		convertor.convert<int>    ("style/chart/font/size",         "style/chart/font/size");
 
@@ -712,8 +708,6 @@ void Application::convertSettings() const
 		convertor.convert<QColor>("style/chart/theme/titleFGColor",    "style/chart/theme/title_fg_color");
 		convertor.convert<int>   ("style/chart/theme/titleStyle",      "style/chart/theme/title_style");
 
-		convertor.convert<int>    ("style/debug/font/characterSet", "style/debug/font/character_set");
-		convertor.convert<int>    ("style/debug/font/codepage",     "style/debug/font/codepage");
 		convertor.convert<QString>("style/debug/font/name",         "style/debug/font/name");
 		convertor.convert<int>    ("style/debug/font/size",         "style/debug/font/size");
 
@@ -741,8 +735,6 @@ void Application::convertSettings() const
 
 		convertor.remove("style/editor/buffer");
 
-		convertor.convert<int>    ("style/editor/font/characterSet", "style/editor/font/character_set");
-		convertor.convert<int>    ("style/editor/font/codepage",     "style/editor/font/codepage");
 		convertor.convert<QString>("style/editor/font/name",         "style/editor/font/name");
 		convertor.convert<int>    ("style/editor/font/size",         "style/editor/font/size");
 
@@ -790,8 +782,6 @@ void Application::convertSettings() const
 		convertor.convert<bool>("style/editor/window/showHorzScrollBar", "style/editor/window/show_horz_scroll_bar");
 		convertor.convert<bool>("style/editor/window/wordWrap",          "style/editor/window/word_wrap");
 
-		convertor.convert<int>    ("style/find/font/characterSet", "style/find/font/character_set");
-		convertor.convert<int>    ("style/find/font/codepage",     "style/find/font/codepage");
 		convertor.convert<QString>("style/find/font/name",         "style/find/font/name");
 		convertor.convert<int>    ("style/find/font/size",         "style/find/font/size");
 
@@ -817,8 +807,6 @@ void Application::convertSettings() const
 		convertor.convert<bool>("style/find/window/showHorzScrollBar", "style/find/window/show_horz_scroll_bar");
 		convertor.convert<bool>("style/find/window/wordWrap",          "style/find/window/word_wrap");
 
-		convertor.convert<int>    ("style/frame/font/characterSet", "style/frame/font/character_set");
-		convertor.convert<int>    ("style/frame/font/codepage",     "style/frame/font/codepage");
 		convertor.convert<QString>("style/frame/font/name",         "style/frame/font/name");
 		convertor.convert<int>    ("style/frame/font/size",         "style/frame/font/size");
 
@@ -826,8 +814,6 @@ void Application::convertSettings() const
 		convertor.convert<QColor>("style/frame/theme/defaultColor",      "style/frame/theme/default_color");
 		convertor.convert<int>   ("style/frame/theme/defaultStyle",      "style/frame/theme/default_style");
 
-		convertor.convert<int>    ("style/results/font/characterSet", "style/results/font/character_set");
-		convertor.convert<int>    ("style/results/font/codepage",     "style/results/font/codepage");
 		convertor.convert<QString>("style/results/font/name",         "style/results/font/name");
 		convertor.convert<int>    ("style/results/font/size",         "style/results/font/size");
 
@@ -869,8 +855,6 @@ void Application::convertSettings() const
 		convertor.convert<int>("style/trace/borders/horzBorder", "style/trace/borders/horz_border");
 		convertor.convert<int>("style/trace/borders/vertBorder", "style/trace/borders/vert_border");
 
-		convertor.convert<int>    ("style/trace/font/characterSet", "style/trace/font/character_set");
-		convertor.convert<int>    ("style/trace/font/codepage",     "style/trace/font/codepage");
 		convertor.convert<QString>("style/trace/font/name",         "style/trace/font/name");
 		convertor.convert<int>    ("style/trace/font/size",         "style/trace/font/size");		
 

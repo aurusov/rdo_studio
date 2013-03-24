@@ -19,8 +19,8 @@
 
 namespace rdo { namespace gui { namespace lexer {
 
-bool isOperator  (char ch);
-bool isIdentifier(char ch, const std::locale& locale);
+bool isOperator  (int ch);
+bool isIdentifier(int ch, const std::locale& locale);
 
 }}} // namespace rdo::gui::lexer
 

@@ -22,17 +22,8 @@ namespace rdo { namespace gui { namespace style {
 // --------------------------------------------------------------------------------
 StyleFont::StyleFont()
 {
-	name         = "Courier New";
-	size         = 10;
-	codepage     = 0;
-	characterSet = 1;
-
-#ifdef OST_WINDOWS
-	//! @todo unicode
-	if ( PRIMARYLANGID(GetSystemDefaultLangID()) == LANG_RUSSIAN ) {
-		characterSet = SC_CHARSET_CYRILLIC;
-	}
-#endif
+	name = "Courier New";
+	size = 10;
 }
 
 StyleFont::~StyleFont()
@@ -40,20 +31,16 @@ StyleFont::~StyleFont()
 
 StyleFont& StyleFont::operator =( const StyleFont& font )
 {
-	name         = font.name;
-	size         = font.size;
-	codepage     = font.codepage;
-	characterSet = font.characterSet;
+	name = font.name;
+	size = font.size;
 
 	return *this;
 }
 
 rbool StyleFont::operator ==( const StyleFont& font ) const
 {
-	return name         == font.name &&
-	       size         == font.size &&
-	       codepage     == font.codepage &&
-	       characterSet == font.characterSet;
+	return name == font.name &&
+	       size == font.size;
 }
 
 rbool StyleFont::operator !=( const StyleFont& font ) const
@@ -80,7 +67,6 @@ StyleFont StyleFont::getDefaultFont()
 StyleFont StyleFont::getClassicFont()
 {
 	StyleFont font;
-
 	font.name = "Fixedsys";
 
 	return font;
@@ -89,7 +75,6 @@ StyleFont StyleFont::getClassicFont()
 StyleFont StyleFont::getTracerLogFont()
 {
 	StyleFont font;
-
 	font.name = "Courier";
 
 	return font;
@@ -98,7 +83,6 @@ StyleFont StyleFont::getTracerLogFont()
 StyleFont StyleFont::getChartViewFont()
 {
 	StyleFont font;
-
 	font.name = "Tahoma";
 
 	return font;
@@ -118,25 +102,13 @@ QSettings& operator<< (QSettings& settings, const StyleFont& font)
 {
 	settings.setValue("name", QString::fromStdString(font.name));
 	settings.setValue("size", font.size);
-	settings.setValue("codepage", font.codepage);
-	settings.setValue("character_set", font.characterSet);
-
 	return settings;
 }
 
 QSettings& operator>> (QSettings& settings, StyleFont& font)
 {
-	font.name         = settings.value("name", QString::fromStdString(font.name)).toString().toStdString();
-	font.size         = settings.value("size", font.size).toInt();
-	font.codepage     = settings.value("codepage", font.codepage).toInt();
-	font.characterSet = settings.value("character_set", font.characterSet).toInt();
-#ifdef OST_WINDOWS
-	//! @todo unicode
-	if (font.characterSet == RUSSIAN_CHARSET)
-	{
-		font.characterSet = SC_CHARSET_CYRILLIC;
-	}
-#endif
+	font.name = settings.value("name", QString::fromStdString(font.name)).toString().toStdString();
+	font.size = settings.value("size", font.size).toInt();
 	return settings;
 }
 

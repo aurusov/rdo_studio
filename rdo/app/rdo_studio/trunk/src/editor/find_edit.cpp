@@ -73,11 +73,6 @@ void Find::setEditorStyle(FindStyle* pStyle)
 	// Font Size
 	sendEditor(SCI_STYLESETSIZE, SCE_FIND_DEFAULT, m_pStyle->font.size);
 	sendEditor(SCI_STYLESETSIZE, SCE_FIND_KEYWORD, m_pStyle->font.size);
-
-	// ----------
-	// Codepage and Characterset
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_FIND_DEFAULT, m_pStyle->font.characterSet);
-	sendEditor(SCI_STYLESETCHARACTERSET, SCE_FIND_KEYWORD, m_pStyle->font.characterSet);
 }
 
 void Find::setKeyword(CREF(QString) keyword, const rbool matchCase) const
