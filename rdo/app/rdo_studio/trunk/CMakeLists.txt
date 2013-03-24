@@ -18,6 +18,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 CONFIGURE_FILE(${CMAKE_MODULE_PATH}/build.version.cmake ${CMAKE_CURRENT_SOURCE_DIR}/res/build_version.h)
 
 SET(HEADER_FILES
+    pch/stdpch.h
     src/about.h
     src/action_activator/action_activator.h
     src/action_activator/action_activator_widget.h
@@ -114,6 +115,7 @@ SET(HEADER_QT_FILES
     )
 
 SET(SOURCE_FILES
+    pch/stdpch.cpp
     src/about.cpp
     src/action_activator/action_activator.cpp
     src/action_activator/action_activator_widget.cpp
