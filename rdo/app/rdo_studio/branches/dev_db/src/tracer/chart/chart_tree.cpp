@@ -36,7 +36,7 @@ using namespace rdo::gui::tracer;
 
 Q_DECLARE_METATYPE(const ChartTreeItem*);
 
-ChartTree::ChartTree(PTR(QWidget) pParent)
+ChartTree::ChartTree(QWidget* pParent)
 	: parent_type(pParent)
 {
 	setColumnCount    (1);
@@ -329,8 +329,9 @@ void ChartTree::mousePressEvent(QMouseEvent* pEvent)
 		}
 		parent_type::mousePressEvent(pEvent);
 	}
-	else if (pEvent->button() == Qt::RightButton)
-	{
-		m_pPopupMenu->exec(pEvent->globalPos());
-	}
+}
+
+void ChartTree::contextMenuEvent(QContextMenuEvent* pEvent)
+{
+	m_pPopupMenu->exec(pEvent->globalPos());
 }

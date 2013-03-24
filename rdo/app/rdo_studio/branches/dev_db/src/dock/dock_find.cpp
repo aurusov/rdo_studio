@@ -18,7 +18,7 @@
 #include "simulator/report/log_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
-DockFind::DockFind(PTR(QWidget) pParent)
+DockFind::DockFind(QWidget* pParent)
 	: DockFocusable("Поиск", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);

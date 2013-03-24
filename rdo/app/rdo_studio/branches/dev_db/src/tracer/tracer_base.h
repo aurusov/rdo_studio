@@ -46,8 +46,6 @@ public:
 	void    getModelStructure(rdo::textstream& stream);
 	void    getTraceString(tstring trace_string);
 	tstring getNextValue(REF(tstring) line);
-	void registerClipboardFormat();
-	UINT const getClipboardFormat() const;
 	ChartDoc* createNewChart();
 	void addChart(ChartDoc* const pDocument);
 	void removeChart(ChartDoc* pDocument);
@@ -119,7 +117,6 @@ private:
 	void clearCharts();
 	void deleteTrace();
 
-	UINT         m_clipboardFormat;
 	DocumentList m_documentList;
 	rbool        m_drawTrace;
 };

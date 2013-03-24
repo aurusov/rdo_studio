@@ -4,11 +4,18 @@
 
 MESSAGE(STATUS "CREATE  RDO  STUDIO  EXECUTABLE")
 
+FIND_PACKAGE(Qt5Widgets REQUIRED)
+INCLUDE_DIRECTORIES(${Qt5Widgets_INCLUDE_DIRS})
+
 FIND_PACKAGE(Boost COMPONENTS program_options thread REQUIRED)
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
+INCLUDE_DIRECTORIES(${SCINTILLA_PATH}/include)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
+CONFIGURE_FILE(${CMAKE_MODULE_PATH}/build.version.cmake ${CMAKE_CURRENT_SOURCE_DIR}/res/build_version.h)
 
 SET(HEADER_FILES
     src/about.h
@@ -79,7 +86,29 @@ SET(HEADER_FILES
     src/view_preferences.h
     )
 
-SET(HEADER_QT_FILES ${HEADER_FILES})
+SET(HEADER_QT_FILES
+    src/about.h
+    src/dialog/file_association_dialog.h
+    src/dialog/find_dialog.h
+    src/dialog/find_replace_dialog.h
+    src/dialog/goto_line_dialog.h
+    src/dialog/new_model_dialog.h
+    src/dock/dock_focusable.h
+    src/editor/edit.h
+    src/editor/log_edit.h
+    src/editor/model_edit.h
+    src/frame/frame_manager.h
+    src/frame/frame_tree_ctrl.h
+    src/frame/frame_view.h
+    src/main_window.h
+    src/model/model.h
+    src/model/model_view.h
+    src/tracer/chart/chart_preferences.h
+    src/tracer/chart/chart_tree.h
+    src/tracer/chart/chart_view.h
+    src/tracer/logger/tracer_logger_view.h
+    src/view_preferences.h
+    )
 
 SET(SOURCE_FILES
     src/about.cpp
@@ -271,6 +300,7 @@ ADD_EXECUTABLE(rdo_studio
     ${SCINTILLA_FILES}
     ${QT_FORMS}
     ${GENERATED_QT_FORMS_HEADERS}
+    ${GENERATED_MOC_SOURCES}
     ${WIN32_RES}
     ${IMAGE_FILES}
     )
@@ -284,6 +314,10 @@ ADD_DEPENDENCIES(rdo_studio rdo_simulator)
 ADD_DEPENDENCIES(rdo_studio rdo_simulator_report)
 ADD_DEPENDENCIES(rdo_studio rdo_ui_abstract)
 ADD_DEPENDENCIES(rdo_studio rdo_ui_qt)
+
+TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Widgets_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Core_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Gui_LIBRARIES})
 
 TARGET_LINK_LIBRARIES(rdo_studio ${Boost_PROGRAM_OPTIONS_LIBRARY})
 TARGET_LINK_LIBRARIES(rdo_studio ${Boost_THREAD_LIBRARY})

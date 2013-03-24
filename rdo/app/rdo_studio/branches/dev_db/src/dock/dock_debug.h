@@ -21,7 +21,7 @@ class DockDebug: public DockFocusable
 public:
 	typedef rdo::gui::editor::Debug context_type;
 
-	DockDebug(PTR(QWidget) pParent);
+	DockDebug(QWidget* pParent);
 	virtual ~DockDebug();
 
 	void appendString(CREF(QString) str);

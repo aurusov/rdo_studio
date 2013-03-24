@@ -19,7 +19,7 @@
 
 using namespace rdo::gui::frame;
 
-TreeCtrl::TreeCtrl(PTR(QWidget) pParent)
+TreeCtrl::TreeCtrl(QWidget* pParent)
 	: parent_type(pParent)
 {
 	setColumnCount    (1);

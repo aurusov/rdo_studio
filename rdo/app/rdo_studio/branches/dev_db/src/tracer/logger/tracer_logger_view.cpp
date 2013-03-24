@@ -178,7 +178,8 @@ void LogView::StringList::setCursor(rsint pos, rsint max)
 	else
 	{
 		rsint delta = pos - m_cursor;
-		seek(delta, m_cursorIt);
+		const_iterator it(m_cursorIt);
+		seek(delta, it);
 	}
 	m_cursor = pos;
 }
@@ -239,7 +240,7 @@ LogView::StringList::const_reverse_iterator LogView::StringList::rFindString(rsi
 	return rit;
 }
 
-void LogView::StringList::seek(rsint delta, REF(StringList::const_iterator) it) const
+void LogView::StringList::seek(rsint delta, REF(const_iterator) it) const
 {
 	ASSERT(it != m_list.end());
 
@@ -998,10 +999,11 @@ void LogView::mousePressEvent(QMouseEvent* pEvent)
 	{
 		selectLine((std::min)(m_SM_Y.position + pEvent->pos().y() / m_lineHeight, m_strings.count() - 1));
 	}
-	else if (pEvent->button() == Qt::RightButton)
-	{
-		m_pPopupMenu->exec(pEvent->globalPos());
-	}
+}
+
+void LogView::contextMenuEvent(QContextMenuEvent* pEvent)
+{
+	m_pPopupMenu->exec(pEvent->globalPos());
 }
 
 void LogView::onUpdateActions(rbool activated)

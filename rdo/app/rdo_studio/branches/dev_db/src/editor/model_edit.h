@@ -28,7 +28,7 @@ class Model: public Parser
 Q_OBJECT
 
 public:
-	Model(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);
+	Model(QWidget* pParent, QWidget* pView = NULL);
 	virtual ~Model();
 
 	void setEditorStyle(PTR(ModelStyle) pStyle);
@@ -57,9 +57,9 @@ private:
 	void  clearErrorLine();
 	rbool hasErrorLine  () const;
 
-	virtual void mousePressEvent(QMouseEvent* pEvent);
-	virtual void onUpdateActions(rbool activated);
-	virtual void onHelpContext  ();
+	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
+	virtual void onUpdateActions (rbool activated);
+	virtual void onHelpContext   ();
 
 private slots:
 	void onEditCommentSelection() const;

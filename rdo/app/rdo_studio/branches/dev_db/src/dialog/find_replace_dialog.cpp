@@ -22,7 +22,7 @@ FindReplaceDialog::Settings::Settings(CREF(Settings) settings)
 	, byWhat(settings.byWhat)
 {}
 
-FindReplaceDialog::FindReplaceDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback, CREF(OnFindCallback) onReplaceCallback, CREF(OnFindCallback) onReplaceAllCallback, CREF(OnCloseCallback) onCloseCallback)
+FindReplaceDialog::FindReplaceDialog(QWidget* pParent, const OnFindCallback& onFindCallback, const OnFindCallback& onReplaceCallback, const OnFindCallback& onReplaceAllCallback, const OnCloseCallback& onCloseCallback)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, m_onFindCallback      (onFindCallback      )
 	, m_onCloseCallback     (onCloseCallback     )

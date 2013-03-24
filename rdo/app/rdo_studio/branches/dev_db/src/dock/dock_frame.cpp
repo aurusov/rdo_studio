@@ -17,7 +17,7 @@
 #include "app/rdo_studio/src/dock/dock_frame.h"
 // --------------------------------------------------------------------------------
 
-DockFrame::DockFrame(PTR(QWidget) pParent)
+DockFrame::DockFrame(QWidget* pParent)
 	: DockFocusable("Анимация", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);

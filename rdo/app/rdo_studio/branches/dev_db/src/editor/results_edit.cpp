@@ -18,7 +18,7 @@
 
 using namespace rdo::gui::editor;
 
-Results::Results(PTR(QWidget) pParent)
+Results::Results(QWidget* pParent)
 	: super(pParent)
 	, PopupMenu(pParent)
 {
@@ -55,14 +55,7 @@ void Results::onHelpContext()
 	g_pApp->callQtAssistant(ba);
 }
 
-void Results::mousePressEvent(QMouseEvent* pEvent)
+void Results::contextMenuEvent(QContextMenuEvent *pEvent)
 {
-	if (pEvent->button() == Qt::LeftButton)
-	{
-		super::mousePressEvent(pEvent);
-	}
-	else if (pEvent->button() == Qt::RightButton)
-	{
-		m_pPopupMenu->exec(pEvent->globalPos());
-	}
+	m_pPopupMenu->exec(pEvent->globalPos());
 }

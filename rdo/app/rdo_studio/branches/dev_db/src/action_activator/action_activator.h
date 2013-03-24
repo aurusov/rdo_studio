@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
+#include <QAction>
 #include <QFocusEvent>
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS

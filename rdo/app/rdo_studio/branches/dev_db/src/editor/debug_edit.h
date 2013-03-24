@@ -23,7 +23,7 @@ class Debug
 	, public PopupMenu
 {
 public:
-	Debug(PTR(QWidget) pParent);
+	Debug(QWidget* pParent);
 	virtual ~Debug();
 
 	void appendLine(CREF(QString) str);
@@ -31,7 +31,7 @@ public:
 private:
 	typedef  Edit  super;
 
-	virtual void mousePressEvent(QMouseEvent* pEvent);
+	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
 	virtual void onHelpContext();
 };
 

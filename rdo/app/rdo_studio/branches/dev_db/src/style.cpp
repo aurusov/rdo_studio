@@ -26,9 +26,13 @@ StyleFont::StyleFont()
 	size         = 10;
 	codepage     = 0;
 	characterSet = 1;
+
+#ifdef OST_WINDOWS
+	//! @todo unicode
 	if ( PRIMARYLANGID(GetSystemDefaultLangID()) == LANG_RUSSIAN ) {
 		characterSet = SC_CHARSET_CYRILLIC;
 	}
+#endif
 }
 
 StyleFont::~StyleFont()
@@ -126,10 +130,13 @@ QSettings& operator>> (QSettings& settings, StyleFont& font)
 	font.size         = settings.value("size", font.size).toInt();
 	font.codepage     = settings.value("codepage", font.codepage).toInt();
 	font.characterSet = settings.value("character_set", font.characterSet).toInt();
+#ifdef OST_WINDOWS
+	//! @todo unicode
 	if (font.characterSet == RUSSIAN_CHARSET)
 	{
 		font.characterSet = SC_CHARSET_CYRILLIC;
 	}
+#endif
 	return settings;
 }
 

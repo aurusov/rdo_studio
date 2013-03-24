@@ -14,7 +14,7 @@
 #include "utils/warning_disable.h"
 #include <QDialog>
 #include <QColorDialog>
-#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_chart_preferences.h"
+#include "ui_chart_preferences.h"
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_doc.h"
@@ -43,8 +43,8 @@ private:
 	PTR(ChartView)  m_pView;
 	PTR(ChartSerie) m_pSerie;
 
-	void ChartPreferences::insertColors(QComboBox* colorBox);
-	void ChartPreferences::insertColor(const QColor& color, const QString& colorName, QComboBox* colorBox);
+	void insertColors(QComboBox* colorBox);
+	void insertColor(const QColor& color, const QString& colorName, QComboBox* colorBox);
 	void apply();
 
 	void onHelpContext();
@@ -62,6 +62,7 @@ private slots:
 	void onColorSelected(const QColor& color);
 	void onValueComboBox(int index);
 	void onCheckAllData();
+	void onCheckInput(const QString& text);
 };
 
 }}} // namespace rdo::gui::tracer

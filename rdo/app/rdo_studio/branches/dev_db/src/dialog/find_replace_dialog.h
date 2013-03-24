@@ -14,7 +14,7 @@
 #include "utils/warning_disable.h"
 #include <boost/function.hpp>
 #include <QDialog>
-#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_find_replace_dialog.h"
+#include "ui_find_replace_dialog.h"
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dialog/find_dialog.h"
@@ -38,7 +38,7 @@ public:
 	typedef  boost::function<void (const Settings&)>  OnFindCallback;
 	typedef  boost::function<void ()>                 OnCloseCallback;
 
-	FindReplaceDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback, CREF(OnFindCallback) onReplaceCallback, CREF(OnFindCallback) onReplaceAllCallback, CREF(OnCloseCallback) onCloseCallback);
+	FindReplaceDialog(QWidget* pParent, const OnFindCallback& onFindCallback, const OnFindCallback& onReplaceCallback, const OnFindCallback& onReplaceAllCallback, const OnCloseCallback& onCloseCallback);
 	virtual ~FindReplaceDialog();
 
 	void setSettings(CREF(Settings) settings);

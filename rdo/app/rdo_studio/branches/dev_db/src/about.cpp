@@ -15,7 +15,7 @@
 #include "app/rdo_studio/res/build_version.h"
 // --------------------------------------------------------------------------------
 
-About::About(PTR(QWidget) pParent)
+About::About(QWidget* pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
 	setupUi(this);

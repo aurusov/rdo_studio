@@ -27,7 +27,7 @@ class TreeCtrl
 Q_OBJECT
 
 public:
-	TreeCtrl(PTR(QWidget) pParent);
+	TreeCtrl(QWidget* pParent);
 	virtual ~TreeCtrl();
 
 	PTR(QTreeWidgetItem) insertFrame(CREF(QString) name);

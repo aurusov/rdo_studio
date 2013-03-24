@@ -22,7 +22,7 @@
 using namespace rdo::gui::editor;
 using namespace rdo::gui::style;
 
-Parser::Parser(PTR(QWidget) pParent)
+Parser::Parser(QWidget* pParent)
 	: super(pParent)
 	, kw0("$Activities?0 $Back_picture?0 $Body?0 $Changes?0 $Compare_tops?0 $Condition?0 \
 $Constant?0 $Decision_point?0 $Default?0 $End?0 $End_picture?0 $Evaluate_by?0 $Frame?0 $Function?0 \

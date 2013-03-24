@@ -14,7 +14,7 @@
 #include "app/rdo_studio/src/action_activator/action_activator_widget.h"
 // --------------------------------------------------------------------------------
 
-ActionActivatorWidget::ActionActivatorWidget(PTR(QWidget) pParent)
+ActionActivatorWidget::ActionActivatorWidget(QWidget* pParent)
 	: QWidget(pParent)
 {}
 

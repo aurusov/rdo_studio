@@ -24,7 +24,7 @@
 using namespace rdo::simulation::report;
 using namespace rdo::gui::editor;
 
-Build::Build(PTR(QWidget) pParent)
+Build::Build(QWidget* pParent)
 	: super(pParent)
 	, PopupMenu(pParent)
 {}
@@ -107,14 +107,7 @@ void Build::onHelpContext()
 	g_pApp->callQtAssistant(ba);
 }
 
-void Build::mousePressEvent(QMouseEvent*  pEvent)
+void Build::contextMenuEvent(QContextMenuEvent* pEvent)
 {
-	if (pEvent->button() == Qt::LeftButton)
-	{
-		super::mousePressEvent(pEvent);
-	}
-	else if (pEvent->button() == Qt::RightButton)
-	{
-		m_pPopupMenu->exec(pEvent->globalPos());
-	}
+	m_pPopupMenu->exec(pEvent->globalPos());
 }

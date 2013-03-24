@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
 #include <QDialog>
-#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_new_model_dialog.h"
+#include "ui_new_model_dialog.h"
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ class NewModelDialog
 Q_OBJECT
 
 public:
-	NewModelDialog(PTR(QWidget) pParent);
+	NewModelDialog(QWidget* pParent);
 	virtual ~NewModelDialog();
 
 	QString getModelName() const;

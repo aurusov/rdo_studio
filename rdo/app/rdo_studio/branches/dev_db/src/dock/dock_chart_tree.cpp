@@ -18,7 +18,7 @@
 #include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
 
-DockChartTree::DockChartTree(PTR(QWidget) pParent)
+DockChartTree::DockChartTree(QWidget* pParent)
 	: DockFocusable("Графики", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);

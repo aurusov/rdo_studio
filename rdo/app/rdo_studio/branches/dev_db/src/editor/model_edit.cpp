@@ -26,7 +26,7 @@
 
 using namespace rdo::gui::editor;
 
-Model::Model(PTR(QWidget) pParent, PTR(QWidget) pView)
+Model::Model(QWidget* pParent, QWidget* pView)
 	: super              (pParent)
 	, m_pView            (pView  )
 	, m_pLog             (NULL   )
@@ -495,7 +495,7 @@ void Model::onEditCompleteWord()
 			foundKeyWords += " ";
 		}
 	}
-	LPCTSTR list;
+	const char* list;
 
 	if (static_cast<PTR(ModelStyle)>(m_pStyle)->autoComplete.showFullList)
 	{
@@ -706,14 +706,7 @@ void Model::onUpdateActions(rbool activated)
 	);
 }
 
-void Model::mousePressEvent(QMouseEvent*  pEvent)
+void Model::contextMenuEvent(QContextMenuEvent* pEvent)
 {
-	if (pEvent->button() == Qt::LeftButton)
-	{
-		super::mousePressEvent(pEvent);
-	}
-	else if (pEvent->button() == Qt::RightButton)
-	{
-		m_pPopupMenu->exec(pEvent->globalPos());
-	}
+	m_pPopupMenu->exec(pEvent->globalPos());
 }

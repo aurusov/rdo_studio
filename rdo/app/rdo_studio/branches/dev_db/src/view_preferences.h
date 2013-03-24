@@ -14,7 +14,7 @@
 #include "utils/warning_disable.h"
 #include <QDialog>
 #include <QColorDialog>
-#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_view_preferenses.h"
+#include "ui_view_preferenses.h"
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/editor/model_edit.h"
@@ -40,16 +40,14 @@ class ViewPreferences
 {
 Q_OBJECT
 public:
-	explicit ViewPreferences(PTR(QWidget) pParent = NULL);
-
-	void updateDialog();
-	void updatePreview();
-	void updateStyleTab();
+	explicit ViewPreferences(QWidget* pParent = NULL);
 
 private slots:
 	void onOkButton();
 	void onCancelButton();
 	void onApplyButton();
+
+	void onCheckInput(const QString& text);
 
 	void onSetup(int state);
 	void onCheckInFuture(int state);
@@ -93,10 +91,23 @@ private slots:
 	void onTitleSize(int index);
 	void onLegendSize(int index);
 	void onTickWidth(const QString& text);
+	void onThemeComboBox(int index);
 
 	void onHelpContext();
 
 private:
+	enum StyleType
+	{
+		ST_CURRENT = 0,
+		ST_DEFAULT,
+		ST_CPP,
+		ST_PASCAL,
+		ST_HTML,
+		ST_CLASSIC,
+		ST_TWILIGHT,
+		ST_OCEAN
+	};
+
 	enum ItemType
 	{
 		IT_ROOT = 0,
@@ -377,6 +388,12 @@ private:
 	void checkAllData();
 
 	void keyPressEvent(QKeyEvent* pEvent);
+
+	void updateDialog();
+	void updatePreview();
+	void updateStyleTab();
+	void updateThemeComboBox(PTR(StyleProperty) prop);
+	void updateTheme();
 };
 
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

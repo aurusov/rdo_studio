@@ -1097,7 +1097,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox">
+          <widget class="QComboBox" name="themeComboBox">
            <property name="minimumSize">
             <size>
              <width>160</width>

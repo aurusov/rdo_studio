@@ -14,6 +14,8 @@
 #include <limits>
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
+#include <boost/format.hpp>
+#include <boost/numeric/conversion/bounds.hpp>
 #include <QMessageBox>
 #include <QFileDialog>
 #include "utils/warning_enable.h"
@@ -333,21 +335,11 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			g_pApp->getIMainWnd()->update_stop();
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
 			m_frameManager.clear();
-			SYSTEMTIME time_stop;
-			::GetSystemTime(&time_stop);
-			ruint delay = ruint(~0);
-			if (m_timeStart.wYear == time_stop.wYear && m_timeStart.wMonth == time_stop.wMonth)
-			{
-				delay = (time_stop.wDay - m_timeStart.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - m_timeStart.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - m_timeStart.wMinute) * 60 * 1000 + (time_stop.wSecond - m_timeStart.wSecond) * 1000 + (time_stop.wMilliseconds - m_timeStart.wMilliseconds);
-			}
-			else if (time_stop.wYear - m_timeStart.wYear == 1 && m_timeStart.wMonth == 12 && time_stop.wMonth == 1)
-			{
-				delay = (time_stop.wDay + 31 - m_timeStart.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - m_timeStart.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - m_timeStart.wMinute) * 60 * 1000 + (time_stop.wSecond - m_timeStart.wSecond) * 1000 + (time_stop.wMilliseconds - m_timeStart.wMilliseconds);
-			}
-			if (delay != -1)
-			{
-				g_pApp->getIMainWnd()->getDockDebug().appendString(QString("Длительность прогона: %1 мсек.\n").arg(delay));
-			}
+			boost::chrono::system_clock::time_point time_stop = boost::chrono::system_clock::now();
+			boost::chrono::milliseconds duration = boost::chrono::duration_cast<boost::chrono::milliseconds>(time_stop - m_timeStart);
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdString(
+				boost::str(boost::format("Длительность прогона: %1% мсек.\n") % duration.count())
+			));
 			setCanRun   (true );
 			setIsRunning(false);
 			break;
@@ -431,7 +423,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 //				g_pApp->getIMainWnd()->getDockBuild().getContext().showFirstError();
 			}
 			m_buildState = BS_COMPLETE;
-			::GetSystemTime(&m_timeStart);
+			m_timeStart = boost::chrono::system_clock::now();
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_ERROR:
@@ -1080,7 +1072,7 @@ void Model::setShowRate(double value)
 	if (!isRunning())
 		return;
 
-	if (value >= DBL_MIN && value <= DBL_MAX)
+	if (value >= boost::numeric::bounds<double>::lowest() && value <= boost::numeric::bounds<double>::highest())
 	{
 		m_showRate = value;
 		sendMessage(kernel->runtime(), RT_RUNTIME_SET_SHOWRATE, &m_showRate);
@@ -1160,10 +1152,10 @@ void Model::updateActions()
 	pMainWindow->actModelRuntimePause->setChecked   (getRuntimeMode() == rdo::runtime::RTM_Pause || getRuntimeMode() == rdo::runtime::RTM_BreakPoint);
 
 	rbool canShowRate = isRunning() && getRuntimeMode() == rdo::runtime::RTM_Sync;
-	pMainWindow->actModelShowRateInc->setEnabled    (canShowRate && getShowRate() * 1.5 <= DBL_MAX);
-	pMainWindow->actModelShowRateIncFour->setEnabled(canShowRate && getShowRate() * 4.0 <= DBL_MAX);
-	pMainWindow->actModelShowRateDecFour->setEnabled(canShowRate && getShowRate() / 4.0 >= DBL_MIN);
-	pMainWindow->actModelShowRateDec->setEnabled    (canShowRate && getShowRate() / 1.5 >= DBL_MIN);
+	pMainWindow->actModelShowRateInc->setEnabled    (canShowRate && getShowRate() * 1.5 <= boost::numeric::bounds<double>::highest());
+	pMainWindow->actModelShowRateIncFour->setEnabled(canShowRate && getShowRate() * 4.0 <= boost::numeric::bounds<double>::highest());
+	pMainWindow->actModelShowRateDecFour->setEnabled(canShowRate && getShowRate() / 4.0 >= boost::numeric::bounds<double>::lowest());
+	pMainWindow->actModelShowRateDec->setEnabled    (canShowRate && getShowRate() / 1.5 >= boost::numeric::bounds<double>::lowest());
 
 	pMainWindow->actModelFrameNext->setEnabled(m_frameManager.canShowNextFrame());
 	pMainWindow->actModelFramePrev->setEnabled(m_frameManager.canShowPrevFrame());

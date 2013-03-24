@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
 #include <QDialog>
-#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_about.h"
+#include "ui_about.h"
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ class About: public QDialog, private Ui::AboutDialog
 Q_OBJECT
 
 public:
-	explicit About(PTR(QWidget) pParent = NULL);
+	explicit About(QWidget* pParent = NULL);
 };
 
 #endif // _RDO_STUDIO_ABOUT_H_

@@ -21,7 +21,7 @@ namespace rdo { namespace gui { namespace editor {
 class Parser: public Edit
 {
 public:
-	Parser(PTR(QWidget) pParent);
+	Parser(QWidget* pParent);
 	virtual ~Parser();
 
 	void setEditorStyle(PTR(ParserStyle) pStyle);

@@ -38,7 +38,6 @@ TracerBase::TracerBase(CREF(tstring) _thread_name, RDOKernelGUI* _kernel_gui)
 	: RDOThreadGUI(_thread_name, _kernel_gui)
 	, m_pLog(NULL)
 	, m_pChartTree(NULL)
-	, m_clipboardFormat(0)
 	, m_eventIndex(0)
 	, m_drawTrace(true)
 	, m_updateAction(RUA_NONE)
@@ -749,15 +748,4 @@ void TracerBase::setDrawTrace(const rbool value)
 rbool TracerBase::getDrawTrace() const
 {
 	return m_drawTrace;
-}
-
-void TracerBase::registerClipboardFormat()
-{
-	//! @todo qt удалить
-	//m_clipboardFormat = ::RegisterClipboardFormat(rdo::format(ID_RAO_CLIPBRD).c_str());
-}
-
-UINT const TracerBase::getClipboardFormat() const
-{
-	return m_clipboardFormat;
 }

@@ -17,7 +17,7 @@
 #include <QMainWindow>
 #include <QSlider>
 #include <QSignalMapper>
-#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_main_window.h"
+#include "ui_main_window.h"
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"

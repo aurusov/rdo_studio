@@ -30,7 +30,7 @@ public:
 	typedef rdo::simulation::report::LogEditLineInfo LogEditLineInfo;
 	typedef std::list<PTR(LogEditLineInfo)> LogEditLineInfoList;
 
-	Log(PTR(QWidget) pParent);
+	Log(QWidget* pParent);
 	virtual ~Log();
 
 	virtual void setEditorStyle(PTR(LogStyle) pStyle);

@@ -25,7 +25,7 @@
 
 using namespace rdo::gui::model;
 
-View::View(PTR(QWidget) pParent)
+View::View(QWidget* pParent)
 	: parent_type(pParent)
 	, m_pModel     (NULL)
 	, m_pTabCtrl   (NULL)

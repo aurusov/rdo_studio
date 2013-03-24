@@ -39,7 +39,7 @@ private:
 	typedef  boost::function<rbool (const Edit*)>  this_predicate;
 
 public:
-	Edit(PTR(QWidget) pParent);
+	Edit(QWidget* pParent);
 	virtual ~Edit();
 
 	//! @todo Вынести класс в отдельный модуль

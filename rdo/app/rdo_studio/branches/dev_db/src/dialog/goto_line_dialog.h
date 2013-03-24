@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
 #include <QDialog>
-#include "app/rdo_studio/projects/common/bin/rdo_studio/generated/ui_goto_line_dialog.h"
+#include "ui_goto_line_dialog.h"
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ class GoToLineDialog
 Q_OBJECT
 
 public:
-	explicit GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount);
+	explicit GoToLineDialog(QWidget* pParent, int line, int lineCount);
 
 	int getLine() const;
 
@@ -34,6 +34,7 @@ private:
 
 private slots:
 	void onOkButtonClicked();
+	void onCheckInput(const QString& text);
 };
 
 #endif // _RDO_STUDIO_GO_TO_NEXT_LINE_DIALOG_H_

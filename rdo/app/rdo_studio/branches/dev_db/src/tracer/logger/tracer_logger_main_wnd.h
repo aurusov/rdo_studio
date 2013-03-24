@@ -27,7 +27,7 @@ namespace rdo { namespace gui { namespace tracer {
 class LogMainWnd: public QAbstractScrollArea
 {
 public:
-	LogMainWnd(PTR(QWidget) pParent);
+	LogMainWnd(QWidget* pParent);
 
 	REF(LogView) view()
 	{

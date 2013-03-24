@@ -1,6 +1,7 @@
 #ifndef _RDO_STUDIO_STDPCH_H_
 #define _RDO_STUDIO_STDPCH_H_
 
+#include "utils/platform.h"
 #include "utils/warning_disable.h"
 
 #include <boost/signal.hpp>

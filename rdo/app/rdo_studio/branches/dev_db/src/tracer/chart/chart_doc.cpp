@@ -341,7 +341,7 @@ void ChartDoc::insertValue(Value* pValue)
 {
 	if (pValue)
 	{
-		ChartDoc::TimesList::iterator it = std::find_if(m_insertedIt, m_docTimes.end(), std::bind2nd(std::mem_fun1(&Time::compareTimes), pValue->getModelTime()));
+		ChartDoc::TimesList::iterator it = std::find_if(m_insertedIt, m_docTimes.end(), boost::bind(&Time::compareTimes, _1, pValue->getModelTime()));
 		if (it == m_docTimes.end() || (*it) != pValue->getModelTime())
 		{
 			m_insertedIt = m_docTimes.insert(it, pValue->getModelTime());

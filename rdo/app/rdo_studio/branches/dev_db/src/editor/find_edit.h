@@ -24,7 +24,7 @@ class Find
 	, public PopupMenu
 {
 public:
-	Find(PTR(QWidget) pParent);
+	Find(QWidget* pParent);
 	virtual ~Find();
 
 	void setEditorStyle(FindStyle* pStyle);
@@ -34,7 +34,7 @@ public:
 private:
 	typedef  Log  super;
 
-	virtual void mousePressEvent(QMouseEvent* pEvent);
+	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
 	virtual void onHelpContext();
 };
 

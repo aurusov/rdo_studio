@@ -24,7 +24,7 @@ class Results
 	, public PopupMenu
 {
 public:
-	Results(PTR(QWidget) pParent);
+	Results(QWidget* pParent);
 	virtual ~Results();
 
 	void setEditorStyle(PTR(ResultsStyle) pStyle);
@@ -32,7 +32,7 @@ public:
 private:
 	typedef  Parser  super;
 
-	virtual void mousePressEvent(QMouseEvent* pEvent);
+	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
 	virtual void onHelpContext();
 };
 
