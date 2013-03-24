@@ -7,7 +7,7 @@ MESSAGE(STATUS "CREATE  RDO  STUDIO  EXECUTABLE")
 FIND_PACKAGE(Qt5Widgets REQUIRED)
 INCLUDE_DIRECTORIES(${Qt5Widgets_INCLUDE_DIRS})
 
-FIND_PACKAGE(Boost COMPONENTS program_options thread REQUIRED)
+FIND_PACKAGE(Boost COMPONENTS program_options thread chrono system filesystem regex REQUIRED)
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
@@ -51,6 +51,9 @@ SET(HEADER_FILES
     src/editor/parser_edit_style.h
     src/editor/results_edit.h
     src/editor/results_edit_style.h
+    src/editor/lexer/lexer_find.h
+    src/editor/lexer/lexer_model.h
+    src/editor/lexer/word_list_util.h
     src/frame/frame_manager.h
     src/frame/frame_options_view.h
     src/frame/frame_style.h
@@ -144,6 +147,9 @@ SET(SOURCE_FILES
     src/editor/parser_edit_style.cpp
     src/editor/results_edit.cpp
     src/editor/results_edit_style.cpp
+    src/editor/lexer/lexer_find.cpp
+    src/editor/lexer/lexer_model.cpp
+    src/editor/lexer/word_list_util.cpp
     src/frame/frame_manager.cpp
     src/frame/frame_options_view.cpp
     src/frame/frame_style.cpp
@@ -327,8 +333,7 @@ TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Widgets_LIBRARIES})
 TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Core_LIBRARIES})
 TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Gui_LIBRARIES})
 
-TARGET_LINK_LIBRARIES(rdo_studio ${Boost_PROGRAM_OPTIONS_LIBRARY})
-TARGET_LINK_LIBRARIES(rdo_studio ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(rdo_studio ${Boost_LIBRARIES})
 
 TARGET_LINK_LIBRARIES(rdo_studio rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_studio rdo_kernel)

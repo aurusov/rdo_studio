@@ -4,7 +4,7 @@
 
 MESSAGE(STATUS "CREATE  RDO_RUNTIME  LIBRARY")
 
-FIND_PACKAGE(Boost COMPONENTS system filesystem thread date_time REQUIRED)
+FIND_PACKAGE(Boost COMPONENTS system filesystem thread date_time chrono REQUIRED)
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
