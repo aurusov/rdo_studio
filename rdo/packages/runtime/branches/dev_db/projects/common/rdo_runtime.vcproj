@@ -2010,7 +2010,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\type\type_db_i.h"
+				RelativePath="..\..\headers\type\type_db_i.h"
 				>
 			</File>
 			<Filter
