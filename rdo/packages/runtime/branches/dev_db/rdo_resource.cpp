@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -269,6 +270,24 @@ CREF(RDOValue) RDOResource::getParam(ruint index)
 	}
 
 	return m_paramList[index];
+}
+
+void RDOResource::serializeInDB () const
+{
+	m_db->insertRow("rss",QString("%1,%2,'trace'")//костыль
+		.arg(getTraceID())
+		.arg(boost::lexical_cast<int>(getTypeId())));
+	int rss_id = m_db->queryExecIndex("rss");
+	int param_id = -1;
+
+	BOOST_FOREACH(const RDOValue& param, m_paramList)
+	{
+		param.serializeInDB(*m_db);
+		m_db->insertRow("rss_param",QString("%1,%2,%3")
+			.arg(rss_id)
+			.arg(++param_id)
+			.arg(m_db->popContext<int>()));
+	}
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

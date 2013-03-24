@@ -18,7 +18,6 @@
 	#include <float.h>
 #endif // COMPILER_GCC
 #include <iomanip>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdodebug.h"
 #include "utils/rdoanimation.h"
@@ -282,20 +281,7 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 #endif
 	m_resourceListByTime.push_back(pResource);
 
-	m_db->insertRow("rss",QString("%1,%2,'trace'")//костыль
-		.arg(pResource->getTraceID())
-		.arg(boost::lexical_cast<int>(pResource->getTypeId())));
-	int rss_id = m_db->queryExecIndex("rss");
-	int param_id = -1;
-
-	BOOST_FOREACH(const RDOValue& param, pResource->getParamList())
-	{
-		param.serializeInDB(*m_db);
-		m_db->insertRow("rss_param",QString("%1,%2,%3")
-			.arg(rss_id)
-			.arg(++param_id)
-			.arg(m_db->popContext<int>()));
-	}
+	pResource->serializeInDB();
 }
 
 PTR(GeneralDB) RDORuntime::getDB()

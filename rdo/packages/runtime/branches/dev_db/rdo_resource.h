@@ -78,6 +78,7 @@ public:
 	virtual tstring whoAreYou           ();
 	void            incRef              ();
 	void            decRef              ();
+	void            serializeInDB       () const;
 
 protected:
 	ParamList      m_paramList;
