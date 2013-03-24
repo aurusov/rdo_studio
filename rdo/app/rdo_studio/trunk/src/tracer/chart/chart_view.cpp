@@ -301,7 +301,7 @@ void ChartView::updateScrollBars()
 	int size;
 	if (!doc->getTimes().empty())
 	{
-		size = roundDouble((doc->getTimes().back()->time - doc->getTimes().front()->time) * double(m_timeScale));
+		size = rdo::roundDouble((doc->getTimes().back()->time - doc->getTimes().front()->time) * double(m_timeScale));
 		if (doUnwrapTime())
 		{
 			size += m_pStyle->pFontsTicks.tickWidth * doc->getTicksCount();
@@ -455,7 +455,7 @@ void ChartView::setFromTo()
 		ChartDoc::TimesList::const_iterator it;
 		for (it = doc->getTimes().begin(); it != doc->getTimes().end(); ++it)
 		{
-			it_pos = roundDouble(((*it)->time - doc->getTimes().front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks.tickWidth;
+			it_pos = rdo::roundDouble(((*it)->time - doc->getTimes().front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks.tickWidth;
 			it_max_pos = it_pos + m_pStyle->pFontsTicks.tickWidth * (*it)->eventCount;
 			if (it_pos == m_SM_X.position)
 			{
@@ -491,7 +491,7 @@ void ChartView::setFromTo()
 			{
 				m_drawToX = m_drawFromX;
 				int delta = m_drawToX.eventCount * m_pStyle->pFontsTicks.tickWidth - m_chartRect.width();
-				m_drawToEventCount = delta >= 0 ? roundDouble((double)delta / (double)m_pStyle->pFontsTicks.tickWidth) : m_drawToX.eventCount;
+				m_drawToEventCount = delta >= 0 ? rdo::roundDouble((double)delta / (double)m_pStyle->pFontsTicks.tickWidth) : m_drawToX.eventCount;
 				it_max_pos = m_drawToX.eventCount * m_pStyle->pFontsTicks.tickWidth;
 				if (it_max_pos > m_chartRect.width())
 				{
@@ -510,7 +510,7 @@ void ChartView::setFromTo()
 			int pos = m_SM_X.position + m_chartRect.width();
 			for (; it != doc->getTimes().end(); ++it)
 			{
-				it_pos = roundDouble(((*it)->time - doc->getTimes().front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks.tickWidth;
+				it_pos = rdo::roundDouble(((*it)->time - doc->getTimes().front()->time) * double(m_timeScale)) + ticks * m_pStyle->pFontsTicks.tickWidth;
 				it_max_pos = it_pos + m_pStyle->pFontsTicks.tickWidth * (*it)->eventCount;
 				if (it_pos == pos)
 				{
@@ -578,7 +578,7 @@ void ChartView::drawYAxis(QPainter& painter, const QRect& chartRect, const Chart
 			painter.setPen(m_pStyle->axisFgColor);
 
 			int count = m_captionList.size();
-			int heightoffset = roundDouble((double)chartRect.height() / (double)(count - 1));
+			int heightoffset = rdo::roundDouble((double)chartRect.height() / (double)(count - 1));
 			tmprect.setTop(chartRect.bottom());
 			int index = 0;
 			for (std::vector<tstring>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)

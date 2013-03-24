@@ -67,4 +67,16 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	return tstring( s.begin(), s.end() );
 }
 
+int roundDouble(double val)
+{
+	if (val >= 0)
+	{
+		return (val - (int)val < 0.5) ? (int)val : (int)val + 1;
+	}
+	else
+	{
+		return (val - (int)val > - 0.5) ? (int)val : (int)val - 1;
+	}
+}
+
 CLOSE_RDO_NAMESPACE

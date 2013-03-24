@@ -18,6 +18,4 @@
 #include "utils/rdomacros.h"
 #include "utils/rdodebug.h"
 
-int  roundDouble(const double val);
-
 #endif // _RDO_STUDIO_STDPCH_H_

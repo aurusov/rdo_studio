@@ -103,6 +103,12 @@ OPEN_RDO_NAMESPACE
 			return *this;
 		}
 	};
+
+	//! Округляет вещественное число до целого
+	//! \param  value - вещественное значение
+	//! \result Результат округления
+	int roundDouble(double val);
+
 CLOSE_RDO_NAMESPACE
 
 #include "utils/rdocommon.inl"

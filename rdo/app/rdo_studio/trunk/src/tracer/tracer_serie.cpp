@@ -272,10 +272,10 @@ void Serie::drawSerie(ChartView* const pView,
 			if (flag)
 				--it;
 
-			int lastY = roundDouble((double)rect.bottom() - double(ky) * ((*it)->getValue() - m_minValue));
+			int lastY = rdo::roundDouble((double)rect.bottom() - double(ky) * ((*it)->getValue() - m_minValue));
 			lastY = std::max(lastY, rect.top());
 			lastY = std::min(lastY, rect.bottom());
-			int lastX = rect.left() + roundDouble(((*it)->getModelTime()->time - pView->drawFromX().time) * double(pView->timeScale())) - pView->chartShift();
+			int lastX = rect.left() + rdo::roundDouble(((*it)->getModelTime()->time - pView->drawFromX().time) * double(pView->timeScale())) - pView->chartShift();
 			lastX = std::min(lastX, rect.right());
 
 			int ticks = 0;
@@ -327,10 +327,10 @@ void Serie::drawSerie(ChartView* const pView,
 			                || (pView->doUnwrapTime()
 			                        && ((*it)->getModelTime()->time < pView->drawToX().time || ((*it)->getModelTime()->time == pView->drawToX().time && (*it)->getEventID() <= pView->drawToEventCount())))))
 			{
-				y = roundDouble((double)rect.bottom() - double(ky) * ((*it)->getValue() - m_minValue));
+				y = rdo::roundDouble((double)rect.bottom() - double(ky) * ((*it)->getValue() - m_minValue));
 				y = std::max(y, rect.top());
 				y = std::min(y, rect.bottom());
-				x = rect.left() + roundDouble(((*it)->getModelTime()->time - pView->drawFromX().time) * double(pView->timeScale())) - pView->chartShift();
+				x = rect.left() + rdo::roundDouble(((*it)->getModelTime()->time - pView->drawFromX().time) * double(pView->timeScale())) - pView->chartShift();
 				if (pView->doUnwrapTime())
 				{
 					x += (ticks + (*it)->getEventID()) * pView->style()->pFontsTicks.tickWidth;
