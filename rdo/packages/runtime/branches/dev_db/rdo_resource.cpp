@@ -199,6 +199,7 @@ CREF(RDOValue) RDOResource::getParam(ruint index)
 {
 	ASSERT(index < m_paramList.size());
 
+#ifndef DB_CACHE_ENABLE
 	QSqlQuery query;
 
 	int traceID = getTraceID();
@@ -268,11 +269,12 @@ CREF(RDOValue) RDOResource::getParam(ruint index)
 			m_paramList[index] = RDOValue(varValueIdentificator);
 		}
 	}
+#endif
 
 	return m_paramList[index];
 }
 
-void RDOResource::serializeInDB () const
+void RDOResource::serializeInDB() const
 {
 	m_db->insertRow("rss",QString("%1,%2,'trace'")//костыль
 		.arg(getTraceID())
