@@ -10,7 +10,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGlobal>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/static_assert.h"
 #include "app/rdo_studio/src/style.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
@@ -21,9 +23,17 @@ namespace rdo { namespace gui { namespace style {
 // -------------------- StyleFont
 // --------------------------------------------------------------------------------
 StyleFont::StyleFont()
+	: size(10)
 {
+#if defined(Q_OS_WIN)
 	name = "Courier New";
 	size = 10;
+#elif defined(Q_OS_LINUX)
+	name = "Courier";
+	size = 11;
+#else
+	STATIC_ASSERT(UndefinedOS);
+#endif
 }
 
 StyleFont::~StyleFont()
