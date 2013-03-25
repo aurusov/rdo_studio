@@ -478,7 +478,7 @@ void RDOThreadRepository::createRDOX()
 {
 	BOOST_AUTO(it, m_files.find(rdoModelObjects::RDOX));
 	ASSERT(it != m_files.end());
-	tstring rdoxFileName = m_modelPath + m_modelName + it->second.m_extention;
+	boost::filesystem::path rdoxFileName = rdo::locale::convertToWStr(m_modelPath + m_modelName + it->second.m_extention);
 	if (!rdo::File::exist(rdoxFileName))
 	{
 		pugi::xml_document doc;
@@ -493,7 +493,7 @@ void RDOThreadRepository::createRDOX()
 		if (ofs.good())
 		{
 			doc.save(ofs);
-			m_projectName.m_fullFileName = rdoxFileName;
+			m_projectName.m_fullFileName = rdo::locale::convertFromWStr(rdoxFileName.wstring());
 			m_projectName.m_rdox         = true;
 		}
 	}

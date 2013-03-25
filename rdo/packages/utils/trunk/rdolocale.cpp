@@ -111,4 +111,9 @@ std::wstring locale::convertToWStr(const std::string& txt, const std::locale& lo
 	return boost::locale::conv::to_utf<wchar_t>(txt, locale);
 }
 
+std::string locale::convertFromWStr(const std::wstring& txt, const std::locale& locale)
+{
+	return boost::locale::conv::from_utf(txt, locale);
+}
+
 } // namespace rdo
