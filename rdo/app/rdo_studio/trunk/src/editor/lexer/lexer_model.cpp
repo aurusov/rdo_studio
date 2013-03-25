@@ -232,7 +232,7 @@ bool isIdentifier(int ch)
 
 bool isDigit(int ch)
 {
-	return isdigit(ch) ? true : false;
+	return iswdigit(ch) ? true : false;
 }
 
 }}} // namespace rdo::gui::lexer
