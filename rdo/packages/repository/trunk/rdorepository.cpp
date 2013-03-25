@@ -218,6 +218,7 @@ void RDOThreadRepository::newModel(CPTRC(NewModel) data)
 		{
 			boost::filesystem::path path = data->m_path;
 			extractName((path / boost::filesystem::path(data->m_name + m_files[rdoModelObjects::RDOX].m_extention)).string());
+			path = rdo::locale::convertToWStr(path.string());
 			if (!rdo::File::exist(path))
 			{
 				boost::filesystem::create_directory(path);
