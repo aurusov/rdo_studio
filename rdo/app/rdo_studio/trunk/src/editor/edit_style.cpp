@@ -206,10 +206,8 @@ EditStyle& EditStyle::operator =( const EditStyle& style )
 
 rbool EditStyle::operator ==( const EditStyle& style ) const
 {
-	rbool flag = StyleBase::operator==( style );
-	flag &= ;
-	flag &= ;
 	return
+		StyleBase::operator==(style) &&
 		tab              == style.tab &&
 		window           == style.window &&
 		defaultColor     == style.defaultColor &&
