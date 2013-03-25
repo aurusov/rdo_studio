@@ -1291,13 +1291,18 @@ void Edit::onSearchBookmarkNextPrev(
 		Group::List::const_iterator it = std::find(m_pGroup->begin(), m_pGroup->end(), this);
 		ASSERT(it != m_pGroup->end());
 
+		ruint thisBookmarkCount = 0;
 		for (;;)
 		{
 			it = nextPrevGroup(it);
 
 			if (*it == this)
 			{
-				break;
+				++thisBookmarkCount;
+				if (thisBookmarkCount > 1)
+				{
+					break;
+				}
 			}
 
 			if (nextPrevFun(*it, false, false))
