@@ -916,8 +916,11 @@ rbool Model::canCloseModel()
 void Model::closeModelFromRepository()
 {
 	setHasModel(false);
-	m_pView->parentWidget()->close();
-	m_pView  = NULL;
+	if (m_pView)
+	{
+		m_pView->parentWidget()->close();
+		m_pView  = NULL;
+	}
 	m_modelClosed = true;
 	setName("");
 }
