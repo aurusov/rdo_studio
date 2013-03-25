@@ -112,7 +112,8 @@ rbool ParserStyle::styleDefault( const int styleType ) const
 
 rbool ParserStyle::styleUsing( const int styleType ) const
 {
-	return styleType == SCE_RDO_DEFAULT      || styleType == SCE_RDO_IDENTIFIER   ||
+	return
+		styleType == SCE_RDO_DEFAULT      || styleType == SCE_RDO_IDENTIFIER   ||
 		styleType == SCE_RDO_KEYWORD      || styleType == SCE_RDO_FUNCTION     ||
 		styleType == SCE_RDO_TRACE        || styleType == SCE_RDO_COMMENT_CPP  ||
 		styleType == SCE_RDO_COMMENT_LINE || styleType == SCE_RDO_NUMBER       ||

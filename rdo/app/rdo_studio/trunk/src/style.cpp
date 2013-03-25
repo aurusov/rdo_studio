@@ -129,21 +129,17 @@ StyleBase::~StyleBase()
 
 StyleBase& StyleBase::operator =( const StyleBase& style )
 {
-	font = style.font;
-	defaultStyle = style.defaultStyle;
-
+	font            = style.font;
+	defaultStyle    = style.defaultStyle;
 	defaultColor    = style.defaultColor;
 	backgroundColor = style.backgroundColor;
-
 	return *this;
 }
 
 rbool StyleBase::operator ==( const StyleBase& style ) const
 {
-	rbool flag = true;
-	flag &= font == style.font;
-
-	return flag &&
+	return
+		font            == style.font &&
 		defaultColor    == style.defaultColor &&
 		backgroundColor == style.backgroundColor &&
 		defaultStyle    == style.defaultStyle;
