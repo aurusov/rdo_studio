@@ -21,6 +21,7 @@ namespace rdo { namespace gui { namespace lexer {
 
 bool isOperator  (int ch);
 bool isIdentifier(int ch);
+bool isDigit     (int ch);
 
 }}} // namespace rdo::gui::lexer
 
