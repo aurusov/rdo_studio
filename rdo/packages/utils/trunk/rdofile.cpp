@@ -18,7 +18,6 @@
 #else
 #   include <unistd.h>
 #endif // COMPILER_VISUAL_STUDIO
-#include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/uuid/uuid.hpp>
@@ -47,7 +46,12 @@ rbool File::create(CREF(tstring) name, CREF(tstring) content)
 
 rbool File::exist(CREF(tstring) name)
 {
-	return  boost::filesystem::exists(rdo::locale::convertToWStr(name));
+	return exist(boost::filesystem::path(rdo::locale::convertToWStr(name)));
+}
+
+rbool File::exist(CREF(boost::filesystem::path) path)
+{
+	return boost::filesystem::exists(path);
 }
 
 rbool File::read_only(CREF(tstring) name)
@@ -59,6 +63,11 @@ rbool File::read_only(CREF(tstring) name)
 #ifdef COMPILER_GCC
 	return access(name.c_str(), R_OK) == 0 && access(name.c_str(), W_OK) == -1;
 #endif // COMPILER_GCC
+}
+
+rbool File::read_only(CREF(boost::filesystem::path) path)
+{
+	return read_only(path.string());
 }
 
 rbool File::unlink(CREF(tstring) name)

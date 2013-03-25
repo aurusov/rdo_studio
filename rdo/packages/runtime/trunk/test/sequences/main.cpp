@@ -60,7 +60,7 @@ const double   g_ksiEtalon            = 50.9985;                    //!< таб�
 template <class T, class F, class contstr>
 void onGenerateData(F binder, contstr g_fileName)
 {
-	if (rdo::File::exist(g_fileName.c_str()))
+	if (rdo::File::exist(g_fileName))
 		return;
 
 	T sequence(g_seed);

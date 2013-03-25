@@ -12,6 +12,7 @@
 #define _UTILS_RDOFILE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/filesystem.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
@@ -28,17 +29,27 @@ public:
 	//! Проверяет существование файла
 	//! \param name - имя файла
 	//! \result \b true, если существует
-	static rbool   exist          (CREF(tstring) name);
+	static rbool exist(CREF(tstring) name);
+
+	//! Проверяет существование файла
+	//! \param name - имя файла
+	//! \result \b true, если существует
+	static rbool exist(CREF(boost::filesystem::path) path);
 
 	//! Проверяет признак только чтение
 	//! \param name - имя файла
 	//! \result \b true, если у файла установлен атрибут только чтение
-	static rbool   read_only      (CREF(tstring) name);
+	static rbool read_only(CREF(boost::filesystem::path) path);
+
+	//! Проверяет признак только чтение
+	//! \param name - имя файла
+	//! \result \b true, если у файла установлен атрибут только чтение
+	static rbool read_only(CREF(tstring) name);
 
 	//! Удаляет файл
 	//! \param name - имя файла
 	//! \result \b true, если файл удалён удачно
-	static rbool   unlink         (CREF(tstring) name);
+	static rbool unlink(CREF(tstring) name);
 
 	//! Разбивает полное имя файла на его составляющие
 	//! \param[in]  name     - полное имя файла
@@ -46,7 +57,7 @@ public:
 	//! \param[out] fileName - имя
 	//! \param[out] fileExt  - расширение
 	//! \result \b true, если получилось извлечь данные
-	static rbool   splitpath      (CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fileName, REF(tstring) fileExt);
+	static rbool splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fileName, REF(tstring) fileExt);
 
 	//! Возвращает полное имя временного файла
 	//! \result полное имя временного файла
@@ -60,7 +71,7 @@ public:
 	//! Удаляет пустоты (пробелы, табуляцию, переводы строк) в конце файла
 	//! \param name - имя файла
 	//! \result \b true, если всё прошло успешно
-	static rbool   trimLeft       (CREF(tstring) name);
+	static rbool trimLeft(CREF(tstring) name);
 };
 
 CLOSE_RDO_NAMESPACE
