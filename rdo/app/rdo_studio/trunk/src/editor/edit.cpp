@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
 #include <boost/bind.hpp>
+#include <boost/format.hpp>
 #include <boost/range.hpp>
 #include <boost/range/algorithm/for_each.hpp>
 #include <boost/range/algorithm/find_if.hpp>
@@ -1004,49 +1005,65 @@ tstring Edit::saveAsRTF(int start, int end) const
 	tstring::size_type prevLength = saveStr.length();
 	rbool prevCR = false;
 	int styleCurrent = -1;
-	for (i = start; i < end; i++)
+
+	//! @todo убрать копипаст
+	char* word = new char[end - start + 1];
+	TextRange tr;
+	tr.lpstrText  = word;
+	tr.chrg.cpMin = start;
+	tr.chrg.cpMax = end;
+	sendEditor(SCI_GETTEXTRANGE, 0, (long)&tr);
+	tstring str(tr.lpstrText);
+	delete[] word;
+	std::wstring wstr = rdo::locale::convertToWStr(str);
+
+	i = start;
+	for (ruint chIndex = 0; chIndex < wstr.length(); ++chIndex)
 	{
-		int m_pStyle = sendEditor(SCI_GETSTYLEAT, i);
-		if (!style->styleUsing(m_pStyle))
+		int styleID = sendEditor(SCI_GETSTYLEAT, i);
+		if (!style->styleUsing(styleID))
 		{
 			continue;
 		}
 
-		char ch = (char)sendEditor(SCI_GETCHARAT, i);
-		if (m_pStyle != styleCurrent)
+		if (styleID != styleCurrent)
 		{
-			GetRTFStyleChange(deltaStyle, lastStyle, styles[m_pStyle]);
+			GetRTFStyleChange(deltaStyle, lastStyle, styles[styleID]);
 			if (*deltaStyle)
 			{
 				saveStr += deltaStyle;
 			}
-			styleCurrent = m_pStyle;
+			styleCurrent = styleID;
 		}
-		if (ch == '\\')
+
+		wchar_t ch = wstr[chIndex];
+		if (ch == L'\\')
 		{
 			saveStr += "\\\\";
 		}
-		else if (ch == '\t')
+		else if (ch == L'\t')
 		{
 			saveStr += RTF_TAB;
 		}
-		else if (ch == '\n')
+		else if (ch == L'\n')
 		{
 			if (!prevCR)
 			{
 				saveStr += RTF_EOLN;
 			}
 		}
-		else if (ch == '\r')
+		else if (ch == L'\r')
 		{
 			saveStr += RTF_EOLN;
 		}
 		else
 		{
-			saveStr += ch;
+			saveStr += boost::str(boost::format("\\u%1%?") % + (ruint)ch);
 		}
 
-		prevCR = ch == '\r';
+		prevCR = ch == L'\r';
+
+		i += rdo::locale::convertFromWStr(wstr.substr(chIndex, 1)).size();
 	}
 	rbool wasGenerated = prevLength != saveStr.length();
 	if (wasGenerated)
