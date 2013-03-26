@@ -78,7 +78,7 @@ void Find::setEditorStyle(FindStyle* pStyle)
 void Find::setKeyword(CREF(QString) keyword, const rbool matchCase) const
 {
 	sendEditorString(SCI_SETPROPERTY, reinterpret_cast<unsigned long>("find_matchcase"), matchCase ? "1" : "0");
-	sendEditorString(SCI_SETKEYWORDS, SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX, keyword);
+	sendEditorString(SCI_SETKEYWORDS, SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX, keyword.toStdString().c_str());
 }
 
 void Find::onHelpContext()

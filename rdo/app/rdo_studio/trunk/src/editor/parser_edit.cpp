@@ -193,7 +193,7 @@ void Parser::replaceCurrent(CREF(QString) str, int changePosValue) const
 		? getCurrentPos()
 		: 0;
 
-	sendEditorString(SCI_REPLACESEL, 0, str);
+	sendEditorString(SCI_REPLACESEL, str.toStdString());
 
 	if (changePosValue != -1)
 	{

@@ -169,11 +169,6 @@ void Edit::catchCharAdded(int ch)
 	}
 }
 
-long Edit::sendEditorString(ruint msg, unsigned long wParam, CREF(QString) str) const
-{
-	return super::sends(msg, wParam, str.toStdString().c_str());
-}
-
 long Edit::sendEditorString(ruint msg, CREF(std::string) str) const
 {
 	return super::sends(msg, str.length(), str.c_str());
@@ -636,18 +631,17 @@ void Edit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool sear
 {
 	if (m_haveFound)
 	{
-		int replaceLen = replaceWhat.length();
 		CharacterRange cr = getSelectionRange();
 		if (cr.cpMin == cr.cpMax)
 		{
 			cr.cpMin = sendEditor(SCI_WORDSTARTPOSITION, getCurrentPos(), true);
 			cr.cpMax = cr.cpMin + getCurrentWord().length();
 		}
+		std::string replaceStr = replaceWhat.toStdString();
 		sendEditor(SCI_SETTARGETSTART, cr.cpMin);
 		sendEditor(SCI_SETTARGETEND,   cr.cpMax);
-		int lenReplaced = replaceLen;
-		sendEditorString(SCI_REPLACETARGET, replaceLen, replaceWhat);
-		setSelection(cr.cpMin + lenReplaced, cr.cpMin);
+		sendEditorString(SCI_REPLACETARGET, replaceStr);
+		setSelection(cr.cpMin + replaceStr.length(), cr.cpMin);
 		m_haveFound = false;
 	}
 	findNext(findWhat, searchDown, matchCase, matchWholeWord);
@@ -661,7 +655,8 @@ void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool m
 	int startPosition = 0;
 	int endPosition   = getLength();
 
-	int replaceLen = replaceWhat.length();
+	std::string replaceStr = replaceWhat.toStdString();
+	std::string::size_type replaceLen = replaceStr.length();
 	int flags = (matchCase ? SCFIND_MATCHCASE : 0) | (matchWholeWord ? SCFIND_WHOLEWORD : 0);
 
 	sendEditor(SCI_SETTARGETSTART, startPosition);
@@ -676,10 +671,9 @@ void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool m
 		while (posFind != -1)
 		{
 			int lenTarget = sendEditor(SCI_GETTARGETEND) - sendEditor(SCI_GETTARGETSTART);
-			int lenReplaced = replaceLen;
-			sendEditorString(SCI_REPLACETARGET, replaceLen, replaceWhat);
-			endPosition += lenReplaced - lenTarget;
-			lastMatch    = posFind + lenReplaced;
+			sendEditorString(SCI_REPLACETARGET, replaceStr);
+			endPosition += replaceLen - lenTarget;
+			lastMatch    = posFind + replaceLen;
 			if (lenTarget <= 0)
 				++lastMatch;
 			sendEditor(SCI_SETTARGETSTART, lastMatch);
