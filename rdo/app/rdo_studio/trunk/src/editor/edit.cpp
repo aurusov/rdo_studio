@@ -174,6 +174,11 @@ long Edit::sendEditorString(ruint msg, unsigned long wParam, CREF(QString) str) 
 	return super::sends(msg, wParam, str.toStdString().c_str());
 }
 
+long Edit::sendEditorString(ruint msg, CREF(std::string) str) const
+{
+	return super::sends(msg, str.length(), str.c_str());
+}
+
 int Edit::getNewMarker()
 {
 	++m_markerCount;
@@ -470,8 +475,7 @@ void Edit::onSearchFindPreviousCurrent()
 
 void Edit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
-	int findLen = findWhat.length();
-	if (!findLen)
+	if (findWhat.isEmpty())
 		return;
 
 	if (!getSelection().empty() && !m_haveFound)
@@ -500,7 +504,7 @@ void Edit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, r
 	sendEditor(SCI_SETTARGETSTART, startPosition);
 	sendEditor(SCI_SETTARGETEND, endPosition);
 	sendEditor(SCI_SETSEARCHFLAGS, flags);
-	int posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
+	int posFind = sendEditorString(SCI_SEARCHINTARGET, findWhat.toStdString());
 	if (posFind == -1)
 	{
 		if (!searchDown)
@@ -515,7 +519,7 @@ void Edit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, r
 		}
 		sendEditor(SCI_SETTARGETSTART, startPosition);
 		sendEditor(SCI_SETTARGETEND, endPosition);
-		posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
+		posFind = sendEditorString(SCI_SEARCHINTARGET, findWhat.toStdString());
 	}
 	if (posFind == -1)
 	{
@@ -651,8 +655,7 @@ void Edit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool sear
 
 void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool matchCase, rbool matchWholeWord)
 {
-	int findLen = findWhat.length();
-	if (!findLen)
+	if (findWhat.isEmpty())
 		return;
 
 	int startPosition = 0;
@@ -664,7 +667,7 @@ void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool m
 	sendEditor(SCI_SETTARGETSTART, startPosition);
 	sendEditor(SCI_SETTARGETEND, endPosition);
 	sendEditor(SCI_SETSEARCHFLAGS, flags);
-	int posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
+	int posFind = sendEditorString(SCI_SEARCHINTARGET, findWhat.toStdString());
 
 	if ((posFind != -1) && (posFind <= endPosition))
 	{
@@ -681,7 +684,7 @@ void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool m
 				++lastMatch;
 			sendEditor(SCI_SETTARGETSTART, lastMatch);
 			sendEditor(SCI_SETTARGETEND, endPosition);
-			posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
+			posFind = sendEditorString(SCI_SEARCHINTARGET, findWhat.toStdString());
 		}
 		setSelection(lastMatch, lastMatch);
 		sendEditor(SCI_ENDUNDOACTION);
@@ -1382,8 +1385,7 @@ void Edit::onViewZoomReset()
 
 int Edit::findPos(CREF(QString) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord) const
 {
-	int findLen = findWhat.length();
-	if (!findLen)
+	if (findWhat.isEmpty())
 		return -1;
 
 	int startPosition = getPositionFromLine(startFromLine);
@@ -1394,7 +1396,7 @@ int Edit::findPos(CREF(QString) findWhat, const int startFromLine, const rbool m
 	sendEditor(SCI_SETTARGETSTART, startPosition);
 	sendEditor(SCI_SETTARGETEND, endPosition);
 	sendEditor(SCI_SETSEARCHFLAGS, flags);
-	return sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
+	return sendEditorString(SCI_SEARCHINTARGET, findWhat.toStdString());
 }
 
 tstring Edit::getLine(const int line) const
