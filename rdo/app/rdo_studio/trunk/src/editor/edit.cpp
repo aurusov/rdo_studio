@@ -331,7 +331,7 @@ tstring Edit::getSelection() const
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
 	sendEditor(SCI_GETSELTEXT, 0, (long)selection);
-	tstring str = rdo::locale::convertFromCLocale(selection);
+	tstring str = selection;
 	delete[] selection;
 	return str;
 }
