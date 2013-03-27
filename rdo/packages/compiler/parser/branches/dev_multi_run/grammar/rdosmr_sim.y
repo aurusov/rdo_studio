@@ -283,17 +283,17 @@ smr_launch_line_event_planning
 		if(pSMR->Check() )
 		{
 			tstring    eventName          = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
-			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($6);
+			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
 			LPRDOEvent pEvent             = PARSER->findEvent(eventName);
 			if (!pEvent)
 			{
-				PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
+				PARSER->error().error(@2, rdo::format("Попытка запланировать неизвестное событие: %s", eventName.c_str()));
 			}
 
 			ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
 			if (arithmIt == pArithmList->getContainer().end())
 			{
-				PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
+				PARSER->error().error(@1, rdo::format("Не указано время планирования события: %s", eventName.c_str()));
 			}
 
 			LPRDOFUNArithm pTimeArithm = *arithmIt;
@@ -317,7 +317,7 @@ smr_launch_line_event_planning
 			ASSERT(pBaseOperation);
 
 			rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
-			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @5, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
 			ASSERT(pEventPlan);
 			pEvent->setParamList(pParamList);
 			pEventPlan->setEvent(pBaseOperation);
