@@ -862,8 +862,6 @@ OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 RDOThreadSimulator::RDOThreadSimulator()
 	: RDOThreadMT     ("RDOThreadSimulator"          )
 	, m_pThreadRuntime(NULL                          )
-	: RDOThreadMT     (_T("RDOThreadSimulator")      )
-	, m_pThreadRuntime(NULL                          )
 	, m_exitCode      (rdo::simulation::report::EC_OK)
 	, m_runCount      (0                             )
 	, m_runNumber     (0                             )
@@ -1236,7 +1234,6 @@ void RDOThreadSimulator::closeModel()
 	}
 }
 
-void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info)
 void RDOThreadSimulator::runSeries()
 {
 	if (m_runNumber == 0)
@@ -1257,7 +1254,7 @@ void RDOThreadSimulator::runSeries()
 	}
 }
 
-void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info)
+void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info)
 {
 #ifdef DISABLE_CONVERTER
 	UNUSED(info);
