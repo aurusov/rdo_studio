@@ -61,6 +61,7 @@ MainWindow::MainWindow()
 	, m_pInsertMenuSignalMapper(NULL)
 	, m_hasWindow(false)
 	, m_pSeparator(NULL)
+	, m_tabActivated(false)
 {
 	setupUi(this);
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
@@ -795,6 +796,12 @@ void MainWindow::onUpdateActions(rbool activated)
 {
 	updateAction(actWindowCascade       , activated, mdiArea, &QMdiArea::cascadeSubWindows);
 	updateAction(actWindowTitleHorzontal, activated, mdiArea, &QMdiArea::tileSubWindows   );
+
+	if (activated)
+		QObject::connect(actWindowTabbedViewMode, &QAction::triggered, boost::function<void ()>(boost::bind(&MainWindow::setTabbedViewMode, this)));
+	else
+		QObject::disconnect(actWindowTabbedViewMode, &QAction::triggered, NULL, NULL);
+	actWindowTabbedViewMode->setEnabled(activated);
 }
 
 bool MainWindow::eventFilter(QObject *target, QEvent *event)
@@ -809,5 +816,11 @@ bool MainWindow::eventFilter(QObject *target, QEvent *event)
 	}
 
 	return parent_type::eventFilter(target, event);
+}
+
+void MainWindow::setTabbedViewMode()
+{
+	m_tabActivated = !m_tabActivated;
+	mdiArea->setViewMode(m_tabActivated ? QMdiArea::TabbedView : QMdiArea::SubWindowView);
 }
 
