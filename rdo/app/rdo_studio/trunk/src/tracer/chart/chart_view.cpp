@@ -964,6 +964,7 @@ void ChartView::paintEvent(QPaintEvent*)
 		{
 			drawLegend(painter, m_legendRect);
 		}
+		recalcLayout();
 
 		painter.setPen(m_pStyle->defaultColor);
 
