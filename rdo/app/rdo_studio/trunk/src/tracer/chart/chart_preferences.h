@@ -34,11 +34,13 @@ private:
 
 	PTR(QColorDialog) colorDlg;
 
-	int       m_valueCountX;
-	int       m_valueCountY;
-	QString   m_chartTitle;
+	int      m_valueCountX;
+	int      m_valueCountY;
+	QString  m_chartTitle;
 
-	int       m_sizeMarker;
+	int      m_sizeMarker;
+
+	int      traceIndex;
 
 	PTR(ChartView)  m_pView;
 	PTR(ChartSerie) m_pSerie;
@@ -60,6 +62,7 @@ private slots:
 	void onMarkerSize(const QString& text);
 	void onColorDialog();
 	void onColorSelected(const QColor& color);
+	void onTraceValue(int index);
 	void onValueComboBox(int index);
 	void onCheckAllData();
 	void onCheckInput(const QString& text);
