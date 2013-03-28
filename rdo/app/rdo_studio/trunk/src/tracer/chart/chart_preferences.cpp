@@ -286,7 +286,7 @@ void ChartPreferences::onColorSelected(const QColor& color)
 
 void ChartPreferences::onTraceValue(int index)
 {
-	m_pSerie = m_pView->getDocument()->getSerieList().at(index);
+	UNUSED(index);
 	onCheckAllData();
 }
 
