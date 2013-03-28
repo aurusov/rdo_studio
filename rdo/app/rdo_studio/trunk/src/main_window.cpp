@@ -59,7 +59,6 @@ const MainWindow::InsertMenuData::Position& MainWindow::InsertMenuData::position
 MainWindow::MainWindow()
 	: m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
-	, m_hasWindow(false)
 	, m_pSeparator(NULL)
 {
 	setupUi(this);
@@ -749,21 +748,35 @@ void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
 		addNewAction(window);
 	}
 	removeExcessActions();
-	onUpdateActions(!mdiArea->subWindowList().empty());
 }
 
 void MainWindow::addNewAction(QMdiSubWindow* window)
 {
+	ASSERT(window);
+
 	QList<QMdiSubWindow *> windowList = mdiArea->subWindowList();
 
 	if (windowList.count() == 1)
-		m_pSeparator = menuWindow->addSeparator();
+		addFirstSubWindow();
 
 	window->installEventFilter(this);
 
 	QAction* pAction = menuWindow->addAction(window->windowTitle());
 	m_pSubWindows[window] = pAction;
 	QObject::connect(pAction, &QAction::triggered, boost::function<void()>(boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window)));
+}
+
+void MainWindow::addFirstSubWindow()
+{
+	m_pSeparator = menuWindow->addSeparator();
+	onUpdateActions(true);
+}
+
+void MainWindow::removeLastSubWindow()
+{
+	menuWindow->removeAction(m_pSeparator);
+	m_pSeparator = NULL;
+	onUpdateActions(false);
 }
 
 void MainWindow::removeExcessActions()
@@ -785,10 +798,7 @@ void MainWindow::removeExcessActions()
 	}
 
 	if (m_pSeparator && windowList.empty())
-	{
-		menuWindow->removeAction(m_pSeparator);
-		m_pSeparator = NULL;
-	}
+		removeLastSubWindow();
 }
 
 void MainWindow::onUpdateActions(rbool activated)

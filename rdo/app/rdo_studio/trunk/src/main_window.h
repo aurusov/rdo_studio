@@ -97,7 +97,6 @@ private:
 	LPStatusBar     m_pStatusBar;
 	ReopenList      m_reopenList;
 	QSignalMapper*  m_pInsertMenuSignalMapper;
-	bool            m_hasWindow;
 	QAction*        m_pSeparator;
 
 	void createStatusBar ();
@@ -129,6 +128,8 @@ private:
 
 	void addNewAction(QMdiSubWindow* window);
 	void removeExcessActions();
+	void addFirstSubWindow();
+	void removeLastSubWindow();
 
 	void setTabbedViewMode(bool checked);
 };
