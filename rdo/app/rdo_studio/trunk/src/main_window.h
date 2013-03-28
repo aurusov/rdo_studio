@@ -98,7 +98,6 @@ private:
 	ReopenList      m_reopenList;
 	QSignalMapper*  m_pInsertMenuSignalMapper;
 	bool            m_hasWindow;
-	bool            m_tabActivated;
 	QAction*        m_pSeparator;
 
 	void createStatusBar ();
@@ -131,7 +130,7 @@ private:
 	void addNewAction(QMdiSubWindow* window);
 	void removeExcessActions();
 
-	void setTabbedViewMode();
+	void setTabbedViewMode(bool checked);
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOW_H_
