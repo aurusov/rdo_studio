@@ -1,0 +1,12 @@
+Visual Studio - продукт компании Microsoft, включающий в себя интегрированную среду разработки (IDE) программного обеспечения и ряд других инструментальных средств.
+
+1. В текущий момент РДО собирается MS VS 2008.
+Для компиляции РДО нет необходимости вместе с VS устанавливать графические и другие (тяжеловесные) компоненты.
+Вот список рекомендованного минимума:
+--Visual C++ Tools
+----Visual C++ Error Lookup
+----Win32 Tools
+--Visual C++ Run-Time Libraries
+----Visual C++ CRT Source Code
+----Visual C++ Static Multi-Threaded CRT Library
+----Visual C++ Dinamic CRT Libraries
