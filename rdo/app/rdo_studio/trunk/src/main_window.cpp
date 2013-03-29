@@ -68,6 +68,9 @@ MainWindow::MainWindow()
 	createToolBar   ();
 	createInsertMenu();
 
+	m_pWindowAction = new QActionGroup(menuWindow);
+	m_pWindowAction->setExclusive(true);
+
 	addAction(actSearchFindNextCurrent);
 	addAction(actSearchFindPreviousCurrent);
 	addAction(actSearchLogNext);
@@ -747,6 +750,8 @@ void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
 	{
 		addNewAction(window);
 	}
+	if (window)
+		m_pSubWindows[window]->setChecked(true);
 	removeExcessActions();
 }
 
@@ -764,6 +769,8 @@ void MainWindow::addNewAction(QMdiSubWindow* window)
 	QAction* pAction = menuWindow->addAction(window->windowTitle());
 	m_pSubWindows[window] = pAction;
 	QObject::connect(pAction, &QAction::triggered, boost::function<void()>(boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window)));
+	m_pWindowAction->addAction(pAction);
+	pAction->setCheckable(true);
 }
 
 void MainWindow::addFirstSubWindow()
@@ -789,6 +796,7 @@ void MainWindow::removeExcessActions()
 		{
 			QObject::disconnect(it->second, &QAction::triggered, NULL, NULL);
 			menuWindow->removeAction(it->second);
+			m_pWindowAction->removeAction(it->second);
 			m_pSubWindows.erase(it++);
 		}
 		else

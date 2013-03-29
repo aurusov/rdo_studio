@@ -98,6 +98,7 @@ private:
 	ReopenList      m_reopenList;
 	QSignalMapper*  m_pInsertMenuSignalMapper;
 	QAction*        m_pSeparator;
+	QActionGroup*   m_pWindowAction;
 
 	void createStatusBar ();
 	void createToolBar   ();
