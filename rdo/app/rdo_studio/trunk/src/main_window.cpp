@@ -829,7 +829,6 @@ bool MainWindow::eventFilter(QObject *target, QEvent *event)
 		if (event->type() == QEvent::WindowTitleChange && m_pSubWindows.find(pSubWindow) != m_pSubWindows.end())
 		{
 			m_pSubWindows[pSubWindow]->setText(pSubWindow->windowTitle());
-			return true;
 		}
 	}
 
