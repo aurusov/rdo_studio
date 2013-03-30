@@ -273,6 +273,10 @@ smr_launch_line
 	| smr_launch_line_show_rate
 	| smr_launch_line_frame_number
 	| smr_launch_line_seed
+	| error
+	{
+		PARSER->error().error(@1, rdo::format("Неизвестная инструкция"));
+	}
 	;
 
 smr_launch_line_event_planning
