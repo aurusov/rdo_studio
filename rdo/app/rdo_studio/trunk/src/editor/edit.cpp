@@ -473,19 +473,33 @@ void Edit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, r
 	if (findWhat.isEmpty())
 		return;
 
-	if (!getSelection().empty() && !m_haveFound)
+	CharacterRange cr;
+	if (m_haveFound)
 	{
-		setCurrentPos(sendEditor(searchDown ? SCI_GETSELECTIONSTART : SCI_GETSELECTIONEND));
+		cr = getSelectionRange();
 	}
 	else
 	{
-		if (!getCurrentWord().empty() && !m_haveFound)
+		CharacterRange crTemp;
+		if (!getSelection().empty())
 		{
-			setCurrentPos(sendEditor(searchDown ? SCI_WORDSTARTPOSITION : SCI_WORDENDPOSITION, getCurrentPos(), true));
+			crTemp = getSelectionRange();
 		}
+		else if (!getCurrentWord().empty())
+		{
+			crTemp.cpMin = sendEditor(SCI_WORDSTARTPOSITION, getCurrentPos(), true);
+			crTemp.cpMax = sendEditor(SCI_WORDENDPOSITION,   getCurrentPos(), true);
+		}
+		else
+		{
+			crTemp.cpMin = getCurrentPos();
+			crTemp.cpMax = getCurrentPos();
+		}
+
+		cr.cpMin = std::min(crTemp.cpMin, crTemp.cpMax);
+		cr.cpMax = std::max(crTemp.cpMin, crTemp.cpMax);
 	}
 
-	CharacterRange cr = getSelectionRange();
 	int startPosition = cr.cpMax;
 	int endPosition   = getLength();
 	if (!searchDown)
