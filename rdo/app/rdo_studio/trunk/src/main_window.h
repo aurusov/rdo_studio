@@ -126,6 +126,7 @@ private:
 
 	void updateInsertMenu(rbool enabled);
 	void onUpdateActions(rbool activated);
+	void onUpdateTabMode(rbool activated);
 
 	void addNewAction(QMdiSubWindow* window);
 	void removeExcessActions();

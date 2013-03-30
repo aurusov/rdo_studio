@@ -777,6 +777,7 @@ void MainWindow::addFirstSubWindow()
 {
 	m_pSeparator = menuWindow->addSeparator();
 	onUpdateActions(true);
+	onUpdateTabMode(true);
 }
 
 void MainWindow::removeLastSubWindow()
@@ -784,6 +785,7 @@ void MainWindow::removeLastSubWindow()
 	menuWindow->removeAction(m_pSeparator);
 	m_pSeparator = NULL;
 	onUpdateActions(false);
+	onUpdateTabMode(false);
 }
 
 void MainWindow::removeExcessActions()
@@ -813,7 +815,10 @@ void MainWindow::onUpdateActions(rbool activated)
 {
 	updateAction(actWindowCascade       , activated, mdiArea, &QMdiArea::cascadeSubWindows);
 	updateAction(actWindowTitleHorzontal, activated, mdiArea, &QMdiArea::tileSubWindows   );
+}
 
+void MainWindow::onUpdateTabMode(rbool activated)
+{
 	if (activated)
 		QObject::connect(actWindowTabbedViewMode, &QAction::triggered, boost::function<void (bool)>(boost::bind(&MainWindow::setTabbedViewMode, this, _1)));
 	else
@@ -838,5 +843,6 @@ bool MainWindow::eventFilter(QObject *target, QEvent *event)
 void MainWindow::setTabbedViewMode(bool checked)
 {
 	mdiArea->setViewMode(checked ? QMdiArea::TabbedView : QMdiArea::SubWindowView);
+	onUpdateActions(!checked);
 }
 
