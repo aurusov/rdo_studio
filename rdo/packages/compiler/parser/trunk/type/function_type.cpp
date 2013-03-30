@@ -25,7 +25,14 @@ OPEN_RDO_PARSER_NAMESPACE
 FunctionParamType::FunctionParamType(CREF(ParamList) paramList, CREF(RDOParserSrcInfo) srcInfo)
 	: RDOParserSrcInfo(srcInfo  )
 	, m_paramList     (paramList)
-{}
+{
+	if (m_paramList.empty())
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo);
+		ASSERT(pType);
+		m_paramList.push_back(pType);
+	}
+}
 
 FunctionParamType::~FunctionParamType()
 {}
