@@ -1089,7 +1089,7 @@ public:
 
 	virtual Function FindFunction(const char *name) {
 		if (lib) {
-			void *fnAddress = lib->resolve(name);
+			void *fnAddress = (void*)lib->resolve(name);
 			return static_cast<Function>(fnAddress);
 		}
 		return NULL;
@@ -1122,7 +1122,7 @@ const char *Platform::DefaultFont()
 	static char fontNameDefault[200] = "";
 	if (!fontNameDefault[0]) {
 		QFont font = QApplication::font();
-		strcpy(fontNameDefault, font.family().toAscii());
+		strcpy(fontNameDefault, font.family().toStdString().c_str());
 	}
 	return fontNameDefault;
 }
