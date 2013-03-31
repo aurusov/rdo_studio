@@ -377,6 +377,7 @@ void RDOValue::serializeInDB(REF(IDB) db) const
 	case RDOType::t_bool          : DEFINE_SERIALIZE_RDO_VALUE("bool_rv"         ,QString("'%1'").arg(QString::fromStdString(getAsString()))); break;
 	case RDOType::t_string        : DEFINE_SERIALIZE_RDO_VALUE("string_rv"       ,QString("'%1'").arg(QString::fromStdString(getString  ()))); break;
 	case RDOType::t_identificator : DEFINE_SERIALIZE_RDO_VALUE("identificator_rv",QString("'%1'").arg(QString::fromStdString(getAsString()))); break;
+	case RDOType::t_pointer       : getPointer<RDOArrayValue>()->serializeInDB(db);                                                            break;
 	default                       : throw RDOValueException("Данная величина не может быть записана в базу данных");
 	}
 }

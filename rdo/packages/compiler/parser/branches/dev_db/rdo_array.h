@@ -23,7 +23,6 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDOArrayValue
 // --------------------------------------------------------------------------------
 OBJECT(RDOArrayValue) IS INSTANCE_OF(RDOParserSrcInfo)
-AND INSTANCE_OF(rdo::runtime::ISerializeTypeInDB)
 {
 DECLARE_FACTORY(RDOArrayValue);
 public:
@@ -37,8 +36,6 @@ public:
 	rdo::runtime::LPRDOArrayValue createRuntimeValue() const;
 	tstring                       getAsString       () const;
 	CREF(Container)               getContainer      () const;
-
-	virtual void serializeInDB(REF(IDB) db) const;
 
 private:
 	RDOArrayValue(CREF(LPRDOArrayType) pArrayType);

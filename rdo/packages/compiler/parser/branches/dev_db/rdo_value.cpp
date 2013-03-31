@@ -117,7 +117,7 @@ RDOValue::RDOValue(CREF(rdo::runtime::RDOValue) value, CREF(RDOParserSrcInfo) sr
 
 void RDOValue::serializeInDB(REF(IDB) db) const
 {
-	value().serializeInDB(db);
+	m_value.serializeInDB(db);
 }
 
 CREF(LPTypeInfo) RDOValue::typeInfo() const

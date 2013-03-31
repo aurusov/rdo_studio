@@ -48,6 +48,8 @@ public:
 	CREF(RDOValue) getItem(CREF(RDOValue) index) const;
 	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item);
 
+	void serializeInDB(REF(IDB) db) const;
+
 private:
 	RDOArrayValue(CREF(LPRDOArrayType)  pType );
 	RDOArrayValue(CREF(LPRDOArrayValue) pValue);

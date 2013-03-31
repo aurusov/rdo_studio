@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_array.h"
 // --------------------------------------------------------------------------------
@@ -110,6 +111,22 @@ void RDOArrayValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 		throw RDORuntimeException("Выход за пределы массива");
 	}
 	m_container[ind] = item;
+}
+
+void RDOArrayValue::serializeInDB(REF(IDB) db) const
+{
+	db.insertRow("array_rv","DEFAULT");
+	int array_id = db.queryExecIndex("array_rv");
+
+	BOOST_FOREACH(CREF(RDOValue) arrayItem, m_container)
+	{
+		arrayItem.serializeInDB(db);
+		db.insertRow("array_value",QString("%1,DEFAULT,%2")
+			.arg(array_id)
+			.arg(db.popContext<int>()));
+	}
+
+	db.pushContext(db.queryExecIndex("array_rv"));
 }
 
 // --------------------------------------------------------------------------------

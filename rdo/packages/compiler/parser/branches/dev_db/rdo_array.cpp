@@ -88,19 +88,4 @@ CREF(RDOArrayValue::Container) RDOArrayValue::getContainer() const
 	return m_container;
 }
 
-void RDOArrayValue::serializeInDB(REF(IDB) db) const
-{
-	db.insertRow("array_rv","DEFAULT");
-	int array_id = db.queryExecIndex("array_rv");
-
-	BOOST_FOREACH(LPRDOValue arrayItem, getContainer())
-	{
-		arrayItem->serializeInDB(db);
-		db.insertRow("array_value",QString("%1,DEFAULT,%2")
-			.arg(array_id)
-			.arg(db.popContext<int>()));
-	}
-
-}
-
 CLOSE_RDO_PARSER_NAMESPACE
