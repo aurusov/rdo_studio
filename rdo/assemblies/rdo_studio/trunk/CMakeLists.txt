@@ -6,11 +6,24 @@
 # and provide build configuration options.
 #==============================================================================
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3)
-
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.0)
 PROJECT(rdo)
 
+#==============================================================================
+
+SET(PROJECT_NAME         "rdo")
+SET(PROJECT_DESCRIPTION  "CMake build system for ${PROJECT_NAME} projects")
+SET(PROJECT_VENDOR       "BMSTU")
+SET(PROJECT_VENDOR_LONG  "BMSTU")
+SET(PROJECT_COPYRIGHT    "Copyright ${PROJECT_VENDOR_LONG}")
+SET(PROJECT_VERSION      "{TEMP}")
+SET(PROJECT_VERSION_LONG "{TEMP}")
+SET(ORG_WEBSITE          "http://rdo.rk9.bmstu.ru/")
+
+#==============================================================================
+
 MESSAGE(STATUS "Create RDO")
+STRING(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
 # work with cmake
 SET(CMAKE_PREFIX_PATH $ENV{QTDIR}/lib/cmake)
@@ -127,6 +140,9 @@ STRING(REPLACE "\n" "" CMAKE_SVN_VERSION ${READ_DATA})
 
 MESSAGE(STATUS "SVN VERSION: ${CMAKE_SVN_VERSION}")
 
+SET(PROJECT_VERSION      ${CMAKE_SVN_VERSION})
+SET(PROJECT_VERSION_LONG ${CMAKE_SVN_VERSION})
+
 #==============================================================================
     
 SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
@@ -194,3 +210,57 @@ MESSAGE(STATUS ${BUILD_INFO_BAR})
 MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
 MESSAGE(STATUS ${NOOP_STRING})
+
+#==============================================================================
+#------------------------------install unix------------------------------------
+#==============================================================================
+
+IF(PROJECT_OS_LINUX)
+ENDIF()
+
+IF(MSVC)
+    SET(UNINSTALL_COMMAND "UNINSTALL")
+ELSE()
+    SET(UNINSTALL_COMMAND "uninstall")
+ENDIF()
+
+CONFIGURE_FILE(
+    "${PROJECT_SOURCE_DIR}/cmake/cmake.uninstall.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake.uninstall.cmake"
+    IMMEDIATE @ONLY
+    )
+
+ADD_CUSTOM_TARGET(${UNINSTALL_COMMAND}
+    COMMAND "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake.uninstall.cmake"
+    )
+
+#==============================================================================
+
+INCLUDE(InstallRequiredSystemLibraries)
+
+SET(CPACK_PACKAGING_INSTALL_PREFIX    "/")
+SET(CPACK_PACKAGE_NAME                "${PROJECT_NAME_LOWER}")
+SET(CPACK_PACKAGE_VENDOR              "${PROJECT_VENDOR_LONG}")
+
+SET(CPACK_PACKAGE_DESCRIPTION         "rdo application")
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${CPACK_PACKAGE_DESCRIPTION}")
+SET(CPACK_PACKAGE_CONTACT             "Evgeny Proydakov <lord.tiran@gmail.com>")
+
+SET(CPACK_DEBIAN_PACKAGE_VERSION      ${PROJECT_VERSION})
+SET(CPACK_DEBIAN_PACKAGE_PRIORITY     "standard")
+SET(CPACK_DEBIAN_PACKAGE_SECTION      "non-free")
+SET(CPACK_DEBIAN_ARCHITECTURE         ${CMAKE_SYSTEM_PROCESSOR})
+SET(CPACK_DEBIAN_PACKAGE_DEPENDS      "libc6 (> = 2.1.3)")
+SET(CPACK_DEBIAN_PACKAGE_HOMEPAGE     "${ORG_WEBSITE}")
+
+SET(CPACK_RPM_PACKAGE_VERSION         ${PROJECT_VERSION})
+SET(CPACK_RPM_PACKAGE_GROUP           "Applications/Base")
+SET(CPACK_RPM_PACKAGE_LICENSE         "Proprietary")
+SET(CPACK_RPM_PACKAGE_ARCHITECTURE    ${CMAKE_SYSTEM_PROCESSOR})
+SET(CPACK_RPM_PACKAGE_URL             "${ORG_WEBSITE}")
+SET(CPACK_RPM_PACKAGE_DESCRIPTION     "${CPACK_PACKAGE_DESCRIPTION}")
+
+SET(CPACK_PACKAGE_FILE_NAME           "${PROJECT_NAME_LOWER}_${PROJECT_VERSION}_${CMAKE_SYSTEM_PROCESSOR}")
+
+INCLUDE(CPack)
+INCLUDE(Documentation)

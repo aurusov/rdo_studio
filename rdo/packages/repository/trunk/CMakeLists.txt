@@ -25,9 +25,11 @@ SET_TARGET_PROPERTIES(rdo_repository PROPERTIES FOLDER ${LIBRARY_FOLDERS})
 
 ADD_DEPENDENCIES(rdo_repository rdo_simulator)
 ADD_DEPENDENCIES(rdo_repository rdo_kernel)
-ADD_DEPENDENCIES(rdo_repository pugixml)
+ADD_DEPENDENCIES(rdo_repository rdo_pugixml)
 
 TARGET_LINK_LIBRARIES(rdo_repository ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
 TARGET_LINK_LIBRARIES(rdo_repository rdo_simulator)
 TARGET_LINK_LIBRARIES(rdo_repository rdo_kernel)
-TARGET_LINK_LIBRARIES(rdo_repository pugixml)
+TARGET_LINK_LIBRARIES(rdo_repository rdo_pugixml)
+
+INSTALL(TARGETS rdo_repository DESTINATION lib)

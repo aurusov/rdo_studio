@@ -28,6 +28,7 @@ SET_TARGET_PROPERTIES(rdo_simulator_report PROPERTIES FOLDER ${LIBRARY_FOLDERS})
 ADD_DEPENDENCIES(rdo_simulator_report rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_simulator_report rdo_utils)
 
+INSTALL(TARGETS rdo_simulator_report DESTINATION lib)
 
 IF(MSVC) # lotions for windows #
 

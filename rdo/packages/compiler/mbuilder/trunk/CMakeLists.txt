@@ -30,6 +30,8 @@ TARGET_LINK_LIBRARIES(rdo_mbuilder ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LI
 TARGET_LINK_LIBRARIES(rdo_mbuilder rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_mbuilder rdo_parser)
 
+INSTALL(TARGETS rdo_mbuilder DESTINATION lib)
+
 IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".common" FILES 

@@ -29,6 +29,8 @@ ADD_DEPENDENCIES(rdo_procgui rdo_utils)
 
 TARGET_LINK_LIBRARIES(rdo_procgui rdo_utils)
 
+INSTALL(TARGETS rdo_procgui DESTINATION lib)
+
 IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".code" FILES 

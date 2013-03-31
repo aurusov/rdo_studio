@@ -57,6 +57,8 @@ TARGET_LINK_LIBRARIES(rdo rdo_repository)
 TARGET_LINK_LIBRARIES(rdo rdo_simulator)
 TARGET_LINK_LIBRARIES(rdo rdo_simulator_report)
 
+INSTALL(TARGETS rdo DESTINATION bin)
+
 IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".code" FILES

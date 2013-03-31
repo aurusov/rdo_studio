@@ -180,6 +180,8 @@ TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox ${Boost_SYSTEM_LIBRARY} ${Boost_FIL
 TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox rdo_runtime)
 
+INSTALL(TARGETS rdo_converter_smr2rdox DESTINATION lib)
+
 IF(MSVC)
     SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
 ENDIF(MSVC)
