@@ -299,9 +299,7 @@ smr_cond
 	}
 	| smr_cond RDO_Frame_number '=' RDO_INT_CONST
 	{
-		LPRDOSMR pSMR = CONVERTER->getSMR();
-		ASSERT(pSMR);
-		pSMR->setFrameNumber(CONVERTER->stack().pop<RDOValue>($4)->value().getInt(), @4);
+		CONVERTER->stack().pop<RDOValue>($4);
 	}
 	| smr_cond RDO_Frame_number '=' error
 	{
