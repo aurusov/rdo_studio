@@ -143,6 +143,8 @@ private:
 	double  getSpeed() const;
 	void    setSpeed(double persent);
 
+	void updateTimeNow();
+
 	struct ModelTemplateItem
 	{
 		QString                resName;

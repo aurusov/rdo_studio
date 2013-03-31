@@ -333,7 +333,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_RUNTIME_MODEL_STOP_BEFORE:
 		{
 			g_pApp->getIMainWnd()->update_stop();
-			sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
+			updateTimeNow();
 			m_frameManager.clear();
 			boost::chrono::system_clock::time_point time_stop = boost::chrono::system_clock::now();
 			boost::chrono::milliseconds duration = boost::chrono::duration_cast<boost::chrono::milliseconds>(time_stop - m_timeStart);
@@ -1223,10 +1223,7 @@ void Model::updateActions()
 
 void Model::update()
 {
-	sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
-
-	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_TIME>(QString("Время: %1").arg(m_timeNow));
-
+	updateTimeNow();
 	rdo::runtime::RunTimeMode rm;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &rm);
 	if (rm != getRuntimeMode())
@@ -1271,6 +1268,12 @@ void Model::update()
 			}
 		}
 	}
+}
+
+void Model::updateTimeNow()
+{
+	sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
+	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_TIME>(QString("Время: %1").arg(m_timeNow));
 }
 
 rbool Model::isModify() const
