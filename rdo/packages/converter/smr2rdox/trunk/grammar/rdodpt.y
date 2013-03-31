@@ -278,7 +278,7 @@ dpt_search_trace
 dpt_search_parent
 	: /* empty */
 	{
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOValue>::create());
+		$$ = CONVERTER->stack().push(LPRDOValue());
 	}
 	| RDO_Parent RDO_IDENTIF
 	{
@@ -596,7 +596,7 @@ dpt_some_trace
 dpt_some_parent
 	: /* empty */
 	{
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOValue>::create());
+		$$ = CONVERTER->stack().push(LPRDOValue());
 	}
 	| RDO_Parent RDO_IDENTIF
 	{
@@ -826,7 +826,7 @@ dpt_prior_trace
 dpt_prior_parent
 	: /* empty */
 	{
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOValue>::create());
+		$$ = CONVERTER->stack().push(LPRDOValue());
 	}
 	| RDO_Parent RDO_IDENTIF
 	{
