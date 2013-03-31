@@ -114,6 +114,7 @@ int ChartView::getValueCountX() const
 void ChartView::setValueCountX(int value)
 {
 	m_valueCountX = value;
+	recalcLayout();
 }
 
 int ChartView::getValueCountY() const
@@ -124,12 +125,14 @@ int ChartView::getValueCountY() const
 void ChartView::setValueCountY(int value)
 {
 	m_valueCountY = value;
+	recalcLayout();
 }
 
 void ChartView::setYAxis(ChartSerie* pSerie)
 {
 	ASSERT(pSerie);
 	m_pYAxis = pSerie;
+	recalcLayout();
 }
 
 rbool ChartView::isDrawLegend() const
@@ -964,7 +967,6 @@ void ChartView::paintEvent(QPaintEvent*)
 		{
 			drawLegend(painter, m_legendRect);
 		}
-		recalcLayout();
 
 		painter.setPen(m_pStyle->defaultColor);
 
