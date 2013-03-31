@@ -308,14 +308,21 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(tstring) mod
 	insertFileName(rdo::converter::smr2rdox::PAT_IN, smrFilePath, modelName, smrFileName, modelName,                           "pat");
 	insertFileName(rdo::converter::smr2rdox::RTP_IN, smrFilePath, modelName, smrFileName, modelName,                           "rtp");
 	insertFileName(rdo::converter::smr2rdox::RSS_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Resource_file"),  "rss");
-	insertFileName(rdo::converter::smr2rdox::OPR_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("OprIev_file"  ),  "opr");
 	insertFileName(rdo::converter::smr2rdox::FRM_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Frame_file"   ),  "frm");
 	insertFileName(rdo::converter::smr2rdox::FUN_IN, smrFilePath, modelName, smrFileName, modelName,                           "fun");
-	insertFileName(rdo::converter::smr2rdox::DPT_IN, smrFilePath, modelName, smrFileName, modelName,                           "dpt");
 	insertFileName(rdo::converter::smr2rdox::PMD_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Statistic_file"), "pmd");
 	insertFileName(rdo::converter::smr2rdox::SMR_IN, smrFilePath, modelName, smrFileName, smrFileName,                         "smr");
 	insertFileName(rdo::converter::smr2rdox::PMV_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Results_file"  ), "pmv");
 	insertFileName(rdo::converter::smr2rdox::TRC_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Trace_file"    ), "trc");
+
+	if (!getSMR()->getFile("OprIev_file").empty())
+	{
+		insertFileName(rdo::converter::smr2rdox::OPR_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("OprIev_file"  ),  "opr");
+	}
+	else
+	{
+		insertFileName(rdo::converter::smr2rdox::DPT_IN, smrFilePath, modelName, smrFileName, modelName,                           "dpt");
+	}
 
 	return true;
 }
