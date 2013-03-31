@@ -3,6 +3,7 @@
     1. Тесты на хорошо
     2. Тесты на плохо с кодом возврата
     3. Тесты на плохо с ошибками компиляции
+    4. Тесты конвертора
 
 Структура файла проекта тестирования
 
@@ -11,20 +12,23 @@
 
     <?xml version="1.0"?>
     <test>
-        <model></model>
-        <target></target>
-        <exit_code></exit_code>
-        <trace></trace>
-        <result></result>
-        <log_compilation></log_compilation>
+      <model name="1.rdox" target="CONSOLE" exit_code="0"/>
+      <etalons>
+        <file source="1.trc" target="1_etalon.trc" type="TRACE"/>
+        <file source="1.pmv" target="1_etalon.pmv" type="RESULT"/>
+      </etalons>
     </test>
 
-    * <model></model> - тут пишется относительный путь к модели от файла .rtestx
-    * <target></target> - указать цель
-    * <exit_code><exit_code> - код завершения
-    <trace></trace> - относительный путь к файлу эталонов трассировки
-    <result></result> - относительный путь к файлу эталонов результатов
-    <log_compilation></log_compilation> - относительный путь к файлу лога компиляции
+    * <model/> - секция описания модели с опциями:
+      * name            - относительный путь к модели от файла .rtestx
+      * target          - указать цель
+      * exit_code       - код завершения
+      ~ log_compilation - относительный путь к файлу лога компиляции
+
+    <etalons/> - секция эталонов с полями:
+        source - источник
+        target - цель сравнения
+        type   - тип сравнения
 
     * ЗВЕЗДОЧНОЙ ОТМЕЧЕНЫ ОБЯЗАТЕЛЬНЫЕ ПОЛЯ
 
@@ -32,9 +36,9 @@
 
     CONSOLE
 
-    Для разработчиков смотреть в файле scripts/python/test.py раздел «test target type»
+    Для разработчиков смотреть в файле scripts/python/executor_of_system_tests.py раздел «test target type»
 
-Список доступных кодов завершения
+Список доступных кодов завершения:
 
     RDO_CONSOLE_TERMINATION_NORMAL                         = 0
     RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_NO_MODEL         = 1
@@ -42,10 +46,18 @@
     RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_PARSE_ERROR      = 3
     RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR    = 4
 
-    Для разработчиков смотреть в файле scripts/python/test.py раздел «rdo console exit code»
-    
+    Для разработчиков смотреть в файле scripts/python/executor_of_system_tests.py раздел «rdo console exit code»
+
+Список доступных методов сравнения:
+
+    FULL - полное сравнение
+    TRACE - сравнить трассировку
+    RESULT - сравнить результаты
+
+    Для разработчиков смотреть в файле scripts/python/compare.py
+
 -------------------------------------------------------------------------------
-    
+
 Для добавление теста на хорошо необходимо:
 
     1. Написать модель на языке РДО. Формат файла проекта .rdox
@@ -57,11 +69,11 @@
 
     <?xml version="1.0"?>
     <test>
-      <model>simple_qs.rdox</model>
-      <target>CONSOLE</target>
-      <exit_code>0</exit_code>
-      <trace>simple_qs_etalon.trc</trace>
-      <result>simple_qs_etalon.pmv</result>
+      <model name="1.rdox" target="CONSOLE" exit_code="0"/>
+      <etalons>
+        <file source="1.trc" target="1_etalon.trc" type="TRACE"/>
+        <file source="1.pmv" target="1_etalon.pmv" type="RESULT"/>
+      </etalons>
     </test>
 
     Особенностью тестов на хорошо является обязательное наличие результатов и трассировки
@@ -81,9 +93,7 @@
 
     <?xml version="1.0"?>
     <test>
-      <model>division_by_zero_error.rdox</model>
-      <target>CONSOLE</target>
-      <exit_code>4</exit_code>
+      <model name="error.rdox" target="CONSOLE" exit_code="4"/>
     </test>
 
     Особенностью тестов на плохо является код ошибки. Брать их нужно из раздела «Структура файла проекта тестирования > Список доступных кодов завершения».
@@ -101,10 +111,7 @@
 
     <?xml version="1.0"?>
     <test>
-        <model>syntax_error.rdox</model>
-        <target>CONSOLE</target>
-        <exit_code>3</exit_code>
-        <log_compilation>syntax_error.rlog</log_compilation>
+      <model name="syntax_error.rdox" target="CONSOLE" exit_code="3" log_compilation="syntax_error.rlog"/>
     </test>
 
     Особенностью тестов на плохо является файл с ошибками компиляции.
@@ -116,6 +123,33 @@
     PMD (5): предупреждение: Преобразование 'real' в 'integer', возможна потеря данных
     PMD (5): предупреждение: Преобразование 'real' в 'integer', возможна потеря данных
     PMD (6): ошибка: Ожидается ключевое слово $End
+
+-------------------------------------------------------------------------------
+
+Для добавления теста конвертора
+
+    1. Написать модель на языке РДО. Формат файла проекта .rdox
+    2. Провести конвертацию и подготовить эталоны
+    3. Создать текстовый файл с расширением .rtestx и заполнить его по примеру
+    4. Созданные файлы модели, .rtestx файл проекта и эталоны конвертации нужно переместить в папку в репозитории РДО, назвав ее вменяемо
+
+    Пример:
+
+    <?xml version="1.0"?>
+    <test>
+      <model name="model.smr" target="CONVERTOR" exit_code="0"/>
+      <etalons>
+        <file source="model.smr"  target="etalons/model.smr"  type="FULL"/>
+        <file source="model.rdox" target="etalons/model.rdox" type="FULL"/>
+        <file source="model.evn"  target="etalons/model.evn"  type="FULL"/>
+        <file source="model.pmd"  target="etalons/model.pmd"  type="FULL"/>
+        <file source="model.dpt"  target="etalons/model.dpt"  type="FULL"/>
+        <file source="model.fun"  target="etalons/model.fun"  type="FULL"/>
+        <file source="model.rss"  target="etalons/model.rss"  type="FULL"/>
+        <file source="model.rtp"  target="etalons/model.rtp"  type="FULL"/>
+        <file source="model.pat"  target="etalons/model.pat"  type="FULL"/>
+      </etalons>
+    </test>
 
 -------------------------------------------------------------------------------
 
