@@ -220,6 +220,20 @@ void InitSructDB::generateCreateDBQuery()
 
 //------------------------
 	m_queryList.push_back(
+		"CREATE TABLE array_t("
+		"id          integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
+		"type_id     integer NOT NULL,"
+		"def_val     integer,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (type_id) REFERENCES list_of_types_of_params(type_id),"
+		"FOREIGN KEY (def_val) REFERENCES array_rv(id)"
+		");");
+
+	trigger("array_t","copy_type_id");
+//------------------------
+
+//------------------------
+	m_queryList.push_back(
 		"CREATE TABLE void("
 		"id      integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
 		"PRIMARY KEY (id)"
