@@ -11,6 +11,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/format.hpp>
 #include <boost/filesystem/operations.hpp>
+#include <boost/algorithm/string/trim.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "repository/rdorepository.h"
 #include "utils/rdofile.h"
@@ -217,20 +218,12 @@ void RDOThreadRepository::newModel(CPTRC(NewModel) data)
 		realCloseModel();
 		if (data)
 		{
-			tstring path = data->m_path;
-			tstring::size_type pos = path.find_last_of('\\');
-			if (pos == tstring::npos)
-			{
-				pos = path.find_last_of('/');
-			}
-			if (pos != path.length() - 1)
-			{
-				path += '\\';
-			}
-			extractName(path + data->m_name + m_files[rdoModelObjects::RDOX].m_extention);
+			boost::filesystem::path path = data->m_path;
+			extractName((path / boost::filesystem::path(data->m_name + m_files[rdoModelObjects::RDOX].m_extention)).string());
+			path = rdo::locale::convertToWStr(path.string());
 			if (!rdo::File::exist(path))
 			{
-				boost::filesystem::create_directory(path.c_str());
+				boost::filesystem::create_directory(path);
 			}
 			createRDOX();
 		}
@@ -377,39 +370,15 @@ void RDOThreadRepository::extractName(CREF(tstring) fullName)
 {
 	m_modelPath = rdo::File::extractFilePath(fullName);
 
-	tstring name = fullName;
-	tstring::size_type pos = name.find_last_of('.');
-	if (pos != tstring::npos)
-	{
-		tstring s;
-		s.assign(&name[0], pos);
-		name = s;
-	}
-	static tchar szDelims[] = " \t\n\r";
-	name.erase(0, name.find_first_not_of(szDelims));
-	name.erase(name.find_last_not_of(szDelims) + 1, tstring::npos);
-	pos = name.find_last_of('\\');
-	if (pos == tstring::npos)
-	{
-		pos = name.find_last_of('/');
-	}
-	if (pos != tstring::npos)
-	{
-		tstring s(name, pos + 1, name.length() - pos);
-		setName(s);
-	}
-	else
-	{
-		setName("");
-	}
+	boost::filesystem::path path(fullName);
+	tstring name = path.filename().stem().string();
+	setName(name);
 }
 
 void RDOThreadRepository::setName(CREF(tstring) name)
 {
 	m_modelName = name;
-	static tchar szDelims[] = " \t\n\r";
-	m_modelName.erase(0, m_modelName.find_first_not_of(szDelims));
-	m_modelName.erase(m_modelName.find_last_not_of(szDelims) + 1, tstring::npos);
+	boost::algorithm::trim(m_modelName);
 	if (m_modelName.empty())
 	{
 		m_modelPath = "";
@@ -511,7 +480,7 @@ void RDOThreadRepository::createRDOX()
 {
 	BOOST_AUTO(it, m_files.find(rdoModelObjects::RDOX));
 	ASSERT(it != m_files.end());
-	tstring rdoxFileName = m_modelPath + m_modelName + it->second.m_extention;
+	boost::filesystem::path rdoxFileName = rdo::locale::convertToWStr(m_modelPath + m_modelName + it->second.m_extention);
 	if (!rdo::File::exist(rdoxFileName))
 	{
 		pugi::xml_document doc;
@@ -526,7 +495,7 @@ void RDOThreadRepository::createRDOX()
 		if (ofs.good())
 		{
 			doc.save(ofs);
-			m_projectName.m_fullFileName = rdoxFileName;
+			m_projectName.m_fullFileName = rdo::locale::convertFromWStr(rdoxFileName.wstring());
 			m_projectName.m_rdox         = true;
 		}
 	}
