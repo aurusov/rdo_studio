@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="boost_multiindex"
+	Name="test_multiindex"
 	ProjectGUID="{3ADF6838-438E-4D28-A8D3-962FE34E9D35}"
-	RootNamespace="boost_multiindex"
+	RootNamespace="test_multiindex"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -163,7 +163,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\test\boost_multiindex\main.cpp"
+				RelativePath="..\..\test\multiindex\main.cpp"
 				>
 			</File>
 		</Filter>
