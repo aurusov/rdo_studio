@@ -24,15 +24,13 @@ void locale::init()
 	rdo::locale& locale = get();
 
 	std::locale sourceCodeLocale = locale.utf8();
-	std::locale::global(sourceCodeLocale);
+	std::locale globalLocale(sourceCodeLocale, new boost::math::nonfinite_num_put<char>);
+	std::locale::global(globalLocale);
 
-	std::locale C99_out_locale(sourceCodeLocale, new boost::math::nonfinite_num_put<char>);
-	std::locale C99_in_locale (sourceCodeLocale, new boost::math::nonfinite_num_get<char>);
-
-	std::cout.imbue(sourceCodeLocale);
-	std::cerr.imbue(sourceCodeLocale);
-	std::clog.imbue(sourceCodeLocale);
-	std::cin.imbue (sourceCodeLocale);
+	std::cout.imbue(globalLocale);
+	std::cerr.imbue(globalLocale);
+	std::clog.imbue(globalLocale);
+	std::cin.imbue (globalLocale);
 }
 
 locale& locale::get()
