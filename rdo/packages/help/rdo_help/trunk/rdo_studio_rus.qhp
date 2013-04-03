@@ -9,22 +9,10 @@
 				<section title="Общие сведения" ref="rdo_studio_rus/html/intro.htm"/>
 				<section title="Работа с программным комплексом" ref="rdo_studio_rus/html/work_intro.htm">
 					<section title="Запуск" ref="rdo_studio_rus/html/work_run.htm"/>
-					<section title="Главное меню" ref="rdo_studio_rus/html/work_menu/work_menu_intro.htm">
-						<section title="Меню Файл" ref="rdo_studio_rus/html/work_menu/work_menu_file.htm"/>
-						<section title="Меню Правка" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
-						<section title="Меню Поиск" ref="rdo_studio_rus/html/work_menu/work_menu_search.htm"/>
-						<section title="Меню Просмотр" ref="rdo_studio_rus/html/work_menu/work_menu_view.htm"/>
-						<section title="Меню Вставка" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
-						<section title="Меню Модель" ref="rdo_studio_rus/html/work_menu/work_menu_model.htm"/>
-						<section title="Меню График" ref="rdo_studio_rus/html/work_menu/work_menu_chart.htm"/>
-						<section title="Меню Окна" ref="rdo_studio_rus/html/work_menu/work_menu_window.htm"/>
-						<section title="Меню Помощь" ref="rdo_studio_rus/html/work_menu/work_menu_help.htm"/>
-					</section>
 					<section title="Работа с моделью" ref="rdo_studio_rus/html/work_model/work_model_intro.htm">
 						<section title="Закладки окна модели" ref="rdo_studio_rus/html/work_model/work_model_tabsheets.htm"/>
 						<section title="Создание" ref="rdo_studio_rus/html/work_model/work_model_creation.htm"/>
 						<section title="Открытие" ref="rdo_studio_rus/html/work_model/work_model_open.htm"/>
-						<section title="Сохранение" ref="rdo_studio_rus/html/work_model/work_model_save.htm"/>
 						<section title="Редактирование" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
 						<section title="Автозавершение (code completion)" ref="rdo_studio_rus/html/work_model/work_model_complete.htm"/>
 						<section title="Шаблоны и вставка синтаксических конструкций" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
@@ -42,128 +30,87 @@
 						<section title="Закладка Табуляция" ref="rdo_studio_rus/html/work_options/work_options_tabs.htm"/>
 						<section title="Закладка Стиль и цвет" ref="rdo_studio_rus/html/work_options/work_options_styles_and_color.htm"/>
 					</section>
+					<section title="Горячие клавиши" ref="rdo_studio_rus/html/work_hotkeys.htm"/>
 					<section title="Получение справочной информации" ref="rdo_studio_rus/html/work_help.htm"/>
 				</section>
 				<section title="Разработчики" ref="rdo_studio_rus/html/about.htm"/>
 			</section>
 		</toc>
 		<keywords>
-			<keyword name="code completion" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="code completion" ref="rdo_studio_rus/html/work_model/work_model_complete.htm"/>
 			<keyword name="code completion" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="DPT" ref="rdo_studio_rus/html/work_run.htm"/>
 			<keyword name="DPT" ref="rdo_studio_rus/html/work_model/work_model_tabsheets.htm"/>
-			<keyword name="DPT" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
 			<keyword name="DPT" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
 			<keyword name="FRM" ref="rdo_studio_rus/html/work_run.htm"/>
 			<keyword name="FRM" ref="rdo_studio_rus/html/work_model/work_model_tabsheets.htm"/>
-			<keyword name="FRM" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
 			<keyword name="FRM" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
 			<keyword name="FUN" ref="rdo_studio_rus/html/work_run.htm"/>
 			<keyword name="FUN" ref="rdo_studio_rus/html/work_model/work_model_tabsheets.htm"/>
-			<keyword name="FUN" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
 			<keyword name="FUN" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
 			<keyword name="OPR" ref="rdo_studio_rus/html/work_run.htm"/>
 			<keyword name="OPR" ref="rdo_studio_rus/html/work_model/work_model_tabsheets.htm"/>
-			<keyword name="OPR" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
 			<keyword name="OPR" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
 			<keyword name="PAT" ref="rdo_studio_rus/html/work_run.htm"/>
 			<keyword name="PAT" ref="rdo_studio_rus/html/work_model/work_model_tabsheets.htm"/>
-			<keyword name="PAT" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
 			<keyword name="PAT" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
 			<keyword name="PMD" ref="rdo_studio_rus/html/work_run.htm"/>
 			<keyword name="PMD" ref="rdo_studio_rus/html/work_model/work_model_tabsheets.htm"/>
-			<keyword name="PMD" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
 			<keyword name="PMD" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
 			<keyword name="PMV" ref="rdo_studio_rus/html/work_model/work_model_results.htm"/>
 			<keyword name="RAO-studio" ref="rdo_studio_rus/html/intro.htm"/>
 			<keyword name="RSS" ref="rdo_studio_rus/html/work_run.htm"/>
 			<keyword name="RSS" ref="rdo_studio_rus/html/work_model/work_model_tabsheets.htm"/>
-			<keyword name="RSS" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
 			<keyword name="RSS" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
 			<keyword name="RTP" ref="rdo_studio_rus/html/work_run.htm"/>
 			<keyword name="RTP" ref="rdo_studio_rus/html/work_model/work_model_tabsheets.htm"/>
-			<keyword name="RTP" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
 			<keyword name="RTP" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
 			<keyword name="SMR" ref="rdo_studio_rus/html/work_run.htm"/>
 			<keyword name="SMR" ref="rdo_studio_rus/html/work_model/work_model_tabsheets.htm"/>
-			<keyword name="SMR" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
 			<keyword name="SMR" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
 			<keyword name="TRC" ref="rdo_studio_rus/html/work_model/work_model_results.htm"/>
 			<keyword name="warnings" ref="rdo_studio_rus/html/work_options/work_options_styles_and_color.htm"/>
-			<keyword name="автозавершение" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="автозавершение" ref="rdo_studio_rus/html/work_model/work_model_complete.htm"/>
 			<keyword name="автозавершение" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="анимация" ref="rdo_studio_rus/html/work_model/work_model_frame.htm"/>
 			<keyword name="бордюр" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
-			<keyword name="вставка" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
-			<keyword name="выделение текста" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="выделение текста" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
-			<keyword name="вырезание" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="вырезание" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
 			<keyword name="графики" ref="rdo_studio_rus/html/work_model/work_model_chart.htm"/>
-			<keyword name="завершение работы" ref="rdo_studio_rus/html/work_menu/work_menu_file.htm"/>
 			<keyword name="задачи" ref="rdo_studio_rus/html/intro.htm"/>
-			<keyword name="закладки" ref="rdo_studio_rus/html/work_menu/work_menu_search.htm"/>
 			<keyword name="закладки" ref="rdo_studio_rus/html/work_model/work_model_bookmarks.htm"/>
-			<keyword name="закомментировать" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="закомментировать" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
 			<keyword name="запуск" ref="rdo_studio_rus/html/work_run.htm"/>
 			<keyword name="запуск" ref="rdo_studio_rus/html/work_model/work_model_run.htm"/>
-			<keyword name="запуск модели" ref="rdo_studio_rus/html/work_menu/work_menu_model.htm"/>
 			<keyword name="запуск модели" ref="rdo_studio_rus/html/work_model/work_model_run.htm"/>
-			<keyword name="запуск прогона" ref="rdo_studio_rus/html/work_menu/work_menu_model.htm"/>
 			<keyword name="запуск прогона" ref="rdo_studio_rus/html/work_model/work_model_run.htm"/>
-			<keyword name="копирование" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="копирование" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
-			<keyword name="копировать в RTF" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="копировать в RTF" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
 			<keyword name="маркер" ref="rdo_studio_rus/html/work_model/work_model_bookmarks.htm"/>
 			<keyword name="МГТУ им. Н.Э. Баумана" ref="rdo_studio_rus/html/about.htm"/>
-			<keyword name="меню" ref="rdo_studio_rus/html/work_menu/work_menu_intro.htm"/>
 			<keyword name="меню RAO" ref="rdo_studio_rus/html/work_model/work_model_run.htm"/>
-			<keyword name="меню RAO" ref="rdo_studio_rus/html/work_menu/work_menu_model.htm"/>
 			<keyword name="меню RAO" ref="rdo_studio_rus/html/work_model/work_model_results.htm"/>
-			<keyword name="меню Вставка" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
 			<keyword name="меню Вставка" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
-			<keyword name="меню Поиск" ref="rdo_studio_rus/html/work_menu/work_menu_search.htm"/>
 			<keyword name="меню Поиск" ref="rdo_studio_rus/html/work_model/work_model_bookmarks.htm"/>
 			<keyword name="меню Поиск" ref="rdo_studio_rus/html/work_model/work_model_search_replace.htm"/>
-			<keyword name="меню Помощь" ref="rdo_studio_rus/html/work_menu/work_menu_help.htm"/>
 			<keyword name="меню Помощь" ref="rdo_studio_rus/html/work_help.htm"/>
 			<keyword name="меню Правка" ref="rdo_studio_rus/html/work_model/work_model_complete.htm"/>
-			<keyword name="меню Правка" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="меню Правка" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
-			<keyword name="меню Просмотр" ref="rdo_studio_rus/html/work_menu/work_menu_view.htm"/>
 			<keyword name="меню Просмотр" ref="rdo_studio_rus/html/work_options/work_options.htm"/>
-			<keyword name="меню Файл" ref="rdo_studio_rus/html/work_menu/work_menu_file.htm"/>
 			<keyword name="меню Файл" ref="rdo_studio_rus/html/work_model/work_model_open.htm"/>
 			<keyword name="меню Файл" ref="rdo_studio_rus/html/work_model/work_model_creation.htm"/>
-			<keyword name="меню Файл" ref="rdo_studio_rus/html/work_model/work_model_save.htm"/>
-			<keyword name="модель: автозавершение" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="модель: автозавершение" ref="rdo_studio_rus/html/work_model/work_model_complete.htm"/>
 			<keyword name="модель: автозавершение" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="модель: анимация" ref="rdo_studio_rus/html/work_model/work_model_frame.htm"/>
-			<keyword name="модель: закладки" ref="rdo_studio_rus/html/work_menu/work_menu_search.htm"/>
 			<keyword name="модель: закладки" ref="rdo_studio_rus/html/work_model/work_model_bookmarks.htm"/>
-			<keyword name="модель: запуск" ref="rdo_studio_rus/html/work_menu/work_menu_model.htm"/>
 			<keyword name="модель: запуск" ref="rdo_studio_rus/html/work_model/work_model_run.htm"/>
-			<keyword name="модель: открытие" ref="rdo_studio_rus/html/work_menu/work_menu_file.htm"/>
 			<keyword name="модель: открытие" ref="rdo_studio_rus/html/work_model/work_model_open.htm"/>
-			<keyword name="модель: отображение текста" ref="rdo_studio_rus/html/work_menu/work_menu_view.htm"/>
-			<keyword name="модель: поиск и замена" ref="rdo_studio_rus/html/work_menu/work_menu_search.htm"/>
 			<keyword name="модель: поиск и замена" ref="rdo_studio_rus/html/work_model/work_model_search_replace.htm"/>
-			<keyword name="модель: редактирование" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="модель: редактирование" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
 			<keyword name="модель: режимы моделирования" ref="rdo_studio_rus/html/work_model/work_model_frame.htm"/>
 			<keyword name="модель: результаты" ref="rdo_studio_rus/html/work_model/work_model_results.htm"/>
 			<keyword name="модель: скорость" ref="rdo_studio_rus/html/work_model/work_model_frame.htm"/>
-			<keyword name="модель: скрытие фрагментов текста" ref="rdo_studio_rus/html/work_menu/work_menu_view.htm"/>
-			<keyword name="модель: создание" ref="rdo_studio_rus/html/work_menu/work_menu_file.htm"/>
 			<keyword name="модель: создание" ref="rdo_studio_rus/html/work_model/work_model_creation.htm"/>
-			<keyword name="модель: сохранение" ref="rdo_studio_rus/html/work_menu/work_menu_file.htm"/>
-			<keyword name="модель: сохранение" ref="rdo_studio_rus/html/work_model/work_model_save.htm"/>
-			<keyword name="модель: шаблоны" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
 			<keyword name="модель: шаблоны" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
 			<keyword name="настройки" ref="rdo_studio_rus/html/work_options/work_options.htm"/>
 			<keyword name="настройки: warnings" ref="rdo_studio_rus/html/work_options/work_options_styles_and_color.htm"/>
@@ -173,53 +120,37 @@
 			<keyword name="настройки: табуляция" ref="rdo_studio_rus/html/work_options/work_options_tabs.htm"/>
 			<keyword name="настройки: тема" ref="rdo_studio_rus/html/work_options/work_options_styles_and_color.htm"/>
 			<keyword name="настройки: цвета" ref="rdo_studio_rus/html/work_options/work_options_styles_and_color.htm"/>
+			<keyword name="горячие клавиши" ref="rdo_studio_rus/html/work_hotkeys.htm"/>
 			<keyword name="о программе" ref="rdo_studio_rus/html/about.htm"/>
-			<keyword name="остановка прогона" ref="rdo_studio_rus/html/work_menu/work_menu_model.htm"/>
 			<keyword name="остановка прогона" ref="rdo_studio_rus/html/work_model/work_model_run.htm"/>
-			<keyword name="откат изменений" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="откат изменений" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
-			<keyword name="открытие модели" ref="rdo_studio_rus/html/work_menu/work_menu_file.htm"/>
 			<keyword name="открытие модели" ref="rdo_studio_rus/html/work_model/work_model_open.htm"/>
 			<keyword name="перенос по словам" ref="rdo_studio_rus/html/work_options/work_options_styles_and_color.htm"/>
-			<keyword name="поиск и замена" ref="rdo_studio_rus/html/work_menu/work_menu_search.htm"/>
 			<keyword name="поиск и замена" ref="rdo_studio_rus/html/work_model/work_model_search_replace.htm"/>
 			<keyword name="поле" ref="rdo_studio_rus/html/work_model/work_model_tabsheets.htm"/>
-			<keyword name="поле" ref="rdo_studio_rus/html/work_menu/work_menu_view.htm"/>
 			<keyword name="разработчики" ref="rdo_studio_rus/html/about.htm"/>
 			<keyword name="РДО" ref="rdo_studio_rus/html/intro.htm"/>
 			<keyword name="РДО-имитатор" ref="rdo_studio_rus/html/intro.htm"/>
-			<keyword name="РДО-имитатор" ref="rdo_studio_rus/html/work_menu/work_menu_model.htm"/>
 			<keyword name="РДО-имитатор" ref="rdo_studio_rus/html/work_model/work_model_run.htm"/>
-			<keyword name="регистр" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="регистр" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
-			<keyword name="редактирование модели" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="редактирование модели" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
 			<keyword name="режимы моделирования" ref="rdo_studio_rus/html/work_model/work_model_frame.htm"/>
 			<keyword name="результаты моделирования" ref="rdo_studio_rus/html/work_model/work_model_results.htm"/>
 			<keyword name="скорость" ref="rdo_studio_rus/html/work_model/work_model_frame.htm"/>
-			<keyword name="скрытие фрагментов текста" ref="rdo_studio_rus/html/work_menu/work_menu_view.htm"/>
-			<keyword name="создание модели" ref="rdo_studio_rus/html/work_menu/work_menu_file.htm"/>
 			<keyword name="создание модели" ref="rdo_studio_rus/html/work_model/work_model_creation.htm"/>
 			<keyword name="состав программного комплекса" ref="rdo_studio_rus/html/work_intro.htm"/>
 			<keyword name="состав программного комплекса" ref="rdo_studio_rus/html/intro.htm"/>
-			<keyword name="сохранение модели" ref="rdo_studio_rus/html/work_menu/work_menu_file.htm"/>
-			<keyword name="сохранение модели" ref="rdo_studio_rus/html/work_model/work_model_save.htm"/>
-			<keyword name="справка" ref="rdo_studio_rus/html/work_menu/work_menu_help.htm"/>
 			<keyword name="справка" ref="rdo_studio_rus/html/work_help.htm"/>
 			<keyword name="табуляция" ref="rdo_studio_rus/html/work_options/work_options_tabs.htm"/>
 			<keyword name="телефон" ref="rdo_studio_rus/html/about.htm"/>
 			<keyword name="тема" ref="rdo_studio_rus/html/work_options/work_options_styles_and_color.htm"/>
 			<keyword name="требования" ref="rdo_studio_rus/html/intro.htm"/>
-			<keyword name="удаление" ref="rdo_studio_rus/html/work_menu/work_menu_edit.htm"/>
 			<keyword name="удаление" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
-			<keyword name="управление отображением текста" ref="rdo_studio_rus/html/work_menu/work_menu_view.htm"/>
 			<keyword name="факс" ref="rdo_studio_rus/html/about.htm"/>
 			<keyword name="цвета" ref="rdo_studio_rus/html/work_options/work_options_styles_and_color.htm"/>
-			<keyword name="шаблоны" ref="rdo_studio_rus/html/work_menu/work_menu_insert.htm"/>
 			<keyword name="шаблоны" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
 		</keywords>
 		<files>
-			<file>rdo_studio_rus/html/work_menu/*</file>
 			<file>rdo_studio_rus/html/work_model/*</file>
 			<file>rdo_studio_rus/html/work_options/*</file>
 			<file>rdo_studio_rus/html/*</file>
