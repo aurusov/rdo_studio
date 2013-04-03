@@ -21,10 +21,7 @@ namespace rdo
 
 void locale::init()
 {
-	rdo::locale& locale = get();
-
-	std::locale sourceCodeLocale = locale.utf8();
-	std::locale globalLocale(sourceCodeLocale, new boost::math::nonfinite_num_put<char>);
+	std::locale globalLocale(get().generate("en_EN.UTF-8"), new boost::math::nonfinite_num_put<char>);
 	std::locale::global(globalLocale);
 
 	std::cout.imbue(globalLocale);
