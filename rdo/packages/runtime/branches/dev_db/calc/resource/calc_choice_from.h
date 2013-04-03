@@ -38,11 +38,14 @@ public:
 
 protected:
 	RDOSelectResourceCalc(ResourceID relResID, CREF(LPRDOCalc) pCalcChoiceFrom, CREF(LPRDOCalc) pCalcOrder, Type orderType = order_empty);
+	RDOSelectResourceCalc(ResourceID relResID, rbool sqlFlag, QString sqlQuery, CREF(LPRDOCalc) pCalcChoiceFrom, CREF(LPRDOCalc) pCalcOrder, Type orderType = order_empty);
 
 	ResourceID  m_relResID;
 	LPRDOCalc   m_pCalcChoiceFrom;
 	LPRDOCalc   m_pCalcOrder;
 	Type        m_orderType;
+	rbool       m_sqlFlag;
+	QString     m_sqlQuery;
 };
 
 //! RDOCalc для оператора !Exist()
@@ -74,7 +77,7 @@ CALC_SUB(RDOSelectResourceByTypeCalc, RDOSelectResourceCalc)
 DECLARE_FACTORY(RDOSelectResourceByTypeCalc)
 protected:
 	RDOSelectResourceByTypeCalc(ResourceID relResID, ResourceID resTypeID, CREF(LPRDOCalc) pChoiceCalc = NULL, CREF(LPRDOCalc) pOrderCalc = NULL, Type orderType = order_empty);
-
+	RDOSelectResourceByTypeCalc(ResourceID relResID, ResourceID resTypeID, QString sqlQuery, CREF(LPRDOCalc) pChoiceCalc = NULL, CREF(LPRDOCalc) pOrderCalc = NULL, Type orderType = order_empty);
 	ResourceID m_resTypeID;
 
 	DECLARE_ICalc;

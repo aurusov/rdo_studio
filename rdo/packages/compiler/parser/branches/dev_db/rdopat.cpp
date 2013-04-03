@@ -1110,9 +1110,18 @@ rdo::runtime::LPRDOCalc RDORelevantResourceByType::createSelectResourceChoiceCal
 {
 	if ((m_statusBegin != rdo::runtime::RDOResource::CS_Create) && (m_statusEnd != rdo::runtime::RDOResource::CS_Create))
 	{
-		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOSelectResourceByTypeCalc>::create(m_relResID, m_pResType->getNumber(), getChoiceCalc(), getSelectCalc(), getSelectType());
-		pCalc->setSrcInfo(m_pChoiceFrom->src_info());
-		return pCalc;
+		if (m_pChoiceFrom->m_type == RDOPATChoiceFrom::ch_from)
+		{
+			rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOSelectResourceByTypeCalc>::create(m_relResID, m_pResType->getNumber(), getChoiceCalc(), getSelectCalc(), getSelectType());
+			pCalc->setSrcInfo(m_pChoiceFrom->src_info());
+			return pCalc;
+		}
+		else if (m_pChoiceFrom->m_type == RDOPATChoiceFrom::sql_select)
+		{
+			rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOSelectResourceByTypeCalc>::create(m_relResID, m_pResType->getNumber(), m_pChoiceFrom->getSqlQuery(), getChoiceCalc(), getSelectCalc(), getSelectType());
+			pCalc->setSrcInfo(m_pChoiceFrom->src_info());
+			return pCalc;
+		}
 	}
 	else
 	{
@@ -1136,7 +1145,14 @@ rdo::runtime::LPRDOCalc RDORelevantResourceByType::createSelectFirstResourceChoi
 {
 	if ((m_statusBegin != rdo::runtime::RDOResource::CS_Create) && (m_statusEnd != rdo::runtime::RDOResource::CS_Create))
 	{
-		return rdo::Factory<rdo::runtime::RDOSelectResourceByTypeCalc>::create(m_relResID, m_pResType->getNumber(), getChoiceCalc());
+		if (m_pChoiceFrom->m_type == RDOPATChoiceFrom::ch_from)
+		{
+			return rdo::Factory<rdo::runtime::RDOSelectResourceByTypeCalc>::create(m_relResID, m_pResType->getNumber(), getChoiceCalc());
+		}
+		else if (m_pChoiceFrom->m_type == RDOPATChoiceFrom::sql_select)
+		{
+			return rdo::Factory<rdo::runtime::RDOSelectResourceByTypeCalc>::create(m_relResID, m_pResType->getNumber(), m_pChoiceFrom->getSqlQuery(), getChoiceCalc());
+		}
 	}
 	else
 	{
@@ -1157,6 +1173,11 @@ rdo::runtime::LPIRDOSelectResourceCommon RDORelevantResourceByType::createSelect
 	rdo::runtime::LPIRDOSelectResourceCommon pSelectResourceCommon = pByTypeCommonCalc.interface_cast<rdo::runtime::IRDOSelectResourceCommon>();
 	ASSERT(pSelectResourceCommon);
 	return pSelectResourceCommon;
+}
+
+CREF(QString) RDOPATChoiceFrom::getSqlQuery() const
+{
+	return m_query;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -134,6 +134,8 @@ $operations                    return(RDO_Operations);
 $Results                       return(RDO_Results);
 $results                       return(RDO_Results);
 
+sql_select                     return(RDO_sql_select);
+
 watch_par                      return(RDO_watch_par);
 watch_state                    return(RDO_watch_state);
 watch_quant                    return(RDO_watch_quant);

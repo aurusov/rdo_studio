@@ -403,10 +403,13 @@ public:
 	{
 		ch_empty = 0,
 		ch_nocheck,
-		ch_from
+		ch_from,
+		sql_select
 	} m_type;
 
 	LPRDOFUNLogic m_pLogic;
+
+	CREF(QString) getSqlQuery() const;
 
 private:
 	RDOPATChoiceFrom(CREF(RDOParserSrcInfo) src_info, Type type, CREF(LPRDOFUNLogic) pLogic = NULL)
@@ -414,6 +417,13 @@ private:
 		, m_type          (type    )
 		, m_pLogic        (pLogic  )
 	{}
+	RDOPATChoiceFrom(CREF(RDOParserSrcInfo) src_info, Type type, CREF(QString) sqlQuery)
+		: RDOParserSrcInfo(src_info)
+		, m_type          (type    )
+		, m_query         (sqlQuery)
+	{}
+
+	QString       m_query;
 };
 
 // --------------------------------------------------------------------------------

@@ -35,6 +35,16 @@ RDOSelectResourceCalc::RDOSelectResourceCalc(ResourceID relResID, CREF(LPRDOCalc
 	, m_pCalcChoiceFrom(pCalcChoiceFrom)
 	, m_pCalcOrder     (pCalcOrder     )
 	, m_orderType      (orderType      )
+	, m_sqlFlag        (false          )
+{}
+
+RDOSelectResourceCalc::RDOSelectResourceCalc(ResourceID relResID, rbool sqlFlag, QString sqlQuery, CREF(LPRDOCalc) pCalcChoiceFrom, CREF(LPRDOCalc) pCalcOrder, Type orderType)
+	: m_relResID       (relResID       )
+	, m_pCalcChoiceFrom(pCalcChoiceFrom)
+	, m_pCalcOrder     (pCalcOrder     )
+	, m_orderType      (orderType      )
+	, m_sqlFlag        (true           )
+	, m_sqlQuery       (sqlQuery       )
 {}
 
 // --------------------------------------------------------------------------------
@@ -87,74 +97,129 @@ RDOSelectResourceByTypeCalc::RDOSelectResourceByTypeCalc(ResourceID relResID, Re
 	, m_resTypeID          (resTypeID                                   )
 {}
 
+RDOSelectResourceByTypeCalc::RDOSelectResourceByTypeCalc(ResourceID relResID, ResourceID resTypeID, QString sqlQuery, CREF(LPRDOCalc) pChoiceCalc, CREF(LPRDOCalc) pOrderCalc, Type orderType)
+	: RDOSelectResourceCalc(relResID, true, sqlQuery, pChoiceCalc, pOrderCalc, orderType)
+	, m_resTypeID          (resTypeID                                   )
+{}
+
 RDOValue RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue   maxVal      = -DBL_MAX;
-	RDOValue   minVal      = DBL_MAX;
-	ResourceID resMinMaxID = ResourceID(~0);
-
-	RDORuntime::ResCIterator end = pRuntime->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; it++)
+	if (m_sqlFlag)
 	{
-		if (*it && (*it)->checkType(m_resTypeID))
-		{
-			ResourceID resID = (*it)->getTraceID();
+		QSqlQuery query;
+		PTR(GeneralDB) db = pRuntime->getDB();
+		query.exec(m_sqlQuery);
 
-			switch (m_orderType)
-			{
+		switch (m_orderType)
+		{
 			case order_empty:
 			case order_first:
+			{
+				if (query.size() > 0)
 				{
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
-					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
-					{
-						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-						continue;
-					}
+					query.next();
+					int i = query.value(query.record().indexOf("rss_id")).toInt();
+					pRuntime->getCurrentActivity()->setRelRes(m_relResID, i);
 					return RDOValue(1);
 				}
+				break;
+			}
 			case order_with_min:
+			{
+				if (query.size() > 0)
 				{
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
-					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
-					{
-						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-						continue;
-					}
-					RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
-					if (tmp < minVal)
-					{
-						minVal      = tmp;
-						resMinMaxID = resID;
-					}
-					break;
+					query.next();
+					int i = query.value(query.record().indexOf("rss_id")).toInt();
+					pRuntime->getCurrentActivity()->setRelRes(m_relResID, i);
+					//pRuntime->getCurrentActivity()->setRelRes(m_relResID, query.value(query.record().indexOf("rss_id")).toInt());
+					return RDOValue(1);
 				}
+				break;
+			}
 			case order_with_max:
+			{
+				if (query.size() > 0)
 				{
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
-					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
+					query.last();
+					int i = query.value(query.record().indexOf("rss_id")).toInt();
+					pRuntime->getCurrentActivity()->setRelRes(m_relResID, i);
+					//pRuntime->getCurrentActivity()->setRelRes(m_relResID, query.value(query.record().indexOf("rss_id")).toInt());
+					return RDOValue(1);
+				}
+				break;
+			}
+		}
+		return RDOValue(0);
+	}
+	else
+	{
+		RDOValue   maxVal      = -DBL_MAX;
+		RDOValue   minVal      = DBL_MAX;
+		ResourceID resMinMaxID = ResourceID(~0);
+
+		RDORuntime::ResCIterator end = pRuntime->res_end();
+		for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; it++)
+		{
+			if (*it && (*it)->checkType(m_resTypeID))
+			{
+				ResourceID resID = (*it)->getTraceID();
+
+				switch (m_orderType)
+				{
+				case order_empty:
+				case order_first:
 					{
-						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-						continue;
+						pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
+						if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
+						{
+							pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+							continue;
+						}
+						return RDOValue(1);
 					}
-					RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
-					if (tmp > maxVal)
+				case order_with_min:
 					{
-						maxVal      = tmp;
-						resMinMaxID = resID;
+						pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
+						if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
+						{
+							pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+							continue;
+						}
+						RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
+						if (tmp < minVal)
+						{
+							minVal      = tmp;
+							resMinMaxID = resID;
+						}
+						break;
 					}
-					break;
+				case order_with_max:
+					{
+						pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
+						if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
+						{
+							pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+							continue;
+						}
+						RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
+						if (tmp > maxVal)
+						{
+							maxVal      = tmp;
+							resMinMaxID = resID;
+						}
+						break;
+					}
 				}
 			}
 		}
-	}
 
-	if (resMinMaxID != ResourceID(~0))
-	{
-		pRuntime->getCurrentActivity()->setRelRes(m_relResID, resMinMaxID);
-		return RDOValue(1);
+		if (resMinMaxID != ResourceID(~0))
+		{
+			pRuntime->getCurrentActivity()->setRelRes(m_relResID, resMinMaxID);
+			return RDOValue(1);
+		}
+		return RDOValue(0);
 	}
-	return RDOValue(0);
 }
 
 // --------------------------------------------------------------------------------

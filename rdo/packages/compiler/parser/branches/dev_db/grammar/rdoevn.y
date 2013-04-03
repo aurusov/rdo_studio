@@ -25,6 +25,7 @@
 %token RDO_End
 %token RDO_temporary
 %token RDO_IDENTIF
+%token SQL_SELECT
 %token RDO_INT_CONST
 %token RDO_REAL_CONST
 %token RDO_such_as
@@ -84,6 +85,7 @@
 %token RDO_Operations
 
 %token RDO_Results
+%token RDO_sql_select
 %token RDO_watch_par
 %token RDO_watch_state
 %token RDO_watch_quant

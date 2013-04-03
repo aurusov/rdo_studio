@@ -25,6 +25,7 @@
 %token RDO_End
 %token RDO_temporary
 %token RDO_IDENTIF
+%token SQL_SELECT
 %token RDO_INT_CONST
 %token RDO_REAL_CONST
 %token RDO_such_as
@@ -84,6 +85,7 @@
 %token RDO_Operations
 
 %token RDO_Results
+%token RDO_sql_select
 %token RDO_watch_par
 %token RDO_watch_state
 %token RDO_watch_quant
@@ -1192,6 +1194,13 @@ pat_choice
 	| pat_choice_from error
 	{
 		PARSER->error().error(@2, "Ошибка в логическом выражении");
+	}
+	| RDO_sql_select RDO_STRING_CONST
+	{
+		std::string sql = PARSER->stack().pop<RDOValue>($2)->value().getString();
+		LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("sql_select " + sql), RDOPATChoiceFrom::sql_select, QString::fromStdString(sql).replace("$","'"));
+		ASSERT(pChoiceFrom);
+		$$ = PARSER->stack().push(pChoiceFrom);
 	}
 	;
 
