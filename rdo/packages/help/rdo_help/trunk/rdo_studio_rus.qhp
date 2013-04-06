@@ -88,17 +88,6 @@
 			<keyword name="копировать в RTF" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
 			<keyword name="маркер" ref="rdo_studio_rus/html/work_model/work_model_bookmarks.htm"/>
 			<keyword name="МГТУ им. Н.Э. Баумана" ref="rdo_studio_rus/html/about.htm"/>
-			<keyword name="меню RAO" ref="rdo_studio_rus/html/work_model/work_model_run.htm"/>
-			<keyword name="меню RAO" ref="rdo_studio_rus/html/work_model/work_model_results.htm"/>
-			<keyword name="меню Вставка" ref="rdo_studio_rus/html/work_model/work_model_insert.htm"/>
-			<keyword name="меню Поиск" ref="rdo_studio_rus/html/work_model/work_model_bookmarks.htm"/>
-			<keyword name="меню Поиск" ref="rdo_studio_rus/html/work_model/work_model_search_replace.htm"/>
-			<keyword name="меню Помощь" ref="rdo_studio_rus/html/work_help.htm"/>
-			<keyword name="меню Правка" ref="rdo_studio_rus/html/work_model/work_model_complete.htm"/>
-			<keyword name="меню Правка" ref="rdo_studio_rus/html/work_model/work_model_edit.htm"/>
-			<keyword name="меню Просмотр" ref="rdo_studio_rus/html/work_options/work_options.htm"/>
-			<keyword name="меню Файл" ref="rdo_studio_rus/html/work_model/work_model_open.htm"/>
-			<keyword name="меню Файл" ref="rdo_studio_rus/html/work_model/work_model_creation.htm"/>
 			<keyword name="модель: автозавершение" ref="rdo_studio_rus/html/work_model/work_model_complete.htm"/>
 			<keyword name="модель: автозавершение" ref="rdo_studio_rus/html/work_options/work_options_editor.htm"/>
 			<keyword name="модель: анимация" ref="rdo_studio_rus/html/work_model/work_model_frame.htm"/>
