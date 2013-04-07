@@ -39,6 +39,8 @@ TARGET_LINK_LIBRARIES(rdo_simulator rdo_procgui)
 TARGET_LINK_LIBRARIES(rdo_simulator rdo_simulator_report)
 TARGET_LINK_LIBRARIES(rdo_simulator rdo_converter_smr2rdox)
 
+INSTALL(TARGETS rdo_simulator DESTINATION lib)
+
 IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".code" FILES 
