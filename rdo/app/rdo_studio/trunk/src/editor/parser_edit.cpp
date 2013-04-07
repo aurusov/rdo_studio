@@ -41,7 +41,7 @@ set?0 Show_mode?0 Show_rate?0 some?0 Statistic_file?0 such_as?0 table?0 temporar
 Terminate_if?0 text?0 Time_now?0 Trace_EndTime?2 Trace_file?2 Trace_StartTime?2 triang?0 triangular?0 \
 uniform?0 until?0 value?0 watch_par?0 watch_quant?0 watch_state?0 watch_value?0 with_max?0 \
 with_min?0 YES?0 Seed?0 Системное_время?0 not?0 if?0 else?0 for?0 return?0 break?0 result?0 ruler?0 space?0 string?0 bool?0 true?0 false?0 \
-External_Model?0 external_model?0 $Priority?0 $Parent?0 prior?0 cf?0 Terminate_counter?0 typedef?0 $Typedef?0")
+External_Model?0 external_model?0 $Priority?0 $Parent?0 prior?0 cf?0 Terminate_counter?0 typedef?0 $Typedef?0 $Sprite?0")
 	, kw1("Abs?1 ArcCos?1 ArcSin?1 ArcTan?1 Cos?1 Cotan?1 Exist?1 Exp?1 Floor?1 For_All?1 Frac?1 \
 GetRelResNumber?1 GetResNumber?1 IAbs?1 IMax?1 IMin?1 Int?1 IntPower?1 Ln?1 Log10?1 Log2?1 LogN?1 Max?1 Min?1 \
 Not_Exist?1 Not_For_All?1 Power?1 Round?1 Sin?1 Sqrt?1 Tan?1 Select?1 Size?1 Empty?1")

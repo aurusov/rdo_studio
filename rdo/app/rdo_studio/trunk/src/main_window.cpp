@@ -231,7 +231,7 @@ void MainWindow::createInsertMenu()
 			"FRM",
 			MenuItemList
 				(MenuItem("FRM", "frm.txt", 7))
-				("$Frame")("$Back_picture")("bitmap")("text")("line")("rect")("circle")("ellipse")("r_rect")
+				("$Frame")("$Sprite")("$Back_picture")("bitmap")("text")("line")("rect")("circle")("ellipse")("r_rect")
 				("triang")("s_bmp")("active")("$End")
 		)
 	);

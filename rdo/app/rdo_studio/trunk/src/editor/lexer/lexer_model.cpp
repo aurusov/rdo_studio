@@ -175,8 +175,8 @@ void SyntaxFold(unsigned int startPos, int length, int initStyle, WordList *[], 
 		{
 			if (str.length())
 			{
-				if (str == "$Pattern"  || str == "$Resource_type"  || str == "$Resources" || str == "$Operations" || str == "$Frame" || str == "$Constant" || str == "$Sequence" || str == "$Function" || str == "$Decision_point" || str == "$Process" || str == "$Results"
-				 || str == "$pattern"  || str == "$resource_type"  || str == "$resources" || str == "$operations" || str == "$frame" || str == "$constant" || str == "$sequence" || str == "$function" || str == "$decision_point" || str == "$Process" || str == "$results")
+				if (str == "$Pattern"  || str == "$Resource_type"  || str == "$Resources" || str == "$Operations" || str == "$Frame" || str == "$Constant" || str == "$Sequence" || str == "$Function" || str == "$Decision_point" || str == "$Process" || str == "$Results" || str == "$Sprite"
+				 || str == "$pattern"  || str == "$resource_type"  || str == "$resources" || str == "$operations" || str == "$frame" || str == "$constant" || str == "$sequence" || str == "$function" || str == "$decision_point" || str == "$Process" || str == "$results" || str == "$sprite")
 				{
 					levelCurrent++;
 				}
