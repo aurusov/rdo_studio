@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoparser.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -129,7 +129,7 @@ void RDOParser::init()
 	ASSERT(pSMR);
 	setSMR(pSMR);
 
-	m_resultGeneratorID.get(); //! Для PMD нумерация с 1
+	m_resultGeneratorID.get(); //! Р”Р»СЏ PMD РЅСѓРјРµСЂР°С†РёСЏ СЃ 1
 }
 
 void RDOParser::deinit()
@@ -187,7 +187,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
-	if (pValue->value().getIdentificator() == _T("Time_now") || pValue->value().getIdentificator() == _T("time_now") || pValue->value().getIdentificator() == _T("Системное_время") || pValue->value().getIdentificator() == _T("системное_время"))
+	if (pValue->value().getIdentificator() == _T("Time_now") || pValue->value().getIdentificator() == _T("time_now") || pValue->value().getIdentificator() == _T("РЎРёСЃС‚РµРјРЅРѕРµ_РІСЂРµРјСЏ") || pValue->value().getIdentificator() == _T("СЃРёСЃС‚РµРјРЅРѕРµ_РІСЂРµРјСЏ"))
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			rdo::Factory<TypeInfo>::delegate<RDOType__real>(pValue->src_info()),
@@ -218,11 +218,11 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
 	}
 
-	//! Типы ресурсов
+	//! РўРёРїС‹ СЂРµСЃСѓСЂСЃРѕРІ
 	LPRDORTPResType pResType = findRTPResType(pValue->value().getIdentificator());
 	if (pResType)
 	{
-		//! Это тип ресурса с закладки RTP
+		//! Р­С‚Рѕ С‚РёРї СЂРµСЃСѓСЂСЃР° СЃ Р·Р°РєР»Р°РґРєРё RTP
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			rdo::Factory<TypeInfo>::create(
 				pResType,
@@ -235,7 +235,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue, pResType.object_static_cast<Context>());
 	}
 
-	//! Это ресурс с закладки RSS
+	//! Р­С‚Рѕ СЂРµСЃСѓСЂСЃ СЃ Р·Р°РєР»Р°РґРєРё RSS
 	LPRDORSSResource pResource = findRSSResource(pValue->value().getIdentificator());
 	if (pResource)
 	{
@@ -251,7 +251,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue, pResource.object_static_cast<Context>());
 	}
 
-	//! Константы
+	//! РљРѕРЅСЃС‚Р°РЅС‚С‹
 	LPRDOFUNConstant pConstant = findFUNConstant(pValue->value().getIdentificator());
 	if (pConstant)
 	{
@@ -264,7 +264,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
 	}
 
-	//! Последовательности
+	//! РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
 	LPRDOFUNSequence pSequence = findFUNSequence(pValue->value().getIdentificator());
 	if (pSequence)
 	{
@@ -284,8 +284,8 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
 	}
 
-	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+	//! Р’РѕР·РјРѕР¶РЅРѕ, С‡С‚Рѕ СЌС‚Рѕ Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР°, С‚РѕР»СЊРєРѕ РѕРґРЅРѕ Рё С‚РѕР¶Рµ Р·РЅР°С‡РµРЅРёРµ РјРѕР¶РµС‚ РІСЃС‚СЂРµС‡Р°С‚СЊСЃСЏ РІ СЂР°Р·РЅС‹С…
+	//! РїРµСЂРµС‡РёСЃР»РёРјС‹С… С‚РёРїР°С…, РїРѕСЌС‚РѕРјСѓ РєР°РєРѕР№ РёРјРµРЅРЅРѕ РёР· РЅРёС… РІС‹Р±СЂР°С‚СЊ - РІРѕРїСЂРѕСЃ
 	{ErrorBlockMonicker errorBlockMonicker;
 		CREF(PreCastTypeList) typeList = getPreCastTypeList();
 		STL_FOR_ALL_CONST(typeList, it)
@@ -304,7 +304,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 		}
 	}
 
-	const_cast<PTR(RDOParser)>(this)->error().error(pValue->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pValue->value().getIdentificator().c_str()));
+	const_cast<PTR(RDOParser)>(this)->error().error(pValue->src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ: %s"), pValue->value().getIdentificator().c_str()));
 	return Context::FindResult();
 }
 
@@ -481,23 +481,23 @@ void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 	LPRDOFUNConstant pConstant = findFUNConstant(src_info.src_text());
 	if (pConstant)
 	{
-		error().push_only(src_info, rdo::format(_T("Константа '%s' уже существует"), src_info.src_text().c_str()));
+		error().push_only(src_info, rdo::format(_T("РљРѕРЅСЃС‚Р°РЅС‚Р° '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
 //		parser->error(_T("Second appearance of the same constant name: ") + *(_cons->getName()));
-		error().push_only(pConstant->src_info(), _T("См. первое определение"));
+		error().push_only(pConstant->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		error().push_done();
 	}
 	LPRDOFUNSequence pSequence = findFUNSequence(src_info.src_text());
 	if (pSequence)
 	{
-		error().push_only(src_info, rdo::format(_T("Последовательность '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pSequence->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format(_T("РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+		error().push_only(pSequence->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		error().push_done();
 	}
 	LPRDOFUNFunction pFunction = findFUNFunction(src_info.src_text());
 	if (pFunction)
 	{
-		error().push_only(src_info, rdo::format(_T("Функция '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pFunction->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format(_T("Р¤СѓРЅРєС†РёСЏ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+		error().push_only(pFunction->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		error().push_done();
 	}
 }
@@ -509,8 +509,8 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if((*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
 		if (it_search_act != (*it_search)->getActivities().end())
 		{
-			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error().push_only((*it_search_act)->src_info(), _T("См. первое определение"));
+			error().push_only(src_info, rdo::format(_T("РђРєС‚РёРІРЅРѕСЃС‚СЊ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+			error().push_only((*it_search_act)->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 			error().push_done();
 //			error(_T("Activity name: ") + *_name + _T(" already defined"));
 		}
@@ -520,8 +520,8 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if((*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
 		if (it_some_act != (*it_some)->getActivities().end())
 		{
-			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error().push_only((*it_some_act)->src_info(), _T("См. первое определение"));
+			error().push_only(src_info, rdo::format(_T("РђРєС‚РёРІРЅРѕСЃС‚СЊ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+			error().push_only((*it_some_act)->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 			error().push_done();
 		}
 	}
@@ -530,8 +530,8 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if((*it_prior)->getActivities().begin(), (*it_prior)->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
 		if (it_prior_act != (*it_prior)->getActivities().end())
 		{
-			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error().push_only((*it_prior_act)->src_info(), _T("См. первое определение"));
+			error().push_only(src_info, rdo::format(_T("РђРєС‚РёРІРЅРѕСЃС‚СЊ '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+			error().push_only((*it_prior_act)->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 			error().push_done();
 		}
 	}
@@ -541,22 +541,22 @@ void RDOParser::checkDPTName(CREF(RDOParserSrcInfo) src_info)
 {
 	if (src_info.src_text().empty())
 	{
-		// Актуально для операций и свободных блоков активностей
+		// РђРєС‚СѓР°Р»СЊРЅРѕ РґР»СЏ РѕРїРµСЂР°С†РёР№ Рё СЃРІРѕР±РѕРґРЅС‹С… Р±Р»РѕРєРѕРІ Р°РєС‚РёРІРЅРѕСЃС‚РµР№
 		return;
 	}
 	DPTSearchList::const_iterator search_it = std::find_if(getDPTSearchs().begin(), getDPTSearchs().end(), compareName<RDODPTSearch>(src_info.src_text()));
 	if (search_it != getDPTSearchs().end())
 	{
-		error().push_only(src_info, rdo::format(_T("Точка '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only((*search_it)->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format(_T("РўРѕС‡РєР° '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+		error().push_only((*search_it)->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		error().push_done();
 //		error(src_info, _T("DPT name: ") + src_info.src_text() + _T(" already defined"));
 	}
 	DPTSomeList::const_iterator some_it = std::find_if(getDPTSomes().begin(), getDPTSomes().end(), compareName<RDODPTSome>(src_info.src_text()));
 	if (some_it != getDPTSomes().end())
 	{
-		error().push_only(src_info, rdo::format(_T("Точка '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only((*some_it)->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format(_T("РўРѕС‡РєР° '%s' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚"), src_info.src_text().c_str()));
+		error().push_only((*some_it)->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		error().push_done();
 	}
 }

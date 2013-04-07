@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      expression.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      07.03.2011
   \brief     
   \indent    4T
@@ -42,8 +42,8 @@ protected:
 
 private:
 	LPTypeInfo               m_pType;
-	LPRDOValue               m_pValue; //! < Используется или m_pValue или m_pCalc
-	rdo::runtime::LPRDOCalc  m_pCalc;  //! < Более красивое решение: завести парсеровский калк
+	LPRDOValue               m_pValue; //! < РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РёР»Рё m_pValue РёР»Рё m_pCalc
+	rdo::runtime::LPRDOCalc  m_pCalc;  //! < Р‘РѕР»РµРµ РєСЂР°СЃРёРІРѕРµ СЂРµС€РµРЅРёРµ: Р·Р°РІРµСЃС‚Рё РїР°СЂСЃРµСЂРѕРІСЃРєРёР№ РєР°Р»Рє
 };
 
 // --------------------------------------------------------------------------------

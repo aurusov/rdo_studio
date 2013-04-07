@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoparser.h
-  \authors   Áàðñ Àëåêñàíäð
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \authors   Ð‘Ð°Ñ€Ñ ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -168,8 +168,8 @@ public:
 			rdo::LPISmartPtrWrapper pWrapper = IndexedStack::pop(id);
 			ASSERT(pWrapper);
 
-			// Ïàäåíèå â â ýòîì ìåñòå îçíà÷àåò, ÷òî èç ñòåêà âûòàñêèâàåòñÿ óêàçàòåëü íåïðàâèëüíîãî òèïà
-			// ×òî áû óçíàòü òèï, íåîáõîäèìî íàéòè êîìàíäó push äëÿ ýòîãî óêàçàòåëÿ
+			// ÐŸÐ°Ð´ÐµÐ½Ð¸Ðµ Ð² Ð² ÑÑ‚Ð¾Ð¼ Ð¼ÐµÑÑ‚Ðµ Ð¾Ð·Ð½Ð°Ñ‡Ð°ÐµÑ‚, Ñ‡Ñ‚Ð¾ Ð¸Ð· ÑÑ‚ÐµÐºÐ° Ð²Ñ‹Ñ‚Ð°ÑÐºÐ¸Ð²Ð°ÐµÑ‚ÑÑ ÑƒÐºÐ°Ð·Ð°Ñ‚ÐµÐ»ÑŒ Ð½ÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾Ð³Ð¾ Ñ‚Ð¸Ð¿Ð°
+			// Ð§Ñ‚Ð¾ Ð±Ñ‹ ÑƒÐ·Ð½Ð°Ñ‚ÑŒ Ñ‚Ð¸Ð¿, Ð½ÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ Ð½Ð°Ð¹Ñ‚Ð¸ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñƒ push Ð´Ð»Ñ ÑÑ‚Ð¾Ð³Ð¾ ÑƒÐºÐ°Ð·Ð°Ñ‚ÐµÐ»Ñ
 			ASSERT((pWrapper->getRefCounter() && dynamic_cast<CPTR(T)>(pWrapper->getRefCounter())) || !pWrapper->getRefCounter());
 
 			rdo::intrusive_ptr<T> pObject = *reinterpret_cast<PTR(rdo::intrusive_ptr<T>)>(pWrapper->getSmartPtr());

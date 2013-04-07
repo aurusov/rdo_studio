@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      function.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      14.12.2012
-  \brief     РДО-функция на уровне парсера
+  \brief     Р Р”Рћ-С„СѓРЅРєС†РёСЏ РЅР° СѓСЂРѕРІРЅРµ РїР°СЂСЃРµСЂР°
   \indent    4T
 */
 
@@ -79,8 +79,8 @@ void Function::onPushParam(CREF(LPRDOParam) pParam)
 	LPRDOParam pParamPrev = findParam(pParam->name());
 	if (pParamPrev)
 	{
-		RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format(_T("Параметр уже определён: %s"), pParam->name().c_str()));
-		RDOParser::s_parser()->error().push_only(pParamPrev->src_info(), _T("См. первое определение"));
+		RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format(_T("РџР°СЂР°РјРµС‚СЂ СѓР¶Рµ РѕРїСЂРµРґРµР»С‘РЅ: %s"), pParam->name().c_str()));
+		RDOParser::s_parser()->error().push_only(pParamPrev->src_info(), _T("РЎРј. РїРµСЂРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ"));
 		RDOParser::s_parser()->error().push_done();
 	}
 	m_paramList.push_back(pParam); 
@@ -158,7 +158,7 @@ void Function::popFunctionBodyContext()
 		{
 			RDOParser::s_parser()->error().warning(
 				src_info(),
-				rdo::format(_T("Возможно, не все ветки функции '%s' могут вернуть значение."), src_text().c_str())
+				rdo::format(_T("Р’РѕР·РјРѕР¶РЅРѕ, РЅРµ РІСЃРµ РІРµС‚РєРё С„СѓРЅРєС†РёРё '%s' РјРѕРіСѓС‚ РІРµСЂРЅСѓС‚СЊ Р·РЅР°С‡РµРЅРёРµ."), src_text().c_str())
 			);
 		}
 	}
@@ -192,7 +192,7 @@ void Function::setBody(CREF(rdo::runtime::LPRDOCalc) pBody)
 		rdo::runtime::LPRDOCalc pCalcDefault = m_pDefaultValue;
 		if (!pCalcDefault)
 		{
-			//! Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
+			//! РџСЂРёСЃРІРѕРёС‚СЊ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРµ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, РµСЃР»Рё РѕРЅРѕ РЅРµ Р·Р°РґР°РЅРѕ РІ СЏРІРЅРѕРј РІРёРґРµ
 			pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturnType->type()->get_default());
 			ASSERT(pCalcDefault);
 			pCalcDefault->setSrcInfo(m_pReturnType->src_info());
@@ -233,9 +233,9 @@ Context::FindResult Function::onFindContext(CREF(LPRDOValue) pValue) const
 		{
 			RDOParser::s_parser()->error().push_only(
 				pValue->src_info(),
-				rdo::format(_T("Тип параметра '%s' определён неверно"), pValue->src_info().src_text().c_str())
+				rdo::format(_T("РўРёРї РїР°СЂР°РјРµС‚СЂР° '%s' РѕРїСЂРµРґРµР»С‘РЅ РЅРµРІРµСЂРЅРѕ"), pValue->src_info().src_text().c_str())
 			);
-			RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), _T("См. описание типа"));
+			RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), _T("РЎРј. РѕРїРёСЃР°РЅРёРµ С‚РёРїР°"));
 			RDOParser::s_parser()->error().push_done();
 		}
 		ParamID paramID = findParamID(pValue->value().getIdentificator());

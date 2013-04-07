@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      local_variable_context.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      16.12.2012
-  \brief     Контекст инициализации списка локальных переменных: integer i, j;
+  \brief     РљРѕРЅС‚РµРєСЃС‚ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё СЃРїРёСЃРєР° Р»РѕРєР°Р»СЊРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С…: integer i, j;
   \indent    4T
 */
 

@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/compiler/parser/rdo_value.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -25,7 +25,7 @@ RDOValue::RDOValue()
 	: RDOParserSrcInfo()
 	, m_value         (rdo::runtime::RDOValue(rdo::runtime::g_unknow.object_parent_cast<rdo::runtime::RDOType>()))
 {
-	//! @todo RDOParserSrcInfo() для TypeInfo реально неопределёно, добавить соответствующий конструктор
+	//! @todo RDOParserSrcInfo() РґР»СЏ TypeInfo СЂРµР°Р»СЊРЅРѕ РЅРµРѕРїСЂРµРґРµР»С‘РЅРѕ, РґРѕР±Р°РІРёС‚СЊ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёР№ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
 	LPRDOValue pValue = getUnknow(RDOParserSrcInfo());
 	ASSERT(pValue);
 
@@ -34,7 +34,7 @@ RDOValue::RDOValue()
 	ASSERT(m_pType);
 }
 
-// Для t_identificator известно только имя, но не тип
+// Р”Р»СЏ t_identificator РёР·РІРµСЃС‚РЅРѕ С‚РѕР»СЊРєРѕ РёРјСЏ, РЅРѕ РЅРµ С‚РёРї
 RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info                                                              )
 	, m_value         (rdo::runtime::RDOValue(src_info.src_text(), rdo::runtime::g_identificator))

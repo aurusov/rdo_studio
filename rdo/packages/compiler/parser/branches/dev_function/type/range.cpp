@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      range.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      22.12.2012
   \brief     
   \indent    4T
@@ -34,11 +34,11 @@ void RDOTypeRangeRange::checkRange() const
 {
 	if (m_pMinValue->typeID() != m_pMaxValue->typeID())
 	{
-		parser::g_error().error(m_pMaxValue->src_info(), rdo::format(_T("Границы диапазона должны быть одного типа, найдено: [%s] .. [%s]"), m_pMinValue->typeInfo()->type()->name().c_str(), m_pMaxValue->typeInfo()->type()->name().c_str()));
+		parser::g_error().error(m_pMaxValue->src_info(), rdo::format(_T("Р“СЂР°РЅРёС†С‹ РґРёР°РїР°Р·РѕРЅР° РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РѕРґРЅРѕРіРѕ С‚РёРїР°, РЅР°Р№РґРµРЅРѕ: [%s] .. [%s]"), m_pMinValue->typeInfo()->type()->name().c_str(), m_pMaxValue->typeInfo()->type()->name().c_str()));
 	}
 	if (m_pMinValue->value() > m_pMaxValue->value())
 	{
-		parser::g_error().error(m_pMaxValue->src_info(), _T("Левая граница диапазона должна быть меньше правой"));
+		parser::g_error().error(m_pMaxValue->src_info(), _T("Р›РµРІР°СЏ РіСЂР°РЅРёС†Р° РґРёР°РїР°Р·РѕРЅР° РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РјРµРЅСЊС€Рµ РїСЂР°РІРѕР№"));
 	}
 }
 
@@ -50,12 +50,12 @@ void RDOTypeRangeRange::checkValue(CREF(LPRDOValue) pValue) const
 	{
 		if (pValue->src_filetype() == src_filetype() && pValue->src_pos().m_last_line == src_pos().m_last_line)
 		{
-			parser::g_error().error(pValue->src_info(), rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_pMaxValue->value().getAsString().c_str(), m_pMaxValue->value().getAsString().c_str(), pValue->value().getAsString().c_str()));
+			parser::g_error().error(pValue->src_info(), rdo::format(_T("Р—РЅР°С‡РµРЅРёРµ РІС‹С…РѕРґРёС‚ Р·Р° РґРѕРїСѓСЃС‚РёРјС‹Р№ РґРёР°РїР°Р·РѕРЅ [%s..%s]: %s"), m_pMaxValue->value().getAsString().c_str(), m_pMaxValue->value().getAsString().c_str(), pValue->value().getAsString().c_str()));
 		}
 		else
 		{
-			parser::g_error().push_only(pValue->src_info(), rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_pMaxValue->value().getAsString().c_str(), m_pMaxValue->value().getAsString().c_str(), pValue->value().getAsString().c_str()));
-			parser::g_error().push_only(src_info(),         rdo::format(_T("См. описание диапазона")));
+			parser::g_error().push_only(pValue->src_info(), rdo::format(_T("Р—РЅР°С‡РµРЅРёРµ РІС‹С…РѕРґРёС‚ Р·Р° РґРѕРїСѓСЃС‚РёРјС‹Р№ РґРёР°РїР°Р·РѕРЅ [%s..%s]: %s"), m_pMaxValue->value().getAsString().c_str(), m_pMaxValue->value().getAsString().c_str(), pValue->value().getAsString().c_str()));
+			parser::g_error().push_only(src_info(),         rdo::format(_T("РЎРј. РѕРїРёСЃР°РЅРёРµ РґРёР°РїР°Р·РѕРЅР°")));
 			parser::g_error().push_done();
 		}
 	}

@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      function.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      14.12.2012
-  \brief     РДО-функция на уровне парсера
+  \brief     Р Р”Рћ-С„СѓРЅРєС†РёСЏ РЅР° СѓСЂРѕРІРЅРµ РїР°СЂСЃРµСЂР°
   \indent    4T
 */
 
@@ -47,7 +47,7 @@ protected:
 	Function(CREF(LPTypeInfo) pReturnType, CREF(RDOParserSrcInfo) srcInfo);
 	virtual ~Function();
 
-	//! @todo Для передачи значения по умолчанию алгоритмической функции. В идеале, это надо переложить на конвертор.
+	//! @todo Р”Р»СЏ РїРµСЂРµРґР°С‡Рё Р·РЅР°С‡РµРЅРёСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ Р°Р»РіРѕСЂРёС‚РјРёС‡РµСЃРєРѕР№ С„СѓРЅРєС†РёРё. Р’ РёРґРµР°Р»Рµ, СЌС‚Рѕ РЅР°РґРѕ РїРµСЂРµР»РѕР¶РёС‚СЊ РЅР° РєРѕРЅРІРµСЂС‚РѕСЂ.
 	void setDefaultCalc(CREF(rdo::runtime::LPRDOCalc) pDefaultValue);
 
 	DECLARE_IContextFind;

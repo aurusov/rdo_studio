@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      statement.cpp
-  \authors   Поподьянец Евгений (kurt.gigacore@gmail.com)
+  \authors   РџРѕРїРѕРґСЊСЏРЅРµС† Р•РІРіРµРЅРёР№ (kurt.gigacore@gmail.com)
   \date      18.04.2012
-  \brief     Контекст выражений
+  \brief     РљРѕРЅС‚РµРєСЃС‚ РІС‹СЂР°Р¶РµРЅРёР№
   \indent    4T
 */
 

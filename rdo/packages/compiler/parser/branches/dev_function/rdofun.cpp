@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdofun.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -81,7 +81,7 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm)
 {
 	if (pArithm->typeID() != rdo::runtime::RDOType::t_bool)
 	{
-		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Ожидается логическое выражение, найдено: %s"), src_text().c_str()));
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ Р»РѕРіРёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ, РЅР°Р№РґРµРЅРѕ: %s"), src_text().c_str()));
 	}
 }
 
@@ -98,11 +98,11 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPExpression) pExpression, rbool hideWarning)
 		{
 			if (pConstCalc->getValue().getAsBool())
 			{
-				RDOParser::s_parser()->error().warning(pConstCalc->srcInfo(), rdo::format(_T("Логическое выражение всегда истинно: %s"), pConstCalc->srcInfo().src_text().c_str()));
+				RDOParser::s_parser()->error().warning(pConstCalc->srcInfo(), rdo::format(_T("Р›РѕРіРёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ РІСЃРµРіРґР° РёСЃС‚РёРЅРЅРѕ: %s"), pConstCalc->srcInfo().src_text().c_str()));
 			}
 			else
 			{
-				RDOParser::s_parser()->error().warning(pConstCalc->srcInfo(), rdo::format(_T("Логическое выражение всегда ложно: %s"), pConstCalc->srcInfo().src_text().c_str()));
+				RDOParser::s_parser()->error().warning(pConstCalc->srcInfo(), rdo::format(_T("Р›РѕРіРёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ РІСЃРµРіРґР° Р»РѕР¶РЅРѕ: %s"), pConstCalc->srcInfo().src_text().c_str()));
 			}
 		}
 	}
@@ -429,21 +429,21 @@ LPTypeInfo RDOFUNArithm::getPreType(CREF(LPRDOFUNArithm) pSecond)
 {
 	if (typeID() == rdo::runtime::RDOType::t_unknow)
 	{
-		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Внутренная ошибка парсера: неопределенное значение арифметического выражения: %s"), src_text().c_str()));
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°: РЅРµРѕРїСЂРµРґРµР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРіРѕ РІС‹СЂР°Р¶РµРЅРёСЏ: %s"), src_text().c_str()));
 	}
 	if (pSecond->typeID() == rdo::runtime::RDOType::t_unknow)
 	{
-		RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format(_T("Внутренная ошибка парсера: неопределенное значение арифметического выражения: %s"), pSecond->src_text().c_str()));
+		RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format(_T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°: РЅРµРѕРїСЂРµРґРµР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРіРѕ РІС‹СЂР°Р¶РµРЅРёСЏ: %s"), pSecond->src_text().c_str()));
 	}
 	if (typeID() == rdo::runtime::RDOType::t_identificator)
 	{
 		rdo::runtime::LPRDOCalcConst pCalc = calc().object_dynamic_cast<rdo::runtime::RDOCalcConst>();
 		ASSERT(pCalc);
-		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), const_value().getIdentificator().c_str()));
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ: %s"), const_value().getIdentificator().c_str()));
 	}
 	if (pSecond->typeID() == rdo::runtime::RDOType::t_identificator)
 	{
-		RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pSecond->const_value().getIdentificator().c_str()));
+		RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ: %s"), pSecond->const_value().getIdentificator().c_str()));
 	}
 
 	return typeInfo()->type_cast(pSecond->typeInfo(), src_info());
@@ -451,28 +451,28 @@ LPTypeInfo RDOFUNArithm::getPreType(CREF(LPRDOFUNArithm) pSecond)
 
 LPRDOFUNArithm RDOFUNArithm::operator+ (CREF(LPRDOFUNArithm) pSecond)
 {
-	return generateArithm<rdo::runtime::RDOCalcPlus>(pSecond, _T("Ну не могу я сложить %s и %s"));
+	return generateArithm<rdo::runtime::RDOCalcPlus>(pSecond, _T("РќСѓ РЅРµ РјРѕРіСѓ СЏ СЃР»РѕР¶РёС‚СЊ %s Рё %s"));
 }
 
 LPRDOFUNArithm RDOFUNArithm::operator- (CREF(LPRDOFUNArithm) pSecond)
 {
-	return generateArithm<rdo::runtime::RDOCalcMinus>(pSecond, _T("Нельзя из %s вычесть %s"));
+	return generateArithm<rdo::runtime::RDOCalcMinus>(pSecond, _T("РќРµР»СЊР·СЏ РёР· %s РІС‹С‡РµСЃС‚СЊ %s"));
 }
 
 LPRDOFUNArithm RDOFUNArithm::operator* (CREF(LPRDOFUNArithm) pSecond)
 {
-	return generateArithm<rdo::runtime::RDOCalcMult>(pSecond, _T("Нельзя %s умножить на %s"));
+	return generateArithm<rdo::runtime::RDOCalcMult>(pSecond, _T("РќРµР»СЊР·СЏ %s СѓРјРЅРѕР¶РёС‚СЊ РЅР° %s"));
 }
 
 LPRDOFUNArithm RDOFUNArithm::operator/ (CREF(LPRDOFUNArithm) pSecond)
 {
-	rdo::runtime::LPRDOCalc pCalc = generateCalc<rdo::runtime::RDOCalcDiv>(pSecond, _T("Нельзя %s разделить на %s"));
+	rdo::runtime::LPRDOCalc pCalc = generateCalc<rdo::runtime::RDOCalcDiv>(pSecond, _T("РќРµР»СЊР·СЏ %s СЂР°Р·РґРµР»РёС‚СЊ РЅР° %s"));
 	ASSERT(pCalc);
 	LPTypeInfo pType = getPreType(pSecond);
 	ASSERT(pType);
 
-	/// @todo перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
-	//! Ответ: с умножением надо делать тоже самое, только непонятно как
+	/// @todo РїРµСЂРµРІРѕРґ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ РІ С†РµР»РѕРµ РїСЂРё РґРµР»РµРЅРёРё. Рђ С‡С‚Рѕ РґРµР»Р°С‚СЊ СЃ СѓРјРЅРѕР¶РµРЅРёРµРј Рё С‚.Рґ. ?
+	//! РћС‚РІРµС‚: СЃ СѓРјРЅРѕР¶РµРЅРёРµРј РЅР°РґРѕ РґРµР»Р°С‚СЊ С‚РѕР¶Рµ СЃР°РјРѕРµ, С‚РѕР»СЊРєРѕ РЅРµРїРѕРЅСЏС‚РЅРѕ РєР°Рє
 	if (pType->type()->typeID() == rdo::runtime::RDOType::t_int)
 	{
 		rdo::runtime::LPRDOCalc pNewCalcDiv = pCalc;
@@ -497,45 +497,45 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (CREF(LPRDOFUNArithm) pSecond)
 
 LPRDOFUNArithm RDOFUNArithm::setEqual(CREF(LPRDOFUNArithm) pSecond)
 {
-	castValue(pSecond, _T("Ошибка присваивания %s = %s"));
+	castValue(pSecond, _T("РћС€РёР±РєР° РїСЂРёСЃРІР°РёРІР°РЅРёСЏ %s = %s"));
 	return this;
 }
 
 LPRDOFUNArithm RDOFUNArithm::uminus(CREF(rdo::runtime::RDOSrcInfo::Position) position)
 {
-	return generateArithm<rdo::runtime::RDOCalcUMinus>(position, _T("Нельзя взять унарный минус от %s"));
+	return generateArithm<rdo::runtime::RDOCalcUMinus>(position, _T("РќРµР»СЊР·СЏ РІР·СЏС‚СЊ СѓРЅР°СЂРЅС‹Р№ РјРёРЅСѓСЃ РѕС‚ %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator< (CREF(LPRDOFUNArithm) pSecond)
 {
-	return generateLogic<rdo::runtime::RDOCalcIsLess>(pSecond, _T("Нельзя сравнивать %s и %s"));
+	return generateLogic<rdo::runtime::RDOCalcIsLess>(pSecond, _T("РќРµР»СЊР·СЏ СЃСЂР°РІРЅРёРІР°С‚СЊ %s Рё %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator> (CREF(LPRDOFUNArithm) pSecond)
 {
-	return generateLogic<rdo::runtime::RDOCalcIsGreater>(pSecond, _T("Нельзя сравнивать %s и %s"));
+	return generateLogic<rdo::runtime::RDOCalcIsGreater>(pSecond, _T("РќРµР»СЊР·СЏ СЃСЂР°РІРЅРёРІР°С‚СЊ %s Рё %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator<= (CREF(LPRDOFUNArithm) pSecond)
 {
-	return generateLogic<rdo::runtime::RDOCalcIsLEQ>(pSecond, _T("Нельзя сравнивать %s и %s"));
+	return generateLogic<rdo::runtime::RDOCalcIsLEQ>(pSecond, _T("РќРµР»СЊР·СЏ СЃСЂР°РІРЅРёРІР°С‚СЊ %s Рё %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator>= (CREF(LPRDOFUNArithm) pSecond)
 {
-	return generateLogic<rdo::runtime::RDOCalcIsGEQ>(pSecond, _T("Нельзя сравнивать %s и %s"));
+	return generateLogic<rdo::runtime::RDOCalcIsGEQ>(pSecond, _T("РќРµР»СЊР·СЏ СЃСЂР°РІРЅРёРІР°С‚СЊ %s Рё %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator== (CREF(LPRDOFUNArithm) pSecond)
 {
-	castValue(pSecond, _T("Ошибка сравнения %s == %s"));
-	return generateLogic<rdo::runtime::RDOCalcIsEqual>(pSecond, _T("Нельзя сравнивать %s и %s"));
+	castValue(pSecond, _T("РћС€РёР±РєР° СЃСЂР°РІРЅРµРЅРёСЏ %s == %s"));
+	return generateLogic<rdo::runtime::RDOCalcIsEqual>(pSecond, _T("РќРµР»СЊР·СЏ СЃСЂР°РІРЅРёРІР°С‚СЊ %s Рё %s"));
 }
 
 LPRDOFUNLogic RDOFUNArithm::operator!= (CREF(LPRDOFUNArithm) pSecond)
 {
-	castValue(pSecond, _T("Ошибка сравнения %s <> %s"));
-	return generateLogic<rdo::runtime::RDOCalcIsNotEqual>(pSecond, _T("Нельзя сравнивать %s и %s"));
+	castValue(pSecond, _T("РћС€РёР±РєР° СЃСЂР°РІРЅРµРЅРёСЏ %s <> %s"));
+	return generateLogic<rdo::runtime::RDOCalcIsNotEqual>(pSecond, _T("РќРµР»СЊР·СЏ СЃСЂР°РІРЅРёРІР°С‚СЊ %s Рё %s"));
 }
 
 void RDOFUNArithm::checkParamType(CREF(LPTypeInfo) pType)
@@ -556,11 +556,11 @@ void RDOFUNArithm::wrongVarInit(CREF(LPRDOValue) pParamName, CREF(tstring) param
 	LPRDOParam pParam = pFunction->findParam(paramName);
 	if (pParam)
 	{
-		RDOParser::s_parser()->error().error(pParamName->src_info(), rdo::format(_T("Функции не могут изменить свой параметр: %s"), paramName.c_str()));		
+		RDOParser::s_parser()->error().error(pParamName->src_info(), rdo::format(_T("Р¤СѓРЅРєС†РёРё РЅРµ РјРѕРіСѓС‚ РёР·РјРµРЅРёС‚СЊ СЃРІРѕР№ РїР°СЂР°РјРµС‚СЂ: %s"), paramName.c_str()));		
 	}
 	else
 	{
-		RDOParser::s_parser()->error().error(pParamName->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), paramName.c_str()));
+		RDOParser::s_parser()->error().error(pParamName->src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ: %s"), paramName.c_str()));
 	}
 }
 
@@ -591,12 +591,12 @@ rdo::runtime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPTypeInfo) pForType)
 	}
 	else if (typeID() == rdo::runtime::RDOType::t_identificator && !pForType)
 	{
-		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), const_value().getAsString().c_str()));
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ: %s"), const_value().getAsString().c_str()));
 	}
 
 	if (!pForType)
 	{
-		RDOParser::s_parser()->error().error(src_info(), _T("Неизвестный тип параметра"));
+		RDOParser::s_parser()->error().error(src_info(), _T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї РїР°СЂР°РјРµС‚СЂР°"));
 	}
 
 	rdo::runtime::LPRDOCalc pNewCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pForType->value_cast(rdo::Factory<RDOValue>::create(src_info()))->value());
@@ -650,7 +650,7 @@ RDOFUNConstant::RDOFUNConstant(CREF(RDOParserSrcInfo) srcInfo, CREF(LPTypeInfo) 
 	if (!getDefault() || !getDefault()->defined())
 	{
 		ASSERT(pType);
-		RDOParser::s_parser()->error().error(pType->src_info(), _T("Константа должна иметь значение"));
+		RDOParser::s_parser()->error().error(pType->src_info(), _T("РљРѕРЅСЃС‚Р°РЅС‚Р° РґРѕР»Р¶РЅР° РёРјРµС‚СЊ Р·РЅР°С‡РµРЅРёРµ"));
 	}
 
 	m_number = RDOParser::s_parser()->getFUNCONST_id();
@@ -700,7 +700,7 @@ LPFunctionParamType ArithmContainer::getType() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNParams
 // --------------------------------------------------------------------------------
-// Параметры, с которыми функция вызывается
+// РџР°СЂР°РјРµС‚СЂС‹, СЃ РєРѕС‚РѕСЂС‹РјРё С„СѓРЅРєС†РёСЏ РІС‹Р·С‹РІР°РµС‚СЃСЏ
 // --------------------------------------------------------------------------------
 RDOFUNParams::RDOFUNParams(CREF(LPArithmContainer) pArithmContainer)
 	: RDOParserSrcInfo  (                )
@@ -783,7 +783,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 	ruint nParams = pFunction->getParams().size();
 	if (nParams != m_pArithmContainer->getContainer().size())
 	{
-		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неверное количество параметров функции: %s"), funName.c_str()));
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("РќРµРІРµСЂРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РїР°СЂР°РјРµС‚СЂРѕРІ С„СѓРЅРєС†РёРё: %s"), funName.c_str()));
 	}
 
 	rdo::runtime::LPRDOCalc pCalc = pFunction->getFunctionCalc();
@@ -818,7 +818,7 @@ LPRDOFUNArithm RDOFUNParams::createSeqCall(CREF(tstring) seqName)
 	LPRDOFUNSequence pSequence = RDOParser::s_parser()->findFUNSequence(seqName);
 	if (!pSequence)
 	{
-		RDOParser::s_parser()->error().error(m_funseqName, rdo::format(_T("Неопределенная функция или последовательность: %s"), seqName.c_str()));
+		RDOParser::s_parser()->error().error(m_funseqName, rdo::format(_T("РќРµРѕРїСЂРµРґРµР»РµРЅРЅР°СЏ С„СѓРЅРєС†РёСЏ РёР»Рё РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ: %s"), seqName.c_str()));
 	}
 	LPRDOFUNParams pThis(this);
 	ASSERT(pThis);
@@ -828,7 +828,7 @@ LPRDOFUNArithm RDOFUNParams::createSeqCall(CREF(tstring) seqName)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- Последовательности
+// -------------------- РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNSequence
 // --------------------------------------------------------------------------------
@@ -878,14 +878,14 @@ void RDOFUNSequence::initCalcSrcInfo()
 	if (m_pInitCalc)
 	{
 		rdo::runtime::RDOSrcInfo srcInfo(m_pHeader->src_info());
-		srcInfo.setSrcText(_T("Установка базы последовательности ") + m_pHeader->src_text());
+		srcInfo.setSrcText(_T("РЈСЃС‚Р°РЅРѕРІРєР° Р±Р°Р·С‹ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё ") + m_pHeader->src_text());
 		m_pInitCalc->setSrcInfo(srcInfo);
 	}
 	m_pNextCalc->setSrcInfo(m_pHeader->src_info());
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- Датчики случайных чисел
+// -------------------- Р”Р°С‚С‡РёРєРё СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNSequenceUniform
 // --------------------------------------------------------------------------------
@@ -894,7 +894,7 @@ RDOFUNSequenceUniform::RDOFUNSequenceUniform(CREF(LPRDOFUNSequenceHeader) pHeade
 {
 	if (m_pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_enum)
 	{
-		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Последовательность '%s' может возвращять значения только целого или вещественного типа"), src_text().c_str()));
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ '%s' РјРѕР¶РµС‚ РІРѕР·РІСЂР°С‰СЏС‚СЊ Р·РЅР°С‡РµРЅРёСЏ С‚РѕР»СЊРєРѕ С†РµР»РѕРіРѕ РёР»Рё РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ С‚РёРїР°"), src_text().c_str()));
 	}
 }
 
@@ -911,7 +911,7 @@ LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(REF(LPRDOFUNParams) pParamL
 {
 	if (pParamList->getParamList()->getContainer().size() != 2)
 	{
-		RDOParser::s_parser()->error().error(seqSrcInfo, rdo::format(_T("Для равномерного закона распределения '%s' нужно указать два параметра: минимальную и максимальную границы диапазона"), name().c_str()));
+		RDOParser::s_parser()->error().error(seqSrcInfo, rdo::format(_T("Р”Р»СЏ СЂР°РІРЅРѕРјРµСЂРЅРѕРіРѕ Р·Р°РєРѕРЅР° СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ '%s' РЅСѓР¶РЅРѕ СѓРєР°Р·Р°С‚СЊ РґРІР° РїР°СЂР°РјРµС‚СЂР°: РјРёРЅРёРјР°Р»СЊРЅСѓСЋ Рё РјР°РєСЃРёРјР°Р»СЊРЅСѓСЋ РіСЂР°РЅРёС†С‹ РґРёР°РїР°Р·РѕРЅР°"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -935,7 +935,7 @@ LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(REF(LPRDOFUNParams) pParamL
 	pArithm->setSrcInfo(seqSrcInfo);
 	if (pArithm->typeID() == rdo::runtime::RDOType::t_enum)
 	{
-		RDOParser::s_parser()->error().error(src_info(), _T("Внутренняя ошибка парсера"));
+		RDOParser::s_parser()->error().error(src_info(), _T("Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°"));
 	}
 	return pArithm;
 }
@@ -948,7 +948,7 @@ RDOFUNSequenceExponential::RDOFUNSequenceExponential(CREF(LPRDOFUNSequenceHeader
 {
 	if (m_pHeader->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int && m_pHeader->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real)
 	{
-		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Последовательность '%s' может возвращять значения только целого или вещественного типа"), src_text().c_str()));
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ '%s' РјРѕР¶РµС‚ РІРѕР·РІСЂР°С‰СЏС‚СЊ Р·РЅР°С‡РµРЅРёСЏ С‚РѕР»СЊРєРѕ С†РµР»РѕРіРѕ РёР»Рё РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ С‚РёРїР°"), src_text().c_str()));
 	}
 }
 
@@ -965,7 +965,7 @@ LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(REF(LPRDOFUNParams) pPa
 {
 	if (pParamList->getParamList()->getContainer().size() != 1)
 	{
-		RDOParser::s_parser()->error().error(seqSrcInfo, rdo::format(_T("Для экспоненциального закона распределения '%s' нужно указать один параметр: математическое ожидание"), name().c_str()));
+		RDOParser::s_parser()->error().error(seqSrcInfo, rdo::format(_T("Р”Р»СЏ СЌРєСЃРїРѕРЅРµРЅС†РёР°Р»СЊРЅРѕРіРѕ Р·Р°РєРѕРЅР° СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ '%s' РЅСѓР¶РЅРѕ СѓРєР°Р·Р°С‚СЊ РѕРґРёРЅ РїР°СЂР°РјРµС‚СЂ: РјР°С‚РµРјР°С‚РёС‡РµСЃРєРѕРµ РѕР¶РёРґР°РЅРёРµ"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -987,7 +987,7 @@ LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(REF(LPRDOFUNParams) pPa
 	pArithm->setSrcInfo(seqSrcInfo);
 	if (pArithm->typeID() == rdo::runtime::RDOType::t_enum)
 	{
-		RDOParser::s_parser()->error().error(src_info(), _T("Внутренняя ошибка парсера"));
+		RDOParser::s_parser()->error().error(src_info(), _T("Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°"));
 	}
 	return pArithm;
 }
@@ -1000,7 +1000,7 @@ RDOFUNSequenceNormal::RDOFUNSequenceNormal(CREF(LPRDOFUNSequenceHeader) pHeader,
 {
 	if (m_pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_enum)
 	{
-		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Последовательность '%s' может возвращять значения только целого или вещественного типа"), src_text().c_str()));
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ '%s' РјРѕР¶РµС‚ РІРѕР·РІСЂР°С‰СЏС‚СЊ Р·РЅР°С‡РµРЅРёСЏ С‚РѕР»СЊРєРѕ С†РµР»РѕРіРѕ РёР»Рё РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ С‚РёРїР°"), src_text().c_str()));
 	}
 }
 
@@ -1017,7 +1017,7 @@ LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(REF(LPRDOFUNParams) pParamLi
 {
 	if (pParamList->getParamList()->getContainer().size() != 2)
 	{
-		RDOParser::s_parser()->error().error(seqSrcInfo, rdo::format(_T("Для нормального закона распределения '%s' нужно указать два параметра: математическое ожидание и среднее квадратическое отклонение"), name().c_str()));
+		RDOParser::s_parser()->error().error(seqSrcInfo, rdo::format(_T("Р”Р»СЏ РЅРѕСЂРјР°Р»СЊРЅРѕРіРѕ Р·Р°РєРѕРЅР° СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ '%s' РЅСѓР¶РЅРѕ СѓРєР°Р·Р°С‚СЊ РґРІР° РїР°СЂР°РјРµС‚СЂР°: РјР°С‚РµРјР°С‚РёС‡РµСЃРєРѕРµ РѕР¶РёРґР°РЅРёРµ Рё СЃСЂРµРґРЅРµРµ РєРІР°РґСЂР°С‚РёС‡РµСЃРєРѕРµ РѕС‚РєР»РѕРЅРµРЅРёРµ"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -1041,7 +1041,7 @@ LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(REF(LPRDOFUNParams) pParamLi
 	pArithm->setSrcInfo(seqSrcInfo);
 	if (pArithm->typeID() == rdo::runtime::RDOType::t_enum)
 	{
-		RDOParser::s_parser()->error().error(src_info(), _T("Внутренняя ошибка парсера"));
+		RDOParser::s_parser()->error().error(src_info(), _T("Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°"));
 	}
 	return pArithm;
 }
@@ -1054,7 +1054,7 @@ RDOFUNSequenceTriangular::RDOFUNSequenceTriangular(CREF(LPRDOFUNSequenceHeader) 
 {
 	if (m_pHeader->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int && m_pHeader->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real)
 	{
-		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Последовательность '%s' может возвращять значения только целого или вещественного типа"), src_text().c_str()));
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ '%s' РјРѕР¶РµС‚ РІРѕР·РІСЂР°С‰СЏС‚СЊ Р·РЅР°С‡РµРЅРёСЏ С‚РѕР»СЊРєРѕ С†РµР»РѕРіРѕ РёР»Рё РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ С‚РёРїР°"), src_text().c_str()));
 	}
 }
 
@@ -1071,7 +1071,7 @@ LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(REF(LPRDOFUNParams) pPar
 {
 	if (pParamList->getParamList()->getContainer().size() != 3)
 	{
-		RDOParser::s_parser()->error().error(seqSrcInfo, rdo::format(_T("Для треугольного закона распределения '%s' нужно указать три параметра: левую границу, точку под высотой треугольника, правую границу"), name().c_str()));
+		RDOParser::s_parser()->error().error(seqSrcInfo, rdo::format(_T("Р”Р»СЏ С‚СЂРµСѓРіРѕР»СЊРЅРѕРіРѕ Р·Р°РєРѕРЅР° СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ '%s' РЅСѓР¶РЅРѕ СѓРєР°Р·Р°С‚СЊ С‚СЂРё РїР°СЂР°РјРµС‚СЂР°: Р»РµРІСѓСЋ РіСЂР°РЅРёС†Сѓ, С‚РѕС‡РєСѓ РїРѕРґ РІС‹СЃРѕС‚РѕР№ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР°, РїСЂР°РІСѓСЋ РіСЂР°РЅРёС†Сѓ"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -1097,13 +1097,13 @@ LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(REF(LPRDOFUNParams) pPar
 	pArithm->setSrcInfo(seqSrcInfo);
 	if (pArithm->typeID() == rdo::runtime::RDOType::t_enum)
 	{
-		RDOParser::s_parser()->error().error(src_info(), _T("Внутренняя ошибка парсера"));
+		RDOParser::s_parser()->error().error(src_info(), _T("Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°"));
 	}
 	return pArithm;
 }
 
 // ----------------------------------------------------------------------------
-// ---------- Гистограмма
+// ---------- Р“РёСЃС‚РѕРіСЂР°РјРјР°
 // ----------------------------------------------------------------------------
 // ---------- RDOFUNSequenceByHist
 // ----------------------------------------------------------------------------
@@ -1115,7 +1115,7 @@ LPRDOFUNArithm RDOFUNSequenceByHist::createCallCalc(REF(LPRDOFUNParams) pParamLi
 {
 	if (pParamList->getParamList()->getContainer().size() != 0)
 	{
-		RDOParser::s_parser()->error().error(srcInfo, rdo::format(_T("Гистограмма '%s' должна вызываться без параметров"), name().c_str()));
+		RDOParser::s_parser()->error().error(srcInfo, rdo::format(_T("Р“РёСЃС‚РѕРіСЂР°РјРјР° '%s' РґРѕР»Р¶РЅР° РІС‹Р·С‹РІР°С‚СЊСЃСЏ Р±РµР· РїР°СЂР°РјРµС‚СЂРѕРІ"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -1150,19 +1150,19 @@ void RDOFUNSequenceByHistReal::addReal(CREF(LPRDOValue) pFrom, CREF(LPRDOValue) 
 
 	if (!m_to.empty() && pFrom->value() != m_to.back())
 	{
-		RDOParser::s_parser()->error().error(pFrom->src_info(), _T("Начало интервала должно совпадать с окончанием предыдущего"));
+		RDOParser::s_parser()->error().error(pFrom->src_info(), _T("РќР°С‡Р°Р»Рѕ РёРЅС‚РµСЂРІР°Р»Р° РґРѕР»Р¶РЅРѕ СЃРѕРІРїР°РґР°С‚СЊ СЃ РѕРєРѕРЅС‡Р°РЅРёРµРј РїСЂРµРґС‹РґСѓС‰РµРіРѕ"));
 	}
 	if (pFrom->value() > pTo->value())
 	{
-		RDOParser::s_parser()->error().error(pTo->src_info(), _T("Начало интервала должно быть меньше его конца"));
+		RDOParser::s_parser()->error().error(pTo->src_info(), _T("РќР°С‡Р°Р»Рѕ РёРЅС‚РµСЂРІР°Р»Р° РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РјРµРЅСЊС€Рµ РµРіРѕ РєРѕРЅС†Р°"));
 	}
 	if (pFreq->value() == 0)
 	{
-		RDOParser::s_parser()->error().warning(pFreq->src_info(), _T("Относительная вероятность должна быть больше нуля"));
+		RDOParser::s_parser()->error().warning(pFreq->src_info(), _T("РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ"));
 	}
 	else if (pFreq->value() < 0)
 	{
-		RDOParser::s_parser()->error().error(pFreq->src_info(), _T("Относительная вероятность должна быть больше нуля"));
+		RDOParser::s_parser()->error().error(pFreq->src_info(), _T("РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ"));
 	}
 	m_pHeader->getTypeInfo()->value_cast(pFrom);
 	m_pHeader->getTypeInfo()->value_cast(pTo  );
@@ -1202,17 +1202,17 @@ void RDOFUNSequenceByHistEnum::addEnum(CREF(LPRDOValue) pValue, CREF(LPRDOValue)
 
 	if (pFreq->value() == 0)
 	{
-		RDOParser::s_parser()->error().warning(pFreq->src_info(), _T("Относительная вероятность должна быть больше нуля"));
+		RDOParser::s_parser()->error().warning(pFreq->src_info(), _T("РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ"));
 	}
 	else if (pFreq->value() < 0)
 	{
-		RDOParser::s_parser()->error().error(pFreq->src_info(), _T("Относительная вероятность должна быть больше нуля"));
+		RDOParser::s_parser()->error().error(pFreq->src_info(), _T("РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РЅСѓР»СЏ"));
 	}
 	m_pHeader->getTypeInfo()->value_cast(pValue);
 	rdo::runtime::RDOValue enum_id = m_pHeader->getTypeInfo()->value_cast(pValue)->value();
 	if (std::find(m_values.begin(), m_values.end(), enum_id) != m_values.end())
 	{
-		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Перечислимое значение определено дважды: %s"), pValue->value().getIdentificator().c_str()));
+		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("РџРµСЂРµС‡РёСЃР»РёРјРѕРµ Р·РЅР°С‡РµРЅРёРµ РѕРїСЂРµРґРµР»РµРЅРѕ РґРІР°Р¶РґС‹: %s"), pValue->value().getIdentificator().c_str()));
 	}
 	m_values.push_back(enum_id);
 	m_freq  .push_back(pFreq->value());
@@ -1233,7 +1233,7 @@ void RDOFUNSequenceByHistEnum::createCalcs()
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- Перечень значений
+// -------------------- РџРµСЂРµС‡РµРЅСЊ Р·РЅР°С‡РµРЅРёР№
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNSequenceEnumerative
 // --------------------------------------------------------------------------------
@@ -1241,7 +1241,7 @@ LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pPa
 {
 	if (pParamList->getParamList()->getContainer().size() != 0)
 	{
-		RDOParser::s_parser()->error().error(srcInfo, rdo::format(_T("Перечисление '%s' должно вызываться без параметров"), name().c_str()));
+		RDOParser::s_parser()->error().error(srcInfo, rdo::format(_T("РџРµСЂРµС‡РёСЃР»РµРЅРёРµ '%s' РґРѕР»Р¶РЅРѕ РІС‹Р·С‹РІР°С‚СЊСЃСЏ Р±РµР· РїР°СЂР°РјРµС‚СЂРѕРІ"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -1274,7 +1274,7 @@ void RDOFUNSequenceEnumerative::createCalcs()
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- Функции
+// -------------------- Р¤СѓРЅРєС†РёРё
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNFunctionListElement
 // --------------------------------------------------------------------------------
@@ -1364,7 +1364,7 @@ RDOFUNFunctionListElementEq::RDOFUNFunctionListElementEq(CREF(YYLTYPE) position)
 rdo::runtime::LPRDOCalcConst RDOFUNFunctionListElementEq::createResultCalc(CREF(LPTypeInfo) pRetType, CREF(RDOParserSrcInfo) src_pos) const
 {
 	UNUSED(pRetType);
-	RDOParser::s_parser()->error().error(src_pos, _T("Внутренная ошибка парсера: RDOFUNFunctionListElementEq::createResultCalc"));
+	RDOParser::s_parser()->error().error(src_pos, _T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°: RDOFUNFunctionListElementEq::createResultCalc"));
 	NEVER_REACH_HERE;
 	return NULL;
 }
@@ -1444,15 +1444,15 @@ void RDOFUNFunction::createListCalc()
 {
 	if (!m_pReturn->getDefault()->defined())
 	{
-		RDOParser::s_parser()->error().error(m_pReturn->src_info(), rdo::format(_T("Функция '%s' должна иметь значение по умолчанию"), name().c_str()));
+		RDOParser::s_parser()->error().error(m_pReturn->src_info(), rdo::format(_T("Р¤СѓРЅРєС†РёСЏ '%s' РґРѕР»Р¶РЅР° РёРјРµС‚СЊ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ"), name().c_str()));
 	}
 	if (getParams().empty())
 	{
-		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Функция '%s' должна иметь параметры, т.к. её тип list"), name().c_str()));
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Р¤СѓРЅРєС†РёСЏ '%s' РґРѕР»Р¶РЅР° РёРјРµС‚СЊ РїР°СЂР°РјРµС‚СЂС‹, С‚.Рє. РµС‘ С‚РёРї list"), name().c_str()));
 	}
 	if (m_elementList.empty())
 	{
-		RDOParser::s_parser()->error().warning(src_info(), rdo::format(_T("Функция '%s' не содержит списка"), name().c_str()));
+		RDOParser::s_parser()->error().warning(src_info(), rdo::format(_T("Р¤СѓРЅРєС†РёСЏ '%s' РЅРµ СЃРѕРґРµСЂР¶РёС‚ СЃРїРёСЃРєР°"), name().c_str()));
 	}
 
 	rdo::runtime::LPRDOCalcConst pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturn->getDefault()->value());
@@ -1475,7 +1475,7 @@ void RDOFUNFunction::createListCalc()
 			if (elem_it == m_elementList.end())
 			{
 				--elem_it;
-				RDOParser::s_parser()->error().error((*elem_it)->src_info(), rdo::format(_T("Ожидается значение для параметра '%s'"), pParam->name().c_str()));
+				RDOParser::s_parser()->error().error((*elem_it)->src_info(), rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ РґР»СЏ РїР°СЂР°РјРµС‚СЂР° '%s'"), pParam->name().c_str()));
 			}
 			LPRDOFUNFunctionListElement pListElement = *elem_it;
 			ASSERT(pListElement);
@@ -1483,7 +1483,7 @@ void RDOFUNFunction::createListCalc()
 			{
 				if ((param_it + 1) == getParams().end())
 				{
-					RDOParser::s_parser()->error().error(pListElement->src_info(), rdo::format(_T("Перед знаком равенства ожидается значение для параметра: %s"),pParam->name().c_str()));
+					RDOParser::s_parser()->error().error(pListElement->src_info(), rdo::format(_T("РџРµСЂРµРґ Р·РЅР°РєРѕРј СЂР°РІРµРЅСЃС‚РІР° РѕР¶РёРґР°РµС‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ РґР»СЏ РїР°СЂР°РјРµС‚СЂР°: %s"),pParam->name().c_str()));
 				}
 				else
 				{
@@ -1495,7 +1495,7 @@ void RDOFUNFunction::createListCalc()
 						str += (*param_it)->src_text();
 						++param_it;
 					}
-					RDOParser::s_parser()->error().error(pListElement->src_info(), rdo::format(_T("Перед знаком равенства ожидаются значения для параметров: %s"), str.c_str()));
+					RDOParser::s_parser()->error().error(pListElement->src_info(), rdo::format(_T("РџРµСЂРµРґ Р·РЅР°РєРѕРј СЂР°РІРµРЅСЃС‚РІР° РѕР¶РёРґР°СЋС‚СЃСЏ Р·РЅР°С‡РµРЅРёСЏ РґР»СЏ РїР°СЂР°РјРµС‚СЂРѕРІ: %s"), str.c_str()));
 				}
 			}
 			rdo::runtime::LPRDOCalcFuncParam pFuncParam   = rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(currParamNumber, pParam->src_info());
@@ -1513,17 +1513,17 @@ void RDOFUNFunction::createListCalc()
 		{
 			--elem_it;
 			--param_it;
-			RDOParser::s_parser()->error().error((*elem_it)->src_info(), rdo::format(_T("После значения для параметра '%s' ожидается знак равенства"), (*param_it)->name().c_str()));
+			RDOParser::s_parser()->error().error((*elem_it)->src_info(), rdo::format(_T("РџРѕСЃР»Рµ Р·РЅР°С‡РµРЅРёСЏ РґР»СЏ РїР°СЂР°РјРµС‚СЂР° '%s' РѕР¶РёРґР°РµС‚СЃСЏ Р·РЅР°Рє СЂР°РІРµРЅСЃС‚РІР°"), (*param_it)->name().c_str()));
 		}
 		if (!(*elem_it)->isEquivalence())
 		{
-			RDOParser::s_parser()->error().error((*elem_it)->src_info(), rdo::format(_T("Слишком много значений, вместо '%s' ожидается знак равенства"), (*elem_it)->src_text().c_str()));
+			RDOParser::s_parser()->error().error((*elem_it)->src_info(), rdo::format(_T("РЎР»РёС€РєРѕРј РјРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёР№, РІРјРµСЃС‚Рѕ '%s' РѕР¶РёРґР°РµС‚СЃСЏ Р·РЅР°Рє СЂР°РІРµРЅСЃС‚РІР°"), (*elem_it)->src_text().c_str()));
 		}
 		++elem_it;
 		if (elem_it == m_elementList.end())
 		{
 			--elem_it;
-			RDOParser::s_parser()->error().error((*elem_it)->src_info(), rdo::format(_T("После знака равенства ожидается значение функции '%s'"), name().c_str()));
+			RDOParser::s_parser()->error().error((*elem_it)->src_info(), rdo::format(_T("РџРѕСЃР»Рµ Р·РЅР°РєР° СЂР°РІРµРЅСЃС‚РІР° РѕР¶РёРґР°РµС‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ С„СѓРЅРєС†РёРё '%s'"), name().c_str()));
 		}
 		rdo::runtime::LPRDOCalcConst pResultCalc = (*elem_it)->createResultCalc(m_pReturn->getTypeInfo(), (*elem_it)->src_info());
 		pFunListCalc->addCase(pCaseCalc, pResultCalc);
@@ -1539,7 +1539,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	{
 		if ((*it)->isEquivalence())
 		{
-			RDOParser::s_parser()->error().error((*it)->src_info(), _T("Символ '=' недопустим в табличной функции"));
+			RDOParser::s_parser()->error().error((*it)->src_info(), _T("РЎРёРјРІРѕР» '=' РЅРµРґРѕРїСѓСЃС‚РёРј РІ С‚Р°Р±Р»РёС‡РЅРѕР№ С„СѓРЅРєС†РёРё"));
 		}
 		++it;
 	}
@@ -1577,27 +1577,27 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 				LPRDOTypeIntRange pRange = pFunctionParam->getTypeInfo()->type().object_static_cast<RDOTypeIntRange>();
 				if (pRange->range()->getMin()->value().getInt() != 1)
 				{
-					RDOParser::s_parser()->error().error(pRange->range()->src_info(), rdo::format(_T("Минимальное значение диапазона должно быть 1, текущий диапазон [%d..%d]"), pRange->range()->getMin()->value().getInt(), pRange->range()->getMax()->value().getInt()));
+					RDOParser::s_parser()->error().error(pRange->range()->src_info(), rdo::format(_T("РњРёРЅРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РґРёР°РїР°Р·РѕРЅР° РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 1, С‚РµРєСѓС‰РёР№ РґРёР°РїР°Р·РѕРЅ [%d..%d]"), pRange->range()->getMin()->value().getInt(), pRange->range()->getMax()->value().getInt()));
 				}
 				range *= pRange->range()->getMax()->value().getInt() - pRange->range()->getMin()->value().getInt() + 1;
 			}
 			else
 			{
-				RDOParser::s_parser()->error().error(pFunctionParam->getTypeInfo()->src_info(), _T("Для параметра табличной функции должен быть задан допустимый диапазон"));
+				RDOParser::s_parser()->error().error(pFunctionParam->getTypeInfo()->src_info(), _T("Р”Р»СЏ РїР°СЂР°РјРµС‚СЂР° С‚Р°Р±Р»РёС‡РЅРѕР№ С„СѓРЅРєС†РёРё РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р·Р°РґР°РЅ РґРѕРїСѓСЃС‚РёРјС‹Р№ РґРёР°РїР°Р·РѕРЅ"));
 			}
 			break;
 		case rdo::runtime::RDOType::t_enum:
 			range *= pFunctionParam->getTypeInfo()->type().object_static_cast<RDOEnumType>()->getEnums()->getValues().size();
 			break;
 		default:
-			RDOParser::s_parser()->error().error(pFunctionParam->getTypeInfo()->src_info(), _T("Параметр табличной функции может быть целого или перечислимого типа"));
+			RDOParser::s_parser()->error().error(pFunctionParam->getTypeInfo()->src_info(), _T("РџР°СЂР°РјРµС‚СЂ С‚Р°Р±Р»РёС‡РЅРѕР№ С„СѓРЅРєС†РёРё РјРѕР¶РµС‚ Р±С‹С‚СЊ С†РµР»РѕРіРѕ РёР»Рё РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР°"));
 		}
 		pCalc = pCalcAdd;
 	}
 
 	if (m_elementList.size() != range)
 	{
-		RDOParser::s_parser()->error().error(elements_pos, rdo::format(_T("Неверное количество элементов табличной функции '%s': %d, требуется %d"), name().c_str(), m_elementList.size(), range));
+		RDOParser::s_parser()->error().error(elements_pos, rdo::format(_T("РќРµРІРµСЂРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ С‚Р°Р±Р»РёС‡РЅРѕР№ С„СѓРЅРєС†РёРё '%s': %d, С‚СЂРµР±СѓРµС‚СЃСЏ %d"), name().c_str(), m_elementList.size(), range));
 	}
 
 	rdo::runtime::LPRDOFuncTableCalc pFuncTableCalc = rdo::Factory<rdo::runtime::RDOFuncTableCalc>::create(pCalc);
@@ -1653,7 +1653,7 @@ void RDOFUNGroup::init(CREF(RDOParserSrcInfo) res_info)
 	m_pResType = RDOParser::s_parser()->findRTPResType(res_info.src_text());
 	if (!m_pResType)
 	{
-		RDOParser::s_parser()->error().error(res_info, rdo::format(_T("Неизвестный тип ресурса: %s"), res_info.src_text().c_str()));
+		RDOParser::s_parser()->error().error(res_info, rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї СЂРµСЃСѓСЂСЃР°: %s"), res_info.src_text().c_str()));
 	}
 	RDOParser::s_parser()->insertFUNGroup(this);
 	RDOParser::s_parser()->contextStack()->push(this);
@@ -1668,7 +1668,7 @@ Context::FindResult RDOFUNGroup::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
-	//! Ресурс внутри групповой функции
+	//! Р РµСЃСѓСЂСЃ РІРЅСѓС‚СЂРё РіСЂСѓРїРїРѕРІРѕР№ С„СѓРЅРєС†РёРё
 	if (getResType()->name() == pValue->value().getIdentificator())
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
@@ -1703,7 +1703,7 @@ LPRDOFUNLogic RDOFUNGroupLogic::createFunLogic(REF(LPRDOFUNLogic) pCondition)
 	case fgt_notexist : setSrcText(_T("NotExist(")  + getResType()->name() + _T(": ") + pCondition->src_text() + _T(")")); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcNotExist >::create(getResType()->getNumber(), pCondition->getCalc()); break;
 	case fgt_forall   : setSrcText(_T("ForAll(")    + getResType()->name() + _T(": ") + pCondition->src_text() + _T(")")); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcForAll   >::create(getResType()->getNumber(), pCondition->getCalc()); break;
 	case fgt_notforall: setSrcText(_T("NotForAll(") + getResType()->name() + _T(": ") + pCondition->src_text() + _T(")")); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcNotForAll>::create(getResType()->getNumber(), pCondition->getCalc()); break;
-	default: RDOParser::s_parser()->error().error(src_info(), _T("Внутренная ошибка: несуществующий тип функции"));
+	default: RDOParser::s_parser()->error().error(src_info(), _T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР°: РЅРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ С‚РёРї С„СѓРЅРєС†РёРё"));
 	}
 	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 	end();
@@ -1729,14 +1729,14 @@ RDOFUNSelect::RDOFUNSelect(CREF(RDOParserSrcInfo) res_info)
 	: RDOFUNGroup(RDOParserSrcInfo(res_info.src_text()))
 {}
 
-//! Сам Select как выборка по типу и условию
+//! РЎР°Рј Select РєР°Рє РІС‹Р±РѕСЂРєР° РїРѕ С‚РёРїСѓ Рё СѓСЃР»РѕРІРёСЋ
 void RDOFUNSelect::initSelect(LPRDOFUNLogic pCondition)
 {
 	m_pCalcSelect = rdo::Factory<rdo::runtime::RDOFunCalcSelect>::create(getResType()->getRuntimeResType(), getResType()->getNumber(), pCondition->getCalc());
 	m_pCalcSelect->setSrcInfo(pCondition->src_info());
 }
 
-//! Групповая функция над выборкой Select'а
+//! Р“СЂСѓРїРїРѕРІР°СЏ С„СѓРЅРєС†РёСЏ РЅР°Рґ РІС‹Р±РѕСЂРєРѕР№ Select'Р°
 LPRDOFUNLogic RDOFUNSelect::createFunSelectGroup(RDOFUNGroupLogic::FunGroupType funType, REF(LPRDOFUNLogic) pCondition)
 {
 	ASSERT(pCondition);
@@ -1747,7 +1747,7 @@ LPRDOFUNLogic RDOFUNSelect::createFunSelectGroup(RDOFUNGroupLogic::FunGroupType 
 	case RDOFUNGroupLogic::fgt_notexist : setSrcText(src_text() + _T(".NotExist(")  + pCondition->src_text() + _T(")")); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotExist >::create(m_pCalcSelect, pCondition->getCalc()); break;
 	case RDOFUNGroupLogic::fgt_forall   : setSrcText(src_text() + _T(".ForAll(")    + pCondition->src_text() + _T(")")); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectForAll   >::create(m_pCalcSelect, pCondition->getCalc()); break;
 	case RDOFUNGroupLogic::fgt_notforall: setSrcText(src_text() + _T(".NotForAll(") + pCondition->src_text() + _T(")")); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotForAll>::create(m_pCalcSelect, pCondition->getCalc()); break;
-	default: RDOParser::s_parser()->error().error(pCondition->src_info(), _T("Внутренная ошибка: неизвестный метод для списка ресурсов"));
+	default: RDOParser::s_parser()->error().error(pCondition->src_info(), _T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР°: РЅРµРёР·РІРµСЃС‚РЅС‹Р№ РјРµС‚РѕРґ РґР»СЏ СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ"));
 	}
 	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 	end();

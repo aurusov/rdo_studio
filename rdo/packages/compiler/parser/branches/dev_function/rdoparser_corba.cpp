@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoparser_corba.h
-  \authors   Раевнев Никита
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р Р°РµРІРЅРµРІ РќРёРєРёС‚Р°
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -37,49 +37,49 @@ void print_RTP(REF(RDOCorba::GetRTP_var) my_rtpList)
 
 	for (ruint i = 0; i < my_rtpList->length(); i++)
 	{
-		fprintf(f1, _T("\nИнформация о типе ресурса №%d:\n"), i+1);
-		fprintf(f1, _T("   Имя типа ресурса №%d: %s \n"), i+1, my_rtpList[i].m_name);
+		fprintf(f1, _T("\nРРЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РёРїРµ СЂРµСЃСѓСЂСЃР° в„–%d:\n"), i+1);
+		fprintf(f1, _T("   РРјСЏ С‚РёРїР° СЂРµСЃСѓСЂСЃР° в„–%d: %s \n"), i+1, my_rtpList[i].m_name);
 
 		if (my_rtpList[i].m_type==RDOCorba::rt_permanent)
-			fprintf(f1, _T("   Вид типа ресурса: tr_permanent\n"));
+			fprintf(f1, _T("   Р’РёРґ С‚РёРїР° СЂРµСЃСѓСЂСЃР°: tr_permanent\n"));
 		else
-			fprintf(f1, _T("   Вид типа ресурса: tr_temporary\n"));
+			fprintf(f1, _T("   Р’РёРґ С‚РёРїР° СЂРµСЃСѓСЂСЃР°: tr_temporary\n"));
 			
 		for (ruint j = 0; j != my_rtpList[i].m_param_count; j++)
 		{
-			fprintf(f1, _T("\n   Информация о параметре №%d:\n"), j+1);
-			fprintf(f1, _T("      Имя параметра:  %s \n"), my_rtpList[i].m_param[j].m_name);
+			fprintf(f1, _T("\n   РРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїР°СЂР°РјРµС‚СЂРµ в„–%d:\n"), j+1);
+			fprintf(f1, _T("      РРјСЏ РїР°СЂР°РјРµС‚СЂР°:  %s \n"), my_rtpList[i].m_param[j].m_name);
 				
 			switch (my_rtpList[i].m_param[j].m_type)
 			{
 			case RDOCorba::int_type:
-				fprintf(f1, _T("      Тип параметра: integer\n"));
+				fprintf(f1, _T("      РўРёРї РїР°СЂР°РјРµС‚СЂР°: integer\n"));
 				if (my_rtpList[i].m_param[j].m_range_int == 1)
 				{
-					fprintf(f1, _T("      Минимальное значение: %d \n"),  my_rtpList[i].m_param[j].m_min_int);
-					fprintf(f1, _T("      Максимальное значение: %d \n"), my_rtpList[i].m_param[j].m_max_int);
+					fprintf(f1, _T("      РњРёРЅРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ: %d \n"),  my_rtpList[i].m_param[j].m_min_int);
+					fprintf(f1, _T("      РњР°РєСЃРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ: %d \n"), my_rtpList[i].m_param[j].m_max_int);
 				}
 				if (my_rtpList[i].m_param[j].m_default_int_ch == 1)
 				{
-					fprintf(f1, _T("      Значение по умолчанию: %d \n"), my_rtpList[i].m_param[j].m_default_int);
+					fprintf(f1, _T("      Р—РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ: %d \n"), my_rtpList[i].m_param[j].m_default_int);
 				}
 				break;
 			case RDOCorba::double_type:
-					fprintf(f1, _T("      Тип параметра: real\n"));
+					fprintf(f1, _T("      РўРёРї РїР°СЂР°РјРµС‚СЂР°: real\n"));
 					if (my_rtpList[i].m_param[j].m_range_double == 1)
 					{
-						fprintf(f1, _T("      Минимальное значение: %f \n"), my_rtpList[i].m_param[j].m_min_double);
-						fprintf(f1, _T("      Максимальное значение: %f \n"), my_rtpList[i].m_param[j].m_max_double);
+						fprintf(f1, _T("      РњРёРЅРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ: %f \n"), my_rtpList[i].m_param[j].m_min_double);
+						fprintf(f1, _T("      РњР°РєСЃРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ: %f \n"), my_rtpList[i].m_param[j].m_max_double);
 					}
 					if (my_rtpList[i].m_param[j].m_default_double_ch == 1)
 					{
-						fprintf(f1, _T("      Значение по умолчанию: %f \n"), my_rtpList[i].m_param[j].m_default_double);
+						fprintf(f1, _T("      Р—РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ: %f \n"), my_rtpList[i].m_param[j].m_default_double);
 					}
 					break;
 				case RDOCorba::enum_type:
 				{
-					fprintf(f1, _T("      Тип параметра: enum\n"));
-					fprintf(f1, _T("      Значения параметра:"));
+					fprintf(f1, _T("      РўРёРї РїР°СЂР°РјРµС‚СЂР°: enum\n"));
+					fprintf(f1, _T("      Р—РЅР°С‡РµРЅРёСЏ РїР°СЂР°РјРµС‚СЂР°:"));
 										
 					CORBA::Long k = 0;
 			
@@ -93,7 +93,7 @@ void print_RTP(REF(RDOCorba::GetRTP_var) my_rtpList)
 
 					if (my_rtpList[i].m_param[j].m_default_enum_ch == 1)
 					{
-						fprintf(f1, _T("\n      Значение по умолчанию: %s \n"), my_rtpList[i].m_param[j].m_default_enum);
+						fprintf(f1, _T("\n      Р—РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ: %s \n"), my_rtpList[i].m_param[j].m_default_enum);
 					}
 					break;
 				}
@@ -114,21 +114,21 @@ void print_RSS(REF(RDOCorba::GetRSS_var) my_rssList)
 	
 	for (ruint i = 0; i < my_rssList->length(); i++)
 	{
-		fprintf(f2, _T("\nИнформация о ресурсе №%d:\n\n"), i+1);
-		fprintf(f2, _T("Имя ресурса: %s/ Тип ресурса: %s\n"), my_rssList[i].m_name, my_rssList[i].m_type);
+		fprintf(f2, _T("\nРРЅС„РѕСЂРјР°С†РёСЏ Рѕ СЂРµСЃСѓСЂСЃРµ в„–%d:\n\n"), i+1);
+		fprintf(f2, _T("РРјСЏ СЂРµСЃСѓСЂСЃР°: %s/ РўРёРї СЂРµСЃСѓСЂСЃР°: %s\n"), my_rssList[i].m_name, my_rssList[i].m_type);
 
 		for (ruint j = 0; j != my_rssList[i].m_param_count; j++)
 		{
 			switch (my_rssList[i].m_param[j].m_type)
 			{
 			case RDOCorba::int_type:
-				fprintf(f2, _T("  Значение параметра: %s = %d\n"), my_rssList[i].m_param[j].m_name, my_rssList[i].m_param[j].m_int);
+				fprintf(f2, _T("  Р—РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР°: %s = %d\n"), my_rssList[i].m_param[j].m_name, my_rssList[i].m_param[j].m_int);
 				break;
 			case RDOCorba::double_type:
-				fprintf(f2, _T("  Значение параметра: %s = %f\n"), my_rssList[i].m_param[j].m_name, my_rssList[i].m_param[j].m_double);
+				fprintf(f2, _T("  Р—РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР°: %s = %f\n"), my_rssList[i].m_param[j].m_name, my_rssList[i].m_param[j].m_double);
 				break;
 			case RDOCorba::enum_type:
-				fprintf(f2, _T("  Значение параметра: %s = %s\n"), my_rssList[i].m_param[j].m_name, my_rssList[i].m_param[j].m_enum);
+				fprintf(f2, _T("  Р—РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР°: %s = %s\n"), my_rssList[i].m_param[j].m_name, my_rssList[i].m_param[j].m_enum);
 				break;
 			default: break;
 			}
@@ -189,7 +189,7 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, CPTR(char) Objec
 	catch(REF(CosNaming::NamingContext::NotFound))
 	{
 		//! This exception is thrown if any of the components of the
-		//! path [contexts or the object] aren’t found:
+		//! path [contexts or the object] arenвЂ™t found:
 		TRACE(_T("Context not found."));
 	}
 	catch(REF(CORBA::TRANSIENT))
@@ -210,9 +210,9 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, CPTR(char) Objec
 //! ----------------------------------------------------------------------------
 void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 {
-	//! Тут надо запросить все типы ресурсов у парного РДО,
-	//! вызвав с помощью корбы некий метод, который вернёт кучу структур
-	//! с описанием RTP и насоздавать этих типов
+	//! РўСѓС‚ РЅР°РґРѕ Р·Р°РїСЂРѕСЃРёС‚СЊ РІСЃРµ С‚РёРїС‹ СЂРµСЃСѓСЂСЃРѕРІ Сѓ РїР°СЂРЅРѕРіРѕ Р Р”Рћ,
+	//! РІС‹Р·РІР°РІ СЃ РїРѕРјРѕС‰СЊСЋ РєРѕСЂР±С‹ РЅРµРєРёР№ РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РІРµСЂРЅС‘С‚ РєСѓС‡Сѓ СЃС‚СЂСѓРєС‚СѓСЂ
+	//! СЃ РѕРїРёСЃР°РЅРёРµРј RTP Рё РЅР°СЃРѕР·РґР°РІР°С‚СЊ СЌС‚РёС… С‚РёРїРѕРІ
 
 	RDOParserSMRInfo parser;
 	parser.parse();
@@ -231,7 +231,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			int argc = 0;
 
 			CORBA::ORB_var         orb         = CORBA::ORB_init   (argc, NULL);
-			CORBA::Object_var      obj         = getObjectReference(orb,  left); //! может лучше right
+			CORBA::Object_var      obj         = getObjectReference(orb,  left); //! РјРѕР¶РµС‚ Р»СѓС‡С€Рµ right
 			RDOCorba_var rdocorbaref = RDOCorba::_narrow(obj);
 
 			//-------------------------------------------------------------
@@ -240,19 +240,19 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			RDOCorba::GetRTP_var tmp_rtp = rdocorbaref->getRDORTPlist(rtp_count);
 			RDOCorba::GetRTP_var my_rtpList(tmp_rtp);
 
-			//! Печатаем в файл на С для теста
+			//! РџРµС‡Р°С‚Р°РµРј РІ С„Р°Р№Р» РЅР° РЎ РґР»СЏ С‚РµСЃС‚Р°
 			print_RTP(my_rtpList);
 			//!-------------------------------------------------------------
-			//! Добавляем к существующим типам ресурсов и выводим в трассировке
+			//! Р”РѕР±Р°РІР»СЏРµРј Рє СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёРј С‚РёРїР°Рј СЂРµСЃСѓСЂСЃРѕРІ Рё РІС‹РІРѕРґРёРј РІ С‚СЂР°СЃСЃРёСЂРѕРІРєРµ
 	
-			//! Получили список всех описанных типов ресурсов
+			//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… РѕРїРёСЃР°РЅРЅС‹С… С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	
 			for (ruint i = 0; i < my_rtpList->length(); i++)
 			{
 				rdo::compiler::mbuilder::RDOResType rtp(my_rtpList[i].m_name.in());
 
-				//! Наполняем его параметрами
+				//! РќР°РїРѕР»РЅСЏРµРј РµРіРѕ РїР°СЂР°РјРµС‚СЂР°РјРё
 				for (ruint j = 0; j != my_rtpList[i].m_param_count; j++)
 				{
 					switch (my_rtpList[i].m_param[j].m_type)
@@ -285,7 +285,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 					}
 					case RDOCorba::enum_type:
 					{
-						//! Создадим список значений параметра перечислимого типа
+						//! РЎРѕР·РґР°РґРёРј СЃРїРёСЃРѕРє Р·РЅР°С‡РµРЅРёР№ РїР°СЂР°РјРµС‚СЂР° РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР°
 						rdo::runtime::RDOEnumType::Enums enumList;
 
 						for (CORBA::Long k = 0; k < my_rtpList[i].m_param[j].m_var_enum_count ; k++)
@@ -293,10 +293,10 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 							enumList.push_back(my_rtpList[i].m_param[j].m_var_enum[k].pd_data);
 						}
 
-						//! Создадим параметр перечислимого типа
+						//! РЎРѕР·РґР°РґРёРј РїР°СЂР°РјРµС‚СЂ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР°
 						rdo::compiler::mbuilder::RDOResType::Param par_enum(my_rtpList[i].m_param[j].m_name.in(), enumList);
 
-						//Добавляем, если есть значение по умолчанию
+						//Р”РѕР±Р°РІР»СЏРµРј, РµСЃР»Рё РµСЃС‚СЊ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 						if (my_rtpList[i].m_param[j].m_default_enum_ch == 1)
 						{
 							tstring temp_string;
@@ -310,20 +310,20 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 					}
 				}
 
-				//! Добавляем к существующим типам ресурсов
+				//! Р”РѕР±Р°РІР»СЏРµРј Рє СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёРј С‚РёРїР°Рј СЂРµСЃСѓСЂСЃРѕРІ
 				if (rtpList.append(rtp))
 				{
-					//! Добавили успешно
-					TRACE(_T("Еще один тип ресурсов добавился!!!\n"));
+					//! Р”РѕР±Р°РІРёР»Рё СѓСЃРїРµС€РЅРѕ
+					TRACE(_T("Р•С‰Рµ РѕРґРёРЅ С‚РёРї СЂРµСЃСѓСЂСЃРѕРІ РґРѕР±Р°РІРёР»СЃСЏ!!!\n"));
 				}
 				else
 				{
-					//! Неудача, возможно, тип с таким именем уже есть
-					TRACE(_T("Где-то есть ошибка или тип ресурса уже существует!!!\n"));
+					//! РќРµСѓРґР°С‡Р°, РІРѕР·РјРѕР¶РЅРѕ, С‚РёРї СЃ С‚Р°РєРёРј РёРјРµРЅРµРј СѓР¶Рµ РµСЃС‚СЊ
+					TRACE(_T("Р“РґРµ-С‚Рѕ РµСЃС‚СЊ РѕС€РёР±РєР° РёР»Рё С‚РёРї СЂРµСЃСѓСЂСЃР° СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚!!!\n"));
 				}
 			}
 
-			//! Вывели все типы ресурсов (исключительно для теста)
+			//! Р’С‹РІРµР»Рё РІСЃРµ С‚РёРїС‹ СЂРµСЃСѓСЂСЃРѕРІ (РёСЃРєР»СЋС‡РёС‚РµР»СЊРЅРѕ РґР»СЏ С‚РµСЃС‚Р°)
 			STL_FOR_ALL_CONST(rtpList, rtp_it)
 			{
 				TRACE1(_T("rtp.name = %s\n"), rtp_it->name().c_str());
@@ -356,18 +356,18 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			RDOCorba::GetRSS_var tmp_rss = rdocorbaref->getRDORSSPlist(rss_count);
 			RDOCorba::GetRSS_var my_rssList(tmp_rss);
 		
-			//! Печатаем в файл на С для теста:
+			//! РџРµС‡Р°С‚Р°РµРј РІ С„Р°Р№Р» РЅР° РЎ РґР»СЏ С‚РµСЃС‚Р°:
 			print_RSS(my_rssList);
 
 			//! -------------------------------------------------------------
-			//! Добавляем к существующим ресурсам и выводим в трассировке
+			//! Р”РѕР±Р°РІР»СЏРµРј Рє СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёРј СЂРµСЃСѓСЂСЃР°Рј Рё РІС‹РІРѕРґРёРј РІ С‚СЂР°СЃСЃРёСЂРѕРІРєРµ
 
-			//! Переписали имеющиеся ресурсы в rssList
+			//! РџРµСЂРµРїРёСЃР°Р»Рё РёРјРµСЋС‰РёРµСЃСЏ СЂРµСЃСѓСЂСЃС‹ РІ rssList
 			rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 
 			for (ruint i = 0; i < my_rssList->length(); i++)
 			{
-				//! Нашли тип ресурса по известному имени и создали ресурс указанного типа
+				//! РќР°С€Р»Рё С‚РёРї СЂРµСЃСѓСЂСЃР° РїРѕ РёР·РІРµСЃС‚РЅРѕРјСѓ РёРјРµРЅРё Рё СЃРѕР·РґР°Р»Рё СЂРµСЃСѓСЂСЃ СѓРєР°Р·Р°РЅРЅРѕРіРѕ С‚РёРїР°
 				rdo::compiler::mbuilder::RDOResType _rtp = rtpList[my_rssList[i].m_type.in()];
 				rdo::compiler::mbuilder::RDOResource rss(_rtp, my_rssList[i].m_name.in());
 
@@ -375,7 +375,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 
 				for (ruint j = 0; j != my_rssList[i].m_param_count; j++)
 				{
-					//! Записываем начальные значения параметров ресурса
+					//! Р—Р°РїРёСЃС‹РІР°РµРј РЅР°С‡Р°Р»СЊРЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ РїР°СЂР°РјРµС‚СЂРѕРІ СЂРµСЃСѓСЂСЃР°
 					switch (my_rssList[i].m_param[j].m_type)
 					{
 					case RDOCorba::int_type:
@@ -395,20 +395,20 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 					}												 
 				 }
 
-				//! Добавляем к существующим ресурсам
+				//! Р”РѕР±Р°РІР»СЏРµРј Рє СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёРј СЂРµСЃСѓСЂСЃР°Рј
 				if (rssList.append<RDORSSResource>(rss))
 				{
-					//! Добавили успешно
-					TRACE(_T("Еще один ресурс добавился!!!\n"));
+					//! Р”РѕР±Р°РІРёР»Рё СѓСЃРїРµС€РЅРѕ
+					TRACE(_T("Р•С‰Рµ РѕРґРёРЅ СЂРµСЃСѓСЂСЃ РґРѕР±Р°РІРёР»СЃСЏ!!!\n"));
 				}
 				else
 				{
-					//! Неудача
-					TRACE(_T("Где-то есть ошибка или ресурс уже существует!!!\n"));
+					//! РќРµСѓРґР°С‡Р°
+					TRACE(_T("Р“РґРµ-С‚Рѕ РµСЃС‚СЊ РѕС€РёР±РєР° РёР»Рё СЂРµСЃСѓСЂСЃ СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚!!!\n"));
 				} 
 			}
 
-			//! Вывели все ресурсы для теста
+			//! Р’С‹РІРµР»Рё РІСЃРµ СЂРµСЃСѓСЂСЃС‹ РґР»СЏ С‚РµСЃС‚Р°
 			//! rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
 			STL_FOR_ALL_CONST(rssList, rss_it)
 			{
@@ -447,32 +447,32 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 void RDOParserCorbaRSS::parse(CREF(LPRDOParser) pParser)
 {
 /*
-	//! Тут надо запросить все ресурсы у парного РДО
+	//! РўСѓС‚ РЅР°РґРѕ Р·Р°РїСЂРѕСЃРёС‚СЊ РІСЃРµ СЂРµСЃСѓСЂСЃС‹ Сѓ РїР°СЂРЅРѕРіРѕ Р Р”Рћ
 
-	//! Количество полученных ресурсов
+	//! РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР»СѓС‡РµРЅРЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ
 	ruint rss_count = 1;
 
-	//! Получили список всех типов ресурсов
+	//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… С‚РёРїРѕРІ СЂРµСЃСѓСЂСЃРѕРІ
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
-	//! Получили список всех ресурсов
+	//! РџРѕР»СѓС‡РёР»Рё СЃРїРёСЃРѕРє РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ
 	rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 
 	for (ruint i = 0; i < rss_count; i++)
 	{
-		//! Создали новый ресурс
-		rdo::compiler::mbuilder::RDOResource rss(rtpList["Парикмахеры"], "MyRSS1");
-		//! Заполнили его параметры
-		rss["длительность_max"] = 174;
-		//! Добавляем его к списку существующих
+		//! РЎРѕР·РґР°Р»Рё РЅРѕРІС‹Р№ СЂРµСЃСѓСЂСЃ
+		rdo::compiler::mbuilder::RDOResource rss(rtpList["РџР°СЂРёРєРјР°С…РµСЂС‹"], "MyRSS1");
+		//! Р—Р°РїРѕР»РЅРёР»Рё РµРіРѕ РїР°СЂР°РјРµС‚СЂС‹
+		rss["РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ_max"] = 174;
+		//! Р”РѕР±Р°РІР»СЏРµРј РµРіРѕ Рє СЃРїРёСЃРєСѓ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёС…
 		if (rssList.append<RDORSSResource>(rss))
 		{
-			//! Добавили успешно
+			//! Р”РѕР±Р°РІРёР»Рё СѓСЃРїРµС€РЅРѕ
 		}
 		else
 		{
-			//! Неудача
+			//! РќРµСѓРґР°С‡Р°
 		}
-		//! Пример проверки ресурса на существование
+		//! РџСЂРёРјРµСЂ РїСЂРѕРІРµСЂРєРё СЂРµСЃСѓСЂСЃР° РЅР° СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ
 		if (rssList.exist("qqq"))
 		{
 		}
