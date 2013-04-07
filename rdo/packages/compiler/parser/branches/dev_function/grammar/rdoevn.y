@@ -612,8 +612,7 @@ pat_rel_res
 				ASSERT(pTypeName);
 
 				YYLTYPE convertor_begin_pos = @3;
-				tstring str = LEXER->YYText();
-				rdo::toLower(str);
+				tstring str = boost::algorithm::to_lower_copy(tstring(LEXER->YYText()));
 				tstring::size_type first_nochange = str.find("nochange");
 				ruint i = 0;
 				for (;;)
@@ -672,8 +671,7 @@ pat_rel_res
 				ASSERT(pTypeName);
 
 				YYLTYPE convertor_begin_pos = @3;
-				tstring str = LEXER->YYText();
-				rdo::toLower(str);
+				tstring str = boost::algorithm::to_lower_copy(tstring(LEXER->YYText()));
 				tstring::size_type first_nochange = str.find("nochange");
 				ruint i = 0;
 				for (;;)

@@ -48,7 +48,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/parser/pch.h"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/parser/pch.h"
@@ -138,8 +138,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -187,7 +185,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../../;../../../../../thirdparty/corba/include"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -209,8 +207,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="COS4d.lib COSDynamic4d.lib omniCodeSets4d.lib omniDynamic4d.lib omniORB4d.lib omnisslTP4d.lib omnithreadd.lib ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories="../../../../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -259,7 +255,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../../;../../../../../thirdparty/corba/include"
-				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__"
+				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -281,8 +277,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="COS4.lib COSDynamic4.lib omniCodeSets4.lib omniDynamic4.lib omniORB4.lib omnisslTP4.lib omnithread.lib ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories="../../../../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -330,7 +324,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../../"
-				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4"
+				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/parser/pch.h"
@@ -351,8 +345,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -401,7 +393,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../../"
-				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
+				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;NOMINMAX"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -423,8 +415,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="COS4.lib COSDynamic4.lib omniCodeSets4.lib omniDynamic4.lib omniORB4.lib omnisslTP4.lib omnithread.lib ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories="../../../../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"
