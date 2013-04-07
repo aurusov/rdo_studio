@@ -1,8 +1,4 @@
-                                                            -*- Autoconf -*-
-
-# C++ skeleton dispatching for Bison.
-
-# Copyright (C) 2006-2007, 2009-2012 Free Software Foundation, Inc.
+## Copyright (C) 2002, 2005-2012 Free Software Foundation, Inc.
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,10 +13,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-b4_glr_if(             [m4_define([b4_used_skeleton], [b4_pkgdatadir/[glr.cc]])])
-b4_nondeterministic_if([m4_define([b4_used_skeleton], [b4_pkgdatadir/[glr.cc]])])
+dist_pkgdata_DATA = README bison.m4 \
+   c-like.m4 \
+   c-skel.m4 c.m4 yacc.c glr.c \
+   c++-skel.m4 c++.m4 location.cc lalr1.cc glr.cc stack.hh \
+   java-skel.m4 java.m4 lalr1.java
 
-m4_define_default([b4_used_skeleton], [b4_pkgdatadir/[lalr1.cc]])
-m4_define_default([b4_skeleton], ["b4_basename(b4_used_skeleton)"])
+m4sugardir = $(pkgdatadir)/m4sugar
+dist_m4sugar_DATA = m4sugar/m4sugar.m4 m4sugar/foreach.m4
 
-m4_include(b4_used_skeleton)
+xsltdir = $(pkgdatadir)/xslt
+dist_xslt_DATA =				\
+   xslt/bison.xsl				\
+   xslt/xml2dot.xsl				\
+   xslt/xml2text.xsl				\
+   xslt/xml2xhtml.xsl
