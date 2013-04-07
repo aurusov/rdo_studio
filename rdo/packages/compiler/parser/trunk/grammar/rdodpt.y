@@ -397,11 +397,11 @@ dpt_search_prior
 	}
 	| dpt_search_condition RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений")
+		PARSER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений");
 	}
 	| dpt_search_condition error
 	{
-		PARSER->error().error(@1, @2, "Ожидается ключевое слово $Priority")
+		PARSER->error().error(@1, @2, "Ожидается ключевое слово $Priority");
 	}
 	;
 
@@ -498,7 +498,7 @@ dpt_search_descr_param
 	}
 	| dpt_search_descr_param error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания параметра образца")
+		PARSER->error().error(@1, @2, "Ошибка описания параметра образца");
 	}
 	;
 
@@ -753,11 +753,11 @@ dpt_some_prior
 	}
 	| dpt_some_multi RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений")
+		PARSER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений");
 	}
 	| dpt_some_multi error
 	{
-		PARSER->error().error(@1, @2, "После слова $Condition ожидается ключевое слово $Multithreading")
+		PARSER->error().error(@1, @2, "После слова $Condition ожидается ключевое слово $Multithreading");
 	}
 	;
 
@@ -827,7 +827,7 @@ dpt_some_descr_param
 	}
 	| dpt_some_descr_param error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания параметра образца")
+		PARSER->error().error(@1, @2, "Ошибка описания параметра образца");
 	}
 	;
 
@@ -1001,11 +1001,11 @@ dpt_prior_prior
 	}
 	| dpt_prior_condition RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений")
+		PARSER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений");
 	}
 	| dpt_some_condition error
 	{
-		PARSER->error().error(@1, @2, "Ожидается ключевое слово $Priority")
+		PARSER->error().error(@1, @2, "Ожидается ключевое слово $Priority");
 	}
 	;
 
@@ -1075,7 +1075,7 @@ dpt_prior_descr_param
 	}
 	| dpt_prior_descr_param error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания параметра образца")
+		PARSER->error().error(@1, @2, "Ошибка описания параметра образца");
 	}
 	;
 
@@ -1092,11 +1092,11 @@ dpt_prior_activ_prior
 	}
 	| RDO_CF '=' error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания приоритета активности")
+		PARSER->error().error(@1, @2, "Ошибка описания приоритета активности");
 	}
 	| RDO_CF error
 	{
-		PARSER->error().error(@1, @2, "Ошибка: ожидается знак равенства")
+		PARSER->error().error(@1, @2, "Ошибка: ожидается знак равенства");
 	}
 	;
 
