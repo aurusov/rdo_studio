@@ -294,11 +294,11 @@ dpt_process_prior
 	}
 	| RDO_Priority error
 	{
-		CONVERTER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений")
+		CONVERTER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений");
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, @1, "Ожидается ключевое слово $Priority")
+		CONVERTER->error().error(@1, @1, "Ожидается ключевое слово $Priority");
 	}
 	;
 
@@ -408,7 +408,7 @@ dpt_queue_param
 	}
 	| RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@1, "Ошибка в миени очереди")
+		CONVERTER->error().error(@1, "Ошибка в миени очереди");
 	}
 	;
 
@@ -424,7 +424,7 @@ dpt_depart_param
 	}
 	| RDO_IDENTIF error 
 	{
-		CONVERTER->error().error(@1, "Ошибка в имени ресурса")
+		CONVERTER->error().error(@1, "Ошибка в имени ресурса");
 	}
 	;
 
@@ -455,7 +455,7 @@ dpt_term_param
 	}
 	| fun_arithm  error
 	{
-		CONVERTER->error().error(@1, "Ошибка, после оператора TERMINATE может быть указано только одно целое положительное число")
+		CONVERTER->error().error(@1, "Ошибка, после оператора TERMINATE может быть указано только одно целое положительное число");
 	}
 	;
 

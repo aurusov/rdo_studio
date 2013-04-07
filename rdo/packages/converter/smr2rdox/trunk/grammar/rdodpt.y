@@ -381,11 +381,11 @@ dpt_search_prior
 	}
 	| dpt_search_condition RDO_Priority error
 	{
-		CONVERTER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений")
+		CONVERTER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений");
 	}
 	| dpt_search_condition error
 	{
-		CONVERTER->error().error(@1, @2, "Ожидается ключевое слово $Priority")
+		CONVERTER->error().error(@1, @2, "Ожидается ключевое слово $Priority");
 	}
 	;
 
@@ -475,7 +475,7 @@ dpt_search_descr_param
 	}
 	| dpt_search_descr_param error
 	{
-		CONVERTER->error().error(@1, @2, "Ошибка описания параметра образца")
+		CONVERTER->error().error(@1, @2, "Ошибка описания параметра образца");
 	}
 	;
 
@@ -691,11 +691,11 @@ dpt_some_prior
 	}
 	| dpt_some_condition RDO_Priority error
 	{
-		CONVERTER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений")
+		CONVERTER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений");
 	}
 	| dpt_some_condition error
 	{
-		CONVERTER->error().error(@1, @2, "Ожидается ключевое слово $Priority")
+		CONVERTER->error().error(@1, @2, "Ожидается ключевое слово $Priority");
 	}
 	;
 
@@ -756,7 +756,7 @@ dpt_some_descr_param
 	}
 	| dpt_some_descr_param error
 	{
-		CONVERTER->error().error(@1, @2, "Ошибка описания параметра образца")
+		CONVERTER->error().error(@1, @2, "Ошибка описания параметра образца");
 	}
 	;
 
@@ -921,11 +921,11 @@ dpt_prior_prior
 	}
 	| dpt_prior_condition RDO_Priority error
 	{
-		CONVERTER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений")
+		CONVERTER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений");
 	}
 	| dpt_some_condition error
 	{
-		CONVERTER->error().error(@1, @2, "Ожидается ключевое слово $Priority")
+		CONVERTER->error().error(@1, @2, "Ожидается ключевое слово $Priority");
 	}
 	;
 
@@ -986,7 +986,7 @@ dpt_prior_descr_param
 	}
 	| dpt_prior_descr_param error
 	{
-		CONVERTER->error().error(@1, @2, "Ошибка описания параметра образца")
+		CONVERTER->error().error(@1, @2, "Ошибка описания параметра образца");
 	}
 	;
 
@@ -1003,11 +1003,11 @@ dpt_prior_activ_prior
 	}
 	| RDO_CF '=' error
 	{
-		CONVERTER->error().error(@1, @2, "Ошибка описания приоритета активности")
+		CONVERTER->error().error(@1, @2, "Ошибка описания приоритета активности");
 	}
 	| RDO_CF error
 	{
-		CONVERTER->error().error(@1, @2, "Ошибка: ожидается знак равенства")
+		CONVERTER->error().error(@1, @2, "Ошибка: ожидается знак равенства");
 	}
 	;
 
@@ -1060,11 +1060,11 @@ dpt_free_prior
 	}
 	| RDO_Priority error dpt_free_header
 	{
-		CONVERTER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений")
+		CONVERTER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений");
 	}
 	| error dpt_free_header
 	{
-		CONVERTER->error().error(@1, @2, "Ожидается ключевое слово $Priority")
+		CONVERTER->error().error(@1, @2, "Ожидается ключевое слово $Priority");
 	}
 	;
 
@@ -1121,7 +1121,7 @@ dpt_free_activity_param
 	}
 	| dpt_free_activity_param error
 	{
-		CONVERTER->error().error(@1, @2, "Ошибка описания параметра образца")
+		CONVERTER->error().error(@1, @2, "Ошибка описания параметра образца");
 	}
 	;
 

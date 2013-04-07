@@ -223,9 +223,9 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // -------------------- General part
 // --------------------------------------------------------------------------------
 dptrtp_main:
-	| dptrtp_main RDO_Decision_point error RDO_End {@1} /* заглушка для $Decision_point */
-	| dptrtp_main RDO_Activities     error RDO_End      /* заглушка для $Activities     */
-	| dptrtp_main RDO_Process        error RDO_End      /* заглушка для $Process        */
+	| dptrtp_main RDO_Decision_point error RDO_End {@1;} /* заглушка для $Decision_point */
+	| dptrtp_main RDO_Activities     error RDO_End       /* заглушка для $Activities     */
+	| dptrtp_main RDO_Process        error RDO_End       /* заглушка для $Process        */
 	;
 
 // --------------------------------------------------------------------------------

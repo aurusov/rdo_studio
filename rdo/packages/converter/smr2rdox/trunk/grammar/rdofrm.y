@@ -292,7 +292,7 @@ frm_begin
 	}
 	| RDO_Frame RDO_IDENTIF RDO_Show_if error
 	{
-		CONVERTER->error().error(@4, "Ошибка в логическом выражении")
+		CONVERTER->error().error(@4, "Ошибка в логическом выражении");
 	}
 	;
 
@@ -409,7 +409,7 @@ frm_show
 	}
 	| RDO_Show_if error
 	{
-		CONVERTER->error().error(@2, "Ошибка в логическом выражении")
+		CONVERTER->error().error(@2, "Ошибка в логическом выражении");
 	}
 	;
 
