@@ -10,16 +10,13 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/context/statement.h"
+#include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
-// --------------------------------------------------------------------------------
-// -------------------- ContextStatementBase
-// --------------------------------------------------------------------------------
-ContextStatementBase::ContextStatementBase()
-{}
 
 // --------------------------------------------------------------------------------
 // -------------------- ContextBreakable
@@ -27,20 +24,27 @@ ContextStatementBase::ContextStatementBase()
 ContextBreakable::ContextBreakable()
 {}
 
+ContextBreakable::~ContextBreakable()
+{}
+
 // --------------------------------------------------------------------------------
 // -------------------- ContextReturnable
 // --------------------------------------------------------------------------------
 ContextReturnable::ContextReturnable()
-	:m_returnFlag(false)
+	: m_returnFlag(false)
 {}
 
-bool ContextReturnable::returnFlag()
+ContextReturnable::~ContextReturnable()
+{}
+
+rbool ContextReturnable::getReturnFlag() const
 {
-	if((m_returnFlag==false) && (!m_contextReturnableList.empty()))
-	{
-		m_returnFlag = checkChildFlags();
-	}
-	return m_returnFlag;
+	if (m_returnFlag)
+		return true;
+
+	return !m_contextReturnableList.empty()
+		? getChildFlags()
+		: false;
 }
 
 void ContextReturnable::setReturnFlag()
@@ -48,23 +52,21 @@ void ContextReturnable::setReturnFlag()
 	m_returnFlag = true;
 }
 
-void ContextReturnable::addContext(REF(LPContextReturnable) pContext)
+void ContextReturnable::addChildContext()
 {
+	LPContextReturnable pContext = rdo::Factory<ContextReturnable>::create();
 	ASSERT(pContext);
 
 	m_contextReturnableList.push_back(pContext);
-	ASSERT(!m_contextReturnableList.empty());
+	RDOParser::s_parser()->contextStack()->push(pContext);
 }
 
-bool ContextReturnable::checkChildFlags()
+rbool ContextReturnable::getChildFlags() const
 {
-	STL_FOR_ALL(m_contextReturnableList, contextIt)
+	BOOST_FOREACH(const LPContextReturnable& pContext, m_contextReturnableList)
 	{
-		LPContextReturnable pContext = *contextIt;
-		if(!pContext->returnFlag())
-		{
+		if (!pContext->getReturnFlag())
 			return false;
-		}
 	}
 	return true;
 }

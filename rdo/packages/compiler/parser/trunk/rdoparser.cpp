@@ -85,6 +85,17 @@ ruint RDOParser::lexer_loc_pos()
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_pos() : 0;
 }
 
+tstring RDOParser::lexer_text()
+{
+	LPRDOParserRDOItem pParserItem = !s_parserStack.empty()
+		? s_parserStack.back()->m_parser_item.object_dynamic_cast<RDOParserRDOItem>()
+		: NULL;
+
+	return pParserItem
+		? pParserItem->text()
+		: tstring();
+}
+
 LPRDOParser RDOParser::s_parser()
 {
 	return !s_parserStack.empty() ? s_parserStack.back() : LPRDOParser(NULL);
@@ -123,7 +134,11 @@ void RDOParser::init()
 
 void RDOParser::deinit()
 {
-	m_pContextStack->pop();
+	while (!m_pContextStack->top().object_dynamic_cast<RDOParser>())
+	{
+		m_pContextStack->pop_not_safed();
+	}
+	m_pContextStack->pop<RDOParser>();
 
 	Context::deinit();
 

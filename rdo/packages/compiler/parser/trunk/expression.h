@@ -32,36 +32,31 @@ public:
 	CREF(rdo::runtime::LPRDOCalc)  calc      () const;
 	virtual void                   setSrcInfo(CREF(RDOParserSrcInfo) src_info);
 
-	LPRDOValue                   constant  () const;
+	LPRDOValue                     constant  () const;
 
-private:
+protected:
 	Expression(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) src_info);
 	Expression(CREF(LPRDOValue) pValue);
 	Expression(CREF(LPExpression) pExpression);
 	virtual ~Expression();
 
+private:
 	LPTypeInfo               m_pType;
 	LPRDOValue               m_pValue; //! < Используется или m_pValue или m_pCalc
 	rdo::runtime::LPRDOCalc  m_pCalc;  //! < Более красивое решение: завести парсеровский калк
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- ExpressionStatement
+// -------------------- ExpressionEmpty
 // --------------------------------------------------------------------------------
-CLASS(ExpressionStatement): INSTANCE_OF(Expression)
+CLASS(ExpressionEmpty): INSTANCE_OF(Expression)
 {
-DECLARE_FACTORY(ExpressionStatement);
-public:
-	rbool getReturn();
-
+DECLARE_FACTORY(ExpressionEmpty);
 private:
-	ExpressionStatement(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(rdo::runtime::RDOSrcInfo) src_info);
-	ExpressionStatement(CREF(LPExpression) pExpression);
-	virtual ~ExpressionStatement();
-
-	rbool m_returnFlag;
+	ExpressionEmpty();
+	virtual ~ExpressionEmpty();
 };
-DECLARE_POINTER(ExpressionStatement);
+DECLARE_POINTER(ExpressionEmpty);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

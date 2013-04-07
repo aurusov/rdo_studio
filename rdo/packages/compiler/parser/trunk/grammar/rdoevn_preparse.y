@@ -261,14 +261,14 @@ pat_params_begin
 	;
 
 pat_params
-	: pat_params_begin RDO_IDENTIF_COLON param_type {}
-	| pat_params       RDO_IDENTIF_COLON param_type {}
-	| pat_params_begin error                        {}
-	| pat_params_begin RDO_IDENTIF error            {}
-	| pat_params_begin RDO_IDENTIF_COLON error      {}
-	| pat_params error                              {}
-	| pat_params RDO_IDENTIF error                  {}
-	| pat_params RDO_IDENTIF_COLON error            {}
+	: pat_params_begin RDO_IDENTIF_COLON type_declaration
+	| pat_params       RDO_IDENTIF_COLON type_declaration
+	| pat_params_begin error
+	| pat_params_begin RDO_IDENTIF       error
+	| pat_params_begin RDO_IDENTIF_COLON error
+	| pat_params error
+	| pat_params RDO_IDENTIF       error
+	| pat_params RDO_IDENTIF_COLON error
 	;
 
 pat_params_end
@@ -422,31 +422,37 @@ pat_pattern
 // --------------------------------------------------------------------------------
 // -------------------- Описание типа параметра
 // --------------------------------------------------------------------------------
-param_type
-	: RDO_integer        param_type_range param_value_default {}
-	| RDO_real           param_type_range param_value_default {}
-	| RDO_string                          param_value_default {}
-	| RDO_bool                            param_value_default {}
-	| param_type_enum                     param_value_default {}
-	| param_type_such_as                  param_value_default {}
+type_declaration_context
+	: type_declaration
+	;
+
+type_declaration
+	: RDO_integer param_type_range {}
+	| RDO_real    param_type_range {}
+	| RDO_string                   {}
+	| type_declaration_array       {}
+	| RDO_bool                     {}
+	| type_declaration_enum        {}
+	| RDO_IDENTIF                  {}
+	| type_declaration_such_as     {}
 	;
 
 param_type_range
-	: /* empty */                                          {}
-	| '[' RDO_INT_CONST  RDO_dblpoint RDO_INT_CONST  ']'   {}
-	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']'   {}
-	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST  ']'   {}
-	| '[' RDO_INT_CONST  RDO_dblpoint RDO_REAL_CONST ']'   {}
-	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST error {}
-	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST  error {}
-	| '[' RDO_INT_CONST  RDO_dblpoint RDO_REAL_CONST error {}
-	| '[' RDO_INT_CONST  RDO_dblpoint RDO_INT_CONST  error {}
-	| '[' RDO_REAL_CONST RDO_dblpoint error                {}
-	| '[' RDO_INT_CONST  RDO_dblpoint error                {}
-	| '[' error                                            {}
+	: /* empty */
+	| '[' RDO_INT_CONST  RDO_dblpoint RDO_INT_CONST  ']'
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']'
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST  ']'
+	| '[' RDO_INT_CONST  RDO_dblpoint RDO_REAL_CONST ']'
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST error
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST  error
+	| '[' RDO_INT_CONST  RDO_dblpoint RDO_REAL_CONST error
+	| '[' RDO_INT_CONST  RDO_dblpoint RDO_INT_CONST  error
+	| '[' RDO_REAL_CONST RDO_dblpoint error
+	| '[' RDO_INT_CONST  RDO_dblpoint error
+	| '[' error
 	;
 
-param_type_enum
+type_declaration_enum
 	: '(' param_type_enum_list ')'   {}
 	| '(' param_type_enum_list error {}
 	;
@@ -463,15 +469,15 @@ param_type_enum_list
 	| RDO_REAL_CONST                          {}
 	;
 
-param_type_such_as
+type_declaration_such_as
 	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF {}
 	| RDO_such_as RDO_IDENTIF                 {}
 	| RDO_such_as RDO_IDENTIF '.' error       {}
 	| RDO_such_as error                       {}
 	;
 
-param_type_array
-	: RDO_array '<' param_type '>' {}
+type_declaration_array
+	: RDO_array '<' type_declaration '>' {}
 	;
 
 // --------------------------------------------------------------------------------
@@ -541,6 +547,7 @@ fun_arithm
 	| RDO_STRING_CONST                   {}
 	| param_array_value                  {}
 	| RDO_IDENTIF                        {}
+	| RDO_IDENTIF_RELRES                 {}
 	| RDO_IDENTIF '.' RDO_IDENTIF        {}
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF {}
 	| '*'                                {}
@@ -552,6 +559,9 @@ fun_arithm
 	| fun_select_arithm                  {}
 	| '(' fun_arithm ')'                 {}
 	| '-' fun_arithm %prec RDO_UMINUS    {}
+	| RDO_IDENTIF '.' RDO_Size
+	| RDO_IDENTIF '[' fun_arithm ']' '.' RDO_IDENTIF {}
+	| RDO_IDENTIF '[' fun_arithm ']'     {}
 	;
 
 // --------------------------------------------------------------------------------
@@ -629,9 +639,12 @@ fun_select_logic
 	;
 
 fun_select_arithm
-	: fun_select_body '.' RDO_Size '(' ')'   {}
-	| fun_select_body '.' RDO_Size error     {}
-	| fun_select_body '.' RDO_Size '(' error {}
+	: fun_select_body '.' RDO_Size '(' ')'           {}
+	| fun_select_body '.' RDO_Size error             {}
+	| fun_select_body '.' RDO_Size '(' error         {}
+	| fun_select_body '.' RDO_Select_Array '(' ')'   {}
+	| fun_select_body '.' RDO_Select_Array error     {}
+	| fun_select_body '.' RDO_Select_Array '(' error {}
 	;
 
 %%
