@@ -25,8 +25,6 @@ SET(GRAMMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
 
 CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/cmake/rdogramma.h.cmake ${GRAMMA_PATH}/rdogramma.h)
 
-SET(BISON_PKGDATADIR ${BISON_FLEX_DIRECTORY}/../share/bison)
-
 BISON_TARGET(rdortp ${GRAMMA_PATH}/rdortp.y ${GRAMMA_PATH}/rdogramrtp.cpp COMPILE_FLAGS "-g -v -prtp")
 BISON_TARGET(rdodpt ${GRAMMA_PATH}/rdodpt.y ${GRAMMA_PATH}/rdogramdpt.cpp COMPILE_FLAGS "-g -v -pdpt")
 BISON_TARGET(rdoevn ${GRAMMA_PATH}/rdoevn.y ${GRAMMA_PATH}/rdogramevn.cpp COMPILE_FLAGS "-g -v -pevn")
