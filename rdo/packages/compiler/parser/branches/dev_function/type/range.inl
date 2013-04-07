@@ -29,7 +29,7 @@ inline RDOTypeRange<T>::~RDOTypeRange()
 template<class T>
 inline tstring RDOTypeRange<T>::name() const
 {
-	return rdo::format(_T("%s %s"), T::name().c_str(), m_range->src_text().c_str());
+	return rdo::format("%s %s", T::name().c_str(), m_range->src_text().c_str());
 }
 
 template<class T>

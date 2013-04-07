@@ -58,7 +58,7 @@ void RDOPMDResult::endOfCreation(CREF(LPIResult) pResult)
 	{
 		//! Показатель создаётся не в контексте группы
 		//! Такое может быть из rdoproc_rss.y
-		pResultGroup = RDOParser::s_parser()->findResultGroup(_T(""));
+		pResultGroup = RDOParser::s_parser()->findResultGroup("");
 		if (!pResultGroup)
 		{
 			//! Нет даже группы по умолчанию
@@ -94,8 +94,8 @@ void RDOResultGroup::init(CREF(RDOParserSrcInfo) src_info)
 	LPRDOResultGroup pResultGroupFound = RDOParser::s_parser()->findResultGroup(name());
 	if (pResultGroupFound)
 	{
-		RDOParser::s_parser()->error().push_only(src_info, rdo::format(_T("Группа показателей '%s' уже существует"), src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pResultGroupFound->src_info(), _T("См. первое определение"));
+		RDOParser::s_parser()->error().push_only(src_info, rdo::format("Группа показателей '%s' уже существует", src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(pResultGroupFound->src_info(), "См. первое определение");
 		RDOParser::s_parser()->error().push_done();
 	}
 	RDOParser::s_parser()->insertResultGroup(this);
@@ -120,8 +120,8 @@ void RDOResultGroup::append(CREF(LPRDOPMDResult) pResult)
 	LPRDOPMDResult pResultFound = find(pResult->name());
 	if (pResultFound)
 	{
-		RDOParser::s_parser()->error().push_only(pResult->src_info(), rdo::format(_T("Показатель '%s' уже существует"), pResult->src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pResultFound->src_info(), _T("См. первое определение"));
+		RDOParser::s_parser()->error().push_only(pResult->src_info(), rdo::format("Показатель '%s' уже существует", pResult->src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(pResultFound->src_info(), "См. первое определение");
 		RDOParser::s_parser()->error().push_done();
 	}
 	m_resultList.push_back(pResult);
@@ -156,29 +156,29 @@ void RDOPMDWatchPar::init(rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF
 	LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource(res_src_info.src_text());
 	if (!pResource)
 	{
-		RDOParser::s_parser()->error().error(res_src_info, rdo::format(_T("Ресурс '%s' не найден"), res_src_info.src_text().c_str()));
+		RDOParser::s_parser()->error().error(res_src_info, rdo::format("Ресурс '%s' не найден", res_src_info.src_text().c_str()));
 	}
 /*
 	if (!pResource->getType()->isPermanent())
 	{
-		RDOParser::s_parser()->error().push_only(res_src_info, _T("Наблюдать (watch_par) можно только за параметром постоянного ресурса"));
-		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
+		RDOParser::s_parser()->error().push_only(res_src_info, "Наблюдать (watch_par) можно только за параметром постоянного ресурса");
+		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), "См. тип ресурса");
 		RDOParser::s_parser()->error().push_done();
 	}
 */
 	LPRDORTPParam pParam = pResource->getType()->findRTPParam(par_src_info.src_text());
 	if (!pParam)
 	{
-		RDOParser::s_parser()->error().push_only(par_src_info, rdo::format(_T("Параметр '%s' не найден"), par_src_info.src_text().c_str()));
-		RDOParser::s_parser()->error().push_only(pResource->src_info(), _T("См. ресурс"));
-		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
+		RDOParser::s_parser()->error().push_only(par_src_info, rdo::format("Параметр '%s' не найден", par_src_info.src_text().c_str()));
+		RDOParser::s_parser()->error().push_only(pResource->src_info(), "См. ресурс");
+		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), "См. тип ресурса");
 		RDOParser::s_parser()->error().push_done();
 	}
 	rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
 	if (typeID != rdo::runtime::RDOType::t_int && typeID != rdo::runtime::RDOType::t_real)
 	{
-		RDOParser::s_parser()->error().push_only(par_src_info, _T("Наблюдать можно только за параметром целого или вещественного типа"));
-		RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), _T("См. тип параметра"));
+		RDOParser::s_parser()->error().push_only(par_src_info, "Наблюдать можно только за параметром целого или вещественного типа");
+		RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), "См. тип параметра");
 		RDOParser::s_parser()->error().push_done();
 	}
 	endOfCreation(RF(rdo::runtime::RDOPMDWatchPar)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
@@ -208,12 +208,12 @@ RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParser
 	LPRDORTPResType pResType = RDOParser::s_parser()->findRTPResType(res_type_src_info.src_text());
 	if (!pResType)
 	{
-		RDOParser::s_parser()->error().error(res_type_src_info, rdo::format(_T("Тип ресурса '%s' не найден"), res_type_src_info.src_text().c_str()));
+		RDOParser::s_parser()->error().error(res_type_src_info, rdo::format("Тип ресурса '%s' не найден", res_type_src_info.src_text().c_str()));
 	}
 	if (!pResType->isTemporary())
 	{
-		RDOParser::s_parser()->error().push_only(res_type_src_info, _T("Показатель собирает информацию по временным ресурсам (temporary)"));
-		RDOParser::s_parser()->error().push_only(pResType->src_info(), _T("См. тип ресурса"));
+		RDOParser::s_parser()->error().push_only(res_type_src_info, "Показатель собирает информацию по временным ресурсам (temporary)");
+		RDOParser::s_parser()->error().push_only(pResType->src_info(), "См. тип ресурса");
 		RDOParser::s_parser()->error().push_done();
 	}
 }

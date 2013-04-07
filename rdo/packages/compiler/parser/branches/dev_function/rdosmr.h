@@ -50,7 +50,7 @@ public:
 	tstring getExternalModelName(CREF(tstring) alias) const
 	{
 		StringTable::const_iterator it = m_extModelList.find(alias);
-		return it != m_extModelList.end() ? it->second : _T("");
+		return it != m_extModelList.end() ? it->second : "";
 	}
 	CREF(StringTable) getExternalModelList() const
 	{

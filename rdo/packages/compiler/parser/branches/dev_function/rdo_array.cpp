@@ -72,14 +72,14 @@ tstring RDOArrayValue::getAsString() const
 	{
 		if (it == m_container.begin())
 		{
-			arrayValue = rdo::format(_T("[%s"), (*it)->value().getAsString().c_str());
+			arrayValue = rdo::format("[%s", (*it)->value().getAsString().c_str());
 		}
 		else
 		{
-			arrayValue = rdo::format(_T("%s, %s"), arrayValue.c_str(), (*it)->value().getAsString().c_str());
+			arrayValue = rdo::format("%s, %s", arrayValue.c_str(), (*it)->value().getAsString().c_str());
 		}
 	}
-	return rdo::format(_T("%s]"), arrayValue.c_str());
+	return rdo::format("%s]", arrayValue.c_str());
 }
 
 CREF(RDOArrayValue::Container) RDOArrayValue::getContainer() const

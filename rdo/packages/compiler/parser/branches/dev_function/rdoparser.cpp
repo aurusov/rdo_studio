@@ -187,7 +187,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
-	if (pValue->value().getIdentificator() == _T("Time_now") || pValue->value().getIdentificator() == _T("time_now") || pValue->value().getIdentificator() == _T("Системное_время") || pValue->value().getIdentificator() == _T("системное_время"))
+	if (pValue->value().getIdentificator() == "Time_now" || pValue->value().getIdentificator() == "time_now" || pValue->value().getIdentificator() == "Системное_время" || pValue->value().getIdentificator() == "системное_время")
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			rdo::Factory<TypeInfo>::delegate<RDOType__real>(pValue->src_info()),
@@ -197,7 +197,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 		ASSERT(pExpression);
 		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
 	}
-	else if (pValue->value().getIdentificator() == _T("Seconds") || pValue->value().getIdentificator() == _T("seconds"))
+	else if (pValue->value().getIdentificator() == "Seconds" || pValue->value().getIdentificator() == "seconds")
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			rdo::Factory<TypeInfo>::delegate<RDOType__real>(pValue->src_info()),
@@ -207,7 +207,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 		ASSERT(pExpression);
 		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
 	}
-	else if (pValue->value().getIdentificator() == _T("Terminate_counter") || pValue->value().getIdentificator() == _T("terminate_counter"))
+	else if (pValue->value().getIdentificator() == "Terminate_counter" || pValue->value().getIdentificator() == "terminate_counter")
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			rdo::Factory<TypeInfo>::delegate<RDOType__int>(pValue->src_info()),
@@ -304,7 +304,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 		}
 	}
 
-	const_cast<PTR(RDOParser)>(this)->error().error(pValue->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pValue->value().getIdentificator().c_str()));
+	const_cast<PTR(RDOParser)>(this)->error().error(pValue->src_info(), rdo::format("Неизвестный идентификатор: %s", pValue->value().getIdentificator().c_str()));
 	return Context::FindResult();
 }
 
@@ -326,7 +326,7 @@ void RDOParser::insertChanges(CREF(tstring) name, CREF(tstring) value)
 tstring RDOParser::getChanges() const
 {
 	rdo::textstream stream;
-	stream << _T("$Changes") << std::endl;
+	stream << "$Changes" << std::endl;
 	ruint changes_max_length = 0;
 	STL_FOR_ALL_CONST(m_changes, change_it)
 	{
@@ -337,12 +337,12 @@ tstring RDOParser::getChanges() const
 	}
 	STL_FOR_ALL_CONST(m_changes, change_it)
 	{
-		stream << _T("  ") << change_it->m_name;
+		stream << "  " << change_it->m_name;
 		for (ruint i = change_it->m_name.length(); i < changes_max_length; i++)
 		{
-			stream << _T(" ");
+			stream << " ";
 		}
-		stream << _T("  = ") << change_it->m_value << std::endl;
+		stream << "  = " << change_it->m_value << std::endl;
 	}
 	return stream.str();
 }
@@ -355,21 +355,21 @@ tstring RDOParser::getModelStructure()
 	modelStructure << getChanges();
 
 	// RTP
-	modelStructure << std::endl << std::endl << _T("$Resource_type") << std::endl;
+	modelStructure << std::endl << std::endl << "$Resource_type" << std::endl;
 	STL_FOR_ALL_CONST(m_allRTPResType, rtp_it)
 	{
 		(*rtp_it)->writeModelStructure(modelStructure);
 	}
 
 	// RSS
-	modelStructure << std::endl << _T("$Resources") << std::endl;
+	modelStructure << std::endl << "$Resources" << std::endl;
 	STL_FOR_ALL_CONST(m_allRSSResource, rss_it)
 	{
 		(*rss_it)->writeModelStructure(modelStructure);
 	}
 
 	// PAT
-	modelStructure << std::endl << _T("$Pattern") << std::endl;
+	modelStructure << std::endl << "$Pattern" << std::endl;
 	STL_FOR_ALL_CONST(m_allPATPattern, pat_it)
 	{
 		(*pat_it)->writeModelStructure(modelStructure);
@@ -377,7 +377,7 @@ tstring RDOParser::getModelStructure()
 
 	// OPR/DPT
 	ruint counter = 1;
-	modelStructure << std::endl << _T("$Activities") << std::endl;
+	modelStructure << std::endl << "$Activities" << std::endl;
 	modelStructure << m_pRuntime->writeActivitiesStructure(counter);
 
 	// DPT only
@@ -387,12 +387,12 @@ tstring RDOParser::getModelStructure()
 		{
 			LPRDODPTSearchActivity pSearchActivity = m_allDPTSearch.at(i)->getActivities().at(j);
 			ASSERT(pSearchActivity);
-			modelStructure << counter++ << _T(" ") << pSearchActivity->name() << _T(" ") << pSearchActivity->pattern()->getPatternId() << std::endl;
+			modelStructure << counter++ << " " << pSearchActivity->name() << " " << pSearchActivity->pattern()->getPatternId() << std::endl;
 		}
 	}
 
 	// PMD
-	modelStructure << std::endl << _T("$Watching") << std::endl;
+	modelStructure << std::endl << "$Watching" << std::endl;
 	ruint watching_max_length = 0;
 	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
 	{
@@ -416,9 +416,9 @@ tstring RDOParser::getModelStructure()
 		{
 			if (trace->traceable())
 			{
-				modelStructure << _T("  ") << name->name();
+				modelStructure << "  " << name->name();
 				for (ruint i = name->name().length(); i < watching_max_length + 2; i++)
-					modelStructure << _T(" ");
+					modelStructure << " ";
 
 				structure->writeModelStructure(modelStructure);
 			}
@@ -481,23 +481,23 @@ void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 	LPRDOFUNConstant pConstant = findFUNConstant(src_info.src_text());
 	if (pConstant)
 	{
-		error().push_only(src_info, rdo::format(_T("Константа '%s' уже существует"), src_info.src_text().c_str()));
-//		parser->error(_T("Second appearance of the same constant name: ") + *(_cons->getName()));
-		error().push_only(pConstant->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format("Константа '%s' уже существует", src_info.src_text().c_str()));
+//		parser->error("Second appearance of the same constant name: " + *(_cons->getName()));
+		error().push_only(pConstant->src_info(), "См. первое определение");
 		error().push_done();
 	}
 	LPRDOFUNSequence pSequence = findFUNSequence(src_info.src_text());
 	if (pSequence)
 	{
-		error().push_only(src_info, rdo::format(_T("Последовательность '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pSequence->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format("Последовательность '%s' уже существует", src_info.src_text().c_str()));
+		error().push_only(pSequence->src_info(), "См. первое определение");
 		error().push_done();
 	}
 	LPRDOFUNFunction pFunction = findFUNFunction(src_info.src_text());
 	if (pFunction)
 	{
-		error().push_only(src_info, rdo::format(_T("Функция '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pFunction->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format("Функция '%s' уже существует", src_info.src_text().c_str()));
+		error().push_only(pFunction->src_info(), "См. первое определение");
 		error().push_done();
 	}
 }
@@ -509,10 +509,10 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if((*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
 		if (it_search_act != (*it_search)->getActivities().end())
 		{
-			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error().push_only((*it_search_act)->src_info(), _T("См. первое определение"));
+			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
+			error().push_only((*it_search_act)->src_info(), "См. первое определение");
 			error().push_done();
-//			error(_T("Activity name: ") + *_name + _T(" already defined"));
+//			error("Activity name: " + *_name + " already defined");
 		}
 	}
 	STL_FOR_ALL_CONST(getDPTSomes(), it_some)
@@ -520,8 +520,8 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if((*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
 		if (it_some_act != (*it_some)->getActivities().end())
 		{
-			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error().push_only((*it_some_act)->src_info(), _T("См. первое определение"));
+			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
+			error().push_only((*it_some_act)->src_info(), "См. первое определение");
 			error().push_done();
 		}
 	}
@@ -530,8 +530,8 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if((*it_prior)->getActivities().begin(), (*it_prior)->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
 		if (it_prior_act != (*it_prior)->getActivities().end())
 		{
-			error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-			error().push_only((*it_prior_act)->src_info(), _T("См. первое определение"));
+			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
+			error().push_only((*it_prior_act)->src_info(), "См. первое определение");
 			error().push_done();
 		}
 	}
@@ -547,16 +547,16 @@ void RDOParser::checkDPTName(CREF(RDOParserSrcInfo) src_info)
 	DPTSearchList::const_iterator search_it = std::find_if(getDPTSearchs().begin(), getDPTSearchs().end(), compareName<RDODPTSearch>(src_info.src_text()));
 	if (search_it != getDPTSearchs().end())
 	{
-		error().push_only(src_info, rdo::format(_T("Точка '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only((*search_it)->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format("Точка '%s' уже существует", src_info.src_text().c_str()));
+		error().push_only((*search_it)->src_info(), "См. первое определение");
 		error().push_done();
-//		error(src_info, _T("DPT name: ") + src_info.src_text() + _T(" already defined"));
+//		error(src_info, "DPT name: " + src_info.src_text() + " already defined");
 	}
 	DPTSomeList::const_iterator some_it = std::find_if(getDPTSomes().begin(), getDPTSomes().end(), compareName<RDODPTSome>(src_info.src_text()));
 	if (some_it != getDPTSomes().end())
 	{
-		error().push_only(src_info, rdo::format(_T("Точка '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only((*some_it)->src_info(), _T("См. первое определение"));
+		error().push_only(src_info, rdo::format("Точка '%s' уже существует", src_info.src_text().c_str()));
+		error().push_only((*some_it)->src_info(), "См. первое определение");
 		error().push_done();
 	}
 }

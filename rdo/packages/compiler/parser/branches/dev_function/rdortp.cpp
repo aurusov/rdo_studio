@@ -56,7 +56,7 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 {
 	if (findRTPParam(param->name()))
 	{
-		RDOParser::s_parser()->error().error(param->src_info(), rdo::format(_T("Параметр уже существует: %s"), param->name().c_str()));
+		RDOParser::s_parser()->error().error(param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()));
 	}
 	m_params.push_back(param);
 }
@@ -111,15 +111,15 @@ LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo)
 				return pThisRTPType;
 
 			//! Типы разные, сгенерим ошибку
-			parser::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
+			parser::g_error().push_only(src_info,    "Несоответствие типов ресурсов");
 			parser::g_error().push_only(to_src_info, to_src_info.src_text());
 			parser::g_error().push_done();
 			break;
 		}
 	default:
 		{
-			parser::g_error().push_only(src_info,    rdo::format(_T("Ожидается тип ресурса, найдено: %s"), from_src_info.src_text().c_str()));
-			parser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+			parser::g_error().push_only(src_info,    rdo::format("Ожидается тип ресурса, найдено: %s", from_src_info.src_text().c_str()));
+			parser::g_error().push_only(to_src_info, rdo::format("См. тип: %s", to_src_info.src_text().c_str()));
 			parser::g_error().push_done();
 			break;
 		}
@@ -142,14 +142,14 @@ LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 			return pFrom;
 
 		//! Типы разные, сгенерим ошибку
-		parser::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
-		parser::g_error().push_only(to_src_info,  rdo::format(  _T("Ожидается: %s"), to_src_info.src_text().c_str()));
-		parser::g_error().push_only(src_info,  rdo::format(  _T("Пришел: %s"), pFrom->src_text().c_str()));
+		parser::g_error().push_only(src_info,    "Несоответствие типов ресурсов");
+		parser::g_error().push_only(to_src_info,  rdo::format(  "Ожидается: %s", to_src_info.src_text().c_str()));
+		parser::g_error().push_only(src_info,  rdo::format(  "Пришел: %s", pFrom->src_text().c_str()));
 		parser::g_error().push_only(to_src_info, to_src_info.src_text());
 		parser::g_error().push_done();
 	}
-	parser::g_error().push_only(src_info,    rdo::format(_T("Ожидается ресурс, найдено: %s"), pFrom->src_text().c_str()));
-	parser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+	parser::g_error().push_only(src_info,    rdo::format("Ожидается ресурс, найдено: %s", pFrom->src_text().c_str()));
+	parser::g_error().push_only(to_src_info, rdo::format("См. тип: %s", to_src_info.src_text().c_str()));
 	parser::g_error().push_done();
 
 	return LPRDOValue(NULL);
@@ -176,14 +176,14 @@ Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExp
 	{
 		RDOParser::s_parser()->error().error(
 			pSwitchExpression->src_info(),
-			rdo::format(_T("Недопустимое использование типа ресурса: %s"), src_text().c_str())
+			rdo::format("Недопустимое использование типа ресурса: %s", src_text().c_str())
 		);
 	}
 
 	ruint parNumb = getRTPParamNumber(pValue->value().getIdentificator());
 	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 	{
-		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), pValue->value().getIdentificator().c_str()));
+		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format("Неизвестный параметр ресурса: %s", pValue->value().getIdentificator().c_str()));
 	}
 
 	LPRDORTPParam pParam = findRTPParam(pValue->value().getIdentificator());

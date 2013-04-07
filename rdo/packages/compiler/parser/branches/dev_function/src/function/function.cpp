@@ -79,8 +79,8 @@ void Function::onPushParam(CREF(LPRDOParam) pParam)
 	LPRDOParam pParamPrev = findParam(pParam->name());
 	if (pParamPrev)
 	{
-		RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format(_T("Параметр уже определён: %s"), pParam->name().c_str()));
-		RDOParser::s_parser()->error().push_only(pParamPrev->src_info(), _T("См. первое определение"));
+		RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format("Параметр уже определён: %s", pParam->name().c_str()));
+		RDOParser::s_parser()->error().push_only(pParamPrev->src_info(), "См. первое определение");
 		RDOParser::s_parser()->error().push_done();
 	}
 	m_paramList.push_back(pParam); 
@@ -158,7 +158,7 @@ void Function::popFunctionBodyContext()
 		{
 			RDOParser::s_parser()->error().warning(
 				src_info(),
-				rdo::format(_T("Возможно, не все ветки функции '%s' могут вернуть значение."), src_text().c_str())
+				rdo::format("Возможно, не все ветки функции '%s' могут вернуть значение.", src_text().c_str())
 			);
 		}
 	}
@@ -233,9 +233,9 @@ Context::FindResult Function::onFindContext(CREF(LPRDOValue) pValue) const
 		{
 			RDOParser::s_parser()->error().push_only(
 				pValue->src_info(),
-				rdo::format(_T("Тип параметра '%s' определён неверно"), pValue->src_info().src_text().c_str())
+				rdo::format("Тип параметра '%s' определён неверно", pValue->src_info().src_text().c_str())
 			);
-			RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), _T("См. описание типа"));
+			RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), "См. описание типа");
 			RDOParser::s_parser()->error().push_done();
 		}
 		ParamID paramID = findParamID(pValue->value().getIdentificator());

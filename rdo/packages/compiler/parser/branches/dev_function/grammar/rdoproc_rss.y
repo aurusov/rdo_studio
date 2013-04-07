@@ -285,22 +285,22 @@ dpt_process_line
 	| RDO_QUEUE dpt_queue_param
 	| RDO_QUEUE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается имя ресурса для сбора статистики по очереди")));
+		PARSER->error().error(@1, rdo::format("Ожидается имя ресурса для сбора статистики по очереди"));
 	}
 	| RDO_DEPART dpt_depart_param
 	| RDO_DEPART error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается имя ресурса для сбора статистики по очереди")));
+		PARSER->error().error(@1, rdo::format("Ожидается имя ресурса для сбора статистики по очереди"));
 	}
 	| RDO_SEIZE dpt_seize_param
 	| RDO_SEIZE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
+		PARSER->error().error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
 	}
 	| RDO_RELEASE dpt_release_param
 	| RDO_RELEASE error
 	{
-		PARSER->error().error(@1, rdo::format(_T("Ожидается список ресурсов, объединяемых в блок, через запятую")));
+		PARSER->error().error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
 	}
 	;
 
@@ -315,8 +315,8 @@ dpt_queue_param
 		//! Получили список всех типов ресурсов
 		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
-		tstring rtp_name = _T("QDEPART");
-		tstring q_name   = _T("Очередь_") + res_name;
+		tstring rtp_name = "QDEPART";
+		tstring q_name   = "Очередь_" + res_name;
 		//! Если ресурс существует, берем его тип и проверяем
 		if (rssList[res_name].exist())
 		{
@@ -324,7 +324,7 @@ dpt_queue_param
 			rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, info);
 			LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 			ASSERT(pResult);
-			pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
+			pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("длина_очереди")));
 		}
 		else
 		{
@@ -337,7 +337,7 @@ dpt_queue_param
 					rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
 					LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 					ASSERT(pResult);
-					pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
+					pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("длина_очереди")));
 				}
 			}
 			else
@@ -348,14 +348,14 @@ dpt_queue_param
 					rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
 					LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 					ASSERT(pResult);
-					pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
+					pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("длина_очереди")));
 				}
 			}
 		}
 	}
 	| RDO_IDENTIF error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		PARSER->error().error(@1, "Ошибка в имени ресурса");
 	}
 	;
 
@@ -370,7 +370,7 @@ dpt_depart_param
 		//! Получили список всех типов ресурсов
 		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
-		tstring rtp_name = _T("QDEPART");
+		tstring rtp_name = "QDEPART";
 		//! Если ресурс существует, берем его тип и проверяем
 		if (rssList[res_name].exist())
 		{
@@ -399,7 +399,7 @@ dpt_depart_param
 	}
 	| RDO_IDENTIF error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		PARSER->error().error(@1, "Ошибка в имени ресурса");
 	}
 	;
 
@@ -495,7 +495,7 @@ dpt_seize_param
 	}
 	| dpt_seize_param error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		PARSER->error().error(@1, "Ошибка в имени ресурса");
 	}
 	;
 
@@ -589,7 +589,7 @@ dpt_release_param
 	}
 	| dpt_release_param error
 	{
-		PARSER->error().error(@1, _T("Ошибка в имени ресурса"));
+		PARSER->error().error(@1, "Ошибка в имени ресурса");
 	}
 	;
 

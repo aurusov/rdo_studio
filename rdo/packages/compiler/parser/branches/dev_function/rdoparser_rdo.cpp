@@ -212,7 +212,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 		{
 			STL_FOR_ALL_CONST(pEvent->getCalcList(), calcIt)
 			{
-				pParser->error().push_only((*calcIt)->srcInfo(), rdo::format(_T("Попытка запланировать неизвестное событие: %s"), pEvent->name().c_str()));
+				pParser->error().push_only((*calcIt)->srcInfo(), rdo::format("Попытка запланировать неизвестное событие: %s", pEvent->name().c_str()));
 			}
 			pParser->error().push_done();
 		}
@@ -220,7 +220,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 		{
 			STL_FOR_ALL_CONST(pEvent->getCalcList(), calcIt)
 			{
-				pParser->error().push_only((*calcIt)->srcInfo(), rdo::format(_T("Паттерн %s не является событием: %s"), pEvent->name().c_str()));
+				pParser->error().push_only((*calcIt)->srcInfo(), rdo::format("Паттерн %s не является событием: %s", pEvent->name().c_str()));
 			}
 			pParser->error().push_done();
 		}
@@ -248,12 +248,12 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 					rdo::runtime::LPRDOCalc pSetParamCalc;
 					LPRDOParam pPatternParam = pPattern->m_paramList[m_currParam];
 					ASSERT(pPatternParam);
-					if (pParam->typeInfo()->src_info().src_text() == _T("*"))
+					if (pParam->typeInfo()->src_info().src_text() == "*")
 					{
 						if (!pPatternParam->getDefault()->defined())
 						{
-							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Нет значения по умолчанию для параметра '%s'"), pPatternParam->src_text().c_str()));
-							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("Нет значения по умолчанию для параметра '%s'", pPatternParam->src_text().c_str()));
+							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("См. параметр '%s', тип '%s'", pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
 							RDOParser::s_parser()->error().push_done();
 						}
 						rdo::runtime::RDOValue val = pPatternParam->getDefault()->value();
@@ -280,7 +280,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 				}
 				else
 				{
-					RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format(_T("Слишком много параметров для события '%s' при планировании события '%s'"), pEvent->name().c_str(), pEvent->name().c_str()));
+					RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format("Слишком много параметров для события '%s' при планировании события '%s'", pEvent->name().c_str(), pEvent->name().c_str()));
 					RDOParser::s_parser()->error().push_done();
 				}
 			}

@@ -31,7 +31,7 @@ public:
    RDOSyntaxException(CREF(tstring) message)
 	   : RDOException(message)
    {}
-   virtual tstring getType() const { return _T("RDO Syntax Error"); }
+   virtual tstring getType() const { return "RDO Syntax Error"; }
 };
 
 // --------------------------------------------------------------------------------

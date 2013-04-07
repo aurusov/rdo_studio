@@ -346,7 +346,7 @@ sprite                         return(RDO_sprite_call);
 
 "*/" {
 	LEXER->loc_delta_pos(YYLeng());
-	PARSER->error().error(rdo::compiler::parser::RDOParserSrcInfo(), _T("Не найдено начало комментария"));
+	PARSER->error().error(rdo::compiler::parser::RDOParserSrcInfo(), "Не найдено начало комментария");
 }
 
 [\r\n\t ]+

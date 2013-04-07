@@ -242,7 +242,7 @@ prc_rtp_main
 	| prc_rtp_main RDO_Process RDO_IDENTIF RDO_IDENTIF error RDO_End
 	{
 		tstring rtp_name       = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
-		tstring rtp_param_name = _T("Время_создания");
+		tstring rtp_param_name = "Время_создания";
 
 		// Получили список всех типов ресурсов
 		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
@@ -257,7 +257,7 @@ prc_rtp_main
 			// Добавим тип ресурса
 			if (!rtpList.append(rtp))
 			{
-				PARSER->error().error(@2, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
+				PARSER->error().error(@2, rdo::format("Ошибка создания типа ресурса: %s", rtp_name.c_str()));
 			}
 			LPRDORTPResType pResType = PARSER->findRTPResType(rtp_name);
 			ASSERT(pResType);
@@ -269,12 +269,12 @@ prc_rtp_main
 			CREF(rdo::compiler::mbuilder::RDOResType) rtp = rtpList[rtp_name];
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
-				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет требуемого параметра '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
+				PARSER->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' нет требуемого параметра '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
 			}
 			// Параметр есть, надо проверить на тип
 			if (rtp.m_params[rtp_param_name].typeID() != rdo::runtime::RDOType::t_real)
 			{
-				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является вещественным типом"), rtp.name().c_str(), rtp_param_name.c_str()));
+				PARSER->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' параметр '%s' не является вещественным типом", rtp.name().c_str(), rtp_param_name.c_str()));
 			}
 			// Тип ресурса подходит в качестве типа транзакта
 			LPRDORTPResType pResType = PARSER->findRTPResType(rtp_name);
