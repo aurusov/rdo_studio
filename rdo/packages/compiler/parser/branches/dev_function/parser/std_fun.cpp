@@ -14,6 +14,7 @@
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <cmath>
+#include <boost/math/special_functions/fpclassify.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/parser/std_fun.h"
 #include "simulator/compiler/parser/param.h"
@@ -37,14 +38,37 @@ int intLocal(int value)
 	return value;
 }
 
+double specValueConvert(double value)
+{
+	if (boost::math::isnan(value))
+	{
+		return std::numeric_limits<double>::quiet_NaN();
+	}
+	else if (boost::math::isinf(value))
+	{
+		return std::numeric_limits<double>::infinity();
+	}
+	return value;
+}
+
+double logLocal(double value)
+{
+	return specValueConvert(log(value));
+}
+
+double log10Local(double value)
+{
+	return specValueConvert(log10(value));
+}
+
 double log2Local(double value)
 {
-	return log(value) / log(2.0);
+	return specValueConvert(log(value) / log(2.0));
 }
 
 double logNLocal(double value1, double value2)
 {
-	return log(value1) / log(value2);
+	return specValueConvert(log(value1) / log(value2));
 }
 
 template <class T>
@@ -190,8 +214,8 @@ void RDOParserSTDFUN::parse(CREF(LPRDOParser) pParser)
 	generate("Int",      rdo::Factory<Function_I_I> ::create<Function_I_I ::function_type>(intLocal),      pIntReturn,  ParamList(realType));
 	generate("IntPower", rdo::Factory<Function_D_DI>::create<Function_D_DI::function_type>(static_cast<Function_D_DI::function_type>(std::pow)),
 	                                                                             pRealReturn, ParamList(realType)(intType));
-	generate("Ln",       rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log),           pRealReturn, ParamList(realType));
-	generate("Log10",    rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log10),         pRealReturn, ParamList(realType));
+	generate("Ln",       rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(logLocal),      pRealReturn, ParamList(realType));
+	generate("Log10",    rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log10Local),    pRealReturn, ParamList(realType));
 	generate("Log2",     rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log2Local),     pRealReturn, ParamList(realType));
 	generate("LogN",     rdo::Factory<Function_D_DD>::create<Function_D_DD::function_type>(logNLocal),     pRealReturn, ParamList(realType)(realType));
 	generate("Max",      rdo::Factory<Function_D_DD>::create<Function_D_DD::function_type>(maxLocal<double>),

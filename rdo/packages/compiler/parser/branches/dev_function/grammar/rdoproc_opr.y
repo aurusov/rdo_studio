@@ -321,11 +321,11 @@ dpt_process_prior
 	}
 	| RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания приоритета процесса")
+		PARSER->error().error(@1, @2, "Ошибка описания приоритета процесса");
 	}
 	| error
 	{
-		PARSER->error().error(@1, @1, "Ожидается ключевое слово $Priority")
+		PARSER->error().error(@1, @1, "Ожидается ключевое слово $Priority");
 	}
 	;
 
@@ -583,7 +583,7 @@ dpt_queue_param
 	}
 	| RDO_IDENTIF error
 	{
-		PARSER->error().error(@1, "Ошибка в миени очереди")
+		PARSER->error().error(@1, "Ошибка в миени очереди");
 	}
 	;
 
@@ -599,7 +599,7 @@ dpt_depart_param
 	}
 	| RDO_IDENTIF error 
 	{
-		PARSER->error().error(@1, "Ошибка в имени ресурса")
+		PARSER->error().error(@1, "Ошибка в имени ресурса");
 	}
 	;
 
@@ -629,7 +629,7 @@ dpt_term_param
 	}
 	| fun_arithm error
 	{
-		PARSER->error().error(@1, "Ошибка, после оператора TERMINATE может быть указано только арифметическое выражение целого типа")
+		PARSER->error().error(@1, "Ошибка, после оператора TERMINATE может быть указано только арифметическое выражение целого типа");
 	}
 	;
 
