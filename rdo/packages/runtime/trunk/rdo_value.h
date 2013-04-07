@@ -103,6 +103,8 @@ public:
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
 
+	RDOValue clone() const;
+
 	//RDOValue  begin ();
 	//RDOValue  end   ();
 	//void      insert(CREF(RDOValue) itr,    CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
@@ -143,8 +145,6 @@ private:
 
 	template <class T>  REF(rdo::intrusive_ptr<T>) getPointer();
 	template <class T> CREF(rdo::intrusive_ptr<T>) getPointer() const;
-
-	RDOValue clone() const;
 
 	tstring       onPointerAsString () const;
 	rbool         onPointerEqual    (CREF(RDOValue) rdovalue) const;
