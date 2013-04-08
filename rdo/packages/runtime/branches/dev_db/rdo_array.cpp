@@ -113,6 +113,19 @@ void RDOArrayValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 	m_container[ind] = item;
 }
 
+LPRDOArrayValue RDOArrayValue::clone() const
+{
+	LPRDOArrayValue pClone = rdo::Factory<RDOArrayValue>::create(type());
+	ASSERT(pClone);
+
+	BOOST_FOREACH(const RDOValue& value, m_container)
+	{
+		pClone->push_back(value.clone());
+	}
+
+	return pClone;
+}
+
 void RDOArrayValue::serializeInDB(REF(IDB) db) const
 {
 	db.insertRow("array_rv","DEFAULT");

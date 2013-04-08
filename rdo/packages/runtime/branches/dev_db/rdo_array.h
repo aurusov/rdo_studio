@@ -48,6 +48,8 @@ public:
 	CREF(RDOValue) getItem(CREF(RDOValue) index) const;
 	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item);
 
+	LPRDOArrayValue clone() const;
+
 	void serializeInDB(REF(IDB) db) const;
 
 private:

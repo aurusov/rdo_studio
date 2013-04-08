@@ -104,6 +104,8 @@ public:
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
 
+	RDOValue clone() const;
+
 	#define DEFINE_SERIALIZE_RDO_VALUE(Table,Value)      \
 	db.insertRow(Table,QString("DEFAULT,%1").arg(Value));\
 	db.pushContext<int>(db.queryExecIndex(Table));
@@ -150,8 +152,6 @@ private:
 
 	template <class T>  REF(rdo::intrusive_ptr<T>) getPointer();
 	template <class T> CREF(rdo::intrusive_ptr<T>) getPointer() const;
-
-	RDOValue clone() const;
 
 	tstring       onPointerAsString () const;
 	rbool         onPointerEqual    (CREF(RDOValue) rdovalue) const;
