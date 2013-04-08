@@ -49,23 +49,27 @@ CREF(PTR(void)) RDOValue::__voidPtrV() const
 
 RDOValue RDOValue::clone() const
 {
+	bool undefined = getUndefined();
+	const_cast<RDOValue*>(this)->setUndefined(true);
+
+	RDOValue result;
 	switch (typeID())
 	{
-	case RDOType::t_unknow        : return RDOValue();
-	case RDOType::t_int           : return RDOValue(getInt());
-	case RDOType::t_real          : return RDOValue(getDouble());
-	case RDOType::t_enum          : return RDOValue(getEnum(), getEnumAsInt());
-	case RDOType::t_bool          : return RDOValue(getBool());
-	case RDOType::t_string        : return RDOValue(getString());
-	case RDOType::t_identificator : return RDOValue(getIdentificator(), g_identificator);
-	case RDOType::t_pointer       :
+	case RDOType::t_int          : result = RDOValue(getInt()); break;
+	case RDOType::t_real         : result = RDOValue(getDouble()); break;
+	case RDOType::t_enum         : result = RDOValue(getEnum(), getEnumAsInt()); break;
+	case RDOType::t_bool         : result = RDOValue(getBool()); break;
+	case RDOType::t_string       : result = RDOValue(getString()); break;
+	case RDOType::t_identificator: result = RDOValue(getIdentificator(), g_identificator); break;
+	case RDOType::t_pointer      :
 		{
 			LPRDOArrayType pThisArrayType = m_pType.object_dynamic_cast<RDOArrayType>();
 			if (pThisArrayType)
 			{
 				LPRDOArrayValue pValue = getPointer<RDOArrayValue>();
 				ASSERT(pValue);
-				return RDOValue(pThisArrayType, pValue->clone());
+				result = RDOValue(pThisArrayType, pValue->clone());
+				break;
 			}
 
 			LPRDOArrayIterator pThisArrayIterator = m_pType.object_dynamic_cast<RDOArrayIterator>();
@@ -73,7 +77,8 @@ RDOValue RDOValue::clone() const
 			{
 				LPRDOArrayIterator pIterator = pThisArrayIterator->clone();
 				ASSERT(pIterator);
-				return RDOValue(pIterator, pIterator);
+				result = RDOValue(pIterator, pIterator);
+				break;
 			}
 
 			LPRDOMatrixIterator pThisMatrixIterator = m_pType.object_dynamic_cast<RDOMatrixIterator>();
@@ -81,10 +86,12 @@ RDOValue RDOValue::clone() const
 			{
 				LPRDOMatrixIterator pIterator = pThisMatrixIterator->clone();
 				ASSERT(pIterator);
-				return RDOValue(pIterator, pIterator);
+				result = RDOValue(pIterator, pIterator);
+				break;
 			}
 		}
 		break;
+	default: break;
 	}
 
 	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
@@ -99,7 +106,13 @@ RDOValue RDOValue::clone() const
 	//	return RDOValue(pCloneValue->type(), pCloneValue);
 	//}
 
-	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод clone()");
+	if (result.typeID() == RDOType::t_unknow)
+	{
+		throw RDOValueException("Для rdo::runtime::RDOValue не определен метод clone()");
+	}
+	result.setUndefined(undefined);
+	const_cast<RDOValue*>(this)->setUndefined(undefined);
+	return result;
 }
 
 tstring RDOValue::onPointerAsString() const
