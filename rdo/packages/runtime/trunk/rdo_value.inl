@@ -379,7 +379,7 @@ inline REF(RDOValue) RDOValue::operator= (CREF(RDOValue) rdovalue)
 
 inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 {
-	if (!m_undefined || !rdovalue.getUndefined())
+	if (!m_undefined || !rdovalue.isUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -457,7 +457,7 @@ inline rbool RDOValue::operator!= (CREF(RDOValue) rdovalue) const
 
 inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 {
-	if (!m_undefined || !rdovalue.getUndefined())
+	if (!m_undefined || !rdovalue.isUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -523,7 +523,7 @@ inline rbool RDOValue::operator>= (CREF(RDOValue) rdovalue) const
 
 inline RDOValue RDOValue::operator&& (CREF(RDOValue) rdovalue) const
 {
-	if (!m_undefined || !rdovalue.getUndefined())
+	if (!m_undefined || !rdovalue.isUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -549,7 +549,7 @@ inline RDOValue RDOValue::operator&& (CREF(RDOValue) rdovalue) const
 
 inline RDOValue RDOValue::operator|| (CREF(RDOValue) rdovalue) const
 {
-	if (!m_undefined || !rdovalue.getUndefined())
+	if (!m_undefined || !rdovalue.isUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -604,7 +604,7 @@ inline rbool RDOValue::operator! () const
 
 inline REF(RDOValue) RDOValue::operator+= (CREF(RDOValue) rdovalue)
 {
-	if (!m_undefined || !rdovalue.getUndefined())
+	if (!m_undefined || !rdovalue.isUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -703,7 +703,7 @@ inline RDOValue RDOValue::operator--(int inc)
 
 inline REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
 {
-	if (!m_undefined || !rdovalue.getUndefined())
+	if (!m_undefined || !rdovalue.isUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -741,7 +741,7 @@ inline REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
 
 inline REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
 {
-	if (!m_undefined || !rdovalue.getUndefined())
+	if (!m_undefined || !rdovalue.isUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -779,7 +779,7 @@ inline REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
 
 inline REF(RDOValue) RDOValue::operator/= (CREF(RDOValue) rdovalue)
 {
-	if (!m_undefined || !rdovalue.getUndefined())
+	if (!m_undefined || !rdovalue.isUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())

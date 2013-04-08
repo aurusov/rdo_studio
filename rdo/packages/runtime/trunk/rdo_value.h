@@ -98,7 +98,7 @@ public:
 	RDOValue       operator/  (CREF(RDOValue) rdovalue) const;
 
 	void  setUndefined(rbool undefined);
-	rbool getUndefined() const;
+	rbool isUndefined () const;
 
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;

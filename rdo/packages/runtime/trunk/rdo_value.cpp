@@ -49,7 +49,7 @@ CREF(PTR(void)) RDOValue::__voidPtrV() const
 
 RDOValue RDOValue::clone() const
 {
-	bool undefined = getUndefined();
+	bool undefined = isUndefined();
 	const_cast<RDOValue*>(this)->setUndefined(true);
 
 	RDOValue result;
@@ -403,7 +403,7 @@ void RDOValue::setUndefined(rbool undefined)
 	m_undefined = undefined;
 }
 
-rbool RDOValue::getUndefined() const
+rbool RDOValue::isUndefined() const
 {
 	return m_undefined;
 }
