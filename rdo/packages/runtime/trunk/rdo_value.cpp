@@ -398,12 +398,12 @@ RDOValue RDOValue::onPointerUMinus() const
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerUMinus()");
 }
 
-void RDOValue::setUndefined(CREF(rbool) undefined)
+void RDOValue::setUndefined(rbool undefined)
 {
 	m_undefined = undefined;
 }
 
-CREF(rbool) RDOValue::getUndefined() const
+rbool RDOValue::getUndefined() const
 {
 	return m_undefined;
 }
