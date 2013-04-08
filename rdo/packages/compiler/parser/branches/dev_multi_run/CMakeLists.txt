@@ -72,7 +72,8 @@ SET(HEADER_FILES
     ${GRAMMA_PATH}/rdobison.h
     rdortp.h
     expression.h
-    local_variable.h
+    src/function/local_variable/local_variable.h
+    src/function/local_variable/local_variable_context.h
     namespace.h
     param.h
     pch.h
@@ -144,7 +145,8 @@ SET(INLITE_FILES
 SET(SOURCE_FILES
     rdortp.cpp
     expression.cpp
-    local_variable.cpp
+    src/function/local_variable/local_variable.cpp
+    src/function/local_variable/local_variable_context.cpp
     param.cpp
     pch.cpp
     rdo_array.cpp
@@ -186,6 +188,7 @@ SET(SOURCE_FILES
     type/info.cpp
     type/such_as.cpp
     type/type.cpp
+    type/range.cpp
     type/function_type.cpp
     type/runtime_wrapper_type.cpp
     context/context_type.cpp
@@ -389,6 +392,7 @@ SOURCE_GROUP(".type_enum" FILES
 SOURCE_GROUP(".type_range" FILES
     type/range.h
     type/range.inl
+    type/range.cpp
     )
 
 SOURCE_GROUP(".type_such_as" FILES

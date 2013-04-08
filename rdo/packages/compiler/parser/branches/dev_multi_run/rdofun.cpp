@@ -553,7 +553,7 @@ void RDOFUNArithm::wrongVarInit(CREF(LPRDOValue) pParamName, CREF(tstring) param
 {
 	LPRDOFUNFunction pFunction = RDOParser::s_parser()->getLastFUNFunction();
 	ASSERT(pFunction);
-	LPRDOParam pParam = pFunction->findFUNFunctionParam(paramName);
+	LPRDOParam pParam = pFunction->findParam(paramName);
 	if (pParam)
 	{
 		RDOParser::s_parser()->error().error(pParamName->src_info(), rdo::format("Функции не могут изменить свой параметр: %s", paramName.c_str()));		
@@ -1386,15 +1386,27 @@ RDOFUNCalculateIf::~RDOFUNCalculateIf()
 // -------------------- RDOFUNFunction
 // --------------------------------------------------------------------------------
 RDOFUNFunction::RDOFUNFunction(CREF(RDOParserSrcInfo) srcInfo, CREF(LPRDOParam) pReturn)
-	: RDOParserSrcInfo(srcInfo)
-	, m_pReturn       (pReturn )
+	: Function (pReturn->getTypeInfo(), srcInfo)
+	, m_pReturn(pReturn)
 {
+	if (m_pReturn->getDefault()->defined())
+	{
+		LPRDOValue pDefault = m_pReturn->getTypeInfo()->value_cast(m_pReturn->getDefault());
+		ASSERT(pDefault);
+
+		rdo::runtime::LPRDOCalcConst pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pDefault->value());
+		ASSERT(pCalcDefault);
+		pCalcDefault->setSrcInfo(m_pReturn->getTypeInfo()->src_info());
+
+		Function::setDefaultCalc(pCalcDefault);
+	}
+
 	init();
 }
 
 RDOFUNFunction::RDOFUNFunction(CREF(tstring) name, CREF(LPRDOParam) pReturn)
-	: RDOParserSrcInfo(name   )
-	, m_pReturn       (pReturn)
+	: Function (pReturn->getTypeInfo(), RDOParserSrcInfo(name))
+	, m_pReturn(pReturn)
 {
 	init();
 }
@@ -1405,73 +1417,17 @@ RDOFUNFunction::~RDOFUNFunction()
 void RDOFUNFunction::init()
 {
 	RDOParser::s_parser()->insertFUNFunction(this);
-	RDOParser::s_parser()->contextStack()->push(this);
-
-	m_pContextMemory = rdo::Factory<ContextMemory>::create();
-	ASSERT(m_pContextMemory);
-	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
-
-	ContextMemory::push();
+	Function::pushContext();
 }
 
 void RDOFUNFunction::end()
 {
-	ContextMemory::pop();
-	RDOParser::s_parser()->contextStack()->pop();
-	RDOParser::s_parser()->contextStack()->pop();
-}
-
-Context::FindResult RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
-{
-	ASSERT(pValue);
-
-	Context::FindResult result = m_pContextMemory->onFindContext(pValue);
-	if (result.m_pContext)
-	{
-		return result;
-	}
-
-	//! Параметры
-	LPRDOParam pParam = findFUNFunctionParam(pValue->value().getIdentificator());
-	if (pParam)
-	{
-		rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
-		if (typeID == rdo::runtime::RDOType::t_identificator || typeID == rdo::runtime::RDOType::t_unknow)
-		{
-			RDOParser::s_parser()->error().push_only(
-				pValue->src_info(),
-				rdo::format("Тип параметра '%s' определён неверно", pValue->src_info().src_text().c_str())
-			);
-			RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), "См. описание типа");
-			RDOParser::s_parser()->error().push_done();
-		}
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			pParam->getTypeInfo(),
-			rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(findFUNFunctionParamNum(pValue->value().getIdentificator()), pParam->src_info()),
-			pValue->src_info()
-		);
-		ASSERT(pExpression);
-		return Context::FindResult(const_cast<PTR(RDOFUNFunction)>(this), pExpression, pValue, pParam);
-	}
-
-	return Context::FindResult();
+	Function::popContext();
 }
 
 CREF(tstring) RDOFUNFunction::name() const
 {
 	return src_info().src_text();
-}
-
-void RDOFUNFunction::add(CREF(LPRDOParam) pParam)
-{ 
-	LPRDOParam pParamPrev = findFUNFunctionParam(pParam->name());
-	if (pParamPrev)
-	{
-		RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format("Параметр уже существует: %s", pParam->name().c_str()));
-		RDOParser::s_parser()->error().push_only(pParamPrev->src_info(), "См. первое определение");
-		RDOParser::s_parser()->error().push_done();
-	}
-	m_paramList.push_back(pParam); 
 }
 
 void RDOFUNFunction::add(CREF(LPRDOFUNFunctionListElement) pParam)
@@ -1484,25 +1440,13 @@ void RDOFUNFunction::add(CREF(LPRDOFUNCalculateIf) pCalculateIf)
 	m_calculateIfList.push_back(pCalculateIf);
 }
 
-LPRDOParam RDOFUNFunction::findFUNFunctionParam(CREF(tstring) paramName) const 
-{
-	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
-	return it != m_paramList.end() ? *it : LPRDOParam(NULL);
-}
-
-int RDOFUNFunction::findFUNFunctionParamNum(CREF(tstring) paramName) const
-{
-	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
-	return it != m_paramList.end() ? it - m_paramList.begin() : -1;
-}
-
 void RDOFUNFunction::createListCalc()
 {
 	if (!m_pReturn->getDefault()->defined())
 	{
 		RDOParser::s_parser()->error().error(m_pReturn->src_info(), rdo::format("Функция '%s' должна иметь значение по умолчанию", name().c_str()));
 	}
-	if (m_paramList.empty())
+	if (getParams().empty())
 	{
 		RDOParser::s_parser()->error().error(src_info(), rdo::format("Функция '%s' должна иметь параметры, т.к. её тип list", name().c_str()));
 	}
@@ -1524,8 +1468,8 @@ void RDOFUNFunction::createListCalc()
 		ASSERT(pCaseCalc);
 		pCaseCalc->setSrcInfo((*elem_it)->src_info());
 		int currParamNumber = 0;
-		ParamList::const_iterator param_it = m_paramList.begin();
-		while (param_it != m_paramList.end())
+		ParamList::const_iterator param_it = getParams().begin();
+		while (param_it != getParams().end())
 		{
 			LPRDOParam pParam = *param_it;
 			if (elem_it == m_elementList.end())
@@ -1537,7 +1481,7 @@ void RDOFUNFunction::createListCalc()
 			ASSERT(pListElement);
 			if (pListElement->isEquivalence())
 			{
-				if ((param_it + 1) == m_paramList.end())
+				if ((param_it + 1) == getParams().end())
 				{
 					RDOParser::s_parser()->error().error(pListElement->src_info(), rdo::format("Перед знаком равенства ожидается значение для параметра: %s",pParam->name().c_str()));
 				}
@@ -1545,7 +1489,7 @@ void RDOFUNFunction::createListCalc()
 				{
 					tstring str = (*param_it)->src_text();
 					++param_it;
-					while (param_it != m_paramList.end())
+					while (param_it != getParams().end())
 					{
 						str += ", ";
 						str += (*param_it)->src_text();
@@ -1599,7 +1543,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 		}
 		++it;
 	}
-	int   param_cnt = m_paramList.size();
+	int   param_cnt = getParams().size();
 	ruint range     = 1;
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(0);
 	ASSERT(pCalc);
@@ -1608,7 +1552,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	pCalc->setSrcInfo(srcInfo);
 	for (int currParam = 0; currParam < param_cnt; currParam++)
 	{
-		LPRDOParam pFunctionParam = m_paramList.at(currParam);
+		LPRDOParam pFunctionParam = getParams().at(currParam);
 		ASSERT(pFunctionParam);
 		rdo::runtime::LPRDOCalcFuncParam pFuncParam = rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(currParam, pFunctionParam->src_info());
 		ASSERT(pFuncParam);
@@ -1670,51 +1614,16 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	setFunctionCalc(pFuncTableCalc);
 }
 
-void RDOFUNFunction::createAlgorithmicCalc()
-{
-	if (!m_returnFlag)
-	{
-		rdo::runtime::LPRDOCalcConst pCalcDefault;
-		if (m_pReturn->getDefault()->defined())
-		{
-			LPRDOValue pDefault = m_pReturn->getTypeInfo()->value_cast(m_pReturn->getDefault());
-			ASSERT(pDefault);
-			pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pDefault->value());
-		}
-		else
-		{
-			//! Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
-			pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturn->getTypeInfo()->type()->get_default());
-			RDOParser::s_parser()->error().warning(src_info(), rdo::format("Для функции '%s' неопределено значение по умолчанию", name().c_str()));
-		}
-		ASSERT(pCalcDefault);
-		pCalcDefault->setSrcInfo(m_pReturn->getTypeInfo()->src_info());
-	}
-}
-
 CREF(LPRDOParam) RDOFUNFunction::getReturn() const
 {
 	return m_pReturn;
 }
 
-const RDOFUNFunction::ParamList RDOFUNFunction::getParams() const
-{
-	return m_paramList;
-}
-
-rbool RDOFUNFunction::getReturnFlag() const
-{
-	return m_returnFlag;
-}
-
-void RDOFUNFunction::setReturnFlag(rbool flag)
-{
-	m_returnFlag = flag;
-}
-
 rdo::runtime::LPRDOCalc RDOFUNFunction::getFunctionCalc() const
 {
-	return m_pFunctionCalc;
+	return m_pFunctionCalc
+		? m_pFunctionCalc
+		: expression()->calc();
 }
 
 void RDOFUNFunction::setFunctionCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
@@ -1752,7 +1661,7 @@ void RDOFUNGroup::init(CREF(RDOParserSrcInfo) res_info)
 
 void RDOFUNGroup::end()
 {
-	RDOParser::s_parser()->contextStack()->pop();
+	RDOParser::s_parser()->contextStack()->pop<RDOFUNGroup>();
 }
 
 Context::FindResult RDOFUNGroup::onFindContext(CREF(LPRDOValue) pValue) const

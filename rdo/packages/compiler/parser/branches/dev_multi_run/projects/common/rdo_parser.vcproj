@@ -115,6 +115,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;NOMINMAX"
@@ -2496,14 +2497,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\local_variable.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\local_variable.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\namespace.h"
 				>
 			</File>
@@ -2668,6 +2661,26 @@
 				</File>
 				<File
 					RelativePath="..\..\expression.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".local_variable"
+				>
+				<File
+					RelativePath="..\..\src\function\local_variable\local_variable.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\function\local_variable\local_variable.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\function\local_variable\local_variable_context.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\function\local_variable\local_variable_context.h"
 					>
 				</File>
 			</Filter>
@@ -2885,6 +2898,10 @@
 				<Filter
 					Name=".range"
 					>
+					<File
+						RelativePath="..\..\type\range.cpp"
+						>
+					</File>
 					<File
 						RelativePath="..\..\type\range.h"
 						>

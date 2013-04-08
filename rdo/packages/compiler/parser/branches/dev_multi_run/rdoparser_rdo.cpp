@@ -120,6 +120,12 @@ ruint RDOParserRDOItem::lexer_loc_pos()
 	return m_pLexer && m_pLexer->m_lploc ? m_pLexer->m_lploc->m_first_pos : 0;
 }
 
+tstring RDOParserRDOItem::text() const
+{
+	ASSERT(m_pLexer);
+	return m_pLexer->YYText();
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserRSS
 // --------------------------------------------------------------------------------

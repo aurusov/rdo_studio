@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _LOCAL_VARIABLE_H_
-#define _LOCAL_VARIABLE_H_
+#ifndef _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_H_
+#define _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -43,9 +43,6 @@ private:
 	LPExpression  m_pExpression;
 };
 
-typedef BisonValuePair<rdo::runtime::LPRDOCalc, LPLocalVariable> VariableWrapper;
-DECLARE_POINTER(VariableWrapper);
-
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariableList
 // --------------------------------------------------------------------------------
@@ -70,15 +67,15 @@ private:
 // --------------------------------------------------------------------------------
 OBJECT(LocalVariableListStack)
 {
-	DECLARE_FACTORY(LocalVariableListStack);
+DECLARE_FACTORY(LocalVariableListStack);
 public:
 	typedef std::list<LPLocalVariableList> VariableListStack;
 
 	void push(CREF(LPLocalVariableList) pVariableList);
 	void pop ();
+	LPLocalVariableList top() const;
 
-	void            append           (CREF(LPLocalVariable) pVariable);
-	LPLocalVariable findLocalVariable(CREF(tstring)         name     ) const;
+	LPLocalVariable findLocalVariable(CREF(tstring) name) const;
 
 private:
 	LocalVariableListStack();
@@ -88,4 +85,4 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // _LOCAL_VARIABLE_H_
+#endif // _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_H_

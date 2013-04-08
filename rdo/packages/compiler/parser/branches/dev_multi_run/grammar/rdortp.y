@@ -245,7 +245,7 @@ ext_param_type
 	;
 
 ext_par_type_enum
-	: param_type_enum RDO_IDENTIF
+	: type_declaration_enum RDO_IDENTIF
 	{
 		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
 		ASSERT(pType);
@@ -367,7 +367,7 @@ rtp_body
 	;
 
 rtp_param
-	: RDO_IDENTIF_COLON param_type param_value_default
+	: RDO_IDENTIF_COLON type_declaration param_value_default
 	{
 		LPRDOValue  pParamName = PARSER->stack().pop<RDOValue>($1);
 		LPTypeInfo  pParamType = PARSER->stack().pop<TypeInfo>($2);
@@ -410,7 +410,19 @@ rtp_param
 // --------------------------------------------------------------------------------
 // -------------------- Описание типа параметра
 // --------------------------------------------------------------------------------
-param_type
+type_declaration_context
+	: type_declaration
+	{
+		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+		PARSER->contextStack()->push(pTypeContext);
+	}
+	;
+
+type_declaration
 	: RDO_integer param_type_range
 	{
 		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
@@ -456,11 +468,11 @@ param_type
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| param_type_array
+	| type_declaration_array
 	{
-		LEXER->array_cnt_rst();
 		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
 		ASSERT(pArray);
+
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pArray, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
@@ -471,23 +483,17 @@ param_type
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| param_type_enum
+	| type_declaration_enum
 	{
 		LEXER->enumReset();
 		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
 		ASSERT(pEnum);
+
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| param_type_such_as
-	{
-		LPRDOTypeParamSuchAs pTypeSuchAs = PARSER->stack().pop<RDOTypeParamSuchAs>($1);
-		ASSERT(pTypeSuchAs);
-		LPTypeInfo pType = pTypeSuchAs.object_parent_cast<TypeInfo>();
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
+	| type_declaration_such_as
 	;
 
 param_type_range
@@ -553,7 +559,7 @@ param_type_range
 	}
 	;
 
-param_type_enum
+type_declaration_enum
 	: '(' param_type_enum_list ')'
 	{
 		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($2);
@@ -634,7 +640,7 @@ param_type_enum_list
 	}
 	;
 
-param_type_such_as
+type_declaration_such_as
 	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF
 	{
 		tstring type  = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
@@ -688,8 +694,8 @@ param_type_such_as
 	}
 	;
 
-param_type_array
-	: RDO_array '<' param_type '>'
+type_declaration_array
+	: RDO_array '<' type_declaration '>'
 	{
 		LPTypeInfo pParamType = PARSER->stack().pop<TypeInfo>($3);
 		ASSERT(pParamType);

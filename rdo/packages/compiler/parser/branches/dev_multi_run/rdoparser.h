@@ -216,6 +216,7 @@ public:
 	static rdoModelObjects::RDOFileType getFileToParse();
 	static ruint                        lexer_loc_line();
 	static ruint                        lexer_loc_pos ();
+	static tstring                      lexer_text    ();
 	static LPRDOParser                  s_parser      ();
 
 protected:
