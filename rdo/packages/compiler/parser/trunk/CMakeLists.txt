@@ -188,6 +188,7 @@ SET(SOURCE_FILES
     type/info.cpp
     type/such_as.cpp
     type/type.cpp
+    type/range.cpp
     type/function_type.cpp
     type/runtime_wrapper_type.cpp
     context/context_type.cpp
@@ -391,6 +392,7 @@ SOURCE_GROUP(".type_enum" FILES
 SOURCE_GROUP(".type_range" FILES
     type/range.h
     type/range.inl
+    type/range.cpp
     )
 
 SOURCE_GROUP(".type_such_as" FILES
