@@ -72,7 +72,8 @@ SET(HEADER_FILES
     ${GRAMMA_PATH}/rdobison.h
     rdortp.h
     expression.h
-    local_variable.h
+    src/function/local_variable/local_variable.h
+    src/function/local_variable/local_variable_context.h
     namespace.h
     param.h
     pch.h
@@ -144,7 +145,8 @@ SET(INLITE_FILES
 SET(SOURCE_FILES
     rdortp.cpp
     expression.cpp
-    local_variable.cpp
+    src/function/local_variable/local_variable.cpp
+    src/function/local_variable/local_variable_context.cpp
     param.cpp
     pch.cpp
     rdo_array.cpp
