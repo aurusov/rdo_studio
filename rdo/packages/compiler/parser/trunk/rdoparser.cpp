@@ -89,7 +89,7 @@ tstring RDOParser::lexer_text()
 {
 	LPRDOParserRDOItem pParserItem = !s_parserStack.empty()
 		? s_parserStack.back()->m_parser_item.object_dynamic_cast<RDOParserRDOItem>()
-		: NULL;
+		: LPRDOParserRDOItem();
 
 	return pParserItem
 		? pParserItem->text()
