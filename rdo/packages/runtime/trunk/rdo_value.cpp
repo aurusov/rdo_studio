@@ -32,7 +32,7 @@ RDOValue RDOValue::fromDouble(CREF(LPRDOType) pType, double value)
 	case RDOType::t_bool  : result.__get<rbool> () = value != 0.0;  break;
 	default               : throw RDOValueException();
 	}
-	result.setUndefined(true);
+	result.setUndefined(false);
 
 	return result;
 }
@@ -50,7 +50,7 @@ CREF(PTR(void)) RDOValue::__voidPtrV() const
 RDOValue RDOValue::clone() const
 {
 	bool undefined = isUndefined();
-	const_cast<RDOValue*>(this)->setUndefined(true);
+	const_cast<RDOValue*>(this)->setUndefined(false);
 
 	RDOValue result;
 	switch (typeID())
