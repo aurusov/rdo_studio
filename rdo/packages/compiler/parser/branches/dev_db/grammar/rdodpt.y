@@ -216,6 +216,7 @@
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdorss.h"
 #include "simulator/runtime/calc/calc_array.h"
+#include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
@@ -399,11 +400,11 @@ dpt_search_prior
 	}
 	| dpt_search_condition RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений")
+		PARSER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений");
 	}
 	| dpt_search_condition error
 	{
-		PARSER->error().error(@1, @2, "Ожидается ключевое слово $Priority")
+		PARSER->error().error(@1, @2, "Ожидается ключевое слово $Priority");
 	}
 	;
 
@@ -500,7 +501,7 @@ dpt_search_descr_param
 	}
 	| dpt_search_descr_param error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания параметра образца")
+		PARSER->error().error(@1, @2, "Ошибка описания параметра образца");
 	}
 	;
 
@@ -755,11 +756,11 @@ dpt_some_prior
 	}
 	| dpt_some_multi RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений")
+		PARSER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений");
 	}
 	| dpt_some_multi error
 	{
-		PARSER->error().error(@1, @2, "После слова $Condition ожидается ключевое слово $Multithreading")
+		PARSER->error().error(@1, @2, "После слова $Condition ожидается ключевое слово $Multithreading");
 	}
 	;
 
@@ -829,7 +830,7 @@ dpt_some_descr_param
 	}
 	| dpt_some_descr_param error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания параметра образца")
+		PARSER->error().error(@1, @2, "Ошибка описания параметра образца");
 	}
 	;
 
@@ -1003,11 +1004,11 @@ dpt_prior_prior
 	}
 	| dpt_prior_condition RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений")
+		PARSER->error().error(@1, @2, "Ошибка описания приоритета точки принятия решений");
 	}
 	| dpt_some_condition error
 	{
-		PARSER->error().error(@1, @2, "Ожидается ключевое слово $Priority")
+		PARSER->error().error(@1, @2, "Ожидается ключевое слово $Priority");
 	}
 	;
 
@@ -1077,7 +1078,7 @@ dpt_prior_descr_param
 	}
 	| dpt_prior_descr_param error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания параметра образца")
+		PARSER->error().error(@1, @2, "Ошибка описания параметра образца");
 	}
 	;
 
@@ -1094,11 +1095,11 @@ dpt_prior_activ_prior
 	}
 	| RDO_CF '=' error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания приоритета активности")
+		PARSER->error().error(@1, @2, "Ошибка описания приоритета активности");
 	}
 	| RDO_CF error
 	{
-		PARSER->error().error(@1, @2, "Ошибка: ожидается знак равенства")
+		PARSER->error().error(@1, @2, "Ошибка: ожидается знак равенства");
 	}
 	;
 
@@ -1492,6 +1493,69 @@ fun_arithm
 
 		$$ = PARSER->stack().push(pArithmArraySize);
 	}
+	| RDO_IDENTIF '[' fun_arithm ']' '.' RDO_IDENTIF
+	{
+		LPRDOValue pArrayValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pArrayValue);
+
+		LPRDOFUNArithm pArrayArithm = RDOFUNArithm::generateByIdentificator(pArrayValue);
+		ASSERT(pArrayArithm);
+
+		LPRDOArrayType pArrayType = pArrayArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>();
+		if (!pArrayType)
+		{
+			PARSER->error().error(@1, rdo::format("'%s' не является массивом"
+				, pArrayValue->value().getIdentificator().c_str())
+			);
+		}
+
+		LPRDORTPResType pResType = pArrayType->getItemType()->type().object_dynamic_cast<RDORTPResType>();
+		if (!pResType)
+		{
+			PARSER->error().error(@1, rdo::format("'%s' не является массивом ресурсов"
+				, pArrayValue->value().getIdentificator().c_str())
+			);
+		}
+
+		LPRDOFUNArithm pArrayIndex = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArrayIndex);
+
+		LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($6);
+		ASSERT(pParamName);
+
+		rsint paramIndex = pResType->getRTPParamNumber(pParamName->value().getAsString());
+
+		if (paramIndex == RDORTPResType::UNDEFINED_PARAM)
+		{
+			PARSER->error().error(@6, rdo::format("'%s' не является параметром ресурса '%s'"
+				, pParamName->value().getAsString().c_str()
+				, pResType->name().c_str())
+			);
+		}
+
+		rdo::runtime::LPRDOCalc pArrayItem = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(
+			pArrayArithm->calc(),
+			pArrayIndex->calc()
+		);
+		ASSERT(pArrayItem);
+
+		rdo::runtime::LPRDOCalc pParamValue = rdo::Factory<rdo::runtime::RDOCalcGetResourceParam>::create(
+			pArrayItem, paramIndex
+		);
+		ASSERT(pParamValue);
+
+		LPExpression pParamExpression = rdo::Factory<Expression>::create(
+			pResType->getParams()[paramIndex]->getTypeInfo(),
+			pParamValue,
+			RDOParserSrcInfo(@6)
+		);
+		ASSERT(pParamExpression);
+
+		LPRDOFUNArithm pParamArithm = rdo::Factory<RDOFUNArithm>::create(pParamExpression);
+		ASSERT(pParamArithm);
+
+		$$ = PARSER->stack().push(pParamArithm);
+	}
 	| RDO_IDENTIF '[' fun_arithm ']'
 	{
 		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
@@ -1781,6 +1845,24 @@ fun_select_arithm
 		PARSER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Size '(' error
+	{
+		PARSER->error().error(@4, "Ожидается закрывающаяся скобка");
+	}
+	| fun_select_body '.' RDO_Select_Array '(' ')'
+	{
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		pSelect->setSrcPos(@1, @5);
+		RDOParserSrcInfo arrayInfo(@3, @5, "Array()");
+		LPRDOFUNArithm pArithm = pSelect->createFunSelectArray(arrayInfo);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
+	}
+	| fun_select_body '.' RDO_Select_Array error
+	{
+		PARSER->error().error(@3, "Ожидается октрывающаяся скобка");
+	}
+	| fun_select_body '.' RDO_Select_Array '(' error
 	{
 		PARSER->error().error(@4, "Ожидается закрывающаяся скобка");
 	}

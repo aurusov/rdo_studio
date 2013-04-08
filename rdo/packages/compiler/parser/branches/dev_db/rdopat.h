@@ -18,7 +18,7 @@
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/rdorss.h"
 #include "simulator/compiler/parser/param.h"
-#include "simulator/compiler/parser/local_variable.h"
+#include "simulator/compiler/parser/src/function/local_variable/local_variable.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_switch_i.h"

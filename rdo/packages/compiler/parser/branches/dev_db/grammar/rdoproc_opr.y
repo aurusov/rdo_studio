@@ -218,6 +218,7 @@
 #include "simulator/runtime/calc/calc_array.h"
 #include "simulator/runtime/calc/calc_process.h"
 #include "simulator/runtime/calc/function/calc_function_system.h"
+#include "simulator/runtime/calc/resource/calc_resource.h"
 #include "simulator/runtime/rdo_res_type_i.h"
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 // --------------------------------------------------------------------------------
@@ -322,11 +323,11 @@ dpt_process_prior
 	}
 	| RDO_Priority error
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания приоритета процесса")
+		PARSER->error().error(@1, @2, "Ошибка описания приоритета процесса");
 	}
 	| error
 	{
-		PARSER->error().error(@1, @1, "Ожидается ключевое слово $Priority")
+		PARSER->error().error(@1, @1, "Ожидается ключевое слово $Priority");
 	}
 	;
 
@@ -584,7 +585,7 @@ dpt_queue_param
 	}
 	| RDO_IDENTIF error
 	{
-		PARSER->error().error(@1, "Ошибка в миени очереди")
+		PARSER->error().error(@1, "Ошибка в миени очереди");
 	}
 	;
 
@@ -600,7 +601,7 @@ dpt_depart_param
 	}
 	| RDO_IDENTIF error 
 	{
-		PARSER->error().error(@1, "Ошибка в имени ресурса")
+		PARSER->error().error(@1, "Ошибка в имени ресурса");
 	}
 	;
 
@@ -630,7 +631,7 @@ dpt_term_param
 	}
 	| fun_arithm error
 	{
-		PARSER->error().error(@1, "Ошибка, после оператора TERMINATE может быть указано только арифметическое выражение целого типа")
+		PARSER->error().error(@1, "Ошибка, после оператора TERMINATE может быть указано только арифметическое выражение целого типа");
 	}
 	;
 
@@ -1086,6 +1087,69 @@ fun_arithm
 
 		$$ = PARSER->stack().push(pArithmArraySize);
 	}
+	| RDO_IDENTIF '[' fun_arithm ']' '.' RDO_IDENTIF
+	{
+		LPRDOValue pArrayValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pArrayValue);
+
+		LPRDOFUNArithm pArrayArithm = RDOFUNArithm::generateByIdentificator(pArrayValue);
+		ASSERT(pArrayArithm);
+
+		LPRDOArrayType pArrayType = pArrayArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>();
+		if (!pArrayType)
+		{
+			PARSER->error().error(@1, rdo::format("'%s' не является массивом"
+				, pArrayValue->value().getIdentificator().c_str())
+			);
+		}
+
+		LPRDORTPResType pResType = pArrayType->getItemType()->type().object_dynamic_cast<RDORTPResType>();
+		if (!pResType)
+		{
+			PARSER->error().error(@1, rdo::format("'%s' не является массивом ресурсов"
+				, pArrayValue->value().getIdentificator().c_str())
+			);
+		}
+
+		LPRDOFUNArithm pArrayIndex = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArrayIndex);
+
+		LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($6);
+		ASSERT(pParamName);
+
+		rsint paramIndex = pResType->getRTPParamNumber(pParamName->value().getAsString());
+
+		if (paramIndex == RDORTPResType::UNDEFINED_PARAM)
+		{
+			PARSER->error().error(@6, rdo::format("'%s' не является параметром ресурса '%s'"
+				, pParamName->value().getAsString().c_str()
+				, pResType->name().c_str())
+			);
+		}
+
+		rdo::runtime::LPRDOCalc pArrayItem = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(
+			pArrayArithm->calc(),
+			pArrayIndex->calc()
+		);
+		ASSERT(pArrayItem);
+
+		rdo::runtime::LPRDOCalc pParamValue = rdo::Factory<rdo::runtime::RDOCalcGetResourceParam>::create(
+			pArrayItem, paramIndex
+		);
+		ASSERT(pParamValue);
+
+		LPExpression pParamExpression = rdo::Factory<Expression>::create(
+			pResType->getParams()[paramIndex]->getTypeInfo(),
+			pParamValue,
+			RDOParserSrcInfo(@6)
+		);
+		ASSERT(pParamExpression);
+
+		LPRDOFUNArithm pParamArithm = rdo::Factory<RDOFUNArithm>::create(pParamExpression);
+		ASSERT(pParamArithm);
+
+		$$ = PARSER->stack().push(pParamArithm);
+	}
 	| RDO_IDENTIF '[' fun_arithm ']'
 	{
 		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
@@ -1375,6 +1439,24 @@ fun_select_arithm
 		PARSER->error().error(@3, "Ожидается октрывающаяся скобка");
 	}
 	| fun_select_body '.' RDO_Size '(' error
+	{
+		PARSER->error().error(@4, "Ожидается закрывающаяся скобка");
+	}
+	| fun_select_body '.' RDO_Select_Array '(' ')'
+	{
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		pSelect->setSrcPos(@1, @5);
+		RDOParserSrcInfo arrayInfo(@3, @5, "Array()");
+		LPRDOFUNArithm pArithm = pSelect->createFunSelectArray(arrayInfo);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
+	}
+	| fun_select_body '.' RDO_Select_Array error
+	{
+		PARSER->error().error(@3, "Ожидается октрывающаяся скобка");
+	}
+	| fun_select_body '.' RDO_Select_Array '(' error
 	{
 		PARSER->error().error(@4, "Ожидается закрывающаяся скобка");
 	}

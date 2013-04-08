@@ -55,7 +55,7 @@ RDORSSResource::~RDORSSResource()
 
 void RDORSSResource::end()
 {
-	RDOParser::s_parser()->contextStack()->pop();
+	RDOParser::s_parser()->contextStack()->pop<RDORSSResource>();
 }
 
 Context::FindResult RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
@@ -91,12 +91,15 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 {
 	ASSERT(pParam);
 
+	LPRDOValue pAddParam;
+
 	if (m_currParam == getType()->getParams().end())
 	{
 		RDOParser::s_parser()->error().push_only(pParam->src_info(), "Слишком много параметров");
 		RDOParser::s_parser()->error().push_only(getType()->src_info(), "См. тип ресурса");
 		RDOParser::s_parser()->error().push_done();
 	}
+
 	try
 	{
 		if (pParam->value().getAsString() == "*")
@@ -108,35 +111,41 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), "См. описание параметра");
 				RDOParser::s_parser()->error().push_done();
 			}
-			m_paramList.push_back(Param((*m_currParam)->getDefault()));
-			m_currParam++;
+			pAddParam = (*m_currParam)->getDefault();
 		}
 		else if (pParam->value().getAsString() == "#")
 		{
-			LPRDOValue pValue = (*m_currParam)->getDefault()->defined()
+			pAddParam = (*m_currParam)->getDefault()->defined()
 				? (*m_currParam)->getDefault()
 				: rdo::Factory<rdo::compiler::parser::RDOValue>::create(
 					(*m_currParam)->getTypeInfo()->type()->get_default(),
 					(*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()),
 					(*m_currParam)->getTypeInfo()
 				);
-			ASSERT(pValue);
-
-			Param param(pValue);
-			param.param()->value().setUndefined(false);
-			m_paramList.push_back(param);
-			m_currParam++;
+			ASSERT(pAddParam);
+			pAddParam->value().setUndefined(false);
 		}
 		else
 		{
-			m_paramList.push_back(Param((*m_currParam)->getTypeInfo()->value_cast(pParam)));
-			m_currParam++;
+			pAddParam = (*m_currParam)->getTypeInfo()->value_cast(pParam);
 		}
 	}
-	catch(REF(RDOSyntaxException))
+	catch(const RDOSyntaxException&)
 	{
 		RDOParser::s_parser()->error().modify(rdo::format("Для параметра '%s': ", (*m_currParam)->name().c_str()));
 	}
+
+	ASSERT(pAddParam);
+	try
+	{
+		pAddParam = rdo::Factory<RDOValue>::create(pAddParam->value().clone(), pAddParam->src_info(), pAddParam->typeInfo());
+	}
+	catch (const rdo::runtime::RDOValueException& e)
+	{
+		RDOParser::s_parser()->error().error(pParam->src_info(), rdo::format("Для параметра '%s': %s", (*m_currParam)->name().c_str(), e.message().c_str()));
+	}
+	m_paramList.push_back(Param(pAddParam));
+	m_currParam++;
 }
 
 rbool RDORSSResource::defined() const

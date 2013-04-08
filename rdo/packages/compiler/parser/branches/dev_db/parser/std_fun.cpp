@@ -14,10 +14,12 @@
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <cmath>
+#include <boost/math/special_functions/fpclassify.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/parser/std_fun.h"
 #include "simulator/compiler/parser/param.h"
 #include "simulator/compiler/parser/rdofun.h"
+#include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/runtime/calc/function/calc_function_internal.h"
 // --------------------------------------------------------------------------------
 
@@ -36,14 +38,37 @@ int intLocal(int value)
 	return value;
 }
 
+double specValueConvert(double value)
+{
+	if (boost::math::isnan(value))
+	{
+		return std::numeric_limits<double>::quiet_NaN();
+	}
+	else if (boost::math::isinf(value))
+	{
+		return std::numeric_limits<double>::infinity();
+	}
+	return value;
+}
+
+double logLocal(double value)
+{
+	return specValueConvert(log(value));
+}
+
+double log10Local(double value)
+{
+	return specValueConvert(log10(value));
+}
+
 double log2Local(double value)
 {
-	return log(value) / log(2.0);
+	return specValueConvert(log(value) / log(2.0));
 }
 
 double logNLocal(double value1, double value2)
 {
-	return log(value1) / log(value2);
+	return specValueConvert(log(value1) / log(value2));
 }
 
 template <class T>
@@ -126,14 +151,25 @@ void RDOParserSTDFUN::generateReal(CREF(tstring) name, CREF(rdo::runtime::LPRDOF
 	LPRDOFUNFunction pFunction = rdo::Factory<RDOFUNFunction>::create(name, pReturnType);
 	ASSERT(pFunction);
 
+	LPIContextParamDefinitionManager pParamDefinitionManager = pFunction.interface_dynamic_cast<IContextParamDefinitionManager>();
+	ASSERT(pParamDefinitionManager);
+	pParamDefinitionManager->pushParamDefinitionContext();
+
+	LPContext pContext = RDOParser::s_parser()->context();
+	ASSERT(pContext);
+	LPContextParamDefinition pContextParamDefinition = pContext->cast<ContextParamDefinition>();
+	ASSERT(pContextParamDefinition);
+
 	ruint paramIndex = 1;
 	STL_FOR_ALL_CONST(paramList, it)
 	{
 		LPRDOParam pParam = rdo::Factory<RDOParam>::create(rdo::format("p%d", paramIndex), *it);
 		ASSERT(pParam);
-		pFunction->add(pParam);
+		pContextParamDefinition->pushParam(pParam);
 		paramIndex++;
 	}
+
+	pParamDefinitionManager->popParamDefinitionContext();
 
 	pFunction->setFunctionCalc(pCalc);
 	pFunction->end();
@@ -178,8 +214,8 @@ void RDOParserSTDFUN::parse(CREF(LPRDOParser) pParser)
 	generate("Int",      rdo::Factory<Function_I_I> ::create<Function_I_I ::function_type>(intLocal),      pIntReturn,  ParamList(realType));
 	generate("IntPower", rdo::Factory<Function_D_DI>::create<Function_D_DI::function_type>(static_cast<Function_D_DI::function_type>(std::pow)),
 	                                                                             pRealReturn, ParamList(realType)(intType));
-	generate("Ln",       rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log),           pRealReturn, ParamList(realType));
-	generate("Log10",    rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log10),         pRealReturn, ParamList(realType));
+	generate("Ln",       rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(logLocal),      pRealReturn, ParamList(realType));
+	generate("Log10",    rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log10Local),    pRealReturn, ParamList(realType));
 	generate("Log2",     rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log2Local),     pRealReturn, ParamList(realType));
 	generate("LogN",     rdo::Factory<Function_D_DD>::create<Function_D_DD::function_type>(logNLocal),     pRealReturn, ParamList(realType)(realType));
 	generate("Max",      rdo::Factory<Function_D_DD>::create<Function_D_DD::function_type>(maxLocal<double>),
