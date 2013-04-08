@@ -132,7 +132,7 @@ protected:
 
 	long sendEditor      (ruint msg, unsigned long wParam = 0, long lParam = 0) const { return super::send (msg, wParam, lParam); }
 	long sendEditorString(ruint msg, unsigned long wParam, const char* str)     const { return super::sends(msg, wParam, str);    }
-	long sendEditorString(ruint msg, unsigned long wParam, CREF(QString) str)   const;
+	long sendEditorString(ruint msg, CREF(std::string) str) const;
 
 	int  getNewMarker();
 	void defineMarker(int marker, int markerType, QColor fore, QColor back) const;

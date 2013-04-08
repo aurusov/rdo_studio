@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
 #include <boost/bind.hpp>
+#include <boost/format.hpp>
 #include <boost/range.hpp>
 #include <boost/range/algorithm/for_each.hpp>
 #include <boost/range/algorithm/find_if.hpp>
@@ -96,7 +97,7 @@ Edit::Group::List::const_iterator Edit::Group::find_if(CREF(this_predicate) fun)
 
 #define RTF_HEADEROPEN    "{\\rtf1\\ansi\\deff0\\deftab720"
 #define RTF_FONTDEFOPEN   "{\\fonttbl"
-#define RTF_FONTDEF       "{\\f%d\\fnil\\fcharset%u %s;}"
+#define RTF_FONTDEF       "{\\f%d\\fnil %s;}"
 #define RTF_FONTDEFCLOSE  "}"
 #define RTF_COLORDEFOPEN  "{\\colortbl"
 #define RTF_COLORDEF      "\\red%d\\green%d\\blue%d;"
@@ -168,9 +169,9 @@ void Edit::catchCharAdded(int ch)
 	}
 }
 
-long Edit::sendEditorString(ruint msg, unsigned long wParam, CREF(QString) str) const
+long Edit::sendEditorString(ruint msg, CREF(std::string) str) const
 {
-	return super::sends(msg, wParam, str.toLocal8Bit().constData());
+	return super::sends(msg, str.length(), str.c_str());
 }
 
 int Edit::getNewMarker()
@@ -224,8 +225,7 @@ void Edit::setEditorStyle(EditStyle* pStyle)
 
 	// ----------
 	// Codepage and Characterset
-	sendEditor(SCI_SETCODEPAGE, m_pStyle->font.codepage);
-	sendEditor(SCI_STYLESETCHARACTERSET, STYLE_DEFAULT, m_pStyle->font.characterSet);
+	sendEditor(SCI_SETCODEPAGE, SC_CP_UTF8);
 
 	// ----------
 	// Tabs
@@ -331,7 +331,7 @@ tstring Edit::getSelection() const
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
 	sendEditor(SCI_GETSELTEXT, 0, (long)selection);
-	tstring str = rdo::locale::convertFromCLocale(selection);
+	tstring str = selection;
 	delete[] selection;
 	return str;
 }
@@ -470,23 +470,36 @@ void Edit::onSearchFindPreviousCurrent()
 
 void Edit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
-	int findLen = findWhat.length();
-	if (!findLen)
+	if (findWhat.isEmpty())
 		return;
 
-	if (!getSelection().empty() && !m_haveFound)
+	CharacterRange cr;
+	if (m_haveFound)
 	{
-		setCurrentPos(sendEditor(searchDown ? SCI_GETSELECTIONSTART : SCI_GETSELECTIONEND));
+		cr = getSelectionRange();
 	}
 	else
 	{
-		if (!getCurrentWord().empty() && !m_haveFound)
+		CharacterRange crTemp;
+		if (!getSelection().empty())
 		{
-			setCurrentPos(sendEditor(searchDown ? SCI_WORDSTARTPOSITION : SCI_WORDENDPOSITION, getCurrentPos(), true));
+			crTemp = getSelectionRange();
 		}
+		else if (!getCurrentWord().empty())
+		{
+			crTemp.cpMin = sendEditor(SCI_WORDSTARTPOSITION, getCurrentPos(), true);
+			crTemp.cpMax = sendEditor(SCI_WORDENDPOSITION,   getCurrentPos(), true);
+		}
+		else
+		{
+			crTemp.cpMin = getCurrentPos();
+			crTemp.cpMax = getCurrentPos();
+		}
+
+		cr.cpMin = std::min(crTemp.cpMin, crTemp.cpMax);
+		cr.cpMax = std::max(crTemp.cpMin, crTemp.cpMax);
 	}
 
-	CharacterRange cr = getSelectionRange();
 	int startPosition = cr.cpMax;
 	int endPosition   = getLength();
 	if (!searchDown)
@@ -500,7 +513,7 @@ void Edit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, r
 	sendEditor(SCI_SETTARGETSTART, startPosition);
 	sendEditor(SCI_SETTARGETEND, endPosition);
 	sendEditor(SCI_SETSEARCHFLAGS, flags);
-	int posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
+	int posFind = sendEditorString(SCI_SEARCHINTARGET, findWhat.toStdString());
 	if (posFind == -1)
 	{
 		if (!searchDown)
@@ -515,7 +528,7 @@ void Edit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, r
 		}
 		sendEditor(SCI_SETTARGETSTART, startPosition);
 		sendEditor(SCI_SETTARGETEND, endPosition);
-		posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
+		posFind = sendEditorString(SCI_SEARCHINTARGET, findWhat.toStdString());
 	}
 	if (posFind == -1)
 	{
@@ -632,18 +645,17 @@ void Edit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool sear
 {
 	if (m_haveFound)
 	{
-		int replaceLen = replaceWhat.length();
 		CharacterRange cr = getSelectionRange();
 		if (cr.cpMin == cr.cpMax)
 		{
 			cr.cpMin = sendEditor(SCI_WORDSTARTPOSITION, getCurrentPos(), true);
 			cr.cpMax = cr.cpMin + getCurrentWord().length();
 		}
+		std::string replaceStr = replaceWhat.toStdString();
 		sendEditor(SCI_SETTARGETSTART, cr.cpMin);
 		sendEditor(SCI_SETTARGETEND,   cr.cpMax);
-		int lenReplaced = replaceLen;
-		sendEditorString(SCI_REPLACETARGET, replaceLen, replaceWhat);
-		setSelection(cr.cpMin + lenReplaced, cr.cpMin);
+		sendEditorString(SCI_REPLACETARGET, replaceStr);
+		setSelection(cr.cpMin + replaceStr.length(), cr.cpMin);
 		m_haveFound = false;
 	}
 	findNext(findWhat, searchDown, matchCase, matchWholeWord);
@@ -651,20 +663,20 @@ void Edit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool sear
 
 void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool matchCase, rbool matchWholeWord)
 {
-	int findLen = findWhat.length();
-	if (!findLen)
+	if (findWhat.isEmpty())
 		return;
 
 	int startPosition = 0;
 	int endPosition   = getLength();
 
-	int replaceLen = replaceWhat.length();
+	std::string replaceStr = replaceWhat.toStdString();
+	std::string::size_type replaceLen = replaceStr.length();
 	int flags = (matchCase ? SCFIND_MATCHCASE : 0) | (matchWholeWord ? SCFIND_WHOLEWORD : 0);
 
 	sendEditor(SCI_SETTARGETSTART, startPosition);
 	sendEditor(SCI_SETTARGETEND, endPosition);
 	sendEditor(SCI_SETSEARCHFLAGS, flags);
-	int posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
+	int posFind = sendEditorString(SCI_SEARCHINTARGET, findWhat.toStdString());
 
 	if ((posFind != -1) && (posFind <= endPosition))
 	{
@@ -673,15 +685,14 @@ void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool m
 		while (posFind != -1)
 		{
 			int lenTarget = sendEditor(SCI_GETTARGETEND) - sendEditor(SCI_GETTARGETSTART);
-			int lenReplaced = replaceLen;
-			sendEditorString(SCI_REPLACETARGET, replaceLen, replaceWhat);
-			endPosition += lenReplaced - lenTarget;
-			lastMatch    = posFind + lenReplaced;
+			sendEditorString(SCI_REPLACETARGET, replaceStr);
+			endPosition += replaceLen - lenTarget;
+			lastMatch    = posFind + replaceLen;
 			if (lenTarget <= 0)
 				++lastMatch;
 			sendEditor(SCI_SETTARGETSTART, lastMatch);
 			sendEditor(SCI_SETTARGETEND, endPosition);
-			posFind = sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
+			posFind = sendEditorString(SCI_SEARCHINTARGET, findWhat.toStdString());
 		}
 		setSelection(lastMatch, lastMatch);
 		sendEditor(SCI_ENDUNDOACTION);
@@ -969,7 +980,7 @@ tstring Edit::saveAsRTF(int start, int end) const
 	saveStr += RTF_FONTDEFOPEN;
 
 	strncpy(*fonts, m_pStyle->font.name.c_str(), MAX_FONTDEF);
-	saveStr += rdo::format(RTF_FONTDEF, 0, m_pStyle->font.characterSet, m_pStyle->font.name.c_str());
+	saveStr += rdo::format(RTF_FONTDEF, 0, m_pStyle->font.name.c_str());
 	strncpy(*colors, "#000000", MAX_COLORDEF);
 
 	EditStyle* style = static_cast<EditStyle*>(m_pStyle);
@@ -1005,49 +1016,65 @@ tstring Edit::saveAsRTF(int start, int end) const
 	tstring::size_type prevLength = saveStr.length();
 	rbool prevCR = false;
 	int styleCurrent = -1;
-	for (i = start; i < end; i++)
+
+	//! @todo убрать копипаст
+	char* word = new char[end - start + 1];
+	TextRange tr;
+	tr.lpstrText  = word;
+	tr.chrg.cpMin = start;
+	tr.chrg.cpMax = end;
+	sendEditor(SCI_GETTEXTRANGE, 0, (long)&tr);
+	tstring str(tr.lpstrText);
+	delete[] word;
+	std::wstring wstr = rdo::locale::convertToWStr(str);
+
+	i = start;
+	for (ruint chIndex = 0; chIndex < wstr.length(); ++chIndex)
 	{
-		int m_pStyle = sendEditor(SCI_GETSTYLEAT, i);
-		if (!style->styleUsing(m_pStyle))
+		int styleID = sendEditor(SCI_GETSTYLEAT, i);
+		if (!style->styleUsing(styleID))
 		{
 			continue;
 		}
 
-		char ch = (char)sendEditor(SCI_GETCHARAT, i);
-		if (m_pStyle != styleCurrent)
+		if (styleID != styleCurrent)
 		{
-			GetRTFStyleChange(deltaStyle, lastStyle, styles[m_pStyle]);
+			GetRTFStyleChange(deltaStyle, lastStyle, styles[styleID]);
 			if (*deltaStyle)
 			{
 				saveStr += deltaStyle;
 			}
-			styleCurrent = m_pStyle;
+			styleCurrent = styleID;
 		}
-		if (ch == '\\')
+
+		wchar_t ch = wstr[chIndex];
+		if (ch == L'\\')
 		{
 			saveStr += "\\\\";
 		}
-		else if (ch == '\t')
+		else if (ch == L'\t')
 		{
 			saveStr += RTF_TAB;
 		}
-		else if (ch == '\n')
+		else if (ch == L'\n')
 		{
 			if (!prevCR)
 			{
 				saveStr += RTF_EOLN;
 			}
 		}
-		else if (ch == '\r')
+		else if (ch == L'\r')
 		{
 			saveStr += RTF_EOLN;
 		}
 		else
 		{
-			saveStr += ch;
+			saveStr += boost::str(boost::format("\\u%1%?") % + (ruint)ch);
 		}
 
-		prevCR = ch == '\r';
+		prevCR = ch == L'\r';
+
+		i += rdo::locale::convertFromWStr(wstr.substr(chIndex, 1)).size();
 	}
 	rbool wasGenerated = prevLength != saveStr.length();
 	if (wasGenerated)
@@ -1136,8 +1163,8 @@ rbool Edit::isLineVisible(const int line) const
 
 void Edit::appendText(CREF(QString) str) const
 {
-	QByteArray text = str.toLocal8Bit();
-	sendEditorString(SCI_ADDTEXT, text.size(), text.constData());
+	std::string text = str.toStdString();
+	sendEditorString(SCI_ADDTEXT, text.length(), text.c_str());
 }
 
 void Edit::scrollToLine(const int line) const
@@ -1167,7 +1194,8 @@ void Edit::load(rdo::stream& stream)
 	rbool readOnly = isReadOnly();
 	setReadOnly(false);
 
-	sendEditorString(SCI_ADDTEXT, stream.str().length(), &stream.str()[0]);
+	std::string text = rdo::locale::convertFromCLocale(stream.str());
+	sendEditorString(SCI_ADDTEXT, text.length(), text.c_str());
 
 	setReadOnly(readOnly);
 }
@@ -1178,9 +1206,8 @@ void Edit::save(rdo::stream& stream) const
 	std::vector<char> str;
 	str.resize(len + 1);
 	sendEditorString(SCI_GETTEXT, len + 1, &str[0]);
-//	str[len] = "\0";
-//	str.resize(len);
-	stream.str(&str[0]); // qq
+	std::string text = rdo::locale::convertToCLocale(&str[0]);
+	stream.str(text);
 }
 
 int Edit::indentOfBlock(int line) const
@@ -1292,13 +1319,18 @@ void Edit::onSearchBookmarkNextPrev(
 		Group::List::const_iterator it = std::find(m_pGroup->begin(), m_pGroup->end(), this);
 		ASSERT(it != m_pGroup->end());
 
+		ruint thisBookmarkCount = 0;
 		for (;;)
 		{
 			it = nextPrevGroup(it);
 
 			if (*it == this)
 			{
-				break;
+				++thisBookmarkCount;
+				if (thisBookmarkCount > 1)
+				{
+					break;
+				}
 			}
 
 			if (nextPrevFun(*it, false, false))
@@ -1361,8 +1393,7 @@ void Edit::onViewZoomReset()
 
 int Edit::findPos(CREF(QString) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord) const
 {
-	int findLen = findWhat.length();
-	if (!findLen)
+	if (findWhat.isEmpty())
 		return -1;
 
 	int startPosition = getPositionFromLine(startFromLine);
@@ -1373,7 +1404,7 @@ int Edit::findPos(CREF(QString) findWhat, const int startFromLine, const rbool m
 	sendEditor(SCI_SETTARGETSTART, startPosition);
 	sendEditor(SCI_SETTARGETEND, endPosition);
 	sendEditor(SCI_SETSEARCHFLAGS, flags);
-	return sendEditorString(SCI_SEARCHINTARGET, findLen, findWhat);
+	return sendEditorString(SCI_SEARCHINTARGET, findWhat.toStdString());
 }
 
 tstring Edit::getLine(const int line) const

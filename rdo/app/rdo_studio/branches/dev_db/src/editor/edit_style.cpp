@@ -180,8 +180,7 @@ EditStyle::EditStyle()
 }
 
 EditStyle::~EditStyle()
-{
-}
+{}
 
 EditStyle& EditStyle::operator =( const EditStyle& style )
 {
@@ -207,10 +206,10 @@ EditStyle& EditStyle::operator =( const EditStyle& style )
 
 rbool EditStyle::operator ==( const EditStyle& style ) const
 {
-	rbool flag = StyleBase::operator==( style );
-	flag &= tab    == style.tab;
-	flag &= window == style.window;
-	return flag &&
+	return
+		StyleBase::operator==(style) &&
+		tab              == style.tab &&
+		window           == style.window &&
 		defaultColor     == style.defaultColor &&
 		backgroundColor  == style.backgroundColor &&
 		caretColor       == style.caretColor &&

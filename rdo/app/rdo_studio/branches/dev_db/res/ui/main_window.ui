@@ -183,6 +183,7 @@ border: none;
     </property>
     <addaction name="actWindowCascade"/>
     <addaction name="actWindowTitleHorzontal"/>
+    <addaction name="actWindowTabbedViewMode"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -976,6 +977,14 @@ border: none;
    </property>
    <property name="text">
     <string>Расположить заголовками</string>
+   </property>
+  </action>
+  <action name="actWindowTabbedViewMode">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Режим табуляции</string>
    </property>
   </action>
   <action name="actModelShowRateIncFour">

@@ -21,7 +21,7 @@ DockDebug::DockDebug(QWidget* pParent)
 	: DockFocusable("Вывод", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
-	pWidget->setMinimumSize(QSize(300, 150));
+	pWidget->setMinimumSize(QSize(300, 110));
 
 	setWidget(pWidget);
 

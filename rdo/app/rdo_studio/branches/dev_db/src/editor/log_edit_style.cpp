@@ -38,7 +38,6 @@ LogStyle& LogStyle::operator =( const LogStyle& style )
 rbool LogStyle::operator ==( const LogStyle& style ) const
 {
 	rbool flag = EditStyle::operator==( style );
-	
 	return flag && selectLineBgColor == style.selectLineBgColor;
 }
 

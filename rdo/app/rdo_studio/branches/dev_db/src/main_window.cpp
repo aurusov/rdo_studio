@@ -23,12 +23,15 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/about.h"
 #include "app/rdo_studio/src/view_preferences.h"
+#include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
+#include "app/rdo_studio/src/editor/lexer/lexer_find.h"
+#include "app/rdo_studio/src/editor/lexer/lexer_model.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
+#include "thirdparty/scintilla/src/Catalogue.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -56,7 +59,6 @@ const MainWindow::InsertMenuData::Position& MainWindow::InsertMenuData::position
 MainWindow::MainWindow()
 	: m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
-	, m_hasWindow(false)
 	, m_pSeparator(NULL)
 {
 	setupUi(this);
@@ -65,6 +67,9 @@ MainWindow::MainWindow()
 	createStatusBar ();
 	createToolBar   ();
 	createInsertMenu();
+
+	m_pWindowAction = new QActionGroup(menuWindow);
+	m_pWindowAction->setExclusive(true);
 
 	addAction(actSearchFindNextCurrent);
 	addAction(actSearchFindPreviousCurrent);
@@ -82,6 +87,8 @@ MainWindow::MainWindow()
 
 	connect(toolBarModel, &QToolBar::orientationChanged, this, &MainWindow::onToolBarModelOrientationChanged);
 
+	Catalogue::AddLexerModule(&lexerRDOSyntax);
+	Catalogue::AddLexerModule(&lexerRDOFind);
 	Scintilla_LinkLexers();
 
 	loadMenuFileReopen  ();
@@ -224,7 +231,7 @@ void MainWindow::createInsertMenu()
 			"FRM",
 			MenuItemList
 				(MenuItem("FRM", "frm.txt", 7))
-				("$Frame")("$Back_picture")("bitmap")("text")("line")("rect")("circle")("ellipse")("r_rect")
+				("$Frame")("$Sprite")("$Back_picture")("bitmap")("text")("line")("rect")("circle")("ellipse")("r_rect")
 				("triang")("s_bmp")("active")("$End")
 		)
 	);
@@ -743,22 +750,42 @@ void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
 	{
 		addNewAction(window);
 	}
+	if (window)
+		m_pSubWindows[window]->setChecked(true);
 	removeExcessActions();
-	onUpdateActions(!mdiArea->subWindowList().empty());
 }
 
 void MainWindow::addNewAction(QMdiSubWindow* window)
 {
+	ASSERT(window);
+
 	QList<QMdiSubWindow *> windowList = mdiArea->subWindowList();
 
 	if (windowList.count() == 1)
-		m_pSeparator = menuWindow->addSeparator();
+		addFirstSubWindow();
 
 	window->installEventFilter(this);
 
 	QAction* pAction = menuWindow->addAction(window->windowTitle());
 	m_pSubWindows[window] = pAction;
 	QObject::connect(pAction, &QAction::triggered, boost::function<void()>(boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window)));
+	m_pWindowAction->addAction(pAction);
+	pAction->setCheckable(true);
+}
+
+void MainWindow::addFirstSubWindow()
+{
+	m_pSeparator = menuWindow->addSeparator();
+	onUpdateActions(true);
+	onUpdateTabMode(true);
+}
+
+void MainWindow::removeLastSubWindow()
+{
+	menuWindow->removeAction(m_pSeparator);
+	m_pSeparator = NULL;
+	onUpdateActions(false);
+	onUpdateTabMode(false);
 }
 
 void MainWindow::removeExcessActions()
@@ -771,6 +798,7 @@ void MainWindow::removeExcessActions()
 		{
 			QObject::disconnect(it->second, &QAction::triggered, NULL, NULL);
 			menuWindow->removeAction(it->second);
+			m_pWindowAction->removeAction(it->second);
 			m_pSubWindows.erase(it++);
 		}
 		else
@@ -780,16 +808,23 @@ void MainWindow::removeExcessActions()
 	}
 
 	if (m_pSeparator && windowList.empty())
-	{
-		menuWindow->removeAction(m_pSeparator);
-		m_pSeparator = NULL;
-	}
+		removeLastSubWindow();
 }
 
 void MainWindow::onUpdateActions(rbool activated)
 {
 	updateAction(actWindowCascade       , activated, mdiArea, &QMdiArea::cascadeSubWindows);
 	updateAction(actWindowTitleHorzontal, activated, mdiArea, &QMdiArea::tileSubWindows   );
+}
+
+void MainWindow::onUpdateTabMode(rbool activated)
+{
+	if (activated)
+		QObject::connect(actWindowTabbedViewMode, &QAction::triggered, boost::function<void (bool)>(boost::bind(&MainWindow::setTabbedViewMode, this, _1)));
+	else
+		QObject::disconnect(actWindowTabbedViewMode, &QAction::triggered, NULL, NULL);
+	actWindowTabbedViewMode->setEnabled(activated);
+	actWindowTabbedViewMode->setCheckable(activated);
 }
 
 bool MainWindow::eventFilter(QObject *target, QEvent *event)
@@ -799,10 +834,15 @@ bool MainWindow::eventFilter(QObject *target, QEvent *event)
 		if (event->type() == QEvent::WindowTitleChange && m_pSubWindows.find(pSubWindow) != m_pSubWindows.end())
 		{
 			m_pSubWindows[pSubWindow]->setText(pSubWindow->windowTitle());
-			return true;
 		}
 	}
 
 	return parent_type::eventFilter(target, event);
+}
+
+void MainWindow::setTabbedViewMode(bool checked)
+{
+	mdiArea->setViewMode(checked ? QMdiArea::TabbedView : QMdiArea::SubWindowView);
+	onUpdateActions(!checked);
 }
 

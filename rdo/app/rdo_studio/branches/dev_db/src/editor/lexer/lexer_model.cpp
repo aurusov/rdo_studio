@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2003-2013
   \file      lexer_model.cpp
-  \author    ”ÛÒÓ‚ ¿Ì‰ÂÈ (rdo@rk9.bmstu.ru)
+  \author    –£—Ä—É—Å–æ–≤ –ê–Ω–¥—Ä–µ–π (rdo@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     
   \indent    4T
@@ -42,8 +42,6 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 
 	StyleContext sc(startPos, length, initStyle, styler);
 
-	std::locale locale = rdo::locale::get().model();
-
 	bool flag = sc.More();
 	for (; flag; sc.Forward())
 	{
@@ -54,7 +52,7 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 		}
 		else if (sc.state == SCE_RDO_IDENTIFIER)
 		{
-			if (!isIdentifier(sc.ch, locale))
+			if (!isIdentifier(sc.ch))
 			{
 				char s[100];
 				sc.GetCurrent(s, sizeof(s));
@@ -79,7 +77,7 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 		}
 		else if (sc.state == SCE_RDO_NUMBER)
 		{
-			if (!std::isdigit((rbyte)sc.ch, locale) && sc.ch != '.' && !(sc.ch == 'e' || sc.ch == 'E') && !((sc.ch == '+' || sc.ch == '-') && (sc.chPrev == 'e' || sc.chPrev == 'E')))
+			if (!isDigit(sc.ch) && sc.ch != '.' && !(sc.ch == 'e' || sc.ch == 'E') && !((sc.ch == '+' || sc.ch == '-') && (sc.chPrev == 'e' || sc.chPrev == 'E')))
 			{
 				sc.SetState(SCE_RDO_DEFAULT);
 			}
@@ -122,7 +120,7 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 			{
 				sc.SetState(SCE_RDO_COMMENT_LINE);
 			}
-			else if (std::isdigit((rbyte)sc.ch, locale) || ((sc.ch == '-' || sc.ch == '+') && std::isdigit((rbyte)sc.chNext, locale)))
+			else if (isDigit(sc.ch) || ((sc.ch == '-' || sc.ch == '+') && isDigit(sc.chNext)))
 			{
 				sc.SetState(SCE_RDO_NUMBER);
 			}
@@ -130,7 +128,7 @@ void SyntaxColor(unsigned int startPos, int length, int initStyle, WordList* key
 			{
 				sc.SetState(SCE_RDO_OPERATOR);
 			}
-			else if (isIdentifier(sc.ch, locale))
+			else if (isIdentifier(sc.ch))
 				sc.SetState(SCE_RDO_IDENTIFIER);
 		}
 
@@ -177,8 +175,8 @@ void SyntaxFold(unsigned int startPos, int length, int initStyle, WordList *[], 
 		{
 			if (str.length())
 			{
-				if (str == "$Pattern"  || str == "$Resource_type"  || str == "$Resources" || str == "$Operations" || str == "$Frame" || str == "$Constant" || str == "$Sequence" || str == "$Function" || str == "$Decision_point" || str == "$Process" || str == "$Results"
-				 || str == "$pattern"  || str == "$resource_type"  || str == "$resources" || str == "$operations" || str == "$frame" || str == "$constant" || str == "$sequence" || str == "$function" || str == "$decision_point" || str == "$Process" || str == "$results")
+				if (str == "$Pattern"  || str == "$Resource_type"  || str == "$Resources" || str == "$Operations" || str == "$Frame" || str == "$Constant" || str == "$Sequence" || str == "$Function" || str == "$Decision_point" || str == "$Process" || str == "$Results" || str == "$Sprite"
+				 || str == "$pattern"  || str == "$resource_type"  || str == "$resources" || str == "$operations" || str == "$frame" || str == "$constant" || str == "$sequence" || str == "$function" || str == "$decision_point" || str == "$Process" || str == "$results" || str == "$sprite")
 				{
 					levelCurrent++;
 				}
@@ -214,7 +212,7 @@ void SyntaxFold(unsigned int startPos, int length, int initStyle, WordList *[], 
 	styler.SetLevel(lineCurrent, levelPrev | flagsNext);
 }
 
-bool isOperator(char ch)
+bool isOperator(int ch)
 {
 	return
 		ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == ':' ||
@@ -223,14 +221,18 @@ bool isOperator(char ch)
 		ch == '{' || ch == '}' || ch == '.';
 }
 
-bool isIdentifier(char ch, const std::locale& locale)
+bool isIdentifier(int ch)
 {
 	return 
-		std::isalpha((rbyte)ch, locale) ||
-		std::isdigit((rbyte)ch, locale) ||
+		iswalnum(ch) ||
 		ch == '_' ||
 		ch == '$' ||
 		ch == '%';
+}
+
+bool isDigit(int ch)
+{
+	return iswdigit(ch) ? true : false;
 }
 
 }}} // namespace rdo::gui::lexer

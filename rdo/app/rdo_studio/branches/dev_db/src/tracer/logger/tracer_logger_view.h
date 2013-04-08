@@ -85,8 +85,6 @@ private:
 		List::iterator  m_cursorIt;
 		rsint           m_cursor;
 		rsint           m_maxLegth;
-
-		void seek(rsint delta, REF(const_iterator) it) const;
 	};
 
 	struct SubitemColors

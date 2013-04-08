@@ -178,8 +178,8 @@ void LogView::StringList::setCursor(rsint pos, rsint max)
 	else
 	{
 		rsint delta = pos - m_cursor;
-		const_iterator it(m_cursorIt);
-		seek(delta, it);
+		ASSERT(m_cursorIt != m_list.end());
+		std::advance(m_cursorIt, delta);
 	}
 	m_cursor = pos;
 }
@@ -227,7 +227,7 @@ LogView::StringList::const_iterator LogView::StringList::findString(rsint index)
 
 		if (res != m_list.end())
 		{
-			seek(delta, res);
+			std::advance(res, delta);
 		}
 	}
 
@@ -238,26 +238,6 @@ LogView::StringList::const_reverse_iterator LogView::StringList::rFindString(rsi
 {
 	const_reverse_iterator rit(findString(index));
 	return rit;
-}
-
-void LogView::StringList::seek(rsint delta, REF(const_iterator) it) const
-{
-	ASSERT(it != m_list.end());
-
-	if (delta > 0)
-	{
-		for (rsint i = 0; i < delta; i++)
-		{
-			++it;
-		}
-	}
-	else
-	{
-		for (rsint i = delta; i < 0; i++)
-		{
-			--it;
-		}
-	}
 }
 
 // --------------------------------------------------------------------------------

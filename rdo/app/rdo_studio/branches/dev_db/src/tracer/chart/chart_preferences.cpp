@@ -24,8 +24,11 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 	: QDialog(pView, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, m_pView(pView)
 	, m_pSerie(NULL)
+	, traceIndex(0)
 {
 	setupUi(this);
+	
+	m_pSerie = m_pView->getDocument()->getSerieList().at(0);
 
 	m_valueCountX = m_pView->getValueCountX();
 	m_valueCountY = m_pView->getValueCountY();
@@ -64,8 +67,9 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 
 	connect(markerSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onMarkerSize(const QString&)));	
 
-	connect(colorToolButton, SIGNAL(clicked()), this, SLOT(onColorDialog()));
+	connect(colorToolButton, SIGNAL(clicked()),      this, SLOT(onColorDialog()));
 	connect(valueComboBox,   SIGNAL(activated(int)), this, SLOT(onValueComboBox(int)));
+	connect(yTraceComboBox,  SIGNAL(activated(int)), this, SLOT(onTraceValue(int)));
 
 	connect(okButton,     SIGNAL(clicked()), this, SLOT(onOkButton()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(onCancelButton()));
@@ -129,8 +133,10 @@ void ChartPreferences::insertColor(const QColor& color, const QString& colorName
 
 void ChartPreferences::apply()
 {
-	m_pView->setYAxis(valueComboBox->currentIndex() != -1
-		? m_pView->getDocument()->getSerieList().at(valueComboBox->currentIndex())
+	traceIndex = yTraceComboBox->currentIndex();
+
+	m_pView->setYAxis(yTraceComboBox->currentIndex() != -1
+		? m_pView->getDocument()->getSerieList().at(yTraceComboBox->currentIndex())
 		: NULL
 	);
 	m_pView->setDrawLegend(showLegendCheckBox->checkState() == Qt::Checked ? true : false);
@@ -192,6 +198,8 @@ void ChartPreferences::onCheckAllData()
 	rbool colorFlag = colorComboBox->itemData(colorComboBox->currentIndex(), Qt::UserRole).value<QColor>() == m_pSerie->options().color ? true : false;
 	rbool markerTypeFlag = markerComboBox->itemData(markerComboBox->currentIndex(), Qt::UserRole).toInt() == m_pSerie->options().markerType ? true : false;
 
+	rbool valueFlag = traceIndex == yTraceComboBox->currentIndex();
+
 	if (titleFlag
 		&& yValueFlag
 		&& xValueFlag
@@ -202,7 +210,8 @@ void ChartPreferences::onCheckAllData()
 		&& markerTransparentFlag
 		&& titleValueFlag
 		&& colorFlag
-		&& markerTypeFlag)
+		&& markerTypeFlag
+		&& valueFlag)
 		applyButton->setEnabled(false);
 	else
 		applyButton->setEnabled(true);
@@ -275,6 +284,12 @@ void ChartPreferences::onColorSelected(const QColor& color)
 	onCheckAllData();
 }
 
+void ChartPreferences::onTraceValue(int index)
+{
+	UNUSED(index);
+	onCheckAllData();
+}
+
 void ChartPreferences::onValueComboBox(int index)
 {
 	m_pSerie = m_pView->getDocument()->getSerieList().at(index);
@@ -291,6 +306,7 @@ void ChartPreferences::onValueComboBox(int index)
 		insertColor(m_pSerie->options().color, QString("[%1, %2, %3]").arg(m_pSerie->options().color.red()).arg(m_pSerie->options().color.green()).arg(m_pSerie->options().color.blue()), colorComboBox);
 	}
 	colorComboBox->setCurrentIndex(colorComboBox->findData(m_pSerie->options().color, Qt::UserRole));
+	onCheckAllData();
 }
 
 void ChartPreferences::keyPressEvent(QKeyEvent* pEvent)

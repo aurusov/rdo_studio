@@ -10,7 +10,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGlobal>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/static_assert.h"
 #include "app/rdo_studio/src/style.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------
@@ -21,17 +23,16 @@ namespace rdo { namespace gui { namespace style {
 // -------------------- StyleFont
 // --------------------------------------------------------------------------------
 StyleFont::StyleFont()
+	: size(10)
 {
-	name         = "Courier New";
-	size         = 10;
-	codepage     = 0;
-	characterSet = 1;
-
-#ifdef OST_WINDOWS
-	//! @todo unicode
-	if ( PRIMARYLANGID(GetSystemDefaultLangID()) == LANG_RUSSIAN ) {
-		characterSet = SC_CHARSET_CYRILLIC;
-	}
+#if defined(Q_OS_WIN)
+	name = "Courier New";
+	size = 10;
+#elif defined(Q_OS_LINUX)
+	name = "Courier";
+	size = 11;
+#else
+	STATIC_ASSERT(UndefinedOS);
 #endif
 }
 
@@ -40,20 +41,16 @@ StyleFont::~StyleFont()
 
 StyleFont& StyleFont::operator =( const StyleFont& font )
 {
-	name         = font.name;
-	size         = font.size;
-	codepage     = font.codepage;
-	characterSet = font.characterSet;
+	name = font.name;
+	size = font.size;
 
 	return *this;
 }
 
 rbool StyleFont::operator ==( const StyleFont& font ) const
 {
-	return name         == font.name &&
-	       size         == font.size &&
-	       codepage     == font.codepage &&
-	       characterSet == font.characterSet;
+	return name == font.name &&
+	       size == font.size;
 }
 
 rbool StyleFont::operator !=( const StyleFont& font ) const
@@ -80,7 +77,6 @@ StyleFont StyleFont::getDefaultFont()
 StyleFont StyleFont::getClassicFont()
 {
 	StyleFont font;
-
 	font.name = "Fixedsys";
 
 	return font;
@@ -89,7 +85,6 @@ StyleFont StyleFont::getClassicFont()
 StyleFont StyleFont::getTracerLogFont()
 {
 	StyleFont font;
-
 	font.name = "Courier";
 
 	return font;
@@ -98,7 +93,6 @@ StyleFont StyleFont::getTracerLogFont()
 StyleFont StyleFont::getChartViewFont()
 {
 	StyleFont font;
-
 	font.name = "Tahoma";
 
 	return font;
@@ -118,25 +112,13 @@ QSettings& operator<< (QSettings& settings, const StyleFont& font)
 {
 	settings.setValue("name", QString::fromStdString(font.name));
 	settings.setValue("size", font.size);
-	settings.setValue("codepage", font.codepage);
-	settings.setValue("character_set", font.characterSet);
-
 	return settings;
 }
 
 QSettings& operator>> (QSettings& settings, StyleFont& font)
 {
-	font.name         = settings.value("name", QString::fromStdString(font.name)).toString().toStdString();
-	font.size         = settings.value("size", font.size).toInt();
-	font.codepage     = settings.value("codepage", font.codepage).toInt();
-	font.characterSet = settings.value("character_set", font.characterSet).toInt();
-#ifdef OST_WINDOWS
-	//! @todo unicode
-	if (font.characterSet == RUSSIAN_CHARSET)
-	{
-		font.characterSet = SC_CHARSET_CYRILLIC;
-	}
-#endif
+	font.name = settings.value("name", QString::fromStdString(font.name)).toString().toStdString();
+	font.size = settings.value("size", font.size).toInt();
 	return settings;
 }
 
@@ -157,21 +139,17 @@ StyleBase::~StyleBase()
 
 StyleBase& StyleBase::operator =( const StyleBase& style )
 {
-	font = style.font;
-	defaultStyle = style.defaultStyle;
-
+	font            = style.font;
+	defaultStyle    = style.defaultStyle;
 	defaultColor    = style.defaultColor;
 	backgroundColor = style.backgroundColor;
-
 	return *this;
 }
 
 rbool StyleBase::operator ==( const StyleBase& style ) const
 {
-	rbool flag = true;
-	flag &= font == style.font;
-
-	return flag &&
+	return
+		font            == style.font &&
 		defaultColor    == style.defaultColor &&
 		backgroundColor == style.backgroundColor &&
 		defaultStyle    == style.defaultStyle;

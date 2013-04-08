@@ -464,15 +464,21 @@ void Model::onEditCompleteWord()
 	sendEditor(SCI_GETLINE, line, reinterpret_cast<long>(currentLine));
 
 	int currentPos = getCurrentPos() - getPositionFromLine(line);
+	currentLine[currentPos] = '\0';
 
 	int startPos = currentPos;
-
-	std::locale locale = rdo::locale::get().model();
-	while ((startPos > 0) && rdo::gui::lexer::isIdentifier(currentLine[startPos - 1], locale))
+	int identifierLength = 0;
+	std::wstring wCurrentLine = rdo::locale::convertToWStr(currentLine);
+	std::wstring::const_reverse_iterator wCharIt = wCurrentLine.rbegin();
+	while (wCharIt != wCurrentLine.rend())
 	{
-		startPos--;
+		if (!rdo::gui::lexer::isIdentifier(*wCharIt))
+			break;
+		++identifierLength;
+		++wCharIt;
 	}
-	currentLine[ currentPos ] = '\0';
+	startPos -= rdo::locale::convertFromWStr(wCurrentLine.substr(wCurrentLine.length() - identifierLength)).length();
+
 	const char*  userPattern = currentLine + startPos;
 	unsigned int userPatternLength = currentPos - startPos;
 

@@ -7,7 +7,7 @@ MESSAGE(STATUS "CREATE  RDO  STUDIO  EXECUTABLE")
 FIND_PACKAGE(Qt5Widgets REQUIRED)
 INCLUDE_DIRECTORIES(${Qt5Widgets_INCLUDE_DIRS})
 
-FIND_PACKAGE(Boost COMPONENTS program_options thread REQUIRED)
+FIND_PACKAGE(Boost COMPONENTS program_options thread chrono system filesystem regex REQUIRED)
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
@@ -18,6 +18,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 CONFIGURE_FILE(${CMAKE_MODULE_PATH}/build.version.cmake ${CMAKE_CURRENT_SOURCE_DIR}/res/build_version.h)
 
 SET(HEADER_FILES
+    pch/stdpch.h
     src/about.h
     src/action_activator/action_activator.h
     src/action_activator/action_activator_widget.h
@@ -51,6 +52,9 @@ SET(HEADER_FILES
     src/editor/parser_edit_style.h
     src/editor/results_edit.h
     src/editor/results_edit_style.h
+    src/editor/lexer/lexer_find.h
+    src/editor/lexer/lexer_model.h
+    src/editor/lexer/word_list_util.h
     src/frame/frame_manager.h
     src/frame/frame_options_view.h
     src/frame/frame_style.h
@@ -111,6 +115,7 @@ SET(HEADER_QT_FILES
     )
 
 SET(SOURCE_FILES
+    pch/stdpch.cpp
     src/about.cpp
     src/action_activator/action_activator.cpp
     src/action_activator/action_activator_widget.cpp
@@ -144,6 +149,9 @@ SET(SOURCE_FILES
     src/editor/parser_edit_style.cpp
     src/editor/results_edit.cpp
     src/editor/results_edit_style.cpp
+    src/editor/lexer/lexer_find.cpp
+    src/editor/lexer/lexer_model.cpp
+    src/editor/lexer/word_list_util.cpp
     src/frame/frame_manager.cpp
     src/frame/frame_options_view.cpp
     src/frame/frame_style.cpp
@@ -184,7 +192,7 @@ SET(SCINTILLA_FILES
     res/scintilla/ac_function.xpm
     res/scintilla/ac_trace.xpm
     )
-    
+
 SET(QT_FORMS
     res/ui/about.ui
     res/ui/chart_preferences.ui
@@ -197,12 +205,12 @@ SET(QT_FORMS
     res/ui/new_model_dialog.ui
     res/ui/view_preferenses.ui
     )
-    
+
 SET(WIN32_RES
     res/win32/rdo_studio.ico
     res/win32/rdo_studio.rc
     )
-    
+
 SET(IMAGE_FILES
     res/images/about.png
     res/images/dock_build.png
@@ -288,8 +296,19 @@ SET(IMAGE_FILES
     res/images/view_zoom_reset_d.png
     )
 
-QT5_WRAP_CPP(GENERATED_MOC_SOURCES ${HEADER_QT_FILES})
-QT5_WRAP_UI (GENERATED_QT_FORMS_HEADERS ${QT_FORMS})
+SET(QT_MOC_FLAGS)
+QT5_GET_MOC_FLAGS(QT_MOC_FLAGS)
+
+SET(GENERATED_MOC_SOURCES)
+FOREACH(HEADER_QT_FILES_IT ${HEADER_QT_FILES})
+    QT5_WRAP_CPP(GENERATED_MOC_SOURCES_IT ${HEADER_QT_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/stdpch.h" "-futils/warning_disable.h" "-fapp/rdo_studio/${HEADER_QT_FILES_IT}")
+    SET(GENERATED_MOC_SOURCES ${GENERATED_MOC_SOURCES} ${GENERATED_MOC_SOURCES_IT})
+ENDFOREACH()
+
+QT5_WRAP_UI(GENERATED_QT_FORMS_HEADERS ${QT_FORMS})
+
+SET(QT_RES res/rdo_studio.qrc)
+QT5_ADD_RESOURCES(GENERATED_RESOURCES ${QT_RES})
 
 ADD_EXECUTABLE(rdo_studio
     ${HEADER_FILES}
@@ -301,7 +320,9 @@ ADD_EXECUTABLE(rdo_studio
     ${QT_FORMS}
     ${GENERATED_QT_FORMS_HEADERS}
     ${GENERATED_MOC_SOURCES}
+    ${GENERATED_RESOURCES}
     ${WIN32_RES}
+    ${QT_RES}
     ${IMAGE_FILES}
     )
 
@@ -314,13 +335,13 @@ ADD_DEPENDENCIES(rdo_studio rdo_simulator)
 ADD_DEPENDENCIES(rdo_studio rdo_simulator_report)
 ADD_DEPENDENCIES(rdo_studio rdo_ui_abstract)
 ADD_DEPENDENCIES(rdo_studio rdo_ui_qt)
+ADD_DEPENDENCIES(rdo_studio rdo_scintilla)
 
 TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Widgets_LIBRARIES})
 TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Core_LIBRARIES})
 TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Gui_LIBRARIES})
 
-TARGET_LINK_LIBRARIES(rdo_studio ${Boost_PROGRAM_OPTIONS_LIBRARY})
-TARGET_LINK_LIBRARIES(rdo_studio ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(rdo_studio ${Boost_LIBRARIES})
 
 TARGET_LINK_LIBRARIES(rdo_studio rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_studio rdo_kernel)
@@ -329,6 +350,9 @@ TARGET_LINK_LIBRARIES(rdo_studio rdo_simulator)
 TARGET_LINK_LIBRARIES(rdo_studio rdo_simulator_report)
 TARGET_LINK_LIBRARIES(rdo_studio rdo_ui_abstract)
 TARGET_LINK_LIBRARIES(rdo_studio rdo_ui_qt)
+TARGET_LINK_LIBRARIES(rdo_studio rdo_scintilla)
+
+INSTALL(TARGETS rdo_studio DESTINATION bin)
 
 IF(MSVC) # lotions for windows #
 
@@ -346,6 +370,8 @@ SOURCE_GROUP(".scintilla" FILES
 SOURCE_GROUP(".qt_forms" FILES
     ${QT_FORMS}
     ${GENERATED_QT_FORMS_HEADERS}
+    ${GENERATED_MOC_SOURCES}
+    ${GENERATED_RESOURCES}
     )
 
 SOURCE_GROUP(".res" FILES
@@ -359,7 +385,7 @@ SOURCE_GROUP(".image" FILES
 SOURCE_GROUP(".doc" FILES
     ${COMMON_FILES}
     )
-    
+
 SOURCE_GROUP(".script" FILES
     ${SCRIPT_FILES}
     )
