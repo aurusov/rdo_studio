@@ -19,6 +19,7 @@
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_matrix.h"
 #include "simulator/runtime/rdo_type.h"
+#include "simulator/runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 
 BOOST_AUTO_TEST_SUITE(RDORuntime_Matrix_Test)
