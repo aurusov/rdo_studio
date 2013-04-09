@@ -496,7 +496,7 @@ void testUndef(CREF(T1) param1)
 {
 	T1 val = param1;
 	RDOValue value(val);
-	BOOST_CHECK(value.getUndefined() == 1);
+	BOOST_CHECK(value.isUndefined() == false);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Undefined)
@@ -512,12 +512,12 @@ BOOST_AUTO_TEST_CASE(RDOValue_Undefined)
 	RDOValue value1(val1);
 	BOOST_CHECK(value1);
 
-	BOOST_CHECK(value1.getUndefined() == true);
-	value1.setUndefined(false);
-	BOOST_CHECK(value1.getUndefined() == false);
+	BOOST_CHECK(value1.isUndefined() == false);
+	value1.setUndefined(true);
+	BOOST_CHECK(value1.isUndefined() == true);
 
 	RDOValue value2(value1);
-	BOOST_CHECK(value2.getUndefined() == false);
+	BOOST_CHECK(value2.isUndefined() == true);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Resource)
