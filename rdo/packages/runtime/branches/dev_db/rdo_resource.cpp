@@ -161,15 +161,16 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 {
 	QSqlQuery query;
 
-	query.exec(QString("select value from rss_param where rss_id=%1 and id=%2;")
-		.arg(getTraceID())
-		.arg(index));
+	query.exec(QString("select rss_param.value, pg_class.relname \
+		from rss_param, pg_class, rdo_value \
+		where rss_param.rss_id=%1 \
+		and rss_param.id=%2 \
+		and pg_class.relfilenode=rdo_value.table_id \
+		and rdo_value.value_id=rss_param.value;")
+			.arg(getTraceID())
+			.arg(index));
 	query.next();
 	int value_id = query.value(query.record().indexOf("value")).toInt();
-
-	query.exec(QString("select relname from pg_class, rdo_value where pg_class.relfilenode=rdo_value.table_id and rdo_value.value_id=%1;")
-		.arg(value_id));
-	query.next();
 	QString table_name = query.value(query.record().indexOf("relname")).toString();
 
 	#define DEFINE_RDO_VALUE(Value)                               \
