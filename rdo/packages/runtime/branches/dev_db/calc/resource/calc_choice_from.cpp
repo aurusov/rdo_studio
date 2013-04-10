@@ -110,45 +110,13 @@ RDOValue RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 		PTR(GeneralDB) db = pRuntime->getDB();
 		query.exec(m_sqlQuery);
 
-		switch (m_orderType)
+		if (query.size() > 0)
 		{
-			case order_empty:
-			case order_first:
-			{
-				if (query.size() > 0)
-				{
-					query.next();
-					int i = query.value(query.record().indexOf("rss_id")).toInt();
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, i);
-					return RDOValue(1);
-				}
-				break;
-			}
-			case order_with_min:
-			{
-				if (query.size() > 0)
-				{
-					query.next();
-					int i = query.value(query.record().indexOf("rss_id")).toInt();
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, i);
-					//pRuntime->getCurrentActivity()->setRelRes(m_relResID, query.value(query.record().indexOf("rss_id")).toInt());
-					return RDOValue(1);
-				}
-				break;
-			}
-			case order_with_max:
-			{
-				if (query.size() > 0)
-				{
-					query.last();
-					int i = query.value(query.record().indexOf("rss_id")).toInt();
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, i);
-					//pRuntime->getCurrentActivity()->setRelRes(m_relResID, query.value(query.record().indexOf("rss_id")).toInt());
-					return RDOValue(1);
-				}
-				break;
-			}
+			query.next();
+			pRuntime->getCurrentActivity()->setRelRes(m_relResID, query.value(query.record().indexOf("rss_id")).toInt());
+			return RDOValue(1);
 		}
+
 		return RDOValue(0);
 	}
 	else
