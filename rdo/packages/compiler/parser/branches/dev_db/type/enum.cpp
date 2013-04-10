@@ -224,9 +224,8 @@ void RDOEnumType::serializeInDB(REF(IDB) db) const
 		get_default().serializeInDB(db);
 	}
 
-	db.insertRow("enum",QString("DEFAULT,%1")
+	int enum_id = db.insertRowInd("enum",QString("DEFAULT,%1")
 		.arg(db.popContext<int>()));
-	int enum_id = db.queryExecIndex("enum");
 
 	for (ruint i = 0; i < getEnums()->getValues().size(); i++)
 	{

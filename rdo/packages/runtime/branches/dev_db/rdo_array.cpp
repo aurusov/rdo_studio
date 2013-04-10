@@ -128,8 +128,7 @@ LPRDOArrayValue RDOArrayValue::clone() const
 
 void RDOArrayValue::serializeInDB(REF(IDB) db) const
 {
-	db.insertRow("array_rv","DEFAULT");
-	int array_id = db.queryExecIndex("array_rv");
+	int array_id = db.insertRowInd("array_rv","DEFAULT");
 
 	BOOST_FOREACH(CREF(RDOValue) arrayItem, m_container)
 	{
@@ -139,7 +138,7 @@ void RDOArrayValue::serializeInDB(REF(IDB) db) const
 			.arg(db.popContext<int>()));
 	}
 
-	db.pushContext(db.queryExecIndex("array_rv"));
+	db.pushContext<int>(array_id);
 }
 
 // --------------------------------------------------------------------------------

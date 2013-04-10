@@ -215,10 +215,9 @@ void RDOType__int::serializeInDB(REF(IDB) db) const
 		get_default().serializeInDB(db);
 	}
 
-	db.insertRow("int",QString("DEFAULT,%1,NULL,NULL")
-		.arg(db.popContext<int>()));
-
-	db.pushContext(db.queryExecIndex("int"));
+	db.pushContext<int>(
+		db.insertRowInd("int",QString("DEFAULT,%1,NULL,NULL")
+			.arg(db.popContext<int>())));
 }
 
 // --------------------------------------------------------------------------------
@@ -287,10 +286,9 @@ void RDOType__real::serializeInDB(REF(IDB) db) const
 		get_default().serializeInDB(db);
 	}
 
-	db.insertRow("real",QString("DEFAULT,%1,NULL,NULL")
-		.arg(db.popContext<int>()));
-
-	db.pushContext(db.queryExecIndex("real"));
+	db.pushContext<int>(
+		db.insertRowInd("real",QString("DEFAULT,%1,NULL,NULL")
+			.arg(db.popContext<int>())));
 }
 
 // --------------------------------------------------------------------------------
@@ -358,10 +356,9 @@ void RDOType__string::serializeInDB(REF(IDB) db) const
 		get_default().serializeInDB(db);
 	}
 
-	db.insertRow("string",QString("DEFAULT,%1")
-		.arg(db.popContext<int>()));
-
-	db.pushContext(db.queryExecIndex("string"));
+	db.pushContext<int>(
+		db.insertRowInd("string",QString("DEFAULT,%1")
+			.arg(db.popContext<int>())));
 }
 
 // --------------------------------------------------------------------------------
@@ -422,10 +419,9 @@ void RDOType__identificator::serializeInDB(REF(IDB) db) const
 		get_default().serializeInDB(db);
 	}
 
-	db.insertRow("identificator",QString("DEFAULT,%1")
-		.arg(db.popContext<int>()));
-
-	db.pushContext(db.queryExecIndex("identificator"));
+	db.pushContext<int>(
+		db.insertRowInd("identificator",QString("DEFAULT,%1")
+			.arg(db.popContext<int>())));
 }
 
 // --------------------------------------------------------------------------------
@@ -493,10 +489,9 @@ void RDOType__bool::serializeInDB(REF(IDB) db) const
 		get_default().serializeInDB(db);
 	}
 
-	db.insertRow("bool",QString("DEFAULT,%1")
-		.arg(db.popContext<int>()));
-
-	db.pushContext(db.queryExecIndex("bool"));
+	db.pushContext<int>(
+		db.insertRowInd("bool",QString("DEFAULT,%1")
+			.arg(db.popContext<int>())));
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

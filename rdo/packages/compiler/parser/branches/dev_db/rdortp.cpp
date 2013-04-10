@@ -149,14 +149,12 @@ void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDORTPResType::serializeInDB(REF(IDB) db) const
 {
-	db.insertRow("rtp",QString("DEFAULT,'%1',%2")
-		.arg(QString::fromStdString(name()))
-		.arg(m_permanent ? "true" : "false"));
-
-	int indexRTP = db.queryExecIndex("rtp");
-	
 	std::vector<int> indexContainer;
-	indexContainer.push_back(indexRTP);
+	indexContainer.push_back(
+		db.insertRowInd("rtp",QString("DEFAULT,'%1',%2")
+			.arg(QString::fromStdString(name()))
+			.arg(m_permanent ? "true" : "false")));
+
 	indexContainer.push_back(-1);
 
 	BOOST_FOREACH(CREF(LPRDORTPParam) param, m_params)

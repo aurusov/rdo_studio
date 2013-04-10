@@ -106,9 +106,8 @@ public:
 
 	RDOValue clone() const;
 
-	#define DEFINE_SERIALIZE_RDO_VALUE(Table,Value)      \
-	db.insertRow(Table,QString("DEFAULT,%1").arg(Value));\
-	db.pushContext<int>(db.queryExecIndex(Table));
+	#define DEFINE_SERIALIZE_RDO_VALUE(Table,Value) \
+		db.pushContext<int>(db.insertRowInd(Table,QString("DEFAULT,%1").arg(Value)));
 
 	void serializeInDB(REF(IDB) db) const;
 

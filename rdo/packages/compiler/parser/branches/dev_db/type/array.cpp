@@ -145,11 +145,10 @@ void RDOArrayType::serializeInDB(REF(IDB) db) const
 	int default_id = db.popContext<int>();
 
 	m_pItemType->type()->serializeInDB(db);
-	db.insertRow("array_t",QString("DEFAULT,%1,%2")
-		.arg(db.popContext<int>())
-		.arg(default_id));
-
-	db.pushContext(db.queryExecIndex("array_t"));
+	db.pushContext<int>(
+		db.insertRowInd("array_t",QString("DEFAULT,%1,%2")
+			.arg(db.popContext<int>())
+			.arg(default_id)));
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
