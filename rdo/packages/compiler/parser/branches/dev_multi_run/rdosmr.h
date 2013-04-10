@@ -43,6 +43,7 @@ DECLARE_FACTORY(RDOSMR);
 public:
 	typedef std::map<tstring, tstring> StringTable;
 
+#ifdef CORBA_ENABLE
 	void setExternalModelName(CREF(tstring) alias, CREF(tstring) modelID)
 	{
 		m_extModelList[alias] = modelID;
@@ -56,6 +57,7 @@ public:
 	{
 		return m_extModelList;
 	}
+#endif
 
 	rdo::service::simulation::ShowMode getShowMode      () const { return m_showMode;       }
 	int                                getFrameNumber   () const { return m_frameNumber;    }

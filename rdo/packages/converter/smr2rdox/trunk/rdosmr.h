@@ -61,6 +61,7 @@ public:
 	{
 		return getFile("Model_name");
 	}
+#ifdef CORBA_ENABLE
 	void setExternalModelName(CREF(tstring) alias, CREF(tstring) modelID)
 	{
 		m_extModelList[alias] = modelID;
@@ -74,6 +75,7 @@ public:
 	{
 		return m_extModelList;
 	}
+#endif
 
 	rdo::service::simulation::ShowMode getShowMode      () const { return m_showMode;       }
 	int                                getFrameNumber   () const { return m_frameNumber;    }

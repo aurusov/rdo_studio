@@ -317,23 +317,39 @@ smr_descr
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
 	{
+#ifdef CORBA_ENABLE
 		tstring alias = CONVERTER->stack().pop<RDOValue>($3)->value().getIdentificator();
 		tstring model = CONVERTER->stack().pop<RDOValue>($5)->value().getIdentificator();
 		LPRDOSMR pSMR = CONVERTER->getSMR();
 		ASSERT(pSMR);
 		pSMR->setExternalModelName(alias, model);
+#else
+		CONVERTER->error().error(@2, "Данная версия РДО не поддерживает распределенные модели (по технологии CORBA)");
+#endif
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' error
 	{
+#ifdef CORBA_ENABLE
 		CONVERTER->error().error( @4, @5, "Ожидается путь и название внешней модели" );
+#else
+		CONVERTER->error().error(@2, "Данная версия РДО не поддерживает распределенные модели (по технологии CORBA)");
+#endif
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF error
 	{
+#ifdef CORBA_ENABLE
 		CONVERTER->error().error( @3, "Ожидается '='" );
+#else
+		CONVERTER->error().error(@2, "Данная версия РДО не поддерживает распределенные модели (по технологии CORBA)");
+#endif
 	}
 	| smr_descr RDO_External_Model error
 	{
+#ifdef CORBA_ENABLE
 		CONVERTER->error().error( @2, "Ожидается псевдоним внешей модели" );
+#else
+		CONVERTER->error().error(@2, "Данная версия РДО не поддерживает распределенные модели (по технологии CORBA)");
+#endif
 	}
 	| smr_descr error
 	;
