@@ -31,6 +31,7 @@ public:
 	~GeneralDB();
 
 	virtual void insertRow     (const QString& tableName, const QString& qRow);
+	virtual int  insertRowInd  (const QString& tableName, const QString& qRow);
 	virtual void queryExec     (const QString&   query                       );
 	virtual void queryExec     (const QueryList& query                       );
 

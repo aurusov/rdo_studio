@@ -46,6 +46,12 @@ void GeneralDB::insertRow(const QString& tableName, const QString& qRow)
 		.arg(qRow));
 }
 
+int GeneralDB::insertRowInd(const QString& tableName, const QString& qRow)
+{
+	insertRow(tableName,qRow);
+	return queryExecIndex(tableName);
+}
+
 void GeneralDB::queryExec(const QueryList& query)
 {
 	BOOST_FOREACH(const QString& queryItem, query)
