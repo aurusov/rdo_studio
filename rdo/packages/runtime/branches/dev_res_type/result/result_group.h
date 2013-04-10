@@ -11,6 +11,7 @@
 #define _LIB_RUNTIME_RESULT_GROUP_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/filesystem/fstream.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "simulator/runtime/result/result_group_i.h"
@@ -45,12 +46,12 @@ private:
 	};
 
 	typedef std::vector<LPIResult> ResultList;
-	ResultList     m_resultList;
-	tstring        m_name;
-	State          m_state;
-	double         m_timeStart;
-	rdo::ofstream  m_streamFull;
-	rdo::ofstream  m_streamTable;
+	ResultList                   m_resultList;
+	tstring                      m_name;
+	State                        m_state;
+	double                       m_timeStart;
+	boost::filesystem::ofstream  m_streamFull;
+	boost::filesystem::ofstream  m_streamTable;
 
 	DECLARE_IResult;
 	DECLARE_IResultGroup;

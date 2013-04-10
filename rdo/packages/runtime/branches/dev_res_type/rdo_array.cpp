@@ -11,8 +11,10 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_array.h"
+#include "simulator/runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -110,6 +112,19 @@ void RDOArrayValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 		throw RDORuntimeException("Выход за пределы массива");
 	}
 	m_container[ind] = item;
+}
+
+LPRDOArrayValue RDOArrayValue::clone() const
+{
+	LPRDOArrayValue pClone = rdo::Factory<RDOArrayValue>::create(type());
+	ASSERT(pClone);
+
+	BOOST_FOREACH(const RDOValue& value, m_container)
+	{
+		pClone->push_back(value.clone());
+	}
+
+	return pClone;
 }
 
 // --------------------------------------------------------------------------------

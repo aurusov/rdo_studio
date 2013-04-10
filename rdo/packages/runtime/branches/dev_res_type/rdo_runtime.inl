@@ -11,6 +11,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 #include "simulator/runtime/namespace.h"
+#include "simulator/runtime/rdo_enum.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

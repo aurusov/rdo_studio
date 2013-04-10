@@ -97,11 +97,13 @@ public:
 	RDOValue       operator*  (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator/  (CREF(RDOValue) rdovalue) const;
 
-	void        setUndefined (CREF(rbool) undefined);
-	CREF(rbool) getUndefined () const;
+	void  setUndefined(rbool undefined);
+	rbool isUndefined () const;
 
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
+
+	RDOValue clone() const;
 
 	//RDOValue  begin ();
 	//RDOValue  end   ();
@@ -143,8 +145,6 @@ private:
 
 	template <class T>  REF(rdo::intrusive_ptr<T>) getPointer();
 	template <class T> CREF(rdo::intrusive_ptr<T>) getPointer() const;
-
-	RDOValue clone() const;
 
 	tstring       onPointerAsString () const;
 	rbool         onPointerEqual    (CREF(RDOValue) rdovalue) const;
