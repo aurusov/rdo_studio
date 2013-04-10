@@ -409,7 +409,9 @@ void Model::onEditCompleteWord()
 		//g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdo::service::simulation::RDOThreadCodeComp::GetCodeComp(tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), primaryKwList));
 
 		rdo::service::simulation::RDOThreadSimulator::GetRTP RTPList;
+#ifdef CORBA_ENABLE
 		g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &RTPList);
+#endif
 		std::vector< rdo::service::simulation::RDOThreadSimulator::RTP >::iterator rtp_it = RTPList.begin();
 		while (rtp_it != RTPList.end())
 		{
@@ -418,7 +420,9 @@ void Model::onEditCompleteWord()
 		}
 
 		rdo::service::simulation::RDOThreadSimulator::GetRSS RSSList;
+#ifdef CORBA_ENABLE
 		g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &RSSList);
+#endif
 		std::vector< rdo::service::simulation::RDOThreadSimulator::RSS >::iterator rss_it = RSSList.begin();
 		while (rss_it != RSSList.end())
 		{

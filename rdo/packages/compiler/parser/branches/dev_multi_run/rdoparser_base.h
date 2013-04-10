@@ -128,6 +128,7 @@ private:
 	RDOParserContainerSMRInfo();
 };
 
+#ifdef CORBA_ENABLE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserContainerCorba
 // --------------------------------------------------------------------------------
@@ -137,6 +138,7 @@ DECLARE_FACTORY(RDOParserContainerCorba);
 private:
 	RDOParserContainerCorba();
 };
+#endif
 
 CLOSE_RDO_PARSER_NAMESPACE
 

@@ -15,7 +15,9 @@
 #include "simulator/compiler/parser/rdoparser_base.h"
 #include "simulator/compiler/parser/rdoparser_rdo.h"
 #include "simulator/compiler/parser/parser/std_fun.h"
+#ifdef CORBA_ENABLE
 #include "simulator/compiler/parser/rdoparser_corba.h"
+#endif
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/rdosmr.h"
@@ -111,8 +113,6 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserRTPPost>::create());
 #ifdef CORBA_ENABLE
 	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserCorbaRTP>::create());
-#endif
-#ifdef CORBA_ENABLE
 	insert(rdoModelObjects::obRSS, rdo::Factory<RDOParserCorbaRSS>::create());
 #endif
 	insert(rdoModelObjects::obFUN, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FUN, funparse, funerror, funlex));
@@ -138,6 +138,7 @@ RDOParserContainerSMRInfo::RDOParserContainerSMRInfo()
 	insert(rdoModelObjects::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
 }
 
+#ifdef CORBA_ENABLE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserContainerCorba
 // --------------------------------------------------------------------------------
@@ -150,5 +151,6 @@ RDOParserContainerCorba::RDOParserContainerCorba()
 	insert(rdoModelObjects::obRSS, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, proc_rss_parse, proc_rss_error, proc_rss_lex, RDOParserItem::sf_editor));
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRSSPost>::create());
 }
+#endif
 
 CLOSE_RDO_PARSER_NAMESPACE

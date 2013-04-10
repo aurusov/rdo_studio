@@ -343,10 +343,12 @@ typedef RDOParserTemplate<RDOParserContainerModel> RDOParserModel;
 // --------------------------------------------------------------------------------
 typedef RDOParserTemplate<RDOParserContainerSMRInfo> RDOParserSMRInfo;
 
+#ifdef CORBA_ENABLE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserCorbar
 // --------------------------------------------------------------------------------
 typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorba;
+#endif
 
 CLOSE_RDO_PARSER_NAMESPACE
 

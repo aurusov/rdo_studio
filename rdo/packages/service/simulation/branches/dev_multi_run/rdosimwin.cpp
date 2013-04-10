@@ -877,13 +877,15 @@ RDOThreadSimulator::RDOThreadSimulator()
 	notifies.push_back(RT_SIMULATOR_GET_ERRORS            );
 	notifies.push_back(RT_THREAD_STOP_AFTER               );
 	notifies.push_back(RT_CODECOMP_GET_DATA               );
+#ifdef CORBA_ENABLE
 	notifies.push_back(RT_CORBA_PARSER_GET_RTP            );
 	notifies.push_back(RT_CORBA_PARSER_GET_RSS            );
+	notifies.push_back(RT_CORBA_PARSER_GET_RTP_COUNT      );
+	notifies.push_back(RT_CORBA_PARSER_GET_RTP_PAR_COUNT  );
+#endif
 	notifies.push_back(RT_PROCGUI_BLOCK_CREATE            );
 	notifies.push_back(RT_PROCGUI_BLOCK_TERMINATE         );
 	notifies.push_back(RT_PROCGUI_BLOCK_PROCESS           );
-	//notifies.push_back(RT_CORBA_PARSER_GET_RTP_COUNT      );
-	//notifies.push_back(RT_CORBA_PARSER_GET_RTP_PAR_COUNT  );
 	after_constructor();
 }
 
@@ -1346,7 +1348,6 @@ void RDOThreadSimulator::codeCompletion()
 {}
 
 #ifdef CORBA_ENABLE
-
 void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP_var) my_rtpList)
 {
 	//! Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
@@ -1508,7 +1509,6 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 		++i;
 		++rtp_it;
 	}
-
 }
 
 void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS_var) my_rssList)

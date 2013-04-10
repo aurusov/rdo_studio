@@ -226,12 +226,10 @@ private:
 
 	
 #ifdef CORBA_ENABLE
-
 //	void corbaGetRTPcount(REF(::CORBA::Long) rtp_count);
 //	void corbaGetRTPParamscount(REF(rdo::compiler::parser::RDOCorba::PARAM_count) params_count);
 	void corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP_var) my_rtpList);
 	void corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS_var) my_rssList);
-
 #endif // CORBA_ENABLE
 
 protected:
@@ -248,8 +246,10 @@ protected:
 
 	void codeCompletion();
 
+#ifdef CORBA_ENABLE
 	void corbaGetRTP(PTR(GetRTP) RTPList);
 	void corbaGetRSS(PTR(GetRSS) RSSList);
+#endif
 
 public:
 	RDOThreadSimulator();
