@@ -237,6 +237,7 @@ OPEN_RDO_PARSER_NAMESPACE
 %start smr_main
 
 %%
+
 // --------------------------------------------------------------------------------
 // --------------------smr_main
 // --------------------------------------------------------------------------------
@@ -274,6 +275,7 @@ smr_launch_line
 	| smr_launch_line_show_rate
 	| smr_launch_line_frame_number
 	| smr_launch_line_seed
+	| smr_launch_line_external_model
 	| error
 	{
 		PARSER->error().error(@1, rdo::format("Неизвестная инструкция"));
@@ -333,6 +335,11 @@ smr_launch_line_event_planning
 
 smr_launch_line_external_model
 	: RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
+	{
+#ifndef CORBA_ENABLE
+		PARSER->error().error(@1, @4, "Данная версия РДО не поддерживает CORBA");
+#endif
+	}
 	;
 
 smr_launch_line_show_mode

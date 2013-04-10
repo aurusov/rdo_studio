@@ -4,6 +4,7 @@
   \dotfile   rdogramsmr_file.dot "SMR file tree"
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      20.02.2003
   \brief     Синтаксис описания файлов модели
   \indent    4T
@@ -226,33 +227,77 @@ OPEN_RDO_PARSER_NAMESPACE
 
 %%
 
+// --------------------------------------------------------------------------------
+// --------------------smr_main
+// --------------------------------------------------------------------------------
 smr_main
-	: smr_descr
+	: smr_launch
+	| smr_launch_set
 	;
 
-smr_descr
+smr_launch_set
 	: /* empty */
-	| smr_descr RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
+	| smr_launch_set smr_launch_single_of_set
+	;
+
+smr_launch_single_of_set
+	: '{' smr_launch '}'
 	{
-		tstring alias = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
-		tstring model = PARSER->stack().pop<RDOValue>($5)->value().getIdentificator();
+		PARSER->getSMR()->setIncrement();
+	}
+	;
+
+smr_launch
+	: /* empty */
+	| smr_launch smr_launch_line
+	;
+
+smr_launch_line
+	: smr_launch_line_external_model
+	| smr_other
+	;
+
+smr_launch_line_external_model
+	: RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
+	{
+#ifdef CORBA_ENABLE
+		tstring alias = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		tstring model = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
 		pSMR->setExternalModelName(alias, model);
+#else
+		PARSER->error().error(@1, "Данная версия РДО не поддерживает распределенные модели (по технологии CORBA)");
+#endif
 	}
-	| smr_descr RDO_External_Model RDO_IDENTIF '=' error
+	| RDO_External_Model RDO_IDENTIF '=' error
 	{
-		PARSER->error().error( @4, @5, "Ожидается путь и название внешней модели" );
+#ifdef CORBA_ENABLE
+		PARSER->error().error(@3, @4, "Ожидается путь и название внешней модели");
+#else
+		PARSER->error().error(@1, "Данная версия РДО не поддерживает распределенные модели (по технологии CORBA)");
+#endif
 	}
-	| smr_descr RDO_External_Model RDO_IDENTIF error
+	| RDO_External_Model RDO_IDENTIF error
 	{
-		PARSER->error().error( @3, "Ожидается '='" );
+#ifdef CORBA_ENABLE
+		PARSER->error().error(@3, "Ожидается '='");
+#else
+		PARSER->error().error(@1, "Данная версия РДО не поддерживает распределенные модели (по технологии CORBA)");
+#endif
 	}
-	| smr_descr RDO_External_Model error
+	| RDO_External_Model error
 	{
-		PARSER->error().error( @2, "Ожидается псевдоним внешей модели" );
+#ifdef CORBA_ENABLE
+		PARSER->error().error(@2, "Ожидается псевдоним внешей модели");
+#else
+		PARSER->error().error(@1, "Данная версия РДО не поддерживает распределенные модели (по технологии CORBA)");
+#endif
 	}
-	| smr_descr error
+	;
+
+smr_other
+	: error
 	;
 
 %%
