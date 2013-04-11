@@ -217,7 +217,7 @@ private:
 	void runSeries     ();
 
 	ShowMode  m_showMode; //! current show mode
-	double    m_showRate; //! current show mode
+	double    m_showRate; //! current show rate
 	ruint     m_runCount;
 	ruint     m_runNumber;
 
