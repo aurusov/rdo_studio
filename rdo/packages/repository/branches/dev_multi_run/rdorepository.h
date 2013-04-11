@@ -162,7 +162,7 @@ private:
 	rbool                        m_realOnlyInDlg;
 	ProjectName                  m_projectName;
 	SystemTime                   m_systemTime;
-	ruint          m_runNumber;
+	ruint                        m_runNumber;
 
 	void      resetModelNames ();
 	FindModel updateModelNames();

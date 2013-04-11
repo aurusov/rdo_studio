@@ -31,7 +31,7 @@ RDOThreadRepository::RDOThreadRepository()
 	: RDOThreadMT    ("RDOThreadRepository")
 	, m_hasModel     (false                )
 	, m_realOnlyInDlg(false                )
-	, m_runNumber    (0                        )
+	, m_runNumber    (0                    )
 {
 	notifies.push_back(RT_STUDIO_MODEL_NEW                  );
 	notifies.push_back(RT_STUDIO_MODEL_OPEN                 );
@@ -602,6 +602,10 @@ void RDOThreadRepository::stopModel()
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &stream);
 			results_file << std::endl << stream.str() << std::endl;
 		}
+	}
+	if (m_runNumber == kernel->simulator()->runNumberCheck())
+	{
+		m_runNumber = 0;
 	}
 }
 
