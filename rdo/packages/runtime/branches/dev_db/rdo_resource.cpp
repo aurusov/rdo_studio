@@ -277,12 +277,10 @@ CREF(RDOValue) RDOResource::getParam(ruint index)
 
 void RDOResource::serializeInDB() const
 {
-	bool a = traceable();
-	m_db->insertRow("rss",QString("%1,%2,%3")
+	int rss_id = m_db->insertRowInd("rss",QString("%1,%2,%3")
 		.arg(getTraceID())
 		.arg(boost::lexical_cast<int>(getTypeId()))
-		.arg(a ? "true" : "false"));
-	int rss_id = m_db->queryExecIndex("rss");
+		.arg(traceable() ? "true" : "false"));
 	int param_id = -1;
 
 	BOOST_FOREACH(const RDOValue& param, m_paramList)
