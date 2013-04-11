@@ -234,6 +234,8 @@ void RDOEnumType::serializeInDB(REF(IDB) db) const
 			.arg(QString::fromStdString(getEnums()->getValues().at(i)))
 			.arg(i));
 	}
+
+	db.pushContext<int>(enum_id);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
