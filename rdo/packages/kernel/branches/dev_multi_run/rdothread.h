@@ -140,10 +140,12 @@ public:
 		RT_CODECOMP_GET_DATA,                  // param = rdo::service::simulation::RDOThreadCodeComp::GetCodeComp* = { file_type:rdoModelObjects::RDOFileType, pos_x:int, pos_y:int, result:std::list< tstring >& }
 		RT_DEBUG_STRING,                       // param = tstring*
 		RT_RESULT_STRING,                      // param = tstring*
+#ifdef CORBA_ENABLE
 		RT_CORBA_PARSER_GET_RTP,
 		RT_CORBA_PARSER_GET_RSS,
 		RT_CORBA_PARSER_GET_RTP_COUNT,
 		RT_CORBA_PARSER_GET_RTP_PAR_COUNT,
+#endif
 		RT_PROCGUI_BLOCK_CREATE,
 		RT_PROCGUI_BLOCK_PROCESS,
 		RT_PROCGUI_BLOCK_TERMINATE
@@ -215,10 +217,12 @@ public:
 			case RT_CODECOMP_GET_DATA                 : return "RT_CODECOMP_GET_DATA";
 			case RT_DEBUG_STRING                      : return "RT_DEBUG_STRING";
 			case RT_RESULT_STRING                     : return "RT_RESULT_STRING";
+#ifdef CORBA_ENABLE
 			case RT_CORBA_PARSER_GET_RTP              : return "RT_CORBA_PARSER_GET_RTP";
 			case RT_CORBA_PARSER_GET_RSS              : return "RT_CORBA_PARSER_GET_RSS";
 			case RT_CORBA_PARSER_GET_RTP_COUNT        : return "RT_CORBA_PARSER_GET_RTP_COUNT";
 			case RT_CORBA_PARSER_GET_RTP_PAR_COUNT    : return "RT_CORBA_PARSER_GET_RTP_PAR_COUNT";
+#endif
 			case RT_PROCGUI_BLOCK_CREATE              : return "RT_PROCGUI_BLOCK_CREATE";
 			case RT_PROCGUI_BLOCK_PROCESS             : return "RT_PROCGUI_BLOCK_PROCESS";
 			case RT_PROCGUI_BLOCK_TERMINATE           : return "RT_PROCGUI_BLOCK_TERMINATE";
