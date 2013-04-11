@@ -260,6 +260,7 @@ public:
 	int      getInitialFrameNumber() const;
 	double   getInitialShowRate   () const;
 	ruint    getInitialRunCount   () const;
+	ruint    runNumberCheck       () const;
 
 	struct GetList
 	{

@@ -1344,6 +1344,11 @@ double RDOThreadSimulator::getInitialShowRate() const
 	return m_pParser->getSMR()->getShowRate();
 }
 
+ruint RDOThreadSimulator::runNumberCheck() const
+{
+	return m_runCount;
+}
+
 void RDOThreadSimulator::codeCompletion()
 {}
 
