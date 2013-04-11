@@ -32,6 +32,8 @@ GeneralDB::GeneralDB()
 {
 	setDefParams();
 	initDB      ();
+	QSqlQuery query;
+	m_query = query;
 }
 
 GeneralDB::~GeneralDB()
@@ -48,8 +50,12 @@ void GeneralDB::insertRow(const QString& tableName, const QString& qRow)
 
 int GeneralDB::insertRowInd(const QString& tableName, const QString& qRow)
 {
-	insertRow(tableName,qRow);
-	return queryExecIndex(tableName);
+	m_query.exec(QString("INSERT INTO %1 VALUES(%2) RETURNING id;")
+		.arg(tableName)
+		.arg(qRow));
+	m_query.next();
+
+	return m_query.value(m_query.record().indexOf("id")).toInt();
 }
 
 void GeneralDB::queryExec(const QueryList& query)

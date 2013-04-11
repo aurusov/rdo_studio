@@ -50,6 +50,7 @@ private:
 	QString      m_password;
 	int          m_port;
 	QSqlDatabase m_db;
+	QSqlQuery    m_query;
 
 	bany m_context;
 };
