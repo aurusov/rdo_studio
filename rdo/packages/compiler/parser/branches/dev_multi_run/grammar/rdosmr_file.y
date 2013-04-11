@@ -242,9 +242,6 @@ smr_launch_set
 
 smr_launch_single_of_set
 	: '{' smr_launch '}'
-	{
-		PARSER->getSMR()->setIncrement();
-	}
 	;
 
 smr_launch
