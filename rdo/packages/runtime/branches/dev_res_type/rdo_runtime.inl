@@ -214,6 +214,22 @@ inline RDORuntime::ResCIterator RDORuntime::res_end() const
 	return m_resourceListByTime.end();
 }
 
+inline void RDORuntime::addResType(ruint number, CREF(LPIResourceType) pResType)
+{
+	ASSERT(pResType);
+	if (number - 1 >= m_resourceTypeList.size())
+	{
+		m_resourceTypeList.resize(number);
+		m_resourceTypeList.at(number - 1) = pResType;
+	}
+}
+
+inline CREF(LPIResourceType) RDORuntime::getResType(ruint number) const
+{
+	return m_resourceTypeList[number - 1];
+}
+
+
 inline CREF(LPIThreadProxy) RDORuntime::getThreadProxy() const
 {
 	return m_pThreadProxy;

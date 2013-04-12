@@ -351,6 +351,7 @@ void RDORuntime::onDestroy()
 	/// @todo Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
 	m_resourceListByTime.clear();
 	m_resourceListByID.clear();
+	m_resourceTypeList.clear();
 
 	if (m_resultList)
 	{
