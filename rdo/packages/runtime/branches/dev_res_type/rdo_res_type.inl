@@ -36,9 +36,22 @@ inline LPRDOResource RDOResourceTypeBase<T>::createRes(CREF(LPRDORuntime) pRunti
 
 	rdo::intrusive_ptr<T> pResource = rdo::Factory<T>::create(pRuntime, paramsCalcs, pIResType, resID, this->getTraceID(), traceFlag, permanentFlag);
 	ASSERT(pResource);
+	m_resourceList.push_back(pResource);
 	pRuntime->insertNewResource(pResource);
 
 	return pResource;
+}
+
+template <class T>
+inline IResourceType::ResCIterator RDOResourceTypeBase<T>::res_begin() const
+{
+	return m_resourceList.begin();
+}
+
+template <class T>
+inline IResourceType::ResCIterator RDOResourceTypeBase<T>::res_end() const
+{
+	return m_resourceList.end();
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -32,6 +32,9 @@ DECLARE_FACTORY(RDOResourceTypeBase<T>);
 public:
 	typedef  T  value_type;
 
+	IResourceType::ResCIterator res_begin() const;
+	IResourceType::ResCIterator res_end() const;
+
 private:
 	//! Конструктор
 	//! \param number - Целочисленный идентификатор
