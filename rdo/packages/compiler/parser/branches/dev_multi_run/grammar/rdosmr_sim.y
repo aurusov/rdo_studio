@@ -256,6 +256,14 @@ smr_launch_single_of_set
 	{
 		PARSER->getSMR()->setIncrement();
 	}
+	| '{' smr_launch error
+	{
+		PARSER->error().error(@3, rdo::format("Очередной прогон из серии должен заканчиваться фигурной скобкой"));
+	}
+	| error
+	{
+		PARSER->error().error(@1, rdo::format("Очередной прогон из серии должен начинаться с фигурной скобки"));
+	}
 	;
 
 smr_launch
