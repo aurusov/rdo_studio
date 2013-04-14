@@ -597,6 +597,12 @@ rbool Model::closeModel()
 	g_pApp->getIMainWnd()->getDockDebug  ().clear();
 	g_pApp->getIMainWnd()->getDockResults().clear();
 	g_pApp->getIMainWnd()->getDockFind   ().clear();
+
+	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_RUNTYPE>(QString());
+	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SPEED>(QString());
+	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SHOWRATE>(QString());
+	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_TIME>(QString());
+
 	g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_CLOSE);
 	return true;
 }
