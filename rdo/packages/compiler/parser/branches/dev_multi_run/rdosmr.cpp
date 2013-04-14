@@ -57,7 +57,7 @@ RDOSMR::RDOSMR()
 	, m_traceStartTime(rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
 	, m_traceEndTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
 	, m_runNumber     (0 )
-	, m_increment     (0 )
+	, m_increment     (1 )
 	, m_runCount      (0 )
 {}
 
@@ -91,7 +91,7 @@ rbool RDOSMR::Check()
 void RDOSMR::setIncrement()
 {
 	++m_increment;
-	m_runCount = m_increment;
+	m_runCount = m_increment - 1;//кол-во запусков меньше на 1;т.к. m_increment больше на 1, для того чтобы был прочитал первый блок
 }
 
 void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)

@@ -214,12 +214,12 @@ private:
 
 	void terminateModel();
 	void closeModel    ();
-	void runSeries     ();
+	void CheckRunSeries();
 
-	ShowMode  m_showMode; //! current show mode
-	double    m_showRate; //! current show rate
-	ruint     m_runCount;
-	ruint     m_runNumber;
+	ShowMode  m_showMode;  //! current show mode
+	double    m_showRate;  //! current show rate
+	ruint     m_runCount;  //! Общее количество прогонов
+	ruint     m_runNumber; //! Номер текущего прогона (нумерация начинается с 1)
 
 	rdo::textstream m_resultString;
 	rdo::textstream m_resultInfoString;

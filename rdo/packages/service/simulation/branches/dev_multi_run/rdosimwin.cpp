@@ -1069,7 +1069,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					//! Остановились сами нормально
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					closeModel();
-					runSeries();
+					CheckRunSeries();//если это не последний прогон, то запускаемся еще раз
 				}
 				else
 				{
@@ -1106,11 +1106,11 @@ rbool RDOThreadSimulator::parseModel()
 		m_exitCode = rdo::simulation::report::EC_OK;
 		if (m_runNumber != 0)
 		{
-			m_pParser->parse(m_runNumber);
+			m_pParser->parse(m_runNumber);// parse i-го блока
 		}
 		else
 		{
-			m_pParser->parse();
+			m_pParser->parse();// parse всей модели
 		}
 	}
 	catch (REF(rdo::compiler::parser::RDOSyntaxException))
@@ -1147,7 +1147,7 @@ void RDOThreadSimulator::runModel()
 {
 	if (m_runNumber == 0)
 	{
-		runSeries();
+		CheckRunSeries();//если серийный запуск и он первый, то останавливаем модель и запускаем заного с чтением одного блока
 	}
 
 	ASSERT(m_pParser );
@@ -1236,19 +1236,19 @@ void RDOThreadSimulator::closeModel()
 	}
 }
 
-void RDOThreadSimulator::runSeries()
+void RDOThreadSimulator::CheckRunSeries()
 {
 	if (m_runNumber == 0)
 	{
+		++m_runNumber;
 		closeModel();
 		parseModel();
-		++m_runNumber;
 	}
 	else if (m_runNumber < m_runCount && m_runNumber !=0)
 	{
+		++m_runNumber;
 		parseModel();
 		runModel();
-		++m_runNumber;
 	}
 	else
 	{
