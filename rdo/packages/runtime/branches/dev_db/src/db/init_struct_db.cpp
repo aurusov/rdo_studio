@@ -264,4 +264,13 @@ void InitSructDB::generateCreateDBQuery()
 		"FOREIGN KEY (rss_id) REFERENCES rss(id),"
 		"FOREIGN KEY (value) REFERENCES rdo_value(value_id)"
 		");");
+
+	m_queryList.push_back(
+		"create index on real_rv using hash (vv);"
+		"create index on int_rv using hash (vv);"
+		"create index on identificator_rv using hash (vv);"
+		"create index on bool_rv using hash (vv);"
+		"create index on string_rv using hash (vv);"
+		"create index on enum_rv using hash (vv);"
+		"create index on rss_param using hash (rss_id);");
 }
