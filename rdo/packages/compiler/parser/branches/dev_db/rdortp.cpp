@@ -149,12 +149,18 @@ void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDORTPResType::serializeInDB(REF(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	std::vector<int> indexContainer;
 	indexContainer.push_back(
+#endif
 		db.insertRowInd("rtp",QString("DEFAULT,'%1',%2")
 			.arg(QString::fromStdString(name()))
-			.arg(m_permanent ? "true" : "false")));
-
+			.arg(m_permanent ? "true" : "false"))
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
+			)
+#endif
+			;
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	indexContainer.push_back(-1);
 
 	BOOST_FOREACH(CREF(LPRDORTPParam) param, m_params)
@@ -163,6 +169,7 @@ void RDORTPResType::serializeInDB(REF(IDB) db) const
 		db.pushContext<std::vector<int>>(indexContainer);
 		param->serializeInDB(db);
 	}
+#endif
 }
 
 tstring RDORTPResType::name() const

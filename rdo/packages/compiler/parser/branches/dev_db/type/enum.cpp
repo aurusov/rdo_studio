@@ -219,6 +219,7 @@ rbool RDOEnumType::operator!= (CREF(RDOEnumType) pEnumType) const
 
 void RDOEnumType::serializeInDB(REF(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	if (db.isEmptyContext())
 	{
 		get_default().serializeInDB(db);
@@ -236,6 +237,9 @@ void RDOEnumType::serializeInDB(REF(IDB) db) const
 	}
 
 	db.pushContext<int>(enum_id);
+#else
+	NEVER_REACH_HERE;
+#endif
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

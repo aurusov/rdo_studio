@@ -137,6 +137,7 @@ LPTypeInfo RDOArrayType::typeInfo() const
 
 void RDOArrayType::serializeInDB(REF(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	if (db.isEmptyContext())
 	{
 		get_default().serializeInDB(db);
@@ -149,6 +150,9 @@ void RDOArrayType::serializeInDB(REF(IDB) db) const
 		db.insertRowInd("array_t",QString("DEFAULT,%1,%2")
 			.arg(db.popContext<int>())
 			.arg(default_id)));
+#else
+	NEVER_REACH_HERE;
+#endif
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

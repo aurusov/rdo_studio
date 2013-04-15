@@ -210,6 +210,7 @@ void RDOType__int::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDOType__int::serializeInDB(REF(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	if (db.isEmptyContext())
 	{
 		get_default().serializeInDB(db);
@@ -218,6 +219,9 @@ void RDOType__int::serializeInDB(REF(IDB) db) const
 	db.pushContext<int>(
 		db.insertRowInd("int",QString("DEFAULT,%1,NULL,NULL")
 			.arg(db.popContext<int>())));
+#else
+	NEVER_REACH_HERE;
+#endif
 }
 
 // --------------------------------------------------------------------------------
@@ -281,6 +285,7 @@ void RDOType__real::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDOType__real::serializeInDB(REF(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	if (db.isEmptyContext())
 	{
 		get_default().serializeInDB(db);
@@ -289,6 +294,9 @@ void RDOType__real::serializeInDB(REF(IDB) db) const
 	db.pushContext<int>(
 		db.insertRowInd("real",QString("DEFAULT,%1,NULL,NULL")
 			.arg(db.popContext<int>())));
+#else
+	NEVER_REACH_HERE;
+#endif
 }
 
 // --------------------------------------------------------------------------------
@@ -351,6 +359,7 @@ void RDOType__string::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDOType__string::serializeInDB(REF(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	if (db.isEmptyContext())
 	{
 		get_default().serializeInDB(db);
@@ -359,6 +368,9 @@ void RDOType__string::serializeInDB(REF(IDB) db) const
 	db.pushContext<int>(
 		db.insertRowInd("string",QString("DEFAULT,%1")
 			.arg(db.popContext<int>())));
+#else
+	NEVER_REACH_HERE;
+#endif
 }
 
 // --------------------------------------------------------------------------------
@@ -414,6 +426,7 @@ void RDOType__identificator::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDOType__identificator::serializeInDB(REF(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	if (db.isEmptyContext())
 	{
 		get_default().serializeInDB(db);
@@ -422,6 +435,9 @@ void RDOType__identificator::serializeInDB(REF(IDB) db) const
 	db.pushContext<int>(
 		db.insertRowInd("identificator",QString("DEFAULT,%1")
 			.arg(db.popContext<int>())));
+#else
+	NEVER_REACH_HERE;
+#endif
 }
 
 // --------------------------------------------------------------------------------
@@ -484,6 +500,7 @@ void RDOType__bool::writeModelStructure(REF(rdo::ostream) stream) const
 
 void RDOType__bool::serializeInDB(REF(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	if (db.isEmptyContext())
 	{
 		get_default().serializeInDB(db);
@@ -492,6 +509,9 @@ void RDOType__bool::serializeInDB(REF(IDB) db) const
 	db.pushContext<int>(
 		db.insertRowInd("bool",QString("DEFAULT,%1")
 			.arg(db.popContext<int>())));
+#else
+	NEVER_REACH_HERE;
+#endif
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

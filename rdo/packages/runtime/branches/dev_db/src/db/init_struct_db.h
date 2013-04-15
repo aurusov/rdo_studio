@@ -25,7 +25,9 @@ public:
 
 private:
 	void rdoValueTable        (QString tableName, QString dataType);
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	void dataTypeTable        (QString tableName);
+#endif
 	void trigger               (QString tableName, QString functionName);
 	void generateCreateDBQuery();
 

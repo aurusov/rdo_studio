@@ -30,13 +30,18 @@ CLASS(RDORTPParam):
 	    INSTANCE_OF      (RDOParam                        )
 	AND IMPLEMENTATION_OF(IModelStructure                 )
 	AND IMPLEMENTATION_OF(IName                           )
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	AND IMPLEMENTATION_OF(rdo::runtime::ISerializeTypeInDB)
+#endif
 {
 DECLARE_FACTORY(RDORTPParam);
 public:
 	DECLARE_IModelStructure;
 	DECLARE_IName;
+
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	virtual void serializeInDB(REF(IDB) db) const;
+#endif
 
 private:
 	RDORTPParam(CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault, CREF(RDOParserSrcInfo) src_info);

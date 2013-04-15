@@ -45,7 +45,9 @@ public:
 	static LPRDOValue getIdentificator(CREF(tstring)     identificator);
 	static LPRDOValue getUnknow       (CREF(RDOParserSrcInfo) src_info);
 
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	void serializeInDB(REF(IDB) db) const;
+#endif
 
 private:
 	// Неопределенный тип

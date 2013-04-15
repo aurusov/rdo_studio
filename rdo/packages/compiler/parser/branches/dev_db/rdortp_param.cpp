@@ -39,6 +39,7 @@ void RDORTPParam::writeModelStructure(REF(rdo::ostream) stream) const
 	getTypeInfo()->type()->writeModelStructure(stream);
 }
 
+#ifdef SERIALIZE_IN_DB_RTP_DETAILS
 void RDORTPParam::serializeInDB(REF(IDB) db) const
 {
 	std::vector<int> indexContainer = db.popContext<std::vector<int>>();
@@ -56,5 +57,6 @@ void RDORTPParam::serializeInDB(REF(IDB) db) const
 			.arg(indexContainer[0])
 			.arg(db.popContext<int>()));
 }
+#endif
 
 CLOSE_RDO_PARSER_NAMESPACE
