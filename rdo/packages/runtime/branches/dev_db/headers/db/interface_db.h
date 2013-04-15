@@ -19,7 +19,7 @@
 #include "utils\rdodebug.h"
 // --------------------------------------------------------------------------------
 
-#define SERIALIZE_IN_DB_RTP_DETAILS
+//#define SERIALIZE_IN_DB_RTP_DETAILS
 
 class IDB
 {
