@@ -813,8 +813,8 @@ void MainWindow::removeExcessActions()
 
 void MainWindow::onUpdateActions(rbool activated)
 {
-	updateAction(actWindowCascade       , activated, mdiArea, &QMdiArea::cascadeSubWindows);
-	updateAction(actWindowTitleHorzontal, activated, mdiArea, &QMdiArea::tileSubWindows   );
+	ActionActivator::updateAction(actWindowCascade       , activated, mdiArea, &QMdiArea::cascadeSubWindows);
+	ActionActivator::updateAction(actWindowTitleHorzontal, activated, mdiArea, &QMdiArea::tileSubWindows   );
 }
 
 void MainWindow::onUpdateTabMode(rbool activated)

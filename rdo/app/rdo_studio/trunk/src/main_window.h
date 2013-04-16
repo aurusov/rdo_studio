@@ -29,7 +29,6 @@ class MainWindow
 	: public QMainWindow
 	, public MainWindowBase
 	, public Ui::MainWindow
-	, public ActionActivator
 {
 Q_OBJECT
 
