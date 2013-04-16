@@ -89,15 +89,23 @@ public:
 private:
 	typedef  QMainWindow  parent_type;
 	typedef  QStringList  ReopenList;
-	typedef  std::map<QMdiSubWindow*, QAction*> SubWindowToAction;
+
+	struct SubWindowToAction
+	{
+		typedef  std::map<QMdiSubWindow*, QAction*>  Map;
+
+		Map                map;
+		QAction*           pSeparator;
+		QActionGroup*      pActionGroup;
+
+		SubWindowToAction(QObject* pParent);
+	};
 
 	SubWindowToAction  m_subWindowToAction;
 	int                m_updateTimerID;
 	LPStatusBar        m_pStatusBar;
 	ReopenList         m_reopenList;
 	QSignalMapper*     m_pInsertMenuSignalMapper;
-	QAction*           m_pSeparator;
-	QActionGroup*      m_pWindowAction;
 
 	void createStatusBar ();
 	void createToolBar   ();
