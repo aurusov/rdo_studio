@@ -76,17 +76,13 @@ Boost - The Boost C++ libraries are a set of free software libraries that extend
 3. Настройка окружения и IDE
 
 3.1. Для Windows
-3.1.1. Добавляем переменную окружения
-	BOOSTDIR=C:\boost_1_53_0
-	Не забывам перелогиниться в винде.
-
-3.1.2. В Visual Studio, заходим в настройки
+3.1.1. В Visual Studio, заходим в настройки
 
     Tools/Options/Projects and Solutions/VC++ Directories
 
 	Platform             = Win32
-	Show directories for = Include files, добавляем $(BOOSTDIR)
-	Show directories for = Library files, добавляем $(BOOSTDIR)\stage\lib
+	Show directories for = Include files, добавляем с:\boost_1_53_0
+	Show directories for = Library files, добавляем с:\boost_1_53_0\stage\lib
 
     Теперь можно компилировать rdo_studio.
 
