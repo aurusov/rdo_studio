@@ -746,12 +746,14 @@ void MainWindow::updateInsertMenu(rbool enabled)
 
 void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
 {
-	if (window && m_pSubWindows.find(window) == m_pSubWindows.end())
+	if (window && m_subWindowToAction.find(window) == m_subWindowToAction.end())
 	{
 		addNewAction(window);
 	}
 	if (window)
-		m_pSubWindows[window]->setChecked(true);
+	{
+		m_subWindowToAction[window]->setChecked(true);
+	}
 	removeExcessActions();
 }
 
@@ -762,12 +764,14 @@ void MainWindow::addNewAction(QMdiSubWindow* window)
 	QList<QMdiSubWindow *> windowList = mdiArea->subWindowList();
 
 	if (windowList.count() == 1)
+	{
 		addFirstSubWindow();
+	}
 
 	window->installEventFilter(this);
 
 	QAction* pAction = menuWindow->addAction(window->windowTitle());
-	m_pSubWindows[window] = pAction;
+	m_subWindowToAction[window] = pAction;
 	QObject::connect(pAction, &QAction::triggered, boost::function<void()>(boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window)));
 	m_pWindowAction->addAction(pAction);
 	pAction->setCheckable(true);
@@ -792,14 +796,14 @@ void MainWindow::removeExcessActions()
 {
 	QList<QMdiSubWindow *> windowList = mdiArea->subWindowList();
 
-	for (SubWindows::iterator it = m_pSubWindows.begin(); it != m_pSubWindows.end();)
+	for (SubWindowToAction::iterator it = m_subWindowToAction.begin(); it != m_subWindowToAction.end();)
 	{
 		if (!windowList.contains(it->first))
 		{
 			QObject::disconnect(it->second, &QAction::triggered, NULL, NULL);
 			menuWindow->removeAction(it->second);
 			m_pWindowAction->removeAction(it->second);
-			m_pSubWindows.erase(it++);
+			m_subWindowToAction.erase(it++);
 		}
 		else
 		{
@@ -808,7 +812,9 @@ void MainWindow::removeExcessActions()
 	}
 
 	if (m_pSeparator && windowList.empty())
+	{
 		removeLastSubWindow();
+	}
 }
 
 void MainWindow::onUpdateActions(rbool activated)
@@ -831,9 +837,9 @@ bool MainWindow::eventFilter(QObject *target, QEvent *event)
 {
 	if (QMdiSubWindow* pSubWindow = static_cast<QMdiSubWindow*>(target))
 	{
-		if (event->type() == QEvent::WindowTitleChange && m_pSubWindows.find(pSubWindow) != m_pSubWindows.end())
+		if (event->type() == QEvent::WindowTitleChange && m_subWindowToAction.find(pSubWindow) != m_subWindowToAction.end())
 		{
-			m_pSubWindows[pSubWindow]->setText(pSubWindow->windowTitle());
+			m_subWindowToAction[pSubWindow]->setText(pSubWindow->windowTitle());
 		}
 	}
 

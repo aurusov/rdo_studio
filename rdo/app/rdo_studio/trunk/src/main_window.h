@@ -89,15 +89,15 @@ public:
 private:
 	typedef  QMainWindow  parent_type;
 	typedef  QStringList  ReopenList;
-	typedef  std::map<QMdiSubWindow*, QAction*> SubWindows;
+	typedef  std::map<QMdiSubWindow*, QAction*> SubWindowToAction;
 
-	SubWindows      m_pSubWindows;
-	int             m_updateTimerID;
-	LPStatusBar     m_pStatusBar;
-	ReopenList      m_reopenList;
-	QSignalMapper*  m_pInsertMenuSignalMapper;
-	QAction*        m_pSeparator;
-	QActionGroup*   m_pWindowAction;
+	SubWindowToAction  m_subWindowToAction;
+	int                m_updateTimerID;
+	LPStatusBar        m_pStatusBar;
+	ReopenList         m_reopenList;
+	QSignalMapper*     m_pInsertMenuSignalMapper;
+	QAction*           m_pSeparator;
+	QActionGroup*      m_pWindowAction;
 
 	void createStatusBar ();
 	void createToolBar   ();
