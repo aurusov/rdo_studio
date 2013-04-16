@@ -556,8 +556,7 @@ dpt_search_name
 dpt_searcht_activity
 	: /* empty */
 	{
-		LPRDODPTActivity pActivity = NULL;
-		$$ = PARSER->stack().push(pActivity);
+		$$ = PARSER->stack().push(LPRDODPTActivity());
 	}
 	| dpt_searcht_activity dpt_search_name dpt_search_descr_param dpt_search_descr_value
 	{
@@ -835,8 +834,7 @@ dpt_some_descr_param
 dpt_some_activity
 	: /* empty */
 	{
-		LPRDODPTActivity pActivity = NULL;
-		$$ = PARSER->stack().push(pActivity);
+		$$ = PARSER->stack().push(LPRDODPTActivity());
 	}
 	| dpt_some_activity dpt_some_name dpt_some_descr_keyb dpt_some_descr_param
 	{
@@ -1104,8 +1102,7 @@ dpt_prior_activ_prior
 dpt_prior_activity
 	: /* empty */
 	{
-		LPRDODPTActivity pActivity = NULL;
-		$$ = PARSER->stack().push(pActivity);
+		$$ = PARSER->stack().push(LPRDODPTActivity());
 	}
 	| dpt_prior_activity dpt_prior_name dpt_prior_descr_keyb dpt_prior_descr_param dpt_prior_activ_prior
 	{
