@@ -101,7 +101,7 @@ private:
 		SubWindowToAction(QObject* pParent);
 	};
 
-	SubWindowToAction  m_subWindowToAction;
+	std::auto_ptr<SubWindowToAction>  m_subWindowToAction;
 	int                m_updateTimerID;
 	LPStatusBar        m_pStatusBar;
 	ReopenList         m_reopenList;

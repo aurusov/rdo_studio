@@ -68,9 +68,9 @@ MainWindow::SubWindowToAction::SubWindowToAction(QObject* pParent)
 MainWindow::MainWindow()
 	: m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
-	, m_subWindowToAction(menuWindow)
 {
 	setupUi(this);
+	m_subWindowToAction.reset(new SubWindowToAction(menuWindow));
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
 
 	createStatusBar ();
@@ -752,13 +752,13 @@ void MainWindow::updateInsertMenu(rbool enabled)
 
 void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
 {
-	if (window && m_subWindowToAction.map.find(window) == m_subWindowToAction.map.end())
+	if (window && m_subWindowToAction->map.find(window) == m_subWindowToAction->map.end())
 	{
 		addNewAction(window);
 	}
 	if (window)
 	{
-		m_subWindowToAction.map[window]->setChecked(true);
+		m_subWindowToAction->map[window]->setChecked(true);
 	}
 	removeExcessActions();
 }
@@ -777,23 +777,23 @@ void MainWindow::addNewAction(QMdiSubWindow* window)
 	window->installEventFilter(this);
 
 	QAction* pAction = menuWindow->addAction(window->windowTitle());
-	m_subWindowToAction.map[window] = pAction;
+	m_subWindowToAction->map[window] = pAction;
 	QObject::connect(pAction, &QAction::triggered, boost::function<void()>(boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window)));
-	m_subWindowToAction.pActionGroup->addAction(pAction);
+	m_subWindowToAction->pActionGroup->addAction(pAction);
 	pAction->setCheckable(true);
 }
 
 void MainWindow::addFirstSubWindow()
 {
-	m_subWindowToAction.pSeparator = menuWindow->addSeparator();
+	m_subWindowToAction->pSeparator = menuWindow->addSeparator();
 	onUpdateActions(true);
 	onUpdateTabMode(true);
 }
 
 void MainWindow::removeLastSubWindow()
 {
-	menuWindow->removeAction(m_subWindowToAction.pSeparator);
-	m_subWindowToAction.pSeparator = NULL;
+	menuWindow->removeAction(m_subWindowToAction->pSeparator);
+	m_subWindowToAction->pSeparator = NULL;
 	onUpdateActions(false);
 	onUpdateTabMode(false);
 }
@@ -802,14 +802,14 @@ void MainWindow::removeExcessActions()
 {
 	QList<QMdiSubWindow*> windowList = mdiArea->subWindowList();
 
-	for (SubWindowToAction::Map::const_iterator it = m_subWindowToAction.map.begin(); it != m_subWindowToAction.map.end();)
+	for (SubWindowToAction::Map::const_iterator it = m_subWindowToAction->map.begin(); it != m_subWindowToAction->map.end();)
 	{
 		if (!windowList.contains(it->first))
 		{
 			QObject::disconnect(it->second, &QAction::triggered, NULL, NULL);
 			menuWindow->removeAction(it->second);
-			m_subWindowToAction.pActionGroup->removeAction(it->second);
-			m_subWindowToAction.map.erase(it++);
+			m_subWindowToAction->pActionGroup->removeAction(it->second);
+			m_subWindowToAction->map.erase(it++);
 		}
 		else
 		{
@@ -817,7 +817,7 @@ void MainWindow::removeExcessActions()
 		}
 	}
 
-	if (m_subWindowToAction.pSeparator && windowList.empty())
+	if (m_subWindowToAction->pSeparator && windowList.empty())
 	{
 		removeLastSubWindow();
 	}
@@ -845,8 +845,8 @@ bool MainWindow::eventFilter(QObject *target, QEvent *event)
 	{
 		if (event->type() == QEvent::WindowTitleChange)
 		{
-			SubWindowToAction::Map::const_iterator it = m_subWindowToAction.map.find(pSubWindow);
-			if (it != m_subWindowToAction.map.end())
+			SubWindowToAction::Map::const_iterator it = m_subWindowToAction->map.find(pSubWindow);
+			if (it != m_subWindowToAction->map.end())
 			{
 				it->second->setText(pSubWindow->windowTitle());
 			}
