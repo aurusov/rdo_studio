@@ -93,13 +93,21 @@ private:
 	{
 		typedef  std::map<QMdiSubWindow*, QAction*>  Map;
 
-		Map                map;
-		QAction*           pSeparator;
-		QActionGroup*      pActionGroup;
+		SubWindowToAction(MainWindow* pMainWindow);
 
-		SubWindowToAction(QObject* pParent);
+		void onSubWindowActivated(QMdiSubWindow* pSubWindow);
+		void onTitleChanged      (QMdiSubWindow* pSubWindow);
 
-		void onTitleChanged(QMdiSubWindow* pSubWindow);
+	private:
+		MainWindow*   m_pMainWindow;
+		Map           m_map;
+		QAction*      m_pSeparator;
+		QActionGroup* m_pActionGroup;
+
+		Map::const_iterator addNewSubWindow(QMdiSubWindow* pSubWindow);
+		void removeExcessActions();
+		void addFirstSubWindow();
+		void removeLastSubWindow();
 	};
 
 	std::auto_ptr<SubWindowToAction>  m_subWindowToAction;
@@ -136,11 +144,6 @@ private:
 	void onUpdateTabMode     (bool activated);
 	void onSetTabbedViewMode (bool checked);
 	void onSubWindowActivated(QMdiSubWindow* window);
-
-	void addNewAction(QMdiSubWindow* window);
-	void removeExcessActions();
-	void addFirstSubWindow();
-	void removeLastSubWindow();
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOW_H_
