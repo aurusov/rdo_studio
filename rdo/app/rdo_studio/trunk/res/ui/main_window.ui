@@ -976,7 +976,7 @@ border: none;
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Расположить заголовками</string>
+    <string>Замостить</string>
    </property>
   </action>
   <action name="actWindowTabbedViewMode">
@@ -984,7 +984,7 @@ border: none;
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Режим табуляции</string>
+    <string>Режим вкладок</string>
    </property>
   </action>
   <action name="actModelShowRateIncFour">
