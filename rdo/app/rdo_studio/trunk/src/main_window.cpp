@@ -109,6 +109,7 @@ MainWindow::SubWindowToAction::addNewSubWindow(QMdiSubWindow* pSubWindow)
 	ASSERT(result.second);
 
 	m_pActionGroup->addAction(pAction);
+	pAction->setCheckable(true);
 
 	return result.first;
 }
