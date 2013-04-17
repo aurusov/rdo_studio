@@ -841,7 +841,7 @@ void MainWindow::onUpdateCascadeTitle(bool activated)
 		mdiArea, &QMdiArea::cascadeSubWindows
 	);
 	ActionActivator::updateAction(
-		actWindowTitleHorzontal,
+		actWindowTitle,
 		activated && mdiArea->viewMode() == QMdiArea::SubWindowView,
 		mdiArea, &QMdiArea::tileSubWindows
 	);

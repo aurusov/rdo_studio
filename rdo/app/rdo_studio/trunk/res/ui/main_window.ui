@@ -182,7 +182,7 @@ border: none;
      <string>Окна</string>
     </property>
     <addaction name="actWindowCascade"/>
-    <addaction name="actWindowTitleHorzontal"/>
+    <addaction name="actWindowTitle"/>
     <addaction name="actWindowTabbedViewMode"/>
    </widget>
    <addaction name="menuFile"/>
@@ -971,7 +971,7 @@ border: none;
     <string>Расположить каскадом</string>
    </property>
   </action>
-  <action name="actWindowTitleHorzontal">
+  <action name="actWindowTitle">
    <property name="enabled">
     <bool>false</bool>
    </property>
