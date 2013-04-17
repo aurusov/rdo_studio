@@ -98,6 +98,8 @@ private:
 		QActionGroup*      pActionGroup;
 
 		SubWindowToAction(QObject* pParent);
+
+		void onTitleChanged(QMdiSubWindow* pSubWindow);
 	};
 
 	std::auto_ptr<SubWindowToAction>  m_subWindowToAction;
