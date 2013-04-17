@@ -13,7 +13,6 @@
 #include "utils/warning_disable.h"
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
-#include <boost/function.hpp>
 #include <boost/range/algorithm/find.hpp>
 #include <QProcess>
 #include <QTextCodec>
