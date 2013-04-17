@@ -114,13 +114,13 @@ private:
 	void loadMenuFileReopen  ();
 	void saveMenuFileReopen  () const;
 
-	virtual void closeEvent(QCloseEvent* event);
-	virtual void showEvent (QShowEvent*  event);
-	virtual void hideEvent (QHideEvent*  event);
-	virtual void timerEvent(QTimerEvent* event);
-	bool eventFilter(QObject *target, QEvent *event);
+	virtual void closeEvent (QCloseEvent* event);
+	virtual void showEvent  (QShowEvent*  event);
+	virtual void hideEvent  (QHideEvent*  event);
+	virtual void timerEvent (QTimerEvent* event);
+	virtual bool eventFilter(QObject* target, QEvent* event);
 
-	void onSubWindowActivated(QMdiSubWindow*);
+	void onSubWindowActivated(QMdiSubWindow* window);
 	void onViewOptions ();
 	void onHelpWhatsNew();
 	void onHelpAbout   ();

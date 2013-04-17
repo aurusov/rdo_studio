@@ -759,7 +759,7 @@ void MainWindow::addNewAction(QMdiSubWindow* window)
 {
 	ASSERT(window);
 
-	QList<QMdiSubWindow *> windowList = mdiArea->subWindowList();
+	QList<QMdiSubWindow*> windowList = mdiArea->subWindowList();
 
 	if (windowList.count() == 1)
 	{
@@ -839,18 +839,15 @@ void MainWindow::onUpdateTabMode(rbool activated)
 	actWindowTabbedViewMode->setCheckable(activated);
 }
 
-bool MainWindow::eventFilter(QObject *target, QEvent *event)
+bool MainWindow::eventFilter(QObject* target, QEvent* event)
 {
-	if (QMdiSubWindow* pSubWindow = static_cast<QMdiSubWindow*>(target))
+	if (event->type() == QEvent::WindowTitleChange)
 	{
-		if (event->type() == QEvent::WindowTitleChange)
-		{
-			SubWindowToAction::Map::const_iterator it = m_subWindowToAction->map.find(pSubWindow);
-			if (it != m_subWindowToAction->map.end())
-			{
-				it->second->setText(pSubWindow->windowTitle());
-			}
-		}
+		ASSERT(dynamic_cast<QMdiSubWindow*>(target));
+		QMdiSubWindow* pSubWindow = static_cast<QMdiSubWindow*>(target);
+		SubWindowToAction::Map::const_iterator it = m_subWindowToAction->map.find(pSubWindow);
+		ASSERT(it != m_subWindowToAction->map.end());
+		it->second->setText(pSubWindow->windowTitle());
 	}
 
 	return parent_type::eventFilter(target, event);
@@ -861,4 +858,3 @@ void MainWindow::setTabbedViewMode(bool checked)
 	mdiArea->setViewMode(checked ? QMdiArea::TabbedView : QMdiArea::SubWindowView);
 	onUpdateActions(!checked);
 }
-
