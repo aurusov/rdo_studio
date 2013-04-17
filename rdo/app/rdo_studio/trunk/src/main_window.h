@@ -140,10 +140,13 @@ private:
 	void onMenuFileReopen(QAction* pAction);
 	void updateInsertMenu(rbool enabled);
 
-	void onUpdateCascadeTitle(bool activated);
-	void onUpdateTabMode     (bool activated);
-	void onSetTabbedViewMode (bool checked);
-	void onSubWindowActivated(QMdiSubWindow* window);
+	void onUpdateCascadeTitle   (bool activated);
+	void onUpdateTabMode        (bool activated);
+	void onSetTabbedViewMode    (bool checked);
+	void onSubWindowActivated   (QMdiSubWindow* window);
+	void onSubWindowStateChanged(Qt::WindowStates oldState, Qt::WindowStates newState);
+	template <class F>
+	void forAllSubWindows(F functor);
 
 	void updateWindowTitle();
 };
