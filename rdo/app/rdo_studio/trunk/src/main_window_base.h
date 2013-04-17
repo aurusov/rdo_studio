@@ -57,9 +57,8 @@ public:
 	virtual void update_start() = 0;
 	virtual void update_stop () = 0;
 
-	virtual void addSubWindow              (QWidget* pWidget) = 0;
-	virtual void activateSubWindow         (QWidget* pWidget) = 0;
-	virtual void connectOnActivateSubWindow(QObject* pObject) = 0;
+	virtual void addSubWindow     (QWidget* pWidget) = 0;
+	virtual void activateSubWindow(QWidget* pWidget) = 0;
 
 protected:
 	PTR(DockBuild)      m_pDockBuild;

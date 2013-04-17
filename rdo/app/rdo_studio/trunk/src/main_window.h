@@ -47,9 +47,8 @@ public:
 	void update_start();
 	void update_stop ();
 
-	virtual void addSubWindow              (QWidget* pWidget);
-	virtual void activateSubWindow         (QWidget* pWidget);
-	virtual void connectOnActivateSubWindow(QObject* pObject);
+	virtual void addSubWindow     (QWidget* pWidget);
+	virtual void activateSubWindow(QWidget* pWidget);
 
 	PTR(QSlider) m_pModelSpeedSlider;
 

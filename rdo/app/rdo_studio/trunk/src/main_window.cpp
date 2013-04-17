@@ -588,14 +588,6 @@ void MainWindow::activateSubWindow(QWidget* pWidget)
 	mdiArea->setActiveSubWindow(pSubWindow);
 }
 
-void MainWindow::connectOnActivateSubWindow(QObject* pObject)
-{
-	ASSERT(mdiArea);
-	ASSERT(pObject);
-
-	QObject::connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), pObject, SLOT(onSubWindowActivated(QMdiSubWindow*)));
-}
-
 void MainWindow::onDockVisibleChanged(rbool visible)
 {
 	if (!visible)
