@@ -836,12 +836,12 @@ void MainWindow::onUpdateCascadeTitle(bool activated)
 {
 	ActionActivator::updateAction(
 		actWindowCascade,
-		activated,
+		activated && mdiArea->viewMode() == QMdiArea::SubWindowView,
 		mdiArea, &QMdiArea::cascadeSubWindows
 	);
 	ActionActivator::updateAction(
 		actWindowTitleHorzontal,
-		activated,
+		activated && mdiArea->viewMode() == QMdiArea::SubWindowView,
 		mdiArea, &QMdiArea::tileSubWindows
 	);
 }
