@@ -159,6 +159,7 @@ MainWindow::MainWindow()
 	, m_pInsertMenuSignalMapper(NULL)
 {
 	setupUi(this);
+	installEventFilter(this);
 	m_subWindowToAction.reset(new SubWindowToAction(this));
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
 
@@ -867,14 +868,34 @@ void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
 	bool hasWindows = !mdiArea->subWindowList().isEmpty();
 	onUpdateCascadeTitle(hasWindows);
 	onUpdateTabMode(hasWindows);
+	updateWindowTitle();
+}
+
+void MainWindow::updateWindowTitle()
+{
+	QString appName("RAO Studio");
+	QString normalTitle = g_pModel->hasModel()
+		? QString("%1 - %2").arg(appName).arg(g_pModel->getName())
+		: appName;
+
+	if (windowTitle() != normalTitle)
+	{
+		setWindowTitle(normalTitle);
+	}
 }
 
 bool MainWindow::eventFilter(QObject* target, QEvent* event)
 {
 	if (event->type() == QEvent::WindowTitleChange)
 	{
-		ASSERT(dynamic_cast<QMdiSubWindow*>(target));
-		m_subWindowToAction->onTitleChanged(static_cast<QMdiSubWindow*>(target));
+		if (dynamic_cast<QMdiSubWindow*>(target))
+		{
+			m_subWindowToAction->onTitleChanged(static_cast<QMdiSubWindow*>(target));
+		}
+		else
+		{
+			updateWindowTitle();
+		}
 	}
 
 	return parent_type::eventFilter(target, event);

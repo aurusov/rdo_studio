@@ -144,6 +144,8 @@ private:
 	void onUpdateTabMode     (bool activated);
 	void onSetTabbedViewMode (bool checked);
 	void onSubWindowActivated(QMdiSubWindow* window);
+
+	void updateWindowTitle();
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOW_H_
