@@ -146,7 +146,7 @@ private:
 	void onSubWindowActivated   (QMdiSubWindow* window);
 	void onSubWindowStateChanged(Qt::WindowStates oldState, Qt::WindowStates newState);
 	template <class F>
-	void forAllSubWindows(F functor);
+	void forAllSubWindows(F functor, QMdiSubWindow* pTopSubWindow);
 
 	void updateWindowTitle();
 };

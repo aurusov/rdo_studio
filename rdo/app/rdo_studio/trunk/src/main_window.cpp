@@ -864,12 +864,7 @@ void MainWindow::onSetTabbedViewMode(bool checked)
 {
 	mdiArea->setViewMode(checked ? QMdiArea::TabbedView : QMdiArea::SubWindowView);
 	onUpdateCascadeTitle(!checked);
-
-	QList<QMdiSubWindow*> windowList = mdiArea->subWindowList();
-	BOOST_FOREACH(QMdiSubWindow* pSubWindow, windowList)
-	{
-		pSubWindow->showMaximized();
-	}
+	forAllSubWindows(boost::bind(&QWidget::showMaximized, _1), mdiArea->currentSubWindow());
 }
 
 void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
@@ -888,35 +883,34 @@ void MainWindow::onSubWindowStateChanged(Qt::WindowStates oldState, Qt::WindowSt
 
 	if ((newState & Qt::WindowMaximized) && !(oldState & Qt::WindowMaximized))
 	{
-		forAllSubWindows(boost::bind(&QWidget::showMaximized, _1));
+		forAllSubWindows(boost::bind(&QWidget::showMaximized, _1), dynamic_cast<QMdiSubWindow*>(sender()));
 	}
 	else if ((newState & ~Qt::WindowActive) == Qt::WindowNoState && (oldState & ~Qt::WindowActive) != Qt::WindowNoState)
 	{
-		forAllSubWindows(boost::bind(&QWidget::showNormal, _1));
+		forAllSubWindows(boost::bind(&QWidget::showNormal, _1), dynamic_cast<QMdiSubWindow*>(sender()));
 	}
 }
 
 template <class F>
-void MainWindow::forAllSubWindows(F functor)
+void MainWindow::forAllSubWindows(F functor, QMdiSubWindow* pTopSubWindow)
 {
 	static bool firstCall = true;
 	if (firstCall)
 	{
 		firstCall = false;
-		QMdiSubWindow* pSender = dynamic_cast<QMdiSubWindow*>(sender());
 		QList<QMdiSubWindow*> windowList = mdiArea->subWindowList();
 		BOOST_FOREACH(QMdiSubWindow* pSubWindow, windowList)
 		{
-			if (pSubWindow != pSender)
+			if (pSubWindow != pTopSubWindow)
 			{
 				functor(pSubWindow);
 			}
 		}
-		if (pSender)
+		if (pTopSubWindow)
 		{
-			functor(pSender);
-			pSender->raise();
-			pSender->setFocus();
+			functor(pTopSubWindow);
+			pTopSubWindow->raise();
+			pTopSubWindow->setFocus();
 		}
 		firstCall = true;
 	}
