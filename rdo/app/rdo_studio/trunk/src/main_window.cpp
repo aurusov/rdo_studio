@@ -163,6 +163,8 @@ MainWindow::MainWindow()
 	installEventFilter(this);
 	m_subWindowToAction.reset(new SubWindowToAction(this));
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
+	mdiArea->setTabsClosable(true);
+	mdiArea->setTabsMovable(true);
 
 	createStatusBar ();
 	createToolBar   ();
