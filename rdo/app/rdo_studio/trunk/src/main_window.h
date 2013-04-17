@@ -105,7 +105,7 @@ private:
 		QActionGroup* m_pActionGroup;
 
 		Map::const_iterator addNewSubWindow(QMdiSubWindow* pSubWindow);
-		void removeExcessActions();
+		void updateList();
 		void addFirstSubWindow();
 		void removeLastSubWindow();
 	};

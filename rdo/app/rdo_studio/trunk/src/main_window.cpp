@@ -77,7 +77,7 @@ void MainWindow::SubWindowToAction::onSubWindowActivated(QMdiSubWindow* pSubWind
 		ASSERT(it != m_map.end());
 		it->second->setChecked(true);
 	}
-	removeExcessActions();
+	updateList();
 }
 
 void MainWindow::SubWindowToAction::onTitleChanged(QMdiSubWindow* pSubWindow)
@@ -95,7 +95,7 @@ MainWindow::SubWindowToAction::addNewSubWindow(QMdiSubWindow* pSubWindow)
 
 	QList<QMdiSubWindow*> windowList = m_pMainWindow->mdiArea->subWindowList();
 
-	if (windowList.count() == 1)
+	if (windowList.count() == 1 && m_pSeparator == NULL)
 	{
 		addFirstSubWindow();
 	}
@@ -103,25 +103,17 @@ MainWindow::SubWindowToAction::addNewSubWindow(QMdiSubWindow* pSubWindow)
 	pSubWindow->installEventFilter(m_pMainWindow);
 
 	QAction* pAction = m_pMainWindow->menuWindow->addAction(pSubWindow->windowTitle());
+	QObject::connect(pAction, &QAction::triggered, boost::function<void()>(boost::bind(&QMdiArea::setActiveSubWindow, m_pMainWindow->mdiArea, pSubWindow)));
+
 	std::pair<Map::const_iterator, bool> result = m_map.insert(Map::value_type(pSubWindow, pAction));
 	ASSERT(result.second);
-	QObject::connect(pAction, &QAction::triggered, boost::function<void()>(boost::bind(&QMdiArea::setActiveSubWindow, m_pMainWindow->mdiArea, pSubWindow)));
+
 	m_pActionGroup->addAction(pAction);
+
 	return result.first;
 }
 
-void MainWindow::SubWindowToAction::addFirstSubWindow()
-{
-	m_pSeparator = m_pMainWindow->menuWindow->addSeparator();
-}
-
-void MainWindow::SubWindowToAction::removeLastSubWindow()
-{
-	m_pMainWindow->menuWindow->removeAction(m_pSeparator);
-	m_pSeparator = NULL;
-}
-
-void MainWindow::SubWindowToAction::removeExcessActions()
+void MainWindow::SubWindowToAction::updateList()
 {
 	QList<QMdiSubWindow*> windowList = m_pMainWindow->mdiArea->subWindowList();
 
@@ -140,10 +132,23 @@ void MainWindow::SubWindowToAction::removeExcessActions()
 		}
 	}
 
-	if (m_pSeparator && windowList.empty())
+	if (windowList.empty() && m_pSeparator)
 	{
 		removeLastSubWindow();
 	}
+}
+
+void MainWindow::SubWindowToAction::addFirstSubWindow()
+{
+	ASSERT(m_pSeparator == NULL);
+	m_pSeparator = m_pMainWindow->menuWindow->addSeparator();
+}
+
+void MainWindow::SubWindowToAction::removeLastSubWindow()
+{
+	ASSERT(m_pSeparator);
+	m_pMainWindow->menuWindow->removeAction(m_pSeparator);
+	m_pSeparator = NULL;
 }
 
 // --------------------------------------------------------------------------------
