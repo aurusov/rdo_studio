@@ -122,7 +122,6 @@ private:
 	virtual void timerEvent (QTimerEvent* event);
 	virtual bool eventFilter(QObject* target, QEvent* event);
 
-	void onSubWindowActivated(QMdiSubWindow* window);
 	void onViewOptions ();
 	void onHelpWhatsNew();
 	void onHelpAbout   ();
@@ -131,17 +130,17 @@ private:
 	void onToolBarModelOrientationChanged(Qt::Orientation orientation);
 
 	void onMenuFileReopen(QAction* pAction);
-
 	void updateInsertMenu(rbool enabled);
-	void onUpdateActions(rbool activated);
-	void onUpdateTabMode(rbool activated);
+
+	void onUpdateCascadeTitle(bool activated);
+	void onUpdateTabMode     (bool activated);
+	void onSetTabbedViewMode (bool checked);
+	void onSubWindowActivated(QMdiSubWindow* window);
 
 	void addNewAction(QMdiSubWindow* window);
 	void removeExcessActions();
 	void addFirstSubWindow();
 	void removeLastSubWindow();
-
-	void setTabbedViewMode(bool checked);
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOW_H_

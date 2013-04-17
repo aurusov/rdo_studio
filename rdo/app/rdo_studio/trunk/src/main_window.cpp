@@ -750,6 +750,36 @@ void MainWindow::updateInsertMenu(rbool enabled)
 	}
 }
 
+void MainWindow::onUpdateCascadeTitle(bool activated)
+{
+	ActionActivator::updateAction(
+		actWindowCascade,
+		activated,
+		mdiArea, &QMdiArea::cascadeSubWindows
+	);
+	ActionActivator::updateAction(
+		actWindowTitleHorzontal,
+		activated,
+		mdiArea, &QMdiArea::tileSubWindows
+	);
+}
+
+void MainWindow::onUpdateTabMode(bool activated)
+{
+	ActionActivator::updateAction(
+		actWindowTabbedViewMode,
+		activated,
+		boost::function<void (bool)>(boost::bind(&MainWindow::onSetTabbedViewMode, this, _1))
+	);
+	actWindowTabbedViewMode->setCheckable(activated);
+}
+
+void MainWindow::onSetTabbedViewMode(bool checked)
+{
+	mdiArea->setViewMode(checked ? QMdiArea::TabbedView : QMdiArea::SubWindowView);
+	onUpdateCascadeTitle(!checked);
+}
+
 void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
 {
 	if (window)
@@ -786,7 +816,7 @@ void MainWindow::addNewAction(QMdiSubWindow* window)
 void MainWindow::addFirstSubWindow()
 {
 	m_subWindowToAction->pSeparator = menuWindow->addSeparator();
-	onUpdateActions(true);
+	onUpdateCascadeTitle(true);
 	onUpdateTabMode(true);
 }
 
@@ -794,7 +824,7 @@ void MainWindow::removeLastSubWindow()
 {
 	menuWindow->removeAction(m_subWindowToAction->pSeparator);
 	m_subWindowToAction->pSeparator = NULL;
-	onUpdateActions(false);
+	onUpdateCascadeTitle(false);
 	onUpdateTabMode(false);
 }
 
@@ -821,36 +851,6 @@ void MainWindow::removeExcessActions()
 	{
 		removeLastSubWindow();
 	}
-}
-
-void MainWindow::onUpdateActions(rbool activated)
-{
-	ActionActivator::updateAction(
-		actWindowCascade,
-		activated,
-		mdiArea, &QMdiArea::cascadeSubWindows
-	);
-	ActionActivator::updateAction(
-		actWindowTitleHorzontal,
-		activated,
-		mdiArea, &QMdiArea::tileSubWindows
-	);
-}
-
-void MainWindow::onUpdateTabMode(rbool activated)
-{
-	ActionActivator::updateAction(
-		actWindowTabbedViewMode,
-		activated,
-		boost::function<void (bool)>(boost::bind(&MainWindow::setTabbedViewMode, this, _1))
-	);
-	actWindowTabbedViewMode->setCheckable(activated);
-}
-
-void MainWindow::setTabbedViewMode(bool checked)
-{
-	mdiArea->setViewMode(checked ? QMdiArea::TabbedView : QMdiArea::SubWindowView);
-	onUpdateActions(!checked);
 }
 
 bool MainWindow::eventFilter(QObject* target, QEvent* event)
