@@ -860,6 +860,12 @@ void MainWindow::onSetTabbedViewMode(bool checked)
 {
 	mdiArea->setViewMode(checked ? QMdiArea::TabbedView : QMdiArea::SubWindowView);
 	onUpdateCascadeTitle(!checked);
+
+	QList<QMdiSubWindow*> windowList = mdiArea->subWindowList();
+	BOOST_FOREACH(QMdiSubWindow* pSubWindow, windowList)
+	{
+		pSubWindow->showMaximized();
+	}
 }
 
 void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
