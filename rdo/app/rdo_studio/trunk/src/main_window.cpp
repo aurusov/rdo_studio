@@ -744,12 +744,12 @@ void MainWindow::updateInsertMenu(rbool enabled)
 
 void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
 {
-	if (window && m_subWindowToAction->map.find(window) == m_subWindowToAction->map.end())
-	{
-		addNewAction(window);
-	}
 	if (window)
 	{
+		if (m_subWindowToAction->map.find(window) == m_subWindowToAction->map.end())
+		{
+			addNewAction(window);
+		}
 		m_subWindowToAction->map[window]->setChecked(true);
 	}
 	removeExcessActions();
