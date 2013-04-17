@@ -817,17 +817,25 @@ void MainWindow::removeExcessActions()
 
 void MainWindow::onUpdateActions(rbool activated)
 {
-	ActionActivator::updateAction(actWindowCascade       , activated, mdiArea, &QMdiArea::cascadeSubWindows);
-	ActionActivator::updateAction(actWindowTitleHorzontal, activated, mdiArea, &QMdiArea::tileSubWindows   );
+	ActionActivator::updateAction(
+		actWindowCascade,
+		activated,
+		mdiArea, &QMdiArea::cascadeSubWindows
+	);
+	ActionActivator::updateAction(
+		actWindowTitleHorzontal,
+		activated,
+		mdiArea, &QMdiArea::tileSubWindows
+	);
 }
 
 void MainWindow::onUpdateTabMode(rbool activated)
 {
-	if (activated)
-		QObject::connect(actWindowTabbedViewMode, &QAction::triggered, boost::function<void (bool)>(boost::bind(&MainWindow::setTabbedViewMode, this, _1)));
-	else
-		QObject::disconnect(actWindowTabbedViewMode, &QAction::triggered, NULL, NULL);
-	actWindowTabbedViewMode->setEnabled(activated);
+	ActionActivator::updateAction(
+		actWindowTabbedViewMode,
+		activated,
+		boost::function<void (bool)>(boost::bind(&MainWindow::setTabbedViewMode, this, _1))
+	);
 	actWindowTabbedViewMode->setCheckable(activated);
 }
 
