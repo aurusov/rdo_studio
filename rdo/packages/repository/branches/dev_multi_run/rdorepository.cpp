@@ -569,7 +569,14 @@ void RDOThreadRepository::beforeModelStart()
 	}
 	if (m_files[rdoModelObjects::TRC].m_described)
 	{
-		m_traceFile.open(rdo::locale::convertToWStr(getFullFileNameSerial(rdoModelObjects::TRC)), std::ios::out | std::ios::binary);
+		if (kernel->simulator()->OldModelCheckSim())
+		{
+			m_traceFile.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::TRC)), std::ios::out | std::ios::binary);
+		}
+		else
+		{
+			m_traceFile.open(rdo::locale::convertToWStr(getFullFileNameSerial(rdoModelObjects::TRC)), std::ios::out | std::ios::binary);
+		}
 		if (m_traceFile.is_open())
 		{
 			writeModelFilesInfo(m_traceFile);
@@ -590,7 +597,14 @@ void RDOThreadRepository::stopModel()
 	if (m_files[rdoModelObjects::PMV].m_described)
 	{
 		boost::filesystem::ofstream results_file;
-		results_file.open(rdo::locale::convertToWStr(getFullFileNameSerial(rdoModelObjects::PMV)), std::ios::out | std::ios::binary);
+		if (kernel->simulator()->OldModelCheckSim())
+		{
+			results_file.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::PMV)), std::ios::out | std::ios::binary);
+		}
+		else
+		{
+			results_file.open(rdo::locale::convertToWStr(getFullFileNameSerial(rdoModelObjects::PMV)), std::ios::out | std::ios::binary);
+		}
 		if (results_file.is_open())
 		{
 			writeModelFilesInfo(results_file);
