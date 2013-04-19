@@ -58,6 +58,7 @@ RDOSMR::RDOSMR()
 	, m_traceEndTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
 	, m_runNumber     (0 )
 	, m_increment     (1 )
+	, m_oldModel      (0 )
 	, m_runCount      (0 )
 {}
 
@@ -88,12 +89,28 @@ rbool RDOSMR::Check()
 	}
 }
 
+rbool RDOSMR::OldModelCheck()
+{
+	if (m_oldModel == 1)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void RDOSMR::setIncrement()
 {
 	++m_increment;
 	m_runCount = m_increment - 1;//кол-во запусков меньше на 1;т.к. m_increment больше на 1, для того чтобы был прочитал первый блок
 }
 
+void RDOSMR::setOldModel()
+{
+	++m_oldModel;
+}
 void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
 {
 	if (value <= 0)

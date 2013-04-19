@@ -1334,6 +1334,11 @@ ruint RDOThreadSimulator::runNumberCheck() const
 	return m_runCount;
 }
 
+rbool RDOThreadSimulator::OldModelCheckSim() const
+{
+	return m_pParser->getSMR()->OldModelCheck();
+}
+
 void RDOThreadSimulator::codeCompletion()
 {}
 

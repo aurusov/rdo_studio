@@ -260,6 +260,7 @@ public:
 	double   getInitialShowRate   () const;
 	ruint    getInitialRunCount   () const;
 	ruint    runNumberCheck       () const;
+	rbool    OldModelCheckSim     () const;
 
 	struct GetList
 	{
