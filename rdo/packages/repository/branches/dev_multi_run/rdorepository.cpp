@@ -603,7 +603,7 @@ void RDOThreadRepository::stopModel()
 			results_file << std::endl << stream.str() << std::endl;
 		}
 	}
-	if (m_runNumber == kernel->simulator()->runNumberCheck())
+	if (m_runNumber == kernel->simulator()->runNumberCheck() || kernel->simulator()->runNumberCheck() == 0)
 	{
 		m_runNumber = 0;
 	}
