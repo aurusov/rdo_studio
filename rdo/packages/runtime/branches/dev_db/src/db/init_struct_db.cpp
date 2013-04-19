@@ -266,9 +266,194 @@ void InitStructDB::generateCreateTrcDBQuery()
 {
 	m_queryList.push_back(
 		"CREATE TABLE trc_resource_type("
-		"rtp_id			integer NOT NULL,"
-		"name			varchar(40) NOT NULL,"
-		"param_count	integer,"				//!!!!!
+		"rtp_id       integer NOT NULL,"
+		"name         varchar(40) NOT NULL,"
+		"param_count  integer,"					//!!!!!
 		"PRIMARY KEY (rtp_id)"
 		");");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_param("
+		"param_id    integer NOT NULL,"
+		"rtp_id      integer NOT NULL,"
+		"name        varchar(40) NOT NULL,"
+		"param_type  char(1) NOT NULL,"
+		"count       integer,"					//!!!!!
+		"PRIMARY KEY (param_id,rtp_id),"
+		"FOREIGN KEY (rtp_id) REFERENCES trc_resource_type(rtp_id)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_vv("
+		"param_id     integer NOT NULL,"
+		"rtp_id       integer NOT NULL,"
+		"string       varchar(40) NOT NULL,"
+		"int          integer NOT NULL,"
+		"PRIMARY KEY (param_id,rtp_id),"
+		"FOREIGN KEY (param_id,rtp_id) REFERENCES trc_param(param_id,rtp_id)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_resources("
+		"res_id integer NOT NULL,"
+		"name   varchar(40) NOT NULL,"
+		"rtp_id integer NOT NULL,"
+		"PRIMARY KEY (res_id),"
+		"FOREIGN KEY (rtp_id) REFERENCES trc_resource_type(rtp_id)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_patterns("
+		"pat_id       integer NOT NULL,"
+		"name         varchar(40) NOT NULL,"
+		"type         char(1) NOT NULL,"
+		"count_res    integer,"				//!!!!!
+		"PRIMARY KEY (pat_id)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_relres("
+		"id           serial NOT NULL,"
+		"rtp_id       integer NOT NULL,"
+		"pat_id       integer NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (rtp_id) REFERENCES trc_resource_type(rtp_id),"
+		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_activities("
+		"act_id       integer NOT NULL,"
+		"name         varchar(40) NOT NULL,"
+		"pat_id       integer NOT NULL,"
+		"PRIMARY KEY (act_id),"
+		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_time("
+		"time         real NOT NULL,"
+		"PRIMARY KEY (time)"
+		");");
+
+	m_queryList.push_back("CREATE SEQUENCE trc_row_id;");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_rows("
+		"id           integer NOT NULL,"
+		"tableid      integer NOT NULL,"
+		"type         varchar(5) NOT NULL,"
+		"PRIMARY KEY (id)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE FUNCTION trc_copy_row() RETURNS TRIGGER AS $trig$ "
+		"BEGIN "
+		"INSERT INTO trc_rows VALUES "
+		"(NEW.id, NEW.tableoid, NEW.type); "
+		"RETURN NULL; "
+		"END; "
+		"$trig$ LANGUAGE plpgsql;");
+
+	m_queryList.push_back(
+		"CREATE FUNCTION trc_copy_es_row() RETURNS TRIGGER AS $trig$ "
+		"BEGIN "
+		"INSERT INTO trc_rows VALUES "
+		"(NEW.id, NEW.tableoid, 'ES'); "
+		"RETURN NULL; "
+		"END; "
+		"$trig$ LANGUAGE plpgsql;");
+
+	m_queryList.push_back(
+		"CREATE FUNCTION trc_copy_er_row() RETURNS TRIGGER AS $trig$ "
+		"BEGIN "
+		"INSERT INTO trc_rows VALUES "
+		"(NEW.id, NEW.tableoid, 'ER'); "
+		"RETURN NULL; "
+		"END; "
+		"$trig$ LANGUAGE plpgsql;");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_es("
+		"id		integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"time	real NOT NULL,"
+		"sno		integer NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (time) REFERENCES trc_time(time)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE TRIGGER trc_es_trig "
+		"AFTER INSERT ON trc_es "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_es_row();");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_eb_ef("
+		"id           integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"time         real NOT NULL,"
+		"type         varchar(5) NOT NULL,"
+		"internal_id  integer NOT NULL,"
+		"act_id       integer NOT NULL,"
+		"pat_id       integer NOT NULL,"					//!!!!!
+		"res_count    integer NOT NULL,"					//!!!!!
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (time) REFERENCES trc_time(time),"
+		"FOREIGN KEY (act_id) REFERENCES trc_activities(act_id),"
+		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_e_res("
+		"id           serial,"
+		"e_id         integer NOT NULL,"
+		"res_id       integer NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (res_id) REFERENCES trc_resources(res_id)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE TRIGGER trc_eb_ef_trig "
+		"AFTER INSERT ON trc_eb_ef "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_row();");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_ei_ee("
+		"id           integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"time         real NOT NULL,"
+		"type         varchar(5) NOT NULL,"
+		"evnt_id      integer NOT NULL,"
+		"pat_id       integer NOT NULL,"			//!!!!!
+		"res_count    integer NOT NULL,"			//!!!!!
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (time) REFERENCES trc_time(time),"
+		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE TRIGGER trc_ei_ee_trig "
+		"AFTER INSERT ON trc_ei_ee "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_row();");
+
+	m_queryList.push_back(
+		"CREATE TABLE trc_er("
+		"id           integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"time         real NOT NULL,"
+		"type         varchar(5) NOT NULL,"
+		"internal_id  integer NOT NULL,"
+		"rule_id      integer NOT NULL,"
+		"pat_id       integer NOT NULL,"			//!!!!!
+		"res_count    integer NOT NULL,"			//!!!!!
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (time) REFERENCES trc_time(time),"
+		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
+		");");
+
+	m_queryList.push_back(
+		"CREATE TRIGGER trc_er_trig "
+		"AFTER INSERT ON trc_er "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_er_row();");
 }
