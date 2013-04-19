@@ -72,9 +72,13 @@ void RDORuntime::init()
 {
 	memory_insert(sizeof(RDORuntime));
 
-	InitSructDB::dropDB("rdo");
-	InitSructDB::createDB("rdo");
-	m_db = new InitSructDB();
+	InitStructDB::dropDB("rdo");
+	InitStructDB::dropDB("trc");
+	InitStructDB::createDB("rdo");
+	InitStructDB::createDB("trc");
+
+	m_db    = new InitStructDB("rdo");
+	m_trcDB = new InitStructDB("trc");
 }
 
 void RDORuntime::deinit()
@@ -287,6 +291,11 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 PTR(GeneralDB) RDORuntime::getDB()
 {
 	return m_db;
+}
+
+PTR(GeneralDB) RDORuntime::getTrcDB()
+{
+	return m_trcDB;
 }
 
 void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer pLogic, CREF(LPIEvent) pEvent)
