@@ -1069,7 +1069,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					//! Остановились сами нормально
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					closeModel();
-					CheckRunSeries();//если это не последний прогон, то запускаемся еще раз
+					runModel();//если это не последний прогон, то запускаемся еще раз
 				}
 				else
 				{
@@ -1145,18 +1145,23 @@ rbool RDOThreadSimulator::parseModel()
 
 void RDOThreadSimulator::runModel()
 {
-	if (m_runNumber == 0)
+	if (m_runNumber < m_runCount || m_runNumber ==0)
 	{
-		CheckRunSeries();//если серийный запуск и он первый, то останавливаем модель и запускаем заного с чтением одного блока
+		++m_runNumber;
+		parseModel();
+
+		ASSERT(m_pParser );
+		ASSERT(m_pRuntime);
+
+		m_pParser->error().clear();
+		m_exitCode = rdo::simulation::report::EC_OK;
+		m_pRuntime->setStudioThread(kernel->studio());
+		m_pThreadRuntime = rdo::Factory<rdo::runtime::RDOThreadRunTime>::create();
 	}
-
-	ASSERT(m_pParser );
-	ASSERT(m_pRuntime);
-
-	m_pParser->error().clear();
-	m_exitCode = rdo::simulation::report::EC_OK;
-	m_pRuntime->setStudioThread(kernel->studio());
-	m_pThreadRuntime = rdo::Factory<rdo::runtime::RDOThreadRunTime>::create();
+	else
+	{
+		m_runNumber = 0;
+	}
 }
 
 void RDOThreadSimulator::stopModel()
@@ -1233,26 +1238,6 @@ void RDOThreadSimulator::closeModel()
 	{
 		m_pParser = NULL;
 		TRACE("******************************** Ошибка удаления m_pParser\n");
-	}
-}
-
-void RDOThreadSimulator::CheckRunSeries()
-{
-	if (m_runNumber == 0)
-	{
-		++m_runNumber;
-		closeModel();
-		parseModel();
-	}
-	else if (m_runNumber < m_runCount && m_runNumber !=0)
-	{
-		++m_runNumber;
-		parseModel();
-		runModel();
-	}
-	else
-	{
-		m_runNumber = 0;
 	}
 }
 

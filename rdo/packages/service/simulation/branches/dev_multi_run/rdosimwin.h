@@ -214,7 +214,6 @@ private:
 
 	void terminateModel();
 	void closeModel    ();
-	void CheckRunSeries();
 
 	ShowMode  m_showMode;  //! current show mode
 	double    m_showRate;  //! current show rate
