@@ -14,34 +14,39 @@
 #include "simulator\runtime\src\db\init_struct_db.h"
 // --------------------------------------------------------------------------------
 
-InitSructDB::InitSructDB()
+InitStructDB::InitStructDB(QString nameDB)
+	: GeneralDB("localhost", nameDB, "postgres", "rdo", 5432)
 {
-	generateCreateDBQuery();
+	if(nameDB == QString("rdo"))
+		generateCreateDBQuery   ();
+	if(nameDB == QString("trc"))
+		generateCreateTrcDBQuery();
+
 	queryExec(m_queryList);
 	m_queryList.clear();
 }
 
-void InitSructDB::dropDB(QString db)
+void InitStructDB::dropDB(QString db)
 {
 	{
-		GeneralDB dbTemp("localhost", "postgres", "postgres", db, 5432);
+		GeneralDB dbTemp("localhost", "postgres", "postgres", "rdo", 5432);
 		dbTemp.queryExec(QString("DROP DATABASE IF EXISTS %1;")
 			.arg(db));
 	}
-	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	QSqlDatabase::removeDatabase("postgres");
 }
 
-void InitSructDB::createDB(QString db)
+void InitStructDB::createDB(QString db)
 {
 	{
-		GeneralDB dbTemp("localhost", "postgres", "postgres", db, 5432);
+		GeneralDB dbTemp("localhost", "postgres", "postgres", "rdo", 5432);
 		dbTemp.queryExec(QString("CREATE DATABASE %1;")
 			.arg(db));
 	}
-	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	QSqlDatabase::removeDatabase("postgres");
 }
 
-void InitSructDB::rdoValueTable(QString tableName, QString dataType)
+void InitStructDB::rdoValueTable(QString tableName, QString dataType)
 {
 	m_queryList.push_back(QString(
 		"CREATE TABLE %1("
@@ -56,7 +61,7 @@ void InitSructDB::rdoValueTable(QString tableName, QString dataType)
 }
 
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
-void InitSructDB::dataTypeTable(QString tableName)
+void InitStructDB::dataTypeTable(QString tableName)
 {
 	m_queryList.push_back(QString(
 		"CREATE TABLE %1("
@@ -71,7 +76,7 @@ void InitSructDB::dataTypeTable(QString tableName)
 }
 #endif
 
-void InitSructDB::trigger(QString tableName, QString functionName)
+void InitStructDB::trigger(QString tableName, QString functionName)
 {
 	m_queryList.push_back(QString(
 		"CREATE TRIGGER %1_trig "
@@ -82,7 +87,7 @@ void InitSructDB::trigger(QString tableName, QString functionName)
 		.arg(functionName));
 }
 
-void InitSructDB::generateCreateDBQuery()
+void InitStructDB::generateCreateDBQuery()
 {
 	m_queryList.push_back(
 		"CREATE TABLE rtp("
@@ -254,5 +259,16 @@ void InitSructDB::generateCreateDBQuery()
 		"PRIMARY KEY (id,rss_id),"
 		"FOREIGN KEY (rss_id) REFERENCES rss(id),"
 		"FOREIGN KEY (value) REFERENCES rdo_value(value_id)"
+		");");
+}
+
+void InitStructDB::generateCreateTrcDBQuery()
+{
+	m_queryList.push_back(
+		"CREATE TABLE trc_resource_type("
+		"rtp_id			integer NOT NULL,"
+		"name			varchar(40) NOT NULL,"
+		"param_count	integer,"				//!!!!!
+		"PRIMARY KEY (rtp_id)"
 		");");
 }

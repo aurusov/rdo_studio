@@ -20,7 +20,6 @@
 class GeneralDB: public IDB
 {
 public:
-	GeneralDB();
 	GeneralDB(
 		const QString& hostName,
 		const QString& databaseName,
@@ -30,19 +29,19 @@ public:
 	);
 	~GeneralDB();
 
-	virtual void insertRow     (const QString& tableName, const QString& qRow);
-	virtual int  insertRowInd  (const QString& tableName, const QString& qRow);
-	virtual void queryExec     (const QString&   query                       );
-	virtual void queryExec     (const QueryList& query                       );
+	virtual void         insertRow     (const QString& tableName, const QString& qRow);
+	virtual int          insertRowInd  (const QString& tableName, const QString& qRow);
+	virtual void         queryExec     (const QString&   query                       );
+	virtual void         queryExec     (const QueryList& query                       );
 
-	virtual int  queryExecIndex(const QString& table                         );
-	virtual void pushContxt    (CREF(bany) context                           );
-	virtual bany popContxt     (                                             );
-	virtual bool isEmptyContext(                                             );
+	virtual void         pushContxt    (CREF(bany) context);
+	virtual bany         popContxt     ();
+	virtual bool         isEmptyContext();
+
+	virtual QSqlDatabase getQtDB       ();
 
 private:
 	void initDB();
-	void setDefParams();
 
 	QString      m_hostName;
 	QString      m_databaseName;
@@ -50,7 +49,6 @@ private:
 	QString      m_password;
 	int          m_port;
 	QSqlDatabase m_db;
-	QSqlQuery    m_query;
 
 	bany m_context;
 };

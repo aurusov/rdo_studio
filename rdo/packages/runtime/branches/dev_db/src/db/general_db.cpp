@@ -28,14 +28,6 @@ GeneralDB::GeneralDB(const QString& hostName, const QString& databaseName, const
 	initDB();
 }
 
-GeneralDB::GeneralDB()
-{
-	setDefParams();
-	initDB      ();
-	QSqlQuery query;
-	m_query = query;
-}
-
 GeneralDB::~GeneralDB()
 {
 	m_db.close();
@@ -50,12 +42,13 @@ void GeneralDB::insertRow(const QString& tableName, const QString& qRow)
 
 int GeneralDB::insertRowInd(const QString& tableName, const QString& qRow)
 {
-	m_query.exec(QString("INSERT INTO %1 VALUES(%2) RETURNING id;")
+	QSqlQuery* query = new QSqlQuery(m_db);
+	query->exec(QString("INSERT INTO %1 VALUES(%2) RETURNING id;")
 		.arg(tableName)
 		.arg(qRow));
-	m_query.next();
+	query->next();
 
-	return m_query.value(m_query.record().indexOf("id")).toInt();
+	return query->value(query->record().indexOf("id")).toInt();
 }
 
 void GeneralDB::queryExec(const QueryList& query)
@@ -85,17 +78,6 @@ void GeneralDB::queryExec(const QString& query)
 	}
 }
 
-int GeneralDB::queryExecIndex(const QString& table)
-{
-	QSqlQuery query;
-	query.exec(QString("select max(id) as alt from %1;")
-		.arg(table ));
-	query.next();
-	int index = query.value(query.record().indexOf("alt")).toInt();
-	m_context = index;
-	return index;
-}
-
 void GeneralDB::pushContxt(CREF(bany) context)
 {
 	m_context = context;
@@ -114,9 +96,14 @@ bool GeneralDB::isEmptyContext()
 	return m_context.empty();
 }
 
+QSqlDatabase GeneralDB::getQtDB()
+{
+	return m_db;
+}
+
 void GeneralDB::initDB()
 {
-	m_db = QSqlDatabase::addDatabase("QPSQL");
+	m_db = QSqlDatabase::addDatabase("QPSQL",m_databaseName);
 
 	m_db.setHostName    (m_hostName);
 	m_db.setDatabaseName(m_databaseName);
@@ -128,13 +115,4 @@ void GeneralDB::initDB()
 	{
 		std::cout << "Connection to datebase failed! :(" << std::endl;
 	}
-}
-
-void GeneralDB::setDefParams()
-{
-	m_hostName     = "localhost";
-	m_databaseName = "rdo";
-	m_userName     = "postgres";
-	m_password     = "rdo";
-	m_port         = 5432;
 }

@@ -16,10 +16,10 @@
 #include "simulator\runtime\src\db\general_db.h"
 // --------------------------------------------------------------------------------
 
-class InitSructDB : public GeneralDB
+class InitStructDB : public GeneralDB
 {
 public:
-	InitSructDB();
+	InitStructDB(QString nameDB);
 	static void dropDB(QString db);
 	static void createDB(QString db);
 
@@ -28,8 +28,9 @@ private:
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	void dataTypeTable        (QString tableName);
 #endif
-	void trigger               (QString tableName, QString functionName);
+	void trigger              (QString tableName, QString functionName);
 	void generateCreateDBQuery();
+	void generateCreateTrcDBQuery();
 
 	GeneralDB::QueryList m_queryList;
 };
