@@ -159,9 +159,9 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 
 void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 {
-	QSqlQuery query;
+	QSqlQuery* query = new QSqlQuery(m_db->getQtDB());
 
-	query.exec(QString("select rss_param.value, pg_class.relname \
+	query->exec(QString("select rss_param.value, pg_class.relname \
 		from rss_param, pg_class, rdo_value \
 		where rss_param.rss_id=%1 \
 		and rss_param.id=%2 \
@@ -169,9 +169,9 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 		and rdo_value.value_id=rss_param.value;")
 			.arg(getTraceID())
 			.arg(index));
-	query.next();
-	int value_id = query.value(query.record().indexOf("value")).toInt();
-	QString table_name = query.value(query.record().indexOf("relname")).toString();
+	query->next();
+	int value_id = query->value(query->record().indexOf("value")).toInt();
+	QString table_name = query->value(query->record().indexOf("relname")).toString();
 
 	#define DEFINE_RDO_VALUE(Value)                               \
 		m_db->queryExec(QString("update %1 set vv=%2 where id=%3")\
@@ -201,9 +201,9 @@ CREF(RDOValue) RDOResource::getParam(ruint index)
 	ASSERT(index < m_paramList.size());
 
 #ifndef DB_CACHE_ENABLE
-	QSqlQuery query;
+	QSqlQuery* query = new QSqlQuery(*db);
 
-	query.exec(QString("select rss_param.value, pg_class.relname \
+	query->exec(QString("select rss_param.value, pg_class.relname \
 		from rss_param, pg_class, rdo_value \
 		where rss_param.rss_id=%1 \
 		and rss_param.id=%2 \
@@ -211,16 +211,16 @@ CREF(RDOValue) RDOResource::getParam(ruint index)
 		and rdo_value.value_id=rss_param.value;")
 			.arg(getTraceID())
 			.arg(index));
-	query.next();
-	int value_id = query.value(query.record().indexOf("value")).toInt();
-	QString table_name = query.value(query.record().indexOf("relname")).toString();
+	query->next();
+	int value_id = query->value(query->record().indexOf("value")).toInt();
+	QString table_name = query->value(query->record().indexOf("relname")).toString();
 
-	query.exec(QString("select vv from %1 where id=%2;")
+	query->exec(QString("select vv from %1 where id=%2;")
 		.arg(table_name)
 		.arg(value_id));
-	query.next();
+	query->next();
 
-	QVariant varValue = query.value(query.record().indexOf("vv"));
+	QVariant varValue = query->value(query->record().indexOf("vv"));
 
 	if (table_name == QString("int_rv"))
 	{

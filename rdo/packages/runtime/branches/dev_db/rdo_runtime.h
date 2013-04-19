@@ -206,6 +206,7 @@ public:
 	void resetPreparingFrame();
 
 	PTR(GeneralDB) getDB();
+	PTR(GeneralDB) getTrcDB();
 
 private:
 	RDORuntime(PTR(Error) pError);
@@ -228,6 +229,7 @@ private:
 	PTR(Error)          m_pError;
 	RDOHotKey           m_hotKey;
 	GeneralDB*          m_db;
+	GeneralDB*          m_trcDB;
 
 #ifdef _DEBUG
 	typedef  std::vector<ValueList>  State;

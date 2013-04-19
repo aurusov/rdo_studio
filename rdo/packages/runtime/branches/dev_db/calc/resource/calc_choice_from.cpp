@@ -106,14 +106,13 @@ RDOValue RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_sqlFlag)
 	{
-		QSqlQuery query;
-		PTR(GeneralDB) db = pRuntime->getDB();
-		query.exec(m_sqlQuery);
+		QSqlQuery* query = new QSqlQuery(pRuntime->getDB()->getQtDB());
+		query->exec(m_sqlQuery);
 
-		if (query.size() > 0)
+		if (query->size() > 0)
 		{
-			query.next();
-			pRuntime->getCurrentActivity()->setRelRes(m_relResID, query.value(query.record().indexOf("rss_id")).toInt());
+			query->next();
+			pRuntime->getCurrentActivity()->setRelRes(m_relResID, query->value(query->record().indexOf("rss_id")).toInt());
 			return RDOValue(1);
 		}
 

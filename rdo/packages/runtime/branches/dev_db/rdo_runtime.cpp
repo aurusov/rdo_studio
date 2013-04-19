@@ -72,9 +72,13 @@ void RDORuntime::init()
 {
 	memory_insert(sizeof(RDORuntime));
 
-	InitSructDB::dropDB("rdo");
-	InitSructDB::createDB("rdo");
-	m_db = new InitSructDB();
+	InitStructDB::dropDB("rdo");
+	InitStructDB::dropDB("trc");
+	InitStructDB::createDB("rdo");
+	InitStructDB::createDB("trc");
+
+	m_db    = new InitStructDB("rdo");
+	m_trcDB = new InitStructDB("trc");
 }
 
 void RDORuntime::deinit()
@@ -268,17 +272,17 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 			));
 		}
 	}
-#ifdef RDO_LIMIT_RES
-	if (m_resourceListByID.size() >= 200)
-	{
-		error().push(RDOSyntaxMessage(
-			"Сработало лицензионное ограничение на количество ресурсов. Обратитесь за приобритением полной версии",
-			rdoModelObjects::PAT,
-			0,
-			0
-		));
-	}
-#endif
+//#ifdef RDO_LIMIT_RES
+//	if (m_resourceListByID.size() >= 200)
+//	{
+//		error().push(RDOSyntaxMessage(
+//			"Сработало лицензионное ограничение на количество ресурсов. Обратитесь за приобритением полной версии",
+//			rdoModelObjects::PAT,
+//			0,
+//			0
+//		));
+//	}
+//#endif
 	m_resourceListByTime.push_back(pResource);
 
 	pResource->serializeInDB();
@@ -287,6 +291,11 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 PTR(GeneralDB) RDORuntime::getDB()
 {
 	return m_db;
+}
+
+PTR(GeneralDB) RDORuntime::getTrcDB()
+{
+	return m_trcDB;
 }
 
 void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer pLogic, CREF(LPIEvent) pEvent)
