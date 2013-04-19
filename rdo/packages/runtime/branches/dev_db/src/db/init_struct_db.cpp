@@ -18,22 +18,25 @@ InitSructDB::InitSructDB()
 {
 	generateCreateDBQuery();
 	queryExec(m_queryList);
+	m_queryList.clear();
 }
 
-void InitSructDB::dropDB()
+void InitSructDB::dropDB(QString db)
 {
 	{
-		GeneralDB dbTemp("localhost", "postgres", "postgres", "rdo", 5432);
-		dbTemp.queryExec("DROP DATABASE IF EXISTS rdo;");
+		GeneralDB dbTemp("localhost", "postgres", "postgres", db, 5432);
+		dbTemp.queryExec(QString("DROP DATABASE IF EXISTS %1;")
+			.arg(db));
 	}
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
 }
 
-void InitSructDB::createDB()
+void InitSructDB::createDB(QString db)
 {
 	{
-		GeneralDB dbTemp("localhost", "postgres", "postgres", "rdo", 5432);
-		dbTemp.queryExec("CREATE DATABASE rdo;");
+		GeneralDB dbTemp("localhost", "postgres", "postgres", db, 5432);
+		dbTemp.queryExec(QString("CREATE DATABASE %1;")
+			.arg(db));
 	}
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
 }
@@ -252,14 +255,4 @@ void InitSructDB::generateCreateDBQuery()
 		"FOREIGN KEY (rss_id) REFERENCES rss(id),"
 		"FOREIGN KEY (value) REFERENCES rdo_value(value_id)"
 		");");
-
-	m_queryList.push_back(
-		"create index on real_rv using hash (vv);"
-		"create index on int_rv using hash (vv);"
-		"create index on identificator_rv using hash (vv);"
-		"create index on bool_rv using hash (vv);"
-		"create index on string_rv using hash (vv);"
-		"create index on enum_rv using hash (vv);"
-		"create index on rss_param using hash (rss_id);"
-		);
 }

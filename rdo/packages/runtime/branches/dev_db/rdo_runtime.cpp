@@ -72,8 +72,8 @@ void RDORuntime::init()
 {
 	memory_insert(sizeof(RDORuntime));
 
-	InitSructDB::dropDB();
-	InitSructDB::createDB();
+	InitSructDB::dropDB("rdo");
+	InitSructDB::createDB("rdo");
 	m_db = new InitSructDB();
 }
 

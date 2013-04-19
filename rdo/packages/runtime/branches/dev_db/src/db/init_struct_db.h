@@ -20,8 +20,8 @@ class InitSructDB : public GeneralDB
 {
 public:
 	InitSructDB();
-	static void dropDB();
-	static void createDB();
+	static void dropDB(QString db);
+	static void createDB(QString db);
 
 private:
 	void rdoValueTable        (QString tableName, QString dataType);
