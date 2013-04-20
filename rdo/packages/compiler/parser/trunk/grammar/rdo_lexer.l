@@ -481,12 +481,6 @@ false {
 	return RDO_BOOL_CONST;
 }
 
-([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-z\xA8\xB8\xC0-\xFF_][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*
-{
-	LEXER->setvalue(NULL);
-	return RDO_IDENTIF_BAD;
-}
-
 [A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
