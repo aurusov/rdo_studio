@@ -31,8 +31,6 @@ private:
 	void trigger              (QString tableName, QString functionName);
 	void generateCreateDBQuery();
 	void generateCreateTrcDBQuery();
-
-	GeneralDB::QueryList m_queryList;
 };
 
 #endif // _SIMULATOR_PARSER_DB_INIT_STRUCT_H_

@@ -22,8 +22,7 @@ InitStructDB::InitStructDB(QString nameDB)
 	if(nameDB == QString("trc"))
 		generateCreateTrcDBQuery();
 
-	queryExec(m_queryList);
-	m_queryList.clear();
+	queryListExec();
 }
 
 void InitStructDB::dropDB(QString db)
@@ -48,7 +47,7 @@ void InitStructDB::createDB(QString db)
 
 void InitStructDB::rdoValueTable(QString tableName, QString dataType)
 {
-	m_queryList.push_back(QString(
+	queryListPushBack(QString(
 		"CREATE TABLE %1("
 		"id integer NOT NULL DEFAULT nextval('rdo_value_seq'),"
 		"vv %2 NOT NULL,"
@@ -63,7 +62,7 @@ void InitStructDB::rdoValueTable(QString tableName, QString dataType)
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
 void InitStructDB::dataTypeTable(QString tableName)
 {
-	m_queryList.push_back(QString(
+	queryListPushBack(QString(
 		"CREATE TABLE %1("
 		"id      integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
 		"def_val integer,"
@@ -78,7 +77,7 @@ void InitStructDB::dataTypeTable(QString tableName)
 
 void InitStructDB::trigger(QString tableName, QString functionName)
 {
-	m_queryList.push_back(QString(
+	queryListPushBack(QString(
 		"CREATE TRIGGER %1_trig "
 		"AFTER INSERT ON %1 "
 		"FOR EACH ROW "
@@ -89,7 +88,7 @@ void InitStructDB::trigger(QString tableName, QString functionName)
 
 void InitStructDB::generateCreateDBQuery()
 {
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE rtp("
 		"id       serial,"
 		"rtp_name VARCHAR(40) NOT NULL,"
@@ -98,14 +97,14 @@ void InitStructDB::generateCreateDBQuery()
 		");");
 
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE list_of_types_of_params("
 		"type_id  integer,"
 		"table_id integer NOT NULL,"
 		"PRIMARY KEY (type_id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE param_of_type("
 		"id          integer NOT NULL,"
 		"param_name  VARCHAR(40) NOT NULL,"
@@ -116,9 +115,9 @@ void InitStructDB::generateCreateDBQuery()
 		"FOREIGN KEY (type_id) REFERENCES list_of_types_of_params"
 		");");
 
-	m_queryList.push_back("CREATE SEQUENCE type_of_param_seq;");
+	queryListPushBack("CREATE SEQUENCE type_of_param_seq;");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE FUNCTION copy_type_id() RETURNS TRIGGER AS $trig$ "
 		"BEGIN "
 		"INSERT INTO list_of_types_of_params VALUES "
@@ -127,7 +126,7 @@ void InitStructDB::generateCreateDBQuery()
 		"END; "
 		"$trig$ LANGUAGE plpgsql; ");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE real("
 		"id          integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
 		"def_val     integer,"
@@ -141,7 +140,7 @@ void InitStructDB::generateCreateDBQuery()
 
 	trigger("real","copy_type_id");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE enum("
 		"id          integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
 		"def_val     integer,"
@@ -151,7 +150,7 @@ void InitStructDB::generateCreateDBQuery()
 
 	trigger("enum","copy_type_id");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE enum_valid_value("
 		"enum_id     integer,"
 		"vv_id       serial,"
@@ -161,7 +160,7 @@ void InitStructDB::generateCreateDBQuery()
 		"FOREIGN KEY (enum_id) REFERENCES enum"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE int("
 		"id          integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
 		"def_val     integer,"
@@ -175,7 +174,7 @@ void InitStructDB::generateCreateDBQuery()
 
 	trigger("int","copy_type_id");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE array_t("
 		"id          integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
 		"type_id     integer NOT NULL,"
@@ -187,7 +186,7 @@ void InitStructDB::generateCreateDBQuery()
 
 	trigger("array_t","copy_type_id");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE void("
 		"id      integer NOT NULL DEFAULT nextval('type_of_param_seq'),"
 		"PRIMARY KEY (id)"
@@ -200,16 +199,16 @@ void InitStructDB::generateCreateDBQuery()
 	dataTypeTable("string");
 #endif
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE rdo_value("
 		"value_id  integer,"
 		"table_id integer NOT NULL,"
 		"PRIMARY KEY (value_id)"
 		");");
 
-	m_queryList.push_back("CREATE SEQUENCE rdo_value_seq;");
+	queryListPushBack("CREATE SEQUENCE rdo_value_seq;");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE FUNCTION copy_rdo_value_id() RETURNS TRIGGER AS $trig$ "
 		"BEGIN "
 		"INSERT INTO rdo_value VALUES "
@@ -225,7 +224,7 @@ void InitStructDB::generateCreateDBQuery()
 	rdoValueTable("string_rv","VARCHAR(40)");
 	rdoValueTable("enum_rv","VARCHAR(40)");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE array_rv("
 		"id  integer NOT NULL DEFAULT nextval('rdo_value_seq'),"
 		"PRIMARY KEY (id)"
@@ -233,7 +232,7 @@ void InitStructDB::generateCreateDBQuery()
 
 	trigger("array_rv","copy_rdo_value_id");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE array_value("
 		"array_id      integer,"
 		"array_elem_id serial,"
@@ -242,7 +241,7 @@ void InitStructDB::generateCreateDBQuery()
 		"FOREIGN KEY   (array_id) REFERENCES array_rv"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE rss("
 		"id      integer NOT NULL,"
 		"rtp_id  integer NOT NULL,"
@@ -251,7 +250,7 @@ void InitStructDB::generateCreateDBQuery()
 		"FOREIGN KEY (rtp_id) REFERENCES rtp(id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE rss_param("
 		"rss_id   integer NOT NULL,"
 		"id       integer NOT NULL,"
@@ -264,7 +263,7 @@ void InitStructDB::generateCreateDBQuery()
 
 void InitStructDB::generateCreateTrcDBQuery()
 {
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_resource_type("
 		"rtp_id       integer NOT NULL,"
 		"name         varchar(40) NOT NULL,"
@@ -272,7 +271,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"PRIMARY KEY (rtp_id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_param("
 		"param_id    integer NOT NULL,"
 		"rtp_id      integer NOT NULL,"
@@ -283,7 +282,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"FOREIGN KEY (rtp_id) REFERENCES trc_resource_type(rtp_id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_vv("
 		"param_id     integer NOT NULL,"
 		"rtp_id       integer NOT NULL,"
@@ -293,7 +292,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"FOREIGN KEY (param_id,rtp_id) REFERENCES trc_param(param_id,rtp_id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_resources("
 		"res_id integer NOT NULL,"
 		"name   varchar(40) NOT NULL,"
@@ -302,7 +301,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"FOREIGN KEY (rtp_id) REFERENCES trc_resource_type(rtp_id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_patterns("
 		"pat_id       integer NOT NULL,"
 		"name         varchar(40) NOT NULL,"
@@ -311,7 +310,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"PRIMARY KEY (pat_id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_relres("
 		"id           serial NOT NULL,"
 		"rtp_id       integer NOT NULL,"
@@ -321,7 +320,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_activities("
 		"act_id       integer NOT NULL,"
 		"name         varchar(40) NOT NULL,"
@@ -330,15 +329,15 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_time("
 		"time         real NOT NULL,"
 		"PRIMARY KEY (time)"
 		");");
 
-	m_queryList.push_back("CREATE SEQUENCE trc_row_id;");
+	queryListPushBack("CREATE SEQUENCE trc_row_id;");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_rows("
 		"id           integer NOT NULL,"
 		"tableid      integer NOT NULL,"
@@ -346,7 +345,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"PRIMARY KEY (id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE FUNCTION trc_copy_row() RETURNS TRIGGER AS $trig$ "
 		"BEGIN "
 		"INSERT INTO trc_rows VALUES "
@@ -355,7 +354,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"END; "
 		"$trig$ LANGUAGE plpgsql;");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE FUNCTION trc_copy_es_row() RETURNS TRIGGER AS $trig$ "
 		"BEGIN "
 		"INSERT INTO trc_rows VALUES "
@@ -364,7 +363,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"END; "
 		"$trig$ LANGUAGE plpgsql;");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE FUNCTION trc_copy_er_row() RETURNS TRIGGER AS $trig$ "
 		"BEGIN "
 		"INSERT INTO trc_rows VALUES "
@@ -373,7 +372,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"END; "
 		"$trig$ LANGUAGE plpgsql;");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_es("
 		"id		integer NOT NULL DEFAULT nextval('trc_row_id'),"
 		"time	real NOT NULL,"
@@ -382,13 +381,13 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"FOREIGN KEY (time) REFERENCES trc_time(time)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TRIGGER trc_es_trig "
 		"AFTER INSERT ON trc_es "
 		"FOR EACH ROW "
 		"EXECUTE PROCEDURE trc_copy_es_row();");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_eb_ef("
 		"id           integer NOT NULL DEFAULT nextval('trc_row_id'),"
 		"time         real NOT NULL,"
@@ -403,7 +402,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_e_res("
 		"id           serial,"
 		"e_id         integer NOT NULL,"
@@ -412,13 +411,13 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"FOREIGN KEY (res_id) REFERENCES trc_resources(res_id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TRIGGER trc_eb_ef_trig "
 		"AFTER INSERT ON trc_eb_ef "
 		"FOR EACH ROW "
 		"EXECUTE PROCEDURE trc_copy_row();");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_ei_ee("
 		"id           integer NOT NULL DEFAULT nextval('trc_row_id'),"
 		"time         real NOT NULL,"
@@ -431,13 +430,13 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TRIGGER trc_ei_ee_trig "
 		"AFTER INSERT ON trc_ei_ee "
 		"FOR EACH ROW "
 		"EXECUTE PROCEDURE trc_copy_row();");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TABLE trc_er("
 		"id           integer NOT NULL DEFAULT nextval('trc_row_id'),"
 		"time         real NOT NULL,"
@@ -451,7 +450,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
 		");");
 
-	m_queryList.push_back(
+	queryListPushBack(
 		"CREATE TRIGGER trc_er_trig "
 		"AFTER INSERT ON trc_er "
 		"FOR EACH ROW "

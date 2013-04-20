@@ -78,6 +78,17 @@ void GeneralDB::queryExec(const QString& query)
 	}
 }
 
+void GeneralDB::queryListPushBack(const QString& query)
+{
+	m_queryList.push_back(query);
+}
+
+void GeneralDB::queryListExec()
+{
+	queryExec(m_queryList);
+	m_queryList.clear();
+}
+
 void GeneralDB::pushContxt(CREF(bany) context)
 {
 	m_context = context;

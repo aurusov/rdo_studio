@@ -29,16 +29,19 @@ public:
 	);
 	~GeneralDB();
 
-	virtual void         insertRow     (const QString& tableName, const QString& qRow);
-	virtual int          insertRowInd  (const QString& tableName, const QString& qRow);
-	virtual void         queryExec     (const QString&   query                       );
-	virtual void         queryExec     (const QueryList& query                       );
+	virtual void         insertRow        (const QString& tableName, const QString& qRow);
+	virtual int          insertRowInd     (const QString& tableName, const QString& qRow);
 
-	virtual void         pushContxt    (CREF(bany) context);
-	virtual bany         popContxt     ();
-	virtual bool         isEmptyContext();
+	virtual void         queryExec        (const QString&   query);
+	virtual void         queryExec        (const QueryList& query);
+	virtual void         queryListPushBack(const QString&   query);
+	virtual void         queryListExec    ();
 
-	virtual QSqlDatabase getQtDB       ();
+	virtual void         pushContxt       (CREF(bany) context);
+	virtual bany         popContxt        ();
+	virtual bool         isEmptyContext   ();
+
+	virtual QSqlDatabase getQtDB          ();
 
 private:
 	void initDB();
@@ -49,6 +52,7 @@ private:
 	QString      m_password;
 	int          m_port;
 	QSqlDatabase m_db;
+	QueryList    m_queryList;
 
 	bany m_context;
 };

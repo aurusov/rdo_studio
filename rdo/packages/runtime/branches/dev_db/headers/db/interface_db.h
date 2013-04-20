@@ -27,20 +27,22 @@ public:
 	typedef std::list<QString>   QueryList;
 	typedef boost::any           bany;
 
-	virtual void         insertRow     (const QString& tableName, const QString& qRow) = 0;
-	virtual int          insertRowInd  (const QString& tableName, const QString& qRow) = 0;
+	virtual void         insertRow        (const QString& tableName, const QString& qRow) = 0;
+	virtual int          insertRowInd     (const QString& tableName, const QString& qRow) = 0;
 
-	virtual void         queryExec     (const QString&   query                       ) = 0;
-	virtual void         queryExec     (const QueryList& query                       ) = 0;
+	virtual void         queryExec        (const QString&   query) = 0;
+	virtual void         queryExec        (const QueryList& query) = 0;
+	virtual void         queryListPushBack(const QString&   query) = 0;
+	virtual void         queryListExec    () = 0;
 
-	virtual void         pushContxt    (CREF(bany) context) = 0;
-	virtual bany         popContxt     () = 0;
-	virtual bool         isEmptyContext() = 0;
+	virtual void         pushContxt       (CREF(bany) context) = 0;
+	virtual bany         popContxt        () = 0;
+	virtual bool         isEmptyContext   () = 0;
 
-	virtual QSqlDatabase getQtDB       () = 0;
+	virtual QSqlDatabase getQtDB          () = 0;
 
-	template <class T> void pushContext(T context);
-	template <class T> T popContext    ();
+	template <class T> void pushContext   (T context);
+	template <class T> T popContext       ();
 };
 
 #include "simulator\runtime\src\db\interface_db.inl"
