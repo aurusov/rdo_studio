@@ -13,6 +13,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/lexical_cast.hpp>
+#include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdolocale.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
@@ -363,15 +364,26 @@ sprite                         return(RDO_sprite_call);
 	unput('.');
 	unput('.');
 	LEXER->loc_delta_pos(-2);
-	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(
+
+	rdo::compiler::parser::RDOParserSrcInfo srcInfo(
 		LEXER->m_lploc
 			? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, yText)
 			: rdo::compiler::parser::RDOParserSrcInfo(yText)
 	);
+
+	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(srcInfo);
 	ASSERT(pType);
 
 	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
-	int value = boost::lexical_cast<int>(yText);
+	int value = 0;
+	try
+	{
+		value = boost::lexical_cast<int>(yText);
+	}
+	catch (const boost::bad_lexical_cast&)
+	{
+		PARSER->error().error(srcInfo, boost::str(boost::format("Ошибка преобразования числа '%1%'. Возможно, число слишком большое.") % yText) );
+	}
 	LEXER->setvalue(PARSER->stack().push(
 		rdo::Factory<rdo::compiler::parser::RDOValue>::create(
 			value,
@@ -386,15 +398,25 @@ sprite                         return(RDO_sprite_call);
 
 	tstring yText = YYText();
 
-	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__real>(
+	rdo::compiler::parser::RDOParserSrcInfo srcInfo(
 		LEXER->m_lploc
 			? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, yText)
 			: rdo::compiler::parser::RDOParserSrcInfo(yText)
 	);
+
+	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__real>(srcInfo);
 	ASSERT(pType);
 
 	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
-	double value = boost::lexical_cast<double>(yText);
+	double value = 0;
+	try
+	{
+		value = boost::lexical_cast<double>(yText);
+	}
+	catch (const boost::bad_lexical_cast&)
+	{
+		PARSER->error().error(srcInfo, boost::str(boost::format("Ошибка преобразования числа '%1%'. Возможно, число слишком большое.") % yText) );
+	}
 	LEXER->setvalue(PARSER->stack().push(
 		rdo::Factory<rdo::compiler::parser::RDOValue>::create(
 			value,
@@ -410,15 +432,25 @@ sprite                         return(RDO_sprite_call);
 
 	tstring yText = YYText();
 
-	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(
+	rdo::compiler::parser::RDOParserSrcInfo srcInfo(
 		LEXER->m_lploc
 			? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, yText)
 			: rdo::compiler::parser::RDOParserSrcInfo(yText)
 	);
+
+	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(srcInfo);
 	ASSERT(pType);
 
 	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
-	int value = boost::lexical_cast<int>(yText);
+	int value = 0;
+	try
+	{
+		value = boost::lexical_cast<int>(yText);
+	}
+	catch (const boost::bad_lexical_cast&)
+	{
+		PARSER->error().error(srcInfo, boost::str(boost::format("Ошибка преобразования числа '%1%'. Возможно, число слишком большое.") % yText) );
+	}
 	LEXER->setvalue(PARSER->stack().push(
 		rdo::Factory<rdo::compiler::parser::RDOValue>::create(
 			value,

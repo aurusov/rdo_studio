@@ -12,6 +12,8 @@
 // ---------------------------------------------------------------------------- PCH
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/lexical_cast.hpp>
+#include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/grammar/rdobison.h"
 #include "converter/smr2rdox/grammar/rdogramma.h"
@@ -373,13 +375,27 @@ set					return(RDO_set);
 	unput('.');
 	LEXER->loc_delta_pos(-2);
 
+	rdo::converter::smr2rdox::RDOParserSrcInfo srcInfo(
+		LEXER->m_lploc
+			? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, yText)
+			: rdo::converter::smr2rdox::RDOParserSrcInfo(yText)
+	);
+
+	int value = 0;
+	try
+	{
+		value = boost::lexical_cast<int>(yText);
+	}
+	catch (const boost::bad_lexical_cast&)
+	{
+		CONVERTER->error().error(srcInfo, boost::str(boost::format("Ошибка преобразования числа '%1%'. Возможно, число слишком большое.") % yText) );
+	}
+
 	LEXER->setvalue(CONVERTER->stack().push(
 		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
-			boost::lexical_cast<int>(yText),
+			value,
 			rdo::Factory<rdo::converter::smr2rdox::RDOType__int>::create(),
-			LEXER->m_lploc
-				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, yText)
-				: rdo::converter::smr2rdox::RDOParserSrcInfo(yText)
+			srcInfo
 		)
 	));
 
@@ -390,13 +406,27 @@ set					return(RDO_set);
 
 	tstring yText = YYText();
 
+	rdo::converter::smr2rdox::RDOParserSrcInfo srcInfo(
+		LEXER->m_lploc
+			? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, yText)
+			: rdo::converter::smr2rdox::RDOParserSrcInfo(yText)
+	);
+
+	double value = 0;
+	try
+	{
+		value = boost::lexical_cast<double>(yText);
+	}
+	catch (const boost::bad_lexical_cast&)
+	{
+		CONVERTER->error().error(srcInfo, boost::str(boost::format("Ошибка преобразования числа '%1%'. Возможно, число слишком большое.") % yText) );
+	}
+
 	LEXER->setvalue(CONVERTER->stack().push(
 		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
-			boost::lexical_cast<double>(yText),
+			value,
 			rdo::Factory<rdo::converter::smr2rdox::RDOType__real>::create(),
-			LEXER->m_lploc
-				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, yText)
-				: rdo::converter::smr2rdox::RDOParserSrcInfo(yText)
+			srcInfo
 		)
 	));
 
@@ -407,13 +437,27 @@ set					return(RDO_set);
 
 	tstring yText = YYText();
 
+	rdo::converter::smr2rdox::RDOParserSrcInfo srcInfo(
+		LEXER->m_lploc
+			? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, yText)
+			: rdo::converter::smr2rdox::RDOParserSrcInfo(yText)
+	);
+
+	int value = 0;
+	try
+	{
+		value = boost::lexical_cast<int>(yText);
+	}
+	catch (const boost::bad_lexical_cast&)
+	{
+		CONVERTER->error().error(srcInfo, boost::str(boost::format("Ошибка преобразования числа '%1%'. Возможно, число слишком большое.") % yText) );
+	}
+
 	LEXER->setvalue(CONVERTER->stack().push(
 		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
-			boost::lexical_cast<int>(yText),
+			value,
 			rdo::Factory<rdo::converter::smr2rdox::RDOType__int>::create(),
-			LEXER->m_lploc
-				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, yText)
-				: rdo::converter::smr2rdox::RDOParserSrcInfo(yText)
+			srcInfo
 		)
 	));
 
