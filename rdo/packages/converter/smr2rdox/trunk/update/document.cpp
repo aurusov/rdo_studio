@@ -13,6 +13,7 @@
 #include <boost/filesystem.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/update/document.h"
+#include "utils/rdolocale.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
@@ -257,7 +258,8 @@ void Document::MemoryStream::init(REF(std::ifstream) stream)
 
 void Document::MemoryStream::get(REF(std::ofstream) stream) const
 {
-	stream.write(&m_buffer[0], m_buffer.size());
+	std::string result = rdo::locale::convertFromCLocale(std::string(&m_buffer[0], m_buffer.size()));
+	stream << result;
 }
 
 void Document::MemoryStream::insert(ruint to, CREF(tstring) value)
