@@ -33,10 +33,10 @@ CREF(tstring) RDORTPParam::name() const
 	return RDOParam::name();
 }
 
-void RDORTPParam::writeModelStructure(REF(rdo::ostream) stream) const
+void RDORTPParam::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	stream << name() << " ";
-	getTypeInfo()->type()->writeModelStructure(stream);
+	getTypeInfo()->type()->writeModelStructure(stream, db);
 }
 
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS

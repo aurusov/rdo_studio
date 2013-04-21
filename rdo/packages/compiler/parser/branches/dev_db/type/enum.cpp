@@ -182,7 +182,7 @@ rdo::runtime::RDOValue RDOEnumType::get_default() const
 	return rdo::runtime::RDOValue(getEnums(), 0);
 }
 
-void RDOEnumType::writeModelStructure(REF(rdo::ostream) stream) const
+void RDOEnumType::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	stream << "E " << getEnums()->getValues().size() << std::endl;
 	for (ruint i = 0; i < getEnums()->getValues().size(); i++)

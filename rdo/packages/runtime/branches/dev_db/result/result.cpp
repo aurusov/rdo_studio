@@ -595,27 +595,27 @@ CREF(RDOValue) RDOPMDGetValue::getValue() const
 	return m_value;
 }
 
-void RDOPMDWatchPar::writeModelStructure(REF(rdo::ostream) stream) const
+void RDOPMDWatchPar::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	stream << traceId() << " watch_par" << std::endl;
 }
 
-void RDOPMDWatchState::writeModelStructure(REF(rdo::ostream) stream) const
+void RDOPMDWatchState::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	stream << traceId() << " watch_state" << std::endl;
 }
 
-void RDOPMDWatchQuant::writeModelStructure(REF(rdo::ostream) stream) const
+void RDOPMDWatchQuant::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	stream << traceId() << " watch_quant" << std::endl;
 }
 
-void RDOPMDWatchValue::writeModelStructure(REF(rdo::ostream) stream) const
+void RDOPMDWatchValue::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	stream << traceId() << " watch_value" << std::endl;
 }
 
-void RDOPMDGetValue::writeModelStructure(REF(rdo::ostream) stream) const
+void RDOPMDGetValue::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	stream << traceId() << " get_value" << std::endl;
 }

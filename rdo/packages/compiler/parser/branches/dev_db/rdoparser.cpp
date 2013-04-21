@@ -354,6 +354,7 @@ tstring RDOParser::getModelStructure()
 {
 	rdo::textstream modelStructure;
 
+	GeneralDB* db = m_pRuntime->getTrcDB();
 	// $Changes
 	modelStructure << getChanges();
 
@@ -361,21 +362,21 @@ tstring RDOParser::getModelStructure()
 	modelStructure << std::endl << std::endl << "$Resource_type" << std::endl;
 	STL_FOR_ALL_CONST(m_allRTPResType, rtp_it)
 	{
-		(*rtp_it)->writeModelStructure(modelStructure);
+		(*rtp_it)->writeModelStructure(modelStructure, db);
 	}
 
 	// RSS
 	modelStructure << std::endl << "$Resources" << std::endl;
 	STL_FOR_ALL_CONST(m_allRSSResource, rss_it)
 	{
-		(*rss_it)->writeModelStructure(modelStructure);
+		(*rss_it)->writeModelStructure(modelStructure, db);
 	}
 
 	// PAT
 	modelStructure << std::endl << "$Pattern" << std::endl;
 	STL_FOR_ALL_CONST(m_allPATPattern, pat_it)
 	{
-		(*pat_it)->writeModelStructure(modelStructure);
+		(*pat_it)->writeModelStructure(modelStructure, db);
 	}
 
 	// OPR/DPT
@@ -423,7 +424,7 @@ tstring RDOParser::getModelStructure()
 				for (ruint i = name->name().length(); i < watching_max_length + 2; i++)
 					modelStructure << " ";
 
-				structure->writeModelStructure(modelStructure);
+				structure->writeModelStructure(modelStructure, db);
 			}
 		}
 	}

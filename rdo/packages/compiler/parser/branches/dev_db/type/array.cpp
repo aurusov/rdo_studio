@@ -109,10 +109,10 @@ rdo::runtime::RDOValue RDOArrayType::get_default() const
 	return rdo::runtime::RDOValue(getRuntimeArrayType(), rdo::Factory<rdo::runtime::RDOArrayValue>::create(getRuntimeArrayType()));
 }
 
-void RDOArrayType::writeModelStructure(REF(rdo::ostream) stream) const
+void RDOArrayType::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	stream << "A ";
-	m_pItemType->type()->writeModelStructure(stream);
+	m_pItemType->type()->writeModelStructure(stream, db);
 }
 
 CREF(LPTypeInfo) RDOArrayType::getItemType() const

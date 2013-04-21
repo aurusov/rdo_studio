@@ -52,7 +52,7 @@ private:
 	QString      m_password;
 	int          m_port;
 	QSqlDatabase m_db;
-	QueryList    m_queryList;
+	QString      m_queryList;
 
 	bany m_context;
 };

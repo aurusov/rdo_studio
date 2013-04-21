@@ -80,7 +80,7 @@ void GeneralDB::queryExec(const QString& query)
 
 void GeneralDB::queryListPushBack(const QString& query)
 {
-	m_queryList.push_back(query);
+	m_queryList.append(query);
 }
 
 void GeneralDB::queryListExec()

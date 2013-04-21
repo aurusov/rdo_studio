@@ -79,7 +79,7 @@ public:
 
 	void end();
 
-	void writeModelStructure(REF(rdo::ostream) stream) const;
+	void writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const;
 
 	virtual void serializeInDB(REF(IDB) db) const;
 

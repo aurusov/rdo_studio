@@ -49,7 +49,7 @@ inline RDOActivityPattern<T>::~RDOActivityPattern()
 {}
 
 template<class T>
-inline void RDOActivityPattern<T>::writeModelStructure(REF(rdo::ostream) stream) const
+inline void RDOActivityPattern<T>::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	stream << m_oprName << " " << tracePatternId() << std::endl;
 }

@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "utils/rdostream.h"
+#include "simulator/runtime/headers/db/interface_db.h"
 // --------------------------------------------------------------------------------
 
 /*!
@@ -27,11 +28,11 @@ public:
 	  \brief      Записать структу модели в поток
 	  \param[out] stream выходной поток
 	*/
-	virtual void writeModelStructure(REF(rdo::ostream) stream) const = 0;
+	virtual void writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const = 0;
 };
 
 #define DECLARE_IModelStructure \
-	virtual void writeModelStructure(REF(rdo::ostream) stream) const;
+	virtual void writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const;
 
 /*!
   \interface IName

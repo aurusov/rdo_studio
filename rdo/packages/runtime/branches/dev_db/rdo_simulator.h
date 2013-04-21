@@ -16,6 +16,7 @@
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdobase.h"
 #include "simulator/runtime/rdo_logic_i.h"
+#include "simulator/runtime/src/db/general_db.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -48,6 +49,8 @@ public:
 
 	LPIBaseOperationContainer m_pMetaLogic;
 
+	PTR(GeneralDB) getTrcDB();
+
 protected:
 	void appendBaseOperation(LPIBaseOperationContainer pLogic, CREF(LPIBaseOperation) pBaseOperation);
 
@@ -62,6 +65,7 @@ protected:
 
 private:
 	LPIBaseOperation m_pOprMustContinue;
+	GeneralDB* m_trcDB;
 
 	virtual rbool doOperation();
 };

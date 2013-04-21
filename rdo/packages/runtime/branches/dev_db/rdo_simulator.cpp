@@ -18,6 +18,7 @@
 #include "simulator/runtime/rdo_simulator.h"
 #include "simulator/runtime/rdo_logic_dptprior.h"
 #include "simulator/runtime/rdo_model_i.h"
+#include "simulator/runtime/src/db/init_struct_db.h"
 // --------------------------------------------------------------------------------
 
 #ifdef COMPILER_VISUAL_STUDIO
@@ -34,6 +35,10 @@ RDOSimulator::RDOSimulator()
 	, m_sizeofSim     (0)
 {
 	m_pMetaLogic = RF(RDOLogicMeta)::create();
+
+	InitStructDB::dropDB("trc");
+	InitStructDB::createDB("trc");
+	m_trcDB = new InitStructDB("trc");
 }
 
 RDOSimulator::~RDOSimulator()
@@ -136,7 +141,12 @@ void RDOSimulator::preProcess()
 	onResetResult();
 }
 
-tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter)
+PTR(GeneralDB) RDOSimulator::getTrcDB()
+{
+	return m_trcDB;
+}
+
+tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter, PTR(IDB) db)
 {
 	rdo::textstream stream;
 	IBaseOperationContainer::CIterator it = pLogic->begin();
@@ -146,7 +156,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 		if (pModelStructure && (pModelStructure.query_cast<IRule>() || pModelStructure.query_cast<IOperation>()))
 		{
 			stream << counter++ << " ";
-			pModelStructure->writeModelStructure(stream);
+			pModelStructure->writeModelStructure(stream, db);
 		}
 		++it;
 	}
@@ -164,7 +174,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 		{
 			stream << _counter++ << " ";
 			counter++;
-			pModelStructure->writeModelStructure(stream);
+			pModelStructure->writeModelStructure(stream, db);
 		}
 		++it;
 	}
@@ -175,7 +185,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 		LPILogic pLogic = *it;
 		if (pLogic)
 		{
-			stream << writeActivitiesStructureRecurse(pLogic, counter);
+			stream << writeActivitiesStructureRecurse(pLogic, counter, db);
 		}
 		++it;
 	}
@@ -185,7 +195,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 
 tstring RDOSimulator::writeActivitiesStructure(REF(ruint) counter)
 {
-	return writeActivitiesStructureRecurse(m_pMetaLogic, counter);
+	return writeActivitiesStructureRecurse(m_pMetaLogic, counter, m_trcDB);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
