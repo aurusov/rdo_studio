@@ -232,7 +232,10 @@ void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 			++it;
 		}
 		m_resourceListByID.at(resourceID) = NULL;
-		// Диструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
+
+		LPIResourceType type(res->getResType());
+		type->eraseRes(res);
+		// Деструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
 		m_resourceListByTime.remove(res);
 		notify().fireMessage(Notify::RO_BEFOREDELETE, (void*)res->getTraceID());
 		onResourceErase(res);
