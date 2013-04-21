@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
 #include <QDialog>
-#include "ui_about.h"
+#include "ui_about_dialog.h"
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
