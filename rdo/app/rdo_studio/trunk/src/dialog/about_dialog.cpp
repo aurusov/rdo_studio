@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      about.cpp
+  \file      about_dialog.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      18.08.2012
   \brief     
@@ -11,11 +11,11 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/dialog/about.h"
+#include "app/rdo_studio/src/dialog/about_dialog.h"
 #include "app/rdo_studio/res/build_version.h"
 // --------------------------------------------------------------------------------
 
-About::About(QWidget* pParent)
+AboutDialog::AboutDialog(QWidget* pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
 	setupUi(this);
