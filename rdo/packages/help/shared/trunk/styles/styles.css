@@ -58,6 +58,8 @@ table.visible { width: 90%; background: #777777; margin-top: .6em; margin-bottom
 
 table.build { padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; width: 90% }
 
+table.image { padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; width: 10% }
+
 th { padding: 4px 8px; background: #dddddd; text-align: left; font-size: 75%; vertical-align: middle; }
 
 th.progon { padding: 4px 8px; background: #dddddd; text-align: center; font-size: 75%; vertical-align: middle; }
