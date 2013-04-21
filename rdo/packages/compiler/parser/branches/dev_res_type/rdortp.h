@@ -87,6 +87,8 @@ private:
 	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, TypeRDOResType type = simple);
 	virtual ~RDORTPResType();
 
+	rdo::runtime::LPRDORuntime    m_pRuntime;
+
 	rdo::runtime::LPIResourceType m_pRuntimeResType;
 	const ruint                   m_number;
 	const rbool                   m_permanent;
