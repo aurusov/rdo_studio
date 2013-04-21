@@ -362,6 +362,39 @@ sprite                         return(RDO_sprite_call);
 
 [#`~@$%^&|:;(),=\[\]\.\*\>\<\+\-\/\\\{\}]	return(YYText()[YYLeng()-1]);
 
+[+-]?[0-9]+ {
+
+	tstring yText = YYText();
+
+	rdo::compiler::parser::RDOParserSrcInfo srcInfo(
+		LEXER->m_lploc
+			? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, yText)
+			: rdo::compiler::parser::RDOParserSrcInfo(yText)
+	);
+
+	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(srcInfo);
+	ASSERT(pType);
+
+	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	int value = 0;
+	try
+	{
+		value = boost::lexical_cast<int>(yText);
+	}
+	catch (const boost::bad_lexical_cast&)
+	{
+		PARSER->error().error(srcInfo, boost::str(boost::format("Ошибка преобразования числа '%1%'. Возможно, число слишком большое.") % yText) );
+	}
+	LEXER->setvalue(PARSER->stack().push(
+		rdo::Factory<rdo::compiler::parser::RDOValue>::create(
+			value,
+			pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()),
+			pType
+		)
+	));
+	return RDO_INT_CONST;
+}
+
 ([+-]?[0-9]+"..") {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("..");
@@ -431,39 +464,6 @@ sprite                         return(RDO_sprite_call);
 	));
 
 	return RDO_REAL_CONST;
-}
-
-[+-]?[0-9]+ {
-
-	tstring yText = YYText();
-
-	rdo::compiler::parser::RDOParserSrcInfo srcInfo(
-		LEXER->m_lploc
-			? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, yText)
-			: rdo::compiler::parser::RDOParserSrcInfo(yText)
-	);
-
-	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(srcInfo);
-	ASSERT(pType);
-
-	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
-	int value = 0;
-	try
-	{
-		value = boost::lexical_cast<int>(yText);
-	}
-	catch (const boost::bad_lexical_cast&)
-	{
-		PARSER->error().error(srcInfo, boost::str(boost::format("Ошибка преобразования числа '%1%'. Возможно, число слишком большое.") % yText) );
-	}
-	LEXER->setvalue(PARSER->stack().push(
-		rdo::Factory<rdo::compiler::parser::RDOValue>::create(
-			value,
-			pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()),
-			pType
-		)
-	));
-	return RDO_INT_CONST;
 }
 
 true {
