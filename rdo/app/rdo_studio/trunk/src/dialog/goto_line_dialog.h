@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_GO_TO_NEXT_LINE_DIALOG_H_
-#define _RDO_STUDIO_GO_TO_NEXT_LINE_DIALOG_H_
+#ifndef _RDO_STUDIO_DIALOG_GO_TO_NEXT_LINE_DIALOG_H_
+#define _RDO_STUDIO_DIALOG_GO_TO_NEXT_LINE_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
@@ -37,4 +37,4 @@ private slots:
 	void onCheckInput(const QString& text);
 };
 
-#endif // _RDO_STUDIO_GO_TO_NEXT_LINE_DIALOG_H_
+#endif // _RDO_STUDIO_DIALOG_GO_TO_NEXT_LINE_DIALOG_H_
