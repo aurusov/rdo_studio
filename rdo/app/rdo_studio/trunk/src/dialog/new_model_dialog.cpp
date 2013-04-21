@@ -13,6 +13,7 @@
 #include "utils/warning_disable.h"
 #include <QDir>
 #include <QFileDialog>
+#include <QStandardPaths>
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dialog/new_model_dialog.h"
@@ -36,7 +37,12 @@ NewModelDialog::NewModelDialog(QWidget* pParent)
 	connect(modelName, SIGNAL(textChanged(const QString&)), this, SLOT(updateUI()));
 	connect(modelPathButton, SIGNAL(clicked(bool)), this, SLOT(onPathButtonClicked()));
 
-	setPath(QDir::homePath());
+	QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+	if (path.isEmpty())
+	{
+		path = QDir::homePath();
+	}
+	setPath(path);
 }
 
 NewModelDialog::~NewModelDialog()
