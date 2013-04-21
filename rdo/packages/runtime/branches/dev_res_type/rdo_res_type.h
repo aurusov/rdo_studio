@@ -24,24 +24,37 @@ OPEN_RDO_RUNTIME_NAMESPACE
 //! tparam T - ресурс, который будет создаваться данной фабрикой
 template <class T>
 CLASS_PARENT_OF(RDOResourceTypeBase, RDOType)
-	IS  IMPLEMENTATION_OF(IResourceType     )
-	AND INSTANCE_OF      (RDORuntimeObject  )
-	AND INSTANCE_OF      (RDOTraceableObject)
+	IS  IMPLEMENTATION_OF(RDOResourceListObject)
 {
 DECLARE_FACTORY(RDOResourceTypeBase<T>);
 public:
 	typedef  T  value_type;
 
-	IResourceType::ResCIterator res_begin() const;
-	IResourceType::ResCIterator res_end() const;
-
 private:
 	//! Конструктор
 	//! \param number - Целочисленный идентификатор
-	RDOResourceTypeBase(ruint number);
+	RDOResourceTypeBase(ruint number, rdo::runtime::LPRDORuntime pRuntime);
 	virtual ~RDOResourceTypeBase();
 
 	DECLARE_IResourceType;
+};
+
+CLASS_PARENT_OF(RDOResourceListObject, IResourceType)
+	IS  INSTANCE_OF      (RDORuntimeObject  )
+	AND INSTANCE_OF      (RDOTraceableObject)
+{
+public:
+	ResCIterator res_begin() const;
+	ResCIterator res_end  () const;
+	
+	void eraseRes(CREF(rdo::runtime::LPRDOResource) pResource);
+
+protected:
+	RDOResourceListObject(ruint number, rdo::runtime::LPRDORuntime pRuntime);
+	virtual ~RDOResourceListObject();
+
+	typedef  std::list<rdo::runtime::LPRDOResource> ResourceList;
+	ResourceList m_resourceList;
 };
 
 //! Тип ресурсов для создания обычных ресурсов РДО

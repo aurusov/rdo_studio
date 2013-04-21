@@ -32,6 +32,8 @@ DECLARE_FACTORY(IResourceType);
 public:
 	virtual rdo::runtime::LPRDOResource createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag) = 0;
 
+	virtual void eraseRes(CREF(rdo::runtime::LPRDOResource) pResource) = 0;
+
 	typedef  std::list<rdo::runtime::LPRDOResource>  ResList;
 	typedef  ResList::const_iterator  ResCIterator;
 
@@ -44,9 +46,6 @@ protected:
 	IResourceType()          {}
 	virtual ~IResourceType() {}
 
-	typedef  std::list<rdo::runtime::LPRDOResource> ResourceList;
-
-	ResourceList m_resourceList;
 };
 
 #define DECLARE_IResourceType \

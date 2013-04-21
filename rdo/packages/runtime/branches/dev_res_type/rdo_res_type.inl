@@ -16,11 +16,17 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 template <class T>
-inline RDOResourceTypeBase<T>::RDOResourceTypeBase(ruint number)
-	: RDOType           (t_pointer                               )
-	, RDORuntimeObject  (                                        )
-	, RDOTraceableObject(false, number, rdo::toString(number + 1))
-{}
+inline RDOResourceTypeBase<T>::RDOResourceTypeBase(ruint number, rdo::runtime::LPRDORuntime pRuntime)
+	: RDOType              (t_pointer       )
+	, RDOResourceListObject(number, pRuntime)
+{
+	rdo::intrusive_ptr<RDOResourceTypeBase<T> > pThis(this);
+	ASSERT(pThis);
+	LPIResourceType pIResType = pThis.template interface_cast<IResourceType>();
+	ASSERT(pIResType);
+
+	pRuntime->addResType(number, pIResType);
+}
 
 template <class T>
 inline RDOResourceTypeBase<T>::~RDOResourceTypeBase()
@@ -42,14 +48,25 @@ inline LPRDOResource RDOResourceTypeBase<T>::createRes(CREF(LPRDORuntime) pRunti
 	return pResource;
 }
 
-template <class T>
-inline IResourceType::ResCIterator RDOResourceTypeBase<T>::res_begin() const
+inline RDOResourceListObject::RDOResourceListObject(ruint number, rdo::runtime::LPRDORuntime pRuntime)
+	: RDORuntimeObject  (                                        )
+	, RDOTraceableObject(false, number, rdo::toString(number + 1))
+{}
+
+inline RDOResourceListObject::~RDOResourceListObject()
+{}
+
+inline void RDOResourceListObject::eraseRes(CREF(rdo::runtime::LPRDOResource) pResource)
+{
+	m_resourceList.remove(pResource);
+}
+
+inline IResourceType::ResCIterator RDOResourceListObject::res_begin() const
 {
 	return m_resourceList.begin();
 }
 
-template <class T>
-inline IResourceType::ResCIterator RDOResourceTypeBase<T>::res_end() const
+inline IResourceType::ResCIterator RDOResourceListObject::res_end() const
 {
 	return m_resourceList.end();
 }
