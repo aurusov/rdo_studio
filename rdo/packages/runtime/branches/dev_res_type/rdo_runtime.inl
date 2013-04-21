@@ -217,11 +217,8 @@ inline RDORuntime::ResCIterator RDORuntime::res_end() const
 inline void RDORuntime::addResType(ruint number, CREF(LPIResourceType) pResType)
 {
 	ASSERT(pResType);
-	if (number - 1 >= m_resourceTypeList.size())
-	{
-		m_resourceTypeList.resize(number);
-		m_resourceTypeList.at(number - 1) = pResType;
-	}
+	ASSERT(m_resourceTypeList.size() == number - 1);
+	m_resourceTypeList.push_back(pResType);
 }
 
 inline CREF(LPIResourceType) RDORuntime::getResType(ruint number) const
