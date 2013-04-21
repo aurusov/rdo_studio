@@ -56,7 +56,7 @@
 %x comment_line
 
 LETTER [A-Za-z]|[\xC2-\xDF][\x80-\xBF]|\xE0[\xA0-\xBF][\x80-\xBF]|[\xE1-\xEC\xEE\xEF]([\x80-\xBF]{2})|\xED[\x80-\x9F][\x80-\xBF]|\xF0[\x90-\xBF]([\x80-\xBF]{2})|[\xF1-\xF3]([\x80-\xBF]{3})|\xF4[\x80-\x8F]([\x80-\xBF]{2})
-IDENTIF ({LETTER}|[_$])({LETTER}|[0-9_$])*
+IDENTIF ({LETTER}|[_$])({LETTER}|[[:digit:]_$])*
 WS [\r\n\t ]
 
 %%
@@ -362,7 +362,7 @@ sprite                         return(RDO_sprite_call);
 
 [#`~@$%^&|:;(),=\[\]\.\*\>\<\+\-\/\\\{\}]	return(YYText()[YYLeng()-1]);
 
-[+-]?[0-9]+ {
+[+-]?[[:digit:]]+ {
 
 	tstring yText = YYText();
 
@@ -395,7 +395,7 @@ sprite                         return(RDO_sprite_call);
 	return RDO_INT_CONST;
 }
 
-([+-]?[0-9]+"..") {
+([+-]?[[:digit:]]+"..") {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("..");
 	tstring yText(n1, 0, pos);
@@ -432,7 +432,7 @@ sprite                         return(RDO_sprite_call);
 	return RDO_INT_CONST;
 }
 
-([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
+([+-]?[[:digit:]]+"."[[:digit:]]*([Ee][+-]?[[:digit:]]+)?) {
 
 	tstring yText = YYText();
 
