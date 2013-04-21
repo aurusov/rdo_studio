@@ -33,7 +33,7 @@ About::About(QWidget* pParent)
 		limitation += "ограниченная версия";
 #endif
 
-	version->setText(QString("Система имитационного моделирования\n\nRAO-studio   %1%2-version 1.1 (build %3)%4")
+	version->setText(QString("Система имитационного моделирования\n\nRAO-studio   %1%2-%3 (build %4)%5")
 
 #ifdef RDO_MT
 		.arg("mt")
@@ -46,6 +46,8 @@ About::About(QWidget* pParent)
 #else
 		.arg("")
 #endif
+
+		.arg(version->text())
 
 		.arg(g_buildVersion)
 
