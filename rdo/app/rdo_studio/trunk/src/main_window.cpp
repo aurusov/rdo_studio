@@ -22,7 +22,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/about.h"
+#include "app/rdo_studio/src/dialog/about.h"
 #include "app/rdo_studio/src/view_preferences.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
