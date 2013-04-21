@@ -558,7 +558,6 @@ false {
 {IDENTIF} {
 
 	tstring name(YYText());
-	std::wstring ww = rdo::locale::convertToWStr(name);
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
 
 	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, name) : rdo::compiler::parser::RDOParserSrcInfo(name))));
