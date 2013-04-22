@@ -78,7 +78,7 @@ void RDOSMR::setShowMode(rdo::service::simulation::ShowMode showMode)
 
 rbool RDOSMR::Check()
 {
-	if (!m_runCount || m_runNumber == m_increment)
+	if (!m_runNumber && !m_runCount || m_runNumber == m_increment)
 	{
 		return true;
 	}
