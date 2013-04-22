@@ -431,11 +431,12 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"CREATE TABLE trc_er("
 		"id           integer NOT NULL DEFAULT nextval('trc_row_id'),"
 		"time         real NOT NULL,"
-		"type         varchar(5) NOT NULL,"
 		"internal_id  integer NOT NULL,"
 		"rule_id      integer NOT NULL,"
+		"pat_id       integer NOT NULL,"
 		"PRIMARY KEY (id),"
-		"FOREIGN KEY (time) REFERENCES trc_time(time)"
+		"FOREIGN KEY (time) REFERENCES trc_time(time),"
+		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
 		");");
 
 	queryListPushBack(

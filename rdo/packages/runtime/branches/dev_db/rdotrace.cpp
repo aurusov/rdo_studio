@@ -166,9 +166,8 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 	if (letter == 'S') {
 	double time = simTr->getCurrentTime();
 
-	m_trcDB->queryListPushBack(
-		QString("INSERT INTO trc_es VALUES(DEFAULT,%1,4);")
-			.arg(time));
+	m_trcDB->insertRow("trc_es",QString("DEFAULT,%1,4")
+		.arg(time));
 
 		getOStream() << "ES"
 		             << " " << time
@@ -223,8 +222,16 @@ void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntim
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(activityPatternTrace);
 
-		getOStream() << "EI " << pRuntime->getCurrentTime()
-		             << " "   << trace->traceId() 
+		double time = pRuntime->getCurrentTime();
+		tstring traceId = trace->traceId();
+
+		m_trcDB->pushContext<int>(
+			m_trcDB->insertRowInd("trc_ei_ee",QString("DEFAULT,%1,'EI',%2")
+				.arg(time)
+				.arg(QString::fromStdString(traceId))));
+
+		getOStream() << "EI " << time
+		             << " "   << traceId 
 		             << " "   << activityPatternTrace->tracePatternId() 
 		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, true)
 		             << std::endl << getEOL();
@@ -250,10 +257,21 @@ void RDOTrace::writeRule(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(activityPatternTrace);
 		int operId = pRuntime->getFreeOperationId();
-		getOStream() << "ER " << pRuntime->getCurrentTime()
+
+		double time = pRuntime->getCurrentTime();
+		tstring ruleId = trace->traceId();
+		tstring patId = activityPatternTrace->tracePatternId();
+		m_trcDB->pushContext<int>(
+			m_trcDB->insertRowInd("trc_er",QString("DEFAULT,%1,%2,%3,%4")
+				.arg(time)
+				.arg(operId)
+				.arg(QString::fromStdString(ruleId))
+				.arg(QString::fromStdString(patId ))));
+
+		getOStream() << "ER " << time
 		             << " "   << operId
-		             << " "   << trace->traceId() 
-		             << " "   << activityPatternTrace->tracePatternId()
+		             << " "   << ruleId 
+		             << " "   << patId
 		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, false)
 		             << std::endl << getEOL();
 		pRuntime->freeOperationId(operId);
