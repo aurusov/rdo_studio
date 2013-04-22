@@ -139,21 +139,32 @@ ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const
 
 void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
-	int number = getNumber();
+	int rtpNumber = getNumber();
 	tstring rtpName = name();
 	int size = getParams().size();
-	stream << number << " " << rtpName << " " << size << std::endl;
+
+	db->queryListPushBack(
+		QString("INSERT INTO trc_resource_type VALUES(%1,'%2');")
+			.arg(rtpNumber)
+			.arg(QString::fromStdString(rtpName)));
+
+	std::vector<int> indexContainer;
+	indexContainer.push_back(-1);
+	indexContainer.push_back(rtpNumber);
+
+	stream << rtpNumber << " " << rtpName << " " << size << std::endl;
 	for (ruint i = 0; i < getParams().size(); i++)
 	{
+		indexContainer[0] = i+1;
+		db->pushContext<std::vector<int>>(indexContainer);
+		db->queryListPushBack(
+			QString("INSERT INTO trc_param VALUES(%1,%2,")
+				.arg(i+1)
+				.arg(rtpNumber));
+
 		stream << "  " << (i+1) << " ";
 		getParams().at(i)->writeModelStructure(stream, db);
 	}
-
-	QSqlQuery* query = new QSqlQuery(db->getQtDB());
-	query->exec(QString("INSERT INTO trc_resource_type VALUES(%1,'%2',%3);")
-		.arg(number)
-		.arg(QString::fromStdString(rtpName))
-		.arg(size));
 }
 
 void RDORTPResType::serializeInDB(REF(IDB) db) const

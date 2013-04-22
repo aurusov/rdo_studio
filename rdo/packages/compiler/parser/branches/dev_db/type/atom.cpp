@@ -205,6 +205,9 @@ rdo::runtime::RDOValue RDOType__int::get_default() const
 
 void RDOType__int::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
+	db->queryListPushBack(
+		QString("'I');"));
+
 	stream << "I" << std::endl;
 }
 
@@ -280,6 +283,9 @@ rdo::runtime::RDOValue RDOType__real::get_default() const
 
 void RDOType__real::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
+	db->queryListPushBack(
+		QString("'R');"));
+
 	stream << "R" << std::endl;
 }
 
@@ -354,6 +360,9 @@ rdo::runtime::RDOValue RDOType__string::get_default() const
 
 void RDOType__string::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
+	db->queryListPushBack(
+		QString("'S');"));
+
 	stream << "S" << std::endl;
 }
 
@@ -495,6 +504,9 @@ rdo::runtime::RDOValue RDOType__bool::get_default() const
 
 void RDOType__bool::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
+	db->queryListPushBack(
+		QString("'B');"));
+
 	stream << "B" << std::endl;
 }
 

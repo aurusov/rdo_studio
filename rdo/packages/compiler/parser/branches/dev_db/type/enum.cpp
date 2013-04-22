@@ -184,10 +184,23 @@ rdo::runtime::RDOValue RDOEnumType::get_default() const
 
 void RDOEnumType::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
+	db->queryListPushBack(
+		QString("'E');"));
+
+	std::vector<int> indexContainer = db->popContext<std::vector<int>>();
+
 	stream << "E " << getEnums()->getValues().size() << std::endl;
 	for (ruint i = 0; i < getEnums()->getValues().size(); i++)
 	{
-		stream << "    " << i << " " << getEnums()->getValues().at(i) << std::endl;
+		tstring enumString = getEnums()->getValues().at(i);
+		db->queryListPushBack(
+			QString("INSERT INTO trc_enum_vv VALUES(%1,%2,%3,'%4');")
+				.arg(indexContainer[0])
+				.arg(indexContainer[1])
+				.arg(i)
+				.arg(QString::fromStdString(enumString)));
+
+		stream << "    " << i << " " << enumString << std::endl;
 	}
 }
 

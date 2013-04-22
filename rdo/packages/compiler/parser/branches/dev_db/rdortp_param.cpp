@@ -35,7 +35,13 @@ CREF(tstring) RDORTPParam::name() const
 
 void RDORTPParam::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
-	stream << name() << " ";
+	tstring paramName = name();
+
+	db->queryListPushBack(
+		QString("'%1',")
+			.arg(QString::fromStdString(paramName)));
+
+	stream << paramName << " ";
 	getTypeInfo()->type()->writeModelStructure(stream, db);
 }
 

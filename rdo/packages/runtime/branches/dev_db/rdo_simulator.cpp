@@ -35,10 +35,6 @@ RDOSimulator::RDOSimulator()
 	, m_sizeofSim     (0)
 {
 	m_pMetaLogic = RF(RDOLogicMeta)::create();
-
-	InitStructDB::dropDB("trc");
-	InitStructDB::createDB("trc");
-	m_trcDB = new InitStructDB("trc");
 }
 
 RDOSimulator::~RDOSimulator()
@@ -141,11 +137,6 @@ void RDOSimulator::preProcess()
 	onResetResult();
 }
 
-PTR(GeneralDB) RDOSimulator::getTrcDB()
-{
-	return m_trcDB;
-}
-
 tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter, PTR(IDB) db)
 {
 	rdo::textstream stream;
@@ -155,7 +146,13 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 		LPIModelStructure pModelStructure = *it;
 		if (pModelStructure && (pModelStructure.query_cast<IRule>() || pModelStructure.query_cast<IOperation>()))
 		{
-			stream << counter++ << " ";
+			int activityNumber = counter++;
+
+			db->queryListPushBack(
+				QString("INSERT INTO trc_activities VALUES(%1,")
+					.arg(activityNumber));
+
+			stream << activityNumber << " ";
 			pModelStructure->writeModelStructure(stream, db);
 		}
 		++it;
@@ -172,7 +169,13 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 		LPIModelStructure pModelStructure = *it;
 		if (pModelStructure && pModelStructure.query_cast<IEvent>())
 		{
-			stream << _counter++ << " ";
+			int activityNumber = _counter++;
+
+			db->queryListPushBack(
+				QString("INSERT INTO trc_activities VALUES(%1,")
+					.arg(activityNumber));
+
+			stream << activityNumber << " ";
 			counter++;
 			pModelStructure->writeModelStructure(stream, db);
 		}
@@ -195,7 +198,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 
 tstring RDOSimulator::writeActivitiesStructure(REF(ruint) counter)
 {
-	return writeActivitiesStructureRecurse(m_pMetaLogic, counter, m_trcDB);
+	return writeActivitiesStructureRecurse(m_pMetaLogic, counter, getTrcDB());
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

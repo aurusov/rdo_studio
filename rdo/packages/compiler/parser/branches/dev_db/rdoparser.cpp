@@ -429,6 +429,8 @@ tstring RDOParser::getModelStructure()
 		}
 	}
 
+	db->queryListExec();
+
 	return modelStructure.str();
 }
 

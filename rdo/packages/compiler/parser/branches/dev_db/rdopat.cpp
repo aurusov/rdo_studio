@@ -343,9 +343,26 @@ tstring RDOPATPattern::getPatternId() const
 
 void RDOPATPattern::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
-	stream << getPatternId() << " " << name() << " " << getModelStructureLetter() << " " << m_relResList.size();
+	int patternId = atoi(getPatternId().c_str());
+	tstring patternName = name();
+	char patternStructure = getModelStructureLetter();
+	db->queryListPushBack(
+		QString("INSERT INTO trc_patterns VALUES(%1,'%2','%3');")
+			.arg(patternId)
+			.arg(QString::fromStdString(patternName))
+			.arg(patternStructure));
+
+	stream << patternId << " " << patternName << " " << patternStructure << " " << m_relResList.size();
 	STL_FOR_ALL_CONST(m_relResList, it)
-		stream << " " << (*it)->getType()->getNumber();
+	{
+		int rtpId = (*it)->getType()->getNumber();
+		db->queryListPushBack(
+			QString("INSERT INTO trc_relres VALUES(DEFAULT,%1,%2);")
+				.arg(rtpId)
+				.arg(patternId));
+
+		stream << " " << rtpId;
+	}
 
 	stream << std::endl;
 }

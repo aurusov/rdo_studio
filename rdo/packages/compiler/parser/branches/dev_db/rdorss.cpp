@@ -84,7 +84,17 @@ Context::FindResult RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchEx
 
 void RDORSSResource::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
-	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
+	int rssId = getID() + 1;
+	tstring rssName = name();
+	int rtpId = getType()->getNumber();
+
+	db->queryListPushBack(
+		QString("INSERT INTO trc_resources VALUES(%1,'%2',%3);")
+			.arg(rssId)
+			.arg(QString::fromStdString(rssName))
+			.arg(rtpId));
+
+	stream << rssId << " " << rssName << " " << rtpId << std::endl;
 }
 
 void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
