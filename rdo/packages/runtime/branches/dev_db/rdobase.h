@@ -20,6 +20,7 @@
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/mode.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
+#include "simulator/runtime/src/db/general_db.h"
 #ifdef COMPILER_VISUAL_STUDIO
 	#ifdef RDO_MT
 		#include <afxwin.h>
@@ -66,6 +67,8 @@ public:
 	ruint get_cnt_choice_from();
 	ruint get_cnt_calc_arithm() const;
 	ruint get_cnt_calc_logic()  const;
+
+	PTR(GeneralDB) getTrcDB();
 
 	static ruint getMSec(CREF(boost::posix_time::ptime) ptime);
 
@@ -148,6 +151,7 @@ private:
 
 	ruint        m_cnt_events;
 	ruint        m_cnt_choice_from;
+	GeneralDB*   m_trcDB;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

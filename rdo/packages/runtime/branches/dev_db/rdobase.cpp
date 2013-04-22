@@ -22,6 +22,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdobase.h"
 #include "simulator/runtime/calc/operation/operation_type.h"
+#include "simulator/runtime/src/db/init_struct_db.h"
 // --------------------------------------------------------------------------------
 
 #ifdef COMPILER_VISUAL_STUDIO
@@ -48,7 +49,11 @@ RDOSimulatorBase::RDOSimulatorBase()
 	, m_msec_prev         (0           )
 	, m_cnt_events        (0           )
 	, m_cnt_choice_from   (0           )
-{}
+{
+	InitStructDB::dropDB("trc");
+	InitStructDB::createDB("trc");
+	m_trcDB = new InitStructDB("trc");
+}
 
 ruint RDOSimulatorBase::get_cnt_calc_arithm() const
 {
@@ -68,6 +73,8 @@ void RDOSimulatorBase::rdoInit()
 	onInit();
 	OperatorType::getCalcCounter<OperatorType::OT_ARITHM>() = 0;
 	OperatorType::getCalcCounter<OperatorType::OT_LOGIC> () = 0;
+
+	m_trcDB->queryListPushBack("INSERT INTO trc_time VALUES(0);");
 
 	if (m_timePoints.find(m_currentTime) == m_timePoints.end())
 		m_timePoints[m_currentTime] = NULL;
@@ -252,11 +259,16 @@ void RDOSimulatorBase::rdoPostProcess()
 
 void RDOSimulatorBase::addTimePoint(double timePoint, CREF(LPIBaseOperation) opr, void* param)
 {
+	m_trcDB->queryListExec();
+
 	BOPlannedItem* list = NULL;
 	if (opr && (m_timePoints.find(timePoint) == m_timePoints.end() || m_timePoints[timePoint] == NULL))
 	{
 		list = new BOPlannedItem();
 		m_timePoints[timePoint] = list;
+
+		m_trcDB->insertRow("trc_time", QString("%1")
+			.arg(timePoint));
 	}
 	if (opr)
 	{
@@ -292,6 +304,11 @@ void RDOSimulatorBase::removeTimePoint(CREF(LPIBaseOperation) opr)
 			++it;
 		}
 	}
+}
+
+PTR(GeneralDB) RDOSimulatorBase::getTrcDB()
+{
+	return m_trcDB;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
