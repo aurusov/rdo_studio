@@ -51,7 +51,14 @@ inline RDOActivityPattern<T>::~RDOActivityPattern()
 template<class T>
 inline void RDOActivityPattern<T>::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
-	stream << m_oprName << " " << tracePatternId() << std::endl;
+	tstring patternId = tracePatternId();
+
+	db->queryListPushBack(
+		QString("'%1',%2);")
+			.arg(QString::fromStdString(m_oprName))
+			.arg(QString::fromStdString(patternId)));
+
+	stream << m_oprName << " " << patternId << std::endl;
 }
 
 template<class T>

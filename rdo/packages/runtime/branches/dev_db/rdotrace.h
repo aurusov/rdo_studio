@@ -20,6 +20,7 @@
 #include "simulator/runtime/rdotrace_i.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
 #include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/src/db/general_db.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -104,6 +105,7 @@ private:
 	rbool         m_canWriteToStream;
 	rdo::ofstream m_emptyOut;
 	RDOEndL       m_emptyEndL;
+	GeneralDB*    m_trcDB;
 };
 
 /*!

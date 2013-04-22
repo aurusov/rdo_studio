@@ -164,8 +164,14 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 	             << " " << treeRoot->m_fullNodesCount 
 	             << std::endl << getEOL();
 	if (letter == 'S') {
+	double time = simTr->getCurrentTime();
+
+	m_trcDB->queryListPushBack(
+		QString("INSERT INTO trc_es VALUES(DEFAULT,%1,4);")
+			.arg(time));
+
 		getOStream() << "ES"
-		             << " " << simTr->getCurrentTime()
+		             << " " << time
 		             << " 4"
 		             << std::endl << getEOL();
 		static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_cost.push_back(treeRoot->m_targetNode->m_costPath);
@@ -271,9 +277,20 @@ void RDOTrace::writeAfterOperationBegin(CREF(LPIBaseOperation) opr, CREF(LPRDORu
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(operationTrace);
 		ASSERT(activityPatternTrace);
-		getOStream() << "EB " << pRuntime->getCurrentTime()
-		             << " "   << operationTrace->traceOperId()
-		             << " "   << trace->traceId()
+
+		double time = pRuntime->getCurrentTime();
+		tstring internalId = operationTrace->traceOperId();
+		tstring traceId = trace->traceId();
+
+		m_trcDB->pushContext<int>(
+			m_trcDB->insertRowInd("trc_eb_ef",QString("DEFAULT,%1,'EB',%2,%3")
+				.arg(time)
+				.arg(QString::fromStdString(internalId))
+				.arg(QString::fromStdString(traceId   ))));
+
+		getOStream() << "EB " << time
+		             << " "   << internalId
+		             << " "   << traceId
 		             << " "   << activityPatternTrace->tracePatternId()
 		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, false)
 		             << std::endl << getEOL(); 
@@ -297,9 +314,20 @@ void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, CREF(LPRDORunt
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(operationTrace);
 		ASSERT(activityPatternTrace);
-		getOStream() << "EF " << pRuntime->getCurrentTime() 
-		             << " "   << operationTrace->traceOperId() 
-		             << " "   << trace->traceId() 
+
+		double time = pRuntime->getCurrentTime();
+		tstring internalId = operationTrace->traceOperId();
+		tstring traceId = trace->traceId();
+
+		m_trcDB->pushContext<int>(
+			m_trcDB->insertRowInd("trc_eb_ef",QString("DEFAULT,%1,'EF',%2,%3")
+				.arg(time)
+				.arg(QString::fromStdString(internalId))
+				.arg(QString::fromStdString(traceId   ))));
+
+		getOStream() << "EF " << time 
+		             << " "   << internalId 
+		             << " "   << traceId 
 		             << " "   << activityPatternTrace->tracePatternId() 
 		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, false)
 		             << std::endl << getEOL();
@@ -309,9 +337,17 @@ void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, CREF(LPRDORunt
 
 void RDOTrace::writeTraceBegin(CREF(LPRDORuntime) pRuntime)
 {
+	m_trcDB = pRuntime->getTrcDB();
+
 	if (isNull()) return;
 
-	getOStream() << "ES " << pRuntime->getCurrentTime() 
+	double time = pRuntime->getCurrentTime();
+
+	m_trcDB->queryListPushBack(
+		QString("INSERT INTO trc_es VALUES(DEFAULT,%1,1);")
+			.arg(time));
+
+	getOStream() << "ES " << time 
       << " 1" << std::endl << getEOL();
 }
 
@@ -319,7 +355,13 @@ void RDOTrace::writeModelBegin(CREF(LPRDORuntime) pRuntime)
 {
 	if (isNull()) return;
 
-	getOStream() << "ES " << pRuntime->getCurrentTime() 
+	double time = pRuntime->getCurrentTime();
+
+	m_trcDB->queryListPushBack(
+		QString("INSERT INTO trc_es VALUES(DEFAULT,%1,3);")
+			.arg(time));
+
+	getOStream() << "ES " << time 
       << " 3" << std::endl << getEOL();
 }
 
@@ -327,8 +369,16 @@ void RDOTrace::writeTraceEnd(CREF(LPRDORuntime) pRuntime)
 {
 	if (isNull()) return;
 
-   getOStream() << "ES " << pRuntime->getCurrentTime() 
+	double time = pRuntime->getCurrentTime();
+
+	m_trcDB->queryListPushBack(
+		QString("INSERT INTO trc_es VALUES(DEFAULT,%1,2);")
+			.arg(time));
+
+	getOStream() << "ES " << time 
       << " 2" << std::endl << getEOL();
+
+	m_trcDB->queryListExec();
 }
 
 void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)

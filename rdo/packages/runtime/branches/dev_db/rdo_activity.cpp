@@ -104,12 +104,13 @@ tstring RDOActivity::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime
 
 tstring RDOActivity::traceResourcesListNumbers(CREF(LPRDORuntime) pRuntime, rbool show_create_index)
 {
-	UNUSED(pRuntime);
+	GeneralDB* db = pRuntime->getTrcDB();
 #ifndef RDOSIM_COMPATIBLE
 	UNUSED(show_create_index);
 #endif
 	rdo::ostringstream res;
 	res << m_relevantResources.size() << " ";
+	int eId = db->popContext<int>();
 	for (std::list<LPRDOResource>::const_iterator i = m_relevantResources.begin(); i != m_relevantResources.end(); ++i)
 	{
 #ifdef RDOSIM_COMPATIBLE
@@ -119,7 +120,14 @@ tstring RDOActivity::traceResourcesListNumbers(CREF(LPRDORuntime) pRuntime, rboo
 		if (*i)
 		{
 #endif
-			res << " " << (*i)->traceId();
+			tstring traceId = (*i)->traceId();
+
+			db->queryListPushBack(
+				QString("INSERT INTO trc_e_res VALUES(DEFAULT,%1,%2);")
+					.arg(eId)
+					.arg(QString::fromStdString(traceId)));
+
+			res << " " << traceId;
 		}
 		else
 		{
