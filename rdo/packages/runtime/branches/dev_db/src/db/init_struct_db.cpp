@@ -267,7 +267,6 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"CREATE TABLE trc_resource_type("
 		"rtp_id       integer NOT NULL,"
 		"name         varchar(40) NOT NULL,"
-		"param_count  integer,"					//!!!!!
 		"PRIMARY KEY (rtp_id)"
 		");");
 
@@ -277,18 +276,17 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"rtp_id      integer NOT NULL,"
 		"name        varchar(40) NOT NULL,"
 		"param_type  char(1) NOT NULL,"
-		"count       integer,"					//!!!!!
 		"PRIMARY KEY (param_id,rtp_id),"
 		"FOREIGN KEY (rtp_id) REFERENCES trc_resource_type(rtp_id)"
 		");");
 
 	queryListPushBack(
-		"CREATE TABLE trc_vv("
+		"CREATE TABLE trc_enum_vv("
 		"param_id     integer NOT NULL,"
 		"rtp_id       integer NOT NULL,"
-		"string       varchar(40) NOT NULL,"
 		"int          integer NOT NULL,"
-		"PRIMARY KEY (param_id,rtp_id),"
+		"string       varchar(40) NOT NULL,"
+		"PRIMARY KEY (param_id,rtp_id,int),"
 		"FOREIGN KEY (param_id,rtp_id) REFERENCES trc_param(param_id,rtp_id)"
 		");");
 
@@ -306,7 +304,6 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"pat_id       integer NOT NULL,"
 		"name         varchar(40) NOT NULL,"
 		"type         char(1) NOT NULL,"
-		"count_res    integer,"				//!!!!!
 		"PRIMARY KEY (pat_id)"
 		");");
 
@@ -374,9 +371,9 @@ void InitStructDB::generateCreateTrcDBQuery()
 
 	queryListPushBack(
 		"CREATE TABLE trc_es("
-		"id		integer NOT NULL DEFAULT nextval('trc_row_id'),"
-		"time	real NOT NULL,"
-		"sno		integer NOT NULL,"
+		"id    integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"time  real NOT NULL,"
+		"s_no  integer NOT NULL,"
 		"PRIMARY KEY (id),"
 		"FOREIGN KEY (time) REFERENCES trc_time(time)"
 		");");
@@ -394,17 +391,14 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"type         varchar(5) NOT NULL,"
 		"internal_id  integer NOT NULL,"
 		"act_id       integer NOT NULL,"
-		"pat_id       integer NOT NULL,"					//!!!!!
-		"res_count    integer NOT NULL,"					//!!!!!
 		"PRIMARY KEY (id),"
 		"FOREIGN KEY (time) REFERENCES trc_time(time),"
-		"FOREIGN KEY (act_id) REFERENCES trc_activities(act_id),"
-		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
+		"FOREIGN KEY (act_id) REFERENCES trc_activities(act_id)"
 		");");
 
 	queryListPushBack(
 		"CREATE TABLE trc_e_res("
-		"id           serial,"
+		"id           serial NOT NULL,"
 		"e_id         integer NOT NULL,"
 		"res_id       integer NOT NULL,"
 		"PRIMARY KEY (id),"
@@ -423,11 +417,8 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"time         real NOT NULL,"
 		"type         varchar(5) NOT NULL,"
 		"evnt_id      integer NOT NULL,"
-		"pat_id       integer NOT NULL,"			//!!!!!
-		"res_count    integer NOT NULL,"			//!!!!!
 		"PRIMARY KEY (id),"
-		"FOREIGN KEY (time) REFERENCES trc_time(time),"
-		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
+		"FOREIGN KEY (time) REFERENCES trc_time(time)"
 		");");
 
 	queryListPushBack(
@@ -443,11 +434,8 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"type         varchar(5) NOT NULL,"
 		"internal_id  integer NOT NULL,"
 		"rule_id      integer NOT NULL,"
-		"pat_id       integer NOT NULL,"			//!!!!!
-		"res_count    integer NOT NULL,"			//!!!!!
 		"PRIMARY KEY (id),"
-		"FOREIGN KEY (time) REFERENCES trc_time(time),"
-		"FOREIGN KEY (pat_id) REFERENCES trc_patterns(pat_id)"
+		"FOREIGN KEY (time) REFERENCES trc_time(time)"
 		");");
 
 	queryListPushBack(
