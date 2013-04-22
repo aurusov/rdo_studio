@@ -78,9 +78,7 @@ public:
 	//! номер выполняемого прогона
 	void  setRunNumber     (ruint  value);
 	rbool Check            ()            ;
-	rbool OldModelCheck    ()            ;
 	void  setIncrement     ()            ;
-	void  setOldModel      ()            ;
 
 	void  setTerminateIf  (REF(LPRDOFUNLogic) pLogic);
 	void  setConstValue   (CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm)    pArithm);
@@ -109,7 +107,6 @@ private:
 	ruint                               m_runCount;
 	ruint                               m_runNumber;
 	ruint                               m_increment;
-	ruint                               m_oldModel;
 	YYLTYPE                             m_traceStartTime_pos;
 	YYLTYPE                             m_traceEndTime_pos;
 	LPRDOFUNLogic                       m_pTerminateIf;

@@ -906,6 +906,9 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		}
 		case RT_STUDIO_MODEL_RUN:
 		{
+			if (m_runCount)
+				++m_runNumber;
+
 			runModel();
 			break;
 		}
@@ -1069,7 +1072,16 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					//! Остановились сами нормально
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					closeModel();
-					runModel();//если это не последний прогон, то запускаемся еще раз
+					if (needNextRun())
+					{
+						++m_runNumber;
+						runModel();//если это не последний прогон, то запускаемся еще раз
+					}
+					else
+					{
+						m_runNumber = 0;
+						m_runCount = 0;
+					}
 				}
 				else
 				{
@@ -1104,13 +1116,14 @@ rbool RDOThreadSimulator::parseModel()
 	try
 	{
 		m_exitCode = rdo::simulation::report::EC_OK;
-		if (m_runNumber != 0)
+		if (!m_runNumber)
 		{
-			m_pParser->parse(m_runNumber);// parse i-го блока
+			m_pParser->parse();// parse всей модели
+			m_runCount = getInitialRunCount();
 		}
 		else
 		{
-			m_pParser->parse();// parse всей модели
+			m_pParser->parse(m_runNumber);// parse i-го блока
 		}
 	}
 	catch (REF(rdo::compiler::parser::RDOSyntaxException))
@@ -1132,36 +1145,23 @@ rbool RDOThreadSimulator::parseModel()
 
 	m_showMode = getInitialShowMode();
 	m_showRate = getInitialShowRate();
-	if (m_runNumber == 0)
-	{
-		m_runCount = getInitialRunCount();
-	}
 
 	broadcastMessage(RT_SIMULATOR_PARSE_OK);
 
 	return true;
 }
 
-
 void RDOThreadSimulator::runModel()
 {
-	if (m_runNumber < m_runCount || m_runNumber ==0)
-	{
-		++m_runNumber;
-		parseModel();
+	parseModel();
 
-		ASSERT(m_pParser );
-		ASSERT(m_pRuntime);
+	ASSERT(m_pParser );
+	ASSERT(m_pRuntime);
 
-		m_pParser->error().clear();
-		m_exitCode = rdo::simulation::report::EC_OK;
-		m_pRuntime->setStudioThread(kernel->studio());
-		m_pThreadRuntime = rdo::Factory<rdo::runtime::RDOThreadRunTime>::create();
-	}
-	else
-	{
-		m_runNumber = 0;
-	}
+	m_pParser->error().clear();
+	m_exitCode = rdo::simulation::report::EC_OK;
+	m_pRuntime->setStudioThread(kernel->studio());
+	m_pThreadRuntime = rdo::Factory<rdo::runtime::RDOThreadRunTime>::create();
 }
 
 void RDOThreadSimulator::stopModel()
@@ -1329,14 +1329,19 @@ double RDOThreadSimulator::getInitialShowRate() const
 	return m_pParser->getSMR()->getShowRate();
 }
 
-ruint RDOThreadSimulator::runNumberCheck() const
+bool RDOThreadSimulator::needNextRun()
 {
-	return m_runCount;
+	return m_runCount > 0 && m_runNumber < m_runCount;
 }
 
-rbool RDOThreadSimulator::OldModelCheckSim() const
+bool RDOThreadSimulator::CheckOldModel()
 {
-	return m_pParser->getSMR()->OldModelCheck();
+	return m_runCount == 0;
+}
+
+ruint RDOThreadSimulator::getRunNumber()
+{
+	return m_runNumber;
 }
 
 void RDOThreadSimulator::codeCompletion()

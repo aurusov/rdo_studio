@@ -236,9 +236,10 @@ protected:
 
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	rbool parseModel  ();
-	void  runModel    ();
-	void  stopModel   ();
+	rbool parseModel   ();
+	void  runModel     ();
+	void  stopModel    ();
+	bool  needNextRun  ();
 
 	typedef std::vector<rdo::simulation::report::FileMessage> SyntaxMessageList;
 	SyntaxMessageList getErrors();
@@ -259,8 +260,8 @@ public:
 	int      getInitialFrameNumber() const;
 	double   getInitialShowRate   () const;
 	ruint    getInitialRunCount   () const;
-	ruint    runNumberCheck       () const;
-	rbool    OldModelCheckSim     () const;
+	ruint    getRunNumber         ()      ;
+	bool     CheckOldModel        ()      ;
 
 	struct GetList
 	{
