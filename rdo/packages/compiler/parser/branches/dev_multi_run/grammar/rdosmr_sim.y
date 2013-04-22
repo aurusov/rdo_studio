@@ -243,20 +243,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 smr_main
 	: smr_launch
-	{
-		PARSER->getSMR()->setOldModel();
-	}
 	| smr_launch_set
-	| smr_launch_mix
-	{
-		PARSER->error().error(@1, rdo::format("старый с новым"));
-	}
-	;
-
-smr_launch_mix
-	: smr_launch smr_launch_single_of_set smr_launch_set
-	//| smr_launch_single_of_set smr_launch smr_launch_set
-	//| smr_launch_single_of_set smr_launch_set smr_launch smr_launch_set
 	;
 
 smr_launch_set
