@@ -197,6 +197,7 @@ protected:
 	tstring getExtention         (rdoModelObjects::RDOFileType type) const;
 	tstring getFileExtName       (rdoModelObjects::RDOFileType type) const;
 	tstring getFullFileName      (rdoModelObjects::RDOFileType type) const;
+	tstring getFullFileNameSerial(rdoModelObjects::RDOFileType type) const;
 	rbool   isReadOnly           (rdoModelObjects::RDOFileType type) const;
 	rbool   isDescribed          (rdoModelObjects::RDOFileType type) const;
 	rbool   isMustExist          (rdoModelObjects::RDOFileType type) const;
