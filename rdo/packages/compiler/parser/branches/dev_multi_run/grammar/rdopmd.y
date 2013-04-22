@@ -181,7 +181,6 @@
 
 %token RDO_STRING_CONST
 %token RDO_STRING_CONST_BAD
-%token RDO_IDENTIF_BAD
 %token RDO_Select
 %token RDO_Size
 %token RDO_Empty

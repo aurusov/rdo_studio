@@ -54,6 +54,11 @@
 %option noyywrap
 %x comment_cpp
 %x comment_line
+
+LETTER [A-Za-z]|[\xC2-\xDF][\x80-\xBF]|\xE0[\xA0-\xBF][\x80-\xBF]|[\xE1-\xEC\xEE\xEF]([\x80-\xBF]{2})|\xED[\x80-\x9F][\x80-\xBF]|\xF0[\x90-\xBF]([\x80-\xBF]{2})|[\xF1-\xF3]([\x80-\xBF]{3})|\xF4[\x80-\x8F]([\x80-\xBF]{2})
+IDENTIF ({LETTER}|[_$])({LETTER}|[[:digit:]_$])*
+WS [\r\n\t ]
+
 %%
 
 $Resource_type                 return(RDO_Resource_type);
@@ -187,8 +192,8 @@ YES                            return(RDO_YES);
 yes                            return(RDO_YES);
 $Activities                    return(RDO_Activities);
 $activities                    return(RDO_Activities);
-value[\r\n\t ]+before          return(RDO_value_before);
-value[\r\n\t ]+after           return(RDO_value_after);
+value{WS}+before               return(RDO_value_before);
+value{WS}+after                return(RDO_value_after);
 value_before                   return(RDO_value_before);
 value_after                    return(RDO_value_after);
 some                           return(RDO_some);
@@ -326,7 +331,7 @@ sprite                         return(RDO_sprite_call);
 (\'[^\']*\') {
 	tstring n1(YYText());
 	int len = n1.length();
-	tstring name(rdo::locale::convertFromCLocale(tstring(n1, 1, len-2)));
+	tstring name(tstring(n1, 1, len-2));
 	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__string>(
 		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, name) : rdo::compiler::parser::RDOParserSrcInfo(name)
 	);
@@ -354,12 +359,45 @@ sprite                         return(RDO_sprite_call);
 	PARSER->error().error(rdo::compiler::parser::RDOParserSrcInfo(), "Не найдено начало комментария");
 }
 
-[\r\n\t ]+
+{WS}+
 {}
 
 [#`~@$%^&|:;(),=\[\]\.\*\>\<\+\-\/\\\{\}]	return(YYText()[YYLeng()-1]);
 
-([+-]?[0-9]+"..") {
+[+-]?[[:digit:]]+ {
+
+	tstring yText = YYText();
+
+	rdo::compiler::parser::RDOParserSrcInfo srcInfo(
+		LEXER->m_lploc
+			? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, yText)
+			: rdo::compiler::parser::RDOParserSrcInfo(yText)
+	);
+
+	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(srcInfo);
+	ASSERT(pType);
+
+	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	int value = 0;
+	try
+	{
+		value = boost::lexical_cast<int>(yText);
+	}
+	catch (const boost::bad_lexical_cast&)
+	{
+		PARSER->error().error(srcInfo, boost::str(boost::format("Ошибка преобразования числа '%1%'. Возможно, число слишком большое.") % yText) );
+	}
+	LEXER->setvalue(PARSER->stack().push(
+		rdo::Factory<rdo::compiler::parser::RDOValue>::create(
+			value,
+			pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()),
+			pType
+		)
+	));
+	return RDO_INT_CONST;
+}
+
+([+-]?[[:digit:]]+"..") {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("..");
 	tstring yText(n1, 0, pos);
@@ -396,7 +434,7 @@ sprite                         return(RDO_sprite_call);
 	return RDO_INT_CONST;
 }
 
-([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
+([+-]?[[:digit:]]+"."[[:digit:]]*([Ee][+-]?[[:digit:]]+)?) {
 
 	tstring yText = YYText();
 
@@ -430,39 +468,6 @@ sprite                         return(RDO_sprite_call);
 	return RDO_REAL_CONST;
 }
 
-[+-]?[0-9]+ {
-
-	tstring yText = YYText();
-
-	rdo::compiler::parser::RDOParserSrcInfo srcInfo(
-		LEXER->m_lploc
-			? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, yText)
-			: rdo::compiler::parser::RDOParserSrcInfo(yText)
-	);
-
-	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(srcInfo);
-	ASSERT(pType);
-
-	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
-	int value = 0;
-	try
-	{
-		value = boost::lexical_cast<int>(yText);
-	}
-	catch (const boost::bad_lexical_cast&)
-	{
-		PARSER->error().error(srcInfo, boost::str(boost::format("Ошибка преобразования числа '%1%'. Возможно, число слишком большое.") % yText) );
-	}
-	LEXER->setvalue(PARSER->stack().push(
-		rdo::Factory<rdo::compiler::parser::RDOValue>::create(
-			value,
-			pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()),
-			pType
-		)
-	));
-	return RDO_INT_CONST;
-}
-
 true {
 	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__bool>(
 		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdo::compiler::parser::RDOParserSrcInfo(YYText())
@@ -483,18 +488,11 @@ false {
 	return RDO_BOOL_CONST;
 }
 
-([+-]?[0-9]+"."?[0-9]*([Ee][+-]?[0-9]+)?)[A-Za-z\xA8\xB8\xC0-\xFF_][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*
-{
-	LEXER->setvalue(NULL);
-	return RDO_IDENTIF_BAD;
-}
-
-[A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange {
+{IDENTIF}{WS}+NoChange{WS}+NoChange {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
-	tstring nameUtf8(rdo::locale::convertFromCLocale(name));
-	RUNTIME->memory_insert(nameUtf8.length() + sizeof(tstring));
+	RUNTIME->memory_insert(name.length() + sizeof(tstring));
 	rdo::compiler::parser::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
@@ -502,23 +500,22 @@ false {
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos  + name.length();
 		pos.m_last_seek = pos.m_first_seek + name.length();
-		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(pos, nameUtf8));
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(pos, name));
 	}
 	else
 	{
-		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(nameUtf8));
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(name));
 	}
 	ASSERT(pValue);
 	LEXER->setvalue(PARSER->stack().push(pValue));
 	return RDO_IDENTIF_NoChange_NoChange;
 }
 
-[A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*[\r\n\t ]+NoChange {
+{IDENTIF}{WS}+NoChange {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
-	tstring nameUtf8(rdo::locale::convertFromCLocale(name));
-	RUNTIME->memory_insert(nameUtf8.length() + sizeof(tstring));
+	RUNTIME->memory_insert(name.length() + sizeof(tstring));
 	rdo::compiler::parser::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
@@ -526,23 +523,22 @@ false {
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos  + name.length();
 		pos.m_last_seek = pos.m_first_seek + name.length();
-		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(pos, nameUtf8));
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(pos, name));
 	}
 	else
 	{
-		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(nameUtf8));
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(name));
 	}
 	ASSERT(pValue);
 	LEXER->setvalue(PARSER->stack().push(pValue));
 	return RDO_IDENTIF_NoChange;
 }
 
-[A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*[\r\n\t ]*\: {
+{IDENTIF}{WS}*\: {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
-	tstring nameUtf8(rdo::locale::convertFromCLocale(name));
-	RUNTIME->memory_insert(nameUtf8.length() + sizeof(tstring));
+	RUNTIME->memory_insert(name.length() + sizeof(tstring));
 	rdo::compiler::parser::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
@@ -550,20 +546,20 @@ false {
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos  + name.length();
 		pos.m_last_seek = pos.m_first_seek + name.length();
-		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(pos, nameUtf8));
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(pos, name));
 	}
 	else
 	{
-		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(nameUtf8));
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(name));
 	}
 	ASSERT(pValue);
 	LEXER->setvalue(PARSER->stack().push(pValue));
 	return RDO_IDENTIF_COLON;
 }
 
-[A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]* {
+{IDENTIF} {
 
-	tstring name(rdo::locale::convertFromCLocale(YYText()));
+	tstring name(YYText());
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
 
 	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, name) : rdo::compiler::parser::RDOParserSrcInfo(name))));
