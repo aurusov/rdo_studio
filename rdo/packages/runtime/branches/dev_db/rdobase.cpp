@@ -74,7 +74,7 @@ void RDOSimulatorBase::rdoInit()
 	OperatorType::getCalcCounter<OperatorType::OT_ARITHM>() = 0;
 	OperatorType::getCalcCounter<OperatorType::OT_LOGIC> () = 0;
 
-	m_trcDB->queryListPushBack("INSERT INTO trc_time VALUES(0);");
+	m_trcDB->queryExec("INSERT INTO trc_time VALUES(0);");
 
 	if (m_timePoints.find(m_currentTime) == m_timePoints.end())
 		m_timePoints[m_currentTime] = NULL;

@@ -444,4 +444,22 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"AFTER INSERT ON trc_er "
 		"FOR EACH ROW "
 		"EXECUTE PROCEDURE trc_copy_er_row();");
+
+	queryListPushBack(
+		"CREATE TABLE trc_r("
+		"id         integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"time       real NOT NULL,"
+		"type       varchar(5) NOT NULL,"
+		"rtp_id     integer NOT NULL,"
+		"res_id     integer NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (rtp_id) REFERENCES trc_resource_type(rtp_id),"
+		"FOREIGN KEY (res_id) REFERENCES trc_resources(res_id)"
+		");");
+
+	queryListPushBack(
+		"CREATE TRIGGER trc_r_trig "
+		"AFTER INSERT ON trc_r "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_row();");
 }

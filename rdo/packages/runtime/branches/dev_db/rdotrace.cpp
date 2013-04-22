@@ -361,7 +361,7 @@ void RDOTrace::writeTraceBegin(CREF(LPRDORuntime) pRuntime)
 
 	double time = pRuntime->getCurrentTime();
 
-	m_trcDB->queryListPushBack(
+	m_trcDB->queryExec(
 		QString("INSERT INTO trc_es VALUES(DEFAULT,%1,1);")
 			.arg(time));
 
@@ -375,7 +375,7 @@ void RDOTrace::writeModelBegin(CREF(LPRDORuntime) pRuntime)
 
 	double time = pRuntime->getCurrentTime();
 
-	m_trcDB->queryListPushBack(
+	m_trcDB->queryExec(
 		QString("INSERT INTO trc_es VALUES(DEFAULT,%1,3);")
 			.arg(time));
 
@@ -389,7 +389,7 @@ void RDOTrace::writeTraceEnd(CREF(LPRDORuntime) pRuntime)
 
 	double time = pRuntime->getCurrentTime();
 
-	m_trcDB->queryListPushBack(
+	m_trcDB->queryExec(
 		QString("INSERT INTO trc_es VALUES(DEFAULT,%1,2);")
 			.arg(time));
 

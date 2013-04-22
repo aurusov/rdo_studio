@@ -94,6 +94,7 @@ private:
 	tstring          m_typeId;
 
 	PTR(GeneralDB)  m_db;
+	PTR(GeneralDB)  m_trcDB;
 
 	tstring traceTypeId();
 };

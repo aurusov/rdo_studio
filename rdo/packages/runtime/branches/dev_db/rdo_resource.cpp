@@ -31,6 +31,7 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList,
 	, m_referenceCount   (0                                     )
 	, m_resType          (pResType                              )
 	, m_db               (pRuntime->getDB()                     )
+	, m_trcDB            (pRuntime->getTrcDB()                  )
 {
 	appendParams(paramList.begin(), paramList.end());
 }
@@ -119,6 +120,10 @@ tstring RDOResource::traceParametersValue()
 
 tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime)
 {
+	double time = pRuntime->getCurrentTime();
+	tstring rtpId = traceTypeId();
+	tstring resId = traceId();
+
 	rdo::ostringstream res;
 	if (traceable() || (prefix != '\0'))
 	{
@@ -128,12 +133,18 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 		if (prefix != '\0')
 			res << prefix;
 
+		m_trcDB->queryListPushBack(
+			QString("INSERT INTO trc_r VALUES(DEFAULT,%1,")
+				.arg(time));
+
 		switch (m_state)
 		{
 		case RDOResource::CS_Create:
+			m_trcDB->queryListPushBack("'RC',");
 			res << "RC ";
 			break;
 		case RDOResource::CS_Erase:
+			m_trcDB->queryListPushBack("'RE',");
 			res << "RE "
 #ifdef RDOSIM_COMPATIBLE
 				<< pRuntime->getCurrentTime() << " "
@@ -145,15 +156,21 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 #endif
 			break;
 		default:
+			m_trcDB->queryListPushBack("'RK',");
 			res << "RK ";
 			break;
 		}
 
-		res << pRuntime->getCurrentTime() << " "
-			<< traceTypeId()              << " "
-			<< traceId()                  << " "
-			<< traceParametersValue()     << std::endl;
+		m_trcDB->queryListPushBack(QString("%1,%2);")
+			.arg(QString::fromStdString(rtpId))
+			.arg(QString::fromStdString(resId)));
+
+		res << time                  << " "
+			<< rtpId                 << " "
+			<< resId                 << " "
+			<< traceParametersValue()<< std::endl;
 	}
+	m_trcDB->queryListExec();
 	return res.str();
 }
 
