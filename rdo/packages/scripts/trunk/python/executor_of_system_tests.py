@@ -9,6 +9,7 @@ import sys
 import uuid
 import shutil
 import argparse
+import traceback
 import subprocess
 import xml.dom.minidom
 
@@ -193,6 +194,7 @@ for task in files:
     
     except:
         print u'PARSE XML ERROR:', utask
+        traceback.print_exc(file=sys.stdout)
         G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
     
     if parse_result:
@@ -218,6 +220,7 @@ for task in files:
         try:
             exit_code = int(model['exit_code'])
         except:
+            traceback.print_exc(file=sys.stdout)
             exit_code = DEFAULT_EXIT_CODE
         
         print u'Project              :', utils.safe_encode(task, sys.getfilesystemencoding())
@@ -266,6 +269,7 @@ for task in files:
                     cycle_exit_code = compare_etalons(etalons, dirname)
 
                 except:
+                    traceback.print_exc(file=sys.stdout)
                     cycle_exit_code = APP_CODE_TERMINATION_ERROR
 
             # .rdox model not found
@@ -289,6 +293,7 @@ for task in files:
                     print u'CHECK ERROR LIST     :', check_message_cmp_string
 
                 except:
+                    traceback.print_exc(file=sys.stdout)
                     cycle_exit_code = APP_CODE_TERMINATION_ERROR
 
             elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR:
@@ -313,6 +318,7 @@ for task in files:
                 
                 shutil.rmtree(temp_directory_name)
             except:
+                traceback.print_exc(file=sys.stdout)
                 cycle_exit_code = APP_CODE_TERMINATION_ERROR
 
         else:
