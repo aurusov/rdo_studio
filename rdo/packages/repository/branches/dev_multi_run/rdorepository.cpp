@@ -31,7 +31,6 @@ RDOThreadRepository::RDOThreadRepository()
 	: RDOThreadMT    ("RDOThreadRepository")
 	, m_hasModel     (false                )
 	, m_realOnlyInDlg(false                )
-	, m_runNumber    (0                    )
 {
 	notifies.push_back(RT_STUDIO_MODEL_NEW                  );
 	notifies.push_back(RT_STUDIO_MODEL_OPEN                 );
@@ -111,7 +110,6 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 		}
 		case RT_RUNTIME_MODEL_START_BEFORE:
 		{
-			++m_runNumber;
 			beforeModelStart();
 			break;
 		}
@@ -569,14 +567,7 @@ void RDOThreadRepository::beforeModelStart()
 	}
 	if (m_files[rdoModelObjects::TRC].m_described)
 	{
-		if (kernel->simulator()->OldModelCheckSim())
-		{
-			m_traceFile.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::TRC)), std::ios::out | std::ios::binary);
-		}
-		else
-		{
-			m_traceFile.open(rdo::locale::convertToWStr(getFullFileNameSerial(rdoModelObjects::TRC)), std::ios::out | std::ios::binary);
-		}
+		m_traceFile.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::TRC)), std::ios::out | std::ios::binary);
 		if (m_traceFile.is_open())
 		{
 			writeModelFilesInfo(m_traceFile);
@@ -597,14 +588,7 @@ void RDOThreadRepository::stopModel()
 	if (m_files[rdoModelObjects::PMV].m_described)
 	{
 		boost::filesystem::ofstream results_file;
-		if (kernel->simulator()->OldModelCheckSim())
-		{
-			results_file.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::PMV)), std::ios::out | std::ios::binary);
-		}
-		else
-		{
-			results_file.open(rdo::locale::convertToWStr(getFullFileNameSerial(rdoModelObjects::PMV)), std::ios::out | std::ios::binary);
-		}
+		results_file.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::PMV)), std::ios::out | std::ios::binary);
 		if (results_file.is_open())
 		{
 			writeModelFilesInfo(results_file);
@@ -616,10 +600,6 @@ void RDOThreadRepository::stopModel()
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &stream);
 			results_file << std::endl << stream.str() << std::endl;
 		}
-	}
-	if (m_runNumber == kernel->simulator()->runNumberCheck() || kernel->simulator()->runNumberCheck() == 0)
-	{
-		m_runNumber = 0;
 	}
 }
 
@@ -665,15 +645,18 @@ tstring RDOThreadRepository::getFileExtName(rdoModelObjects::RDOFileType type) c
 	return it->second.m_fileName + it->second.m_extention;
 }
 
-tstring RDOThreadRepository::getFullFileNameSerial(rdoModelObjects::RDOFileType type) const
-{
-	tstring buffer = rdo::format("%i", m_runNumber);
-	return m_modelPath + buffer + getFileExtName(type);
-}
-
 tstring RDOThreadRepository::getFullFileName(rdoModelObjects::RDOFileType type) const
 {
-	return m_modelPath + getFileExtName(type);
+	if (kernel->simulator()->CheckOldModel())
+	{
+		return m_modelPath + getFileExtName(type);
+	}
+	else
+	{
+		ruint number = kernel->simulator()->getRunNumber();
+		tstring buffer = rdo::format("%i", number);
+		return m_modelPath + buffer + getFileExtName(type);
+	}
 }
 
 rbool RDOThreadRepository::isReadOnly(rdoModelObjects::RDOFileType type) const

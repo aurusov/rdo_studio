@@ -162,7 +162,6 @@ private:
 	rbool                        m_realOnlyInDlg;
 	ProjectName                  m_projectName;
 	SystemTime                   m_systemTime;
-	ruint                        m_runNumber;
 
 	void      resetModelNames ();
 	FindModel updateModelNames();
@@ -197,7 +196,6 @@ protected:
 	tstring getFileName          (rdoModelObjects::RDOFileType type) const;
 	tstring getExtention         (rdoModelObjects::RDOFileType type) const;
 	tstring getFileExtName       (rdoModelObjects::RDOFileType type) const;
-	tstring getFullFileNameSerial(rdoModelObjects::RDOFileType type) const;
 	tstring getFullFileName      (rdoModelObjects::RDOFileType type) const;
 	rbool   isReadOnly           (rdoModelObjects::RDOFileType type) const;
 	rbool   isDescribed          (rdoModelObjects::RDOFileType type) const;
