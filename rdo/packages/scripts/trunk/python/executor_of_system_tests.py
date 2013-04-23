@@ -129,7 +129,7 @@ def compare_etalons(etalons, basedir):
         print u'COMPARE:  ', utils.safe_encode(etalon['source'], sys.getfilesystemencoding()), u'  AND  ', utils.safe_encode(etalon['target'], sys.getfilesystemencoding()), u':  ', compare_string
     
     return cycle_exit_code
-    
+
 ###############################################################################
 #                                 main code                                   #
 ###############################################################################
