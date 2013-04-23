@@ -247,7 +247,7 @@ for task in files:
             # run rdo_console app on test model
 
             command = (rdo_ex + u' -i ' + utils.wrap_the_string_in_quotes(model_file))
-            print 'Run:', utils.safe_encode(command), '\n'
+            print 'Run:', utils.safe_encode(command, 'UTF-8'), '\n'
             simulation_code = subprocess.call(utils.safe_encode(command, CONSOLE_PARAM_ENCODING), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
             print u'SIMYLATION EXIT CODE :', simulation_code
@@ -309,7 +309,7 @@ for task in files:
                 
                 model_file = temp_directory_name + model['name']
                 command = (rdo_ex + u' -i ' + utils.wrap_the_string_in_quotes(model_file) + u' -c')
-                print 'Run:', utils.safe_encode(command), '\n'
+                print 'Run:', utils.safe_encode(command, 'UTF-8'), '\n'
                 convertor_exit_code = subprocess.call(utils.safe_encode(command, 'UTF-8'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                 
                 print u'CONVERT EXIT CODE :', convertor_exit_code, u'\n'
