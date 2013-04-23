@@ -388,17 +388,38 @@ RDOValue RDOValue::onPointerUMinus() const
 
 void RDOValue::serializeInDB(REF(IDB) db) const
 {
-	switch (typeID())
+	LPRDOArrayType pThisArrayType;
+
+	QString connectionName = db.getQtDB().connectionName();
+	if (connectionName == "rdo")
 	{
-	case RDOType::t_unknow        : break;
-	case RDOType::t_int           : DEFINE_SERIALIZE_RDO_VALUE("int_rv"          ,                                           getInt     ()  ); break;
-	case RDOType::t_real          : DEFINE_SERIALIZE_RDO_VALUE("real_rv"         ,                                           getDouble  ()  ); break;
-	case RDOType::t_enum          : DEFINE_SERIALIZE_RDO_VALUE("enum_rv"         ,QString("'%1'").arg(QString::fromStdString(getAsString()))); break;
-	case RDOType::t_bool          : DEFINE_SERIALIZE_RDO_VALUE("bool_rv"         ,QString("'%1'").arg(QString::fromStdString(getAsString()))); break;
-	case RDOType::t_string        : DEFINE_SERIALIZE_RDO_VALUE("string_rv"       ,QString("'%1'").arg(QString::fromStdString(getString  ()))); break;
-	case RDOType::t_identificator : DEFINE_SERIALIZE_RDO_VALUE("identificator_rv",QString("'%1'").arg(QString::fromStdString(getAsString()))); break;
-	case RDOType::t_pointer       : getPointer<RDOArrayValue>()->serializeInDB(db);                                                            break;
-	default                       : throw RDOValueException("Данная величина не может быть записана в базу данных");
+		switch (typeID())
+		{
+		case RDOType::t_unknow        : break;
+		case RDOType::t_int           : DEFINE_SERIALIZE_RDO_VALUE("int_rv"          ,                                           getInt     ()  );                        break;
+		case RDOType::t_real          : DEFINE_SERIALIZE_RDO_VALUE("real_rv"         ,                                           getDouble  ()  );                        break;
+		case RDOType::t_enum          : DEFINE_SERIALIZE_RDO_VALUE("enum_rv"         ,QString("'%1'").arg(QString::fromStdString(getAsString())));                        break;
+		case RDOType::t_bool          : DEFINE_SERIALIZE_RDO_VALUE("bool_rv"         ,QString("'%1'").arg(QString::fromStdString(getAsString())));                        break;
+		case RDOType::t_string        : DEFINE_SERIALIZE_RDO_VALUE("string_rv"       ,QString("'%1'").arg(QString::fromStdString(getString  ())));                        break;
+		case RDOType::t_identificator : DEFINE_SERIALIZE_RDO_VALUE("identificator_rv",QString("'%1'").arg(QString::fromStdString(getAsString())));                        break;
+		case RDOType::t_pointer       : pThisArrayType = m_pType.object_dynamic_cast<RDOArrayType>(); if (pThisArrayType) getPointer<RDOArrayValue>()->serializeInDB(db); break;
+		default                       : throw RDOValueException("Данная величина не может быть записана в базу данных");
+		}
+	}
+	else if (connectionName == "trc")
+	{
+		switch (typeID())
+		{
+		case RDOType::t_int           :
+		case RDOType::t_enum          : db.pushContext<int>(db.insertRowInd("trc_value_int"   ,QString("DEFAULT, %1 ").arg(                       getInt     () )));      break;
+		case RDOType::t_real          : db.pushContext<int>(db.insertRowInd("trc_value_real"  ,QString("DEFAULT, %1 ").arg(                       getDouble  () )));      break;
+		case RDOType::t_bool          : db.pushContext<int>(db.insertRowInd("trc_value_bool"  ,QString("DEFAULT, %1 ").arg(QString::fromStdString(getAsString()))));      break;
+		case RDOType::t_string        : db.pushContext<int>(db.insertRowInd("trc_value_string",QString("DEFAULT,'%1'").arg(QString::fromStdString(getAsString()))));      break;
+		case RDOType::t_pointer       : pThisArrayType = m_pType.object_dynamic_cast<RDOArrayType>(); if (pThisArrayType) getPointer<RDOArrayValue>()->serializeInDB(db); break;
+		case RDOType::t_identificator :
+		case RDOType::t_unknow        :
+		default                       : throw RDOValueException("Трассировка данной величины не может быть записана в базу данных");
+		}
 	}
 }
 

@@ -128,12 +128,25 @@ LPRDOArrayValue RDOArrayValue::clone() const
 
 void RDOArrayValue::serializeInDB(REF(IDB) db) const
 {
-	int array_id = db.insertRowInd("array_rv","DEFAULT");
+	QString tableName,tableNameVv;
+	QString connectionName = db.getQtDB().connectionName();
+	if (connectionName == "trc")
+	{
+		tableName = "trc_value_array";
+		tableNameVv = "trc_value_array_vv";
+	}
+	else if (connectionName == "rdo")
+	{
+		tableName = "array_rv";
+		tableNameVv = "array_value";
+	}
+
+	int array_id = db.insertRowInd(tableName,"DEFAULT");
 
 	BOOST_FOREACH(CREF(RDOValue) arrayItem, m_container)
 	{
 		arrayItem.serializeInDB(db);
-		db.insertRow("array_value",QString("%1,DEFAULT,%2")
+		db.insertRow(tableNameVv,QString("%1,DEFAULT,%2")
 			.arg(array_id)
 			.arg(db.popContext<int>()));
 	}
