@@ -327,6 +327,14 @@ void InitStructDB::generateCreateTrcDBQuery()
 		");");
 
 	queryListPushBack(
+		"CREATE TABLE trc_watches("
+		"name        varchar(40) NOT NULL,"
+		"watch_id    integer NOT NULL,"
+		"watch_type  varchar(11) NOT NULL,"
+		"PRIMARY KEY (watch_id)"
+		");");
+
+	queryListPushBack(
 		"CREATE TABLE trc_time("
 		"time         real NOT NULL,"
 		"PRIMARY KEY (time)"
@@ -338,7 +346,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"CREATE TABLE trc_rows("
 		"id           integer NOT NULL,"
 		"tableid      integer NOT NULL,"
-		"type         varchar(5) NOT NULL,"
+		"type         varchar(6) NOT NULL,"
 		"PRIMARY KEY (id)"
 		");");
 
@@ -388,7 +396,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"CREATE TABLE trc_eb_ef("
 		"id           integer NOT NULL DEFAULT nextval('trc_row_id'),"
 		"time         real NOT NULL,"
-		"type         varchar(5) NOT NULL,"
+		"type         varchar(6) NOT NULL,"
 		"internal_id  integer NOT NULL,"
 		"act_id       integer NOT NULL,"
 		"PRIMARY KEY (id),"
@@ -415,7 +423,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"CREATE TABLE trc_ei_ee("
 		"id           integer NOT NULL DEFAULT nextval('trc_row_id'),"
 		"time         real NOT NULL,"
-		"type         varchar(5) NOT NULL,"
+		"type         varchar(6) NOT NULL,"
 		"evnt_id      integer NOT NULL,"
 		"PRIMARY KEY (id),"
 		"FOREIGN KEY (time) REFERENCES trc_time(time)"
@@ -449,7 +457,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"CREATE TABLE trc_r("
 		"id         integer NOT NULL DEFAULT nextval('trc_row_id'),"
 		"time       real NOT NULL,"
-		"type       varchar(5) NOT NULL,"
+		"type       varchar(6) NOT NULL,"
 		"rtp_id     integer NOT NULL,"
 		"res_id     integer NOT NULL,"
 		"PRIMARY KEY (id),"
@@ -462,4 +470,132 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"AFTER INSERT ON trc_r "
 		"FOR EACH ROW "
 		"EXECUTE PROCEDURE trc_copy_row();");
+
+	queryListPushBack("CREATE SEQUENCE trc_value_seq;");
+
+	queryListPushBack("CREATE TABLE trc_value("
+		"id         integer NOT NULL,"
+		"table_id   integer NOT NULL,"
+		"PRIMARY KEY (id)"
+		");");
+
+	queryListPushBack("CREATE TABLE trc_r_param_value("
+		"r_id       integer NOT NULL,"
+		"param_id   integer NOT NULL,"
+		"value_id   integer NOT NULL,"
+		"PRIMARY KEY (r_id,param_id),"
+		"FOREIGN KEY (r_id) REFERENCES trc_r(id),"
+		"FOREIGN KEY (value_id) REFERENCES trc_value(id)"
+		");");
+
+	queryListPushBack("CREATE FUNCTION trc_copy_value() RETURNS TRIGGER AS $trig$ "
+		"BEGIN "
+		"INSERT INTO trc_value(id,table_id) VALUES "
+		"(NEW.id, NEW.tableoid); "
+		"RETURN NULL; "
+		"END; "
+		"$trig$ LANGUAGE plpgsql;");
+
+	queryListPushBack("CREATE TABLE trc_value_int("
+		"id         integer NOT NULL DEFAULT nextval('trc_value_seq'),"
+		"value      integer NOT NULL,"
+		"PRIMARY KEY (id)"
+		");");
+
+	queryListPushBack("CREATE TRIGGER trc_value_int_trig "
+		"AFTER INSERT ON trc_value_int "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_value();");
+
+	queryListPushBack("CREATE TABLE trc_value_real("
+		"id         integer NOT NULL DEFAULT nextval('trc_value_seq'),"
+		"value      real NOT NULL,"
+		"PRIMARY KEY (id)"
+		");");
+
+	queryListPushBack("CREATE TRIGGER trc_value_real_trig "
+		"AFTER INSERT ON trc_value_real "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_value();");
+
+	queryListPushBack("CREATE TABLE trc_value_bool("
+		"id         integer NOT NULL DEFAULT nextval('trc_value_seq'),"
+		"value      bool NOT NULL,"
+		"PRIMARY KEY (id)"
+		");");
+
+	queryListPushBack("CREATE TRIGGER trc_value_bool_trig "
+		"AFTER INSERT ON trc_value_bool "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_value();");
+
+	queryListPushBack("CREATE TABLE trc_value_string("
+		"id         integer NOT NULL DEFAULT nextval('trc_value_seq'),"
+		"value      varchar(40) NOT NULL,"
+		"PRIMARY KEY (id)"
+		");");
+
+	queryListPushBack("CREATE TRIGGER trc_value_string_trig "
+		"AFTER INSERT ON trc_value_string "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_value();");
+
+	queryListPushBack("CREATE TABLE trc_value_array("
+		"id         integer NOT NULL DEFAULT nextval('trc_value_seq'),"
+		"PRIMARY KEY (id)"
+		");");
+
+	queryListPushBack("CREATE TRIGGER trc_value_array_trig "
+		"AFTER INSERT ON trc_value_array "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_value();");
+
+	queryListPushBack("CREATE TABLE trc_value_array_vv("
+		"array_id   integer NOT NULL,"
+		"id         serial  NOT NULL,"
+		"value_id   integer NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (array_id) REFERENCES trc_value_array(id),"
+		"FOREIGN KEY (value_id) REFERENCES trc_value(id)"
+		");");
+
+	queryListPushBack("CREATE TABLE trc_dps("
+		"id         integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"type       varchar(6) NOT NULL,"
+		"value1     real,"
+		"value2     real,"
+		"value3     real,"
+		"PRIMARY KEY (id)"
+		");");
+
+	queryListPushBack(
+		"CREATE TRIGGER trc_dps_trig "
+		"AFTER INSERT ON trc_dps "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_row();");
+
+	queryListPushBack("CREATE TABLE trc_v("
+		"id         integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"time       real NOT NULL,"
+		"watch_id   integer NOT NULL,"
+		"value_id   integer NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (watch_id) REFERENCES trc_watches(watch_id),"
+		"FOREIGN KEY (value_id) REFERENCES trc_value(id)"
+		");");
+
+	queryListPushBack(
+		"CREATE FUNCTION trc_copy_v_row() RETURNS TRIGGER AS $trig$ "
+		"BEGIN "
+		"INSERT INTO trc_rows VALUES "
+		"(NEW.id, NEW.tableoid, 'V'); "
+		"RETURN NULL; "
+		"END; "
+		"$trig$ LANGUAGE plpgsql;");
+
+	queryListPushBack(
+		"CREATE TRIGGER trc_v_trig "
+		"AFTER INSERT ON trc_v "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_v_row();");
 }
