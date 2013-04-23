@@ -87,10 +87,12 @@ tstring RDOResource::getTypeId() const
 
 tstring RDOResource::traceParametersValue()
 {
+	int r_id = m_trcDB->popContext<int>();
 	rdo::ostringstream str;
 	if(m_paramList.size() > 0)
 	{
 		ParamList::iterator end = m_paramList.end();
+		int i = 1;
 		for (ParamList::iterator it = m_paramList.begin();;)
 		{
 #ifdef RDOSIM_COMPATIBLE
@@ -108,11 +110,18 @@ tstring RDOResource::traceParametersValue()
 				str << _str.str().c_str();
 			}
 #else
+			it->serializeInDB(*m_trcDB);
+			m_trcDB->queryListPushBack(QString("INSERT INTO trc_r_param_value VALUES(%1,%2,%3);")
+				.arg(r_id)
+				.arg(i)
+				.arg(m_trcDB->popContext<int>()));
+
 			str << *it;
 #endif
 			if (++it == end)
 				break;
 			str << " ";
+			++i;
 		}
 	}
 	return str.str();
@@ -133,6 +142,7 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 		if (prefix != '\0')
 			res << prefix;
 
+		m_trcDB->queryListExec();
 		m_trcDB->queryListPushBack(
 			QString("INSERT INTO trc_r VALUES(DEFAULT,%1,")
 				.arg(time));
@@ -161,16 +171,17 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 			break;
 		}
 
-		m_trcDB->queryListPushBack(QString("%1,%2);")
+		m_trcDB->queryListPushBack(QString("%1,%2) RETURNING id;")
 			.arg(QString::fromStdString(rtpId))
 			.arg(QString::fromStdString(resId)));
 
+		m_trcDB->pushContext<int>(m_trcDB->queryListExecInd());
+
 		res << time                  << " "
 			<< rtpId                 << " "
-			<< resId                 << " "
+			<< resId                 << "  "
 			<< traceParametersValue()<< std::endl;
 	}
-	m_trcDB->queryListExec();
 	return res.str();
 }
 

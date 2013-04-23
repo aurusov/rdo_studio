@@ -395,8 +395,6 @@ void RDOTrace::writeTraceEnd(CREF(LPRDORuntime) pRuntime)
 
 	getOStream() << "ES " << time 
       << " 2" << std::endl << getEOL();
-
-	m_trcDB->queryListExec();
 }
 
 void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
@@ -417,11 +415,22 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 			ASSERT(dp_trace);
 			// Информация о точке
 			getOStream() << std::endl << getEOL();
+			int pointNumber     = dp_trace->getTraceID();
+			int activationCount = dp_stat->getCalcCnt();
+			int successCount    = dp_stat->getCalcResFoundCnt();
+
 			getOStream() << "DPS_C"
-			             << "  " << dp_trace->getTraceID()
-			             << "  " << dp_stat->getCalcCnt()
-			             << "  " << dp_stat->getCalcResFoundCnt()
+			             << "  " << pointNumber
+			             << "  " << activationCount
+			             << "  " << successCount
 			             << std::endl << getEOL();
+
+			m_trcDB->queryListPushBack(
+				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_C',%1,%2,%3);")
+					.arg(pointNumber)
+					.arg(activationCount)
+					.arg(successCount));
+
 			if (dp_stat->getCalcCnt())
 			{
 				// Время поиска
@@ -431,11 +440,23 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 				dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_TIMES, d_min, d_max, d_med);
 				getOStream() << rdo::format("DPS_TM %0.3f  %0.3f  %0.3f", d_med, d_min, d_max) << std::endl << getEOL();
 
+				m_trcDB->queryListPushBack(
+				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_TM',%1,%2,%3);")
+					.arg(d_med)
+					.arg(d_min)
+					.arg(d_max));
+
 				// Используемая память
 				ruint ui_min = 0;
 				ruint ui_max = 0;
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_MEMORY, ui_min, ui_max, d_med);
 				getOStream() << rdo::format("DPS_ME %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
+
+				m_trcDB->queryListPushBack(
+				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_ME',%1,%2,%3);")
+					.arg(d_med)
+					.arg(ui_min)
+					.arg(ui_max));
 
 				// Стоимость решения
 				dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_COST, d_min, d_max, d_med);
@@ -445,21 +466,51 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 				             << "  " << d_max
 				             << std::endl << getEOL();
 
+				m_trcDB->queryListPushBack(
+				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_CO',%1,%2,%3);")
+					.arg(d_med)
+					.arg(d_min)
+					.arg(d_max));
+
 				// Количество раскрытых вершин
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_EXPENDED, ui_min, ui_max, d_med);
 				getOStream() << rdo::format("DPS_TO %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
+
+				m_trcDB->queryListPushBack(
+				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_TO',%1,%2,%3);")
+					.arg(d_med)
+					.arg(ui_min)
+					.arg(ui_max));
 
 				// Количество вершин в графе
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_IN_GRAPH, ui_min, ui_max, d_med);
 				getOStream() << rdo::format("DPS_TT %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
+				m_trcDB->queryListPushBack(
+				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_TT',%1,%2,%3);")
+					.arg(d_med)
+					.arg(ui_min)
+					.arg(ui_max));
+
 				// Количество включавшихся в граф вершин (вершины, соответствующие одному и тому же состоянию системы, могут включаться в граф неоднократно, если порождается вершина с меньшей стоимостью пути)
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES, ui_min, ui_max, d_med);
 				getOStream() << rdo::format("DPS_TI %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
+				m_trcDB->queryListPushBack(
+				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_TI',%1,%2,%3);")
+					.arg(d_med)
+					.arg(ui_min)
+					.arg(ui_max));
+
 				// Общее количество порожденных вершин-преемников
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_FULL, ui_min, ui_max, d_med);
 				getOStream() << rdo::format("DPS_TG %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
+
+				m_trcDB->queryListPushBack(
+				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_TG',%1,%2,%3);")
+					.arg(d_med)
+					.arg(ui_min)
+					.arg(ui_max));
 			}
 		}
 		++it;
@@ -467,7 +518,14 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 
 	// Используемая память
 	getOStream() << std::endl << getEOL();
-	getOStream() << "DPS_MM " << pRuntime->memory_get() << std::endl << getEOL();
+	double memory = pRuntime->memory_get();
+	getOStream() << "DPS_MM " << memory << std::endl << getEOL();
+
+	m_trcDB->queryListPushBack(
+		QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_MM',%1,NULL,NULL);")
+			.arg(memory));
+
+	m_trcDB->queryListExec();
 }
 
 void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok)
@@ -475,9 +533,17 @@ void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok)
 	if (!canTrace())
 		return;
 
-	getOStream() << "V  "  << pRuntime->getCurrentTime() 
-		<< " " << pok->traceId() 
-		<< "  " << pok->traceValue() << std::endl << getEOL();
+	double time = pRuntime->getCurrentTime();
+	tstring watchId = pok->traceId();
+	getOStream() << "V  "  << time 
+		<< " " << watchId 
+		<< "  " << pok->traceValue(m_trcDB) << std::endl << getEOL();
+
+	m_trcDB->queryListPushBack(
+		QString("INSERT INTO trc_v VALUES(DEFAULT,%1,%2,%3);")
+			.arg(time)
+			.arg(QString::fromStdString(watchId))
+			.arg(m_trcDB->popContext<int>()));
 }
 
 // --------------------------------------------------------------------------------
