@@ -143,8 +143,10 @@ void RDOPMDWatchPar::notify(ruint message, PTR(void) pParam)
 	}
 };
 
-tstring RDOPMDWatchPar::traceValue() const
+tstring RDOPMDWatchPar::traceValue(PTR(IDB) db) const
 {
+	if (db)
+		m_currentValue.rdoValue.serializeInDB(*db);
 	return rdo::toString(m_currentValue.rdoValue);
 }
 
@@ -219,10 +221,10 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 	printLeft(stream, name());
 	stream
 		<< "\t" << "Тип:"        << "\t" << "par"
-		<< "\t" << "Посл.знач.:" << "\t" << ResultStreamItem<tstring> (count > 0, traceValue())
-		<< "\t" << "Ср.знач.:"   << "\t" << ResultStreamItem<double>  (count > 0, average     )
-		<< "\t" << "Мин.знач.:"  << "\t" << ResultStreamItem<RDOValue>(count > 0, minValue    )
-		<< "\t" << "Макс.знач.:" << "\t" << ResultStreamItem<RDOValue>(count > 0, maxValue    )
+		<< "\t" << "Посл.знач.:" << "\t" << ResultStreamItem<tstring> (count > 0, traceValue(NULL))
+		<< "\t" << "Ср.знач.:"   << "\t" << ResultStreamItem<double>  (count > 0, average         )
+		<< "\t" << "Мин.знач.:"  << "\t" << ResultStreamItem<RDOValue>(count > 0, minValue        )
+		<< "\t" << "Макс.знач.:" << "\t" << ResultStreamItem<RDOValue>(count > 0, maxValue        )
 		<< "\t" << "Числ.наб.:"  << "\t" << count
 		<< "\t" << "Стд.откл.:"  << "\t" << ResultStreamItem<double>  (varianceEnable, stdDeviation)
 		<< "\t" << "К.вар.%:"    << "\t" << ResultStreamItem<double>  (averageEnable,  cv          )
@@ -242,9 +244,15 @@ RDOPMDWatchState::RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) na
 RDOPMDWatchState::~RDOPMDWatchState()
 {}
 
-tstring RDOPMDWatchState::traceValue() const
+tstring RDOPMDWatchState::traceValue(PTR(IDB) db) const
 {
-	return m_currentValue.state ? "TRUE" : "FALSE";
+	bool state = m_currentValue.state;
+	if (db)
+		db->pushContext<int>(
+			db->insertRowInd("trc_value_bool",QString("DEFAULT, %1")
+				.arg(state ? "TRUE" : "FALSE")));
+
+	return state ? "TRUE" : "FALSE";
 }
 
 void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
@@ -312,7 +320,7 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	printLeft(stream, name());
 	stream
 		<< "\t" << "Тип:"        << "\t" << "state"
-		<< "\t" << "Посл.знач.:" << "\t" << traceValue()
+		<< "\t" << "Посл.знач.:" << "\t" << traceValue(NULL)
 		<< "\t" << "% соотв.:"   << "\t" << boost::format("%1.6f") % average
 		<< "\t" << "Мин.длит.:"  << "\t" << boost::format("%1.6f") % (count > 0 ? (boost::accumulators::min)(m_acc) : 0)
 		<< "\t" << "Макс.длит.:" << "\t" << boost::format("%1.6f") % (count > 0 ? (boost::accumulators::max)(m_acc) : 0)
@@ -335,8 +343,14 @@ RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) na
 RDOPMDWatchQuant::~RDOPMDWatchQuant()
 {}
 
-tstring RDOPMDWatchQuant::traceValue() const
+tstring RDOPMDWatchQuant::traceValue(PTR(IDB) db) const
 {
+	int quant = m_currentValue.quant;
+	if (db)
+		db->pushContext<int>(
+			db->insertRowInd("trc_value_int",QString("DEFAULT, %1")
+				.arg(quant)));
+
 	return rdo::toString(m_currentValue.quant);
 }
 
@@ -428,8 +442,8 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	printLeft(stream, name());
 	stream
 		<< "\t" << "Тип:"        << "\t" << "quant"
-		<< "\t" << "Посл.знач.:" << "\t" << ResultStreamItem<tstring>(true, traceValue())
-		<< "\t" << "Ср.знач.:"   << "\t" << ResultStreamItem<double> (true, average     )
+		<< "\t" << "Посл.знач.:" << "\t" << ResultStreamItem<tstring>(true, traceValue(NULL))
+		<< "\t" << "Ср.знач.:"   << "\t" << ResultStreamItem<double> (true, average         )
 		<< "\t" << "Мин.знач.:"  << "\t" << ResultStreamItem<int>    (true, (int)(boost::accumulators::min)(m_acc))
 		<< "\t" << "Макс.знач.:" << "\t" << ResultStreamItem<int>    (true, (int)(boost::accumulators::max)(m_acc))
 		<< "\t" << "Числ.наб.:"  << "\t" << count
@@ -460,8 +474,10 @@ RDOPMDWatchValue::RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) na
 RDOPMDWatchValue::~RDOPMDWatchValue()
 {}
 
-tstring RDOPMDWatchValue::traceValue() const
+tstring RDOPMDWatchValue::traceValue(PTR(IDB) db) const
 {
+	if (db)
+		m_currValue.serializeInDB(*db);
 	return rdo::toString(m_currValue);
 }
 
@@ -558,7 +574,7 @@ RDOPMDGetValue::RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, 
 RDOPMDGetValue::~RDOPMDGetValue()
 {}
 
-tstring RDOPMDGetValue::traceValue() const
+tstring RDOPMDGetValue::traceValue(PTR(IDB) db) const
 {
 	return "ERROR";
 }
@@ -597,22 +613,34 @@ CREF(RDOValue) RDOPMDGetValue::getValue() const
 
 void RDOPMDWatchPar::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
-	stream << traceId() << " watch_par" << std::endl;
+	tstring traceID = traceId();
+	db->queryListPushBack(QString("%1,'watch_par');")
+		.arg(QString::fromStdString(traceID)));
+	stream << traceID << " watch_par" << std::endl;
 }
 
 void RDOPMDWatchState::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
-	stream << traceId() << " watch_state" << std::endl;
+	tstring traceID = traceId();
+	db->queryListPushBack(QString("%1,'watch_state');")
+		.arg(QString::fromStdString(traceID)));
+	stream << traceID << " watch_state" << std::endl;
 }
 
 void RDOPMDWatchQuant::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
-	stream << traceId() << " watch_quant" << std::endl;
+	tstring traceID = traceId();
+	db->queryListPushBack(QString("%1,'watch_quant');")
+		.arg(QString::fromStdString(traceID)));
+	stream << traceID << " watch_quant" << std::endl;
 }
 
 void RDOPMDWatchValue::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
-	stream << traceId() << " watch_value" << std::endl;
+	tstring traceID = traceId();
+	db->queryListPushBack(QString("%1,'watch_value');")
+		.arg(QString::fromStdString(traceID)));
+	stream << traceID << " watch_value" << std::endl;
 }
 
 void RDOPMDGetValue::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const

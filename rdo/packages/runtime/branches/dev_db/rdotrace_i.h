@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
+#include "simulator/runtime/headers/type/type_db_i.h"
 // --------------------------------------------------------------------------------
 
 /*!
@@ -47,11 +48,11 @@ public:
 class IResultTraceValue
 {
 public:
-	virtual tstring traceValue() const = 0;
+	virtual tstring traceValue(PTR(IDB) db) const = 0;
 };
 
 #define DECLARE_IResultTraceValue \
-	virtual tstring traceValue() const;
+	virtual tstring traceValue(PTR(IDB) db) const;
 
 /*!
   \interface IResultTrace
