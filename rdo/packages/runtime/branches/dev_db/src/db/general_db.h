@@ -36,6 +36,7 @@ public:
 	virtual void         queryExec        (const QueryList& query);
 	virtual void         queryListPushBack(const QString&   query);
 	virtual void         queryListExec    ();
+	virtual int          queryListExecInd ();
 
 	virtual void         pushContxt       (CREF(bany) context);
 	virtual bany         popContxt        ();

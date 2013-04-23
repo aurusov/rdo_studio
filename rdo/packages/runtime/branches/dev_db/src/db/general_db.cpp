@@ -89,6 +89,16 @@ void GeneralDB::queryListExec()
 	m_queryList.clear();
 }
 
+int GeneralDB::queryListExecInd()
+{
+	QSqlQuery* query = new QSqlQuery(m_db);
+	query->exec(m_queryList);
+	query->next();
+	m_queryList.clear();
+
+	return query->value(query->record().indexOf("id")).toInt();
+}
+
 void GeneralDB::pushContxt(CREF(bany) context)
 {
 	m_context = context;
