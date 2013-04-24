@@ -47,7 +47,7 @@ RDORSSResource::RDORSSResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) sr
 	m_currParam = m_pResType->getParams().begin();
 }
 
-void RDORSSResource::writeModelStructure(REF(std::ostream) stream) const
+void RDORSSResource::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
 	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
 }

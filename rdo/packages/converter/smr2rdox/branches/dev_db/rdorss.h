@@ -71,7 +71,7 @@ public:
 	void  setTrace(rbool value) { trace = value; }
 	rbool defined () const;
 
-	void writeModelStructure(REF(std::ostream) stream) const;
+	void writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const;
 
 protected:
 	RDORSSResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);

@@ -67,7 +67,7 @@ LPRDOValue RDOType__unknow::get_default() const
 	return rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(), rdo::Factory<RDOType__unknow>::create(), RDOParserSrcInfo());
 }
 
-void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__unknow::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
 	UNUSED(stream);
 
@@ -126,7 +126,7 @@ LPRDOValue RDOType__int::get_default() const
 	return rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(0), rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo());
 }
 
-void RDOType__int::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__int::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
 	stream << "I" << std::endl;
 }
@@ -176,7 +176,7 @@ LPRDOValue RDOType__real::get_default() const
 	return rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(0.0), rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
 }
 
-void RDOType__real::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__real::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
 	stream << "R" << std::endl;
 }
@@ -225,7 +225,7 @@ LPRDOValue RDOType__string::get_default() const
 	return rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(""), rdo::Factory<RDOType__string>::create(), RDOParserSrcInfo());
 }
 
-void RDOType__string::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__string::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
 	stream << "S" << std::endl;
 }
@@ -258,7 +258,7 @@ LPRDOValue RDOType__identificator::get_default() const
 	return rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue("", rdo::runtime::g_identificator), rdo::Factory<RDOType__identificator>::create(), RDOParserSrcInfo());
 }
 
-void RDOType__identificator::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__identificator::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
 	UNUSED(stream);
 
@@ -310,7 +310,7 @@ LPRDOValue RDOType__bool::get_default() const
 	return rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(false), rdo::Factory<RDOType__bool>::create(), RDOParserSrcInfo());
 }
 
-void RDOType__bool::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__bool::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
 	stream << "B" << std::endl;
 }

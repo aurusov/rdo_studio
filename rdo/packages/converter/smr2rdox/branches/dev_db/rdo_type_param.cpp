@@ -42,9 +42,9 @@ LPRDOType RDOTypeParam::type() const
 	return m_pType;
 }
 
-void RDOTypeParam::writeModelStructure(REF(std::ostream) stream) const
+void RDOTypeParam::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
-	m_pType->writeModelStructure(stream);
+	m_pType->writeModelStructure(stream, db);
 }
 
 LPRDOValue RDOTypeParam::value_cast(CREF(LPRDOValue) pValue) const

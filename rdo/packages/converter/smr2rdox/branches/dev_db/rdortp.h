@@ -58,7 +58,7 @@ public:
 	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
 	CREF(ParamList) getParams        ()                        const { return m_params; }
 
-	void writeModelStructure(REF(std::ostream) stream) const;
+	void writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const;
 
 private:
 	RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);

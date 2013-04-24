@@ -124,7 +124,7 @@ public:
 	void addRelResConvert      (rbool trace, CREF(LPConvertCmdList) commands, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdo::runtime::RDOResource::ConvertStatus status);
 	void end                   ();
 
-	void         writeModelStructure    (REF(std::ostream) stream) const;
+	void         writeModelStructure    (REF(std::ostream) stream, PTR(IDB) db) const;
 	virtual char getModelStructureLetter() const = 0;
 	tstring      getPatternId           () const;
 

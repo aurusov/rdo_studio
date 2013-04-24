@@ -33,10 +33,10 @@ CREF(tstring) RDORTPParam::name() const
 	return RDOParam::name();
 }
 
-void RDORTPParam::writeModelStructure(REF(std::ostream) stream) const
+void RDORTPParam::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
 	stream << name() << " ";
-	getType()->writeModelStructure(stream);
+	getType()->writeModelStructure(stream, db);
 }
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

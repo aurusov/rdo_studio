@@ -183,21 +183,21 @@ tstring Converter::getModelStructure()
 	modelStructure << std::endl << std::endl << "$Resource_type" << std::endl;
 	STL_FOR_ALL_CONST(m_allRTPResType, rtp_it)
 	{
-		(*rtp_it)->writeModelStructure(modelStructure);
+		(*rtp_it)->writeModelStructure(modelStructure, NULL);
 	}
 
 	// RSS
 	modelStructure << std::endl << "$Resources" << std::endl;
 	STL_FOR_ALL_CONST(m_allRSSResource, rss_it)
 	{
-		(*rss_it)->writeModelStructure(modelStructure);
+		(*rss_it)->writeModelStructure(modelStructure, NULL);
 	}
 
 	// PAT
 	modelStructure << std::endl << "$Pattern" << std::endl;
 	STL_FOR_ALL_CONST(m_allPATPattern, pat_it)
 	{
-		(*pat_it)->writeModelStructure(modelStructure);
+		(*pat_it)->writeModelStructure(modelStructure, NULL);
 	}
 
 	// OPR/DPT
@@ -245,7 +245,7 @@ tstring Converter::getModelStructure()
 				for (ruint i = name->name().length(); i < watching_max_length + 2; i++)
 					modelStructure << " ";
 
-				structure->writeModelStructure(modelStructure);
+				structure->writeModelStructure(modelStructure, NULL);
 			}
 		}
 	}
