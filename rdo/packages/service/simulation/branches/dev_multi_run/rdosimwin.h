@@ -215,10 +215,10 @@ private:
 	void terminateModel();
 	void closeModel    ();
 
-	ShowMode  m_showMode;  //! current show mode
-	double    m_showRate;  //! current show rate
-	ruint     m_runCount;  //! Общее количество прогонов
-	ruint     m_runNumber; //! Номер текущего прогона (нумерация начинается с 1)
+	ShowMode  m_showMode;         //! current show mode
+	double    m_showRate;         //! current show rate
+	ruint     m_seriesCapacity;   //! Общее количество прогонов в серии
+	ruint     m_currentRunNumber; //! Номер текущего прогона (нумерация начинается с 1)
 
 	rdo::textstream m_resultString;
 	rdo::textstream m_resultInfoString;
@@ -239,7 +239,6 @@ protected:
 	rbool parseModel   ();
 	void  runModel     ();
 	void  stopModel    ();
-	bool  needNextRun  ();
 
 	typedef std::vector<rdo::simulation::report::FileMessage> SyntaxMessageList;
 	SyntaxMessageList getErrors();
@@ -260,8 +259,9 @@ public:
 	int      getInitialFrameNumber() const;
 	double   getInitialShowRate   () const;
 	ruint    getInitialRunCount   () const;
-	ruint    getRunNumber         ()      ;
-	bool     CheckOldModel        ()      ;
+	ruint    getCurrentRunNumber  () const;
+	ruint    getSeriesCapacity    () const;
+	bool     needNextRun          () const;
 
 	struct GetList
 	{

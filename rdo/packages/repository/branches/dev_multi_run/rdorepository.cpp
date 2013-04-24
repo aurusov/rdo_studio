@@ -567,7 +567,7 @@ void RDOThreadRepository::beforeModelStart()
 	}
 	if (m_files[rdoModelObjects::TRC].m_described)
 	{
-		m_traceFile.open(rdo::locale::convertToWStr(getFullFileNameSerial(rdoModelObjects::TRC)), std::ios::out | std::ios::binary);
+		m_traceFile.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::TRC)), std::ios::out | std::ios::binary);
 		if (m_traceFile.is_open())
 		{
 			writeModelFilesInfo(m_traceFile);
@@ -588,7 +588,7 @@ void RDOThreadRepository::stopModel()
 	if (m_files[rdoModelObjects::PMV].m_described)
 	{
 		boost::filesystem::ofstream results_file;
-		results_file.open(rdo::locale::convertToWStr(getFullFileNameSerial(rdoModelObjects::PMV)), std::ios::out | std::ios::binary);
+		results_file.open(rdo::locale::convertToWStr(getFullFileName(rdoModelObjects::PMV)), std::ios::out | std::ios::binary);
 		if (results_file.is_open())
 		{
 			writeModelFilesInfo(results_file);
@@ -645,23 +645,28 @@ tstring RDOThreadRepository::getFileExtName(rdoModelObjects::RDOFileType type) c
 	return it->second.m_fileName + it->second.m_extention;
 }
 
-tstring RDOThreadRepository::getFullFileNameSerial(rdoModelObjects::RDOFileType type) const
-{
-	if (kernel->simulator()->CheckOldModel())
-	{
-		return m_modelPath + getFileExtName(type);
-	}
-	else
-	{
-		ruint number = kernel->simulator()->getRunNumber();
-		tstring buffer = rdo::format("%i", number);
-		return m_modelPath + buffer + getFileExtName(type);
-	}
-}
-
 tstring RDOThreadRepository::getFullFileName(rdoModelObjects::RDOFileType type) const
 {
+	return (type == rdoModelObjects::PMV || type == rdoModelObjects::TRC)
+		? getFullOutputFileName(type)
+		: getFullInputFileName (type);
+}
+
+tstring RDOThreadRepository::getFullInputFileName(rdoModelObjects::RDOFileType type) const
+{
+	ASSERT(type != rdoModelObjects::PMV && type != rdoModelObjects::TRC);
 	return m_modelPath + getFileExtName(type);
+}
+
+tstring RDOThreadRepository::getFullOutputFileName(rdoModelObjects::RDOFileType type) const
+{
+	ASSERT(type == rdoModelObjects::PMV || type == rdoModelObjects::TRC);
+
+	ruint runNumber = (kernel->simulator()->getSeriesCapacity());
+	tstring runNumberStr = runNumber
+		? rdo::format("-%i", kernel->simulator()->getCurrentRunNumber())
+		: "";
+	return m_modelPath + getFileName(type)+ runNumberStr + getExtention(type);
 }
 
 rbool RDOThreadRepository::isReadOnly(rdoModelObjects::RDOFileType type) const

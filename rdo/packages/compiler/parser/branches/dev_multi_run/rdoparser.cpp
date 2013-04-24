@@ -442,7 +442,7 @@ void RDOParser::parse()
 
 void RDOParser::parse(ruint count)
 {
-	getSMR()->setRunNumber(count);
+	getSMR()->setCurrentRunNumber(count);
 	parse();
 }
 

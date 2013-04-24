@@ -50,25 +50,19 @@ void smr_sim_error(PTR(char) message)
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
 RDOSMR::RDOSMR()
-	: m_showMode      (rdo::service::simulation::SM_NoShow)
-	, m_frameNumber   (1 )
-	, m_showRate      (60)
-	, m_runStartTime  (0 )
-	, m_traceStartTime(rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
-	, m_traceEndTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
-	, m_runNumber     (0 )
-	, m_runCount      (0 )
-	, m_increment     (1 ) // атрибут нужный для захода только в нужные скобки при серийном прогоне
+	: m_showMode        (rdo::service::simulation::SM_NoShow)
+	, m_frameNumber     (1 )
+	, m_showRate        (60)
+	, m_runStartTime    (0 )
+	, m_traceStartTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
+	, m_traceEndTime    (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
+	, m_foundRunNumber  (0 )
+	, m_currentRunNumber(0 )
 {}
 
-void RDOSMR::setRunCount(ruint value)
+void RDOSMR::setCurrentRunNumber(ruint value)
 {
-	m_runCount = value;
-}
-
-void RDOSMR::setRunNumber(ruint value)
-{
-	m_runNumber = value;
+	m_currentRunNumber = value;
 }
 
 void RDOSMR::setShowMode(rdo::service::simulation::ShowMode showMode)
@@ -76,22 +70,21 @@ void RDOSMR::setShowMode(rdo::service::simulation::ShowMode showMode)
 	m_showMode = showMode;
 }
 
-rbool RDOSMR::Check()
+rbool RDOSMR::check() const
 {
-	if (!m_runNumber && !m_runCount || m_runNumber == m_increment)
+	if (m_currentRunNumber)
 	{
-		return true;
+		return m_currentRunNumber - m_foundRunNumber == 1;
 	}
 	else
 	{
-		return false;
+		return m_foundRunNumber == 0;
 	}
 }
 
-void RDOSMR::setIncrement()
+void RDOSMR::foundEndOfNextRun()
 {
-	++m_increment;
-	++m_runCount;
+	++m_foundRunNumber;
 }
 
 void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)

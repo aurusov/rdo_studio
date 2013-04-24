@@ -860,11 +860,11 @@ OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 // -------------------- RDOThreadSimulator
 // --------------------------------------------------------------------------------
 RDOThreadSimulator::RDOThreadSimulator()
-	: RDOThreadMT     ("RDOThreadSimulator"          )
-	, m_pThreadRuntime(NULL                          )
-	, m_exitCode      (rdo::simulation::report::EC_OK)
-	, m_runCount      (0                             )
-	, m_runNumber     (0                             )
+	: RDOThreadMT       ("RDOThreadSimulator"          )
+	, m_pThreadRuntime  (NULL                          )
+	, m_exitCode        (rdo::simulation::report::EC_OK)
+	, m_seriesCapacity  (0                             )
+	, m_currentRunNumber(0                             )
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
 	notifies.push_back(RT_STUDIO_MODEL_RUN                );
@@ -906,8 +906,8 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		}
 		case RT_STUDIO_MODEL_RUN:
 		{
-			if (m_runCount)
-				++m_runNumber;
+			if (m_seriesCapacity)
+				++m_currentRunNumber;
 
 			runModel();
 			break;
@@ -1074,13 +1074,13 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					closeModel();
 					if (needNextRun())
 					{
-						++m_runNumber;
-						runModel();//если это не последний прогон, то запускаемся еще раз
+						++m_currentRunNumber;
+						runModel();
 					}
 					else
 					{
-						m_runNumber = 0;
-						m_runCount = 0;
+						m_currentRunNumber = 0;
+						m_seriesCapacity = 0;
 					}
 				}
 				else
@@ -1116,14 +1116,14 @@ rbool RDOThreadSimulator::parseModel()
 	try
 	{
 		m_exitCode = rdo::simulation::report::EC_OK;
-		if (!m_runNumber)
+		if (!m_currentRunNumber)
 		{
-			m_pParser->parse();// parse всей модели
-			m_runCount = getInitialRunCount();
+			m_pParser->parse();
+			m_seriesCapacity = getInitialRunCount();
 		}
 		else
 		{
-			m_pParser->parse(m_runNumber);// parse i-го блока
+			m_pParser->parse(m_currentRunNumber);
 		}
 	}
 	catch (REF(rdo::compiler::parser::RDOSyntaxException))
@@ -1153,7 +1153,9 @@ rbool RDOThreadSimulator::parseModel()
 
 void RDOThreadSimulator::runModel()
 {
-	parseModel();
+	//! \error убедиться, что появится сообщение об ошибке
+	if (!parseModel())
+		return;
 
 	ASSERT(m_pParser );
 	ASSERT(m_pRuntime);
@@ -1321,7 +1323,7 @@ int RDOThreadSimulator::getInitialFrameNumber() const
 
 ruint RDOThreadSimulator::getInitialRunCount() const
 {
-	return m_pParser->getSMR()->getRunCount();
+	return m_pParser->getSMR()->getSeriesCapacity();
 }
 
 double RDOThreadSimulator::getInitialShowRate() const
@@ -1329,19 +1331,19 @@ double RDOThreadSimulator::getInitialShowRate() const
 	return m_pParser->getSMR()->getShowRate();
 }
 
-bool RDOThreadSimulator::needNextRun()
+bool RDOThreadSimulator::needNextRun() const
 {
-	return m_runCount > 0 && m_runNumber < m_runCount;
+	return 0 < m_seriesCapacity && m_currentRunNumber < m_seriesCapacity;
 }
 
-bool RDOThreadSimulator::CheckOldModel()
+ruint RDOThreadSimulator::getSeriesCapacity() const
 {
-	return m_runCount == 0;
+	return m_seriesCapacity;
 }
 
-ruint RDOThreadSimulator::getRunNumber()
+ruint RDOThreadSimulator::getCurrentRunNumber() const
 {
-	return m_runNumber;
+	return m_currentRunNumber;
 }
 
 void RDOThreadSimulator::codeCompletion()
