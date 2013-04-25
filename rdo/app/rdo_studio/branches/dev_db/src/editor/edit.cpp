@@ -1194,7 +1194,7 @@ void Edit::load(rdo::stream& stream)
 	rbool readOnly = isReadOnly();
 	setReadOnly(false);
 
-	std::string text = rdo::locale::convertFromCLocale(stream.str());
+	std::string text = stream.str();
 	sendEditorString(SCI_ADDTEXT, text.length(), text.c_str());
 
 	setReadOnly(readOnly);
@@ -1206,8 +1206,7 @@ void Edit::save(rdo::stream& stream) const
 	std::vector<char> str;
 	str.resize(len + 1);
 	sendEditorString(SCI_GETTEXT, len + 1, &str[0]);
-	std::string text = rdo::locale::convertToCLocale(&str[0]);
-	stream.str(text);
+	stream.str(&str[0]);
 }
 
 int Edit::indentOfBlock(int line) const

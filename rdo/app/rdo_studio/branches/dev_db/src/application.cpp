@@ -19,6 +19,7 @@
 #include "utils/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
+#include "utils/rdolocale.h"
 #include "kernel/rdothread.h"
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"
@@ -156,6 +157,9 @@ Application::Application(int& argc, char** argv)
 	kernel->thread_studio = g_pModel;
 #endif
 
+	connect(&m_idleTimer, &QTimer::timeout, this, &Application::onIdle);
+	m_idleTimer.start(0);
+
 	if (getFileAssociationCheckInFuture())
 	{
 		setupFileAssociation();
@@ -184,6 +188,7 @@ Application::Application(int& argc, char** argv)
 	if (vm.count("input"))
 	{
 		openModelName = vm["input"].as<tstring>();
+		openModelName = rdo::locale::convertFromCLocale(openModelName);
 	}
 
 	rbool autoRun = false;
@@ -206,13 +211,9 @@ Application::Application(int& argc, char** argv)
 	rbool autoModel = false;
 	if (!openModelName.empty())
 	{
-		openModelName = rdo::File::extractFilePath(qApp->applicationFilePath().toStdString()) + openModelName;
 		if (rdo::File::exist(openModelName) && g_pModel->openModel(QString::fromStdString(openModelName)))
 		{
-			autoRun            = true;
-			m_autoExitByModel  = true;
-			m_dontCloseIfError = true;
-			autoModel          = true;
+			autoModel = true;
 		}
 		else
 		{
@@ -244,9 +245,6 @@ Application::Application(int& argc, char** argv)
 	{
 		g_pModel->runModel();
 	}
-
-	connect(&m_idleTimer, &QTimer::timeout, this, &Application::onIdle);
-	m_idleTimer.start(0);
 }
 
 Application::~Application()

@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_FILE_ASSOCIATION_DIALOG_H_
-#define _RDO_STUDIO_FILE_ASSOCIATION_DIALOG_H_
+#ifndef _RDO_STUDIO_DIALOG_FILE_ASSOCIATION_DIALOG_H_
+#define _RDO_STUDIO_DIALOG_FILE_ASSOCIATION_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
@@ -29,4 +29,4 @@ public:
 	virtual ~FileAssociationDialog();
 };
 
-#endif // _RDO_STUDIO_FILE_ASSOCIATION_DIALOG_H_
+#endif // _RDO_STUDIO_DIALOG_FILE_ASSOCIATION_DIALOG_H_

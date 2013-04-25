@@ -19,10 +19,10 @@ CONFIGURE_FILE(${CMAKE_MODULE_PATH}/build.version.cmake ${CMAKE_CURRENT_SOURCE_D
 
 SET(HEADER_FILES
     pch/stdpch.h
-    src/about.h
     src/action_activator/action_activator.h
     src/action_activator/action_activator_widget.h
     src/application.h
+    src/dialog/about_dialog.h
     src/dialog/file_association_dialog.h
     src/dialog/find_dialog.h
     src/dialog/find_replace_dialog.h
@@ -91,7 +91,7 @@ SET(HEADER_FILES
     )
 
 SET(HEADER_QT_FILES
-    src/about.h
+    src/dialog/about_dialog.h
     src/dialog/file_association_dialog.h
     src/dialog/find_dialog.h
     src/dialog/find_replace_dialog.h
@@ -116,10 +116,10 @@ SET(HEADER_QT_FILES
 
 SET(SOURCE_FILES
     pch/stdpch.cpp
-    src/about.cpp
     src/action_activator/action_activator.cpp
     src/action_activator/action_activator_widget.cpp
     src/application.cpp
+    src/dialog/about_dialog.cpp
     src/dialog/file_association_dialog.cpp
     src/dialog/find_dialog.cpp
     src/dialog/find_replace_dialog.cpp
@@ -194,7 +194,7 @@ SET(SCINTILLA_FILES
     )
 
 SET(QT_FORMS
-    res/ui/about.ui
+    res/ui/about_dialog.ui
     res/ui/chart_preferences.ui
     res/ui/file_association_dialog.ui
     res/ui/find_dialog.ui

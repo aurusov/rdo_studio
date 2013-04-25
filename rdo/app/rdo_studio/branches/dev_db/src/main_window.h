@@ -29,7 +29,6 @@ class MainWindow
 	: public QMainWindow
 	, public MainWindowBase
 	, public Ui::MainWindow
-	, public ActionActivator
 {
 Q_OBJECT
 
@@ -48,9 +47,8 @@ public:
 	void update_start();
 	void update_stop ();
 
-	virtual void addSubWindow              (QWidget* pWidget);
-	virtual void activateSubWindow         (QWidget* pWidget);
-	virtual void connectOnActivateSubWindow(QObject* pObject);
+	virtual void addSubWindow     (QWidget* pWidget);
+	virtual void activateSubWindow(QWidget* pWidget);
 
 	PTR(QSlider) m_pModelSpeedSlider;
 
@@ -90,15 +88,33 @@ public:
 private:
 	typedef  QMainWindow  parent_type;
 	typedef  QStringList  ReopenList;
-	typedef  std::map<QMdiSubWindow*, QAction*> SubWindows;
 
-	SubWindows      m_pSubWindows;
-	int             m_updateTimerID;
-	LPStatusBar     m_pStatusBar;
-	ReopenList      m_reopenList;
-	QSignalMapper*  m_pInsertMenuSignalMapper;
-	QAction*        m_pSeparator;
-	QActionGroup*   m_pWindowAction;
+	struct SubWindowToAction
+	{
+		typedef  std::map<QMdiSubWindow*, QAction*>  Map;
+
+		SubWindowToAction(MainWindow* pMainWindow);
+
+		void onSubWindowActivated(QMdiSubWindow* pSubWindow);
+		void onTitleChanged      (QMdiSubWindow* pSubWindow);
+
+	private:
+		MainWindow*   m_pMainWindow;
+		Map           m_map;
+		QAction*      m_pSeparator;
+		QActionGroup* m_pActionGroup;
+
+		Map::const_iterator addNewSubWindow(QMdiSubWindow* pSubWindow);
+		void updateList();
+		void addFirstSubWindow();
+		void removeLastSubWindow();
+	};
+
+	std::auto_ptr<SubWindowToAction>  m_subWindowToAction;
+	int                m_updateTimerID;
+	LPStatusBar        m_pStatusBar;
+	ReopenList         m_reopenList;
+	QSignalMapper*     m_pInsertMenuSignalMapper;
 
 	void createStatusBar ();
 	void createToolBar   ();
@@ -108,13 +124,12 @@ private:
 	void loadMenuFileReopen  ();
 	void saveMenuFileReopen  () const;
 
-	virtual void closeEvent(QCloseEvent* event);
-	virtual void showEvent (QShowEvent*  event);
-	virtual void hideEvent (QHideEvent*  event);
-	virtual void timerEvent(QTimerEvent* event);
-	bool eventFilter(QObject *target, QEvent *event);
+	virtual void closeEvent (QCloseEvent* event);
+	virtual void showEvent  (QShowEvent*  event);
+	virtual void hideEvent  (QHideEvent*  event);
+	virtual void timerEvent (QTimerEvent* event);
+	virtual bool eventFilter(QObject* target, QEvent* event);
 
-	void onSubWindowActivated(QMdiSubWindow*);
 	void onViewOptions ();
 	void onHelpWhatsNew();
 	void onHelpAbout   ();
@@ -123,17 +138,17 @@ private:
 	void onToolBarModelOrientationChanged(Qt::Orientation orientation);
 
 	void onMenuFileReopen(QAction* pAction);
-
 	void updateInsertMenu(rbool enabled);
-	void onUpdateActions(rbool activated);
-	void onUpdateTabMode(rbool activated);
 
-	void addNewAction(QMdiSubWindow* window);
-	void removeExcessActions();
-	void addFirstSubWindow();
-	void removeLastSubWindow();
+	void onUpdateCascadeTitle   (bool activated);
+	void onUpdateTabMode        (bool activated);
+	void onSetTabbedViewMode    (bool checked);
+	void onSubWindowActivated   (QMdiSubWindow* window);
+	void onSubWindowStateChanged(Qt::WindowStates oldState, Qt::WindowStates newState);
+	template <class F>
+	void forAllSubWindows(F functor, QMdiSubWindow* pTopSubWindow);
 
-	void setTabbedViewMode(bool checked);
+	void updateWindowTitle();
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOW_H_

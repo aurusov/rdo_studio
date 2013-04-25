@@ -21,7 +21,7 @@
 #include "app/rdo_studio/src/frame/frame_manager.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/main_window_base.h"
+#include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/frame/frame_tree_ctrl.h"
 #include "app/rdo_studio/src/editor/debug_edit.h"
 // --------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ Manager::Manager(CREF(OnChangeFrame) onChangeFrame)
 {
 	//! @todo А почему объект не удаляется ? Это происходит автоматически ?
 
-	g_pApp->getIMainWnd()->connectOnActivateSubWindow(this);
+	QObject::connect(g_pApp->getMainWndUI()->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(onSubWindowActivated(QMdiSubWindow*)));
 }
 
 Manager::~Manager()

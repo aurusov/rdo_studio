@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_NEW_MODEL_DIALOG_H_
-#define _RDO_STUDIO_NEW_MODEL_DIALOG_H_
+#ifndef _RDO_STUDIO_DIALOG_NEW_MODEL_DIALOG_H_
+#define _RDO_STUDIO_DIALOG_NEW_MODEL_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/warning_disable.h"
@@ -45,4 +45,4 @@ private slots:
 	void onPathButtonClicked();
 };
 
-#endif // _RDO_STUDIO_NEW_MODEL_DIALOG_H_
+#endif // _RDO_STUDIO_DIALOG_NEW_MODEL_DIALOG_H_

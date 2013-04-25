@@ -62,9 +62,6 @@ Not_Exist?1 Not_For_All?1 Power?1 Round?1 Sin?1 Sqrt?1 Tan?1 Select?1 Size?1 Emp
 	sendEditorString(SCI_SETKEYWORDS, 2, Parser::convertToLexer(kw2).c_str());
 	sendEditorString(SCI_SETKEYWORDS, 3, Parser::convertToLexer(kw3).c_str());
 
-	static PTR(char) s_wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZАаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя";
-
-	sendEditorString(SCI_SETWORDCHARS, 0, s_wordCharacters);
 	sendEditor(SCI_REGISTERIMAGE, 0, reinterpret_cast<long>(xpm_ac_function));
 	sendEditor(SCI_REGISTERIMAGE, 1, reinterpret_cast<unsigned long>(xpm_ac_data));
 	sendEditor(SCI_REGISTERIMAGE, 2, reinterpret_cast<unsigned long>(xpm_ac_trace));

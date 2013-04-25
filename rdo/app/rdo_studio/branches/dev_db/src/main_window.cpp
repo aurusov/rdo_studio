@@ -13,7 +13,6 @@
 #include "utils/warning_disable.h"
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
-#include <boost/function.hpp>
 #include <boost/range/algorithm/find.hpp>
 #include <QProcess>
 #include <QTextCodec>
@@ -23,7 +22,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/about.h"
+#include "app/rdo_studio/src/dialog/about_dialog.h"
 #include "app/rdo_studio/src/view_preferences.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
@@ -54,22 +53,122 @@ const MainWindow::InsertMenuData::Position& MainWindow::InsertMenuData::position
 }
 
 // --------------------------------------------------------------------------------
+// -------------------- MainWindow::SubWindowToAction
+// --------------------------------------------------------------------------------
+MainWindow::SubWindowToAction::SubWindowToAction(MainWindow* pMainWindow)
+	: m_pSeparator(NULL)
+	, m_pMainWindow(pMainWindow)
+{
+	ASSERT(m_pMainWindow);
+	ASSERT(m_pMainWindow->menuWindow);
+	m_pActionGroup = new QActionGroup(m_pMainWindow->menuWindow);
+	m_pActionGroup->setExclusive(true);
+}
+
+void MainWindow::SubWindowToAction::onSubWindowActivated(QMdiSubWindow* pSubWindow)
+{
+	if (pSubWindow)
+	{
+		Map::const_iterator it = m_map.find(pSubWindow);
+		if (it == m_map.end())
+		{
+			it = addNewSubWindow(pSubWindow);
+		}
+		ASSERT(it != m_map.end());
+		it->second->setChecked(true);
+	}
+	updateList();
+}
+
+void MainWindow::SubWindowToAction::onTitleChanged(QMdiSubWindow* pSubWindow)
+{
+	ASSERT(pSubWindow);
+	Map::const_iterator it = m_map.find(pSubWindow);
+	ASSERT(it != m_map.end());
+	it->second->setText(pSubWindow->windowTitle());
+}
+
+MainWindow::SubWindowToAction::Map::const_iterator
+MainWindow::SubWindowToAction::addNewSubWindow(QMdiSubWindow* pSubWindow)
+{
+	ASSERT(pSubWindow);
+
+	QList<QMdiSubWindow*> windowList = m_pMainWindow->mdiArea->subWindowList();
+
+	if (windowList.count() == 1 && m_pSeparator == NULL)
+	{
+		addFirstSubWindow();
+	}
+
+	pSubWindow->installEventFilter(m_pMainWindow);
+
+	QAction* pAction = m_pMainWindow->menuWindow->addAction(pSubWindow->windowTitle());
+	QObject::connect(pAction, &QAction::triggered, boost::function<void()>(boost::bind(&QMdiArea::setActiveSubWindow, m_pMainWindow->mdiArea, pSubWindow)));
+
+	std::pair<Map::const_iterator, bool> result = m_map.insert(Map::value_type(pSubWindow, pAction));
+	ASSERT(result.second);
+
+	m_pActionGroup->addAction(pAction);
+	pAction->setCheckable(true);
+
+	return result.first;
+}
+
+void MainWindow::SubWindowToAction::updateList()
+{
+	QList<QMdiSubWindow*> windowList = m_pMainWindow->mdiArea->subWindowList();
+
+	for (SubWindowToAction::Map::const_iterator it = m_map.begin(); it != m_map.end();)
+	{
+		if (!windowList.contains(it->first))
+		{
+			QObject::disconnect(it->second, &QAction::triggered, NULL, NULL);
+			m_pMainWindow->menuWindow->removeAction(it->second);
+			m_pActionGroup->removeAction(it->second);
+			m_map.erase(it++);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
+	if (windowList.empty() && m_pSeparator)
+	{
+		removeLastSubWindow();
+	}
+}
+
+void MainWindow::SubWindowToAction::addFirstSubWindow()
+{
+	ASSERT(m_pSeparator == NULL);
+	m_pSeparator = m_pMainWindow->menuWindow->addSeparator();
+}
+
+void MainWindow::SubWindowToAction::removeLastSubWindow()
+{
+	ASSERT(m_pSeparator);
+	m_pMainWindow->menuWindow->removeAction(m_pSeparator);
+	m_pSeparator = NULL;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- MainWindow
 // --------------------------------------------------------------------------------
 MainWindow::MainWindow()
 	: m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
-	, m_pSeparator(NULL)
 {
 	setupUi(this);
+	installEventFilter(this);
+	m_subWindowToAction.reset(new SubWindowToAction(this));
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
+	mdiArea->setTabsClosable(true);
+	mdiArea->setTabsMovable(true);
 
 	createStatusBar ();
 	createToolBar   ();
 	createInsertMenu();
-
-	m_pWindowAction = new QActionGroup(menuWindow);
-	m_pWindowAction->setExclusive(true);
 
 	addAction(actSearchFindNextCurrent);
 	addAction(actSearchFindPreviousCurrent);
@@ -503,7 +602,7 @@ void MainWindow::onHelpWhatsNew()
 
 void MainWindow::onHelpAbout()
 {
-	About dlg(this);
+	AboutDialog dlg(this);
 	dlg.exec();
 }
 
@@ -552,6 +651,7 @@ void MainWindow::addSubWindow(QWidget* pWidget)
 	}
 
 	QMdiSubWindow* pFrame = mdiArea->addSubWindow(pWidget);
+	QObject::connect(pFrame, &QMdiSubWindow::windowStateChanged, this, &MainWindow::onSubWindowStateChanged);
 
 	IInit* pInitWidget = dynamic_cast<IInit*>(pWidget);
 	if (pInitWidget)
@@ -580,14 +680,6 @@ void MainWindow::activateSubWindow(QWidget* pWidget)
 		return;
 
 	mdiArea->setActiveSubWindow(pSubWindow);
-}
-
-void MainWindow::connectOnActivateSubWindow(QObject* pObject)
-{
-	ASSERT(mdiArea);
-	ASSERT(pObject);
-
-	QObject::connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), pObject, SLOT(onSubWindowActivated(QMdiSubWindow*)));
 }
 
 void MainWindow::onDockVisibleChanged(rbool visible)
@@ -744,105 +836,112 @@ void MainWindow::updateInsertMenu(rbool enabled)
 	}
 }
 
-void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
+void MainWindow::onUpdateCascadeTitle(bool activated)
 {
-	if (window && m_pSubWindows.find(window) == m_pSubWindows.end())
-	{
-		addNewAction(window);
-	}
-	if (window)
-		m_pSubWindows[window]->setChecked(true);
-	removeExcessActions();
+	ActionActivator::updateAction(
+		actWindowCascade,
+		activated && mdiArea->viewMode() == QMdiArea::SubWindowView,
+		mdiArea, &QMdiArea::cascadeSubWindows
+	);
+	ActionActivator::updateAction(
+		actWindowTitle,
+		activated && mdiArea->viewMode() == QMdiArea::SubWindowView,
+		mdiArea, &QMdiArea::tileSubWindows
+	);
 }
 
-void MainWindow::addNewAction(QMdiSubWindow* window)
+void MainWindow::onUpdateTabMode(bool activated)
 {
-	ASSERT(window);
-
-	QList<QMdiSubWindow *> windowList = mdiArea->subWindowList();
-
-	if (windowList.count() == 1)
-		addFirstSubWindow();
-
-	window->installEventFilter(this);
-
-	QAction* pAction = menuWindow->addAction(window->windowTitle());
-	m_pSubWindows[window] = pAction;
-	QObject::connect(pAction, &QAction::triggered, boost::function<void()>(boost::bind(&QMdiArea::setActiveSubWindow, mdiArea, window)));
-	m_pWindowAction->addAction(pAction);
-	pAction->setCheckable(true);
-}
-
-void MainWindow::addFirstSubWindow()
-{
-	m_pSeparator = menuWindow->addSeparator();
-	onUpdateActions(true);
-	onUpdateTabMode(true);
-}
-
-void MainWindow::removeLastSubWindow()
-{
-	menuWindow->removeAction(m_pSeparator);
-	m_pSeparator = NULL;
-	onUpdateActions(false);
-	onUpdateTabMode(false);
-}
-
-void MainWindow::removeExcessActions()
-{
-	QList<QMdiSubWindow *> windowList = mdiArea->subWindowList();
-
-	for (SubWindows::iterator it = m_pSubWindows.begin(); it != m_pSubWindows.end();)
-	{
-		if (!windowList.contains(it->first))
-		{
-			QObject::disconnect(it->second, &QAction::triggered, NULL, NULL);
-			menuWindow->removeAction(it->second);
-			m_pWindowAction->removeAction(it->second);
-			m_pSubWindows.erase(it++);
-		}
-		else
-		{
-			++it;
-		}
-	}
-
-	if (m_pSeparator && windowList.empty())
-		removeLastSubWindow();
-}
-
-void MainWindow::onUpdateActions(rbool activated)
-{
-	updateAction(actWindowCascade       , activated, mdiArea, &QMdiArea::cascadeSubWindows);
-	updateAction(actWindowTitleHorzontal, activated, mdiArea, &QMdiArea::tileSubWindows   );
-}
-
-void MainWindow::onUpdateTabMode(rbool activated)
-{
-	if (activated)
-		QObject::connect(actWindowTabbedViewMode, &QAction::triggered, boost::function<void (bool)>(boost::bind(&MainWindow::setTabbedViewMode, this, _1)));
-	else
-		QObject::disconnect(actWindowTabbedViewMode, &QAction::triggered, NULL, NULL);
-	actWindowTabbedViewMode->setEnabled(activated);
+	ActionActivator::updateAction(
+		actWindowTabbedViewMode,
+		activated,
+		boost::function<void (bool)>(boost::bind(&MainWindow::onSetTabbedViewMode, this, _1))
+	);
 	actWindowTabbedViewMode->setCheckable(activated);
 }
 
-bool MainWindow::eventFilter(QObject *target, QEvent *event)
+void MainWindow::onSetTabbedViewMode(bool checked)
 {
-	if (QMdiSubWindow* pSubWindow = static_cast<QMdiSubWindow*>(target))
+	mdiArea->setViewMode(checked ? QMdiArea::TabbedView : QMdiArea::SubWindowView);
+	onUpdateCascadeTitle(!checked);
+	forAllSubWindows(boost::bind(&QWidget::showMaximized, _1), mdiArea->currentSubWindow());
+}
+
+void MainWindow::onSubWindowActivated(QMdiSubWindow* window)
+{
+	m_subWindowToAction->onSubWindowActivated(window);
+	bool hasWindows = !mdiArea->subWindowList().isEmpty();
+	onUpdateCascadeTitle(hasWindows);
+	onUpdateTabMode(hasWindows);
+	updateWindowTitle();
+}
+
+void MainWindow::onSubWindowStateChanged(Qt::WindowStates oldState, Qt::WindowStates newState)
+{
+	if (mdiArea->viewMode() != QMdiArea::SubWindowView)
+		return;
+
+	if ((newState & Qt::WindowMaximized) && !(oldState & Qt::WindowMaximized))
 	{
-		if (event->type() == QEvent::WindowTitleChange && m_pSubWindows.find(pSubWindow) != m_pSubWindows.end())
+		forAllSubWindows(boost::bind(&QWidget::showMaximized, _1), dynamic_cast<QMdiSubWindow*>(sender()));
+	}
+	else if ((newState & ~Qt::WindowActive) == Qt::WindowNoState && (oldState & ~Qt::WindowActive) != Qt::WindowNoState)
+	{
+		forAllSubWindows(boost::bind(&QWidget::showNormal, _1), dynamic_cast<QMdiSubWindow*>(sender()));
+	}
+}
+
+template <class F>
+void MainWindow::forAllSubWindows(F functor, QMdiSubWindow* pTopSubWindow)
+{
+	static bool firstCall = true;
+	if (firstCall)
+	{
+		firstCall = false;
+		QList<QMdiSubWindow*> windowList = mdiArea->subWindowList();
+		BOOST_FOREACH(QMdiSubWindow* pSubWindow, windowList)
 		{
-			m_pSubWindows[pSubWindow]->setText(pSubWindow->windowTitle());
+			if (pSubWindow != pTopSubWindow)
+			{
+				functor(pSubWindow);
+			}
+		}
+		if (pTopSubWindow)
+		{
+			functor(pTopSubWindow);
+			pTopSubWindow->raise();
+			pTopSubWindow->setFocus();
+		}
+		firstCall = true;
+	}
+}
+
+void MainWindow::updateWindowTitle()
+{
+	QString appName("RAO Studio");
+	QString normalTitle = g_pModel->hasModel()
+		? QString("%1 - %2").arg(appName).arg(g_pModel->getName())
+		: appName;
+
+	if (windowTitle() != normalTitle)
+	{
+		setWindowTitle(normalTitle);
+	}
+}
+
+bool MainWindow::eventFilter(QObject* target, QEvent* event)
+{
+	if (event->type() == QEvent::WindowTitleChange)
+	{
+		if (dynamic_cast<QMdiSubWindow*>(target))
+		{
+			m_subWindowToAction->onTitleChanged(static_cast<QMdiSubWindow*>(target));
+		}
+		else
+		{
+			updateWindowTitle();
 		}
 	}
 
 	return parent_type::eventFilter(target, event);
 }
-
-void MainWindow::setTabbedViewMode(bool checked)
-{
-	mdiArea->setViewMode(checked ? QMdiArea::TabbedView : QMdiArea::SubWindowView);
-	onUpdateActions(!checked);
-}
-

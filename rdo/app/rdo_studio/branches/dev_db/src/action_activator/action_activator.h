@@ -20,17 +20,7 @@
 
 class ActionActivator
 {
-protected:
-	ActionActivator();
-	virtual ~ActionActivator();
-
-	rbool isActivated() const;
-
-	void activate  (QFocusEvent* pEvent);
-	void deactivate(QFocusEvent* pEvent);
-
-	virtual void onUpdateActions(rbool activated) = 0;
-
+public:
 	template <typename SlotFun>
 	static void updateAction(QAction* pAction, rbool enabled, const typename QtPrivate::FunctionPointer<SlotFun>::Object* pObject, SlotFun pSlot)
 	{
@@ -47,6 +37,33 @@ protected:
 			QObject::disconnect(pAction, &QAction::triggered, NULL, NULL);
 		}
 	}
+
+	template <typename F>
+	static void updateAction(QAction* pAction, rbool enabled, const F& functor)
+	{
+		ASSERT(pAction);
+
+		pAction->setEnabled(enabled);
+		if (enabled)
+		{
+			QObject::connect(pAction, &QAction::triggered, functor);
+		}
+		else
+		{
+			QObject::disconnect(pAction, &QAction::triggered, NULL, NULL);
+		}
+	}
+
+protected:
+	ActionActivator();
+	virtual ~ActionActivator();
+
+	rbool isActivated() const;
+
+	void activate  (QFocusEvent* pEvent);
+	void deactivate(QFocusEvent* pEvent);
+
+	virtual void onUpdateActions(rbool activated) = 0;
 
 private:
 	rbool m_activated;

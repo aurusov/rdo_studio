@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/about.cpp
+  \file      about_dialog.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      18.08.2012
   \brief     
@@ -11,11 +11,11 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/about.h"
+#include "app/rdo_studio/src/dialog/about_dialog.h"
 #include "app/rdo_studio/res/build_version.h"
 // --------------------------------------------------------------------------------
 
-About::About(QWidget* pParent)
+AboutDialog::AboutDialog(QWidget* pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
 	setupUi(this);
@@ -33,7 +33,7 @@ About::About(QWidget* pParent)
 		limitation += "ограниченная версия";
 #endif
 
-	version->setText(QString("Система имитационного моделирования\n\nRAO-studio   %1%2-version 1.1 (build %3)%4")
+	version->setText(QString("Система имитационного моделирования\n\nRAO-studio   %1%2-%3 (build %4)%5")
 
 #ifdef RDO_MT
 		.arg("mt")
@@ -46,6 +46,8 @@ About::About(QWidget* pParent)
 #else
 		.arg("")
 #endif
+
+		.arg(version->text())
 
 		.arg(g_buildVersion)
 
