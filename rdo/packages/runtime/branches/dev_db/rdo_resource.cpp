@@ -139,22 +139,25 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 		if (m_state == RDOResource::CS_NoChange || m_state == RDOResource::CS_NonExist)
 			return "";
 
-		if (prefix != '\0')
-			res << prefix;
-
 		m_trcDB->queryListExec();
 		m_trcDB->queryListPushBack(
-			QString("INSERT INTO trc_r VALUES(DEFAULT,%1,")
+			QString("INSERT INTO trc_r VALUES(DEFAULT,%1,'")
 				.arg(time));
+
+		if (prefix != '\0')
+		{
+			res << prefix;
+			m_trcDB->queryListPushBack(QString(prefix));
+		}
 
 		switch (m_state)
 		{
 		case RDOResource::CS_Create:
-			m_trcDB->queryListPushBack("'RC',");
+			m_trcDB->queryListPushBack("RC',");
 			res << "RC ";
 			break;
 		case RDOResource::CS_Erase:
-			m_trcDB->queryListPushBack("'RE',");
+			m_trcDB->queryListPushBack("RE',");
 			res << "RE "
 #ifdef RDOSIM_COMPATIBLE
 				<< pRuntime->getCurrentTime() << " "
@@ -166,7 +169,7 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 #endif
 			break;
 		default:
-			m_trcDB->queryListPushBack("'RK',");
+			m_trcDB->queryListPushBack("RK',");
 			res << "RK ";
 			break;
 		}

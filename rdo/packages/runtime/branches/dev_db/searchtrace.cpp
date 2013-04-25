@@ -15,6 +15,7 @@
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/simtrace.h"
 #include "simulator/runtime/rdo_rule.h"
+#include "simulator/runtime/headers/db/interface_db.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -30,6 +31,9 @@ void RDODPTSearchTrace::onSearchBegin(CREF(LPRDORuntime) pRuntime)
 	}
 	if (traceFlag == DPT_trace_tops || traceFlag == DPT_trace_all)
 	{
+		pRuntime->getTracer()->getTrcDB()->queryListPushBack(QString("INSERT INTO trc_st (DEFAULT,%1,'STN',1,0,0,0,-1,-1,0);")
+			.arg(pRuntime->getTracer()->getSBid()));
+
 		pRuntime->getTracer()->writeString("STN 1 0 0 0 -1 -1 0 0");
 	}
 	++calc_cnt;

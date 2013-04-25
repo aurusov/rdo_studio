@@ -94,6 +94,9 @@ public:
 
 	virtual void writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok);
 
+	PTR(GeneralDB) getTrcDB();
+	int getSBid();
+
 public:
 	virtual REF(rdo::ostream) getOStream();
 	virtual REF(RDOEndL)      getEOL();
@@ -106,6 +109,8 @@ private:
 	rdo::ofstream m_emptyOut;
 	RDOEndL       m_emptyEndL;
 	GeneralDB*    m_trcDB;
+	int           m_sbId;
+	int           m_so;
 };
 
 /*!

@@ -54,6 +54,10 @@ void RDOTrace::writeSearchBegin(double currentTime, tstring decisionPointId)
 	if (!canTrace())
 		return;
 
+	m_sbId = m_trcDB->insertRowInd("trc_sb",QString("DEFAULT,%1,'SB',%2")
+		.arg(currentTime)
+		.arg(QString::fromStdString(decisionPointId)));
+
 	getOStream() << "SB " << currentTime << " " << decisionPointId.c_str() << std::endl << getEOL();
 }
 
@@ -97,6 +101,14 @@ void RDOTrace::writeSearchOpenNode(int nodeCount, int parentCount, double pathCo
 	if (!canTrace())
 		return;
 
+	m_trcDB->queryListExec();
+	m_so = m_trcDB->insertRowInd("trc_so", QString("DEFAULT,%1,%2,%3,%4,%5")
+			.arg(m_sbId)
+			.arg(nodeCount)
+			.arg(parentCount)
+			.arg(pathCost)
+			.arg(restCost));
+
 	getOStream() << "SO " << nodeCount
 	             << " " << doubleToString(parentCount)
 	             << " " << doubleToString(pathCost)
@@ -119,15 +131,39 @@ void RDOTrace::writeSearchNodeInfo(char sign, PTR(TreeNodeTrace) node)
 		ASSERT(activityTrace);
 		ASSERT(activityPatternTrace);
 
+	double nodeNumber   = node->m_number;
+	double nodesCound   = node->m_root->getNodesCound();
+	double parentNumber = node->m_parent->m_number;
+	double costPath     = node->m_costPath;
+	double costRest     = node->m_costRest;
+	double newCostPath  = node->m_newCostPath;
+	double newCostRest  = node->m_newCostRest;
+	tstring traceID     = trace->traceId();
+	tstring patternID   = activityPatternTrace->tracePatternId();
+	double costRule     = node->m_costRule;
+	double newCostRule  = node->m_newCostRule;
+
+	m_trcDB->pushContext<int>(
+		m_trcDB->insertRowInd("trc_st",QString("DEFAULT,%1,'ST%2',%3,%4,%5,%6,%7,%8,%9")
+			.arg(m_so)
+			.arg(sign)
+			.arg((sign != 'D') ? nodeNumber : nodesCound)
+			.arg((sign != 'D') ? parentNumber : nodeNumber)
+			.arg((sign != 'D') ? costPath : newCostPath)
+			.arg((sign != 'D') ? costRest : newCostRest)
+			.arg(QString::fromStdString(traceID))
+			.arg(QString::fromStdString(patternID))
+			.arg(newCostRule)));
+
 		getOStream().precision(4);
 		getOStream() << "ST" << sign
-		             << " " << ((sign != 'D') ? node->m_number : node->m_root->getNodesCound())
-		             << " " << ((sign != 'D') ? node->m_parent->m_number : node->m_number)
-		             << " " << ((sign != 'D') ? doubleToString(node->m_costPath) : doubleToString(node->m_newCostPath))
-		             << " " << ((sign != 'D') ? doubleToString(node->m_costRest) : doubleToString(node->m_newCostRest))
-		             << " " << trace->traceId()
-		             << " " << activityPatternTrace->tracePatternId()
-		             << " " << ((sign != 'D') ? doubleToString(node->m_costRule) : doubleToString(node->m_newCostRule))
+		             << " " << ((sign != 'D') ? nodeNumber : nodesCound)
+		             << " " << ((sign != 'D') ? parentNumber : nodeNumber)
+		             << " " << ((sign != 'D') ? doubleToString(costPath) : doubleToString(newCostPath))
+		             << " " << ((sign != 'D') ? doubleToString(costRest) : doubleToString(newCostRest))
+		             << " " << traceID
+		             << " " << patternID
+		             << " " << ((sign != 'D') ? doubleToString(costRule) : doubleToString(newCostRule))
 		             << " " << activityTrace->traceResourcesListNumbers(pRuntime, true)
 		             << std::endl << getEOL();
 
@@ -153,15 +189,36 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 
 	static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_times.push_back(sec_delay);
 
+	double currentTime = simTr->getCurrentTime();
+	int memUsed = treeRoot->m_sizeof_dpt;
+	double costPath = treeRoot->m_targetNode->m_costPath;
+	int expendedNodes = treeRoot->m_expandedNodesCount;
+	int inGraph = treeRoot->m_nodesInGraphCount;
+	int nodesCount = treeRoot->getNodesCound();
+	int nodesFullCount = treeRoot->m_fullNodesCount;
+
+	m_trcDB->queryListPushBack(
+		QString("INSERT INTO trc_se VALUES(DEFAULT,%1,%2,'SE%3',%4,%5,%6,%7,%8,%9,%10);")
+			.arg(m_sbId)
+			.arg(currentTime)
+			.arg(letter)
+			.arg(sec_delay)
+			.arg(memUsed)
+			.arg(letter == 'S' ? costPath : 0)
+			.arg(expendedNodes)
+			.arg(inGraph)
+			.arg(nodesCount)
+			.arg(nodesFullCount));
+
 	getOStream() << "SE" << letter
-	             << " " << simTr->getCurrentTime()
+	             << " " << currentTime
 	             << " " << sec_delay            // realTime
-	             << " " << treeRoot->m_sizeof_dpt // memUsed
-	             << " " << (letter == 'S' ? treeRoot->m_targetNode->m_costPath : 0)
-	             << " " << treeRoot->m_expandedNodesCount
-	             << " " << treeRoot->m_nodesInGraphCount
-	             << " " << treeRoot->getNodesCound()
-	             << " " << treeRoot->m_fullNodesCount 
+	             << " " << memUsed // memUsed
+	             << " " << (letter == 'S' ? costPath : 0)
+	             << " " << expendedNodes
+	             << " " << inGraph
+	             << " " << nodesCount
+	             << " " << nodesFullCount 
 	             << std::endl << getEOL();
 	if (letter == 'S') {
 	double time = simTr->getCurrentTime();
@@ -544,6 +601,16 @@ void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok)
 			.arg(time)
 			.arg(QString::fromStdString(watchId))
 			.arg(m_trcDB->popContext<int>()));
+}
+
+int RDOTrace::getSBid()
+{
+	return m_sbId;
+}
+
+PTR(GeneralDB) RDOTrace::getTrcDB()
+{
+	return m_trcDB;
 }
 
 // --------------------------------------------------------------------------------
