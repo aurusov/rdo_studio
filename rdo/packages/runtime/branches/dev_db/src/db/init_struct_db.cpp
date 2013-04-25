@@ -461,6 +461,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"rtp_id     integer NOT NULL,"
 		"res_id     integer NOT NULL,"
 		"PRIMARY KEY (id),"
+		"FOREIGN KEY (time) REFERENCES trc_time(time),"
 		"FOREIGN KEY (rtp_id) REFERENCES trc_resource_type(rtp_id),"
 		"FOREIGN KEY (res_id) REFERENCES trc_resources(res_id)"
 		");");
@@ -580,6 +581,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"watch_id   integer NOT NULL,"
 		"value_id   integer NOT NULL,"
 		"PRIMARY KEY (id),"
+		"FOREIGN KEY (time) REFERENCES trc_time(time),"
 		"FOREIGN KEY (watch_id) REFERENCES trc_watches(watch_id),"
 		"FOREIGN KEY (value_id) REFERENCES trc_value(id)"
 		");");
@@ -598,4 +600,116 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"AFTER INSERT ON trc_v "
 		"FOR EACH ROW "
 		"EXECUTE PROCEDURE trc_copy_v_row();");
+
+	queryListPushBack("CREATE TABLE trc_sb("
+		"id        integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"time      real NOT NULL,"
+		"type      varchar(6) NOT NULL,"
+		"no_of_dpt integer NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (time) REFERENCES trc_time(time)"
+		");");
+
+	queryListPushBack(
+		"CREATE TRIGGER trc_sb_trig "
+		"AFTER INSERT ON trc_sb "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_row();");
+
+	queryListPushBack("CREATE TABLE trc_so("
+		"id               integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"sb_id            integer NOT NULL,"
+		"node_number      integer NOT NULL,"
+		"node_parent      integer NOT NULL,"
+		"path_cost        real NOT NULL,"
+		"rest_cost        real NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (sb_id) REFERENCES trc_sb(id)"
+		");");
+
+	queryListPushBack(
+		"CREATE FUNCTION trc_copy_so_row() RETURNS TRIGGER AS $trig$ "
+		"BEGIN "
+		"INSERT INTO trc_rows VALUES "
+		"(NEW.id, NEW.tableoid, 'SO'); "
+		"RETURN NULL; "
+		"END; "
+		"$trig$ LANGUAGE plpgsql;");
+
+	queryListPushBack(
+		"CREATE TRIGGER trc_so_trig "
+		"AFTER INSERT ON trc_so "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_so_row();");
+
+
+	queryListPushBack("CREATE TABLE trc_st("
+		"id               integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"so_id            integer NOT NULL,"
+		"type             varchar(6) NOT NULL,"
+		"node_number      integer NOT NULL,"
+		"node_parent      integer NOT NULL,"
+		"path_cost        real NOT NULL,"
+		"rest_cost        real NOT NULL,"
+		"activity         integer NOT NULL,"
+		"pattern          integer NOT NULL,"
+		"cost_of_dpt      real NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (activity) REFERENCES trc_activities(act_id),"
+		"FOREIGN KEY (pattern) REFERENCES trc_patterns(pat_id),"
+		"FOREIGN KEY (so_id) REFERENCES trc_so(id)"
+		");");
+
+	queryListPushBack(
+		"CREATE TRIGGER trc_st_trig "
+		"AFTER INSERT ON trc_st "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_row();");
+
+	queryListPushBack("CREATE TABLE trc_sd("
+		"id        integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"type      varchar(6) NOT NULL,"
+		"PRIMARY KEY (id)"
+		");");
+
+	queryListPushBack("CREATE TRIGGER trc_sd_trig "
+		"AFTER INSERT ON trc_sd "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_row();");
+
+	queryListPushBack("CREATE TABLE trc_sd_desc("
+		"id               serial,"
+		"sd_id            integer NOT NULL,"
+		"node_number      integer NOT NULL,"
+		"activity         integer NOT NULL,"
+		"pattern          integer NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (sd_id) REFERENCES trc_sd(id),"
+		"FOREIGN KEY (node_number) REFERENCES trc_so(node_number),"
+		"FOREIGN KEY (activity) REFERENCES trc_activities(act_id),"
+		"FOREIGN KEY (pattern) REFERENCES trc_patterns(pat_id)"
+		");");
+
+	queryListPushBack("CREATE TABLE trc_se("
+		"id                      integer NOT NULL DEFAULT nextval('trc_row_id'),"
+		"sd_id                   integer NOT NULL,"
+		"time                    real NOT NULL,"
+		"type                    varchar(6) NOT NULL,"
+		"time_of_runtime         real NOT NULL,"
+		"memory_size             real NOT NULL,"
+		"cost_of_result          real NOT NULL,"
+		"count_of_opened_nodes   integer NOT NULL,"
+		"count_of_nodes_graph    integer NOT NULL,"
+		"count_of_included_nodes integer NOT NULL,"
+		"count_of_all_nodes      integer NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (time) REFERENCES trc_time(time),"
+		"FOREIGN KEY (sd_id) REFERENCES trc_sd(id)"
+		");");
+
+	queryListPushBack(
+		"CREATE TRIGGER trc_se_trig "
+		"AFTER INSERT ON trc_se "
+		"FOR EACH ROW "
+		"EXECUTE PROCEDURE trc_copy_row();");
 }
