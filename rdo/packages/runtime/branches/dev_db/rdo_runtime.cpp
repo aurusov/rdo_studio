@@ -77,7 +77,6 @@ void RDORuntime::init()
 void RDORuntime::deinit()
 {
 	onDestroy();
-	delete m_db;
 }
 
 void RDORuntime::setStudioThread(PTR(RDOThread) pStudioThread)
