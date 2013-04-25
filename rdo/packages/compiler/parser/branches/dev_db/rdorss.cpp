@@ -133,7 +133,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 					(*m_currParam)->getTypeInfo()
 				);
 			ASSERT(pAddParam);
-			pAddParam->value().setUndefined(false);
+			pAddParam->value().setUndefined(true);
 		}
 		else
 		{

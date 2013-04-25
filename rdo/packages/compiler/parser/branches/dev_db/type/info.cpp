@@ -38,12 +38,9 @@ TypeInfo::TypeInfo(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) srcInfo)
 
 void TypeInfo::init()
 {
-	if (m_pType->type())
+	if (m_pType.object_dynamic_cast<RDOEnumType>())
 	{
-		if (m_pType->type()->typeID() == rdo::runtime::RDOType::t_enum)
-		{
-			RDOParser::s_parser()->insertPreCastType(this);
-		}
+		RDOParser::s_parser()->insertPreCastType(this);
 	}
 }
 
