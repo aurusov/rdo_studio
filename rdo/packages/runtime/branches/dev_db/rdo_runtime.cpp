@@ -285,11 +285,6 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 	pResource->serializeInDB();
 }
 
-PTR(GeneralDB) RDORuntime::getDB()
-{
-	return m_db;
-}
-
 void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer pLogic, CREF(LPIEvent) pEvent)
 {
 	ASSERT(pLogic);
