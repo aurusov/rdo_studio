@@ -72,10 +72,6 @@ RDORuntime::~RDORuntime()
 void RDORuntime::init()
 {
 	memory_insert(sizeof(RDORuntime));
-
-	InitStructDB::dropDB("rdo");
-	InitStructDB::createDB("rdo");
-	m_db = new InitStructDB("rdo");
 }
 
 void RDORuntime::deinit()
