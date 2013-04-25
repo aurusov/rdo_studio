@@ -68,6 +68,7 @@ public:
 	ruint get_cnt_calc_arithm() const;
 	ruint get_cnt_calc_logic()  const;
 
+	PTR(GeneralDB) getDB();
 	PTR(GeneralDB) getTrcDB();
 
 	static ruint getMSec(CREF(boost::posix_time::ptime) ptime);
@@ -151,6 +152,7 @@ private:
 
 	ruint        m_cnt_events;
 	ruint        m_cnt_choice_from;
+	GeneralDB*   m_db;
 	GeneralDB*   m_trcDB;
 };
 

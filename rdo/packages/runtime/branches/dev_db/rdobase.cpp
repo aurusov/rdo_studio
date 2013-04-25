@@ -49,11 +49,7 @@ RDOSimulatorBase::RDOSimulatorBase()
 	, m_msec_prev         (0           )
 	, m_cnt_events        (0           )
 	, m_cnt_choice_from   (0           )
-{
-	InitStructDB::dropDB("trc");
-	InitStructDB::createDB("trc");
-	m_trcDB = new InitStructDB("trc");
-}
+{}
 
 ruint RDOSimulatorBase::get_cnt_calc_arithm() const
 {
@@ -73,6 +69,14 @@ void RDOSimulatorBase::rdoInit()
 	onInit();
 	OperatorType::getCalcCounter<OperatorType::OT_ARITHM>() = 0;
 	OperatorType::getCalcCounter<OperatorType::OT_LOGIC> () = 0;
+
+	InitStructDB::dropDB("trc");
+	InitStructDB::createDB("trc");
+	m_trcDB = new InitStructDB("trc");
+
+	InitStructDB::dropDB("rdo");
+	InitStructDB::createDB("rdo");
+	m_db = new InitStructDB("rdo");
 
 	m_trcDB->queryExec("INSERT INTO trc_time VALUES(0);");
 
@@ -304,6 +308,11 @@ void RDOSimulatorBase::removeTimePoint(CREF(LPIBaseOperation) opr)
 			++it;
 		}
 	}
+}
+
+PTR(GeneralDB) RDOSimulatorBase::getDB()
+{
+	return m_db;
 }
 
 PTR(GeneralDB) RDOSimulatorBase::getTrcDB()

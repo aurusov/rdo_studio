@@ -205,8 +205,6 @@ public:
 	void setPreparingFrame  (PTR(rdo::animation::Frame) pPreparingFrame);
 	void resetPreparingFrame();
 
-	PTR(GeneralDB) getDB();
-
 private:
 	RDORuntime(PTR(Error) pError);
 	virtual ~RDORuntime();
@@ -227,7 +225,6 @@ private:
 	Notify              m_notify;
 	PTR(Error)          m_pError;
 	RDOHotKey           m_hotKey;
-	GeneralDB*          m_db;
 
 #ifdef _DEBUG
 	typedef  std::vector<ValueList>  State;
