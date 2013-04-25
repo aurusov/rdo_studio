@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdoframe.h"
 #include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_exception.h"
 #include "simulator/runtime/calc/function/calc_function.h"
 #include "simulator/runtime/calc/procedural/calc_const.h"
 #include "simulator/runtime/calc/procedural/calc_statement.h"

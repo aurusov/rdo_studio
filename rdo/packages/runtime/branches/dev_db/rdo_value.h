@@ -98,8 +98,8 @@ public:
 	RDOValue       operator*  (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator/  (CREF(RDOValue) rdovalue) const;
 
-	void        setUndefined (CREF(rbool) undefined);
-	CREF(rbool) getUndefined () const;
+	void  setUndefined(rbool undefined);
+	rbool isUndefined () const;
 
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
