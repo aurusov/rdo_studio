@@ -136,6 +136,12 @@ public:
 	ruint getPAT_id     () const { return m_allPATPattern.size()  + 0; }
 	ruint getPMD_id     ()       { return m_resultGeneratorID.get();   }
 	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
+	ruint getSeriesCapacity() const { return m_foundRunNumber; }
+
+	void  setCurrentRunNumber (ruint  value);
+	void  foundEndOfNextRun   ()            ;
+
+	rbool check               () const;
 
 	tstring getModelStructure();
 	tstring getChanges       () const;
@@ -254,6 +260,8 @@ private:
 	LPContextStack        m_pContextStack;
 	rbool                 m_pattern;
 	rdo::IDGenerator      m_resultGeneratorID;
+	ruint                 m_foundRunNumber;
+	ruint                 m_currentRunNumber;
 
 	template <class T>
 	void howIsIt()

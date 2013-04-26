@@ -1323,7 +1323,7 @@ int RDOThreadSimulator::getInitialFrameNumber() const
 
 ruint RDOThreadSimulator::getInitialRunCount() const
 {
-	return m_pParser->getSMR()->getSeriesCapacity();
+	return m_pParser->getSeriesCapacity();
 }
 
 double RDOThreadSimulator::getInitialShowRate() const

@@ -253,7 +253,7 @@ smr_launch_set
 smr_launch_single_of_set
 	: '{' smr_launch '}'
 	{
-		PARSER->getSMR()->foundEndOfNextRun();
+		PARSER->foundEndOfNextRun();
 	}
 	| '{' smr_launch error
 	{
@@ -292,9 +292,7 @@ smr_launch_line
 smr_launch_line_event_planning
 	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if (pSMR->check())
+		if (PARSER->check())
 		{
 			tstring    eventName          = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
@@ -369,10 +367,10 @@ smr_launch_line_show_mode
 smr_launch_line_frame_number
 	: RDO_Frame_number '=' RDO_INT_CONST
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if (pSMR->check())
+		if (PARSER->check())
 		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
 			pSMR->setFrameNumber(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 		}
 	}
@@ -412,19 +410,19 @@ smr_launch_line_show_rate
 smr_launch_line_run_startTime
 	: RDO_Run_StartTime '=' RDO_REAL_CONST
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if (pSMR->check())
+		if (PARSER->check())
 		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
 			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
 		}
 	}
 	| RDO_Run_StartTime '=' RDO_INT_CONST
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if (pSMR->check())
+		if (PARSER->check())
 		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
 			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 		}
 	}
@@ -447,10 +445,10 @@ smr_launch_line_trace_startTime
 	}
 	| RDO_Trace_StartTime '=' RDO_INT_CONST
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if (pSMR->check())
+		if (PARSER->check())
 		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
 			pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 		}
 	}
@@ -467,19 +465,19 @@ smr_launch_line_trace_startTime
 smr_launch_line_trace_endTime
 	: RDO_Trace_EndTime '=' RDO_REAL_CONST
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if (pSMR->check())
+		if (PARSER->check())
 		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
 			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
 		}
 	}
 	| RDO_Trace_EndTime '=' RDO_INT_CONST
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if (pSMR->check())
+		if (PARSER->check())
 		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
 			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 		}
 	}
@@ -496,13 +494,15 @@ smr_launch_line_trace_endTime
 smr_launch_line_terminate_if
 	: RDO_Terminate_if fun_logic
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if (pSMR->check())
+		if (PARSER->check())
 		{
 			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
 			ASSERT(pLogic);
-			PARSER->getSMR()->setTerminateIf(pLogic);
+
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+
+			pSMR->setTerminateIf(pLogic);
 		}
 	}
 	| RDO_Terminate_if error
@@ -514,12 +514,14 @@ smr_launch_line_terminate_if
 smr_launch_line_break_point
 	: RDO_Break_point RDO_IDENTIF fun_logic
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if (pSMR->check())
+		if (PARSER->check())
 		{
 			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($3);
 			ASSERT(pLogic);
+
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+
 			pSMR->insertBreakPoint(PARSER->stack().pop<RDOValue>($2)->src_info(), pLogic);
 		}
 	}
@@ -536,13 +538,15 @@ smr_launch_line_break_point
 smr_launch_line_arithm
 	: RDO_IDENTIF '=' fun_arithm
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if (pSMR->check())
+		if (PARSER->check())
 		{
 			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 			ASSERT(pArithm);
-			PARSER->getSMR()->setConstValue(PARSER->stack().pop<RDOValue>($1)->src_info(), pArithm);
+
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+
+			pSMR->setConstValue(PARSER->stack().pop<RDOValue>($1)->src_info(), pArithm);
 		}
 	}
 	| RDO_IDENTIF '=' error
@@ -555,13 +559,15 @@ smr_launch_line_arithm
 	}
 	| RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if (pSMR->check())
+		if (PARSER->check())
 		{
 			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
 			ASSERT(pArithm);
-			PARSER->getSMR()->setResParValue(PARSER->stack().pop<RDOValue>($1)->src_info(), PARSER->stack().pop<RDOValue>($3)->src_info(), pArithm);
+
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+
+			pSMR->setResParValue(PARSER->stack().pop<RDOValue>($1)->src_info(), PARSER->stack().pop<RDOValue>($3)->src_info(), pArithm);
 		}
 	}
 	| RDO_IDENTIF '.' RDO_IDENTIF '=' error
@@ -598,10 +604,10 @@ smr_launch_line_arithm
 smr_launch_line_seed
 	: RDO_IDENTIF '.' RDO_Seed '=' RDO_INT_CONST
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		if (pSMR->check())
+		if (PARSER->check())
 		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
 			pSMR->setSeed(PARSER->stack().pop<RDOValue>($1)->src_info(), PARSER->stack().pop<RDOValue>($5)->value().getInt());
 		}
 	}

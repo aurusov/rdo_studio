@@ -65,7 +65,6 @@ public:
 	double                             getRunStartTime  () const { return m_runStartTime;   }
 	double                             getTraceStartTime() const { return m_traceStartTime; }
 	double                             getTraceEndTime  () const { return m_traceEndTime;   }
-	ruint                              getSeriesCapacity() const { return m_foundRunNumber; }
 
 	void  setShowMode         (rdo::service::simulation::ShowMode showMode);
 	void  setFrameNumber      (int value,    CREF(YYLTYPE) pos);
@@ -73,10 +72,6 @@ public:
 	void  setRunStartTime     (double value, CREF(YYLTYPE) pos);
 	void  setTraceStartTime   (double value, CREF(YYLTYPE) pos);
 	void  setTraceEndTime     (double value, CREF(YYLTYPE) pos);
-	void  setCurrentRunNumber (ruint  value);
-	void  foundEndOfNextRun   ()            ;
-
-	rbool check               () const;
 
 	void  setTerminateIf  (REF(LPRDOFUNLogic) pLogic);
 	void  setConstValue   (CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm)    pArithm);
@@ -86,6 +81,7 @@ public:
 
 private:
 	RDOSMR();
+	~RDOSMR();
 
 	OBJECT(BreakPoint) IS INSTANCE_OF(RDOParserSrcInfo)
 	{
@@ -102,8 +98,6 @@ private:
 	double                              m_runStartTime;
 	double                              m_traceStartTime;
 	double                              m_traceEndTime;
-	ruint                               m_foundRunNumber;
-	ruint                               m_currentRunNumber;
 	YYLTYPE                             m_traceStartTime_pos;
 	YYLTYPE                             m_traceEndTime_pos;
 	LPRDOFUNLogic                       m_pTerminateIf;

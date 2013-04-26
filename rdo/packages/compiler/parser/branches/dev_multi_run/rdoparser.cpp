@@ -106,6 +106,8 @@ RDOParser::RDOParser()
 	, m_have_kw_Resources   (false)
 	, m_have_kw_ResourcesEnd(false)
 	, m_pattern             (false)
+	, m_foundRunNumber      (0    )
+	, m_currentRunNumber    (0    )
 {}
 
 RDOParser::~RDOParser()
@@ -171,6 +173,32 @@ void RDOParser::deinit()
 	m_pRuntime = NULL;
 
 	s_parserStack.remove(this);
+}
+
+void RDOParser::setCurrentRunNumber(ruint value)
+{
+	m_currentRunNumber = value;
+}
+
+rbool RDOParser::check() const
+{
+	if (m_currentRunNumber)
+	{
+		return m_currentRunNumber - m_foundRunNumber == 1;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+void RDOParser::foundEndOfNextRun()
+{
+	++m_foundRunNumber;
+
+	LPRDOSMR pSMR = rdo::Factory<RDOSMR>::create();
+	ASSERT(pSMR);
+	setSMR(pSMR);
 }
 
 LPContextStack RDOParser::contextStack()
@@ -442,7 +470,7 @@ void RDOParser::parse()
 
 void RDOParser::parse(ruint count)
 {
-	getSMR()->setCurrentRunNumber(count);
+	setCurrentRunNumber(count);
 	parse();
 }
 

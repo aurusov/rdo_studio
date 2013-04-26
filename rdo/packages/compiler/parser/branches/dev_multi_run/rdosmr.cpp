@@ -56,35 +56,14 @@ RDOSMR::RDOSMR()
 	, m_runStartTime    (0 )
 	, m_traceStartTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
 	, m_traceEndTime    (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
-	, m_foundRunNumber  (0 )
-	, m_currentRunNumber(0 )
 {}
 
-void RDOSMR::setCurrentRunNumber(ruint value)
-{
-	m_currentRunNumber = value;
-}
+RDOSMR::~RDOSMR()
+{}
 
 void RDOSMR::setShowMode(rdo::service::simulation::ShowMode showMode)
 {
 	m_showMode = showMode;
-}
-
-rbool RDOSMR::check() const
-{
-	if (m_currentRunNumber)
-	{
-		return m_currentRunNumber - m_foundRunNumber == 1;
-	}
-	else
-	{
-		return m_foundRunNumber == 0;
-	}
-}
-
-void RDOSMR::foundEndOfNextRun()
-{
-	++m_foundRunNumber;
 }
 
 void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
