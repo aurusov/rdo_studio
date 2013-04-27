@@ -420,20 +420,28 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"EXECUTE PROCEDURE trc_copy_row();");
 
 	queryListPushBack(
-		"CREATE TABLE trc_ei_ee("
+		"CREATE TABLE trc_ei("
 		"id           integer NOT NULL DEFAULT nextval('trc_row_id'),"
 		"time         real NOT NULL,"
-		"type         varchar(6) NOT NULL,"
 		"evnt_id      integer NOT NULL,"
 		"PRIMARY KEY (id),"
 		"FOREIGN KEY (time) REFERENCES trc_time(time)"
 		");");
 
 	queryListPushBack(
-		"CREATE TRIGGER trc_ei_ee_trig "
-		"AFTER INSERT ON trc_ei_ee "
+		"CREATE FUNCTION trc_copy_ei_row() RETURNS TRIGGER AS $trig$ "
+		"BEGIN "
+		"INSERT INTO trc_rows VALUES "
+		"(NEW.id, NEW.tableoid, 'EI'); "
+		"RETURN NULL; "
+		"END; "
+		"$trig$ LANGUAGE plpgsql;");
+
+	queryListPushBack(
+		"CREATE TRIGGER trc_ei_trig "
+		"AFTER INSERT ON trc_ei "
 		"FOR EACH ROW "
-		"EXECUTE PROCEDURE trc_copy_row();");
+		"EXECUTE PROCEDURE trc_copy_ei_row();");
 
 	queryListPushBack(
 		"CREATE TABLE trc_er("
@@ -685,7 +693,6 @@ void InitStructDB::generateCreateTrcDBQuery()
 		"pattern          integer NOT NULL,"
 		"PRIMARY KEY (id),"
 		"FOREIGN KEY (sd_id) REFERENCES trc_sd(id),"
-		"FOREIGN KEY (node_number) REFERENCES trc_so(node_number),"
 		"FOREIGN KEY (activity) REFERENCES trc_activities(act_id),"
 		"FOREIGN KEY (pattern) REFERENCES trc_patterns(pat_id)"
 		");");

@@ -294,7 +294,7 @@ void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntim
 
 #ifdef SERIALIZE_IN_DB_TRC
 		m_trcDB->pushContext<int>(
-			m_trcDB->insertRowInd("trc_ei_ee",QString("DEFAULT,%1,'EI',%2")
+			m_trcDB->insertRowInd("trc_ei",QString("DEFAULT,%1,%2")
 				.arg(time)
 				.arg(QString::fromStdString(traceId))));
 #endif
