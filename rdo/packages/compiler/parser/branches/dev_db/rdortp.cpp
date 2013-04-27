@@ -144,14 +144,17 @@ void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) c
 	int size = getParams().size();
 
 #ifdef SERIALIZE_IN_DB_TRC
-	db->queryListPushBack(
-		QString("INSERT INTO trc_resource_type VALUES(%1,'%2');")
-			.arg(rtpNumber)
-			.arg(QString::fromStdString(rtpName)));
-
 	std::vector<int> indexContainer;
-	indexContainer.push_back(-1);
-	indexContainer.push_back(rtpNumber);
+	if(db)
+	{
+		db->queryListPushBack(
+			QString("INSERT INTO trc_resource_type VALUES(%1,'%2');")
+				.arg(rtpNumber)
+				.arg(QString::fromStdString(rtpName)));
+
+		indexContainer.push_back(-1);
+		indexContainer.push_back(rtpNumber);
+	}
 #else
 	UNUSED(db);
 #endif
@@ -160,12 +163,15 @@ void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) c
 	for (ruint i = 0; i < getParams().size(); i++)
 	{
 #ifdef SERIALIZE_IN_DB_TRC
-		indexContainer[0] = i+1;
-		db->pushContext<std::vector<int>>(indexContainer);
-		db->queryListPushBack(
-			QString("INSERT INTO trc_param VALUES(%1,%2,")
-				.arg(i+1)
-				.arg(rtpNumber));
+		if(db)
+		{
+			indexContainer[0] = i+1;
+			db->pushContext<std::vector<int>>(indexContainer);
+			db->queryListPushBack(
+				QString("INSERT INTO trc_param VALUES(%1,%2,")
+					.arg(i+1)
+					.arg(rtpNumber));
+		}
 #endif
 		stream << "  " << (i+1) << " ";
 		getParams().at(i)->writeModelStructure(stream, db);

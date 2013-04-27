@@ -348,11 +348,12 @@ void RDOPATPattern::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) c
 	char patternStructure = getModelStructureLetter();
 
 #ifdef SERIALIZE_IN_DB_TRC
-	db->queryListPushBack(
-		QString("INSERT INTO trc_patterns VALUES(%1,'%2','%3');")
-			.arg(patternId)
-			.arg(QString::fromStdString(patternName))
-			.arg(patternStructure));
+	if(db)
+		db->queryListPushBack(
+			QString("INSERT INTO trc_patterns VALUES(%1,'%2','%3');")
+				.arg(patternId)
+				.arg(QString::fromStdString(patternName))
+				.arg(patternStructure));
 #else
 	UNUSED(db);
 #endif
@@ -363,10 +364,11 @@ void RDOPATPattern::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) c
 		int rtpId = (*it)->getType()->getNumber();
 
 #ifdef SERIALIZE_IN_DB_TRC
-		db->queryListPushBack(
-			QString("INSERT INTO trc_relres VALUES(DEFAULT,%1,%2);")
-				.arg(rtpId)
-				.arg(patternId));
+		if(db)
+			db->queryListPushBack(
+				QString("INSERT INTO trc_relres VALUES(DEFAULT,%1,%2);")
+					.arg(rtpId)
+					.arg(patternId));
 #else
 	UNUSED(db);
 #endif

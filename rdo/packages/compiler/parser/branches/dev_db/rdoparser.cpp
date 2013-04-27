@@ -350,11 +350,12 @@ tstring RDOParser::getChanges() const
 	return stream.str();
 }
 
-tstring RDOParser::getModelStructure()
+tstring RDOParser::getModelStructure(bool trcDB)
 {
 	rdo::textstream modelStructure;
 
-	GeneralDB* db = m_pRuntime->getTrcDB();
+	GeneralDB* db = (trcDB ? m_pRuntime->getTrcDB() : NULL);
+
 	// $Changes
 	modelStructure << getChanges();
 
@@ -422,8 +423,9 @@ tstring RDOParser::getModelStructure()
 			{
 				tstring watchName = name->name();
 #ifdef SERIALIZE_IN_DB_TRC
-				db->queryListPushBack(QString("INSERT INTO trc_watches VALUES('%1',")
-					.arg(QString::fromStdString(watchName)));
+				if(db)
+					db->queryListPushBack(QString("INSERT INTO trc_watches VALUES('%1',")
+						.arg(QString::fromStdString(watchName)));
 #endif
 				modelStructure << "  " << watchName;
 				for (ruint i = name->name().length(); i < watching_max_length + 2; i++)
@@ -435,7 +437,8 @@ tstring RDOParser::getModelStructure()
 	}
 
 #ifdef SERIALIZE_IN_DB_TRC
-	db->queryListExec();
+	if (db)
+		db->queryListExec();
 #endif
 
 	return modelStructure.str();

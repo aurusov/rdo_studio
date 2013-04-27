@@ -150,9 +150,10 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 			int activityNumber = counter++;
 
 #ifdef SERIALIZE_IN_DB_TRC
-			db->queryListPushBack(
-				QString("INSERT INTO trc_activities VALUES(%1,")
-					.arg(activityNumber));
+			if(db)
+				db->queryListPushBack(
+					QString("INSERT INTO trc_activities VALUES(%1,")
+						.arg(activityNumber));
 #else
 	UNUSED(db);
 #endif

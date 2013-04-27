@@ -54,10 +54,11 @@ inline void RDOActivityPattern<T>::writeModelStructure(REF(rdo::ostream) stream,
 	tstring patternId = tracePatternId();
 
 #ifdef SERIALIZE_IN_DB_TRC
-	db->queryListPushBack(
-		QString("'%1',%2);")
-			.arg(QString::fromStdString(m_oprName))
-			.arg(QString::fromStdString(patternId)));
+	if(db)
+		db->queryListPushBack(
+			QString("'%1',%2);")
+				.arg(QString::fromStdString(m_oprName))
+				.arg(QString::fromStdString(patternId)));
 #else
 	UNUSED(db);
 #endif

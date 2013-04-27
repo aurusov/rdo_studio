@@ -635,8 +635,9 @@ void RDOPMDWatchPar::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) 
 	tstring traceID = traceId();
 
 #ifdef SERIALIZE_IN_DB_TRC
-	db->queryListPushBack(QString("%1,'watch_par');")
-		.arg(QString::fromStdString(traceID)));
+	if(db)
+		db->queryListPushBack(QString("%1,'watch_par');")
+			.arg(QString::fromStdString(traceID)));
 #else
 	UNUSED(db);
 #endif
@@ -649,8 +650,9 @@ void RDOPMDWatchState::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db
 	tstring traceID = traceId();
 
 #ifdef SERIALIZE_IN_DB_TRC
-	db->queryListPushBack(QString("%1,'watch_state');")
-		.arg(QString::fromStdString(traceID)));
+	if(db)
+		db->queryListPushBack(QString("%1,'watch_state');")
+			.arg(QString::fromStdString(traceID)));
 #else
 	UNUSED(db);
 #endif
@@ -663,8 +665,9 @@ void RDOPMDWatchQuant::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db
 	tstring traceID = traceId();
 
 #ifdef SERIALIZE_IN_DB_TRC
-	db->queryListPushBack(QString("%1,'watch_quant');")
-		.arg(QString::fromStdString(traceID)));
+	if(db)
+		db->queryListPushBack(QString("%1,'watch_quant');")
+			.arg(QString::fromStdString(traceID)));
 #else
 	UNUSED(db);
 #endif
@@ -677,8 +680,9 @@ void RDOPMDWatchValue::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db
 	tstring traceID = traceId();
 
 #ifdef SERIALIZE_IN_DB_TRC
-	db->queryListPushBack(QString("%1,'watch_value');")
-		.arg(QString::fromStdString(traceID)));
+	if(db)
+		db->queryListPushBack(QString("%1,'watch_value');")
+			.arg(QString::fromStdString(traceID)));
 #else
 	UNUSED(db);
 #endif

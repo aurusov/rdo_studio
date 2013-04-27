@@ -137,7 +137,7 @@ public:
 	ruint getPMD_id     ()       { return m_resultGeneratorID.get();   }
 	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
 
-	tstring getModelStructure();
+	tstring getModelStructure(bool trcDB);
 	tstring getChanges       () const;
 
 	LPRDOSMR getSMR() const              { return m_pSMR;                }
