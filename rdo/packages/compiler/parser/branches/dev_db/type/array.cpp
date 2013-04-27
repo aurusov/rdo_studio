@@ -151,6 +151,7 @@ void RDOArrayType::serializeInDB(REF(IDB) db) const
 			.arg(db.popContext<int>())
 			.arg(default_id)));
 #else
+	UNUSED(db);
 	NEVER_REACH_HERE;
 #endif
 }

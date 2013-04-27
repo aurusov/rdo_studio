@@ -74,12 +74,14 @@ rdo::runtime::RDOValue RDOType__unknow::get_default() const
 void RDOType__unknow::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	UNUSED(stream);
+	UNUSED(db);
 	parser::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать неизвестный тип в отчет");
 	NEVER_REACH_HERE;
 }
 
 void RDOType__unknow::serializeInDB(REF(IDB) db) const
 {
+	UNUSED(db);
 	NEVER_REACH_HERE;
 }
 
@@ -127,12 +129,14 @@ rdo::runtime::RDOValue RDOType__void::get_default() const
 void RDOType__void::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	UNUSED(stream);
+	UNUSED(db);
 	parser::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать void-тип в отчет");
 	NEVER_REACH_HERE;
 }
 
 void RDOType__void::serializeInDB(REF(IDB) db) const
 {
+	UNUSED(db);
 	NEVER_REACH_HERE;
 }
 
@@ -223,6 +227,7 @@ void RDOType__int::serializeInDB(REF(IDB) db) const
 		db.insertRowInd("int",QString("DEFAULT,%1,NULL,NULL")
 			.arg(db.popContext<int>())));
 #else
+	UNUSED(db);
 	NEVER_REACH_HERE;
 #endif
 }
@@ -301,6 +306,7 @@ void RDOType__real::serializeInDB(REF(IDB) db) const
 		db.insertRowInd("real",QString("DEFAULT,%1,NULL,NULL")
 			.arg(db.popContext<int>())));
 #else
+	UNUSED(db);
 	NEVER_REACH_HERE;
 #endif
 }
@@ -378,6 +384,7 @@ void RDOType__string::serializeInDB(REF(IDB) db) const
 		db.insertRowInd("string",QString("DEFAULT,%1")
 			.arg(db.popContext<int>())));
 #else
+	UNUSED(db);
 	NEVER_REACH_HERE;
 #endif
 }
@@ -429,6 +436,7 @@ rdo::runtime::RDOValue RDOType__identificator::get_default() const
 void RDOType__identificator::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	UNUSED(stream);
+	UNUSED(db);
 	parser::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать тип идектификатор в отчет");
 	NEVER_REACH_HERE;
 }
@@ -445,6 +453,7 @@ void RDOType__identificator::serializeInDB(REF(IDB) db) const
 		db.insertRowInd("identificator",QString("DEFAULT,%1")
 			.arg(db.popContext<int>())));
 #else
+	UNUSED(db);
 	NEVER_REACH_HERE;
 #endif
 }
@@ -522,6 +531,7 @@ void RDOType__bool::serializeInDB(REF(IDB) db) const
 		db.insertRowInd("bool",QString("DEFAULT,%1")
 			.arg(db.popContext<int>())));
 #else
+	UNUSED(db);
 	NEVER_REACH_HERE;
 #endif
 }

@@ -49,6 +49,7 @@ RDORSSResource::RDORSSResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) sr
 
 void RDORSSResource::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
+	UNUSED(db);
 	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
 }
 

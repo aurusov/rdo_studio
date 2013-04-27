@@ -576,6 +576,7 @@ RDOPMDGetValue::~RDOPMDGetValue()
 
 tstring RDOPMDGetValue::traceValue(PTR(IDB) db) const
 {
+	UNUSED(db);
 	return "ERROR";
 }
 
@@ -645,6 +646,7 @@ void RDOPMDWatchValue::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db
 
 void RDOPMDGetValue::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
+	UNUSED(db);
 	stream << traceId() << " get_value" << std::endl;
 }
 

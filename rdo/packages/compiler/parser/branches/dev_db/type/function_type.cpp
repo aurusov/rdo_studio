@@ -57,6 +57,7 @@ rdo::runtime::RDOType::TypeID FunctionParamType::typeID() const
 
 void FunctionParamType::serializeInDB(REF(IDB) db) const
 {
+	UNUSED(db);
 	NEVER_REACH_HERE;
 }
 
@@ -113,6 +114,7 @@ rdo::runtime::RDOValue FunctionParamType::get_default() const
 
 void FunctionParamType::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
+	UNUSED(db);
 	stream << "F " << std::endl;
 	NEVER_REACH_HERE;
 }
@@ -144,6 +146,7 @@ rdo::runtime::RDOType::TypeID FunctionType::typeID() const
 
 void FunctionType::serializeInDB(REF(IDB) db) const
 {
+	UNUSED(db);
 	NEVER_REACH_HERE;
 }
 
@@ -188,6 +191,7 @@ rdo::runtime::RDOValue FunctionType::get_default() const
 
 void FunctionType::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
+	UNUSED(db);
 	stream << "F " << std::endl;
 	NEVER_REACH_HERE;
 }

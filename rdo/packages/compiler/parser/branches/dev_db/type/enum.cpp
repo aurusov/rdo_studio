@@ -251,6 +251,7 @@ void RDOEnumType::serializeInDB(REF(IDB) db) const
 
 	db.pushContext<int>(enum_id);
 #else
+	UNUSED(db);
 	NEVER_REACH_HERE;
 #endif
 }

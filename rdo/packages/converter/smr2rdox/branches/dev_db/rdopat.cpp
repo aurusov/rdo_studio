@@ -177,6 +177,7 @@ tstring RDOPATPattern::getPatternId() const
 
 void RDOPATPattern::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
+	UNUSED(db);
 	stream << getPatternId() << " " << name() << " " << getModelStructureLetter() << " " << m_relResList.size();
 	STL_FOR_ALL_CONST(m_relResList, it)
 		stream << " " << (*it)->getType()->getNumber();
