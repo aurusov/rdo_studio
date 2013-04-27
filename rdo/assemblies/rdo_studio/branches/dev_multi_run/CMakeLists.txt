@@ -6,11 +6,24 @@
 # and provide build configuration options.
 #==============================================================================
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
-
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.0)
 PROJECT(rdo)
 
+#==============================================================================
+
+SET(PROJECT_NAME         "rdo")
+SET(PROJECT_DESCRIPTION  "CMake build system for ${PROJECT_NAME} projects")
+SET(PROJECT_VENDOR       "BMSTU")
+SET(PROJECT_VENDOR_LONG  "BMSTU")
+SET(PROJECT_COPYRIGHT    "Copyright ${PROJECT_VENDOR_LONG}")
+SET(PROJECT_VERSION      "{TEMP}")
+SET(PROJECT_VERSION_LONG "{TEMP}")
+SET(ORG_WEBSITE          "http://rdo.rk9.bmstu.ru/")
+
+#==============================================================================
+
 MESSAGE(STATUS "Create RDO")
+STRING(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
 # work with cmake
 SET(CMAKE_PREFIX_PATH $ENV{QTDIR}/lib/cmake)
@@ -86,7 +99,7 @@ IF(WIN32)
     ELSE()
         SET(ENV{PATH} "$ENV{PATH};${RDO_BASE_DIRECTORY}/thirdparty/bison_flex/bin")
     ENDIF()
-ENDIF(WIN32)
+ENDIF()
 
 SET(DOC_DIRECTORY ${RDO_BASE_DIRECTORY}/doc)
 
@@ -103,10 +116,34 @@ SET(COMMON_FILES
     ${DOC_DIRECTORY}/configuring.environment.opensuse.txt
     ${DOC_DIRECTORY}/install.cmake.txt
     ${DOC_DIRECTORY}/install.graphviz.txt
+    ${DOC_DIRECTORY}/install.qt.linux.txt
     ${DOC_DIRECTORY}/install.qt.from.installer.txt
     ${DOC_DIRECTORY}/make.project.txt
     ${DOC_DIRECTORY}/system.test.txt
     )
+
+#==============================================================================
+
+FIND_PACKAGE(Subversion)
+
+IF(NOT SUBVERSION_FOUND)
+    MESSAGE(FATAL_ERROR "SUBVERSION NOT FOUND")
+ENDIF()
+
+SET(SVN_RES TRUE)
+
+SET(FILE_VERSION "${CMAKE_CURRENT_BINARY_DIR}/svn.version.txt")
+EXECUTE_PROCESS(COMMAND svnversion -n ${RDO_BASE_DIRECTORY} RESULT_VARIABLE ${SVN_RES} OUTPUT_FILE ${FILE_VERSION})
+
+FILE(READ ${FILE_VERSION} READ_DATA)
+STRING(REPLACE "\n" "" CMAKE_SVN_VERSION ${READ_DATA})
+
+MESSAGE(STATUS "SVN VERSION: ${CMAKE_SVN_VERSION}")
+
+SET(PROJECT_VERSION      ${CMAKE_SVN_VERSION})
+SET(PROJECT_VERSION_LONG ${CMAKE_SVN_VERSION})
+
+#==============================================================================
 
 SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
 
@@ -116,6 +153,12 @@ SET(SCRIPT_FILES
     )
 
 SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
+
+IF(WIN32)
+    SET(ENV{BISON_PKGDATADIR} ${BISON_FLEX_DIRECTORY}/share/bison)
+ENDIF()
+
+MESSAGE(BISON_PKGDATADIR: $ENV{BISON_PKGDATADIR})
 
 # Compile the rdo_common
 SET(UTILS_PATH ${RDO_BASE_DIRECTORY}/utils)
@@ -145,6 +188,12 @@ ADD_SUBDIRECTORY(${CONVERTER_PATH})
 SET(SIMULATOR_PATH ${RDO_BASE_DIRECTORY}/simulator)
 ADD_SUBDIRECTORY(${SIMULATOR_PATH})
 
+SET(ABSTRACT_UI_PATH ${RDO_BASE_DIRECTORY}/ui/abstract)
+ADD_SUBDIRECTORY(${ABSTRACT_UI_PATH})
+
+SET(UI_QT_PATH ${RDO_BASE_DIRECTORY}/ui/qt)
+ADD_SUBDIRECTORY(${UI_QT_PATH})
+
 SET(APLICATIONS_DIRECTORY ${RDO_BASE_DIRECTORY}/app)
 ADD_SUBDIRECTORY(${APLICATIONS_DIRECTORY})
 
@@ -167,3 +216,57 @@ MESSAGE(STATUS ${BUILD_INFO_BAR})
 MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
 MESSAGE(STATUS ${NOOP_STRING})
+
+#==============================================================================
+#------------------------------install unix------------------------------------
+#==============================================================================
+
+IF(PROJECT_OS_LINUX)
+ENDIF()
+
+IF(MSVC)
+    SET(UNINSTALL_COMMAND "UNINSTALL")
+ELSE()
+    SET(UNINSTALL_COMMAND "uninstall")
+ENDIF()
+
+CONFIGURE_FILE(
+    "${PROJECT_SOURCE_DIR}/cmake/cmake.uninstall.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake.uninstall.cmake"
+    IMMEDIATE @ONLY
+    )
+
+ADD_CUSTOM_TARGET(${UNINSTALL_COMMAND}
+    COMMAND "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake.uninstall.cmake"
+    )
+
+#==============================================================================
+
+INCLUDE(InstallRequiredSystemLibraries)
+
+SET(CPACK_PACKAGING_INSTALL_PREFIX    "/")
+SET(CPACK_PACKAGE_NAME                "${PROJECT_NAME_LOWER}")
+SET(CPACK_PACKAGE_VENDOR              "${PROJECT_VENDOR_LONG}")
+
+SET(CPACK_PACKAGE_DESCRIPTION         "rdo application")
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${CPACK_PACKAGE_DESCRIPTION}")
+SET(CPACK_PACKAGE_CONTACT             "Evgeny Proydakov <lord.tiran@gmail.com>")
+
+SET(CPACK_DEBIAN_PACKAGE_VERSION      ${PROJECT_VERSION})
+SET(CPACK_DEBIAN_PACKAGE_PRIORITY     "standard")
+SET(CPACK_DEBIAN_PACKAGE_SECTION      "non-free")
+SET(CPACK_DEBIAN_ARCHITECTURE         ${CMAKE_SYSTEM_PROCESSOR})
+SET(CPACK_DEBIAN_PACKAGE_DEPENDS      "libc6 (> = 2.1.3)")
+SET(CPACK_DEBIAN_PACKAGE_HOMEPAGE     "${ORG_WEBSITE}")
+
+SET(CPACK_RPM_PACKAGE_VERSION         ${PROJECT_VERSION})
+SET(CPACK_RPM_PACKAGE_GROUP           "Applications/Base")
+SET(CPACK_RPM_PACKAGE_LICENSE         "Proprietary")
+SET(CPACK_RPM_PACKAGE_ARCHITECTURE    ${CMAKE_SYSTEM_PROCESSOR})
+SET(CPACK_RPM_PACKAGE_URL             "${ORG_WEBSITE}")
+SET(CPACK_RPM_PACKAGE_DESCRIPTION     "${CPACK_PACKAGE_DESCRIPTION}")
+
+SET(CPACK_PACKAGE_FILE_NAME           "${PROJECT_NAME_LOWER}_${PROJECT_VERSION}_${CMAKE_SYSTEM_PROCESSOR}")
+
+INCLUDE(CPack)
+INCLUDE(Documentation)
