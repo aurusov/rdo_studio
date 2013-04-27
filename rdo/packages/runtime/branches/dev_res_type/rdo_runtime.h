@@ -26,6 +26,7 @@
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/simtrace.h"
 #include "simulator/runtime/rdo_resource.h"
+#include "simulator/runtime/rdo_res_type.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_memory.h"
@@ -196,8 +197,8 @@ public:
 	ResCIterator res_begin() const;
 	ResCIterator res_end() const;
 
-	void addResType(ruint number, CREF(LPIResourceType) pResType);
-	CREF(LPIResourceType) getResType(ruint number) const;
+	void addResType(CREF(LPRDOResourceListObject) pResType);
+	CREF(LPRDOResourceListObject) getResType(ruint number) const;
 
 	CREF(LPIThreadProxy) getThreadProxy() const;
 
@@ -216,7 +217,7 @@ private:
 	typedef  std::vector<RDOValue>         ValueList;
 	typedef  std::vector<LPRDOResource>    ResourceListByID;
 	typedef  std::list  <LPRDOResource>    ResourceListByTime;
-	typedef  std::vector<LPIResourceType>  ResourceTypeList;
+	typedef  std::vector<LPRDOResourceListObject>  ResourceTypeList;
 
 	ResourceListByID    m_resourceListByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	ResourceListByTime  m_resourceListByTime;    // Они же, только упорядочены по времени создания и без NULL-ов

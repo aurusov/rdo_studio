@@ -214,18 +214,17 @@ inline RDORuntime::ResCIterator RDORuntime::res_end() const
 	return m_resourceListByTime.end();
 }
 
-inline void RDORuntime::addResType(ruint number, CREF(LPIResourceType) pResType)
+inline void RDORuntime::addResType(CREF(LPRDOResourceListObject) pResType)
 {
 	ASSERT(pResType);
-	ASSERT(m_resourceTypeList.size() == number - 1);
+	ASSERT(m_resourceTypeList.size() == pResType->getTraceID() - 1);
 	m_resourceTypeList.push_back(pResType);
 }
 
-inline CREF(LPIResourceType) RDORuntime::getResType(ruint number) const
+inline CREF(LPRDOResourceListObject) RDORuntime::getResType(ruint number) const
 {
 	return m_resourceTypeList[number - 1];
 }
-
 
 inline CREF(LPIThreadProxy) RDORuntime::getThreadProxy() const
 {
