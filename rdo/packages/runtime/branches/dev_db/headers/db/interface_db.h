@@ -20,6 +20,7 @@
 // --------------------------------------------------------------------------------
 
 //#define SERIALIZE_IN_DB_RTP_DETAILS
+//#define SERIALIZE_IN_DB_TRC
 
 class IDB
 {
