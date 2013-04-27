@@ -17,15 +17,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 template <class T>
 inline RDOResourceTypeBase<T>::RDOResourceTypeBase(ruint number, rdo::runtime::LPRDORuntime pRuntime)
-	: RDOType              (t_pointer       )
-	, RDOResourceListObject(number, pRuntime)
+	: RDOResourceListObject(number, pRuntime)
 {
 	rdo::intrusive_ptr<RDOResourceTypeBase<T> > pThis(this);
 	ASSERT(pThis);
-	LPIResourceType pIResType = pThis.template interface_cast<IResourceType>();
-	ASSERT(pIResType);
+	LPRDOResourceListObject pResourceListObject = pThis.template object_parent_cast<RDOResourceListObject>();
+	ASSERT(pResourceListObject);
 
-	pRuntime->addResType(number, pIResType);
+	pRuntime->addResType(pResourceListObject);
 }
 
 template <class T>
@@ -49,7 +48,7 @@ inline LPRDOResource RDOResourceTypeBase<T>::createRes(CREF(LPRDORuntime) pRunti
 }
 
 inline RDOResourceListObject::RDOResourceListObject(ruint number, rdo::runtime::LPRDORuntime pRuntime)
-	: RDORuntimeObject  (                                        )
+	: RDOType           (t_pointer)
 	, RDOTraceableObject(false, number, rdo::toString(number + 1))
 {}
 

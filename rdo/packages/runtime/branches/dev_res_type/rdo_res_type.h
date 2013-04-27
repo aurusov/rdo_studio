@@ -23,8 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 //! Описывает РДО-тип ресурса (RTP), который суть фабрика для РДО-ресурсов
 //! tparam T - ресурс, который будет создаваться данной фабрикой
 template <class T>
-CLASS_PARENT_OF(RDOResourceTypeBase, RDOType)
-	IS  IMPLEMENTATION_OF(RDOResourceListObject)
+class RDOResourceTypeBase: public RDOResourceListObject
 {
 DECLARE_FACTORY(RDOResourceTypeBase<T>);
 public:
@@ -39,14 +38,18 @@ private:
 	DECLARE_IResourceType;
 };
 
-CLASS_PARENT_OF(RDOResourceListObject, IResourceType)
-	IS  INSTANCE_OF      (RDORuntimeObject  )
-	AND INSTANCE_OF      (RDOTraceableObject)
+class RDOResourceListObject
+	: public RDOType
+	, public IResourceType
+	, public RDORuntimeObject
+	, public RDOTraceableObject
 {
+friend class rdo::Factory<RDOResourceListObject>;
+
 public:
 	ResCIterator res_begin() const;
 	ResCIterator res_end  () const;
-	
+
 	void eraseRes(CREF(rdo::runtime::LPRDOResource) pResource);
 
 protected:
@@ -56,6 +59,8 @@ protected:
 	typedef  std::list<rdo::runtime::LPRDOResource> ResourceList;
 	ResourceList m_resourceList;
 };
+
+typedef  rdo::intrusive_ptr<RDOResourceListObject>  LPRDOResourceListObject;
 
 //! Тип ресурсов для создания обычных ресурсов РДО
 //! \details Создает ресурсы, которые могут быть релевантны активностям и
