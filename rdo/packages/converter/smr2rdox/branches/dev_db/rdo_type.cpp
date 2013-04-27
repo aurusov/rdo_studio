@@ -70,6 +70,7 @@ LPRDOValue RDOType__unknow::get_default() const
 void RDOType__unknow::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
 	UNUSED(stream);
+	UNUSED(db);
 
 	rdo::converter::smr2rdox::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать неизвестный тип в отчет");
 	NEVER_REACH_HERE;
@@ -128,6 +129,7 @@ LPRDOValue RDOType__int::get_default() const
 
 void RDOType__int::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
+	UNUSED(db);
 	stream << "I" << std::endl;
 }
 
@@ -178,6 +180,7 @@ LPRDOValue RDOType__real::get_default() const
 
 void RDOType__real::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
+	UNUSED(db);
 	stream << "R" << std::endl;
 }
 
@@ -227,6 +230,7 @@ LPRDOValue RDOType__string::get_default() const
 
 void RDOType__string::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
+	UNUSED(db);
 	stream << "S" << std::endl;
 }
 
@@ -261,6 +265,7 @@ LPRDOValue RDOType__identificator::get_default() const
 void RDOType__identificator::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
 	UNUSED(stream);
+	UNUSED(db);
 
 	rdo::converter::smr2rdox::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать тип идектификатор в отчет");
 	NEVER_REACH_HERE;
@@ -312,6 +317,7 @@ LPRDOValue RDOType__bool::get_default() const
 
 void RDOType__bool::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
+	UNUSED(db);
 	stream << "B" << std::endl;
 }
 

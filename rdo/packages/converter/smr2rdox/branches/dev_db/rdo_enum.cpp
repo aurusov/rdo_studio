@@ -166,6 +166,7 @@ LPRDOValue RDOEnumType::get_default() const
 
 void RDOEnumType::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
+	UNUSED(db);
 	stream << "E " << getEnums()->getValues().size() << std::endl;
 	for (ruint i = 0; i < getEnums()->getValues().size(); i++)
 	{

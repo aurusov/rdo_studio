@@ -80,6 +80,7 @@ ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const
 
 void RDORTPResType::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
+	UNUSED(db);
 	stream << getNumber() << " " << name() << " " << getParams().size() << std::endl;
 	for (ruint i = 0; i < getParams().size(); i++)
 	{
