@@ -153,7 +153,10 @@ private:
 	ruint        m_cnt_events;
 	ruint        m_cnt_choice_from;
 	GeneralDB*   m_db;
+
+#ifdef SERIALIZE_IN_DB_TRC
 	GeneralDB*   m_trcDB;
+#endif
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -50,9 +50,11 @@ RDOSimulatorBase::RDOSimulatorBase()
 	, m_cnt_events        (0           )
 	, m_cnt_choice_from   (0           )
 {
+#ifdef SERIALIZE_IN_DB_TRC
 	InitStructDB::dropDB("trc");
 	InitStructDB::createDB("trc");
 	m_trcDB = new InitStructDB("trc");
+#endif
 
 	InitStructDB::dropDB("rdo");
 	InitStructDB::createDB("rdo");
@@ -78,9 +80,9 @@ void RDOSimulatorBase::rdoInit()
 	OperatorType::getCalcCounter<OperatorType::OT_ARITHM>() = 0;
 	OperatorType::getCalcCounter<OperatorType::OT_LOGIC> () = 0;
 
-
-
+#ifdef SERIALIZE_IN_DB_TRC
 	m_trcDB->queryExec("INSERT INTO trc_time VALUES(0);");
+#endif
 
 	if (m_timePoints.find(m_currentTime) == m_timePoints.end())
 		m_timePoints[m_currentTime] = NULL;
@@ -265,7 +267,9 @@ void RDOSimulatorBase::rdoPostProcess()
 
 void RDOSimulatorBase::addTimePoint(double timePoint, CREF(LPIBaseOperation) opr, void* param)
 {
+#ifdef SERIALIZE_IN_DB_TRC
 	m_trcDB->queryListExec();
+#endif
 
 	BOPlannedItem* list = NULL;
 	if (opr && (m_timePoints.find(timePoint) == m_timePoints.end() || m_timePoints[timePoint] == NULL))
@@ -273,8 +277,10 @@ void RDOSimulatorBase::addTimePoint(double timePoint, CREF(LPIBaseOperation) opr
 		list = new BOPlannedItem();
 		m_timePoints[timePoint] = list;
 
+#ifdef SERIALIZE_IN_DB_TRC
 		m_trcDB->insertRow("trc_time", QString("%1")
 			.arg(timePoint));
+#endif
 	}
 	if (opr)
 	{
@@ -319,7 +325,11 @@ PTR(GeneralDB) RDOSimulatorBase::getDB()
 
 PTR(GeneralDB) RDOSimulatorBase::getTrcDB()
 {
+#ifdef SERIALIZE_IN_DB_TRC
 	return m_trcDB;
+#else
+	return NULL;
+#endif
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -44,7 +44,11 @@ LPRDOType RDOTypeParam::type() const
 
 void RDOTypeParam::writeModelStructure(REF(std::ostream) stream, PTR(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_TRC
 	m_pType->writeModelStructure(stream, db);
+#else
+	UNUSED(db);
+#endif
 }
 
 LPRDOValue RDOTypeParam::value_cast(CREF(LPRDOValue) pValue) const

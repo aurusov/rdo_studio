@@ -54,9 +54,11 @@ void RDOTrace::writeSearchBegin(double currentTime, tstring decisionPointId)
 	if (!canTrace())
 		return;
 
+#ifdef SERIALIZE_IN_DB_TRC
 	m_sbId = m_trcDB->insertRowInd("trc_sb",QString("DEFAULT,%1,'SB',%2")
 		.arg(currentTime)
 		.arg(QString::fromStdString(decisionPointId)));
+#endif
 
 	getOStream() << "SB " << currentTime << " " << decisionPointId.c_str() << std::endl << getEOL();
 }
@@ -101,6 +103,7 @@ void RDOTrace::writeSearchOpenNode(int nodeCount, int parentCount, double pathCo
 	if (!canTrace())
 		return;
 
+#ifdef SERIALIZE_IN_DB_TRC
 	m_trcDB->queryListExec();
 	m_so = m_trcDB->insertRowInd("trc_so", QString("DEFAULT,%1,%2,%3,%4,%5")
 			.arg(m_sbId)
@@ -108,6 +111,7 @@ void RDOTrace::writeSearchOpenNode(int nodeCount, int parentCount, double pathCo
 			.arg(parentCount)
 			.arg(pathCost)
 			.arg(restCost));
+#endif
 
 	getOStream() << "SO " << nodeCount
 	             << " " << doubleToString(parentCount)
@@ -143,6 +147,7 @@ void RDOTrace::writeSearchNodeInfo(char sign, PTR(TreeNodeTrace) node)
 	double costRule     = node->m_costRule;
 	double newCostRule  = node->m_newCostRule;
 
+#ifdef SERIALIZE_IN_DB_TRC
 	m_trcDB->pushContext<int>(
 		m_trcDB->insertRowInd("trc_st",QString("DEFAULT,%1,'ST%2',%3,%4,%5,%6,%7,%8,%9")
 			.arg(m_so)
@@ -154,6 +159,7 @@ void RDOTrace::writeSearchNodeInfo(char sign, PTR(TreeNodeTrace) node)
 			.arg(QString::fromStdString(traceID))
 			.arg(QString::fromStdString(patternID))
 			.arg(newCostRule)));
+#endif
 
 		getOStream().precision(4);
 		getOStream() << "ST" << sign
@@ -197,6 +203,7 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 	int nodesCount = treeRoot->getNodesCound();
 	int nodesFullCount = treeRoot->m_fullNodesCount;
 
+#ifdef SERIALIZE_IN_DB_TRC
 	m_trcDB->queryListPushBack(
 		QString("INSERT INTO trc_se VALUES(DEFAULT,%1,%2,'SE%3',%4,%5,%6,%7,%8,%9,%10);")
 			.arg(m_sbId)
@@ -209,6 +216,7 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 			.arg(inGraph)
 			.arg(nodesCount)
 			.arg(nodesFullCount));
+#endif
 
 	getOStream() << "SE" << letter
 	             << " " << currentTime
@@ -223,8 +231,10 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 	if (letter == 'S') {
 	double time = simTr->getCurrentTime();
 
+#ifdef SERIALIZE_IN_DB_TRC
 	m_trcDB->insertRow("trc_es",QString("DEFAULT,%1,4")
 		.arg(time));
+#endif
 
 		getOStream() << "ES"
 		             << " " << time
@@ -282,10 +292,12 @@ void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntim
 		double time = pRuntime->getCurrentTime();
 		tstring traceId = trace->traceId();
 
+#ifdef SERIALIZE_IN_DB_TRC
 		m_trcDB->pushContext<int>(
 			m_trcDB->insertRowInd("trc_ei_ee",QString("DEFAULT,%1,'EI',%2")
 				.arg(time)
 				.arg(QString::fromStdString(traceId))));
+#endif
 
 		getOStream() << "EI " << time
 		             << " "   << traceId 
@@ -318,12 +330,15 @@ void RDOTrace::writeRule(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime
 		double time = pRuntime->getCurrentTime();
 		tstring ruleId = trace->traceId();
 		tstring patId = activityPatternTrace->tracePatternId();
+
+#ifdef SERIALIZE_IN_DB_TRC
 		m_trcDB->pushContext<int>(
 			m_trcDB->insertRowInd("trc_er",QString("DEFAULT,%1,%2,%3,%4")
 				.arg(time)
 				.arg(operId)
 				.arg(QString::fromStdString(ruleId))
 				.arg(QString::fromStdString(patId ))));
+#endif
 
 		getOStream() << "ER " << time
 		             << " "   << operId
@@ -357,11 +372,13 @@ void RDOTrace::writeAfterOperationBegin(CREF(LPIBaseOperation) opr, CREF(LPRDORu
 		tstring internalId = operationTrace->traceOperId();
 		tstring traceId = trace->traceId();
 
+#ifdef SERIALIZE_IN_DB_TRC
 		m_trcDB->pushContext<int>(
 			m_trcDB->insertRowInd("trc_eb_ef",QString("DEFAULT,%1,'EB',%2,%3")
 				.arg(time)
 				.arg(QString::fromStdString(internalId))
 				.arg(QString::fromStdString(traceId   ))));
+#endif
 
 		getOStream() << "EB " << time
 		             << " "   << internalId
@@ -394,11 +411,13 @@ void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, CREF(LPRDORunt
 		tstring internalId = operationTrace->traceOperId();
 		tstring traceId = trace->traceId();
 
+#ifdef SERIALIZE_IN_DB_TRC
 		m_trcDB->pushContext<int>(
 			m_trcDB->insertRowInd("trc_eb_ef",QString("DEFAULT,%1,'EF',%2,%3")
 				.arg(time)
 				.arg(QString::fromStdString(internalId))
 				.arg(QString::fromStdString(traceId   ))));
+#endif
 
 		getOStream() << "EF " << time 
 		             << " "   << internalId 
@@ -412,15 +431,18 @@ void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, CREF(LPRDORunt
 
 void RDOTrace::writeTraceBegin(CREF(LPRDORuntime) pRuntime)
 {
+#ifdef SERIALIZE_IN_DB_TRC
 	m_trcDB = pRuntime->getTrcDB();
+#endif
 
 	if (isNull()) return;
 
 	double time = pRuntime->getCurrentTime();
 
-	m_trcDB->queryExec(
-		QString("INSERT INTO trc_es VALUES(DEFAULT,%1,1);")
+#ifdef SERIALIZE_IN_DB_TRC
+	m_trcDB->queryExec(QString("INSERT INTO trc_es VALUES(DEFAULT,%1,1);")
 			.arg(time));
+#endif
 
 	getOStream() << "ES " << time 
       << " 1" << std::endl << getEOL();
@@ -432,9 +454,10 @@ void RDOTrace::writeModelBegin(CREF(LPRDORuntime) pRuntime)
 
 	double time = pRuntime->getCurrentTime();
 
-	m_trcDB->queryExec(
-		QString("INSERT INTO trc_es VALUES(DEFAULT,%1,3);")
-			.arg(time));
+#ifdef SERIALIZE_IN_DB_TRC
+	m_trcDB->queryExec(QString("INSERT INTO trc_es VALUES(DEFAULT,%1,3);")
+		.arg(time));
+#endif
 
 	getOStream() << "ES " << time 
       << " 3" << std::endl << getEOL();
@@ -446,9 +469,10 @@ void RDOTrace::writeTraceEnd(CREF(LPRDORuntime) pRuntime)
 
 	double time = pRuntime->getCurrentTime();
 
-	m_trcDB->queryExec(
-		QString("INSERT INTO trc_es VALUES(DEFAULT,%1,2);")
-			.arg(time));
+#ifdef SERIALIZE_IN_DB_TRC
+	m_trcDB->queryExec(QString("INSERT INTO trc_es VALUES(DEFAULT,%1,2);")
+		.arg(time));
+#endif
 
 	getOStream() << "ES " << time 
       << " 2" << std::endl << getEOL();
@@ -482,11 +506,13 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 			             << "  " << successCount
 			             << std::endl << getEOL();
 
+#ifdef SERIALIZE_IN_DB_TRC
 			m_trcDB->queryListPushBack(
 				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_C',%1,%2,%3);")
 					.arg(pointNumber)
 					.arg(activationCount)
 					.arg(successCount));
+#endif
 
 			if (dp_stat->getCalcCnt())
 			{
@@ -497,11 +523,13 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 				dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_TIMES, d_min, d_max, d_med);
 				getOStream() << rdo::format("DPS_TM %0.3f  %0.3f  %0.3f", d_med, d_min, d_max) << std::endl << getEOL();
 
+#ifdef SERIALIZE_IN_DB_TRC
 				m_trcDB->queryListPushBack(
 				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_TM',%1,%2,%3);")
 					.arg(d_med)
 					.arg(d_min)
 					.arg(d_max));
+#endif
 
 				// Используемая память
 				ruint ui_min = 0;
@@ -509,11 +537,13 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_MEMORY, ui_min, ui_max, d_med);
 				getOStream() << rdo::format("DPS_ME %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
+#ifdef SERIALIZE_IN_DB_TRC
 				m_trcDB->queryListPushBack(
 				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_ME',%1,%2,%3);")
 					.arg(d_med)
 					.arg(ui_min)
 					.arg(ui_max));
+#endif
 
 				// Стоимость решения
 				dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_COST, d_min, d_max, d_med);
@@ -523,51 +553,61 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 				             << "  " << d_max
 				             << std::endl << getEOL();
 
+#ifdef SERIALIZE_IN_DB_TRC
 				m_trcDB->queryListPushBack(
 				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_CO',%1,%2,%3);")
 					.arg(d_med)
 					.arg(d_min)
 					.arg(d_max));
+#endif
 
 				// Количество раскрытых вершин
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_EXPENDED, ui_min, ui_max, d_med);
 				getOStream() << rdo::format("DPS_TO %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
+#ifdef SERIALIZE_IN_DB_TRC
 				m_trcDB->queryListPushBack(
 				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_TO',%1,%2,%3);")
 					.arg(d_med)
 					.arg(ui_min)
 					.arg(ui_max));
+#endif
 
 				// Количество вершин в графе
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_IN_GRAPH, ui_min, ui_max, d_med);
 				getOStream() << rdo::format("DPS_TT %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
+#ifdef SERIALIZE_IN_DB_TRC
 				m_trcDB->queryListPushBack(
 				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_TT',%1,%2,%3);")
 					.arg(d_med)
 					.arg(ui_min)
 					.arg(ui_max));
+#endif
 
 				// Количество включавшихся в граф вершин (вершины, соответствующие одному и тому же состоянию системы, могут включаться в граф неоднократно, если порождается вершина с меньшей стоимостью пути)
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES, ui_min, ui_max, d_med);
 				getOStream() << rdo::format("DPS_TI %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
+#ifdef SERIALIZE_IN_DB_TRC
 				m_trcDB->queryListPushBack(
 				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_TI',%1,%2,%3);")
 					.arg(d_med)
 					.arg(ui_min)
 					.arg(ui_max));
+#endif
 
 				// Общее количество порожденных вершин-преемников
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_FULL, ui_min, ui_max, d_med);
 				getOStream() << rdo::format("DPS_TG %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
+#ifdef SERIALIZE_IN_DB_TRC
 				m_trcDB->queryListPushBack(
 				QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_TG',%1,%2,%3);")
 					.arg(d_med)
 					.arg(ui_min)
 					.arg(ui_max));
+#endif
 			}
 		}
 		++it;
@@ -578,11 +618,13 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 	double memory = pRuntime->memory_get();
 	getOStream() << "DPS_MM " << memory << std::endl << getEOL();
 
+#ifdef SERIALIZE_IN_DB_TRC
 	m_trcDB->queryListPushBack(
 		QString("INSERT INTO trc_dps VALUES(DEFAULT,'DPS_MM',%1,NULL,NULL);")
 			.arg(memory));
 
 	m_trcDB->queryListExec();
+#endif
 }
 
 void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok)
@@ -594,15 +636,18 @@ void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok)
 	tstring watchId = pok->traceId();
 	getOStream() << "V  "  << time 
 		<< " " << watchId 
-		<< "  " << pok->traceValue(m_trcDB) << std::endl << getEOL();
+		<< "  " << (m_trcDB ? pok->traceValue(m_trcDB) : pok->traceValue(NULL)) << std::endl << getEOL();
 
+#ifdef SERIALIZE_IN_DB_TRC
 	m_trcDB->queryListPushBack(
 		QString("INSERT INTO trc_v VALUES(DEFAULT,%1,%2,%3);")
 			.arg(time)
 			.arg(QString::fromStdString(watchId))
 			.arg(m_trcDB->popContext<int>()));
+#endif
 }
 
+#ifdef SERIALIZE_IN_DB_TRC
 int RDOTrace::getSBid()
 {
 	return m_sbId;
@@ -612,7 +657,7 @@ PTR(GeneralDB) RDOTrace::getTrcDB()
 {
 	return m_trcDB;
 }
-
+#endif
 // --------------------------------------------------------------------------------
 // -------------------- RDOResultTrace
 // --------------------------------------------------------------------------------

@@ -31,7 +31,9 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList,
 	, m_referenceCount   (0                                     )
 	, m_resType          (pResType                              )
 	, m_db               (pRuntime->getDB()                     )
+#ifdef SERIALIZE_IN_DB_TRC
 	, m_trcDB            (pRuntime->getTrcDB()                  )
+#endif
 {
 	appendParams(paramList.begin(), paramList.end());
 }
@@ -87,7 +89,10 @@ tstring RDOResource::getTypeId() const
 
 tstring RDOResource::traceParametersValue()
 {
+#ifdef SERIALIZE_IN_DB_TRC
 	int r_id = m_trcDB->popContext<int>();
+#endif
+
 	rdo::ostringstream str;
 	if(m_paramList.size() > 0)
 	{
@@ -110,12 +115,13 @@ tstring RDOResource::traceParametersValue()
 				str << _str.str().c_str();
 			}
 #else
+#ifdef SERIALIZE_IN_DB_TRC
 			it->serializeInDB(*m_trcDB);
 			m_trcDB->queryListPushBack(QString("INSERT INTO trc_r_param_value VALUES(%1,%2,%3);")
 				.arg(r_id)
 				.arg(i)
 				.arg(m_trcDB->popContext<int>()));
-
+#endif
 			str << *it;
 #endif
 			if (++it == end)
@@ -139,26 +145,34 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 		if (m_state == RDOResource::CS_NoChange || m_state == RDOResource::CS_NonExist)
 			return "";
 
+#ifdef SERIALIZE_IN_DB_TRC
 		m_trcDB->queryListExec();
 		m_trcDB->queryListPushBack(
 			QString("INSERT INTO trc_r VALUES(DEFAULT,%1,'")
 				.arg(time));
+#endif
 
 		if (prefix != '\0')
 		{
 			res << prefix;
+#ifdef SERIALIZE_IN_DB_TRC
 			m_trcDB->queryListPushBack(QString(prefix));
+#endif
 		}
 
 		switch (m_state)
 		{
 		case RDOResource::CS_Create:
+#ifdef SERIALIZE_IN_DB_TRC
 			m_trcDB->queryListPushBack("RC',");
+#endif
 			res << "RC ";
 			break;
 		case RDOResource::CS_Erase:
+#ifdef SERIALIZE_IN_DB_TRC
 			m_trcDB->queryListPushBack("RE',");
 			res << "RE "
+#endif
 #ifdef RDOSIM_COMPATIBLE
 				<< pRuntime->getCurrentTime() << " "
 				<< traceTypeId()              << " "
@@ -169,16 +183,20 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 #endif
 			break;
 		default:
+#ifdef SERIALIZE_IN_DB_TRC
 			m_trcDB->queryListPushBack("RK',");
+#endif
 			res << "RK ";
 			break;
 		}
 
+#ifdef SERIALIZE_IN_DB_TRC
 		m_trcDB->queryListPushBack(QString("%1,%2) RETURNING id;")
 			.arg(QString::fromStdString(rtpId))
 			.arg(QString::fromStdString(resId)));
 
 		m_trcDB->pushContext<int>(m_trcDB->queryListExecInd());
+#endif
 
 		res << time                  << " "
 			<< rtpId                 << " "
@@ -209,7 +227,7 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 		.arg(table_name)                                          \
 		.arg(Value)                                               \
 		.arg(value_id));
-
+//update int_rv set vv=0 where id= (select value from rss_param where rss_id=0 and id=1)::integer;
 	switch (value.typeID())
 	{
 	case RDOType::t_unknow        : break;

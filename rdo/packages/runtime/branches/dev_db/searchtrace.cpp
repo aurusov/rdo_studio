@@ -31,9 +31,10 @@ void RDODPTSearchTrace::onSearchBegin(CREF(LPRDORuntime) pRuntime)
 	}
 	if (traceFlag == DPT_trace_tops || traceFlag == DPT_trace_all)
 	{
+#ifdef SERIALIZE_IN_DB_TRC
 		pRuntime->getTracer()->getTrcDB()->queryListPushBack(QString("INSERT INTO trc_st (DEFAULT,%1,'STN',1,0,0,0,-1,-1,0);")
 			.arg(pRuntime->getTracer()->getSBid()));
-
+#endif
 		pRuntime->getTracer()->writeString("STN 1 0 0 0 -1 -1 0 0");
 	}
 	++calc_cnt;

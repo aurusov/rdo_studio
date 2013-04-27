@@ -88,11 +88,15 @@ void RDORSSResource::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) 
 	tstring rssName = name();
 	int rtpId = getType()->getNumber();
 
+#ifdef SERIALIZE_IN_DB_TRC
 	db->queryListPushBack(
 		QString("INSERT INTO trc_resources VALUES(%1,'%2',%3);")
 			.arg(rssId)
 			.arg(QString::fromStdString(rssName))
 			.arg(rtpId));
+#else
+	UNUSED(db);
+#endif
 
 	stream << rssId << " " << rssName << " " << rtpId << std::endl;
 }

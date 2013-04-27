@@ -94,8 +94,10 @@ public:
 
 	virtual void writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok);
 
+#ifdef SERIALIZE_IN_DB_TRC
 	PTR(GeneralDB) getTrcDB();
 	int getSBid();
+#endif
 
 public:
 	virtual REF(rdo::ostream) getOStream();
@@ -108,9 +110,12 @@ private:
 	rbool         m_canWriteToStream;
 	rdo::ofstream m_emptyOut;
 	RDOEndL       m_emptyEndL;
+
 	GeneralDB*    m_trcDB;
+#ifdef SERIALIZE_IN_DB_TRC
 	int           m_sbId;
 	int           m_so;
+#endif
 };
 
 /*!

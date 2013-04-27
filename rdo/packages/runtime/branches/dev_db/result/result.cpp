@@ -145,8 +145,12 @@ void RDOPMDWatchPar::notify(ruint message, PTR(void) pParam)
 
 tstring RDOPMDWatchPar::traceValue(PTR(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_TRC
 	if (db)
 		m_currentValue.rdoValue.serializeInDB(*db);
+#else
+	UNUSED(db);
+#endif
 	return rdo::toString(m_currentValue.rdoValue);
 }
 
@@ -247,10 +251,15 @@ RDOPMDWatchState::~RDOPMDWatchState()
 tstring RDOPMDWatchState::traceValue(PTR(IDB) db) const
 {
 	bool state = m_currentValue.state;
+
+#ifdef SERIALIZE_IN_DB_TRC
 	if (db)
 		db->pushContext<int>(
 			db->insertRowInd("trc_value_bool",QString("DEFAULT, %1")
 				.arg(state ? "TRUE" : "FALSE")));
+#else
+	UNUSED(db);
+#endif
 
 	return state ? "TRUE" : "FALSE";
 }
@@ -346,10 +355,15 @@ RDOPMDWatchQuant::~RDOPMDWatchQuant()
 tstring RDOPMDWatchQuant::traceValue(PTR(IDB) db) const
 {
 	int quant = m_currentValue.quant;
+
+#ifdef SERIALIZE_IN_DB_TRC
 	if (db)
 		db->pushContext<int>(
 			db->insertRowInd("trc_value_int",QString("DEFAULT, %1")
 				.arg(quant)));
+#else
+	UNUSED(db);
+#endif
 
 	return rdo::toString(m_currentValue.quant);
 }
@@ -476,8 +490,12 @@ RDOPMDWatchValue::~RDOPMDWatchValue()
 
 tstring RDOPMDWatchValue::traceValue(PTR(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_TRC
 	if (db)
 		m_currValue.serializeInDB(*db);
+#else
+	UNUSED(db);
+#endif
 	return rdo::toString(m_currValue);
 }
 
@@ -615,32 +633,56 @@ CREF(RDOValue) RDOPMDGetValue::getValue() const
 void RDOPMDWatchPar::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	tstring traceID = traceId();
+
+#ifdef SERIALIZE_IN_DB_TRC
 	db->queryListPushBack(QString("%1,'watch_par');")
 		.arg(QString::fromStdString(traceID)));
+#else
+	UNUSED(db);
+#endif
+
 	stream << traceID << " watch_par" << std::endl;
 }
 
 void RDOPMDWatchState::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	tstring traceID = traceId();
+
+#ifdef SERIALIZE_IN_DB_TRC
 	db->queryListPushBack(QString("%1,'watch_state');")
 		.arg(QString::fromStdString(traceID)));
+#else
+	UNUSED(db);
+#endif
+
 	stream << traceID << " watch_state" << std::endl;
 }
 
 void RDOPMDWatchQuant::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	tstring traceID = traceId();
+
+#ifdef SERIALIZE_IN_DB_TRC
 	db->queryListPushBack(QString("%1,'watch_quant');")
 		.arg(QString::fromStdString(traceID)));
+#else
+	UNUSED(db);
+#endif
+
 	stream << traceID << " watch_quant" << std::endl;
 }
 
 void RDOPMDWatchValue::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
 	tstring traceID = traceId();
+
+#ifdef SERIALIZE_IN_DB_TRC
 	db->queryListPushBack(QString("%1,'watch_value');")
 		.arg(QString::fromStdString(traceID)));
+#else
+	UNUSED(db);
+#endif
+
 	stream << traceID << " watch_value" << std::endl;
 }
 

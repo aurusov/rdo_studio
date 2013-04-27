@@ -421,9 +421,10 @@ tstring RDOParser::getModelStructure()
 			if (trace->traceable())
 			{
 				tstring watchName = name->name();
+#ifdef SERIALIZE_IN_DB_TRC
 				db->queryListPushBack(QString("INSERT INTO trc_watches VALUES('%1',")
 					.arg(QString::fromStdString(watchName)));
-
+#endif
 				modelStructure << "  " << watchName;
 				for (ruint i = name->name().length(); i < watching_max_length + 2; i++)
 					modelStructure << " ";
@@ -433,7 +434,9 @@ tstring RDOParser::getModelStructure()
 		}
 	}
 
+#ifdef SERIALIZE_IN_DB_TRC
 	db->queryListExec();
+#endif
 
 	return modelStructure.str();
 }

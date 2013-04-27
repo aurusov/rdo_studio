@@ -209,8 +209,12 @@ rdo::runtime::RDOValue RDOType__int::get_default() const
 
 void RDOType__int::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_TRC
 	db->queryListPushBack(
 		QString("'I');"));
+#else
+	UNUSED(db);
+#endif
 
 	stream << "I" << std::endl;
 }
@@ -288,8 +292,12 @@ rdo::runtime::RDOValue RDOType__real::get_default() const
 
 void RDOType__real::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_TRC
 	db->queryListPushBack(
 		QString("'R');"));
+#else
+	UNUSED(db);
+#endif
 
 	stream << "R" << std::endl;
 }
@@ -366,8 +374,12 @@ rdo::runtime::RDOValue RDOType__string::get_default() const
 
 void RDOType__string::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_TRC
 	db->queryListPushBack(
 		QString("'S');"));
+#else
+	UNUSED(db);
+#endif
 
 	stream << "S" << std::endl;
 }
@@ -513,8 +525,12 @@ rdo::runtime::RDOValue RDOType__bool::get_default() const
 
 void RDOType__bool::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const
 {
+#ifdef SERIALIZE_IN_DB_TRC
 	db->queryListPushBack(
 		QString("'B');"));
+#else
+	UNUSED(db);
+#endif
 
 	stream << "B" << std::endl;
 }

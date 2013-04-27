@@ -149,9 +149,13 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 		{
 			int activityNumber = counter++;
 
+#ifdef SERIALIZE_IN_DB_TRC
 			db->queryListPushBack(
 				QString("INSERT INTO trc_activities VALUES(%1,")
 					.arg(activityNumber));
+#else
+	UNUSED(db);
+#endif
 
 			stream << activityNumber << " ";
 			pModelStructure->writeModelStructure(stream, db);
@@ -172,9 +176,11 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 		{
 			int activityNumber = _counter++;
 
+#ifdef SERIALIZE_IN_DB_TRC
 			db->queryListPushBack(
 				QString("INSERT INTO trc_activities VALUES(%1,")
 					.arg(activityNumber));
+#endif
 
 			stream << activityNumber << " ";
 			counter++;

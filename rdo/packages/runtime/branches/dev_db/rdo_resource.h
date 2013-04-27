@@ -94,7 +94,9 @@ private:
 	tstring          m_typeId;
 
 	PTR(GeneralDB)  m_db;
+#ifdef SERIALIZE_IN_DB_TRC
 	PTR(GeneralDB)  m_trcDB;
+#endif
 
 	tstring traceTypeId();
 };

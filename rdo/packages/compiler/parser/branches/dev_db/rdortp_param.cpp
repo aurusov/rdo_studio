@@ -37,9 +37,11 @@ void RDORTPParam::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) con
 {
 	tstring paramName = name();
 
+#ifdef SERIALIZE_IN_DB_TRC
 	db->queryListPushBack(
 		QString("'%1',")
 			.arg(QString::fromStdString(paramName)));
+#endif
 
 	stream << paramName << " ";
 	getTypeInfo()->type()->writeModelStructure(stream, db);
