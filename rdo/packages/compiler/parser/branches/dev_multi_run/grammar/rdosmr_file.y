@@ -247,6 +247,7 @@ smr_launch
 
 smr_launch_line
 	: smr_launch_line_external_model
+	| smr_launch_line_show_rate
 	| error
 	;
 
@@ -287,6 +288,10 @@ smr_launch_line_external_model
 		PARSER->error().error(@1, "Данная версия РДО не поддерживает распределенные модели (по технологии CORBA)");
 #endif
 	}
+	;
+
+smr_launch_line_show_rate
+	: RDO_Show_rate '=' RDO_REAL_CONST
 	;
 
 %%
