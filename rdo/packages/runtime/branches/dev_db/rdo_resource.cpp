@@ -208,39 +208,27 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 
 void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 {
-	QSqlQuery* query = new QSqlQuery(m_db->getQtDB());
+	ASSERT(index < m_paramList.size());
 
-	query->exec(QString("select rss_param.value, pg_class.relname \
-		from rss_param, pg_class, rdo_value \
-		where rss_param.rss_id=%1 \
-		and rss_param.id=%2 \
-		and pg_class.relfilenode=rdo_value.table_id \
-		and rdo_value.value_id=rss_param.value;")
-			.arg(getTraceID())
+	#define DEFINE_RDO_VALUE(Table_name,Value) \
+		m_db->queryExec(QString("update %1 set vv=%2 where id= (select value from rss_param where rss_id=%3 and id=%4)::integer;")\
+			.arg(Table_name)                   \
+			.arg(Value)                        \
+			.arg(getTraceID())                 \
 			.arg(index));
-	query->next();
-	int value_id = query->value(query->record().indexOf("value")).toInt();
-	QString table_name = query->value(query->record().indexOf("relname")).toString();
 
-	#define DEFINE_RDO_VALUE(Value)                               \
-		m_db->queryExec(QString("update %1 set vv=%2 where id=%3")\
-		.arg(table_name)                                          \
-		.arg(Value)                                               \
-		.arg(value_id));
-//update int_rv set vv=0 where id= (select value from rss_param where rss_id=0 and id=1)::integer;
 	switch (value.typeID())
 	{
 	case RDOType::t_unknow        : break;
-	case RDOType::t_int           : DEFINE_RDO_VALUE(                                           value.getInt     ()  ); break;
-	case RDOType::t_real          : DEFINE_RDO_VALUE(                                           value.getDouble  ()  ); break;
-	case RDOType::t_enum          : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
-	case RDOType::t_bool          : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
-	case RDOType::t_string        : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromStdString(value.getString  ()))); break;
-	case RDOType::t_identificator : DEFINE_RDO_VALUE(QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
+	case RDOType::t_int           : DEFINE_RDO_VALUE("int_rv"          ,                                           value.getInt     ()  ); break;
+	case RDOType::t_real          : DEFINE_RDO_VALUE("real_rv"         ,                                           value.getDouble  ()  ); break;
+	case RDOType::t_enum          : DEFINE_RDO_VALUE("enum_rv"         ,QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
+	case RDOType::t_bool          : DEFINE_RDO_VALUE("bool_rv"         ,QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
+	case RDOType::t_string        : DEFINE_RDO_VALUE("string_rv"       ,QString("'%1'").arg(QString::fromStdString(value.getString  ()))); break;
+	case RDOType::t_identificator : DEFINE_RDO_VALUE("identificator_rv",QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
 	default                       : throw RDOValueException("Данная величина не может быть записана в базу данных");
 	}
 
-	ASSERT(index < m_paramList.size());
 	setState(CS_Keep);
 	m_paramList[index] = value;
 }
