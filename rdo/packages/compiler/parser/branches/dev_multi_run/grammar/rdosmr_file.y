@@ -247,10 +247,7 @@ smr_launch
 
 smr_launch_line
 	: smr_launch_line_external_model
-	| error
-	{
-		PARSER->error().error(@1, rdo::format("Неизвестная инструкция"));
-	}
+	| smr_other
 	;
 
 smr_launch_line_external_model
@@ -290,6 +287,10 @@ smr_launch_line_external_model
 		PARSER->error().error(@1, "Данная версия РДО не поддерживает распределенные модели (по технологии CORBA)");
 #endif
 	}
+	;
+
+smr_other
+	: error
 	;
 
 %%
