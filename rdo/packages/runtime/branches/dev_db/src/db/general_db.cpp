@@ -51,14 +51,6 @@ int GeneralDB::insertRowInd(const QString& tableName, const QString& qRow)
 	return query->value(query->record().indexOf("id")).toInt();
 }
 
-void GeneralDB::queryExec(const QueryList& query)
-{
-	BOOST_FOREACH(const QString& queryItem, query)
-	{
-		queryExec(queryItem);
-	}
-}
-
 void GeneralDB::queryExec(const QString& query)
 {
 	std::cout << query.toStdString() << "..." << std::endl;

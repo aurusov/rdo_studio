@@ -33,7 +33,6 @@ public:
 	virtual int          insertRowInd     (const QString& tableName, const QString& qRow);
 
 	virtual void         queryExec        (const QString&   query);
-	virtual void         queryExec        (const QueryList& query);
 	virtual void         queryListPushBack(const QString&   query);
 	virtual void         queryListExec    ();
 	virtual int          queryListExecInd ();
