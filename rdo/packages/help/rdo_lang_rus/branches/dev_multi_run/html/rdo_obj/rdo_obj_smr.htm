@@ -17,25 +17,32 @@ function toggle_display(e)
 <BODY>
 	<DIV>
 		<H1>ОБЪЕКТ ПРОГОНА</H1> 
-		<P>В <B>объекте прогона</B> (с расширением <FONT class="syntax">.smr</FONT>) записывается <A class="syntax" href="#run_block">&lt;блок_прогона&gt;</A>, который содержит необходимые для управления <A href="../rdo_terms.htm#run">прогоном</A> данные и режимы.</P>
-		<P>Формат задания <B>прогона</B>:</P>
+<P>В <B>объекте прогона</B> (с расширением <FONT class="syntax">.smr</FONT>) задается один прогон или серия прогонов, которые состоят из <A class="syntax" href="#run_block">&lt;блоков_прогонов&gt;</A>, содержащие необходимые для управления <A href="../rdo_terms.htm#run">прогоном</A> данные и режимы.</P>
+<P>Формат задания <A class="syntax" href="#one_run_block">&lt;одного_прогона&gt;</A>:</P>
 				<PRE class="syntax">
- <A class="syntax" href="#run_block">&lt;блок_прогона&gt;</A></PRE>
+<A class="syntax" href="#run_block">&lt;блок_прогона&gt;</A></PRE>
+<P>Формат задания <A class="syntax" href="#multi_run_block">&lt;серии_прогонов&gt;</A>:</P>
+				<PRE class="syntax">
+<A class="syntax" href="#run_block">&lt;блок_прогона&gt;</A> { <блок_прогона> }</PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="multi_run_block"></A><I>серия_прогонов</I></DT>
+					<DD class="syntax">Серия прогонов - это два или более прогона модели с различными начальными и терминальными условиями.</DD>
+				</DL>
  <DL class="syntax">
 					<DT class="syntax"><A name="run_block"></A><I>блок_прогона</I></DT>
-					<DD class="syntax">Блок_прогона имеет формат:
+					<DD class="syntax">Блок включающий в себя все инструкции доступные для прогона и имеет следующий формат:
 						<PRE class="syntax"><A class="syntax" href="#terminate_if">&lt;инструкция_окончания_прогона&gt;</A>
 | <A class="syntax" href="#statement_planning">&lt;инструкция_планирования_события&gt;</A>
-| <A class="syntax" href="#break">&lt;инструкция_точки_останова&gt;</A>
-| <A class="syntax" href="#run_start">&lt;инструкция_времени_начала_прогона&gt;</A>
-| <A class="syntax" href="#trace_start">&lt;инструкция_времени_начала_трассировки&gt;</A>
-| <A class="syntax" href="#trace_end">&lt;инструкция_времени_окончания_трассировки&gt;</A>
-| <A class="syntax" href="#frame_number">&lt;инструкция_номера_кадра&gt;</A>
-| <A class="syntax" href="#show_rate">&lt;инструкция_масштаба_отображения&gt;</A>
-| <A class="syntax" href="#show_mode">&lt;инструкция_режима_отображения&gt;</A>
-| <A class="syntax" href="#new_const">&lt;инструкция_нового_значения_константы&gt;</A>
+| <A class="syntax" href="#break">&lt;точка_останова&gt;</A>
+| <A class="syntax" href="#run_start">&lt;время_начала_прогона&gt;</A>
+| <A class="syntax" href="#trace_start">&lt;время_начала_трассировки&gt;</A>
+| <A class="syntax" href="#trace_end">&lt;время_окончания_трассировки&gt;</A>
+| <A class="syntax" href="#frame_number">&lt;номер_кадра&gt;</A>
+| <A class="syntax" href="#new_const">&lt;новое_значение_константы&gt;</A>
 | <A class="syntax" href="#new_param">&lt;инструкция_нового_значения_параметра_ресурса&gt;</A>
-| <A class="syntax" href="#seed_new">&lt;инструкция_нового_значения_базы_генератора&gt;</A></PRE>
+| <A class="syntax" href="#seed_new">&lt;инструкция_нового_значения_базы_генератора&gt;</A>
+| <A class="syntax" href="#show_rate">&lt;масштаб_отображения&gt;</A>
+| <A class="syntax" href="#show_mode">&lt;режим_отображения&gt;</A></PRE>
 						<DL class="syntax">
 							<DT class="syntax"><A name="terminate_if"></A><I>инструкция_окончания_прогона</I></DT>
 							<DD class="syntax">Инструкция окончания прогона имеет следующий формат:
@@ -57,8 +64,8 @@ function toggle_display(e)
 									<DD class="syntax">Значения параметров события записываются таким же образом, как и для <A href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_params">активностей</A>, за исключением того, что они могут представлять собой <A href="rdo_base_equations.htm">арифметическое выражение</A>.</DD>
 								</DL>
 							</DD>
-							<DT class="syntax"><A name="break"></A><I>инструкция_точки_останова</I></DT>
-							<DD class="syntax">Инструкция точки останова имеет следующий формат:
+							<DT class="syntax"><A name="break"></A><I>точка_останова</I></DT>
+							<DD class="syntax">Задание точки останова имеет следующий формат:
 								<PRE class="syntax">Break_point <A class="syntax" href="#break_name">&lt;имя_точки_останова&gt;</A><A class="syntax" href="#fun_arithm">&lt;условие_остановки&gt;</A></PRE> 
 								<DL class="syntax">
 									<DT class="syntax"><A name="break_name"></A><I>имя_точки_останова</I></DT>
@@ -69,76 +76,40 @@ function toggle_display(e)
 									<DD class="syntax"><A href="../rdo_base/rdo_base_equations.htm#log_expr">Логическое выражение</A> задает условие, которому должно удовлетворять состояние системы. В тот момент, когда указанное логическое выражение приобретает значение ИСТИНА, происходит прерывание моделирования с выдачей соответствующей информации и РДО-имитатор переходит в режим монитора.</DD>
 								</DL>
 							</DD>
-							<DT class="syntax"><A name="run_start"></A><I>инструкция_времени_начала_прогона</I></DT>
-							<DD class="syntax">Инструкция времени начала прогона имеет следующий формат:
+							<DT class="syntax"><A name="run_start"></A><I>время_начала_прогона</I></DT>
+							<DD class="syntax">Задание времени начала прогона имеет следующий формат:
 								<PRE class="syntax">Run_StartTime = <A class="syntax" href="#smr_const">&lt;константа&gt;</A></PRE> 
 								<DL class="syntax">
 									<DT class="syntax"><A name="smr_const"></A><I>константа</I></DT>
 									<DD class="syntax"><A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">Вещественная константа</A>, задающая модельное время, устанавливаемое в начале прогона. Значение по умолчанию - 0.0.</DD>
 								</DL>
 							</DD>
-							<DT class="syntax"><A name="trace_start"></A><I>инструкция_времени_начала_трассировки</I></DT>
-							<DD class="syntax">Инструкция времени начала трассировки имеет следующий формат:
+							<DT class="syntax"><A name="trace_start"></A><I>время_начала_трассировки</I></DT>
+							<DD class="syntax">Задание времени начала трассировки имеет следующий формат:
 								<PRE class="syntax">Trace_StartTime = <A class="syntax" href="#smr_const">&lt;константа&gt;</A></PRE> 
 								<DL class="syntax">
 									<DT class="syntax"><A name="smr_const"></A><I>константа</I></DT>
 									<DD class="syntax"><A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">Вещественная константа</A>, задающая время начала выдачи информации в <A href="../rdo_res/rdo_res_trc.htm">Объект трассировки</A>. Значение по умолчанию - 0.0.</DD>
 								</DL>
 							</DD>
-							<DT class="syntax"><A name="trace_end"></A><I>инструкция_времени_окончания_трассировки</I></DT>
-							<DD class="syntax">Инструкция времени окончания трассировки имеет следующий формат:
+							<DT class="syntax"><A name="trace_end"></A><I>время_окончания_трассировки</I></DT>
+							<DD class="syntax">Задание времени окончания трассировки имеет следующий формат:
 								<PRE class="syntax">Trace_EndTime = <A class="syntax" href="#smr_const">&lt;константа&gt;</A></PRE> 
 								<DL class="syntax">
 									<DT class="syntax"><A name="smr_const"></A><I>константа</I></DT>
 									<DD class="syntax"><A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">Вещественная константа</A>, задающая время окончания выдачи информации в <A href="../rdo_res/rdo_res_trc.htm">Объект трассировки</A>. Значение по умолчанию - 10.0Е+30.</DD>
 								</DL>
 							</DD>
-							<DT class="syntax"><A name="frame_number"></A><I>инструкция_номера_кадра</I></DT>
-							<DD class="syntax">Инструкция номера кадра имеет следующий формат:
+							<DT class="syntax"><A name="frame_number"></A><I>номер_кадра</I></DT>
+							<DD class="syntax">Задание номера кадра имеет следующий формат:
 								<PRE class="syntax">Frame_number = <A class="syntax" href="#smr_const">&lt;константа&gt;</A></PRE> 
 								<DL class="syntax">
 									<DT class="syntax"><A name="smr_const"></A><I>константа</I></DT>
 									<DD class="syntax"><A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">Константа целого типа</A>, задающая номер кадра из числа описанных в объекте кадров для отображения при запуске модели, если указан соответствующий режим. Значение по умолчанию равно 1.</DD>
 								</DL>
 							</DD>
-							<DT class="syntax"><A name="show_rate"></A><I>инструкция_масштаба_отображения</I></DT>
-							<DD class="syntax">Инструкция масштаба отображения имеет следующий формат:
-								<PRE class="syntax">Show_rate = <A class="syntax" href="#smr_const">&lt;константа&gt;</A></PRE> 
-								<DL class="syntax">
-									<DT class="syntax"><A name="smr_const"></A><I>константа</I></DT>
-									<DD class="syntax">Задает временной масштаб отображения.<A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">Вещественная константа</A>, равная отношению темпа отображения к модельному времени. Например, при <FONT class="syntax">Show_rate = 60.0</FONT> отображение будет производиться в 60 раз быстрее, т.е. один час модельного времени будет отображаться за одну минуту. Значение по умолчанию - 60.0.</DD>
-								</DL>
-							</DD>
-							<DT class="syntax"><A name="show_mode"></A><I>инструкция_режима_отображения</I></DT>
-							<DD class="syntax">Инструкция режима отображения имеет следующий формат:
-								<PRE class="syntax">Show_mode = <A class="syntax" href="#smr_mode">&lt;режим&gt;</A></PRE> 
-								<DL class="syntax">
-									<DT class="syntax"><A name="smr_mode"></A><I>режим</I></DT>
-									<DD class="syntax">В данной версии языка возможны режимы следующих типов:
-									<TABLE class="visible" cols="2">
-										<TR valign="top">
-											<TH align="left" width="20%">Режим</TH>
-											<TH align="left" width="80%">Описание</TH>
-										</TR>
-										<TR valign="top">
-											<TD class="visible" NOWRAP width="20%">NoShow</TD>
-											<TD class="visible" width="80%">Режим без отображения</TD>
-										</TR>
-										<TR valign="top">
-											<TD class="visible" NOWRAP width="20%">Monitor</TD>
-											<TD class="visible" width="80%">Режим монитора</TD>
-										</TR>
-										<TR valign="top">
-											<TD class="visible" NOWRAP width="20%">Animation</TD>
-											<TD class="visible" width="80%">Режим отображения состояния (анимации)</TD>
-										</TR>
-									</TABLE>
-									<DD class="syntax">Значение по умолчанию - <FONT class="syntax">NoShow</FONT>.</DD>
-									</DD>
-								</DL>
-							</DD>
-							<DT class="syntax"><A name="new_const"></A><I>инструкция_нового_значения_константы</I></DT>
-							<DD class="syntax">Инструкция нового значения константы имеет следующий формат:
+							<DT class="syntax"><A name="show_mode"></A><I>новое_значение_константы</I></DT>
+							<DD class="syntax">Задание нового значения константы имеет следующий формат:
 								<PRE class="syntax"><A class="syntax" href="#smr_const_name">&lt;имя_константы&gt;</A> = <A class="syntax" href="#smr_const">&lt;константа&gt;</A></PRE>
 								<DL class="syntax">
 									<DT class="syntax"><A name="smr_const_name"></A><I>имя_константы</I></DT>
@@ -177,25 +148,43 @@ function toggle_display(e)
 									<DD class="syntax">Значение задают <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A> целого типа в диапазоне -2147483647…2147483647.</DD>
 								</DL>
 							</DD>
-		<P><BR>Также в <B>объекте прогона</B> (с расширением <FONT class="syntax">.smr</FONT>) можно задавать серию прогонов с различными начальными и терминальными условиями.</P>
-		<P>Формат задания <A class="syntax" href="#multi_run_block">&lt;серии_прогонов&gt;</A>:</P>
-		<PRE class="syntax">
-{
-  <A class="syntax" href="#run_block">&lt;блок_прогона&gt;</A>
-}
-{
-  <A class="syntax" href="#run_block">&lt;блок_прогона&gt;</A>
-}
-...
-		</PRE>
-		<DL class="syntax">
-			<DT class="syntax"><A name="multi_run_block"></A><I>серия_прогонов</I></DT>
-			<DD class="syntax">Серия прогонов - это два или более прогона модели с различными начальными и терминальными условиями.</DD>
-		</DL>
-		<DL class="syntax">
-			<DT class="syntax"><A name="run_block"></A><I>блок_прогона</I></DT>
-			<DD class="syntax">Блок включающий в себя все инструкции доступные для прогона.</DD>
-		</DL>
+							<DT class="syntax"><A name="show_rate"></A><I>масштаб_отображения</I></DT>
+							<DD class="syntax">Задание масштаба отображения имеет следующий формат:
+								<PRE class="syntax">Show_rate = <A class="syntax" href="#smr_const">&lt;константа&gt;</A></PRE> 
+								<DL class="syntax">
+									<DT class="syntax"><A name="smr_const"></A><I>константа</I></DT>
+									<DD class="syntax">Задает временной масштаб отображения.<A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">Вещественная константа</A>, равная отношению темпа отображения к модельному времени. Например, при <FONT class="syntax">Show_rate = 60.0</FONT> отображение будет производиться в 60 раз быстрее, т.е. один час модельного времени будет отображаться за одну минуту. Значение по умолчанию - 60.0.</DD>
+								</DL>
+							</DD>
+							<DT class="syntax"><A name="show_mode"></A><I>режим_отображения</I></DT>
+							<DD class="syntax">Задание режима отображения имеет следующий формат:
+								<PRE class="syntax">Show_mode = <A class="syntax" href="#smr_mode">&lt;режим&gt;</A></PRE> 
+								<DL class="syntax">
+									<DT class="syntax"><A name="smr_mode"></A><I>режим</I></DT>
+									<DD class="syntax">В данной версии языка возможны режимы следующих типов:
+									<TABLE class="visible" cols="2">
+										<TR valign="top">
+											<TH align="left" width="20%">Режим</TH>
+											<TH align="left" width="80%">Описание</TH>
+										</TR>
+										<TR valign="top">
+											<TD class="visible" NOWRAP width="20%">NoShow</TD>
+											<TD class="visible" width="80%">Режим без отображения</TD>
+										</TR>
+										<TR valign="top">
+											<TD class="visible" NOWRAP width="20%">Monitor</TD>
+											<TD class="visible" width="80%">Режим монитора</TD>
+										</TR>
+										<TR valign="top">
+											<TD class="visible" NOWRAP width="20%">Animation</TD>
+											<TD class="visible" width="80%">Режим отображения состояния (анимации)</TD>
+										</TR>
+									</TABLE>
+									<DD class="syntax">Значение по умолчанию - <FONT class="syntax">NoShow</FONT>.</DD>
+									</DD>
+								</DL>
+							</DD>
+						</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Пример задания одного прогона</H4></A>
 		<DIV style="display:none" id="v1">
 		<PRE class="samples">
