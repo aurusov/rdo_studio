@@ -55,6 +55,8 @@ void InitStructDB::rdoValueTable(QString tableName, QString dataType)
 		");")
 		.arg(tableName)
 		.arg(dataType));
+
+	trigger(tableName,"copy_rdo_value_id");
 }
 
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
@@ -197,7 +199,23 @@ void InitStructDB::generateCreateDBQuery()
 	dataTypeTable("string");
 #endif
 
+	queryListPushBack(
+		"CREATE TABLE rdo_value("
+		"value_id  integer,"
+		"table_id integer NOT NULL,"
+		"PRIMARY KEY (value_id)"
+		");");
+
 	queryListPushBack("CREATE SEQUENCE rdo_value_seq;");
+
+	queryListPushBack(
+		"CREATE FUNCTION copy_rdo_value_id() RETURNS TRIGGER AS $trig$ "
+		"BEGIN "
+		"INSERT INTO rdo_value VALUES "
+		"(NEW.id, NEW.tableoid); "
+		"RETURN NULL; "
+		"END; "
+		"$trig$ LANGUAGE plpgsql; ");
 
 	rdoValueTable("real_rv","real");
 	rdoValueTable("int_rv","integer");
@@ -211,6 +229,8 @@ void InitStructDB::generateCreateDBQuery()
 		"id  integer NOT NULL DEFAULT nextval('rdo_value_seq'),"
 		"PRIMARY KEY (id)"
 		");");
+
+	trigger("array_rv","copy_rdo_value_id");
 
 	queryListPushBack(
 		"CREATE TABLE array_value("
@@ -236,7 +256,8 @@ void InitStructDB::generateCreateDBQuery()
 		"id       integer NOT NULL,"
 		"value    integer NOT NULL,"
 		"PRIMARY KEY (id,rss_id),"
-		"FOREIGN KEY (rss_id) REFERENCES rss(id)"
+		"FOREIGN KEY (rss_id) REFERENCES rss(id),"
+		"FOREIGN KEY (value) REFERENCES rdo_value(value_id)"
 		");");
 }
 
