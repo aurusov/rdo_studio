@@ -51,6 +51,7 @@ public:
 	LPRDOArrayValue clone() const;
 
 	void serializeInDB(REF(IDB) db) const;
+	void RDOArrayValue::updateInDB(ruint index, ruint traceID, REF(IDB) db);
 
 private:
 	RDOArrayValue(CREF(LPRDOArrayType)  pType );

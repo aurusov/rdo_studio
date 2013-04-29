@@ -110,6 +110,7 @@ public:
 		db.pushContext<int>(db.insertRowInd(Table,QString("DEFAULT,%1").arg(Value)));
 
 	void serializeInDB(REF(IDB) db) const;
+	void updateArrayDB(ruint index, ruint traceID, REF(IDB) db) const;
 
 	//RDOValue  begin ();
 	//RDOValue  end   ();

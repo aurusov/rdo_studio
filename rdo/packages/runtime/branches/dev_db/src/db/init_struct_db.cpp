@@ -259,6 +259,16 @@ void InitStructDB::generateCreateDBQuery()
 		"FOREIGN KEY (rss_id) REFERENCES rss(id),"
 		"FOREIGN KEY (value) REFERENCES rdo_value(value_id)"
 		");");
+
+	queryListPushBack(
+		"create or replace function update_array (traceid integer,paramid integer) returns integer as $$"
+		"DECLARE vid integer;"
+		"BEGIN "
+		"	select value into vid from rss_param where rss_id=$1 and id=$2;"
+		"	delete from array_value where array_id=vid;"
+		"	RETURN vid; "
+		"END; "
+		"$$ language plpgsql");
 }
 
 void InitStructDB::generateCreateTrcDBQuery()

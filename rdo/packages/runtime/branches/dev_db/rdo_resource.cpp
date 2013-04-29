@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_array.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -217,6 +218,8 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 			.arg(getTraceID())                 \
 			.arg(index));
 
+	LPRDOArrayType pThisArrayType;
+
 	switch (value.typeID())
 	{
 	case RDOType::t_unknow        : break;
@@ -226,6 +229,7 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 	case RDOType::t_bool          : DEFINE_RDO_VALUE("bool_rv"         ,QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
 	case RDOType::t_string        : DEFINE_RDO_VALUE("string_rv"       ,QString("'%1'").arg(QString::fromStdString(value.getString  ()))); break;
 	case RDOType::t_identificator : DEFINE_RDO_VALUE("identificator_rv",QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
+	case RDOType::t_pointer       : pThisArrayType = value.type().object_dynamic_cast<RDOArrayType>(); if (pThisArrayType) value.updateArrayDB(index,getTraceID(),*m_db); break;
 	default                       : throw RDOValueException("Данная величина не может быть записана в базу данных");
 	}
 

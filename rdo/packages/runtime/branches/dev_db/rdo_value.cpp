@@ -1347,4 +1347,9 @@ void RDOValue::serializeInDB(REF(IDB) db) const
 	}
 }
 
+void RDOValue::updateArrayDB(ruint index, ruint traceID, REF(IDB) db) const
+{
+	getPointer<RDOArrayValue>()->updateInDB(index, traceID, db);
+}
+
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -136,7 +136,7 @@ void RDOArrayValue::serializeInDB(REF(IDB) db) const
 		tableName = "trc_value_array";
 		tableNameVv = "trc_value_array_vv";
 	}
-	else if (connectionName == "rdo")
+	if (connectionName == "rdo")
 	{
 		tableName = "array_rv";
 		tableNameVv = "array_value";
@@ -153,6 +153,24 @@ void RDOArrayValue::serializeInDB(REF(IDB) db) const
 	}
 
 	db.pushContext<int>(array_id);
+}
+
+void RDOArrayValue::updateInDB(ruint index, ruint traceID, REF(IDB) db)
+{
+	QSqlQuery* query = new QSqlQuery(db.getQtDB());
+	query->exec(QString("select * from update_array(%1,%2);")
+		.arg(traceID)
+		.arg(index));
+	query->next();
+	int array_id = query->value(query->record().indexOf("update_array")).toInt();
+
+	BOOST_FOREACH(CREF(RDOValue) arrayItem, m_container)
+	{
+		arrayItem.serializeInDB(db);
+		db.insertRow("array_value",QString("%1,DEFAULT,%2")
+			.arg(array_id)
+			.arg(db.popContext<int>()));
+	}
 }
 
 // --------------------------------------------------------------------------------
