@@ -36,7 +36,9 @@ public:
 	rbool operator== (CREF(RDOEnumType) pEnumType) const;
 	rbool operator!= (CREF(RDOEnumType) pEnumType) const;
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	virtual void serializeInDB(REF(IDB) db) const;
+#endif
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;

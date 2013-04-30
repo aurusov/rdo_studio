@@ -19,13 +19,27 @@
 #include "utils\rdodebug.h"
 // --------------------------------------------------------------------------------
 
-//#define SERIALIZE_IN_DB_RTP_DETAILS
 //#define SERIALIZE_IN_DB_TRC
+//#define SERIALIZE_IN_DB_MAINSTREAM
+
+#define DB_CACHE_ENABLE
+//#define SERIALIZE_IN_DB_RTP_DETAILS
+
+
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
+	#define INTERSECTION_DB
+#endif
+
+#ifdef SERIALIZE_IN_DB_TRC
+	#ifndef INTERSECTION_DB
+		#define INTERSECTION_DB
+	#endif
+#endif
 
 class IDB
 {
 public:
-	typedef boost::any           bany;
+	typedef boost::any   bany;
 
 	virtual void         insertRow        (const QString& tableName, const QString& qRow) = 0;
 	virtual int          insertRowInd     (const QString& tableName, const QString& qRow) = 0;

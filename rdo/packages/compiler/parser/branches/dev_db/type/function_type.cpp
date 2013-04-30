@@ -55,11 +55,13 @@ rdo::runtime::RDOType::TypeID FunctionParamType::typeID() const
 	return rdo::runtime::RDOType::t_unknow;
 }
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void FunctionParamType::serializeInDB(REF(IDB) db) const
 {
 	UNUSED(db);
 	NEVER_REACH_HERE;
 }
+#endif
 
 tstring FunctionParamType::name() const
 {
@@ -144,11 +146,13 @@ rdo::runtime::RDOType::TypeID FunctionType::typeID() const
 	return m_pReturnType->type()->typeID();
 }
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void FunctionType::serializeInDB(REF(IDB) db) const
 {
 	UNUSED(db);
 	NEVER_REACH_HERE;
 }
+#endif
 
 CREF(LPTypeInfo) FunctionType::returnType() const
 {

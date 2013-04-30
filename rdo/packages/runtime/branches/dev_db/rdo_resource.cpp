@@ -211,6 +211,7 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 {
 	ASSERT(index < m_paramList.size());
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	#define DEFINE_RDO_VALUE(Table_name,Value) \
 		m_db->queryExec(QString("update %1 set vv=%2 where id= (select value from rss_param where rss_id=%3 and id=%4)::integer;")\
 			.arg(Table_name)                   \
@@ -229,9 +230,10 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 	case RDOType::t_bool          : DEFINE_RDO_VALUE("bool_rv"         ,QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
 	case RDOType::t_string        : DEFINE_RDO_VALUE("string_rv"       ,QString("'%1'").arg(QString::fromStdString(value.getString  ()))); break;
 	case RDOType::t_identificator : DEFINE_RDO_VALUE("identificator_rv",QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
-	case RDOType::t_pointer       : pThisArrayType = value.type().object_dynamic_cast<RDOArrayType>(); if (pThisArrayType) value.updateArrayDB(index,getTraceID(),*m_db); break;
+	case RDOType::t_pointer       : pThisArrayType = value.type().object_dynamic_cast<RDOArrayType>(); if (pThisArrayType) m_paramList[index].updateArrayDB(index,getTraceID(),*m_db, value); break;
 	default                       : throw RDOValueException("Данная величина не может быть записана в базу данных");
 	}
+#endif
 
 	setState(CS_Keep);
 	m_paramList[index] = value;
@@ -244,67 +246,62 @@ CREF(RDOValue) RDOResource::getParam(ruint index)
 #ifndef DB_CACHE_ENABLE
 	QSqlQuery* query = new QSqlQuery(*db);
 
-	query->exec(QString("select rss_param.value, pg_class.relname \
-		from rss_param, pg_class, rdo_value \
-		where rss_param.rss_id=%1 \
-		and rss_param.id=%2 \
-		and pg_class.relfilenode=rdo_value.table_id \
-		and rdo_value.value_id=rss_param.value;")
-			.arg(getTraceID())
-			.arg(index));
-	query->next();
-	int value_id = query->value(query->record().indexOf("value")).toInt();
-	QString table_name = query->value(query->record().indexOf("relname")).toString();
-
-	query->exec(QString("select vv from %1 where id=%2;")
-		.arg(table_name)
-		.arg(value_id));
-	query->next();
-
+#define GET_PARAM_DB(Table_name) \
+	query->exec(QString("select vv from %1 where id= (select value from rss_param where rss_id=%2 and id=%3)::integer;") \
+			.arg(Table_name)   \
+			.arg(getTraceID()) \
+			.arg(index));      \
+	query->next();             \
 	QVariant varValue = query->value(query->record().indexOf("vv"));
 
-	if (table_name == QString("int_rv"))
+	if (value.typeID() == RDOType::t_int)
 	{
+		GET_PARAM_DB("int_rv");
 		int varValueInt = varValue.toInt();
 		if (varValueInt != m_paramList[index].getInt())
 		{
 			m_paramList[index] = RDOValue(varValueInt);
 		}
 	}
-	else if (table_name == QString("real_rv"))
+	else if (value.typeID() == RDOType::t_real)
 	{
+		GET_PARAM_DB("real_rv");
 		double varValueDouble = varValue.toDouble();
 		if (varValueDouble != m_paramList[index].getDouble())
 		{
 			m_paramList[index] = RDOValue(varValueDouble);
 		}
 	}
-	else if (table_name == QString("enum_rv"))
+	else if (value.typeID() == RDOType::t_enum)
 	{
+		GET_PARAM_DB("enum_rv");
 		tstring varValueEnum = varValue.toString().toStdString();
 		if (varValueEnum != m_paramList[index].getAsString())
 		{
 			m_paramList[index] = RDOValue(m_paramList[index].type().object_static_cast<RDOEnumType>(),varValueEnum);
 		}
 	}
-	else if (table_name == QString("bool_rv"))
+	else if (value.typeID() == RDOType::t_bool)
 	{
+		GET_PARAM_DB("bool_rv");
 		bool varValueBool = varValue.toBool();
 		if (varValueBool != m_paramList[index].getBool())
 		{
 			m_paramList[index] = RDOValue(varValueBool);
 		}
 	}
-	else if (table_name == QString("string_rv"))
+	else if (value.typeID() == RDOType::t_string)
 	{
+		GET_PARAM_DB("string_rv");
 		tstring varValueString = varValue.toString().toStdString();
 		if (varValueString != m_paramList[index].getString())
 		{
 			m_paramList[index] = RDOValue(varValueString);
 		}
 	}
-	else if (table_name == QString("identificator_rv"))
+	else if (value.typeID() == RDOType::t_identificator)
 	{
+		GET_PARAM_DB("identificator_rv");
 		tstring varValueIdentificator = varValue.toString().toStdString();
 		if (varValueIdentificator != m_paramList[index].getIdentificator())
 		{
@@ -316,6 +313,7 @@ CREF(RDOValue) RDOResource::getParam(ruint index)
 	return m_paramList[index];
 }
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void RDOResource::serializeInDB() const
 {
 	int rss_id = m_db->insertRowInd("rss",QString("%1,%2,%3")
@@ -333,5 +331,6 @@ void RDOResource::serializeInDB() const
 			.arg(m_db->popContext<int>()));
 	}
 }
+#endif
 
 CLOSE_RDO_RUNTIME_NAMESPACE

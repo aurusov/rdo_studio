@@ -21,8 +21,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-#define DB_CACHE_ENABLE
-
 class RDORuntime;
 PREDECLARE_OBJECT_INTERFACE(IResourceType);
 
@@ -80,7 +78,9 @@ public:
 	virtual tstring whoAreYou           ();
 	void            incRef              ();
 	void            decRef              ();
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	void            serializeInDB       () const;
+#endif
 
 protected:
 	ParamList      m_paramList;

@@ -81,7 +81,9 @@ public:
 
 	void writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) const;
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	virtual void serializeInDB(REF(IDB) db) const;
+#endif
 
 	DECLARE_IType;
 

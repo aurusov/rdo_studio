@@ -21,6 +21,13 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- ATOM_TYPE_PARSER
 // --------------------------------------------------------------------------------
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
+#define DECLARE_ISerializeInDB \
+	virtual void serializeInDB(REF(IDB) db) const;
+#else
+	#define DECLARE_ISerializeInDB ;
+#endif
+
 #define DEFINE_ATOM_TYPE_PARSER(Type)               \
 class RDOType__##Type: public RuntimeWrapperType    \
 {                                                   \
@@ -34,7 +41,7 @@ public:                                             \
 	{}                                              \
 	DECLARE_IType;                                  \
 	DECLARE_IModelStructure;                        \
-	virtual void serializeInDB(REF(IDB) db) const;  \
+	DECLARE_ISerializeInDB;                         \
 };                                                  \
 DECLARE_POINTER(RDOType__##Type);
 

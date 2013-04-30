@@ -79,11 +79,13 @@ void RDOType__unknow::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db)
 	NEVER_REACH_HERE;
 }
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void RDOType__unknow::serializeInDB(REF(IDB) db) const
 {
 	UNUSED(db);
 	NEVER_REACH_HERE;
 }
+#endif
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__void
@@ -134,11 +136,13 @@ void RDOType__void::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) c
 	NEVER_REACH_HERE;
 }
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void RDOType__void::serializeInDB(REF(IDB) db) const
 {
 	UNUSED(db);
 	NEVER_REACH_HERE;
 }
+#endif
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__int
@@ -220,6 +224,7 @@ void RDOType__int::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) co
 	stream << "I" << std::endl;
 }
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void RDOType__int::serializeInDB(REF(IDB) db) const
 {
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
@@ -236,6 +241,7 @@ void RDOType__int::serializeInDB(REF(IDB) db) const
 	NEVER_REACH_HERE;
 #endif
 }
+#endif
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__real
@@ -304,6 +310,7 @@ void RDOType__real::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) c
 	stream << "R" << std::endl;
 }
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void RDOType__real::serializeInDB(REF(IDB) db) const
 {
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
@@ -320,6 +327,7 @@ void RDOType__real::serializeInDB(REF(IDB) db) const
 	NEVER_REACH_HERE;
 #endif
 }
+#endif
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__string
@@ -387,6 +395,7 @@ void RDOType__string::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db)
 	stream << "S" << std::endl;
 }
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void RDOType__string::serializeInDB(REF(IDB) db) const
 {
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
@@ -403,6 +412,7 @@ void RDOType__string::serializeInDB(REF(IDB) db) const
 	NEVER_REACH_HERE;
 #endif
 }
+#endif
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__identificator
@@ -456,6 +466,7 @@ void RDOType__identificator::writeModelStructure(REF(rdo::ostream) stream, PTR(I
 	NEVER_REACH_HERE;
 }
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void RDOType__identificator::serializeInDB(REF(IDB) db) const
 {
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
@@ -472,7 +483,7 @@ void RDOType__identificator::serializeInDB(REF(IDB) db) const
 	NEVER_REACH_HERE;
 #endif
 }
-
+#endif
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__bool
 // --------------------------------------------------------------------------------
@@ -539,6 +550,7 @@ void RDOType__bool::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) c
 	stream << "B" << std::endl;
 }
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void RDOType__bool::serializeInDB(REF(IDB) db) const
 {
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
@@ -555,5 +567,6 @@ void RDOType__bool::serializeInDB(REF(IDB) db) const
 	NEVER_REACH_HERE;
 #endif
 }
+#endif
 
 CLOSE_RDO_PARSER_NAMESPACE

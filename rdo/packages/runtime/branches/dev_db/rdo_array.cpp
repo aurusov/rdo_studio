@@ -127,6 +127,7 @@ LPRDOArrayValue RDOArrayValue::clone() const
 	return pClone;
 }
 
+#ifdef INTERSECTION_DB
 void RDOArrayValue::serializeInDB(REF(IDB) db) const
 {
 	QString tableName,tableNameVv;
@@ -154,7 +155,9 @@ void RDOArrayValue::serializeInDB(REF(IDB) db) const
 
 	db.pushContext<int>(array_id);
 }
+#endif
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void RDOArrayValue::updateInDB(ruint index, ruint traceID, REF(IDB) db)
 {
 	QSqlQuery* query = new QSqlQuery(db.getQtDB());
@@ -172,6 +175,7 @@ void RDOArrayValue::updateInDB(ruint index, ruint traceID, REF(IDB) db)
 			.arg(db.popContext<int>()));
 	}
 }
+#endif
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOArrayIterator

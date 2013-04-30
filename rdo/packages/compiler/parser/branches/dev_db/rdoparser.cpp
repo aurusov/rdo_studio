@@ -455,10 +455,12 @@ void RDOParser::parse()
 		it++;
 	}
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	BOOST_FOREACH(const LPRDORTPResType& pResType, getRTPResTypes())
 	{
 		pResType->serializeInDB(*(runtime()->getDB()));
 	}
+#endif
 }
 
 void RDOParser::parse(rdoModelObjects::RDOParseType file)

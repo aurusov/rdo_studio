@@ -23,7 +23,9 @@ class RDOType
 	: public virtual rdo::counter_reference
 	, public IType
 	, public IModelStructure
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	, public rdo::runtime::ISerializeTypeInDB
+#endif
 {
 DECLARE_FACTORY(RDOType)
 public:

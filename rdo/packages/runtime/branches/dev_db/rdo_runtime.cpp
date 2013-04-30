@@ -277,7 +277,9 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 #endif
 	m_resourceListByTime.push_back(pResource);
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	pResource->serializeInDB();
+#endif
 }
 
 void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer pLogic, CREF(LPIEvent) pEvent)

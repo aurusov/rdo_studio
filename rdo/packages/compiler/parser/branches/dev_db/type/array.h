@@ -32,7 +32,9 @@ public:
 	rdo::runtime::LPRDOArrayType getRuntimeArrayType() const;
 	LPTypeInfo                   typeInfo           () const;
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	virtual void serializeInDB(REF(IDB) db) const;
+#endif
 
 private:
 	RDOArrayType         (CREF(LPTypeInfo) pItemType, CREF(RDOParserSrcInfo) src_info);

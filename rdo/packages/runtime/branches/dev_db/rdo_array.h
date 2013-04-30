@@ -50,8 +50,12 @@ public:
 
 	LPRDOArrayValue clone() const;
 
+#ifdef INTERSECTION_DB
 	void serializeInDB(REF(IDB) db) const;
-	void RDOArrayValue::updateInDB(ruint index, ruint traceID, REF(IDB) db);
+#endif
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
+	void RDOArrayValue::updateInDB(ruint index, ruint traceID, REF(IDB) db, CREF(RDOValue) value);
+#endif
 
 private:
 	RDOArrayValue(CREF(LPRDOArrayType)  pType );

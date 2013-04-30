@@ -38,7 +38,9 @@ private:
 
 	virtual CREF(rdo::runtime::LPRDOType)    type() const;
 	virtual rdo::runtime::RDOType::TypeID  typeID() const;
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	virtual void serializeInDB(REF(IDB) db) const;
+#endif
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;
@@ -66,7 +68,9 @@ private:
 
 	virtual CREF(rdo::runtime::LPRDOType)    type() const;
 	virtual rdo::runtime::RDOType::TypeID  typeID() const;
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	virtual void serializeInDB(REF(IDB) db) const;
+#endif
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;

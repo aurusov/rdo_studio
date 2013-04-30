@@ -1310,6 +1310,7 @@ rdo::intrusive_ptr<RDOValue::string_class> RDOValue::string_class::clone() const
 	return rdo::intrusive_ptr<string_class>(new string_class(c_str()));
 }
 
+#ifdef INTERSECTION_DB
 void RDOValue::serializeInDB(REF(IDB) db) const
 {
 	LPRDOArrayType pThisArrayType;
@@ -1346,10 +1347,13 @@ void RDOValue::serializeInDB(REF(IDB) db) const
 		}
 	}
 }
+#endif
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void RDOValue::updateArrayDB(ruint index, ruint traceID, REF(IDB) db) const
 {
 	getPointer<RDOArrayValue>()->updateInDB(index, traceID, db);
 }
+#endif
 
 CLOSE_RDO_RUNTIME_NAMESPACE

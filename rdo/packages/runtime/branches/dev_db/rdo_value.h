@@ -106,11 +106,15 @@ public:
 
 	RDOValue clone() const;
 
+#ifdef INTERSECTION_DB
 	#define DEFINE_SERIALIZE_RDO_VALUE(Table,Value) \
 		db.pushContext<int>(db.insertRowInd(Table,QString("DEFAULT,%1").arg(Value)));
 
 	void serializeInDB(REF(IDB) db) const;
+#endif
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	void updateArrayDB(ruint index, ruint traceID, REF(IDB) db) const;
+#endif
 
 	//RDOValue  begin ();
 	//RDOValue  end   ();

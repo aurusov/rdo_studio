@@ -243,6 +243,7 @@ rbool RDOEnumType::operator!= (CREF(RDOEnumType) pEnumType) const
 	return !operator==(pEnumType);
 }
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void RDOEnumType::serializeInDB(REF(IDB) db) const
 {
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
@@ -268,5 +269,6 @@ void RDOEnumType::serializeInDB(REF(IDB) db) const
 	NEVER_REACH_HERE;
 #endif
 }
+#endif
 
 CLOSE_RDO_PARSER_NAMESPACE

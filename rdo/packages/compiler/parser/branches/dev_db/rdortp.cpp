@@ -178,6 +178,7 @@ void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) c
 	}
 }
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 void RDORTPResType::serializeInDB(REF(IDB) db) const
 {
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
@@ -202,6 +203,7 @@ void RDORTPResType::serializeInDB(REF(IDB) db) const
 	}
 #endif
 }
+#endif
 
 tstring RDORTPResType::name() const
 {
