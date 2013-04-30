@@ -17,7 +17,8 @@ function toggle_display(e)
 <BODY>
 	<DIV>
 		<H1>ОБЪЕКТ ПРОГОНА</H1> 
-<P>В <B>объекте прогона</B> (с расширением <FONT class="syntax">.smr</FONT>) задается один прогон или серия прогонов, которые состоят из <A class="syntax" href="#run_block">&lt;блоков_прогонов&gt;</A>, содержащие необходимые для управления <A href="../rdo_terms.htm#run">прогоном</A> данные и режимы.</P>
+<P><B>Объект прогона</B> (с расширением <FONT class="syntax">.smr</FONT>) состоит из одного или нескольких <A class="syntax" href="#run_block">&lt;блоков_прогона&gt;</A>.</P>
+<P>Здесь можно задать как <A class="syntax" href="#one_run_block">&lt;один_прогон&gt;</A>, так и <A class="syntax" href="#multi_run_block">&lt;серию_прогонов&gt;</A></P>
 <P>Формат задания <A class="syntax" href="#one_run_block">&lt;одного_прогона&gt;</A>:</P>
 				<PRE class="syntax">
 <A class="syntax" href="#run_block">&lt;блок_прогона&gt;</A></PRE>
@@ -26,11 +27,11 @@ function toggle_display(e)
 {<A class="syntax" href="#run_block">&lt;блок_прогона&gt;</A>} = { { <блок_прогона> } }</PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="multi_run_block"></A><I>серия_прогонов</I></DT>
-					<DD class="syntax">Серия прогонов - это два или более прогона модели с различными начальными и терминальными условиями.</DD>
+					<DD class="syntax">Серия прогонов - это два или более <A class="syntax" href="#run_block">&lt;блока_прогона&gt;</A>, каждый из которых записывается в отдельных фигурных скобках.</DD>
 				</DL>
  <DL class="syntax">
 					<DT class="syntax"><A name="run_block"></A><I>блок_прогона</I></DT>
-					<DD class="syntax">Блок включающий в себя все инструкции доступные для прогона и имеет следующий формат:
+					<DD class="syntax">Блок включающий в себя все инструкции, начальние и терминальные условия доступные для прогона и имеет следующий формат:
 						<PRE class="syntax"><A class="syntax" href="#terminate_if">&lt;инструкция_окончания_прогона&gt;</A>
 | <A class="syntax" href="#statement_planning">&lt;инструкция_планирования_события&gt;</A>
 | <A class="syntax" href="#break">&lt;точка_останова&gt;</A>
@@ -66,7 +67,7 @@ function toggle_display(e)
 							</DD>
 							<DT class="syntax"><A name="break"></A><I>точка_останова</I></DT>
 							<DD class="syntax">Задание точки останова имеет следующий формат:
-								<PRE class="syntax">Break_point <A class="syntax" href="#break_name">&lt;имя_точки_останова&gt;</A><A class="syntax" href="#fun_arithm">&lt;условие_остановки&gt;</A></PRE> 
+								<PRE class="syntax">Break_point <A class="syntax" href="#break_name">&lt;имя_точки_останова&gt;</A> <A class="syntax" href="#fun_arithm">&lt;условие_остановки&gt;</A></PRE> 
 								<DL class="syntax">
 									<DT class="syntax"><A name="break_name"></A><I>имя_точки_останова</I></DT>
 									<DD class="syntax">Имя точки останова - это <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>, оно не должно совпадать с ранее определенными именами.</DD>
