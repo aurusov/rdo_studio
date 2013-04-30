@@ -230,7 +230,7 @@ void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 	case RDOType::t_bool          : DEFINE_RDO_VALUE("bool_rv"         ,QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
 	case RDOType::t_string        : DEFINE_RDO_VALUE("string_rv"       ,QString("'%1'").arg(QString::fromStdString(value.getString  ()))); break;
 	case RDOType::t_identificator : DEFINE_RDO_VALUE("identificator_rv",QString("'%1'").arg(QString::fromStdString(value.getAsString()))); break;
-	case RDOType::t_pointer       : pThisArrayType = value.type().object_dynamic_cast<RDOArrayType>(); if (pThisArrayType) m_paramList[index].updateArrayDB(index,getTraceID(),*m_db, value); break;
+	case RDOType::t_pointer       : pThisArrayType = value.type().object_dynamic_cast<RDOArrayType>(); if (pThisArrayType) value.updateArrayDB(index,getTraceID(),*m_db); break;
 	default                       : throw RDOValueException("Данная величина не может быть записана в базу данных");
 	}
 #endif

@@ -54,7 +54,8 @@ public:
 	void serializeInDB(REF(IDB) db) const;
 #endif
 #ifdef SERIALIZE_IN_DB_MAINSTREAM
-	void RDOArrayValue::updateInDB(ruint index, ruint traceID, REF(IDB) db, CREF(RDOValue) value);
+	void updateInDB       (ruint index, ruint traceID, REF(IDB) db);
+	void eraseArrayValueDB(int array_id, REF(IDB) db);
 #endif
 
 private:

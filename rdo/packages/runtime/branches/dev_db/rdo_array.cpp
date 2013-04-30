@@ -161,11 +161,15 @@ void RDOArrayValue::serializeInDB(REF(IDB) db) const
 void RDOArrayValue::updateInDB(ruint index, ruint traceID, REF(IDB) db)
 {
 	QSqlQuery* query = new QSqlQuery(db.getQtDB());
-	query->exec(QString("select * from update_array(%1,%2);")
+
+	query->exec(QString("select value from rss_param where rss_id=%1 and id=%2;")
 		.arg(traceID)
 		.arg(index));
 	query->next();
-	int array_id = query->value(query->record().indexOf("update_array")).toInt();
+	int array_id = query->value(query->record().indexOf("value")).toInt();
+	query->clear();
+
+	eraseArrayValueDB(array_id,db);
 
 	BOOST_FOREACH(CREF(RDOValue) arrayItem, m_container)
 	{
@@ -174,6 +178,44 @@ void RDOArrayValue::updateInDB(ruint index, ruint traceID, REF(IDB) db)
 			.arg(array_id)
 			.arg(db.popContext<int>()));
 	}
+}
+
+void RDOArrayValue::eraseArrayValueDB(int array_id, REF(IDB) db)
+{
+	QSqlQuery* queryOne = new QSqlQuery(db.getQtDB());
+	QSqlQuery* queryTwo = new QSqlQuery(db.getQtDB());
+
+	QString tableName;
+	RDOType::TypeID type_id = m_pArrayType->typeID();
+	switch (type_id)
+	{
+		case RDOType::t_unknow        : break;
+		case RDOType::t_int           : tableName = "int_rv";           break;
+		case RDOType::t_real          : tableName = "real_rv";          break;
+		case RDOType::t_enum          : tableName = "enum_rv";          break;
+		case RDOType::t_bool          : tableName = "bool_rv";          break;
+		case RDOType::t_string        : tableName = "string_rv";        break;
+		case RDOType::t_identificator : tableName = "identificator_rv"; break;
+		case RDOType::t_pointer       : tableName = "array_rv";         break;
+		default                       : throw RDOValueException("Тип массива, который РДО пытается обновить в БД, не определен");
+	}
+
+	queryOne->exec(QString("select vv_id from array_value where array_id=%1;")
+		.arg(array_id));
+	for (int i = 0; i < queryOne->size(); ++i)
+	{
+		queryOne->next();
+		int array_value = queryOne->value(queryOne->record().indexOf("vv_id")).toInt();
+		if (type_id == RDOType::t_pointer)
+			eraseArrayValueDB(array_value,db);
+		queryTwo->exec(QString("delete from %1 where id=%2;")
+			.arg(tableName)
+			.arg(array_value));
+	}
+	queryOne->clear();
+
+	queryOne->exec(QString("delete from array_value where array_id=%1;")
+		.arg(array_id));
 }
 #endif
 
