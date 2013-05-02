@@ -170,6 +170,7 @@ void RDOArrayValue::updateInDB(ruint index, ruint traceID, REF(IDB) db)
 	query->clear();
 
 	eraseArrayValueDB(array_id,db);
+	db.queryListExec();
 
 	BOOST_FOREACH(CREF(RDOValue) arrayItem, m_container)
 	{
@@ -182,11 +183,10 @@ void RDOArrayValue::updateInDB(ruint index, ruint traceID, REF(IDB) db)
 
 void RDOArrayValue::eraseArrayValueDB(int array_id, REF(IDB) db)
 {
-	QSqlQuery* queryOne = new QSqlQuery(db.getQtDB());
-	QSqlQuery* queryTwo = new QSqlQuery(db.getQtDB());
+	QSqlQuery* query = new QSqlQuery(db.getQtDB());
 
 	QString tableName;
-	RDOType::TypeID type_id = m_pArrayType->typeID();
+	RDOType::TypeID type_id = m_container[0].typeID();
 	switch (type_id)
 	{
 		case RDOType::t_unknow        : break;
@@ -200,21 +200,20 @@ void RDOArrayValue::eraseArrayValueDB(int array_id, REF(IDB) db)
 		default                       : throw RDOValueException("Тип массива, который РДО пытается обновить в БД, не определен");
 	}
 
-	queryOne->exec(QString("select vv_id from array_value where array_id=%1;")
+	query->exec(QString("select vv_id from array_value where array_id=%1;")
 		.arg(array_id));
-	for (int i = 0; i < queryOne->size(); ++i)
+	for (int i = 0; i < query->size(); ++i)
 	{
-		queryOne->next();
-		int array_value = queryOne->value(queryOne->record().indexOf("vv_id")).toInt();
+		query->next();
+		int array_value = query->value(query->record().indexOf("vv_id")).toInt();
 		if (type_id == RDOType::t_pointer)
 			eraseArrayValueDB(array_value,db);
-		queryTwo->exec(QString("delete from %1 where id=%2;")
+		db.queryListPushBack(QString("delete from %1 where id=%2;")
 			.arg(tableName)
 			.arg(array_value));
 	}
-	queryOne->clear();
 
-	queryOne->exec(QString("delete from array_value where array_id=%1;")
+	db.queryListPushBack(QString("delete from array_value where array_id=%1;")
 		.arg(array_id));
 }
 #endif
