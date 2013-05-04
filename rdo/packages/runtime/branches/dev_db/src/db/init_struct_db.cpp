@@ -96,6 +96,67 @@ void InitStructDB::generateCreateDBQuery()
 		"PRIMARY KEY (id)"
 		");");
 
+	queryListPushBack(
+		"CREATE TABLE rdo_value("
+		"value_id  integer,"
+		"table_id integer NOT NULL,"
+		"PRIMARY KEY (value_id)"
+		");");
+
+	queryListPushBack("CREATE SEQUENCE rdo_value_seq;");
+
+	queryListPushBack(
+		"CREATE FUNCTION copy_rdo_value_id() RETURNS TRIGGER AS $trig$ "
+		"BEGIN "
+		"INSERT INTO rdo_value VALUES "
+		"(NEW.id, NEW.tableoid); "
+		"RETURN NULL; "
+		"END; "
+		"$trig$ LANGUAGE plpgsql; ");
+
+	rdoValueTable("real_rv","real");
+	rdoValueTable("int_rv","integer");
+	rdoValueTable("identificator_rv","VARCHAR(40)");
+	rdoValueTable("bool_rv","boolean");
+	rdoValueTable("string_rv","VARCHAR(40)");
+	rdoValueTable("enum_rv","VARCHAR(40)");
+
+	queryListPushBack(
+		"CREATE TABLE array_rv("
+		"id  integer NOT NULL DEFAULT nextval('rdo_value_seq'),"
+		"PRIMARY KEY (id)"
+		");");
+
+	trigger("array_rv","copy_rdo_value_id");
+
+	queryListPushBack(
+		"CREATE TABLE array_value("
+		"array_id      integer,"
+		"array_elem_id serial,"
+		"vv_id         integer NOT NULL,"
+		"PRIMARY KEY   (array_id, vv_id),"
+		"FOREIGN KEY   (array_id) REFERENCES array_rv"
+		");");
+
+	queryListPushBack(
+		"CREATE TABLE rss("
+		"id      integer NOT NULL,"
+		"rtp_id  integer NOT NULL,"
+		"trace   boolean NOT NULL,"
+		"PRIMARY KEY (id),"
+		"FOREIGN KEY (rtp_id) REFERENCES rtp(id)"
+		");");
+
+	queryListPushBack(
+		"CREATE TABLE rss_param("
+		"rss_id   integer NOT NULL,"
+		"id       integer NOT NULL,"
+		"value    integer NOT NULL,"
+		"PRIMARY KEY (id,rss_id),"
+		"FOREIGN KEY (rss_id) REFERENCES rss(id),"
+		"FOREIGN KEY (value) REFERENCES rdo_value(value_id)"
+		");");
+
 #ifdef SERIALIZE_IN_DB_RTP_DETAILS
 	queryListPushBack(
 		"CREATE TABLE list_of_types_of_params("
@@ -198,67 +259,6 @@ void InitStructDB::generateCreateDBQuery()
 	dataTypeTable("bool");
 	dataTypeTable("string");
 #endif
-
-	queryListPushBack(
-		"CREATE TABLE rdo_value("
-		"value_id  integer,"
-		"table_id integer NOT NULL,"
-		"PRIMARY KEY (value_id)"
-		");");
-
-	queryListPushBack("CREATE SEQUENCE rdo_value_seq;");
-
-	queryListPushBack(
-		"CREATE FUNCTION copy_rdo_value_id() RETURNS TRIGGER AS $trig$ "
-		"BEGIN "
-		"INSERT INTO rdo_value VALUES "
-		"(NEW.id, NEW.tableoid); "
-		"RETURN NULL; "
-		"END; "
-		"$trig$ LANGUAGE plpgsql; ");
-
-	rdoValueTable("real_rv","real");
-	rdoValueTable("int_rv","integer");
-	rdoValueTable("identificator_rv","VARCHAR(40)");
-	rdoValueTable("bool_rv","boolean");
-	rdoValueTable("string_rv","VARCHAR(40)");
-	rdoValueTable("enum_rv","VARCHAR(40)");
-
-	queryListPushBack(
-		"CREATE TABLE array_rv("
-		"id  integer NOT NULL DEFAULT nextval('rdo_value_seq'),"
-		"PRIMARY KEY (id)"
-		");");
-
-	trigger("array_rv","copy_rdo_value_id");
-
-	queryListPushBack(
-		"CREATE TABLE array_value("
-		"array_id      integer,"
-		"array_elem_id serial,"
-		"vv_id         integer NOT NULL,"
-		"PRIMARY KEY   (array_id, vv_id),"
-		"FOREIGN KEY   (array_id) REFERENCES array_rv"
-		");");
-
-	queryListPushBack(
-		"CREATE TABLE rss("
-		"id      integer NOT NULL,"
-		"rtp_id  integer NOT NULL,"
-		"trace   boolean NOT NULL,"
-		"PRIMARY KEY (id),"
-		"FOREIGN KEY (rtp_id) REFERENCES rtp(id)"
-		");");
-
-	queryListPushBack(
-		"CREATE TABLE rss_param("
-		"rss_id   integer NOT NULL,"
-		"id       integer NOT NULL,"
-		"value    integer NOT NULL,"
-		"PRIMARY KEY (id,rss_id),"
-		"FOREIGN KEY (rss_id) REFERENCES rss(id),"
-		"FOREIGN KEY (value) REFERENCES rdo_value(value_id)"
-		");");
 }
 
 void InitStructDB::generateCreateTrcDBQuery()
