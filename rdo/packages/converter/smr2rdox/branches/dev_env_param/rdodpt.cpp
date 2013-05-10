@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/rdodpt.h"
 #include "converter/smr2rdox/rdoopr.h"
@@ -19,6 +20,7 @@
 #include "converter/smr2rdox/rdorss.h"
 #include "converter/smr2rdox/rdo_type.h"
 #include "converter/smr2rdox/runtime/rdo_logic_dptfree.h"
+#include "converter/smr2rdox/update/update.h"
 #include "simulator/runtime/keyboard.h"
 #include "simulator/runtime/rdo_rule.h"
 #include "simulator/runtime/rdo_operation.h"
@@ -147,6 +149,8 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 		val = pPatternParam->getType()->value_cast(pParam)->value();
 	}
 
+	m_pPattern->addFactParam(pParam->value().getAsString().c_str());
+
 	rdo::runtime::LPRDOCalc pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
 		m_currParam,
 		rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
@@ -184,6 +188,31 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 			Converter::s_converter()->error().push_only(m_pPattern->src_info(), "См. образец");
 			Converter::s_converter()->error().push_done();
 		}
+	}
+	if (m_pPattern->getType() == RDOPATPattern::PT_IE)
+	{
+		tstring params;
+		RDOPATPattern::FactParamList factParamList = m_pPattern->getFactParamList();
+		if (!factParamList.empty())
+		{
+			BOOST_FOREACH(tstring param, factParamList)
+			{
+				params += ", " + param;
+			}
+		}
+		tstring planning = rdo::format("%s.planning(time_now + %s%s)"
+			, m_pPattern->name().c_str()
+			, m_pPattern->time->calc()->srcInfo().src_text().c_str()
+			, params.c_str()
+		);
+
+		LPDocUpdate pPlanningInsertSMR = rdo::Factory<UpdateInsert>::create(
+			0,
+			rdo::format("%s\r\n", planning.c_str()),
+			IDocument::SMR
+		);
+		ASSERT(pPlanningInsertSMR);
+		Converter::s_converter()->insertDocUpdate(pPlanningInsertSMR);
 	}
 }
 

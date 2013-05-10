@@ -193,6 +193,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/rdoparser.h"
 #include "converter/smr2rdox/rdoparser_lexer.h"
@@ -1613,9 +1614,19 @@ pat_pattern
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		if (pPattern->getType() == RDOPATPattern::PT_IE)
 		{
-			tstring planning = rdo::format("%s.planning(time_now + %s)"
+			tstring params;
+			RDOPATPattern::ParamList paramList = pPattern->getParamList();
+			if (!paramList.empty())
+			{
+				BOOST_FOREACH(RDOPATPattern::ParamList::value_type param, paramList)
+				{
+					params += ", " + param->name();
+				}
+			}
+			tstring planning = rdo::format("%s.planning(time_now + %s%s)"
 				, pPattern->name().c_str()
 				, pPattern->time->calc()->srcInfo().src_text().c_str()
+				, params.c_str()
 			);
 
 			LPDocUpdate pPlanningInsert = rdo::Factory<UpdateInsert>::create(
@@ -1624,14 +1635,6 @@ pat_pattern
 			);
 			ASSERT(pPlanningInsert);
 			CONVERTER->insertDocUpdate(pPlanningInsert);
-
-			LPDocUpdate pPlanningInsertSMR = rdo::Factory<UpdateInsert>::create(
-				0,
-				rdo::format("%s\r\n", planning.c_str()),
-				IDocument::SMR
-			);
-			ASSERT(pPlanningInsertSMR);
-			CONVERTER->insertDocUpdate(pPlanningInsertSMR);
 		}
 		pPattern->end();
 		$$ = CONVERTER->stack().push(pPattern);

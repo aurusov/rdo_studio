@@ -80,6 +80,8 @@ public:
 	virtual PatType getType() const = 0;
 
 	typedef std::vector<LPRDORelevantResource> RelResList;
+	typedef std::vector<LPRDOParam>            ParamList;
+	typedef std::vector<tstring>               FactParamList;
 
 	rbool                            isHaveConvertEnd() const { return getType() == PT_Operation || getType() == PT_Keyboard; }
 
@@ -107,6 +109,9 @@ public:
 	LPRDOFUNArithm        time;
 
 	void                  add                    (CREF(LPRDOParam) pParam);
+	void                  addFactParam           (CREF(tstring) pFactParam);
+	CREF(ParamList)       getParamList           (                       ) const;
+	CREF(FactParamList)   getFactParamList       (                       ) const;
 	LPRDOParam            findPATPatternParam    (CREF(tstring) paramName) const;
 	int                   findPATPatternParamNum (CREF(tstring) paramName) const;
 	LPRDORelevantResource findRelevantResource   (CREF(tstring) resName  ) const;
@@ -142,9 +147,8 @@ protected:
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status) = 0;
 
 private:
-	typedef std::vector<LPRDOParam> ParamList;
-
 	ParamList      m_paramList;
+	FactParamList  m_factParamList;
 	RelResList     m_relResList;
 
 	rbool          m_useCommonChoice;
