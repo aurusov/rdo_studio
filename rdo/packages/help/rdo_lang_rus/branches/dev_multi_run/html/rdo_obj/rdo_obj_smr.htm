@@ -16,22 +16,27 @@ function toggle_display(e)
 </HEAD>
 <BODY>
 	<DIV>
-		<H1>ОБЪЕКТ ПРОГОНА</H1> 
-<P><B>Объект прогона</B> (с расширением <FONT class="syntax">.smr</FONT>) состоит из одного или нескольких <A class="syntax" href="#run_block">&lt;блоков_прогона&gt;</A>.</P>
-<P>Здесь можно задать как <A class="syntax" href="#one_run_block">&lt;один_прогон&gt;</A>, так и <A class="syntax" href="#multi_run_block">&lt;серию_прогонов&gt;</A></P>
-<P>Формат задания <A class="syntax" href="#one_run_block">&lt;одного_прогона&gt;</A>:</P>
-				<PRE class="syntax">
-<A class="syntax" href="#run_block">&lt;блок_прогона&gt;</A></PRE>
-<P>Формат задания <A class="syntax" href="#multi_run_block">&lt;серии_прогонов&gt;</A>:</P>
-				<PRE class="syntax">
-{<A class="syntax" href="#run_block">&lt;блок_прогона&gt;</A>} = { { <блок_прогона> } }</PRE>
+		<H1>ОБЪЕКТ СЦЕНАРИЯ ЗАПУСКОВ</H1>
+		<P><B>Объект сценария запусков</B> (с расширением <FONT class="syntax">.smr</FONT>) описывает сценарий запусков данной модели состоит из одного или нескольких <A class="syntax" href="#model_launch">&lt;блоков_прогона&gt;</A>.</P>
+		<P>Сценарий запуска имеет следующий формат:</P>
+		<PRE class="syntax"><A class="syntax" href="#model_launch_series">&lt;серия_прогонов&gt;</A> | <A class="syntax" href="#model_launch">&lt;единичный_прогон&gt;</A></PRE>
+		<DL class="syntax">
+			<DT class="syntax"><A name="model_launch_series"></A><I>серия_прогонов</I></DT>
+			<DD class="syntax">Серия прогонов описывается следующим образом:
+				<PRE class="syntax">{ <A class="syntax" href="#model_launch_single_of_set">&lt;один_прогон_из_множества&gt;</A> }</PRE>
 				<DL class="syntax">
-					<DT class="syntax"><A name="multi_run_block"></A><I>серия_прогонов</I></DT>
-					<DD class="syntax">Серия прогонов - это два или более <A class="syntax" href="#run_block">&lt;блока_прогона&gt;</A>, каждый из которых записывается в отдельных фигурных скобках.</DD>
+					<DT class="syntax"><A name="model_launch_single_of_set"></A><I>один_прогон_из_множества</I></DT>
+					<DD class="syntax">Один прогон внутри серии имеет следующий формат:
+						<PRE class="syntax">'{' <A class="syntax" href="#model_launch">&lt;единичный_прогон&gt;</A> '}'</PRE>
+					</DD>
 				</DL>
- <DL class="syntax">
-					<DT class="syntax"><A name="run_block"></A><I>блок_прогона</I></DT>
-					<DD class="syntax">Блок включающий в себя все инструкции, режимы, данные, начальные и терминальные условия доступные для управления прогоном и имеет следующий формат:
+			</DD>
+			<DT class="syntax"><A name="model_launch"></A><I>единичный_прогон</I></DT>
+			<DD class="syntax">Один прогон описывается следующим образом:
+				<PRE class="syntax">{ <A class="syntax" href="#model_launch_line">&lt;инструкция_настраивающая_прогон&gt;</A> }</PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="model_launch_line"></A><I>инструкция_настраивающая_прогон</I></DT>
+					<DD class="syntax">Инструкция для настройки прогона настраивает режимы моделирования, новые значения констант, баз генераторов, параметров ресурсов, точки останова, терминальное условие и прочее:
 						<PRE class="syntax"><A class="syntax" href="#terminate_if">&lt;инструкция_окончания_прогона&gt;</A>
 | <A class="syntax" href="#statement_planning">&lt;инструкция_планирования_события&gt;</A>
 | <A class="syntax" href="#break">&lt;точка_останова&gt;</A>
@@ -181,11 +186,15 @@ function toggle_display(e)
 											<TD class="visible" width="80%">Режим отображения состояния (анимации)</TD>
 										</TR>
 									</TABLE>
-									<DD class="syntax">Значение по умолчанию - <FONT class="syntax">NoShow</FONT>.</DD>
+									Значение по умолчанию - <FONT class="syntax">NoShow</FONT>.
 									</DD>
 								</DL>
 							</DD>
 						</DL>
+					</DD>
+				</DL>
+			</DD>
+		</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Пример задания одного прогона</H4></A>
 		<DIV style="display:none" id="v1">
 		<PRE class="samples">
