@@ -214,14 +214,14 @@ inline RDORuntime::ResCIterator RDORuntime::res_end() const
 	return m_resourceListByTime.end();
 }
 
-inline void RDORuntime::addResType(CREF(LPRDOResourceListObject) pResType)
+inline void RDORuntime::addResType(CREF(LPRDOResourceTypeList) pResType)
 {
 	ASSERT(pResType);
 	ASSERT(m_resourceTypeList.size() == pResType->getTraceID() - 1);
 	m_resourceTypeList.push_back(pResType);
 }
 
-inline CREF(LPRDOResourceListObject) RDORuntime::getResType(ruint number) const
+inline CREF(LPRDOResourceTypeList) RDORuntime::getResType(ruint number) const
 {
 	return m_resourceTypeList[number - 1];
 }

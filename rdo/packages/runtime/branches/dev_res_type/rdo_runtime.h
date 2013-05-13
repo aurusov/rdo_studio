@@ -197,8 +197,8 @@ public:
 	ResCIterator res_begin() const;
 	ResCIterator res_end() const;
 
-	void addResType(CREF(LPRDOResourceListObject) pResType);
-	CREF(LPRDOResourceListObject) getResType(ruint number) const;
+	void addResType(CREF(LPRDOResourceTypeList) pResType);
+	CREF(LPRDOResourceTypeList) getResType(ruint number) const;
 
 	CREF(LPIThreadProxy) getThreadProxy() const;
 
@@ -212,12 +212,12 @@ private:
 	RDORuntime(PTR(Error) pError);
 	virtual ~RDORuntime();
 
-	typedef  RDOSimulatorTrace             parent_type;
-	typedef  std::list<LPRDOCalc>          CalcList;
-	typedef  std::vector<RDOValue>         ValueList;
-	typedef  std::vector<LPRDOResource>    ResourceListByID;
-	typedef  std::list  <LPRDOResource>    ResourceListByTime;
-	typedef  std::vector<LPRDOResourceListObject>  ResourceTypeList;
+	typedef  RDOSimulatorTrace                   parent_type;
+	typedef  std::list<LPRDOCalc>                CalcList;
+	typedef  std::vector<RDOValue>               ValueList;
+	typedef  std::vector<LPRDOResource>          ResourceListByID;
+	typedef  std::list  <LPRDOResource>          ResourceListByTime;
+	typedef  std::vector<LPRDOResourceTypeList>  ResourceTypeList;
 
 	ResourceListByID    m_resourceListByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	ResourceListByTime  m_resourceListByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
