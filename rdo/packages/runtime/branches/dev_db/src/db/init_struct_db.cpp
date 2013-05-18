@@ -308,7 +308,7 @@ void InitStructDB::generateCreateTrcDBQuery()
 		");");
 
 	queryListPushBack(
-		"CREATE TABLE trc_relres("
+		"CREATE TABLE trc_pattern_relres("
 		"id           serial NOT NULL,"
 		"rtp_id       integer NOT NULL,"
 		"pat_id       integer NOT NULL,"

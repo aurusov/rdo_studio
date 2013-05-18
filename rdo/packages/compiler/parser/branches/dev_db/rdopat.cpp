@@ -366,7 +366,7 @@ void RDOPATPattern::writeModelStructure(REF(rdo::ostream) stream, PTR(IDB) db) c
 #ifdef SERIALIZE_IN_DB_TRC
 		if(db)
 			db->queryListPushBack(
-				QString("INSERT INTO trc_relres VALUES(DEFAULT,%1,%2);")
+				QString("INSERT INTO trc_pattern_relres VALUES(DEFAULT,%1,%2);")
 					.arg(rtpId)
 					.arg(patternId));
 #else
