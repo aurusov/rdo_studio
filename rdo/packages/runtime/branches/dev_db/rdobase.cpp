@@ -56,9 +56,11 @@ RDOSimulatorBase::RDOSimulatorBase()
 	m_trcDB = new InitStructDB("trc");
 #endif
 
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	InitStructDB::dropDB("rdo");
 	InitStructDB::createDB("rdo");
 	m_db = new InitStructDB("rdo");
+#endif
 }
 
 ruint RDOSimulatorBase::get_cnt_calc_arithm() const
