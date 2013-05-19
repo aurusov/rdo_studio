@@ -205,6 +205,52 @@ void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, REF(LPRDOFUNLogic
 	m_breakPointList.push_back(pBreakPoint);
 }
 
+#ifdef CORBA_ENABLE
+void RDOSMR::setExternalModelName(CREF(tstring) alias, CREF(tstring) modelID)
+{
+    m_extModelList[alias] = modelID;
+}
+tstring RDOSMR::getExternalModelName(CREF(tstring) alias) const
+{
+    StringTable::const_iterator it = m_extModelList.find(alias);
+    return it != m_extModelList.end() ? it->second : "";
+}
+CREF(StringTable) RDOSMR::getExternalModelList() const
+{
+    return m_extModelList;
+}
+#endif
+
+rdo::service::simulation::ShowMode RDOSMR::getShowMode() const
+{
+    return m_showMode;
+}
+
+int RDOSMR::getFrameNumber() const
+{
+    return m_frameNumber;
+}
+
+double RDOSMR::getShowRate() const
+{
+    return m_showRate;
+}
+
+double RDOSMR::getRunStartTime() const
+{
+    return m_runStartTime;
+}
+
+double RDOSMR::getTraceStartTime() const
+{
+    return m_traceStartTime;
+}
+
+double RDOSMR::getTraceEndTime() const
+{
+    return m_traceEndTime;
+}
+
 RDOSMR::BreakPoint::BreakPoint(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
 	: RDOParserSrcInfo(src_info)
 {

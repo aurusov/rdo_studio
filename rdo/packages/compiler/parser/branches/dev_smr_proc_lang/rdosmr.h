@@ -41,30 +41,21 @@ OBJECT(RDOSMR)
 {
 DECLARE_FACTORY(RDOSMR);
 public:
-	typedef std::map<tstring, tstring> StringTable;
+    typedef std::map<tstring, tstring>         StringTable;
+    typedef rdo::service::simulation::ShowMode ShowMode;
 
 #ifdef CORBA_ENABLE
-	void setExternalModelName(CREF(tstring) alias, CREF(tstring) modelID)
-	{
-		m_extModelList[alias] = modelID;
-	}
-	tstring getExternalModelName(CREF(tstring) alias) const
-	{
-		StringTable::const_iterator it = m_extModelList.find(alias);
-		return it != m_extModelList.end() ? it->second : "";
-	}
-	CREF(StringTable) getExternalModelList() const
-	{
-		return m_extModelList;
-	}
+    void              setExternalModelName(CREF(tstring) alias, CREF(tstring) modelID);
+    tstring           getExternalModelName(CREF(tstring) alias) const;
+    CREF(StringTable) getExternalModelList()                    const;
 #endif
 
-	rdo::service::simulation::ShowMode getShowMode      () const { return m_showMode;       }
-	int                                getFrameNumber   () const { return m_frameNumber;    }
-	double                             getShowRate      () const { return m_showRate;       }
-	double                             getRunStartTime  () const { return m_runStartTime;   }
-	double                             getTraceStartTime() const { return m_traceStartTime; }
-	double                             getTraceEndTime  () const { return m_traceEndTime;   }
+    ShowMode getShowMode      () const;
+    int      getFrameNumber   () const;
+    double   getShowRate      () const;
+    double   getRunStartTime  () const;
+    double   getTraceStartTime() const;
+    double   getTraceEndTime  () const;
 
 	void  setShowMode         (rdo::service::simulation::ShowMode showMode);
 	void  setFrameNumber      (int value,    CREF(YYLTYPE) pos);
@@ -83,25 +74,25 @@ private:
 	RDOSMR();
 	~RDOSMR();
 
-	OBJECT(BreakPoint) IS INSTANCE_OF(RDOParserSrcInfo)
-	{
-	DECLARE_FACTORY(BreakPoint);
-	private:
-		BreakPoint(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic);
-	};
-	typedef std::vector<LPBreakPoint> BreakPointList;
+    OBJECT(BreakPoint) IS INSTANCE_OF(RDOParserSrcInfo)
+    {
+    DECLARE_FACTORY(BreakPoint);
+    private:
+        BreakPoint(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic);
+    };
+    typedef std::vector<LPBreakPoint> BreakPointList;
 
-	StringTable                         m_extModelList;
-	rdo::service::simulation::ShowMode  m_showMode;
-	int                                 m_frameNumber;
-	double                              m_showRate;
-	double                              m_runStartTime;
-	double                              m_traceStartTime;
-	double                              m_traceEndTime;
-	YYLTYPE                             m_traceStartTime_pos;
-	YYLTYPE                             m_traceEndTime_pos;
-	LPRDOFUNLogic                       m_pTerminateIf;
-	BreakPointList                      m_breakPointList;
+    StringTable    m_extModelList;
+    ShowMode       m_showMode;
+    int            m_frameNumber;
+    double         m_showRate;
+    double         m_runStartTime;
+    double         m_traceStartTime;
+    double         m_traceEndTime;
+    YYLTYPE        m_traceStartTime_pos;
+    YYLTYPE        m_traceEndTime_pos;
+    LPRDOFUNLogic  m_pTerminateIf;
+    BreakPointList m_breakPointList;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
