@@ -557,6 +557,10 @@
 				Name=".rdo_db"
 				>
 				<File
+					RelativePath="..\..\rdo_res_type.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\rdo_res_type.h"
 					>
 				</File>
