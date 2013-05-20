@@ -32,13 +32,10 @@ RDOFunCalcSelect::RDOFunCalcSelect(CREF(LPIResourceType) pResType, int nResType,
 void RDOFunCalcSelect::prepare(CREF(LPRDORuntime) pRuntime)
 {
 	res_list.clear();
-	RDORuntime::ResCIterator end = pRuntime->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; it++)
+	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
+	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end; it++)
 	{
 		if (*it == LPRDOResource(NULL))
-			continue;
-
-		if (!(*it)->checkType(m_nResType))
 			continue;
 
 		pRuntime->pushGroupFunc(*it);

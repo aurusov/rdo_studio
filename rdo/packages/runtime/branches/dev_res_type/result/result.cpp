@@ -350,12 +350,10 @@ void RDOPMDWatchQuant::resetResult(CREF(LPRDORuntime) pRuntime)
 ruint RDOPMDWatchQuant::calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const
 {
 	ruint newQuant = 0;
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); ++it)
+	RDORuntime::ResCIterator end = pRuntime->getResType(m_rtpID)->res_end();
+	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_rtpID)->res_begin(); it != end; ++it)
 	{
 		if (*it == 0)
-			continue;
-
-		if (!(*it)->checkType(m_rtpID))
 			continue;
 
 		pRuntime->pushGroupFunc(*it);
