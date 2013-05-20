@@ -194,9 +194,6 @@ public:
 	typedef std::list<LPRDOResource> ResList;
 	typedef ResList::const_iterator  ResCIterator;
 
-	ResCIterator res_begin() const;
-	ResCIterator res_end() const;
-
 	void addResType(CREF(LPRDOResourceTypeList) pResType);
 	CREF(LPRDOResourceTypeList) getResType(ruint number) const;
 
@@ -216,11 +213,9 @@ private:
 	typedef  std::list<LPRDOCalc>                CalcList;
 	typedef  std::vector<RDOValue>               ValueList;
 	typedef  std::vector<LPRDOResource>          ResourceListByID;
-	typedef  std::list  <LPRDOResource>          ResourceListByTime;
 	typedef  std::vector<LPRDOResourceTypeList>  ResourceTypeList;
 
 	ResourceListByID    m_resourceListByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
-	ResourceListByTime  m_resourceListByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
 	ResourceTypeList    m_resourceTypeList;
 	CalcList            m_initCalcList;
 	LPRDOMemoryStack    m_pMemoryStack;

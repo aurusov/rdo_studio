@@ -234,9 +234,8 @@ void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 		m_resourceListByID.at(resourceID) = NULL;
 
 		LPIResourceType type(res->getResType());
-		type->eraseRes(res);
 		// Деструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
-		m_resourceListByTime.remove(res);
+		type->eraseRes(res);
 		notify().fireMessage(Notify::RO_BEFOREDELETE, (void*)res->getTraceID());
 		onResourceErase(res);
 	}
@@ -267,7 +266,7 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 		}
 	}
 #ifdef RDO_LIMIT_RES
-	if (m_resourceListByID.size() >= 200)
+	if (m_resourceListByID.size() >= 20000)
 	{
 		error().push(RDOSyntaxMessage(
 			"Сработало лицензионное ограничение на количество ресурсов. Обратитесь за приобритением полной версии",
@@ -277,7 +276,6 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 		));
 	}
 #endif
-	m_resourceListByTime.push_back(pResource);
 }
 
 void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer pLogic, CREF(LPIEvent) pEvent)
@@ -352,7 +350,6 @@ void RDORuntime::onInit()
 void RDORuntime::onDestroy()
 {
 	/// @todo Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
-	m_resourceListByTime.clear();
 	m_resourceListByID.clear();
 	m_resourceTypeList.clear();
 
