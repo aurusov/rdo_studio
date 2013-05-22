@@ -35,7 +35,7 @@ public:
 	void eraseRes(CREF(rdo::runtime::LPRDOResource) pResource);
 
 protected:
-	RDOResourceTypeList(ruint number, rdo::runtime::LPRDORuntime pRuntime);
+	RDOResourceTypeList(ruint number, CREF(rdo::runtime::LPRDORuntime) pRuntime);
 	virtual ~RDOResourceTypeList();
 
 	typedef  std::list<rdo::runtime::LPRDOResource> ResourceList;

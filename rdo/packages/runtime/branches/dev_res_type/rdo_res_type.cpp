@@ -16,7 +16,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-RDOResourceTypeList::RDOResourceTypeList(ruint number, rdo::runtime::LPRDORuntime pRuntime)
+RDOResourceTypeList::RDOResourceTypeList(ruint number, CREF(rdo::runtime::LPRDORuntime) pRuntime)
 : RDOType           (t_pointer)
 , RDOTraceableObject(false, number, rdo::toString(number + 1))
 {}
