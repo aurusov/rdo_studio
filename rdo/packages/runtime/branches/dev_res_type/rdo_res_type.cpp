@@ -19,7 +19,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOResourceTypeList::RDOResourceTypeList(ruint number, CREF(rdo::runtime::LPRDORuntime) pRuntime)
 : RDOType           (t_pointer)
 , RDOTraceableObject(false, number, rdo::toString(number + 1))
-{}
+{
+	rdo::intrusive_ptr<RDOResourceTypeList> pThis(this);
+	ASSERT(pThis);
+	pRuntime->addResType(pThis);
+}
 
 RDOResourceTypeList::~RDOResourceTypeList()
 {}

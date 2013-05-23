@@ -18,14 +18,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 template <class T>
 inline RDOResourceTypeListT<T>::RDOResourceTypeListT(ruint number, rdo::runtime::LPRDORuntime pRuntime)
 	: RDOResourceTypeList(number, pRuntime)
-{
-	rdo::intrusive_ptr<RDOResourceTypeListT<T> > pThis(this);
-	ASSERT(pThis);
-	LPRDOResourceTypeList pResourceListObject = pThis.template object_parent_cast<RDOResourceTypeList>();
-	ASSERT(pResourceListObject);
-
-	pRuntime->addResType(pResourceListObject);
-}
+{}
 
 template <class T>
 inline RDOResourceTypeListT<T>::~RDOResourceTypeListT()
