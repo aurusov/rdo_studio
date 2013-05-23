@@ -1,0 +1,26 @@
+progon1
+{
+	Длительность_обслуживания.seed = 100
+	Образец_прихода_клиента.planning( time_now + Интервал_прихода( 500 ) )
+	Terminate_if Time_now >= 10 * 28 * 30
+}
+
+progon2
+{
+	Длительность_обслуживания.seed = 343453
+	Образец_прихода_клиента.planning( time_now + Интервал_прихода( 78 ) )
+	Terminate_if Time_now >= 10 * 28 * 30
+}
+
+
+int a = 1;
+if( a == 1 )
+{
+	progon1;
+	progon2;
+}
+else
+{
+	progon1;
+}
+
