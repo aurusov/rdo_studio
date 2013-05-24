@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdosimwin.cpp
-  \authors   Áàğñ Àëåêñàíäğ
-  \authors   Óğóñîâ Àíäğåé (rdo@rk9.bmstu.ru)
+  \authors   Ğ‘Ğ°Ñ€Ñ ĞĞ»ĞµĞºÑĞ°Ğ½Ğ´Ñ€
+  \authors   Ğ£Ñ€ÑƒÑĞ¾Ğ² ĞĞ½Ğ´Ñ€ĞµĞ¹ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -80,10 +80,10 @@ public:
 
 PTR(rdo::compiler::parser::RDOCorba::GetRTP) RDOCorba_i::getRDORTPlist(REF(::CORBA::Long) rtp_count)
 {
-	//! Ñîçäàåì ñïèñîê ñòğóêòóğ äëÿ õğàíåíèÿ èíôîğìàöèè îá èñêîìûõ òèïàõ ğåñóğñîâ
+	//! Ğ¡Ğ¾Ğ·Ğ´Ğ°ĞµĞ¼ ÑĞ¿Ğ¸ÑĞ¾Ğº ÑÑ‚Ñ€ÑƒĞºÑ‚ÑƒÑ€ Ğ´Ğ»Ñ Ñ…Ñ€Ğ°Ğ½ĞµĞ½Ğ¸Ñ Ğ¸Ğ½Ñ„Ğ¾Ñ€Ğ¼Ğ°Ñ†Ğ¸Ğ¸ Ğ¾Ğ± Ğ¸ÑĞºĞ¾Ğ¼Ñ‹Ñ… Ñ‚Ğ¸Ğ¿Ğ°Ñ… Ñ€ĞµÑÑƒÑ€ÑĞ¾Ğ²
 	rdo::compiler::parser::RDOCorba::GetRTP_var my_rtpList = new rdo::compiler::parser::RDOCorba::GetRTP;
 
-	//! Ïîëó÷àåì íåîáõîäèìûå íàì äàííûå î òèïàõ ğåñóğñîâ ĞÄÎ
+	//! ĞŸĞ¾Ğ»ÑƒÑ‡Ğ°ĞµĞ¼ Ğ½ĞµĞ¾Ğ±Ñ…Ğ¾Ğ´Ğ¸Ğ¼Ñ‹Ğµ Ğ½Ğ°Ğ¼ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ Ğ¾ Ñ‚Ğ¸Ğ¿Ğ°Ñ… Ñ€ĞµÑÑƒÑ€ÑĞ¾Ğ² Ğ Ğ”Ğ
 	kernel->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &my_rtpList);
 	
 	return my_rtpList._retn();
@@ -91,10 +91,10 @@ PTR(rdo::compiler::parser::RDOCorba::GetRTP) RDOCorba_i::getRDORTPlist(REF(::COR
 
 PTR(rdo::compiler::parser::RDOCorba::GetRSS) RDOCorba_i::getRDORSSPlist(REF(::CORBA::Long) rss_count)
 {
-	//! Ñîçäàåì ñïèñîê ñòğóêòóğ äëÿ õğàíåíèÿ èíôîğìàöèè îá èñêîìûõ ğåñóğñàõ
+	//! Ğ¡Ğ¾Ğ·Ğ´Ğ°ĞµĞ¼ ÑĞ¿Ğ¸ÑĞ¾Ğº ÑÑ‚Ñ€ÑƒĞºÑ‚ÑƒÑ€ Ğ´Ğ»Ñ Ñ…Ñ€Ğ°Ğ½ĞµĞ½Ğ¸Ñ Ğ¸Ğ½Ñ„Ğ¾Ñ€Ğ¼Ğ°Ñ†Ğ¸Ğ¸ Ğ¾Ğ± Ğ¸ÑĞºĞ¾Ğ¼Ñ‹Ñ… Ñ€ĞµÑÑƒÑ€ÑĞ°Ñ…
 	rdo::compiler::parser::RDOCorba::GetRSS_var my_rssList = new rdo::compiler::parser::RDOCorba::GetRSS;
 	
-	//! Ïîëó÷àåì íåîáõîäèìûå íàì äàííûå î ğåñóğñàõ ĞÄÎ
+	//! ĞŸĞ¾Ğ»ÑƒÑ‡Ğ°ĞµĞ¼ Ğ½ĞµĞ¾Ğ±Ñ…Ğ¾Ğ´Ğ¸Ğ¼Ñ‹Ğµ Ğ½Ğ°Ğ¼ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ Ğ¾ Ñ€ĞµÑÑƒÑ€ÑĞ°Ñ… Ğ Ğ”Ğ
 	kernel->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &my_rssList);
 	
 	return my_rssList._retn();
@@ -190,7 +190,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 		//! CosNaming::NamingContext::AlreadyBound exception if the name
 		//! supplied is already bound to an object.
 		//! Amendment: When using OrbixNames, it is necessary to first try bind
-		//! and then rebind, as rebind on it’s own will throw a NotFoundexception if
+		//! and then rebind, as rebind on itâ€™s own will throw a NotFoundexception if
 		//! the Name has not already been bound. [This is incorrect behaviour -
 		//! it should just bind].
 	}
@@ -227,8 +227,8 @@ ruint RDOThreadCorba::corbaRunThreadFun(PTR(void) pParam)
 		//! the naming service.
 		obj = myrdocorba->_this();
 
-		CPTR(char) ModelName = "ÖÅÕ";
-		//! CPTR(char) ModelName = "ÑÊËÀÄ";
+		CPTR(char) ModelName = "Ğ¦Ğ•Ğ¥";
+		//! CPTR(char) ModelName = "Ğ¡ĞšĞ›ĞĞ”";
 
 		if (!bindObjectToName(g_orb, obj, ModelName))
 		{
@@ -265,13 +265,13 @@ RDOThreadCorba::RDOThreadCorba()
 	: RDOThreadMT             ("RDOThreadCorba")
 	, thread_corbaRunThreadFun(NULL            )
 {
-	//! Ìåñòî äëÿ ğåãèñòàöèè ñîîáùåíèé êîğáå
+	//! ĞœĞµÑÑ‚Ğ¾ Ğ´Ğ»Ñ Ñ€ĞµĞ³Ğ¸ÑÑ‚Ğ°Ñ†Ğ¸Ğ¸ ÑĞ¾Ğ¾Ğ±Ñ‰ĞµĞ½Ğ¸Ğ¹ ĞºĞ¾Ñ€Ğ±Ğµ
 	after_constructor();
 }
 
 void RDOThreadCorba::proc(REF(RDOMessageInfo) msg)
 {
-	//! Ìåñòî äëÿ îáğàáîòêè ñîîáùåíèé êîğáå
+	//! ĞœĞµÑÑ‚Ğ¾ Ğ´Ğ»Ñ Ğ¾Ğ±Ñ€Ğ°Ğ±Ğ¾Ñ‚ĞºĞ¸ ÑĞ¾Ğ¾Ğ±Ñ‰ĞµĞ½Ğ¸Ğ¹ ĞºĞ¾Ñ€Ğ±Ğµ
 }
 
 void RDOThreadCorba::start()
@@ -280,7 +280,7 @@ void RDOThreadCorba::start()
 	trace(thread_name + " corba begin");
 #endif
 
-	//! Ìåñòî äëÿ çàïóñêà êîğáû
+	//! ĞœĞµÑÑ‚Ğ¾ Ğ´Ğ»Ñ Ğ·Ğ°Ğ¿ÑƒÑĞºĞ° ĞºĞ¾Ñ€Ğ±Ñ‹
 	thread_corbaRunThreadFun = AfxBeginThread(corbaRunThreadFun, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
 	thread_corbaRunThreadFun->m_bAutoDelete = false;
 	thread_corbaRunThreadFun->ResumeThread();
@@ -299,7 +299,7 @@ void RDOThreadCorba::idle()
 		return;
 	}
 #endif
-	//! Âîò òóò îñíîâíàÿ ğàáîòà êîğáû
+	//! Ğ’Ğ¾Ñ‚ Ñ‚ÑƒÑ‚ Ğ¾ÑĞ½Ğ¾Ğ²Ğ½Ğ°Ñ Ñ€Ğ°Ğ±Ğ¾Ñ‚Ğ° ĞºĞ¾Ñ€Ğ±Ñ‹
 }
 
 void RDOThreadCorba::stop()
@@ -307,7 +307,7 @@ void RDOThreadCorba::stop()
 #ifdef TR_TRACE
 	trace(thread_name + " stop begin");
 #endif
-	//! Ìåñòî äëÿ îñòàíîâêè êîğáû
+	//! ĞœĞµÑÑ‚Ğ¾ Ğ´Ğ»Ñ Ğ¾ÑÑ‚Ğ°Ğ½Ğ¾Ğ²ĞºĞ¸ ĞºĞ¾Ñ€Ğ±Ñ‹
 	if (g_orb != CORBA::ORB::_nil())
 	{
 		try
@@ -697,7 +697,7 @@ void RDOThreadRunTime::idle()
 	{
 		if (m_runtimeError || !m_pSimulator->m_pRuntime->rdoNext())
 		{
-			LPRDOThreadRunTime pThis(this); //! Óâåëè÷èì íà ñåáÿ ññûëêó, ÷òîáû íàñ íå óäàëèë ñèìóëÿòîğ ğàíüøå âğåìåíè
+			LPRDOThreadRunTime pThis(this); //! Ğ£Ğ²ĞµĞ»Ğ¸Ñ‡Ğ¸Ğ¼ Ğ½Ğ° ÑĞµĞ±Ñ ÑÑÑ‹Ğ»ĞºÑƒ, Ñ‡Ñ‚Ğ¾Ğ±Ñ‹ Ğ½Ğ°Ñ Ğ½Ğµ ÑƒĞ´Ğ°Ğ»Ğ¸Ğ» ÑĞ¸Ğ¼ÑƒĞ»ÑÑ‚Ğ¾Ñ€ Ñ€Ğ°Ğ½ÑŒÑˆĞµ Ğ²Ñ€ĞµĞ¼ĞµĞ½Ğ¸
 			RDOThreadMT::sendMessage(this, RT_THREAD_CLOSE);
 		}
 	}
@@ -715,7 +715,7 @@ void RDOThreadRunTime::idle()
 	}
 //	catch (...) {
 //		m_runtimeError = true;
-//		TRACE("******************************** Îøèáêà rdoNext()\n");
+//		TRACE("******************************** ĞÑˆĞ¸Ğ±ĞºĞ° rdoNext()\n");
 //		m_pSimulator->m_pRuntime->onRuntimeError();
 //	}
 }
@@ -1063,13 +1063,13 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		{
 			if (msg.from == m_pThreadRuntime.get())
 			{
-				//! rdo::simulation::report::EC_ParserError   - Íå èñïîëüçóåòñÿ â run-time
-				//! rdo::simulation::report::EC_ModelNotFound - Íå èñïîëüçóåòñÿ â run-time
-				//! rdo::simulation::report::EC_UserBreak     - Óñòàíàâëèâàåòñÿ â m_pSimulator, ïåğåõâàò RT_THREAD_STOP_AFTER íå ñğàáàòûâàåò
+				//! rdo::simulation::report::EC_ParserError   - ĞĞµ Ğ¸ÑĞ¿Ğ¾Ğ»ÑŒĞ·ÑƒĞµÑ‚ÑÑ Ğ² run-time
+				//! rdo::simulation::report::EC_ModelNotFound - ĞĞµ Ğ¸ÑĞ¿Ğ¾Ğ»ÑŒĞ·ÑƒĞµÑ‚ÑÑ Ğ² run-time
+				//! rdo::simulation::report::EC_UserBreak     - Ğ£ÑÑ‚Ğ°Ğ½Ğ°Ğ²Ğ»Ğ¸Ğ²Ğ°ĞµÑ‚ÑÑ Ğ² m_pSimulator, Ğ¿ĞµÑ€ĞµÑ…Ğ²Ğ°Ñ‚ RT_THREAD_STOP_AFTER Ğ½Ğµ ÑÑ€Ğ°Ğ±Ğ°Ñ‚Ñ‹Ğ²Ğ°ĞµÑ‚
 				m_exitCode = m_pRuntime->m_whyStop;
 				if (!m_pThreadRuntime->runtimeError())
 				{
-					//! Îñòàíîâèëèñü ñàìè íîğìàëüíî
+					//! ĞÑÑ‚Ğ°Ğ½Ğ¾Ğ²Ğ¸Ğ»Ğ¸ÑÑŒ ÑĞ°Ğ¼Ğ¸ Ğ½Ğ¾Ñ€Ğ¼Ğ°Ğ»ÑŒĞ½Ğ¾
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					closeModel();
 					if (needNextRun())
@@ -1085,12 +1085,12 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 				}
 				else
 				{
-					//! Îñòàíîâèëèñü ñàìè, íî íå íîğìàëüíî
+					//! ĞÑÑ‚Ğ°Ğ½Ğ¾Ğ²Ğ¸Ğ»Ğ¸ÑÑŒ ÑĞ°Ğ¼Ğ¸, Ğ½Ğ¾ Ğ½Ğµ Ğ½Ğ¾Ñ€Ğ¼Ğ°Ğ»ÑŒĞ½Ğ¾
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
 					closeModel();
 				}
-				//! Òğåäà óäàëÿåòñÿ ñàìà, íàäî óäàëèòü å¸ ñîáûòèå
-				//! Äåëàåòñÿ ıòî áåç ìóòåêñîâ, ò.ê. thread_destroy íå äîëæíà èñïîëüçîâàòüñÿ â m_pThreadRuntime ïîêà îáğàáàòûâàåòñÿ RT_THREAD_STOP_AFTER
+				//! Ğ¢Ñ€ĞµĞ´Ğ° ÑƒĞ´Ğ°Ğ»ÑĞµÑ‚ÑÑ ÑĞ°Ğ¼Ğ°, Ğ½Ğ°Ğ´Ğ¾ ÑƒĞ´Ğ°Ğ»Ğ¸Ñ‚ÑŒ ĞµÑ‘ ÑĞ¾Ğ±Ñ‹Ñ‚Ğ¸Ğµ
+				//! Ğ”ĞµĞ»Ğ°ĞµÑ‚ÑÑ ÑÑ‚Ğ¾ Ğ±ĞµĞ· Ğ¼ÑƒÑ‚ĞµĞºÑĞ¾Ğ², Ñ‚.Ğº. thread_destroy Ğ½Ğµ Ğ´Ğ¾Ğ»Ğ¶Ğ½Ğ° Ğ¸ÑĞ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ÑŒÑÑ Ğ² m_pThreadRuntime Ğ¿Ğ¾ĞºĞ° Ğ¾Ğ±Ñ€Ğ°Ğ±Ğ°Ñ‚Ñ‹Ğ²Ğ°ĞµÑ‚ÑÑ RT_THREAD_STOP_AFTER
 #ifdef RDO_MT
 				delete m_pThreadRuntime->thread_destroy;
 				m_pThreadRuntime->thread_destroy = NULL;
@@ -1153,7 +1153,7 @@ rbool RDOThreadSimulator::parseModel()
 
 void RDOThreadSimulator::runModel()
 {
-	//! \error óáåäèòüñÿ, ÷òî ïîÿâèòñÿ ñîîáùåíèå îá îøèáêå
+	//! \error ÑƒĞ±ĞµĞ´Ğ¸Ñ‚ÑŒÑÑ, Ñ‡Ñ‚Ğ¾ Ğ¿Ğ¾ÑĞ²Ğ¸Ñ‚ÑÑ ÑĞ¾Ğ¾Ğ±Ñ‰ĞµĞ½Ğ¸Ğµ Ğ¾Ğ± Ğ¾ÑˆĞ¸Ğ±ĞºĞµ
 	if (!parseModel())
 		return;
 
@@ -1181,7 +1181,7 @@ void RDOThreadSimulator::terminateModel()
 {
 	if (m_pThreadRuntime)
 	{
-		//! Ïåğåñòàëè ğåàãèğîâàòü íà îñòàíîâêó run-time-òğåäû, ò.ê. çàêğûâàåì å¸ ñàìè
+		//! ĞŸĞµÑ€ĞµÑÑ‚Ğ°Ğ»Ğ¸ Ñ€ĞµĞ°Ğ³Ğ¸Ñ€Ğ¾Ğ²Ğ°Ñ‚ÑŒ Ğ½Ğ° Ğ¾ÑÑ‚Ğ°Ğ½Ğ¾Ğ²ĞºÑƒ run-time-Ñ‚Ñ€ĞµĞ´Ñ‹, Ñ‚.Ğº. Ğ·Ğ°ĞºÑ€Ñ‹Ğ²Ğ°ĞµĞ¼ ĞµÑ‘ ÑĞ°Ğ¼Ğ¸
 #ifdef RDO_MT
 		notifies_mutex.Lock();
 #endif
@@ -1199,7 +1199,7 @@ void RDOThreadSimulator::terminateModel()
 #endif
 		m_pThreadRuntime = NULL;
 
-		//! Îïÿòü íà÷àëè ğåàãèğîâàòü íà îñòàíîâêó run-time-òğåäû, ÷òîáû îáíàğóæèòü íîğìàëüíîå çàâåğøåíèå ìîäåëè (èëè ïî run-time-error)
+		//! ĞĞ¿ÑÑ‚ÑŒ Ğ½Ğ°Ñ‡Ğ°Ğ»Ğ¸ Ñ€ĞµĞ°Ğ³Ğ¸Ñ€Ğ¾Ğ²Ğ°Ñ‚ÑŒ Ğ½Ğ° Ğ¾ÑÑ‚Ğ°Ğ½Ğ¾Ğ²ĞºÑƒ run-time-Ñ‚Ñ€ĞµĞ´Ñ‹, Ñ‡Ñ‚Ğ¾Ğ±Ñ‹ Ğ¾Ğ±Ğ½Ğ°Ñ€ÑƒĞ¶Ğ¸Ñ‚ÑŒ Ğ½Ğ¾Ñ€Ğ¼Ğ°Ğ»ÑŒĞ½Ğ¾Ğµ Ğ·Ğ°Ğ²ĞµÑ€ÑˆĞµĞ½Ğ¸Ğµ Ğ¼Ğ¾Ğ´ĞµĞ»Ğ¸ (Ğ¸Ğ»Ğ¸ Ğ¿Ğ¾ run-time-error)
 #ifdef RDO_MT
 		notifies_mutex.Lock();
 #endif
@@ -1223,7 +1223,7 @@ void RDOThreadSimulator::closeModel()
 	catch (...)
 	{
 		m_pRuntime = NULL;
-		TRACE("******************************** Îøèáêà óäàëåíèÿ m_pRuntime\n");
+		TRACE("******************************** ĞÑˆĞ¸Ğ±ĞºĞ° ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ m_pRuntime\n");
 	}
 */
 	m_pRuntime = NULL;
@@ -1239,7 +1239,7 @@ void RDOThreadSimulator::closeModel()
 	catch (...)
 	{
 		m_pParser = NULL;
-		TRACE("******************************** Îøèáêà óäàëåíèÿ m_pParser\n");
+		TRACE("******************************** ĞÑˆĞ¸Ğ±ĞºĞ° ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ m_pParser\n");
 	}
 }
 
@@ -1272,7 +1272,7 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::converter::smr2rdox::RDOSMRFi
 			{
 				broadcastMessage(RT_CONVERTOR_ERROR);
 
-				tstring mess("Îøèáêà êîíâåğòîğà\n");
+				tstring mess("ĞÑˆĞ¸Ğ±ĞºĞ° ĞºĞ¾Ğ½Ğ²ĞµÑ€Ñ‚Ğ¾Ñ€Ğ°\n");
 				broadcastMessage(RT_DEBUG_STRING, &mess);
 				CREF(rdo::converter::smr2rdox::Error::ErrorList) errorList = converter.error().getList();
 				BOOST_AUTO(it, errorList.begin());
@@ -1352,7 +1352,7 @@ void RDOThreadSimulator::codeCompletion()
 #ifdef CORBA_ENABLE
 void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP_var) my_rtpList)
 {
-	//! Ïğîïàğñåëè òèïû è ğåñóğñû òåêñòà ìîäåëè (òåêóùèå, à íå çàïèñàííûå)
+	//! ĞŸÑ€Ğ¾Ğ¿Ğ°Ñ€ÑĞµĞ»Ğ¸ Ñ‚Ğ¸Ğ¿Ñ‹ Ğ¸ Ñ€ĞµÑÑƒÑ€ÑÑ‹ Ñ‚ĞµĞºÑÑ‚Ğ° Ğ¼Ğ¾Ğ´ĞµĞ»Ğ¸ (Ñ‚ĞµĞºÑƒÑ‰Ğ¸Ğµ, Ğ° Ğ½Ğµ Ğ·Ğ°Ğ¿Ğ¸ÑĞ°Ğ½Ğ½Ñ‹Ğµ)
 	rdo::compiler::parser::RDOParserCorba parser;
 	try
 	{
@@ -1365,10 +1365,10 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 
 	::CORBA::Long i = 0, j = 0;
 
-	//! Ïğîáåæàëèñü ïî âñåì òèïàì è ïåğåïèñàëè â RTPList
+	//! ĞŸÑ€Ğ¾Ğ±ĞµĞ¶Ğ°Ğ»Ğ¸ÑÑŒ Ğ¿Ğ¾ Ğ²ÑĞµĞ¼ Ñ‚Ğ¸Ğ¿Ğ°Ğ¼ Ğ¸ Ğ¿ĞµÑ€ĞµĞ¿Ğ¸ÑĞ°Ğ»Ğ¸ Ğ² RTPList
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(&parser);
 	
-	//! Ñ÷èòàåì êîëè÷åñòâî òèïîâ ğåñóğñîâ
+	//! Ğ¡Ñ‡Ğ¸Ñ‚Ğ°ĞµĞ¼ ĞºĞ¾Ğ»Ğ¸Ñ‡ĞµÑÑ‚Ğ²Ğ¾ Ñ‚Ğ¸Ğ¿Ğ¾Ğ² Ñ€ĞµÑÑƒÑ€ÑĞ¾Ğ²
 	rdo::compiler::mbuilder::RDOResTypeList::List::const_iterator rtp_it = rtpList.begin();
 	
 	::CORBA::Long rtp_count = 0;
@@ -1379,15 +1379,15 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 		++rtp_it;
 	}
 
-	//! Âûäåëÿåì ïÿìÿòü ïîä ïîñëåäîâàòåëüíîñòü
+	//! Ğ’Ñ‹Ğ´ĞµĞ»ÑĞµĞ¼ Ğ¿ÑĞ¼ÑÑ‚ÑŒ Ğ¿Ğ¾Ğ´ Ğ¿Ğ¾ÑĞ»ĞµĞ´Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ÑÑ‚ÑŒ
 	my_rtpList->length(rtp_count);
 
-	//! Ñíîâà âîçâğàùàåìñÿ â íà÷àëî ñïèñêà òèïîâ ğåñóğñîâ
+	//! Ğ¡Ğ½Ğ¾Ğ²Ğ° Ğ²Ğ¾Ğ·Ğ²Ñ€Ğ°Ñ‰Ğ°ĞµĞ¼ÑÑ Ğ² Ğ½Ğ°Ñ‡Ğ°Ğ»Ğ¾ ÑĞ¿Ğ¸ÑĞºĞ° Ñ‚Ğ¸Ğ¿Ğ¾Ğ² Ñ€ĞµÑÑƒÑ€ÑĞ¾Ğ²
 	rtp_it = rtpList.begin();
 
 	while (rtp_it != rtpList.end())
 	{
-		//! Ñîçäàåì òåêñòîâóş ñòğóêòóğó
+		//! Ğ¡Ğ¾Ğ·Ğ´Ğ°ĞµĞ¼ Ñ‚ĞµĞºÑÑ‚Ğ¾Ğ²ÑƒÑ ÑÑ‚Ñ€ÑƒĞºÑ‚ÑƒÑ€Ñƒ
 
 		my_rtpList[i].m_name = CORBA::string_dup(rtp_it->name().c_str());
 		
@@ -1396,7 +1396,7 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 		else
 			my_rtpList[i].m_type=rdo::compiler::parser::RDOCorba::rt_temporary;
 
-		//! Ñ÷èòàåì êîëè÷åñòâî ïàğàìåòğîâ i-ãî òèïà ğåñóğñà
+		//! Ğ¡Ñ‡Ğ¸Ñ‚Ğ°ĞµĞ¼ ĞºĞ¾Ğ»Ğ¸Ñ‡ĞµÑÑ‚Ğ²Ğ¾ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€Ğ¾Ğ² i-Ğ³Ğ¾ Ñ‚Ğ¸Ğ¿Ğ° Ñ€ĞµÑÑƒÑ€ÑĞ°
 		rdo::compiler::mbuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
 		my_rtpList[i].m_param_count = 0;
 
@@ -1406,15 +1406,15 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 			++param_it;
 		}
 		
-		//! Âûäåëÿåì ïàìÿòü ïîä ïîñëåäîâàòåëüíîñòü ïàğàìåòğîâ i-ãî òèïà ğåñóğñîâ
+		//! Ğ’Ñ‹Ğ´ĞµĞ»ÑĞµĞ¼ Ğ¿Ğ°Ğ¼ÑÑ‚ÑŒ Ğ¿Ğ¾Ğ´ Ğ¿Ğ¾ÑĞ»ĞµĞ´Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ÑÑ‚ÑŒ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€Ğ¾Ğ² i-Ğ³Ğ¾ Ñ‚Ğ¸Ğ¿Ğ° Ñ€ĞµÑÑƒÑ€ÑĞ¾Ğ²
 		my_rtpList[i].m_param.length(my_rtpList[i].m_param_count);
 
-		//! Ñíîâà âîçâğàùàåìñÿ â íà÷àëî ñïèñêà ïàğàìåòğîâ i-ãî òèïà ğåñóğñîâ
+		//! Ğ¡Ğ½Ğ¾Ğ²Ğ° Ğ²Ğ¾Ğ·Ğ²Ñ€Ğ°Ñ‰Ğ°ĞµĞ¼ÑÑ Ğ² Ğ½Ğ°Ñ‡Ğ°Ğ»Ğ¾ ÑĞ¿Ğ¸ÑĞºĞ° Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€Ğ¾Ğ² i-Ğ³Ğ¾ Ñ‚Ğ¸Ğ¿Ğ° Ñ€ĞµÑÑƒÑ€ÑĞ¾Ğ²
 		param_it = rtp_it->m_params.begin();
 
 		while (param_it != rtp_it->m_params.end())
 		{
-			//! Äîáàâëÿåì â ñòğóêòóğó ïàğàìåòğ!!!!!!!!!!!!!!!!
+			//! Ğ”Ğ¾Ğ±Ğ°Ğ²Ğ»ÑĞµĞ¼ Ğ² ÑÑ‚Ñ€ÑƒĞºÑ‚ÑƒÑ€Ñƒ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€!!!!!!!!!!!!!!!!
 			my_rtpList[i].m_param[j].m_name = CORBA::string_dup(param_it->name().c_str());
 
 			my_rtpList[i].m_param[j].m_range_int = 0;
@@ -1467,7 +1467,7 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 				{
 					my_rtpList[i].m_param[j].m_type = rdo::compiler::parser::RDOCorba::enum_type;
 					
-					//! Ñ÷èòàåì êîëè÷åñòâî çíà÷åíèé ïåğå÷èñëèìîãî òèïà
+					//! Ğ¡Ñ‡Ğ¸Ñ‚Ğ°ĞµĞ¼ ĞºĞ¾Ğ»Ğ¸Ñ‡ĞµÑÑ‚Ğ²Ğ¾ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğ¹ Ğ¿ĞµÑ€ĞµÑ‡Ğ¸ÑĞ»Ğ¸Ğ¼Ğ¾Ğ³Ğ¾ Ñ‚Ğ¸Ğ¿Ğ°
 					rdo::runtime::RDOEnumType::CIterator enum_it = param_it->getEnum()->getEnums().begin();
 
 					CORBA::Long k = 0;
@@ -1478,7 +1478,7 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 						enum_it++;
 					}
 
-					//! Âûäåëÿåì ïàìÿòü ïîä ïîñëåäîâàòåëüíîñòü çíà÷åíèé j-ãî ïàğàìåòğà ïåğå÷èñëèìîãî òèïà i-ãî òèïà ğåñóğñîâ
+					//! Ğ’Ñ‹Ğ´ĞµĞ»ÑĞµĞ¼ Ğ¿Ğ°Ğ¼ÑÑ‚ÑŒ Ğ¿Ğ¾Ğ´ Ğ¿Ğ¾ÑĞ»ĞµĞ´Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ÑÑ‚ÑŒ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğ¹ j-Ğ³Ğ¾ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€Ğ° Ğ¿ĞµÑ€ĞµÑ‡Ğ¸ÑĞ»Ğ¸Ğ¼Ğ¾Ğ³Ğ¾ Ñ‚Ğ¸Ğ¿Ğ° i-Ğ³Ğ¾ Ñ‚Ğ¸Ğ¿Ğ° Ñ€ĞµÑÑƒÑ€ÑĞ¾Ğ²
 					my_rtpList[i].m_param[j].m_var_enum.length(k);
 					
 					enum_it = param_it->getEnum()->getEnums().begin();
@@ -1515,7 +1515,7 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 
 void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS_var) my_rssList)
 {
-	//! Ïğîïàğñåëè òèïû è ğåñóğñû òåêñòà ìîäåëè (òåêóùèå, à íå çàïèñàííûå)
+	//! ĞŸÑ€Ğ¾Ğ¿Ğ°Ñ€ÑĞµĞ»Ğ¸ Ñ‚Ğ¸Ğ¿Ñ‹ Ğ¸ Ñ€ĞµÑÑƒÑ€ÑÑ‹ Ñ‚ĞµĞºÑÑ‚Ğ° Ğ¼Ğ¾Ğ´ĞµĞ»Ğ¸ (Ñ‚ĞµĞºÑƒÑ‰Ğ¸Ğµ, Ğ° Ğ½Ğµ Ğ·Ğ°Ğ¿Ğ¸ÑĞ°Ğ½Ğ½Ñ‹Ğµ)
 	rdo::compiler::parser::RDOParserCorba parser;
 	try
 	{
@@ -1526,33 +1526,33 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS
 	catch (REF(rdo::runtime::RDORuntimeException))
 	{}
 
-	//! Ïğîáåæàëèñü ïî âñåì ğåñóğñàì è ïåğåïèñàëè â RSSList
+	//! ĞŸÑ€Ğ¾Ğ±ĞµĞ¶Ğ°Ğ»Ğ¸ÑÑŒ Ğ¿Ğ¾ Ğ²ÑĞµĞ¼ Ñ€ĞµÑÑƒÑ€ÑĞ°Ğ¼ Ğ¸ Ğ¿ĞµÑ€ĞµĞ¿Ğ¸ÑĞ°Ğ»Ğ¸ Ğ² RSSList
 	rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
 	rdo::compiler::mbuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
 
 	::CORBA::Long i = 0, j = 0;
 	::CORBA::Long rss_count = 0;
 
-	//! Ñ÷èòàåì êîëè÷åñòâî ğåñóğñîâ
+	//! Ğ¡Ñ‡Ğ¸Ñ‚Ğ°ĞµĞ¼ ĞºĞ¾Ğ»Ğ¸Ñ‡ĞµÑÑ‚Ğ²Ğ¾ Ñ€ĞµÑÑƒÑ€ÑĞ¾Ğ²
 	while (rss_it != rssList.end())
 	{
 		++rss_count;
 		++rss_it;
 	}
 
-	//! Âûäåëÿåì ïÿìÿòü ïîä ïîñëåäîâàòåëüíîñòü
+	//! Ğ’Ñ‹Ğ´ĞµĞ»ÑĞµĞ¼ Ğ¿ÑĞ¼ÑÑ‚ÑŒ Ğ¿Ğ¾Ğ´ Ğ¿Ğ¾ÑĞ»ĞµĞ´Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ÑÑ‚ÑŒ
 	my_rssList->length(rss_count);
 
-	//! Ñíîâà âîçâğàùàåìñÿ â íà÷àëî ñïèñêà òèïîâ ğåñóğñîâ
+	//! Ğ¡Ğ½Ğ¾Ğ²Ğ° Ğ²Ğ¾Ğ·Ğ²Ñ€Ğ°Ñ‰Ğ°ĞµĞ¼ÑÑ Ğ² Ğ½Ğ°Ñ‡Ğ°Ğ»Ğ¾ ÑĞ¿Ğ¸ÑĞºĞ° Ñ‚Ğ¸Ğ¿Ğ¾Ğ² Ñ€ĞµÑÑƒÑ€ÑĞ¾Ğ²
 	rss_it = rssList.begin();
 
 	while (rss_it != rssList.end())
 	{
-		//! Çàïîëíÿåì çíà÷åíèÿ ñòğóêòóğû
+		//! Ğ—Ğ°Ğ¿Ğ¾Ğ»Ğ½ÑĞµĞ¼ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ñ ÑÑ‚Ñ€ÑƒĞºÑ‚ÑƒÑ€Ñ‹
 		my_rssList[i].m_name = CORBA::string_dup(rss_it->name().c_str());
 		my_rssList[i].m_type = CORBA::string_dup(rss_it->getType().name().c_str());
 		
-		//! Ñ÷èòàåì êîëè÷åñòâî ïàğàìåòğîâ i-ãî òèïà ğåñóğñà
+		//! Ğ¡Ñ‡Ğ¸Ñ‚Ğ°ĞµĞ¼ ĞºĞ¾Ğ»Ğ¸Ñ‡ĞµÑÑ‚Ğ²Ğ¾ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€Ğ¾Ğ² i-Ğ³Ğ¾ Ñ‚Ğ¸Ğ¿Ğ° Ñ€ĞµÑÑƒÑ€ÑĞ°
 		rdo::compiler::mbuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
 		
 		my_rssList[i].m_param_count = 0;
@@ -1563,10 +1563,10 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS
 			++param_it;
 		}
 		
-		//! Âûäåëÿåì ïàìÿòü ïîä ïîñëåäîâàòåëüíîñòü ïàğàìåòğîâ i-ãî ğåñóğñà
+		//! Ğ’Ñ‹Ğ´ĞµĞ»ÑĞµĞ¼ Ğ¿Ğ°Ğ¼ÑÑ‚ÑŒ Ğ¿Ğ¾Ğ´ Ğ¿Ğ¾ÑĞ»ĞµĞ´Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ğ¾ÑÑ‚ÑŒ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€Ğ¾Ğ² i-Ğ³Ğ¾ Ñ€ĞµÑÑƒÑ€ÑĞ°
 		my_rssList[i].m_param.length(my_rssList[i].m_param_count);
 
-		//! Ñíîâà âîçâğàùàåìñÿ â íà÷àëî ñïèñêà ïàğàìåòğîâ i-ãî ğåñóğñà
+		//! Ğ¡Ğ½Ğ¾Ğ²Ğ° Ğ²Ğ¾Ğ·Ğ²Ñ€Ğ°Ñ‰Ğ°ĞµĞ¼ÑÑ Ğ² Ğ½Ğ°Ñ‡Ğ°Ğ»Ğ¾ ÑĞ¿Ğ¸ÑĞºĞ° Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€Ğ¾Ğ² i-Ğ³Ğ¾ Ñ€ĞµÑÑƒÑ€ÑĞ°
 		param_it = rss_it->begin();
 
 		while (param_it != rss_it->end())
@@ -1612,7 +1612,7 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS
 	}
 
 /*
-	//! Ïğîïàğñåëè òèïû è ğåñóğñû òåêñòà ìîäåëè (òåêóùèå, à íå çàïèñàííûå)
+	//! ĞŸÑ€Ğ¾Ğ¿Ğ°Ñ€ÑĞµĞ»Ğ¸ Ñ‚Ğ¸Ğ¿Ñ‹ Ğ¸ Ñ€ĞµÑÑƒÑ€ÑÑ‹ Ñ‚ĞµĞºÑÑ‚Ğ° Ğ¼Ğ¾Ğ´ĞµĞ»Ğ¸ (Ñ‚ĞµĞºÑƒÑ‰Ğ¸Ğµ, Ğ° Ğ½Ğµ Ğ·Ğ°Ğ¿Ğ¸ÑĞ°Ğ½Ğ½Ñ‹Ğµ)
 	rdo::compiler::parser::RDOParserCorba parser;
 	try
 	{
@@ -1623,15 +1623,15 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS
 	catch (REF(rdo::runtime::RDORuntimeException))
 	{}
 
-	//! Ïğîáåæàëèñü ïî âñåì ğåñóğñàì è ïåğåïèñàëè â RSSList
+	//! ĞŸÑ€Ğ¾Ğ±ĞµĞ¶Ğ°Ğ»Ğ¸ÑÑŒ Ğ¿Ğ¾ Ğ²ÑĞµĞ¼ Ñ€ĞµÑÑƒÑ€ÑĞ°Ğ¼ Ğ¸ Ğ¿ĞµÑ€ĞµĞ¿Ğ¸ÑĞ°Ğ»Ğ¸ Ğ² RSSList
 	rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
 	rdo::compiler::mbuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
 	while (rss_it != rssList.end())
 	{
-		//! Ñîçäàåì òåêñòîâóş ñòğóêòóğó
+		//! Ğ¡Ğ¾Ğ·Ğ´Ğ°ĞµĞ¼ Ñ‚ĞµĞºÑÑ‚Ğ¾Ğ²ÑƒÑ ÑÑ‚Ñ€ÑƒĞºÑ‚ÑƒÑ€Ñƒ
 		RSS rss;
 		rss.m_name = rss_it->name();
-		//! Çàïîìèíàåì â ñïèñêå
+		//! Ğ—Ğ°Ğ¿Ğ¾Ğ¼Ğ¸Ğ½Ğ°ĞµĞ¼ Ğ² ÑĞ¿Ğ¸ÑĞºĞµ
 		RSSList->push_back(rss);
 		rss_it++;
 	}
