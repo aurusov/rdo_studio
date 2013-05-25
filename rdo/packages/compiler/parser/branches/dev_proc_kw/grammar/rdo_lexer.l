@@ -325,6 +325,7 @@ $term                          return(RDO_Fuzzy_Term);
 $Sprite                        return(RDO_Sprite);
 $sprite                        return(RDO_Sprite);
 sprite                         return(RDO_sprite_call);
+size_queue                     return(RDO_size_queue);
 
 (\'[^\']*\') {
 	tstring n1(YYText());

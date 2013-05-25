@@ -30,11 +30,6 @@ inline ruint RDOPROCQueue::getDefaultValue()
 	return 0;
 }
 
-inline tstring RDOPROCQueue::getQueueParamName()
-{
-	return "длина_очереди";
-}
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCDepart
 // --------------------------------------------------------------------------------
@@ -45,11 +40,6 @@ inline RDOPROCDepart::RDOPROCDepart(LPIPROCProcess process, parser_for_Queue Fro
 inline ruint RDOPROCDepart::getDefaultValue()
 {
 	return 0;
-}
-
-inline tstring RDOPROCDepart::getDepartParamName()
-{
-	return "длина_очереди";
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

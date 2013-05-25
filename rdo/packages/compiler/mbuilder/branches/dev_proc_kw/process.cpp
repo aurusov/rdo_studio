@@ -31,12 +31,9 @@ void BlockForQueue::createRes(RDOResType rtp, CREF(tstring) res_name)
 	rssList.append<parser::RDORSSResource>(rss);
 }
 
-rbool BlockForQueue::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info)
+rbool BlockForQueue::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info, CREF(tstring) rtp_param_name)
 {
 	UNUSED(info);
-
-	// "длина_очереди"
-	tstring rtp_param_name = rdo::runtime::RDOPROCQueue::getQueueParamName();
 	// Тип найден, проверим его на наличие параметра "длина_очереди"
 	if (!rtp.m_params[rtp_param_name].exist())
 		parser::RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' нет параметра integer '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
@@ -52,10 +49,8 @@ rbool BlockForQueue::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) in
 	return true;
 }
 
-RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(parser::RDOParserSrcInfo) info)
+RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(tstring) rtp_param_name, CREF(parser::RDOParserSrcInfo) info)
 {
-	// "длина_очереди"
-	tstring rtp_param_name = rdo::runtime::RDOPROCQueue::getQueueParamName();
 	// значение длины очереди по умолчанию
 	parser::LPRDOValue pDefaultValue = rdo::Factory<parser::RDOValue>::create(
 		rdo::explicit_value<ruint>(rdo::runtime::RDOPROCQueue::getDefaultValue()),

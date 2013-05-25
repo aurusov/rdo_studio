@@ -72,7 +72,6 @@ QUERY_INTERFACE_END
 
 public:
 	static ruint   getDefaultValue  ();
-	static tstring getQueueParamName();
 
 private:
 	RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_Par);
@@ -94,7 +93,6 @@ QUERY_INTERFACE_END
 
 public:
 	static ruint   getDefaultValue   ();
-	static tstring getDepartParamName();
 
 private:
 	RDOPROCDepart(LPIPROCProcess process, parser_for_Queue From_Par);

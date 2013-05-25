@@ -165,7 +165,7 @@ class RDOPROCQueue: public RDOPROCBlockForQueue
 DECLARE_FACTORY(RDOPROCQueue);
 public:
 	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
-	void createRuntime();
+	void createRuntime(CREF(tstring) rtp_param_name);
 	void setResource  (CREF(tstring) name);
 
 protected:
@@ -185,7 +185,7 @@ class RDOPROCDepart: public RDOPROCBlockForQueue
 DECLARE_FACTORY(RDOPROCDepart);
 public:
 	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
-	void createRuntime();
+	void createRuntime(CREF(tstring) rtp_param_name);
 	void setResource  (CREF(tstring) name);
 
 protected:

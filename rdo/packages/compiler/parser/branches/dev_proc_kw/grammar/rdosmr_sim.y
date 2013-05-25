@@ -199,6 +199,7 @@
 
 %token RDO_Sprite
 %token RDO_sprite_call
+%token RDO_size_queue
 
 %{
 // ---------------------------------------------------------------------------- PCH
@@ -497,6 +498,9 @@ smr_cond
 	| smr_cond error
 	{
 		PARSER->error().error(@2, "Неизвестная ошибка");
+	}
+	| smr_cond RDO_size_queue '=' RDO_IDENTIF ';'
+	{
 	}
 	;
 

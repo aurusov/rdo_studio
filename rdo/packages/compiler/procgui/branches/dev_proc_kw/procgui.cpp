@@ -627,14 +627,15 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 	rdo::compiler::mbuilder::RDOResType     rtp;
 	tstring rtpName   = "QDEPART";
 	tstring queueName = "Очередь_" + m_resourceName;
+	tstring rtp_param_name = pParser->getProcSizeQueueValue();
 	//! Если ресурс существует, берем его тип и проверяем
 	if (rssList[m_resourceName].exist())
 	{
-		rtp = rssList[m_resourceName].getType();
-		rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, parser::RDOParserSrcInfo());
+		rtp = rssList[m_resourceName].getType(); 
+		rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, parser::RDOParserSrcInfo(), rtp_param_name);
 		parser::LPRDOPMDWatchPar pResult = rdo::Factory<parser::RDOPMDWatchPar>::create(parser::RDOParserSrcInfo(queueName));
 		ASSERT(pResult);
-		pResult->init(false, parser::RDOParserSrcInfo(m_resourceName), parser::RDOParserSrcInfo(tstring("длина_очереди")));
+		pResult->init(false, parser::RDOParserSrcInfo(m_resourceName), parser::RDOParserSrcInfo(rtp_param_name));
 	}
 	else
 	{
@@ -642,23 +643,24 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 		if (rtpList[rtpName].exist())
 		{
 			rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtpName];
-			if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, parser::RDOParserSrcInfo()))
+			if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, parser::RDOParserSrcInfo(), rtp_param_name))
 			{
 				rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, m_resourceName);
 				parser::LPRDOPMDWatchPar pResult = rdo::Factory<parser::RDOPMDWatchPar>::create(parser::RDOParserSrcInfo(queueName));
 				ASSERT(pResult);
-				pResult->init(false, parser::RDOParserSrcInfo(m_resourceName), parser::RDOParserSrcInfo(tstring("длина_очереди")));
+				pResult->init(false, parser::RDOParserSrcInfo(m_resourceName), parser::RDOParserSrcInfo(rtp_param_name));
 			}
 		}
 		else
 		{
-			rdo::compiler::mbuilder::RDOResType rtp_ = rdo::compiler::mbuilder::BlockForQueue::createType(rtpName, parser::RDOParserSrcInfo());
-			if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, parser::RDOParserSrcInfo()))
+			tstring rtp_param_name = pParser->getProcSizeQueueValue();
+			rdo::compiler::mbuilder::RDOResType rtp_ = rdo::compiler::mbuilder::BlockForQueue::createType(rtpName, rtp_param_name, parser::RDOParserSrcInfo());
+			if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, parser::RDOParserSrcInfo(), rtp_param_name))
 			{
 				rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, m_resourceName);
 				parser::LPRDOPMDWatchPar pResult = rdo::Factory<parser::RDOPMDWatchPar>::create(parser::RDOParserSrcInfo(queueName));
 				ASSERT(pResult);
-				pResult->init(false, parser::RDOParserSrcInfo(m_resourceName), parser::RDOParserSrcInfo(tstring("длина_очереди")));
+				pResult->init(false, parser::RDOParserSrcInfo(m_resourceName), parser::RDOParserSrcInfo(rtp_param_name));
 			}
 		}
 	}
@@ -681,7 +683,7 @@ void ProcGUIQueue::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::L
 		//! Создадим тип ресурса
 		rdo::compiler::mbuilder::RDOResType rtp = rssList[resName].getType();
 		//! "длина_очереди"
-		tstring rtpParamName        = rdo::runtime::RDOPROCQueue::getQueueParamName();
+		tstring rtpParamName        = pParser->getProcSizeQueueValue();
 		m_parserForRuntime.Id_res   = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtpParamName].id();
 	}
@@ -711,26 +713,28 @@ ProcGUIDepart::ProcGUIDepart(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDO
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	rdo::compiler::mbuilder::RDOResType rtp;
 	tstring rtpName = "QDEPART";
+	//! Длина очереди
+	tstring rtp_param_name = pParser->getProcSizeQueueValue();
 	//! Если ресурс существует, берем его тип и проверяем
 	if (rssList[m_resourceName].exist())
 	{
 		rtp = rssList[m_resourceName].getType();
-		rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, parser::RDOParserSrcInfo());
+		rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, parser::RDOParserSrcInfo(), rtp_param_name);
 	}
 	else
 	{
 		if (rtpList[rtpName].exist())
 		{
 			rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtpName];
-			if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, parser::RDOParserSrcInfo()))
+			if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, parser::RDOParserSrcInfo(), rtp_param_name))
 			{
 				rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, m_resourceName);
 			}
 		}
 		else
 		{
-			rdo::compiler::mbuilder::RDOResType rtp_ = rdo::compiler::mbuilder::BlockForQueue::createType(rtpName, parser::RDOParserSrcInfo());
-			if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, parser::RDOParserSrcInfo()))
+			rdo::compiler::mbuilder::RDOResType rtp_ = rdo::compiler::mbuilder::BlockForQueue::createType(rtpName, rtp_param_name, parser::RDOParserSrcInfo());
+			if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, parser::RDOParserSrcInfo(), rtp_param_name))
 			{
 				rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, m_resourceName);
 			}
@@ -755,7 +759,7 @@ void ProcGUIDepart::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::
 		//! Создадим тип ресурса
 		rdo::compiler::mbuilder::RDOResType rtp = rssList[resName].getType();
 		//! "длина_очереди"
-		tstring rtpParamName        = rdo::runtime::RDOPROCDepart::getDepartParamName();
+		tstring rtpParamName        = pParser->getProcSizeQueueValue();
 		m_parserForRuntime.Id_res   = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtpParamName].id();
 	}	

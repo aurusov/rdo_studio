@@ -199,6 +199,7 @@
 
 %token RDO_Sprite
 %token RDO_sprite_call
+%token RDO_size_queue
 
 %{
 // ---------------------------------------------------------------------------- PCH
@@ -433,7 +434,9 @@ dpt_process_line
 		TRACE("QUEUE dpt_queue_param\n");
 		LPRDOPROCQueue pQueue = PARSER->stack().pop<RDOPROCQueue>($2);
 		ASSERT(pQueue);
-		pQueue->createRuntime();
+		//! "длина_очереди"
+		tstring rtp_param_name = PARSER->getProcSizeQueueValue();
+		pQueue->createRuntime(rtp_param_name);
 		$$ = PARSER->stack().push(pQueue);
 	}
 	| RDO_QUEUE error
@@ -445,7 +448,9 @@ dpt_process_line
 		TRACE("DEPART dpt_depart_param\n");
 		LPRDOPROCDepart pDepart = PARSER->stack().pop<RDOPROCDepart>($2);
 		ASSERT(pDepart);
-		pDepart->createRuntime();
+		//! Длина очереди
+		tstring rtp_param_name = PARSER->getProcSizeQueueValue();
+		pDepart->createRuntime(rtp_param_name);
 		$$ = PARSER->stack().push(pDepart);
 	}
 	| RDO_DEPART error

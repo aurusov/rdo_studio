@@ -156,7 +156,7 @@ RDOPROCQueue::RDOPROCQueue(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
 	: RDOPROCBlockForQueue(pProcess, name)
 {}
 
-void RDOPROCQueue::createRuntime()
+void RDOPROCQueue::createRuntime(CREF(tstring) rtp_param_name)
 {
 	LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource(m_resourceName);
 	if (pResource)
@@ -166,8 +166,6 @@ void RDOPROCQueue::createRuntime()
 		rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
 		//! Создадим тип ресурса
 		rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
-		//! "длина_очереди"
-		tstring rtp_param_name      = rdo::runtime::RDOPROCQueue::getQueueParamName();
 		m_parserForRuntime.Id_res   = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtp_param_name].id();
 	}
@@ -194,7 +192,7 @@ RDOPROCDepart::RDOPROCDepart(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name
 	: RDOPROCBlockForQueue(pProcess, name)
 {}
 
-void RDOPROCDepart::createRuntime()
+void RDOPROCDepart::createRuntime(CREF(tstring) rtp_param_name)
 {
 	LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource(m_resourceName);
 	if (pResource)
@@ -204,8 +202,6 @@ void RDOPROCDepart::createRuntime()
 		rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
 		//! Создадим тип ресурса
 		rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
-		//! "длина_очереди"
-		tstring rtp_param_name      = rdo::runtime::RDOPROCDepart::getDepartParamName();
 		m_parserForRuntime.Id_res   = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtp_param_name].id(); 
 	}	

@@ -24,9 +24,9 @@ OPEN_COMPILER_MBUILDER_NAMESPACE
 class BlockForQueue
 {
 public:
-	static rbool      checkType (RDOResType rtp,         CREF(parser::RDOParserSrcInfo) info    );
+	static rbool      checkType (RDOResType rtp,         CREF(parser::RDOParserSrcInfo) info, CREF(tstring) rtp_param_name    );
 	static void       createRes (RDOResType rtp,         CREF(tstring)                  res_name);
-	static RDOResType createType(CREF(tstring) rtp_name, CREF(parser::RDOParserSrcInfo) info    );
+	static RDOResType createType(CREF(tstring) rtp_name, CREF(tstring) rtp_param_name, CREF(parser::RDOParserSrcInfo) info    );
 };
 
 // --------------------------------------------------------------------------------

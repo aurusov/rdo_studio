@@ -140,6 +140,9 @@ public:
 	tstring getModelStructure();
 	tstring getChanges       () const;
 
+	void    setProcSizeQueueValue(tstring procSizeQueueValue){ m_procSizeQueueValue = procSizeQueueValue; }
+	tstring getProcSizeQueueValue()               { return m_procSizeQueueValue; }
+
 	LPRDOSMR getSMR() const              { return m_pSMR;                }
 	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
 	rbool    hasSMR() const              { return m_pSMR ? true : false; }
@@ -253,6 +256,8 @@ private:
 	LPContextStack        m_pContextStack;
 	rbool                 m_pattern;
 	rdo::IDGenerator      m_resultGeneratorID;
+	//! Значение параметра "длина_очереди" процессного ресурса
+	tstring               m_procSizeQueueValue;
 
 	template <class T>
 	void howIsIt()

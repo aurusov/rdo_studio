@@ -201,6 +201,7 @@
 
 %token RDO_Sprite
 %token RDO_sprite_call
+%token RDO_size_queue
 
 %{
 // ---------------------------------------------------------------------------- PCH
