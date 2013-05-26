@@ -325,7 +325,14 @@ $term                          return(RDO_Fuzzy_Term);
 $Sprite                        return(RDO_Sprite);
 $sprite                        return(RDO_Sprite);
 sprite                         return(RDO_sprite_call);
+sys_free                       return(RDO_sys_free);
+sys_busy                       return(RDO_sys_busy);
 size_queue                     return(RDO_size_queue);
+time_create                    return(RDO_time_create);
+sys_status                     return(RDO_sys_status);
+sys_queue                      return(RDO_sys_queue);
+QDEPART                        return(RDO_QDEPART);
+
 
 (\'[^\']*\') {
 	tstring n1(YYText());
