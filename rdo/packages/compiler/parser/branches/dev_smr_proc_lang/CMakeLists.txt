@@ -131,7 +131,8 @@ SET(HEADER_FILES
 SET(INLITE_FILES
     rdo_logic.inl
     bison_value_pair.inl
-    rdoparser_lexer.inl
+	rdoparser.inl
+	rdoparser_lexer.inl
     rdopatpreparse.inl
     rdo_value.inl
     rdortp.inl

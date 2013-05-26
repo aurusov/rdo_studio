@@ -2696,6 +2696,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\rdoparser.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\rdoparser_base.cpp"
 				>
 			</File>

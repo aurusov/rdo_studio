@@ -112,109 +112,74 @@ public:
 	virtual void init  ();
 	virtual void deinit();
 
-	CREF(rdo::runtime::LPRDORuntime) runtime() const { return m_pRuntime; }
+    CREF(rdo::runtime::LPRDORuntime) runtime() const;
 
-	rbool             isPattern       () const { return m_pattern;     }
-	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
+    rbool             isPattern       () const;
+    REF(FUNGroupList) getFUNGroupStack();
 
-	void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
-	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
-	void  checkDPTName         (CREF(RDOParserSrcInfo) src_info);
+    void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
+    void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
+    void  checkDPTName         (CREF(RDOParserSrcInfo) src_info);
 
-	void  insertChanges        (CREF(tstring) name, CREF(tstring) value);
+    void  insertChanges        (CREF(tstring) name, CREF(tstring) value);
 
-	rbool isHaveKWResources    ()            const { return m_have_kw_Resources;     }
-	void  setHaveKWResources   (rbool value)       { m_have_kw_Resources = value;    }
-	rbool isHaveKWResourcesEnd ()            const { return m_have_kw_ResourcesEnd;  }
-	void  setHaveKWResourcesEnd(rbool value)       { m_have_kw_ResourcesEnd = value; }
+    rbool isHaveKWResources    () const;
+    void  setHaveKWResources   (rbool value);
+    rbool isHaveKWResourcesEnd () const;
+    void  setHaveKWResourcesEnd(rbool value);
 
 	rbool isCurrentDPTSearch   ();
 	rbool isCurrentDPTPrior    ();
 
-	ruint getRTP_id     () const { return m_allRTPResType.size()  + 1; }
-	ruint getRSS_id     () const { return m_allRSSResource.size() + 0; }
-	ruint getPAT_id     () const { return m_allPATPattern.size()  + 0; }
-	ruint getPMD_id     ()       { return m_resultGeneratorID.get();   }
-	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
-	ruint getSeriesCapacity() const { return m_foundRunNumber; }
+    ruint getRTP_id        () const;
+    ruint getRSS_id        () const;
+    ruint getPAT_id        () const;
+    ruint getPMD_id        ();
+    ruint getFUNCONST_id   () const;
+    ruint getSeriesCapacity() const;
 
 	void  setCurrentRunNumber (ruint  value);
-	void  foundEndOfNextRun   ()            ;
+    void  foundEndOfNextRun   ();
 
 	rbool check               () const;
 
 	tstring getModelStructure();
 	tstring getChanges       () const;
 
-	LPRDOSMR getSMR() const              { return m_pSMR;                }
-	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
-	rbool    hasSMR() const              { return m_pSMR ? true : false; }
+    LPRDOSMR getSMR() const;
+    void     setSMR(CREF(LPRDOSMR) pSMR);
+    rbool    hasSMR() const;
 
 	void parse();
 	void parse(ruint count);
 	void parse(REF(std::istream) stream);
 
-	CREF(Error) error() const { return m_error; }
-	 REF(Error) error()       { return m_error; }
+    CREF(Error) error() const;
+     REF(Error) error();
 
-	class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
-	{
-	friend class RDOParser;
-	public:
-		typedef rdo::IndexedStack<rdo::LPISmartPtrWrapper> IndexedStack;
+    class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
+    {
+        friend class RDOParser;
+    public:
+        typedef rdo::IndexedStack<rdo::LPISmartPtrWrapper> IndexedStack;
 
-		template <class T>
-		IndexedStack::ID push(CREF(rdo::intrusive_ptr<T>) pObject)
-		{
-			rdo::LPISmartPtrWrapper pWrapper = new rdo::smart_ptr_wrapper<T>(pObject);
-			return IndexedStack::push(pWrapper);
-		}
-		template <class T>
-		rdo::intrusive_ptr<T> pop(IndexedStack::ID id)
-		{
-			rdo::LPISmartPtrWrapper pWrapper = IndexedStack::pop(id);
-			ASSERT(pWrapper);
+        template <class T>
+        IndexedStack::ID push(CREF(rdo::intrusive_ptr<T>) pObject);
 
-			// Падение в в этом месте означает, что из стека вытаскивается указатель неправильного типа
-			// Что бы узнать тип, необходимо найти команду push для этого указателя
-			ASSERT((pWrapper->getRefCounter() && dynamic_cast<CPTR(T)>(pWrapper->getRefCounter())) || !pWrapper->getRefCounter());
+        template <class T>
+        rdo::intrusive_ptr<T> pop(IndexedStack::ID id);
 
-			rdo::intrusive_ptr<T> pObject = *reinterpret_cast<PTR(rdo::intrusive_ptr<T>)>(pWrapper->getSmartPtr());
-			pWrapper->destroy();
-			return pObject;
-		}
+        rdo::LPISmartPtrWrapper raw_pop(IndexedStack::ID id);
 
-		rdo::LPISmartPtrWrapper raw_pop(IndexedStack::ID id)
-		{
-			rdo::LPISmartPtrWrapper pWrapper = IndexedStack::pop(id);
-			ASSERT(pWrapper);
-			return pWrapper;
-		}
+    private:
+        void clear();
+    };
 
-	private:
-		void clear()
-		{
-			STL_FOR_ALL(m_stack, it)
-			{
-				it->second->destroy();
-			}
-		}
-	};
-
-	REF(Stack) stack()
-	{
-		return m_movementObjectList;
-	}
+    REF(Stack) stack();
 
 	typedef std::vector<LPTypeInfo> PreCastTypeList;
-	CREF(PreCastTypeList) getPreCastTypeList() const
-	{
-		return m_preCastTypeList;
-	}
-	void insertPreCastType(CREF(LPTypeInfo) pType)
-	{
-		m_preCastTypeList.push_back(pType);
-	}
+    CREF(PreCastTypeList) getPreCastTypeList() const;
+    void insertPreCastType(CREF(LPTypeInfo) pType);
 
 	LPContextStack contextStack();
 	LPContext      context     () const;
@@ -233,18 +198,9 @@ protected:
 
 	virtual CREF(LPRDOParserContainer) getContainer() const = 0;
 
-	RDOParserContainer::Iterator begin()
-	{
-		return getContainer()->begin();
-	}
-	RDOParserContainer::Iterator end()
-	{
-		return getContainer()->end();
-	}
-	RDOParserContainer::Iterator find(ruint index)
-	{
-		return getContainer()->find(index);
-	}
+    RDOParserContainer::Iterator begin();
+    RDOParserContainer::Iterator end();
+    RDOParserContainer::Iterator find(ruint index);
 
 	rdo::runtime::LPRDORuntime m_pRuntime;
 
@@ -264,43 +220,35 @@ private:
 	ruint                 m_currentRunNumber;
 
 	template <class T>
-	void howIsIt()
-	{
-		howIsIt(identity<T>());
-	}
+    void howIsIt();
 
 	template <class T>
-	void howIsIt(identity<T>)
-	{
-		m_pattern = false;
-	}
+    void howIsIt(identity<T>);
 
-	void howIsIt(identity<LPRDOFUNGroup>)
-	{}
+    void howIsIt(identity<LPRDOFUNGroup>);
 
-	void howIsIt(identity<LPRDOPATPattern>)
-	{
-		m_pattern = true;
-	}
+    void howIsIt(identity<LPRDOPATPattern>);
 
-	struct Changes
-	{
-		tstring m_name;
-		tstring m_value;
-		Changes(CREF(tstring) name, CREF(tstring) value)
-			: m_name (name )
-			, m_value(value)
-		{}
-	};
-	typedef std::vector<Changes> ChangesList;
-	ChangesList m_changes;
+    struct Changes;
+    typedef std::vector<Changes> ChangesList;
+    ChangesList m_changes;
 
-	typedef std::list<LPRDOParser> ParserList;
+    typedef std::list<LPRDOParser> ParserList;
 	static ParserList s_parserStack;
 
 	DECLARE_IContextFind;
 };
 DECLARE_POINTER(RDOParser);
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOParser::Changes
+// --------------------------------------------------------------------------------
+struct RDOParser::Changes
+{
+    tstring m_name;
+    tstring m_value;
+    Changes(CREF(tstring) name, CREF(tstring) value);
+};
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserTemplate
@@ -313,30 +261,14 @@ DECLARE_FACTORY(RDOParserTemplate<Container>);
 private:
 	typedef  RDOParser  parent_type;
 
-	RDOParserTemplate()
-		: RDOParser()
-	{}
-	virtual ~RDOParserTemplate()
-	{}
+    RDOParserTemplate();
+    virtual ~RDOParserTemplate();
 
-	virtual void init()
-	{
-		m_pContainer = rdo::Factory<Container>::create();
-		ASSERT(m_pContainer);
-		parent_type::init();
-	}
+    virtual void init();
 
-	virtual void deinit()
-	{
-		ASSERT(m_pContainer)
-		m_pContainer->clear();
-		parent_type::deinit();
-	}
+    virtual void deinit();
 
-	virtual CREF(LPRDOParserContainer) getContainer() const
-	{
-		return m_pContainer;
-	}
+    virtual CREF(LPRDOParserContainer) getContainer() const;
 
 	LPRDOParserContainer m_pContainer;
 };
@@ -359,5 +291,7 @@ typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorba;
 #endif
 
 CLOSE_RDO_PARSER_NAMESPACE
+
+#include "simulator/compiler/parser/rdoparser.inl"
 
 #endif // _RDOPARSER_H_
