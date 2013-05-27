@@ -1077,6 +1077,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					if (needNextRun())
 					{
 						++m_currentRunNumber;
+						m_pRuntimeClone->deinit();
 						m_pThreadRuntime->start();
 					}
 					else
