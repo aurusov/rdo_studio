@@ -18,13 +18,16 @@ function toggle_display(e)
 	<DIV>
 		<H1>ОБЪЕКТ СЦЕНАРИЯ ЗАПУСКОВ</H1>
 		<P><B>Объект сценария запусков</B> (с расширением <FONT class="syntax">.smr</FONT>) задает начальные условия для множества прогонов модели.</P>
-		<P>Сценарий запуска имеет следующий формат:</P>
+		<P>Он состоит из двух частей. В первой части описывается сценарий запуска.</P>
+		<P>Он имеет следующий формат:</P>
 		<PRE class="syntax"><A class="syntax" href="#model_launch_series">&lt;серия_прогонов&gt;</A> | <A class="syntax" href="#model_launch">&lt;единичный_прогон&gt;</A></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="model_launch_series"></A><I>серия_прогонов</I></DT>
 			<DD class="syntax">Серия прогонов описывается следующим образом:
-				<PRE class="syntax">{ <A class="syntax" href="#model_launch_single_of_set">&lt;один_прогон_из_множества&gt;</A> }</PRE>
+				<PRE class="syntax">{ <A class="syntax" href="#launch_name">&lt;имя_прогона&gt;</A>  <A class="syntax" href="#model_launch_single_of_set">&lt;один_прогон_из_множества&gt;</A> }</PRE>
 				<DL class="syntax">
+					<DT class="syntax"><A name="launch_name"></A><I>имя_прогона</I></DT>
+					<DD class="syntax">Имя прогона - это <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>, оно не должно совпадать с ранее определенными именами.</DD>
 					<DT class="syntax"><A name="model_launch_single_of_set"></A><I>один_прогон_из_множества</I></DT>
 					<DD class="syntax">Один прогон внутри серии имеет следующий формат:
 						<PRE class="syntax">'{' <A class="syntax" href="#model_launch">&lt;единичный_прогон&gt;</A> '}'</PRE>
@@ -195,42 +198,56 @@ function toggle_display(e)
 				</DL>
 			</DD>
 		</DL>
+						
+<P><B>Вторая часть</B> сценария состоит из <A class="syntax" href="#run_manage">&lt;блока_управления прогоном&gt;</A>. Здесь можно задать в какой последовательности и при каких условях запускать <A class="syntax" href="#model_launch_series">&lt;серию_прогонов&gt;</A>.</P>
+<P>Формат задания <A class="syntax" href="#run_manage">&lt;блока_управления_прогоном&gt;</A>:</P>
+				<PRE class="syntax">
+<A class="syntax" href="#launch_name">&lt;имя_прогона_1&gt;</A>;
+<A class="syntax" href="#launch_name">&lt;имя_прогона_2&gt;</A>;
+<A class="syntax" href="#launch_name">&lt;имя_прогона_3&gt;</A>;</PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="run_manage"></A><I>блок_управления_прогоном</I></DT>
+					<DD class="syntax">Блок управления прогоном - блок в котором, определяется условия или последовательность запуска <A class="syntax" href="#run_series">&lt;серии_прогонов&gt;</A></DD>
+				</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Пример задания одного прогона</H4></A>
 		<DIV style="display:none" id="v1">
 		<PRE class="samples">
 	Show_mode = NoShow
 	Show_rate = 3600.0
-
+	Образец_прихода_клиента.planning( time_now + Интервал_прихода( 500 ) )
 	Terminate_if Ресурс_2.Параметр_5 = Занят 
-
 	Константа_1 = 20
-	Константа_5 = Занят
-
 	Ресурс_1.Параметр_2 = 3.4
-	Ресурс_3.Параметр_5 = Разгрузка
-
 	Последовательность_4.Seed = 363252
 		</PRE>
 		</DIV>
 		<A href="" class="ref" onclick="return toggle_display(v2);"><H4>Пример задания серии прогонов</H4></A>
 		<DIV style="display:none" id="v2">
 		<PRE class="samples">
+progon1
 {
-	Show_mode      = NoShow
-	Show_rate      = 3600.0
-	Образец_прихода_клиента.planning( time_now )
-	Интервал_прихода.seed = 987654323
-	Константа_1 = 20
-	Terminate_if Time_now >= 12 * 7 * 60
+	Длительность_обслуживания.seed = 100
+	Образец_прихода_клиента.planning( time_now + Интервал_прихода( 500 ) )
+	Terminate_if Time_now >= 10 * 28 * 30
 }
 
+progon2
 {
-	Show_mode      = NoShow
-	Show_rate      = 3600.0
-	Образец_прихода_клиента.planning( time_now )
-	Интервал_прихода.seed = 123549
-	Ресурс_3.Параметр_5 = Разгрузка
-	Terminate_if Time_now >= 12 * 7 * 60
+	Длительность_обслуживания.seed = 343453
+	Образец_прихода_клиента.planning( time_now + Интервал_прихода( 78 ) )
+	Terminate_if Time_now >= 10 * 28 * 30
+}
+
+
+int a = 1;
+if( a == 1 )
+{
+	progon1;
+	progon2;
+}
+else
+{
+	progon1;
 }
 		</PRE>
 		</DIV>
