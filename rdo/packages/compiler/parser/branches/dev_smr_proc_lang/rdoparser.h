@@ -131,22 +131,23 @@ public:
 	rbool isCurrentDPTSearch   ();
 	rbool isCurrentDPTPrior    ();
 
-    ruint getRTP_id        () const;
-    ruint getRSS_id        () const;
-    ruint getPAT_id        () const;
-    ruint getPMD_id        ();
-    ruint getFUNCONST_id   () const;
-    ruint getSeriesCapacity() const;
+	ruint getRTP_id        () const;
+	ruint getRSS_id        () const;
+	ruint getPAT_id        () const;
+	ruint getPMD_id        ();
+	ruint getFUNCONST_id   () const;
+	ruint getSeriesCapacity() const;
 
 	void  setCurrentRunNumber (ruint  value);
-    void  foundEndOfNextRun   ();
+	void  foundEndOfNextRun   ();
+	void  pushToContainer     ();
 
 	rbool check               () const;
 
 	tstring getModelStructure();
 	tstring getChanges       () const;
 
-    LPRDOSMR getSMR() const;
+	LPRDOSMR getSMR(ruint value);
     void     setSMR(CREF(LPRDOSMR) pSMR);
     rbool    hasSMR() const;
 
@@ -235,6 +236,9 @@ private:
 
     typedef std::list<LPRDOParser> ParserList;
 	static ParserList s_parserStack;
+
+	typedef std::vector<LPRDOSMR> SMRList;
+	SMRList SMRList_1;
 
 	DECLARE_IContextFind;
 };

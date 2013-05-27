@@ -639,10 +639,12 @@ void RDOThreadRunTime::start()
 	pResultsInfo = new rdo::service::simulation::RDOSimResultInformer(m_pSimulator->m_resultInfoString);
 
 	//! RDO config initialization
-	m_pSimulator->m_pRuntime->hotkey().clear();
-	m_pSimulator->m_pRuntime->setStartTime     (m_pSimulator->m_pParser->getSMR()->getRunStartTime  ());
-	m_pSimulator->m_pRuntime->setTraceStartTime(m_pSimulator->m_pParser->getSMR()->getTraceStartTime());
-	m_pSimulator->m_pRuntime->setTraceEndTime  (m_pSimulator->m_pParser->getSMR()->getTraceEndTime  ());
+	
+	m_pRuntimeClone = m_pSimulator->m_pRuntime->clone();
+	m_pSimulator->m_pRuntimeClone->hotkey().clear();
+	m_pSimulator->m_pRuntimeClone->setStartTime     (m_pSimulator->m_pParser->getSMR(m_currentRunNumber)->getRunStartTime  ());
+	m_pSimulator->m_pRuntimeClone->setTraceStartTime(m_pSimulator->m_pParser->getSMR(m_currentRunNumber)->getTraceStartTime());
+	m_pSimulator->m_pRuntimeClone->setTraceEndTime  (m_pSimulator->m_pParser->getSMR(m_currentRunNumber)->getTraceEndTime  ());
 
 	//! Modelling
 	m_pSimulator->m_canTrace = true;
@@ -865,6 +867,7 @@ RDOThreadSimulator::RDOThreadSimulator()
 	, m_exitCode        (rdo::simulation::report::EC_OK)
 	, m_seriesCapacity  (0                             )
 	, m_currentRunNumber(0                             )
+	, m_pRuntimeClone   (NULL                          )
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
 	notifies.push_back(RT_STUDIO_MODEL_RUN                );
@@ -1071,17 +1074,17 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 				{
 					//! Остановились сами нормально
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
-					closeModel();
 					if (needNextRun())
 					{
 						++m_currentRunNumber;
-						runModel();
+						m_pThreadRuntime->start();
 					}
 					else
 					{
 						m_currentRunNumber = 0;
 						m_seriesCapacity = 0;
 					}
+					closeModel();
 				}
 				else
 				{
@@ -1153,10 +1156,6 @@ rbool RDOThreadSimulator::parseModel()
 
 void RDOThreadSimulator::runModel()
 {
-	//! \error убедиться, что появится сообщение об ошибке
-	if (!parseModel())
-		return;
-
 	ASSERT(m_pParser );
 	ASSERT(m_pRuntime);
 

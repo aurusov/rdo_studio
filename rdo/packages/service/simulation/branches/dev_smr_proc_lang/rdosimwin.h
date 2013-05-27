@@ -211,6 +211,7 @@ private:
 	rdo::compiler::gui::LPProcGUIBlock    m_pBlock;
 	rdo::runtime::LPRDOThreadRunTime      m_pThreadRuntime;
 	rdo::simulation::report::RDOExitCode  m_exitCode;
+	rdo::runtime::LPRDORuntime            m_pRuntimeClone;
 
 	void terminateModel();
 	void closeModel    ();

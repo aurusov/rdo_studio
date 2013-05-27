@@ -83,9 +83,9 @@ inline ruint RDOParser::getSeriesCapacity() const
     return m_foundRunNumber;
 }
 
-inline LPRDOSMR RDOParser::getSMR() const
+inline LPRDOSMR RDOParser::getSMR(ruint value)
 {
-    return m_pSMR;
+    return SMRList_1[value];
 }
 
 inline void RDOParser::setSMR(CREF(LPRDOSMR) pSMR)

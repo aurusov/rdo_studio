@@ -253,6 +253,7 @@ smr_launch_set
 smr_launch_single_of_set
 	: '{' smr_launch '}'
 	{
+		PARSER->pushToContainer();
 		PARSER->foundEndOfNextRun();
 	}
 	| '{' smr_launch error

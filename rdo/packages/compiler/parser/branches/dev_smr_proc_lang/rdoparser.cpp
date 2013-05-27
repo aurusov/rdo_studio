@@ -201,6 +201,11 @@ void RDOParser::foundEndOfNextRun()
 	setSMR(pSMR);
 }
 
+void RDOParser::pushToContainer()
+{
+	SMRList.push_back(m_pSMR);
+}
+
 LPContextStack RDOParser::contextStack()
 {
 	return m_pContextStack;
