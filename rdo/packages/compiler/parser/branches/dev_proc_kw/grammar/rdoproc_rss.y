@@ -321,8 +321,8 @@ dpt_queue_param
 		//! Получили список всех типов ресурсов
 		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
-		tstring rtp_name = "QDEPART";
-		tstring q_name   = "Очередь_" + res_name;
+		tstring rtp_name = PARSER->getProcQDepartValue();
+		tstring q_name   = PARSER->getProcQueueValue() + "_" + res_name;
 		//! Длина очереди
 		tstring rtp_param_name = PARSER->getProcSizeQueueValue();
 		//! Если ресурс существует, берем его тип и проверяем
@@ -378,7 +378,7 @@ dpt_depart_param
 		//! Получили список всех типов ресурсов
 		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
-		tstring rtp_name = "QDEPART";
+		tstring rtp_name = PARSER->getProcQDepartValue();
 		tstring rtp_param_name = PARSER->getProcSizeQueueValue();
 		//! Если ресурс существует, берем его тип и проверяем
 		if (rssList[res_name].exist())

@@ -140,14 +140,26 @@ public:
 	tstring getModelStructure();
 	tstring getChanges       () const;
 
-	void    setProcSizeQueueValue(tstring procSizeQueueValue){ m_procSizeQueueValue = procSizeQueueValue; }
-	tstring getProcSizeQueueValue()               { return m_procSizeQueueValue = "sizeQueue"; }
+	void    setProcSizeQueueValue(tstring procSizeQueueValue){ m_procSizeQueueValue = procSizeQueueValue;             }
+	tstring getProcSizeQueueValue()           { return m_procSizeQueueValue = "sizeQueue";                            }
 
-	void    setProcResStateFreeValue(tstring procResStateFreeValue){ m_procResStateFreeValue = procResStateFreeValue;}
-	tstring getProcResStateFreeValue()               { return m_procResStateFreeValue =  "NewСвободен"; }
+	void    setProcResStateFreeValue(tstring procResStateFreeValue){ m_procResStateFreeValue = procResStateFreeValue; }
+	tstring getProcResStateFreeValue()        { return m_procResStateFreeValue =  "NewСвободен";                      }
 
 	void    setProcResStateBusyValue(tstring procResStateBusyValue){ m_procResStateBusyValue = procResStateBusyValue; }
-	tstring getProcResStateBusyValue()               { return m_procResStateBusyValue = "NewЗанят"; }
+	tstring getProcResStateBusyValue()        { return m_procResStateBusyValue = "NewЗанят";                          }
+
+	void    setProcQueueValue(tstring procQueueValue){ m_procQueueValue = procQueueValue;                             }
+	tstring getProcQueueValue()               { return m_procQueueValue = "NewОчередь";                               }
+
+	void    setProcQDepartValue(tstring procQDepartValue){ m_procQDepartValue = procQDepartValue;                     }
+	tstring getProcQDepartValue()             { return m_procQDepartValue = "NewQDEPART";                             }
+
+	void    setProcTransactionValue(tstring procTransactionValue){ m_procTransactionValue = procTransactionValue;     }
+	tstring getProcTransactionValue()             { return m_procTransactionValue = "NewТранзакты";                   }
+
+	void    setProcTimeCreateValue(tstring procTimeCreateValue){ m_procTimeCreateValue = procTimeCreateValue;         }
+	tstring getProcTimeCreateValue()             { return m_procTimeCreateValue = "NewТранзакты";                     }
 
 	LPRDOSMR getSMR() const              { return m_pSMR;                }
 	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
@@ -268,6 +280,14 @@ private:
 	tstring               m_procResStateFreeValue;
 	//! Значение параметра "Занят" процессного ресурса
 	tstring               m_procResStateBusyValue;
+	//! Значение параметра "Очередь" процессного ресурса
+	tstring               m_procQueueValue;
+	//! Значение параметра "Транзакты" процессного ресурса
+	tstring               m_procTransactionValue;
+	//! Значение параметра "Время_создания" процессного ресурса
+	tstring               m_procTimeCreateValue;
+	//! Значение параметра "QDEPART" процессного ресурса
+	tstring               m_procQDepartValue;
 
 	template <class T>
 	void howIsIt()

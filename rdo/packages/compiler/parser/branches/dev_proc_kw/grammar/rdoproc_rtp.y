@@ -248,7 +248,7 @@ prc_rtp_main
 	| prc_rtp_main RDO_Process RDO_IDENTIF RDO_IDENTIF error RDO_End
 	{
 		tstring rtp_name       = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
-		tstring rtp_param_name = "Время_создания";
+		tstring rtp_param_name = PARSER->getProcTimeCreateValue();
 
 		// Получили список всех типов ресурсов
 		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);

@@ -227,8 +227,8 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF
 	ASSERT(pParser  );
 	ASSERT(m_pParams);
 
-	tstring rtpName      = "Транзакты";
-	tstring rtpParamName = "Время_создания";
+	tstring rtpName      = pParser->getProcTransactionValue();
+	tstring rtpParamName = pParser->getProcTimeCreateValue();
 
 	//! Получили список всех типов ресурсов
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
@@ -633,8 +633,8 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 	//! Получили список всех типов ресурсов
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	rdo::compiler::mbuilder::RDOResType     rtp;
-	tstring rtpName   = "QDEPART";
-	tstring queueName = "Очередь_" + m_resourceName;
+	tstring rtpName   = pParser->getProcQDepartValue();;
+	tstring queueName = pParser->getProcQueueValue() + "_" + m_resourceName;
 	tstring rtp_param_name = pParser->getProcSizeQueueValue();
 	//! Если ресурс существует, берем его тип и проверяем
 	if (rssList[m_resourceName].exist())
@@ -720,7 +720,7 @@ ProcGUIDepart::ProcGUIDepart(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDO
 	//! Получили список всех типов ресурсов
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	rdo::compiler::mbuilder::RDOResType rtp;
-	tstring rtpName = "QDEPART";
+	tstring rtpName = pParser->getProcQDepartValue();
 	//! Длина очереди
 	tstring rtp_param_name = pParser->getProcSizeQueueValue();
 	//! Если ресурс существует, берем его тип и проверяем
