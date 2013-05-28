@@ -81,14 +81,10 @@ RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(tstring) rtp_p
 // --------------------------------------------------------------------------------
 // -------------------- BlockForSeize
 // --------------------------------------------------------------------------------
-rbool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info)
+rbool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info, CREF(tstring) rtp_state_free, CREF(tstring) rtp_state_buzy)
 {
 	// "Состояние"
 	tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
-	// "Свободен"
-	tstring rtp_state_free = rdo::runtime::RDOPROCBlockForSeize::getStateEnumFree();
-	// "Занят"
-	tstring rtp_state_buzy = rdo::runtime::RDOPROCBlockForSeize::getStateEnumBuzy();
 	// Тип найден, проверим его на наличие перечислимого параметра
 	if (!rtp.m_params[rtp_param_name].exist())
 		parser::RDOParser::s_parser()->error().error(info, rdo::format("У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
@@ -130,21 +126,16 @@ void BlockForSeize::reobjectRes(RDOResType rtp, CREF(tstring) res_name)
 	rssList.replace<parser::RDORSSResource>(rssNew);
 }
 
-RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(parser::RDOParserSrcInfo) info)
+RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(parser::RDOParserSrcInfo) info, CREF(tstring) rtp_state_free, CREF(tstring) rtp_state_buzy)
 {
 	// "Состояние"
 	tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
-	// "Свободен"
-	tstring rtp_state_free = rdo::runtime::RDOPROCBlockForSeize::getStateEnumFree();
 	parser::LPRDOValue pDefaultValue = rdo::Factory<parser::RDOValue>::create(
 		rdo::explicit_value<tstring>(rtp_state_free),
 		info
 	);
 	ASSERT(pDefaultValue);
 	pDefaultValue->setSrcText(rtp_state_free);
-	// "Занят"
-	tstring rtp_state_buzy = rdo::runtime::RDOPROCBlockForSeize::getStateEnumBuzy();
-
 	// Получили список всех типов ресурсов
 	RDOResTypeList rtpList(parser::RDOParser::s_parser());
 	// Создадим тип ресурса

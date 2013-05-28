@@ -26,16 +26,6 @@ inline tstring RDOPROCBlockForSeize::getStateParamName()
 	return "Состояние";
 }
 
-inline tstring RDOPROCBlockForSeize::getStateEnumFree()
-{
-	return "Свободен";
-}
-
-inline tstring RDOPROCBlockForSeize::getStateEnumBuzy()
-{
-	return "Занят";
-}
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCSeize
 // --------------------------------------------------------------------------------

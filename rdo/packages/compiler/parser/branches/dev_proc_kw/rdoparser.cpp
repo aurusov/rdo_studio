@@ -116,6 +116,8 @@ void RDOParser::init()
 	s_parserStack.push_back(this);
 
 	m_pRuntime = rdo::Factory<rdo::runtime::RDORuntime>::create(new rdo::runtime::Error());
+	m_pRuntime->setProcResStateFreeValueRuntime(this->getProcResStateFreeValue());
+	m_pRuntime->setProcResStateBusyValueRuntime(this->getProcResStateBusyValue());
 	ASSERT(m_pRuntime);
 	m_pRuntime->memory_insert(sizeof(RDOParser));
 	m_pRuntime->init();

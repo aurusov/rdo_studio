@@ -43,8 +43,10 @@ void RDOPROCBlockForSeize::_onStart(CREF(LPRDORuntime) pRuntime)
 		runtime_for_Seize bbb;
 		bbb.Id_param = Id_param;
 		bbb.rss = res.object_static_cast<RDOPROCResource>();
-		bbb.enum_free = RDOValue(bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumFree());
-		bbb.enum_buzy = RDOValue(bbb.rss->getParam(Id_param).getEnum(), RDOPROCBlockForSeize::getStateEnumBuzy());
+		tstring rtp_state_free = pRuntime->getProcResStateFreeValueRuntime();
+		bbb.enum_free = RDOValue(bbb.rss->getParam(Id_param).getEnum(), rtp_state_free);
+		tstring rtp_state_busy = pRuntime->getProcResStateBusyValueRuntime();
+		bbb.enum_buzy = RDOValue(bbb.rss->getParam(Id_param).getEnum(), rtp_state_busy);
 		forRes.push_back(bbb);
 		++it1;
 	}

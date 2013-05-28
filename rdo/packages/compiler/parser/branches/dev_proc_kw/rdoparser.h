@@ -141,7 +141,13 @@ public:
 	tstring getChanges       () const;
 
 	void    setProcSizeQueueValue(tstring procSizeQueueValue){ m_procSizeQueueValue = procSizeQueueValue; }
-	tstring getProcSizeQueueValue()               { return m_procSizeQueueValue; }
+	tstring getProcSizeQueueValue()               { return m_procSizeQueueValue = "sizeQueue"; }
+
+	void    setProcResStateFreeValue(tstring procResStateFreeValue){ m_procResStateFreeValue = procResStateFreeValue;}
+	tstring getProcResStateFreeValue()               { return m_procResStateFreeValue =  "NewСвободен"; }
+
+	void    setProcResStateBusyValue(tstring procResStateBusyValue){ m_procResStateBusyValue = procResStateBusyValue; }
+	tstring getProcResStateBusyValue()               { return m_procResStateBusyValue = "NewЗанят"; }
 
 	LPRDOSMR getSMR() const              { return m_pSMR;                }
 	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
@@ -258,6 +264,10 @@ private:
 	rdo::IDGenerator      m_resultGeneratorID;
 	//! Значение параметра "длина_очереди" процессного ресурса
 	tstring               m_procSizeQueueValue;
+	//! Значение параметра "Свободен" процессного ресурса
+	tstring               m_procResStateFreeValue;
+	//! Значение параметра "Занят" процессного ресурса
+	tstring               m_procResStateBusyValue;
 
 	template <class T>
 	void howIsIt()

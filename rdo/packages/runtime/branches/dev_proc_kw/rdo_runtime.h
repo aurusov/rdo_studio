@@ -105,6 +105,12 @@ public:
 	double getTimeNow();
 	double getSeconds();
 
+	void    setProcResStateFreeValueRuntime(tstring procResStateFreeValueRuntime){ m_procResStateFreeValueRuntime = procResStateFreeValueRuntime; }
+	tstring getProcResStateFreeValueRuntime()               { return m_procResStateFreeValueRuntime; }
+
+	void    setProcResStateBusyValueRuntime(tstring procResStateBusyValueRuntime){ m_procResStateBusyValueRuntime = procResStateBusyValueRuntime; }
+	tstring getProcResStateBusyValueRuntime()               { return m_procResStateBusyValueRuntime; }
+
 	ruint getCurrentTerm() const;
 	void  setCurrentTerm(ruint value);
 
@@ -224,6 +230,11 @@ private:
 	Notify              m_notify;
 	PTR(Error)          m_pError;
 	RDOHotKey           m_hotKey;
+	//! Значение параметра "Занят" процессного ресурса
+	tstring               m_procResStateBusyValueRuntime;
+	//! Значение параметра "Свободен" процессного ресурса
+	tstring               m_procResStateFreeValueRuntime;
+
 
 #ifdef _DEBUG
 	typedef  std::vector<ValueList>  State;
