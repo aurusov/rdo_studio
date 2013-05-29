@@ -161,6 +161,9 @@ public:
 	void    setProcTimeCreateValue(tstring procTimeCreateValue){ m_procTimeCreateValue = procTimeCreateValue;         }
 	tstring getProcTimeCreateValue()             { return m_procTimeCreateValue = "NewТранзакты";                     }
 
+	void    setProcStateValue(tstring procStateValue){ m_procStateValue = procStateValue;                             }
+	tstring getProcStateValue()             { return m_procStateValue = "NewСостояние";                               }
+
 	LPRDOSMR getSMR() const              { return m_pSMR;                }
 	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
 	rbool    hasSMR() const              { return m_pSMR ? true : false; }
@@ -288,6 +291,8 @@ private:
 	tstring               m_procTimeCreateValue;
 	//! Значение параметра "QDEPART" процессного ресурса
 	tstring               m_procQDepartValue;
+	//! Значение параметра "Состояние" процессного ресурса
+	tstring               m_procStateValue;
 
 	template <class T>
 	void howIsIt()

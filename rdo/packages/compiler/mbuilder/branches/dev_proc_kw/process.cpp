@@ -81,10 +81,8 @@ RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(tstring) rtp_p
 // --------------------------------------------------------------------------------
 // -------------------- BlockForSeize
 // --------------------------------------------------------------------------------
-rbool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info, CREF(tstring) rtp_state_free, CREF(tstring) rtp_state_buzy)
+rbool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info, CREF(tstring) rtp_state_free, CREF(tstring) rtp_state_buzy, CREF(tstring) rtp_param_name)
 {
-	// "Состояние"
-	tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
 	// Тип найден, проверим его на наличие перечислимого параметра
 	if (!rtp.m_params[rtp_param_name].exist())
 		parser::RDOParser::s_parser()->error().error(info, rdo::format("У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
@@ -126,10 +124,8 @@ void BlockForSeize::reobjectRes(RDOResType rtp, CREF(tstring) res_name)
 	rssList.replace<parser::RDORSSResource>(rssNew);
 }
 
-RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(parser::RDOParserSrcInfo) info, CREF(tstring) rtp_state_free, CREF(tstring) rtp_state_buzy)
+RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(parser::RDOParserSrcInfo) info, CREF(tstring) rtp_state_free, CREF(tstring) rtp_state_buzy, CREF(tstring) rtp_param_name)
 {
-	// "Состояние"
-	tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
 	parser::LPRDOValue pDefaultValue = rdo::Factory<parser::RDOValue>::create(
 		rdo::explicit_value<tstring>(rtp_state_free),
 		info

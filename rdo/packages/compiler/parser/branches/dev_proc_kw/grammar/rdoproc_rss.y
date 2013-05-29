@@ -425,11 +425,13 @@ dpt_seize_param
 		tstring rtp_state_free = PARSER->getProcResStateFreeValue();
 		//! Значение процессного ресурса "Занят"
 		tstring rtp_state_busy = PARSER->getProcResStateBusyValue();
+		//! Значение процессного ресурса "Состояние"
+		tstring rtp_param_name = PARSER->getProcStateValue();
 		//! Если ресурс существует, берем его тип и проверяем
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
-			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info,rtp_state_free ,rtp_state_busy))
+			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info,rtp_state_free ,rtp_state_busy, rtp_param_name))
 			{
 				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
 				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
@@ -450,14 +452,14 @@ dpt_seize_param
 			if (rtpList[rtp_name].exist())
 			{
 				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
-				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info,rtp_state_free ,rtp_state_busy))
+				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info,rtp_state_free ,rtp_state_busy, rtp_param_name))
 				{
 					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp_, res_name);
 				}
 			}
 			else
 			{
-				rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info,rtp_state_free ,rtp_state_busy);
+				rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info,rtp_state_free ,rtp_state_busy, rtp_param_name);
 				rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
 			}
 		}
@@ -474,11 +476,13 @@ dpt_seize_param
 		tstring rtp_state_free = PARSER->getProcResStateFreeValue();
 		//! Значение процессного ресурса "Занят"
 		tstring rtp_state_busy = PARSER->getProcResStateBusyValue();
+		//! Значение процессного ресурса "Состояние"
+		tstring rtp_param_name = PARSER->getProcStateValue();
 		//! Если ресурс существует, берем его тип и проверяем
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
-			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info,rtp_state_free ,rtp_state_busy))
+			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info,rtp_state_free ,rtp_state_busy, rtp_param_name))
 			{
 				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
 				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
@@ -498,14 +502,14 @@ dpt_seize_param
 			if (rtpList[rtp_name].exist())
 			{
 				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
-				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info,rtp_state_free ,rtp_state_busy))
+				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info,rtp_state_free ,rtp_state_busy, rtp_param_name))
 				{
 					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp_, res_name);
 				}
 			}
 			else
 			{
-				rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info,rtp_state_free ,rtp_state_busy);
+				rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info,rtp_state_free ,rtp_state_busy, rtp_param_name);
 				rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
 			}
 		}
@@ -529,10 +533,12 @@ dpt_release_param
 		tstring rtp_state_free = PARSER->getProcResStateFreeValue();
 		//! Значение процессного ресурса "Занят"
 		tstring rtp_state_busy = PARSER->getProcResStateBusyValue();
+		//! Значение процессного ресурса "Состояние"
+		tstring rtp_param_name = PARSER->getProcStateValue();
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
-			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info,rtp_state_free ,rtp_state_busy))
+			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info,rtp_state_free ,rtp_state_busy, rtp_param_name))
 			{
 				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
 				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
@@ -552,14 +558,14 @@ dpt_release_param
 			if (rtpList[rtp_name].exist())
 			{
 				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
-				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info,rtp_state_free ,rtp_state_busy))
+				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info,rtp_state_free ,rtp_state_busy, rtp_param_name))
 				{
 					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp_, res_name);
 				}
 			}
 			else
 			{
-				rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info,rtp_state_free ,rtp_state_busy);
+				rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info,rtp_state_free ,rtp_state_busy, rtp_param_name);
 				rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
 			}
 		}
@@ -576,11 +582,13 @@ dpt_release_param
 		tstring rtp_state_free = PARSER->getProcResStateFreeValue();
 		//! Значение процессного ресурса "Занят"
 		tstring rtp_state_busy = PARSER->getProcResStateBusyValue();
+		//! Значение процессного ресурса "Состояние"
+		tstring rtp_param_name = PARSER->getProcStateValue();
 		//! Если ресурс существует берем его тип и проверяем
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
-			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info,rtp_state_free ,rtp_state_busy))
+			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info,rtp_state_free ,rtp_state_busy, rtp_param_name))
 			{
 				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
 				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
@@ -600,14 +608,14 @@ dpt_release_param
 			if (rtpList[rtp_name].exist())
 			{
 				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
-				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info,rtp_state_free ,rtp_state_busy))
+				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info,rtp_state_free ,rtp_state_busy, rtp_param_name))
 				{
 					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp_, res_name);
 				}
 			}
 			else
 			{
-				rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info,rtp_state_free ,rtp_state_busy);
+				rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info,rtp_state_free ,rtp_state_busy, rtp_param_name);
 				rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
 			}
 		}

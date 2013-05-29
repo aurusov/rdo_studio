@@ -468,7 +468,9 @@ dpt_process_line
 		TRACE("SEIZE dpt_seize_param\n");
 		LPRDOPROCSeize pSeize = PARSER->stack().pop<RDOPROCSeize>($2);
 		ASSERT(pSeize);
-		pSeize->createRuntime();
+		//! Значение параметра "Состояние"
+		tstring rtp_param_name = PARSER->getProcStateValue();
+		pSeize->createRuntime(rtp_param_name);
 		$$ = PARSER->stack().push(pSeize);
 	}
 	| RDO_SEIZE error
@@ -480,7 +482,9 @@ dpt_process_line
 		TRACE("RELEASE dpt_release_param\n");
 		LPRDOPROCRelease pRelease = PARSER->stack().pop<RDOPROCRelease>($2);
 		ASSERT(pRelease);
-		pRelease->createRuntime();
+		//! Значение параметра "Состояние"
+		tstring rtp_param_name = PARSER->getProcStateValue();
+		pRelease->createRuntime(rtp_param_name);
 		$$ = PARSER->stack().push(pRelease);
 	}
 	| RDO_RELEASE error

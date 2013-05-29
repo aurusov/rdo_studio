@@ -217,7 +217,7 @@ class RDOPROCSeize: public RDOPROCBlockForSeize
 DECLARE_FACTORY(RDOPROCSeize);
 public:
 	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
-	void createRuntime();
+	void createRuntime(CREF(tstring) rtp_param_name);
 	void addResource  (CREF(tstring) name);
 
 protected:
@@ -241,7 +241,7 @@ class RDOPROCRelease: public RDOPROCBlockForSeize
 DECLARE_FACTORY(RDOPROCRelease);
 public:
 	LPIPROCBlock getRuntimeBlock() const { return m_pRuntime; }
-	void createRuntime();
+	void createRuntime(CREF(tstring) rtp_param_name);
 	void addResource  (CREF(tstring) name);
 
 protected:

@@ -235,7 +235,7 @@ RDOPROCSeize::RDOPROCSeize(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
 	: RDOPROCBlockForSeize(pProcess, name)
 {}
 
-void RDOPROCSeize::createRuntime()
+void RDOPROCSeize::createRuntime(CREF(tstring) rtp_param_name)
 {
 	STL_FOR_ALL_CONST(m_resourceList, it)
 	{
@@ -247,8 +247,6 @@ void RDOPROCSeize::createRuntime()
 			rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
 			// Создадим тип ресурса
 			rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
-			// "Состояние"
-			tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
 			// проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
@@ -289,7 +287,7 @@ RDOPROCRelease::RDOPROCRelease(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) na
 	: RDOPROCBlockForSeize(pProcess, name)
 {}
 
-void RDOPROCRelease::createRuntime()
+void RDOPROCRelease::createRuntime(CREF(tstring) rtp_param_name)
 {
 	STL_FOR_ALL_CONST(m_resourceList, it)
 	{
@@ -301,8 +299,6 @@ void RDOPROCRelease::createRuntime()
 			rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
 			//! Создадим тип ресурса
 			rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
-			//! "Состояние"
-			tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
 			//! проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
