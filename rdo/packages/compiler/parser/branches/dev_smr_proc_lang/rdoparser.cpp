@@ -130,6 +130,7 @@ void RDOParser::init()
 	LPRDOSMR pSMR = rdo::Factory<RDOSMR>::create();
 	ASSERT(pSMR);
 	setSMR(pSMR);
+	pushToContainer();
 
 	m_resultGeneratorID.get(); //! Для PMD нумерация с 1
 }

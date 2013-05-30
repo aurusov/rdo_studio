@@ -112,21 +112,23 @@ public:
 	virtual void init  ();
 	virtual void deinit();
 
-    CREF(rdo::runtime::LPRDORuntime) runtime() const;
+	ruint  m_currentRunNumber;
 
-    rbool             isPattern       () const;
-    REF(FUNGroupList) getFUNGroupStack();
+	CREF(rdo::runtime::LPRDORuntime) runtime() const;
 
-    void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
-    void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
-    void  checkDPTName         (CREF(RDOParserSrcInfo) src_info);
+	rbool             isPattern       () const;
+	REF(FUNGroupList) getFUNGroupStack();
 
-    void  insertChanges        (CREF(tstring) name, CREF(tstring) value);
+	void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
+	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
+	void  checkDPTName         (CREF(RDOParserSrcInfo) src_info);
 
-    rbool isHaveKWResources    () const;
-    void  setHaveKWResources   (rbool value);
-    rbool isHaveKWResourcesEnd () const;
-    void  setHaveKWResourcesEnd(rbool value);
+	void  insertChanges        (CREF(tstring) name, CREF(tstring) value);
+
+	rbool isHaveKWResources    () const;
+	void  setHaveKWResources   (rbool value);
+	rbool isHaveKWResourcesEnd () const;
+	void  setHaveKWResourcesEnd(rbool value);
 
 	rbool isCurrentDPTSearch   ();
 	rbool isCurrentDPTPrior    ();
@@ -148,39 +150,39 @@ public:
 	tstring getChanges       () const;
 
 	LPRDOSMR getSMR(ruint value);
-    void     setSMR(CREF(LPRDOSMR) pSMR);
-    rbool    hasSMR() const;
+	void     setSMR(CREF(LPRDOSMR) pSMR);
+	rbool    hasSMR() const;
 
 	void parse();
 	void parse(ruint count);
 	void parse(REF(std::istream) stream);
 
-    CREF(Error) error() const;
-     REF(Error) error();
+	CREF(Error) error() const;
+	 REF(Error) error();
 
-    class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
-    {
-        friend class RDOParser;
-    public:
-        typedef rdo::IndexedStack<rdo::LPISmartPtrWrapper> IndexedStack;
+	class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
+	{
+		friend class RDOParser;
+	public:
+		typedef rdo::IndexedStack<rdo::LPISmartPtrWrapper> IndexedStack;
 
-        template <class T>
-        IndexedStack::ID push(CREF(rdo::intrusive_ptr<T>) pObject);
+		template <class T>
+		IndexedStack::ID push(CREF(rdo::intrusive_ptr<T>) pObject);
 
-        template <class T>
-        rdo::intrusive_ptr<T> pop(IndexedStack::ID id);
+		template <class T>
+		rdo::intrusive_ptr<T> pop(IndexedStack::ID id);
 
-        rdo::LPISmartPtrWrapper raw_pop(IndexedStack::ID id);
+		rdo::LPISmartPtrWrapper raw_pop(IndexedStack::ID id);
 
-    private:
-        void clear();
-    };
+	private:
+		void clear();
+	};
 
-    REF(Stack) stack();
+	REF(Stack) stack();
 
 	typedef std::vector<LPTypeInfo> PreCastTypeList;
-    CREF(PreCastTypeList) getPreCastTypeList() const;
-    void insertPreCastType(CREF(LPTypeInfo) pType);
+	CREF(PreCastTypeList) getPreCastTypeList() const;
+	void insertPreCastType(CREF(LPTypeInfo) pType);
 
 	LPContextStack contextStack();
 	LPContext      context     () const;
@@ -199,9 +201,9 @@ protected:
 
 	virtual CREF(LPRDOParserContainer) getContainer() const = 0;
 
-    RDOParserContainer::Iterator begin();
-    RDOParserContainer::Iterator end();
-    RDOParserContainer::Iterator find(ruint index);
+	RDOParserContainer::Iterator begin();
+	RDOParserContainer::Iterator end();
+	RDOParserContainer::Iterator find(ruint index);
 
 	rdo::runtime::LPRDORuntime m_pRuntime;
 
@@ -218,27 +220,26 @@ private:
 	rbool                 m_pattern;
 	rdo::IDGenerator      m_resultGeneratorID;
 	ruint                 m_foundRunNumber;
-	ruint                 m_currentRunNumber;
 
 	template <class T>
-    void howIsIt();
+	void howIsIt();
 
 	template <class T>
-    void howIsIt(identity<T>);
+	void howIsIt(identity<T>);
 
-    void howIsIt(identity<LPRDOFUNGroup>);
+	void howIsIt(identity<LPRDOFUNGroup>);
 
-    void howIsIt(identity<LPRDOPATPattern>);
+	void howIsIt(identity<LPRDOPATPattern>);
 
-    struct Changes;
-    typedef std::vector<Changes> ChangesList;
-    ChangesList m_changes;
+	struct Changes;
+	typedef std::vector<Changes> ChangesList;
+	ChangesList m_changes;
 
-    typedef std::list<LPRDOParser> ParserList;
+	typedef std::list<LPRDOParser> ParserList;
 	static ParserList s_parserStack;
 
-	typedef std::vector<LPRDOSMR> SMRList;
-	SMRList SMRList_1;
+	typedef std::vector<LPRDOSMR> RDOSMRList;
+	RDOSMRList SMRList;
 
 	DECLARE_IContextFind;
 };

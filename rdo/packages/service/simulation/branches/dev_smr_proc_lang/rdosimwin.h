@@ -118,7 +118,7 @@ OBJECT(RDOThreadRunTime)
 DECLARE_FACTORY(RDOThreadRunTime);
 public:
 	rbool runtimeError() const;
-
+	virtual void start  ();
 	struct GetFrame
 	{
 		PTR(rdo::animation::Frame) m_pFrame;
@@ -152,7 +152,6 @@ private:
 
 	virtual void proc   (REF(RDOMessageInfo) msg);
 	virtual void idle   ();
-	virtual void start  ();
 	virtual void stop   ();
 	virtual void destroy();
 

@@ -351,7 +351,7 @@ smr_launch_line_external_model
 smr_launch_line_show_mode
 	: RDO_Show_mode                  '=' smr_show_mode
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
+		LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 		ASSERT(pSMR);
 		pSMR->setShowMode((rdo::service::simulation::ShowMode)$3);
 	}
@@ -370,7 +370,7 @@ smr_launch_line_frame_number
 	{
 		if (PARSER->check())
 		{
-			LPRDOSMR pSMR = PARSER->getSMR();
+			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 			ASSERT(pSMR);
 			pSMR->setFrameNumber(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 		}
@@ -388,13 +388,13 @@ smr_launch_line_frame_number
 smr_launch_line_show_rate
 	: RDO_Show_rate '=' RDO_REAL_CONST
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
+		LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 		ASSERT(pSMR);
 		pSMR->setShowRate(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
 	}
 	| RDO_Show_rate '=' RDO_INT_CONST
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
+		LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 		ASSERT(pSMR);
 		pSMR->setShowRate(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 	}
@@ -413,7 +413,7 @@ smr_launch_line_run_startTime
 	{
 		if (PARSER->check())
 		{
-			LPRDOSMR pSMR = PARSER->getSMR();
+			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 			ASSERT(pSMR);
 			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
 		}
@@ -422,7 +422,7 @@ smr_launch_line_run_startTime
 	{
 		if (PARSER->check())
 		{
-			LPRDOSMR pSMR = PARSER->getSMR();
+			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 			ASSERT(pSMR);
 			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 		}
@@ -440,7 +440,7 @@ smr_launch_line_run_startTime
 smr_launch_line_trace_startTime
 	: RDO_Trace_StartTime '=' RDO_REAL_CONST
 	{
-		LPRDOSMR pSMR = PARSER->getSMR();
+		LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 		ASSERT(pSMR);
 		pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
 	}
@@ -448,7 +448,7 @@ smr_launch_line_trace_startTime
 	{
 		if (PARSER->check())
 		{
-			LPRDOSMR pSMR = PARSER->getSMR();
+			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 			ASSERT(pSMR);
 			pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 		}
@@ -468,7 +468,7 @@ smr_launch_line_trace_endTime
 	{
 		if (PARSER->check())
 		{
-			LPRDOSMR pSMR = PARSER->getSMR();
+			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 			ASSERT(pSMR);
 			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
 		}
@@ -477,7 +477,7 @@ smr_launch_line_trace_endTime
 	{
 		if (PARSER->check())
 		{
-			LPRDOSMR pSMR = PARSER->getSMR();
+			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 			ASSERT(pSMR);
 			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
 		}
@@ -500,7 +500,7 @@ smr_launch_line_terminate_if
 			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
 			ASSERT(pLogic);
 
-			LPRDOSMR pSMR = PARSER->getSMR();
+			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 			ASSERT(pSMR);
 
 			pSMR->setTerminateIf(pLogic);
@@ -520,7 +520,7 @@ smr_launch_line_break_point
 			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($3);
 			ASSERT(pLogic);
 
-			LPRDOSMR pSMR = PARSER->getSMR();
+			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 			ASSERT(pSMR);
 
 			pSMR->insertBreakPoint(PARSER->stack().pop<RDOValue>($2)->src_info(), pLogic);
@@ -544,7 +544,7 @@ smr_launch_line_arithm
 			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 			ASSERT(pArithm);
 
-			LPRDOSMR pSMR = PARSER->getSMR();
+			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 			ASSERT(pSMR);
 
 			pSMR->setConstValue(PARSER->stack().pop<RDOValue>($1)->src_info(), pArithm);
@@ -565,7 +565,7 @@ smr_launch_line_arithm
 			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
 			ASSERT(pArithm);
 
-			LPRDOSMR pSMR = PARSER->getSMR();
+			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 			ASSERT(pSMR);
 
 			pSMR->setResParValue(PARSER->stack().pop<RDOValue>($1)->src_info(), PARSER->stack().pop<RDOValue>($3)->src_info(), pArithm);
@@ -607,7 +607,7 @@ smr_launch_line_seed
 	{
 		if (PARSER->check())
 		{
-			LPRDOSMR pSMR = PARSER->getSMR();
+			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 			ASSERT(pSMR);
 			pSMR->setSeed(PARSER->stack().pop<RDOValue>($1)->src_info(), PARSER->stack().pop<RDOValue>($5)->value().getInt());
 		}

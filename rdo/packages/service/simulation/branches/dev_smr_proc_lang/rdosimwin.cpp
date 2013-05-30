@@ -640,11 +640,12 @@ void RDOThreadRunTime::start()
 
 	//! RDO config initialization
 	
-	m_pRuntimeClone = m_pSimulator->m_pRuntime->clone();
+	ruint currentRunNumber = m_pSimulator->m_pParser->m_currentRunNumber;
+	m_pSimulator->m_pRuntimeClone = m_pSimulator->m_pRuntime->clone();
 	m_pSimulator->m_pRuntimeClone->hotkey().clear();
-	m_pSimulator->m_pRuntimeClone->setStartTime     (m_pSimulator->m_pParser->getSMR(m_currentRunNumber)->getRunStartTime  ());
-	m_pSimulator->m_pRuntimeClone->setTraceStartTime(m_pSimulator->m_pParser->getSMR(m_currentRunNumber)->getTraceStartTime());
-	m_pSimulator->m_pRuntimeClone->setTraceEndTime  (m_pSimulator->m_pParser->getSMR(m_currentRunNumber)->getTraceEndTime  ());
+	m_pSimulator->m_pRuntimeClone->setStartTime     (m_pSimulator->m_pParser->getSMR(currentRunNumber)->getRunStartTime  ());
+	m_pSimulator->m_pRuntimeClone->setTraceStartTime(m_pSimulator->m_pParser->getSMR(currentRunNumber)->getTraceStartTime());
+	m_pSimulator->m_pRuntimeClone->setTraceEndTime  (m_pSimulator->m_pParser->getSMR(currentRunNumber)->getTraceEndTime  ());
 
 	//! Modelling
 	m_pSimulator->m_canTrace = true;
@@ -654,13 +655,13 @@ void RDOThreadRunTime::start()
 		LPRDOThreadRunTime pThis(this);
 		m_pSimulator->m_exitCode = rdo::simulation::report::EC_OK;
 		m_pSimulator->m_pRuntime->rdoInit(pTracer, pResults, pResultsInfo, pThis.interface_cast<IThreadProxy>());
-		switch (m_pSimulator->m_pParser->getSMR()->getShowMode())
+		switch (m_pSimulator->m_pParser->getSMR(currentRunNumber)->getShowMode())
 		{
 			case rdo::service::simulation::SM_NoShow   : m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_MaxSpeed); break;
 			case rdo::service::simulation::SM_Animation: m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_Sync    ); break;
 			case rdo::service::simulation::SM_Monitor  : m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_Pause   ); break;
 		}
-		m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pParser->getSMR()->getShowRate());
+		m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pParser->getSMR(currentRunNumber)->getShowRate());
 	}
 	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{
@@ -1313,12 +1314,12 @@ RDOThreadSimulator::SyntaxMessageList RDOThreadSimulator::getErrors()
 
 ShowMode RDOThreadSimulator::getInitialShowMode() const
 {
-	return m_pParser->getSMR()->getShowMode();
+	return m_pParser->getSMR(m_currentRunNumber)->getShowMode();
 }
 
 int RDOThreadSimulator::getInitialFrameNumber() const
 {
-	return m_pParser->getSMR()->getFrameNumber();
+	return m_pParser->getSMR(m_currentRunNumber)->getFrameNumber();
 }
 
 ruint RDOThreadSimulator::getInitialRunCount() const
@@ -1328,7 +1329,7 @@ ruint RDOThreadSimulator::getInitialRunCount() const
 
 double RDOThreadSimulator::getInitialShowRate() const
 {
-	return m_pParser->getSMR()->getShowRate();
+	return m_pParser->getSMR(m_currentRunNumber)->getShowRate();
 }
 
 bool RDOThreadSimulator::needNextRun() const

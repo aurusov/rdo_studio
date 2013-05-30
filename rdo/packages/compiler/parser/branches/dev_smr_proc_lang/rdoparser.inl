@@ -85,7 +85,7 @@ inline ruint RDOParser::getSeriesCapacity() const
 
 inline LPRDOSMR RDOParser::getSMR(ruint value)
 {
-    return SMRList_1[value];
+    return SMRList[value];
 }
 
 inline void RDOParser::setSMR(CREF(LPRDOSMR) pSMR)
