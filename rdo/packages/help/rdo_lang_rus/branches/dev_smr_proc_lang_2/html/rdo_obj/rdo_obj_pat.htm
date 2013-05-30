@@ -1,0 +1,283 @@
+<HTML>
+<HEAD>
+<TITLE>Описание образцов</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<SCRIPT>
+function toggle_display(e)
+{
+	if (e.style.display == "none")
+		e.style.display = "";
+	else
+		e.style.display = "none";
+	return false;
+}
+</SCRIPT>
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>ОПИСАНИЕ ОБРАЗЦОВ</H1>
+		<P><B>Образцы</B> представляют собой шаблоны, по которым в <A href="../rdo_terms.htm">модели</A> заводятся <A href="rdo_obj_dpt.htm">активности</A> <A href="rdo_obj_dpt.htm">точкек принятия решений</A>. Подобно тому, как <A href="../rdo_base/rdo_base_res_types.htm">типы ресурсов</A> определяют структуру базы данных программы, образцы определяют структуру её базы знаний. Они представляют собой знания о функционировании моделируемой системы (знания о предметной области), записанные в виде модифицированных продукционных правил в соответствии с синтаксисом языка. Описание всех образцов содержится в <A href="../rdo_terms.htm#object">объекте</A> образцов (с расширением <FONT class="syntax">.pat</FONT>). <FONT style="color: FF0000">На основании одного образца в системе может быть заведено несколько активностей, но <B>самостоятельного значения образцы не имеют</B>. Имитатор в процессе моделирования обрабатывает именно активности, а не образцы, поэтому если какой-либо образец был описан в объекте образцов, но ни разу не упоминался в активностях, то он никогда не будет использован.</FONT> Описание образца имеет следующий формат:</P>
+		<PRE class="syntax">$Pattern <A class="syntax" href="#pat_name">&lt;имя_образца&gt;</A> : <A class="syntax" href="#pat_type">&lt;тип_образца&gt;</A> [ <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A> ]
+[ $Parameters <A class="syntax" href="#param_desc">&lt;описание_параметров_образца&gt;</A> ]
+$Relevant_resources <A class="syntax" href="#rel_res_desc">&lt;описание_релевантных_ресурсов_образца&gt;</A>
+[ <A class="syntax" href="#pat_choice_type" style="color: FF0000">&lt;способ_выбора&gt;</A> ]
+$Time = <A class="syntax" href="#time_expr">&lt;выражение_времени&gt;</A>
+$Body <A class="syntax" href="#pattern_body">&lt;тело_образца&gt;</A>
+$End</PRE>
+		<DL class="syntax">
+			<DT class="syntax"><A name="pat_name"></A><I>имя_образца</I></DT>
+			<DD class="syntax">Имя образца представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех образцов и не должны совпадать с ранее определенными именами.</DD>
+			<DT class="syntax"><A name="pat_type"></A><I>тип_образца</I></A></DT>
+			<DD class="syntax">В данной версии языка возможны образцы следующих типов:
+				<TABLE class="visible" cols="2">
+					<TR valign="top">
+						<TH align="left" width="20%">Тип образца</TH>
+						<TH align="left" width="80%">Описание</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A href="../rdo_obj/rdo_pat_type/rdo_pat_type_rule.htm">rule</A></TD>
+						<TD class="visible" width="80%">Образец, описывающий продукционное правило</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A href="../rdo_obj/rdo_pat_type/rdo_pat_type_opr.htm">operation</A></TD>
+						<TD class="visible" width="80%">Образец, описывающий операцию</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A href="../rdo_obj/rdo_pat_type/rdo_pat_type_keyboard.htm">keyboard</A></TD>
+						<TD class="visible" width="80%">Образец, описывающий клавиатурную операцию (такая операция может быть выполнена, если пользователь выполнил некоторое действие - нажал определенную клавишу или щелкнул мышью в активной области кадра анимации - и выполняются предусловия)</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A href="rdo_pat_type/rdo_pat_type_event.htm">event</A></TD>
+						<TD class="visible" width="80%">Образец, описывающий событие</TD>
+					</TR>
+				</TABLE>
+			</DD>
+			<DT class="syntax"><I>признак_трассировки</I></DT>
+			<DD class="syntax">После типа образца может быть указан признак трассировки (подробнее смотри описание <A href="../rdo_res/rdo_res_trc.htm">объекта трассировки</A>).
+			</DD>
+			<DT class="syntax"><A name="param_desc"></A><I>описание_параметров_образца</I></DT>
+			<DD class="syntax">Описание параметров образца имеет следующий формат:
+				<PRE class="syntax"><A class="syntax" href="#param_name">&lt;имя_параметра&gt;</A> : <A class="syntax" href="#param_type">&lt;тип_параметра&gt;</A> [ = <A class="syntax" href="#param_def_val">&lt;значение_по_умолчанию&gt;</A> ]
+{ &lt;имя_параметра&gt; : &lt;тип_параметра&gt; [ = &lt;значение_по_умолчанию&gt; ] }</PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="param_name"></A><I>имя_параметра</I></DT>
+					<DD class="syntax">Имя параметра образца представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех параметров и не должны совпадать с ранее определенными именами. Имя параметра может совпадать с именем параметра другого образца.</DD>
+					<DT class="syntax"><A name="param_type"></A><I>тип_параметра</I></DT>
+					<DD class="syntax">Тип параметра - это один из возможных <A href="../rdo_base/rdo_base_types.htm">типов данных</A>. При описании типов параметров образца возможны ссылки на <A href="../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="rdo_obj_const_fun_sec.htm#const_type">типы символьных констант</A>.</DD>
+					<DT class="syntax"><A name="param_def_val"></A><I>значение_по_умолчанию</I></DT>
+					<DD class="syntax">Для параметра любого типа может быть задано значение по умолчанию. Это значение указывают после знака равенства целой или вещественной <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A>, либо именем значения для перечислимого параметра. При указании типа ссылкой также возможно задание значения по умолчанию. При этом задаваемое значение может отличаться от значения по умолчанию того параметра, на тип которого производится ссылка.</DD>
+				</DL>
+				<P>Параметры в образце любого типа могут отсутствовать, в этом случае зарезервированное слово <FONT class="syntax">$Parameters</FONT> не указывают.</P>
+			</DD>
+			<DT class="syntax"><A name="rel_res_desc"></A><I>описание_релевантных_ресурсов_образца</I></DT>
+			<DD class="syntax">Описание релевантных ресурсов для образцов типа <A href="#pat_type">операция</A> и <A href="#pat_type">клавиатурная операция</A> имеет следующий формат:
+				<PRE class="syntax"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A>
+<A class="syntax" href="#conv_beg_stat">&lt;статус_конвертора_начала&gt;</A> <A class="syntax" href="#conv_end_stat">&lt;статус_конвертора_конца&gt;</A></PRE>
+				<P>Описание релевантных ресурсов образца для образцов типа <A href="#pat_type">событие</A>, <A href="#pat_type">нерегулярное событие</A> и <A href="#pat_type">продукционное правило</A> имеет следующий формат:</P>
+				<PRE class="syntax"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A> <A class="syntax" href="#conv_stat">&lt;статус_конвертора&gt;</A></PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="rel_res_name"></A><I>имя_релевантного_ресурса</I></DT>
+					<DD class="syntax">Имя релевантного ресурса образца представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех релевантных ресурсов и не должны совпадать с ранее определенными именами. Имя релевантного ресурса может совпадать с именем релевантного ресурса другого образца.</DD>
+					<DT class="syntax"><A name="rel_res_describer"></A><I>описатель</I></DT>
+					<DD class="syntax">Описатель ресурса - это либо имя <A href="../rdo_base/rdo_base_res_types.htm">типа ресурса</A>, либо имя <A href="../rdo_base/rdo_base_resources.htm">ресурса</A>. В первом случае в качестве релевантного может быть использован любой ресурс указанного типа, состояние которого удовлетворяет <A href="#init_cond">предусловию</A>. Во втором случае может быть использован только указанный ресурс, если его состояние удовлетворяет предусловию.</DD>
+					<DT class="syntax"><A name="conv_stat"></A><I>статус_конвертора</I></DT>
+					<DD class="syntax">Статус конвертора описывает, что происходит с релевантным ресурсом в целом при выполнении <A href="#init_cond">предусловия</A>.</DD>
+					<DT class="syntax"><A name="conv_beg_stat"></A><I>статус_конвертора_начала</I></DT>
+					<DD class="syntax">Статус конвертора начала описывает, что происходит с релевантным ресурсом в начале операции.</DD>
+					<DT class="syntax"><A name="conv_end_stat"></A><I>статус_конвертора_конца</I></DT>
+					<DD class="syntax">Статус конвертора конца описывает, что происходит с релевантным ресурсом в конце операции.</DD>
+				</DL>
+				<P><A name="conv_stats"></A><A name="conv_stats_nc"></A>В данной версии языка определены следующие статусы конверторов и соответствующие ключевые слова:</P>
+				<TABLE class="visible" cols="2">
+					<TR valign="top">
+						<TH align="left" width="20%">Статус конвертора</TH>
+						<TH align="left" width="80%">Описание</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Keep</FONT></TD>
+						<TD class="visible" width="80%">Релевантный ресурс сохраняется, но его состояние (значения параметров) изменяется</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Create</FONT></TD>
+						<TD class="visible" width="80%">Релевантный ресурс создается</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Erase</FONT></TD>
+						<TD class="visible" width="80%">Релевантный ресурс уничтожается</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">NonExist</FONT></TD>
+						<TD class="visible" width="80%">Релевантный ресурс не существует</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">NoChange</FONT></TD>
+						<TD class="visible" width="80%">Состояние релевантного ресурса не изменяется</TD>
+					</TR>
+				</TABLE>
+				<P>Статусы <FONT class="syntax">Create</FONT>, <FONT class="syntax">Erase</FONT> и <FONT class="syntax">NonExist</FONT> допустимы только для <A href="../rdo_base/rdo_base_res_types.htm#temporary">ресурсов временного вида</A>, при этом, в качестве описателя может использоваться только имя <A href="../rdo_base/rdo_base_res_types.htm">типа ресурса</A>. Статусы <FONT class="syntax">NoChange</FONT>, <FONT class="syntax">Erase</FONT> и <FONT class="syntax">NonExist</FONT> недопустимы в образцах типа событие и нерегулярное событие. Статус <FONT class="syntax">NonExist</FONT> недопустим в продукционном правиле. В образцах типа событие и нерегулярное событие статус <FONT class="syntax">Keep</FONT> допустим только в случае, если описатель есть имя <A href="../rdo_base/rdo_base_resources.htm">ресурса</A>.</P>
+				<P><A name="conv_comp"></A>В образцах <A href="#pat_type">операций</A> и <A href="#pat_type">клавиатурных операций</A> возможны следующие сочетания статусов начала и конца:</P>
+				<TABLE class="visible" cols="2">
+					<TR valign="top">
+						<TH align="left" width="50%">Статус конвертора начала</TH>
+						<TH align="left" width="50%">Статус конвертора конца</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Keep</FONT></TD>
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Keep<BR>Erase<BR>NoChange</FONT></TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Create</FONT></TD>
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Keep<BR>Erase<BR>NoChange</FONT></TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Erase</FONT></TD>
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">NonExist</FONT></TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">NonExist</FONT></TD>
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Create</FONT></TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">NoChange</FONT></TD>
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Keep<BR>Erase<BR>NoChange</FONT></TD>
+					</TR>
+				</TABLE>
+			</DD>
+			<DT class="syntax"><A name="pat_choice_type"></A><I>способ_выбора</I></DT>
+			<DD class="syntax">Способ выбора определяет, какие <A href="../rdo_base/rdo_base_resources.htm">ресурсы</A> будут использованы в качестве релевантных в том случае, если <A href="#rel_res_describer">описатель</A> релевантного ресурса есть <A href="../rdo_base/rdo_base_res_types.htm">имя типа</A> и существует более одного ресурса, удовлетворяющего <A href="#init_cond">предусловию</A>. В РДО-языке определены следующие способы выбора:
+				<TABLE class="visible" cols="2">
+					<TR valign="top">
+						<TH align="left" width="20%">Способ выбора</TH>
+						<TH align="left" width="80%">Описание</TH>
+					</TR>
+					<TR valign="top"><A name="first"></A>
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">first</FONT></TD>
+						<TD class="visible" width="80%">Использовать первые попавшиеся ресурсы, удовлетворяющие предусловиям</TD>
+					</TR>
+					<TR valign="top"><A name="with_max"></A>
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">with_max &lt;арифметическое_выражение&gt;</FONT></TD>
+						<TD class="visible" width="80%">Использовать такую комбинацию релевантных ресурсов, для которой значение указанного арифметического выражения максимально</TD>
+					</TR>
+					<TR valign="top"><A name="with_min"></A>
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">with_min &lt;арифметическое_выражение&gt;</FONT></TD>
+						<TD class="visible" width="80%">Использовать такую комбинацию релевантных ресурсов, для которой значение указанного арифметического выражения минимально</TD>
+					</TR>
+				</TABLE>
+				<P>По умолчанию принимается значение способа выбора <FONT class="syntax">first</FONT>, поэтому это значение можно не указывать.</P>
+				<P><A href="../rdo_base/rdo_base_equations.htm">Арифметическое выражение</A> в способе выбора должно быть целого или вещественного типа, в нем могут использоваться параметры всех <A href="#rel_res_desc">релевантных ресурсов</A> образца, так как оно вычисляется после подбора всех релевантных ресурсов комбинации.</P>
+				<P><FONT style="color: FF0000">Указание способа выбора релевантных ресурсов <B>после описания релевантных ресурсов</B> не является обязательным. Если он указан, РДО-имитатор производит анализ <A href="#init_cond">предусловий</A> и <B>подбор комбинаций релевантных ресурсов</B>. Если же способ выбора не указан, то он должен быть указан в теле образца отдельно для каждого релевантного ресурса. В последнем случае РДО-имитатор подбирает не комбинации ресурсов, а каждый релевантный ресурс по отдельности и, возможно, с различными способами выбора. В арифметическом выражении для способа выбора в этом случае не могут использоваться параметры релевантных ресурсов, которые следуют в описании релевантных ресурсов образца после данного. Релевантные ресурсы выбираются последовательно без возвращений, то есть выбранный ранее ресурс не может быть изменен, если при подборе следующего окажется, что операция не может быть выполнена из-за неудачного подбора предыдущих ресурсов. Такая операция не может быть выполнена, хотя она могла бы быть выполнена при другой комбинации релевантных ресурсов.</FONT></P>
+				<P>Задание способа выбора релевантных ресурсов в этом месте образца позволяет избегать подобных ситуаций, а также подбирать наиболее предпочтительные комбинации ресурсов. Однако поскольку для этого анализируются все возможные по предусловиям комбинации, это требует больших вычислительных затрат, чем при подборе ресурсов по отдельности. Поэтому данный способ рекомендуется использовать только тогда, когда это действительно необходимо.</P>
+			</DD>
+			<DT class="syntax"><A name="time_expr"></A><I>выражение_времени</I></DT>
+			<DD class="syntax">Выражение времени представляет собой <A href="../rdo_base/rdo_base_equations.htm">арифметическое выражение</A> целого или вещественного типа, по которому рассчитывается <B>длительность</B> <A href="#pat_type">операции</A> или <A href="#pat_type">клавиатурной операции</A>. В образцах типа <FONT class="syntax">event</FONT> и <FONT class="syntax">rule</FONT> выражение времени вместе с зарезервированным словом <FONT class="syntax">$Time</FONT> и знаком равенства не указывают.</DD>
+			<DT class="syntax"><A name="pattern_body"></A><I>тело_образца</I></DT>
+			<DD class="syntax">Тело образца описывает суть изменений, которые происходят в системе в момент срабатывания образца.</DD>
+		</DL>
+		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
+		<DIV style="display:none" id="v1">
+		<PRE class="samples">$Pattern Образец_1 : operation
+$Parameters
+  Количество : integer = 10
+$Relevant_resources
+  Рел_ресурс_1 : Ресурс_1      NoChange    NoChange
+  Рел_ресурс_2 : Ресурс_2      NoChange    Keep
+  Рел_ресурс_3 : Тип_1         Keep        Keep
+$Time =  Количество * 0.5 + Функция_1(Количество + 1, 5.0) +
+         2.0 * (Ресурс_1.Параметр_2 + Рел_ресурс_3.Параметр_1)
+$Body
+  Рел_ресурс_1
+    Choice from    Рел_ресурс_1.Параметр_1 &gt; 0 and
+                   Рел_ресурс_1.Параметр_5 = Свободен
+    first
+  Рел_ресурс_2
+    Choice NoCheck first
+    Convert_end
+      Параметр_1 += Количество;
+      Параметр_3 set Таблица_2(Значение_4, 2);
+      Параметр_6 NoChange;
+  Рел_ресурс_3
+    Choice from
+         Рел_ресурс_3.Параметр_1 + Рел_ресурс_2.Параметр_1 &gt;=
+         Количество and [Рел_ресурс_1.Параметр_5 = Свободен or
+         Рел_ресурс_1.Параметр_5 = Разгрузка]
+    with_max (Рел_ресурс_3.Параметр_1 * Рел_ресурс_3.Параметр_4)
+    Convert_begin
+      Параметр_1 set Рел_ресурс_3.Параметр_1 +
+                     Рел_ресурс_2.Параметр_1 + Рел_ресурс_1.Параметр_1;
+      Параметр_5 = Занят;
+    Convert_end
+      Параметр_4 set Последовательность_3(Рел_ресурс_3.Параметр_2, 0.2);
+      Параметр_5 set Свободен;
+$End
+
+$Pattern Образец_2 : rule
+$Parameters
+  Количество : integer
+  Число : real = 2.5
+$Relevant_resources
+  Рел_ресурс_1 : Ресурс_1      NoChange
+  Рел_ресурс_2 : Тип_1         Keep
+$Body
+  Рел_ресурс_1
+    Choice from    Рел_ресурс_1.Параметр_1 &gt; 0 and
+                   Рел_ресурс_1.Параметр_5 = Свободен
+    first
+  Рел_ресурс_2
+    Choice from    Рел_ресурс_2.Параметр_1 &gt;= Количество and
+                   [Рел_ресурс_1.Параметр_5 = Свободен or
+                   Рел_ресурс_1.Параметр_5 = Разгрузка]
+    with_max (Рел_ресурс_2.Параметр_1 * Рел_ресурс_2.Параметр_4)
+    Convert_rule
+      Параметр_4 set Число + Последовательность_3(Рел_ресурс_2.
+                                                  Параметр_2, 0.2);
+      Параметр_5 = Свободен;
+$End
+
+$Pattern Событие_прихода_клиента: event trace
+$Relevant_resources
+	_Парикмахерская: Парикмахерская Keep
+$Body
+  _Парикмахерская
+	Convert_event
+		Событие_прихода_клиента.Planning(Time_now + Интервал_прихода(30));
+		if (состояние_парикмахера == Свободен and количество_в_очереди == 0)
+		{
+			состояние_парикмахера = Занят;
+			Событие_окончания_обслуживания_клиента.planning(Time_now + Длительность_обслуживания( 20, 40 ));
+		}
+		else 
+			количество_в_очереди += 1;
+$End
+
+$Pattern Образец_3 : rule
+$Parameters
+  Количество : integer
+$Relevant_resources
+  Рел_ресурс_1 : Тип_1      NoChange
+  Рел_ресурс_2 : Тип_2      Keep
+  with_max (Рел_ресурс_1.Параметр_1 * Количество +
+            Рел_ресурс_2.Параметр_1 * Рел_ресурс_2.Параметр_4)
+$Body
+  Рел_ресурс_1
+    Choice from    Рел_ресурс_1.Параметр_1 &gt; 0 and
+                   Рел_ресурс_1.Параметр_5 = Свободен
+  Рел_ресурс_2
+    Choice from    Рел_ресурс_2.Параметр_1 &gt;= Количество and
+                   [Рел_ресурс_1.Параметр_5 = Свободен or
+                    Рел_ресурс_1.Параметр_5 = Разгрузка]
+    Convert_rule
+      Параметр_4 set Функция_1(Рел_ресурс_2.Параметр_2, 0.2);
+      Параметр_5 set Свободен;
+$End</PRE>
+	</DIV>
+	<H4>См. также</H4>
+	<P><A href="../rdo_base/rdo_base_res_types.htm">Типы ресурсов</A></P>
+	<P><A href="../rdo_base/rdo_base_resources.htm">Описание ресурсов</A></P>
+	<P><A href="rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
+	<P><A href="rdo_obj_dpt.htm">Описание точек принятия решений</A></P>
+	<P><A href="../rdo_res/rdo_res_trc.htm">Объект трассировки</A></P>
+	</DIV>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
+</BODY>
+</HTML>
