@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      main.cpp
+  \file      /app/rdo_check_results/main.cpp
   \author    Пройдаков Евгений (lord.tiran@gmail.com)
   \date      10.05.2009
   \brief     Тест приложения rdo_studio_console

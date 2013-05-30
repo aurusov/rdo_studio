@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdobison.h
+  \file      /converter/smr2rdox/grammar/rdobison.h
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      

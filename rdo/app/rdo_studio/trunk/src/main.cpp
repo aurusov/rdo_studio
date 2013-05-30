@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2013
-  \file      main.cpp
+  \file      app/rdo_studio/src/main.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.02.2013
   \brief     

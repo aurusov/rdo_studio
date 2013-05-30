@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdoeditorresults.h
+  \file      results_edit.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      14.03.2003
   \brief     

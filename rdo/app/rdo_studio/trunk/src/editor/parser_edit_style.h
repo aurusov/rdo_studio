@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdoeditorbaseeditstyle.h
+  \file      parser_edit_style.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      14.03.2003
   \brief     

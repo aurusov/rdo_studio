@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      controller_console_options.cpp
+  \file      /app/rdo_check_results/controller_console_options.inl
   \author    Пройдаков Евгений (lord.tiran@gmail.com)
   \date      21.03.2011
   \brief     Консольная версия RDO

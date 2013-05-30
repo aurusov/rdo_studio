@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2012-2012
-  \file      dock_trace_tree.h
+  \file      dock_chart_tree.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      06.10.2012
   \brief     
