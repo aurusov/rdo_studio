@@ -128,10 +128,10 @@ LPRDOArrayValue RDOArrayValue::clone() const
 }
 
 #ifdef INTERSECTION_DB
-void RDOArrayValue::serializeInDB(REF(IDB) db) const
+void RDOArrayValue::serializeInDB(REF(IDB) db, CREF(QString) connectionName) const
 {
 	QString tableName,tableNameVv;
-	QString connectionName = db.getQtDB().connectionName();
+
 	if (connectionName == "trc")
 	{
 		tableName = "trc_value_array";

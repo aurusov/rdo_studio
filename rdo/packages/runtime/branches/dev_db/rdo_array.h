@@ -51,7 +51,7 @@ public:
 	LPRDOArrayValue clone() const;
 
 #ifdef INTERSECTION_DB
-	void serializeInDB(REF(IDB) db) const;
+	void serializeInDB(REF(IDB) db, CREF(QString) connectionName) const;
 #endif
 #ifdef SERIALIZE_IN_DB_MAINSTREAM
 	void updateInDB       (ruint index, ruint traceID, REF(IDB) db);
