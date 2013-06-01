@@ -15,7 +15,6 @@
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_error.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
-#include <boost/foreach.hpp>
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
