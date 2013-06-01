@@ -117,8 +117,9 @@ OBJECT(RDOThreadRunTime)
 {
 DECLARE_FACTORY(RDOThreadRunTime);
 public:
-	rbool runtimeError() const;
-	virtual void start  ();
+	rbool runtimeError  () const;
+	virtual void start        ();
+
 	struct GetFrame
 	{
 		PTR(rdo::animation::Frame) m_pFrame;
@@ -180,6 +181,8 @@ friend class RDORuntimeTracer;
 friend class RDOSimResulter;
 
 public:
+	rdo::runtime::LPRDORuntime  m_pRuntime;
+
 	struct RTP
 	{
 		struct Param
@@ -204,13 +207,12 @@ public:
 
 private:
 	rdo::compiler::parser::LPRDOParser    m_pParser;
-	rdo::runtime::LPRDORuntime            m_pRuntime;
+	rdo::runtime::LPRDORuntime            m_pRuntimeBackup;
 	rbool                                 m_canTrace;
 	rdo::compiler::gui::LPProcGUIProcess  m_pGUIProcess;
 	rdo::compiler::gui::LPProcGUIBlock    m_pBlock;
 	rdo::runtime::LPRDOThreadRunTime      m_pThreadRuntime;
 	rdo::simulation::report::RDOExitCode  m_exitCode;
-	rdo::runtime::LPRDORuntime            m_pRuntimeClone;
 
 	void terminateModel();
 	void closeModel    ();

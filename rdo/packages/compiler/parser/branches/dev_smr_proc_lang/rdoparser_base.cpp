@@ -173,13 +173,10 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdoModelObjects::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
 	insert(rdoModelObjects::obEVN, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evnparse, evnerror, evnlex));
 	insert(rdoModelObjects::obPAT, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, patparse, paterror, patlex));
-	insert(rdoModelObjects::obEVN, rdo::Factory<RDOParserEVNPost>::create());
 	insert(rdoModelObjects::obDPT, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, dptparse, dpterror, dptlex));
 	insert(rdoModelObjects::obPRC, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_opr_parse, proc_opr_error, proc_opr_lex));
 	insert(rdoModelObjects::obFRM, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, frmparse, frmerror, frmlex));
-	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRSSPost>::create());
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex));
-	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserSMRPost>::create());
 }
 
 // --------------------------------------------------------------------------------

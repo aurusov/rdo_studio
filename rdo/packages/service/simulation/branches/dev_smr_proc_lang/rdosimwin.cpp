@@ -639,13 +639,17 @@ void RDOThreadRunTime::start()
 	pResultsInfo = new rdo::service::simulation::RDOSimResultInformer(m_pSimulator->m_resultInfoString);
 
 	//! RDO config initialization
-	
-	ruint currentRunNumber = m_pSimulator->m_pParser->m_currentRunNumber;
-	m_pSimulator->m_pRuntimeClone = m_pSimulator->m_pRuntime->clone();
-	m_pSimulator->m_pRuntimeClone->hotkey().clear();
-	m_pSimulator->m_pRuntimeClone->setStartTime     (m_pSimulator->m_pParser->getSMR(currentRunNumber)->getRunStartTime  ());
-	m_pSimulator->m_pRuntimeClone->setTraceStartTime(m_pSimulator->m_pParser->getSMR(currentRunNumber)->getTraceStartTime());
-	m_pSimulator->m_pRuntimeClone->setTraceEndTime  (m_pSimulator->m_pParser->getSMR(currentRunNumber)->getTraceEndTime  ());
+	ruint currentRunNumber = 0;
+	//ruint currentRunNumber = m_pSimulator->m_pParser->m_currentRunNumber;
+	m_pSimulator->m_pRuntime = m_pSimulator->m_pRuntimeBackup->clone();
+	m_pSimulator->m_pRuntime->hotkey().clear();
+
+	m_pSimulator->m_pParser->castInitToRuntime();
+
+	m_pSimulator->m_pRuntime->setTerminateIf   (m_pSimulator->m_pParser->getSMR(currentRunNumber)->m_pTerminateIf->getCalc());
+	m_pSimulator->m_pRuntime->setStartTime     (m_pSimulator->m_pParser->getSMR(currentRunNumber)->getRunStartTime        ());
+	m_pSimulator->m_pRuntime->setTraceStartTime(m_pSimulator->m_pParser->getSMR(currentRunNumber)->getTraceStartTime      ());
+	m_pSimulator->m_pRuntime->setTraceEndTime  (m_pSimulator->m_pParser->getSMR(currentRunNumber)->getTraceEndTime        ());
 
 	//! Modelling
 	m_pSimulator->m_canTrace = true;
@@ -868,7 +872,7 @@ RDOThreadSimulator::RDOThreadSimulator()
 	, m_exitCode        (rdo::simulation::report::EC_OK)
 	, m_seriesCapacity  (0                             )
 	, m_currentRunNumber(0                             )
-	, m_pRuntimeClone   (NULL                          )
+	, m_pRuntime   (NULL                          )
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
 	notifies.push_back(RT_STUDIO_MODEL_RUN                );
@@ -1078,7 +1082,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					if (needNextRun())
 					{
 						++m_currentRunNumber;
-						m_pRuntimeClone->deinit();
+						m_pRuntime->deinit();
 						m_pThreadRuntime->start();
 					}
 					else
@@ -1115,8 +1119,8 @@ rbool RDOThreadSimulator::parseModel()
 	m_pParser = rdo::Factory<rdo::compiler::parser::RDOParserModel>::create();
 	ASSERT(m_pParser);
 	m_pParser->init();
-	m_pRuntime = m_pParser->runtime();
-	ASSERT(m_pRuntime);
+	m_pRuntimeBackup = m_pParser->runtime();
+	ASSERT(m_pRuntimeBackup);
 
 	try
 	{
@@ -1159,17 +1163,17 @@ rbool RDOThreadSimulator::parseModel()
 void RDOThreadSimulator::runModel()
 {
 	ASSERT(m_pParser );
-	ASSERT(m_pRuntime);
+	ASSERT(m_pRuntimeBackup);
 
 	m_pParser->error().clear();
 	m_exitCode = rdo::simulation::report::EC_OK;
-	m_pRuntime->setStudioThread(kernel->studio());
+	m_pRuntimeBackup->setStudioThread(kernel->studio());
 	m_pThreadRuntime = rdo::Factory<rdo::runtime::RDOThreadRunTime>::create();
 }
 
 void RDOThreadSimulator::stopModel()
 {
-	m_pRuntime->onUserBreak();
+	m_pRuntimeBackup->onUserBreak();
 	m_exitCode = rdo::simulation::report::EC_UserBreak;
 	terminateModel();
 	m_canTrace = false;
@@ -1227,7 +1231,7 @@ void RDOThreadSimulator::closeModel()
 		TRACE("******************************** Ошибка удаления m_pRuntime\n");
 	}
 */
-	m_pRuntime = NULL;
+	m_pRuntimeBackup = NULL;
 	m_pThreadRuntime = NULL;
 	try
 	{
@@ -1308,7 +1312,7 @@ RDOThreadSimulator::SyntaxMessageList RDOThreadSimulator::getErrors()
 	}
 
 	res = m_pParser->error().getList();
-	res.insert(res.end(), m_pRuntime->error().list().begin(), m_pRuntime->error().list().end());
+	res.insert(res.end(), m_pRuntimeBackup->error().list().begin(), m_pRuntimeBackup->error().list().end());
 	return res;
 }
 

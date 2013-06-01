@@ -68,6 +68,7 @@ private:
 class RDOParserRSSPost: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserRSSPost);
+friend class RDOParser;
 private:
 	RDOParserRSSPost()
 		: RDOParserItem(rdoModelObjects::RSS, NULL, NULL, NULL)
@@ -81,6 +82,7 @@ private:
 class RDOParserSMRPost: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserSMRPost);
+friend class RDOParser;
 private:
 	RDOParserSMRPost();
 	virtual void parse(CREF(LPRDOParser) pParser);
@@ -92,6 +94,7 @@ private:
 class RDOParserEVNPost: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserEVNPost);
+friend class RDOParser;
 private:
 	RDOParserEVNPost()
 		: RDOParserItem(rdoModelObjects::PAT, NULL, NULL, NULL)

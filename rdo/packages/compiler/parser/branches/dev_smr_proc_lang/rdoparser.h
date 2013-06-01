@@ -156,6 +156,7 @@ public:
 	void parse();
 	void parse(ruint count);
 	void parse(REF(std::istream) stream);
+	void castInitToRuntime();
 
 	CREF(Error) error() const;
 	 REF(Error) error();
@@ -205,7 +206,7 @@ protected:
 	RDOParserContainer::Iterator end();
 	RDOParserContainer::Iterator find(ruint index);
 
-	rdo::runtime::LPRDORuntime m_pRuntime;
+	rdo::runtime::LPRDORuntime m_pRuntimeBackup;
 
 	void parse(rdoModelObjects::RDOParseType file);
 

@@ -66,6 +66,16 @@ void RDOSMR::setShowMode(rdo::service::simulation::ShowMode showMode)
 	m_showMode = showMode;
 }
 
+RDOSMR::SMREvent RDOSMR::getSMREvent()
+{
+	return SMREventList;
+}
+
+void RDOSMR::pushEventPlan(REF(LPRDOEvent) pEventPlan)
+{
+	SMREventList.push_back(pEventPlan);
+}
+
 void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
 {
 	if (value <= 0)
@@ -138,7 +148,6 @@ void RDOSMR::setTerminateIf(REF(LPRDOFUNLogic) pLogic)
 		RDOParser::s_parser()->error().push_done();
 	}
 	m_pTerminateIf = pLogic;
-	RDOParser::s_parser()->runtime()->setTerminateIf(pLogic->getCalc());
 }
 
 void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm) pArithm)

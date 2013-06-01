@@ -86,6 +86,7 @@ DECLARE_FACTORY(RDOPATPattern)
 friend class RDOOPROperation;
 friend class RDODPTActivity;
 friend class RDOParserEVNPost;
+friend class RDOParser;
 
 public:
 	enum PatType

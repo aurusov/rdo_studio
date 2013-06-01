@@ -19,6 +19,8 @@
 #include "simulator/runtime/calc/calc_process.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
 #include "simulator/runtime/calc/function/calc_function_system.h"
+#include "simulator/runtime/calc/calc_pattern.h"
+#include "simulator/runtime/rdo_pattern.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -117,10 +119,10 @@ void RDOParser::init()
 {
 	s_parserStack.push_back(this);
 
-	m_pRuntime = rdo::Factory<rdo::runtime::RDORuntime>::create(new rdo::runtime::Error());
-	ASSERT(m_pRuntime);
-	m_pRuntime->memory_insert(sizeof(RDOParser));
-	m_pRuntime->init();
+	m_pRuntimeBackup = rdo::Factory<rdo::runtime::RDORuntime>::create(new rdo::runtime::Error());
+	ASSERT(m_pRuntimeBackup);
+	m_pRuntimeBackup->memory_insert(sizeof(RDOParser));
+	m_pRuntimeBackup->init();
 
 	m_pContextStack = rdo::Factory<ContextStack>::create();
 	ASSERT(m_pContextStack);
@@ -170,8 +172,8 @@ void RDOParser::deinit()
 	m_preCastTypeList   .clear();
 	m_movementObjectList.clear();
 
-	m_pRuntime->deinit();
-	m_pRuntime = NULL;
+	m_pRuntimeBackup->deinit();
+	m_pRuntimeBackup = NULL;
 
 	s_parserStack.remove(this);
 }
@@ -200,6 +202,18 @@ void RDOParser::foundEndOfNextRun()
 	LPRDOSMR pSMR = rdo::Factory<RDOSMR>::create();
 	ASSERT(pSMR);
 	setSMR(pSMR);
+}
+
+void RDOParser::castInitToRuntime()
+{
+	RDOParserEVNPost evnLink;
+	evnLink.parse(this);
+
+	RDOParserRSSPost rssLink;
+	rssLink.parse(this);
+
+	RDOParserSMRPost smrLink;
+	smrLink.parse(this);
 }
 
 void RDOParser::pushToContainer()
@@ -412,7 +426,7 @@ tstring RDOParser::getModelStructure()
 	// OPR/DPT
 	ruint counter = 1;
 	modelStructure << std::endl << "$Activities" << std::endl;
-	modelStructure << m_pRuntime->writeActivitiesStructure(counter);
+	modelStructure << m_pRuntimeBackup->writeActivitiesStructure(counter);
 
 	// DPT only
 	for (ruint i = 0; i < m_allDPTSearch.size(); i++)
@@ -428,7 +442,7 @@ tstring RDOParser::getModelStructure()
 	// PMD
 	modelStructure << std::endl << "$Watching" << std::endl;
 	ruint watching_max_length = 0;
-	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
+	STL_FOR_ALL_CONST(m_pRuntimeBackup->getResult(), watching_it)
 	{
 		LPITrace          trace     = *watching_it;
 		LPIName           name      = trace;
@@ -441,7 +455,7 @@ tstring RDOParser::getModelStructure()
 			}
 		}
 	}
-	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
+	STL_FOR_ALL_CONST(m_pRuntimeBackup->getResult(), watching_it)
 	{
 		LPITrace          trace     = *watching_it;
 		LPIName           name      = trace;

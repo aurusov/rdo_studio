@@ -221,7 +221,6 @@
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
-#define RUNTIME PARSER->runtime()
 
 OPEN_RDO_PARSER_NAMESPACE
 %}
@@ -326,15 +325,22 @@ smr_launch_line_event_planning
 			pCalcTime->setSrcInfo(pTimeArithm->src_info());
 			ASSERT(pCalcTime);
 
-			LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
-			ASSERT(pBaseOperation);
+			//
+			//LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
+			//ASSERT(pBaseOperation);
 
 			rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
-			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @5, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
 			ASSERT(pEventPlan);
+			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @5, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+
 			pEvent->setParamList(pParamList);
-			pEventPlan->setEvent(pBaseOperation);
-			pEvent->setInitCalc(pEventPlan);
+			//pEventPlan->setEvent(pBaseOperation); связывание событий произойдет в castInitToRuntime
+			pEvent->attachCalc(pEventPlan);
+
+			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
+			ASSERT(pSMR);
+			pSMR->pushEventPlan(pEventPlan);
+			//pEvent->setInitCalc(pEventPlan); сохранить калк, который выполняет планирование событий перед запуском в RDOSMR
 		}
 	}
 	;

@@ -20,7 +20,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 inline CREF(rdo::runtime::LPRDORuntime) RDOParser::runtime() const
 {
-    return m_pRuntime;
+    return m_pRuntimeBackup;
 }
 
 inline rbool RDOParser::isPattern() const
