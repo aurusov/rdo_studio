@@ -71,7 +71,7 @@ RDOSMR::SMREvent RDOSMR::getSMREvent()
 	return SMREventList;
 }
 
-void RDOSMR::pushEventPlan(REF(LPRDOEvent) pEventPlan)
+void RDOSMR::pushEventPlan(REF(rdo::runtime::LPRDOCalcEventPlan) pEventPlan)
 {
 	SMREventList.push_back(pEventPlan);
 }

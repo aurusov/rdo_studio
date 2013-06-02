@@ -197,7 +197,7 @@ void RDOParserSMRPost::parse(CREF(LPRDOParser) pParser)
 		ruint value = 0;
 		STL_FOR_ALL(pParser->getSMR(value)->getSMREvent(), eventPlanIt)
 		{
-			LPRDOEvent pEventPlan = *eventPlanIt;
+			rdo::runtime::LPRDOCalcEventPlan pEventPlan = *eventPlanIt;
 			ASSERT(pEventPlan);
 			
 			pEvent->setInitCalc(pEventPlan);

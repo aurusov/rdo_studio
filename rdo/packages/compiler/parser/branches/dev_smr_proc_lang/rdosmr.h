@@ -19,6 +19,7 @@
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/service/show_mode.h"
 #include "simulator/compiler/parser/rdopatpreparse.h"
+#include "simulator/runtime/calc/calc_event.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -60,10 +61,10 @@ public:
 
 	LPRDOFUNLogic     m_pTerminateIf;
 
-	typedef std::vector<LPRDOEvent> SMREvent;
+	typedef std::vector<rdo::runtime::LPRDOCalcEventPlan> SMREvent;
 	SMREvent                    SMREventList;
 
-	void  pushEventPlan(REF(LPRDOEvent) pEventPlan);
+	void  pushEventPlan(REF(rdo::runtime::LPRDOCalcEventPlan) pEventPlan);
 	SMREvent getSMREvent();
 
 	void  setShowMode         (rdo::service::simulation::ShowMode showMode);
