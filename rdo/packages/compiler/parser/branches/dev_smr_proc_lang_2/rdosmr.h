@@ -43,6 +43,7 @@ DECLARE_FACTORY(RDOSMR);
 public:
 	typedef std::map<tstring, tstring> StringTable;
 
+#ifdef CORBA_ENABLE
 	void setExternalModelName(CREF(tstring) alias, CREF(tstring) modelID)
 	{
 		m_extModelList[alias] = modelID;
@@ -56,6 +57,7 @@ public:
 	{
 		return m_extModelList;
 	}
+#endif
 
 	rdo::service::simulation::ShowMode getShowMode      () const { return m_showMode;       }
 	int                                getFrameNumber   () const { return m_frameNumber;    }
@@ -64,21 +66,22 @@ public:
 	double                             getTraceStartTime() const { return m_traceStartTime; }
 	double                             getTraceEndTime  () const { return m_traceEndTime;   }
 
-	void setShowMode      (rdo::service::simulation::ShowMode showMode);
-	void setFrameNumber   (int value,    CREF(YYLTYPE) pos);
-	void setShowRate      (double value, CREF(YYLTYPE) pos);
-	void setRunStartTime  (double value, CREF(YYLTYPE) pos);
-	void setTraceStartTime(double value, CREF(YYLTYPE) pos);
-	void setTraceEndTime  (double value, CREF(YYLTYPE) pos);
+	void  setShowMode         (rdo::service::simulation::ShowMode showMode);
+	void  setFrameNumber      (int value,    CREF(YYLTYPE) pos);
+	void  setShowRate         (double value, CREF(YYLTYPE) pos);
+	void  setRunStartTime     (double value, CREF(YYLTYPE) pos);
+	void  setTraceStartTime   (double value, CREF(YYLTYPE) pos);
+	void  setTraceEndTime     (double value, CREF(YYLTYPE) pos);
 
-	void setTerminateIf  (REF(LPRDOFUNLogic) pLogic);
-	void setConstValue   (CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm)    pArithm);
-	void setResParValue  (CREF(RDOParserSrcInfo) res_info,   CREF(RDOParserSrcInfo) par_info, REF(LPRDOFUNArithm) pArithm);
-	void setSeed         (CREF(RDOParserSrcInfo) seq_info,   int base);
-	void insertBreakPoint(CREF(RDOParserSrcInfo) src_info,   REF(LPRDOFUNLogic) pLogic);
+	void  setTerminateIf  (REF(LPRDOFUNLogic) pLogic);
+	void  setConstValue   (CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm)    pArithm);
+	void  setResParValue  (CREF(RDOParserSrcInfo) res_info,   CREF(RDOParserSrcInfo) par_info, REF(LPRDOFUNArithm) pArithm);
+	void  setSeed         (CREF(RDOParserSrcInfo) seq_info,   int base);
+	void  insertBreakPoint(CREF(RDOParserSrcInfo) src_info,   REF(LPRDOFUNLogic) pLogic);
 
 private:
 	RDOSMR();
+	~RDOSMR();
 
 	OBJECT(BreakPoint) IS INSTANCE_OF(RDOParserSrcInfo)
 	{

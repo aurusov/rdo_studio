@@ -172,6 +172,8 @@ Monitor                        return(RDO_Monitor);
 monitor                        return(RDO_Monitor);
 Animation                      return(RDO_Animation);
 animation                      return(RDO_Animation);
+run_count                      return(RDO_Run_Count);
+Run_count                      return(RDO_Run_Count);
 
 $Decision_point                return(RDO_Decision_point);
 $decision_point                return(RDO_Decision_point);

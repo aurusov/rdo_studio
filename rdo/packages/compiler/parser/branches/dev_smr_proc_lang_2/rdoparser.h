@@ -136,6 +136,12 @@ public:
 	ruint getPAT_id     () const { return m_allPATPattern.size()  + 0; }
 	ruint getPMD_id     ()       { return m_resultGeneratorID.get();   }
 	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
+	ruint getSeriesCapacity() const { return m_foundRunNumber; }
+
+	void  setCurrentRunNumber (ruint  value);
+	void  foundEndOfNextRun   ()            ;
+
+	rbool check               () const;
 
 	tstring getModelStructure();
 	tstring getChanges       () const;
@@ -145,6 +151,7 @@ public:
 	rbool    hasSMR() const              { return m_pSMR ? true : false; }
 
 	void parse();
+	void parse(ruint count);
 	void parse(REF(std::istream) stream);
 
 	CREF(Error) error() const { return m_error; }
@@ -253,6 +260,8 @@ private:
 	LPContextStack        m_pContextStack;
 	rbool                 m_pattern;
 	rdo::IDGenerator      m_resultGeneratorID;
+	ruint                 m_foundRunNumber;
+	ruint                 m_currentRunNumber;
 
 	template <class T>
 	void howIsIt()
@@ -342,10 +351,12 @@ typedef RDOParserTemplate<RDOParserContainerModel> RDOParserModel;
 // --------------------------------------------------------------------------------
 typedef RDOParserTemplate<RDOParserContainerSMRInfo> RDOParserSMRInfo;
 
+#ifdef CORBA_ENABLE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserCorbar
 // --------------------------------------------------------------------------------
 typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorba;
+#endif
 
 CLOSE_RDO_PARSER_NAMESPACE
 
