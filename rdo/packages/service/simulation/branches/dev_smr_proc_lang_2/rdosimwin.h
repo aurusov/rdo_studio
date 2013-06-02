@@ -213,22 +213,22 @@ private:
 	rdo::simulation::report::RDOExitCode  m_exitCode;
 
 	void terminateModel();
-	void closeModel    (); 
+	void closeModel    ();
 
-	ShowMode m_showMode; //! current show mode
-	double   m_showRate; //! current show mode
+	ShowMode  m_showMode;         //! current show mode
+	double    m_showRate;         //! current show rate
+	ruint     m_seriesCapacity;   //! Общее количество прогонов в серии
+	ruint     m_currentRunNumber; //! Номер текущего прогона (нумерация начинается с 1)
 
 	rdo::textstream m_resultString;
 	rdo::textstream m_resultInfoString;
 
 	
 #ifdef CORBA_ENABLE
-
 //	void corbaGetRTPcount(REF(::CORBA::Long) rtp_count);
 //	void corbaGetRTPParamscount(REF(rdo::compiler::parser::RDOCorba::PARAM_count) params_count);
 	void corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP_var) my_rtpList);
 	void corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS_var) my_rssList);
-
 #endif // CORBA_ENABLE
 
 protected:
@@ -236,17 +236,19 @@ protected:
 
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	rbool parseModel();
-	void  runModel  ();
-	void  stopModel ();
+	rbool parseModel   ();
+	void  runModel     ();
+	void  stopModel    ();
 
 	typedef std::vector<rdo::simulation::report::FileMessage> SyntaxMessageList;
 	SyntaxMessageList getErrors();
 
 	void codeCompletion();
 
+#ifdef CORBA_ENABLE
 	void corbaGetRTP(PTR(GetRTP) RTPList);
 	void corbaGetRSS(PTR(GetRSS) RSSList);
+#endif
 
 public:
 	RDOThreadSimulator();
@@ -256,6 +258,10 @@ public:
 	ShowMode getInitialShowMode   () const;
 	int      getInitialFrameNumber() const;
 	double   getInitialShowRate   () const;
+	ruint    getInitialRunCount   () const;
+	ruint    getCurrentRunNumber  () const;
+	ruint    getSeriesCapacity    () const;
+	bool     needNextRun          () const;
 
 	struct GetList
 	{
