@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdorepository.cpp
-  \author    Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
+  \author    Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -642,13 +642,31 @@ tstring RDOThreadRepository::getFileExtName(rdoModelObjects::RDOFileType type) c
 	{
 		NEVER_REACH_HERE;
 	}
-
 	return it->second.m_fileName + it->second.m_extention;
 }
 
 tstring RDOThreadRepository::getFullFileName(rdoModelObjects::RDOFileType type) const
 {
+	return (type == rdoModelObjects::PMV || type == rdoModelObjects::TRC)
+		? getFullOutputFileName(type)
+		: getFullInputFileName (type);
+}
+
+tstring RDOThreadRepository::getFullInputFileName(rdoModelObjects::RDOFileType type) const
+{
+	ASSERT(type != rdoModelObjects::PMV && type != rdoModelObjects::TRC);
 	return m_modelPath + getFileExtName(type);
+}
+
+tstring RDOThreadRepository::getFullOutputFileName(rdoModelObjects::RDOFileType type) const
+{
+	ASSERT(type == rdoModelObjects::PMV || type == rdoModelObjects::TRC);
+
+	ruint runNumber = (kernel->simulator()->getSeriesCapacity());
+	tstring runNumberStr = runNumber
+		? rdo::format("-%i", kernel->simulator()->getCurrentRunNumber())
+		: "";
+	return m_modelPath + getFileName(type)+ runNumberStr + getExtention(type);
 }
 
 rbool RDOThreadRepository::isReadOnly(rdoModelObjects::RDOFileType type) const

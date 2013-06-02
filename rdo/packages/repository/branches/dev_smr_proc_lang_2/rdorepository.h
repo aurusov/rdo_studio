@@ -193,14 +193,16 @@ protected:
 	void load(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream);
 	void save(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream) const;
 
-	tstring getFileName    (rdoModelObjects::RDOFileType type) const;
-	tstring getExtention   (rdoModelObjects::RDOFileType type) const;
-	tstring getFileExtName (rdoModelObjects::RDOFileType type) const;
-	tstring getFullFileName(rdoModelObjects::RDOFileType type) const;
-	rbool   isReadOnly     (rdoModelObjects::RDOFileType type) const;
-	rbool   isDescribed    (rdoModelObjects::RDOFileType type) const;
-	rbool   isMustExist    (rdoModelObjects::RDOFileType type) const;
-	rbool   isDeleteIfEmpty(rdoModelObjects::RDOFileType type) const;
+	tstring getFileName          (rdoModelObjects::RDOFileType type) const;
+	tstring getExtention         (rdoModelObjects::RDOFileType type) const;
+	tstring getFileExtName       (rdoModelObjects::RDOFileType type) const;
+	tstring getFullFileName      (rdoModelObjects::RDOFileType type) const;
+	tstring getFullInputFileName (rdoModelObjects::RDOFileType type) const;
+	tstring getFullOutputFileName(rdoModelObjects::RDOFileType type) const;
+	rbool   isReadOnly           (rdoModelObjects::RDOFileType type) const;
+	rbool   isDescribed          (rdoModelObjects::RDOFileType type) const;
+	rbool   isMustExist          (rdoModelObjects::RDOFileType type) const;
+	rbool   isDeleteIfEmpty      (rdoModelObjects::RDOFileType type) const;
 
 	void loadBMP(REF(tstring) name, REF(rdo::stream) stream) const;
 };
