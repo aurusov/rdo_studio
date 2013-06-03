@@ -336,11 +336,11 @@ smr_launch_line_event_planning
 			pEvent->setParamList(pParamList);
 			//pEventPlan->setEvent(pBaseOperation); связывание событий произойдет в castInitToRuntime
 			pEvent->attachCalc(pEventPlan);
-
+			
 			LPRDOSMR pSMR = PARSER->getSMR(PARSER->m_currentRunNumber);
 			ASSERT(pSMR);
 			pSMR->pushEventPlan(pEventPlan);
-			//pEvent->setInitCalc(pEventPlan); сохранить калк, который выполняет планирование событий перед запуском в RDOSMR
+			//pEvent->setInitCalc(pEventPlan); //сохранить калк, который выполняет планирование событий перед запуском в RDOSMR
 		}
 	}
 	;

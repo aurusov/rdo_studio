@@ -61,11 +61,11 @@ public:
 
 	LPRDOFUNLogic     m_pTerminateIf;
 
-	typedef std::vector<rdo::runtime::LPRDOCalcEventPlan> SMREvent;
+	typedef std::list<rdo::runtime::LPRDOCalcEventPlan> SMREvent;
 	SMREvent                    SMREventList;
 
 	void  pushEventPlan(REF(rdo::runtime::LPRDOCalcEventPlan) pEventPlan);
-	SMREvent getSMREvent();
+	REF(SMREvent)              getSMREvent();
 
 	void  setShowMode         (rdo::service::simulation::ShowMode showMode);
 	void  setFrameNumber      (int value,    CREF(YYLTYPE) pos);

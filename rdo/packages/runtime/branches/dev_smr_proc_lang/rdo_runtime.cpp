@@ -401,6 +401,7 @@ void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 		}
 	}
 	m_constantList      = pOther->m_constantList;
+	m_initCalcList      = pOther->m_initCalcList;
 	m_patternParameterList = pOther->m_patternParameterList;
 	m_resultList           = pOther->m_resultList;
 	m_pThreadProxy    = pOther->m_pThreadProxy;

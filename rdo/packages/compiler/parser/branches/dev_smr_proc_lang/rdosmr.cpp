@@ -66,7 +66,7 @@ void RDOSMR::setShowMode(rdo::service::simulation::ShowMode showMode)
 	m_showMode = showMode;
 }
 
-RDOSMR::SMREvent RDOSMR::getSMREvent()
+REF(RDOSMR::SMREvent) RDOSMR::getSMREvent()
 {
 	return SMREventList;
 }

@@ -641,10 +641,9 @@ void RDOThreadRunTime::start()
 	//! RDO config initialization
 	ruint currentRunNumber = 0;
 	//ruint currentRunNumber = m_pSimulator->m_pParser->m_currentRunNumber;
+	m_pSimulator->m_pParser->castInitToRuntime();
 	m_pSimulator->m_pRuntime = m_pSimulator->m_pRuntimeBackup->clone();
 	m_pSimulator->m_pRuntime->hotkey().clear();
-
-	m_pSimulator->m_pParser->castInitToRuntime();
 
 	m_pSimulator->m_pRuntime->setTerminateIf   (m_pSimulator->m_pParser->getSMR(currentRunNumber)->m_pTerminateIf->getCalc());
 	m_pSimulator->m_pRuntime->setStartTime     (m_pSimulator->m_pParser->getSMR(currentRunNumber)->getRunStartTime        ());
