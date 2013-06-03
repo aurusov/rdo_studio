@@ -34,6 +34,8 @@
 #include "simulator/runtime/rdodptrtime.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/resource/calc_relevant.h"
+#include "kernel/rdokernel.h"
+#include "simulator/service/rdosimwin.h"
 // --------------------------------------------------------------------------------
 
 typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
@@ -402,6 +404,7 @@ void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 	}
 	m_constantList      = pOther->m_constantList;
 	m_initCalcList      = pOther->m_initCalcList;
+	m_resultAllList     = pOther->m_resultAllList;
 	m_patternParameterList = pOther->m_patternParameterList;
 	m_resultList           = pOther->m_resultList;
 	m_pThreadProxy    = pOther->m_pThreadProxy;
