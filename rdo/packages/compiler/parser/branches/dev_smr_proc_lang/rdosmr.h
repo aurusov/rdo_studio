@@ -64,6 +64,10 @@ public:
 	typedef std::list<rdo::runtime::LPRDOCalcEventPlan> SMREvent;
 	SMREvent                    SMREventList;
 
+	typedef std::list<rdo::runtime::LPRDOCalcSetConst> SMRConstant;
+	SMRConstant                                SMRConstantCalcList;
+	REF(SMRConstant)                              getSMRConstant();
+
 	void  pushEventPlan(REF(rdo::runtime::LPRDOCalcEventPlan) pEventPlan);
 	REF(SMREvent)              getSMREvent();
 

@@ -15,7 +15,7 @@
 #include "utils/rdostream.h"
 
 #include "kernel/rdokernel.h"
-
+#include "simulator/service/rdosimwin.h"
 #include "repository/rdorepository.h"
 
 #include "simulator/runtime/calc/calc_pattern.h"
@@ -160,7 +160,7 @@ void RDOParserRSSPost::parse(CREF(LPRDOParser) pParser)
 			{
 #endif
 				rdo::runtime::LPRDOCalc calc = (*rss_it)->createCalc();
-				pParser->runtime()->addInitCalc(calc);
+				kernel->simulator()->m_pRuntime->addInitCalc(calc);
 #ifdef RDOSIM_COMPATIBLE
 			}
 #endif
@@ -192,8 +192,15 @@ void RDOParserSMRPost::parse(CREF(LPRDOParser) pParser)
 			rdo::runtime::LPRDOCalcEventPlan pEventPlan = *eventPlanIt;
 			ASSERT(pEventPlan);
 			
-			pParser->runtime()->addInitCalc(pEventPlan);
+			kernel->simulator()->m_pRuntime->addInitCalc(pEventPlan);
 		}
+	}
+	// Константы из SMR
+	STL_FOR_ALL_CONST(pParser->getSMR(pParser->m_currentRunNumber)->getSMRConstant(), ConstantIt)
+	{
+		rdo::runtime::LPRDOCalcSetConst pConstCalc = *ConstantIt;
+
+		kernel->simulator()->m_pRuntime->addInitCalc(pConstCalc);
 	}
 }
 
@@ -230,7 +237,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 		//! \todo избавиться от рудимента getRegular()
 		if (pEvent->getRegular())
 		{
-			LPIBaseOperation pRuntimeEvent = pPattern->getPatRuntime<rdo::runtime::RDOPatternEvent>()->createActivity(pParser->runtime()->m_pMetaLogic, pParser->runtime(), pEvent->name());
+			LPIBaseOperation pRuntimeEvent = pPattern->getPatRuntime<rdo::runtime::RDOPatternEvent>()->createActivity(kernel->simulator()->m_pRuntime->m_pMetaLogic, kernel->simulator()->m_pRuntime, pEvent->name());
 			ASSERT(pRuntimeEvent);
 			pEvent->setRuntimeEvent(pRuntimeEvent);
 

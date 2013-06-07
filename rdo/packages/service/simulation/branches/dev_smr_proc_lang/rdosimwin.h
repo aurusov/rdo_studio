@@ -179,9 +179,11 @@ class RDOThreadSimulator: public RDOThreadMT
 friend class rdo::runtime::RDOThreadRunTime;
 friend class RDORuntimeTracer;
 friend class RDOSimResulter;
+friend class RDOParser;
 
 public:
 	rdo::runtime::LPRDORuntime  m_pRuntime;
+	CREF(rdo::runtime::LPRDORuntime) copyRuntime() const;
 
 	struct RTP
 	{

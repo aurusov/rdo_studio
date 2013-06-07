@@ -71,6 +71,11 @@ REF(RDOSMR::SMREvent) RDOSMR::getSMREvent()
 	return SMREventList;
 }
 
+REF(RDOSMR::SMRConstant) RDOSMR::getSMRConstant()
+{
+	return SMRConstantCalcList;
+}
+
 void RDOSMR::pushEventPlan(REF(rdo::runtime::LPRDOCalcEventPlan) pEventPlan)
 {
 	SMREventList.push_back(pEventPlan);
@@ -160,7 +165,9 @@ void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm
 	ASSERT(pArithm);
 	pArithm->checkParamType(pConstant->getTypeInfo());
 	rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(pConstant->getTypeInfo());
-	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOCalcSetConst>::create(pConstant->getNumber(), pCalc));
+	rdo::runtime::LPRDOCalcSetConst pConstCalc = rdo::Factory<rdo::runtime::RDOCalcSetConst>::create(pConstant->getNumber(), pCalc);
+	SMRConstantCalcList.push_back(pConstCalc);
+	//RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOCalcSetConst>::create(pConstant->getNumber(), pCalc));
 	RDOParser::s_parser()->insertChanges(pConstant->src_text(), pArithm->src_text());
 }
 

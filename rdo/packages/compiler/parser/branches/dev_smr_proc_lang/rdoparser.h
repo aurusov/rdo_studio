@@ -113,8 +113,9 @@ public:
 	virtual void deinit();
 
 	ruint  m_currentRunNumber;
+	ruint  m_foundRunNumber;
 
-	CREF(rdo::runtime::LPRDORuntime) runtime() const;
+	CREF(rdo::runtime::LPRDORuntime) runtime      () const;
 
 	rbool             isPattern       () const;
 	REF(FUNGroupList) getFUNGroupStack();
@@ -207,6 +208,7 @@ protected:
 	RDOParserContainer::Iterator find(ruint index);
 
 	rdo::runtime::LPRDORuntime m_pRuntimeBackup;
+	rdo::runtime::LPRDORuntime m_pRuntime;
 
 	void parse(rdoModelObjects::RDOParseType file);
 
@@ -220,7 +222,7 @@ private:
 	LPContextStack        m_pContextStack;
 	rbool                 m_pattern;
 	rdo::IDGenerator      m_resultGeneratorID;
-	ruint                 m_foundRunNumber;
+	
 
 	template <class T>
 	void howIsIt();

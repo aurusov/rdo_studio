@@ -641,10 +641,9 @@ void RDOThreadRunTime::start()
 	//! RDO config initialization
 	ruint currentRunNumber = 0;
 	//ruint currentRunNumber = m_pSimulator->m_pParser->m_currentRunNumber;
-	m_pSimulator->m_pParser->castInitToRuntime();
 	m_pSimulator->m_pRuntime = m_pSimulator->m_pRuntimeBackup->clone();
 	m_pSimulator->m_pRuntime->hotkey().clear();
-
+	m_pSimulator->m_pParser->castInitToRuntime();
 	m_pSimulator->m_pRuntime->setTerminateIf   (m_pSimulator->m_pParser->getSMR(currentRunNumber)->m_pTerminateIf->getCalc());
 	m_pSimulator->m_pRuntime->setStartTime     (m_pSimulator->m_pParser->getSMR(currentRunNumber)->getRunStartTime        ());
 	m_pSimulator->m_pRuntime->setTraceStartTime(m_pSimulator->m_pParser->getSMR(currentRunNumber)->getTraceStartTime      ());
@@ -1082,14 +1081,16 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					{
 						++m_currentRunNumber;
 						m_pRuntime->deinit();
-						m_pThreadRuntime->start();
+						m_pRuntime = NULL;
+						m_pThreadRuntime = NULL;
+						m_pThreadRuntime = rdo::Factory<rdo::runtime::RDOThreadRunTime>::create();
 					}
 					else
 					{
 						m_currentRunNumber = 0;
 						m_seriesCapacity = 0;
+						closeModel();
 					}
-					closeModel();
 				}
 				else
 				{
@@ -1230,6 +1231,7 @@ void RDOThreadSimulator::closeModel()
 		TRACE("******************************** Ошибка удаления m_pRuntime\n");
 	}
 */
+	m_pRuntime = NULL;
 	m_pRuntimeBackup = NULL;
 	m_pThreadRuntime = NULL;
 	try
@@ -1348,6 +1350,11 @@ ruint RDOThreadSimulator::getSeriesCapacity() const
 ruint RDOThreadSimulator::getCurrentRunNumber() const
 {
 	return m_currentRunNumber;
+}
+
+CREF(rdo::runtime::LPRDORuntime) RDOThreadSimulator::copyRuntime() const
+{
+    return m_pRuntime;
 }
 
 void RDOThreadSimulator::codeCompletion()
