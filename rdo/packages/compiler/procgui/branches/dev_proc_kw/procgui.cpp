@@ -227,8 +227,8 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF
 	ASSERT(pParser  );
 	ASSERT(m_pParams);
 
-	tstring rtpName      = pParser->getProcTransactionValue();
-	tstring rtpParamName = pParser->getProcTimeCreateValue();
+	tstring rtpName      = "Транзакты" ;
+	tstring rtpParamName = pParser->getSMR()->getProcKeyWord("procTimeCreateValue");
 
 	//! Получили список всех типов ресурсов
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
@@ -410,11 +410,11 @@ ProcGUISeize::ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 		rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 		rdo::compiler::mbuilder::RDOResType      rtp;
 		//! Значение процессного ресурса "Свободен"
-		tstring rtp_state_free = pParser->getProcResStateFreeValue();
+		tstring rtp_state_free = pParser->getSMR()->getProcKeyWord("procResStateFreeValue");
 		//! Значение процессного ресурса "Занят"
-		tstring rtp_state_busy = pParser->getProcResStateBusyValue();
+		tstring rtp_state_busy = pParser->getSMR()->getProcKeyWord("procResStateBusyValue");
 		//! Значение процессного ресурса "Состояние"
-		tstring rtp_param_name = pParser->getProcStateValue();
+		tstring rtp_param_name = pParser->getSMR()->getProcKeyWord("procStateValue");
 		//! Если ресурс существует, берем его тип и проверяем
 		if (rssList[resName].exist())
 		{
@@ -472,7 +472,7 @@ void ProcGUISeize::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::L
 			//! Создадим тип ресурса
 			rdo::compiler::mbuilder::RDOResType rtp = rssList[resName].getType();
 			//! "Состояние"
-			tstring rtpParamName = pParser->getProcStateValue();
+			tstring rtpParamName = pParser->getSMR()->getProcKeyWord("procStateValue");
 			//! проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtpParamName].exist())
 			{
@@ -526,11 +526,11 @@ ProcGUIRelease::ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPR
 		rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 		rdo::compiler::mbuilder::RDOResType      rtp;
 		//! Значение процессного ресурса "Свободен"
-		tstring rtp_state_free = pParser->getProcResStateFreeValue();
+		tstring rtp_state_free = pParser->getSMR()->getProcKeyWord("procResStateFreeValue");
 		//! Значение процессного ресурса "Занят"
-		tstring rtp_state_busy = pParser->getProcResStateBusyValue();
+		tstring rtp_state_busy = pParser->getSMR()->getProcKeyWord("procResStateBusyValue");
 		//! Значение процессного ресурса "Состояние"
-		tstring rtp_param_name = pParser->getProcStateValue();
+		tstring rtp_param_name = pParser->getSMR()->getProcKeyWord("procStateValue");
 		//! Если ресурс существует, берем его тип и проверяем
 		if (rssList[resName].exist())
 		{
@@ -588,7 +588,7 @@ void ProcGUIRelease::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser:
 			//! Создадим тип ресурса
 			rdo::compiler::mbuilder::RDOResType rtp = rssList[resName].getType();
 			//! "Состояние"
-			tstring rtpParamName = pParser->getProcStateValue();
+			tstring rtpParamName = pParser->getSMR()->getProcKeyWord("procStateValue");
 			//! проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtpParamName].exist())
 			{
@@ -637,9 +637,9 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 	//! Получили список всех типов ресурсов
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	rdo::compiler::mbuilder::RDOResType     rtp;
-	tstring rtpName   = pParser->getProcQDepartValue();;
-	tstring queueName = pParser->getProcQueueValue() + "_" + m_resourceName;
-	tstring rtp_param_name = pParser->getProcSizeQueueValue();
+	tstring rtpName   = pParser->getSMR()->getProcKeyWord("procQDepartValue");
+	tstring queueName = pParser->getSMR()->getProcKeyWord("procQueueValue") + m_resourceName;
+	tstring rtp_param_name = pParser->getSMR()->getProcKeyWord("procSizeQueueValue");
 	//! Если ресурс существует, берем его тип и проверяем
 	if (rssList[m_resourceName].exist())
 	{
@@ -665,7 +665,7 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 		}
 		else
 		{
-			tstring rtp_param_name = pParser->getProcSizeQueueValue();
+			tstring rtp_param_name = pParser->getSMR()->getProcKeyWord("procSizeQueueValue");
 			rdo::compiler::mbuilder::RDOResType rtp_ = rdo::compiler::mbuilder::BlockForQueue::createType(rtpName, rtp_param_name, parser::RDOParserSrcInfo());
 			if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, parser::RDOParserSrcInfo(), rtp_param_name))
 			{
@@ -695,7 +695,7 @@ void ProcGUIQueue::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::L
 		//! Создадим тип ресурса
 		rdo::compiler::mbuilder::RDOResType rtp = rssList[resName].getType();
 		//! "длина_очереди"
-		tstring rtpParamName        = pParser->getProcSizeQueueValue();
+		tstring rtpParamName        = pParser->getSMR()->getProcKeyWord("procSizeQueueValue");
 		m_parserForRuntime.Id_res   = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtpParamName].id();
 	}
@@ -724,9 +724,9 @@ ProcGUIDepart::ProcGUIDepart(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDO
 	//! Получили список всех типов ресурсов
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	rdo::compiler::mbuilder::RDOResType rtp;
-	tstring rtpName = pParser->getProcQDepartValue();
+	tstring rtpName = pParser->getSMR()->getProcKeyWord("procQDepartValue");
 	//! Длина очереди
-	tstring rtp_param_name = pParser->getProcSizeQueueValue();
+	tstring rtp_param_name = pParser->getSMR()->getProcKeyWord("procSizeQueueValue");
 	//! Если ресурс существует, берем его тип и проверяем
 	if (rssList[m_resourceName].exist())
 	{
@@ -771,7 +771,7 @@ void ProcGUIDepart::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::
 		//! Создадим тип ресурса
 		rdo::compiler::mbuilder::RDOResType rtp = rssList[resName].getType();
 		//! "длина_очереди"
-		tstring rtpParamName        = pParser->getProcSizeQueueValue();
+		tstring rtpParamName        = pParser->getSMR()->getProcKeyWord("procSizeQueueValue");
 		m_parserForRuntime.Id_res   = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtpParamName].id();
 	}	

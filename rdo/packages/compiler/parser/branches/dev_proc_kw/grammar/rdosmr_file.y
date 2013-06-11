@@ -204,9 +204,9 @@
 %token RDO_sys_busy
 %token RDO_size_queue
 %token RDO_time_create
-%token RDO_sys_status
+%token RDO_sys_state
 %token RDO_sys_queue
-%token RDO_QDEPART
+%token RDO_sys_qdepart
 
 %{
 // ---------------------------------------------------------------------------- PCH
@@ -241,6 +241,41 @@ smr_descr
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
 		pSMR->setExternalModelName(alias, model);
+	}
+	| smr_descr RDO_size_queue '=' RDO_STRING_CONST ';'
+	{
+		tstring procSizeQueueValue = PARSER->stack().pop<RDOValue>($4)->value().getString();
+		PARSER->getSMR()->setProcKeyWord( "procSizeQueueValue", procSizeQueueValue);
+	}
+	| smr_descr RDO_sys_free '=' RDO_STRING_CONST ';'
+	{
+		tstring procResStateFreeValue = PARSER->stack().pop<RDOValue>($4)->value().getString();
+		PARSER->getSMR()->setProcKeyWord( "procResStateFreeValue", procResStateFreeValue);
+	}
+	| smr_descr RDO_sys_busy '=' RDO_STRING_CONST ';'
+	{
+		tstring procResStateBusyValue = PARSER->stack().pop<RDOValue>($4)->value().getString();
+		PARSER->getSMR()->setProcKeyWord( "procResStateBusyValue", procResStateBusyValue);
+	}
+	| smr_descr RDO_time_create '=' RDO_STRING_CONST ';'
+	{
+		tstring procTimeCreateValue = PARSER->stack().pop<RDOValue>($4)->value().getString();
+		PARSER->getSMR()->setProcKeyWord( "procTimeCreateValue", procTimeCreateValue);
+	}
+	| smr_descr RDO_sys_state '=' RDO_STRING_CONST ';'
+	{
+		tstring procStateValue = PARSER->stack().pop<RDOValue>($4)->value().getString();
+		PARSER->getSMR()->setProcKeyWord( "procStateValue", procStateValue);
+	}
+	| smr_descr RDO_sys_queue '=' RDO_STRING_CONST ';'
+	{
+		tstring procQueueValue = PARSER->stack().pop<RDOValue>($4)->value().getString();
+		PARSER->getSMR()->setProcKeyWord( "procQueueValue", procQueueValue);
+	}
+	| smr_descr RDO_sys_qdepart '=' RDO_STRING_CONST ';'
+	{
+		tstring procQDepartValue = PARSER->stack().pop<RDOValue>($4)->value().getString();
+		PARSER->getSMR()->setProcKeyWord( "procQDepartValue", procQDepartValue);
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' error
 	{

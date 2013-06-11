@@ -326,12 +326,19 @@ $Sprite                        return(RDO_Sprite);
 $sprite                        return(RDO_Sprite);
 sprite                         return(RDO_sprite_call);
 sys_free                       return(RDO_sys_free);
+Sys_free                       return(RDO_sys_free);
 sys_busy                       return(RDO_sys_busy);
+Sys_busy                       return(RDO_sys_busy);
 size_queue                     return(RDO_size_queue);
+Size_queue                     return(RDO_size_queue);
 time_create                    return(RDO_time_create);
-sys_status                     return(RDO_sys_status);
+Time_create                    return(RDO_time_create);
+sys_state                      return(RDO_sys_state);
+Sys_state                      return(RDO_sys_state);
 sys_queue                      return(RDO_sys_queue);
-QDEPART                        return(RDO_QDEPART);
+Sys_queue                      return(RDO_sys_queue);
+sys_qdepart                    return(RDO_sys_qdepart);
+Sys_qdepart                    return(RDO_sys_qdepart);
 
 
 (\'[^\']*\') {

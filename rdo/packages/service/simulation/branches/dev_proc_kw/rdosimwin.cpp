@@ -1095,12 +1095,14 @@ rbool RDOThreadSimulator::parseModel()
 	ASSERT(m_pParser);
 	m_pParser->init();
 	m_pRuntime = m_pParser->runtime();
-	ASSERT(m_pRuntime);
+	ASSERT(m_pRuntime );
 
 	try
 	{
 		m_exitCode = rdo::simulation::report::EC_OK;
 		m_pParser->parse();
+		m_pRuntime->setProcResStateFreeValueRuntime(m_pParser->rdo::compiler::parser::RDOParser::getSMR()->getProcKeyWord("procResStateFreeValue"));
+		m_pRuntime->setProcResStateBusyValueRuntime(m_pParser->rdo::compiler::parser::RDOParser::getSMR()->getProcKeyWord("procResStateBusyValue"));
 	}
 	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{

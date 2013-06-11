@@ -203,9 +203,9 @@
 %token RDO_sys_busy
 %token RDO_size_queue
 %token RDO_time_create
-%token RDO_sys_status
+%token RDO_sys_state
 %token RDO_sys_queue
-%token RDO_QDEPART
+%token RDO_sys_qdepart
 
 %{
 // ---------------------------------------------------------------------------- PCH
@@ -505,9 +505,13 @@ smr_cond
 	{
 		PARSER->error().error(@2, "Неизвестная ошибка");
 	}
-	| smr_cond RDO_size_queue '=' RDO_IDENTIF ';'
-	{
-	}
+	| smr_cond RDO_size_queue '=' RDO_STRING_CONST ';'
+	| smr_cond RDO_sys_free '=' RDO_STRING_CONST ';'
+	| smr_cond RDO_sys_busy '=' RDO_STRING_CONST ';'
+	| smr_cond RDO_time_create '=' RDO_STRING_CONST ';'
+	| smr_cond RDO_sys_state '=' RDO_STRING_CONST ';'
+	| smr_cond RDO_sys_queue '=' RDO_STRING_CONST ';'
+	| smr_cond RDO_sys_qdepart '=' RDO_STRING_CONST ';'
 	;
 
 // --------------------------------------------------------------------------------

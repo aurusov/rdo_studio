@@ -364,7 +364,7 @@ void MainWindow::createInsertMenu()
 			MenuItemList
 				(MenuItem("SMR", "smr.txt", 17))
 				("Frame_number")("Show_mode")("Animation")("Monitor")("NoShow")("Show_rate")("Run_StartTime")
-				("Trace_StartTime")("Trace_EndTime")("Terminate_if")("Time_now")("Seconds")("Break_point")
+				("Trace_StartTime")("Trace_EndTime")("Terminate_if")("Time_now")("Seconds")("Break_point")("Sys_free")("Sys_busy")("Size_queue")("Time_create")("Sys_state")("Sys_queue")("Sys_qdepart")
 		)
 	);
 	menuList.push_back(

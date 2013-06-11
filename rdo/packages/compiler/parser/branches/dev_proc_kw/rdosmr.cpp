@@ -94,6 +94,17 @@ void RDOSMR::setRunStartTime(double value, CREF(YYLTYPE) pos)
 	m_runStartTime = value;
 }
 
+void RDOSMR::setDefaultProcKeywords()
+{
+	m_mapProcKeyWords["procSizeQueueValue"]    = "длина_очереди";
+	m_mapProcKeyWords["procResStateFreeValue"] = "Свободен";
+	m_mapProcKeyWords["procResStateBusyValue"] = "Занят";
+	m_mapProcKeyWords["procQueueValue"]        = "Очередь_";
+	m_mapProcKeyWords["procTimeCreateValue"]   = "Время_создания";
+	m_mapProcKeyWords["procQDepartValue"]      = "QDEPART";
+	m_mapProcKeyWords["procStateValue"]        = "Состояние";
+}
+
 void RDOSMR::setTraceStartTime(double value, CREF(YYLTYPE) pos)
 {
 	if (value < 0)

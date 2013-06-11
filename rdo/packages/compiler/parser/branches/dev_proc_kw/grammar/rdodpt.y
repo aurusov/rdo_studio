@@ -204,9 +204,9 @@
 %token RDO_sys_busy
 %token RDO_size_queue
 %token RDO_time_create
-%token RDO_sys_status
+%token RDO_sys_state
 %token RDO_sys_queue
-%token RDO_QDEPART
+%token RDO_sys_qdepart
 
 %{
 // ---------------------------------------------------------------------------- PCH

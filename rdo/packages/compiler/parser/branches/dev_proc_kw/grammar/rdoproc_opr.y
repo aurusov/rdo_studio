@@ -203,9 +203,9 @@
 %token RDO_sys_busy
 %token RDO_size_queue
 %token RDO_time_create
-%token RDO_sys_status
+%token RDO_sys_state
 %token RDO_sys_queue
-%token RDO_QDEPART
+%token RDO_sys_qdepart
 
 %{
 // ---------------------------------------------------------------------------- PCH
@@ -441,7 +441,7 @@ dpt_process_line
 		LPRDOPROCQueue pQueue = PARSER->stack().pop<RDOPROCQueue>($2);
 		ASSERT(pQueue);
 		//! "длина_очереди"
-		tstring rtp_param_name = PARSER->getProcSizeQueueValue();
+		tstring rtp_param_name = PARSER->getSMR()->getProcKeyWord("procSizeQueueValue");
 		pQueue->createRuntime(rtp_param_name);
 		$$ = PARSER->stack().push(pQueue);
 	}
@@ -455,7 +455,7 @@ dpt_process_line
 		LPRDOPROCDepart pDepart = PARSER->stack().pop<RDOPROCDepart>($2);
 		ASSERT(pDepart);
 		//! Длина очереди
-		tstring rtp_param_name = PARSER->getProcSizeQueueValue();
+		tstring rtp_param_name = PARSER->getSMR()->getProcKeyWord("procSizeQueueValue");
 		pDepart->createRuntime(rtp_param_name);
 		$$ = PARSER->stack().push(pDepart);
 	}
@@ -469,7 +469,7 @@ dpt_process_line
 		LPRDOPROCSeize pSeize = PARSER->stack().pop<RDOPROCSeize>($2);
 		ASSERT(pSeize);
 		//! Значение параметра "Состояние"
-		tstring rtp_param_name = PARSER->getProcStateValue();
+		tstring rtp_param_name = PARSER->getSMR()->getProcKeyWord("procStateValue");
 		pSeize->createRuntime(rtp_param_name);
 		$$ = PARSER->stack().push(pSeize);
 	}
@@ -483,7 +483,7 @@ dpt_process_line
 		LPRDOPROCRelease pRelease = PARSER->stack().pop<RDOPROCRelease>($2);
 		ASSERT(pRelease);
 		//! Значение параметра "Состояние"
-		tstring rtp_param_name = PARSER->getProcStateValue();
+		tstring rtp_param_name = PARSER->getSMR()->getProcKeyWord("procStateValue");
 		pRelease->createRuntime(rtp_param_name);
 		$$ = PARSER->stack().push(pRelease);
 	}

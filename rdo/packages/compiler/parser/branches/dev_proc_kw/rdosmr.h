@@ -77,6 +77,12 @@ public:
 	void setSeed         (CREF(RDOParserSrcInfo) seq_info,   int base);
 	void insertBreakPoint(CREF(RDOParserSrcInfo) src_info,   REF(LPRDOFUNLogic) pLogic);
 
+	void    setDefaultProcKeywords();
+	tstring getProcKeyWord (CREF(tstring) procKeyWord)                                 {return m_mapProcKeyWords.find(procKeyWord)->second;}
+	tstring setProcKeyWord (CREF(tstring) procKeyWord, CREF(tstring) procKeyWordValue) {return m_mapProcKeyWords[procKeyWord] = procKeyWordValue;}
+
+
+
 private:
 	RDOSMR();
 
@@ -99,6 +105,7 @@ private:
 	YYLTYPE                             m_traceEndTime_pos;
 	LPRDOFUNLogic                       m_pTerminateIf;
 	BreakPointList                      m_breakPointList;
+	std::map<tstring,tstring>           m_mapProcKeyWords;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

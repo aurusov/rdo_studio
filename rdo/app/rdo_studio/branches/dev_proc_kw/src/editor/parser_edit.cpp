@@ -38,7 +38,7 @@ OperRuleCheckCounter?0 OprIev_file?0 or?0 permanent?0 r_rect?0 real?0 enum?0 rec
 Results_file?0 rule?0 Run_file?0 Run_StartTime?0 s_bmp?0 search?0 Seconds?0 selected?0 \
 ADVANCE?0 SEIZE?0 RELEASE?0 GENERATE?0 QUEUE?0 DEPART?0 ASSIGN?0 TERMINATE?0 \
 set?0 Show_mode?0 Show_rate?0 some?0 Statistic_file?0 such_as?0 table?0 temporary?0 \
-Terminate_if?0 text?0 Time_now?0 Trace_EndTime?2 Trace_file?2 Trace_StartTime?2 triang?0 triangular?0 \
+Terminate_if?0 text?0 Time_now?0 Trace_EndTime?2 Trace_file?2 Trace_StartTime?2 triang?0 triangular?0 Sys_free?0 Sys_busy?0 Size_queue?0 Time_create?0 Sys_state?0 Sys_queue?0 Sys_qdepart?0 \
 uniform?0 until?0 value?0 watch_par?0 watch_quant?0 watch_state?0 watch_value?0 with_max?0 \
 with_min?0 YES?0 Seed?0 Системное_время?0 not?0 if?0 else?0 for?0 return?0 break?0 result?0 ruler?0 space?0 string?0 bool?0 true?0 false?0 \
 External_Model?0 external_model?0 $Priority?0 $Parent?0 prior?0 cf?0 Terminate_counter?0 typedef?0 $Typedef?0 $Sprite?0")

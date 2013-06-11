@@ -203,9 +203,9 @@
 %token RDO_sys_busy
 %token RDO_size_queue
 %token RDO_time_create
-%token RDO_sys_status
+%token RDO_sys_state
 %token RDO_sys_queue
-%token RDO_QDEPART
+%token RDO_sys_qdepart
 
 %{
 // ---------------------------------------------------------------------------- PCH
@@ -248,7 +248,7 @@ prc_rtp_main
 	| prc_rtp_main RDO_Process RDO_IDENTIF RDO_IDENTIF error RDO_End
 	{
 		tstring rtp_name       = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
-		tstring rtp_param_name = PARSER->getProcTimeCreateValue();
+		tstring rtp_param_name = PARSER->getSMR()->getProcKeyWord("procTimeCreateValue");
 
 		// Получили список всех типов ресурсов
 		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);

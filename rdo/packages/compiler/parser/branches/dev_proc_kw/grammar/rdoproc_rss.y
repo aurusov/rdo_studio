@@ -203,9 +203,9 @@
 %token RDO_sys_busy
 %token RDO_size_queue
 %token RDO_time_create
-%token RDO_sys_status
+%token RDO_sys_state
 %token RDO_sys_queue
-%token RDO_QDEPART
+%token RDO_sys_qdepart
 
 %{
 // ---------------------------------------------------------------------------- PCH
@@ -321,10 +321,10 @@ dpt_queue_param
 		//! Получили список всех типов ресурсов
 		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
-		tstring rtp_name = PARSER->getProcQDepartValue();
-		tstring q_name   = PARSER->getProcQueueValue() + "_" + res_name;
+		tstring rtp_name = PARSER->getSMR()->getProcKeyWord("procQDepartValue");
+		tstring q_name   = PARSER->getSMR()->getProcKeyWord("procQueueValue") + res_name;
 		//! Длина очереди
-		tstring rtp_param_name = PARSER->getProcSizeQueueValue();
+		tstring rtp_param_name = PARSER->getSMR()->getProcKeyWord("procSizeQueueValue");
 		//! Если ресурс существует, берем его тип и проверяем
 		if (rssList[res_name].exist())
 		{
@@ -378,8 +378,8 @@ dpt_depart_param
 		//! Получили список всех типов ресурсов
 		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
-		tstring rtp_name = PARSER->getProcQDepartValue();
-		tstring rtp_param_name = PARSER->getProcSizeQueueValue();
+		tstring rtp_name = PARSER->getSMR()->getProcKeyWord("procQDepartValue");
+		tstring rtp_param_name = PARSER->getSMR()->getProcKeyWord("procSizeQueueValue");
 		//! Если ресурс существует, берем его тип и проверяем
 		if (rssList[res_name].exist())
 		{
@@ -422,11 +422,11 @@ dpt_seize_param
 		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
 		//! Значение процессного ресурса "Свободен"
-		tstring rtp_state_free = PARSER->getProcResStateFreeValue();
+		tstring rtp_state_free = PARSER->getSMR()->getProcKeyWord("procResStateFreeValue");
 		//! Значение процессного ресурса "Занят"
-		tstring rtp_state_busy = PARSER->getProcResStateBusyValue();
+		tstring rtp_state_busy = PARSER->getSMR()->getProcKeyWord("procResStateBusyValue");
 		//! Значение процессного ресурса "Состояние"
-		tstring rtp_param_name = PARSER->getProcStateValue();
+		tstring rtp_param_name = PARSER->getSMR()->getProcKeyWord("procStateValue");
 		//! Если ресурс существует, берем его тип и проверяем
 		if (rssList[res_name].exist())
 		{
@@ -473,11 +473,11 @@ dpt_seize_param
 		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
 		//! Значение процессного ресурса "Свободен"
-		tstring rtp_state_free = PARSER->getProcResStateFreeValue();
+		tstring rtp_state_free = PARSER->getSMR()->getProcKeyWord("procResStateFreeValue");
 		//! Значение процессного ресурса "Занят"
-		tstring rtp_state_busy = PARSER->getProcResStateBusyValue();
+		tstring rtp_state_busy = PARSER->getSMR()->getProcKeyWord("procResStateBusyValue");
 		//! Значение процессного ресурса "Состояние"
-		tstring rtp_param_name = PARSER->getProcStateValue();
+		tstring rtp_param_name = PARSER->getSMR()->getProcKeyWord("procStateValue");
 		//! Если ресурс существует, берем его тип и проверяем
 		if (rssList[res_name].exist())
 		{
@@ -530,11 +530,11 @@ dpt_release_param
 		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
 		//! Значение процессного ресурса "Свободен"
-		tstring rtp_state_free = PARSER->getProcResStateFreeValue();
+		tstring rtp_state_free = PARSER->getSMR()->getProcKeyWord("procResStateFreeValue");
 		//! Значение процессного ресурса "Занят"
-		tstring rtp_state_busy = PARSER->getProcResStateBusyValue();
+		tstring rtp_state_busy = PARSER->getSMR()->getProcKeyWord("procResStateBusyValue");
 		//! Значение процессного ресурса "Состояние"
-		tstring rtp_param_name = PARSER->getProcStateValue();
+		tstring rtp_param_name = PARSER->getSMR()->getProcKeyWord("procStateValue");
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
@@ -579,11 +579,11 @@ dpt_release_param
 		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 		rdo::compiler::mbuilder::RDOResType rtp;
 		//! Значение процессного ресурса "Свободен"
-		tstring rtp_state_free = PARSER->getProcResStateFreeValue();
+		tstring rtp_state_free = PARSER->getSMR()->getProcKeyWord("procResStateFreeValue");
 		//! Значение процессного ресурса "Занят"
-		tstring rtp_state_busy = PARSER->getProcResStateBusyValue();
+		tstring rtp_state_busy = PARSER->getSMR()->getProcKeyWord("procResStateBusyValue");
 		//! Значение процессного ресурса "Состояние"
-		tstring rtp_param_name = PARSER->getProcStateValue();
+		tstring rtp_param_name = PARSER->getSMR()->getProcKeyWord("procStateValue");
 		//! Если ресурс существует берем его тип и проверяем
 		if (rssList[res_name].exist())
 		{
