@@ -82,6 +82,30 @@ function toggle_display(e)
 				<TD class="visible" NOWRAP width="20%"><A name="trace_end_time"></A><FONT class="syntax">Trace_EndTime</FONT></TD>
 				<TD class="visible" width="80%">Задает время окончания выдачи информации в объект трассировки. Указывается вещественной численной константой. Значение по умолчанию - 10.0Е+30.</TD>
 			</TR>
+			<TR valign="top"><A name="Sys_state"></A>
+				<TD class="visible" NOWRAP width="20%"><A name="Sys_state"></A><FONT class="syntax">Sys_state</FONT></TD>
+				<TD class="visible" width="80%">Задает значение типа процессного ресурса "Состояние" </TD>
+			</TR>
+			<TR valign="top"><A name="Sys_free"></A>
+				<TD class="visible" NOWRAP width="20%"><A name="Sys_free"></A><FONT class="syntax">Sys_free</FONT></TD>
+				<TD class="visible" width="80%">Задает значения  процессного ресурса "Свободен" </TD>
+			</TR>
+			<TR valign="top"><A name="Sys_busy"></A>
+				<TD class="visible" NOWRAP width="20%"><A name="Sys_busy"></A><FONT class="syntax">Sys_busy</FONT></TD>
+				<TD class="visible" width="80%">Задает значения  процессного ресурса "Занят" </TD>
+			</TR>
+			<TR valign="top"><A name="Sys_queue"></A>
+				<TD class="visible" NOWRAP width="20%"><A name="Sys_queue"></A><FONT class="syntax">Sys_queue</FONT></TD>
+				<TD class="visible" width="80%">Задает значения  слова "Очередь" в процессном подходе, по умолчанию значение "Очередь_" </TD>
+			</TR>
+			<TR valign="top"><A name="Size_queue"></A>
+				<TD class="visible" NOWRAP width="20%"><A name="Size_queue"></A><FONT class="syntax">Size_queue</FONT></TD>
+				<TD class="visible" width="80%">Задает значения  слова "длина_очереди" в процессном подходе</TD>
+			</TR>
+			<TR valign="top"><A name="Time_create"></A>
+				<TD class="visible" NOWRAP width="20%"><A name="Time_create"></A><FONT class="syntax">Time_create</FONT></TD>
+				<TD class="visible" width="80%">Задает значения  слова "Время_создания" в процессном подходе</TD>
+			</TR>
 		</TABLE>
 		<P>Указание имен файлов <A href="../rdo_base/rdo_base_resources.htm">объектов ресурсов</A>&nbsp; в первой части объекта прогона обязательно. Остальные дескрипторы могут отсутствовать. В этом случае используется значение по умолчанию.</P>
 		<P><BR><B>Во второй части объекта</B> задают в произвольном порядке <A href="#break_pnt">точки останова</A>, <A href="#term_cond">условие окончания прогона</A>, <A href="#const_new">новые начальные значения констант</A>, <A href="#res_param_new">параметров ресурсов</A> и <A href="#seed_new">баз генераторов последовательностей</A>.
