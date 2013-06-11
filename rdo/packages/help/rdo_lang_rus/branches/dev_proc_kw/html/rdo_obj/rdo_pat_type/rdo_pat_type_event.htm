@@ -1,0 +1,105 @@
+<HTML>
+<HEAD>
+<TITLE>Описание событий</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../../../../shared/styles/styles.css">
+<META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<SCRIPT>
+function toggle_display(e)
+{
+	if (e.style.display == "none")
+		e.style.display = "";
+	else
+		e.style.display = "none";
+	return false;
+}
+</SCRIPT>
+</HEAD>
+	<BODY>
+		<DIV>
+			<H1>ОПИСАНИЕ СОБЫТИЙ</H1>
+		<P><B>События</B> описываются в отдельном <A href="../../rdo_terms.htm">объекте</A> с расширением <B>.evn</B>
+		<PRE class="syntax">$Pattern <A class="syntax" href="#event_name">&lt;имя_события&gt;</A> : event [ <A class="syntax" href="#sign_of_the_trace">&lt;признак_трассировки&gt;</A> ]
+[ $Parameters <A class="syntax" href="../rdo_obj_pat.htm#param_descr">&lt;описание_параметров_события&gt;</A> ]
+$Relevant_resources <A class="syntax" href="#rel_res_desc">&lt;описание_релевантных_ресурсов_события&gt;</A>
+$Body <A class="syntax" href="#body">&lt;тело_события&gt;</A>
+$End</PRE>
+		<DL class="syntax">
+			<DT class="syntax"><A name="event_name"></A><I>имя_события</I></DT>
+			<DD class="syntax">Имя события представляет собой <A href="../../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех событий и не должны совпадать с ранее определенными именами.</DD>
+			<DT class="syntax"><A name ="sign_of_the_trace"><I>признак_трассировки</I></DT>
+			<DD class="syntax">Событие может иметь признак трассировки (подробнее смотри описание <A class="syntax" href="../../rdo_res/rdo_res_trace_descr.htm">&lt;трассировка состояния объектов РДО&gt;</A>).
+			<DT class="syntax"><A name="rel_res_desc"></A><I>описание_релевантных_ресурсов_события</I></DT>
+			<DD class="syntax">Описание релевантных ресурсов события имеет следующий формат:
+				<PRE class="syntax"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A> <A class="syntax" href="#event_conv_stat">&lt;статус_конвертора&gt;</A></PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="rel_res_name"></A><I>имя_релевантного_ресурса</I></DT>
+					<DD class="syntax">Имя релевантного ресурса образца представляет собой <A href="../../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Область видимости имени релевантного ресурса события - это данное событие. Поэтому имена всех релевантных ресурсов одного события должны быть различными.</DD>
+					<DT class="syntax"><A name="rel_res_describer"></A><I>описатель</I></DT>
+					<DD class="syntax">Описатель ресурса - это имя <A href="../../rdo_base/rdo_base_resources.htm">ресурса</A>. Может быть использован указанный ресурс, если его состояние удовлетворяет предусловию.</DD>
+					<DT class="syntax"><A name="event_conv_stat"></A><I>статус_конвертора</I></DT>
+					<DD class="syntax">Статус конвертора описывает, что происходит с релевантным ресурсом в целом при наступлении события.
+					<P><A name="event_conv_stats"></A><A name="event_conv_stats_nc"></A>В данной версии языка для событий определены следующие статусы конверторов:</P>
+					<TABLE class="visible" cols="2">
+						<TR valign="top">
+							<TH align="left" width="20%">Статус конвертора</TH>
+							<TH align="left" width="80%">Описание</TH>
+						</TR>
+						<TR valign="top">
+							<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Keep</FONT></TD>
+							<TD class="visible" width="80%">Релевантный ресурс сохраняется, но его состояние (значения параметров) изменяется</TD>
+						</TR>
+						<TR valign="top">
+							<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Create</FONT></TD>
+							<TD class="visible" width="80%">Релевантный ресурс создается</TD>
+						</TR>
+						<TR valign="top">
+							<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Erase</FONT></TD>
+							<TD class="visible" width="80%">Релевантный ресурс уничтожается</TD>
+						</TR>
+					</TABLE>
+					<P>Статусы конверторов <FONT class="syntax">Keep</FONT> и <FONT class="syntax">Erase</FONT> требуют в качестве описателя исключительно имя <A href="../../rdo_base/rdo_base_resources.htm">ресурса</A>, а статус <FONT class="syntax">Create</FONT> - имя <A href="../../rdo_base/rdo_base_res_types.htm">типа ресурса</A>.</P>
+					</DD>
+				</DL>
+			</DD>
+		<DT class="syntax"><A name="body"></A><I>тело_образца</I></DT>
+		<DD class="syntax">Тело событий и образцов имеет следующий формат:
+			<PRE class="syntax"><A class="syntax" href="#body_rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> Convert_event <A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A></PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="body_rel_res_name"></A><I>имя_релевантного_ресурса</I></DT>
+					<DD class="syntax">Имена релевантных ресурсов должны следовать в том порядке, в котором они указаны в описании <A href="#rel_res_desc">релевантных ресурсов</A>.</DD>
+						<DT class="syntax"><A name="statement_list"></A><I>список_инструкций</I></DT>
+						<DD class="syntax">Список инструкций и указанное перед ним зарезервированное слово должны присутствовать в образце в том случае, если соответствующий <A href="#rel_res_desc">статус конвертора</A>, указанный при описании релевантных ресурсов, есть <FONT class="syntax">Keep</FONT> или <FONT class="syntax">Create</FONT>. Если статус конвертора есть <FONT class="syntax">Erase</FONT>, то список инструкций может быть пустым или наоборот содержать инструкции, которые требуется выполнить для сбора статистики в момент удаления ресурса. <A name="temp_trace_feat"></A>Если статус конвертора есть <FONT class="syntax">Create</FONT>, то после зарезервированного слова может быть указан <A href="../../rdo_res/rdo_res_trace_descr.htm">признак трассировки</A> для создаваемого ресурса.
+							<P>Список инструкций записывают в следующем формате:</P>
+							<PRE class="syntax"><A class="syntax" href="../../rdo_base/rdo_base_proc_lang.htm#statement">&lt;инструкция&gt;</A> { &lt;инструкция&gt; }</PRE>
+							<P><A name="set_order"></A>Все инструкции могут быть указаны в произвольном порядке. Вычисление новых значений параметров релевантных ресурсов происходит в том порядке, в котором следуют их инструкции присваивания. Если нет ни одной инструкции присваивания, которая относится к данному параметру, то подразумевается, что значение этого параметра не изменяется. Для ресурсов, имеющих статус конвертора <FONT class="syntax">Create</FONT>, задание новых значений каждого параметра обязательны, за исключением случая, когда для параметра указано значение по умолчанию в описании типа ресурса.</P>
+						</DD>
+				</DL>
+		</DD>
+	</DL>
+	<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
+	<DIV style="display:none" id="v1">
+	<PRE class="samples">
+$Pattern Образец_прихода_клиента : event
+$Parameters
+  Количество : integer = 10
+$Relevant_resources
+  Рел_ресурс_1 : Ресурс_1      NoChange    NoChange
+  Рел_ресурс_2 : Ресурс_2      NoChange    Keep
+  Рел_ресурс_3 : Тип_1         Keep        Keep
+$Body
+  Рел_ресурс_1
+    Образец_прихода_клиента.planning( time_now + Интервал_прихода( 30 ) )(norm(5));
+    Количество_в_очереди += Образец_прихода_клиента.Количество
+$End
+	</PRE>
+	</DIV>
+		<H4>См. также</H4>
+	<P><A href="../../rdo_base/rdo_base_res_types.htm">Типы ресурсов</A></P>
+	<P><A href="../../rdo_base/rdo_base_resources.htm">Описание ресурсов</A></P>
+	<P><A href="../rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
+	<P><A href="../rdo_obj_dpt.htm">Описание точек принятия решений</A></P>
+	<P><A href="../../rdo_res/rdo_res_trc.htm">Объект трассировки</A></P>
+	</DIV>
+	<BR><SCRIPT src="../../../../shared/scripts/navbar.js"></SCRIPT>
+</BODY>
+</HTML>
