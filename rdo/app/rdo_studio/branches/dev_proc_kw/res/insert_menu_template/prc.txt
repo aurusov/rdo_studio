@@ -1,0 +1,7 @@
+$Process 
+	GENERATE
+	SEIZE
+	ADVANCE
+	RELEASE
+	TERMINATE
+$End
