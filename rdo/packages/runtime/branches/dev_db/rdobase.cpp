@@ -322,7 +322,11 @@ void RDOSimulatorBase::removeTimePoint(CREF(LPIBaseOperation) opr)
 
 PTR(GeneralDB) RDOSimulatorBase::getDB()
 {
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	return m_db;
+#else
+	return NULL;
+#endif
 }
 
 PTR(GeneralDB) RDOSimulatorBase::getTrcDB()

@@ -152,7 +152,10 @@ private:
 
 	ruint        m_cnt_events;
 	ruint        m_cnt_choice_from;
+
+#ifdef SERIALIZE_IN_DB_MAINSTREAM
 	GeneralDB*   m_db;
+#endif
 
 #ifdef SERIALIZE_IN_DB_TRC
 	GeneralDB*   m_trcDB;
