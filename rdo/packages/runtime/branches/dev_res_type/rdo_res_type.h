@@ -3,6 +3,7 @@
   \file      rdo_res_type.h
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Александровский Кирилл (k.alexandrovsky@gmail.com)
   \date      07.06.2011
   \brief     Типы ресурсов в rdo::runtime
   \indent    4T
@@ -26,13 +27,14 @@ class RDOResourceTypeList
 	, public RDORuntimeObject
 	, public RDOTraceableObject
 {
+private:
 	friend class rdo::Factory<RDOResourceTypeList>;
 
 public:
-	ResCIterator res_begin() const;
-	ResCIterator res_end  () const;
+	virtual ResCIterator res_begin() const;
+	virtual ResCIterator res_end  () const;
 
-	void eraseRes(CREF(rdo::runtime::LPRDOResource) pResource);
+	virtual void eraseRes(CREF(rdo::runtime::LPRDOResource) pResource);
 
 protected:
 	RDOResourceTypeList(ruint number, CREF(rdo::runtime::LPRDORuntime) pRuntime);
@@ -65,7 +67,7 @@ typedef  rdo::intrusive_ptr<RDOResourceTypeList>  LPRDOResourceTypeList;
 //! Тип ресурсов для создания обычных ресурсов РДО
 //! \details Создает ресурсы, которые могут быть релевантны активностям и
 //!          событиям, но не могут использоваться в процессах
-typedef  RDOResourceTypeListT<RDOResource>     RDOResourceType;
+typedef  RDOResourceTypeListT<RDOResource>    RDOResourceType;
 typedef  rdo::intrusive_ptr<RDOResourceType>  LPRDOResourceType;
 
 CLOSE_RDO_RUNTIME_NAMESPACE
