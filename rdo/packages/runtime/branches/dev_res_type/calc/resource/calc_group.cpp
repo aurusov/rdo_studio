@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/resource/calc_group.h"
 #include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_res_type_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
