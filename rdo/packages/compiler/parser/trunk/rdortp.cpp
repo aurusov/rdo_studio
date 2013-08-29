@@ -40,6 +40,7 @@ RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) s
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
 	, m_type          (type                )
+	, m_pRuntime      (pParser->runtime()  )
 {
 	pParser->insertRTPResType(LPRDORTPResType(this));
 }
