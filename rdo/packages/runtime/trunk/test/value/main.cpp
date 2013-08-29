@@ -526,7 +526,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create(&error);
 	BOOST_CHECK(pRuntime);
 
-	LPRDOResourceType pResourceType = rdo::Factory<RDOResourceType>::create(0, pRuntime);
+	LPRDOResourceType pResourceType = rdo::Factory<RDOResourceType>::create(1, pRuntime);
 	BOOST_CHECK(pResourceType);
 	LPIResourceType pResourceFactory = pResourceType.interface_cast<IResourceType>();
 	BOOST_CHECK(pResourceFactory);
@@ -549,6 +549,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 	pRuntime   = NULL;
 	value1     = RDOValue();
 	pResource1 = NULL;
+	pResourceType->eraseRes(pResource);
 
 	BOOST_CHECK(pResource.owner());
 
