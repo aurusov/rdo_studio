@@ -213,6 +213,8 @@ inline void RDORuntime::addResType(CREF(LPRDOResourceTypeList) pResType)
 
 inline CREF(LPRDOResourceTypeList) RDORuntime::getResType(ruint number) const
 {
+	ASSERT(number > 0);
+	ASSERT(number - 1 < m_resourceTypeList.size());
 	return m_resourceTypeList[number - 1];
 }
 
@@ -224,9 +226,9 @@ inline CREF(LPIThreadProxy) RDORuntime::getThreadProxy() const
 inline RDORuntime::ResList RDORuntime::getResourcesBeforeSim() const
 {
 	ResList list;
-	ResCIterator it, end;
 	for (ruint i = 0; i < m_resourceTypeList.size(); i++)
 	{
+		ResCIterator it, end;
 		it  = m_resourceTypeList[i]->res_begin();
 		end = m_resourceTypeList[i]->res_end  ();
 		while (it != end)
