@@ -43,7 +43,6 @@
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/notify_i.h"
 #include "simulator/runtime/calc/calc_base.h"
-#include "simulator/runtime/rdo_res_type_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
