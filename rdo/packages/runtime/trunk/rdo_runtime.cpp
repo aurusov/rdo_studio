@@ -232,8 +232,10 @@ void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 			++it;
 		}
 		m_resourceListByID.at(resourceID) = NULL;
-		// Диструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
-		m_resourceListByTime.remove(res);
+
+		LPIResourceType type(res->getResType());
+		// Деструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
+		type->eraseRes(res);
 		notify().fireMessage(Notify::RO_BEFOREDELETE, (void*)res->getTraceID());
 		onResourceErase(res);
 	}
@@ -274,7 +276,6 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 		));
 	}
 #endif
-	m_resourceListByTime.push_back(pResource);
 }
 
 void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer pLogic, CREF(LPIEvent) pEvent)
@@ -349,8 +350,8 @@ void RDORuntime::onInit()
 void RDORuntime::onDestroy()
 {
 	/// @todo Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
-	m_resourceListByTime.clear();
 	m_resourceListByID.clear();
+	m_resourceTypeList.clear();
 
 	if (m_resultList)
 	{

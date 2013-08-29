@@ -204,14 +204,18 @@ inline void RDORuntime::onUserBreak()
 	m_whyStop = rdo::simulation::report::EC_UserBreak;
 }
 
-inline RDORuntime::ResCIterator RDORuntime::res_begin() const
+inline void RDORuntime::addResType(CREF(LPRDOResourceTypeList) pResType)
 {
-	return m_resourceListByTime.begin();
+	ASSERT(pResType);
+	ASSERT(m_resourceTypeList.size() == pResType->getTraceID() - 1);
+	m_resourceTypeList.push_back(pResType);
 }
 
-inline RDORuntime::ResCIterator RDORuntime::res_end() const
+inline CREF(LPRDOResourceTypeList) RDORuntime::getResType(ruint number) const
 {
-	return m_resourceListByTime.end();
+	ASSERT(number > 0);
+	ASSERT(number - 1 < m_resourceTypeList.size());
+	return m_resourceTypeList[number - 1];
 }
 
 inline CREF(LPIThreadProxy) RDORuntime::getThreadProxy() const
@@ -222,11 +226,16 @@ inline CREF(LPIThreadProxy) RDORuntime::getThreadProxy() const
 inline RDORuntime::ResList RDORuntime::getResourcesBeforeSim() const
 {
 	ResList list;
-	ResCIterator it = m_resourceListByTime.begin();
-	while (it != m_resourceListByTime.end())
+	for (ruint i = 0; i < m_resourceTypeList.size(); i++)
 	{
-		list.push_back(*it);
-		++it;
+		ResCIterator it, end;
+		it  = m_resourceTypeList[i]->res_begin();
+		end = m_resourceTypeList[i]->res_end  ();
+		while (it != end)
+		{
+			list.push_back(*it);
+			++it;
+		}
 	}
 	return list;
 }
