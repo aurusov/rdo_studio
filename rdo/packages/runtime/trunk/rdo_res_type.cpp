@@ -28,6 +28,14 @@ RDOResourceTypeList::RDOResourceTypeList(ruint number, CREF(rdo::runtime::LPRDOR
 RDOResourceTypeList::~RDOResourceTypeList()
 {}
 
+void RDOResourceTypeList::insertNewResource(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(rdo::runtime::LPRDOResource) pResource)
+{
+	ASSERT(pRuntime);
+	ASSERT(pResource);
+	m_resourceList.push_back(pResource);
+	pRuntime->insertNewResource(pResource);
+}
+
 void RDOResourceTypeList::eraseRes(CREF(rdo::runtime::LPRDOResource) pResource)
 {
 	m_resourceList.remove(pResource);

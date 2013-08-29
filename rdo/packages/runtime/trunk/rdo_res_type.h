@@ -40,6 +40,8 @@ protected:
 	RDOResourceTypeList(ruint number, CREF(rdo::runtime::LPRDORuntime) pRuntime);
 	virtual ~RDOResourceTypeList();
 
+	void insertNewResource(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(rdo::runtime::LPRDOResource) pResource);
+
 	typedef  std::list<rdo::runtime::LPRDOResource> ResourceList;
 	ResourceList m_resourceList;
 };

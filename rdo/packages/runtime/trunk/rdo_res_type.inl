@@ -34,8 +34,7 @@ inline LPRDOResource RDOResourceTypeListT<T>::createRes(CREF(LPRDORuntime) pRunt
 
 	rdo::intrusive_ptr<T> pResource = rdo::Factory<T>::create(pRuntime, paramsCalcs, pIResType, resID, this->getTraceID(), traceFlag, permanentFlag);
 	ASSERT(pResource);
-	m_resourceList.push_back(pResource);
-	pRuntime->insertNewResource(pResource);
+	insertNewResource(pRuntime, pResource);
 
 	return pResource;
 }
