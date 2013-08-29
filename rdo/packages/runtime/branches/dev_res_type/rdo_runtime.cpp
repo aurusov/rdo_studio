@@ -266,7 +266,7 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 		}
 	}
 #ifdef RDO_LIMIT_RES
-	if (m_resourceListByID.size() >= 20000)
+	if (m_resourceListByID.size() >= 200)
 	{
 		error().push(RDOSyntaxMessage(
 			"Сработало лицензионное ограничение на количество ресурсов. Обратитесь за приобритением полной версии",
