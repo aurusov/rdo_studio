@@ -3,14 +3,14 @@
 0. Можно скачать скомпилированные бинарники с google-docs
 https://docs.google.com/folder/d/0B-tnm4ER5l74c0hnRFl4LTVHbDA/edit?usp=sharing
 Файл
-icu-50.1.2-bin.7z
+qt-5.1.1/icu-51.2-bin.7z
 
 Но собраны они под Visual Studio 2008 SP1. Если у вас другая версия компилятора, но этот вариант не подходит.
 
-1. Скачать исходники последней версии. На текущий момент - это icu4c-50_1_2-src
+1. Скачать исходники последней версии. На текущий момент - это icu4c-51_2-src.zip
 http://site.icu-project.org/
 
-2. Разархивировать, например, в C:\icu
+2. Разархивировать, например, в D:\Downloads\qt\icu
 
 2. Для сборки надо поставить cygwin. См. install.cygwin.txt
 3. Теперь консольный квест
@@ -18,13 +18,13 @@ http://site.icu-project.org/
 Пуск\Поиск\Visual Studio 2008 Command Prompt
 
 3.3 Добавляем cygwin в PATH прямо из консоли
-set PATH=D:\Downloads\cygwin\bin;%PATH%
+set PATH=D:\cygwin64\bin;%PATH%
 
 3.4 Запускаем консоль cygwin'а
-D:\Downloads\cygwin\bin\bash.exe
+D:\cygwin64\bin\bash.exe
 
 4. Конфигурирование и компиляция
-cd /cygdrive/c/icu/source/
+cd /cygdrive/d/Downloads/qt/icu/source/
 ./runConfigureICU Cygwin/MSVC
 
 Если ошибка, то выходим из cygwin'а и запускаем
@@ -34,15 +34,31 @@ cd /cygdrive/c/icu/source/
 make
 make install
 
-5. После сборки, можно удалить C:\icu, т.к. всё нужное будет в D:\Downloads\cygwin\usr\local\
+5. После сборки, можно удалить D:\Downloads\qt\icu, т.к. всё нужное будет в D:\cygwin64\usr\local\
 
-6. Для доступа к скомпиленным dll нужно или прописать путь в PATH или, скопировать
-icudt50.dll
-icuin50.dll
-icuuc50.dll
+6. Для доступа к скомпилённым dll нужно скопировать
+icudt51.dll
+icuin51.dll
+icuio51.dll
+icule51.dll
+iculx51.dll
+icutest51.dll
+icutu51.dll
+icuuc51.dll
+
+icudt.lib
+icuin.lib
+icuio.lib
+icule.lib
+iculx.lib
+icutest.lib
+icutu.lib
+icuuc.lib
+
 в
 %(QTDIR)/bin
+, например, C:\qt-5.1.1\qtbase\bin
 
-Именно отсюда их будет брать РДО при компиляции, а не из PATH
+Именно отсюда их будет брать РДО при компиляции
 
-Сами dll лежат или в D:\Downloads\cygwin\usr\local\lib или выкачиваются с google-disk'а, см. пункт 0
+Сами dll лежат или в D:\cygwin64\usr\local\lib или выкачиваются с google-disk'а, см. пункт 0
