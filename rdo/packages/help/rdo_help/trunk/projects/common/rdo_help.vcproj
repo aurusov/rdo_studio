@@ -104,7 +104,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdo_help_cbs\icudt50.dll.txt"
+				RelativePath=".\rdo_help_cbs\icudt51.dll.txt"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -128,7 +128,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdo_help_cbs\icuin50.dll.txt"
+				RelativePath=".\rdo_help_cbs\icuin51.dll.txt"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -152,7 +152,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdo_help_cbs\icuuc50.dll.txt"
+				RelativePath=".\rdo_help_cbs\icuuc51.dll.txt"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -392,6 +392,78 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\rdo_help_cbs\Qt5Qml.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\Qt5Quick.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\Qt5Sensors.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\rdo_help_cbs\Qt5Sql.dll.txt"
 				>
 				<FileConfiguration
@@ -411,6 +483,30 @@
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
 						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\Qt5V8.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
