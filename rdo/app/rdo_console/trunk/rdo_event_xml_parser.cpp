@@ -36,7 +36,7 @@ void event_xml_parser::parse(REF(std::istream) stream, REF(event_container) list
 	boost::property_tree::ptree pt;
 	boost::property_tree::read_xml(stream, pt);
 
-    BOOST_FOREACH( boost::property_tree::ptree::value_type const& v, pt.get_child("rscript.events") )
+	BOOST_FOREACH( boost::property_tree::ptree::value_type const& v, pt.get_child("rscript.events") )
 	{
 		boost::property_tree::ptree const& node = v.second;
 
@@ -44,8 +44,8 @@ void event_xml_parser::parse(REF(std::istream) stream, REF(event_container) list
 		parsers::iterator it = m_parsers.find(event_type);
 		if(it != m_parsers.end())
 		{
-            event* e = it->second->read(node);
-			if(e != nullptr)
+			event* e = it->second->read(node);
+			if (e)
 			{
 				list.insert(std::make_pair(e->getTime(), boost::shared_ptr<event>(e)));
 			}
