@@ -25,41 +25,43 @@ SET(GRAMMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
 
 CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/cmake/rdogramma.h.cmake ${GRAMMA_PATH}/rdogramma.h)
 
-BISON_TARGET(rdortp ${GRAMMA_PATH}/rdortp.y ${GRAMMA_PATH}/rdogramrtp.cpp COMPILE_FLAGS "-g -v -prtp")
-BISON_TARGET(rdodpt ${GRAMMA_PATH}/rdodpt.y ${GRAMMA_PATH}/rdogramdpt.cpp COMPILE_FLAGS "-g -v -pdpt")
-BISON_TARGET(rdoevn ${GRAMMA_PATH}/rdoevn.y ${GRAMMA_PATH}/rdogramevn.cpp COMPILE_FLAGS "-g -v -pevn")
-BISON_TARGET(rdoevn_preparse ${GRAMMA_PATH}/rdoevn_preparse.y ${GRAMMA_PATH}/rdogramevn_preparse.cpp COMPILE_FLAGS "-g -v -pevn_preparse_")
-BISON_TARGET(rdofrm ${GRAMMA_PATH}/rdofrm.y ${GRAMMA_PATH}/rdogramfrm.cpp COMPILE_FLAGS "-g -v -pfrm")
-BISON_TARGET(rdofun ${GRAMMA_PATH}/rdofun.y ${GRAMMA_PATH}/rdogramfun.cpp COMPILE_FLAGS "-g -v -pfun")
-BISON_TARGET(rdopat ${GRAMMA_PATH}/rdopat.y ${GRAMMA_PATH}/rdogrampat.cpp COMPILE_FLAGS "-g -v -ppat")
-BISON_TARGET(rdopmd ${GRAMMA_PATH}/rdopmd.y ${GRAMMA_PATH}/rdogrampmd.cpp COMPILE_FLAGS "-g -v -ppmd")
-BISON_TARGET(rdoproc_opr ${GRAMMA_PATH}/rdoproc_opr.y ${GRAMMA_PATH}/rdogramproc_opr.cpp COMPILE_FLAGS "-g -v -pproc_opr_")
-BISON_TARGET(rdoproc_rss ${GRAMMA_PATH}/rdoproc_rss.y ${GRAMMA_PATH}/rdogramproc_rss.cpp COMPILE_FLAGS "-g -v -pproc_rss_")
-BISON_TARGET(rdoproc_rtp ${GRAMMA_PATH}/rdoproc_rtp.y ${GRAMMA_PATH}/rdogramproc_rtp.cpp COMPILE_FLAGS "-g -v -pproc_rtp_")
-BISON_TARGET(rdorss ${GRAMMA_PATH}/rdorss.y ${GRAMMA_PATH}/rdogramrss.cpp COMPILE_FLAGS "-g -v -prss")
-BISON_TARGET(rdosmr_file ${GRAMMA_PATH}/rdosmr_file.y ${GRAMMA_PATH}/rdogramsmr_file.cpp COMPILE_FLAGS "-g -v -psmr_file_")
-BISON_TARGET(rdosmr_sim ${GRAMMA_PATH}/rdosmr_sim.y ${GRAMMA_PATH}/rdogramsmr_sim.cpp COMPILE_FLAGS "-g -v -psmr_sim_")
+INCLUDE(${PROJECT_SOURCE_DIR}/cmake/bison.cmake)
+
+RDO_BISON_TARGET(rtp rtp define)
+RDO_BISON_TARGET(dpt)
+RDO_BISON_TARGET(evn)
+RDO_BISON_TARGET(evn_preparse evn_preparse_)
+RDO_BISON_TARGET(frm)
+RDO_BISON_TARGET(fun)
+RDO_BISON_TARGET(pat)
+RDO_BISON_TARGET(pmd)
+RDO_BISON_TARGET(proc_opr proc_opr_)
+RDO_BISON_TARGET(proc_rss proc_rss_)
+RDO_BISON_TARGET(proc_rtp proc_rtp_)
+RDO_BISON_TARGET(rss)
+RDO_BISON_TARGET(smr_file smr_file_)
+RDO_BISON_TARGET(smr_sim smr_sim_)
 
 FLEX_TARGET(lexer_scaner ${GRAMMA_PATH}/rdo_lexer.l ${GRAMMA_PATH}/rdolex.cpp COMPILE_FLAGS "-+")
 
 SET(GENERATED_FILES
     ${GRAMMA_PATH}/rdogramma.h
     ${FLEX_lexer_scaner_OUTPUTS}
-    ${BISON_rdortp_OUTPUTS}
-    ${BISON_rdortp_OUTPUT_HEADER}
-    ${BISON_rdodpt_OUTPUTS}
-    ${BISON_rdoevn_OUTPUTS}
-    ${BISON_rdoevn_preparse_OUTPUTS}
-    ${BISON_rdofrm_OUTPUTS}
-    ${BISON_rdofun_OUTPUTS}
-    ${BISON_rdopat_OUTPUTS}
-    ${BISON_rdopmd_OUTPUTS}
-    ${BISON_rdoproc_opr_OUTPUTS}
-    ${BISON_rdoproc_rss_OUTPUTS}
-    ${BISON_rdoproc_rtp_OUTPUTS}
-    ${BISON_rdorss_OUTPUTS}
-    ${BISON_rdosmr_file_OUTPUTS}
-    ${BISON_rdosmr_sim_OUTPUTS}
+    ${GRAMMA_PATH}/rdogramrtp.cpp
+    ${GRAMMA_PATH}/rdogramrtp.hpp
+    ${GRAMMA_PATH}/rdogramdpt.cpp
+    ${GRAMMA_PATH}/rdogramevn.cpp
+    ${GRAMMA_PATH}/rdogramevn_preparse.cpp
+    ${GRAMMA_PATH}/rdogramfrm.cpp
+    ${GRAMMA_PATH}/rdogramfun.cpp
+    ${GRAMMA_PATH}/rdogrampat.cpp
+    ${GRAMMA_PATH}/rdogrampmd.cpp
+    ${GRAMMA_PATH}/rdogramproc_opr.cpp
+    ${GRAMMA_PATH}/rdogramproc_rss.cpp
+    ${GRAMMA_PATH}/rdogramproc_rtp.cpp
+    ${GRAMMA_PATH}/rdogramrss.cpp
+    ${GRAMMA_PATH}/rdogramsmr_file.cpp
+    ${GRAMMA_PATH}/rdogramsmr_sim.cpp
     )
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
