@@ -9,9 +9,9 @@ ENDIF()
 SET(QT_LIBRARY_DIR       $ENV{QTDIR}/lib              )
 SET(QT_PLATFORM_DIR      $ENV{QTDIR}/plugins/platforms)
 
-FIND_FILE(DLL_ICUUC       icuuc50.dll        PATHS ${QT_LIBRARY_DIR})
-FIND_FILE(DLL_ICUIN       icuin50.dll        PATHS ${QT_LIBRARY_DIR})
-FIND_FILE(DLL_ICUDT       icudt50.dll        PATHS ${QT_LIBRARY_DIR})
+FIND_FILE(DLL_ICUUC       icuuc51.dll        PATHS ${QT_LIBRARY_DIR})
+FIND_FILE(DLL_ICUIN       icuin51.dll        PATHS ${QT_LIBRARY_DIR})
+FIND_FILE(DLL_ICUDT       icudt51.dll        PATHS ${QT_LIBRARY_DIR})
 FIND_FILE(DLL_D3DCOMPILER D3DCompiler_43.dll PATHS ${QT_LIBRARY_DIR})
 
 FIND_FILE(DLL_D_QT_CORE    Qt5Cored.dll    PATHS ${QT_LIBRARY_DIR})
