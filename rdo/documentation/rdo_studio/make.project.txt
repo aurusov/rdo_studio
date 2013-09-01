@@ -1,26 +1,63 @@
-Инструкции по сборки РДО (пока только библиотеки rdo_common) и проведению тестов.
+Инструкции по сборке РДО и проведению тестов.
 
 1. Генерация Makefile'ов и компиляция
 
 1.1 Для Linux
+1.1.1 Необходимо настроить переменные окружения
+
+set BOOST_ROOT=/home/user/boost/boost_1_45_0
+
+    Внутри BOOST_ROOT должны находиться две папки :
+
+    1) include, а в ней boost со всеми его заголовочными файлами
+    2) lib, а в ней все .lib
+
+    Чтобы CMAKE обнаружил bison и flex необходимо в PATH добавить путь к этим исполняемым файлам.
+
+1.1.2 Конфигурация и компиляция через cmake
 cd <корень_проекта>
 mkdir build
 cd build
 cmake ..
 make -j4
 
-1.2 Для Windows через CMake (cmake-gui)
+1.2 Для Windows
+1.2.1 Только конфигурация через cmake
+1.2.1.1 Открыть консоль
+Пуск\Microsoft Visual Studio 2008\Visual Studio Tools\Visual Studio 2008 Command Prompt
 
-1.2.1 Запустить 'CMake (cmake-gui)'
-1.2.2 Указать 'Where is the source code' путь к корню исходников, например 'C:/rdo/dev_linux'
-1.2.3 Указать 'Where to build the binaries' путь к подпапке build, например 'C:/rdo/dev_linux/build'
-1.2.4 Нажать 'Configure', для компиляции под MinGW выбрать 'MinGW Makefiles' (для Visual studio своё),
+1.2.1.2
+cd <корень_проекта>, например 'cd C:\rdo\rdo_studio'
+mkdir build
+cd build
+cmake -DBOOST_ROOT=C:\boost_1_54_0 -DBOOST_LIBRARYDIR=C:\boost_1_54_0\stage -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_LIBS=ON ..
+
+1.2.2 Только конфигурация через cmake-gui
+1.2.2.1 Открыть консоль
+Пуск\Microsoft Visual Studio 2008\Visual Studio Tools\Visual Studio 2008 Command Prompt
+
+1.2.2.2 Запустить
+cmake-gui
+
+1.2.2.3 Указать 'Where is the source code' путь к корню исходников, например 'C:/rdo/rdo_studio'
+1.2.2.4 Указать 'Where to build the binaries' путь к подпапке build, например 'C:/rdo/rdo_studio/build'
+1.2.2.5 Нажать 'Configure', для компиляции под MinGW выбрать 'MinGW Makefiles' (для Visual studio своё),
       оставить выбранным вариант 'Use default native compilers'
-1.2.5 Если возникла ошибка, то еще раз повторяем 'Configure', у меня срабатывает со второго раза
-1.2.6 Нажать 'Generate'
+1.2.2.6 Настроить переменные. Установить флаг 'Advanced' и через 'Add Entry' добавить
 
-Всё, в папке 'C:/rdo/dev_linux/build ' лежат make-файлы, можем их компилить
-Компиляцию с использованием gcc через MinGW см. в 1.3, через Visual Studio: надо окрыть сгенерированный солюшен.
+Boost_INCLUDE_DIRS       PATH  C:\boost_1_54_0
+Boost_LIBRARY_DIRS       PATH  C:\boost_1_54_0\stage\lib
+Boost_USE_MULTITHREADED  BOOL  true
+Boost_USE_STATIC_LIBS    BOOL  true
+MSVC90                   BOOL  true
+MSVC                     BOOL  true
+
+1.2.2.7 Если возникла ошибка, то еще раз повторяем 'Configure', у меня срабатывает со второго раза
+1.2.2.8 Нажать 'Generate'
+
+1.2.3 После конфигурации
+Всё, в папке 'C:/rdo/rdo_studio/build ' лежат make-файлы, можем их компилить
+Компиляцию с использованием gcc через MinGW см. в 1.3, через Visual Studio: надо окрыть сгенерированный солюшен (rdo.sln)
 
 1.3 Для Windows с использованием gcc через MinGW
 Пути к C:\MinGW\bin и C:\MinGW\msys\1.0\bin должны быть в PATH
