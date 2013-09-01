@@ -1,5 +1,5 @@
 #==============================================================================
-# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011-2013 Evgeny Proydakov <lord.tiran@gmail.com>
 #==============================================================================
 # Welcome to the CMake build system for RDO STUDIO (UNIX VERSION).
 # This is the main file where we prepare the general build environment
@@ -13,6 +13,7 @@ PROJECT(rdo)
 MESSAGE(STATUS "Create RDO")
 
 # work with cmake
+SET(CMAKE_PREFIX_PATH $ENV{QTDIR}/lib/cmake)
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 # call system info script
@@ -55,6 +56,10 @@ SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
 # add the include folder to the include path
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
+
+IF(WIN32)
+    INCLUDE(win32.install)
+ENDIF()
 
 INCLUDE(CTest)
 ENABLE_TESTING()
