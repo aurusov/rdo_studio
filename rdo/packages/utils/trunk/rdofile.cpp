@@ -60,6 +60,7 @@ rbool File::read_only(CREF(tstring) name)
 	std::string fileName = rdo::locale::convertToCLocale(name);
 	return _access(fileName.c_str(), 04) == 0 && _access(fileName.c_str(), 06) == -1;
 #endif  // COMPILER_VISUAL_STUDIO
+
 #ifdef COMPILER_GCC
 	return access(name.c_str(), R_OK) == 0 && access(name.c_str(), W_OK) == -1;
 #endif // COMPILER_GCC
