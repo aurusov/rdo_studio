@@ -25,57 +25,44 @@ SET(GRAMMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
 
 CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/cmake/rdogramma.h.cmake ${GRAMMA_PATH}/rdogramma.h)
 
-BISON_TARGET(rdosmr_sim ${GRAMMA_PATH}/rdosmr_sim.y ${GRAMMA_PATH}/rdogramsmr_sim.cpp COMPILE_FLAGS "-g -v -pcnv_smr_sim_")
-BISON_TARGET(rdosmr_file ${GRAMMA_PATH}/rdosmr_file.y ${GRAMMA_PATH}/rdogramsmr_file.cpp COMPILE_FLAGS "-g -v -pcnv_smr_file_")
-BISON_TARGET(rdoproc_rtp ${GRAMMA_PATH}/rdoproc_rtp.y ${GRAMMA_PATH}/rdogramproc_rtp.cpp COMPILE_FLAGS "-g -v -pcnv_proc_rtp_")
-BISON_TARGET(rdoproc_rss ${GRAMMA_PATH}/rdoproc_rss.y ${GRAMMA_PATH}/rdogramproc_rss.cpp COMPILE_FLAGS "-g -v -pcnv_proc_rss_")
-BISON_TARGET(rdoproc_opr ${GRAMMA_PATH}/rdoproc_opr.y ${GRAMMA_PATH}/rdogramproc_opr.cpp COMPILE_FLAGS "-g -v -pcnv_proc_opr_")
-BISON_TARGET(rdortp ${GRAMMA_PATH}/rdortp.y ${GRAMMA_PATH}/rdogramrtp.cpp COMPILE_FLAGS "-g -v -pcnv_rtp")
-BISON_TARGET(rdorss ${GRAMMA_PATH}/rdorss.y ${GRAMMA_PATH}/rdogramrss.cpp COMPILE_FLAGS "-g -v -pcnv_rss")
-BISON_TARGET(rdopmd ${GRAMMA_PATH}/rdopmd.y ${GRAMMA_PATH}/rdogrampmd.cpp COMPILE_FLAGS "-g -v -pcnv_pmd")
-BISON_TARGET(rdopat ${GRAMMA_PATH}/rdopat.y ${GRAMMA_PATH}/rdogrampat.cpp COMPILE_FLAGS "-g -v -pcnv_pat")
-BISON_TARGET(rdoopr ${GRAMMA_PATH}/rdoopr.y ${GRAMMA_PATH}/rdogramopr.cpp COMPILE_FLAGS "-g -v -pcnv_opr")
-BISON_TARGET(rdofun ${GRAMMA_PATH}/rdofun.y ${GRAMMA_PATH}/rdogramfun.cpp COMPILE_FLAGS "-g -v -pcnv_fun")
-BISON_TARGET(rdofrm ${GRAMMA_PATH}/rdofrm.y ${GRAMMA_PATH}/rdogramfrm.cpp COMPILE_FLAGS "-g -v -pcnv_frm")
-BISON_TARGET(rdodpt ${GRAMMA_PATH}/rdodpt.y ${GRAMMA_PATH}/rdogramdpt.cpp COMPILE_FLAGS "-g -v -pcnv_dpt")
+INCLUDE(${PROJECT_SOURCE_DIR}/cmake/bison.cmake)
+
+RDO_BISON_TARGET(smr_sim cnv_smr_sim_)
+RDO_BISON_TARGET(smr_file cnv_smr_file_)
+RDO_BISON_TARGET(proc_rtp cnv_proc_rtp_)
+RDO_BISON_TARGET(proc_rss cnv_proc_rss_)
+RDO_BISON_TARGET(proc_opr cnv_proc_opr_)
+RDO_BISON_TARGET(rtp cnv_rtp define)
+RDO_BISON_TARGET(rss cnv_rss)
+RDO_BISON_TARGET(pmd cnv_pmd)
+RDO_BISON_TARGET(pat cnv_pat)
+RDO_BISON_TARGET(opr cnv_opr)
+RDO_BISON_TARGET(fun cnv_fun)
+RDO_BISON_TARGET(frm cnv_frm)
+RDO_BISON_TARGET(dpt cnv_dpt)
 
 FLEX_TARGET(lexer_scaner ${GRAMMA_PATH}/rdo_lexer.l ${GRAMMA_PATH}/rdolex.cpp COMPILE_FLAGS "-Pcnv -+")
 
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_sim)
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_file)
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdortp)
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdorss)
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_rtp)
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_rss)
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_opr)
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdopmd)
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdopat)
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoopr)
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdofun)
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdofrm)
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdodpt)
-
-ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_sim)
+ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rtp)
 
 SET(GENERATED_FILES
+    ${GRAMMA_PATH}/rdogramma.h
     ${FLEX_lexer_scaner_OUTPUTS}
-    ${BISON_rdortp_OUTPUTS}
-    ${BISON_rdortp_OUTPUT_HEADER}
-    ${BISON_rdodpt_OUTPUTS}
-    ${BISON_rdoevn_OUTPUTS}
-    ${BISON_rdoevn_preparse_OUTPUTS}
-    ${BISON_rdofrm_OUTPUTS}
-    ${BISON_rdofun_OUTPUTS}
-    ${BISON_rdoopr_OUTPUTS}
-    ${BISON_rdopat_OUTPUTS}
-    ${BISON_rdopmd_OUTPUTS}
-    ${BISON_rdoproc_opr_OUTPUTS}
-    ${BISON_rdoproc_rss_OUTPUTS}
-    ${BISON_rdoproc_rtp_OUTPUTS}
-    ${BISON_rdorss_OUTPUTS}
-    ${BISON_rdosmr_file_OUTPUTS}
-    ${BISON_rdosmr_sim_OUTPUTS}
-	)
+    ${GRAMMA_PATH}/rdogramrtp.cpp
+    ${GRAMMA_PATH}/rdogramrtp.hpp
+    ${GRAMMA_PATH}/rdogramdpt.cpp
+    ${GRAMMA_PATH}/rdogramfrm.cpp
+    ${GRAMMA_PATH}/rdogramfun.cpp
+    ${GRAMMA_PATH}/rdogramopr.cpp
+    ${GRAMMA_PATH}/rdogrampat.cpp
+    ${GRAMMA_PATH}/rdogrampmd.cpp
+    ${GRAMMA_PATH}/rdogramproc_opr.cpp
+    ${GRAMMA_PATH}/rdogramproc_rss.cpp
+    ${GRAMMA_PATH}/rdogramproc_rtp.cpp
+    ${GRAMMA_PATH}/rdogramrss.cpp
+    ${GRAMMA_PATH}/rdogramsmr_file.cpp
+    ${GRAMMA_PATH}/rdogramsmr_sim.cpp
+    )
 
 SET(HEADER_FILES
     namespace.h
