@@ -6,7 +6,7 @@ ELSE()
     SET(CONFIG_DIRECTORY_RELEASE ${EXECUTABLE_OUTPUT_PATH})
 ENDIF()
 
-SET(QT_LIBRARY_DIR       $ENV{QTDIR}/lib              )
+SET(QT_LIBRARY_DIR       $ENV{QTDIR}/bin              )
 SET(QT_PLATFORM_DIR      $ENV{QTDIR}/plugins/platforms)
 
 FIND_FILE(DLL_ICUUC       icuuc51.dll        PATHS ${QT_LIBRARY_DIR})
