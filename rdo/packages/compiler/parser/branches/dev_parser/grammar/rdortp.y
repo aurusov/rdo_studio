@@ -207,6 +207,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
+#include "simulator/compiler/parser/rdorss.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/type/range.h"
@@ -224,6 +225,11 @@ OPEN_RDO_PARSER_NAMESPACE
 
 %%
 
+// --------------------------------------------------------------------------------
+// -------------------- Синтаксис типов ресурсов
+// --------------------------------------------------------------------------------
+// -------------------- Описание типов ресурсов
+// --------------------------------------------------------------------------------
 type_list
 	: /* empty */
 	| type_list rtp_res_type
@@ -252,7 +258,8 @@ ext_par_type_enum
 	;
 
 rtp_res_type
-	: rtp_header RDO_Parameters rtp_body RDO_End
+	: rtp_header RDO_Parameters rtp_body RDO_End rss_main
+	// точка входа в RSS + объявление ресурсов только после объявления типов
 	{
 		LPRDORTPResType pResourceType = PARSER->stack().pop<RDORTPResType>($1);
 		ASSERT(pResourceType);
@@ -699,6 +706,134 @@ type_declaration_array
 		ASSERT(pParamType);
 		LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType, RDOParserSrcInfo(@1, @4));
 		$$ = PARSER->stack().push(pArray);
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Синтаксис ресурсов
+// --------------------------------------------------------------------------------
+// -------------------- Описание ресурсов
+// --------------------------------------------------------------------------------
+	rss_main
+	: /* empty */
+	| rss_resources_begin rss_resources rss_resources_end
+	| rss_resources_begin rss_resources
+	{
+		PARSER->error().error(@2, "После описания всех ресурсов ожидается ключевое слово $End");
+	}
+	| error
+	{
+		if (!PARSER->isHaveKWResources())
+		{
+			PARSER->error().error(@1, "Ожидается ключевое слово $Resources");
+		}
+		else
+		{
+			if (PARSER->isHaveKWResourcesEnd())
+			{
+				PARSER->error().error(@1, "Ресурсы уже определены");
+			}
+			else
+			{
+				PARSER->error().error(@1, "Неизвестная ошибка");
+			}
+		}
+	}
+	;
+
+rss_resources_begin
+	: RDO_Resources
+	{
+		PARSER->setHaveKWResources(true);
+	}
+	;
+
+rss_resources_end
+	: RDO_End
+	{
+		PARSER->setHaveKWResourcesEnd(true);
+	}
+	;
+
+rss_resources
+	: /* empty */
+	| rss_resources rss_res_descr
+	;
+
+rss_res_descr
+	: rss_res_type rss_trace rss_values
+	{
+		LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
+		ASSERT(pResource);
+		if (!pResource->defined())
+		{
+			PARSER->error().error(@3, rdo::format("Заданы не все параметры ресурса: %s", pResource->name().c_str()));
+		}
+		pResource->setTrace($2 != 0);
+		pResource->end();
+	}
+	;
+
+rss_res_type
+	: RDO_IDENTIF_COLON RDO_IDENTIF
+	{
+		LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
+		LPRDOValue pType = PARSER->stack().pop<RDOValue>($2);
+		ASSERT(pName);
+		ASSERT(pType);
+
+		LPRDORTPResType pResType = PARSER->findRTPResType(pType->value().getIdentificator());
+		if (!pResType)
+		{
+			PARSER->error().error(@2, rdo::format("Неизвестный тип ресурса: %s", pType->value().getIdentificator().c_str()));
+		}
+		LPRDORSSResource pResourceExist = PARSER->findRSSResource(pName->value().getIdentificator());
+		if (pResourceExist)
+		{
+			PARSER->error().push_only(pName->src_info(), rdo::format("Ресурс '%s' уже существует", pName->value().getIdentificator().c_str()));
+			PARSER->error().push_only(pResourceExist->src_info(), "См. первое определение");
+			PARSER->error().push_done();
+		}
+		LPRDORSSResource pResource = pResType->createRes(PARSER, pName->src_info());
+		$$ = PARSER->stack().push(pResource);
+	}
+	| RDO_IDENTIF_COLON error
+	{
+		PARSER->error().error(@2, "Ожидается тип ресурса");
+	}
+	| ':'
+	{
+		PARSER->error().error(@1, "Перед двоеточием ожидается имя ресурса");
+	}
+	| error
+	{
+		PARSER->error().error(@1, "Ожидается имя ресурса");
+	}
+	;
+
+rss_trace
+	: /* empty */  {$$ = 0;}
+	| RDO_trace	   {$$ = 1;}
+	| RDO_no_trace {$$ = 0;}
+	;
+
+rss_values
+	: /* empty */
+	| rss_values rss_value
+	;
+
+rss_value
+	: '*'               {PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*")));}
+	| '#'               {PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "#")));}
+	| RDO_INT_CONST     {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
+	| RDO_REAL_CONST    {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
+	| RDO_BOOL_CONST    {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
+	| RDO_STRING_CONST  {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
+	| RDO_IDENTIF       {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
+	| param_array_value {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
+	| error
+	{
+		PARSER->error().error(@1, rdo::format("Неправильное значение параметра: %s", LEXER->YYText()));
 	}
 	;
 
