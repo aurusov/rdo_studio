@@ -23,18 +23,6 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-int rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
-{
-	LEXER->m_lpval = lpval;
-	LEXER->m_lploc = llocp;
-	return LEXER->yylex();
-}
-
-void rsserror(PTR(char) message)
-{
-	UNUSED(message);
-}
-
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------

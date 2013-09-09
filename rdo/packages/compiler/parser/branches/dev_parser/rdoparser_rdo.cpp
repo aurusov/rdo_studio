@@ -130,7 +130,7 @@ tstring RDOParserRDOItem::text() const
 // -------------------- RDOParserRSS
 // --------------------------------------------------------------------------------
 RDOParserRSS::RDOParserRSS(StreamFrom from)
-	: RDOParserRDOItem(rdoModelObjects::RSS, rssparse, rsserror, rsslex, from)
+	: RDOParserRDOItem(rdoModelObjects::RSS, rtpparse, rtperror, rtplex, from)
 {}
 
 void RDOParserRSS::parse(CREF(LPRDOParser) pParser)

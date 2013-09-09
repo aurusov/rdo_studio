@@ -1176,70 +1176,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\grammar\rdorss.y"
-				>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrss.cpp;..\..\grammar\rdogramrss.dot"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrss.cpp;..\..\grammar\rdogramrss.dot"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.corba|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrss.cpp;..\..\grammar\rdogramrss.dot"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.corba|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrss.cpp;..\..\grammar\rdogramrss.dot"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.mt|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrss.cpp;..\..\grammar\rdogramrss.dot"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.mt|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrss.cpp;..\..\grammar\rdogramrss.dot"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\grammar\rdortp.y"
 				>
 				<FileConfiguration
@@ -2067,67 +2003,6 @@
 							Name="VCCLCompilerTool"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\grammar\rdogramrss.cpp"
-					>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
 							UsePrecompiledHeader="0"
 						/>
 					</FileConfiguration>
