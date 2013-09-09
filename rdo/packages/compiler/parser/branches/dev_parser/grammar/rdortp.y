@@ -221,27 +221,33 @@
 OPEN_RDO_PARSER_NAMESPACE
 %}
 
-%start type_list
+%start rdo_compiler
 
 %%
+
+rdo_compiler
+	: /* empty */
+	| rtp_main rdo_compiler
+	| rss_main rdo_compiler
+	| error
+	{
+		PARSER->error().error(RDOParserSrcInfo(), "Ожидается $Ключевое_слово");
+	}
+	;
 
 // --------------------------------------------------------------------------------
 // -------------------- Синтаксис типов ресурсов
 // --------------------------------------------------------------------------------
 // -------------------- Описание типов ресурсов
 // --------------------------------------------------------------------------------
-type_list
+rtp_main
 	: /* empty */
-	| type_list rtp_res_type
+	| rtp_main rtp_res_type
 	{
 		LPRDORTPResType pResourceType = PARSER->stack().pop<RDORTPResType>($2);
 		ASSERT(pResourceType);
 	}
-	| type_list ext_param_type
-	| error
-	{
-		PARSER->error().error(RDOParserSrcInfo(), "Ожидается ключевое слово $Resource_type");
-	}
+	| rtp_main ext_param_type
 	;
 
 ext_param_type
@@ -258,8 +264,7 @@ ext_par_type_enum
 	;
 
 rtp_res_type
-	: rtp_header RDO_Parameters rtp_body RDO_End rss_main
-	// точка входа в RSS + объявление ресурсов только после объявления типов
+	: rtp_header RDO_Parameters rtp_body RDO_End
 	{
 		LPRDORTPResType pResourceType = PARSER->stack().pop<RDORTPResType>($1);
 		ASSERT(pResourceType);
@@ -720,24 +725,6 @@ type_declaration_array
 	| rss_resources_begin rss_resources
 	{
 		PARSER->error().error(@2, "После описания всех ресурсов ожидается ключевое слово $End");
-	}
-	| error
-	{
-		if (!PARSER->isHaveKWResources())
-		{
-			PARSER->error().error(@1, "Ожидается ключевое слово $Resources");
-		}
-		else
-		{
-			if (PARSER->isHaveKWResourcesEnd())
-			{
-				PARSER->error().error(@1, "Ресурсы уже определены");
-			}
-			else
-			{
-				PARSER->error().error(@1, "Неизвестная ошибка");
-			}
-		}
 	}
 	;
 
