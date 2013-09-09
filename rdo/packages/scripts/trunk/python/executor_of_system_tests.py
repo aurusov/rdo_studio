@@ -70,6 +70,12 @@ dividing_line = '---------------------------------------------------------------
 #                                 functions                                   #
 ###############################################################################
 
+def safe_close():
+    print '\n', u'PYTHON EXIT CODE :', G_EXIT_CODE, '\n'
+    sys.exit(G_EXIT_CODE)
+
+###############################################################################
+
 def get_test_files(dir):
     files = utils.get_files_list(dir)
     
@@ -82,6 +88,7 @@ def get_test_files(dir):
 
     return test_files
 
+###############################################################################
 
 def get_executables(dir):
     files = utils.get_files_list(dir)
@@ -98,6 +105,7 @@ def get_executables(dir):
 
     return rdo_ex
 
+###############################################################################
 
 def get_node_attribute_from_dom(dom, node_text, attribute_text):
 
@@ -110,6 +118,7 @@ def get_node_attribute_from_dom(dom, node_text, attribute_text):
 
     return attribute_text_data
 
+###############################################################################
 
 def compare_etalons(etalons, basedir):
     cycle_exit_code = APP_CODE_TERMINATION_NORMAL
@@ -128,6 +137,76 @@ def compare_etalons(etalons, basedir):
 
         print u'COMPARE:  ', utils.safe_encode(etalon['source'], sys.getfilesystemencoding()), u'  AND  ', utils.safe_encode(etalon['target'], sys.getfilesystemencoding()), u':  ', compare_string
     
+    return cycle_exit_code
+
+###############################################################################
+
+def test_console(dirname, model):
+    # run rdo_console app on test model
+
+    command = (rdo_ex + u' -i ' + utils.wrap_the_string_in_quotes(model_file))
+    print 'Run:', utils.safe_encode(command, 'UTF-8'), '\n'
+    simulation_code = subprocess.call(utils.safe_encode(command, CONSOLE_PARAM_ENCODING), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+    print u'SIMYLATION EXIT CODE :', simulation_code
+
+    # check simulation exit code
+    simulation_exit_code_string = u'ERROR'
+
+    if simulation_code == exit_code:
+        cycle_exit_code = APP_CODE_TERMINATION_NORMAL
+        simulation_exit_code_string = u'OK'
+    else:
+        cycle_exit_code = APP_CODE_TERMINATION_ERROR
+            
+    print u'CHECK SIM EXIT CODE  :', simulation_exit_code_string, u'\n'  
+            
+    # nornal simulation check
+    if simulation_code == RDO_CONSOLE_TERMINATION_NORMAL:
+        try:
+            # compare etalons
+            cycle_exit_code = compare_etalons(etalons, dirname)
+        except:
+            traceback.print_exc(file=sys.stdout)
+            cycle_exit_code = APP_CODE_TERMINATION_ERROR
+
+    # check compile error log
+    elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_PARSE_ERROR:
+        try:
+            simulation_log_file = dirname + RDO_CONSOLE_COMPILE_LOG_FILE_NAME
+            simulation_log_file_etalon = dirname + model['log_compilation']
+            res = compare.full(simulation_log_file, simulation_log_file_etalon)
+            check_message_cmp_string = u'ERROR'
+            if res:
+                cycle_exit_code = APP_CODE_TERMINATION_NORMAL
+                check_message_cmp_string = u'OK'
+            print u'CHECK ERROR LIST     :', check_message_cmp_string
+
+        except:
+            traceback.print_exc(file=sys.stdout)
+            cycle_exit_code = APP_CODE_TERMINATION_ERROR
+
+    return cycle_exit_code
+
+###############################################################################
+
+def test_convertor(dirname, model):
+    try:
+        text_uuid = str(uuid.uuid4())
+        temp_directory_name = dirname + text_uuid + DIR_LINE
+        shutil.copytree(dirname, temp_directory_name, ignore=shutil.ignore_patterns(*IGNORE_PATTERNS))
+        model_file = temp_directory_name + model['name']
+        command = (rdo_ex + u' -i ' + utils.wrap_the_string_in_quotes(model_file) + u' -c')
+        print 'Run:', utils.safe_encode(command, 'UTF-8'), '\n'
+        convertor_exit_code = subprocess.call(utils.safe_encode(command, 'UTF-8'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        print u'CONVERT EXIT CODE :', convertor_exit_code, u'\n'
+        if convertor_exit_code == exit_code:
+            cycle_exit_code = compare_etalons(etalons, temp_directory_name)
+        shutil.rmtree(temp_directory_name)
+    except:
+        traceback.print_exc(file=sys.stdout)
+        cycle_exit_code = APP_CODE_TERMINATION_ERROR
+
     return cycle_exit_code
 
 ###############################################################################
@@ -196,7 +275,8 @@ for task in files:
         print u'PARSE XML ERROR:', utask
         traceback.print_exc(file=sys.stdout)
         G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
-    
+        safe_close()
+
     if parse_result:
         model = {}
         model['name']            = get_node_attribute_from_dom(dom, u'model', u'name'           )
@@ -214,15 +294,14 @@ for task in files:
                 etalon['source'] = file.getAttribute('source')
                 etalon['target'] = file.getAttribute('target')
                 etalon['type']   = file.getAttribute('type')
-                
                 etalons.append(etalon)
-        
+
         try:
             exit_code = int(model['exit_code'])
         except:
             traceback.print_exc(file=sys.stdout)
             exit_code = DEFAULT_EXIT_CODE
-        
+
         print u'Project              :', utils.safe_encode(task, sys.getfilesystemencoding())
         print u'Model file           :', utils.safe_encode(model['name'], sys.getfilesystemencoding())
         print u'Target               :', utils.safe_encode(model['target'], sys.getfilesystemencoding())
@@ -237,90 +316,17 @@ for task in files:
 
         print ''
 
-        model_file    = dirname + model['name']
+        model_file = dirname + model['name']
         model_name = model['name'].partition('.')[0]
 
         cycle_exit_code = APP_CODE_TERMINATION_ERROR
 
         # select console target
         if model['target'] == TARGET_CONSOLE:
-            # run rdo_console app on test model
-
-            command = (rdo_ex + u' -i ' + utils.wrap_the_string_in_quotes(model_file))
-            print 'Run:', utils.safe_encode(command, 'UTF-8'), '\n'
-            simulation_code = subprocess.call(utils.safe_encode(command, CONSOLE_PARAM_ENCODING), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-
-            print u'SIMYLATION EXIT CODE :', simulation_code
-
-            # check simulation exit code
-            simulation_exit_code_string = u'ERROR'
-
-            if simulation_code == exit_code:
-                simulation_exit_code_string = u'OK'
-            else:
-                cycle_exit_code = APP_CODE_TERMINATION_ERROR
-            
-            print u'CHECK SIM EXIT CODE  :', simulation_exit_code_string, u'\n'  
-            
-            # nornal simulation check
-            if simulation_code == RDO_CONSOLE_TERMINATION_NORMAL:
-
-                try:
-                    # compare etalons
-                    cycle_exit_code = compare_etalons(etalons, dirname)
-
-                except:
-                    traceback.print_exc(file=sys.stdout)
-                    cycle_exit_code = APP_CODE_TERMINATION_ERROR
-
-            # .rdox model not found
-            elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_NO_MODEL:
-                cycle_exit_code = APP_CODE_TERMINATION_NORMAL
-
-            # check compile error log
-            elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_PARSE_ERROR:
-                try:
-                    simulation_log_file = dirname + RDO_CONSOLE_COMPILE_LOG_FILE_NAME
-                    simulation_log_file_etalon = dirname + model['log_compilation']
-
-                    res = compare.full(simulation_log_file, simulation_log_file_etalon)
-
-                    check_message_cmp_string = u'ERROR'
-
-                    if res:
-                        cycle_exit_code = APP_CODE_TERMINATION_NORMAL
-                        check_message_cmp_string = u'OK'
-
-                    print u'CHECK ERROR LIST     :', check_message_cmp_string
-
-                except:
-                    traceback.print_exc(file=sys.stdout)
-                    cycle_exit_code = APP_CODE_TERMINATION_ERROR
-
-            elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR:
-                cycle_exit_code = APP_CODE_TERMINATION_NORMAL
+            cycle_exit_code = test_console(dirname, model)
 
         elif model['target'] == TAGRET_CONVERTER:
-            try:
-                text_uuid = str(uuid.uuid4())
-                temp_directory_name = dirname + text_uuid + DIR_LINE
-                
-                shutil.copytree(dirname, temp_directory_name, ignore=shutil.ignore_patterns(*IGNORE_PATTERNS))
-                
-                model_file = temp_directory_name + model['name']
-                command = (rdo_ex + u' -i ' + utils.wrap_the_string_in_quotes(model_file) + u' -c')
-                print 'Run:', utils.safe_encode(command, 'UTF-8'), '\n'
-                convertor_exit_code = subprocess.call(utils.safe_encode(command, 'UTF-8'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-                
-                print u'CONVERT EXIT CODE :', convertor_exit_code, u'\n'
-                
-                if convertor_exit_code == exit_code:
-                    cycle_exit_code = compare_etalons(etalons, temp_directory_name)
-                
-                shutil.rmtree(temp_directory_name)
-            except:
-                traceback.print_exc(file=sys.stdout)
-                cycle_exit_code = APP_CODE_TERMINATION_ERROR
+            cycle_exit_code = test_convertor(dirname, model)
 
         else:
             print 'INVALID TARGET'
@@ -335,6 +341,4 @@ utils.print_list_of_line(bad_models, sys.getfilesystemencoding())
 if(len(bad_models) < 1):
    print u'(empty)'
 
-print '\n', u'PYTHON EXIT CODE :', G_EXIT_CODE, '\n'
-
-sys.exit(G_EXIT_CODE)
+safe_close()
