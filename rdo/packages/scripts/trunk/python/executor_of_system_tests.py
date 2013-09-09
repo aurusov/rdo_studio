@@ -70,7 +70,7 @@ dividing_line = '---------------------------------------------------------------
 #                                 functions                                   #
 ###############################################################################
 
-def safe_close():
+def safe_exit():
     print '\n', u'PYTHON EXIT CODE :', G_EXIT_CODE, '\n'
     sys.exit(G_EXIT_CODE)
 
@@ -212,7 +212,6 @@ def test_convertor(dirname, model):
 ###############################################################################
 
 # parse console options
-
 parser = argparse.ArgumentParser(description = u'rdo executor of system tests:', version = APP_VERSION)
 parser.add_argument(u'-ad', action = 'store', dest = u'app_directory',   default = app_directory,   help = u'application directory')
 parser.add_argument(u'-md', action = 'store', dest = u'model_directory', default = model_directory, help = u'model directory')
@@ -231,7 +230,6 @@ print u'FILESYSTEM ENCODING', sys.getfilesystemencoding()
 
 # search rdo and rdo_test executables
 rdo_ex = get_executables(app_directory)
-
 if not os.path.exists(rdo_ex):
     print u'Build app not found. Critical error !!!'
     sys.exit(APP_CODE_TERMINATION_ERROR)
@@ -241,7 +239,6 @@ files = get_test_files(model_directory)
 files.sort()
 
 print u'\nDEBUG INFO'
-
 print u'\nFind RDO executables    :'
 print utils.safe_encode(rdo_ex, sys.getfilesystemencoding())
 
@@ -250,7 +247,6 @@ utils.print_list_of_line(files, sys.getfilesystemencoding())
 
 # parse xml and start tests
 print u'\nSTARTED TEST CYCLE\n'
-
 bad_models = []
 
 # check model cycle
@@ -273,7 +269,7 @@ for task in files:
         print u'PARSE XML ERROR:', utask
         traceback.print_exc(file=sys.stdout)
         G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
-        safe_close()
+        safe_exit()
 
     if parse_result:
         model = {}
@@ -286,14 +282,12 @@ for task in files:
         node_etalons = dom.getElementsByTagName('etalons')
         if len(node_etalons):
             files = node_etalons[0].getElementsByTagName('file')
-
             for file in files:
                 etalon = {}
                 etalon['source'] = file.getAttribute('source')
                 etalon['target'] = file.getAttribute('target')
                 etalon['type']   = file.getAttribute('type')
                 etalons.append(etalon)
-
         try:
             exit_code = int(model['exit_code'])
         except:
@@ -308,10 +302,8 @@ for task in files:
 
         if len(etalons):
             print '\n', u'Etalons :', '\n'
-        
         for etalon in etalons:
             print u'SOURCE:  ', utils.safe_encode(etalon['source'], sys.getfilesystemencoding()), u'  TARGET:  ', utils.safe_encode(etalon['target'], sys.getfilesystemencoding()), u'  TYPE:  ',   etalon['type']
-
         print ''
 
         cycle_exit_code = APP_CODE_TERMINATION_ERROR
@@ -319,10 +311,8 @@ for task in files:
         # select console target
         if model['target'] == TARGET_CONSOLE:
             cycle_exit_code = test_console(dirname, model)
-
         elif model['target'] == TAGRET_CONVERTER:
             cycle_exit_code = test_convertor(dirname, model)
-
         else:
             print 'INVALID TARGET'
 
@@ -336,4 +326,4 @@ utils.print_list_of_line(bad_models, sys.getfilesystemencoding())
 if(len(bad_models) < 1):
    print u'(empty)'
 
-safe_close()
+safe_exit()
