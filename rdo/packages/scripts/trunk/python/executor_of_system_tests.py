@@ -143,16 +143,14 @@ def compare_etalons(etalons, basedir):
 
 def test_console(dirname, model):
     # run rdo_console app on test model
-
+    model_file = u'' + dirname + model['name']
     command = (rdo_ex + u' -i ' + utils.wrap_the_string_in_quotes(model_file))
-    print 'Run:', utils.safe_encode(command, 'UTF-8'), '\n'
+    print 'Run:', utils.safe_encode(command, sys.getfilesystemencoding()), '\n'
     simulation_code = subprocess.call(utils.safe_encode(command, CONSOLE_PARAM_ENCODING), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-
     print u'SIMYLATION EXIT CODE :', simulation_code
 
     # check simulation exit code
     simulation_exit_code_string = u'ERROR'
-
     if simulation_code == exit_code:
         cycle_exit_code = APP_CODE_TERMINATION_NORMAL
         simulation_exit_code_string = u'OK'
@@ -195,9 +193,9 @@ def test_convertor(dirname, model):
         text_uuid = str(uuid.uuid4())
         temp_directory_name = dirname + text_uuid + DIR_LINE
         shutil.copytree(dirname, temp_directory_name, ignore=shutil.ignore_patterns(*IGNORE_PATTERNS))
-        model_file = temp_directory_name + model['name']
+        model_file = u'' + temp_directory_name + model['name']
         command = (rdo_ex + u' -i ' + utils.wrap_the_string_in_quotes(model_file) + u' -c')
-        print 'Run:', utils.safe_encode(command, 'UTF-8'), '\n'
+        print 'Run:', utils.safe_encode(command, sys.getfilesystemencoding()), '\n'
         convertor_exit_code = subprocess.call(utils.safe_encode(command, 'UTF-8'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         print u'CONVERT EXIT CODE :', convertor_exit_code, u'\n'
         if convertor_exit_code == exit_code:
@@ -315,9 +313,6 @@ for task in files:
             print u'SOURCE:  ', utils.safe_encode(etalon['source'], sys.getfilesystemencoding()), u'  TARGET:  ', utils.safe_encode(etalon['target'], sys.getfilesystemencoding()), u'  TYPE:  ',   etalon['type']
 
         print ''
-
-        model_file = dirname + model['name']
-        model_name = model['name'].partition('.')[0]
 
         cycle_exit_code = APP_CODE_TERMINATION_ERROR
 
