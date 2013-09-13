@@ -6,7 +6,7 @@ def divide(expr):
     f1 = ""
     f2 = ""
 
-    use1 = use2 = last = True
+    use1 = use2 = True
     brackets = i = comment = curbr = 0
     brOmitted = False
 
@@ -15,46 +15,38 @@ def divide(expr):
     lnre = re.compile(r"^(\s*[\|\:].*)$")
 
     for ln in expr:
-        if (i == 0) and not lnre.match(ln):
-            sys.exit("faulty token block")
-        else:
-            if lnre.match(ln):
-                if not last:
-                    last = True
-            else:
-                last = False
-                if ln.count("#PASS1") > 0:
-                    use2 = False
-                    curbr = brackets
-                    comstep = ln[:ln.find("#PASS1")]
-                    ln = ln.replace("#PASS1", "/* ---------- COMPILER 1st PASS ---------- */", 1)
-                if ln.count("#PASS2") > 0:
-                    use1 = False
-                    curbr = brackets
-                    comstep = ln[:ln.find("#PASS1")]
-                    ln = ln.replace("#PASS2", "/* ---------- COMPILER 2nd PASS ---------- */", 1)
-                if ln.count("{") > 0:
-                    brackets += ln.count("{")
-                    if (not brOmitted and brackets >= curbr + 1) and ((not use1) or (not use2)):
-                        brOmitted = True
-                        ln = ln.replace("{", "", 1)
-                        ln = re.sub(r"^\s*$", r"", ln)
-                if ln.count("}") > 0:
-                    brackets -= ln.count("}")
-                    if (brackets <= curbr) and ((not use1) or (not use2)):
-                        comment = 2*use1 + use2
-                        use1 = True
-                        use2 = True
-                        brOmitted = False
-                        # some black right-replace magick
-                        ln = ln[::-1].replace("}"[::-1], (("\n" + comstep)*((ln.count("}") - 1) and True) + "/* --------------------------------------- */")[::-1], 1)[::-1]
-            f1 += (ln + "\n" * ((len(expr) - i - 1) and True)) * ((len(ln) or not ((brackets == curbr + 1) and ((not use1) or (not use2)))) and (comment - 1) and use1)
-            f2 += (ln + "\n" * ((len(expr) - i - 1) and True)) * ((len(ln) or not ((brackets == curbr + 1) and ((not use1) or (not use2)))) and (comment - 2) and use2)
-            comment = 0
+        if ln.count("#PASS1") > 0:
+            use2 = False
+            curbr = brackets
+            comstep = ln[:ln.find("#PASS1")]
+            ln = ln.replace("#PASS1", "/* ---------- COMPILER 1st PASS ---------- */", 1)
+        if ln.count("#PASS2") > 0:
+            use1 = False
+            curbr = brackets
+            comstep = ln[:ln.find("#PASS1")]
+            ln = ln.replace("#PASS2", "/* ---------- COMPILER 2nd PASS ---------- */", 1)
+        if ln.count("{") > 0:
+            brackets += ln.count("{")
+            if (not brOmitted and brackets >= curbr + 1) and ((not use1) or (not use2)):
+                brOmitted = True
+                ln = ln.replace("{", "", 1)
+                ln = re.sub(r"^\s*$", r"", ln)
+        if ln.count("}") > 0:
+            brackets -= ln.count("}")
+            if (brackets <= curbr) and ((not use1) or (not use2)):
+                comment = 2*use1 + use2
+                use1 = True
+                use2 = True
+                brOmitted = False
+                # some black right-replace magick
+                ln = ln[::-1].replace("}"[::-1], (("\n" + comstep)*((ln.count("}") - 1) and True) + "/* --------------------------------------- */")[::-1], 1)[::-1]
+        f1 += ln * ((len(ln) or not ((brackets == curbr + 1) and ((not use1) or (not use2)))) and (comment - 1) and use1) + "\n" * ((len(expr) - i - 1) and True)
+        f2 += ln * ((len(ln) or not ((brackets == curbr + 1) and ((not use1) or (not use2)))) and (comment - 2) and use2) + "\n" * ((len(expr) - i - 1) and True)
+        comment = 0
         i += 1
 
-    f1 = re.sub(r'(\s*[\|\:].*)\n\s*{\s*}(.*)', r'\1\2', f1)
-    f2 = re.sub(r'(\s*[\|\:].*)\n\s*{\s*}(.*)', r'\1\2', f2)
+    f1 = re.sub(r'(\s*[\|\:].*)(\n\s*){(\s*)}(.*)', r'\1\2\3\4', f1)
+    f2 = re.sub(r'(\s*[\|\:].*)(\n\s*){(\s*)}(.*)', r'\1\2\3\4', f2)
 
     return [f1,f2]
 
