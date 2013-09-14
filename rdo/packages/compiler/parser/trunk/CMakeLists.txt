@@ -326,7 +326,7 @@ SET(NO_PCH_FILES
 
 ADD_LIBRARY(rdo_parser ${SOURCE_FILES})
 
-SET_TARGET_PROPERTIES(rdo_parser PROPERTIES FOLDER ${LIBRARY_FOLDERS})
+SET_TARGET_PROPERTIES(rdo_parser PROPERTIES FOLDER ".simulator/.compiler")
 
 ADD_DEPENDENCIES(rdo_parser rdo_utils)
 ADD_DEPENDENCIES(rdo_parser rdo_runtime)
