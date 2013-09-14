@@ -27,22 +27,19 @@ CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/cmake/rdogramma.h.cmake ${GRAMMA_PATH}/rdog
 
 INCLUDE(${PROJECT_SOURCE_DIR}/cmake/bison.cmake)
 
-RDO_BISON_TARGET(rtp cnv_rtp define)
-RDO_BISON_TARGET(dpt cnv_dpt)
-RDO_BISON_TARGET(opr cnv_opr)
-RDO_BISON_TARGET(frm cnv_frm)
-RDO_BISON_TARGET(fun cnv_fun)
-RDO_BISON_TARGET(pat cnv_pat)
-RDO_BISON_TARGET(pmd cnv_pmd)
+RDO_BISON_TARGET(smr_sim cnv_smr_sim_)
+RDO_BISON_TARGET(smr_file cnv_smr_file_)
 RDO_BISON_TARGET(proc_rtp cnv_proc_rtp_)
 RDO_BISON_TARGET(proc_rss cnv_proc_rss_)
 RDO_BISON_TARGET(proc_opr cnv_proc_opr_)
+RDO_BISON_TARGET(rtp cnv_rtp define)
 RDO_BISON_TARGET(rss cnv_rss)
-RDO_BISON_TARGET(smr_sim cnv_smr_sim_)
-RDO_BISON_TARGET(smr_file cnv_smr_file_)
-
-
-
+RDO_BISON_TARGET(pmd cnv_pmd)
+RDO_BISON_TARGET(pat cnv_pat)
+RDO_BISON_TARGET(opr cnv_opr)
+RDO_BISON_TARGET(fun cnv_fun)
+RDO_BISON_TARGET(frm cnv_frm)
+RDO_BISON_TARGET(dpt cnv_dpt)
 
 FLEX_TARGET(lexer_scaner ${GRAMMA_PATH}/rdo_lexer.l ${GRAMMA_PATH}/rdolex.cpp COMPILE_FLAGS "-Pcnv -+")
 
