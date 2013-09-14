@@ -143,8 +143,7 @@ SET(GRAMMAR_FILES
     ${GRAMMA_PATH}/rdosmr_sim.y
 )
 
-SET(GRAMMAR_GENERATED_FILES
-    ${GRAMMA_PATH}/rdogramma.h
+SET(GRAMMAR_GENERATED_NO_PCH
     ${FLEX_lexer_scaner_OUTPUTS}
     ${GRAMMA_PATH}/rdogramrtp.cpp
     ${GRAMMA_PATH}/rdogramrss.cpp
@@ -160,6 +159,11 @@ SET(GRAMMAR_GENERATED_FILES
     ${GRAMMA_PATH}/rdogramproc_opr.cpp
     ${GRAMMA_PATH}/rdogramsmr_file.cpp
     ${GRAMMA_PATH}/rdogramsmr_sim.cpp
+)
+
+SET(GRAMMAR_GENERATED_FILES
+    ${GRAMMA_PATH}/rdogramma.h
+    ${GRAMMAR_GENERATED_NO_PCH}
 )
 
 SET(PARSER_FILES
@@ -282,7 +286,7 @@ SET(WATCH_FILES
     rdopmd.h
 )
 
-ADD_LIBRARY(rdo_parser
+SET(SOURCE_FILES
     ${ANIMATION_FILES}
     ${COMMON_FILES}
     ${CONTEXT_FILES}
@@ -315,6 +319,13 @@ ADD_LIBRARY(rdo_parser
     ${WATCH_FILES}
 )
 
+SET(NO_PCH_FILES
+    ${GRAMMAR_GENERATED_NO_PCH}
+    ${PCH_FILES}
+)
+
+ADD_LIBRARY(rdo_parser ${SOURCE_FILES})
+
 SET_TARGET_PROPERTIES(rdo_parser PROPERTIES FOLDER ${LIBRARY_FOLDERS})
 
 ADD_DEPENDENCIES(rdo_parser rdo_utils)
@@ -334,6 +345,9 @@ SET(RDO_PARSER_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 #ADD_SUBDIRECTORY(${RDO_PARSER_TEST_PATH})
 
 IF(MSVC) # options for windows #
+
+    INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
+    ADD_PCH("${SOURCE_FILES}" "${NO_PCH_FILES}" pch simulator/compiler/parser)
 
     SOURCE_GROUP(".animation" FILES
         ${ANIMATION_FILES}
