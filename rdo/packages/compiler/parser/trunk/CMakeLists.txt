@@ -129,7 +129,7 @@ SET(HEADER_FILES
     context/function/context_function_param_definition.h
     )
 
-SET(INLITE_FILES
+SET(INLINE_FILES
     rdo_logic.inl
     bison_value_pair.inl
     rdoparser_lexer.inl
@@ -216,7 +216,7 @@ SET(BISON_FILES
     ${GRAMMA_PATH}/rdo_lexer.l
     )
 
-ADD_LIBRARY(rdo_parser ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${BISON_FILES} ${GENERATED_FILES})
+ADD_LIBRARY(rdo_parser ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES} ${BISON_FILES} ${GENERATED_FILES})
 SET_TARGET_PROPERTIES(rdo_parser PROPERTIES FOLDER ${LIBRARY_FOLDERS})
 
 ADD_DEPENDENCIES(rdo_parser rdo_utils)
