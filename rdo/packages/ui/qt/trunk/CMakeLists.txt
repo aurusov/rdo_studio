@@ -25,7 +25,9 @@ SET(SOURCE_FILES
     )
 
 ADD_LIBRARY(rdo_ui_qt ${HEADER_FILES} ${SOURCE_FILES})
-SET_TARGET_PROPERTIES(rdo_ui_qt PROPERTIES FOLDER ${LIBRARY_FOLDERS})
+
+INCLUDE(${PROJECT_SOURCE_DIR}/app/rdo_studio/projects/common/rdo_studio.cmake)
+SET_TARGET_PROPERTIES(rdo_ui_qt PROPERTIES FOLDER ${APP_FOLDER}/.ui)
 
 ADD_DEPENDENCIES(rdo_ui_qt rdo_utils)
 
