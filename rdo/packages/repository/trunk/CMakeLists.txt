@@ -21,7 +21,7 @@ SOURCE_GROUP(".repository" FILES
 	rdorepository.cpp)
 
 ADD_LIBRARY(rdo_repository ${HEADER_FILES} ${SOURCE_FILES})
-SET_TARGET_PROPERTIES(rdo_repository PROPERTIES FOLDER ${LIBRARY_FOLDERS})
+SET_TARGET_PROPERTIES(rdo_repository PROPERTIES FOLDER ".repository")
 
 ADD_DEPENDENCIES(rdo_repository rdo_simulator)
 ADD_DEPENDENCIES(rdo_repository rdo_kernel)
