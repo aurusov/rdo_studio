@@ -229,7 +229,7 @@ SET(SOURCE_FILES
 	result/result_group.cpp)
 
 ADD_LIBRARY(rdo_runtime ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES})
-SET_TARGET_PROPERTIES(rdo_runtime PROPERTIES FOLDER ${LIBRARY_FOLDERS})
+SET_TARGET_PROPERTIES(rdo_runtime PROPERTIES FOLDER ".simulator/.runtime")
 
 ADD_DEPENDENCIES(rdo_runtime rdo_utils)
 ADD_DEPENDENCIES(rdo_runtime rdo_simulator_report)
