@@ -11,64 +11,115 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/smart_ptr)
 
-SET(HEADER_FILES
+SET(ANIMATION_FILES
+	rdoanimation.h
+	rdoanimation.inl
+)
+
+SET(COMMON_FILES
+	model_objects.cpp
 	model_objects.h
 	namespace.h
 	platform.h
-	rdoanimation.h
+	rdocommon.cpp
 	rdocommon.h
+	rdocommon.inl
+	rdomacros.h 
+	rdotypes.h
+	warning_disable.h
+	warning_enable.h
+)
+
+SET(DEBUG_FILES
 	rdodebug.h
+	static_assert.h
+)
+
+SET(FILE_FILES
+	rdofile.cpp
 	rdofile.h
+)
+
+SET(INTERFACE_FILES
+	rdointerface.h
+	rdointerface.inl
+)
+
+SET(LOCALE_FILES
+	rdolocale.cpp
+	rdolocale.h
+)
+
+SET(STREAM_FILES
+	rdostream.h
+)
+
+SET(STUFF_FILES
+	explicit_value.h
 	rdoidgenerator.h
 	rdoindexedstack.h
-	rdointerface.h
-	rdomacros.h
 	rdosingletone.h
-	rdosmart_ptr_wrapper.h
-	rdostream.h
-	rdotime.h
-	rdotypes.h
-	rdolocale.h
 	stack.h
-	static_assert.h
+	stack.inl
 	supersubclass.h
 )
 
-SET(INLINE_FILES
-	rdoanimation.inl
-	rdocommon.inl
-	rdointerface.inl
+SET(TIME_FILES
+	rdotime.h
 	rdotime.inl
-	stack.inl
 )
 
-SET(SOURCE_FILES
-    model_objects.cpp
-	rdocommon.cpp
-	rdofile.cpp
-	rdolocale.cpp
+SET(SMARTPTR_FACTORY_FILES
+	smart_ptr/factory.h
+	smart_ptr/factory.inl
+)
+
+SET(SMARTPTR_INTERFACEPTR_FILES
+	smart_ptr/interface_ptr.h
+	smart_ptr/interface_ptr.inl
+)
+
+SET(SMARTPTR_INTRUSIVEPTR_FILES
+	smart_ptr/intrusive_ptr.h
+	smart_ptr/intrusive_ptr.inl
+	smart_ptr/intrusive_ptr_interface_wrapper.h
+	smart_ptr/intrusive_ptr_interface_wrapper.inl
+)
+
+SET(SMARTPTR_REFCOUNTER_FILES
+	smart_ptr/counter_reference.h
+	smart_ptr/counter_reference.inl
+	smart_ptr/ref_counter.h
+	smart_ptr/ref_counter.inl
+	smart_ptr/ref_counter_i.h
+)
+
+SET(SMARTPTR_WRAPPER_FILES
+	rdosmart_ptr_wrapper.h
 )
 
 SET(SMART_PTR_FILES
-	smart_ptr/factory.h
-	smart_ptr/factory.inl
-
-	smart_ptr/interface_ptr.h
-	smart_ptr/interface_ptr.inl
-
-	smart_ptr/intrusive_ptr.h
-	smart_ptr/intrusive_ptr_interface_wrapper.h
-	smart_ptr/intrusive_ptr.inl
-	smart_ptr/intrusive_ptr_interface_wrapper.inl
-
-	smart_ptr/ref_counter_i.h
-	smart_ptr/ref_counter.inl
-	smart_ptr/ref_counter.h
-	smart_ptr/counter_reference.h
-	smart_ptr/counter_reference.inl
+	${SMARTPTR_FACTORY_FILES}
+	${SMARTPTR_INTERFACEPTR_FILES}
+	${SMARTPTR_INTRUSIVEPTR_FILES}
+	${SMARTPTR_REFCOUNTER_FILES}
+	${SMARTPTR_WRAPPER_FILES}
 )
 
-ADD_LIBRARY(rdo_utils ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES} ${SMART_PTR_FILES})
+SET(SOURCE_FILES
+	${ANIMATION_FILES}
+	${COMMON_FILES}
+	${DEBUG_FILES}
+	${FILE_FILES}
+	${INTERFACE_FILES}
+	${LOCALE_FILES}
+	${STREAM_FILES}
+	${STUFF_FILES}
+	${TIME_FILES}
+	${SMART_PTR_FILES}
+)
+
+ADD_LIBRARY(rdo_utils ${SOURCE_FILES})
 SET_TARGET_PROPERTIES(rdo_utils PROPERTIES LINKER_LANGUAGE CXX)
 
 INCLUDE(${PROJECT_SOURCE_DIR}/utils/projects/common/utils_common.cmake)
@@ -81,90 +132,62 @@ INSTALL(TARGETS rdo_utils DESTINATION lib)
 SET(RDO_UTILS_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 ADD_SUBDIRECTORY(${RDO_UTILS_TEST_PATH})
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
-	SOURCE_GROUP(".animation" FILES 
-		rdoanimation.h
-		rdoanimation.inl
+	SOURCE_GROUP(".animation" FILES
+		${ANIMATION_FILES}
 	)
 
 	SOURCE_GROUP(".common" FILES
-		rdotypes.h
-		namespace.h
-		rdomacros.h 
-		rdocommon.h
-		rdolocale.h
-		rdolocale.cpp
-		rdocommon.inl
-		rdocommon.cpp
-		model_objects.h
-		model_objects.cpp
+		${COMMON_FILES}
 	)
 
-	SOURCE_GROUP(".debug" FILES 
-		rdodebug.h
-		static_assert.h
+	SOURCE_GROUP(".debug" FILES
+		${DEBUG_FILES}
 	)
 
-	SOURCE_GROUP(".file" FILES 
-		rdofile.h
-		rdofile.cpp
+	SOURCE_GROUP(".file" FILES
+		${FILE_FILES}
 	)
 
-	SOURCE_GROUP(".interface" FILES 
-		rdointerface.h
-		rdointerface.inl
+	SOURCE_GROUP(".interface" FILES
+		${INTERFACE_FILES}
 	)
 
-	SOURCE_GROUP(".smart_ptr_factory" FILES
-		smart_ptr/factory.h
-		smart_ptr/factory.inl
+	SOURCE_GROUP(".locale" FILES
+		${LOCALE_FILES}
 	)
 
-	SOURCE_GROUP(".smart_ptr_wrapper" FILES
-		rdosmart_ptr_wrapper.h
+	SOURCE_GROUP(".stream" FILES
+		${STREAM_FILES}
 	)
 
-	SOURCE_GROUP(".smart_ptr_ref_counter" FILES
-		smart_ptr/ref_counter_i.h
-		smart_ptr/ref_counter.inl
-		smart_ptr/ref_counter.h
-		smart_ptr/counter_reference.h
-		smart_ptr/counter_reference.inl
-	)
-
-	SOURCE_GROUP(".smart_ptr_interface_ptr" FILES
-		smart_ptr/interface_ptr.h
-		smart_ptr/interface_ptr.inl
-	)
-
-	SOURCE_GROUP(".smart_ptr_intrusive_ptr" FILES
-		smart_ptr/intrusive_ptr.h
-		smart_ptr/intrusive_ptr_interface_wrapper.h
-		smart_ptr/intrusive_ptr.inl
-		smart_ptr/intrusive_ptr_interface_wrapper.inl
-	)
-
-	SOURCE_GROUP(".stream" FILES 
-		rdostream.h
-	)
-
-	SOURCE_GROUP(".stuff" FILES 
-		stack.h
-		stack.inl
-		supersubclass.h
-		rdosingletone.h
-		rdoidgenerator.h
-		rdoindexedstack.h
+	SOURCE_GROUP(".stuff" FILES
+		${STUFF_FILES}
 	)
 
 	SOURCE_GROUP(".time" FILES
-		rdotime.h
-		rdotime.inl
+		${TIME_FILES}
 	)
 
-	SOURCE_GROUP(".platform" FILES
-		platform.h
+	SOURCE_GROUP(".smart_ptr\\.factory" FILES
+		${SMARTPTR_FACTORY_FILES}
+	)
+
+	SOURCE_GROUP(".smart_ptr\\.interface_ptr" FILES
+		${SMARTPTR_INTERFACEPTR_FILES}
+	)
+
+	SOURCE_GROUP(".smart_ptr\\.intrusive_ptr" FILES
+		${SMARTPTR_INTRUSIVEPTR_FILES}
+	)
+
+	SOURCE_GROUP(".smart_ptr\\.ref_counter" FILES
+		${SMARTPTR_REFCOUNTER_FILES}
+	)
+
+	SOURCE_GROUP(".smart_ptr\\.wrapper" FILES
+		${SMARTPTR_WRAPPER_FILES}
 	)
 
 ENDIF(MSVC)
