@@ -16,7 +16,7 @@
 #include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/grammar/rdobison.h"
-#include "converter/smr2rdox/grammar/rdogramma.h"
+#include "converter/smr2rdox/grammar/generated/rdogramma.h"
 #include "converter/smr2rdox/rdoparser.h"
 #include "converter/smr2rdox/rdoparser_lexer.h"
 #include "converter/smr2rdox/rdo_value.h"

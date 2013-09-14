@@ -1,5 +1,6 @@
 #==============================================================================
 # Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+#               2013 Andrey Urusov <drobus@gmail.com>
 #==============================================================================
 
 MESSAGE(STATUS "CREATE  CONVERTER  SMR2RDOX  LIBRARY")
@@ -21,9 +22,9 @@ IF(NOT FLEX_FOUND)
     MESSAGE(FATAL_ERROR "Flex can not be found")
 ENDIF(NOT FLEX_FOUND)
 
-SET(GRAMMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
-
-CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/cmake/rdogramma.h.cmake ${GRAMMA_PATH}/rdogramma.h)
+SET(GRAMMA_INPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
+SET(GRAMMA_OUTPUT_PATH ${GRAMMA_INPUT_PATH}/generated)
+SET(GRAMMA_H ${GRAMMA_OUTPUT_PATH}/rdogramma.h)
 
 INCLUDE(${PROJECT_SOURCE_DIR}/cmake/bison.cmake)
 
@@ -41,33 +42,33 @@ RDO_BISON_TARGET(proc_opr cnv_proc_opr_)
 RDO_BISON_TARGET(smr_file cnv_smr_file_)
 RDO_BISON_TARGET(smr_sim cnv_smr_sim_)
 
-FLEX_TARGET(lexer_scaner ${GRAMMA_PATH}/rdo_lexer.l ${GRAMMA_PATH}/rdolex.cpp COMPILE_FLAGS "-Pcnv -+")
+FLEX_TARGET(lexer_scaner ${GRAMMA_INPUT_PATH}/rdo_lexer.l ${GRAMMA_OUTPUT_PATH}/rdolex.cpp COMPILE_FLAGS "-Pcnv -+")
 
 ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rtp)
 
 SET(GENERATED_FILES
-    ${GRAMMA_PATH}/rdogramma.h
+    ${GRAMMA_H}
     ${FLEX_lexer_scaner_OUTPUTS}
-    ${GRAMMA_PATH}/rdogramrtp.cpp
-    ${GRAMMA_PATH}/rdogramrss.cpp
-    ${GRAMMA_PATH}/rdogramopr.cpp
-    ${GRAMMA_PATH}/rdogrampat.cpp
-    ${GRAMMA_PATH}/rdogramdpt.cpp
-    ${GRAMMA_PATH}/rdogramfrm.cpp
-    ${GRAMMA_PATH}/rdogramfun.cpp
-    ${GRAMMA_PATH}/rdogrampmd.cpp
-    ${GRAMMA_PATH}/rdogramproc_rtp.cpp
-    ${GRAMMA_PATH}/rdogramproc_rss.cpp
-    ${GRAMMA_PATH}/rdogramproc_opr.cpp
-    ${GRAMMA_PATH}/rdogramsmr_file.cpp
-    ${GRAMMA_PATH}/rdogramsmr_sim.cpp
+    ${BISON_rtp_OUTPUTS}
+    ${BISON_rss_OUTPUTS}
+    ${BISON_opr_OUTPUTS}
+    ${BISON_pat_OUTPUTS}
+    ${BISON_dpt_OUTPUTS}
+    ${BISON_frm_OUTPUTS}
+    ${BISON_fun_OUTPUTS}
+    ${BISON_pmd_OUTPUTS}
+    ${BISON_proc_rtp_OUTPUTS}
+    ${BISON_proc_rss_OUTPUTS}
+    ${BISON_proc_opr_OUTPUTS}
+    ${BISON_smr_file_OUTPUTS}
+    ${BISON_smr_sim_OUTPUTS}
     )
 
 SET(HEADER_FILES
     namespace.h
     param.h
     pch.h
-    ${GRAMMA_PATH}/rdobison.h
+    ${GRAMMA_INPUT_PATH}/rdobison.h
     rdodpt.h
     rdo_enum.h
     rdofrm.h
@@ -139,20 +140,20 @@ SET(SOURCE_FILES
 	)
 
 SET(GRAMMA_FILES
-    ${GRAMMA_PATH}/rdo_lexer.l
-    ${GRAMMA_PATH}/rdoproc_rtp.y
-    ${GRAMMA_PATH}/rdoproc_rss.y
-    ${GRAMMA_PATH}/rdoproc_opr.y
-    ${GRAMMA_PATH}/rdosmr_file.y
-    ${GRAMMA_PATH}/rdosmr_sim.y
-    ${GRAMMA_PATH}/rdortp.y
-    ${GRAMMA_PATH}/rdorss.y
-    ${GRAMMA_PATH}/rdopmd.y
-    ${GRAMMA_PATH}/rdopat.y
-    ${GRAMMA_PATH}/rdoopr.y
-    ${GRAMMA_PATH}/rdofun.y
-    ${GRAMMA_PATH}/rdofrm.y
-    ${GRAMMA_PATH}/rdodpt.y
+    ${GRAMMA_INPUT_PATH}/rdo_lexer.l
+    ${GRAMMA_INPUT_PATH}/rdoproc_rtp.y
+    ${GRAMMA_INPUT_PATH}/rdoproc_rss.y
+    ${GRAMMA_INPUT_PATH}/rdoproc_opr.y
+    ${GRAMMA_INPUT_PATH}/rdosmr_file.y
+    ${GRAMMA_INPUT_PATH}/rdosmr_sim.y
+    ${GRAMMA_INPUT_PATH}/rdortp.y
+    ${GRAMMA_INPUT_PATH}/rdorss.y
+    ${GRAMMA_INPUT_PATH}/rdopmd.y
+    ${GRAMMA_INPUT_PATH}/rdopat.y
+    ${GRAMMA_INPUT_PATH}/rdoopr.y
+    ${GRAMMA_INPUT_PATH}/rdofun.y
+    ${GRAMMA_INPUT_PATH}/rdofrm.y
+    ${GRAMMA_INPUT_PATH}/rdodpt.y
 	)
 
 ADD_LIBRARY(rdo_converter_smr2rdox ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES} ${GENERATED_FILES} ${GRAMMA_FILES})
@@ -186,7 +187,7 @@ SOURCE_GROUP(".common" FILES
 	)	
 
 SOURCE_GROUP(".converter" FILES 
-    ${GRAMMA_PATH}/rdobison.h
+    ${GRAMMA_INPUT_PATH}/rdobison.h
     rdoparser.cpp
     rdoparser.h
     rdoparser_base.cpp
