@@ -49,7 +49,6 @@ SET(GENERATED_FILES
     ${GRAMMA_PATH}/rdogramma.h
     ${FLEX_lexer_scaner_OUTPUTS}
     ${GRAMMA_PATH}/rdogramrtp.cpp
-    ${GRAMMA_PATH}/rdogramrtp.hpp
     ${GRAMMA_PATH}/rdogramdpt.cpp
     ${GRAMMA_PATH}/rdogramfrm.cpp
     ${GRAMMA_PATH}/rdogramfun.cpp
