@@ -23,7 +23,9 @@ SET(SOURCE_FILES
     build_edit_line_info.cpp)
 
 ADD_LIBRARY(rdo_simulator_report ${HEADER_FILES} ${SOURCE_FILES})
-SET_TARGET_PROPERTIES(rdo_simulator_report PROPERTIES FOLDER ".simulator/.report")
+
+INCLUDE(${PROJECT_SOURCE_DIR}/simulator/simulator.cmake)
+SET_TARGET_PROPERTIES(rdo_simulator_report PROPERTIES FOLDER ${PROJECT_FOLDER}/.report)
 
 ADD_DEPENDENCIES(rdo_simulator_report rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_simulator_report rdo_utils)

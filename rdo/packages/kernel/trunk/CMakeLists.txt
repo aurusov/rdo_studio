@@ -23,7 +23,7 @@ SET(SOURCE_FILES
 	rdokernel.cpp)
 
 ADD_LIBRARY(rdo_kernel ${HEADER_FILES} ${SOURCE_FILES})
-SET_TARGET_PROPERTIES(rdo_kernel PROPERTIES FOLDER ".kernel")
+SET_TARGET_PROPERTIES(rdo_kernel PROPERTIES FOLDER .kernel)
 
 ADD_DEPENDENCIES(rdo_kernel rdo_utils)
 ADD_DEPENDENCIES(rdo_kernel rdo_parser)

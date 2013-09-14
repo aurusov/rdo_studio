@@ -20,7 +20,9 @@ SET(SOURCE_FILES
     )
 
 ADD_LIBRARY(rdo_simulator ${HEADER_FILES} ${SOURCE_FILES})
-SET_TARGET_PROPERTIES(rdo_simulator PROPERTIES FOLDER ".simulator/.service")
+
+INCLUDE(${PROJECT_SOURCE_DIR}/simulator/simulator.cmake)
+SET_TARGET_PROPERTIES(rdo_simulator PROPERTIES FOLDER ${PROJECT_FOLDER}/.service)
 
 ADD_DEPENDENCIES(rdo_simulator rdo_utils)
 ADD_DEPENDENCIES(rdo_simulator rdo_runtime)

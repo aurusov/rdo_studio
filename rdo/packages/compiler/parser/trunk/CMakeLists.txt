@@ -326,7 +326,8 @@ SET(NO_PCH_FILES
 
 ADD_LIBRARY(rdo_parser ${SOURCE_FILES})
 
-SET_TARGET_PROPERTIES(rdo_parser PROPERTIES FOLDER ".simulator/.compiler")
+INCLUDE(${PROJECT_SOURCE_DIR}/simulator/compiler/compiler.cmake)
+SET_TARGET_PROPERTIES(rdo_parser PROPERTIES FOLDER ${PROJECT_FOLDER})
 
 ADD_DEPENDENCIES(rdo_parser rdo_utils)
 ADD_DEPENDENCIES(rdo_parser rdo_runtime)

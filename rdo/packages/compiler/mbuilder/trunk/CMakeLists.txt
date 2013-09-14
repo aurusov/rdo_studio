@@ -22,7 +22,9 @@ SET(SOURCE_FILES
     rdo_resources.cpp)
 
 ADD_LIBRARY(rdo_mbuilder ${HEADER_FILES} ${SOURCE_FILES})
-SET_TARGET_PROPERTIES(rdo_mbuilder PROPERTIES FOLDER ".simulator/.compiler")
+
+INCLUDE(${PROJECT_SOURCE_DIR}/simulator/compiler/compiler.cmake)
+SET_TARGET_PROPERTIES(rdo_mbuilder PROPERTIES FOLDER ${PROJECT_FOLDER})
 
 ADD_DEPENDENCIES(rdo_mbuilder rdo_parser)
 

@@ -23,7 +23,8 @@ SET(SOURCE_FILES
     )
 
 ADD_LIBRARY(rdo_procgui ${HEADER_FILES} ${SOURCE_FILES})
-SET_TARGET_PROPERTIES(rdo_procgui PROPERTIES FOLDER ".simulator/.compiler")
+INCLUDE(${PROJECT_SOURCE_DIR}/simulator/compiler/compiler.cmake)
+SET_TARGET_PROPERTIES(rdo_procgui PROPERTIES FOLDER ${PROJECT_FOLDER})
 
 ADD_DEPENDENCIES(rdo_procgui rdo_utils)
 

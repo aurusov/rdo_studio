@@ -229,7 +229,9 @@ SET(SOURCE_FILES
 	result/result_group.cpp)
 
 ADD_LIBRARY(rdo_runtime ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES})
-SET_TARGET_PROPERTIES(rdo_runtime PROPERTIES FOLDER ".simulator/.runtime")
+
+INCLUDE(${PROJECT_SOURCE_DIR}/simulator/simulator.cmake)
+SET_TARGET_PROPERTIES(rdo_runtime PROPERTIES FOLDER ${PROJECT_FOLDER}/.runtime)
 
 ADD_DEPENDENCIES(rdo_runtime rdo_utils)
 ADD_DEPENDENCIES(rdo_runtime rdo_simulator_report)
