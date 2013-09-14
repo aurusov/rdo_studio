@@ -29,6 +29,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="mkdir generated"
+				CommandLine="cd $(ProjectDir)..\..\grammar&#x0D;&#x0A;if not exist generated mkdir generated&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -98,6 +100,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="mkdir generated"
+				CommandLine="cd $(ProjectDir)..\..\grammar&#x0D;&#x0A;if not exist generated mkdir generated&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -166,6 +170,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="mkdir generated"
+				CommandLine="cd $(ProjectDir)..\..\grammar&#x0D;&#x0A;if not exist generated mkdir generated&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -235,6 +241,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="mkdir generated"
+				CommandLine="cd $(ProjectDir)..\..\grammar&#x0D;&#x0A;if not exist generated mkdir generated&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -305,6 +313,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="mkdir generated"
+				CommandLine="cd $(ProjectDir)..\..\grammar&#x0D;&#x0A;if not exist generated mkdir generated&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -373,6 +383,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="mkdir generated"
+				CommandLine="cd $(ProjectDir)..\..\grammar&#x0D;&#x0A;if not exist generated mkdir generated&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -458,8 +470,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\flex.exe -Pcnv -o&quot;../../grammar/rdolex.cpp&quot; -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdolex.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\flex.exe -Pcnv -o&quot;../../grammar/generated/rdolex.cpp&quot; -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdolex.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -468,8 +480,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\flex.exe -Pcnv -o&quot;../../grammar/rdolex.cpp&quot; -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdolex.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\flex.exe -Pcnv -o&quot;../../grammar/generated/rdolex.cpp&quot; -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdolex.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -478,8 +490,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\flex.exe -Pcnv -o&quot;../../grammar/rdolex.cpp&quot; -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdolex.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\flex.exe -Pcnv -o&quot;../../grammar/generated/rdolex.cpp&quot; -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdolex.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -488,8 +500,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\flex.exe -Pcnv -o&quot;../../grammar/rdolex.cpp&quot; -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdolex.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\flex.exe -Pcnv -o&quot;../../grammar/generated/rdolex.cpp&quot; -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdolex.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -498,8 +510,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\flex.exe -Pcnv -o&quot;../../grammar/rdolex.cpp&quot; -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdolex.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\flex.exe -Pcnv -o&quot;../../grammar/generated/rdolex.cpp&quot; -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdolex.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -508,8 +520,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\flex.exe -Pcnv -o&quot;../../grammar/rdolex.cpp&quot; -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdolex.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\flex.exe -Pcnv -o&quot;../../grammar/generated/rdolex.cpp&quot; -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdolex.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -522,8 +534,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_dpt -o&quot;../../grammar/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramdpt.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_dpt -o&quot;../../grammar/generated/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramdpt.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -532,8 +544,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_dpt -o&quot;../../grammar/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramdpt.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_dpt -o&quot;../../grammar/generated/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramdpt.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -542,8 +554,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_dpt -o&quot;../../grammar/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramdpt.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_dpt -o&quot;../../grammar/generated/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramdpt.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -552,8 +564,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_dpt -o&quot;../../grammar/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramdpt.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_dpt -o&quot;../../grammar/generated/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramdpt.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -562,8 +574,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_dpt -o&quot;../../grammar/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramdpt.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_dpt -o&quot;../../grammar/generated/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramdpt.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -572,8 +584,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_dpt -o&quot;../../grammar/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramdpt.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_dpt -o&quot;../../grammar/generated/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramdpt.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -586,8 +598,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_frm -o&quot;../../grammar/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramfrm.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_frm -o&quot;../../grammar/generated/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramfrm.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -596,8 +608,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_frm -o&quot;../../grammar/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramfrm.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_frm -o&quot;../../grammar/generated/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramfrm.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -606,8 +618,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_frm -o&quot;../../grammar/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramfrm.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_frm -o&quot;../../grammar/generated/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramfrm.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -616,8 +628,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_frm -o&quot;../../grammar/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramfrm.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_frm -o&quot;../../grammar/generated/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramfrm.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -626,8 +638,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_frm -o&quot;../../grammar/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramfrm.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_frm -o&quot;../../grammar/generated/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramfrm.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -636,8 +648,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_frm -o&quot;../../grammar/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramfrm.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_frm -o&quot;../../grammar/generated/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramfrm.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -650,8 +662,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_fun -o&quot;../../grammar/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramfun.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_fun -o&quot;../../grammar/generated/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramfun.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -660,8 +672,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_fun -o&quot;../../grammar/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramfun.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_fun -o&quot;../../grammar/generated/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramfun.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -670,8 +682,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_fun -o&quot;../../grammar/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramfun.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_fun -o&quot;../../grammar/generated/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramfun.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -680,8 +692,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_fun -o&quot;../../grammar/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramfun.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_fun -o&quot;../../grammar/generated/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramfun.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -690,8 +702,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_fun -o&quot;../../grammar/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramfun.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_fun -o&quot;../../grammar/generated/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramfun.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -700,8 +712,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_fun -o&quot;../../grammar/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramfun.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_fun -o&quot;../../grammar/generated/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramfun.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -714,8 +726,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_opr -o&quot;../../grammar/rdogramopr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramopr.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_opr -o&quot;../../grammar/generated/rdogramopr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramopr.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -724,8 +736,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_opr -o&quot;../../grammar/rdogramopr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramopr.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_opr -o&quot;../../grammar/generated/rdogramopr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramopr.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -734,8 +746,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_opr -o&quot;../../grammar/rdogramopr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramopr.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_opr -o&quot;../../grammar/generated/rdogramopr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramopr.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -744,8 +756,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_opr -o&quot;../../grammar/rdogramopr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramopr.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_opr -o&quot;../../grammar/generated/rdogramopr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramopr.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -754,8 +766,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_opr -o&quot;../../grammar/rdogramopr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramopr.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_opr -o&quot;../../grammar/generated/rdogramopr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramopr.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -764,8 +776,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_opr -o&quot;../../grammar/rdogramopr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramopr.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_opr -o&quot;../../grammar/generated/rdogramopr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramopr.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -778,8 +790,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pat -o&quot;../../grammar/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogrampat.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pat -o&quot;../../grammar/generated/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogrampat.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -788,8 +800,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pat -o&quot;../../grammar/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogrampat.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pat -o&quot;../../grammar/generated/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogrampat.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -798,8 +810,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pat -o&quot;../../grammar/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogrampat.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pat -o&quot;../../grammar/generated/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogrampat.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -808,8 +820,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pat -o&quot;../../grammar/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogrampat.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pat -o&quot;../../grammar/generated/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogrampat.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -818,8 +830,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pat -o&quot;../../grammar/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogrampat.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pat -o&quot;../../grammar/generated/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogrampat.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -828,8 +840,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pat -o&quot;../../grammar/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogrampat.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pat -o&quot;../../grammar/generated/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogrampat.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -842,8 +854,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pmd -o&quot;../../grammar/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogrampmd.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pmd -o&quot;../../grammar/generated/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogrampmd.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -852,8 +864,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pmd -o&quot;../../grammar/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogrampmd.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pmd -o&quot;../../grammar/generated/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogrampmd.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -862,8 +874,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pmd -o&quot;../../grammar/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogrampmd.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pmd -o&quot;../../grammar/generated/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogrampmd.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -872,8 +884,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pmd -o&quot;../../grammar/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogrampmd.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pmd -o&quot;../../grammar/generated/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogrampmd.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -882,8 +894,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pmd -o&quot;../../grammar/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogrampmd.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pmd -o&quot;../../grammar/generated/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogrampmd.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -892,8 +904,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pmd -o&quot;../../grammar/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogrampmd.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_pmd -o&quot;../../grammar/generated/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogrampmd.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -906,8 +918,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_opr_ -o&quot;../../grammar/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_opr.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_opr_ -o&quot;../../grammar/generated/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_opr.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -916,8 +928,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_opr_ -o&quot;../../grammar/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_opr.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_opr_ -o&quot;../../grammar/generated/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_opr.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -926,8 +938,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_opr_ -o&quot;../../grammar/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_opr.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_opr_ -o&quot;../../grammar/generated/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_opr.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -936,8 +948,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_opr_ -o&quot;../../grammar/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_opr.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_opr_ -o&quot;../../grammar/generated/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_opr.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -946,8 +958,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_opr_ -o&quot;../../grammar/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_opr.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_opr_ -o&quot;../../grammar/generated/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_opr.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -956,8 +968,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_opr_ -o&quot;../../grammar/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_opr.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_opr_ -o&quot;../../grammar/generated/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_opr.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -970,8 +982,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rss_ -o&quot;../../grammar/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_rss.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rss_ -o&quot;../../grammar/generated/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_rss.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -980,8 +992,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rss_ -o&quot;../../grammar/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_rss.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rss_ -o&quot;../../grammar/generated/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_rss.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -990,8 +1002,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rss_ -o&quot;../../grammar/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_rss.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rss_ -o&quot;../../grammar/generated/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_rss.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1000,8 +1012,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rss_ -o&quot;../../grammar/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_rss.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rss_ -o&quot;../../grammar/generated/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_rss.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1010,8 +1022,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rss_ -o&quot;../../grammar/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_rss.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rss_ -o&quot;../../grammar/generated/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_rss.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1020,8 +1032,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rss_ -o&quot;../../grammar/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_rss.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rss_ -o&quot;../../grammar/generated/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_rss.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1034,8 +1046,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rtp_ -o&quot;../../grammar/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_rtp.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rtp_ -o&quot;../../grammar/generated/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_rtp.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1044,8 +1056,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rtp_ -o&quot;../../grammar/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_rtp.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rtp_ -o&quot;../../grammar/generated/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_rtp.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1054,8 +1066,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rtp_ -o&quot;../../grammar/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_rtp.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rtp_ -o&quot;../../grammar/generated/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_rtp.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1064,8 +1076,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rtp_ -o&quot;../../grammar/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_rtp.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rtp_ -o&quot;../../grammar/generated/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_rtp.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1074,8 +1086,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rtp_ -o&quot;../../grammar/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_rtp.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rtp_ -o&quot;../../grammar/generated/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_rtp.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1084,8 +1096,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rtp_ -o&quot;../../grammar/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramproc_rtp.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_proc_rtp_ -o&quot;../../grammar/generated/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramproc_rtp.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1098,8 +1110,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_rss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrss.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_rss -o&quot;../../grammar/generated/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramrss.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1108,8 +1120,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_rss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrss.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_rss -o&quot;../../grammar/generated/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramrss.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1118,8 +1130,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_rss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrss.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_rss -o&quot;../../grammar/generated/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramrss.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1128,8 +1140,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_rss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrss.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_rss -o&quot;../../grammar/generated/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramrss.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1138,8 +1150,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_rss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrss.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_rss -o&quot;../../grammar/generated/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramrss.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1148,8 +1160,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_rss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrss.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_rss -o&quot;../../grammar/generated/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramrss.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1162,8 +1174,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -v --defines=&quot;../../grammar/rdogramma.h&quot; -pcnv_rtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -v --defines=&quot;../../grammar/generated/rdogramma.h&quot; -pcnv_rtp -o&quot;../../grammar/generated/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramrtp.cpp;..\..\grammar\generated\rdogramma.h;..\..\grammar\generated\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1172,8 +1184,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -v --defines=&quot;../../grammar/rdogramma.h&quot; -pcnv_rtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -v --defines=&quot;../../grammar/generated/rdogramma.h&quot; -pcnv_rtp -o&quot;../../grammar/generated/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramrtp.cpp;..\..\grammar\generated\rdogramma.h;..\..\grammar\generated\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1182,8 +1194,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -v --defines=&quot;../../grammar/rdogramma.h&quot; -pcnv_rtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -v --defines=&quot;../../grammar/generated/rdogramma.h&quot; -pcnv_rtp -o&quot;../../grammar/generated/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramrtp.cpp;..\..\grammar\generated\rdogramma.h;..\..\grammar\generated\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1192,8 +1204,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -v --defines=&quot;../../grammar/rdogramma.h&quot; -pcnv_rtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -v --defines=&quot;../../grammar/generated/rdogramma.h&quot; -pcnv_rtp -o&quot;../../grammar/generated/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramrtp.cpp;..\..\grammar\generated\rdogramma.h;..\..\grammar\generated\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1202,8 +1214,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -v --defines=&quot;../../grammar/rdogramma.h&quot; -pcnv_rtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -v --defines=&quot;../../grammar/generated/rdogramma.h&quot; -pcnv_rtp -o&quot;../../grammar/generated/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramrtp.cpp;..\..\grammar\generated\rdogramma.h;..\..\grammar\generated\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1212,8 +1224,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -v --defines=&quot;../../grammar/rdogramma.h&quot; -pcnv_rtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -v --defines=&quot;../../grammar/generated/rdogramma.h&quot; -pcnv_rtp -o&quot;../../grammar/generated/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramrtp.cpp;..\..\grammar\generated\rdogramma.h;..\..\grammar\generated\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1226,8 +1238,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_file_ -o&quot;../../grammar/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramsmr_file.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_file_ -o&quot;../../grammar/generated/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramsmr_file.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1236,8 +1248,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_file_ -o&quot;../../grammar/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramsmr_file.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_file_ -o&quot;../../grammar/generated/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramsmr_file.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1246,8 +1258,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_file_ -o&quot;../../grammar/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramsmr_file.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_file_ -o&quot;../../grammar/generated/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramsmr_file.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1256,8 +1268,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_file_ -o&quot;../../grammar/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramsmr_file.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_file_ -o&quot;../../grammar/generated/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramsmr_file.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1266,8 +1278,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_file_ -o&quot;../../grammar/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramsmr_file.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_file_ -o&quot;../../grammar/generated/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramsmr_file.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1276,8 +1288,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_file_ -o&quot;../../grammar/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramsmr_file.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_file_ -o&quot;../../grammar/generated/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramsmr_file.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1290,8 +1302,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_sim_ -o&quot;../../grammar/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramsmr_sim.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_sim_ -o&quot;../../grammar/generated/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramsmr_sim.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1300,8 +1312,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_sim_ -o&quot;../../grammar/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramsmr_sim.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_sim_ -o&quot;../../grammar/generated/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramsmr_sim.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1310,8 +1322,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_sim_ -o&quot;../../grammar/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramsmr_sim.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_sim_ -o&quot;../../grammar/generated/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramsmr_sim.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1320,8 +1332,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_sim_ -o&quot;../../grammar/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramsmr_sim.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_sim_ -o&quot;../../grammar/generated/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramsmr_sim.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1330,8 +1342,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_sim_ -o&quot;../../grammar/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramsmr_sim.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_sim_ -o&quot;../../grammar/generated/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramsmr_sim.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1340,8 +1352,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_sim_ -o&quot;../../grammar/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramsmr_sim.cpp"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\thirdparty\bison_flex\bin\bison.exe -pcnv_smr_sim_ -o&quot;../../grammar/generated/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\generated\rdogramsmr_sim.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1349,7 +1361,7 @@
 				Name="generated"
 				>
 				<File
-					RelativePath="..\..\grammar\rdogramdpt.cpp"
+					RelativePath="..\..\grammar\generated\rdogramdpt.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -1413,7 +1425,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdogramfrm.cpp"
+					RelativePath="..\..\grammar\generated\rdogramfrm.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -1477,7 +1489,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdogramfun.cpp"
+					RelativePath="..\..\grammar\generated\rdogramfun.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -1544,11 +1556,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdogramma.h"
+					RelativePath="..\..\grammar\generated\rdogramma.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdogramopr.cpp"
+					RelativePath="..\..\grammar\generated\rdogramopr.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -1600,71 +1612,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdogrampat.cpp"
-					>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\grammar\rdogrampmd.cpp"
+					RelativePath="..\..\grammar\generated\rdogrampat.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -1728,7 +1676,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdogramproc_opr.cpp"
+					RelativePath="..\..\grammar\generated\rdogrampmd.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -1792,7 +1740,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdogramproc_rss.cpp"
+					RelativePath="..\..\grammar\generated\rdogramproc_opr.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -1856,7 +1804,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdogramproc_rtp.cpp"
+					RelativePath="..\..\grammar\generated\rdogramproc_rss.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -1920,7 +1868,71 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdogramrss.cpp"
+					RelativePath="..\..\grammar\generated\rdogramproc_rtp.cpp"
+					>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\grammar\generated\rdogramrss.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -1981,7 +1993,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdogramrtp.cpp"
+					RelativePath="..\..\grammar\generated\rdogramrtp.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -2045,7 +2057,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdogramsmr_file.cpp"
+					RelativePath="..\..\grammar\generated\rdogramsmr_file.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -2109,7 +2121,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdogramsmr_sim.cpp"
+					RelativePath="..\..\grammar\generated\rdogramsmr_sim.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -2173,7 +2185,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\grammar\rdolex.cpp"
+					RelativePath="..\..\grammar\generated\rdolex.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
