@@ -48,17 +48,17 @@ SET(GENERATED_FILES
     ${GRAMMA_PATH}/rdogramma.h
     ${FLEX_lexer_scaner_OUTPUTS}
     ${GRAMMA_PATH}/rdogramrtp.cpp
-    ${GRAMMA_PATH}/rdogramdpt.cpp
+    ${GRAMMA_PATH}/rdogramrss.cpp
     ${GRAMMA_PATH}/rdogramevn.cpp
     ${GRAMMA_PATH}/rdogramevn_preparse.cpp
+    ${GRAMMA_PATH}/rdogrampat.cpp
+    ${GRAMMA_PATH}/rdogramdpt.cpp
     ${GRAMMA_PATH}/rdogramfrm.cpp
     ${GRAMMA_PATH}/rdogramfun.cpp
-    ${GRAMMA_PATH}/rdogrampat.cpp
     ${GRAMMA_PATH}/rdogrampmd.cpp
-    ${GRAMMA_PATH}/rdogramproc_opr.cpp
-    ${GRAMMA_PATH}/rdogramproc_rss.cpp
     ${GRAMMA_PATH}/rdogramproc_rtp.cpp
-    ${GRAMMA_PATH}/rdogramrss.cpp
+    ${GRAMMA_PATH}/rdogramproc_rss.cpp
+    ${GRAMMA_PATH}/rdogramproc_opr.cpp
     ${GRAMMA_PATH}/rdogramsmr_file.cpp
     ${GRAMMA_PATH}/rdogramsmr_sim.cpp
     )
