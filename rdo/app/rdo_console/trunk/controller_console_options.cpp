@@ -87,7 +87,7 @@ const tstring ControllerConsoleOptions::getModelFileName()
 	if(m_variables.count(MODEL_COMMAND))
 	{
 		tstring modelFileName = m_variables[MODEL_COMMAND].as<tstring>();
-		modelFileName = rdo::locale::convertFromCLocale(modelFileName);
+		modelFileName = rdo::locale::convert(modelFileName, rdo::locale::get().utf8(), rdo::locale::get().system());
 		return modelFileName;
 	}
 	return "";
