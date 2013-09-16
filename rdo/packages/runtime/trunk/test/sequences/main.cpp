@@ -9,7 +9,7 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOSequencesTest
@@ -21,8 +21,8 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdofile.h"
-#include "utils/rdolocale.h"
+#include "utils/src/file/rdofile.h"
+#include "utils/src/locale/rdolocale.h"
 #include "simulator/runtime/rdo_random_distribution.h"
 // --------------------------------------------------------------------------------
 

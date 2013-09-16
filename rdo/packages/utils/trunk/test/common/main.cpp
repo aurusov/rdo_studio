@@ -9,17 +9,17 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/regex.hpp>
 #define BOOST_TEST_MODULE RDOCommon_Test
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/rdofile.h"
-#include "utils/rdotime.h"
-#include "utils/rdolocale.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/file/rdofile.h"
+#include "utils/src/time/rdotime.h"
+#include "utils/src/locale/rdolocale.h"
 // --------------------------------------------------------------------------------
 
 const tstring s_testFileName("test_file");

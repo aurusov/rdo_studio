@@ -16,9 +16,9 @@
 #define BOOST_TEST_MODULE RDOSmartPrtTest
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/factory.h"
-#include "utils/smart_ptr/interface_ptr.h"
-#include "utils/rdodebug.h"
+#include "utils/src/smart_ptr/factory/factory.h"
+#include "utils/src/smart_ptr/interface_ptr/interface_ptr.h"
+#include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
 
 class Log;

@@ -15,9 +15,9 @@
 #define BOOST_TEST_MODULE RDORuntime_Logic_Test
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdomacros.h"
-#include "utils/rdotypes.h"
-#include "utils/rdodebug.h"
+#include "utils/src/common/rdomacros.h"
+#include "utils/src/common/rdotypes.h"
+#include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
 
 class MyOperation

@@ -16,7 +16,7 @@
 #define BOOST_TEST_MODULE RDOInterfaceTest
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdointerface.h"
+#include "utils/src/interface/rdointerface.h"
 // --------------------------------------------------------------------------------
 
 #define DISABLE_CONSOLE_OUTPUT

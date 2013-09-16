@@ -13,7 +13,7 @@
 #include <boost/test/included/unit_test.hpp>
 #include <memory>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdoanimation.h"
+#include "utils/src/animation/rdoanimation.h"
 // --------------------------------------------------------------------------------
 
 BOOST_AUTO_TEST_SUITE(RDOCommonAnimation_Test)

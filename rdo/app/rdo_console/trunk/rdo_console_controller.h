@@ -14,7 +14,7 @@
 #include <boost/optional.hpp>
 #include <boost/thread/mutex.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
+#include "utils/src/common/rdotypes.h"
 #include "kernel/rdothread.h"
 #include "simulator/report/error_code.h"
 #include "simulator/report/file_message.h"

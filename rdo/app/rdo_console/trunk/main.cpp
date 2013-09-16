@@ -15,8 +15,8 @@
 #include <boost/date_time.hpp>
 #include <boost/filesystem.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/rdolocale.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/locale/rdolocale.h"
 #include "repository/rdorepository.h"
 #include "simulator/runtime/keyboard.h"
 #include "simulator/service/rdosimwin.h"
