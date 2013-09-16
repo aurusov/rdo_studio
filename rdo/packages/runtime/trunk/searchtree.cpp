@@ -11,7 +11,7 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdodebug.h"
+#include "utils/src/debug/rdodebug.h"
 #include "simulator/runtime/searchtree.h"
 #include "simulator/runtime/searchtrace.h"
 #include "simulator/runtime/rdo_runtime.h"

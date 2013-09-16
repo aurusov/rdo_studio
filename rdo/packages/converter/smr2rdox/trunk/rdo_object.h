@@ -16,9 +16,9 @@
 #include "converter/smr2rdox/namespace.h"
 #include "converter/smr2rdox/grammar/rdobison.h"
 #include "simulator/runtime/rdo_object.h"
-#include "utils/rdomacros.h"
-#include "utils/rdotypes.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/src/common/rdomacros.h"
+#include "utils/src/common/rdotypes.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE

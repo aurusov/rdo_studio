@@ -271,11 +271,11 @@
 			Name=".factory"
 			>
 			<File
-				RelativePath="..\..\smart_ptr\factory.h"
+				RelativePath="..\..\src\smart_ptr\factory\factory.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\smart_ptr\factory.inl"
+				RelativePath="..\..\src\smart_ptr\factory\factory.inl"
 				>
 			</File>
 		</Filter>
@@ -283,11 +283,11 @@
 			Name=".interface_ptr"
 			>
 			<File
-				RelativePath="..\..\smart_ptr\interface_ptr.h"
+				RelativePath="..\..\src\smart_ptr\interface_ptr\interface_ptr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\smart_ptr\interface_ptr.inl"
+				RelativePath="..\..\src\smart_ptr\interface_ptr\interface_ptr.inl"
 				>
 			</File>
 		</Filter>
@@ -295,19 +295,19 @@
 			Name=".intrusive_ptr"
 			>
 			<File
-				RelativePath="..\..\smart_ptr\intrusive_ptr.h"
+				RelativePath="..\..\src\smart_ptr\intrusive_ptr\intrusive_ptr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\smart_ptr\intrusive_ptr.inl"
+				RelativePath="..\..\src\smart_ptr\intrusive_ptr\intrusive_ptr.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\smart_ptr\intrusive_ptr_interface_wrapper.h"
+				RelativePath="..\..\src\smart_ptr\intrusive_ptr\intrusive_ptr_interface_wrapper.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\smart_ptr\intrusive_ptr_interface_wrapper.inl"
+				RelativePath="..\..\src\smart_ptr\intrusive_ptr\intrusive_ptr_interface_wrapper.inl"
 				>
 			</File>
 		</Filter>
@@ -315,23 +315,23 @@
 			Name=".ref_counter"
 			>
 			<File
-				RelativePath="..\..\smart_ptr\counter_reference.h"
+				RelativePath="..\..\src\smart_ptr\ref_counter\counter_reference.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\smart_ptr\counter_reference.inl"
+				RelativePath="..\..\src\smart_ptr\ref_counter\counter_reference.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\smart_ptr\ref_counter.h"
+				RelativePath="..\..\src\smart_ptr\ref_counter\ref_counter.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\smart_ptr\ref_counter.inl"
+				RelativePath="..\..\src\smart_ptr\ref_counter\ref_counter.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\smart_ptr\ref_counter_i.h"
+				RelativePath="..\..\src\smart_ptr\ref_counter\ref_counter_i.h"
 				>
 			</File>
 		</Filter>
@@ -339,7 +339,7 @@
 			Name=".wrapper"
 			>
 			<File
-				RelativePath="..\..\rdosmart_ptr_wrapper.h"
+				RelativePath="..\..\src\smart_ptr\wrapper\rdosmart_ptr_wrapper.h"
 				>
 			</File>
 		</Filter>

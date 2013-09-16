@@ -12,7 +12,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdostream.h"
+#include "utils/src/stream/rdostream.h"
 
 #include "kernel/rdokernel.h"
 

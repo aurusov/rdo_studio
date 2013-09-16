@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdomacros.h"
-#include "utils/rdotypes.h"
-#include "utils/smart_ptr/factory.h"
+#include "utils/src/common/rdomacros.h"
+#include "utils/src/common/rdotypes.h"
+#include "utils/src/smart_ptr/factory/factory.h"
 #include "simulator/runtime/calc/calc_event.h"
 #include "simulator/runtime/rdo_event.h"
 #include "simulator/compiler/parser/rdofun.h"

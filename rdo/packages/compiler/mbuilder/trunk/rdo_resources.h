@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdodebug.h"
+#include "utils/src/debug/rdodebug.h"
 
 #include "simulator/compiler/mbuilder/namespace.h"
 

@@ -12,7 +12,7 @@
 #define _UTILS_RDOTYPES_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
 #   include <tchar.h>

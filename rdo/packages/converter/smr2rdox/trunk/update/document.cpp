@@ -13,7 +13,7 @@
 #include <boost/filesystem.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/update/document.h"
-#include "utils/rdolocale.h"
+#include "utils/src/locale/rdolocale.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE

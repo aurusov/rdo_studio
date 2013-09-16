@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <boost/bind.hpp>
 #include <boost/format.hpp>
 #include <boost/range.hpp>
@@ -18,9 +18,9 @@
 #include <boost/range/algorithm/find_if.hpp>
 #include <QMessageBox>
 #include <QClipboard>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdolocale.h"
+#include "utils/src/locale/rdolocale.h"
 #include "app/rdo_studio/src/editor/edit.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"

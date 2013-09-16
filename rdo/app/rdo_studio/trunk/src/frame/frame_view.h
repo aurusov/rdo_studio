@@ -11,14 +11,14 @@
 #define _RDO_STUDIO_FRAME_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <map>
 #include <QWidget>
 #include <QScrollArea>
 #include <QEvent>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdoanimation.h"
+#include "utils/src/animation/rdoanimation.h"
 #include "ui/qt/headers/memdc/memdc.h"
 #include "ui/qt/headers/animation/area.h"
 #include "ui/qt/headers/bitmap/bitmap.h"

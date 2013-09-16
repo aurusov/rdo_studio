@@ -13,16 +13,16 @@
 #define _LIB_RUNTIME_RUNTIME_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
 #endif // COMPILER_VISUAL_STUDIO
 #include <time.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/rdostream.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/stream/rdostream.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/simtrace.h"
 #include "simulator/runtime/rdo_resource.h"

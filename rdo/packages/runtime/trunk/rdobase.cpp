@@ -8,7 +8,7 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -16,9 +16,9 @@
 #ifdef COMPILER_GCC
 	#include <float.h>
 #endif // COMPILER_GCC
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <boost/thread.hpp>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdobase.h"
 #include "simulator/runtime/calc/operation/operation_type.h"

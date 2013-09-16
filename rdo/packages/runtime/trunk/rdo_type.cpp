@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_type.h"
-#include "utils/smart_ptr/factory.h"
+#include "utils/src/smart_ptr/factory/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

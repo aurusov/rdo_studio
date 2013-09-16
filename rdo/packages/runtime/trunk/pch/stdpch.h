@@ -8,7 +8,7 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
@@ -35,8 +35,8 @@
 #include <map>
 #include <functional>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/rdotypes.h"
-#include "utils/rdomacros.h"
-#include "utils/rdodebug.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/common/rdotypes.h"
+#include "utils/src/common/rdomacros.h"
+#include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------

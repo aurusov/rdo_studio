@@ -10,7 +10,7 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
 #   include <Windows.h>
@@ -24,9 +24,9 @@
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdofile.h"
-#include "utils/rdocommon.h"
-#include "utils/rdolocale.h"
+#include "utils/src/file/rdofile.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/locale/rdolocale.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
-#include "utils/smart_ptr/factory.h"
+#include "utils/src/smart_ptr/factory/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

@@ -15,8 +15,8 @@
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/rdofile.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/file/rdofile.h"
 
 #include "converter/smr2rdox/rdoparser.h"
 #include "converter/smr2rdox/rdoparser_rdo.h"

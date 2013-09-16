@@ -18,8 +18,8 @@
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
-#include "utils/rdostream.h"
-#include "utils/rdocommon.h"
+#include "utils/src/stream/rdostream.h"
+#include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace repository {

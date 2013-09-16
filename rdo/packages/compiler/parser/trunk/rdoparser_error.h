@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
+#include "utils/src/common/rdocommon.h"
 #include "simulator/runtime/rdo_exception.h"
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/rdo_object.h"

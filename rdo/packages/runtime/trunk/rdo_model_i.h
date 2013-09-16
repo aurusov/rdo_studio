@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdointerface.h"
-#include "utils/rdostream.h"
+#include "utils/src/interface/rdointerface.h"
+#include "utils/src/stream/rdostream.h"
 // --------------------------------------------------------------------------------
 
 /*!

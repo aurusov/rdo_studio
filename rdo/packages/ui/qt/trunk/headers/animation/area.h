@@ -11,11 +11,11 @@
 #define _UI_QT_ANIMATION_AREA_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <map>
 #include <QRect>
 #include <QString>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 

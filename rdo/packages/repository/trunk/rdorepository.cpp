@@ -14,9 +14,9 @@
 #include <boost/algorithm/string/trim.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "repository/rdorepository.h"
-#include "utils/rdofile.h"
-#include "utils/rdotime.h"
-#include "utils/rdolocale.h"
+#include "utils/src/file/rdofile.h"
+#include "utils/src/time/rdotime.h"
+#include "utils/src/locale/rdolocale.h"
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"
 #include "thirdparty/pugixml/src/pugixml.hpp"

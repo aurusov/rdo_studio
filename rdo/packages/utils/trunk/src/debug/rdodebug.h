@@ -12,7 +12,7 @@
 #define _UTILS_RDODEBUG_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
 	#ifdef RDO_MT
@@ -26,7 +26,7 @@
 	#include <assert.h>
 #endif // COMPILER_GCC
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
+#include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 #ifdef TRACE

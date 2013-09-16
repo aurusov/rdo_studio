@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdostream.h"
+#include "utils/src/stream/rdostream.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"

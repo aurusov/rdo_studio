@@ -12,7 +12,7 @@
 #define _LIB_RUNTIME_LOGIC_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)

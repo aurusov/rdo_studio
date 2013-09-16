@@ -17,7 +17,7 @@
 #include <stdarg.h>
 #include <assert.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdolocale.h"
+#include "utils/src/locale/rdolocale.h"
 #include "app/rdo_studio/src/editor/lexer/lexer_model.h"
 #include "thirdparty/scintilla/include/Platform.h"
 #include "thirdparty/scintilla/include/Scintilla.h"

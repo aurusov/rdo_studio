@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGlobal>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/static_assert.h"
+#include "utils/src/debug/static_assert.h"
 #include "app/rdo_studio/src/style.h"
 #include "thirdparty/scintilla/include/Scintilla.h"
 // --------------------------------------------------------------------------------

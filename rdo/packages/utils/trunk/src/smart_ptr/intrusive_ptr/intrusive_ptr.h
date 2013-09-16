@@ -12,12 +12,12 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
-#include "utils/rdomacros.h"
-#include "utils/rdotypes.h"
-#include "utils/smart_ptr/counter_reference.h"
-#include "utils/smart_ptr/interface_ptr.h"
-#include "utils/smart_ptr/ref_counter_i.h"
+#include "utils/src/common/namespace.h"
+#include "utils/src/common/rdomacros.h"
+#include "utils/src/common/rdotypes.h"
+#include "utils/src/smart_ptr/ref_counter/counter_reference.h"
+#include "utils/src/smart_ptr/interface_ptr/interface_ptr.h"
+#include "utils/src/smart_ptr/ref_counter/ref_counter_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
@@ -97,6 +97,6 @@ private:
 
 CLOSE_RDO_NAMESPACE
 
-#include "utils/smart_ptr/intrusive_ptr.inl"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.inl"
 
 #endif // _UTILS_SMART_PTR_INTRUSIVE_PTR_H_

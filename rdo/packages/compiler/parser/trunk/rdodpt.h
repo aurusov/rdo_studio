@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/factory.h"
+#include "utils/src/smart_ptr/factory/factory.h"
 
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_logic.h"

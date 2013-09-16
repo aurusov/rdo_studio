@@ -9,12 +9,12 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdostream.h"
+#include "utils/src/stream/rdostream.h"
 #include "simulator/runtime/rdo_simulator.h"
 #include "simulator/runtime/rdo_logic_dptprior.h"
 #include "simulator/runtime/rdo_model_i.h"

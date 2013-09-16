@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdolocale.h"
+#include "utils/src/locale/rdolocale.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/editor/model_edit.h"

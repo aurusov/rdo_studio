@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
+#include "utils/src/common/rdocommon.h"
 #include "app/rdo_studio/src/editor/log_edit.h"
 #include "app/rdo_studio/src/editor/edit_popup_menu.h"
 // --------------------------------------------------------------------------------

@@ -10,16 +10,16 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <boost/program_options.hpp>
 #include <QProcess>
 #include <QTextCodec>
 #include <QSettings>
 #include <QMessageBox>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdofile.h"
-#include "utils/rdolocale.h"
+#include "utils/src/file/rdofile.h"
+#include "utils/src/locale/rdolocale.h"
 #include "kernel/rdothread.h"
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"

@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <limits>
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
@@ -18,10 +18,10 @@
 #include <boost/numeric/conversion/bounds.hpp>
 #include <QMessageBox>
 #include <QFileDialog>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdostream.h"
-#include "utils/rdoanimation.h"
+#include "utils/src/stream/rdostream.h"
+#include "utils/src/animation/rdoanimation.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
 #include "repository/rdorepository.h"

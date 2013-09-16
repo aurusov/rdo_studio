@@ -9,7 +9,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 

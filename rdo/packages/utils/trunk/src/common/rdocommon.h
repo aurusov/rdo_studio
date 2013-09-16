@@ -13,17 +13,17 @@
 #define _UTILS_RDOCOMMON_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <stdarg.h>
 #include <vector>
 #include <sstream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
-#include "utils/rdotypes.h"
-#include "utils/rdomacros.h"
-#include "utils/model_objects.h"
-#include "utils/rdostream.h"
+#include "utils/src/common/namespace.h"
+#include "utils/src/common/rdotypes.h"
+#include "utils/src/common/rdomacros.h"
+#include "utils/src/common/model_objects.h"
+#include "utils/src/stream/rdostream.h"
 // --------------------------------------------------------------------------------
 
 #ifdef COMPILER_VISUAL_STUDIO
@@ -111,6 +111,6 @@ OPEN_RDO_NAMESPACE
 
 CLOSE_RDO_NAMESPACE
 
-#include "utils/rdocommon.inl"
+#include "utils/src/common/rdocommon.inl"
 
 #endif // _UTILS_RDOCOMMON_H_

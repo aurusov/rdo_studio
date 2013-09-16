@@ -11,11 +11,11 @@
 #define _LIB_RUNTIME_VALUE_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
-#include "utils/smart_ptr/intrusive_ptr_interface_wrapper.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr_interface_wrapper.h"
 #include "simulator/runtime/rdo_type.h"
 // --------------------------------------------------------------------------------
 

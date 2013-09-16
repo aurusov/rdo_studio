@@ -13,8 +13,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdointerface.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/src/interface/rdointerface.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 

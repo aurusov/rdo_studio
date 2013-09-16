@@ -9,8 +9,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
-#include "utils/smart_ptr/ref_counter_i.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
+#include "utils/src/smart_ptr/ref_counter/ref_counter_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

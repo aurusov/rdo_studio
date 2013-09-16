@@ -8,12 +8,12 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdodebug.h"
+#include "utils/src/debug/rdodebug.h"
 #include "simulator/runtime/simtrace.h"
 #include "simulator/runtime/searchtrace.h"
 #include "simulator/runtime/rdo_rule.h"

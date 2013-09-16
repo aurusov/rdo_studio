@@ -15,7 +15,7 @@
 #include <map>
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
+#include "utils/src/common/rdocommon.h"
 #include "simulator/runtime/calc/calc_base.h"
 // --------------------------------------------------------------------------------
 

@@ -15,7 +15,7 @@
 #include "converter/smr2rdox/rdo_type.h"
 #include "converter/smr2rdox/rdo_value.h"
 #include "simulator/runtime/rdo_enum.h"
-#include "utils/smart_ptr/factory.h"
+#include "utils/src/smart_ptr/factory/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE

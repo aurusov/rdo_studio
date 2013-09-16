@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/interface_ptr.h"
+#include "utils/src/smart_ptr/interface_ptr/interface_ptr.h"
 
 #include "converter/smr2rdox/namespace.h"
 // --------------------------------------------------------------------------------

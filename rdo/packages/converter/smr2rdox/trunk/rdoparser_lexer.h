@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdomacros.h"
+#include "utils/src/common/rdomacros.h"
 #include "converter/smr2rdox/namespace.h"
 #include "converter/smr2rdox/grammar/rdobison.h"
 

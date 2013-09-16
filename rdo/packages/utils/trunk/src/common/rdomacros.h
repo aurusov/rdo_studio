@@ -11,7 +11,7 @@
 #define _UTILS_MACROS_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/typeof/typeof.hpp>
 #include <boost/preprocessor/cat.hpp>

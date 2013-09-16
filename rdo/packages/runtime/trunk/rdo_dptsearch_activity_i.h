@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdointerface.h"
+#include "utils/src/interface/rdointerface.h"
 #include "simulator/runtime/rdo_rule_i.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
 // --------------------------------------------------------------------------------

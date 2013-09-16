@@ -9,7 +9,7 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -19,8 +19,8 @@
 #endif // COMPILER_GCC
 #include <iomanip>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdodebug.h"
-#include "utils/rdoanimation.h"
+#include "utils/src/debug/rdodebug.h"
+#include "utils/src/animation/rdoanimation.h"
 #include "simulator/runtime/pch/stdpch.h"
 #include "simulator/runtime/keyboard.h"
 #include "simulator/runtime/rdo_runtime.h"

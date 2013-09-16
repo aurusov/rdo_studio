@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdointerface.h"
-#include "utils/rdostream.h"
+#include "utils/src/interface/rdointerface.h"
+#include "utils/src/stream/rdostream.h"
 #include "simulator/runtime/rdo_simulator.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_resource.h"

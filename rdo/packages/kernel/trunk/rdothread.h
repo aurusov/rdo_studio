@@ -2,7 +2,7 @@
 #define RDO_THREAD_H
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 #include <string>
@@ -13,7 +13,7 @@
 	#pragma warning( disable : 4786 )
 #endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
+#include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------

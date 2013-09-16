@@ -9,7 +9,7 @@
 */
 
 #include <string>
-#include "utils/rdotypes.h"
+#include "utils/src/common/rdotypes.h"
 
 #ifndef _RDOCOMMON_MODEL_OBJECTS_CONVERTOR_H_
 #define _RDOCOMMON_MODEL_OBJECTS_CONVERTOR_H_

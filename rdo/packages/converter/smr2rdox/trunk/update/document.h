@@ -16,8 +16,8 @@
 #include <fstream>
 #include <boost/shared_ptr.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/factory.h"
-#include "utils/rdomacros.h"
+#include "utils/src/smart_ptr/factory/factory.h"
+#include "utils/src/common/rdomacros.h"
 
 #include "converter/smr2rdox/namespace.h"
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"

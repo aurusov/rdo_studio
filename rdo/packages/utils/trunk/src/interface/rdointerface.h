@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
-#include "utils/rdodebug.h"
+#include "utils/src/common/namespace.h"
+#include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
@@ -289,6 +289,6 @@ public:
 
 INTERFACE_REGISTRATOR(IInit, 0);
 
-#include "utils/rdointerface.inl"
+#include "utils/src/interface/rdointerface.inl"
 
 #endif // _UTILS_RDOINTERFACE_H_

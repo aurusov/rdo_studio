@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/interface_ptr.h"
-#include "utils/smart_ptr/factory.h"
+#include "utils/src/smart_ptr/interface_ptr/interface_ptr.h"
+#include "utils/src/smart_ptr/factory/factory.h"
 // --------------------------------------------------------------------------------
 
 /*!

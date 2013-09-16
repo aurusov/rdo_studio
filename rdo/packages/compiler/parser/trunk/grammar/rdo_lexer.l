@@ -15,7 +15,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdolocale.h"
+#include "utils/src/locale/rdolocale.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
 #include "simulator/compiler/parser/grammar/generated/rdogramma.h"
 #include "simulator/compiler/parser/rdoparser.h"

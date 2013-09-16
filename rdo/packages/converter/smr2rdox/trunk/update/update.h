@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/factory.h"
-#include "utils/rdomacros.h"
+#include "utils/src/smart_ptr/factory/factory.h"
+#include "utils/src/common/rdomacros.h"
 
 #include "converter/smr2rdox/update/update_i.h"
 // --------------------------------------------------------------------------------

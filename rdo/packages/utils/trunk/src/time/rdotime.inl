@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/date_time/posix_time/posix_time.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdodebug.h"
+#include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

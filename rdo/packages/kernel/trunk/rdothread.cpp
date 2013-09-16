@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
 #include <algorithm>
@@ -19,7 +19,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
-#include "utils/rdocommon.h"
+#include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 #ifdef TR_TRACE

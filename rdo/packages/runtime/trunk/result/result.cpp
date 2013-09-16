@@ -9,7 +9,7 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -20,7 +20,7 @@
 	#include <float.h>
 #endif // COMPILER_GCC
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdolocale.h"
+#include "utils/src/locale/rdolocale.h"
 #include "simulator/runtime/result/result.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_runtime.h"

@@ -12,8 +12,8 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
-#include "utils/rdomacros.h"
+#include "utils/src/common/rdotypes.h"
+#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/advance.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/resource/calc_relevant.h"

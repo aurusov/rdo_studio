@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
+#include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
@@ -42,6 +42,6 @@ private:
 
 CLOSE_RDO_NAMESPACE
 
-#include "utils/rdotime.inl"
+#include "utils/src/time/rdotime.inl"
 
 #endif // _UTILS_RDOTIME_H_

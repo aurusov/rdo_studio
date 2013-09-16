@@ -11,7 +11,7 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <stdio.h>
 #include <stdarg.h>
@@ -25,7 +25,7 @@
 #	include <wchar.h>
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
+#include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 #ifdef COMPILER_VISUAL_STUDIO

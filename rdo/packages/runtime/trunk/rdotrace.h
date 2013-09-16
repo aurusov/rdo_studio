@@ -14,8 +14,8 @@
 #include <fstream>
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdostream.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/src/stream/rdostream.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdotrace_i.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"

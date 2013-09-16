@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdomacros.h"
+#include "utils/src/common/rdomacros.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/type/runtime_wrapper_type.h"

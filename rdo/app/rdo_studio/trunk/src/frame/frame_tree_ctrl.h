@@ -11,9 +11,9 @@
 #define _RDO_STUDIO_FRAME_TREE_CTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QTreeWidget>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------

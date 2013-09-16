@@ -11,7 +11,7 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/static_assert.h"
+#include "utils/src/debug/static_assert.h"
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_enum.h"
 #include "simulator/runtime/rdo_array.h"

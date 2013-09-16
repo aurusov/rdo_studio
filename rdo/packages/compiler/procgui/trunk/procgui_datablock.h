@@ -14,7 +14,7 @@
 #include <list>
 #include <boost/optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/compiler/procgui/namespace.h"
 #include "simulator/runtime/process/generate.h"
 // --------------------------------------------------------------------------------

@@ -15,8 +15,8 @@
 #include <list>
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdomacros.h"
-#include "utils/rdotypes.h"
+#include "utils/src/common/rdomacros.h"
+#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 #endif // _UI_QT_STDPCH_H_

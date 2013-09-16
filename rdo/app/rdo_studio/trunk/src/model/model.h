@@ -11,13 +11,13 @@
 #define _RDO_STUDIO_MODEL_MODEL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <boost/optional.hpp>
 #include <boost/chrono.hpp>
 #include <QObject>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdointerface.h"
+#include "utils/src/interface/rdointerface.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio/src/frame/frame_manager.h"

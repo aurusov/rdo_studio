@@ -13,8 +13,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
-#include "utils/rdomacros.h"
+#include "utils/src/common/rdotypes.h"
+#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 

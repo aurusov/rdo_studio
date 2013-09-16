@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdointerface.h"
+#include "utils/src/interface/rdointerface.h"
 #include "simulator/runtime/rdo_dptsearch_activity_i.h"
 // --------------------------------------------------------------------------------
 

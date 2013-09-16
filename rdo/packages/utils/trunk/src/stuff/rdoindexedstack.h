@@ -13,9 +13,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/rdodebug.h"
-#include "utils/rdoidgenerator.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/debug/rdodebug.h"
+#include "utils/src/stuff/rdoidgenerator.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

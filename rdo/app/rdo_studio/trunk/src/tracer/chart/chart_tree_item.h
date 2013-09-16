@@ -11,11 +11,11 @@
 #define _RDO_STUDIO_TRACER_CHART_TREE_ITEM_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QTreeWidget>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace tracer {

@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/filesystem/fstream.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdostream.h"
+#include "utils/src/stream/rdostream.h"
 #include "simulator/runtime/result/result_group_i.h"
 // --------------------------------------------------------------------------------
 

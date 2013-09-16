@@ -10,7 +10,7 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
@@ -32,8 +32,8 @@
 //#   define DISABLE_CONVERTER
 #endif // COMPILER_GCC
 
-#include "utils/rdodebug.h"
-#include "utils/rdotime.h"
+#include "utils/src/debug/rdodebug.h"
+#include "utils/src/time/rdotime.h"
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
 #include "simulator/runtime/rdotrace.h"

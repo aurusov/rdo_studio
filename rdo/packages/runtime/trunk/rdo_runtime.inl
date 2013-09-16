@@ -9,7 +9,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdomacros.h"
+#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/namespace.h"
 #include "simulator/runtime/rdo_enum.h"
 // --------------------------------------------------------------------------------

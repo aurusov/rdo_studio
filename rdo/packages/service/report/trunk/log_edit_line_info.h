@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
+#include "utils/src/common/rdotypes.h"
 #include "simulator/report/namespace.h"
 #include "simulator/report/file_message.h"
 // --------------------------------------------------------------------------------

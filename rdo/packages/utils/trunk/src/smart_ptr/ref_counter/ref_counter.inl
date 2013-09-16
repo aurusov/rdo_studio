@@ -9,8 +9,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdodebug.h"
-#include "utils/smart_ptr/counter_reference.h"
+#include "utils/src/debug/rdodebug.h"
+#include "utils/src/smart_ptr/ref_counter/counter_reference.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

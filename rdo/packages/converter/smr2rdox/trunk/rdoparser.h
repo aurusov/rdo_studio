@@ -15,10 +15,10 @@
 #include <algorithm>
 #include <stack>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/rdoindexedstack.h"
-#include "utils/smart_ptr/factory.h"
-#include "utils/rdosmart_ptr_wrapper.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/stuff/rdoindexedstack.h"
+#include "utils/src/smart_ptr/factory/factory.h"
+#include "utils/src/smart_ptr/wrapper/rdosmart_ptr_wrapper.h"
 
 #include "converter/smr2rdox/rdo_object.h"
 #include "converter/smr2rdox/rdoparser_base.h"

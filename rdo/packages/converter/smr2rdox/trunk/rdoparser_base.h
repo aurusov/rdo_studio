@@ -14,8 +14,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/factory.h"
-#include "utils/rdocommon.h"
+#include "utils/src/smart_ptr/factory/factory.h"
+#include "utils/src/common/rdocommon.h"
 
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
 #include "converter/smr2rdox/grammar/rdobison.h"

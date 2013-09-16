@@ -14,8 +14,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/factory.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/src/smart_ptr/factory/factory.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/namespace.h"
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_object.h"

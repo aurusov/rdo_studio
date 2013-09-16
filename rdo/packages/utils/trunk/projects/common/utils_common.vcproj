@@ -275,11 +275,11 @@
 			Name=".animation"
 			>
 			<File
-				RelativePath="..\..\rdoanimation.h"
+				RelativePath="..\..\src\animation\rdoanimation.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdoanimation.inl"
+				RelativePath="..\..\src\animation\rdoanimation.inl"
 				>
 			</File>
 		</Filter>
@@ -287,11 +287,11 @@
 			Name=".interface"
 			>
 			<File
-				RelativePath="..\..\rdointerface.h"
+				RelativePath="..\..\src\interface\rdointerface.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdointerface.inl"
+				RelativePath="..\..\src\interface\rdointerface.inl"
 				>
 			</File>
 		</Filter>
@@ -299,47 +299,47 @@
 			Name=".common"
 			>
 			<File
-				RelativePath="..\..\model_objects.cpp"
+				RelativePath="..\..\src\common\model_objects.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\model_objects.h"
+				RelativePath="..\..\src\common\model_objects.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\namespace.h"
+				RelativePath="..\..\src\common\namespace.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\platform.h"
+				RelativePath="..\..\src\common\platform.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdocommon.cpp"
+				RelativePath="..\..\src\common\rdocommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdocommon.h"
+				RelativePath="..\..\src\common\rdocommon.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdocommon.inl"
+				RelativePath="..\..\src\common\rdocommon.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdomacros.h"
+				RelativePath="..\..\src\common\rdomacros.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdotypes.h"
+				RelativePath="..\..\src\common\rdotypes.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\warning_disable.h"
+				RelativePath="..\..\src\common\warning_disable.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\warning_enable.h"
+				RelativePath="..\..\src\common\warning_enable.h"
 				>
 			</File>
 		</Filter>
@@ -347,11 +347,11 @@
 			Name=".debug"
 			>
 			<File
-				RelativePath="..\..\rdodebug.h"
+				RelativePath="..\..\src\debug\rdodebug.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\static_assert.h"
+				RelativePath="..\..\src\debug\static_assert.h"
 				>
 			</File>
 		</Filter>
@@ -359,11 +359,11 @@
 			Name=".file"
 			>
 			<File
-				RelativePath="..\..\rdofile.cpp"
+				RelativePath="..\..\src\file\rdofile.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdofile.h"
+				RelativePath="..\..\src\file\rdofile.h"
 				>
 			</File>
 		</Filter>
@@ -371,11 +371,11 @@
 			Name=".time"
 			>
 			<File
-				RelativePath="..\..\rdotime.h"
+				RelativePath="..\..\src\time\rdotime.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdotime.inl"
+				RelativePath="..\..\src\time\rdotime.inl"
 				>
 			</File>
 		</Filter>
@@ -383,7 +383,7 @@
 			Name=".stream"
 			>
 			<File
-				RelativePath="..\..\rdostream.h"
+				RelativePath="..\..\src\stream\rdostream.h"
 				>
 			</File>
 		</Filter>
@@ -391,31 +391,31 @@
 			Name=".stuff"
 			>
 			<File
-				RelativePath="..\..\explicit_value.h"
+				RelativePath="..\..\src\stuff\explicit_value.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdoidgenerator.h"
+				RelativePath="..\..\src\stuff\rdoidgenerator.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdoindexedstack.h"
+				RelativePath="..\..\src\stuff\rdoindexedstack.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdosingletone.h"
+				RelativePath="..\..\src\stuff\rdosingletone.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\stack.h"
+				RelativePath="..\..\src\stuff\stack.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\stack.inl"
+				RelativePath="..\..\src\stuff\stack.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\supersubclass.h"
+				RelativePath="..\..\src\stuff\supersubclass.h"
 				>
 			</File>
 		</Filter>
@@ -423,11 +423,11 @@
 			Name=".locale"
 			>
 			<File
-				RelativePath="..\..\rdolocale.cpp"
+				RelativePath="..\..\src\locale\rdolocale.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdolocale.h"
+				RelativePath="..\..\src\locale\rdolocale.h"
 				>
 			</File>
 		</Filter>

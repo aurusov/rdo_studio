@@ -13,7 +13,7 @@
 #include <boost/math/special_functions/nonfinite_num_facets.hpp>
 #include <iostream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdolocale.h"
+#include "utils/src/locale/rdolocale.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo

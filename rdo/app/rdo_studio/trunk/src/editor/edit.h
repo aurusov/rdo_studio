@@ -12,14 +12,14 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <vector>
 #include <boost/function.hpp>
 #include <QColor>
 #include "thirdparty/scintilla/qt/ScintillaEditBase/ScintillaEditBase.h"
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdostream.h"
+#include "utils/src/stream/rdostream.h"
 #include "app/rdo_studio/src/editor/edit_style.h"
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 #include "app/rdo_studio/src/dialog/find_dialog.h"

@@ -11,10 +11,10 @@
 #define _RDO_STUDIO_DIALOG_NEW_MODEL_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QDialog>
 #include "ui_new_model_dialog.h"
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 

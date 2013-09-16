@@ -16,8 +16,8 @@
 #include <fstream>
 #include <sstream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
-#include "utils/rdotypes.h"
+#include "utils/src/common/namespace.h"
+#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

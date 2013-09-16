@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/smart_ptr/factory.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/smart_ptr/factory/factory.h"
 #include "simulator/runtime/rdo_type.h"
 // --------------------------------------------------------------------------------
 

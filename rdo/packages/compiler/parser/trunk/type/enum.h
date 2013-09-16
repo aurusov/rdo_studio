@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/factory.h"
+#include "utils/src/smart_ptr/factory/factory.h"
 #include "simulator/runtime/rdo_enum.h"
 #include "simulator/compiler/parser/type/runtime_wrapper_type.h"
 #include "simulator/compiler/parser/rdo_value.h"

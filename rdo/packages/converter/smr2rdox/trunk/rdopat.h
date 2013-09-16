@@ -25,7 +25,7 @@
 #include "simulator/runtime/calc/resource/calc_relevant.h"
 #include "simulator/runtime/calc/resource/calc_choice_from.h"
 
-#include "utils/smart_ptr/factory.h"
+#include "utils/src/smart_ptr/factory/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE

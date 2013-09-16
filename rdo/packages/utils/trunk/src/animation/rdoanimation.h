@@ -15,7 +15,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
+#include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_ANIMATION_NAMESPACE
@@ -377,6 +377,6 @@ OPEN_RDO_ANIMATION_NAMESPACE
 
 CLOSE_RDO_ANIMATION_NAMESPACE
 
-#include "utils/rdoanimation.inl"
+#include "utils/src/animation/rdoanimation.inl"
 
 #endif // _UTILS_RDOANIMATION_H_

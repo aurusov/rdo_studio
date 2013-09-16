@@ -15,7 +15,7 @@
 #include <list>
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdoanimation.h"
+#include "utils/src/animation/rdoanimation.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------

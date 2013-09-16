@@ -14,7 +14,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
+#include "utils/src/common/rdotypes.h"
 #include "app/rdo_studio/src/editor/lexer/word_list_util.h"
 // --------------------------------------------------------------------------------
 

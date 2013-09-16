@@ -12,7 +12,7 @@
 #define _RDOSIMWIN_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
 #include <vector>
@@ -29,8 +29,8 @@
 	#endif
 #endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/rdostream.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/stream/rdostream.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
 #include "simulator/runtime/thread_proxy_i.h"

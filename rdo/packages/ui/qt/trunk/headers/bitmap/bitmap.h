@@ -11,13 +11,13 @@
 #define _UI_QT_BITMAP_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <map>
 #include <QPixmap>
 #include <QString>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdomacros.h"
+#include "utils/src/common/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo

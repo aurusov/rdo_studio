@@ -31,7 +31,7 @@
 #include "simulator/runtime/calc/resource/calc_choice_from.h"
 #include "simulator/runtime/calc/resource/calc_create_resource.h"
 
-#include "utils/smart_ptr/factory.h"
+#include "utils/src/smart_ptr/factory/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

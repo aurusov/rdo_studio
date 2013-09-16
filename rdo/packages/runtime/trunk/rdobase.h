@@ -15,8 +15,8 @@
 #include <map>
 #include <boost/date_time/posix_time/posix_time.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/mode.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
