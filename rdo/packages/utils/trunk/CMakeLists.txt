@@ -12,90 +12,90 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/smart_ptr)
 
 SET(ANIMATION_FILES
-	rdoanimation.h
-	rdoanimation.inl
+	src/animation/rdoanimation.h
+	src/animation/rdoanimation.inl
 )
 
 SET(COMMON_FILES
-	model_objects.cpp
-	model_objects.h
-	namespace.h
-	platform.h
-	rdocommon.cpp
-	rdocommon.h
-	rdocommon.inl
-	rdomacros.h 
-	rdotypes.h
-	warning_disable.h
-	warning_enable.h
+	src/common/model_objects.cpp
+	src/common/model_objects.h
+	src/common/namespace.h
+	src/common/platform.h
+	src/common/rdocommon.cpp
+	src/common/rdocommon.h
+	src/common/rdocommon.inl
+	src/common/rdomacros.h 
+	src/common/rdotypes.h
+	src/common/warning_disable.h
+	src/common/warning_enable.h
 )
 
 SET(DEBUG_FILES
-	rdodebug.h
-	static_assert.h
+	src/debug/rdodebug.h
+	src/debug/static_assert.h
 )
 
 SET(FILE_FILES
-	rdofile.cpp
-	rdofile.h
+	src/file/rdofile.cpp
+	src/file/rdofile.h
 )
 
 SET(INTERFACE_FILES
-	rdointerface.h
-	rdointerface.inl
+	src/interface/rdointerface.h
+	src/interface/rdointerface.inl
 )
 
 SET(LOCALE_FILES
-	rdolocale.cpp
-	rdolocale.h
+	src/locale/rdolocale.cpp
+	src/locale/rdolocale.h
 )
 
 SET(STREAM_FILES
-	rdostream.h
+	src/stream/rdostream.h
 )
 
 SET(STUFF_FILES
-	explicit_value.h
-	rdoidgenerator.h
-	rdoindexedstack.h
-	rdosingletone.h
-	stack.h
-	stack.inl
-	supersubclass.h
+	src/stuff/explicit_value.h
+	src/stuff/rdoidgenerator.h
+	src/stuff/rdoindexedstack.h
+	src/stuff/rdosingletone.h
+	src/stuff/stack.h
+	src/stuff/stack.inl
+	src/stuff/supersubclass.h
 )
 
 SET(TIME_FILES
-	rdotime.h
-	rdotime.inl
+	src/time/rdotime.h
+	src/time/rdotime.inl
 )
 
 SET(SMARTPTR_FACTORY_FILES
-	smart_ptr/factory.h
-	smart_ptr/factory.inl
+	src/smart_ptr/factory/factory.h
+	src/smart_ptr/factory/factory.inl
 )
 
 SET(SMARTPTR_INTERFACEPTR_FILES
-	smart_ptr/interface_ptr.h
-	smart_ptr/interface_ptr.inl
+	src/smart_ptr/interface_ptr/interface_ptr.h
+	src/smart_ptr/interface_ptr/interface_ptr.inl
 )
 
 SET(SMARTPTR_INTRUSIVEPTR_FILES
-	smart_ptr/intrusive_ptr.h
-	smart_ptr/intrusive_ptr.inl
-	smart_ptr/intrusive_ptr_interface_wrapper.h
-	smart_ptr/intrusive_ptr_interface_wrapper.inl
+	src/smart_ptr/intrusive_ptr/intrusive_ptr.h
+	src/smart_ptr/intrusive_ptr/intrusive_ptr.inl
+	src/smart_ptr/intrusive_ptr/intrusive_ptr_interface_wrapper.h
+	src/smart_ptr/intrusive_ptr/intrusive_ptr_interface_wrapper.inl
 )
 
 SET(SMARTPTR_REFCOUNTER_FILES
-	smart_ptr/counter_reference.h
-	smart_ptr/counter_reference.inl
-	smart_ptr/ref_counter.h
-	smart_ptr/ref_counter.inl
-	smart_ptr/ref_counter_i.h
+	src/smart_ptr/ref_counter/counter_reference.h
+	src/smart_ptr/ref_counter/counter_reference.inl
+	src/smart_ptr/ref_counter/ref_counter.h
+	src/smart_ptr/ref_counter/ref_counter.inl
+	src/smart_ptr/ref_counter/ref_counter_i.h
 )
 
 SET(SMARTPTR_WRAPPER_FILES
-	rdosmart_ptr_wrapper.h
+	src/smart_ptr/wrapper/rdosmart_ptr_wrapper.h
 )
 
 SET(SMART_PTR_FILES
