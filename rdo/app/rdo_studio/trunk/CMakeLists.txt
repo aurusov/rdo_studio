@@ -337,7 +337,7 @@ ADD_DEPENDENCIES(rdo_studio rdo_simulator)
 ADD_DEPENDENCIES(rdo_studio rdo_simulator_report)
 ADD_DEPENDENCIES(rdo_studio rdo_ui_abstract)
 ADD_DEPENDENCIES(rdo_studio rdo_ui_qt)
-ADD_DEPENDENCIES(rdo_studio rdo_scintilla)
+ADD_DEPENDENCIES(rdo_studio scintilla)
 
 TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Widgets_LIBRARIES})
 TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Core_LIBRARIES})
@@ -352,7 +352,7 @@ TARGET_LINK_LIBRARIES(rdo_studio rdo_simulator)
 TARGET_LINK_LIBRARIES(rdo_studio rdo_simulator_report)
 TARGET_LINK_LIBRARIES(rdo_studio rdo_ui_abstract)
 TARGET_LINK_LIBRARIES(rdo_studio rdo_ui_qt)
-TARGET_LINK_LIBRARIES(rdo_studio rdo_scintilla)
+TARGET_LINK_LIBRARIES(rdo_studio scintilla)
 
 INSTALL(TARGETS rdo_studio DESTINATION bin)
 
