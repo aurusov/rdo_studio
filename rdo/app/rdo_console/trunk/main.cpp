@@ -17,6 +17,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 #include "utils/src/locale/rdolocale.h"
+#include "utils/src/file/rdofile.h"
 #include "repository/rdorepository.h"
 #include "simulator/runtime/keyboard.h"
 #include "simulator/service/rdosimwin.h"
@@ -30,8 +31,6 @@
 #include "app/rdo_console/controller_console_options.h"
 #include "app/rdo_console/terminate_codes.h"
 // --------------------------------------------------------------------------------
-
-namespace fs = boost::filesystem;
 
 typedef std::list<tstring> string_list;
 typedef rdo::event_xml_parser::event_container event_container;
@@ -55,10 +54,10 @@ int main(int argc, PTR(char) argv[])
 	options_controller.parseOptions();
 
 	tstring model_file_name = options_controller.getModelFileName();
-	rbool model_exist = fs::exists(model_file_name);
+	rbool model_exist = rdo::File::exist(model_file_name);
 
 	tstring events_file_name = options_controller.getScriptFileName();
-	rbool event_exist = fs::exists(events_file_name);
+	rbool event_exist = rdo::File::exist(events_file_name);
 
 	if (options_controller.helpQuery())
 	{
