@@ -13,14 +13,14 @@
 #include <fstream>
 #include <iostream>
 #include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
-
 #include <stdlib.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/rdofile.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/file/rdofile.h"
 #include "app/rdo_check_results/controller_console_options.h"
 // --------------------------------------------------------------------------------
+
+namespace fs = boost::filesystem;
 
 #ifdef COMPILER_VISUAL_STUDIO
 #	pragma warning (disable:4127)

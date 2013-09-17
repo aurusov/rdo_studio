@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdomacros.h"
+#include "utils/src/common/rdomacros.h"
 #include "app/rdo_check_results/controller_console_options.h"
 #include "app/rdo_check_results/controller_console_options_config.h"
 // --------------------------------------------------------------------------------

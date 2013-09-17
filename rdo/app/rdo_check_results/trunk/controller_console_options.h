@@ -11,7 +11,7 @@
 #define _RDO_CONTROLLER_CONSOLE_OPTIONS_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
 #	pragma warning (disable:4512)
@@ -19,7 +19,7 @@
 
 #include <boost/program_options.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
+#include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 namespace po = boost::program_options;

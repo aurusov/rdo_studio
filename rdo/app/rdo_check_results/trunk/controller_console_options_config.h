@@ -11,10 +11,10 @@
 #define _RDO_CONTROLLER_CONSOLE_OPTIONS_CONFIG_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
+#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 // Input param constant
