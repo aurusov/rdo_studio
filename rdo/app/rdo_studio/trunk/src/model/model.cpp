@@ -85,7 +85,7 @@ Model::Model()
 	, m_exitCode       (rdo::simulation::report::EC_ModelNotFound)
 	, m_modify         (false                     )
 	, m_buildState     (BS_UNDEFINED              )
-	, m_pView     (NULL                      )
+	, m_pView          (NULL                      )
 	, m_name           ("")
 {
 	g_pModel = this;
