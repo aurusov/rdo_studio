@@ -6,20 +6,20 @@ MESSAGE(STATUS "CREATE  RDO_UI_ABSTRACT LIBRARY")
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
-SET(PCH_FILES
-	pch/stdpch.cpp
-	pch/stdpch.h
-)
-
 SET(MEMDC_FILES
 	src/memdc/memdc.cpp
 	headers/memdc/memdc.h
 	headers/memdc/memdc.inl
 )
 
+SET(PCH_FILES
+	pch/stdpch.cpp
+	pch/stdpch.h
+)
+
 SET(SOURCE_FILES
-	${PCH_FILES}
 	${MEMDC_FILES}
+	${PCH_FILES}
 )
 
 ADD_LIBRARY(rdo_ui_abstract ${SOURCE_FILES})
@@ -36,12 +36,12 @@ IF(MSVC) # options for windows #
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
 	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" pch/stdpch ui/abstract)
 
-	SOURCE_GROUP(".pch" FILES 
-		${PCH_FILES}
-	)
-
 	SOURCE_GROUP(".memdc" FILES 
 		${MEMDC_FILES}
+	)
+
+	SOURCE_GROUP(".pch" FILES 
+		${PCH_FILES}
 	)
 
 ENDIF(MSVC)
