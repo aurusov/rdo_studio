@@ -18,7 +18,7 @@
 #include <boost/shared_ptr.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
-
+#include "app/rdo_console/rdo_event.h"
 #include "app/rdo_console/rdo_event_xml_reader.h"
 // --------------------------------------------------------------------------------
 
