@@ -38,7 +38,7 @@ private:
 	QPalette m_palette;
 	QPalette m_paletteRed;
 
-	void setPath(CREF(QString) path);
+	void setPath(const QString& path);
 
 private slots:
 	void updateUI();

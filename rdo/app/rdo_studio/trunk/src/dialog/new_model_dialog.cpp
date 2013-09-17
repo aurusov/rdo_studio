@@ -48,7 +48,7 @@ NewModelDialog::NewModelDialog(QWidget* pParent)
 NewModelDialog::~NewModelDialog()
 {}
 
-void NewModelDialog::setPath(CREF(QString) path)
+void NewModelDialog::setPath(const QString& path)
 {
 	QString normPath(path);
 	if (!normPath.isEmpty())
