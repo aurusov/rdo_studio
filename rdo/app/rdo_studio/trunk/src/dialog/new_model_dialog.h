@@ -16,6 +16,7 @@
 #include "ui_new_model_dialog.h"
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 class NewModelDialog
