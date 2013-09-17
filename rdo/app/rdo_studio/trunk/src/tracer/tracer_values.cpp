@@ -38,17 +38,17 @@ Time& Time::operator= (const Time& timeNow)
 	return *this;
 }
 
-rbool Time::operator== (const Time& timeNow) const
+bool Time::operator== (const Time& timeNow) const
 {
 	return time == timeNow.time && eventCount == timeNow.eventCount;
 }
 
-rbool Time::operator!= (const Time& timeNow) const
+bool Time::operator!= (const Time& timeNow) const
 {
 	return !(*this == timeNow);
 }
 
-rbool Time::compareTimes(const Time* pTimeNow)
+bool Time::compareTimes(const Time* pTimeNow)
 {
 	return pTimeNow
 		? time >= pTimeNow->time

@@ -37,16 +37,16 @@ class ChartView: public ActionActivatorWidget
 Q_OBJECT
 
 public:
-	ChartView(QAbstractScrollArea* pParent, ChartDoc* pDocument, const rbool preview);
+	ChartView(QAbstractScrollArea* pParent, ChartDoc* pDocument, const bool preview);
 	virtual ~ChartView();
 
 	ChartDoc* getDocument();
 	void      attachToDoc();
 
 	const ChartViewStyle& getStyle() const;
-	void setStyle(ChartViewStyle* pStyle, const rbool needRedraw = true);
+	void setStyle(ChartViewStyle* pStyle, const bool needRedraw = true);
 
-	void setPreviwMode(rbool value);
+	void setPreviwMode(bool value);
 
 	int  getValueCountX() const;
 	void setValueCountX(int value);
@@ -58,8 +58,8 @@ public:
 
 	void setYAxis(ChartSerie* pSerie);
 
-	rbool isDrawLegend () const;
-	void  setDrawLegend(rbool value);
+	bool isDrawLegend () const;
+	void setDrawLegend(bool value);
 
 	long double  timeScale       () const;
 	int          chartShift      () const;
@@ -71,7 +71,7 @@ public:
 	CREF(ChartDoc::TimesList)            unwrapTimesList() const;
 	const ChartViewStyle* const style          () const;
 
-	rbool doUnwrapTime () const;
+	bool doUnwrapTime () const;
 
 private:
 //	COleDropTarget m_ddTarget;
@@ -84,18 +84,18 @@ private:
 	std::vector<tstring> m_captionList;
 	int m_valueCountY;
 
-	rbool m_timeWrapFlag;
-	rbool canUnwrapTime() const;
+	bool m_timeWrapFlag;
+	bool canUnwrapTime() const;
 
 	QRect m_chartRect;
 	void recalcLayout();
 
 	rdo::gui::ScrollMetric m_SM_X;
-	rbool       minXVisible       () const;
-	rbool       maxXVisible       () const;
+	bool        minXVisible       () const;
+	bool        maxXVisible       () const;
 	QScrollBar& getHorzScrollBar  ();
 	void        updateScrollBars  ();
-	rbool       scrollHorizontally(rsint inc);
+	bool        scrollHorizontally(rsint inc);
 
 	long double         m_timeScale;
 	int                 m_chartShift;
@@ -105,8 +105,8 @@ private:
 	int                 m_drawToEventCount;
 	ChartDoc::TimesList m_unwrapTimesList;
 
-	rbool setTo(const int fromMaxPos);
-	void  setFromTo();
+	bool setTo(const int fromMaxPos);
+	void setFromTo();
 
 	void drawTitle(QPainter& painter, const QRect& chartRect);
 
@@ -122,19 +122,19 @@ private:
 	double m_zoomOld;
 	double m_zoomAuto;
 	double m_scaleKoeff;
-	rbool  m_zoomAutoFlag;
-	void setZoom(double new_zoom, const rbool force_update = false);
+	bool   m_zoomAutoFlag;
+	void setZoom(double new_zoom, const bool force_update = false);
 
-	rbool           m_previewMode;
+	bool            m_previewMode;
 	ChartViewStyle* m_pStyle;
 
 	ChartSerie* m_pYAxis;
-	rbool       m_needDrawLegend;
+	bool        m_needDrawLegend;
 
 	QFont   m_fontTitle;
 	QFont   m_fontLegend;
 	QFont   m_fontAxis;
-	void setFonts(const rbool needRedraw = true);
+	void setFonts(const bool needRedraw = true);
 
 	void onDraw();
 
@@ -151,7 +151,7 @@ private:
 	virtual void dropEvent       (QDropEvent*      pEvent);
 	virtual void dragLeaveEvent  (QDragLeaveEvent * pEvent);
 
-	virtual void onUpdateActions(rbool activated);
+	virtual void onUpdateActions(bool activated);
 
 private slots:
 	void onHorzScrollBarValueChanged(int value);
@@ -175,7 +175,7 @@ private slots:
 class ChartViewMainWnd: public QAbstractScrollArea
 {
 public:
-	ChartViewMainWnd(QWidget* pParent, ChartDoc* pDocument, rbool preview);
+	ChartViewMainWnd(QWidget* pParent, ChartDoc* pDocument, bool preview);
 	virtual ~ChartViewMainWnd();
 
 	ChartView& view();
@@ -183,10 +183,10 @@ public:
 private:
 	typedef  QAbstractScrollArea  super;
 
-	virtual rbool viewportEvent(PTR(QEvent)      pEvent);
-	virtual void  focusInEvent (PTR(QFocusEvent) pEvent);
-	virtual void  focusOutEvent(PTR(QFocusEvent) pEvent);
-	virtual void  keyPressEvent(PTR(QKeyEvent)   pEvent);
+	virtual bool viewportEvent(PTR(QEvent)      pEvent);
+	virtual void focusInEvent (PTR(QFocusEvent) pEvent);
+	virtual void focusOutEvent(PTR(QFocusEvent) pEvent);
+	virtual void keyPressEvent(PTR(QKeyEvent)   pEvent);
 };
 
 }}} // namespace rdo::gui::tracer

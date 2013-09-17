@@ -28,7 +28,7 @@ using namespace rdo::gui::tracer;
 
 Tracer* g_pTracer = NULL;
 
-static rbool s_clearAfterStop = false;
+static bool s_clearAfterStop = false;
 
 // --------------------------------------------------------------------------------
 // -------------------- Tracer

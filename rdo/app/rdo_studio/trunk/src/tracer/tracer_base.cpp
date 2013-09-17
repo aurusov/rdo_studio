@@ -328,7 +328,7 @@ void TracerBase::dispatchNextString(REF(tstring) line)
 	}
 	else if (key == "RK" || key == "SRK" || key == "RE" || key == "SRE")
 	{
-		rbool re = key == "RE" || key == "SRE";
+		bool re = key == "RE" || key == "SRE";
 		tstring copy1 = line;
 		LPResource pResource = resourceChanging(line, pTimeNow);
 		if (!pResource)
@@ -374,7 +374,7 @@ tstring TracerBase::getNextValue(REF(tstring) line)
 Time* TracerBase::addTime(CREF(tstring) time)
 {
 	double val = boost::lexical_cast<double>(time);
-	rbool empty = m_timeList.empty();
+	bool empty = m_timeList.empty();
 	Time* pLastTime = NULL;
 	if (!empty)
 	{
@@ -732,7 +732,7 @@ void TracerBase::setModelName(CREF(QString) name) const
 	}
 }
 
-void TracerBase::setDrawTrace(const rbool value)
+void TracerBase::setDrawTrace(const bool value)
 {
 	if (m_drawTrace != value)
 	{
@@ -745,7 +745,7 @@ void TracerBase::setDrawTrace(const rbool value)
 	}
 }
 
-rbool TracerBase::getDrawTrace() const
+bool TracerBase::getDrawTrace() const
 {
 	return m_drawTrace;
 }

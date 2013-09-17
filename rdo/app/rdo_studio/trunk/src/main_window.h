@@ -40,7 +40,7 @@ public:
 
 	virtual void updateAllStyles();
 
-	virtual void setVisible(rbool visible);
+	virtual void setVisible(bool visible);
 
 	CREF(LPStatusBar) statusBar() const;
 
@@ -55,7 +55,7 @@ public:
 	void insertMenuFileReopenItem(CREF(QString) item);
 
 	template <typename SlotFun>
-	void updateInsertMenu(rbool enabled, const typename QtPrivate::FunctionPointer<SlotFun>::Object* pObject, SlotFun pSlot)
+	void updateInsertMenu(bool enabled, const typename QtPrivate::FunctionPointer<SlotFun>::Object* pObject, SlotFun pSlot)
 	{
 		updateInsertMenu(enabled);
 		void (QSignalMapper::*pSignal)(QObject*) = &QSignalMapper::mapped;
@@ -138,7 +138,7 @@ private:
 	void onToolBarModelOrientationChanged(Qt::Orientation orientation);
 
 	void onMenuFileReopen(QAction* pAction);
-	void updateInsertMenu(rbool enabled);
+	void updateInsertMenu(bool enabled);
 
 	void onUpdateCascadeTitle   (bool activated);
 	void onUpdateTabMode        (bool activated);

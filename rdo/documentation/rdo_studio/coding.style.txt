@@ -54,7 +54,7 @@ enum Type
 virtual BOResult onDoOperation(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 
 //! Проверка на точки останова
-virtual rbool breakPoints() = 0;
+virtual bool breakPoints() = 0;
 
 2. стражи включения.
 2.1. имя макроса-стража пишется большими буквами, знаком подчеркивания и ничем больше.
@@ -70,7 +70,6 @@ virtual rbool breakPoints() = 0;
 4.1. Использовать встроенные типы данных, такие как: int, unsigned, long, float, double, char, bool, * (указатель), & (ссылка) и библиотечный класс std::basic_string<char> (std::string) запрещено. Краткая таблица синонимом
 
 std::string            -> tstring
-bool                   -> rbool
 signed int             -> rsint
 unsigned int           -> ruint
 signed long long int   -> rsint64

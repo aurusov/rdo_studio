@@ -56,20 +56,20 @@ public:
 
 	void           broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam = NULL);
 
-	rbool          getFileAssociationSetup() const;
-	void           setFileAssociationSetup(rbool value);
+	bool           getFileAssociationSetup() const;
+	void           setFileAssociationSetup(bool value);
 
-	rbool          getFileAssociationCheckInFuture() const;
-	void           setFileAssociationCheckInFuture(rbool value);
+	bool           getFileAssociationCheckInFuture() const;
+	void           setFileAssociationCheckInFuture(bool value);
 
-	rbool          getOpenLastProject() const;
-	void           setOpenLastProject(rbool value);
+	bool           getOpenLastProject() const;
+	void           setOpenLastProject(bool value);
 
 	CREF(QString)  getLastProjectName() const;
 	void           setLastProjectName(CREF(QString) projectName);
 
-	rbool          getShowCaptionFullName() const;
-	void           setShowCaptionFullName(rbool value);
+	bool           getShowCaptionFullName() const;
+	void           setShowCaptionFullName(bool value);
 
 	void           autoCloseByModel ();
 
@@ -90,13 +90,13 @@ private:
 #endif
 
 	std::ofstream                          m_log;
-	rbool                                  m_fileAssociationSetup;
-	rbool                                  m_fileAssociationCheckInFuture;
-	rbool                                  m_openLastProject;
+	bool                                   m_fileAssociationSetup;
+	bool                                   m_fileAssociationCheckInFuture;
+	bool                                   m_openLastProject;
 	QString                                m_lastProjectName;
-	rbool                                  m_showCaptionFullName;
-	rbool                                  m_autoExitByModel;
-	rbool                                  m_dontCloseIfError;
+	bool                                   m_showCaptionFullName;
+	bool                                   m_autoExitByModel;
+	bool                                   m_dontCloseIfError;
 	rdo::simulation::report::RDOExitCode   m_exitCode;
 	QProcess*                              m_pAssistant;
 	PTR(MainWindow)                        m_pMainFrame;

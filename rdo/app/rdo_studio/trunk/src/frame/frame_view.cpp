@@ -45,7 +45,7 @@ Content::Content(QWidget* pParent)
 Content::~Content()
 {}
 
-rbool Content::valid() const
+bool Content::valid() const
 {
 	return m_memDC.valid();
 }
@@ -55,7 +55,7 @@ void Content::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapLis
 	ASSERT(pFrame);
 
 	QSize size;
-	rbool imageFound = false;
+	bool imageFound = false;
 	if (pFrame->hasBgImage())
 	{
 		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(QString::fromStdString(pFrame->m_bgImageName));
@@ -208,7 +208,7 @@ void Content::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui:
 {
 	ASSERT(pFrame);
 
-	rbool bgImage = false;
+	bool bgImage = false;
 	if (pFrame->hasBgImage())
 	{
 		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(QString::fromStdString(pFrame->m_bgImageName));
@@ -509,7 +509,7 @@ QPixmap Content::getBitmap(
 			QPixmap pixmap = rdo::gui::Bitmap::transparent(bmpIt->second, maskIt->second);
 			if (!pixmap.isNull())
 			{
-				std::pair<rdo::gui::BitmapList::const_iterator, rbool> result =
+				std::pair<rdo::gui::BitmapList::const_iterator, bool> result =
 					bitmapGeneratedList.insert(rdo::gui::BitmapList::value_type(maskedBitmapName, pixmap));
 				ASSERT(result.second);
 				return pixmap;
@@ -528,7 +528,7 @@ void Content::elementActive(PTR(rdo::animation::ActiveElement) pElement, REF(rdo
 	rdo::gui::animation::AreaList::iterator it = areaList.find(oprName);
 	if (it == areaList.end())
 	{
-		std::pair<rdo::gui::animation::AreaList::iterator, rbool> result =
+		std::pair<rdo::gui::animation::AreaList::iterator, bool> result =
 			areaList.insert(rdo::gui::animation::AreaList::value_type(oprName, rdo::gui::animation::Area()));
 		ASSERT(result.second);
 		it = result.first;
@@ -594,7 +594,7 @@ void View::updateFont()
 	getContent()->updateFont();
 }
 
-rbool View::event(QEvent* pEvent)
+bool View::event(QEvent* pEvent)
 {
 	if (pEvent->type() == QEvent::KeyPress || pEvent->type() == QEvent::ShortcutOverride)
 	{

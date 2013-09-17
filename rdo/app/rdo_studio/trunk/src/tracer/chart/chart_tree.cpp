@@ -198,7 +198,7 @@ void ChartTree::createChart(PTR(QTreeWidgetItem) pCtrlItem) const
 	}
 }
 
-rbool ChartTree::activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const
+bool ChartTree::activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const
 {
 	LPSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<Serie>();
 	if (pSerie)
@@ -284,7 +284,7 @@ void ChartTree::focusOutEvent(QFocusEvent* pEvent)
 	parent_type::focusOutEvent(pEvent);
 }
 
-void ChartTree::onUpdateActions(rbool activated)
+void ChartTree::onUpdateActions(bool activated)
 {
 	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);

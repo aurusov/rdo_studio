@@ -197,7 +197,7 @@ void Log::clearAll()
 void Log::appendLine(PTR(LogEditLineInfo) pLine)
 {
 	m_lines.push_back(pLine);
-	rbool readOnly = isReadOnly();
+	bool readOnly = isReadOnly();
 	if (readOnly)
 	{
 		setReadOnly(false);
@@ -216,7 +216,7 @@ void Log::appendLine(PTR(LogEditLineInfo) pLine)
 	onUpdateEditGUI();
 }
 
-void Log::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScroll)
+void Log::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, bool useScroll)
 {
 	if (pLineInfo->getLineNumber() != -1)
 	{
@@ -269,7 +269,7 @@ void Log::clearSelectLine()
 	}
 }
 
-rbool Log::hasSelectLine() const
+bool Log::hasSelectLine() const
 {
 	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine);
 	return nextLine >= 0;

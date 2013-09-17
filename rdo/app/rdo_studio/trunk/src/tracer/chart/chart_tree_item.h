@@ -27,15 +27,15 @@ public:
 	void setCtrlItem(PTR(QTreeWidgetItem) pCtrlItem);
 	REF(QTreeWidgetItem) getCtrlItem();
 
-	rbool isDrawable() const;
+	bool isDrawable() const;
 
 protected:
-	ChartTreeItem (rbool drawable = false);
+	ChartTreeItem (bool drawable = false);
 	~ChartTreeItem();
 
 private:
 	PTR(QTreeWidgetItem) m_pCtrlItem;
-	rbool                m_drawable; // set to true ONLY for TracerSerie and descendants
+	bool                 m_drawable; // set to true ONLY for TracerSerie and descendants
 };
 
 typedef  rdo::intrusive_ptr<ChartTreeItem>  LPChartTreeItem;

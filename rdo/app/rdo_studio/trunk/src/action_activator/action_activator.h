@@ -22,7 +22,7 @@ class ActionActivator
 {
 public:
 	template <typename SlotFun>
-	static void updateAction(QAction* pAction, rbool enabled, const typename QtPrivate::FunctionPointer<SlotFun>::Object* pObject, SlotFun pSlot)
+	static void updateAction(QAction* pAction, bool enabled, const typename QtPrivate::FunctionPointer<SlotFun>::Object* pObject, SlotFun pSlot)
 	{
 		ASSERT(pAction);
 
@@ -39,7 +39,7 @@ public:
 	}
 
 	template <typename F>
-	static void updateAction(QAction* pAction, rbool enabled, const F& functor)
+	static void updateAction(QAction* pAction, bool enabled, const F& functor)
 	{
 		ASSERT(pAction);
 
@@ -58,15 +58,15 @@ protected:
 	ActionActivator();
 	virtual ~ActionActivator();
 
-	rbool isActivated() const;
+	bool isActivated() const;
 
 	void activate  (QFocusEvent* pEvent);
 	void deactivate(QFocusEvent* pEvent);
 
-	virtual void onUpdateActions(rbool activated) = 0;
+	virtual void onUpdateActions(bool activated) = 0;
 
 private:
-	rbool m_activated;
+	bool m_activated;
 };
 
 #endif // _RDO_STUDIO_ACTION_ACTIVATOR_H_

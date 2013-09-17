@@ -34,12 +34,12 @@ public:
 		QColor         color;
 		Serie::Marker  markerType;
 		int            markerSize;
-		rbool          markerNeedDraw;
-		rbool          markerTransparent;
-		rbool          showInLegend;
+		bool           markerNeedDraw;
+		bool           markerTransparent;
+		bool           showInLegend;
 
 		Options();
-		rbool operator== (CREF(Options) options) const;
+		bool operator== (CREF(Options) options) const;
 	};
 
 	CREF(LPSerie) getSerie() const;
@@ -47,13 +47,13 @@ public:
 	CREF(Options) options   () const;
 	void          setOptions(CREF(Options) options);
 
-	rbool isTracerSerie(CREF(LPSerie) pSerie) const;
+	bool  isTracerSerie(CREF(LPSerie) pSerie) const;
 	void  drawSerie    (ChartView* const pView, QPainter& painter, const QRect& rect) const;
 	void  getCaptions  (std::vector<tstring>& captions, const int valueCount) const;
 	QSize getLegendSize(const QFontMetrics& fm, const QRect& rect) const;
 	QSize drawLegend   (QPainter& painter, const QRect& rect, const QColor& textColor) const;
 
-	rbool empty () const;
+	bool  empty () const;
 
 protected:
 	LPSerie  m_pSerie;

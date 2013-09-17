@@ -41,7 +41,7 @@ private:
 
 	virtual void focusInEvent   (QFocusEvent* pEvent);
 	virtual void focusOutEvent  (QFocusEvent* pEvent);
-	virtual void onUpdateActions(rbool activated);
+	virtual void onUpdateActions(bool activated);
 
 private slots:
 	void onHelpContext();

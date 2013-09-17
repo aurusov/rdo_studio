@@ -28,7 +28,7 @@ ChartSerie::Options::Options()
 	, showInLegend     (true)
 {}
 
-rbool ChartSerie::Options::operator== (CREF(Options) options) const
+bool ChartSerie::Options::operator== (CREF(Options) options) const
 {
 	return title             == options.title
 		&& color             == options.color
@@ -69,7 +69,7 @@ void ChartSerie::setOptions(CREF(Options) options)
 	m_options = options;
 }
 
-rbool ChartSerie::isTracerSerie(CREF(LPSerie) pSerie) const
+bool ChartSerie::isTracerSerie(CREF(LPSerie) pSerie) const
 {
 	return m_pSerie == pSerie;
 }
@@ -84,7 +84,7 @@ void ChartSerie::getCaptions(std::vector<tstring>& captions, const int valueCoun
 	m_pSerie->getCaptions(captions, valueCount);
 }
 
-rbool ChartSerie::empty() const
+bool ChartSerie::empty() const
 {
 	return m_pSerie->empty();
 }

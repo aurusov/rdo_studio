@@ -40,9 +40,9 @@ FindStyle& FindStyle::operator =( const FindStyle& style )
 	return *this;
 }
 
-rbool FindStyle::operator ==( const FindStyle& style ) const
+bool FindStyle::operator ==( const FindStyle& style ) const
 {
-	rbool flag = LogStyle::operator==( style );
+	bool flag = LogStyle::operator==( style );
 
 	if ( flag ) flag &= keywordColor == style.keywordColor &&
 		keywordStyle == style.keywordStyle;
@@ -50,22 +50,22 @@ rbool FindStyle::operator ==( const FindStyle& style ) const
 	return flag;
 }
 
-rbool FindStyle::operator !=( const FindStyle& style ) const
+bool FindStyle::operator !=( const FindStyle& style ) const
 {
 	return !(*this == style);
 }
 
-rbool FindStyle::styleDefault( const int styleType ) const
+bool FindStyle::styleDefault( const int styleType ) const
 {
 	return styleType == SCE_FIND_DEFAULT;
 }
 
-rbool FindStyle::styleUsing( const int styleType ) const
+bool FindStyle::styleUsing( const int styleType ) const
 {
 	return styleType == SCE_FIND_DEFAULT || styleType == SCE_FIND_KEYWORD;
 }
 
-rbool FindStyle::styleBold( const int styleType ) const
+bool FindStyle::styleBold( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_FIND_DEFAULT: return defaultStyle & StyleFont::BOLD ? true : false;
@@ -74,7 +74,7 @@ rbool FindStyle::styleBold( const int styleType ) const
 	return false;
 }
 
-rbool FindStyle::styleItalic( const int styleType ) const
+bool FindStyle::styleItalic( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_FIND_DEFAULT: return defaultStyle & StyleFont::ITALIC ? true : false;

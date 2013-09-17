@@ -37,7 +37,7 @@ std::vector<std::string> WordListUtil::getNearestWords(const std::string& userPa
 			, priority(priority)
 		{}
 
-		rbool operator< (const PriorityResultItem& item) const
+		bool operator< (const PriorityResultItem& item) const
 		{
 			return priority == item.priority
 				? value < item.value

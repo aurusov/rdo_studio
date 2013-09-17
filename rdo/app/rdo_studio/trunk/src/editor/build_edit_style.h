@@ -27,10 +27,10 @@ public:
 	~BuildStyle();
 
 	BuildStyle& operator =( const BuildStyle& style );
-	rbool operator ==( const BuildStyle& style ) const;
-	rbool operator !=( const BuildStyle& style ) const;
+	bool operator ==( const BuildStyle& style ) const;
+	bool operator !=( const BuildStyle& style ) const;
 
-	rbool warning;
+	bool warning;
 
 	static BuildStyle getDefaultStyle();
 	static BuildStyle getClassicStyle();

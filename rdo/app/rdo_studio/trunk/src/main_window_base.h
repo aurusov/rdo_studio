@@ -42,7 +42,7 @@ public:
 	rdo::gui::frame::FrameStyle       style_frame;
 	rdo::gui::tracer::ChartViewStyle  style_chart;
 
-	rbool isMDIMaximazed() const { return true; }
+	bool isMDIMaximazed() const { return true; }
 
 	REF(DockBuild)      getDockBuild    () { ASSERT(m_pDockBuild    ); return *m_pDockBuild;     }
 	REF(DockDebug)      getDockDebug    () { ASSERT(m_pDockDebug    ); return *m_pDockDebug;     }

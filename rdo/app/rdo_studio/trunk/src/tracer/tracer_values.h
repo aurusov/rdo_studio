@@ -29,10 +29,10 @@ public:
 	int eventCount;
 
 	Time& operator =(const Time& timeNow);
-	rbool operator ==(const Time& timeNow) const;
-	rbool operator !=(const Time& timeNow) const;
+	bool  operator ==(const Time& timeNow) const;
+	bool  operator !=(const Time& timeNow) const;
 
-	rbool compareTimes(const Time* pTimeNow);
+	bool  compareTimes(const Time* pTimeNow);
 };
 
 // --------------------------------------------------------------------------------

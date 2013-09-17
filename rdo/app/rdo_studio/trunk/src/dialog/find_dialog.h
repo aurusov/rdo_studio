@@ -29,9 +29,9 @@ public:
 	struct Settings
 	{
 		QString what;
-		rbool   matchCase;
-		rbool   matchWholeWord;
-		rbool   searchDown;
+		bool    matchCase;
+		bool    matchWholeWord;
+		bool    searchDown;
 
 		Settings();
 		Settings(CREF(Settings) settings);

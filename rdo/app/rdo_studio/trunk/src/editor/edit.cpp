@@ -369,7 +369,7 @@ void Edit::gotoLineEnsureVisible(int line) const
 	sendEditor(SCI_GOTOLINE, line);
 }
 
-void Edit::ensureRangeVisible(int posStart, int posEnd, rbool enforcePolicy) const
+void Edit::ensureRangeVisible(int posStart, int posEnd, bool enforcePolicy) const
 {
 	int lineStart = getLineFromPosition(posStart < posEnd ? posStart : posEnd);
 	int lineEnd   = getLineFromPosition(posStart > posEnd ? posStart : posEnd);
@@ -468,7 +468,7 @@ void Edit::onSearchFindPreviousCurrent()
 	}
 }
 
-void Edit::findNext(CREF(QString) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
+void Edit::findNext(CREF(QString) findWhat, bool searchDown, bool matchCase, bool matchWholeWord)
 {
 	if (findWhat.isEmpty())
 		return;
@@ -641,7 +641,7 @@ void Edit::showFindWarning(CREF(QString) findWhat)
 	QMessageBox::warning(this, "Результаты поиска", QString("Невозможно найти строчку '%1'.").arg(findWhat));
 }
 
-void Edit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
+void Edit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, bool searchDown, bool matchCase, bool matchWholeWord)
 {
 	if (m_haveFound)
 	{
@@ -661,7 +661,7 @@ void Edit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool sear
 	findNext(findWhat, searchDown, matchCase, matchWholeWord);
 }
 
-void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool matchCase, rbool matchWholeWord)
+void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, bool matchCase, bool matchWholeWord)
 {
 	if (findWhat.isEmpty())
 		return;
@@ -707,13 +707,13 @@ void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool m
 
 void Edit::clearAll()
 {
-	rbool readOnly = isReadOnly();
+	bool readOnly = isReadOnly();
 	setReadOnly(false);
 	sendEditor(SCI_CLEARALL);
 	setReadOnly(readOnly);
 }
 
-rbool Edit::bookmarkToggle(int line) const
+bool Edit::bookmarkToggle(int line) const
 {
 	if (line == -1)
 	{
@@ -732,10 +732,10 @@ rbool Edit::bookmarkToggle(int line) const
 	}
 }
 
-rbool Edit::bookmarkNext(rbool canLoop, rbool fromCurrentLine) const
+bool Edit::bookmarkNext(bool canLoop, bool fromCurrentLine) const
 {
-	rbool wasFound = false;
-	rbool wasLoop  = false;
+	bool wasFound = false;
+	bool wasLoop  = false;
 
 	int line = fromCurrentLine
 		? getCurrentLineNumber()
@@ -759,10 +759,10 @@ rbool Edit::bookmarkNext(rbool canLoop, rbool fromCurrentLine) const
 	return wasFound;
 }
 
-rbool Edit::bookmarkPrev(rbool canLoop, rbool fromCurrentLine) const
+bool Edit::bookmarkPrev(bool canLoop, bool fromCurrentLine) const
 {
-	rbool wasFound = false;
-	rbool wasLoop  = false;
+	bool wasFound = false;
+	bool wasLoop  = false;
 
 	int lineCount = getLineCount();
 	int line = fromCurrentLine
@@ -792,7 +792,7 @@ void Edit::bookmarkClearAll() const
 	sendEditor(SCI_MARKERDELETEALL, m_sciMarkerBookmark);
 }
 
-rbool Edit::hasBookmarks() const
+bool Edit::hasBookmarks() const
 {
 	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerBookmark);
 	return nextLine >= 0;
@@ -993,8 +993,8 @@ tstring Edit::saveAsRTF(int start, int end) const
 				strncpy(colors[colorCount++], style->styleBGColorToHEX(istyle).c_str(), MAX_COLORDEF);
 			}
 			strncpy(colors[colorCount++], style->styleFGColorToHEX(istyle).c_str(), MAX_COLORDEF);
-			rbool bold   = style->styleBold(istyle);
-			rbool italic = style->styleItalic(istyle);
+			bool bold   = style->styleBold(istyle);
+			bool italic = style->styleItalic(istyle);
 			sprintf(lastStyle + strlen(lastStyle), RTF_SETCOLOR "%d", colorCount-1);
 			sprintf(lastStyle + strlen(lastStyle), RTF_SETBACKGROUND "%d", 1);
 			strcat(lastStyle, bold ? RTF_BOLD_ON : RTF_BOLD_OFF);
@@ -1014,7 +1014,7 @@ tstring Edit::saveAsRTF(int start, int end) const
 	sprintf(lastStyle, RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0" RTF_SETBACKGROUND "0" RTF_BOLD_OFF RTF_ITALIC_OFF, m_pStyle->font.size * 2);
 
 	tstring::size_type prevLength = saveStr.length();
-	rbool prevCR = false;
+	bool prevCR = false;
 	int styleCurrent = -1;
 
 	//! @todo убрать копипаст
@@ -1076,7 +1076,7 @@ tstring Edit::saveAsRTF(int start, int end) const
 
 		i += rdo::locale::convertFromWStr(wstr.substr(chIndex, 1)).size();
 	}
-	rbool wasGenerated = prevLength != saveStr.length();
+	bool wasGenerated = prevLength != saveStr.length();
 	if (wasGenerated)
 	{
 		saveStr += RTF_BODYCLOSE;
@@ -1099,12 +1099,12 @@ void Edit::setCurrentPos(const int value) const
 	sendEditor(SCI_SETSELECTIONEND, value);
 }
 
-void Edit::setCurrentPos(const int line, int pos_in_line, const rbool convert_rdo_tab) const
+void Edit::setCurrentPos(const int line, int pos_in_line, const bool convert_rdo_tab) const
 {
 	int pos = getPositionFromLine(line);
 	int line_length = sendEditor(SCI_LINELENGTH, line);
 	char currentLine[8000];
-	rbool canUseLine = false;
+	bool canUseLine = false;
 	if (line_length < 8000)
 	{
 		sendEditor(SCI_GETLINE, line, (long)currentLine);
@@ -1154,7 +1154,7 @@ void Edit::setCurrentPos(const int line, int pos_in_line, const rbool convert_rd
 	setCurrentPos(pos);
 }
 
-rbool Edit::isLineVisible(const int line) const
+bool Edit::isLineVisible(const int line) const
 {
 	int first_line = sendEditor(SCI_GETFIRSTVISIBLELINE);
 	int last_line = first_line + sendEditor(SCI_LINESONSCREEN);
@@ -1191,7 +1191,7 @@ void Edit::horzScrollToCurrentPos() const
 
 void Edit::load(rdo::stream& stream)
 {
-	rbool readOnly = isReadOnly();
+	bool readOnly = isReadOnly();
 	setReadOnly(false);
 
 	std::string text = stream.str();
@@ -1300,7 +1300,7 @@ void Edit::onSearchBookmarkPrev() const
 }
 
 void Edit::onSearchBookmarkNextPrev(
-	const boost::function<rbool (const Edit*, rbool, rbool)>& nextPrevFun,
+	const boost::function<bool (const Edit*, bool, bool)>& nextPrevFun,
 	const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
 ) const
 {
@@ -1390,7 +1390,7 @@ void Edit::onViewZoomReset()
 	onUpdateActions(isActivated());
 }
 
-int Edit::findPos(CREF(QString) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord) const
+int Edit::findPos(CREF(QString) findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord) const
 {
 	if (findWhat.isEmpty())
 		return -1;
@@ -1436,7 +1436,7 @@ void Edit::focusOutEvent(QFocusEvent* pEvent)
 	super::focusOutEvent(pEvent);
 }
 
-void Edit::onUpdateActions(rbool activated)
+void Edit::onUpdateActions(bool activated)
 {
 	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
@@ -1521,7 +1521,7 @@ void Edit::onUpdateActions(rbool activated)
 		this, &Edit::onViewZoomReset
 	);
 
-	rbool hasBookmark = predicateOfGroup(boost::bind(&Edit::hasBookmarks, _1));
+	bool hasBookmark = predicateOfGroup(boost::bind(&Edit::hasBookmarks, _1));
 
 	updateAction(
 		pMainWindow->actSearchBookmarkNext,
@@ -1579,7 +1579,7 @@ void Edit::onUpdateActions(rbool activated)
 	pMainWindow->statusBar()->update<StatusBar::SB_OVERWRITE>(overwrite);
 }
 
-void Edit::updateActionFind(rbool activated)
+void Edit::updateActionFind(bool activated)
 {
 	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
@@ -1596,7 +1596,7 @@ void Edit::updateActionFind(rbool activated)
 		this, &Edit::onSearchReplace
 	);
 
-	rbool findNextPrev = activated && (!m_findReplaceSettings.what.isEmpty() || !m_findSettings.what.isEmpty() || (m_pGroup && !m_pGroup->findStr.isEmpty()));
+	bool findNextPrev = activated && (!m_findReplaceSettings.what.isEmpty() || !m_findSettings.what.isEmpty() || (m_pGroup && !m_pGroup->findStr.isEmpty()));
 	updateAction(
 		pMainWindow->actSearchFindNext,
 		findNextPrev,
@@ -1627,22 +1627,22 @@ void Edit::onUpdateModify()
 	emit modifyChanged(isModify());
 }
 
-rbool Edit::isViewWhiteSpace() const
+bool Edit::isViewWhiteSpace() const
 {
 	return sendEditor(SCI_GETVIEWWS) != SCWS_INVISIBLE;
 }
 
-void Edit::setViewWhiteSpace(rbool value)
+void Edit::setViewWhiteSpace(bool value)
 {
 	sendEditor(SCI_SETVIEWWS, value ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE);
 }
 
-rbool Edit::isViewEndOfLine() const
+bool Edit::isViewEndOfLine() const
 {
 	return sendEditor(SCI_GETVIEWEOL) ? true : false;
 }
 
-void Edit::setViewEndOfLine(rbool value)
+void Edit::setViewEndOfLine(bool value)
 {
 	sendEditor(SCI_SETVIEWEOL, value);
 }
@@ -1654,7 +1654,7 @@ void Edit::methodOfGroup(CREF(this_method) fun)
 		: fun(this);
 }
 
-rbool Edit::predicateOfGroup(CREF(this_predicate) fun) const
+bool Edit::predicateOfGroup(CREF(this_predicate) fun) const
 {
 	return m_pGroup
 		? m_pGroup->find_if(fun) != m_pGroup->end()

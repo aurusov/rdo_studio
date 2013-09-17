@@ -36,15 +36,15 @@ public:
 		: m_pView(pView)
 	{}
 
-	rbool operator() (Value* pValue);
+	bool operator() (Value* pValue);
 
 private:
 	ChartView* m_pView;
 };
 
-rbool TracerSerieFindValue::operator() (Value* pValue)
+bool TracerSerieFindValue::operator() (Value* pValue)
 {
-	rbool res = pValue && pValue->getModelTime()->time >= m_pView->drawFromX().time;
+	bool res = pValue && pValue->getModelTime()->time >= m_pView->drawFromX().time;
 	if (m_pView->doUnwrapTime() && res && (pValue->getModelTime()->time == m_pView->drawFromX().time))
 	{
 		res = pValue->getEventID() >= m_pView->drawFromEventID();
@@ -90,7 +90,7 @@ Serie::Kind Serie::getKind() const
 	return m_kind;
 }
 
-rbool Serie::isTemporaryResourceParam() const
+bool Serie::isTemporaryResourceParam() const
 {
 	return m_kind == SK_PARAM && ((Param*)this)->getResource()->getType()->getKind() == ResourceType::RDOTK_TEMPORARY;
 }
@@ -120,7 +120,7 @@ void Serie::getValueCount(int& count) const
 	count = m_valueCount;
 }
 
-rbool Serie::empty() const
+bool Serie::empty() const
 {
 	return m_valueList.empty();
 }
@@ -226,8 +226,8 @@ void Serie::drawSerie(ChartView* const pView,
                             const QColor& color,
                             Marker marker,
                             const int markerSize,
-                            const rbool draw_marker,
-                            const rbool transparent_marker) const
+                            const bool draw_marker,
+                            const bool transparent_marker) const
 {
 	if (!m_valueList.empty())
 	{
@@ -241,7 +241,7 @@ void Serie::drawSerie(ChartView* const pView,
 			--it;
 		}
 
-		rbool flag = it != m_valueList.end();
+		bool flag = it != m_valueList.end();
 		if (flag && !pView->doUnwrapTime())
 		{
 			flag = !(it == m_valueList.begin() && (*it)->getModelTime()->time > pView->drawToX().time);
@@ -353,8 +353,8 @@ void Serie::drawSerie(ChartView* const pView,
 				}
 			}
 
-			rbool tempResourceErased = (m_kind == SK_PARAM && ((Param*)this)->getResource()->isErased());
-			rbool needContinue = !pView->doUnwrapTime() ? (m_valueList.size() > 1) : true;
+			bool tempResourceErased = (m_kind == SK_PARAM && ((Param*)this)->getResource()->isErased());
+			bool needContinue = !pView->doUnwrapTime() ? (m_valueList.size() > 1) : true;
 			if (tempResourceErased)
 			{
 				if (!pView->doUnwrapTime())
@@ -452,14 +452,14 @@ void Serie::removeFromDoc(ChartDoc* const pDocument)
 	}
 }
 
-rbool Serie::isInOneOrMoreDocs() const
+bool Serie::isInOneOrMoreDocs() const
 {
 	return !m_documentList.empty();
 }
 
-rbool Serie::activateFirstDoc() const
+bool Serie::activateFirstDoc() const
 {
-	rbool result = false;
+	bool result = false;
 	if (!m_documentList.empty())
 	{
 		ChartDoc* pDoc = m_documentList.front();

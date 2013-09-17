@@ -75,7 +75,7 @@ private:
 	void createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType);
 
 	void  createChart          (PTR(QTreeWidgetItem) pCtrlItem) const;
-	rbool activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const;
+	bool  activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const;
 
 	LPChartTreeItem      getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
 	PTR(QTreeWidgetItem) getSelected        () const;
@@ -84,7 +84,7 @@ private:
 	virtual void focusOutEvent   (QFocusEvent* pEvent);
 	virtual void mousePressEvent (QMouseEvent* pEvent);
 	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
-	virtual void onUpdateActions (rbool activated);
+	virtual void onUpdateActions (bool activated);
 
 	void doDragDrop(CREF(LPSerie) pSerie);
 

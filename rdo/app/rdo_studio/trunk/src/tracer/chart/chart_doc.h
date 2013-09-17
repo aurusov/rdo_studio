@@ -36,7 +36,7 @@ public:
 	typedef  std::list<Time*>          TimesList;
 	typedef  std::vector<ChartSerie*>  SerieList;
 
-	ChartDoc(const rbool preview = false);
+	ChartDoc(const bool preview = false);
 	virtual ~ChartDoc();
 
 	void attachView(ChartView* pView);
@@ -52,10 +52,10 @@ public:
 	void updateAllViews();
 
 	void addSerie(CREF(LPSerie) pSerie);
-	rbool serieExists(CREF(LPSerie) pSerie) const;
+	bool serieExists(CREF(LPSerie) pSerie) const;
 
 	void incTimeEventsCount(Time* time);
-	rbool newValueToSerieAdded(Value* val);
+	bool newValueToSerieAdded(Value* val);
 
 	void addToViews     (ChartView* pWidget);
 	void removeFromViews(ChartView* pWidget);
@@ -73,7 +73,7 @@ private:
 	SerieList            m_serieList;
 	double               m_minTimeOffset;
 	int                  m_ticksCount;
-	rbool                m_previewMode;
+	bool                 m_previewMode;
 
 	std::vector<ChartView*> m_widgetList;
 	QString                 m_title;

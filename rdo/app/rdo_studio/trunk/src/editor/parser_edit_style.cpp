@@ -75,7 +75,7 @@ ParserStyle& ParserStyle::operator =( const ParserStyle& style )
 	return *this;
 }
 
-rbool ParserStyle::operator ==( const ParserStyle& style ) const
+bool ParserStyle::operator ==( const ParserStyle& style ) const
 {
 	
 	return EditStyle::operator==( style ) &&
@@ -100,17 +100,17 @@ rbool ParserStyle::operator ==( const ParserStyle& style ) const
 		operatorStyle   == style.operatorStyle;
 }
 
-rbool ParserStyle::operator !=( const ParserStyle& style ) const
+bool ParserStyle::operator !=( const ParserStyle& style ) const
 {
 	return !(*this == style);
 }
 
-rbool ParserStyle::styleDefault( const int styleType ) const
+bool ParserStyle::styleDefault( const int styleType ) const
 {
 	return styleType == SCE_RDO_DEFAULT;
 }
 
-rbool ParserStyle::styleUsing( const int styleType ) const
+bool ParserStyle::styleUsing( const int styleType ) const
 {
 	return
 		styleType == SCE_RDO_DEFAULT      || styleType == SCE_RDO_IDENTIFIER   ||
@@ -121,7 +121,7 @@ rbool ParserStyle::styleUsing( const int styleType ) const
 		styleType == SCE_RDO_FRAME_COLOR;
 }
 
-rbool ParserStyle::styleBold( const int styleType ) const
+bool ParserStyle::styleBold( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT     : return defaultStyle    & StyleFont::BOLD ? true : false;
@@ -139,7 +139,7 @@ rbool ParserStyle::styleBold( const int styleType ) const
 	return false;
 }
 
-rbool ParserStyle::styleItalic( const int styleType ) const
+bool ParserStyle::styleItalic( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT     : return defaultStyle    & StyleFont::ITALIC ? true : false;

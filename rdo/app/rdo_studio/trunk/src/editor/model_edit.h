@@ -38,7 +38,7 @@ public:
 	CPTR(Log) getLog() const;
 	void setLog(REF(Log) log);
 
-	void setCanClearErrorLine(rbool value);
+	void setCanClearErrorLine(bool value);
 
 private:
 	typedef  Parser  super;
@@ -48,17 +48,17 @@ private:
 	QMenu*    m_pPopupMenu;
 	int       m_sciFoldMarginID;
 	int       m_sciMarkerError;
-	rbool     m_canClearErrorLine;
+	bool      m_canClearErrorLine;
 
-	void expand         (int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1) const;
+	void expand         (int& line, bool doExpand, bool force = false, int visLevels = 0, int level = -1) const;
 	void foldChanged    (int line, int levelNow, int levelPrev) const;
 	void foldMarginClick(int position, int modifiers) const;
 
 	void  clearErrorLine();
-	rbool hasErrorLine  () const;
+	bool  hasErrorLine  () const;
 
 	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
-	virtual void onUpdateActions (rbool activated);
+	virtual void onUpdateActions (bool activated);
 	virtual void onHelpContext   ();
 
 private slots:

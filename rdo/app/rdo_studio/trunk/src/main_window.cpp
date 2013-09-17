@@ -516,7 +516,7 @@ void MainWindow::init()
 	pModelInit->init();
 }
 
-void MainWindow::setVisible(rbool visible)
+void MainWindow::setVisible(bool visible)
 {
 	parent_type::setVisible(visible);
 }
@@ -644,7 +644,7 @@ void MainWindow::addSubWindow(QWidget* pWidget)
 
 	QList<QMdiSubWindow*> frameList = mdiArea->subWindowList();
 
-	rbool maximized = frameList.empty();
+	bool maximized = frameList.empty();
 	if (!maximized)
 	{
 		maximized = frameList.front()->isMaximized();
@@ -682,7 +682,7 @@ void MainWindow::activateSubWindow(QWidget* pWidget)
 	mdiArea->setActiveSubWindow(pSubWindow);
 }
 
-void MainWindow::onDockVisibleChanged(rbool visible)
+void MainWindow::onDockVisibleChanged(bool visible)
 {
 	if (!visible)
 		return;
@@ -820,7 +820,7 @@ void MainWindow::saveMenuFileReopen() const
 	settings.endGroup();
 }
 
-void MainWindow::updateInsertMenu(rbool enabled)
+void MainWindow::updateInsertMenu(bool enabled)
 {
 	QList<QAction*> menuList = menuInsert->actions();
 	BOOST_FOREACH(const QAction* pMenu, menuList)

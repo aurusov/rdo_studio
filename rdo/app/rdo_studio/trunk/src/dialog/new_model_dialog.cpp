@@ -64,7 +64,7 @@ void NewModelDialog::setPath(CREF(QString) path)
 
 void NewModelDialog::updateUI()
 {
-	rbool error = true;
+	bool error = true;
 	if (modelName->text().isEmpty())
 	{
 		labelError->setText("Необходимо указать имя модели");

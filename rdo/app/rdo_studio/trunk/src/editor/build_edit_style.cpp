@@ -36,14 +36,14 @@ BuildStyle& BuildStyle::operator =( const BuildStyle& style )
 	return *this;
 }
 
-rbool BuildStyle::operator ==( const BuildStyle& style ) const
+bool BuildStyle::operator ==( const BuildStyle& style ) const
 {
-	rbool flag = LogStyle::operator==( style );
+	bool flag = LogStyle::operator==( style );
 	if ( flag )	flag &= warning == style.warning ? true : false;
 	return flag;
 }
 
-rbool BuildStyle::operator !=( const BuildStyle& style ) const
+bool BuildStyle::operator !=( const BuildStyle& style ) const
 {
 	return !(*this == style);
 }

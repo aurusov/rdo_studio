@@ -41,14 +41,14 @@ ChartViewFontsTicks& ChartViewFontsTicks::operator =(const ChartViewFontsTicks& 
 	return *this;
 }
 
-rbool ChartViewFontsTicks::operator ==(const ChartViewFontsTicks& fonts_ticks) const
+bool ChartViewFontsTicks::operator ==(const ChartViewFontsTicks& fonts_ticks) const
 {
 	return titleFontSize  == fonts_ticks.titleFontSize &&
 	       legendFontSize == fonts_ticks.legendFontSize &&
 	       tickWidth      == fonts_ticks.tickWidth;
 }
 
-rbool ChartViewFontsTicks::operator !=(const ChartViewFontsTicks& fonts_ticks) const
+bool ChartViewFontsTicks::operator !=(const ChartViewFontsTicks& fonts_ticks) const
 {
 	return !(*this == fonts_ticks);
 }
@@ -126,9 +126,9 @@ ChartViewStyle& ChartViewStyle::operator =(const ChartViewStyle& style)
 	return *this;
 }
 
-rbool ChartViewStyle::operator ==(const ChartViewStyle& style) const
+bool ChartViewStyle::operator ==(const ChartViewStyle& style) const
 {
-	rbool flag = StyleBase::operator==(style);
+	bool flag = StyleBase::operator==(style);
 
 	flag &= pFontsTicks == style.pFontsTicks;
 
@@ -143,7 +143,7 @@ rbool ChartViewStyle::operator ==(const ChartViewStyle& style) const
 	return flag;
 }
 
-rbool ChartViewStyle::operator !=(const ChartViewStyle& style) const
+bool ChartViewStyle::operator !=(const ChartViewStyle& style) const
 {
 	return !(*this == style);
 }

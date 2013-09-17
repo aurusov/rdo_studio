@@ -153,7 +153,7 @@ int Resource::getParamIndex(CREF(LPParam) pParam) const
 	return -1;
 }
 
-void Resource::setParams(tstring& line, Time* const pTime, const int eventIndex, const rbool erasing)
+void Resource::setParams(tstring& line, Time* const pTime, const int eventIndex, const bool erasing)
 {
 	int count = m_paramList.size();
 	for (int i = 0; i < count; i++)
@@ -189,7 +189,7 @@ void Resource::setParams(tstring& line, Time* const pTime, const int eventIndex,
 	}
 }
 
-void Resource::setErased(const rbool value)
+void Resource::setErased(const bool value)
 {
 	if (m_erased != value)
 	{
@@ -197,7 +197,7 @@ void Resource::setErased(const rbool value)
 	}
 }
 
-rbool Resource::isErased() const
+bool Resource::isErased() const
 {
 	return m_erased;
 }

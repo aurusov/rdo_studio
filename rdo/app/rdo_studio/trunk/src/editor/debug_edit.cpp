@@ -34,9 +34,9 @@ Debug::~Debug()
 
 void Debug::appendLine(CREF(QString) str)
 {
-	rbool readOnly = isReadOnly();
+	bool readOnly = isReadOnly();
 	setReadOnly(false);
-	rbool scroll = isLineVisible( getLineCount() - 1 );
+	bool scroll = isLineVisible( getLineCount() - 1 );
 	setCurrentPos(getLength());
 	appendText(str);
 	if (scroll)

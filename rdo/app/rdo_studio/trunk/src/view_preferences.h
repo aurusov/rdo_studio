@@ -205,16 +205,16 @@ private:
 		ItemType                                type;
 		int&                                    font_size;
 		tstring&                                font_name;
-		rbool&                                  wordwrap;
-		rbool&                                  horzscrollbar;
-		rbool&                                  warning;
+		bool&                                   wordwrap;
+		bool&                                   horzscrollbar;
+		bool&                                   warning;
 		rdo::gui::editor::EditStyle::Bookmark&  bookmarkstyle;
 		rdo::gui::editor::ModelStyle::Fold&     foldstyle;
-		rbool&                                  commentfold;
+		bool&                                   commentfold;
 
 		PropertyList properties;
 
-		StyleItem(ItemType type, int& font_size, tstring& font_name, rbool& wordwrap = null_wordwrap, rbool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::EditStyle::Bookmark& bookmarkstyle = null_bookmarkstyle, rdo::gui::editor::ModelStyle::Fold& foldstyle = null_foldstyle, rbool& commentfold = null_commentfold, rbool& warning = null_warning)
+		StyleItem(ItemType type, int& font_size, tstring& font_name, bool& wordwrap = null_wordwrap, bool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::EditStyle::Bookmark& bookmarkstyle = null_bookmarkstyle, rdo::gui::editor::ModelStyle::Fold& foldstyle = null_foldstyle, bool& commentfold = null_commentfold, bool& warning = null_warning)
 			: type(type)
 			, font_size(font_size)
 			, font_name(font_name)
@@ -237,19 +237,19 @@ private:
 	QColor      all_bg_color;
 
 	rdo::gui::style::StyleFont::style             null_font_style;
-	static rbool                                  null_wordwrap;
-	static rbool                                  null_horzscrollbar;
-	static rbool                                  null_warning;
-	static rbool                                  null_commentfold;
+	static bool                                   null_wordwrap;
+	static bool                                   null_horzscrollbar;
+	static bool                                   null_warning;
+	static bool                                   null_commentfold;
 	static rdo::gui::editor::EditStyle::Bookmark  null_bookmarkstyle;
 	static rdo::gui::editor::ModelStyle::Fold     null_foldstyle;
 	static QColor                                 null_fg_color;
 	static QColor                                 null_bg_color;
 
-	rbool m_setup;
-	rbool m_checkInFuture;
-	rbool m_openLastProject;
-	rbool m_showFullName;
+	bool m_setup;
+	bool m_checkInFuture;
+	bool m_openLastProject;
+	bool m_showFullName;
 
 	rdo::gui::editor::ModelStyle      style_editor;
 	rdo::gui::editor::BuildStyle      style_build;

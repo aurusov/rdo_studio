@@ -48,12 +48,12 @@ public:
 	ruint findFrameIndex(CPTR(View)            pView          ) const;
 	ruint findFrameIndex(CPTR(Content)         pContent       ) const;
 
-	rbool          isShowing         () const;
+	bool           isShowing         () const;
 	CREF(QString)  getFrameName      (ruint index) const;
 	PTR(View)      getFrameView      (ruint index) const;
 	PTR(View)      getFrameViewFirst () const;
 	ruint          count             () const;
-	rbool          isChanged         ();
+	bool           isChanged         ();
 
 	void           areaDown          (ruint frameIndex, CREF(QPoint) point) const;
 
@@ -70,8 +70,8 @@ public:
 	void  showNextFrame           ();
 	void  showPrevFrame           ();
 	void  showFrame               (ruint index);
-	rbool canShowNextFrame        () const;
-	rbool canShowPrevFrame        () const;
+	bool  canShowNextFrame        () const;
+	bool  canShowPrevFrame        () const;
 	void  updateStyles            () const;
 
 private:
@@ -96,7 +96,7 @@ private:
 	rdo::gui::BitmapList  m_bitmapList;
 	ruint                 m_lastShowedFrame;
 	ruint                 m_currentShowingFrame;
-	rbool                 m_changed;
+	bool                  m_changed;
 	OnChangeFrame         m_onChangeFrame;
 
 	DECLARE_IInit;

@@ -32,8 +32,8 @@ public:
 	virtual ~StyleFont();
 
 	StyleFont& operator =(const StyleFont& font);
-	rbool operator ==(const StyleFont& font) const;
-	rbool operator !=(const StyleFont& font) const;
+	bool operator ==(const StyleFont& font) const;
+	bool operator !=(const StyleFont& font) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
@@ -63,8 +63,8 @@ public:
 	~StyleBase();
 
 	StyleBase& operator =(const StyleBase& style);
-	rbool operator ==(const StyleBase& style) const;
-	rbool operator !=(const StyleBase& style) const;
+	bool operator ==(const StyleBase& style) const;
+	bool operator !=(const StyleBase& style) const;
 
 	StyleFont font;
 	StyleFont::style defaultStyle;

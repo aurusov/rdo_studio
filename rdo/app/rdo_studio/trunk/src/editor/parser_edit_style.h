@@ -30,13 +30,13 @@ public:
 	~ParserStyle();
 
 	ParserStyle& operator =( const ParserStyle& style );
-	rbool operator ==( const ParserStyle& style ) const;
-	rbool operator !=( const ParserStyle& style ) const;
+	bool operator ==( const ParserStyle& style ) const;
+	bool operator !=( const ParserStyle& style ) const;
 
-	virtual rbool styleDefault( const int styleType ) const;
-	virtual rbool styleUsing( const int styleType ) const;
-	virtual rbool styleBold( const int styleType = STYLE_DEFAULT ) const;
-	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
+	virtual bool styleDefault( const int styleType ) const;
+	virtual bool styleUsing( const int styleType ) const;
+	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
+	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
 	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static ParserStyle getDefaultStyle();

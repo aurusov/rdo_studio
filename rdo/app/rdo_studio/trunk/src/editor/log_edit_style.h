@@ -27,8 +27,8 @@ public:
 	~LogStyle();
 
 	LogStyle& operator =( const LogStyle& style );
-	rbool operator ==( const LogStyle& style ) const;
-	rbool operator !=( const LogStyle& style ) const;
+	bool operator ==( const LogStyle& style ) const;
+	bool operator !=( const LogStyle& style ) const;
 
 	static LogStyle getDefaultStyle();
 	static LogStyle getClassicStyle();

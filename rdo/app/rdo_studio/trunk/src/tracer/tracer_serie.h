@@ -55,7 +55,7 @@ public:
 	void addValue(Value* const value);
 	void getValueCount(int& count) const;
 
-	rbool empty() const;
+	bool empty() const;
 
 	ValuesList::const_iterator begin() const;
 	ValuesList::const_iterator end  () const;
@@ -69,15 +69,15 @@ public:
 	               const QColor& color,
 	               Marker marker,
 	               const int markerSize,
-	               const rbool draw_marker,
-	               const rbool transparent_marker) const;
+	               const bool draw_marker,
+	               const bool transparent_marker) const;
 	void drawMarker(QPainter& painter, const int x, const int y, Marker marker, const int markerSize) const;
 
 	void addToDoc(ChartDoc* const pDocument);
 	void removeFromDoc(ChartDoc* const pDocument);
-	rbool isInOneOrMoreDocs() const;
+	bool isInOneOrMoreDocs() const;
 
-	rbool activateFirstDoc() const;
+	bool activateFirstDoc() const;
 
 	typedef std::vector<QString> ExportData;
 	ExportData exportData();
@@ -102,7 +102,7 @@ private:
 	int           m_valueCount;
 	DocumentList  m_documentList;
 
-	rbool isTemporaryResourceParam() const;
+	bool isTemporaryResourceParam() const;
 };
 
 typedef  rdo::intrusive_ptr<Serie>  LPSerie;

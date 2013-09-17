@@ -24,10 +24,10 @@ using namespace rdo::gui::style;
 using namespace rdo::gui::tracer;
 using namespace rdo::gui::frame;
 
-rbool ViewPreferences::null_wordwrap      = false;
-rbool ViewPreferences::null_horzscrollbar = true;
-rbool ViewPreferences::null_warning       = true;
-rbool ViewPreferences::null_commentfold   = false;
+bool ViewPreferences::null_wordwrap      = false;
+bool ViewPreferences::null_horzscrollbar = true;
+bool ViewPreferences::null_warning       = true;
+bool ViewPreferences::null_commentfold   = false;
 EditStyle::Bookmark ViewPreferences::null_bookmarkstyle = EditStyle::B_NONE;
 ModelStyle::Fold    ViewPreferences::null_foldstyle     = ModelStyle::F_NONE;
 QColor ViewPreferences::null_fg_color = QColor(0x00, 0x00, 0x00);
@@ -198,7 +198,7 @@ void ViewPreferences::onCheckInput(const QString& text)
 {
 	UNUSED(text);
 
-	rbool check = tabSizeLineEdit->text().toInt() >= 1 &&
+	bool check = tabSizeLineEdit->text().toInt() >= 1 &&
 		indentSizeLineEdit->text().toInt() >= 1 &&
 		horzIndentLineEdit->text().toInt() >= 1 &&
 		vertIndentLineEdit->text().toInt() >= 1 &&
@@ -1637,19 +1637,19 @@ void ViewPreferences::apply()
 
 void ViewPreferences::checkAllData()
 {
-	rbool setupFlag           = m_setup           == g_pApp->getFileAssociationSetup() ? true : false;
-	rbool checkInFutureFlag   = m_checkInFuture   == g_pApp->getFileAssociationCheckInFuture() ? true : false;
-	rbool openLastProjectFlag = m_openLastProject == g_pApp->getOpenLastProject() ? true : false;
-	rbool showFullNameFlag    = m_showFullName    == g_pApp->getShowCaptionFullName() ? true : false;
+	bool setupFlag           = m_setup           == g_pApp->getFileAssociationSetup() ? true : false;
+	bool checkInFutureFlag   = m_checkInFuture   == g_pApp->getFileAssociationCheckInFuture() ? true : false;
+	bool openLastProjectFlag = m_openLastProject == g_pApp->getOpenLastProject() ? true : false;
+	bool showFullNameFlag    = m_showFullName    == g_pApp->getShowCaptionFullName() ? true : false;
 
-	rbool style_editor_flag  = style_editor  == g_pApp->getStyle()->style_editor ? true : false;
-	rbool style_build_flag   = style_build   == g_pApp->getStyle()->style_build ? true : false;
-	rbool style_debug_flag   = style_debug   == g_pApp->getStyle()->style_debug ? true : false;
-	rbool style_trace_flag   = style_trace   == g_pApp->getStyle()->style_trace ? true : false;
-	rbool style_results_flag = style_results == g_pApp->getStyle()->style_results ? true : false;
-	rbool style_find_flag    = style_find    == g_pApp->getStyle()->style_find ? true : false;
-	rbool style_chart_flag   = style_chart   == g_pApp->getStyle()->style_chart ? true : false;
-	rbool style_frame_flag   = style_frame   == g_pApp->getStyle()->style_frame ? true : false;
+	bool style_editor_flag  = style_editor  == g_pApp->getStyle()->style_editor ? true : false;
+	bool style_build_flag   = style_build   == g_pApp->getStyle()->style_build ? true : false;
+	bool style_debug_flag   = style_debug   == g_pApp->getStyle()->style_debug ? true : false;
+	bool style_trace_flag   = style_trace   == g_pApp->getStyle()->style_trace ? true : false;
+	bool style_results_flag = style_results == g_pApp->getStyle()->style_results ? true : false;
+	bool style_find_flag    = style_find    == g_pApp->getStyle()->style_find ? true : false;
+	bool style_chart_flag   = style_chart   == g_pApp->getStyle()->style_chart ? true : false;
+	bool style_frame_flag   = style_frame   == g_pApp->getStyle()->style_frame ? true : false;
 
 	if(setupFlag
 		&& checkInFutureFlag

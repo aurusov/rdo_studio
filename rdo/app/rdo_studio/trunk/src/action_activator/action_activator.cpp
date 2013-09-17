@@ -24,7 +24,7 @@ ActionActivator::ActionActivator()
 ActionActivator::~ActionActivator()
 {}
 
-rbool ActionActivator::isActivated() const
+bool ActionActivator::isActivated() const
 {
 	return m_activated;
 }

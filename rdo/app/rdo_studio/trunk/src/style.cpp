@@ -47,13 +47,13 @@ StyleFont& StyleFont::operator =( const StyleFont& font )
 	return *this;
 }
 
-rbool StyleFont::operator ==( const StyleFont& font ) const
+bool StyleFont::operator ==( const StyleFont& font ) const
 {
 	return name == font.name &&
 	       size == font.size;
 }
 
-rbool StyleFont::operator !=( const StyleFont& font ) const
+bool StyleFont::operator !=( const StyleFont& font ) const
 {
 	return !(*this == font);
 }
@@ -146,7 +146,7 @@ StyleBase& StyleBase::operator =( const StyleBase& style )
 	return *this;
 }
 
-rbool StyleBase::operator ==( const StyleBase& style ) const
+bool StyleBase::operator ==( const StyleBase& style ) const
 {
 	return
 		font            == style.font &&
@@ -155,7 +155,7 @@ rbool StyleBase::operator ==( const StyleBase& style ) const
 		defaultStyle    == style.defaultStyle;
 }
 
-rbool StyleBase::operator !=( const StyleBase& style ) const
+bool StyleBase::operator !=( const StyleBase& style ) const
 {
 	return !(*this == style);
 }

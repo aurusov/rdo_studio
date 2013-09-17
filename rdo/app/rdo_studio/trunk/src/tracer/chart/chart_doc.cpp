@@ -28,7 +28,7 @@ using namespace rdo::gui::tracer;
 
 ruint ChartDoc::s_titleIndex = 0;
 
-ChartDoc::ChartDoc(const rbool preview)
+ChartDoc::ChartDoc(const bool preview)
 	: m_minTimeOffset(1.7E+308)
 	, m_ticksCount(0)
 	, m_previewMode(preview)
@@ -106,7 +106,7 @@ void ChartDoc::incTimeEventsCount(Time* time)
 	}
 }
 
-rbool ChartDoc::newValueToSerieAdded(Value* val)
+bool ChartDoc::newValueToSerieAdded(Value* val)
 {
 	if (m_docTimes.empty())
 	{
@@ -310,7 +310,7 @@ Serie::Marker ChartDoc::selectMarker()
 	return res;
 }
 
-rbool ChartDoc::serieExists(CREF(LPSerie) pSerie) const
+bool ChartDoc::serieExists(CREF(LPSerie) pSerie) const
 {
 	return boost::range::find_if(m_serieList, boost::bind(&ChartSerie::isTracerSerie, _1, pSerie)) != m_serieList.end();
 }

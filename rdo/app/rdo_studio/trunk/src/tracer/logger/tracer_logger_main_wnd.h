@@ -35,10 +35,10 @@ public:
 	}
 
 private:
-	virtual rbool viewportEvent(PTR(QEvent)      pEvent);
-	virtual void  focusInEvent (PTR(QFocusEvent) pEvent);
-	virtual void  focusOutEvent(PTR(QFocusEvent) pEvent);
-	virtual void  keyPressEvent(PTR(QKeyEvent)   pEvent);
+	virtual bool viewportEvent(PTR(QEvent)      pEvent);
+	virtual void focusInEvent (PTR(QFocusEvent) pEvent);
+	virtual void focusOutEvent(PTR(QFocusEvent) pEvent);
+	virtual void keyPressEvent(PTR(QKeyEvent)   pEvent);
 };
 
 }}} // namespace rdo::gui::tracer

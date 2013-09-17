@@ -52,7 +52,7 @@ private:
 	QPoint             m_pos;
 	QFont              m_font;
 
-	rbool valid           () const;
+	bool  valid           () const;
 	void  init            (CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
 	void  init            (CREF(QSize)   size );
 	void  setBGColor      (CREF(QColor)  color);
@@ -111,7 +111,7 @@ public:
 private:
 	QWidget* m_pContent;
 
-	virtual rbool event(QEvent* pEvent);
+	virtual bool event(QEvent* pEvent);
 };
 
 }}} // namespace rdo::gui::frame

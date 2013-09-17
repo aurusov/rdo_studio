@@ -53,8 +53,8 @@ public:
 	void updateChartsStyles() const;
 	void clear();
 	void setModelName(CREF(QString) name) const;
-	void setDrawTrace(const rbool value);
-	rbool getDrawTrace() const;
+	void setDrawTrace(const bool value);
+	bool getDrawTrace() const;
 
 protected:
 	TracerBase(CREF(tstring) _thread_name, RDOKernelGUI* _kernel_gui);
@@ -118,7 +118,7 @@ private:
 	void deleteTrace();
 
 	DocumentList m_documentList;
-	rbool        m_drawTrace;
+	bool         m_drawTrace;
 };
 
 }}} // namespace rdo::gui::tracer
