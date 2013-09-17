@@ -15,6 +15,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <boost/function.hpp>
 #include <QMdiSubWindow>
 #include <QTreeWidget>
 #include "utils/src/common/warning_enable.h"
