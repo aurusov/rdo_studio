@@ -6,18 +6,23 @@ MESSAGE(STATUS "CREATE  RDO_UI_ABSTRACT LIBRARY")
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
-SET(HEADER_FILES
-    pch/stdpch.h
-    headers/memdc/memdc.h
-    headers/memdc/memdc.inl
-    )
+SET(PCH_FILES
+	pch/stdpch.cpp
+	pch/stdpch.h
+)
+
+SET(MEMDC_FILES
+	src/memdc/memdc.cpp
+	headers/memdc/memdc.h
+	headers/memdc/memdc.inl
+)
 
 SET(SOURCE_FILES
-    pch/stdpch.cpp
-    src/memdc/memdc.cpp
-    )
+	${PCH_FILES}
+	${MEMDC_FILES}
+)
 
-ADD_LIBRARY(rdo_ui_abstract ${HEADER_FILES} ${SOURCE_FILES})
+ADD_LIBRARY(rdo_ui_abstract ${SOURCE_FILES})
 
 INCLUDE(${PROJECT_SOURCE_DIR}/app/rdo_studio/projects/common/rdo_studio.cmake)
 SET_TARGET_PROPERTIES(rdo_ui_abstract PROPERTIES FOLDER ${APP_FOLDER}/.ui)
@@ -26,11 +31,17 @@ ADD_DEPENDENCIES(rdo_ui_abstract rdo_utils)
 
 TARGET_LINK_LIBRARIES(rdo_ui_abstract rdo_utils)
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
-SOURCE_GROUP(".code" FILES 
-    ${HEADER_FILES}
-    ${SOURCE_FILES}
-    )
+	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
+	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" pch/stdpch ui/abstract)
+
+	SOURCE_GROUP(".pch" FILES 
+		${PCH_FILES}
+	)
+
+	SOURCE_GROUP(".memdc" FILES 
+		${MEMDC_FILES}
+	)
 
 ENDIF(MSVC)
