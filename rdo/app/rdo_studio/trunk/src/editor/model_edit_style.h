@@ -11,7 +11,6 @@
 #define _RDO_STUDIO_EDITOR_MODEL_EDIT_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/signal.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/editor/parser_edit_style.h"
 // --------------------------------------------------------------------------------

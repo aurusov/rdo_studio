@@ -4,7 +4,6 @@
 #include "utils/src/common/platform.h"
 #include "utils/src/common/warning_disable.h"
 
-#include <boost/signal.hpp>
 #include <vector>
 #include <map>
 #include <list>
