@@ -173,7 +173,7 @@ IF(MSVC)
     SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
 ENDIF(MSVC)
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
 SOURCE_GROUP(".animation" FILES 
     rdofrm.h

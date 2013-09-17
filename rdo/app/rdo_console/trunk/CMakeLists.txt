@@ -61,7 +61,7 @@ TARGET_LINK_LIBRARIES(rdo rdo_simulator_report)
 
 INSTALL(TARGETS rdo DESTINATION bin)
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
 SOURCE_GROUP(".code" FILES
     ${HEADER_FILES}

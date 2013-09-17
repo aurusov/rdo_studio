@@ -246,7 +246,7 @@ INSTALL(TARGETS rdo_runtime DESTINATION lib)
 SET(RDO_RUNTIME_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 ADD_SUBDIRECTORY(${RDO_RUNTIME_TEST_PATH})
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
 SOURCE_GROUP(".common" FILES 
 	namespace.h)

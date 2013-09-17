@@ -32,7 +32,7 @@ TARGET_LINK_LIBRARIES(rdo_simulator_report rdo_utils)
 
 INSTALL(TARGETS rdo_simulator_report DESTINATION lib)
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
 SOURCE_GROUP(".code" FILES 
 	${HEADER_FILES}

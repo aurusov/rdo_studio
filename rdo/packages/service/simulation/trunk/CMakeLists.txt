@@ -43,7 +43,7 @@ TARGET_LINK_LIBRARIES(rdo_simulator rdo_converter_smr2rdox)
 
 INSTALL(TARGETS rdo_simulator DESTINATION lib)
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
 SOURCE_GROUP(".code" FILES 
     ${HEADER_FILES}

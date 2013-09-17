@@ -37,7 +37,7 @@ IF(PROJECT_OS_LINUX OR CYGWIN)
 	TARGET_LINK_LIBRARIES(rdo_kernel ${PTHREAD})
 ENDIF(PROJECT_OS_LINUX OR CYGWIN)
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
 SOURCE_GROUP(".thread" FILES 
 	rdothread.h

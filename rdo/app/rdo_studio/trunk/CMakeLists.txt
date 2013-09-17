@@ -356,7 +356,7 @@ TARGET_LINK_LIBRARIES(rdo_studio scintilla)
 
 INSTALL(TARGETS rdo_studio DESTINATION bin)
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
 SOURCE_GROUP(".code" FILES
     ${HEADER_FILES}

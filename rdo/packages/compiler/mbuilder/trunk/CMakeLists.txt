@@ -34,7 +34,7 @@ TARGET_LINK_LIBRARIES(rdo_mbuilder rdo_parser)
 
 INSTALL(TARGETS rdo_mbuilder DESTINATION lib)
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
 SOURCE_GROUP(".common" FILES 
 	namespace.h)

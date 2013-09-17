@@ -33,7 +33,7 @@ ADD_DEPENDENCIES(rdo_ui_qt rdo_utils)
 
 TARGET_LINK_LIBRARIES(rdo_ui_qt rdo_utils)
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
 SOURCE_GROUP(".code" FILES 
     ${HEADER_FILES}
