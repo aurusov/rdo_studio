@@ -57,6 +57,10 @@ RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 #endif
 		return doCalc(pRuntime);
 	}
+	catch (CREF(RDOUndefinedException) ex)
+	{
+		throw ex;
+	}
 	catch (CREF(RDORuntimeException) ex)
 	{
 		tstring message = rdo::format("<Модельное время: %f>, '%s'", pRuntime->getTimeNow(), m_srcInfo.src_text().c_str());
