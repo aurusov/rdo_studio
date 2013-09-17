@@ -16,6 +16,7 @@
 #include <QFocusEvent>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
 
 class ActionActivator
