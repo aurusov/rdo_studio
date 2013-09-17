@@ -11,6 +11,8 @@
 #define _RDO_STUDIO_EDITOR_LEXER_WORD_LIST_UTIL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <vector>
+#include <string>
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "thirdparty/scintilla/lexlib/WordList.h"
