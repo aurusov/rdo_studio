@@ -13,6 +13,7 @@
 #define _LIB_RUNTIME_RES_TYPE_I_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/interface_ptr/interface_ptr.h"
 #include "simulator/runtime/rdo_value.h"
