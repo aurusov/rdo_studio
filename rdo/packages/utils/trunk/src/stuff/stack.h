@@ -38,6 +38,6 @@ private:
 
 CLOSE_RDO_NAMESPACE
 
-#include "utils/stack.inl"
+#include "utils/src/stuff/stack.inl"
 
 #endif // _RDO_COMMON_STACK_H_
