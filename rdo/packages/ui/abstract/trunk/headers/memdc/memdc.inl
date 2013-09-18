@@ -60,13 +60,13 @@ namespace rdo
 		}
 
 		template <class TDC, class TBMP>
-		inline REF(TDC) MemDC<TDC, TBMP>::dc()
+		inline TDC& MemDC<TDC, TBMP>::dc()
 		{
 			return *m_pDC.get();
 		}
 
 		template <class TDC, class TBMP>
-		inline REF(TBMP) MemDC<TDC, TBMP>::buffer()
+		inline TBMP& MemDC<TDC, TBMP>::buffer()
 		{
 			return *m_pBitmap.get();
 		}

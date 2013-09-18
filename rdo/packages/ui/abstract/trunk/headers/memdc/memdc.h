@@ -43,11 +43,11 @@ namespace rdo
 
 			rbool valid () const;
 			rbool create(ruint width, ruint height);
-			rbool create(ruint width, ruint height, REF(TDC) from);
+			rbool create(ruint width, ruint height, TDC& from);
 			rbool resize(ruint width, ruint height);
 
-			REF(TDC)  dc    ();
-			REF(TBMP) buffer();
+			TDC&  dc    ();
+			TBMP& buffer();
 
 		private:
 			std::auto_ptr<TDC>    m_pDC;
