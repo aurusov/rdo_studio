@@ -434,7 +434,7 @@ INSTALL(TARGETS rdo_studio DESTINATION bin)
 IF(MSVC) # options for windows #
 
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
-	ADD_PCH("${SOURCE_FILES2}" "${PCH_FILES}" app/rdo_studio pch stdpch)
+	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" app/rdo_studio pch stdpch)
 
 	SOURCE_GROUP(".application" FILES
 		${APPLICATION_FILES}
