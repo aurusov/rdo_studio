@@ -21,8 +21,8 @@ SET(PCH_FILES
 )
 
 SET(SOURCE_FILES
-	${MEMDC_FILES}
 	${PCH_FILES}
+	${MEMDC_FILES}
 )
 
 ADD_LIBRARY(rdo_ui_abstract ${SOURCE_FILES})
@@ -37,13 +37,13 @@ TARGET_LINK_LIBRARIES(rdo_ui_abstract rdo_utils)
 IF(MSVC) # options for windows #
 
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
-	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" pch/stdpch ui/abstract)
+	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" ui/abstract pch stdpch)
 
-	SOURCE_GROUP(".memdc" FILES 
+	SOURCE_GROUP(".memdc" FILES
 		${MEMDC_FILES}
 	)
 
-	SOURCE_GROUP(".pch" FILES 
+	SOURCE_GROUP(".pch" FILES
 		${PCH_FILES}
 	)
 

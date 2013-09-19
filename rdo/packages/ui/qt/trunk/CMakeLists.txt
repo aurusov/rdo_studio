@@ -36,10 +36,10 @@ SET(SCROLLBAR_FILES
 )
 
 SET(SOURCE_FILES
+	${PCH_FILES}
 	${ANIMATION_FILES}
 	${BITMAP_FILES}
 	${MEMDC_FILES}
-	${PCH_FILES}
 	${SCROLLBAR_FILES}
 )
 
@@ -55,7 +55,7 @@ TARGET_LINK_LIBRARIES(rdo_ui_qt rdo_utils)
 IF(MSVC) # options for windows #
 
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
-	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" pch/stdpch ui/qt)
+	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" ui/qt pch stdpch)
 
 	SOURCE_GROUP(".animation" FILES 
 		${ANIMATION_FILES}
