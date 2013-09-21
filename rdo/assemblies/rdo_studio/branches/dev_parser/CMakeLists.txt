@@ -110,24 +110,32 @@ ENDIF()
 
 SET(DOC_DIRECTORY ${RDO_BASE_DIRECTORY}/doc)
 
-SET(COMMON_FILES
-    ${DOC_DIRECTORY}/changes.txt
-    ${DOC_DIRECTORY}/configuring.environment.debian.txt
-    ${DOC_DIRECTORY}/install.boost.txt
-    ${DOC_DIRECTORY}/install.doxygen.txt
-    ${DOC_DIRECTORY}/install.mingw.txt
-    ${DOC_DIRECTORY}/install.qt.from.sources.txt
-    ${DOC_DIRECTORY}/rdodoc-src-html.doxyfile
-    ${DOC_DIRECTORY}/todo.txt
-    ${DOC_DIRECTORY}/coding.style.txt
-    ${DOC_DIRECTORY}/configuring.environment.opensuse.txt
-    ${DOC_DIRECTORY}/install.cmake.txt
-    ${DOC_DIRECTORY}/install.graphviz.txt
-    ${DOC_DIRECTORY}/install.qt.linux.txt
-    ${DOC_DIRECTORY}/install.qt.from.installer.txt
-    ${DOC_DIRECTORY}/make.project.txt
-    ${DOC_DIRECTORY}/system.test.txt
-    )
+SET(DOC_FILES
+	${DOC_DIRECTORY}/changes.txt
+	${DOC_DIRECTORY}/coding.style.txt
+	${DOC_DIRECTORY}/configuring.environment.debian.txt
+	${DOC_DIRECTORY}/configuring.environment.opensuse.txt
+	${DOC_DIRECTORY}/cpack.txt
+	${DOC_DIRECTORY}/install.boost.txt
+	${DOC_DIRECTORY}/install.cmake.txt
+	${DOC_DIRECTORY}/install.cygwin.txt
+	${DOC_DIRECTORY}/install.doxygen.txt
+	${DOC_DIRECTORY}/install.graphviz.txt
+	${DOC_DIRECTORY}/install.icu.txt
+	${DOC_DIRECTORY}/install.mingw.txt
+	${DOC_DIRECTORY}/install.ms.vs.txt
+	${DOC_DIRECTORY}/install.postgresql.txt
+	${DOC_DIRECTORY}/install.qt.from.binary.txt
+	${DOC_DIRECTORY}/install.qt.from.installer.txt
+	${DOC_DIRECTORY}/install.qt.from.sources.txt
+	${DOC_DIRECTORY}/install.qt.linux.txt
+	${DOC_DIRECTORY}/install.qt.txt
+	${DOC_DIRECTORY}/install.webdav.txt
+	${DOC_DIRECTORY}/make.project.txt
+	${DOC_DIRECTORY}/rdodoc-src-html.doxyfile
+	${DOC_DIRECTORY}/system.test.txt
+	${DOC_DIRECTORY}/todo.txt
+)
 
 #==============================================================================
 
@@ -157,15 +165,13 @@ SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
 SET(SCRIPT_FILES
     ${SCRIPTS_DIRECTORY}/python/executor_of_system_tests.py
     ${SCRIPTS_DIRECTORY}/statistics/statistics.sh
-    )
+)
 
 SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
 
 IF(WIN32)
     SET(ENV{BISON_PKGDATADIR} ${BISON_FLEX_DIRECTORY}/share/bison)
 ENDIF()
-
-MESSAGE(BISON_PKGDATADIR: $ENV{BISON_PKGDATADIR})
 
 # Compile the rdo_common
 SET(UTILS_PATH ${RDO_BASE_DIRECTORY}/utils)
