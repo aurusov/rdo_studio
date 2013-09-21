@@ -181,24 +181,24 @@ void ChartPreferences::onHelpContext()
 
 void ChartPreferences::onCheckAllData()
 {
-	rbool legend = showLegendCheckBox->checkState() == Qt::Checked ? true : false;
-	rbool showInLegend = showInLegendCheckBox->checkState() == Qt::Checked ? true : false;
-	rbool showMarker = showMarkerCheckBox->checkState() == Qt::Checked ? true : false;
-	rbool transparentMarker = transparentMarkerCheckBox->checkState() == Qt::Checked ? true : false;
+	bool legend = showLegendCheckBox->checkState() == Qt::Checked ? true : false;
+	bool showInLegend = showInLegendCheckBox->checkState() == Qt::Checked ? true : false;
+	bool showMarker = showMarkerCheckBox->checkState() == Qt::Checked ? true : false;
+	bool transparentMarker = transparentMarkerCheckBox->checkState() == Qt::Checked ? true : false;
 
-	rbool titleFlag  = titleLineEdit->text() == m_pView->getDocument()->getTitle() ? true : false;
-	rbool yValueFlag = yValueLineEdit->text().toInt() == m_pView->getValueCountX() ? true : false;
-	rbool xValueFlag = xValueLineEdit->text().toInt() == m_pView->getValueCountY() ? true : false;
-	rbool showLegendFlag = legend == m_pView->isDrawLegend();
-	rbool showInLegendFlag = showInLegend == m_pSerie->options().showInLegend ? true : false;
-	rbool markerSizeFlag = markerSizeLineEdit->text().toInt() == m_pSerie->options().markerSize ? true : false;
-	rbool markerShowFlag = showMarker == m_pSerie->options().markerNeedDraw ? true : false;
-	rbool markerTransparentFlag = transparentMarker == m_pSerie->options().markerTransparent ? true : false;
-	rbool titleValueFlag = titleValueLineEdit->text() == m_pSerie->options().title;
-	rbool colorFlag = colorComboBox->itemData(colorComboBox->currentIndex(), Qt::UserRole).value<QColor>() == m_pSerie->options().color ? true : false;
-	rbool markerTypeFlag = markerComboBox->itemData(markerComboBox->currentIndex(), Qt::UserRole).toInt() == m_pSerie->options().markerType ? true : false;
+	bool titleFlag  = titleLineEdit->text() == m_pView->getDocument()->getTitle() ? true : false;
+	bool yValueFlag = yValueLineEdit->text().toInt() == m_pView->getValueCountX() ? true : false;
+	bool xValueFlag = xValueLineEdit->text().toInt() == m_pView->getValueCountY() ? true : false;
+	bool showLegendFlag = legend == m_pView->isDrawLegend();
+	bool showInLegendFlag = showInLegend == m_pSerie->options().showInLegend ? true : false;
+	bool markerSizeFlag = markerSizeLineEdit->text().toInt() == m_pSerie->options().markerSize ? true : false;
+	bool markerShowFlag = showMarker == m_pSerie->options().markerNeedDraw ? true : false;
+	bool markerTransparentFlag = transparentMarker == m_pSerie->options().markerTransparent ? true : false;
+	bool titleValueFlag = titleValueLineEdit->text() == m_pSerie->options().title;
+	bool colorFlag = colorComboBox->itemData(colorComboBox->currentIndex(), Qt::UserRole).value<QColor>() == m_pSerie->options().color ? true : false;
+	bool markerTypeFlag = markerComboBox->itemData(markerComboBox->currentIndex(), Qt::UserRole).toInt() == m_pSerie->options().markerType ? true : false;
 
-	rbool valueFlag = traceIndex == yTraceComboBox->currentIndex();
+	bool valueFlag = traceIndex == yTraceComboBox->currentIndex();
 
 	if (titleFlag
 		&& yValueFlag
@@ -238,7 +238,7 @@ void ChartPreferences::onCheckInput(const QString& text)
 {
 	UNUSED(text);
 
-	rbool check = yValueLineEdit->text().toInt() >= 2 &&
+	bool check = yValueLineEdit->text().toInt() >= 2 &&
 		xValueLineEdit->text().toInt() >= 2 &&
 		markerSizeLineEdit->text().toInt() >= 2;
 

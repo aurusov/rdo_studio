@@ -35,13 +35,13 @@ LogStyle& LogStyle::operator =( const LogStyle& style )
 	return *this;
 }
 
-rbool LogStyle::operator ==( const LogStyle& style ) const
+bool LogStyle::operator ==( const LogStyle& style ) const
 {
-	rbool flag = EditStyle::operator==( style );
+	bool flag = EditStyle::operator==( style );
 	return flag && selectLineBgColor == style.selectLineBgColor;
 }
 
-rbool LogStyle::operator !=( const LogStyle& style ) const
+bool LogStyle::operator !=( const LogStyle& style ) const
 {
 	return !(*this == style);
 }

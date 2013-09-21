@@ -45,7 +45,7 @@ EditTab& EditTab::operator =( const EditTab& tab )
 	return *this;
 }
 
-rbool EditTab::operator ==( const EditTab& tab ) const
+bool EditTab::operator ==( const EditTab& tab ) const
 {
 	return tabSize         == tab.tabSize &&
 	       indentSize      == tab.indentSize &&
@@ -55,7 +55,7 @@ rbool EditTab::operator ==( const EditTab& tab ) const
 	       autoIndent      == tab.autoIndent;
 }
 
-rbool EditTab::operator !=( const EditTab& tab ) const
+bool EditTab::operator !=( const EditTab& tab ) const
 {
 	return !(*this == tab);
 }
@@ -118,13 +118,13 @@ EditWindow& EditWindow::operator =( const EditWindow& window )
 	return *this;
 }
 
-rbool EditWindow::operator ==( const EditWindow& window ) const
+bool EditWindow::operator ==( const EditWindow& window ) const
 {
 	return wordWrap          == window.wordWrap &&
 	       showHorzScrollBar == window.showHorzScrollBar;
 }
 
-rbool EditWindow::operator !=( const EditWindow& window ) const
+bool EditWindow::operator !=( const EditWindow& window ) const
 {
 	return !(*this == window);
 }
@@ -204,7 +204,7 @@ EditStyle& EditStyle::operator =( const EditStyle& style )
 	return *this;
 }
 
-rbool EditStyle::operator ==( const EditStyle& style ) const
+bool EditStyle::operator ==( const EditStyle& style ) const
 {
 	return
 		StyleBase::operator==(style) &&
@@ -220,27 +220,27 @@ rbool EditStyle::operator ==( const EditStyle& style ) const
 		bookmarkStyle    == style.bookmarkStyle;
 }
 
-rbool EditStyle::operator !=( const EditStyle& style ) const
+bool EditStyle::operator !=( const EditStyle& style ) const
 {
 	return !(*this == style);
 }
 
-rbool EditStyle::styleDefault( const int styleType ) const
+bool EditStyle::styleDefault( const int styleType ) const
 {
 	return styleType == STYLE_DEFAULT;
 }
 
-rbool EditStyle::styleUsing( const int styleType ) const
+bool EditStyle::styleUsing( const int styleType ) const
 {
 	return styleType == STYLE_DEFAULT;
 }
 
-rbool EditStyle::styleBold( const int /*styleType*/ ) const
+bool EditStyle::styleBold( const int /*styleType*/ ) const
 {
 	return defaultStyle & StyleFont::BOLD ? true : false;
 }
 
-rbool EditStyle::styleItalic( const int /*styleType*/ ) const
+bool EditStyle::styleItalic( const int /*styleType*/ ) const
 {
 	return defaultStyle & StyleFont::ITALIC ? true : false;
 }

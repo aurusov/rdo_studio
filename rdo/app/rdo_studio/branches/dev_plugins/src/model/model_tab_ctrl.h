@@ -11,9 +11,9 @@
 #define _RDO_STUDIO_MODEL_TAB_CTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QTabWidget>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/editor/model_edit.h"
 // --------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ public:
 
 	rdoModelObjects::RDOFileType indexToType(int index) const;
 	int   typeToIndex  (rdoModelObjects::RDOFileType type) const;
-	rbool typeSupported(rdoModelObjects::RDOFileType type) const   { return typeToIndex(type) != -1;     }
+	bool  typeSupported(rdoModelObjects::RDOFileType type) const   { return typeToIndex(type) != -1;     }
 
 	rdoModelObjects::RDOFileType getCurrentRDOItem() const         { return indexToType(currentIndex()); }
 	void setCurrentRDOItem(rdoModelObjects::RDOFileType type);

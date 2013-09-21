@@ -27,8 +27,8 @@ public:
 	~FrameStyle();
 
 	FrameStyle& operator =( const FrameStyle& style );
-	rbool operator ==( const FrameStyle& style ) const;
-	rbool operator !=( const FrameStyle& style ) const;
+	bool operator ==( const FrameStyle& style ) const;
+	bool operator !=( const FrameStyle& style ) const;
 
 	static FrameStyle getDefaultStyle();
 };

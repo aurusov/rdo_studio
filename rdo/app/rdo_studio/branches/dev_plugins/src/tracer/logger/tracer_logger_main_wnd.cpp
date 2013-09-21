@@ -31,7 +31,7 @@ LogMainWnd::LogMainWnd(QWidget* pParent)
 	setViewport(pLog);
 }
 
-rbool LogMainWnd::viewportEvent(PTR(QEvent) pEvent)
+bool LogMainWnd::viewportEvent(PTR(QEvent) pEvent)
 {
 	UNUSED(pEvent);
 	return false;

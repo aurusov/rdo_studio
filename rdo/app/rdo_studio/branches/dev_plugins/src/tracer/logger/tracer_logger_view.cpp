@@ -11,14 +11,14 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <QPainter>
 #include <QScrollBar>
 #include <QClipboard>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/logger/tracer_logger_view.h"
 #include "app/rdo_studio/src/application.h"
@@ -36,8 +36,8 @@ namespace rdo { namespace gui { namespace tracer {
 class LogCtrlFindInList
 {
 public:
-	LogCtrlFindInList(REF(rsint) checkCounter, CREF(QString) strToFind, rbool matchCase, rbool matchWholeWord);
-	rbool operator() (CREF(QString) nextStr);
+	LogCtrlFindInList(REF(rsint) checkCounter, CREF(QString) strToFind, bool matchCase, bool matchWholeWord);
+	bool operator() (CREF(QString) nextStr);
 
 	LogCtrlFindInList& operator= (CREF(LogCtrlFindInList))
 	{
@@ -52,7 +52,7 @@ private:
 
 }}} // namespace rdo::gui::tracer
 
-LogCtrlFindInList::LogCtrlFindInList(REF(rsint) checkCounter, CREF(QString) strToFind, rbool matchCase, rbool matchWholeWord)
+LogCtrlFindInList::LogCtrlFindInList(REF(rsint) checkCounter, CREF(QString) strToFind, bool matchCase, bool matchWholeWord)
 	: m_checkCounter(checkCounter)
 {
 	QString what = matchWholeWord
@@ -74,7 +74,7 @@ LogCtrlFindInList::LogCtrlFindInList(REF(rsint) checkCounter, CREF(QString) strT
 	{}
 }
 
-rbool LogCtrlFindInList::operator()(CREF(QString) nextStr)
+bool LogCtrlFindInList::operator()(CREF(QString) nextStr)
 {
 	++m_checkCounter;
 
@@ -83,7 +83,7 @@ rbool LogCtrlFindInList::operator()(CREF(QString) nextStr)
 
 	try
 	{
-		rbool result = boost::regex_match(nextStr.toStdString(), m_expression.get());
+		bool result = boost::regex_match(nextStr.toStdString(), m_expression.get());
 		if (result)
 		{
 			TRACE1("found %s\n", nextStr.toStdString().c_str());
@@ -262,13 +262,13 @@ LogView::ScrollMetricVert::ScrollMetricVert()
 	, lastViewableLine(0)
 {}
 
-rbool LogView::ScrollMetricVert::isVisible(rsint index) const
+bool LogView::ScrollMetricVert::isVisible(rsint index) const
 {
 	return index >= position &&
 	       index <= lastViewableLine;
 }
 
-rbool LogView::ScrollMetricVert::applyInc(rsint delta)
+bool LogView::ScrollMetricVert::applyInc(rsint delta)
 {
 	if (!ScrollMetric::applyInc(delta))
 	{
@@ -352,7 +352,7 @@ void LogView::push_back(CREF(tstring) log)
 		}
 	}
 
-	rbool prevVisible = m_SM_Y.isVisible(m_strings.count() - 1);
+	bool prevVisible = m_SM_Y.isVisible(m_strings.count() - 1);
 
 	m_strings.push_back(QString::fromStdString(log));
 
@@ -442,7 +442,7 @@ void LogView::selectLine(rsint index)
 	{
 		setSelectedLine(selectedLine() + inc);
 
-		rbool needrepaint = !makeLineVisible(selectedLine());
+		bool needrepaint = !makeLineVisible(selectedLine());
 		if (needrepaint)
 		{
 			repaintLine(selectedLine());
@@ -452,12 +452,12 @@ void LogView::selectLine(rsint index)
 	}
 }
 
-rbool LogView::getFocusOnly() const
+bool LogView::getFocusOnly() const
 {
 	return m_focusOnly;
 }
 
-void LogView::setFocusOnly(rbool value)
+void LogView::setFocusOnly(bool value)
 {
 	m_focusOnly = value;
 }
@@ -467,7 +467,7 @@ CREF(LogStyle) LogView::getStyle() const
 	return *m_logStyle;
 }
 
-void LogView::setStyle(LogStyle* style, rbool needRedraw)
+void LogView::setStyle(LogStyle* style, bool needRedraw)
 {
 	m_logStyle = style;
 	setFont();
@@ -480,12 +480,12 @@ void LogView::setStyle(LogStyle* style, rbool needRedraw)
 	}
 }
 
-rbool LogView::getDrawLog() const
+bool LogView::getDrawLog() const
 {
 	return m_drawLog;
 }
 
-void LogView::setDrawLog(rbool value)
+void LogView::setDrawLog(bool value)
 {
 	if (m_drawLog != value)
 	{
@@ -496,9 +496,9 @@ void LogView::setDrawLog(rbool value)
 	}
 }
 
-rbool LogView::getItemColors(rsint index, LogColorPair &colors) const
+bool LogView::getItemColors(rsint index, LogColorPair &colors) const
 {
-	rbool res = true;
+	bool res = true;
 	SubitemColors::List::const_iterator it = m_subitemColors.m_colorList.find(index);
 	if (it != m_subitemColors.m_colorList.end())
 	{
@@ -512,7 +512,7 @@ rbool LogView::getItemColors(rsint index, LogColorPair &colors) const
 	return res;
 }
 
-rbool LogView::getItemColors(CREF(QString) item, LogColorPair &colors) const
+bool LogView::getItemColors(CREF(QString) item, LogColorPair &colors) const
 {
 	return m_logStyle->getItemColors(item.toStdString(), colors);
 }
@@ -588,7 +588,7 @@ void LogView::updateScrollBars()
 	getHorzScrollBar().setValue   (m_SM_X.position);
 }
 
-rbool LogView::scrollVertically(rsint inc)
+bool LogView::scrollVertically(rsint inc)
 {
 	if (!m_SM_Y.applyInc(inc))
 	{
@@ -601,7 +601,7 @@ rbool LogView::scrollVertically(rsint inc)
 	return true;
 }
 
-rbool LogView::scrollHorizontally(rsint inc)
+bool LogView::scrollHorizontally(rsint inc)
 {
 	if (!m_SM_X.applyInc(inc))
 	{
@@ -633,9 +633,9 @@ void LogView::onHorzScrollBarValueChanged(int value)
 	scrollHorizontally(value - m_SM_X.position);
 }
 
-rbool LogView::makeLineVisible(rsint index)
+bool LogView::makeLineVisible(rsint index)
 {
-	rbool res = false;
+	bool res = false;
 
 	if (isFullyVisible(index))
 	{
@@ -663,7 +663,7 @@ rbool LogView::makeLineVisible(rsint index)
 	return res;
 }
 
-rbool LogView::isFullyVisible(rsint index) const
+bool LogView::isFullyVisible(rsint index) const
 {
 	rsint lastVisible = m_SM_Y.position + m_clientRect.height() / m_lineHeight - 1;
 	return index <= lastVisible && index >= m_SM_Y.position;
@@ -704,7 +704,7 @@ void LogView::setFont()
 	m_charWidth  = fontMetrics.averageCharWidth(); // fontMetrics.maxWidth()
 }
 
-void LogView::updateActionFind(rbool activated)
+void LogView::updateActionFind(bool activated)
 {
 	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
@@ -715,7 +715,7 @@ void LogView::updateActionFind(rbool activated)
 		this, &LogView::onSearchFind
 	);
 
-	rbool findNextPrev = activated && !m_findSettings.what.isEmpty();
+	bool findNextPrev = activated && !m_findSettings.what.isEmpty();
 	updateAction(
 		pMainWindow->actSearchFindNext,
 		findNextPrev,
@@ -729,7 +729,7 @@ void LogView::updateActionFind(rbool activated)
 	);
 }
 
-void LogView::updateActionEditCopy(rbool activated)
+void LogView::updateActionEditCopy(bool activated)
 {
 	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
@@ -741,7 +741,7 @@ void LogView::updateActionEditCopy(rbool activated)
 	);
 }
 
-void LogView::updateCoordStatusBar(rbool activated)
+void LogView::updateCoordStatusBar(bool activated)
 {
 	QString coord = activated && selectedLine() != -1
 		? QString("1 : %1").arg(selectedLine())
@@ -752,12 +752,12 @@ void LogView::updateCoordStatusBar(rbool activated)
 	pMainWindow->statusBar()->update<StatusBar::SB_COORD>(coord);
 }
 
-rbool LogView::canCopy() const
+bool LogView::canCopy() const
 {
 	return selectedLine() != -1;
 }
 
-rsint LogView::find(rbool searchDown)
+rsint LogView::find(bool searchDown)
 {
 	rsint result = -1;
 
@@ -772,7 +772,7 @@ rsint LogView::find(rbool searchDown)
 	rsint checkCounter = 0;
 	LogCtrlFindInList findInList(checkCounter, m_findSettings.what, m_findSettings.matchCase, m_findSettings.matchWholeWord);
 
-	rbool found = searchDown
+	bool found = searchDown
 		? std::find_if(m_strings.findString(startPos), m_strings.end(), findInList) != m_strings.end()
 		: std::find_if(m_strings.rFindString(startPos + 1), m_strings.rend(), findInList) != m_strings.rend();
 
@@ -986,7 +986,7 @@ void LogView::contextMenuEvent(QContextMenuEvent* pEvent)
 	m_pPopupMenu->exec(pEvent->globalPos());
 }
 
-void LogView::onUpdateActions(rbool activated)
+void LogView::onUpdateActions(bool activated)
 {
 	repaintLine(selectedLine());
 

@@ -11,12 +11,12 @@
 #define _RDO_STUDIO_TRACER_BASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QString>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdostream.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/src/stream/rdostream.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
 // --------------------------------------------------------------------------------
@@ -53,8 +53,8 @@ public:
 	void updateChartsStyles() const;
 	void clear();
 	void setModelName(CREF(QString) name) const;
-	void setDrawTrace(const rbool value);
-	rbool getDrawTrace() const;
+	void setDrawTrace(const bool value);
+	bool getDrawTrace() const;
 
 protected:
 	TracerBase(CREF(tstring) _thread_name, RDOKernelGUI* _kernel_gui);
@@ -118,7 +118,7 @@ private:
 	void deleteTrace();
 
 	DocumentList m_documentList;
-	rbool        m_drawTrace;
+	bool         m_drawTrace;
 };
 
 }}} // namespace rdo::gui::tracer

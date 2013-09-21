@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdostream.h"
+#include "utils/src/stream/rdostream.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
@@ -71,7 +71,7 @@ Manager::~Manager()
 	}
 }
 
-rbool Manager::init()
+bool Manager::init()
 {
 	connect(
 		&g_pApp->getIMainWnd()->getDockFrame().getContext(), &TreeCtrl::itemDoubleClicked,
@@ -156,9 +156,9 @@ ruint Manager::count() const
 	return m_frameList.size();
 }
 
-rbool Manager::isChanged()
+bool Manager::isChanged()
 {
-	rbool res = m_changed;
+	bool res = m_changed;
 	m_changed = false;
 	return res;
 }
@@ -196,7 +196,7 @@ PTR(View) Manager::createView(ruint index)
 	return pView;
 }
 
-rbool Manager::isShowing() const
+bool Manager::isShowing() const
 {
 	BOOST_FOREACH(const Frame* pFrame, m_frameList)
 	{
@@ -306,11 +306,11 @@ void Manager::insertBitmap(CREF(QString) bitmapName)
 	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName.toStdString(), stream);
 	g_pModel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
-	rbool ok = false;
+	bool ok = false;
 	QPixmap pixmap(QString::fromStdString(data.m_name));
 	if (!pixmap.isNull())
 	{
-		std::pair<rdo::gui::BitmapList::const_iterator, rbool> result =
+		std::pair<rdo::gui::BitmapList::const_iterator, bool> result =
 			m_bitmapList.insert(rdo::gui::BitmapList::value_type(bitmapName, pixmap));
 		if (result.second)
 		{
@@ -399,13 +399,13 @@ void Manager::showFrame(ruint index)
 	}
 }
 
-rbool Manager::canShowNextFrame() const
+bool Manager::canShowNextFrame() const
 {
 	ruint cnt = count();
 	return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame == ruint(~0) || m_currentShowingFrame < cnt-1);
 }
 
-rbool Manager::canShowPrevFrame() const
+bool Manager::canShowPrevFrame() const
 {
 	int cnt = count();
 	return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame != ruint(~0) && m_currentShowingFrame > 0);

@@ -10,16 +10,16 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <boost/program_options.hpp>
 #include <QProcess>
 #include <QTextCodec>
 #include <QSettings>
 #include <QMessageBox>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdofile.h"
-#include "utils/rdolocale.h"
+#include "utils/src/file/rdofile.h"
+#include "utils/src/locale/rdolocale.h"
 #include "kernel/rdothread.h"
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"
@@ -191,7 +191,7 @@ Application::Application(int& argc, char** argv)
 		openModelName = rdo::locale::convertFromCLocale(openModelName);
 	}
 
-	rbool autoRun = false;
+	bool autoRun = false;
 	if (vm.count("autorun"))
 	{
 		autoRun = true;
@@ -207,8 +207,8 @@ Application::Application(int& argc, char** argv)
 		m_dontCloseIfError = true;
 	}
 
-	rbool newModel  = true;
-	rbool autoModel = false;
+	bool newModel  = true;
+	bool autoModel = false;
 	if (!openModelName.empty())
 	{
 		if (rdo::File::exist(openModelName) && g_pModel->openModel(QString::fromStdString(openModelName)))
@@ -363,12 +363,12 @@ void Application::callQtAssistant(CREF(QByteArray) ba)
 	m_pAssistant->write(ba);
 }
 
-rbool Application::getFileAssociationSetup() const
+bool Application::getFileAssociationSetup() const
 {
 	return m_fileAssociationSetup;
 }
 
-void Application::setFileAssociationSetup(rbool value)
+void Application::setFileAssociationSetup(bool value)
 {
 	m_fileAssociationSetup = value;
 	QSettings settings;
@@ -379,12 +379,12 @@ void Application::setFileAssociationSetup(rbool value)
 	}
 }
 
-rbool Application::getFileAssociationCheckInFuture() const
+bool Application::getFileAssociationCheckInFuture() const
 {
 	return m_fileAssociationCheckInFuture;
 }
 
-void Application::setFileAssociationCheckInFuture(rbool value)
+void Application::setFileAssociationCheckInFuture(bool value)
 {
 	if (m_fileAssociationCheckInFuture != value)
 	{
@@ -394,12 +394,12 @@ void Application::setFileAssociationCheckInFuture(rbool value)
 	}
 }
 
-rbool Application::getOpenLastProject() const
+bool Application::getOpenLastProject() const
 {
 	return m_openLastProject;
 }
 
-void Application::setOpenLastProject(rbool value)
+void Application::setOpenLastProject(bool value)
 {
 	if (m_openLastProject != value)
 	{
@@ -428,12 +428,12 @@ void Application::setLastProjectName(CREF(QString) projectName)
 	}
 }
 
-rbool Application::getShowCaptionFullName() const
+bool Application::getShowCaptionFullName() const
 {
 	return m_showCaptionFullName;
 }
 
-void Application::setShowCaptionFullName(rbool value)
+void Application::setShowCaptionFullName(bool value)
 {
 	if (m_showCaptionFullName != value)
 	{
@@ -454,7 +454,7 @@ void Application::setupFileAssociation()
 
 	QSettings settings("HKEY_CURRENT_USER\\Software\\Classes", QSettings::NativeFormat);
 
-	rbool mustBeRegistered = true;
+	bool mustBeRegistered = true;
 	if (settings.childGroups().contains(fileTypeID))
 	{
 		QString openCommand = settings.value(fileTypeID + "/shell/open/command/Default").toString();
@@ -550,7 +550,7 @@ public:
 		childGroupsFrom = settingsFrom.childGroups();
 	}
 
-	rbool contains(const QString& name) const
+	bool contains(const QString& name) const
 	{
 		return childGroupsFrom.contains(name);
 	}
@@ -630,16 +630,16 @@ void Application::convertSettings() const
 
 	if (convertor.contains("fileAssociation"))
 	{
-		convertor.convert<rbool>("fileAssociation/setup",         "general/file_association_setup");
-		convertor.convert<rbool>("fileAssociation/checkInFuture", "general/file_association_check_in_future");
+		convertor.convert<bool>("fileAssociation/setup",         "general/file_association_setup");
+		convertor.convert<bool>("fileAssociation/checkInFuture", "general/file_association_check_in_future");
 		convertor.remove("fileAssociation");
 	}
 
 	if (convertor.contains("general"))
 	{
 		convertor.convert<QString>("general/lastProject",         "general/last_project_full_name");
-		convertor.convert<rbool>  ("general/openLastProject",     "general/last_project_auto_open");
-		convertor.convert<rbool>  ("general/showCaptionFullName", "general/show_caption_full_name");
+		convertor.convert<bool>  ("general/openLastProject",     "general/last_project_auto_open");
+		convertor.convert<bool>  ("general/showCaptionFullName", "general/show_caption_full_name");
 		convertor.remove("general");
 	}
 
@@ -663,7 +663,7 @@ void Application::convertSettings() const
 
 	if (convertor.contains("style"))
 	{
-		convertor.convert<rbool>("style/build/build/warning", "style/build/build/warning");
+		convertor.convert<bool>("style/build/build/warning", "style/build/build/warning");
 
 		convertor.convert<QString>("style/build/font/name",         "style/build/font/name");
 		convertor.convert<int>    ("style/build/font/size",         "style/build/font/size");

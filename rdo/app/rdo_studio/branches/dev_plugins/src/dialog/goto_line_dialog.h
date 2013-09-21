@@ -11,10 +11,10 @@
 #define _RDO_STUDIO_DIALOG_GO_TO_NEXT_LINE_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QDialog>
 #include "ui_goto_line_dialog.h"
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 

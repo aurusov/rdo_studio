@@ -10,13 +10,13 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <algorithm>
 #include <boost/foreach.hpp>
 #include <QProcess>
 #include <QEvent>
 #include <QClipboard>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
@@ -33,7 +33,7 @@ using namespace rdo::gui::style;
 // --------------------------------------------------------------------------------
 // -------------------- ChartView
 // --------------------------------------------------------------------------------
-ChartView::ChartView(QAbstractScrollArea* pParent, ChartDoc* pDocument, const rbool preview)
+ChartView::ChartView(QAbstractScrollArea* pParent, ChartDoc* pDocument, const bool preview)
 	: super(pParent)
 	, m_pDocument(pDocument)
 	, m_bmpRect(0, 0, 0, 0)
@@ -135,12 +135,12 @@ void ChartView::setYAxis(ChartSerie* pSerie)
 	recalcLayout();
 }
 
-rbool ChartView::isDrawLegend() const
+bool ChartView::isDrawLegend() const
 {
 	return m_needDrawLegend;
 }
 
-void ChartView::setDrawLegend(rbool value)
+void ChartView::setDrawLegend(bool value)
 {
 	m_needDrawLegend = value;
 }
@@ -324,7 +324,7 @@ void ChartView::updateScrollBars()
 	getHorzScrollBar().setValue   (m_SM_X.position);
 }
 
-rbool ChartView::scrollHorizontally(rsint inc)
+bool ChartView::scrollHorizontally(rsint inc)
 {
 	if (!m_SM_X.applyInc(inc))
 	{
@@ -405,9 +405,9 @@ void ChartView::dragLeaveEvent(QDragLeaveEvent*)
 	m_pddSerie = NULL;
 }
 
-rbool ChartView::setTo(const int fromMaxPos)
+bool ChartView::setTo(const int fromMaxPos)
 {
-	rbool res = true;
+	bool res = true;
 	int delta = (fromMaxPos - m_SM_X.position - m_chartRect.width()) / m_pStyle->pFontsTicks.tickWidth;
 	if (delta >= 0)
 	{
@@ -453,7 +453,7 @@ void ChartView::setFromTo()
 	{
 		int it_pos = 0;
 		int it_max_pos = 0;
-		rbool need_search_to = true;
+		bool need_search_to = true;
 		int ticks = 0;
 		ChartDoc::TimesList::const_iterator it;
 		for (it = doc->getTimes().begin(); it != doc->getTimes().end(); ++it)
@@ -766,7 +766,7 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 	}
 }
 
-void ChartView::setZoom(double new_zoom, const rbool force_update)
+void ChartView::setZoom(double new_zoom, const bool force_update)
 {
 	UNUSED(force_update);
 
@@ -876,7 +876,7 @@ const ChartViewStyle& ChartView::getStyle() const
 	return (*m_pStyle);
 }
 
-void ChartView::setFonts(const rbool needRedraw)
+void ChartView::setFonts(const bool needRedraw)
 {
 	UNUSED(needRedraw);
 
@@ -902,7 +902,7 @@ void ChartView::setFonts(const rbool needRedraw)
 	m_fontLegend.setPointSize(m_pStyle->pFontsTicks.legendFontSize);
 }
 
-void ChartView::setStyle(ChartViewStyle* pStyle, const rbool needRedraw)
+void ChartView::setStyle(ChartViewStyle* pStyle, const bool needRedraw)
 {
 	m_pStyle = pStyle;
 
@@ -921,7 +921,7 @@ void ChartView::setStyle(ChartViewStyle* pStyle, const rbool needRedraw)
 	}
 }
 
-void ChartView::setPreviwMode(rbool value)
+void ChartView::setPreviwMode(bool value)
 {
 	m_previewMode = value;
 }
@@ -934,7 +934,7 @@ void ChartView::onChartOptions()
 
 void ChartView::updateView()
 {
-	rbool lastvisible = maxXVisible();
+	bool lastvisible = maxXVisible();
 	recalcLayout();
 	updateScrollBars();
 	if (lastvisible && !maxXVisible())
@@ -1004,27 +1004,27 @@ void ChartView::onHelpKeyword()
 	g_pApp->callQtAssistant(ba);
 }
 
-rbool ChartView::canUnwrapTime() const
+bool ChartView::canUnwrapTime() const
 {
 	return m_scaleKoeff >= 1 && !m_zoomAutoFlag;
 }
 
-rbool ChartView::doUnwrapTime() const
+bool ChartView::doUnwrapTime() const
 {
 	return canUnwrapTime() && !m_timeWrapFlag;
 }
 
-rbool ChartView::minXVisible() const
+bool ChartView::minXVisible() const
 {
 	return m_SM_X.position == 0;
 }
 
-rbool ChartView::maxXVisible() const
+bool ChartView::maxXVisible() const
 {
 	return m_SM_X.position == m_SM_X.posMax;
 }
 
-void ChartView::onUpdateActions(rbool activated)
+void ChartView::onUpdateActions(bool activated)
 {
 	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);
@@ -1087,7 +1087,7 @@ void ChartView::onUpdateActions(rbool activated)
 // --------------------------------------------------------------------------------
 // -------------------- ChartViewMainWnd
 // --------------------------------------------------------------------------------
-ChartViewMainWnd::ChartViewMainWnd(QWidget* pParent, ChartDoc* pDocument, rbool preview)
+ChartViewMainWnd::ChartViewMainWnd(QWidget* pParent, ChartDoc* pDocument, bool preview)
 	: super(pParent)
 {
 	setMinimumSize(400, 200);
@@ -1105,7 +1105,7 @@ ChartView& ChartViewMainWnd::view()
 	return *static_cast<PTR(ChartView)>(viewport());
 }
 
-rbool ChartViewMainWnd::viewportEvent(PTR(QEvent) pEvent)
+bool ChartViewMainWnd::viewportEvent(PTR(QEvent) pEvent)
 {
 	UNUSED(pEvent);
 	return false;

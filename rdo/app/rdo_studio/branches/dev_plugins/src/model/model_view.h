@@ -11,9 +11,9 @@
 #define _RDO_STUDIO_MODEL_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QWidget>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/dialog/find_dialog.h"

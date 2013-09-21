@@ -53,9 +53,9 @@ protected:
 	virtual void updateEdit(PTR(Model) pEdit, CPTR(LogEditLineInfo) pLineInfo);
 
 	void  clearLines     ();
-	void  setSelectLine  (int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScroll = false);
+	void  setSelectLine  (int line, CPTR(LogEditLineInfo) pLineInfo, bool useScroll = false);
 	void  clearSelectLine();
-	rbool hasSelectLine  () const;
+	bool  hasSelectLine  () const;
 
 private:
 	LogEditLineInfoList  m_lines;

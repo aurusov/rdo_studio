@@ -11,12 +11,13 @@
 #define _RDO_STUDIO_DIALOG_FIND_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <boost/function.hpp>
 #include <QDialog>
 #include "ui_find_dialog.h"
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/src/common/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 class FindDialog
@@ -29,9 +30,9 @@ public:
 	struct Settings
 	{
 		QString what;
-		rbool   matchCase;
-		rbool   matchWholeWord;
-		rbool   searchDown;
+		bool    matchCase;
+		bool    matchWholeWord;
+		bool    searchDown;
 
 		Settings();
 		Settings(CREF(Settings) settings);

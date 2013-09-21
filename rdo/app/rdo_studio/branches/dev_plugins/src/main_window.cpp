@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm/find.hpp>
@@ -18,7 +18,7 @@
 #include <QTextCodec>
 #include <QSettings>
 #include <QMdiSubWindow>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/application.h"
@@ -516,7 +516,7 @@ void MainWindow::init()
 	pModelInit->init();
 }
 
-void MainWindow::setVisible(rbool visible)
+void MainWindow::setVisible(bool visible)
 {
 	parent_type::setVisible(visible);
 }
@@ -644,7 +644,7 @@ void MainWindow::addSubWindow(QWidget* pWidget)
 
 	QList<QMdiSubWindow*> frameList = mdiArea->subWindowList();
 
-	rbool maximized = frameList.empty();
+	bool maximized = frameList.empty();
 	if (!maximized)
 	{
 		maximized = frameList.front()->isMaximized();
@@ -682,7 +682,7 @@ void MainWindow::activateSubWindow(QWidget* pWidget)
 	mdiArea->setActiveSubWindow(pSubWindow);
 }
 
-void MainWindow::onDockVisibleChanged(rbool visible)
+void MainWindow::onDockVisibleChanged(bool visible)
 {
 	if (!visible)
 		return;
@@ -820,7 +820,7 @@ void MainWindow::saveMenuFileReopen() const
 	settings.endGroup();
 }
 
-void MainWindow::updateInsertMenu(rbool enabled)
+void MainWindow::updateInsertMenu(bool enabled)
 {
 	QList<QAction*> menuList = menuInsert->actions();
 	BOOST_FOREACH(const QAction* pMenu, menuList)

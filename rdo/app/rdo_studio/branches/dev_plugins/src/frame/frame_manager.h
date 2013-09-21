@@ -11,15 +11,16 @@
 #define _RDO_STUDIO_FRAME_MANAGER_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <vector>
 #include <map>
 #include <memory>
+#include <boost/function.hpp>
 #include <QMdiSubWindow>
 #include <QTreeWidget>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdointerface.h"
+#include "utils/src/interface/rdointerface.h"
 #include "app/rdo_studio/src/frame/frame_view.h"
 // --------------------------------------------------------------------------------
 
@@ -48,12 +49,12 @@ public:
 	ruint findFrameIndex(CPTR(View)            pView          ) const;
 	ruint findFrameIndex(CPTR(Content)         pContent       ) const;
 
-	rbool          isShowing         () const;
+	bool           isShowing         () const;
 	CREF(QString)  getFrameName      (ruint index) const;
 	PTR(View)      getFrameView      (ruint index) const;
 	PTR(View)      getFrameViewFirst () const;
 	ruint          count             () const;
-	rbool          isChanged         ();
+	bool           isChanged         ();
 
 	void           areaDown          (ruint frameIndex, CREF(QPoint) point) const;
 
@@ -70,8 +71,8 @@ public:
 	void  showNextFrame           ();
 	void  showPrevFrame           ();
 	void  showFrame               (ruint index);
-	rbool canShowNextFrame        () const;
-	rbool canShowPrevFrame        () const;
+	bool  canShowNextFrame        () const;
+	bool  canShowPrevFrame        () const;
 	void  updateStyles            () const;
 
 private:
@@ -96,7 +97,7 @@ private:
 	rdo::gui::BitmapList  m_bitmapList;
 	ruint                 m_lastShowedFrame;
 	ruint                 m_currentShowingFrame;
-	rbool                 m_changed;
+	bool                  m_changed;
 	OnChangeFrame         m_onChangeFrame;
 
 	DECLARE_IInit;

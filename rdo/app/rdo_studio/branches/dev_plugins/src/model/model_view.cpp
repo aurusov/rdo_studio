@@ -10,11 +10,11 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <boost/bind.hpp>
 #include <QEvent>
 #include <QBoxLayout>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/model/model_view.h"
 #include "app/rdo_studio/src/application.h"
@@ -113,8 +113,8 @@ void View::onSearchFindAll()
 	g_pApp->getIMainWnd()->getDockFind().clear();
 	g_pApp->getIMainWnd()->getDockFind().raise();
 	QString findStr       = m_findSettings.what;
-	rbool bMatchCase      = m_findSettings.matchCase;
-	rbool bMatchWholeWord = m_findSettings.matchWholeWord;
+	bool bMatchCase      = m_findSettings.matchCase;
+	bool bMatchWholeWord = m_findSettings.matchWholeWord;
 	g_pApp->getIMainWnd()->getDockFind().getContext().setKeyword(findStr, bMatchCase);
 	g_pApp->getIMainWnd()->getDockFind().appendString(QString("Поиск '%1'...\r\n").arg(findStr));
 	int count = 0;

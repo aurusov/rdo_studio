@@ -10,9 +10,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QProcess>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/editor/debug_edit.h"
 #include "app/rdo_studio/src/application.h"
@@ -34,9 +34,9 @@ Debug::~Debug()
 
 void Debug::appendLine(CREF(QString) str)
 {
-	rbool readOnly = isReadOnly();
+	bool readOnly = isReadOnly();
 	setReadOnly(false);
-	rbool scroll = isLineVisible( getLineCount() - 1 );
+	bool scroll = isLineVisible( getLineCount() - 1 );
 	setCurrentPos(getLength());
 	appendText(str);
 	if (scroll)

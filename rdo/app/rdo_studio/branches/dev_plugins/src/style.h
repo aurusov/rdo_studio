@@ -11,13 +11,13 @@
 #define _RDO_STUDIO_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <string>
 #include <QColor>
 #include <QSettings>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace style {
@@ -32,8 +32,8 @@ public:
 	virtual ~StyleFont();
 
 	StyleFont& operator =(const StyleFont& font);
-	rbool operator ==(const StyleFont& font) const;
-	rbool operator !=(const StyleFont& font) const;
+	bool operator ==(const StyleFont& font) const;
+	bool operator !=(const StyleFont& font) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
@@ -63,8 +63,8 @@ public:
 	~StyleBase();
 
 	StyleBase& operator =(const StyleBase& style);
-	rbool operator ==(const StyleBase& style) const;
-	rbool operator !=(const StyleBase& style) const;
+	bool operator ==(const StyleBase& style) const;
+	bool operator !=(const StyleBase& style) const;
 
 	StyleFont font;
 	StyleFont::style defaultStyle;

@@ -36,13 +36,13 @@ ModelAutoComplete& ModelAutoComplete::operator =( const ModelAutoComplete& autoC
 	return *this;
 }
 
-rbool ModelAutoComplete::operator ==( const ModelAutoComplete& autoComplete ) const
+bool ModelAutoComplete::operator ==( const ModelAutoComplete& autoComplete ) const
 {
 	return useAutoComplete == autoComplete.useAutoComplete &&
 	       showFullList    == autoComplete.showFullList;
 }
 
-rbool ModelAutoComplete::operator !=( const ModelAutoComplete& autoComplete ) const
+bool ModelAutoComplete::operator !=( const ModelAutoComplete& autoComplete ) const
 {
 	return !(*this == autoComplete);
 }
@@ -99,14 +99,14 @@ ModelMargin& ModelMargin::operator =( const ModelMargin& margin )
 	return *this;
 }
 
-rbool ModelMargin::operator ==( const ModelMargin& margin ) const
+bool ModelMargin::operator ==( const ModelMargin& margin ) const
 {
 	return fold       == margin.fold &&
 	       bookmark   == margin.bookmark &&
 	       lineNumber == margin.lineNumber;
 }
 
-rbool ModelMargin::operator !=( const ModelMargin& margin ) const
+bool ModelMargin::operator !=( const ModelMargin& margin ) const
 {
 	return !(*this == margin);
 }
@@ -181,9 +181,9 @@ ModelStyle& ModelStyle::operator =( const ModelStyle& style )
 	return *this;
 }
 
-rbool ModelStyle::operator ==( const ModelStyle& style ) const
+bool ModelStyle::operator ==( const ModelStyle& style ) const
 {
-	rbool flag = ParserStyle::operator==( style );
+	bool flag = ParserStyle::operator==( style );
 	flag &= autoComplete == style.autoComplete;
 	flag &= margin       == style.margin;
 	if ( flag ) flag &= foldFgColor == style.foldFgColor &&
@@ -194,7 +194,7 @@ rbool ModelStyle::operator ==( const ModelStyle& style ) const
 	return flag;
 }
 
-rbool ModelStyle::operator !=( const ModelStyle& style ) const
+bool ModelStyle::operator !=( const ModelStyle& style ) const
 {
 	return !(*this == style);
 }

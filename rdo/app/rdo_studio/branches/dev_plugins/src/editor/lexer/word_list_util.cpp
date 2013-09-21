@@ -14,7 +14,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
+#include "utils/src/common/rdotypes.h"
 #include "app/rdo_studio/src/editor/lexer/word_list_util.h"
 // --------------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ std::vector<std::string> WordListUtil::getNearestWords(const std::string& userPa
 			, priority(priority)
 		{}
 
-		rbool operator< (const PriorityResultItem& item) const
+		bool operator< (const PriorityResultItem& item) const
 		{
 			return priority == item.priority
 				? value < item.value

@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdolocale.h"
+#include "utils/src/locale/rdolocale.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/editor/model_edit.h"
@@ -202,7 +202,7 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 	defineMarker(m_sciMarkerError, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<ModelStyle*>(m_pStyle)->errorBgColor);
 }
 
-void Model::expand(int& line, rbool doExpand, rbool force, int visLevels, int level) const
+void Model::expand(int& line, bool doExpand, bool force, int visLevels, int level) const
 {
 	int lineMaxSubord = sendEditor(SCI_GETLASTCHILD, line, level & SC_FOLDLEVELNUMBERMASK);
 	line++;
@@ -293,7 +293,7 @@ void Model::onToggleAllFolds() const
 {
 	sendEditor(SCI_COLOURISE, 0, -1);
 	int maxLine = getLineCount();
-	rbool expanding = true;
+	bool expanding = true;
 	for (int lineSeek = 0; lineSeek < maxLine; lineSeek++)
 	{
 		if (sendEditor(SCI_GETFOLDLEVEL, lineSeek) & SC_FOLDLEVELHEADERFLAG)
@@ -379,7 +379,7 @@ void Model::onEditCommentSelection() const
 	int startCommentLength = startComment.length();
 	CharacterRange cr = getSelectionRange();
 	int caretPosition = getCurrentPos();
-	rbool moveCaret   = caretPosition < cr.cpMax;
+	bool moveCaret   = caretPosition < cr.cpMax;
 	sendEditor(SCI_BEGINUNDOACTION);
 	sendEditorString(SCI_INSERTTEXT, cr.cpMin, startComment.c_str());
 	cr.cpMax += startCommentLength;
@@ -492,7 +492,7 @@ void Model::onEditCompleteWord()
 	{
 		tstring startKeyWord       = "";
 		tstring startKeyWordScroll = stWord;
-		rbool useReplace = false;
+		bool useReplace = false;
 		if (foundKeyWords.c_str())
 		{
 			fullWordList.Clear();
@@ -551,7 +551,7 @@ void Model::clearErrorLine()
 	}
 }
 
-rbool Model::hasErrorLine() const
+bool Model::hasErrorLine() const
 {
 	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerError);
 	return nextLine >= 0;
@@ -580,7 +580,7 @@ void Model::setLog(REF(Log) pLog)
 	m_pLog = &pLog;
 }
 
-void Model::setCanClearErrorLine(rbool value)
+void Model::setCanClearErrorLine(bool value)
 {
 	m_canClearErrorLine = value;
 }
@@ -635,7 +635,7 @@ void Model::onHelpContext()
 	g_pApp->callQtAssistant(ba);
 }
 
-void Model::onUpdateActions(rbool activated)
+void Model::onUpdateActions(bool activated)
 {
 	super::onUpdateActions(activated);
 

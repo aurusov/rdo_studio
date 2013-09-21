@@ -16,7 +16,7 @@
 
 using namespace rdo::gui::tracer;
 
-ChartTreeItem::ChartTreeItem(rbool drawable)
+ChartTreeItem::ChartTreeItem(bool drawable)
 	: m_pCtrlItem(NULL    )
 	, m_drawable (drawable)
 {}
@@ -35,7 +35,7 @@ REF(QTreeWidgetItem) ChartTreeItem::getCtrlItem()
 	return *m_pCtrlItem;
 }
 
-rbool ChartTreeItem::isDrawable() const
+bool ChartTreeItem::isDrawable() const
 {
 	return m_drawable;
 }

@@ -10,11 +10,11 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QDir>
 #include <QFileDialog>
 #include <QStandardPaths>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dialog/new_model_dialog.h"
 // --------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ NewModelDialog::NewModelDialog(QWidget* pParent)
 NewModelDialog::~NewModelDialog()
 {}
 
-void NewModelDialog::setPath(CREF(QString) path)
+void NewModelDialog::setPath(const QString& path)
 {
 	QString normPath(path);
 	if (!normPath.isEmpty())
@@ -64,7 +64,7 @@ void NewModelDialog::setPath(CREF(QString) path)
 
 void NewModelDialog::updateUI()
 {
-	rbool error = true;
+	bool error = true;
 	if (modelName->text().isEmpty())
 	{
 		labelError->setText("Необходимо указать имя модели");

@@ -12,9 +12,9 @@
 #define _RDO_STUDIO_TRACER_LOGGER_MAIN_WND_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QAbstractScrollArea>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/logger/tracer_logger_view.h"
 // --------------------------------------------------------------------------------
@@ -35,10 +35,10 @@ public:
 	}
 
 private:
-	virtual rbool viewportEvent(PTR(QEvent)      pEvent);
-	virtual void  focusInEvent (PTR(QFocusEvent) pEvent);
-	virtual void  focusOutEvent(PTR(QFocusEvent) pEvent);
-	virtual void  keyPressEvent(PTR(QKeyEvent)   pEvent);
+	virtual bool viewportEvent(PTR(QEvent)      pEvent);
+	virtual void focusInEvent (PTR(QFocusEvent) pEvent);
+	virtual void focusOutEvent(PTR(QFocusEvent) pEvent);
+	virtual void keyPressEvent(PTR(QKeyEvent)   pEvent);
 };
 
 }}} // namespace rdo::gui::tracer

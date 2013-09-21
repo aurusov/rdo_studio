@@ -11,9 +11,9 @@
 #define _RDO_STUDIO_TRACER_LOGGER_VIEW_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QColor>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/style.h"
 // --------------------------------------------------------------------------------
@@ -30,8 +30,8 @@ public:
 	virtual ~LogColorPair();
 
 	LogColorPair& operator =( const LogColorPair& colors );
-	rbool operator ==( const LogColorPair& colors ) const;
-	rbool operator !=( const LogColorPair& colors ) const;
+	bool operator ==( const LogColorPair& colors ) const;
+	bool operator !=( const LogColorPair& colors ) const;
 
 	void load(QSettings& settings, QString regParam);
 	void save(QSettings& settings, QString regParam) const;
@@ -50,8 +50,8 @@ public:
 	virtual ~LogBorders();
 
 	LogBorders& operator =( const LogBorders& borders );
-	rbool operator ==( const LogBorders& borders ) const;
-	rbool operator !=( const LogBorders& borders ) const;
+	bool operator ==( const LogBorders& borders ) const;
+	bool operator !=( const LogBorders& borders ) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
@@ -72,12 +72,12 @@ public:
 	LogStyle();
 	~LogStyle();
 
-	virtual rbool getItemColors( int index,          LogColorPair &colors ) const;
-	virtual rbool getItemColors( CREF(tstring) item, LogColorPair &colors ) const;
+	virtual bool getItemColors( int index,          LogColorPair &colors ) const;
+	virtual bool getItemColors( CREF(tstring) item, LogColorPair &colors ) const;
 
 	LogStyle& operator =( const LogStyle& style );
-	rbool operator ==( const LogStyle& style ) const;
-	rbool operator !=( const LogStyle& style ) const;
+	bool operator ==( const LogStyle& style ) const;
+	bool operator !=( const LogStyle& style ) const;
 
 	static LogStyle getDefaultStyle();
 
@@ -113,8 +113,7 @@ public:
 	LogBorders borders;
 
 private:
-
-	rbool getDefaultColor(LogColorPair &colors) const;
+	bool getDefaultColor(LogColorPair &colors) const;
 };
 
 QSettings& operator<< (QSettings& settings, const LogStyle& style);

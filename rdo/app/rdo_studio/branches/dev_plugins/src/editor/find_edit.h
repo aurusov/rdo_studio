@@ -29,7 +29,7 @@ public:
 
 	void setEditorStyle(FindStyle* pStyle);
 
-	void setKeyword(CREF(QString) keyword, const rbool matchCase = false) const;
+	void setKeyword(CREF(QString) keyword, const bool matchCase = false) const;
 
 private:
 	typedef  Log  super;

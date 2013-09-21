@@ -11,11 +11,11 @@
 #define _RDO_STUDIO_TRACER_CHART_TREE_ITEM_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QTreeWidget>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace tracer {
@@ -27,15 +27,15 @@ public:
 	void setCtrlItem(PTR(QTreeWidgetItem) pCtrlItem);
 	REF(QTreeWidgetItem) getCtrlItem();
 
-	rbool isDrawable() const;
+	bool isDrawable() const;
 
 protected:
-	ChartTreeItem (rbool drawable = false);
+	ChartTreeItem (bool drawable = false);
 	~ChartTreeItem();
 
 private:
 	PTR(QTreeWidgetItem) m_pCtrlItem;
-	rbool                m_drawable; // set to true ONLY for TracerSerie and descendants
+	bool                 m_drawable; // set to true ONLY for TracerSerie and descendants
 };
 
 typedef  rdo::intrusive_ptr<ChartTreeItem>  LPChartTreeItem;

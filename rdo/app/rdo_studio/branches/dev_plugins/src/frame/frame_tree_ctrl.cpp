@@ -65,7 +65,7 @@ void TreeCtrl::focusOutEvent(QFocusEvent* pEvent)
 	parent_type::focusOutEvent(pEvent);
 }
 
-void TreeCtrl::onUpdateActions(rbool activated)
+void TreeCtrl::onUpdateActions(bool activated)
 {
 	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);

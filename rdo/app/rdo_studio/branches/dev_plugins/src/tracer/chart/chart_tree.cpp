@@ -10,14 +10,14 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 #include <QProcess>
 #include <QTextStream>
 #include <QFileDialog>
 #include <QDrag>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"
@@ -198,7 +198,7 @@ void ChartTree::createChart(PTR(QTreeWidgetItem) pCtrlItem) const
 	}
 }
 
-rbool ChartTree::activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const
+bool ChartTree::activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const
 {
 	LPSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<Serie>();
 	if (pSerie)
@@ -284,7 +284,7 @@ void ChartTree::focusOutEvent(QFocusEvent* pEvent)
 	parent_type::focusOutEvent(pEvent);
 }
 
-void ChartTree::onUpdateActions(rbool activated)
+void ChartTree::onUpdateActions(bool activated)
 {
 	MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	ASSERT(pMainWindow);

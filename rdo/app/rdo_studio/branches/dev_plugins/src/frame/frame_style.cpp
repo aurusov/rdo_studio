@@ -39,14 +39,14 @@ FrameStyle& FrameStyle::operator =( const FrameStyle& style )
 	return *this;
 }
 
-rbool FrameStyle::operator ==( const FrameStyle& style ) const
+bool FrameStyle::operator ==( const FrameStyle& style ) const
 {
-	rbool flag = StyleBase::operator==( style );
+	bool flag = StyleBase::operator==( style );
 
 	return flag;
 }
 
-rbool FrameStyle::operator !=( const FrameStyle& style ) const
+bool FrameStyle::operator !=( const FrameStyle& style ) const
 {
 	return !(*this == style);
 }

@@ -12,11 +12,11 @@
 #define _RDO_STUDIO_TRACER_LOGGER_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QWidget>
 #include <QEvent>
 #include <QAbstractScrollArea>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/logger/tracer_logger_view_style.h"
 #include "app/rdo_studio/src/action_activator/action_activator_widget.h"
@@ -37,19 +37,19 @@ public:
 	LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle);
 	virtual ~LogView();
 
-	void  push_back (CREF(tstring) log );
-	void  setText   (tstring       text);
-	void  clear     ();
-	void  selectLine(rsint index);
+	void push_back (CREF(tstring) log );
+	void setText   (tstring       text);
+	void clear     ();
+	void selectLine(rsint index);
 
-	rbool getFocusOnly() const;
-	void  setFocusOnly(rbool value);
+	bool getFocusOnly() const;
+	void setFocusOnly(bool value);
 
 	CREF(LogStyle) getStyle() const;
-	void setStyle(LogStyle* style, rbool needRedraw = true);
+	void setStyle(LogStyle* style, bool needRedraw = true);
 
-	rbool getDrawLog() const;
-	void  setDrawLog(rbool value);
+	bool getDrawLog() const;
+	void setDrawLog(bool value);
 
 private:
 	typedef  ActionActivatorWidget  parent_type;
@@ -91,8 +91,8 @@ private:
 	{
 		typedef std::map<rsint, LogColorPair> List;
 
-		List              m_colorList;
-		rbool             m_addingSubitems;
+		List         m_colorList;
+		bool         m_addingSubitems;
 		LogColorPair m_parentColor;
 
 		SubitemColors();
@@ -104,8 +104,8 @@ private:
 		rsint lastViewableLine;
 
 		ScrollMetricVert();
-		rbool isVisible(rsint index) const;
-		rbool applyInc (rsint delta);
+		bool isVisible(rsint index) const;
+		bool applyInc (rsint delta);
 	};
 
 	QAbstractScrollArea* m_pScrollArea;
@@ -121,14 +121,14 @@ private:
 	QRect                m_clientRect;
 	QRect                m_prevWindowRect;
 	rsint                m_fullRepaintLines;
-	rbool                m_focusOnly;
+	bool                 m_focusOnly;
 	FindDialog*          m_pFindDialog;
 	FindDialog::Settings m_findSettings;
-	rbool                m_drawLog;
+	bool                 m_drawLog;
 	QFont                m_font;
 
-	rbool getItemColors(CREF(QString) item, LogColorPair &colors) const;
-	rbool getItemColors(rsint index, LogColorPair &colors) const;
+	bool getItemColors(CREF(QString) item, LogColorPair &colors) const;
+	bool getItemColors(rsint index, LogColorPair &colors) const;
 
 	rsint selectedLine() const;
 	void  setSelectedLine(rsint selectedLine);
@@ -139,21 +139,21 @@ private:
 	QScrollBar& getVertScrollBar    ();
 	QScrollBar& getHorzScrollBar    ();
 	void        updateScrollBars    ();
-	rbool       scrollVertically    (rsint inc);
-	rbool       scrollHorizontally  (rsint inc);
+	bool        scrollVertically    (rsint inc);
+	bool        scrollHorizontally  (rsint inc);
 
-	rbool       makeLineVisible     (rsint index);
-	rbool       isFullyVisible      (rsint index) const;
+	bool        makeLineVisible     (rsint index);
+	bool        isFullyVisible      (rsint index) const;
 	QRect       getLineRect         (rsint index) const;
 	void        repaintLine         (rsint index);
 
 	void        setFont             ();
-	void        updateActionFind    (rbool activated);
-	void        updateActionEditCopy(rbool activated);
-	void        updateCoordStatusBar(rbool activated);
-	rbool       canCopy             () const;
+	void        updateActionFind    (bool activated);
+	void        updateActionEditCopy(bool activated);
+	void        updateCoordStatusBar(bool activated);
+	bool        canCopy             () const;
 
-	rsint       find                (rbool searchDown);
+	rsint       find                (bool searchDown);
 	void        onFindDlgFind       (CREF(FindDialog::Settings) settings);
 	void        onFindDlgClose      ();
 
@@ -164,7 +164,7 @@ private:
 	virtual void mousePressEvent (QMouseEvent*  pEvent);
 	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
 
-	virtual void onUpdateActions(rbool activated);
+	virtual void onUpdateActions(bool activated);
 
 private slots:
 	void onVertScrollBarValueChanged(int value);

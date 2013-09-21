@@ -11,14 +11,14 @@
 #define _RDO_STUDIO_MAIN_WINDOW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <math.h>
 #include <boost/mpl/integral_c.hpp>
 #include <QMainWindow>
 #include <QSlider>
 #include <QSignalMapper>
 #include "ui_main_window.h"
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio/src/main_window_base.h"
@@ -40,7 +40,7 @@ public:
 
 	virtual void updateAllStyles();
 
-	virtual void setVisible(rbool visible);
+	virtual void setVisible(bool visible);
 
 	CREF(LPStatusBar) statusBar() const;
 
@@ -55,7 +55,7 @@ public:
 	void insertMenuFileReopenItem(CREF(QString) item);
 
 	template <typename SlotFun>
-	void updateInsertMenu(rbool enabled, const typename QtPrivate::FunctionPointer<SlotFun>::Object* pObject, SlotFun pSlot)
+	void updateInsertMenu(bool enabled, const typename QtPrivate::FunctionPointer<SlotFun>::Object* pObject, SlotFun pSlot)
 	{
 		updateInsertMenu(enabled);
 		void (QSignalMapper::*pSignal)(QObject*) = &QSignalMapper::mapped;
@@ -138,7 +138,7 @@ private:
 	void onToolBarModelOrientationChanged(Qt::Orientation orientation);
 
 	void onMenuFileReopen(QAction* pAction);
-	void updateInsertMenu(rbool enabled);
+	void updateInsertMenu(bool enabled);
 
 	void onUpdateCascadeTitle   (bool activated);
 	void onUpdateTabMode        (bool activated);

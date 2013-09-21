@@ -39,13 +39,13 @@ LogColorPair& LogColorPair::operator =( const LogColorPair& colors )
 	return *this;
 }
 
-rbool LogColorPair::operator ==( const LogColorPair& colors ) const
+bool LogColorPair::operator ==( const LogColorPair& colors ) const
 {
 	return foregroundColor == colors.foregroundColor &&
 	       backgroundColor == colors.backgroundColor;
 }
 
-rbool LogColorPair::operator !=( const LogColorPair& colors ) const
+bool LogColorPair::operator !=( const LogColorPair& colors ) const
 {
 	return !(*this == colors);
 }
@@ -85,13 +85,13 @@ LogBorders& LogBorders::operator =( const LogBorders& borders )
 	return *this;
 }
 
-rbool LogBorders::operator ==( const LogBorders& borders ) const
+bool LogBorders::operator ==( const LogBorders& borders ) const
 {
 	return vertBorder == borders.vertBorder &&
 	       horzBorder == borders.horzBorder;
 }
 
-rbool LogBorders::operator !=( const LogBorders& borders ) const
+bool LogBorders::operator !=( const LogBorders& borders ) const
 {
 	return !(*this == borders);
 }
@@ -221,20 +221,20 @@ LogStyle::~LogStyle()
 {
 }
 
-rbool LogStyle::getItemColors( int index, LogColorPair &colors ) const
+bool LogStyle::getItemColors( int index, LogColorPair &colors ) const
 {
 	UNUSED(index);
 	return getDefaultColor(colors);
 }
 
-rbool LogStyle::getItemColors( CREF(tstring) item, LogColorPair &colors ) const
+bool LogStyle::getItemColors( CREF(tstring) item, LogColorPair &colors ) const
 {
 	if ( item.empty() )
 		return LogStyle::getDefaultColor(colors);
 	int posstart = item.find_first_not_of( ' ' );
 	int posend = item.find_first_of( ' ', posstart );
 	tstring key = boost::algorithm::trim_copy(item.substr(posstart, posend - posstart));
-	rbool res = true;
+	bool res = true;
 	if ( key == "ES" ) {
 		colors = es;
 	} else if ( key == "EB" ) {
@@ -291,7 +291,7 @@ rbool LogStyle::getItemColors( CREF(tstring) item, LogColorPair &colors ) const
 	return res;
 }
 
-rbool LogStyle::getDefaultColor(LogColorPair &colors) const
+bool LogStyle::getDefaultColor(LogColorPair &colors) const
 {
 	colors = defaultColor;
 
@@ -334,9 +334,9 @@ LogStyle& LogStyle::operator =( const LogStyle& style )
 	return *this;
 }
 
-rbool LogStyle::operator ==( const LogStyle& style ) const
+bool LogStyle::operator ==( const LogStyle& style ) const
 {
-	rbool flag = StyleBase::operator==( style );
+	bool flag = StyleBase::operator==( style );
 	flag &= borders == style.borders;
 
 	return flag && fontStyle == style.fontStyle
@@ -368,7 +368,7 @@ rbool LogStyle::operator ==( const LogStyle& style ) const
 		&& seu          == style.seu;
 }
 
-rbool LogStyle::operator !=( const LogStyle& style ) const
+bool LogStyle::operator !=( const LogStyle& style ) const
 {
 	return !(*this == style);
 }

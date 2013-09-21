@@ -62,9 +62,9 @@ public:
 	void addParam(CREF(LPParam) pParam);
 	LPParam getParam(unsigned int index) const;
 	int getParamIndex(CREF(LPParam) pParam) const;
-	void setParams(tstring& line, Time* const time, const int eventIndex, const rbool erasing = false);
-	void setErased(const rbool value);
-	rbool isErased() const;
+	void setParams(tstring& line, Time* const time, const int eventIndex, const bool erasing = false);
+	void setErased(const bool value);
+	bool isErased() const;
 
 private:
 	Resource(CREF(LPResourceType) pResType, CREF(QString) name, int id);
@@ -76,7 +76,7 @@ private:
 	int                m_id;
 	ResourceParamList  m_paramList;
 	LPResourceType     m_pResourceType;
-	rbool              m_erased;
+	bool               m_erased;
 };
 
 typedef  rdo::intrusive_ptr<Resource>  LPResource;

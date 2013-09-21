@@ -11,11 +11,11 @@
 #define _RDO_STUDIO_TRACER_CHART_TREE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QTreeWidget>
 #include <QMenu>
 #include <QIcon>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_tree_item.h"
 #include "app/rdo_studio/src/action_activator/action_activator.h"
@@ -75,7 +75,7 @@ private:
 	void createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType);
 
 	void  createChart          (PTR(QTreeWidgetItem) pCtrlItem) const;
-	rbool activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const;
+	bool  activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const;
 
 	LPChartTreeItem      getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
 	PTR(QTreeWidgetItem) getSelected        () const;
@@ -84,7 +84,7 @@ private:
 	virtual void focusOutEvent   (QFocusEvent* pEvent);
 	virtual void mousePressEvent (QMouseEvent* pEvent);
 	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
-	virtual void onUpdateActions (rbool activated);
+	virtual void onUpdateActions (bool activated);
 
 	void doDragDrop(CREF(LPSerie) pSerie);
 

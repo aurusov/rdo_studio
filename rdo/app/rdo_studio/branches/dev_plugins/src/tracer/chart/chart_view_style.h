@@ -27,8 +27,8 @@ public:
 	virtual ~ChartViewFontsTicks();
 
 	ChartViewFontsTicks& operator =(const ChartViewFontsTicks& fonts_ticks);
-	rbool operator ==(const ChartViewFontsTicks& fonts_ticks) const;
-	rbool operator !=(const ChartViewFontsTicks& fonts_ticks) const;
+	bool operator ==(const ChartViewFontsTicks& fonts_ticks) const;
+	bool operator !=(const ChartViewFontsTicks& fonts_ticks) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
@@ -51,8 +51,8 @@ public:
 	~ChartViewStyle();
 
 	ChartViewStyle& operator =(const ChartViewStyle& style);
-	rbool operator ==(const ChartViewStyle& style) const;
-	rbool operator !=(const ChartViewStyle& style) const;
+	bool operator ==(const ChartViewStyle& style) const;
+	bool operator !=(const ChartViewStyle& style) const;
 
 	QColor axisFgColor;
 	QColor titleFGColor;

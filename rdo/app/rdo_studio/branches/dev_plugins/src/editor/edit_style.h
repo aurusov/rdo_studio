@@ -28,18 +28,18 @@ public:
 	virtual ~EditTab();
 
 	EditTab& operator =( const EditTab& tab );
-	rbool operator ==( const EditTab& tab ) const;
-	rbool operator !=( const EditTab& tab ) const;
+	bool operator ==( const EditTab& tab ) const;
+	bool operator !=( const EditTab& tab ) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
 
-	int tabSize;
-	int indentSize;
-	rbool useTabs;
-	rbool tabIndents;
-	rbool backspaceUntabs;
-	rbool autoIndent;
+	int  tabSize;
+	int  indentSize;
+	bool useTabs;
+	bool tabIndents;
+	bool backspaceUntabs;
+	bool autoIndent;
 };
 
 QSettings& operator<< (QSettings& settings, const EditTab& tab);
@@ -55,14 +55,14 @@ public:
 	virtual ~EditWindow();
 
 	EditWindow& operator =( const EditWindow& window );
-	rbool operator ==( const EditWindow& window ) const;
-	rbool operator !=( const EditWindow& window ) const;
+	bool operator ==( const EditWindow& window ) const;
+	bool operator !=( const EditWindow& window ) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
 
-	rbool wordWrap;
-	rbool showHorzScrollBar;
+	bool wordWrap;
+	bool showHorzScrollBar;
 };
 
 QSettings& operator<< (QSettings& settings, const EditWindow& window);
@@ -88,13 +88,13 @@ public:
 	~EditStyle();
 
 	EditStyle& operator =( const EditStyle& style );
-	rbool operator ==( const EditStyle& style ) const;
-	rbool operator !=( const EditStyle& style ) const;
+	bool operator ==( const EditStyle& style ) const;
+	bool operator !=( const EditStyle& style ) const;
 
-	virtual rbool styleDefault( const int styleType ) const;
-	virtual rbool styleUsing( const int styleType ) const;
-	virtual rbool styleBold( const int styleType = STYLE_DEFAULT ) const;
-	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
+	virtual bool styleDefault( const int styleType ) const;
+	virtual bool styleUsing( const int styleType ) const;
+	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
+	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
 	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 	virtual tstring styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 

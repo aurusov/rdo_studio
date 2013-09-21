@@ -11,7 +11,6 @@
 #define _RDO_STUDIO_EDITOR_MODEL_EDIT_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/signal.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/editor/parser_edit_style.h"
 // --------------------------------------------------------------------------------
@@ -27,14 +26,14 @@ public:
 	virtual ~ModelAutoComplete();
 
 	ModelAutoComplete& operator =( const ModelAutoComplete& autoComplete );
-	rbool operator ==( const ModelAutoComplete& autoComplete ) const;
-	rbool operator !=( const ModelAutoComplete& autoComplete ) const;
+	bool operator ==( const ModelAutoComplete& autoComplete ) const;
+	bool operator !=( const ModelAutoComplete& autoComplete ) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
 
-	rbool useAutoComplete;
-	rbool showFullList;
+	bool useAutoComplete;
+	bool showFullList;
 };
 
 QSettings& operator<< (QSettings& settings, const ModelAutoComplete& auto_complete);
@@ -50,15 +49,15 @@ public:
 	virtual ~ModelMargin();
 
 	ModelMargin& operator =( const ModelMargin& margin );
-	rbool operator ==( const ModelMargin& margin ) const;
-	rbool operator !=( const ModelMargin& margin ) const;
+	bool operator ==( const ModelMargin& margin ) const;
+	bool operator !=( const ModelMargin& margin ) const;
 
 	void load(QSettings& settings);
 	void save(QSettings& settings) const;
 
-	rbool fold;
-	rbool bookmark;
-	rbool lineNumber;
+	bool fold;
+	bool bookmark;
+	bool lineNumber;
 };
 
 QSettings& operator<< (QSettings& settings, const ModelMargin& margin);
@@ -87,8 +86,8 @@ public:
 	~ModelStyle();
 
 	ModelStyle& operator =( const ModelStyle& style );
-	rbool operator ==( const ModelStyle& style ) const;
-	rbool operator !=( const ModelStyle& style ) const;
+	bool operator ==( const ModelStyle& style ) const;
+	bool operator !=( const ModelStyle& style ) const;
 
 	ModelAutoComplete autoComplete;
 	ModelMargin       margin;
@@ -97,7 +96,7 @@ public:
 	QColor foldBgColor;
 	QColor errorBgColor;
 	Fold   foldStyle;
-	rbool  commentFold;
+	bool   commentFold;
 
 	static ModelStyle getDefaultStyle();
 	static ModelStyle getCppStyle();

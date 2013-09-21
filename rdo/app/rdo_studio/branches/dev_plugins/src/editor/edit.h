@@ -12,14 +12,14 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <vector>
 #include <boost/function.hpp>
 #include <QColor>
 #include "thirdparty/scintilla/qt/ScintillaEditBase/ScintillaEditBase.h"
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdostream.h"
+#include "utils/src/stream/rdostream.h"
 #include "app/rdo_studio/src/editor/edit_style.h"
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 #include "app/rdo_studio/src/dialog/find_dialog.h"
@@ -35,8 +35,8 @@ class Edit
 Q_OBJECT
 
 private:
-	typedef  boost::function<void (Edit*)>         this_method;
-	typedef  boost::function<rbool (const Edit*)>  this_predicate;
+	typedef  boost::function<void (Edit*)>        this_method;
+	typedef  boost::function<bool (const Edit*)>  this_predicate;
 
 public:
 	Edit(QWidget* pParent);
@@ -48,9 +48,9 @@ public:
 	public:
 		typedef std::vector<PTR(Edit)> List;
 
-		rbool   bMatchCase;
-		rbool   bMatchWholeWord;
-		rbool   bSearchDown;
+		bool    bMatchCase;
+		bool    bMatchWholeWord;
+		bool    bSearchDown;
 		QString findStr;
 		QString replaceStr;
 
@@ -75,17 +75,17 @@ public:
 
 	void setGroup(PTR(Group) pGroup);
 
-	rbool isEmpty() const                                  { return getLength() == 0;                                                     }
-	rbool isSelected() const                               { return sendEditor(SCI_GETSELECTIONSTART) != sendEditor(SCI_GETSELECTIONEND); }
+	bool  isEmpty() const                                  { return getLength() == 0;                                                     }
+	bool  isSelected() const                               { return sendEditor(SCI_GETSELECTIONSTART) != sendEditor(SCI_GETSELECTIONEND); }
 
-	rbool isModify() const                                 { return sendEditor(SCI_GETMODIFY) ? true : false; }
+	bool  isModify() const                                 { return sendEditor(SCI_GETMODIFY) ? true : false; }
 	void  setModifyFalse()                                 { sendEditor(SCI_SETSAVEPOINT); }
 
 	virtual void clearAll();
 	void clearUndoBuffer() const                           { sendEditor(SCI_EMPTYUNDOBUFFER); }
 
-	rbool isReadOnly() const                               { return sendEditor(SCI_GETREADONLY) ? true : false; }
-	void setReadOnly(const rbool value)                    { sendEditor(SCI_SETREADONLY, value); }
+	bool  isReadOnly() const                               { return sendEditor(SCI_GETREADONLY) ? true : false; }
+	void  setReadOnly(const bool value)                    { sendEditor(SCI_SETREADONLY, value); }
 
 	void appendText(CREF(QString) str) const;
 
@@ -95,11 +95,11 @@ public:
 	void zoomOut() const                                   { sendEditor(SCI_ZOOMOUT);        }
 	void resetZoom() const                                 { sendEditor(SCI_SETZOOM, 0);     }
 
-	rbool bookmarkToggle  (int line = -1) const;
-	rbool bookmarkNext    (rbool canLoop = true, rbool fromCurrentLine = true) const;
-	rbool bookmarkPrev    (rbool canLoop = true, rbool fromCurrentLine = true) const;
+	bool  bookmarkToggle  (int line = -1) const;
+	bool  bookmarkNext    (bool canLoop = true, bool fromCurrentLine = true) const;
+	bool  bookmarkPrev    (bool canLoop = true, bool fromCurrentLine = true) const;
 	void  bookmarkClearAll() const;
-	rbool hasBookmarks    () const;
+	bool  hasBookmarks    () const;
 
 	int getLength() const                         { return sendEditor(SCI_GETLENGTH);                  }
 	int getLineCount() const                      { return sendEditor(SCI_GETLINECOUNT);               }
@@ -108,8 +108,8 @@ public:
 	int getLineFromPosition(const int pos) const  { return sendEditor(SCI_LINEFROMPOSITION, pos);      }
 	int isEndOfWord(int pos) const                { return sendEditor(SCI_WORDENDPOSITION, pos, true); }
 	void setCurrentPos (const int value) const;
-	void setCurrentPos (const int line, int pos_in_line, const rbool convert_rdo_tab = false) const;
-	rbool isLineVisible(const int line) const;
+	void setCurrentPos (const int line, int pos_in_line, const bool convert_rdo_tab = false) const;
+	bool isLineVisible(const int line) const;
 	void scrollToLine  (const int line) const;
 	void scrollToLine2 (const int line) const;
 	void scrollToCarret() const;
@@ -120,7 +120,7 @@ public:
 	tstring getCurrentOrSelectedWord() const;
 	QString getWordForFind() const;
 
-	int findPos(CREF(QString) findWhat, const int startFromLine = 0, const rbool matchCase = false, const rbool matchWholeWord = false) const;
+	int findPos(CREF(QString) findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false) const;
 	tstring getLine(const int line) const;
 
 	void load(rdo::stream& stream);
@@ -143,7 +143,7 @@ protected:
 	int getCurrentLineNumber  () const { return getLineFromPosition(getCurrentPos());       }
 	int getCurrentColumnNumber() const { return sendEditor(SCI_GETCOLUMN, getCurrentPos()); }
 
-	virtual void onUpdateActions(rbool activated);
+	virtual void onUpdateActions(bool activated);
 
 	static ruint convertColor(CREF(QColor) color);
 
@@ -157,27 +157,27 @@ private:
 	PTR(Group) m_pGroup;
 	int        m_sciMarkerBookmark;
 	int        m_firstFoundPos;
-	rbool      m_haveFound;
+	bool       m_haveFound;
 
 	void gotoLineEnsureVisible(int line) const;
-	void ensureRangeVisible(int posStart, int posEnd, rbool enforcePolicy = true) const;
+	void ensureRangeVisible(int posStart, int posEnd, bool enforcePolicy = true) const;
 
-	void findNext  (CREF(QString) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
-	void replace   (CREF(QString) findWhat, CREF(QString) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord);
-	void replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, rbool matchCase, rbool matchWholeWord);
+	void findNext  (CREF(QString) findWhat, bool searchDown, bool matchCase, bool matchWholeWord);
+	void replace   (CREF(QString) findWhat, CREF(QString) replaceWhat, bool searchDown, bool matchCase, bool matchWholeWord);
+	void replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, bool matchCase, bool matchWholeWord);
 
 	int  indentOfBlock     (int line) const;
 	void setLineIndentation(int line, int indent) const;
 	void autoIndent        () const;
 
-	rbool isViewWhiteSpace () const;
-	void  setViewWhiteSpace(rbool value);
+	bool  isViewWhiteSpace () const;
+	void  setViewWhiteSpace(bool value);
 
-	rbool isViewEndOfLine () const;
-	void  setViewEndOfLine(rbool value);
+	bool  isViewEndOfLine () const;
+	void  setViewEndOfLine(bool value);
 
 	void onSearchBookmarkNextPrev(
-		const boost::function<rbool (const Edit*, rbool, rbool)>& nextPrevFun,
+		const boost::function<bool (const Edit*, bool, bool)>& nextPrevFun,
 		const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
 	) const;
 
@@ -198,10 +198,10 @@ private:
 	void onFindReplaceDlgClose     ();
 	void showFindWarning           (CREF(QString) findWhat);
 
-	void updateActionFind(rbool activated);
+	void updateActionFind(bool activated);
 
 	void  methodOfGroup   (CREF(this_method)    fun);
-	rbool predicateOfGroup(CREF(this_predicate) fun) const;
+	bool  predicateOfGroup(CREF(this_predicate) fun) const;
 
 	virtual void focusInEvent (QFocusEvent* pEvent);
 	virtual void focusOutEvent(QFocusEvent* pEvent);

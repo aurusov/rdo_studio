@@ -11,13 +11,13 @@
 #define _RDO_STUDIO_MODEL_MODEL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <boost/optional.hpp>
 #include <boost/chrono.hpp>
 #include <QObject>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdointerface.h"
+#include "utils/src/interface/rdointerface.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio/src/frame/frame_manager.h"
@@ -42,9 +42,9 @@ public:
 	Model();
 	virtual ~Model();
 
-	rbool openModel (CREF(QString) modelName = QString());
-	rbool runModel  ();
-	rbool closeModel();
+	bool  openModel (CREF(QString) modelName = QString());
+	bool  runModel  ();
+	bool  closeModel();
 	void  update    ();
 
 	void resetView();
@@ -53,8 +53,8 @@ public:
 	void          setName    (CREF(QString) str);
 	QString       getFullName() const;
 
-	rbool  isRunning     () const;
-	rbool  isFrmDescribed() const;
+	bool   isRunning     () const;
+	bool   isFrmDescribed() const;
 	double getTimeNow    () const;
 
 	rdo::simulation::report::RDOExitCode getExitCode   () const;
@@ -68,13 +68,13 @@ public:
 	CREF(QString) getFrameName    (int index) const;
 	void          showFrame       (int index);
 	void          closeAllFrame   ();
-	rbool         hasModel        () const;
+	bool          hasModel        () const;
 
 	 PTR(TabCtrl) getTab();
 	CPTR(TabCtrl) getTab() const;
 
 	void  updateStyleOfAllModel() const;
-	rbool isPrevModelClosed    () const;
+	bool  isPrevModelClosed    () const;
 
 	REF(rdo::gui::frame::Manager) getFrameManager();
 	void onChangeFrame(ruint index);
@@ -92,52 +92,52 @@ private:
 
 	rdo::gui::frame::Manager  m_frameManager;
 	boost::optional<ruint>    m_templateIndex;
-	rbool                     m_GUI_HAS_MODEL;
-	rbool                     m_GUI_CAN_RUN;
-	rbool                     m_GUI_IS_RUNNING;
+	bool                      m_GUI_HAS_MODEL;
+	bool                      m_GUI_CAN_RUN;
+	bool                      m_GUI_IS_RUNNING;
 
-	void setHasModel  (rbool value);
-	void setCanRun    (rbool value);
-	void setIsRunning (rbool value);
+	void setHasModel  (bool value);
+	void setCanRun    (bool value);
+	void setIsRunning (bool value);
 	void updateActions();
 
-	rbool  isModify  () const;
-	rbool  canNew    () const;
-	rbool  canOpen   () const;
-	rbool  canSave   () const;
-	rbool  canClose  () const;
-	rbool  canBuild  () const;
-	rbool  canRun    () const;
+	bool  isModify  () const;
+	bool  canNew    () const;
+	bool  canOpen   () const;
+	bool  canSave   () const;
+	bool  canClose  () const;
+	bool  canBuild  () const;
+	bool  canRun    () const;
 
 	boost::chrono::system_clock::time_point m_timeStart;
 	BuildState                              m_buildState;
 
-	mutable rbool                           m_openError;
-	mutable rbool                           m_smrEmptyError;
-	mutable rbool                           m_modelClosed;
+	mutable bool                            m_openError;
+	mutable bool                            m_smrEmptyError;
+	mutable bool                            m_modelClosed;
 
-	rbool                                   m_frmDescribed;
+	bool                                    m_frmDescribed;
 	double                                  m_timeNow;
 	double                                  m_speed;
 	double                                  m_showRate;
-	rbool                                   m_tempPause;
+	bool                                    m_tempPause;
 	rdo::runtime::RunTimeMode               m_runtimeMode;
 	rdo::simulation::report::RDOExitCode    m_exitCode;
-	mutable rbool                           m_modify;
+	mutable bool                            m_modify;
 	View*                                   m_pView;
 	QString                                 m_name;
 
-	rbool newModel  (CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex);
-	rbool saveModel () const;
-	rbool buildModel();
-	rbool stopModel () const;
+	bool newModel  (CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex);
+	bool saveModel () const;
+	bool buildModel();
+	bool stopModel () const;
 
 	void  updateFrmDescribed      ();
 	void  newModelFromRepository  ();
 	void  openModelFromRepository ();
 	void  saveModelToRepository   ();
 	void  closeModelFromRepository();
-	rbool canCloseModel           ();
+	bool  canCloseModel           ();
 	void  afterModelStart         ();
 
 	double  getSpeed() const;

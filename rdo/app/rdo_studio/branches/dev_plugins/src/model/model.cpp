@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <limits>
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
@@ -18,10 +18,10 @@
 #include <boost/numeric/conversion/bounds.hpp>
 #include <QMessageBox>
 #include <QFileDialog>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdostream.h"
-#include "utils/rdoanimation.h"
+#include "utils/src/stream/rdostream.h"
+#include "utils/src/animation/rdoanimation.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
 #include "repository/rdorepository.h"
@@ -85,7 +85,7 @@ Model::Model()
 	, m_exitCode       (rdo::simulation::report::EC_ModelNotFound)
 	, m_modify         (false                     )
 	, m_buildState     (BS_UNDEFINED              )
-	, m_pView     (NULL                      )
+	, m_pView          (NULL                      )
 	, m_name           ("")
 {
 	g_pModel = this;
@@ -234,7 +234,7 @@ Model::~Model()
 //	closeModel();
 }
 
-rbool Model::init()
+bool Model::init()
 {
 	PTR(IInit) pFrameManagerInit = dynamic_cast<PTR(IInit)>(&m_frameManager);
 	ASSERT(pFrameManagerInit);
@@ -508,7 +508,7 @@ void Model::show_result()
 	}
 }
 
-rbool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex)
+bool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex)
 {
 	m_templateIndex = templateIndex;
 	g_pApp->getIMainWnd()->getDockBuild  ().clear();
@@ -522,7 +522,7 @@ rbool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, ruint te
 	return true;
 }
 
-rbool Model::openModel(CREF(QString) modelName)
+bool Model::openModel(CREF(QString) modelName)
 {
 	if (isRunning())
 	{
@@ -570,14 +570,14 @@ rbool Model::openModel(CREF(QString) modelName)
 	return data.m_result;
 }
 
-rbool Model::saveModel() const
+bool Model::saveModel() const
 {
-	rbool res = true;
+	bool res = true;
 	g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_SAVE, &res);
 	return res;
 }
 
-rbool Model::closeModel()
+bool Model::closeModel()
 {
 	if (isRunning())
 	{
@@ -607,7 +607,7 @@ rbool Model::closeModel()
 	return true;
 }
 
-rbool Model::buildModel()
+bool Model::buildModel()
 {
 	if (hasModel() && !isRunning() && saveModel())
 	{
@@ -624,7 +624,7 @@ rbool Model::buildModel()
 	return false;
 }
 
-rbool Model::runModel()
+bool Model::runModel()
 {
 	if (buildModel())
 	{
@@ -640,7 +640,7 @@ rbool Model::runModel()
 	return false;
 }
 
-rbool Model::stopModel() const
+bool Model::stopModel() const
 {
 	if (hasModel() && isRunning())
 	{
@@ -751,7 +751,7 @@ void Model::openModelFromRepository()
 		pEdit->setReadOnly(false);
 		pEdit->clearAll();
 		rdo::binarystream stream;
-		rbool canLoad = true;
+		bool canLoad = true;
 		rdoModelObjects::RDOFileType type = m_pView->getTab().indexToType(i);
 		if (m_pView->getTab().typeSupported(type))
 		{
@@ -767,7 +767,7 @@ void Model::openModelFromRepository()
 		{
 			rdo::repository::RDOThreadRepository::FileInfo data(type);
 			g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
-			rbool stream_error = stream.rdstate() & std::ios_base::failbit ? true : false;
+			bool stream_error = stream.rdstate() & std::ios_base::failbit ? true : false;
 			if (!stream_error)
 			{
 				pEdit->load(stream);
@@ -812,8 +812,8 @@ void Model::openModelFromRepository()
 
 void Model::saveModelToRepository()
 {
-	rbool smr_modified = false;
-	rbool wasSaved     = false;
+	bool smr_modified = false;
+	bool wasSaved     = false;
 	PTR(editor::Model) pSmrEdit = m_pView->getTab().getItemEdit(rdoModelObjects::SMR);
 	if (pSmrEdit->isModify())
 	{
@@ -904,9 +904,9 @@ void Model::updateFrmDescribed()
 	m_frmDescribed = true;
 }
 
-rbool Model::canCloseModel()
+bool Model::canCloseModel()
 {
-	rbool result = true;
+	bool result = true;
 	if (isModify())
 	{
 		switch (QMessageBox::question(g_pApp->getMainWnd(), "RAO-Studio", "Сохранить модель ?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel))
@@ -1017,7 +1017,7 @@ void Model::updateStyleOfAllModel() const
 	m_frameManager.updateStyles();
 }
 
-rbool Model::isPrevModelClosed() const
+bool Model::isPrevModelClosed() const
 {
 	return m_modelClosed;
 }
@@ -1119,18 +1119,18 @@ void Model::closeAllFrame()
 	m_frameManager.closeAll();
 }
 
-rbool Model::hasModel() const
+bool Model::hasModel() const
 {
 	return m_GUI_HAS_MODEL;
 }
 
-void Model::setHasModel(rbool value)
+void Model::setHasModel(bool value)
 {
 	m_GUI_HAS_MODEL = value;
 	updateActions();
 }
 
-void Model::setCanRun(rbool value)
+void Model::setCanRun(bool value)
 {
 	m_GUI_CAN_RUN = value;
 	updateActions();
@@ -1160,7 +1160,7 @@ void Model::updateActions()
 	pMainWindow->actModelRuntimeSync->setChecked    (getRuntimeMode() == rdo::runtime::RTM_Sync);
 	pMainWindow->actModelRuntimePause->setChecked   (getRuntimeMode() == rdo::runtime::RTM_Pause || getRuntimeMode() == rdo::runtime::RTM_BreakPoint);
 
-	rbool canShowRate = isRunning() && getRuntimeMode() == rdo::runtime::RTM_Sync;
+	bool canShowRate = isRunning() && getRuntimeMode() == rdo::runtime::RTM_Sync;
 	pMainWindow->actModelShowRateInc->setEnabled    (canShowRate && getShowRate() * 1.5 <= boost::numeric::bounds<double>::highest());
 	pMainWindow->actModelShowRateIncFour->setEnabled(canShowRate && getShowRate() * 4.0 <= boost::numeric::bounds<double>::highest());
 	pMainWindow->actModelShowRateDecFour->setEnabled(canShowRate && getShowRate() / 4.0 >= boost::numeric::bounds<double>::lowest());
@@ -1282,12 +1282,12 @@ void Model::updateTimeNow()
 	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_TIME>(QString("Время: %1").arg(m_timeNow));
 }
 
-rbool Model::isModify() const
+bool Model::isModify() const
 {
 	if (!m_pView)
 		return false;
 
-	rbool result = false;
+	bool result = false;
 
 	for (int i = 0; i < getTab()->count(); i++)
 	{
@@ -1306,48 +1306,48 @@ rbool Model::isModify() const
 	return result;
 }
 
-rbool Model::canNew() const
+bool Model::canNew() const
 {
 	return (canRun() || !hasModel());
 }
 
-rbool Model::canOpen() const
+bool Model::canOpen() const
 {
 	return (canRun() || !hasModel());
 }
 
-rbool Model::canSave() const
+bool Model::canSave() const
 {
 	return hasModel() && isModify();
 }
 
-rbool Model::canClose() const
+bool Model::canClose() const
 {
 	return hasModel() && !isRunning();
 }
 
-rbool Model::canBuild() const
+bool Model::canBuild() const
 {
 	return canRun();
 }
 
-rbool Model::canRun() const
+bool Model::canRun() const
 {
 	return hasModel() && m_GUI_CAN_RUN;
 }
 
-rbool Model::isRunning() const
+bool Model::isRunning() const
 {
 	return m_GUI_IS_RUNNING;
 }
 
-void Model::setIsRunning(rbool value)
+void Model::setIsRunning(bool value)
 {
 	m_GUI_IS_RUNNING = value;
 	updateActions();
 }
 
-rbool Model::isFrmDescribed() const
+bool Model::isFrmDescribed() const
 {
 	return m_frmDescribed;
 }

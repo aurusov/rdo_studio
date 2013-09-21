@@ -10,9 +10,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QProcess>
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/editor/find_edit.h"
 #include "app/rdo_studio/src/editor/lexer/lexer_find.h"
@@ -75,7 +75,7 @@ void Find::setEditorStyle(FindStyle* pStyle)
 	sendEditor(SCI_STYLESETSIZE, SCE_FIND_KEYWORD, m_pStyle->font.size);
 }
 
-void Find::setKeyword(CREF(QString) keyword, const rbool matchCase) const
+void Find::setKeyword(CREF(QString) keyword, const bool matchCase) const
 {
 	sendEditorString(SCI_SETPROPERTY, reinterpret_cast<unsigned long>("find_matchcase"), matchCase ? "1" : "0");
 	sendEditorString(SCI_SETKEYWORDS, SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX, keyword.toStdString().c_str());

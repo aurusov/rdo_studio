@@ -11,10 +11,10 @@
 #define _RDO_STUDIO_DIALOG_FILE_ASSOCIATION_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include "utils/warning_disable.h"
+#include "utils/src/common/warning_disable.h"
 #include <QDialog>
 #include "ui_file_association_dialog.h"
-#include "utils/warning_enable.h"
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
