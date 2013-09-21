@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
-#include "utils/smart_ptr/intrusive_ptr_interface_wrapper.h"
-#include "utils/explicit_value.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr_interface_wrapper.h"
+#include "utils/src/stuff/explicit_value.h"
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/type/info.h"

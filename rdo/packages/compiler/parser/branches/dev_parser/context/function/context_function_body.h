@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/interface_ptr.h"
+#include "utils/src/smart_ptr/interface_ptr/interface_ptr.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/context/context.h"

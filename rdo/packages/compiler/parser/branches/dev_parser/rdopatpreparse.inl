@@ -10,8 +10,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/namespace.h"
-#include "utils/rdomacros.h"
-#include "utils/rdotypes.h"
+#include "utils/src/common/rdomacros.h"
+#include "utils/src/common/rdotypes.h"
 #include "simulator/runtime/calc/calc_event.h"
 #include "simulator/runtime/rdo_event.h"
 // --------------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 #==============================================================================
-# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>,
+#               2013 Andrey Urusov <drobus@gmail.com>
 #==============================================================================
 
 MESSAGE(STATUS "CREATE  RDO_PARSER  LIBRARY")
@@ -15,52 +16,34 @@ FIND_PACKAGE(BISON)
 FIND_PACKAGE(FLEX)
 
 IF(NOT BISON_FOUND)
-    MESSAGE(FATAL_ERROR "Bison can not be found")
+	MESSAGE(FATAL_ERROR "Bison can not be found")
 ENDIF(NOT BISON_FOUND)
 IF(NOT FLEX_FOUND)
-    MESSAGE(FATAL_ERROR "Flex can not be found")
+	MESSAGE(FATAL_ERROR "Flex can not be found")
 ENDIF(NOT FLEX_FOUND)
 
-SET(GRAMMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
+SET(GRAMMA_INPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
+SET(GRAMMA_OUTPUT_PATH ${GRAMMA_INPUT_PATH}/generated)
+SET(GRAMMA_H ${GRAMMA_OUTPUT_PATH}/rdogramma.h)
 
-CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/cmake/rdogramma.h.cmake ${GRAMMA_PATH}/rdogramma.h)
+INCLUDE(${PROJECT_SOURCE_DIR}/cmake/bison.cmake)
 
-BISON_TARGET(rdortp ${GRAMMA_PATH}/rdortp.y ${GRAMMA_PATH}/rdogramrtp.cpp COMPILE_FLAGS "-g -v -prtp")
-BISON_TARGET(rdodpt ${GRAMMA_PATH}/rdodpt.y ${GRAMMA_PATH}/rdogramdpt.cpp COMPILE_FLAGS "-g -v -pdpt")
-BISON_TARGET(rdoevn ${GRAMMA_PATH}/rdoevn.y ${GRAMMA_PATH}/rdogramevn.cpp COMPILE_FLAGS "-g -v -pevn")
-BISON_TARGET(rdoevn_preparse ${GRAMMA_PATH}/rdoevn_preparse.y ${GRAMMA_PATH}/rdogramevn_preparse.cpp COMPILE_FLAGS "-g -v -pevn_preparse_")
-BISON_TARGET(rdofrm ${GRAMMA_PATH}/rdofrm.y ${GRAMMA_PATH}/rdogramfrm.cpp COMPILE_FLAGS "-g -v -pfrm")
-BISON_TARGET(rdofun ${GRAMMA_PATH}/rdofun.y ${GRAMMA_PATH}/rdogramfun.cpp COMPILE_FLAGS "-g -v -pfun")
-BISON_TARGET(rdopat ${GRAMMA_PATH}/rdopat.y ${GRAMMA_PATH}/rdogrampat.cpp COMPILE_FLAGS "-g -v -ppat")
-BISON_TARGET(rdopmd ${GRAMMA_PATH}/rdopmd.y ${GRAMMA_PATH}/rdogrampmd.cpp COMPILE_FLAGS "-g -v -ppmd")
-BISON_TARGET(rdoproc_opr ${GRAMMA_PATH}/rdoproc_opr.y ${GRAMMA_PATH}/rdogramproc_opr.cpp COMPILE_FLAGS "-g -v -pproc_opr_")
-BISON_TARGET(rdoproc_rss ${GRAMMA_PATH}/rdoproc_rss.y ${GRAMMA_PATH}/rdogramproc_rss.cpp COMPILE_FLAGS "-g -v -pproc_rss_")
-BISON_TARGET(rdoproc_rtp ${GRAMMA_PATH}/rdoproc_rtp.y ${GRAMMA_PATH}/rdogramproc_rtp.cpp COMPILE_FLAGS "-g -v -pproc_rtp_")
-BISON_TARGET(rdorss ${GRAMMA_PATH}/rdorss.y ${GRAMMA_PATH}/rdogramrss.cpp COMPILE_FLAGS "-g -v -prss")
-BISON_TARGET(rdosmr_file ${GRAMMA_PATH}/rdosmr_file.y ${GRAMMA_PATH}/rdogramsmr_file.cpp COMPILE_FLAGS "-g -v -psmr_file_")
-BISON_TARGET(rdosmr_sim ${GRAMMA_PATH}/rdosmr_sim.y ${GRAMMA_PATH}/rdogramsmr_sim.cpp COMPILE_FLAGS "-g -v -psmr_sim_")
+RDO_BISON_TARGET(rtp rtp define)
+RDO_BISON_TARGET(rss)
+RDO_BISON_TARGET(evn)
+RDO_BISON_TARGET(evn_preparse evn_preparse_)
+RDO_BISON_TARGET(pat)
+RDO_BISON_TARGET(dpt)
+RDO_BISON_TARGET(frm)
+RDO_BISON_TARGET(fun)
+RDO_BISON_TARGET(pmd)
+RDO_BISON_TARGET(proc_rtp proc_rtp_)
+RDO_BISON_TARGET(proc_rss proc_rss_)
+RDO_BISON_TARGET(proc_opr proc_opr_)
+RDO_BISON_TARGET(smr_file smr_file_)
+RDO_BISON_TARGET(smr_sim smr_sim_)
 
-FLEX_TARGET(lexer_scaner ${GRAMMA_PATH}/rdo_lexer.l ${GRAMMA_PATH}/rdolex.cpp COMPILE_FLAGS "-+")
-
-SET(GENERATED_FILES
-    ${GRAMMA_PATH}/rdogramma.h
-    ${FLEX_lexer_scaner_OUTPUTS}
-    ${BISON_rdortp_OUTPUTS}
-    ${BISON_rdortp_OUTPUT_HEADER}
-    ${BISON_rdodpt_OUTPUTS}
-    ${BISON_rdoevn_OUTPUTS}
-    ${BISON_rdoevn_preparse_OUTPUTS}
-    ${BISON_rdofrm_OUTPUTS}
-    ${BISON_rdofun_OUTPUTS}
-    ${BISON_rdopat_OUTPUTS}
-    ${BISON_rdopmd_OUTPUTS}
-    ${BISON_rdoproc_opr_OUTPUTS}
-    ${BISON_rdoproc_rss_OUTPUTS}
-    ${BISON_rdoproc_rtp_OUTPUTS}
-    ${BISON_rdorss_OUTPUTS}
-    ${BISON_rdosmr_file_OUTPUTS}
-    ${BISON_rdosmr_sim_OUTPUTS}
-    )
+FLEX_TARGET(lexer_scaner ${GRAMMA_INPUT_PATH}/rdo_lexer.l ${GRAMMA_OUTPUT_PATH}/rdolex.cpp COMPILE_FLAGS "-+")
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
@@ -68,165 +51,295 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/parser)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/context)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/type)
 
-SET(HEADER_FILES
-    ${GRAMMA_PATH}/rdobison.h
-    rdortp.h
-    expression.h
-    src/function/local_variable/local_variable.h
-    src/function/local_variable/local_variable_context.h
-    namespace.h
-    param.h
-    pch.h
-    rdo_array.h
-    rdodpt.h
-    rdofun.h
-    rdo_logic_base.h
-    rdo_logic.h
-    rdo_object.h
-    rdoparser_base.h
-    rdoparser_corba.h
-    rdoparser_error.h
-    rdoparser.h
-    rdoparser_lexer.h
-    rdoparser_rdo.h
-    src/animation/animation_base.h
-    src/animation/animation_frame.h
-    src/animation/animation_sprite.h
-    src/function/function.h
-    rdopat.h
-    rdopatpreparse.h
-    rdopmd.h
-    rdoprocess.h
-    rdorss.h
-    rdortp.h
-    rdortp_param.h
-    rdosmr.h
-    rdo_value.h
-    bison_value_pair.h
-    # context path
-    context/context_create_calc_i.h
-    context/context_find_i.h
-    context/context_switch_i.h
-    context/context.h
-    context/memory.h
-    context/statement.h
-    context/stack.h
-    # parses paht
-    parser/std_fun.h
-    # type path
-    type/array.h
-    type/atom.h
-    type/enum.h
-    type/info.h
-    type/range.h
-    type/such_as.h
-    type/type.h
-    type/function_type.h
-    type/runtime_wrapper_type.h
-    context/context_type.h
-    context/function/context_function_body.h
-    context/function/context_function_param_definition.h
-    )
+SET(ANIMATION_FILES
+	src/animation/animation_base.cpp
+	src/animation/animation_base.h
+	src/animation/animation_frame.cpp
+	src/animation/animation_frame.h
+	src/animation/animation_sprite.cpp
+	src/animation/animation_sprite.h
+)
 
-SET(INLITE_FILES
-    rdo_logic.inl
-    bison_value_pair.inl
-    rdoparser_lexer.inl
-    rdopatpreparse.inl
-    rdo_value.inl
-    rdortp.inl
-    # context path
-    context/context.inl
-    # type path
-    type/info.inl
-    type/range.inl
-    )
+SET(COMMON_FILES
+	bison_value_pair.h
+	bison_value_pair.inl
+	namespace.h
+	rdo_object.cpp
+	rdo_object.h
+)
+
+SET(CONTEXT_FILES
+	context/context.cpp
+	context/context.h
+	context/context.inl
+	context/context_create_calc_i.h
+	context/context_find.cpp
+	context/context_find_i.h
+	context/context_switch_i.h
+	context/context_type.cpp
+	context/context_type.h
+	context/memory.cpp
+	context/memory.h
+	context/stack.cpp
+	context/stack.h
+	context/statement.cpp
+	context/statement.h
+)
+
+SET(CONTEXT_FUNCTION_FILES
+	context/function/context_function_body.cpp
+	context/function/context_function_body.h
+	context/function/context_function_param_definition.cpp
+	context/function/context_function_param_definition.h
+)
+
+SET(DPT_FILES
+	rdo_logic.cpp
+	rdo_logic.h
+	rdo_logic.inl
+	rdo_logic_base.h
+	rdo_logic_base.cpp
+	rdodpt.cpp
+	rdodpt.h
+	rdoprocess.h
+	rdoprocess.cpp
+)
+
+SET(FUNCTION_FILES
+	rdofun.cpp
+	rdofun.h
+	src/function/function.cpp
+	src/function/function.h
+)
+
+SET(FUNCTION_EXPRESSION_FILES
+	expression.h
+	expression.cpp
+)
+
+SET(FUNCTION_LOCAL_VARIABLE_FILES
+	src/function/local_variable/local_variable.cpp
+	src/function/local_variable/local_variable.h
+	src/function/local_variable/local_variable_context.cpp
+	src/function/local_variable/local_variable_context.h
+)
+
+SET(GRAMMAR_FILES
+	${GRAMMA_INPUT_PATH}/rdobison.h
+	${GRAMMA_INPUT_PATH}/rdo_lexer.l
+	${GRAMMA_INPUT_PATH}/rdortp.y
+	${GRAMMA_INPUT_PATH}/rdorss.y
+	${GRAMMA_INPUT_PATH}/rdoevn_preparse.y
+	${GRAMMA_INPUT_PATH}/rdoevn.y
+	${GRAMMA_INPUT_PATH}/rdopat.y
+	${GRAMMA_INPUT_PATH}/rdodpt.y
+	${GRAMMA_INPUT_PATH}/rdofrm.y
+	${GRAMMA_INPUT_PATH}/rdofun.y
+	${GRAMMA_INPUT_PATH}/rdopmd.y
+	${GRAMMA_INPUT_PATH}/rdoproc_rtp.y
+	${GRAMMA_INPUT_PATH}/rdoproc_rss.y
+	${GRAMMA_INPUT_PATH}/rdoproc_opr.y
+	${GRAMMA_INPUT_PATH}/rdosmr_file.y
+	${GRAMMA_INPUT_PATH}/rdosmr_sim.y
+)
+
+SET(GRAMMAR_GENERATED_NO_PCH
+	${FLEX_lexer_scaner_OUTPUTS}
+	${BISON_rtp_OUTPUTS}
+	${BISON_rss_OUTPUTS}
+	${BISON_evn_preparse_OUTPUTS}
+	${BISON_evn_OUTPUTS}
+	${BISON_pat_OUTPUTS}
+	${BISON_dpt_OUTPUTS}
+	${BISON_frm_OUTPUTS}
+	${BISON_fun_OUTPUTS}
+	${BISON_pmd_OUTPUTS}
+	${BISON_proc_rtp_OUTPUTS}
+	${BISON_proc_rss_OUTPUTS}
+	${BISON_proc_opr_OUTPUTS}
+	${BISON_smr_file_OUTPUTS}
+	${BISON_smr_sim_OUTPUTS}
+)
+
+SET(GRAMMAR_GENERATED_FILES
+	${GRAMMA_H}
+	${GRAMMAR_GENERATED_NO_PCH}
+)
+
+SET(PARSER_FILES
+	rdoparser.cpp
+	rdoparser.h
+	rdoparser_base.cpp
+	rdoparser_base.h
+	rdoparser_corba.cpp
+	rdoparser_corba.h
+	rdoparser_rdo.cpp
+	rdoparser_rdo.h
+	parser/std_fun.cpp
+	parser/std_fun.h
+)
+
+SET(PARSER_ERROR_FILES
+	rdoparser_error.cpp
+	rdoparser_error.h
+)
+
+SET(PARSER_LEXER_FILES
+	rdoparser_lexer.cpp
+	rdoparser_lexer.h
+	rdoparser_lexer.inl
+)
+
+SET(PATTERN_FILES
+	rdopat.cpp
+	rdopat.h
+	rdopatpreparse.h
+	rdopatpreparse.inl
+)
+
+SET(PCH_FILES
+	pch.cpp
+	pch.h
+)
+
+SET(PROJECT_FILES
+	rdosmr.cpp
+	rdosmr.h
+)
+
+SET(RESORCES_FILES
+	rdorss.cpp
+	rdorss.h
+	rdortp.cpp
+	rdortp.h
+	rdortp.inl
+	rdortp_param.cpp
+	rdortp_param.h
+)
+
+SET(RESORCES_PARAM_FILES
+	param.h
+	param.cpp
+)
+
+SET(TYPE_FILES
+	type/type.cpp
+	type/type.h
+	type/type_i.h
+)
+
+SET(TYPE_FUNCTION_FILES
+	type/function_type.cpp
+	type/function_type.h
+)
+
+SET(TYPE_INFO_FILES
+	type/info.cpp
+	type/info.h
+	type/info.inl
+)
+
+SET(TYPE_RUNTIMEWRAPPER_FILES
+	type/runtime_wrapper_type.cpp
+	type/runtime_wrapper_type.h
+)
+
+SET(TYPE_RUNTIMEWRAPPER_ARRAY_FILES
+	type/array.cpp
+	type/array.h
+)
+
+SET(TYPE_RUNTIMEWRAPPER_ATOM_FILES
+	type/atom.cpp
+	type/atom.h
+)
+
+SET(TYPE_RUNTIMEWRAPPER_ENUM_FILES
+	type/enum.cpp
+	type/enum.h
+)
+
+SET(TYPE_RUNTIMEWRAPPER_RANGE_FILES
+	type/range.cpp
+	type/range.h
+	type/range.inl
+)
+
+SET(TYPE_SUCHAS_FILES
+	type/such_as.cpp
+	type/such_as.h
+)
+
+SET(VALUE_FILES
+	rdo_value.cpp
+	rdo_value.h
+	rdo_value.inl
+)
+
+SET(VALUE_ARRAY_FILES
+	rdo_array.cpp
+	rdo_array.h
+)
+
+SET(WATCH_FILES
+	rdopmd.cpp
+	rdopmd.h
+)
 
 SET(SOURCE_FILES
-    rdortp.cpp
-    expression.cpp
-    src/function/local_variable/local_variable.cpp
-    src/function/local_variable/local_variable_context.cpp
-    param.cpp
-    pch.cpp
-    rdo_array.cpp
-    rdodpt.cpp
-    rdofun.cpp
-    rdo_logic_base.cpp
-    rdo_logic.cpp
-    rdo_object.cpp
-    rdoparser_base.cpp
-    rdoparser_corba.cpp
-    rdoparser.cpp
-    rdoparser_error.cpp
-    rdoparser_lexer.cpp
-    rdoparser_rdo.cpp
-    src/animation/animation_base.cpp
-    src/animation/animation_frame.cpp
-    src/animation/animation_sprite.cpp
-    src/function/function.cpp
-    rdopat.cpp
-    rdopmd.cpp
-    rdoprocess.cpp
-    rdorss.cpp
-    rdortp.cpp
-    rdortp_param.cpp
-    rdosmr.cpp
-    rdo_value.cpp
-    # context path
-    context/context_find.cpp
-    context/context.cpp
-    context/memory.cpp
-    context/statement.cpp
-    context/stack.cpp
-    # parses paht
-    parser/std_fun.cpp
-    # type path
-    type/array.cpp
-    type/atom.cpp
-    type/enum.cpp
-    type/info.cpp
-    type/such_as.cpp
-    type/type.cpp
-    type/range.cpp
-    type/function_type.cpp
-    type/runtime_wrapper_type.cpp
-    context/context_type.cpp
-    context/function/context_function_body.cpp
-    context/function/context_function_param_definition.cpp
-    )
+	${PCH_FILES}
+	${ANIMATION_FILES}
+	${COMMON_FILES}
+	${CONTEXT_FILES}
+	${CONTEXT_FUNCTION_FILES}
+	${DPT_FILES}
+	${FUNCTION_FILES}
+	${FUNCTION_EXPRESSION_FILES}
+	${FUNCTION_LOCAL_VARIABLE_FILES}
+	${GRAMMAR_FILES}
+	${GRAMMAR_GENERATED_FILES}
+	${PARSER_FILES}
+	${PARSER_ERROR_FILES}
+	${PARSER_LEXER_FILES}
+	${PATTERN_FILES}
+	${PROJECT_FILES}
+	${RESORCES_FILES}
+	${RESORCES_PARAM_FILES}
+	${TYPE_FILES}
+	${TYPE_FUNCTION_FILES}
+	${TYPE_INFO_FILES}
+	${TYPE_RUNTIMEWRAPPER_FILES}
+	${TYPE_RUNTIMEWRAPPER_ARRAY_FILES}
+	${TYPE_RUNTIMEWRAPPER_ATOM_FILES}
+	${TYPE_RUNTIMEWRAPPER_ENUM_FILES}
+	${TYPE_RUNTIMEWRAPPER_RANGE_FILES}
+	${TYPE_SUCHAS_FILES}
+	${VALUE_FILES}
+	${VALUE_ARRAY_FILES}
+	${WATCH_FILES}
+)
 
-SET(BISON_FILES
-    # *.y files
-    ${GRAMMA_PATH}/rdodpt.y
-    ${GRAMMA_PATH}/rdoevn_preparse.y
-    ${GRAMMA_PATH}/rdoevn.y
-    ${GRAMMA_PATH}/rdofrm.y
-    ${GRAMMA_PATH}/rdofun.y
-    ${GRAMMA_PATH}/rdopat.y
-    ${GRAMMA_PATH}/rdopmd.y
-    ${GRAMMA_PATH}/rdoproc_opr.y
-    ${GRAMMA_PATH}/rdoproc_rss.y
-    ${GRAMMA_PATH}/rdoproc_rtp.y
-    ${GRAMMA_PATH}/rdorss.y
-    ${GRAMMA_PATH}/rdortp.y
-    ${GRAMMA_PATH}/rdosmr_file.y
-    ${GRAMMA_PATH}/rdosmr_sim.y
-    ${GRAMMA_PATH}/rdo_lexer.l
-    )
+SET(NO_PCH_FILES
+	${GRAMMAR_GENERATED_NO_PCH}
+	${PCH_FILES}
+)
 
-ADD_LIBRARY(rdo_parser ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${BISON_FILES} ${GENERATED_FILES})
-SET_TARGET_PROPERTIES(rdo_parser PROPERTIES FOLDER ${LIBRARY_FOLDERS})
+ADD_LIBRARY(rdo_parser ${SOURCE_FILES})
+
+INCLUDE(${PROJECT_SOURCE_DIR}/simulator/compiler/compiler.cmake)
+SET_TARGET_PROPERTIES(rdo_parser PROPERTIES FOLDER ${PROJECT_FOLDER})
 
 ADD_DEPENDENCIES(rdo_parser rdo_utils)
 ADD_DEPENDENCIES(rdo_parser rdo_runtime)
+ADD_DEPENDENCIES(rdo_parser pugixml)
 
 TARGET_LINK_LIBRARIES(rdo_parser ${Boost_LIBRARIES})
 TARGET_LINK_LIBRARIES(rdo_parser rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_parser rdo_runtime)
+TARGET_LINK_LIBRARIES(rdo_parser pugixml)
 
 IF(MSVC)
-    SET_TARGET_PROPERTIES(rdo_parser PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
+	SET_TARGET_PROPERTIES(rdo_parser PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
 ENDIF(MSVC)
 
 INSTALL(TARGETS rdo_parser DESTINATION lib)
@@ -234,174 +347,129 @@ INSTALL(TARGETS rdo_parser DESTINATION lib)
 SET(RDO_PARSER_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 #ADD_SUBDIRECTORY(${RDO_PARSER_TEST_PATH})
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
-SOURCE_GROUP(".animation" FILES 
-    rdofrm.h
-    rdofrm.cpp
-    )
+	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
+	ADD_PCH("${SOURCE_FILES}" "${NO_PCH_FILES}" simulator/compiler/parser ./ pch)
 
-SOURCE_GROUP(".bison" FILES 
-    ${BISON_FILES}
-    ${GRAMMA_PATH}/rdobison.h
-    )
-    
-SOURCE_GROUP(".common" FILES 
-    local_variable.h
-    local_variable.cpp
-    rdo_object.h
-    rdo_object.cpp
-    variable_container.h
-    variable_container.cpp
-    )    
+	SOURCE_GROUP(".animation" FILES
+		${ANIMATION_FILES}
+	)
 
-SOURCE_GROUP(".context" FILES 
-    context/context.h
-    context/context.inl
-    context/context.cpp
-    context/context_create_calc_i.h
-    context/context_create_expression_i.h
-    context/memory.h
-    context/memory.cpp
-    context/stack.h
-    context/stack.cpp
-    context/type.h
-    context/type.cpp
-    context/context_find_i.h
-    context/context_find.cpp
-    context/context_switch_i.h
-    )
-    
-SOURCE_GROUP(".dpt" FILES
-    rdodpt.h
-    rdoprocess.h
-    rdodpt.cpp
-    rdoprocess.cpp
-    rdo_logic.h
-    rdo_logic.cpp
-    )    
+	SOURCE_GROUP(".common" FILES
+		${COMMON_FILES}
+	)
 
-SOURCE_GROUP(".expression" FILES
-    expression.h
-    expression.cpp
-    )    
+	SOURCE_GROUP(".context" FILES
+		${CONTEXT_FILES}
+	)
 
-SOURCE_GROUP(".function" FILES
-    rdofun.h
-    rdofun.cpp
-    )    
+	SOURCE_GROUP(".context\\.function" FILES
+		${CONTEXT_FUNCTION_FILES}
+	)
 
-SOURCE_GROUP(".parser" FILES
-    parser/std_fun.h
-    parser/std_fun.cpp
-    rdoparser_rdo.h
-    rdoparser_rdo.cpp
-    rdoparser_corba.h
-    rdoparser_corba.cpp
-    rdoparser_base.h
-    rdoparser_base.cpp
-    rdoparser.h
-    rdoparser.cpp
-    )
+	SOURCE_GROUP(".dpt" FILES
+		${DPT_FILES}
+	)
 
-SOURCE_GROUP(".parser_error" FILES
-    rdoparser_error.h
-    rdoparser_error.cpp
-    )        
+	SOURCE_GROUP(".function" FILES
+		${FUNCTION_FILES}
+	)
 
-SOURCE_GROUP(".parser_lexer" FILES
-    rdoparser_lexer.h
-    rdoparser_lexer.inl
-    rdoparser_lexer.cpp
-    )
+	SOURCE_GROUP(".function\\.expression" FILES
+		${FUNCTION_EXPRESSION_FILES}
+	)
 
-SOURCE_GROUP(".pattern" FILES
-    rdopat.h
-    rdopat.cpp
-    rdopatpreparse.h
-    rdopatpreparse.inl
-    )
+	SOURCE_GROUP(".function\\.local_variable" FILES
+		${FUNCTION_LOCAL_VARIABLE_FILES}
+	)
 
-SOURCE_GROUP(".pch" FILES
-    pch.h
-    pch.cpp
-    )
+	SOURCE_GROUP(".grammar" FILES
+		${GRAMMAR_FILES}
+	)
 
-SOURCE_GROUP(".project" FILES
-    rdosmr.h
-    rdosmr.cpp
-    )
+	SOURCE_GROUP(".grammar\\generated" FILES
+		${GRAMMAR_GENERATED_FILES}
+	)
 
-SOURCE_GROUP(".resorces" FILES
-    rdortp_param.h
-    rdortp_param.cpp
-    rdortp.h
-    rdortp.cpp
-    rdortp.inl
-    rdorss.h
-    rdorss.cpp
-    )
+	SOURCE_GROUP(".parser" FILES
+		${PARSER_FILES}
+	)
 
-SOURCE_GROUP(".resorces_param" FILES
-    param.h
-    param.cpp
-    )
+	SOURCE_GROUP(".parser\\.error" FILES
+		${PARSER_ERROR_FILES}
+	)
 
-SOURCE_GROUP(".type" FILES
-    type.h
-    type.cpp
-    type/type.h
-    type/info.h
-    type/info.inl
-    type/info.cpp
-    type/runtime_wrapper_type.h
-    type/runtime_wrapper_type.cpp
-    )
+	SOURCE_GROUP(".parser\\.lexer" FILES
+		${PARSER_LEXER_FILES}
+	)
 
-SOURCE_GROUP(".value_array" FILES
-    rdo_array.h
-    rdo_array.cpp
-    )
+	SOURCE_GROUP(".pattern" FILES
+		${PATTERN_FILES}
+	)
 
-SOURCE_GROUP(".value" FILES
-    rdo_value.h
-    rdo_value.inl
-    rdo_value.cpp
-    )
+	SOURCE_GROUP(".pch" FILES
+		${PCH_FILES}
+	)
 
-SOURCE_GROUP(".watch" FILES
-    rdopmd.h
-    rdopmd.cpp
-    )
+	SOURCE_GROUP(".project" FILES
+		${PROJECT_FILES}
+	)
 
-SOURCE_GROUP(".type_array" FILES
-    type/array.h
-    type/array.cpp
-    )
+	SOURCE_GROUP(".resorces" FILES
+		${RESORCES_FILES}
+	)
 
-SOURCE_GROUP(".type_atom" FILES
-    type/atom.h
-    type/atom.cpp
-    )
+	SOURCE_GROUP(".resorces\\.param" FILES
+		${RESORCES_PARAM_FILES}
+	)
 
-SOURCE_GROUP(".type_enum" FILES
-    type/enum.h
-    type/enum.cpp
-    )
+	SOURCE_GROUP(".type" FILES
+		${TYPE_FILES}
+	)
 
-SOURCE_GROUP(".type_range" FILES
-    type/range.h
-    type/range.inl
-    type/range.cpp
-    )
+	SOURCE_GROUP(".type\\.function" FILES
+		${TYPE_FUNCTION_FILES}
+	)
 
-SOURCE_GROUP(".type_such_as" FILES
-    type/such_as.h
-    type/such_as.cpp
-    )
+	SOURCE_GROUP(".type\\.info" FILES
+		${TYPE_INFO_FILES}
+	)
 
-SOURCE_GROUP(".generated" FILES
-    ${GENERATED_FILES}
-    )
+	SOURCE_GROUP(".type\\.runtime_wrapper" FILES
+		${TYPE_RUNTIMEWRAPPER_FILES}
+	)
+
+	SOURCE_GROUP(".type\\.runtime_wrapper\\.array" FILES
+		${TYPE_RUNTIMEWRAPPER_ARRAY_FILES}
+	)
+
+	SOURCE_GROUP(".type\\.runtime_wrapper\\.atom" FILES
+		${TYPE_RUNTIMEWRAPPER_ATOM_FILES}
+	)
+
+	SOURCE_GROUP(".type\\.runtime_wrapper\\.enum" FILES
+		${TYPE_RUNTIMEWRAPPER_ENUM_FILES}
+	)
+
+	SOURCE_GROUP(".type\\.runtime_wrapper\\.range" FILES
+		${TYPE_RUNTIMEWRAPPER_RANGE_FILES}
+	)
+
+	SOURCE_GROUP(".type\\.such_as" FILES
+		${TYPE_SUCHAS_FILES}
+	)
+
+	SOURCE_GROUP(".value" FILES
+		${VALUE_FILES}
+	)
+
+	SOURCE_GROUP(".value\\.array" FILES
+		${VALUE_ARRAY_FILES}
+	)
+
+	SOURCE_GROUP(".watch" FILES
+		${WATCH_FILES}
+	)
 
 ENDIF(MSVC)

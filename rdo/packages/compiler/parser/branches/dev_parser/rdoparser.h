@@ -15,11 +15,11 @@
 #include <algorithm>
 #include <stack>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/rdoindexedstack.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
-#include "utils/rdosmart_ptr_wrapper.h"
-#include "utils/rdoidgenerator.h"
+#include "utils/src/common/rdocommon.h"
+#include "utils/src/stuff/rdoindexedstack.h"
+#include "utils/src/stuff/rdoidgenerator.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
+#include "utils/src/smart_ptr/wrapper/rdosmart_ptr_wrapper.h"
 
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_object.h"
