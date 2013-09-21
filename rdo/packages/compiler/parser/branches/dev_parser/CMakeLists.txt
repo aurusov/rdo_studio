@@ -36,6 +36,7 @@ BISON_TARGET(rdopmd ${GRAMMA_PATH}/rdopmd.y ${GRAMMA_PATH}/rdogrampmd.cpp COMPIL
 BISON_TARGET(rdoproc_opr ${GRAMMA_PATH}/rdoproc_opr.y ${GRAMMA_PATH}/rdogramproc_opr.cpp COMPILE_FLAGS "-g -v -pproc_opr_")
 BISON_TARGET(rdoproc_rss ${GRAMMA_PATH}/rdoproc_rss.y ${GRAMMA_PATH}/rdogramproc_rss.cpp COMPILE_FLAGS "-g -v -pproc_rss_")
 BISON_TARGET(rdoproc_rtp ${GRAMMA_PATH}/rdoproc_rtp.y ${GRAMMA_PATH}/rdogramproc_rtp.cpp COMPILE_FLAGS "-g -v -pproc_rtp_")
+BISON_TARGET(rdorss ${GRAMMA_PATH}/rdorss.y ${GRAMMA_PATH}/rdogramrss.cpp COMPILE_FLAGS "-g -v -prss")
 BISON_TARGET(rdosmr_file ${GRAMMA_PATH}/rdosmr_file.y ${GRAMMA_PATH}/rdogramsmr_file.cpp COMPILE_FLAGS "-g -v -psmr_file_")
 BISON_TARGET(rdosmr_sim ${GRAMMA_PATH}/rdosmr_sim.y ${GRAMMA_PATH}/rdogramsmr_sim.cpp COMPILE_FLAGS "-g -v -psmr_sim_")
 
@@ -56,6 +57,7 @@ SET(GENERATED_FILES
     ${BISON_rdoproc_opr_OUTPUTS}
     ${BISON_rdoproc_rss_OUTPUTS}
     ${BISON_rdoproc_rtp_OUTPUTS}
+    ${BISON_rdorss_OUTPUTS}
     ${BISON_rdosmr_file_OUTPUTS}
     ${BISON_rdosmr_sim_OUTPUTS}
     )
@@ -206,6 +208,7 @@ SET(BISON_FILES
     ${GRAMMA_PATH}/rdoproc_opr.y
     ${GRAMMA_PATH}/rdoproc_rss.y
     ${GRAMMA_PATH}/rdoproc_rtp.y
+    ${GRAMMA_PATH}/rdorss.y
     ${GRAMMA_PATH}/rdortp.y
     ${GRAMMA_PATH}/rdosmr_file.y
     ${GRAMMA_PATH}/rdosmr_sim.y
