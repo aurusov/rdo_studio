@@ -25,6 +25,12 @@ SET(ORG_WEBSITE          "http://rdo.rk9.bmstu.ru/")
 MESSAGE(STATUS "Create RDO")
 STRING(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
+ADD_DEFINITIONS(-DRDO_ST)
+ADD_DEFINITIONS(-DRDO_LIMIT_RES)
+ADD_DEFINITIONS(-DRDO_LICENSE_ACADEMIC)
+ADD_DEFINITIONS(-DNOMINMAX)
+ADD_DEFINITIONS(-DBOOST_SIGNALS_NO_DEPRECATION_WARNING)
+
 # work with cmake
 SET(CMAKE_PREFIX_PATH $ENV{QTDIR}/lib/cmake)
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -38,6 +44,7 @@ IF(NOT MSVC)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 ELSE()
     STRING(REGEX REPLACE /W[0-4] /W4 CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
 ENDIF(NOT MSVC)
 
 IF(NOT MSVC)
@@ -103,24 +110,32 @@ ENDIF()
 
 SET(DOC_DIRECTORY ${RDO_BASE_DIRECTORY}/doc)
 
-SET(COMMON_FILES
-    ${DOC_DIRECTORY}/changes.txt
-    ${DOC_DIRECTORY}/configuring.environment.debian.txt
-    ${DOC_DIRECTORY}/install.boost.txt
-    ${DOC_DIRECTORY}/install.doxygen.txt
-    ${DOC_DIRECTORY}/install.mingw.txt
-    ${DOC_DIRECTORY}/install.qt.from.sources.txt
-    ${DOC_DIRECTORY}/rdodoc-src-html.doxyfile
-    ${DOC_DIRECTORY}/todo.txt
-    ${DOC_DIRECTORY}/coding.style.txt
-    ${DOC_DIRECTORY}/configuring.environment.opensuse.txt
-    ${DOC_DIRECTORY}/install.cmake.txt
-    ${DOC_DIRECTORY}/install.graphviz.txt
-    ${DOC_DIRECTORY}/install.qt.linux.txt
-    ${DOC_DIRECTORY}/install.qt.from.installer.txt
-    ${DOC_DIRECTORY}/make.project.txt
-    ${DOC_DIRECTORY}/system.test.txt
-    )
+SET(DOC_FILES
+	${DOC_DIRECTORY}/changes.txt
+	${DOC_DIRECTORY}/coding.style.txt
+	${DOC_DIRECTORY}/configuring.environment.debian.txt
+	${DOC_DIRECTORY}/configuring.environment.opensuse.txt
+	${DOC_DIRECTORY}/cpack.txt
+	${DOC_DIRECTORY}/install.boost.txt
+	${DOC_DIRECTORY}/install.cmake.txt
+	${DOC_DIRECTORY}/install.cygwin.txt
+	${DOC_DIRECTORY}/install.doxygen.txt
+	${DOC_DIRECTORY}/install.graphviz.txt
+	${DOC_DIRECTORY}/install.icu.txt
+	${DOC_DIRECTORY}/install.mingw.txt
+	${DOC_DIRECTORY}/install.ms.vs.txt
+	${DOC_DIRECTORY}/install.postgresql.txt
+	${DOC_DIRECTORY}/install.qt.from.binary.txt
+	${DOC_DIRECTORY}/install.qt.from.installer.txt
+	${DOC_DIRECTORY}/install.qt.from.sources.txt
+	${DOC_DIRECTORY}/install.qt.linux.txt
+	${DOC_DIRECTORY}/install.qt.txt
+	${DOC_DIRECTORY}/install.webdav.txt
+	${DOC_DIRECTORY}/make.project.txt
+	${DOC_DIRECTORY}/rdodoc-src-html.doxyfile
+	${DOC_DIRECTORY}/system.test.txt
+	${DOC_DIRECTORY}/todo.txt
+)
 
 #==============================================================================
 
@@ -150,15 +165,13 @@ SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
 SET(SCRIPT_FILES
     ${SCRIPTS_DIRECTORY}/python/executor_of_system_tests.py
     ${SCRIPTS_DIRECTORY}/statistics/statistics.sh
-    )
+)
 
 SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
 
 IF(WIN32)
     SET(ENV{BISON_PKGDATADIR} ${BISON_FLEX_DIRECTORY}/share/bison)
 ENDIF()
-
-MESSAGE(BISON_PKGDATADIR: $ENV{BISON_PKGDATADIR})
 
 # Compile the rdo_common
 SET(UTILS_PATH ${RDO_BASE_DIRECTORY}/utils)
