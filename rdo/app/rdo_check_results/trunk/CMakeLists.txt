@@ -1,5 +1,6 @@
 #==============================================================================
-# Copyright (c) 2011-2012 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011-2012 Evgeny Proydakov <lord.tiran@gmail.com>,
+#               2013      Andrey Urusov <drobus@gmail.com>
 #==============================================================================
 
 MESSAGE(STATUS "CREATE  RDO  STUDIO  CONSOLE  TEST  EXECUTABLE")
