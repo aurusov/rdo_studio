@@ -1,5 +1,5 @@
 #==============================================================================
-# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>,
 #               2013 Andrey Urusov <drobus@gmail.com>
 #==============================================================================
 
@@ -16,10 +16,10 @@ FIND_PACKAGE(BISON)
 FIND_PACKAGE(FLEX)
 
 IF(NOT BISON_FOUND)
-    MESSAGE(FATAL_ERROR "Bison can not be found")
+	MESSAGE(FATAL_ERROR "Bison can not be found")
 ENDIF(NOT BISON_FOUND)
 IF(NOT FLEX_FOUND)
-    MESSAGE(FATAL_ERROR "Flex can not be found")
+	MESSAGE(FATAL_ERROR "Flex can not be found")
 ENDIF(NOT FLEX_FOUND)
 
 SET(GRAMMA_INPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
@@ -46,115 +46,210 @@ FLEX_TARGET(lexer_scaner ${GRAMMA_INPUT_PATH}/rdo_lexer.l ${GRAMMA_OUTPUT_PATH}/
 
 ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rtp)
 
-SET(GENERATED_FILES
-    ${GRAMMA_H}
-    ${FLEX_lexer_scaner_OUTPUTS}
-    ${BISON_rtp_OUTPUTS}
-    ${BISON_rss_OUTPUTS}
-    ${BISON_opr_OUTPUTS}
-    ${BISON_pat_OUTPUTS}
-    ${BISON_dpt_OUTPUTS}
-    ${BISON_frm_OUTPUTS}
-    ${BISON_fun_OUTPUTS}
-    ${BISON_pmd_OUTPUTS}
-    ${BISON_proc_rtp_OUTPUTS}
-    ${BISON_proc_rss_OUTPUTS}
-    ${BISON_proc_opr_OUTPUTS}
-    ${BISON_smr_file_OUTPUTS}
-    ${BISON_smr_sim_OUTPUTS}
-    )
+SET(ANIMATION_FILES
+	rdofrm.cpp
+	rdofrm.h
+)
 
-SET(HEADER_FILES
-    namespace.h
-    param.h
-    pch.h
-    ${GRAMMA_INPUT_PATH}/rdobison.h
-    rdodpt.h
-    rdo_enum.h
-    rdofrm.h
-    rdofun.h
-    rdo_logic.h
-    rdo_object.h
-    rdoopr.h
-    rdoparser_base.h
-    rdoparser_error.h
-    rdoparser.h
-    rdoparser_lexer.h
-    rdoparser_rdo.h
-    rdopat.h
-    rdopmd.h
-    rdorss.h
-    rdortp.h
-    rdortp_param.h
-    rdosmr.h
-    rdo_type.h
-    rdo_type_param.h
-    rdo_type_param_suchas.h
-    rdo_type_range.h
-    rdo_value.h
-    runtime/rdo_ie.h
-    runtime/rdo_logic_dptfree.h
-    update/document.h
-    update/document_i.h
-    update/update.h
-    update/update_i.h
-	)
+SET(COMMON_FILES
+	namespace.h
+	rdo_object.cpp
+	rdo_object.h
+)
 
-SET(INLINE_FILES
-    rdoparser_lexer.inl
-    rdo_type_range.inl
-    rdo_value.inl
-    runtime/rdo_logic_dptfree.inl
-	)
+SET(CONVERTER_FILES
+	rdoparser.cpp
+	rdoparser.h
+	rdoparser_base.cpp
+	rdoparser_base.h
+	rdoparser_rdo.cpp
+	rdoparser_rdo.h
+)
+
+SET(CONVERTER_ERROR_FILES
+	rdoparser_error.cpp
+	rdoparser_error.h
+)
+
+SET(CONVERTER_LEXER_FILES
+	rdoparser_lexer.cpp
+	rdoparser_lexer.inl
+	rdoparser_lexer.h
+)
+
+SET(DPT_FILES
+	rdo_logic.cpp
+	rdo_logic.h
+	rdodpt.cpp
+	rdodpt.h
+)
+
+SET(FUNCTION_FILES
+	rdofun.cpp
+	rdofun.h
+)
+
+SET(GRAMMAR_FILES
+	${GRAMMA_INPUT_PATH}/rdobison.h
+	${GRAMMA_INPUT_PATH}/rdo_lexer.l
+	${GRAMMA_INPUT_PATH}/rdortp.y
+	${GRAMMA_INPUT_PATH}/rdorss.y
+	${GRAMMA_INPUT_PATH}/rdoopr.y
+	${GRAMMA_INPUT_PATH}/rdopat.y
+	${GRAMMA_INPUT_PATH}/rdodpt.y
+	${GRAMMA_INPUT_PATH}/rdofrm.y
+	${GRAMMA_INPUT_PATH}/rdofun.y
+	${GRAMMA_INPUT_PATH}/rdopmd.y
+	${GRAMMA_INPUT_PATH}/rdoproc_rtp.y
+	${GRAMMA_INPUT_PATH}/rdoproc_rss.y
+	${GRAMMA_INPUT_PATH}/rdoproc_opr.y
+	${GRAMMA_INPUT_PATH}/rdosmr_file.y
+	${GRAMMA_INPUT_PATH}/rdosmr_sim.y
+)
+
+SET(GRAMMAR_GENERATED_NO_PCH
+	${FLEX_lexer_scaner_OUTPUTS}
+	${BISON_rtp_OUTPUTS}
+	${BISON_rss_OUTPUTS}
+	${BISON_opr_OUTPUTS}
+	${BISON_pat_OUTPUTS}
+	${BISON_dpt_OUTPUTS}
+	${BISON_frm_OUTPUTS}
+	${BISON_fun_OUTPUTS}
+	${BISON_pmd_OUTPUTS}
+	${BISON_proc_rtp_OUTPUTS}
+	${BISON_proc_rss_OUTPUTS}
+	${BISON_proc_opr_OUTPUTS}
+	${BISON_smr_file_OUTPUTS}
+	${BISON_smr_sim_OUTPUTS}
+)
+
+SET(GRAMMAR_GENERATED_FILES
+	${GRAMMA_H}
+	${GRAMMAR_GENERATED_NO_PCH}
+)
+
+SET(OPR_FILES
+	rdoopr.cpp
+	rdoopr.h
+)
+
+SET(PATTERN_FILES
+	rdopat.cpp
+	rdopat.h
+)
+
+SET(PCH_FILES
+	pch.cpp
+	pch.h
+)
+
+SET(PROJECT_FILES
+	rdosmr.cpp
+	rdosmr.h
+)
+
+SET(RDO_COMMON_FILES
+	rdo_common/model_objects_convertor.h
+)
+
+SET(RESORCES_FILES
+	rdorss.cpp
+	rdorss.h
+	rdortp.cpp
+	rdortp.h
+	rdortp_param.cpp
+	rdortp_param.h
+)
+
+SET(RESORCES_PARAM_FILES
+	param.h
+	param.cpp
+	rdo_type_param.cpp
+	rdo_type_param.h
+	rdo_type_param_suchas.h
+	rdo_type_param_suchas.cpp
+)
+
+SET(RUNTIME_FILES
+	runtime/rdo_ie.cpp
+	runtime/rdo_ie.h
+	runtime/rdo_logic_dptfree.cpp
+	runtime/rdo_logic_dptfree.h
+	runtime/rdo_logic_dptfree.inl
+)
+
+SET(TYPE_FILES
+	rdo_type.cpp
+	rdo_type.h
+)
+
+SET(TYPE_ENUM_FILES
+	rdo_enum.cpp
+	rdo_enum.h
+)
+
+SET(TYPE_RANGE_FILES
+	rdo_type_range.h
+	rdo_type_range.inl
+)
+
+SET(UPDATE_FILES
+	update/document.cpp
+	update/document.h
+	update/document_i.h
+	update/update.cpp
+	update/update.h
+	update/update_i.cpp
+	update/update_i.h
+)
+
+SET(VALUE_FILES
+	rdo_value.cpp
+	rdo_value.h
+	rdo_value.inl
+)
+
+SET(VALUE_ARRAY_FILES
+	rdo_array.cpp
+	rdo_array.h
+)
+
+SET(WATCH_FILES
+	rdopmd.cpp
+	rdopmd.h
+)
 
 SET(SOURCE_FILES
-    param.cpp
-    pch.cpp
-    rdodpt.cpp
-    rdo_enum.cpp
-    rdofrm.cpp
-    rdofun.cpp
-    rdo_logic.cpp
-    rdo_object.cpp
-    rdoopr.cpp
-    rdoparser_base.cpp
-    rdoparser.cpp
-    rdoparser_error.cpp
-    rdoparser_lexer.cpp
-    rdoparser_rdo.cpp
-    rdopat.cpp
-    rdopmd.cpp
-    rdorss.cpp
-    rdortp.cpp
-    rdortp_param.cpp
-    rdosmr.cpp
-    rdo_type.cpp
-    rdo_type_param.cpp
-    rdo_type_param_suchas.cpp
-    rdo_value.cpp
-    runtime/rdo_ie.cpp
-    runtime/rdo_logic_dptfree.cpp
-    update/document.cpp
-    update/update.cpp
-    update/update_i.cpp
-	)
+	${PCH_FILES}
+	${ANIMATION_FILES}
+	${COMMON_FILES}
+	${CONVERTER_FILES}
+	${CONVERTER_ERROR_FILES}
+	${CONVERTER_LEXER_FILES}
+	${DPT_FILES}
+	${FUNCTION_FILES}
+	${GRAMMAR_FILES}
+	${GRAMMAR_GENERATED_FILES}
+	${OPR_FILES}
+	${PATTERN_FILES}
+	${PROJECT_FILES}
+	${RDO_COMMON_FILES}
+	${RESORCES_FILES}
+	${RESORCES_PARAM_FILES}
+	${RUNTIME_FILES}
+	${TYPE_FILES}
+	${TYPE_ENUM_FILES}
+	${TYPE_RANGE_FILES}
+	${UPDATE_FILES}
+	${VALUE_FILES}
+	${WATCH_FILES}
+)
 
-SET(GRAMMA_FILES
-    ${GRAMMA_INPUT_PATH}/rdo_lexer.l
-    ${GRAMMA_INPUT_PATH}/rdoproc_rtp.y
-    ${GRAMMA_INPUT_PATH}/rdoproc_rss.y
-    ${GRAMMA_INPUT_PATH}/rdoproc_opr.y
-    ${GRAMMA_INPUT_PATH}/rdosmr_file.y
-    ${GRAMMA_INPUT_PATH}/rdosmr_sim.y
-    ${GRAMMA_INPUT_PATH}/rdortp.y
-    ${GRAMMA_INPUT_PATH}/rdorss.y
-    ${GRAMMA_INPUT_PATH}/rdopmd.y
-    ${GRAMMA_INPUT_PATH}/rdopat.y
-    ${GRAMMA_INPUT_PATH}/rdoopr.y
-    ${GRAMMA_INPUT_PATH}/rdofun.y
-    ${GRAMMA_INPUT_PATH}/rdofrm.y
-    ${GRAMMA_INPUT_PATH}/rdodpt.y
-	)
+SET(NO_PCH_FILES
+	${GRAMMAR_GENERATED_NO_PCH}
+	${PCH_FILES}
+)
 
 ADD_LIBRARY(rdo_converter_smr2rdox ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES} ${GENERATED_FILES} ${GRAMMA_FILES})
 SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES LINKER_LANGUAGE CXX)
@@ -169,152 +264,103 @@ TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox rdo_runtime)
 
 INSTALL(TARGETS rdo_converter_smr2rdox DESTINATION lib)
 
-IF(MSVC)
-    SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
-ENDIF(MSVC)
-
 IF(MSVC) # options for windows #
 
-SOURCE_GROUP(".animation" FILES 
-    rdofrm.h
-    rdofrm.cpp
+	SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
+
+	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
+	ADD_PCH("${SOURCE_FILES}" "${NO_PCH_FILES}" converter/smr2rdox ./ pch)
+
+	SOURCE_GROUP(".animation" FILES 
+		${ANIMATION_FILES}
 	)
 	
-SOURCE_GROUP(".common" FILES 
-    namespace.h
-    rdo_object.h
-    rdo_object.cpp
-	)	
-
-SOURCE_GROUP(".converter" FILES 
-    ${GRAMMA_INPUT_PATH}/rdobison.h
-    rdoparser.cpp
-    rdoparser.h
-    rdoparser_base.cpp
-    rdoparser_base.h
-    rdoparser_rdo.cpp
-    rdoparser_rdo.h
-	)
-	
-SOURCE_GROUP(".converter_error" FILES 
-    rdoparser_error.cpp
-    rdoparser_error.h
-	)
-	
-SOURCE_GROUP(".converter_lexer" FILES
-    rdoparser_lexer.cpp
-    rdoparser_lexer.inl
-    rdoparser_lexer.h
-	)
-	
-SOURCE_GROUP(".dpt" FILES
-    rdodpt.h
-    rdodpt.cpp
-    rdo_logic.h
-    rdo_logic.cpp
-	)	
-
-SOURCE_GROUP(".function" FILES
-    rdofun.h
-    rdofun.cpp
+	SOURCE_GROUP(".common" FILES 
+		${COMMON_FILES}
 	)
 
-SOURCE_GROUP(".grammar" FILES
-    ${GRAMMA_FILES}
-    ${GENERATED_FILES}
-	)
-	
-SOURCE_GROUP(".opt" FILES
-    rdoopr.cpp
-    rdoopr.h
-	)
-	
-SOURCE_GROUP(".pattern" FILES	
-    rdopat.cpp
-    rdopat.h
+	SOURCE_GROUP(".converter" FILES 
+		${CONVERTER_FILES}
 	)
 
-SOURCE_GROUP(".pch" FILES
-    pch.h
-    pch.cpp
+	SOURCE_GROUP(".converter\\.error" FILES 
+		${CONVERTER_ERROR_FILES}
 	)
 
-SOURCE_GROUP(".project" FILES
-    rdosmr.h
-    rdosmr.cpp
+	SOURCE_GROUP(".converter\\.lexer" FILES
+		${CONVERTER_LEXER_FILES}
 	)
 
-SOURCE_GROUP(".rdo_common" FILES
-    rdo_common/model_objects_convertor.h
+	SOURCE_GROUP(".dpt" FILES
+		${DPT_FILES}
 	)
 
-SOURCE_GROUP(".resorces" FILES
-    rdortp_param.h
-    rdortp_param.cpp
-    rdortp.h
-    rdortp.cpp
-    rdorss.h
-    rdorss.cpp
+	SOURCE_GROUP(".function" FILES
+		${FUNCTION_FILES}
 	)
 
-SOURCE_GROUP(".resorces_param" FILES
-    param.h
-    param.cpp
+	SOURCE_GROUP(".grammar" FILES
+		${GRAMMAR_FILES}
 	)
 
-SOURCE_GROUP(".value" FILES
-    rdo_value.h
-    rdo_value.inl
-    rdo_value.cpp
+	SOURCE_GROUP(".grammar\\generated" FILES
+		${GRAMMAR_GENERATED_FILES}
 	)
 
-SOURCE_GROUP(".watch" FILES
-    rdopmd.h
-    rdopmd.cpp
+	SOURCE_GROUP(".opr" FILES
+		${OPR_FILES}
 	)
 
-SOURCE_GROUP(".type" FILES
-    rdo_type.h
-    rdo_type.cpp
-	rdo_type_range.inl
+	SOURCE_GROUP(".pattern" FILES
+		${PATTERN_FILES}
 	)
 
-SOURCE_GROUP(".type_enum" FILES
-    rdo_enum.h
-    rdo_enum.cpp
+	SOURCE_GROUP(".pch" FILES
+		${PCH_FILES}
 	)
 
-SOURCE_GROUP(".type_param" FILES
-    rdo_type_param.cpp
-    rdo_type_param.h
+	SOURCE_GROUP(".project" FILES
+		${PROJECT_FILES}
 	)
 
-SOURCE_GROUP(".type_such_as" FILES
-    rdo_type_param_suchas.h
-    rdo_type_param_suchas.cpp
+	SOURCE_GROUP(".rdo_common" FILES
+		${RDO_COMMON_FILES}
 	)
 
-SOURCE_GROUP(".type_param" FILES
-    rdo_type_range.h
-    rdo_type_range.cpp
+	SOURCE_GROUP(".resorces" FILES
+		${RESORCES_FILES}
 	)
 
-SOURCE_GROUP(".runtime" FILES
-    runtime/rdo_ie.cpp
-    runtime/rdo_ie.h
-    runtime/rdo_logic_dptfree.cpp
-    runtime/rdo_logic_dptfree.inl
-    runtime/rdo_logic_dptfree.h
+	SOURCE_GROUP(".resorces\\.param" FILES
+		${RESORCES_PARAM_FILES}
 	)
 
-SOURCE_GROUP(".update" FILES
-    update/document.cpp
-    update/document.h
-    update/document_i.h
-    update/update.cpp
-    update/update.h
-    update/update_i.cpp
-    update/update_i.h
+	SOURCE_GROUP(".runtime" FILES
+		${RUNTIME_FILES}
 	)
-	
+
+	SOURCE_GROUP(".type" FILES
+		${TYPE_FILES}
+	)
+
+	SOURCE_GROUP(".type\\.enum" FILES
+		${TYPE_ENUM_FILES}
+	)
+
+	SOURCE_GROUP(".type\\.range" FILES
+		${TYPE_RANGE_FILES}
+	)
+
+	SOURCE_GROUP(".update" FILES
+		${UPDATE_FILES}
+	)
+
+	SOURCE_GROUP(".value" FILES
+		${VALUE_FILES}
+	)
+
+	SOURCE_GROUP(".watch" FILES
+		${WATCH_FILES}
+	)
+
 ENDIF(MSVC)
