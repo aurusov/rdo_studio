@@ -1,5 +1,6 @@
 #==============================================================================
-# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>,
+#               2013 Andrey Urusov <drobus@gmail.com>
 #==============================================================================
 
 MESSAGE(STATUS "CREATE  RDO_MBUILDER  LIBRARY")
@@ -10,18 +11,37 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-SET(HEADER_FILES
-    namespace.h
-    pch.h
-    process.h
-    rdo_resources.h)
+SET(COMMON_FILES
+	namespace.h
+)
+
+SET(PCH_FILES
+	pch.h
+	pch.cpp
+)
+
+SET(PROCESS_FILES
+	process.h
+	process.cpp
+)
+
+SET(RESOURCES_FILES
+	rdo_resources.h
+	rdo_resources.cpp
+)
 
 SET(SOURCE_FILES
-    pch.cpp
-    process.cpp
-    rdo_resources.cpp)
+	${PCH_FILES}
+	${COMMON_FILES}
+	${PROCESS_FILES}
+	${RESOURCES_FILES}
+)
 
-ADD_LIBRARY(rdo_mbuilder ${HEADER_FILES} ${SOURCE_FILES})
+SET(NO_PCH_FILES
+	${PCH_FILES}
+)
+
+ADD_LIBRARY(rdo_mbuilder ${SOURCE_FILES})
 
 INCLUDE(${PROJECT_SOURCE_DIR}/simulator/compiler/compiler.cmake)
 SET_TARGET_PROPERTIES(rdo_mbuilder PROPERTIES FOLDER ${PROJECT_FOLDER})
@@ -36,19 +56,23 @@ INSTALL(TARGETS rdo_mbuilder DESTINATION lib)
 
 IF(MSVC) # options for windows #
 
-SOURCE_GROUP(".common" FILES 
-	namespace.h)
+	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
+	ADD_PCH("${SOURCE_FILES}" "${NO_PCH_FILES}" simulator/compiler/mbuilder ./ pch)
 
-SOURCE_GROUP(".pch" FILES 
-	pch.h
-	pch.cpp)
+	SOURCE_GROUP(".common" FILES
+		${COMMON_FILES}
+	)
 
-SOURCE_GROUP(".process" FILES 
-	process.h
-	process.cpp)
+	SOURCE_GROUP(".pch" FILES
+		${PCH_FILES}
+	)
 
-SOURCE_GROUP(".resources" FILES 
-	rdo_resources.h
-	rdo_resources.cpp)
+	SOURCE_GROUP(".process" FILES
+		${PROCESS_FILES}
+	)
+
+	SOURCE_GROUP(".resources" FILES
+		${RESOURCES_FILES}
+	)
 
 ENDIF(MSVC)
