@@ -108,34 +108,7 @@ IF(WIN32)
     ENDIF()
 ENDIF()
 
-SET(DOC_DIRECTORY ${RDO_BASE_DIRECTORY}/doc)
-
-SET(DOC_FILES
-	${DOC_DIRECTORY}/changes.txt
-	${DOC_DIRECTORY}/coding.style.txt
-	${DOC_DIRECTORY}/configuring.environment.debian.txt
-	${DOC_DIRECTORY}/configuring.environment.opensuse.txt
-	${DOC_DIRECTORY}/cpack.txt
-	${DOC_DIRECTORY}/install.boost.txt
-	${DOC_DIRECTORY}/install.cmake.txt
-	${DOC_DIRECTORY}/install.cygwin.txt
-	${DOC_DIRECTORY}/install.doxygen.txt
-	${DOC_DIRECTORY}/install.graphviz.txt
-	${DOC_DIRECTORY}/install.icu.txt
-	${DOC_DIRECTORY}/install.mingw.txt
-	${DOC_DIRECTORY}/install.ms.vs.txt
-	${DOC_DIRECTORY}/install.postgresql.txt
-	${DOC_DIRECTORY}/install.qt.from.binary.txt
-	${DOC_DIRECTORY}/install.qt.from.installer.txt
-	${DOC_DIRECTORY}/install.qt.from.sources.txt
-	${DOC_DIRECTORY}/install.qt.linux.txt
-	${DOC_DIRECTORY}/install.qt.txt
-	${DOC_DIRECTORY}/install.webdav.txt
-	${DOC_DIRECTORY}/make.project.txt
-	${DOC_DIRECTORY}/rdodoc-src-html.doxyfile
-	${DOC_DIRECTORY}/system.test.txt
-	${DOC_DIRECTORY}/todo.txt
-)
+FILE(GLOB DOC_FILES "${RDO_BASE_DIRECTORY}/doc/*.*")
 
 #==============================================================================
 
