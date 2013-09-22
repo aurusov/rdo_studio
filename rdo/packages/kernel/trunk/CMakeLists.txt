@@ -1,11 +1,12 @@
 #==============================================================================
-# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>,
+#               2013 Andrey Urusov <drobus@gmail.com>
 #==============================================================================
 
 MESSAGE(STATUS "CREATE  RDO_KERNEL LIBRARY")
 
 IF(PROJECT_OS_LINUX)
-    FIND_LIBRARY(PTHREAD pthread $ENV{LD_LIBRARY_PATH})
+	FIND_LIBRARY(PTHREAD pthread $ENV{LD_LIBRARY_PATH})
 ENDIF(PROJECT_OS_LINUX)
 
 FIND_PACKAGE(Boost COMPONENTS system filesystem thread REQUIRED)
@@ -14,15 +15,22 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
-SET(HEADER_FILES	
+SET(KERNEL_FILES
+	rdokernel.h
+	rdokernel.cpp
+)
+
+SET(THREAD_FILES
 	rdothread.h
-	rdokernel.h)
+	rdothread.cpp
+)
 
 SET(SOURCE_FILES
-	rdothread.cpp
-	rdokernel.cpp)
+	${KERNEL_FILES}
+	${THREAD_FILES}
+)
 
-ADD_LIBRARY(rdo_kernel ${HEADER_FILES} ${SOURCE_FILES})
+ADD_LIBRARY(rdo_kernel ${SOURCE_FILES})
 SET_TARGET_PROPERTIES(rdo_kernel PROPERTIES FOLDER .kernel)
 
 ADD_DEPENDENCIES(rdo_kernel rdo_utils)
@@ -39,12 +47,12 @@ ENDIF(PROJECT_OS_LINUX OR CYGWIN)
 
 IF(MSVC) # options for windows #
 
-SOURCE_GROUP(".thread" FILES 
-	rdothread.h
-	rdothread.cpp)
+	SOURCE_GROUP(".kernel" FILES
+		${KERNEL_FILES}
+	)
 
-SOURCE_GROUP(".kernel" FILES 
-	rdokernel.h
-	rdokernel.cpp)
-	
+	SOURCE_GROUP(".thread" FILES
+		${THREAD_FILES}
+	)
+
 ENDIF(MSVC)
