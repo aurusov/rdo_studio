@@ -1,5 +1,6 @@
 #==============================================================================
-# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>,
+#               2013 Andrey Urusov <drobus@gmail.com>
 #==============================================================================
 
 MESSAGE(STATUS "CREATE  RDO_SIMULATOR  LIBRARY")
@@ -10,16 +11,18 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-SET(HEADER_FILES
-    namespace.h
-    rdosimwin.h
-    )
+SET(CODE_FILES
+	namespace.h
+	rdosimwin.cpp
+	rdosimwin.h
+	show_mode.h
+)
 
 SET(SOURCE_FILES
-    rdosimwin.cpp
-    )
+	${CODE_FILES}
+)
 
-ADD_LIBRARY(rdo_simulator ${HEADER_FILES} ${SOURCE_FILES})
+ADD_LIBRARY(rdo_simulator ${SOURCE_FILES})
 
 INCLUDE(${PROJECT_SOURCE_DIR}/simulator/simulator.cmake)
 SET_TARGET_PROPERTIES(rdo_simulator PROPERTIES FOLDER ${PROJECT_FOLDER}/.service)
@@ -45,8 +48,8 @@ INSTALL(TARGETS rdo_simulator DESTINATION lib)
 
 IF(MSVC) # options for windows #
 
-SOURCE_GROUP(".code" FILES 
-    ${HEADER_FILES}
-    ${SOURCE_FILES})
+	SOURCE_GROUP(".code" FILES 
+		${CODE_FILES}
+	)
 
 ENDIF(MSVC)
