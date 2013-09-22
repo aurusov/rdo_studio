@@ -1,5 +1,6 @@
 #==============================================================================
-# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>,
+#               2013 Andrey Urusov <drobus@gmail.com>
 #==============================================================================
 
 MESSAGE(STATUS "CREATE  RDO  STUDIO  CONSOLE  EXECUTABLE")
@@ -10,37 +11,53 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
-SET(HEADER_FILES
+SET(CODE_FILES
+	main.cpp
 	terminate_codes.h
-    controller_console_options.h
-    controller_console_options_config.h
-    rdo_console_controller.h
+)
+
+SET(CONSOLE_CONTROLLER_FILES
+	rdo_console_controller.h
+	rdo_console_controller.cpp
+)
+
+SET(CONSOLE_OPTIONS_FILES
+	controller_console_options.h
+	controller_console_options.cpp
+	controller_console_options_config.h
+)
+
+SET(EVENT_FILES
 	rdo_event.h
+	rdo_event.cpp
 	rdo_key_event.h
+	rdo_key_event.cpp
 	rdo_mouse_event.h
+	rdo_mouse_event.cpp
+)
+
+SET(XML_FILES
 	rdo_event_xml_parser.h
+	rdo_event_xml_parser.cpp
 	rdo_event_xml_reader.h
+	rdo_event_xml_reader.cpp
 	rdo_key_event_xml_reader.h
+	rdo_key_event_xml_reader.cpp
 	rdo_mouse_event_xml_reader.h
-	)
+	rdo_mouse_event_xml_reader.cpp
+)
 
 SET(SOURCE_FILES
-    controller_console_options.cpp
-    rdo_console_controller.cpp
-    rdo_event.cpp
-	rdo_key_event.cpp
-	rdo_mouse_event.cpp
-	rdo_event_xml_parser.cpp
-	rdo_event_xml_reader.cpp
-	rdo_key_event_xml_reader.cpp
-	rdo_mouse_event_xml_reader.cpp
-	)
+	${CODE_FILES}
+	${CONSOLE_CONTROLLER_FILES}
+	${CONSOLE_OPTIONS_FILES}
+	${EVENT_FILES}
+	${XML_FILES}
+	${DOC_FILES}
+	${SCRIPT_FILES}
+)
 
-SET(MAIN_FILES
-    main.cpp
-	)
-
-ADD_EXECUTABLE(rdo ${HEADER_FILES} ${SOURCE_FILES} ${MAIN_FILES} ${DOC_FILES} ${SCRIPT_FILES})
+ADD_EXECUTABLE(rdo ${SOURCE_FILES})
 
 INCLUDE(${PROJECT_SOURCE_DIR}/app/rdo_console/projects/common/rdo_studio_console.cmake)
 SET_TARGET_PROPERTIES(rdo PROPERTIES FOLDER ${APP_FOLDER})
@@ -63,49 +80,32 @@ INSTALL(TARGETS rdo DESTINATION bin)
 
 IF(MSVC) # options for windows #
 
-SOURCE_GROUP(".code" FILES
-    ${HEADER_FILES}
-    ${SOURCE_FILES}
-    ${MAIN_FILES}
+	SOURCE_GROUP(".code" FILES
+		${CODE_FILES}
 	)
 
-SOURCE_GROUP(".console_controller" FILES
-    rdo_console_controller.h
-    rdo_console_controller.cpp
+	SOURCE_GROUP(".console_controller" FILES
+		${CONSOLE_CONTROLLER_FILES}
 	)
 
-SOURCE_GROUP(".console_options" FILES
-    controller_console_options.h
-    controller_console_options.cpp
-    controller_console_options_config.h
+	SOURCE_GROUP(".console_options" FILES
+		${CONSOLE_OPTIONS_FILES}
 	)
 
-SOURCE_GROUP(".event" FILES
-    rdo_event.h
-    rdo_event.cpp
-	rdo_key_event.h
-	rdo_key_event.cpp
-	rdo_mouse_event.h
-	rdo_mouse_event.cpp
-    )
-
-SOURCE_GROUP(".xml" FILES
-    rdo_event_xml_parser.h
-	rdo_event_xml_parser.cpp
-	rdo_event_xml_reader.h
-	rdo_event_xml_reader.cpp
-	rdo_key_event_xml_reader.h
-	rdo_key_event_xml_reader.cpp
-	rdo_mouse_event_xml_reader.h
-	rdo_mouse_event_xml_reader.cpp
-    )
-
-SOURCE_GROUP(".doc" FILES
-	${DOC_FILES}
+	SOURCE_GROUP(".event" FILES
+		${EVENT_FILES}
 	)
 
-SOURCE_GROUP(".scripts" FILES
-	${SCRIPT_FILES}
+	SOURCE_GROUP(".xml" FILES
+		${XML_FILES}
+	)
+
+	SOURCE_GROUP(".doc" FILES
+		${DOC_FILES}
+	)
+
+	SOURCE_GROUP(".scripts" FILES
+		${SCRIPT_FILES}
 	)
 
 ENDIF(MSVC)
