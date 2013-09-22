@@ -108,7 +108,8 @@ IF(WIN32)
     ENDIF()
 ENDIF()
 
-FILE(GLOB DOC_FILES "${RDO_BASE_DIRECTORY}/doc/*.*")
+FILE(GLOB DOC_FILES ${RDO_BASE_DIRECTORY}/doc/*.txt)
+LIST(APPEND DOC_FILES ${RDO_BASE_DIRECTORY}/doc/rdodoc-src-html.doxyfile)
 
 #==============================================================================
 
