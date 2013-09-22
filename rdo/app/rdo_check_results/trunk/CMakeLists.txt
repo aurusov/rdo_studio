@@ -8,25 +8,26 @@ FIND_PACKAGE(Boost COMPONENTS program_options REQUIRED)
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
-SET(HEADER_FILES
-    controller_console_options.h
-    controller_console_options_config.h
-	)
+SET(CODE_FILE
+	main.cpp
+)
 
-SET(INLINE_FILES
-    controller_console_options.inl
-	)
+SET(CONSOLE_OPTIONS_FILES
+	controller_console_options.h
+	controller_console_options.inl
+	controller_console_options.cpp
+	controller_console_options_config.h
+)
 
 SET(SOURCE_FILES
-    controller_console_options.cpp
-	)
+	${CODE_FILE}
+	${CONSOLE_OPTIONS_FILES}
+)
 
-SET(MAIN_FILE 
-    main.cpp
-	)
+ADD_EXECUTABLE(rdo_check_results ${SOURCE_FILES})
 
-ADD_EXECUTABLE(rdo_check_results ${MAIN_FILE} ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES})
-SET_TARGET_PROPERTIES(rdo_check_results PROPERTIES FOLDER ${APPS_FOLDERS})
+INCLUDE(${PROJECT_SOURCE_DIR}/app/rdo_check_results/projects/common/rdo_check_results.cmake)
+SET_TARGET_PROPERTIES(rdo_check_results PROPERTIES FOLDER ${APP_FOLDER})
 
 ADD_DEPENDENCIES(rdo_check_results rdo)
 ADD_DEPENDENCIES(rdo_check_results rdo_utils)
@@ -34,17 +35,14 @@ ADD_DEPENDENCIES(rdo_check_results rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_check_results rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_check_results ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
-IF(MSVC) # lotions for windows #
+IF(MSVC) # options for windows #
 
-SOURCE_GROUP(".code" FILES
-    ${MAIN_FILE}
+	SOURCE_GROUP(".code" FILES
+		${CODE_FILE}
 	)
 
-SOURCE_GROUP(".console_options" FILES
-    controller_console_options.h
-	controller_console_options.inl
-    controller_console_options.cpp
-    controller_console_options_config.h
+	SOURCE_GROUP(".console_options" FILES
+		${CONSOLE_OPTIONS_FILES}
 	)
 
 ENDIF(MSVC)
