@@ -486,6 +486,8 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			msg.unlock();
 			break;
 		}
+		default:
+			break;
 	}
 }
 
@@ -790,6 +792,7 @@ void Model::openModelFromRepository()
 				case rdoModelObjects::FRM: objName = "кадры";                  break;
 				case rdoModelObjects::FUN: objName = "функции";                break;
 				case rdoModelObjects::PMD: objName = "описание показателей";   break;
+				default                  : objName = "неизвестный объект";     break;
 				}
 				if (!objName.isEmpty())
 				{
@@ -813,7 +816,6 @@ void Model::openModelFromRepository()
 void Model::saveModelToRepository()
 {
 	bool smr_modified = false;
-	bool wasSaved     = false;
 	PTR(editor::Model) pSmrEdit = m_pView->getTab().getItemEdit(rdoModelObjects::SMR);
 	if (pSmrEdit->isModify())
 	{
@@ -875,7 +877,6 @@ void Model::saveModelToRepository()
 			g_pApp->getMainWndUI()->statusBar()->stepProgress();
 		}
 		g_pApp->getMainWndUI()->statusBar()->endProgress();
-		wasSaved = true;
 	}
 
 	rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
@@ -914,6 +915,7 @@ bool Model::canCloseModel()
 			case QMessageBox::Yes   : result = saveModel(); break;
 			case QMessageBox::No    : result = true; break;
 			case QMessageBox::Cancel: result = false; break;
+			default: break;
 		}
 	}
 	return result;

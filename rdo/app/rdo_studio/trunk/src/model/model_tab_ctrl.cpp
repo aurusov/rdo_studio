@@ -88,6 +88,7 @@ int TabCtrl::typeToIndex(rdoModelObjects::RDOFileType type) const
 		case rdoModelObjects::FUN: return 7;
 		case rdoModelObjects::SMR: return 8;
 		case rdoModelObjects::PMD: return 9;
+		default: break;
 	}
 	return -1;
 }

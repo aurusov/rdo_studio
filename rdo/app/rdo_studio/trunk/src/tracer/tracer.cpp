@@ -61,16 +61,14 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 	switch (msg.message)
 	{
 	case RDOThread::RT_REPOSITORY_MODEL_CLOSE:
-	{
 		s_clearAfterStop = g_pModel->isRunning();
 		if (!s_clearAfterStop)
 		{
 			clear();
 		}
 		break;
-	}
+
 	case RDOThread::RT_RUNTIME_MODEL_START_BEFORE:
-	{
 		clear();
 		ChartDoc::resetTitleIndex();
 		try
@@ -87,7 +85,7 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 			g_pApp->getIMainWnd()->getDockDebug().appendString("failed\n");
 		}
 		break;
-	}
+
 	case RDOThread::RT_RUNTIME_MODEL_START_AFTER:
 	{
 		rdo::runtime::RunTimeMode runtimeMode;
@@ -95,10 +93,10 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 		setRuntimeMode(runtimeMode);
 		break;
 	}
+
 	case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
 	case RDOThread::RT_SIMULATOR_MODEL_STOP_BY_USER:
 	case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
-	{
 		if (s_clearAfterStop)
 		{
 			clear();
@@ -106,14 +104,15 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 		}
 		setDrawTrace(true);
 		break;
-	}
+
 	case RDOThread::RT_RUNTIME_TRACE_STRING:
-	{
 		msg.lock();
 		getTraceString(*static_cast<tstring*>(msg.param));
 		msg.unlock();
 		break;
-	}
+
+	default:
+		break;
 	}
 }
 

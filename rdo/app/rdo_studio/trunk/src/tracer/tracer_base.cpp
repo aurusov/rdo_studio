@@ -39,8 +39,8 @@ TracerBase::TracerBase(CREF(tstring) _thread_name, RDOKernelGUI* _kernel_gui)
 	, m_pLog(NULL)
 	, m_pChartTree(NULL)
 	, m_eventIndex(0)
-	, m_drawTrace(true)
 	, m_updateAction(RUA_NONE)
+	, m_drawTrace(true)
 {}
 
 TracerBase::~TracerBase()
