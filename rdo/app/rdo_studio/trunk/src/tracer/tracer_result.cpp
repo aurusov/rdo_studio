@@ -62,6 +62,10 @@ void Result::getCaptions(std::vector<tstring>& captions, const int valueCount) c
 	case RK_WATCHVALUE:
 		Serie::getCaptionsDouble(captions, valueCount);
 		break;
+
+	default:
+		NEVER_REACH_HERE;
+		break;
 	}
 }
 
