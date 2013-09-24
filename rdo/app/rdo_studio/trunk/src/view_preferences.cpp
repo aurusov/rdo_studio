@@ -399,6 +399,8 @@ void ViewPreferences::onFontSize(int index)
 	case IT_FRAME:
 		style_frame.font.size   = size;
 		break;
+	default:
+		break;
 	}
 
 	updatePreview();
@@ -446,6 +448,8 @@ void ViewPreferences::onFontType(int index)
 		break;
 	case IT_FRAME:
 		style_frame.font.name   = name;
+		break;
+	default:
 		break;
 	}
 
@@ -523,6 +527,8 @@ void ViewPreferences::onWordWrap(int state)
 	case IT_FIND:
 		horzScrollFindCheckBox->setEnabled(state ? false : true);
 		break;
+	default:
+		break;
 	}
 	if(state)
 	{
@@ -546,6 +552,8 @@ void ViewPreferences::onWordWrap(int state)
 			break;
 		case IT_FIND:
 			item->horzscrollbar = horzScrollFindCheckBox->checkState() == Qt::Checked ? true : false;
+			break;
+		default:
 			break;
 		}
 	}
@@ -797,7 +805,8 @@ void ViewPreferences::onThemeComboBox(int index)
 		case 1: style_frame = FrameStyle::getDefaultStyle(); style_frame.font = StyleFont::getFrameFont(); break;
 		}
 		break;
-	default: break;
+	default:
+		break;
 	}
 	updatePreview();
 }
@@ -926,7 +935,8 @@ void ViewPreferences::updateTheme()
 			themeComboBox->setCurrentIndex(0);
 		}
 		break;
-	default: break;
+	default:
+		break;
 	}
 }
 
@@ -1148,6 +1158,8 @@ void ViewPreferences::updateStyleTab()
 			fgColorToolButton->setEnabled(false);
 			bgColorToolButton->setEnabled(true);
 			break;
+		default:
+			break;
 		}
 		break;
 	case IT_FRAME:
@@ -1172,6 +1184,8 @@ void ViewPreferences::updateStyleTab()
 			bgColorToolButton->setEnabled(true);
 			break;
 		}
+		break;
+	default:
 		break;
 	}
 	updateThemeComboBox(prop);
@@ -1209,6 +1223,8 @@ void ViewPreferences::updateThemeComboBox(PTR(StyleProperty) prop)
 		themeComboBox->addItem("Классический", ST_CLASSIC);
 		themeComboBox->addItem("Яркий", ST_TWILIGHT);
 		themeComboBox->addItem("Океан", ST_OCEAN);
+		break;
+	default:
 		break;
 	}
 }
@@ -1670,6 +1686,8 @@ void ViewPreferences::checkAllData()
 
 void ViewPreferences::keyPressEvent(QKeyEvent* pEvent)
 {
-	if(QKeySequence(pEvent->key()) == QKeySequence::HelpContents)
+	if (QKeySequence(pEvent->key()) == QKeySequence::HelpContents)
+	{
 		onHelpContext();
+	}
 }
