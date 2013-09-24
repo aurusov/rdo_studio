@@ -30,8 +30,8 @@ Model::Model(QWidget* pParent, QWidget* pView)
 	: super              (pParent)
 	, m_pView            (pView  )
 	, m_pLog             (NULL   )
-	, m_canClearErrorLine(true   )
 	, m_pPopupMenu       (NULL   )
+	, m_canClearErrorLine(true   )
 {
 	m_sciFoldMarginID = getNewMarker();
 	m_sciMarkerError  = getNewMarker();

@@ -511,6 +511,7 @@ QPixmap Content::getBitmap(
 			{
 				std::pair<rdo::gui::BitmapList::const_iterator, bool> result =
 					bitmapGeneratedList.insert(rdo::gui::BitmapList::value_type(maskedBitmapName, pixmap));
+				UNUSED(result);
 				ASSERT(result.second);
 				return pixmap;
 			}

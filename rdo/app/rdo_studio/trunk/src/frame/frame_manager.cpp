@@ -209,7 +209,7 @@ bool Manager::isShowing() const
 void Manager::disconnectView(CPTR(View) pView)
 {
 	ruint index = findFrameIndex(pView);
-	if (index != ~0)
+	if (index != ruint(~0))
 	{
 		m_frameList[index]->m_pView = NULL;
 	}
