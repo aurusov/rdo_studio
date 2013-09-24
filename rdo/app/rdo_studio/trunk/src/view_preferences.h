@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
+#include <boost/utility.hpp>
 #include <QDialog>
 #include <QColorDialog>
 #include "ui_view_preferenses.h"
@@ -173,7 +174,7 @@ private:
 
 	class StyleItem;
 
-	class StyleProperty
+	class StyleProperty: boost::noncopyable
 	{
 	public:
 		StyleItem* item;
@@ -199,7 +200,7 @@ private:
 
 	typedef std::list<PTR(StyleProperty)> PropertyList;
 
-	class StyleItem
+	class StyleItem: boost::noncopyable
 	{
 	public:
 		ItemType                                type;
