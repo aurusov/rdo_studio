@@ -48,7 +48,7 @@ int RDOLexer::LexerInput(PTR(char) buf, int max_size)
 	}
 	else
 	{
-		return m_yyin->gcount();
+		return static_cast<int>(m_yyin->gcount());
 	}
 #endif
 }
