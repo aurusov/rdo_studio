@@ -34,17 +34,17 @@ ruint IDocUpdate::Position::get() const
 
 rbool IDocUpdate::Position::begin() const
 {
-	return m_position == POSITION_BEGIN;
+	return m_position == ruint(POSITION_BEGIN);
 }
 
 rbool IDocUpdate::Position::end() const
 {
-	return m_position == POSITION_END;
+	return m_position == ruint(POSITION_END);
 }
 
 rbool IDocUpdate::Position::real() const
 {
-	return m_position != POSITION_BEGIN && m_position != POSITION_END;
+	return m_position != ruint(POSITION_BEGIN) && m_position != ruint(POSITION_END);
 }
 
 void IDocUpdate::Position::operator+= (CREF(Position) pos)
