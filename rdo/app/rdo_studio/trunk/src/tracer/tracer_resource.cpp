@@ -93,10 +93,10 @@ void Param::getCaptions(std::vector<tstring>& captions, const int valueCount) co
 // --------------------------------------------------------------------------------
 Resource::Resource(CREF(LPResourceType) pResType, CREF(QString) name, int id)
 	: ChartTreeItem()
-	, m_erased(false)
-	, m_pResourceType(pResType)
 	, m_name(name)
 	, m_id(id)
+	, m_pResourceType(pResType)
+	, m_erased(false)
 {
 	int count = m_pResourceType->getParamsCount();
 	for (int i = 0; i < count; i++)
