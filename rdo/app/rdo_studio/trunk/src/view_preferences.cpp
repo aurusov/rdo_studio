@@ -37,9 +37,9 @@ ViewPreferences::ViewPreferences(QWidget* pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, all_font_size(-1)
 	, all_font_name("")
-	, null_font_style(StyleFont::NONE)
 	, all_fg_color(0x00, 0x00, 0x00)
 	, all_bg_color(0xFF, 0xFF, 0xFF)
+	, null_font_style(StyleFont::NONE)
 {
 	setupUi(this);
 
