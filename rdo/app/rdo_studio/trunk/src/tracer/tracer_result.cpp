@@ -51,21 +51,17 @@ void Result::getCaptions(std::vector<tstring>& captions, const int valueCount) c
 	switch (m_kind)
 	{
 	case RK_WATCHQUANT:
-	{
 		Serie::getCaptionsInt(captions, valueCount);
 		break;
-	}
+
 	case RK_WATCHSTATE:
-	{
 		Serie::getCaptionsBool(captions, valueCount);
 		break;
-	}
+
 	case RK_WATCHPAR:
 	case RK_WATCHVALUE:
-	{
 		Serie::getCaptionsDouble(captions, valueCount);
 		break;
-	}
 	}
 }
 
