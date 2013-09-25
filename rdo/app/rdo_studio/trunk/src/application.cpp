@@ -207,7 +207,6 @@ Application::Application(int& argc, char** argv)
 		m_dontCloseIfError = true;
 	}
 
-	bool newModel  = true;
 	bool autoModel = false;
 	if (!openModelName.empty())
 	{
@@ -226,15 +225,10 @@ Application::Application(int& argc, char** argv)
 		if (getOpenLastProject() && !getLastProjectName().isEmpty() && QFile::exists(getLastProjectName()))
 		{
 			g_pModel->openModel(getLastProjectName());
-			newModel = false;
 		}
 	}
 
-	if (autoModel)
-	{
-		newModel = false;
-	}
-	else
+	if (!autoModel)
 	{
 		autoRun            = false;
 		m_autoExitByModel  = false;
