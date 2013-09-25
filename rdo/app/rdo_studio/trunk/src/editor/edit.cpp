@@ -130,11 +130,11 @@ Edit::Group::List::const_iterator Edit::Group::find_if(CREF(this_predicate) fun)
 
 Edit::Edit(QWidget* pParent)
 	: super               (pParent)
-	, m_markerCount       (0    )
 	, m_pStyle            (NULL )
 	, m_pGroup            (NULL )
 	, m_firstFoundPos     (-1   )
 	, m_haveFound         (false)
+	, m_markerCount       (0    )
 	, m_pFindDialog       (NULL )
 	, m_pFindReplaceDialog(NULL )
 {
