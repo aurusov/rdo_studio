@@ -10,12 +10,15 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <boost/locale.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/editor/lexer/lexer_find.h"
 #include "app/rdo_studio/src/editor/lexer/lexer_model.h"
@@ -26,20 +29,6 @@
 #include "thirdparty/scintilla/lexlib/LexAccessor.h"
 #include "thirdparty/scintilla/lexlib/Accessor.h"
 // --------------------------------------------------------------------------------
-
-static inline char RDOMakeUpperCase( char ch )
-{
-	if ( ch >= 'a' && ch <= 'z' ) return static_cast<char>( ch - 'a' + 'A' );
-	if ( ch >= 'а' && ch <= 'я' ) return static_cast<char>( ch - 'а' + 'А' );
-	return ch;
-}
-
-static inline char RDOMakeLowerCase( char ch )
-{
-	if ( ch >= 'A' && ch <= 'Z' ) return static_cast<char>( ch - 'A' + 'a' );
-	if ( ch >= 'А' && ch <= 'Я' ) return static_cast<char>( ch - 'А' + 'а' );
-	return ch;
-}
 
 static void lexerRDOFindColor( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
 {
@@ -63,12 +52,12 @@ static void lexerRDOFindColor( unsigned int startPos, int length, int initStyle,
 		}
 
 		if ( state == SCE_FIND_DEFAULT ) {
-			if ( (matchCase && ch == findKeyword[0]) || (!matchCase && RDOMakeLowerCase(ch) == RDOMakeLowerCase(findKeyword[0])) ) {
+			if ( (matchCase && ch == findKeyword[0]) || (!matchCase && boost::locale::to_lower(std::string(1, ch)) == boost::locale::to_lower(std::string(1, findKeyword[0]))) ) {
 				bool flag = true;
 				for ( int j = 0; j < findKeywordLen; j++ ) {
 					char c1 = styler.SafeGetCharAt( i + j );
 					char c2 = findKeyword[j];
-					if ( (matchCase && c1 != c2) || (!matchCase && RDOMakeLowerCase(c1) != RDOMakeLowerCase(c2)) ) {
+					if ( (matchCase && c1 != c2) || (!matchCase && boost::locale::to_lower(std::string(1, c1)) != boost::locale::to_lower(std::string(1, c2))) ) {
 						flag = false;
 						break;
 					}
