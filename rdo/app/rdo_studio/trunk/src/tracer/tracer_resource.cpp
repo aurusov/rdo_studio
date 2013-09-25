@@ -83,7 +83,7 @@ void Param::getCaptions(std::vector<tstring>& captions, const int valueCount) co
 		}
 		break;
 	}
-	case PT_ARRAY:
+	case ParamInfo::PT_ARRAY:
 		NEVER_REACH_HERE;
 	}
 }
