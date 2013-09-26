@@ -30,7 +30,7 @@ make -j4
 cd <корень_проекта>, например 'cd C:\rdo\rdo_studio'
 mkdir build
 cd build
-cmake -DBOOST_ROOT=C:\boost_1_54_0 -DBOOST_LIBRARYDIR=C:\boost_1_54_0\stage -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_LIBS=ON ..
+cmake -DCMAKE_BUILD_TYPE=Debug -DBOOST_ROOT=C:\boost_1_54_0 -DBOOST_LIBRARYDIR=C:\boost_1_54_0\stage -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_LIBS=ON ..
 
 1.2.2 Только конфигурация через cmake-gui
 1.2.2.1 Открыть консоль
