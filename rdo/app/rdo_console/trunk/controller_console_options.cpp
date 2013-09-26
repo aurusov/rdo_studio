@@ -55,13 +55,14 @@ ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[]) :
 }
 
 ControllerConsoleOptions::~ControllerConsoleOptions()
-{	
+{
 }
 
 void ControllerConsoleOptions::parseOptions()
 {
-	if (m_variables.empty() || m_variables.count(HELP_COMMAND) && 
-			!m_variables.count(LANGUAGE_COMMAND) && !m_variables.count(VERSION_COMMAND))
+	if ((m_variables.empty() || m_variables.count(HELP_COMMAND)) && 
+            !m_variables.count(LANGUAGE_COMMAND) &&
+            !m_variables.count(VERSION_COMMAND))
 	{
 		std::cout << m_options << std::endl;
 		m_help = true;
