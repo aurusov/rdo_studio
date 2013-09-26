@@ -169,23 +169,22 @@
 %token RDO_enum							429
 
 %token RDO_STRING_CONST					430
-%token RDO_STRING_CONST_BAD				431
-%token RDO_IDENTIF_BAD					432
-%token RDO_Select						433
-%token RDO_Size							434
-%token RDO_Empty						435
-%token RDO_not							436
-%token RDO_UMINUS						437
-%token RDO_string						438
-%token RDO_bool							439
-%token RDO_BOOL_CONST					440
-%token RDO_Fuzzy						441
-%token RDO_Fuzzy_Term					442
-%token RDO_eq							443
-%token RDO_External_Model				444
-%token RDO_QUEUE						445
-%token RDO_DEPART						446
-%token RDO_ASSIGN						447
+%token RDO_IDENTIF_BAD					431
+%token RDO_Select						432
+%token RDO_Size							433
+%token RDO_Empty						434
+%token RDO_not							435
+%token RDO_UMINUS						436
+%token RDO_string						437
+%token RDO_bool							438
+%token RDO_BOOL_CONST					439
+%token RDO_Fuzzy						440
+%token RDO_Fuzzy_Term					441
+%token RDO_eq							442
+%token RDO_External_Model				443
+%token RDO_QUEUE						444
+%token RDO_DEPART						445
+%token RDO_ASSIGN						446
 
 
 %{
