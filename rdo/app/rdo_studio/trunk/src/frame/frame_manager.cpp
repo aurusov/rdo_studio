@@ -181,7 +181,7 @@ void Manager::areaDown(ruint frameIndex, CREF(QPoint) point) const
 PTR(View) Manager::createView(ruint index)
 {
 	PTR(View) pView = NULL;
-	if (index != ~0)
+	if (index != ruint(~0))
 	{
 		pView = new View(NULL);
 		g_pApp->getIMainWnd()->addSubWindow(pView);

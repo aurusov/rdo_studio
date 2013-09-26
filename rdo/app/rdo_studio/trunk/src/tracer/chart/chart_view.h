@@ -121,8 +121,8 @@ private:
 	double m_zoom;
 	double m_zoomOld;
 	double m_zoomAuto;
-	double m_scaleKoeff;
 	bool   m_zoomAutoFlag;
+	double m_scaleKoeff;
 	void setZoom(double new_zoom, const bool force_update = false);
 
 	bool            m_previewMode;
