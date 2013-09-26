@@ -47,7 +47,8 @@ namespace rdo
 #else
 			typedef std::unique_ptr<QPixmap> QPixmapPointer;
 #endif
-			QPixmapPointer pPrevBitmap(m_pBitmap);
+			QPixmapPointer pPrevBitmap;
+			std::swap(pPrevBitmap, m_pBitmap);
 
 			clear();
 			if (!create(width, height))
