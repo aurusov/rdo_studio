@@ -89,21 +89,21 @@ public:
 		rdoModelObjects::RDOFileType  m_type;
 		boost::filesystem::path       m_name;
 		boost::filesystem::path       m_fullName;
-		boost::filesystem::path       m_extention;
+		boost::filesystem::path       m_extension;
 		rbool                         m_readOnly;
 		rbool                         m_described;
 
 		FileInfo(  rdoModelObjects::RDOFileType  type      = rdoModelObjects::SMR
 		         , CREF(boost::filesystem::path) name      = boost::filesystem::path()
 		         , CREF(boost::filesystem::path) fullName  = boost::filesystem::path()
-		         , CREF(boost::filesystem::path) extention = "smr"
+		         , CREF(boost::filesystem::path) extension = "smr"
 		         , rbool                         readOnly  = false
 		         , rbool                         described = false
 		)
 			: m_type     (type     )
 			, m_name     (name     )
 			, m_fullName (fullName )
-			, m_extention(extention)
+			, m_extension(extension)
 			, m_readOnly (readOnly )
 			, m_described(described)
 		{}
@@ -113,7 +113,7 @@ private:
 	struct fileInfo
 	{
 		boost::filesystem::path  m_fileName;
-		boost::filesystem::path  m_extention;
+		boost::filesystem::path  m_extension;
 		rbool                    m_described;
 		rbool                    m_mustExist;
 		rbool                    m_deleteIfEmpty;
@@ -194,7 +194,7 @@ protected:
 	void save(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream) const;
 
 	boost::filesystem::path getFileName    (rdoModelObjects::RDOFileType type) const;
-	boost::filesystem::path getExtention   (rdoModelObjects::RDOFileType type) const;
+	boost::filesystem::path getExtension   (rdoModelObjects::RDOFileType type) const;
 	boost::filesystem::path getFileExtName (rdoModelObjects::RDOFileType type) const;
 	boost::filesystem::path getFullFileName(rdoModelObjects::RDOFileType type) const;
 	rbool   isReadOnly     (rdoModelObjects::RDOFileType type) const;

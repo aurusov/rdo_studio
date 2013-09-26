@@ -148,27 +148,25 @@ void Document::close()
 
 boost::filesystem::path Document::getName(TypeOut typeOut) const
 {
-	tstring extention;
+	boost::filesystem::path extension;
 	switch (typeOut)
 	{
-	case rdo::converter::smr2rdox::PAT_OUT: extention = "pat"; break;
-	case rdo::converter::smr2rdox::RTP_OUT: extention = "rtp"; break;
-	case rdo::converter::smr2rdox::RSS_OUT: extention = "rss"; break;
-	case rdo::converter::smr2rdox::FRM_OUT: extention = "frm"; break;
-	case rdo::converter::smr2rdox::FUN_OUT: extention = "fun"; break;
-	case rdo::converter::smr2rdox::DPT_OUT: extention = "dpt"; break;
-	case rdo::converter::smr2rdox::SMR_OUT: extention = "smr"; break;
-	case rdo::converter::smr2rdox::PMD_OUT: extention = "pmd"; break;
-	case rdo::converter::smr2rdox::PMV_OUT: extention = "pmv"; break;
-	case rdo::converter::smr2rdox::TRC_OUT: extention = "trc"; break;
-	case rdo::converter::smr2rdox::EVN_OUT: extention = "evn"; break;
-	case rdo::converter::smr2rdox::PRC_OUT: extention = "prc"; break;
+	case rdo::converter::smr2rdox::PAT_OUT: extension = "pat"; break;
+	case rdo::converter::smr2rdox::RTP_OUT: extension = "rtp"; break;
+	case rdo::converter::smr2rdox::RSS_OUT: extension = "rss"; break;
+	case rdo::converter::smr2rdox::FRM_OUT: extension = "frm"; break;
+	case rdo::converter::smr2rdox::FUN_OUT: extension = "fun"; break;
+	case rdo::converter::smr2rdox::DPT_OUT: extension = "dpt"; break;
+	case rdo::converter::smr2rdox::SMR_OUT: extension = "smr"; break;
+	case rdo::converter::smr2rdox::PMD_OUT: extension = "pmd"; break;
+	case rdo::converter::smr2rdox::PMV_OUT: extension = "pmv"; break;
+	case rdo::converter::smr2rdox::TRC_OUT: extension = "trc"; break;
+	case rdo::converter::smr2rdox::EVN_OUT: extension = "evn"; break;
+	case rdo::converter::smr2rdox::PRC_OUT: extension = "prc"; break;
 	default: NEVER_REACH_HERE;
 	}
 
-	boost::filesystem::path fileName(m_filePath / m_modelName);
-	fileName.replace_extension(rdo::format(".%s", extention.c_str()));
-	return fileName;
+	return (m_filePath / m_modelName).replace_extension(extension);
 }
 
 Document::LPMemoryStream Document::getMemoryStream(Type type)

@@ -46,20 +46,20 @@ RDOThreadRepository::RDOThreadRepository()
 	notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        );
 	notifies.push_back(RT_RUNTIME_TRACE_STRING              );
 
-	m_files[rdoModelObjects::RDOX].m_extention = "rdox";
-	m_files[rdoModelObjects::RTP ].m_extention = "rtp";
-	m_files[rdoModelObjects::RSS ].m_extention = "rss";
-	m_files[rdoModelObjects::EVN ].m_extention = "evn";
-	m_files[rdoModelObjects::PAT ].m_extention = "pat";
-	m_files[rdoModelObjects::DPT ].m_extention = "dpt";
-	m_files[rdoModelObjects::PRC ].m_extention = "prc";
-	m_files[rdoModelObjects::PRCX].m_extention = "prcx";
-	m_files[rdoModelObjects::FRM ].m_extention = "frm";
-	m_files[rdoModelObjects::FUN ].m_extention = "fun";
-	m_files[rdoModelObjects::SMR ].m_extention = "smr";
-	m_files[rdoModelObjects::PMD ].m_extention = "pmd";
-	m_files[rdoModelObjects::PMV ].m_extention = "pmv";
-	m_files[rdoModelObjects::TRC ].m_extention = "trc";
+	m_files[rdoModelObjects::RDOX].m_extension = "rdox";
+	m_files[rdoModelObjects::RTP ].m_extension = "rtp";
+	m_files[rdoModelObjects::RSS ].m_extension = "rss";
+	m_files[rdoModelObjects::EVN ].m_extension = "evn";
+	m_files[rdoModelObjects::PAT ].m_extension = "pat";
+	m_files[rdoModelObjects::DPT ].m_extension = "dpt";
+	m_files[rdoModelObjects::PRC ].m_extension = "prc";
+	m_files[rdoModelObjects::PRCX].m_extension = "prcx";
+	m_files[rdoModelObjects::FRM ].m_extension = "frm";
+	m_files[rdoModelObjects::FUN ].m_extension = "fun";
+	m_files[rdoModelObjects::SMR ].m_extension = "smr";
+	m_files[rdoModelObjects::PMD ].m_extension = "pmd";
+	m_files[rdoModelObjects::PMV ].m_extension = "pmv";
+	m_files[rdoModelObjects::TRC ].m_extension = "trc";
 
 //	m_files[rdoModelObjects::OPR].deleteifempty = true;
 //	m_files[rdoModelObjects::DPT].deleteifempty = true;
@@ -132,7 +132,7 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 			PTR(FileInfo) data = static_cast<PTR(FileInfo)>(msg.param);
 			data->m_name      = getFileName    (data->m_type);
 			data->m_fullName  = getFullFileName(data->m_type);
-			data->m_extention = getExtention   (data->m_type);
+			data->m_extension = getExtension   (data->m_type);
 			data->m_described = isDescribed    (data->m_type);
 			data->m_readOnly  = isReadOnly     (data->m_type);
 			msg.unlock();
@@ -216,7 +216,7 @@ void RDOThreadRepository::newModel(CPTRC(NewModel) data)
 		if (data)
 		{
 			boost::filesystem::path path = data->m_path;
-			extractName((path / data->m_name).replace_extension(m_files[rdoModelObjects::RDOX].m_extention));
+			extractName((path / data->m_name).replace_extension(m_files[rdoModelObjects::RDOX].m_extension));
 			if (!rdo::File::exist(path))
 			{
 				boost::filesystem::create_directory(path);
@@ -276,8 +276,8 @@ rbool RDOThreadRepository::openModel(CREF(boost::filesystem::path) modelFileName
 				it->second.m_readOnly = m_realOnlyInDlg;
 			}
 
-			boost::filesystem::path rdoxFileName = (m_modelPath / m_modelName).replace_extension(m_files[rdoModelObjects::RDOX].m_extention);
-			boost::filesystem::path smrFileName  = (m_modelPath / m_modelName).replace_extension(m_files[rdoModelObjects::SMR ].m_extention);
+			boost::filesystem::path rdoxFileName = (m_modelPath / m_modelName).replace_extension(m_files[rdoModelObjects::RDOX].m_extension);
+			boost::filesystem::path smrFileName  = (m_modelPath / m_modelName).replace_extension(m_files[rdoModelObjects::SMR ].m_extension);
 
 			if (rdo::File::exist(rdoxFileName))
 			{
@@ -474,7 +474,7 @@ void RDOThreadRepository::createRDOX()
 {
 	BOOST_AUTO(it, m_files.find(rdoModelObjects::RDOX));
 	ASSERT(it != m_files.end());
-	boost::filesystem::path rdoxFileName = (m_modelPath / m_modelName).replace_extension(it->second.m_extention);
+	boost::filesystem::path rdoxFileName = (m_modelPath / m_modelName).replace_extension(it->second.m_extension);
 	if (!rdo::File::exist(rdoxFileName))
 	{
 		pugi::xml_document doc;
@@ -530,7 +530,7 @@ void RDOThreadRepository::writeModelFilesInfo(REF(boost::filesystem::ofstream) s
 	stream << "Results_file   = " << rdo::locale::convertFromWStr(getFileExtName(rdoModelObjects::PMV).wstring()) << "    " << rdo::Time::local().asString() << std::endl;
 	stream << "Run_file       = " << rdo::locale::convertFromWStr(getFileExtName(rdoModelObjects::SMR).wstring()) << std::endl;
 	stream << "Model_name     = " << rdo::locale::convertFromWStr(getFileName(rdoModelObjects::SMR).wstring()) << std::endl;
-	stream << "Resource_file  = " << rdo::locale::convertFromWStr(getFileName(rdoModelObjects::RSS).replace_extension(getExtention(rdoModelObjects::RSS)).wstring()) << std::endl;
+	stream << "Resource_file  = " << rdo::locale::convertFromWStr(getFileName(rdoModelObjects::RSS).replace_extension(getExtension(rdoModelObjects::RSS)).wstring()) << std::endl;
 }
 
 rbool RDOThreadRepository::createFile(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream) const
@@ -621,7 +621,7 @@ boost::filesystem::path RDOThreadRepository::getFileName(rdoModelObjects::RDOFil
 	return it->second.m_fileName;
 }
 
-boost::filesystem::path RDOThreadRepository::getExtention(rdoModelObjects::RDOFileType type) const
+boost::filesystem::path RDOThreadRepository::getExtension(rdoModelObjects::RDOFileType type) const
 {
 	BOOST_AUTO(it, m_files.find(type));
 	if (it == m_files.end())
@@ -629,7 +629,7 @@ boost::filesystem::path RDOThreadRepository::getExtention(rdoModelObjects::RDOFi
 		NEVER_REACH_HERE;
 	}
 
-	return it->second.m_extention;
+	return it->second.m_extension;
 }
 
 boost::filesystem::path RDOThreadRepository::getFileExtName(rdoModelObjects::RDOFileType type) const
@@ -640,7 +640,7 @@ boost::filesystem::path RDOThreadRepository::getFileExtName(rdoModelObjects::RDO
 		NEVER_REACH_HERE;
 	}
 
-	return boost::filesystem::path(it->second.m_fileName).replace_extension(it->second.m_extention);
+	return boost::filesystem::path(it->second.m_fileName).replace_extension(it->second.m_extension);
 }
 
 boost::filesystem::path RDOThreadRepository::getFullFileName(rdoModelObjects::RDOFileType type) const

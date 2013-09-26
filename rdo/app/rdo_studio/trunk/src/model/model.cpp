@@ -776,7 +776,7 @@ void Model::openModelFromRepository()
 				pEdit->setReadOnly(data.m_readOnly);
 				if (data.m_readOnly)
 				{
-					g_pApp->getIMainWnd()->getDockDebug().appendString(QString("%1 - только чтение\n").arg(QString::fromStdWString((data.m_name / data.m_extention).wstring())));
+					g_pApp->getIMainWnd()->getDockDebug().appendString(QString("%1 - только чтение\n").arg(QString::fromStdWString((data.m_name / data.m_extension).wstring())));
 				}
 			}
 			else
