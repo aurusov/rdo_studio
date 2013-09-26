@@ -230,9 +230,9 @@ OPEN_RDO_PARSER_NAMESPACE
 %%
 
 pat_main
-	: /* empty */          {   }
-	| pat_main pat_pattern {@1;}
-	| error                {   }
+	: /* empty */          {}
+	| pat_main pat_pattern {UNUSED(@1);}
+	| error                {}
 	;
 
 pat_header
