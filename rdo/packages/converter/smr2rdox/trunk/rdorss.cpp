@@ -28,7 +28,7 @@ int cnv_rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_rsserror(PTR(char) message)
+void cnv_rsserror(const char* message)
 {
 	UNUSED(message);
 }

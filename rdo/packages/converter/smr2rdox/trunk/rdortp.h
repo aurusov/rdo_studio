@@ -28,7 +28,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int  cnv_rtpparse(PTR(void) lexer);
 int  cnv_rtplex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void cnv_rtperror(PTR(char) message);
+void cnv_rtperror(const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType

@@ -40,7 +40,7 @@ int cnv_dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_dpterror(PTR(char) message)
+void cnv_dpterror(const char* message)
 {
 	UNUSED(message);
 }
@@ -52,7 +52,7 @@ int cnv_proc_rtp_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_proc_rtp_error(PTR(char) message)
+void cnv_proc_rtp_error(const char* message)
 {
 	UNUSED(message);
 }
@@ -64,7 +64,7 @@ int cnv_proc_rss_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_proc_rss_error(PTR(char) message)
+void cnv_proc_rss_error(const char* message)
 {
 	UNUSED(message);
 }
@@ -76,7 +76,7 @@ int cnv_proc_opr_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_proc_opr_error(PTR(char) message)
+void cnv_proc_opr_error(const char* message)
 {
 	UNUSED(message);
 }

@@ -23,7 +23,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int  cnv_frmparse(PTR(void) lexer);
 int  cnv_frmlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void cnv_frmerror(PTR(char) message);
+void cnv_frmerror(const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame

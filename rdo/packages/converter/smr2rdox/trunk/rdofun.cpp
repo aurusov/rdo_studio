@@ -41,7 +41,7 @@ int cnv_funlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_funerror(PTR(char) message)
+void cnv_funerror(const char* message)
 {
 	UNUSED(message);
 }

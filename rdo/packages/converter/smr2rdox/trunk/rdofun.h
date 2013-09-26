@@ -31,7 +31,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int  cnv_funparse(PTR(void) lexer);
 int  cnv_funlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void cnv_funerror(PTR(char) message);
+void cnv_funerror(const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNDoubleToIntByResult

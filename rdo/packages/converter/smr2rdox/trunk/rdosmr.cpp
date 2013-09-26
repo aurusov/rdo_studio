@@ -29,7 +29,7 @@ int cnv_smr_file_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_smr_file_error(PTR(char) message)
+void cnv_smr_file_error(const char* message)
 {
 	UNUSED(message);
 }
@@ -41,7 +41,7 @@ int cnv_smr_sim_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_smr_sim_error(PTR(char) message)
+void cnv_smr_sim_error(const char* message)
 {
 	UNUSED(message);
 }

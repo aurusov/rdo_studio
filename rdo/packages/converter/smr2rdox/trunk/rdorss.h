@@ -28,7 +28,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int  cnv_rssparse(PTR(void)    lexer);
 int  cnv_rsslex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void cnv_rsserror(PTR(char)    message);
+void cnv_rsserror(const char*  message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource

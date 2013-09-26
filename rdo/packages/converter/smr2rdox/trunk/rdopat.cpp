@@ -30,7 +30,7 @@ int cnv_patlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_paterror(PTR(char) message)
+void cnv_paterror(const char* message)
 {
 	UNUSED(message);
 }
@@ -42,7 +42,7 @@ int pat_preparse_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void pat_preparse_error(PTR(char) message)
+void pat_preparse_error(const char* message)
 {
 	UNUSED(message);
 }

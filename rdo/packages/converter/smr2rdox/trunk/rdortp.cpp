@@ -28,7 +28,7 @@ int cnv_rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_rtperror(PTR(char) message)
+void cnv_rtperror(const char* message)
 {
 	UNUSED(message);
 }

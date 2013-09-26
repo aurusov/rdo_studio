@@ -32,7 +32,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int  cnv_patparse(PTR(void) lexer);
 int  cnv_patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void cnv_paterror(PTR(char) message);
+void cnv_paterror(const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- ConvertCmdList

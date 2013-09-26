@@ -30,7 +30,7 @@ int cnv_pmdlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_pmderror(PTR(char) message)
+void cnv_pmderror(const char* message)
 {
 	UNUSED(message);
 }

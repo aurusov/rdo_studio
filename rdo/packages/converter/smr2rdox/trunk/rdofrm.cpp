@@ -27,7 +27,7 @@ int cnv_frmlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_frmerror(PTR(char) message)
+void cnv_frmerror(const char* message)
 {
 	UNUSED(message);
 }

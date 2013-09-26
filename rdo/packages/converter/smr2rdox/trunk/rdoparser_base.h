@@ -29,7 +29,7 @@
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 typedef int  (*t_bison_parse_fun)(PTR(void) lexer  );
-typedef void (*t_bison_error_fun)(PTR(char) message);
+typedef void (*t_bison_error_fun)(const char* message);
 typedef int  (*t_flex_lexer_fun) (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 
 // --------------------------------------------------------------------------------
