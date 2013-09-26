@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
 #include <stack>
+#include <boost/filesystem/path.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 #include "utils/src/stuff/rdoindexedstack.h"
@@ -285,10 +286,10 @@ public:
 		CNV_OK,
 		CNV_ERROR
 	};
-	Result convert(CREF(tstring) smrFullFileName, REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info);
+	Result convert(CREF(boost::filesystem::path) smrFullFileName, REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info);
 
 private:
-	rbool createRDOX(CREF(tstring) smrFileName) const;
+	rbool createRDOX(CREF(boost::filesystem::path) smrFileName) const;
 };
 
 // --------------------------------------------------------------------------------
@@ -297,20 +298,20 @@ private:
 class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
 {
 public:
-	typedef std::map<rdo::converter::smr2rdox::RDOFileTypeIn, tstring> FileList;
+	typedef std::map<rdo::converter::smr2rdox::RDOFileTypeIn, boost::filesystem::path> FileList;
 
-	rbool          parseSMR(CREF(tstring) smrFullFileName, REF(tstring) modelName);
+	rbool          parseSMR(CREF(boost::filesystem::path) smrFullFileName, REF(boost::filesystem::path) modelName);
 	CREF(FileList) getFileList() const;
 
 private:
 	FileList m_fileList;
 
 	void insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn type,
-	                    CREF(tstring)                           modelPath,
-	                    CREF(tstring)                           modelName,
-	                    CREF(tstring)                           smrFileName,
-	                    CREF(tstring)                           nameFromSMR,
-	                    CREF(tstring)                           fileExt);
+	                    CREF(boost::filesystem::path)           modelPath,
+	                    CREF(boost::filesystem::path)           modelName,
+	                    CREF(boost::filesystem::path)           smrFileName,
+	                    CREF(boost::filesystem::path)           nameFromSMR,
+	                    CREF(boost::filesystem::path)           fileExt);
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

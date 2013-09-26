@@ -76,9 +76,8 @@ rbool File::unlink(CREF(tstring) name)
 	return boost::filesystem::remove(rdo::locale::convertToWStr(name));
 }
 
-rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fileName, REF(tstring) fileExt)
+rbool File::splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem::path) fileDir, REF(boost::filesystem::path) fileName, REF(boost::filesystem::path) fileExt)
 {
-	boost::filesystem::path from(name);
 	boost::filesystem::path parentDir(from.parent_path());
 	boost::filesystem::path rootName      = parentDir.root_name();
 	boost::filesystem::path rootDirectory = parentDir.root_directory();
@@ -87,9 +86,9 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 		parentDir /= boost::filesystem::path("/");
 	}
 
-	fileDir  = parentDir.make_preferred().string();
-	fileName = from.stem().string();
-	fileExt  = from.extension().string();
+	fileDir  = parentDir.make_preferred();
+	fileName = from.stem();
+	fileExt  = from.extension();
 
 	return true;
 }
@@ -126,9 +125,9 @@ tstring File::extractFilePath(CREF(tstring) fileName)
 	return result;
 }
 
-rbool File::trimLeft(CREF(tstring) name)
+rbool File::trimLeft(CREF(boost::filesystem::path) name)
 {
-	boost::filesystem::ifstream inputStream(rdo::locale::convertToWStr(name), std::ios::binary);
+	boost::filesystem::ifstream inputStream(name, std::ios::binary);
 	std::stringstream sstream;
 
 	if (!inputStream.good())

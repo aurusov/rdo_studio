@@ -57,7 +57,7 @@ public:
 	//! \param[out] fileName - имя
 	//! \param[out] fileExt  - расширение
 	//! \result \b true, если получилось извлечь данные
-	static rbool splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fileName, REF(tstring) fileExt);
+	static rbool splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem::path) fileDir, REF(boost::filesystem::path) fileName, REF(boost::filesystem::path) fileExt);
 
 	//! Возвращает полное имя временного файла
 	//! \result полное имя временного файла
@@ -71,7 +71,7 @@ public:
 	//! Удаляет пустоты (пробелы, табуляцию, переводы строк) в конце файла
 	//! \param name - имя файла
 	//! \result \b true, если всё прошло успешно
-	static rbool trimLeft(CREF(tstring) name);
+	static rbool trimLeft(CREF(boost::filesystem::path) name);
 };
 
 CLOSE_RDO_NAMESPACE

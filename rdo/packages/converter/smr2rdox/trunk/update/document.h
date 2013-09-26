@@ -15,6 +15,7 @@
 #include <map>
 #include <fstream>
 #include <boost/shared_ptr.hpp>
+#include <boost/filesystem/path.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/factory/factory.h"
 #include "utils/src/common/rdomacros.h"
@@ -37,12 +38,12 @@ DECLARE_FACTORY(Document)
 public:
 	typedef rdo::converter::smr2rdox::RDOFileTypeOut TypeOut;
 
-	void    create      (CREF(tstring) filePath, CREF(tstring) modelName);
-	void    init        (rdo::converter::smr2rdox::RDOFileTypeIn type, REF(std::ifstream) stream);
-	void    insertUpdate(CREF(LPDocUpdate) pUpdate);
-	void    convert     ();
-	void    close       ();
-	tstring getName     (TypeOut typeOut) const;
+	void  create      (CREF(boost::filesystem::path) filePath, CREF(boost::filesystem::path) modelName);
+	void  init        (rdo::converter::smr2rdox::RDOFileTypeIn type, REF(std::ifstream) stream);
+	void  insertUpdate(CREF(LPDocUpdate) pUpdate);
+	void  convert     ();
+	void  close       ();
+	boost::filesystem::path getName(TypeOut typeOut) const;
 
 private:
 	 Document();
@@ -73,11 +74,11 @@ private:
 	typedef std::pair<LPDocUpdate, rbool> Update;
 	typedef std::list<Update>             UpdateContainer;
 
-	tstring         m_filePath;
-	tstring         m_modelName;
-	MemoryFileList  m_memoryFileList;
-	StreamFileList  m_streamFileList;
-	UpdateContainer m_updateContainer;
+	boost::filesystem::path  m_filePath;
+	boost::filesystem::path  m_modelName;
+	MemoryFileList           m_memoryFileList;
+	StreamFileList           m_streamFileList;
+	UpdateContainer          m_updateContainer;
 
 	LPMemoryStream getMemoryStream(Type    type);
 	LPFileStream   getFileStream  (TypeOut type);

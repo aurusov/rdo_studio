@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/update/document.h"
 #include "utils/src/locale/rdolocale.h"
@@ -31,7 +31,7 @@ Document::~Document()
 	close();
 }
 
-void Document::create(CREF(tstring) filePath, CREF(tstring) modelName)
+void Document::create(CREF(boost::filesystem::path) filePath, CREF(boost::filesystem::path) modelName)
 {
 	m_filePath  = filePath;
 	m_modelName = modelName;
@@ -146,7 +146,7 @@ void Document::close()
 	m_streamFileList.clear();
 }
 
-tstring Document::getName(TypeOut typeOut) const
+boost::filesystem::path Document::getName(TypeOut typeOut) const
 {
 	tstring extention;
 	switch (typeOut)
@@ -166,9 +166,9 @@ tstring Document::getName(TypeOut typeOut) const
 	default: NEVER_REACH_HERE;
 	}
 
-	boost::filesystem::path fileName(boost::filesystem::path(m_filePath) / m_modelName);
+	boost::filesystem::path fileName(m_filePath / m_modelName);
 	fileName.replace_extension(rdo::format(".%s", extention.c_str()));
-	return fileName.string();
+	return fileName;
 }
 
 Document::LPMemoryStream Document::getMemoryStream(Type type)
@@ -189,7 +189,7 @@ Document::LPFileStream Document::getFileStream(TypeOut type)
 	BOOST_AUTO(it, m_streamFileList.find(type));
 	if (it == m_streamFileList.end())
 	{
-		LPFileStream pFileStream = LPFileStream(new std::ofstream(getName(type).c_str(), std::ios::trunc | std::ios::binary));
+		LPFileStream pFileStream = LPFileStream(new boost::filesystem::ofstream(getName(type), std::ios::trunc | std::ios::binary));
 		std::pair<StreamFileList::iterator, rbool> result = m_streamFileList.insert(StreamFileList::value_type(type, pFileStream));
 		ASSERT(result.second);
 		it = result.first;

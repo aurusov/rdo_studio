@@ -12,11 +12,12 @@
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/date_time/posix_time/posix_time_types.hpp>
-#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 #include "utils/src/file/rdofile.h"
+#include "utils/src/locale/rdolocale.h"
 
 #include "converter/smr2rdox/rdoparser.h"
 #include "converter/smr2rdox/rdoparser_rdo.h"
@@ -259,18 +260,19 @@ CREF(RDOParserSMRInfo::FileList) RDOParserSMRInfo::getFileList() const
 }
 
 void RDOParserSMRInfo::insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn type,
-                                      CREF(tstring)                           modelPath,
-                                      CREF(tstring)                           modelName,
-                                      CREF(tstring)                           smrFileName,
-                                      CREF(tstring)                           nameFromSMR,
-                                      CREF(tstring)                           fileExt
+                                      CREF(boost::filesystem::path)           modelPath,
+                                      CREF(boost::filesystem::path)           modelName,
+                                      CREF(boost::filesystem::path)           smrFileName,
+                                      CREF(boost::filesystem::path)           nameFromSMR,
+                                      CREF(boost::filesystem::path)           fileExt
 )
 {
-	CREF(tstring) fileName = !nameFromSMR.empty() ? nameFromSMR : (!modelName.empty() ? modelName : smrFileName);
+	CREF(boost::filesystem::path) fileName = !nameFromSMR.empty() ? nameFromSMR : (!modelName.empty() ? modelName : smrFileName);
 	if (fileName.empty())
 		return;
 
-	tstring fullFileName = rdo::format("%s%s.%s", modelPath.c_str(), fileName.c_str(), fileExt.c_str());
+	boost::filesystem::path fullFileName = modelPath / fileName;
+	fullFileName.replace_extension(fileExt);
 
 	if (rdo::File::exist(fullFileName))
 	{
@@ -278,9 +280,9 @@ void RDOParserSMRInfo::insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn ty
 	}
 }
 
-rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(tstring) modelName)
+rbool RDOParserSMRInfo::parseSMR(CREF(boost::filesystem::path) smrFullFileName, REF(boost::filesystem::path) modelName)
 {
-	std::ifstream stream(smrFullFileName.c_str());
+	boost::filesystem::ifstream stream(smrFullFileName);
 	if (!stream.is_open())
 		return false;
 
@@ -299,7 +301,7 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(tstring) mod
 	if (!hasSMR())
 		return false;
 
-	tstring smrFilePath, smrFileName, smrFileExt;
+	boost::filesystem::path smrFilePath, smrFileName, smrFileExt;
 	if (!rdo::File::splitpath(smrFullFileName, smrFilePath, smrFileName, smrFileExt))
 		return false;
 
@@ -327,12 +329,12 @@ rbool RDOParserSMRInfo::parseSMR(CREF(tstring) smrFullFileName, REF(tstring) mod
 	return true;
 }
 
-RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info)
+RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smrFullFileName, REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info)
 {
 	info.m_error = true;
 
 	RDOParserSMRInfo::FileList fileList;
-	tstring                    modelName;
+	boost::filesystem::path    modelName;
 	{
 		std::auto_ptr<RDOParserSMRInfo> pSMRParser(new RDOParserSMRInfo());
 
@@ -375,7 +377,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 				BOOST_AUTO(it, fileList.find(m_pParserItem->m_type));
 				if (it != fileList.end())
 				{
-					std::ifstream stream(it->second.c_str(), std::ios::binary);
+					boost::filesystem::ifstream stream(it->second, std::ios::binary);
 					m_pParserItem->parse(this, stream);
 				}
 			}
@@ -450,7 +452,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 			boost::filesystem::path from(it->second);
 			boost::filesystem::path to  (backupPath / from.filename());
 			boost::filesystem::rename(from, to);
-			it->second = to.string();
+			it->second = to;
 		}
 	}
 	catch (REF(rdo::converter::smr2rdox::RDOSyntaxException))
@@ -466,7 +468,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 		return CNV_ERROR;
 	}
 
-	m_pDocument->create(fullPath.string(), modelName);
+	m_pDocument->create(fullPath, modelName);
 	RDOParserContainer::Iterator it = begin();
 	while (it != end())
 	{
@@ -477,7 +479,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 			BOOST_AUTO(fileIt, fileList.find(pParserItem->m_type));
 			if (fileIt != fileList.end())
 			{
-				std::ifstream streamIn(fileIt->second.c_str(), std::ios::binary);
+				boost::filesystem::ifstream streamIn(fileIt->second, std::ios::binary);
 				ASSERT(streamIn.good());
 
 				m_pDocument->init(pParserItem->m_type, streamIn);
@@ -490,7 +492,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 
 	boost::filesystem::path rdoxFile(fullPath / modelName);
 	rdoxFile.replace_extension(".rdox");
-	if (!createRDOX(rdoxFile.string()))
+	if (!createRDOX(rdoxFile))
 	{
 		return CNV_ERROR;
 	}
@@ -503,7 +505,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 	return CNV_OK;
 }
 
-rbool RDOParserModel::createRDOX(CREF(tstring) smrFileName) const
+rbool RDOParserModel::createRDOX(CREF(boost::filesystem::path) smrFileName) const
 {
 	pugi::xml_document doc;
 	pugi::xml_node      rootNode           = doc.append_child("Settings");
@@ -513,7 +515,7 @@ rbool RDOParserModel::createRDOX(CREF(tstring) smrFileName) const
 	projectVersionAttr.set_value("2");
 	smrVersionAttr    .set_value("2");
 
-	std::ofstream ofs(smrFileName.c_str());
+	boost::filesystem::ofstream ofs(smrFileName);
 	if (!ofs.good())
 	{
 		return false;

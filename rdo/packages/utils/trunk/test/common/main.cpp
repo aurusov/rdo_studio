@@ -51,10 +51,10 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileRemove)
 #ifdef OST_LINUX
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInLinux)
 {
-	tstring file("/rdo/run and space/files/project.smr");
-	tstring dir;
-	tstring name;
-	tstring ext;
+	boost::filesystem::path file("/rdo/run and space/files/project.smr");
+	boost::filesystem::path dir;
+	boost::filesystem::path name;
+	boost::filesystem::path ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
 	BOOST_CHECK(dir  == "/rdo/run and space/files/");
@@ -64,10 +64,10 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInLinux)
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInLinux)
 {
-	tstring file("/project.smr");
-	tstring dir;
-	tstring name;
-	tstring ext;
+	boost::filesystem::path file("/project.smr");
+	boost::filesystem::path dir;
+	boost::filesystem::path name;
+	boost::filesystem::path ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
 	BOOST_CHECK(dir  == "/");
@@ -79,10 +79,10 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInLinux)
 #ifdef OST_WINDOWS
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInWindows)
 {
-	tstring file("C:/rdo/русский пробел/files/проект.smr");
-	tstring dir;
-	tstring name;
-	tstring ext;
+	boost::filesystem::path file("C:/rdo/русский пробел/files/проект.smr");
+	boost::filesystem::path dir;
+	boost::filesystem::path name;
+	boost::filesystem::path ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
 	BOOST_CHECK(dir  == "C:\\rdo\\русский пробел\\files\\");
@@ -92,10 +92,10 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInWindows)
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInWindows)
 {
-	tstring file("C:/проект.smr");
-	tstring dir;
-	tstring name;
-	tstring ext;
+	boost::filesystem::path file("C:/проект.smr");
+	boost::filesystem::path dir;
+	boost::filesystem::path name;
+	boost::filesystem::path ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
 	BOOST_CHECK(dir  == "C:\\");
@@ -105,10 +105,10 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInWindows)
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInWindows_BackSlash)
 {
-	tstring file("C:\\rdo\\русский пробел\\files\\проект.smr");
-	tstring dir;
-	tstring name;
-	tstring ext;
+	boost::filesystem::path file("C:\\rdo\\русский пробел\\files\\проект.smr");
+	boost::filesystem::path dir;
+	boost::filesystem::path name;
+	boost::filesystem::path ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
 	BOOST_CHECK(dir  == "C:\\rdo\\русский пробел\\files\\");
@@ -118,10 +118,10 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInWindows_BackSlash)
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInWindows_BackSlash)
 {
-	tstring file("C:\\проект.smr");
-	tstring dir;
-	tstring name;
-	tstring ext;
+	boost::filesystem::path file("C:\\проект.smr");
+	boost::filesystem::path dir;
+	boost::filesystem::path name;
+	boost::filesystem::path ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
 	BOOST_CHECK(dir  == "C:\\");
