@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <memory>
+#include <boost/config.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
@@ -50,9 +51,13 @@ namespace rdo
 			TBMP& buffer();
 
 		private:
-			std::auto_ptr<TDC>    m_pDC;
-			std::auto_ptr<TBMP>   m_pBitmap;
-
+#ifdef BOOST_NO_AUTO_PTR
+			std::unique_ptr<TDC>   m_pDC;
+			std::unique_ptr<TBMP>  m_pBitmap;
+#else
+			std::auto_ptr<TDC>     m_pDC;
+			std::auto_ptr<TBMP>    m_pBitmap;
+#endif
 			rbool onCreate();
 
 			void clear();
