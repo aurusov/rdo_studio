@@ -236,7 +236,7 @@ void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 		LPIResourceType type(res->getResType());
 		// Деструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
 		type->eraseRes(res);
-		notify().fireMessage(Notify::RO_BEFOREDELETE, (void*)res->getTraceID());
+		notify().fireMessage(Notify::RO_BEFOREDELETE, reinterpret_cast<void*>(res->getTraceID()));
 		onResourceErase(res);
 	}
 }
