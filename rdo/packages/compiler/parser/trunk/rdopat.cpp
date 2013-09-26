@@ -31,7 +31,7 @@ int patlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void paterror(PTR(char) message)
+void paterror(const char* message)
 {
 	UNUSED(message);
 }
@@ -43,7 +43,7 @@ int evnlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void evnerror(PTR(char) message)
+void evnerror(const char* message)
 {
 	UNUSED(message);
 }
@@ -55,7 +55,7 @@ int evn_preparse_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void evn_preparse_error(PTR(char) message)
+void evn_preparse_error(const char* message)
 {
 	UNUSED(message);
 }

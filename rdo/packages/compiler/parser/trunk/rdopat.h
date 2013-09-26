@@ -38,15 +38,15 @@ OPEN_RDO_PARSER_NAMESPACE
 
 int  patparse(PTR(void) lexer);
 int  patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void paterror(PTR(char) message);
+void paterror(const char* message);
 
 int  evnparse(PTR(void) lexer);
 int  evnlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void evnerror(PTR(char) message);
+void evnerror(const char* message);
 
 int  evn_preparse_parse(PTR(void) lexer);
 int  evn_preparse_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void evn_preparse_error(PTR(char) message);
+void evn_preparse_error(const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- ConvertCmdList

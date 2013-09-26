@@ -30,7 +30,7 @@ int rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void rsserror(PTR(char) message)
+void rsserror(const char* message)
 {
 	UNUSED(message);
 }

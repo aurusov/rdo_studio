@@ -38,7 +38,7 @@ int dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void dpterror(PTR(char) message)
+void dpterror(const char* message)
 {
 	UNUSED(message);
 }

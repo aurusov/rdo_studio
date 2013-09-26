@@ -38,7 +38,7 @@ int funlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void funerror(PTR(char) message)
+void funerror(const char* message)
 {
 	UNUSED(message);
 }

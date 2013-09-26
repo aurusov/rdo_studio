@@ -30,7 +30,7 @@ OPEN_RDO_PARSER_NAMESPACE
 
 int  rssparse(PTR(void)    lexer);
 int  rsslex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void rsserror(PTR(char)    message);
+void rsserror(const char*  message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
