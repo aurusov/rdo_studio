@@ -51,82 +51,84 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileRemove)
 #ifdef OST_LINUX
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInLinux)
 {
-	boost::filesystem::path file("/rdo/run and space/files/project.smr");
+	boost::filesystem::path file(rdo::locale::convertToWStr("/rdo/русский пробел/files/проект.smr"));
 	boost::filesystem::path dir;
 	boost::filesystem::path name;
 	boost::filesystem::path ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
-	BOOST_CHECK(dir  == "/rdo/run and space/files/");
-	BOOST_CHECK(name == "project");
-	BOOST_CHECK(ext  == ".smr");
+	BOOST_CHECK(dir  == rdo::locale::convertToWStr("/rdo/русский пробел/files/"));
+	BOOST_CHECK(name == rdo::locale::convertToWStr("проект"));
+	BOOST_CHECK(ext  == rdo::locale::convertToWStr(".smr"));
+	BOOST_CHECK(rdo::locale::convertFromWStr(dir.wstring()) == "/rdo/русский пробел/files/");
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInLinux)
 {
-	boost::filesystem::path file("/project.smr");
+	boost::filesystem::path file(rdo::locale::convertToWStr("/проект.smr"));
 	boost::filesystem::path dir;
 	boost::filesystem::path name;
 	boost::filesystem::path ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
-	BOOST_CHECK(dir  == "/");
-	BOOST_CHECK(name == "project");
-	BOOST_CHECK(ext  == ".smr");
+	BOOST_CHECK(dir  == rdo::locale::convertToWStr("/"));
+	BOOST_CHECK(name == rdo::locale::convertToWStr("проект"));
+	BOOST_CHECK(ext  == rdo::locale::convertToWStr(".smr"));
 }
 #endif
 
 #ifdef OST_WINDOWS
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInWindows)
 {
-	boost::filesystem::path file("C:/rdo/русский пробел/files/проект.smr");
+	boost::filesystem::path file(rdo::locale::convertToWStr("C:/rdo/русский пробел/files/проект.smr"));
 	boost::filesystem::path dir;
 	boost::filesystem::path name;
 	boost::filesystem::path ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
-	BOOST_CHECK(dir  == "C:\\rdo\\русский пробел\\files\\");
-	BOOST_CHECK(name == "проект");
-	BOOST_CHECK(ext  == ".smr");
+	BOOST_CHECK(dir  == rdo::locale::convertToWStr("C:\\rdo\\русский пробел\\files\\"));
+	BOOST_CHECK(name == rdo::locale::convertToWStr("проект"));
+	BOOST_CHECK(ext  == rdo::locale::convertToWStr(".smr"));
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInWindows)
 {
-	boost::filesystem::path file("C:/проект.smr");
+	boost::filesystem::path file(rdo::locale::convertToWStr("C:/проект.smr"));
 	boost::filesystem::path dir;
 	boost::filesystem::path name;
 	boost::filesystem::path ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
-	BOOST_CHECK(dir  == "C:\\");
-	BOOST_CHECK(name == "проект");
-	BOOST_CHECK(ext  == ".smr");
+	BOOST_CHECK(dir  == rdo::locale::convertToWStr("C:\\"));
+	BOOST_CHECK(name == rdo::locale::convertToWStr("проект"));
+	BOOST_CHECK(ext  == rdo::locale::convertToWStr(".smr"));
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInWindows_BackSlash)
 {
-	boost::filesystem::path file("C:\\rdo\\русский пробел\\files\\проект.smr");
+	boost::filesystem::path file(rdo::locale::convertToWStr("C:\\rdo\\русский пробел\\files\\проект.smr"));
 	boost::filesystem::path dir;
 	boost::filesystem::path name;
 	boost::filesystem::path ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
-	BOOST_CHECK(dir  == "C:\\rdo\\русский пробел\\files\\");
-	BOOST_CHECK(name == "проект");
-	BOOST_CHECK(ext  == ".smr");
+	BOOST_CHECK(dir  == rdo::locale::convertToWStr("C:\\rdo\\русский пробел\\files\\"));
+	BOOST_CHECK(name == rdo::locale::convertToWStr("проект"));
+	BOOST_CHECK(ext  == rdo::locale::convertToWStr(".smr"));
+	BOOST_CHECK(rdo::locale::convertFromWStr(dir.wstring()) == "C:\\rdo\\русский пробел\\files\\");
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInWindows_BackSlash)
 {
-	boost::filesystem::path file("C:\\проект.smr");
+	boost::filesystem::path file(rdo::locale::convertToWStr("C:\\проект.smr"));
 	boost::filesystem::path dir;
 	boost::filesystem::path name;
 	boost::filesystem::path ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
-	BOOST_CHECK(dir  == "C:\\");
-	BOOST_CHECK(name == "проект");
-	BOOST_CHECK(ext  == ".smr");
+	BOOST_CHECK(dir  == rdo::locale::convertToWStr("C:\\"));
+	BOOST_CHECK(name == rdo::locale::convertToWStr("проект"));
+	BOOST_CHECK(ext  == rdo::locale::convertToWStr(".smr"));
 }
 #endif // #endif
 
