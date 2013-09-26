@@ -14,6 +14,7 @@
 #include "utils/src/common/warning_disable.h"
 #include <QtGui/qpainter.h>
 #include <QtGui/qpixmap.h>
+#include <boost/config.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "ui/abstract/headers/memdc/memdc.h"
@@ -41,10 +42,10 @@ namespace rdo
 			if (width == m_width && height == m_height)
 				return true;
 
-#if (__cplusplus >= 201103L)
-			typedef std::unique_ptr<QPixmap> QPixmapPointer;
-#else
+#ifdef BOOST_NO_CXX11_SMART_PTR
 			typedef std::auto_ptr<QPixmap> QPixmapPointer;
+#else
+			typedef std::unique_ptr<QPixmap> QPixmapPointer;
 #endif
 			QPixmapPointer pPrevBitmap(m_pBitmap);
 
