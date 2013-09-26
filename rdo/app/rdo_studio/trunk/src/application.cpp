@@ -312,7 +312,7 @@ QString Application::getFullHelpFileName(CREF(QString) helpFileName) const
 QString Application::chkHelpExist(CREF(QString) helpFileName) const
 {
 	QString fullHelpFileName = QString("%1%2")
-		.arg(QString::fromStdString(rdo::File::extractFilePath(qApp->applicationFilePath().toStdString())))
+		.arg(QString::fromStdWString(rdo::File::extractFilePath(qApp->applicationFilePath().toStdWString()).wstring()))
 		.arg(helpFileName);
 
 	if (!QFile::exists(fullHelpFileName))

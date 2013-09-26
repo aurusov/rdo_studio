@@ -23,36 +23,26 @@ OPEN_RDO_NAMESPACE
 class File
 {
 public:
-	static rbool create(CREF(tstring) name);
-	static rbool create(CREF(tstring) name, CREF(tstring) content);
+	static rbool create(CREF(boost::filesystem::path) name);
+	static rbool create(CREF(boost::filesystem::path) name, CREF(tstring) content);
 
 	//! Проверяет существование файла
 	//! \param name - имя файла
 	//! \result \b true, если существует
-	static rbool exist(CREF(tstring) name);
-
-	//! Проверяет существование файла
-	//! \param name - имя файла
-	//! \result \b true, если существует
-	static rbool exist(CREF(boost::filesystem::path) path);
+	static rbool exist(CREF(boost::filesystem::path) name);
 
 	//! Проверяет признак только чтение
 	//! \param name - имя файла
 	//! \result \b true, если у файла установлен атрибут только чтение
-	static rbool read_only(CREF(boost::filesystem::path) path);
-
-	//! Проверяет признак только чтение
-	//! \param name - имя файла
-	//! \result \b true, если у файла установлен атрибут только чтение
-	static rbool read_only(CREF(tstring) name);
+	static rbool read_only(CREF(boost::filesystem::path) name);
 
 	//! Удаляет файл
 	//! \param name - имя файла
 	//! \result \b true, если файл удалён удачно
-	static rbool unlink(CREF(tstring) name);
+	static rbool unlink(CREF(boost::filesystem::path) name);
 
 	//! Разбивает полное имя файла на его составляющие
-	//! \param[in]  name     - полное имя файла
+	//! \param[in]  from     - полное имя файла
 	//! \param[out] fileDir  - путь
 	//! \param[out] fileName - имя
 	//! \param[out] fileExt  - расширение
@@ -61,12 +51,12 @@ public:
 
 	//! Возвращает полное имя временного файла
 	//! \result полное имя временного файла
-	static tstring getTempFileName();
+	static boost::filesystem::path getTempFileName();
 
 	//! Получение пути файла по его имени
-	//! \param fileName - полное имя файла
+	//! \param name - полное имя файла
 	//! \result Путь к файлу, заканчивающийся '/' или '\' в зависимости от платформы
-	static tstring extractFilePath(CREF(tstring) fileName);
+	static boost::filesystem::path extractFilePath(CREF(boost::filesystem::path) name);
 
 	//! Удаляет пустоты (пробелы, табуляцию, переводы строк) в конце файла
 	//! \param name - имя файла

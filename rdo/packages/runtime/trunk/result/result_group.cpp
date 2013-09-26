@@ -13,6 +13,7 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/src/locale/rdolocale.h"
 #include "simulator/runtime/result/result_group.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_model_i.h"
@@ -48,7 +49,7 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
 			ASSERT(pThreadProxy);
 			rdo::repository::RDOThreadRepository::CreateFileInfo file(
-				boost::str(boost::format("- %1% - full.txt") % m_name),
+				rdo::locale::convertToWStr(boost::str(boost::format("- %1% - full.txt") % m_name)),
 				m_streamFull
 			);
 			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
@@ -58,7 +59,7 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
 			ASSERT(pThreadProxy);
 			rdo::repository::RDOThreadRepository::CreateFileInfo file(
-				boost::str(boost::format("- %1% - table.txt") % m_name),
+				rdo::locale::convertToWStr(boost::str(boost::format("- %1% - table.txt") % m_name)),
 				m_streamTable
 			);
 			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);

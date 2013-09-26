@@ -303,11 +303,11 @@ void Manager::insertBitmap(CREF(QString) bitmapName)
 	g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 
 	rdo::binarystream stream;
-	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName.toStdString(), stream);
+	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName.toStdWString(), stream);
 	g_pModel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
 	bool ok = false;
-	QPixmap pixmap(QString::fromStdString(data.m_name));
+	QPixmap pixmap(QString::fromStdWString(data.m_name.wstring()));
 	if (!pixmap.isNull())
 	{
 		std::pair<rdo::gui::BitmapList::const_iterator, bool> result =

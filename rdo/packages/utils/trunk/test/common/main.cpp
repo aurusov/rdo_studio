@@ -134,12 +134,13 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInWindows_BackSlash)
 
 BOOST_AUTO_TEST_CASE(RDOCommon_GetTempFile)
 {
-	std::set<tstring> name_set;
-	for(int i = 0; i < 15; ++i)
+	std::set<boost::filesystem::path> nameSet;
+	for (int i = 0; i < 15; ++i)
 	{
-		tstring file_name = rdo::File::getTempFileName();
-		BOOST_CHECK(name_set.find(file_name) == name_set.end());
-		name_set.insert(file_name);
+		boost::filesystem::path fileName = rdo::File::getTempFileName();
+		rdo::File::unlink(fileName);
+		BOOST_CHECK(nameSet.find(fileName) == nameSet.end());
+		nameSet.insert(fileName);
 	}
 }
 

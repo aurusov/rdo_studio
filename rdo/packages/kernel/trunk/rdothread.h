@@ -91,7 +91,7 @@ public:
 		RT_STUDIO_MODEL_GET_TEXT,              // param = rdo::repository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
 		RT_REPOSITORY_MODEL_NEW,               // param = rdo::repository::RDOThreadRepository::NewModel* = { model_name:tstring&, model_path:tstring&   }
 		RT_REPOSITORY_MODEL_OPEN,
-		RT_REPOSITORY_MODEL_OPEN_ERROR,        // param = model_name:tstring*
+		RT_REPOSITORY_MODEL_OPEN_ERROR,        // param = model_name:boost::filesystem::path*
 		RT_REPOSITORY_MODEL_SAVE,
 		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdo::repository::RDOThreadRepository::OpenFile* = { model_name:tstring, readonly:rbool, result:rbool }
 		RT_REPOSITORY_MODEL_CLOSE,

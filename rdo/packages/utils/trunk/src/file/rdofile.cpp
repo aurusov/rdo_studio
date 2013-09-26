@@ -31,49 +31,39 @@
 
 OPEN_RDO_NAMESPACE
 
-rbool File::create(CREF(tstring) name)
+rbool File::create(CREF(boost::filesystem::path) name)
 {
 	return create(name, "");
 }
 
-rbool File::create(CREF(tstring) name, CREF(tstring) content)
+rbool File::create(CREF(boost::filesystem::path) name, CREF(tstring) content)
 {
-	boost::filesystem::fstream file(rdo::locale::convertToWStr(name), std::ios::out | std::ios::binary);
+	boost::filesystem::fstream file(name, std::ios::out | std::ios::binary);
 	file << content << std::endl;
 	file.close();
 	return true;
 }
 
-rbool File::exist(CREF(tstring) name)
+rbool File::exist(CREF(boost::filesystem::path) name)
 {
-	return exist(boost::filesystem::path(rdo::locale::convertToWStr(name)));
+	return boost::filesystem::exists(name);
 }
 
-rbool File::exist(CREF(boost::filesystem::path) path)
-{
-	return boost::filesystem::exists(path);
-}
-
-rbool File::read_only(CREF(tstring) name)
+rbool File::read_only(CREF(boost::filesystem::path) name)
 {
 #ifdef COMPILER_VISUAL_STUDIO
-	std::string fileName = rdo::locale::convertToCLocale(name);
-	return _access(fileName.c_str(), 04) == 0 && _access(fileName.c_str(), 06) == -1;
+	return _waccess(name.wstring().c_str(), 04) == 0 && _waccess(name.wstring().c_str(), 06) == -1;
 #endif  // COMPILER_VISUAL_STUDIO
 
 #ifdef COMPILER_GCC
-	return access(name.c_str(), R_OK) == 0 && access(name.c_str(), W_OK) == -1;
+	std::string fileName = rdo::locale::convertToCLocale(name.string());
+	return access(fileName.c_str(), R_OK) == 0 && access(fileName.c_str(), W_OK) == -1;
 #endif // COMPILER_GCC
 }
 
-rbool File::read_only(CREF(boost::filesystem::path) path)
+rbool File::unlink(CREF(boost::filesystem::path) name)
 {
-	return read_only(path.string());
-}
-
-rbool File::unlink(CREF(tstring) name)
-{
-	return boost::filesystem::remove(rdo::locale::convertToWStr(name));
+	return boost::filesystem::remove(name);
 }
 
 rbool File::splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem::path) fileDir, REF(boost::filesystem::path) fileName, REF(boost::filesystem::path) fileExt)
@@ -93,7 +83,7 @@ rbool File::splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem:
 	return true;
 }
 
-tstring File::getTempFileName()
+boost::filesystem::path File::getTempFileName()
 {
 #ifdef COMPILER_VISUAL_STUDIO
 	const ruint BUFSIZE = 4096;
@@ -101,28 +91,28 @@ tstring File::getTempFileName()
 
 	if (::GetTempPath(BUFSIZE, lpPathBuffer) == 0)
 	{
-		return tstring();
+		return boost::filesystem::path();
 	}
 	tchar szTempName[MAX_PATH];
 	if (::GetTempFileName(lpPathBuffer, NULL, 0, szTempName) == 0)
 	{
-		return tstring();
+		return boost::filesystem::path();
 	}
-	return szTempName;
+	return boost::filesystem::path(rdo::locale::convertToWStr(szTempName));
 #endif // COMPILER_VISUAL_STUDIO
 #ifdef COMPILER_GCC
 	boost::uuids::random_generator random_gen;
-	tstring tempFileName = tstring("/tmp/rdo_temp_file_num_") + boost::uuids::to_string(random_gen());
+	boost::filesystem::path tempFileName;
+	tempFileName /= "tmp";
+	tempFileName /= "rdo_temp_file_num_" + boost::uuids::to_string(random_gen());
 	create(tempFileName);
 	return tempFileName;
 #endif // COMPILER_GCC
 }
 
-tstring File::extractFilePath(CREF(tstring) fileName)
+boost::filesystem::path File::extractFilePath(CREF(boost::filesystem::path) name)
 {
-	boost::filesystem::path fullFileName(fileName);
-	tstring result = (fullFileName.make_preferred().parent_path() / boost::filesystem::path("/").make_preferred()).string();
-	return result;
+	return boost::filesystem::path(name).make_preferred().parent_path() / boost::filesystem::path("/").make_preferred();
 }
 
 rbool File::trimLeft(CREF(boost::filesystem::path) name)
