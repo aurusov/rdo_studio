@@ -3422,7 +3422,7 @@ fun_arithm
 		LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($6);
 		ASSERT(pParamName);
 
-		rsint paramIndex = pResType->getRTPParamNumber(pParamName->value().getAsString());
+		ruint paramIndex = pResType->getRTPParamNumber(pParamName->value().getAsString());
 
 		if (paramIndex == RDORTPResType::UNDEFINED_PARAM)
 		{
