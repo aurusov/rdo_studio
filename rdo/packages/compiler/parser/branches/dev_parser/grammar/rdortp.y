@@ -231,7 +231,7 @@ rdo_compiler
 	| rss_main rdo_compiler
 	| error
 	{
-		PARSER->error().error(RDOParserSrcInfo(), "Ожидается $Ключевое_слово");
+		PARSER->error().error(RDOParserSrcInfo(), "Ожидается ключевое слово: $Resource_type или $Resources");
 	}
 	;
 
