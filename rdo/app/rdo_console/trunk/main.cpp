@@ -89,7 +89,7 @@ int main(int argc, PTR(char) argv[])
 	rdo::repository::RDOThreadRepository::OpenFile data(modelFileName);
 	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
 
-	if(optionsController.convertQuery())
+	if (optionsController.convertQuery())
 	{
 		bool converted = false;
 		while(!converted)
@@ -97,7 +97,7 @@ int main(int argc, PTR(char) argv[])
 			converted = pAppController->converted();
 			boost::this_thread::sleep(boost::posix_time::milliseconds(500));
 		}
-		if(pAppController->convertorError())
+		if (pAppController->convertorError())
 		{
 			exit(TERMINATION_WITH_AN_ERROR_CONVERTOR_ERROR);
 		}
@@ -160,7 +160,7 @@ void read_events(REF(std::istream) stream, REF(event_container) container)
 	{
 		parser.parse(stream, container);
 	}
-	catch(...)
+	catch (...)
 	{
 		exit(TERMINATION_WITH_AN_ERROR_PARSE_EVENTS_ERROR);
 	}
@@ -191,7 +191,7 @@ bool run(PTR(rdo::console_controller) pAppController, REF(event_container) conta
 			std::cout << "Run-time error" << std::endl;
 			exit(TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR);
 		}
-        process_event(pAppController, container);
+		process_event(pAppController, container);
 	}
 	return pAppController->simulationSuccessfully();
 }
@@ -206,7 +206,7 @@ void process_event(PTR(rdo::console_controller) pAppController, REF(event_contai
 		event_container::iterator it = container.begin();
 		if(it->first < runtime_time)
 		{
-            std::cout << "process event : " << "name : " << it->second->getName() << "  |  " << "time : " << it->second->getTime() << std::endl;
+			std::cout << "process event : " << "name : " << it->second->getName() << "  |  " << "time : " << it->second->getTime() << std::endl;
 
 			rdo::event::types type = it->second->getType();
 
@@ -217,14 +217,14 @@ void process_event(PTR(rdo::console_controller) pAppController, REF(event_contai
 				rdo::key_event::states state = static_cast<rdo::key_event*>(it->second.get())->getState();
 
 				rdo::console_controller::RDOTreadMessage message_type;
-				if(state == rdo::key_event::press) {
+				switch (state)
+				{
+				case rdo::key_event::press:
 					message_type = RDOThread::RT_RUNTIME_KEY_DOWN;
-				}
-				else if(state == rdo::key_event::release) {
+					break;
+				case rdo::key_event::release:
 					message_type = RDOThread::RT_RUNTIME_KEY_UP;
-				}
-				else {
-					NEVER_REACH_HERE;
+					break;
 				}
 				pAppController->broadcastMessage(message_type, &code);
 			}
