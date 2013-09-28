@@ -1,74 +1,95 @@
-import sys, argparse, re
+import sys, re, os, argparse, subprocess
 
 def divide(expr):
-    expr = expr.split('\n')
 
-    f1 = ""
-    f2 = ""
+    f1 = expr
+    f2 = expr
 
-    use1 = use2 = True
-    brackets = i = comment = curbr = 0
-    brOmitted = False
+    # isle PASS1 blocks if file 1
+    while f1.count("#PASS1") > 0:
+        pos = f1.find("{", f1.find("#PASS1"))
+        brackets = 1
+        posend = pos
+        while brackets > 0:
+            posend += 1
+            if f1[posend] is '{':
+                brackets += 1
+            if f1[posend] is '}':
+                brackets -= 1
+        f1 = f1[: posend] + "/* -------------- END PASS 1 ------------- */" + f1[posend + 1 :]
+        f1 = f1[: pos] + f1[pos + 1 :]
+        f1 = f1.replace("#PASS1", "/* ---------- COMPILER 1st PASS ---------- */", 1)
+ 
+    # clean PASS2 blocks from file 1
+    while f1.count("#PASS2") > 0:
+        Ppos = f1.find("#PASS2")
+        pos = f1.find("{", Ppos)
+        brackets = 1
+        posend = pos
+        while brackets > 0:
+            posend += 1
+            if f1[posend] is '{':
+                brackets += 1
+            if f1[posend] is '}':
+                brackets -= 1
+        cut = f1[Ppos + 1 : posend]
+        f1 = f1[: Ppos] + "\n" * cut.count("\n") + f1[posend + 1 :]
 
-    comstep = ""
+    # isle PASS2 blocks if file 2
+    while f2.count("#PASS2") > 0:
+        pos = f2.find("{", f2.find("#PASS2"))
+        brackets = 1
+        posend = pos
+        while brackets > 0:
+            posend += 1
+            if f2[posend] is '{':
+                brackets += 1
+            if f2[posend] is '}':
+                brackets -= 1
+        f2 = f2[: posend] + "/* -------------- END PASS 2 ------------- */" + f2[posend + 1 :]
+        f2 = f2[: pos] + f2[pos + 1 :]
+        f2 = f2.replace("#PASS2", "/* ---------- COMPILER 2st PASS ---------- */", 1)
 
-    lnre = re.compile(r"^(\s*[\|\:].*)$")
+    # clean PASS1 blocks from file 2
+    while f2.count("#PASS1") > 0:
+        Ppos = f2.find("#PASS1")
+        pos = f2.find("{", Ppos)
+        brackets = 1
+        posend = pos
+        while brackets > 0:
+            posend += 1
+            if f2[posend] is '{':
+                brackets += 1
+            if f2[posend] is '}':
+                brackets -= 1
+        cut = f2[Ppos + 1 : posend]
+        f2 = f2[: Ppos] + "\n" * cut.count("\n") + f2[posend + 1 :]
 
-    for ln in expr:
-        if ln.count("#PASS1") > 0:
-            use2 = False
-            curbr = brackets
-            comstep = ln[:ln.find("#PASS1")]
-            ln = ln.replace("#PASS1", "/* ---------- COMPILER 1st PASS ---------- */", 1)
-        if ln.count("#PASS2") > 0:
-            use1 = False
-            curbr = brackets
-            comstep = ln[:ln.find("#PASS1")]
-            ln = ln.replace("#PASS2", "/* ---------- COMPILER 2nd PASS ---------- */", 1)
-        if ln.count("{") > 0:
-            brackets += ln.count("{")
-            if (not brOmitted and brackets >= curbr + 1) and ((not use1) or (not use2)):
-                brOmitted = True
-                ln = ln.replace("{", "", 1)
-                ln = re.sub(r"^\s*$", r"", ln)
-        if ln.count("}") > 0:
-            brackets -= ln.count("}")
-            if (brackets <= curbr) and ((not use1) or (not use2)):
-                comment = 2*use1 + use2
-                use1 = True
-                use2 = True
-                brOmitted = False
-                # some black right-replace magick
-                ln = ln[::-1].replace("}"[::-1], (("\n" + comstep)*((ln.count("}") - 1) and True) + "/* --------------------------------------- */")[::-1], 1)[::-1]
-        f1 += ln * ((len(ln) or not ((brackets == curbr + 1) and ((not use1) or (not use2)))) and (comment - 1) and use1) + "\n" * ((len(expr) - i - 1) and True)
-        f2 += ln * ((len(ln) or not ((brackets == curbr + 1) and ((not use1) or (not use2)))) and (comment - 2) and use2) + "\n" * ((len(expr) - i - 1) and True)
-        comment = 0
-        i += 1
-
-    f1 = re.sub(r'(\s*[\|\:].*)(\n\s*){(\s*)}(.*)', r'\1\2\3\4', f1)
-    f2 = re.sub(r'(\s*[\|\:].*)(\n\s*){(\s*)}(.*)', r'\1\2\3\4', f2)
+    # clean empty brackets
+    f1 = re.sub(r"(\s*[\|\:][^{}$]*\s*){(\s*)}", r"\1\2", f1, flags = re.DOTALL)
+    f2 = re.sub(r"(\s*[\|\:][^{}$]*\s*){(\s*)}", r"\1\2", f2, flags = re.DOTALL)
 
     return [f1,f2]
 
 
 def main():
-    parser = argparse.ArgumentParser(usage = argparse.SUPPRESS, description ="desc")
+    parser = argparse.ArgumentParser(usage = argparse.SUPPRESS, description ="split multipass compiler yx file into a pair of bison grammar files")
 
     parser.add_argument('inputFile', type = str, help = ".yx input file")
-    parser.add_argument('-o1', type = str, default = '', help =\
-                        "1st output file", required = True)
-    parser.add_argument('-o2', type = str, default = '', help =\
-                        "2nd output file", required = True)
-
+    parser.add_argument('-y1', type = str, default = '', help =\
+                        "1st output y file", required = True)
+    parser.add_argument('-y2', type = str, default = '', help =\
+                        "2nd output y file", required = True)
+    
     args = parser.parse_args()
 
     inf = open(args.inputFile,"r", encoding = codepage)
     print(toolname + ": parsing " + args.inputFile)
         
-    out1 = open(args.o1, 'w', encoding = codepage)
+    out1 = open(args.y1, 'w', encoding = codepage)
     out1.truncate()
     
-    out2 = open(args.o2, 'w', encoding = codepage)
+    out2 = open(args.y2, 'w', encoding = codepage)
     out2.truncate()
 
     blck = ""
@@ -88,7 +109,7 @@ def main():
         if sym == '}':
             brackets -= 1
             if brackets < 0:
-                sys.exit("error: braces nesting mismatch in line " + str(curline) + ". check source file")
+                sys.exit(args.inputFile + "(" + str(curline) + "): error: braces nesting mismatch")
             
         if sym == ';' and brackets == 0:
             flag = 0
@@ -105,10 +126,10 @@ def main():
 
         if not sym:
             break
-    print(toolname + ": generated " + args.o1 + ", " + args.o2)
+    print(toolname + ": generated " + args.y1 + ", " + args.y2)
+
     sys.exit(0)
 
-# some parameters
 toolname = "split-bison"
 codepage = "utf-8"
 
