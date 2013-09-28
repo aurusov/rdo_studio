@@ -180,7 +180,6 @@
 %token RDO_enum
 
 %token RDO_STRING_CONST
-%token RDO_STRING_CONST_BAD
 %token RDO_Select
 %token RDO_Size
 %token RDO_Empty
@@ -231,9 +230,9 @@ OPEN_RDO_PARSER_NAMESPACE
 %%
 
 pat_main
-	: /* empty */          {   }
-	| pat_main pat_pattern {@1;}
-	| error                {   }
+	: /* empty */          {}
+	| pat_main pat_pattern {UNUSED(@1);}
+	| error                {}
 	;
 
 pat_header

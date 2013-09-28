@@ -31,7 +31,7 @@ int pmdlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void pmderror(PTR(char) message)
+void pmderror(const char* message)
 {
 	UNUSED(message);
 }

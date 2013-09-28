@@ -339,11 +339,6 @@ sprite                         return(RDO_sprite_call);
 	return RDO_STRING_CONST;
 }
 
-(\'[^\']*\n\r) {
-	LEXER->setvalue(0);
-	return RDO_STRING_CONST_BAD;
-}
-
 "/*"					BEGIN(comment_cpp);
 <comment_cpp>[^*.]*		;
 <comment_cpp>[^*\n\r]*	;

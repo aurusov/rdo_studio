@@ -34,7 +34,7 @@ int proc_rtp_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void proc_rtp_error(PTR(char) message)
+void proc_rtp_error(CPTR(char) message)
 {
 	UNUSED(message);
 }
@@ -46,7 +46,7 @@ int proc_rss_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void proc_rss_error(PTR(char) message)
+void proc_rss_error(const char* message)
 {
 	UNUSED(message);
 }
@@ -58,7 +58,7 @@ int proc_opr_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void proc_opr_error(PTR(char) message)
+void proc_opr_error(const char* message)
 {
 	UNUSED(message);
 }

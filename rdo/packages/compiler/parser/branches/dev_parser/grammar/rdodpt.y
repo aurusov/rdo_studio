@@ -180,7 +180,6 @@
 %token RDO_enum
 
 %token RDO_STRING_CONST
-%token RDO_STRING_CONST_BAD
 %token RDO_Select
 %token RDO_Size
 %token RDO_Empty
@@ -1508,7 +1507,7 @@ fun_arithm
 		LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($6);
 		ASSERT(pParamName);
 
-		rsint paramIndex = pResType->getRTPParamNumber(pParamName->value().getAsString());
+		ruint paramIndex = pResType->getRTPParamNumber(pParamName->value().getAsString());
 
 		if (paramIndex == RDORTPResType::UNDEFINED_PARAM)
 		{
