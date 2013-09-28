@@ -8,12 +8,10 @@
 */
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <iostream>
-
 #include <boost/thread.hpp>
 #include <boost/foreach.hpp>
 #include <boost/date_time.hpp>
-#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 #include "utils/src/locale/rdolocale.h"
@@ -35,7 +33,7 @@
 typedef std::list<tstring> string_list;
 typedef rdo::event_xml_parser::event_container event_container;
 
-const tstring LOG_FILE_NAME = "log.txt";
+const boost::filesystem::path LOG_FILE_NAME = "log.txt";
 
 void read_events(REF(std::istream) stream, REF(event_container) container);
 void write_build_log(REF(std::ostream) stream, CREF(string_list) list);
@@ -76,8 +74,8 @@ int main(int argc, PTR(char) argv[])
 
 	// read events
 	event_container container;
-	if(eventExist) {
-		std::ifstream stream(eventsFileName.c_str(), std::ios::out);
+	if (eventExist) {
+		boost::filesystem::ifstream stream(eventsFileName, std::ios::out);
 		read_events(stream, container);
 	}
 
@@ -110,17 +108,15 @@ int main(int argc, PTR(char) argv[])
 
 	bool simulationSuccessfully = false;
 
-	tstring modelDir = modelFileName.parent_path().string();
-
 	bool buildError = pAppController->buildError();
 	if (buildError)
 	{
 		string_list buildList;
 		pAppController->getBuildLogList(buildList);
 
-		tstring fileName(modelDir + "/" + LOG_FILE_NAME);
+		boost::filesystem::path fileName = modelFileName.parent_path() / LOG_FILE_NAME;
 		boost::filesystem::remove(fileName);
-		std::ofstream stream(fileName.c_str(), std::ios::out);
+		boost::filesystem::ofstream stream(fileName, std::ios::out);
 
 		write_build_log(stream, buildList);
 
