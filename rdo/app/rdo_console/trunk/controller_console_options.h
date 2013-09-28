@@ -18,6 +18,7 @@
 #endif // COMPILER_VISUAL_STUDIO
 
 #include <boost/program_options.hpp>
+#include <boost/filesystem/path.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
@@ -29,28 +30,26 @@ namespace po = boost::program_options;
 class ControllerConsoleOptions
 {
 public:
-	ControllerConsoleOptions(int argc, char *argv[]);
+	ControllerConsoleOptions(int argc, char* argv[]);
 	~ControllerConsoleOptions();
 	
 	void parseOptions();
 
-	const tstring getModelFileName();
-	const tstring getScriptFileName();
-	
+	boost::filesystem::path getModelFileName () const;
+	boost::filesystem::path getScriptFileName() const;
+
 	rbool helpQuery();
 	rbool convertQuery();
-	
-private:
-	void createGeneralOptions(REF(po::options_description) options);
-	void createConvertorOptions(REF(po::options_description) options);
-	void createAdditionalOptions(REF(po::options_description) options);
-	
+
 private:
 	po::options_description m_options;
 	po::variables_map       m_variables;
-	
 	rbool                   m_help;
 	rbool                   m_convert;
+
+	void createGeneralOptions(REF(po::options_description) options);
+	void createConvertorOptions(REF(po::options_description) options);
+	void createAdditionalOptions(REF(po::options_description) options);
 };
 
 CLOSE_RDO_NAMESPACE

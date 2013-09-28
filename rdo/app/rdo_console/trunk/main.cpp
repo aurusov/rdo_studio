@@ -50,25 +50,25 @@ int main(int argc, PTR(char) argv[])
 
 	boost::posix_time::ptime startTime = boost::posix_time::microsec_clock::local_time();
 
-	rdo::ControllerConsoleOptions options_controller(argc, argv);
-	options_controller.parseOptions();
+	rdo::ControllerConsoleOptions optionsController(argc, argv);
+	optionsController.parseOptions();
 
-	tstring model_file_name = options_controller.getModelFileName();
-	rbool model_exist = rdo::File::exist(model_file_name);
+	boost::filesystem::path modelFileName = optionsController.getModelFileName();
+	rbool modelExist = rdo::File::exist(modelFileName);
 
-	tstring events_file_name = options_controller.getScriptFileName();
-	rbool event_exist = rdo::File::exist(events_file_name);
+	boost::filesystem::path eventsFileName = optionsController.getScriptFileName();
+	rbool eventExist = rdo::File::exist(eventsFileName);
 
-	if (options_controller.helpQuery())
+	if (optionsController.helpQuery())
 	{
 		exit(TERMINATION_NORMAL);
 	}
-	else if (!model_exist)
+	else if (!modelExist)
 	{
 		std::cerr << "Model file does not exist" << std::endl;
 		exit(TERMINATION_WITH_AN_ERROR_NO_MODEL);
 	}
-	else if (!event_exist && !events_file_name.empty())
+	else if (!eventExist && !eventsFileName.empty())
 	{
 		std::cerr << "Events file does not exist" << std::endl;
 		exit(TERMINATION_WITH_AN_ERROR_NO_EVENTS);
@@ -76,8 +76,8 @@ int main(int argc, PTR(char) argv[])
 
 	// read events
 	event_container container;
-	if(event_exist) {
-		std::ifstream stream(events_file_name.c_str(), std::ios::out);
+	if(eventExist) {
+		std::ifstream stream(eventsFileName.c_str(), std::ios::out);
 		read_events(stream, container);
 	}
 
@@ -88,10 +88,10 @@ int main(int argc, PTR(char) argv[])
 
 	rdo::console_controller* pAppController = new rdo::console_controller();
 
-	rdo::repository::RDOThreadRepository::OpenFile data(model_file_name);
+	rdo::repository::RDOThreadRepository::OpenFile data(modelFileName);
 	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
 
-	if(options_controller.convertQuery())
+	if(optionsController.convertQuery())
 	{
 		bool converted = false;
 		while(!converted)
@@ -110,8 +110,7 @@ int main(int argc, PTR(char) argv[])
 
 	bool simulationSuccessfully = false;
 
-	boost::filesystem::path path(model_file_name);
-	tstring model_dir = path.parent_path().string();
+	tstring modelDir = modelFileName.parent_path().string();
 
 	bool buildError = pAppController->buildError();
 	if (buildError)
@@ -119,7 +118,7 @@ int main(int argc, PTR(char) argv[])
 		string_list buildList;
 		pAppController->getBuildLogList(buildList);
 
-		tstring fileName(model_dir + "/" + LOG_FILE_NAME);
+		tstring fileName(modelDir + "/" + LOG_FILE_NAME);
 		boost::filesystem::remove(fileName);
 		std::ofstream stream(fileName.c_str(), std::ios::out);
 

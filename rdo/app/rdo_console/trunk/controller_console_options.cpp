@@ -83,9 +83,10 @@ void ControllerConsoleOptions::parseOptions()
 	}
 }
 
-const tstring ControllerConsoleOptions::getModelFileName()
+boost::filesystem::path ControllerConsoleOptions::getModelFileName() const
 {
-	if(m_variables.count(MODEL_COMMAND))
+	boost::filesystem::path result;
+	if (m_variables.count(MODEL_COMMAND))
 	{
 		tstring modelFileName = m_variables[MODEL_COMMAND].as<tstring>();
 #if defined(OST_WINDOWS)
@@ -93,19 +94,25 @@ const tstring ControllerConsoleOptions::getModelFileName()
 #elif defined(OST_LINUX)
 		modelFileName = rdo::locale::convert(modelFileName, rdo::locale::get().utf8(), rdo::locale::get().system());
 #endif
-		return modelFileName;
+		result = rdo::locale::convertToWStr(modelFileName);
 	}
-	return "";
+	return result;
 }
 
-const tstring ControllerConsoleOptions::getScriptFileName()
+boost::filesystem::path ControllerConsoleOptions::getScriptFileName() const
 {
-	if(m_variables.count(SCRIPT_COMMAND))
+	boost::filesystem::path result;
+	if (m_variables.count(SCRIPT_COMMAND))
 	{
 		tstring eventsFileName = m_variables[SCRIPT_COMMAND].as<tstring>();
-		return eventsFileName;
+#if defined(OST_WINDOWS)
+		eventsFileName = rdo::locale::convertFromCLocale(eventsFileName);
+#elif defined(OST_LINUX)
+		eventsFileName = rdo::locale::convert(eventsFileName, rdo::locale::get().utf8(), rdo::locale::get().system());
+#endif
+		result = rdo::locale::convertToWStr(eventsFileName);
 	}
-	return "";
+	return result;
 }
 
 rbool ControllerConsoleOptions::helpQuery()
