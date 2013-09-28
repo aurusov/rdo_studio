@@ -50,13 +50,13 @@ void Log::catchDoubleClick(int position, int line)
 			++it;
 		}
 	}
-	if (it != m_lines.end() && (*it)->getLineNumber() != -1)
+	if (it != m_lines.end() && (*it)->getLineNumber() != ruint(~0))
 	{
 		setSelectLine(line, *it);
 	}
 
-	sendEditor( SCI_SETSELECTIONSTART, position);
-	sendEditor( SCI_SETSELECTIONEND  , position);
+	sendEditor(SCI_SETSELECTIONSTART, position);
+	sendEditor(SCI_SETSELECTIONEND  , position);
 }
 
 void Log::catchModified()
@@ -99,22 +99,22 @@ void Log::gotoPrev()
 	{
 		++it;
 	}
-	while (it != m_lines.begin() && (*it)->getLineNumber() == -1)
+	while (it != m_lines.begin() && (*it)->getLineNumber() == ruint(~0))
 	{
 		--it;
 		--m_currentLine;
 	}
-	if (it == m_lines.begin() && (*it)->getLineNumber() == -1)
+	if (it == m_lines.begin() && (*it)->getLineNumber() == ruint(~0))
 	{
 		it = m_lines.end();
 		m_currentLine = m_lines.size();
-		while (it == m_lines.end() || (it != m_lines.begin() && (*it)->getLineNumber() == -1))
+		while (it == m_lines.end() || (it != m_lines.begin() && (*it)->getLineNumber() == ruint(~0)))
 		{
 			--it;
 			--m_currentLine;
 		}
 	}
-	if (it != m_lines.end() && (*it)->getLineNumber() != -1)
+	if (it != m_lines.end() && (*it)->getLineNumber() != ruint(~0))
 	{
 		setSelectLine(m_currentLine, *it, true);
 	}
@@ -167,7 +167,7 @@ void Log::gotoNext()
 	{
 		++it;
 	}
-	while (it != m_lines.end() && (*it)->getLineNumber() == -1)
+	while (it != m_lines.end() && (*it)->getLineNumber() == ruint(~0))
 	{
 		++it;
 		++m_currentLine;
@@ -176,13 +176,13 @@ void Log::gotoNext()
 	{
 		it = m_lines.begin();
 		m_currentLine = 0;
-		while (it != m_lines.end() && (*it)->getLineNumber() == -1)
+		while (it != m_lines.end() && (*it)->getLineNumber() == ruint(~0))
 		{
 			++it;
 			++m_currentLine;
 		}
 	}
-	if (it != m_lines.end() && (*it)->getLineNumber() != -1)
+	if (it != m_lines.end() && (*it)->getLineNumber() != ruint(~0))
 	{
 		setSelectLine(m_currentLine, *it, true);
 	}
@@ -218,7 +218,7 @@ void Log::appendLine(PTR(LogEditLineInfo) pLine)
 
 void Log::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, bool useScroll)
 {
-	if (pLineInfo->getLineNumber() != -1)
+	if (pLineInfo->getLineNumber() != ruint(~0))
 	{
 		if (sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine) != line)
 		{

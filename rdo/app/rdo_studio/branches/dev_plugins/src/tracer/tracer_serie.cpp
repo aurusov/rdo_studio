@@ -57,9 +57,9 @@ bool TracerSerieFindValue::operator() (Value* pValue)
 // --------------------------------------------------------------------------------
 Serie::Serie(Kind _serieKind)
 	: ChartTreeItem(true)
-	, m_kind(_serieKind)
 	, m_minValue(0)
 	, m_maxValue(0)
+	, m_kind(_serieKind)
 	, m_valueCount(0)
 {}
 
@@ -396,15 +396,13 @@ void Serie::drawMarker(QPainter& painter, const int x, const int y, Marker marke
 	switch (marker)
 	{
 	case M_CIRCLE:
-	{
 		painter.drawEllipse(rect);
 		break;
-	}
+
 	case M_SQUARE:
-	{
 		painter.drawRect(rect);
 		break;
-	}
+
 	case M_TRIANG:
 	{
 		QPolygonF polygon;
@@ -432,6 +430,8 @@ void Serie::drawMarker(QPainter& painter, const int x, const int y, Marker marke
 		painter.drawPath(path);
 		break;
 	}
+	default:
+		break;
 	}
 }
 

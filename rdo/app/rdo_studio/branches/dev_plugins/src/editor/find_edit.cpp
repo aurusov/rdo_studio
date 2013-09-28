@@ -24,7 +24,7 @@
 using namespace rdo::gui::editor;
 using namespace rdo::gui::style;
 
-static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZАаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя";
+static std::string wordCharacters("0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZАаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя");
 
 Find::Find(QWidget* pParent)
 	: super(pParent)
@@ -33,7 +33,7 @@ Find::Find(QWidget* pParent)
 	sendEditor(SCI_SETLEXER, SCLEX_FIND);
 	//	int lexLanguage = sendEditor(SCI_GETLEXER);
 	sendEditor(SCI_SETSTYLEBITS, 5);
-	sendEditorString(SCI_SETWORDCHARS, 0, wordCharacters);
+	sendEditorString(SCI_SETWORDCHARS, 0, wordCharacters.c_str());
 }
 
 Find::~Find()

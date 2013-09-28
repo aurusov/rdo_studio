@@ -2,6 +2,8 @@
 # Copyright (c) 2013 Evgeny Proydakov <lord.tiran@gmail.com>
 #==============================================================================
 
+ADD_SUBDIRECTORY(help)
+
 MESSAGE(STATUS "CREATE  RDO  STUDIO  EXECUTABLE")
 
 FIND_PACKAGE(Qt5Widgets REQUIRED)
@@ -412,6 +414,7 @@ ADD_DEPENDENCIES(rdo_studio rdo_simulator)
 ADD_DEPENDENCIES(rdo_studio rdo_simulator_report)
 ADD_DEPENDENCIES(rdo_studio rdo_ui_abstract)
 ADD_DEPENDENCIES(rdo_studio rdo_ui_qt)
+ADD_DEPENDENCIES(rdo_studio rdo_help)
 ADD_DEPENDENCIES(rdo_studio scintilla)
 
 TARGET_LINK_LIBRARIES(rdo_studio ${Qt5Widgets_LIBRARIES})

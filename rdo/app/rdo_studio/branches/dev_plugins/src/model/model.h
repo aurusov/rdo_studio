@@ -120,7 +120,6 @@ private:
 	double                                  m_timeNow;
 	double                                  m_speed;
 	double                                  m_showRate;
-	bool                                    m_tempPause;
 	rdo::runtime::RunTimeMode               m_runtimeMode;
 	rdo::simulation::report::RDOExitCode    m_exitCode;
 	mutable bool                            m_modify;

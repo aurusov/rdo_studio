@@ -196,6 +196,7 @@ void Content::update(
 		case rdo::animation::FrameItem::FIT_BMP    : elementBMP      (static_cast<PTR(rdo::animation::BmpElement      )>(pCurrElement), bitmapList, bitmapGeneratedList); break;
 		case rdo::animation::FrameItem::FIT_S_BMP  : elementSBMP     (static_cast<PTR(rdo::animation::ScaledBmpElement)>(pCurrElement), bitmapList, bitmapGeneratedList); break;
 		case rdo::animation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<PTR(rdo::animation::ActiveElement   )>(pCurrElement), areaList); break;
+		case rdo::animation::FrameItem::FIT_NULL   : break;
 		}
 	}
 
@@ -511,6 +512,7 @@ QPixmap Content::getBitmap(
 			{
 				std::pair<rdo::gui::BitmapList::const_iterator, bool> result =
 					bitmapGeneratedList.insert(rdo::gui::BitmapList::value_type(maskedBitmapName, pixmap));
+				UNUSED(result);
 				ASSERT(result.second);
 				return pixmap;
 			}

@@ -181,7 +181,7 @@ void Manager::areaDown(ruint frameIndex, CREF(QPoint) point) const
 PTR(View) Manager::createView(ruint index)
 {
 	PTR(View) pView = NULL;
-	if (index != ~0)
+	if (index != ruint(~0))
 	{
 		pView = new View(NULL);
 		g_pApp->getIMainWnd()->addSubWindow(pView);
@@ -209,7 +209,7 @@ bool Manager::isShowing() const
 void Manager::disconnectView(CPTR(View) pView)
 {
 	ruint index = findFrameIndex(pView);
-	if (index != ~0)
+	if (index != ruint(~0))
 	{
 		m_frameList[index]->m_pView = NULL;
 	}
@@ -303,11 +303,11 @@ void Manager::insertBitmap(CREF(QString) bitmapName)
 	g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 
 	rdo::binarystream stream;
-	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName.toStdString(), stream);
+	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName.toStdWString(), stream);
 	g_pModel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
 	bool ok = false;
-	QPixmap pixmap(QString::fromStdString(data.m_name));
+	QPixmap pixmap(QString::fromStdWString(data.m_name.wstring()));
 	if (!pixmap.isNull())
 	{
 		std::pair<rdo::gui::BitmapList::const_iterator, bool> result =

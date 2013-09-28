@@ -20,8 +20,8 @@ using namespace rdo::gui::tracer;
 // -------------------- ParamInfo
 // --------------------------------------------------------------------------------
 ParamInfo::ParamInfo(const ParamType type)
-	: m_paramType(type)
-	, m_enumValueList(NULL)
+	: m_enumValueList(NULL)
+	, m_paramType(type)
 {
 	if (m_paramType == PT_ENUMERATIVE || m_paramType == PT_BOOL || m_paramType == PT_STRING)
 	{

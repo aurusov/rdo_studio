@@ -27,9 +27,9 @@ using namespace rdo::gui::model;
 
 View::View(QWidget* pParent)
 	: parent_type(pParent)
-	, m_pModel     (NULL)
-	, m_pTabCtrl   (NULL)
 	, m_pFindDialog(NULL)
+	, m_pTabCtrl   (NULL)
+	, m_pModel     (NULL)
 {
 	m_pTabCtrl = new TabCtrl(this, this);
 

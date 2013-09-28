@@ -100,8 +100,8 @@ bool LogCtrlFindInList::operator()(CREF(QString) nextStr)
 // --------------------------------------------------------------------------------
 LogView::StringList::StringList()
 	: m_count   (0)
-	, m_cursor  (0)
 	, m_cursorIt(m_list.end())
+	, m_cursor  (0)
 	, m_maxLegth(0)
 {}
 

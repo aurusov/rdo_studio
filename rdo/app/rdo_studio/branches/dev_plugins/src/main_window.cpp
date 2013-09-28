@@ -56,8 +56,8 @@ const MainWindow::InsertMenuData::Position& MainWindow::InsertMenuData::position
 // -------------------- MainWindow::SubWindowToAction
 // --------------------------------------------------------------------------------
 MainWindow::SubWindowToAction::SubWindowToAction(MainWindow* pMainWindow)
-	: m_pSeparator(NULL)
-	, m_pMainWindow(pMainWindow)
+	: m_pMainWindow(pMainWindow)
+	, m_pSeparator(NULL)
 {
 	ASSERT(m_pMainWindow);
 	ASSERT(m_pMainWindow->menuWindow);
