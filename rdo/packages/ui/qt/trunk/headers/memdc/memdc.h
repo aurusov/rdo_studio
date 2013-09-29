@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
+#include <memory>
 #include <QtGui/qpainter.h>
 #include <QtGui/qpixmap.h>
 #include <boost/config.hpp>
