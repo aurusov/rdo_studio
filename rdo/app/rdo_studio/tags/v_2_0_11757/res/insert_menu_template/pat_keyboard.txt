@@ -1,0 +1,13 @@
+$Pattern  : keyboard
+$Relevant_resources
+
+$Time =
+$Body
+
+	Choice from
+	first
+	Convert_begin
+
+	Convert_end
+
+$End

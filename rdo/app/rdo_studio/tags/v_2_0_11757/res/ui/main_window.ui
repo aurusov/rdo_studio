@@ -1,0 +1,1071 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1059</width>
+    <height>613</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>RAO Studio</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../rdo_studio.qrc">
+    <normaloff>:/images/images/logo.png</normaloff>:/images/images/logo.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QMdiArea" name="mdiArea"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="styleSheet">
+    <string notr="true">QStatusBar::item {
+border: none;
+}</string>
+   </property>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1059</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <widget class="QMenu" name="menuFileReopen">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Недавние</string>
+     </property>
+     <addaction name="action"/>
+    </widget>
+    <addaction name="actFileNew"/>
+    <addaction name="actFileOpen"/>
+    <addaction name="menuFileReopen"/>
+    <addaction name="actFileClose"/>
+    <addaction name="separator"/>
+    <addaction name="actFileSaveAll"/>
+    <addaction name="separator"/>
+    <addaction name="actFileExit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Помощь</string>
+    </property>
+    <addaction name="actHelpContext"/>
+    <addaction name="actHelpWhatsNew"/>
+    <addaction name="separator"/>
+    <addaction name="actHelpAbout"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Правка</string>
+    </property>
+    <addaction name="actEditUndo"/>
+    <addaction name="actEditRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actEditCut"/>
+    <addaction name="actEditCopy"/>
+    <addaction name="actEditPaste"/>
+    <addaction name="actEditDel"/>
+    <addaction name="separator"/>
+    <addaction name="actEditSelectAll"/>
+    <addaction name="separator"/>
+    <addaction name="actEditUpperCase"/>
+    <addaction name="actEditLowerCase"/>
+    <addaction name="actEditCommentSelection"/>
+    <addaction name="actEditCompleteWord"/>
+   </widget>
+   <widget class="QMenu" name="menuSearch">
+    <property name="title">
+     <string>Поиск</string>
+    </property>
+    <addaction name="actSearchFind"/>
+    <addaction name="actSearchFindNext"/>
+    <addaction name="actSearchFindPrevious"/>
+    <addaction name="actSearchReplace"/>
+    <addaction name="separator"/>
+    <addaction name="actSearchFindInModel"/>
+    <addaction name="separator"/>
+    <addaction name="actSearchBookmarksToggle"/>
+    <addaction name="actSearchBookmarkNext"/>
+    <addaction name="actSearchBookmarkPrev"/>
+    <addaction name="actSearchBookmarksClearAll"/>
+    <addaction name="separator"/>
+    <addaction name="actSearchGotoLine"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>Просмотр</string>
+    </property>
+    <addaction name="actViewToggleAllFolds"/>
+    <addaction name="actViewToggleCurrentFold"/>
+    <addaction name="separator"/>
+    <addaction name="actViewShowWhiteSpace"/>
+    <addaction name="actViewShowEndOfLine"/>
+    <addaction name="separator"/>
+    <addaction name="actViewZoomInc"/>
+    <addaction name="actViewZoomDec"/>
+    <addaction name="actViewZoomAuto"/>
+    <addaction name="actViewZoomReset"/>
+    <addaction name="separator"/>
+    <addaction name="actViewSettings"/>
+   </widget>
+   <widget class="QMenu" name="menuInsert">
+    <property name="title">
+     <string>Вставка</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuModel">
+    <property name="title">
+     <string>Модель</string>
+    </property>
+    <addaction name="actModelBuild"/>
+    <addaction name="actModelRun"/>
+    <addaction name="actModelStop"/>
+    <addaction name="separator"/>
+    <addaction name="actModelRuntimeMaxSpeed"/>
+    <addaction name="actModelRuntimeJump"/>
+    <addaction name="actModelRuntimeSync"/>
+    <addaction name="actModelRuntimePause"/>
+    <addaction name="separator"/>
+    <addaction name="actModelShowRateInc"/>
+    <addaction name="actModelShowRateIncFour"/>
+    <addaction name="actModelShowRateDecFour"/>
+    <addaction name="actModelShowRateDec"/>
+    <addaction name="separator"/>
+    <addaction name="actModelFrameNext"/>
+    <addaction name="actModelFramePrev"/>
+   </widget>
+   <widget class="QMenu" name="menuChart">
+    <property name="title">
+     <string>График</string>
+    </property>
+    <addaction name="actChartCreate"/>
+    <addaction name="actChartExport"/>
+    <addaction name="separator"/>
+    <addaction name="actChartTimeWrap"/>
+    <addaction name="separator"/>
+    <addaction name="actChartOptions"/>
+   </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Окна</string>
+    </property>
+    <addaction name="actWindowCascade"/>
+    <addaction name="actWindowTitle"/>
+    <addaction name="actWindowTabbedViewMode"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuSearch"/>
+   <addaction name="menuView"/>
+   <addaction name="menuInsert"/>
+   <addaction name="menuModel"/>
+   <addaction name="menuChart"/>
+   <addaction name="menuWindow"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="toolBarFile">
+   <property name="windowTitle">
+    <string>Файл</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actFileNew"/>
+   <addaction name="actFileOpen"/>
+   <addaction name="actFileSaveAll"/>
+  </widget>
+  <widget class="QToolBar" name="toolBarEdit">
+   <property name="windowTitle">
+    <string>Редактирование</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actEditCut"/>
+   <addaction name="actEditCopy"/>
+   <addaction name="actEditPaste"/>
+   <addaction name="separator"/>
+   <addaction name="actEditUndo"/>
+   <addaction name="actEditRedo"/>
+   <addaction name="separator"/>
+   <addaction name="actSearchFind"/>
+   <addaction name="actSearchReplace"/>
+   <addaction name="separator"/>
+   <addaction name="actSearchBookmarkPrev"/>
+   <addaction name="actSearchBookmarkNext"/>
+  </widget>
+  <widget class="QToolBar" name="toolBarZoom">
+   <property name="windowTitle">
+    <string>Масштаб</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actViewZoomInc"/>
+   <addaction name="actViewZoomDec"/>
+   <addaction name="actViewZoomAuto"/>
+   <addaction name="actViewZoomReset"/>
+  </widget>
+  <widget class="QToolBar" name="toolBarModel">
+   <property name="windowTitle">
+    <string>Модель</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actModelRun"/>
+   <addaction name="actModelStop"/>
+   <addaction name="separator"/>
+   <addaction name="actModelRuntimeMaxSpeed"/>
+   <addaction name="actModelRuntimeJump"/>
+   <addaction name="actModelRuntimeSync"/>
+   <addaction name="actModelRuntimePause"/>
+   <addaction name="separator"/>
+   <addaction name="actModelShowRateInc"/>
+   <addaction name="actModelShowRateIncFour"/>
+   <addaction name="actModelShowRateDecFour"/>
+   <addaction name="actModelShowRateDec"/>
+   <addaction name="separator"/>
+   <addaction name="actModelFrameNext"/>
+   <addaction name="actModelFramePrev"/>
+  </widget>
+  <action name="actFileNew">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/file_new.png</normaloff>
+     <disabledoff>:/images/images/file_new_d.png</disabledoff>:/images/images/file_new.png</iconset>
+   </property>
+   <property name="text">
+    <string>Новая модель...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actFileOpen">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/file_open.png</normaloff>
+     <disabledoff>:/images/images/file_open_d.png</disabledoff>:/images/images/file_open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Открыть...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actFileClose">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Закрыть</string>
+   </property>
+  </action>
+  <action name="actFileSaveAll">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/file_save_all.png</normaloff>
+     <disabledoff>:/images/images/file_save_all_d.png</disabledoff>:/images/images/file_save_all.png</iconset>
+   </property>
+   <property name="text">
+    <string>Сохранить всё</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actFileExit">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+  </action>
+  <action name="actHelpContext">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/help_context.png</normaloff>:/images/images/help_context.png</iconset>
+   </property>
+   <property name="text">
+    <string>Контекстная справка</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actHelpAbout">
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/about.png</normaloff>:/images/images/about.png</iconset>
+   </property>
+   <property name="text">
+    <string>О программе...</string>
+   </property>
+  </action>
+  <action name="actEditUndo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/edit_undo.png</normaloff>
+     <disabledoff>:/images/images/edit_undo_d.png</disabledoff>:/images/images/edit_undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Отменить</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actEditRedo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/edit_redo.png</normaloff>
+     <disabledoff>:/images/images/edit_redo_d.png</disabledoff>:/images/images/edit_redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Повторить</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actEditCut">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/edit_cut.png</normaloff>
+     <disabledoff>:/images/images/edit_cut_d.png</disabledoff>:/images/images/edit_cut.png</iconset>
+   </property>
+   <property name="text">
+    <string>Вырезать</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actEditCopy">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/edit_copy.png</normaloff>
+     <disabledoff>:/images/images/edit_copy_d.png</disabledoff>:/images/images/edit_copy.png</iconset>
+   </property>
+   <property name="text">
+    <string>Копировать</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actEditPaste">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/edit_paste.png</normaloff>
+     <disabledoff>:/images/images/edit_paste_d.png</disabledoff>:/images/images/edit_paste.png</iconset>
+   </property>
+   <property name="text">
+    <string>Вставить</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actEditDel">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Удалить</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="actEditSelectAll">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Выделить все</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actEditUpperCase">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>В верхний регистр</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+U</string>
+   </property>
+  </action>
+  <action name="actEditLowerCase">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>В нижний регистр</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
+   </property>
+  </action>
+  <action name="actEditCommentSelection">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Закомментировать выделенное</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actEditCompleteWord">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Завершить слово</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Space</string>
+   </property>
+  </action>
+  <action name="actSearchFind">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/search_find.png</normaloff>
+     <disabledoff>:/images/images/search_find_d.png</disabledoff>:/images/images/search_find.png</iconset>
+   </property>
+   <property name="text">
+    <string>Найти...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actSearchFindNext">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Найти следующий</string>
+   </property>
+   <property name="shortcut">
+    <string>F3</string>
+   </property>
+  </action>
+  <action name="actSearchFindPrevious">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Найти предыдущий</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F3</string>
+   </property>
+  </action>
+  <action name="actSearchReplace">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/search_replace.png</normaloff>
+     <disabledoff>:/images/images/search_replace_d.png</disabledoff>:/images/images/search_replace.png</iconset>
+   </property>
+   <property name="text">
+    <string>Заменить</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="actSearchFindInModel">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Найти в модели</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F</string>
+   </property>
+  </action>
+  <action name="actSearchBookmarksToggle">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Поставить/снять закладку</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F2</string>
+   </property>
+  </action>
+  <action name="actSearchBookmarkNext">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/search_bookmark_next.png</normaloff>
+     <disabledoff>:/images/images/search_bookmark_next_d.png</disabledoff>:/images/images/search_bookmark_next.png</iconset>
+   </property>
+   <property name="text">
+    <string>Перейти к след. закладке</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+  </action>
+  <action name="actSearchBookmarkPrev">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/search_bookmark_prev.png</normaloff>
+     <disabledoff>:/images/images/search_bookmark_prev_d.png</disabledoff>:/images/images/search_bookmark_prev.png</iconset>
+   </property>
+   <property name="text">
+    <string>Перейти к пред. закладке</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F2</string>
+   </property>
+  </action>
+  <action name="actSearchBookmarksClearAll">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Очистить все закладки</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F2</string>
+   </property>
+  </action>
+  <action name="actSearchGotoLine">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Перейти на строчку</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
+  </action>
+  <action name="actViewToggleAllFolds">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Свернуть/развернуть все группы</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+0</string>
+   </property>
+  </action>
+  <action name="actViewToggleCurrentFold">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Свернуть/развернуть текущую группу</string>
+   </property>
+  </action>
+  <action name="actViewShowWhiteSpace">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Показать пробелы</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+8</string>
+   </property>
+  </action>
+  <action name="actViewShowEndOfLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Показать символы конца строки</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+9</string>
+   </property>
+  </action>
+  <action name="actViewZoomInc">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/view_zoom_inc.png</normaloff>
+     <disabledoff>:/images/images/view_zoom_inc_d.png</disabledoff>:/images/images/view_zoom_inc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Увеличить масштаб</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
+   </property>
+  </action>
+  <action name="actViewZoomDec">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/view_zoom_dec.png</normaloff>
+     <disabledoff>:/images/images/view_zoom_dec_d.png</disabledoff>:/images/images/view_zoom_dec.png</iconset>
+   </property>
+   <property name="text">
+    <string>Уменьшить масштаб</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actViewZoomAuto">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/view_zoom_auto.png</normaloff>
+     <disabledoff>:/images/images/view_zoom_auto_d.png</disabledoff>:/images/images/view_zoom_auto.png</iconset>
+   </property>
+   <property name="text">
+    <string>Автоматический масштаб</string>
+   </property>
+  </action>
+  <action name="actViewZoomReset">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/view_zoom_reset.png</normaloff>
+     <disabledoff>:/images/images/view_zoom_reset_d.png</disabledoff>:/images/images/view_zoom_reset.png</iconset>
+   </property>
+   <property name="text">
+    <string>Восстановить масштаб</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+/</string>
+   </property>
+  </action>
+  <action name="actViewSettings">
+   <property name="text">
+    <string>Настройки...</string>
+   </property>
+  </action>
+  <action name="actModelBuild">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Скомпилировать</string>
+   </property>
+   <property name="shortcut">
+    <string>F7</string>
+   </property>
+  </action>
+  <action name="actModelRun">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_run.png</normaloff>
+     <disabledoff>:/images/images/model_run_d.png</disabledoff>:/images/images/model_run.png</iconset>
+   </property>
+   <property name="text">
+    <string>Запустить</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actModelStop">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_stop.png</normaloff>
+     <disabledoff>:/images/images/model_stop_d.png</disabledoff>:/images/images/model_stop.png</iconset>
+   </property>
+   <property name="text">
+    <string>Остановить</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F5</string>
+   </property>
+  </action>
+  <action name="actModelRuntimeMaxSpeed">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_runtime_max_speed.png</normaloff>
+     <disabledoff>:/images/images/model_runtime_max_speed_d.png</disabledoff>:/images/images/model_runtime_max_speed.png</iconset>
+   </property>
+   <property name="text">
+    <string>Максимальная скорость</string>
+   </property>
+  </action>
+  <action name="actModelRuntimeJump">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_runtime_jump.png</normaloff>
+     <disabledoff>:/images/images/model_runtime_jump_d.png</disabledoff>:/images/images/model_runtime_jump.png</iconset>
+   </property>
+   <property name="text">
+    <string>Дискретная имитация</string>
+   </property>
+  </action>
+  <action name="actModelRuntimeSync">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_runtime_sync.png</normaloff>
+     <disabledoff>:/images/images/model_runtime_sync_d.png</disabledoff>:/images/images/model_runtime_sync.png</iconset>
+   </property>
+   <property name="text">
+    <string>Синхронная имитация</string>
+   </property>
+  </action>
+  <action name="actModelRuntimePause">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_runtime_pause.png</normaloff>
+     <disabledoff>:/images/images/model_runtime_pause_d.png</disabledoff>:/images/images/model_runtime_pause.png</iconset>
+   </property>
+   <property name="text">
+    <string>Пауза</string>
+   </property>
+  </action>
+  <action name="actModelShowRateInc">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_show_rate_inc.png</normaloff>
+     <disabledoff>:/images/images/model_show_rate_inc_d.png</disabledoff>:/images/images/model_show_rate_inc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Увеличить масштаб</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt++</string>
+   </property>
+  </action>
+  <action name="actModelShowRateDec">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_show_rate_dec.png</normaloff>
+     <disabledoff>:/images/images/model_show_rate_dec_d.png</disabledoff>:/images/images/model_show_rate_dec.png</iconset>
+   </property>
+   <property name="text">
+    <string>Уменьшить масштаб</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+-</string>
+   </property>
+  </action>
+  <action name="actModelFrameNext">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_frame_next.png</normaloff>
+     <disabledoff>:/images/images/model_frame_next_d.png</disabledoff>:/images/images/model_frame_next.png</iconset>
+   </property>
+   <property name="text">
+    <string>След. кадр анимации</string>
+   </property>
+  </action>
+  <action name="actModelFramePrev">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_frame_prev.png</normaloff>
+     <disabledoff>:/images/images/model_frame_prev_d.png</disabledoff>:/images/images/model_frame_prev.png</iconset>
+   </property>
+   <property name="text">
+    <string>Пред. кадр анимации</string>
+   </property>
+  </action>
+  <action name="actChartCreate">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Создать</string>
+   </property>
+  </action>
+  <action name="actChartTimeWrap">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>'Схлопнуть' время</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actChartOptions">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Настройки</string>
+   </property>
+  </action>
+  <action name="actWindowCascade">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Расположить каскадом</string>
+   </property>
+  </action>
+  <action name="actWindowTitle">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Замостить</string>
+   </property>
+  </action>
+  <action name="actWindowTabbedViewMode">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Режим вкладок</string>
+   </property>
+  </action>
+  <action name="actModelShowRateIncFour">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_show_rate_inc_four.png</normaloff>
+     <disabledoff>:/images/images/model_show_rate_inc_four_d.png</disabledoff>:/images/images/model_show_rate_inc_four.png</iconset>
+   </property>
+   <property name="text">
+    <string>Увеличить масштаб в 4-ре раза</string>
+   </property>
+  </action>
+  <action name="actModelShowRateDecFour">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_show_rate_dec_four.png</normaloff>
+     <disabledoff>:/images/images/model_show_rate_dec_four_d.png</disabledoff>:/images/images/model_show_rate_dec_four.png</iconset>
+   </property>
+   <property name="text">
+    <string>Уменьшить масштаб в 4-ре раза</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Пусто</string>
+   </property>
+  </action>
+  <action name="actHelpWhatsNew">
+   <property name="text">
+    <string>Что нового</string>
+   </property>
+  </action>
+  <action name="actSearchFindNextCurrent">
+   <property name="text">
+    <string>Найти следующий текущий</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F3</string>
+   </property>
+  </action>
+  <action name="actSearchFindPreviousCurrent">
+   <property name="text">
+    <string>Найти предыдущий текущий</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F3</string>
+   </property>
+  </action>
+  <action name="actSearchLogNext">
+   <property name="text">
+    <string>Перейти к следующему в логе</string>
+   </property>
+   <property name="shortcut">
+    <string>F4</string>
+   </property>
+  </action>
+  <action name="actSearchLogPrev">
+   <property name="text">
+    <string>Перейти к предыдущему в логе</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F4</string>
+   </property>
+  </action>
+  <action name="actChartExport">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Экспорт данных</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../rdo_studio.qrc"/>
+ </resources>
+ <connections/>
+</ui>
