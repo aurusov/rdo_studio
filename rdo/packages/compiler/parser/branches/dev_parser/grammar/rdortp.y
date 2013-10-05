@@ -419,18 +419,6 @@ rtp_param
 // --------------------------------------------------------------------------------
 // -------------------- Описание типа параметра
 // --------------------------------------------------------------------------------
-type_declaration_context
-	: type_declaration
-	{
-		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
-		ASSERT(pType);
-
-		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
-		ASSERT(pTypeContext);
-		PARSER->contextStack()->push(pTypeContext);
-	}
-	;
-
 type_declaration
 	: RDO_integer param_type_range
 	{
