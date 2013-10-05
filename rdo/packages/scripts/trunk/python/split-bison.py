@@ -1,5 +1,8 @@
 import sys, re, os, argparse, subprocess
 
+toolname = "split-bison"
+codepage = "utf-8"
+
 def divide(expr):
 
     f1 = expr
@@ -16,7 +19,7 @@ def divide(expr):
                 brackets += 1
             if f1[posend] is '}':
                 brackets -= 1
-        f1 = f1[: posend] + "/* -------------- END PASS 1 ------------- */" + f1[posend + 1 :]
+        f1 = f1[: posend] +       "/* -------------- END PASS 1 ------------- */" + f1[posend + 1 :]
         f1 = f1[: pos] + f1[pos + 1 :]
         f1 = f1.replace("#PASS1", "/* ---------- COMPILER 1st PASS ---------- */", 1)
  
@@ -46,7 +49,7 @@ def divide(expr):
                 brackets += 1
             if f2[posend] is '}':
                 brackets -= 1
-        f2 = f2[: posend] + "/* -------------- END PASS 2 ------------- */" + f2[posend + 1 :]
+        f2 = f2[: posend] +       "/* -------------- END PASS 2 ------------- */" + f2[posend + 1 :]
         f2 = f2[: pos] + f2[pos + 1 :]
         f2 = f2.replace("#PASS2", "/* ---------- COMPILER 2st PASS ---------- */", 1)
 
@@ -98,7 +101,7 @@ def main():
     while True:
         sym = inf.read(1)
         
-        if sym == ':':
+        if sym == ':' and brackets == 0:
             flag = 1
 
         if sym == '\n':
@@ -129,9 +132,6 @@ def main():
     print(toolname + ": generated " + args.y1 + ", " + args.y2)
 
     sys.exit(0)
-
-toolname = "split-bison"
-codepage = "utf-8"
 
 if __name__ == '__main__':
     main()

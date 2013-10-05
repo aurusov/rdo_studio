@@ -1,7 +1,7 @@
-import subprocess,os,argparse,re,sys
+import subprocess, os, argparse, re, sys
 
-def run_bison(yxPath, yPath, cppPath, iswin):
-    if iswin:
+def run_bison(yxPath, yPath, cppPath):
+    if sys.platform == 'win32':
         procname = "set CYGWIN=nodosfilewarning& set BISON_PKGDATADIR=" + os.environ["BISON_PKGDATADIR"] + "&" + os.environ["BISON_PATH"] + " -g -pdpt \"" + yPath + "\" -o\"" + cppPath + "\""
     else:
         procname = "set BISON_PKGDATADIR=" + os.environ["BISON_PKGDATADIR"] + ";" + os.environ["BISON_PATH"] + " -g -pdpt \"" + yPath + "\" -o\"" + cppPath + "\""
@@ -12,7 +12,7 @@ def run_bison(yxPath, yPath, cppPath, iswin):
 
     errr = errr.replace(yPath,yxPath)
     
-    if iswin:
+    if sys.platform == 'win32':
         yPath = yPath.replace("\\","\\\\")   # ну это какой-то грязный хак, конечно
         yxPath = yxPath.replace("\\","\\\\")
         errr = errr.replace(yPath,yxPath)
@@ -30,17 +30,10 @@ def main():
 
     parser.add_argument('inputFile', type = str, help = ".yx input file")
 
-    parser.add_argument('-y1', type = str, default = '', help =\
-                        "1st output y file", required = True)
-    parser.add_argument('-y2', type = str, default = '', help =\
-                        "2nd output y file", required = True)
-    parser.add_argument('-o1', type = str, default = '', help =\
-                        "1st output cpp file", required = True)
-    parser.add_argument('-o2', type = str, default = '', help =\
-                        "2nd output cpp file", required = True)
-
-    parser.add_argument('-windows', action = "store_true", help =\
-                        "win or linux")
+    parser.add_argument('-y1', type = str, default = '', help = "1st output y file",   required = True)
+    parser.add_argument('-y2', type = str, default = '', help = "2nd output y file",   required = True)
+    parser.add_argument('-o1', type = str, default = '', help = "1st output cpp file", required = True)
+    parser.add_argument('-o2', type = str, default = '', help = "2nd output cpp file", required = True)
 
     args = parser.parse_args()
 
@@ -50,14 +43,14 @@ def main():
     yxPath  = os.path.abspath(args.inputFile)
     print(toolname + ": " + "parsing " + yPath)
     
-    out1 = run_bison(yxPath, yPath, cppPath, args.windows)
+    out1 = run_bison(yxPath, yPath, cppPath)
 
     cppPath = os.path.abspath(args.o2)
     yPath   = os.path.abspath(args.y2)
     yxPath  = os.path.abspath(args.inputFile)
     print(toolname + ": " + "parsing " + yPath)
 
-    out2 = run_bison(yxPath, yPath, cppPath, args.windows)
+    out2 = run_bison(yxPath, yPath, cppPath)
 
     if out1 == out2:
         print(toolname + ": " + "bison output:")
