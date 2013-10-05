@@ -240,12 +240,12 @@ rdo_compiler
 // -------------------- Описание типов ресурсов
 // --------------------------------------------------------------------------------
 rtp_main
-	: rtp_main rtp_res_type
+	: rtp_res_type
 	{
-		LPRDORTPResType pResourceType = PARSER->stack().pop<RDORTPResType>($2);
+		LPRDORTPResType pResourceType = PARSER->stack().pop<RDORTPResType>($1);
 		ASSERT(pResourceType);
 	}
-	| rtp_main ext_param_type
+	| ext_param_type
 	;
 
 ext_param_type
