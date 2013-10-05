@@ -240,8 +240,7 @@ rdo_compiler
 // -------------------- Описание типов ресурсов
 // --------------------------------------------------------------------------------
 rtp_main
-	: /* empty */
-	| rtp_main rtp_res_type
+	: rtp_main rtp_res_type
 	{
 		LPRDORTPResType pResourceType = PARSER->stack().pop<RDORTPResType>($2);
 		ASSERT(pResourceType);
@@ -707,8 +706,7 @@ type_declaration_array
 // -------------------- Описание ресурсов
 // --------------------------------------------------------------------------------
 	rss_main
-	: /* empty */
-	| rss_resources_begin rss_resources rss_resources_end
+	: rss_resources_begin rss_resources rss_resources_end
 	| rss_resources_begin rss_resources
 	{
 		PARSER->error().error(@2, "После описания всех ресурсов ожидается ключевое слово $End");
