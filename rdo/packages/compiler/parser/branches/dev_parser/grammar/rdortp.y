@@ -705,25 +705,11 @@ type_declaration_array
 // --------------------------------------------------------------------------------
 // -------------------- Описание ресурсов
 // --------------------------------------------------------------------------------
-	rss_main
-	: rss_resources_begin rss_resources rss_resources_end
-	| rss_resources_begin rss_resources
+rss_main
+	: RDO_Resources rss_resources RDO_End
+	| RDO_Resources rss_resources
 	{
 		PARSER->error().error(@2, "После описания всех ресурсов ожидается ключевое слово $End");
-	}
-	;
-
-rss_resources_begin
-	: RDO_Resources
-	{
-		PARSER->setHaveKWResources(true);
-	}
-	;
-
-rss_resources_end
-	: RDO_End
-	{
-		PARSER->setHaveKWResourcesEnd(true);
 	}
 	;
 

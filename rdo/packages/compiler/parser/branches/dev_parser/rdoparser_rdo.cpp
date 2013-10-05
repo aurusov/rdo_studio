@@ -136,8 +136,6 @@ RDOParserRSS::RDOParserRSS(StreamFrom from)
 void RDOParserRSS::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
-	pParser->setHaveKWResources   (false);
-	pParser->setHaveKWResourcesEnd(false);
 	RDOParserRDOItem::parse(pParser);
 }
 
