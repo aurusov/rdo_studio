@@ -170,6 +170,12 @@ SET(PCH_FILES
 SET(QRC_FILES
 	res/rdo_studio.qrc
 )
+
+SET(PLUGINS_FILES
+	src/plugins/plugin_info.cpp
+	src/plugins/plugin_info.h
+	src/plugins/plugin_interface.h
+)
 QT5_ADD_RESOURCES(GENERATED_QRC_FILES ${QRC_FILES})
 
 CONFIGURE_FILE(${CMAKE_MODULE_PATH}/build.version.cmake ${CMAKE_CURRENT_SOURCE_DIR}/res/build_version.h)
@@ -360,6 +366,7 @@ SET(SOURCE_FILES
 	${TRACER_FILES}
 	${TRACER_CHART_FILES}
 	${TRACER_LOGGER_FILES}
+	${PLUGINS_FILES}
 )
 
 SET(MOC_FILES
@@ -550,6 +557,10 @@ IF(MSVC) # options for windows #
 
 	SOURCE_GROUP(".tracer\\.logger" FILES
 		${TRACER_LOGGER_FILES}
+	)
+
+	SOURCE_GROUP(".plugins" FILES
+		${PLUGINS_FILES}
 	)
 
 ENDIF(MSVC)

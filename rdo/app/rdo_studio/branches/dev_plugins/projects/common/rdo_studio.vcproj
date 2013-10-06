@@ -3418,6 +3418,22 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name=".plugins"
+			>
+			<File
+				RelativePath="..\..\src\plugins\plugin_info.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\plugins\plugin_info.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\plugins\plugin_interface.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

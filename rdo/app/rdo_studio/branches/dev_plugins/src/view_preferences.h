@@ -33,6 +33,7 @@
 #include "app/rdo_studio/src/tracer/chart/chart_view_style.h"
 #include "app/rdo_studio/src/frame/frame_style.h"
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
+#include "app/rdo_studio/src/plugins/plugin_info.h"
 // --------------------------------------------------------------------------------
 
 class ViewPreferences
@@ -95,6 +96,11 @@ private slots:
 	void onThemeComboBox(int index);
 
 	void onHelpContext();
+
+	void deletePlugin       ();
+	void onStartPlugin      ();
+	void onStopPlugin       ();
+	void updateButtonsState ();
 
 private:
 	enum StyleType
@@ -395,6 +401,14 @@ private:
 	void updateStyleTab();
 	void updateThemeComboBox(PTR(StyleProperty) prop);
 	void updateTheme();
+
+
+	PluginInfoList* mergedPluginInfoList;
+	void populateRow(PluginInfoList::iterator plgInfo);
+	void fillPluginInfoTable();
+	std::vector<int> selectedRows() const;
+	PluginInfoList::iterator getPluginInfoFromTable (int pluginRow) const;
+	void updatePluginList();
 };
 
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

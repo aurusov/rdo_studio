@@ -24,7 +24,6 @@
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/dialog/about_dialog.h"
 #include "app/rdo_studio/src/view_preferences.h"
-#include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
 #include "app/rdo_studio/src/editor/lexer/lexer_find.h"
@@ -158,6 +157,7 @@ void MainWindow::SubWindowToAction::removeLastSubWindow()
 MainWindow::MainWindow()
 	: m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
+	, m_pModel  (NULL)
 {
 	setupUi(this);
 	installEventFilter(this);
@@ -514,6 +514,8 @@ void MainWindow::init()
 	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(g_pModel);
 	ASSERT(pModelInit);
 	pModelInit->init();
+
+	m_pModel = g_pModel;
 }
 
 void MainWindow::setVisible(bool visible)
@@ -944,4 +946,9 @@ bool MainWindow::eventFilter(QObject* target, QEvent* event)
 	}
 
 	return parent_type::eventFilter(target, event);
+}
+
+rdo::gui::model::Model* MainWindow::getModel()
+{
+	return m_pModel;
 }
