@@ -16,8 +16,6 @@
 #include <QTextCodec>
 #include <QSettings>
 #include <QMessageBox>
-#include <QDir>
-#include <boost/foreach.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/file/rdofile.h"
@@ -97,7 +95,6 @@ Application::Application(int& argc, char** argv)
 	, m_exitCode                    (rdo::simulation::report::EC_OK)
 	, m_pAssistant                  (NULL  )
 	, m_pMainFrame                  (NULL  )
-	, mergedPluginInfoList          (getPluginInfoList())
 {
 	g_pApp = this;
 
@@ -242,8 +239,6 @@ Application::Application(int& argc, char** argv)
 	{
 		g_pModel->runModel();
 	}
-
-	loadPlugins();
 }
 
 Application::~Application()
@@ -536,185 +531,6 @@ CREF(rdo::gui::editor::LPModelStyle) Application::getModelStyle() const
 {
 	ASSERT(m_pModelStyle);
 	return m_pModelStyle;
-}
-
-PluginInfoList* Application::getMergedPluginInfoList()
-{
-	return &mergedPluginInfoList;
-}
-
-PluginInfoList Application::getPluginInfoList() const
-{
-	PluginInfoList plgnsHistory   = getPluginsHistory     ();
-	PluginInfoList curLoadedPlgns = identifyCurrentPlugins();
-	PluginInfoList mergedPlgns;
-	for (PluginInfoList::iterator curItrt=curLoadedPlgns.begin(); curItrt!=curLoadedPlgns.end(); ++curItrt)
-	{
-		PluginInfo plgnInfo = *curItrt;
-		matchPluginInfo(plgnsHistory, &plgnInfo);
-		mergedPlgns.push_back(plgnInfo);
-	}
-	for (PluginInfoList::iterator histrItrt=plgnsHistory.begin(); histrItrt!=plgnsHistory.end(); ++histrItrt)
-	{
-		PluginInfo plgnInfo = *histrItrt;
-		if (matchPluginInfo( mergedPlgns, &plgnInfo ) != rdo::Plugin::ExactMatched)
-		{
-			plgnInfo.setState(rdo::Plugin::Deleted);
-			mergedPlgns.push_back(plgnInfo);
-		}
-	}
-	return mergedPlgns;
-}
-
-PluginInfoList Application::getPluginsHistory() const
-{
-	QSettings settings("RAO-studio","RAO-studio");
-	PluginInfoList list;
-	int size = settings.beginReadArray("plugins");
-	for (int i = 0; i < size; ++i) {
-		settings.setArrayIndex(i);
-		QString plgnName     = settings.value("plgnName"    ,"").toString();
-		bool    plgnAutoLoad = settings.value("plgnAutoLoad",false).toBool();
-		QString plgnAuthor   = settings.value("plgnAuthor"  ,"").toString();
-		QString plgnVer      = settings.value("plgnVer"     ,"").toString();
-		QUuid   plgnGUID     = settings.value("plgnGUID"    ,QUuid::QUuid()).toUuid();
-		PluginInfo plgn(plgnName , NULL , plgnAutoLoad , plgnGUID , plgnAuthor , plgnVer , rdo::Plugin::Unique);
-		list.push_back(plgn);
-	}
-	return list;
-}
-
-void Application::setPluginHistory(const PluginInfoList& value)
-{
-	QSettings settings;
-	settings.remove("plugins");
-	settings.beginWriteArray("plugins");
-	int index = 0;
-	BOOST_FOREACH (PluginInfo plgnInfo, value){
-		if (plgnInfo.getState() != rdo::Plugin::IdOnlyMatched)
-		{
-			settings.setArrayIndex(index);
-			settings.setValue("plgnName"    ,plgnInfo.getName());
-			settings.setValue("plgnAutoLoad",plgnInfo.getAutoload());
-			settings.setValue("plgnGUID"    ,plgnInfo.getGUID());
-			settings.setValue("plgnAuthor"  ,plgnInfo.getAuthor());
-			settings.setValue("plgnVer"     ,plgnInfo.getVersion());
-			index++;
-		}
-	}
-	settings.endArray();
-}
-
-PluginInfoList Application::identifyCurrentPlugins() const
-{
-	PluginInfoList list;
-	QDir dir(qApp->applicationDirPath());
-	if (dir.dirName().toLower() == "debug" || dir.dirName().toLower() == "release")
-		dir.cdUp();
-	if(dir.cd("plugins"))
-	{
-		QStringList fileList = getFileList(dir.path());
-		BOOST_FOREACH (QString filePath,fileList) {
-			QPluginLoader* pluginLoader = new QPluginLoader(filePath);
-			PluginInterface *plgn = loadPlugin(pluginLoader);
-			if (plgn) {
-				PluginInfo plgnInfo = generatePluginInfo(plgn,pluginLoader);
-				pluginLoader->unload();
-				if ( matchPluginInfo( list, &plgnInfo ) != rdo::Plugin::ExactMatched ) {
-					list.push_back(plgnInfo);
-				}
-				else
-				{
-					delete pluginLoader;
-				}
-			}
-		}
-	}
-	return list;
-}
-
-int Application::matchPluginInfo(const PluginInfoList& list,PluginInfo * plgnInfo) const
-{
-	bool notFoundFullMatch = true;
-	int plgnState = plgnInfo ->getState();
-	for (PluginInfoList::const_iterator listItr = list.begin(); listItr != list.end() && notFoundFullMatch; ++listItr)
-	{
-		if (plgnInfo->getGUID() == listItr->getGUID())
-		{
-			if (plgnInfo->pluginSignInfoIsEqual(*listItr))
-			{
-				notFoundFullMatch = false;
-				plgnInfo->setAutoload(listItr->getAutoload());
-				plgnState = rdo::Plugin::ExactMatched;
-			}
-			else
-				plgnState = rdo::Plugin::IdOnlyMatched;
-		}
-	}
-	plgnInfo->setState(plgnState);
-	return plgnState;
-}
-
-QStringList Application::getFileList(const QString &startDir) const
-{
-	QDir dir(startDir);
-	QStringList list;
-
-	BOOST_FOREACH (QString file, dir.entryList(QDir::Files))
-		list += dir.absoluteFilePath(file);
-
-	BOOST_FOREACH (QString subdir, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
-		list += getFileList(startDir + "/" + subdir);
-	return list;
-}
-
-PluginInterface * Application::loadPlugin(QPluginLoader * pluginLoader) const
-{
-	QObject* plugin = pluginLoader->instance();
-	if (plugin) {
-		PluginInterface *plgn = qobject_cast<PluginInterface *>(plugin);
-		return plgn;
-	}
-	return NULL;
-}
-
-PluginInfo Application::generatePluginInfo(PluginInterface *plgn, QPluginLoader* pluginLoader) const
-{
-	QString plgnName     = plgn->getPluginName();
-	QUuid   plgnGUID     = plgn->getGUID();
-	QString plgnAuthor   = plgn->getAuthor();
-	QString plgnVersion  = plgn->getVersion();
-	bool    plgnAutoload = false;
-	PluginInfo plgnInfo(plgnName , pluginLoader , plgnAutoload , plgnGUID , plgnAuthor , plgnVersion , rdo::Plugin::Unique);
-	return plgnInfo; 
-}
-
-void Application::stopPlugin(PluginInfoList::iterator plgnInfo)
-{
-	PluginInterface * plgn = loadPlugin(plgnInfo->getLoader());
-	if (plgn) {
-		plgn->plgnStopAction(m_pMainFrame);
-		plgnInfo->setActive(false);
-	}
-}
-
-void Application::startPlugin(PluginInfoList::iterator plgnInfo)
-{
-	PluginInterface * plgn = loadPlugin(plgnInfo->getLoader());
-	if (plgn) {
-		plgn->plgnStartAction(m_pMainFrame);
-		plgnInfo->setActive(true);
-	}
-}
-
-void Application::loadPlugins()
-{
-	for (PluginInfoList::iterator plgnInfoItrt=mergedPluginInfoList.begin(); plgnInfoItrt!=mergedPluginInfoList.end(); ++plgnInfoItrt)
-	{
-		if (plgnInfoItrt->getAutoload() && plgnInfoItrt->isAvailable()) {
-			startPlugin(plgnInfoItrt);
-		}
-	}
 }
 
 #ifdef Q_OS_WIN

@@ -22,7 +22,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio/src/main_window_base.h"
-#include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/status_bar.h"
 // --------------------------------------------------------------------------------
 
@@ -70,8 +69,6 @@ public:
 			QObject::disconnect(m_pInsertMenuSignalMapper, pSignal, NULL, NULL);
 		}
 	}
-
-	rdo::gui::model::Model* getModel();
 
 	class InsertMenuData: public QObject
 	{
@@ -152,8 +149,6 @@ private:
 	void forAllSubWindows(F functor, QMdiSubWindow* pTopSubWindow);
 
 	void updateWindowTitle();
-
-	rdo::gui::model::Model* m_pModel;
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOW_H_
