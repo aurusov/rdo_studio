@@ -11,7 +11,7 @@
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/src/plugin_info.h"
+#include "app/rdo_studio/src/plugins/plugin_info.h"
 // --------------------------------------------------------------------------------
 
 PluginInfo::PluginInfo(const QString& name , QPluginLoader* loader  , bool  autoload,
