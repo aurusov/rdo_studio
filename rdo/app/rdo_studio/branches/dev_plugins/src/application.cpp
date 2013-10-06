@@ -577,7 +577,7 @@ PluginInfoList Application::getPluginsHistory() const
 		bool    plgnAutoLoad = settings.value("plgnAutoLoad",false).toBool();
 		QString plgnAuthor   = settings.value("plgnAuthor"  ,"").toString();
 		QString plgnVer      = settings.value("plgnVer"     ,"").toString();
-		QUuid   plgnGUID     = settings.value("plgnGUID"    ,QUuid::QUuid()).toUuid();
+		QUuid   plgnGUID     = settings.value("plgnGUID"    ,QUuid()).toUuid();
 		PluginInfo plgn(plgnName , NULL , plgnAutoLoad , plgnGUID , plgnAuthor , plgnVer , rdo::Plugin::Unique);
 		list.push_back(plgn);
 	}
