@@ -22,9 +22,16 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio/src/main_window_base.h"
-#include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/status_bar.h"
 // --------------------------------------------------------------------------------
+
+namespace rdo {
+	namespace gui {
+		namespace model {
+			class Model;
+		};
+	};
+};
 
 class MainWindow
 	: public QMainWindow
