@@ -36,6 +36,8 @@
 #include "app/rdo_studio/src/plugins/plugin_info.h"
 // --------------------------------------------------------------------------------
 
+typedef std::vector<int> IntVector;
+
 class ViewPreferences
 	: public QDialog
 	, private Ui::ViewPreferencesDialog
@@ -402,13 +404,13 @@ private:
 	void updateThemeComboBox(PTR(StyleProperty) prop);
 	void updateTheme();
 
-
-	PluginInfoList* mergedPluginInfoList;
-	void populateRow(PluginInfoList::iterator plgInfo);
-	void fillPluginInfoTable();
-	std::vector<int> selectedRows() const;
-	PluginInfoList::iterator getPluginInfoFromTable (int pluginRow) const;
-	void updatePluginList();
+	PluginInfoList* m_pPluginInfoList;
+	
+	void                     fillPluginInfoTable    ();
+	void                     populateRow            (PluginInfoList::iterator plgInfo);
+	PluginInfoList::iterator getPluginInfoFromTable (int pluginRow)                    const;
+	IntVector                selectedRows           ()                                 const;
+	void                     updatePluginList       ();
 };
 
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

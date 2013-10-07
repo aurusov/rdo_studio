@@ -3433,6 +3433,14 @@
 				RelativePath="..\..\src\plugins\plugin_interface.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\src\plugins\plugin_loader.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\plugins\plugin_loader.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

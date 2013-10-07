@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2013
-  \file      rdo_plugin_test/src/plugininterface.cpp
+  \file      app/rdo_studio/src/plugins/plugininterface.cpp
   \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
   \date      22.09.2013
   \brief     

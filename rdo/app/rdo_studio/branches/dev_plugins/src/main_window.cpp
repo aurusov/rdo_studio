@@ -157,7 +157,6 @@ void MainWindow::SubWindowToAction::removeLastSubWindow()
 MainWindow::MainWindow()
 	: m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
-	, m_pModel  (NULL)
 {
 	setupUi(this);
 	installEventFilter(this);
@@ -514,8 +513,6 @@ void MainWindow::init()
 	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(g_pModel);
 	ASSERT(pModelInit);
 	pModelInit->init();
-
-	m_pModel = g_pModel;
 }
 
 void MainWindow::setVisible(bool visible)
@@ -950,5 +947,5 @@ bool MainWindow::eventFilter(QObject* target, QEvent* event)
 
 rdo::gui::model::Model* MainWindow::getModel()
 {
-	return m_pModel;
+	return g_pModel;
 }

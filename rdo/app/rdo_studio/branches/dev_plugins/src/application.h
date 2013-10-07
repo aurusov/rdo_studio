@@ -24,8 +24,7 @@
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio/src/main_window_base.h"
 #include "app/rdo_studio/src/editor/model_edit_style.h"
-#include "app/rdo_studio/src/plugins/plugin_info.h"
-#include "app/rdo_studio/src/plugins/plugin_interface.h"
+#include "app/rdo_studio/src/plugins/plugin_loader.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -83,20 +82,6 @@ public:
 
 	CREF(rdo::gui::editor::LPModelStyle) getModelStyle() const;
 
-	PluginInfoList mergedPluginInfoList;
-	PluginInfoList* getMergedPluginInfoList();
-	PluginInfoList getPluginInfoList() const;
-	PluginInfoList getPluginsHistory() const;
-	PluginInfoList identifyCurrentPlugins() const;
-	int matchPluginInfo(const PluginInfoList& list,PluginInfo * plgnInfo) const;
-	QStringList getFileList(const QString &startDir) const;
-	PluginInterface * loadPlugin(QPluginLoader * pluginLoader) const;
-	PluginInfo generatePluginInfo(PluginInterface *plgn, QPluginLoader* pluginLoader) const;
-	void stopPlugin (PluginInfoList::iterator plgnInfo);
-	void startPlugin(PluginInfoList::iterator plgnInfo);
-	void loadPlugins();
-	void setPluginHistory(const PluginInfoList& value);
-
 private:
 #ifdef RDO_MT
 	// Используется для рассылки широковещательных уведомлений из приложения.
@@ -118,6 +103,8 @@ private:
 	PTR(MainWindow)                        m_pMainFrame;
 	rdo::gui::editor::LPModelStyle         m_pModelStyle;
 	QTimer                                 m_idleTimer;
+
+	rdo::Plugin::Loader*                   m_pPluginLoader;
 
 	void setupFileAssociation();
 #ifdef Q_OS_WIN

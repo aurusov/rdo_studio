@@ -175,6 +175,8 @@ SET(PLUGINS_FILES
 	src/plugins/plugin_info.cpp
 	src/plugins/plugin_info.h
 	src/plugins/plugin_interface.h
+    src/plugins/plugin_loader.cpp
+    src/plugins/plugin_loader.h
 )
 QT5_ADD_RESOURCES(GENERATED_QRC_FILES ${QRC_FILES})
 

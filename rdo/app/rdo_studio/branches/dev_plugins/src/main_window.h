@@ -152,8 +152,6 @@ private:
 	void forAllSubWindows(F functor, QMdiSubWindow* pTopSubWindow);
 
 	void updateWindowTitle();
-
-	rdo::gui::model::Model* m_pModel;
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOW_H_
