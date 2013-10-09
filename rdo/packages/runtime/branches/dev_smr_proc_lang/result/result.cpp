@@ -25,6 +25,7 @@
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/notify.h"
+#include "simulator/runtime/rdo_res_type_i.h"
 // --------------------------------------------------------------------------------
 
 #if defined( ARCHITECTURE_AMD64 )
@@ -350,12 +351,10 @@ void RDOPMDWatchQuant::resetResult(CREF(LPRDORuntime) pRuntime)
 ruint RDOPMDWatchQuant::calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const
 {
 	ruint newQuant = 0;
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); ++it)
+	RDORuntime::ResCIterator end = pRuntime->getResType(m_rtpID)->res_end();
+	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_rtpID)->res_begin(); it != end; ++it)
 	{
 		if (*it == 0)
-			continue;
-
-		if (!(*it)->checkType(m_rtpID))
 			continue;
 
 		pRuntime->pushGroupFunc(*it);

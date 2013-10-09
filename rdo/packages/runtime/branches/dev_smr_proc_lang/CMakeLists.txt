@@ -186,6 +186,7 @@ SET(SOURCE_FILES
 	rdotrace.cpp
 	rdo_type.cpp
 	rdo_value.cpp
+	rdo_res_type.cpp
 	searchtrace.cpp
 	searchtree.cpp
 	simtrace.cpp
@@ -462,6 +463,7 @@ SOURCE_GROUP(".rdo_simulator" FILES
 SOURCE_GROUP(".rdo_simulator_db" FILES 
 	rdo_res_type.h
 	rdo_res_type.inl
+	rdo_res_type.cpp
 	rdo_res_type_i.h
 	rdo_resource.h
 	rdo_resource.inl

@@ -16,27 +16,25 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 template <class T>
-inline RDOResourceTypeBase<T>::RDOResourceTypeBase(ruint number)
-	: RDOType           (t_pointer                               )
-	, RDORuntimeObject  (                                        )
-	, RDOTraceableObject(false, number, rdo::toString(number + 1))
+inline RDOResourceTypeListT<T>::RDOResourceTypeListT(ruint number, rdo::runtime::LPRDORuntime pRuntime)
+	: RDOResourceTypeList(number, pRuntime)
 {}
 
 template <class T>
-inline RDOResourceTypeBase<T>::~RDOResourceTypeBase()
+inline RDOResourceTypeListT<T>::~RDOResourceTypeListT()
 {}
 
 template <class T>
-inline LPRDOResource RDOResourceTypeBase<T>::createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
+inline LPRDOResource RDOResourceTypeListT<T>::createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
 {
-	rdo::intrusive_ptr<RDOResourceTypeBase<T> > pThis(this);
+	rdo::intrusive_ptr<RDOResourceTypeListT<T> > pThis(this);
 	ASSERT(pThis);
 	LPIResourceType pIResType = pThis.template interface_cast<IResourceType>();
 	ASSERT(pIResType);
 
 	rdo::intrusive_ptr<T> pResource = rdo::Factory<T>::create(pRuntime, paramsCalcs, pIResType, resID, this->getTraceID(), traceFlag, permanentFlag);
 	ASSERT(pResource);
-	pRuntime->insertNewResource(pResource);
+	insertNewResource(pRuntime, pResource);
 
 	return pResource;
 }

@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/resource/calc_group.h"
 #include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_res_type_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -33,13 +34,10 @@ RDOFunCalcGroup::RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition)
 RDOValue RDOFunCalcExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool res = false;
-	RDORuntime::ResCIterator end = pRuntime->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end && !res; ++it)
+	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
+	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end && !res; ++it)
 	{
 		if (*it == LPRDOResource(NULL))
-			continue;
-
-		if (!(*it)->checkType(m_nResType))
 			continue;
 
 		pRuntime->pushGroupFunc(*it);
@@ -56,13 +54,10 @@ RDOValue RDOFunCalcExist::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOValue RDOFunCalcNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool res = true;
-	RDORuntime::ResCIterator end = pRuntime->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end && res; it++)
+	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
+	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end && res; it++)
 	{
 		if (*it == LPRDOResource(NULL))
-			continue;
-
-		if (!(*it)->checkType(m_nResType))
 			continue;
 
 		pRuntime->pushGroupFunc(*it);
@@ -80,13 +75,10 @@ RDOValue RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool first_found = false;
 	rbool res = true;
-	RDORuntime::ResCIterator end = pRuntime->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end && res; it++)
+	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
+	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end && res; it++)
 	{
 		if (*it == LPRDOResource(NULL))
-			continue;
-
-		if (!(*it)->checkType(m_nResType))
 			continue;
 
 		pRuntime->pushGroupFunc(*it);
@@ -109,13 +101,10 @@ RDOValue RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOValue RDOFunCalcNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool res = false;
-	RDORuntime::ResCIterator end = pRuntime->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end && !res; it++)
+	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
+	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end && !res; it++)
 	{
 		if (*it == LPRDOResource(NULL))
-			continue;
-
-		if (!(*it)->checkType(m_nResType))
 			continue;
 
 		pRuntime->pushGroupFunc(*it);

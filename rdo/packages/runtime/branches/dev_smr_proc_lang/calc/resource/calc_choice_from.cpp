@@ -93,58 +93,55 @@ RDOValue RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	RDOValue   minVal      = DBL_MAX;
 	ResourceID resMinMaxID = ResourceID(~0);
 
-	RDORuntime::ResCIterator end = pRuntime->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; it++)
+	RDORuntime::ResCIterator end = pRuntime->getResType(m_resTypeID)->res_end();
+	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_resTypeID)->res_begin(); it != end; it++)
 	{
-		if (*it && (*it)->checkType(m_resTypeID))
-		{
-			ResourceID resID = (*it)->getTraceID();
+		ResourceID resID = (*it)->getTraceID();
 
-			switch (m_orderType)
+		switch (m_orderType)
+		{
+		case order_empty:
+		case order_first:
 			{
-			case order_empty:
-			case order_first:
+				pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
+				if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 				{
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
-					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
-					{
-						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-						continue;
-					}
-					return RDOValue(1);
+					pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+					continue;
 				}
-			case order_with_min:
+				return RDOValue(1);
+			}
+		case order_with_min:
+			{
+				pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
+				if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 				{
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
-					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
-					{
-						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-						continue;
-					}
-					RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
-					if (tmp < minVal)
-					{
-						minVal      = tmp;
-						resMinMaxID = resID;
-					}
-					break;
+					pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+					continue;
 				}
-			case order_with_max:
+				RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
+				if (tmp < minVal)
 				{
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
-					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
-					{
-						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-						continue;
-					}
-					RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
-					if (tmp > maxVal)
-					{
-						maxVal      = tmp;
-						resMinMaxID = resID;
-					}
-					break;
+					minVal      = tmp;
+					resMinMaxID = resID;
 				}
+				break;
+			}
+		case order_with_max:
+			{
+				pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
+				if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
+				{
+					pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+					continue;
+				}
+				RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
+				if (tmp > maxVal)
+				{
+					maxVal      = tmp;
+					resMinMaxID = resID;
+				}
+				break;
 			}
 		}
 	}
@@ -330,13 +327,10 @@ RDOSelectResourceByTypeCommonCalc::RDOSelectResourceByTypeCommonCalc(ResourceID 
 
 void RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pRuntime, REF(ResourceIDList) resourceIDList) const
 {
-	RDORuntime::ResCIterator end = pRuntime->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; it++)
+	RDORuntime::ResCIterator end = pRuntime->getResType(m_resTypeID)->res_end();
+	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_resTypeID)->res_begin(); it != end; it++)
 	{
 		if (*it == LPRDOResource(NULL))
-			continue;
-
-		if (!(*it)->checkType(m_resTypeID))
 			continue;
 
 		resourceIDList.push_back((*it)->getTraceID());

@@ -3,6 +3,7 @@
   \file      rdo_res_type.h
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Александровский Кирилл (k.alexandrovsky@gmail.com)
   \date      07.06.2011
   \brief     Типы ресурсов в rdo::runtime
   \indent    4T
@@ -20,31 +21,55 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+class RDOResourceTypeList
+	: public RDOType
+	, public IResourceType
+	, public RDORuntimeObject
+	, public RDOTraceableObject
+{
+private:
+	friend class rdo::Factory<RDOResourceTypeList>;
+
+public:
+	virtual ResCIterator res_begin() const;
+	virtual ResCIterator res_end  () const;
+
+	virtual void eraseRes(CREF(rdo::runtime::LPRDOResource) pResource);
+
+protected:
+	RDOResourceTypeList(ruint number, CREF(rdo::runtime::LPRDORuntime) pRuntime);
+	virtual ~RDOResourceTypeList();
+
+	void insertNewResource(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(rdo::runtime::LPRDOResource) pResource);
+
+	typedef  std::list<rdo::runtime::LPRDOResource> ResourceList;
+	ResourceList m_resourceList;
+};
+
 //! Описывает РДО-тип ресурса (RTP), который суть фабрика для РДО-ресурсов
 //! tparam T - ресурс, который будет создаваться данной фабрикой
 template <class T>
-CLASS_PARENT_OF(RDOResourceTypeBase, RDOType)
-	IS  IMPLEMENTATION_OF(IResourceType     )
-	AND INSTANCE_OF      (RDORuntimeObject  )
-	AND INSTANCE_OF      (RDOTraceableObject)
+class RDOResourceTypeListT: public RDOResourceTypeList
 {
-DECLARE_FACTORY(RDOResourceTypeBase<T>);
+DECLARE_FACTORY(RDOResourceTypeListT<T>);
 public:
 	typedef  T  value_type;
 
 private:
 	//! Конструктор
 	//! \param number - Целочисленный идентификатор
-	RDOResourceTypeBase(ruint number);
-	virtual ~RDOResourceTypeBase();
+	RDOResourceTypeListT(ruint number, rdo::runtime::LPRDORuntime pRuntime);
+	virtual ~RDOResourceTypeListT();
 
 	DECLARE_IResourceType;
 };
 
+typedef  rdo::intrusive_ptr<RDOResourceTypeList>  LPRDOResourceTypeList;
+
 //! Тип ресурсов для создания обычных ресурсов РДО
 //! \details Создает ресурсы, которые могут быть релевантны активностям и
 //!          событиям, но не могут использоваться в процессах
-typedef  RDOResourceTypeBase<RDOResource>     RDOResourceType;
+typedef  RDOResourceTypeListT<RDOResource>    RDOResourceType;
 typedef  rdo::intrusive_ptr<RDOResourceType>  LPRDOResourceType;
 
 CLOSE_RDO_RUNTIME_NAMESPACE

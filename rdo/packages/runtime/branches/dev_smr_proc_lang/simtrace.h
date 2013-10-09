@@ -35,6 +35,7 @@ CLASS(RDOSimulatorTrace): INSTANCE_OF(RDOSimulator)
 DECLARE_FACTORY(RDOSimulatorTrace)
 public:
 	enum { UNDEFINE_TIME = -1 };
+	typedef  RDOSimulator  parent_type;
 
 	virtual void rdoInit();
 

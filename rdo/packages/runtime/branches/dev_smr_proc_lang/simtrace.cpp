@@ -45,6 +45,12 @@ void RDOSimulatorTrace::copyFrom(CREF(LPRDOSimulatorTrace) pOther)
 
 	freeResourcesIds = pOther->freeResourcesIds;
 	maxResourcesId   = pOther->maxResourcesId;
+	m_activityCounter = pOther->m_activityCounter;
+	m_dptCounter = pOther->m_dptCounter;
+	memory_current = pOther->memory_current;
+	memory_max = pOther->memory_max;
+
+	parent_type::copyFrom(pOther.object_parent_cast<parent_type>());
 }
 
 void RDOSimulatorTrace::rdoInit()

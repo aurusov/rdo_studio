@@ -20,6 +20,8 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+PREDECLARE_POINTER(RDOSimulator);
+
 /*!
   \class     RDOSimulator
   \brief     Один из базовых классов для RDORuntime
@@ -29,6 +31,8 @@ CLASS(RDOSimulator): INSTANCE_OF (RDOSimulatorBase)
 public:
 	RDOSimulator();
 	virtual ~RDOSimulator();
+
+	void copyFrom(CREF(LPRDOSimulator) pOther);
 
 	void             appendLogic       (CREF(LPIBaseOperation) pLogic, LPIBaseOperationContainer pParent);
 	LPIBaseOperation getMustContinueOpr() const;

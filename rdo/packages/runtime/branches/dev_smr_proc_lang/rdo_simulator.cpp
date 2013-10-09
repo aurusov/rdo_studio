@@ -46,6 +46,13 @@ void RDOSimulator::appendLogic(CREF(LPIBaseOperation) pLogic, LPIBaseOperationCo
 	pParent->append(pLogic);
 }
 
+void RDOSimulator::copyFrom(CREF(LPRDOSimulator) pOther)
+{
+	ASSERT(pOther);
+
+	m_pMetaLogic = pOther->m_pMetaLogic;
+}
+
 rbool RDOSimulator::doOperation()
 {
 	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
