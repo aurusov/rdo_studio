@@ -639,15 +639,13 @@ void RDOThreadRunTime::start()
 	pResultsInfo = new rdo::service::simulation::RDOSimResultInformer(m_pSimulator->m_resultInfoString);
 
 	//! RDO config initialization
-	ruint currentRunNumber = 0;
-	//ruint currentRunNumber = m_pSimulator->m_pParser->m_currentRunNumber;
 	m_pSimulator->m_pRuntime = m_pSimulator->m_pRuntimeBackup->clone();
 	m_pSimulator->m_pRuntime->hotkey().clear();
 	m_pSimulator->m_pParser->castInitToRuntime();
-	m_pSimulator->m_pRuntime->setTerminateIf   (m_pSimulator->m_pParser->getSMR(currentRunNumber)->m_pTerminateIf->getCalc());
-	m_pSimulator->m_pRuntime->setStartTime     (m_pSimulator->m_pParser->getSMR(currentRunNumber)->getRunStartTime        ());
-	m_pSimulator->m_pRuntime->setTraceStartTime(m_pSimulator->m_pParser->getSMR(currentRunNumber)->getTraceStartTime      ());
-	m_pSimulator->m_pRuntime->setTraceEndTime  (m_pSimulator->m_pParser->getSMR(currentRunNumber)->getTraceEndTime        ());
+	m_pSimulator->m_pRuntime->setTerminateIf   (m_pSimulator->m_pParser->getSMR(m_pSimulator->m_runIterator)->m_pTerminateIf->getCalc());
+	m_pSimulator->m_pRuntime->setStartTime     (m_pSimulator->m_pParser->getSMR(m_pSimulator->m_runIterator)->getRunStartTime        ());
+	m_pSimulator->m_pRuntime->setTraceStartTime(m_pSimulator->m_pParser->getSMR(m_pSimulator->m_runIterator)->getTraceStartTime      ());
+	m_pSimulator->m_pRuntime->setTraceEndTime  (m_pSimulator->m_pParser->getSMR(m_pSimulator->m_runIterator)->getTraceEndTime        ());
 
 	//! Modelling
 	m_pSimulator->m_canTrace = true;
@@ -657,13 +655,13 @@ void RDOThreadRunTime::start()
 		LPRDOThreadRunTime pThis(this);
 		m_pSimulator->m_exitCode = rdo::simulation::report::EC_OK;
 		m_pSimulator->m_pRuntime->rdoInit(pTracer, pResults, pResultsInfo, pThis.interface_cast<IThreadProxy>());
-		switch (m_pSimulator->m_pParser->getSMR(currentRunNumber)->getShowMode())
+		switch (m_pSimulator->m_pParser->getSMR(m_pSimulator->m_runIterator)->getShowMode())
 		{
 			case rdo::service::simulation::SM_NoShow   : m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_MaxSpeed); break;
 			case rdo::service::simulation::SM_Animation: m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_Sync    ); break;
 			case rdo::service::simulation::SM_Monitor  : m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_Pause   ); break;
 		}
-		m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pParser->getSMR(currentRunNumber)->getShowRate());
+		m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pParser->getSMR(m_pSimulator->m_runIterator)->getShowRate());
 	}
 	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{
@@ -870,7 +868,8 @@ RDOThreadSimulator::RDOThreadSimulator()
 	, m_exitCode        (rdo::simulation::report::EC_OK)
 	, m_seriesCapacity  (0                             )
 	, m_currentRunNumber(0                             )
-	, m_pRuntime   (NULL                          )
+	, m_runIterator     (0                             )
+	, m_pRuntime        (NULL                          )
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
 	notifies.push_back(RT_STUDIO_MODEL_RUN                );
@@ -1080,6 +1079,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					if (needNextRun())
 					{
 						++m_currentRunNumber;
+						++m_runIterator;
 						m_pRuntime->deinit();
 						m_pRuntime = NULL;
 						m_pThreadRuntime = NULL;
@@ -1087,6 +1087,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					}
 					else
 					{
+						m_runIterator = 0;
 						m_currentRunNumber = 0;
 						m_seriesCapacity = 0;
 						closeModel();

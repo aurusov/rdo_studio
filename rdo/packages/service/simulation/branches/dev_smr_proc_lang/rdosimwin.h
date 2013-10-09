@@ -182,6 +182,7 @@ friend class RDOSimResulter;
 friend class RDOParser;
 
 public:
+	ruint                    m_runIterator; //итератор для прогонов
 	rdo::runtime::LPRDORuntime  m_pRuntime;
 	CREF(rdo::runtime::LPRDORuntime) copyRuntime() const;
 
