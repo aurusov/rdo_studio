@@ -180,14 +180,14 @@ RDOParserSMRPost::RDOParserSMRPost()
 void RDOParserSMRPost::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
-
+	
 	//! Планирование событий, описанных в SMR
 	STL_FOR_ALL_CONST(pParser->getEvents(), eventIt)
 	{
 		LPRDOEvent pEvent = *eventIt;
 		ASSERT(pEvent);
 
-		STL_FOR_ALL(pParser->getSMR(pParser->m_currentRunNumber)->getSMREvent(), eventPlanIt)
+		STL_FOR_ALL(pParser->getSMR(kernel->simulator()->m_runIterator)->getSMREvent(), eventPlanIt)
 		{
 			rdo::runtime::LPRDOCalcEventPlan pEventPlan = *eventPlanIt;
 			ASSERT(pEventPlan);
@@ -196,12 +196,23 @@ void RDOParserSMRPost::parse(CREF(LPRDOParser) pParser)
 		}
 	}
 	// Константы из SMR
-	STL_FOR_ALL_CONST(pParser->getSMR(pParser->m_currentRunNumber)->getSMRConstant(), ConstantIt)
+	STL_FOR_ALL_CONST(pParser->getSMR(kernel->simulator()->m_runIterator)->getSMRConstant(), ConstantIt)
 	{
 		rdo::runtime::LPRDOCalcSetConst pConstCalc = *ConstantIt;
 
 		kernel->simulator()->m_pRuntime->addInitCalc(pConstCalc);
 	}
+	// Последовательности
+	std::vector<int>::iterator it = pParser->getSMR(kernel->simulator()->m_runIterator)->getSMRBase().begin();
+
+	STL_FOR_ALL(pParser->getSMR(kernel->simulator()->m_runIterator)->getSMRSequence(), SequenceIt)
+		{
+			LPRDOFUNSequence pSequence = *SequenceIt;
+			ASSERT(pSequence);
+			
+			pSequence->getInitCalc()->setBase(*it);
+			++it;
+		}
 }
 
 // --------------------------------------------------------------------------------

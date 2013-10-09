@@ -61,6 +61,14 @@ public:
 
 	LPRDOFUNLogic     m_pTerminateIf;
 
+	typedef std::vector<int>          baseList;
+	baseList                          m_baseList;
+	REF(baseList)                     getSMRBase();
+
+	typedef std::list<LPRDOFUNSequence> SMRSequence;
+	SMRSequence                   m_SMRSequenceList;
+	REF(SMRSequence)              getSMRSequence();
+
 	typedef std::list<rdo::runtime::LPRDOCalcEventPlan> SMREvent;
 	SMREvent                    SMREventList;
 

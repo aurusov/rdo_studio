@@ -71,6 +71,16 @@ REF(RDOSMR::SMREvent) RDOSMR::getSMREvent()
 	return SMREventList;
 }
 
+REF(RDOSMR::SMRSequence) RDOSMR::getSMRSequence()
+{
+	return m_SMRSequenceList;
+}
+
+REF(RDOSMR::baseList) RDOSMR::getSMRBase()
+{
+	return m_baseList;
+}
+
 REF(RDOSMR::SMRConstant) RDOSMR::getSMRConstant()
 {
 	return SMRConstantCalcList;
@@ -201,7 +211,8 @@ void RDOSMR::setSeed(CREF(RDOParserSrcInfo) seq_info, int base)
 	{
 		RDOParser::s_parser()->error().error(seq_info, rdo::format("Последовательность '%s' не найдена", seq_info.src_text().c_str()));
 	}
-	pSequence->getInitCalc()->setBase(base);
+	m_SMRSequenceList.push_back(pSequence);
+	m_baseList.push_back(base);
 	RDOParser::s_parser()->insertChanges(pSequence->src_text() + ".Seed", rdo::format("%d", base));
 }
 
