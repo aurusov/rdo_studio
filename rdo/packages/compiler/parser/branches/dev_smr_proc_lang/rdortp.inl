@@ -60,13 +60,13 @@ inline void RDORTPResType::end()
 	switch (m_type)
 	{
 	case simple:
-		m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceType>::create(m_number).interface_cast<rdo::runtime::IResourceType>();
+		m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceType>::create(m_number, m_pRuntime).interface_cast<rdo::runtime::IResourceType>();
 		break;
 	case procRes:
-		m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeProccess>::create(m_number).interface_cast<rdo::runtime::IResourceType>();
+		m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeProccess>::create(m_number, m_pRuntime).interface_cast<rdo::runtime::IResourceType>();
 		break;
 	case procTran:
-		m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeTransact>::create(m_number).interface_cast<rdo::runtime::IResourceType>();
+		m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeTransact>::create(m_number, m_pRuntime).interface_cast<rdo::runtime::IResourceType>();
 		break;
 	default:
 		NEVER_REACH_HERE;
