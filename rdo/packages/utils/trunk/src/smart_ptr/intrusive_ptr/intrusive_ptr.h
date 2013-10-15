@@ -69,7 +69,7 @@ public:
 	intrusive_ptr<P> object_dynamic_cast() const;
 
 	template <class P>
-	interface_ptr<P> interface_cast();
+	interface_ptr<P> interface_cast() const;
 
 	template <class P>
 	interface_ptr<P> interface_dynamic_cast() const;

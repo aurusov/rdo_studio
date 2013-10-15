@@ -151,7 +151,7 @@ inline intrusive_ptr<P> intrusive_ptr<T>::object_dynamic_cast() const
 
 template<class T>
 template<class P>
-inline interface_ptr<P> intrusive_ptr<T>::interface_cast()
+inline interface_ptr<P> intrusive_ptr<T>::interface_cast() const
 {
 	return interface_ptr<P>(static_cast<PTR(P)>(m_object), static_cast<LPIRefCounter>(m_object));
 }
