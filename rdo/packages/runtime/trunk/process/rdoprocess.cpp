@@ -122,7 +122,6 @@ LPRDOResource RDOPROCTransact::clone(CREF(LPRDORuntime) pRuntime) const
 {
 	LPRDOResource pResource = rdo::Factory<RDOPROCTransact>::create(pRuntime, getParamList(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 	ASSERT(pResource);
-	pRuntime->insertNewResource(pResource);
 	return pResource;
 }
 
@@ -145,7 +144,6 @@ LPRDOResource RDOPROCResource::clone(CREF(LPRDORuntime) pRuntime) const
 {
 	LPRDOResource pResource = rdo::Factory<RDOPROCResource>::create(pRuntime, getParamList(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 	ASSERT(pResource);
-	pRuntime->insertNewResource(pResource);
 	return pResource;
 }
 

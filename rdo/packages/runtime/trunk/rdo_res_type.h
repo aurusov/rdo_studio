@@ -21,6 +21,9 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+class RDOResourceTypeList;
+typedef  rdo::intrusive_ptr<RDOResourceTypeList>  LPRDOResourceTypeList;
+
 class RDOResourceTypeList
 	: public RDOType
 	, public IResourceType
@@ -34,15 +37,18 @@ public:
 	virtual ResCIterator res_begin() const;
 	virtual ResCIterator res_end  () const;
 
-	virtual void eraseRes(CREF(rdo::runtime::LPRDOResource) pResource);
+	virtual void          eraseRes(CREF(LPRDOResource) pResource);
+	LPRDOResourceTypeList clone   (CREF(LPRDORuntime) pRuntime) const;
 
 protected:
-	RDOResourceTypeList(ruint number, CREF(rdo::runtime::LPRDORuntime) pRuntime);
+	RDOResourceTypeList(ruint number, CREF(LPRDORuntime) pRuntime);
 	virtual ~RDOResourceTypeList();
 
-	void insertNewResource(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(rdo::runtime::LPRDOResource) pResource);
+	void insertNewResource(CREF(LPRDORuntime) pRuntime, CREF(LPRDOResource) pResource);
 
-	typedef  std::list<rdo::runtime::LPRDOResource> ResourceList;
+	virtual LPRDOResourceTypeList cloneTypeOnly(CREF(LPRDORuntime) pRuntime) const = 0;
+
+	typedef  std::list<LPRDOResource> ResourceList;
 	ResourceList m_resourceList;
 };
 
@@ -58,13 +64,13 @@ public:
 private:
 	//! Конструктор
 	//! \param number - Целочисленный идентификатор
-	RDOResourceTypeListT(ruint number, rdo::runtime::LPRDORuntime pRuntime);
+	RDOResourceTypeListT(ruint number, LPRDORuntime pRuntime);
 	virtual ~RDOResourceTypeListT();
+
+	virtual LPRDOResourceTypeList cloneTypeOnly(CREF(LPRDORuntime) pRuntime) const;
 
 	DECLARE_IResourceType;
 };
-
-typedef  rdo::intrusive_ptr<RDOResourceTypeList>  LPRDOResourceTypeList;
 
 //! Тип ресурсов для создания обычных ресурсов РДО
 //! \details Создает ресурсы, которые могут быть релевантны активностям и

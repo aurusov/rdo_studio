@@ -10,15 +10,16 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-RDOResourceTypeList::RDOResourceTypeList(ruint number, CREF(rdo::runtime::LPRDORuntime) pRuntime)
-: RDOType           (t_pointer)
-, RDOTraceableObject(false, number, rdo::toString(number + 1))
+RDOResourceTypeList::RDOResourceTypeList(ruint number, CREF(LPRDORuntime) pRuntime)
+	: RDOType           (t_pointer)
+	, RDOTraceableObject(false, number, rdo::toString(number + 1))
 {
 	rdo::intrusive_ptr<RDOResourceTypeList> pThis(this);
 	ASSERT(pThis);
@@ -28,15 +29,23 @@ RDOResourceTypeList::RDOResourceTypeList(ruint number, CREF(rdo::runtime::LPRDOR
 RDOResourceTypeList::~RDOResourceTypeList()
 {}
 
-void RDOResourceTypeList::insertNewResource(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(rdo::runtime::LPRDOResource) pResource)
+void RDOResourceTypeList::insertNewResource(CREF(LPRDORuntime) pRuntime, CREF(LPRDOResource) pResource)
 {
 	ASSERT(pRuntime);
 	ASSERT(pResource);
+
+#ifdef _DEBUG
+	BOOST_FOREACH(const LPRDOResource& resource, m_resourceList)
+	{
+		ASSERT(resource->getTraceID() != pResource->getTraceID());
+	}
+#endif // _DEBUG
+
 	m_resourceList.push_back(pResource);
 	pRuntime->insertNewResource(pResource);
 }
 
-void RDOResourceTypeList::eraseRes(CREF(rdo::runtime::LPRDOResource) pResource)
+void RDOResourceTypeList::eraseRes(CREF(LPRDOResource) pResource)
 {
 	m_resourceList.remove(pResource);
 }
@@ -49,6 +58,17 @@ IResourceType::ResCIterator RDOResourceTypeList::res_begin() const
 IResourceType::ResCIterator RDOResourceTypeList::res_end() const
 {
 	return m_resourceList.end();
+}
+
+LPRDOResourceTypeList RDOResourceTypeList::clone(CREF(LPRDORuntime) pRuntime) const
+{
+	LPRDOResourceTypeList type = cloneTypeOnly(pRuntime);
+	ASSERT(type);
+	BOOST_FOREACH(const LPRDOResource& resource, m_resourceList)
+	{
+		type->insertNewResource(pRuntime, resource->clone(pRuntime));
+	}
+	return type;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

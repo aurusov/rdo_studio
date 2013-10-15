@@ -18,6 +18,7 @@
 	#include <float.h>
 #endif // COMPILER_GCC
 #include <iomanip>
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/debug/rdodebug.h"
 #include "utils/src/animation/rdoanimation.h"
@@ -386,25 +387,19 @@ LPRDORuntime RDORuntime::clone() const
 void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 {
 	ASSERT(pOther);
+	ASSERT(m_resourceTypeList.empty());
 
-	ruint size = pOther->m_resourceListByID.size();
-	for (ruint i = 0; i < size; ++i)
+	LPRDORuntime pThis(const_cast<PTR(RDORuntime)>(this));
+
+	BOOST_FOREACH(const LPRDOResourceTypeList& pRTP, pOther->m_resourceTypeList)
 	{
-		if (pOther->m_resourceListByID.at(i) == LPRDOResource(NULL))
-		{
-			m_resourceListByID.push_back(NULL);
-		}
-		else
-		{
-			// вставка ресурса в контейнер m_resourceListByID нового RDORuntime произойдет в его конструкторе
-			pOther->m_resourceListByID.at(i)->clone(this);
-			m_sizeofSim += sizeof(RDOResource) + sizeof(void*) * 2;
-		}
+		pRTP->clone(pThis);
 	}
-	m_constantList      = pOther->m_constantList;
+
+	m_constantList         = pOther->m_constantList;
 	m_patternParameterList = pOther->m_patternParameterList;
 	m_resultList           = pOther->m_resultList;
-	m_pThreadProxy    = pOther->m_pThreadProxy;
+	m_pThreadProxy         = pOther->m_pThreadProxy;
 	setCurrentTime(pOther->getCurrentTime());
 
 	parent_type::copyFrom(pOther.object_parent_cast<parent_type>());

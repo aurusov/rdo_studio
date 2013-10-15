@@ -24,16 +24,16 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOCalcCreateResource
 // --------------------------------------------------------------------------------
 RDOCalcCreateResource::RDOCalcCreateResource(
-	CREF(LPIResourceType) pType,
+	ruint resourceTypeID,
 	CREF(std::vector<RDOValue>) rParamsCalcs,
 	rbool traceFlag,
 	rbool permanentFlag,
 	ruint relResID
 )
-	: m_pResType     (pType        )
-	, m_traceFlag    (traceFlag    )
-	, m_permanentFlag(permanentFlag)
-	, m_relResID     (relResID     )
+	: m_resourceTypeID(resourceTypeID)
+	, m_traceFlag     (traceFlag     )
+	, m_permanentFlag (permanentFlag )
+	, m_relResID      (relResID      )
 {
 	m_paramsCalcs.insert(m_paramsCalcs.begin(), rParamsCalcs.begin(), rParamsCalcs.end());
 	// попытка создавать постоянные ресурсы динамически
@@ -42,7 +42,9 @@ RDOCalcCreateResource::RDOCalcCreateResource(
 
 RDOValue RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	LPRDOResource pResource = m_pResType->createRes(pRuntime, pRuntime->getResourceId(), m_paramsCalcs, m_traceFlag, m_permanentFlag);
+	const LPRDOResourceTypeList& resourceType = pRuntime->getResType(m_resourceTypeID);
+
+	LPRDOResource pResource = resourceType.interface_cast<IResourceType>()->createRes(pRuntime, pRuntime->getResourceId(), m_paramsCalcs, m_traceFlag, m_permanentFlag);
 	ASSERT(pResource);
 
 	if (m_relResID != ruint(~0))
@@ -50,7 +52,7 @@ RDOValue RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
 		pRuntime->getCurrentActivity()->setRelRes(m_relResID, pResource->getTraceID());
 	}
 
-	LPRDOType pType = m_pResType;
+	LPRDOType pType = resourceType;
 	ASSERT(pType);
 
 	return RDOValue(pType, pResource);

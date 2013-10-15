@@ -70,9 +70,10 @@ rbool RDOResource::operator!= (RDOResource &other)
 
 LPRDOResource RDOResource::clone(CREF(LPRDORuntime) pRuntime) const
 {
-	LPRDOResource pResource = rdo::Factory<RDOResource>::create(pRuntime, m_paramList, m_resType, getTraceID(), m_type, traceable(), m_temporary);
+	const LPRDOResourceTypeList& resourceType = pRuntime->getResType(m_type);
+	ASSERT(resourceType);
+	LPRDOResource pResource = rdo::Factory<RDOResource>::create(pRuntime, m_paramList, resourceType.interface_cast<IResourceType>(), getTraceID(), m_type, traceable(), m_temporary);
 	ASSERT(pResource);
-	pRuntime->insertNewResource(pResource);
 	return pResource;
 }
 

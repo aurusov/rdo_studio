@@ -212,11 +212,11 @@ private:
 	typedef  RDOSimulatorTrace                   parent_type;
 	typedef  std::list<LPRDOCalc>                CalcList;
 	typedef  std::vector<RDOValue>               ValueList;
-	typedef  std::vector<LPRDOResource>          ResourceListByID;
 	typedef  std::vector<LPRDOResourceTypeList>  ResourceTypeList;
+	typedef  std::vector<LPRDOResource>          ResourceListByID;
 
-	ResourceListByID    m_resourceListByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	ResourceTypeList    m_resourceTypeList;
+	ResourceListByID    m_resourceListByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
 	CalcList            m_initCalcList;
 	LPRDOMemoryStack    m_pMemoryStack;
 	FunBreakFlag        m_funBreakFlag;

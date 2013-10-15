@@ -39,4 +39,12 @@ inline LPRDOResource RDOResourceTypeListT<T>::createRes(CREF(LPRDORuntime) pRunt
 	return pResource;
 }
 
+template <class T>
+inline LPRDOResourceTypeList RDOResourceTypeListT<T>::cloneTypeOnly(CREF(LPRDORuntime) pRuntime) const
+{
+	LPRDOResourceTypeList type = rdo::Factory<RDOResourceTypeListT<T> >::create(getTraceID(), pRuntime);
+	ASSERT(type);
+	return type;
+}
+
 CLOSE_RDO_RUNTIME_NAMESPACE

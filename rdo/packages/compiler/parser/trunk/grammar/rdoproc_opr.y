@@ -375,9 +375,6 @@ dpt_process_line
 		LPRDORTPResType pParserType = pProc->getTransacType();
 		ASSERT(pParserType);
 		
-		rdo::runtime::LPIResourceType pType = pParserType->getRuntimeResType();
-		ASSERT(pType);
-
 		rbool permanentFlag = pParserType->isPermanent();
 		rbool traceFlag     = true;
 
@@ -386,7 +383,7 @@ dpt_process_line
 		paramList.push_back(rdo::runtime::RDOValue(0.0));
 
 		rdo::runtime::LPRDOCalcCreateResource pCreateAndGoOnTransactCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
-			pType,
+			pParserType->getNumber(),
 			paramList,
 			traceFlag,
 			permanentFlag
