@@ -17,13 +17,13 @@ def run_bison(yxPath, yPath, cppPath, name):
         yxPath = yxPath.replace("\\","\\\\")
         errr = errr.replace(yPath,yxPath)
 
-    strGRAM = open(cppPath, encoding = codepage).read()
+    if not errr.count("error"):
+        strGRAM = open(cppPath, encoding = codepage).read()
+        fin = open(cppPath, 'w', encoding = codepage)
+        fin.write( strGRAM.replace(yPath,yxPath) )
+        fin.close()
 
-    fin = open(cppPath, 'w', encoding = codepage)
-    fin.write( strGRAM.replace(yPath,yxPath) )
-    fin.close()
-
-    return re.sub(r"^([^:]*:)((\\\\?[^:\\]*)*):(([0-9]*).([0-9]*)-[0-9.]*)(.*)$", r"\1\2(\5,\6)\7", errr, flags=re.MULTILINE)
+    return re.sub(r"^([^:]*:)((\\\\?[^:\\]*)*):(([0-9]*).([0-9]*)-[0-9.]*)(.*)$", r"\1\2(\5)\7", errr, flags=re.MULTILINE)
 
 def main():
     parser = argparse.ArgumentParser(usage = argparse.SUPPRESS, description = "run bison twice for multipass compiler grammar files")
@@ -41,6 +41,8 @@ def main():
 
     print(toolname + ": " + "Executing bison...")
     cppPath = os.path.abspath(args.o1)
+    if os.path.exists(cppPath):
+        os.remove(cppPath)
     yPath   = os.path.abspath(args.y1)
     yxPath  = os.path.abspath(args.inputFile)
     print(toolname + ": " + "parsing " + yPath)
@@ -48,6 +50,8 @@ def main():
     out1 = run_bison(yxPath, yPath, cppPath, args.n1)
 
     cppPath = os.path.abspath(args.o2)
+    if os.path.exists(cppPath):
+        os.remove(cppPath)
     yPath   = os.path.abspath(args.y2)
     yxPath  = os.path.abspath(args.inputFile)
     print(toolname + ": " + "parsing " + yPath)
@@ -69,7 +73,9 @@ def main():
             if conend == -1:
                 conend = 0
             out1 = out1[:conend] + out1[conend:con].replace(yxPath, cppPath.replace(".cpp", ".output"), 1) + out1[con:]
-            
+
+        out1 = out1.replace(": error:"," : error C0000:")
+        out1 = out1.replace("\\\\","\\")
         print(out1)
         sys.exit(0)
     else:
