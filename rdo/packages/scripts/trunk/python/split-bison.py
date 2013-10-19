@@ -15,9 +15,9 @@ def divide(expr):
         posend = pos
         while brackets > 0:
             posend += 1
-            if f1[posend] is '{':
+            if f1[posend] == '{':
                 brackets += 1
-            if f1[posend] is '}':
+            if f1[posend] == '}':
                 brackets -= 1
         f1 = f1[: posend] +       "/* -------------- END PASS 1 ------------- */" + f1[posend + 1 :]
         f1 = f1[: pos] + f1[pos + 1 :]
@@ -31,9 +31,9 @@ def divide(expr):
         posend = pos
         while brackets > 0:
             posend += 1
-            if f1[posend] is '{':
+            if f1[posend] == '{':
                 brackets += 1
-            if f1[posend] is '}':
+            if f1[posend] == '}':
                 brackets -= 1
         cut = f1[Ppos + 1 : posend]
         f1 = f1[: Ppos] + "\n" * cut.count("\n") + f1[posend + 1 :]
@@ -45,9 +45,9 @@ def divide(expr):
         posend = pos
         while brackets > 0:
             posend += 1
-            if f2[posend] is '{':
+            if f2[posend] == '{':
                 brackets += 1
-            if f2[posend] is '}':
+            if f2[posend] == '}':
                 brackets -= 1
         f2 = f2[: posend] +       "/* -------------- END PASS 2 ------------- */" + f2[posend + 1 :]
         f2 = f2[: pos] + f2[pos + 1 :]
@@ -61,9 +61,9 @@ def divide(expr):
         posend = pos
         while brackets > 0:
             posend += 1
-            if f2[posend] is '{':
+            if f2[posend] == '{':
                 brackets += 1
-            if f2[posend] is '}':
+            if f2[posend] == '}':
                 brackets -= 1
         cut = f2[Ppos + 1 : posend]
         f2 = f2[: Ppos] + "\n" * cut.count("\n") + f2[posend + 1 :]
@@ -100,9 +100,11 @@ def main():
     curline = 1
     while True:
         sym = inf.read(1)
+        symread = True
         
         if sym == ':' and brackets == 0:
             flag = 1
+            symread = False
 
         if sym == '\n':
             curline += 1
@@ -114,7 +116,7 @@ def main():
             if brackets < 0:
                 sys.exit(args.inputFile + "(" + str(curline) + "): error: braces nesting mismatch")
             
-        if sym == ';' and brackets == 0:
+        if sym == ':' and brackets == 0 and flag == 1 and symread or not sym:
             flag = 0
             blck = divide(blck)
             out1.write(blck[0])
