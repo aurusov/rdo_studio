@@ -20,6 +20,7 @@
 #include <boost/test/included/unit_test.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/file/rdofile.h"
 #include "utils/src/locale/rdolocale.h"
@@ -31,11 +32,11 @@ typedef std::vector<ruint>  ContainerInt;
 typedef const tstring contstr;
 
 const long int g_seed                 = 123456789;                  //!< база генератора
-contstr        g_filePath             = "../../test/sequences/";//!< путь к файлам относительно проекта
-contstr        g_fileNormalName       = "data_normal.txt";      //!< файл данных
-contstr        g_fileUniformName      = "data_uniform.txt";     //!< файл данных
-contstr        g_fileExponentialName  = "data_exponential.txt"; //!< файл данных
-contstr        g_fileTriangularName   = "data_trinagular.txt";  //!< файл данных
+contstr        g_filePath             = "../../test/sequences/";    //!< путь к файлам относительно проекта
+contstr        g_fileNormalName       = "data_normal.txt";          //!< файл данных
+contstr        g_fileUniformName      = "data_uniform.txt";         //!< файл данных
+contstr        g_fileExponentialName  = "data_exponential.txt";     //!< файл данных
+contstr        g_fileTriangularName   = "data_trinagular.txt";      //!< файл данных
 
 const ruint    g_count                = 100000;                     //!< количество генерируемых данных
 const double   g_main                 = 10.0;                       //!< параметр закона экспоненциального и нормального
@@ -80,50 +81,55 @@ void onGenerateData(F binder, contstr g_fileName)
 	}
 }
 
-template <class T, class F, class contstr>
-void onCheckData(F binder, contstr g_fileName)
+template <class T, class F>
+void onCheckData(F binder, contstr& g_fileName)
 {
-	std::ifstream stream(g_fileName.c_str());
-	BOOST_CHECK(stream.good());
-	Container orig;
-	while (stream.good())
-	{
-		double value;
-		stream >> value;
-		std::stringstream s;
-		s.precision(g_precision);
-		s << value;
-		s >> value;
-		orig.push_back(value);
-	}
-
-	Container test;
-	test.reserve(g_count);
 	T sequence(g_seed);
-	for (ruint i = 0; i < g_count; ++i)
-	{
-		std::stringstream s;
-		s.precision(g_precision);
-		s << binder.operator()(&sequence);
-		double value;
-		s >> value;
-		test.push_back(value);
-	}
+	std::ifstream stream(g_fileName.c_str());
 
-	Container::const_iterator origIt = orig.begin();
-	stream.precision(g_precision);
-	STL_FOR_ALL(test, it)
+	const boost::posix_time::time_duration testDuration = boost::posix_time::microseconds(100000);
+	unsigned int minTestCount = 100;
+
+	boost::posix_time::ptime testStart = boost::posix_time::microsec_clock::local_time();
+	while (boost::posix_time::microsec_clock::local_time() - testStart < testDuration)
 	{
-		BOOST_CHECK(origIt != orig.end());
-		rbool check = *it == *origIt;
-		BOOST_CHECK(check);
-		if (!check)
+		for (unsigned int i = 0; i < minTestCount; ++i)
 		{
-			std::cout.precision(g_precision);
-			std::cout << *it << std::endl;
-			std::cout << *origIt << std::endl;
+			if (!stream.good())
+				return;
+
+			double valueOriginal;
+			stream >> valueOriginal;
+
+			if (!stream.good())
+				return;
+
+			qqq++;
+
+			{
+				std::stringstream s;
+				s.precision(g_precision);
+				s << valueOriginal;
+				s >> valueOriginal;
+			}
+
+			double valueTest;
+
+			{
+				std::stringstream s;
+				s.precision(g_precision);
+				s << binder.operator()(&sequence);
+				s >> valueTest;
+			}
+
+			rbool check = valueOriginal == valueTest;
+			BOOST_CHECK(check);
+			if (!check)
+			{
+				std::cout.precision(g_precision);
+				std::cout << valueOriginal << " != " << valueTest << std::endl;
+			}
 		}
-		++origIt;
 	}
 }
 
