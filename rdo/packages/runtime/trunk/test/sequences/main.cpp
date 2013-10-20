@@ -29,14 +29,13 @@
 
 typedef std::vector<double> Container;
 typedef std::vector<ruint>  ContainerInt;
-typedef const tstring contstr;
 
-const long int g_seed                 = 123456789;                  //!< база генератора
-contstr        g_filePath             = "../../test/sequences/";    //!< путь к файлам относительно проекта
-contstr        g_fileNormalName       = "data_normal.txt";          //!< файл данных
-contstr        g_fileUniformName      = "data_uniform.txt";         //!< файл данных
-contstr        g_fileExponentialName  = "data_exponential.txt";     //!< файл данных
-contstr        g_fileTriangularName   = "data_trinagular.txt";      //!< файл данных
+const long int     g_seed                = 123456789;               //!< база генератора
+const std::string  g_filePath            = "../../test/sequences/"; //!< путь к файлам относительно проекта
+const std::string  g_fileNormalName      = "data_normal.txt";       //!< файл данных
+const std::string  g_fileUniformName     = "data_uniform.txt";      //!< файл данных
+const std::string  g_fileExponentialName = "data_exponential.txt";  //!< файл данных
+const std::string  g_fileTriangularName  = "data_trinagular.txt";   //!< файл данных
 
 const ruint    g_count                = 100000;                     //!< количество генерируемых данных
 const double   g_main                 = 10.0;                       //!< параметр закона экспоненциального и нормального
@@ -58,8 +57,8 @@ const double   g_ksiEtalon            = 50.9985;                    //!< таб�
 // --------------------------------------------------------------------------------
 // -------Templates
 // --------------------------------------------------------------------------------
-template <class T, class F, class contstr>
-void onGenerateData(F binder, contstr g_fileName)
+template <class T, class F>
+void onGenerateData(F binder, const std::string& g_fileName)
 {
 	if (rdo::File::exist(g_fileName))
 		return;
@@ -82,7 +81,7 @@ void onGenerateData(F binder, contstr g_fileName)
 }
 
 template <class T, class F>
-void onCheckData(F binder, contstr& g_fileName)
+void onCheckData(F binder, const std::string& g_fileName)
 {
 	T sequence(g_seed);
 	std::ifstream stream(g_fileName.c_str());
@@ -134,11 +133,11 @@ void onCheckData(F binder, contstr& g_fileName)
 template <class T,class F>
 double  area (F binder, double n, double m)
 {
-	double k = 1;
+	double k  = 1;
 	double S1 = 1;
 	double S2 = 0;
-	ruint t = 10;
-	while (fabs(S1-S2)/S1 > 0.01)
+	ruint  t  = 10;
+	while (fabs(S1-S2) / S1 > 0.01)
 	{
 		S2 = S1;
 		S1 = 0;
@@ -149,7 +148,7 @@ double  area (F binder, double n, double m)
 			S1 += k*(binder.operator()(n + g*(m-n)/t));
 			k = 1;
 		}
-		S1 *= (m-n)/t;
+		S1 *= (m-n) / t;
 		t  *= 10;
 	}
 	return S1;
@@ -160,31 +159,31 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 {
 	Container x;
 	x.reserve(g_countOfR + 1);
-	double elem = (right-left)/(g_countOfR*1.0);	//расстояние между точками на прямой
+	double elem = (right-left) / (g_countOfR*1.0); // расстояние между точками на прямой
 
 	for (ruint i = 0; i < g_countOfR + 1; ++i)
 	{
 		x.push_back(left + elem*i);
 	}
 
-	Container vb;									//контейнер для хранения выборки
+	Container vb;                                  // контейнер для хранения выборки
 	vb.reserve(g_countOfExamples);
 
-	G sequence(g_seed);								//выборка
+	G sequence(g_seed);                            // выборка
 	for (ruint i = 0; i < g_countOfExamples; ++i)
 	{
 		vb.push_back(binderSeq.operator()(&sequence));
 	}
 
-	Container f_vb;									//контейнер для храниения количества попаданий на интервал
+	Container f_vb;                                // контейнер для храниения количества попаданий на интервал
 	f_vb.reserve(g_countOfR);
 
-	for(ruint i = 0; i < g_countOfR; ++i)			//нахождение количества попаданий на интервал
+	for (ruint i = 0; i < g_countOfR; ++i)          // нахождение количества попаданий на интервал
 	{
 		ruint freq = 0;
-		for(ruint k = 0; k < g_countOfExamples; ++k)
+		for (ruint k = 0; k < g_countOfExamples; ++k)
 		{
-			if((vb[k] > x[i]) & (vb[k] <= x[i+1]))
+			if ((vb[k] > x[i]) & (vb[k] <= x[i+1]))
 			{
 				++freq;
 			}
@@ -201,13 +200,13 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 	}
 
 	double ksi = 0;
-	for(ruint i = 0; i < g_countOfR; ++i)
+	for (ruint i = 0; i < g_countOfR; ++i)
 	{
-		double ksiTemp = F_etalon[i]*g_countOfExamples;
-		ksi += (f_vb[i] - ksiTemp)*(f_vb[i] - ksiTemp)/ksiTemp;
+		double ksiTemp = F_etalon[i] * g_countOfExamples;
+		ksi += (f_vb[i] - ksiTemp) * (f_vb[i] - ksiTemp) / ksiTemp;
 	}
 	BOOST_CHECK(ksi <= g_ksiEtalon);
-			if (ksi >  g_ksiEtalon)
+	if (ksi > g_ksiEtalon)
 	{
 		std::cout << ksi << std::endl;
 	}
@@ -224,7 +223,7 @@ public:
 
 	double get(double x) const
 	{
-		return 1/(sqrt(2*pi)*m_var*exp((x - m_main)*(x - m_main)/(2*m_var*m_var)));
+		return 1 / (sqrt(2*pi) * m_var * exp((x - m_main) * (x - m_main) / (2*m_var*m_var)));
 	}
 
 private:
@@ -241,7 +240,7 @@ public:
 
 	double get(double x) const
 	{
-		return 1/(m_main*exp(x/m_main)); 
+		return 1 / (m_main * exp(x/m_main)); 
 	}
 
 private:
@@ -259,7 +258,7 @@ public:
 	double get(double x) const
 	{
 		UNUSED(x);
-		return 1/(m_max-m_min); 
+		return 1 / (m_max-m_min); 
 	}
 
 private:
@@ -282,11 +281,11 @@ public:
 		double temp;
 		if (x < 0)
 		{
-			temp = -2*x/((m_max - m_min)*m_min) + 2/(m_max - m_min);
+			temp = -2 * x / ((m_max - m_min) * m_min) + 2 / (m_max - m_min);
 		}
 		else
 		{
-			temp = -2*x/((m_max - m_min)*m_max) + 2/(m_max - m_min);
+			temp = -2 * x / ((m_max - m_min) * m_max) + 2 / (m_max - m_min);
 		}
 		return temp; 
 	}
@@ -316,11 +315,12 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 		(boost::bind(&rdo::runtime::RandGeneratorNormal::next, _1, g_main, g_var), g_filePath + g_fileNormalName);
 
 	SequenceNormal normal(g_main, g_var);
-	onCheckKsi<SequenceNormal, rdo::runtime::RandGeneratorNormal>
-		(boost::bind(&SequenceNormal::get, normal, _1),
+	onCheckKsi<SequenceNormal, rdo::runtime::RandGeneratorNormal>(
+		boost::bind(&SequenceNormal::get, normal, _1),
 		boost::bind(&rdo::runtime::RandGeneratorNormal::next, _1, g_main, g_var),
-		g_main-4*g_var,
-		g_main+4*g_var);
+		g_main - 4 * g_var,
+		g_main + 4 * g_var
+	);
 }
 // --------------------------------------------------------------------------------
 
@@ -339,11 +339,12 @@ BOOST_AUTO_TEST_CASE(RDOUniformTestCheck)
 		(boost::bind(&rdo::runtime::RandGeneratorUniform::next, _1, g_from, g_to), g_filePath + g_fileUniformName);
 
 	SequenceUniform uniform(g_from, g_to);
-	onCheckKsi<SequenceUniform, rdo::runtime::RandGeneratorUniform>
-		(boost::bind(&SequenceUniform::get, uniform, _1),
+	onCheckKsi<SequenceUniform, rdo::runtime::RandGeneratorUniform>(
+		boost::bind(&SequenceUniform::get, uniform, _1),
 		boost::bind(&rdo::runtime::RandGeneratorUniform::next, _1, g_from, g_to),
 		g_from,
-		g_to);
+		g_to
+	);
 }
 // --------------------------------------------------------------------------------
 
@@ -362,11 +363,12 @@ BOOST_AUTO_TEST_CASE(RDOExponentialTestCheck)
 		(boost::bind(&rdo::runtime::RandGeneratorExponential::next, _1, g_main), g_filePath + g_fileExponentialName);
 
 	SequenceExponential exponential(g_main);
-	onCheckKsi<SequenceExponential, rdo::runtime::RandGeneratorExponential>
-		(boost::bind(&SequenceExponential::get, exponential, _1),
+	onCheckKsi<SequenceExponential, rdo::runtime::RandGeneratorExponential>(
+		boost::bind(&SequenceExponential::get, exponential, _1),
 		boost::bind(&rdo::runtime::RandGeneratorExponential::next, _1, g_main),
 		0,
-		7*g_main);
+		7 * g_main
+	);
 }
 // --------------------------------------------------------------------------------
 
@@ -385,11 +387,12 @@ BOOST_AUTO_TEST_CASE(RDOTriangularTestCheck)
 		(boost::bind(&rdo::runtime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_filePath + g_fileTriangularName);
 
 	SequenceTriangular triangular(g_from, g_top, g_to);
-	onCheckKsi<SequenceTriangular, rdo::runtime::RandGeneratorTriangular>
-		(boost::bind(&SequenceTriangular::get, triangular, _1),
+	onCheckKsi<SequenceTriangular, rdo::runtime::RandGeneratorTriangular>(
+		boost::bind(&SequenceTriangular::get, triangular, _1),
 		boost::bind(&rdo::runtime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to),
 		g_from,
-		g_to);
+		g_to
+	);
 }
 // --------------------------------------------------------------------------------
 
