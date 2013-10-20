@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdotypes.h"
+#include "app/rdo_console/build_version.h"
 // --------------------------------------------------------------------------------
 
 #ifdef OST_WINDOWS
@@ -68,7 +69,6 @@ const tstring PLUGIN_START_COMMENT          = ": start plugin";
 const tstring PLUGIN_AUTO_EXIT_COMMENT      = ": plugin auto exit";
 
 // Auxiliary constants
-const tstring PROGRAM_VERSION               = "1.0.6";
 const tstring RDO_LANGUAGE_VERSION          = "2.0";
 
 const tstring RDO_SITE                      = "( http://rdo.rk9.bmstu.ru )";

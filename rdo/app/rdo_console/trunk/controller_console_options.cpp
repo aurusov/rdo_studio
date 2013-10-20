@@ -20,8 +20,7 @@
 
 using namespace rdo;
 
-const tstring program_description = PROGRAM_NAME + NOP_STRING + VERSION_COMMAND_SHORT +
-PROGRAM_VERSION + NOP_STRING + SYSTEM_OS + NOP_STRING + SYSTEM_ARCHITECTURES + NOP_STRING + RDO_SITE;
+const tstring program_description = PROGRAM_NAME + NOP_STRING + PROGRAM_VERSION + NOP_STRING + SYSTEM_OS + NOP_STRING + SYSTEM_ARCHITECTURES + NOP_STRING + RDO_SITE;
 
 ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[]) :
 	m_help(false),
