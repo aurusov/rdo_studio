@@ -104,8 +104,6 @@ void onCheckData(F binder, contstr& g_fileName)
 			if (!stream.good())
 				return;
 
-			qqq++;
-
 			{
 				std::stringstream s;
 				s.precision(g_precision);
