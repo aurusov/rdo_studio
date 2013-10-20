@@ -21,6 +21,7 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/math/constants/constants.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/file/rdofile.h"
 #include "utils/src/locale/rdolocale.h"
@@ -51,7 +52,6 @@ const ruint    g_precision            = 14;                         //!< точ�
 
 const ruint    g_countOfExamples      = 2000;                       //!< количество чисел в выборке
 const ruint    g_countOfR             = 39;                         //!< число разрядов
-const double   pi                     = 3.141592653;                //!< фундаментальная константа
 const double   g_ksiEtalon            = 50.9985;                    //!< табличное значение. 95% вероятность того, что это действительно тот самый закон распределения
 
 // --------------------------------------------------------------------------------
@@ -223,7 +223,7 @@ public:
 
 	double get(double x) const
 	{
-		return 1 / (sqrt(2*pi) * m_var * exp((x - m_main) * (x - m_main) / (2*m_var*m_var)));
+		return 1 / (sqrt(2 * boost::math::constants::pi<double>()) * m_var * exp((x - m_main) * (x - m_main) / (2*m_var*m_var)));
 	}
 
 private:
