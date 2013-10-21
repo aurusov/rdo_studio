@@ -49,7 +49,7 @@ AboutDialog::AboutDialog(QWidget* pParent)
 
 		.arg(version->text())
 
-		.arg(g_buildVersion)
+		.arg(QString::fromStdString(g_buildVersion))
 
 		.arg(!limitation.isEmpty()
 			? "\n(" + limitation + ")"
