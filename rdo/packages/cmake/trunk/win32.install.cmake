@@ -69,6 +69,8 @@ SET(CONFIG_DLL_R
     ${DLL_R_QT_CORE}
     ${DLL_R_QT_CUI}
     ${DLL_R_QT_WIDGETS}
+    ${DLL_GLES}
+    ${DLL_EGL}
     ${DLL_R_QWINDOWS}
     ${DLL_R_QMINIMAL}
     ${DLL_R_MSVCR}
