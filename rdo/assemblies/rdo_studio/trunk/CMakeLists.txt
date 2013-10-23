@@ -1,5 +1,5 @@
 #==============================================================================
-# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011-2013 Evgeny Proydakov <lord.tiran@gmail.com>
 #==============================================================================
 # Welcome to the CMake build system for RDO STUDIO (UNIX VERSION).
 # This is the main file where we prepare the general build environment
@@ -63,19 +63,10 @@ IF(NOT MSVC)
 #   SET(CDEFS "-m32 -o output32")
 ENDIF(NOT MSVC)
 
-SET(ENABLE_UNICODE FALSE)
-IF(NOT MSVC AND ENABLE_UNICODE)
-    ADD_DEFINITIONS(-DUNICODE)
-ENDIF(NOT MSVC AND ENABLE_UNICODE)
-
 SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
-
-IF(WIN32)
-    INCLUDE(win32.install)
-ENDIF()
 
 INCLUDE(CTest)
 ENABLE_TESTING()
@@ -137,6 +128,12 @@ SET(PROJECT_VERSION_LONG ${CMAKE_SVN_VERSION})
 
 #==============================================================================
 
+IF(WIN32)
+    INCLUDE(win32.install)
+ENDIF()
+
+#==============================================================================
+
 SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
 
 SET(SCRIPT_FILES
@@ -187,6 +184,9 @@ ADD_SUBDIRECTORY(${UI_QT_PATH})
 SET(APLICATIONS_DIRECTORY ${RDO_BASE_DIRECTORY}/app)
 ADD_SUBDIRECTORY(${APLICATIONS_DIRECTORY})
 
+SET(BUILD_RDO_CONSOLE TRUE)
+SET(BUILD_RDO_STUDIO  TRUE)
+
 #==============================================================================
 #---------------------------------- info --------------------------------------
 #==============================================================================
@@ -201,9 +201,8 @@ MESSAGE(STATUS "Summary of the build:")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
 MESSAGE(STATUS "APP VERSION:                  ${CMAKE_SVN_VERSION}")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
-MESSAGE(STATUS "ENABLE UNICODE:               ${ENABLE_UNICODE}")
-MESSAGE(STATUS ${BUILD_INFO_BAR})
-MESSAGE(STATUS "BUILD rdo console:            TRUE")
+MESSAGE(STATUS "BUILD rdo console:            ${BUILD_RDO_CONSOLE}")
+MESSAGE(STATUS "BUILD rdo studio:             ${BUILD_RDO_STUDIO}")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
 MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
