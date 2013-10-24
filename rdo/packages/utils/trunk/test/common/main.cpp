@@ -15,6 +15,7 @@
 #include <boost/regex.hpp>
 #define BOOST_TEST_MODULE RDOCommon_Test
 #include <boost/test/included/unit_test.hpp>
+#include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 #include "utils/src/file/rdofile.h"
@@ -148,7 +149,8 @@ BOOST_AUTO_TEST_CASE(RDOCommon_Time)
 {
 	rdo::Time timeValue = rdo::Time::local();
 	BOOST_CHECK(timeValue > s_createTestLocalTime);
-	std::cout << "Today:  " << timeValue.asString().c_str() << "  is not it?";
+	std::wcout << rdo::locale::convertToWStr(boost::str(
+		boost::format("Today: %1%, is not it?") % timeValue.asString())) << std::endl;
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDOCommon_Test
