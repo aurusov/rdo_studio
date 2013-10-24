@@ -11,7 +11,7 @@ namespace rdo
 {
 	namespace version
 	{
-		static const std::string g_appName("${CMAKE_PROJECT_NAME}");
+		static const std::string g_appName("${APP_NAME}");
 		static const std::string g_version("2.0");
 		static const std::string g_build  ("svn-${CMAKE_SVN_VERSION}");
 		static const std::string g_site   ("${ORG_WEBSITE}");
