@@ -71,9 +71,6 @@ const tstring PLUGIN_AUTO_EXIT_COMMENT      = ": plugin auto exit";
 // Auxiliary constants
 const tstring RDO_LANGUAGE_VERSION          = "2.0";
 
-const tstring RDO_SITE                      = "( http://rdo.rk9.bmstu.ru )";
-const tstring PROGRAM_NAME                  = "rdo console studio";
-
 const tstring NOP_STRING   = " ";
 const tstring COMMA_STRING = ",";
 

@@ -9,6 +9,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/thread.hpp>
+#include <boost/format.hpp>
 #include <boost/foreach.hpp>
 #include <boost/date_time.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -131,16 +132,17 @@ int main(int argc, PTR(char) argv[])
 
 	boost::posix_time::ptime endTime = boost::posix_time::microsec_clock::local_time();
 	ruint64 simulationTimeMillisecond = ( endTime - startTime ).total_milliseconds();
-	std::cout << "Total simulation time : " << simulationTimeMillisecond << " milliseconds" << std::endl;
+	std::wcout << rdo::locale::convertToWStr(boost::str(
+		boost::format("Total simulation time : %1% milliseconds") % simulationTimeMillisecond)) << std::endl;
 
 	if (simulationSuccessfully)
 	{
-		std::cout << "Simulation finished successfully" << std::endl;
+		std::wcout << rdo::locale::convertToWStr("Simulation finished successfully") << std::endl;
 		exitCode = TERMINATION_NORMAL;
 	}
 	else
 	{
-		std::cout << "Simulation completed with errors" << std::endl;
+		std::wcout << rdo::locale::convertToWStr("Simulation completed with errors") << std::endl;
 	}
 	return exitCode;
 }
@@ -188,7 +190,7 @@ bool run(PTR(rdo::console_controller) pAppController, REF(event_container) conta
 
 		if (pAppController->runtimeError())
 		{
-			std::cout << "Run-time error" << std::endl;
+			std::wcout << rdo::locale::convertToWStr("Run-time error") << std::endl;
 			exit(TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR);
 		}
 		process_event(pAppController, container);
@@ -206,7 +208,10 @@ void process_event(PTR(rdo::console_controller) pAppController, REF(event_contai
 		event_container::iterator it = container.begin();
 		if(it->first < runtime_time)
 		{
-			std::cout << "process event : " << "name : " << it->second->getName() << "  |  " << "time : " << it->second->getTime() << std::endl;
+			std::wcout << rdo::locale::convertToWStr(boost::str(
+				boost::format("process event : name : %1%  |  time : %2%")
+				% it->second->getName()
+				% it->second->getTime())) << std::endl;
 
 			rdo::event::types type = it->second->getType();
 

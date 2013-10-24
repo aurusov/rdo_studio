@@ -10,6 +10,10 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
+#include <boost/format.hpp>
+#include <fcntl.h>
+#include <io.h>
+#include <stdio.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdomacros.h"
 #include "utils/src/locale/rdolocale.h"
@@ -20,17 +24,20 @@
 
 using namespace rdo;
 
-const tstring program_description = PROGRAM_NAME + NOP_STRING + g_buildVersion + NOP_STRING + SYSTEM_OS + NOP_STRING + SYSTEM_ARCHITECTURES + NOP_STRING + RDO_SITE;
-
 ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[]) :
 	m_help(false),
 	m_convert(false)
 {
-	po::options_description options_header(program_description);
-	
+	po::options_description options_header(boost::str(boost::format("%1% %2% %3% (%4%)")
+		% rdo::version::g_versionName
+		% SYSTEM_OS
+		% SYSTEM_ARCHITECTURES
+		% rdo::version::g_site
+	));
+
 	po::options_description options_general("General options");
 	createGeneralOptions(options_general);
-	
+
 	po::options_description options_convertor("Convertor options");
 	createConvertorOptions(options_convertor);
 
@@ -49,7 +56,8 @@ ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[]) :
 	}
 	catch (CREF(std::exception) e)
 	{
-		std::cout << "command line error: " << e.what() << std::endl;
+		std::wcout << rdo::locale::convertToWStr(boost::str(
+			boost::format("command line error: %1%") % e.what())) << std::endl;
 	}
 }
 
@@ -60,20 +68,22 @@ ControllerConsoleOptions::~ControllerConsoleOptions()
 void ControllerConsoleOptions::parseOptions()
 {
 	if ((m_variables.empty() || m_variables.count(HELP_COMMAND)) && 
-            !m_variables.count(LANGUAGE_COMMAND) &&
-            !m_variables.count(VERSION_COMMAND))
+		    !m_variables.count(LANGUAGE_COMMAND) &&
+		    !m_variables.count(VERSION_COMMAND))
 	{
-		std::cout << m_options << std::endl;
+		std::stringstream stream;
+		stream << m_options;
+		std::wcout << rdo::locale::convertToWStr(stream.str()) << std::endl;
 		m_help = true;
 	}
 	else if (m_variables.count(LANGUAGE_COMMAND))
 	{
-		std::cout << "rdo language v" + RDO_LANGUAGE_VERSION << " ( supported rdox )" << std::endl;
+		std::wcout << rdo::locale::convertToWStr("rdo language v" + RDO_LANGUAGE_VERSION + " ( supported rdox )") << std::endl;
 		m_help = true;
 	}
 	else if (m_variables.count(VERSION_COMMAND))
 	{
-		std::cout << PROGRAM_NAME + NOP_STRING + VERSION_COMMAND_SHORT + g_buildVersion << std::endl;
+		std::wcout << rdo::locale::convertToWStr(rdo::version::g_versionName) << std::endl;
 		m_help = true;
 	}
 	else if(m_variables.count(CONVERTOR_COMMAND))
