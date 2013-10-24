@@ -1,3 +1,5 @@
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
 #include <boost/format.hpp>
@@ -28,6 +30,20 @@ namespace rdo
 		static const std::string g_comp("");
 #endif
 
+#ifdef OST_WINDOWS
+		static const std::string g_systemOS("win");
+#elif defined(OST_LINUX)
+		static const std::string g_systemOS("linux");
+#endif
+
+#ifdef ARCHITECTURE_AMD64
+		static const std::string g_systemArchitectures("AMD64");
+#elif defined(ARCHITECTURE_X86)
+		static const std::string g_systemArchitectures("x86");
+#elif defined(ARCHITECTURE_ARM)
+		static const std::string g_systemArchitectures("arm");
+#endif
+
 #ifdef RDO_LICENSE_ACADEMIC
 		static const std::string g_academic("не для коммерческого использования");
 #else
@@ -40,12 +56,14 @@ namespace rdo
 		static const std::string g_limitRes("");
 #endif
 
-		static const std::string g_versionName = boost::str(boost::format("%1% %2%%3%-version %4% (build %5%)%6%")
+		static const std::string g_versionName = boost::str(boost::format("%1% %2%%3%-version %4% (build %5%) %6%-%7%%8%")
 			% g_appName
 			% g_mt
 			% g_comp
 			% g_version
 			% g_build
+			% g_systemOS
+			% g_systemArchitectures
 			% (!g_academic.empty() || !g_limitRes.empty()
 				? "\n(" + g_academic + (!g_academic.empty() && !g_limitRes.empty() ? ", " : "") + g_limitRes + ")"
 				: ""

@@ -18,20 +18,6 @@
 #include "app/rdo_console/build_version.h"
 // --------------------------------------------------------------------------------
 
-#ifdef OST_WINDOWS
-const tstring SYSTEM_OS = "Windows";
-#elif defined( OST_LINUX )
-const tstring SYSTEM_OS = "Linux";
-#endif // OST_WINDOWS
-
-#ifdef ARCHITECTURE_AMD64
-const tstring SYSTEM_ARCHITECTURES = "AMD64";
-#elif defined( ARCHITECTURE_X86 )
-const tstring SYSTEM_ARCHITECTURES = "x86";
-#elif defined( ARCHITECTURE_ARM )
-const tstring SYSTEM_ARCHITECTURES = "arm";
-#endif // ARCHITECTURE_AMD64
-
 // Input param constant
 const tstring MODEL_COMMAND                 = "input";
 const tstring SCRIPT_COMMAND                = "script";

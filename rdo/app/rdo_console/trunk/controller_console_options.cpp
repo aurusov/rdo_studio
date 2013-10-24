@@ -28,10 +28,8 @@ ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[]) :
 	m_help(false),
 	m_convert(false)
 {
-	po::options_description options_header(boost::str(boost::format("%1% %2% %3% (%4%)")
+	po::options_description options_header(boost::str(boost::format("%1%\n\n%2%")
 		% rdo::version::g_versionName
-		% SYSTEM_OS
-		% SYSTEM_ARCHITECTURES
 		% rdo::version::g_site
 	));
 
@@ -43,12 +41,12 @@ ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[]) :
 
 	po::options_description options_additional("Compatibility options (skipped in console version)");
 	createAdditionalOptions(options_additional);
-	
+
 	m_options.add(options_header);
 	m_options.add(options_general);
 	m_options.add(options_convertor);
 	m_options.add(options_additional);
-	
+
 	try
 	{
 		po::store(po::parse_command_line(argc, argv, m_options), m_variables);
