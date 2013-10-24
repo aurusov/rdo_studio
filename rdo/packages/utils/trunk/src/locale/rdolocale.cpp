@@ -9,9 +9,16 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
+#include "utils/src/common/platform.h"
+// ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/math/special_functions/nonfinite_num_facets.hpp>
 #include <iostream>
+
+#ifdef OST_WINDOWS
+#include <fcntl.h>
+#include <io.h>
+#endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/locale/rdolocale.h"
 // --------------------------------------------------------------------------------
@@ -28,6 +35,10 @@ void locale::init()
 	std::cerr.imbue(globalLocale);
 	std::clog.imbue(globalLocale);
 	std::cin.imbue (globalLocale);
+
+#ifdef OST_WINDOWS
+	_setmode(_fileno(stdout), _O_U16TEXT);
+#endif
 }
 
 locale& locale::get()
