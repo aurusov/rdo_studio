@@ -150,7 +150,7 @@ rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 	}
 
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
-		getType()->getRuntimeResType(),
+        getType()->getNumber(),
 		paramList,
 		getTrace(),
 		getType()->isPermanent()
