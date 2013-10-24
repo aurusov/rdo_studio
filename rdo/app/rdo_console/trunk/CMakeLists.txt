@@ -13,7 +13,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
 CONFIGURE_FILE(${CMAKE_MODULE_PATH}/build.version.cmake ${CMAKE_CURRENT_SOURCE_DIR}/build_version.h)
 SET(RESOURCES_FILES
-        build_version.h
+	build_version.h
 )
 
 SET(CODE_FILES
