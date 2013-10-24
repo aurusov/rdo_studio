@@ -21,7 +21,10 @@ def run_bison(yxPath, yPath, cppPath, name, bison):
             fin.write( strGRAM.replace(yPath,yxPath) )
             fin.close()
 
-    return errr
+    if sys.platform == 'win32': 
+        return re.sub(r"^([^:]*:)((\\\\?[^:\\]*)*):(([0-9]*).([0-9]*)-[0-9.]*)(.*)$", r"\1\2(\5)\7", errr, flags=re.MULTILINE)
+    else:
+        return re.sub(r"^(.*)(\.yx)(:)([0-9]*)\.([0-9]*)(-[0-9]*)?(:.*)$", r"\1\2\3\4:\5\7", errr, flags=re.MULTILINE)
 
 def main():
     parser = argparse.ArgumentParser(usage = argparse.SUPPRESS, description = "run bison twice for multipass compiler grammar files")
