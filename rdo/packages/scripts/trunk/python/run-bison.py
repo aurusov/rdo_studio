@@ -22,7 +22,7 @@ def run_bison(yxPath, yPath, cppPath, name, bison):
             fin.close()
 
     if sys.platform == 'win32': 
-        return re.sub(r"^([^:]*:)((\\\\?[^:\\]*)*):(([0-9]*).([0-9]*)-[0-9.]*)(.*)$", r"\1\2(\5)\7", errr, flags=re.MULTILINE)
+        return re.sub(r"^(.*)(\.yx)(:)([0-9]*)\.([0-9]*)(-[0-9]*)?(:.*)$", r"\1\2(\4)\7",    errr, flags=re.MULTILINE)
     else:
         return re.sub(r"^(.*)(\.yx)(:)([0-9]*)\.([0-9]*)(-[0-9]*)?(:.*)$", r"\1\2\3\4:\5\7", errr, flags=re.MULTILINE)
 
