@@ -148,8 +148,8 @@ BOOST_AUTO_TEST_CASE(RDOCommon_Time)
 {
 	rdo::Time timeValue = rdo::Time::local();
 	BOOST_CHECK(timeValue > s_createTestLocalTime);
-	std::wcout << rdo::locale::convertToWStr(boost::str(
-		boost::format("Today: %1%, is not it?") % timeValue.asString())) << std::endl;
+	//std::wcout << rdo::locale::convertToWStr(boost::str(
+	//	boost::format("Today: %1%, is not it?") % timeValue.asString())) << std::endl;
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDOCommon_Test
