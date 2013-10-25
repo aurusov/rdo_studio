@@ -18,7 +18,7 @@ SET(PROJECT_VENDOR_LONG  "BMSTU")
 SET(PROJECT_COPYRIGHT    "Copyright ${PROJECT_VENDOR_LONG}")
 SET(PROJECT_VERSION      "{TEMP}")
 SET(PROJECT_VERSION_LONG "{TEMP}")
-SET(ORG_WEBSITE          "http://rdo.rk9.bmstu.ru/")
+SET(ORG_WEBSITE          "http://rdo.rk9.bmstu.ru")
 
 #==============================================================================
 
