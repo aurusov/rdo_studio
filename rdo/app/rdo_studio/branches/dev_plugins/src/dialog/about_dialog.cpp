@@ -10,6 +10,8 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/format.hpp>
+#include <boost/algorithm/string/erase.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dialog/about_dialog.h"
 #include "app/rdo_studio/res/build_version.h"
@@ -20,42 +22,14 @@ AboutDialog::AboutDialog(QWidget* pParent)
 {
 	setupUi(this);
 
-	QString limitation;
+	version->setText(QString("Система имитационного моделирования\n\n%1")
+		.arg(QString::fromStdString(rdo::version::g_versionName)));
 
-#ifdef RDO_LICENSE_ACADEMIC
-		limitation += "не для коммерческого использования";
-#endif
-
-#ifdef RDO_LIMIT_RES
-		if (!limitation.isEmpty())
-			limitation += ", ";
-
-		limitation += "ограниченная версия";
-#endif
-
-	version->setText(QString("Система имитационного моделирования\n\nRAO-studio   %1%2-%3 (build %4)%5")
-
-#ifdef RDO_MT
-		.arg("mt")
-#else
-		.arg("st")
-#endif
-
-#ifdef RDOSIM_COMPATIBLE
-		.arg("-comp")
-#else
-		.arg("")
-#endif
-
-		.arg(version->text())
-
-		.arg(g_buildVersion)
-
-		.arg(!limitation.isEmpty()
-			? "\n(" + limitation + ")"
-			: ""
-		)
-	);
+	www->setText(QString::fromStdString(boost::str(
+		boost::format("<A HREF=\"%1%\">%2%</A>")
+		% rdo::version::g_site
+		% boost::algorithm::erase_first_copy(rdo::version::g_site, "http://")
+	)));
 
 	if (pParent)
 	{
