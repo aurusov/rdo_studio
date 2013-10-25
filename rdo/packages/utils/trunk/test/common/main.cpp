@@ -12,7 +12,6 @@
 #include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/regex.hpp>
 #define BOOST_TEST_MODULE RDOCommon_Test
 #include <boost/test/included/unit_test.hpp>
 #include <boost/format.hpp>
