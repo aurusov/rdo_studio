@@ -11,9 +11,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
 #include <boost/format.hpp>
-#include <fcntl.h>
-#include <io.h>
-#include <stdio.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdomacros.h"
 #include "utils/src/locale/rdolocale.h"
