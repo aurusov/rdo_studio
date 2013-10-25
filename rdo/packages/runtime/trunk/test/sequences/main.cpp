@@ -303,7 +303,7 @@ BOOST_AUTO_TEST_SUITE(RDOSequencesTest)
 // --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
 {
-	rdo::locale::init();
+	rdo::locale::initForTest();
 
 	onGenerateData<rdo::runtime::RandGeneratorNormal>
 		(boost::bind(&rdo::runtime::RandGeneratorNormal::next, _1, g_main, g_var), g_filePath + g_fileNormalName);

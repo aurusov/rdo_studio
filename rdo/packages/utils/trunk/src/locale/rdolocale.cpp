@@ -28,6 +28,15 @@ namespace rdo
 
 void locale::init()
 {
+	initForTest();
+
+#ifdef OST_WINDOWS
+	_setmode(_fileno(stdout), _O_U16TEXT);
+#endif
+}
+
+void locale::initForTest()
+{
 	std::locale globalLocale(get().generate("en_EN.UTF-8"), new boost::math::nonfinite_num_put<char>);
 	std::locale::global(globalLocale);
 
@@ -35,10 +44,6 @@ void locale::init()
 	std::cerr.imbue(globalLocale);
 	std::clog.imbue(globalLocale);
 	std::cin.imbue (globalLocale);
-
-#ifdef OST_WINDOWS
-	_setmode(_fileno(stdout), _O_U16TEXT);
-#endif
 }
 
 locale& locale::get()

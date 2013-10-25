@@ -26,6 +26,7 @@ namespace rdo
 	{
 	public:
 		static void    init();
+		static void    initForTest();
 		static locale& get ();
 
 		std::locale generate(const std::string& name);
