@@ -1,7 +1,7 @@
 import subprocess, os, argparse, re, sys
 
 def run_bison(yxPath, yPath, cppPath, name, bison):
-    procname = bison + " -p" + name + " \"" + yPath + "\" -o\"" + cppPath + "\""
+    procname = os.path.abspath(bison) + " -p" + name + " \"" + yPath + "\" -o\"" + cppPath + "\""
     
     output, errr = subprocess.Popen(procname,stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True).communicate()
 
