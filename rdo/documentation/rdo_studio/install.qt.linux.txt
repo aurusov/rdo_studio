@@ -20,3 +20,5 @@ PATH=$PATH:$QTDIR/bin
 
 Их инициализацию лучше прописать в .bashrc
 
+6. Под Debian Wheezy еще необходима библиотека GL. Пакет libgl1-mesa-dev содержит достаточную реализацию OpenGL API.
+apt-get install libgl1-mesa-dev
