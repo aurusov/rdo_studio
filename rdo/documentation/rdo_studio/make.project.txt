@@ -23,8 +23,11 @@ make -j4
 
 1.2 Для Windows
 1.2.1 Только конфигурация через cmake
-1.2.1.1 Открыть консоль
+1.2.1.1 Открыть консоль. Для разных версий Visual Studio это могут быть разные файлы
+
 Пуск\Microsoft Visual Studio 2008\Visual Studio Tools\Visual Studio 2008 Command Prompt
+или
+Пуск\Microsoft Visual Studio 2012\Visual Studio Tools\Developer Command Prompt for VS2012
 
 1.2.1.2
 cd <корень_проекта>, например 'cd C:\rdo\rdo_studio'
