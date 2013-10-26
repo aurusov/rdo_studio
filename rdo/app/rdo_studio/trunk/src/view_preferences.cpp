@@ -13,7 +13,6 @@
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/view_preferences.h"
-#include "app/rdo_studio/res/build_version.h"
 #include "app/rdo_studio/src/application.h"
 #include "simulator/report/build_edit_line_info.h"
 // --------------------------------------------------------------------------------
