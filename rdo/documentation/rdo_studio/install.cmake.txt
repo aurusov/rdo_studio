@@ -5,7 +5,7 @@ CMake - the cross-platform, open-source build system
 1. Для Windows
 1.1. Скачать и установить CMake
     http://www.cmake.org/
-    текущая версия 2.8.11
+    тестировалось на версии 2.8.12
 
 1.2 Путь к cmake должен быть в PATH
 set PATH=D:\Program Files\CMake 2.8\bin;%PATH%
