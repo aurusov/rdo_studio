@@ -6,15 +6,15 @@ Boost - The Boost C++ libraries are a set of free software libraries that extend
 
 1. Скачиваем boost
     http://www.boost.org/
-    текущая версия 1.53
+    проверялось на версии 1.54
 
-    Для Windows предположим, что разархивировали в 'с:\boost_1_49_0'
+    Для Windows предположим, что разархивировали в 'с:\boost_1_54_0'
     Для GNU/Linux предположим, что разархивировали в '/home/user/boost'
 
 2. Собираем статические либы буста
-2.1. Для Windows (из Far'а или cmd.exe):
+2.1. Для Windows
 
-    cd c:\boost_1_53_0
+    cd c:\boost_1_54_0
     bootstrap.bat
 
     Если вывелось
@@ -37,7 +37,7 @@ Boost - The Boost C++ libraries are a set of free software libraries that extend
 
 2.3. Для Windows запускаем bjam.exe с параметрами (можно запускать b2.exe - разницы нет)
 
-2.3.1 Для компиляции библиотек под Visual Studio 2008
+2.3.1 Visual Studio (дочитай до конца этой главы)
 
     bjam debug link=static threading=multi
     bjam release link=static threading=multi
@@ -54,9 +54,11 @@ Boost - The Boost C++ libraries are a set of free software libraries that extend
     bjam debug link=static threading=multi -j 4
     bjam release link=static threading=multi -j 4
 
-    Собранные либы лежат в 'C:\boost_1_49_0\stage\lib'
+    Собранные либы лежат в 'C:\boost_1_54_0\stage\lib'
 
-2.3.2 Для MinGW в корне буста находим файл project-config.jam и заменяем директиву using на using gcc ;
+2.3.2 MinGW
+
+    В корне буста находим файл project-config.jam и заменяем директиву using на using gcc ;
 
     Далее запускаем blam как и для Visual Studio:
     bjam debug link=static threading=multi
@@ -69,7 +71,7 @@ Boost - The Boost C++ libraries are a set of free software libraries that extend
     C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin
 
 
-2.3.3 Для GNU/Linux запускаем bjam с параметрами
+2.4 Для GNU/Linux запускаем bjam с параметрами
 
     ./b2 --layout=tagged --build-type=complete --prefix=/home/user/boost-install threading=multi -j 8 install
 
@@ -81,8 +83,8 @@ Boost - The Boost C++ libraries are a set of free software libraries that extend
     Tools/Options/Projects and Solutions/VC++ Directories
 
 	Platform             = Win32
-	Show directories for = Include files, добавляем с:\boost_1_53_0
-	Show directories for = Library files, добавляем с:\boost_1_53_0\stage\lib
+	Show directories for = Include files, добавляем с:\boost_1_54_0
+	Show directories for = Library files, добавляем с:\boost_1_54_0\stage\lib
 
     Теперь можно компилировать rdo_studio.
 
@@ -96,13 +98,13 @@ Boost - The Boost C++ libraries are a set of free software libraries that extend
 4. Если потребуется пересобрать буст, то
 
 4.1 bjam --clean-all
-4.2 удаляем папку lib из C:\boost_1_49_0\bin.v2
-4.3 удаляем папку lib из C:\boost_1_49_0\stage
+4.2 удаляем папку lib из C:\boost_1_54_0\bin.v2
+4.3 удаляем папку lib из C:\boost_1_54_0\stage
 
     и повторяем шаг 2
 
     PS: Уже не в первый раз понадобилось описание имён бибилиотек, вот оно
-    http://www.boost.org/doc/libs/1_49_0/more/getting_started/unix-variants.html#library-naming
+    http://www.boost.org/doc/libs/1_54_0/more/getting_started/unix-variants.html#library-naming
 
     PSS: Параметры запуска bjam
     http://www.boost.org/boost-build2/doc/html/bbv2/overview/invocation.html#bbv2.overview.invocation.properties
