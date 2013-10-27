@@ -30,8 +30,8 @@ qtmultimedia
 http://www.activestate.com/activeperl/downloads
 
 2.2 Установить Python
-http://www.python.org/download/
-(выбрать Add python.exe to PATH)
+http://www.python.org/download/releases/2.7.5/
+(выбрать Add python.exe to PATH или добавить самостоятельно)
 
 2.3 Установить Ruby
 http://www.rubyinstaller.org/downloads/
@@ -46,20 +46,33 @@ http://qt-project.org/wiki/jom
 Разархивировать в любую папку, например в C:\Program\jom
 Прописать путь в PATH
 
-3. Конфигурация и компиляция Qt
-3.1 Открыть 'правильную консоль' [install.txt:2.1]
+3. Конфигурация Qt
+3.1 (актуально для Visual Studio) Добавить флаг компиляции '-FS' в qmake.conf для своего компилятора
+Например,
+C:\qt-5.1.1\qtbase\mkspecs\win32-msvc2013\qmake.conf
+QMAKE_CFLAGS = -nologo -Zm200 -Zc:wchar_t -FC
 
-3.2 Запуск конфигуратора
-3.2.1 Без поддержки PostgreSQL
+3.2 Актуально для Visual Studio 2013 + Qt5.1.1 + Win7-x86 (актуальность для других версий под вопросом)
+Если возникает ошибка компиляции
+qtjsbackend\src\v8, то его можно отключить в файле конфигурации
+C:\qt-5.1.1\qtbase\configure
+CFG_V8SNAPSHOT=no
+
+После этого достаточно переконфигурировать Qt и опять запустить компиляцию
+
+3.3 Открыть 'правильную консоль' [install.txt:2.1]
+
+3.4 Запуск конфигуратора
+3.4.1 Без поддержки PostgreSQL
 cd c:\qt-5.1.1
 [install.txt:2.2]
-set PATH=C:\qt-5.1.1\qtbase\bin;C:\qt-5.1.1\gnuwin32\bin;%PATH%
+set PATH=C:\qt-5.1.1\qtbase\bin;C:\qt-5.1.1\gnuwin32\bin;C:\Program\cygwin\usr\local\lib;%PATH%
 set INCLUDE=C:\Program\cygwin\usr\local\include;%INCLUDE%
 set LIB=C:\Program\cygwin\usr\local\lib;%LIB%
 
 configure.bat -debug-and-release -opensource -confirm-license -nomake tests -nomake examples -opengl desktop
 
-3.2.2 С пожддержкой PostgreSQL
+3.4.2 С пожддержкой PostgreSQL
 cd c:\qt-5.1.1
 [install.txt:2.2]
 set PATH=C:\qt-5.1.1\qtbase\bin;C:\qt-5.1.1\gnuwin32\bin;%PATH%
@@ -68,7 +81,7 @@ set LIB=%PSQL%\lib;C:\Program\cygwin\usr\local\lib;%LIB%
 
 configure.bat -debug-and-release -opensource -confirm-license -nomake tests -nomake examples -opengl desktop -plugin-sql-psql
 
-После конфигурации.
+3.5 После конфигурации.
 Если выдает Error, то попробуйте запустить консоль от имени Администратора. В конце конфигурации должно быть
 
 Qt is now configured for building. Just run nmake.
@@ -82,16 +95,16 @@ Info: creating super cache file C:/qt-5.1.1/.qmake.super
 Еще можно проверить, что icu найдена:
 ICU support.............yes
 
-3.3 Компиляция
+4. Компиляция Qt
 jom
 
-4. Настройка окружения и IDE
+5. Настройка окружения и IDE
 
-4.1. Добавляем переменную окружения
+5.1. Добавляем переменную окружения
 QTDIR=C:\qt-5.1.1\qtbase
 Не забывам перелогиниться в винде.
 
-4.2. Для Windows запускаем Visual Studio, заходим в настройки
+5.2. Для Windows запускаем Visual Studio, заходим в настройки
 Tools/Options/Projects and Solutions/VC++ Directories
 
 Platform             = Win32
@@ -100,20 +113,20 @@ Show directories for = Library files, добавляем $(QTDIR)\lib
 
 или берёза
 
-5. Чтобы скомпиленная Qt стала переносимой в другие папки, необходимо подредактировать файл
+6. Чтобы скомпиленная Qt стала переносимой в другие папки, необходимо подредактировать файл
 C:\qt-5.1.1\qtbase\bin\qt.conf
 
-5.1 Для переноса исходников и бинарников самой библиотеки
+6.1 Для переноса исходников и бинарников самой библиотеки
 прописать
 [Paths]
 Prefix=..
 
-5.2 А для релиза РДО
+6.2 А для релиза РДО
 
-5.2.1 Если плагины расположены в подпапке plugins, которая в корне бинарника РДО. При этом каждый плагин в своей отдельной папке внутри plugins
+6.2.1 Если плагины расположены в подпапке plugins, которая в корне бинарника РДО. При этом каждый плагин в своей отдельной папке внутри plugins
 Создать qt.conf в корне бинарников РДО со следующим содержимым
 [Paths]
 Plugins=./plugins
 
-5.2.2 Если плагины располагаются в своих подпапках, но сразу в корне бинарников РДО
+6.2.2 Если плагины располагаются в своих подпапках, но сразу в корне бинарников РДО
 Этот файл вообще не нужен, его лучше не создавать
