@@ -1,10 +1,7 @@
 Cygwin используется для компиляции некоторых проектов, например ICU
 
 1. Скачать setup.exe с сайта
-http://www.cygwin.com/
-
-Прямая ссылка
-http://cygwin.com/setup.exe
+http://cygwin.com/install.html
 
 2. Запустить setup.exe
 2.1 Install from Internet, выбрать любой сервер, выбрать пути
@@ -13,4 +10,3 @@ make
 autoconf
 
 Их можно найти поиском, лежат они в разделе Devel
-

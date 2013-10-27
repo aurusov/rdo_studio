@@ -82,11 +82,11 @@ Boost - The Boost C++ libraries are a set of free software libraries that extend
 
     Tools/Options/Projects and Solutions/VC++ Directories
 
-	Platform             = Win32
-	Show directories for = Include files, добавляем с:\boost_1_54_0
-	Show directories for = Library files, добавляем с:\boost_1_54_0\stage\lib
+    Platform             = Win32
+    Show directories for = Include files, добавляем с:\boost_1_54_0
+    Show directories for = Library files, добавляем с:\boost_1_54_0\stage\lib
 
-    Теперь можно компилировать rdo_studio.
+    или берёза
 
 3.2. Для GNU/Linux
 
