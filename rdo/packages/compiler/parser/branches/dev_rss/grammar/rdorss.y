@@ -15,6 +15,10 @@
 
 %pure-parser
 
+//пока новые токены пишу в самом верху, чтобы удобнее было с ними работать
+%token RDO_new
+%token RDO_IDENTIF_ASSIGN
+
 %token RDO_Resource_type
 %token RDO_permanent
 %token RDO_Parameters
@@ -199,6 +203,9 @@
 %token RDO_Sprite
 %token RDO_sprite_call
 
+
+
+
 %{
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
@@ -216,8 +223,7 @@
 OPEN_RDO_PARSER_NAMESPACE
 %}
 
-%left RDO_IDENTIF
-%left ':'
+//если '.' и '=' буду рассматривать как операторы, тут будет указана их ассоциативность
 
 %start rss_main
 
@@ -264,13 +270,18 @@ rss_resources_end
 	}
 	;
 
-rss_resources
-	: /* empty */
-	| rss_resources rss_res_descr
-	;
+//поменял имя нетерминала rss_res_type на rss_res_type_and_name, т.к. так он более информативен
 
-rss_res_descr
-	: rss_res_type rss_trace rss_values
+//где лучше разбираться с ';', в rss_resources или в rss_res_constr и rss_res_trace?
+//скорее всего, это главным образом будет влиять на обрабоку ошибок
+
+//выделил rss_res_constr в отдельный нетерминал, т.к. так, возможно, будет удобнее описывать действия
+//стоит ли ради этого вводить новые нетерминалы?
+
+//как исключить возможность постановки пробелов после точки при вызове метода trace?
+	
+rss_resources
+	:	rss_res_type_and_name RDO_new rss_res_constr
 	{
 		LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
 		ASSERT(pResource);
@@ -278,23 +289,31 @@ rss_res_descr
 		{
 			PARSER->error().error(@3, rdo::format("Заданы не все параметры ресурса: %s", pResource->name().c_str()));
 		}
-		pResource->setTrace($2 != 0);
 		pResource->end();
 	}
+	|	RDO_IDENTIF_member_selection rss_trace
+	{
+		// здесь либо положим ресурс в стек, выполним с ним действия и вытащим из стека, либо ещё что-то
+		pResource->setTrace($2 != 0);
+		//pResource->end();
+	}
+	
 	;
 
-rss_res_type
-	: RDO_IDENTIF_COLON RDO_IDENTIF
+//внимательно: порядок типа и имени ресурса в rss_res_type_and_name поменялся
+
+rss_res_type_and_name
+	: RDO_IDENTIF RDO_IDENTIF_ASSIGN
 	{
-		LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
-		LPRDOValue pType = PARSER->stack().pop<RDOValue>($2);
+		LPRDOValue pType = PARSER->stack().pop<RDOValue>($1);
+		LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
 		ASSERT(pName);
 		ASSERT(pType);
 
 		LPRDORTPResType pResType = PARSER->findRTPResType(pType->value().getIdentificator());
 		if (!pResType)
 		{
-			PARSER->error().error(@2, rdo::format("Неизвестный тип ресурса: %s", pType->value().getIdentificator().c_str()));
+			PARSER->error().error(@1, rdo::format("Неизвестный тип ресурса: %s", pType->value().getIdentificator().c_str()));
 		}
 		LPRDORSSResource pResourceExist = PARSER->findRSSResource(pName->value().getIdentificator());
 		if (pResourceExist)
@@ -306,29 +325,44 @@ rss_res_type
 		LPRDORSSResource pResource = pResType->createRes(PARSER, pName->src_info());
 		$$ = PARSER->stack().push(pResource);
 	}
-	| RDO_IDENTIF_COLON error
+	| RDO_IDENTIF_ASSIGN error
 	{
-		PARSER->error().error(@2, "Ожидается тип ресурса");
+		PARSER->error().error(@1, "Ожидается тип ресурса");
 	}
-	| ':'
+	| RDO_IDENTIF error
 	{
-		PARSER->error().error(@1, "Перед двоеточием ожидается имя ресурса");
+		PARSER->error().error(@2, "Ожидается имя ресурса");
+	}
+	| '='
+	{
+		PARSER->error().error(@1, "Ожидается тип и имя ресурса");
 	}
 	| error
 	{
-		PARSER->error().error(@1, "Ожидается имя ресурса");
+		//пока не знаю, какую ошибку вывести, скорее всего она такая же как предыдущая
+		PARSER->error().error(@1, "");
+	}
+	;
+	
+rss_trace
+	: RDO_trace ';'		 {$$ = 1;}
+	| RDO_no_trace ';'	 {$$ = 0;}
+	;
+
+//действия для вызова конструктора пока не написал
+
+rss_res_constr
+	: RDO_IDENTIF '(' rss_values ')' ';'
+	{
+	}
+	| RDO_IDENTIF '(' ')' ';'
+	{
 	}
 	;
 
-rss_trace
-	: /* empty */  {$$ = 0;}
-	| RDO_trace	   {$$ = 1;}
-	| RDO_no_trace {$$ = 0;}
-	;
-
 rss_values
-	: /* empty */
-	| rss_values rss_value
+	:	rss_value
+	|	rss_values ',' rss_value
 	;
 
 rss_value

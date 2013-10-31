@@ -61,6 +61,11 @@ WS [\r\n\t ]
 
 %%
 
+//пока новые лексемы пишу в самом верху, чтобы удобнее было с ними работать
+new							   return(RDO_new);
+trace()                        return(RDO_trace);
+no_trace()                     return(RDO_no_trace);
+
 $Resource_type                 return(RDO_Resource_type);
 $resource_type                 return(RDO_Resource_type);
 $Resources                     return(RDO_Resources);
@@ -527,6 +532,10 @@ false {
 	return RDO_IDENTIF_NoChange;
 }
 
+/* 
+//больше не использую двоеточие для создания ресурсов, теперь использую '='
+//соответствующее определение ниже
+
 {IDENTIF}{WS}*\: {
 	tstring n1(YYText());
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
@@ -549,6 +558,45 @@ false {
 	LEXER->setvalue(PARSER->stack().push(pValue));
 	return RDO_IDENTIF_COLON;
 }
+*/
+
+//назвал этот токен RDO_IDENTIF_ASSIGN
+//поменяется ли тело определения ещё как-то?
+
+{IDENTIF}{WS}*\= {
+	tstring n1(YYText());
+	tstring::size_type pos = n1.find_first_of("\r\n\t =");
+	tstring name(n1, 0, pos);
+	RUNTIME->memory_insert(name.length() + sizeof(tstring));
+	rdo::compiler::parser::LPRDOValue pValue;
+	if (LEXER->m_lploc)
+	{
+		YYLTYPE pos     = LEXER_POS;
+		pos.m_last_line = pos.m_first_line;
+		pos.m_last_pos  = pos.m_first_pos  + name.length();
+		pos.m_last_seek = pos.m_first_seek + name.length();
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(pos, name));
+	}
+	else
+	{
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(name));
+	}
+	ASSERT(pValue);
+	LEXER->setvalue(PARSER->stack().push(pValue));
+	return RDO_IDENTIF_ASSIGN;
+}
+
+//возможно задать регулярное определение для ресурса, который будет обращаться к trace
+//тогда синтаксический анализатор получит токены, например, RDO_IDENTIF_member_selection RDO_trace
+//нужно ли это или лучше, чтобы пересылал синтаксическому анализатор работал с RDO_IDENTIF '.' RDO_trace?
+//тело будет похоже на RDO_IDENTIF_ASSIGN, однако из-за отсутствия пробелов его тело изменится
+//как - пока не знаю, так что тело оставил пустым
+
+{IDENTIF}\. {
+	
+	return RDO_IDENTIF_member_selection;
+}
+
 
 {IDENTIF} {
 
