@@ -17,7 +17,8 @@
 
 //пока новые токены пишу в самом верху, чтобы удобнее было с ними работать
 %token RDO_new
-%token RDO_IDENTIF_ASSIGN
+%token RDO_IDENTIF_Assign
+%token RDO_IDENTIF_Member_selection
 
 %token RDO_Resource_type
 %token RDO_permanent
@@ -224,6 +225,7 @@ OPEN_RDO_PARSER_NAMESPACE
 %}
 
 //если '.' и '=' буду рассматривать как операторы, тут будет указана их ассоциативность
+//upd: скорее всего, этого не будет
 
 %start rss_main
 
@@ -275,10 +277,9 @@ rss_resources_end
 //где лучше разбираться с ';', в rss_resources или в rss_res_constr и rss_res_trace?
 //скорее всего, это главным образом будет влиять на обрабоку ошибок
 
-//выделил rss_res_constr в отдельный нетерминал, т.к. так, возможно, будет удобнее описывать действия
-//стоит ли ради этого вводить новые нетерминалы?
-
 //как исключить возможность постановки пробелов после точки при вызове метода trace?
+
+//зачем каждый раз делать ASSERT()? Так понял, что он крашит программу в случае пустого указателя
 	
 rss_resources
 	:	rss_res_type_and_name RDO_new rss_res_constr
@@ -291,19 +292,32 @@ rss_resources
 		}
 		pResource->end();
 	}
-	|	RDO_IDENTIF_member_selection rss_trace
+	|	RDO_IDENTIF_Member_selection rss_trace
 	{
-		// здесь либо положим ресурс в стек, выполним с ним действия и вытащим из стека, либо ещё что-то
+		//можно ли так? что за класс PARSER и где этот метод ищет ресурс?
+		//что делают push_only и push_done?
+		//интуитивно будет примерно так
+		LPRDORSSResource pResource = PARSER->findRSSResource(pName->value().getIdentificator());
+		if (!pResource)
+		{	
+			PARSER->error().push_only(pName->src_info(), rdo::format("Ресурса '%s' не существует", pName->value().getIdentificator().c_str()));
+			PARSER->error().push_done();
+		}
 		pResource->setTrace($2 != 0);
-		//pResource->end();
 	}
 	
 	;
 
 //внимательно: порядок типа и имени ресурса в rss_res_type_and_name поменялся
 
+//где нужно создавать объект ресурса? 
+//с одной стороны более естественно, если rss_res_type_and_name только читает и проверяет тип и имя, а конструктор уже создает объект
+//с другой стороны, это неудобно
+//к тому же в с++ нельзя (?) объявить объект класса, не вызвав конструктор (без явного вызова вызывается дефолтный)
+//подробно см. грамматика.txt
+
 rss_res_type_and_name
-	: RDO_IDENTIF RDO_IDENTIF_ASSIGN
+	: RDO_IDENTIF RDO_IDENTIF_Assign
 	{
 		LPRDOValue pType = PARSER->stack().pop<RDOValue>($1);
 		LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
@@ -325,7 +339,7 @@ rss_res_type_and_name
 		LPRDORSSResource pResource = pResType->createRes(PARSER, pName->src_info());
 		$$ = PARSER->stack().push(pResource);
 	}
-	| RDO_IDENTIF_ASSIGN error
+	| RDO_IDENTIF_Assign error
 	{
 		PARSER->error().error(@1, "Ожидается тип ресурса");
 	}
@@ -349,7 +363,6 @@ rss_trace
 	| RDO_no_trace ';'	 {$$ = 0;}
 	;
 
-//действия для вызова конструктора пока не написал
 
 rss_res_constr
 	: RDO_IDENTIF '(' rss_values ')' ';'
