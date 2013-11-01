@@ -272,16 +272,19 @@ rss_resources_end
 	}
 	;
 
-//поменял имя нетерминала rss_res_type на rss_res_type_and_name, т.к. так он более информативен
-
-//где лучше разбираться с ';', в rss_resources или в rss_res_constr и rss_res_trace?
-//скорее всего, это главным образом будет влиять на обрабоку ошибок
-
 //как исключить возможность постановки пробелов после точки при вызове метода trace?
 
 //зачем каждый раз делать ASSERT()? Так понял, что он крашит программу в случае пустого указателя
-	
+
+
 rss_resources
+	:	/* empty */
+	|	rss_resource ';'
+	|	rss_resources rss_resouce ';'
+	;
+
+
+rss_resource
 	:	rss_res_type_and_name RDO_new rss_res_constr
 	{
 		LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
@@ -294,9 +297,10 @@ rss_resources
 	}
 	|	RDO_IDENTIF_Member_selection rss_trace
 	{
-		//можно ли так? что за класс PARSER и где этот метод ищет ресурс?
+		//можно ли так? что за класс PARSER и что возвращает метод findRSSResource?
 		//что делают push_only и push_done?
-		//интуитивно будет примерно так
+		//если метод возвращает объект по ссылке, то будет примерно так
+
 		LPRDORSSResource pResource = PARSER->findRSSResource(pName->value().getIdentificator());
 		if (!pResource)
 		{	
@@ -309,12 +313,6 @@ rss_resources
 	;
 
 //внимательно: порядок типа и имени ресурса в rss_res_type_and_name поменялся
-
-//где нужно создавать объект ресурса? 
-//с одной стороны более естественно, если rss_res_type_and_name только читает и проверяет тип и имя, а конструктор уже создает объект
-//с другой стороны, это неудобно
-//к тому же в с++ нельзя (?) объявить объект класса, не вызвав конструктор (без явного вызова вызывается дефолтный)
-//подробно см. грамматика.txt
 
 rss_res_type_and_name
 	: RDO_IDENTIF RDO_IDENTIF_Assign
@@ -359,24 +357,25 @@ rss_res_type_and_name
 	;
 	
 rss_trace
-	: RDO_trace ';'		 {$$ = 1;}
-	| RDO_no_trace ';'	 {$$ = 0;}
+	: RDO_trace 	 {$$ = 1;}
+	| RDO_no_trace 	 {$$ = 0;}
 	;
 
 
 rss_res_constr
-	: RDO_IDENTIF '(' rss_values ')' ';'
+	: RDO_IDENTIF '(' rss_opt_values ')' ';'
 	{
 	}
-	| RDO_IDENTIF '(' ')' ';'
-	{
-	}
+	;
+
+rss_opt_values
+	:	/* empty */
+	|	rss_values
 	;
 
 rss_values
 	:	rss_value
 	|	rss_values ',' rss_value
-	;
 
 rss_value
 	: '*'               {PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*")));}
