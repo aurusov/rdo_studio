@@ -274,13 +274,10 @@ rss_resources_end
 
 //как исключить возможность постановки пробелов после точки при вызове метода trace?
 
-//зачем каждый раз делать ASSERT()? Так понял, что он крашит программу в случае пустого указателя
-
-
 rss_resources
 	:	/* empty */
 	|	rss_resource ';'
-	|	rss_resources rss_resouce ';'
+	|	rss_resources rss_resource ';'
 	;
 
 
@@ -297,36 +294,40 @@ rss_resource
 	}
 	|	RDO_IDENTIF_Member_selection rss_trace
 	{
-		//можно ли так? что за класс PARSER и что возвращает метод findRSSResource?
-		//что делают push_only и push_done?
-		//если метод возвращает объект по ссылке, то будет примерно так
+		//метод find##NAME возвращает указатель (ищет итератором в стеке ресурсов) на объект ресурса (если он найден)
 
 		LPRDORSSResource pResource = PARSER->findRSSResource(pName->value().getIdentificator());
 		if (!pResource)
 		{	
-			PARSER->error().push_only(pName->src_info(), rdo::format("Ресурса '%s' не существует", pName->value().getIdentificator().c_str()));
-			PARSER->error().push_done();
+			// вывести ошибки
 		}
 		pResource->setTrace($2 != 0);
 	}
 	
 	;
 
-//внимательно: порядок типа и имени ресурса в rss_res_type_and_name поменялся
-
 rss_res_type_and_name
 	: RDO_IDENTIF RDO_IDENTIF_Assign
 	{
+		//снимаем последние объекты (?) со стека и присваиваем их значения переменым pType и pName
+
 		LPRDOValue pType = PARSER->stack().pop<RDOValue>($1);
 		LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
+
+
 		ASSERT(pName);
 		ASSERT(pType);
+
+		//ищем этот тип по имени в стеке типов ресурсов
 
 		LPRDORTPResType pResType = PARSER->findRTPResType(pType->value().getIdentificator());
 		if (!pResType)
 		{
 			PARSER->error().error(@1, rdo::format("Неизвестный тип ресурса: %s", pType->value().getIdentificator().c_str()));
 		}
+
+		//метод find##NAME возвращает указатель (ищет итератором в стеке ресурсов) на объект ресурса (если он найден)
+
 		LPRDORSSResource pResourceExist = PARSER->findRSSResource(pName->value().getIdentificator());
 		if (pResourceExist)
 		{
@@ -334,7 +335,14 @@ rss_res_type_and_name
 			PARSER->error().push_only(pResourceExist->src_info(), "См. первое определение");
 			PARSER->error().push_done();
 		}
+
+		//создаём ресурс 
+
 		LPRDORSSResource pResource = pResType->createRes(PARSER, pName->src_info());
+
+		//передаем бизону в стек в качестве атрибута rss_res_type_and_name указатель на созданный ресурс
+		//одновременно добавляем этот ресурс в стек ресурсов парсера
+
 		$$ = PARSER->stack().push(pResource);
 	}
 	| RDO_IDENTIF_Assign error
@@ -363,8 +371,31 @@ rss_trace
 
 
 rss_res_constr
-	: RDO_IDENTIF '(' rss_opt_values ')' ';'
+	: RDO_IDENTIF '(' rss_opt_values ')'
 	{
+		//??
+		//PARSER->stack() возвращает указатель на объект класса Stack
+		//PARSER->stack().pop<>() снимает указатель на указанный объект со стека по его id
+
+		LPRDOValue pType = PARSER->stack().pop<RDOValue>($1);
+
+		//потом проверяем, что такой тип есть
+
+		LPRDORTPResType pResType = PARSER->findRTPResType(pType->value().getIdentificator());
+		if (!pResType)
+		{
+			PARSER->error().error(@1, rdo::format("Неизвестный тип ресурса: %s", pType->value().getIdentificator().c_str()));
+		}
+
+		//getLastRSSResource возвращает .back() т.е. указатель на последний элемент в контейнере
+		//соответственно, берем последний ресурс в стеке (тот, что был только что создан в rss_res_type_and_name)
+
+		LPRDORSSResource pResource = PARSER->getLastRSSResource();
+
+		//сейчас соответствие количества параметров ресурса его типу проверяется в rss_resource с помощью if(!pResource->defined())
+		//должна ли эта проверка быть здесь?
+		//наверное, надо провести ещё какие-то проверки		
+
 	}
 	;
 
@@ -376,7 +407,8 @@ rss_opt_values
 rss_values
 	:	rss_value
 	|	rss_values ',' rss_value
-
+	;
+	
 rss_value
 	: '*'               {PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*")));}
 	| '#'               {PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "#")));}
