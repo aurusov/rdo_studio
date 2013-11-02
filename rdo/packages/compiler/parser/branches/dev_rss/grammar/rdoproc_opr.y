@@ -56,6 +56,7 @@
 %token RDO_triangular
 %token RDO_by_hist
 %token RDO_enumerative
+%token RDO_new
 
 %token RDO_Pattern
 %token RDO_operation
