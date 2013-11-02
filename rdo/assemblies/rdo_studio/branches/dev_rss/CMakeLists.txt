@@ -68,6 +68,10 @@ SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
 
+IF(WIN32)
+    INCLUDE(win32.install)
+ENDIF()
+
 INCLUDE(CTest)
 ENABLE_TESTING()
 
@@ -130,6 +134,21 @@ SET(PROJECT_VERSION_LONG ${CMAKE_SVN_VERSION})
 
 IF(WIN32)
     INCLUDE(win32.install)
+ENDIF()
+
+#==============================================================================
+
+IF(WIN32)
+    FIND_PACKAGE(PythonInterp)
+    IF(NOT ${PYTHON_VERSION_MAJOR} EQUAL 3)
+        MESSAGE(FATAL_ERROR "Python3 not found")
+    ENDIF()
+ELSE()
+    FIND_PROGRAM(PYTHON_EXECUTABLE python3)
+    IF(NOT PYTHON_EXECUTABLE)
+        MESSAGE(FATAL_ERROR "Python3 not found")
+    ENDIF()
+    MESSAGE(STATUS "Found PythonInterp: "${PYTHON_EXECUTABLE})
 ENDIF()
 
 #==============================================================================
