@@ -715,7 +715,7 @@ rss_main
 
 rss_resources
 	: /* empty */
-	| rss_resources rss_res_descr
+	| rss_resources rss_res_descr ';'
 	;
 
 rss_res_descr
