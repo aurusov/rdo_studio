@@ -50,7 +50,7 @@ http://qt-project.org/wiki/jom
 3.1 (актуально для Visual Studio) Добавить флаг компиляции '-FS' в qmake.conf для своего компилятора
 Например,
 C:\qt-5.1.1\qtbase\mkspecs\win32-msvc2013\qmake.conf
-QMAKE_CFLAGS = -nologo -Zm200 -Zc:wchar_t -FC
+QMAKE_CFLAGS = -nologo -Zm200 -Zc:wchar_t -FS
 
 3.2 Актуально для Visual Studio 2013 + Qt5.1.1 + Win7-x86 (актуальность для других версий под вопросом)
 Если возникает ошибка компиляции
