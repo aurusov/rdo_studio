@@ -720,7 +720,7 @@ rss_resources
 	;
 
 rss_res_descr
-	: rss_res_type rss_trace rss_values
+	: rss_res_type '(' rss_opt_value_list ')'
 	{
 		LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
 		ASSERT(pResource);
@@ -728,7 +728,7 @@ rss_res_descr
 		{
 			PARSER->error().error(@3, rdo::format("Заданы не все параметры ресурса: %s", pResource->name().c_str()));
 		}
-		pResource->setTrace($2 != 0);
+		pResource->setTrace(1);
 		pResource->end();
 	}
 	;
@@ -770,15 +770,14 @@ rss_res_type
 	}
 	;
 
-rss_trace
-	: /* empty */  {$$ = 0;}
-	| RDO_trace	   {$$ = 1;}
-	| RDO_no_trace {$$ = 0;}
+rss_opt_value_list
+	: /* empty */
+	| rss_value_list
 	;
 
-rss_values
-	: /* empty */
-	| rss_values rss_value
+rss_value_list
+	: rss_value
+	| rss_value_list ',' rss_value
 	;
 
 rss_value
