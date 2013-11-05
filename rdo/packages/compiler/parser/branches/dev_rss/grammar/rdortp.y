@@ -716,11 +716,11 @@ rss_main
 
 rss_resource_list
 	: /* empty */
-	| rss_resource_list rss_resource ';'
+	| rss_resource_list rss_resource
 	;
 
 rss_resource
-	: rss_res_type_and_name RDO_new RDO_IDENTIF '(' rss_opt_value_list ')'
+	: rss_res_type_and_name RDO_new RDO_IDENTIF '(' rss_opt_value_list ')' ';'
 	{
 		LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
 		ASSERT(pResource);
@@ -742,6 +742,26 @@ rss_resource
 		}
 		pResource->setTrace(1);
 		pResource->end();
+	}
+	| rss_res_type_and_name RDO_new RDO_IDENTIF '(' rss_opt_value_list ')' 
+	{
+		PARSER->error().push_only(@6, rdo::format("Ожидается ';'"));
+	}
+	| error ';'
+	{
+		PARSER->error().push_only(@1, rdo::format("Синтаксическая ошибка"));
+		yyclearin;
+		yyerrok;
+	}
+	| error RDO_End
+	{
+		PARSER->error().push_only(@1, rdo::format("Синтаксическая ошибка"));
+		PARSER->error().push_done();
+	}
+	| rss_res_type_and_name RDO_new RDO_IDENTIF '(' rss_opt_value_list ')' RDO_End
+	{
+		PARSER->error().push_only(@6, rdo::format("Ожидается ';'"));
+		PARSER->error().push_done();
 	}
 	;
 
@@ -767,18 +787,6 @@ rss_res_type_and_name
 		}
 		LPRDORSSResource pResource = pResType->createRes(PARSER, pName->src_info());
 		$$ = PARSER->stack().push(pResource);
-	}
-	| RDO_IDENTIF '=' error
-	{
-		PARSER->error().error(@1, "Ожидается тип или имя ресурса");
-	}
-	| '='
-	{
-		PARSER->error().error(@1, "Ожидается тип и имя ресурса");
-	}
-	| error
-	{
-		PARSER->error().error(@1, "Ожидается имя ресурса");
 	}
 	;
 
