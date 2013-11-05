@@ -758,6 +758,11 @@ rss_resource
 		PARSER->error().push_only(@1, rdo::format("Синтаксическая ошибка"));
 		PARSER->error().push_done();
 	}
+	| error ';' RDO_End
+	{
+		PARSER->error().push_only(@1, rdo::format("Синтаксическая ошибка"));
+		PARSER->error().push_done();
+	}
 	| rss_res_type_and_name RDO_new RDO_IDENTIF '(' rss_opt_value_list ')' RDO_End
 	{
 		PARSER->error().push_only(@6, rdo::format("Ожидается ';'"));
