@@ -770,7 +770,17 @@ rss_res_type_and_name
 	}
 	| RDO_IDENTIF '=' error
 	{
-		PARSER->error().error(@1, "Ожидается тип или имя ресурса");
+		LPRDOValue pType = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pType);
+		LPRDORTPResType pResType = PARSER->findRTPResType(pType->value().getIdentificator());
+		if (!pResType)
+		{
+			PARSER->error().error(@1, rdo::format("Ожидается тип ресурса"));
+		}
+		else
+		{
+			PARSER->error().error(@1, "Ожидается имя ресурса");
+		}
 	}
 	| '='
 	{
@@ -778,7 +788,7 @@ rss_res_type_and_name
 	}
 	| error
 	{
-		PARSER->error().error(@1, "Ожидается имя ресурса");
+		PARSER->error().error(@1, "Синтаксическая ошибка");
 	}
 	;
 
