@@ -276,7 +276,7 @@ dpt_search_trace
 dpt_search_parent
 	: /* empty */
 	{
-		$$ = CONVERTER->stack().push(LPRDOValue());
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOValue>::create());
 	}
 	| RDO_Parent RDO_IDENTIF
 	{
@@ -293,8 +293,10 @@ dpt_search_begin
 	{
 		LPRDOValue  pName       = CONVERTER->stack().pop<RDOValue>($2);
 		LPRDOValue  pParentName = CONVERTER->stack().pop<RDOValue>($4);
+		ASSERT(pName);
+
 		LPRDODPTSearch pDPTSearch;
-		if (!pParentName->value().isType<rdo::runtime::RDOType__unknow>())
+		if (pParentName->defined())
 		{
 			LPRDODPTPrior  pParentDPTPrior  = CONVERTER->findDPTPrior (pParentName->value().getIdentificator());
 			LPRDODPTSearch pParentDPTSearch = CONVERTER->findDPTSearch(pParentName->value().getIdentificator());
@@ -597,7 +599,7 @@ dpt_some_trace
 dpt_some_parent
 	: /* empty */
 	{
-		$$ = CONVERTER->stack().push(LPRDOValue());
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOValue>::create());
 	}
 	| RDO_Parent RDO_IDENTIF
 	{
@@ -615,8 +617,10 @@ dpt_some_begin
 		/// @todo а где признак трассировки для some ?
 		LPRDOValue pName       = CONVERTER->stack().pop<RDOValue>($2);
 		LPRDOValue pParentName = CONVERTER->stack().pop<RDOValue>($4);
+		ASSERT(pName)
+
 		LPRDODPTSome  pDPTSome;
-		if (pParentName)
+		if (pParentName->defined())
 		{
 			LPRDODPTPrior  pParentDPTPrior  = CONVERTER->findDPTPrior (pParentName->value().getIdentificator());
 			LPRDODPTSearch pParentDPTSearch = CONVERTER->findDPTSearch(pParentName->value().getIdentificator());
@@ -830,7 +834,7 @@ dpt_prior_trace
 dpt_prior_parent
 	: /* empty */
 	{
-		$$ = CONVERTER->stack().push(LPRDOValue());
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOValue>::create());
 	}
 	| RDO_Parent RDO_IDENTIF
 	{
@@ -848,8 +852,10 @@ dpt_prior_begin
 		/// @todo а где признак трассировки для prior ?
 		LPRDOValue pName       = CONVERTER->stack().pop<RDOValue>($2);
 		LPRDOValue pParentName = CONVERTER->stack().pop<RDOValue>($4);
+		ASSERT(pName);
+
 		LPRDODPTPrior pDPTPrior;
-		if (pParentName)
+		if (pParentName->defined())
 		{
 			LPRDODPTPrior  pParentDPTPrior  = CONVERTER->findDPTPrior (pParentName->value().getIdentificator());
 			LPRDODPTSearch pParentDPTSearch = CONVERTER->findDPTSearch(pParentName->value().getIdentificator());
