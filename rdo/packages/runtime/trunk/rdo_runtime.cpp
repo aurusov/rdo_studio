@@ -415,7 +415,7 @@ rbool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
 		if (m_resourceListByID.at(i) == LPRDOResource(NULL) && pOther->m_resourceListByID.at(i) != LPRDOResource(NULL)) return false;
 		if (m_resourceListByID.at(i) != LPRDOResource(NULL) && pOther->m_resourceListByID.at(i) == LPRDOResource(NULL)) return false;
 		if (m_resourceListByID.at(i) == LPRDOResource(NULL) && pOther->m_resourceListByID.at(i) == LPRDOResource(NULL)) continue;
-		if (pOther->m_resourceListByID.at(i) != m_resourceListByID.at(i)) return false;
+		if (*pOther->m_resourceListByID.at(i).get() != *m_resourceListByID.at(i).get()) return false;
 	}
 	return true;
 }

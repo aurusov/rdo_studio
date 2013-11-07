@@ -53,7 +53,7 @@ public:
 	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy);
 	virtual ~RDOResource();
 
-	rbool operator!= (REF(RDOResource) other);
+	rbool operator!= (CREF(RDOResource) other) const;
 
 	ConvertStatus          getState    (                           ) const;
 	CREF(RDOValue)         getParam    (ruint index                ) const;

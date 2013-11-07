@@ -55,7 +55,7 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
 RDOResource::~RDOResource()
 {}
 
-rbool RDOResource::operator!= (RDOResource &other)
+rbool RDOResource::operator!= (const RDOResource& other) const
 {
 	if (m_type != other.m_type) return true;
 	if (m_paramList.size() != other.m_paramList.size()) return true;
