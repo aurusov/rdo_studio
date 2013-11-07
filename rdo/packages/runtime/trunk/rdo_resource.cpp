@@ -55,17 +55,21 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
 RDOResource::~RDOResource()
 {}
 
-rbool RDOResource::operator!= (const RDOResource& other) const
+bool RDOResource::operator== (const RDOResource& other) const
 {
-	if (m_type != other.m_type) return true;
-	if (m_paramList.size() != other.m_paramList.size()) return true;
+	if (m_type != other.m_type)
+		return false;
+
+	if (m_paramList.size() != other.m_paramList.size())
+		return false;
 
 	int size = m_paramList.size();
 	for (int i = 0; i < size; ++i)
 	{
-		if (m_paramList.at(i) != other.m_paramList.at(i)) return true;
+		if (m_paramList[i] != other.m_paramList[i])
+			return false;
 	}
-	return false;
+	return true;
 }
 
 LPRDOResource RDOResource::clone(CREF(LPRDORuntime) pRuntime) const

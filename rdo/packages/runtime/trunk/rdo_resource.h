@@ -12,6 +12,7 @@
 #define _LIB_RUNTIME_RESOURCE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/operators.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdo_object.h"
@@ -29,7 +30,10 @@ PREDECLARE_OBJECT_INTERFACE(IResourceType);
   \details Ресурсы, которые могут быть релевантны активностям и
  * событиям, но не могут использоваться в процессах
 */
-OBJECT(RDOResource) IS INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
+OBJECT(RDOResource)
+	IS  INSTANCE_OF(RDORuntimeObject)
+	AND INSTANCE_OF(RDOTraceableObject)
+	AND public boost::operators<RDOResource>
 {
 public:
 	/*!
@@ -53,7 +57,7 @@ public:
 	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy);
 	virtual ~RDOResource();
 
-	rbool operator!= (CREF(RDOResource) other) const;
+	bool operator== (const RDOResource& other) const;
 
 	ConvertStatus          getState    (                           ) const;
 	CREF(RDOValue)         getParam    (ruint index                ) const;
