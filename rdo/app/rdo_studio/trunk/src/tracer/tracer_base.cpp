@@ -318,7 +318,7 @@ void TracerBase::dispatchNextString(REF(tstring) line)
 	else if (key == "RK" || key == "SRK")
 	{
 		tstring copy = line;
-		Resource* res = resourceChanging(line, pTimeNow);
+		LPResource res = resourceChanging(line, pTimeNow);
 		if (!res)
 		{
 			m_pResource = resourceCreation(copy, pTimeNow);

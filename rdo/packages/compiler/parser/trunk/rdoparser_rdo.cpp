@@ -150,7 +150,7 @@ void RDOParserRSSPost::parse(CREF(LPRDOParser) pParser)
 
 	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
 #ifdef RDOSIM_COMPATIBLE
-	STL_FOR_ALL_CONST(pParser->getRTPResType(), rtp_it)
+	STL_FOR_ALL_CONST(pParser->getRTPResTypes(), rtp_it)
 	{
 #endif
 		STL_FOR_ALL_CONST(pParser->getRSSResources(), rss_it)
