@@ -720,32 +720,6 @@ rss_resource_list
 	;
 
 rss_resource
-	: rss_res_type_and_name RDO_new RDO_IDENTIF '(' rss_opt_value_list ')'
-	{
-		LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
-		ASSERT(pResource);
-
-		LPRDOValue checkType = PARSER->stack().pop<RDOValue>($3);
-		ASSERT(checkType);
-		LPRDORTPResType pCheckResType = PARSER->findRTPResType(checkType->value().getIdentificator());
-		if (!pCheckResType)
-		{
-			PARSER->error().error(@3, rdo::format("Неизвестный тип ресурса: %s", checkType->value().getIdentificator().c_str()));
-		}
-		if (pResource->getType() != pCheckResType)
-		{
-			PARSER->error().error(@3, rdo::format("Несоответствие типов"));
-		}
-		if (!pResource->defined())
-		{
-			PARSER->error().error(@5, rdo::format("Заданы не все параметры ресурса: %s", pResource->name().c_str()));
-		}
-		pResource->setTrace(1);
-		pResource->end();
-	}
-	;
-
-rss_res_type_and_name
 	: RDO_IDENTIF RDO_IDENTIF '='
 	{
 		LPRDOValue pType = PARSER->stack().pop<RDOValue>($1);
@@ -767,11 +741,35 @@ rss_res_type_and_name
 		}
 		LPRDORSSResource pResource = pResType->createRes(PARSER, pName->src_info());
 		$$ = PARSER->stack().push(pResource);
+	} 
+	/*продолжение правила*/ RDO_new RDO_IDENTIF '(' rss_opt_value_list ')'
+	{
+		LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($4);
+		ASSERT(pResource);
+
+		LPRDOValue checkType = PARSER->stack().pop<RDOValue>($6);
+		ASSERT(checkType);
+		LPRDORTPResType pCheckResType = PARSER->findRTPResType(checkType->value().getIdentificator());
+		if (!pCheckResType)
+		{
+			PARSER->error().error(@6, rdo::format("Неизвестный тип ресурса: %s", checkType->value().getIdentificator().c_str()));
+		}
+		if (pResource->getType() != pCheckResType)
+		{
+			PARSER->error().error(@6, rdo::format("Несоответствие типов"));
+		}
+		if (!pResource->defined())
+		{
+			PARSER->error().error(@8, rdo::format("Заданы не все параметры ресурса: %s", pResource->name().c_str()));
+		}
+		pResource->setTrace(1);
+		pResource->end();
 	}
-	| RDO_IDENTIF '=' error
+	| RDO_IDENTIF '='
 	{
 		LPRDOValue pType = PARSER->stack().pop<RDOValue>($1);
 		ASSERT(pType);
+
 		LPRDORTPResType pResType = PARSER->findRTPResType(pType->value().getIdentificator());
 		if (!pResType)
 		{
@@ -779,16 +777,16 @@ rss_res_type_and_name
 		}
 		else
 		{
-			PARSER->error().error(@1, "Ожидается имя ресурса");
+			PARSER->error().error(@1, rdo::format("Ожидается имя ресурса"));
 		}
 	}
 	| '='
 	{
-		PARSER->error().error(@1, "Ожидается тип и имя ресурса");
+		PARSER->error().error(@1, rdo::format("Ожидается тип и имя ресурса"));
 	}
 	| error
 	{
-		PARSER->error().error(@1, "Синтаксическая ошибка");
+		PARSER->error().error(@1, rdo::format("Синтаксическая ошибка"));
 	}
 	;
 
