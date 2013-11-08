@@ -224,6 +224,7 @@ model_directory = u'' + args.model_directory
 # global exit code variable
 G_EXIT_CODE = APP_CODE_TERMINATION_NORMAL
 
+print dividing_line
 print u'STARTED SCRIPT :', sys.argv[0]
 print u'SYSTEM ENCODING', sys.getdefaultencoding()
 print u'FILESYSTEM ENCODING', sys.getfilesystemencoding()
