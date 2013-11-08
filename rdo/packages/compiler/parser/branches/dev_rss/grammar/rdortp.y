@@ -717,6 +717,10 @@ rss_main
 rss_resource_list
 	: /* empty */
 	| rss_resource_list rss_resource ';'
+	| rss_resource_list rss_resource error
+	{
+		PARSER->error().error(@3, rdo::format("Пропущена ';'"));
+	}
 	;
 
 rss_resource
@@ -742,7 +746,7 @@ rss_resource
 		LPRDORSSResource pResource = pResType->createRes(PARSER, pName->src_info());
 		$$ = PARSER->stack().push(pResource);
 	} 
-	/*продолжение правила*/ RDO_new RDO_IDENTIF '(' rss_opt_value_list ')'
+	/*продолжение правила*/ RDO_new RDO_IDENTIF rss_constr_params
 	{
 		LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($4);
 		ASSERT(pResource);
@@ -760,7 +764,7 @@ rss_resource
 		}
 		if (!pResource->defined())
 		{
-			PARSER->error().error(@8, rdo::format("Заданы не все параметры ресурса: %s", pResource->name().c_str()));
+			PARSER->error().error(@7, rdo::format("Заданы не все параметры ресурса: %s", pResource->name().c_str()));
 		}
 		pResource->setTrace(1);
 		pResource->end();
@@ -780,13 +784,25 @@ rss_resource
 			PARSER->error().error(@1, rdo::format("Ожидается имя ресурса"));
 		}
 	}
-	| '='
+	| error
 	{
-		PARSER->error().error(@1, rdo::format("Ожидается тип и имя ресурса"));
+		PARSER->error().error(@1, rdo::format("Синтаксическая ошибка, описание ресурсов должно иметь вид:\n<тип ресурса> <имя ресурса> = new <тип ресурса> ( <параметры> ) ;"));
+	}
+	;
+
+rss_constr_params
+	: '(' rss_opt_value_list ')'
+	| '(' rss_opt_value_list error
+	{
+		PARSER->error().error(@3, rdo::format("Пропущена закрывающая скобка"));
+	}
+	| rss_opt_value_list ')'
+	{
+		PARSER->error().error(@1, rdo::format("Пропущена открывающая скобка"));
 	}
 	| error
 	{
-		PARSER->error().error(@1, rdo::format("Синтаксическая ошибка"));
+		PARSER->error().error(@1, rdo::format("Синтаксическая ошибка, параметры ресурсов должны заключаться в круглые скобки"));
 	}
 	;
 
