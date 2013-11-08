@@ -283,6 +283,7 @@ for task in files:
         print u'Target               :', utils.safe_encode(model['target'], sys.getfilesystemencoding())
         print u'Exit code            :', utils.safe_encode(model['exit_code'], sys.getfilesystemencoding())
         print u'Log compilation file :', utils.safe_encode(model['log_compilation'], sys.getfilesystemencoding())
+        sys.stdout.flush()
 
         etalons = []
         node_etalons = dom.getElementsByTagName('etalons')
