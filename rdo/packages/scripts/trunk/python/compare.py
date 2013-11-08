@@ -80,10 +80,6 @@ def trace(file1, file2):
     file1_data = _read_trace_data(file1)
     file2_data = _read_trace_data(file2)
 
-#    for file1_line_number, file1_line in enumerate(file1_data):
-#        file1_data[file1_line_number] = re.sub(r'SES\s(\S+)\s(\S+)\s(\S+)', r"SES \1", file1_line)
-
-    print file1_data
     if cmp(file1_data, file2_data) == 0:
         return True
 
