@@ -277,7 +277,13 @@ for task in files:
         model['target']          = get_node_attribute_from_dom(dom, u'model', u'target'         )
         model['exit_code']       = get_node_attribute_from_dom(dom, u'model', u'exit_code'      )
         model['log_compilation'] = get_node_attribute_from_dom(dom, u'model', u'log_compilation')
-        
+
+        print u'Project              :', utils.safe_encode(task, sys.getfilesystemencoding())
+        print u'Model file           :', utils.safe_encode(model['name'], sys.getfilesystemencoding())
+        print u'Target               :', utils.safe_encode(model['target'], sys.getfilesystemencoding())
+        print u'Exit code            :', utils.safe_encode(model['exit_code'], sys.getfilesystemencoding())
+        print u'Log compilation file :', utils.safe_encode(model['log_compilation'], sys.getfilesystemencoding())
+
         etalons = []
         node_etalons = dom.getElementsByTagName('etalons')
         if len(node_etalons):
@@ -293,12 +299,6 @@ for task in files:
         except:
             traceback.print_exc(file=sys.stdout)
             exit_code = DEFAULT_EXIT_CODE
-
-        print u'Project              :', utils.safe_encode(task, sys.getfilesystemencoding())
-        print u'Model file           :', utils.safe_encode(model['name'], sys.getfilesystemencoding())
-        print u'Target               :', utils.safe_encode(model['target'], sys.getfilesystemencoding())
-        print u'Exit code            :', utils.safe_encode(model['exit_code'], sys.getfilesystemencoding())
-        print u'Log compilation file :', utils.safe_encode(model['log_compilation'], sys.getfilesystemencoding())
 
         if len(etalons):
             print '\n', u'Etalons :', '\n'
