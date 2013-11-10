@@ -734,15 +734,15 @@ rss_resource
 		LPRDORTPResType pCheckResType = PARSER->findRTPResType(checkType->value().getIdentificator());
 		if (!pCheckResType)
 		{
-			PARSER->error().error(@5, rdo::format("Неизвестный тип ресурса: %s", checkType->value().getIdentificator().c_str()));
+			PARSER->error().error(@5, rdo::format("Неизвестный тип ресурса: '%s'", checkType->value().getIdentificator().c_str()));
 		}
 		if (pResource->getType() != pCheckResType)
 		{
-			PARSER->error().error(@5, rdo::format("Несоответствие типов"));
+			PARSER->error().error(@5, rdo::format("Несоответствие типов: '%s' и '%s'", pResource->getType()->name().c_str(), checkType->value().getIdentificator().c_str()));
 		}
 		if (!pResource->defined())
 		{
-			PARSER->error().error(@5, rdo::format("Заданы не все параметры ресурса: %s", pResource->name().c_str()));
+			PARSER->error().error(@5, rdo::format("Заданы не все параметры ресурса: '%s'", pResource->name().c_str()));
 		}
 		pResource->setTrace(1);
 		pResource->end();
