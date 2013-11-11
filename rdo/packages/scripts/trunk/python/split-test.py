@@ -11,10 +11,12 @@ parser.add_argument('-ref1', type = str, default = '', help =\
                         "2nd reference y file", required = True)
 parser.add_argument('-ref2', type = str, default = '', help =\
                         "2nd reference y file", required = True)
+parser.add_argument('-exec', type = str, default = '', help =\
+                        "command to execute split-bison", required = True)
     
 args = parser.parse_args()
 
-procname = "python3 split-bison.py -y1 " + args.y1 + " -y2 " + args.y2 + " " + args.inputFile
+procname = args.exec + " -y1 " + args.y1 + " -y2 " + args.y2 + " " + args.inputFile
 
 out, err = subprocess.Popen(procname, stdout = subprocess.PIPE, shell = True).communicate()
 
