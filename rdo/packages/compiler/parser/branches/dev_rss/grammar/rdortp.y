@@ -744,12 +744,22 @@ rss_resource
 		{
 			PARSER->error().error(@5, rdo::format("Заданы не все параметры ресурса: '%s'", pResource->name().c_str()));
 		}
-		pResource->setTrace(1);
 		pResource->end();
+	}
+	| RDO_IDENTIF '.' rss_trace '(' ')'
+	{
+		LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pName);
+		LPRDORSSResource pResource = PARSER->findRSSResource(pName->value().getIdentificator());
+		if (!pResource)
+		{
+			PARSER->error().error(@1, rdo::format("Ресурс '%s' не существует", pName->value().getIdentificator().c_str()));
+		}
+		pResource->setTrace($3 != 0);
 	}
 	| error
 	{
-		PARSER->error().error(@1, rdo::format("Синтаксическая ошибка, описание ресурсов должно иметь вид:\n<тип ресурса> <имя ресурса> = new <тип ресурса> ( <параметры> ) ;"));
+		PARSER->error().error(@1, rdo::format("Синтаксическая ошибка"));
 	}
 	;
 
@@ -791,6 +801,11 @@ rss_res_init
 			PARSER->error().error(@1, rdo::format("Ожидается имя ресурса"));
 		}
 	}
+	;
+
+	rss_trace
+	: RDO_trace	   {$$ = 1;}
+	| RDO_no_trace {$$ = 0;}
 	;
 
 rss_opt_value_list
