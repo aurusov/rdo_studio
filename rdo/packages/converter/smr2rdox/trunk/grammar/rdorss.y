@@ -195,6 +195,7 @@
 #include "converter/smr2rdox/rdoparser_lexer.h"
 #include "converter/smr2rdox/rdorss.h"
 #include "converter/smr2rdox/rdortp.h"
+#include "converter/smr2rdox/update/update.h"
 // --------------------------------------------------------------------------------
 
 #define CONVERTER LEXER->converter()
@@ -265,7 +266,63 @@ rss_res_descr
 		{
 			CONVERTER->error().error(@3, rdo::format("Заданы не все параметры ресурса: %s", pResource->name().c_str()));
 		}
-		pResource->setTrace($2 != 0);
+		pResource->setTrace($2 == 1);
+
+		if ($2 != 2)
+		{
+			LPDocUpdate pTraceDelete = rdo::Factory<UpdateDelete>::create(
+				@2.m_first_seek,
+				@2.m_last_seek
+			);
+			ASSERT (pTraceDelete);
+			CONVERTER->insertDocUpdate(pTraceDelete);
+		}
+
+		LPDocUpdate pLeftParenInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_first_seek,
+			"("
+		);
+		ASSERT (pLeftParenInsert);
+		CONVERTER->insertDocUpdate(pLeftParenInsert);
+		
+		LPDocUpdate pRightParenSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_last_seek,
+			");"
+		);
+		ASSERT (pRightParenSemicolonInsert);
+		CONVERTER->insertDocUpdate(pRightParenSemicolonInsert);
+
+		switch ($2)
+		{
+			case 0 :
+			{
+				tstring tracestr;
+				tracestr = pResource->name().c_str();
+				tracestr = "\n\t" + tracestr + ".no_trace();";
+				LPDocUpdate pAddTrace = rdo::Factory<UpdateInsert>::create(
+					@3.m_last_seek,
+					tracestr
+				);	
+				ASSERT (pAddTrace);
+				CONVERTER->insertDocUpdate(pAddTrace);
+				break;
+			}
+			case 1 :
+			{
+				tstring tracestr;
+				tracestr = pResource->name().c_str();
+				tracestr = "\n\t" + tracestr + ".trace();";
+				LPDocUpdate pAddTrace = rdo::Factory<UpdateInsert>::create(
+					@3.m_last_seek,
+					tracestr
+				);
+				ASSERT (pAddTrace);
+				CONVERTER->insertDocUpdate(pAddTrace);
+				break;
+			}
+			default :
+				break;
+		}		
 	}
 	;
 
@@ -287,6 +344,24 @@ rss_res_type
 			CONVERTER->error().push_done();
 		}
 		LPRDORSSResource pResource = rdo::Factory<RDORSSResource>::create(CONVERTER, pName->src_info(), pResType);
+
+		tstring typestr = pType->value().getIdentificator().c_str();
+		typestr += " ";
+		LPDocUpdate pTypeInsert = rdo::Factory<UpdateInsert>::create(
+			@1.m_first_seek,
+			typestr
+		);
+		ASSERT (pTypeInsert);
+		CONVERTER->insertDocUpdate(pTypeInsert);
+
+		LPDocUpdate pColonReplace = rdo::Factory<UpdateReplace>::create(
+			@1.m_last_seek - 1,
+			@1.m_last_seek,
+			"= new "
+		);
+		ASSERT (pColonReplace);
+		CONVERTER->insertDocUpdate(pColonReplace);
+		
 		$$ = CONVERTER->stack().push(pResource);
 	}
 	| RDO_IDENTIF_COLON error
@@ -304,14 +379,29 @@ rss_res_type
 	;
 
 rss_trace
-	: /* empty */  {$$ = 0;}
+	: /* empty */  {$$ = 2;}
 	| RDO_trace	   {$$ = 1;}
 	| RDO_no_trace {$$ = 0;}
 	;
 
 rss_values
-	: /* empty */
+	: /* empty */ 
+	{
+		$$ = 1;
+	}
 	| rss_values rss_value
+	{
+	if ( $1 != 1 )
+		{
+			LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
+				@1.m_last_seek,
+				","
+			);
+			ASSERT(pCommaInsert);
+			CONVERTER->insertDocUpdate(pCommaInsert);
+		}
+		$$ = 0;
+	}
 	;
 
 rss_value
