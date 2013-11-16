@@ -339,11 +339,9 @@ rss_res_type
 		}
 		LPRDORSSResource pResource = rdo::Factory<RDORSSResource>::create(CONVERTER, pName->src_info(), pResType);
 
-		tstring typeStr = pType->value().getIdentificator();
-		typeStr += " ";
 		LPDocUpdate pTypeInsert = rdo::Factory<UpdateInsert>::create(
 			@1.m_first_seek,
-			typeStr
+			pType->value().getIdentificator() + " "
 		);
 		ASSERT(pTypeInsert);
 		CONVERTER->insertDocUpdate(pTypeInsert);
