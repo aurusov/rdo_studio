@@ -738,7 +738,9 @@ rss_resource
 		}
 		if (pResource->getType() != pCheckResType)
 		{
-			PARSER->error().error(@5, rdo::format("Несоответствие типов: '%s' и '%s'", pResource->getType()->name().c_str(), checkType->value().getIdentificator().c_str()));
+			PARSER->error().error(@5, rdo::format("Несоответствие типов: '%s' и '%s'",
+				pResource->getType()->name().c_str(),
+				checkType->value().getIdentificator().c_str()));
 		}
 		if (!pResource->defined())
 		{
@@ -803,8 +805,8 @@ rss_res_init
 	}
 	;
 
-	rss_trace
-	: RDO_trace	   {$$ = 1;}
+rss_trace
+	: RDO_trace    {$$ = 1;}
 	| RDO_no_trace {$$ = 0;}
 	;
 
