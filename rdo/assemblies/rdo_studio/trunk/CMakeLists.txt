@@ -134,6 +134,21 @@ ENDIF()
 
 #==============================================================================
 
+IF(WIN32)
+    FIND_PACKAGE(PythonInterp)
+    IF(NOT ${PYTHON_VERSION_MAJOR} EQUAL 3)
+        MESSAGE(FATAL_ERROR "Python3 not found")
+    ENDIF()
+ELSE()
+    FIND_PROGRAM(PYTHON_EXECUTABLE python3)
+    IF(NOT PYTHON_EXECUTABLE)
+        MESSAGE(FATAL_ERROR "Python3 not found")
+    ENDIF()
+    MESSAGE(STATUS "Found PythonInterp: "${PYTHON_EXECUTABLE})
+ENDIF()
+
+#==============================================================================
+
 SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
 
 SET(SCRIPT_FILES
