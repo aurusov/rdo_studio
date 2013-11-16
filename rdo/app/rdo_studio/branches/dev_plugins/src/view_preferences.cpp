@@ -1807,7 +1807,7 @@ void ViewPreferences::updateButtonsState()
 	buttonStopPlugin ->setEnabled(!allInactive && !allUnavailable);
 }
 
-IntVector ViewPreferences::selectedRows() const
+ViewPreferences::IntVector ViewPreferences::selectedRows() const
 {
 	std::vector<int> sortedRows;
 	BOOST_FOREACH(QModelIndex index, pluginInfoTable->selectionModel()->selectedRows()) {
