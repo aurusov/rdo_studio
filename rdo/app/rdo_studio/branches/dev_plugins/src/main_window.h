@@ -98,6 +98,7 @@ public:
 private:
 	typedef  QMainWindow  parent_type;
 	typedef  QStringList  ReopenList;
+	rdo::gui::model::Model* m_pModel;
 
 	struct SubWindowToAction
 	{
