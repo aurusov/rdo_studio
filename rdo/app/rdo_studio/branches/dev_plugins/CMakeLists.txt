@@ -178,8 +178,8 @@ SET(PLUGINS_FILES
 	src/plugins/plugin_info.cpp
 	src/plugins/plugin_info.h
 	src/plugins/plugin_interface.h
-    src/plugins/plugin_loader.cpp
-    src/plugins/plugin_loader.h
+	src/plugins/plugin_loader.cpp
+	src/plugins/plugin_loader.h
 )
 QT5_ADD_RESOURCES(GENERATED_QRC_FILES ${QRC_FILES})
 
@@ -568,14 +568,14 @@ ADD_DEPENDENCIES(rdo_application rdo_ui_qt)
 ADD_DEPENDENCIES(rdo_application rdo_help)
 ADD_DEPENDENCIES(rdo_application scintilla)
 
-TARGET_LINK_LIBRARIES(rdo_application rdo_utils)
-TARGET_LINK_LIBRARIES(rdo_application rdo_kernel)
-TARGET_LINK_LIBRARIES(rdo_application rdo_repository)
-TARGET_LINK_LIBRARIES(rdo_application rdo_simulator)
+TARGET_LINK_LIBRARIES(rdo_application rdo_utils           )
+TARGET_LINK_LIBRARIES(rdo_application rdo_kernel          )
+TARGET_LINK_LIBRARIES(rdo_application rdo_repository      )
+TARGET_LINK_LIBRARIES(rdo_application rdo_simulator       )
 TARGET_LINK_LIBRARIES(rdo_application rdo_simulator_report)
-TARGET_LINK_LIBRARIES(rdo_application rdo_ui_abstract)
-TARGET_LINK_LIBRARIES(rdo_application rdo_ui_qt)
-TARGET_LINK_LIBRARIES(rdo_application scintilla)
+TARGET_LINK_LIBRARIES(rdo_application rdo_ui_abstrac      )
+TARGET_LINK_LIBRARIES(rdo_application rdo_ui_qt           )
+TARGET_LINK_LIBRARIES(rdo_application scintilla           )
 
 ADD_DEPENDENCIES     (rdo_editor rdo_application)
 TARGET_LINK_LIBRARIES(rdo_editor rdo_application)
