@@ -274,7 +274,7 @@ rss_res_descr
 				@2.m_first_seek,
 				@2.m_last_seek
 			);
-			ASSERT (pTraceDelete);
+			ASSERT(pTraceDelete);
 			CONVERTER->insertDocUpdate(pTraceDelete);
 		}
 
@@ -282,14 +282,14 @@ rss_res_descr
 			@3.m_first_seek,
 			"("
 		);
-		ASSERT (pLeftParenInsert);
+		ASSERT(pLeftParenInsert);
 		CONVERTER->insertDocUpdate(pLeftParenInsert);
 		
 		LPDocUpdate pRightParenSemicolonInsert = rdo::Factory<UpdateInsert>::create(
 			@3.m_last_seek,
 			");"
 		);
-		ASSERT (pRightParenSemicolonInsert);
+		ASSERT(pRightParenSemicolonInsert);
 		CONVERTER->insertDocUpdate(pRightParenSemicolonInsert);
 
 		switch ($2)
@@ -300,7 +300,7 @@ rss_res_descr
 				@3.m_last_seek,
 				"\n\t" + pResource->name() + ".no_trace();"
 			);
-			ASSERT (pAddTrace);
+			ASSERT(pAddTrace);
 			CONVERTER->insertDocUpdate(pAddTrace);
 			break;
 		}
@@ -310,7 +310,7 @@ rss_res_descr
 				@3.m_last_seek,
 				"\n\t" + pResource->name() + ".trace();"
 			);
-			ASSERT (pAddTrace);
+			ASSERT(pAddTrace);
 			CONVERTER->insertDocUpdate(pAddTrace);
 			break;
 		}
@@ -339,21 +339,21 @@ rss_res_type
 		}
 		LPRDORSSResource pResource = rdo::Factory<RDORSSResource>::create(CONVERTER, pName->src_info(), pResType);
 
-		tstring typestr = pType->value().getIdentificator().c_str();
-		typestr += " ";
+		tstring typeStr = pType->value().getIdentificator();
+		typeStr += " ";
 		LPDocUpdate pTypeInsert = rdo::Factory<UpdateInsert>::create(
 			@1.m_first_seek,
-			typestr
+			typeStr
 		);
-		ASSERT (pTypeInsert);
+		ASSERT(pTypeInsert);
 		CONVERTER->insertDocUpdate(pTypeInsert);
 
 		LPDocUpdate pColonReplace = rdo::Factory<UpdateReplace>::create(
 			@1.m_last_seek - 1,
 			@1.m_last_seek,
-			"= new "
+			" = new "
 		);
-		ASSERT (pColonReplace);
+		ASSERT(pColonReplace);
 		CONVERTER->insertDocUpdate(pColonReplace);
 		
 		$$ = CONVERTER->stack().push(pResource);
@@ -385,7 +385,7 @@ rss_values
 	}
 	| rss_values rss_value
 	{
-	if ( $1 != 1 )
+		if ($1 != 1)
 		{
 			LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
 				@1.m_last_seek,
