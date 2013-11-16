@@ -127,21 +127,6 @@ tstring RDOParserRDOItem::text() const
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOParserRSS
-// --------------------------------------------------------------------------------
-RDOParserRSS::RDOParserRSS(StreamFrom from)
-	: RDOParserRDOItem(rdoModelObjects::RSS, rssparse, rsserror, rsslex, from)
-{}
-
-void RDOParserRSS::parse(CREF(LPRDOParser) pParser)
-{
-	ASSERT(pParser);
-	pParser->setHaveKWResources   (false);
-	pParser->setHaveKWResourcesEnd(false);
-	RDOParserRDOItem::parse(pParser);
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOParserRSSPost
 // --------------------------------------------------------------------------------
 void RDOParserRSSPost::parse(CREF(LPRDOParser) pParser)

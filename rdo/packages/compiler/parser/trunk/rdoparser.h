@@ -123,11 +123,6 @@ public:
 
 	void  insertChanges        (CREF(tstring) name, CREF(tstring) value);
 
-	rbool isHaveKWResources    ()            const { return m_have_kw_Resources;     }
-	void  setHaveKWResources   (rbool value)       { m_have_kw_Resources = value;    }
-	rbool isHaveKWResourcesEnd ()            const { return m_have_kw_ResourcesEnd;  }
-	void  setHaveKWResourcesEnd(rbool value)       { m_have_kw_ResourcesEnd = value; }
-
 	rbool isCurrentDPTSearch   ();
 	rbool isCurrentDPTPrior    ();
 
@@ -245,8 +240,6 @@ protected:
 
 private:
 	LPRDOSMR              m_pSMR;
-	rbool                 m_have_kw_Resources;
-	rbool                 m_have_kw_ResourcesEnd;
 	Error                 m_error;
 	Stack                 m_movementObjectList;
 	PreCastTypeList       m_preCastTypeList;

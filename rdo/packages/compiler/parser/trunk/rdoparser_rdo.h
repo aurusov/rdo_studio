@@ -52,17 +52,6 @@ private:
 DECLARE_POINTER(RDOParserRDOItem);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOParserRSS
-// --------------------------------------------------------------------------------
-class RDOParserRSS: public RDOParserRDOItem
-{
-DECLARE_FACTORY(RDOParserRSS);
-private:
-	RDOParserRSS(StreamFrom from = sf_repository);
-	virtual void parse(CREF(LPRDOParser) pParser);
-};
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOParserRSSPost
 // --------------------------------------------------------------------------------
 class RDOParserRSSPost: public RDOParserItem
