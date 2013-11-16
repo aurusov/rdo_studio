@@ -294,35 +294,29 @@ rss_res_descr
 
 		switch ($2)
 		{
-			case 0 :
-			{
-				tstring tracestr;
-				tracestr = pResource->name().c_str();
-				tracestr = "\n\t" + tracestr + ".no_trace();";
-				LPDocUpdate pAddTrace = rdo::Factory<UpdateInsert>::create(
-					@3.m_last_seek,
-					tracestr
-				);	
-				ASSERT (pAddTrace);
-				CONVERTER->insertDocUpdate(pAddTrace);
-				break;
-			}
-			case 1 :
-			{
-				tstring tracestr;
-				tracestr = pResource->name().c_str();
-				tracestr = "\n\t" + tracestr + ".trace();";
-				LPDocUpdate pAddTrace = rdo::Factory<UpdateInsert>::create(
-					@3.m_last_seek,
-					tracestr
-				);
-				ASSERT (pAddTrace);
-				CONVERTER->insertDocUpdate(pAddTrace);
-				break;
-			}
-			default :
-				break;
-		}		
+		case 0:
+		{
+			LPDocUpdate pAddTrace = rdo::Factory<UpdateInsert>::create(
+				@3.m_last_seek,
+				"\n\t" + pResource->name() + ".no_trace();"
+			);
+			ASSERT (pAddTrace);
+			CONVERTER->insertDocUpdate(pAddTrace);
+			break;
+		}
+		case 1:
+		{
+			LPDocUpdate pAddTrace = rdo::Factory<UpdateInsert>::create(
+				@3.m_last_seek,
+				"\n\t" + pResource->name() + ".trace();"
+			);
+			ASSERT (pAddTrace);
+			CONVERTER->insertDocUpdate(pAddTrace);
+			break;
+		}
+		default:
+			break;
+		}
 	}
 	;
 
