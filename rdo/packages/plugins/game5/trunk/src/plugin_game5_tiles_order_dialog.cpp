@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2013
-  \file      rdo_plugin_test/src/plugin_game5_tiles_order_dialog.cpp
+  \file      app/rdo_studio/plugins/game5/src/plugin_game5_tiles_order_dialog.cpp
   \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
   \date      22.09.2013
   \brief     
