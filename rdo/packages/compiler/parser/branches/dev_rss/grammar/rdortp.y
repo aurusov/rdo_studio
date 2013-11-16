@@ -781,8 +781,17 @@ rss_res_init
 		LPRDORSSResource pResourceExist = PARSER->findRSSResource(pName->value().getIdentificator());
 		if (pResourceExist)
 		{
-			PARSER->error().push_only(pName->src_info(), rdo::format("Ресурс '%s' уже существует", pName->value().getIdentificator().c_str()));
+			PARSER->error().push_only(@2, rdo::format("Ресурс '%s' уже существует",
+				pName->value().getIdentificator().c_str()));
 			PARSER->error().push_only(pResourceExist->src_info(), "См. первое определение");
+			PARSER->error().push_done();
+		}
+		LPRDORTPResType pNameExist = PARSER->findRTPResType(pName->value().getIdentificator());
+		if (pNameExist)
+		{
+			PARSER->error().push_only(@2, rdo::format("Недопустимое имя ресурса: '%s'. Данное имя уже зарезервировано ",
+				pName->value().getIdentificator().c_str()));
+			PARSER->error().push_only(pNameExist->src_info(), "См. первое определение");
 			PARSER->error().push_done();
 		}
 		LPRDORSSResource pResource = pResType->createRes(PARSER, pName->src_info());
