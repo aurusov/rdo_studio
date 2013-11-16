@@ -81,6 +81,7 @@ public:
 	void           callQtAssistant     (CREF(QByteArray) ba);
 
 	CREF(rdo::gui::editor::LPModelStyle) getModelStyle() const;
+	rdo::Plugin::Loader&                 getPluginLoader();
 
 private:
 #ifdef RDO_MT
@@ -104,7 +105,7 @@ private:
 	rdo::gui::editor::LPModelStyle         m_pModelStyle;
 	QTimer                                 m_idleTimer;
 
-	rdo::Plugin::Loader*                   m_pPluginLoader;
+	rdo::Plugin::Loader                    m_PluginLoader;
 
 	void setupFileAssociation();
 #ifdef Q_OS_WIN

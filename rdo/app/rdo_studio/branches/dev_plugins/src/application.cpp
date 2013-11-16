@@ -96,7 +96,7 @@ Application::Application(int& argc, char** argv)
 	, m_exitCode                    (rdo::simulation::report::EC_OK)
 	, m_pAssistant                  (NULL  )
 	, m_pMainFrame                  (NULL  )
-	, m_pPluginLoader               (NULL  )
+	, m_PluginLoader                ()
 {
 	g_pApp = this;
 
@@ -242,8 +242,8 @@ Application::Application(int& argc, char** argv)
 		g_pModel->runModel();
 	}
 
-	m_pPluginLoader = new rdo::Plugin::Loader(m_pMainFrame);
-	m_pPluginLoader->startAutoloadedPlugins();
+	m_PluginLoader.initPluginParent(m_pMainFrame);
+	m_PluginLoader.startAutoloadedPlugins();
 }
 
 Application::~Application()
@@ -536,6 +536,11 @@ CREF(rdo::gui::editor::LPModelStyle) Application::getModelStyle() const
 {
 	ASSERT(m_pModelStyle);
 	return m_pModelStyle;
+}
+
+rdo::Plugin::Loader& Application::getPluginLoader()
+{
+	return m_PluginLoader;
 }
 
 #ifdef Q_OS_WIN
