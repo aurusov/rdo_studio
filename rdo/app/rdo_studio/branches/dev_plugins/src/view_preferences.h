@@ -404,11 +404,11 @@ private:
 	void updateThemeComboBox(PTR(StyleProperty) prop);
 	void updateTheme();
 
-	PluginInfoList* m_pPluginInfoList;
+	LPPluginInfoList m_pPluginInfoList;
 	
 	void                     fillPluginInfoTable    ();
-	void                     populateRow            (PluginInfoList::iterator plgInfo);
-	PluginInfoList::iterator getPluginInfoFromTable (int pluginRow)                    const;
+	void                     populateRow            (LPPluginInfo plgInfo);
+	LPPluginInfo             getPluginInfoFromTable (int pluginRow)                    const;
 	IntVector                selectedRows           ()                                 const;
 	void                     updatePluginList       ();
 };

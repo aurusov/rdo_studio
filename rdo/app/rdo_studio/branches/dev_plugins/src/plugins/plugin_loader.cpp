@@ -25,16 +25,10 @@ using namespace rdo::Plugin;
 
 Loader* g_pPluginLoader = NULL;
 
-Loader::Loader(QWidget * pPluginsParent)
-	: m_pPluginsParent(pPluginsParent)
-	, m_MergedPluginInfoList(getMergedPluginInfoList())
+Loader::Loader()
+	: m_pPluginsParent       (NULL)
+	, m_pMergedPluginInfoList(rdo::Factory<PluginInfoList>::create(getMergedPluginInfoList()))
 {
-	g_pPluginLoader = this;
-}
-
-Loader::~Loader()
-{
-	g_pPluginLoader = NULL;
 }
 
 PluginInfoList Loader::getMergedPluginInfoList() const
@@ -44,16 +38,16 @@ PluginInfoList Loader::getMergedPluginInfoList() const
 	PluginInfoList mergedPlgns;
 	for (PluginInfoList::iterator curItrt=curLoadedPlgns.begin(); curItrt!=curLoadedPlgns.end(); ++curItrt)
 	{
-		PluginInfo plgnInfo = *curItrt;
-		matchPluginInfo(plgnsHistory, &plgnInfo);
+		LPPluginInfo plgnInfo = *curItrt;
+		matchPluginInfo(plgnsHistory, plgnInfo);
 		mergedPlgns.push_back(plgnInfo);
 	}
 	for (PluginInfoList::iterator histrItrt=plgnsHistory.begin(); histrItrt!=plgnsHistory.end(); ++histrItrt)
 	{
-		PluginInfo plgnInfo = *histrItrt;
-		if (matchPluginInfo( mergedPlgns, &plgnInfo ) != rdo::Plugin::ExactMatched)
+		LPPluginInfo plgnInfo = *histrItrt;
+		if (matchPluginInfo( mergedPlgns, plgnInfo ) != rdo::Plugin::ExactMatched)
 		{
-			plgnInfo.setState(rdo::Plugin::Deleted);
+			plgnInfo->setState(rdo::Plugin::Deleted);
 			mergedPlgns.push_back(plgnInfo);
 		}
 	}
@@ -73,7 +67,7 @@ PluginInfoList Loader::getPluginsHistory() const
 		QString plgnVer      = settings.value("plgnVer"     ,"").toString();
 		QUuid   plgnGUID     = settings.value("plgnGUID"    ,QUuid()).toUuid();
 		PluginInfo plgn(plgnName , NULL , plgnAutoLoad , plgnGUID , plgnAuthor , plgnVer , rdo::Plugin::Unique);
-		list.push_back(plgn);
+		list.push_back(rdo::Factory<PluginInfo>::create(plgn));
 	}
 	return list;
 }
@@ -84,15 +78,15 @@ void Loader::setPluginInfoList(const PluginInfoList& value)
 	settings.remove("plugins");
 	settings.beginWriteArray("plugins");
 	int index = 0;
-	BOOST_FOREACH (PluginInfo plgnInfo, value){
-		if (plgnInfo.getState() != rdo::Plugin::IdOnlyMatched)
+	BOOST_FOREACH (LPPluginInfo plgnInfo, value){
+		if (plgnInfo->getState() != rdo::Plugin::IdOnlyMatched)
 		{
 			settings.setArrayIndex(index);
-			settings.setValue("plgnName"    ,plgnInfo.getName());
-			settings.setValue("plgnAutoLoad",plgnInfo.getAutoload());
-			settings.setValue("plgnGUID"    ,plgnInfo.getGUID());
-			settings.setValue("plgnAuthor"  ,plgnInfo.getAuthor());
-			settings.setValue("plgnVer"     ,plgnInfo.getVersion());
+			settings.setValue("plgnName"    ,plgnInfo->getName());
+			settings.setValue("plgnAutoLoad",plgnInfo->getAutoload());
+			settings.setValue("plgnGUID"    ,plgnInfo->getGUID());
+			settings.setValue("plgnAuthor"  ,plgnInfo->getAuthor());
+			settings.setValue("plgnVer"     ,plgnInfo->getVersion());
 			index++;
 		}
 	}
@@ -113,9 +107,10 @@ PluginInfoList Loader::getCurrentPlugins() const
 			PluginInterface *plgn = loadPlugin(pluginLoader);
 			if (plgn) {
 				PluginInfo plgnInfo = generatePluginInfo(plgn,pluginLoader);
+				LPPluginInfo pPlgnInfo = rdo::Factory<PluginInfo>::create(plgnInfo);
 				pluginLoader->unload();
-				if ( matchPluginInfo( list, &plgnInfo ) != rdo::Plugin::ExactMatched ) {
-					list.push_back(plgnInfo);
+				if ( matchPluginInfo( list, pPlgnInfo ) != rdo::Plugin::ExactMatched ) {
+					list.push_back(pPlgnInfo);
 				}
 				else
 				{
@@ -127,18 +122,18 @@ PluginInfoList Loader::getCurrentPlugins() const
 	return list;
 }
 
-int Loader::matchPluginInfo(const PluginInfoList& list,PluginInfo * plgnInfo) const
+int Loader::matchPluginInfo(const PluginInfoList& list, LPPluginInfo plgnInfo) const
 {
 	bool notFoundFullMatch = true;
 	int plgnState = plgnInfo ->getState();
 	for (PluginInfoList::const_iterator listItr = list.begin(); listItr != list.end() && notFoundFullMatch; ++listItr)
 	{
-		if (plgnInfo->getGUID() == listItr->getGUID())
+		if (plgnInfo->getGUID() == (*listItr)->getGUID())
 		{
-			if (plgnInfo->pluginSignInfoIsEqual(*listItr))
+			if (plgnInfo->pluginSignInfoIsEqual(*(*listItr)))
 			{
 				notFoundFullMatch = false;
-				plgnInfo->setAutoload(listItr->getAutoload());
+				plgnInfo->setAutoload((*listItr)->getAutoload());
 				plgnState = rdo::Plugin::ExactMatched;
 			}
 			else
@@ -183,7 +178,7 @@ PluginInfo Loader::generatePluginInfo(PluginInterface *plgn, QPluginLoader* plug
 	return plgnInfo; 
 }
 
-void Loader::stopPlugin(PluginInfo* plgnInfo)
+void Loader::stopPlugin(LPPluginInfo plgnInfo)
 {
 	PluginInterface * plgn = loadPlugin(plgnInfo->getLoader());
 	if (plgn) {
@@ -192,7 +187,7 @@ void Loader::stopPlugin(PluginInfo* plgnInfo)
 	}
 }
 
-void Loader::startPlugin(PluginInfo* plgnInfo)
+void Loader::startPlugin(LPPluginInfo plgnInfo)
 {
 	PluginInterface * plgn = loadPlugin(plgnInfo->getLoader());
 	if (plgn) {
@@ -203,16 +198,20 @@ void Loader::startPlugin(PluginInfo* plgnInfo)
 
 void Loader::startAutoloadedPlugins()
 {
-	for (PluginInfoList::iterator plgnInfoItrt=m_MergedPluginInfoList.begin(); plgnInfoItrt!=m_MergedPluginInfoList.end(); ++plgnInfoItrt)
+	for (PluginInfoList::iterator plgnInfoItrt=m_pMergedPluginInfoList->begin(); plgnInfoItrt!=m_pMergedPluginInfoList->end(); ++plgnInfoItrt)
 	{
-		if (plgnInfoItrt->getAutoload() && plgnInfoItrt->isAvailable()) {
-			startPlugin(&(*plgnInfoItrt));
+		if ((*plgnInfoItrt)->getAutoload() && (*plgnInfoItrt)->isAvailable()) {
+			startPlugin((*plgnInfoItrt));
 		}
 	}
 }
 
-PluginInfoList* Loader::getPluginInfoList ()
+const LPPluginInfoList& Loader::getPluginInfoList ()
 {
-	return &m_MergedPluginInfoList;
+	return m_pMergedPluginInfoList;
 }
 
+void Loader::initPluginParent (QWidget* pParent)
+{
+	m_pPluginsParent = pParent;
+}

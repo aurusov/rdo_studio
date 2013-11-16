@@ -25,29 +25,28 @@ namespace rdo {
 class rdo::Plugin::Loader
 {
 public:
-	Loader(QWidget * pPluginsParent);
-	~Loader();
+	Loader ();
+	virtual ~Loader() {};
 
-	PluginInfoList*       getPluginInfoList      ();
-	void                  stopPlugin             (PluginInfo* plgnInfo);
-	void                  startPlugin            (PluginInfo* plgnInfo);
-	void                  startAutoloadedPlugins ();
-	void                  setPluginInfoList      (const PluginInfoList& value);
+	const LPPluginInfoList& getPluginInfoList      ();
+	void                    stopPlugin             (LPPluginInfo plgnInfo);
+	void                    startPlugin            (LPPluginInfo plgnInfo);
+	void                    startAutoloadedPlugins ();
+	void                    setPluginInfoList      (const PluginInfoList& value);
+	void                    initPluginParent       (QWidget* pParent);
 
 private:
-	PluginInfoList m_MergedPluginInfoList;
-	QWidget *      m_pPluginsParent;
+	LPPluginInfoList m_pMergedPluginInfoList;
+	QWidget*         m_pPluginsParent;
 
 	QStringList       getFileList            (const QString &startDir) const;
 	PluginInfoList    getMergedPluginInfoList() const;
 	PluginInfoList    getPluginsHistory      () const;
 	PluginInfoList    getCurrentPlugins      () const;
 
-	PluginInterface * loadPlugin             (QPluginLoader * pluginLoader) const;
-	PluginInfo        generatePluginInfo     (PluginInterface *plgn, QPluginLoader* pluginLoader) const;
-	int               matchPluginInfo        (const PluginInfoList& list,PluginInfo * plgnInfo) const;
+	PluginInterface*  loadPlugin             (QPluginLoader* pluginLoader) const;
+	PluginInfo        generatePluginInfo     (PluginInterface* plgn, QPluginLoader* pluginLoader) const;
+	int               matchPluginInfo        (const PluginInfoList& list,LPPluginInfo plgnInfo) const;
 };
-
-extern rdo::Plugin::Loader* g_pPluginLoader;
 
 #endif // _RDO_STUDIO_PLUGIN_LOADER_H_

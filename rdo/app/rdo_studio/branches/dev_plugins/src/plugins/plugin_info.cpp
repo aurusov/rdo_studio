@@ -94,3 +94,14 @@ bool PluginInfo::isAvailable()
 	          pluginState == rdo::Plugin::IdOnlyMatched );
 }
 
+bool PluginInfo::operator==(const PluginInfo& other)
+{
+	return pluginName     == other.pluginName       &&
+	       pluginVersion  == other.pluginVersion    &&
+	       pluginAuthor   == other.pluginAuthor     &&
+	       pluginAutoload == other.pluginAutoload   &&
+	       pluginIsActive == other.pluginIsActive   &&
+	       pluginGUID     == other.pluginGUID       &&
+	       pluginState    == other.pluginState      &&
+	       pluginLoader   == other.pluginLoader     ;
+}

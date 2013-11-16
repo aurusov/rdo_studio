@@ -17,10 +17,12 @@
 #include <QMetaType>
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
-class PluginInfo
+OBJECT(PluginInfo)
 {
+DECLARE_FACTORY(PluginInfo);
 public:
 	PluginInfo(const QString& name, QPluginLoader* loader, bool autoload, const QUuid& GUID, const QString& author, const QString& version , int state);
 	PluginInfo() {};
@@ -40,6 +42,7 @@ public:
 
 	bool pluginSignInfoIsEqual(const PluginInfo& scndPlgn);
 	bool isAvailable();
+	bool operator==(const PluginInfo& other);
 
 private:
 	QString        pluginName;
@@ -52,7 +55,11 @@ private:
 	QPluginLoader* pluginLoader;
 };
 
-typedef std::list<PluginInfo> PluginInfoList;
+OBJECT(PluginInfoList)
+AND INSTANCE_OF(std::list<LPPluginInfo>)
+{
+	DECLARE_FACTORY(PluginInfo);
+};
 
 namespace rdo {
 	namespace Plugin {
@@ -60,6 +67,6 @@ namespace rdo {
 	}
 };
 
-Q_DECLARE_METATYPE(PluginInfoList::iterator)
+Q_DECLARE_METATYPE(LPPluginInfo)
 
 #endif // _RDO_STUDIO_PLUGIN_INFO_H_
