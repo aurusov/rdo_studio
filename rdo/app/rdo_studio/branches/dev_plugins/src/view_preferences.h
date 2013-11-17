@@ -405,11 +405,11 @@ private:
 	typedef std::vector<int> IntVector;
 	LPPluginInfoList m_pPluginInfoList;
 
-	void                     fillPluginInfoTable    ();
-	void                     populateRow            (LPPluginInfo plgInfo);
-	LPPluginInfo             getPluginInfoFromTable (int pluginRow)                    const;
-	IntVector                selectedRows           ()                                 const;
-	void                     updatePluginList       ();
+	void         fillPluginInfoTable    ();
+	void         populateRow            (const LPPluginInfo& plgInfo);
+	LPPluginInfo getPluginInfoFromTable (int pluginRow) const;
+	IntVector    selectedRows           () const;
+	void         updatePluginList       ();
 };
 
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

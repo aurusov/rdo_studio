@@ -1764,7 +1764,7 @@ void ViewPreferences::onStopPlugin()
 	updateButtonsState();
 }
 
-void ViewPreferences::populateRow(LPPluginInfo plgInfo)
+void ViewPreferences::populateRow(const LPPluginInfo& plgInfo)
 {
 	int currentRow = pluginInfoTable->rowCount();
 	pluginInfoTable->setRowCount(currentRow + 1);
@@ -1818,7 +1818,7 @@ ViewPreferences::IntVector ViewPreferences::selectedRows() const
 	return sortedRows;
 }
 
-LPPluginInfo ViewPreferences::getPluginInfoFromTable (int pluginRow) const
+LPPluginInfo ViewPreferences::getPluginInfoFromTable(int pluginRow) const
 {
 	QTableWidgetItem* itm = pluginInfoTable->item(pluginRow,0);
 	LPPluginInfo plgnInfo = itm->data(Qt::UserRole).value<LPPluginInfo>();

@@ -78,15 +78,16 @@ void Loader::setPluginInfoList(const PluginInfoList& value)
 	settings.remove("plugins");
 	settings.beginWriteArray("plugins");
 	int index = 0;
-	BOOST_FOREACH (LPPluginInfo plgnInfo, value){
+	BOOST_FOREACH(const LPPluginInfo& plgnInfo, value)
+	{
 		if (plgnInfo->getState() != rdo::Plugin::IdOnlyMatched)
 		{
 			settings.setArrayIndex(index);
-			settings.setValue("plgnName"    ,plgnInfo->getName());
-			settings.setValue("plgnAutoLoad",plgnInfo->getAutoload());
-			settings.setValue("plgnGUID"    ,plgnInfo->getGUID());
-			settings.setValue("plgnAuthor"  ,plgnInfo->getAuthor());
-			settings.setValue("plgnVer"     ,plgnInfo->getVersion());
+			settings.setValue("plgnName"    , plgnInfo->getName());
+			settings.setValue("plgnAutoLoad", plgnInfo->getAutoload());
+			settings.setValue("plgnGUID"    , plgnInfo->getGUID());
+			settings.setValue("plgnAuthor"  , plgnInfo->getAuthor());
+			settings.setValue("plgnVer"     , plgnInfo->getVersion());
 			index++;
 		}
 	}
@@ -122,7 +123,7 @@ PluginInfoList Loader::getCurrentPlugins() const
 	return list;
 }
 
-int Loader::matchPluginInfo(const PluginInfoList& list, LPPluginInfo plgnInfo) const
+int Loader::matchPluginInfo(const PluginInfoList& list, const LPPluginInfo& plgnInfo) const
 {
 	bool notFoundFullMatch = true;
 	int plgnState = plgnInfo ->getState();
@@ -178,7 +179,7 @@ PluginInfo Loader::generatePluginInfo(PluginInterface *plgn, QPluginLoader* plug
 	return plgnInfo; 
 }
 
-void Loader::stopPlugin(LPPluginInfo plgnInfo)
+void Loader::stopPlugin(const LPPluginInfo& plgnInfo)
 {
 	PluginInterface * plgn = loadPlugin(plgnInfo->getLoader());
 	if (plgn) {
@@ -187,7 +188,7 @@ void Loader::stopPlugin(LPPluginInfo plgnInfo)
 	}
 }
 
-void Loader::startPlugin(LPPluginInfo plgnInfo)
+void Loader::startPlugin(const LPPluginInfo& plgnInfo)
 {
 	PluginInterface * plgn = loadPlugin(plgnInfo->getLoader());
 	if (plgn) {
@@ -198,15 +199,19 @@ void Loader::startPlugin(LPPluginInfo plgnInfo)
 
 void Loader::startAutoloadedPlugins()
 {
-	for (PluginInfoList::iterator plgnInfoItrt=m_pMergedPluginInfoList->begin(); plgnInfoItrt!=m_pMergedPluginInfoList->end(); ++plgnInfoItrt)
+	for (PluginInfoList::const_iterator plgnInfoItrt = m_pMergedPluginInfoList->begin();
+		 plgnInfoItrt != m_pMergedPluginInfoList->end();
+		 ++plgnInfoItrt
+	)
 	{
-		if ((*plgnInfoItrt)->getAutoload() && (*plgnInfoItrt)->isAvailable()) {
+		if ((*plgnInfoItrt)->getAutoload() && (*plgnInfoItrt)->isAvailable())
+		{
 			startPlugin((*plgnInfoItrt));
 		}
 	}
 }
 
-const LPPluginInfoList& Loader::getPluginInfoList ()
+const LPPluginInfoList& Loader::getPluginInfoList() const
 {
 	return m_pMergedPluginInfoList;
 }
