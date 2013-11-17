@@ -357,7 +357,6 @@ SET(APP_SOURCE_FILES
 	${RESOURCES_IMAGE_FILES}
 	${RESOURCES_SCINTILLA_FILES}
 	${RESOURCES_UI_FILES}
-	${RESOURCES_WIN32_FILES}
 )
 
 SET(EDITOR_SOURCE_FILES
@@ -393,6 +392,7 @@ SET(TRACER_SOURCE_FILES
 
 SET(RDO_STUDIO_SOURCE_FILES
 	${MAIN_FILES}
+	${RESOURCES_WIN32_FILES}
 	${PCH_FILES}
 )
 
@@ -618,6 +618,10 @@ IF(MSVC) # options for windows #
 		${MAIN_FILES}
 	)
 
+	SOURCE_GROUP("rdo_studio\\.resources\\.win32" FILES
+		${RESOURCES_WIN32_FILES}
+	)
+
 	SOURCE_GROUP("rdo_application\\.application" FILES
 		${APPLICATION_FILES}
 	)
@@ -660,10 +664,6 @@ IF(MSVC) # options for windows #
 
 	SOURCE_GROUP("rdo_application\\.resources\\.ui" FILES
 		${RESOURCES_UI_FILES}
-	)
-
-	SOURCE_GROUP("rdo_application\\.resources\\.win32" FILES
-		${RESOURCES_WIN32_FILES}
 	)
 
 	SOURCE_GROUP("rdo_editor\\.editor" FILES

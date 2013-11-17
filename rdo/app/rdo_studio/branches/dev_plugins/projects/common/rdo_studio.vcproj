@@ -601,6 +601,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name=".win32"
+			>
+			<File
+				RelativePath="..\..\res\win32\rdo_studio.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\..\res\win32\rdo_studio.rc"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\src\main.cpp"
 			>
