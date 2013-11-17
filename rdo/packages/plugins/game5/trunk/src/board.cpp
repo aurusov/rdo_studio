@@ -12,7 +12,6 @@
 #include <boost/range/algorithm/find.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/board.h"
-#include "app/rdo_studio/plugins/game5/src/plugin_game5_dialog.h"
 // --------------------------------------------------------------------------------
 
 Board::Board(QWidget * pParent)
@@ -52,13 +51,9 @@ Board::Board(QWidget * pParent)
 
 void Board::clickOnTile(int number)
 {
-	Tile* tile = qobject_cast<Tile*>(sender());
 	if (freePlaceIsNearby(tilesPosition[number]))
 	{
-		tile->move(tilePoint(tilesPosition[0]));
-		int currentPlace      = tilesPosition[number];
-		tilesPosition[number] = tilesPosition[0];
-		tilesPosition[0]      = currentPlace;
+		moveTile(number, tilesPosition[0]);
 	}
 }
 
