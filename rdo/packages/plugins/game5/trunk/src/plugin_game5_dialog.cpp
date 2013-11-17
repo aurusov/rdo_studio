@@ -141,13 +141,12 @@ std::string game5Dialog::RTPtabText()
 std::string game5Dialog::RSStabText()
 {
 	std::stringstream RSStabTextStream; 
-	RSStabTextStream
-	<<	"$Resources\n";
+	RSStabTextStream <<	"$Resources\n";
 	for (unsigned int i = 1 ; i < gameBoard->getTilesPos().size() ; i++)
 	{
-		RSStabTextStream << "\tФишка" << i <<"\t: Фишка " << i << " " << gameBoard->getTilesPos()[i] <<"\n";
+		RSStabTextStream << "\tФишка Фишка" << i <<" = new Фишка(" << i << ", " << gameBoard->getTilesPos()[i] << ");\n";
 	}
-	RSStabTextStream << "\tДырка\t: Дырка_t " << gameBoard->getTilesPos()[0] << "\n";
+	RSStabTextStream << "\tДырка_t Дырка = new Дырка_t(" << gameBoard->getTilesPos()[0] << ");\n";
 	RSStabTextStream <<	"$End\n";
 	return RSStabTextStream.str();
 }
