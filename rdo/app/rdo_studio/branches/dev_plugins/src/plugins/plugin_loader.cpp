@@ -8,11 +8,9 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <QDir>
-#include <QString>
 #include <QApplication>
 #include <QSettings>
 #include <boost/foreach.hpp>

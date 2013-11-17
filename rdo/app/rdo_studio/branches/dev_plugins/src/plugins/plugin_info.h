@@ -11,11 +11,11 @@
 #define _RDO_STUDIO_PLUGIN_INFO_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QString>
+#include "utils/src/common/warning_disable.h"
 #include <QUuid>
 #include <QPluginLoader>
 #include <QMetaType>
-#include <list>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
