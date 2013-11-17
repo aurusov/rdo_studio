@@ -3,6 +3,7 @@
 #==============================================================================
 
 ADD_SUBDIRECTORY(help)
+ADD_SUBDIRECTORY(plugins)
 
 MESSAGE(STATUS "CREATE  RDO  STUDIO  EXECUTABLE")
 
