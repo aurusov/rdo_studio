@@ -9,7 +9,6 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
-#include <QMessageBox>
 #include <boost/range/algorithm/find.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/board.h"
@@ -152,15 +151,7 @@ void Board::setTilesPositon(QString string)
 	for (unsigned int i = 0; i < tilesPosition.size(); i++)
 	{
 		unsigned int tile = string.section(' ', i, i).toInt();
-		if (tile < tilesPosition.size())
-		{
-			moveTile(tile, i + 1);
-		}
-		else
-		{
-			QMessageBox::warning(qobject_cast<QWidget *>(sender()), "Игра 5",
-			                     "Неверное значение: " + QString::number(tile));
-		}
+		moveTile(tile, i + 1);
 	}
 }
 
