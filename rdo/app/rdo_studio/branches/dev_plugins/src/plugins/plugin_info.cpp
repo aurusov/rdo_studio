@@ -15,7 +15,7 @@
 // --------------------------------------------------------------------------------
 
 PluginInfo::PluginInfo(const QString& name , QPluginLoader* loader  , bool  autoload,
-	                   const QUuid&   GUID , const QString& author  , const QString& version , int state)
+	                    const QUuid&   GUID , const QString& author  , const QString& version , int state)
 	: pluginName     (name)
 	, pluginLoader   (loader)
 	, pluginAuthor   (author)
@@ -26,82 +26,82 @@ PluginInfo::PluginInfo(const QString& name , QPluginLoader* loader  , bool  auto
 	, pluginIsActive (false)
 {}
 
-const QString& PluginInfo::getName () const
+const QString& PluginInfo::getName() const
 {
 	return pluginName;
 }
 
-QPluginLoader* PluginInfo::getLoader ()
+QPluginLoader* PluginInfo::getLoader()
 {
 	return pluginLoader;
 }
 
-bool PluginInfo::getAutoload () const
+bool PluginInfo::getAutoload() const
 {
 	return pluginAutoload;
 }
 
-const QUuid& PluginInfo::getGUID () const
+const QUuid& PluginInfo::getGUID() const
 {
 	return pluginGUID;
 }
 
-int PluginInfo::getState () const
+int PluginInfo::getState() const
 {
 	return pluginState;
 }
 
-const QString& PluginInfo::getVersion () const
+const QString& PluginInfo::getVersion() const
 {
 	return pluginVersion;
 }
 
-const QString& PluginInfo::getAuthor () const
+const QString& PluginInfo::getAuthor() const
 {
 	return pluginAuthor;
 }
 
-void PluginInfo::setState (int value)
+void PluginInfo::setState(int value)
 {
 	pluginState = value;
 }
 
-void PluginInfo::setAutoload (bool value)
+void PluginInfo::setAutoload(bool value)
 {
 	pluginAutoload = value;
 }
 
-bool PluginInfo::isActive () const
+bool PluginInfo::isActive() const
 {
 	return pluginIsActive;
 }
 
-void PluginInfo::setActive (bool value)
+void PluginInfo::setActive(bool value)
 {
 	pluginIsActive = value;
 }
 
 bool PluginInfo::pluginSignInfoIsEqual(const PluginInfo& scndPlgn)
 {
-	return ( pluginName    == scndPlgn.getName()    &&
-	         pluginAuthor  == scndPlgn.getAuthor()  &&
-	         pluginVersion == scndPlgn.getVersion() );
+	return pluginName    == scndPlgn.getName()    &&
+	       pluginAuthor  == scndPlgn.getAuthor()  &&
+	       pluginVersion == scndPlgn.getVersion() ;
 }
 
 bool PluginInfo::isAvailable()
 {
-	return !( pluginState == rdo::Plugin::Deleted       ||
-	          pluginState == rdo::Plugin::IdOnlyMatched );
+	return !(pluginState == rdo::Plugin::Deleted       ||
+	         pluginState == rdo::Plugin::IdOnlyMatched );
 }
 
 bool PluginInfo::operator==(const PluginInfo& other)
 {
-	return pluginName     == other.pluginName       &&
-	       pluginVersion  == other.pluginVersion    &&
-	       pluginAuthor   == other.pluginAuthor     &&
-	       pluginAutoload == other.pluginAutoload   &&
-	       pluginIsActive == other.pluginIsActive   &&
-	       pluginGUID     == other.pluginGUID       &&
-	       pluginState    == other.pluginState      &&
-	       pluginLoader   == other.pluginLoader     ;
+	return pluginName     == other.pluginName     &&
+	       pluginVersion  == other.pluginVersion  &&
+	       pluginAuthor   == other.pluginAuthor   &&
+	       pluginAutoload == other.pluginAutoload &&
+	       pluginIsActive == other.pluginIsActive &&
+	       pluginGUID     == other.pluginGUID     &&
+	       pluginState    == other.pluginState    &&
+	       pluginLoader   == other.pluginLoader   ;
 }

@@ -24,7 +24,8 @@ OBJECT(PluginInfo)
 {
 DECLARE_FACTORY(PluginInfo);
 public:
-	PluginInfo(const QString& name, QPluginLoader* loader, bool autoload, const QUuid& GUID, const QString& author, const QString& version , int state);
+	PluginInfo(const QString& name, QPluginLoader* loader, bool autoload, const QUuid& GUID, 
+	           const QString& author, const QString& version , int state);
 	PluginInfo() {};
 	~PluginInfo() {};
 	const QString& getName    () const;
@@ -36,9 +37,9 @@ public:
 	bool           isActive   () const;
 	QPluginLoader* getLoader  ();
 	
-	void setAutoload (bool value);
-	void setState    (int  value);
-	void setActive   (bool value);
+	void setAutoload(bool value);
+	void setState   (int  value);
+	void setActive  (bool value);
 
 	bool pluginSignInfoIsEqual(const PluginInfo& scndPlgn);
 	bool isAvailable();
@@ -61,8 +62,10 @@ AND INSTANCE_OF(std::list<LPPluginInfo>)
 	DECLARE_FACTORY(PluginInfo);
 };
 
-namespace rdo {
-	namespace Plugin {
+namespace rdo
+{
+	namespace Plugin
+	{
 		enum LoadState{Unique = -52,IdOnlyMatched,ExactMatched,Deleted};
 	}
 };

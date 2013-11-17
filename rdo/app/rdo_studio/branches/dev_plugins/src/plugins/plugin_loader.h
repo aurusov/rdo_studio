@@ -16,8 +16,10 @@
 #include "app/rdo_studio/src/plugins/plugin_interface.h"
 // --------------------------------------------------------------------------------
 
-namespace rdo {
-	namespace Plugin {
+namespace rdo
+{
+	namespace Plugin
+	{
 		class Loader;
 	};
 };
@@ -28,18 +30,18 @@ public:
 	Loader ();
 	virtual ~Loader() {};
 
-	const LPPluginInfoList& getPluginInfoList      () const;
-	void                    stopPlugin             (const LPPluginInfo& plgnInfo);
-	void                    startPlugin            (const LPPluginInfo& plgnInfo);
-	void                    startAutoloadedPlugins ();
-	void                    setPluginInfoList      (const PluginInfoList& value);
-	void                    initPluginParent       (QWidget* pParent);
+	const LPPluginInfoList& getPluginInfoList     () const;
+	void                    stopPlugin            (const LPPluginInfo& plgnInfo);
+	void                    startPlugin           (const LPPluginInfo& plgnInfo);
+	void                    startAutoloadedPlugins();
+	void                    setPluginInfoList     (const PluginInfoList& value) const;
+	void                    initPluginParent      (QWidget* pParent);
 
 private:
 	LPPluginInfoList m_pMergedPluginInfoList;
 	QWidget*         m_pPluginsParent;
 
-	QStringList       getFileList            (const QString &startDir) const;
+	QStringList       getFileList            (const QString& startDir) const;
 	PluginInfoList    getMergedPluginInfoList() const;
 	PluginInfoList    getPluginsHistory      () const;
 	PluginInfoList    getCurrentPlugins      () const;
