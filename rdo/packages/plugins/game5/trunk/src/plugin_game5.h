@@ -11,7 +11,6 @@
 #define _RDO_PLUGIN_PLUGIN_GAME5_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QObject>
 #include <QtPlugin>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/plugins/plugin_interface.h"

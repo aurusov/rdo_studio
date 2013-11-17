@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <QHeaderView>
-#include <QGridLayout>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/costsetuptable.h"
 #include "app/rdo_studio/plugins/game5/src/comboboxdelegate.h"

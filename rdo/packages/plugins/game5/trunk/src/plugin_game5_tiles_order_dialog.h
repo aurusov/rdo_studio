@@ -11,8 +11,6 @@
 #define _RDO_PLUGIN_TEST_GAME_5_TILE_ORDER_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QDialog>
-#include <QString>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "ui_plugin_game5_tiles_order_dialog.h"
 // --------------------------------------------------------------------------------

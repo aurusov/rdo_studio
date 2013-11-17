@@ -11,9 +11,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QMessageBox>
 #include <QDir>
-#include <sstream>
-#include <iostream>
-#include <fstream>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"

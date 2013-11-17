@@ -11,8 +11,6 @@
 #define _RDO_PLUGIN_TEST_GAME_5_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QDialog>
-#include <QtPlugin>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/board.h"
 #include "app/rdo_studio/src/model/model.h"
