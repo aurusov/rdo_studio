@@ -11,20 +11,20 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QComboBox>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app\rdo_studio\plugins\game5\src\ComboBoxDelegate.h"
+#include "app/rdo_studio/plugins/game5/src/comboboxdelegate.h"
 // --------------------------------------------------------------------------------
  
-ComboBoxDelegate::ComboBoxDelegate(const ComboBoxDelegate::itemList& comboBoxItems , QObject *parent)
+ComboBoxDelegate::ComboBoxDelegate(const ComboBoxDelegate::itemList& comboBoxItems , QObject* parent)
 	: QItemDelegate(parent)
 	, comboBoxItems(comboBoxItems)
 {
 }
 
-QWidget *ComboBoxDelegate::createEditor(QWidget *parent,
-                                        const QStyleOptionViewItem & /* option */,
-                                        const QModelIndex          & /*index   */) const
+QWidget* ComboBoxDelegate::createEditor(QWidget* parent,
+                                        const QStyleOptionViewItem& /* option */,
+                                        const QModelIndex&          /*index   */) const
 {
-	QComboBox *comboBox = new QComboBox(parent);
+	QComboBox* comboBox = new QComboBox(parent);
 	 for (unsigned int i = 0; i < comboBoxItems.size(); i++)
 	{
 		 comboBox->addItem(QString::fromStdString(comboBoxItems[i]));
@@ -35,29 +35,32 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent,
 	return comboBox;
 }
 
-void ComboBoxDelegate::setEditorData(QWidget *editor,
-                                     const QModelIndex &index) const
+void ComboBoxDelegate::setEditorData(QWidget* editor,
+                                     const QModelIndex& index) const
 {
-	QComboBox *comboBox = qobject_cast<QComboBox *>(editor);
+	QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
 	if (!comboBox)
+	{
 		return;
+	}
 
-	int pos = comboBox->findText(index.model()->data(index).toString(),
-	                             Qt::MatchExactly);
+	int pos = comboBox->findText(index.model()->data(index).toString(), Qt::MatchExactly);
 	comboBox->setCurrentIndex(pos);
 }
 
-void ComboBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
-                                    const QModelIndex &index) const
+void ComboBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel* model,
+                                    const QModelIndex& index) const
 {
-	QComboBox *comboBox = qobject_cast<QComboBox *>(editor);
+	QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
 	if (!comboBox)
+	{
 		return;
+	}
 
 	model->setData(index, comboBox->currentText());
 }
 
 void ComboBoxDelegate::emitCommitData()
 {
-	emit commitData(qobject_cast<QWidget *>(sender()));
+	emit commitData(qobject_cast<QWidget*>(sender()));
 }

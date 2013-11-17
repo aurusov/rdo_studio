@@ -13,32 +13,33 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QDialog>
 #include <QtPlugin>
-#include "ui_plugin_game5_dialog.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/board.h"
 #include "app/rdo_studio/src/model/model.h"
+#include "ui_plugin_game5_dialog.h"
 // --------------------------------------------------------------------------------
 
-class game5Dialog : public QDialog, public Ui_RAOgame5PluginDialog
+class game5Dialog: public QDialog, public Ui_RAOgame5PluginDialog
 {
-	Q_OBJECT
+Q_OBJECT
 public:
 	game5Dialog(QWidget * parent);
 	~game5Dialog() {};
 
+signals:
+	void buttonRandomClicked(bool solvabilityCheck);
+
 private slots:
-	void callDialog();
-	void onClickOk();
+	void callDialog ();
+	void onClickOk  ();
 	void onClickHide(bool state);
 	void emitSolvabilityCheck();
 	void onItemCheckStateChanged(QTableWidgetItem * item);
 	
-signals:
-	void buttonRandomClicked(bool solvabilityCheck);
-
 private:
 	std::string evaluateBy();
 	std::string activityValue(int tableRow);
+
 	std::string RTPtabText();
 	std::string RSStabText();
 	std::string PATtabText();

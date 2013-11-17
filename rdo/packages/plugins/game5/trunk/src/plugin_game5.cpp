@@ -134,9 +134,9 @@ void plugin::plgnStopAction(QWidget* pParent)
 
 void plugin::pluginSlot()
 {
-	QWidget * pParent = qobject_cast<QWidget *>(sender()-> //action
-	                                            parent()-> //QMenu
-	                                            parent()); //QMainWindow
+	QWidget* pParent = qobject_cast<QWidget*>(sender()-> //action
+	                                          parent()-> //QMenu
+	                                          parent()); //QMainWindow
 	game5Dialog D(pParent);
 	D.exec();
 }

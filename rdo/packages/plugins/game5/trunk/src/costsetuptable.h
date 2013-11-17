@@ -17,21 +17,21 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-class CostSetupTable : public QTableWidget
+class CostSetupTable: public QTableWidget
 {
-	Q_OBJECT
+Q_OBJECT
 public:
-	CostSetupTable(QWidget * p_Parent);
+	CostSetupTable(QWidget* pParent);
 	virtual ~CostSetupTable() {};
 
-private slots:
-	void reemitItemCheckStateChanged(QTableWidgetItem * itm);
-
 signals:
-	void itemCheckStateChanged(QTableWidgetItem * itm);
+	void itemCheckStateChanged(QTableWidgetItem* itm);
+
+private slots:
+	void reemitItemCheckStateChanged(QTableWidgetItem* itm);
 
 private:
-	std::vector<bool> m_ItemsLastState;
+	std::vector<bool> m_itemsLastState;
 
 	void prepareTable();
 	void init();

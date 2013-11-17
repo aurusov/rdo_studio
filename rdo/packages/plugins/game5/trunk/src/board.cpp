@@ -17,9 +17,9 @@
 // --------------------------------------------------------------------------------
 
 Board::Board(QWidget * pParent)
-	: m_tileSize    (50)
-	, m_tilesCountX (5)
-	, m_tilesCountY (5)
+	: m_tileSize    (75)
+	, m_tilesCountX (3)
+	, m_tilesCountY (2)
 	, m_spacer      (1)
 	, m_boardSpacer (3)
 	, m_boardSizeX  (sizeCalc(m_tilesCountX) - m_spacer + 2 * m_boardSpacer)
@@ -151,7 +151,7 @@ void Board::setTilesPositon(QString string)
 	QString::SectionFlag flag = QString::SectionSkipEmpty;
 	for (unsigned int i = 0; i < tilesPosition.size(); i++)
 	{
-		int tile = string.section(' ', i, i).toInt();
+		unsigned int tile = string.section(' ', i, i).toInt();
 		if (tile < tilesPosition.size())
 		{
 			moveTile(tile, i + 1);

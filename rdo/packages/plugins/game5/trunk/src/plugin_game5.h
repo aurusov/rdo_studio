@@ -17,11 +17,11 @@
 #include "app/rdo_studio/src/plugins/plugin_interface.h"
 // --------------------------------------------------------------------------------
 
-class plugin : public QObject,PluginInterface
+class plugin: public QObject, PluginInterface
 {
-	Q_OBJECT
-	Q_PLUGIN_METADATA(IID "RDO_PLUGIN_INTERFACE" FILE "plugin_game5.json")
-	Q_INTERFACES(PluginInterface)
+Q_OBJECT
+Q_PLUGIN_METADATA(IID "RDO_PLUGIN_INTERFACE" FILE "plugin_game5.json")
+Q_INTERFACES(PluginInterface)
 
 public:
 	QUuid   getGUID       ();

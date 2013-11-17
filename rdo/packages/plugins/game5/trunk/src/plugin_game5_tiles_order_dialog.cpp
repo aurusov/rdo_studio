@@ -11,10 +11,10 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app\rdo_studio\plugins\game5\src\plugin_game5_tiles_order_dialog.h"
+#include "app/rdo_studio/plugins/game5/src/plugin_game5_tiles_order_dialog.h"
 // --------------------------------------------------------------------------------
-TilesOrderDialog::TilesOrderDialog(QWidget * pParent , const std::vector<unsigned int>& vector)
-: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
+TilesOrderDialog::TilesOrderDialog(QWidget* pParent, const std::vector<unsigned int>& vector)
+	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
 	setupUi(this);
 
@@ -36,12 +36,14 @@ TilesOrderDialog::TilesOrderDialog(QWidget * pParent , const std::vector<unsigne
 	}
 
 	lineEditPosition->setText(lineEditText);
-	if (pParent) {
+
+	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
+	connect(buttonOk    , SIGNAL(clicked()), this, SLOT(onOkClick()));
+	
+	if (pParent)
+	{
 		move(pParent->frameGeometry().center() - frameGeometry().center());
 	}
-
-	connect(buttonCancel,SIGNAL(clicked()),this,SLOT(reject()));
-	connect(buttonOk    ,SIGNAL(clicked()),this,SLOT(onOkClick()));
 }
 
 void TilesOrderDialog::onOkClick()
@@ -56,14 +58,21 @@ QString TilesOrderDialog::validatorRegExpPattern(int value)
 	int leastBit = value % 10;
 	int highBit  = value / 10;
 	if (highBit == 0)
+	{
 		singleRegExp += "[0-" + QString::number(leastBit) + "]";
+	}
 	else
+	{
 		if (highBit == 1)
+		{
 			singleRegExp += "[0-9]|[0-1][0-" + QString::number(leastBit) + "]";
+		}
 		else
+		{
 			singleRegExp += "[0-9]|[0-" + QString::number(highBit - 1) + "][0-9]|[0-" + QString::number(highBit) + "][0-" + QString::number(leastBit) + "]";
+		}
+	}
 
 	QString regExpString = "(((" + singleRegExp + ")(\\s)+)|((\\s)+(" + singleRegExp + ")(\\s)+))*($|((" + singleRegExp + ")$))";
-
 	return regExpString;
 }

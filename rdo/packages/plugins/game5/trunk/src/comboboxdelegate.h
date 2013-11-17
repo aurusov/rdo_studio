@@ -19,19 +19,19 @@
  
 class ComboBoxDelegate : public QItemDelegate
 {
-	Q_OBJECT
+Q_OBJECT
 
 public:
 	typedef std::vector<std::string> itemList;
 
 public:
-	ComboBoxDelegate(const ComboBoxDelegate::itemList& comboBoxItems , QObject *parent = 0);
+	ComboBoxDelegate(const ComboBoxDelegate::itemList& comboBoxItems, QObject* parent = 0);
 
-	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
-	                      const QModelIndex &index) const;
-	void setEditorData(QWidget *editor, const QModelIndex &index) const;
-	void setModelData (QWidget *editor, QAbstractItemModel *model,
-	                   const QModelIndex &index) const;
+	QWidget *createEditor(QWidget* parent, const QStyleOptionViewItem& option,
+	                      const QModelIndex& index) const;
+	void setEditorData(QWidget* editor, const QModelIndex& index) const;
+	void setModelData (QWidget* editor, QAbstractItemModel* model,
+	                   const QModelIndex& index) const;
 
 private slots:
 	void emitCommitData();

@@ -16,11 +16,11 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-class Tile : public QPushButton
+class Tile: public QPushButton
 {
-	Q_OBJECT
+Q_OBJECT
 public:
-	Tile(int number, QWidget *pParent);
+	Tile(int number, QWidget* pParent);
 	
 signals:
 	void tileClicked(int number);

@@ -10,10 +10,10 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app\rdo_studio\plugins\game5\src\tiles.h"
+#include "app/rdo_studio/plugins/game5/src/tiles.h"
 // --------------------------------------------------------------------------------
 
-Tile::Tile(int number, QWidget *pParent)
+Tile::Tile(int number, QWidget* pParent)
 	: QPushButton(pParent)
 	, tileNumber (number)
 {
@@ -26,8 +26,8 @@ Tile::Tile(int number, QWidget *pParent)
 	               border-radius: 10px; \
 	               border-color: black; \
 	               font: bold 28px; \
-	               padding: 6px; \
-	               ");
+	               padding: 6px;"
+	);
 
 	connect(this, SIGNAL(clicked()), this, SLOT(reemitClicked()));
 }

@@ -17,11 +17,11 @@
 #include "ui_plugin_game5_tiles_order_dialog.h"
 // --------------------------------------------------------------------------------
 
-class TilesOrderDialog : public QDialog, public Ui_RAOgame5TilesOrderDialog
+class TilesOrderDialog: public QDialog, public Ui_RAOgame5TilesOrderDialog
 {
-	Q_OBJECT
+Q_OBJECT
 public:
-	TilesOrderDialog(QWidget * parent , const std::vector<unsigned int>& vector);
+	TilesOrderDialog(QWidget* parent, const std::vector<unsigned int>& vector);
 	~TilesOrderDialog() {};
 
 signals:
@@ -32,7 +32,7 @@ private slots:
 
 private:
 	QString validatorRegExpPattern(int value);
-	std::vector<unsigned int> TilesOrderDialog::stringToVector(QString string);
+	std::vector<unsigned int> stringToVector(QString string);
 };
 
 #endif // _RDO_PLUGIN_TEST_GAME_5_TILE_ORDER_DIALOG_H_

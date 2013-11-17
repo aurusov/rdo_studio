@@ -16,16 +16,16 @@
 #include "app/rdo_studio/plugins/game5/src/comboboxdelegate.h"
 // --------------------------------------------------------------------------------
 
-CostSetupTable::CostSetupTable(QWidget * p_Parent)
-	: QTableWidget(p_Parent)
-	, m_ItemsLastState()
+CostSetupTable::CostSetupTable(QWidget * pParent)
+	: QTableWidget(pParent)
+	, m_itemsLastState()
 {
-	m_ItemsLastState.resize(4);
+	m_itemsLastState.resize(4);
 	prepareTable();
 	init();
 	resizeRowsToContents();
 
-	connect(this , SIGNAL(itemChanged(QTableWidgetItem *)) , this , SLOT(reemitItemCheckStateChanged(QTableWidgetItem *)));
+	connect(this, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(reemitItemCheckStateChanged(QTableWidgetItem*)));
 }
 
 void CostSetupTable::prepareTable()
@@ -39,7 +39,7 @@ void CostSetupTable::prepareTable()
 	tableColumnHeaders << "Движение" << "Вычисление" << "Стоимость";
 	setHorizontalHeaderLabels(tableColumnHeaders);
 	horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-	horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);//Stretch
+	horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
 
 	ComboBoxDelegate::itemList calcOrderState;
 	calcOrderState.push_back("after" );
@@ -64,19 +64,18 @@ void CostSetupTable::init()
 		openPersistentEditor(calcOrderItem);
 
 		QTableWidgetItem* costValueItem = new QTableWidgetItem("1");
-		costValueItem->setFlags(costValueItem->flags() & ~Qt::ItemIsEditable | Qt::ItemIsUserCheckable );// & ~Qt::ItemIsEditable);
+		costValueItem->setFlags(costValueItem->flags() & ~Qt::ItemIsEditable | Qt::ItemIsUserCheckable );
 		costValueItem->setCheckState(Qt::Unchecked);
-		m_ItemsLastState[i] = false;
+		m_itemsLastState[i] = false;
 		setItem(i, 2, costValueItem);
 	}
 }
 
-void CostSetupTable::reemitItemCheckStateChanged(QTableWidgetItem * itm)
+void CostSetupTable::reemitItemCheckStateChanged(QTableWidgetItem* itm)
 {
-	if ( (itm->flags() & Qt::ItemIsUserCheckable) && ((itm->checkState() == Qt::Checked) != m_ItemsLastState[itm->row()]) )
+	if ((itm->flags() & Qt::ItemIsUserCheckable) && ((itm->checkState() == Qt::Checked) != m_itemsLastState[itm->row()]))
 	{
-		m_ItemsLastState[itm->row()] = (itm->checkState() == Qt::Checked);
+		m_itemsLastState[itm->row()] = (itm->checkState() == Qt::Checked);
 		emit itemCheckStateChanged(itm);
 	}
-		
 }

@@ -23,7 +23,7 @@
 #include "app/rdo_studio/plugins/game5/src/costsetuptable.h"
 // --------------------------------------------------------------------------------
 
-game5Dialog::game5Dialog(QWidget * pParent)
+game5Dialog::game5Dialog(QWidget* pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
 	setupUi(this);
@@ -35,15 +35,16 @@ game5Dialog::game5Dialog(QWidget * pParent)
 
 	setFixedHeight(std::max(375, gameBoard->m_boardSizeY + 160));
 	adjustSize();
-	connect(tableCostValue    ,SIGNAL(itemCheckStateChanged(QTableWidgetItem *)),this      ,SLOT(onItemCheckStateChanged(QTableWidgetItem *)));
-	connect(buttonHide        ,SIGNAL(toggled(bool))                            ,this      ,SLOT(onClickHide(bool)));
-	connect(buttonSetLineup   ,SIGNAL(clicked())                                ,this      ,SLOT(callDialog()));
-	connect(buttonOk          ,SIGNAL(clicked())                                ,this      ,SLOT(onClickOk()));
-	connect(buttonRandomLineup,SIGNAL(clicked())                                ,this      ,SLOT(emitSolvabilityCheck()));
-	connect(buttonRightLineup ,SIGNAL(clicked())                                ,gameBoard ,SLOT(buildRightLineup()));
-	connect(this              ,SIGNAL(buttonRandomClicked(bool))                ,gameBoard ,SLOT(buildRandomLineup(bool)));
+	connect(tableCostValue    , SIGNAL(itemCheckStateChanged(QTableWidgetItem*)), this     , SLOT(onItemCheckStateChanged(QTableWidgetItem*)));
+	connect(buttonHide        , SIGNAL(toggled(bool))                           , this     , SLOT(onClickHide(bool)));
+	connect(buttonSetLineup   , SIGNAL(clicked())                               , this     , SLOT(callDialog()));
+	connect(buttonOk          , SIGNAL(clicked())                               , this     , SLOT(onClickOk()));
+	connect(buttonRandomLineup, SIGNAL(clicked())                               , this     , SLOT(emitSolvabilityCheck()));
+	connect(buttonRightLineup , SIGNAL(clicked())                               , gameBoard, SLOT(buildRightLineup()));
+	connect(this              , SIGNAL(buttonRandomClicked(bool))               , gameBoard, SLOT(buildRandomLineup(bool)));
 
-	if (pParent) {
+	if (pParent)
+	{
 		move(pParent->frameGeometry().center() - frameGeometry().center());
 	}
 }
@@ -51,15 +52,16 @@ game5Dialog::game5Dialog(QWidget * pParent)
 void game5Dialog::onClickHide(bool state)
 {
 	hiddenWidget->setVisible(state);
-	buttonHide->setText(buttonHide->text() == "<<" ? ">>" : "<<");
+	buttonHide->setText(buttonHide->text() == ">>" ? "<<" : ">>");
 	adjustSize();
 }
 
 void game5Dialog::onClickOk()
 {
-	MainWindow* pMainWindow = (MainWindow *)(parent());
+	MainWindow* pMainWindow = (MainWindow*)(parent());
 	rdo::gui::model::Model* pModel = pMainWindow->getModel();
-	if(pModel)
+	if (pModel)
+	{
 		if (pModel->getTab())
 		{
 			//pModel->saveModel(); !private
@@ -77,10 +79,13 @@ void game5Dialog::onClickOk()
 		}
 		else
 			QMessageBox::warning(pMainWindow, "Игра 5",
-			                    "Не найден текстовый редактор!\nВозможно не открыта ни одна модель.");
+			                     "Не найден текстовый редактор!\nВозможно не открыта ни одна модель.");
+	}
 	else
+	{
 		QMessageBox::warning(pMainWindow, "Игра 5",
 		                     "Не найдена модель!\nВозможно не открыта ни одна модель.");
+	}
 	done(Accepted);
 }
 
@@ -89,9 +94,9 @@ void game5Dialog::emitSolvabilityCheck()
 	emit buttonRandomClicked(solvabilityCheck->isChecked());
 }
 
-void game5Dialog::onItemCheckStateChanged(QTableWidgetItem * item)
+void game5Dialog::onItemCheckStateChanged(QTableWidgetItem* item)
 {
-	QTableWidget * parentTable = item->tableWidget();
+	QTableWidget* parentTable = item->tableWidget();
 	if (item->checkState() == Qt::Unchecked)
 	{
 		item->setFlags(item->flags() & ~Qt::ItemIsEditable);
@@ -100,25 +105,33 @@ void game5Dialog::onItemCheckStateChanged(QTableWidgetItem * item)
 	else
 	{
 		item->setFlags(item->flags() | Qt::ItemIsEditable);
-		parentTable->edit(parentTable->model()->index(item->row(),item->column()));
+		parentTable->edit(parentTable->model()->index(item->row(), item->column()));
 	}
 }
 
 std::string game5Dialog::evaluateBy()
 {
 	if (radioButton0->isChecked())
+	{
 		return "0";
+	}
 	if (radioButtonQuantity->isChecked())
+	{
 		return "Кол_во_фишек_не_на_месте()";
+	}
 	if (radioButtonDistance->isChecked())
+	{
 		return "Расстояния_фишек_до_мест()";
-	if (radioButtonCustom->isChecked())
+	}
+	else //if (radioButtonCustom->isChecked())
+	{
 		return lineEditCustom->text().toStdString();
+	}
 }
 
 std::string game5Dialog::activityValue(int tableRow)
 {
-	QString string = tableCostValue->item(tableRow,1)->text() + " " + tableCostValue->item(tableRow,2)->text();
+	QString string = tableCostValue->item(tableRow, 1)->text() + " " + tableCostValue->item(tableRow, 2)->text();
 	return string.toStdString();
 }
 
@@ -143,7 +156,7 @@ std::string game5Dialog::RSStabText()
 {
 	std::stringstream RSStabTextStream; 
 	RSStabTextStream <<	"$Resources\n";
-	for (unsigned int i = 1 ; i < gameBoard->getTilesPos().size() ; i++)
+	for (unsigned int i = 1; i < gameBoard->getTilesPos().size(); i++)
 	{
 		RSStabTextStream << "\tФишка Фишка" << i <<" = new Фишка(" << i << ", " << gameBoard->getTilesPos()[i] << ");\n";
 	}
@@ -258,7 +271,7 @@ std::string game5Dialog::FUNtabText()
 	<<	"$Parameters\n"
 	<<	"$Body\n"
 	<<	"	return " << gameBoard->getTilesPos().size() - 1 << " - (Фишка_на_месте(Фишка1.Номер, Фишка1.Местоположение)+\n";
-	for (unsigned int i=2;i < gameBoard->getTilesPos().size() - 1; i++)
+	for (unsigned int i = 2; i < gameBoard->getTilesPos().size() - 1; i++)
 	{
 		FUNtabTextStream
 	<<	"	            Фишка_на_месте(Фишка" << i <<".Номер, Фишка" << i <<".Местоположение)+\n";
@@ -281,7 +294,7 @@ std::string game5Dialog::FUNtabText()
 	<<	"$Parameters\n"
 	<<	"$Body\n"
 	<<	"	return Расстояние_фишки_до_места(Фишка1.Номер, Фишка1.Местоположение)+\n";
-	for (unsigned int i=2;i < gameBoard->getTilesPos().size() - 1; i++)
+	for (unsigned int i = 2; i < gameBoard->getTilesPos().size() - 1; i++)
 	{
 		FUNtabTextStream
 	<<	"	       Расстояние_фишки_до_места(Фишка" << i << ".Номер, Фишка" << i << ".Местоположение)+\n";
@@ -294,14 +307,17 @@ std::string game5Dialog::FUNtabText()
 
 void game5Dialog::backUpModel(rdo::gui::model::Model* pModel)
 {
-	QString backUpFolder = g_pApp->applicationDirPath() + "/model_backup/" + pModel->getName() + QDateTime::currentDateTime().toString("_yyyy-MM-dd_HH.mm.ss") + "/";
+	QString backUpFolder  = g_pApp->applicationDirPath() + "/model_backup/";
+	        backUpFolder += pModel->getName();
+	        backUpFolder += QDateTime::currentDateTime().toString("_yyyy-MM-dd_HH.mm.ss") + "/";
 	QDir makeDir;
 	bool success = makeDir.mkpath(backUpFolder);
-	for (int i = 0; i < pModel->getTab()->tabBar()->count() ; i++)
+	for (int i = 0; i < pModel->getTab()->tabBar()->count(); i++)
 	{
 		if (!(pModel->getTab()->getItemEdit(i)->isEmpty()))
 		{
-			QString backUpFile = backUpFolder + pModel->getName() + "." + pModel->getTab()->tabBar()->tabText(i).toLower();
+			QString backUpFile  = backUpFolder + pModel->getName() + ".";
+			        backUpFile += pModel->getTab()->tabBar()->tabText(i).toLower();
 			std::ofstream File;
 			File.open(backUpFile.toStdString().c_str());
 			rdo::textstream txtStream;
@@ -312,9 +328,9 @@ void game5Dialog::backUpModel(rdo::gui::model::Model* pModel)
 		}
 	}
 
-	QString backUpFile = backUpFolder + pModel->getName() + "." + "rdox";
+	QString projectBackUpFile = backUpFolder + pModel->getName() + "." + "rdox";
 	std::ofstream File;
-	File.open(backUpFile.toStdString().c_str());
+	File.open(projectBackUpFile.toStdString().c_str());
 	File
 	<< "<?xml version=\"1.0\"?>\n"
 	<< "<Settings>\n"
@@ -325,13 +341,13 @@ void game5Dialog::backUpModel(rdo::gui::model::Model* pModel)
 
 void game5Dialog::clearAllTabs(rdo::gui::model::Model* pModel)
 {
-	for (int i = 0; i < pModel->getTab()->tabBar()->count() ; i++)
+	for (int i = 0; i < pModel->getTab()->tabBar()->count(); i++)
 		pModel->getTab()->getItemEdit(i)->clearAll();
 }
 
 void game5Dialog::callDialog()
 {
 	TilesOrderDialog dlg(this, gameBoard->getTilesPos());
-	connect(&dlg , SIGNAL(tilesOrderCommited(QString)) , gameBoard , SLOT(setTilesPositon(QString)));
+	connect(&dlg, SIGNAL(tilesOrderCommited(QString)), gameBoard, SLOT(setTilesPositon(QString)));
 	dlg.exec();
 }
