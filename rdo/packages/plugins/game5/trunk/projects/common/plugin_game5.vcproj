@@ -271,7 +271,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="if not exist  &quot;$(InputDir)$(InputName).json&quot; copy nul  &quot;$(InputDir)$(InputName).json&quot;"
+						CommandLine="if not exist  &quot;$(InputDir)$(InputName).json&quot; copy nul  &quot;$(InputDir)$(InputName).json&quot;&#x0D;&#x0A;if not exist  &quot;$(InputDir)plugin_interface.h&quot; copy &quot;$(SolutionDir)..\src\plugins\plugin_interface.h&quot;  &quot;$(InputDir)plugin_interface.h&quot;&#x0D;&#x0A;$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -281,7 +281,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="if not exist  &quot;$(InputDir)$(InputName).json&quot; copy nul  &quot;$(InputDir)$(InputName).json&quot;"
+						CommandLine="if not exist  &quot;$(InputDir)$(InputName).json&quot; copy nul  &quot;$(InputDir)$(InputName).json&quot;&#x0D;&#x0A;if not exist  &quot;$(InputDir)plugin_interface.h&quot; copy &quot;$(SolutionDir)..\src\plugins\plugin_interface.h&quot;  &quot;$(InputDir)plugin_interface.h&quot;&#x0D;&#x0A;$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
