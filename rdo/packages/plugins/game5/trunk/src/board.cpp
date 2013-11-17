@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <QMessageBox>
+#include <boost/range/algorithm/find.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/board.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_dialog.h"
@@ -32,7 +33,7 @@ Board::Board(QWidget * pParent)
 	tiles        .resize(m_tilesCountX * m_tilesCountY);
 	tilesPosition[0] = m_tilesCountX * m_tilesCountY;
 
-	for (int place=1; place < m_tilesCountX * m_tilesCountY ;place++)
+	for (int place = 1; place < m_tilesCountX * m_tilesCountY; place++)
 	{
 		tilesPosition[place] = place;
 		tiles[place] = new Tile(place, this);
@@ -41,13 +42,13 @@ Board::Board(QWidget * pParent)
 		connect(tiles[place],SIGNAL(tileClicked(int)),this,SLOT(clickOnTile(int)));
 	}
 	setStyleSheet("\
-	               background-color: pink; \
-	               border-style: outset; \
-	               border-width: 2px; \
-	               border-radius: 13px; \
-	               border-color: black; \
-	               align: center; \
-	               ");
+		background-color: pink; \
+		border-style: outset; \
+		border-width: 2px; \
+		border-radius: 13px; \
+		border-color: black; \
+		align: center; \
+	");
 }
 
 void Board::clickOnTile(int number)
@@ -56,7 +57,7 @@ void Board::clickOnTile(int number)
 	if (freePlaceIsNearby(tilesPosition[number]))
 	{
 		tile->move(tilePoint(tilesPosition[0]));
-		int currentPlace = tilesPosition[number];
+		int currentPlace      = tilesPosition[number];
 		tilesPosition[number] = tilesPosition[0];
 		tilesPosition[0]      = currentPlace;
 	}
@@ -91,7 +92,7 @@ bool Board::freePlaceIsNearby(int place)
 
 void Board::buildRightLineup()
 {
-	for (int place=1; place < m_tilesCountX * m_tilesCountY ;place++)
+	for (int place = 1; place < m_tilesCountX * m_tilesCountY; place++)
 	{
 		tilesPosition[place] = place;
 		tiles[place]->move(tilePoint(place));
@@ -106,12 +107,14 @@ void Board::buildRandomLineup(bool solvabilityCheck)
 	{
 		std::random_shuffle(tilesPosition.begin(),tilesPosition.end());
 		int freePlaceRow = (tilesPosition[0] -1) / m_tilesCountX;
-		for (int tile=1; tile < m_tilesCountX * m_tilesCountY ;tile++)
+		for (int tile = 1; tile < m_tilesCountX * m_tilesCountY; tile++)
 		{
 			tiles[tile]->move(tilePoint(tilesPosition[tile]));
 		}
 		if (lineupIsSolvable() || !solvabilityCheck)
+		{
 			needRandomize = false;
+		}
 	}
 }
 
@@ -130,7 +133,12 @@ bool Board::lineupIsSolvable()
 			}
 		}
 	}
-	return m_tilesCountX % 2 ? !(sum % 2) : ( m_tilesCountY % 2 ? (sum + freePlaceRow) % 2 : (sum + freePlaceRow) % 2 == 0); //См. Перельман. Живая математика.
+	return m_tilesCountX % 2
+		? !(sum % 2)
+		: (m_tilesCountY % 2
+				? (sum + freePlaceRow) % 2
+				: (sum + freePlaceRow) % 2 == 0
+		); // См. Перельман. Живая математика.
 }
 
 const std::vector<unsigned int>& Board::getTilesPos() const
@@ -141,22 +149,31 @@ const std::vector<unsigned int>& Board::getTilesPos() const
 void Board::setTilesPositon(QString string)
 {
 	QString::SectionFlag flag = QString::SectionSkipEmpty;
-	for (unsigned int i = 0; i < tilesPosition.size() ; i++)
+	for (unsigned int i = 0; i < tilesPosition.size(); i++)
 	{
-		int tile = string.section(' ',i,i).toInt();
+		int tile = string.section(' ', i, i).toInt();
 		if (tile < tilesPosition.size())
+		{
 			moveTile(tile, i + 1);
+		}
 		else
+		{
 			QMessageBox::warning(qobject_cast<QWidget *>(sender()), "Игра 5",
 			                     "Неверное значение: " + QString::number(tile));
+		}
 	}
 }
 
-void Board::moveTile(int tileNumber , unsigned int position)
+void Board::moveTile(int tileNumber, unsigned int position)
 {
 	if (tileNumber)
+	{
 		tiles[tileNumber]->move(tilePoint(position));
-	unsigned int swapedTilePos = std::distance(tilesPosition.begin(),std::find(tilesPosition.begin(),tilesPosition.end(),position));
+	}
+	unsigned int swapedTilePos = std::distance(
+		tilesPosition.begin(),
+		boost::range::find(tilesPosition, position)
+	);
 
 	if (swapedTilePos)
 	{

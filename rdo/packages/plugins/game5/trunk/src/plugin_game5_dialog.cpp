@@ -22,8 +22,9 @@
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_tiles_order_dialog.h"
 #include "app/rdo_studio/plugins/game5/src/costsetuptable.h"
 // --------------------------------------------------------------------------------
+
 game5Dialog::game5Dialog(QWidget * pParent)
-: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
+	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
 	setupUi(this);
 	hiddenWidget->setFixedWidth(280);

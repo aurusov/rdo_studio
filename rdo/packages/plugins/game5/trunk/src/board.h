@@ -16,23 +16,16 @@
 #include <QLabel>
 #include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app\rdo_studio\plugins\game5\src\tiles.h"
+#include "app/rdo_studio/plugins/game5/src/tiles.h"
 // --------------------------------------------------------------------------------
 
-class Board : public QFrame
+class Board: public QFrame
 {
-	Q_OBJECT
+Q_OBJECT
 public:
 	Board(QWidget * pParent);
 	~Board() {};
 
-private slots:
-	void clickOnTile(int number);
-	void buildRightLineup();
-	void buildRandomLineup(bool solvabilityCheck);
-	void setTilesPositon(QString string);
-
-public:
 	const int m_tileSize;
 	const int m_tilesCountX;
 	const int m_tilesCountY;
@@ -49,11 +42,17 @@ private:
 	std::vector<unsigned int> tilesPosition;
 	std::vector<Tile *> tiles;
 
-	void moveTile(int tileNumber , unsigned int position);
+	void   moveTile (int tileNumber, unsigned int position);
 	QPoint tilePoint(int place);
-	int sizeCalc(int count);
-	bool freePlaceIsNearby(int place);
-	bool lineupIsSolvable();
+	int    sizeCalc (int count);
+	bool   freePlaceIsNearby(int place);
+	bool   lineupIsSolvable();
+
+private slots:
+	void clickOnTile(int number);
+	void buildRightLineup();
+	void buildRandomLineup(bool solvabilityCheck);
+	void setTilesPositon(QString string);
 };
 
 #endif // _RDO_PLUGIN_GAME_5_BOARD_H_

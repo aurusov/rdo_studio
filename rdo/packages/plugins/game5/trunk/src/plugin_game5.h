@@ -13,8 +13,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QObject>
 #include <QtPlugin>
-#include "app/rdo_studio/src/plugins/plugin_interface.h"
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio/src/plugins/plugin_interface.h"
 // --------------------------------------------------------------------------------
 
 class plugin : public QObject,PluginInterface
