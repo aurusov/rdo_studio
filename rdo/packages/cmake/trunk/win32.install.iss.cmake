@@ -49,7 +49,7 @@ Source: "libEGL.dll";         DestDir: "{app}"
 Source: "icuuc51.dll";        DestDir: "{app}"
 Source: "icuin51.dll";        DestDir: "{app}"
 Source: "icudt51.dll";        DestDir: "{app}"
-Source: "D3DCompiler_43.dll"; DestDir: "{app}"
+#Source: "D3DCompiler_43.dll"; DestDir: "{app}"
 
 Source: "msvcr100.dll"; DestDir: "{app}"
 Source: "msvcp100.dll"; DestDir: "{app}"
