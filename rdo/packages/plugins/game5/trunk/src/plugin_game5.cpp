@@ -16,6 +16,8 @@
 #include "app/rdo_studio/plugins/game5/src/plugin_game5.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_dialog.h"
 #include "app/rdo_studio/src/application.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
+#include "app/rdo_studio/src/main_window.h"
 // --------------------------------------------------------------------------------
 
 QString plugin::getPluginName()
@@ -44,6 +46,9 @@ void plugin::plgnStartAction(QWidget * p_Parent)
 	if (!g_pApp)
 	{
 		g_pApp = static_cast<Application*>(qApp);
+		g_pModel  = g_pApp->getMainWndUI()->getModel();
+		g_pTracer = g_pApp->getTracer();
+		kernel    = g_pApp->getKernel();
 	}
 	QMenu * menu = p_Parent->findChild<QMenu *>("createdMenu");
 	if (!menu) {

@@ -25,6 +25,7 @@
 #include "app/rdo_studio/src/main_window_base.h"
 #include "app/rdo_studio/src/editor/model_edit_style.h"
 #include "app/rdo_studio/src/plugins/plugin_loader.h"
+#include "app/rdo_studio/src/shared_object_service.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -38,13 +39,18 @@ namespace rdo { namespace gui { namespace tracer {
 class Tracer;
 }}}
 
-class Application: public QApplication
+class Application
+	: public QApplication
+	, public rdo::gui::ISharedObjectService
 {
 public:
 	Application(int& argc, char** argv);
 	virtual ~Application();
 
-	PTR(MainWindow)      getMainWndUI();
+	virtual RDOKernel*                getKernel   () const;
+	virtual rdo::gui::tracer::Tracer* getTracer   () const;
+	virtual MainWindow*               getMainWndUI() const;
+
 	PTR(QMainWindow)     getMainWnd  ();
 	PTR(MainWindowBase)  getIMainWnd ();
 	PTR(MainWindowBase)  getStyle    ();

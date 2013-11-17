@@ -275,9 +275,19 @@ Application::~Application()
 	}
 }
 
-PTR(MainWindow) Application::getMainWndUI()
+RDOKernel* Application::getKernel() const
+{
+	return kernel;
+}
+
+MainWindow* Application::getMainWndUI() const
 {
 	return m_pMainFrame;
+}
+
+rdo::gui::tracer::Tracer* Application::getTracer() const
+{
+	return g_pTracer;
 }
 
 PTR(QMainWindow) Application::getMainWnd()

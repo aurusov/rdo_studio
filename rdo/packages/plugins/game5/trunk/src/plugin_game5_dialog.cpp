@@ -73,7 +73,7 @@ void game5Dialog::onClickOk()
 			pModel->getTab()->getItemEdit(rdoModelObjects::DPT)->appendText(QString::fromStdString(DPTtabText()));
 			pModel->getTab()->getItemEdit(rdoModelObjects::FUN)->appendText(QString::fromStdString(FUNtabText()));
 
-			//pModel->runModel();
+			pModel->runModel();
 		}
 		else
 			QMessageBox::warning(pMainWindow, "Игра 5",

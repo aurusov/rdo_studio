@@ -25,6 +25,7 @@ SET(MAIN_FILES
 SET(APPLICATION_FILES
 	src/application.cpp
 	src/application.h
+	src/shared_object_service.h
 	src/main_window.cpp
 	src/main_window.h
 	src/main_window_base.h
