@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../../../app/rdo_studio/projects/common/bin/rdo_application/generated/;../../../../../../app\rdo_studio\src\plugins;../../../../../../;&quot;./bin/$(ProjectName)/generated/&quot;;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;;../../../../../../thirdparty/scintilla/include"
+				AdditionalIncludeDirectories="../../../../../../app/rdo_studio/projects/common/bin/rdo_application/generated/;../../../../../../;&quot;./bin/$(ProjectName)/generated/&quot;;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;;../../../../../../thirdparty/scintilla/include"
 				PreprocessorDefinitions="RDO_ST;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;_DEBUG;_WINDOWS;_USRDLL;PLUGIN_GAME5_EXPORTS;NOMINMAX;_UNISTD_H_"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -271,7 +271,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="if not exist  &quot;$(InputDir)$(InputName).json&quot; copy nul  &quot;$(InputDir)$(InputName).json&quot;&#x0D;&#x0A;if not exist  &quot;$(InputDir)plugin_interface.h&quot; copy &quot;$(SolutionDir)..\src\plugins\plugin_interface.h&quot;  &quot;$(InputDir)plugin_interface.h&quot;&#x0D;&#x0A;$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						CommandLine="if not exist  &quot;$(InputDir)$(InputName).json&quot; copy nul  &quot;$(InputDir)$(InputName).json&quot;&#x0D;&#x0A;$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -I&quot;$(SolutionDir)../../../&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -281,7 +281,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="if not exist  &quot;$(InputDir)$(InputName).json&quot; copy nul  &quot;$(InputDir)$(InputName).json&quot;&#x0D;&#x0A;if not exist  &quot;$(InputDir)plugin_interface.h&quot; copy &quot;$(SolutionDir)..\src\plugins\plugin_interface.h&quot;  &quot;$(InputDir)plugin_interface.h&quot;&#x0D;&#x0A;$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						CommandLine="if not exist  &quot;$(InputDir)$(InputName).json&quot; copy nul  &quot;$(InputDir)$(InputName).json&quot;&#x0D;&#x0A;$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -I&quot;$(SolutionDir)../../../&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
