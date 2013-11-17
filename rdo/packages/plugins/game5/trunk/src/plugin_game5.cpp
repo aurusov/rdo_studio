@@ -12,6 +12,7 @@
 #include <QtGui>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/plugin_game5.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_dialog.h"
@@ -41,7 +42,7 @@ QUuid plugin::getGUID()
 	return plgnGUID;
 }
 
-void plugin::plgnStartAction(QWidget * p_Parent)
+void plugin::plgnStartAction(QWidget* pParent)
 {
 	if (!g_pApp)
 	{
@@ -50,65 +51,80 @@ void plugin::plgnStartAction(QWidget * p_Parent)
 		g_pTracer = g_pApp->getTracer();
 		kernel    = g_pApp->getKernel();
 	}
-	QMenu * menu = p_Parent->findChild<QMenu *>("createdMenu");
-	if (!menu) {
-		QMenuBar *menuBar = p_Parent->findChild<QMenuBar *>("menubar");
-		if(menuBar) {
+	QMenu* menu = pParent->findChild<QMenu*>("createdMenu");
+	if (!menu)
+	{
+		QMenuBar* menuBar = pParent->findChild<QMenuBar*>("menubar");
+		if (menuBar)
+		{
 			bool defined = false;
-			QMenu *defMenu;
-			foreach(QAction *a, menuBar->actions()) {
-				if (a->text() == "Плагины" && !defined) {
+			QMenu* defMenu;
+			BOOST_FOREACH(QAction* action, menuBar->actions())
+			{
+				if (action->text() == "Плагины" && !defined)
+				{
 					defined = true;
-					defMenu = a->menu();
+					defMenu = action->menu();
 				}
 			}
-			if (!defined) {
-				menu = new QMenu("Плагины",p_Parent);
+			if (!defined)
+			{
+				menu = new QMenu("Плагины", pParent);
 				menu->setObjectName("createdMenu");
 			}
-			else {
+			else
+			{
 				menu = defMenu;
 			}
 			menuBar->addMenu(menu);
 		}
-		else {
-			QMessageBox::warning(p_Parent, "Plugin " + getPluginName() + " ver " + getVersion(),
+		else
+		{
+			QMessageBox::warning(pParent, "Plugin " + getPluginName() + " ver " + getVersion(),
 			                     "Не найдено меню");
 		}
 	}
-	if(menu) {
-		QAction *action = new QAction(getPluginName() + " ver " + getVersion(), menu);
+	if (menu)
+	{
+		QAction* action = new QAction(getPluginName() + " ver " + getVersion(), menu);
 		action->setObjectName("createdAction");
 		connect(action, SIGNAL(triggered()), this, SLOT(pluginSlot()));
 		menu->addAction(action);
 	}
 }
 
-void plugin::plgnStopAction (QWidget * p_Parent)
+void plugin::plgnStopAction(QWidget* pParent)
 {
-	QMenu * createdMenu = p_Parent->findChild<QMenu *>("createdMenu");
-	QAction * createdAction;
-	if (createdMenu) {
-		createdAction = createdMenu->findChild<QAction *>("createdAction");
-		if(createdAction) {
+	QMenu* createdMenu = pParent->findChild<QMenu*>("createdMenu");
+	QAction* createdAction;
+	if (createdMenu)
+	{
+		createdAction = createdMenu->findChild<QAction*>("createdAction");
+		if (createdAction)
+		{
 			createdAction->disconnect();
 			createdAction->~QAction();
 		}
-		if (createdMenu->isEmpty()) {
+		if (createdMenu->isEmpty())
+		{
 			createdMenu->~QMenu();
 		}
 	}
-	else {
-		QMenuBar *menuBar = p_Parent->findChild<QMenuBar *>("menuBar");
+	else
+	{
+		QMenuBar* menuBar = pParent->findChild<QMenuBar*>("menuBar");
 		bool defined = false;
-		QMenu *defMenu;
-		foreach(QAction *a, menuBar->actions()) {
-			if (a->text() == "Плагины" && !defined) {
+		QMenu* defMenu;
+		BOOST_FOREACH(QAction* action, menuBar->actions())
+		{
+			if (action->text() == "Плагины" && !defined)
+			{
 				defined = true;
-				defMenu = a->menu();
+				defMenu = action->menu();
 			}
-			createdAction = defMenu->findChild<QAction *>("createdAction");
-			if(createdAction) {
+			createdAction = defMenu->findChild<QAction*>("createdAction");
+			if (createdAction)
+			{
 				createdAction->disconnect();
 				createdAction->~QAction();
 			}
@@ -116,11 +132,11 @@ void plugin::plgnStopAction (QWidget * p_Parent)
 	}
 }
 
-void plugin::pluginSlot ()
+void plugin::pluginSlot()
 {
-	QWidget * p_parent = qobject_cast<QWidget *>(sender()-> //action
-	                                             parent()-> //QMenu
-	                                             parent()); //QMainWindow ?
-	game5Dialog D(p_parent);
+	QWidget * pParent = qobject_cast<QWidget *>(sender()-> //action
+	                                            parent()-> //QMenu
+	                                            parent()); //QMainWindow
+	game5Dialog D(pParent);
 	D.exec();
 }

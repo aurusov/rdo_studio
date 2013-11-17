@@ -22,14 +22,16 @@ class plugin : public QObject,PluginInterface
 	Q_OBJECT
 	Q_PLUGIN_METADATA(IID "RDO_PLUGIN_INTERFACE" FILE "plugin_game5.json")
 	Q_INTERFACES(PluginInterface)
+
 public:
 	QUuid   getGUID       ();
 	QString getPluginName ();
 	QString getAuthor     ();
 	QString getVersion    ();
 
-	void plgnStartAction  (QWidget * parent);
-	void plgnStopAction   (QWidget * parent);
+	void plgnStartAction  (QWidget* parent);
+	void plgnStopAction   (QWidget* parent);
+
 private slots:
 	void pluginSlot();
 };
