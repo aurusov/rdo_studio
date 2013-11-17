@@ -41,8 +41,8 @@ Source: "Qt5Core.dll";    DestDir: "{app}"
 Source: "Qt5Gui.dll";     DestDir: "{app}"
 Source: "Qt5Widgets.dll"; DestDir: "{app}"
 
-Source: "qminimal.dll"; DestDir: "{app}/platforms"
-Source: "qwindows.dll"; DestDir: "{app}/platforms"
+Source: "plugins/platforms/qminimal.dll"; DestDir: "{app}/plugins/platforms"
+Source: "plugins/platforms/qwindows.dll"; DestDir: "{app}/plugins/platforms"
 
 Source: "libGLESv2.dll";      DestDir: "{app}"
 Source: "libEGL.dll";         DestDir: "{app}"
