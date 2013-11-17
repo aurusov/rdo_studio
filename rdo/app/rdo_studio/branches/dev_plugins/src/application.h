@@ -105,7 +105,7 @@ private:
 	rdo::gui::editor::LPModelStyle         m_pModelStyle;
 	QTimer                                 m_idleTimer;
 
-	rdo::Plugin::Loader                    m_PluginLoader;
+	rdo::Plugin::Loader                    m_pluginLoader;
 
 	void setupFileAssociation();
 #ifdef Q_OS_WIN
