@@ -18,8 +18,8 @@ ENDIF()
 
 SET(MOC_FILES
 	src/board.h
-	src/comboboxdelegate.h
-	src/costsetuptable.h
+	src/combobox_delegate.h
+	src/cost_setup_table.h
 	src/plugin_game5.h
 	src/plugin_game5_dialog.h
 	src/plugin_game5_tiles_order_dialog.h
@@ -29,10 +29,10 @@ SET(MOC_FILES
 SET(SRC_FILES
 	src/board.h
 	src/board.cpp
-	src/comboboxdelegate.h
-	src/comboboxdelegate.cpp
-	src/costsetuptable.h
-	src/costsetuptable.cpp
+	src/combobox_delegate.h
+	src/combobox_delegate.cpp
+	src/cost_setup_table.h
+	src/cost_setup_table.cpp
 	src/plugin_game5.h
 	src/plugin_game5.cpp
 	src/plugin_game5_dialog.h

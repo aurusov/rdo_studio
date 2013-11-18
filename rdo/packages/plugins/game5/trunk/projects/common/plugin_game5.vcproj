@@ -187,7 +187,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -197,17 +197,17 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\comboboxdelegate.cpp"
+				RelativePath="..\..\src\combobox_delegate.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\comboboxdelegate.h"
+				RelativePath="..\..\src\combobox_delegate.h"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -231,11 +231,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\costsetuptable.cpp"
+				RelativePath="..\..\src\cost_setup_table.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\costsetuptable.h"
+				RelativePath="..\..\src\cost_setup_table.h"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -271,7 +271,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="if not exist  &quot;$(InputDir)$(InputName).json&quot; copy nul  &quot;$(InputDir)$(InputName).json&quot;&#x0D;&#x0A;$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -I&quot;$(SolutionDir)../../../&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						CommandLine="if not exist  &quot;$(InputDir)$(InputName).json&quot; copy nul  &quot;$(InputDir)$(InputName).json&quot;&#x0D;&#x0A;$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -I&quot;$(SolutionDir)../../../&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -281,7 +281,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="if not exist  &quot;$(InputDir)$(InputName).json&quot; copy nul  &quot;$(InputDir)$(InputName).json&quot;&#x0D;&#x0A;$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -I&quot;$(SolutionDir)../../../&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						CommandLine="if not exist  &quot;$(InputDir)$(InputName).json&quot; copy nul  &quot;$(InputDir)$(InputName).json&quot;&#x0D;&#x0A;$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -I&quot;$(SolutionDir)../../../&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -299,7 +299,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -309,7 +309,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -327,7 +327,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -337,7 +337,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
 						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
@@ -386,7 +386,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Generating ui_$(InputName) header"
-							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;&#x0D;&#x0A;"
 							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
 						/>
 					</FileConfiguration>
@@ -401,11 +401,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\bin\plugin_game5\generated\moc_comboboxdelegate.cpp"
+				RelativePath=".\bin\plugin_game5\generated\moc_combobox_delegate.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\bin\plugin_game5\generated\moc_costsetuptable.cpp"
+				RelativePath=".\bin\plugin_game5\generated\moc_cost_setup_table.cpp"
 				>
 			</File>
 			<File

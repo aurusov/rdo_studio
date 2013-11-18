@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/plugins/game5/src/comboboxdelegate.cpp
+  \file      app/rdo_studio/plugins/game5/src/combobox_delegate.cpp
   \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
   \date      22.09.2013
   \brief     
@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QComboBox>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/plugins/game5/src/comboboxdelegate.h"
+#include "app/rdo_studio/plugins/game5/src/combobox_delegate.h"
 // --------------------------------------------------------------------------------
  
 ComboBoxDelegate::ComboBoxDelegate(const ComboBoxDelegate::itemList& comboBoxItems , QObject* parent)

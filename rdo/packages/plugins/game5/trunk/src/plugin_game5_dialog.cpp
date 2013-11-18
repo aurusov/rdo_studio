@@ -17,7 +17,7 @@
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_dialog.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_tiles_order_dialog.h"
-#include "app/rdo_studio/plugins/game5/src/costsetuptable.h"
+#include "app/rdo_studio/plugins/game5/src/cost_setup_table.h"
 // --------------------------------------------------------------------------------
 
 game5Dialog::game5Dialog(QWidget* pParent)

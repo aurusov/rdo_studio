@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/plugins/game5/src/costsetuptable.cpp
+  \file      app/rdo_studio/plugins/game5/src/cost_setup_table.cpp
   \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
   \date      22.09.2013
   \brief     
@@ -11,8 +11,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QHeaderView>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/plugins/game5/src/costsetuptable.h"
-#include "app/rdo_studio/plugins/game5/src/comboboxdelegate.h"
+#include "app/rdo_studio/plugins/game5/src/cost_setup_table.h"
+#include "app/rdo_studio/plugins/game5/src/combobox_delegate.h"
 // --------------------------------------------------------------------------------
 
 CostSetupTable::CostSetupTable(QWidget * pParent)

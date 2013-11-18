@@ -247,7 +247,7 @@
   <customwidget>
    <class>CostSetupTable</class>
    <extends>QTableWidget</extends>
-   <header>costsetuptable.h</header>
+   <header>app/rdo_studio/plugins/game5/src/cost_setup_table.h</header>
   </customwidget>
   <customwidget>
    <class>Board</class>
