@@ -575,7 +575,7 @@ TARGET_LINK_LIBRARIES(rdo_application rdo_kernel          )
 TARGET_LINK_LIBRARIES(rdo_application rdo_repository      )
 TARGET_LINK_LIBRARIES(rdo_application rdo_simulator       )
 TARGET_LINK_LIBRARIES(rdo_application rdo_simulator_report)
-TARGET_LINK_LIBRARIES(rdo_application rdo_ui_abstrac      )
+TARGET_LINK_LIBRARIES(rdo_application rdo_ui_abstract     )
 TARGET_LINK_LIBRARIES(rdo_application rdo_ui_qt           )
 TARGET_LINK_LIBRARIES(rdo_application scintilla           )
 
