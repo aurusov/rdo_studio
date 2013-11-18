@@ -45,11 +45,13 @@ private:
 	bool   freePlaceIsNearby(int place);
 	bool   lineupIsSolvable();
 
+public slots:
+	void setTilesPositon(const QString& string);
+
 private slots:
 	void clickOnTile(int number);
 	void buildRightLineup();
 	void buildRandomLineup(bool solvabilityCheck);
-	void setTilesPositon(const QString& string);
 };
 
 #endif // _RDO_PLUGIN_GAME_5_BOARD_H_

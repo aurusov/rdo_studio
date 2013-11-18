@@ -345,6 +345,6 @@ void game5Dialog::clearAllTabs(rdo::gui::model::Model* pModel)
 void game5Dialog::callDialog()
 {
 	TilesOrderDialog dlg(this, gameBoard->getTilesPos());
-	connect(&dlg, SIGNAL(tilesOrderCommited(const QString&)), gameBoard, SLOT(setTilesPositon(const QString&)));
+	connect(&dlg, &TilesOrderDialog::tilesOrderCommited, gameBoard, &Board::setTilesPositon);
 	dlg.exec();
 }
