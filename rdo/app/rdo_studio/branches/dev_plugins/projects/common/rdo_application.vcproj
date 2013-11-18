@@ -1334,10 +1334,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\shared_object_service.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\status_bar.cpp"
 				>
 			</File>
