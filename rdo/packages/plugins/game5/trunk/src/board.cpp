@@ -15,7 +15,8 @@
 // --------------------------------------------------------------------------------
 
 Board::Board(QWidget * pParent)
-	: m_tileSize    (75)
+	: QFrame        (pParent)
+	, m_tileSize    (75)
 	, m_tilesCountX (3)
 	, m_tilesCountY (2)
 	, m_spacer      (1)
@@ -24,7 +25,6 @@ Board::Board(QWidget * pParent)
 	, m_boardSizeY  (sizeCalc(m_tilesCountY) - m_spacer + 2 * m_boardSpacer)
 	, m_topLeftX    (m_boardSpacer)
 	, m_topLeftY    (m_boardSpacer)
-	, QFrame        (pParent)
 {
 	setFixedSize(m_boardSizeX,m_boardSizeY);
 	tilesPosition.resize(m_tilesCountX * m_tilesCountY);
@@ -78,10 +78,10 @@ bool Board::freePlaceIsNearby(int place)
 	int freePlaceCol = (tilesPosition[0] -1) % m_tilesCountX;
 	int freePlaceRow = (tilesPosition[0] -1) / m_tilesCountX;
 
-	return tileCol == freePlaceCol + 1 && tileRow == freePlaceRow ||
-	       tileCol == freePlaceCol - 1 && tileRow == freePlaceRow ||
-	       tileRow == freePlaceRow + 1 && tileCol == freePlaceCol ||
-	       tileRow == freePlaceRow - 1 && tileCol == freePlaceCol ;
+	return ((tileCol == freePlaceCol + 1) && (tileRow == freePlaceRow)) ||
+		   ((tileCol == freePlaceCol - 1) && (tileRow == freePlaceRow)) ||
+		   ((tileRow == freePlaceRow + 1) && (tileCol == freePlaceCol)) ||
+		   ((tileRow == freePlaceRow - 1) && (tileCol == freePlaceCol)) ;
 }
 
 void Board::buildRightLineup()
@@ -100,7 +100,6 @@ void Board::buildRandomLineup(bool solvabilityCheck)
 	while (needRandomize)
 	{
 		std::random_shuffle(tilesPosition.begin(),tilesPosition.end());
-		int freePlaceRow = (tilesPosition[0] -1) / m_tilesCountX;
 		for (int tile = 1; tile < m_tilesCountX * m_tilesCountY; tile++)
 		{
 			tiles[tile]->move(tilePoint(tilesPosition[tile]));
@@ -142,10 +141,9 @@ const std::vector<unsigned int>& Board::getTilesPos() const
 
 void Board::setTilesPositon(const QString& string)
 {
-	QString::SectionFlag flag = QString::SectionSkipEmpty;
 	for (unsigned int i = 0; i < tilesPosition.size(); i++)
 	{
-		unsigned int tile = string.section(' ', i, i).toInt();
+		unsigned int tile = string.section(' ', i, i, QString::SectionSkipEmpty).toInt();
 		moveTile(tile, i + 1);
 	}
 }

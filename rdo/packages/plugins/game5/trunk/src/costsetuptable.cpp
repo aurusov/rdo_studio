@@ -63,7 +63,7 @@ void CostSetupTable::init()
 		openPersistentEditor(calcOrderItem);
 
 		QTableWidgetItem* costValueItem = new QTableWidgetItem("1");
-		costValueItem->setFlags(costValueItem->flags() & ~Qt::ItemIsEditable | Qt::ItemIsUserCheckable );
+		costValueItem->setFlags((costValueItem->flags() & ~Qt::ItemIsEditable) | Qt::ItemIsUserCheckable );
 		costValueItem->setCheckState(Qt::Unchecked);
 		m_itemsLastState[i] = false;
 		setItem(i, 2, costValueItem);
