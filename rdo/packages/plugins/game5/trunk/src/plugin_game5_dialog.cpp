@@ -308,7 +308,7 @@ void game5Dialog::backUpModel(rdo::gui::model::Model* pModel)
 	        backUpFolder += pModel->getName();
 	        backUpFolder += QDateTime::currentDateTime().toString("_yyyy-MM-dd_HH.mm.ss") + "/";
 	QDir makeDir;
-	bool success = makeDir.mkpath(backUpFolder);
+	makeDir.mkpath(backUpFolder);
 	for (int i = 0; i < pModel->getTab()->tabBar()->count(); i++)
 	{
 		if (!(pModel->getTab()->getItemEdit(i)->isEmpty()))
