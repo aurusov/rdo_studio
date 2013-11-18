@@ -140,7 +140,7 @@ const std::vector<unsigned int>& Board::getTilesPos() const
 	return tilesPosition;
 }
 
-void Board::setTilesPositon(QString string)
+void Board::setTilesPositon(const QString& string)
 {
 	QString::SectionFlag flag = QString::SectionSkipEmpty;
 	for (unsigned int i = 0; i < tilesPosition.size(); i++)

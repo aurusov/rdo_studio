@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_tiles_order_dialog.h"
 // --------------------------------------------------------------------------------
+
 TilesOrderDialog::TilesOrderDialog(QWidget* pParent, const std::vector<unsigned int>& vector)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
@@ -45,6 +46,9 @@ TilesOrderDialog::TilesOrderDialog(QWidget* pParent, const std::vector<unsigned 
 		move(pParent->frameGeometry().center() - frameGeometry().center());
 	}
 }
+
+TilesOrderDialog::~TilesOrderDialog()
+{}
 
 void TilesOrderDialog::onOkClick()
 {

@@ -49,7 +49,7 @@ private slots:
 	void clickOnTile(int number);
 	void buildRightLineup();
 	void buildRandomLineup(bool solvabilityCheck);
-	void setTilesPositon(QString string);
+	void setTilesPositon(const QString& string);
 };
 
 #endif // _RDO_PLUGIN_GAME_5_BOARD_H_
