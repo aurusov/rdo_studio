@@ -10,39 +10,52 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
+IF(WIN32)
+	EXECUTE_PROCESS(COMMAND if not exists ${PROJECT_SOURCE_DIR}/app/rdo_studio/plugins/game5/src/plugin_game5.json copy nul ${PROJECT_SOURCE_DIR}/app/rdo_studio/plugins/game5/src/plugin_game5.json)
+ELSE()
+	EXECUTE_PROCESS(COMMAND touch ${PROJECT_SOURCE_DIR}/app/rdo_studio/plugins/game5/src/plugin_game5.json)
+ENDIF()
+
 SET(MOC_FILES
 	src/board.h
-    src/comboboxdelegate.h
-    src/costsetuptable.h
-    src/plugin_game5.h
-    src/plugin_game5_dialog.h
-    src/plugin_game5_tiles_order_dialog.h
-    src/tiles.h
+	src/comboboxdelegate.h
+	src/costsetuptable.h
+	src/plugin_game5.h
+	src/plugin_game5_dialog.h
+	src/plugin_game5_tiles_order_dialog.h
+	src/tiles.h
 )
 
 SET(SRC_FILES
 	src/board.h
 	src/board.cpp
-    src/comboboxdelegate.h
+	src/comboboxdelegate.h
 	src/comboboxdelegate.cpp
 	src/costsetuptable.h
 	src/costsetuptable.cpp
-    src/plugin_game5.h
+	src/plugin_game5.h
 	src/plugin_game5.cpp
-    src/plugin_game5_dialog.h
+	src/plugin_game5_dialog.h
 	src/plugin_game5_dialog.cpp
-    src/plugin_game5_tiles_order_dialog.h
+	src/plugin_game5_tiles_order_dialog.h
 	src/plugin_game5_tiles_order_dialog.cpp
-    src/tiles.h
+	src/tiles.h
 	src/tiles.cpp
 )
 
 SET(SRC_UI_FILES
 	src/plugin_game5_dialog.ui
-    src/plugin_game5_tiles_order_dialog.ui
+	src/plugin_game5_tiles_order_dialog.ui
 )
 
+SET(CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+MESSAGE(STATUS ${CMAKE_CURRENT_BINARY_DIR})
 QT5_WRAP_UI(GENERATED_SRC_UI_FILES ${SRC_UI_FILES})
+
+SET(PLUGIN_SRC_FILES
+	${SRC_FILES}
+	${SRC_UI_FILES}
+)
 
 SET(QT_MOC_FLAGS)
 QT5_GET_MOC_FLAGS(QT_MOC_FLAGS)
@@ -54,10 +67,10 @@ FOREACH(MOC_FILES_IT ${MOC_FILES})
 ENDFOREACH()
 
 ADD_LIBRARY(plugin_game5 SHARED
-    ${SRC_FILES}
-    ${GENERATED_SRC_UI_FILES}
-    ${GENERATED_MOC_FILES}
- )
+	${PLUGIN_SRC_FILES}
+	${GENERATED_SRC_UI_FILES}
+	${GENERATED_MOC_FILES}
+)
 SET_TARGET_PROPERTIES(plugin_game5 PROPERTIES FOLDER .plugins)
 
 ADD_DEPENDENCIES(plugin_game5 rdo_application)
@@ -81,16 +94,16 @@ IF(MSVC) # options for windows #
 	SOURCE_GROUP(".generated\\.ui" FILES
 		${GENERATED_RESOURCES_UI_FILES}
 	)
-    
-    SOURCE_GROUP(".generated\\.moc" FILES
+
+	SOURCE_GROUP(".generated\\.moc" FILES
 		${GENERATED_MOC_FILES}
 	)
 
 	SOURCE_GROUP(".src" FILES
 		${SRC_FILES}
 	)
-    
-    SOURCE_GROUP(".src\\.ui" FILES
+
+	SOURCE_GROUP(".src\\.ui" FILES
 		${SRC_UI_FILES}
 	)
 
