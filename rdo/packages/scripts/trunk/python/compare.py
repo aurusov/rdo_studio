@@ -11,15 +11,15 @@ import utils
 import re
 
 # compate type
-COMPARE_FULL   = u'FULL'
-COMPARE_TRACE  = u'TRACE'
-COMPARE_RESULT = u'RESULT'
+COMPARE_FULL   = 'FULL'
+COMPARE_TRACE  = 'TRACE'
+COMPARE_RESULT = 'RESULT'
 
 def cmp(a, b):
     return (a > b) - (a < b)
 
 def _read_result_data(name):
-    file_data_temp = open(name, u'r').readlines()
+    file_data_temp = open(name, 'r').readlines()
     utils.cut_slash(file_data_temp)
 
     file_data = []
@@ -35,7 +35,7 @@ def _read_result_data(name):
 
 
 def _read_trace_data(name):
-    file_data_temp = open(name, u'r').readlines()
+    file_data_temp = open(name, 'r').readlines()
     utils.cut_slash(file_data_temp)
 
     file_data = []
