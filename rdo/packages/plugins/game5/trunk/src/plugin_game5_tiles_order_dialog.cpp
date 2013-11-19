@@ -38,8 +38,8 @@ TilesOrderDialog::TilesOrderDialog(QWidget* pParent, const std::vector<unsigned 
 
 	lineEditPosition->setText(lineEditText);
 
-	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
-	connect(buttonOk    , SIGNAL(clicked()), this, SLOT(onOkClick()));
+	connect(buttonCancel, &QPushButton::clicked, this, &TilesOrderDialog::reject);
+	connect(buttonOk    , &QPushButton::clicked, this, &TilesOrderDialog::onOkClick);
 	
 	if (pParent)
 	{

@@ -24,7 +24,7 @@ CostSetupTable::CostSetupTable(QWidget * pParent)
 	init();
 	resizeRowsToContents();
 
-	connect(this, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(reemitItemCheckStateChanged(QTableWidgetItem*)));
+	connect(this, &QTableWidget::itemChanged, this, &CostSetupTable::reemitItemCheckStateChanged);
 }
 
 void CostSetupTable::prepareTable()
@@ -43,7 +43,7 @@ void CostSetupTable::prepareTable()
 	ComboBoxDelegate::itemList calcOrderState;
 	calcOrderState.push_back("after" );
 	calcOrderState.push_back("before");
-	ComboBoxDelegate * comboDelegate = new ComboBoxDelegate(calcOrderState, this);
+	ComboBoxDelegate* comboDelegate = new ComboBoxDelegate(calcOrderState, this);
 	setItemDelegateForColumn(1, comboDelegate);
 
 	setSelectionMode(QAbstractItemView::NoSelection);

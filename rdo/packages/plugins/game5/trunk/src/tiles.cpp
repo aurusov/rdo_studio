@@ -29,7 +29,7 @@ Tile::Tile(int number, QWidget* pParent)
 	               padding: 6px;"
 	);
 
-	connect(this, SIGNAL(clicked()), this, SLOT(reemitClicked()));
+	connect(this, &QPushButton::clicked, this, &Tile::reemitClicked);
 }
 
 void Tile::reemitClicked()

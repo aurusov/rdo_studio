@@ -37,7 +37,7 @@ Board::Board(QWidget * pParent)
 		tiles[place] = new Tile(place, this);
 		tiles[place]->setFixedSize(m_tileSize,m_tileSize);
 		tiles[place]->setGeometry(tilePoint(place).x(),tilePoint(place).y(),m_tileSize,m_tileSize);
-		connect(tiles[place],SIGNAL(tileClicked(int)),this,SLOT(clickOnTile(int)));
+		connect(tiles[place], &Tile::tileClicked, this, &Board::clickOnTile);
 	}
 	setStyleSheet("\
 		background-color: pink; \

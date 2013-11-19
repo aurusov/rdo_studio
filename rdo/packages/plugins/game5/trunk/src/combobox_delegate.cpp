@@ -25,12 +25,12 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent,
                                         const QModelIndex&          /*index   */) const
 {
 	QComboBox* comboBox = new QComboBox(parent);
-	 for (unsigned int i = 0; i < comboBoxItems.size(); i++)
+	for (unsigned int i = 0; i < comboBoxItems.size(); i++)
 	{
-		 comboBox->addItem(QString::fromStdString(comboBoxItems[i]));
+		comboBox->addItem(QString::fromStdString(comboBoxItems[i]));
 	}
 
-	connect(comboBox, SIGNAL(activated(int)), this, SLOT(emitCommitData()));
+	connect(comboBox,  static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, &ComboBoxDelegate::emitCommitData);
 
 	return comboBox;
 }

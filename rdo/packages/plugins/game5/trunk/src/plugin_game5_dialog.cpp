@@ -32,13 +32,20 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 
 	setFixedHeight(std::max(375, gameBoard->m_boardSizeY + 160));
 	adjustSize();
-	connect(tableCostValue    , SIGNAL(itemCheckStateChanged(QTableWidgetItem*)), this     , SLOT(onItemCheckStateChanged(QTableWidgetItem*)));
-	connect(buttonHide        , SIGNAL(toggled(bool))                           , this     , SLOT(onClickHide(bool)));
-	connect(buttonSetLineup   , SIGNAL(clicked())                               , this     , SLOT(callDialog()));
-	connect(buttonOk          , SIGNAL(clicked())                               , this     , SLOT(onClickOk()));
-	connect(buttonRandomLineup, SIGNAL(clicked())                               , this     , SLOT(emitSolvabilityCheck()));
-	connect(buttonRightLineup , SIGNAL(clicked())                               , gameBoard, SLOT(buildRightLineup()));
-	connect(this              , SIGNAL(buttonRandomClicked(bool))               , gameBoard, SLOT(buildRandomLineup(bool)));
+	connect(buttonHide        , &QPushButton::toggled, this, &PluginGame5GenerateSituationDialog::onClickHide         );
+	connect(buttonSetLineup   , &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::callDialog          );
+	connect(buttonRandomLineup, &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::emitSolvabilityCheck);
+	connect(buttonOk          , &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::onClickOk           );
+
+	connect(tableCostValue, &CostSetupTable::itemCheckStateChanged,
+	        this          , &PluginGame5GenerateSituationDialog::onItemCheckStateChanged
+	);
+	connect(this     , &PluginGame5GenerateSituationDialog::buttonRandomClicked,
+	        gameBoard, &Board::buildRandomLineup
+	);
+	connect(buttonRightLineup, &QPushButton::clicked,
+	        gameBoard        , &Board::buildRightLineup
+	);
 
 	if (pParent)
 	{

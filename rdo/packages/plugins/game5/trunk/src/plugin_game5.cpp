@@ -86,7 +86,7 @@ void PluginGame5::plgnStartAction(QWidget* pParent)
 	{
 		QAction* action = new QAction(getPluginName() + " ver " + getVersion(), menu);
 		action->setObjectName("createdAction");
-		connect(action, SIGNAL(triggered()), this, SLOT(pluginSlot()));
+		connect(action, &QAction::triggered, this, &PluginGame5::pluginSlot);
 		menu->addAction(action);
 	}
 }

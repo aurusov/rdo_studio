@@ -35,6 +35,11 @@ public:
 	bool      m_solvabilityCheck;
 	const std::vector<unsigned int>& getTilesPos() const;
 
+public slots:
+	void setTilesPositon(const QString& string);
+	void buildRightLineup();
+	void buildRandomLineup(bool solvabilityCheck);
+
 private:
 	std::vector<unsigned int> tilesPosition;
 	std::vector<Tile *> tiles;
@@ -45,13 +50,8 @@ private:
 	bool   freePlaceIsNearby(int place);
 	bool   lineupIsSolvable();
 
-public slots:
-	void setTilesPositon(const QString& string);
-
 private slots:
 	void clickOnTile(int number);
-	void buildRightLineup();
-	void buildRandomLineup(bool solvabilityCheck);
 };
 
 #endif // _RDO_PLUGIN_GAME_5_BOARD_H_
