@@ -256,6 +256,20 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>buttonRandomLineup</tabstop>
+  <tabstop>solvabilityCheck</tabstop>
+  <tabstop>buttonRightLineup</tabstop>
+  <tabstop>buttonSetLineup</tabstop>
+  <tabstop>buttonHide</tabstop>
+  <tabstop>radioButton0</tabstop>
+  <tabstop>radioButtonQuantity</tabstop>
+  <tabstop>radioButtonDistance</tabstop>
+  <tabstop>radioButtonCustom</tabstop>
+  <tabstop>lineEditCustom</tabstop>
+  <tabstop>radioButtonCopareTop</tabstop>
+  <tabstop>buttonOk</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
