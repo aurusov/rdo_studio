@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>RAOgame5PluginDialog</class>
- <widget class="QDialog" name="RAOgame5PluginDialog">
+ <class>PluginGame5GenerateSituationDialog</class>
+ <widget class="QDialog" name="PluginGame5GenerateSituationDialog">
   <property name="geometry">
    <rect>
     <x>0</x>

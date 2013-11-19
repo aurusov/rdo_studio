@@ -17,12 +17,14 @@
 #include "ui_plugin_game5_dialog.h"
 // --------------------------------------------------------------------------------
 
-class game5Dialog: public QDialog, public Ui_RAOgame5PluginDialog
+class PluginGame5GenerateSituationDialog
+	: public QDialog
+	, public Ui_PluginGame5GenerateSituationDialog
 {
 Q_OBJECT
 public:
-	game5Dialog(QWidget * parent);
-	~game5Dialog() {};
+	PluginGame5GenerateSituationDialog(QWidget * parent);
+	~PluginGame5GenerateSituationDialog() {};
 
 signals:
 	void buttonRandomClicked(bool solvabilityCheck);

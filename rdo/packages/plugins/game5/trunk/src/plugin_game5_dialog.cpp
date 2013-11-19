@@ -20,7 +20,7 @@
 #include "app/rdo_studio/plugins/game5/src/cost_setup_table.h"
 // --------------------------------------------------------------------------------
 
-game5Dialog::game5Dialog(QWidget* pParent)
+PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
 	setupUi(this);
@@ -46,14 +46,14 @@ game5Dialog::game5Dialog(QWidget* pParent)
 	}
 }
 
-void game5Dialog::onClickHide(bool state)
+void PluginGame5GenerateSituationDialog::onClickHide(bool state)
 {
 	hiddenWidget->setVisible(state);
 	buttonHide->setText(buttonHide->text() == ">>" ? "<<" : ">>");
 	adjustSize();
 }
 
-void game5Dialog::onClickOk()
+void PluginGame5GenerateSituationDialog::onClickOk()
 {
 	MainWindow* pMainWindow = (MainWindow*)(parent());
 	rdo::gui::model::Model* pModel = pMainWindow->getModel();
@@ -86,12 +86,12 @@ void game5Dialog::onClickOk()
 	done(Accepted);
 }
 
-void game5Dialog::emitSolvabilityCheck()
+void PluginGame5GenerateSituationDialog::emitSolvabilityCheck()
 {
 	emit buttonRandomClicked(solvabilityCheck->isChecked());
 }
 
-void game5Dialog::onItemCheckStateChanged(QTableWidgetItem* item)
+void PluginGame5GenerateSituationDialog::onItemCheckStateChanged(QTableWidgetItem* item)
 {
 	QTableWidget* parentTable = item->tableWidget();
 	if (item->checkState() == Qt::Unchecked)
@@ -106,7 +106,7 @@ void game5Dialog::onItemCheckStateChanged(QTableWidgetItem* item)
 	}
 }
 
-std::string game5Dialog::evaluateBy()
+std::string PluginGame5GenerateSituationDialog::evaluateBy()
 {
 	if (radioButton0->isChecked())
 	{
@@ -126,13 +126,13 @@ std::string game5Dialog::evaluateBy()
 	}
 }
 
-std::string game5Dialog::activityValue(int tableRow)
+std::string PluginGame5GenerateSituationDialog::activityValue(int tableRow)
 {
 	QString string = tableCostValue->item(tableRow, 1)->text() + " " + tableCostValue->item(tableRow, 2)->text();
 	return string.toStdString();
 }
 
-std::string game5Dialog::RTPtabText()
+std::string PluginGame5GenerateSituationDialog::RTPtabText()
 {
 	std::stringstream RTPtabTextStream; 
 	RTPtabTextStream
@@ -149,7 +149,7 @@ std::string game5Dialog::RTPtabText()
 	return RTPtabTextStream.str();
 }
 
-std::string game5Dialog::RSStabText()
+std::string PluginGame5GenerateSituationDialog::RSStabText()
 {
 	std::stringstream RSStabTextStream; 
 	RSStabTextStream <<	"$Resources\n";
@@ -162,7 +162,7 @@ std::string game5Dialog::RSStabText()
 	return RSStabTextStream.str();
 }
 
-std::string game5Dialog::PATtabText()
+std::string PluginGame5GenerateSituationDialog::PATtabText()
 {
 	std::stringstream PATtabTextStream; 
 	PATtabTextStream
@@ -186,7 +186,7 @@ std::string game5Dialog::PATtabText()
 	return PATtabTextStream.str();
 }
 
-std::string game5Dialog::DPTtabText()
+std::string PluginGame5GenerateSituationDialog::DPTtabText()
 {
 	std::stringstream DPTtabTextStream; 
 	DPTtabTextStream
@@ -205,7 +205,7 @@ std::string game5Dialog::DPTtabText()
 	return DPTtabTextStream.str();
 }
 
-std::string game5Dialog::FUNtabText()
+std::string PluginGame5GenerateSituationDialog::FUNtabText()
 {
 	std::stringstream FUNtabTextStream; 
 	FUNtabTextStream
@@ -302,7 +302,7 @@ std::string game5Dialog::FUNtabText()
 	return FUNtabTextStream.str();
 }
 
-void game5Dialog::backUpModel(rdo::gui::model::Model* pModel)
+void PluginGame5GenerateSituationDialog::backUpModel(rdo::gui::model::Model* pModel)
 {
 	QString backUpFolder  = g_pApp->applicationDirPath() + "/model_backup/";
 	        backUpFolder += pModel->getName();
@@ -336,13 +336,13 @@ void game5Dialog::backUpModel(rdo::gui::model::Model* pModel)
 	File.close();
 }
 
-void game5Dialog::clearAllTabs(rdo::gui::model::Model* pModel)
+void PluginGame5GenerateSituationDialog::clearAllTabs(rdo::gui::model::Model* pModel)
 {
 	for (int i = 0; i < pModel->getTab()->tabBar()->count(); i++)
 		pModel->getTab()->getItemEdit(i)->clearAll();
 }
 
-void game5Dialog::callDialog()
+void PluginGame5GenerateSituationDialog::callDialog()
 {
 	TilesOrderDialog dlg(this, gameBoard->getTilesPos());
 	connect(&dlg, &TilesOrderDialog::tilesOrderCommited, gameBoard, &Board::setTilesPositon);

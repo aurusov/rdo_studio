@@ -19,28 +19,28 @@
 #include "app/rdo_studio/src/main_window.h"
 // --------------------------------------------------------------------------------
 
-QString plugin::getPluginName()
+QString PluginGame5::getPluginName()
 {
 	return "game5_debug";
 }
 
-QString plugin::getAuthor()
+QString PluginGame5::getAuthor()
 {
 	return "Chernov";
 }
 
-QString plugin::getVersion()
+QString PluginGame5::getVersion()
 {
 	return "0.1.3";
 }
 
-QUuid plugin::getGUID()
+QUuid PluginGame5::getGUID()
 {
 	QUuid plgnGUID("{9D9CAAE2-324A-43db-8A4C-E8B12FD6C546}");
 	return plgnGUID;
 }
 
-void plugin::plgnStartAction(QWidget* pParent)
+void PluginGame5::plgnStartAction(QWidget* pParent)
 {
 	if (!g_pApp)
 	{
@@ -91,7 +91,7 @@ void plugin::plgnStartAction(QWidget* pParent)
 	}
 }
 
-void plugin::plgnStopAction(QWidget* pParent)
+void PluginGame5::plgnStopAction(QWidget* pParent)
 {
 	QMenu* createdMenu = pParent->findChild<QMenu*>("createdMenu");
 	QAction* createdAction;
@@ -130,11 +130,11 @@ void plugin::plgnStopAction(QWidget* pParent)
 	}
 }
 
-void plugin::pluginSlot()
+void PluginGame5::pluginSlot()
 {
 	QWidget* pParent = qobject_cast<QWidget*>(sender()-> //action
 	                                          parent()-> //QMenu
 	                                          parent()); //QMainWindow
-	game5Dialog D(pParent);
+	PluginGame5GenerateSituationDialog D(pParent);
 	D.exec();
 }
