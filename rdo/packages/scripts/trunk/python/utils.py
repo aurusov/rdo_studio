@@ -4,24 +4,23 @@
  # -*- coding: utf-8 -*-
 ###############################################################################
 
+ENC = ''
+DEC = ''
+
 import os, sys
-
-MSVC_WORKAROUND = False
-
 
 def enc_print(*args):
     flag = False
     for arg in args:
         if flag:
             sys.stdout.write(' ')
-        if MSVC_WORKAROUND:
-            sys.stdout.write(str(arg).encode('cp866').decode(sys.stdout.encoding))
+        if len(ENC)*len(DEC):
+            sys.stdout.write(str(arg).encode(ENC).decode(DEC))
         else:
             sys.stdout.write(str(arg))
         flag = True
     sys.stdout.write('\n')
         
-
 
 def print_list_of_line(list):
     for string in list:

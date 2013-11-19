@@ -215,14 +215,16 @@ def test_convertor(dirname, model):
 parser = argparse.ArgumentParser(description = 'rdo executor of system tests: ' + str(APP_VERSION))
 parser.add_argument('-ad', action = 'store', dest = 'app_directory',   default = app_directory,   help = 'application directory')
 parser.add_argument('-md', action = 'store', dest = 'model_directory', default = model_directory, help = 'model directory')
-parser.add_argument('-msvc', action='store_true', default = False)
+parser.add_argument('-enc', action='store', default = '')
+parser.add_argument('-dec', action='store', default = '')
 
 args = parser.parse_args()
 
 app_directory   = '' + args.app_directory
 model_directory = '' + args.model_directory
 
-utils.MSVC_WORKAROUND = args.msvc
+utils.ENC = args.enc
+utils.DEC = args.dec
 
 # global exit code variable
 G_EXIT_CODE = APP_CODE_TERMINATION_NORMAL
