@@ -15,6 +15,9 @@ COMPARE_FULL   = u'FULL'
 COMPARE_TRACE  = u'TRACE'
 COMPARE_RESULT = u'RESULT'
 
+def cmp(a, b):
+    return (a > b) - (a < b)
+
 def _read_result_data(name):
     file_data_temp = open(name, u'r').readlines()
     utils.cut_slash(file_data_temp)
@@ -97,4 +100,4 @@ def files(file1, file2, type):
 
 if __name__ == '__main__':
 
-    print str(files('game5.trc', 'game5_etalon.trc', COMPARE_TRACE))
+    print (str(files('game5.trc', 'game5_etalon.trc', COMPARE_TRACE)))

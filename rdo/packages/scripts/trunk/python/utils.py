@@ -6,13 +6,10 @@
 
 import os
 
-def safe_encode(string, encoding):
-    return string.encode(encoding)
 
-
-def print_list_of_line(list, encoding):
+def print_list_of_line(list):
     for string in list:
-        print safe_encode(string, encoding)
+        print (string)
 
 
 def get_files_list(dir):
