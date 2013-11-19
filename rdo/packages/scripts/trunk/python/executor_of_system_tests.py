@@ -71,7 +71,7 @@ dividing_line = '---------------------------------------------------------------
 ###############################################################################
 
 def safe_exit():
-    print ('\n', 'PYTHON EXIT CODE :', G_EXIT_CODE, '\n')
+    utils.enc_print ('\n', 'PYTHON EXIT CODE :', G_EXIT_CODE, '\n')
     sys.exit(G_EXIT_CODE)
 
 ###############################################################################
@@ -135,7 +135,7 @@ def compare_etalons(etalons, basedir):
         else:
             cycle_exit_code = APP_CODE_TERMINATION_ERROR
 
-        print ('COMPARE:  ', etalon['source'], '  AND  ', etalon['target'], ':  ', compare_string)
+        utils.enc_print ('COMPARE:  ', etalon['source'], '  AND  ', etalon['target'], ':  ', compare_string)
     
     return cycle_exit_code
 
@@ -145,9 +145,9 @@ def test_console(dirname, model):
     # run rdo_console app on test model
     model_file = '' + dirname + model['name']
     command = (rdo_ex + ' -i ' + utils.wrap_the_string_in_quotes(model_file))
-    print('Run:', command, '\n')
+    utils.enc_print('Run:', command, '\n')
     simulation_code = subprocess.call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    print ('SIMULATION EXIT CODE :', simulation_code)
+    utils.enc_print ('SIMULATION EXIT CODE :', simulation_code)
 
     # check simulation exit code
     simulation_exit_code_string = 'ERROR'
@@ -157,7 +157,7 @@ def test_console(dirname, model):
     else:
         cycle_exit_code = APP_CODE_TERMINATION_ERROR
             
-    print ('CHECK SIM EXIT CODE  :', simulation_exit_code_string, '\n')
+    utils.enc_print ('CHECK SIM EXIT CODE  :', simulation_exit_code_string, '\n')
             
     # nornal simulation check
     if simulation_code == RDO_CONSOLE_TERMINATION_NORMAL:
@@ -178,7 +178,7 @@ def test_console(dirname, model):
             if res:
                 cycle_exit_code = APP_CODE_TERMINATION_NORMAL
                 check_message_cmp_string = 'OK'
-            print ('CHECK ERROR LIST     :', check_message_cmp_string)
+            utils.enc_print ('CHECK ERROR LIST     :', check_message_cmp_string)
 
         except:
             traceback.print_exc(file=sys.stdout)
@@ -195,9 +195,9 @@ def test_convertor(dirname, model):
         shutil.copytree(dirname, temp_directory_name, ignore=shutil.ignore_patterns(*IGNORE_PATTERNS))
         model_file = '' + temp_directory_name + model['name']
         command = (rdo_ex + ' -i ' + utils.wrap_the_string_in_quotes(model_file) + ' -c')
-        print ('Run:', command, '\n')
+        utils.enc_print ('Run:', command, '\n')
         convertor_exit_code = subprocess.call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        print ('CONVERT EXIT CODE :', convertor_exit_code, '\n')
+        utils.enc_print ('CONVERT EXIT CODE :', convertor_exit_code, '\n')
         if convertor_exit_code == exit_code:
             cycle_exit_code = compare_etalons(etalons, temp_directory_name)
         shutil.rmtree(temp_directory_name)
@@ -215,45 +215,48 @@ def test_convertor(dirname, model):
 parser = argparse.ArgumentParser(description = 'rdo executor of system tests: ' + str(APP_VERSION))
 parser.add_argument('-ad', action = 'store', dest = 'app_directory',   default = app_directory,   help = 'application directory')
 parser.add_argument('-md', action = 'store', dest = 'model_directory', default = model_directory, help = 'model directory')
+parser.add_argument('-msvc', action='store_true', default = False)
 
 args = parser.parse_args()
 
 app_directory   = '' + args.app_directory
 model_directory = '' + args.model_directory
 
+utils.MSVC_WORKAROUND = args.msvc
+
 # global exit code variable
 G_EXIT_CODE = APP_CODE_TERMINATION_NORMAL
 
-print (dividing_line)
-print ('STARTED SCRIPT :', sys.argv[0])
-print ('SYSTEM ENCODING', sys.getdefaultencoding())
-print ('FILESYSTEM ENCODING', sys.getfilesystemencoding())
+utils.enc_print (dividing_line)
+utils.enc_print ('STARTED SCRIPT :', sys.argv[0])
+utils.enc_print ('SYSTEM ENCODING', sys.getdefaultencoding())
+utils.enc_print ('FILESYSTEM ENCODING', sys.getfilesystemencoding())
 
 # search rdo and rdo_test executables
 rdo_ex = get_executables(app_directory)
 if not os.path.exists(rdo_ex):
-    print ('Build app not found. Critical error !!!')
+    utils.enc_print ('Build app not found. Critical error !!!')
     sys.exit(APP_CODE_TERMINATION_ERROR)
 
 # search .rtestx files
 files = get_test_files(model_directory)
 files.sort()
 
-print ('\nDEBUG INFO')
-print ('\nFind RDO executables    :')
-print (rdo_ex)
+utils.enc_print ('\nDEBUG INFO')
+utils.enc_print ('\nFind RDO executables    :')
+utils.enc_print (rdo_ex)
 
-print ('\nFind test project files :')
+utils.enc_print ('\nFind test project files :')
 utils.print_list_of_line(files)
 
 # parse xml and start tests
-print ('\nSTARTED TEST CYCLE\n')
+utils.enc_print ('\nSTARTED TEST CYCLE\n')
 bad_models = []
 
 # check model cycle
 for task in files:
 
-    print (dividing_line)
+    utils.enc_print (dividing_line)
 
     utask   = task
     dirname = os.path.dirname(utask) + DIR_LINE
@@ -267,7 +270,7 @@ for task in files:
         parse_result = True
     
     except:
-        print ('PARSE XML ERROR:', utask)
+        utils.enc_print ('PARSE XML ERROR:', utask)
         traceback.print_exc(file=sys.stdout)
         G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
         safe_exit()
@@ -279,11 +282,11 @@ for task in files:
         model['exit_code']       = get_node_attribute_from_dom(dom, 'model', 'exit_code'      )
         model['log_compilation'] = get_node_attribute_from_dom(dom, 'model', 'log_compilation')
 
-        print ('Project              :', task)
-        print ('Model file           :', model['name'])
-        print ('Target               :', model['target'])
-        print ('Exit code            :', model['exit_code'])
-        print ('Log compilation file :', model['log_compilation'])
+        utils.enc_print ('Project              :', task)
+        utils.enc_print ('Model file           :', model['name'])
+        utils.enc_print ('Target               :', model['target'])
+        utils.enc_print ('Exit code            :', model['exit_code'])
+        utils.enc_print ('Log compilation file :', model['log_compilation'])
         sys.stdout.flush()
 
         etalons = []
@@ -303,10 +306,10 @@ for task in files:
             exit_code = DEFAULT_EXIT_CODE
 
         if len(etalons):
-            print ('\n', 'Etalons :', '\n')
+            utils.enc_print ('\n', 'Etalons :', '\n')
         for etalon in etalons:
-            print ('SOURCE:  ', etalon['source'], '  TARGET:  ', etalon['target'], '  TYPE:  ',   etalon['type'])
-        print ('')
+            utils.enc_print ('SOURCE:  ', etalon['source'], '  TARGET:  ', etalon['target'], '  TYPE:  ',   etalon['type'])
+        utils.enc_print ('')
 
         cycle_exit_code = APP_CODE_TERMINATION_ERROR
 
@@ -316,16 +319,16 @@ for task in files:
         elif model['target'] == TAGRET_CONVERTER:
             cycle_exit_code = test_convertor(dirname, model)
         else:
-            print ('INVALID TARGET')
+            utils.enc_print ('INVALID TARGET')
 
         if cycle_exit_code == APP_CODE_TERMINATION_ERROR:
             bad_models.append(task)
             G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
 
-print ('\n', 'MODEL WITH ERRORS:')
+utils.enc_print ('\n', 'MODEL WITH ERRORS:')
 utils.print_list_of_line(bad_models)
 
 if(len(bad_models) < 1):
-    print ('(empty)')
+    utils.enc_print ('(empty)')
 
 safe_exit()

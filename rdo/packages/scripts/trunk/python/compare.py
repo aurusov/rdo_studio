@@ -100,4 +100,4 @@ def files(file1, file2, type):
 
 if __name__ == '__main__':
 
-    print (str(files('game5.trc', 'game5_etalon.trc', COMPARE_TRACE)))
+    utils.enc_print (str(files('game5.trc', 'game5_etalon.trc', COMPARE_TRACE)))

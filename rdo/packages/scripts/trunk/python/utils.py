@@ -4,12 +4,28 @@
  # -*- coding: utf-8 -*-
 ###############################################################################
 
-import os
+import os, sys
+
+MSVC_WORKAROUND = False
+
+
+def enc_print(*args):
+    flag = False
+    for arg in args:
+        if flag:
+            sys.stdout.write(' ')
+        if MSVC_WORKAROUND:
+            sys.stdout.write(str(arg).encode('cp866').decode(sys.stdout.encoding))
+        else:
+            sys.stdout.write(str(arg))
+        flag = True
+    sys.stdout.write('\n')
+        
 
 
 def print_list_of_line(list):
     for string in list:
-        print (string)
+        enc_print (string)
 
 
 def get_files_list(dir):
