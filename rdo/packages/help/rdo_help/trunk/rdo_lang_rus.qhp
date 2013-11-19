@@ -260,6 +260,7 @@
 			<keyword name="Model_name" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
 			<keyword name="Monitor" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
 			<keyword name="NO" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="new" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
 			<keyword name="NO_MORE_EVENTS" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
 			<keyword name="NO_MORE_EVENTS" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
 			<keyword name="no_trace" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
