@@ -49,5 +49,5 @@ def cut_slash(list):
 
 def wrap_the_string_in_quotes(string):
 
-    new_string = u'"' + string + u'"'
+    new_string = '"' + string + '"'
     return new_string
