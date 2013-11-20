@@ -1,5 +1,5 @@
 #==============================================================================
-# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011-2013 Evgeny Proydakov <lord.tiran@gmail.com>
 #==============================================================================
 # Welcome to the CMake build system for RDO STUDIO (UNIX VERSION).
 # This is the main file where we prepare the general build environment
@@ -18,12 +18,18 @@ SET(PROJECT_VENDOR_LONG  "BMSTU")
 SET(PROJECT_COPYRIGHT    "Copyright ${PROJECT_VENDOR_LONG}")
 SET(PROJECT_VERSION      "{TEMP}")
 SET(PROJECT_VERSION_LONG "{TEMP}")
-SET(ORG_WEBSITE          "http://rdo.rk9.bmstu.ru/")
+SET(ORG_WEBSITE          "http://rdo.rk9.bmstu.ru")
 
 #==============================================================================
 
 MESSAGE(STATUS "Create RDO")
 STRING(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
+
+ADD_DEFINITIONS(-DRDO_ST)
+ADD_DEFINITIONS(-DRDO_LIMIT_RES)
+ADD_DEFINITIONS(-DRDO_LICENSE_ACADEMIC)
+ADD_DEFINITIONS(-DNOMINMAX)
+ADD_DEFINITIONS(-DBOOST_SIGNALS_NO_DEPRECATION_WARNING)
 
 # work with cmake
 SET(CMAKE_PREFIX_PATH $ENV{QTDIR}/lib/cmake)
@@ -38,6 +44,7 @@ IF(NOT MSVC)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 ELSE()
     STRING(REGEX REPLACE /W[0-4] /W4 CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
 ENDIF(NOT MSVC)
 
 IF(NOT MSVC)
@@ -56,15 +63,9 @@ IF(NOT MSVC)
 #   SET(CDEFS "-m32 -o output32")
 ENDIF(NOT MSVC)
 
-SET(ENABLE_UNICODE FALSE)
-IF(NOT MSVC AND ENABLE_UNICODE)
-    ADD_DEFINITIONS(-DUNICODE)
-ENDIF(NOT MSVC AND ENABLE_UNICODE)
-
 SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
-# add the include folder to the include path
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
 
 INCLUDE(CTest)
@@ -101,26 +102,8 @@ IF(WIN32)
     ENDIF()
 ENDIF()
 
-SET(DOC_DIRECTORY ${RDO_BASE_DIRECTORY}/doc)
-
-SET(COMMON_FILES
-    ${DOC_DIRECTORY}/changes.txt
-    ${DOC_DIRECTORY}/configuring.environment.debian.txt
-    ${DOC_DIRECTORY}/install.boost.txt
-    ${DOC_DIRECTORY}/install.doxygen.txt
-    ${DOC_DIRECTORY}/install.mingw.txt
-    ${DOC_DIRECTORY}/install.qt.from.sources.txt
-    ${DOC_DIRECTORY}/rdodoc-src-html.doxyfile
-    ${DOC_DIRECTORY}/todo.txt
-    ${DOC_DIRECTORY}/coding.style.txt
-    ${DOC_DIRECTORY}/configuring.environment.opensuse.txt
-    ${DOC_DIRECTORY}/install.cmake.txt
-    ${DOC_DIRECTORY}/install.graphviz.txt
-    ${DOC_DIRECTORY}/install.qt.linux.txt
-    ${DOC_DIRECTORY}/install.qt.from.installer.txt
-    ${DOC_DIRECTORY}/make.project.txt
-    ${DOC_DIRECTORY}/system.test.txt
-    )
+FILE(GLOB DOC_FILES ${RDO_BASE_DIRECTORY}/doc/*.txt)
+LIST(APPEND DOC_FILES ${RDO_BASE_DIRECTORY}/doc/rdodoc-src-html.doxyfile)
 
 #==============================================================================
 
@@ -145,20 +128,39 @@ SET(PROJECT_VERSION_LONG ${CMAKE_SVN_VERSION})
 
 #==============================================================================
 
+IF(WIN32)
+    INCLUDE(win32.install)
+ENDIF()
+
+#==============================================================================
+
+IF(WIN32)
+    FIND_PACKAGE(PythonInterp)
+    IF(NOT ${PYTHON_VERSION_MAJOR} EQUAL 3)
+        MESSAGE(FATAL_ERROR "Python3 for Windows not found")
+    ENDIF()
+ELSE()
+    FIND_PROGRAM(PYTHON_EXECUTABLE python3)
+    IF(NOT PYTHON_EXECUTABLE)
+        MESSAGE(FATAL_ERROR "Python3 not found")
+    ENDIF()
+    MESSAGE(STATUS "Found PythonInterp: "${PYTHON_EXECUTABLE})
+ENDIF()
+
+#==============================================================================
+
 SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
 
 SET(SCRIPT_FILES
     ${SCRIPTS_DIRECTORY}/python/executor_of_system_tests.py
     ${SCRIPTS_DIRECTORY}/statistics/statistics.sh
-    )
+)
 
 SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
 
 IF(WIN32)
     SET(ENV{BISON_PKGDATADIR} ${BISON_FLEX_DIRECTORY}/share/bison)
 ENDIF()
-
-MESSAGE(BISON_PKGDATADIR: $ENV{BISON_PKGDATADIR})
 
 # Compile the rdo_common
 SET(UTILS_PATH ${RDO_BASE_DIRECTORY}/utils)
@@ -197,6 +199,9 @@ ADD_SUBDIRECTORY(${UI_QT_PATH})
 SET(APLICATIONS_DIRECTORY ${RDO_BASE_DIRECTORY}/app)
 ADD_SUBDIRECTORY(${APLICATIONS_DIRECTORY})
 
+SET(BUILD_RDO_CONSOLE TRUE)
+SET(BUILD_RDO_STUDIO  TRUE)
+
 #==============================================================================
 #---------------------------------- info --------------------------------------
 #==============================================================================
@@ -209,9 +214,10 @@ MESSAGE(STATUS ${NOOP_STRING})
 MESSAGE(STATUS ${BUILD_INFO_BAR})
 MESSAGE(STATUS "Summary of the build:")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
-MESSAGE(STATUS "ENABLE UNICODE:               ${ENABLE_UNICODE}")
+MESSAGE(STATUS "APP VERSION:                  ${CMAKE_SVN_VERSION}")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
-MESSAGE(STATUS "BUILD rdo console:            TRUE")
+MESSAGE(STATUS "BUILD rdo console:            ${BUILD_RDO_CONSOLE}")
+MESSAGE(STATUS "BUILD rdo studio:             ${BUILD_RDO_STUDIO}")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
 MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
