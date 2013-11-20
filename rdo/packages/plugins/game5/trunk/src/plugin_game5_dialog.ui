@@ -92,7 +92,7 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_5">
          <item row="0" column="0">
-          <widget class="QRadioButton" name="radioButtonCopareTop">
+          <widget class="QCheckBox" name="checkBoxCopareTop">
            <property name="text">
             <string>Сравнивать вершину с раскрытыми</string>
            </property>
@@ -135,16 +135,6 @@
    <item row="0" column="1">
     <widget class="QWidget" name="mainWidget" native="true">
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="5" column="0" colspan="5">
-       <widget class="Board" name="gameBoard" native="true"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="buttonRandomLineup">
-        <property name="text">
-         <string>Перемешать</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="2">
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
@@ -152,11 +142,18 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>20</width>
+          <width>0</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="buttonRandomLineup">
+        <property name="text">
+         <string>Перемешать</string>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QPushButton" name="buttonRightLineup">
@@ -185,14 +182,14 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="3" colspan="2">
+      <item row="6" column="3" colspan="2">
        <widget class="QPushButton" name="buttonOk">
         <property name="text">
          <string>Ok</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="0" colspan="3">
+      <item row="6" column="0" colspan="3">
        <spacer name="horizontalSpacer_4">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -205,37 +202,84 @@
         </property>
        </spacer>
       </item>
-      <item row="6" column="0" colspan="5">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="4" column="0" colspan="5">
-       <spacer name="verticalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="3" column="0">
        <widget class="QPushButton" name="buttonSetLineup">
         <property name="text">
          <string>Задать..</string>
         </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="5">
+       <widget class="QWidget" name="widget" native="true">
+        <layout class="QGridLayout" name="gridLayout_7">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item row="1" column="1">
+          <widget class="Board" name="gameBoard" native="true"/>
+         </item>
+         <item row="2" column="1">
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="0">
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="1">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="2">
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -267,7 +311,7 @@
   <tabstop>radioButtonDistance</tabstop>
   <tabstop>radioButtonCustom</tabstop>
   <tabstop>lineEditCustom</tabstop>
-  <tabstop>radioButtonCopareTop</tabstop>
+  <tabstop>checkBoxCopareTop</tabstop>
   <tabstop>buttonOk</tabstop>
  </tabstops>
  <resources/>

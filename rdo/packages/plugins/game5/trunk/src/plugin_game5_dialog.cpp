@@ -202,7 +202,7 @@ std::string PluginGame5GenerateSituationDialog::DPTtabText()
 	<<	"$Term_condition\n"
 	<<	"	For_All(Фишка: Фишка.Номер == Фишка.Местоположение)\n"
 	<<	"$Evaluate_by " << evaluateBy() << "\n"
-	<<	"$Compare_tops = " << (radioButtonCopareTop->isChecked() ? "YES" : "NO") << "\n"
+	<<	"$Compare_tops = " << (checkBoxCopareTop->isChecked() ? "YES" : "NO") << "\n"
 	<<	"$Activities\n"
 	<<	"	Перемещение_вправо: Перемещение_фишки справа  1 value " << activityValue(0) << "\n"
 	<<	"	Перемещение_влево : Перемещение_фишки слева  -1 value " << activityValue(1) << "\n"

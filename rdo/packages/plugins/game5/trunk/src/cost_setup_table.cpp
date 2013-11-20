@@ -58,6 +58,8 @@ void CostSetupTable::init()
 
 	for (int i = 0; i < 4; i++)
 	{
+		item(i,0)->setFlags(item(i,0)->flags() & ~Qt::ItemIsEditable);
+
 		QTableWidgetItem* calcOrderItem = new QTableWidgetItem("after");
 		setItem(i, 1, calcOrderItem);
 		openPersistentEditor(calcOrderItem);
