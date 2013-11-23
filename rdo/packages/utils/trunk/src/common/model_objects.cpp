@@ -29,6 +29,9 @@ tstring getFileTypeString(RDOFileType type)
 			case FUN : string = "FUN" ; break;
 			case SMR : string = "SMR" ; break;
 			case PMD : string = "PMD" ; break;
+			case PMV : string = "PMV" ; break;
+			case TRC : string = "TRC" ; break;
+			case RDOX: string = "RDOX" ; break;
 			default: string = "";
 	}
 	return string;
