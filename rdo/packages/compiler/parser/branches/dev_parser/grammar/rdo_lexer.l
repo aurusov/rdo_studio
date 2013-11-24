@@ -100,7 +100,6 @@ normal                         return(RDO_normal);
 triangular                     return(RDO_triangular);
 by_hist                        return(RDO_by_hist);
 enumerative                    return(RDO_enumerative);
-new                            return(RDO_new);
 
 $Pattern                       return(RDO_Pattern);
 $pattern                       return(RDO_Pattern);
