@@ -10,6 +10,8 @@ testPhrase = \
 ========================
 """
 
+print(testPhrase)
+
 failPhrase = \
 """\
 ========================
