@@ -29,3 +29,11 @@ for left in enclist:
             except Exception as ex: 
                 print(failPhrase)
 
+for left in enclist:
+    print("========================")
+    print(" TRYING ENC TO ", left)
+    try:
+        print(testPhrase.encode(left))
+    except Exception as ex: 
+        print(failPhrase)
+
