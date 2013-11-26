@@ -45,27 +45,18 @@ function toggle_display(e)
 				<DD class="syntax"></DD>
 				<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 				<DIV style="display:none" id="v1">
-				<P><B><I>Вычисление наибольшего числа</I></B> из двух данных:</P>
-				<PRE name="sample_1" class="samples">
-$Parameters
-INPUT_1	: integer
-INPUT_2	: integer
-$Body
-if(A>B)	return INPUT_1;
-esle	return INPUT_2;
-$End
-			</PRE>
-			<P><B><I>Проверка состояния канала</I></B>:</P>
-			<PRE name="sample_2" class="samples">
-$Parameters
-СМО		:	Тип_СМО
-$Body
-if(СМО.состояние_канала == Свободен)
-	return true;
+				<P>Вычисление наибольшего из двух чисел:</P>
+<pre><code>if (A > B)
+    return A;
 else
-	return false;
-$End
-		   </PRE>
+    return B;
+</code></pre>
+				<P>Проверка состояния канала:</P>
+<pre><code>if (СМО.состояние_канала == Свободен)
+    return true;
+else
+    return false;
+</code></pre>
 			</DIV>
 			</DL>
 			<h2>Операторы объявления и инициализации локальной переменной</h2>
