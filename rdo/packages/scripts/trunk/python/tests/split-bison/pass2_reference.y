@@ -59,18 +59,18 @@ test_brackets
 	}
 	| Token3 Token4	{ some_code(); }
 	| Token4 Token5	
+	{
 	
+	}
+	| Token5 Token6	{
 	
-	
-	| Token5 Token6	
-	
-	
-	| Token6 Token7	
+	}
+	| Token6 Token7	{}
 	;
 
 test_for_one_pass_only
 	: Token1 Token2
-	
+	{
 		
 
 
@@ -78,11 +78,11 @@ test_for_one_pass_only
 
 
 
-	
-	| Token2 Token3 
+	}
+	| Token2 Token3 {
 		
-	
-	| Token3 Token4	  
+	}
+	| Token3 Token4	{  }
 	| Token4 Token5	
 	{
 		/* ---------- COMPILER 2st PASS ---------- */ 

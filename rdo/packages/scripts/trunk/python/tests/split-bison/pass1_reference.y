@@ -59,13 +59,13 @@ test_brackets
 	}
 	| Token3 Token4	{ some_code(); }
 	| Token4 Token5	
+	{
 	
+	}
+	| Token5 Token6	{
 	
-	
-	| Token5 Token6	
-	
-	
-	| Token6 Token7	
+	}
+	| Token6 Token7	{}
 	;
 
 test_for_one_pass_only
@@ -84,12 +84,12 @@ test_for_one_pass_only
 	}
 	| Token3 Token4	{ /* ---------- COMPILER 1st PASS ---------- */ some_code(); /* -------------- END PASS 1 ------------- */ }
 	| Token4 Token5	
-	
+	{
 		
 
 
 		
-	
+	}
 	| Token5 Token6	
 	{
 		

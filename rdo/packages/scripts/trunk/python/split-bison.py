@@ -68,10 +68,6 @@ def divide(expr):
         cut = f2[Ppos + 1 : posend]
         f2 = f2[: Ppos] + "\n" * cut.count("\n") + f2[posend + 1 :]
 
-    # clean empty brackets
-    f1 = re.sub(r"(\s*[\|\:][^{}$]*\s*){(\s*)}", r"\1\2", f1, flags = re.DOTALL)
-    f2 = re.sub(r"(\s*[\|\:][^{}$]*\s*){(\s*)}", r"\1\2", f2, flags = re.DOTALL)
-
     return [f1,f2]
 
 
