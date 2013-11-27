@@ -31,10 +31,6 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-int  rtpparse(PTR(void) lexer);
-int  rtplex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void rtperror(const char* message);
-
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
 // --------------------------------------------------------------------------------
