@@ -19,7 +19,7 @@ def cmp(a, b):
     return (a > b) - (a < b)
 
 def _read_result_data(name):
-    file_data_temp = open(name, 'r').readlines()
+    file_data_temp = open(name, 'r', encoding = 'utf-8').readlines()
     utils.cut_slash(file_data_temp)
 
     file_data = []
@@ -35,7 +35,7 @@ def _read_result_data(name):
 
 
 def _read_trace_data(name):
-    file_data_temp = open(name, 'r').readlines()
+    file_data_temp = open(name, 'r', encoding = 'utf-8').readlines()
     utils.cut_slash(file_data_temp)
 
     file_data = []
@@ -57,8 +57,8 @@ def _read_trace_data(name):
 
 
 def full(file1, file2):
-    file1_data = open(file1, 'r').readlines()
-    file2_data = open(file2, 'r').readlines()
+    file1_data = open(file1, 'r', encoding = 'utf-8').readlines()
+    file2_data = open(file2, 'r', encoding = 'utf-8').readlines()
 
     utils.cut_slash(file1_data)
     utils.cut_slash(file2_data)
