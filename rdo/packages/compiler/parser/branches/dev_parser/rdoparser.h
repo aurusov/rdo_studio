@@ -324,16 +324,6 @@ private:
 // --------------------------------------------------------------------------------
 typedef RDOParserTemplate<RDOParserContainerModel> RDOParserModel;
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserSMRInfo
-// --------------------------------------------------------------------------------
-typedef RDOParserTemplate<RDOParserContainerSMRInfo> RDOParserSMRInfo;
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserCorbar
-// --------------------------------------------------------------------------------
-typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorba;
-
 CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_H_

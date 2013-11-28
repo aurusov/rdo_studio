@@ -82,26 +82,4 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdo::Factory<RDOParserSMRPost>::create());
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserContainerSMRInfo
-// --------------------------------------------------------------------------------
-RDOParserContainerSMRInfo::RDOParserContainerSMRInfo()
-	: RDOParserContainer()
-{
-	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserContainerCorba
-// --------------------------------------------------------------------------------
-RDOParserContainerCorba::RDOParserContainerCorba()
-	: RDOParserContainer()
-{
-	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, evnparse, evnerror, evnlex, RDOParserItem::sf_editor));
-	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, proc_rtp_parse, proc_rtp_error, proc_rtp_lex, RDOParserItem::sf_editor));
-	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RSS, evnparse, evnerror, evnlex, RDOParserItem::sf_editor));
-	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, proc_rss_parse, proc_rss_error, proc_rss_lex, RDOParserItem::sf_editor));
-	insert(rdo::Factory<RDOParserRSSPost>::create());
-}
-
 CLOSE_RDO_PARSER_NAMESPACE

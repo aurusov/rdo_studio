@@ -115,26 +115,6 @@ private:
 	RDOParserContainerModel();
 };
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserContainerSMRInfo
-// --------------------------------------------------------------------------------
-class RDOParserContainerSMRInfo: public RDOParserContainer
-{
-DECLARE_FACTORY(RDOParserContainerSMRInfo);
-private:
-	RDOParserContainerSMRInfo();
-};
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserContainerCorba
-// --------------------------------------------------------------------------------
-class RDOParserContainerCorba: public RDOParserContainer
-{
-DECLARE_FACTORY(RDOParserContainerCorba);
-private:
-	RDOParserContainerCorba();
-};
-
 CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_BASE_H_
