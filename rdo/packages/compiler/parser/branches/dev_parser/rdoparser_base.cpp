@@ -67,7 +67,6 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdo::Factory<RDOParserCorbaRSS>::create());
 #endif
 	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FUN, funparse, funerror, funlex));
-	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, pmdparse, pmderror, pmdlex));
 	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
 	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evnparse, evnerror, evnlex));
 	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, patparse, paterror, patlex));
@@ -76,6 +75,7 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_opr_parse, proc_opr_error, proc_opr_lex));
 	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, frmparse, frmerror, frmlex));
 	insert(rdo::Factory<RDOParserRSSPost>::create());
+	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, pmdparse, pmderror, pmdlex));
 	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex));
 	insert(rdo::Factory<RDOParserSMRPost>::create());
 }
