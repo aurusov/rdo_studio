@@ -529,7 +529,7 @@ type_declaration
 			if (pRange)
 			{
 				if (pRange->getMin()->typeID() != rdo::runtime::RDOType::t_int ||
-					pRange->getMax()->typeID() != rdo::runtime::RDOType::t_int)
+				    pRange->getMax()->typeID() != rdo::runtime::RDOType::t_int)
 				{
 					PARSER->error().error(@2, "Диапазон целого типа должен быть целочисленным");
 				}
