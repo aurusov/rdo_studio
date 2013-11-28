@@ -213,33 +213,22 @@ public:
 	static tstring                      lexer_text    ();
 	static LPRDOParser                  s_parser      ();
 
-protected:
+private:
 	RDOParser();
 	virtual ~RDOParser();
 
-	LPRDOParserItem m_parser_item;
+	typedef std::vector<LPRDOParserItem> Compilers;
 
-	virtual CREF(LPRDOParserContainer) getContainer() const = 0;
-
-	RDOParserContainer::Iterator begin()
-	{
-		return getContainer()->begin();
-	}
-	RDOParserContainer::Iterator end()
-	{
-		return getContainer()->end();
-	}
-
-	rdo::runtime::LPRDORuntime m_pRuntime;
-
-private:
-	LPRDOSMR              m_pSMR;
-	Error                 m_error;
-	Stack                 m_movementObjectList;
-	PreCastTypeList       m_preCastTypeList;
-	LPContextStack        m_pContextStack;
-	rbool                 m_pattern;
-	rdo::IDGenerator      m_resultGeneratorID;
+	rdo::runtime::LPRDORuntime  m_pRuntime;
+	LPRDOSMR                    m_pSMR;
+	Error                       m_error;
+	Stack                       m_movementObjectList;
+	PreCastTypeList             m_preCastTypeList;
+	LPContextStack              m_pContextStack;
+	rbool                       m_pattern;
+	rdo::IDGenerator            m_resultGeneratorID;
+	Compilers                   m_compilers;
+	LPRDOParserItem             m_parser_item;
 
 	template <class T>
 	void howIsIt()
@@ -279,50 +268,6 @@ private:
 	DECLARE_IContextFind;
 };
 DECLARE_POINTER(RDOParser);
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserTemplate
-// --------------------------------------------------------------------------------
-template <class Container>
-class RDOParserTemplate: public RDOParser
-{
-DECLARE_FACTORY(RDOParserTemplate<Container>);
-
-private:
-	typedef  RDOParser  parent_type;
-
-	RDOParserTemplate()
-		: RDOParser()
-	{}
-	virtual ~RDOParserTemplate()
-	{}
-
-	virtual void init()
-	{
-		m_pContainer = rdo::Factory<Container>::create();
-		ASSERT(m_pContainer);
-		parent_type::init();
-	}
-
-	virtual void deinit()
-	{
-		ASSERT(m_pContainer)
-		m_pContainer->clear();
-		parent_type::deinit();
-	}
-
-	virtual CREF(LPRDOParserContainer) getContainer() const
-	{
-		return m_pContainer;
-	}
-
-	LPRDOParserContainer m_pContainer;
-};
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserModel
-// --------------------------------------------------------------------------------
-typedef RDOParserTemplate<RDOParserContainerModel> RDOParserModel;
 
 CLOSE_RDO_PARSER_NAMESPACE
 

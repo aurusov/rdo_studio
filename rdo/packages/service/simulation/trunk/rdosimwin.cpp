@@ -1092,7 +1092,7 @@ rbool RDOThreadSimulator::parseModel()
 	terminateModel();
 	closeModel();
 
-	m_pParser = rdo::Factory<rdo::compiler::parser::RDOParserModel>::create();
+	m_pParser = rdo::Factory<rdo::compiler::parser::RDOParser>::create();
 	ASSERT(m_pParser);
 	m_pParser->init();
 	m_pRuntime = m_pParser->runtime();

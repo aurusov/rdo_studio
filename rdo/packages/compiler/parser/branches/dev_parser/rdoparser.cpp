@@ -11,11 +11,13 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_rdo.h"
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/rdorss.h"
+#include "simulator/compiler/parser/parser/std_fun.h"
 #include "simulator/runtime/calc/calc_process.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
 #include "simulator/runtime/calc/function/calc_function_system.h"
@@ -102,9 +104,36 @@ LPRDOParser RDOParser::s_parser()
 }
 
 RDOParser::RDOParser()
-	: m_parser_item         (NULL )
-	, m_pattern             (false)
-{}
+	: m_parser_item(NULL )
+	, m_pattern    (false)
+{
+	m_compilers.push_back(rdo::Factory<RDOParserSTDFUN> ::create());
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
+
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, evnparse, evnerror, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RSS, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RSS, evnparse, evnerror, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rtp_parse, proc_rtp_error, proc_rtp_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rss_parse, proc_rss_error, proc_rss_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRTPPost>::create());
+#ifdef CORBA_ENABLE
+	m_compilers.push_back(rdo::Factory<RDOParserCorbaRTP>::create());
+	m_compilers.push_back(rdo::Factory<RDOParserCorbaRSS>::create());
+#endif
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FUN, funparse, funerror, funlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evnparse, evnerror, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, patparse, paterror, patlex));
+	m_compilers.push_back(rdo::Factory<RDOParserEVNPost>::create());
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, dptparse, dpterror, dptlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_opr_parse, proc_opr_error, proc_opr_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, frmparse, frmerror, frmlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRSSPost>::create());
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, pmdparse, pmderror, pmdlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserSMRPost>::create());
+}
 
 RDOParser::~RDOParser()
 {}
@@ -428,25 +457,21 @@ tstring RDOParser::getModelStructure()
 
 void RDOParser::parse()
 {
-	RDOParserContainer::Iterator it = begin();
-	while (it != end())
+	BOOST_FOREACH(const LPRDOParserItem& compiler, m_compilers)
 	{
-		m_parser_item = *it;
+		m_parser_item = compiler;
 		m_parser_item->parse(this);
 		m_parser_item = NULL;
-		++it;
 	}
 }
 
 void RDOParser::parse(REF(std::istream) stream)
 {
-	RDOParserContainer::Iterator it = begin();
-	while (it != end())
+	BOOST_FOREACH(const LPRDOParserItem& compiler, m_compilers)
 	{
-		m_parser_item = *it;
+		m_parser_item = compiler;
 		m_parser_item->parse(this, stream);
 		m_parser_item = NULL;
-		++it;
 	}
 }
 
