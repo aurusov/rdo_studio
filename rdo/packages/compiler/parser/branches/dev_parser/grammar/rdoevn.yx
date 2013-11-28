@@ -504,6 +504,21 @@ rtp_param
 // --------------------------------------------------------------------------------
 // -------------------- Описание типа параметра
 // --------------------------------------------------------------------------------
+type_declaration_context
+	: type_declaration
+	{
+		#PASS2
+		{
+			LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
+			ASSERT(pType);
+
+			LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+			ASSERT(pTypeContext);
+			PARSER->contextStack()->push(pTypeContext);
+		}
+	}
+	;
+
 type_declaration
 	: RDO_integer param_type_range
 	{
@@ -3933,24 +3948,6 @@ break_statement
 			{
 				PARSER->error().error(@1, "Нельзя использовать break вне цикла");
 			}
-		}
-	}
-	;
-
-// --------------------------------------------------------------------------------
-// -------------------- Описание типа параметра
-// --------------------------------------------------------------------------------
-type_declaration_context
-	: type_declaration
-	{
-		#PASS2
-		{
-			LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
-			ASSERT(pType);
-
-			LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
-			ASSERT(pTypeContext);
-			PARSER->contextStack()->push(pTypeContext);
 		}
 	}
 	;
