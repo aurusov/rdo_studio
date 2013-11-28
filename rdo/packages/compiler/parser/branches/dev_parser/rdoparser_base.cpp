@@ -55,7 +55,9 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdo::Factory<RDOParserSTDFUN> ::create());
 	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
 
+	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
 	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, evnparse, evnerror, evnlex));
+	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RSS, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
 	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RSS, evnparse, evnerror, evnlex));
 	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rtp_parse, proc_rtp_error, proc_rtp_lex));
 	insert(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rss_parse, proc_rss_error, proc_rss_lex));
