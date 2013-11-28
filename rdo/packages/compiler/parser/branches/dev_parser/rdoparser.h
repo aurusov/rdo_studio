@@ -229,14 +229,8 @@ protected:
 	{
 		return getContainer()->end();
 	}
-	RDOParserContainer::Iterator find(ruint index)
-	{
-		return getContainer()->find(index);
-	}
 
 	rdo::runtime::LPRDORuntime m_pRuntime;
-
-	void parse(rdoModelObjects::RDOParseType file);
 
 private:
 	LPRDOSMR              m_pSMR;

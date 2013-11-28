@@ -431,34 +431,10 @@ void RDOParser::parse()
 	RDOParserContainer::Iterator it = begin();
 	while (it != end())
 	{
-		m_parser_item = it->second;
-		it->second->parse(this);
+		m_parser_item = *it;
+		m_parser_item->parse(this);
 		m_parser_item = NULL;
-		it++;
-	}
-}
-
-void RDOParser::parse(rdoModelObjects::RDOParseType file)
-{
-	ruint min, max;
-	RDOParserContainer::getMinMax(file, min, max);
-	if (min == RDOParserContainer::UNDEFINED_ID || max == RDOParserContainer::UNDEFINED_ID)
-		return;
-
-	RDOParserContainer::Iterator it = find(min);
-	while (it != end())
-	{
-		if (it->first <= max)
-		{
-			m_parser_item = it->second;
-			it->second->parse(this);
-			m_parser_item = NULL;
-		}
-		else
-		{
-			break;
-		}
-		it++;
+		++it;
 	}
 }
 
@@ -467,10 +443,10 @@ void RDOParser::parse(REF(std::istream) stream)
 	RDOParserContainer::Iterator it = begin();
 	while (it != end())
 	{
-		m_parser_item = it->second;
-		it->second->parse(this, stream);
+		m_parser_item = *it;
+		m_parser_item->parse(this, stream);
 		m_parser_item = NULL;
-		it++;
+		++it;
 	}
 }
 

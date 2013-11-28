@@ -86,26 +86,23 @@ OBJECT(RDOParserContainer)
 {
 DECLARE_FACTORY(RDOParserContainer);
 public:
-	typedef std::map<ruint, LPRDOParserItem> List;
-	typedef List::iterator                   Iterator;
+	typedef std::vector<LPRDOParserItem> Parsers;
+	typedef Parsers::const_iterator      Iterator;
 
 	static const ruint UNDEFINED_ID = ruint(~0);
 
-	Iterator begin()            { return m_list.begin();     }
-	Iterator end  ()            { return m_list.end();       }
-	Iterator find (ruint index) { return m_list.find(index); }
+	Iterator begin() { return m_list.begin(); }
+	Iterator end  () { return m_list.end();   }
 	void     clear();
-
-	static void getMinMax(rdoModelObjects::RDOParseType type, REF(ruint) min, REF(ruint) max);
 
 protected:
 	RDOParserContainer();
 	virtual ~RDOParserContainer();
 
-	ruint insert(rdoModelObjects::RDOParseType type, CREF(LPRDOParserItem) pParser);
+	void insert(CREF(LPRDOParserItem) pParser);
 
 private:
-	List m_list;
+	Parsers m_list;
 };
 
 // --------------------------------------------------------------------------------
