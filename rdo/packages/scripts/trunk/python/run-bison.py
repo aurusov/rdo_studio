@@ -43,8 +43,12 @@ def main():
     args = parser.parse_args()
 
     defines = os.path.abspath(args.defines)
-    
+
     print(toolname + ": " + "Executing bison...", file=sys.stderr)
+
+    if len(defines) > 0:
+        print(toolname + ": " + "defines path: " +defines, file=sys.stderr)
+
     cppPath = os.path.abspath(args.o1)
     if os.path.exists(cppPath):
         os.remove(cppPath)
@@ -60,7 +64,7 @@ def main():
     yPath   = os.path.abspath(args.y2)
     yxPath  = os.path.abspath(args.inputFile)
     print(toolname + ": " + "parsing " + yPath, file=sys.stderr)
-    
+
     out2 = run_bison(yxPath, yPath, cppPath, args.n2, args.bison, defines)
 
     if out1 == out2:
