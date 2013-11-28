@@ -29,8 +29,7 @@ SET(GRAMMA_H ${GRAMMA_OUTPUT_PATH}/rdogramma.h)
 INCLUDE(${PROJECT_SOURCE_DIR}/cmake/bison.cmake)
 INCLUDE(${PROJECT_SOURCE_DIR}/cmake/split-bison.cmake)
 
-RDO_BISON_TARGET(rtp rtp define)
-RDO_SPLIT_BISON_TARGET(evn evn_preparse_ evn)
+RDO_SPLIT_BISON_TARGET(evn evn_preparse_ evn define)
 RDO_BISON_TARGET(pat)
 RDO_BISON_TARGET(dpt)
 RDO_BISON_TARGET(frm)
@@ -126,7 +125,6 @@ SET(FUNCTION_LOCAL_VARIABLE_FILES
 SET(GRAMMAR_FILES
 	${GRAMMA_INPUT_PATH}/rdobison.h
 	${GRAMMA_INPUT_PATH}/rdo_lexer.l
-	${GRAMMA_INPUT_PATH}/rdortp.y
 	${GRAMMA_INPUT_PATH}/rdoevn.yx
 	${GRAMMA_INPUT_PATH}/rdopat.y
 	${GRAMMA_INPUT_PATH}/rdodpt.y
@@ -142,7 +140,6 @@ SET(GRAMMAR_FILES
 
 SET(GRAMMAR_GENERATED_NO_PCH
 	${FLEX_lexer_scaner_OUTPUTS}
-	${BISON_rtp_OUTPUTS}
 	${BISON_evn_preparse_OUTPUTS}
 	${BISON_evn_OUTPUTS_1}
 	${BISON_evn_OUTPUTS_2}

@@ -620,7 +620,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\scripts\python\split-bison.py &quot;$(InputPath)&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot;&#x0D;&#x0A;..\..\..\..\..\scripts\python\run-bison.py &quot;$(InputPath)&quot; -o1 &quot;../../grammar/generated/rdogramevn_preparse_.cpp&quot; -o2 &quot;../../grammar/generated/rdogramevn.cpp&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot; -n1 &quot;evn_preparse_&quot; -n2 &quot;evn&quot; -bison &quot;../../../../../thirdparty/bison_flex/bin/bison.exe -g -v&quot;"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\scripts\python\split-bison.py &quot;$(InputPath)&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot;&#x0D;&#x0A;..\..\..\..\..\scripts\python\run-bison.py &quot;$(InputPath)&quot; -o1 &quot;../../grammar/generated/rdogramevn_preparse_.cpp&quot; -o2 &quot;../../grammar/generated/rdogramevn.cpp&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot; -n1 &quot;evn_preparse_&quot; -n2 &quot;evn&quot; -bison &quot;../../../../../thirdparty/bison_flex/bin/bison.exe -g -v&quot; -defines &quot;../../grammar/generated/rdogramma.h&quot;&#x0D;&#x0A;"
 						Outputs="../../grammar/generated/rdoevn_preparse_.y; ../../grammar/generated/rdoevn.y; ../../grammar/generated/rdogramevn_preparse_.cpp; ../../grammar/generated/rdogramevn.cpp"
 					/>
 				</FileConfiguration>
@@ -630,7 +630,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\scripts\python\split-bison.py &quot;$(InputPath)&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot;&#x0D;&#x0A;..\..\..\..\..\scripts\python\run-bison.py &quot;$(InputPath)&quot; -o1 &quot;../../grammar/generated/rdogramevn_preparse_.cpp&quot; -o2 &quot;../../grammar/generated/rdogramevn.cpp&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot; -n1 &quot;evn_preparse_&quot; -n2 &quot;evn&quot; -bison &quot;../../../../../thirdparty/bison_flex/bin/bison.exe -g -v&quot;"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\scripts\python\split-bison.py &quot;$(InputPath)&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot;&#x0D;&#x0A;..\..\..\..\..\scripts\python\run-bison.py &quot;$(InputPath)&quot; -o1 &quot;../../grammar/generated/rdogramevn_preparse_.cpp&quot; -o2 &quot;../../grammar/generated/rdogramevn.cpp&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot; -n1 &quot;evn_preparse_&quot; -n2 &quot;evn&quot; -bison &quot;../../../../../thirdparty/bison_flex/bin/bison.exe -g -v&quot; -defines &quot;../../grammar/generated/rdogramma.h&quot;&#x0D;&#x0A;"
 						Outputs="../../grammar/generated/rdoevn_preparse_.y; ../../grammar/generated/rdoevn.y; ../../grammar/generated/rdogramevn_preparse_.cpp; ../../grammar/generated/rdogramevn.cpp"
 					/>
 				</FileConfiguration>
@@ -640,7 +640,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\scripts\python\split-bison.py &quot;$(InputPath)&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot;&#x0D;&#x0A;..\..\..\..\..\scripts\python\run-bison.py &quot;$(InputPath)&quot; -o1 &quot;../../grammar/generated/rdogramevn_preparse_.cpp&quot; -o2 &quot;../../grammar/generated/rdogramevn.cpp&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot; -n1 &quot;evn_preparse_&quot; -n2 &quot;evn&quot; -bison &quot;../../../../../thirdparty/bison_flex/bin/bison.exe -g -v&quot;"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\scripts\python\split-bison.py &quot;$(InputPath)&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot;&#x0D;&#x0A;..\..\..\..\..\scripts\python\run-bison.py &quot;$(InputPath)&quot; -o1 &quot;../../grammar/generated/rdogramevn_preparse_.cpp&quot; -o2 &quot;../../grammar/generated/rdogramevn.cpp&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot; -n1 &quot;evn_preparse_&quot; -n2 &quot;evn&quot; -bison &quot;../../../../../thirdparty/bison_flex/bin/bison.exe -g -v&quot; -defines &quot;../../grammar/generated/rdogramma.h&quot;&#x0D;&#x0A;"
 						Outputs="../../grammar/generated/rdoevn_preparse_.y; ../../grammar/generated/rdoevn.y; ../../grammar/generated/rdogramevn_preparse_.cpp; ../../grammar/generated/rdogramevn.cpp"
 					/>
 				</FileConfiguration>
@@ -650,7 +650,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\scripts\python\split-bison.py &quot;$(InputPath)&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot;&#x0D;&#x0A;..\..\..\..\..\scripts\python\run-bison.py &quot;$(InputPath)&quot; -o1 &quot;../../grammar/generated/rdogramevn_preparse_.cpp&quot; -o2 &quot;../../grammar/generated/rdogramevn.cpp&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot; -n1 &quot;evn_preparse_&quot; -n2 &quot;evn&quot; -bison &quot;../../../../../thirdparty/bison_flex/bin/bison.exe -g -v&quot;"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\scripts\python\split-bison.py &quot;$(InputPath)&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot;&#x0D;&#x0A;..\..\..\..\..\scripts\python\run-bison.py &quot;$(InputPath)&quot; -o1 &quot;../../grammar/generated/rdogramevn_preparse_.cpp&quot; -o2 &quot;../../grammar/generated/rdogramevn.cpp&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot; -n1 &quot;evn_preparse_&quot; -n2 &quot;evn&quot; -bison &quot;../../../../../thirdparty/bison_flex/bin/bison.exe -g -v&quot; -defines &quot;../../grammar/generated/rdogramma.h&quot;&#x0D;&#x0A;"
 						Outputs="../../grammar/generated/rdoevn_preparse_.y; ../../grammar/generated/rdoevn.y; ../../grammar/generated/rdogramevn_preparse_.cpp; ../../grammar/generated/rdogramevn.cpp"
 					/>
 				</FileConfiguration>
@@ -660,7 +660,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\scripts\python\split-bison.py &quot;$(InputPath)&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot;&#x0D;&#x0A;..\..\..\..\..\scripts\python\run-bison.py &quot;$(InputPath)&quot; -o1 &quot;../../grammar/generated/rdogramevn_preparse_.cpp&quot; -o2 &quot;../../grammar/generated/rdogramevn.cpp&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot; -n1 &quot;evn_preparse_&quot; -n2 &quot;evn&quot; -bison &quot;../../../../../thirdparty/bison_flex/bin/bison.exe -g -v&quot;"
+						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\scripts\python\split-bison.py &quot;$(InputPath)&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot;&#x0D;&#x0A;..\..\..\..\..\scripts\python\run-bison.py &quot;$(InputPath)&quot; -o1 &quot;../../grammar/generated/rdogramevn_preparse_.cpp&quot; -o2 &quot;../../grammar/generated/rdogramevn.cpp&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot; -n1 &quot;evn_preparse_&quot; -n2 &quot;evn&quot; -bison &quot;../../../../../thirdparty/bison_flex/bin/bison.exe -g -v&quot; -defines &quot;../../grammar/generated/rdogramma.h&quot;&#x0D;&#x0A;"
 						Outputs="../../grammar/generated/rdoevn_preparse_.y; ../../grammar/generated/rdoevn.y; ../../grammar/generated/rdogramevn_preparse_.cpp; ../../grammar/generated/rdogramevn.cpp"
 					/>
 				</FileConfiguration>
@@ -1110,70 +1110,6 @@
 						Description="build $(InputFileName)"
 						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -o&quot;../../grammar/generated/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="..\..\grammar\generated\rdogramproc_rtp.cpp;..\..\grammar\generated\rdogramproc_rtp.dot"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\grammar\rdortp.y"
-				>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/generated/rdogramma.h&quot; -prtp -o&quot;../../grammar/generated/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\generated\rdogramrtp.cpp;..\..\grammar\generated\rdogramrtp.dot;..\..\grammar\generated\rdogramma.h;..\..\grammar\generated\rdogramrtp.output"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/generated/rdogramma.h&quot; -prtp -o&quot;../../grammar/generated/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\generated\rdogramrtp.cpp;..\..\grammar\generated\rdogramrtp.dot;..\..\grammar\generated\rdogramma.h;..\..\grammar\generated\rdogramrtp.output"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.corba|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/generated/rdogramma.h&quot; -prtp -o&quot;../../grammar/generated/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\generated\rdogramrtp.cpp;..\..\grammar\generated\rdogramrtp.dot;..\..\grammar\generated\rdogramma.h;..\..\grammar\generated\rdogramrtp.output"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.corba|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/generated/rdogramma.h&quot; -prtp -o&quot;../../grammar/generated/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\generated\rdogramrtp.cpp;..\..\grammar\generated\rdogramrtp.dot;..\..\grammar\generated\rdogramma.h;..\..\grammar\generated\rdogramrtp.output"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.mt|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/generated/rdogramma.h&quot; -prtp -o&quot;../../grammar/generated/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\generated\rdogramrtp.cpp;..\..\grammar\generated\rdogramrtp.dot;..\..\grammar\generated\rdogramma.h;..\..\grammar\generated\rdogramrtp.output"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.mt|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="build $(InputFileName)"
-						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/generated/rdogramma.h&quot; -prtp -o&quot;../../grammar/generated/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\generated\rdogramrtp.cpp;..\..\grammar\generated\rdogramrtp.dot;..\..\grammar\generated\rdogramma.h;..\..\grammar\generated\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1952,70 +1888,6 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
 							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\grammar\generated\rdogramrtp.cpp"
-					>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-							BrowseInformation="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-							BrowseInformation="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="0"
-							BrowseInformation="0"
 						/>
 					</FileConfiguration>
 				</File>
