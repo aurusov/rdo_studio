@@ -5,7 +5,7 @@ def run_bison(yxPath, yPath, cppPath, name, bison, defines):
     
     output, errr = subprocess.Popen(procname,stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True).communicate()
 
-    errr = errr.decode(sys.stdout.encoding)
+    errr = errr.decode(sys.stdout.encoding, 'ignore')
     
     errr = errr.replace(yPath,yxPath)
     
@@ -100,7 +100,10 @@ def main():
 
         print("Difference in bison output:")
         for d in list(diff1):
-            print(d)
+            if (d[0] == '+' or d[0] == '-') and d[1] != '+' and d[1] != '-':
+                print(d[0] + '\n' + d[1:])
+            else:
+                print(d)
 
         sys.exit(yxPath + ": error : bison console output doesn't match for grammar files")
 
