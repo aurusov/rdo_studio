@@ -36,10 +36,6 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-int  patparse(PTR(void) lexer);
-int  patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void paterror(const char* message);
-
 int  evnparse(PTR(void) lexer);
 int  evnlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void evnerror(const char* message);
