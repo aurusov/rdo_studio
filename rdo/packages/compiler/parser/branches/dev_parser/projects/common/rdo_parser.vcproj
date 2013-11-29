@@ -621,7 +621,7 @@
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
 						CommandLine="set CYGWIN=nodosfilewarning&#x0D;&#x0A;set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;..\..\..\..\..\scripts\python\split-bison.py &quot;$(InputPath)&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot;&#x0D;&#x0A;..\..\..\..\..\scripts\python\run-bison.py &quot;$(InputPath)&quot; -o1 &quot;../../grammar/generated/rdogramevn_preparse_.cpp&quot; -o2 &quot;../../grammar/generated/rdogramevn.cpp&quot; -y1 &quot;../../grammar/generated/rdoevn_preparse_.y&quot; -y2 &quot;../../grammar/generated/rdoevn.y&quot; -n1 &quot;evn_preparse_&quot; -n2 &quot;evn&quot; -bison &quot;../../../../../thirdparty/bison_flex/bin/bison.exe -g -v&quot; -defines &quot;../../grammar/generated/rdogramma.h&quot;&#x0D;&#x0A;"
-						Outputs="../../grammar/generated/rdoevn_preparse_.y; ../../grammar/generated/rdoevn.y; ../../grammar/generated/rdogramevn_preparse_.cpp; ../../grammar/generated/rdogramevn.cpp"
+						Outputs="../../grammar/generated/rdoevn_preparse_.y; ../../grammar/generated/rdoevn.y; ../../grammar/generated/rdogramevn_preparse_.cpp; ../../grammar/generated/rdogramevn.cpp ;../../grammar/generated/rdogramma.h"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
