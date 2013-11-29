@@ -49,10 +49,6 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_PARSER_NAMESPACE
 
-int  dptparse      (PTR(void) lexer);
-int  dptlex        (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void dpterror      (const char* message);
-
 int  proc_rtp_parse(PTR(void) lexer);
 int  proc_rtp_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void proc_rtp_error(CPTR(char) message);
