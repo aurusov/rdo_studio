@@ -7,7 +7,7 @@
   \authors   Поподьянец Евгений (kurt.gigacore@gmail.com)
   \authors   Александровский Кирилл (k.alexandrovsky@gmail.com)
   \date      18.10.2013
-  \brief     Синтаксис событий
+  \brief     Синтаксис событий, паттернов, ресурсов, типов ресурсов
   \indent    4T
 */
 
@@ -1166,6 +1166,39 @@ pat_header
 			$$ = PARSER->stack().push(pPattern);
 		}
 	}
+	| RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace 
+	{
+		#PASS2
+		{
+			LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
+			ASSERT(pName);
+			LPRDOPATPattern pPattern = rdo::Factory<RDOPatternOperation>::create(pName->src_info(), $4 != 0);
+			ASSERT(pPattern);
+			$$ = PARSER->stack().push(pPattern);
+		}
+	}
+	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule pat_trace
+	{
+		#PASS2
+		{
+			LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
+			ASSERT(pName);
+			LPRDOPATPattern pPattern = rdo::Factory<RDOPatternRule>::create(pName->src_info(), $4 != 0);
+			ASSERT(pPattern);
+			$$ = PARSER->stack().push(pPattern);
+		}
+	}
+	| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard pat_trace
+	{
+		#PASS2
+		{
+			LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
+			ASSERT(pName);
+			LPRDOPATPattern pPattern = rdo::Factory<RDOPatternKeyboard>::create(pName->src_info(), $4 != 0);
+			ASSERT(pPattern);
+			$$ = PARSER->stack().push(pPattern);
+		}
+	}
 	| RDO_Pattern error
 	{
 		#PASS2
@@ -2115,14 +2148,94 @@ pat_time
 		#PASS2
 		{
 			LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+			switch (pPattern->getType())
+			{
+				case RDOPATPattern::PT_Operation:
+				case RDOPATPattern::PT_Keyboard :
+				{
+					PARSER->error().error(@2, "Перед $Body пропущено ключевое слово $Time");
+					break;
+				}
+				default:
+					break;
+			}
 			$$ = PARSER->stack().push(pPattern);
+		}
+	}
+	| pat_common_choice RDO_Time '=' fun_arithm RDO_Body
+	{
+		#PASS2
+		{
+			LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+			switch (pPattern->getType())
+			{
+				case RDOPATPattern::PT_Event:
+				{
+					PARSER->error().error(@2, "Поле $Time не используется в событии");
+					break;
+				}
+				case RDOPATPattern::PT_Rule:
+				{
+					PARSER->error().error(@2, "Поле $Time не используется в продукционном правиле");
+					break;
+				}
+				default:
+					break;
+			}
+			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($4);
+			ASSERT(pArithm);
+			pArithm->setSrcPos (@2, @4);
+			pArithm->setSrcText("$Time = " + pArithm->src_text());
+			pPattern->setTime(pArithm);
+			$$ = PARSER->stack().push(pPattern);
+		}
+	}
+	| pat_common_choice RDO_Time '=' fun_arithm error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@4, @5, "Ожидается ключевое слово $Body");
+		}
+	}
+	| pat_common_choice RDO_Time '=' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@4, "Ошибка в арифметическом выражении");
+		}
+	}
+	| pat_common_choice RDO_Time error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@2, @3, "После ключевого слова $Time ожидается знак равенства");
 		}
 	}
 	| pat_common_choice error
 	{
 		#PASS2
 		{
-			PARSER->error().error(@1, @2, "Ожидается ключевое слово $Body");
+			LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+			switch (pPattern->getType())
+			{
+				case RDOPATPattern::PT_Rule:
+				{
+					PARSER->error().error(@2, rdo::format("Ожидается $Body, найдено: %s", LEXER->YYText()));
+					break;
+				}
+				case RDOPATPattern::PT_Event:
+				{
+					PARSER->error().error(@2, rdo::format("Ожидается $Body, найдено: %s", LEXER->YYText()));
+					break;
+				}
+				case RDOPATPattern::PT_Operation:
+				case RDOPATPattern::PT_Keyboard :
+				{
+					PARSER->error().error(@2, rdo::format("Ожидается $Time, найдено: %s", LEXER->YYText()));
+					break;
+				}
+			}
+			$$ = PARSER->stack().push(pPattern);
 		}
 	}
 	;
@@ -3188,6 +3301,49 @@ empty_statement
 		#PASS2
 		{
 			PARSER->error().error(@1, "Ошибка в инструкции");
+		}
+	}
+	;
+
+member_statement_parent
+	: RDO_IDENTIF
+	{
+		#PASS2
+		{
+			LPRDOValue pIdentificator = PARSER->stack().pop<RDOValue>($1);
+			ASSERT(pIdentificator);
+
+			LPContext pCurrentContext = PARSER->context();
+			ASSERT(pCurrentContext);
+
+			LPContext pContext = pCurrentContext->find(pIdentificator);
+			if (!pContext)
+			{
+				PARSER->error().error(@1, rdo::format("Неизвестный идентификатор: %s", pIdentificator->value().getIdentificator().c_str()));
+			}
+
+			$$ = PARSER->stack().push(pContext);
+		}
+	}
+	;
+
+member_statement
+	: member_statement_parent '.' RDO_IDENTIF
+	{
+		#PASS2
+		{
+			LPContext  pContext       = PARSER->stack().pop<Context>($1);
+			LPRDOValue pIdentificator = PARSER->stack().pop<RDOValue>($3);
+			ASSERT(pContext      );
+			ASSERT(pIdentificator);
+
+			LPExpression pExpression = pContext->create(pIdentificator);
+			if (!pExpression)
+			{
+				PARSER->error().error(@3, rdo::format("Неизвестный идентификатор: %s", pIdentificator->value().getIdentificator().c_str()));
+			}
+
+			$$ = PARSER->stack().push(pExpression);
 		}
 	}
 	;
