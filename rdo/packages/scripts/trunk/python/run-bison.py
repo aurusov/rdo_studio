@@ -88,6 +88,7 @@ def main():
 
         if sys.platform == 'win32':
             out1 = out1.replace(": error:"," : error C0000:")
+            out1 = out1.replace(": warning:"," : warning C0000:")
             out1 = out1.replace("\\\\","\\")
         print(out1, file=sys.stderr)
         sys.exit(0)
