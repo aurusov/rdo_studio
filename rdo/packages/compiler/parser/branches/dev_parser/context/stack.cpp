@@ -36,6 +36,7 @@ void ContextStack::push(LPContext pContext)
 void ContextStack::pop_not_safed()
 {
 	ASSERT(!m_container.empty());
+	top()->resetContextStack();
 	m_container.pop_back();
 }
 
