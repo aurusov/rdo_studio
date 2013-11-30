@@ -1062,7 +1062,7 @@ rss_res_init
 			LPRDORSSResource pResource = pResType->createRes(PARSER, pName->src_info());
 			$$ = PARSER->stack().push(pResource);
 		}
-	} 
+	}
 	;
 
 rss_trace
@@ -1200,7 +1200,7 @@ pat_header
 			$$ = PARSER->stack().push(pPattern);
 		}
 	}
-	| RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace 
+	| RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace
 	{
 		#PASS2
 		{
@@ -1254,21 +1254,21 @@ pat_trace
 	{
 		#PASS2
 		{
-			$$ = 0; 
+			$$ = 0;
 		}
 	}
 	| RDO_trace	
 	{
 		#PASS2
 		{
-			$$ = 1; 
+			$$ = 1;
 		}
 	}
 	| RDO_no_trace
 	{
 		#PASS2
 		{
-			$$ = 0; 
+			$$ = 0;
 		}
  	}
 	;
@@ -1417,7 +1417,7 @@ pat_params_end
 	| pat_header RDO_Relevant_resources
 	{
 		#PASS2
-		{	
+		{
 			$$ = $1;
 		}
 	}
@@ -1514,7 +1514,7 @@ pat_rel_res
 					PARSER->error().error(@4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdo::runtime::RDOResource::ConvertStatus)$4).c_str()));
 					break;
 				}
-				case RDOPATPattern::PT_Event: 
+				case RDOPATPattern::PT_Event:
 				case RDOPATPattern::PT_Rule :
 				{
 					LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
@@ -1544,7 +1544,7 @@ pat_rel_res
 					PARSER->error().error(@4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdo::runtime::RDOResource::ConvertStatus)$4).c_str()));
 					break;
 				}
-				case RDOPATPattern::PT_Event: 
+				case RDOPATPattern::PT_Event:
 				case RDOPATPattern::PT_Rule :
 				{
 					LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
@@ -1774,7 +1774,7 @@ pat_rel_res
 					PARSER->error().error(@3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).c_str()));
 					break;
 				}
-				case RDOPATPattern::PT_Event: 
+				case RDOPATPattern::PT_Event:
 				case RDOPATPattern::PT_Rule :
 				{
 					LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
@@ -1808,7 +1808,7 @@ pat_rel_res
 					PARSER->error().error(@3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).c_str()));
 					break;
 				}
-				case RDOPATPattern::PT_Event: 
+				case RDOPATPattern::PT_Event:
 				case RDOPATPattern::PT_Rule :
 				{
 					LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
@@ -2306,7 +2306,7 @@ pat_body
 	| pat_convert error
 	{
 		#PASS2
-		{	
+		{
 			tstring str(LEXER->YYText());
 			PARSER->error().error(@2, rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()));
 		}
@@ -5287,32 +5287,32 @@ frm_space
 	;
 
 frm_text_align
-	: /* empty */ 
+	: /* empty */
 	{
 		#PASS2
 		{
-			$$ = rdo::animation::TextElement::TETA_LEFT;  
+			$$ = rdo::animation::TextElement::TETA_LEFT;
 		}
 	}
-	| '<'         
+	| '<'
 	{
 		#PASS2
 		{
-			$$ = rdo::animation::TextElement::TETA_LEFT;  
+			$$ = rdo::animation::TextElement::TETA_LEFT;
 		}
 	}
-	| '='         
+	| '='
 	{
 		#PASS2
 		{
 			$$ = rdo::animation::TextElement::TETA_CENTER;
 		}
 	}
-	| '>'         
+	| '>'
 	{
 		#PASS2
 		{
-			$$ = rdo::animation::TextElement::TETA_RIGHT; 
+			$$ = rdo::animation::TextElement::TETA_RIGHT;
 		}
 	}
 	;
@@ -9706,63 +9706,63 @@ fun_arithm
 	{
 		#PASS2
 		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); 
+			$$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1)));
 		}
 	}
 	| RDO_REAL_CONST
 	{
 		#PASS2
 		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); 
+			$$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1)));
 		}
 	}
 	| RDO_BOOL_CONST
 	{
 		#PASS2
 		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); 
+			$$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1)));
 		}
 	}
 	| RDO_STRING_CONST
 	{
 		#PASS2
 		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); 
+			$$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1)));
 		}
 	}
 	| param_array_value
 	{
 		#PASS2
 		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); 
+			$$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1)));
 		}
 	}
 	| RDO_IDENTIF
 	{
 		#PASS2
 		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); 
+			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1)));
 		}
 	}
 	| RDO_IDENTIF_RELRES
 	{
 		#PASS2
 		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); 
+			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1)));
 		}
 	}
 	| RDO_IDENTIF '.' RDO_IDENTIF
 	{
 		#PASS2
 		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); 
+			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3)));
 		}
 	}
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF
 	{
 		#PASS2
 		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); 
+			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3)));
 		}
 	}
 // 	| member_statement
