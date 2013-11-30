@@ -30,7 +30,6 @@ INCLUDE(${PROJECT_SOURCE_DIR}/cmake/bison.cmake)
 INCLUDE(${PROJECT_SOURCE_DIR}/cmake/split-bison.cmake)
 
 RDO_SPLIT_BISON_TARGET(evn evn_preparse_ evn define)
-RDO_BISON_TARGET(pmd)
 RDO_BISON_TARGET(proc_rtp proc_rtp_)
 RDO_BISON_TARGET(proc_rss proc_rss_)
 RDO_BISON_TARGET(proc_opr proc_opr_)
@@ -122,7 +121,6 @@ SET(GRAMMAR_FILES
 	${GRAMMA_INPUT_PATH}/rdobison.h
 	${GRAMMA_INPUT_PATH}/rdo_lexer.l
 	${GRAMMA_INPUT_PATH}/rdoevn.yx
-	${GRAMMA_INPUT_PATH}/rdopmd.y
 	${GRAMMA_INPUT_PATH}/rdoproc_rtp.y
 	${GRAMMA_INPUT_PATH}/rdoproc_rss.y
 	${GRAMMA_INPUT_PATH}/rdoproc_opr.y
@@ -135,7 +133,6 @@ SET(GRAMMAR_GENERATED_NO_PCH
 	${BISON_evn_preparse_OUTPUTS}
 	${BISON_evn_OUTPUTS_1}
 	${BISON_evn_OUTPUTS_2}
-	${BISON_pmd_OUTPUTS}
 	${BISON_proc_rtp_OUTPUTS}
 	${BISON_proc_rss_OUTPUTS}
 	${BISON_proc_opr_OUTPUTS}

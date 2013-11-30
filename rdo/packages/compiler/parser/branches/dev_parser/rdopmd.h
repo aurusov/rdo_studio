@@ -22,10 +22,6 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-int  pmdparse(PTR(void) lexer);
-int  pmdlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void pmderror(const char* message);
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
