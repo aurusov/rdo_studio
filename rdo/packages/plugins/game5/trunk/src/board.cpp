@@ -10,11 +10,13 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/range/algorithm/find.hpp>
+#include <ctime>
+#include <cstdlib>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/board.h"
 // --------------------------------------------------------------------------------
 
-Board::Board(QWidget * pParent)
+Board::Board(QWidget* pParent)
 	: QFrame        (pParent)
 	, m_tileSize    (75)
 	, m_tilesCountX (3)
@@ -27,6 +29,23 @@ Board::Board(QWidget * pParent)
 	, m_topLeftY    (m_boardSpacer)
 {
 	setFixedSize(m_boardSizeX,m_boardSizeY);
+
+	setStyleSheet("\
+		background-color: pink; \
+		border-style: outset; \
+		border-width: 2px; \
+		border-radius: 13px; \
+		border-color: black; \
+		align: center; \
+	");
+}
+
+Board::~Board()
+{
+}
+
+void Board::init(bool disabledMode)
+{
 	tilesPosition.resize(m_tilesCountX * m_tilesCountY);
 	tiles        .resize(m_tilesCountX * m_tilesCountY);
 	tilesPosition[0] = m_tilesCountX * m_tilesCountY;
@@ -37,16 +56,9 @@ Board::Board(QWidget * pParent)
 		tiles[place] = new Tile(place, this);
 		tiles[place]->setFixedSize(m_tileSize,m_tileSize);
 		tiles[place]->setGeometry(tilePoint(place).x(),tilePoint(place).y(),m_tileSize,m_tileSize);
+		tiles[place]->setDisabled(disabledMode);
 		connect(tiles[place], &Tile::tileClicked, this, &Board::clickOnTile);
 	}
-	setStyleSheet("\
-		background-color: pink; \
-		border-style: outset; \
-		border-width: 2px; \
-		border-radius: 13px; \
-		border-color: black; \
-		align: center; \
-	");
 }
 
 void Board::clickOnTile(int number)
@@ -96,6 +108,7 @@ void Board::buildRightLineup()
 
 void Board::buildRandomLineup(bool solvabilityCheck)
 {
+	std::srand (unsigned(std::time(0)));
 	bool needRandomize = true;
 	while (needRandomize)
 	{
@@ -137,6 +150,24 @@ bool Board::lineupIsSolvable()
 const std::vector<unsigned int>& Board::getTilesPos() const
 {
 	return tilesPosition;
+}
+
+QString Board::getBoardState() const
+{
+	std::vector<unsigned int> transpVector;
+	transpVector.resize(tilesPosition.size() + 1);
+	for (unsigned int i = 0; i < tilesPosition.size() ; i++)
+	{
+		transpVector[tilesPosition[i]] = i;
+	}
+
+	QString boardStateStr;
+	for (unsigned int i = 1; i < transpVector.size() ; i++)
+	{
+		boardStateStr += QString::number(transpVector[i]) + " ";
+	}
+
+	return boardStateStr;
 }
 
 void Board::setTilesPositon(const QString& string)

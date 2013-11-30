@@ -24,6 +24,8 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
 	setupUi(this);
+	gameBoard->init();
+
 	hiddenWidget->setFixedWidth(280);
 	hiddenWidget->hide();
 
@@ -53,6 +55,10 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 	}
 }
 
+PluginGame5GenerateSituationDialog::~PluginGame5GenerateSituationDialog()
+{
+}
+
 void PluginGame5GenerateSituationDialog::onClickHide(bool state)
 {
 	hiddenWidget->setVisible(state);
@@ -79,7 +85,7 @@ void PluginGame5GenerateSituationDialog::onClickOk()
 			pModel->getTab()->getItemEdit(rdoModelObjects::DPT)->appendText(QString::fromStdString(DPTtabText()));
 			pModel->getTab()->getItemEdit(rdoModelObjects::FUN)->appendText(QString::fromStdString(FUNtabText()));
 
-			pModel->runModel();
+	pModel->runModel();
 		}
 		else
 			QMessageBox::warning(pMainWindow, "Игра 5",
@@ -351,7 +357,7 @@ void PluginGame5GenerateSituationDialog::clearAllTabs(rdo::gui::model::Model* pM
 
 void PluginGame5GenerateSituationDialog::callDialog()
 {
-	TilesOrderDialog dlg(this, gameBoard->getTilesPos());
+	TilesOrderDialog dlg(this, gameBoard->getBoardState());
 	connect(&dlg, &TilesOrderDialog::tilesOrderCommited, gameBoard, &Board::setTilesPositon);
 	dlg.exec();
 }

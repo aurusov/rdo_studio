@@ -14,28 +14,15 @@
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_tiles_order_dialog.h"
 // --------------------------------------------------------------------------------
 
-TilesOrderDialog::TilesOrderDialog(QWidget* pParent, const std::vector<unsigned int>& vector)
+TilesOrderDialog::TilesOrderDialog(QWidget* pParent, const QString& lineEditText)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
 	setupUi(this);
 
 	QRegExpValidator * validator = new QRegExpValidator();
-	validator->setRegExp(QRegExp(validatorRegExpPattern(vector.size() - 1)));
+	validator->setRegExp(QRegExp(validatorRegExpPattern(lineEditText.length() / 2)));
 
-	QString lineEditText;
 	lineEditPosition->setValidator(validator);
-	std::vector<unsigned int> transpVector;
-	transpVector.resize(vector.size() + 1);
-	for (unsigned int i = 0; i < vector.size() ; i++)
-	{
-		transpVector[vector[i]] = i;
-	}
-
-	for (unsigned int i = 1; i < transpVector.size() ; i++)
-	{
-		lineEditText += QString::number(transpVector[i]) + " ";
-	}
-
 	lineEditPosition->setText(lineEditText);
 
 	connect(buttonCancel, &QPushButton::clicked, this, &TilesOrderDialog::reject);

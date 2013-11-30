@@ -20,8 +20,10 @@ class Board: public QFrame
 {
 Q_OBJECT
 public:
-	Board(QWidget * pParent);
-	~Board() {};
+	Board(QWidget* pParent);
+	~Board();
+
+	void init(bool disabledMode = false);
 
 	const int m_tileSize;
 	const int m_tilesCountX;
@@ -34,6 +36,7 @@ public:
 	const int m_topLeftY;
 	bool      m_solvabilityCheck;
 	const std::vector<unsigned int>& getTilesPos() const;
+	QString getBoardState() const;
 
 public slots:
 	void setTilesPositon(const QString& string);

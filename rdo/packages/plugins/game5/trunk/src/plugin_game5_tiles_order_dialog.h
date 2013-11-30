@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_PLUGIN_TEST_GAME_5_TILE_ORDER_DIALOG_H_
-#define _RDO_PLUGIN_TEST_GAME_5_TILE_ORDER_DIALOG_H_
+#ifndef _RDO_PLUGIN_GAME_5_TILE_ORDER_DIALOG_H_
+#define _RDO_PLUGIN_GAME_5_TILE_ORDER_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -21,7 +21,7 @@ class TilesOrderDialog
 {
 Q_OBJECT
 public:
-	TilesOrderDialog(QWidget* parent, const std::vector<unsigned int>& vector);
+	TilesOrderDialog(QWidget* parent, const QString& lineEditText);
 	virtual ~TilesOrderDialog();
 
 signals:
@@ -29,10 +29,9 @@ signals:
 
 private:
 	QString validatorRegExpPattern(int value);
-	std::vector<unsigned int> stringToVector(const QString& string);
 
 private slots:
 	void onOkClick();
 };
 
-#endif // _RDO_PLUGIN_TEST_GAME_5_TILE_ORDER_DIALOG_H_
+#endif // _RDO_PLUGIN_GAME_5_TILE_ORDER_DIALOG_H_

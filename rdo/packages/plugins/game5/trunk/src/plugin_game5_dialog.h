@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_PLUGIN_TEST_GAME_5_DIALOG_H_
-#define _RDO_PLUGIN_TEST_GAME_5_DIALOG_H_
+#ifndef _RDO_PLUGIN_GAME_5_DIALOG_H_
+#define _RDO_PLUGIN_GAME_5_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -24,7 +24,7 @@ class PluginGame5GenerateSituationDialog
 Q_OBJECT
 public:
 	PluginGame5GenerateSituationDialog(QWidget * parent);
-	~PluginGame5GenerateSituationDialog() {};
+	~PluginGame5GenerateSituationDialog();
 
 signals:
 	void buttonRandomClicked(bool solvabilityCheck);
@@ -50,4 +50,4 @@ private:
 	void clearAllTabs(rdo::gui::model::Model* pModel);
 };
 
-#endif // _RDO_PLUGIN_TEST_GAME_5_DIALOG_H_
+#endif // _RDO_PLUGIN_GAME_5_DIALOG_H_
