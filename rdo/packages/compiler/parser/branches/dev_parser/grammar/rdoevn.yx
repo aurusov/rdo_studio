@@ -7989,26 +7989,29 @@ return_statement
 	// statement'ы функций
 	| RDO_Return fun_arithm
 	{
-		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
-		ASSERT(pArithm);
+		#PASS2
+		{
+			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+			ASSERT(pArithm);
 
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(PARSER->getLastFUNFunction()->getReturn()->getTypeInfo());
-		ASSERT(pType);
+			LPTypeInfo pType = rdo::Factory<TypeInfo>::create(PARSER->getLastFUNFunction()->getReturn()->getTypeInfo());
+			ASSERT(pType);
 
-		rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(pType);
-		ASSERT(pCalc);
+			rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(pType);
+			ASSERT(pCalc);
 
-		rdo::runtime::LPRDOCalc pCalcReturn = rdo::Factory<rdo::runtime::RDOCalcFunReturn>::create(pCalc);
-		ASSERT(pCalcReturn);
+			rdo::runtime::LPRDOCalc pCalcReturn = rdo::Factory<rdo::runtime::RDOCalcFunReturn>::create(pCalc);
+			ASSERT(pCalcReturn);
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcReturn, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
+			LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcReturn, RDOParserSrcInfo(@1));
+			ASSERT(pExpression);
 
-		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnable);
-		pContextReturnable->setReturnFlag();
+			LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
+			ASSERT(pContextReturnable);
+			pContextReturnable->setReturnFlag();
 
-		$$ = PARSER->stack().push(pExpression);
+			$$ = PARSER->stack().push(pExpression);
+		}
 	}
 	;
 
