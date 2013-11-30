@@ -9438,6 +9438,15 @@ fun_arithm
 			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); 
 		}
 	}
+	| member_statement
+	{
+		#PASS2
+		{
+			LPExpression pExpression = PARSER->stack().pop<Expression>($1);
+			ASSERT(pExpression);
+			$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(pExpression));
+		}
+	}
 	| '*'
 	{
 		#PASS2
@@ -9592,7 +9601,7 @@ fun_arithm
 			LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($6);
 			ASSERT(pParamName);
 
-			rsint paramIndex = pResType->getRTPParamNumber(pParamName->value().getAsString());
+			ruint paramIndex = pResType->getRTPParamNumber(pParamName->value().getAsString());
 
 			if (paramIndex == RDORTPResType::UNDEFINED_PARAM)
 			{
