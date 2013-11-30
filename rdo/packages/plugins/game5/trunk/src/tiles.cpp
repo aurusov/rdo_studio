@@ -26,6 +26,7 @@ Tile::Tile(int number, QWidget* pParent)
 	               border-radius: 10px; \
 	               border-color: black; \
 	               font: bold 28px; \
+	               color: black; \
 	               padding: 6px;"
 	);
 
