@@ -1133,6 +1133,8 @@ void RDOThreadSimulator::runModel()
 	ASSERT(m_pParser );
 	ASSERT(m_pRuntime);
 
+	m_pParser->beforeRun();
+
 	m_pParser->error().clear();
 	m_exitCode = rdo::simulation::report::EC_OK;
 	m_pRuntime->setStudioThread(kernel->studio());

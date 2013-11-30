@@ -127,60 +127,6 @@ tstring RDOParserRDOItem::text() const
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOParserRSSPost
-// --------------------------------------------------------------------------------
-void RDOParserRSSPost::parse(CREF(LPRDOParser) pParser)
-{
-	ASSERT(pParser);
-
-	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
-#ifdef RDOSIM_COMPATIBLE
-	STL_FOR_ALL_CONST(pParser->getRTPResTypes(), rtp_it)
-	{
-#endif
-		STL_FOR_ALL_CONST(pParser->getRSSResources(), rss_it)
-		{
-#ifdef RDOSIM_COMPATIBLE
-			if ((*rss_it)->getType() == *rtp_it)
-			{
-#endif
-				rdo::runtime::LPRDOCalc calc = (*rss_it)->createCalc();
-				pParser->runtime()->addInitCalc(calc);
-#ifdef RDOSIM_COMPATIBLE
-			}
-#endif
-		}
-#ifdef RDOSIM_COMPATIBLE
-	}
-#endif
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserSMRPost
-// --------------------------------------------------------------------------------
-RDOParserSMRPost::RDOParserSMRPost()
-	: RDOParserItem(rdoModelObjects::SMR, NULL, NULL, NULL)
-{}
-
-void RDOParserSMRPost::parse(CREF(LPRDOParser) pParser)
-{
-	ASSERT(pParser);
-
-	//! Планирование событий, описанных в SMR
-	STL_FOR_ALL_CONST(pParser->getEvents(), eventIt)
-	{
-		LPRDOEvent pEvent = *eventIt;
-		ASSERT(pEvent);
-
-		rdo::runtime::LPRDOCalc pInitCalc = pEvent->getInitCalc();
-		if (pInitCalc)
-		{
-			pParser->runtime()->addInitCalc(pInitCalc);
-		}
-	}
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOParserEVNPost
 // --------------------------------------------------------------------------------
 void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)

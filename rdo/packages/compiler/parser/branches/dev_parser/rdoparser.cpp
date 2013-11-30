@@ -13,6 +13,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/runtime/calc/calc_pattern.h"
+#include "simulator/runtime/rdo_pattern.h"
+
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_rdo.h"
 #include "simulator/compiler/parser/rdofun.h"
@@ -133,11 +136,9 @@ RDOParser::RDOParser()
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_opr_parse, proc_opr_error, proc_opr_lex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, evnparse, evnerror, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRSSPost>::create());
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, evnparse, evnerror, evnlex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserSMRPost>::create());
 }
 
 RDOParser::~RDOParser()
@@ -479,6 +480,53 @@ void RDOParser::parse(REF(std::istream) stream)
 		m_parser_item = NULL;
 	}
 }
+
+void RDOParser::beforeRun()
+{
+	runRSSPost();
+	runSMRPost();
+}
+
+void RDOParser::runRSSPost()
+{
+	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
+#ifdef RDOSIM_COMPATIBLE
+	STL_FOR_ALL_CONST(getRTPResTypes(), rtp_it)
+	{
+#endif
+		STL_FOR_ALL_CONST(getRSSResources(), rss_it)
+		{
+#ifdef RDOSIM_COMPATIBLE
+			if ((*rss_it)->getType() == *rtp_it)
+			{
+#endif
+				rdo::runtime::LPRDOCalc calc = (*rss_it)->createCalc();
+				runtime()->addInitCalc(calc);
+#ifdef RDOSIM_COMPATIBLE
+			}
+#endif
+		}
+#ifdef RDOSIM_COMPATIBLE
+	}
+#endif
+}
+
+void RDOParser::runSMRPost()
+{
+	//! Планирование событий, описанных в SMR
+	STL_FOR_ALL_CONST(getEvents(), eventIt)
+	{
+		LPRDOEvent pEvent = *eventIt;
+		ASSERT(pEvent);
+
+		rdo::runtime::LPRDOCalc pInitCalc = pEvent->getInitCalc();
+		if (pInitCalc)
+		{
+			runtime()->addInitCalc(pInitCalc);
+		}
+	}
+}
+
 
 void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 {

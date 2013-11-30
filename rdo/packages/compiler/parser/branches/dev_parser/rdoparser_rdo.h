@@ -52,30 +52,6 @@ private:
 DECLARE_POINTER(RDOParserRDOItem);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOParserRSSPost
-// --------------------------------------------------------------------------------
-class RDOParserRSSPost: public RDOParserItem
-{
-DECLARE_FACTORY(RDOParserRSSPost);
-private:
-	RDOParserRSSPost()
-		: RDOParserItem(rdoModelObjects::RSS, NULL, NULL, NULL)
-	{}
-	virtual void parse(CREF(LPRDOParser) pParser);
-};
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserSMRPost
-// --------------------------------------------------------------------------------
-class RDOParserSMRPost: public RDOParserItem
-{
-DECLARE_FACTORY(RDOParserSMRPost);
-private:
-	RDOParserSMRPost();
-	virtual void parse(CREF(LPRDOParser) pParser);
-};
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOParserEVNPost
 // --------------------------------------------------------------------------------
 class RDOParserEVNPost: public RDOParserItem

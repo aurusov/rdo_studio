@@ -142,6 +142,8 @@ public:
 	void parse();
 	void parse(REF(std::istream) stream);
 
+	void beforeRun();
+
 	CREF(Error) error() const { return m_error; }
 	 REF(Error) error()       { return m_error; }
 
@@ -212,6 +214,9 @@ public:
 	static ruint                        lexer_loc_pos ();
 	static tstring                      lexer_text    ();
 	static LPRDOParser                  s_parser      ();
+
+	void runRSSPost();
+	void runSMRPost();
 
 private:
 	RDOParser();
