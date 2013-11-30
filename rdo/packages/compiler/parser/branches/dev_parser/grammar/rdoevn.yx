@@ -6620,8 +6620,9 @@ fun_consts
 	;
 
 fun_const_body
-	: fun_const_param_desc
-	| error
+	: /* empty */
+	| fun_const_body fun_const_param_desc
+	| fun_const_body error
 	{
 		#PASS2
 		{
