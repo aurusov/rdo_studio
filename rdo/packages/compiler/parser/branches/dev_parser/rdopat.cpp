@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -572,6 +573,13 @@ RDOPatternEvent::RDOPatternEvent(CREF(RDOParserSrcInfo) name_src_info, rbool tra
 	m_pPatRuntime = rdo::Factory<rdo::runtime::RDOPatternEvent>::create(trace);
 	ASSERT(m_pPatRuntime);
 	m_pPatRuntime->setTraceID(RDOParser::s_parser()->getPAT_id());
+
+	m_pRuntimeEvent = getPatRuntime<rdo::runtime::RDOPatternEvent>()->createActivity(
+		RDOParser::s_parser()->runtime()->m_pMetaLogic,
+		RDOParser::s_parser()->runtime(),
+		name()
+	);
+	ASSERT(m_pRuntimeEvent);
 }
 
 void RDOPatternEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdo::runtime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos)
@@ -673,6 +681,77 @@ tstring RDOPatternEvent::getErrorMessage_NotNeedConvertor(CREF(tstring) name, rd
 tstring RDOPatternEvent::getWarningMessage_EmptyConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status)
 {
 	return rdo::format("Для релевантного ресурса '%s' указан пустой конвертор (Convert_event), хотя его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
+}
+
+rdo::runtime::LPRDOCalc RDOPatternEvent::getBeforeStartModelPlaning() const
+{
+	return m_beforeStartModelPlaning;
+}
+
+void RDOPatternEvent::setBeforeStartModelPlaning(CREF(rdo::runtime::LPRDOCalc) beforeStartModelPlaning)
+{
+	ASSERT(beforeStartModelPlaning);
+	m_beforeStartModelPlaning = beforeStartModelPlaning;
+}
+
+void RDOPatternEvent::insertPlaning(CREF(rdo::runtime::LPRDOCalcEventPlan) pCalc, CREF(LPArithmContainer) pParamList)
+{
+	ASSERT(pCalc);
+	pCalc->setEvent(m_pRuntimeEvent);
+
+	LPIActivity pActivity = m_pRuntimeEvent;
+	ASSERT(pActivity);
+
+	ruint currParam = 0;
+	BOOST_FOREACH(const LPRDOFUNArithm& pParam, pParamList->getContainer())
+	{
+		ASSERT(pParam);
+		if (currParam < m_paramList.size())
+		{
+			rdo::runtime::LPRDOCalc pSetParamCalc;
+			LPRDOParam pPatternParam = m_paramList[currParam];
+			ASSERT(pPatternParam);
+			if (pParam->typeInfo()->src_info().src_text() == "*")
+			{
+				if (!pPatternParam->getDefault()->defined())
+				{
+					RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("Нет значения по умолчанию для параметра '%s'", pPatternParam->src_text().c_str()));
+					RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("См. параметр '%s', тип '%s'", pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+					RDOParser::s_parser()->error().push_done();
+				}
+				rdo::runtime::RDOValue val = pPatternParam->getDefault()->value();
+				ASSERT(val);
+				pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
+					currParam,
+					rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
+				);
+			}
+			else
+			{
+				LPTypeInfo pTypeInfo = pPatternParam->getTypeInfo();
+				ASSERT(pTypeInfo);
+				rdo::runtime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
+				ASSERT(pParamValueCalc);
+				pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
+					currParam,
+					pParamValueCalc
+				);
+			}
+			ASSERT(pSetParamCalc);
+			pActivity->addParamCalc(pSetParamCalc);
+			++currParam;
+		}
+		else
+		{
+			RDOParser::s_parser()->error().error(pParam->src_info(), rdo::format("Слишком много параметров для события '%s'", name().c_str()));
+		}
+	}
+}
+
+void RDOPatternEvent::insertStop(CREF(rdo::runtime::LPRDOCalcEventStop) pCalc)
+{
+	ASSERT(pCalc);
+	pCalc->setEvent(m_pRuntimeEvent);
 }
 
 // --------------------------------------------------------------------------------

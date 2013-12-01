@@ -51,23 +51,6 @@ private:
 };
 DECLARE_POINTER(RDOParserRDOItem);
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserEVNPost
-// --------------------------------------------------------------------------------
-class RDOParserEVNPost: public RDOParserItem
-{
-DECLARE_FACTORY(RDOParserEVNPost);
-private:
-	RDOParserEVNPost()
-		: RDOParserItem(rdoModelObjects::PAT, NULL, NULL, NULL)
-		, m_currParam  (0)
-	{}
-
-	ruint             m_currParam;
-
-	virtual void parse(CREF(LPRDOParser) pParser);
-};
-
 CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_RDO_H_

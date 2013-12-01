@@ -172,8 +172,6 @@ SET(PARSER_LEXER_FILES
 SET(PATTERN_FILES
 	rdopat.cpp
 	rdopat.h
-	rdopatpreparse.h
-	rdopatpreparse.inl
 )
 
 SET(PCH_FILES

@@ -69,7 +69,6 @@ DECLARE_PARSER_OBJECT_CONTAINER(DPTSearch     );
 DECLARE_PARSER_OBJECT_CONTAINER(DPTSome       );
 DECLARE_PARSER_OBJECT_CONTAINER(DPTPrior      );
 DECLARE_PARSER_OBJECT_CONTAINER(DPTActivity   );
-DECLARE_PARSER_OBJECT_CONTAINER(Event         );
 DECLARE_PARSER_OBJECT_CONTAINER(ResultGroup   );
 DECLARE_PARSER_OBJECT_CONTAINER(PROCProcess   );
 
@@ -129,7 +128,6 @@ RDOParser::RDOParser()
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evnparse, evnerror, evnlex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, evnparse, evnerror, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserEVNPost>::create());
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, evnparse, evnerror, evnlex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_opr_parse, proc_opr_error, proc_opr_lex));
@@ -187,7 +185,6 @@ void RDOParser::deinit()
 	m_allDPTSome    .clear();
 	m_allDPTPrior   .clear();
 	m_allDPTActivity.clear();
-	m_allEvent      .clear();
 	m_allResultGroup.clear();
 	m_allPROCProcess.clear();
 	m_allFUNGroup   .clear();
@@ -514,13 +511,16 @@ void RDOParser::runRSSPost()
 void RDOParser::runSMRPost()
 {
 	//! Планирование событий, описанных в SMR
-	BOOST_FOREACH(const LPRDOEvent& pEvent, getEvents())
+	BOOST_FOREACH(const LPRDOPATPattern& pattern, getPATPatterns())
 	{
-		ASSERT(pEvent);
-		rdo::runtime::LPRDOCalc pInitCalc = pEvent->getInitCalc();
-		if (pInitCalc)
+		LPRDOPatternEvent event = pattern.object_dynamic_cast<RDOPatternEvent>();
+		if (!event)
+			continue;
+
+		rdo::runtime::LPRDOCalc initCalc = event->getBeforeStartModelPlaning();
+		if (initCalc)
 		{
-			runtime()->addInitCalc(pInitCalc);
+			runtime()->addInitCalc(initCalc);
 		}
 	}
 }

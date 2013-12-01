@@ -28,10 +28,8 @@
 #include "simulator/compiler/parser/rdoparser_base.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/rdoparser_error.h"
-#include "simulator/compiler/parser/rdopatpreparse.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdopat.h"
-#include "simulator/compiler/parser/rdopatpreparse.h"
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/rdoprocess.h"
 #include "simulator/compiler/parser/rdopmd.h"
@@ -102,7 +100,6 @@ DEFINE_OBJECT_CONTAINER(DPTSearch     );
 DEFINE_OBJECT_CONTAINER(DPTSome       );
 DEFINE_OBJECT_CONTAINER(DPTPrior      );
 DEFINE_OBJECT_CONTAINER(DPTActivity   );
-DEFINE_OBJECT_CONTAINER(Event         );
 DEFINE_OBJECT_CONTAINER(ResultGroup   );
 DEFINE_OBJECT_CONTAINER(PROCProcess   );
 

@@ -1809,14 +1809,6 @@
 				RelativePath="..\..\rdopat.h"
 				>
 			</File>
-			<File
-				RelativePath="..\..\rdopatpreparse.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdopatpreparse.inl"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name=".project"

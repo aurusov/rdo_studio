@@ -487,10 +487,16 @@ planning_statement
 		tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
 
-		LPRDOEvent pEvent = PARSER->findEvent(eventName);
-		if (!pEvent)
+		LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
+		if (!pPattern)
 		{
 			PARSER->error().error(@1, rdo::format("Попытка запланировать неизвестное событие: %s", eventName.c_str()));
+		}
+
+		LPRDOPatternEvent pEvent = pPattern.object_dynamic_cast<RDOPatternEvent>();
+		if (!pEvent)
+		{
+			PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", eventName.c_str()));
 		}
 
 		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
@@ -512,18 +518,16 @@ planning_statement
 			++arithmIt;
 		}
 
-		pEvent->setParamList(pParamList);
-
 		rdo::runtime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
 		pCalcTime->setSrcInfo(pTimeArithm->src_info());
 		ASSERT(pCalcTime);
 
-		rdo::runtime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
-		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
-		ASSERT(pCalc);
-		pEvent->attachCalc(pCalc);
+		rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
+		pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+		ASSERT(pEventPlan);
+		pEvent->insertPlaning(pEventPlan, pParamList);
 
-		$$ = PARSER->stack().push(pCalc);
+		$$ = PARSER->stack().push(pEventPlan);
 	}
 	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' error
 	{
@@ -546,17 +550,23 @@ planning_statement
 stopping_statement
 	: RDO_IDENTIF '.' RDO_Stopping '(' ')' ';'
 	{
-		tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
-		if (!pEvent)
+		tstring         eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		LPRDOPATPattern pPattern  = PARSER->findPATPattern(eventName);
+		if (!pPattern)
 		{
 			PARSER->error().error(@1, rdo::format("Попытка остановить неизвестное событие: %s", eventName.c_str()));
+		}
+
+		LPRDOPatternEvent pEvent = pPattern.object_dynamic_cast<RDOPatternEvent>();
+		if (!pEvent)
+		{
+			PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", eventName.c_str()));
 		}
 
 		rdo::runtime::LPRDOCalcEventStop pCalc = rdo::Factory<rdo::runtime::RDOCalcEventStop>::create();
 		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Остановка события %s", eventName.c_str())));
 		ASSERT(pCalc);
-		pEvent->attachCalc(pCalc);
+		pEvent->insertStop(pCalc);
 
 		$$ = PARSER->stack().push(pCalc);
 	}
