@@ -188,7 +188,7 @@ void RDODPTSearchTrace::getStatsRUINT(Type type, REF(ruint) min, REF(ruint) max,
 	case IDPTSearchTraceStatistics::ST_MEMORY:
 		return __getStats<ruint>(calc_mems, min, max, med);
 	case IDPTSearchTraceStatistics::ST_NODES:
-		return __getStats<ruint>(calc_nodes_in_graph, min, max, med);
+		return __getStats<ruint>(calc_nodes, min, max, med);
 	case IDPTSearchTraceStatistics::ST_NODES_FULL:
 		return __getStats<ruint>(calc_nodes_full, min, max, med);
 	case IDPTSearchTraceStatistics::ST_NODES_EXPENDED:
