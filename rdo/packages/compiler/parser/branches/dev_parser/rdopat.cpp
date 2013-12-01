@@ -754,6 +754,9 @@ void RDOPatternEvent::insertPlaning(CREF(rdo::runtime::LPRDOCalcEventPlan) pCalc
 
 	LPIActivity pActivity = m_pRuntimeEvent;
 	ASSERT(pActivity);
+	// TODO Событие может быть запланировано из разных мест с разными параметрами
+	//      Это по логике, а на самом деле будут применены параметры самого последнего планировщика,
+	//      который встретился компилятору
 	pActivity->setParamsCalcs(createParamsCalcs(pParamList->getContainer()));
 }
 
