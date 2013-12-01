@@ -337,6 +337,59 @@ void RDOPATPattern::addParamSetCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 	}
 }
 
+std::vector<runtime::LPRDOCalc> RDOPATPattern::createParamsCalcs(CREF(std::vector<LPRDOFUNArithm>) params) const
+{
+	std::vector<runtime::LPRDOCalc> result;
+	result.reserve(m_paramList.size());
+
+	ruint currParam = 0;
+	BOOST_FOREACH(const LPRDOFUNArithm& pParam, params)
+	{
+		ASSERT(pParam);
+		if (currParam < m_paramList.size())
+		{
+			rdo::runtime::LPRDOCalc pSetParamCalc;
+			LPRDOParam pPatternParam = m_paramList[currParam];
+			ASSERT(pPatternParam);
+			if (pParam->typeInfo()->src_info().src_text() == "*")
+			{
+				if (!pPatternParam->getDefault()->defined())
+				{
+					RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("Нет значения по умолчанию для параметра '%s'", pPatternParam->src_text().c_str()));
+					RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("См. параметр '%s', тип '%s'", pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+					RDOParser::s_parser()->error().push_done();
+				}
+				rdo::runtime::RDOValue val = pPatternParam->getDefault()->value();
+				ASSERT(val);
+				pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
+					currParam,
+					rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
+				);
+			}
+			else
+			{
+				LPTypeInfo pTypeInfo = pPatternParam->getTypeInfo();
+				ASSERT(pTypeInfo);
+				rdo::runtime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
+				ASSERT(pParamValueCalc);
+				pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
+					currParam,
+					pParamValueCalc
+				);
+			}
+			ASSERT(pSetParamCalc);
+			result.push_back(pSetParamCalc);
+			++currParam;
+		}
+		else
+		{
+			RDOParser::s_parser()->error().error(pParam->src_info(), rdo::format("Слишком много параметров для события '%s'", name().c_str()));
+		}
+	}
+
+	return result;
+}
+
 tstring RDOPATPattern::getPatternId() const
 { 
 	return m_pPatRuntime->traceId(); 
@@ -701,51 +754,7 @@ void RDOPatternEvent::insertPlaning(CREF(rdo::runtime::LPRDOCalcEventPlan) pCalc
 
 	LPIActivity pActivity = m_pRuntimeEvent;
 	ASSERT(pActivity);
-
-	ruint currParam = 0;
-	BOOST_FOREACH(const LPRDOFUNArithm& pParam, pParamList->getContainer())
-	{
-		ASSERT(pParam);
-		if (currParam < m_paramList.size())
-		{
-			rdo::runtime::LPRDOCalc pSetParamCalc;
-			LPRDOParam pPatternParam = m_paramList[currParam];
-			ASSERT(pPatternParam);
-			if (pParam->typeInfo()->src_info().src_text() == "*")
-			{
-				if (!pPatternParam->getDefault()->defined())
-				{
-					RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("Нет значения по умолчанию для параметра '%s'", pPatternParam->src_text().c_str()));
-					RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("См. параметр '%s', тип '%s'", pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
-					RDOParser::s_parser()->error().push_done();
-				}
-				rdo::runtime::RDOValue val = pPatternParam->getDefault()->value();
-				ASSERT(val);
-				pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
-					currParam,
-					rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
-				);
-			}
-			else
-			{
-				LPTypeInfo pTypeInfo = pPatternParam->getTypeInfo();
-				ASSERT(pTypeInfo);
-				rdo::runtime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
-				ASSERT(pParamValueCalc);
-				pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
-					currParam,
-					pParamValueCalc
-				);
-			}
-			ASSERT(pSetParamCalc);
-			pActivity->addParamCalc(pSetParamCalc);
-			++currParam;
-		}
-		else
-		{
-			RDOParser::s_parser()->error().error(pParam->src_info(), rdo::format("Слишком много параметров для события '%s'", name().c_str()));
-		}
-	}
+	pActivity->setParamsCalcs(createParamsCalcs(pParamList->getContainer()));
 }
 
 void RDOPatternEvent::insertStop(CREF(rdo::runtime::LPRDOCalcEventStop) pCalc)

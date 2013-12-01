@@ -122,28 +122,23 @@ protected:
 	RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info);
 	virtual ~RDOPATPattern();
 
+	typedef std::vector<LPRDOParam> ParamList;
+	ParamList                  m_paramList;
 	rdo::runtime::LPRDOPattern m_pPatRuntime;
 
-	rdo::runtime::LPRDOCalc createRelRes   (rbool trace) const;
-	virtual void            addParamSetCalc(CREF(rdo::runtime::LPRDOCalc) pCalc);
+	rdo::runtime::LPRDOCalc         createRelRes     (rbool trace) const;
+	virtual void                    addParamSetCalc  (CREF(rdo::runtime::LPRDOCalc) pCalc);
+	std::vector<runtime::LPRDOCalc> createParamsCalcs(CREF(std::vector<LPRDOFUNArithm>) params) const;
 
 	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status) = 0;
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status) = 0;
 
-protected:
-	typedef std::vector<LPRDOParam> ParamList;
-	ParamList        m_paramList;
-
 private:
-
 	RelResList       m_relResList;
-
 	rbool            m_useCommonChoice;
 	rbool            m_useCommonWithMax;
 	LPRDOFUNArithm   m_pCommonChoice;
-
 	ruint            m_currentRelResIndex;
-
 	LPContextMemory  m_pContextMemory;
 
 	tstring               typeToString     (PatType type) const;

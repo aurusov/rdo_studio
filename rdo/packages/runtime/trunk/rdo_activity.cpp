@@ -26,6 +26,11 @@ void RDOActivity::addParamCalc(CREF(LPRDOCalc) pCalc)
 	m_paramsCalcs.push_back(pCalc);
 }
 
+void RDOActivity::setParamsCalcs(CREF(std::vector<LPRDOCalc>) params)
+{
+	m_paramsCalcs = params;
+}
+
 int RDOActivity::getResByRelRes(ruint rel_res_id) const
 {
 	if (m_relResID.size() <= rel_res_id)
