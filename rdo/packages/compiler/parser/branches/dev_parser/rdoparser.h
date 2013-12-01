@@ -215,9 +215,6 @@ public:
 	static tstring                      lexer_text    ();
 	static LPRDOParser                  s_parser      ();
 
-	void runRSSPost();
-	void runSMRPost();
-
 private:
 	RDOParser();
 	virtual ~RDOParser();
@@ -234,6 +231,9 @@ private:
 	rdo::IDGenerator            m_resultGeneratorID;
 	Compilers                   m_compilers;
 	LPRDOParserItem             m_parser_item;
+
+	void runRSSPost();
+	void runSMRPost();
 
 	template <class T>
 	void howIsIt()
