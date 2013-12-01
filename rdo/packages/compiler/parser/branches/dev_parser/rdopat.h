@@ -46,28 +46,6 @@ int  evn_preparse_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void evn_preparse_error(const char* message);
 
 // --------------------------------------------------------------------------------
-// -------------------- ConvertCmdList
-// --------------------------------------------------------------------------------
-OBJECT(ConvertCmdList)
-{
-DECLARE_FACTORY(ConvertCmdList)
-public:
-	typedef std::vector<rdo::runtime::LPRDOCalc> CalcList;
-
-	void insertCommand(CREF(rdo::runtime::LPRDOCalc) pCalc)
-	{
-		m_calcList.push_back(pCalc);
-	}
-	CREF(CalcList) commands() const
-	{
-		return m_calcList;
-	}
-
-private:
-	CalcList m_calcList;
-};
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOPATPattern
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOPATChoiceFrom);
