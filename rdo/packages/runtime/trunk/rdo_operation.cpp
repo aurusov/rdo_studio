@@ -8,9 +8,11 @@
   \indent    4T
 */
 
-// ----------------------------------------------------------------------- INCLUDES
-// ----------------------------------------------------------------------- SYNOPSIS
+// ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_operation.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
@@ -69,7 +71,13 @@ IBaseOperation::BOResult RDOOperation::onDoOperation(CREF(LPRDORuntime) pRuntime
 	LPIOperation newOper = RF(RDOOperation)::create(pRuntime, *this);
 	newOper->onBeforeOperationBegin(pRuntime);
 	newOper->convertBegin(pRuntime);
-	pRuntime->addTimePoint(newOper->getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(), newOper);
+
+	LPIBaseOperation event(newOper);
+	pRuntime->addTimePoint(
+		newOper->getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(),
+		event,
+		boost::bind(&IBaseOperation::onMakePlaned, event.get(), pRuntime, (void*)NULL)
+	);
 	newOper->onAfterOperationBegin(pRuntime);
 	return IBaseOperation::BOR_planned_and_run;
 }

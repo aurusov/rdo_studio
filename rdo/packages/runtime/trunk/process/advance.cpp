@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
@@ -57,7 +58,13 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(CREF(LPRDORuntime) pRunti
 		double timeLeave = pDelayCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime();
 		leave_list.push_back(LeaveTr(m_transacts.front(), timeLeave));
 		m_transacts.erase(m_transacts.begin());
-		pRuntime->addTimePoint(timeLeave, m_process, this);
+
+		LPIBaseOperation event(m_process);
+		pRuntime->addTimePoint(
+			timeLeave,
+			event,
+			boost::bind(&IBaseOperation::onMakePlaned, event.get(), pRuntime, this)
+		);
 
 		if (m_pStatistics)
 			m_pStatistics->setTransCount(m_transacts.size());

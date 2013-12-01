@@ -68,27 +68,27 @@ rbool RDOSimulator::doOperation()
 		if (!m_checkOperation && !m_timePoints.empty())
 		{
 			m_checkOperation = true;
-			double newTime   = m_timePoints.begin()->first;
+			BOPlannedMap::iterator begin = m_timePoints.begin();
+			double newTime = begin->first;
 			if (getCurrentTime() >= newTime)
 			{
-				PTR(BOPlannedItem) pList = m_timePoints.begin()->second;
-				if (pList && !pList->empty())
+				BOPlannedList& pList = begin->second;
+				if (!pList.empty())
 				{
 #ifdef RDOSIM_COMPATIBLE
 					// Дисциплина списка текущих событий LIFO
-					LPIBaseOperation pOperation = pList->back().m_opr;
-					PTR(void)        pParam     = pList->back().m_param;
-					pList->pop_back();
+					LPIBaseOperation pOperation = pList.back().first;
+					EventFunction eventFunction = pList.back().second;
+					pList.pop_back();
 #else
 					// Дисциплина списка текущих событий FIFO
-					LPIBaseOperation pOperation = pList->front().m_opr;
-					PTR(void)        pParam     = pList->front().m_param;
-					pList->pop_front();
+					LPIBaseOperation pOperation = pList.front().first;
+					EventFunction eventFunction = pList.front().second;
+					pList.pop_front();
 #endif // RDOSIM_COMPATIBLE
-					if (pList->empty())
+					if (pList.empty())
 					{
-						delete pList;
-						m_timePoints.erase(m_timePoints.begin());
+						m_timePoints.erase(begin);
 					}
 #ifndef RDO_703_COMPATIBLE
 					else
@@ -96,7 +96,7 @@ rbool RDOSimulator::doOperation()
 						m_checkOperation = false;
 					}
 #endif // not RDO_703_COMPATIBLE
-					pOperation->onMakePlaned(pRuntime, pParam);
+					eventFunction();
 					foundPlaned = true;
 				}
 			}

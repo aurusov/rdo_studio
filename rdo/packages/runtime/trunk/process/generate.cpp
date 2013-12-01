@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
@@ -63,7 +64,13 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 
 void RDOPROCGenerate::calcNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->addTimePoint( timeNext = m_pTimeCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime(), m_process, this );
+	timeNext = m_pTimeCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime();
+	LPIBaseOperation event(m_process);
+	pRuntime->addTimePoint(
+		timeNext,
+		event,
+		boost::bind(&IBaseOperation::onMakePlaned, event.get(), pRuntime, this)
+	);
 }
 
 void RDOPROCGenerate::onStop(CREF(LPRDORuntime) pRuntime)

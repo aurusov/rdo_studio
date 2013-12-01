@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/runtime/rdo_ie.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -49,7 +50,11 @@ RDOIrregEvent::RDOIrregEvent(PTR(RDOPatternIrregEvent) pPattern, rbool trace, CR
 void RDOIrregEvent::onStart(CREF(LPRDORuntime) pRuntime)
 {
 	onBeforeIrregularEvent(pRuntime);
-	pRuntime->addTimePoint(getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(), this);
+	pRuntime->addTimePoint(
+		getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(),
+		this,
+		boost::bind(&IBaseOperation::onMakePlaned, this, pRuntime, (void*)NULL)
+	);
 }
 
 void RDOIrregEvent::onStop(CREF(LPRDORuntime) pRuntime)
@@ -76,7 +81,11 @@ void RDOIrregEvent::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 	pRuntime->inc_cnt_events();
 	onBeforeIrregularEvent(pRuntime);
 	convertEvent(pRuntime);
-	pRuntime->addTimePoint(getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(), this);
+	pRuntime->addTimePoint(
+		getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(),
+		this,
+		boost::bind(&IBaseOperation::onMakePlaned, this, pRuntime, (void*)NULL)
+	);
 	onAfterIrregularEvent(pRuntime);
 }
 

@@ -70,7 +70,7 @@ void RDOSimulatorBase::rdoInit()
 	OperatorType::getCalcCounter<OperatorType::OT_LOGIC> () = 0;
 
 	if (m_timePoints.find(m_currentTime) == m_timePoints.end())
-		m_timePoints[m_currentTime] = NULL;
+		m_timePoints[m_currentTime] = BOPlannedList();
 	preProcess();
 
 	m_speed              = 1;
@@ -155,12 +155,12 @@ rbool RDOSimulatorBase::rdoNext()
 		// Переход к следующей операции
 		if (!m_timePoints.empty())
 		{
-			double newTime = m_timePoints.begin()->first;
-			BOPlannedItem* list = m_timePoints.begin()->second;
-			if (!list || list->empty())
+			BOPlannedMap::iterator begin = m_timePoints.begin();
+			double newTime = begin->first;
+			const BOPlannedList& list = begin->second;
+			if (list.empty())
 			{
-				delete m_timePoints.begin()->second;
-				m_timePoints.erase(m_timePoints.begin());
+				m_timePoints.erase(begin);
 			}
 			if (m_currentTime > newTime)
 			{
@@ -243,46 +243,34 @@ void RDOSimulatorBase::setShowRate( double value )
 void RDOSimulatorBase::rdoPostProcess()
 {
 	postProcess();
-	while (!m_timePoints.empty())
-	{
-		delete m_timePoints.begin()->second;
-		m_timePoints.erase(m_timePoints.begin());
-	}
+	m_timePoints.clear();
 }
 
-void RDOSimulatorBase::addTimePoint(double timePoint, CREF(LPIBaseOperation) opr, void* param)
+void RDOSimulatorBase::addTimePoint(double timePoint, const LPIBaseOperation& eventID, const EventFunction& eventFunction)
 {
-	BOPlannedItem* list = NULL;
-	if (opr && (m_timePoints.find(timePoint) == m_timePoints.end() || m_timePoints[timePoint] == NULL))
-	{
-		list = new BOPlannedItem();
-		m_timePoints[timePoint] = list;
-	}
-	if (opr)
-	{
-		m_timePoints[timePoint]->push_back(BOPlanned(opr, param));
-	}
+	ASSERT(eventID);
+	m_timePoints[timePoint].push_back(std::make_pair(eventID, eventFunction));
 }
 
-void RDOSimulatorBase::removeTimePoint(CREF(LPIBaseOperation) opr)
+void RDOSimulatorBase::removeTimePoint(const LPIBaseOperation& eventID)
 {
 	BOPlannedMap::iterator it = m_timePoints.begin();
 	while (it != m_timePoints.end())
 	{
-		BOPlannedItem* list = it->second;
-		BOPlannedItem::iterator item = list->begin();
-		while (item != list->end())
+		BOPlannedList& list = it->second;
+		BOPlannedList::iterator item = list.begin();
+		while (item != list.end())
 		{
 			// Удалим операцию из списка запланированных
-			if (item->m_opr == opr)
+			if (item->first == eventID)
 			{
-				item = list->erase(item);
+				item = list.erase(item);
 				continue;
 			}
 			++item;
 		}
 		// Если список запланированых пустой, то удалим и его
-		if (list->empty())
+		if (list.empty())
 		{
 			m_timePoints.erase(it++);
 			continue;

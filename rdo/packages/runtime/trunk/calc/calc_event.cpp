@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_event.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -42,7 +43,11 @@ RDOValue RDOCalcEventPlan::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(m_pEvent);
 	RDOValue value = m_pTimeCalc->calcValue(pRuntime);
-	pRuntime->addTimePoint(value.getDouble(), m_pEvent);
+	pRuntime->addTimePoint(
+		value.getDouble(),
+		m_pEvent,
+		boost::bind(&IBaseOperation::onMakePlaned, m_pEvent.get(), pRuntime, (void*)NULL)
+	);
 	return value;
 }
 

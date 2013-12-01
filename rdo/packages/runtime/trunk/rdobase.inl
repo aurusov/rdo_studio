@@ -80,22 +80,4 @@ inline void RDOSimulatorBase::setCurrentTime(double value)
 inline void RDOSimulatorBase::onNewTimeNow()
 {}
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOSimulatorBase::BOPlanned
-// --------------------------------------------------------------------------------
-inline RDOSimulatorBase::BOPlanned::BOPlanned()
-	: m_opr  (NULL)
-	, m_param(NULL)
-{}
-
-inline RDOSimulatorBase::BOPlanned::BOPlanned(CREF(BOPlanned) copy)
-	: m_opr  (copy.m_opr  )
-	, m_param(copy.m_param)
-{}
-
-inline RDOSimulatorBase::BOPlanned::BOPlanned(LPIBaseOperation opr, PTR(void) pParam)
-	: m_opr  (opr   )
-	, m_param(pParam)
-{}
-
 CLOSE_RDO_RUNTIME_NAMESPACE

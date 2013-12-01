@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 #include <map>
+#include <boost/function.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
@@ -56,8 +57,9 @@ public:
 	double getShowRate() const;
 	void setShowRate(double value);
 
-	void addTimePoint   (double timePoint, CREF(LPIBaseOperation) opr, void* param = NULL);
-	void removeTimePoint(CREF(LPIBaseOperation) opr);
+	typedef  boost::function<void ()>  EventFunction;
+	void addTimePoint   (double timePoint, const LPIBaseOperation& eventID, const EventFunction& eventFunction);
+	void removeTimePoint(const LPIBaseOperation& eventID);
 
 	void inc_cnt_events();
 	void inc_cnt_choice_from();
@@ -73,17 +75,9 @@ protected:
 	RDOSimulatorBase();
 	virtual ~RDOSimulatorBase();
 
-	struct BOPlanned
-	{
-		LPIBaseOperation  m_opr;
-		PTR(void)         m_param;
-		
-		BOPlanned();
-		BOPlanned(CREF(BOPlanned) copy);
-		BOPlanned(LPIBaseOperation opr, PTR(void) pParam = NULL);
-	};
-	typedef  std::list<BOPlanned>                  BOPlannedItem;
-	typedef  std::map<double, PTR(BOPlannedItem)>  BOPlannedMap;
+	typedef  std::pair<LPIBaseOperation, EventFunction>  BOPlannedItem;
+	typedef  std::list<BOPlannedItem>                    BOPlannedList;
+	typedef  std::map<double, BOPlannedList>             BOPlannedMap;
 
 	BOPlannedMap m_timePoints;
 	rbool        m_checkOperation;
