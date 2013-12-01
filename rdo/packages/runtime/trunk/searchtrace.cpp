@@ -194,7 +194,7 @@ void RDODPTSearchTrace::getStatsRUINT(Type type, REF(ruint) min, REF(ruint) max,
 	case IDPTSearchTraceStatistics::ST_NODES_EXPENDED:
 		return __getStats<ruint>(calc_nodes_expended, min, max, med);
 	case IDPTSearchTraceStatistics::ST_NODES_IN_GRAPH:
-		return __getStats<ruint>(calc_mems, min, max, med);
+		return __getStats<ruint>(calc_nodes_in_graph, min, max, med);
 	default:
 		break;
 	}

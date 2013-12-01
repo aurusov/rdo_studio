@@ -46,7 +46,6 @@ def _read_trace_data(name):
             line = re.sub(r'SES\s+(\S+)\s(\S+)\s(\S+)', r'SES \1', line)
             line = re.sub(r'DPS_TM\s(\S+)(\s+)(\S+)(\s+)(\S+)', r'DPS_TM', line)
             line = re.sub(r'DPS_ME\s(\S+)(\s+)(\S+)(\s+)(\S+)', r'DPS_ME', line)
-            line = re.sub(r'DPS_TT\s(\S+)(\s+)(\S+)(\s+)(\S+)', r'DPS_TT', line)
             line = re.sub(r'DPS_MM\s(\S+)', r'DPS_MM', line)
             file_data.append(line)
 
