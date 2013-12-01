@@ -1,3 +1,5 @@
+#!python3
+
 import sys, re, os, argparse, subprocess
 
 toolname = "split-bison"

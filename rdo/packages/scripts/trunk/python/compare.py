@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!python3
 
 ###############################################################################
 # Copyright (c) 2013 Evgeny Proydakov <lord.tiran@gmail.com>

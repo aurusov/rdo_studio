@@ -1,3 +1,5 @@
+#!python3
+
 import subprocess, os, argparse, re, sys, difflib
 
 def run_bison(yxPath, yPath, cppPath, name, bison, defines):

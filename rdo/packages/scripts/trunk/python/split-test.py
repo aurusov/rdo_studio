@@ -1,3 +1,5 @@
+#!python3
+
 import difflib, argparse, subprocess, sys
 
 parser = argparse.ArgumentParser(usage = argparse.SUPPRESS, description ="split-bison test script")
