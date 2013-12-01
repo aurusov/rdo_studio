@@ -1197,6 +1197,7 @@ pat_header
 			ASSERT(pName);
 			LPRDOPATPattern pPattern = PARSER->findPATPattern(pName->value().getIdentificator());
 			ASSERT(pPattern);
+			PARSER->howIsIt<LPRDOPATPattern>();
 			$$ = PARSER->stack().push(pPattern);
 		}
 	}

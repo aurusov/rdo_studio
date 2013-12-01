@@ -212,6 +212,12 @@ public:
 	static tstring                      lexer_text    ();
 	static LPRDOParser                  s_parser      ();
 
+	template <class T>
+	void howIsIt()
+	{
+		howIsIt(identity<T>());
+	}
+
 private:
 	RDOParser();
 	virtual ~RDOParser();
@@ -232,12 +238,6 @@ private:
 	void runRSSPost();
 	void runSMRPost();
 	void runRTPPost();
-
-	template <class T>
-	void howIsIt()
-	{
-		howIsIt(identity<T>());
-	}
 
 	template <class T>
 	void howIsIt(identity<T>)
