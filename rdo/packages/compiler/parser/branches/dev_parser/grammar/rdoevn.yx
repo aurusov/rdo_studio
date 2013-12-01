@@ -1253,6 +1253,11 @@ pat_header
 pat_trace
 	: /* empty */
 	{
+		#PASS1
+		{
+			$$ = 0;
+		}
+
 		#PASS2
 		{
 			$$ = 0;
@@ -1260,6 +1265,11 @@ pat_trace
 	}
 	| RDO_trace	
 	{
+		#PASS1
+		{
+			$$ = 1;
+		}
+
 		#PASS2
 		{
 			$$ = 1;
@@ -1267,6 +1277,11 @@ pat_trace
 	}
 	| RDO_no_trace
 	{
+		#PASS1
+		{
+			$$ = 0;
+		}
+
 		#PASS2
 		{
 			$$ = 0;
