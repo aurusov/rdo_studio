@@ -28,7 +28,7 @@ class rdo::Plugin::Loader
 {
 public:
 	Loader ();
-	virtual ~Loader() {};
+	virtual ~Loader();
 
 	const LPPluginInfoList& getPluginInfoList     () const;
 	void                    stopPlugin            (const LPPluginInfo& plgnInfo);

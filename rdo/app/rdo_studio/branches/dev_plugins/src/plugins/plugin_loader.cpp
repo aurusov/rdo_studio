@@ -27,6 +27,17 @@ Loader::Loader()
 {
 }
 
+Loader::~Loader()
+{
+	BOOST_FOREACH(const LPPluginInfo& plgnInfo, *m_pMergedPluginInfoList)
+	{
+		if (plgnInfo->isActive())
+		{
+			stopPlugin(plgnInfo);
+		}
+	}
+}
+
 PluginInfoList Loader::getMergedPluginInfoList() const
 {
 	PluginInfoList plgnsHistory   = getPluginsHistory();
