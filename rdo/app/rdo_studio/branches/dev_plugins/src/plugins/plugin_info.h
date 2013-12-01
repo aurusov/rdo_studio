@@ -26,8 +26,7 @@ DECLARE_FACTORY(PluginInfo);
 public:
 	PluginInfo(const QString& name, QPluginLoader* loader, bool autoload, const QUuid& GUID, 
 	           const QString& author, const QString& version , int state);
-	PluginInfo() {};
-	~PluginInfo() {};
+	~PluginInfo();
 	const QString& getName    () const;
 	const QString& getAuthor  () const;
 	const QString& getVersion () const;

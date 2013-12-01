@@ -13,8 +13,8 @@
 #include "app/rdo_studio/src/plugins/plugin_info.h"
 // --------------------------------------------------------------------------------
 
-PluginInfo::PluginInfo(const QString& name , QPluginLoader* loader  , bool  autoload,
-	                    const QUuid&   GUID , const QString& author  , const QString& version , int state)
+PluginInfo::PluginInfo(const QString& name, QPluginLoader* loader, bool  autoload,
+	                    const QUuid&   GUID, const QString& author, const QString& version, int state)
 	: pluginName     (name)
 	, pluginLoader   (loader)
 	, pluginAuthor   (author)
@@ -23,7 +23,12 @@ PluginInfo::PluginInfo(const QString& name , QPluginLoader* loader  , bool  auto
 	, pluginGUID     (GUID)
 	, pluginState    (state)
 	, pluginIsActive (false)
-{}
+{
+}
+
+PluginInfo::~PluginInfo()
+{
+}
 
 const QString& PluginInfo::getName() const
 {
