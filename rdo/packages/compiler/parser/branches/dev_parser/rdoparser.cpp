@@ -514,11 +514,9 @@ void RDOParser::runRSSPost()
 void RDOParser::runSMRPost()
 {
 	//! Планирование событий, описанных в SMR
-	STL_FOR_ALL_CONST(getEvents(), eventIt)
+	BOOST_FOREACH(const LPRDOEvent& pEvent, getEvents())
 	{
-		LPRDOEvent pEvent = *eventIt;
 		ASSERT(pEvent);
-
 		rdo::runtime::LPRDOCalc pInitCalc = pEvent->getInitCalc();
 		if (pInitCalc)
 		{

@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/stream/rdostream.h"
 
@@ -134,24 +135,22 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 	ASSERT(pParser);
 
 	//! Позднее связывание для планирования событий
-	STL_FOR_ALL_CONST(pParser->getEvents(), eventIt)
+	BOOST_FOREACH(const LPRDOEvent& pEvent, pParser->getEvents())
 	{
-		LPRDOEvent pEvent = *eventIt;
-
 		LPRDOPATPattern pPattern = pParser->findPATPattern(pEvent->name());
 		if (!pPattern)
 		{
-			STL_FOR_ALL_CONST(pEvent->getCalcList(), calcIt)
+			BOOST_FOREACH(const runtime::LPRDOCalcEvent& calc, pEvent->getCalcList())
 			{
-				pParser->error().push_only((*calcIt)->srcInfo(), rdo::format("Попытка запланировать неизвестное событие: %s", pEvent->name().c_str()));
+				pParser->error().push_only(calc->srcInfo(), rdo::format("Попытка запланировать неизвестное событие: %s", pEvent->name().c_str()));
 			}
 			pParser->error().push_done();
 		}
 		if (pPattern->getType() != RDOPATPattern::PT_Event)
 		{
-			STL_FOR_ALL_CONST(pEvent->getCalcList(), calcIt)
+			BOOST_FOREACH(const runtime::LPRDOCalcEvent& calc, pEvent->getCalcList())
 			{
-				pParser->error().push_only((*calcIt)->srcInfo(), rdo::format("Паттерн %s не является событием: %s", pEvent->name().c_str()));
+				pParser->error().push_only(calc->srcInfo(), rdo::format("Паттерн %s не является событием: %s", pEvent->name().c_str()));
 			}
 			pParser->error().push_done();
 		}
@@ -163,16 +162,15 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 			ASSERT(pRuntimeEvent);
 			pEvent->setRuntimeEvent(pRuntimeEvent);
 
-			STL_FOR_ALL(pEvent->getCalcList(), calcIt)
+			BOOST_FOREACH(const runtime::LPRDOCalcEvent& calc, pEvent->getCalcList())
 			{
-				(*calcIt)->setEvent(pRuntimeEvent);
+				calc->setEvent(pRuntimeEvent);
 			}
 
 			LPIActivity pActivity = pRuntimeEvent;
 			ASSERT(pActivity);
-			STL_FOR_ALL_CONST(pEvent->getParamList()->getContainer(), paramIt)
+			BOOST_FOREACH(const LPRDOFUNArithm& pParam, pEvent->getParamList()->getContainer())
 			{
-				LPRDOFUNArithm pParam = *paramIt;
 				ASSERT(pParam);
 				if (m_currParam < pPattern->m_paramList.size())
 				{
