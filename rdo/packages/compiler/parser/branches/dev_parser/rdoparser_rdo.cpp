@@ -155,70 +155,62 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 			pParser->error().push_done();
 		}
 
-		//! \todo избавиться от рудимента getRegular()
-		if (pEvent->getRegular())
+		LPIBaseOperation pRuntimeEvent = pPattern->getPatRuntime<rdo::runtime::RDOPatternEvent>()->createActivity(pParser->runtime()->m_pMetaLogic, pParser->runtime(), pEvent->name());
+		ASSERT(pRuntimeEvent);
+		pEvent->setRuntimeEvent(pRuntimeEvent);
+
+		BOOST_FOREACH(const runtime::LPRDOCalcEvent& calc, pEvent->getCalcList())
 		{
-			LPIBaseOperation pRuntimeEvent = pPattern->getPatRuntime<rdo::runtime::RDOPatternEvent>()->createActivity(pParser->runtime()->m_pMetaLogic, pParser->runtime(), pEvent->name());
-			ASSERT(pRuntimeEvent);
-			pEvent->setRuntimeEvent(pRuntimeEvent);
+			calc->setEvent(pRuntimeEvent);
+		}
 
-			BOOST_FOREACH(const runtime::LPRDOCalcEvent& calc, pEvent->getCalcList())
+		LPIActivity pActivity = pRuntimeEvent;
+		ASSERT(pActivity);
+		BOOST_FOREACH(const LPRDOFUNArithm& pParam, pEvent->getParamList()->getContainer())
+		{
+			ASSERT(pParam);
+			if (m_currParam < pPattern->m_paramList.size())
 			{
-				calc->setEvent(pRuntimeEvent);
-			}
-
-			LPIActivity pActivity = pRuntimeEvent;
-			ASSERT(pActivity);
-			BOOST_FOREACH(const LPRDOFUNArithm& pParam, pEvent->getParamList()->getContainer())
-			{
-				ASSERT(pParam);
-				if (m_currParam < pPattern->m_paramList.size())
+				rdo::runtime::LPRDOCalc pSetParamCalc;
+				LPRDOParam pPatternParam = pPattern->m_paramList[m_currParam];
+				ASSERT(pPatternParam);
+				if (pParam->typeInfo()->src_info().src_text() == "*")
 				{
-					rdo::runtime::LPRDOCalc pSetParamCalc;
-					LPRDOParam pPatternParam = pPattern->m_paramList[m_currParam];
-					ASSERT(pPatternParam);
-					if (pParam->typeInfo()->src_info().src_text() == "*")
+					if (!pPatternParam->getDefault()->defined())
 					{
-						if (!pPatternParam->getDefault()->defined())
-						{
-							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("Нет значения по умолчанию для параметра '%s'", pPatternParam->src_text().c_str()));
-							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("См. параметр '%s', тип '%s'", pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
-							RDOParser::s_parser()->error().push_done();
-						}
-						rdo::runtime::RDOValue val = pPatternParam->getDefault()->value();
-						ASSERT(val);
-						pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
-							m_currParam,
-							rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
-						);
+						RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("Нет значения по умолчанию для параметра '%s'", pPatternParam->src_text().c_str()));
+						RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("См. параметр '%s', тип '%s'", pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+						RDOParser::s_parser()->error().push_done();
 					}
-					else
-					{
-						LPTypeInfo pTypeInfo = pPatternParam->getTypeInfo();
-						ASSERT(pTypeInfo);
-						rdo::runtime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
-						ASSERT(pParamValueCalc);
-						pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
-							m_currParam,
-							pParamValueCalc
-						);
-					}
-					ASSERT(pSetParamCalc);
-					pActivity->addParamCalc(pSetParamCalc);
-					++m_currParam;
+					rdo::runtime::RDOValue val = pPatternParam->getDefault()->value();
+					ASSERT(val);
+					pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
+						m_currParam,
+						rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
+					);
 				}
 				else
 				{
-					RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format("Слишком много параметров для события '%s' при планировании события '%s'", pEvent->name().c_str(), pEvent->name().c_str()));
-					RDOParser::s_parser()->error().push_done();
+					LPTypeInfo pTypeInfo = pPatternParam->getTypeInfo();
+					ASSERT(pTypeInfo);
+					rdo::runtime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
+					ASSERT(pParamValueCalc);
+					pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
+						m_currParam,
+						pParamValueCalc
+					);
 				}
+				ASSERT(pSetParamCalc);
+				pActivity->addParamCalc(pSetParamCalc);
+				++m_currParam;
 			}
-			m_currParam = 0;
+			else
+			{
+				RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format("Слишком много параметров для события '%s' при планировании события '%s'", pEvent->name().c_str(), pEvent->name().c_str()));
+				RDOParser::s_parser()->error().push_done();
+			}
 		}
-		else
-		{
-			NEVER_REACH_HERE; //потому что нерегулярных событий больше нет
-		}
+		m_currParam = 0;
 	}
 }
 

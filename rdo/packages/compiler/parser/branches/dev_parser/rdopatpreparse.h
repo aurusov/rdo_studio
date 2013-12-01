@@ -37,18 +37,16 @@ public:
 	REF(CalcList)            getCalcList    ();
 	LPIBaseOperation         getRuntimeEvent() const;
 	void                     setRuntimeEvent(LPIBaseOperation pRuntimeEvent);
-	rbool                    getRegular     () const;
 	rdo::runtime::LPRDOCalc  getInitCalc    () const;
 	void                     setInitCalc    (CREF(rdo::runtime::LPRDOCalc) pCalc);
 	void                     setParamList   (CREF(LPArithmContainer) pParamList);
 	CREF(LPArithmContainer)  getParamList   () const;
 
 private:
-	RDOEvent(CREF(tstring) name, rbool regular);
+	RDOEvent(CREF(tstring) name);
 	virtual ~RDOEvent();
 
 	tstring                  m_name;
-	rbool                    m_regullar;
 	CalcList                 m_calcList;
 	LPIBaseOperation         m_runtimeEvent;
 	rdo::runtime::LPRDOCalc  m_pInitCalc;
