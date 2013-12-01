@@ -234,6 +234,7 @@ private:
 
 	void runRSSPost();
 	void runSMRPost();
+	void runRTPPost();
 
 	template <class T>
 	void howIsIt()

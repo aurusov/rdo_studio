@@ -119,7 +119,6 @@ RDOParser::RDOParser()
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RSS, evnparse, evnerror, evnlex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rtp_parse, proc_rtp_error, proc_rtp_lex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rss_parse, proc_rss_error, proc_rss_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRTPPost>::create());
 #ifdef CORBA_ENABLE
 	m_compilers.push_back(rdo::Factory<RDOParserCorbaRTP>::create());
 	m_compilers.push_back(rdo::Factory<RDOParserCorbaRSS>::create());
@@ -469,6 +468,7 @@ void RDOParser::parse()
 		m_parser_item->parse(this);
 		m_parser_item = NULL;
 	}
+	runRTPPost();
 }
 
 void RDOParser::parse(REF(std::istream) stream)
@@ -527,6 +527,17 @@ void RDOParser::runSMRPost()
 	}
 }
 
+void RDOParser::runRTPPost()
+{
+	STL_FOR_ALL_CONST(getRTPResTypes(), RTPResTypeIt)
+	{
+		// Взять очередной тип ресурса в парсере
+		LPRDORTPResType pResType = *RTPResTypeIt;
+
+		// Создать соответствующий тип ресурсов в рантайме
+		pResType->end();
+	}
+}
 
 void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 {

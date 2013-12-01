@@ -224,21 +224,4 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 	}
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserRTPPost
-// --------------------------------------------------------------------------------
-void RDOParserRTPPost::parse(CREF(LPRDOParser) pParser)
-{
-	ASSERT(pParser);
-
-	STL_FOR_ALL_CONST(pParser->getRTPResTypes(), RTPResTypeIt)
-	{
-		// Взять очередной тип ресурса в парсере
-		LPRDORTPResType pResType = *RTPResTypeIt;
-
-		// Создать соответствующий тип ресурсов в рантайме
-		pResType->end();
-	}
-}
-
 CLOSE_RDO_PARSER_NAMESPACE
