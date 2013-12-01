@@ -11,6 +11,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QMessageBox>
 #include <QDir>
+#include <QCompleter>
+#include <QStringListModel>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"
@@ -18,6 +20,7 @@
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_dialog.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_tiles_order_dialog.h"
 #include "app/rdo_studio/plugins/game5/src/cost_setup_table.h"
+#include "app/rdo_studio/plugins/game5/src/multi_select_completer.h"
 // --------------------------------------------------------------------------------
 
 PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* pParent)
@@ -32,8 +35,19 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 	buttonHide->setCheckable(true);
 	buttonHide->setDefault(false);
 
+	MultiSelectCompleter* completer = new MultiSelectCompleter(QStringList(), this);
+	lineEditCustom->setCompleter(completer);
+
 	setFixedHeight(std::max(375, gameBoard->m_boardSizeY + 160));
 	adjustSize();
+	setFixedWidth(width());
+	setSizeGripEnabled(false);
+
+	rdo::gui::model::Model* pModel = getCurrentModel();
+	clearAllTabs();
+	pModel->getTab()->getItemEdit(rdoModelObjects::FUN)->clearAll();
+	pModel->getTab()->getItemEdit(rdoModelObjects::FUN)->appendText(QString::fromStdString(FUNtabText()));
+
 	connect(buttonHide        , &QPushButton::toggled, this, &PluginGame5GenerateSituationDialog::onClickHide         );
 	connect(buttonSetLineup   , &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::callDialog          );
 	connect(buttonRandomLineup, &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::emitSolvabilityCheck);
@@ -63,39 +77,16 @@ void PluginGame5GenerateSituationDialog::onClickHide(bool state)
 {
 	hiddenWidget->setVisible(state);
 	buttonHide->setText(buttonHide->text() == ">>" ? "<<" : ">>");
+	setFixedWidth(QWIDGETSIZE_MAX);
 	adjustSize();
+	setFixedWidth(width());
 }
 
 void PluginGame5GenerateSituationDialog::onClickOk()
 {
-	MainWindow* pMainWindow = (MainWindow*)(parent());
-	rdo::gui::model::Model* pModel = pMainWindow->getModel();
-	if (pModel)
-	{
-		if (pModel->getTab())
-		{
-			//pModel->saveModel(); !private
-			//QString a = pModel->getFullName(); !RDORepository
-			backUpModel(pModel);
-			clearAllTabs(pModel);
-
-			pModel->getTab()->getItemEdit(rdoModelObjects::RTP)->appendText(QString::fromStdString(RTPtabText()));
-			pModel->getTab()->getItemEdit(rdoModelObjects::RSS)->appendText(QString::fromStdString(RSStabText()));
-			pModel->getTab()->getItemEdit(rdoModelObjects::PAT)->appendText(QString::fromStdString(PATtabText()));
-			pModel->getTab()->getItemEdit(rdoModelObjects::DPT)->appendText(QString::fromStdString(DPTtabText()));
-			pModel->getTab()->getItemEdit(rdoModelObjects::FUN)->appendText(QString::fromStdString(FUNtabText()));
-
+	rdo::gui::model::Model* pModel = getCurrentModel();
+	updateTabs();
 	pModel->runModel();
-		}
-		else
-			QMessageBox::warning(pMainWindow, "Игра 5",
-			                     "Не найден текстовый редактор!\nВозможно не открыта ни одна модель.");
-	}
-	else
-	{
-		QMessageBox::warning(pMainWindow, "Игра 5",
-		                     "Не найдена модель!\nВозможно не открыта ни одна модель.");
-	}
 	done(Accepted);
 }
 
@@ -315,44 +306,16 @@ std::string PluginGame5GenerateSituationDialog::FUNtabText()
 	return FUNtabTextStream.str();
 }
 
-void PluginGame5GenerateSituationDialog::backUpModel(rdo::gui::model::Model* pModel)
+void PluginGame5GenerateSituationDialog::clearAllTabs()
 {
-	QString backUpFolder  = g_pApp->applicationDirPath() + "/model_backup/";
-	        backUpFolder += pModel->getName();
-	        backUpFolder += QDateTime::currentDateTime().toString("_yyyy-MM-dd_HH.mm.ss") + "/";
-	QDir makeDir;
-	makeDir.mkpath(backUpFolder);
+	rdo::gui::model::Model* pModel = getCurrentModel();
 	for (int i = 0; i < pModel->getTab()->tabBar()->count(); i++)
 	{
-		if (!(pModel->getTab()->getItemEdit(i)->isEmpty()))
+		if (i != rdoModelObjects::FUN)
 		{
-			QString backUpFile  = backUpFolder + pModel->getName() + ".";
-			        backUpFile += pModel->getTab()->tabBar()->tabText(i).toLower();
-			std::ofstream File;
-			File.open(backUpFile.toStdString().c_str());
-			rdo::textstream txtStream;
-			pModel->getTab()->getItemEdit(i)->save(txtStream);
-			std::string tabStr = txtStream.str();
-			File << tabStr;
-			File.close();
+			pModel->getTab()->getItemEdit(i)->clearAll();
 		}
 	}
-
-	QString projectBackUpFile = backUpFolder + pModel->getName() + "." + "rdox";
-	std::ofstream File;
-	File.open(projectBackUpFile.toStdString().c_str());
-	File
-	<< "<?xml version=\"1.0\"?>\n"
-	<< "<Settings>\n"
-	<< "	<Version ProjectVersion=\"2\" SMRVersion=\"2\" />\n"
-	<< "</Settings>";
-	File.close();
-}
-
-void PluginGame5GenerateSituationDialog::clearAllTabs(rdo::gui::model::Model* pModel)
-{
-	for (int i = 0; i < pModel->getTab()->tabBar()->count(); i++)
-		pModel->getTab()->getItemEdit(i)->clearAll();
 }
 
 void PluginGame5GenerateSituationDialog::callDialog()
@@ -360,4 +323,55 @@ void PluginGame5GenerateSituationDialog::callDialog()
 	TilesOrderDialog dlg(this, gameBoard->getBoardState());
 	connect(&dlg, &TilesOrderDialog::tilesOrderCommited, gameBoard, &Board::setTilesPositon);
 	dlg.exec();
+}
+
+void PluginGame5GenerateSituationDialog::updateTabs()
+{
+	rdo::gui::model::Model* pModel = getCurrentModel();
+	if (pModel->getTab())
+	{
+		clearAllTabs();
+
+		pModel->getTab()->getItemEdit(rdoModelObjects::RTP)->appendText(QString::fromStdString(RTPtabText()));
+		pModel->getTab()->getItemEdit(rdoModelObjects::RSS)->appendText(QString::fromStdString(RSStabText()));
+		pModel->getTab()->getItemEdit(rdoModelObjects::PAT)->appendText(QString::fromStdString(PATtabText()));
+		pModel->getTab()->getItemEdit(rdoModelObjects::DPT)->appendText(QString::fromStdString(DPTtabText()));
+	}
+}
+
+void PluginGame5GenerateSituationDialog::onPlgnAction()
+{
+	QStringList funList = parseFunTab();
+	QStringListModel* stringModel = (QStringListModel*)lineEditCustom->completer()->model();
+	stringModel->setStringList(funList);
+	exec();
+}
+
+QStringList PluginGame5GenerateSituationDialog::parseFunTab()
+{
+	rdo::gui::model::Model* pModel = getCurrentModel();
+	rdo::textstream txtStream;
+	pModel->getTab()->getItemEdit(rdoModelObjects::FUN)->save(txtStream);
+	QString tabStr = QString::fromStdString(txtStream.str());
+	QRegExp regExp("(\\$Function)(\\s*)([A-Za-z0-9_А-Яа-я\\$]*)(\\s*):");
+
+	QStringList list;
+	int pos=0;
+	while((pos = regExp.indexIn(tabStr, pos))!= -1)
+	{
+		list << regExp.cap(3);
+		pos += regExp.matchedLength();
+	}
+	return list;
+}
+
+rdo::gui::model::Model* PluginGame5GenerateSituationDialog::getCurrentModel()
+{
+	MainWindow* pMainWindow = (MainWindow*)(parent());
+	return pMainWindow->getModel();
+}
+
+QString PluginGame5GenerateSituationDialog::getBoardState()
+{
+	return gameBoard->getBoardState();
 }

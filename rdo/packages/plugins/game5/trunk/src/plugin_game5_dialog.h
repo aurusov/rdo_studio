@@ -26,8 +26,13 @@ public:
 	PluginGame5GenerateSituationDialog(QWidget * parent);
 	~PluginGame5GenerateSituationDialog();
 
+	QString getBoardState();
+
 signals:
 	void buttonRandomClicked(bool solvabilityCheck);
+
+public slots:
+	void onPlgnAction();
 
 private slots:
 	void callDialog ();
@@ -46,8 +51,11 @@ private:
 	std::string DPTtabText();
 	std::string FUNtabText();
 
-	void backUpModel (rdo::gui::model::Model* pModel);
-	void clearAllTabs(rdo::gui::model::Model* pModel);
+	void clearAllTabs();
+	rdo::gui::model::Model* getCurrentModel();
+	void updateTabs();
+
+	QStringList parseFunTab();
 };
 
 #endif // _RDO_PLUGIN_GAME_5_DIALOG_H_
