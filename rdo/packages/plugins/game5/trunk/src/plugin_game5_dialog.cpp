@@ -159,9 +159,9 @@ std::string PluginGame5GenerateSituationDialog::RSStabText()
 	RSStabTextStream <<	"$Resources\n";
 	for (unsigned int i = 1; i < gameBoard->getTilesPos().size(); i++)
 	{
-		RSStabTextStream << "\tФишка Фишка" << i <<" = new Фишка(" << i << ", " << gameBoard->getTilesPos()[i] << ");\n";
+		RSStabTextStream << "\tФишка" << i <<" = Фишка(" << i << ", " << gameBoard->getTilesPos()[i] << ");\n";
 	}
-	RSStabTextStream << "\tДырка_t Дырка = new Дырка_t(" << gameBoard->getTilesPos()[0] << ");\n";
+	RSStabTextStream << "\tДырка = Дырка_t(" << gameBoard->getTilesPos()[0] << ");\n";
 	RSStabTextStream <<	"$End\n";
 	return RSStabTextStream.str();
 }
