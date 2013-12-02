@@ -47,7 +47,7 @@ SET(DIALOGS_FILES
 	src/plugin_game5_graph_dialog.h
 	src/plugin_game5_graph_dialog.cpp
 	src/plugin_game5_graph_node_info_dialog.h
-	src/plugin_game5_graph_node_info_dialog.cpph
+	src/plugin_game5_graph_node_info_dialog.cpp
 	src/plugin_game5_tiles_order_dialog.h
 	src/plugin_game5_tiles_order_dialog.cpp
 )
