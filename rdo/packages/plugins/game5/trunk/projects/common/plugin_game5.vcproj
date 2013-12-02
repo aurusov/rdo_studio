@@ -175,90 +175,6 @@
 			Name=".src"
 			>
 			<File
-				RelativePath="..\..\src\board.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\board.h"
-				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\combobox_delegate.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\combobox_delegate.h"
-				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\cost_setup_table.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\cost_setup_table.h"
-				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\src\plugin_game5.cpp"
 				>
 			</File>
@@ -286,108 +202,422 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath="..\..\src\plugin_game5_dialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\plugin_game5_dialog.h"
-				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\plugin_game5_tiles_order_dialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\plugin_game5_tiles_order_dialog.h"
-				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\tiles.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\tiles.h"
-				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC&apos;ing $(InputName).h"
-						CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-			</File>
 			<Filter
-				Name=".ui"
+				Name=".dialogs"
 				>
 				<File
-					RelativePath="..\..\src\plugin_game5_dialog.ui"
+					RelativePath="..\..\src\plugin_game5_dialog.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\plugin_game5_dialog.h"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCustomBuildTool"
-							Description="Generating ui_$(InputName) header"
-							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;&#x0D;&#x0A;"
-							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						/>
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\plugin_game5_tiles_order_dialog.ui"
+					RelativePath="..\..\src\plugin_game5_graph_dialog.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\plugin_game5_graph_dialog.h"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCustomBuildTool"
-							Description="Generating ui_$(InputName) header"
-							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;&#x0D;&#x0A;"
-							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\plugin_game5_graph_node_info_dialog.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\plugin_game5_graph_node_info_dialog.h"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\plugin_game5_tiles_order_dialog.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\plugin_game5_tiles_order_dialog.h"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<Filter
+					Name=".ui"
+					>
+					<File
+						RelativePath="..\..\src\plugin_game5_dialog.ui"
+						>
+						<FileConfiguration
+							Name="debug|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+								Description="Generating ui_$(InputName) header"
+								CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;&#x0D;&#x0A;"
+								Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="release|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+								Description="Generating ui_$(InputName) header"
+								CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;&#x0D;&#x0A;"
+								Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\src\plugin_game5_graph_dialog.ui"
+						>
+						<FileConfiguration
+							Name="debug|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+								Description="Generating ui_$(InputName) header"
+								CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;&#x0D;&#x0A;"
+								Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="release|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+								Description="Generating ui_$(InputName) header"
+								CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;&#x0D;&#x0A;"
+								Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\src\plugin_game5_graph_node_info_dialog.ui"
+						>
+						<FileConfiguration
+							Name="debug|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+								Description="Generating ui_$(InputName) header"
+								CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;&#x0D;&#x0A;"
+								Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="release|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+								Description="Generating ui_$(InputName) header"
+								CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;&#x0D;&#x0A;"
+								Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\src\plugin_game5_tiles_order_dialog.ui"
+						>
+						<FileConfiguration
+							Name="debug|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+								Description="Generating ui_$(InputName) header"
+								CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;&#x0D;&#x0A;"
+								Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							/>
+						</FileConfiguration>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name=".game_board"
+				>
+				<File
+					RelativePath="..\..\src\board.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\board.h"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\combobox_delegate.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\combobox_delegate.h"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\cost_setup_table.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\cost_setup_table.h"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\tiles.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tiles.h"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name=".completer"
+				>
+				<File
+					RelativePath="..\..\src\multi_select_completer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\multi_select_completer.h"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name=".graph"
+				>
+				<File
+					RelativePath="..\..\src\graph_edge.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\graph_edge.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\graph_info.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\graph_info.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\graph_node.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\graph_node.h"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\graph_widget.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\graph_widget.h"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="MOC&apos;ing $(InputName).h"
+							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
 						/>
 					</FileConfiguration>
 				</File>
@@ -396,42 +626,78 @@
 		<Filter
 			Name=".generated"
 			>
-			<File
-				RelativePath=".\bin\plugin_game5\generated\moc_board.cpp"
+			<Filter
+				Name=".moc"
 				>
-			</File>
-			<File
-				RelativePath=".\bin\plugin_game5\generated\moc_combobox_delegate.cpp"
+				<File
+					RelativePath=".\bin\plugin_game5\generated\moc_board.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\moc_combobox_delegate.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\moc_cost_setup_table.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\moc_graph_node.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\moc_graph_widget.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\moc_multi_select_completer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\moc_plugin_game5.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\moc_plugin_game5_dialog.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\moc_plugin_game5_graph_dialog.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\moc_plugin_game5_graph_node_info_dialog.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\moc_plugin_game5_tiles_order_dialog.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\moc_tiles.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".ui"
 				>
-			</File>
-			<File
-				RelativePath=".\bin\plugin_game5\generated\moc_cost_setup_table.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\bin\plugin_game5\generated\moc_plugin_game5.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\bin\plugin_game5\generated\moc_plugin_game5_dialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\bin\plugin_game5\generated\moc_plugin_game5_tiles_order_dialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\bin\plugin_game5\generated\moc_tiles.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\bin\plugin_game5\generated\ui_plugin_game5_dialog.h"
-				>
-			</File>
-			<File
-				RelativePath=".\bin\plugin_game5\generated\ui_plugin_game5_tiles_order_dialog.h"
-				>
-			</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\ui_plugin_game5_dialog.h"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\ui_plugin_game5_graph_dialog.h"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\ui_plugin_game5_graph_node_info_dialog.h"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\plugin_game5\generated\ui_plugin_game5_tiles_order_dialog.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

@@ -20,41 +20,78 @@ SET(MOC_FILES
 	src/board.h
 	src/combobox_delegate.h
 	src/cost_setup_table.h
+	src/multi_select_completer.h
+	src/graph_node.h
+	src/graph_widget.h
 	src/plugin_game5.h
 	src/plugin_game5_dialog.h
+	src/plugin_game5_graph_dialog.h
+	src/plugin_game5_graph_node_info_dialog.h
 	src/plugin_game5_tiles_order_dialog.h
 	src/tiles.h
 )
 
 SET(SRC_FILES
+	src/plugin_game5.h
+	src/plugin_game5.cpp
+)
+
+SET(COMPLETER_FILES
+	src/multi_select_completer.h
+	src/multi_select_completer.cpp	
+)
+
+SET(DIALOGS_FILES
+	src/plugin_game5_dialog.h
+	src/plugin_game5_dialog.cpp
+	src/plugin_game5_graph_dialog.h
+	src/plugin_game5_graph_dialog.cpp
+	src/plugin_game5_graph_node_info_dialog.h
+	src/plugin_game5_graph_node_info_dialog.cpph
+	src/plugin_game5_tiles_order_dialog.h
+	src/plugin_game5_tiles_order_dialog.cpp
+)
+
+SET(GAME_BOARD_FILES
 	src/board.h
 	src/board.cpp
 	src/combobox_delegate.h
 	src/combobox_delegate.cpp
 	src/cost_setup_table.h
 	src/cost_setup_table.cpp
-	src/plugin_game5.h
-	src/plugin_game5.cpp
-	src/plugin_game5_dialog.h
-	src/plugin_game5_dialog.cpp
-	src/plugin_game5_tiles_order_dialog.h
-	src/plugin_game5_tiles_order_dialog.cpp
 	src/tiles.h
 	src/tiles.cpp
 )
 
-SET(SRC_UI_FILES
+SET(GRAPH_FILES
+	src/graph_info.h
+	src/graph_info.cpp
+	src/graph_edge.h
+	src/graph_edge.cpp
+	src/graph_node.h
+	src/graph_node.cpp
+	src/graph_widget.h
+	src/graph_widget.cpp
+)
+
+SET(DIALOGS_UI_FILES
 	src/plugin_game5_dialog.ui
 	src/plugin_game5_tiles_order_dialog.ui
+	src/plugin_game5_graph_dialog.ui
+	src/plugin_game5_graph_node_info_dialog.ui
 )
 
 SET(CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 MESSAGE(STATUS ${CMAKE_CURRENT_BINARY_DIR})
-QT5_WRAP_UI(GENERATED_SRC_UI_FILES ${SRC_UI_FILES})
+QT5_WRAP_UI(GENERATED_DIALOGS_UI_FILES ${DIALOGS_UI_FILES})
 
 SET(PLUGIN_SRC_FILES
 	${SRC_FILES}
-	${SRC_UI_FILES}
+	${COMPLETER_FILES}
+	${DIALOGS_FILES}
+	${GAME_BOARD_FILES}
+	${GRAPH_FILES}
+	${DIALOGS_UI_FILES}
 )
 
 SET(QT_MOC_FLAGS)
@@ -68,7 +105,7 @@ ENDFOREACH()
 
 ADD_LIBRARY(plugin_game5 SHARED
 	${PLUGIN_SRC_FILES}
-	${GENERATED_SRC_UI_FILES}
+	${GENERATED_DIALOGS_UI_FILES}
 	${GENERATED_MOC_FILES}
 )
 SET_TARGET_PROPERTIES(plugin_game5 PROPERTIES FOLDER .plugins)
@@ -103,8 +140,24 @@ IF(MSVC) # options for windows #
 		${SRC_FILES}
 	)
 
-	SOURCE_GROUP(".src\\.ui" FILES
-		${SRC_UI_FILES}
+	SOURCE_GROUP(".src\\.completer" FILES
+		${COMPLETER_FILES}
+	)
+
+	SOURCE_GROUP(".src\\.dialogs" FILES
+		${DIALOGS_FILES}
+	)
+
+	SOURCE_GROUP(".src\\.game_board" FILES
+		${GAME_BOARD_FILES}
+	)
+
+	SOURCE_GROUP(".src\\.graph" FILES
+		${GRAPH_FILES}
+	)
+
+	SOURCE_GROUP(".src\\.dialogs\\.ui" FILES
+		${DIALOGS_UI_FILES}
 	)
 
 ENDIF(MSVC)
