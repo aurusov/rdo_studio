@@ -77,17 +77,27 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 		parser::g_error().push_done();
 	}
 	RDOParser::s_parser()->insertPATPattern(this);
-	RDOParser::s_parser()->contextStack()->push(this);
 
 	m_pContextMemory = rdo::Factory<ContextMemory>::create();
 	ASSERT(m_pContextMemory);
-	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
-
-	ContextMemory::push();
 }
 
 RDOPATPattern::~RDOPATPattern()
 {}
+
+void RDOPATPattern::pushContext()
+{
+	RDOParser::s_parser()->contextStack()->push(this);
+	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
+	ContextMemory::push();
+}
+
+void RDOPATPattern::popContext()
+{
+	ContextMemory::pop();
+	RDOParser::s_parser()->contextStack()->pop<ContextMemory>();
+	RDOParser::s_parser()->contextStack()->pop<RDOPATPattern>();
+}
 
 tstring RDOPATPattern::typeToString(PatType type) const
 {
@@ -612,9 +622,6 @@ void RDOPATPattern::end()
 			addChoiceFromCalc(pCalc);
 		}
 	}
-	ContextMemory::pop();
-	RDOParser::s_parser()->contextStack()->pop<ContextMemory>();
-	RDOParser::s_parser()->contextStack()->pop<RDOPATPattern>();
 }
 
 // --------------------------------------------------------------------------------

@@ -1197,7 +1197,7 @@ pat_header
 			ASSERT(pName);
 			LPRDOPATPattern pPattern = PARSER->findPATPattern(pName->value().getIdentificator());
 			ASSERT(pPattern);
-			PARSER->howIsIt<LPRDOPATPattern>();
+			pPattern->pushContext();
 			$$ = PARSER->stack().push(pPattern);
 		}
 	}
@@ -1209,6 +1209,7 @@ pat_header
 			ASSERT(pName);
 			LPRDOPATPattern pPattern = rdo::Factory<RDOPatternOperation>::create(pName->src_info(), $4 != 0);
 			ASSERT(pPattern);
+			pPattern->pushContext();
 			$$ = PARSER->stack().push(pPattern);
 		}
 	}
@@ -1220,6 +1221,7 @@ pat_header
 			ASSERT(pName);
 			LPRDOPATPattern pPattern = rdo::Factory<RDOPatternRule>::create(pName->src_info(), $4 != 0);
 			ASSERT(pPattern);
+			pPattern->pushContext();
 			$$ = PARSER->stack().push(pPattern);
 		}
 	}
@@ -1231,6 +1233,7 @@ pat_header
 			ASSERT(pName);
 			LPRDOPATPattern pPattern = rdo::Factory<RDOPatternKeyboard>::create(pName->src_info(), $4 != 0);
 			ASSERT(pPattern);
+			pPattern->pushContext();
 			$$ = PARSER->stack().push(pPattern);
 		}
 	}
@@ -1961,7 +1964,9 @@ pat_rel_res
 	{
 		#PASS2
 		{
-			if (PARSER->getLastPATPattern()->isHaveConvertEnd())
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			if (pPattern->isHaveConvertEnd())
 			{
 				PARSER->error().error(@3, @4, "Ожидается статус конвертора начала");
 			}
@@ -1975,7 +1980,9 @@ pat_rel_res
 	{
 		#PASS2
 		{
-			if (PARSER->getLastPATPattern()->isHaveConvertEnd())
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			if (pPattern->isHaveConvertEnd())
 			{
 				PARSER->error().error(@3, @4, "Ожидается статус конвертора начала");
 			}
@@ -1989,7 +1996,9 @@ pat_rel_res
 	{
 		#PASS2
 		{
-			switch (PARSER->getLastPATPattern()->getType())
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_Rule:
 				{
@@ -2014,7 +2023,9 @@ pat_rel_res
 	{
 		#PASS2
 		{
-			switch (PARSER->getLastPATPattern()->getType())
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_Rule:
 				{
@@ -2039,7 +2050,9 @@ pat_rel_res
 	{
 		#PASS2
 		{
-			switch (PARSER->getLastPATPattern()->getType())
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_Rule:
 				{
@@ -2064,7 +2077,9 @@ pat_rel_res
 	{
 		#PASS2
 		{
-			switch (PARSER->getLastPATPattern()->getType())
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_Rule:
 				{
@@ -2354,7 +2369,9 @@ pat_choice
 	{
 		#PASS2
 		{
-			PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceEmpty;
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceEmpty;
 			LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice NoCheck"), RDOPATChoiceFrom::ch_empty);
 			ASSERT(pChoiceFrom);
 			$$ = PARSER->stack().push(pChoiceFrom);
@@ -2394,7 +2411,9 @@ pat_choice_nocheck
 	{
 		#PASS2
 		{
-			PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceNoCheck;
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceNoCheck;
 		}
 	}
 	;
@@ -2404,7 +2423,9 @@ pat_choice_from
 	{
 		#PASS2
 		{
-			PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceFrom;
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceFrom;
 		}
 	}
 	;
@@ -2414,7 +2435,9 @@ pat_order
 	{
 		#PASS2
 		{
-			PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderEmpty;
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderEmpty;
 			LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo(), rdo::runtime::RDOSelectResourceCalc::order_empty);
 			ASSERT(pChoiceOrder);
 			$$ = PARSER->stack().push(pChoiceOrder);
@@ -2472,7 +2495,9 @@ pat_choice_first
 	{
 		#PASS2
 		{
-			PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderFirst;
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderFirst;
 		}
 	}
 	;
@@ -2482,7 +2507,9 @@ pat_choice_with_min
 	{
 		#PASS2
 		{
-			PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderWithMin;
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderWithMin;
 		}
 	}
 	;
@@ -2492,7 +2519,9 @@ pat_choice_with_max
 	{
 		#PASS2
 		{
-			PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderWithMax;
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderWithMax;
 		}
 	}
 	;
@@ -2832,7 +2861,9 @@ convert_rule
 	{
 		#PASS2
 		{
-			PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
 
 			LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
 			ASSERT(pContextReturnable);
@@ -2847,7 +2878,9 @@ convert_event
 	{
 		#PASS2
 		{
-			PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
 
 			LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
 			ASSERT(pContextReturnable);
@@ -2862,7 +2895,9 @@ convert_begin
 	{
 		#PASS2
 		{
-			PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
 
 			LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
 			ASSERT(pContextReturnable);
@@ -2877,7 +2912,9 @@ convert_end
 	{
 		#PASS2
 		{
-			PARSER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::convertEnd;
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+			ASSERT(pPattern);
+			pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::convertEnd;
 
 			LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
 			ASSERT(pContextReturnable);
@@ -2894,6 +2931,7 @@ pat_pattern
 		{
 			LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
 			pPattern->end();
+			pPattern->popContext();
 			$$ = PARSER->stack().push(pPattern);
 		}
 	}
@@ -3073,7 +3111,7 @@ process_input_statement
 
 			tstring relResName = PARSER->stack().pop<RDOValue>($5)->value().getIdentificator();
 
-			LPRDOPATPattern pPattern = PARSER->getLastPATPattern();
+			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
 			ASSERT(pPattern);
 			/*из-за использования RDO_IDENTIF_RELRES findRelevantResource() всегда находит ресурс*/
 			LPRDORelevantResource pRelRes = pPattern->findRelevantResource(relResName);
@@ -8676,7 +8714,9 @@ equal_statement
 			}
 			else
 			{
-				LPRDORelevantResource pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
+				LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+				ASSERT(pPattern);
+				LPRDORelevantResource pRelRes = pPattern->m_pCurrRelRes;
 				ASSERT(pRelRes);
 				LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
 				if (!pParam)
@@ -8808,7 +8848,9 @@ equal_statement
 			}
 			else
 			{
-				LPRDORelevantResource pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
+				LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+				ASSERT(pPattern);
+				LPRDORelevantResource pRelRes = pPattern->m_pCurrRelRes;
 				ASSERT(pRelRes);
 				LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
 				if (!pParam)
@@ -9044,7 +9086,9 @@ set_array_item_statement
 			}
 			else
 			{
-				LPRDORelevantResource pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
+				LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
+				ASSERT(pPattern);
+				LPRDORelevantResource pRelRes = pPattern->m_pCurrRelRes;
 				ASSERT(pRelRes);
 				LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
 				ASSERT(pParam);

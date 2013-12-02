@@ -118,6 +118,9 @@ public:
 	virtual char getModelStructureLetter() const = 0;
 	tstring      getPatternId           () const;
 
+	void pushContext();
+	void popContext ();
+
 protected:
 	RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info);
 	virtual ~RDOPATPattern();
