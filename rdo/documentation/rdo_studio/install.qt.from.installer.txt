@@ -63,4 +63,4 @@ Show directories for = Include files, добавляем $(QTDIR)\include
 Show directories for = Library files, добавляем $(QTDIR)\lib
 
 5. Под Debian Wheezy еще необходима библиотека GL. Пакет libgl1-mesa-dev содержит достаточную реализацию OpenGL API.
-apt-get install libgl1-mesa-dev
+sudo apt-get install libgl1-mesa-dev
