@@ -1,0 +1,17 @@
+NetBeans - кросс-платформенная среда разработки (IDE)
+
+1. Скачать с сайта последную версию для C++
+https://netbeans.org/downloads/index.html
+
+2. Установка
+2.1 Для Linux
+
+- Сделать скаченый скрипт запускаемым
+chmod +x netbeans-7.4-cpp-linux.sh
+
+- Поставить java. Я использую 7-ую версию
+sudo apt-get install openjdk-7-jdk
+
+- Запускаем netbeans-7.4-cpp-linux.sh. В визарде можно ничего не менять.
+- Чтобы изменить тему меню, можно запускать NetBeans с параметром
+/home/drobus/netbeans-7.4/bin/netbeans --laf javax.swing.plaf.metal.MetalLookAndFeel
