@@ -1203,11 +1203,20 @@ pat_header
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace
 	{
-		#PASS2
+		#PASS1
 		{
 			LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
 			ASSERT(pName);
 			LPRDOPATPattern pPattern = rdo::Factory<RDOPatternOperation>::create(pName->src_info(), $4 != 0);
+			ASSERT(pPattern);
+			$$ = PARSER->stack().push(pPattern);
+		}
+
+		#PASS2
+		{
+			LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
+			ASSERT(pName);
+			LPRDOPATPattern pPattern = PARSER->findPATPattern(pName->value().getIdentificator());
 			ASSERT(pPattern);
 			pPattern->pushContext();
 			$$ = PARSER->stack().push(pPattern);
@@ -1215,11 +1224,20 @@ pat_header
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule pat_trace
 	{
-		#PASS2
+		#PASS1
 		{
 			LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
 			ASSERT(pName);
 			LPRDOPATPattern pPattern = rdo::Factory<RDOPatternRule>::create(pName->src_info(), $4 != 0);
+			ASSERT(pPattern);
+			$$ = PARSER->stack().push(pPattern);
+		}
+
+		#PASS2
+		{
+			LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
+			ASSERT(pName);
+			LPRDOPATPattern pPattern = PARSER->findPATPattern(pName->value().getIdentificator());
 			ASSERT(pPattern);
 			pPattern->pushContext();
 			$$ = PARSER->stack().push(pPattern);
@@ -1227,11 +1245,20 @@ pat_header
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard pat_trace
 	{
-		#PASS2
+		#PASS1
 		{
 			LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
 			ASSERT(pName);
 			LPRDOPATPattern pPattern = rdo::Factory<RDOPatternKeyboard>::create(pName->src_info(), $4 != 0);
+			ASSERT(pPattern);
+			$$ = PARSER->stack().push(pPattern);
+		}
+
+		#PASS2
+		{
+			LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
+			ASSERT(pName);
+			LPRDOPATPattern pPattern = PARSER->findPATPattern(pName->value().getIdentificator());
 			ASSERT(pPattern);
 			pPattern->pushContext();
 			$$ = PARSER->stack().push(pPattern);
