@@ -1287,11 +1287,6 @@ pat_trace
 		{
 			$$ = 0;
 		}
-
-		#PASS2
-		{
-			$$ = 0;
-		}
 	}
 	| RDO_trace	
 	{
@@ -1299,20 +1294,10 @@ pat_trace
 		{
 			$$ = 1;
 		}
-
-		#PASS2
-		{
-			$$ = 1;
-		}
 	}
 	| RDO_no_trace
 	{
 		#PASS1
-		{
-			$$ = 0;
-		}
-
-		#PASS2
 		{
 			$$ = 0;
 		}
