@@ -6556,10 +6556,7 @@ fun_consts
 	: RDO_Constant fun_const_body RDO_End
 	| RDO_Constant fun_const_body
 	{
-		#PASS2
-		{
-			PARSER->error().error(@2, "После описания констант ожидается ключевое слово $End");
-		}
+		PARSER->error().error(@2, "После описания констант ожидается ключевое слово $End");
 	}
 	;
 
@@ -6568,17 +6565,14 @@ fun_const_body
 	| fun_const_body fun_const_param_desc
 	| fun_const_body error
 	{
-		#PASS2
-		{
-			PARSER->error().error(@1, "Ожидается описание константы");
-		}
+		PARSER->error().error(@1, "Ожидается описание константы");
 	}
 	;
 
 fun_const_param_desc
 	: RDO_IDENTIF_COLON type_declaration param_value_default
 	{
-		#PASS2
+		#PASS1
 		{
 			LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
 			ASSERT(pName);
@@ -6593,14 +6587,14 @@ fun_const_param_desc
 	}
 	| RDO_IDENTIF_COLON
 	{
-		#PASS2
+		#PASS1
 		{
 			PARSER->error().error(@1, "Ожидается тип константы");
 		}
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		#PASS2
+		#PASS1
 		{
 			PARSER->error().error(@2, "Ошибка описания типа константы");
 		}
