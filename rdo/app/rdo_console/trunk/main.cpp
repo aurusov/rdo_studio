@@ -208,10 +208,11 @@ void process_event(PTR(rdo::console_controller) pAppController, REF(event_contai
 		event_container::iterator it = container.begin();
 		if(it->first < runtime_time)
 		{
-			std::wcout << rdo::locale::convertToWStr(boost::str(
-				boost::format("process event : name : %1%  |  time : %2%")
+			std::string eventName = boost::str(boost::format("process event : name : %1%  |  time : %2%")
 				% it->second->getName()
-				% it->second->getTime())) << std::endl;
+				% it->second->getTime()
+			);
+			rdo::locale::cout(eventName);
 
 			rdo::event::types type = it->second->getType();
 

@@ -51,8 +51,8 @@ ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[]) :
 	}
 	catch (CREF(std::exception) e)
 	{
-		std::wcout << rdo::locale::convertToWStr(boost::str(
-			boost::format("command line error: %1%") % e.what())) << std::endl;
+		const std::string error = boost::str(boost::format("command line error: %1%") % e.what());
+		rdo::locale::cout(error);
 	}
 }
 
@@ -62,23 +62,24 @@ ControllerConsoleOptions::~ControllerConsoleOptions()
 
 void ControllerConsoleOptions::parseOptions()
 {
-	if ((m_variables.empty() || m_variables.count(HELP_COMMAND)) && 
+	if ((m_variables.empty() || m_variables.count(HELP_COMMAND)) &&
 		    !m_variables.count(LANGUAGE_COMMAND) &&
 		    !m_variables.count(VERSION_COMMAND))
 	{
 		std::stringstream stream;
 		stream << m_options;
-		std::wcout << rdo::locale::convertToWStr(stream.str()) << std::endl;
+		rdo::locale::cout(stream.str());
 		m_help = true;
 	}
 	else if (m_variables.count(LANGUAGE_COMMAND))
 	{
-		std::wcout << rdo::locale::convertToWStr("rdo language v" + RDO_LANGUAGE_VERSION + " ( supported rdox )") << std::endl;
+		const std::string message("rdo language v" + RDO_LANGUAGE_VERSION + " ( supported rdox )");
+		rdo::locale::cout(message);
 		m_help = true;
 	}
 	else if (m_variables.count(VERSION_COMMAND))
 	{
-		std::wcout << rdo::locale::convertToWStr(rdo::version::g_versionName) << std::endl;
+		rdo::locale::cout(rdo::version::g_versionName);
 		m_help = true;
 	}
 	else if(m_variables.count(CONVERTOR_COMMAND))
@@ -152,5 +153,5 @@ void ControllerConsoleOptions::createAdditionalOptions(REF(po::options_descripti
 			(AUTO_EXIT_COMMAND.c_str(), AUTO_EXIT_COMMENT.c_str())
 			(DONT_CLOSE_IF_ERROR_COMMAND.c_str(), DONT_CLOSE_IF_ERROR_COMMENT.c_str())
 			(PLUGIN_START_COMMAND.c_str(), PLUGIN_START_COMMENT.c_str())
-			(PLUGIN_AUTO_EXIT_COMMAND.c_str(), PLUGIN_AUTO_EXIT_COMMENT.c_str());	
+			(PLUGIN_AUTO_EXIT_COMMAND.c_str(), PLUGIN_AUTO_EXIT_COMMENT.c_str());
 }

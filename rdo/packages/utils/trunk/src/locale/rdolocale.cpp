@@ -127,4 +127,13 @@ std::string locale::convertFromWStr(const std::wstring& txt, const std::locale& 
 	return boost::locale::conv::from_utf(txt, locale);
 }
 
+void locale::cout(const std::string& txt)
+{
+#ifdef OST_WINDOWS
+		std::wcout << convertToWStr(txt) << std::endl;
+#else
+		std::cout << txt << std::endl;
+#endif
+}
+
 } // namespace rdo

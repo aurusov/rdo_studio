@@ -42,6 +42,8 @@ namespace rdo
 		static std::wstring convertToWStr     (const std::string& txt, const std::locale& locale = std::locale());
 		static std::string  convertFromWStr   (const std::wstring& txt, const std::locale& locale = std::locale());
 
+		static void cout(const std::string& txt);
+
 	private:
 		locale();
 
