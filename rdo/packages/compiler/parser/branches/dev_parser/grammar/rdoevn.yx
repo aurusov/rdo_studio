@@ -177,7 +177,6 @@
 %token RDO_color_yellow
 %token RDO_color_gray
 
-%token RDO_IDENTIF_RELRES
 %token RDO_typedef
 %token RDO_enum
 
@@ -2184,7 +2183,7 @@ pat_time
 	;
 
 pat_body
-	: pat_time RDO_IDENTIF_RELRES
+	: pat_time RDO_IDENTIF_COLON
 	{
 		#PASS2
 		{
@@ -2194,7 +2193,7 @@ pat_body
 			$$ = PARSER->stack().push(pPattern);
 		}
 	}
-	| pat_convert RDO_IDENTIF_RELRES
+	| pat_convert RDO_IDENTIF_COLON
 	{
 		#PASS2
 		{
@@ -2973,7 +2972,7 @@ planning_statement
 	;
 
 process_input_statement
-	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF_RELRES ')' ';'
+	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF ')' ';'
 	{
 		#PASS2
 		{
@@ -9626,21 +9625,7 @@ fun_arithm
 			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1)));
 		}
 	}
-	| RDO_IDENTIF_RELRES
-	{
-		#PASS2
-		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1)));
-		}
-	}
 	| RDO_IDENTIF '.' RDO_IDENTIF
-	{
-		#PASS2
-		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3)));
-		}
-	}
-	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF
 	{
 		#PASS2
 		{

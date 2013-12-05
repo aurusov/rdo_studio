@@ -1129,6 +1129,11 @@ pat_body
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		tstring         name     = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
+
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@2.m_last_seek, ":");
+		ASSERT(pInsert);
+		CONVERTER->insertDocUpdate(pInsert);
+
 		$$ = CONVERTER->stack().push(pPattern);
 	}
 	| pat_convert RDO_IDENTIF_RELRES
@@ -1136,6 +1141,11 @@ pat_body
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		tstring         name     = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
+
+		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@2.m_last_seek, ":");
+		ASSERT(pInsert);
+		CONVERTER->insertDocUpdate(pInsert);
+
 		$$ = CONVERTER->stack().push(pPattern);
 	}
 	| pat_time error

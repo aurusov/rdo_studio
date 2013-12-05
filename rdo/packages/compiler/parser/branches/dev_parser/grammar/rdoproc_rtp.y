@@ -174,7 +174,6 @@
 %token RDO_color_yellow
 %token RDO_color_gray
 
-%token RDO_IDENTIF_RELRES
 %token RDO_typedef
 %token RDO_enum
 
