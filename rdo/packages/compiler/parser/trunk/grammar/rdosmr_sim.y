@@ -174,7 +174,6 @@
 %token RDO_color_yellow
 %token RDO_color_gray
 
-%token RDO_IDENTIF_RELRES
 %token RDO_typedef
 %token RDO_enum
 
@@ -254,18 +253,25 @@ smr_cond
 	: /* empty */
 	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
 	{
-		tstring    eventName          = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		tstring           eventName   = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($6);
-		LPRDOEvent pEvent             = PARSER->findEvent(eventName);
-		if (!pEvent)
+
+		LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
+		if (!pPattern)
 		{
 			PARSER->error().error(@2, rdo::format("Попытка запланировать неизвестное событие: %s", eventName.c_str()));
+		}
+
+		LPRDOPatternEvent pEvent = pPattern.object_dynamic_cast<RDOPatternEvent>();
+		if (!pEvent)
+		{
+			PARSER->error().error(@2, rdo::format("Паттерн %s не является событием", eventName.c_str()));
 		}
 
 		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
 		if (arithmIt == pArithmList->getContainer().end())
 		{
-			PARSER->error().error(@1, rdo::format("Не указано время планирования события: %s", eventName.c_str()));
+			PARSER->error().error(@2, rdo::format("Не указано время планирования события: %s", eventName.c_str()));
 		}
 
 		LPRDOFUNArithm pTimeArithm = *arithmIt;
@@ -285,15 +291,11 @@ smr_cond
 		pCalcTime->setSrcInfo(pTimeArithm->src_info());
 		ASSERT(pCalcTime);
 
-		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
-		ASSERT(pBaseOperation);
-
 		rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
-		pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+		pEventPlan->setSrcInfo(RDOParserSrcInfo(@2, @7, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
 		ASSERT(pEventPlan);
-		pEvent->setParamList(pParamList);
-		pEventPlan->setEvent(pBaseOperation);
-		pEvent->setInitCalc(pEventPlan);
+		pEvent->insertPlaning(pEventPlan, pParamList);
+		pEvent->setBeforeStartModelPlaning(pEventPlan);
 	}
 	| smr_cond RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
 	| smr_cond RDO_Show_mode                  '=' smr_show_mode
@@ -748,9 +750,7 @@ fun_arithm
 	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| param_array_value                  { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
-	| RDO_IDENTIF_RELRES                 { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
-	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
 	| '*' 
 	{
 		LPRDOValue pValue = rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*"));

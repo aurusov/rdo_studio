@@ -62,6 +62,12 @@ void Context::setContextStack(CREF(LPContextStack) pContextStack)
 	m_pContextStack = pContextStack;
 }
 
+void Context::resetContextStack()
+{
+	ASSERT(m_pContextStack);
+	m_pContextStack = NULL;
+}
+
 LPContext Context::find(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);

@@ -26,6 +26,7 @@ OBJECT_VIRTUAL(Context)
 {
 DECLARE_FACTORY(Context);
 friend void ContextStack::push(LPContext pContext);
+friend void ContextStack::pop_not_safed();
 
 public:
 	struct FindResult
@@ -61,7 +62,8 @@ private:
 	LPContextStack  m_pContextStack;
 	FindResult      m_findResult;
 
-	void setContextStack(CREF(LPContextStack) pContextStack);
+	void setContextStack  (CREF(LPContextStack) pContextStack);
+	void resetContextStack();
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

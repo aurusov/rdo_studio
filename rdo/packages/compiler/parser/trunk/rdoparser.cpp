@@ -13,6 +13,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/runtime/calc/calc_pattern.h"
+#include "simulator/runtime/rdo_pattern.h"
+
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_rdo.h"
 #include "simulator/compiler/parser/rdofun.h"
@@ -66,7 +69,6 @@ DECLARE_PARSER_OBJECT_CONTAINER(DPTSearch     );
 DECLARE_PARSER_OBJECT_CONTAINER(DPTSome       );
 DECLARE_PARSER_OBJECT_CONTAINER(DPTPrior      );
 DECLARE_PARSER_OBJECT_CONTAINER(DPTActivity   );
-DECLARE_PARSER_OBJECT_CONTAINER(Event         );
 DECLARE_PARSER_OBJECT_CONTAINER(ResultGroup   );
 DECLARE_PARSER_OBJECT_CONTAINER(PROCProcess   );
 
@@ -116,23 +118,24 @@ RDOParser::RDOParser()
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RSS, evnparse, evnerror, evnlex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rtp_parse, proc_rtp_error, proc_rtp_lex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rss_parse, proc_rss_error, proc_rss_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRTPPost>::create());
 #ifdef CORBA_ENABLE
 	m_compilers.push_back(rdo::Factory<RDOParserCorbaRTP>::create());
 	m_compilers.push_back(rdo::Factory<RDOParserCorbaRSS>::create());
 #endif
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FUN, funparse, funerror, funlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FUN, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FUN, evnparse, evnerror, evnlex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evnparse, evnerror, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, patparse, paterror, patlex));
-	m_compilers.push_back(rdo::Factory<RDOParserEVNPost>::create());
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, dptparse, dpterror, dptlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, evnparse, evnerror, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, evnparse, evnerror, evnlex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_opr_parse, proc_opr_error, proc_opr_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, frmparse, frmerror, frmlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRSSPost>::create());
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, pmdparse, pmderror, pmdlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, evnparse, evnerror, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, evnparse, evnerror, evnlex));
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserSMRPost>::create());
 }
 
 RDOParser::~RDOParser()
@@ -182,7 +185,6 @@ void RDOParser::deinit()
 	m_allDPTSome    .clear();
 	m_allDPTPrior   .clear();
 	m_allDPTActivity.clear();
-	m_allEvent      .clear();
 	m_allResultGroup.clear();
 	m_allPROCProcess.clear();
 	m_allFUNGroup   .clear();
@@ -463,6 +465,7 @@ void RDOParser::parse()
 		m_parser_item->parse(this);
 		m_parser_item = NULL;
 	}
+	runRTPPost();
 }
 
 void RDOParser::parse(REF(std::istream) stream)
@@ -472,6 +475,65 @@ void RDOParser::parse(REF(std::istream) stream)
 		m_parser_item = compiler;
 		m_parser_item->parse(this, stream);
 		m_parser_item = NULL;
+	}
+}
+
+void RDOParser::beforeRun()
+{
+	runRSSPost();
+	runSMRPost();
+}
+
+void RDOParser::runRSSPost()
+{
+	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
+#ifdef RDOSIM_COMPATIBLE
+	STL_FOR_ALL_CONST(getRTPResTypes(), rtp_it)
+	{
+#endif
+		STL_FOR_ALL_CONST(getRSSResources(), rss_it)
+		{
+#ifdef RDOSIM_COMPATIBLE
+			if ((*rss_it)->getType() == *rtp_it)
+			{
+#endif
+				rdo::runtime::LPRDOCalc calc = (*rss_it)->createCalc();
+				runtime()->addInitCalc(calc);
+#ifdef RDOSIM_COMPATIBLE
+			}
+#endif
+		}
+#ifdef RDOSIM_COMPATIBLE
+	}
+#endif
+}
+
+void RDOParser::runSMRPost()
+{
+	//! Планирование событий, описанных в SMR
+	BOOST_FOREACH(const LPRDOPATPattern& pattern, getPATPatterns())
+	{
+		LPRDOPatternEvent event = pattern.object_dynamic_cast<RDOPatternEvent>();
+		if (!event)
+			continue;
+
+		rdo::runtime::LPRDOCalc initCalc = event->getBeforeStartModelPlaning();
+		if (initCalc)
+		{
+			runtime()->addInitCalc(initCalc);
+		}
+	}
+}
+
+void RDOParser::runRTPPost()
+{
+	STL_FOR_ALL_CONST(getRTPResTypes(), RTPResTypeIt)
+	{
+		// Взять очередной тип ресурса в парсере
+		LPRDORTPResType pResType = *RTPResTypeIt;
+
+		// Создать соответствующий тип ресурсов в рантайме
+		pResType->end();
 	}
 }
 

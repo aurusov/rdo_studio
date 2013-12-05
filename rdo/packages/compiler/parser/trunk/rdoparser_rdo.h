@@ -51,62 +51,6 @@ private:
 };
 DECLARE_POINTER(RDOParserRDOItem);
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserRSSPost
-// --------------------------------------------------------------------------------
-class RDOParserRSSPost: public RDOParserItem
-{
-DECLARE_FACTORY(RDOParserRSSPost);
-private:
-	RDOParserRSSPost()
-		: RDOParserItem(rdoModelObjects::RSS, NULL, NULL, NULL)
-	{}
-	virtual void parse(CREF(LPRDOParser) pParser);
-};
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserSMRPost
-// --------------------------------------------------------------------------------
-class RDOParserSMRPost: public RDOParserItem
-{
-DECLARE_FACTORY(RDOParserSMRPost);
-private:
-	RDOParserSMRPost();
-	virtual void parse(CREF(LPRDOParser) pParser);
-};
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserEVNPost
-// --------------------------------------------------------------------------------
-class RDOParserEVNPost: public RDOParserItem
-{
-DECLARE_FACTORY(RDOParserEVNPost);
-private:
-	RDOParserEVNPost()
-		: RDOParserItem(rdoModelObjects::PAT, NULL, NULL, NULL)
-		, m_currParam  (0)
-	{}
-
-	ruint             m_currParam;
-
-	virtual void parse(CREF(LPRDOParser) pParser);
-};
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOParserRTPPost
-// --------------------------------------------------------------------------------
-class RDOParserRTPPost: public RDOParserItem
-{
-	DECLARE_FACTORY(RDOParserRTPPost);
-private:
-	RDOParserRTPPost()
-		: RDOParserItem(rdoModelObjects::RTP, NULL, NULL, NULL)
-	{}
-
-	//! Cоздание типов ресурсов в runtime
-	virtual void parse(CREF(LPRDOParser) pParser);
-};
-
 CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_RDO_H_

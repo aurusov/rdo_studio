@@ -556,34 +556,6 @@ false {
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
 
 	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, name) : rdo::compiler::parser::RDOParserSrcInfo(name))));
-	switch (PARSER->getFileToParse())
-	{
-	case rdoModelObjects::EVN:
-	case rdoModelObjects::PAT:
-		if (PARSER->isPattern())
-		{
-			rdo::compiler::parser::LPRDOPATPattern pPattern = PARSER->getLastPATPattern();
-			ASSERT(pPattern);
-			rdo::compiler::parser::LPRDORelevantResource pCurrRelRes = pPattern->m_pCurrRelRes;
-			if (pCurrRelRes)
-			{
-				rdo::compiler::parser::LPRDORTPResType pResType = pCurrRelRes->getType();
-				ASSERT(pResType);
-				if (pResType->findRTPParam(name))
-				{
-					return RDO_IDENTIF;
-				}
-			}
-			if (pPattern->findRelevantResource(name))
-			{
-				return RDO_IDENTIF_RELRES;
-			}
-		}
-		break;
-
-	default:
-		break;
-	}
 	return RDO_IDENTIF;
 }
 

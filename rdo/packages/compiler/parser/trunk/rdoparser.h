@@ -28,10 +28,8 @@
 #include "simulator/compiler/parser/rdoparser_base.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/rdoparser_error.h"
-#include "simulator/compiler/parser/rdopatpreparse.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdopat.h"
-#include "simulator/compiler/parser/rdopatpreparse.h"
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/rdoprocess.h"
 #include "simulator/compiler/parser/rdopmd.h"
@@ -102,7 +100,6 @@ DEFINE_OBJECT_CONTAINER(DPTSearch     );
 DEFINE_OBJECT_CONTAINER(DPTSome       );
 DEFINE_OBJECT_CONTAINER(DPTPrior      );
 DEFINE_OBJECT_CONTAINER(DPTActivity   );
-DEFINE_OBJECT_CONTAINER(Event         );
 DEFINE_OBJECT_CONTAINER(ResultGroup   );
 DEFINE_OBJECT_CONTAINER(PROCProcess   );
 
@@ -141,6 +138,8 @@ public:
 
 	void parse();
 	void parse(REF(std::istream) stream);
+
+	void beforeRun();
 
 	CREF(Error) error() const { return m_error; }
 	 REF(Error) error()       { return m_error; }
@@ -213,6 +212,12 @@ public:
 	static tstring                      lexer_text    ();
 	static LPRDOParser                  s_parser      ();
 
+	template <class T>
+	void howIsIt()
+	{
+		howIsIt(identity<T>());
+	}
+
 private:
 	RDOParser();
 	virtual ~RDOParser();
@@ -230,11 +235,9 @@ private:
 	Compilers                   m_compilers;
 	LPRDOParserItem             m_parser_item;
 
-	template <class T>
-	void howIsIt()
-	{
-		howIsIt(identity<T>());
-	}
+	void runRSSPost();
+	void runSMRPost();
+	void runRTPPost();
 
 	template <class T>
 	void howIsIt(identity<T>)

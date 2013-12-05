@@ -30,15 +30,12 @@
 #include "simulator/runtime/calc/resource/calc_relevant.h"
 #include "simulator/runtime/calc/resource/calc_choice_from.h"
 #include "simulator/runtime/calc/resource/calc_create_resource.h"
+#include "simulator/runtime/calc/calc_event.h"
 
 #include "utils/src/smart_ptr/factory/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
-
-int  patparse(PTR(void) lexer);
-int  patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void paterror(const char* message);
 
 int  evnparse(PTR(void) lexer);
 int  evnlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -47,28 +44,6 @@ void evnerror(const char* message);
 int  evn_preparse_parse(PTR(void) lexer);
 int  evn_preparse_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void evn_preparse_error(const char* message);
-
-// --------------------------------------------------------------------------------
-// -------------------- ConvertCmdList
-// --------------------------------------------------------------------------------
-OBJECT(ConvertCmdList)
-{
-DECLARE_FACTORY(ConvertCmdList)
-public:
-	typedef std::vector<rdo::runtime::LPRDOCalc> CalcList;
-
-	void insertCommand(CREF(rdo::runtime::LPRDOCalc) pCalc)
-	{
-		m_calcList.push_back(pCalc);
-	}
-	CREF(CalcList) commands() const
-	{
-		return m_calcList;
-	}
-
-private:
-	CalcList m_calcList;
-};
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPATPattern
@@ -85,7 +60,6 @@ CLASS(RDOPATPattern):
 DECLARE_FACTORY(RDOPATPattern)
 friend class RDOOPROperation;
 friend class RDODPTActivity;
-friend class RDOParserEVNPost;
 
 public:
 	enum PatType
@@ -105,7 +79,7 @@ public:
 	template<class T>
 	rdo::intrusive_ptr<T>            getPatRuntime   () const
 	{
-		rdo::intrusive_ptr<T> pPatRuntime = m_pPatRuntime.object_static_cast<T>();
+		rdo::intrusive_ptr<T> pPatRuntime = m_pPatRuntime.object_dynamic_cast<T>();
 		ASSERT(pPatRuntime);
 		return pPatRuntime;
 	}
@@ -144,31 +118,30 @@ public:
 	virtual char getModelStructureLetter() const = 0;
 	tstring      getPatternId           () const;
 
+	void pushContext();
+	void popContext ();
+
 protected:
 	RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info);
 	virtual ~RDOPATPattern();
 
+	typedef std::vector<LPRDOParam> ParamList;
+	ParamList                  m_paramList;
 	rdo::runtime::LPRDOPattern m_pPatRuntime;
 
-
-	rdo::runtime::LPRDOCalc createRelRes   (rbool trace) const;
-	virtual void            addParamSetCalc(CREF(rdo::runtime::LPRDOCalc) pCalc);
+	rdo::runtime::LPRDOCalc         createRelRes     (rbool trace) const;
+	virtual void                    addParamSetCalc  (CREF(rdo::runtime::LPRDOCalc) pCalc);
+	std::vector<runtime::LPRDOCalc> createParamsCalcs(CREF(std::vector<LPRDOFUNArithm>) params) const;
 
 	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status) = 0;
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status) = 0;
 
 private:
-	typedef std::vector<LPRDOParam> ParamList;
-
-	ParamList        m_paramList;
 	RelResList       m_relResList;
-
 	rbool            m_useCommonChoice;
 	rbool            m_useCommonWithMax;
 	LPRDOFUNArithm   m_pCommonChoice;
-
 	ruint            m_currentRelResIndex;
-
 	LPContextMemory  m_pContextMemory;
 
 	tstring               typeToString     (PatType type) const;
@@ -198,13 +171,22 @@ public:
 		return PT_Event;
 	}
 
+	rdo::runtime::LPRDOCalc  getBeforeStartModelPlaning() const;
+	void                     setBeforeStartModelPlaning(CREF(rdo::runtime::LPRDOCalc) beforeStartModelPlaning);
+	void                     insertPlaning (CREF(rdo::runtime::LPRDOCalcEventPlan) pCalc, CREF(LPArithmContainer) pParamList);
+	void                     insertStop    (CREF(rdo::runtime::LPRDOCalcEventStop) pCalc);
+
 protected:
 	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status);
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status);
 
 private:
 	RDOPatternEvent(CREF(RDOParserSrcInfo) name_src_info, rbool trace);
+
+	rdo::runtime::LPRDOCalc  m_beforeStartModelPlaning;
+	LPIBaseOperation         m_pRuntimeEvent;
 };
+DECLARE_POINTER(RDOPatternEvent);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternRule
