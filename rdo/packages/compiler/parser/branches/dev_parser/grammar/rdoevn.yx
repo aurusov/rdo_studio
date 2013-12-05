@@ -315,7 +315,7 @@ rdo_compiler
 rtp_main
 	: rtp_res_type
 	{
-		#PASS2
+		#PASS1
 		{
 			LPRDORTPResType pResourceType = PARSER->stack().pop<RDORTPResType>($1);
 			ASSERT(pResourceType);
@@ -331,7 +331,7 @@ ext_param_type
 ext_par_type_enum
 	: type_declaration_enum RDO_IDENTIF
 	{
-		#PASS2
+		#PASS1
 		{
 			LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
 			ASSERT(pType);
@@ -343,7 +343,7 @@ ext_par_type_enum
 rtp_res_type
 	: rtp_header RDO_Parameters rtp_body RDO_End
 	{
-		#PASS2
+		#PASS1
 		{
 			LPRDORTPResType pResourceType = PARSER->stack().pop<RDORTPResType>($1);
 			ASSERT(pResourceType);
@@ -356,14 +356,14 @@ rtp_res_type
 	}
 	| rtp_header RDO_Parameters rtp_body
 	{
-		#PASS2
+		#PASS1
 		{
 			PARSER->error().error(@2, "Не найдено ключевое слово $End");
 		}
 	}
 	| rtp_header error
 	{
-		#PASS2
+		#PASS1
 		{
 			PARSER->error().error(@2, "Не найдено ключевое слово $Parameters");
 		}
@@ -373,7 +373,7 @@ rtp_res_type
 rtp_header
 	: RDO_Resource_type RDO_IDENTIF_COLON rtp_vid_res
 	{
-		#PASS2
+		#PASS1
 		{
 			LEXER->enumReset();
 
@@ -396,7 +396,7 @@ rtp_header
 	}
 	|	RDO_Resource_type RDO_IDENTIF_COLON RDO_IDENTIF_COLON rtp_vid_res
 	{
-		#PASS2
+		#PASS1
 		{
 			LEXER->enumReset();
 
@@ -441,21 +441,21 @@ rtp_header
 	}
 	| RDO_Resource_type RDO_IDENTIF_COLON error
 	{
-		#PASS2
+		#PASS1
 		{
 			PARSER->error().error(@2, "Не указан вид ресурса");
 		}
 	}
 	| RDO_Resource_type RDO_IDENTIF_COLON RDO_IDENTIF_COLON error
 	{
-		#PASS2
+		#PASS1
 		{
 			PARSER->error().error(@3, "Не указан вид ресурса");
 		}
 	}
 	| RDO_Resource_type error
 	{
-		#PASS2
+		#PASS1
 		{
 			tstring str(LEXER->YYText());
 			PARSER->error().error(@2, rdo::format("Ошибка в описании имени типа ресурса: %s", str.c_str()));
@@ -466,14 +466,14 @@ rtp_header
 rtp_vid_res
 	: RDO_permanent
 	{
-		#PASS2
+		#PASS1
 		{
 			$$ = 1;
 		}
 	}
 	| RDO_temporary
 	{
-		#PASS2
+		#PASS1
 		{
 			$$ = 0;
 		}
@@ -484,7 +484,7 @@ rtp_body
 	: /* empty */
 	| rtp_body rtp_param
 	{
-		#PASS2
+		#PASS1
 		{
 			LPRDORTPParam pParam = PARSER->stack().pop<RDORTPParam>($2);
 			PARSER->getLastRTPResType()->addParam(pParam);
@@ -495,7 +495,7 @@ rtp_body
 rtp_param
 	: RDO_IDENTIF_COLON type_declaration param_value_default
 	{
-		#PASS2
+		#PASS1
 		{
 			LPRDOValue  pParamName = PARSER->stack().pop<RDOValue>($1);
 			LPTypeInfo  pParamType = PARSER->stack().pop<TypeInfo>($2);
@@ -520,7 +520,7 @@ rtp_param
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		#PASS2
+		#PASS1
 		{
 			if (PARSER->lexer_loc_line() == @1.m_last_line)
 			{
@@ -535,7 +535,7 @@ rtp_param
 	}
 	| error
 	{
-		#PASS2
+		#PASS1
 		{
 			PARSER->error().error(@1, "Неправильное описание параметра");
 		}
