@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_base.h"
-#include "simulator/runtime/rdo.h"
+#include "simulator/runtime/rdo_event_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -23,12 +23,12 @@ CALC(RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEvent)
 public:
-	void setEvent(CREF(LPIBaseOperation) pEvent);
+	void setEvent(CREF(LPIEvent) pEvent);
 
 protected:
 	RDOCalcEvent();
 
-	LPIBaseOperation m_pEvent;
+	LPIEvent m_pEvent;
 };
 
 //! Планирование события

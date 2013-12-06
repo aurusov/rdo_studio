@@ -7,24 +7,26 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_EVENT_I_H_
-#define _LIB_RUNTIME_EVENT_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/interface/rdointerface.h"
 // --------------------------------------------------------------------------------
 
-/*!
-  \interface IEvent
-  \brief     Интерфейс событий
-  \todo      что это?
-*/
+namespace rdo { namespace runtime {
+
+PREDECLARE_POINTER(RDORuntime)
+
+}} // namespace rdo::runtime
+
 class IEvent
 {
 public:
+	virtual void onMakePlaned(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+
+	virtual ~IEvent()
+	{}
 };
 
-#define DECLARE_IEvent
-
-#endif // _LIB_RUNTIME_EVENT_I_H_
+INTERFACE_PREDECLARATION(IEvent);

@@ -58,6 +58,8 @@ private:
 
 	LPIInternalStatistics m_pStatistics;
 
+	void onMakePlaned(CREF(LPRDORuntime) pRuntime);
+
 	DECLARE_IBaseOperation;
 	DECLARE_IInternalStatisticsManager;
 };

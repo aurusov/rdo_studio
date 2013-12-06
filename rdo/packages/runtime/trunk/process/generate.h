@@ -80,6 +80,8 @@ private:
 	ruint                  m_createdTransactCount;
 	LPIInternalStatistics  m_pStatistics;
 
+	void onMakePlaned(CREF(LPRDORuntime) pRuntime);
+
 	DECLARE_IBaseOperation;
 	DECLARE_IInternalStatisticsManager;
 };

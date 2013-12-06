@@ -50,10 +50,8 @@ IBaseOperation::BOResult RDOEvent::onDoOperation(CREF(LPRDORuntime) pRuntime)
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOEvent::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
+void RDOEvent::onMakePlaned(CREF(LPRDORuntime) pRuntime)
 {
-	UNUSED(pParam);
-
 	pRuntime->inc_cnt_events();
 	onBeforeEvent(pRuntime);
 	convertEvent (pRuntime);

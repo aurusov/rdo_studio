@@ -41,6 +41,27 @@ rbool RDOPROCGenerate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
+	return IBaseOperation::BOR_done;
+}
+
+void RDOPROCGenerate::calcNextTimeInterval(CREF(LPRDORuntime) pRuntime)
+{
+	timeNext = m_pTimeCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime();
+	pRuntime->addTimePoint(
+		timeNext,
+		this,
+		boost::bind(&RDOPROCGenerate::onMakePlaned, this, pRuntime)
+	);
+}
+
+void RDOPROCGenerate::onStop(CREF(LPRDORuntime) pRuntime)
+{
+	UNUSED(pRuntime);
+}
+
+void RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime)
+{
 	++m_createdTransactCount;
 
 	if (m_pStatistics)
@@ -59,29 +80,6 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 	}
 
 	calcNextTimeInterval(pRuntime);
-	return IBaseOperation::BOR_done;
-}
-
-void RDOPROCGenerate::calcNextTimeInterval(CREF(LPRDORuntime) pRuntime)
-{
-	timeNext = m_pTimeCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime();
-	LPIBaseOperation event(m_process);
-	pRuntime->addTimePoint(
-		timeNext,
-		event,
-		boost::bind(&IBaseOperation::onMakePlaned, event.get(), pRuntime, this)
-	);
-}
-
-void RDOPROCGenerate::onStop(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
-
-void RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
-{
-	UNUSED(pRuntime);
-	UNUSED(pParam  );
 }
 
 IBaseOperation::BOResult RDOPROCGenerate::onContinue(CREF(LPRDORuntime) pRuntime)

@@ -45,9 +45,9 @@ private:
 
 	virtual void onBeforeEvent(CREF(LPRDORuntime) pRuntime);
 	virtual void onAfterEvent (CREF(LPRDORuntime) pRuntime);
+	virtual void onMakePlaned (const LPRDORuntime& pRuntime);
 
 	DECLARE_IBaseOperation;
-	DECLARE_IEvent;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

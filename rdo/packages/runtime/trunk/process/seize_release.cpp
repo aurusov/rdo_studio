@@ -119,12 +119,6 @@ void RDOPROCSeize::onStop(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCSeize::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
-{
-	UNUSED(pRuntime);
-	UNUSED(pParam  );
-}
-
 IBaseOperation::BOResult RDOPROCSeize::onContinue(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
@@ -194,12 +188,6 @@ IBaseOperation::BOResult RDOPROCRelease::onDoOperation(CREF(LPRDORuntime) pRunti
 void RDOPROCRelease::onStop(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
-}
-
-void RDOPROCRelease::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
-{
-	UNUSED(pRuntime);
-	UNUSED(pParam  );
 }
 
 IBaseOperation::BOResult RDOPROCRelease::onContinue(CREF(LPRDORuntime) pRuntime)

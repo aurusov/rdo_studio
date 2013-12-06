@@ -181,15 +181,6 @@ inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(CREF(LPRDORuntime
 }
 
 template <class Order>
-inline void RDOLogic<Order>::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
-{
-	LOGIC_FOR_ALL()
-	{
-		(*it)->onMakePlaned(pRuntime, pParam);
-	}
-}
-
-template <class Order>
 inline IBaseOperation::BOResult RDOLogic<Order>::onContinue(CREF(LPRDORuntime) pRuntime)
 {
 	LOGIC_FOR_ALL()

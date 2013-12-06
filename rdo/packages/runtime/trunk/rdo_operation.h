@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo.h"
+#include "simulator/runtime/rdo_event_i.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/simtrace.h"
 #include "simulator/runtime/rdo_pattern.h"
@@ -28,7 +29,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class     RDOOperation
   \brief     Операция - модифицированное продукционное правило
 */
-class RDOOperation: public IBaseOperation, public IOperation, public RDOActivityPattern<RDOPatternOperation>, public RDOPatternPrior, public IOperationTrace
+class RDOOperation
+	: public IBaseOperation
+	, public IOperation
+	, public IEvent
+	, public RDOActivityPattern<RDOPatternOperation>
+	, public RDOPatternPrior
+	, public IOperationTrace
 {
 typedef RDOActivityPattern<RDOPatternOperation> pattern_type;
 DEFINE_IFACTORY(RDOOperation);
@@ -37,6 +44,7 @@ QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPatternPrior)
 	QUERY_INTERFACE(IBaseOperation)
 	QUERY_INTERFACE(IOperation)
+	QUERY_INTERFACE(IEvent)
 	QUERY_INTERFACE(IOperationTrace)
 QUERY_INTERFACE_END
 
@@ -59,6 +67,8 @@ private:
 	rbool     m_haveAdditionalCondition;
 	LPRDOCalc m_pAdditionalCondition;
 	int       m_operId;
+
+	virtual void onMakePlaned(CREF(LPRDORuntime) pRuntime);
 
 	DECLARE_IBaseOperation;
 	DECLARE_IOperationTrace;

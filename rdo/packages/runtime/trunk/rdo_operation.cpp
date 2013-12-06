@@ -72,20 +72,18 @@ IBaseOperation::BOResult RDOOperation::onDoOperation(CREF(LPRDORuntime) pRuntime
 	newOper->onBeforeOperationBegin(pRuntime);
 	newOper->convertBegin(pRuntime);
 
-	LPIBaseOperation event(newOper);
+	LPIEvent event(newOper);
 	pRuntime->addTimePoint(
 		newOper->getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(),
 		event,
-		boost::bind(&IBaseOperation::onMakePlaned, event.get(), pRuntime, (void*)NULL)
+		boost::bind(&IEvent::onMakePlaned, event.get(), pRuntime)
 	);
 	newOper->onAfterOperationBegin(pRuntime);
 	return IBaseOperation::BOR_planned_and_run;
 }
 
-void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
+void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime)
 {
-	UNUSED(pParam);
-
 	// Выполняем событие конца операции-клона
 	pRuntime->inc_cnt_events();
 	onBeforeOperationEnd(pRuntime);

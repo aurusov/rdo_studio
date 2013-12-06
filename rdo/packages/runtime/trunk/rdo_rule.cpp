@@ -123,9 +123,8 @@ IBaseOperation::BOResult RDORule::onDoOperation(CREF(LPRDORuntime) pRuntime)
 	return IBaseOperation::BOR_done;
 }
 
-void                     RDORule::onStart     (CREF(LPRDORuntime) pRuntime)                   { UNUSED(pRuntime); }
-void                     RDORule::onStop      (CREF(LPRDORuntime) pRuntime)                   { UNUSED(pRuntime); }
-void                     RDORule::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam) { UNUSED(pRuntime); UNUSED(pParam); }
-IBaseOperation::BOResult RDORule::onContinue  (CREF(LPRDORuntime) pRuntime)                   { UNUSED(pRuntime); return IBaseOperation::BOR_cant_run; }
+void                     RDORule::onStart   (CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); }
+void                     RDORule::onStop    (CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); }
+IBaseOperation::BOResult RDORule::onContinue(CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); return IBaseOperation::BOR_cant_run; }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

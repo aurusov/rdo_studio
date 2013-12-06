@@ -50,11 +50,6 @@ RDOIrregEvent::RDOIrregEvent(PTR(RDOPatternIrregEvent) pPattern, rbool trace, CR
 void RDOIrregEvent::onStart(CREF(LPRDORuntime) pRuntime)
 {
 	onBeforeIrregularEvent(pRuntime);
-	pRuntime->addTimePoint(
-		getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(),
-		this,
-		boost::bind(&IBaseOperation::onMakePlaned, this, pRuntime, (void*)NULL)
-	);
 }
 
 void RDOIrregEvent::onStop(CREF(LPRDORuntime) pRuntime)
@@ -72,21 +67,6 @@ IBaseOperation::BOResult RDOIrregEvent::onDoOperation(CREF(LPRDORuntime) pRuntim
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
-}
-
-void RDOIrregEvent::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
-{
-	UNUSED(pParam);
-
-	pRuntime->inc_cnt_events();
-	onBeforeIrregularEvent(pRuntime);
-	convertEvent(pRuntime);
-	pRuntime->addTimePoint(
-		getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(),
-		this,
-		boost::bind(&IBaseOperation::onMakePlaned, this, pRuntime, (void*)NULL)
-	);
-	onAfterIrregularEvent(pRuntime);
 }
 
 void RDOIrregEvent::convertEvent(CREF(LPRDORuntime) pRuntime) 

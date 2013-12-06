@@ -52,42 +52,24 @@ rbool RDOPROCAdvance::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
-	if (!m_transacts.empty())
-	{
-		//		TRACE1("%7.1f ADVANCE BEGIN\n", pRuntime->getCurrentTime());
-		double timeLeave = pDelayCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime();
-		leave_list.push_back(LeaveTr(m_transacts.front(), timeLeave));
-		m_transacts.erase(m_transacts.begin());
+	if (m_transacts.empty())
+		return IBaseOperation::BOR_cant_run;
 
-		LPIBaseOperation event(m_process);
-		pRuntime->addTimePoint(
-			timeLeave,
-			event,
-			boost::bind(&IBaseOperation::onMakePlaned, event.get(), pRuntime, this)
-		);
+	//		TRACE1("%7.1f ADVANCE BEGIN\n", pRuntime->getCurrentTime());
+	double timeLeave = pDelayCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime();
+	leave_list.push_back(LeaveTr(m_transacts.front(), timeLeave));
+	m_transacts.erase(m_transacts.begin());
 
-		if (m_pStatistics)
-			m_pStatistics->setTransCount(m_transacts.size());
+	pRuntime->addTimePoint(
+		timeLeave,
+		this,
+		boost::bind(&RDOPROCAdvance::onMakePlaned, this, pRuntime)
+	);
 
-		return IBaseOperation::BOR_done;
-	} 
-	else if (!leave_list.empty())
-	{
-		double tnow = pRuntime->getCurrentTime();
-		std::list<LeaveTr>::iterator it = leave_list.begin();
-		while (it != leave_list.end())
-		{
-			if (tnow >= it->timeLeave)
-			{
-				//				TRACE1("%7.1f ADVANCE END\n", it->timeLeave);
-				it->transact->next();
-				leave_list.erase(it);
-				return IBaseOperation::BOR_planned_and_run;
-			}
-			++it;
-		}
-	}
-	return IBaseOperation::BOR_cant_run;
+	if (m_pStatistics)
+		m_pStatistics->setTransCount(m_transacts.size());
+
+	return IBaseOperation::BOR_done;
 }
 
 void RDOPROCAdvance::onStart(CREF(LPRDORuntime) pRuntime)
@@ -100,10 +82,26 @@ void RDOPROCAdvance::onStop(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCAdvance::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
+void RDOPROCAdvance::onMakePlaned(CREF(LPRDORuntime) pRuntime)
 {
-	UNUSED(pRuntime);
-	UNUSED(pParam  );
+	if (leave_list.empty())
+		return;
+
+	double tnow = pRuntime->getCurrentTime();
+	std::list<LeaveTr>::iterator it = leave_list.begin();
+	while (it != leave_list.end())
+	{
+		if (tnow >= it->timeLeave)
+		{
+			// TRACE1("%7.1f ADVANCE END\n", it->timeLeave);
+			it->transact->next();
+			leave_list.erase(it++);
+		}
+		else
+		{
+			++it;
+		}
+	}
 }
 
 IBaseOperation::BOResult RDOPROCAdvance::onContinue(CREF(LPRDORuntime) pRuntime)

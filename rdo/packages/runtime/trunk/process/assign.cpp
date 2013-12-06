@@ -49,12 +49,6 @@ void RDOPROCAssign::onStop(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCAssign::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
-{
-	UNUSED(pRuntime);
-	UNUSED(pParam  );
-}
-
 IBaseOperation::BOResult RDOPROCAssign::onContinue(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);

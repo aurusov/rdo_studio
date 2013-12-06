@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOCalcEvent::RDOCalcEvent()
 {}
 
-void RDOCalcEvent::setEvent(CREF(LPIBaseOperation) pEvent)
+void RDOCalcEvent::setEvent(CREF(LPIEvent) pEvent)
 {
 	ASSERT(pEvent);
 	m_pEvent = pEvent;
@@ -46,7 +46,7 @@ RDOValue RDOCalcEventPlan::doCalc(CREF(LPRDORuntime) pRuntime)
 	pRuntime->addTimePoint(
 		value.getDouble(),
 		m_pEvent,
-		boost::bind(&IBaseOperation::onMakePlaned, m_pEvent.get(), pRuntime, (void*)NULL)
+		boost::bind(&IEvent::onMakePlaned, m_pEvent.get(), pRuntime)
 	);
 	return value;
 }

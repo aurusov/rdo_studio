@@ -77,12 +77,6 @@ void RDOPROCQueue::onStop (CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCQueue::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
-{
-	UNUSED(pRuntime);
-	UNUSED(pParam  );
-}
-
 IBaseOperation::BOResult RDOPROCQueue::onContinue(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
@@ -125,12 +119,6 @@ IBaseOperation::BOResult RDOPROCDepart::onDoOperation(CREF(LPRDORuntime) pRuntim
 void RDOPROCDepart::onStop(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
-}
-
-void RDOPROCDepart::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
-{
-	UNUSED(pRuntime);
-	UNUSED(pParam  );
 }
 
 IBaseOperation::BOResult RDOPROCDepart::onContinue(CREF(LPRDORuntime) pRuntime)

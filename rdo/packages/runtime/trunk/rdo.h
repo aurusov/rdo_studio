@@ -39,7 +39,7 @@ public:
 		BOR_cant_run       = 0, //!< операция не может быть запущена
 		BOR_planned_and_run,    //!< операция запланирована и выполняется
 		BOR_must_continue  ,    //!< операция может быть продолжена
-		BOR_done			    //!< операция выполнена
+		BOR_done                //!< операция выполнена
 	};
 
 	/*!
@@ -78,15 +78,6 @@ public:
 	virtual BOResult onDoOperation(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
 
 	/*!
-	  \fn      virtual void onMakePlaned(CREF(rdo::runtime::LPRDORuntime) pRuntime, PTR(void) pParam)
-	  \brief   Планирование
-	  \details Вызывается для запланированных в будующем событий: event, operation_end, keyboard_end
-	           Может не использоваться, например, для rule
-	  \param   pRuntime константная ссылка на указатель на Рантайм
-	*/
-	virtual void onMakePlaned(CREF(rdo::runtime::LPRDORuntime) pRuntime, PTR(void) pParam) = 0;
-
-	/*!
 	  \fn      virtual BOResult onContinue(CREF(rdo::runtime::LPRDORuntime) pRuntime)
 	  \brief   Продолжение
 	  \details Вызывается для продолжения долгой операции, например, DPT search
@@ -96,12 +87,11 @@ public:
 	virtual BOResult onContinue(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
 };
 
-#define DECLARE_IBaseOperation                                                                      \
-	virtual void     onStart         (CREF(rdo::runtime::LPRDORuntime) pRuntime);                   \
-	virtual void     onStop          (CREF(rdo::runtime::LPRDORuntime) pRuntime);                   \
-	virtual rbool    onCheckCondition(CREF(rdo::runtime::LPRDORuntime) pRuntime);                   \
-	virtual BOResult onDoOperation   (CREF(rdo::runtime::LPRDORuntime) pRuntime);                   \
-	virtual void     onMakePlaned    (CREF(rdo::runtime::LPRDORuntime) pRuntime, PTR(void) pParam); \
+#define DECLARE_IBaseOperation                                                    \
+	virtual void     onStart         (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
+	virtual void     onStop          (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
+	virtual rbool    onCheckCondition(CREF(rdo::runtime::LPRDORuntime) pRuntime); \
+	virtual BOResult onDoOperation   (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
 	virtual BOResult onContinue      (CREF(rdo::runtime::LPRDORuntime) pRuntime);
 
 INTERFACE_PREDECLARATION(IBaseOperation);

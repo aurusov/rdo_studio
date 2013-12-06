@@ -65,12 +65,6 @@ void RDOPROCTerminate::onStop(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCTerminate::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
-{
-	UNUSED(pRuntime);
-	UNUSED(pParam  );
-}
-
 IBaseOperation::BOResult RDOPROCTerminate::onContinue(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
