@@ -132,17 +132,16 @@ int main(int argc, PTR(char) argv[])
 
 	boost::posix_time::ptime endTime = boost::posix_time::microsec_clock::local_time();
 	ruint64 simulationTimeMillisecond = ( endTime - startTime ).total_milliseconds();
-	std::wcout << rdo::locale::convertToWStr(boost::str(
-		boost::format("Total simulation time : %1% milliseconds") % simulationTimeMillisecond)) << std::endl;
+	rdo::locale::cout(boost::str(boost::format("Total simulation time : %1% milliseconds") % simulationTimeMillisecond));
 
 	if (simulationSuccessfully)
 	{
-		std::wcout << rdo::locale::convertToWStr("Simulation finished successfully") << std::endl;
+		rdo::locale::cout("Simulation finished successfully");
 		exitCode = TERMINATION_NORMAL;
 	}
 	else
 	{
-		std::wcout << rdo::locale::convertToWStr("Simulation completed with errors") << std::endl;
+		rdo::locale::cout("Simulation completed with errors");
 	}
 	return exitCode;
 }
@@ -190,7 +189,7 @@ bool run(PTR(rdo::console_controller) pAppController, REF(event_container) conta
 
 		if (pAppController->runtimeError())
 		{
-			std::wcout << rdo::locale::convertToWStr("Run-time error") << std::endl;
+			rdo::locale::cout("Run-time error");
 			exit(TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR);
 		}
 		process_event(pAppController, container);
