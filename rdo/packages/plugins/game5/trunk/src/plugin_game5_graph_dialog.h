@@ -24,7 +24,7 @@ class PluginGame5GraphDialog
 
 Q_OBJECT
 public:
-	PluginGame5GraphDialog(QWidget * parent);
+	PluginGame5GraphDialog(QWidget* parent);
 	~PluginGame5GraphDialog();
 
 	void updateGraph(const QString& startBoardState);
@@ -46,9 +46,9 @@ private:
 
 	struct SortStruct
 	{
-		PluginGame5GraphDialog* m_pDlg;
 		SortStruct(PluginGame5GraphDialog* pDlg) : m_pDlg(pDlg) {};
- 
+		PluginGame5GraphDialog* m_pDlg;
+
 		bool operator() (int i, int j)
 		{
 			int iParentOLO = m_pDlg->m_graph[i]->getParentGraphNode()->getGraphOnLevelOrder();

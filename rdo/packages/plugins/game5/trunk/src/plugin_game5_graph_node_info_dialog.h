@@ -22,7 +22,7 @@ class PluginGame5GraphNodeInfoDialog
 {
 Q_OBJECT
 public:
-	PluginGame5GraphNodeInfoDialog(QWidget * parent);
+	PluginGame5GraphNodeInfoDialog(QWidget* parent);
 	~PluginGame5GraphNodeInfoDialog();
 
 public slots:

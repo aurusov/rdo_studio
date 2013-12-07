@@ -33,6 +33,10 @@ Tile::Tile(int number, QWidget* pParent)
 	connect(this, &QPushButton::clicked, this, &Tile::reemitClicked);
 }
 
+Tile::~Tile()
+{
+}
+
 void Tile::reemitClicked()
 {
 	emit tileClicked(tileNumber);

@@ -20,7 +20,8 @@ class Tile: public QPushButton
 Q_OBJECT
 public:
 	Tile(int number, QWidget* pParent);
-	
+	virtual ~Tile();
+
 signals:
 	void tileClicked(int number);
 

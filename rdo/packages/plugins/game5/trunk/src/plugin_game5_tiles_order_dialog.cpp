@@ -35,7 +35,8 @@ TilesOrderDialog::TilesOrderDialog(QWidget* pParent, const QString& lineEditText
 }
 
 TilesOrderDialog::~TilesOrderDialog()
-{}
+{
+}
 
 void TilesOrderDialog::onOkClick()
 {
