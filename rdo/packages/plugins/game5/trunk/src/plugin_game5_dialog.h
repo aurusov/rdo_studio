@@ -23,7 +23,7 @@ class PluginGame5GenerateSituationDialog
 {
 Q_OBJECT
 public:
-	PluginGame5GenerateSituationDialog(QWidget * parent);
+	PluginGame5GenerateSituationDialog(QWidget* parent);
 	~PluginGame5GenerateSituationDialog();
 
 	QString getBoardState();
@@ -35,11 +35,11 @@ public slots:
 	void onPlgnAction();
 
 private slots:
-	void callDialog ();
-	void onClickOk  ();
+	void callTilesOrderDialog();
+	void onClickOk();
 	void onClickHide(bool state);
 	void emitSolvabilityCheck();
-	void onItemCheckStateChanged(QTableWidgetItem * item);
+	void onItemCheckStateChanged(QTableWidgetItem* item);
 	
 private:
 	std::string evaluateBy();
