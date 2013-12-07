@@ -37,13 +37,6 @@ public:
 
 	tstring          writeActivitiesStructure(REF(ruint) counter);
 
-	/// @todo Найти к чему относится этот комментарий
-	// Для DPT необходимо перекрыть две нижеследующие функции:
-	// 1. Создает клон RDOSimulator с копиями всех ресурсов, но не более
-	// virtual PTR(RDOSimulator) clone()                   = 0;
-	// 2. Сравнение двух симуляторов по ресурсам
-	// virtual rbool operator== (CREF(RDOSimulator) other) = 0;
-
 	ruint getSizeofSim() const;
 
 	LPIBaseOperationContainer m_pMetaLogic;
