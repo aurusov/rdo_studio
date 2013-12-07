@@ -24,7 +24,7 @@ def divide(expr):
         f1 = f1[: posend] +       "/* -------------- END PASS 1 ------------- */" + f1[posend + 1 :]
         f1 = f1[: pos] + f1[pos + 1 :]
         f1 = f1.replace("#PASS1", "/* ---------- COMPILER 1st PASS ---------- */", 1)
- 
+
     # clean PASS2 blocks from file 1
     while f1.count("#PASS2") > 0:
         Ppos = f1.find("#PASS2")
@@ -81,54 +81,23 @@ def main():
                         "1st output y file", required = True)
     parser.add_argument('-y2', type = str, default = '', help =\
                         "2nd output y file", required = True)
-    
+
     args = parser.parse_args()
 
     inf = open(args.inputFile,"r", encoding = codepage)
     print(toolname + ": parsing " + args.inputFile)
-        
+
     out1 = open(args.y1, 'w', encoding = codepage)
     out1.truncate()
-    
+
     out2 = open(args.y2, 'w', encoding = codepage)
     out2.truncate()
 
-    blck = ""
-    flag = brackets = 0
-    curline = 1
-    while True:
-        sym = inf.read(1)
-        symread = True
-        
-        if sym == ':' and brackets == 0:
-            flag = 1
-            symread = False
+    gram = divide(inf.read())
 
-        if sym == '\n':
-            curline += 1
-            
-        if sym == '{':
-            brackets += 1
-        if sym == '}':
-            brackets -= 1
-            if brackets < 0:
-                sys.exit(args.inputFile + "(" + str(curline) + "): error: braces nesting mismatch")
-            
-        if sym == ':' and brackets == 0 and flag == 1 and symread or not sym:
-            flag = 0
-            blck = divide(blck)
-            out1.write(blck[0])
-            out2.write(blck[1])
-            blck = ""
-            
-        if flag == 0:
-            out1.write(sym)
-            out2.write(sym)
-        else:
-            blck += sym
+    out1.write(gram[0])
+    out2.write(gram[1])
 
-        if not sym:
-            break
     print(toolname + ": generated " + args.y1 + ", " + args.y2)
 
     sys.exit(0)
