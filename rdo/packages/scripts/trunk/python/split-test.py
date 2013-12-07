@@ -42,9 +42,11 @@ diff2 = difflib.unified_diff(text3_lines, text4_lines, lineterm='')
 if len(list(diff1)) + len(list(diff2)) > 0:
     print("split-test: error: generated files don't match reference ones")
     print("split-test: Diff1:")
-    print('\n'.list(diff1))
+    for s in list(diff1):
+        print(s)
     print("split-test: Diff2:")
-    print('\n'.list(diff2))
+    for s in list(diff2):
+        print(s)
     sys.exit(1)
 else:
     print("split-test: TEST PASS")
