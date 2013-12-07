@@ -257,9 +257,6 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 					buildFlag = false;
 					tempNodeNum = j;
 				}
-			}
-			if (!buildFlag)
-			{
 				tempCounter++;
 			}
 		}
