@@ -20,22 +20,22 @@ class ComboBoxDelegate : public QItemDelegate
 Q_OBJECT
 
 public:
-	typedef std::vector<std::string> itemList;
+	typedef std::vector<std::string> ItemList;
 
 public:
-	ComboBoxDelegate(const ComboBoxDelegate::itemList& comboBoxItems, QObject* parent = 0);
+	ComboBoxDelegate(const ComboBoxDelegate::ItemList& comboBoxItems, QObject* parent = 0);
 
-	QWidget *createEditor(QWidget* parent, const QStyleOptionViewItem& option,
-	                      const QModelIndex& index) const;
-	void setEditorData(QWidget* editor, const QModelIndex& index) const;
-	void setModelData (QWidget* editor, QAbstractItemModel* model,
-	                   const QModelIndex& index) const;
+	virtual QWidget *createEditor(QWidget* parent, const QStyleOptionViewItem& option,
+	                              const QModelIndex& index) const;
+	virtual void setEditorData(QWidget* editor, const QModelIndex& index) const;
+	virtual void setModelData (QWidget* editor, QAbstractItemModel* model,
+	                           const QModelIndex& index) const;
 
 private slots:
 	void emitCommitData();
 
 private:
-	itemList comboBoxItems;
+	ItemList comboBoxItems;
 };
 
 #endif // _RDO_PLUGIN_GAME_5_COMBOBOX_DELEGATE_H_

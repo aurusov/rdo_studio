@@ -20,7 +20,7 @@ class CostSetupTable: public QTableWidget
 Q_OBJECT
 public:
 	CostSetupTable(QWidget* pParent);
-	virtual ~CostSetupTable() {};
+	virtual ~CostSetupTable();
 
 signals:
 	void itemCheckStateChanged(QTableWidgetItem* itm);

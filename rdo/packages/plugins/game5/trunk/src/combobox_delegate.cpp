@@ -14,7 +14,7 @@
 #include "app/rdo_studio/plugins/game5/src/combobox_delegate.h"
 // --------------------------------------------------------------------------------
  
-ComboBoxDelegate::ComboBoxDelegate(const ComboBoxDelegate::itemList& comboBoxItems , QObject* parent)
+ComboBoxDelegate::ComboBoxDelegate(const ComboBoxDelegate::ItemList& comboBoxItems , QObject* parent)
 	: QItemDelegate(parent)
 	, comboBoxItems(comboBoxItems)
 {
