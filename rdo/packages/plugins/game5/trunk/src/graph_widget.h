@@ -18,8 +18,6 @@
 
 class GraphWidget : public QGraphicsView
 {
-Q_OBJECT
-
 public:
 	GraphWidget(QWidget* parent = 0);
 	~GraphWidget();
@@ -31,6 +29,7 @@ protected:
 	virtual void keyPressEvent  (QKeyEvent* kEvent);
 	virtual void keyReleaseEvent(QKeyEvent* kEvent);
 
+private:
 	void scaleView(double scaleFactor);
 };
 

@@ -20,9 +20,7 @@ SET(MOC_FILES
 	src/board.h
 	src/combobox_delegate.h
 	src/cost_setup_table.h
-	src/multi_select_completer.h
 	src/graph_node.h
-	src/graph_widget.h
 	src/plugin_game5.h
 	src/plugin_game5_dialog.h
 	src/plugin_game5_graph_dialog.h

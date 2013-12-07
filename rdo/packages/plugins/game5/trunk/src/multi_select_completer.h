@@ -16,14 +16,12 @@
 // --------------------------------------------------------------------------------
 class MultiSelectCompleter : public QCompleter
 {
-Q_OBJECT
 public:
 	MultiSelectCompleter(const QStringList& items, QObject* parent);
 	~MultiSelectCompleter();
 
-public:
-	QString pathFromIndex(const QModelIndex& index) const;
-	QStringList splitPath(const QString& path) const;
+	virtual QString pathFromIndex(const QModelIndex& index) const;
+	virtual QStringList splitPath(const QString& path) const;
 };
 
 

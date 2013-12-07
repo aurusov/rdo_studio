@@ -529,9 +529,9 @@
 						>
 						<Tool
 							Name="VCCustomBuildTool"
-							Description="MOC&apos;ing $(InputName).h"
-							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+							Description="Performing Custom Build Step"
+							CommandLine=""
+							Outputs=""
 						/>
 					</FileConfiguration>
 					<FileConfiguration
@@ -539,9 +539,9 @@
 						>
 						<Tool
 							Name="VCCustomBuildTool"
-							Description="MOC&apos;ing $(InputName).h"
-							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+							Description="Performing Custom Build Step"
+							CommandLine=""
+							Outputs=""
 						/>
 					</FileConfiguration>
 				</File>
@@ -605,9 +605,9 @@
 						>
 						<Tool
 							Name="VCCustomBuildTool"
-							Description="MOC&apos;ing $(InputName).h"
-							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+							Description="Performing Custom Build Step"
+							CommandLine=""
+							Outputs=""
 						/>
 					</FileConfiguration>
 					<FileConfiguration
@@ -615,9 +615,9 @@
 						>
 						<Tool
 							Name="VCCustomBuildTool"
-							Description="MOC&apos;ing $(InputName).h"
-							CommandLine="$(QTDIR)\bin\moc &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+							Description="Performing Custom Build Step"
+							CommandLine=""
+							Outputs=""
 						/>
 					</FileConfiguration>
 				</File>
@@ -643,14 +643,6 @@
 				</File>
 				<File
 					RelativePath=".\bin\plugin_game5\generated\moc_graph_node.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\bin\plugin_game5\generated\moc_graph_widget.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\bin\plugin_game5\generated\moc_multi_select_completer.cpp"
 					>
 				</File>
 				<File
