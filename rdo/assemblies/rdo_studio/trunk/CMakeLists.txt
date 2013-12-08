@@ -99,7 +99,7 @@ ENDIF(WIN32)
 # set base directory
 SET(RDO_BASE_DIRECTORY ${PROJECT_SOURCE_DIR})
 
-IF(WIN32)
+IF(MSVC)
     SET(PATH_STRING $ENV{PATH})
     STRING(FIND "${PATH_STRING}" "thirdparty/bison_flex/bin" OUT)
     IF(${OUT} GREATER -1)
@@ -164,9 +164,8 @@ SET(SCRIPT_FILES
     ${SCRIPTS_DIRECTORY}/statistics/statistics.sh
 )
 
-SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
-
-IF(WIN32)
+IF(MSVC)
+    SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
     SET(ENV{BISON_PKGDATADIR} ${BISON_FLEX_DIRECTORY}/share/bison)
 ENDIF()
 
