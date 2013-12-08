@@ -5,17 +5,15 @@
 #include <fstream>
 #include <algorithm>
 
-#ifdef COMPILER_VISUAL_STUDIO
+#ifdef OST_WINDOWS
 	#ifdef RDO_MT
 		#include <afxwin.h>
 	#else
 		#include <windows.h>
 	#endif
-#endif // COMPILER_VISUAL_STUDIO
-
-#ifdef COMPILER_GCC
+#else
 	#include <pthread.h>
-#endif // COMPILER_GCC
+#endif // OST_WINDOWS
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
