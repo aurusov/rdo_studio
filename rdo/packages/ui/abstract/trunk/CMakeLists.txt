@@ -25,7 +25,7 @@ SET(SOURCE_FILES
 	${MEMDC_FILES}
 )
 
-ADD_LIBRARY(rdo_ui_abstract ${SOURCE_FILES})
+ADD_LIBRARY(rdo_ui_abstract STATIC ${SOURCE_FILES})
 
 INCLUDE(${PROJECT_SOURCE_DIR}/app/rdo_studio/projects/common/rdo_studio.cmake)
 SET_TARGET_PROPERTIES(rdo_ui_abstract PROPERTIES FOLDER ${APP_FOLDER}/.ui)

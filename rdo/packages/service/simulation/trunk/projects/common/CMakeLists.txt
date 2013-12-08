@@ -13,7 +13,7 @@ SET(HEADER_FILES
 SET(SOURCE_FILES
     rdosimwin.cpp)
 
-ADD_LIBRARY(rdo_simulator ${HEADER_FILES} ${SOURCE_FILES})
+ADD_LIBRARY(rdo_simulator STATIC ${HEADER_FILES} ${SOURCE_FILES})
 
 ADD_DEPENDENCIES(rdo_simulator rdo_utils)
 ADD_DEPENDENCIES(rdo_simulator rdo_runtime)

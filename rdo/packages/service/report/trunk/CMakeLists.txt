@@ -26,7 +26,7 @@ SET(SOURCE_FILES
 	${CODE_FILES}
 )
 
-ADD_LIBRARY(rdo_simulator_report ${SOURCE_FILES})
+ADD_LIBRARY(rdo_simulator_report STATIC ${SOURCE_FILES})
 
 INCLUDE(${PROJECT_SOURCE_DIR}/simulator/simulator.cmake)
 SET_TARGET_PROPERTIES(rdo_simulator_report PROPERTIES FOLDER ${PROJECT_FOLDER}/.report)

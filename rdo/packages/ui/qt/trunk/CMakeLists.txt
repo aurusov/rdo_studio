@@ -43,7 +43,7 @@ SET(SOURCE_FILES
 	${SCROLLBAR_FILES}
 )
 
-ADD_LIBRARY(rdo_ui_qt ${SOURCE_FILES})
+ADD_LIBRARY(rdo_ui_qt STATIC ${SOURCE_FILES})
 
 INCLUDE(${PROJECT_SOURCE_DIR}/app/rdo_studio/projects/common/rdo_studio.cmake)
 SET_TARGET_PROPERTIES(rdo_ui_qt PROPERTIES FOLDER ${APP_FOLDER}/.ui)

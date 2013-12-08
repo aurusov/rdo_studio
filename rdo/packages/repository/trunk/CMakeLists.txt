@@ -20,7 +20,7 @@ SET(SOURCE_FILES
 	${REPOSITORY_FILES}
 )
 
-ADD_LIBRARY(rdo_repository ${SOURCE_FILES})
+ADD_LIBRARY(rdo_repository STATIC ${SOURCE_FILES})
 SET_TARGET_PROPERTIES(rdo_repository PROPERTIES FOLDER .repository)
 
 ADD_DEPENDENCIES(rdo_repository rdo_simulator)
