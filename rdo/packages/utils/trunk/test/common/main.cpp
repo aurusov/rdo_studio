@@ -10,7 +10,9 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
-// ---------------------------------------------------------------------------- PCH
+#ifdef COMPILER_MINGW
+	#undef __STRICT_ANSI__
+#endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOCommon_Test
 #include <boost/test/included/unit_test.hpp>

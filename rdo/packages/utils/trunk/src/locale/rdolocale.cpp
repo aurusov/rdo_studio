@@ -10,6 +10,9 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
+#ifdef COMPILER_MINGW
+	#undef __STRICT_ANSI__
+#endif
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/math/special_functions/nonfinite_num_facets.hpp>

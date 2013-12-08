@@ -18,11 +18,11 @@
 // compilers
 #ifdef _MSC_VER
 	#define COMPILER_VISUAL_STUDIO
-#elif defined( __GNUC__ )
-	#define COMPILER_GCC
 #elif defined( __MINGW32__ )
 	#define COMPILER_GCC
 	#define COMPILER_MINGW
+#elif defined( __GNUC__ )
+	#define COMPILER_GCC
 #else
 	#error Unknown compiler!
 #endif

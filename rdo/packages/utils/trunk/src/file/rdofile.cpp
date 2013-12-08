@@ -8,15 +8,17 @@
   \indent    4T
 */
 
-// ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
+#ifdef COMPILER_MINGW
+	#undef __STRICT_ANSI__
+#endif
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
-#   include <Windows.h>
-#   include <io.h>
-#else
-#   include <unistd.h>
+	#include <Windows.h>
+	#include <io.h>
+#elif defined(COMPILER_MINGW)
+	#include <io.h>
 #endif // COMPILER_VISUAL_STUDIO
 #include <boost/filesystem/fstream.hpp>
 #include <boost/lexical_cast.hpp>
