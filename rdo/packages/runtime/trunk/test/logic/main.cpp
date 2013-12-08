@@ -8,7 +8,11 @@
   \indent    4T
 */
 
-// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/src/common/platform.h"
+#ifdef COMPILER_MINGW
+	#undef __STRICT_ANSI__
+#endif
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <algorithm>

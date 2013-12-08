@@ -10,7 +10,9 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
-// ---------------------------------------------------------------------------- PCH
+#ifdef COMPILER_MINGW
+	#undef __STRICT_ANSI__
+#endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOSequencesTest
 #include <iostream>
@@ -21,7 +23,6 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/math/constants/constants.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/file/rdofile.h"
 #include "utils/src/locale/rdolocale.h"
@@ -31,6 +32,7 @@
 typedef std::vector<double> Container;
 typedef std::vector<ruint>  ContainerInt;
 
+const double       g_pi                  = 3.141592653589793;
 const long int     g_seed                = 123456789;               //!< база генератора
 const std::string  g_filePath            = "../../test/sequences/"; //!< путь к файлам относительно проекта
 const std::string  g_fileNormalName      = "data_normal.txt";       //!< файл данных
@@ -223,7 +225,7 @@ public:
 
 	double get(double x) const
 	{
-		return 1 / (sqrt(2 * boost::math::constants::pi<double>()) * m_var * exp((x - m_main) * (x - m_main) / (2*m_var*m_var)));
+		return 1 / (sqrt(2 * g_pi) * m_var * exp((x - m_main) * (x - m_main) / (2*m_var*m_var)));
 	}
 
 private:
