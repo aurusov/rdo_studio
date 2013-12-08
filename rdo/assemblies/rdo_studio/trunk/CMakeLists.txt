@@ -42,14 +42,20 @@ INCLUDE(add.boost.test)
 IF(NOT MSVC)
     SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+    IF(MINGW)
+        ADD_DEFINITIONS(-Wno-unused-local-typedefs)
+    ENDIF()
 ELSE()
     STRING(REGEX REPLACE /W[0-4] /W4 CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
 ENDIF(NOT MSVC)
 
 IF(NOT MSVC)
-    SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++0x")
+    IF(NOT MINGW)
+        SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC")
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+    ENDIF()
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 ENDIF(NOT MSVC)
 
 IF(NOT CMAKE_BUILD_TYPE)
@@ -129,7 +135,9 @@ SET(PROJECT_VERSION_LONG ${CMAKE_SVN_VERSION})
 #==============================================================================
 
 IF(WIN32)
-    INCLUDE(win32.install)
+    IF(NOT MINGW)
+        INCLUDE(win32.install)
+    ENDIF()
 ENDIF()
 
 #==============================================================================
