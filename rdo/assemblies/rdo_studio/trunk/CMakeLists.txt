@@ -143,7 +143,7 @@ ENDIF()
 #==============================================================================
 
 IF(WIN32)
-    FIND_PACKAGE(PythonInterp)
+    FIND_PACKAGE(PythonInterp 3.0 REQUIRED)
     IF(NOT ${PYTHON_VERSION_MAJOR} EQUAL 3)
         MESSAGE(FATAL_ERROR "Python3 for Windows not found")
     ENDIF()
@@ -152,7 +152,7 @@ ELSE()
     IF(NOT PYTHON_EXECUTABLE)
         MESSAGE(FATAL_ERROR "Python3 not found")
     ENDIF()
-    MESSAGE(STATUS "Found PythonInterp: "${PYTHON_EXECUTABLE})
+    MESSAGE(STATUS "Found PythonInterp: " ${PYTHON_EXECUTABLE})
 ENDIF()
 
 #==============================================================================
