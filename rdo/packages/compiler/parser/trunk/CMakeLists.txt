@@ -317,6 +317,7 @@ ADD_DEPENDENCIES(rdo_parser pugixml)
 TARGET_LINK_LIBRARIES(rdo_parser ${Boost_LIBRARIES})
 TARGET_LINK_LIBRARIES(rdo_parser rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_parser rdo_runtime)
+TARGET_LINK_LIBRARIES(rdo_parser rdo_mbuilder)
 TARGET_LINK_LIBRARIES(rdo_parser pugixml)
 
 IF(MSVC)
