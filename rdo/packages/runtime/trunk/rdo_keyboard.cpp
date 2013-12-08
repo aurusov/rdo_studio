@@ -15,7 +15,7 @@
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
-#ifdef OST_LINUX
+#ifndef COMPILER_VISUAL_STUDIO
 	//! @todo А что на самом деле делать под линухами ?
 	const ruint VK_SHIFT   = 0x10;
 	const ruint VK_CONTROL = 0x11;

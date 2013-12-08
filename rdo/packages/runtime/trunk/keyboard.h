@@ -16,7 +16,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-#ifdef OST_LINUX
+#ifndef COMPILER_VISUAL_STUDIO
 
 #define VK_ESCAPE           1
 #define VK_TAB              15
@@ -64,6 +64,6 @@
 #define VK_NUMPAD8          316 //! @todo find code
 #define VK_NUMPAD9          317 //! @todo find code
 
-#endif // OST_LINUX
+#endif // not COMPILER_VISUAL_STUDIO
 
 #endif // _LIB_RUNTIME_KEYBOARD_REDEFINE_H_

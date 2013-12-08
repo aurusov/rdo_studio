@@ -19,13 +19,13 @@
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
-#ifndef OST_WINDOWS
-	ruint32 GetTickCount()
-	{ 
-		struct timeval tv;
-		gettimeofday(&tv,NULL);
-		return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-	}
+#ifndef COMPILER_VISUAL_STUDIO
+ruint32 GetTickCount()
+{
+	struct timeval tv;
+	gettimeofday(&tv,NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+}
 #endif
 
 OPEN_RDO_RUNTIME_NAMESPACE
