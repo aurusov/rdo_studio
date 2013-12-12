@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <QMessageBox>
+#include <QBitmap>
 #include <QDir>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -185,6 +186,8 @@ void PluginGame5::pluginSlot()
 			backUpModel(pMainWindow->getModel());
 			initDialogs(pParent);
 			initToolBar(pMainWindow);
+			QAction* senderAct = qobject_cast<QAction*>(sender());
+			senderAct->setEnabled(false);
 		}
 	}
 	else
@@ -226,11 +229,20 @@ void PluginGame5::initToolBar(MainWindow* pParent)
 
 	plgnGnrtDlg->setObjectName("plgnGnrtDlg");
 	plgnGnrtDlg->setText("Расставить фишки");
-	plgnGnrtDlg->setIcon(pParent->style()->standardIcon(QStyle::SP_DialogApplyButton));
+	QPixmap gnrtDlgPixmap(":/res/images/gen_sit_dialog.bmp");
+	gnrtDlgPixmap.setMask(gnrtDlgPixmap.createMaskFromColor(QColor(255, 0, 255)));
+	plgnGnrtDlg->setIcon(QIcon(gnrtDlgPixmap));
 
 	plgnGraphDlg->setObjectName("plgnGraphDlg");
 	plgnGraphDlg->setText("Построить граф");
-	plgnGraphDlg->setIcon(pParent->style()->standardIcon(QStyle::SP_DialogCloseButton));
+	QPixmap graphDlgPixmapD(":/res/images/graph_dialog_d.bmp");
+	QPixmap graphDlgPixmap (":/res/images/graph_dialog.bmp");
+	graphDlgPixmapD.setMask(graphDlgPixmapD.createMaskFromColor(QColor(255, 0, 255)));
+	graphDlgPixmap .setMask(graphDlgPixmap .createMaskFromColor(QColor(255, 0, 255)));
+	QIcon graphDlgIcon(graphDlgPixmap);
+	graphDlgIcon.addPixmap(graphDlgPixmapD, QIcon::Disabled);
+	plgnGraphDlg->setIcon(graphDlgIcon);
+	plgnGraphDlg->setEnabled(false);
 
 	pluginToolBar->addAction(plgnGnrtDlg);
 	pluginToolBar->addAction(plgnGraphDlg);
@@ -240,16 +252,25 @@ void PluginGame5::initToolBar(MainWindow* pParent)
 
 	connect(plgnGnrtDlg , &QAction::triggered, genSitDlg, &PluginGame5GenerateSituationDialog::onPlgnAction);
 	connect(plgnGraphDlg, &QAction::triggered, this , &PluginGame5::reemitGraphDlgAction);
-	connect(this, &PluginGame5::onGraphDlgAction, graphDlg , &PluginGame5GraphDialog::onPlgnAction);
+
+	connect(this, &PluginGame5::onGraphDlgAction        , graphDlg    , &PluginGame5GraphDialog::onPlgnAction);
+	connect(this, &PluginGame5::setGraphDlgActionEnabled, plgnGraphDlg, &QAction::setEnabled);
 }
 
 void PluginGame5::initDialogs(QWidget* pParent)
 {
 	genSitDlg = new PluginGame5GenerateSituationDialog(pParent);
 	graphDlg  = new PluginGame5GraphDialog(pParent);
+	
+	connect(genSitDlg, &QDialog::accepted, this, &PluginGame5::reemitGraphDlgActionEnabled);
 }
 
 void PluginGame5::reemitGraphDlgAction()
 {
 	emit onGraphDlgAction(genSitDlg->getBoardState());
+}
+
+void PluginGame5::reemitGraphDlgActionEnabled()
+{
+	emit setGraphDlgActionEnabled(true);
 }

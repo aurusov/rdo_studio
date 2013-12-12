@@ -38,10 +38,12 @@ public:
 
 signals:
 	void onGraphDlgAction(QString string);
+	void setGraphDlgActionEnabled(bool);
 
 private slots:
 	void pluginSlot();
 	void reemitGraphDlgAction();
+	void reemitGraphDlgActionEnabled();
 
 private:
 	PluginGame5GenerateSituationDialog* genSitDlg;
