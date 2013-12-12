@@ -79,6 +79,18 @@ SET(DIALOGS_UI_FILES
 	src/plugin_game5_graph_node_info_dialog.ui
 )
 
+SET(QRC_FILES
+	src/res/plugin_game5.qrc
+)
+
+QT5_ADD_RESOURCES(GENERATED_QRC_FILES ${QRC_FILES})
+
+SET(RESOURCES_IMAGE_FILES
+	src/res/images/gen_sit_dialog.bmp
+	src/res/images/graph_dialog.bmp
+	src/res/images/graph_dialog_d.bmp
+)
+
 SET(CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 MESSAGE(STATUS ${CMAKE_CURRENT_BINARY_DIR})
 QT5_WRAP_UI(GENERATED_DIALOGS_UI_FILES ${DIALOGS_UI_FILES})
@@ -90,6 +102,8 @@ SET(PLUGIN_SRC_FILES
 	${GAME_BOARD_FILES}
 	${GRAPH_FILES}
 	${DIALOGS_UI_FILES}
+	${RESOURCES_IMAGE_FILES}
+	${QRC_FILES}
 )
 
 SET(QT_MOC_FLAGS)
@@ -105,6 +119,7 @@ ADD_LIBRARY(plugin_game5 SHARED
 	${PLUGIN_SRC_FILES}
 	${GENERATED_DIALOGS_UI_FILES}
 	${GENERATED_MOC_FILES}
+	${GENERATED_QRC_FILES}
 )
 SET_TARGET_PROPERTIES(plugin_game5 PROPERTIES FOLDER .plugins)
 
@@ -134,8 +149,13 @@ IF(MSVC) # options for windows #
 		${GENERATED_MOC_FILES}
 	)
 
+	SOURCE_GROUP(".generated" FILES
+		${GENERATED_QRC_FILES}
+	)
+
 	SOURCE_GROUP(".src" FILES
 		${SRC_FILES}
+		${QRC_FILES}
 	)
 
 	SOURCE_GROUP(".src\\.completer" FILES
@@ -158,4 +178,7 @@ IF(MSVC) # options for windows #
 		${DIALOGS_UI_FILES}
 	)
 
+	SOURCE_GROUP(".src\\.resources" FILES
+		${RESOURCES_IMAGE_FILES}
+	)
 ENDIF(MSVC)

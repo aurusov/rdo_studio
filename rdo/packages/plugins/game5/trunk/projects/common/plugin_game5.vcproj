@@ -202,6 +202,30 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath="..\..\src\res\plugin_game5.qrc"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="RCC $(InputFileName)"
+						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name $(InputName) $(InputPath) -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\qrc_$(InputName).cpp&quot;"
+						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\qrc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="RCC $(InputFileName)"
+						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name $(InputName) $(InputPath) -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\qrc_$(InputName).cpp&quot;"
+						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\qrc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
 			<Filter
 				Name=".dialogs"
 				>
@@ -626,6 +650,10 @@
 		<Filter
 			Name=".generated"
 			>
+			<File
+				RelativePath=".\bin\plugin_game5\generated\qrc_plugin_game5.cpp"
+				>
+			</File>
 			<Filter
 				Name=".moc"
 				>

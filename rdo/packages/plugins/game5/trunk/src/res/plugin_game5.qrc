@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="/res">
+    <file>images/gen_sit_dialog.bmp</file>
+    <file>images/graph_dialog.bmp</file>
+    <file>images/graph_dialog_d.bmp</file>
+  </qresource>
+</RCC>
