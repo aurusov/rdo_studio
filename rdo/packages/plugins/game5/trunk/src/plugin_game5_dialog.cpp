@@ -76,7 +76,6 @@ PluginGame5GenerateSituationDialog::~PluginGame5GenerateSituationDialog()
 void PluginGame5GenerateSituationDialog::onClickHide(bool state)
 {
 	hiddenWidget->setVisible(state);
-	buttonHide->setText(buttonHide->text() == ">>" ? "<<" : ">>");
 	setFixedWidth(QWIDGETSIZE_MAX);
 	adjustSize();
 	setFixedWidth(width());
