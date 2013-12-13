@@ -7,7 +7,7 @@
   \authors   Поподьянец Евгений (kurt.gigacore@gmail.com)
   \authors   Александровский Кирилл (k.alexandrovsky@gmail.com)
   \date      18.10.2013
-  \brief     Синтаксис RTP, RSS, EVN, PAT, DPT, FRM
+  \brief     Синтаксис компилятора РДО
   \indent    4T
 */
 
@@ -207,6 +207,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/src/common/rdotypes.h"
+
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdopat.h"
@@ -223,6 +225,7 @@
 #include "simulator/compiler/parser/context/context_type.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/statement.h"
+#include "simulator/compiler/parser/src/animation/animation_frame.h"
 
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/calc/calc_base.h"
@@ -235,8 +238,12 @@
 #include "simulator/runtime/calc/procedural/calc_braces.h"
 #include "simulator/runtime/calc/procedural/calc_range.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
+#include "simulator/runtime/calc/function/calc_function_system.h"
+#include "simulator/runtime/rdo_res_type_i.h"
 
-#include "simulator/compiler/parser/src/animation/animation_frame.h"
+#include "simulator/runtime/process/rdoprocess.h"
+#include "simulator/compiler/mbuilder/rdo_resources.h"
+#include "simulator/compiler/mbuilder/process.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
@@ -297,12 +304,13 @@ rdo_compiler
 	| rss_main rdo_compiler
 	| pat_main rdo_compiler
 	| dpt_main rdo_compiler
+	| prc_main rdo_compiler
 	| frm_main rdo_compiler
 	| fun_list rdo_compiler
 	| pmd_main rdo_compiler
 	| error
 	{
-		PARSER->error().error(RDOParserSrcInfo(), "Ожидается ключевое слово: $Resource_type, $Resources, $Pattern");
+		PARSER->error().error(RDOParserSrcInfo(), "Синтаксическая ошибка");
 	}
 	;
 
@@ -8216,6 +8224,949 @@ pmd_result
 		#PASS2
 		{
 			PARSER->error().error(@2, @3, "После ключевого слова get_value ожидается арифметическое выражение");
+		}
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Процессный подход
+// --------------------------------------------------------------------------------
+// -------------------- Основная часть
+// --------------------------------------------------------------------------------
+
+prc_main
+	: process RDO_End
+	{
+		#PASS2
+		{
+			PARSER->getLastPROCProcess()->end();
+		}
+	}
+	;
+
+process
+	: process_header process_input
+	;
+
+process_header
+	: process_begin process_condition process_prior
+	;
+
+process_begin
+	: RDO_Process RDO_IDENTIF RDO_IDENTIF
+	{
+		#PASS2
+		{
+			LPRDOPROCProcess pProcess = PARSER->getLastPROCProcess();
+			if (pProcess && !pProcess->closed())
+			{
+				PARSER->error().error(pProcess->src_info(), "Не закрыт предыдущий блок $Process");
+			}
+
+			tstring transactName   = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
+			tstring rtp_param_name = "Время_создания";
+
+			// Получили список всех типов ресурсов
+			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
+			// Найти тип ресурса, если его нет, то создать
+			if (!rtpList[transactName].exist())
+			{
+				// Создадим тип ресурса-транзакта
+				rdo::compiler::mbuilder::RDOResType rtp(transactName, rdo::compiler::mbuilder::RDOResType::rt_temporary);
+				// Добавим параметр Время_создания
+				rdo::compiler::mbuilder::RDOResType::Param param(rtp_param_name, rdo::Factory<RDOType__real>::create());
+				rtp.m_params.append(param);
+				// Добавим тип ресурса
+				if (!rtpList.append(rtp))
+				{
+					PARSER->error().error(@2, rdo::format("Ошибка создания типа ресурса: %s", transactName.c_str()));
+				}
+				LPRDORTPResType pResType = PARSER->findRTPResType(transactName);
+				ASSERT(pResType);
+				pResType->setType(RDORTPResType::procTran);
+			}
+			else
+			{
+				// Тип найден, проверим его на наличие вещественного параметра
+				CREF(rdo::compiler::mbuilder::RDOResType) rtp = rtpList[transactName];
+				if (!rtp.m_params[rtp_param_name].exist())
+				{
+					PARSER->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' нет требуемого параметра '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
+				}
+				// Параметр есть, надо проверить на тип
+				if (rtp.m_params[rtp_param_name].typeID() != rdo::runtime::RDOType::t_real)
+				{
+					PARSER->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' параметр '%s' не является вещественным типом", rtp.name().c_str(), rtp_param_name.c_str()));
+				}
+				// Тип ресурса подходит в качестве типа транзакта
+				LPRDORTPResType pResType = PARSER->findRTPResType(transactName);
+				pResType->setType(RDORTPResType::procTran);
+			}
+
+			LPRDORTPResType transactType = PARSER->findRTPResType(transactName);
+
+			tstring procName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(@1, @3, procName), procName, transactType);
+			ASSERT(pProcess);
+		}
+	}
+	| RDO_Process error
+	{
+		PARSER->error().error(@2, @2, "Ошибка в процессе!");
+	}
+	;
+
+process_condition
+	: /* empty */
+	{
+		#PASS2
+		{
+			LPRDOPROCProcess pProcess = PARSER->getLastPROCProcess();
+			ASSERT(pProcess);
+			pProcess->setCondition();
+		}
+	}
+	| RDO_Condition fun_logic
+	{
+		#PASS2
+		{
+			LPRDOPROCProcess pProcess = PARSER->getLastPROCProcess();
+			ASSERT(pProcess);
+			pProcess->setCondition(PARSER->stack().pop<RDOFUNLogic>($2));
+		}
+	}
+	| RDO_Condition RDO_NoCheck
+	{
+		#PASS2
+		{
+			LPRDOPROCProcess pProcess = PARSER->getLastPROCProcess();
+			ASSERT(pProcess);
+			pProcess->setCondition();
+		}
+	}
+	| RDO_Condition error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@2, @2, "После ключевого слова $Condition ожидается условие активации процесса");
+		}
+	}
+	| error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@1, "Ожидается ключевое слово $Condition");
+		}
+	}
+	;
+
+process_prior
+	: /* empty */
+	| RDO_Priority fun_arithm
+	{
+		#PASS2
+		{
+			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+			ASSERT(pArithm);
+			if (!PARSER->getLastPROCProcess()->setPrior(pArithm))
+			{
+				PARSER->error().error(@2, "Процесс не может иметь приоритет");
+			}
+		}
+	}
+	| RDO_Priority error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@1, @2, "Ошибка описания приоритета процесса");
+		}
+	}
+	| error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@1, @1, "Ожидается ключевое слово $Priority");
+		}
+	}
+	;
+
+process_input
+	: /* empty */
+	| process_input process_line
+	;
+
+process_line
+	: RDO_IDENTIF
+	{
+		#PASS1
+		{
+			PARSER->error().error(@1, rdo::format("Неизвестный оператор '%s'", PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str()));
+		}
+	}
+	| proc_planning_statement
+	{
+		#PASS2
+		{
+			rdo::runtime::LPRDOCalc pCalc = PARSER->stack().pop<rdo::runtime::RDOCalc>($1);
+			ASSERT(pCalc);
+			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(
+				PARSER->getLastPROCProcess(),
+				"Event planning from process",
+				pCalc
+			);
+			ASSERT(pBlock);
+			$$ = PARSER->stack().push(pBlock);
+		}
+	}
+	| proc_stopping_statement
+	{
+		#PASS2
+		{
+			rdo::runtime::LPRDOCalc pCalc = PARSER->stack().pop<rdo::runtime::RDOCalc>($1);
+			ASSERT(pCalc);
+			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(
+				PARSER->getLastPROCProcess(),
+				"Event stop from process",
+				pCalc
+			);
+			ASSERT(pBlock);
+			$$ = PARSER->stack().push(pBlock);
+		}
+	}
+	| RDO_GENERATE fun_arithm
+	{
+		#PASS2
+		{
+			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+			ASSERT(pArithm);
+
+			rdo::runtime::LPRDOCalc pCalcTime = pArithm->createCalc();
+			ASSERT(pCalcTime);
+
+			LPRDOPROCProcess pProc = PARSER->getLastPROCProcess();
+			ASSERT(pProc);
+
+			LPRDORTPResType pParserType = pProc->getTransacType();
+			ASSERT(pParserType);
+			
+			rbool permanentFlag = pParserType->isPermanent();
+			rbool traceFlag     = true;
+
+			std::vector<rdo::runtime::RDOValue> paramList;
+			//! \error вместо настоящих значений параметров транзакта просто 0
+			paramList.push_back(rdo::runtime::RDOValue(0.0));
+
+			rdo::runtime::LPRDOCalcCreateResource pCreateAndGoOnTransactCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
+				pParserType->getNumber(),
+				paramList,
+				traceFlag,
+				permanentFlag
+			);
+			ASSERT(pCreateAndGoOnTransactCalc);
+
+			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCGenerate>::create(
+				pProc,
+				"GENERATE",
+				pCalcTime,
+				pCreateAndGoOnTransactCalc
+			);
+			ASSERT(pBlock);
+
+			$$ = PARSER->stack().push(pBlock);
+		}
+	}
+	| RDO_GENERATE error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@2, "Ошибка в арифметическом выражении");
+		}
+	}
+	| RDO_TERMINATE term_param
+	{
+		#PASS2
+		{
+			LPRDOPROCOperator pBlock = PARSER->stack().pop<RDOPROCOperator>($2);
+			ASSERT(pBlock);
+			$$ = PARSER->stack().push(pBlock);
+		}
+	}
+	| RDO_TERMINATE error
+	{
+		PARSER->error().error(@1, "Ошибка в параметре оператора TERMINATE");
+	}
+	| RDO_ADVANCE fun_arithm
+	{
+		#PASS2
+		{
+			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAdvance>::create(PARSER->getLastPROCProcess(), "ADVANCE", PARSER->stack().pop<RDOFUNArithm>($2)->createCalc());
+			ASSERT(pBlock);
+			$$ = PARSER->stack().push(pBlock);
+		}
+	}
+	| RDO_ADVANCE error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@2, "Ошибка в арифметическом выражении");
+		}
+	}
+	| RDO_QUEUE queue_param
+	{
+		#PASS2
+		{
+			TRACE("QUEUE dpt_queue_param\n");
+			LPRDOPROCQueue pQueue = PARSER->stack().pop<RDOPROCQueue>($2);
+			ASSERT(pQueue);
+			pQueue->createRuntime();
+			$$ = PARSER->stack().push(pQueue);
+		}
+	}
+	| RDO_QUEUE error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@1, "Ожидается имя ресурса для сбора статистики по очереди");
+		}
+	}
+	| RDO_DEPART depart_param
+	{
+		#PASS2
+		{
+			TRACE("DEPART dpt_depart_param\n");
+			LPRDOPROCDepart pDepart = PARSER->stack().pop<RDOPROCDepart>($2);
+			ASSERT(pDepart);
+			pDepart->createRuntime();
+			$$ = PARSER->stack().push(pDepart);
+		}
+	}
+	| RDO_DEPART error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@1, "Ожидается имя ресурса для сбора статистики по очереди");
+		}
+	}
+	| RDO_SEIZE seize_param
+	{
+		#PASS2
+		{
+			TRACE("SEIZE dpt_seize_param\n");
+			LPRDOPROCSeize pSeize = PARSER->stack().pop<RDOPROCSeize>($2);
+			ASSERT(pSeize);
+			pSeize->createRuntime();
+			$$ = PARSER->stack().push(pSeize);
+		}
+	}
+	| RDO_SEIZE error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
+		}
+	}
+	| RDO_RELEASE release_param
+	{
+		#PASS2
+		{
+			TRACE("RELEASE dpt_release_param\n");
+			LPRDOPROCRelease pRelease = PARSER->stack().pop<RDOPROCRelease>($2);
+			ASSERT(pRelease);
+			pRelease->createRuntime();
+			$$ = PARSER->stack().push(pRelease);
+		}
+	}
+	| RDO_RELEASE error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@1, rdo::format("Ожидается список ресурсов, объединяемых в блок, через запятую"));
+		}
+	}
+	| RDO_ASSIGN assign_param
+	{
+	}
+	| RDO_ASSIGN error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@1, rdo::format("Ожидается строка изменения параметра"));
+		}
+	}
+	;
+
+proc_planning_statement
+	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'';'
+	{
+		#PASS2
+		{
+			tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
+
+			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
+			if (!pPattern)
+			{
+				PARSER->error().error(@1, rdo::format("Попытка запланировать неизвестное событие: %s", eventName.c_str()));
+			}
+
+			LPRDOPatternEvent pEvent = pPattern.object_dynamic_cast<RDOPatternEvent>();
+			if (!pEvent)
+			{
+				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", eventName.c_str()));
+			}
+
+			ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
+			if (arithmIt == pArithmList->getContainer().end())
+			{
+				PARSER->error().error(@1, rdo::format("Не указано время планирования события: %s", eventName.c_str()));
+			}
+
+			LPRDOFUNArithm pTimeArithm = *arithmIt;
+			ASSERT(pTimeArithm);
+			++arithmIt;
+
+			LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
+			ASSERT(pParamList);
+
+			while (arithmIt != pArithmList->getContainer().end())
+			{
+				pParamList->addItem(*arithmIt);
+				++arithmIt;
+			}
+
+			rdo::runtime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
+			pCalcTime->setSrcInfo(pTimeArithm->src_info());
+			ASSERT(pCalcTime);
+
+			rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
+			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+			ASSERT(pEventPlan);
+			pEvent->insertPlaning(pEventPlan, pParamList);
+
+			$$ = PARSER->stack().push(pEventPlan);
+		}
+	}
+	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@7, "Не найден символ окончания инструкции - точка с запятой");
+		}
+	}
+	| RDO_IDENTIF '.' RDO_Planning '(' error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@5, "Ошибка в арифметическом выражении");
+		}
+	}
+	| RDO_IDENTIF '.' RDO_Planning error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@4, "Ожидается открывающая скобка");
+		}
+	}
+	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@6, "Ожидается закрывающая скобка");
+		}
+	}
+	;
+
+proc_stopping_statement
+	: RDO_IDENTIF '.' RDO_Stopping '(' ')' ';'
+	{
+		#PASS2
+		{
+			tstring         eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			LPRDOPATPattern pPattern  = PARSER->findPATPattern(eventName);
+			if (!pPattern)
+			{
+				PARSER->error().error(@1, rdo::format("Попытка остановить неизвестное событие: %s", eventName.c_str()));
+			}
+
+			LPRDOPatternEvent pEvent = pPattern.object_dynamic_cast<RDOPatternEvent>();
+			if (!pEvent)
+			{
+				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", eventName.c_str()));
+			}
+
+			rdo::runtime::LPRDOCalcEventStop pCalc = rdo::Factory<rdo::runtime::RDOCalcEventStop>::create();
+			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Остановка события %s", eventName.c_str())));
+			ASSERT(pCalc);
+			pEvent->insertStop(pCalc);
+
+			$$ = PARSER->stack().push(pCalc);
+		}
+	}
+	| RDO_IDENTIF '.' RDO_Stopping '(' ')' error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@4, "Не найден символ окончания инструкции - точка с запятой");
+		}
+	}
+	;
+
+queue_param
+	: RDO_IDENTIF
+	{
+		#PASS1
+		{
+			//! Имя ресурса
+			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			CREF(RDOParserSrcInfo) info     = @1;
+			// Получили список всех ресурсов
+			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
+			//! Получили список всех типов ресурсов
+			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
+			rdo::compiler::mbuilder::RDOResType rtp;
+			tstring rtp_name = "QDEPART";
+			tstring q_name   = "Очередь_" + res_name;
+			//! Если ресурс существует, берем его тип и проверяем
+			if (rssList[res_name].exist())
+			{
+				rtp = rssList[res_name].getType();
+				rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, info);
+				LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
+				ASSERT(pResult);
+				pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("длина_очереди")));
+			}
+			else
+			{
+				//! Если тип "QDEPART" существует
+				if (rtpList[rtp_name].exist())
+				{
+					rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
+					if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, info))
+					{
+						rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
+						LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
+						ASSERT(pResult);
+						pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("длина_очереди")));
+					}
+				}
+				else
+				{
+					rdo::compiler::mbuilder::RDOResType rtp_ = rdo::compiler::mbuilder::BlockForQueue::createType(rtp_name, info);
+					if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, info))
+					{
+						rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
+						LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
+						ASSERT(pResult);
+						pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("длина_очереди")));
+					}
+				}
+			}
+		}
+		#PASS2
+		{
+			tstring res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			TRACE1("%s _good\n", res_name.c_str());
+			LPRDOPROCQueue pQueue = rdo::Factory<RDOPROCQueue>::create(PARSER->getLastPROCProcess(), "QUEUE");
+			ASSERT(pQueue);
+			pQueue->setResource(res_name);
+			$$ = PARSER->stack().push(pQueue);
+		}
+	}
+	| RDO_IDENTIF error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@1, "Ошибка в миени очереди");
+		}
+	}
+	;
+
+depart_param
+	: RDO_IDENTIF
+	{
+		#PASS1
+		{
+			//! Имя ресурса
+			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			CREF(RDOParserSrcInfo) info     = @1;
+			//! Получили список всех ресурсов
+			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
+			//! Получили список всех типов ресурсов
+			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
+			rdo::compiler::mbuilder::RDOResType rtp;
+			tstring rtp_name = "QDEPART";
+			//! Если ресурс существует, берем его тип и проверяем
+			if (rssList[res_name].exist())
+			{
+				rtp = rssList[res_name].getType();
+				rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, info);
+			}
+			else
+			{
+				if (rtpList[rtp_name].exist())
+				{
+					rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
+					if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, info))
+					{
+						rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
+					}
+				}
+				else
+				{
+					rdo::compiler::mbuilder::RDOResType rtp_ = rdo::compiler::mbuilder::BlockForQueue::createType(rtp_name, info);
+					if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, info))
+					{
+						rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
+					}
+				}
+			}
+		}
+		#PASS2
+		{
+			tstring res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			TRACE1("%s _good\n", res_name.c_str());
+			LPRDOPROCDepart pDepart = rdo::Factory<RDOPROCDepart>::create(PARSER->getLastPROCProcess(), "DEPART");
+			ASSERT(pDepart);
+			pDepart->setResource(res_name);
+			$$ = PARSER->stack().push(pDepart);
+		}
+	}
+	| RDO_IDENTIF error 
+	{
+		#PASS1
+		{
+			PARSER->error().error(@1, "Ошибка в имени ресурса");
+		}
+	}
+	;
+
+term_param
+	: /* empty */
+	{
+		#PASS2
+		{
+			rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0));
+			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), "TERMINATE", pCalc);
+			ASSERT(pBlock);
+			$$ = PARSER->stack().push(pBlock);
+		}
+	}
+	| fun_arithm
+	{
+		#PASS2
+		{
+			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
+			ASSERT(pArithm);
+			if (pArithm->typeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int)
+			{
+				rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(NULL);
+				LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), "TERMINATE", pCalc);
+				ASSERT(pBlock);
+				$$ = PARSER->stack().push(pBlock);
+			}
+			else
+			{
+				PARSER->error().error(@1, "Ошибка, для оператора TERMINATE можно использовать только арифметические выражения целого типа");
+			}
+		}
+	}
+	| fun_arithm error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@1, "Ошибка, после оператора TERMINATE может быть указано только арифметическое выражение целого типа");
+		}
+	}
+	;
+
+seize_param
+	: RDO_IDENTIF
+	{
+		#PASS1
+		{
+			//! Имя ресурса
+			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			CREF(RDOParserSrcInfo) info     = @1;
+			//! Получили список всех ресурсов
+			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
+			rdo::compiler::mbuilder::RDOResType rtp;
+			//! Если ресурс существует, берем его тип и проверяем
+			if (rssList[res_name].exist())
+			{
+				rtp = rssList[res_name].getType();
+				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
+				{
+					//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
+					if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
+					{
+						//здесь нужно переделать тип ресурса, а не ресурс
+						rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
+					}
+				}
+			}
+			else
+			{
+				//! Ресурс не найден, сформировать имя типа по имени ресурса
+				//! Сформировать имя типа по имени ресурса
+				tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
+				//! Получили список всех типов ресурсов
+				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
+				//! Нашли тип ресурса
+				if (rtpList[rtp_name].exist())
+				{
+					rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
+					if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info))
+					{
+						rdo::compiler::mbuilder::BlockForSeize::createRes(rtp_, res_name);
+					}
+				}
+				else
+				{
+					rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info);
+					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
+				}
+			}
+		}
+		#PASS2
+		{
+			tstring        res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			LPRDOPROCSeize pSeize   = rdo::Factory<RDOPROCSeize>::create(PARSER->getLastPROCProcess(), "SEIZE");
+			ASSERT(pSeize);
+			pSeize->addResource(res_name);
+			$$ = PARSER->stack().push(pSeize);
+		}
+	}
+	| seize_param ',' RDO_IDENTIF
+	{
+		#PASS1
+		{
+			//! Имя ресурса
+			tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
+			CREF(RDOParserSrcInfo) info     = @3;
+			//! Получили список всех ресурсов
+			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
+			rdo::compiler::mbuilder::RDOResType rtp;
+			//! Если ресурс существует, берем его тип и проверяем
+			if (rssList[res_name].exist())
+			{
+				rtp = rssList[res_name].getType();
+				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
+				{
+					//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
+					if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
+					{
+						rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
+					}
+				}
+			}
+			else
+			{
+				//! Ресурс не найден, сформировать имя типа по имени ресурса
+				//! Сформировать имя типа по имени ресурса
+				tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
+				//! Получили список всех типов ресурсов
+				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
+				//! Нашли тип ресурса
+				if (rtpList[rtp_name].exist())
+				{
+					rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
+					if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info))
+					{
+						rdo::compiler::mbuilder::BlockForSeize::createRes(rtp_, res_name);
+					}
+				}
+				else
+				{
+					rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info);
+					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
+				}
+			}
+		}
+		#PASS2
+		{
+			LPRDOPROCSeize pSeize = PARSER->stack().pop<RDOPROCSeize>($1);
+			ASSERT(pSeize);
+			tstring res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
+			pSeize->addResource(res_name);
+			$$ = PARSER->stack().push(pSeize);
+		}
+	}
+	| seize_param error
+	{
+		#PASS1
+		{
+			PARSER->error().error(@1, "Ошибка в имени ресурса");
+		}
+	}
+	;
+
+release_param
+	: RDO_IDENTIF
+	{
+		#PASS1
+		{
+			//! Имя ресурса
+			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			CREF(RDOParserSrcInfo) info     = @1;
+			//! Получили список всех ресурсов
+			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
+			rdo::compiler::mbuilder::RDOResType rtp;
+			if (rssList[res_name].exist())
+			{
+				rtp = rssList[res_name].getType();
+				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
+				{
+					//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
+					if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
+					{
+						rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
+					}
+				}
+			}
+			else
+			{
+				//! Ресурс не найден, сформировать имя типа по имени ресурса
+				//! Сформировать имя типа по имени ресурса
+				tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
+				//! Получили список всех типов ресурсов
+				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
+				//! Нашли тип ресурса
+				if (rtpList[rtp_name].exist())
+				{
+					rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
+					if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info))
+					{
+						rdo::compiler::mbuilder::BlockForSeize::createRes(rtp_, res_name);
+					}
+				}
+				else
+				{
+					rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info);
+					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
+				}
+			}
+		}
+		#PASS2
+		{
+			tstring          res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			LPRDOPROCRelease pRelease = rdo::Factory<RDOPROCRelease>::create(PARSER->getLastPROCProcess(), "RELEASE");
+			ASSERT(pRelease);
+			pRelease->addResource(res_name);
+			$$ = PARSER->stack().push(pRelease);
+		}
+	}
+	| release_param ',' RDO_IDENTIF
+	{
+		#PASS1
+		{
+			//! Имя ресурса
+			tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
+			CREF(RDOParserSrcInfo) info     = @3;
+			//! Получили список всех ресурсов
+			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
+			rdo::compiler::mbuilder::RDOResType rtp;
+			//! Если ресурс существует берем его тип и проверяем
+			if (rssList[res_name].exist())
+			{
+				rtp = rssList[res_name].getType();
+				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
+				{
+					//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
+					if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
+					{
+						rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
+					}
+				}
+			}
+			else
+			{
+				//! Ресурс не найден, сформировать имя типа по имени ресурса
+				//! Сформировать имя типа по имени ресурса
+				tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
+				//! Получили список всех типов ресурсов
+				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
+				//! Нашли тип ресурса
+				if (rtpList[rtp_name].exist())
+				{
+					rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
+					if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info))
+					{
+						rdo::compiler::mbuilder::BlockForSeize::createRes(rtp_, res_name);
+					}
+				}
+				else
+				{
+					rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info);
+					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
+				}
+			}
+		}
+		#PASS2
+		{
+			LPRDOPROCRelease pRelease = PARSER->stack().pop<RDOPROCRelease>($1);
+			ASSERT(pRelease);
+			tstring res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
+			pRelease->addResource(res_name);
+			$$ = PARSER->stack().push(pRelease);
+		}
+	}
+	| release_param error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@1, "Ошибка в имени ресурса");
+		}
+	}
+	;
+
+assign_param
+	: RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
+	{
+		#PASS2
+		{
+			tstring res   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			tstring param = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
+			rdo::compiler::mbuilder::RDOResType rtp;
+
+			// Получили список всех ресурсов
+			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
+
+			// Если ресурс существует, берем его тип и проверяем наличие параметра
+			if (rssList[res].exist())
+			{
+				rtp = rssList[res].getType();
+				if(!rtp.m_params[param].exist())
+				{
+					PARSER->error().error(@1, rdo::format("Ссылка на неизвестный параметр ресурса: %s.%s", res.c_str(), param.c_str()));
+				}
+			
+				LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
+				ASSERT(pArithm);
+
+				LPRDORSSResource pResource = PARSER->findRSSResource(res);
+				ASSERT(pResource);
+
+				LPRDORTPResType pResType = pResource->getType();
+				LPRDORTPParam   pParam   = pResType->findRTPParam(param);
+				pArithm->checkParamType(pParam->getTypeInfo());
+
+				ruint res = pResource->getID();
+				ruint par = rtp.m_params[param].id();
+
+				rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(pParam->getTypeInfo());
+				ASSERT(pCalc);
+
+				rdo::runtime::LPRDOCalcProcAssign pAssignCalc = rdo::Factory<rdo::runtime::RDOCalcProcAssign>::create(pCalc, res, par);
+				ASSERT(pAssignCalc);
+
+				LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(PARSER->getLastPROCProcess(), "ASSIGN", pAssignCalc);
+				ASSERT(pBlock);
+				$$ = PARSER->stack().push(pBlock);
+			}
+			else
+			{
+				PARSER->error().error(@1, rdo::format("Ссылка на неизвестный ресурс: %s", res.c_str()));
+			}
 		}
 	}
 	;
