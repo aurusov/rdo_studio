@@ -8714,7 +8714,7 @@ proc_stopping_statement
 queue_param
 	: RDO_IDENTIF
 	{
-		#PASS1
+		#PASS2
 		{
 			//! Имя ресурса
 			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
@@ -8761,10 +8761,6 @@ queue_param
 					}
 				}
 			}
-		}
-		#PASS2
-		{
-			tstring res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 			TRACE1("%s _good\n", res_name.c_str());
 			LPRDOPROCQueue pQueue = rdo::Factory<RDOPROCQueue>::create(PARSER->getLastPROCProcess(), "QUEUE");
 			ASSERT(pQueue);
@@ -8784,7 +8780,7 @@ queue_param
 depart_param
 	: RDO_IDENTIF
 	{
-		#PASS1
+		#PASS2
 		{
 			//! Имя ресурса
 			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
@@ -8820,10 +8816,6 @@ depart_param
 					}
 				}
 			}
-		}
-		#PASS2
-		{
-			tstring res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 			TRACE1("%s _good\n", res_name.c_str());
 			LPRDOPROCDepart pDepart = rdo::Factory<RDOPROCDepart>::create(PARSER->getLastPROCProcess(), "DEPART");
 			ASSERT(pDepart);
@@ -8882,7 +8874,7 @@ term_param
 seize_param
 	: RDO_IDENTIF
 	{
-		#PASS1
+		#PASS2
 		{
 			//! Имя ресурса
 			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
@@ -8926,11 +8918,7 @@ seize_param
 					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
 				}
 			}
-		}
-		#PASS2
-		{
-			tstring        res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			LPRDOPROCSeize pSeize   = rdo::Factory<RDOPROCSeize>::create(PARSER->getLastPROCProcess(), "SEIZE");
+			LPRDOPROCSeize pSeize = rdo::Factory<RDOPROCSeize>::create(PARSER->getLastPROCProcess(), "SEIZE");
 			ASSERT(pSeize);
 			pSeize->addResource(res_name);
 			$$ = PARSER->stack().push(pSeize);
@@ -8938,7 +8926,7 @@ seize_param
 	}
 	| seize_param ',' RDO_IDENTIF
 	{
-		#PASS1
+		#PASS2
 		{
 			//! Имя ресурса
 			tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
@@ -8981,12 +8969,8 @@ seize_param
 					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
 				}
 			}
-		}
-		#PASS2
-		{
 			LPRDOPROCSeize pSeize = PARSER->stack().pop<RDOPROCSeize>($1);
 			ASSERT(pSeize);
-			tstring res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 			pSeize->addResource(res_name);
 			$$ = PARSER->stack().push(pSeize);
 		}
@@ -9003,7 +8987,7 @@ seize_param
 release_param
 	: RDO_IDENTIF
 	{
-		#PASS1
+		#PASS2
 		{
 			//! Имя ресурса
 			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
@@ -9045,10 +9029,6 @@ release_param
 					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
 				}
 			}
-		}
-		#PASS2
-		{
-			tstring          res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 			LPRDOPROCRelease pRelease = rdo::Factory<RDOPROCRelease>::create(PARSER->getLastPROCProcess(), "RELEASE");
 			ASSERT(pRelease);
 			pRelease->addResource(res_name);
@@ -9057,7 +9037,7 @@ release_param
 	}
 	| release_param ',' RDO_IDENTIF
 	{
-		#PASS1
+		#PASS2
 		{
 			//! Имя ресурса
 			tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
@@ -9100,12 +9080,8 @@ release_param
 					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
 				}
 			}
-		}
-		#PASS2
-		{
 			LPRDOPROCRelease pRelease = PARSER->stack().pop<RDOPROCRelease>($1);
 			ASSERT(pRelease);
-			tstring res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 			pRelease->addResource(res_name);
 			$$ = PARSER->stack().push(pRelease);
 		}
