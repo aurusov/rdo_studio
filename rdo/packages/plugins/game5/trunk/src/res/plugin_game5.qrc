@@ -1,7 +1,7 @@
 <RCC>
   <qresource prefix="/res">
-    <file>images/gen_sit_dialog.bmp</file>
-    <file>images/graph_dialog.bmp</file>
-    <file>images/graph_dialog_d.bmp</file>
+    <file>images/gen_sit_dialog.png</file>
+    <file>images/graph_dialog.png</file>
+    <file>images/graph_dialog_d.png</file>
   </qresource>
 </RCC>

@@ -229,16 +229,13 @@ void PluginGame5::initToolBar(MainWindow* pParent)
 
 	plgnGnrtDlg->setObjectName("plgnGnrtDlg");
 	plgnGnrtDlg->setText("Расставить фишки");
-	QPixmap gnrtDlgPixmap(":/res/images/gen_sit_dialog.bmp");
-	gnrtDlgPixmap.setMask(gnrtDlgPixmap.createMaskFromColor(QColor(255, 0, 255)));
+	QPixmap gnrtDlgPixmap(":/res/images/gen_sit_dialog.png");
 	plgnGnrtDlg->setIcon(QIcon(gnrtDlgPixmap));
 
 	plgnGraphDlg->setObjectName("plgnGraphDlg");
 	plgnGraphDlg->setText("Построить граф");
-	QPixmap graphDlgPixmapD(":/res/images/graph_dialog_d.bmp");
-	QPixmap graphDlgPixmap (":/res/images/graph_dialog.bmp");
-	graphDlgPixmapD.setMask(graphDlgPixmapD.createMaskFromColor(QColor(255, 0, 255)));
-	graphDlgPixmap .setMask(graphDlgPixmap .createMaskFromColor(QColor(255, 0, 255)));
+	QPixmap graphDlgPixmapD(":/res/images/graph_dialog_d.png");
+	QPixmap graphDlgPixmap (":/res/images/graph_dialog.png");
 	QIcon graphDlgIcon(graphDlgPixmap);
 	graphDlgIcon.addPixmap(graphDlgPixmapD, QIcon::Disabled);
 	plgnGraphDlg->setIcon(graphDlgIcon);

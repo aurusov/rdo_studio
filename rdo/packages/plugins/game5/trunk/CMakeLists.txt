@@ -86,9 +86,9 @@ SET(QRC_FILES
 QT5_ADD_RESOURCES(GENERATED_QRC_FILES ${QRC_FILES})
 
 SET(RESOURCES_IMAGE_FILES
-	src/res/images/gen_sit_dialog.bmp
-	src/res/images/graph_dialog.bmp
-	src/res/images/graph_dialog_d.bmp
+	src/res/images/gen_sit_dialog.png
+	src/res/images/graph_dialog.png
+	src/res/images/graph_dialog_d.png
 )
 
 SET(CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
