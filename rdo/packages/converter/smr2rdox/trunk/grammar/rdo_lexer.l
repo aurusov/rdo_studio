@@ -319,8 +319,8 @@ set					return(RDO_set);
 			name,
 			rdo::Factory<rdo::converter::smr2rdox::RDOType__string>::create(),
 			LEXER->m_lploc
-				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, name)
-				: rdo::converter::smr2rdox::RDOParserSrcInfo(name)
+				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, n1)
+				: rdo::converter::smr2rdox::RDOParserSrcInfo(n1)
 		)
 	));
 	return RDO_STRING_CONST;

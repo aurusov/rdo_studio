@@ -11,6 +11,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/format.hpp>
+#include <boost/algorithm/string/join.hpp>
+#include <boost/range/algorithm_ext/insert.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/rdodpt.h"
 #include "converter/smr2rdox/rdoopr.h"
@@ -19,6 +22,7 @@
 #include "converter/smr2rdox/rdorss.h"
 #include "converter/smr2rdox/rdo_type.h"
 #include "converter/smr2rdox/runtime/rdo_logic_dptfree.h"
+#include "converter/smr2rdox/update/update.h"
 #include "simulator/runtime/keyboard.h"
 #include "simulator/runtime/rdo_rule.h"
 #include "simulator/runtime/rdo_operation.h"
@@ -147,6 +151,8 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 		val = pPatternParam->getType()->value_cast(pParam)->value();
 	}
 
+	m_paramValuesAsString.push_back(pParam->src_text());
+
 	rdo::runtime::LPRDOCalc pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
 		m_currParam,
 		rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
@@ -185,6 +191,31 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 			Converter::s_converter()->error().push_done();
 		}
 	}
+
+	planningInsertIntoSMR();
+}
+
+void RDODPTActivity::planningInsertIntoSMR() const
+{
+	if (pattern()->getType() != RDOPATPattern::PT_IE)
+		return;
+
+	const tstring planning_time = boost::str(boost::format("time_now + %s")
+		% pattern()->time->calc()->srcInfo().src_text());
+
+	std::vector<std::string> planning_params;
+	planning_params.push_back(planning_time);
+	boost::range::insert(planning_params, planning_params.end(), m_paramValuesAsString);
+
+	const tstring planning = boost::str(boost::format("%s.planning(%s)\r\n")
+		% pattern()->name()
+		% boost::algorithm::join(planning_params, ", "));
+
+	LPDocUpdate pPlanningInsertIntoSMR = rdo::Factory<UpdateInsert>::create(
+		IDocUpdate::Position::POSITION_END,
+		planning,
+		IDocument::SMR);
+	Converter::s_converter()->insertDocUpdate(pPlanningInsertIntoSMR);
 }
 
 rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)

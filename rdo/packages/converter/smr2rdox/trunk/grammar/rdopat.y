@@ -1643,16 +1643,6 @@ pat_pattern
 				@1.m_last_seek,
 				planning);
 			CONVERTER->insertDocUpdate(pPlanningInsertIntoEvent);
-
-			tstring planning_into_smr_params(planning_time);
-			tstring planning_into_smr = boost::str(boost::format("%s.planning(%s)")
-				% pPattern->name()
-				% planning_into_smr_params);
-			LPDocUpdate pPlanningInsertIntoSMR = rdo::Factory<UpdateInsert>::create(
-				IDocUpdate::Position::POSITION_END,
-				boost::str(boost::format("%s\r\n") % planning_into_smr),
-				IDocument::SMR);
-			CONVERTER->insertDocUpdate(pPlanningInsertIntoSMR);
 		}
 		pPattern->end();
 		$$ = CONVERTER->stack().push(pPattern);

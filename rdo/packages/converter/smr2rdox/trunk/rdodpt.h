@@ -85,8 +85,11 @@ protected:
 	virtual ~RDODPTActivity();
 
 private:
-	ruint           m_currParam;
-	LPRDOPATPattern m_pPattern;
+	ruint                     m_currParam;
+	LPRDOPATPattern           m_pPattern;
+	std::vector<std::string>  m_paramValuesAsString;
+
+	void planningInsertIntoSMR() const;
 };
 
 // --------------------------------------------------------------------------------
