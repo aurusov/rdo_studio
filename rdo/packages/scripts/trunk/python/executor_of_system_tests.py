@@ -204,10 +204,10 @@ def test_convertor(dirname, model):
         if convertor_exit_code == exit_code:
             cycle_exit_code = compare_etalons(etalons, temp_directory_name)
         if cycle_exit_code != APP_CODE_TERMINATION_NORMAL:
-            arc_name = temp_directory_name + '.zip'
+            arc_name = dirname + '.zip'
             utils.enc_print('Make zip archive: ' + arc_name)
             zipf = zipfile.ZipFile(arc_name, 'w')
-            zipdir(temp_directory_name, zipf)
+            zipdir(dirname, zipf)
             zipf.close()
         shutil.rmtree(temp_directory_name)
     except:
