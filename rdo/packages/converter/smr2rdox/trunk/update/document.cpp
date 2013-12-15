@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 #include <boost/filesystem/fstream.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/update/document.h"
@@ -71,30 +72,30 @@ void Document::convert()
 
 #ifdef DUMP_DOCUMENT
 	{
-		STL_FOR_ALL_CONST(m_updateContainer, it)
+		BOOST_FOREACH(const Update& update, m_updateContainer)
 		{
-			LPDocUpdate pUpdate = it->first;
+			const LPDocUpdate pUpdate = update.first;
 			ASSERT(pUpdate);
 			pUpdate->dump(pDocument);
 		}
 	}
 #endif
 
-	STL_FOR_ALL(m_updateContainer, it)
+	BOOST_FOREACH(Update& update, m_updateContainer)
 	{
-		it->second = true;
-		LPDocUpdate pUpdate = it->first;
+		update.second = true;
+		const LPDocUpdate pUpdate = update.first;
 		ASSERT(pUpdate);
 		pUpdate->apply(pDocument);
 
 #ifdef DUMP_DOCUMENT
 		{
 			TRACE("=================\n");
-			STL_FOR_ALL_CONST(m_updateContainer, it)
+			BOOST_FOREACH(const Update& update, m_updateContainer)
 			{
-				if (!it->second)
+				if (!update.second)
 				{
-					LPDocUpdate pUpdate = it->first;
+					const LPDocUpdate pUpdate = update.first;
 					ASSERT(pUpdate);
 					pUpdate->dump(pDocument);
 				}
@@ -300,6 +301,18 @@ void Document::MemoryStream::remove(ruint from, ruint to)
 
 tstring Document::MemoryStream::get(ruint from, ruint to)
 {
+	switch (from)
+	{
+	case IDocUpdate::Position::POSITION_BEGIN: from = 0; break;
+	case IDocUpdate::Position::POSITION_END  : from = m_buffer.size(); break;
+	}
+
+	switch (to)
+	{
+	case IDocUpdate::Position::POSITION_BEGIN: to = 0; break;
+	case IDocUpdate::Position::POSITION_END  : to = m_buffer.size(); break;
+	}
+
 	Buffer::iterator itFrom = m_buffer.begin() + from;
 	Buffer::iterator itTo   = m_buffer.begin() + to;
 	tstring result;
