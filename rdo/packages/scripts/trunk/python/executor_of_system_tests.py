@@ -207,7 +207,7 @@ def test_convertor(dirname, model):
             arc_name = text_uuid + '.zip'
             utils.enc_print('Make zip archive: ' + arc_name)
             zipf = zipfile.ZipFile(arc_name, 'w')
-            zipdir(dirname, zipf)
+            zipdir(temp_directory_name, zipf)
             zipf.close()
         shutil.rmtree(temp_directory_name)
     except:
