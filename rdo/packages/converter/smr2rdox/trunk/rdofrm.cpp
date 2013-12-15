@@ -49,14 +49,14 @@ void RDOFRMFrame::setShowIfBlock(CREF(Seek) firstSeek)
 	{
 		LPDocUpdate pOpenBraceInsert = rdo::Factory<UpdateInsert>::create(
 			*m_firstSeek,
-			"\n{"
+			"\r\n{"
 		);
 		ASSERT(pOpenBraceInsert);
 		Converter::s_converter()->insertDocUpdate(pOpenBraceInsert);
 
 		LPDocUpdate pCloseBraceInsert = rdo::Factory<UpdateInsert>::create(
 			*m_lastSeek,
-			"\n}"
+			"\r\n}"
 		);
 		ASSERT(pCloseBraceInsert);
 		Converter::s_converter()->insertDocUpdate(pCloseBraceInsert);
