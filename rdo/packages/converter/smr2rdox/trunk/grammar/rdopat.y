@@ -1634,7 +1634,7 @@ pat_pattern
 			CONVERTER->insertDocUpdate(pPlanningInsert);
 
 			LPDocUpdate pPlanningInsertSMR = rdo::Factory<UpdateInsert>::create(
-				0,
+				IDocUpdate::Position::POSITION_END,
 				rdo::format("%s\r\n", planning.c_str()),
 				IDocument::SMR
 			);
