@@ -331,7 +331,9 @@ sprite                         return(RDO_sprite_call);
 	int len = n1.length();
 	tstring name(tstring(n1, 1, len-2));
 	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__string>(
-		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, name) : rdo::compiler::parser::RDOParserSrcInfo(name)
+		LEXER->m_lploc
+			? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, n1)
+			: rdo::compiler::parser::RDOParserSrcInfo(n1)
 	);
 	ASSERT(pType);
 	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
