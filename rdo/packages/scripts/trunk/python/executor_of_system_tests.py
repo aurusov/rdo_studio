@@ -10,6 +10,7 @@ import os
 import sys
 import uuid
 import shutil
+import zipfile
 import argparse
 import traceback
 import subprocess
@@ -202,12 +203,25 @@ def test_convertor(dirname, model):
         utils.enc_print ('CONVERT EXIT CODE :', convertor_exit_code, '\n')
         if convertor_exit_code == exit_code:
             cycle_exit_code = compare_etalons(etalons, temp_directory_name)
+        else:
+            arc_name = temp_directory_name + '.zip'
+            utils.enc_print('Make zip archive: ' + arc_name)
+            zipf = zipfile.ZipFile(arc_name, 'w')
+            zipdir(temp_directory_name, zipf)
+            zipf.close()
         shutil.rmtree(temp_directory_name)
     except:
         traceback.print_exc(file=sys.stdout)
         cycle_exit_code = APP_CODE_TERMINATION_ERROR
 
     return cycle_exit_code
+
+###############################################################################
+
+def zipdir(path, zip):
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            zip.write(os.path.join(root, file))
 
 ###############################################################################
 #                                 main code                                   #
