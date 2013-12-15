@@ -364,20 +364,23 @@ frm_backpicture
 frm_show
 	: RDO_Show
 	{
+		LPRDOFRMFrame pFrame = CONVERTER->getLastFRMFrame();
+		ASSERT(pFrame);
+		pFrame->setShowIfBlock(RDOFRMFrame::Seek());
+
 		LPDocUpdate pShowDelete = rdo::Factory<UpdateDelete>::create(
 			@1.m_first_seek,
 			@1.m_last_seek
 		);
 		ASSERT(pShowDelete);
 		CONVERTER->insertDocUpdate(pShowDelete);
-
-		LPRDOFRMFrame pFrame = CONVERTER->getLastFRMFrame();
-		ASSERT(pFrame);
-
-		pFrame->setShowIfBlock(RDOFRMFrame::Seek());
 	}
 	| RDO_Show_if fun_logic
 	{
+		LPRDOFRMFrame pFrame = CONVERTER->getLastFRMFrame();
+		ASSERT(pFrame);
+		pFrame->setShowIfBlock(RDOFRMFrame::Seek(@2.m_last_seek));
+
 		LPDocUpdate pShowIfReplace = rdo::Factory<UpdateReplace>::create(
 			@1.m_first_seek,
 			@1.m_last_seek,
@@ -400,10 +403,6 @@ frm_show
 		);
 		ASSERT(pCloseBraceInsert);
 		CONVERTER->insertDocUpdate(pCloseBraceInsert);
-
-		LPRDOFRMFrame pFrame = CONVERTER->getLastFRMFrame();
-		ASSERT(pFrame);
-		pFrame->setShowIfBlock(RDOFRMFrame::Seek(@2.m_last_seek + closeBrace.length()));
 	}
 	| RDO_Show_if error
 	{
@@ -433,6 +432,11 @@ frm_header
 
 frm_end
 	: frm_header RDO_End
+	{
+		LPRDOFRMFrame pFrame = CONVERTER->getLastFRMFrame();
+		ASSERT(pFrame);
+		pFrame->setShowIfBlock(RDOFRMFrame::Seek());
+	}
 	;
 
 // --------------------------------------------------------------------------------
