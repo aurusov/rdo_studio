@@ -115,6 +115,9 @@ public:
 
 	CREF(tstring) name() const { return src_text(); }
 
+	typedef std::vector<LPRDOParam> ParamList;
+	const ParamList& getParamList() const;
+
 	void setCommonChoiceFirst  ();
 	void setCommonChoiceWithMin(CREF(LPRDOFUNArithm) arithm);
 	void setCommonChoiceWithMax(CREF(LPRDOFUNArithm) arithm);
@@ -142,16 +145,12 @@ protected:
 	virtual tstring getWarningMessage_EmptyConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status) = 0;
 
 private:
-	typedef std::vector<LPRDOParam> ParamList;
-
-	ParamList      m_paramList;
-	RelResList     m_relResList;
-
-	rbool          m_useCommonChoice;
-	rbool          m_useCommonWithMax;
-	LPRDOFUNArithm m_pCommonChoice;
-
-	ruint          m_currentRelResIndex;
+	ParamList       m_paramList;
+	RelResList      m_relResList;
+	rbool           m_useCommonChoice;
+	rbool           m_useCommonWithMax;
+	LPRDOFUNArithm  m_pCommonChoice;
+	ruint           m_currentRelResIndex;
 
 	tstring typeToString(PatType type)
 	{

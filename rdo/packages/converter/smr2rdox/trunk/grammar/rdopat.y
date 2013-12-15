@@ -191,6 +191,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/format.hpp>
+#include <boost/foreach.hpp>
+#include <boost/algorithm/string/join.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/rdoparser.h"
 #include "converter/smr2rdox/rdoparser_lexer.h"
@@ -1621,25 +1624,35 @@ pat_pattern
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		if (pPattern->getType() == RDOPATPattern::PT_IE)
 		{
-			tstring planning = rdo::format("%s.planning(time_now + %s)"
-				, pPattern->name().c_str()
-				, pPattern->time->calc()->srcInfo().src_text().c_str()
-			);
+			const tstring planning_time = boost::str(boost::format("time_now + %s")
+				% pPattern->time->calc()->srcInfo().src_text());
 
-			LPDocUpdate pPlanningInsert = rdo::Factory<UpdateInsert>::create(
+			std::vector<std::string> planning_params;
+			planning_params.push_back(planning_time);
+
+			BOOST_FOREACH(const LPRDOParam& param, pPattern->getParamList())
+			{
+				planning_params.push_back(param->name());
+			}
+
+			const tstring planning = boost::str(boost::format("\r\n\t\t%s.planning(%s);")
+				% pPattern->name()
+				% boost::algorithm::join(planning_params, ", "));
+
+			LPDocUpdate pPlanningInsertIntoEvent = rdo::Factory<UpdateInsert>::create(
 				@1.m_last_seek,
-				rdo::format("\r\n\t\t%s;", planning.c_str())
-			);
-			ASSERT(pPlanningInsert);
-			CONVERTER->insertDocUpdate(pPlanningInsert);
+				planning);
+			CONVERTER->insertDocUpdate(pPlanningInsertIntoEvent);
 
-			LPDocUpdate pPlanningInsertSMR = rdo::Factory<UpdateInsert>::create(
+			tstring planning_into_smr_params(planning_time);
+			tstring planning_into_smr = boost::str(boost::format("%s.planning(%s)")
+				% pPattern->name()
+				% planning_into_smr_params);
+			LPDocUpdate pPlanningInsertIntoSMR = rdo::Factory<UpdateInsert>::create(
 				IDocUpdate::Position::POSITION_END,
-				rdo::format("%s\r\n", planning.c_str()),
-				IDocument::SMR
-			);
-			ASSERT(pPlanningInsertSMR);
-			CONVERTER->insertDocUpdate(pPlanningInsertSMR);
+				boost::str(boost::format("%s\r\n") % planning_into_smr),
+				IDocument::SMR);
+			CONVERTER->insertDocUpdate(pPlanningInsertIntoSMR);
 		}
 		pPattern->end();
 		$$ = CONVERTER->stack().push(pPattern);

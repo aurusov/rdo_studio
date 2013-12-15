@@ -222,6 +222,11 @@ void RDOPATPattern::add(CREF(LPRDOParam) pParam)
 	m_paramList.push_back(pParam);
 }
 
+const RDOPATPattern::ParamList& RDOPATPattern::getParamList() const
+{
+	return m_paramList;
+}
+
 void RDOPATPattern::setCommonChoiceFirst()
 {
 	m_useCommonChoice = true;
