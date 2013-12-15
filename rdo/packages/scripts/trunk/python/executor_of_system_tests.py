@@ -203,7 +203,7 @@ def test_convertor(dirname, model):
         utils.enc_print ('CONVERT EXIT CODE :', convertor_exit_code, '\n')
         if convertor_exit_code == exit_code:
             cycle_exit_code = compare_etalons(etalons, temp_directory_name)
-        else:
+        if cycle_exit_code != APP_CODE_TERMINATION_NORMAL:
             arc_name = temp_directory_name + '.zip'
             utils.enc_print('Make zip archive: ' + arc_name)
             zipf = zipfile.ZipFile(arc_name, 'w')
