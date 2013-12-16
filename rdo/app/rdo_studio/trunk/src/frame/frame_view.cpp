@@ -601,7 +601,7 @@ bool View::event(QEvent* pEvent)
 	if (pEvent->type() == QEvent::KeyPress || pEvent->type() == QEvent::ShortcutOverride)
 	{
 		QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
-		ruint scanCode = pKeyEvent->nativeScanCode();
+		ruint scanCode = pKeyEvent->nativeVirtualKey();
 		g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_DOWN, &scanCode);
 
 		if (pKeyEvent->key() == Qt::Key_F1)
@@ -616,7 +616,7 @@ bool View::event(QEvent* pEvent)
 	else if (pEvent->type() == QEvent::KeyRelease)
 	{
 		QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
-		ruint scanCode = pKeyEvent->nativeScanCode();
+		ruint scanCode = pKeyEvent->nativeVirtualKey();
 		g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_UP, &scanCode);
 		return true;
 	}
