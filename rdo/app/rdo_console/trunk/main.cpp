@@ -19,6 +19,7 @@
 #include "utils/src/file/rdofile.h"
 #include "repository/rdorepository.h"
 #include "simulator/runtime/keyboard.h"
+#include "simulator/runtime/mode.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_console/rdo_event.h"
 #include "app/rdo_console/rdo_key_event.h"
@@ -183,6 +184,9 @@ bool run(PTR(rdo::console_controller) pAppController, REF(event_container) conta
 {
 	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
 
+	rdo::runtime::RunTimeMode runtimeMode = rdo::runtime::RTM_MaxSpeed;
+	pAppController->broadcastMessage(RDOThread::RT_RUNTIME_SET_MODE, &runtimeMode);
+
 	while (!pAppController->finished())
 	{
 		kernel->idle();
@@ -205,7 +209,7 @@ void process_event(PTR(rdo::console_controller) pAppController, REF(event_contai
 	if(!container.empty())
 	{
 		event_container::iterator it = container.begin();
-		if(it->first < runtime_time)
+		if (it->first < runtime_time)
 		{
 			std::string eventName = boost::str(boost::format("process event : name : %1%  |  time : %2%")
 				% it->second->getName()
@@ -215,7 +219,8 @@ void process_event(PTR(rdo::console_controller) pAppController, REF(event_contai
 
 			rdo::event::types type = it->second->getType();
 
-			switch (type) {
+			switch (type)
+			{
 			case rdo::event::key:
 			{
 				ruint code = static_cast<rdo::key_event*>(it->second.get())->getKeyCode();
