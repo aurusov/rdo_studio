@@ -39,7 +39,7 @@
 #define VK_SUBTRACT         74
 #define VK_ADD              78
 #define VK_CLEAR            307 //! @todo find code
-#define VK_SPACE            57
+#define VK_SPACE            32
 #define VK_DECIMAL          83
 #define VK_F1               59
 #define VK_F2               60
