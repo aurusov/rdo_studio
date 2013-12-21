@@ -148,6 +148,8 @@ def test_console(dirname, model):
     # run rdo_console app on test model
     model_file = '' + dirname + model['name']
     command = (rdo_ex + ' -i ' + utils.wrap_the_string_in_quotes(model_file))
+    if len(model['script']) > 0:
+        command += ' -s ' + utils.wrap_the_string_in_quotes(dirname + model['script'])
     utils.enc_print('Run:', command, '\n')
     simulation_code = subprocess.call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     utils.enc_print ('SIMULATION EXIT CODE :', simulation_code)
@@ -303,12 +305,14 @@ for task in files:
         model['name']            = get_node_attribute_from_dom(dom, 'model', 'name'           )
         model['target']          = get_node_attribute_from_dom(dom, 'model', 'target'         )
         model['exit_code']       = get_node_attribute_from_dom(dom, 'model', 'exit_code'      )
+        model['script']          = get_node_attribute_from_dom(dom, 'model', 'script'         )
         model['log_compilation'] = get_node_attribute_from_dom(dom, 'model', 'log_compilation')
 
         utils.enc_print ('Project              :', task)
         utils.enc_print ('Model file           :', model['name'])
         utils.enc_print ('Target               :', model['target'])
         utils.enc_print ('Exit code            :', model['exit_code'])
+        utils.enc_print ('Script               :', model['script'])
         utils.enc_print ('Log compilation file :', model['log_compilation'])
         sys.stdout.flush()
 
