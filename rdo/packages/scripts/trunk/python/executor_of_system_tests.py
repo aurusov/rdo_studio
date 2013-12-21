@@ -192,9 +192,9 @@ def test_console(dirname, model):
 ###############################################################################
 
 def test_convertor(dirname, model):
+    text_uuid = str(uuid.uuid4())
+    temp_directory_name = dirname + text_uuid + DIR_LINE
     try:
-        text_uuid = str(uuid.uuid4())
-        temp_directory_name = dirname + text_uuid + DIR_LINE
         shutil.copytree(dirname, temp_directory_name, ignore=shutil.ignore_patterns(*IGNORE_PATTERNS))
         model_file = '' + temp_directory_name + model['name']
         command = (rdo_ex + ' -i ' + utils.wrap_the_string_in_quotes(model_file) + ' -c')
@@ -209,6 +209,11 @@ def test_convertor(dirname, model):
             zipf = zipfile.ZipFile(arc_name, 'w')
             zipdir(temp_directory_name, zipf)
             zipf.close()
+    except:
+        traceback.print_exc(file=sys.stdout)
+        cycle_exit_code = APP_CODE_TERMINATION_ERROR
+    
+    try:
         shutil.rmtree(temp_directory_name)
     except:
         traceback.print_exc(file=sys.stdout)
