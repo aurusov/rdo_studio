@@ -183,8 +183,9 @@ def test_console(dirname, model):
             if res:
                 cycle_exit_code = APP_CODE_TERMINATION_NORMAL
                 check_message_cmp_string = 'OK'
+            else:
+                cycle_exit_code = APP_CODE_TERMINATION_ERROR
             utils.enc_print ('CHECK ERROR LIST     :', check_message_cmp_string)
-
         except:
             traceback.print_exc(file=sys.stdout)
             cycle_exit_code = APP_CODE_TERMINATION_ERROR
