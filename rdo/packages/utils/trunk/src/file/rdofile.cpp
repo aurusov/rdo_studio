@@ -114,7 +114,10 @@ boost::filesystem::path File::getTempFileName()
 
 boost::filesystem::path File::extractFilePath(CREF(boost::filesystem::path) name)
 {
-	return boost::filesystem::path(name).make_preferred().parent_path() / boost::filesystem::path("/").make_preferred();
+	boost::filesystem::path parentPath = boost::filesystem::path(name).make_preferred().parent_path();
+	return parentPath.empty()
+		? parentPath
+		: parentPath / boost::filesystem::path("/").make_preferred();
 }
 
 rbool File::trimLeft(CREF(boost::filesystem::path) name)
