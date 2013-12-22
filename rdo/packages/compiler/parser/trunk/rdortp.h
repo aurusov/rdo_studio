@@ -91,7 +91,7 @@ private:
 	TypeRDOResType                m_type;
 	ParamList                     m_params;
 
-	virtual runtime::RDOType::TypeID RDORTPResType::typeID() const;
+	virtual runtime::RDOType::TypeID typeID() const;
 
 	DECLARE_IContextSwitch;
 };
