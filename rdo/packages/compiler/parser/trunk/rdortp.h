@@ -91,6 +91,8 @@ private:
 	TypeRDOResType                m_type;
 	ParamList                     m_params;
 
+	virtual runtime::RDOType::TypeID RDORTPResType::typeID() const;
+
 	DECLARE_IContextSwitch;
 };
 DECLARE_POINTER(RDORTPResType);

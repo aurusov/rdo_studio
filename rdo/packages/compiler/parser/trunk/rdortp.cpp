@@ -48,6 +48,11 @@ RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) s
 RDORTPResType::~RDORTPResType()
 {}
 
+runtime::RDOType::TypeID RDORTPResType::typeID() const
+{
+	return runtime::RDOType::t_pointer;
+}
+
 LPRDORSSResource RDORTPResType::createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info)
 {
 	return rdo::Factory<RDORSSResource>::create(pParser, src_info, this);
