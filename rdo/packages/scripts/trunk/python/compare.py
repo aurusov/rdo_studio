@@ -26,9 +26,10 @@ def _read_result_data(name):
 
     push = False
     for line in file_data_temp:
-        if(push):
+        if (push):
+            line = re.sub(r'Медиана:\s+(\S+)', r'Медиана:\1', line)
             file_data.append(line)
-        if(line.find('BExpCalcCounter') != -1):
+        if (line.find('BExpCalcCounter') != -1):
             push = True
 
     return file_data
