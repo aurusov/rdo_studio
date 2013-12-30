@@ -170,7 +170,6 @@ SET(SIMULATOR_DB_FILES
 	rdo_res_type_i.h
 	rdo_resource.cpp
 	rdo_resource.h
-	rdo_resource.inl
 )
 
 SET(SIMULATOR_KB_LOGIC_BASE_FILES

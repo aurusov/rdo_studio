@@ -9,9 +9,9 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
+#include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/pch/stdpch.h"
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
@@ -159,6 +159,104 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 			<< traceParametersValue()     << std::endl;
 	}
 	return res.str();
+}
+
+void RDOResource::setRuntime(CREF(LPRDORuntime) pRuntime)
+{
+	UNUSED(pRuntime);
+
+	/// @todo походу надо удалить метод
+	NEVER_REACH_HERE;
+}
+
+tstring RDOResource::whoAreYou()
+{
+	return "rdoRes";
+}
+
+void RDOResource::makeTemporary(rbool value)
+{
+	m_temporary = value;
+}
+
+RDOResource::ConvertStatus RDOResource::getState() const
+{
+	return m_state;
+}
+
+void RDOResource::setState(RDOResource::ConvertStatus value)
+{
+	m_state = value;
+}
+
+rbool RDOResource::checkType(ruint type) const
+{
+	return m_type == type;
+}
+
+CREF(LPIResourceType) RDOResource::getResType() const
+{
+	return m_resType;
+}
+
+ruint RDOResource::getType() const
+{
+	return m_type;
+}
+
+CREF(RDOResource::ParamList) RDOResource::getParamList() const
+{
+	return m_paramList;
+}
+
+CREF(RDOValue) RDOResource::getParam(ruint index) const
+{
+	ASSERT(index < m_paramList.size());
+	return m_paramList[index];
+}
+
+REF(RDOValue) RDOResource::getParamRaw(ruint index)
+{
+	ASSERT(index < m_paramList.size());
+	setState(CS_Keep);
+	return m_paramList[index];
+}
+
+void RDOResource::setParam(ruint index, CREF(RDOValue) value)
+{
+	ASSERT(index < m_paramList.size());
+	setState(CS_Keep);
+	m_paramList[index] = value;
+}
+
+ruint RDOResource::paramsCount() const
+{
+	return m_paramList.size();
+}
+
+void RDOResource::appendParams(CREF(ParamCIt) from_begin, CREF(ParamCIt) from_end)
+{
+	m_paramList.insert(m_paramList.end(), from_begin, from_end);
+}
+
+rbool RDOResource::canFree() const
+{
+	return m_referenceCount == 0;
+}
+
+void RDOResource::incRef()
+{
+	++m_referenceCount;
+}
+
+void RDOResource::decRef()
+{
+	--m_referenceCount;
+}
+
+tstring RDOResource::traceTypeId()
+{
+	return m_typeId.empty() ? (m_typeId = getTypeId()) : m_typeId;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

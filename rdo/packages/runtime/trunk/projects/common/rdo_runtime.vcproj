@@ -634,10 +634,6 @@
 					RelativePath="..\..\rdo_resource.h"
 					>
 				</File>
-				<File
-					RelativePath="..\..\rdo_resource.inl"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name=".rdo_kb"

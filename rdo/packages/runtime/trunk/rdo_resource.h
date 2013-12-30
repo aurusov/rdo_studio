@@ -98,6 +98,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_resource.inl"
-
 #endif // _LIB_RUNTIME_RESOURCE_H_
