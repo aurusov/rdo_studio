@@ -47,7 +47,7 @@ RDOSelectResourceNonExistCalc::RDOSelectResourceNonExistCalc(ResourceID relResID
 RDOValue RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-	return RDOValue();
+	return RDOValue(true);
 }
 
 // --------------------------------------------------------------------------------
