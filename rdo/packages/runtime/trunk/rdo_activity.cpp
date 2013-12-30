@@ -134,23 +134,4 @@ tstring RDOActivity::traceResourcesListNumbers(CREF(LPRDORuntime) pRuntime, rboo
 	return res.str();
 }
 
-void RDOActivity::incrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime)
-{
-	for (ruint i = 0; i < m_relResID.size(); ++i)
-	{
-		LPRDOResource res = pRuntime->getResourceByID(m_relResID.at(i));
-		if (res && (res->getState() == RDOResource::CS_Keep || res->getState() == RDOResource::CS_Create || res->getState() == RDOResource::CS_Erase)) res->incRef();
-	}
-}
-
-void RDOActivity::decrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime)
-{
-	//! \todo исправить
-	for (ruint i = 0; i < m_relResID.size(); ++i)
-	{
-		LPRDOResource res = pRuntime->getResourceByID(m_relResID.at(i));
-		if (res && (res->getState() == RDOResource::CS_Keep || res->getState() == RDOResource::CS_Create || res->getState() == RDOResource::CS_Erase)) res->decRef();
-	}
-}
-
 CLOSE_RDO_RUNTIME_NAMESPACE

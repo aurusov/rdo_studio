@@ -132,15 +132,13 @@ void RDOOperation::onAfterOperationBegin(CREF(LPRDORuntime) pRuntime)
 	pRuntime->getTracer()->writeAfterOperationBegin(this, pRuntime);
 	m_pPattern->convertBeginErase(pRuntime);
 	updateRelRes(pRuntime);
-	updateConvertStatus(pRuntime, m_pPattern->m_convertorEndStatus);
 	incrementRelevantResourceReference(pRuntime);
-	updateConvertStatus(pRuntime, m_pPattern->m_convertorBeginStatus);
 }
 
 void RDOOperation::onAfterOperationEnd(CREF(LPRDORuntime) pRuntime)
 {
-	updateConvertStatus(pRuntime, m_pPattern->m_convertorEndStatus);
 	decrementRelevantResourceReference(pRuntime);
+	updateConvertStatus(pRuntime, m_pPattern->m_convertorEndStatus);
 	pRuntime->getTracer()->writeAfterOperationEnd(this, pRuntime); 
 	pRuntime->freeOperationId(m_operId);
 	m_pPattern->convertEndErase(pRuntime);
@@ -156,6 +154,97 @@ double RDOOperation::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 tstring RDOOperation::traceOperId() const
 {
 	return rdo::toString(m_operId);
+}
+
+namespace
+{
+bool mustBeExist(RDOResource::ConvertStatus status_begin, RDOResource::ConvertStatus status_end)
+{
+	switch (status_begin)
+	{
+	case RDOResource::CS_Keep:
+		switch (status_end)
+		{
+		case RDOResource::CS_Keep    : return true;
+		case RDOResource::CS_Create  : NEVER_REACH_HERE;
+		case RDOResource::CS_Erase   : return true;
+		case RDOResource::CS_NonExist: NEVER_REACH_HERE;
+		case RDOResource::CS_NoChange: return true;
+		default: NEVER_REACH_HERE;
+		}
+	case RDOResource::CS_Create:
+		switch (status_end)
+		{
+		case RDOResource::CS_Keep    : return true;
+		case RDOResource::CS_Create  : NEVER_REACH_HERE;
+		case RDOResource::CS_Erase   : return true;
+		case RDOResource::CS_NonExist: NEVER_REACH_HERE;
+		case RDOResource::CS_NoChange: return true;
+		default: NEVER_REACH_HERE;
+		}
+	case RDOResource::CS_Erase:
+		switch (status_end)
+		{
+		case RDOResource::CS_Keep    : NEVER_REACH_HERE;
+		case RDOResource::CS_Create  : NEVER_REACH_HERE;
+		case RDOResource::CS_Erase   : NEVER_REACH_HERE;
+		case RDOResource::CS_NonExist: return false;
+		case RDOResource::CS_NoChange: NEVER_REACH_HERE;
+		default: NEVER_REACH_HERE;
+		}
+	case RDOResource::CS_NonExist:
+		switch (status_end)
+		{
+		case RDOResource::CS_Keep    : NEVER_REACH_HERE;
+		case RDOResource::CS_Create  : return false;
+		case RDOResource::CS_Erase   : NEVER_REACH_HERE;
+		case RDOResource::CS_NonExist: NEVER_REACH_HERE;
+		case RDOResource::CS_NoChange: NEVER_REACH_HERE;
+		default: NEVER_REACH_HERE;
+		}
+	case RDOResource::CS_NoChange:
+		switch (status_end)
+		{
+		case RDOResource::CS_Keep    : return true;
+		case RDOResource::CS_Create  : NEVER_REACH_HERE;
+		case RDOResource::CS_Erase   : return true;
+		case RDOResource::CS_NonExist: NEVER_REACH_HERE;
+		case RDOResource::CS_NoChange: return true;
+		default: NEVER_REACH_HERE;
+		}
+	default: NEVER_REACH_HERE;
+	}
+	NEVER_REACH_HERE;
+	return true;
+}
+}
+
+void RDOOperation::incrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime)
+{
+	ASSERT(m_pPattern->m_convertorBeginStatus.size() == m_pPattern->m_convertorEndStatus.size());
+
+	for (size_t index = 0; index < m_pPattern->m_convertorBeginStatus.size(); ++index)
+	{
+		if (mustBeExist(m_pPattern->m_convertorBeginStatus[index], m_pPattern->m_convertorEndStatus[index]))
+		{
+			LPRDOResource resource = pRuntime->getResourceByID(m_relResID.at(index));
+			resource->incRef();
+		}
+	}
+}
+
+void RDOOperation::decrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime)
+{
+	ASSERT(m_pPattern->m_convertorBeginStatus.size() == m_pPattern->m_convertorEndStatus.size());
+
+	for (size_t index = 0; index < m_pPattern->m_convertorBeginStatus.size(); ++index)
+	{
+		if (mustBeExist(m_pPattern->m_convertorBeginStatus[index], m_pPattern->m_convertorEndStatus[index]))
+		{
+			LPRDOResource resource = pRuntime->getResourceByID(m_relResID.at(index));
+			resource->decRef();
+		}
+	}
 }
 
 void                     RDOOperation::onBeforeOperationBegin(CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); }

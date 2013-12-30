@@ -70,6 +70,9 @@ private:
 
 	virtual void onMakePlaned(CREF(LPRDORuntime) pRuntime);
 
+	void incrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime);
+	void decrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime);
+
 	DECLARE_IBaseOperation;
 	DECLARE_IOperationTrace;
 };
