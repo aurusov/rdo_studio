@@ -6676,6 +6676,17 @@ fun_func_header
 
 fun_func_parameters
 	: /* empty */
+	{
+		#PASS2
+		{
+			LPContext pContext = RDOParser::s_parser()->context();
+			ASSERT(pContext);
+			LPIContextParamDefinitionManager pContextParamDefinitionManager = pContext->interface_cast<IContextParamDefinitionManager>();
+			ASSERT(pContextParamDefinitionManager);
+			pContextParamDefinitionManager->pushParamDefinitionContext();
+			pContextParamDefinitionManager->popParamDefinitionContext();
+		}
+	}
 	| param_list_open fun_func_params
 	{
 		#PASS2
