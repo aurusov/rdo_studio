@@ -20,57 +20,6 @@
 OPEN_COMPILER_MBUILDER_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- Конструкторы копий и операторы присваивания
-// --------------------------------------------------------------------------------
-RDOResType::RDOResType(CREF(RDOResType) obj)
-{
-	operator=(obj);
-}
-
-RDOResType::Param::Param(CREF(RDOResType::Param) obj)
-{
-	operator=(obj);
-}
-
-RDOResource::RDOResource(CREF(RDOResource) obj)
-{
-	operator=(obj);
-}
-
-void RDOResType::operator= (CREF(RDOResType) obj)
-{
-	m_name   = obj.m_name;
-	m_exist  = obj.m_exist;
-	m_type   = obj.m_type;
-	m_id     = obj.m_id;
-	m_params = obj.m_params;
-}
-
-void RDOResType::Param::operator= (CREF(RDOResType::Param) obj)
-{
-	m_name     = obj.m_name;
-	m_exist    = obj.m_exist;
-	m_pType    = obj.m_pType;
-	m_id       = obj.m_id;
-	m_pMin     = obj.m_pMin;
-	m_pMax     = obj.m_pMax;
-	m_pDefault = obj.m_pDefault;
-}
-
-void RDOResource::operator= (CREF(RDOResource) obj)
-{
-	m_name  = obj.m_name;
-	m_exist = obj.m_exist;
-	m_rtp   = obj.m_rtp;
-	m_id    = obj.m_id;
-	m_params.clear();
-	STL_FOR_ALL_CONST(obj.m_params, it)
-	{
-		m_params[it->first] = it->second;
-	}
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOResType
 // --------------------------------------------------------------------------------
 // ---- Инициализация типа ресурса по существующему в памяти

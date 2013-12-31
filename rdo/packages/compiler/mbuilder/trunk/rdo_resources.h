@@ -106,11 +106,9 @@ class Class: public parser::RDOParserSrcInfo               \
 friend class Class##List;                                  \
 public:                                                    \
 	Class(): m_name(""), m_exist( false ) {}               \
-	Class(CREF(Class) obj);                                \
                                                            \
 	CREF(tstring)  name () const       { return m_name;  } \
 	rbool          exist() const       { return m_exist; } \
-	void operator= (CREF(Class) copy);                     \
                                                            \
 private:                                                   \
 	tstring  m_name;                                       \
