@@ -44,17 +44,6 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_PARSER_NAMESPACE
 
-int  proc_rtp_parse(PTR(void) lexer);
-int  proc_rtp_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void proc_rtp_error(const char* message);
-
-int  proc_rss_parse(PTR(void) lexer);
-int  proc_rss_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void proc_rss_error(const char* message);
-
-int  proc_opr_parse(PTR(void) lexer);
-int  proc_opr_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void proc_opr_error(const char* message);
 /*
 // --------------------------------------------------------------------------------
 // -------------------- RDOParsEvent
