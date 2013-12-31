@@ -147,7 +147,7 @@ public:
 	rdo::runtime::RDOValue        const_value() const;
 
 	LPRDOEnumType                 enumType  () const { return typeInfo()->type().object_static_cast<RDOEnumType>(); }
-	rdo::runtime::RDOType::TypeID typeID    () const { return typeInfo()->type()->type()->typeID();                 }
+	rdo::runtime::RDOType::TypeID typeID    () const { return typeInfo()->type()->typeID();                         }
 
 	virtual void setSrcInfo(CREF(RDOParserSrcInfo)     srcInfo );
 	virtual void setSrcPos (CREF(RDOSrcInfo::Position) position);
