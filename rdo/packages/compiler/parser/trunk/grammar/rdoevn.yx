@@ -8274,7 +8274,8 @@ process_begin
 				PARSER->error().error(pProcess->src_info(), "Не закрыт предыдущий блок $Process");
 			}
 
-			tstring transactName   = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
+			LPRDOValue transact = PARSER->stack().pop<RDOValue>($3);
+			tstring transactName   = transact->value().getIdentificator();
 			tstring rtp_param_name = "Время_создания";
 
 			// Получили список всех типов ресурсов
@@ -8298,8 +8299,16 @@ process_begin
 			}
 			else
 			{
-				// Тип найден, проверим его на наличие вещественного параметра
+				// Проверим тип на временность
 				CREF(rdo::compiler::mbuilder::RDOResType) rtp = rtpList[transactName];
+				if (rtp.getType() != rdo::compiler::mbuilder::RDOResType::rt_temporary)
+				{
+					PARSER->error().push_only(transact->src_info(), rdo::format("Типа транзакта '%s' должен быть временным", rtp.name().c_str()));
+					PARSER->error().push_only(rtp.src_info(), "См. тип");
+					PARSER->error().push_done();
+				}
+
+				// Проверим тип на наличие вещественного параметра
 				if (!rtp.m_params[rtp_param_name].exist())
 				{
 					PARSER->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' нет требуемого параметра '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
