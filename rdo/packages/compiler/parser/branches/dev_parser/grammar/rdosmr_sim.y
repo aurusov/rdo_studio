@@ -291,10 +291,8 @@ smr_cond
 		pCalcTime->setSrcInfo(pTimeArithm->src_info());
 		ASSERT(pCalcTime);
 
-		rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
+		rdo::runtime::LPRDOCalcEventPlan pEventPlan = pEvent->planning(pCalcTime, pParamList);
 		pEventPlan->setSrcInfo(RDOParserSrcInfo(@2, @7, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
-		ASSERT(pEventPlan);
-		pEvent->insertPlaning(pEventPlan, pParamList);
 		pEvent->setBeforeStartModelPlaning(pEventPlan);
 	}
 	| smr_cond RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
