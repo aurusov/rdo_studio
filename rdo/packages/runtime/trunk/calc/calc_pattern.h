@@ -17,19 +17,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Установка параметра паттерна
-CALC(RDOSetPatternParamCalc)
-{
-DECLARE_FACTORY(RDOSetPatternParamCalc)
-private:
-	RDOSetPatternParamCalc(ruint paramID, CREF(LPRDOCalc) pCalc);
-
-	ruint      m_paramID;
-	LPRDOCalc  m_pCalc;
-
-	DECLARE_ICalc;
-};
-
 //! Получение параметра паттерна
 CALC(RDOCalcPatParam)
 {

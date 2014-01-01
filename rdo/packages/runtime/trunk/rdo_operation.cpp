@@ -12,6 +12,7 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_operation.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -43,16 +44,16 @@ RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperati
 
 RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(RDOOperation) originForClone)
 	: RDOActivityPattern<RDOPatternOperation>(originForClone.m_pPattern, originForClone.traceable(), originForClone.m_oprName)
-	, m_pAdditionalCondition                 (NULL                                                                           )
+	, m_pAdditionalCondition                 (NULL)
 {
-  setTrace(originForClone.traceable());
-  m_haveAdditionalCondition = false;
-  setTraceID(pRuntime->getFreeActivityId());
+	setTrace(originForClone.traceable());
+	m_haveAdditionalCondition = false;
+	setTraceID(pRuntime->getFreeActivityId());
 
-  m_paramsCalcs.insert(m_paramsCalcs.begin(), originForClone.m_paramsCalcs.begin(), originForClone.m_paramsCalcs.end());
-  m_relResID   .insert(m_relResID   .begin(), originForClone.m_relResID   .begin(), originForClone.m_relResID   .end());
-  setTraceID(originForClone.getTraceID());
-  m_operId = pRuntime->getFreeOperationId();
+	m_paramsCalcs.insert(m_paramsCalcs.begin(), originForClone.m_paramsCalcs.begin(), originForClone.m_paramsCalcs.end());
+	m_relResID   .insert(m_relResID   .begin(), originForClone.m_relResID   .begin(), originForClone.m_relResID   .end());
+	setTraceID(originForClone.getTraceID());
+	m_operId = pRuntime->getFreeOperationId();
 }
 
 RDOOperation::~RDOOperation()
@@ -72,21 +73,28 @@ IBaseOperation::BOResult RDOOperation::onDoOperation(CREF(LPRDORuntime) pRuntime
 	newOper->onBeforeOperationBegin(pRuntime);
 	newOper->convertBegin(pRuntime);
 
+	std::vector<RDOValue> params;
+	params.reserve(m_paramsCalcs.size());
+	BOOST_FOREACH(const LPRDOCalc& param, m_paramsCalcs)
+	{
+		params.push_back(param->calcValue(pRuntime));
+	}
+
 	LPIEvent event(newOper);
 	pRuntime->addTimePoint(
 		newOper->getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(),
 		event,
-		boost::bind(&IEvent::onMakePlaned, event.get(), pRuntime)
+		boost::bind(&IEvent::onMakePlaned, event.get(), pRuntime, params)
 	);
 	newOper->onAfterOperationBegin(pRuntime);
 	return IBaseOperation::BOR_planned_and_run;
 }
 
-void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime)
+void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime, const std::vector<RDOValue>& params)
 {
 	// Выполняем событие конца операции-клона
 	pRuntime->inc_cnt_events();
-	onBeforeOperationEnd(pRuntime);
+	onBeforeOperationEnd(pRuntime, params);
 	convertEnd(pRuntime);
 	onAfterOperationEnd(pRuntime);
 }
@@ -118,12 +126,12 @@ void RDOOperation::convertEnd(CREF(LPRDORuntime) pRuntime)
 
 void RDOOperation::onBeforeChoiceFrom(CREF(LPRDORuntime) pRuntime)
 {
-	setPatternParameters(pRuntime);
+	setPatternParameters(pRuntime, m_paramsCalcs);
 }
 
-void RDOOperation::onBeforeOperationEnd(CREF(LPRDORuntime) pRuntime)
+void RDOOperation::onBeforeOperationEnd(CREF(LPRDORuntime) pRuntime, const std::vector<rdo::runtime::RDOValue>& params)
 {
-	setPatternParameters(pRuntime);
+	setPatternParameters(pRuntime, params);
 }
 
 void RDOOperation::onAfterOperationBegin(CREF(LPRDORuntime) pRuntime)

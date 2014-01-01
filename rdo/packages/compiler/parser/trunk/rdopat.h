@@ -173,8 +173,8 @@ public:
 
 	rdo::runtime::LPRDOCalc  getBeforeStartModelPlaning() const;
 	void                     setBeforeStartModelPlaning(CREF(rdo::runtime::LPRDOCalc) beforeStartModelPlaning);
-	void                     insertPlaning (CREF(rdo::runtime::LPRDOCalcEventPlan) pCalc, CREF(LPArithmContainer) pParamList);
-	void                     insertStop    (CREF(rdo::runtime::LPRDOCalcEventStop) pCalc);
+	runtime::LPRDOCalcEventPlan planning(const runtime::LPRDOCalc& time, const LPArithmContainer& params) const;
+	runtime::LPRDOCalcEventStop stoping () const;
 
 protected:
 	virtual tstring getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status);

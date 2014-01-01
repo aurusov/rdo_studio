@@ -23,16 +23,14 @@
 class IActivity
 {
 public:
-	virtual void addParamCalc  (CREF(rdo::runtime::LPRDOCalc) pCalc)               = 0;
-	virtual void setParamsCalcs(CREF(std::vector<rdo::runtime::LPRDOCalc>) params) = 0;
-	virtual int  getResByRelRes(ruint rel_res_id) const                            = 0;
-	virtual void setRelRes     (ruint rel_res_id, ruint res_id)                    = 0;
+	virtual void addParamCalc  (CREF(rdo::runtime::LPRDOCalc) pCalc) = 0;
+	virtual int  getResByRelRes(ruint rel_res_id) const         = 0;
+	virtual void setRelRes     (ruint rel_res_id, ruint res_id) = 0;
 };
 
 #define DECLARE_IActivity \
-	virtual void addParamCalc  (CREF(rdo::runtime::LPRDOCalc) pCalc);               \
-	virtual void setParamsCalcs(CREF(std::vector<rdo::runtime::LPRDOCalc>) params); \
-	virtual int  getResByRelRes(ruint rel_res_id) const;                            \
+	virtual void addParamCalc  (CREF(rdo::runtime::LPRDOCalc) pCalc); \
+	virtual int  getResByRelRes(ruint rel_res_id) const; \
 	virtual void setRelRes     (ruint rel_res_id, ruint res_id);
 
 /*!

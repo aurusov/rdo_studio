@@ -358,7 +358,7 @@ std::vector<runtime::LPRDOCalc> RDOPATPattern::createParamsCalcs(CREF(std::vecto
 		ASSERT(pParam);
 		if (currParam < m_paramList.size())
 		{
-			rdo::runtime::LPRDOCalc pSetParamCalc;
+			rdo::runtime::LPRDOCalc pParamValueCalc;
 			LPRDOParam pPatternParam = m_paramList[currParam];
 			ASSERT(pPatternParam);
 			if (pParam->typeInfo()->src_info().src_text() == "*")
@@ -369,26 +369,18 @@ std::vector<runtime::LPRDOCalc> RDOPATPattern::createParamsCalcs(CREF(std::vecto
 					RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("См. параметр '%s', тип '%s'", pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
 					RDOParser::s_parser()->error().push_done();
 				}
-				rdo::runtime::RDOValue val = pPatternParam->getDefault()->value();
-				ASSERT(val);
-				pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
-					currParam,
-					rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
-				);
+				rdo::runtime::RDOValue value = pPatternParam->getDefault()->value();
+				ASSERT(value);
+				pParamValueCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(value);
 			}
 			else
 			{
 				LPTypeInfo pTypeInfo = pPatternParam->getTypeInfo();
 				ASSERT(pTypeInfo);
-				rdo::runtime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
-				ASSERT(pParamValueCalc);
-				pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
-					currParam,
-					pParamValueCalc
-				);
+				pParamValueCalc = pParam->createCalc(pTypeInfo);
 			}
-			ASSERT(pSetParamCalc);
-			result.push_back(pSetParamCalc);
+			ASSERT(pParamValueCalc);
+			result.push_back(pParamValueCalc);
 			++currParam;
 		}
 		else
@@ -754,23 +746,18 @@ void RDOPatternEvent::setBeforeStartModelPlaning(CREF(rdo::runtime::LPRDOCalc) b
 	m_beforeStartModelPlaning = beforeStartModelPlaning;
 }
 
-void RDOPatternEvent::insertPlaning(CREF(rdo::runtime::LPRDOCalcEventPlan) pCalc, CREF(LPArithmContainer) pParamList)
+runtime::LPRDOCalcEventPlan RDOPatternEvent::planning(const runtime::LPRDOCalc& time, const LPArithmContainer& params) const
 {
-	ASSERT(pCalc);
-	pCalc->setEvent(m_pRuntimeEvent);
-
-	LPIActivity pActivity = m_pRuntimeEvent;
-	ASSERT(pActivity);
-	// TODO Событие может быть запланировано из разных мест с разными параметрами
-	//      Это по логике, а на самом деле будут применены параметры самого последнего планировщика,
-	//      который встретился компилятору
-	pActivity->setParamsCalcs(createParamsCalcs(pParamList->getContainer()));
+	return rdo::Factory<runtime::RDOCalcEventPlan>::create(
+			m_pRuntimeEvent,
+			time,
+			createParamsCalcs(params->getContainer())
+	);
 }
 
-void RDOPatternEvent::insertStop(CREF(rdo::runtime::LPRDOCalcEventStop) pCalc)
+runtime::LPRDOCalcEventStop RDOPatternEvent::stoping() const
 {
-	ASSERT(pCalc);
-	pCalc->setEvent(m_pRuntimeEvent);
+	return rdo::Factory<runtime::RDOCalcEventStop>::create(m_pRuntimeEvent);
 }
 
 // --------------------------------------------------------------------------------

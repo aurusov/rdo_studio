@@ -43,10 +43,11 @@ protected:
 	std::vector<ruint>        m_relResID;          // Содержит список id ресурсов, которые стали релевантными образцу
 	std::vector<LPRDOCalc>    m_paramsCalcs;
 
-	void setPatternParameters              (CREF(LPRDORuntime) pRuntime);
-	void getRelevantResources              (CREF(LPRDORuntime) pRuntime, REF(std::list<LPRDOResource>) rel_res_list);
-	void updateRelRes                      (CREF(LPRDORuntime) pRuntime);
-	void updateConvertStatus               (CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOResource::ConvertStatus>) status_list);
+	void setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::vector<LPRDOCalc>& params);
+	void setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::vector<RDOValue>& params);
+	void getRelevantResources(CREF(LPRDORuntime) pRuntime, REF(std::list<LPRDOResource>) rel_res_list);
+	void updateRelRes        (CREF(LPRDORuntime) pRuntime);
+	void updateConvertStatus (CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOResource::ConvertStatus>) status_list);
 
 private:
 	DECLARE_IActivity;

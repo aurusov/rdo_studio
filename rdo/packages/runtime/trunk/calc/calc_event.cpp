@@ -11,6 +11,7 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_event.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -21,45 +22,51 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcEvent
 // --------------------------------------------------------------------------------
-RDOCalcEvent::RDOCalcEvent()
-{}
-
-void RDOCalcEvent::setEvent(CREF(LPIEvent) pEvent)
+RDOCalcEvent::RDOCalcEvent(const LPIEvent& event)
+	: m_pEvent(event)
 {
-	ASSERT(pEvent);
-	m_pEvent = pEvent;
+	ASSERT(m_pEvent);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcEventPlan
 // --------------------------------------------------------------------------------
-RDOCalcEventPlan::RDOCalcEventPlan(CREF(LPRDOCalc) pTimeCalc)
-	: m_pTimeCalc(pTimeCalc)
+RDOCalcEventPlan::RDOCalcEventPlan(const LPIEvent& event, const LPRDOCalc& pTimeCalc, const std::vector<runtime::LPRDOCalc>& params)
+	: RDOCalcEvent(event)
+	, m_pTimeCalc (pTimeCalc)
+	, m_params    (params)
 {
 	ASSERT(m_pTimeCalc);
 }
 
 RDOValue RDOCalcEventPlan::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	ASSERT(m_pEvent);
-	RDOValue value = m_pTimeCalc->calcValue(pRuntime);
+	RDOValue time = m_pTimeCalc->calcValue(pRuntime);
+
+	std::vector<RDOValue> params;
+	params.reserve(m_params.size());
+	BOOST_FOREACH(const LPRDOCalc& param, m_params)
+	{
+		params.push_back(param->calcValue(pRuntime));
+	}
+
 	pRuntime->addTimePoint(
-		value.getDouble(),
+		time.getDouble(),
 		m_pEvent,
-		boost::bind(&IEvent::onMakePlaned, m_pEvent.get(), pRuntime)
+		boost::bind(&IEvent::onMakePlaned, m_pEvent.get(), pRuntime, params)
 	);
-	return value;
+	return time;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcEventStop
 // --------------------------------------------------------------------------------
-RDOCalcEventStop::RDOCalcEventStop()
+RDOCalcEventStop::RDOCalcEventStop(const LPIEvent& event)
+	: RDOCalcEvent(event)
 {}
 
 RDOValue RDOCalcEventStop::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	ASSERT(m_pEvent);
 	pRuntime->removeTimePoint(m_pEvent);
 	return RDOValue();
 }

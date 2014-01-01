@@ -68,7 +68,7 @@ private:
 	LPRDOCalc m_pAdditionalCondition;
 	int       m_operId;
 
-	virtual void onMakePlaned(CREF(LPRDORuntime) pRuntime);
+	virtual void onMakePlaned(CREF(LPRDORuntime) pRuntime, const std::vector<RDOValue>& params);
 
 	void incrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime);
 	void decrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime);

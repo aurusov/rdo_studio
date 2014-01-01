@@ -48,7 +48,7 @@ void RDORule::init()
 
 void RDORule::onBeforeChoiceFrom(CREF(LPRDORuntime) pRuntime)
 {
-	setPatternParameters(pRuntime);
+	setPatternParameters(pRuntime, m_paramsCalcs);
 }
 
 rbool RDORule::choiceFrom(CREF(LPRDORuntime) pRuntime)

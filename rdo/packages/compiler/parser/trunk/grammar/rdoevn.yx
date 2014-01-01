@@ -2869,10 +2869,8 @@ stopping_statement
 				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", eventName.c_str()));
 			}
 
-			rdo::runtime::LPRDOCalcEventStop pCalc = rdo::Factory<rdo::runtime::RDOCalcEventStop>::create();
+			rdo::runtime::LPRDOCalcEventStop pCalc = pEvent->stoping();
 			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Остановка события %s", eventName.c_str())));
-			ASSERT(pCalc);
-			pEvent->insertStop(pCalc);
 
 			LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 			ASSERT(pType);
@@ -2935,10 +2933,8 @@ planning_statement
 			pCalcTime->setSrcInfo(pTimeArithm->src_info());
 			ASSERT(pCalcTime);
 
-			rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
+			rdo::runtime::LPRDOCalcEventPlan pEventPlan = pEvent->planning(pCalcTime, pParamList);
 			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
-			ASSERT(pEventPlan);
-			pEvent->insertPlaning(pEventPlan, pParamList);
 
 			LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 			ASSERT(pType);
@@ -8658,11 +8654,8 @@ proc_planning_statement
 			pCalcTime->setSrcInfo(pTimeArithm->src_info());
 			ASSERT(pCalcTime);
 
-			rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
+			rdo::runtime::LPRDOCalcEventPlan pEventPlan = pEvent->planning(pCalcTime, pParamList);
 			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
-			ASSERT(pEventPlan);
-			pEvent->insertPlaning(pEventPlan, pParamList);
-
 			$$ = PARSER->stack().push(pEventPlan);
 		}
 	}
@@ -8714,10 +8707,8 @@ proc_stopping_statement
 				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", eventName.c_str()));
 			}
 
-			rdo::runtime::LPRDOCalcEventStop pCalc = rdo::Factory<rdo::runtime::RDOCalcEventStop>::create();
+			rdo::runtime::LPRDOCalcEventStop pCalc = pEvent->stoping();
 			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Остановка события %s", eventName.c_str())));
-			ASSERT(pCalc);
-			pEvent->insertStop(pCalc);
 
 			$$ = PARSER->stack().push(pCalc);
 		}

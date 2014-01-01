@@ -11,10 +11,12 @@
 #define _LIB_RUNTIME_OPERATION_I_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/interface/rdointerface.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/namespace.h"
+#include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -35,7 +37,7 @@ public:
 	virtual void   onBeforeOperationBegin(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
 	virtual void   convertBegin          (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
 	virtual void   onAfterOperationBegin (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void   onBeforeOperationEnd  (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
+	virtual void   onBeforeOperationEnd  (CREF(rdo::runtime::LPRDORuntime) pRuntime, const std::vector<rdo::runtime::RDOValue>& params) = 0;
 	virtual void   convertEnd            (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
 	virtual void   onAfterOperationEnd   (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
 	virtual double getNextTimeInterval   (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
@@ -47,7 +49,7 @@ public:
 	virtual void   onBeforeOperationBegin(CREF(rdo::runtime::LPRDORuntime) pRuntime); \
 	virtual void   convertBegin          (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
 	virtual void   onAfterOperationBegin (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void   onBeforeOperationEnd  (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
+	virtual void   onBeforeOperationEnd  (CREF(rdo::runtime::LPRDORuntime) pRuntime, const std::vector<rdo::runtime::RDOValue>& params); \
 	virtual void   convertEnd            (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
 	virtual void   onAfterOperationEnd   (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
 	virtual double getNextTimeInterval   (CREF(rdo::runtime::LPRDORuntime) pRuntime)

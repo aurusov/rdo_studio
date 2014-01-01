@@ -8,7 +8,10 @@
   \indent    4T
 */
 
+// ---------------------------------------------------------------------------- PCH
+#include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/pch/stdpch.h"
 #include "simulator/runtime/rdo_activity.h"
@@ -24,11 +27,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 void RDOActivity::addParamCalc(CREF(LPRDOCalc) pCalc)
 {
 	m_paramsCalcs.push_back(pCalc);
-}
-
-void RDOActivity::setParamsCalcs(CREF(std::vector<LPRDOCalc>) params)
-{
-	m_paramsCalcs = params;
 }
 
 int RDOActivity::getResByRelRes(ruint rel_res_id) const
@@ -49,12 +47,22 @@ void RDOActivity::setRelRes(ruint rel_res_id, ruint res_id)
 	m_relResID[rel_res_id] = res_id;
 }
 
-void RDOActivity::setPatternParameters(CREF(LPRDORuntime) pRuntime)
+void RDOActivity::setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::vector<LPRDOCalc>& params)
 {
-	int size = m_paramsCalcs.size();
-	for (int i = 0; i < size; ++i)
+	std::vector<RDOValue> params_values;
+	params_values.reserve(params.size());
+	BOOST_FOREACH(const LPRDOCalc& param, params)
 	{
-		m_paramsCalcs.at(i)->calcValue(pRuntime);
+		params_values.push_back(param->calcValue(pRuntime));
+	}
+	setPatternParameters(pRuntime, params_values);
+}
+
+void RDOActivity::setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::vector<RDOValue>& params)
+{
+	for (size_t index = 0; index < params.size(); ++index)
+	{
+		pRuntime->setPatternParameter(index, params[index]);
 	}
 }
 

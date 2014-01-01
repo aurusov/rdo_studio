@@ -18,22 +18,6 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOSetPatternParamCalc
-// --------------------------------------------------------------------------------
-RDOSetPatternParamCalc::RDOSetPatternParamCalc(ruint paramID, CREF(LPRDOCalc) pCalc)
-	: m_paramID(paramID)
-	, m_pCalc  (pCalc  )
-{
-	ASSERT(m_pCalc);
-}
-
-RDOValue RDOSetPatternParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	pRuntime->setPatternParameter(m_paramID, m_pCalc->calcValue(pRuntime));
-	return RDOValue();
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOCalcPatParam
 // --------------------------------------------------------------------------------
 RDOCalcPatParam::RDOCalcPatParam(ruint paramID)

@@ -22,11 +22,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 CALC(RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEvent)
-public:
-	void setEvent(CREF(LPIEvent) pEvent);
 
 protected:
-	RDOCalcEvent();
+	RDOCalcEvent(const LPIEvent& event);
 
 	LPIEvent m_pEvent;
 };
@@ -36,9 +34,10 @@ CALC_SUB(RDOCalcEventPlan, RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEventPlan)
 private:
-	RDOCalcEventPlan(CREF(LPRDOCalc) pTimeCalc);
+	RDOCalcEventPlan(const LPIEvent& event, const LPRDOCalc& pTimeCalc, const std::vector<runtime::LPRDOCalc>& params);
 
-	LPRDOCalc m_pTimeCalc;
+	LPRDOCalc              m_pTimeCalc;
+	std::vector<LPRDOCalc> m_params;
 
 	DECLARE_ICalc;
 };
@@ -48,7 +47,7 @@ CALC_SUB(RDOCalcEventStop, RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEventStop)
 private:
-	RDOCalcEventStop();
+	RDOCalcEventStop(const LPIEvent& event);
 
 	DECLARE_ICalc;
 };

@@ -41,11 +41,11 @@ friend class RDOTrace;
 private:
 	RDOEvent(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternEvent) pPattern, rbool trace, CREF(tstring) name);
 
-	void convertEvent(CREF(LPRDORuntime) pRuntime);
+	void convertEvent(const LPRDORuntime& pRuntime);
 
-	virtual void onBeforeEvent(CREF(LPRDORuntime) pRuntime);
-	virtual void onAfterEvent (CREF(LPRDORuntime) pRuntime);
-	virtual void onMakePlaned (const LPRDORuntime& pRuntime);
+	        void onBeforeEvent(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params);
+	        void onAfterEvent (const LPRDORuntime& pRuntime);
+	virtual void onMakePlaned (const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params);
 
 	DECLARE_IBaseOperation;
 };

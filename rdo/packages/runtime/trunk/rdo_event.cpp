@@ -28,15 +28,11 @@ RDOEvent::RDOEvent(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternEvent) pPattern
 	setTraceID(pRuntime->getFreeEventId());
 }
 
-void RDOEvent::onStart(CREF(LPRDORuntime) pRuntime)
-{
-	onBeforeEvent(pRuntime);
-}
+void RDOEvent::onStart(CREF(LPRDORuntime) /*pRuntime*/)
+{}
 
-void RDOEvent::onStop(CREF(LPRDORuntime) pRuntime)
-{
-	pRuntime->removeTimePoint(this);
-}
+void RDOEvent::onStop(CREF(LPRDORuntime) /*pRuntime*/)
+{}
 
 rbool RDOEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
@@ -50,26 +46,26 @@ IBaseOperation::BOResult RDOEvent::onDoOperation(CREF(LPRDORuntime) pRuntime)
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOEvent::onMakePlaned(CREF(LPRDORuntime) pRuntime)
+void RDOEvent::onMakePlaned(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params)
 {
 	pRuntime->inc_cnt_events();
-	onBeforeEvent(pRuntime);
+	onBeforeEvent(pRuntime, params);
 	convertEvent (pRuntime);
 	onAfterEvent (pRuntime);
 }
 
-void RDOEvent::convertEvent(CREF(LPRDORuntime) pRuntime)
+void RDOEvent::convertEvent(const LPRDORuntime& pRuntime)
 {
 	m_pPattern->convertEvent(pRuntime);
 }
 
-void RDOEvent::onBeforeEvent(CREF(LPRDORuntime) pRuntime)
+void RDOEvent::onBeforeEvent(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params)
 {
 	pRuntime->setCurrentActivity(this);
-	setPatternParameters(pRuntime);
+	setPatternParameters(pRuntime, params);
 }
 
-void RDOEvent::onAfterEvent(CREF(LPRDORuntime) pRuntime)
+void RDOEvent::onAfterEvent(const LPRDORuntime& pRuntime)
 {
 	updateConvertStatus(pRuntime, m_pPattern->m_convertorStatus);
 	pRuntime->getTracer()->writeEvent(this, pRuntime);
