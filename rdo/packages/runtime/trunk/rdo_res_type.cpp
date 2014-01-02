@@ -42,7 +42,7 @@ LPRDOResource RDOResourceTypeList::createRes(CREF(LPRDORuntime) pRuntime, ruint 
 
 	rdo::intrusive_ptr<RDOResourceTypeList> pThis(this);
 	ASSERT(pThis);
-	LPIResourceType pIResType = pThis.template interface_cast<IResourceType>();
+	LPIResourceType pIResType = pThis.interface_cast<IResourceType>();
 	ASSERT(pIResType);
 
 	LPRDOResource resource = m_create(pRuntime, paramsCalcs, pIResType, resID, getTraceID(), traceFlag, permanentFlag);
