@@ -77,12 +77,11 @@ void rtperror(const char* message)
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
 // --------------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, Subtype subtype)
+RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
 	: RDOParserSrcInfo(src_info            )
 	, m_pRuntime      (pParser->runtime()  )
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
-	, m_subtype       (subtype             )
 {
 	pParser->insertRTPResType(LPRDORTPResType(this));
 }
@@ -114,14 +113,6 @@ CREF(rdo::runtime::LPIResourceType) RDORTPResType::getRuntimeResType() const
 {
 	ASSERT(m_pRuntimeResType);
 	return m_pRuntimeResType;
-}
-
-void RDORTPResType::setSubtype(Subtype type)
-{
-	//! \todo вывести ошибку вместо ASSERT()
-	ASSERT(!(m_subtype == RT_PROCESS_RESOURCE && type == RT_PROCESS_TRANSACT));
-	ASSERT(!(m_subtype == RT_PROCESS_TRANSACT && type == RT_PROCESS_RESOURCE));
-	m_subtype = type;
 }
 
 runtime::RDOType::TypeID RDORTPResType::typeID() const
@@ -283,6 +274,21 @@ Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExp
 
 void RDORTPResType::end()
 {
+	createRuntimeResourceType();
+}
+
+void RDORTPResType::setSubtype(Subtype type)
+{
+	ASSERT(!m_subtype.is_initialized());
+	m_subtype = type;
+	createRuntimeResourceType();
+}
+
+void RDORTPResType::createRuntimeResourceType()
+{
+	ASSERT(!m_pRuntimeResType);
+	ASSERT(!m_pType);
+
 	m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeList>::create(m_number, m_pRuntime).interface_cast<rdo::runtime::IResourceType>();
 	m_pType = m_pRuntimeResType;
 	ASSERT(m_pType);
@@ -290,8 +296,12 @@ void RDORTPResType::end()
 
 void RDORTPResType::setupRuntimeFactory()
 {
+	Subtype subtype = m_subtype.is_initialized()
+		? m_subtype.get()
+		: RT_SIMPLE;
+
 	runtime::RDOResourceTypeList::Create create;
-	switch (m_subtype)
+	switch (subtype)
 	{
 	case RT_SIMPLE:
 		create = boost::bind(&createSimpleResource, _1, _2, _3, _4, _5, _6, _7);

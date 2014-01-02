@@ -13,6 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
+#include <boost/optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdomacros.h"
 #include "simulator/compiler/parser/rdo_object.h"
@@ -71,9 +72,9 @@ public:
 
 	CREF(rdo::runtime::LPIResourceType) getRuntimeResType() const;
 
+	void end();
 	void setSubtype(Subtype subtype);
 
-	void end();
 	void setupRuntimeFactory();
 
 	void writeModelStructure(REF(rdo::ostream) stream) const;
@@ -81,7 +82,7 @@ public:
 	DECLARE_IType;
 
 private:
-	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, Subtype subtype);
+	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
 	virtual ~RDORTPResType();
 
 	rdo::runtime::LPRDORuntime    m_pRuntime;
@@ -89,10 +90,12 @@ private:
 	rdo::runtime::LPIResourceType m_pRuntimeResType;
 	const ruint                   m_number;
 	const rbool                   m_permanent;
-	Subtype                       m_subtype;
+	boost::optional<Subtype>      m_subtype;
 	ParamList                     m_params;
 
 	virtual runtime::RDOType::TypeID typeID() const;
+
+	void createRuntimeResourceType();
 
 	DECLARE_IContextSwitch;
 };
