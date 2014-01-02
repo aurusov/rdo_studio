@@ -526,13 +526,9 @@ void RDOParser::runSMRPost()
 
 void RDOParser::runRTPPost()
 {
-	STL_FOR_ALL_CONST(getRTPResTypes(), RTPResTypeIt)
+	BOOST_FOREACH(const LPRDORTPResType& type, getRTPResTypes())
 	{
-		// Взять очередной тип ресурса в парсере
-		LPRDORTPResType pResType = *RTPResTypeIt;
-
-		// Создать соответствующий тип ресурсов в рантайме
-		pResType->end();
+		type->setupRuntimeFactory();
 	}
 }
 
