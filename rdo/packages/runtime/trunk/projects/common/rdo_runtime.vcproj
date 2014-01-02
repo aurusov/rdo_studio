@@ -565,10 +565,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\rdo_res_type.inl"
-					>
-				</File>
-				<File
 					RelativePath="..\..\rdo_res_type_i.h"
 					>
 				</File>

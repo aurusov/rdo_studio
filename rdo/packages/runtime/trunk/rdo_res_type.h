@@ -13,6 +13,7 @@
 #define _LIB_RUNTIME_RES_TYPE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdo_res_type_i.h"
@@ -34,52 +35,28 @@ private:
 	friend class rdo::Factory<RDOResourceTypeList>;
 
 public:
+	typedef  boost::function<LPRDOResource (const LPRDORuntime&, const std::vector<RDOValue>&, const LPIResourceType&, ruint, ruint, rbool, rbool)>  Create;
+	void setFactoryMethod(const Create& create);
+
 	virtual ResCIterator res_begin() const;
 	virtual ResCIterator res_end  () const;
 
 	virtual void          eraseRes(CREF(LPRDOResource) pResource);
 	LPRDOResourceTypeList clone   (CREF(LPRDORuntime) pRuntime) const;
 
-protected:
+private:
 	RDOResourceTypeList(ruint number, CREF(LPRDORuntime) pRuntime);
 	virtual ~RDOResourceTypeList();
 
 	void insertNewResource(CREF(LPRDORuntime) pRuntime, CREF(LPRDOResource) pResource);
 
-	virtual LPRDOResourceTypeList cloneTypeOnly(CREF(LPRDORuntime) pRuntime) const = 0;
-
 	typedef  std::list<LPRDOResource> ResourceList;
 	ResourceList m_resourceList;
+	Create       m_create;
+
+	virtual LPRDOResource createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag);
 };
-
-//! Описывает РДО-тип ресурса (RTP), который суть фабрика для РДО-ресурсов
-//! tparam T - ресурс, который будет создаваться данной фабрикой
-template <class T>
-class RDOResourceTypeListT: public RDOResourceTypeList
-{
-DECLARE_FACTORY(RDOResourceTypeListT<T>);
-public:
-	typedef  T  value_type;
-
-private:
-	//! Конструктор
-	//! \param number - Целочисленный идентификатор
-	RDOResourceTypeListT(ruint number, LPRDORuntime pRuntime);
-	virtual ~RDOResourceTypeListT();
-
-	virtual LPRDOResourceTypeList cloneTypeOnly(CREF(LPRDORuntime) pRuntime) const;
-
-	DECLARE_IResourceType;
-};
-
-//! Тип ресурсов для создания обычных ресурсов РДО
-//! \details Создает ресурсы, которые могут быть релевантны активностям и
-//!          событиям, но не могут использоваться в процессах
-typedef  RDOResourceTypeListT<RDOResource>    RDOResourceType;
-typedef  rdo::intrusive_ptr<RDOResourceType>  LPRDOResourceType;
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_res_type.inl"
 
 #endif // _LIB_RUNTIME_RES_TYPE_H_

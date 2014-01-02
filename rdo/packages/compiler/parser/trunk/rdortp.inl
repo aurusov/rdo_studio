@@ -47,33 +47,12 @@ inline CREF(rdo::runtime::LPIResourceType) RDORTPResType::getRuntimeResType() co
 	return m_pRuntimeResType;
 }
 
-inline void RDORTPResType::setType(TypeRDOResType type)
+inline void RDORTPResType::setSubtype(Subtype type)
 {
 	//! \todo вывести ошибку вместо ASSERT()
-	ASSERT(!(m_type == procRes && type == procTran));
-	ASSERT(!(m_type == procTran && type == procRes));
-	m_type = type;
-}
-
-inline void RDORTPResType::end()
-{
-	switch (m_type)
-	{
-	case simple:
-		m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceType>::create(m_number, m_pRuntime).interface_cast<rdo::runtime::IResourceType>();
-		break;
-	case procRes:
-		m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeProccess>::create(m_number, m_pRuntime).interface_cast<rdo::runtime::IResourceType>();
-		break;
-	case procTran:
-		m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeTransact>::create(m_number, m_pRuntime).interface_cast<rdo::runtime::IResourceType>();
-		break;
-	default:
-		NEVER_REACH_HERE;
-	}
-	ASSERT(m_pRuntimeResType);
-	m_pType = m_pRuntimeResType;
-	ASSERT(m_pType);
+	ASSERT(!(m_subtype == RT_PROCESS_RESOURCE && type == RT_PROCESS_TRANSACT));
+	ASSERT(!(m_subtype == RT_PROCESS_TRANSACT && type == RT_PROCESS_RESOURCE));
+	m_subtype = type;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

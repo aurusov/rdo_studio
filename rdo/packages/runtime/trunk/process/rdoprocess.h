@@ -125,18 +125,6 @@ private:
 	virtual ~RDOPROCResource();
 };
 
-//! Тип РДО-ресурсов для создания ресуров-транзактов
-//! \details Создает ресурсы, которые могут быть релевантны активностям и 
-//!          событиям, а также обслуживать транзакты в процессах
-typedef  RDOResourceTypeListT<RDOPROCTransact>        RDOResourceTypeTransact;
-typedef  rdo::intrusive_ptr<RDOResourceTypeTransact>  LPRDOResourceTypeTransact;
-
-//! Тип ресурсов для создания ресурсов-ресурсов (который свободен/занят с точки зрения процесснорго подхода)
-//! \details Создает ресурсы, которые могут быть релевантны активностям и 
-//!          событиям, а также становиться процесс-ресурсами (свободен/занят) в процессах
-typedef  RDOResourceTypeListT<RDOPROCResource>        RDOResourceTypeProccess;
-typedef  rdo::intrusive_ptr<RDOResourceTypeProccess>  LPRDOResourceTypeProccess;
-
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/process/rdoprocess.inl"

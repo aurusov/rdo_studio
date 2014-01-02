@@ -29,6 +29,28 @@ RDOResourceTypeList::RDOResourceTypeList(ruint number, CREF(LPRDORuntime) pRunti
 RDOResourceTypeList::~RDOResourceTypeList()
 {}
 
+void RDOResourceTypeList::setFactoryMethod(const Create& create)
+{
+	ASSERT(create);
+	ASSERT(!m_create);
+	m_create = create;
+}
+
+LPRDOResource RDOResourceTypeList::createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
+{
+	ASSERT(m_create);
+
+	rdo::intrusive_ptr<RDOResourceTypeList> pThis(this);
+	ASSERT(pThis);
+	LPIResourceType pIResType = pThis.template interface_cast<IResourceType>();
+	ASSERT(pIResType);
+
+	LPRDOResource resource = m_create(pRuntime, paramsCalcs, pIResType, resID, getTraceID(), traceFlag, permanentFlag);
+	insertNewResource(pRuntime, resource);
+
+	return resource;
+}
+
 void RDOResourceTypeList::insertNewResource(CREF(LPRDORuntime) pRuntime, CREF(LPRDOResource) pResource)
 {
 	ASSERT(pRuntime);
@@ -62,7 +84,7 @@ IResourceType::ResCIterator RDOResourceTypeList::res_end() const
 
 LPRDOResourceTypeList RDOResourceTypeList::clone(CREF(LPRDORuntime) pRuntime) const
 {
-	LPRDOResourceTypeList type = cloneTypeOnly(pRuntime);
+	LPRDOResourceTypeList type = rdo::Factory<RDOResourceTypeList>::create(getTraceID(), pRuntime);
 	ASSERT(type);
 	BOOST_FOREACH(const LPRDOResource& resource, m_resourceList)
 	{

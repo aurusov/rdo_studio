@@ -179,7 +179,7 @@ parser::LPRDORTPResType RDOResTypeList::appendBefore(REF(RDOResType) rtp)
 		return parser::LPRDORTPResType(NULL);
 	}
 
-	parser::LPRDORTPResType pResourceType = rdo::Factory<parser::RDORTPResType>::create(m_pParser, parser::RDOParserSrcInfo(rtp.name()), rtp.isPermanent());
+	parser::LPRDORTPResType pResourceType = rdo::Factory<parser::RDORTPResType>::create(m_pParser, parser::RDOParserSrcInfo(rtp.name()), rtp.isPermanent(), parser::RDORTPResType::RT_SIMPLE);
 	ASSERT(pResourceType);
 	return pResourceType;
 }

@@ -48,11 +48,11 @@ DECLARE_FACTORY(RDORTPResType);
 public:
 	typedef std::vector<LPRDORTPParam> ParamList;
 
-	enum TypeRDOResType
+	enum Subtype
 	{
-		simple,
-		procRes,
-		procTran
+		RT_SIMPLE,
+		RT_PROCESS_RESOURCE,
+		RT_PROCESS_TRANSACT
 	};
 	static const ruint UNDEFINED_PARAM = ruint(~0);
 
@@ -71,16 +71,17 @@ public:
 
 	CREF(rdo::runtime::LPIResourceType) getRuntimeResType() const;
 
-	void setType(TypeRDOResType type);
+	void setSubtype(Subtype subtype);
 
 	void end();
+	void setupRuntimeFactory();
 
 	void writeModelStructure(REF(rdo::ostream) stream) const;
 
 	DECLARE_IType;
 
 private:
-	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, TypeRDOResType type = simple);
+	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, Subtype subtype);
 	virtual ~RDORTPResType();
 
 	rdo::runtime::LPRDORuntime    m_pRuntime;
@@ -88,7 +89,7 @@ private:
 	rdo::runtime::LPIResourceType m_pRuntimeResType;
 	const ruint                   m_number;
 	const rbool                   m_permanent;
-	TypeRDOResType                m_type;
+	Subtype                       m_subtype;
 	ParamList                     m_params;
 
 	virtual runtime::RDOType::TypeID typeID() const;

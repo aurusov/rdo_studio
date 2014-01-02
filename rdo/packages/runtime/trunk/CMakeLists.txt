@@ -166,7 +166,6 @@ SET(SIMULATOR_NOTIFY_FILES
 SET(SIMULATOR_DB_FILES
 	rdo_res_type.cpp
 	rdo_res_type.h
-	rdo_res_type.inl
 	rdo_res_type_i.h
 	rdo_resource.cpp
 	rdo_resource.h

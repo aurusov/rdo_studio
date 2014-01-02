@@ -65,7 +65,7 @@ RDOCalcGetResourceParam::RDOCalcGetResourceParam(CREF(LPRDOCalc) pResource, ruin
 
 RDOValue RDOCalcGetResourceParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	LPRDOResource pResource = m_pResource->calcValue(pRuntime).getPointerByInterfaceSafety<IResourceType>();
+	LPRDOResource pResource = m_pResource->calcValue(pRuntime).getPointerByInterface<IResourceType>();
 	ASSERT(pResource);
 	return pResource->getParam(m_paramID);
 }

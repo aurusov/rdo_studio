@@ -321,13 +321,6 @@ rdo_compiler
 // --------------------------------------------------------------------------------
 rtp_main
 	: rtp_res_type
-	{
-		#PASS1
-		{
-			LPRDORTPResType pResourceType = PARSER->stack().pop<RDORTPResType>($1);
-			ASSERT(pResourceType);
-		}
-	}
 	| ext_param_type
 	;
 
@@ -358,7 +351,7 @@ rtp_res_type
 			{
 				PARSER->error().warning(@2, rdo::format("Тип ресурса '%s' не содежит параметров", pResourceType->name().c_str()));
 			}
-			$$ = PARSER->stack().push(pResourceType);
+			pResourceType->end();
 		}
 	}
 	| rtp_header RDO_Parameters rtp_body
@@ -396,7 +389,7 @@ rtp_header
 				PARSER->error().push_done();
 			}
 
-			LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, pTypeName->src_info(), $3 != 0);
+			LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, pTypeName->src_info(), $3 != 0, parser::RDORTPResType::RT_SIMPLE);
 			ASSERT(pResourceType);
 			$$ = PARSER->stack().push(pResourceType);
 		}
@@ -426,7 +419,7 @@ rtp_header
 			LPRDORTPResType pParentRTP = PARSER->findRTPResType(prnt_name);
 			if (pParentRTP)
 			{
-				LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, pTypeName->src_info(), $4 != 0);
+				LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, pTypeName->src_info(), $4 != 0, parser::RDORTPResType::RT_SIMPLE);
 				ASSERT(pResourceType);
 				ruint t_ind   = 0;
 				ruint col_par = pParentRTP->getParams().size();
@@ -8291,7 +8284,7 @@ process_begin
 				}
 				LPRDORTPResType pResType = PARSER->findRTPResType(transactName);
 				ASSERT(pResType);
-				pResType->setType(RDORTPResType::procTran);
+				pResType->setSubtype(RDORTPResType::RT_PROCESS_TRANSACT);
 			}
 			else
 			{
@@ -8316,7 +8309,7 @@ process_begin
 				}
 				// Тип ресурса подходит в качестве типа транзакта
 				LPRDORTPResType pResType = PARSER->findRTPResType(transactName);
-				pResType->setType(RDORTPResType::procTran);
+				pResType->setSubtype(RDORTPResType::RT_PROCESS_TRANSACT);
 			}
 
 			LPRDORTPResType transactType = PARSER->findRTPResType(transactName);

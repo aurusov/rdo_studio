@@ -47,7 +47,7 @@ rbool BlockForQueue::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) in
 
 	parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp.name());
 	ASSERT(pResType);
-	pResType->setType(parser::RDORTPResType::procRes);
+	pResType->setSubtype(parser::RDORTPResType::RT_PROCESS_RESOURCE);
 
 	return true;
 }
@@ -78,7 +78,7 @@ RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(parser::RDOPar
 	{
 		parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp_name);
 		ASSERT(pResType);
-		pResType->setType(parser::RDORTPResType::procRes);
+		pResType->setSubtype(parser::RDORTPResType::RT_PROCESS_RESOURCE);
 	}
 	return rtp;
 }
@@ -110,7 +110,7 @@ rbool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) in
 
 	parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp.name());
 	ASSERT(pResType);
-	pResType->setType(parser::RDORTPResType::procRes);
+	pResType->setSubtype(parser::RDORTPResType::RT_PROCESS_RESOURCE);
 
 	return true;
 }
@@ -170,7 +170,7 @@ RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(parser::RDOPar
 	{
 		parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp_name);
 		ASSERT(pResType);
-		pResType->setType(parser::RDORTPResType::procRes);
+		pResType->setSubtype(parser::RDORTPResType::RT_PROCESS_RESOURCE);
 	}
 	return rtp;
 }
