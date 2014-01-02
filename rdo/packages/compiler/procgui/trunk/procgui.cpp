@@ -250,7 +250,6 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF
 	parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtpName);
 	ASSERT(pResType);
 	pResType->setSubtype(parser::RDORTPResType::RT_PROCESS_TRANSACT);
-	pResType->end();
 
 	std::vector<rdo::runtime::RDOValue> paramList;
 	paramList.push_back(rdo::runtime::RDOValue(0.0));

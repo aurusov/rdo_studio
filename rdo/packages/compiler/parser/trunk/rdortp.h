@@ -72,7 +72,6 @@ public:
 
 	CREF(rdo::runtime::LPIResourceType) getRuntimeResType() const;
 
-	void end();
 	void setSubtype(Subtype subtype);
 
 	void setupRuntimeFactory();
@@ -85,8 +84,6 @@ private:
 	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
 	virtual ~RDORTPResType();
 
-	rdo::runtime::LPRDORuntime    m_pRuntime;
-
 	rdo::runtime::LPIResourceType m_pRuntimeResType;
 	const ruint                   m_number;
 	const rbool                   m_permanent;
@@ -94,8 +91,6 @@ private:
 	ParamList                     m_params;
 
 	virtual runtime::RDOType::TypeID typeID() const;
-
-	void createRuntimeResourceType();
 
 	DECLARE_IContextSwitch;
 };

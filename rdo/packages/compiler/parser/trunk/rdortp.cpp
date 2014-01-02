@@ -79,10 +79,13 @@ void rtperror(const char* message)
 // --------------------------------------------------------------------------------
 RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
 	: RDOParserSrcInfo(src_info            )
-	, m_pRuntime      (pParser->runtime()  )
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
 {
+	m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeList>::create(m_number, pParser->runtime()).interface_cast<rdo::runtime::IResourceType>();
+	m_pType = m_pRuntimeResType;
+	ASSERT(m_pType);
+
 	pParser->insertRTPResType(LPRDORTPResType(this));
 }
 
@@ -272,26 +275,10 @@ Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExp
 	return Context::FindResult(const_cast<PTR(RDORTPResType)>(this), pExpression, pValue);
 }
 
-void RDORTPResType::end()
-{
-	createRuntimeResourceType();
-}
-
 void RDORTPResType::setSubtype(Subtype type)
 {
-	ASSERT(!m_subtype.is_initialized());
+	ASSERT(!m_subtype.is_initialized() || m_subtype.get() == type);
 	m_subtype = type;
-	createRuntimeResourceType();
-}
-
-void RDORTPResType::createRuntimeResourceType()
-{
-	ASSERT(!m_pRuntimeResType);
-	ASSERT(!m_pType);
-
-	m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeList>::create(m_number, m_pRuntime).interface_cast<rdo::runtime::IResourceType>();
-	m_pType = m_pRuntimeResType;
-	ASSERT(m_pType);
 }
 
 void RDORTPResType::setupRuntimeFactory()
