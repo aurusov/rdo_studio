@@ -549,18 +549,19 @@ void RDOFUNArithm::checkParamType(CREF(LPTypeInfo) pType)
 	}
 }
 
-void RDOFUNArithm::wrongVarInit(CREF(LPRDOValue) pParamName, CREF(tstring) paramName)
+void RDOFUNArithm::wrongVarInitialization(const LPRDOValue& name)
 {
+	const std::string identificator = name->value().getIdentificator();
 	LPRDOFUNFunction pFunction = RDOParser::s_parser()->getLastFUNFunction();
 	ASSERT(pFunction);
-	LPRDOParam pParam = pFunction->findParam(paramName);
+	LPRDOParam pParam = pFunction->findParam(identificator);
 	if (pParam)
 	{
-		RDOParser::s_parser()->error().error(pParamName->src_info(), rdo::format("Функции не могут изменить свой параметр: %s", paramName.c_str()));		
+		RDOParser::s_parser()->error().error(name->src_info(), rdo::format("Функции не могут изменить свой параметр: %s", identificator.c_str()));		
 	}
 	else
 	{
-		RDOParser::s_parser()->error().error(pParamName->src_info(), rdo::format("Неизвестный идентификатор: %s", paramName.c_str()));
+		RDOParser::s_parser()->error().error(name->src_info(), rdo::format("Неизвестный идентификатор: %s", identificator.c_str()));
 	}
 }
 

@@ -9871,21 +9871,22 @@ set_array_item_statement
 
 			rdo::runtime::LPRDOCalc pArrayItemCalc = rdo::Factory<rdo::runtime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
 			ASSERT(pArrayItemCalc);
-			
-			tstring   paramName = pParamName->value().getIdentificator();
-			LPContext pContext  = PARSER->context();
-			ASSERT(pContext);
-			LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-			ASSERT(pContextMemory);
-			LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-			ASSERT(pLocalVariableListStack);
-			LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
+
 			rdo::runtime::LPRDOCalc pCalc;
-			if (pLocalVariable)
+			tstring paramName = pParamName->value().getIdentificator();
+			LPContext pContext = PARSER->context()->find(pParamName);
+			if (pContext.object_dynamic_cast<ContextMemory>())
 			{
+				LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+				ASSERT(pContextMemory);
+				LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+				ASSERT(pLocalVariableListStack);
+				LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
+				ASSERT(pLocalVariable);
 				pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_EQUAL> >::create(paramName, pArrayItemCalc);
 			}
-			else
+
+			if (!pCalc && pContext.object_dynamic_cast<RDOPATPattern>())
 			{
 				LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
 				ASSERT(pPattern);
@@ -9897,6 +9898,11 @@ set_array_item_statement
 				pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pArrayItemCalc);
 				ASSERT(pCalc);
 				pCalc->setSrcInfo(RDOParserSrcInfo(@1, rdo::format("%s.%s", pRelRes->src_text().c_str(), paramName.c_str())));
+			}
+
+			if (!pCalc)
+			{
+				RDOFUNArithm::wrongVarInitialization(pParamName);
 			}
 
 			LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));
