@@ -9902,7 +9902,7 @@ set_array_item_statement
 
 			if (!pCalc)
 			{
-				RDOFUNArithm::wrongVarInit(pParamName, paramName);
+				RDOFUNArithm::wrongVarInitialization(pParamName);
 			}
 
 			LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));
