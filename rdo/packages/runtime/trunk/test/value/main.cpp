@@ -530,14 +530,14 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create(&error);
 	BOOST_CHECK(pRuntime);
 
-	LPRDOResourceType pResourceType = rdo::Factory<RDOResourceType>::create(1, pRuntime);
+	LPRDOResourceTypeList pResourceType = rdo::Factory<RDOResourceTypeList>::create(1, pRuntime);
 	BOOST_CHECK(pResourceType);
 	LPIResourceType pResourceFactory = pResourceType.interface_cast<IResourceType>();
 	BOOST_CHECK(pResourceFactory);
 
 	std::vector<RDOValue> paramList;
-	paramList.push_back(RDOValue(1      ));
-	paramList.push_back(RDOValue(2.2    ));
+	paramList.push_back(RDOValue(1  ));
+	paramList.push_back(RDOValue(2.2));
 	paramList.push_back(RDOValue("3"));
 
 	LPRDOResource pResource = pResourceFactory->createRes(pRuntime, pRuntime->getResourceId(), paramList, true, true);
@@ -545,10 +545,10 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 
 	RDOValue value1(pResourceType, pResource);
 
-	LPRDOResourceType pType = value1.type().object_dynamic_cast<RDOResourceType>();
+	LPRDOResourceTypeList pType = value1.type().object_dynamic_cast<RDOResourceTypeList>();
 	BOOST_CHECK(pType);
 
-	LPRDOResource pResource1 = value1.getPointerSafety<RDOResourceType>();
+	LPRDOResource pResource1 = value1.getPointerByType<RDOResourceTypeList>();
 
 	pRuntime   = NULL;
 	value1     = RDOValue();
