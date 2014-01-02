@@ -524,6 +524,23 @@ BOOST_AUTO_TEST_CASE(RDOValue_Undefined)
 	BOOST_CHECK(value2.isUndefined() == true);
 }
 
+namespace
+{
+
+rdo::runtime::LPRDOResource createSimpleResource(
+	const rdo::runtime::LPRDORuntime            runtime,
+	const rdo::runtime::RDOResource::ParamList& params,
+	const rdo::runtime::LPIResourceType&        type,
+	ruint resource_id,
+	ruint type_id,
+	rbool trace,
+	rbool temporary)
+{
+	return rdo::Factory<rdo::runtime::RDOResource>::create(runtime, params, type, resource_id, type_id, trace, temporary);
+}
+
+}
+
 BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 {
 	Error error;
@@ -532,6 +549,8 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 
 	LPRDOResourceTypeList pResourceType = rdo::Factory<RDOResourceTypeList>::create(1, pRuntime);
 	BOOST_CHECK(pResourceType);
+	pResourceType->setFactoryMethod(boost::bind(&createSimpleResource, _1, _2, _3, _4, _5, _6, _7));
+
 	LPIResourceType pResourceFactory = pResourceType.interface_cast<IResourceType>();
 	BOOST_CHECK(pResourceFactory);
 
