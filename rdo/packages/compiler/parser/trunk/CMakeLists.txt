@@ -184,7 +184,6 @@ SET(RESORCES_FILES
 	rdorss.h
 	rdortp.cpp
 	rdortp.h
-	rdortp.inl
 	rdortp_param.cpp
 	rdortp_param.h
 )

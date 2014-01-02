@@ -90,6 +90,40 @@ RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) s
 RDORTPResType::~RDORTPResType()
 {}
 
+rsint RDORTPResType::getNumber() const
+{
+	return m_number;
+}
+
+rbool RDORTPResType::isPermanent() const
+{
+	return m_permanent;
+}
+
+rbool RDORTPResType::isTemporary() const
+{
+	return !m_permanent;
+}
+
+CREF(RDORTPResType::ParamList) RDORTPResType::getParams() const
+{
+	return m_params;
+}
+
+CREF(rdo::runtime::LPIResourceType) RDORTPResType::getRuntimeResType() const
+{
+	ASSERT(m_pRuntimeResType);
+	return m_pRuntimeResType;
+}
+
+void RDORTPResType::setSubtype(Subtype type)
+{
+	//! \todo вывести ошибку вместо ASSERT()
+	ASSERT(!(m_subtype == RT_PROCESS_RESOURCE && type == RT_PROCESS_TRANSACT));
+	ASSERT(!(m_subtype == RT_PROCESS_TRANSACT && type == RT_PROCESS_RESOURCE));
+	m_subtype = type;
+}
+
 runtime::RDOType::TypeID RDORTPResType::typeID() const
 {
 	return runtime::RDOType::t_pointer;
