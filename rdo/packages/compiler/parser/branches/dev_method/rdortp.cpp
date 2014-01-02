@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -19,6 +20,47 @@
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
+
+namespace
+{
+
+rdo::runtime::LPRDOResource createSimpleResource(
+	const rdo::runtime::LPRDORuntime            runtime,
+	const rdo::runtime::RDOResource::ParamList& params,
+	const rdo::runtime::LPIResourceType&        type,
+	ruint resource_id,
+	ruint type_id,
+	rbool trace,
+	rbool temporary)
+{
+	return rdo::Factory<rdo::runtime::RDOResource>::create(runtime, params, type, resource_id, type_id, trace, temporary);
+}
+
+rdo::runtime::LPRDOPROCResource createProcessResource(
+	const rdo::runtime::LPRDORuntime            runtime,
+	const rdo::runtime::RDOResource::ParamList& params,
+	const rdo::runtime::LPIResourceType&        type,
+	ruint resource_id,
+	ruint type_id,
+	rbool trace,
+	rbool temporary)
+{
+	return rdo::Factory<rdo::runtime::RDOPROCResource>::create(runtime, params, type, resource_id, type_id, trace, temporary);
+}
+
+rdo::runtime::LPRDOPROCTransact createProcessTransact(
+	const rdo::runtime::LPRDORuntime            runtime,
+	const rdo::runtime::RDOResource::ParamList& params,
+	const rdo::runtime::LPIResourceType&        type,
+	ruint resource_id,
+	ruint type_id,
+	rbool trace,
+	rbool temporary)
+{
+	return rdo::Factory<rdo::runtime::RDOPROCTransact>::create(runtime, params, type, resource_id, type_id, trace, temporary);
+}
+
+}
 
 int rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -35,18 +77,46 @@ void rtperror(const char* message)
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
 // --------------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, TypeRDOResType type)
+RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
 	: RDOParserSrcInfo(src_info            )
-	, m_pRuntime      (pParser->runtime()  )
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
-	, m_type          (type                )
 {
+	m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeList>::create(m_number, pParser->runtime()).interface_cast<rdo::runtime::IResourceType>();
+	m_pType = m_pRuntimeResType;
+	ASSERT(m_pType);
+
 	pParser->insertRTPResType(LPRDORTPResType(this));
 }
 
 RDORTPResType::~RDORTPResType()
 {}
+
+rsint RDORTPResType::getNumber() const
+{
+	return m_number;
+}
+
+rbool RDORTPResType::isPermanent() const
+{
+	return m_permanent;
+}
+
+rbool RDORTPResType::isTemporary() const
+{
+	return !m_permanent;
+}
+
+CREF(RDORTPResType::ParamList) RDORTPResType::getParams() const
+{
+	return m_params;
+}
+
+CREF(rdo::runtime::LPIResourceType) RDORTPResType::getRuntimeResType() const
+{
+	ASSERT(m_pRuntimeResType);
+	return m_pRuntimeResType;
+}
 
 runtime::RDOType::TypeID RDORTPResType::typeID() const
 {
@@ -203,6 +273,38 @@ Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExp
 	ASSERT(pExpression);
 
 	return Context::FindResult(const_cast<PTR(RDORTPResType)>(this), pExpression, pValue);
+}
+
+void RDORTPResType::setSubtype(Subtype type)
+{
+	ASSERT(!m_subtype.is_initialized() || m_subtype.get() == type);
+	m_subtype = type;
+}
+
+void RDORTPResType::setupRuntimeFactory()
+{
+	Subtype subtype = m_subtype.is_initialized()
+		? m_subtype.get()
+		: RT_SIMPLE;
+
+	runtime::RDOResourceTypeList::Create create;
+	switch (subtype)
+	{
+	case RT_SIMPLE:
+		create = boost::bind(&createSimpleResource, _1, _2, _3, _4, _5, _6, _7);
+		break;
+	case RT_PROCESS_RESOURCE:
+		create = boost::bind(&createProcessResource, _1, _2, _3, _4, _5, _6, _7);
+		break;
+	case RT_PROCESS_TRANSACT:
+		create = boost::bind(&createProcessTransact, _1, _2, _3, _4, _5, _6, _7);
+		break;
+	default:
+		NEVER_REACH_HERE;
+	}
+	rdo::runtime::LPRDOResourceTypeList type(m_pRuntimeResType);
+	ASSERT(type);
+	type->setFactoryMethod(create);
 }
 
 /*
