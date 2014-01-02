@@ -157,8 +157,8 @@ public:
 	        void setSrcPos (CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end);
 
 	void checkParamType(CREF(LPTypeInfo) pType);
-	
-	static void wrongVarInit(CREF(LPRDOValue) pParamName ,CREF(tstring) paramName);
+
+	static void wrongVarInitialization(const LPRDOValue& name);
 
 	static LPRDOFUNArithm generateByConst        (CREF(LPRDOValue) pValue);
 	static LPRDOFUNArithm generateByIdentificator(CREF(LPRDOValue) pValue);
