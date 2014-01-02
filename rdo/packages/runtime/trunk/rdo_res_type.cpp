@@ -86,6 +86,7 @@ LPRDOResourceTypeList RDOResourceTypeList::clone(CREF(LPRDORuntime) pRuntime) co
 {
 	LPRDOResourceTypeList type = rdo::Factory<RDOResourceTypeList>::create(getTraceID(), pRuntime);
 	ASSERT(type);
+	type->setFactoryMethod(m_create);
 	BOOST_FOREACH(const LPRDOResource& resource, m_resourceList)
 	{
 		type->insertNewResource(pRuntime, resource->clone(pRuntime));
