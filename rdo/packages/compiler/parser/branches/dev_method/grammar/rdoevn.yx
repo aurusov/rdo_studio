@@ -10940,7 +10940,7 @@ fun_group_header
 	{
 		#PASS2
 		{
-			PARSER->error().error(@1, "После имени функции ожидается октрывающаяся скобка");
+			PARSER->error().error(@1, "После имени функции ожидается открывающаяся скобка");
 		}
 	}
 	;
@@ -11133,7 +11133,7 @@ fun_select_logic
 	{
 		#PASS2
 		{
-			PARSER->error().error(@3, "Ожидается октрывающаяся скобка");
+			PARSER->error().error(@3, "Ожидается открывающаяся скобка");
 		}
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
@@ -11160,7 +11160,7 @@ fun_select_logic
 	{
 		#PASS2
 		{
-			PARSER->error().error(@3, "Ожидается октрывающаяся скобка");
+			PARSER->error().error(@3, "Ожидается открывающаяся скобка");
 		}
 	}
 	| fun_select_body '.' error
@@ -11197,7 +11197,7 @@ fun_select_arithm
 	{
 		#PASS2
 		{
-			PARSER->error().error(@3, "Ожидается октрывающаяся скобка");
+			PARSER->error().error(@3, "Ожидается открывающаяся скобка");
 		}
 	}
 	| fun_select_body '.' RDO_Size '(' error
@@ -11224,7 +11224,7 @@ fun_select_arithm
 	{
 		#PASS2
 		{
-			PARSER->error().error(@3, "Ожидается октрывающаяся скобка");
+			PARSER->error().error(@3, "Ожидается открывающаяся скобка");
 		}
 	}
 	| fun_select_body '.' RDO_Select_Array '(' error
