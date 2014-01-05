@@ -302,6 +302,7 @@ public:
 			return false;
 
 		parserRSS->setTrace(true);
+		parserRSS->end();
 
 		mbuilderRSS.m_exist = true;
 		m_list.push_back(mbuilderRSS);
