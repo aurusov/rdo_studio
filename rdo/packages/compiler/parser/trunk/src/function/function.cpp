@@ -263,10 +263,13 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 			}
 			else if (method == Context::METHOD_OPERATOR_DOT)
 			{
-				Context::Params params_;
-				params_[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = contextParameter(pParam, *paramID, srcInfo);
-				params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = *paramID;
-				return FindResult(SwitchContext(pParam, params_));
+				LPRDORTPResType resourceType = pParam->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
+				if (resourceType)
+				{
+					Context::Params params_;
+					params_[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = contextParameter(pParam, *paramID, srcInfo);
+					return FindResult(SwitchContext(resourceType, params_));
+				}
 			}
 			else
 			{
