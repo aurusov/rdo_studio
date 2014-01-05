@@ -243,36 +243,48 @@ rdo::runtime::RDOValue RDORTPResType::get_default() const
 	//return rdo::runtime::RDOValue (pResourceType,pResource);
 }
 
-Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
+namespace
 {
-	ASSERT(pSwitchExpression);
-	ASSERT(pValue           );
 
-	if (!pSwitchExpression->calc())
-	{
-		RDOParser::s_parser()->error().error(
-			pSwitchExpression->src_info(),
-			rdo::format("Недопустимое использование типа ресурса: %s", src_text().c_str())
-		);
-	}
-
-	ruint parNumb = getRTPParamNumber(pValue->value().getIdentificator());
-	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
-	{
-		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format("Неизвестный параметр ресурса: %s", pValue->value().getIdentificator().c_str()));
-	}
-
-	LPRDORTPParam pParam = findRTPParam(pValue->value().getIdentificator());
-	ASSERT(pParam);
-
-	LPExpression pExpression = rdo::Factory<Expression>::create(
-		pParam->getTypeInfo(),
-		rdo::Factory<rdo::runtime::RDOCalcGetResourceParam>::create(pSwitchExpression->calc(), parNumb),
-		pValue->src_info()
+LPExpression contextTypeOfResourceType(const LPRDORTPResType& resourceType, const RDOParserSrcInfo& srcInfo)
+{
+	return rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(resourceType, srcInfo),
+		rdo::runtime::LPRDOCalc(NULL),
+		srcInfo
 	);
-	ASSERT(pExpression);
+}
 
-	return Context::FindResult(const_cast<PTR(RDORTPResType)>(this), pExpression, pValue);
+}
+
+Context::FindResult RDORTPResType::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+{
+	if (method == Context::METHOD_GET)
+	{
+		const std::string paramName = params.identifier();
+
+		ruint parNumb = getRTPParamNumber(paramName);
+		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
+		{
+			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Неизвестный параметр ресурса: %s", paramName.c_str()));
+		}
+
+		Context::Params params_;
+		params_[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = params.get<LPExpression>(RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION);
+		params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = parNumb;
+
+		LPContext pParam = findRTPParam(paramName);
+		ASSERT(pParam);
+		return pParam->find(Context::METHOD_GET, params_, srcInfo);
+	}
+
+	if (method == Context::METHOD_TYPE_OF)
+	{
+		LPRDORTPResType pThis(const_cast<RDORTPResType*>(this));
+		return FindResult(CreateExpression(boost::bind(&contextTypeOfResourceType, pThis, srcInfo)));
+	}
+
+	return FindResult();
 }
 
 void RDORTPResType::setSubtype(Subtype type)

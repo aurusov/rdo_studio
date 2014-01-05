@@ -18,7 +18,8 @@
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/rdortp.h"
-#include "simulator/compiler/parser/context/context_switch_i.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
 #include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
@@ -33,12 +34,14 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 CLASS(RDORSSResource):
 	    INSTANCE_OF      (RDOParserSrcInfo  )
-	AND INSTANCE_OF      (Context           )
 	AND INSTANCE_OF      (boost::noncopyable)
-	AND IMPLEMENTATION_OF(IContextSwitch    )
+	AND INSTANCE_OF      (Context           )
+	AND IMPLEMENTATION_OF(IContextFind      )
 {
 DECLARE_FACTORY(RDORSSResource);
 public:
+	static const std::string CONTEXT_PARAM_RESOURCE_EXPRESSION;
+
 	class Param
 	{
 	public:
@@ -80,6 +83,8 @@ public:
 
 	void writeModelStructure(REF(rdo::ostream) stream) const;
 
+	LPExpression  createGetResourceExpression(const RDOParserSrcInfo& srcInfo) const;
+
 protected:
 	RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id = UNDEFINED_ID);
 	virtual ~RDORSSResource();
@@ -92,7 +97,7 @@ protected:
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;
 
-	DECLARE_IContextSwitch;
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDORSSResource);
 

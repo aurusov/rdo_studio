@@ -15,7 +15,8 @@
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/type/info.h"
-#include "simulator/compiler/parser/context/context_switch_i.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -23,13 +24,16 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParam
 // --------------------------------------------------------------------------------
-CLASS(RDOParam):
-	    INSTANCE_OF      (RDOParserSrcInfo)
-	AND INSTANCE_OF      (Context         )
-	AND IMPLEMENTATION_OF(IContextSwitch  )
+class RDOParam
+	: public virtual rdo::counter_reference
+	, public RDOParserSrcInfo
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDOParam)
 public:
+	static const std::string CONTEXT_PARAM_PARAM_ID;
+
 	CREF(tstring)    name       () const { return src_info().src_text(); }
 	LPTypeInfo       getTypeInfo() const { return m_pType;               }
 	CREF(LPRDOValue) getDefault () const { return m_pDefault;            }
@@ -45,7 +49,7 @@ private:
 
 	void checkDefault();
 
-	DECLARE_IContextSwitch;
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOParam);
 

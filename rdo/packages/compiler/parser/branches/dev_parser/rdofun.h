@@ -616,7 +616,7 @@ private:
 
 	LPRDORTPResType m_pResType;
 
-	DECLARE_IContextFind;
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOFUNGroup);
 

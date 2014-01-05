@@ -24,14 +24,14 @@ OBJECT_INTERFACE(IContextFind)
 {
 DECLARE_FACTORY(IContextFind)
 public:
-	virtual Context::FindResult onFindContext(CREF(LPRDOValue) pValue) const = 0;
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const = 0;
 
 protected:
 	         IContextFind();
 	virtual ~IContextFind();
 };
 #define DECLARE_IContextFind \
-	Context::FindResult onFindContext(CREF(LPRDOValue) pValue) const;
+	Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 CLOSE_RDO_PARSER_NAMESPACE
 

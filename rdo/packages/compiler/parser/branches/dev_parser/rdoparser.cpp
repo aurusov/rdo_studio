@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_pattern.h"
@@ -32,6 +33,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDOParser
 // --------------------------------------------------------------------------------
 RDOParser::ParserList RDOParser::s_parserStack;
+
+const std::string RDOParser::METHOD_TIME_NOW = "time_now()";
+const std::string RDOParser::METHOD_SECONDS = "seconds()";
+const std::string RDOParser::METHOD_TERMINATE_COUNTER = "terminate_counter()";
 
 #define DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
 void RDOParser::insert##NAME(LPRDO##NAME value) \
@@ -169,8 +174,6 @@ void RDOParser::deinit()
 	}
 	m_pContextStack->pop<RDOParser>();
 
-	Context::deinit();
-
 	m_allPATPattern .clear();
 	m_allRTPResType .clear();
 	m_allRSSResource.clear();
@@ -211,128 +214,164 @@ LPContext RDOParser::context() const
 	return m_pContextStack->top();
 }
 
-Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
+namespace
 {
-	ASSERT(pValue);
 
-	if (pValue->value().getIdentificator() == "Time_now" || pValue->value().getIdentificator() == "time_now" || pValue->value().getIdentificator() == "Системное_время" || pValue->value().getIdentificator() == "системное_время")
-	{
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::delegate<RDOType__real>(pValue->src_info()),
-			rdo::Factory<rdo::runtime::RDOCalcGetTimeNow>::create(),
-			pValue->src_info()
-		);
-		ASSERT(pExpression);
-		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
-	}
-	else if (pValue->value().getIdentificator() == "Seconds" || pValue->value().getIdentificator() == "seconds")
-	{
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::delegate<RDOType__real>(pValue->src_info()),
-			rdo::Factory<rdo::runtime::RDOCalcGetSeconds>::create(),
-			pValue->src_info()
-		);
-		ASSERT(pExpression);
-		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
-	}
-	else if (pValue->value().getIdentificator() == "Terminate_counter" || pValue->value().getIdentificator() == "terminate_counter")
-	{
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::delegate<RDOType__int>(pValue->src_info()),
-			rdo::Factory<rdo::runtime::RDOCalcGetTermNow>::create(),
-			pValue->src_info()
-		);
-		ASSERT(pExpression);
-		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
-	}
+LPExpression contextTimeNow(const RDOParserSrcInfo& srcInfo)
+{
+	return rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::delegate<RDOType__real>(srcInfo),
+		rdo::Factory<rdo::runtime::RDOCalcGetTimeNow>::create(),
+		srcInfo
+	);
+}
 
-	//! Типы ресурсов
-	LPRDORTPResType pResType = findRTPResType(pValue->value().getIdentificator());
-	if (pResType)
-	{
-		//! Это тип ресурса с закладки RTP
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::create(
-				pResType,
-				pValue->src_info()
-			),
-			rdo::runtime::LPRDOCalc(NULL),
-			pValue->src_info()
-		);
-		ASSERT(pExpression);
-		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue, pResType.object_static_cast<Context>());
-	}
+LPExpression contextSeconds(const RDOParserSrcInfo& srcInfo)
+{
+	return rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::delegate<RDOType__real>(srcInfo),
+		rdo::Factory<rdo::runtime::RDOCalcGetSeconds>::create(),
+		srcInfo
+	);
+}
 
-	//! Это ресурс с закладки RSS
-	LPRDORSSResource pResource = findRSSResource(pValue->value().getIdentificator());
-	if (pResource)
-	{
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::create(
-				pResource->getType(),
-				pValue->src_info()
-			),
-			rdo::Factory<rdo::runtime::RDOCalcGetResourceByID>::create(pResource->getID()),
-			pValue->src_info()
-		);
-		ASSERT(pExpression);
-		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue, pResource.object_static_cast<Context>());
-	}
+LPExpression contextTerminateCounter(const RDOParserSrcInfo& srcInfo)
+{
+	return rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::delegate<RDOType__int>(srcInfo),
+		rdo::Factory<rdo::runtime::RDOCalcGetTermNow>::create(),
+		srcInfo
+	);
+}
 
-	//! Константы
-	LPRDOFUNConstant pConstant = findFUNConstant(pValue->value().getIdentificator());
-	if (pConstant)
-	{
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			pConstant->getTypeInfo(),
-			rdo::Factory<rdo::runtime::RDOCalcGetConst>::create(pConstant->getNumber()),
-			pValue->src_info()
-		);
-		ASSERT(pExpression);
-		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
-	}
+LPExpression contextGetResource(const LPRDORSSResource& resource, const RDOParserSrcInfo& srcInfo)
+{
+	return resource->createGetResourceExpression(srcInfo);
+}
 
-	//! Последовательности
-	LPRDOFUNSequence pSequence = findFUNSequence(pValue->value().getIdentificator());
-	if (pSequence)
-	{
-		LPRDOFUNParams pParams = rdo::Factory<RDOFUNParams>::create(
-			rdo::Factory<ArithmContainer>::create()
-		);
-		ASSERT(pParams);
-		LPRDOFUNArithm pArithm = pParams->createSeqCall(pValue->value().getIdentificator());
-		ASSERT(pArithm);
-		pArithm->setSrcInfo(pValue->src_info());
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			pArithm->typeInfo(),
-			pArithm->calc(),
-			pValue->src_info()
-		);
-		ASSERT(pExpression);
-		return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
-	}
+LPExpression contextConstant(const LPRDOFUNConstant& constant, const RDOParserSrcInfo& srcInfo)
+{
+	return rdo::Factory<Expression>::create(
+		constant->getTypeInfo(),
+		rdo::Factory<rdo::runtime::RDOCalcGetConst>::create(constant->getNumber()),
+		srcInfo
+	);
+}
 
-	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
-	{ErrorBlockMonicker errorBlockMonicker;
-		CREF(PreCastTypeList) typeList = getPreCastTypeList();
-		STL_FOR_ALL_CONST(typeList, it)
+LPExpression contextSequence(const std::string& name, const RDOParserSrcInfo& srcInfo)
+{
+	LPRDOFUNParams pParams = rdo::Factory<RDOFUNParams>::create(
+		rdo::Factory<ArithmContainer>::create()
+	);
+	LPRDOFUNArithm pArithm = pParams->createSeqCall(name);
+	pArithm->setSrcInfo(srcInfo);
+
+	return rdo::Factory<Expression>::create(
+		pArithm->typeInfo(),
+		pArithm->calc(),
+		srcInfo
+	);
+}
+
+LPExpression contextUnknownEnum(const rdo::runtime::LPRDOEnumType& enumType, ruint index, const RDOParserSrcInfo& srcInfo)
+{
+	LPTypeInfo typeInfo = rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(srcInfo);
+	return rdo::Factory<Expression>::create(
+		typeInfo,
+		rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(enumType->getValues()[index], typeInfo->type()->type())),
+		srcInfo
+	);
+}
+
+}
+
+Context::FindResult RDOParser::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+{
+	const std::string identifier = params.identifier();
+
+	if (method == Context::METHOD_GET)
+	{
+		if (identifier == "Time_now" || identifier == "time_now" || identifier == "Системное_время" || identifier == "системное_время")
 		{
-			LPRDOValue pTryCastValue = (*it)->value_cast(pValue);
-			if (pTryCastValue && pTryCastValue->defined())
+			return FindResult(CreateExpression(boost::bind(&contextTimeNow, srcInfo)));
+		}
+		else if (identifier == "Seconds" || identifier == "seconds")
+		{
+			return FindResult(CreateExpression(boost::bind(&contextSeconds, srcInfo)));
+		}
+		else if (identifier == "Terminate_counter" || identifier == "terminate_counter")
+		{
+			return FindResult(CreateExpression(boost::bind(&contextTerminateCounter, srcInfo)));
+		}
+	}
+
+	if (method == Context::METHOD_TYPE_OF)
+	{
+		LPRDORTPResType pResType = findRTPResType(identifier);
+		if (pResType)
+		{
+			return pResType->find(method, params, srcInfo);
+		}
+	}
+
+	if (method == Context::METHOD_OPERATOR_DOT)
+	{
+		//! Типы ресурсов
+		LPRDORTPResType pResType = findRTPResType(identifier);
+		if (pResType)
+		{
+			return FindResult(SwitchContext(pResType));
+		}
+
+		//! Ресурсы
+		LPRDORSSResource pResource = findRSSResource(identifier);
+		if (pResource)
+		{
+			return FindResult(SwitchContext(pResource));
+		}
+	}
+
+	if (method == Context::METHOD_GET)
+	{
+		//! Ресурсы
+		LPRDORSSResource pResource = findRSSResource(identifier);
+		if (pResource)
+		{
+			return FindResult(CreateExpression(boost::bind(&contextGetResource, pResource, srcInfo)));
+		}
+
+		//! Константы
+		LPRDOFUNConstant pConstant = findFUNConstant(identifier);
+		if (pConstant)
+		{
+			return FindResult(CreateExpression(boost::bind(&contextConstant, pConstant, srcInfo)));
+		}
+
+		//! Последовательности
+		LPRDOFUNSequence pSequence = findFUNSequence(identifier);
+		if (pSequence)
+		{
+			return FindResult(CreateExpression(boost::bind(&contextSequence, identifier, srcInfo)));
+		}
+
+		//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
+		//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+		{
+			ErrorBlockMonicker errorBlockMonicker;
+			BOOST_FOREACH(const LPTypeInfo& type, m_preCastTypeList)
 			{
-				LPExpression pExpression = rdo::Factory<Expression>::create(
-					rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(pValue->src_info()),
-					rdo::Factory<rdo::runtime::RDOCalcConst>::create(pValue->value()),
-					pValue->src_info()
-				);
-				ASSERT(pExpression);
-				return Context::FindResult(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
+				LPRDOEnumType enumType = type->type().object_dynamic_cast<RDOEnumType>();
+				ASSERT(enumType);
+
+				ruint index = enumType->getEnums()->findEnum(identifier);
+				if (index != rdo::runtime::RDOEnumType::END)
+				{
+					return FindResult(CreateExpression(boost::bind(&contextUnknownEnum, enumType->getEnums(), index, srcInfo)));
+				}
 			}
 		}
 	}
 
-	const_cast<PTR(RDOParser)>(this)->error().error(pValue->src_info(), rdo::format("Неизвестный идентификатор: %s", pValue->value().getIdentificator().c_str()));
 	return Context::FindResult();
 }
 

@@ -11,6 +11,9 @@
 #define _RDOPARSER_CONTEXT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <string>
+#include <boost/any.hpp>
+#include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/expression.h"
@@ -29,16 +32,67 @@ friend void ContextStack::push(LPContext pContext);
 friend void ContextStack::pop_not_safed();
 
 public:
-	struct FindResult
-	{
-		LPContext     m_pContext;
-		LPExpression  m_pExpression;
-		LPRDOValue    m_pFindByValue;
-		LPContext     m_pValueContext;
+	static const std::string METHOD_GET;
+	static const std::string METHOD_TYPE_OF;
+	static const std::string METHOD_SET;
+	static const std::string METHOD_OPERATOR_BRACKETS;
+	static const std::string METHOD_OPERATOR_DOT;
 
+	typedef  boost::function<LPExpression ()> CreateExpressionFunction;
+
+	template <class Function>
+	struct FunctionWrapper
+	{
+		FunctionWrapper(const Function& function);
+		Function function;
+	};
+	typedef  FunctionWrapper<CreateExpressionFunction>  CreateExpression;
+
+	struct Params: public std::map<std::string, boost::any>
+	{
+		static const std::string IDENTIFIER;
+
+		template <class T>
+		T get(const std::string& name) const;
+
+		std::string get(const std::string& name) const;
+		std::string identifier() const;
+
+		bool exists(const std::string& name) const;
+	};
+
+	class FindResult;
+	struct SwitchContext
+	{
+		friend class FindResult;
+
+		LPContext  context;
+		Params     params;
+
+		SwitchContext(const LPContext& context);
+		SwitchContext(const LPContext& context, const Params& params);
+
+		operator bool() const;
+
+	private:
+		SwitchContext();
+	};
+
+	class FindResult
+	{
+	public:
 		FindResult();
-		FindResult(CREF(FindResult) result);
-		FindResult(CREF(LPContext) pContext, CREF(LPExpression) pExpression, CREF(LPRDOValue) pFindByParam, LPContext pValueContext = LPContext());
+		explicit FindResult(const CreateExpression& createExpression);
+		explicit FindResult(const SwitchContext& switchContext);
+
+		operator bool() const;
+
+		const CreateExpressionFunction& getCreateExpression() const;
+		const SwitchContext& getSwitchContext() const;
+
+	private:
+		CreateExpressionFunction createExpression;
+		SwitchContext            switchContext;
 	};
 
 	template <class T>
@@ -47,20 +101,14 @@ public:
 	template <class T>
 	rdo::interface_ptr<T> interface_cast();
 
-	LPContext    find  (CREF(LPRDOValue) pValue) const;
-	LPContext    swch  (CREF(LPRDOValue) pValue) const;
-	LPExpression create(CREF(LPRDOValue) pValue);
+	FindResult find(const std::string& method, const Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 protected:
 	Context();
 	virtual ~Context();
 
-	void init  ();
-	void deinit();
-
 private:
 	LPContextStack  m_pContextStack;
-	FindResult      m_findResult;
 
 	void setContextStack  (CREF(LPContextStack) pContextStack);
 	void resetContextStack();

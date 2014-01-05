@@ -10,14 +10,18 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/param.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/runtime/rdo_resource.h"
+#include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
+
+const std::string RDOParam::CONTEXT_PARAM_PARAM_ID = "param_id";
 
 RDOParam::RDOParam(CREF(tstring) name, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault)
 	: RDOParserSrcInfo(name    )
@@ -47,23 +51,28 @@ void RDOParam::checkDefault()
 	}
 }
 
-Context::FindResult RDOParam::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
+namespace
 {
-	ASSERT(pSwitchExpression);
-	ASSERT(pValue           );
 
-	LPRDORTPResType pResType = pSwitchExpression->typeInfo()->type().object_dynamic_cast<RDORTPResType>();
-	if (pResType)
-	{
-		LPIContextSwitch pContextSwitch = pResType.interface_dynamic_cast<IContextSwitch>();
-		ASSERT(pContextSwitch);
-		return pContextSwitch->onSwitchContext(pSwitchExpression, pValue);
-	}
-
-	RDOParser::s_parser()->error().error(
-		pSwitchExpression->src_info(),
-		rdo::format("Тип параметра '%s' определён неверно", pSwitchExpression->src_info().src_text().c_str())
+LPExpression contextGetParam(const rdo::runtime::LPRDOCalc& resource, ruint paramID, const LPTypeInfo& paramType, const RDOParserSrcInfo& srcInfo)
+{
+	return rdo::Factory<Expression>::create(
+		paramType,
+		rdo::Factory<rdo::runtime::RDOCalcGetResourceParam>::create(resource, paramID),
+		srcInfo
 	);
+}
+
+}
+
+Context::FindResult RDOParam::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+{
+	if (method == Context::METHOD_GET)
+	{
+		LPExpression resource = params.get<LPExpression>(RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION);
+		const ruint paramID = params.get<ruint>(RDOParam::CONTEXT_PARAM_PARAM_ID);
+		return FindResult(CreateExpression(boost::bind(&contextGetParam, resource->calc(), paramID, getTypeInfo(), srcInfo)));
+	}
 
 	return FindResult();
 }

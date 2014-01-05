@@ -63,15 +63,9 @@ RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSr
 RDODPTActivity::~RDODPTActivity()
 {}
 
-Context::FindResult RDODPTActivity::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDODPTActivity::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	ASSERT(pValue);
-	Context::FindResult result = m_pPattern->onFindContext(pValue);
-	if (result.m_pContext)
-	{
-		return result;
-	}
-	return Context::FindResult();
+	return m_pPattern->onFindContext(method, params, srcInfo);
 }
 
 void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
@@ -252,12 +246,14 @@ RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 RDODPTSome::~RDODPTSome()
 {}
 
-Context::FindResult RDODPTSome::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDODPTSome::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	UNUSED(pValue);
+	UNUSED(method);
+	UNUSED(params);
+	UNUSED(srcInfo);
 
-	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return Context::FindResult();
+	//! Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
+	return FindResult();
 }
 
 // --------------------------------------------------------------------------------
@@ -277,12 +273,14 @@ RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 RDODPTPrior::~RDODPTPrior()
 {}
 
-Context::FindResult RDODPTPrior::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDODPTPrior::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	UNUSED(pValue);
+	UNUSED(method);
+	UNUSED(params);
+	UNUSED(srcInfo);
 
-	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return Context::FindResult();
+	//! Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
+	return FindResult();
 }
 
 // --------------------------------------------------------------------------------
@@ -338,12 +336,14 @@ RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPT
 RDODPTSearch::~RDODPTSearch()
 {}
 
-Context::FindResult RDODPTSearch::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDODPTSearch::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	UNUSED(pValue);
+	UNUSED(method);
+	UNUSED(params);
+	UNUSED(srcInfo);
 
-	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return Context::FindResult();
+	//! Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
+	return FindResult();
 }
 
 void RDODPTSearch::end()

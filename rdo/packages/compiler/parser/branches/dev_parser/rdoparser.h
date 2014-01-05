@@ -194,10 +194,6 @@ public:
 	}
 
 	typedef std::vector<LPTypeInfo> PreCastTypeList;
-	CREF(PreCastTypeList) getPreCastTypeList() const
-	{
-		return m_preCastTypeList;
-	}
 	void insertPreCastType(CREF(LPTypeInfo) pType)
 	{
 		m_preCastTypeList.push_back(pType);
@@ -217,6 +213,10 @@ public:
 	{
 		howIsIt(identity<T>());
 	}
+
+	static const std::string METHOD_TIME_NOW;
+	static const std::string METHOD_SECONDS;
+	static const std::string METHOD_TERMINATE_COUNTER;
 
 private:
 	RDOParser();
