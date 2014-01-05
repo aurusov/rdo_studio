@@ -28,6 +28,8 @@ OBJECT(Expression) IS INSTANCE_OF(RDOParserSrcInfo)
 DECLARE_FACTORY(Expression);
 friend class ExpressionStatement;
 public:
+	static const std::string CONTEXT_PARAM_SET_EXPRESSION;
+
 	CREF(LPTypeInfo)               typeInfo  () const;
 	CREF(rdo::runtime::LPRDOCalc)  calc      () const;
 	virtual void                   setSrcInfo(CREF(RDOParserSrcInfo) src_info);

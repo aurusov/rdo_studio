@@ -14,6 +14,8 @@
 #include <boost/optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_base.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
 #include "simulator/compiler/parser/context/function/context_function_param_definition.h"
 #include "simulator/compiler/parser/context/function/context_function_body.h"
 #include "simulator/compiler/parser/type/function_type.h"
@@ -50,7 +52,7 @@ protected:
 	//! @todo Для передачи значения по умолчанию алгоритмической функции. В идеале, это надо переложить на конвертор.
 	void setDefaultCalc(CREF(rdo::runtime::LPRDOCalc) pDefaultValue);
 
-	DECLARE_IContextFind;
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 private:
 	LPFunctionType           m_pFunctionType;

@@ -13,9 +13,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/param.h"
-#include "simulator/runtime/rdo_model_i.h"
 #include "utils/src/smart_ptr/factory/factory.h"
+#include "simulator/runtime/rdo_model_i.h"
+#include "simulator/compiler/parser/param.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -25,10 +27,12 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDORTPResType);
 
-CLASS(RDORTPParam):
-	    INSTANCE_OF      (RDOParam       )
-	AND IMPLEMENTATION_OF(IModelStructure )
-	AND IMPLEMENTATION_OF(IName           )
+class RDORTPParam
+	: public RDOParam
+	, public IModelStructure
+	, public IName
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDORTPParam);
 public:
@@ -38,6 +42,8 @@ public:
 private:
 	RDORTPParam(CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDORTPParam();
+
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDORTPParam);
 

@@ -19,6 +19,8 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
+const std::string RDOParam::CONTEXT_PARAM_PARAM_ID = "param_id";
+
 RDOParam::RDOParam(CREF(tstring) name, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault)
 	: RDOParserSrcInfo(name    )
 	, m_pType         (pType   )
@@ -45,27 +47,6 @@ void RDOParam::checkDefault()
 		m_pType->type()->type_cast(m_pDefault->typeInfo()->type(), m_pDefault->src_info(), this->src_info(), m_pDefault->src_info());
 		m_pDefault = m_pType->type()->value_cast(m_pDefault, this->src_info(), m_pDefault->src_info());
 	}
-}
-
-Context::FindResult RDOParam::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
-{
-	ASSERT(pSwitchExpression);
-	ASSERT(pValue           );
-
-	LPRDORTPResType pResType = pSwitchExpression->typeInfo()->type().object_dynamic_cast<RDORTPResType>();
-	if (pResType)
-	{
-		LPIContextSwitch pContextSwitch = pResType.interface_dynamic_cast<IContextSwitch>();
-		ASSERT(pContextSwitch);
-		return pContextSwitch->onSwitchContext(pSwitchExpression, pValue);
-	}
-
-	RDOParser::s_parser()->error().error(
-		pSwitchExpression->src_info(),
-		rdo::format("Тип параметра '%s' определён неверно", pSwitchExpression->src_info().src_text().c_str())
-	);
-
-	return FindResult();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

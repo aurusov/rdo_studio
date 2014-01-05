@@ -21,12 +21,11 @@
 #include "simulator/compiler/parser/type/runtime_wrapper_type.h"
 #include "simulator/compiler/parser/type/enum.h"
 #include "simulator/compiler/parser/rdortp_param.h"
-#include "simulator/runtime/rdo_object.h"
-#include "simulator/runtime/rdo_value.h"
 #include "simulator/compiler/parser/context/context.h"
-#include "simulator/compiler/parser/context/context_switch_i.h"
 #include "simulator/runtime/rdo_res_type_i.h"
 #include "simulator/runtime/rdo_res_type.h"
+#include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/process/rdoprocess.h"
 // --------------------------------------------------------------------------------
 
@@ -43,7 +42,7 @@ CLASS(RDORTPResType):
 	AND INSTANCE_OF      (boost::noncopyable)
 	AND INSTANCE_OF      (RuntimeWrapperType)
 	AND INSTANCE_OF      (Context           )
-	AND IMPLEMENTATION_OF(IContextSwitch    )
+	AND IMPLEMENTATION_OF(IContextFind      )
 {
 DECLARE_FACTORY(RDORTPResType);
 public:
@@ -91,8 +90,7 @@ private:
 	ParamList                     m_params;
 
 	virtual runtime::RDOType::TypeID typeID() const;
-
-	DECLARE_IContextSwitch;
+	virtual FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDORTPResType);
 

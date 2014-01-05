@@ -638,10 +638,12 @@ type_declaration
 		LPContext pContext = RDOParser::s_parser()->context();
 		ASSERT(pContext);
 
-		pContext = pContext->find(pValue);
-		ASSERT(pContext);
+		Context::Params params;
+		params[Context::Params::IDENTIFIER] = pValue->value().getIdentificator();
+		Context::FindResult result = pContext->find(Context::METHOD_TYPE_OF, params, pValue->src_info());
+		ASSERT(result.getCreateExpression());
 
-		LPExpression pExpression = pContext->create(pValue);
+		LPExpression pExpression = result.getCreateExpression()();
 		ASSERT(pExpression);
 		$$ = PARSER->stack().push(pExpression->typeInfo());
 	}
@@ -9872,43 +9874,17 @@ set_array_item_statement
 			rdo::runtime::LPRDOCalc pArrayItemCalc = rdo::Factory<rdo::runtime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
 			ASSERT(pArrayItemCalc);
 
-			rdo::runtime::LPRDOCalc pCalc;
-			tstring paramName = pParamName->value().getIdentificator();
-			LPContext pContext = PARSER->context()->find(pParamName);
-			if (pContext.object_dynamic_cast<ContextMemory>())
-			{
-				LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-				ASSERT(pContextMemory);
-				LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-				ASSERT(pLocalVariableListStack);
-				LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
-				ASSERT(pLocalVariable);
-				pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_EQUAL> >::create(paramName, pArrayItemCalc);
-			}
+			LPExpression setExpression = rdo::Factory<Expression>::create(
+				rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1, @6)),
+				pArrayItemCalc,
+				RDOParserSrcInfo(@1, @6)
+			);
 
-			if (!pCalc && pContext.object_dynamic_cast<RDOPATPattern>())
-			{
-				LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
-				ASSERT(pPattern);
-				LPRDORelevantResource pRelRes = pPattern->m_pCurrRelRes;
-				ASSERT(pRelRes);
-				LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
-				ASSERT(pParam);
-
-				pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pArrayItemCalc);
-				ASSERT(pCalc);
-				pCalc->setSrcInfo(RDOParserSrcInfo(@1, rdo::format("%s.%s", pRelRes->src_text().c_str(), paramName.c_str())));
-			}
-
-			if (!pCalc)
-			{
-				RDOFUNArithm::wrongVarInitialization(pParamName);
-			}
-
-			LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));
-			ASSERT(pExpression);
-
-			$$ = PARSER->stack().push(pExpression);
+			Context::Params params;
+			params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
+			params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = setExpression;
+			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
+			$$ = PARSER->stack().push(result.getCreateExpression()());
 		}
 	}
 	;

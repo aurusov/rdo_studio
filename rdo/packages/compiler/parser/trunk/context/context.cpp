@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/context/context.h"
@@ -19,41 +20,88 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
+// -------------------- Context::Params
+// --------------------------------------------------------------------------------
+const std::string Context::Params::IDENTIFIER = "identifier";
+
+std::string Context::Params::get(const std::string& name) const
+{
+	return get<std::string>(name);
+}
+
+std::string Context::Params::identifier() const
+{
+	return get(IDENTIFIER);
+}
+
+bool Context::Params::exists(const std::string& name) const
+{
+	return find(name) != end();
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- Context::SwitchContext
+// --------------------------------------------------------------------------------
+Context::SwitchContext::SwitchContext()
+{}
+
+Context::SwitchContext::SwitchContext(const LPContext& context)
+	: context(context)
+{}
+
+Context::SwitchContext::SwitchContext(const LPContext& context, const Context::Params& params)
+	: context(context)
+	, params(params)
+{}
+
+Context::SwitchContext::operator bool() const
+{
+	return context;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- Context::FindResult
 // --------------------------------------------------------------------------------
 Context::FindResult::FindResult()
 {}
 
-Context::FindResult::FindResult(CREF(FindResult) result)
-	: m_pContext     (result.m_pContext     )
-	, m_pExpression  (result.m_pExpression  )
-	, m_pFindByValue (result.m_pFindByValue )
-	, m_pValueContext(result.m_pValueContext)
+Context::FindResult::FindResult(const CreateExpression& createExpression)
+	: createExpression(createExpression.function)
 {}
 
-Context::FindResult::FindResult(CREF(LPContext) pContext, CREF(LPExpression) pExpression, CREF(LPRDOValue) pFindByParam, LPContext pValueContext)
-	: m_pContext     (pContext     )
-	, m_pExpression  (pExpression  )
-	, m_pFindByValue (pFindByParam )
-	, m_pValueContext(pValueContext)
+Context::FindResult::FindResult(const SwitchContext& switchContext)
+	: switchContext(switchContext)
 {}
+
+Context::FindResult::operator bool() const
+{
+	return createExpression || switchContext;
+}
+
+const Context::CreateExpressionFunction& Context::FindResult::getCreateExpression() const
+{
+	return createExpression;
+}
+
+const Context::SwitchContext& Context::FindResult::getSwitchContext() const
+{
+	return switchContext;
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- Context
 // --------------------------------------------------------------------------------
+const std::string Context::METHOD_GET = "get()";
+const std::string Context::METHOD_SET = "set()";
+const std::string Context::METHOD_TYPE_OF = "type_if()";
+const std::string Context::METHOD_OPERATOR_BRACKETS = "operator()()";
+const std::string Context::METHOD_OPERATOR_DOT = "operator.()";
+
 Context::Context()
 {}
 
 Context::~Context()
 {}
-
-void Context::init()
-{}
-
-void Context::deinit()
-{
-	m_findResult = FindResult();
-}
 
 void Context::setContextStack(CREF(LPContextStack) pContextStack)
 {
@@ -68,47 +116,36 @@ void Context::resetContextStack()
 	m_pContextStack = NULL;
 }
 
-LPContext Context::find(CREF(LPRDOValue) pValue) const
+Context::FindResult Context::find(const std::string& method, const Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	ASSERT(pValue);
-
+	Context::FindResult result;
 	LPContext pThis(const_cast<PTR(Context)>(this));
 	LPIContextFind pThisContextFind = pThis.interface_dynamic_cast<IContextFind>();
 	if (pThisContextFind)
 	{
-		const_cast<PTR(Context)>(this)->m_findResult = pThisContextFind->onFindContext(pValue);
-		if (m_findResult.m_pContext)
+		result = pThisContextFind->onFindContext(method, params, srcInfo);
+		if (result.getCreateExpression() || result.getSwitchContext())
 		{
-			return m_findResult.m_pContext;
+			return result;
 		}
 	}
-	LPContext pPrev = m_pContextStack->prev(pThis);
-	return pPrev ? pPrev->find(pValue) : LPContext();
-}
 
-LPContext Context::swch(CREF(LPRDOValue) pValue) const
-{
-	ASSERT(pValue);
+	LPContext pPrev;
 
-	LPIContextSwitch pContextSwitch = m_findResult.m_pValueContext.interface_dynamic_cast<IContextSwitch>();
-	ASSERT(pContextSwitch);
-	FindResult result = pContextSwitch->onSwitchContext(m_findResult.m_pExpression, pValue);
-	ASSERT(result.m_pContext);
-	result.m_pContext->m_findResult = result;
-	ASSERT(result.m_pContext);
-	const_cast<PTR(Context)>(this)->deinit();
-	return result.m_pContext;
-}
+	if (m_pContextStack)
+	{
+		pPrev = m_pContextStack->prev(pThis);
+	}
 
-LPExpression Context::create(CREF(LPRDOValue) pValue)
-{
-	ASSERT(pValue);
-	ASSERT(m_findResult.m_pFindByValue == pValue);
-	ASSERT(m_findResult.m_pExpression);
+	if (!pPrev)
+	{
+		const std::string error = params.exists(Params::IDENTIFIER)
+			? boost::str(boost::format("Неизвестный идентификатор: %s") % params.identifier())
+			: "Неизвестная ошибка";
+		RDOParser::s_parser()->error().error(srcInfo, error);
+	}
 
-	LPExpression pExpression = m_findResult.m_pExpression;
-	deinit();
-	return pExpression;
+	return pPrev->find(method, params, srcInfo);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
