@@ -237,7 +237,7 @@ LPExpression contextParameter(const LPRDOParam& param, ruint paramID, const RDOP
 
 Context::FindResult Function::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	if (method == Context::METHOD_GET)
+	if (method == Context::METHOD_GET || method == Context::METHOD_SET)
 	{
 		const std::string identifier = params.identifier();
 
@@ -257,7 +257,15 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 			ParamID paramID = findParamID(identifier);
 			ASSERT(paramID.is_initialized());
 
-			return FindResult(CreateExpression(boost::bind(&contextParameter, pParam, *paramID, srcInfo)));
+			if (method == Context::METHOD_GET)
+			{
+				return FindResult(CreateExpression(boost::bind(&contextParameter, pParam, *paramID, srcInfo)));
+			}
+			else
+			{
+				ASSERT(method == Context::METHOD_SET);
+				RDOParser::s_parser()->error().error(srcInfo, rdo::format("Функция не может изменить свой параметр: %s", identifier.c_str()));
+			}
 		}
 	}
 
