@@ -198,6 +198,15 @@ LPExpression contextParameters(const LPRDOParam& param, ruint paramID, const RDO
 	);
 }
 
+LPExpression contextGetRelevantResource(const LPRDORelevantResource& relevantResource, const RDOParserSrcInfo& srcInfo)
+{
+	return rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(relevantResource->getType(), srcInfo),
+		rdo::Factory<rdo::runtime::RDOGetResourceByRelevantResourceID>::create(relevantResource->m_relResID),
+		srcInfo
+	);
+}
+
 LPExpression contextSetRelevantResourceParameter(const LPRDORelevantResource& relevantResource, const LPRDORTPParam& param, const rdo::runtime::LPRDOCalc& rightValue, const RDOParserSrcInfo& srcInfo)
 {
 	RDOParserSrcInfo srcInfo_(srcInfo);
@@ -224,21 +233,22 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 	{
 		const std::string identifier = params.identifier();
 
-		if (method == Context::METHOD_OPERATOR_DOT)
+		LPRDORelevantResource pRelevantResource = findRelRes(identifier, srcInfo);
+		if (pRelevantResource)
 		{
-			LPRDORelevantResource pRelevantResource = findRelRes(identifier, srcInfo);
-			if (pRelevantResource)
+			if (method == Context::METHOD_OPERATOR_DOT)
 			{
 				Context::Params params;
-				params[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = rdo::Factory<Expression>::create(
-					rdo::Factory<TypeInfo>::create(pRelevantResource->getType(), srcInfo),
-					rdo::Factory<rdo::runtime::RDOGetResourceByRelevantResourceID>::create(pRelevantResource->m_relResID),
-					srcInfo
-				);
+				params[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = contextGetRelevantResource(pRelevantResource, srcInfo);
 				return FindResult(SwitchContext(pRelevantResource, params));
 			}
+
+			if (method == Context::METHOD_GET)
+			{
+				return FindResult(CreateExpression(boost::bind(&contextGetRelevantResource, pRelevantResource, srcInfo)));
+			}
 		}
-		else if (method == Context::METHOD_GET)
+		if (method == Context::METHOD_GET)
 		{
 			LPRDOParam pParam = findPATPatternParam(identifier);
 			if (pParam)
