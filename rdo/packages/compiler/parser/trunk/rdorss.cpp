@@ -60,14 +60,8 @@ Context::FindResult RDORSSResource::onFindContext(const std::string& method, con
 			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Неизвестный параметр ресурса: %s", paramName.c_str()));
 		}
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::create(getType(), getType()->src_info()),
-			rdo::Factory<rdo::runtime::RDOCalcGetResourceByID>::create(getID()),
-			srcInfo
-		);
-
 		Context::Params params_;
-		params_[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = pExpression;
+		params_[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = createGetResourceExpression(srcInfo);
 		params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = parNumb;
 
 		LPContext pParam = getType()->findRTPParam(paramName);
@@ -76,6 +70,15 @@ Context::FindResult RDORSSResource::onFindContext(const std::string& method, con
 	}
 
 	return FindResult();
+}
+
+LPExpression RDORSSResource::createGetResourceExpression(const RDOParserSrcInfo& srcInfo) const
+{
+	return rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(getType(), getType()->src_info()),
+		rdo::Factory<rdo::runtime::RDOCalcGetResourceByID>::create(getID()),
+		srcInfo
+	);
 }
 
 void RDORSSResource::writeModelStructure(REF(rdo::ostream) stream) const

@@ -244,6 +244,11 @@ LPExpression contextTerminateCounter(const RDOParserSrcInfo& srcInfo)
 	);
 }
 
+LPExpression contextGetResource(const LPRDORSSResource& resource, const RDOParserSrcInfo& srcInfo)
+{
+	return resource->createGetResourceExpression(srcInfo);
+}
+
 LPExpression contextConstant(const LPRDOFUNConstant& constant, const RDOParserSrcInfo& srcInfo)
 {
 	return rdo::Factory<Expression>::create(
@@ -328,6 +333,13 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 
 	if (method == Context::METHOD_GET)
 	{
+		//! Ресурсы
+		LPRDORSSResource pResource = findRSSResource(identifier);
+		if (pResource)
+		{
+			return FindResult(CreateExpression(boost::bind(&contextGetResource, pResource, srcInfo)));
+		}
+
 		//! Константы
 		LPRDOFUNConstant pConstant = findFUNConstant(identifier);
 		if (pConstant)

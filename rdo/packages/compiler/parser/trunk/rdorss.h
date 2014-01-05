@@ -83,6 +83,8 @@ public:
 
 	void writeModelStructure(REF(rdo::ostream) stream) const;
 
+	LPExpression  createGetResourceExpression(const RDOParserSrcInfo& srcInfo) const;
+
 protected:
 	RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id = UNDEFINED_ID);
 	virtual ~RDORSSResource();
