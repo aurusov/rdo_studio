@@ -237,7 +237,7 @@ LPExpression contextParameter(const LPRDOParam& param, ruint paramID, const RDOP
 
 Context::FindResult Function::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	if (method == Context::METHOD_GET || method == Context::METHOD_SET)
+	if (method == Context::METHOD_GET || method == Context::METHOD_SET || method == Context::METHOD_OPERATOR_DOT)
 	{
 		const std::string identifier = params.identifier();
 
@@ -260,6 +260,13 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 			if (method == Context::METHOD_GET)
 			{
 				return FindResult(CreateExpression(boost::bind(&contextParameter, pParam, *paramID, srcInfo)));
+			}
+			else if (method == Context::METHOD_OPERATOR_DOT)
+			{
+				Context::Params params_;
+				params_[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = contextParameter(pParam, *paramID, srcInfo);
+				params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = *paramID;
+				return FindResult(SwitchContext(pParam, params_));
 			}
 			else
 			{

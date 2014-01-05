@@ -15,6 +15,8 @@
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/type/info.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -25,6 +27,8 @@ OPEN_RDO_PARSER_NAMESPACE
 class RDOParam
 	: public virtual rdo::counter_reference
 	, public RDOParserSrcInfo
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDOParam)
 public:
@@ -44,6 +48,8 @@ private:
 	LPRDOValue m_pDefault;
 
 	void checkDefault();
+
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOParam);
 
