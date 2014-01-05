@@ -221,35 +221,65 @@ void Function::setDefaultCalc(CREF(rdo::runtime::LPRDOCalc) pDefaultValue)
 	m_pDefaultValue = pDefaultValue;
 }
 
-Context::FindResult Function::onFindContext(CREF(LPRDOValue) pValue) const
+namespace
 {
-	ASSERT(pValue);
 
-	LPRDOParam pParam = findParam(pValue->value().getIdentificator());
-	if (pParam)
+LPExpression contextParameter(const LPRDOParam& param, ruint paramID, const RDOParserSrcInfo& srcInfo)
+{
+	return rdo::Factory<Expression>::create(
+		param->getTypeInfo(),
+		rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(paramID, param->src_info()),
+		srcInfo
+	);
+}
+
+}
+
+Context::FindResult Function::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+{
+	if (method == Context::METHOD_GET || method == Context::METHOD_SET || method == Context::METHOD_OPERATOR_DOT)
 	{
-		rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
-		if (typeID == rdo::runtime::RDOType::t_identificator || typeID == rdo::runtime::RDOType::t_unknow)
+		const std::string identifier = params.identifier();
+
+		LPRDOParam pParam = findParam(identifier);
+		if (pParam)
 		{
-			RDOParser::s_parser()->error().push_only(
-				pValue->src_info(),
-				rdo::format("Тип параметра '%s' определён неверно", pValue->src_info().src_text().c_str())
-			);
-			RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), "См. описание типа");
-			RDOParser::s_parser()->error().push_done();
+			rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
+			if (typeID == rdo::runtime::RDOType::t_identificator || typeID == rdo::runtime::RDOType::t_unknow)
+			{
+				RDOParser::s_parser()->error().push_only(
+					srcInfo,
+					rdo::format("Тип параметра '%s' определён неверно", identifier.c_str())
+				);
+				RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), "См. описание типа");
+				RDOParser::s_parser()->error().push_done();
+			}
+			ParamID paramID = findParamID(identifier);
+			ASSERT(paramID.is_initialized());
+
+			if (method == Context::METHOD_GET)
+			{
+				return FindResult(CreateExpression(boost::bind(&contextParameter, pParam, *paramID, srcInfo)));
+			}
+			else if (method == Context::METHOD_OPERATOR_DOT)
+			{
+				LPRDORTPResType resourceType = pParam->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
+				if (resourceType)
+				{
+					Context::Params params_;
+					params_[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = contextParameter(pParam, *paramID, srcInfo);
+					return FindResult(SwitchContext(resourceType, params_));
+				}
+			}
+			else
+			{
+				ASSERT(method == Context::METHOD_SET);
+				RDOParser::s_parser()->error().error(srcInfo, rdo::format("Функция не может изменить свой параметр: %s", identifier.c_str()));
+			}
 		}
-		ParamID paramID = findParamID(pValue->value().getIdentificator());
-		ASSERT(paramID.is_initialized());
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			pParam->getTypeInfo(),
-			rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(*paramID, pParam->src_info()),
-			pValue->src_info()
-		);
-		ASSERT(pExpression);
-		return Context::FindResult(const_cast<PTR(Function)>(this), pExpression, pValue, pParam);
 	}
 
-	return Context::FindResult();
+	return FindResult();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -33,23 +34,48 @@ LPLocalVariableListStack ContextMemory::getLocalMemory()
 	return m_pLocalVariableListStack;
 }
 
-Context::FindResult ContextMemory::onFindContext(CREF(LPRDOValue) pValue) const
+namespace
 {
-	ASSERT(pValue);
 
-	LPLocalVariable pLocalVariable = m_pLocalVariableListStack->findLocalVariable(pValue->value().getIdentificator());
-	if (pLocalVariable)
+LPExpression contextGetLocalVariable(const LPLocalVariable& pLocalVariable, const RDOParserSrcInfo& srcInfo)
+{
+	return rdo::Factory<Expression>::create(
+		pLocalVariable->getExpression()->typeInfo(),
+		rdo::Factory<rdo::runtime::RDOCalcGetLocalVariable>::create(pLocalVariable->getName()),
+		srcInfo
+	);
+}
+
+LPExpression contextSetLocalVariable(const LPLocalVariable& pLocalVariable, const rdo::runtime::LPRDOCalc& rightValue, const RDOParserSrcInfo& srcInfo)
+{
+	ASSERT(rightValue);
+	return rdo::Factory<Expression>::create(
+		pLocalVariable->getExpression()->typeInfo(),
+		rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_EQUAL> >::create(pLocalVariable->getName(), rightValue),
+		srcInfo
+	);
+}
+
+}
+
+Context::FindResult ContextMemory::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+{
+	if (method == Context::METHOD_GET)
 	{
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			pLocalVariable->getExpression()->typeInfo(),
-			rdo::Factory<rdo::runtime::RDOCalcGetLocalVariable>::create(pLocalVariable->getName()),
-			pValue->src_info()
-		);
-		ASSERT(pExpression);
-		return Context::FindResult(const_cast<PTR(ContextMemory)>(this), pExpression, pValue);
+		LPLocalVariable pLocalVariable = m_pLocalVariableListStack->findLocalVariable(params.identifier());
+		if (pLocalVariable)
+			return FindResult(CreateExpression(boost::bind(&contextGetLocalVariable, pLocalVariable, srcInfo)));
+	}
+	else if (method == Context::METHOD_SET)
+	{
+		LPLocalVariable pLocalVariable = m_pLocalVariableListStack->findLocalVariable(params.identifier());
+		if (!pLocalVariable)
+			return FindResult();
+
+		return FindResult(CreateExpression(boost::bind(&contextSetLocalVariable, pLocalVariable, params.get<LPExpression>(Expression::CONTEXT_PARAM_SET_EXPRESSION)->calc(), srcInfo)));
 	}
 
-	return Context::FindResult();
+	return FindResult();
 }
 
 void ContextMemory::push()

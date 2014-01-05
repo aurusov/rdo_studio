@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/src/animation/animation_base.h"
 #include "simulator/compiler/parser/src/animation/animation_sprite.h"
@@ -49,18 +50,29 @@ CREF(LPFunction) RDOFRMCommandList::function() const
 	return m_pFunction;
 }
 
-Context::FindResult RDOFRMCommandList::onFindContext(CREF(LPRDOValue) pValue) const
+namespace
 {
-	ASSERT(pValue);
 
-	tstring name = pValue->value().getIdentificator();
-	LPRDOFRMSprite pSprite = RDOParser::s_parser()->findFRMSprite(name);
-	if (pSprite)
+LPExpression sprite(const LPRDOFRMSprite& sprite)
+{
+	return sprite->expression();
+}
+
+}
+
+Context::FindResult RDOFRMCommandList::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+{
+	UNUSED(srcInfo);
+
+	if (method == Context::METHOD_GET)
 	{
-		return Context::FindResult(const_cast<PTR(RDOFRMCommandList)>(this), pSprite->expression(), pValue);
+		LPRDOFRMSprite pSprite = RDOParser::s_parser()->findFRMSprite(params.identifier());
+		return pSprite
+			? FindResult(CreateExpression(boost::bind(&sprite, pSprite)))
+			: FindResult();
 	}
 
-	return Context::FindResult();
+	return FindResult();
 }
 
 void RDOFRMCommandList::end()

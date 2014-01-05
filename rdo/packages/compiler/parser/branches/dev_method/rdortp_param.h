@@ -13,9 +13,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/param.h"
-#include "simulator/runtime/rdo_model_i.h"
 #include "utils/src/smart_ptr/factory/factory.h"
+#include "simulator/runtime/rdo_model_i.h"
+#include "simulator/compiler/parser/param.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -25,10 +25,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDORTPResType);
 
-CLASS(RDORTPParam):
-	    INSTANCE_OF      (RDOParam       )
-	AND IMPLEMENTATION_OF(IModelStructure )
-	AND IMPLEMENTATION_OF(IName           )
+class RDORTPParam
+	: public RDOParam
+	, public IModelStructure
+	, public IName
 {
 DECLARE_FACTORY(RDORTPParam);
 public:

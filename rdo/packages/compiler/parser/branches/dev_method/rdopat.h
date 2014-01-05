@@ -20,8 +20,8 @@
 #include "simulator/compiler/parser/param.h"
 #include "simulator/compiler/parser/src/function/local_variable/local_variable.h"
 #include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
 #include "simulator/compiler/parser/context/memory.h"
-#include "simulator/compiler/parser/context/context_switch_i.h"
 
 #include "simulator/runtime/rdo_pattern.h"
 #include "simulator/runtime/rdo_resource.h"
@@ -146,9 +146,9 @@ private:
 
 	tstring               typeToString     (PatType type) const;
 	void                  addChoiceFromCalc(CREF(rdo::runtime::LPRDOCalc) pCalc);
-	LPRDORelevantResource findRelRes       (CREF(LPRDOValue) pValue) const;
+	LPRDORelevantResource findRelRes       (const std::string& identifier, const RDOParserSrcInfo& srcInfo) const;
 
-	DECLARE_IContextFind;
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOPATPattern);
 
@@ -281,9 +281,9 @@ private:
 // --------------------------------------------------------------------------------
 CLASS(RDORelevantResource):
 	    INSTANCE_OF      (RDOParserSrcInfo  )
-	AND INSTANCE_OF      (Context           )
 	AND INSTANCE_OF      (boost::noncopyable)
-	AND IMPLEMENTATION_OF(IContextSwitch    )
+	AND INSTANCE_OF      (Context           )
+	AND IMPLEMENTATION_OF(IContextFind      )
 {
 DECLARE_FACTORY(RDORelevantResource)
 public:
@@ -370,7 +370,7 @@ protected:
 private:
 	ParamSetList m_paramSetList;
 
-	DECLARE_IContextSwitch;
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDORelevantResource);
 

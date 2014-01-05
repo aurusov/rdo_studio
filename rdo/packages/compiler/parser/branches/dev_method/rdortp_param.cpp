@@ -12,8 +12,9 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/rdortp_param.h"
 #include "simulator/runtime/rdo_resource.h"
+#include "simulator/compiler/parser/rdortp_param.h"
+#include "simulator/compiler/parser/rdorss.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

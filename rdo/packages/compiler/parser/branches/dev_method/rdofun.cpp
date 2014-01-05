@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdofun.h"
@@ -257,10 +258,12 @@ LPRDOFUNArithm RDOFUNArithm::generateByIdentificator(CREF(LPRDOValue) pValue)
 	LPContext pContext = RDOParser::s_parser()->context();
 	ASSERT(pContext);
 
-	pContext = pContext->find(pValue);
-	ASSERT(pContext);
+	Context::Params params;
+	params[Context::Params::IDENTIFIER] = pValue->value().getIdentificator();
+	Context::FindResult result = pContext->find(Context::METHOD_GET, params, pValue->src_info());
+	ASSERT(result.getCreateExpression());
 
-	LPExpression pExpression = pContext->create(pValue);
+	LPExpression pExpression = result.getCreateExpression()();
 	ASSERT(pExpression);
 
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
@@ -277,13 +280,18 @@ LPRDOFUNArithm RDOFUNArithm::generateByIdentificator(CREF(LPRDOValue) pValue1, C
 	LPContext pContext = RDOParser::s_parser()->context();
 	ASSERT(pContext);
 
-	pContext = pContext->find(pValue1);
-	ASSERT(pContext);
+	Context::Params params;
+	params[Context::Params::IDENTIFIER] = pValue1->value().getIdentificator();
+	Context::FindResult result = pContext->find(Context::METHOD_OPERATOR_DOT, params, pValue1->src_info());
+	ASSERT(result.getSwitchContext());
 
-	pContext = pContext->swch(pValue2);
-	ASSERT(pContext);
+	params = result.getSwitchContext().params;
+	ASSERT(!params.exists(Context::Params::IDENTIFIER));
+	params[Context::Params::IDENTIFIER] = pValue2->value().getIdentificator();
+	result = result.getSwitchContext().context->find(Context::METHOD_GET, params, pValue2->src_info());
+	ASSERT(result.getCreateExpression());
 
-	LPExpression pExpression = pContext->create(pValue2);
+	LPExpression pExpression = result.getCreateExpression()();
 	ASSERT(pExpression);
 
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
@@ -1665,26 +1673,24 @@ void RDOFUNGroup::end()
 	RDOParser::s_parser()->contextStack()->pop<RDOFUNGroup>();
 }
 
-Context::FindResult RDOFUNGroup::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDOFUNGroup::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	ASSERT(pValue);
-
-	//! Ресурс внутри групповой функции
-	if (getResType()->name() == pValue->value().getIdentificator())
+	//! Тип ресурса внутри групповой функции
+	if (method == Context::METHOD_OPERATOR_DOT)
 	{
-		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::create(
-				getResType(),
-				pValue->src_info()
-			),
-			rdo::Factory<rdo::runtime::RDOCalcGetGroupFunctionResource>::create(),
-			pValue->src_info()
-		);
-		ASSERT(pExpression);
-		return Context::FindResult(const_cast<PTR(RDOFUNGroup)>(this), pExpression, pValue, getResType());
+		if (getResType()->name() == params.identifier())
+		{
+			Context::Params params;
+			params[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = rdo::Factory<Expression>::create(
+				rdo::Factory<TypeInfo>::create(getResType(), srcInfo),
+				rdo::Factory<rdo::runtime::RDOCalcGetGroupFunctionResource>::create(),
+				srcInfo
+			);
+			return FindResult(SwitchContext(getResType(), params));
+		}
 	}
 
-	return Context::FindResult();
+	return FindResult();
 }
 
 // --------------------------------------------------------------------------------
