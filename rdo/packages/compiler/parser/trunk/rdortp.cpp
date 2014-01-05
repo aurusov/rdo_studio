@@ -243,6 +243,20 @@ rdo::runtime::RDOValue RDORTPResType::get_default() const
 	//return rdo::runtime::RDOValue (pResourceType,pResource);
 }
 
+namespace
+{
+
+LPExpression contextTypeOfResourceType(const LPRDORTPResType& resourceType, const RDOParserSrcInfo& srcInfo)
+{
+	return rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(resourceType, srcInfo),
+		rdo::runtime::LPRDOCalc(NULL),
+		srcInfo
+	);
+}
+
+}
+
 Context::FindResult RDORTPResType::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_GET)
@@ -262,6 +276,12 @@ Context::FindResult RDORTPResType::onFindContext(const std::string& method, cons
 		LPContext pParam = findRTPParam(paramName);
 		ASSERT(pParam);
 		return pParam->find(Context::METHOD_GET, params_, srcInfo);
+	}
+
+	if (method == Context::METHOD_TYPE_OF)
+	{
+		LPRDORTPResType pThis(const_cast<RDORTPResType*>(this));
+		return FindResult(CreateExpression(boost::bind(&contextTypeOfResourceType, pThis, srcInfo)));
 	}
 
 	return FindResult();

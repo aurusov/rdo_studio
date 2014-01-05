@@ -300,6 +300,15 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 		}
 	}
 
+	if (method == Context::METHOD_TYPE_OF)
+	{
+		LPRDORTPResType pResType = findRTPResType(identifier);
+		if (pResType)
+		{
+			return pResType->find(method, params, srcInfo);
+		}
+	}
+
 	if (method == Context::METHOD_OPERATOR_DOT)
 	{
 		//! Типы ресурсов

@@ -93,7 +93,7 @@ const Context::SwitchContext& Context::FindResult::getSwitchContext() const
 // --------------------------------------------------------------------------------
 const std::string Context::METHOD_GET = "get()";
 const std::string Context::METHOD_SET = "set()";
-const std::string Context::METHOD_TYPE_OF = "type_if()";
+const std::string Context::METHOD_TYPE_OF = "type_of()";
 const std::string Context::METHOD_OPERATOR_BRACKETS = "operator()()";
 const std::string Context::METHOD_OPERATOR_DOT = "operator.()";
 
