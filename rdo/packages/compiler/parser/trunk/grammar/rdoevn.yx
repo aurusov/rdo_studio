@@ -306,7 +306,7 @@ rdo_compiler
 	| dpt_main rdo_compiler
 	| prc_main rdo_compiler
 	| frm_main rdo_compiler
-	| fun_list rdo_compiler
+	| fun_main rdo_compiler
 	| pmd_main rdo_compiler
 	| error
 	{
@@ -6541,7 +6541,7 @@ frm_active
 // -------------------- Список для функций
 // --------------------------------------------------------------------------------
 
-fun_list
+fun_main
 	: fun_consts
 	| fun_func_seq
 	;
