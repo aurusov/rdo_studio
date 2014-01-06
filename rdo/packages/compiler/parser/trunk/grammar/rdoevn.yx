@@ -9888,26 +9888,7 @@ equal_statement
 				}
 			}
 
-			tstring oprStr;
-			switch (setOperationType)
-			{
-				case rdo::runtime::SetOperationType::INCREMENT:
-				{
-					oprStr = "++";
-					break;
-				}
-				case rdo::runtime::SetOperationType::DECRIMENT:
-				{
-					oprStr = "--";
-					break;
-				}
-				default:
-				{
-					oprStr = "";
-					break;
-				}
-			}
-			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format("%s %s", paramName.c_str(), oprStr.c_str())));
+			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format("%s %s", paramName.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str())));
 
 			LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, pCalc->srcInfo());
 			ASSERT(pExpression);
@@ -10057,41 +10038,7 @@ equal_statement
 				}
 			}
 
-			tstring oprStr;
-			switch (setOperationType)
-			{
-				case rdo::runtime::SetOperationType::SET:
-				{
-					oprStr = "=";
-					break;
-				}
-				case rdo::runtime::SetOperationType::ADDITION:
-				{
-					oprStr = "+=";
-					break;
-				}
-				case rdo::runtime::SetOperationType::SUBTRACTION:
-				{
-					oprStr = "-=";
-					break;
-				}
-				case rdo::runtime::SetOperationType::MULTIPLY:
-				{
-					oprStr = "*=";
-					break;
-				}
-				case rdo::runtime::SetOperationType::DIVIDE:
-				{
-					oprStr = "/=";
-					break;
-				}
-				default:
-				{
-					oprStr = "";
-					break;
-				}
-			}
-			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format("%s %s %s", paramName.c_str(), oprStr.c_str(), pCalcRight->srcInfo().src_text().c_str())));
+			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format("%s %s %s", paramName.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str(), pCalcRight->srcInfo().src_text().c_str())));
 
 			LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, pCalc->srcInfo());
 			ASSERT(pExpression);

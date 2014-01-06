@@ -1563,21 +1563,7 @@ pat_convert_cmd
 		}
 		if (pCalc)
 		{
-			tstring oprStr;
-			switch (setOperationType)
-			{
-				case rdo::runtime::SetOperationType::SET:
-				{
-					oprStr = "=";
-					break;
-				}
-				default:
-				{
-					oprStr = "";
-					break;
-				}
-			}
-			pCalc->setSrcInfo(RDOParserSrcInfo(@2, @4, rdo::format("%s %s %s", paramName.c_str(), oprStr.c_str(), pCalcRight->srcInfo().src_text().c_str())));
+			pCalc->setSrcInfo(RDOParserSrcInfo(@2, @4, rdo::format("%s %s %s", paramName.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str(), pCalcRight->srcInfo().src_text().c_str())));
 			pCmdList->insertCommand(pCalc);
 		}
 

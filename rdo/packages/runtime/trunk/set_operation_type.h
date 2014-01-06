@@ -12,6 +12,7 @@
 #define _LIB_RUNTIME_SET_OPERATION_TYPE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
@@ -31,6 +32,8 @@ struct SetOperationType
 		INCREMENT,
 		DECRIMENT
 	};
+
+	static std::string toString(Type type);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

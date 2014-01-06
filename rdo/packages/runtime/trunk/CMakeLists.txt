@@ -91,6 +91,7 @@ SET(CALC_RESOURCE_FILES
 SET(COMMON_FILES
 	namespace.h
 	mode.h
+	set_operation_type.cpp
 	set_operation_type.h
 )
 

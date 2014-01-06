@@ -2098,6 +2098,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\set_operation_type.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\set_operation_type.h"
 				>
 			</File>
