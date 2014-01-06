@@ -111,8 +111,8 @@ LPRDOParser RDOParser::s_parser()
 }
 
 RDOParser::RDOParser()
-	: m_parser_item(NULL )
-	, m_pattern    (false)
+	: m_pattern    (false)
+	, m_parser_item(NULL )
 {
 	m_compilers.push_back(rdo::Factory<RDOParserSTDFUN> ::create());
 	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
