@@ -9813,7 +9813,7 @@ set_statement
 			Context::Params params;
 			params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
 			params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = rdo::Factory<Expression>::create(
-				rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@2),
+				rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@2)),
 				rdo::Factory<rdo::runtime::RDOCalcConst>::create(1),
 				RDOParserSrcInfo(@2)
 			);
