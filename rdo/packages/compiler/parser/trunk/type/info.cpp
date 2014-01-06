@@ -33,6 +33,10 @@ TypeInfo::TypeInfo(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) srcInfo)
 	: m_pType  (pType  )
 	, m_srcInfo(srcInfo)
 {
+	if (m_srcInfo->src_text().empty())
+	{
+		m_srcInfo->setSrcText(pType->name());
+	}
 	init();
 }
 
