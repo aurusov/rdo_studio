@@ -11,6 +11,7 @@
 #define _RDOPARSER_CONTEXT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <map>
 #include <string>
 #include <boost/any.hpp>
 #include <boost/function.hpp>
