@@ -36,6 +36,14 @@ inline RDOSetRelResParamCalc<setOperationType>::~RDOSetRelResParamCalc()
 {}
 
 template <>
+inline RDOValue RDOSetRelResParamCalc<SetOperationType::NOCHANGE>::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	UNUSED(pRuntime);
+	RDOValue value(true);
+	return value;
+}
+
+template <>
 inline RDOValue RDOSetRelResParamCalc<SetOperationType::SET>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	RDOValue value = m_pCalc->calcValue(pRuntime);
