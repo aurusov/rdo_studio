@@ -308,6 +308,7 @@ rdo_compiler
 	| frm_main rdo_compiler
 	| fun_main rdo_compiler
 	| pmd_main rdo_compiler
+	| smr_main rdo_compiler
 	| error
 	{
 		PARSER->error().error(RDOParserSrcInfo(), "Синтаксическая ошибка");
@@ -8606,7 +8607,7 @@ process_line
 	;
 
 proc_planning_statement
-	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'';'
+	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' ';'
 	{
 		#PASS2
 		{
@@ -9149,6 +9150,331 @@ assign_param
 				PARSER->error().error(@1, rdo::format("Ссылка на неизвестный ресурс: %s", res.c_str()));
 			}
 		}
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Синтаксис прогона
+// --------------------------------------------------------------------------------
+smr_main
+	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
+	{
+		#PASS2
+		{
+			tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
+
+			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
+			if (!pPattern)
+			{
+				PARSER->error().error(@1, rdo::format("Попытка запланировать неизвестное событие: %s", eventName.c_str()));
+			}
+
+			LPRDOPatternEvent pEvent = pPattern.object_dynamic_cast<RDOPatternEvent>();
+			if (!pEvent)
+			{
+				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", eventName.c_str()));
+			}
+
+			ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
+			if (arithmIt == pArithmList->getContainer().end())
+			{
+				PARSER->error().error(@1, rdo::format("Не указано время планирования события: %s", eventName.c_str()));
+			}
+
+			LPRDOFUNArithm pTimeArithm = *arithmIt;
+			ASSERT(pTimeArithm);
+			++arithmIt;
+
+			LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
+			ASSERT(pParamList);
+
+			while (arithmIt != pArithmList->getContainer().end())
+			{
+				pParamList->addItem(*arithmIt);
+				++arithmIt;
+			}
+
+			rdo::runtime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
+			pCalcTime->setSrcInfo(pTimeArithm->src_info());
+			ASSERT(pCalcTime);
+
+			rdo::runtime::LPRDOCalcEventPlan pEventPlan = pEvent->planning(pCalcTime, pParamList);
+			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+			pEvent->setBeforeStartModelPlaning(pEventPlan);
+		}
+	}
+	| RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
+	| RDO_Show_mode                  '=' smr_show_mode
+	{
+		#PASS2
+		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			pSMR->setShowMode((rdo::service::simulation::ShowMode)$3);
+		}
+	}
+	| RDO_Show_mode '=' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@2, @3, "Ожидается режим анимации");
+		}
+	}
+	| RDO_Show_mode error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@1, "Ожидается '='");
+		}
+	}
+	| RDO_Frame_number '=' RDO_INT_CONST
+	{
+		#PASS2
+		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			pSMR->setFrameNumber(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
+		}
+	}
+	| RDO_Frame_number '=' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@2, @3, "Ожидается начальный номер кадра");
+		}
+	}
+	| RDO_Frame_number error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@1, "Ожидается '='");
+		}
+	}
+	| RDO_Show_rate '=' RDO_REAL_CONST
+	{
+		#PASS2
+		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			pSMR->setShowRate(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
+		}
+	}
+	| RDO_Show_rate '=' RDO_INT_CONST
+	{
+		#PASS2
+		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			pSMR->setShowRate(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
+		}
+	}
+	| RDO_Show_rate '=' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@2, @3, "Ожидается масштабный коэффициент");
+		}
+	}
+	| RDO_Show_rate error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@1, "Ожидается '='");
+		}
+	}
+	| RDO_Run_StartTime '=' RDO_REAL_CONST
+	{
+		#PASS2
+		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
+		}
+	}
+	| RDO_Run_StartTime '=' RDO_INT_CONST
+	{
+		#PASS2
+		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			pSMR->setRunStartTime(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
+		}
+	}
+	| RDO_Run_StartTime '=' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@2, @3, "Ожидается начальное модельное время");
+		}
+	}
+	| RDO_Run_StartTime error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@1, "Ожидается '='");
+		}
+	}
+	| RDO_Trace_StartTime '=' RDO_REAL_CONST
+	{
+		#PASS2
+		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
+		}
+	}
+	| RDO_Trace_StartTime '=' RDO_INT_CONST
+	{
+		#PASS2
+		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			pSMR->setTraceStartTime(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
+		}
+	}
+	| RDO_Trace_StartTime '=' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@2, @3, "Ожидается начальное время трассировки");
+		}
+	}
+	| RDO_Trace_StartTime error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@1, "Ожидается '='");
+		}
+	}
+	| RDO_Trace_EndTime '=' RDO_REAL_CONST
+	{
+		#PASS2
+		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($3)->value().getDouble(), @3);
+		}
+	}
+	| RDO_Trace_EndTime '=' RDO_INT_CONST
+	{
+		#PASS2
+		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			pSMR->setTraceEndTime(PARSER->stack().pop<RDOValue>($3)->value().getInt(), @3);
+		}
+	}
+	| RDO_Trace_EndTime '=' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@2, @3, "Ожидается конечное время трассировки");
+		}
+	}
+	| RDO_Trace_EndTime error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@1, "Ожидается '='");
+		}
+	}
+	| RDO_Terminate_if fun_logic
+	{
+		#PASS2
+		{
+			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
+			ASSERT(pLogic);
+			PARSER->getSMR()->setTerminateIf(pLogic);
+		}
+	}
+	| RDO_Terminate_if error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@1, @2, "Ошибка логического выражения в терминальном условии");
+		}
+	}
+	| RDO_Break_point RDO_IDENTIF fun_logic
+	{
+		#PASS2
+		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($3);
+			ASSERT(pLogic);
+			pSMR->insertBreakPoint(PARSER->stack().pop<RDOValue>($2)->src_info(), pLogic);
+		}
+	}
+	| RDO_Break_point RDO_IDENTIF error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@3, "Ошибка логического выражения в точке останова");
+		}
+	}
+	| RDO_Break_point error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@1, @2, "Ожидается имя точки останова");
+		}
+	}
+	| RDO_IDENTIF '=' fun_arithm
+	{
+		#PASS2
+		{
+			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+			ASSERT(pArithm);
+			PARSER->getSMR()->setConstValue(PARSER->stack().pop<RDOValue>($1)->src_info(), pArithm);
+		}
+	}
+	| RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
+	{
+		#PASS2
+		{
+			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
+			ASSERT(pArithm);
+			PARSER->getSMR()->setResParValue(PARSER->stack().pop<RDOValue>($1)->src_info(), PARSER->stack().pop<RDOValue>($3)->src_info(), pArithm);
+		}
+	}
+	| RDO_IDENTIF '.' RDO_Seed '=' RDO_INT_CONST
+	{
+		#PASS2
+		{
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			pSMR->setSeed(PARSER->stack().pop<RDOValue>($1)->src_info(), PARSER->stack().pop<RDOValue>($5)->value().getInt());
+		}
+	}
+	| RDO_IDENTIF '.' RDO_Seed '=' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@4, @5, "Ожидается база генератора");
+		}
+	}
+	| RDO_IDENTIF '.' RDO_Seed error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@3, "Ожидается '='");
+		}
+	}
+	;
+
+smr_show_mode
+	: RDO_NoShow
+	{
+		$$ = rdo::service::simulation::SM_NoShow;
+	}
+	| RDO_Monitor
+	{
+		$$ = rdo::service::simulation::SM_Monitor;
+	}
+	| RDO_Animation
+	{
+		$$ = rdo::service::simulation::SM_Animation;
 	}
 	;
 

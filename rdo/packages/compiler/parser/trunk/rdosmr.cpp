@@ -34,18 +34,6 @@ void smr_file_error(const char* message)
 	UNUSED(message);
 }
 
-int smr_sim_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
-{
-	LEXER->m_lpval = lpval;
-	LEXER->m_lploc = llocp;
-	return LEXER->yylex();
-}
-
-void smr_sim_error(const char* message)
-{
-	UNUSED(message);
-}
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
