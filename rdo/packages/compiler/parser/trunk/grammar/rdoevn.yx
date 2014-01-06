@@ -10280,6 +10280,11 @@ init_declaration_list_item
 			LPExpression pExpression = PARSER->stack().pop<Expression>($2);
 			ASSERT(pExpression);
 
+			LPTypeContext pTypeContext = PARSER->context()->cast<TypeContext>();
+			ASSERT(pTypeContext);
+
+			pTypeContext->getTypeInfo()->type_cast(pExpression->typeInfo(), RDOParserSrcInfo(@2));
+
 			pExpression->setSrcInfo(RDOParserSrcInfo(@1, @2, pVariableName->src_text()));
 
 			LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression);
