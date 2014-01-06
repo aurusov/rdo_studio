@@ -1054,10 +1054,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\context\context_create_calc_i.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\context\context_find.cpp"
 				>
 			</File>

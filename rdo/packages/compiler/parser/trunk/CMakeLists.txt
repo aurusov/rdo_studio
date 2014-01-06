@@ -65,7 +65,6 @@ SET(CONTEXT_FILES
 	context/context.cpp
 	context/context.h
 	context/context.inl
-	context/context_create_calc_i.h
 	context/context_find.cpp
 	context/context_find_i.h
 	context/context_type.cpp
