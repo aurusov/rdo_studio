@@ -9803,7 +9803,7 @@ member_statement
 	;
 
 set_statement
-	: RDO_IDENTIF increment_or_decrement_type
+	: RDO_IDENTIF set_increment_or_decrement_type
 	{
 		#PASS2
 		{
@@ -9814,7 +9814,7 @@ set_statement
 			params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
 			params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = rdo::Factory<Expression>::create(
 				rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@2),
-				rdo::Factory<rdo:runtime::RDOCalcConst>::create(1),
+				rdo::Factory<rdo::runtime::RDOCalcConst>::create(1),
 				RDOParserSrcInfo(@2)
 			);
 			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
@@ -9855,20 +9855,14 @@ set_statement
 	}
 	;
 
-increment_or_decrement_type
+set_increment_or_decrement_type
 	: RDO_IncrEqual
 	{
-		#PASS2
-		{
-			$$ = rdo::runtime::SetOperationType::INCREMENT;
-		}
+		$$ = rdo::runtime::SetOperationType::INCREMENT;
 	}
 	| RDO_DecrEqual
 	{
-		#PASS2
-		{
-			$$ = rdo::runtime::SetOperationType::DECRIMENT;
-		}
+		$$ = rdo::runtime::SetOperationType::DECRIMENT;
 	}
 	;
 
