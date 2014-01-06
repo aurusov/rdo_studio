@@ -214,7 +214,7 @@ LPExpression contextSetRelevantResourceParameter(const LPRDORelevantResource& re
 
 	return rdo::Factory<Expression>::create(
 		param->getTypeInfo(),
-		rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_EQUAL> >::create(relevantResource->m_relResID, relevantResource->getType()->getRTPParamNumber(param->name()), rightValue),
+		rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::SET> >::create(relevantResource->m_relResID, relevantResource->getType()->getRTPParamNumber(param->name()), rightValue),
 		srcInfo_
 	);
 }

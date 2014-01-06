@@ -33,10 +33,10 @@ private:
 
 /*!
   \class   RDOSetRelResParamCalc
-  \tparam  equalType Тип присваивания
+  \tparam  setOperationType Тип присваивания
   \brief   Установка значения параметра релевантного ресурса
 */
-template <EqualType equalType>
+template <SetOperationType::Type setOperationType>
 class RDOSetRelResParamCalc: public RDOCalc
 {
 public:

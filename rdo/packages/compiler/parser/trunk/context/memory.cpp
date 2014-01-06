@@ -51,7 +51,7 @@ LPExpression contextSetLocalVariable(const LPLocalVariable& pLocalVariable, cons
 	ASSERT(rightValue);
 	return rdo::Factory<Expression>::create(
 		pLocalVariable->getExpression()->typeInfo(),
-		rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_EQUAL> >::create(pLocalVariable->getName(), rightValue),
+		rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::SET> >::create(pLocalVariable->getName(), rightValue),
 		srcInfo
 	);
 }

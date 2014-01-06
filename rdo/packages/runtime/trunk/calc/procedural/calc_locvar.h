@@ -44,7 +44,7 @@ private:
 };
 
 //! Установка значения локальной переменной
-template <EqualType equalType>
+template <SetOperationType::Type setOperationType>
 class RDOCalcSetLocalVariable: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSetLocalVariable)

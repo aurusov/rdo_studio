@@ -9807,9 +9807,9 @@ equal_statement
 	{
 		#PASS2
 		{
-			LPRDOValue              pParamName = PARSER->stack().pop<RDOValue>($1);
-			tstring                 paramName  = pParamName->value().getIdentificator();
-			rdo::runtime::EqualType equalType  = static_cast<rdo::runtime::EqualType>($2);
+			LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($1);
+			tstring    paramName  = pParamName->value().getIdentificator();
+			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
 			LPContext pContext = PARSER->context();
 			ASSERT(pContext);
 			LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
@@ -9823,16 +9823,16 @@ equal_statement
 			{
 				pLeftArithmType = pLocalVariable->getTypeInfo();
 
-				switch (equalType)
+				switch (setOperationType)
 				{
-					case rdo::runtime::ET_INCR:
+					case rdo::runtime::SetOperationType::INCREMENT:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_INCR> >::create(paramName);
+						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::INCREMENT> >::create(paramName);
 						break;
 					}
-					case rdo::runtime::ET_DECR:
+					case rdo::runtime::SetOperationType::DECRIMENT:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_DECR> >::create(paramName);
+						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::DECRIMENT> >::create(paramName);
 						break;
 					}
 					default:
@@ -9855,16 +9855,16 @@ equal_statement
 
 				pLeftArithmType = pParam->getTypeInfo();
 
-				switch (equalType)
+				switch (setOperationType)
 				{
-					case rdo::runtime::ET_INCR:
+					case rdo::runtime::SetOperationType::INCREMENT:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_INCR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
+						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::INCREMENT> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
 						break;
 					}
-					case rdo::runtime::ET_DECR:
+					case rdo::runtime::SetOperationType::DECRIMENT:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_DECR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
+						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::DECRIMENT> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
 						break;
 					}
 					default:
@@ -9889,14 +9889,14 @@ equal_statement
 			}
 
 			tstring oprStr;
-			switch (equalType)
+			switch (setOperationType)
 			{
-				case rdo::runtime::ET_INCR:
+				case rdo::runtime::SetOperationType::INCREMENT:
 				{
 					oprStr = "++";
 					break;
 				}
-				case rdo::runtime::ET_DECR:
+				case rdo::runtime::SetOperationType::DECRIMENT:
 				{
 					oprStr = "--";
 					break;
@@ -9919,10 +9919,10 @@ equal_statement
 	{
 		#PASS2
 		{
-			LPRDOValue              pParamName   = PARSER->stack().pop<RDOValue>($1);
-			tstring                 paramName    = pParamName->value().getIdentificator();
-			rdo::runtime::EqualType equalType    = static_cast<rdo::runtime::EqualType>($2);
-			LPRDOFUNArithm          pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+			LPRDOValue     pParamName   = PARSER->stack().pop<RDOValue>($1);
+			tstring        paramName    = pParamName->value().getIdentificator();
+			LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
 			LPContext pContext = PARSER->context();
 			ASSERT(pContext);
 			LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
@@ -9938,35 +9938,35 @@ equal_statement
 				pLeftArithmType = pLocalVariable->getTypeInfo();
 
 				pCalcRight = pRightArithm->createCalc(pLocalVariable->getTypeInfo());
-				switch (equalType)
+				switch (setOperationType)
 				{
-					case rdo::runtime::ET_NOCHANGE:
+					case rdo::runtime::SetOperationType::NOCHANGE:
 					{
 						break;
 					}
-					case rdo::runtime::ET_EQUAL:
+					case rdo::runtime::SetOperationType::SET:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_EQUAL> >::create(paramName, pCalcRight);
+						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::SET> >::create(paramName, pCalcRight);
 						break;
 					}
-					case rdo::runtime::ET_PLUS:
+					case rdo::runtime::SetOperationType::ADDITION:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_PLUS> >::create(paramName, pCalcRight);
+						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::ADDITION> >::create(paramName, pCalcRight);
 						break;
 					}
-					case rdo::runtime::ET_MINUS:
+					case rdo::runtime::SetOperationType::SUBTRACTION:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_MINUS> >::create(paramName, pCalcRight);
+						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::SUBTRACTION> >::create(paramName, pCalcRight);
 						break;
 					}
-					case rdo::runtime::ET_MULTIPLY:
+					case rdo::runtime::SetOperationType::MULTIPLY:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_MULTIPLY> >::create(paramName, pCalcRight);
+						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::MULTIPLY> >::create(paramName, pCalcRight);
 						break;
 					}
-					case rdo::runtime::ET_DIVIDE:
+					case rdo::runtime::SetOperationType::DIVIDE:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_DIVIDE> >::create(paramName, pCalcRight);
+						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::DIVIDE> >::create(paramName, pCalcRight);
 						break;
 					}
 					default:
@@ -9990,15 +9990,15 @@ equal_statement
 				pLeftArithmType = pParam->getTypeInfo();
 
 				pCalcRight = pRightArithm->createCalc(pParam->getTypeInfo());
-				switch (equalType)
+				switch (setOperationType)
 				{
-					case rdo::runtime::ET_NOCHANGE:
+					case rdo::runtime::SetOperationType::NOCHANGE:
 					{
 						break;
 					}
-					case rdo::runtime::ET_EQUAL:
+					case rdo::runtime::SetOperationType::SET:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::SET> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 						ASSERT(pCalc);
 						pCalc->setSrcInfo(RDOParserSrcInfo(@1, rdo::format("%s.%s", pRelRes->src_text().c_str(), paramName.c_str())));
 
@@ -10016,24 +10016,24 @@ equal_statement
 						pRelRes->getParamSetList().insert(pParam);
 						break;
 					}
-					case rdo::runtime::ET_PLUS:
+					case rdo::runtime::SetOperationType::ADDITION:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_PLUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::ADDITION> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 						break;
 					}
-					case rdo::runtime::ET_MINUS:
+					case rdo::runtime::SetOperationType::SUBTRACTION:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_MINUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::SUBTRACTION> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 						break;
 					}
-					case rdo::runtime::ET_MULTIPLY:
+					case rdo::runtime::SetOperationType::MULTIPLY:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_MULTIPLY> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::MULTIPLY> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 						break;
 					}
-					case rdo::runtime::ET_DIVIDE:
+					case rdo::runtime::SetOperationType::DIVIDE:
 					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_DIVIDE> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::DIVIDE> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 						break;
 					}
 					default:
@@ -10058,29 +10058,29 @@ equal_statement
 			}
 
 			tstring oprStr;
-			switch (equalType)
+			switch (setOperationType)
 			{
-				case rdo::runtime::ET_EQUAL:
+				case rdo::runtime::SetOperationType::SET:
 				{
 					oprStr = "=";
 					break;
 				}
-				case rdo::runtime::ET_PLUS:
+				case rdo::runtime::SetOperationType::ADDITION:
 				{
 					oprStr = "+=";
 					break;
 				}
-				case rdo::runtime::ET_MINUS:
+				case rdo::runtime::SetOperationType::SUBTRACTION:
 				{
 					oprStr = "-=";
 					break;
 				}
-				case rdo::runtime::ET_MULTIPLY:
+				case rdo::runtime::SetOperationType::MULTIPLY:
 				{
 					oprStr = "*=";
 					break;
 				}
-				case rdo::runtime::ET_DIVIDE:
+				case rdo::runtime::SetOperationType::DIVIDE:
 				{
 					oprStr = "/=";
 					break;
@@ -10113,14 +10113,14 @@ increment_or_decrement_type
 	{
 		#PASS2
 		{
-			$$ = rdo::runtime::ET_INCR;
+			$$ = rdo::runtime::SetOperationType::INCREMENT;
 		}
 	}
 	| RDO_DecrEqual
 	{
 		#PASS2
 		{
-			$$ = rdo::runtime::ET_DECR;
+			$$ = rdo::runtime::SetOperationType::DECRIMENT;
 		}
 	}
 	;
@@ -10130,42 +10130,42 @@ param_equal_type
 	{
 		#PASS2
 		{
-			$$ = rdo::runtime::ET_EQUAL;
+			$$ = rdo::runtime::SetOperationType::SET;
 		}
 	}
 	| '='
 	{
 		#PASS2
 		{
-			$$ = rdo::runtime::ET_EQUAL;
+			$$ = rdo::runtime::SetOperationType::SET;
 		}
 	}
 	| RDO_PlusEqual
 	{
 		#PASS2
 		{
-			$$ = rdo::runtime::ET_PLUS;
+			$$ = rdo::runtime::SetOperationType::ADDITION;
 		}
 	}
 	| RDO_MinusEqual
 	{
 		#PASS2
 		{
-			$$ = rdo::runtime::ET_MINUS;
+			$$ = rdo::runtime::SetOperationType::SUBTRACTION;
 		}
 	}
 	| RDO_MultiplyEqual
 	{
 		#PASS2
 		{
-			$$ = rdo::runtime::ET_MULTIPLY;
+			$$ = rdo::runtime::SetOperationType::MULTIPLY;
 		}
 	}
 	| RDO_DivideEqual
 	{
 		#PASS2
 		{
-			$$ = rdo::runtime::ET_DIVIDE;
+			$$ = rdo::runtime::SetOperationType::DIVIDE;
 		}
 	}
 	;

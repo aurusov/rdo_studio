@@ -1,9 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      equaltype.h
-  \author    Чирков Михаил
+  \authors   Чирков Михаил
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      03.12.2010
-  \brief     Типы операторов сравнения
+  \brief     Типы операторов присваивания
   \indent    4T
 */
 
@@ -17,21 +18,19 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \enum    EqualType
-  \brief   Типы сравнений
-*/
-enum EqualType
+struct SetOperationType
 {
-	ET_UNDEFINED,
-	ET_NOCHANGE,
-	ET_EQUAL,
-	ET_PLUS,
-	ET_MINUS,
-	ET_MULTIPLY,
-	ET_DIVIDE,
-	ET_INCR,
-	ET_DECR
+	enum Type
+	{
+		NOCHANGE,
+		SET,
+		ADDITION,
+		SUBTRACTION,
+		MULTIPLY,
+		DIVIDE,
+		INCREMENT,
+		DECRIMENT
+	};
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

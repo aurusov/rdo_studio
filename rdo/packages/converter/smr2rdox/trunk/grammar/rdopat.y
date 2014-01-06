@@ -1534,11 +1534,11 @@ pat_convert_cmd
 	}
 	| pat_convert_cmd RDO_IDENTIF param_equal_type fun_arithm
 	{
-		LPConvertCmdList         pCmdList     = CONVERTER->stack().pop<ConvertCmdList>($1);
-		tstring                  paramName    = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
-		rdo::runtime::EqualType  equalType    = static_cast<rdo::runtime::EqualType>($3);
-		LPRDOFUNArithm           pRightArithm = CONVERTER->stack().pop<RDOFUNArithm>($4);
-		LPRDORelevantResource    pRelRes      = CONVERTER->getLastPATPattern()->m_pCurrRelRes;
+		LPConvertCmdList      pCmdList     = CONVERTER->stack().pop<ConvertCmdList>($1);
+		tstring               paramName    = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		LPRDOFUNArithm        pRightArithm = CONVERTER->stack().pop<RDOFUNArithm>($4);
+		LPRDORelevantResource pRelRes      = CONVERTER->getLastPATPattern()->m_pCurrRelRes;
+		rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($3);
 		ASSERT(pRelRes);
 		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
 		if (!param)
@@ -1547,11 +1547,11 @@ pat_convert_cmd
 		}
 		rdo::runtime::LPRDOCalc pCalcRight = pRightArithm->createCalc(param->getType().get());
 		rdo::runtime::LPRDOCalc pCalc;
-		switch (equalType)
+		switch (setOperationType)
 		{
-			case rdo::runtime::ET_EQUAL:
+			case rdo::runtime::SetOperationType::SET:
 			{
-				pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+				pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::SET> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 				ASSERT(pCalc);
 				pRelRes->getParamSetList().insert(param);
 				break;
@@ -1564,9 +1564,9 @@ pat_convert_cmd
 		if (pCalc)
 		{
 			tstring oprStr;
-			switch (equalType)
+			switch (setOperationType)
 			{
-				case rdo::runtime::ET_EQUAL:
+				case rdo::runtime::SetOperationType::SET:
 				{
 					oprStr = "=";
 					break;
@@ -1614,7 +1614,7 @@ param_equal_type
 		ASSERT(pInsert);
 		CONVERTER->insertDocUpdate(pInsert);
 
-		$$ = rdo::runtime::ET_EQUAL;
+		$$ = rdo::runtime::SetOperationType::SET;
 	}
 	;
 
