@@ -227,6 +227,8 @@ void RDOFUNLogic::setSrcPos(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNArithm
 // --------------------------------------------------------------------------------
+const std::string RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM = "set_arithm";
+
 RDOFUNArithm::RDOFUNArithm(CREF(LPExpression) pExpression)
 	: RDOFUNBase(pExpression)
 {

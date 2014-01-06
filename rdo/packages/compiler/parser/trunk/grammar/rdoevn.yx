@@ -9901,147 +9901,19 @@ equal_statement
 		#PASS2
 		{
 			LPRDOValue     pParamName   = PARSER->stack().pop<RDOValue>($1);
-			tstring        paramName    = pParamName->value().getIdentificator();
 			LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
-			LPContext pContext = PARSER->context();
-			ASSERT(pContext);
-			LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-			ASSERT(pContextMemory);
-			LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-			ASSERT(pLocalVariableListStack);
-			LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
-			rdo::runtime::LPRDOCalc pCalc;
-			rdo::runtime::LPRDOCalc pCalcRight;
-			LPTypeInfo pLeftArithmType;
-			if (pLocalVariable)
-			{
-				pLeftArithmType = pLocalVariable->getTypeInfo();
 
-				pCalcRight = pRightArithm->createCalc(pLocalVariable->getTypeInfo());
-				switch (setOperationType)
-				{
-					case rdo::runtime::SetOperationType::NOCHANGE:
-					{
-						break;
-					}
-					case rdo::runtime::SetOperationType::SET:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::SET> >::create(paramName, pCalcRight);
-						break;
-					}
-					case rdo::runtime::SetOperationType::ADDITION:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::ADDITION> >::create(paramName, pCalcRight);
-						break;
-					}
-					case rdo::runtime::SetOperationType::SUBTRACTION:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::SUBTRACTION> >::create(paramName, pCalcRight);
-						break;
-					}
-					case rdo::runtime::SetOperationType::MULTIPLY:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::MULTIPLY> >::create(paramName, pCalcRight);
-						break;
-					}
-					case rdo::runtime::SetOperationType::DIVIDE:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::DIVIDE> >::create(paramName, pCalcRight);
-						break;
-					}
-					default:
-					{
-						NEVER_REACH_HERE;
-					}
-				}
-			}
-			else
-			{
-				LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
-				ASSERT(pPattern);
-				LPRDORelevantResource pRelRes = pPattern->m_pCurrRelRes;
-				ASSERT(pRelRes);
-				LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
-				if (!pParam)
-				{
-					PARSER->error().error(@1, rdo::format("Неизвестный параметр: %s", paramName.c_str()));
-				}
-
-				pLeftArithmType = pParam->getTypeInfo();
-
-				pCalcRight = pRightArithm->createCalc(pParam->getTypeInfo());
-				switch (setOperationType)
-				{
-					case rdo::runtime::SetOperationType::NOCHANGE:
-					{
-						break;
-					}
-					case rdo::runtime::SetOperationType::SET:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::SET> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
-						ASSERT(pCalc);
-						pCalc->setSrcInfo(RDOParserSrcInfo(@1, rdo::format("%s.%s", pRelRes->src_text().c_str(), paramName.c_str())));
-
-						LPExpression pExpressionLeft = rdo::Factory<Expression>::create(
-							pParam->getTypeInfo(),
-							pCalc,
-							pCalc->srcInfo()
-						);
-						ASSERT(pExpressionLeft);
-
-						LPRDOFUNArithm pArithmLeft = rdo::Factory<RDOFUNArithm>::create(pExpressionLeft);
-						ASSERT(pArithmLeft);
-						pArithmLeft->setEqual(pRightArithm);
-
-						pRelRes->getParamSetList().insert(pParam);
-						break;
-					}
-					case rdo::runtime::SetOperationType::ADDITION:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::ADDITION> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
-						break;
-					}
-					case rdo::runtime::SetOperationType::SUBTRACTION:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::SUBTRACTION> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
-						break;
-					}
-					case rdo::runtime::SetOperationType::MULTIPLY:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::MULTIPLY> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
-						break;
-					}
-					case rdo::runtime::SetOperationType::DIVIDE:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::DIVIDE> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
-						break;
-					}
-					default:
-					{
-						NEVER_REACH_HERE;
-					}
-				}
-				ASSERT(pCalc);
-
-				//! Проверка на диапазон
-				LPRDOTypeIntRange pTypeIntRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeIntRange>();
-				if (pTypeIntRange)
-				{
-					pCalc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), pCalc);
-				}
-
-				LPRDOTypeRealRange pTypeRealRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeRealRange>();
-				if (pTypeRealRange)
-				{
-					pCalc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), pCalc);
-				}
-			}
-
-			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format("%s %s %s", paramName.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str(), pCalcRight->srcInfo().src_text().c_str())));
-
-			LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, pCalc->srcInfo());
-			ASSERT(pExpression);
+			Context::Params params;
+			params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
+			params[RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM] = pRightArithm;
+			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
+			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
+			LPExpression pExpression = result.getCreateExpression()();
+			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format("%s %s %s", pParamName->value().getIdentificator().c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str(), pRightArithm->src_text().c_str())));
+			LPRDOFUNArithm pLeftArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
+			ASSERT(pLeftArithm);
+			pLeftArithm->setEqual(pRightArithm);
 
 			$$ = PARSER->stack().push(pExpression);
 		}
@@ -10156,6 +10028,7 @@ set_array_item_statement
 			Context::Params params;
 			params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
 			params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = setExpression;
+			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = rdo::runtime::SetOperationType::SET;
 			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
 			$$ = PARSER->stack().push(result.getCreateExpression()());
 		}

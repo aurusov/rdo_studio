@@ -126,6 +126,8 @@ CLASS(RDOFUNArithm): INSTANCE_OF(RDOFUNBase)
 {
 DECLARE_FACTORY(RDOFUNArithm);
 public:
+	static const std::string CONTEXT_PARAM_SET_ARITHM;
+
 	LPRDOFUNArithm operator +(CREF(LPRDOFUNArithm) pSecond);
 	LPRDOFUNArithm operator -(CREF(LPRDOFUNArithm) pSecond);
 	LPRDOFUNArithm operator *(CREF(LPRDOFUNArithm) pSecond);
