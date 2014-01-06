@@ -9547,8 +9547,8 @@ statement
 			PARSER->error().error(@1, "Не найден символ окончания инструкции - точка с запятой");
 		}
 	}
-	| equal_statement ';'
-	| equal_statement error
+	| set_statement ';'
+	| set_statement error
 	{
 		#PASS2
 		{
@@ -9802,101 +9802,29 @@ member_statement
 	}
 	;
 
-equal_statement
+set_statement
 	: RDO_IDENTIF increment_or_decrement_type
 	{
 		#PASS2
 		{
 			LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($1);
-			tstring    paramName  = pParamName->value().getIdentificator();
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
-			LPContext pContext = PARSER->context();
-			ASSERT(pContext);
-			LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-			ASSERT(pContextMemory);
-			LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-			ASSERT(pLocalVariableListStack);
-			LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
-			rdo::runtime::LPRDOCalc pCalc;
-			LPTypeInfo pLeftArithmType;
-			if(pLocalVariable)
-			{
-				pLeftArithmType = pLocalVariable->getTypeInfo();
 
-				switch (setOperationType)
-				{
-					case rdo::runtime::SetOperationType::INCREMENT:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::INCREMENT> >::create(paramName);
-						break;
-					}
-					case rdo::runtime::SetOperationType::DECRIMENT:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::SetOperationType::DECRIMENT> >::create(paramName);
-						break;
-					}
-					default:
-					{
-						NEVER_REACH_HERE;
-					}
-				}
-			}
-			else
-			{
-				LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
-				ASSERT(pPattern);
-				LPRDORelevantResource pRelRes = pPattern->m_pCurrRelRes;
-				ASSERT(pRelRes);
-				LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
-				if (!pParam)
-				{
-					PARSER->error().error(@1, rdo::format("Неизвестный параметр: %s", paramName.c_str()));
-				}
-
-				pLeftArithmType = pParam->getTypeInfo();
-
-				switch (setOperationType)
-				{
-					case rdo::runtime::SetOperationType::INCREMENT:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::INCREMENT> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
-						break;
-					}
-					case rdo::runtime::SetOperationType::DECRIMENT:
-					{
-						pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::DECRIMENT> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
-						break;
-					}
-					default:
-					{
-						NEVER_REACH_HERE;
-					}
-				}
-				ASSERT(pCalc);
-
-				//! Проверка на диапазон
-				LPRDOTypeIntRange pTypeIntRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeIntRange>();
-				if (pTypeIntRange)
-				{
-					pCalc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), pCalc);
-				}
-
-				LPRDOTypeRealRange pTypeRealRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeRealRange>();
-				if (pTypeRealRange)
-				{
-					pCalc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), pCalc);
-				}
-			}
-
-			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format("%s %s", paramName.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str())));
-
-			LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, pCalc->srcInfo());
-			ASSERT(pExpression);
-
+			Context::Params params;
+			params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
+			params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = rdo::Factory<Expression>::create(
+				rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@2),
+				rdo::Factory<rdo:runtime::RDOCalcConst>::create(1),
+				RDOParserSrcInfo(@2)
+			);
+			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
+			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
+			LPExpression pExpression = result.getCreateExpression()();
+			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format("%s%s", pParamName->value().getIdentificator().c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str())));
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_IDENTIF param_equal_type fun_arithm
+	| RDO_IDENTIF set_operation_type fun_arithm
 	{
 		#PASS2
 		{
@@ -9918,7 +9846,7 @@ equal_statement
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_IDENTIF param_equal_type error
+	| RDO_IDENTIF set_operation_type error
 	{
 		#PASS2
 		{
@@ -9944,48 +9872,30 @@ increment_or_decrement_type
 	}
 	;
 
-param_equal_type
+set_operation_type
 	: RDO_set
 	{
-		#PASS2
-		{
-			$$ = rdo::runtime::SetOperationType::SET;
-		}
+		$$ = rdo::runtime::SetOperationType::SET;
 	}
 	| '='
 	{
-		#PASS2
-		{
-			$$ = rdo::runtime::SetOperationType::SET;
-		}
+		$$ = rdo::runtime::SetOperationType::SET;
 	}
 	| RDO_PlusEqual
 	{
-		#PASS2
-		{
-			$$ = rdo::runtime::SetOperationType::ADDITION;
-		}
+		$$ = rdo::runtime::SetOperationType::ADDITION;
 	}
 	| RDO_MinusEqual
 	{
-		#PASS2
-		{
-			$$ = rdo::runtime::SetOperationType::SUBTRACTION;
-		}
+		$$ = rdo::runtime::SetOperationType::SUBTRACTION;
 	}
 	| RDO_MultiplyEqual
 	{
-		#PASS2
-		{
-			$$ = rdo::runtime::SetOperationType::MULTIPLY;
-		}
+		$$ = rdo::runtime::SetOperationType::MULTIPLY;
 	}
 	| RDO_DivideEqual
 	{
-		#PASS2
-		{
-			$$ = rdo::runtime::SetOperationType::DIVIDE;
-		}
+		$$ = rdo::runtime::SetOperationType::DIVIDE;
 	}
 	;
 
@@ -10272,7 +10182,7 @@ for_statement
 	;
 
 for_header
-	: RDO_for '(' local_variable_declaration ';' fun_logic ';' equal_statement ')'
+	: RDO_for '(' local_variable_declaration ';' fun_logic ';' set_statement ')'
 	{
 		#PASS2
 		{
@@ -10307,7 +10217,7 @@ for_header
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_for '(' equal_statement ';' fun_logic ';' equal_statement ')'
+	| RDO_for '(' set_statement ';' fun_logic ';' set_statement ')'
 	{
 		#PASS2
 		{

@@ -49,7 +49,6 @@ LPExpression contextGetLocalVariable(const LPLocalVariable& pLocalVariable, cons
 template <rdo::runtime::SetOperationType::Type setOperationType>
 LPExpression contextSetLocalVariable(const LPLocalVariable& pLocalVariable, const rdo::runtime::LPRDOCalc& rightValue, const RDOParserSrcInfo& srcInfo)
 {
-	ASSERT(rightValue);
 	return rdo::Factory<Expression>::create(
 		pLocalVariable->getTypeInfo(),
 		rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<setOperationType> >::create(pLocalVariable->getName(), rightValue),
