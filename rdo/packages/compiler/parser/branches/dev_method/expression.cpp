@@ -22,6 +22,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- Expression
 // --------------------------------------------------------------------------------
 const std::string Expression::CONTEXT_PARAM_SET_EXPRESSION = "set_expression";
+const std::string Expression::CONTEXT_PARAM_SET_OPERATION_TYPE = "set_operation_type";
 
 Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) src_info)
 	: m_pType(pType)

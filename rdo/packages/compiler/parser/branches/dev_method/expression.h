@@ -29,6 +29,7 @@ DECLARE_FACTORY(Expression);
 friend class ExpressionStatement;
 public:
 	static const std::string CONTEXT_PARAM_SET_EXPRESSION;
+	static const std::string CONTEXT_PARAM_SET_OPERATION_TYPE;
 
 	CREF(LPTypeInfo)               typeInfo  () const;
 	CREF(rdo::runtime::LPRDOCalc)  calc      () const;

@@ -35,7 +35,6 @@ INCLUDE(${PROJECT_SOURCE_DIR}/cmake/split-bison.cmake)
 
 RDO_SPLIT_BISON_TARGET(evn evn_preparse_ evn define)
 RDO_BISON_TARGET(smr_file smr_file_)
-RDO_BISON_TARGET(smr_sim smr_sim_)
 
 FLEX_TARGET(lexer_scaner ${GRAMMA_INPUT_PATH}/rdo_lexer.l ${GRAMMA_OUTPUT_PATH}/rdolex.cpp COMPILE_FLAGS "-+")
 
@@ -66,10 +65,8 @@ SET(CONTEXT_FILES
 	context/context.cpp
 	context/context.h
 	context/context.inl
-	context/context_create_calc_i.h
 	context/context_find.cpp
 	context/context_find_i.h
-	context/context_switch_i.h
 	context/context_type.cpp
 	context/context_type.h
 	context/memory.cpp
@@ -123,7 +120,6 @@ SET(GRAMMAR_FILES
 	${GRAMMA_INPUT_PATH}/rdo_lexer.l
 	${GRAMMA_INPUT_PATH}/rdoevn.yx
 	${GRAMMA_INPUT_PATH}/rdosmr_file.y
-	${GRAMMA_INPUT_PATH}/rdosmr_sim.y
 )
 
 SET(GRAMMAR_GENERATED_NO_PCH
@@ -132,7 +128,6 @@ SET(GRAMMAR_GENERATED_NO_PCH
 	${BISON_evn_OUTPUTS_1}
 	${BISON_evn_OUTPUTS_2}
 	${BISON_smr_file_OUTPUTS}
-	${BISON_smr_sim_OUTPUTS}
 )
 
 SET(GRAMMAR_GENERATED_FILES
