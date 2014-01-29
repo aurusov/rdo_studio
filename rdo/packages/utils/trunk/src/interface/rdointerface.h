@@ -144,6 +144,9 @@ typedef PTR(IGetUnknown) LPIGetUnknown;
 template <class T>
 class IFactory
 {
+public:
+    class Object;
+
 private:
 	class Counter: public IUnknown
 	{
