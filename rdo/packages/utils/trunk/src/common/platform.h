@@ -37,6 +37,8 @@
 	#endif
 #elif defined( __linux__ )
 	#define OST_LINUX
+#elif defined(macintosh) || defined(__APPLE__) || defined(__APPLE_CC__)
+	#define OST_MACOSX
 #else
 	#error Unknown OS!
 #endif
