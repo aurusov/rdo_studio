@@ -62,7 +62,7 @@
 //! Итерирование контейнера
 #define STL_FOR_ALL(CONTAINER, IT)                                \
 typedef BOOST_TYPEOF(CONTAINER) RDO_UNIQUE_NAME(CONTAINER_TYPE_); \
-for (RDO_UNIQUE_NAME(CONTAINER_TYPE_)::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+for (typename RDO_UNIQUE_NAME(CONTAINER_TYPE_)::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
 
 //! Итерирование константного контейнера
 #define STL_FOR_ALL_CONST(CONTAINER, IT)                          \
