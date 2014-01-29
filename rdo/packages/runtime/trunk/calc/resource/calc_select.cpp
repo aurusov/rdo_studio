@@ -154,7 +154,7 @@ RDOValue RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOValue RDOFunCalcSelectSize::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
-	return m_pSelect->res_list.size();
+	return RDOValue(static_cast<ruint>(m_pSelect->res_list.size()));
 }
 
 // --------------------------------------------------------------------------------
