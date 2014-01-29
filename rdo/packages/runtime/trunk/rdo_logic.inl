@@ -26,12 +26,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 /// @todo не стоит ли здесь перейти на функторы?
 
-/*!
-  \def   LOGIC_FOR_ALL()
-  \brief Итерация по логики БЗ
-*/
-#define LOGIC_FOR_ALL() STL_FOR_ALL(m_childList, it)
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOOrderSimple
 // --------------------------------------------------------------------------------
@@ -183,7 +177,7 @@ inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(CREF(LPRDORuntime
 template <class Order>
 inline IBaseOperation::BOResult RDOLogic<Order>::onContinue(CREF(LPRDORuntime) pRuntime)
 {
-	LOGIC_FOR_ALL()
+	for(ChildList::iterator it = m_childList.begin(); it != m_childList.end(); ++it)
 	{
 		if ((*it)->onContinue(pRuntime) == IBaseOperation::BOR_must_continue)
 			return IBaseOperation::BOR_must_continue;
@@ -202,7 +196,7 @@ inline rbool RDOLogic<Order>::checkSelfCondition(CREF(LPRDORuntime) pRuntime)
 template <class Order>
 inline void RDOLogic<Order>::start(CREF(LPRDORuntime) pRuntime)
 {
-	LOGIC_FOR_ALL()
+	for(ChildList::iterator it = m_childList.begin(); it != m_childList.end(); ++it)
 	{
 		(*it)->onStart(pRuntime);
 	}
@@ -211,7 +205,7 @@ inline void RDOLogic<Order>::start(CREF(LPRDORuntime) pRuntime)
 template <class Order>
 inline void RDOLogic<Order>::stop(CREF(LPRDORuntime) pRuntime)
 {
-	LOGIC_FOR_ALL()
+	for(ChildList::iterator it = m_childList.begin(); it != m_childList.end(); ++it)
 	{
 		(*it)->onStop(pRuntime);
 	}
