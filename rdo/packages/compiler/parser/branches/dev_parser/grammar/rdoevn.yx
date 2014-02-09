@@ -217,6 +217,7 @@
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/rdopmd.h"
+#include "simulator/compiler/parser/rdosmr.h"
 #include "simulator/compiler/parser/type/range.h"
 #include "simulator/compiler/parser/rdo_array.h"
 #include "simulator/compiler/parser/src/function/local_variable/local_variable.h"
@@ -300,15 +301,16 @@ typedef rdo::runtime::LPRDOFRMSpace                 LPRDOFRMSpace;
 // --------------------------------------------------------------------------------
 rdo_compiler
 	: /* empty */
-	| rtp_main rdo_compiler
-	| rss_main rdo_compiler
-	| pat_main rdo_compiler
-	| dpt_main rdo_compiler
-	| prc_main rdo_compiler
-	| frm_main rdo_compiler
-	| fun_main rdo_compiler
-	| pmd_main rdo_compiler
-	| smr_main rdo_compiler
+	| rtp_main  rdo_compiler
+	| rss_main  rdo_compiler
+	| pat_main  rdo_compiler
+	| dpt_main  rdo_compiler
+	| prc_main  rdo_compiler
+	| frm_main  rdo_compiler
+	| fun_main  rdo_compiler
+	| pmd_main  rdo_compiler
+	| smr_main  rdo_compiler
+	| smr_descr rdo_compiler
 	| error
 	{
 		PARSER->error().error(RDOParserSrcInfo(), "Синтаксическая ошибка");
@@ -9475,6 +9477,44 @@ smr_show_mode
 	| RDO_Animation
 	{
 		$$ = rdo::service::simulation::SM_Animation;
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Синтаксис для внешней модели
+// --------------------------------------------------------------------------------
+smr_descr
+	: RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
+	{
+		#PASS1
+		{
+			tstring alias = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			tstring model = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
+			LPRDOSMR pSMR = PARSER->getSMR();
+			ASSERT(pSMR);
+			pSMR->setExternalModelName(alias, model);
+		}
+	}
+	| RDO_External_Model RDO_IDENTIF '=' error
+	{
+		#PASS1
+		{
+			PARSER->error().error( @3, @4, "Ожидается путь и название внешней модели" );
+		}
+	}
+	| RDO_External_Model RDO_IDENTIF error
+	{
+		#PASS1
+		{
+			PARSER->error().error( @2, "Ожидается '='" );
+		}
+	}
+	| RDO_External_Model error
+	{
+		#PASS1
+		{
+			PARSER->error().error( @1, "Ожидается псевдоним внешей модели" );
+		}
 	}
 	;
 

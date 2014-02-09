@@ -34,7 +34,6 @@ INCLUDE(${PROJECT_SOURCE_DIR}/cmake/bison.cmake)
 INCLUDE(${PROJECT_SOURCE_DIR}/cmake/split-bison.cmake)
 
 RDO_SPLIT_BISON_TARGET(evn evn_preparse_ evn define)
-RDO_BISON_TARGET(smr_file smr_file_)
 
 FLEX_TARGET(lexer_scaner ${GRAMMA_INPUT_PATH}/rdo_lexer.l ${GRAMMA_OUTPUT_PATH}/rdolex.cpp COMPILE_FLAGS "-+")
 
@@ -119,7 +118,6 @@ SET(GRAMMAR_FILES
 	${GRAMMA_INPUT_PATH}/rdobison.h
 	${GRAMMA_INPUT_PATH}/rdo_lexer.l
 	${GRAMMA_INPUT_PATH}/rdoevn.yx
-	${GRAMMA_INPUT_PATH}/rdosmr_file.y
 )
 
 SET(GRAMMAR_GENERATED_NO_PCH
@@ -127,7 +125,6 @@ SET(GRAMMAR_GENERATED_NO_PCH
 	${BISON_evn_preparse_OUTPUTS}
 	${BISON_evn_OUTPUTS_1}
 	${BISON_evn_OUTPUTS_2}
-	${BISON_smr_file_OUTPUTS}
 )
 
 SET(GRAMMAR_GENERATED_FILES
