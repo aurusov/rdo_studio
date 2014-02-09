@@ -104,4 +104,21 @@ RDOValue RDOSetResourceParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return RDOValue();
 }
 
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcSetResourceTrace
+// --------------------------------------------------------------------------------
+RDOCalcSetResourceTrace::RDOCalcSetResourceTrace(ruint resourceID, bool traceValue)
+	: m_resourceID(resourceID)
+	, m_traceValue(traceValue)
+{}
+
+RDOValue RDOCalcSetResourceTrace::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	RDOValue value = 0;
+	LPRDOResource pResource = pRuntime->getResourceByID(m_resourceID);
+	ASSERT(pResource);
+	pResource->setTrace(m_traceValue);
+	return value;
+}
+
 CLOSE_RDO_RUNTIME_NAMESPACE

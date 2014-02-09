@@ -908,12 +908,28 @@ rss_resource
 		{
 			LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
 			ASSERT(pName);
+			bool traceValue = $3 != 0;
+
+			Context::Params params;
+			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
+			Context::FindResult result = PARSER->context()->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
+			ASSERT(result.getSwitchContext());
+			PARSER->contextStack()->push(result.getSwitchContext().context);
+
+			Context::Params traceParams;
+			traceParams["traceValue"] = traceValue;
+			result = result.getSwitchContext().context->find("trace()", traceParams, pName->src_info());
+			
+			LPExpression pExpression = result.getCreateExpression()();
+			ASSERT(pExpression);
+
+			rdo::runtime::LPRDOCalc pCalc = pExpression->calc();
 			LPRDORSSResource pResource = PARSER->findRSSResource(pName->value().getIdentificator());
-			if (!pResource)
-			{
-				PARSER->error().error(@1, rdo::format("Ресурс '%s' не существует", pName->value().getIdentificator().c_str()));
-			}
-			pResource->setTrace($3 != 0);
+			ASSERT(pResource);
+			pResource->setAddCalc(pCalc);
+
+			PARSER->contextStack()->pop_not_safed();
+			$$ = PARSER->stack().push(pExpression);
 		}
 	}
 	| error

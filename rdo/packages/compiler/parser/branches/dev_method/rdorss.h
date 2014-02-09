@@ -67,6 +67,7 @@ public:
 	static const ruint UNDEFINED_ID = ruint(~0);
 
 	virtual rdo::runtime::LPRDOCalc createCalc() const;
+	virtual std::vector<rdo::runtime::LPRDOCalc> createCalcList() const;
 
 	CREF(tstring)    name   () const { return src_info().src_text(); }
 	LPRDORTPResType  getType() const { return m_pResType;            }
@@ -85,6 +86,11 @@ public:
 
 	LPExpression  createGetResourceExpression(const RDOParserSrcInfo& srcInfo) const;
 
+	void setAddCalc (const rdo::runtime::LPRDOCalc& pTraceCalc)
+	{
+		m_traceCalc = pTraceCalc;
+	}
+
 protected:
 	RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id = UNDEFINED_ID);
 	virtual ~RDORSSResource();
@@ -96,6 +102,7 @@ protected:
 
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;
+	rdo::runtime::LPRDOCalc m_traceCalc;
 
 	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
