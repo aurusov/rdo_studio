@@ -536,8 +536,8 @@ void RDOParser::runRSSPost()
 			if ((*rss_it)->getType() == *rtp_it)
 			{
 #endif
-				std::vector<rdo::runtime::LPRDOCalc> calcList = (*rss_it)->createCalcList();
-				BOOST_FOREACH(rdo::runtime::LPRDOCalc calc, calcList)
+				std::vector<rdo::runtime::LPRDOCalc> pCalcList = (*rss_it)->createCalc();
+				BOOST_FOREACH(rdo::runtime::LPRDOCalc calc, pCalcList)
 				{
 					runtime()->addInitCalc(calc);
 				}

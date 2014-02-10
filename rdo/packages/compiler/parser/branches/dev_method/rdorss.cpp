@@ -173,8 +173,9 @@ rbool RDORSSResource::defined() const
 	return m_currParam == getType()->getParams().end();
 }
 
-rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
+std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalc() const
 {
+	std::vector<rdo::runtime::LPRDOCalc> pCalcList;
 	std::vector<rdo::runtime::RDOValue> paramList;
 	STL_FOR_ALL_CONST(params(), it)
 	{
@@ -191,15 +192,8 @@ rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());
 	srcInfo.setSrcText("Создание ресурса " + src_text());
 	pCalc->setSrcInfo(srcInfo);
-	return pCalc;
-}
-
-std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalcList() const
-{
-	std::vector<rdo::runtime::LPRDOCalc> pCalcList;
-	rdo::runtime::LPRDOCalc pCalc = createCalc();
+	
 	pCalcList.push_back(pCalc);
-
 	if (m_traceCalc)
 		pCalcList.push_back(m_traceCalc);
 
