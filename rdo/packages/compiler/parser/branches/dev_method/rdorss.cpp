@@ -52,11 +52,11 @@ void RDORSSResource::end()
 namespace 
 {
 
-LPExpression contextSetTrace(ruint resID, bool traceValue, const RDOParserSrcInfo& srcInfo)
+LPExpression contextSetTrace(const rdo::runtime::LPRDOCalc& pCalc, bool traceValue, const RDOParserSrcInfo& srcInfo)
 {
 	return rdo::Factory<Expression>::create(
 		rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo),
-		rdo::Factory<rdo::runtime::RDOCalcSetResourceTrace>::create(resID, traceValue),
+		rdo::Factory<rdo::runtime::RDOCalcSetResourceTrace>::create(pCalc, traceValue),
 		srcInfo
 	);
 }
@@ -86,8 +86,9 @@ Context::FindResult RDORSSResource::onFindContext(const std::string& method, con
 	
 	if (method == "trace()")
 	{
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcGetResourceByID>::create(getID());
 		const bool traceValue = params.get<bool>("traceValue");
-		return FindResult(CreateExpression(boost::bind(&contextSetTrace, getID(), traceValue, srcInfo)));
+		return FindResult(CreateExpression(boost::bind(&contextSetTrace, pCalc, traceValue, srcInfo)));
 	}
 	
 	return FindResult();
