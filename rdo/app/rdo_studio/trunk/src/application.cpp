@@ -16,7 +16,6 @@
 #include <QTextCodec>
 #include <QSettings>
 #include <QMessageBox>
-#include <boost/foreach.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/file/rdofile.h"
