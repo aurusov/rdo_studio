@@ -231,5 +231,7 @@ const LPPluginInfoList& Loader::getPluginInfoList() const
 
 void Loader::initPluginParent(QWidget* pParent)
 {
+	ASSERT(!m_pPluginsParent);
+	ASSERT(pParent);
 	m_pPluginsParent = pParent;
 }
