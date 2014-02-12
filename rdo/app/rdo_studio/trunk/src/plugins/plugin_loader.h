@@ -31,8 +31,8 @@ public:
 	virtual ~Loader();
 
 	const LPPluginInfoList& getPluginInfoList     () const;
-	void                    stopPlugin            (const LPPluginInfo& plgnInfo);
-	void                    startPlugin           (const LPPluginInfo& plgnInfo);
+	void                    stopPlugin            (const LPPluginInfo& pluginInfo);
+	void                    startPlugin           (const LPPluginInfo& pluginInfo);
 	void                    startAutoloadedPlugins();
 	void                    setPluginInfoList     (const PluginInfoList& value) const;
 	void                    initPluginParent      (QWidget* pParent);
@@ -47,8 +47,8 @@ private:
 	PluginInfoList    getCurrentPlugins      () const;
 
 	PluginInterface*  loadPlugin             (QPluginLoader* pluginLoader) const;
-	PluginInfo        generatePluginInfo     (PluginInterface* plgn, QPluginLoader* pluginLoader) const;
-	int               matchPluginInfo        (const PluginInfoList& list, const LPPluginInfo& plgnInfo) const;
+	PluginInfo        generatePluginInfo     (PluginInterface* pluginInterface, QPluginLoader* pluginLoader) const;
+	int               matchPluginInfo        (const PluginInfoList& list, const LPPluginInfo& pluginInfo) const;
 };
 
 #endif // _RDO_STUDIO_PLUGIN_LOADER_H_

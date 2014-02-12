@@ -22,43 +22,38 @@
 using namespace rdo::Plugin;
 
 Loader::Loader()
-	: m_pPluginsParent       (NULL)
+	: m_pPluginsParent(NULL)
 	, m_pMergedPluginInfoList(rdo::Factory<PluginInfoList>::create(getMergedPluginInfoList()))
-{
-}
+{}
 
 Loader::~Loader()
 {
-	BOOST_FOREACH(const LPPluginInfo& plgnInfo, *m_pMergedPluginInfoList)
+	BOOST_FOREACH(const LPPluginInfo& pluginInfo, *m_pMergedPluginInfoList)
 	{
-		if (plgnInfo->isActive())
-		{
-			stopPlugin(plgnInfo);
-		}
+		if (pluginInfo->isActive())
+			stopPlugin(pluginInfo);
 	}
 }
 
 PluginInfoList Loader::getMergedPluginInfoList() const
 {
-	PluginInfoList plgnsHistory   = getPluginsHistory();
-	PluginInfoList curLoadedPlgns = getCurrentPlugins();
-	PluginInfoList mergedPlgns;
-	for (PluginInfoList::const_iterator curItrt = curLoadedPlgns.begin(); curItrt != curLoadedPlgns.end(); ++curItrt)
+	PluginInfoList pluginHistory = getPluginsHistory();
+	PluginInfoList currentLoadedPlugin = getCurrentPlugins();
+	PluginInfoList mergedPlugin;
+	BOOST_FOREACH(const LPPluginInfo& pluginInfo, currentLoadedPlugin)
 	{
-		LPPluginInfo plgnInfo = *curItrt;
-		matchPluginInfo(plgnsHistory, plgnInfo);
-		mergedPlgns.push_back(plgnInfo);
+		matchPluginInfo(pluginHistory, pluginInfo);
+		mergedPlugin.push_back(pluginInfo);
 	}
-	for (PluginInfoList::const_iterator histrItrt = plgnsHistory.begin(); histrItrt != plgnsHistory.end(); ++histrItrt)
+	BOOST_FOREACH(const LPPluginInfo& pluginInfo, pluginHistory)
 	{
-		LPPluginInfo plgnInfo = *histrItrt;
-		if (matchPluginInfo(mergedPlgns, plgnInfo) != rdo::Plugin::ExactMatched)
+		if (matchPluginInfo(mergedPlugin, pluginInfo) != rdo::Plugin::ExactMatched)
 		{
-			plgnInfo->setState(rdo::Plugin::Deleted);
-			mergedPlgns.push_back(plgnInfo);
+			pluginInfo->setState(rdo::Plugin::Deleted);
+			mergedPlugin.push_back(pluginInfo);
 		}
 	}
-	return mergedPlgns;
+	return mergedPlugin;
 }
 
 PluginInfoList Loader::getPluginsHistory() const
@@ -69,13 +64,13 @@ PluginInfoList Loader::getPluginsHistory() const
 	for (int i = 0; i < size; ++i)
 	{
 		settings.setArrayIndex(i);
-		QString plgnName     = settings.value("plgnName"    , "").toString();
-		bool    plgnAutoLoad = settings.value("plgnAutoLoad", false).toBool();
-		QString plgnAuthor   = settings.value("plgnAuthor"  , "").toString();
-		QString plgnVer      = settings.value("plgnVer"     , "").toString();
-		QUuid   plgnGUID     = settings.value("plgnGUID"    , QUuid()).toUuid();
-		PluginInfo plgn(plgnName, NULL, plgnAutoLoad, plgnGUID, plgnAuthor, plgnVer, rdo::Plugin::Unique);
-		list.push_back(rdo::Factory<PluginInfo>::create(plgn));
+		QString pluginName     = settings.value("plgnName"    , "").toString();
+		bool    pluginAutoLoad = settings.value("plgnAutoLoad", false).toBool();
+		QString pluginAuthor   = settings.value("plgnAuthor"  , "").toString();
+		QString pluginVer      = settings.value("plgnVer"     , "").toString();
+		QUuid   pluginGUID     = settings.value("plgnGUID"    , QUuid()).toUuid();
+		PluginInfo pluginInfo(pluginName, NULL, pluginAutoLoad, pluginGUID, pluginAuthor, pluginVer, rdo::Plugin::Unique);
+		list.push_back(rdo::Factory<PluginInfo>::create(pluginInfo));
 	}
 	return list;
 }
@@ -86,16 +81,16 @@ void Loader::setPluginInfoList(const PluginInfoList& value) const
 	settings.remove("plugins");
 	settings.beginWriteArray("plugins");
 	int index = 0;
-	BOOST_FOREACH(const LPPluginInfo& plgnInfo, value)
+	BOOST_FOREACH(const LPPluginInfo& pluginInfo, value)
 	{
-		if (plgnInfo->getState() != rdo::Plugin::IdOnlyMatched)
+		if (pluginInfo->getState() != rdo::Plugin::IdOnlyMatched)
 		{
 			settings.setArrayIndex(index);
-			settings.setValue("plgnName"    , plgnInfo->getName());
-			settings.setValue("plgnAutoLoad", plgnInfo->getAutoload());
-			settings.setValue("plgnGUID"    , plgnInfo->getGUID());
-			settings.setValue("plgnAuthor"  , plgnInfo->getAuthor());
-			settings.setValue("plgnVer"     , plgnInfo->getVersion());
+			settings.setValue("plgnName"    , pluginInfo->getName());
+			settings.setValue("plgnAutoLoad", pluginInfo->getAutoload());
+			settings.setValue("plgnGUID"    , pluginInfo->getGUID());
+			settings.setValue("plgnAuthor"  , pluginInfo->getAuthor());
+			settings.setValue("plgnVer"     , pluginInfo->getVersion());
 			index++;
 		}
 	}
@@ -113,14 +108,14 @@ PluginInfoList Loader::getCurrentPlugins() const
 	if (dir.cd("plugins"))
 	{
 		QStringList fileList = getFileList(dir.path());
-		BOOST_FOREACH (QString filePath, fileList)
+		BOOST_FOREACH(const QString& filePath, fileList)
 		{
 			QPluginLoader* pluginLoader = new QPluginLoader(filePath);
-			PluginInterface* plgn = loadPlugin(pluginLoader);
-			if (plgn)
+			PluginInterface* pluginInterface = loadPlugin(pluginLoader);
+			if (pluginInterface)
 			{
-				PluginInfo plgnInfo = generatePluginInfo(plgn, pluginLoader);
-				LPPluginInfo pPlgnInfo = rdo::Factory<PluginInfo>::create(plgnInfo);
+				PluginInfo pluginInfo = generatePluginInfo(pluginInterface, pluginLoader);
+				LPPluginInfo pPlgnInfo = rdo::Factory<PluginInfo>::create(pluginInfo);
 				pluginLoader->unload();
 				if (matchPluginInfo(list, pPlgnInfo) != rdo::Plugin::ExactMatched)
 				{
@@ -136,41 +131,40 @@ PluginInfoList Loader::getCurrentPlugins() const
 	return list;
 }
 
-int Loader::matchPluginInfo(const PluginInfoList& list, const LPPluginInfo& plgnInfo) const
+int Loader::matchPluginInfo(const PluginInfoList& list, const LPPluginInfo& pluginInfo) const
 {
-	bool notFoundFullMatch = true;
-	int plgnState = plgnInfo->getState();
-	for (PluginInfoList::const_iterator listItr = list.begin(); listItr != list.end() && notFoundFullMatch; ++listItr)
+	int pluginState = pluginInfo->getState();
+	BOOST_FOREACH(const LPPluginInfo& pluginInfo, list)
 	{
-		if (plgnInfo->getGUID() == (*listItr)->getGUID())
+		if (pluginInfo->getGUID() == pluginInfo->getGUID())
 		{
-			if (plgnInfo->pluginSignInfoIsEqual(*(*listItr)))
+			if (pluginInfo->pluginSignInfoIsEqual(*pluginInfo))
 			{
-				notFoundFullMatch = false;
-				plgnInfo->setAutoload((*listItr)->getAutoload());
-				plgnState = rdo::Plugin::ExactMatched;
+				pluginInfo->setAutoload(pluginInfo->getAutoload());
+				pluginState = rdo::Plugin::ExactMatched;
+				break;
 			}
 			else
 			{
-				plgnState = rdo::Plugin::IdOnlyMatched;
+				pluginState = rdo::Plugin::IdOnlyMatched;
 			}
 		}
 	}
-	plgnInfo->setState(plgnState);
-	return plgnState;
+	pluginInfo->setState(pluginState);
+	return pluginState;
 }
 
-QStringList Loader::getFileList(const QString &startDir) const
+QStringList Loader::getFileList(const QString& startDir) const
 {
 	QDir dir(startDir);
 	QStringList list;
 
-	BOOST_FOREACH (QString file, dir.entryList(QDir::Files))
+	BOOST_FOREACH(const QString& file, dir.entryList(QDir::Files))
 	{
 		list += dir.absoluteFilePath(file);
 	}
 
-	BOOST_FOREACH (QString subdir, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+	BOOST_FOREACH(const QString& subdir, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
 	{
 		list += getFileList(startDir + "/" + subdir);
 	}
@@ -182,53 +176,50 @@ PluginInterface* Loader::loadPlugin(QPluginLoader* pluginLoader) const
 	QObject* plugin = pluginLoader->instance();
 	if (plugin)
 	{
-		PluginInterface* plgn = qobject_cast<PluginInterface*>(plugin);
-		return plgn;
+		PluginInterface* pluginInterface = qobject_cast<PluginInterface*>(plugin);
+		return pluginInterface;
 	}
 	return NULL;
 }
 
-PluginInfo Loader::generatePluginInfo(PluginInterface* plgn, QPluginLoader* pluginLoader) const
+PluginInfo Loader::generatePluginInfo(PluginInterface* pluginInterface, QPluginLoader* pluginLoader) const
 {
-	QString plgnName     = plgn->getPluginName();
-	QUuid   plgnGUID     = plgn->getGUID();
-	QString plgnAuthor   = plgn->getAuthor();
-	QString plgnVersion  = plgn->getVersion();
-	bool    plgnAutoload = false;
-	PluginInfo plgnInfo(plgnName, pluginLoader, plgnAutoload, plgnGUID, plgnAuthor, plgnVersion, rdo::Plugin::Unique);
-	return plgnInfo; 
+	QString pluginName     = pluginInterface->getPluginName();
+	QUuid   pluginGUID     = pluginInterface->getGUID();
+	QString pluginAuthor   = pluginInterface->getAuthor();
+	QString pluginVersion  = pluginInterface->getVersion();
+	bool    pluginAutoload = false;
+	PluginInfo pluginInfo(pluginName, pluginLoader, pluginAutoload, pluginGUID, pluginAuthor, pluginVersion, rdo::Plugin::Unique);
+	return pluginInfo; 
 }
 
-void Loader::stopPlugin(const LPPluginInfo& plgnInfo)
+void Loader::stopPlugin(const LPPluginInfo& pluginInfo)
 {
-	PluginInterface* plgn = loadPlugin(plgnInfo->getLoader());
-	if (plgn)
+	PluginInterface* pluginInterface = loadPlugin(pluginInfo->getLoader());
+	if (pluginInterface)
 	{
-		plgn->plgnStopAction(m_pPluginsParent);
-		plgnInfo->setActive(false);
+		pluginInterface->plgnStopAction(m_pPluginsParent);
+		pluginInfo->setActive(false);
 	}
 }
 
-void Loader::startPlugin(const LPPluginInfo& plgnInfo)
+void Loader::startPlugin(const LPPluginInfo& pluginInfo)
 {
-	PluginInterface* plgn = loadPlugin(plgnInfo->getLoader());
-	if (plgn)
+	PluginInterface* pluginInterface = loadPlugin(pluginInfo->getLoader());
+	if (pluginInterface)
 	{
-		plgn->plgnStartAction(m_pPluginsParent);
-		plgnInfo->setActive(true);
+		pluginInterface->plgnStartAction(m_pPluginsParent);
+		pluginInfo->setActive(true);
 	}
 }
 
 void Loader::startAutoloadedPlugins()
 {
-	for (PluginInfoList::const_iterator plgnInfoItrt = m_pMergedPluginInfoList->begin();
-		  plgnInfoItrt != m_pMergedPluginInfoList->end();
-		  ++plgnInfoItrt
-	)
+	BOOST_FOREACH(const LPPluginInfo& pluginInfo, *m_pMergedPluginInfoList)
 	{
-		if ((*plgnInfoItrt)->getAutoload() && (*plgnInfoItrt)->isAvailable())
+		if (pluginInfo->getAutoload() && pluginInfo->isAvailable())
 		{
-			startPlugin(*plgnInfoItrt);
+			startPlugin(pluginInfo);
 		}
 	}
 }

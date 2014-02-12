@@ -28,6 +28,6 @@ public:
 	virtual void plgnStopAction (QWidget* parent) = 0;
 };
 
-Q_DECLARE_INTERFACE(PluginInterface,"RDO_PLUGIN_INTERFACE");
+Q_DECLARE_INTERFACE(PluginInterface, "RDO_PLUGIN_INTERFACE");
 
 #endif // _RDO_STUDIO_PLUGIN_INTERFACE_H_

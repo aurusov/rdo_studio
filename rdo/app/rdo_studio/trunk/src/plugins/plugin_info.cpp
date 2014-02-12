@@ -14,21 +14,19 @@
 // --------------------------------------------------------------------------------
 
 PluginInfo::PluginInfo(const QString& name, QPluginLoader* loader, bool  autoload,
-	                    const QUuid&   GUID, const QString& author, const QString& version, int state)
-	: pluginName     (name)
-	, pluginLoader   (loader)
-	, pluginAuthor   (author)
-	, pluginVersion  (version)
-	, pluginAutoload (autoload)
-	, pluginGUID     (GUID)
-	, pluginState    (state)
-	, pluginIsActive (false)
-{
-}
+	                   const QUuid&   GUID, const QString& author, const QString& version, int state)
+	: pluginName    (name)
+	, pluginLoader  (loader)
+	, pluginAuthor  (author)
+	, pluginVersion (version)
+	, pluginAutoload(autoload)
+	, pluginGUID    (GUID)
+	, pluginState   (state)
+	, pluginIsActive(false)
+{}
 
 PluginInfo::~PluginInfo()
-{
-}
+{}
 
 const QString& PluginInfo::getName() const
 {
@@ -85,17 +83,17 @@ void PluginInfo::setActive(bool value)
 	pluginIsActive = value;
 }
 
-bool PluginInfo::pluginSignInfoIsEqual(const PluginInfo& scndPlgn)
+bool PluginInfo::pluginSignInfoIsEqual(const PluginInfo& pluginInfo)
 {
-	return pluginName    == scndPlgn.getName()    &&
-	       pluginAuthor  == scndPlgn.getAuthor()  &&
-	       pluginVersion == scndPlgn.getVersion() ;
+	return pluginName    == pluginInfo.getName() &&
+	       pluginAuthor  == pluginInfo.getAuthor() &&
+	       pluginVersion == pluginInfo.getVersion();
 }
 
 bool PluginInfo::isAvailable()
 {
-	return !(pluginState == rdo::Plugin::Deleted       ||
-	         pluginState == rdo::Plugin::IdOnlyMatched );
+	return !(pluginState == rdo::Plugin::Deleted ||
+	         pluginState == rdo::Plugin::IdOnlyMatched);
 }
 
 bool PluginInfo::operator==(const PluginInfo& other)
@@ -107,5 +105,5 @@ bool PluginInfo::operator==(const PluginInfo& other)
 	       pluginIsActive == other.pluginIsActive &&
 	       pluginGUID     == other.pluginGUID     &&
 	       pluginState    == other.pluginState    &&
-	       pluginLoader   == other.pluginLoader   ;
+	       pluginLoader   == other.pluginLoader;
 }
