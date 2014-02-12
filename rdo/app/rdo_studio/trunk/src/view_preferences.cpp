@@ -172,8 +172,7 @@ ViewPreferences::ViewPreferences(QWidget* pParent)
 	connect(vertIndentLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
 	connect(tickWidthLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
 
-
-	//Вкладка "Пплагины"
+	// Вкладка "Пплагины"
 	QStringList tableColumnHeaders;
 	tableColumnHeaders << "Name" << "Version" << "Author" << "Autoload";
 	pluginInfoTable->setColumnCount(4);
@@ -186,7 +185,7 @@ ViewPreferences::ViewPreferences(QWidget* pParent)
 	QObject::connect(buttonDeletePlugin, &QAbstractButton::clicked, this, &ViewPreferences::deletePlugin);
 	QObject::connect(buttonStartPlugin , &QAbstractButton::clicked, this, &ViewPreferences::onStartPlugin);
 	QObject::connect(buttonStopPlugin  , &QAbstractButton::clicked, this, &ViewPreferences::onStopPlugin);
-	connect(pluginInfoTable->selectionModel(),
+	QObject::connect(pluginInfoTable->selectionModel(),
 	        &QItemSelectionModel::selectionChanged,
 	        this,
 	        &ViewPreferences::updateButtonsState);
@@ -1717,14 +1716,15 @@ void ViewPreferences::keyPressEvent(QKeyEvent* pEvent)
 void ViewPreferences::deletePlugin()
 {
 	onStopPlugin();
-	std::vector<int> rows = selectedRows();
-	for( int i = rows.size()-1; i >= 0; i-- )
+	const std::vector<int> rows = selectedRows();
+	for(int i = rows.size()-1; i >= 0; i--)
 	{
-		int current = rows[i];
+		const int current = rows[i];
 		{
-			LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
+			const LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
 			QPluginLoader* loaderPtr = plgnInfo->getLoader();
-			if (loaderPtr) {
+			if (loaderPtr)
+			{
 				loaderPtr->unload();
 				QFile::remove(loaderPtr->fileName());
 			}
@@ -1737,12 +1737,13 @@ void ViewPreferences::deletePlugin()
 
 void ViewPreferences::onStartPlugin()
 {
-	std::vector<int> rows = selectedRows();
-	for( int i = rows.size()-1; i >= 0; i-- )
+	const std::vector<int> rows = selectedRows();
+	for(int i = rows.size()-1; i >= 0; i--)
 	{
-		int current = rows[i];
-		LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
-		if (!plgnInfo->isActive() && plgnInfo->isAvailable()) {
+		const int current = rows[i];
+		const LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
+		if (!plgnInfo->isActive() && plgnInfo->isAvailable())
+		{
 			g_pApp->getPluginLoader().startPlugin(plgnInfo);
 		}
 	}
@@ -1752,12 +1753,13 @@ void ViewPreferences::onStartPlugin()
 
 void ViewPreferences::onStopPlugin()
 {
-	std::vector<int> rows = selectedRows();
-	for( int i = rows.size()-1; i >= 0; i-- )
+	const std::vector<int> rows = selectedRows();
+	for(int i = rows.size()-1; i >= 0; i--)
 	{
-		int current  = rows[i];
-		LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
-		if (plgnInfo->isActive() && plgnInfo->isAvailable()) { 
+		const int current  = rows[i];
+		const LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
+		if (plgnInfo->isActive() && plgnInfo->isAvailable())
+		{
 			g_pApp->getPluginLoader().stopPlugin(plgnInfo);
 		}
 	}
@@ -1782,24 +1784,25 @@ void ViewPreferences::populateRow(const LPPluginInfo& plgInfo)
 
 void ViewPreferences::fillPluginInfoTable()
 {
-	for (PluginInfoList::iterator plgnInfoItrt=m_pPluginInfoList->begin(); plgnInfoItrt!=m_pPluginInfoList->end(); ++plgnInfoItrt)
+	BOOST_FOREACH(const LPPluginInfo& pluginInfo, *m_pPluginInfoList)
 	{
-		populateRow(*plgnInfoItrt);
+		populateRow(pluginInfo);
 	}
 }
 void ViewPreferences::updateButtonsState()
 {
-	std::vector<int> rows = selectedRows();
+	const std::vector<int> rows = selectedRows();
 	bool allActive      = true;
 	bool allInactive    = true;
 	bool allUnavailable = true;
-	for( int i = rows.size()-1; i >= 0; i-- )
+	for(int i = rows.size()-1; i >= 0; i--)
 	{
-		int current = rows[i];
-		LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
-		if (plgnInfo->isAvailable()) {
-			allActive      = allActive      &&   plgnInfo->isActive() ;
-			allInactive    = allInactive    && !(plgnInfo->isActive());
+		const int current = rows[i];
+		const LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
+		if (plgnInfo->isAvailable())
+		{
+			allActive      = allActive   &&   plgnInfo->isActive() ;
+			allInactive    = allInactive && !(plgnInfo->isActive());
 			allUnavailable = false;
 		}
 	}
@@ -1810,24 +1813,26 @@ void ViewPreferences::updateButtonsState()
 ViewPreferences::IntVector ViewPreferences::selectedRows() const
 {
 	std::vector<int> sortedRows;
-	BOOST_FOREACH(QModelIndex index, pluginInfoTable->selectionModel()->selectedRows()) {
+	BOOST_FOREACH(const QModelIndex& index, pluginInfoTable->selectionModel()->selectedRows())
+	{
 		sortedRows.push_back(index.row()); 
 	}
 
-	std::sort(sortedRows.begin() , sortedRows.end());
+	std::sort(sortedRows.begin(), sortedRows.end());
 	return sortedRows;
 }
 
 LPPluginInfo ViewPreferences::getPluginInfoFromTable(int pluginRow) const
 {
-	QTableWidgetItem* itm = pluginInfoTable->item(pluginRow,0);
+	const QTableWidgetItem* itm = pluginInfoTable->item(pluginRow,0);
 	LPPluginInfo plgnInfo = itm->data(Qt::UserRole).value<LPPluginInfo>();
 	return plgnInfo;
 }
 
 void ViewPreferences::updatePluginList()
 {
-	for (int itmRow=0; itmRow < pluginInfoTable->rowCount(); itmRow++) {
+	for (int itmRow=0; itmRow < pluginInfoTable->rowCount(); itmRow++)
+	{
 		LPPluginInfo plgnInfo = getPluginInfoFromTable(itmRow);
 		bool autoLoadValue = pluginInfoTable->item(itmRow,3)->checkState() == Qt::Checked;
 		plgnInfo->setAutoload(autoLoadValue);
