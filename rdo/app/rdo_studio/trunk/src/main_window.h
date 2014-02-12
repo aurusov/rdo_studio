@@ -25,6 +25,14 @@
 #include "app/rdo_studio/src/status_bar.h"
 // --------------------------------------------------------------------------------
 
+namespace rdo {
+	namespace gui {
+		namespace model {
+			class Model;
+		};
+	};
+};
+
 class MainWindow
 	: public QMainWindow
 	, public MainWindowBase
@@ -70,6 +78,8 @@ public:
 		}
 	}
 
+	rdo::gui::model::Model* getModel();
+
 	class InsertMenuData: public QObject
 	{
 	public:
@@ -88,6 +98,7 @@ public:
 private:
 	typedef  QMainWindow  parent_type;
 	typedef  QStringList  ReopenList;
+	rdo::gui::model::Model* m_pModel;
 
 	struct SubWindowToAction
 	{

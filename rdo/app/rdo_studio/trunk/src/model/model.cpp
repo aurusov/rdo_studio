@@ -1483,3 +1483,16 @@ void Model::onEditModifyChanged(bool)
 {
 	updateActions();
 }
+
+bool Model::isEmpty() const
+{
+	for (int i = 0; i < getTab()->count(); i++)
+	{
+		if (!(getTab()->getItemEdit(i)->isEmpty()))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}

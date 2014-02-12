@@ -39,6 +39,7 @@ ViewPreferences::ViewPreferences(QWidget* pParent)
 	, all_fg_color(0x00, 0x00, 0x00)
 	, all_bg_color(0xFF, 0xFF, 0xFF)
 	, null_font_style(StyleFont::NONE)
+	, m_pPluginInfoList(g_pApp->getPluginLoader().getPluginInfoList())
 {
 	setupUi(this);
 
@@ -171,6 +172,26 @@ ViewPreferences::ViewPreferences(QWidget* pParent)
 	connect(vertIndentLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
 	connect(tickWidthLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onCheckInput(const QString&)));
 
+
+	//Вкладка "Пплагины"
+	QStringList tableColumnHeaders;
+	tableColumnHeaders << "Name" << "Version" << "Author" << "Autoload";
+	pluginInfoTable->setColumnCount(4);
+	pluginInfoTable->setHorizontalHeaderLabels(tableColumnHeaders);
+	pluginInfoTable->verticalHeader()->hide();
+	pluginInfoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+	pluginInfoTable->setEditTriggers     (QAbstractItemView::NoEditTriggers);
+	pluginInfoTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+	pluginInfoTable->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Stretch);
+	QObject::connect(buttonDeletePlugin, &QAbstractButton::clicked, this, &ViewPreferences::deletePlugin);
+	QObject::connect(buttonStartPlugin , &QAbstractButton::clicked, this, &ViewPreferences::onStartPlugin);
+	QObject::connect(buttonStopPlugin  , &QAbstractButton::clicked, this, &ViewPreferences::onStopPlugin);
+	connect(pluginInfoTable->selectionModel(),
+	        &QItemSelectionModel::selectionChanged,
+	        this,
+	        &ViewPreferences::updateButtonsState);
+	fillPluginInfoTable();
+	updateButtonsState();
 
 	updateDialog();
 	checkAllData();
@@ -1648,6 +1669,8 @@ void ViewPreferences::apply()
 	g_pApp->setOpenLastProject(m_openLastProject);
 	g_pApp->setShowCaptionFullName(m_showFullName);
 	g_pApp->getStyle()->updateAllStyles();
+	updatePluginList();
+	g_pApp->getPluginLoader().setPluginInfoList(*m_pPluginInfoList);
 }
 
 void ViewPreferences::checkAllData()
@@ -1688,5 +1711,125 @@ void ViewPreferences::keyPressEvent(QKeyEvent* pEvent)
 	if (QKeySequence(pEvent->key()) == QKeySequence::HelpContents)
 	{
 		onHelpContext();
+	}
+}
+
+void ViewPreferences::deletePlugin()
+{
+	onStopPlugin();
+	std::vector<int> rows = selectedRows();
+	for( int i = rows.size()-1; i >= 0; i-- )
+	{
+		int current = rows[i];
+		{
+			LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
+			QPluginLoader* loaderPtr = plgnInfo->getLoader();
+			if (loaderPtr) {
+				loaderPtr->unload();
+				QFile::remove(loaderPtr->fileName());
+			}
+			m_pPluginInfoList->remove(plgnInfo);
+			pluginInfoTable->removeRow(current);
+		}
+	}
+	updateButtonsState();
+}
+
+void ViewPreferences::onStartPlugin()
+{
+	std::vector<int> rows = selectedRows();
+	for( int i = rows.size()-1; i >= 0; i-- )
+	{
+		int current = rows[i];
+		LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
+		if (!plgnInfo->isActive() && plgnInfo->isAvailable()) {
+			g_pApp->getPluginLoader().startPlugin(plgnInfo);
+		}
+	}
+	pluginInfoTable->setFocus();
+	updateButtonsState();
+}
+
+void ViewPreferences::onStopPlugin()
+{
+	std::vector<int> rows = selectedRows();
+	for( int i = rows.size()-1; i >= 0; i-- )
+	{
+		int current  = rows[i];
+		LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
+		if (plgnInfo->isActive() && plgnInfo->isAvailable()) { 
+			g_pApp->getPluginLoader().stopPlugin(plgnInfo);
+		}
+	}
+	updateButtonsState();
+}
+
+void ViewPreferences::populateRow(const LPPluginInfo& plgInfo)
+{
+	int currentRow = pluginInfoTable->rowCount();
+	pluginInfoTable->setRowCount(currentRow + 1);
+	QTableWidgetItem* pNameItem (new QTableWidgetItem);
+	QTableWidgetItem* pCheckItem(new QTableWidgetItem);
+	pNameItem ->setText(plgInfo->getName());
+	pNameItem ->setData(Qt::UserRole,QVariant::fromValue(plgInfo));
+	pCheckItem->setFlags     (pCheckItem->flags() | Qt::ItemIsUserCheckable);
+	pCheckItem->setCheckState(plgInfo->getAutoload() ? Qt::Checked : Qt::Unchecked);
+	pluginInfoTable->setItem(currentRow, 0, pNameItem);
+	pluginInfoTable->setItem(currentRow, 1, new QTableWidgetItem(plgInfo->getVersion()));
+	pluginInfoTable->setItem(currentRow, 2, new QTableWidgetItem(plgInfo->getAuthor ()));
+	pluginInfoTable->setItem(currentRow, 3, pCheckItem);
+}
+
+void ViewPreferences::fillPluginInfoTable()
+{
+	for (PluginInfoList::iterator plgnInfoItrt=m_pPluginInfoList->begin(); plgnInfoItrt!=m_pPluginInfoList->end(); ++plgnInfoItrt)
+	{
+		populateRow(*plgnInfoItrt);
+	}
+}
+void ViewPreferences::updateButtonsState()
+{
+	std::vector<int> rows = selectedRows();
+	bool allActive      = true;
+	bool allInactive    = true;
+	bool allUnavailable = true;
+	for( int i = rows.size()-1; i >= 0; i-- )
+	{
+		int current = rows[i];
+		LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
+		if (plgnInfo->isAvailable()) {
+			allActive      = allActive      &&   plgnInfo->isActive() ;
+			allInactive    = allInactive    && !(plgnInfo->isActive());
+			allUnavailable = false;
+		}
+	}
+	buttonStartPlugin->setEnabled(!allActive   && !allUnavailable);
+	buttonStopPlugin ->setEnabled(!allInactive && !allUnavailable);
+}
+
+ViewPreferences::IntVector ViewPreferences::selectedRows() const
+{
+	std::vector<int> sortedRows;
+	BOOST_FOREACH(QModelIndex index, pluginInfoTable->selectionModel()->selectedRows()) {
+		sortedRows.push_back(index.row()); 
+	}
+
+	std::sort(sortedRows.begin() , sortedRows.end());
+	return sortedRows;
+}
+
+LPPluginInfo ViewPreferences::getPluginInfoFromTable(int pluginRow) const
+{
+	QTableWidgetItem* itm = pluginInfoTable->item(pluginRow,0);
+	LPPluginInfo plgnInfo = itm->data(Qt::UserRole).value<LPPluginInfo>();
+	return plgnInfo;
+}
+
+void ViewPreferences::updatePluginList()
+{
+	for (int itmRow=0; itmRow < pluginInfoTable->rowCount(); itmRow++) {
+		LPPluginInfo plgnInfo = getPluginInfoFromTable(itmRow);
+		bool autoLoadValue = pluginInfoTable->item(itmRow,3)->checkState() == Qt::Checked;
+		plgnInfo->setAutoload(autoLoadValue);
 	}
 }

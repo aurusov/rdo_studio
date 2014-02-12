@@ -16,6 +16,7 @@
 #include <QTextCodec>
 #include <QSettings>
 #include <QMessageBox>
+#include <boost/foreach.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/file/rdofile.h"
@@ -95,6 +96,7 @@ Application::Application(int& argc, char** argv)
 	, m_exitCode                    (rdo::simulation::report::EC_OK)
 	, m_pAssistant                  (NULL  )
 	, m_pMainFrame                  (NULL  )
+	, m_pluginLoader                ()
 {
 	g_pApp = this;
 
@@ -239,6 +241,9 @@ Application::Application(int& argc, char** argv)
 	{
 		g_pModel->runModel();
 	}
+
+	m_pluginLoader.initPluginParent(m_pMainFrame);
+	m_pluginLoader.startAutoloadedPlugins();
 }
 
 Application::~Application()
@@ -270,9 +275,19 @@ Application::~Application()
 	}
 }
 
-PTR(MainWindow) Application::getMainWndUI()
+RDOKernel* Application::getKernel() const
+{
+	return kernel;
+}
+
+MainWindow* Application::getMainWndUI() const
 {
 	return m_pMainFrame;
+}
+
+rdo::gui::tracer::Tracer* Application::getTracer() const
+{
+	return g_pTracer;
 }
 
 PTR(QMainWindow) Application::getMainWnd()
@@ -531,6 +546,11 @@ CREF(rdo::gui::editor::LPModelStyle) Application::getModelStyle() const
 {
 	ASSERT(m_pModelStyle);
 	return m_pModelStyle;
+}
+
+rdo::Plugin::Loader& Application::getPluginLoader()
+{
+	return m_pluginLoader;
 }
 
 #ifdef Q_OS_WIN

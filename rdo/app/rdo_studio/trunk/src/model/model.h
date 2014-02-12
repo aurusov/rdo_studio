@@ -69,6 +69,8 @@ public:
 	void          showFrame       (int index);
 	void          closeAllFrame   ();
 	bool          hasModel        () const;
+	bool          isModify        () const;
+	bool          isEmpty         () const;
 
 	 PTR(TabCtrl) getTab();
 	CPTR(TabCtrl) getTab() const;
@@ -101,7 +103,6 @@ private:
 	void setIsRunning (bool value);
 	void updateActions();
 
-	bool  isModify  () const;
 	bool  canNew    () const;
 	bool  canOpen   () const;
 	bool  canSave   () const;

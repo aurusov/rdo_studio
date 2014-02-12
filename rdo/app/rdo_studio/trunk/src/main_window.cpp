@@ -158,6 +158,7 @@ void MainWindow::SubWindowToAction::removeLastSubWindow()
 MainWindow::MainWindow()
 	: m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
+	, m_pModel(NULL)
 {
 	setupUi(this);
 	installEventFilter(this);
@@ -425,6 +426,7 @@ void MainWindow::init()
 {
 	// Кто-то должен поднять кернел и треды
 	new rdo::gui::model::Model();
+	m_pModel = g_pModel;
 
 	QSettings settings;
 	settings.beginGroup("style");
@@ -944,4 +946,9 @@ bool MainWindow::eventFilter(QObject* target, QEvent* event)
 	}
 
 	return parent_type::eventFilter(target, event);
+}
+
+rdo::gui::model::Model* MainWindow::getModel()
+{
+	return m_pModel;
 }

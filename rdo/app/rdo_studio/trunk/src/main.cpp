@@ -20,6 +20,7 @@ int main(int argc, char** argv)
 	rdo::locale::init();
 
 	Application app(argc, argv);
+	Q_INIT_RESOURCE(rdo_studio);
 
 	return app.exec();
 }
