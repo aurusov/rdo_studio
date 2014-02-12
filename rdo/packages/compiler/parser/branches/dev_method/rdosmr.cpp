@@ -22,18 +22,6 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-int smr_file_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
-{
-	LEXER->m_lpval = lpval;
-	LEXER->m_lploc = llocp;
-	return LEXER->yylex();
-}
-
-void smr_file_error(const char* message)
-{
-	UNUSED(message);
-}
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
