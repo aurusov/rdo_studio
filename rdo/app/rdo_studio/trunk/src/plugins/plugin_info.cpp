@@ -90,7 +90,7 @@ bool PluginInfo::pluginSignInfoIsEqual(const PluginInfo& pluginInfo)
 	       pluginVersion == pluginInfo.getVersion();
 }
 
-bool PluginInfo::isAvailable()
+bool PluginInfo::isAvailable() const
 {
 	return !(pluginState == rdo::Plugin::Deleted ||
 	         pluginState == rdo::Plugin::IdOnlyMatched);

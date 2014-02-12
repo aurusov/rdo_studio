@@ -41,7 +41,7 @@ public:
 	void setActive  (bool value);
 
 	bool pluginSignInfoIsEqual(const PluginInfo& pluginInfo);
-	bool isAvailable();
+	bool isAvailable() const;
 	bool operator==(const PluginInfo& other);
 
 private:
