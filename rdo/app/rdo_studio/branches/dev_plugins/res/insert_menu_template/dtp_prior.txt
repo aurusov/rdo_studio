@@ -1,5 +1,0 @@
-$Decision_point  : prior
-$Condition NoCheck
-$Activities
-
-$End
