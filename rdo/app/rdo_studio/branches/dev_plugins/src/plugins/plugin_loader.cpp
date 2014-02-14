@@ -101,10 +101,6 @@ PluginInfoList Loader::getCurrentPlugins() const
 {
 	PluginInfoList list;
 	QDir dir(qApp->applicationDirPath());
-	if (dir.dirName().toLower() == "debug" || dir.dirName().toLower() == "release")
-	{
-		dir.cdUp();
-	}
 	if (dir.cd("plugins"))
 	{
 		QStringList fileList = getFileList(dir.path());
