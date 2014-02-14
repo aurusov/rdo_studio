@@ -10,11 +10,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
-IF(WIN32)
-	EXECUTE_PROCESS(COMMAND if not exists ${PROJECT_SOURCE_DIR}/app/rdo_studio/plugins/game5/src/plugin_game5.json copy nul ${PROJECT_SOURCE_DIR}/app/rdo_studio/plugins/game5/src/plugin_game5.json)
-ELSE()
-	EXECUTE_PROCESS(COMMAND touch ${PROJECT_SOURCE_DIR}/app/rdo_studio/plugins/game5/src/plugin_game5.json)
-ENDIF()
+FILE(WRITE ${PROJECT_SOURCE_DIR}/app/rdo_studio/plugins/game5/src/plugin_game5.json)
 
 SET(MOC_FILES
 	src/board.h
