@@ -338,7 +338,7 @@ void PluginGame5GenerateSituationDialog::updateTabs()
 	}
 }
 
-void PluginGame5GenerateSituationDialog::onPlgnAction()
+void PluginGame5GenerateSituationDialog::onPluginAction()
 {
 	QStringList funList = parseFunTab();
 	QStringListModel* stringModel = (QStringListModel*)lineEditCustom->completer()->model();

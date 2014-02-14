@@ -349,7 +349,7 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 	                                          graphWidget->scene->sceneRect().x(), graphWidget->scene->sceneRect().y()));
 }
 
-void PluginGame5GraphDialog::onPlgnAction(QString boardState)
+void PluginGame5GraphDialog::onPluginAction(QString boardState)
 {
 	if (m_traceTimeStamp != getTraceTimeStamp())
 	{

@@ -32,7 +32,7 @@ signals:
 	void buttonRandomClicked(bool solvabilityCheck);
 
 public slots:
-	void onPlgnAction();
+	void onPluginAction();
 
 private slots:
 	void callTilesOrderDialog();

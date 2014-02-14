@@ -30,7 +30,7 @@ public:
 	void updateGraph(const QString& startBoardState);
 
 public slots:
-	void onPlgnAction(QString boardState);
+	void onPluginAction(QString boardState);
 	void emitShowNodeInfoDlg();
 
 signals:

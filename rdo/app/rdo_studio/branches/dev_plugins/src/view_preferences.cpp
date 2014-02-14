@@ -1721,14 +1721,14 @@ void ViewPreferences::deletePlugin()
 	{
 		const int current = rows[i];
 		{
-			const LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
-			QPluginLoader* loaderPtr = plgnInfo->getLoader();
-			if (loaderPtr)
+			const LPPluginInfo pluginInfo = getPluginInfoFromTable(current);
+			QPluginLoader* pluginLoader   = pluginInfo->getLoader();
+			if (pluginLoader)
 			{
-				loaderPtr->unload();
-				QFile::remove(loaderPtr->fileName());
+				pluginLoader->unload();
+				QFile::remove(pluginLoader->fileName());
 			}
-			m_pPluginInfoList->remove(plgnInfo);
+			m_pPluginInfoList->remove(pluginInfo);
 			pluginInfoTable->removeRow(current);
 		}
 	}
@@ -1741,10 +1741,10 @@ void ViewPreferences::onStartPlugin()
 	for(int i = rows.size()-1; i >= 0; i--)
 	{
 		const int current = rows[i];
-		const LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
-		if (!plgnInfo->isActive() && plgnInfo->isAvailable())
+		const LPPluginInfo pluginInfo = getPluginInfoFromTable(current);
+		if (!pluginInfo->isActive() && pluginInfo->isAvailable())
 		{
-			g_pApp->getPluginLoader().startPlugin(plgnInfo);
+			g_pApp->getPluginLoader().startPlugin(pluginInfo);
 		}
 	}
 	pluginInfoTable->setFocus();
@@ -1757,10 +1757,10 @@ void ViewPreferences::onStopPlugin()
 	for(int i = rows.size()-1; i >= 0; i--)
 	{
 		const int current  = rows[i];
-		const LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
-		if (plgnInfo->isActive() && plgnInfo->isAvailable())
+		const LPPluginInfo pluginInfo = getPluginInfoFromTable(current);
+		if (pluginInfo->isActive() && pluginInfo->isAvailable())
 		{
-			g_pApp->getPluginLoader().stopPlugin(plgnInfo);
+			g_pApp->getPluginLoader().stopPlugin(pluginInfo);
 		}
 	}
 	updateButtonsState();
@@ -1798,11 +1798,11 @@ void ViewPreferences::updateButtonsState()
 	for(int i = rows.size()-1; i >= 0; i--)
 	{
 		const int current = rows[i];
-		const LPPluginInfo plgnInfo = getPluginInfoFromTable(current);
-		if (plgnInfo->isAvailable())
+		const LPPluginInfo pluginInfo = getPluginInfoFromTable(current);
+		if (pluginInfo->isAvailable())
 		{
-			allActive      = allActive   &&   plgnInfo->isActive() ;
-			allInactive    = allInactive && !(plgnInfo->isActive());
+			allActive      = allActive   &&   pluginInfo->isActive() ;
+			allInactive    = allInactive && !(pluginInfo->isActive());
 			allUnavailable = false;
 		}
 	}
@@ -1826,16 +1826,16 @@ ViewPreferences::IntVector ViewPreferences::selectedRows() const
 LPPluginInfo ViewPreferences::getPluginInfoFromTable(int pluginRow) const
 {
 	const QTableWidgetItem* itm = pluginInfoTable->item(pluginRow,0);
-	LPPluginInfo plgnInfo = itm->data(Qt::UserRole).value<LPPluginInfo>();
-	return plgnInfo;
+	LPPluginInfo pluginInfo = itm->data(Qt::UserRole).value<LPPluginInfo>();
+	return pluginInfo;
 }
 
 void ViewPreferences::updatePluginList()
 {
-	for (int itmRow=0; itmRow < pluginInfoTable->rowCount(); itmRow++)
+	for (int currentRow = 0; currentRow < pluginInfoTable->rowCount(); currentRow++)
 	{
-		LPPluginInfo plgnInfo = getPluginInfoFromTable(itmRow);
-		bool autoLoadValue = pluginInfoTable->item(itmRow,3)->checkState() == Qt::Checked;
-		plgnInfo->setAutoload(autoLoadValue);
+		LPPluginInfo pluginInfo = getPluginInfoFromTable(currentRow);
+		bool autoLoadValue = pluginInfoTable->item(currentRow, 3)->checkState() == Qt::Checked;
+		pluginInfo->setAutoload(autoLoadValue);
 	}
 }

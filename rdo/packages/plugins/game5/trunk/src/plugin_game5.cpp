@@ -39,11 +39,11 @@ QString PluginGame5::getVersion()
 
 QUuid PluginGame5::getGUID()
 {
-	QUuid plgnGUID("{5315750C-964B-4ed2-96FE-21FC6226942B}");
-	return plgnGUID;
+	QUuid pluginGUID("{5315750C-964B-4ed2-96FE-21FC6226942B}");
+	return pluginGUID;
 }
 
-void PluginGame5::plgnStartAction(QWidget* pParent)
+void PluginGame5::pluginStartAction(QWidget* pParent)
 {
 	if (!g_pApp)
 	{
@@ -96,7 +96,7 @@ void PluginGame5::plgnStartAction(QWidget* pParent)
 	graphDlg  = NULL;
 }
 
-void PluginGame5::plgnStopAction(QWidget* pParent)
+void PluginGame5::pluginStopAction(QWidget* pParent)
 {
 	QMenu* pluginMenu = pParent->findChild<QMenu*>("createdMenu");
 	QAction* pluignAction = NULL;
@@ -224,34 +224,34 @@ void PluginGame5::initToolBar(MainWindow* pParent)
 	QToolBar* pluginToolBar = new QToolBar(pParent);
 	pluginToolBar->setObjectName("pluginGame5ToolBar");
 
-	QAction* plgnGraphDlg = new QAction(pParent);
-	QAction* plgnGnrtDlg = new QAction(pParent);
+	QAction* pluginGraphDlgAction    = new QAction(pParent);
+	QAction* pluginGenerateDlgAction = new QAction(pParent);
 
-	plgnGnrtDlg->setObjectName("plgnGnrtDlg");
-	plgnGnrtDlg->setText("Расставить фишки");
-	QPixmap gnrtDlgPixmap(":/res/images/gen_sit_dialog.png");
-	plgnGnrtDlg->setIcon(QIcon(gnrtDlgPixmap));
+	pluginGenerateDlgAction->setObjectName("pluginGenerateDlgAction");
+	pluginGenerateDlgAction->setText("Расставить фишки");
+	QPixmap pluginGenerateDlgActionPixmap(":/res/images/gen_sit_dialog.png");
+	pluginGenerateDlgAction->setIcon(QIcon(pluginGenerateDlgActionPixmap));
 
-	plgnGraphDlg->setObjectName("plgnGraphDlg");
-	plgnGraphDlg->setText("Построить граф");
+	pluginGraphDlgAction->setObjectName("pluginGraphDlgAction");
+	pluginGraphDlgAction->setText("Построить граф");
 	QPixmap graphDlgPixmapD(":/res/images/graph_dialog_d.png");
 	QPixmap graphDlgPixmap (":/res/images/graph_dialog.png");
 	QIcon graphDlgIcon(graphDlgPixmap);
 	graphDlgIcon.addPixmap(graphDlgPixmapD, QIcon::Disabled);
-	plgnGraphDlg->setIcon(graphDlgIcon);
-	plgnGraphDlg->setEnabled(false);
+	pluginGraphDlgAction->setIcon(graphDlgIcon);
+	pluginGraphDlgAction->setEnabled(false);
 
-	pluginToolBar->addAction(plgnGnrtDlg);
-	pluginToolBar->addAction(plgnGraphDlg);
+	pluginToolBar->addAction(pluginGenerateDlgAction);
+	pluginToolBar->addAction(pluginGraphDlgAction);
 	pluginToolBar->setIconSize(QSize(16, 15));
 
 	pParent->addToolBar(Qt::TopToolBarArea,pluginToolBar);
 
-	connect(plgnGnrtDlg , &QAction::triggered, genSitDlg, &PluginGame5GenerateSituationDialog::onPlgnAction);
-	connect(plgnGraphDlg, &QAction::triggered, this , &PluginGame5::reemitGraphDlgAction);
+	connect(pluginGenerateDlgAction , &QAction::triggered, genSitDlg, &PluginGame5GenerateSituationDialog::onPluginAction);
+	connect(pluginGraphDlgAction    , &QAction::triggered, this     , &PluginGame5::reemitGraphDlgAction);
 
-	connect(this, &PluginGame5::onGraphDlgAction        , graphDlg    , &PluginGame5GraphDialog::onPlgnAction);
-	connect(this, &PluginGame5::setGraphDlgActionEnabled, plgnGraphDlg, &QAction::setEnabled);
+	connect(this, &PluginGame5::onGraphDlgAction        , graphDlg            , &PluginGame5GraphDialog::onPluginAction);
+	connect(this, &PluginGame5::setGraphDlgActionEnabled, pluginGraphDlgAction, &QAction::setEnabled);
 }
 
 void PluginGame5::initDialogs(QWidget* pParent)

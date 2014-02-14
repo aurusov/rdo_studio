@@ -64,11 +64,11 @@ PluginInfoList Loader::getPluginsHistory() const
 	for (int i = 0; i < size; ++i)
 	{
 		settings.setArrayIndex(i);
-		QString pluginName     = settings.value("plgnName"    , "").toString();
-		bool    pluginAutoLoad = settings.value("plgnAutoLoad", false).toBool();
-		QString pluginAuthor   = settings.value("plgnAuthor"  , "").toString();
-		QString pluginVer      = settings.value("plgnVer"     , "").toString();
-		QUuid   pluginGUID     = settings.value("plgnGUID"    , QUuid()).toUuid();
+		QString pluginName     = settings.value("pluginName"    , "").toString();
+		bool    pluginAutoLoad = settings.value("pluginAutoLoad", false).toBool();
+		QString pluginAuthor   = settings.value("pluginAuthor"  , "").toString();
+		QString pluginVer      = settings.value("pluginVer"     , "").toString();
+		QUuid   pluginGUID     = settings.value("pluginGUID"    , QUuid()).toUuid();
 		PluginInfo pluginInfo(pluginName, NULL, pluginAutoLoad, pluginGUID, pluginAuthor, pluginVer, rdo::Plugin::Unique);
 		list.push_back(rdo::Factory<PluginInfo>::create(pluginInfo));
 	}
@@ -86,11 +86,11 @@ void Loader::setPluginInfoList(const PluginInfoList& value) const
 		if (pluginInfo->getState() != rdo::Plugin::IdOnlyMatched)
 		{
 			settings.setArrayIndex(index);
-			settings.setValue("plgnName"    , pluginInfo->getName());
-			settings.setValue("plgnAutoLoad", pluginInfo->getAutoload());
-			settings.setValue("plgnGUID"    , pluginInfo->getGUID());
-			settings.setValue("plgnAuthor"  , pluginInfo->getAuthor());
-			settings.setValue("plgnVer"     , pluginInfo->getVersion());
+			settings.setValue("pluginName"    , pluginInfo->getName());
+			settings.setValue("pluginAutoLoad", pluginInfo->getAutoload());
+			settings.setValue("pluginGUID"    , pluginInfo->getGUID());
+			settings.setValue("pluginAuthor"  , pluginInfo->getAuthor());
+			settings.setValue("pluginVer"     , pluginInfo->getVersion());
 			index++;
 		}
 	}
@@ -194,7 +194,7 @@ void Loader::stopPlugin(const LPPluginInfo& pluginInfo)
 	PluginInterface* pluginInterface = loadPlugin(pluginInfo->getLoader());
 	if (pluginInterface)
 	{
-		pluginInterface->plgnStopAction(m_pPluginsParent);
+		pluginInterface->pluginStopAction(m_pPluginsParent);
 		pluginInfo->setActive(false);
 	}
 }
@@ -204,7 +204,7 @@ void Loader::startPlugin(const LPPluginInfo& pluginInfo)
 	PluginInterface* pluginInterface = loadPlugin(pluginInfo->getLoader());
 	if (pluginInterface)
 	{
-		pluginInterface->plgnStartAction(m_pPluginsParent);
+		pluginInterface->pluginStartAction(m_pPluginsParent);
 		pluginInfo->setActive(true);
 	}
 }

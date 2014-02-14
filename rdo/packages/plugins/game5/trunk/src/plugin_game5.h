@@ -33,8 +33,8 @@ public:
 	virtual QString getAuthor    ();
 	virtual QString getVersion   ();
 
-	virtual void plgnStartAction (QWidget* parent);
-	virtual void plgnStopAction  (QWidget* parent);
+	virtual void pluginStartAction (QWidget* parent);
+	virtual void pluginStopAction  (QWidget* parent);
 
 signals:
 	void onGraphDlgAction(QString string);
