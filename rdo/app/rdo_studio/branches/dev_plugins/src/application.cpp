@@ -547,7 +547,7 @@ CREF(rdo::gui::editor::LPModelStyle) Application::getModelStyle() const
 	return m_pModelStyle;
 }
 
-rdo::Plugin::Loader& Application::getPluginLoader()
+rdo::plugin::Loader& Application::getPluginLoader()
 {
 	return m_pluginLoader;
 }

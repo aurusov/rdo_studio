@@ -19,7 +19,7 @@
 #include "app/rdo_studio/src/plugins/plugin_loader.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdo::Plugin;
+using namespace rdo::plugin;
 
 Loader::Loader()
 	: m_pPluginsParent(NULL)
@@ -47,9 +47,9 @@ PluginInfoList Loader::getMergedPluginInfoList() const
 	}
 	BOOST_FOREACH(const LPPluginInfo& pluginInfo, pluginHistory)
 	{
-		if (matchPluginInfo(mergedPlugin, pluginInfo) != rdo::Plugin::ExactMatched)
+		if (matchPluginInfo(mergedPlugin, pluginInfo) != rdo::plugin::ExactMatched)
 		{
-			pluginInfo->setState(rdo::Plugin::Deleted);
+			pluginInfo->setState(rdo::plugin::Deleted);
 			mergedPlugin.push_back(pluginInfo);
 		}
 	}
@@ -69,7 +69,7 @@ PluginInfoList Loader::getPluginsHistory() const
 		QString pluginAuthor   = settings.value("pluginAuthor"  , "").toString();
 		QString pluginVer      = settings.value("pluginVer"     , "").toString();
 		QUuid   pluginGUID     = settings.value("pluginGUID"    , QUuid()).toUuid();
-		PluginInfo pluginInfo(pluginName, NULL, pluginAutoLoad, pluginGUID, pluginAuthor, pluginVer, rdo::Plugin::Unique);
+		PluginInfo pluginInfo(pluginName, NULL, pluginAutoLoad, pluginGUID, pluginAuthor, pluginVer, rdo::plugin::Unique);
 		list.push_back(rdo::Factory<PluginInfo>::create(pluginInfo));
 	}
 	return list;
@@ -83,7 +83,7 @@ void Loader::setPluginInfoList(const PluginInfoList& value) const
 	int index = 0;
 	BOOST_FOREACH(const LPPluginInfo& pluginInfo, value)
 	{
-		if (pluginInfo->getState() != rdo::Plugin::IdOnlyMatched)
+		if (pluginInfo->getState() != rdo::plugin::IdOnlyMatched)
 		{
 			settings.setArrayIndex(index);
 			settings.setValue("pluginName"    , pluginInfo->getName());
@@ -113,7 +113,7 @@ PluginInfoList Loader::getCurrentPlugins() const
 				PluginInfo pluginInfo = generatePluginInfo(pluginInterface, pluginLoader);
 				LPPluginInfo pPlgnInfo = rdo::Factory<PluginInfo>::create(pluginInfo);
 				pluginLoader->unload();
-				if (matchPluginInfo(list, pPlgnInfo) != rdo::Plugin::ExactMatched)
+				if (matchPluginInfo(list, pPlgnInfo) != rdo::plugin::ExactMatched)
 				{
 					list.push_back(pPlgnInfo);
 				}
@@ -137,12 +137,12 @@ int Loader::matchPluginInfo(const PluginInfoList& list, const LPPluginInfo& plug
 			if (pluginInfo->pluginSignInfoIsEqual(*pluginInfo))
 			{
 				pluginInfo->setAutoload(pluginInfo->getAutoload());
-				pluginState = rdo::Plugin::ExactMatched;
+				pluginState = rdo::plugin::ExactMatched;
 				break;
 			}
 			else
 			{
-				pluginState = rdo::Plugin::IdOnlyMatched;
+				pluginState = rdo::plugin::IdOnlyMatched;
 			}
 		}
 	}
@@ -185,7 +185,7 @@ PluginInfo Loader::generatePluginInfo(PluginInterface* pluginInterface, QPluginL
 	QString pluginAuthor   = pluginInterface->getAuthor();
 	QString pluginVersion  = pluginInterface->getVersion();
 	bool    pluginAutoload = false;
-	PluginInfo pluginInfo(pluginName, pluginLoader, pluginAutoload, pluginGUID, pluginAuthor, pluginVersion, rdo::Plugin::Unique);
+	PluginInfo pluginInfo(pluginName, pluginLoader, pluginAutoload, pluginGUID, pluginAuthor, pluginVersion, rdo::plugin::Unique);
 	return pluginInfo; 
 }
 

@@ -63,7 +63,7 @@ AND INSTANCE_OF(std::list<LPPluginInfo>)
 
 namespace rdo
 {
-	namespace Plugin
+	namespace plugin
 	{
 		enum LoadState
 		{

@@ -18,13 +18,13 @@
 
 namespace rdo
 {
-	namespace Plugin
+	namespace plugin
 	{
 		class Loader;
 	};
 };
 
-class rdo::Plugin::Loader
+class rdo::plugin::Loader
 {
 public:
 	Loader ();
