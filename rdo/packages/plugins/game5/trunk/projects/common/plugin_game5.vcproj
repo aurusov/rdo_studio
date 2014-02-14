@@ -64,7 +64,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Qt5Guid.lib Qt5Cored.lib Qt5Widgetsd.lib"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\plugins\$(ProjectName).dll"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -138,6 +138,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="Qt5Guid.lib Qt5Cored.lib Qt5Widgetsd.lib"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="2"
