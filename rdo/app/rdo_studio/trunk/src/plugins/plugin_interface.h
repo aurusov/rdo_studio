@@ -24,8 +24,8 @@ public:
 	virtual QString getAuthor    () = 0;
 	virtual QString getVersion   () = 0;
 
-	virtual void plgnStartAction(QWidget* parent) = 0;
-	virtual void plgnStopAction (QWidget* parent) = 0;
+	virtual void pluginStartAction(QWidget* parent) = 0;
+	virtual void pluginStopAction (QWidget* parent) = 0;
 };
 
 Q_DECLARE_INTERFACE(PluginInterface, "RDO_PLUGIN_INTERFACE");
