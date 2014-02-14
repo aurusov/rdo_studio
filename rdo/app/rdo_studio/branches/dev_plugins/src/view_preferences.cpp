@@ -1806,8 +1806,9 @@ void ViewPreferences::updateButtonsState()
 			allUnavailable = false;
 		}
 	}
-	buttonStartPlugin->setEnabled(!allActive   && !allUnavailable);
-	buttonStopPlugin ->setEnabled(!allInactive && !allUnavailable);
+	buttonStartPlugin ->setEnabled(!allActive   && !allUnavailable);
+	buttonStopPlugin  ->setEnabled(!allInactive && !allUnavailable);
+	buttonDeletePlugin->setEnabled(!m_pPluginInfoList->empty());
 }
 
 ViewPreferences::IntVector ViewPreferences::selectedRows() const
