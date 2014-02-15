@@ -11,7 +11,9 @@
 #define _RDO_PLUGIN_GAME_5_BOARD_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <QFrame>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/tiles.h"
 // --------------------------------------------------------------------------------

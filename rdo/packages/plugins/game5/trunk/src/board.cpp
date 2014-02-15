@@ -9,9 +9,11 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <boost/range/algorithm/find.hpp>
 #include <ctime>
 #include <cstdlib>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/board.h"
 // --------------------------------------------------------------------------------
@@ -139,10 +141,10 @@ bool Board::lineupIsSolvable()
 			}
 		}
 	}
-	return m_tilesCountX % 2
-		? !(sum % 2)
-		: (m_tilesCountY % 2
-				? (sum + freePlaceRow) % 2
+	return m_tilesCountX % 2 != 0
+		? sum % 2 == 0
+		: (m_tilesCountY % 2 != 0
+				? (sum + freePlaceRow) % 2 != 0
 				: (sum + freePlaceRow) % 2 == 0
 		); // См. Перельман. Живая математика.
 }

@@ -9,10 +9,12 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <QMessageBox>
 #include <QBitmap>
 #include <QDir>
 #include <boost/foreach.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/plugin_game5.h"
 #include "app/rdo_studio/src/application.h"
@@ -58,24 +60,23 @@ void PluginGame5::pluginStartAction(QWidget* pParent)
 		QMenuBar* menuBar = pParent->findChild<QMenuBar*>("menubar");
 		if (menuBar)
 		{
-			bool defined = false;
-			QMenu* defMenu;
+			QMenu* defMenu = NULL;
 			BOOST_FOREACH(QAction* action, menuBar->actions())
 			{
-				if (action->text() == "Плагины" && !defined)
+				if (action->text() == "Плагины")
 				{
-					defined = true;
 					defMenu = action->menu();
+					break;
 				}
 			}
-			if (!defined)
+			if (defMenu)
 			{
-				menu = new QMenu("Плагины", pParent);
-				menu->setObjectName("createdMenu");
+				menu = defMenu;
 			}
 			else
 			{
-				menu = defMenu;
+				menu = new QMenu("Плагины", pParent);
+				menu->setObjectName("createdMenu");
 			}
 			menuBar->addMenu(menu);
 		}

@@ -9,8 +9,10 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <QPainter>
 #include <math.h>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_node.h"
 #include "app/rdo_studio/plugins/game5/src/graph_edge.h"
@@ -19,9 +21,9 @@
 static const double Pi = 3.14159265358979323846264338327950288419717;
 
 GraphEdge::GraphEdge(GraphNode* sourceNode, GraphNode* destNode)
-	: arrowSize(10        )
-	, source   (sourceNode)
+	: source   (sourceNode)
 	, dest     (destNode  )
+	, arrowSize(10        )	
 {
 	setAcceptedMouseButtons(0);
 	adjust();

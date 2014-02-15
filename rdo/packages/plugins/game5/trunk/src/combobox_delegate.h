@@ -11,7 +11,9 @@
 #define _RDO_PLUGIN_GAME_5_COMBOBOX_DELEGATE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <QItemDelegate>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
  

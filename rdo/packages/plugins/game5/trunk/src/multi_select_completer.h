@@ -11,7 +11,9 @@
 #define _RDO_PLUGIN_GAME_5_MULTI_SELECT_COMPLETER_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <QCompleter>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 class MultiSelectCompleter : public QCompleter

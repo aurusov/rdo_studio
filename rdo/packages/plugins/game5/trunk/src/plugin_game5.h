@@ -11,7 +11,9 @@
 #define _RDO_PLUGIN_PLUGIN_GAME5_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <QtPlugin>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_dialog.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_graph_dialog.h"

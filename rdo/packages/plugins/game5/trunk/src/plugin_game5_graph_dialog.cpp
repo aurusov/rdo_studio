@@ -9,8 +9,10 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <boost/foreach.hpp>
 #include <algorithm>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model.h"
@@ -24,7 +26,6 @@
 PluginGame5GraphDialog::PluginGame5GraphDialog(QWidget * pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, m_traceTimeStamp(getTraceTimeStamp())
-	, m_graph(NULL)
 	, m_clickedNode(NULL)
 {
 	setupUi(this);
@@ -224,7 +225,18 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 	{
 		m_graph[node]->setRelatedToSolution(true);
 	}
-	for (int i = (int)paintLevel.size() - 1; i >= 0; i--)
+	
+	for (unsigned int j = 0; j < paintLevel.back().size(); j++)
+	{
+		int node = paintLevel.back()[j];
+
+		graphWidget->scene->addItem(m_graph[node]);
+		m_graph[node]->setPos(40 * (j + 1), 20 + (paintLevel.size() - 1) * 40);
+	}
+	leftNode  = m_graph[paintLevel.back().front()];
+	rightNode = m_graph[paintLevel.back().back()];
+	
+	for (int i = (int)paintLevel.size() - 2; i >= 0; i--)
 	{
 		bool buildFlag   = true;
 		int  tempNodeNum = 0;
@@ -269,77 +281,62 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 		}
 		BOOST_FOREACH(const UnbuiltRange& unbuiltRange, unbuiltRangeVector)
 		{
-			int endUnbuiltRange = unbuiltRange.firstNode + unbuiltRange.range;
-			if (unbuiltRange.range == paintLevel[i].size())
+			unsigned int endUnbuiltRange = unbuiltRange.firstNode + unbuiltRange.range;
+			if (unbuiltRange.firstNode == 0)
 			{
-				for (int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
+				int temp  = paintLevel[i][endUnbuiltRange];
+				for (unsigned int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
 				{
-					int node = paintLevel[i][k];
+					int node  = paintLevel[i][k];
+					int segment = unbuiltRange.range - k + unbuiltRange.firstNode;
 
 					graphWidget->scene->addItem(m_graph[node]);
-					m_graph[node]->setPos(40 * (k + 1), 20 + (paintLevel.size() - 1) * 40);
+					m_graph[node]->setPos(m_graph[temp]->pos().x() - 40 * segment, m_graph[temp]->pos().y());
 				}
-				leftNode  = m_graph[paintLevel[i][unbuiltRange.firstNode]];
-				rightNode = m_graph[paintLevel[i][endUnbuiltRange - 1]];
+				if (leftNode->pos().x() > m_graph[paintLevel[i][unbuiltRange.firstNode]]->pos().x())
+				{
+					leftNode = m_graph[paintLevel[i][unbuiltRange.firstNode]];
+				}
+			}
+			else if (endUnbuiltRange == paintLevel[i].size())
+			{
+				int temp = paintLevel[i][unbuiltRange.firstNode - 1];
+				for (unsigned int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
+				{
+					int node  = paintLevel[i][k];
+					int segment = k - unbuiltRange.firstNode + 1;
+
+					graphWidget->scene->addItem(m_graph[node]);
+					m_graph[node]->setPos(m_graph[temp]->pos().x() + 40 * segment, m_graph[temp]->pos().y());
+				}
+				if (rightNode->pos().x() < m_graph[paintLevel[i][endUnbuiltRange - 1]]->pos().x())
+				{
+					rightNode = m_graph[paintLevel[i][endUnbuiltRange - 1]];
+				}
 			}
 			else
 			{
-				if (unbuiltRange.firstNode == 0)
-				{
-					int temp  = paintLevel[i][endUnbuiltRange];
-					for (int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
-					{
-						int node  = paintLevel[i][k];
-						int segment = unbuiltRange.range - k + unbuiltRange.firstNode;
+				int temp1  = paintLevel[i][unbuiltRange.firstNode - 1];
+				int temp2  = paintLevel[i][endUnbuiltRange];
+				double deltaX =  m_graph[temp2]->pos().x() - m_graph[temp1]->pos().x();
 
-						graphWidget->scene->addItem(m_graph[node]);
-						m_graph[node]->setPos(m_graph[temp]->pos().x() - 40 * segment, m_graph[temp]->pos().y());
-					}
-					if (leftNode->pos().x() > m_graph[paintLevel[i][unbuiltRange.firstNode]]->pos().x())
+				if (deltaX < (unbuiltRange.range + 1) * 40)
+				{
+					for (unsigned int l = endUnbuiltRange; l < paintLevel[i].size(); l++)
 					{
-						leftNode = m_graph[paintLevel[i][unbuiltRange.firstNode]];
+						int node    = paintLevel[i][l];
+						m_graph[node]->forceShift((unbuiltRange.range + 1) * 40 - deltaX);
 					}
+					deltaX = m_graph[temp2]->pos().x() - m_graph[temp1]->pos().x();
 				}
-				else if (endUnbuiltRange == paintLevel[i].size())
+
+				for (unsigned int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
 				{
-					int temp = paintLevel[i][unbuiltRange.firstNode - 1];
-					for (int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
-					{
-						int node  = paintLevel[i][k];
-						int segment = k - unbuiltRange.firstNode + 1;
+					int node    = paintLevel[i][k];
+					int segment = k - unbuiltRange.firstNode + 1;
 
-						graphWidget->scene->addItem(m_graph[node]);
-						m_graph[node]->setPos(m_graph[temp]->pos().x() + 40 * segment, m_graph[temp]->pos().y());
-					}
-					if (rightNode->pos().x() < m_graph[paintLevel[i][endUnbuiltRange - 1]]->pos().x())
-					{
-						rightNode = m_graph[paintLevel[i][endUnbuiltRange - 1]];
-					}
-				}
-				else
-				{
-					int temp1  = paintLevel[i][unbuiltRange.firstNode - 1];
-					int temp2  = paintLevel[i][endUnbuiltRange];
-					double deltaX =  m_graph[temp2]->pos().x() - m_graph[temp1]->pos().x();
-
-					if (deltaX < (unbuiltRange.range + 1) * 40)
-					{
-						for (unsigned int l = endUnbuiltRange; l < paintLevel[i].size(); l++)
-						{
-							int node    = paintLevel[i][l];
-							m_graph[node]->forceShift((unbuiltRange.range + 1) * 40 - deltaX);
-						}
-						deltaX = m_graph[temp2]->pos().x() - m_graph[temp1]->pos().x();
-					}
-
-					for (int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
-					{
-						int node    = paintLevel[i][k];
-						int segment = k - unbuiltRange.firstNode + 1;
-
-						graphWidget->scene->addItem(m_graph[node]);
-						m_graph[node]->setPos(m_graph[temp1]->pos().x() + segment * deltaX/(unbuiltRange.range + 1), m_graph[temp1]->pos().y());
-					}
+					graphWidget->scene->addItem(m_graph[node]);
+					m_graph[node]->setPos(m_graph[temp1]->pos().x() + segment * deltaX/(unbuiltRange.range + 1), m_graph[temp1]->pos().y());
 				}
 			}
 		}

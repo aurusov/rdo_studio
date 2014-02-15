@@ -11,7 +11,9 @@
 #define _RDO_PLUGIN_GAME5_GRAPH_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <vector>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/warning_disable.h"
 #include "ui_plugin_game5_graph_dialog.h"
@@ -42,8 +44,8 @@ signals:
 private:
 	struct UnbuiltRange
 	{
-		int firstNode;
-		int range;
+		unsigned int firstNode;
+		unsigned int range;
 	};
 
 	struct SortStruct

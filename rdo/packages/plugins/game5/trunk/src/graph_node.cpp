@@ -9,12 +9,14 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <boost/foreach.hpp>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
 #include <list>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_node.h"
 #include "app/rdo_studio/plugins/game5/src/graph_edge.h"
@@ -24,8 +26,8 @@ GraphNode::GraphNode(int graphNode, GraphNode* parentGraphNode, int pathCost, in
                      int moveDirection, int moveCost, int relevantTile, int graphLevel,
                      int tileMoveFrom, int tileMoveTo, const QString& boardState
 )
-	: m_graphNode             (graphNode      )
-	, m_pParentGraphNode      (parentGraphNode)
+	: m_pParentGraphNode      (parentGraphNode)
+	, m_graphNode             (graphNode      )
 	, m_pathCost              (pathCost       )
 	, m_restPathCost          (restPathCost   )
 	, m_moveDirection         (moveDirection  )
@@ -36,10 +38,8 @@ GraphNode::GraphNode(int graphNode, GraphNode* parentGraphNode, int pathCost, in
 	, m_tileMoveTo            (tileMoveTo     )
 	, m_boardState            (boardState     )
 	, m_graphOnLevelOrder     (0              )
-	, edgeList                (NULL           )
-	, childrenList            (NULL           )
-	, isChecked               (false          )
 	, m_relatedToSolutionState(false          )
+	, isChecked               (false          )
 {
 	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
@@ -63,7 +63,7 @@ QRectF GraphNode::boundingRect() const
 	               20 + adjust,  20 + adjust);
 }
 
-void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* /*widget*/)
+void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget* /*widget*/)
 {
 	QRect nodeRect(-10, -10, 20, 20);
 	painter->setPen(QPen(Qt::black, 0));

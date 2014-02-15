@@ -9,7 +9,9 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <QHeaderView>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/cost_setup_table.h"
 #include "app/rdo_studio/plugins/game5/src/combobox_delegate.h"

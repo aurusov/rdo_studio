@@ -9,10 +9,12 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <QMessageBox>
 #include <QDir>
 #include <QCompleter>
 #include <QStringListModel>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"
