@@ -296,7 +296,7 @@
   <customwidget>
    <class>Board</class>
    <extends>QWidget</extends>
-   <header>board.h</header>
+   <header>app/rdo_studio/plugins/game5/src/board.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
