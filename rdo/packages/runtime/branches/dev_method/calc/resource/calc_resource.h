@@ -82,9 +82,9 @@ CALC(RDOCalcSetResourceTrace)
 {
 DECLARE_FACTORY(RDOCalcSetResourceTrace)
 private:
-	RDOCalcSetResourceTrace(const LPRDOCalc& pCalc, bool traceValue);
+	RDOCalcSetResourceTrace(const LPRDOCalc& getResource, bool traceValue);
 
-	LPRDOCalc m_pCalc;
+	LPRDOCalc m_getResource;
 	bool  m_traceValue;
 
 	DECLARE_ICalc;

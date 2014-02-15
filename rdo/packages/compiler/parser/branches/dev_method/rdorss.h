@@ -85,7 +85,7 @@ public:
 
 	LPExpression  createGetResourceExpression(const RDOParserSrcInfo& srcInfo) const;
 
-	void setAddCalc (const rdo::runtime::LPRDOCalc& pTraceCalc)
+	void setTraceCalc (const rdo::runtime::LPRDOCalc& pTraceCalc)
 	{
 		m_traceCalc = pTraceCalc;
 	}
