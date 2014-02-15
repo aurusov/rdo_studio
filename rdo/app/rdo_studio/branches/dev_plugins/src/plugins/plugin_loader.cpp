@@ -127,16 +127,16 @@ PluginInfoList Loader::getCurrentPlugins() const
 	return list;
 }
 
-int Loader::matchPluginInfo(const PluginInfoList& list, const LPPluginInfo& pluginInfo) const
+int Loader::matchPluginInfo(const PluginInfoList& list, const LPPluginInfo& matchingPluginInfo) const
 {
-	int pluginState = pluginInfo->getState();
+	int pluginState = matchingPluginInfo->getState();
 	BOOST_FOREACH(const LPPluginInfo& pluginInfo, list)
 	{
-		if (pluginInfo->getGUID() == pluginInfo->getGUID())
+		if (matchingPluginInfo->getGUID() == pluginInfo->getGUID())
 		{
-			if (pluginInfo->pluginSignInfoIsEqual(*pluginInfo))
+			if (matchingPluginInfo->pluginSignInfoIsEqual(*pluginInfo))
 			{
-				pluginInfo->setAutoload(pluginInfo->getAutoload());
+				matchingPluginInfo->setAutoload(pluginInfo->getAutoload());
 				pluginState = rdo::plugin::ExactMatched;
 				break;
 			}
@@ -146,7 +146,7 @@ int Loader::matchPluginInfo(const PluginInfoList& list, const LPPluginInfo& plug
 			}
 		}
 	}
-	pluginInfo->setState(pluginState);
+	matchingPluginInfo->setState(pluginState);
 	return pluginState;
 }
 
