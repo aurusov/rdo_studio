@@ -11,9 +11,11 @@
 #define _RDO_STUDIO_PLUGIN_INTERFACE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <QUuid>
 #include <QString>
 #include <QWidget>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
