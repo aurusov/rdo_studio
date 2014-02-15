@@ -65,10 +65,6 @@ ChartView::ChartView(QAbstractScrollArea* pParent, ChartDoc* pDocument, const bo
 	if (m_previewMode)
 		m_timeWrapFlag = false;
 
-	//! @todo qt
-	//if (!m_ddTarget.Register(this))
-	//	return -1;
-
 	if (!m_previewMode)
 	{
 		setStyle(&g_pApp->getStyle()->style_chart, false);

@@ -74,7 +74,6 @@ public:
 	bool doUnwrapTime () const;
 
 private:
-//	COleDropTarget m_ddTarget;
 	Serie*  m_pddSerie;
 
 	QRect m_bmpRect;
