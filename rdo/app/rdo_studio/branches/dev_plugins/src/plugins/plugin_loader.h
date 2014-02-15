@@ -35,7 +35,7 @@ public:
 	void                    startPlugin           (const LPPluginInfo& pluginInfo);
 	void                    startAutoloadedPlugins();
 	void                    setPluginInfoList     (const PluginInfoList& value) const;
-	void                    initPluginParent      (QWidget* pParent);
+	void                    init                  (QWidget* pParent);
 
 private:
 	LPPluginInfoList m_pMergedPluginInfoList;

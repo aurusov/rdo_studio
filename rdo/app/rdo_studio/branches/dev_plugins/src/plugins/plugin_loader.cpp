@@ -23,7 +23,6 @@ using namespace rdo::plugin;
 
 Loader::Loader()
 	: m_pPluginsParent(NULL)
-	, m_pMergedPluginInfoList(rdo::Factory<PluginInfoList>::create(getMergedPluginInfoList()))
 {}
 
 Loader::~Loader()
@@ -58,7 +57,7 @@ PluginInfoList Loader::getMergedPluginInfoList() const
 
 PluginInfoList Loader::getPluginsHistory() const
 {
-	QSettings settings("RAO-studio", "RAO-studio");
+	QSettings settings;
 	PluginInfoList list;
 	int size = settings.beginReadArray("plugins");
 	for (int i = 0; i < size; ++i)
@@ -225,8 +224,10 @@ const LPPluginInfoList& Loader::getPluginInfoList() const
 	return m_pMergedPluginInfoList;
 }
 
-void Loader::initPluginParent(QWidget* pParent)
+void Loader::init(QWidget* pParent)
 {
+	m_pMergedPluginInfoList = rdo::Factory<PluginInfoList>::create(getMergedPluginInfoList());
+
 	ASSERT(!m_pPluginsParent);
 	ASSERT(pParent);
 	m_pPluginsParent = pParent;
