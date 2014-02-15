@@ -92,8 +92,8 @@ bool PluginInfo::pluginSignInfoIsEqual(const PluginInfo& pluginInfo)
 
 bool PluginInfo::isAvailable() const
 {
-	return !(pluginState == rdo::Plugin::Deleted ||
-	         pluginState == rdo::Plugin::IdOnlyMatched);
+	return !(pluginState == rdo::plugin::Deleted ||
+	         pluginState == rdo::plugin::IdOnlyMatched);
 }
 
 bool PluginInfo::operator==(const PluginInfo& other)
