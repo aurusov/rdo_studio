@@ -77,7 +77,7 @@ void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 	}
 
 	buttonNext->setEnabled(!node->getChildrenList().empty());
-	buttonPrev->setEnabled(node->getParentGraphNode());
+	buttonPrev->setEnabled(node->getParentGraphNode() != NULL);
 
 	gameBoard->setTilesPositon(node->getBoardState());
 }
