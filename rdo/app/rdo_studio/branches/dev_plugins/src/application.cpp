@@ -212,6 +212,7 @@ void Application::onInit(int argc, char** argv)
 	desc.add_options()
 		("help,h", "display help message")
 		("input,i", po::value<tstring>(), "model file name")
+		("gui_silent_mode,s", "turn on GUI silent mode from console running")
 		("autorun", "auto run model")
 		("autoexit", "auto exit after simulation stoped")
 		("dont_close_if_error", "don't close application if model error detected")
@@ -231,7 +232,10 @@ void Application::onInit(int argc, char** argv)
 		std::stringstream stream;
 		stream << desc;
 		rdo::locale::cout(stream.str());
-		QMessageBox::information(getMainWndUI(), "Help", QString::fromStdString(stream.str()));
+		if (!vm.count("gui_silent_mode"))
+		{
+			QMessageBox::information(getMainWndUI(), "Help", QString::fromStdString(stream.str()));
+		}
 		quit();
 	}
 
