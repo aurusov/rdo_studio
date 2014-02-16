@@ -239,8 +239,8 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 	for (int i = (int)paintLevel.size() - 2; i >= 0; i--)
 	{
 		bool buildFlag   = true;
-		int  tempNodeNum = 0;
-		int  tempCounter = 0;
+		unsigned int tempNodeNum = 0;
+		unsigned int tempCounter = 0;
 		std::vector<UnbuiltRange> unbuiltRangeVector;
 		for (unsigned int j = 0; j < paintLevel[i].size(); j++)
 		{

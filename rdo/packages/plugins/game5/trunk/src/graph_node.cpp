@@ -27,6 +27,7 @@ GraphNode::GraphNode(int graphNode, GraphNode* parentGraphNode, int pathCost, in
                      int tileMoveFrom, int tileMoveTo, const QString& boardState
 )
 	: m_pParentGraphNode      (parentGraphNode)
+	, m_boardState            (boardState     )
 	, m_graphNode             (graphNode      )
 	, m_pathCost              (pathCost       )
 	, m_restPathCost          (restPathCost   )
@@ -36,7 +37,6 @@ GraphNode::GraphNode(int graphNode, GraphNode* parentGraphNode, int pathCost, in
 	, m_graphLevel            (graphLevel     )
 	, m_tileMoveFrom          (tileMoveFrom   )
 	, m_tileMoveTo            (tileMoveTo     )
-	, m_boardState            (boardState     )
 	, m_graphOnLevelOrder     (0              )
 	, m_relatedToSolutionState(false          )
 	, isChecked               (false          )
