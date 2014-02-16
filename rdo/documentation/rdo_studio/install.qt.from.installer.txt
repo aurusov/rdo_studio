@@ -10,20 +10,20 @@ http://qt-project.org/downloads
 
 2. Установка
 
-В окне выбора компонентов можно ничего не менять
+В окне выбора компонентов лучше выбрать всё
 Мы используем Qt по лицензии LGPL
 
 2.1 Под виндой
 Просто запустить только что скаченный инсталлятор
 
-2.2 Под линухами (посмотри на 2.3)
+2.2 Под линухами (посмотри на 2.2.1)
 Установить в директория по умолчанию
 /home/<username>/Qt5.*.*
 с правами текущего пользователя или в директорию
 /opt/qt/5.*.*
 от root или из под sudo
 
-2.3 Под Ubuntu 13.10 сделал, как написано, но стал получать сообщение
+2.2.1 Под Ubuntu 13.10 сделал, как написано, но стал получать сообщение
 could not find a Qt installation of ''
 при вызове консольных qt-приложений, например,
 qmake
@@ -34,6 +34,9 @@ qcollectiongenerator
 - снести установленную из инсталятора Qt
 - доставить штатную Qt через пакеты
 sudo apt-get install qt5-default qttools5-dev qttools5-dev-tools
+
+2.2.2. Под Debian Wheezy еще необходима библиотека GL. Пакет libgl1-mesa-dev содержит достаточную реализацию OpenGL API.
+sudo apt-get install libgl1-mesa-dev
 
 3. После установки необходимо определить две переменные окружения: QTDIR и PATH
 
@@ -50,12 +53,7 @@ lib\
 
 И прописываем QTDIR, например
 QTDIR=D:\Qt\Qt5.0.1\5.0.1\msvc2010
-
-в Win 7 это делается так:
-Панель управления -> Учетные записи пользователей -> Изменение переменных среды -> создаём QTDIR и прописываем значение
 PATH = %QTDIR%/bin
-
-Не забывам перелогиниться в винде.
 
 3.2. Linux
 QTDIR=/home/<username>/Qt5.*.*/5.*.*/(gcc/gcc64)
@@ -63,16 +61,3 @@ QTDIR=/home/<username>/Qt5.*.*/5.*.*/(gcc/gcc64)
 QTDIR=/opt/qt/5.*.*/5.*.*/(gcc/gcc64)
 
 PATH=$PATH:$QTDIR/bin
-
-Их инициализацию лучше прописать в .bashrc
-
-4. Настройка IDE
-4.1. Для Windows запускаем Visual Studio, заходим в настройки
-Tools/Options/Projects and Solutions/VC++ Directories
-
-Platform             = Win32
-Show directories for = Include files, добавляем $(QTDIR)\include
-Show directories for = Library files, добавляем $(QTDIR)\lib
-
-5. Под Debian Wheezy еще необходима библиотека GL. Пакет libgl1-mesa-dev содержит достаточную реализацию OpenGL API.
-sudo apt-get install libgl1-mesa-dev

@@ -6,15 +6,15 @@ Boost - The Boost C++ libraries are a set of free software libraries that extend
 
 1. Скачиваем boost
     http://www.boost.org/
-    проверялось на версии 1.54
+    проверялось на версии 1.55
 
-    Для Windows предположим, что разархивировали в 'с:\boost_1_54_0'
+    Для Windows предположим, что разархивировали в 'с:\boost_1_55_0_src'
     Для GNU/Linux предположим, что разархивировали в '/home/user/boost'
 
 2. Собираем статические либы буста
 2.1. Для Windows
 
-    cd c:\boost_1_54_0
+    cd c:\boost_1_55_0_src
     bootstrap.bat
 
     Если вывелось
@@ -35,76 +35,54 @@ Boost - The Boost C++ libraries are a set of free software libraries that extend
     cd /home/user/boost
     ./bootstrap.sh
 
-2.3. Для Windows запускаем bjam.exe с параметрами (можно запускать b2.exe - разницы нет)
+2.3. Для Windows
 
 2.3.1 Visual Studio (дочитай до конца этой главы)
 
-    bjam debug link=static threading=multi
-    bjam release link=static threading=multi
+    Создать папку, в которую будет проинсталлирован буст, например, C:\boost_1_55_0
 
-    дело это еще более долгое, чем пункт 2, так что тоже не нервничеам;-)
-    чтобы ускорить процесс можно добавить флаг
-    -j N
-    где N - количество потоков компиляции,
+    b2 debug release link=static threading=multi -j n install --prefix=C:\boost_1_55_0
+    , где n - количество процессоров (точнее, одновременно собираемых исходников)
+
     для i7 пишем
-    bjam debug link=static threading=multi -j 8
-    bjam release link=static threading=multi -j 8
+    b2 debug release link=static threading=multi -j 8 install --prefix=C:\boost_1_55_0
 
     для i5 пишем
-    bjam debug link=static threading=multi -j 4
-    bjam release link=static threading=multi -j 4
+    b2 debug release link=static threading=multi -j 4 install --prefix=C:\boost_1_55_0
 
-    Собранные либы лежат в 'C:\boost_1_54_0\stage\lib'
+    Задать переменную окружения
+    BOOST_ROOT=C:\boost_1_55_0
 
 2.3.2 MinGW
 
     В корне буста находим файл project-config.jam и заменяем директиву using на using gcc ;
 
     Далее запускаем blam как и для Visual Studio:
-    bjam debug link=static threading=multi
-    bjam release link=static threading=multi
+    b2 debug link=static threading=multi
+    b2 release link=static threading=multi
 
     Если вы уже скомпилили буст под Visual Studio, то ничего страшного.
     Библиотеки буста после компиляции MinGW и Visual Studio имеют разные имена и располагаются в одном месте.
 
     Если возникла ошибка 'ml...', то необходимо добавить путь к ml.exe в PATH. Искать ml.exe надо в районе в
-    C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin
 
 
-2.4 Для GNU/Linux запускаем bjam с параметрами
+2.4 Для GNU/Linux запускаем b2 с параметрами
 
     ./b2 --layout=tagged --build-type=complete --prefix=/home/user/boost-install threading=multi -j 8 install
 
-3. Настройка окружения и IDE
-
-3.1. Для Windows
-3.1.1. В Visual Studio, заходим в настройки
-
-    Tools/Options/Projects and Solutions/VC++ Directories
-
-    Platform             = Win32
-    Show directories for = Include files, добавляем с:\boost_1_54_0
-    Show directories for = Library files, добавляем с:\boost_1_54_0\stage\lib
-
-    или берёза
-
-3.2. Для GNU/Linux
-
     export BOOST_ROOT=~/boost-install
-    Лучше добавить в .bashrc - чтобы не делать этого постоянно.
 
-    Добавить эту переменную в IDE.
+3. Если потребуется пересобрать буст, то
 
-4. Если потребуется пересобрать буст, то
-
-4.1 bjam --clean-all
-4.2 удаляем папку lib из C:\boost_1_54_0\bin.v2
-4.3 удаляем папку lib из C:\boost_1_54_0\stage
+3.1 b2 --clean-all
+3.2 удаляем папку lib из C:\boost_1_55_0\bin.v2
+3.3 удаляем папку lib из C:\boost_1_55_0\stage
 
     и повторяем шаг 2
 
     PS: Уже не в первый раз понадобилось описание имён бибилиотек, вот оно
-    http://www.boost.org/doc/libs/1_54_0/more/getting_started/unix-variants.html#library-naming
+    http://www.boost.org/doc/libs/1_55_0/more/getting_started/unix-variants.html#library-naming
 
-    PSS: Параметры запуска bjam
+    PSS: Параметры запуска b2
     http://www.boost.org/boost-build2/doc/html/bbv2/overview/invocation.html#bbv2.overview.invocation.properties

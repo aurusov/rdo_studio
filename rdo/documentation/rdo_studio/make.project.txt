@@ -1,68 +1,21 @@
 Инструкции по сборке РДО и проведению тестов.
 
-1. Генерация Makefile'ов и компиляция
+1. Генерация Makefile'ов
 
-1.1 Для Linux
-1.1.1 Необходимо настроить переменные окружения
+Открываем консоль. Для Windows
+Пуск\Microsoft Visual Studio 2012\Visual Studio Tools\VS2012 x86 Native Tools Command Prompt
 
-set BOOST_ROOT=/home/user/boost/boost_1_45_0
-
-    Внутри BOOST_ROOT должны находиться две папки :
-
-    1) include, а в ней boost со всеми его заголовочными файлами
-    2) lib, а в ней все .lib
-
-    Чтобы CMAKE обнаружил bison и flex необходимо в PATH добавить путь к этим исполняемым файлам.
-
-1.1.2 Конфигурация и компиляция через cmake
-cd <корень_проекта>
+cd <корень_проекта> (например, C:/rdo/rdo_studio)
 mkdir build
 cd build
 cmake ..
-make -j4
 
-1.2 Для Windows
-1.2.1 Только конфигурация через cmake
-1.2.1.1 Открыть консоль. Для разных версий Visual Studio это могут быть разные файлы
+2. Компиляция
+2.1 Для Windows
+В папке build находим rdo.sln. Жмакаем по нему дважды или открываем из Visual Studio. Выбираем конфигурацию Debug. Компилируем проект rdo_studio:
+.apps/.rdo_studio/rdo_studio, popup-menu, Set as StartUp Project, Build
 
-Пуск\Microsoft Visual Studio 2008\Visual Studio Tools\Visual Studio 2008 Command Prompt
-или
-Пуск\Microsoft Visual Studio 2012\Visual Studio Tools\Developer Command Prompt for VS2012
-
-1.2.1.2
-cd <корень_проекта>, например 'cd C:\rdo\rdo_studio'
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Debug -DBOOST_ROOT=C:\boost_1_54_0 -DBOOST_LIBRARYDIR=C:\boost_1_54_0\stage -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_LIBS=ON ..
-
-1.2.2 Только конфигурация через cmake-gui
-1.2.2.1 Открыть консоль
-Пуск\Microsoft Visual Studio 2008\Visual Studio Tools\Visual Studio 2008 Command Prompt
-
-1.2.2.2 Запустить
-cmake-gui
-
-1.2.2.3 Указать 'Where is the source code' путь к корню исходников, например 'C:/rdo/rdo_studio'
-1.2.2.4 Указать 'Where to build the binaries' путь к подпапке build, например 'C:/rdo/rdo_studio/build'
-1.2.2.5 Нажать 'Configure', для компиляции под MinGW выбрать 'MinGW Makefiles' (для Visual studio своё),
-      оставить выбранным вариант 'Use default native compilers'
-1.2.2.6 Настроить переменные. Установить флаг 'Advanced' и через 'Add Entry' добавить
-
-Boost_INCLUDE_DIRS       PATH  C:\boost_1_54_0
-Boost_LIBRARY_DIRS       PATH  C:\boost_1_54_0\stage\lib
-Boost_USE_MULTITHREADED  BOOL  true
-Boost_USE_STATIC_LIBS    BOOL  true
-MSVC90                   BOOL  true
-MSVC                     BOOL  true
-
-1.2.2.7 Если возникла ошибка, то еще раз повторяем 'Configure', у меня срабатывает со второго раза
-1.2.2.8 Нажать 'Generate'
-
-1.2.3 После конфигурации
-Всё, в папке 'C:/rdo/rdo_studio/build ' лежат make-файлы, можем их компилить
-Компиляцию с использованием gcc через MinGW см. в 1.3, через Visual Studio: надо окрыть сгенерированный солюшен (rdo.sln)
-
-1.3 Для Windows с использованием gcc через MinGW
+2.2 Для Windows с использованием gcc через MinGW
 Пути к C:\MinGW\bin и C:\MinGW\msys\1.0\bin должны быть в PATH
 Запускаем 'MinGW Shell', окрывается консоль
 cd /c/rdo/dev_linux
@@ -73,7 +26,10 @@ cmake --build ./
 
 Если возникла ошибка при "cmake -G 'MinGW Makefiles' ..", то еще раз повторяем, у меня срабатывает со второго раза
 
-2. Запуск тестов для Linux
+2.3 Для Linux
+make -j4
+
+3. Запуск тестов для Linux
 
 cd <корень_проекта>
 cd build
