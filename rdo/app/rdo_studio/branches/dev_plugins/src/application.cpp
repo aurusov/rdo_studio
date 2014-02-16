@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <boost/program_options.hpp>
+#include <boost/bind.hpp>
 #include <QProcess>
 #include <QTextCodec>
 #include <QSettings>
@@ -161,9 +162,45 @@ Application::Application(int& argc, char** argv)
 	kernel->thread_studio = g_pModel;
 #endif
 
+	QObject::connect(&m_initTimer, &QTimer::timeout, boost::function<void()>(boost::bind(&Application::onInit, this, argc, argv)));
+	m_initTimer.setSingleShot(true);
+	m_initTimer.start(0);
+
 	connect(&m_idleTimer, &QTimer::timeout, this, &Application::onIdle);
 	m_idleTimer.start(0);
+}
 
+Application::~Application()
+{
+	m_pMainFrame = NULL;
+
+	if (m_exitCode != rdo::simulation::report::EC_ModelNotFound)
+	{
+		m_exitCode = g_pModel->getExitCode();
+	}
+#ifdef RDO_MT
+	if (m_pStudioGUI)
+	{
+		m_pStudioGUI->sendMessage(m_pStudioGUI, RDOThread::RT_THREAD_CLOSE);
+		delete static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI);
+		m_pStudioGUI = NULL;
+	}
+#endif
+
+	// Роняем кернел и закрываем все треды
+	RDOKernel::close();
+
+	g_pApp = NULL;
+
+	if (m_autoExitByModel)
+	{
+		//! @todo qt
+		//return m_exitCode;
+	}
+}
+
+void Application::onInit(int argc, char** argv)
+{
 	if (getFileAssociationCheckInFuture())
 	{
 		setupFileAssociation();
@@ -242,35 +279,6 @@ Application::Application(int& argc, char** argv)
 	if (autoRun)
 	{
 		g_pModel->runModel();
-	}
-}
-
-Application::~Application()
-{
-	m_pMainFrame = NULL;
-
-	if (m_exitCode != rdo::simulation::report::EC_ModelNotFound)
-	{
-		m_exitCode = g_pModel->getExitCode();
-	}
-#ifdef RDO_MT
-	if (m_pStudioGUI)
-	{
-		m_pStudioGUI->sendMessage(m_pStudioGUI, RDOThread::RT_THREAD_CLOSE);
-		delete static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI);
-		m_pStudioGUI = NULL;
-	}
-#endif
-
-	// Роняем кернел и закрываем все треды
-	RDOKernel::close();
-
-	g_pApp = NULL;
-
-	if (m_autoExitByModel)
-	{
-		//! @todo qt
-		//return m_exitCode;
 	}
 }
 

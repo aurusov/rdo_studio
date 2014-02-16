@@ -109,9 +109,11 @@ private:
 	QProcess*                              m_pAssistant;
 	PTR(MainWindow)                        m_pMainFrame;
 	rdo::gui::editor::LPModelStyle         m_pModelStyle;
+	QTimer                                 m_initTimer;
 	QTimer                                 m_idleTimer;
-
 	rdo::plugin::Loader                    m_pluginLoader;
+
+	void onInit(int argc, char** argv);
 
 	void setupFileAssociation();
 #ifdef Q_OS_WIN
