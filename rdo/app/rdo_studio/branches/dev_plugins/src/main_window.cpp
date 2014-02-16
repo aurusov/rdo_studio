@@ -156,9 +156,9 @@ void MainWindow::SubWindowToAction::removeLastSubWindow()
 // -------------------- MainWindow
 // --------------------------------------------------------------------------------
 MainWindow::MainWindow()
-	: m_updateTimerID(0)
+	: m_pModel(NULL)
+	, m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
-	, m_pModel(NULL)
 {
 	setupUi(this);
 	installEventFilter(this);
