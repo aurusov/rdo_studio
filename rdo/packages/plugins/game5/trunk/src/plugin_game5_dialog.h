@@ -12,9 +12,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/src/common/warning_disable.h"
+#include "ui_plugin_game5_dialog.h"
+#include "utils/src/common/warning_enable.h"
 #include "app/rdo_studio/plugins/game5/src/board.h"
 #include "app/rdo_studio/src/model/model.h"
-#include "ui_plugin_game5_dialog.h"
 // --------------------------------------------------------------------------------
 
 class PluginGame5GenerateSituationDialog

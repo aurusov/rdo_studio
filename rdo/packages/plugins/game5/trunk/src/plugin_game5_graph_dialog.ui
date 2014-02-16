@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Игра5</string>
+   <string>Игра 5</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
