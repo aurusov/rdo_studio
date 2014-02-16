@@ -152,6 +152,10 @@ Application::Application(int& argc, char** argv)
 	m_pMainFrame->init();
 	m_pMainFrame->show();
 
+	m_pluginLoader.init(m_pMainFrame);
+	m_pluginLoader.startAutoloadedPlugins();
+
+
 #ifdef RDO_MT
 	kernel->thread_studio = m_pStudioGUI;
 #else
@@ -240,9 +244,6 @@ Application::Application(int& argc, char** argv)
 	{
 		g_pModel->runModel();
 	}
-
-	m_pluginLoader.initPluginParent(m_pMainFrame);
-	m_pluginLoader.startAutoloadedPlugins();
 }
 
 Application::~Application()
