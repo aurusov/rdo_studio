@@ -46,13 +46,13 @@ public:
 
 private:
 	QString        pluginName;
-	QString        pluginVersion;
-	QString        pluginAuthor;
-	bool           pluginAutoload;
-	bool           pluginIsActive;
-	QUuid          pluginGUID;
-	int            pluginState;
 	QPluginLoader* pluginLoader;
+	bool           pluginAutoload;
+	QUuid          pluginGUID;
+	QString        pluginAuthor;
+	QString        pluginVersion;
+	int            pluginState;
+	bool           pluginIsActive;
 };
 
 OBJECT(PluginInfoList)
