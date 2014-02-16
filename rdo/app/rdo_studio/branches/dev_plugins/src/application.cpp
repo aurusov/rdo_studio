@@ -210,6 +210,7 @@ void Application::onInit(int argc, char** argv)
 
 	po::options_description desc("RAO-studio");
 	desc.add_options()
+		("help,h", "display help message")
 		("input,i", po::value<tstring>(), "model file name")
 		("autorun", "auto run model")
 		("autoexit", "auto exit after simulation stoped")
@@ -224,6 +225,15 @@ void Application::onInit(int argc, char** argv)
 	}
 	catch (const std::exception&)
 	{}
+
+	if (vm.empty() || vm.count("help"))
+	{
+		std::stringstream stream;
+		stream << desc;
+		rdo::locale::cout(stream.str());
+		QMessageBox::information(getMainWndUI(), "Help", QString::fromStdString(stream.str()));
+		quit();
+	}
 
 	tstring openModelName;
 	if (vm.count("input"))
