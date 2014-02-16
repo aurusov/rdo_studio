@@ -155,7 +155,6 @@ Application::Application(int& argc, char** argv)
 	m_pluginLoader.init(m_pMainFrame);
 	m_pluginLoader.startAutoloadedPlugins();
 
-
 #ifdef RDO_MT
 	kernel->thread_studio = m_pStudioGUI;
 #else
