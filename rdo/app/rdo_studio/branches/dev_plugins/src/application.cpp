@@ -226,7 +226,7 @@ void Application::onInit(int argc, char** argv)
 	catch (const std::exception&)
 	{}
 
-	if (vm.empty() || vm.count("help"))
+	if (vm.count("help"))
 	{
 		std::stringstream stream;
 		stream << desc;
