@@ -47,6 +47,7 @@ RDO_BISON_TARGET(smr_file cnv_smr_file_)
 RDO_BISON_TARGET(smr_sim cnv_smr_sim_)
 
 FLEX_TARGET(lexer_scaner ${GRAMMA_INPUT_PATH}/rdo_lexer.l ${GRAMMA_OUTPUT_PATH}/rdolex.cpp COMPILE_FLAGS "-Pcnv -+")
+SET_SOURCE_FILES_PROPERTIES(${GRAMMA_OUTPUT_PATH}/rdolex.cpp PROPERTIES COMPILE_FLAGS "/Od")
 
 ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rtp)
 
