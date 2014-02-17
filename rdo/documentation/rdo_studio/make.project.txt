@@ -2,9 +2,6 @@
 
 1. Генерация Makefile'ов
 
-Открываем консоль. Для Windows
-Пуск\Microsoft Visual Studio 2012\Visual Studio Tools\VS2012 x86 Native Tools Command Prompt
-
 cd <корень_проекта> (например, C:/rdo/rdo_studio)
 mkdir build
 cd build
