@@ -10,7 +10,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/stream/rdostream.h"
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/rdo_model_i.h"
@@ -49,7 +48,7 @@ inline RDOActivityPattern<T>::~RDOActivityPattern()
 {}
 
 template<class T>
-inline void RDOActivityPattern<T>::writeModelStructure(REF(rdo::ostream) stream) const
+inline void RDOActivityPattern<T>::writeModelStructure(std::ostream& stream) const
 {
 	stream << m_oprName << " " << tracePatternId() << std::endl;
 }

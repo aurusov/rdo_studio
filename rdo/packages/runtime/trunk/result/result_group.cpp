@@ -97,7 +97,7 @@ void RDOPMDResultGroup::checkResult(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
+void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 {
 	if (m_state == RGS_STOP)
 		return;
@@ -123,7 +123,7 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) 
 	rbool tableWrite = false;
 	BOOST_FOREACH(LPIResult& pResult, m_resultList)
 	{
-		rdo::textstream textStream;
+		std::stringstream textStream;
 
 		pResult->calcStat(pRuntime, textStream);
 

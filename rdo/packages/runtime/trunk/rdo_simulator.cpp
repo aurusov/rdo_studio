@@ -14,7 +14,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/stream/rdostream.h"
 #include "simulator/runtime/rdo_simulator.h"
 #include "simulator/runtime/rdo_logic_dptprior.h"
 #include "simulator/runtime/rdo_model_i.h"
@@ -139,7 +138,7 @@ void RDOSimulator::preProcess()
 
 tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter)
 {
-	rdo::textstream stream;
+	std::stringstream stream;
 	IBaseOperationContainer::CIterator it = pLogic->begin();
 	while (it != pLogic->end())
 	{

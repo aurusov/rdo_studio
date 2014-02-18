@@ -20,7 +20,6 @@
 #include <QFileDialog>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/stream/rdostream.h"
 #include "utils/src/animation/rdoanimation.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
@@ -493,7 +492,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 
 void Model::show_result()
 {
-	rdo::textstream modelResults;
+	std::stringstream modelResults;
 	sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &modelResults);
 	QString str = QString::fromStdString(modelResults.str());
 	if (!str.isEmpty())
@@ -549,7 +548,7 @@ bool Model::openModel(CREF(QString) modelName)
 	g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
 	if (data.m_result && !m_openError && !m_smrEmptyError)
 	{
-		rdo::binarystream stream;
+		std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::PMV, stream);
 		g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 		g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(stream.str()));
@@ -752,7 +751,7 @@ void Model::openModelFromRepository()
 		PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
 		pEdit->setReadOnly(false);
 		pEdit->clearAll();
-		rdo::binarystream stream;
+		std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 		bool canLoad = true;
 		rdoModelObjects::RDOFileType type = m_pView->getTab().indexToType(i);
 		if (m_pView->getTab().typeSupported(type))
@@ -819,7 +818,7 @@ void Model::saveModelToRepository()
 	PTR(editor::Model) pSmrEdit = m_pView->getTab().getItemEdit(rdoModelObjects::SMR);
 	if (pSmrEdit->isModify())
 	{
-		rdo::binarystream stream;
+		std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 		pSmrEdit->save(stream);
 		m_smrEmptyError = false;
 		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::SMR, stream);
@@ -850,7 +849,7 @@ void Model::saveModelToRepository()
 			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
 			if (smr_modified || pEdit->isModify())
 			{
-				rdo::binarystream stream;
+				std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 				pEdit->save(stream);
 				g_pApp->getMainWndUI()->statusBar()->stepProgress();
 				rdoModelObjects::RDOFileType type = m_pView->getTab().indexToType(i);

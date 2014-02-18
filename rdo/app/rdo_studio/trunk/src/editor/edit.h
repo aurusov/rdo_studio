@@ -19,7 +19,6 @@
 #include "thirdparty/scintilla/qt/ScintillaEditBase/ScintillaEditBase.h"
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/stream/rdostream.h"
 #include "app/rdo_studio/src/editor/edit_style.h"
 #include "app/rdo_studio/src/action_activator/action_activator.h"
 #include "app/rdo_studio/src/dialog/find_dialog.h"
@@ -123,8 +122,8 @@ public:
 	int findPos(CREF(QString) findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false) const;
 	tstring getLine(const int line) const;
 
-	void load(rdo::stream& stream);
-	void save(rdo::stream& stream) const;
+	void load(const std::stringstream& stream);
+	void save(std::stringstream& stream) const;
 	tstring saveAsRTF(int start, int end) const;
 
 protected:

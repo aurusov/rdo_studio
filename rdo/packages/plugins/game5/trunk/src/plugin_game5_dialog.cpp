@@ -351,7 +351,7 @@ void PluginGame5GenerateSituationDialog::onPluginAction()
 QStringList PluginGame5GenerateSituationDialog::parseFunTab()
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
-	rdo::textstream txtStream;
+	std::stringstream txtStream;
 	pModel->getTab()->getItemEdit(rdoModelObjects::FUN)->save(txtStream);
 	QString tabStr = QString::fromStdString(txtStream.str());
 	QRegExp regExp("(\\$Function)(\\s*)([A-Za-z0-9_А-Яа-я\\$]*)(\\s*):");

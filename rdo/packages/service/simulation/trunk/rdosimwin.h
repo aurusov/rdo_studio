@@ -30,7 +30,6 @@
 #endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
-#include "utils/src/stream/rdostream.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
 #include "simulator/runtime/thread_proxy_i.h"
@@ -218,8 +217,8 @@ private:
 	ShowMode m_showMode; //! current show mode
 	double   m_showRate; //! current show mode
 
-	rdo::textstream m_resultString;
-	rdo::textstream m_resultInfoString;
+	std::stringstream m_resultString;
+	std::stringstream m_resultInfoString;
 
 	
 #ifdef CORBA_ENABLE

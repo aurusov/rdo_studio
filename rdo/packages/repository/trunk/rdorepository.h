@@ -12,13 +12,13 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
+#include <iostream>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
-#include "utils/src/stream/rdostream.h"
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
@@ -35,9 +35,9 @@ public:
 	struct FileData: public boost::noncopyable
 	{
 		rdoModelObjects::RDOFileType  m_type;
-		REF(rdo::stream)              m_stream;
+		std::stringstream&            m_stream;
 
-		FileData(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream)
+		FileData(rdoModelObjects::RDOFileType type, std::stringstream& stream)
 			: m_type  (type  )
 			, m_stream(stream)
 		{}
@@ -45,9 +45,9 @@ public:
 	struct BinaryFile: public boost::noncopyable
 	{
 		boost::filesystem::path  m_name;
-		REF(rdo::stream)         m_stream;
+		std::stringstream&       m_stream;
 
-		BinaryFile(CREF(boost::filesystem::path) name, REF(rdo::stream) stream)
+		BinaryFile(CREF(boost::filesystem::path) name, std::stringstream& stream)
 			: m_name  (name  )
 			, m_stream(stream)
 		{}
@@ -171,8 +171,8 @@ private:
 	void      setName         (CREF(boost::filesystem::path) name);
 	void      createRDOX      ();
 
-	void      loadFile(CREF(boost::filesystem::path) fileName, REF(rdo::stream) stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;
-	void      saveFile(CREF(boost::filesystem::path) fileName, REF(rdo::stream) stream, rbool deleteIfEmpty = false) const;
+	void      loadFile(CREF(boost::filesystem::path) fileName, std::ostream& stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;
+	void      saveFile(CREF(boost::filesystem::path) fileName, const std::stringstream& stream, rbool deleteIfEmpty = false) const;
 
 	rbool     createFile(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream) const;
 
@@ -190,8 +190,8 @@ protected:
 	void  closeModel();
 	rbool saveModel ();
 
-	void load(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream);
-	void save(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream) const;
+	void load(rdoModelObjects::RDOFileType type, std::ostream& stream);
+	void save(rdoModelObjects::RDOFileType type, const std::stringstream& stream) const;
 
 	boost::filesystem::path getFileName    (rdoModelObjects::RDOFileType type) const;
 	boost::filesystem::path getExtension   (rdoModelObjects::RDOFileType type) const;
@@ -202,7 +202,7 @@ protected:
 	rbool   isMustExist    (rdoModelObjects::RDOFileType type) const;
 	rbool   isDeleteIfEmpty(rdoModelObjects::RDOFileType type) const;
 
-	void loadBMP(REF(boost::filesystem::path) name, REF(rdo::stream) stream) const;
+	void loadBMP(REF(boost::filesystem::path) name, std::ostream& stream) const;
 };
 
 }} // namespace rdo::repository

@@ -75,7 +75,7 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 		{
 			setModelName(g_pModel->getName());
 			g_pApp->getIMainWnd()->getDockDebug().appendString("Получение структуры модели... ");
-			rdo::textstream model_structure;
+			std::stringstream model_structure;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
 			getModelStructure(model_structure);
 			g_pApp->getIMainWnd()->getDockDebug().appendString("ok\n");

@@ -48,7 +48,7 @@ TracerBase::~TracerBase()
 	deleteTrace();
 }
 
-ParamInfo* TracerBase::getParamType(rdo::textstream& stream)
+ParamInfo* TracerBase::getParamType(std::istream& stream)
 {
 	boost::optional<ParamInfo::ParamType> parType;
 
@@ -108,7 +108,7 @@ ParamInfo* TracerBase::getParamType(rdo::textstream& stream)
 	return pParam;
 }
 
-ParamInfo* TracerBase::getParam(rdo::textstream& stream)
+ParamInfo* TracerBase::getParam(std::istream& stream)
 {
 	tstring paramType;
 	tstring paramName;
@@ -119,7 +119,7 @@ ParamInfo* TracerBase::getParam(rdo::textstream& stream)
 	return pParam;
 }
 
-void TracerBase::addResourceType(REF(tstring), rdo::textstream& stream)
+void TracerBase::addResourceType(REF(tstring), std::istream& stream)
 {
 	LPResourceType pResourceType = rdo::Factory<ResourceType>::create(ResourceType::RDOTK_PERMANENT);
 	tstring resourceTypeName;
@@ -135,7 +135,7 @@ void TracerBase::addResourceType(REF(tstring), rdo::textstream& stream)
 	m_pChartTree->addResourceType(pResourceType);
 }
 
-void TracerBase::addResource(REF(tstring) s, rdo::textstream& stream)
+void TracerBase::addResource(REF(tstring) s, std::istream& stream)
 {
 	int resourceTypeID;
 	tstring resourceName;
@@ -151,7 +151,7 @@ void TracerBase::addResource(REF(tstring) s, rdo::textstream& stream)
 	m_pChartTree->addResource(pResource);
 }
 
-void TracerBase::addPattern(REF(tstring), rdo::textstream& stream)
+void TracerBase::addPattern(REF(tstring), std::istream& stream)
 {
 	tstring patternName;
 	stream >> patternName;
@@ -193,7 +193,7 @@ void TracerBase::addPattern(REF(tstring), rdo::textstream& stream)
 	}
 }
 
-void TracerBase::addOperation(REF(tstring), rdo::textstream& stream)
+void TracerBase::addOperation(REF(tstring), std::istream& stream)
 {
 	tstring operationName;
 	stream >> operationName;
@@ -227,7 +227,7 @@ void TracerBase::addOperation(REF(tstring), rdo::textstream& stream)
 	m_pChartTree->addOperation(pOperationBase);
 }
 
-void TracerBase::addResult(REF(tstring) s, rdo::textstream& stream)
+void TracerBase::addResult(REF(tstring) s, std::istream& stream)
 {
 	int resultID;
 	stream >> resultID;
@@ -566,7 +566,7 @@ void TracerBase::setTree(PTR(ChartTree) pTreeCtrl)
 	m_pChartTree = pTreeCtrl;
 }
 
-void TracerBase::getModelStructure(rdo::textstream& stream)
+void TracerBase::getModelStructure(std::istream& stream)
 {
 	tstring s;
 

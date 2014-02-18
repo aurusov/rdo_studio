@@ -380,7 +380,7 @@ void RDOThreadRepository::setName(CREF(boost::filesystem::path) name)
 	}
 }
 
-void RDOThreadRepository::loadFile(CREF(boost::filesystem::path) fileName, REF(rdo::stream) stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const
+void RDOThreadRepository::loadFile(CREF(boost::filesystem::path) fileName, std::ostream& stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const
 {
 	if (described)
 	{
@@ -394,36 +394,9 @@ void RDOThreadRepository::loadFile(CREF(boost::filesystem::path) fileName, REF(r
 			{
 				reanOnly = true;
 			}
-			if (stream.isBinary())
-			{
-				boost::filesystem::ifstream file(fileName, std::ios::in | std::ios::binary);
-				stream << file.rdbuf();
-				file.close();
-			}
-			else
-			{
-				boost::filesystem::ifstream file(fileName);
-				stream << file.rdbuf();
-				file.close();
-			}
-/*
-			if (stream.getOpenMode() & std::ios::binary*)
-			{
-				boost::filesystem::ifstream file(fileName, std::ios::in | std::ios::binary);
-				file.seekg(0, std::ios::end);
-				int len = file.tellg();
-				file.seekg(0, std::ios::beg);
-				stream.resize(len);
-				file.read(stream.data(), len);
-				file.close();
-			}
-			else
-			{
-				boost::filesystem::ifstream file(fileName);
-				stream << file.rdbuf();
-				file.close();
-			}
-*/
+			boost::filesystem::ifstream file(fileName, std::ios::in | std::ios::binary);
+			stream << file.rdbuf();
+			file.close();
 		}
 		else
 		{
@@ -440,25 +413,16 @@ void RDOThreadRepository::loadFile(CREF(boost::filesystem::path) fileName, REF(r
 	}
 }
 
-void RDOThreadRepository::saveFile(CREF(boost::filesystem::path) fileName, REF(rdo::stream) stream, rbool deleteIfEmpty) const
+void RDOThreadRepository::saveFile(CREF(boost::filesystem::path) fileName, const std::stringstream& stream, rbool deleteIfEmpty) const
 {
 	if (!fileName.empty())
 	{
 		rbool file_exist = rdo::File::exist(fileName);
 		if (!stream.str().empty() || (file_exist && !deleteIfEmpty))
 		{
-			if (stream.isBinary())
-			{
-				boost::filesystem::ofstream file(fileName, std::ios::out | std::ios::binary);
-				file << stream.rdbuf();
-				file.close();
-			}
-			else
-			{
-				boost::filesystem::ofstream file(fileName);
-				file << stream.rdbuf();
-				file.close();
-			}
+			boost::filesystem::ofstream file(fileName, std::ios::out | std::ios::binary);
+			file << stream.rdbuf();
+			file.close();
 		}
 		else
 		{
@@ -495,12 +459,12 @@ void RDOThreadRepository::createRDOX()
 	}
 }
 
-void RDOThreadRepository::load(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream)
+void RDOThreadRepository::load(rdoModelObjects::RDOFileType type, std::ostream& stream)
 {
 	loadFile(getFullFileName(type), stream, m_files[type].m_described, m_files[type].m_mustExist, m_files[type].m_readOnly);
 }
 
-void RDOThreadRepository::save(rdoModelObjects::RDOFileType type, REF(rdo::stream) stream) const
+void RDOThreadRepository::save(rdoModelObjects::RDOFileType type, const std::stringstream& stream) const
 {
 	saveFile(getFullFileName(type), stream, isDeleteIfEmpty(type));
 	if (type == rdoModelObjects::SMR)
@@ -509,7 +473,7 @@ void RDOThreadRepository::save(rdoModelObjects::RDOFileType type, REF(rdo::strea
 	}
 }
 
-void RDOThreadRepository::loadBMP(REF(boost::filesystem::path) name, REF(rdo::stream) stream) const
+void RDOThreadRepository::loadBMP(REF(boost::filesystem::path) name, std::ostream& stream) const
 {
 	boost::filesystem::path fileName = (m_modelPath / name).replace_extension("bmp");
 	if (rdo::File::exist(fileName))
@@ -568,7 +532,7 @@ void RDOThreadRepository::beforeModelStart()
 		if (m_traceFile.is_open())
 		{
 			writeModelFilesInfo(m_traceFile);
-			rdo::textstream model_structure;
+			std::stringstream model_structure;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
 			m_traceFile << std::endl << model_structure.str() << std::endl;
 			m_traceFile << "$Tracing" << std::endl;
@@ -589,7 +553,7 @@ void RDOThreadRepository::stopModel()
 		if (results_file.is_open())
 		{
 			writeModelFilesInfo(results_file);
-			rdo::textstream stream;
+			std::stringstream stream;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS_INFO, &stream);
 			results_file << std::endl << stream.str() << std::endl;
 			stream.str("");

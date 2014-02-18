@@ -366,8 +366,8 @@ OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 class RDORuntimeTracer: public rdo::runtime::RDOTrace, public rdo::runtime::RDOEndL
 {
 public:
-	virtual REF(rdo::ostream)          getOStream()    { return m_stream; }
-	virtual REF(rdo::runtime::RDOEndL) getEOL()        { return *this;    }
+	virtual std::ostream&          getOStream()    { return m_stream; }
+	virtual REF(rdo::runtime::RDOEndL) getEOL()    { return *this;    }
 
 	void onEndl()
 	{
@@ -401,7 +401,7 @@ public:
 
 private:
 	PTR(RDOThreadSimulator) m_pSimulator;
-	rdo::textstream         m_stream;
+	std::stringstream       m_stream;
 };
 
 // --------------------------------------------------------------------------------
@@ -410,17 +410,17 @@ private:
 class RDOSimResulter: public rdo::runtime::RDOResults
 {
 public:
-	RDOSimResulter(PTR(RDOThreadSimulator) pSimulator, REF(rdo::ostream) stream)
+	RDOSimResulter(PTR(RDOThreadSimulator) pSimulator, std::ostream& stream)
 		: m_pSimulator(pSimulator)
 		, m_stream    (stream    )
 	{}
 
 private:
 	PTR(RDOThreadSimulator) m_pSimulator;
-	REF(rdo::ostream)       m_stream;
-	rdo::textstream         m_buffer;
+	std::ostream&           m_stream;
+	std::stringstream       m_buffer;
 
-	virtual REF(rdo::ostream) getOStream()
+	virtual std::ostream& getOStream()
 	{
 		return m_buffer;
 	}
@@ -461,14 +461,14 @@ private:
 class RDOSimResultInformer: public rdo::runtime::RDOResults, public boost::noncopyable
 {
 public:
-	RDOSimResultInformer(REF(rdo::ostream) stream)
+	RDOSimResultInformer(std::ostream& stream)
 		: m_stream(stream)
 	{}
 
 private:
-	REF(rdo::ostream) m_stream;
+	std::ostream& m_stream;
 
-	virtual REF(rdo::ostream) getOStream()
+	virtual std::ostream& getOStream()
 	{
 		return m_stream;
 	}
@@ -914,23 +914,23 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		case RT_SIMULATOR_GET_MODEL_STRUCTURE:
 		{
 			msg.lock();
-			*static_cast<PTR(rdo::textstream)>(msg.param) << m_pParser->getModelStructure();
+			*static_cast<PTR(std::stringstream)>(msg.param) << m_pParser->getModelStructure();
 			msg.unlock();
 			break;
 		}
 		case RT_SIMULATOR_GET_MODEL_RESULTS:
 		{
 			msg.lock();
-			*static_cast<PTR(rdo::textstream)>(msg.param) << m_resultString.str();
+			*static_cast<PTR(std::stringstream)>(msg.param) << m_resultString.str();
 			msg.unlock();
 			break;
 		}
 		case RT_SIMULATOR_GET_MODEL_RESULTS_INFO:
 		{
 			msg.lock();
-			*static_cast<PTR(rdo::textstream)>(msg.param) << m_pParser->getChanges();
-			*static_cast<PTR(rdo::textstream)>(msg.param) << std::endl << std::endl;
-			*static_cast<PTR(rdo::textstream)>(msg.param) << m_resultInfoString.str();
+			*static_cast<PTR(std::stringstream)>(msg.param) << m_pParser->getChanges();
+			*static_cast<PTR(std::stringstream)>(msg.param) << std::endl << std::endl;
+			*static_cast<PTR(std::stringstream)>(msg.param) << m_resultInfoString.str();
 			msg.unlock();
 			break;
 		}
@@ -1619,7 +1619,7 @@ void RDOThreadCodeComp::proc(REF(RDOMessageInfo) msg)
 			if (!m_pParser) break;
 			msg.lock();
 			PTR(GetCodeComp) data = static_cast<PTR(GetCodeComp)>(msg.param);
-//			rdo::binarystream stream;
+//			std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 //			sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdo::repository::RDOThreadRepository::FileData(data->file, stream));
 //			data->result = stream.data();
 			CREF(rdo::compiler::parser::RDOParser::RTPResTypeList) rtp_list = m_pParser->getRTPResTypes(); 

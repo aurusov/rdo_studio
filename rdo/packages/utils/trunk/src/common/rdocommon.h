@@ -23,7 +23,6 @@
 #include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
 #include "utils/src/common/model_objects.h"
-#include "utils/src/stream/rdostream.h"
 // --------------------------------------------------------------------------------
 
 #ifdef COMPILER_VISUAL_STUDIO
@@ -49,9 +48,9 @@ OPEN_RDO_NAMESPACE
 	//! \param  value - значение
 	//! \result Строковое представление значения
 	template< class T >
-	inline tstring toString(T value)
+	inline tstring toString(const T& value)
 	{
-		rdo::ostringstream str;
+		std::stringstream str;
 		str << value;
 		return str.str();
 	}

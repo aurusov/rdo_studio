@@ -13,16 +13,11 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/stream/rdostream.h"
-
 #include "kernel/rdokernel.h"
-
 #include "repository/rdorepository.h"
-
 #include "simulator/runtime/calc/calc_pattern.h"
 #include "simulator/runtime/rdo_pattern.h"
 #include "simulator/runtime/rdo_activity_i.h"
-
 #include "simulator/compiler/parser/rdoparser_rdo.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -57,7 +52,7 @@ void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
 
-	rdo::binarystream in_stream;
+	std::stringstream in_stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 	switch (m_from)
 	{
 	case sf_repository:

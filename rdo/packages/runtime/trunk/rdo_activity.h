@@ -13,7 +13,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/stream/rdostream.h"
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/rdo_model_i.h"
@@ -74,7 +73,7 @@ protected:
 	rdo::intrusive_ptr<T> m_pPattern;
 
 private:
-	void writeModelStructure(REF(rdo::ostream) stream) const;
+	void writeModelStructure(std::ostream& stream) const;
 	CREF(tstring) tracePatternId() const;
 };
 

@@ -50,10 +50,6 @@ SET(LOCALE_FILES
 	src/locale/rdolocale.h
 )
 
-SET(STREAM_FILES
-	src/stream/rdostream.h
-)
-
 SET(STUFF_FILES
 	src/stuff/explicit_value.h
 	src/stuff/rdoidgenerator.h
@@ -113,7 +109,6 @@ SET(SOURCE_FILES
 	${FILE_FILES}
 	${INTERFACE_FILES}
 	${LOCALE_FILES}
-	${STREAM_FILES}
 	${STUFF_FILES}
 	${TIME_FILES}
 	${SMART_PTR_FILES}
@@ -156,10 +151,6 @@ IF(MSVC) # options for windows #
 
 	SOURCE_GROUP(".locale" FILES
 		${LOCALE_FILES}
-	)
-
-	SOURCE_GROUP(".stream" FILES
-		${STREAM_FILES}
 	)
 
 	SOURCE_GROUP(".stuff" FILES

@@ -392,7 +392,7 @@ void RDOParser::insertChanges(CREF(tstring) name, CREF(tstring) value)
 
 tstring RDOParser::getChanges() const
 {
-	rdo::textstream stream;
+	std::stringstream stream;
 	stream << "$Changes" << std::endl;
 	ruint changes_max_length = 0;
 	STL_FOR_ALL_CONST(m_changes, change_it)
@@ -416,7 +416,7 @@ tstring RDOParser::getChanges() const
 
 tstring RDOParser::getModelStructure()
 {
-	rdo::textstream modelStructure;
+	std::stringstream modelStructure;
 
 	// $Changes
 	modelStructure << getChanges();

@@ -75,7 +75,7 @@ public:
 
 	void setupRuntimeFactory();
 
-	void writeModelStructure(REF(rdo::ostream) stream) const;
+	void writeModelStructure(std::ostream& stream) const;
 
 	DECLARE_IType;
 

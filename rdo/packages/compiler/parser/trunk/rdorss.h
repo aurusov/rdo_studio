@@ -81,7 +81,7 @@ public:
 	rbool defined () const;
 	void  end     ();
 
-	void writeModelStructure(REF(rdo::ostream) stream) const;
+	void writeModelStructure(std::ostream& stream) const;
 
 	LPExpression  createGetResourceExpression(const RDOParserSrcInfo& srcInfo) const;
 

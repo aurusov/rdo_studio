@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/interface/rdointerface.h"
-#include "utils/src/stream/rdostream.h"
 #include "simulator/runtime/rdo_simulator.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_resource.h"
@@ -28,13 +27,13 @@ class IResult
 public:
 	virtual void resetResult(CREF(rdo::runtime::LPRDORuntime) Runtime) = 0;
 	virtual void checkResult(CREF(rdo::runtime::LPRDORuntime) Runtime) = 0;
-	virtual void calcStat   (CREF(rdo::runtime::LPRDORuntime) Runtime, REF(rdo::ostream) stream) = 0;
+	virtual void calcStat   (CREF(rdo::runtime::LPRDORuntime) Runtime, std::ostream& stream) = 0;
 };
 
 #define DECLARE_IResult                                                 \
 	virtual void resetResult(CREF(rdo::runtime::LPRDORuntime) Runtime); \
 	virtual void checkResult(CREF(rdo::runtime::LPRDORuntime) Runtime); \
-	virtual void calcStat   (CREF(rdo::runtime::LPRDORuntime) Runtime, REF(rdo::ostream) stream);
+	virtual void calcStat   (CREF(rdo::runtime::LPRDORuntime) Runtime, std::ostream& stream);
 
 /*!
   \interface IResultWatchQuant

@@ -151,7 +151,7 @@ void Converter::insertChanges(CREF(tstring) name, CREF(tstring) value)
 
 tstring Converter::getChanges() const
 {
-	rdo::textstream stream;
+	std::stringstream stream;
 	stream << "$Changes" << std::endl;
 	ruint changes_max_length = 0;
 	STL_FOR_ALL_CONST(m_changes, change_it)
@@ -175,7 +175,7 @@ tstring Converter::getChanges() const
 
 tstring Converter::getModelStructure()
 {
-	rdo::textstream modelStructure;
+	std::stringstream modelStructure;
 
 	// $Changes
 	modelStructure << getChanges();

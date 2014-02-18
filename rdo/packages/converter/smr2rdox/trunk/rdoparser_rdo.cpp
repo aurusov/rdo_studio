@@ -22,7 +22,6 @@
 #include "converter/smr2rdox/rdosmr.h"
 #include "converter/smr2rdox/rdopat.h"
 #include "simulator/runtime/rdo_pattern.h"
-#include "utils/src/stream/rdostream.h"
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
 #include "simulator/runtime/calc/function/calc_function_internal.h"

@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 #ifdef RDOSIM_COMPATIBLE
 tstring doubleToString(double value)
 {
-	rdo::ostringstream _str;
+	std::ostringstream _str;
 	_str << value;
 	tstring::size_type pos = _str.str().find("e");
 	if (pos != tstring::npos)

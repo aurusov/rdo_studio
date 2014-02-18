@@ -15,7 +15,6 @@
 #include <QString>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/stream/rdostream.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
@@ -43,7 +42,7 @@ public:
 	void setTree(PTR(ChartTree) pTreeCtrl);
 
 	void startTrace();
-	void    getModelStructure(rdo::textstream& stream);
+	void    getModelStructure(std::istream& stream);
 	void    getTraceString(tstring trace_string);
 	tstring getNextValue(REF(tstring) line);
 	ChartDoc* createNewChart();
@@ -64,8 +63,8 @@ private:
 	LogMainWnd* m_pLog;
 	ChartTree*  m_pChartTree;
 
-	ParamInfo* getParam(rdo::textstream& stream);
-	ParamInfo* getParamType(rdo::textstream& stream);
+	ParamInfo* getParam(std::istream& stream);
+	ParamInfo* getParamType(std::istream& stream);
 
 	typedef  std::vector<LPResourceType>   ResourceTypeList;
 	typedef  std::vector<LPResource>       ResourceList;
@@ -83,11 +82,11 @@ private:
 	EventList         m_eventList;
 	ResultList        m_resultList;
 
-	void addResourceType(REF(tstring) s, rdo::textstream& stream);
-	void addResource    (REF(tstring) s, rdo::textstream& stream);
-	void addPattern     (REF(tstring) s, rdo::textstream& stream);
-	void addOperation   (REF(tstring) s, rdo::textstream& stream);
-	void addResult      (REF(tstring) s, rdo::textstream& stream);
+	void addResourceType(REF(tstring) s, std::istream& stream);
+	void addResource    (REF(tstring) s, std::istream& stream);
+	void addPattern     (REF(tstring) s, std::istream& stream);
+	void addOperation   (REF(tstring) s, std::istream& stream);
+	void addResult      (REF(tstring) s, std::istream& stream);
 
 	void dispatchNextString(REF(tstring) line);
 

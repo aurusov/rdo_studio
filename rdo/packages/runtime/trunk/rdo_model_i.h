@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/interface/rdointerface.h"
-#include "utils/src/stream/rdostream.h"
 // --------------------------------------------------------------------------------
 
 /*!
@@ -27,11 +26,11 @@ public:
 	  \brief      Записать структу модели в поток
 	  \param[out] stream выходной поток
 	*/
-	virtual void writeModelStructure(REF(rdo::ostream) stream) const = 0;
+	virtual void writeModelStructure(std::ostream& stream) const = 0;
 };
 
 #define DECLARE_IModelStructure \
-	virtual void writeModelStructure(REF(rdo::ostream) stream) const;
+	virtual void writeModelStructure(std::ostream& stream) const;
 
 /*!
   \interface IName

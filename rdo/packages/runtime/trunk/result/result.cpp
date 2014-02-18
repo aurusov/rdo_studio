@@ -51,7 +51,7 @@ public:
 	{}
 
 	template <class TS>
-	friend rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<TS>& item);
+	friend std::ostream& operator<< (std::ostream& stream, const ResultStreamItem<TS>& item);
 
 private:
 	rbool predicate;
@@ -59,7 +59,7 @@ private:
 };
 
 template <class T>
-inline rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<T>& item)
+inline std::ostream& operator<< (std::ostream& stream, const ResultStreamItem<T>& item)
 {
 	if (item.predicate)
 	{
@@ -73,7 +73,7 @@ inline rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<T>
 }
 
 template <>
-inline rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<double>& item)
+inline std::ostream& operator<< (std::ostream& stream, const ResultStreamItem<double>& item)
 {
 	if (item.predicate)
 	{
@@ -104,7 +104,7 @@ CREF(tstring) RDOPMDResult::name() const
 	return m_name;
 }
 
-void RDOPMDResult::printLeft(REF(rdo::ostream) stream, CREF(tstring) txt)
+void RDOPMDResult::printLeft(std::ostream& stream, CREF(tstring) txt)
 {
 	stream << txt;
 
@@ -184,7 +184,7 @@ void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 	m_timePrev = currTime;
 }
 
-void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
+void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 {
 	if (!m_wasFinalCalc)
 	{
@@ -292,7 +292,7 @@ void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 	m_timePrev = currTime;
 }
 
-void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
+void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 {
 	if (!m_wasFinalCalc)
 	{
@@ -385,7 +385,7 @@ void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 	m_timePrev = currTime;
 }
 
-void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
+void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 {
 	if (!m_wasFinalCalc)
 	{
@@ -476,7 +476,7 @@ void RDOPMDWatchValue::checkResult(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
+void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 {
 	UNUSED(pRuntime);
 
@@ -574,7 +574,7 @@ void RDOPMDGetValue::checkResult(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
+void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 {
 	if (!m_wasFinalCalc)
 	{
@@ -594,27 +594,27 @@ CREF(RDOValue) RDOPMDGetValue::getValue() const
 	return m_value;
 }
 
-void RDOPMDWatchPar::writeModelStructure(REF(rdo::ostream) stream) const
+void RDOPMDWatchPar::writeModelStructure(std::ostream& stream) const
 {
 	stream << traceId() << " watch_par" << std::endl;
 }
 
-void RDOPMDWatchState::writeModelStructure(REF(rdo::ostream) stream) const
+void RDOPMDWatchState::writeModelStructure(std::ostream& stream) const
 {
 	stream << traceId() << " watch_state" << std::endl;
 }
 
-void RDOPMDWatchQuant::writeModelStructure(REF(rdo::ostream) stream) const
+void RDOPMDWatchQuant::writeModelStructure(std::ostream& stream) const
 {
 	stream << traceId() << " watch_quant" << std::endl;
 }
 
-void RDOPMDWatchValue::writeModelStructure(REF(rdo::ostream) stream) const
+void RDOPMDWatchValue::writeModelStructure(std::ostream& stream) const
 {
 	stream << traceId() << " watch_value" << std::endl;
 }
 
-void RDOPMDGetValue::writeModelStructure(REF(rdo::ostream) stream) const
+void RDOPMDGetValue::writeModelStructure(std::ostream& stream) const
 {
 	stream << traceId() << " get_value" << std::endl;
 }

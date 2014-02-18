@@ -155,7 +155,7 @@ ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const
 	return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
 }
 
-void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream) const
+void RDORTPResType::writeModelStructure(std::ostream& stream) const
 {
 	stream << getNumber() << " " << name() << " " << getParams().size() << std::endl;
 	for (ruint i = 0; i < getParams().size(); i++)
