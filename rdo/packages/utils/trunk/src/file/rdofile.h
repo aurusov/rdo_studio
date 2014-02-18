@@ -12,7 +12,9 @@
 #define _UTILS_RDOFILE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #include <boost/filesystem.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------

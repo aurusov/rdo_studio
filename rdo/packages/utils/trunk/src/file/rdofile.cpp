@@ -14,6 +14,7 @@
 	#undef __STRICT_ANSI__
 #endif
 // ----------------------------------------------------------------------- INCLUDES
+#include "utils/src/common/warning_disable.h"
 #ifdef COMPILER_VISUAL_STUDIO
 	#include <Windows.h>
 	#include <io.h>
@@ -25,6 +26,7 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/uuid/uuid_generators.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/file/rdofile.h"
 #include "utils/src/common/rdocommon.h"
