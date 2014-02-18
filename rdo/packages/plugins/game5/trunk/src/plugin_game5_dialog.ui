@@ -111,7 +111,14 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_6">
          <item row="0" column="0">
-          <widget class="CostSetupTable" name="tableCostValue"/>
+          <widget class="CostSetupTable" name="tableCostValue">
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
+           <property name="tabKeyNavigation">
+            <bool>false</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -153,12 +160,18 @@
         <property name="text">
          <string>Перемешать</string>
         </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item row="2" column="0">
        <widget class="QPushButton" name="buttonRightLineup">
         <property name="text">
          <string>По порядку</string>
+        </property>
+        <property name="autoDefault">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -180,12 +193,21 @@
         <property name="text">
          <string>&gt;&gt;</string>
         </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item row="6" column="3" colspan="2">
        <widget class="QPushButton" name="buttonOk">
         <property name="text">
          <string>Ok</string>
+        </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
+        <property name="default">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -206,6 +228,9 @@
        <widget class="QPushButton" name="buttonSetLineup">
         <property name="text">
          <string>Задать..</string>
+        </property>
+        <property name="autoDefault">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -301,6 +326,7 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>buttonOk</tabstop>
   <tabstop>buttonRandomLineup</tabstop>
   <tabstop>solvabilityCheck</tabstop>
   <tabstop>buttonRightLineup</tabstop>
@@ -312,7 +338,6 @@
   <tabstop>radioButtonCustom</tabstop>
   <tabstop>lineEditCustom</tabstop>
   <tabstop>checkBoxCopareTop</tabstop>
-  <tabstop>buttonOk</tabstop>
  </tabstops>
  <resources/>
  <connections/>
