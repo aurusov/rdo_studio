@@ -114,7 +114,7 @@ QStringList PluginGame5GraphDialog::parseTrace()
 	QString trcStringS;
 	trcStringS = trcString.mid(begin + 2, end - begin - 2);
 
-	QRegExp regExp("(STN|STR)(((\\s)-?\\d{1,5})*((\\s)(\\s)(\\d{1,2})(\\s)(\\d{1,2}))?)(((\\nSRK)((\\s)\\d){4})(\\s\\d{1,2})((\\nSRK)((\\s)\\d){3})(\\s\\d{1,2}))?");
+	QRegExp regExp("(STN|STR)(((\\s)-?\\d{1,5}){8}((\\s)(\\s)(\\d{1,2})(\\s)(\\d{1,2})))(((\\nSRK)((\\s)\\d){4})(\\s\\d{1,2})((\\nSRK)((\\s)\\d){3})(\\s\\d{1,2}))?");
 	QStringList list;
 	int pos=0;
 	while((pos = regExp.indexIn(trcStringS, pos))!= -1)
@@ -149,7 +149,7 @@ int PluginGame5GraphDialog::parseTraceInfo(const QString& key)
 	int value = 0;
 	QString str = getTraceInfo(); 
 
-	int pos=0;
+	int pos = 0;
 	while((pos = regExp.indexIn(str, pos))!= -1)
 	{
 		value = regExp.cap(2).toInt();
@@ -169,50 +169,48 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 	GraphNode* rightNode;
 	std::vector<std::vector<int>> paintLevel;
 	QStringList parsingResult = parseTrace();
-	m_graph.resize(parsingResult.size() + 1);
+	m_graph.resize(parsingResult.size() + 2);
+	m_graph[1] = new GraphNode(1, NULL, 0, 0, 0, 0, 0, 0, 0, 0, startBoardState);
 	BOOST_FOREACH(const QString& string, parsingResult)
 	{
-		int graphNode        = string.section(" ", 1, 1).toInt();
-		int parentGraphNode  = string.section(" ", 2, 2).toInt();
-		int pathCost         = string.section(" ", 3, 3).toInt();
-		int restPathCost     = string.section(" ", 4, 4).toInt() - pathCost;
-		int moveDirection    = string.section(" ", 5, 5).toInt();
-		int moveCost         = string.section(" ", 7, 7).toInt();
-		int relevantTileFlag = string.section(" ", 8, 8).toInt();
-		int relevantTile     = 0;
-		int tileMoveFrom     = 0;
-		int tileMoveTo       = 0;
-		int graphLevel       = 0;
-		QString boardState = startBoardState;
-		if (relevantTileFlag)
-		{
-			tileMoveFrom = string.section(" ", -1, -1).toInt();
-			tileMoveTo   = string.section(" ", -2, -2).toInt();
-			relevantTile = string.section(" ", -4, -4).toInt();
-		}
-		if (parentGraphNode)
-		{
-			graphLevel = m_graph[parentGraphNode]->getGraphLevel() + 1;
-			boardState = m_graph[parentGraphNode]->getBoardState();
-			int tileMoveToPos   = (tileMoveTo   - 1) * 2;
-			int tileMoveFromPos = (tileMoveFrom - 1) * 2;
-			QString tileMoveToStr   = boardState.mid(tileMoveToPos, 1  );
-			QString tileMoveFromStr = boardState.mid(tileMoveFromPos, 1);
-			boardState.replace(tileMoveToPos  , 1, tileMoveFromStr);
-			boardState.replace(tileMoveFromPos, 1, tileMoveToStr  );
-		}
+		int graphNode        = string.section(" ",  1,  1).toInt();
+		int parentGraphNode  = string.section(" ",  2,  2).toInt();
+		int pathCost         = string.section(" ",  3,  3).toInt();
+		int restPathCost     = string.section(" ",  4,  4).toInt() - pathCost;
+		int moveDirection    = string.section(" ",  5,  5).toInt();
+		int moveCost         = string.section(" ",  7,  7).toInt();
+
+		int tileMoveFrom     = string.section(" ", -1, -1).toInt();
+		int tileMoveTo       = string.section(" ", -2, -2).toInt();
+		int relevantTile     = string.section(" ", -4, -4).toInt();
+
+		int graphLevel = m_graph[parentGraphNode]->getGraphLevel() + 1;
+		QString	boardState = m_graph[parentGraphNode]->getBoardState();
+		int tileMoveToPos   = (tileMoveTo   - 1) * 2;
+		int tileMoveFromPos = (tileMoveFrom - 1) * 2;
+		QString tileMoveToStr   = boardState.mid(tileMoveToPos, 1  );
+		QString tileMoveFromStr = boardState.mid(tileMoveFromPos, 1);
+		boardState.replace(tileMoveToPos  , 1, tileMoveFromStr);
+		boardState.replace(tileMoveFromPos, 1, tileMoveToStr  );
+		
 		m_graph[graphNode] = new GraphNode(graphNode, m_graph[parentGraphNode], pathCost, restPathCost,moveDirection,
 		                                   moveCost, relevantTile, graphLevel, tileMoveFrom, tileMoveTo, boardState
 		);
-		connect(m_graph[graphNode], &GraphNode::clickedNode  , this, &PluginGame5GraphDialog::updateCheckedNode);
-		connect(m_graph[graphNode], &GraphNode::doubleClicked, this, &PluginGame5GraphDialog::emitShowNodeInfoDlg);
-		int currntLevel = paintLevel.size() - 1;
-		if (currntLevel < graphLevel)
+	}
+
+	for (unsigned int i = 1; i < m_graph.size(); i++)
+	{
+		int graphLevel = m_graph[i]->getGraphLevel();
+		connect(m_graph[i], &GraphNode::clickedNode  , this, &PluginGame5GraphDialog::updateCheckedNode);
+		connect(m_graph[i], &GraphNode::doubleClicked, this, &PluginGame5GraphDialog::emitShowNodeInfoDlg);
+		int currentLevel = paintLevel.size() - 1;
+		if (currentLevel < graphLevel)
 		{
 			paintLevel.push_back(std::vector<int>());
 		}
-		paintLevel[graphLevel].push_back(graphNode);
+		paintLevel[graphLevel].push_back(i);
 	}
+
 	for (unsigned int i = 1; i < paintLevel.size(); i++)
 	{
 		quickSort(paintLevel[i]);
@@ -221,6 +219,7 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 			m_graph[paintLevel[i][j]]->setGraphOnLevelOrder(j);
 		}
 	}
+
 	BOOST_FOREACH(int node, getSolutionNodes())
 	{
 		m_graph[node]->setRelatedToSolution(true);
