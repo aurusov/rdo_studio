@@ -48,7 +48,9 @@ RDO_BISON_TARGET(smr_file cnv_smr_file_)
 RDO_BISON_TARGET(smr_sim cnv_smr_sim_)
 
 FLEX_TARGET(lexer_scaner ${GRAMMA_INPUT_PATH}/rdo_lexer.l ${GRAMMA_OUTPUT_PATH}/rdolex.cpp COMPILE_FLAGS "-Pcnv -+")
-SET_SOURCE_FILES_PROPERTIES(${GRAMMA_OUTPUT_PATH}/rdolex.cpp PROPERTIES COMPILE_FLAGS "/Od")
+IF(MSVC)
+	SET_SOURCE_FILES_PROPERTIES(${GRAMMA_OUTPUT_PATH}/rdolex.cpp PROPERTIES COMPILE_FLAGS "/Od")
+ENDIF()
 
 ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rtp)
 
@@ -277,19 +279,19 @@ IF(MSVC) # options for windows #
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
 	ADD_PCH("${SOURCE_FILES}" "${NO_PCH_FILES}" converter/smr2rdox ./ pch)
 
-	SOURCE_GROUP(".animation" FILES 
+	SOURCE_GROUP(".animation" FILES
 		${ANIMATION_FILES}
 	)
-	
-	SOURCE_GROUP(".common" FILES 
+
+	SOURCE_GROUP(".common" FILES
 		${COMMON_FILES}
 	)
 
-	SOURCE_GROUP(".converter" FILES 
+	SOURCE_GROUP(".converter" FILES
 		${CONVERTER_FILES}
 	)
 
-	SOURCE_GROUP(".converter\\.error" FILES 
+	SOURCE_GROUP(".converter\\.error" FILES
 		${CONVERTER_ERROR_FILES}
 	)
 
