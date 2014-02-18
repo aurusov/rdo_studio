@@ -49,7 +49,7 @@ void TilesOrderDialog::onOkClick()
 QString TilesOrderDialog::validatorRegExpPattern(int value)
 {
 	QString singleRegExp;
-	int leastBit = value % 10;
+	int leastBit = value % 10 - 1;
 	int highBit  = value / 10;
 	if (highBit == 0)
 	{
@@ -67,6 +67,6 @@ QString TilesOrderDialog::validatorRegExpPattern(int value)
 		}
 	}
 
-	QString regExpString = "(((" + singleRegExp + ")(\\s)+)|((\\s)+(" + singleRegExp + ")(\\s)+))*($|((" + singleRegExp + ")$))";
+	QString regExpString = "(((" + singleRegExp + ")(\\s)+)|((\\s)+(" + singleRegExp + ")(\\s)+)){" + QString::number(value) + "}($|((" + singleRegExp + ")$))";
 	return regExpString;
 }
