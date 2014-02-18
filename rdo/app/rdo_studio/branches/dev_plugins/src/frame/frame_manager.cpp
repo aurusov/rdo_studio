@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/stream/rdostream.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
@@ -302,7 +301,7 @@ void Manager::insertBitmap(CREF(QString) bitmapName)
 	g_pApp->getIMainWnd()->getDockDebug().appendString(QString("Загрузка %1...").arg(bitmapName));
 	g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 
-	rdo::binarystream stream;
+	std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName.toStdWString(), stream);
 	g_pModel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 

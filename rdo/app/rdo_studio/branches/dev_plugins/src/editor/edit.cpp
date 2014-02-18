@@ -1189,7 +1189,7 @@ void Edit::horzScrollToCurrentPos() const
 	sendEditor(SCI_REPLACESEL, 0, 0);
 }
 
-void Edit::load(rdo::stream& stream)
+void Edit::load(const std::stringstream& stream)
 {
 	bool readOnly = isReadOnly();
 	setReadOnly(false);
@@ -1200,7 +1200,7 @@ void Edit::load(rdo::stream& stream)
 	setReadOnly(readOnly);
 }
 
-void Edit::save(rdo::stream& stream) const
+void Edit::save(std::stringstream& stream) const
 {
 	int len = getLength();
 	std::vector<char> str;
