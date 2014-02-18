@@ -106,7 +106,7 @@ rdo::runtime::RDOValue FunctionParamType::get_default() const
 	return rdo::runtime::RDOValue();
 }
 
-void FunctionParamType::writeModelStructure(REF(rdo::ostream) stream) const
+void FunctionParamType::writeModelStructure(std::ostream& stream) const
 {
 	stream << "F " << std::endl;
 	NEVER_REACH_HERE;
@@ -176,7 +176,7 @@ rdo::runtime::RDOValue FunctionType::get_default() const
 	return rdo::runtime::RDOValue();
 }
 
-void FunctionType::writeModelStructure(REF(rdo::ostream) stream) const
+void FunctionType::writeModelStructure(std::ostream& stream) const
 {
 	stream << "F " << std::endl;
 	NEVER_REACH_HERE;

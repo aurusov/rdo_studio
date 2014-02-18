@@ -103,7 +103,7 @@ LPExpression RDORSSResource::createGetResourceExpression(const RDOParserSrcInfo&
 	);
 }
 
-void RDORSSResource::writeModelStructure(REF(rdo::ostream) stream) const
+void RDORSSResource::writeModelStructure(std::ostream& stream) const
 {
 	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
 }
