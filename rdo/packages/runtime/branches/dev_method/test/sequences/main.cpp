@@ -15,6 +15,7 @@
 #endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOSequencesTest
+#include "utils/src/common/warning_disable.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -23,6 +24,7 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/file/rdofile.h"
 #include "utils/src/locale/rdolocale.h"

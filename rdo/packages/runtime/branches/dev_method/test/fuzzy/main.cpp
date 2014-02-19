@@ -14,9 +14,11 @@
 	#undef __STRICT_ANSI__
 #endif
 // ----------------------------------------------------------------------- INCLUDES
-#include <iostream>
 #define BOOST_TEST_MODULE RDORuntime_Fuzzy_Test
+#include "utils/src/common/warning_disable.h"
+#include <iostream>
 #include <boost/test/included/unit_test.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_fuzzy.h"

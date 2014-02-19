@@ -15,10 +15,12 @@
 	#undef __STRICT_ANSI__
 #endif
 // ----------------------------------------------------------------------- INCLUDES
+#define BOOST_TEST_MODULE RDOValue_Test
+#include "utils/src/common/warning_disable.h"
 #include <iostream>
 #include <boost/bind.hpp>
-#define BOOST_TEST_MODULE RDOValue_Test
 #include <boost/test/included/unit_test.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_res_type.h"

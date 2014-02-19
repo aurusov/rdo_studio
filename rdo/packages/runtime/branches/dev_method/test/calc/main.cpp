@@ -14,9 +14,11 @@
 #endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOCalc_Test
+#include "utils/src/common/warning_disable.h"
 #include <boost/test/included/unit_test.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/chrono.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/calc/procedural/calc_const.h"
