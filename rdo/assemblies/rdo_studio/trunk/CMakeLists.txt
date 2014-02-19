@@ -133,7 +133,7 @@ SET(PROJECT_VERSION_LONG ${CMAKE_SVN_VERSION})
 
 IF(WIN32)
     IF(NOT MINGW)
-#        INCLUDE(win32.install)
+        INCLUDE(win32.install)
     ENDIF()
 ENDIF()
 
