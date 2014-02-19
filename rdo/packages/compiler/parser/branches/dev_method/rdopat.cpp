@@ -280,26 +280,29 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 	{
 		LPRDORelevantResource pRelevantResource = m_pCurrRelRes;
 		ASSERT(pRelevantResource);
+		const rdo::runtime::LPRDOCalc resource = rdo::Factory<rdo::runtime::RDOGetResourceByRelevantResourceID>::create(m_pCurrRelRes->m_relResID);
 		LPRDORTPParam pParam = pRelevantResource->getType()->findRTPParam(params.identifier());
 		if (pParam)
 		{
-			const rdo::runtime::LPRDOCalc rightValue = params.exists(Expression::CONTEXT_PARAM_SET_EXPRESSION)
-				? params.get<LPExpression>(Expression::CONTEXT_PARAM_SET_EXPRESSION)->calc()
-				: params.get<LPRDOFUNArithm>(RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM)->createCalc(pParam->getTypeInfo());
-
-			using namespace rdo::runtime;
-			switch (params.get<SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE))
+			if (params.get<rdo::runtime::SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE) == rdo::runtime::SetOperationType::SET)
 			{
-			case SetOperationType::NOCHANGE   : return FindResult(CreateExpression(boost::bind(&contextSetRelevantResourceParameter<SetOperationType::NOCHANGE>, pRelevantResource, pParam, rightValue, srcInfo)));
-			case SetOperationType::SET        : return FindResult(CreateExpression(boost::bind(&contextSetRelevantResourceParameterSet, pRelevantResource, pParam, rightValue, srcInfo)));
-			case SetOperationType::ADDITION   : return FindResult(CreateExpression(boost::bind(&contextSetRelevantResourceParameter<SetOperationType::ADDITION>, pRelevantResource, pParam, rightValue, srcInfo)));
-			case SetOperationType::SUBTRACTION: return FindResult(CreateExpression(boost::bind(&contextSetRelevantResourceParameter<SetOperationType::SUBTRACTION>, pRelevantResource, pParam, rightValue, srcInfo)));
-			case SetOperationType::MULTIPLY   : return FindResult(CreateExpression(boost::bind(&contextSetRelevantResourceParameter<SetOperationType::MULTIPLY>, pRelevantResource, pParam, rightValue, srcInfo)));
-			case SetOperationType::DIVIDE     : return FindResult(CreateExpression(boost::bind(&contextSetRelevantResourceParameter<SetOperationType::DIVIDE>, pRelevantResource, pParam, rightValue, srcInfo)));
-			case SetOperationType::INCREMENT  : return FindResult(CreateExpression(boost::bind(&contextSetRelevantResourceParameter<SetOperationType::INCREMENT>, pRelevantResource, pParam, rightValue, srcInfo)));
-			case SetOperationType::DECRIMENT  : return FindResult(CreateExpression(boost::bind(&contextSetRelevantResourceParameter<SetOperationType::DECRIMENT>, pRelevantResource, pParam, rightValue, srcInfo)));
-			default: return FindResult();
+				const rdo::runtime::LPRDOCalc rightValue = params.exists(Expression::CONTEXT_PARAM_SET_EXPRESSION)
+					? params.get<LPExpression>(Expression::CONTEXT_PARAM_SET_EXPRESSION)->calc()
+					: params.get<LPRDOFUNArithm>(RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM)->createCalc(pParam->getTypeInfo());
+				return FindResult(CreateExpression(boost::bind(&contextSetRelevantResourceParameterSet, pRelevantResource, pParam, rightValue, srcInfo)));
 			}
+
+			Context::Params params_;
+			params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = pRelevantResource->getType()->getRTPParamNumber(params.identifier());
+			params_["getResource()"] = resource;
+			params_[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = params.get<rdo::runtime::SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE);
+			
+			if (params.exists(Expression::CONTEXT_PARAM_SET_EXPRESSION))
+				params_[Expression::CONTEXT_PARAM_SET_EXPRESSION] = params.get<LPExpression>(Expression::CONTEXT_PARAM_SET_EXPRESSION);
+			if (params.exists(RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM))
+				params_[RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM] = params.get<LPRDOFUNArithm>(RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM);
+
+			return pParam->find(Context::METHOD_SET, params_, srcInfo);
 		}
 	}
 

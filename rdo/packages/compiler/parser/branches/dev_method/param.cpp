@@ -63,6 +63,17 @@ LPExpression contextGetParam(const rdo::runtime::LPRDOCalc& resource, ruint para
 	);
 }
 
+template <rdo::runtime::SetOperationType::Type setOperationType>
+LPExpression contextSetParam(const rdo::runtime::LPRDOCalc& getResource, const ruint paramID, const rdo::runtime::LPRDOCalc& rightValue, const RDOParserSrcInfo& srcInfo)
+{	
+	return rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo),
+		rdo::Factory<rdo::runtime::RDOSetResourceParam<setOperationType> >::create(getResource, paramID, rightValue),
+		srcInfo
+	);
+
+}
+
 }
 
 Context::FindResult RDOParam::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
@@ -72,6 +83,29 @@ Context::FindResult RDOParam::onFindContext(const std::string& method, const Con
 		LPExpression resource = params.get<LPExpression>(RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION);
 		const ruint paramID = params.get<ruint>(RDOParam::CONTEXT_PARAM_PARAM_ID);
 		return FindResult(CreateExpression(boost::bind(&contextGetParam, resource->calc(), paramID, getTypeInfo(), srcInfo)));
+	}
+
+	if (method == Context::METHOD_SET)
+	{
+		const rdo::runtime::LPRDOCalc rightValue = params.exists(Expression::CONTEXT_PARAM_SET_EXPRESSION)
+				? params.get<LPExpression>(Expression::CONTEXT_PARAM_SET_EXPRESSION)->calc()
+				: params.get<LPRDOFUNArithm>(RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM)->createCalc(getTypeInfo());
+		const ruint paramID = params.get<ruint>(RDOParam::CONTEXT_PARAM_PARAM_ID);
+		const rdo::runtime::LPRDOCalc getResource = params.get<rdo::runtime::LPRDOCalc>("getResource()");
+
+		using namespace rdo::runtime;
+		switch (params.get<SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE))
+			{
+			case SetOperationType::NOCHANGE   : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::NOCHANGE>, getResource, paramID, rightValue, srcInfo)));
+			case SetOperationType::SET        : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, getResource, paramID, rightValue, srcInfo)));
+			case SetOperationType::ADDITION   : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::ADDITION>, getResource, paramID, rightValue, srcInfo)));
+			case SetOperationType::SUBTRACTION: return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SUBTRACTION>, getResource, paramID, rightValue, srcInfo)));
+			case SetOperationType::MULTIPLY   : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::MULTIPLY>, getResource, paramID, rightValue, srcInfo)));
+			case SetOperationType::DIVIDE     : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::DIVIDE>, getResource, paramID, rightValue, srcInfo)));
+			case SetOperationType::INCREMENT  : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::INCREMENT>, getResource, paramID, rightValue, srcInfo)));
+			case SetOperationType::DECRIMENT  : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::DECRIMENT>, getResource, paramID, rightValue, srcInfo)));
+			default: return FindResult();
+		}
 	}
 
 	return FindResult();

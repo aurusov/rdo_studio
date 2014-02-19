@@ -90,6 +90,23 @@ private:
 	DECLARE_ICalc;
 };
 
+template <SetOperationType::Type setOperationType>
+class RDOSetResourceParam: public RDOCalc
+{
+public:
+	RDOSetResourceParam(const LPRDOCalc& getResource, const ruint paramID, const LPRDOCalc& pCalc = NULL);
+	virtual ~RDOSetResourceParam();
+
+protected:
+	LPRDOCalc m_getResource;
+	ruint     m_paramID;
+	LPRDOCalc m_pCalc;
+
+	DECLARE_ICalc;
+};
+
 CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "simulator/runtime/calc/resource/calc_resource.inl"
 
 #endif // _LIB_RUNTIME_CALC_RESOURCE_H_
