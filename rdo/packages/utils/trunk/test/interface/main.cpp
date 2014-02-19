@@ -14,11 +14,13 @@
 	#undef __STRICT_ANSI__
 #endif
 // ----------------------------------------------------------------------- INCLUDES
+#define BOOST_TEST_MODULE RDOInterfaceTest
+#include "utils/src/common/warning_disable.h"
 #include <list>
 #include <vector>
 #include <iostream>
-#define BOOST_TEST_MODULE RDOInterfaceTest
 #include <boost/test/included/unit_test.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/interface/rdointerface.h"
 // --------------------------------------------------------------------------------

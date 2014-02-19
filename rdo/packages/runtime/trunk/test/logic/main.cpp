@@ -14,10 +14,12 @@
 	#undef __STRICT_ANSI__
 #endif
 // ----------------------------------------------------------------------- INCLUDES
+#define BOOST_TEST_MODULE RDORuntime_Logic_Test
+#include "utils/src/common/warning_disable.h"
 #include <vector>
 #include <algorithm>
-#define BOOST_TEST_MODULE RDORuntime_Logic_Test
 #include <boost/test/included/unit_test.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdomacros.h"
 #include "utils/src/common/rdotypes.h"

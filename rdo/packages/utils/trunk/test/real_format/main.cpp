@@ -15,9 +15,11 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <iostream>
 #define BOOST_TEST_MODULE RDORealFormatTest
+#include "utils/src/common/warning_disable.h"
+#include <iostream>
 #include <boost/test/included/unit_test.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 

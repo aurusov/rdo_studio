@@ -15,8 +15,10 @@
 #endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOCommon_Test
-#include <boost/test/included/unit_test.hpp>
+#include "utils/src/common/warning_disable.h"
 #include <boost/format.hpp>
+#include <boost/test/included/unit_test.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 #include "utils/src/file/rdofile.h"

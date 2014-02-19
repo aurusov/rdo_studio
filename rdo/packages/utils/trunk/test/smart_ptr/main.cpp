@@ -14,11 +14,13 @@
 	#undef __STRICT_ANSI__
 #endif
 // ----------------------------------------------------------------------- INCLUDES
+#define BOOST_TEST_MODULE RDOSmartPrtTest
+#include "utils/src/common/warning_disable.h"
 #include <vector>
 #include <list>
 #include <iostream>
-#define BOOST_TEST_MODULE RDOSmartPrtTest
 #include <boost/test/included/unit_test.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/factory/factory.h"
 #include "utils/src/smart_ptr/interface_ptr/interface_ptr.h"

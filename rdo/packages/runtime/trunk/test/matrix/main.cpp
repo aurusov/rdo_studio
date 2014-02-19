@@ -15,10 +15,12 @@
 	#undef __STRICT_ANSI__
 #endif
 // ----------------------------------------------------------------------- INCLUDES
+#define BOOST_TEST_MODULE RDORuntime_Matrix_Test
+#include "utils/src/common/warning_disable.h"
 #include <iostream>
 #include <stdio.h>
-#define BOOST_TEST_MODULE RDORuntime_Matrix_Test
 #include <boost/test/included/unit_test.hpp>
+#include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_matrix.h"
