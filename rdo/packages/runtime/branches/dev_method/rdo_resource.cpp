@@ -83,21 +83,21 @@ LPRDOResource RDOResource::clone(CREF(LPRDORuntime) pRuntime) const
 
 tstring RDOResource::getTypeId()
 {
-	rdo::ostringstream str;
+	std::ostringstream str;
 	str << m_type;
 	return str.str();
 }
 
 tstring RDOResource::traceParametersValue()
 {
-	rdo::ostringstream str;
+	std::ostringstream str;
 	if(m_paramList.size() > 0)
 	{
 		ParamList::iterator end = m_paramList.end();
 		for (ParamList::iterator it = m_paramList.begin();;)
 		{
 #ifdef RDOSIM_COMPATIBLE
-			rdo::ostringstream _str;
+			std::ostringstream _str;
 			_str << *it;
 			tstring::size_type pos = _str.str().find("e");
 			if (pos != tstring::npos)
@@ -123,7 +123,7 @@ tstring RDOResource::traceParametersValue()
 
 tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime)
 {
-	rdo::ostringstream res;
+	std::ostringstream res;
 	if (traceable() || (prefix != '\0'))
 	{
 		if (m_state == RDOResource::CS_NoChange || m_state == RDOResource::CS_NonExist)

@@ -40,7 +40,7 @@ inline RDOType::TypeID RDOValue::typeID() const
 	return m_pType->typeID();
 }
 
-inline REF(rdo::ostream) operator<< (REF(rdo::ostream) stream, CREF(RDOValue) rdovalue)
+inline std::ostream& operator<< (std::ostream& stream, CREF(RDOValue) rdovalue)
 {
 	stream << rdovalue.getAsStringForTrace();
 	return stream;
