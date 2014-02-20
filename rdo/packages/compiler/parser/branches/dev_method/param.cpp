@@ -15,6 +15,7 @@
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/param.h"
 #include "simulator/compiler/parser/rdortp.h"
+#include "simulator/compiler/parser/type/range.h"
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
@@ -64,11 +65,25 @@ LPExpression contextGetParam(const rdo::runtime::LPRDOCalc& resource, ruint para
 }
 
 template <rdo::runtime::SetOperationType::Type setOperationType>
-LPExpression contextSetParam(const rdo::runtime::LPRDOCalc& getResource, const ruint paramID, const rdo::runtime::LPRDOCalc& rightValue, const RDOParserSrcInfo& srcInfo)
+LPExpression contextSetParam(const rdo::runtime::LPRDOCalc& getResource, const RDOParam* param, const ruint paramID, const rdo::runtime::LPRDOCalc& rightValue, const RDOParserSrcInfo& srcInfo)
 {	
-	return rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo),
-		rdo::Factory<rdo::runtime::RDOSetResourceParam<setOperationType> >::create(getResource, paramID, rightValue),
+	rdo::runtime::LPRDOCalc setParamCalc = rdo::Factory<rdo::runtime::RDOSetResourceParam<setOperationType> >::create(getResource, paramID, rightValue);
+	
+	LPRDOTypeIntRange pTypeIntRange = param->getTypeInfo()->type().object_dynamic_cast<RDOTypeIntRange>();
+	if (pTypeIntRange)
+	{
+		setParamCalc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), setParamCalc);
+	}
+
+	LPRDOTypeRealRange pTypeRealRange = param->getTypeInfo()->type().object_dynamic_cast<RDOTypeRealRange>();
+	if (pTypeRealRange)
+	{
+		setParamCalc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), setParamCalc);
+	}
+		
+		return rdo::Factory<Expression>::create(
+		param->getTypeInfo(),
+		setParamCalc,
 		srcInfo
 	);
 
@@ -96,14 +111,14 @@ Context::FindResult RDOParam::onFindContext(const std::string& method, const Con
 		using namespace rdo::runtime;
 		switch (params.get<SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE))
 			{
-			case SetOperationType::NOCHANGE   : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::NOCHANGE>, getResource, paramID, rightValue, srcInfo)));
-			case SetOperationType::SET        : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, getResource, paramID, rightValue, srcInfo)));
-			case SetOperationType::ADDITION   : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::ADDITION>, getResource, paramID, rightValue, srcInfo)));
-			case SetOperationType::SUBTRACTION: return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SUBTRACTION>, getResource, paramID, rightValue, srcInfo)));
-			case SetOperationType::MULTIPLY   : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::MULTIPLY>, getResource, paramID, rightValue, srcInfo)));
-			case SetOperationType::DIVIDE     : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::DIVIDE>, getResource, paramID, rightValue, srcInfo)));
-			case SetOperationType::INCREMENT  : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::INCREMENT>, getResource, paramID, rightValue, srcInfo)));
-			case SetOperationType::DECRIMENT  : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::DECRIMENT>, getResource, paramID, rightValue, srcInfo)));
+			case SetOperationType::NOCHANGE   : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::NOCHANGE>, getResource, this, paramID, rightValue, srcInfo)));
+			case SetOperationType::SET        : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, getResource, this, paramID, rightValue, srcInfo)));
+			case SetOperationType::ADDITION   : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::ADDITION>, getResource, this, paramID, rightValue, srcInfo)));
+			case SetOperationType::SUBTRACTION: return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SUBTRACTION>, getResource, this, paramID, rightValue, srcInfo)));
+			case SetOperationType::MULTIPLY   : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::MULTIPLY>, getResource, this, paramID, rightValue, srcInfo)));
+			case SetOperationType::DIVIDE     : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::DIVIDE>, getResource, this, paramID, rightValue, srcInfo)));
+			case SetOperationType::INCREMENT  : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::INCREMENT>, getResource, this, paramID, rightValue, srcInfo)));
+			case SetOperationType::DECRIMENT  : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::DECRIMENT>, getResource, this, paramID, rightValue, srcInfo)));
 			default: return FindResult();
 		}
 	}
