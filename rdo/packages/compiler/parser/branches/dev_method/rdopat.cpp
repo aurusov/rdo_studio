@@ -284,12 +284,13 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 		LPRDORTPParam pParam = pRelevantResource->getType()->findRTPParam(params.identifier());
 		if (pParam)
 		{
+
+			RDOParserSrcInfo srcInfo_(srcInfo);
+			srcInfo_.setSrcText(rdo::format("%s.%s", pRelevantResource->src_text().c_str(), pParam->name().c_str()));
+
 			if (params.get<rdo::runtime::SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE) == rdo::runtime::SetOperationType::SET)
 			{
-				const rdo::runtime::LPRDOCalc rightValue = params.exists(Expression::CONTEXT_PARAM_SET_EXPRESSION)
-					? params.get<LPExpression>(Expression::CONTEXT_PARAM_SET_EXPRESSION)->calc()
-					: params.get<LPRDOFUNArithm>(RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM)->createCalc(pParam->getTypeInfo());
-				return FindResult(CreateExpression(boost::bind(&contextSetRelevantResourceParameterSet, pRelevantResource, pParam, rightValue, srcInfo)));
+				pRelevantResource->getParamSetList().insert(pParam);
 			}
 
 			Context::Params params_;
