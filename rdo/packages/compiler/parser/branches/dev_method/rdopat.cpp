@@ -207,37 +207,6 @@ LPExpression contextGetRelevantResource(const LPRDORelevantResource& relevantRes
 	);
 }
 
-template <rdo::runtime::SetOperationType::Type setOperationType>
-LPExpression contextSetRelevantResourceParameter(const LPRDORelevantResource& relevantResource, const LPRDORTPParam& param, const rdo::runtime::LPRDOCalc& rightValue, const RDOParserSrcInfo& srcInfo)
-{
-	RDOParserSrcInfo srcInfo_(srcInfo);
-	srcInfo_.setSrcText(rdo::format("%s.%s", relevantResource->src_text().c_str(), param->name().c_str()));
-
-	rdo::runtime::LPRDOCalc calc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<setOperationType> >::create(relevantResource->m_relResID, relevantResource->getType()->getRTPParamNumber(param->name()), rightValue);
-
-	//! Проверка на диапазон
-	LPRDOTypeIntRange pTypeIntRange = param->getTypeInfo()->type().object_dynamic_cast<RDOTypeIntRange>();
-	if (pTypeIntRange)
-	{
-		calc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), calc);
-	}
-
-	LPRDOTypeRealRange pTypeRealRange = param->getTypeInfo()->type().object_dynamic_cast<RDOTypeRealRange>();
-	if (pTypeRealRange)
-	{
-		calc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), calc);
-	}
-
-	return rdo::Factory<Expression>::create(param->getTypeInfo(), calc, srcInfo_);
-}
-
-LPExpression contextSetRelevantResourceParameterSet(const LPRDORelevantResource& relevantResource, const LPRDORTPParam& param, const rdo::runtime::LPRDOCalc& rightValue, const RDOParserSrcInfo& srcInfo)
-{
-	LPExpression expression = contextSetRelevantResourceParameter<rdo::runtime::SetOperationType::SET>(relevantResource, param, rightValue, srcInfo);
-	relevantResource->getParamSetList().insert(param);
-	return expression;
-}
-
 }
 
 Context::FindResult RDOPATPattern::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const

@@ -36,62 +36,12 @@ inline RDOSetRelResParamCalc<setOperationType>::~RDOSetRelResParamCalc()
 {}
 
 template <>
-inline RDOValue RDOSetRelResParamCalc<SetOperationType::NOCHANGE>::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-	RDOValue value(true);
-	return value;
-}
-
-template <>
 inline RDOValue RDOSetRelResParamCalc<SetOperationType::SET>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	RDOValue value = m_pCalc->calcValue(pRuntime);
 	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
 	pRuntime->setResParamVal(resID, m_paramID, value);
 	return value;
-}
-
-template <>
-inline RDOValue RDOSetRelResParamCalc<SetOperationType::ADDITION>::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
-	return pRuntime->getResParamValRaw(resID, m_paramID) += m_pCalc->calcValue(pRuntime);
-}
-
-template <>
-inline RDOValue RDOSetRelResParamCalc<SetOperationType::SUBTRACTION>::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
-	return pRuntime->getResParamValRaw(resID, m_paramID) -= m_pCalc->calcValue(pRuntime);
-}
-
-template <>
-inline RDOValue RDOSetRelResParamCalc<SetOperationType::MULTIPLY>::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
-	return pRuntime->getResParamValRaw(resID, m_paramID) *= m_pCalc->calcValue(pRuntime);
-}
-
-template <>
-inline RDOValue RDOSetRelResParamCalc<SetOperationType::DIVIDE>::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
-	return pRuntime->getResParamValRaw(resID, m_paramID) /= m_pCalc->calcValue(pRuntime);
-}
-
-template <>
-inline RDOValue RDOSetRelResParamCalc<SetOperationType::INCREMENT>::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
-	return pRuntime->getResParamValRaw(resID, m_paramID) += RDOValue(1);
-}
-
-template <>
-inline RDOValue RDOSetRelResParamCalc<SetOperationType::DECRIMENT>::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
-	return pRuntime->getResParamValRaw(resID, m_paramID) -= RDOValue(1);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
