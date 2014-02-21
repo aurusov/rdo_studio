@@ -48,8 +48,8 @@
 				AdditionalIncludeDirectories="../../../../;./bin/rdo_application/generated/;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtWidgets&quot;;../../../../thirdparty/scintilla/include"
 				PreprocessorDefinitions="RDO_ST;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="app/rdo_studio/pch/plugin_loader_pch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
 				DebugInformationFormat="3"
@@ -121,7 +121,7 @@
 				PreprocessorDefinitions="RDO_ST;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;NOMINMAX"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
+				PrecompiledHeaderThrough="app/rdo_studio/pch/plugin_loader_pch.h"
 				WarningLevel="4"
 			/>
 			<Tool
@@ -204,7 +204,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
+				PrecompiledHeaderThrough="app/rdo_studio/pch/plugin_loader_pch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
 				DebugInformationFormat="3"
@@ -292,7 +292,7 @@
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;NOMINMAX"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
+				PrecompiledHeaderThrough="app/rdo_studio/pch/plugin_loader_pch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
 			/>
@@ -375,7 +375,7 @@
 				PreprocessorDefinitions="RDO_MT;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;NOMINMAX"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
+				PrecompiledHeaderThrough="app/rdo_studio/pch/plugin_loader_pch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
 				DebugInformationFormat="3"
@@ -463,7 +463,7 @@
 				PreprocessorDefinitions="RDO_MT;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;NOMINMAX"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="app/rdo_studio/pch/stdpch.h"
+				PrecompiledHeaderThrough="app/rdo_studio/pch/plugin_loader_pch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
 			/>
@@ -538,6 +538,66 @@
 			</File>
 			<File
 				RelativePath="..\..\src\plugins\plugin_loader.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".pch"
+			>
+			<File
+				RelativePath="..\..\pch\plugin_loader_pch.cpp"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\pch\plugin_loader_pch.h"
 				>
 			</File>
 		</Filter>
