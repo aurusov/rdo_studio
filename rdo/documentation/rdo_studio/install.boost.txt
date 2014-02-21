@@ -55,17 +55,12 @@ Boost - The Boost C++ libraries are a set of free software libraries that extend
 
 2.3.2 MinGW
 
-    В корне буста находим файл project-config.jam и заменяем директиву using на using gcc ;
-
-    Далее запускаем blam как и для Visual Studio:
-    b2 debug link=static threading=multi
-    b2 release link=static threading=multi
+    cd c:\boost_1_55_0_src
+    bootstrap.bat mingw
+    b2 debug release link=static threading=multi -j 4 install --prefix=C:\boost_1_55_0 toolset=gcc
 
     Если вы уже скомпилили буст под Visual Studio, то ничего страшного.
     Библиотеки буста после компиляции MinGW и Visual Studio имеют разные имена и располагаются в одном месте.
-
-    Если возникла ошибка 'ml...', то необходимо добавить путь к ml.exe в PATH. Искать ml.exe надо в районе в
-
 
 2.4 Для GNU/Linux запускаем b2 с параметрами
 
