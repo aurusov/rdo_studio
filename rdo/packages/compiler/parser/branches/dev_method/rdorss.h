@@ -40,7 +40,7 @@ CLASS(RDORSSResource):
 {
 DECLARE_FACTORY(RDORSSResource);
 public:
-	static const std::string CONTEXT_PARAM_RESOURCE_EXPRESSION;
+	static const std::string GET_RESOURCE;
 
 	class Param
 	{

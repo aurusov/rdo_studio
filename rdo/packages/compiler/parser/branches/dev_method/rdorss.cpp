@@ -27,7 +27,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------
-const std::string RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION = "resource_expression";
+const std::string RDORSSResource::GET_RESOURCE = "resource_expression";
 
 RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id)
 	: RDOParserSrcInfo(src_info                                      )
@@ -76,7 +76,7 @@ Context::FindResult RDORSSResource::onFindContext(const std::string& method, con
 		}
 
 		Context::Params params_;
-		params_[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = createGetResourceExpression(srcInfo);
+		params_[RDORSSResource::GET_RESOURCE] = createGetResourceExpression(srcInfo);
 		params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = parNumb;
 
 		LPContext pParam = getType()->findRTPParam(paramName);

@@ -227,7 +227,7 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 			if (method == Context::METHOD_OPERATOR_DOT)
 			{
 				Context::Params params;
-				params[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = contextGetRelevantResource(pRelevantResource, srcInfo);
+				params[RDORSSResource::GET_RESOURCE] = contextGetRelevantResource(pRelevantResource, srcInfo);
 				return FindResult(SwitchContext(pRelevantResource, params));
 			}
 
@@ -249,13 +249,18 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 	{
 		LPRDORelevantResource pRelevantResource = m_pCurrRelRes;
 		ASSERT(pRelevantResource);
-		const rdo::runtime::LPRDOCalc resource = rdo::Factory<rdo::runtime::RDOGetResourceByRelevantResourceID>::create(m_pCurrRelRes->m_relResID);
 		LPRDORTPParam pParam = pRelevantResource->getType()->findRTPParam(params.identifier());
 		if (pParam)
 		{
-
 			RDOParserSrcInfo srcInfo_(srcInfo);
 			srcInfo_.setSrcText(rdo::format("%s.%s", pRelevantResource->src_text().c_str(), pParam->name().c_str()));
+
+			const rdo::runtime::LPRDOCalc resourceCalc = rdo::Factory<rdo::runtime::RDOGetResourceByRelevantResourceID>::create(m_pCurrRelRes->m_relResID);
+			const LPExpression resourceExpression = rdo::Factory<Expression>::create(
+				rdo::Factory<TypeInfo>::create(pRelevantResource->getType(), srcInfo_), 
+				resourceCalc, 
+				srcInfo_
+			);
 
 			if (params.get<rdo::runtime::SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE) == rdo::runtime::SetOperationType::SET)
 			{
@@ -264,7 +269,7 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 
 			Context::Params params_;
 			params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = pRelevantResource->getType()->getRTPParamNumber(params.identifier());
-			params_["getResource()"] = resource;
+			params_[RDORSSResource::GET_RESOURCE] = resourceExpression;
 			params_[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = params.get<rdo::runtime::SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE);
 			
 			if (params.exists(Expression::CONTEXT_PARAM_SET_EXPRESSION))
@@ -272,7 +277,7 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 			if (params.exists(RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM))
 				params_[RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM] = params.get<LPRDOFUNArithm>(RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM);
 
-			return pParam->find(Context::METHOD_SET, params_, srcInfo);
+			return pParam->find(Context::METHOD_SET, params_, srcInfo_);
 		}
 	}
 
@@ -1141,7 +1146,7 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 
 		{
 			Context::Params params_;
-			params_[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = params.get<LPExpression>(RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION);
+			params_[RDORSSResource::GET_RESOURCE] = params.get<LPExpression>(RDORSSResource::GET_RESOURCE);
 			params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = parNumb;
 
 			return pParam->find(Context::METHOD_GET, params_, srcInfo);

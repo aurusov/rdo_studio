@@ -1683,7 +1683,7 @@ Context::FindResult RDOFUNGroup::onFindContext(const std::string& method, const 
 		if (getResType()->name() == params.identifier())
 		{
 			Context::Params params;
-			params[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = rdo::Factory<Expression>::create(
+			params[RDORSSResource::GET_RESOURCE] = rdo::Factory<Expression>::create(
 				rdo::Factory<TypeInfo>::create(getResType(), srcInfo),
 				rdo::Factory<rdo::runtime::RDOCalcGetGroupFunctionResource>::create(),
 				srcInfo
