@@ -1,4 +1,4 @@
-Boost - The Boost C++ libraries are a set of free software libraries that extend the functionality of C++.
+﻿Boost - The Boost C++ libraries are a set of free software libraries that extend the functionality of C++.
 
     Используется в исходном коде РДО.
 
@@ -54,6 +54,9 @@ Boost - The Boost C++ libraries are a set of free software libraries that extend
     BOOST_ROOT=C:\boost_1_55_0
 
 2.3.2 MinGW
+
+    Поставить MASM32 SDK (http://www.masm32.com/masmdl.htm) и прописать путь
+    set PATH=C:\masm32\bin;%PATH% (это можно сделать только в консоле сборки, а после сборки буста удалить MASM32 с винта)
 
     cd c:\boost_1_55_0_src
     bootstrap.bat mingw
