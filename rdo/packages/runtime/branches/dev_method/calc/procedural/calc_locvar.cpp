@@ -12,6 +12,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_activity.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -63,6 +65,23 @@ RDOValue RDOCalcLocalVariableList::doCalc(CREF(LPRDORuntime) pRuntime)
 	{
 		(*calc_it)->calcValue(pRuntime);
 	}
+	return RDOValue();
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcSetLocalVariable
+// --------------------------------------------------------------------------------
+RDOCalcSetLocalVariable::RDOCalcSetLocalVariable(CREF(tstring) name, LPRDOCalc pCalc)
+	: m_name (name )
+	, m_pCalc(pCalc)
+{}
+
+RDOCalcSetLocalVariable::~RDOCalcSetLocalVariable()
+{}
+
+RDOValue RDOCalcSetLocalVariable::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	pRuntime->getMemoryStack()->set(m_name, m_pCalc->calcValue(pRuntime));
 	return RDOValue();
 }
 
