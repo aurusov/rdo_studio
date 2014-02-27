@@ -28,6 +28,30 @@ SET(STUDIO_PCH_FILES
 	pch/stdpch.h
 )
 
+SET(CORE_APPLICATION_ACTIONACTIVATOR_FILES
+	src/action_activator/action_activator.cpp
+	src/action_activator/action_activator.h
+	src/action_activator/action_activator_widget.cpp
+	src/action_activator/action_activator_widget.h
+)
+
+SET(CORE_APPLICATION_FILES
+	src/style.cpp
+	src/style.h
+)
+
+SET(CORE_APPLICATION_DIALOG_FILES
+	src/dialog/find_dialog.cpp
+	src/dialog/find_dialog.h
+	src/dialog/find_replace_dialog.cpp
+	src/dialog/find_replace_dialog.h	
+)
+
+SET(CORE_APPLICATION_PCH_FILES
+	pch/application_core_pch.cpp
+	pch/application_core_pch.h
+)
+
 SET(APPLICATION_FILES
 	src/application.cpp
 	src/application.h
@@ -37,37 +61,24 @@ SET(APPLICATION_FILES
 	src/main_window_base.h
 	src/status_bar.cpp
 	src/status_bar.h
-	src/style.cpp
-	src/style.h
 	src/thread.cpp
 	src/thread.h
 	src/view_preferences.cpp
 	src/view_preferences.h
 )
 
-SET(APPLICATION_ACTIONACTIVATOR_FILES
-	src/action_activator/action_activator.cpp
-	src/action_activator/action_activator.h
-	src/action_activator/action_activator_widget.cpp
-	src/action_activator/action_activator_widget.h
-)
-
-SET(DIALOG_FILES
+SET(APPLICATION_DIALOG_FILES
 	src/dialog/about_dialog.cpp
 	src/dialog/about_dialog.h
 	src/dialog/file_association_dialog.cpp
 	src/dialog/file_association_dialog.h
-	src/dialog/find_dialog.cpp
-	src/dialog/find_dialog.h
-	src/dialog/find_replace_dialog.cpp
-	src/dialog/find_replace_dialog.h
 	src/dialog/goto_line_dialog.cpp
 	src/dialog/goto_line_dialog.h
 	src/dialog/new_model_dialog.cpp
 	src/dialog/new_model_dialog.h
 )
 
-SET(DOCK_FILES
+SET(APPLICATION_DOCK_FILES
 	src/dock/dock_build.cpp
 	src/dock/dock_build.h
 	src/dock/dock_chart_tree.cpp
@@ -271,7 +282,7 @@ SET(RESOURCES_FILES
 	${QRC_FILES}
 )
 
-SET(RESOURCES_IMAGE_FILES
+SET(APPLICATION_RESOURCES_IMAGE_FILES
 	res/images/about.png
 	res/images/dock_build.png
 	res/images/dock_chart.png
@@ -356,94 +367,53 @@ SET(RESOURCES_IMAGE_FILES
 	res/images/view_zoom_reset_d.png
 )
 
-SET(RESOURCES_SCINTILLA_FILES
+SET(APPLICATION_RESOURCES_SCINTILLA_FILES
 	res/scintilla/ac_data.xpm
 	res/scintilla/ac_function.xpm
 	res/scintilla/ac_trace.xpm
 )
 
-SET(RESOURCES_UI_FILES
+SET(APPLICATION_RESOURCES_UI_FILES
 	res/ui/about_dialog.ui
-	res/ui/chart_preferences.ui
 	res/ui/file_association_dialog.ui
-	res/ui/find_dialog.ui
-	res/ui/find_replace_dialog.ui
 	res/ui/frame_options_widget.ui
 	res/ui/goto_line_dialog.ui
 	res/ui/main_window.ui
 	res/ui/new_model_dialog.ui
 	res/ui/view_preferenses.ui
 )
-QT5_WRAP_UI(GENERATED_RESOURCES_UI_FILES ${RESOURCES_UI_FILES})
+
+SET(CORE_APPLICATION_RESOURCES_UI_FILES
+	res/ui/find_dialog.ui
+	res/ui/find_replace_dialog.ui
+)
+	
+SET(TRACER_RESOURCES_UI_FILES
+	res/ui/chart_preferences.ui
+)
+
+QT5_WRAP_UI(GENERATED_CORE_APPLICATION_UI_FILES ${CORE_APPLICATION_RESOURCES_UI_FILES})
+QT5_WRAP_UI(GENERATED_APPLICATION_UI_FILES      ${APPLICATION_RESOURCES_UI_FILES})
+QT5_WRAP_UI(GENERATED_TRACER_UI_FILES           ${TRACER_RESOURCES_UI_FILES})
 
 SET(RESOURCES_WIN32_FILES
 	res/win32/rdo_studio.ico
 	res/win32/rdo_studio.rc
 )
 
-SET(APP_SOURCE_FILES
-	${APPLICATION_FILES}
-	${APPLICATION_ACTIONACTIVATOR_FILES}
-	${DIALOG_FILES}
-	${DOCK_FILES}
-	${RESOURCES_FILES}
-	${RESOURCES_IMAGE_FILES}
-	${RESOURCES_SCINTILLA_FILES}
-	${RESOURCES_UI_FILES}
-	${APPLICATION_PCH_FILES}
-)
-
-SET(EDITOR_SOURCE_FILES
-	${EDITOR_FILES}
-	${EDITOR_DEBUG_FILES}
-	${EDITOR_LEXER_FILES}
-	${EDITOR_LOG_FILES}
-	${EDITOR_LOG_BUILD_FILES}
-	${EDITOR_LOG_FIND_FILES}
-	${EDITOR_PARSER_FILES}
-	${EDITOR_RESULTS_FILES}
-	${EDITOR_PCH_FILES}
-)
-
-SET(FRAME_SOURCE_FILES
-	${FRAME_FILES}
-	${FRAME_PCH_FILES}
-)
-
-SET(MODEL_SOURCE_FILES
-	${EDITOR_MODEL_FILES}
-	${MODEL_FILES}
-	${MODEL_PCH_FILES}
-)
-
-SET(PLUGIN_LOADER_SOURCE_FILES
-	${PLUGINS_FILES}
-	${PLUGIN_LOADER_PCH_FILES}
-)
-
-SET(TRACER_SOURCE_FILES
-	${TRACER_FILES}
-	${TRACER_CHART_FILES}
-	${TRACER_LOGGER_FILES}
-	${TRACER_PCH_FILES}
-)
-
-SET(RDO_STUDIO_SOURCE_FILES
-	${MAIN_FILES}
-	${RESOURCES_WIN32_FILES}
-	${STUDIO_PCH_FILES}
-)
-
-SET(RDO_APP_MOC_FILES
+SET(APPLICATION_MOC_FILES
 	src/dialog/about_dialog.h
 	src/dialog/file_association_dialog.h
-	src/dialog/find_dialog.h
-	src/dialog/find_replace_dialog.h
 	src/dialog/goto_line_dialog.h
 	src/dialog/new_model_dialog.h
 	src/dock/dock_focusable.h
 	src/main_window.h
 	src/view_preferences.h
+)
+
+SET(CORE_APPLICATION_MOC_FILES
+	src/dialog/find_dialog.h
+	src/dialog/find_replace_dialog.h
 )
 
 SET(RDO_EDITOR_MOC_FILES
@@ -473,114 +443,197 @@ SET(RDO_TRACER_MOC_FILES
 SET(QT_MOC_FLAGS)
 QT5_GET_MOC_FLAGS(QT_MOC_FLAGS)
 
-SET(GENERATED_APP_MOC_FILES)
-FOREACH(RDO_APP_MOC_FILES_IT ${RDO_APP_MOC_FILES})
-	QT5_WRAP_CPP(GENERATED_RDO_APP_MOC_FILES_IT ${RDO_APP_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/stdpch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_APP_MOC_FILES_IT}")
-	SET(GENERATED_APP_MOC_FILES ${GENERATED_APP_MOC_FILES} ${GENERATED_RDO_APP_MOC_FILES_IT})
+SET(GENERATED_CORE_APPLICATION_MOC_FILES)
+FOREACH(CORE_APPLICATION_MOC_FILES_IT ${CORE_APPLICATION_MOC_FILES})
+	QT5_WRAP_CPP(GENERATED_CORE_APPLICATION_MOC_FILES_IT ${CORE_APPLICATION_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/application_core_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${CORE_APPLICATION_MOC_FILES_IT}")
+	SET(GENERATED_CORE_APPLICATION_MOC_FILES ${GENERATED_CORE_APPLICATION_MOC_FILES} ${GENERATED_CORE_APPLICATION_MOC_FILES_IT})
+ENDFOREACH()
+
+SET(GENERATED_APPLICATION_MOC_FILES)
+FOREACH(APPLICATION_MOC_FILES_IT ${APPLICATION_MOC_FILES})
+	QT5_WRAP_CPP(GENERATED_APPLICATION_MOC_FILES_IT ${APPLICATION_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/application_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${APPLICATION_MOC_FILES_IT}")
+	SET(GENERATED_APPLICATION_MOC_FILES ${GENERATED_APPLICATION_MOC_FILES} ${GENERATED_APPLICATION_MOC_FILES_IT})
 ENDFOREACH()
 
 SET(GENERATED_EDITOR_MOC_FILES)
 FOREACH(RDO_EDITOR_MOC_FILES_IT ${RDO_EDITOR_MOC_FILES})
-	QT5_WRAP_CPP(GENERATED_RDO_EDITOR_MOC_FILES_IT ${RDO_EDITOR_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/stdpch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_EDITOR_MOC_FILES_IT}")
+	QT5_WRAP_CPP(GENERATED_RDO_EDITOR_MOC_FILES_IT ${RDO_EDITOR_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/editor_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_EDITOR_MOC_FILES_IT}")
 	SET(GENERATED_EDITOR_MOC_FILES ${GENERATED_EDITOR_MOC_FILES} ${GENERATED_RDO_EDITOR_MOC_FILES_IT})
 ENDFOREACH()
 
 SET(GENERATED_FRAME_MOC_FILES)
 FOREACH(RDO_FRAME_MOC_FILES_IT ${RDO_FRAME_MOC_FILES})
-	QT5_WRAP_CPP(GENERATED_RDO_FRAME_MOC_FILES_IT ${RDO_FRAME_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/stdpch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_FRAME_MOC_FILES_IT}")
+	QT5_WRAP_CPP(GENERATED_RDO_FRAME_MOC_FILES_IT ${RDO_FRAME_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/frame_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_FRAME_MOC_FILES_IT}")
 	SET(GENERATED_FRAME_MOC_FILES ${GENERATED_FRAME_MOC_FILES} ${GENERATED_RDO_FRAME_MOC_FILES_IT})
 ENDFOREACH()
 
 SET(GENERATED_MODEL_MOC_FILES)
 FOREACH(RDO_MODEL_MOC_FILES_IT ${RDO_MODEL_MOC_FILES})
-	QT5_WRAP_CPP(GENERATED_RDO_MODEL_MOC_FILES_IT ${RDO_MODEL_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/stdpch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_MODEL_MOC_FILES_IT}")
+	QT5_WRAP_CPP(GENERATED_RDO_MODEL_MOC_FILES_IT ${RDO_MODEL_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/model_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_MODEL_MOC_FILES_IT}")
 	SET(GENERATED_MODEL_MOC_FILES ${GENERATED_MODEL_MOC_FILES} ${GENERATED_RDO_MODEL_MOC_FILES_IT})
 ENDFOREACH()
 
 SET(GENERATED_TRACER_MOC_FILES)
 FOREACH(RDO_TRACER_MOC_FILES_IT ${RDO_TRACER_MOC_FILES})
-	QT5_WRAP_CPP(GENERATED_RDO_TRACER_MOC_FILES_IT ${RDO_TRACER_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/stdpch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_TRACER_MOC_FILES_IT}")
+	QT5_WRAP_CPP(GENERATED_RDO_TRACER_MOC_FILES_IT ${RDO_TRACER_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/tracer_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_TRACER_MOC_FILES_IT}")
 	SET(GENERATED_TRACER_MOC_FILES ${GENERATED_TRACER_MOC_FILES} ${GENERATED_RDO_TRACER_MOC_FILES_IT})
 ENDFOREACH()
+
+SET(RDO_STUDIO_SOURCE_FILES
+	${MAIN_FILES}
+	${RESOURCES_WIN32_FILES}
+	${STUDIO_PCH_FILES}
+)
+
+SET(CORE_APPLICATION_SOURCE_FILES
+	${CORE_APPLICATION_ACTIONACTIVATOR_FILES}
+	${CORE_APPLICATION_FILES}
+	${CORE_APPLICATION_DIALOG_FILES}
+	${CORE_APPLICATION_RESOURCES_UI_FILES}
+	${GENERATED_CORE_APPLICATION_MOC_FILES}
+	${CORE_APPLICATION_PCH_FILES}
+)
+
+SET(APPLICATION_SOURCE_FILES
+	${APPLICATION_FILES}
+	${APPLICATION_ACTIONACTIVATOR_FILES}
+	${APPLICATION_DIALOG_FILES}
+	${APPLICATION_DOCK_FILES}
+	${RESOURCES_FILES}
+	${APPLICATION_RESOURCES_IMAGE_FILES}
+	${APPLICATION_RESOURCES_SCINTILLA_FILES}
+	${APPLICATION_RESOURCES_UI_FILES}
+	${GENERATED_APPLICATION_MOC_FILES}
+	${APPLICATION_PCH_FILES}
+)
+
+SET(EDITOR_SOURCE_FILES
+	${EDITOR_FILES}
+	${EDITOR_DEBUG_FILES}
+	${EDITOR_LEXER_FILES}
+	${EDITOR_LOG_FILES}
+	${EDITOR_LOG_BUILD_FILES}
+	${EDITOR_LOG_FIND_FILES}
+	${EDITOR_PARSER_FILES}
+	${EDITOR_RESULTS_FILES}
+	${GENERATED_EDITOR_MOC_FILES}
+	${EDITOR_PCH_FILES}
+)
+
+SET(FRAME_SOURCE_FILES
+	${FRAME_FILES}
+	${GENERATED_FRAME_MOC_FILES}
+	${FRAME_PCH_FILES}
+)
+
+SET(MODEL_SOURCE_FILES
+	${EDITOR_MODEL_FILES}
+	${MODEL_FILES}
+	${GENERATED_MODEL_MOC_FILES}
+	${MODEL_PCH_FILES}
+)
+
+SET(PLUGIN_LOADER_SOURCE_FILES
+	${PLUGINS_FILES}
+	${PLUGIN_LOADER_PCH_FILES}
+	${BUILD_PLUGIN_LOADER_DLL_FILES}
+)
+
+SET(TRACER_SOURCE_FILES
+	${TRACER_FILES}
+	${TRACER_CHART_FILES}
+	${TRACER_LOGGER_FILES}
+	${TRACER_RESOURCES_UI_FILES}
+	${GENERATED_TRACER_MOC_FILES}
+	${TRACER_PCH_FILES}
+	${BUILD_TRACER_DLL_FILES}
+)
 
 ADD_EXECUTABLE(rdo_studio
 	${RDO_STUDIO_SOURCE_FILES}
 	${DOC_FILES}
 )
 
-ADD_LIBRARY(rdo_application
-	${APP_SOURCE_FILES}
-	${GENERATED_RESOURCES_UI_FILES}
-	${GENERATED_APP_MOC_FILES}
+ADD_LIBRARY(rdo_application_core STATIC
+	${CORE_APPLICATION_SOURCE_FILES}
+	${GENERATED_CORE_APPLICATION_UI_FILES}
+)
+
+
+ADD_LIBRARY(rdo_application STATIC
+	${APPLICATION_SOURCE_FILES}
+	${GENERATED_APPLICATION_UI_FILES}
 	${GENERATED_QRC_FILES}
 )
 
-ADD_LIBRARY(rdo_editor
+ADD_LIBRARY(rdo_editor STATIC
 	${EDITOR_SOURCE_FILES}
-	${GENERATED_EDITOR_MOC_FILES}
 )
 
-ADD_LIBRARY(rdo_frame
+ADD_LIBRARY(rdo_frame STATIC
 	${FRAME_SOURCE_FILES}
-	${GENERATED_FRAME_MOC_FILES}
 )
 
-ADD_LIBRARY(rdo_model
+ADD_LIBRARY(rdo_model STATIC
 	${MODEL_SOURCE_FILES}
-	${GENERATED_MODEL_MOC_FILES}
 )
 
-ADD_LIBRARY(rdo_tracer
+ADD_LIBRARY(rdo_tracer STATIC
 	${TRACER_SOURCE_FILES}
-	${GENERATED_TRACER_MOC_FILES}
+	${GENERATED_TRACER_UI_FILES}
 )
 
-ADD_LIBRARY(rdo_plugin_loader
+ADD_LIBRARY(rdo_plugin_loader STATIC
 	${PLUGIN_LOADER_SOURCE_FILES}
 )
 
 INCLUDE(${PROJECT_SOURCE_DIR}/app/rdo_studio/projects/common/rdo_studio.cmake)
-SET_TARGET_PROPERTIES(rdo_studio        PROPERTIES FOLDER ${APP_FOLDER})
-SET_TARGET_PROPERTIES(rdo_application   PROPERTIES FOLDER ${APP_FOLDER})
-SET_TARGET_PROPERTIES(rdo_editor        PROPERTIES FOLDER ${APP_FOLDER})
-SET_TARGET_PROPERTIES(rdo_frame         PROPERTIES FOLDER ${APP_FOLDER})
-SET_TARGET_PROPERTIES(rdo_model         PROPERTIES FOLDER ${APP_FOLDER})
-SET_TARGET_PROPERTIES(rdo_tracer        PROPERTIES FOLDER ${APP_FOLDER})
-SET_TARGET_PROPERTIES(rdo_plugin_loader PROPERTIES FOLDER ${APP_FOLDER})
+SET_TARGET_PROPERTIES(rdo_studio           PROPERTIES FOLDER ${APP_FOLDER})
+SET_TARGET_PROPERTIES(rdo_application_core PROPERTIES FOLDER ${APP_FOLDER})
+SET_TARGET_PROPERTIES(rdo_application      PROPERTIES FOLDER ${APP_FOLDER})
+SET_TARGET_PROPERTIES(rdo_editor           PROPERTIES FOLDER ${APP_FOLDER})
+SET_TARGET_PROPERTIES(rdo_frame            PROPERTIES FOLDER ${APP_FOLDER})
+SET_TARGET_PROPERTIES(rdo_model            PROPERTIES FOLDER ${APP_FOLDER})
+SET_TARGET_PROPERTIES(rdo_tracer           PROPERTIES FOLDER ${APP_FOLDER})
+SET_TARGET_PROPERTIES(rdo_plugin_loader    PROPERTIES FOLDER ${APP_FOLDER})
 
 SET_TARGET_PROPERTIES(rdo_studio PROPERTIES COMPILE_FLAGS "-DSCI_LEXER")
 
-TARGET_LINK_LIBRARIES(rdo_studio        ${Qt5Widgets_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_application   ${Qt5Widgets_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_editor        ${Qt5Widgets_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_frame         ${Qt5Widgets_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_model         ${Qt5Widgets_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_tracer        ${Qt5Widgets_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_plugin_loader ${Qt5Widgets_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_studio             ${Qt5Widgets_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_application_core   ${Qt5Widgets_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_application        ${Qt5Widgets_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_editor             ${Qt5Widgets_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_frame              ${Qt5Widgets_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_model              ${Qt5Widgets_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_tracer             ${Qt5Widgets_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_plugin_loader      ${Qt5Widgets_LIBRARIES})
 
-TARGET_LINK_LIBRARIES(rdo_studio        ${Qt5Core_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_application   ${Qt5Core_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_editor        ${Qt5Core_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_frame         ${Qt5Core_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_model         ${Qt5Core_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_tracer        ${Qt5Core_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_plugin_loader ${Qt5Core_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_studio             ${Qt5Core_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_application_core   ${Qt5Core_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_application        ${Qt5Core_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_editor             ${Qt5Core_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_frame              ${Qt5Core_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_model              ${Qt5Core_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_tracer             ${Qt5Core_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_plugin_loader      ${Qt5Core_LIBRARIES})
 
-TARGET_LINK_LIBRARIES(rdo_studio        ${Qt5Gui_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_application   ${Qt5Gui_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_editor        ${Qt5Gui_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_frame         ${Qt5Gui_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_model         ${Qt5Gui_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_tracer        ${Qt5Gui_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_plugin_loader ${Qt5Gui_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_studio             ${Qt5Gui_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_application_core   ${Qt5Gui_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_application        ${Qt5Gui_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_editor             ${Qt5Gui_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_frame              ${Qt5Gui_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_model              ${Qt5Gui_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_tracer             ${Qt5Gui_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_plugin_loader      ${Qt5Gui_LIBRARIES})
 
-TARGET_LINK_LIBRARIES(rdo_studio        ${Boost_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_application   ${Boost_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_editor        ${Boost_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_frame         ${Boost_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_model         ${Boost_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_tracer        ${Boost_LIBRARIES})
-TARGET_LINK_LIBRARIES(rdo_plugin_loader ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_studio             ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_application_core   ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_application        ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_editor             ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_frame              ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_model              ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_tracer             ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_plugin_loader      ${Boost_LIBRARIES})
 
 ADD_DEPENDENCIES(rdo_studio rdo_application   )
 ADD_DEPENDENCIES(rdo_studio rdo_editor        )
@@ -597,6 +650,12 @@ TARGET_LINK_LIBRARIES(rdo_studio rdo_model         )
 TARGET_LINK_LIBRARIES(rdo_studio rdo_plugin_loader )
 TARGET_LINK_LIBRARIES(rdo_studio rdo_tracer        )
 
+ADD_DEPENDENCIES(rdo_application_core rdo_utils)
+ADD_DEPENDENCIES(rdo_application_core scintilla)
+
+TARGET_LINK_LIBRARIES(rdo_application_core rdo_utils)
+TARGET_LINK_LIBRARIES(rdo_application_core scintilla)
+
 ADD_DEPENDENCIES(rdo_application rdo_utils)
 ADD_DEPENDENCIES(rdo_application rdo_kernel)
 ADD_DEPENDENCIES(rdo_application rdo_repository)
@@ -606,6 +665,7 @@ ADD_DEPENDENCIES(rdo_application rdo_ui_abstract)
 ADD_DEPENDENCIES(rdo_application rdo_ui_qt)
 ADD_DEPENDENCIES(rdo_application rdo_help)
 ADD_DEPENDENCIES(rdo_application scintilla)
+ADD_DEPENDENCIES(rdo_application rdo_application_core)
 
 TARGET_LINK_LIBRARIES(rdo_application rdo_utils           )
 TARGET_LINK_LIBRARIES(rdo_application rdo_kernel          )
@@ -615,6 +675,7 @@ TARGET_LINK_LIBRARIES(rdo_application rdo_simulator_report)
 TARGET_LINK_LIBRARIES(rdo_application rdo_ui_abstract     )
 TARGET_LINK_LIBRARIES(rdo_application rdo_ui_qt           )
 TARGET_LINK_LIBRARIES(rdo_application scintilla           )
+TARGET_LINK_LIBRARIES(rdo_application rdo_application_core)
 
 ADD_DEPENDENCIES     (rdo_editor rdo_application)
 TARGET_LINK_LIBRARIES(rdo_editor rdo_application)
@@ -642,171 +703,204 @@ INSTALL(TARGETS rdo_tracer        DESTINATION lib)
 IF(MSVC) # options for windows #
 
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
-	ADD_PCH("${RDO_STUDIO_SOURCE_FILES}"    "${STUDIO_PCH_FILES}"        app/rdo_studio pch stdpch)
-	ADD_PCH("${APP_SOURCE_FILES}"           "${APPLICATION_PCH_FILES}"   app/rdo_studio pch application_pch)
-	ADD_PCH("${EDITOR_SOURCE_FILES}"        "${EDITOR_PCH_FILES}"        app/rdo_studio pch editor_pch)
-	ADD_PCH("${FRAME_SOURCE_FILES}"         "${FRAME_PCH_FILES}"         app/rdo_studio pch frame_pch)
-	ADD_PCH("${MODEL_SOURCE_FILES}"         "${MODEL_PCH_FILES}"         app/rdo_studio pch model_pch)
-	ADD_PCH("${PLUGIN_LOADER_SOURCE_FILES}" "${PLUGIN_LOADER_PCH_FILES}" app/rdo_studio pch plugin_loader_pch)
-	ADD_PCH("${TRACER_SOURCE_FILES}"        "${TRACER_PCH_FILES}"        app/rdo_studio pch tracer_pch)
+	ADD_PCH("${RDO_STUDIO_SOURCE_FILES}"       "${STUDIO_PCH_FILES}"           app/rdo_studio pch stdpch)
+	ADD_PCH("${CORE_APPLICATION_SOURCE_FILES}" "${CORE_APPLICATION_PCH_FILES}" app/rdo_studio pch application_core_pch)
+	ADD_PCH("${APPLICATION_SOURCE_FILES}"      "${APPLICATION_PCH_FILES}"      app/rdo_studio pch application_pch)
+	ADD_PCH("${EDITOR_SOURCE_FILES}"           "${EDITOR_PCH_FILES}"           app/rdo_studio pch editor_pch)
+	ADD_PCH("${FRAME_SOURCE_FILES}"            "${FRAME_PCH_FILES}"            app/rdo_studio pch frame_pch)
+	ADD_PCH("${MODEL_SOURCE_FILES}"            "${MODEL_PCH_FILES}"            app/rdo_studio pch model_pch)
+	ADD_PCH("${PLUGIN_LOADER_SOURCE_FILES}"    "${PLUGIN_LOADER_PCH_FILES}"    app/rdo_studio pch plugin_loader_pch)
+	ADD_PCH("${TRACER_SOURCE_FILES}"           "${TRACER_PCH_FILES}"           app/rdo_studio pch tracer_pch)
 	
-	SOURCE_GROUP("rdo_studio\\.doc" FILES
+	SOURCE_GROUP("\\.doc" FILES
 		${DOC_FILES}
 	)
 
-	SOURCE_GROUP("rdo_studio\\.pch" FILES
+	SOURCE_GROUP("\\.pch" FILES
 		${STUDIO_PCH_FILES}
 	)
 
-	SOURCE_GROUP("rdo_studio" FILES
+	SOURCE_GROUP("" FILES
 		${MAIN_FILES}
 	)
 
-	SOURCE_GROUP("rdo_studio\\.resources\\.win32" FILES
+	SOURCE_GROUP("\\.resources\\.win32" FILES
 		${RESOURCES_WIN32_FILES}
 	)
 
-	SOURCE_GROUP("rdo_application\\.application" FILES
+	SOURCE_GROUP("\\.actionactivator" FILES
+		${CORE_APPLICATION_ACTIONACTIVATOR_FILES}
+	)
+	
+	SOURCE_GROUP("" FILES
+		${CORE_APPLICATION_FILES}
+	)
+	
+	SOURCE_GROUP("\\.dialog" FILES
+		${CORE_APPLICATION_DIALOG_FILES}
+	)
+
+	SOURCE_GROUP("\\.resources\\.ui" FILES
+		${CORE_APPLICATION_RESOURCES_UI_FILES}
+	)
+
+	SOURCE_GROUP("\\.generated\\.ui" FILES
+		${GENERATED_CORE_APPLICATION_UI_FILES}
+	)
+	
+	SOURCE_GROUP("\\.generated\\.moc" FILES
+		${GENERATED_CORE_APPLICATION_MOC_FILES}
+	)
+	
+	SOURCE_GROUP("\\.pch" FILES
+		${CORE_APPLICATION_PCH_FILES}
+	)
+	
+	SOURCE_GROUP("\\.application" FILES
 		${APPLICATION_FILES}
 	)
 
-	SOURCE_GROUP("rdo_application\\.application\\.action_activator" FILES
-		${APPLICATION_ACTIONACTIVATOR_FILES}
+	SOURCE_GROUP("\\.dialog" FILES
+		${APPLICATION_DIALOG_FILES}
 	)
 
-	SOURCE_GROUP("rdo_application\\.dialog" FILES
-		${DIALOG_FILES}
+	SOURCE_GROUP("\\.dock" FILES
+		${APPLICATION_DOCK_FILES}
 	)
 
-	SOURCE_GROUP("rdo_application\\.dock" FILES
-		${DOCK_FILES}
+	SOURCE_GROUP("\\.generated\\.ui" FILES
+		${GENERATED_APPLICATION_UI_FILES}
 	)
 
-	SOURCE_GROUP("rdo_application\\.generated\\.ui" FILES
-		${GENERATED_RESOURCES_UI_FILES}
-	)
-
-	SOURCE_GROUP("rdo_application\\.generated\\.qrc" FILES
+	SOURCE_GROUP("\\.generated\\.qrc" FILES
 		${GENERATED_QRC_FILES}
 	)
 
-	SOURCE_GROUP("rdo_application\\.generated\\.moc" FILES
-		${GENERATED_APP_MOC_FILES}
+	SOURCE_GROUP("\\.generated\\.moc" FILES
+		${GENERATED_APPLICATION_MOC_FILES}
 	)
 
-	SOURCE_GROUP("rdo_application\\.resources" FILES
+	SOURCE_GROUP("\\.resources" FILES
 		${RESOURCES_FILES}
 	)
 
-	SOURCE_GROUP("rdo_application\\.resources\\.images" FILES
-		${RESOURCES_IMAGE_FILES}
+	SOURCE_GROUP("\\.resources\\.images" FILES
+		${APPLICATION_RESOURCES_IMAGE_FILES}
 	)
 
-	SOURCE_GROUP("rdo_application\\.resources\\.scintilla" FILES
-		${RESOURCES_SCINTILLA_FILES}
+	SOURCE_GROUP("\\.resources\\.scintilla" FILES
+		${APPLICATION_RESOURCES_SCINTILLA_FILES}
 	)
 
-	SOURCE_GROUP("rdo_application\\.resources\\.ui" FILES
-		${RESOURCES_UI_FILES}
+	SOURCE_GROUP("\\.resources\\.ui" FILES
+		${APPLICATION_RESOURCES_UI_FILES}
 	)
 
-	SOURCE_GROUP("rdo_application\\.pch" FILES
+	SOURCE_GROUP("\\.pch" FILES
 		${APPLICATION_PCH_FILES}
 	)
 	
-	SOURCE_GROUP("rdo_editor\\.editor" FILES
+	SOURCE_GROUP("\\.editor" FILES
 		${EDITOR_FILES}
 	)
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.debug" FILES
+	SOURCE_GROUP("\\.editor\\.debug" FILES
 		${EDITOR_DEBUG_FILES}
 	)
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.lexer" FILES
+	SOURCE_GROUP("\\.editor\\.lexer" FILES
 		${EDITOR_LEXER_FILES}
 	)
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.log" FILES
+	SOURCE_GROUP("\\.editor\\.log" FILES
 		${EDITOR_LOG_FILES}
 	)
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.log\\.build" FILES
+	SOURCE_GROUP("\\.editor\\.log\\.build" FILES
 		${EDITOR_LOG_BUILD_FILES}
 	)
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.log\\.find" FILES
+	SOURCE_GROUP("\\.editor\\.log\\.find" FILES
 		${EDITOR_LOG_FIND_FILES}
 	)
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.parser" FILES
+	SOURCE_GROUP("\\.editor\\.parser" FILES
 		${EDITOR_PARSER_FILES}
 	)
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.results" FILES
+	SOURCE_GROUP("\\.editor\\.results" FILES
 		${EDITOR_RESULTS_FILES}
 	)
 
-	SOURCE_GROUP("rdo_editor\\.generated\\.moc" FILES
+	SOURCE_GROUP("\\.generated\\.moc" FILES
 		${GENERATED_EDITOR_MOC_FILES}
 	)
 
-	SOURCE_GROUP("rdo_editor\\.pch" FILES
+	SOURCE_GROUP("\\.pch" FILES
 		${EDITOR_PCH_FILES}
 	)
 	
-	SOURCE_GROUP("rdo_frame\\.frame" FILES
+	SOURCE_GROUP("\\.frame" FILES
 		${FRAME_FILES}
 	)
 
-	SOURCE_GROUP("rdo_frame\\.generated\\.moc" FILES
+	SOURCE_GROUP("\\.generated\\.moc" FILES
 		${GENERATED_FRAME_MOC_FILES}
 	)
 
-	SOURCE_GROUP("rdo_frame\\.pch" FILES
+	SOURCE_GROUP("\\.pch" FILES
 		${FRAME_PCH_FILES}
 	)
 	
-	SOURCE_GROUP("rdo_model\\.editor" FILES
+	SOURCE_GROUP("\\.editor" FILES
 		${EDITOR_MODEL_FILES}
 	)
 
-	SOURCE_GROUP("rdo_model\\.model" FILES
+	SOURCE_GROUP("\\.model" FILES
 		${MODEL_FILES}
 	)
 
-	SOURCE_GROUP("rdo_model\\.generated\\.moc" FILES
+	SOURCE_GROUP("\\.generated\\.moc" FILES
 		${GENERATED_MODEL_MOC_FILES}
 	)
 
-	SOURCE_GROUP("rdo_model\\.pch" FILES
+	SOURCE_GROUP("\\.pch" FILES
 		${MODEL_PCH_FILES}
 	)
 	
-	SOURCE_GROUP("rdo_plugin_loader\\.plugins" FILES
+	SOURCE_GROUP("\\.plugins" FILES
 		${PLUGINS_FILES}
 	)
 
-	SOURCE_GROUP("rdo_plugin_loader\\.pch" FILES
+	SOURCE_GROUP("\\.pch" FILES
 		${PLUGIN_LOADER_PCH_FILES}
 	)
 	
-	SOURCE_GROUP("rdo_tracer\\.tracer" FILES
+	SOURCE_GROUP("\\.tracer" FILES
 		${TRACER_FILES}
 	)
 
-	SOURCE_GROUP("rdo_tracer\\.tracer\\.chart" FILES
+	SOURCE_GROUP("\\.tracer\\.chart" FILES
 		${TRACER_CHART_FILES}
 	)
 
-	SOURCE_GROUP("rdo_tracer\\.tracer\\.logger" FILES
+	SOURCE_GROUP("\\.tracer\\.logger" FILES
 		${TRACER_LOGGER_FILES}
 	)
 
-	SOURCE_GROUP("rdo_tracer\\.generated\\.moc" FILES
+	SOURCE_GROUP("\\.generated\\.moc" FILES
 		${GENERATED_TRACER_MOC_FILES}
 	)
+	
+	SOURCE_GROUP("\\.generated\\.ui" FILES
+		${GENERATED_TRACER_UI_FILES}
+	)
+	
+	SOURCE_GROUP("\\.resources\\.ui" FILES
+		${TRACER_RESOURCES_UI_FILES}
+	)
 
-	SOURCE_GROUP("rdo_tracer\\.pch" FILES
+	SOURCE_GROUP("\\.pch" FILES
 		${TRACER_PCH_FILES}
-	)	
+	)
 ENDIF(MSVC)
