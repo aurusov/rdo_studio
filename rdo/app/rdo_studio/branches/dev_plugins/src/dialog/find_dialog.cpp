@@ -8,7 +8,7 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio/pch/application_core_pch.h"
+#include "app/rdo_studio/pch/application_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dialog/find_dialog.h"

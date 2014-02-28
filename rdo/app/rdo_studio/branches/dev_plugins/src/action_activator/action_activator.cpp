@@ -8,7 +8,7 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio/pch/application_core_pch.h"
+#include "app/rdo_studio/pch/application_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <QAction>
