@@ -63,7 +63,6 @@ SET(CALC_PROCEDURAL_FILES
 	calc/procedural/calc_const.h
 	calc/procedural/calc_locvar.cpp
 	calc/procedural/calc_locvar.h
-	calc/procedural/calc_locvar.inl
 	calc/procedural/calc_nop.cpp
 	calc/procedural/calc_nop.h
 	calc/procedural/calc_range.cpp
