@@ -1536,37 +1536,13 @@ pat_convert_cmd
 	{
 		LPConvertCmdList      pCmdList     = CONVERTER->stack().pop<ConvertCmdList>($1);
 		tstring               paramName    = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
-		LPRDOFUNArithm        pRightArithm = CONVERTER->stack().pop<RDOFUNArithm>($4);
 		LPRDORelevantResource pRelRes      = CONVERTER->getLastPATPattern()->m_pCurrRelRes;
-		rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($3);
 		ASSERT(pRelRes);
 		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
 		if (!param)
 		{
 			CONVERTER->error().error(@2, rdo::format("Неизвестный параметр: %s", paramName.c_str()));
 		}
-		rdo::runtime::LPRDOCalc pCalcRight = pRightArithm->createCalc(param->getType().get());
-		rdo::runtime::LPRDOCalc pCalc;
-		switch (setOperationType)
-		{
-			case rdo::runtime::SetOperationType::SET:
-			{
-				pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::SetOperationType::SET> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
-				ASSERT(pCalc);
-				pRelRes->getParamSetList().insert(param);
-				break;
-			}
-			default:
-			{
-				NEVER_REACH_HERE;
-			}
-		}
-		if (pCalc)
-		{
-			pCalc->setSrcInfo(RDOParserSrcInfo(@2, @4, rdo::format("%s %s %s", paramName.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str(), pCalcRight->srcInfo().src_text().c_str())));
-			pCmdList->insertCommand(pCalc);
-		}
-
 		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@4.m_last_seek, ";");
 		ASSERT(pInsert);
 		CONVERTER->insertDocUpdate(pInsert);
