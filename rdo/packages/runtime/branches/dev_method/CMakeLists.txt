@@ -83,6 +83,7 @@ SET(CALC_RESOURCE_FILES
 	calc/resource/calc_relevant.inl
 	calc/resource/calc_resource.cpp
 	calc/resource/calc_resource.h
+	calc/resource/calc_resource.inl
 	calc/resource/calc_select.cpp
 	calc/resource/calc_select.h
 )
