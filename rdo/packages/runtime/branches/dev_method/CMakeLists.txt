@@ -80,7 +80,6 @@ SET(CALC_RESOURCE_FILES
 	calc/resource/calc_group.h
 	calc/resource/calc_relevant.cpp
 	calc/resource/calc_relevant.h
-	calc/resource/calc_relevant.inl
 	calc/resource/calc_resource.cpp
 	calc/resource/calc_resource.h
 	calc/resource/calc_resource.inl

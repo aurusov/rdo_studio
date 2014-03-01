@@ -15,6 +15,8 @@
 #include "simulator/runtime/calc/resource/calc_relevant.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
 #include "simulator/runtime/rdo_res_type_i.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_activity.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
