@@ -3,8 +3,8 @@
   \file      rdopat.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -207,6 +207,19 @@ LPExpression contextGetRelevantResource(const LPRDORelevantResource& relevantRes
 	);
 }
 
+void pushRelevantResourceContext(const LPRDORelevantResource& pRelevantResource)
+{
+	RDOParser::s_parser()->contextStack()->push(pRelevantResource);
+}
+
+void popRelevantResourceContext()
+{
+	if (RDOParser::s_parser()->contextStack()->top().object_dynamic_cast<RDORelevantResource>())
+	{
+		RDOParser::s_parser()->contextStack()->pop<RDORelevantResource>();
+	}
+}
+
 }
 
 Context::FindResult RDOPATPattern::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
@@ -245,13 +258,7 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 			}
 		}
 	}
-	else if (method == Context::METHOD_SET)
-	{
-		LPRDORelevantResource pRelevantResource = m_pCurrRelRes;
-		ASSERT(pRelevantResource);
-		return pRelevantResource->find(Context::METHOD_SET, params, srcInfo);
-	}
-	
+
 	return FindResult();
 }
 
@@ -306,6 +313,10 @@ void RDOPATPattern::beforeRelRensert(CREF(RDOParserSrcInfo) rel_info)
 void RDOPATPattern::rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource)
 {
 	ASSERT(pRelevantResource);
+
+	popRelevantResourceContext();
+	pushRelevantResourceContext(pRelevantResource);
+
 	switch (getType())
 	{
 	case PT_Event    : getPatRuntime<rdo::runtime::RDOPatternEvent    >()->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
@@ -419,8 +430,8 @@ std::vector<runtime::LPRDOCalc> RDOPATPattern::createParamsCalcs(CREF(std::vecto
 }
 
 tstring RDOPATPattern::getPatternId() const
-{ 
-	return m_pPatRuntime->traceId(); 
+{
+	return m_pPatRuntime->traceId();
 }
 
 void RDOPATPattern::writeModelStructure(std::ostream& stream) const
@@ -492,7 +503,7 @@ void RDOPATPattern::setCommonChoiceWithMax(CREF(LPRDOFUNArithm) arithm)
 }
 
 void RDOPATPattern::setTime(REF(LPRDOFUNArithm) arithm)
-{ 
+{
 	switch (getType())
 	{
 	case PT_Operation: getPatRuntime<rdo::runtime::RDOPatternOperation>()->setTime(arithm->createCalc(NULL)); break;
@@ -514,7 +525,7 @@ void RDOPATPattern::addChoiceFromCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 }
 
 void RDOPATPattern::addRelResBody(CREF(RDOParserSrcInfo) body_name)
-{ 
+{
 	RelResList::const_iterator it = std::find_if(m_relResList.begin(), m_relResList.end(), compareName<RDORelevantResource>(body_name.src_text()));
 	if (it == m_relResList.end())
 	{
@@ -582,6 +593,8 @@ void RDOPATPattern::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LP
 
 void RDOPATPattern::end()
 {
+	popRelevantResourceContext();
+
 	int size = m_relResList.size();
 	for (int i = 0; i < size; i++)
 	{
@@ -792,7 +805,7 @@ runtime::LPRDOCalcEventStop RDOPatternEvent::stoping() const
 RDOPatternRule::RDOPatternRule(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
 	: RDOPATPattern(name_src_info)
 {
-//	RDOParser::s_parser()->runtime()->addRuntimeRule((RDOPatternRule *)(m_pPatRuntime = new RDOPatternRule(RDOParser::s_parser()->runtime(), _trace))); 
+//	RDOParser::s_parser()->runtime()->addRuntimeRule((RDOPatternRule *)(m_pPatRuntime = new RDOPatternRule(RDOParser::s_parser()->runtime(), _trace)));
 	m_pPatRuntime = rdo::Factory<rdo::runtime::RDOPatternRule>::create(trace);
 	ASSERT(m_pPatRuntime);
 	m_pPatRuntime->setTraceID(RDOParser::s_parser()->getPAT_id());
@@ -1083,6 +1096,7 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 		ruint parNumb = getType()->getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 		{
+			// TODO должен возвращать return FindResult();
 			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Неизвестный параметр ресурса: %s", paramName.c_str()));
 		}
 
@@ -1134,8 +1148,8 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 
 			const rdo::runtime::LPRDOCalc resourceCalc = rdo::Factory<rdo::runtime::RDOGetResourceByRelevantResourceID>::create(m_relResID);
 			const LPExpression resourceExpression = rdo::Factory<Expression>::create(
-				rdo::Factory<TypeInfo>::create(getType(), srcInfo_), 
-				resourceCalc, 
+				rdo::Factory<TypeInfo>::create(getType(), srcInfo_),
+				resourceCalc,
 				srcInfo_
 			);
 			LPRDORelevantResource pThis(const_cast<RDORelevantResource*>(this));
@@ -1148,7 +1162,7 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 			params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = getType()->getRTPParamNumber(params.identifier());
 			params_[RDORSSResource::GET_RESOURCE] = resourceExpression;
 			params_[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = params.get<rdo::runtime::SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE);
-			
+
 			if (params.exists(Expression::CONTEXT_PARAM_SET_EXPRESSION))
 				params_[Expression::CONTEXT_PARAM_SET_EXPRESSION] = params.get<LPExpression>(Expression::CONTEXT_PARAM_SET_EXPRESSION);
 			if (params.exists(RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM))
@@ -1217,9 +1231,9 @@ rdo::runtime::LPIRDOSelectResourceCommon RDORelevantResourceDirect::createSelect
 	return pSelectResourceCommon;
 }
 
-LPRDORTPResType RDORelevantResourceDirect::getType() const 
-{ 
-	return m_pResource->getType(); 
+LPRDORTPResType RDORelevantResourceDirect::getType() const
+{
+	return m_pResource->getType();
 }
 
 // --------------------------------------------------------------------------------
