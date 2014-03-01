@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      calc_relevant.inl
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
   \date      16.04.2011
-  \brief     RDOCalc для подбора релевантных ресурсов
+  \brief     RDOCalc РґР»СЏ РїРѕРґР±РѕСЂР° СЂРµР»РµРІР°РЅС‚РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ
   \indent    4T
 */
 
