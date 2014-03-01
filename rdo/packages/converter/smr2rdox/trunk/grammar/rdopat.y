@@ -1543,6 +1543,7 @@ pat_convert_cmd
 		{
 			CONVERTER->error().error(@2, rdo::format("Неизвестный параметр: %s", paramName.c_str()));
 		}
+		pRelRes->getParamSetList().insert(param);		
 		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@4.m_last_seek, ";");
 		ASSERT(pInsert);
 		CONVERTER->insertDocUpdate(pInsert);
