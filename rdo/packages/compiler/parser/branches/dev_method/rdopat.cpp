@@ -587,6 +587,9 @@ void RDOPATPattern::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LP
 		}
 	}
 
+	popRelevantResourceContext();
+	pushRelevantResourceContext(m_pCurrRelRes);
+
 	m_pCurrRelRes->m_pChoiceFrom  = pChoiceFrom;
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
 }
@@ -734,6 +737,9 @@ void RDOPatternEvent::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(
 	{
 		parser::g_error().error(pChoiceFrom->src_info(), rdo::format("Для релевантных ресурсов события нельзя использовать правило выбора '%s'", pChoiceOrder->asString().c_str()));
 	}
+	popRelevantResourceContext();
+	pushRelevantResourceContext(m_pCurrRelRes);
+
 	m_pCurrRelRes->m_pChoiceFrom  = pChoiceFrom;
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
 }
@@ -1095,11 +1101,7 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 
 		ruint parNumb = getType()->getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
-		{
-			// TODO должен возвращать return FindResult();
-			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Неизвестный параметр ресурса: %s", paramName.c_str()));
-		}
-
+			return FindResult();
 		//! Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
 		LPRDORTPParam pParam = getType()->findRTPParam(paramName);
 		ASSERT(pParam);
