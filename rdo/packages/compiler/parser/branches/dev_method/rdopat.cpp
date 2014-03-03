@@ -1151,10 +1151,9 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 				resourceCalc,
 				srcInfo_
 			);
-			LPRDORelevantResource pThis(const_cast<RDORelevantResource*>(this));
 			if (params.get<rdo::runtime::SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE) == rdo::runtime::SetOperationType::SET)
 			{
-				 pThis->getParamSetList().insert(pParam);
+				 const_cast<RDORelevantResource*>(this)->getParamSetList().insert(pParam);
 			}
 
 			Context::Params params_;
