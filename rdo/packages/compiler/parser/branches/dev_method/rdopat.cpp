@@ -314,9 +314,6 @@ void RDOPATPattern::rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource
 {
 	ASSERT(pRelevantResource);
 
-	popRelevantResourceContext();
-	pushRelevantResourceContext(pRelevantResource);
-
 	switch (getType())
 	{
 	case PT_Event    : getPatRuntime<rdo::runtime::RDOPatternEvent    >()->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
