@@ -82,42 +82,39 @@ Context::FindResult ContextMemory::onFindContext(const std::string& method, cons
 		const LPRDOCalc rightValue = params.exists(Expression::CONTEXT_PARAM_SET_EXPRESSION)
 			? params.get<LPExpression>(Expression::CONTEXT_PARAM_SET_EXPRESSION)->calc()
 			: params.get<LPRDOFUNArithm>(RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM)->createCalc(pLocalVariable->getTypeInfo());
-	
+		
+		LPRDOCalc operationResult;
+
 		switch (params.get<SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE))
 		{
-		case SetOperationType::SET        : return FindResult(CreateExpression(boost::bind(&contextSetLocalVariable, pLocalVariable, rightValue, srcInfo)));
+		case SetOperationType::NOCHANGE:
+			RDOParser::s_parser()->error().error(srcInfo, "Недопустимый тип операции: NOCHANGE");
+			break;
+		case SetOperationType::SET        : 
+			operationResult = rightValue;
+			break;
 		case SetOperationType::ADDITION   : 
-			{
-				const LPRDOCalc operationResult =  rdo::Factory<RDOCalcPlus>::create(localVariableValue, rightValue);
-				return FindResult(CreateExpression(boost::bind(&contextSetLocalVariable, pLocalVariable, operationResult, srcInfo)));
-			}
+			operationResult =  rdo::Factory<RDOCalcPlus>::create(localVariableValue, rightValue);
+			break;
 		case SetOperationType::SUBTRACTION: 
-			{
-				const LPRDOCalc operationResult =  rdo::Factory<RDOCalcMinus>::create(localVariableValue, rightValue);
-				return FindResult(CreateExpression(boost::bind(&contextSetLocalVariable, pLocalVariable, operationResult, srcInfo)));
-			}
+			operationResult =  rdo::Factory<RDOCalcMinus>::create(localVariableValue, rightValue);
+			break;
 		case SetOperationType::MULTIPLY   : 
-			{
-				const LPRDOCalc operationResult =  rdo::Factory<RDOCalcMult>::create(localVariableValue, rightValue);
-				return FindResult(CreateExpression(boost::bind(&contextSetLocalVariable, pLocalVariable, operationResult, srcInfo)));
-			}
+			operationResult =  rdo::Factory<RDOCalcMult>::create(localVariableValue, rightValue);
+			break;
 		case SetOperationType::DIVIDE     : 
-			{
-				const LPRDOCalc operationResult =  rdo::Factory<RDOCalcDiv>::create(localVariableValue, rightValue);
-				return FindResult(CreateExpression(boost::bind(&contextSetLocalVariable, pLocalVariable, operationResult, srcInfo)));
-			}
+			operationResult =  rdo::Factory<RDOCalcDiv>::create(localVariableValue, rightValue);
+			break;
 		case SetOperationType::INCREMENT  : 
-			{
-				const LPRDOCalc operationResult =  rdo::Factory<RDOCalcPlus>::create(localVariableValue, rdo::Factory<RDOCalcConst>::create(rdo::runtime::RDOValue(1)));
-				return FindResult(CreateExpression(boost::bind(&contextSetLocalVariable, pLocalVariable, operationResult, srcInfo)));
-			}
+			operationResult =  rdo::Factory<RDOCalcPlus>::create(localVariableValue, rdo::Factory<RDOCalcConst>::create(1));
+			break;
 		case SetOperationType::DECRIMENT  :
-			{
-				const LPRDOCalc operationResult =  rdo::Factory<RDOCalcMinus>::create(localVariableValue, rdo::Factory<RDOCalcConst>::create(rdo::runtime::RDOValue(1)));
-				return FindResult(CreateExpression(boost::bind(&contextSetLocalVariable, pLocalVariable, operationResult, srcInfo)));
-			}
-		default: return FindResult();
+			operationResult =  rdo::Factory<RDOCalcMinus>::create(localVariableValue, rdo::Factory<RDOCalcConst>::create(1));
+			break;
 		}
+
+		ASSERT(operationResult);
+		return FindResult(CreateExpression(boost::bind(&contextSetLocalVariable, pLocalVariable, operationResult, srcInfo)));
 	}
 
 	return FindResult();

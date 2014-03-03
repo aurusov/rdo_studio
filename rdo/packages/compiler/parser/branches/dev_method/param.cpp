@@ -116,44 +116,37 @@ Context::FindResult RDOParam::onFindContext(const std::string& method, const Con
 			(boost::bind(&contextGetParam, resource->calc(), paramID, getTypeInfo(), srcInfo))
 			).getCreateExpression()()->calc();
 
+		LPRDOCalc operationResult;
+
 		switch (params.get<SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE))
 		{
-		case SetOperationType::NOCHANGE   : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::NOCHANGE>, resource->calc(), getTypeInfo(), paramID, rightValue, srcInfo)));
-		case SetOperationType::SET        : return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, resource->calc(), getTypeInfo(), paramID, rightValue, srcInfo)));
+		case SetOperationType::NOCHANGE   : 
+			return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::NOCHANGE>, resource->calc(), getTypeInfo(), paramID, rightValue, srcInfo)));
+		case SetOperationType::SET        : 
+			operationResult = rightValue;
+			break;
 		case SetOperationType::ADDITION   : 
-			{
-				const LPRDOCalc operationResult =  rdo::Factory<RDOCalcPlus>::create(paramValue, rightValue);
-				return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, resource->calc(), getTypeInfo(), paramID, operationResult, srcInfo)));
-			}
+			operationResult =  rdo::Factory<RDOCalcPlus>::create(paramValue, rightValue);
+			break;
 		case SetOperationType::SUBTRACTION: 
-			{
-				const LPRDOCalc operationResult =  rdo::Factory<RDOCalcMinus>::create(paramValue, rightValue);
-				return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, resource->calc(), getTypeInfo(), paramID, operationResult, srcInfo)));
-			}
+			operationResult =  rdo::Factory<RDOCalcMinus>::create(paramValue, rightValue);
+			break;
 		case SetOperationType::MULTIPLY   : 
-			{
-				const LPRDOCalc operationResult =  rdo::Factory<RDOCalcMult>::create(paramValue, rightValue);
-				return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, resource->calc(), getTypeInfo(), paramID, operationResult, srcInfo)));
-			}
+			operationResult =  rdo::Factory<RDOCalcMult>::create(paramValue, rightValue);
+			break;
 		case SetOperationType::DIVIDE     : 
-			{
-				const LPRDOCalc operationResult =  rdo::Factory<RDOCalcDiv>::create(paramValue, rightValue);
-				return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, resource->calc(), getTypeInfo(), paramID, operationResult, srcInfo)));
-			}
+			operationResult =  rdo::Factory<RDOCalcDiv>::create(paramValue, rightValue);
+			break;
 		case SetOperationType::INCREMENT  : 
-			{
-				const LPRDOCalc operationResult =  rdo::Factory<RDOCalcPlus>::create(paramValue, rdo::Factory<RDOCalcConst>::create(rdo::runtime::RDOValue(1)));
-				return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, resource->calc(), getTypeInfo(), paramID, operationResult, srcInfo)));
-			}
+			operationResult =  rdo::Factory<RDOCalcPlus>::create(paramValue, rdo::Factory<RDOCalcConst>::create(1));
+			break;
 		case SetOperationType::DECRIMENT  : 
-			{
-				const LPRDOCalc operationResult =  rdo::Factory<RDOCalcMinus>::create(paramValue, rdo::Factory<RDOCalcConst>::create(rdo::runtime::RDOValue(1)));
-				return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, resource->calc(), getTypeInfo(), paramID, operationResult, srcInfo)));
-			}
-		default: return FindResult();
+			operationResult =  rdo::Factory<RDOCalcMinus>::create(paramValue, rdo::Factory<RDOCalcConst>::create(1));
+			break;
 		}
+		ASSERT(operationResult);
+		return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, resource->calc(), getTypeInfo(), paramID, operationResult, srcInfo)));
 	}
-
 	return FindResult();
 }
 
