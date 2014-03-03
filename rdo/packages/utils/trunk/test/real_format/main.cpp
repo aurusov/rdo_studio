@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE(RDORealFormatTest)
 
 BOOST_AUTO_TEST_CASE(MantissaPrecisionSet)
 {
-#ifdef COMPILER_VISUAL_STUDIO
+#if defined(COMPILER_VISUAL_STUDIO) or defined(COMPILER_MINGW)
 	_set_output_format(_TWO_DIGIT_EXPONENT);
 #endif
 }
