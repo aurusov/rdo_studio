@@ -3,7 +3,7 @@
   \file      application.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -580,7 +580,7 @@ public:
 	template <class T>
 	T value(const QString& from)
 	{
-		return convertFrom<T>(settingsFrom.value(from, qt_to_mfc_type_convertor<T>::type())).value<T>();
+		return convertFrom<T>(settingsFrom.value(from, typename qt_to_mfc_type_convertor<T>::type())).value<T>();
 	}
 
 	template <class T>
@@ -605,23 +605,10 @@ private:
 		typedef  T  type;
 	};
 
-	template <>
-	struct qt_to_mfc_type_convertor<QColor>
-	{
-		typedef  __int32  type;
-	};
-
 	template <class T>
 	static QVariant convertFrom(const QVariant& value)
 	{
 		return value;
-	}
-
-	template <>
-	static QVariant convertFrom<QColor>(const QVariant& value)
-	{
-		__int32 colorRef = value.value<__int32>();
-		return QColor(GetRValue(colorRef), GetGValue(colorRef), GetBValue(colorRef));
 	}
 
 	template <class T>
@@ -629,13 +616,46 @@ private:
 	{
 		return value;
 	}
-
-	template <>
-	static QVariant convertTo<QColor>(const QVariant& value)
-	{
-		return value.value<QColor>().name();
-	}
 };
+
+template <>
+struct Convertor::qt_to_mfc_type_convertor<QColor>
+{
+	typedef  __int32  type;
+};
+
+#ifdef COMPILER_MINGW
+namespace
+{
+	__int32 GetRValue(__int32 rgb)
+	{
+		return rgb & 0xFF;
+	}
+
+	__int32 GetGValue(__int32 rgb)
+	{
+		return (rgb >> 8) & 0xFF;
+	}
+
+	__int32 GetBValue(__int32 rgb)
+	{
+		return (rgb >> 16) & 0xFF;
+	}
+}
+#endif
+
+template <>
+QVariant Convertor::convertFrom<QColor>(const QVariant& value)
+{
+	__int32 colorRef = value.value<__int32>();
+	return QColor(GetRValue(colorRef), GetGValue(colorRef), GetBValue(colorRef));
+}
+
+template <>
+QVariant Convertor::convertTo<QColor>(const QVariant& value)
+{
+	return value.value<QColor>().name();
+}
 
 void Application::convertSettings() const
 {
@@ -867,7 +887,7 @@ void Application::convertSettings() const
 		convertor.convert<int>("style/trace/borders/vertBorder", "style/trace/borders/vert_border");
 
 		convertor.convert<QString>("style/trace/font/name",         "style/trace/font/name");
-		convertor.convert<int>    ("style/trace/font/size",         "style/trace/font/size");		
+		convertor.convert<int>    ("style/trace/font/size",         "style/trace/font/size");
 
 		convertor.convert<QColor>("style/trace/theme/defaultColor_backgroundColor",  "style/trace/theme/default_color_background_color");
 		convertor.convert<QColor>("style/trace/theme/defaultColor_foregroundColor",  "style/trace/theme/default_color_foreground_color");
