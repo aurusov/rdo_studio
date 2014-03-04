@@ -300,8 +300,14 @@ QT5_WRAP_UI(GENERATED_RESOURCES_UI_FILES ${RESOURCES_UI_FILES})
 
 SET(RESOURCES_WIN32_FILES
 	res/win32/rdo_studio.ico
-	res/win32/rdo_studio.rc
 )
+
+IF(MSVC)
+	SET(RESOURCES_WIN32_FILES
+		${RESOURCES_WIN32_FILES}
+		res/win32/rdo_studio.rc
+	)
+ENDIF()
 
 SET(TRACER_FILES
 	src/tracer/tracer.cpp
@@ -607,7 +613,7 @@ IF(MSVC) # options for windows #
 
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
 	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" app/rdo_studio pch stdpch)
-	
+
 	SOURCE_GROUP("rdo_studio\\.doc" FILES
 		${DOC_FILES}
 	)
