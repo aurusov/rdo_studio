@@ -378,8 +378,14 @@ QT5_WRAP_UI(GENERATED_RESOURCES_UI_FILES ${RESOURCES_UI_FILES})
 
 SET(RESOURCES_WIN32_FILES
 	res/win32/rdo_studio.ico
+)
+
+IF(MSVC)
+	SET(RESOURCES_WIN32_FILES
+		${RESOURCES_WIN32_FILES}
 	res/win32/rdo_studio.rc
 )
+ENDIF()
 
 SET(APP_SOURCE_FILES
 	${APPLICATION_FILES}
@@ -508,29 +514,29 @@ ADD_EXECUTABLE(rdo_studio
 	${DOC_FILES}
 )
 
-ADD_LIBRARY(rdo_application
+ADD_LIBRARY(rdo_application STATIC
 	${APP_SOURCE_FILES}
 	${GENERATED_RESOURCES_UI_FILES}
 	${GENERATED_APP_MOC_FILES}
 	${GENERATED_QRC_FILES}
 )
 
-ADD_LIBRARY(rdo_editor
+ADD_LIBRARY(rdo_editor STATIC
 	${EDITOR_SOURCE_FILES}
 	${GENERATED_EDITOR_MOC_FILES}
 )
 
-ADD_LIBRARY(rdo_frame
+ADD_LIBRARY(rdo_frame STATIC
 	${FRAME_SOURCE_FILES}
 	${GENERATED_FRAME_MOC_FILES}
 )
 
-ADD_LIBRARY(rdo_model
+ADD_LIBRARY(rdo_model STATIC
 	${MODEL_SOURCE_FILES}
 	${GENERATED_MODEL_MOC_FILES}
 )
 
-ADD_LIBRARY(rdo_tracer
+ADD_LIBRARY(rdo_tracer STATIC
 	${TRACER_SOURCE_FILES}
 	${GENERATED_TRACER_MOC_FILES}
 )
@@ -616,14 +622,14 @@ TARGET_LINK_LIBRARIES(rdo_application rdo_ui_abstract     )
 TARGET_LINK_LIBRARIES(rdo_application rdo_ui_qt           )
 TARGET_LINK_LIBRARIES(rdo_application scintilla           )
 
-ADD_DEPENDENCIES     (rdo_editor rdo_application)
-TARGET_LINK_LIBRARIES(rdo_editor rdo_application)
+ADD_DEPENDENCIES     (rdo_editor rdo_application rdo_model)
+TARGET_LINK_LIBRARIES(rdo_editor rdo_application rdo_model)
 
-ADD_DEPENDENCIES     (rdo_frame rdo_application)
-TARGET_LINK_LIBRARIES(rdo_frame rdo_application)
+ADD_DEPENDENCIES     (rdo_frame rdo_application rdo_model)
+TARGET_LINK_LIBRARIES(rdo_frame rdo_application rdo_model)
 
 ADD_DEPENDENCIES     (rdo_model rdo_application)
-TARGET_LINK_LIBRARIES(rdo_model rdo_application)
+TARGET_LINK_LIBRARIES(rdo_model rdo_application rdo_frame rdo_editor)
 
 ADD_DEPENDENCIES     (rdo_plugin_loader rdo_application)
 TARGET_LINK_LIBRARIES(rdo_plugin_loader rdo_application)
