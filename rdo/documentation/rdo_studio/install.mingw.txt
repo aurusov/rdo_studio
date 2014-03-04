@@ -1,4 +1,4 @@
-MinGW - Minimalist GNU for Windows
+﻿MinGW - Minimalist GNU for Windows
 
 Используется для компиляции исходников под виндой через gcc.
 
@@ -18,3 +18,8 @@ MSYS Basic System
 7. Запускаем 'MinGW Shell', окрывается консоль, устанавливаем еще пару пакетов (bison и flex)
 mingw-get install msys-bison
 mingw-get install msys-flex
+8. Прописываем переменные окружения
+CYGWIN=nodosfilewarning
+
+(после выгрузки РДО надо найти похожий путь в исходниках)
+BISON_PKGDATADIR=C:\rdo\trunk\thirdparty\bison_flex\share\bison
