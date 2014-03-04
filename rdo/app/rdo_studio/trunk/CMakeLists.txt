@@ -580,14 +580,14 @@ TARGET_LINK_LIBRARIES(rdo_application rdo_ui_abstract     )
 TARGET_LINK_LIBRARIES(rdo_application rdo_ui_qt           )
 TARGET_LINK_LIBRARIES(rdo_application scintilla           )
 
-ADD_DEPENDENCIES     (rdo_editor rdo_application)
-TARGET_LINK_LIBRARIES(rdo_editor rdo_application)
+ADD_DEPENDENCIES     (rdo_editor rdo_application rdo_model)
+TARGET_LINK_LIBRARIES(rdo_editor rdo_application rdo_model)
 
-ADD_DEPENDENCIES     (rdo_frame rdo_application)
-TARGET_LINK_LIBRARIES(rdo_frame rdo_application)
+ADD_DEPENDENCIES     (rdo_frame rdo_application rdo_model)
+TARGET_LINK_LIBRARIES(rdo_frame rdo_application rdo_model)
 
 ADD_DEPENDENCIES     (rdo_model rdo_application)
-TARGET_LINK_LIBRARIES(rdo_model rdo_application)
+TARGET_LINK_LIBRARIES(rdo_model rdo_application rdo_frame rdo_editor)
 
 ADD_DEPENDENCIES     (rdo_plugin_loader rdo_application)
 TARGET_LINK_LIBRARIES(rdo_plugin_loader rdo_application)
