@@ -55,12 +55,18 @@
 
 2.3.2 MinGW
 
+==== Если буст будет компилироваться как link=static (под mingw получилось слинковаться только как shared)
     Поставить MASM32 SDK (http://www.masm32.com/masmdl.htm) и прописать путь
     set PATH=C:\masm32\bin;%PATH% (это можно сделать только в консоле сборки, а после сборки буста удалить MASM32 с винта)
+====
 
     cd c:\boost_1_55_0_src
     bootstrap.bat mingw
-    b2 debug release link=static threading=multi -j 4 install --prefix=C:\boost_1_55_0 toolset=gcc
+    b2 debug release link=shared threading=multi -j 4 install --prefix=C:\boost_1_55_0 toolset=gcc
+
+    Добавить переменные окружения
+    BOOST_ROOT=C:\boost_1_55_0
+    PATH=%PATH%;%BOOST_ROOT%\lib
 
     Если вы уже скомпилили буст под Visual Studio, то ничего страшного.
     Библиотеки буста после компиляции MinGW и Visual Studio имеют разные имена и располагаются в одном месте.
