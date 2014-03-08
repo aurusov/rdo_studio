@@ -637,7 +637,10 @@ public:
 		fgt_exist     = 1,
 		fgt_notexist  = 2,
 		fgt_forall    = 3,
-		fgt_notforall = 4
+		fgt_notforall = 4,
+		fgt_empty     = 5,
+		fgt_size      = 6,
+		fgt_array     = 7
 	};
 
 	LPRDOFUNLogic createFunLogic(REF(LPRDOFUNLogic) pCondition);
@@ -666,6 +669,8 @@ private:
 	RDOFUNSelect(CREF(RDOParserSrcInfo) res_info);
 
 	rdo::runtime::LPRDOFunCalcSelect m_pCalcSelect;
+
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOFUNSelect);
 

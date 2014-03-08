@@ -11200,8 +11200,17 @@ fun_select_logic
 			ASSERT(pSelect);
 			ASSERT(pLogic );
 			pSelect->setSrcPos(@1, @6);
-			LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, pLogic);
+			RDOParserSrcInfo srcInfo(@3, @5, "");
+
+			Context::Params params;
+			params["FunGroupType"] = (RDOFUNGroupLogic::FunGroupType)$3;
+			params["GroupLogic"] = pLogic;
+			Context::FindResult result = PARSER->context()->find("select()", params, srcInfo);
+			LPExpression pExpression = result.getCreateExpression()();
+			ASSERT(pExpression);
+			LPRDOFUNLogic pLogicSelect = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
 			ASSERT(pLogicSelect);
+			pLogicSelect->setSrcInfo(srcInfo);
 			$$ = PARSER->stack().push(pLogicSelect);
 		}
 	}
@@ -11226,9 +11235,16 @@ fun_select_logic
 			LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
 			ASSERT(pSelect);
 			pSelect->setSrcPos(@1, @5);
-			RDOParserSrcInfo emptyInfo(@3, @5, "Empty()");
-			LPRDOFUNLogic pLogic = pSelect->createFunSelectEmpty(emptyInfo);
+			RDOParserSrcInfo srcInfo(@3, @5, "");
+
+			Context::Params params;
+			params["FunGroupType"] = RDOFUNGroupLogic::fgt_empty;
+			Context::FindResult result = PARSER->context()->find("select()", params, srcInfo);
+			LPExpression pExpression = result.getCreateExpression()();
+			ASSERT(pExpression);
+			LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
 			ASSERT(pLogic);
+			pLogic->setSrcInfo(srcInfo);
 			$$ = PARSER->stack().push(pLogic);
 		}
 	}
@@ -11270,9 +11286,16 @@ fun_select_arithm
 			LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
 			ASSERT(pSelect);
 			pSelect->setSrcPos(@1, @5);
-			RDOParserSrcInfo sizeInfo(@3, @5, "Size()");
-			LPRDOFUNArithm pArithm = pSelect->createFunSelectSize(sizeInfo);
+			RDOParserSrcInfo srcInfo(@3, @5, "");
+
+			Context::Params params;
+			params["FunGroupType"] = RDOFUNGroupLogic::fgt_size;
+			Context::FindResult result = PARSER->context()->find("select()", params, srcInfo);
+			LPExpression pExpression = result.getCreateExpression()();
+			ASSERT(pExpression);
+			LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 			ASSERT(pArithm);
+			pArithm->setSrcInfo(srcInfo);
 			$$ = PARSER->stack().push(pArithm);
 		}
 	}
@@ -11297,9 +11320,16 @@ fun_select_arithm
 			LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
 			ASSERT(pSelect);
 			pSelect->setSrcPos(@1, @5);
-			RDOParserSrcInfo arrayInfo(@3, @5, "Array()");
-			LPRDOFUNArithm pArithm = pSelect->createFunSelectArray(arrayInfo);
+			RDOParserSrcInfo srcInfo(@3, @5, "");
+
+			Context::Params params;
+			params["FunGroupType"] = RDOFUNGroupLogic::fgt_array;
+			Context::FindResult result = PARSER->context()->find("select()", params, srcInfo);
+			LPExpression pExpression = result.getCreateExpression()();
+			ASSERT(pExpression);
+			LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 			ASSERT(pArithm);
+			pArithm->setSrcInfo(srcInfo);
 			$$ = PARSER->stack().push(pArithm);
 		}
 	}
