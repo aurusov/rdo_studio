@@ -47,7 +47,7 @@ TARGET_LINK_LIBRARIES(rdo_procgui rdo_utils)
 
 INSTALL(TARGETS rdo_procgui DESTINATION lib)
 
-IF(MSVC) # options for windows #
+IF(MSVC_IDE) # options for windows #
 
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
 	ADD_PCH("${SOURCE_FILES}" "${NO_PCH_FILES}" simulator/compiler/procgui ./ pch)
@@ -64,4 +64,4 @@ IF(MSVC) # options for windows #
 		${PROCGUI_FILES}
 	)
 
-ENDIF(MSVC)
+ENDIF()

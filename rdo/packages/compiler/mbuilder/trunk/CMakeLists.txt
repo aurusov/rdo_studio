@@ -54,7 +54,7 @@ TARGET_LINK_LIBRARIES(rdo_mbuilder rdo_parser)
 
 INSTALL(TARGETS rdo_mbuilder DESTINATION lib)
 
-IF(MSVC) # options for windows #
+IF(MSVC_IDE) # options for windows #
 
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
 	ADD_PCH("${SOURCE_FILES}" "${NO_PCH_FILES}" simulator/compiler/mbuilder ./ pch)
@@ -75,4 +75,4 @@ IF(MSVC) # options for windows #
 		${RESOURCES_FILES}
 	)
 
-ENDIF(MSVC)
+ENDIF()

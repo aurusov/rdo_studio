@@ -268,7 +268,7 @@ TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox rdo_runtime)
 
 INSTALL(TARGETS rdo_converter_smr2rdox DESTINATION lib)
 
-IF(MSVC) # options for windows #
+IF(MSVC_IDE) # options for windows #
 
 	SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
 
@@ -367,4 +367,4 @@ IF(MSVC) # options for windows #
 		${WATCH_FILES}
 	)
 
-ENDIF(MSVC)
+ENDIF()

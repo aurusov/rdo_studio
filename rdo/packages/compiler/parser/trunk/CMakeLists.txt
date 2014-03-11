@@ -311,7 +311,7 @@ INSTALL(TARGETS rdo_parser DESTINATION lib)
 SET(RDO_PARSER_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 #ADD_SUBDIRECTORY(${RDO_PARSER_TEST_PATH})
 
-IF(MSVC) # options for windows #
+IF(MSVC_IDE) # options for windows #
 
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
 	ADD_PCH("${SOURCE_FILES}" "${NO_PCH_FILES}" simulator/compiler/parser ./ pch)
@@ -436,4 +436,4 @@ IF(MSVC) # options for windows #
 		${WATCH_FILES}
 	)
 
-ENDIF(MSVC)
+ENDIF()

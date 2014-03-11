@@ -34,7 +34,7 @@ ADD_DEPENDENCIES(rdo_ui_abstract rdo_utils)
 
 TARGET_LINK_LIBRARIES(rdo_ui_abstract rdo_utils)
 
-IF(MSVC) # options for windows #
+IF(MSVC_IDE) # options for windows #
 
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
 	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" ui/abstract pch stdpch)
@@ -47,4 +47,4 @@ IF(MSVC) # options for windows #
 		${PCH_FILES}
 	)
 
-ENDIF(MSVC)
+ENDIF()

@@ -609,7 +609,7 @@ INSTALL(TARGETS rdo_model         DESTINATION lib)
 INSTALL(TARGETS rdo_plugin_loader DESTINATION lib)
 INSTALL(TARGETS rdo_tracer        DESTINATION lib)
 
-IF(MSVC) # options for windows #
+IF(MSVC_IDE) # options for windows #
 
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
 	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" app/rdo_studio pch stdpch)
@@ -753,4 +753,4 @@ IF(MSVC) # options for windows #
 		${GENERATED_TRACER_MOC_FILES}
 	)
 
-ENDIF(MSVC)
+ENDIF()
