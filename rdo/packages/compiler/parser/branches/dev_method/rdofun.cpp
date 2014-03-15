@@ -1839,8 +1839,13 @@ LPRDOFUNArithm RDOFUNSelect::createFunSelectArray(CREF(RDOParserSrcInfo) array_i
 
 namespace
 {
-	LPExpression getSelectExpression(const rdo::runtime::LPRDOCalc& selectCalc, const LPTypeInfo& selectType, const RDOParserSrcInfo& srcInfo)
+	LPExpression getSelectExpression(
+			const LPRDOFUNSelect&          select,
+			const rdo::runtime::LPRDOCalc& selectCalc,
+			const LPTypeInfo&              selectType,
+			const RDOParserSrcInfo&        srcInfo)
 	{
+		select->end();
 		return rdo::Factory<Expression>::create(
 			selectType,
 			selectCalc,
@@ -1853,8 +1858,6 @@ Context::FindResult RDOFUNSelect::onFindContext(const std::string& method, const
 {
 	if (method == "select()")
 	{
-		const_cast<RDOFUNSelect*>(this)->end();
-
 		rdo::runtime::LPRDOCalc selectCalc;
 		LPTypeInfo selectType;
 
@@ -1921,7 +1924,8 @@ Context::FindResult RDOFUNSelect::onFindContext(const std::string& method, const
 		}
 		ASSERT(selectCalc);
 		ASSERT(selectType);
-		return FindResult(CreateExpression(boost::bind(&getSelectExpression, selectCalc, selectType, srcInfo)));
+		return FindResult(CreateExpression(boost::bind(&getSelectExpression,
+			LPRDOFUNSelect(const_cast<RDOFUNSelect*>(this)), selectCalc,selectType, srcInfo)));
 	}
 
 	return RDOFUNGroup::onFindContext(method, params, srcInfo);
