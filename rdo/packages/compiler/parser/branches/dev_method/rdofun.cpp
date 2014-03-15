@@ -1868,24 +1868,24 @@ Context::FindResult RDOFUNSelect::onFindContext(const std::string& method, const
 		case RDOFUNGroupLogic::fgt_exist:
 		{
 			LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
-			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Exist("     + pCondition->src_text() + ")");
-			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectExist    >::create(m_pCalcSelect, pCondition->getCalc());
+			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Exist(" + pCondition->src_text() + ")");
+			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectExist>::create(m_pCalcSelect, pCondition->getCalc());
 			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
 			break;
 		}
 		case RDOFUNGroupLogic::fgt_notexist:
 		{
 			LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
-			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".NotExist("  + pCondition->src_text() + ")");
-			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotExist >::create(m_pCalcSelect, pCondition->getCalc());
+			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".NotExist(" + pCondition->src_text() + ")");
+			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotExist>::create(m_pCalcSelect, pCondition->getCalc());
 			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
 			break;
 		}
 		case RDOFUNGroupLogic::fgt_forall:
 		{
 			LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
-			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".ForAll("    + pCondition->src_text() + ")");
-			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectForAll   >::create(m_pCalcSelect, pCondition->getCalc());
+			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".ForAll(" + pCondition->src_text() + ")");
+			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectForAll>::create(m_pCalcSelect, pCondition->getCalc());
 			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
 			break;
 		}
