@@ -1776,6 +1776,7 @@ Context::FindResult RDOFUNSelect::onFindContext(const std::string& method, const
 			LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
 			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Exist(" + pCondition->src_text() + ")");
 			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectExist>::create(m_pCalcSelect, pCondition->getCalc());
+			selectCalc->setSrcInfo(src_info());
 			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
 			break;
 		}
@@ -1784,6 +1785,7 @@ Context::FindResult RDOFUNSelect::onFindContext(const std::string& method, const
 			LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
 			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".NotExist(" + pCondition->src_text() + ")");
 			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotExist>::create(m_pCalcSelect, pCondition->getCalc());
+			selectCalc->setSrcInfo(src_info());
 			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
 			break;
 		}
@@ -1792,6 +1794,7 @@ Context::FindResult RDOFUNSelect::onFindContext(const std::string& method, const
 			LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
 			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".ForAll(" + pCondition->src_text() + ")");
 			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectForAll>::create(m_pCalcSelect, pCondition->getCalc());
+			selectCalc->setSrcInfo(src_info());
 			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
 			break;
 		}
@@ -1800,6 +1803,7 @@ Context::FindResult RDOFUNSelect::onFindContext(const std::string& method, const
 			LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
 			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".NotForAll(" + pCondition->src_text() + ")");
 			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotForAll>::create(m_pCalcSelect, pCondition->getCalc());
+			selectCalc->setSrcInfo(src_info());
 			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
 			break;
 		}
@@ -1807,14 +1811,15 @@ Context::FindResult RDOFUNSelect::onFindContext(const std::string& method, const
 		{
 			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Empty(" + srcInfo.src_text() + ")");
 			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectEmpty>::create(m_pCalcSelect);
-			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
 			selectCalc->setSrcInfo(src_info());
+			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
 			break;
 		}
 		case RDOFUNGroupLogic::fgt_size:
 		{
 			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Size(" + srcInfo.src_text() + ")");
 			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectSize>::create(m_pCalcSelect);
+			selectCalc->setSrcInfo(src_info());
 			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(srcInfo);
 			break;
 		}
@@ -1823,6 +1828,7 @@ Context::FindResult RDOFUNSelect::onFindContext(const std::string& method, const
 			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Array(" + srcInfo.src_text() + ")");
 			LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(rdo::Factory<TypeInfo>::create(getResType(), srcInfo), srcInfo);
 			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectArray>::create(m_pCalcSelect);
+			selectCalc->setSrcInfo(src_info());
 			selectType = rdo::Factory<TypeInfo>::create(pArrayType, srcInfo);
 			break;
 		}
