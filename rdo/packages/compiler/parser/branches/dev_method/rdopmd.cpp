@@ -3,8 +3,8 @@
   \file      rdopmd.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -244,7 +244,6 @@ void RDOPMDWatchQuant::setLogic(REF(LPRDOFUNLogic) pLogic)
 	ASSERT(pQuant);
 	pQuant->setLogicCalc(pLogic->getCalc());
 	m_pGroupLogic->end();
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 }
 
 void RDOPMDWatchQuant::setLogicNoCheck()
@@ -253,7 +252,6 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 	ASSERT(pQuant);
 	pQuant->setLogicCalc(rdo::Factory<rdo::runtime::RDOCalcConst>::create(1));
 	m_pGroupLogic->end();
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 }
 
 // --------------------------------------------------------------------------------
@@ -280,7 +278,6 @@ void RDOPMDWatchValue::setLogic(REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) p
 	pWatch->setLogicCalc (pLogic->getCalc()    );
 	pWatch->setArithmCalc(pArithm->createCalc());
 	m_pGroupLogic->end();
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 }
 
 void RDOPMDWatchValue::setLogicNoCheck(REF(LPRDOFUNArithm) pArithm)
@@ -290,7 +287,6 @@ void RDOPMDWatchValue::setLogicNoCheck(REF(LPRDOFUNArithm) pArithm)
 	pWatch->setLogicCalc (rdo::Factory<rdo::runtime::RDOCalcConst>::create(1));
 	pWatch->setArithmCalc(pArithm->createCalc());
 	m_pGroupLogic->end();
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 }
 
 // --------------------------------------------------------------------------------
