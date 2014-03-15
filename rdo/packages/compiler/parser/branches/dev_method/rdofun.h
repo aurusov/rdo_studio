@@ -3,8 +3,8 @@
   \file      rdofun.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -613,12 +613,12 @@ protected:
 	RDOFUNGroup(CREF(RDOParserSrcInfo) res_info);
 	virtual ~RDOFUNGroup();
 
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+
 private:
 	void init(CREF(RDOParserSrcInfo) res_info);
 
 	LPRDORTPResType m_pResType;
-
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOFUNGroup);
 
