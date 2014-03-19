@@ -24,9 +24,9 @@
 #include "app/rdo_studio/src/frame/frame_view.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_ANIMATION_NAMESPACE
+namespace rdo { namespace animation {
 struct Frame;
-CLOSE_RDO_ANIMATION_NAMESPACE
+}} // namespace rdo::animation
 
 namespace rdo { namespace gui { namespace frame {
 

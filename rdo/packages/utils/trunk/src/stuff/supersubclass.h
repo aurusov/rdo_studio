@@ -15,7 +15,7 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template <class T, class U>
 class SuperSubClass
@@ -43,6 +43,6 @@ public:
 
 #define SUPERSUBCLASS(T, U) (SuperSubClass<CPTR(U), CPTR(T)>::exists)
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _UTILS_SUPERSUBCLASS_H_

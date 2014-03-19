@@ -15,7 +15,7 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template<class T>
 class SingleTone
@@ -50,6 +50,6 @@ private:
 	PTR(T) m_object;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _UTILS_RDOSINGLETONE_H_

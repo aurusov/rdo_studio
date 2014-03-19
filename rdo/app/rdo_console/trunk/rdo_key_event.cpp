@@ -12,7 +12,7 @@
 #include "app/rdo_console/rdo_key_event.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 key_event::key_event(CREF(tstring) name, double time, states state, int key_code) :
 	event(name, time, event::key),
@@ -45,4 +45,4 @@ int key_event::getKeyCode() const
 	return m_key_code;
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

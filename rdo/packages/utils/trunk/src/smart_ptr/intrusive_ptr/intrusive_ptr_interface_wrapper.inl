@@ -13,7 +13,7 @@
 #include "utils/src/smart_ptr/ref_counter/ref_counter_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 // --------------------------------------------------------------------------------
 // -------------------- RefCounter<T>
@@ -41,4 +41,4 @@ FORCE_INLINE rbool intrusive_ptr_interface_wrapper<T>::owner() const
 	return parent_type::owner();
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

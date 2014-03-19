@@ -16,7 +16,7 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template<class T>
 class stack
@@ -36,7 +36,7 @@ private:
 	Container m_container;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #include "utils/src/stuff/stack.inl"
 

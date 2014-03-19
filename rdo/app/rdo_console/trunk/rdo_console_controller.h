@@ -20,7 +20,7 @@
 #include "simulator/report/file_message.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 class console_controller: public RDOThread
 {
@@ -67,6 +67,6 @@ private:
 	mutable boost::mutex m_stateMutex;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _RDO_STUDIO_CONSOLE_CONTROLLER_H_

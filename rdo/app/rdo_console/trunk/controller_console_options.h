@@ -23,7 +23,7 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 namespace po = boost::program_options;
 
@@ -52,7 +52,7 @@ private:
 	void createAdditionalOptions(REF(po::options_description) options);
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #ifdef COMPILER_VISUAL_STUDIO
 #	pragma warning (default:4512)

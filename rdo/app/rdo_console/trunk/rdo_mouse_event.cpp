@@ -12,7 +12,7 @@
 #include "app/rdo_console/rdo_mouse_event.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 mouse_event::mouse_event(CREF(tstring) name, double time, buttons button, int x, int y) :
 	event(name, time, event::mouse),
@@ -56,4 +56,4 @@ int mouse_event::getY() const
 	return m_y;
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

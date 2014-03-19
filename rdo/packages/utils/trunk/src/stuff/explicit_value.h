@@ -15,7 +15,7 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template <class T>
 class explicit_value
@@ -34,6 +34,6 @@ private:
 	T m_value;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _RDO_COMMON_EXPLICIT_VALUE_H_

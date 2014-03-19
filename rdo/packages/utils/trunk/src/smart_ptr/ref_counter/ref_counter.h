@@ -15,7 +15,7 @@
 #include "utils/src/smart_ptr/ref_counter/ref_counter_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template <class T>
 class RefCounter: public IRefCounter
@@ -24,6 +24,6 @@ public:
 	DECLARE_IRefCounter;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _UTILS_SMART_PTR_REF_COUNTER_H_

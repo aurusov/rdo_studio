@@ -3,17 +3,16 @@
   \file      factory.inl
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      21.09.2011
-  \brief     
+  \brief
   \indent    4T
 */
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/namespace.h"
 #include "utils/src/common/rdomacros.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template <class T>
 inline intrusive_ptr<T> Factory<T>::create()
@@ -107,4 +106,4 @@ FORCE_INLINE void Factory<T>::destroy(PTR(T) object)
 	delete object;
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

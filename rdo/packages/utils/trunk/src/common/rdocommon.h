@@ -19,7 +19,6 @@
 #include <vector>
 #include <sstream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/namespace.h"
 #include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
 #include "utils/src/common/model_objects.h"
@@ -29,7 +28,7 @@
 	#pragma warning(disable : 4786)
 #endif
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 	//! Формирование строки по формату, аналогично <a href="http://ru.wikipedia.org/wiki/Printf">printf</a>
 	//! \param  str - исходная строка, которая может содержать символы форматирования
@@ -108,7 +107,7 @@ OPEN_RDO_NAMESPACE
 	//! \result Результат округления
 	int roundDouble(double val);
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #include "utils/src/common/rdocommon.inl"
 

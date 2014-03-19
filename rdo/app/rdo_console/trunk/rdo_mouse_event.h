@@ -15,7 +15,7 @@
 #include "app/rdo_console/rdo_event.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 class mouse_event : public event
 {
@@ -46,6 +46,6 @@ private:
 	int m_y;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _RDO_MOUSE_EVENT_H_

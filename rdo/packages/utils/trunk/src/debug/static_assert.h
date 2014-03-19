@@ -15,7 +15,7 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 //! \struct  rdo::CompileTimeError
 //! \brief   Шаблонный класс для генерации ошибки компиляции
@@ -36,6 +36,6 @@ struct CompileTimeError<true> {};
 #define STATIC_ASSERT(expr)                 \
 	rdo::CompileTimeError<((expr) != 0)>();
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _UTILS_STATIC_ASSERT_H_

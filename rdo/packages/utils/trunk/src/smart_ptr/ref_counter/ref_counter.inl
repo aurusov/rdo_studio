@@ -13,7 +13,7 @@
 #include "utils/src/smart_ptr/ref_counter/counter_reference.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template<class T>
 inline void RefCounter<T>::addref()
@@ -45,4 +45,4 @@ inline rbool RefCounter<T>::owner() const
 	return pCounter->m_intrusive_counter == 1;
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

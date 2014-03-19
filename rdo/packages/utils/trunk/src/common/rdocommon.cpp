@@ -32,7 +32,7 @@
 #	pragma warning(disable : 4786)
 #endif
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 tstring format(CPTR(tchar) str, ...)
 {
@@ -79,4 +79,4 @@ int roundDouble(double val)
 	}
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

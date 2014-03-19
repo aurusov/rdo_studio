@@ -3,18 +3,17 @@
   \file      interface_ptr.inl
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.06.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/debug/rdodebug.h"
-#include "utils/src/common/namespace.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template<class T>
 FORCE_INLINE interface_ptr<T>::interface_ptr()
@@ -80,4 +79,4 @@ FORCE_INLINE PTR(T) interface_ptr<T>::operator-> ()
 	return m_pInterface;
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

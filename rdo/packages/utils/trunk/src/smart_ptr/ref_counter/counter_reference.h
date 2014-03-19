@@ -3,7 +3,7 @@
   \file      counter_reference.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.06.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -12,12 +12,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/namespace.h"
 #include "utils/src/common/rdomacros.h"
 #include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 class counter_reference
 {
@@ -32,7 +31,7 @@ private:
 	ruint m_intrusive_counter;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #include "utils/src/smart_ptr/ref_counter/counter_reference.inl"
 

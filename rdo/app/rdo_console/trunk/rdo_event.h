@@ -17,7 +17,7 @@
 
 #include <time.h>
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 /// base event class
 class event
@@ -48,6 +48,6 @@ private:
 	types   m_type;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _RDO_EVENT_H_

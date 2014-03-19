@@ -18,7 +18,7 @@
 #include "utils/src/stuff/rdoidgenerator.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template<class T>
 class IndexedStack
@@ -52,6 +52,6 @@ protected:
 	IDGenerator m_generator;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _UTILS_RDOINDEXEDSTACK_H_

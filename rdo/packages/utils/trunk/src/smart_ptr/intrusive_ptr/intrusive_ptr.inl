@@ -3,21 +3,20 @@
   \file      intrusive_ptr.inl
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      08.06.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdomacros.h"
-#include "utils/src/common/namespace.h"
 #include "utils/src/smart_ptr/factory/factory.h"
 #include "utils/src/smart_ptr/factory/factory.inl"
 #include "utils/src/smart_ptr/ref_counter/ref_counter.h"
 #include "utils/src/smart_ptr/ref_counter/ref_counter.inl"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template<class T>
 FORCE_INLINE intrusive_ptr<T>::intrusive_ptr()
@@ -208,4 +207,4 @@ FORCE_INLINE REF(ruint) intrusive_ptr<T>::counter()
 	return m_object->m_intrusive_counter;
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

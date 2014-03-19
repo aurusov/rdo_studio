@@ -22,7 +22,7 @@
 #include "app/rdo_console/rdo_event_xml_reader.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 class event_xml_parser
 {
@@ -40,6 +40,6 @@ private:
 	parsers m_parsers;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _RDO_KEY_EVENT_XML_PARSER_H_

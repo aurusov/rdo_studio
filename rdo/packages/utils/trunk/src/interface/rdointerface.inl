@@ -3,17 +3,16 @@
  * filename : rdointerface.inl
  * author   : Урусов Андрей
  * date     : 12.08.2011
- * bref     : 
+ * bref     :
  * indent   : 4T
  */
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/namespace.h"
 #include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template<class I>
 FORCE_INLINE Interface<I>::Interface()
@@ -312,4 +311,4 @@ inline UnknownPointer IFactory<T>::init(PTR(Object) pObject)
 	return uPointer;
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

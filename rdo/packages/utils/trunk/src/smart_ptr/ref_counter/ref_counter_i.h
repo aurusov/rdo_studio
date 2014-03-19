@@ -3,7 +3,7 @@
   \file      ref_counter_i.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      21.09.2011
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -12,12 +12,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/namespace.h"
 #include "utils/src/common/rdomacros.h"
 #include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 struct NO_V_TABLE IRefCounter
 {
@@ -32,6 +31,6 @@ struct NO_V_TABLE IRefCounter
 
 typedef PTR(IRefCounter) LPIRefCounter;
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _UTILS_SMART_PTR_REF_COUNTER_I_H_

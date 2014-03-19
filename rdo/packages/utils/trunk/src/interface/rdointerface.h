@@ -12,11 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/namespace.h"
 #include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 //! \class   rdo::InterfaceRegistrator
 //! \brief   Регистратор интерфейсов
@@ -39,7 +38,7 @@ public:
 //! Позволяет спросить у интерфейса идентификатор
 //! \tparam I - тип интерфейса
 template <class I> class GetInterface {};
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 //! \details Макрос регистрации интерфейса
 //! \param I  - тип интерфейса (сам интерфейс)
@@ -47,9 +46,9 @@ CLOSE_RDO_NAMESPACE
 #define INTERFACE_REGISTRATOR(I, ID)                             \
 class I;                                                         \
 typedef rdo::InterfaceRegistrator<I, ID> Registered##I;          \
-OPEN_RDO_NAMESPACE                                               \
+namespace rdo {                                                  \
 template <> class GetInterface<I>: public Registered##I {};      \
-CLOSE_RDO_NAMESPACE                                              \
+}                                                                \
 class ___InterfaceRegistrator___DoubleID___##ID {};              \
 typedef rdo::Interface<I> LP##I;
 
@@ -63,7 +62,7 @@ typedef rdo::Interface<I> LP##I;
 #define IID(I) \
 Registered##I::ID
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 class IUnknown;
 typedef PTR(IUnknown) LPIUnknown;
@@ -258,7 +257,7 @@ private:
 	static UnknownPointer init(PTR(Object) pObject);
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #define  CAST_TO_UNKNOWN  public rdo::IGetUnknown
 

@@ -13,7 +13,7 @@
 #include "app/rdo_console/rdo_mouse_event_xml_reader.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 mouse_event_xml_reader::~mouse_event_xml_reader()
 {
@@ -33,4 +33,4 @@ PTR(event) mouse_event_xml_reader::read(CREF(boost::property_tree::ptree) pt)
 	return new mouse_event(name, time, static_cast<mouse_event::buttons>(button), x, y);
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

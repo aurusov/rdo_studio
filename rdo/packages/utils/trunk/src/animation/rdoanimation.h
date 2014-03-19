@@ -18,7 +18,7 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_ANIMATION_NAMESPACE
+namespace rdo { namespace animation {
 
 	//! Базовый класс элементов анимации
 	STRUCT(FrameItem)
@@ -375,7 +375,7 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		rbool hasBgImage() const;
 	};
 
-CLOSE_RDO_ANIMATION_NAMESPACE
+}} // namespace rdo::animation
 
 #include "utils/src/animation/rdoanimation.inl"
 

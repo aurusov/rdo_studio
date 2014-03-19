@@ -14,7 +14,7 @@
 #include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 inline Time::Time()
 	: m_value(Time::invalid().value())
@@ -70,4 +70,4 @@ inline Time Time::invalid()
 	return Time(Value(~0));
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

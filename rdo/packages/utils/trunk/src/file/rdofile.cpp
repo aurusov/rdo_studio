@@ -33,7 +33,7 @@
 #include "utils/src/locale/rdolocale.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 rbool File::create(CREF(boost::filesystem::path) name)
 {
@@ -172,4 +172,4 @@ rbool File::trimLeft(CREF(boost::filesystem::path) name)
 	return true;
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

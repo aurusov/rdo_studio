@@ -15,7 +15,7 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 class Time
 {
@@ -40,7 +40,7 @@ private:
 	Value  m_value;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #include "utils/src/time/rdotime.inl"
 

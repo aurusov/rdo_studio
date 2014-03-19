@@ -15,7 +15,7 @@
 #include "app/rdo_console/rdo_event.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 /// base event class
 class key_event : public event
@@ -41,6 +41,6 @@ private:
 	int m_key_code;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _RDO_KEY_EVENT_H_

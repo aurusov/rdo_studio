@@ -12,7 +12,7 @@
 #include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template<class T>
 inline void stack<T>::push(CREF(T) item)
@@ -56,4 +56,4 @@ inline REF(T) stack<T>::top()
 	return m_container.back();
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

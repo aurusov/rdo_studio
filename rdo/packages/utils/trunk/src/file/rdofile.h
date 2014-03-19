@@ -19,7 +19,7 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 //! Скорее пространство имён для статических методов, чем класс
 class File
@@ -66,6 +66,6 @@ public:
 	static rbool trimLeft(CREF(boost::filesystem::path) name);
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _UTILS_RDOFILE_H_

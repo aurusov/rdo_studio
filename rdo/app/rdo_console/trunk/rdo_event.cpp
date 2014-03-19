@@ -12,7 +12,7 @@
 #include "app/rdo_console/rdo_event.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 event::event(CREF(tstring) name, etime time, types type) :
 	m_name(name), m_time(time), m_type(type)
@@ -48,4 +48,4 @@ event::types event::getType() const
 	return m_type;
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

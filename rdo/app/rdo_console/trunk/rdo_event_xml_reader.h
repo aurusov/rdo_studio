@@ -16,7 +16,7 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 class event;
 
@@ -28,6 +28,6 @@ public:
 	virtual PTR(event) read(CREF(boost::property_tree::ptree) pt) = 0;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _RDO_EVENT_XML_READER_H_

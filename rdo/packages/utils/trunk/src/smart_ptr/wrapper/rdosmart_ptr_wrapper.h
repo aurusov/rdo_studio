@@ -16,7 +16,7 @@
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 class ISmartPtrWrapper
 {
@@ -86,6 +86,6 @@ private:
 	LPISmartPtrWrapper m_pISmartPtrWrapper;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _UTILS_RDOSMART_PTR_WRAPPER_H_

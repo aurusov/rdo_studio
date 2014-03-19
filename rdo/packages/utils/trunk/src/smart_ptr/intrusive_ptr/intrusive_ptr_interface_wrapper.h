@@ -16,7 +16,7 @@
 #include "utils/src/smart_ptr/ref_counter/ref_counter_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 //! Оборачивает умный указатель в интерфейс
 //! tparam T - тип объекта, на который ссылается указатель
@@ -31,7 +31,7 @@ private:
 	typedef rdo::intrusive_ptr<T> parent_type;
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr_interface_wrapper.inl"
 

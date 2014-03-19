@@ -12,10 +12,10 @@
 #include "app/rdo_console/rdo_event_xml_reader.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 event_xml_reader::~event_xml_reader()
 {
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

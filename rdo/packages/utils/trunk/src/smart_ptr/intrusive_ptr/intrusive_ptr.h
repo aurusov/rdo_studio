@@ -3,7 +3,7 @@
   \file      intrusive_ptr.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      08.06.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/namespace.h"
 #include "utils/src/common/rdomacros.h"
 #include "utils/src/common/rdotypes.h"
 #include "utils/src/smart_ptr/ref_counter/counter_reference.h"
@@ -20,7 +19,7 @@
 #include "utils/src/smart_ptr/ref_counter/ref_counter_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template<class T>
 class intrusive_ptr
@@ -95,7 +94,7 @@ private:
 #define OBJECT(TYPE)             PREDECLARE_POINTER(TYPE); CLASS(TYPE): INSTANCE_OF        (rdo::counter_reference)
 #define OBJECT_VIRTUAL(TYPE)     PREDECLARE_POINTER(TYPE); CLASS(TYPE): INSTANCE_VIRTUAL_OF(rdo::counter_reference)
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.inl"
 

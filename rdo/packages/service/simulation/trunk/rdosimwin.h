@@ -40,9 +40,9 @@
 
 //#define DISABLE_CORBA
 //#ifndef DISABLE_CORBA
-OPEN_RDO_ANIMATION_NAMESPACE
+namespace rdo { namespace animation {
 struct Frame;
-CLOSE_RDO_ANIMATION_NAMESPACE
+}} // namespace rdo::animation
 
 #define DISABLE_CORBA
 

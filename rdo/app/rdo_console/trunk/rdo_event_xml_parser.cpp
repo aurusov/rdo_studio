@@ -15,7 +15,7 @@
 #include "app/rdo_console/rdo_event_xml_parser.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 bool event_xml_parser::register_parser(CREF(tstring) name, boost::shared_ptr<event_xml_reader> reader)
 {
@@ -59,4 +59,4 @@ void event_xml_parser::parse(REF(std::istream) stream, REF(event_container) list
 	}
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

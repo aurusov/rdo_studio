@@ -16,7 +16,7 @@
 #include "utils/src/smart_ptr/ref_counter/ref_counter_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template<class T>
 class interface_ptr
@@ -45,7 +45,7 @@ private:
 #define PREDECLARE_OBJECT_INTERFACE(TYPE) struct NO_V_TABLE TYPE; DECLARE_OBJECT_INTERFACE(TYPE);
 #define OBJECT_INTERFACE(TYPE)            PREDECLARE_OBJECT_INTERFACE(TYPE) struct TYPE: public rdo::RefCounter<TYPE>
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #include "utils/src/smart_ptr/interface_ptr/interface_ptr.inl"
 

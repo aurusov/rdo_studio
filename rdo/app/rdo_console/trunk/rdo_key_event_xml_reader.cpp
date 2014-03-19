@@ -13,7 +13,7 @@
 #include "app/rdo_console/rdo_key_event_xml_reader.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 key_event_xml_reader::~key_event_xml_reader()
 {
@@ -32,4 +32,4 @@ PTR(event) key_event_xml_reader::read(CREF(boost::property_tree::ptree) pt)
 	return new key_event(name, time, static_cast<key_event::states>(state), key_code);
 }
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo

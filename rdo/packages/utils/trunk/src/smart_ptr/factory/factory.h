@@ -3,7 +3,7 @@
   \file      factory.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      21.09.2011
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -12,11 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/namespace.h"
 #include "utils/src/common/rdomacros.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 template <class T>
 class intrusive_ptr;
@@ -139,6 +138,6 @@ private:
 
 #define DECLARE_FACTORY(TYPE) friend class rdo::Factory<TYPE>;
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _UTILS_SMART_PTR_FACTORY_H_

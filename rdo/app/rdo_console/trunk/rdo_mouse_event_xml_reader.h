@@ -15,7 +15,7 @@
 #include "app/rdo_console/rdo_event_xml_reader.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_NAMESPACE
+namespace rdo {
 
 class mouse_event_xml_reader : public event_xml_reader
 {
@@ -25,6 +25,6 @@ public:
 	virtual PTR(event) read(CREF(boost::property_tree::ptree) pt);
 };
 
-CLOSE_RDO_NAMESPACE
+} // namespace rdo
 
 #endif // _RDO_MOUSE_EVENT_XML_READER_H_

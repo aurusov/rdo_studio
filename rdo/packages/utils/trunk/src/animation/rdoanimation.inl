@@ -14,7 +14,7 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_ANIMATION_NAMESPACE
+namespace rdo { namespace animation {
 
 inline FrameItem::FrameItem(Type type)
 	: m_type(type)
@@ -191,4 +191,4 @@ inline rbool Frame::hasBgImage() const
 	return !m_bgImageName.empty();
 }
 
-CLOSE_RDO_ANIMATION_NAMESPACE
+}} // namespace rdo::animation
