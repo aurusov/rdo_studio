@@ -31,8 +31,6 @@
 
 //! Объявление класса
 #define  CLASS(A)              class A
-//! Объявление структуры
-#define STRUCT(A)              struct A
 //! Объявление интерфейса
 #define S_INTERFACE(A)         struct A
 //! Наследование
@@ -47,8 +45,6 @@
 #define INSTANCE_VIRTUAL_OF(A) public virtual A
 //! Класс-потомок от B
 #define CLASS_PARENT_OF(A, B)  CLASS(A): IMPLEMENTATION_OF(B)
-//! Структура-потомок от B
-#define STRUCT_PARENT_OF(A, B) STRUCT(A): IMPLEMENTATION_OF(B)
 
 #ifdef UNUSED
 	#undef UNUSED

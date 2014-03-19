@@ -22,7 +22,7 @@ namespace rdo {
 namespace animation {
 
 //! Базовый класс элементов анимации
-STRUCT(FrameItem)
+struct FrameItem
 {
 	//! \details Тип элемента
 	enum Type
@@ -57,7 +57,7 @@ private:
 
 //! \brief   Цвет
 //! \details Хранит RGB-цвет и признак прозрачности
-STRUCT(Color)
+struct Color
 {
 	rbyte m_r;           //!< Красная составляющая цвета
 	rbyte m_g;           //!< Зелёная составляющая цвета
@@ -86,7 +86,7 @@ STRUCT(Color)
 
 //! \brief   Цвет элемента
 //! \details Используется для хранения цветов переднего плана и фона элемента анимации
-STRUCT(ColoredElement)
+struct ColoredElement
 {
 	Color m_background; //!< Цвет фона
 	Color m_foreground; //!< Цвет переднего плана
@@ -108,7 +108,7 @@ STRUCT(ColoredElement)
 
 //! \brief   Точка
 //! \details Начало системы координат - левый верхний угол
-STRUCT(Point)
+struct Point
 {
 	double m_x; //!< Координата x
 	double m_y; //!< Координата y
@@ -129,7 +129,7 @@ STRUCT(Point)
 };
 
 //! Размер
-STRUCT(Size)
+struct Size
 {
 	double m_width;  //!< Ширина
 	double m_height; //!< Высота
@@ -153,7 +153,7 @@ STRUCT(Size)
 };
 
 //! Вписанный в прямоуголник элемент
-STRUCT(BoundedElement)
+struct BoundedElement
 {
 	Point  m_point; //!< Координата элемента
 	Size   m_size;  //!< Размер элемента
@@ -174,7 +174,7 @@ STRUCT(BoundedElement)
 };
 
 //! Радиус окружности
-STRUCT(Radius)
+struct Radius
 {
 	double m_radius; //!< Радиус
 
@@ -192,13 +192,12 @@ STRUCT(Radius)
 	}
 };
 
-//! Объявление нового элемента
-#define FRAME_ITEM(A) STRUCT_PARENT_OF(A, FrameItem)
-
 //! \brief   Текст
 //! \details Используется для реализации команды анимации <tt>text[x, y, ширина, высота, цвет_фона, цвет, [выравнивание] содержимое]</tt>
-FRAME_ITEM(TextElement) IS  IMPLEMENTATION_OF(BoundedElement)
-						AND IMPLEMENTATION_OF(ColoredElement)
+struct TextElement
+	: public FrameItem
+	, public BoundedElement
+	, public ColoredElement
 {
 	//! \details Тип выравнивания текста
 	enum TextAlign
@@ -221,7 +220,7 @@ FRAME_ITEM(TextElement) IS  IMPLEMENTATION_OF(BoundedElement)
 
 //! \brief   Отрезок
 //! \details Используется для реализации команды анимации <tt>line[x1, y1, x2, y2, цвет]</tt>
-FRAME_ITEM(LineElement)
+struct LineElement: public FrameItem
 {
 	Point  m_point1; //!< Начальная точка
 	Point  m_point2; //!< Конечная точка
@@ -241,7 +240,9 @@ FRAME_ITEM(LineElement)
 
 //! \brief   Треугольник
 //! \details Используется для реализации команды анимации <tt>triang[x1, y1, x2, y2, x3, y3, цвет_фона, цвет]</tt>
-FRAME_ITEM(TriangElement) IS IMPLEMENTATION_OF(ColoredElement)
+struct TriangElement
+	: public FrameItem
+	, public ColoredElement
 {
 	Point  m_point1; //!< Первая точка треугольника
 	Point  m_point2; //!< Вторая точка треугольника
@@ -257,8 +258,10 @@ FRAME_ITEM(TriangElement) IS IMPLEMENTATION_OF(ColoredElement)
 
 //! \brief   Прямоугольник
 //! \details Используется для реализации команды анимации <tt>rect[x, y, ширина, высота, цвет_фона, цвет]</tt>
-FRAME_ITEM(RectElement) IS  IMPLEMENTATION_OF(BoundedElement)
-						AND IMPLEMENTATION_OF(ColoredElement)
+struct RectElement
+	: public FrameItem
+	, public BoundedElement
+	, public ColoredElement
 {
 	//! Создаёт прямоугольник
 	//! \param rect  - координаты и размер фигуры
@@ -268,8 +271,10 @@ FRAME_ITEM(RectElement) IS  IMPLEMENTATION_OF(BoundedElement)
 
 //! \brief   Прямоугольник со скруглёнными углами
 //! \details Используется для реализации команды анимации <tt>r_rect[x, y, ширина, высота, цвет_фона, цвет]</tt>
-FRAME_ITEM(RoundRectElement) IS  IMPLEMENTATION_OF(BoundedElement)
-							 AND IMPLEMENTATION_OF(ColoredElement)
+struct RoundRectElement
+	: public FrameItem
+	, public BoundedElement
+	, public ColoredElement
 {
 	//! Создаёт прямоугольник
 	//! \param rect  - координаты и размер фигуры
@@ -279,7 +284,9 @@ FRAME_ITEM(RoundRectElement) IS  IMPLEMENTATION_OF(BoundedElement)
 
 //! \brief   Окружность
 //! \details Используется для реализации команды анимации <tt>circle[x, y, радиус, цвет_фона, цвет]</tt>
-FRAME_ITEM(CircleElement) IS IMPLEMENTATION_OF(ColoredElement)
+struct CircleElement
+	: public FrameItem
+	, public ColoredElement
 {
 	Point  m_center; //!< Центр окружности
 	Radius m_radius; //!< Радиус окружности
@@ -293,8 +300,10 @@ FRAME_ITEM(CircleElement) IS IMPLEMENTATION_OF(ColoredElement)
 
 //! \brief   Эллипс
 //! \details Используется для реализации команды анимации <tt>ellipse[x, y, ширина, высота, цвет_фона, цвет]</tt>
-FRAME_ITEM(EllipseElement) IS  IMPLEMENTATION_OF(BoundedElement)
-						   AND IMPLEMENTATION_OF(ColoredElement)
+struct EllipseElement
+	: public FrameItem
+	, public BoundedElement
+	, public ColoredElement
 {
 	//! Создаёт эллипс
 	//! \param rect  - координаты и размер фигуры
@@ -304,7 +313,7 @@ FRAME_ITEM(EllipseElement) IS  IMPLEMENTATION_OF(BoundedElement)
 
 //! \brief   Картинка
 //! \details Используется для реализации команды анимации <tt>bitmap[x, y, имя_файла_битовой_карты [, имя_файла_маски]]</tt>
-FRAME_ITEM(BmpElement)
+struct BmpElement: public FrameItem
 {
 	Point    m_point;     //!< Координата левого верхнего угла картинки
 	tstring  m_bmp_name;  //!< Имя файла картинки
@@ -322,7 +331,9 @@ FRAME_ITEM(BmpElement)
 
 //! \brief   Масштабируемая картинка
 //! \details Используется для реализации команды анимации <tt>s_bmp[x, y, ширина, высота, имя_файла_битовой_карты [, имя_файла_маски]]</tt>
-FRAME_ITEM(ScaledBmpElement) IS IMPLEMENTATION_OF(BoundedElement)
+struct ScaledBmpElement
+	: public FrameItem
+	, public BoundedElement
 {
 	tstring  m_bmp_name;  //!< Имя файла картинки
 	tstring  m_mask_name; //!< Имя файла маски картинки
@@ -339,7 +350,9 @@ FRAME_ITEM(ScaledBmpElement) IS IMPLEMENTATION_OF(BoundedElement)
 
 //! \brief   Активная область
 //! \details Используется для реализации команды анимации <tt>active имя_клавиатурной_операции[x, y, ширина, высота]</tt>
-FRAME_ITEM(ActiveElement) IS IMPLEMENTATION_OF(BoundedElement)
+struct ActiveElement
+	: public FrameItem
+	, public BoundedElement
 {
 	tstring  m_opr_name; //!< Имя клавиатурной операции
 
@@ -351,7 +364,7 @@ FRAME_ITEM(ActiveElement) IS IMPLEMENTATION_OF(BoundedElement)
 
 //! \brief   Пустой элемент
 //! \details Нигде не используется
-FRAME_ITEM(NullElement)
+struct NullElement: public FrameItem
 {
 	//! \details Создаёт пустой элемент
 	NullElement();
@@ -360,7 +373,7 @@ FRAME_ITEM(NullElement)
 //! \brief   Фрейм
 //! \details Является контейнером элементов анимации.
 //!          Аналог $Frame, но содержит только те элементы, которые необходимо вывести
-STRUCT(Frame)
+struct Frame
 {
 	typedef  std::vector<PTR(FrameItem)>  Elements; //!< Тип контейнера элементов анимации
 
