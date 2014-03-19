@@ -5,7 +5,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "simulator/runtime/namespace.h"
-#include "simulator/service/namespace.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -20,10 +19,14 @@ class RDOThreadCorba;
 
 #endif
 
-OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
+namespace rdo {
+namespace service {
+namespace simulation {
+
 class RDOThreadSimulator;
 class RDOThreadCodeComp;
-CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
+
+}}} // namespace rdo::service::simulation
 
 OPEN_RDO_RUNTIME_NAMESPACE
 class RDOThreadRunTime;
@@ -59,12 +62,12 @@ protected:
 	rdo::service::simulation::RDOThreadSimulator*  thread_simulator;
 	rdo::service::simulation::RDOThreadCodeComp*   thread_codecomp;
 	rdo::repository::RDOThreadRepository*          thread_repository;
-	
-	
+
+
 #ifdef CORBA_ENABLE
 	rdoCorba::RDOThreadCorba*           thread_corba;
 #endif
-	
+
 
 	void registration( RDOThread* thread );
 	void unregistered( RDOThread* thread );

@@ -3,7 +3,7 @@
   \file      procgui.h
   \author    Шувалов Андрей
   \date      22.04.2011
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
-#include "simulator/service/namespace.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/procgui/namespace.h"
 #include "simulator/compiler/procgui/procgui_datablock.h"

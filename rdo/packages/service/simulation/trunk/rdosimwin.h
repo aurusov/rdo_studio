@@ -34,7 +34,6 @@
 #include "kernel/rdothread.h"
 #include "simulator/runtime/thread_proxy_i.h"
 #include "simulator/compiler/procgui/procgui.h"
-#include "simulator/service/namespace.h"
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
 // --------------------------------------------------------------------------------
 
@@ -102,9 +101,13 @@ private:
 
 #endif // CORBA_ENABLE
 
-OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
+namespace rdo {
+namespace service {
+namespace simulation {
+
 class RDOThreadSimulator;
-CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
+
+}}} // namespace rdo::service::simulation
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -171,7 +174,9 @@ OPEN_RDO_PARSER_NAMESPACE
 PREDECLARE_POINTER(RDOParser);
 CLOSE_RDO_PARSER_NAMESPACE
 
-OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
+namespace rdo {
+namespace service {
+namespace simulation {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOThreadSimulator
@@ -309,6 +314,6 @@ public:
 	};
 };
 
-CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
+}}} // namespace rdo::service::simulation
 
 #endif // _RDOSIMWIN_H_
