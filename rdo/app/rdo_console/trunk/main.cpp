@@ -20,7 +20,7 @@
 #include "repository/rdorepository.h"
 #include "simulator/runtime/keyboard.h"
 #include "simulator/runtime/mode.h"
-#include "simulator/service/src/rdosimwin.h"
+#include "simulator/service/src/simulator.h"
 #include "app/rdo_console/rdo_event.h"
 #include "app/rdo_console/rdo_key_event.h"
 #include "app/rdo_console/rdo_mouse_event.h"

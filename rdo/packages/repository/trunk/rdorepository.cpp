@@ -17,7 +17,7 @@
 #include "utils/src/time/rdotime.h"
 #include "utils/src/locale/rdolocale.h"
 #include "kernel/rdokernel.h"
-#include "simulator/service/src/rdosimwin.h"
+#include "simulator/service/src/simulator.h"
 #include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 

@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdosimwin.cpp
+  \file      simulator.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date
@@ -46,7 +46,7 @@
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 #include "simulator/compiler/procgui/procgui_datablock.h"
-#include "simulator/service/src/rdosimwin.h"
+#include "simulator/service/src/simulator.h"
 
 #ifndef DISABLE_CONVERTER
 	#include "converter/smr2rdox/rdoparser.h"

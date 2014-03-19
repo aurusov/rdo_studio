@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdosimwin.h
+  \file      simulator.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date
@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _RDOSIMWIN_H_
-#define _RDOSIMWIN_H_
+#ifndef _LIB_SERVICE_SIMULATOR_H_
+#define _LIB_SERVICE_SIMULATOR_H_
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -316,4 +316,4 @@ public:
 
 }}} // namespace rdo::service::simulation
 
-#endif // _RDOSIMWIN_H_
+#endif // _LIB_SERVICE_SIMULATOR_H_

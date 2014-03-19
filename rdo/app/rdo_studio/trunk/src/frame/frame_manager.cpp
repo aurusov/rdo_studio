@@ -15,7 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
-#include "simulator/service/src/rdosimwin.h"
+#include "simulator/service/src/simulator.h"
 #include "repository/rdorepository.h"
 #include "app/rdo_studio/src/frame/frame_manager.h"
 #include "app/rdo_studio/src/model/model.h"
