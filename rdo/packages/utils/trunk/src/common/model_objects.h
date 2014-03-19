@@ -16,34 +16,29 @@
 #include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
-//! \namespace rdoModelObjects
-//! \brief     Пространство имён объектов модели
-#define OPEN_RDO_MODEL_OBJECTS_NAMESPACE	namespace rdoModelObjects {
-#define CLOSE_RDO_MODEL_OBJECTS_NAMESPACE	};
+namespace rdoModelObjects {
 
-OPEN_RDO_MODEL_OBJECTS_NAMESPACE
+//! \details Типы файлов
+enum RDOFileType
+{
+	RTP = 0, //!< Файл типов ресурсов
+	RSS,     //!< Файл ресурсов
+	EVN,     //!< Файл событий
+	PAT,     //!< Файл паттернов
+	DPT,     //!< Файл точек принятия решений
+	PRC,     //!< Файл процессов
+	FRM,     //!< Файл анимации
+	FUN,     //!< Файл функций
+	SMR,     //!< Файл прогона
+	PMD,     //!< Файл описания показателей
+	PMV,     //!< Файл со значениями показателей
+	TRC,     //!< Файл трассировки
+	RDOX,    //!< Файл проекта
+	PRCX     //!< Файл GUI-процессов, XML
+};
 
-	//! \details Типы файлов
-	enum RDOFileType
-	{
-		RTP = 0, //!< Файл типов ресурсов
-		RSS,     //!< Файл ресурсов
-		EVN,     //!< Файл событий
-		PAT,     //!< Файл паттернов
-		DPT,     //!< Файл точек принятия решений
-		PRC,     //!< Файл процессов
-		FRM,     //!< Файл анимации
-		FUN,     //!< Файл функций
-		SMR,     //!< Файл прогона
-		PMD,     //!< Файл описания показателей
-		PMV,     //!< Файл со значениями показателей
-		TRC,     //!< Файл трассировки
-		RDOX,    //!< Файл проекта
-		PRCX     //!< Файл GUI-процессов, XML
-	};
+tstring getFileTypeString(RDOFileType type);
 
-	tstring getFileTypeString(RDOFileType type);
-
-CLOSE_RDO_MODEL_OBJECTS_NAMESPACE
+} // namespace rdoModelObjects
 
 #endif // _UTILS_MODEL_OBJECTS_H_

@@ -12,7 +12,7 @@
 #include "utils/src/common/model_objects.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_MODEL_OBJECTS_NAMESPACE
+namespace rdoModelObjects {
 
 tstring getFileTypeString(RDOFileType type)
 {
@@ -37,4 +37,4 @@ tstring getFileTypeString(RDOFileType type)
 	return string;
 }
 
-CLOSE_RDO_MODEL_OBJECTS_NAMESPACE
+} // namespace rdoModelObjects
