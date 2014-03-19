@@ -3,8 +3,8 @@
   \file      rdosmr.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -16,7 +16,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 #include "simulator/runtime/rdotrace.h"
-#include "simulator/service/show_mode.h"
+#include "simulator/service/src/show_mode.h"
 #include "converter/smr2rdox/rdo_object.h"
 #include "converter/smr2rdox/rdofun.h"
 // --------------------------------------------------------------------------------

@@ -18,7 +18,7 @@
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
-#include "simulator/service/rdosimwin.h"
+#include "simulator/service/src/rdosimwin.h"
 #include "app/rdo_studio/src/frame/frame_view.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/application.h"

@@ -13,7 +13,7 @@
 #include <boost/thread/locks.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
-#include "simulator/service/rdosimwin.h"
+#include "simulator/service/src/rdosimwin.h"
 #include "simulator/report/src/build_edit_line_info.h"
 #include "app/rdo_console/rdo_console_controller.h"
 // --------------------------------------------------------------------------------

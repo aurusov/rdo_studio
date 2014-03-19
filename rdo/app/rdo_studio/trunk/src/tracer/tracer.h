@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
-#include "simulator/service/rdosimwin.h"
+#include "simulator/service/src/rdosimwin.h"
 #include "app/rdo_studio/src/tracer/tracer_base.h"
 // --------------------------------------------------------------------------------
 

@@ -46,7 +46,7 @@
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 #include "simulator/compiler/procgui/procgui_datablock.h"
-#include "simulator/service/rdosimwin.h"
+#include "simulator/service/src/rdosimwin.h"
 
 #ifndef DISABLE_CONVERTER
 	#include "converter/smr2rdox/rdoparser.h"

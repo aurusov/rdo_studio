@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/report/src/log_edit_line_info.h"
-#include "simulator/service/rdosimwin.h"
+#include "simulator/service/src/rdosimwin.h"
 #include "app/rdo_studio/src/editor/edit.h"
 #include "app/rdo_studio/src/editor/log_edit_style.h"
 // --------------------------------------------------------------------------------

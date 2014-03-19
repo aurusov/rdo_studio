@@ -7,7 +7,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
-#include "simulator/service/rdosimwin.h"
+#include "simulator/service/src/rdosimwin.h"
 // --------------------------------------------------------------------------------
 
 RDOKernel* kernel = NULL;
