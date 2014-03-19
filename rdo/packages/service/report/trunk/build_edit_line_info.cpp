@@ -5,7 +5,7 @@
   \date      12.08.2012
   \brief
   \indent    4T
-*/
+ */
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
@@ -19,16 +19,16 @@ namespace rdo {
 namespace simulation {
 namespace report {
 
-BuildEditLineInfo::BuildEditLineInfo( CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type ) :
-	LogEditLineInfo( text, file, line, pos, type )
+BuildEditLineInfo::BuildEditLineInfo(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type)
+	: LogEditLineInfo(text, file, line, pos, type)
 {}
 
-BuildEditLineInfo::BuildEditLineInfo( CREF(FileMessage) message )
+BuildEditLineInfo::BuildEditLineInfo(CREF(FileMessage) message)
 	: LogEditLineInfo(message)
 {}
 
-BuildEditLineInfo::BuildEditLineInfo( CREF(tstring) message ) :
-	LogEditLineInfo( message )
+BuildEditLineInfo::BuildEditLineInfo(CREF(tstring) message)
+	: LogEditLineInfo(message)
 {}
 
 BuildEditLineInfo::~BuildEditLineInfo()
@@ -36,15 +36,15 @@ BuildEditLineInfo::~BuildEditLineInfo()
 
 tstring BuildEditLineInfo::getMessage() const
 {
-	if ( isSimpleTextMessage() )
+	if (isSimpleTextMessage())
 	{
 		return getText();
 	}
 	else
 	{
 		tstring file = rdoModelObjects::getFileTypeString(getFileType());
-		tstring error = ( getType() == FileMessage::MT_WARNING ) ? tstring( WARNING_STRING ) : tstring( ERROR_STRING );
-		tstring text = rdo::format("%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, error.c_str(), getText().c_str() );
+		tstring error = (getType() == FileMessage::MT_WARNING) ? tstring(WARNING_STRING) : tstring(ERROR_STRING);
+		tstring text = rdo::format("%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, error.c_str(), getText().c_str());
 		return text;
 	}
 }

@@ -5,7 +5,7 @@
   \date      12.08.2012
   \brief
   \indent    4T
-*/
+ */
 
 #ifndef _LOG_EDIT_LINE_INFO_H_
 #define _LOG_EDIT_LINE_INFO_H_
@@ -23,9 +23,9 @@ namespace report {
 class LogEditLineInfo : public FileMessage
 {
 public:
-	LogEditLineInfo( CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type );
-	explicit LogEditLineInfo( CREF(FileMessage) message );
-	explicit LogEditLineInfo( CREF(tstring) message );
+	LogEditLineInfo(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type);
+	explicit LogEditLineInfo(CREF(FileMessage) message);
+	explicit LogEditLineInfo(CREF(tstring) message);
 	virtual ~LogEditLineInfo();
 
 	virtual tstring getMessage() const;
