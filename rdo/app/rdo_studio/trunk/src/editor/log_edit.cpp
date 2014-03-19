@@ -13,7 +13,7 @@
 #include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/report/error_code.h"
+#include "simulator/report/src/error_code.h"
 #include "app/rdo_studio/src/editor/log_edit.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/model/model.h"

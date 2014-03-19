@@ -16,8 +16,8 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdotypes.h"
 #include "kernel/rdothread.h"
-#include "simulator/report/error_code.h"
-#include "simulator/report/file_message.h"
+#include "simulator/report/src/error_code.h"
+#include "simulator/report/src/file_message.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo {

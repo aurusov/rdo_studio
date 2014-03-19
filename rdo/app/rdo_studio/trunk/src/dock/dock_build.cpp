@@ -17,8 +17,8 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_build.h"
 #include "app/rdo_studio/src/application.h"
-#include "simulator/report/file_message.h"
-#include "simulator/report/build_edit_line_info.h"
+#include "simulator/report/src/file_message.h"
+#include "simulator/report/src/build_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
 DockBuild::DockBuild(QWidget* pParent)

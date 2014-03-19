@@ -10,7 +10,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
-#include "simulator/report/log_edit_line_info.h"
+#include "simulator/report/src/log_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo {

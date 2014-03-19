@@ -11,8 +11,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
-#include "simulator/report/comment.h"
-#include "simulator/report/build_edit_line_info.h"
+#include "simulator/report/src/comment.h"
+#include "simulator/report/src/build_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo {

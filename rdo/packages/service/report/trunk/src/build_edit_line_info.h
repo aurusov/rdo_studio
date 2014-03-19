@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/report/error_code.h"
-#include "simulator/report/log_edit_line_info.h"
+#include "simulator/report/src/error_code.h"
+#include "simulator/report/src/log_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo {

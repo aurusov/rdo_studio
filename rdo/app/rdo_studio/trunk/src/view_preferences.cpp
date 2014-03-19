@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/view_preferences.h"
 #include "app/rdo_studio/src/application.h"
-#include "simulator/report/build_edit_line_info.h"
+#include "simulator/report/src/build_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo::simulation::report;

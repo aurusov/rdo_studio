@@ -15,7 +15,7 @@
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dock/dock_find.h"
-#include "simulator/report/log_edit_line_info.h"
+#include "simulator/report/src/log_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
 DockFind::DockFind(QWidget* pParent)
