@@ -9,22 +9,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
-SET(MEMDC_FILES
-	src/memdc/memdc.cpp
-	headers/memdc/memdc.h
-	headers/memdc/memdc.inl
-)
-
-SET(PCH_FILES
-	pch/stdpch.cpp
-	pch/stdpch.h
-)
-
-SET(SOURCE_FILES
-	${PCH_FILES}
-	${MEMDC_FILES}
-)
-
+FILE(GLOB_RECURSE SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 ADD_LIBRARY(rdo_ui_abstract STATIC ${SOURCE_FILES})
 
 INCLUDE(${PROJECT_SOURCE_DIR}/app/rdo_studio/projects/common/rdo_studio.cmake)
@@ -34,17 +19,11 @@ ADD_DEPENDENCIES(rdo_ui_abstract rdo_utils)
 
 TARGET_LINK_LIBRARIES(rdo_ui_abstract rdo_utils)
 
-IF(MSVC_IDE) # options for windows #
-
+IF(MSVC_IDE)
+	SET(PCH_FILES
+		pch/stdpch.cpp
+		pch/stdpch.h
+	)
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
 	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" ui/abstract pch stdpch)
-
-	SOURCE_GROUP(".memdc" FILES
-		${MEMDC_FILES}
-	)
-
-	SOURCE_GROUP(".pch" FILES
-		${PCH_FILES}
-	)
-
 ENDIF()

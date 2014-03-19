@@ -11,17 +11,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-SET(CODE_FILES
-	namespace.h
-	rdosimwin.cpp
-	rdosimwin.h
-	show_mode.h
-)
-
-SET(SOURCE_FILES
-	${CODE_FILES}
-)
-
+FILE(GLOB_RECURSE SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 ADD_LIBRARY(rdo_simulator STATIC ${SOURCE_FILES})
 
 INCLUDE(${PROJECT_SOURCE_DIR}/simulator/simulator.cmake)
@@ -45,11 +35,3 @@ TARGET_LINK_LIBRARIES(rdo_simulator rdo_simulator_report)
 TARGET_LINK_LIBRARIES(rdo_simulator rdo_converter_smr2rdox)
 
 INSTALL(TARGETS rdo_simulator DESTINATION lib)
-
-IF(MSVC) # options for windows #
-
-	SOURCE_GROUP(".code" FILES 
-		${CODE_FILES}
-	)
-
-ENDIF(MSVC)

@@ -11,36 +11,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-SET(COMMON_FILES
-	namespace.h
-)
-
-SET(PCH_FILES
-	pch.h
-	pch.cpp
-)
-
-SET(PROCESS_FILES
-	process.h
-	process.cpp
-)
-
-SET(RESOURCES_FILES
-	rdo_resources.h
-	rdo_resources.cpp
-)
-
-SET(SOURCE_FILES
-	${PCH_FILES}
-	${COMMON_FILES}
-	${PROCESS_FILES}
-	${RESOURCES_FILES}
-)
-
-SET(NO_PCH_FILES
-	${PCH_FILES}
-)
-
+FILE(GLOB_RECURSE SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 ADD_LIBRARY(rdo_mbuilder STATIC ${SOURCE_FILES})
 
 INCLUDE(${PROJECT_SOURCE_DIR}/simulator/compiler/compiler.cmake)
@@ -54,25 +25,11 @@ TARGET_LINK_LIBRARIES(rdo_mbuilder rdo_parser)
 
 INSTALL(TARGETS rdo_mbuilder DESTINATION lib)
 
-IF(MSVC_IDE) # options for windows #
-
+IF(MSVC_IDE)
+	SET(PCH_FILES
+		pch.h
+		pch.cpp
+	)
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
-	ADD_PCH("${SOURCE_FILES}" "${NO_PCH_FILES}" simulator/compiler/mbuilder ./ pch)
-
-	SOURCE_GROUP(".common" FILES
-		${COMMON_FILES}
-	)
-
-	SOURCE_GROUP(".pch" FILES
-		${PCH_FILES}
-	)
-
-	SOURCE_GROUP(".process" FILES
-		${PROCESS_FILES}
-	)
-
-	SOURCE_GROUP(".resources" FILES
-		${RESOURCES_FILES}
-	)
-
+	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" simulator/compiler/mbuilder ./ pch)
 ENDIF()
