@@ -17,7 +17,7 @@
 #include "simulator/runtime/rdo_exception.h"
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/rdo_object.h"
-#include "simulator/report/file_message.h"
+#include "simulator/report/src/file_message.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

@@ -88,13 +88,13 @@ LPRDOType FunctionParamType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcI
 	return const_cast<PTR(FunctionParamType)>(this);
 }
 
-LPRDOValue FunctionParamType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue FunctionParamType::value_cast(CREF(LPRDOValue) /*pFrom*/, CREF(RDOParserSrcInfo) /*to_src_info*/, CREF(RDOParserSrcInfo) /*src_info*/) const
 {
 	NEVER_REACH_HERE;
 	return LPRDOValue();
 }
 
-rdo::runtime::LPRDOCalc FunctionParamType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc FunctionParamType::calc_cast(CREF(rdo::runtime::LPRDOCalc) /*pCalc*/, CREF(LPRDOType) /*pType*/) const
 {
 	NEVER_REACH_HERE;
 	return rdo::runtime::LPRDOCalc();
@@ -152,19 +152,19 @@ tstring FunctionType::name() const
 	return src_text();
 }
 
-LPRDOType FunctionType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType FunctionType::type_cast(CREF(LPRDOType) /*pFrom*/, CREF(RDOParserSrcInfo) /*from_src_info*/, CREF(RDOParserSrcInfo) /*to_src_info*/, CREF(RDOParserSrcInfo) /*src_info*/) const
 {
 	NEVER_REACH_HERE;
 	return LPRDOType();
 }
 
-LPRDOValue FunctionType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue FunctionType::value_cast(CREF(LPRDOValue) /*pFrom*/, CREF(RDOParserSrcInfo) /*to_src_info*/, CREF(RDOParserSrcInfo) /*src_info*/) const
 {
 	NEVER_REACH_HERE;
 	return LPRDOValue();
 }
 
-rdo::runtime::LPRDOCalc FunctionType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc FunctionType::calc_cast(CREF(rdo::runtime::LPRDOCalc) /*pCalc*/, CREF(LPRDOType) /*pType*/) const
 {
 	NEVER_REACH_HERE;
 	return rdo::runtime::LPRDOCalc();
