@@ -19,7 +19,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/interface/rdointerface.h"
 #include "kernel/rdothread.h"
-#include "simulator/service/rdosimwin.h"
+#include "simulator/service/src/simulator.h"
 #include "app/rdo_studio/src/frame/frame_manager.h"
 #include "app/rdo_studio/src/application.h"
 // --------------------------------------------------------------------------------

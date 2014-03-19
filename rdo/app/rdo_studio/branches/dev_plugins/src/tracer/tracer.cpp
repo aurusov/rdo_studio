@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
-#include "simulator/service/rdosimwin.h"
+#include "simulator/service/src/simulator.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/main_window_base.h"
 #include "app/rdo_studio/src/application.h"

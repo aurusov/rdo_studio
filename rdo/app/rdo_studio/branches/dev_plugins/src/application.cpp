@@ -23,7 +23,7 @@
 #include "utils/src/locale/rdolocale.h"
 #include "kernel/rdothread.h"
 #include "repository/rdorepository.h"
-#include "simulator/service/rdosimwin.h"
+#include "simulator/service/src/simulator.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model.h"

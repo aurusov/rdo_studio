@@ -3,7 +3,7 @@
   \file      frame_manager.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.03.2003
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -24,9 +24,12 @@
 #include "app/rdo_studio/src/frame/frame_view.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_ANIMATION_NAMESPACE
+namespace rdo {
+namespace animation {
+
 struct Frame;
-CLOSE_RDO_ANIMATION_NAMESPACE
+
+}} // namespace rdo::animation
 
 namespace rdo { namespace gui { namespace frame {
 
