@@ -31,12 +31,6 @@ typedef  char                        tchar;
 //! Тип строки
 typedef  std::basic_string<tchar>    tstring;
 
-//! ANSI-строка
-typedef  std::basic_string<char>     astring;
-
-//! Unicode-строка
-typedef  std::basic_string<wchar_t>  wstring;
-
 //! Булевский тип
 typedef  bool                        rbool;
 
