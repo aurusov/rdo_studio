@@ -38,8 +38,11 @@
 
 class RDOThread;
 
-namespace rdo { namespace animation {
+namespace rdo {
+namespace animation {
+
 struct Frame;
+
 }} // namespace rdo::animation
 
 OPEN_RDO_RUNTIME_NAMESPACE

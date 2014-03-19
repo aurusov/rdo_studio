@@ -14,7 +14,8 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-namespace rdo { namespace animation {
+namespace rdo {
+namespace animation {
 
 inline FrameItem::FrameItem(Type type)
 	: m_type(type)

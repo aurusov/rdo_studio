@@ -3,8 +3,8 @@
   \file      rdosimwin.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -40,8 +40,11 @@
 
 //#define DISABLE_CORBA
 //#ifndef DISABLE_CORBA
-namespace rdo { namespace animation {
+namespace rdo {
+namespace animation {
+
 struct Frame;
+
 }} // namespace rdo::animation
 
 #define DISABLE_CORBA
@@ -83,7 +86,7 @@ class RDOThreadCorba: public RDOThreadMT
 {
 public:
 	RDOThreadCorba();
-	
+
 private:
 	virtual ~RDOThreadCorba() {}; //! Чтобы нельзя было удалить через delete
 	virtual void proc(REF(RDOMessageInfo) msg);
@@ -212,7 +215,7 @@ private:
 	rdo::simulation::report::RDOExitCode  m_exitCode;
 
 	void terminateModel();
-	void closeModel    (); 
+	void closeModel    ();
 
 	ShowMode m_showMode; //! current show mode
 	double   m_showRate; //! current show mode
@@ -220,7 +223,7 @@ private:
 	std::stringstream m_resultString;
 	std::stringstream m_resultInfoString;
 
-	
+
 #ifdef CORBA_ENABLE
 
 //	void corbaGetRTPcount(REF(::CORBA::Long) rtp_count);
