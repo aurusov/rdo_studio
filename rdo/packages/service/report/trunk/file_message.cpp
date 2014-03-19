@@ -12,7 +12,9 @@
 #include "simulator/report/file_message.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_SIMULATION_REPORT_NAMESPACE
+namespace rdo {
+namespace simulation {
+namespace report {
 
 FileMessage::FileMessage(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type)
 	: m_text(text)
@@ -52,4 +54,4 @@ void FileMessage::setText(CREF(tstring) text)
 	m_text = text;
 }
 
-CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
+}}} // namespace rdo::simulation::report

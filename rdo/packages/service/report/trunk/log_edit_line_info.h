@@ -3,7 +3,7 @@
   \file      rdo_log_edit_line_info.h
   \authors   Евгений Пройдаков (lord.tiran@gmail.com)
   \date      12.08.2012
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -13,11 +13,12 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdotypes.h"
-#include "simulator/report/namespace.h"
 #include "simulator/report/file_message.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_SIMULATION_REPORT_NAMESPACE
+namespace rdo {
+namespace simulation {
+namespace report {
 
 class LogEditLineInfo : public FileMessage
 {
@@ -38,6 +39,6 @@ private:
 	rbool m_simpleTextMessage;
 };
 
-CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
+}}} // namespace rdo::simulation::report
 
 #endif // _LOG_EDIT_LINE_INFO_H_

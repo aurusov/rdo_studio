@@ -3,7 +3,7 @@
   \file      rdo_build_edit_line_info.cpp
   \authors   Евгений Пройдаков (lord.tiran@gmail.com)
   \date      12.08.2012
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -15,7 +15,9 @@
 #include "simulator/report/build_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_SIMULATION_REPORT_NAMESPACE
+namespace rdo {
+namespace simulation {
+namespace report {
 
 BuildEditLineInfo::BuildEditLineInfo( CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type ) :
 	LogEditLineInfo( text, file, line, pos, type )
@@ -47,4 +49,4 @@ tstring BuildEditLineInfo::getMessage() const
 	}
 }
 
-CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
+}}} // namespace rdo::simulation::report

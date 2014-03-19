@@ -3,7 +3,7 @@
   \file      rdo_build_edit_line_info.h
   \authors   Евгений Пройдаков (lord.tiran@gmail.com)
   \date      12.08.2012
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -13,11 +13,12 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/report/error_code.h"
-#include "simulator/report/namespace.h"
 #include "simulator/report/log_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_SIMULATION_REPORT_NAMESPACE
+namespace rdo {
+namespace simulation {
+namespace report {
 
 class BuildEditLineInfo : public LogEditLineInfo
 {
@@ -30,6 +31,6 @@ public:
 	virtual tstring getMessage() const;
 };
 
-CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
+}}} // namespace rdo::simulation::report
 
 #endif // _BUILD_EDIT_LINE_INFO_H_

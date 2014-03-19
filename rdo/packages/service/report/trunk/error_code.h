@@ -14,10 +14,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/report/namespace.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_SIMULATION_REPORT_NAMESPACE
+namespace rdo {
+namespace simulation {
+namespace report {
 
 //! Код окончания компиляции или прогона модели
 enum RDOExitCode
@@ -30,6 +31,6 @@ enum RDOExitCode
 	EC_NoMoreEvents   //!< Модель завершилась потому, что больше нечего моделировать
 };
 
-CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
+}}} // namespace rdo::simulation::report
 
 #endif // _SIMULATOR_REPORT_ERROR_CODE_H_

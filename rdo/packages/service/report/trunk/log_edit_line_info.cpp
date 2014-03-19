@@ -3,7 +3,7 @@
   \file      rdo_log_edit_line_info.cpp
   \authors   Евгений Пройдаков (lord.tiran@gmail.com)
   \date      12.08.2012
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -13,9 +13,11 @@
 #include "simulator/report/log_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_SIMULATION_REPORT_NAMESPACE
+namespace rdo {
+namespace simulation {
+namespace report {
 
-LogEditLineInfo::LogEditLineInfo( CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type ) 
+LogEditLineInfo::LogEditLineInfo( CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type )
 	: FileMessage( text, file, line, pos, type )
 	, m_posInLog(0)
 	, m_simpleTextMessage(false)
@@ -37,7 +39,7 @@ LogEditLineInfo::~LogEditLineInfo()
 {}
 
 tstring LogEditLineInfo::getMessage() const
-{	
+{
 	if ( m_simpleTextMessage )
 	{
 		return getText();
@@ -65,4 +67,4 @@ void LogEditLineInfo::setPosInLog(int posInLog)
 	m_posInLog = posInLog;
 }
 
-CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
+}}} // namespace rdo::simulation::report

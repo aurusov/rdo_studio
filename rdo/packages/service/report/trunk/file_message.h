@@ -15,10 +15,11 @@
 #include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
 #include "utils/src/common/model_objects.h"
-#include "simulator/report/namespace.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_SIMULATION_REPORT_NAMESPACE
+namespace rdo {
+namespace simulation {
+namespace report {
 
 //! Файловое сообщение
 class FileMessage
@@ -54,6 +55,6 @@ private:
 	Type                         m_type; //!<  Тип сообщения
 };
 
-CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
+}}} // namespace rdo::simulation::report
 
 #endif // _SIMULATOR_REPORT_FILE_MESSAGE_H_
