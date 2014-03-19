@@ -70,7 +70,13 @@ TreeNode::~TreeNode()
 void TreeNode::ExpandChildren()
 {
 	m_root->m_sizeof_dpt -= (m_pRuntime->getSizeofSim() + sizeof(TreeNode)) * m_children.size();
-	rdo::deleteAllObjects(m_children);
+	std::vector<TreeNode*>::reverse_iterator it = m_children.rbegin();
+	while (it != m_children.rend())
+	{
+		delete *it;
+		++it;
+	}
+	m_children.clear();
 
 	// Вывели статистику
 	onSearchOpenNode(m_root->m_theRealSimulator);

@@ -54,21 +54,6 @@ namespace rdo {
 		return str.str();
 	}
 
-	//! Удаляет все элементы контейнера, начиная с последнего
-	//! \tparam         T         - тип контейнера
-	//! \param[in, out] container - контейнер
-	template<class T>
-	void deleteAllObjects(REF(T) container)
-	{
-		typename T::reverse_iterator it = container.rbegin();
-		while (it != container.rend())
-		{
-			delete *it;
-			++it;
-		}
-		container.clear();
-	}
-
 	//! \class  vector
 	//! \tparam T - Тип хранимого элемента
 	//! \brief    Вектор
