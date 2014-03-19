@@ -4,13 +4,12 @@
 
 MESSAGE(STATUS "CREATE  TEST  FOR  RDO  TYPE")
 
-SET(SOURCE_FILES
-	main.cpp)
+FILE(GLOB_RECURSE SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
+ADD_BOOST_TEST(test_parser_type ${SOURCE_FILES})
 
-ADD_BOOST_TEST(test_rdo_type ${SOURCE_FILES})
-ADD_DEPENDENCIES(test_rdo_type parser)
-ADD_DEPENDENCIES(test_rdo_type rdo_mbuilder)
-ADD_DEPENDENCIES(test_rdo_type rdo_kernel)
-TARGET_LINK_LIBRARIES(test_rdo_type parser)
-TARGET_LINK_LIBRARIES(test_rdo_type rdo_mbuilder)
-TARGET_LINK_LIBRARIES(test_rdo_type rdo_kernel)
+ADD_DEPENDENCIES(test_parser_type parser)
+ADD_DEPENDENCIES(test_parser_type rdo_mbuilder)
+ADD_DEPENDENCIES(test_parser_type rdo_kernel)
+TARGET_LINK_LIBRARIES(test_parser_type parser)
+TARGET_LINK_LIBRARIES(test_parser_type rdo_mbuilder)
+TARGET_LINK_LIBRARIES(test_parser_type rdo_kernel)
