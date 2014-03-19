@@ -66,9 +66,6 @@ SET(SOURCE_FILES
 
 ADD_EXECUTABLE(rdo ${SOURCE_FILES})
 
-INCLUDE(${PROJECT_SOURCE_DIR}/app/rdo_console/projects/common/rdo_studio_console.cmake)
-SET_TARGET_PROPERTIES(rdo PROPERTIES FOLDER ${APP_FOLDER})
-
 ADD_DEPENDENCIES(rdo rdo_utils)
 ADD_DEPENDENCIES(rdo rdo_kernel)
 ADD_DEPENDENCIES(rdo rdo_repository)
