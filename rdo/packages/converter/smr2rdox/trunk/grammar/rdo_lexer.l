@@ -3,8 +3,8 @@
   \file      rdo_lexer.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -16,7 +16,7 @@
 #include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/grammar/rdobison.h"
-#include "converter/smr2rdox/grammar/generated/rdogramma.h"
+#include "rdogramma.h"
 #include "converter/smr2rdox/rdoparser.h"
 #include "converter/smr2rdox/rdoparser_lexer.h"
 #include "converter/smr2rdox/rdo_value.h"
@@ -171,8 +171,8 @@ Resource_file		return(RDO_Resource_file);
 resource_file		return(RDO_Resource_file);
 OprIev_file			return(RDO_OprIev_file);
 opriev_file			return(RDO_OprIev_file);
-Frame_file			return(RDO_Frame_file);	
-frame_file			return(RDO_Frame_file);	
+Frame_file			return(RDO_Frame_file);
+frame_file			return(RDO_Frame_file);
 Statistic_file		return(RDO_Statistic_file);
 statistic_file		return(RDO_Statistic_file);
 Results_file		return(RDO_Results_file);

@@ -28,8 +28,7 @@ SET(BISON_INCLUDE ${BISON_INCLUDE}/../include)
 INCLUDE_DIRECTORIES(${BISON_INCLUDE})
 
 SET(GRAMMA_INPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
-SET(GRAMMA_OUTPUT_PATH ${GRAMMA_INPUT_PATH}/generated)
-SET(GRAMMA_H ${GRAMMA_OUTPUT_PATH}/rdogramma.h)
+SET(GRAMMA_H ${CMAKE_CURRENT_BINARY_DIR}/rdogramma.h)
 
 INCLUDE(${PROJECT_SOURCE_DIR}/cmake/bison.cmake)
 
@@ -46,7 +45,7 @@ RDO_BISON_TARGET(proc_rss cnv_proc_rss_)
 RDO_BISON_TARGET(proc_opr cnv_proc_opr_)
 RDO_BISON_TARGET(smr_file cnv_smr_file_)
 RDO_BISON_TARGET(smr_sim cnv_smr_sim_)
-RDO_FLEX_TARGET(lexer_scaner ${GRAMMA_INPUT_PATH}/rdo_lexer.l ${GRAMMA_OUTPUT_PATH}/rdolex.cpp COMPILE_FLAGS "-Pcnv -+")
+RDO_FLEX_TARGET(lexer_scaner ${GRAMMA_INPUT_PATH}/rdo_lexer.l ${CMAKE_CURRENT_BINARY_DIR}/rdolex.cpp COMPILE_FLAGS "-Pcnv -+")
 
 ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rtp)
 
