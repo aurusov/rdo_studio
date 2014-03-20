@@ -11,13 +11,18 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
-#include "simulator/report/src/comment.h"
 #include "simulator/report/src/build_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo {
 namespace simulation {
 namespace report {
+
+namespace
+{
+	const std::string WARNING_STRING("предупреждение");
+	const std::string ERROR_STRING("ошибка");
+}
 
 BuildEditLineInfo::BuildEditLineInfo(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type)
 	: LogEditLineInfo(text, file, line, pos, type)
@@ -42,9 +47,9 @@ tstring BuildEditLineInfo::getMessage() const
 	}
 	else
 	{
-		tstring file = rdoModelObjects::getFileTypeString(getFileType());
-		tstring error = (getType() == FileMessage::MT_WARNING) ? tstring(WARNING_STRING) : tstring(ERROR_STRING);
-		tstring text = rdo::format("%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, error.c_str(), getText().c_str());
+		const tstring file = rdoModelObjects::getFileTypeString(getFileType());
+		const tstring error = (getType() == FileMessage::MT_WARNING) ? WARNING_STRING : ERROR_STRING;
+		const tstring text = rdo::format("%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, error.c_str(), getText().c_str());
 		return text;
 	}
 }
