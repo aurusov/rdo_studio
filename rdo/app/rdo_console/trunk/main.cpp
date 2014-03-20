@@ -132,7 +132,7 @@ int main(int argc, PTR(char) argv[])
 	}
 
 	const boost::posix_time::ptime endTime = boost::posix_time::microsec_clock::local_time();
-	const ruint64 simulationTimeMillisecond = ( endTime - startTime ).total_milliseconds();
+	const ruint64 simulationTimeMillisecond = (endTime - startTime).total_milliseconds();
 	rdo::locale::cout(boost::str(boost::format("Total simulation time : %1% milliseconds") % simulationTimeMillisecond));
 
 	if (simulationSuccessfully)
