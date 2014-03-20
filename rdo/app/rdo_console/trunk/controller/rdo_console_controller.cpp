@@ -15,7 +15,7 @@
 #include "kernel/rdokernel.h"
 #include "simulator/service/src/simulator.h"
 #include "simulator/report/src/build_edit_line_info.h"
-#include "app/rdo_console/rdo_console_controller.h"
+#include "app/rdo_console/controller/rdo_console_controller.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdo;

@@ -12,7 +12,7 @@
 #include <boost/foreach.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_console/rdo_event_xml_parser.h"
+#include "app/rdo_console/events/xml_parser/rdo_event_xml_parser.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo {

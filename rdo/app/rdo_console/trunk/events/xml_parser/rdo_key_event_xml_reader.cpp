@@ -9,8 +9,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_console/rdo_key_event.h"
-#include "app/rdo_console/rdo_key_event_xml_reader.h"
+#include "app/rdo_console/events/rdo_key_event.h"
+#include "app/rdo_console/events/xml_parser/rdo_key_event_xml_reader.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo {
