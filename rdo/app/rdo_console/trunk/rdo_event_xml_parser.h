@@ -32,7 +32,7 @@ public:
 public:
 	bool register_parser(CREF(tstring) name, boost::shared_ptr<event_xml_reader> reader);
 
-	void parse(REF(std::istream) stream, REF(event_container) list);
+	void parse(REF(std::istream) stream, REF(event_container) list) const;
 
 private:
 	typedef std::map< tstring, boost::shared_ptr<event_xml_reader> > parsers;

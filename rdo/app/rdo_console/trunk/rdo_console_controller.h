@@ -58,7 +58,7 @@ private:
 
 	SimulatorState       m_state;
 	rbool                m_converted;
-	rbool                m_buildError; 
+	rbool                m_buildError;
 	rbool                m_runtimeError;
 	rbool                m_convertorError;
 	RDOExitCode          m_exitCode;

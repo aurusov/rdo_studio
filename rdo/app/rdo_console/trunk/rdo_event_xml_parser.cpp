@@ -19,7 +19,7 @@ namespace rdo {
 
 bool event_xml_parser::register_parser(CREF(tstring) name, boost::shared_ptr<event_xml_reader> reader)
 {
-	if(m_parsers.find(name) == m_parsers.end())
+	if (m_parsers.find(name) == m_parsers.end())
 	{
 		m_parsers[name] = reader;
 		return true;
@@ -27,20 +27,20 @@ bool event_xml_parser::register_parser(CREF(tstring) name, boost::shared_ptr<eve
 	return false;
 }
 
-void event_xml_parser::parse(REF(std::istream) stream, REF(event_container) list)
+void event_xml_parser::parse(REF(std::istream) stream, REF(event_container) list) const
 {
 	list.clear();
 
 	boost::property_tree::ptree pt;
 	boost::property_tree::read_xml(stream, pt);
 
-	BOOST_FOREACH( boost::property_tree::ptree::value_type const& v, pt.get_child("rscript.events") )
+	BOOST_FOREACH(const boost::property_tree::ptree::value_type& v, pt.get_child("rscript.events"))
 	{
 		boost::property_tree::ptree const& node = v.second;
 
-		tstring event_type = node.get<tstring>("<xmlattr>.type", "");
-		parsers::iterator it = m_parsers.find(event_type);
-		if(it != m_parsers.end())
+		const tstring event_type = node.get<tstring>("<xmlattr>.type", "");
+		parsers::const_iterator it = m_parsers.find(event_type);
+		if (it != m_parsers.end())
 		{
 			event* e = it->second->read(node);
 			if (e)

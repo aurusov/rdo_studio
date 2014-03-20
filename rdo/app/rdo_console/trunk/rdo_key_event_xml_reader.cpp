@@ -16,18 +16,17 @@
 namespace rdo {
 
 key_event_xml_reader::~key_event_xml_reader()
+{}
+
+PTR(event) key_event_xml_reader::read(CREF(boost::property_tree::ptree) pt) const
 {
-}
+	const tstring name = pt.get<tstring>("<xmlattr>.name", "");
+	const double time  = pt.get<double>("<xmlattr>.time", 0.0);
 
-PTR(event) key_event_xml_reader::read(CREF(boost::property_tree::ptree) pt)
-{
-	tstring name = pt.get<tstring>("<xmlattr>.name", "");
-	double time  = pt.get<double>("<xmlattr>.time", 0.0);
+	const boost::property_tree::ptree& param = pt.get_child("param");
 
-	boost::property_tree::ptree const& param = pt.get_child("param");
-
-	int state = param.get<int>("<xmlattr>.state");
-	int key_code = param.get<int>("<xmlattr>.key");
+	const int state = param.get<int>("<xmlattr>.state");
+	const int key_code = param.get<int>("<xmlattr>.key");
 
 	return new key_event(name, time, static_cast<key_event::states>(state), key_code);
 }

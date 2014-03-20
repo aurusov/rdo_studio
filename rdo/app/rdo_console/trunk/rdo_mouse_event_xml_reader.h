@@ -17,12 +17,12 @@
 
 namespace rdo {
 
-class mouse_event_xml_reader : public event_xml_reader
+class mouse_event_xml_reader: public event_xml_reader
 {
 public:
 	virtual ~mouse_event_xml_reader();
 
-	virtual PTR(event) read(CREF(boost::property_tree::ptree) pt);
+	virtual PTR(event) read(CREF(boost::property_tree::ptree) pt) const;
 };
 
 } // namespace rdo

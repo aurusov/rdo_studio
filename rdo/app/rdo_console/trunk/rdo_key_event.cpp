@@ -14,16 +14,14 @@
 
 namespace rdo {
 
-key_event::key_event(CREF(tstring) name, double time, states state, int key_code) :
-	event(name, time, event::key),
-	m_state(state),
-	m_key_code(key_code)
-{
-}
+key_event::key_event(CREF(tstring) name, double time, states state, int key_code)
+	: event(name, time, event::key)
+	, m_state(state)
+	, m_key_code(key_code)
+{}
 
 key_event::~key_event()
-{
-}
+{}
 
 void key_event::setState(states state)
 {

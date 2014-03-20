@@ -14,17 +14,15 @@
 
 namespace rdo {
 
-mouse_event::mouse_event(CREF(tstring) name, double time, buttons button, int x, int y) :
-	event(name, time, event::mouse),
-	m_button(button),
-	m_x(x),
-	m_y(y)
-{
-}
+mouse_event::mouse_event(CREF(tstring) name, double time, buttons button, int x, int y)
+	: event(name, time, event::mouse)
+	, m_button(button)
+	, m_x(x)
+	, m_y(y)
+{}
 
 mouse_event::~mouse_event()
-{
-}
+{}
 
 void mouse_event::setButton(buttons button)
 {

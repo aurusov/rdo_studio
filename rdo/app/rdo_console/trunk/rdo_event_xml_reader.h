@@ -25,7 +25,7 @@ class event_xml_reader
 public:
 	virtual ~event_xml_reader();
 
-	virtual PTR(event) read(CREF(boost::property_tree::ptree) pt) = 0;
+	virtual PTR(event) read(CREF(boost::property_tree::ptree) pt) const = 0;
 };
 
 } // namespace rdo

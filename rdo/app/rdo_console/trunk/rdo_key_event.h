@@ -18,15 +18,15 @@
 namespace rdo {
 
 /// base event class
-class key_event : public event
+class key_event: public event
 {
 public:
-	enum states {
+	enum states
+	{
 		press = 0,
 		release
 	};
 
-public:
 	key_event(CREF(tstring) name, double time, states state, int key_code);
 	virtual ~key_event();
 

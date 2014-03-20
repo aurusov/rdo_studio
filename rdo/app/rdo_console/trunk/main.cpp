@@ -53,11 +53,11 @@ int main(int argc, PTR(char) argv[])
 	rdo::ControllerConsoleOptions optionsController(argc, argv);
 	optionsController.parseOptions();
 
-	boost::filesystem::path modelFileName = optionsController.getModelFileName();
-	rbool modelExist = rdo::File::exist(modelFileName);
+	const boost::filesystem::path modelFileName = optionsController.getModelFileName();
+	const rbool modelExist = rdo::File::exist(modelFileName);
 
-	boost::filesystem::path eventsFileName = optionsController.getScriptFileName();
-	rbool eventExist = rdo::File::exist(eventsFileName);
+	const boost::filesystem::path eventsFileName = optionsController.getScriptFileName();
+	const rbool eventExist = rdo::File::exist(eventsFileName);
 
 	if (optionsController.helpQuery())
 	{
@@ -110,13 +110,13 @@ int main(int argc, PTR(char) argv[])
 
 	bool simulationSuccessfully = false;
 
-	bool buildError = pAppController->buildError();
+	const bool buildError = pAppController->buildError();
 	if (buildError)
 	{
 		string_list buildList;
 		pAppController->getBuildLogList(buildList);
 
-		boost::filesystem::path fileName = modelFileName.parent_path() / LOG_FILE_NAME;
+		const boost::filesystem::path fileName = modelFileName.parent_path() / LOG_FILE_NAME;
 		boost::filesystem::remove(fileName);
 		boost::filesystem::ofstream stream(fileName, std::ios::out);
 
@@ -131,8 +131,8 @@ int main(int argc, PTR(char) argv[])
 		RDOKernel::close();
 	}
 
-	boost::posix_time::ptime endTime = boost::posix_time::microsec_clock::local_time();
-	ruint64 simulationTimeMillisecond = ( endTime - startTime ).total_milliseconds();
+	const boost::posix_time::ptime endTime = boost::posix_time::microsec_clock::local_time();
+	const ruint64 simulationTimeMillisecond = ( endTime - startTime ).total_milliseconds();
 	rdo::locale::cout(boost::str(boost::format("Total simulation time : %1% milliseconds") % simulationTimeMillisecond));
 
 	if (simulationSuccessfully)
@@ -151,7 +151,8 @@ void read_events(REF(std::istream) stream, REF(event_container) container)
 {
 	container.clear();
 
-	if (stream.fail()) {
+	if (stream.fail())
+	{
 		exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
 	}
 	rdo::event_xml_parser parser;
@@ -174,7 +175,7 @@ void write_build_log(REF(std::ostream) stream, CREF(string_list) list)
 	{
 		exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
 	}
-	BOOST_FOREACH( string_list::value_type const& line, list )
+	BOOST_FOREACH(const string_list::value_type& line, list)
 	{
 		stream << line.c_str() << std::endl;
 	}
@@ -208,10 +209,10 @@ void process_event(PTR(rdo::console_controller) pAppController, REF(event_contai
 
 	if(!container.empty())
 	{
-		event_container::iterator it = container.begin();
+		event_container::const_iterator it = container.begin();
 		if (it->first < runtime_time)
 		{
-			std::string eventName = boost::str(boost::format("process event : name : %1%  |  time : %2%")
+			const std::string eventName = boost::str(boost::format("process event : name : %1%  |  time : %2%")
 				% it->second->getName()
 				% it->second->getTime()
 			);
@@ -222,22 +223,22 @@ void process_event(PTR(rdo::console_controller) pAppController, REF(event_contai
 			switch (type)
 			{
 			case rdo::event::key:
-			{
-				ruint code = static_cast<rdo::key_event*>(it->second.get())->getKeyCode();
-				rdo::key_event::states state = static_cast<rdo::key_event*>(it->second.get())->getState();
-
-				rdo::console_controller::RDOTreadMessage message_type;
-				switch (state)
 				{
-				case rdo::key_event::press:
-					message_type = RDOThread::RT_RUNTIME_KEY_DOWN;
-					break;
-				case rdo::key_event::release:
-					message_type = RDOThread::RT_RUNTIME_KEY_UP;
-					break;
+				ruint code = static_cast<rdo::key_event*>(it->second.get())->getKeyCode();
+					rdo::key_event::states state = static_cast<rdo::key_event*>(it->second.get())->getState();
+
+					rdo::console_controller::RDOTreadMessage message_type;
+					switch (state)
+					{
+					case rdo::key_event::press:
+						message_type = RDOThread::RT_RUNTIME_KEY_DOWN;
+						break;
+					case rdo::key_event::release:
+						message_type = RDOThread::RT_RUNTIME_KEY_UP;
+						break;
+					}
+					pAppController->broadcastMessage(message_type, &code);
 				}
-				pAppController->broadcastMessage(message_type, &code);
-			}
 				break;
 
 			case rdo::event::mouse:

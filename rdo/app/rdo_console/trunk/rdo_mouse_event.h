@@ -17,20 +17,20 @@
 
 namespace rdo {
 
-class mouse_event : public event
+class mouse_event: public event
 {
 public:
-	enum buttons {
+	enum buttons
+	{
 		none,
 		left,
 		right,
 		middle
 	};
 
-public:
 	mouse_event(CREF(tstring) name, double time, buttons button, int x, int y);
 	virtual ~mouse_event();
-    
+
 	void setButton(buttons button);
 	void setX(int x);
 	void sety(int y);

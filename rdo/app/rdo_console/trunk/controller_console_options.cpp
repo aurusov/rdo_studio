@@ -21,11 +21,11 @@
 
 using namespace rdo;
 
-ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[]) :
-	m_help(false),
-	m_convert(false)
+ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[])
+	: m_help(false)
+	, m_convert(false)
 {
-	po::options_description options_header(boost::str(boost::format("%1%\n\n%2%")
+	const po::options_description options_header(boost::str(boost::format("%1%\n\n%2%")
 		% rdo::version::g_versionName
 		% rdo::version::g_site
 	));
@@ -57,8 +57,7 @@ ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[]) :
 }
 
 ControllerConsoleOptions::~ControllerConsoleOptions()
-{
-}
+{}
 
 void ControllerConsoleOptions::parseOptions()
 {
@@ -120,12 +119,12 @@ boost::filesystem::path ControllerConsoleOptions::getScriptFileName() const
 	return result;
 }
 
-rbool ControllerConsoleOptions::helpQuery()
+rbool ControllerConsoleOptions::helpQuery() const
 {
 	return m_help;
 }
 
-rbool ControllerConsoleOptions::convertQuery()
+rbool ControllerConsoleOptions::convertQuery() const
 {
 	return m_convert;
 }

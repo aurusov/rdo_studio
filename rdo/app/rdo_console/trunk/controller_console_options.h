@@ -32,14 +32,14 @@ class ControllerConsoleOptions
 public:
 	ControllerConsoleOptions(int argc, char* argv[]);
 	~ControllerConsoleOptions();
-	
+
 	void parseOptions();
 
 	boost::filesystem::path getModelFileName () const;
 	boost::filesystem::path getScriptFileName() const;
 
-	rbool helpQuery();
-	rbool convertQuery();
+	rbool helpQuery() const;
+	rbool convertQuery() const;
 
 private:
 	po::options_description m_options;

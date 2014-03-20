@@ -49,8 +49,7 @@ console_controller::console_controller()
 }
 
 console_controller::~console_controller()
-{
-}
+{}
 
 rbool console_controller::finished() const
 {
@@ -73,7 +72,7 @@ rbool console_controller::simulationSuccessfully()
 	return m_exitCode == rdo::simulation::report::EC_OK;
 }
 
-rbool console_controller::buildError () const
+rbool console_controller::buildError() const
 {
 	return m_buildError;
 }
@@ -164,7 +163,7 @@ void console_controller::fillBuildLogList(REF(std::vector<FileMessage>) errors)
 	STL_FOR_ALL_CONST(errors, it)
 	{
 		BuildEditLineInfo info(*it);
-		tstring line = info.getMessage();
+		const tstring line = info.getMessage();
 		m_buildLogList.push_back(line);
 	}
 }
