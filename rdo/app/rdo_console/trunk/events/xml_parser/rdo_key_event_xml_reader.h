@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      app/rdo_console/rdo_key_event_xml_reader.h
+  \file      rdo_key_event_xml_reader.h
   \author    Пройдаков Евгений (lord.tiran@gmail.com)
   \date      26.11.2012
   \brief     Консольная версия RDO

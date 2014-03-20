@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      app/rdo_console/rdo_mouse_event.h
+  \file      rdo_mouse_event.h
   \author    Пройдаков Евгений (lord.tiran@gmail.com)
   \date      26.11.2012
   \brief     Консольная версия RDO
