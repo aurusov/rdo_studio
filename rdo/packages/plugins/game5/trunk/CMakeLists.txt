@@ -10,8 +10,6 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
-FILE(WRITE ${PROJECT_SOURCE_DIR}/app/rdo_studio/plugins/game5/src/plugin_game5.json)
-
 SET(PLUGIN_GAME5_MOC_FILES
 	src/board.h
 	src/combobox_delegate.h
@@ -32,7 +30,7 @@ SET(SRC_FILES
 
 SET(COMPLETER_FILES
 	src/multi_select_completer.h
-	src/multi_select_completer.cpp	
+	src/multi_select_completer.cpp
 )
 
 SET(DIALOGS_FILES
