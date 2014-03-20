@@ -15,7 +15,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdotypes.h"
-#include "app/rdo_console/build_version.h"
+#include "build_version.h"
 // --------------------------------------------------------------------------------
 
 // Input param constant

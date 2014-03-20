@@ -3,7 +3,7 @@
   \file      about_dialog.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      18.08.2012
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -14,7 +14,7 @@
 #include <boost/algorithm/string/erase.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/dialog/about_dialog.h"
-#include "app/rdo_studio/res/build_version.h"
+#include "build_version.h"
 // --------------------------------------------------------------------------------
 
 AboutDialog::AboutDialog(QWidget* pParent)
