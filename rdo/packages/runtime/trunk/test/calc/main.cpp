@@ -9,9 +9,6 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
-#ifdef COMPILER_MINGW
-	#undef __STRICT_ANSI__
-#endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOCalc_Test
 #include "utils/src/common/warning_disable.h"
@@ -102,7 +99,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_RecursSimulator)
 			//! Важно, чтобы тип был int, а не int&
 			//! Иначе результаты обоих функций будут по 1
 			//! А сейчас 1 и 120
-			int value() 
+			int value()
 			{
 				return m_value;
 			}
@@ -167,7 +164,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 		static LPRDOCalc create(MultOrder order)
 		{
 			//! ручная набивка тела функции вида
-			//! 
+			//!
 			//! int fun(int param)
 			//! {
 			//!     if (param == 1)
@@ -228,7 +225,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 				BOOST_CHECK(pFunctionCaller);
 
 				//! fun(param - 1) * param
-				//! или 
+				//! или
 				//! param * fun(param - 1)
 				LPRDOCalc pMult;
 				switch (order)

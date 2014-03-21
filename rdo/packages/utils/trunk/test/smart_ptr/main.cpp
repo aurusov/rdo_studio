@@ -10,9 +10,6 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
-#ifdef COMPILER_MINGW
-	#undef __STRICT_ANSI__
-#endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOSmartPrtTest
 #include "utils/src/common/warning_disable.h"

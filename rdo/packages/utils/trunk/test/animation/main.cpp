@@ -9,9 +9,6 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
-#ifdef COMPILER_MINGW
-	#undef __STRICT_ANSI__
-#endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOCommonAnimation_Test
 #include "utils/src/common/warning_disable.h"
@@ -89,7 +86,7 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationRadius)
 {
 	double radiusSize = 100;
 	rdo::animation::Radius radius(radiusSize);
-	
+
 	BOOST_CHECK(radius.m_radius == radiusSize);
 }
 
@@ -129,7 +126,7 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationLineElement)
 	rdo::animation::Color color;
 
 	rdo::animation::LineElement lineElem(point1, point2, color);
-	
+
 	BOOST_CHECK(lineElem.m_color.m_transparent == color.m_transparent);
 	BOOST_CHECK(lineElem.m_color == color);
 	BOOST_CHECK(lineElem.m_point1 == point1);

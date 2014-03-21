@@ -10,9 +10,6 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
-#ifdef COMPILER_MINGW
-	#undef __STRICT_ANSI__
-#endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDORuntime_Logic_Test
 #include "utils/src/common/warning_disable.h"
@@ -109,7 +106,7 @@ public:
 	Logic(const data_vector& data)
 	{
 		data_vector::const_iterator endIt = data.end();
-		for(data_vector::const_iterator it = data.begin(); it != endIt; ++it) 
+		for(data_vector::const_iterator it = data.begin(); it != endIt; ++it)
 		{
 			m_container(*it);
 		}

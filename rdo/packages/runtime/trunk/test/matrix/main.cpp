@@ -11,9 +11,6 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
-#ifdef COMPILER_MINGW
-	#undef __STRICT_ANSI__
-#endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDORuntime_Matrix_Test
 #include "utils/src/common/warning_disable.h"
@@ -196,7 +193,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePreMinus)
 	BOOST_CHECK(it != begin);
 	BOOST_CHECK(it == end  );
 
-	do 
+	do
 	{
 		result += getString(--it, end);
 	}
@@ -218,7 +215,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePostMinus)
 	BOOST_CHECK(it != begin);
 	BOOST_CHECK(it == end  );
 
-	do 
+	do
 	{
 		result += getString(it--, end);
 	}

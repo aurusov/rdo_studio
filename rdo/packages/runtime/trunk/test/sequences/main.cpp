@@ -10,9 +10,6 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
-#ifdef COMPILER_MINGW
-	#undef __STRICT_ANSI__
-#endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOSequencesTest
 #include "utils/src/common/warning_disable.h"
@@ -244,7 +241,7 @@ public:
 
 	double get(double x) const
 	{
-		return 1 / (m_main * exp(x/m_main)); 
+		return 1 / (m_main * exp(x/m_main));
 	}
 
 private:
@@ -262,7 +259,7 @@ public:
 	double get(double x) const
 	{
 		UNUSED(x);
-		return 1 / (m_max-m_min); 
+		return 1 / (m_max-m_min);
 	}
 
 private:
@@ -291,7 +288,7 @@ public:
 		{
 			temp = -2 * x / ((m_max - m_min) * m_max) + 2 / (m_max - m_min);
 		}
-		return temp; 
+		return temp;
 	}
 
 private:

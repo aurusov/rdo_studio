@@ -11,9 +11,6 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
-#ifdef COMPILER_MINGW
-	#undef __STRICT_ANSI__
-#endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDORuntime_Array_Test
 #include "utils/src/common/warning_disable.h"
@@ -217,7 +214,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePostMinus)
 	BOOST_CHECK(it != begin);
 	BOOST_CHECK(it == end  );
 
-	do 
+	do
 	{
 		result += getString(it--, end);
 	}
