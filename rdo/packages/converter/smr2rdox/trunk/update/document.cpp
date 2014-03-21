@@ -3,7 +3,7 @@
   \file      document.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      01.11.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -201,11 +201,11 @@ void Document::insert(Type type, ruint to, CREF(tstring) value)
 	LPMemoryStream streamOut = getMemoryStream(type);
 	streamOut->insert(to, value);
 
-	STL_FOR_ALL(m_updateContainer, it)
+	for (const auto& update: m_updateContainer)
 	{
-		if (!it->second)
+		if (!update.second)
 		{
-			LPDocUpdate pUpdate = it->first;
+			LPDocUpdate pUpdate = update.first;
 			ASSERT(pUpdate);
 			pUpdate->insert(type, to, value.length());
 		}
@@ -217,11 +217,11 @@ void Document::remove(Type type, ruint from, ruint to)
 	LPMemoryStream streamOut = getMemoryStream(type);
 	streamOut->remove(from, to);
 
-	STL_FOR_ALL(m_updateContainer, it)
+	for (const auto& update: m_updateContainer)
 	{
-		if (!it->second)
+		if (!update.second)
 		{
-			LPDocUpdate pUpdate = it->first;
+			LPDocUpdate pUpdate = update.first;
 			ASSERT(pUpdate);
 			pUpdate->remove(type, from, to);
 		}

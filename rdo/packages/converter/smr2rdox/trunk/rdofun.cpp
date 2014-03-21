@@ -3,8 +3,8 @@
   \file      rdofun.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -51,9 +51,9 @@ void cnv_funerror(const char* message)
 // --------------------------------------------------------------------------------
 void RDOFUNDoubleToIntByResult::roundCalc()
 {
-	STL_FOR_ALL(m_intOrDouble, it)
+	for (const auto& calc: m_intOrDouble)
 	{
-		(*it)->needRound();
+		calc->needRound();
 	}
 }
 
@@ -1410,13 +1410,13 @@ void RDOFUNFunction::setFunctionCalc(CREF(rdo::runtime::LPRDOFunCalc) pCalc)
 	{
 		m_pFunctionCalc->setSrcInfo(src_info());
 	}
-	STL_FOR_ALL(m_postLinkedList, it)
+	for (const auto& calc: m_postLinkedList)
 	{
-		(*it)->setFunctionCalc(getFunctionCalc());
+		calc->setFunctionCalc(getFunctionCalc());
 	}
 }
 
-LPRDOParam RDOFUNFunction::findFUNFunctionParam(CREF(tstring) paramName) const 
+LPRDOParam RDOFUNFunction::findFUNFunctionParam(CREF(tstring) paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
 	return it != m_paramList.end() ? *it : LPRDOParam(NULL);
@@ -1429,7 +1429,7 @@ int RDOFUNFunction::findFUNFunctionParamNum(CREF(tstring) paramName) const
 }
 
 void RDOFUNFunction::add(CREF(LPRDOParam) pParam)
-{ 
+{
 	LPRDOParam pParamPrev = findFUNFunctionParam(pParam->name());
 	if (pParamPrev)
 	{
@@ -1437,12 +1437,12 @@ void RDOFUNFunction::add(CREF(LPRDOParam) pParam)
 		Converter::s_converter()->error().push_only(pParamPrev->src_info(), "См. первое определение");
 		Converter::s_converter()->error().push_done();
 	}
-	m_paramList.push_back(pParam); 
+	m_paramList.push_back(pParam);
 }
 
 void RDOFUNFunction::add(CREF(LPRDOFUNFunctionListElement) pParam)
 {
-	m_elementList.push_back(pParam); 
+	m_elementList.push_back(pParam);
 }
 
 void RDOFUNFunction::add(CREF(LPRDOFUNCalculateIf) pCalculateIf)

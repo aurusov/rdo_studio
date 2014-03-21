@@ -156,9 +156,9 @@ public:
 	private:
 		void clear()
 		{
-			STL_FOR_ALL(m_stack, it)
+			for (auto& item: m_stack)
 			{
-				it->second->destroy();
+				item.second->destroy();
 			}
 		}
 	};
