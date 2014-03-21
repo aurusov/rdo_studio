@@ -1,12 +1,13 @@
 #==============================================================================
 # Copyright (c) 2011-2013 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2013-2014 Andrey Urusov <rdo@rk9.bmstu.ru>
 #==============================================================================
-# Welcome to the CMake build system for RDO STUDIO (UNIX VERSION).
+# Welcome to the CMake build system for RDO STUDIO.
 # This is the main file where we prepare the general build environment
 # and provide build configuration options.
 #==============================================================================
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.7)
 PROJECT(rdo)
 
 #==============================================================================
@@ -42,7 +43,8 @@ INCLUDE(add.boost.test)
 IF(MSVC)
     STRING(REGEX REPLACE /W[0-4] /W4 CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} /Ot /Ob2")
+    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} /Ot /Ob2 /MD")
+    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} /MDd")
     SET(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /LTCG")
     SET(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_STATIC_LINKER_FLAGS_RELEASE} /LTCG")
 ELSE()
@@ -54,10 +56,6 @@ ELSE()
     ENDIF()
 ENDIF()
 SET(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS}")
-
-IF(NOT CMAKE_BUILD_TYPE)
-    SET(CMAKE_BUILD_TYPE Debug)
-ENDIF(NOT CMAKE_BUILD_TYPE)
 
 IF(NOT MSVC)
     IF(NOT BUILD_SHARED_LIBS)
@@ -77,7 +75,12 @@ ENABLE_TESTING()
 IF(MSVC)
     SET(Boost_USE_STATIC_LIBS    ON)
     SET(Boost_USE_MULTITHREADED  ON)
-ENDIF(MSVC)
+ELSE()
+    IF(MINGW)
+        SET(Boost_USE_STATIC_LIBS    OFF)
+        SET(Boost_USE_MULTITHREADED  ON)
+    ENDIF()
+ENDIF()
 
 # enable folders for msvc
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -96,7 +99,7 @@ ENDIF(WIN32)
 # set base directory
 SET(RDO_BASE_DIRECTORY ${PROJECT_SOURCE_DIR})
 
-IF(MSVC)
+IF(MSVC OR MINGW)
     SET(PATH_STRING $ENV{PATH})
     STRING(FIND "${PATH_STRING}" "thirdparty/bison_flex/bin" OUT)
     IF(${OUT} GREATER -1)
@@ -133,7 +136,7 @@ SET(PROJECT_VERSION_LONG ${CMAKE_SVN_VERSION})
 
 IF(WIN32)
     IF(NOT MINGW)
-#        INCLUDE(win32.install)
+        INCLUDE(win32.install)
     ENDIF()
 ENDIF()
 
@@ -161,7 +164,7 @@ SET(SCRIPT_FILES
     ${SCRIPTS_DIRECTORY}/statistics/statistics.sh
 )
 
-IF(MSVC)
+IF(MSVC OR MINGW)
     SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
     SET(ENV{BISON_PKGDATADIR} ${BISON_FLEX_DIRECTORY}/share/bison)
 ENDIF()
@@ -173,10 +176,6 @@ ADD_SUBDIRECTORY(${UTILS_PATH})
 # Compile the rdo_kernel
 SET(KERNEL_PATH ${RDO_BASE_DIRECTORY}/kernel)
 ADD_SUBDIRECTORY(${KERNEL_PATH})
-
-# Compile XML plugin
-SET(XML_PUGIXML_PATH ${RDO_BASE_DIRECTORY}/thirdparty/pugixml/scripts)
-ADD_SUBDIRECTORY(${XML_PUGIXML_PATH})
 
 # Compile scintilla editor
 SET(SCINTILLA_PATH ${RDO_BASE_DIRECTORY}/thirdparty/scintilla)
