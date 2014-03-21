@@ -27,6 +27,7 @@
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
 #include "converter/smr2rdox/update/update_i.h"
 #include "converter/smr2rdox/update/update.h"
+#include "repository/rdorepository.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
