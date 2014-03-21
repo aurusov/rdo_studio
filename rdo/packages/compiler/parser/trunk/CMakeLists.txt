@@ -293,13 +293,11 @@ SET_TARGET_PROPERTIES(rdo_parser PROPERTIES FOLDER ${PROJECT_FOLDER})
 
 ADD_DEPENDENCIES(rdo_parser rdo_utils)
 ADD_DEPENDENCIES(rdo_parser rdo_runtime)
-ADD_DEPENDENCIES(rdo_parser pugixml)
 
 TARGET_LINK_LIBRARIES(rdo_parser ${Boost_LIBRARIES})
 TARGET_LINK_LIBRARIES(rdo_parser rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_parser rdo_runtime)
 TARGET_LINK_LIBRARIES(rdo_parser rdo_mbuilder)
-TARGET_LINK_LIBRARIES(rdo_parser pugixml)
 
 IF(MSVC)
 	SET_TARGET_PROPERTIES(rdo_parser PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
