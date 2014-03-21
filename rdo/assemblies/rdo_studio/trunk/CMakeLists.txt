@@ -7,7 +7,7 @@
 # and provide build configuration options.
 #==============================================================================
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.11)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.7)
 PROJECT(rdo)
 
 #==============================================================================
