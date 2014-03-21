@@ -2,8 +2,8 @@
   \copyright (c) RDO-Team, 2011
   \file      rdorepository.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -11,6 +11,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/format.hpp>
 #include <boost/filesystem/operations.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "repository/rdorepository.h"
 #include "utils/src/file/rdofile.h"
@@ -18,7 +19,6 @@
 #include "utils/src/locale/rdolocale.h"
 #include "kernel/rdokernel.h"
 #include "simulator/service/src/simulator.h"
-#include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace repository {
@@ -434,6 +434,22 @@ void RDOThreadRepository::saveFile(CREF(boost::filesystem::path) fileName, const
 	}
 }
 
+bool RDOThreadRepository::createRDOX(const boost::filesystem::path& fileName)
+{
+	boost::property_tree::ptree pt;
+	boost::property_tree::ptree& version = pt.add("Settings.Version", "");
+	version.put("<xmlattr>.ProjectVersion", "2");
+	version.put("<xmlattr>.SMRVersion", "2");
+
+	boost::filesystem::ofstream ofs(fileName);
+	if (!ofs.good())
+		return false;
+
+	boost::property_tree::xml_writer_settings<char> settings('\t', 1);
+	boost::property_tree::write_xml(ofs, pt, settings);
+	return true;
+}
+
 void RDOThreadRepository::createRDOX()
 {
 	BOOST_AUTO(it, m_files.find(rdoModelObjects::RDOX));
@@ -441,18 +457,8 @@ void RDOThreadRepository::createRDOX()
 	boost::filesystem::path rdoxFileName = (m_modelPath / m_modelName).replace_extension(it->second.m_extension);
 	if (!rdo::File::exist(rdoxFileName))
 	{
-		pugi::xml_document doc;
-		pugi::xml_node      rootNode           = doc.append_child("Settings");
-		pugi::xml_node      versionNode        = rootNode.append_child("Version");
-		pugi::xml_attribute projectVersionAttr = versionNode.append_attribute("ProjectVersion");
-		pugi::xml_attribute smrVersionAttr     = versionNode.append_attribute("SMRVersion");
-		projectVersionAttr.set_value("2");
-		smrVersionAttr    .set_value("2");
-
-		boost::filesystem::ofstream ofs(rdoxFileName);
-		if (ofs.good())
+		if (createRDOX(rdoxFileName))
 		{
-			doc.save(ofs);
 			m_projectName.m_fullFileName = rdoxFileName;
 			m_projectName.m_rdox         = true;
 		}

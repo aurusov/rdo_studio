@@ -2,8 +2,8 @@
   \copyright (c) RDO-Team, 2011
   \file      rdorepository.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -108,6 +108,8 @@ public:
 			, m_described(described)
 		{}
 	};
+
+	static bool createRDOX(const boost::filesystem::path& fileName);
 
 private:
 	struct fileInfo

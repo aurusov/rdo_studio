@@ -3,8 +3,8 @@
   \file      rdoparser.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -287,9 +287,6 @@ public:
 		CNV_ERROR
 	};
 	Result convert(CREF(boost::filesystem::path) smrFullFileName, REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info);
-
-private:
-	rbool createRDOX(CREF(boost::filesystem::path) smrFileName) const;
 };
 
 // --------------------------------------------------------------------------------

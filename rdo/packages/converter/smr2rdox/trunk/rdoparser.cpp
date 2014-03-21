@@ -3,8 +3,8 @@
   \file      rdoparser.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -14,6 +14,7 @@
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 #include "utils/src/file/rdofile.h"
@@ -26,8 +27,6 @@
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
 #include "converter/smr2rdox/update/update_i.h"
 #include "converter/smr2rdox/update/update.h"
-
-#include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
@@ -492,7 +491,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smr
 
 	boost::filesystem::path rdoxFile(fullPath / modelName);
 	rdoxFile.replace_extension(".rdox");
-	if (!createRDOX(rdoxFile))
+	if (!repository::RDOThreadRepository::createRDOX(rdoxFile))
 	{
 		return CNV_ERROR;
 	}
@@ -503,25 +502,6 @@ RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smr
 	}
 
 	return CNV_OK;
-}
-
-rbool RDOParserModel::createRDOX(CREF(boost::filesystem::path) smrFileName) const
-{
-	pugi::xml_document doc;
-	pugi::xml_node      rootNode           = doc.append_child("Settings");
-	pugi::xml_node      versionNode        = rootNode.append_child("Version");
-	pugi::xml_attribute projectVersionAttr = versionNode.append_attribute("ProjectVersion");
-	pugi::xml_attribute smrVersionAttr     = versionNode.append_attribute("SMRVersion");
-	projectVersionAttr.set_value("2");
-	smrVersionAttr    .set_value("2");
-
-	boost::filesystem::ofstream ofs(smrFileName);
-	if (!ofs.good())
-	{
-		return false;
-	}
-	doc.save(ofs);
-	return true;
 }
 
 void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
