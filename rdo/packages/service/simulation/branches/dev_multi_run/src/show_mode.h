@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _SIMULATOR_SERVICE_SHOW_MODE_H_
-#define _SIMULATOR_SERVICE_SHOW_MODE_H_
+#ifndef _LIB_SERVICE_SHOW_MODE_H_
+#define _LIB_SERVICE_SHOW_MODE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -29,4 +29,4 @@ enum ShowMode
 
 }}} // namespace rdo::service::simulation
 
-#endif // _SIMULATOR_SERVICE_SHOW_MODE_H_
+#endif // _LIB_SERVICE_SHOW_MODE_H_
