@@ -10,9 +10,6 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
-#ifdef COMPILER_MINGW
-	#undef __STRICT_ANSI__
-#endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDORuntime_Fuzzy_Test
 #include "utils/src/common/warning_disable.h"
@@ -82,7 +79,7 @@ BOOST_AUTO_TEST_CASE(FuzzySetTest)
 
 	LPFuzzySet pConSet = MemberFunctionProperties::a_con(pSet);
 	BOOST_CHECK(pConSet->getAsString() == "<1/0.01> <2/0.04> <3/0.09> <5/0.25> <6/0.16> <7/0.04> <9/0.01>");
-	
+
 	LPFuzzySet pDilSet = MemberFunctionProperties::a_dil(pSet);
 	BOOST_CHECK(pDilSet->getAsString() == "<1/0.32> <2/0.45> <3/0.55> <5/0.71> <6/0.63> <7/0.45> <9/0.32>");
 
@@ -115,7 +112,7 @@ BOOST_AUTO_TEST_CASE(TermTest)
 	LPRDOFuzzyTerm pTerm = rdo::Factory<RDOFuzzyTerm>::create(testname, pSet);
 	BOOST_CHECK(pTerm->getName() == "test");
 
-	
+
 	Error error;
 	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create(&error);
 	BOOST_CHECK(pRuntime);
@@ -137,7 +134,7 @@ BOOST_AUTO_TEST_CASE(VariableTest)
 
 	LPDefineArea pDefineArea2 = rdo::Factory<DefineArea>::create(10.0, 20.0);
 	BOOST_CHECK(pDefineArea2);
-	
+
 	LPFuzzySet pFuzzySet1 = rdo::Factory<FuzzySet>::create(pDefineArea1);
 	BOOST_CHECK(pFuzzySet1);
 

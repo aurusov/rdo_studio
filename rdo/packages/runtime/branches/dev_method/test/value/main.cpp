@@ -11,9 +11,6 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
-#ifdef COMPILER_MINGW
-	#undef __STRICT_ANSI__
-#endif
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOValue_Test
 #include "utils/src/common/warning_disable.h"
@@ -189,7 +186,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Arifmethic)
 	value1 += val3;
 	value1 = value1 - val3;
 	BOOST_CHECK(value1 == val1 + val2 - val3);
-	
+
 	const rsint val4 = 2;
 	value2 = value1;
 	value2 *= val4;
@@ -205,7 +202,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Arifmethic)
 	value2 *= val5;
 	value2 = value2 / val5;
 	BOOST_CHECK(value2 == ((val1 + val2 - val3) / val5));
-	
+
 	value2 = value1;
 	value2 --;
 	BOOST_CHECK(value2 == value1 - 1);
@@ -411,7 +408,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Enum)
 	BOOST_CHECK(value2.getEnumAsInt() == 2              );
 	BOOST_CHECK(value2.getAsBool   ()                   );
 	BOOST_CHECK(value2.getAsString () == "test2"        );
-	
+
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Ruint)

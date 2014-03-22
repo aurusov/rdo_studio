@@ -33,14 +33,17 @@
 #include "simulator/runtime/notify.h"
 #include "simulator/runtime/error.h"
 #include "simulator/runtime/hotkey.h"
-#include "simulator/report/error_code.h"
+#include "simulator/report/src/error_code.h"
 // --------------------------------------------------------------------------------
 
 class RDOThread;
 
-OPEN_RDO_ANIMATION_NAMESPACE
+namespace rdo {
+namespace animation {
+
 struct Frame;
-CLOSE_RDO_ANIMATION_NAMESPACE
+
+}} // namespace rdo::animation
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
