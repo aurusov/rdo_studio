@@ -3,8 +3,8 @@
   \file      rdosimwin.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -12,7 +12,7 @@
 #define _RDOSIMWIN_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
+#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
 #include <vector>
@@ -29,21 +29,22 @@
 	#endif
 #endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
-#include "utils/rdostream.h"
+#include "utils/src/common/rdocommon.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
 #include "simulator/runtime/thread_proxy_i.h"
 #include "simulator/compiler/procgui/procgui.h"
-#include "simulator/service/namespace.h"
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
 // --------------------------------------------------------------------------------
 
 //#define DISABLE_CORBA
 //#ifndef DISABLE_CORBA
-OPEN_RDO_ANIMATION_NAMESPACE
+namespace rdo {
+namespace animation {
+
 struct Frame;
-CLOSE_RDO_ANIMATION_NAMESPACE
+
+}} // namespace rdo::animation
 
 #define DISABLE_CORBA
 
@@ -84,7 +85,7 @@ class RDOThreadCorba: public RDOThreadMT
 {
 public:
 	RDOThreadCorba();
-	
+
 private:
 	virtual ~RDOThreadCorba() {}; //! Чтобы нельзя было удалить через delete
 	virtual void proc(REF(RDOMessageInfo) msg);
@@ -100,9 +101,13 @@ private:
 
 #endif // CORBA_ENABLE
 
-OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
+namespace rdo {
+namespace service {
+namespace simulation {
+
 class RDOThreadSimulator;
-CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
+
+}}} // namespace rdo::service::simulation
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -169,7 +174,9 @@ OPEN_RDO_PARSER_NAMESPACE
 PREDECLARE_POINTER(RDOParser);
 CLOSE_RDO_PARSER_NAMESPACE
 
-OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
+namespace rdo {
+namespace service {
+namespace simulation {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOThreadSimulator
@@ -220,10 +227,10 @@ private:
 	ruint     m_seriesCapacity;   //! Общее количество прогонов в серии
 	ruint     m_currentRunNumber; //! Номер текущего прогона (нумерация начинается с 1)
 
-	rdo::textstream m_resultString;
-	rdo::textstream m_resultInfoString;
+	std::stringstream m_resultString;
+	std::stringstream m_resultInfoString;
 
-	
+
 #ifdef CORBA_ENABLE
 //	void corbaGetRTPcount(REF(::CORBA::Long) rtp_count);
 //	void corbaGetRTPParamscount(REF(rdo::compiler::parser::RDOCorba::PARAM_count) params_count);
@@ -313,6 +320,6 @@ public:
 	};
 };
 
-CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
+}}} // namespace rdo::service::simulation
 
 #endif // _RDOSIMWIN_H_

@@ -1,5 +1,6 @@
 #==============================================================================
-# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>,
+#               2013 Andrey Urusov <drobus@gmail.com>
 #==============================================================================
 
 MESSAGE(STATUS "CREATE  RDO_SIMULATOR  LIBRARY")
@@ -10,17 +11,11 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-SET(HEADER_FILES
-    namespace.h
-    rdosimwin.h
-    )
+FILE(GLOB_RECURSE SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
+ADD_LIBRARY(rdo_simulator STATIC ${SOURCE_FILES})
 
-SET(SOURCE_FILES
-    rdosimwin.cpp
-    )
-
-ADD_LIBRARY(rdo_simulator ${HEADER_FILES} ${SOURCE_FILES})
-SET_TARGET_PROPERTIES(rdo_simulator PROPERTIES FOLDER ${LIBRARY_FOLDERS})
+INCLUDE(${PROJECT_SOURCE_DIR}/simulator/simulator.cmake)
+SET_TARGET_PROPERTIES(rdo_simulator PROPERTIES FOLDER ${PROJECT_FOLDER}/.service)
 
 ADD_DEPENDENCIES(rdo_simulator rdo_utils)
 ADD_DEPENDENCIES(rdo_simulator rdo_runtime)
@@ -40,11 +35,3 @@ TARGET_LINK_LIBRARIES(rdo_simulator rdo_simulator_report)
 TARGET_LINK_LIBRARIES(rdo_simulator rdo_converter_smr2rdox)
 
 INSTALL(TARGETS rdo_simulator DESTINATION lib)
-
-IF(MSVC) # lotions for windows #
-
-SOURCE_GROUP(".code" FILES 
-    ${HEADER_FILES}
-    ${SOURCE_FILES})
-
-ENDIF(MSVC)
