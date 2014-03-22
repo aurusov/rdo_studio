@@ -541,7 +541,7 @@ ADD_LIBRARY(rdo_tracer STATIC
 	${GENERATED_TRACER_MOC_FILES}
 )
 
-ADD_LIBRARY(rdo_plugin_loader
+ADD_LIBRARY(rdo_plugin_loader STATIC
 	${PLUGIN_LOADER_SOURCE_FILES}
 )
 
