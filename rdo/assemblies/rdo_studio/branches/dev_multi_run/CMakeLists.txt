@@ -1,12 +1,13 @@
 #==============================================================================
-# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011-2013 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2013-2014 Andrey Urusov <rdo@rk9.bmstu.ru>
 #==============================================================================
-# Welcome to the CMake build system for RDO STUDIO (UNIX VERSION).
+# Welcome to the CMake build system for RDO STUDIO.
 # This is the main file where we prepare the general build environment
 # and provide build configuration options.
 #==============================================================================
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.7)
 PROJECT(rdo)
 
 #==============================================================================
@@ -18,7 +19,7 @@ SET(PROJECT_VENDOR_LONG  "BMSTU")
 SET(PROJECT_COPYRIGHT    "Copyright ${PROJECT_VENDOR_LONG}")
 SET(PROJECT_VERSION      "{TEMP}")
 SET(PROJECT_VERSION_LONG "{TEMP}")
-SET(ORG_WEBSITE          "http://rdo.rk9.bmstu.ru/")
+SET(ORG_WEBSITE          "http://rdo.rk9.bmstu.ru")
 
 #==============================================================================
 
@@ -39,22 +40,22 @@ SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 INCLUDE(FindOS)
 INCLUDE(add.boost.test)
 
-IF(NOT MSVC)
-    SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-ELSE()
+IF(MSVC)
     STRING(REGEX REPLACE /W[0-4] /W4 CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-ENDIF(NOT MSVC)
-
-IF(NOT MSVC)
-    SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++0x")
-ENDIF(NOT MSVC)
-
-IF(NOT CMAKE_BUILD_TYPE)
-    SET(CMAKE_BUILD_TYPE Debug)
-ENDIF(NOT CMAKE_BUILD_TYPE)
+    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} /Ot /Ob2 /MD")
+    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} /MDd")
+    SET(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /LTCG")
+    SET(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_STATIC_LINKER_FLAGS_RELEASE} /LTCG")
+ELSE()
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++0x")
+    IF(MINGW)
+        ADD_DEFINITIONS(-Wno-unused-local-typedefs)
+    ELSE()
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+    ENDIF()
+ENDIF()
+SET(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS}")
 
 IF(NOT MSVC)
     IF(NOT BUILD_SHARED_LIBS)
@@ -63,15 +64,9 @@ IF(NOT MSVC)
 #   SET(CDEFS "-m32 -o output32")
 ENDIF(NOT MSVC)
 
-SET(ENABLE_UNICODE FALSE)
-IF(NOT MSVC AND ENABLE_UNICODE)
-    ADD_DEFINITIONS(-DUNICODE)
-ENDIF(NOT MSVC AND ENABLE_UNICODE)
-
 SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
-# add the include folder to the include path
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
 
 INCLUDE(CTest)
@@ -80,7 +75,12 @@ ENABLE_TESTING()
 IF(MSVC)
     SET(Boost_USE_STATIC_LIBS    ON)
     SET(Boost_USE_MULTITHREADED  ON)
-ENDIF(MSVC)
+ELSE()
+    IF(MINGW)
+        SET(Boost_USE_STATIC_LIBS    OFF)
+        SET(Boost_USE_MULTITHREADED  ON)
+    ENDIF()
+ENDIF()
 
 # enable folders for msvc
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -99,7 +99,7 @@ ENDIF(WIN32)
 # set base directory
 SET(RDO_BASE_DIRECTORY ${PROJECT_SOURCE_DIR})
 
-IF(WIN32)
+IF(MSVC OR MINGW)
     SET(PATH_STRING $ENV{PATH})
     STRING(FIND "${PATH_STRING}" "thirdparty/bison_flex/bin" OUT)
     IF(${OUT} GREATER -1)
@@ -108,26 +108,8 @@ IF(WIN32)
     ENDIF()
 ENDIF()
 
-SET(DOC_DIRECTORY ${RDO_BASE_DIRECTORY}/doc)
-
-SET(COMMON_FILES
-    ${DOC_DIRECTORY}/changes.txt
-    ${DOC_DIRECTORY}/configuring.environment.debian.txt
-    ${DOC_DIRECTORY}/install.boost.txt
-    ${DOC_DIRECTORY}/install.doxygen.txt
-    ${DOC_DIRECTORY}/install.mingw.txt
-    ${DOC_DIRECTORY}/install.qt.from.sources.txt
-    ${DOC_DIRECTORY}/rdodoc-src-html.doxyfile
-    ${DOC_DIRECTORY}/todo.txt
-    ${DOC_DIRECTORY}/coding.style.txt
-    ${DOC_DIRECTORY}/configuring.environment.opensuse.txt
-    ${DOC_DIRECTORY}/install.cmake.txt
-    ${DOC_DIRECTORY}/install.graphviz.txt
-    ${DOC_DIRECTORY}/install.qt.linux.txt
-    ${DOC_DIRECTORY}/install.qt.from.installer.txt
-    ${DOC_DIRECTORY}/make.project.txt
-    ${DOC_DIRECTORY}/system.test.txt
-    )
+FILE(GLOB DOC_FILES ${RDO_BASE_DIRECTORY}/doc/*.txt)
+LIST(APPEND DOC_FILES ${RDO_BASE_DIRECTORY}/doc/rdodoc-src-html.doxyfile)
 
 #==============================================================================
 
@@ -152,20 +134,40 @@ SET(PROJECT_VERSION_LONG ${CMAKE_SVN_VERSION})
 
 #==============================================================================
 
+IF(WIN32)
+    IF(NOT MINGW)
+        INCLUDE(win32.install)
+    ENDIF()
+ENDIF()
+
+#==============================================================================
+
+IF(WIN32)
+    FIND_PACKAGE(PythonInterp 3.0 REQUIRED)
+    IF(NOT ${PYTHON_VERSION_MAJOR} EQUAL 3)
+        MESSAGE(FATAL_ERROR "Python3 for Windows not found")
+    ENDIF()
+ELSE()
+    FIND_PROGRAM(PYTHON_EXECUTABLE python3)
+    IF(NOT PYTHON_EXECUTABLE)
+        MESSAGE(FATAL_ERROR "Python3 not found")
+    ENDIF()
+    MESSAGE(STATUS "Found PythonInterp: " ${PYTHON_EXECUTABLE})
+ENDIF()
+
+#==============================================================================
+
 SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
 
 SET(SCRIPT_FILES
     ${SCRIPTS_DIRECTORY}/python/executor_of_system_tests.py
     ${SCRIPTS_DIRECTORY}/statistics/statistics.sh
-    )
+)
 
-SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
-
-IF(WIN32)
+IF(MSVC OR MINGW)
+    SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
     SET(ENV{BISON_PKGDATADIR} ${BISON_FLEX_DIRECTORY}/share/bison)
 ENDIF()
-
-MESSAGE(BISON_PKGDATADIR: $ENV{BISON_PKGDATADIR})
 
 # Compile the rdo_common
 SET(UTILS_PATH ${RDO_BASE_DIRECTORY}/utils)
@@ -174,10 +176,6 @@ ADD_SUBDIRECTORY(${UTILS_PATH})
 # Compile the rdo_kernel
 SET(KERNEL_PATH ${RDO_BASE_DIRECTORY}/kernel)
 ADD_SUBDIRECTORY(${KERNEL_PATH})
-
-# Compile XML plugin
-SET(XML_PUGIXML_PATH ${RDO_BASE_DIRECTORY}/thirdparty/pugixml/scripts)
-ADD_SUBDIRECTORY(${XML_PUGIXML_PATH})
 
 # Compile scintilla editor
 SET(SCINTILLA_PATH ${RDO_BASE_DIRECTORY}/thirdparty/scintilla)
@@ -204,6 +202,9 @@ ADD_SUBDIRECTORY(${UI_QT_PATH})
 SET(APLICATIONS_DIRECTORY ${RDO_BASE_DIRECTORY}/app)
 ADD_SUBDIRECTORY(${APLICATIONS_DIRECTORY})
 
+SET(BUILD_RDO_CONSOLE TRUE)
+SET(BUILD_RDO_STUDIO  TRUE)
+
 #==============================================================================
 #---------------------------------- info --------------------------------------
 #==============================================================================
@@ -216,9 +217,10 @@ MESSAGE(STATUS ${NOOP_STRING})
 MESSAGE(STATUS ${BUILD_INFO_BAR})
 MESSAGE(STATUS "Summary of the build:")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
-MESSAGE(STATUS "ENABLE UNICODE:               ${ENABLE_UNICODE}")
+MESSAGE(STATUS "APP VERSION:                  ${CMAKE_SVN_VERSION}")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
-MESSAGE(STATUS "BUILD rdo console:            TRUE")
+MESSAGE(STATUS "BUILD rdo console:            ${BUILD_RDO_CONSOLE}")
+MESSAGE(STATUS "BUILD rdo studio:             ${BUILD_RDO_STUDIO}")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
 MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
 MESSAGE(STATUS ${BUILD_INFO_BAR})
