@@ -104,4 +104,21 @@ RDOValue RDOSetResourceParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return RDOValue();
 }
 
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcSetResourceTrace
+// --------------------------------------------------------------------------------
+RDOCalcSetResourceTrace::RDOCalcSetResourceTrace(const LPRDOCalc& getResource, bool traceValue)
+	: m_getResource(getResource)
+	, m_traceValue(traceValue)
+{}
+
+RDOValue RDOCalcSetResourceTrace::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	RDOValue value = 0;
+	LPRDOResource pResource = m_getResource->calcValue(pRuntime).getPointerByInterface<IResourceType>();
+	ASSERT(pResource);
+	pResource->setTrace(m_traceValue);
+	return value;
+}
+
 CLOSE_RDO_RUNTIME_NAMESPACE

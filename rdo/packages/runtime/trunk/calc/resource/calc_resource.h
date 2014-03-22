@@ -78,6 +78,18 @@ private:
 	DECLARE_ICalc;
 };
 
+CALC(RDOCalcSetResourceTrace)
+{
+DECLARE_FACTORY(RDOCalcSetResourceTrace)
+private:
+	RDOCalcSetResourceTrace(const LPRDOCalc& getResource, bool traceValue);
+
+	LPRDOCalc m_getResource;
+	bool  m_traceValue;
+
+	DECLARE_ICalc;
+};
+
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // _LIB_RUNTIME_CALC_RESOURCE_H_
