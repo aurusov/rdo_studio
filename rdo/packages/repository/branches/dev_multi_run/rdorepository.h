@@ -195,20 +195,12 @@ protected:
 	void load(rdoModelObjects::RDOFileType type, std::ostream& stream);
 	void save(rdoModelObjects::RDOFileType type, const std::stringstream& stream) const;
 
-	boost::filesystem::path getFileName    (rdoModelObjects::RDOFileType type) const;
-	boost::filesystem::path getExtension   (rdoModelObjects::RDOFileType type) const;
-	boost::filesystem::path getFileExtName (rdoModelObjects::RDOFileType type) const;
-	boost::filesystem::path getFullFileName(rdoModelObjects::RDOFileType type) const;
-	rbool   isReadOnly     (rdoModelObjects::RDOFileType type) const;
-	rbool   isDescribed    (rdoModelObjects::RDOFileType type) const;
-	rbool   isMustExist    (rdoModelObjects::RDOFileType type) const;
-	rbool   isDeleteIfEmpty(rdoModelObjects::RDOFileType type) const;
-	tstring getFileName          (rdoModelObjects::RDOFileType type) const;
-	tstring getExtention         (rdoModelObjects::RDOFileType type) const;
-	tstring getFileExtName       (rdoModelObjects::RDOFileType type) const;
-	tstring getFullFileName      (rdoModelObjects::RDOFileType type) const;
-	tstring getFullInputFileName (rdoModelObjects::RDOFileType type) const;
-	tstring getFullOutputFileName(rdoModelObjects::RDOFileType type) const;
+    boost::filesystem::path getFileName          (rdoModelObjects::RDOFileType type) const;
+    boost::filesystem::path getExtention         (rdoModelObjects::RDOFileType type) const;
+    boost::filesystem::path getFileExtName       (rdoModelObjects::RDOFileType type) const;
+    boost::filesystem::path getFullFileName      (rdoModelObjects::RDOFileType type) const;
+    boost::filesystem::path getFullInputFileName (rdoModelObjects::RDOFileType type) const;
+    boost::filesystem::path getFullOutputFileName(rdoModelObjects::RDOFileType type) const;
 	rbool   isReadOnly           (rdoModelObjects::RDOFileType type) const;
 	rbool   isDescribed          (rdoModelObjects::RDOFileType type) const;
 	rbool   isMustExist          (rdoModelObjects::RDOFileType type) const;
