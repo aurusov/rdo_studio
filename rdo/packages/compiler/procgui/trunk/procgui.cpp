@@ -184,9 +184,10 @@ void ProcGUIProcess::initResources(CREF(parser::LPRDOParser) pParser)
 	{
 		parser::LPRDORSSResource pResource = pParser->findRSSResource(*it);
 		ASSERT(pResource);
-		rdo::runtime::LPRDOCalc pCalc = pResource->createCalc();
-		ASSERT(pCalc);
-		pParser->runtime()->addInitCalc(pCalc);
+		const std::vector<rdo::runtime::LPRDOCalc> calcList = pResource->createCalc();
+		ASSERT(!calcList.empty());
+		ASSERT(calcList[0]);
+		pParser->runtime()->addInitCalc(calcList[0]);
 	}
 }
 
