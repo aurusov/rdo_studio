@@ -3,8 +3,8 @@
   \file      rdofun.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -613,12 +613,12 @@ protected:
 	RDOFUNGroup(CREF(RDOParserSrcInfo) res_info);
 	virtual ~RDOFUNGroup();
 
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+
 private:
 	void init(CREF(RDOParserSrcInfo) res_info);
 
 	LPRDORTPResType m_pResType;
-
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOFUNGroup);
 
@@ -637,7 +637,10 @@ public:
 		fgt_exist     = 1,
 		fgt_notexist  = 2,
 		fgt_forall    = 3,
-		fgt_notforall = 4
+		fgt_notforall = 4,
+		fgt_empty     = 5,
+		fgt_size      = 6,
+		fgt_array     = 7
 	};
 
 	LPRDOFUNLogic createFunLogic(REF(LPRDOFUNLogic) pCondition);
@@ -656,16 +659,14 @@ class RDOFUNSelect: public RDOFUNGroup
 {
 DECLARE_FACTORY(RDOFUNSelect)
 public:
-	void           initSelect          (LPRDOFUNLogic pCondition = NULL);
-	LPRDOFUNLogic  createFunSelectGroup(RDOFUNGroupLogic::FunGroupType funType, REF(LPRDOFUNLogic) pCondition);
-	LPRDOFUNLogic  createFunSelectEmpty(CREF(RDOParserSrcInfo) empty_info);
-	LPRDOFUNArithm createFunSelectSize (CREF(RDOParserSrcInfo) size_info );
-	LPRDOFUNArithm createFunSelectArray(CREF(RDOParserSrcInfo) array_info);
+	void initSelect(LPRDOFUNLogic pCondition = NULL);
 
 private:
 	RDOFUNSelect(CREF(RDOParserSrcInfo) res_info);
 
 	rdo::runtime::LPRDOFunCalcSelect m_pCalcSelect;
+
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOFUNSelect);
 

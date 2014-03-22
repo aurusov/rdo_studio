@@ -270,7 +270,7 @@ Context::FindResult RDORTPResType::onFindContext(const std::string& method, cons
 		}
 
 		Context::Params params_;
-		params_[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = params.get<LPExpression>(RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION);
+		params_[RDORSSResource::GET_RESOURCE] = params.get<LPExpression>(RDORSSResource::GET_RESOURCE);
 		params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = parNumb;
 
 		LPContext pParam = findRTPParam(paramName);

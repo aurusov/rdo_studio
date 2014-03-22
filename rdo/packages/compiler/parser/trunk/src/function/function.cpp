@@ -267,7 +267,7 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 				if (resourceType)
 				{
 					Context::Params params_;
-					params_[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = contextParameter(pParam, *paramID, srcInfo);
+					params_[RDORSSResource::GET_RESOURCE] = contextParameter(pParam, *paramID, srcInfo);
 					return FindResult(SwitchContext(resourceType, params_));
 				}
 			}

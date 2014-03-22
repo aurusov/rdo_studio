@@ -3,8 +3,8 @@
   \file      rdofun.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -567,7 +567,7 @@ void RDOFUNArithm::wrongVarInitialization(const LPRDOValue& name)
 	LPRDOParam pParam = pFunction->findParam(identificator);
 	if (pParam)
 	{
-		RDOParser::s_parser()->error().error(name->src_info(), rdo::format("Функции не могут изменить свой параметр: %s", identificator.c_str()));		
+		RDOParser::s_parser()->error().error(name->src_info(), rdo::format("Функции не могут изменить свой параметр: %s", identificator.c_str()));
 	}
 	else
 	{
@@ -1443,7 +1443,7 @@ CREF(tstring) RDOFUNFunction::name() const
 
 void RDOFUNFunction::add(CREF(LPRDOFUNFunctionListElement) pParam)
 {
-	m_elementList.push_back(pParam); 
+	m_elementList.push_back(pParam);
 }
 
 void RDOFUNFunction::add(CREF(LPRDOFUNCalculateIf) pCalculateIf)
@@ -1672,6 +1672,7 @@ void RDOFUNGroup::init(CREF(RDOParserSrcInfo) res_info)
 
 void RDOFUNGroup::end()
 {
+	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 	RDOParser::s_parser()->contextStack()->pop<RDOFUNGroup>();
 }
 
@@ -1683,7 +1684,7 @@ Context::FindResult RDOFUNGroup::onFindContext(const std::string& method, const 
 		if (getResType()->name() == params.identifier())
 		{
 			Context::Params params;
-			params[RDORSSResource::CONTEXT_PARAM_RESOURCE_EXPRESSION] = rdo::Factory<Expression>::create(
+			params[RDORSSResource::GET_RESOURCE] = rdo::Factory<Expression>::create(
 				rdo::Factory<TypeInfo>::create(getResType(), srcInfo),
 				rdo::Factory<rdo::runtime::RDOCalcGetGroupFunctionResource>::create(),
 				srcInfo
@@ -1714,7 +1715,6 @@ LPRDOFUNLogic RDOFUNGroupLogic::createFunLogic(REF(LPRDOFUNLogic) pCondition)
 	case fgt_notforall: setSrcText("NotForAll(" + getResType()->name() + ": " + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcNotForAll>::create(getResType()->getNumber(), pCondition->getCalc()); break;
 	default: RDOParser::s_parser()->error().error(src_info(), "Внутренная ошибка: несуществующий тип функции");
 	}
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 	end();
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
@@ -1745,100 +1745,104 @@ void RDOFUNSelect::initSelect(LPRDOFUNLogic pCondition)
 	m_pCalcSelect->setSrcInfo(pCondition->src_info());
 }
 
-//! Групповая функция над выборкой Select'а
-LPRDOFUNLogic RDOFUNSelect::createFunSelectGroup(RDOFUNGroupLogic::FunGroupType funType, REF(LPRDOFUNLogic) pCondition)
+namespace
 {
-	ASSERT(pCondition);
-	rdo::runtime::LPRDOFunCalcSelectBase pCalc;
-	switch (funType)
+	LPExpression getSelectExpression(
+			const LPRDOFUNSelect&          select,
+			const rdo::runtime::LPRDOCalc& selectCalc,
+			const LPTypeInfo&              selectType,
+			const RDOParserSrcInfo&        srcInfo)
 	{
-	case RDOFUNGroupLogic::fgt_exist    : setSrcText(src_text() + ".Exist("     + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectExist    >::create(m_pCalcSelect, pCondition->getCalc()); break;
-	case RDOFUNGroupLogic::fgt_notexist : setSrcText(src_text() + ".NotExist("  + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotExist >::create(m_pCalcSelect, pCondition->getCalc()); break;
-	case RDOFUNGroupLogic::fgt_forall   : setSrcText(src_text() + ".ForAll("    + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectForAll   >::create(m_pCalcSelect, pCondition->getCalc()); break;
-	case RDOFUNGroupLogic::fgt_notforall: setSrcText(src_text() + ".NotForAll(" + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotForAll>::create(m_pCalcSelect, pCondition->getCalc()); break;
-	default: RDOParser::s_parser()->error().error(pCondition->src_info(), "Внутренная ошибка: неизвестный метод для списка ресурсов");
+		select->end();
+		return rdo::Factory<Expression>::create(
+			selectType,
+			selectCalc,
+			srcInfo
+		);
 	}
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
-	end();
-
-	LPExpression pExpression = rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::delegate<RDOType__bool>(pCalc->srcInfo()),
-		pCalc,
-		pCalc->srcInfo()
-	);
-	ASSERT(pExpression);
-
-	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
-	ASSERT(pLogic);
-
-	pLogic->setSrcInfo(src_info());
-	return pLogic;
 }
 
-LPRDOFUNLogic RDOFUNSelect::createFunSelectEmpty(CREF(RDOParserSrcInfo) empty_info)
+Context::FindResult RDOFUNSelect::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	setSrcText(src_text() + "." + empty_info.src_text());
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
-	end();
+	if (method == "select()")
+	{
+		rdo::runtime::LPRDOCalc selectCalc;
+		LPTypeInfo selectType;
 
-	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectEmpty>::create(m_pCalcSelect);
-	ASSERT(pCalc);
-	pCalc->setSrcInfo(src_info());
+		switch (params.get<RDOFUNGroupLogic::FunGroupType>("FunGroupType"))
+		{
+		case RDOFUNGroupLogic::fgt_exist:
+		{
+			LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
+			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Exist(" + pCondition->src_text() + ")");
+			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectExist>::create(m_pCalcSelect, pCondition->getCalc());
+			selectCalc->setSrcInfo(src_info());
+			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
+			break;
+		}
+		case RDOFUNGroupLogic::fgt_notexist:
+		{
+			LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
+			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".NotExist(" + pCondition->src_text() + ")");
+			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotExist>::create(m_pCalcSelect, pCondition->getCalc());
+			selectCalc->setSrcInfo(src_info());
+			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
+			break;
+		}
+		case RDOFUNGroupLogic::fgt_forall:
+		{
+			LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
+			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".ForAll(" + pCondition->src_text() + ")");
+			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectForAll>::create(m_pCalcSelect, pCondition->getCalc());
+			selectCalc->setSrcInfo(src_info());
+			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
+			break;
+		}
+		case RDOFUNGroupLogic::fgt_notforall:
+		{
+			LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
+			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".NotForAll(" + pCondition->src_text() + ")");
+			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotForAll>::create(m_pCalcSelect, pCondition->getCalc());
+			selectCalc->setSrcInfo(src_info());
+			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
+			break;
+		}
+		case RDOFUNGroupLogic::fgt_empty:
+		{
+			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Empty(" + srcInfo.src_text() + ")");
+			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectEmpty>::create(m_pCalcSelect);
+			selectCalc->setSrcInfo(src_info());
+			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
+			break;
+		}
+		case RDOFUNGroupLogic::fgt_size:
+		{
+			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Size(" + srcInfo.src_text() + ")");
+			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectSize>::create(m_pCalcSelect);
+			selectCalc->setSrcInfo(src_info());
+			selectType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(srcInfo);
+			break;
+		}
+		case RDOFUNGroupLogic::fgt_array:
+		{
+			const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Array(" + srcInfo.src_text() + ")");
+			LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(rdo::Factory<TypeInfo>::create(getResType(), srcInfo), srcInfo);
+			selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectArray>::create(m_pCalcSelect);
+			selectCalc->setSrcInfo(src_info());
+			selectType = rdo::Factory<TypeInfo>::create(pArrayType, srcInfo);
+			break;
+		}
+		default:
+			RDOParser::s_parser()->error().error(srcInfo, "Внутренная ошибка: неизвестный метод для списка ресурсов");
+			break;
+		}
+		ASSERT(selectCalc);
+		ASSERT(selectType);
+		return FindResult(CreateExpression(boost::bind(&getSelectExpression,
+			LPRDOFUNSelect(const_cast<RDOFUNSelect*>(this)), selectCalc,selectType, srcInfo)));
+	}
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::delegate<RDOType__bool>(pCalc->srcInfo()),
-		pCalc,
-		pCalc->srcInfo()
-	);
-	ASSERT(pExpression);
-
-	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
-	ASSERT(pLogic);
-
-	pLogic->setSrcInfo(empty_info);
-	return pLogic;
-}
-
-LPRDOFUNArithm RDOFUNSelect::createFunSelectSize(CREF(RDOParserSrcInfo) size_info)
-{
-	setSrcText(src_text() + "." + size_info.src_text());
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
-	end();
-
-	LPExpression pExpression = rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::delegate<RDOType__int>(size_info),
-		rdo::Factory<rdo::runtime::RDOFunCalcSelectSize>::create(m_pCalcSelect),
-		size_info
-	);
-	ASSERT(pExpression);
-
-	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
-	ASSERT(pArithm);
-
-	pArithm->setSrcInfo(size_info);
-	return pArithm;
-}
-
-LPRDOFUNArithm RDOFUNSelect::createFunSelectArray(CREF(RDOParserSrcInfo) array_info)
-{
-	setSrcText(src_text() + "." + array_info.src_text());
-	RDOParser::s_parser()->getFUNGroupStack().pop_back();
-	end();
-
-	LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(rdo::Factory<TypeInfo>::create(getResType(), array_info), array_info);
-
-	LPExpression pExpression = rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::create(pArrayType, array_info),
-		rdo::Factory<rdo::runtime::RDOFunCalcSelectArray>::create(m_pCalcSelect),
-		array_info
-	);
-	ASSERT(pExpression);
-
-	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
-	ASSERT(pArithm);
-
-	pArithm->setSrcInfo(array_info);
-	return pArithm;
+	return RDOFUNGroup::onFindContext(method, params, srcInfo);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
