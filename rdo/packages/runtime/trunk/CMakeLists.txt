@@ -63,7 +63,6 @@ SET(CALC_PROCEDURAL_FILES
 	calc/procedural/calc_const.h
 	calc/procedural/calc_locvar.cpp
 	calc/procedural/calc_locvar.h
-	calc/procedural/calc_locvar.inl
 	calc/procedural/calc_nop.cpp
 	calc/procedural/calc_nop.h
 	calc/procedural/calc_range.cpp
@@ -81,9 +80,9 @@ SET(CALC_RESOURCE_FILES
 	calc/resource/calc_group.h
 	calc/resource/calc_relevant.cpp
 	calc/resource/calc_relevant.h
-	calc/resource/calc_relevant.inl
 	calc/resource/calc_resource.cpp
 	calc/resource/calc_resource.h
+	calc/resource/calc_resource.inl
 	calc/resource/calc_select.cpp
 	calc/resource/calc_select.h
 )

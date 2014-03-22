@@ -31,26 +31,6 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOSetRelResParamCalc
-  \tparam  setOperationType Тип присваивания
-  \brief   Установка значения параметра релевантного ресурса
-*/
-template <SetOperationType::Type setOperationType>
-class RDOSetRelResParamCalc: public RDOCalc
-{
-public:
-	RDOSetRelResParamCalc(ruint relResID, ruint paramID, CREF(LPRDOCalc) pCalc = NULL);
-	virtual ~RDOSetRelResParamCalc();
-
-protected:
-	ruint     m_relResID;
-	ruint     m_paramID;
-	LPRDOCalc m_pCalc;
-
-	DECLARE_ICalc;
-};
-
 //! Удаление релевантного ресурса
 CALC(RDOEraseResRelCalc)
 {
@@ -78,7 +58,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/calc/resource/calc_relevant.inl"
 
 #endif // _LIB_RUNTIME_CALC_RESOURCE_RELEVANT_H_

@@ -44,7 +44,6 @@ private:
 };
 
 //! Установка значения локальной переменной
-template <SetOperationType::Type setOperationType>
 class RDOCalcSetLocalVariable: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSetLocalVariable)
@@ -76,7 +75,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/calc/procedural/calc_locvar.inl"
 
 #endif // _LIB_RUNTIME_CALC_PROCEDURAL_LOCVAR_H_
