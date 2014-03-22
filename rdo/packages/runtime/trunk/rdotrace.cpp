@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/searchtrace.h"
@@ -88,7 +89,7 @@ void RDOTrace::writeString(tstring str)
 {
 	if (!canTrace())
 		return;
-	
+
 	getOStream() << str << std::endl << getEOL();
 }
 
@@ -161,7 +162,7 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 	             << " " << treeRoot->m_expandedNodesCount
 	             << " " << treeRoot->m_nodesInGraphCount
 	             << " " << treeRoot->getNodesCound()
-	             << " " << treeRoot->m_fullNodesCount 
+	             << " " << treeRoot->m_fullNodesCount
 	             << std::endl << getEOL();
 	if (letter == 'S') {
 		getOStream() << "ES"
@@ -218,8 +219,8 @@ void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntim
 		ASSERT(activityPatternTrace);
 
 		getOStream() << "EI " << pRuntime->getCurrentTime()
-		             << " "   << trace->traceId() 
-		             << " "   << activityPatternTrace->tracePatternId() 
+		             << " "   << trace->traceId()
+		             << " "   << activityPatternTrace->tracePatternId()
 		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, true)
 		             << std::endl << getEOL();
 	}
@@ -246,7 +247,7 @@ void RDOTrace::writeRule(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime
 		int operId = pRuntime->getFreeOperationId();
 		getOStream() << "ER " << pRuntime->getCurrentTime()
 		             << " "   << operId
-		             << " "   << trace->traceId() 
+		             << " "   << trace->traceId()
 		             << " "   << activityPatternTrace->tracePatternId()
 		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, false)
 		             << std::endl << getEOL();
@@ -276,7 +277,7 @@ void RDOTrace::writeAfterOperationBegin(CREF(LPIBaseOperation) opr, CREF(LPRDORu
 		             << " "   << trace->traceId()
 		             << " "   << activityPatternTrace->tracePatternId()
 		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, false)
-		             << std::endl << getEOL(); 
+		             << std::endl << getEOL();
 	}
 	getOStream() << activityTrace->traceResourcesList('\0', pRuntime) << getEOL();
 }
@@ -297,10 +298,10 @@ void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, CREF(LPRDORunt
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(operationTrace);
 		ASSERT(activityPatternTrace);
-		getOStream() << "EF " << pRuntime->getCurrentTime() 
-		             << " "   << operationTrace->traceOperId() 
-		             << " "   << trace->traceId() 
-		             << " "   << activityPatternTrace->tracePatternId() 
+		getOStream() << "EF " << pRuntime->getCurrentTime()
+		             << " "   << operationTrace->traceOperId()
+		             << " "   << trace->traceId()
+		             << " "   << activityPatternTrace->tracePatternId()
 		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, false)
 		             << std::endl << getEOL();
 	}
@@ -311,7 +312,7 @@ void RDOTrace::writeTraceBegin(CREF(LPRDORuntime) pRuntime)
 {
 	if (isNull()) return;
 
-	getOStream() << "ES " << pRuntime->getCurrentTime() 
+	getOStream() << "ES " << pRuntime->getCurrentTime()
       << " 1" << std::endl << getEOL();
 }
 
@@ -319,7 +320,7 @@ void RDOTrace::writeModelBegin(CREF(LPRDORuntime) pRuntime)
 {
 	if (isNull()) return;
 
-	getOStream() << "ES " << pRuntime->getCurrentTime() 
+	getOStream() << "ES " << pRuntime->getCurrentTime()
       << " 3" << std::endl << getEOL();
 }
 
@@ -327,7 +328,7 @@ void RDOTrace::writeTraceEnd(CREF(LPRDORuntime) pRuntime)
 {
 	if (isNull()) return;
 
-   getOStream() << "ES " << pRuntime->getCurrentTime() 
+   getOStream() << "ES " << pRuntime->getCurrentTime()
       << " 2" << std::endl << getEOL();
 }
 
@@ -361,7 +362,7 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 				double d_max = 0;
 				double d_med = 0;
 				dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_TIMES, d_min, d_max, d_med);
-				getOStream() << rdo::format("DPS_TM %0.3f  %0.3f  %0.3f", d_med, d_min, d_max) << std::endl << getEOL();
+				getOStream() << boost::format("DPS_TM %0.3f  %0.3f  %0.3f") % d_med % d_min % d_max << std::endl << getEOL();
 
 				// Используемая память
 				ruint ui_min = 0;
@@ -407,8 +408,8 @@ void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok)
 	if (!canTrace())
 		return;
 
-	getOStream() << "V  "  << pRuntime->getCurrentTime() 
-		<< " " << pok->traceId() 
+	getOStream() << "V  "  << pRuntime->getCurrentTime()
+		<< " " << pok->traceId()
 		<< "  " << pok->traceValue() << std::endl << getEOL();
 }
 
