@@ -8,6 +8,7 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
+#include "app/rdo_studio/pch/plugin_loader_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/plugins/plugin_info.h"
@@ -17,10 +18,10 @@ PluginInfo::PluginInfo(const QString& name, QPluginLoader* loader, bool  autoloa
 	                   const QUuid&   GUID, const QString& author, const QString& version, int state)
 	: pluginName    (name)
 	, pluginLoader  (loader)
-	, pluginAuthor  (author)
-	, pluginVersion (version)
 	, pluginAutoload(autoload)
 	, pluginGUID    (GUID)
+	, pluginAuthor  (author)
+	, pluginVersion (version)
 	, pluginState   (state)
 	, pluginIsActive(false)
 {}

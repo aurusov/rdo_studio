@@ -8,6 +8,7 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
+#include "app/rdo_studio/pch/plugin_loader_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <QDir>

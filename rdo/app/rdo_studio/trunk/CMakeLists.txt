@@ -23,6 +23,11 @@ SET(MAIN_FILES
 	src/main.cpp
 )
 
+SET(STUDIO_PCH_FILES
+	pch/stdpch.cpp
+	pch/stdpch.h
+)
+
 SET(APPLICATION_FILES
 	src/application.cpp
 	src/application.h
@@ -79,6 +84,11 @@ SET(DOCK_FILES
 	src/dock/dock_results.h
 	src/dock/dock_trace.cpp
 	src/dock/dock_trace.h
+)
+
+SET(APPLICATION_PCH_FILES
+	pch/application_pch.cpp
+	pch/application_pch.h
 )
 
 SET(EDITOR_FILES
@@ -146,6 +156,11 @@ SET(EDITOR_RESULTS_FILES
 	src/editor/results_edit_style.h
 )
 
+SET(EDITOR_PCH_FILES
+	pch/editor_pch.cpp
+	pch/editor_pch.h
+)
+
 SET(FRAME_FILES
 	src/frame/frame_manager.cpp
 	src/frame/frame_manager.h
@@ -159,6 +174,11 @@ SET(FRAME_FILES
 	src/frame/frame_view.h
 )
 
+SET(FRAME_PCH_FILES
+	pch/frame_pch.cpp
+	pch/frame_pch.h
+)
+
 SET(MODEL_FILES
 	src/model/model.cpp
 	src/model/model.h
@@ -168,13 +188,9 @@ SET(MODEL_FILES
 	src/model/model_view.h
 )
 
-SET(PCH_FILES
-	pch/stdpch.cpp
-	pch/stdpch.h
-)
-
-SET(QRC_FILES
-	res/rdo_studio.qrc
+SET(MODEL_PCH_FILES
+	pch/model_pch.cpp
+	pch/model_pch.h
 )
 
 SET(PLUGINS_FILES
@@ -184,6 +200,68 @@ SET(PLUGINS_FILES
 	src/plugins/plugin_loader.cpp
 	src/plugins/plugin_loader.h
 )
+
+SET(PLUGIN_LOADER_PCH_FILES
+	pch/plugin_loader_pch.cpp
+	pch/plugin_loader_pch.h
+)
+
+SET(TRACER_FILES
+	src/tracer/tracer.cpp
+	src/tracer/tracer.h
+	src/tracer/tracer_base.cpp
+	src/tracer/tracer_base.h
+	src/tracer/tracer_operation.cpp
+	src/tracer/tracer_operation.h
+	src/tracer/tracer_pattern.cpp
+	src/tracer/tracer_pattern.h
+	src/tracer/tracer_resource.cpp
+	src/tracer/tracer_resource.h
+	src/tracer/tracer_resource_type.cpp
+	src/tracer/tracer_resource_type.h
+	src/tracer/tracer_result.cpp
+	src/tracer/tracer_result.h
+	src/tracer/tracer_serie.cpp
+	src/tracer/tracer_serie.h
+	src/tracer/tracer_values.cpp
+	src/tracer/tracer_values.h
+)
+
+SET(TRACER_CHART_FILES
+	src/tracer/chart/chart_doc.cpp
+	src/tracer/chart/chart_doc.h
+	src/tracer/chart/chart_preferences.cpp
+	src/tracer/chart/chart_preferences.h
+	src/tracer/chart/chart_serie.cpp
+	src/tracer/chart/chart_serie.h
+	src/tracer/chart/chart_tree.cpp
+	src/tracer/chart/chart_tree.h
+	src/tracer/chart/chart_tree_item.cpp
+	src/tracer/chart/chart_tree_item.h
+	src/tracer/chart/chart_view.cpp
+	src/tracer/chart/chart_view.h
+	src/tracer/chart/chart_view_style.cpp
+	src/tracer/chart/chart_view_style.h
+)
+
+SET(TRACER_LOGGER_FILES
+	src/tracer/logger/tracer_logger_main_wnd.cpp
+	src/tracer/logger/tracer_logger_main_wnd.h
+	src/tracer/logger/tracer_logger_view.cpp
+	src/tracer/logger/tracer_logger_view.h
+	src/tracer/logger/tracer_logger_view_style.cpp
+	src/tracer/logger/tracer_logger_view_style.h
+)
+
+SET(TRACER_PCH_FILES
+	pch/tracer_pch.cpp
+	pch/tracer_pch.h
+)
+
+SET(QRC_FILES
+	res/rdo_studio.qrc
+)
+
 QT5_ADD_RESOURCES(GENERATED_QRC_FILES ${QRC_FILES})
 
 SET(APP_NAME RAO-studio)
@@ -306,56 +384,9 @@ SET(RESOURCES_WIN32_FILES
 IF(MSVC)
 	SET(RESOURCES_WIN32_FILES
 		${RESOURCES_WIN32_FILES}
-		res/win32/rdo_studio.rc
-	)
+	res/win32/rdo_studio.rc
+)
 ENDIF()
-
-SET(TRACER_FILES
-	src/tracer/tracer.cpp
-	src/tracer/tracer.h
-	src/tracer/tracer_base.cpp
-	src/tracer/tracer_base.h
-	src/tracer/tracer_operation.cpp
-	src/tracer/tracer_operation.h
-	src/tracer/tracer_pattern.cpp
-	src/tracer/tracer_pattern.h
-	src/tracer/tracer_resource.cpp
-	src/tracer/tracer_resource.h
-	src/tracer/tracer_resource_type.cpp
-	src/tracer/tracer_resource_type.h
-	src/tracer/tracer_result.cpp
-	src/tracer/tracer_result.h
-	src/tracer/tracer_serie.cpp
-	src/tracer/tracer_serie.h
-	src/tracer/tracer_values.cpp
-	src/tracer/tracer_values.h
-)
-
-SET(TRACER_CHART_FILES
-	src/tracer/chart/chart_doc.cpp
-	src/tracer/chart/chart_doc.h
-	src/tracer/chart/chart_preferences.cpp
-	src/tracer/chart/chart_preferences.h
-	src/tracer/chart/chart_serie.cpp
-	src/tracer/chart/chart_serie.h
-	src/tracer/chart/chart_tree.cpp
-	src/tracer/chart/chart_tree.h
-	src/tracer/chart/chart_tree_item.cpp
-	src/tracer/chart/chart_tree_item.h
-	src/tracer/chart/chart_view.cpp
-	src/tracer/chart/chart_view.h
-	src/tracer/chart/chart_view_style.cpp
-	src/tracer/chart/chart_view_style.h
-)
-
-SET(TRACER_LOGGER_FILES
-	src/tracer/logger/tracer_logger_main_wnd.cpp
-	src/tracer/logger/tracer_logger_main_wnd.h
-	src/tracer/logger/tracer_logger_view.cpp
-	src/tracer/logger/tracer_logger_view.h
-	src/tracer/logger/tracer_logger_view_style.cpp
-	src/tracer/logger/tracer_logger_view_style.h
-)
 
 SET(APP_SOURCE_FILES
 	${APPLICATION_FILES}
@@ -366,6 +397,7 @@ SET(APP_SOURCE_FILES
 	${RESOURCES_IMAGE_FILES}
 	${RESOURCES_SCINTILLA_FILES}
 	${RESOURCES_UI_FILES}
+	${APPLICATION_PCH_FILES}
 )
 
 SET(EDITOR_SOURCE_FILES
@@ -377,32 +409,36 @@ SET(EDITOR_SOURCE_FILES
 	${EDITOR_LOG_FIND_FILES}
 	${EDITOR_PARSER_FILES}
 	${EDITOR_RESULTS_FILES}
+	${EDITOR_PCH_FILES}
 )
 
 SET(FRAME_SOURCE_FILES
 	${FRAME_FILES}
+	${FRAME_PCH_FILES}
 )
 
 SET(MODEL_SOURCE_FILES
 	${EDITOR_MODEL_FILES}
 	${MODEL_FILES}
-	${PCH_FILES}
+	${MODEL_PCH_FILES}
 )
 
 SET(PLUGIN_LOADER_SOURCE_FILES
 	${PLUGINS_FILES}
+	${PLUGIN_LOADER_PCH_FILES}
 )
 
 SET(TRACER_SOURCE_FILES
 	${TRACER_FILES}
 	${TRACER_CHART_FILES}
 	${TRACER_LOGGER_FILES}
+	${TRACER_PCH_FILES}
 )
 
 SET(RDO_STUDIO_SOURCE_FILES
 	${MAIN_FILES}
 	${RESOURCES_WIN32_FILES}
-	${PCH_FILES}
+	${STUDIO_PCH_FILES}
 )
 
 SET(RDO_APP_MOC_FILES
@@ -506,8 +542,8 @@ ADD_LIBRARY(rdo_tracer STATIC
 	${GENERATED_TRACER_MOC_FILES}
 )
 
-ADD_LIBRARY(rdo_plugin_loader
-	${PLUGINS_FILES}
+ADD_LIBRARY(rdo_plugin_loader STATIC
+	${PLUGIN_LOADER_SOURCE_FILES}
 )
 
 INCLUDE(${PROJECT_SOURCE_DIR}/app/rdo_studio/projects/common/rdo_studio.cmake)
@@ -613,14 +649,20 @@ INSTALL(TARGETS rdo_tracer        DESTINATION lib)
 IF(MSVC_IDE) # options for windows #
 
 	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
-	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" app/rdo_studio pch stdpch)
-
+	ADD_PCH("${RDO_STUDIO_SOURCE_FILES}"    "${STUDIO_PCH_FILES}"        app/rdo_studio pch stdpch)
+	ADD_PCH("${APP_SOURCE_FILES}"           "${APPLICATION_PCH_FILES}"   app/rdo_studio pch application_pch)
+	ADD_PCH("${EDITOR_SOURCE_FILES}"        "${EDITOR_PCH_FILES}"        app/rdo_studio pch editor_pch)
+	ADD_PCH("${FRAME_SOURCE_FILES}"         "${FRAME_PCH_FILES}"         app/rdo_studio pch frame_pch)
+	ADD_PCH("${MODEL_SOURCE_FILES}"         "${MODEL_PCH_FILES}"         app/rdo_studio pch model_pch)
+	ADD_PCH("${PLUGIN_LOADER_SOURCE_FILES}" "${PLUGIN_LOADER_PCH_FILES}" app/rdo_studio pch plugin_loader_pch)
+	ADD_PCH("${TRACER_SOURCE_FILES}"        "${TRACER_PCH_FILES}"        app/rdo_studio pch tracer_pch)
+	
 	SOURCE_GROUP("rdo_studio\\.doc" FILES
 		${DOC_FILES}
 	)
 
 	SOURCE_GROUP("rdo_studio\\.pch" FILES
-		${PCH_FILES}
+		${STUDIO_PCH_FILES}
 	)
 
 	SOURCE_GROUP("rdo_studio" FILES
@@ -675,6 +717,10 @@ IF(MSVC_IDE) # options for windows #
 		${RESOURCES_UI_FILES}
 	)
 
+	SOURCE_GROUP("rdo_application\\.pch" FILES
+		${APPLICATION_PCH_FILES}
+	)
+	
 	SOURCE_GROUP("rdo_editor\\.editor" FILES
 		${EDITOR_FILES}
 	)
@@ -711,6 +757,10 @@ IF(MSVC_IDE) # options for windows #
 		${GENERATED_EDITOR_MOC_FILES}
 	)
 
+	SOURCE_GROUP("rdo_editor\\.pch" FILES
+		${EDITOR_PCH_FILES}
+	)
+	
 	SOURCE_GROUP("rdo_frame\\.frame" FILES
 		${FRAME_FILES}
 	)
@@ -719,6 +769,10 @@ IF(MSVC_IDE) # options for windows #
 		${GENERATED_FRAME_MOC_FILES}
 	)
 
+	SOURCE_GROUP("rdo_frame\\.pch" FILES
+		${FRAME_PCH_FILES}
+	)
+	
 	SOURCE_GROUP("rdo_model\\.editor" FILES
 		${EDITOR_MODEL_FILES}
 	)
@@ -732,12 +786,17 @@ IF(MSVC_IDE) # options for windows #
 	)
 
 	SOURCE_GROUP("rdo_model\\.pch" FILES
-		${PCH_FILES}
+		${MODEL_PCH_FILES}
 	)
+	
 	SOURCE_GROUP("rdo_plugin_loader\\.plugins" FILES
 		${PLUGINS_FILES}
 	)
 
+	SOURCE_GROUP("rdo_plugin_loader\\.pch" FILES
+		${PLUGIN_LOADER_PCH_FILES}
+	)
+	
 	SOURCE_GROUP("rdo_tracer\\.tracer" FILES
 		${TRACER_FILES}
 	)
@@ -754,4 +813,7 @@ IF(MSVC_IDE) # options for windows #
 		${GENERATED_TRACER_MOC_FILES}
 	)
 
+	SOURCE_GROUP("rdo_tracer\\.pch" FILES
+		${TRACER_PCH_FILES}
+	)	
 ENDIF()

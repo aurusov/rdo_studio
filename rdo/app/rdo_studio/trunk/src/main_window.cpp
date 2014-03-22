@@ -8,7 +8,7 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio/pch/stdpch.h"
+#include "app/rdo_studio/pch/application_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <boost/bind.hpp>
@@ -156,9 +156,9 @@ void MainWindow::SubWindowToAction::removeLastSubWindow()
 // -------------------- MainWindow
 // --------------------------------------------------------------------------------
 MainWindow::MainWindow()
-	: m_updateTimerID(0)
+	: m_pModel(NULL)
+	, m_updateTimerID(0)
 	, m_pInsertMenuSignalMapper(NULL)
-	, m_pModel(NULL)
 {
 	setupUi(this);
 	installEventFilter(this);

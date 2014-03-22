@@ -8,7 +8,7 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "app/rdo_studio/pch/stdpch.h"
+#include "app/rdo_studio/pch/editor_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <boost/algorithm/string.hpp>
