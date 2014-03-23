@@ -32,6 +32,8 @@ namespace rdo
 
 #ifdef OST_WINDOWS
 		static const std::string g_systemOS("win");
+#elif defined(OST_MACOSX)
+                static const std::string g_systemOS("mac");
 #elif defined(OST_LINUX)
 		static const std::string g_systemOS("linux");
 #endif
