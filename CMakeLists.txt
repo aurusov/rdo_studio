@@ -108,8 +108,20 @@ IF(MSVC OR MINGW)
     ENDIF()
 ENDIF()
 
+#==============================================================================
+
+SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
+
+FILE(GLOB_RECURSE SCRIPT_FILES ${SCRIPTS_DIRECTORY}/*)
+
 FILE(GLOB DOC_FILES ${RDO_BASE_DIRECTORY}/doc/*.txt)
 LIST(APPEND DOC_FILES ${RDO_BASE_DIRECTORY}/doc/rdodoc-src-html.doxyfile)
+
+SET(TEXT_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/README.md
+    ${SCRIPT_FILES}
+    ${DOC_FILES}
+    )
 
 #==============================================================================
 #----------------------------- get git version --------------------------------
@@ -146,6 +158,8 @@ STRING(SUBSTRING "${GIT_VERSION_SHORT}" 1 -1 GIT_VERSION_SHORT_NUM)
 
 SET(GIT_VERSION ${GIT_VERSION_SHORT})
 
+#==============================================================================
+
 SET(PROJECT_VERSION      ${GIT_VERSION_SHORT})
 SET(PROJECT_VERSION_LONG ${GIT_VERSION_LONG} )
 
@@ -173,13 +187,6 @@ ELSE()
 ENDIF()
 
 #==============================================================================
-
-SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
-
-SET(SCRIPT_FILES
-    ${SCRIPTS_DIRECTORY}/python/executor_of_system_tests.py
-    ${SCRIPTS_DIRECTORY}/statistics/statistics.sh
-)
 
 IF(MSVC OR MINGW)
     SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
