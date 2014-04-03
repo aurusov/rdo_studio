@@ -1,1 +1,0 @@
-updater-body.bat "D:\sites\rdo\help" "D:\sites\rdo\help_assistant"

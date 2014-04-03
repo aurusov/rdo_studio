@@ -1,8 +1,0 @@
-$Pattern  : event
-$Parameters  :
-$Relevant_resources
-
-$Body
-	Convert_event
-
-$End

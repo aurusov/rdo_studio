@@ -1,7 +1,0 @@
-; rdo_plugin_mfc.def : Declares the module parameters for the DLL.
-
-LIBRARY      "rdo_plugin_mfc"
-;DESCRIPTION  'rdo_plugin_mfc Windows Dynamic Link Library'
-
-EXPORTS
-    ; Explicit exports can go here
