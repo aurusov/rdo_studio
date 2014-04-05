@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 RDOCalcCreateResource::RDOCalcCreateResource(
 	ruint resourceTypeID,
-	CREF(std::vector<RDOValue>) rParamsCalcs,
+	const std::vector<LPRDOCalc>& rParamCalcList,
 	rbool traceFlag,
 	rbool permanentFlag,
 	ruint relResID
@@ -35,7 +35,7 @@ RDOCalcCreateResource::RDOCalcCreateResource(
 	, m_permanentFlag (permanentFlag )
 	, m_relResID      (relResID      )
 {
-	m_paramsCalcs.insert(m_paramsCalcs.begin(), rParamsCalcs.begin(), rParamsCalcs.end());
+	m_paramCalcList.insert(m_paramCalcList.begin(), rParamCalcList.begin(), rParamCalcList.end());
 	// попытка создавать постоянные ресурсы динамически
 	ASSERT(m_relResID == ~0 || (m_relResID != ~0 && !m_permanentFlag));
 }
@@ -43,8 +43,14 @@ RDOCalcCreateResource::RDOCalcCreateResource(
 RDOValue RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	const LPRDOResourceTypeList& resourceType = pRuntime->getResType(m_resourceTypeID);
+	std::vector<RDOValue> paramValueList;
 
-	LPRDOResource pResource = resourceType.interface_cast<IResourceType>()->createRes(pRuntime, pRuntime->getResourceId(), m_paramsCalcs, m_traceFlag, m_permanentFlag);
+	STL_FOR_ALL_CONST(m_paramCalcList, it)
+	{
+		paramValueList.push_back((*it)->calcValue(pRuntime));
+	}
+
+	LPRDOResource pResource = resourceType.interface_cast<IResourceType>()->createRes(pRuntime, pRuntime->getResourceId(), paramValueList, m_traceFlag, m_permanentFlag);
 	ASSERT(pResource);
 
 	if (m_relResID != ruint(~0))

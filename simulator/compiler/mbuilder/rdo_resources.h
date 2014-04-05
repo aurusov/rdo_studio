@@ -219,7 +219,7 @@ public:
 	CREF(RDOResType)  getType() const { return m_rtp; }
 	rsint             getID  () const { return m_id;  }
 
-	typedef std::map<tstring, parser::LPRDOValue> Params;
+	typedef std::map<tstring, parser::LPExpression> Params;
 
 	Params::const_iterator begin() const { return m_params.begin(); }
 	Params::const_iterator end  () const { return m_params.end();   }

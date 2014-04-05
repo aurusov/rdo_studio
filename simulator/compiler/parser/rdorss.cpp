@@ -112,7 +112,8 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 {
 	ASSERT(pParam);
 
-	LPRDOValue pAddParam;
+	LPRDOValue pAddParamValue;
+	LPExpression pAddParam;
 
 	if (m_currParam == getType()->getParams().end())
 	{
@@ -132,23 +133,23 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), "См. описание параметра");
 				RDOParser::s_parser()->error().push_done();
 			}
-			pAddParam = (*m_currParam)->getDefault();
+			pAddParamValue = (*m_currParam)->getDefault();
 		}
 		else if (pParam->value().getAsString() == "#")
 		{
-			pAddParam = (*m_currParam)->getDefault()->defined()
+			pAddParamValue = (*m_currParam)->getDefault()->defined()
 				? (*m_currParam)->getDefault()
 				: rdo::Factory<rdo::compiler::parser::RDOValue>::create(
 					(*m_currParam)->getTypeInfo()->type()->get_default(),
 					(*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()),
 					(*m_currParam)->getTypeInfo()
 				);
-			ASSERT(pAddParam);
-			pAddParam->value().setUndefined(true);
+			ASSERT(pAddParamValue);
+			pAddParamValue->value().setUndefined(true);
 		}
 		else
 		{
-			pAddParam = (*m_currParam)->getTypeInfo()->value_cast(pParam);
+			pAddParamValue = (*m_currParam)->getTypeInfo()->value_cast(pParam);
 		}
 	}
 	catch(const RDOSyntaxException&)
@@ -156,10 +157,14 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 		RDOParser::s_parser()->error().modify(rdo::format("Для параметра '%s': ", (*m_currParam)->name().c_str()));
 	}
 
-	ASSERT(pAddParam);
+	ASSERT(pAddParamValue);
 	try
 	{
-		pAddParam = rdo::Factory<RDOValue>::create(pAddParam->value().clone(), pAddParam->src_info(), pAddParam->typeInfo());
+		pAddParam = rdo::Factory<Expression>::create(
+			rdo::Factory<TypeInfo>::create(pAddParamValue->typeInfo()),
+			rdo::Factory<rdo::runtime::RDOCalcConst>::create(pAddParamValue->value().clone()),
+			pAddParamValue->src_info()
+		);
 	}
 	catch (const rdo::runtime::RDOValueException& e)
 	{
@@ -177,10 +182,10 @@ rbool RDORSSResource::defined() const
 std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalc() const
 {
 	std::vector<rdo::runtime::LPRDOCalc> calcList;
-	std::vector<rdo::runtime::RDOValue> paramList;
+	std::vector<rdo::runtime::LPRDOCalc> paramList;
 	STL_FOR_ALL_CONST(params(), it)
 	{
-		paramList.push_back(it->param()->value());
+		paramList.push_back(it->param()->calc());
 	}
 
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(

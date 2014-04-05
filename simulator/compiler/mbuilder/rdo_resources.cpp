@@ -305,8 +305,9 @@ rbool RDOResource::fillParserResourceParams(REF(parser::LPRDORSSResource) pToPar
 		if (value_it == end())
 			return false;
 
-		parser::LPRDOValue pValue = rdo::Factory<parser::RDOValue>::create(value_it->second);
-		ASSERT(pValue);
+		ASSERT(value_it->second);
+		runtime::RDOValue value = value_it->second->calc().object_dynamic_cast<runtime::RDOCalcConst>()->getValue();
+		parser::LPRDOValue pValue = Factory<parser::RDOValue>::create(value, pToParserRSS->src_info(), value.type().object_dynamic_cast<parser::TypeInfo>());
 		pValue = param_it->type()->value_cast(pValue);
 		/// @todo а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
 		pValue->setSrcInfo(pToParserRSS->src_info());
@@ -336,7 +337,8 @@ RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 		{
 			pValue = param_it->getMin();
 		}
-		m_params[param_it->name()] = pValue;
+		parser::LPExpression pValueExpression = rdo::Factory<parser::Expression>::create(pValue);
+		m_params[param_it->name()] = pValueExpression;
 	}
 }
 

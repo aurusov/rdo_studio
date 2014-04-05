@@ -8477,9 +8477,9 @@ process_line
 			rbool permanentFlag = pParserType->isPermanent();
 			rbool traceFlag     = true;
 
-			std::vector<rdo::runtime::RDOValue> paramList;
+			std::vector<rdo::runtime::LPRDOCalc> paramList;
 			//! \error вместо настоящих значений параметров транзакта просто 0
-			paramList.push_back(rdo::runtime::RDOValue(0.0));
+			paramList.push_back(rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0.0)));
 
 			rdo::runtime::LPRDOCalcCreateResource pCreateAndGoOnTransactCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
 				pParserType->getNumber(),

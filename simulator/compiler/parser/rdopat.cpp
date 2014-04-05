@@ -743,12 +743,12 @@ void RDOPatternEvent::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(
 
 rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 {
-	std::vector<rdo::runtime::RDOValue> params_default;
+	std::vector<rdo::runtime::LPRDOCalc> params_default;
 	STL_FOR_ALL_CONST(m_pCurrRelRes->getType()->getParams(), it)
 	{
 		if (!(*it)->getDefault()->defined())
 		{
-			params_default.push_back(rdo::runtime::RDOValue(0));
+			params_default.push_back(rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0)));
 			if (!m_pCurrRelRes->getParamSetList().find((*it)->name()))
 			{
 				parser::g_error().error(m_pCurrRelRes->src_info(), rdo::format("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s", (*it)->name().c_str()));
@@ -756,7 +756,7 @@ rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 		}
 		else
 		{
-			params_default.push_back((*it)->getDefault()->value());
+			params_default.push_back(rdo::Factory<rdo::runtime::RDOCalcConst>::create(((*it)->getDefault()->value())));
 		}
 	}
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(m_pCurrRelRes->getType()->getNumber(), params_default, trace, false/** @todo проверить, что ресурс временный */, m_pCurrRelRes->m_relResID);

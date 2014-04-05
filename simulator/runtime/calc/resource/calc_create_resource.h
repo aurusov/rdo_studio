@@ -26,14 +26,13 @@ CALC(RDOCalcCreateResource)
 DECLARE_FACTORY(RDOCalcCreateResource)
 private:
 	//! relResID == ~0 для ресурсов, создаваемых при инициализации модели
-	RDOCalcCreateResource(ruint resourceTypeID, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID = ~0);
+	RDOCalcCreateResource(ruint resourceTypeID, const std::vector<LPRDOCalc>& rParamCalcList, rbool traceFlag, rbool permanentFlag, ruint relResID = ~0);
 
-	ruint                  m_resourceTypeID;
-	//! \todo m_paramsCalcs должен стать контейнером RDOCalc
-	std::vector<RDOValue>  m_paramsCalcs;
-	rbool                  m_traceFlag;
-	rbool                  m_permanentFlag;
-	ruint                  m_relResID;
+	ruint                   m_resourceTypeID;
+	std::vector<LPRDOCalc>  m_paramCalcList;
+	rbool                   m_traceFlag;
+	rbool                   m_permanentFlag;
+	ruint                   m_relResID;
 
 	DECLARE_ICalc;
 };

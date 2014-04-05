@@ -45,23 +45,22 @@ public:
 	class Param
 	{
 	public:
-		explicit Param(CREF(LPRDOValue) pValue)
+		explicit Param(CREF(LPExpression) pValue)
 			: m_pValue(pValue)
 		{}
 
-		CREF(LPRDOValue) param() const
+		CREF(LPExpression) param() const
 		{
 			return m_pValue;
 		}
 
-		REF(LPRDOValue) param()
+		REF(LPExpression) param()
 		{
 			return m_pValue;
 		}
 
 	private:
-		//! \todo использовать RDOCalc вместо RDOValue
-		LPRDOValue m_pValue;
+		LPExpression m_pValue;
 	};
 	typedef std::vector<Param> ParamList;
 	static const ruint UNDEFINED_ID = ruint(~0);
