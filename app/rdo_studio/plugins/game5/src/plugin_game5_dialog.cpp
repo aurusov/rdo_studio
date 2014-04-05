@@ -173,11 +173,11 @@ std::string PluginGame5GenerateSituationDialog::RSStabText()
 {
 	std::stringstream RSStabTextStream; 
 	RSStabTextStream <<	"$Resources\n";
-	for (unsigned int i = 1; i < gameBoard->getTilesPos().size(); i++)
+	for (unsigned int i = 1; i < gameBoard->getQuantityOfTiles() + 1; i++)
 	{
-		RSStabTextStream << "\tФишка" << i <<" = Фишка(" << i << ", " << gameBoard->getTilesPos()[i] << ");\n";
+		RSStabTextStream << "\tФишка" << i <<" = Фишка(" << i << ", " << gameBoard->getTilePosition(i) << ");\n";
 	}
-	RSStabTextStream << "\tДырка = Дырка_t(" << gameBoard->getTilesPos()[0] << ");\n";
+	RSStabTextStream << "\tДырка = Дырка_t(" << gameBoard->getTilePosition(0) << ");\n";
 	RSStabTextStream <<	"$End\n";
 	return RSStabTextStream.str();
 }
@@ -287,14 +287,14 @@ std::string PluginGame5GenerateSituationDialog::FUNtabText()
 	<<	"$Type = algorithmic\n"
 	<<	"$Parameters\n"
 	<<	"$Body\n"
-	<<	"	return " << gameBoard->getTilesPos().size() - 1 << " - (Фишка_на_месте(Фишка1.Номер, Фишка1.Местоположение)+\n";
-	for (unsigned int i = 2; i < gameBoard->getTilesPos().size() - 1; i++)
+	<<	"	return " << gameBoard->getQuantityOfTiles() << " - (Фишка_на_месте(Фишка1.Номер, Фишка1.Местоположение)+\n";
+	for (unsigned int i = 2; i < gameBoard->getQuantityOfTiles(); i++)
 	{
 		FUNtabTextStream
 	<<	"	            Фишка_на_месте(Фишка" << i <<".Номер, Фишка" << i <<".Местоположение)+\n";
 	}
 	FUNtabTextStream
-	<<	"	            Фишка_на_месте(Фишка" << gameBoard->getTilesPos().size() - 1 <<".Номер, Фишка" << gameBoard->getTilesPos().size() - 1 <<".Местоположение));\n"
+	<<	"	            Фишка_на_месте(Фишка" << gameBoard->getQuantityOfTiles() <<".Номер, Фишка" << gameBoard->getQuantityOfTiles() <<".Местоположение));\n"
 	<<	"$End\n"
 	<<	"\n"
 	<<	"$Function Расстояние_фишки_до_места : integer\n"
@@ -311,13 +311,13 @@ std::string PluginGame5GenerateSituationDialog::FUNtabText()
 	<<	"$Parameters\n"
 	<<	"$Body\n"
 	<<	"	return Расстояние_фишки_до_места(Фишка1.Номер, Фишка1.Местоположение)+\n";
-	for (unsigned int i = 2; i < gameBoard->getTilesPos().size() - 1; i++)
+	for (unsigned int i = 2; i < gameBoard->getQuantityOfTiles(); i++)
 	{
 		FUNtabTextStream
 	<<	"	       Расстояние_фишки_до_места(Фишка" << i << ".Номер, Фишка" << i << ".Местоположение)+\n";
 	}
 	FUNtabTextStream
-	<<	"	       Расстояние_фишки_до_места(Фишка" << gameBoard->getTilesPos().size() - 1 << ".Номер, Фишка" << gameBoard->getTilesPos().size() - 1 << ".Местоположение);\n"
+	<<	"	       Расстояние_фишки_до_места(Фишка" << gameBoard->getQuantityOfTiles() << ".Номер, Фишка" << gameBoard->getQuantityOfTiles() << ".Местоположение);\n"
 	<<	"$End";
 	return FUNtabTextStream.str();
 }

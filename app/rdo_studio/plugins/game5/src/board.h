@@ -36,24 +36,25 @@ public:
 	const int m_boardSizeY;
 	const int m_topLeftX;
 	const int m_topLeftY;
-	bool      m_solvabilityCheck;
-	const std::vector<unsigned int>& getTilesPos() const;
+
+	const int& getTilePosition(const int& index) const;
+	const int& getQuantityOfTiles() const;
 	QString getBoardState() const;
 
 public slots:
 	void setTilesPositon(const QString& string);
-	void buildRightLineup();
-	void buildRandomLineup(bool solvabilityCheck);
+	void buildCorrectOrder();
+	void buildRandomOrder(bool solvabilityCheck);
 
 private:
 	std::vector<unsigned int> tilesPosition;
 	std::vector<Tile *> tiles;
 
 	void   moveTile (int tileNumber, unsigned int position);
-	QPoint tilePoint(int place);
-	int    sizeCalc (int count);
-	bool   freePlaceIsNearby(int place);
-	bool   lineupIsSolvable();
+	QPoint tilePoint(int place) const;
+	int    sizeCalc (int count) const;
+	bool   freePlaceIsNearby(int place) const;
+	bool   lineupIsSolvable() const;
 
 private slots:
 	void clickOnTile(int number);
