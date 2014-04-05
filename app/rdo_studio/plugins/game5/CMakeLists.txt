@@ -12,8 +12,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
 SET(PLUGIN_GAME5_MOC_FILES
 	src/board.h
-	src/combobox_delegate.h
-	src/cost_setup_table.h
+	src/checkable_line_edit.h
 	src/graph_node.h
 	src/plugin_game5.h
 	src/plugin_game5_dialog.h
@@ -47,10 +46,8 @@ SET(DIALOGS_FILES
 SET(GAME_BOARD_FILES
 	src/board.h
 	src/board.cpp
-	src/combobox_delegate.h
-	src/combobox_delegate.cpp
-	src/cost_setup_table.h
-	src/cost_setup_table.cpp
+	src/checkable_line_edit.h
+	src/checkable_line_edit.cpp
 	src/tiles.h
 	src/tiles.cpp
 )
@@ -116,12 +113,20 @@ ADD_LIBRARY(plugin_game5 SHARED
 	${GENERATED_QRC_FILES}
 )
 
-FOREACH(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
-	string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+IF(MSVC)
+	FOREACH(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
+		string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+		SET_TARGET_PROPERTIES(plugin_game5 PROPERTIES
+			RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CONFIG_DIRECTORY_${OUTPUTCONFIG}}/plugins
+		)
+	ENDFOREACH()
+ELSE()
 	SET_TARGET_PROPERTIES(plugin_game5 PROPERTIES
-		RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CONFIG_DIRECTORY_${OUTPUTCONFIG}}/plugins
+		LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
+		ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
+		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
 	)
-ENDFOREACH()
+ENDIF()
 
 SET_TARGET_PROPERTIES(plugin_game5 PROPERTIES FOLDER ${APPS_FOLDERS}/.plugins/.game5)
 
