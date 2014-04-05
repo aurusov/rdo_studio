@@ -21,9 +21,19 @@
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_dialog.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_tiles_order_dialog.h"
-#include "app/rdo_studio/plugins/game5/src/cost_setup_table.h"
 #include "app/rdo_studio/plugins/game5/src/multi_select_completer.h"
 // --------------------------------------------------------------------------------
+
+namespace
+{
+	enum moveDirection
+	{
+		MOVE_UP = 0,
+		MOVE_DOWN,
+		MOVE_RIGHT,
+		MOVE_LEFT
+	};
+}//end anonymous namespace
 
 PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
@@ -31,18 +41,18 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 	setupUi(this);
 	gameBoard->init();
 
-	hiddenWidget->setFixedWidth(280);
+	MultiSelectCompleter* completer = new MultiSelectCompleter(QStringList(), this);
+	lineEditCustom->setCompleter(completer);
+
+	adjustSize();
+	hiddenWidget->setFixedWidth(hiddenWidget->width());
 	hiddenWidget->hide();
 
 	buttonHide->setCheckable(true);
 	buttonHide->setDefault(false);
 
-	MultiSelectCompleter* completer = new MultiSelectCompleter(QStringList(), this);
-	lineEditCustom->setCompleter(completer);
-
-	setFixedHeight(std::max(375, gameBoard->m_boardSizeY + 160));
 	adjustSize();
-	setFixedWidth(width());
+	setFixedSize(width(), height());
 	setSizeGripEnabled(false);
 
 	rdo::gui::model::Model* pModel = getCurrentModel();
@@ -55,14 +65,11 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 	connect(buttonRandomLineup, &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::emitSolvabilityCheck);
 	connect(buttonOk          , &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::onClickOk           );
 
-	connect(tableCostValue, &CostSetupTable::itemCheckStateChanged,
-	        this          , &PluginGame5GenerateSituationDialog::onItemCheckStateChanged
-	);
 	connect(this     , &PluginGame5GenerateSituationDialog::buttonRandomClicked,
-	        gameBoard, &Board::buildRandomLineup
+	        gameBoard, &Board::buildRandomOrder
 	);
 	connect(buttonRightLineup, &QPushButton::clicked,
-	        gameBoard        , &Board::buildRightLineup
+	        gameBoard        , &Board::buildCorrectOrder
 	);
 
 	if (pParent)
@@ -96,21 +103,6 @@ void PluginGame5GenerateSituationDialog::emitSolvabilityCheck()
 	emit buttonRandomClicked(solvabilityCheck->isChecked());
 }
 
-void PluginGame5GenerateSituationDialog::onItemCheckStateChanged(QTableWidgetItem* item)
-{
-	QTableWidget* parentTable = item->tableWidget();
-	if (item->checkState() == Qt::Unchecked)
-	{
-		item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-		item->setText("1");
-	}
-	else
-	{
-		item->setFlags(item->flags() | Qt::ItemIsEditable);
-		parentTable->edit(parentTable->model()->index(item->row(), item->column()));
-	}
-}
-
 std::string PluginGame5GenerateSituationDialog::evaluateBy()
 {
 	if (radioButton0->isChecked())
@@ -131,9 +123,32 @@ std::string PluginGame5GenerateSituationDialog::evaluateBy()
 	}
 }
 
-std::string PluginGame5GenerateSituationDialog::activityValue(int tableRow)
+std::string PluginGame5GenerateSituationDialog::activityValue(int direction)
 {
-	QString string = tableCostValue->item(tableRow, 1)->text() + " " + tableCostValue->item(tableRow, 2)->text();
+	QString costValue;
+	QString calcSwitcher;
+	switch (direction)
+	{
+		case MOVE_DOWN:
+			costValue    = moveDownCost->getLineEdit()->text();
+			calcSwitcher = moveDownCalcSwitcher->currentText();
+			break;
+		case MOVE_LEFT:
+			costValue    = moveLeftCost->getLineEdit()->text();
+			calcSwitcher = moveLeftCalcSwitcher->currentText();
+			break;
+		case MOVE_RIGHT:
+			costValue    = moveRightCost->getLineEdit()->text();
+			calcSwitcher = moveRightCalcSwitcher->currentText();
+			break;
+		case MOVE_UP:
+			costValue    = moveUpCost->getLineEdit()->text();
+			calcSwitcher = moveUpCalcSwitcher->currentText();
+			break;
+		default:
+			break;
+	}
+	QString string = calcSwitcher + " " + costValue ;
 	return string.toStdString();
 }
 
@@ -202,10 +217,10 @@ std::string PluginGame5GenerateSituationDialog::DPTtabText()
 	<<	"$Evaluate_by " << evaluateBy() << "\n"
 	<<	"$Compare_tops = " << (checkBoxCopareTop->isChecked() ? "YES" : "NO") << "\n"
 	<<	"$Activities\n"
-	<<	"	Перемещение_вправо: Перемещение_фишки справа  1 value " << activityValue(0) << "\n"
-	<<	"	Перемещение_влево : Перемещение_фишки слева  -1 value " << activityValue(1) << "\n"
-	<<	"	Перемещение_вверх : Перемещение_фишки сверху -" << gameBoard->m_tilesCountX << " value " << activityValue(2) << "\n"
-	<<	"	Перемещение_вниз  : Перемещение_фишки снизу   " << gameBoard->m_tilesCountX << " value " << activityValue(3) << "\n"
+	<<	"	Перемещение_вправо: Перемещение_фишки справа  1 value " << activityValue(MOVE_LEFT) << "\n"
+	<<	"	Перемещение_влево : Перемещение_фишки слева  -1 value " << activityValue(MOVE_RIGHT) << "\n"
+	<<	"	Перемещение_вверх : Перемещение_фишки сверху -" << gameBoard->m_tilesCountX << " value " << activityValue(MOVE_DOWN) << "\n"
+	<<	"	Перемещение_вниз  : Перемещение_фишки снизу   " << gameBoard->m_tilesCountX << " value " << activityValue(MOVE_UP) << "\n"
 	<<	"$End";
 	return DPTtabTextStream.str();
 }

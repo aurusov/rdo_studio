@@ -41,11 +41,10 @@ private slots:
 	void onClickOk();
 	void onClickHide(bool state);
 	void emitSolvabilityCheck();
-	void onItemCheckStateChanged(QTableWidgetItem* item);
 	
 private:
 	std::string evaluateBy();
-	std::string activityValue(int tableRow);
+	std::string activityValue(int direction);
 
 	std::string RTPtabText();
 	std::string RSStabText();
