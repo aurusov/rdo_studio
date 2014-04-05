@@ -31,8 +31,8 @@ public:
 	public:
 		enum
 		{
-			POSITION_BEGIN = ~0,
-			POSITION_END   = ~1
+			POSITION_BEGIN = static_cast<ruint>(~0),
+			POSITION_END   = static_cast<ruint>(~1)
 		};
 
 		Position(ruint          pos);
