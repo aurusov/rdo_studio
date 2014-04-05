@@ -1008,56 +1008,56 @@ rss_value
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*")));
+			PARSER->context()->cast<RDORSSResource>()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*")));
 		}
 	}
 	| '#'
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "#")));
+			PARSER->context()->cast<RDORSSResource>()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "#")));
 		}
 	}
 	| RDO_INT_CONST
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));
+			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
 		}
 	}
 	| RDO_REAL_CONST
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));
+			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
 		}
 	}
 	| RDO_BOOL_CONST
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));
+			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
 		}
 	}
 	| RDO_STRING_CONST
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));
+			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
 		}
 	}
 	| RDO_IDENTIF
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));
+			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
 		}
 	}
 	| param_array_value
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));
+			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
 		}
 	}
 	| error
