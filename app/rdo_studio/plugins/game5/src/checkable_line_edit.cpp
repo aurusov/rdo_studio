@@ -16,10 +16,14 @@
 #include "app/rdo_studio/plugins/game5/src/checkable_line_edit.h"
 // --------------------------------------------------------------------------------
 
+namespace
+{
+	const QString DEFAULT_TEXT = "1";
+} // end anonymous namespace
 
-CheckableLineEdit::CheckableLineEdit(QWidget* parent, const QString& defaultText)
+CheckableLineEdit::CheckableLineEdit(QWidget* parent)
 	: QWidget(parent)
-	, defaultText(defaultText)
+	, defaultText(DEFAULT_TEXT)
 {
 	QHBoxLayout* layout = new QHBoxLayout(this);
 	layout->setMargin(0);
@@ -33,7 +37,7 @@ CheckableLineEdit::CheckableLineEdit(QWidget* parent, const QString& defaultText
 	connect(checkBox, &QCheckBox::stateChanged, this, &CheckableLineEdit::setLineEditState);
 }
 
-void CheckableLineEdit::setLineEditState(const int& state)
+void CheckableLineEdit::setLineEditState(int state)
 {
 	if (state == Qt::Checked)
 	{

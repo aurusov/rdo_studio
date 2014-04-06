@@ -33,7 +33,7 @@ namespace
 		MOVE_RIGHT,
 		MOVE_LEFT
 	};
-}//end anonymous namespace
+} // end anonymous namespace
 
 PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
@@ -130,19 +130,19 @@ std::string PluginGame5GenerateSituationDialog::activityValue(int direction)
 	switch (direction)
 	{
 		case MOVE_DOWN:
-			costValue    = moveDownCost->getLineEdit()->text();
+			costValue    = moveDownCost->getLineEdit().text();
 			calcSwitcher = moveDownCalcSwitcher->currentText();
 			break;
 		case MOVE_LEFT:
-			costValue    = moveLeftCost->getLineEdit()->text();
+			costValue    = moveLeftCost->getLineEdit().text();
 			calcSwitcher = moveLeftCalcSwitcher->currentText();
 			break;
 		case MOVE_RIGHT:
-			costValue    = moveRightCost->getLineEdit()->text();
+			costValue    = moveRightCost->getLineEdit().text();
 			calcSwitcher = moveRightCalcSwitcher->currentText();
 			break;
 		case MOVE_UP:
-			costValue    = moveUpCost->getLineEdit()->text();
+			costValue    = moveUpCost->getLineEdit().text();
 			calcSwitcher = moveUpCalcSwitcher->currentText();
 			break;
 		default:

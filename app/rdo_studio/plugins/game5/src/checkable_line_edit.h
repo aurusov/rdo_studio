@@ -20,13 +20,12 @@
 // --------------------------------------------------------------------------------
 
 class CheckableLineEdit: public QWidget
-{
-	Q_OBJECT
+{Q_OBJECT
 
 public:
-	CheckableLineEdit(QWidget* parent, const QString& defaultText = "1");
-	const QCheckBox* getCheckBox() {return checkBox;};
-	const QLineEdit* getLineEdit() {return lineEdit;};
+	CheckableLineEdit(QWidget* parent);
+	QCheckBox& getCheckBox() {return *checkBox;};
+	QLineEdit& getLineEdit() {return *lineEdit;};
 
 private:
 	QCheckBox*    checkBox;
@@ -34,7 +33,7 @@ private:
 	const QString defaultText;
 
 private slots:
-	void setLineEditState(const int& state);
+	void setLineEditState(int state);
 };
 
 #endif // CHECKABLE_LINE_EDIT_H
