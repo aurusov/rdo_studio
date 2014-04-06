@@ -188,11 +188,6 @@ ENDIF()
 
 #==============================================================================
 
-IF(MSVC OR MINGW)
-    SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
-    SET(ENV{BISON_PKGDATADIR} ${BISON_FLEX_DIRECTORY}/share/bison)
-ENDIF()
-
 # Compile the rdo_common
 SET(UTILS_PATH ${RDO_BASE_DIRECTORY}/utils)
 ADD_SUBDIRECTORY(${UTILS_PATH})
