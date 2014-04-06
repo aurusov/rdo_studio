@@ -56,6 +56,7 @@ void Board::init(bool disabledMode)
 	tilesPosition.resize(m_tilesCountX * m_tilesCountY);
 	tiles        .resize(m_tilesCountX * m_tilesCountY);
 
+	tiles[holeIndex] = NULL;
 	for (int index = 1; index < m_tilesCountX * m_tilesCountY; index++)
 	{
 		tiles[index] = new Tile(index, this);
@@ -148,12 +149,12 @@ bool Board::lineupIsSolvable() const
 		); // См. Перельман. Живая математика.
 }
 
-const int& Board::getTilePosition(const int& index) const
+int Board::getTilePosition(int index) const
 {
 	return tilesPosition[index] + 1;
 }
 
-const int&Board::getQuantityOfTiles() const
+int Board::getQuantityOfTiles() const
 {
 	return m_tilesCountX * m_tilesCountY - 1;
 }

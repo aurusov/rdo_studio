@@ -37,8 +37,8 @@ public:
 	const int m_topLeftX;
 	const int m_topLeftY;
 
-	const int& getTilePosition(const int& index) const;
-	const int& getQuantityOfTiles() const;
+	int getTilePosition(int index) const;
+	int getQuantityOfTiles() const;
 	QString getBoardState() const;
 
 public slots:
