@@ -253,7 +253,7 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF
 	pResType->setSubtype(parser::RDORTPResType::RT_PROCESS_TRANSACT);
 
 	std::vector<rdo::runtime::LPRDOCalc> paramList;
-	paramList.push_back(rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0.0)));
+	paramList.push_back(rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0)));
 
 	rdo::runtime::LPRDOCalc pCreateTransactCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
 		pResType->getNumber(),
