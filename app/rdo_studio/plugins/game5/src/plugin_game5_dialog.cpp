@@ -387,7 +387,7 @@ rdo::gui::model::Model* PluginGame5GenerateSituationDialog::getCurrentModel()
 	return pMainWindow->getModel();
 }
 
-QString PluginGame5GenerateSituationDialog::getBoardState()
+std::vector<unsigned int> PluginGame5GenerateSituationDialog::getBoardState()
 {
 	return gameBoard->getBoardState();
 }

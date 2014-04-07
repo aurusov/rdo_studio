@@ -28,7 +28,7 @@ public:
 	PluginGame5GenerateSituationDialog(QWidget* parent);
 	~PluginGame5GenerateSituationDialog();
 
-	QString getBoardState();
+	std::vector<unsigned int> getBoardState();
 
 signals:
 	void buttonRandomClicked(bool solvabilityCheck);

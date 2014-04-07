@@ -159,7 +159,7 @@ int PluginGame5GraphDialog::parseTraceInfo(const QString& key)
 	return value;
 }
 
-void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
+void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startBoardState)
 {
 	graphWidget->scene->clear();//@todo Хранить и рисовать 2 разных объекта
 	m_graph.clear();            //Очистка вектора, объекты удалены при очистке сцены
@@ -171,7 +171,7 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 	QStringList parsingResult = parseTrace();
 	m_graph.resize(parsingResult.size() + 2);
 	m_graph[1] = new GraphNode(1, NULL, 0, 0, 0, 0, 0, 0, 0, 0, startBoardState);
-	BOOST_FOREACH(const QString& string, parsingResult)
+	for(const auto& string: parsingResult)
 	{
 		int graphNode        = string.section(" ",  1,  1).toInt();
 		int parentGraphNode  = string.section(" ",  2,  2).toInt();
@@ -185,13 +185,11 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 		int relevantTile     = string.section(" ", -4, -4).toInt();
 
 		int graphLevel = m_graph[parentGraphNode]->getGraphLevel() + 1;
-		QString	boardState = m_graph[parentGraphNode]->getBoardState();
-		int tileMoveToPos   = (tileMoveTo   - 1) * 2;
-		int tileMoveFromPos = (tileMoveFrom - 1) * 2;
-		QString tileMoveToStr   = boardState.mid(tileMoveToPos, 1  );
-		QString tileMoveFromStr = boardState.mid(tileMoveFromPos, 1);
-		boardState.replace(tileMoveToPos  , 1, tileMoveFromStr);
-		boardState.replace(tileMoveFromPos, 1, tileMoveToStr  );
+		std::vector<unsigned int> boardState = m_graph[parentGraphNode]->getBoardState();
+		unsigned int temp = boardState[tileMoveFrom - 1];
+		boardState[tileMoveFrom - 1] = boardState[tileMoveTo - 1];
+		boardState[tileMoveTo - 1]   = temp;
+		//std::swap(boardState[tileMoveFrom], boardState[tileMoveTo]);
 		
 		m_graph[graphNode] = new GraphNode(graphNode, m_graph[parentGraphNode], pathCost, restPathCost,moveDirection,
 		                                   moveCost, relevantTile, graphLevel, tileMoveFrom, tileMoveTo, boardState
@@ -345,7 +343,7 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 	                                          graphWidget->scene->sceneRect().x(), graphWidget->scene->sceneRect().y()));
 }
 
-void PluginGame5GraphDialog::onPluginAction(QString boardState)
+void PluginGame5GraphDialog::onPluginAction(const std::vector<unsigned int>& boardState)
 {
 	if (m_traceTimeStamp != getTraceTimeStamp())
 	{

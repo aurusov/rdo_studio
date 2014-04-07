@@ -31,10 +31,10 @@ public:
 	PluginGame5GraphDialog(QWidget* parent);
 	~PluginGame5GraphDialog();
 
-	void updateGraph(const QString& startBoardState);
+	void updateGraph(const std::vector<unsigned int>& startBoardState);
 
 public slots:
-	void onPluginAction(QString boardState);
+	void onPluginAction(const std::vector<unsigned int>& boardState);
 	void emitShowNodeInfoDlg();
 
 signals:

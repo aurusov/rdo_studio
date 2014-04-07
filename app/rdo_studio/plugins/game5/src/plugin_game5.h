@@ -39,7 +39,7 @@ public:
 	virtual void pluginStopAction  (QWidget* parent);
 
 signals:
-	void onGraphDlgAction(QString string);
+	void onGraphDlgAction(const std::vector<unsigned int>& state);
 	void setGraphDlgActionEnabled(bool);
 
 private slots:

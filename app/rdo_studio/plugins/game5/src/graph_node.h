@@ -32,7 +32,7 @@ private:
 public:
 	GraphNode(int graphNode, GraphNode* parentGraphNode, int pathCost, int restPathCost,
 	          int moveDirection, int moveCost, int relevantTile, int graphLevel,
-	          int tileMoveFrom, int tileMoveTo, const QString& boardState
+	          int tileMoveFrom, int tileMoveTo, const std::vector<unsigned int>& boardState
 	);
 	~GraphNode();
 
@@ -44,21 +44,22 @@ public:
 
 	void setGraphOnLevelOrder(int value);
 	void setRelatedToSolution(bool value);
-		
-	GraphNode*      getParentGraphNode  () const;
-	int             getGraphNode        () const;
-	int             getPathCost         () const;
-	int             getRestPathCost     () const;
-	int             getMoveDirection    () const;
-	int             getMoveCost         () const;
-	int             getRelevantTile     () const;
-	int             getGraphLevel       () const;
-	int             getGraphOnLevelOrder() const;
-	int             getTileMoveFrom     () const;
-	int             getTileMoveTo       () const;
-	bool            isRelatedToSolution () const;
-	const QString&  getBoardState       () const;
-	const NodeList& getChildrenList() const;
+
+	const NodeList&                  getChildrenList   () const;
+	GraphNode*                       getParentGraphNode() const;
+	const std::vector<unsigned int>& getBoardState     () const;
+
+	int  getGraphNode        () const;
+	int  getPathCost         () const;
+	int  getRestPathCost     () const;
+	int  getMoveDirection    () const;
+	int  getMoveCost         () const;
+	int  getRelevantTile     () const;
+	int  getGraphLevel       () const;
+	int  getGraphOnLevelOrder() const;
+	int  getTileMoveFrom     () const;
+	int  getTileMoveTo       () const;
+	bool isRelatedToSolution () const;
 
 	void addEdge(GraphEdge* edge);
 
@@ -84,7 +85,7 @@ private:
 	NodeList childrenList;
 
 	GraphNode* m_pParentGraphNode;
-	QString    m_boardState;
+	std::vector<unsigned int> m_boardState;
 	int  m_graphNode;
 	int  m_pathCost;
 	int  m_restPathCost;

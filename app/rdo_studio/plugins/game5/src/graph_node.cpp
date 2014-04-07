@@ -24,7 +24,7 @@
 
 GraphNode::GraphNode(int graphNode, GraphNode* parentGraphNode, int pathCost, int restPathCost,
                      int moveDirection, int moveCost, int relevantTile, int graphLevel,
-                     int tileMoveFrom, int tileMoveTo, const QString& boardState
+                     int tileMoveFrom, int tileMoveTo, const std::vector<unsigned int>& boardState
 )
 	: m_pParentGraphNode      (parentGraphNode)
 	, m_boardState            (boardState     )
@@ -133,7 +133,7 @@ int GraphNode::getTileMoveTo() const
 	return m_tileMoveTo;
 }
 
-const QString& GraphNode::getBoardState() const
+const std::vector<unsigned int>& GraphNode::getBoardState() const
 {
 	return m_boardState;
 }

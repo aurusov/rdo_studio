@@ -53,25 +53,24 @@ Board::~Board()
 
 void Board::init(bool disabledMode)
 {
-	tilesPosition.resize(m_tilesCountX * m_tilesCountY);
-	tiles        .resize(m_tilesCountX * m_tilesCountY);
+	tiles.resize(m_tilesCountX * m_tilesCountY);
 
-	tiles[holeIndex] = NULL;
-	for (int index = 1; index < m_tilesCountX * m_tilesCountY; index++)
+	for (int index = 0; index < m_tilesCountX * m_tilesCountY; index++)
 	{
-		tiles[index] = new Tile(index, this);
+		tiles[index] = new PlacedTile(index, this);
 		tiles[index]->setFixedSize(m_tileSize,m_tileSize);
 		tiles[index]->setDisabled(disabledMode);
 		connect(tiles[index], &Tile::tileClicked, this, &Board::clickOnTile);
 	}
+	tiles[holeIndex]->setVisible(false);
 	buildCorrectOrder();
 }
 
 void Board::clickOnTile(int number)
 {
-	if (freePlaceIsNearby(tilesPosition[number]))
+	if (freePlaceIsNearby(tiles[number]->getPosition()))
 	{
-		moveTile(number, tilesPosition[holeIndex]);
+		swapTiles(number, holeIndex);
 	}
 }
 
@@ -93,8 +92,8 @@ bool Board::freePlaceIsNearby(int place) const
 {
 	const int tileCol      = place % m_tilesCountX;
 	const int tileRow      = place / m_tilesCountX;
-	const int freePlaceCol = tilesPosition[holeIndex] % m_tilesCountX;
-	const int freePlaceRow = tilesPosition[holeIndex] / m_tilesCountX;
+	const int freePlaceCol = tiles[holeIndex]->getPosition() % m_tilesCountX;
+	const int freePlaceRow = tiles[holeIndex]->getPosition() / m_tilesCountX;
 
 	return ((tileCol == freePlaceCol + 1) && (tileRow == freePlaceRow)) ||
 	       ((tileCol == freePlaceCol - 1) && (tileRow == freePlaceRow)) ||
@@ -107,26 +106,30 @@ void Board::buildCorrectOrder()
 	for (int index = 1; index < m_tilesCountX * m_tilesCountY; index++)
 	{
 		std::size_t position = index - 1;
-		tilesPosition[index] = position;
-		tiles[index]->move(tilePoint(position));
+		moveTile(tiles[index], position);
 	}
-	tilesPosition[holeIndex] = m_tilesCountX * m_tilesCountY - 1;
+	moveTile(tiles[holeIndex], m_tilesCountX * m_tilesCountY - 1);
 }
 
 void Board::buildRandomOrder(bool solvabilityCheck)
 {
 	std::srand(unsigned(std::time(0)));
+	std::vector<unsigned int> tilesPosition;
+	for (const auto& tile: tiles)
+	{
+		tilesPosition.push_back(tile->getPosition());
+	}
 	do
 	{
 		std::random_shuffle(tilesPosition.begin(), tilesPosition.end());
-		for (int index = 1; index < m_tilesCountX * m_tilesCountY; index++)
-		{
-			tiles[index]->move(tilePoint(tilesPosition[index]));
-		}
-	} while (solvabilityCheck && !lineupIsSolvable());
+	} while (solvabilityCheck && !orderIsSolvable(tilesPosition));
+	for (int index = 0; index < m_tilesCountX * m_tilesCountY; index++)
+	{
+		moveTile(tiles[index], tilesPosition[index]);
+	}
 }
 
-bool Board::lineupIsSolvable() const
+bool Board::orderIsSolvable(const std::vector<unsigned int>& tilesPosition) const
 {
 	int freePlaceRow = tilesPosition[holeIndex] / m_tilesCountX + 1;
 	int sum = 0;
@@ -151,7 +154,7 @@ bool Board::lineupIsSolvable() const
 
 int Board::getTilePosition(int index) const
 {
-	return tilesPosition[index] + 1;
+	return tiles[index]->getPosition() + 1;
 }
 
 int Board::getQuantityOfTiles() const
@@ -159,48 +162,53 @@ int Board::getQuantityOfTiles() const
 	return m_tilesCountX * m_tilesCountY - 1;
 }
 
-QString Board::getBoardState() const
+std::vector<unsigned int> Board::getBoardState() const
 {
-	std::vector<unsigned int> transpVector;
-	transpVector.resize(tilesPosition.size());
-	for (unsigned int i = 0; i < tilesPosition.size(); i++)
+	std::vector<unsigned int> boardState;
+	boardState.resize(tiles.size());
+	for (unsigned int i = 0; i < tiles.size(); i++)
 	{
-		transpVector[tilesPosition[i]] = i;
+		boardState[tiles[i]->getPosition()] = i;
 	}
-
-	QString boardStateStr;
-	for (unsigned int i = 0; i < transpVector.size(); i++)
-	{
-		boardStateStr += QString::number(transpVector[i]) + " ";
-	}
-
-	return boardStateStr;
+	return boardState;
 }
 
-void Board::setTilesPositon(const QString& string)
+void Board::setTilesPositon(const std::vector<unsigned int>& newState)
 {
-	for (unsigned int positionIndex = 0; positionIndex < tilesPosition.size(); positionIndex++)
+	for (unsigned int positionIndex = 0; positionIndex < newState.size(); positionIndex++)
 	{
-		unsigned int tileIndex = string.section(' ', positionIndex, positionIndex, QString::SectionSkipEmpty).toInt();
-		moveTile(tileIndex, positionIndex);
+		unsigned int currentStateIndex = getBoardState()[positionIndex];
+		if (newState[positionIndex] != currentStateIndex)
+			swapTiles(newState[positionIndex], currentStateIndex);
 	}
 }
 
-void Board::moveTile(int tileNumber, unsigned int position)
+void Board::swapTiles(int first, int second)
 {
-	if (tileNumber)
-	{
-		tiles[tileNumber]->move(tilePoint(position));
-	}
-	unsigned int swapedTilePos = std::distance(
-		tilesPosition.begin(),
-		boost::range::find(tilesPosition, position)
-	);
+	const unsigned int firstPosition = tiles[first]->getPosition();
+	moveTile(tiles[first], tiles[second]->getPosition());
+	moveTile(tiles[second], firstPosition);
+}
 
-	if (swapedTilePos)
-	{
-		tiles[swapedTilePos]->move(tilePoint(tilesPosition[tileNumber]));
-	}
-	tilesPosition[swapedTilePos] = tilesPosition[tileNumber];
-	tilesPosition[tileNumber]    = position;
+void Board::moveTile(PlacedTile* tile, unsigned int place)
+{
+	tile->move(tilePoint(place));
+	tile->setPosition(place);
+}
+
+Board::PlacedTile::PlacedTile(int number, QWidget* pParent)
+    : Tile(number, pParent)
+{}
+
+Board::PlacedTile::~PlacedTile()
+{}
+
+unsigned int Board::PlacedTile::getPosition() const
+{
+	return position;
+}
+
+void Board::PlacedTile::setPosition(unsigned int value)
+{
+	position = value;
 }

@@ -23,11 +23,11 @@ class TilesOrderDialog
 {
 Q_OBJECT
 public:
-	TilesOrderDialog(QWidget* parent, const QString& lineEditText);
+	TilesOrderDialog(QWidget* parent, const std::vector<unsigned int>& state);
 	virtual ~TilesOrderDialog();
 
 signals:
-	void tilesOrderCommited(const QString& string);
+	void tilesOrderCommited(const std::vector<unsigned int>& state);
 
 private:
 	QString validatorRegExpPattern(int value);

@@ -36,7 +36,7 @@ QString PluginGame5::getAuthor()
 
 QString PluginGame5::getVersion()
 {
-	return "0.2.0";
+	return "0.2.1";
 }
 
 QUuid PluginGame5::getGUID()
