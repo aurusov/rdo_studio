@@ -14,8 +14,7 @@ namespace rdo
 	namespace version
 	{
 		static const std::string g_appName("${APP_NAME}");
-		static const std::string g_version("2.0");
-		static const std::string g_build  ("svn-${CMAKE_SVN_VERSION}");
+		static const std::string g_version("${PROJECT_VERSION_LONG}");
 		static const std::string g_site   ("${ORG_WEBSITE}");
 
 #ifdef RDO_MT
@@ -58,12 +57,11 @@ namespace rdo
 		static const std::string g_limitRes("");
 #endif
 
-		static const std::string g_versionName = boost::str(boost::format("%1% %2%%3%-version %4% (build %5%) %6%-%7%%8%")
+		static const std::string g_versionName = boost::str(boost::format("%1% %2%%3%-version %4% %5%-%6%%7%")
 			% g_appName
 			% g_mt
 			% g_comp
 			% g_version
-			% g_build
 			% g_systemOS
 			% g_systemArchitectures
 			% (!g_academic.empty() || !g_limitRes.empty()
