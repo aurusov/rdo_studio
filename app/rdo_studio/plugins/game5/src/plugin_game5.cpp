@@ -13,7 +13,6 @@
 #include <QMessageBox>
 #include <QBitmap>
 #include <QDir>
-#include <boost/foreach.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/plugin_game5.h"
@@ -61,7 +60,7 @@ void PluginGame5::pluginStartAction(QWidget* pParent)
 		if (menuBar)
 		{
 			QMenu* defMenu = NULL;
-			BOOST_FOREACH(QAction* action, menuBar->actions())
+			for(auto action: menuBar->actions())
 			{
 				if (action->text() == "Плагины")
 				{
@@ -109,7 +108,7 @@ void PluginGame5::pluginStopAction(QWidget* pParent)
 	{
 		QMenuBar* menuBar = pParent->findChild<QMenuBar*>("menuBar");
 		bool defined = false;
-		BOOST_FOREACH(QAction* action, menuBar->actions())
+		for(auto action: menuBar->actions())
 		{
 			if (!defined && action->text() == "Плагины")
 			{

@@ -21,8 +21,9 @@ GraphInfo::GraphInfo(int solutionCost, int numOfOpenNodes, int totalNumOfNodes, 
 	, m_numOfOpenNodes (numOfOpenNodes )
 	, m_totalNumOfNodes(totalNumOfNodes)
 {
-	setAcceptedMouseButtons(0);
+	setAcceptedMouseButtons(Qt::NoButton);
 	setPos(x, y);
+	setZValue(1);
 }
 
 GraphInfo::~GraphInfo()
@@ -31,7 +32,7 @@ GraphInfo::~GraphInfo()
 
 QRectF GraphInfo::boundingRect() const
 {
-	double adjust = 2;
+	const double adjust = 2;
 	return QRectF(-adjust, -adjust, 200 + 2 * adjust, 70 + 2 * adjust);
 }
 

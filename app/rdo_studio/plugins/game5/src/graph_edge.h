@@ -15,6 +15,7 @@
 #include <QGraphicsItem>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio/plugins/game5/src/graph_items_types.h"
 // --------------------------------------------------------------------------------
 
 class GraphNode;
@@ -22,25 +23,26 @@ class GraphNode;
 class GraphEdge : public QGraphicsItem
 {
 public:
-	GraphEdge (GraphNode *sourceNode, GraphNode *destNode);
+	GraphEdge (GraphNode& sourceNode, GraphNode& destNode);
 	~GraphEdge();
 
 	void adjust();
 
-	enum { Type = UserType + 2 };
+	enum { Type = UserType + TypeID::GRAPH_EDGE };
 	virtual int type() const { return Type; }
 
-protected:
-	virtual QRectF boundingRect() const;
-	virtual void   paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-
 private:
-	GraphNode* source;
-	GraphNode* dest;
+	GraphNode& source;
+	GraphNode& dest;
 
 	QPointF sourcePoint;
 	QPointF destPoint;
-	double arrowSize;
+	const double arrowSize;
+	const double pointSize;
+	const double penWidth;
+
+	virtual QRectF boundingRect() const;
+	virtual void   paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
 #endif // _RDO_PLUGIN_GAME_5_GRAPH_EDGE_H_

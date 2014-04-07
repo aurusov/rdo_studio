@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <boost/foreach.hpp>
 #include <algorithm>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -218,7 +217,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 		}
 	}
 
-	BOOST_FOREACH(int node, getSolutionNodes())
+	for(auto node: getSolutionNodes())
 	{
 		m_graph[node]->setRelatedToSolution(true);
 	}
@@ -246,9 +245,9 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 			{
 				graphWidget->scene->addItem(m_graph[node]);
 				m_graph[node]->setPos(m_graph[node]->childrenMeanX(), m_graph[node]->childrenMeanY() - 40);
-				BOOST_FOREACH(GraphNode* childNode, m_graph[node]->getChildrenList())
+				for(auto childNode: m_graph[node]->getChildrenList())
 				{
-					graphWidget->scene->addItem(new GraphEdge(m_graph[node], childNode));
+					graphWidget->scene->addItem(new GraphEdge(*m_graph[node], *childNode));
 				}
 
 				if (!buildFlag)
@@ -276,7 +275,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 			unbuiltRangeVector.push_back(temp);
 			tempCounter = 0;
 		}
-		BOOST_FOREACH(const UnbuiltRange& unbuiltRange, unbuiltRangeVector)
+		for(const auto& unbuiltRange: unbuiltRangeVector)
 		{
 			unsigned int endUnbuiltRange = unbuiltRange.firstNode + unbuiltRange.range;
 			if (unbuiltRange.firstNode == 0)

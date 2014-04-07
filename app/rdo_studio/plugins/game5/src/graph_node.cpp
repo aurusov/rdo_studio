@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <boost/foreach.hpp>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
@@ -22,13 +21,13 @@
 #include "app/rdo_studio/plugins/game5/src/graph_edge.h"
 // --------------------------------------------------------------------------------
 
-GraphNode::GraphNode(int graphNode, GraphNode* parentGraphNode, int pathCost, int restPathCost,
+GraphNode::GraphNode(int nodeID, GraphNode* parentGraphNode, int pathCost, int restPathCost,
                      int moveDirection, int moveCost, int relevantTile, int graphLevel,
                      int tileMoveFrom, int tileMoveTo, const std::vector<unsigned int>& boardState
 )
 	: m_pParentGraphNode      (parentGraphNode)
 	, m_boardState            (boardState     )
-	, m_graphNode             (graphNode      )
+	, m_nodeID                (nodeID         )
 	, m_pathCost              (pathCost       )
 	, m_restPathCost          (restPathCost   )
 	, m_moveDirection         (moveDirection  )
@@ -44,7 +43,6 @@ GraphNode::GraphNode(int graphNode, GraphNode* parentGraphNode, int pathCost, in
 	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
 	setCacheMode(DeviceCoordinateCache);
-	setZValue(-1);
 
 	if (parentGraphNode)
 	{
@@ -53,8 +51,7 @@ GraphNode::GraphNode(int graphNode, GraphNode* parentGraphNode, int pathCost, in
 }
 
 GraphNode::~GraphNode()
-{
-}
+{}
 
 QRectF GraphNode::boundingRect() const
 {
@@ -81,12 +78,12 @@ void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*optio
 	{
 		painter->setPen(QPen(Qt::white, 0));
 	}
-	painter->drawText(nodeRect, Qt::AlignCenter, QString::number(m_graphNode));
+	painter->drawText(nodeRect, Qt::AlignCenter, QString::number(m_nodeID));
 }
 
-int GraphNode::getGraphNode() const
+int GraphNode::getNodeID() const
 {
-	return m_graphNode;
+	return m_nodeID;
 }
 
 int GraphNode::getPathCost() const
@@ -163,7 +160,7 @@ QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant &value)
 	switch (change)
 	{
 		case ItemPositionHasChanged:
-			BOOST_FOREACH (GraphEdge* edge, edgeList)
+			for(auto edge: edgeList)
 			{
 				edge->adjust();
 			}
@@ -196,12 +193,12 @@ double GraphNode::childrenMeanX() const
 		return 0.;
 
 	double value(0);
-	BOOST_FOREACH(GraphNode* child, childrenList)
+	for(const auto child: childrenList)
 	{
 		value += child->pos().x();
 	}
 
-	return value/childrenList.size();
+	return value / childrenList.size();
 }
 
 double GraphNode::childrenMeanY() const
@@ -212,14 +209,14 @@ double GraphNode::childrenMeanY() const
 	return value;
 }
 
-const GraphNode::NodeList& GraphNode::getChildrenList() const
+const std::list<GraphNode*>& GraphNode::getChildrenList() const
 {
 	return childrenList;
 }
 
 void GraphNode::forceShift(double deltaX)
 {
-	BOOST_FOREACH(GraphNode* child, childrenList)
+	for(auto child: childrenList)
 	{
 		child->forceShift(deltaX);
 	}

@@ -15,6 +15,7 @@
 #include <QGraphicsObject>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio/plugins/game5/src/graph_items_types.h"
 // --------------------------------------------------------------------------------
 
 class GraphWidget;
@@ -22,12 +23,7 @@ class QGraphicsSceneMouseEvent;
 class GraphEdge;
 
 class GraphNode: public QGraphicsObject
-{
-Q_OBJECT
-
-private:
-	typedef std::list<GraphNode*> NodeList;
-	typedef std::list<GraphEdge*> EdgeList;
+{Q_OBJECT
 
 public:
 	GraphNode(int graphNode, GraphNode* parentGraphNode, int pathCost, int restPathCost,
@@ -36,7 +32,7 @@ public:
 	);
 	~GraphNode();
 
-	enum { Type = UserType + 1 };
+	enum { Type = UserType + TypeID::GRAPH_NODE };
 	virtual int type() const { return Type; }
 
 	virtual QRectF boundingRect() const;
@@ -45,11 +41,11 @@ public:
 	void setGraphOnLevelOrder(int value);
 	void setRelatedToSolution(bool value);
 
-	const NodeList&                  getChildrenList   () const;
+	const std::list<GraphNode*>&     getChildrenList   () const;
 	GraphNode*                       getParentGraphNode() const;
 	const std::vector<unsigned int>& getBoardState     () const;
 
-	int  getGraphNode        () const;
+	int  getNodeID           () const;
 	int  getPathCost         () const;
 	int  getRestPathCost     () const;
 	int  getMoveDirection    () const;
@@ -75,18 +71,13 @@ signals:
 	void clickedNode(GraphNode* node);
 	void doubleClicked();
 
-protected:
-	virtual QVariant itemChange           (GraphicsItemChange change, const QVariant &value);
-	virtual void     mousePressEvent      (QGraphicsSceneMouseEvent* mEvent);
-	virtual void     mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mEvent);
-
 private:
-	EdgeList edgeList;
-	NodeList childrenList;
+	std::list<GraphEdge*> edgeList;
+	std::list<GraphNode*> childrenList;
 
 	GraphNode* m_pParentGraphNode;
 	std::vector<unsigned int> m_boardState;
-	int  m_graphNode;
+	int  m_nodeID;
 	int  m_pathCost;
 	int  m_restPathCost;
 	int  m_moveDirection;
@@ -98,6 +89,10 @@ private:
 	int  m_graphOnLevelOrder;
 	bool m_relatedToSolutionState;
 	bool isChecked;
+
+	virtual QVariant itemChange           (GraphicsItemChange change, const QVariant &value);
+	virtual void     mousePressEvent      (QGraphicsSceneMouseEvent* mEvent);
+	virtual void     mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mEvent);
 };
 
 #endif // _RDO_PLUGIN_GAME_5_GRAPH_NODE_H_

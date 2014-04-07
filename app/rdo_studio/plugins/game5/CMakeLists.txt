@@ -53,10 +53,11 @@ SET(GAME_BOARD_FILES
 )
 
 SET(GRAPH_FILES
-	src/graph_info.h
-	src/graph_info.cpp
 	src/graph_edge.h
 	src/graph_edge.cpp
+	src/graph_info.h
+	src/graph_info.cpp
+	src/graph_items_types.h
 	src/graph_node.h
 	src/graph_node.cpp
 	src/graph_widget.h

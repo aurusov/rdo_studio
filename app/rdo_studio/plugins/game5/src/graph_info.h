@@ -15,6 +15,7 @@
 #include <QGraphicsItem>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio/plugins/game5/src/graph_items_types.h"
 // --------------------------------------------------------------------------------
 
 class GraphInfo;
@@ -25,17 +26,16 @@ public:
 	GraphInfo  (int solutionCost, int numOfOpenNodes, int totalNumOfNodes, double x, double y);
 	~GraphInfo();
 
-	enum { Type = UserType + 3 };
+	enum { Type = UserType + TypeID::GRAPH_INFO };
 	virtual int type() const { return Type; }
 
-protected:
+private:
+	const int m_solutionCost;
+	const int m_numOfOpenNodes;
+	const int m_totalNumOfNodes;
+
 	virtual QRectF boundingRect() const;
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
-
-private:
-	int m_solutionCost;
-	int m_numOfOpenNodes;
-	int m_totalNumOfNodes;
 };
 
 #endif // _RDO_PLUGIN_GAME_5_GRAPH_INFO_H_
