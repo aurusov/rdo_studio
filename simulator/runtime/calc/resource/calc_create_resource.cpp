@@ -45,9 +45,9 @@ RDOValue RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
 	const LPRDOResourceTypeList& resourceType = pRuntime->getResType(m_resourceTypeID);
 	std::vector<RDOValue> paramValueList;
 
-	STL_FOR_ALL_CONST(m_paramCalcList, it)
+	for (const auto& calc : m_paramCalcList)
 	{
-		paramValueList.push_back((*it)->calcValue(pRuntime));
+		paramValueList.push_back(calc->calcValue(pRuntime));
 	}
 
 	LPRDOResource pResource = resourceType.interface_cast<IResourceType>()->createRes(pRuntime, pRuntime->getResourceId(), paramValueList, m_traceFlag, m_permanentFlag);
