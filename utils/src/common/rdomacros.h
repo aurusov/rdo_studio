@@ -51,9 +51,6 @@
 //! Макрос подавляет предупреждения компилятора о неиспользуемых переменных
 #define UNUSED(A) ((void)A);
 
-//! Автоматическое определение типа для паременной
-#define AUTO BOOST_AUTO
-
 #ifdef COMPILER_VISUAL_STUDIO
 	#define NO_V_TABLE   __declspec(novtable)
 	#define FORCE_INLINE __forceinline
