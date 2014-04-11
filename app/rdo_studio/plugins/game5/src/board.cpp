@@ -135,13 +135,10 @@ bool Board::orderIsSolvable(const std::vector<unsigned int>& tilesPosition) cons
 	int sum = 0;
 	for (int i = 1; i < m_tilesCountX * m_tilesCountY; i++)
 	{
-		if (tilesPosition[i] > 0)
+		for (int j = i + 1; j < m_tilesCountX * m_tilesCountY; j++)
 		{
-			for (int j = i + 1; j < m_tilesCountX * m_tilesCountY; j++)
-			{
-				if (tilesPosition[j] > 0 && tilesPosition[i] > tilesPosition[j])
-					sum++;
-			}
+			if (tilesPosition[i] > tilesPosition[j])
+				sum++;
 		}
 	}
 	return m_tilesCountX % 2 != 0
