@@ -83,7 +83,7 @@ PREDECLARE_POINTER(RDOPROCResource);
   \class   RDOPROCTransact
   \brief   Транзакт в РДО
 */
-CLASS_PARENT_OF(RDOPROCTransact, RDOResource)
+class RDOPROCTransact: public RDOResource
 {
 DECLARE_FACTORY(RDOPROCTransact);
 public:
@@ -107,7 +107,7 @@ private:
   \class   RDOPROCResource
   \brief   Процессный ресурс РДО - обслуживает транзакты в процессах
 */
-CLASS_PARENT_OF(RDOPROCResource, RDOResource)
+class RDOPROCResource: public RDOResource
 {
 DECLARE_FACTORY(RDOPROCResource);
 friend class RDOPROCSeize;

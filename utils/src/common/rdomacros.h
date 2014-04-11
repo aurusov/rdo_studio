@@ -43,7 +43,6 @@
 //! Объект типа виртуальный A
 #define INSTANCE_VIRTUAL_OF(A) public virtual A
 //! Класс-потомок от B
-#define CLASS_PARENT_OF(A, B)  CLASS(A): IMPLEMENTATION_OF(B)
 
 #ifdef UNUSED
 	#undef UNUSED
