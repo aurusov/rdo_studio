@@ -101,11 +101,11 @@ void RDORuntime::setTerminateIf(CREF(LPRDOCalc) pTerminateIfCalc)
 
 rbool RDORuntime::breakPoints()
 {
-	STL_FOR_ALL_CONST(m_breakPointList, it)
+	for (const auto& breakPoint: m_breakPointList)
 	{
-		if ((*it)->getCalc()->calcValue(this).getAsBool())
+		if (breakPoint->getCalc()->calcValue(this).getAsBool())
 		{
-			m_pLastActiveBreakPoint = *it;
+			m_pLastActiveBreakPoint = breakPoint;
 			return true;
 		}
 	}
@@ -120,11 +120,11 @@ void RDORuntime::insertBreakPoint(CREF(tstring) name, CREF(LPRDOCalc) pCalc)
 
 LPRDOCalc RDORuntime::findBreakPoint(CREF(tstring) name)
 {
-	STL_FOR_ALL_CONST(m_breakPointList, it)
+	for (const auto& breakPoint: m_breakPointList)
 	{
-		if ((*it)->getName() == name)
+		if (breakPoint->getName() == name)
 		{
-			return (*it)->getCalc();
+			return breakPoint->getCalc();
 		}
 	}
 	return NULL;
@@ -344,8 +344,8 @@ void RDORuntime::rdoInit(RDOTrace* tracer, RDOResults* customResults, RDOResults
 
 void RDORuntime::onInit()
 {
-	STL_FOR_ALL(m_initCalcList, calcIt)
-		(*calcIt)->calcValue(this);
+	for (const auto& calc: m_initCalcList)
+		calc->calcValue(this);
 }
 
 void RDORuntime::onDestroy()

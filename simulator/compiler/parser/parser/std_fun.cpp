@@ -161,9 +161,9 @@ void RDOParserSTDFUN::generateReal(CREF(tstring) name, CREF(rdo::runtime::LPRDOF
 	ASSERT(pContextParamDefinition);
 
 	ruint paramIndex = 1;
-	STL_FOR_ALL_CONST(paramList, it)
+	for (const auto& param: paramList)
 	{
-		LPRDOParam pParam = rdo::Factory<RDOParam>::create(rdo::format("p%d", paramIndex), *it);
+		LPRDOParam pParam = rdo::Factory<RDOParam>::create(rdo::format("p%d", paramIndex), param);
 		ASSERT(pParam);
 		pContextParamDefinition->pushParam(pParam);
 		paramIndex++;

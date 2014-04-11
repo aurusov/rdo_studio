@@ -338,9 +338,9 @@ public:
 		}
 		rbool find(CREF(tstring) name) const
 		{
-			STL_FOR_ALL_CONST(m_list, paramIt)
+			for (const auto& param: m_list)
 			{
-				if ((*paramIt)->name() == name)
+				if (param->name() == name)
 					return true;
 			}
 			return false;

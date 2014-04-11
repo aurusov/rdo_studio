@@ -295,9 +295,9 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
 	{ErrorBlockMonicker errorBlockMonicker;
 		CREF(Converter::PreCastTypeList) typeList = Converter::s_converter()->getPreCastTypeList();
-		STL_FOR_ALL_CONST(typeList, it)
+		for (const auto& type: typeList)
 		{
-			LPRDOValue pTryCastValue = (*it)->value_cast(pValue);
+			LPRDOValue pTryCastValue = type->value_cast(pValue);
 			if (pTryCastValue->defined())
 			{
 				m_pValue = rdo::Factory<RDOValue>::create(pValue);

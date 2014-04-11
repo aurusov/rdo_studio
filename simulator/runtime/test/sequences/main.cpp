@@ -75,9 +75,9 @@ void onGenerateData(F binder, const std::string& g_fileName)
 
 	std::ofstream stream(g_fileName.c_str());
 	stream.precision(g_precision);
-	STL_FOR_ALL(test, it)
+	for (const auto& item: test)
 	{
-		stream << *it << std::endl;
+		stream << item << std::endl;
 	}
 }
 

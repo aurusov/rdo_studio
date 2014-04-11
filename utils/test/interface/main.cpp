@@ -237,27 +237,27 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 		myInterfaceList.push_back(smptr2);
 
 		tchar symbolT = '0';
-		STL_FOR_ALL_CONST(myInterfaceList, it)
+		for (const auto& item: myInterfaceList)
 		{
 			rdo::Interface<IMy1> ptr1;
-			ptr1 = *it;
+			ptr1 = item;
 			if (ptr1)
 			{
-				symbolT = (*it == smptr ? initFValue : (*it == smptr2 ? initSValue : initTValue));
+				symbolT = (item == smptr ? initFValue : (item == smptr2 ? initSValue : initTValue));
 				BOOST_CHECK(ptr1->fun1() == strIMy1 + symbolT);
 			}
 
-			rdo::Interface<IMy2> ptr2 = *it;
+			rdo::Interface<IMy2> ptr2 = item;
 			if (ptr2)
 			{
-				symbolT = (*it == smptr ? initFValue : (*it == smptr2 ? initSValue : initTValue));
+				symbolT = (item == smptr ? initFValue : (item == smptr2 ? initSValue : initTValue));
 				BOOST_CHECK(ptr2->fun2() == strIMy2 + symbolT);
 			}
 
-			rdo::Interface<IMy3> ptr3 = *it;
+			rdo::Interface<IMy3> ptr3 = item;
 			if (ptr3)
 			{
-				symbolT = (*it == smptr ? initFValue : (*it == smptr2 ? initSValue : initTValue));
+				symbolT = (item == smptr ? initFValue : (item == smptr2 ? initSValue : initTValue));
 				BOOST_CHECK(ptr3->fun3() == strIMy3 + symbolT);
 			}
 		}

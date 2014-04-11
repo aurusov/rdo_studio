@@ -352,11 +352,10 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPExpression) pStatementL
 	rdo::runtime::RDOCalc::RDOCalcList pCalcList = pBaseStatementList->statementList();
 	ASSERT(!pCalcList.empty());
 
-	STL_FOR_ALL(pCalcList, calcIt)
+	for (const auto& calc: pCalcList)
 	{
-		rdo::runtime::LPRDOCalc pCalc = *calcIt;
-		ASSERT(pCalc);
-		rdo::runtime::LPRDOCalcStatementList pStatementList = pCalc.object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
+		ASSERT(calc);
+		rdo::runtime::LPRDOCalcStatementList pStatementList = calc.object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		if (pStatementList)
 		{
 			if (pStatementList->statementList().empty() && status == rdo::runtime::RDOResource::CS_Keep)
@@ -434,8 +433,8 @@ tstring RDOPATPattern::getPatternId() const
 void RDOPATPattern::writeModelStructure(std::ostream& stream) const
 {
 	stream << getPatternId() << " " << name() << " " << getModelStructureLetter() << " " << m_relResList.size();
-	STL_FOR_ALL_CONST(m_relResList, it)
-		stream << " " << (*it)->getType()->getNumber();
+	for (const auto& resource: m_relResList)
+		stream << " " << resource->getType()->getNumber();
 
 	stream << std::endl;
 }
@@ -744,19 +743,19 @@ void RDOPatternEvent::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(
 rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 {
 	std::vector<rdo::runtime::RDOValue> params_default;
-	STL_FOR_ALL_CONST(m_pCurrRelRes->getType()->getParams(), it)
+	for (const auto& param: m_pCurrRelRes->getType()->getParams())
 	{
-		if (!(*it)->getDefault()->defined())
+		if (!param->getDefault()->defined())
 		{
 			params_default.push_back(rdo::runtime::RDOValue(0));
-			if (!m_pCurrRelRes->getParamSetList().find((*it)->name()))
+			if (!m_pCurrRelRes->getParamSetList().find(param->name()))
 			{
-				parser::g_error().error(m_pCurrRelRes->src_info(), rdo::format("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s", (*it)->name().c_str()));
+				parser::g_error().error(m_pCurrRelRes->src_info(), rdo::format("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s", param->name().c_str()));
 			}
 		}
 		else
 		{
-			params_default.push_back((*it)->getDefault()->value());
+			params_default.push_back(param->getDefault()->value());
 		}
 	}
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(m_pCurrRelRes->getType()->getNumber(), params_default, trace, false/** @todo проверить, что ресурс временный */, m_pCurrRelRes->m_relResID);

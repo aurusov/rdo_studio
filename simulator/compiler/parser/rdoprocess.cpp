@@ -241,9 +241,9 @@ RDOPROCSeize::RDOPROCSeize(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
 
 void RDOPROCSeize::createRuntime()
 {
-	STL_FOR_ALL_CONST(m_resourceList, it)
+	for (const auto& resource: m_resourceList)
 	{
-		LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource((*it));
+		LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource(resource);
 		if (pResource)
 		{
 			tstring res_name = pResource->name();
@@ -265,7 +265,7 @@ void RDOPROCSeize::createRuntime()
 		}
 		else
 		{
-			RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Внутренняя ошибка RDOPROCSeize: не нашли parser-ресурс '%s'", it->c_str()));
+			RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Внутренняя ошибка RDOPROCSeize: не нашли parser-ресурс '%s'", resource.c_str()));
 		}
 	}
 
@@ -295,9 +295,9 @@ RDOPROCRelease::RDOPROCRelease(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) na
 
 void RDOPROCRelease::createRuntime()
 {
-	STL_FOR_ALL_CONST(m_resourceList, it)
+	for (const auto& resource: m_resourceList)
 	{
-		LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource((*it));
+		LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource(resource);
 		if (pResource)
 		{
 			tstring res_name = pResource->name();
@@ -319,7 +319,7 @@ void RDOPROCRelease::createRuntime()
 		}
 		else
 		{
-			RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Внутренняя ошибка RDOPROCRelease: не нашли parser-ресурс '%s'", it->c_str()));
+			RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Внутренняя ошибка RDOPROCRelease: не нашли parser-ресурс '%s'", resource.c_str()));
 		}
 	}
 

@@ -118,11 +118,11 @@ LPLocalVariableList LocalVariableListStack::top() const
 
 LPLocalVariable LocalVariableListStack::findLocalVariable(CREF(tstring) name) const
 {
-	STL_FOR_ALL_CONST(m_pVariableListStack, it)
+	for (const auto& stack: m_pVariableListStack)
 	{
-		if ((*it)->findLocalVariable(name))
+		if (stack->findLocalVariable(name))
 		{
-			return (*it)->findLocalVariable(name);
+			return stack->findLocalVariable(name);
 		}
 	}
 	return NULL;

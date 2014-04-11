@@ -181,10 +181,8 @@ public:
 	private:
 		void clear()
 		{
-			STL_FOR_ALL(m_stack, it)
-			{
-				it->second->destroy();
-			}
+			for (const auto& stack: m_stack)
+				stack.second->destroy();
 		}
 	};
 

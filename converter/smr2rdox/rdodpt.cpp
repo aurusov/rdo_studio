@@ -256,12 +256,10 @@ IKeyboard::AddHotKeyResult RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey)
 
 rbool RDODPTActivityHotKey::hasHotKey() const
 {
-	STL_FOR_ALL_CONST(m_scanCodeList, it)
+	for (const auto key: m_scanCodeList)
 	{
-		if (*it != VK_SHIFT && *it != VK_CONTROL)
-		{
+		if (key != VK_SHIFT && key != VK_CONTROL)
 			return true;
-		}
 	}
 	return false;
 }

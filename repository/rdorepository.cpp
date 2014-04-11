@@ -176,10 +176,8 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 
 void RDOThreadRepository::resetModelNames()
 {
-	STL_FOR_ALL(m_files, it)
-	{
-		it->second.resetname();
-	}
+	for (auto& file: m_files)
+		file.second.resetname();
 }
 
 RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
@@ -198,12 +196,12 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 		}
 	}
 
-	STL_FOR_ALL(m_files, it)
+	for (auto& file: m_files)
 	{
-		it->second.m_fileName      = m_modelName;
-		it->second.m_described     = true;
-		it->second.m_mustExist     = false;
-		it->second.m_deleteIfEmpty = true;
+		file.second.m_fileName      = m_modelName;
+		file.second.m_described     = true;
+		file.second.m_mustExist     = false;
+		file.second.m_deleteIfEmpty = true;
 	}
 	return fm_ok;
 }
@@ -228,9 +226,9 @@ void RDOThreadRepository::newModel(CPTRC(NewModel) data)
 			m_modelName = "noname";
 			m_modelPath = boost::filesystem::path();
 		}
-		STL_FOR_ALL(m_files, it)
+		for (auto& file: m_files)
 		{
-			it->second.m_fileName = m_modelName;
+			file.second.m_fileName = m_modelName;
 		}
 		m_hasModel = true;
 		broadcastMessage(RT_REPOSITORY_MODEL_NEW);
@@ -271,10 +269,8 @@ rbool RDOThreadRepository::openModel(CREF(boost::filesystem::path) modelFileName
 
 		if (canOpen)
 		{
-			STL_FOR_ALL(m_files, it)
-			{
-				it->second.m_readOnly = m_realOnlyInDlg;
-			}
+			for (auto& file: m_files)
+				file.second.m_readOnly = m_realOnlyInDlg;
 
 			boost::filesystem::path rdoxFileName = (m_modelPath / m_modelName).replace_extension(m_files[rdoModelObjects::RDOX].m_extension);
 			boost::filesystem::path smrFileName  = (m_modelPath / m_modelName).replace_extension(m_files[rdoModelObjects::SMR ].m_extension);

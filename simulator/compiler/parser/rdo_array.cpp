@@ -58,9 +58,9 @@ rdo::runtime::LPRDOArrayValue RDOArrayValue::createRuntimeValue() const
 {
 	rdo::runtime::LPRDOArrayValue pArrayValue = rdo::Factory<rdo::runtime::RDOArrayValue>::create(m_pArrayType->getRuntimeArrayType());
 	ASSERT(pArrayValue);
-	STL_FOR_ALL_CONST(m_container, it)
+	for (const auto& item: m_container)
 	{
-		pArrayValue->push_back((*it)->value());
+		pArrayValue->push_back(item->value());
 	}
 	return pArrayValue;
 }
@@ -68,7 +68,8 @@ rdo::runtime::LPRDOArrayValue RDOArrayValue::createRuntimeValue() const
 tstring RDOArrayValue::getAsString() const
 {
 	tstring arrayValue;
-	STL_FOR_ALL_CONST(m_container, it)
+
+	for (Container::const_iterator it = m_container.begin(); it != m_container.end(); ++it)
 	{
 		if (it == m_container.begin())
 		{

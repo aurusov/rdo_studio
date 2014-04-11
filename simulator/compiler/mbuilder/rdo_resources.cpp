@@ -32,9 +32,9 @@ RDOResType::RDOResType(CREF(parser::LPRDORTPResType) rtp)
 	, m_type (rtp->isPermanent() ? rt_permanent : rt_temporary)
 	, m_id   (rtp->getNumber()                                )
 {
-	STL_FOR_ALL_CONST(rtp->getParams(), param_it)
+	for (const auto& parser_param: rtp->getParams())
 	{
-		Param param(*param_it);
+		Param param(parser_param);
 		param.m_id = m_params.size();
 		m_params.append(param);
 	}
@@ -162,9 +162,9 @@ rbool RDOResType::Param::operator== (CREF(Param) param) const
 RDOResTypeList::RDOResTypeList(CREF(parser::LPRDOParser) pParser)
 	: RDOList<RDOResType>(pParser)
 {
-	STL_FOR_ALL_CONST(m_pParser->getRTPResTypes(), rtp_it)
+	for (const auto& parser_rtp: m_pParser->getRTPResTypes())
 	{
-		RDOResType rtp(*rtp_it);
+		const RDOResType rtp(parser_rtp);
 		m_list.push_back(rtp);
 	}
 }
@@ -188,44 +188,44 @@ rbool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(parser::LPRDORTPResT
 {
 	ASSERT(pResourceType);
 
-	STL_FOR_ALL_CONST(rtp.m_params, param)
+	for (const auto& param: rtp.m_params)
 	{
 		parser::LPTypeInfo pParamType;
-		parser::LPRDOValue pDefault = param->hasDefault() ? param->getDefault() : rdo::Factory<parser::RDOValue>::create();
+		parser::LPRDOValue pDefault = param.hasDefault() ? param.getDefault() : rdo::Factory<parser::RDOValue>::create();
 		ASSERT(pDefault);
-		switch (param->typeID())
+		switch (param.typeID())
 		{
 			case rdo::runtime::RDOType::t_int:
 			{
-				if (param->hasRange())
+				if (param.hasRange())
 				{
-					parser::LPRDOTypeRangeRange pRange    = rdo::Factory<parser::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), parser::RDOParserSrcInfo());
+					parser::LPRDOTypeRangeRange pRange    = rdo::Factory<parser::RDOTypeRangeRange>::create(param.getMin(), param.getMax(), parser::RDOParserSrcInfo());
 					parser::LPRDOTypeIntRange   pIntRange = rdo::Factory<parser::RDOTypeIntRange>::create(pRange);
 					pParamType = rdo::Factory<parser::TypeInfo>::create(pIntRange, parser::RDOParserSrcInfo());
 				}
 				else
 				{
-					pParamType = param->type();
+					pParamType = param.type();
 				}
 				break;
 			}
 			case rdo::runtime::RDOType::t_real:
 			{
-				if (param->hasRange())
+				if (param.hasRange())
 				{
-					parser::LPRDOTypeRangeRange pRange     = rdo::Factory<parser::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), parser::RDOParserSrcInfo());
+					parser::LPRDOTypeRangeRange pRange     = rdo::Factory<parser::RDOTypeRangeRange>::create(param.getMin(), param.getMax(), parser::RDOParserSrcInfo());
 					parser::LPRDOTypeRealRange  pRealRange = rdo::Factory<parser::RDOTypeRealRange>::create(pRange);
 					pParamType = rdo::Factory<parser::TypeInfo>::create(pRealRange, parser::RDOParserSrcInfo());
 				}
 				else
 				{
-					pParamType = param->type();
+					pParamType = param.type();
 				}
 				break;
 			}
 			case rdo::runtime::RDOType::t_enum:
 			{
-				pParamType = param->type();
+				pParamType = param.type();
 				break;
 			}
 			default:
@@ -234,7 +234,7 @@ rbool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(parser::LPRDORTPResT
 				return false;
 			}
 		}
-		parser::LPRDORTPParam pParam = rdo::Factory<parser::RDORTPParam>::create(pParamType, pDefault, parser::RDOParserSrcInfo(param->name()));
+		parser::LPRDORTPParam pParam = rdo::Factory<parser::RDORTPParam>::create(pParamType, pDefault, parser::RDOParserSrcInfo(param.name()));
 		ASSERT(pParam);
 		pResourceType->addParam(pParam);
 	}
@@ -260,9 +260,9 @@ RDOResource::RDOResource(CREF(parser::LPRDORSSResource) rss)
 	if (m_rtp.m_params.size() == rss->params().size())
 	{
 		ruint index = 0;
-		STL_FOR_ALL_CONST(m_rtp.m_params, param_it)
+		for (const auto& param: m_rtp.m_params)
 		{
-			m_params[param_it->name()] = rss->params()[index].param();
+			m_params[param.name()] = rss->params()[index].param();
 			index++;
 		}
 	}
@@ -299,15 +299,15 @@ parser::LPRDORSSResource RDOResource::getParserResource(CREF(parser::LPRDOParser
 
 rbool RDOResource::fillParserResourceParams(REF(parser::LPRDORSSResource) pToParserRSS) const
 {
-	STL_FOR_ALL_CONST(getType().m_params, param_it)
+	for (const auto& param: getType().m_params)
 	{
-		RDOResource::Params::const_iterator value_it = operator[](param_it->name());
+		RDOResource::Params::const_iterator value_it = operator[](param.name());
 		if (value_it == end())
 			return false;
 
 		parser::LPRDOValue pValue = rdo::Factory<parser::RDOValue>::create(value_it->second);
 		ASSERT(pValue);
-		pValue = param_it->type()->value_cast(pValue);
+		pValue = param.type()->value_cast(pValue);
 		/// @todo а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
 		pValue->setSrcInfo(pToParserRSS->src_info());
 		pToParserRSS->addParam(pValue);
@@ -324,19 +324,19 @@ RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 	, m_rtp  (rtp                                 )
 	, m_id   (parser::RDORSSResource::UNDEFINED_ID)
 {
-	STL_FOR_ALL_CONST(m_rtp.m_params, param_it)
+	for (const auto& param: m_rtp.m_params)
 	{
-		parser::LPRDOValue pValue = rdo::Factory<parser::RDOValue>::create(param_it->type(), param_it->src_info());
+		parser::LPRDOValue pValue = rdo::Factory<parser::RDOValue>::create(param.type(), param.src_info());
 		ASSERT(pValue);
-		if (param_it->hasDefault())
+		if (param.hasDefault())
 		{
-			pValue = param_it->getDefault();
+			pValue = param.getDefault();
 		}
-		else if (param_it->hasRange())
+		else if (param.hasRange())
 		{
-			pValue = param_it->getMin();
+			pValue = param.getMin();
 		}
-		m_params[param_it->name()] = pValue;
+		m_params[param.name()] = pValue;
 	}
 }
 
@@ -348,9 +348,9 @@ RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 RDOResourceList::RDOResourceList(CREF(parser::LPRDOParser) pParser)
 	: RDOList<RDOResource>(pParser)
 {
-	STL_FOR_ALL_CONST(m_pParser->getRSSResources(), rss_it)
+	for (const auto& parser_rss: m_pParser->getRSSResources())
 	{
-		RDOResource rss(*rss_it);
+		const RDOResource rss(parser_rss);
 		m_list.push_back(rss);
 	}
 }

@@ -178,9 +178,9 @@ std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalc() const
 {
 	std::vector<rdo::runtime::LPRDOCalc> calcList;
 	std::vector<rdo::runtime::RDOValue> paramList;
-	STL_FOR_ALL_CONST(params(), it)
+	for (const auto& param: params())
 	{
-		paramList.push_back(it->param()->value());
+		paramList.push_back(param.param()->value());
 	}
 
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(

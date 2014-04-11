@@ -21,20 +21,20 @@ OPEN_RDO_RUNTIME_NAMESPACE
 inline LPIBaseOperation RDOOrderDPTPrior::sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container)
 {
 	BaseOperationList priorContainer;
-	STL_FOR_ALL_CONST(container, it)
+	for (const auto& operation: container)
 	{
-		if (it->query_cast<IBaseOperation>()->onCheckCondition(pRuntime))
+		if (operation.query_cast<IBaseOperation>()->onCheckCondition(pRuntime))
 		{
-			priorContainer.push_back(*it);
+			priorContainer.push_back(operation);
 		}
 	}
 
 	if (priorContainer.empty())
 		return NULL;
 
-	STL_FOR_ALL_CONST(priorContainer, it)
+	for (const auto& operation: container)
 	{
-		LPIPriority pPattern = *it;
+		LPIPriority pPattern = operation;
 		if (pPattern)
 		{
 			LPRDOCalc pPriorCalc = pPattern->getPrior();

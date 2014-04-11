@@ -72,9 +72,9 @@ void RDOFunListCalc::addCase(CREF(LPRDOCalc) pCase, CREF(LPRDOCalcConst) pResult
 RDOValue RDOFunListCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ResultList::const_iterator resultIt = m_resultList.begin();
-	STL_FOR_ALL_CONST(m_caseList, caseIt)
+	for (const auto& calc: m_caseList)
 	{
-		if ((*caseIt)->calcValue(pRuntime).getAsBool())
+		if (calc->calcValue(pRuntime).getAsBool())
 		{
 			return (*resultIt)->calcValue(pRuntime);
 		}
@@ -101,9 +101,9 @@ void RDOFunAlgorithmicCalc::addCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc
 RDOValue RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	RDOCalcList::const_iterator actionIt = m_actionList.begin();
-	STL_FOR_ALL_CONST(m_conditionList, conditionIt)
+	for (const auto& condition: m_conditionList)
 	{
-		if ((*conditionIt)->calcValue(pRuntime).getAsBool())
+		if (condition->calcValue(pRuntime).getAsBool())
 		{
 			return (*actionIt)->calcValue(pRuntime);
 		}
@@ -185,15 +185,15 @@ CREF(LPRDOCalc) RDOCalcFunctionCaller::function() const
 RDOValue RDOCalcFunctionCaller::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->pushFuncTop();
-	STL_FOR_ALL_CONST(m_paramList, paramIt)
+	for (const auto& param: m_paramList)
 	{
-		pRuntime->pushFuncArgument((*paramIt)->calcValue(pRuntime));
+		pRuntime->pushFuncArgument(param->calcValue(pRuntime));
 	}
 	pRuntime->resetFuncTop(m_paramList.size());
 
 	RDOValue value = m_pFunction->calcValue(pRuntime);
 
-	STL_FOR_ALL_CONST(m_paramList, paramIt)
+	for (const auto& param: m_paramList)
 	{
 		pRuntime->popFuncArgument();
 	}
