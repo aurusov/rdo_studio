@@ -221,10 +221,10 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 	CPTR(char) right;
 
 	RDOSMR::StringTable tmp = parser.getSMR()->getExternalModelList();
-	STL_FOR_ALL_CONST(tmp, it)
+	for (const auto& pair: tmp)
 	{
-		left  = it->first.c_str();
-		right = it->second.c_str();
+		left  = pair.first.c_str();
+		right = pair.second.c_str();
 
 		try
 		{
@@ -324,27 +324,27 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			}
 
 			//! Вывели все типы ресурсов (исключительно для теста)
-			STL_FOR_ALL_CONST(rtpList, rtp_it)
+			for (const auto& rtp: rtpList)
 			{
-				TRACE1("rtp.name = %s\n", rtp_it->name().c_str());
-				STL_FOR_ALL_CONST(rtp_it->m_params, param_it)
+				TRACE1("rtp.name = %s\n", rtp.name().c_str());
+				for (const auto& param: rtp.m_params)
 				{
-					tstring info = rdo::format("  param: %s: %s", param_it->name().c_str() , param_it->typeStr().c_str());
-					if (param_it->hasRange())
+					tstring info = rdo::format("  param: %s: %s", param.name().c_str() , param.typeStr().c_str());
+					if (param.hasRange())
 					{
-						info = rdo::format("%s [%s..%s]", info.c_str(), param_it->getMin()->getAsString().c_str(), param_it->getMax()->getAsString().c_str());
+						info = rdo::format("%s [%s..%s]", info.c_str(), param.getMin()->getAsString().c_str(), param.getMax()->getAsString().c_str());
 					}
-					if (param_it->hasDefault())
+					if (param.hasDefault())
 					{
-						info = rdo::format("%s = %s", info.c_str(), param_it->getDefault()->getAsString().c_str());
+						info = rdo::format("%s = %s", info.c_str(), param.getDefault()->getAsString().c_str());
 					}
 					TRACE1("%s\n", info.c_str());
 
-					if (param_it->typeID() ==  rdo::runtime::RDOType::t_enum)
+					if (param.typeID() ==  rdo::runtime::RDOType::t_enum)
 					{
-						STL_FOR_ALL_CONST(param_it->getEnum()->getEnums(), enum_it)
+						for (const auto& enumValue: param.getEnum()->getEnums())
 						{
-							TRACE1("  - enum - %s\n", enum_it->c_str());
+							TRACE1("  - enum - %s\n", enumValue.c_str());
 						}
 					}
 				}
@@ -410,12 +410,12 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 
 			//! Вывели все ресурсы для теста
 			//! rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
-			STL_FOR_ALL_CONST(rssList, rss_it)
+			for (const auto& rss: rssList)
 			{
-				TRACE2("rss.name = %s: %s\n", rss_it->name().c_str(), rss_it->getType().name().c_str());
-				STL_FOR_ALL_CONST((*rss_it), param_it)
+				TRACE2("rss.name = %s: %s\n", rss.name().c_str(), rss.getType().name().c_str());
+				for (const auto& param: rss)
 				{
-					TRACE2("  %s = %s\n", param_it->first.c_str(), param_it->second->getAsString().c_str());
+					TRACE2("  %s = %s\n", param.first.c_str(), param.second->getAsString().c_str());
 				}
 			}
 

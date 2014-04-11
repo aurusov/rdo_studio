@@ -191,12 +191,12 @@ void RDOSMR::setSeed(CREF(RDOParserSrcInfo) seq_info, int base)
 
 void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, REF(LPRDOFUNLogic) pLogic)
 {
-	STL_FOR_ALL_CONST(m_breakPointList, it)
+	for (const auto& breakPoint: m_breakPointList)
 	{
-		if ((*it)->src_text() == src_info.src_text())
+		if (breakPoint->src_text() == src_info.src_text())
 		{
 			Converter::s_converter()->error().push_only(src_info, rdo::format("Точка останова с именем '%s' уже существует", src_info.src_text().c_str()));
-			Converter::s_converter()->error().push_only((*it)->src_info(), "См. первое определение");
+			Converter::s_converter()->error().push_only(breakPoint->src_info(), "См. первое определение");
 			Converter::s_converter()->error().push_done();
 		}
 	}

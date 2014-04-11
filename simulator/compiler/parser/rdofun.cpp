@@ -49,9 +49,9 @@ void funerror(const char* message)
 // --------------------------------------------------------------------------------
 void RDOFUNDoubleToIntByResult::roundCalc()
 {
-	STL_FOR_ALL(m_intOrDouble, it)
+	for (const auto& intOrDouble: m_intOrDouble)
 	{
-		(*it)->needRound();
+		intOrDouble->needRound();
 	}
 }
 

@@ -64,9 +64,9 @@ ruint RDOSimulatorTrace::getResourceId()
 	else
 	{
 #ifdef _DEBUG
-		STL_FOR_ALL(freeResourcesIds, it)
+		for (const auto& id: freeResourcesIds)
 		{
-			TRACE1("getFreeResourceId: %d\n", *it);
+			TRACE1("getFreeResourceId: %d\n", id);
 		}
 #endif
 		ruint id = freeResourcesIds.back();

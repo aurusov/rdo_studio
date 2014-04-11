@@ -61,9 +61,9 @@ void RDOCalcLocalVariableList::addCalcLocalVariable(CREF(LPRDOCalc) pCalc)
 
 RDOValue RDOCalcLocalVariableList::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	STL_FOR_ALL(m_calcLocalVariableList, calc_it)
+	for (const auto& calc: m_calcLocalVariableList)
 	{
-		(*calc_it)->calcValue(pRuntime);
+		calc->calcValue(pRuntime);
 	}
 	return RDOValue();
 }

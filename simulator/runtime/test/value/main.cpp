@@ -98,7 +98,7 @@ void compareValue(CREF(T1) param1, CREF(T2) param2, CREF(RDOType::TypeID) type1,
 	value1 = val1;
 	value2 = val2;
 	value1 += value2;
-	BOOST_CHECK(value1          == T1(param1 + param2));
+	BOOST_CHECK(value1 == T1(param1 + param2));
 	BOOST_CHECK(value1.typeID() == type1);
 	value1 -= value2;
 	BOOST_CHECK(value1 == param1);
@@ -132,11 +132,11 @@ void compareChr(CREF(T1) param1, CREF(T2) param2)
 	value1 += value2;
 	BOOST_CHECK(value1 == val1 + ch1);
 	value1 -= value2;
-	BOOST_CHECK(value1 == val1      );
+	BOOST_CHECK(value1 == val1);
 	value1 *= value2;
 	BOOST_CHECK(value1 == val1 * ch1);
 	value1 /= value2;
-	BOOST_CHECK(value1 == val1      );
+	BOOST_CHECK(value1 == val1);
 
 	compare(value1, value2);
 }
@@ -145,17 +145,17 @@ BOOST_AUTO_TEST_CASE(RDOValue_String)
 {
 	const tstring str1 = "qqq";
 	RDOValue value1(str1);
-	BOOST_CHECK(value1.getString  () == str1);
+	BOOST_CHECK(value1.getString() == str1);
 	BOOST_CHECK(value1.getAsString() == str1);
 
 	RDOValue value2 = value1;
-	BOOST_CHECK(value2.getString  () == str1);
+	BOOST_CHECK(value2.getString() == str1);
 	BOOST_CHECK(value2.getAsString() == str1);
 	BOOST_CHECK(value2 == value1);
 
 	const tstring str2 = "aaa";
 	value2 += str2;
-	BOOST_CHECK(value2.getString  () == str1 + str2);
+	BOOST_CHECK(value2.getString() == str1 + str2);
 	BOOST_CHECK(value2.getAsString() == str1 + str2);
 }
 
@@ -341,7 +341,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Bool)
 	RDOValue value3(bool3);
 	RDOValue value4(bool4);
 
-	BOOST_CHECK(value1.getBool     ()     );
+	BOOST_CHECK(value1.getBool     ());
 	BOOST_CHECK(value1.getInt      () == 1);
 	BOOST_CHECK(value1.getUInt     () == 1);
 	BOOST_CHECK(value1.getEnumAsInt() == 1);
@@ -380,34 +380,34 @@ BOOST_AUTO_TEST_CASE(RDOValue_Enum)
 	pEnum->add("test2");
 	pEnum->add("test3");
 	BOOST_CHECK(pEnum->findEnum("test1") == 1);
-	BOOST_CHECK(pEnum->exist   ("test3")     );
+	BOOST_CHECK(pEnum->exist   ("test3"));
 
 	RDOValue value(pEnum);
 	BOOST_CHECK(value.typeID      () == RDOType::t_enum);
-	BOOST_CHECK(value.getEnum     () == pEnum          );
-	BOOST_CHECK(value.getInt      () == 0              );
-	BOOST_CHECK(value.getDouble   () == 0              );
-	BOOST_CHECK(value.getEnumAsInt() == 0              );
-	BOOST_CHECK(!value.getAsBool  ()                   );
-	BOOST_CHECK(value.getAsString () == "test0"        );
+	BOOST_CHECK(value.getEnum     () == pEnum);
+	BOOST_CHECK(value.getInt      () == 0);
+	BOOST_CHECK(value.getDouble   () == 0);
+	BOOST_CHECK(value.getEnumAsInt() == 0);
+	BOOST_CHECK(!value.getAsBool  ());
+	BOOST_CHECK(value.getAsString () == "test0");
 
 	RDOValue value1(pEnum, "test2");
 	BOOST_CHECK(value1.typeID      () == RDOType::t_enum);
-	BOOST_CHECK(value1.getEnum     () == pEnum          );
-	BOOST_CHECK(value1.getInt      () == 2              );
-	BOOST_CHECK(value1.getDouble   () == 2              );
-	BOOST_CHECK(value1.getEnumAsInt() == 2              );
-	BOOST_CHECK(value1.getAsBool   ()                   );
-	BOOST_CHECK(value1.getAsString () == "test2"        );
+	BOOST_CHECK(value1.getEnum     () == pEnum);
+	BOOST_CHECK(value1.getInt      () == 2);
+	BOOST_CHECK(value1.getDouble   () == 2);
+	BOOST_CHECK(value1.getEnumAsInt() == 2);
+	BOOST_CHECK(value1.getAsBool   ());
+	BOOST_CHECK(value1.getAsString () == "test2");
 
 	RDOValue value2(pEnum, 2);
 	BOOST_CHECK(value2.typeID      () == RDOType::t_enum);
-	BOOST_CHECK(value2.getEnum     () == pEnum          );
-	BOOST_CHECK(value2.getInt      () == 2              );
-	BOOST_CHECK(value2.getDouble   () == 2              );
-	BOOST_CHECK(value2.getEnumAsInt() == 2              );
-	BOOST_CHECK(value2.getAsBool   ()                   );
-	BOOST_CHECK(value2.getAsString () == "test2"        );
+	BOOST_CHECK(value2.getEnum     () == pEnum);
+	BOOST_CHECK(value2.getInt      () == 2);
+	BOOST_CHECK(value2.getDouble   () == 2);
+	BOOST_CHECK(value2.getEnumAsInt() == 2);
+	BOOST_CHECK(value2.getAsBool   ());
+	BOOST_CHECK(value2.getAsString () == "test2");
 
 }
 
@@ -504,12 +504,12 @@ void testUndef(CREF(T1) param1)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Undefined)
 {
-	testUndef<rsint>  (10       );
-	testUndef<ruint>  (10       );
-	testUndef<double> (10.5     );
+	testUndef<rsint>  (10);
+	testUndef<ruint>  (10);
+	testUndef<double> (10.5);
 	testUndef<tstring>("abc");
-	testUndef<tchar>  ('a'  );
-	testUndef<rbool>  (true     );
+	testUndef<tchar>  ('a');
+	testUndef<rbool>  (true);
 
 	rsint val1 = 10;
 	RDOValue value1(val1);
@@ -554,7 +554,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 	BOOST_CHECK(pResourceFactory);
 
 	std::vector<RDOValue> paramList;
-	paramList.push_back(RDOValue(1  ));
+	paramList.push_back(RDOValue(1));
 	paramList.push_back(RDOValue(2.2));
 	paramList.push_back(RDOValue("3"));
 

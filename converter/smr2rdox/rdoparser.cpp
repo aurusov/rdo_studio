@@ -154,21 +154,21 @@ tstring Converter::getChanges() const
 	std::stringstream stream;
 	stream << "$Changes" << std::endl;
 	ruint changes_max_length = 0;
-	STL_FOR_ALL_CONST(m_changes, change_it)
+	for (const auto& change: m_changes)
 	{
-		if (change_it->m_name.length() > changes_max_length)
+		if (change.m_name.length() > changes_max_length)
 		{
-			changes_max_length = change_it->m_name.length();
+			changes_max_length = change.m_name.length();
 		}
 	}
-	STL_FOR_ALL_CONST(m_changes, change_it)
+	for (const auto& change: m_changes)
 	{
-		stream << "  " << change_it->m_name;
-		for (ruint i = change_it->m_name.length(); i < changes_max_length; i++)
+		stream << "  " << change.m_name;
+		for (ruint i = change.m_name.length(); i < changes_max_length; i++)
 		{
 			stream << " ";
 		}
-		stream << "  = " << change_it->m_value << std::endl;
+		stream << "  = " << change.m_value << std::endl;
 	}
 	return stream.str();
 }
@@ -182,24 +182,18 @@ tstring Converter::getModelStructure()
 
 	// RTP
 	modelStructure << std::endl << std::endl << "$Resource_type" << std::endl;
-	STL_FOR_ALL_CONST(m_allRTPResType, rtp_it)
-	{
-		(*rtp_it)->writeModelStructure(modelStructure);
-	}
+	for (const auto& rtp: m_allRTPResType)
+		rtp->writeModelStructure(modelStructure);
 
 	// RSS
 	modelStructure << std::endl << "$Resources" << std::endl;
-	STL_FOR_ALL_CONST(m_allRSSResource, rss_it)
-	{
-		(*rss_it)->writeModelStructure(modelStructure);
-	}
+	for (const auto& rss: m_allRSSResource)
+		rss->writeModelStructure(modelStructure);
 
 	// PAT
 	modelStructure << std::endl << "$Pattern" << std::endl;
-	STL_FOR_ALL_CONST(m_allPATPattern, pat_it)
-	{
-		(*pat_it)->writeModelStructure(modelStructure);
-	}
+	for (const auto& pat: m_allPATPattern)
+		pat->writeModelStructure(modelStructure);
 
 	// OPR/DPT
 	ruint counter = 1;
@@ -220,9 +214,9 @@ tstring Converter::getModelStructure()
 	// PMD
 	modelStructure << std::endl << "$Watching" << std::endl;
 	ruint watching_max_length = 0;
-	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
+	for (const auto& watching: m_pRuntime->getResult())
 	{
-		LPITrace          trace     = *watching_it;
+		LPITrace          trace     = watching;
 		LPIName           name      = trace;
 		LPIModelStructure structure = trace;
 		if (trace && name && structure)
@@ -233,9 +227,9 @@ tstring Converter::getModelStructure()
 			}
 		}
 	}
-	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
+	for (const auto& watching: m_pRuntime->getResult())
 	{
-		LPITrace          trace     = *watching_it;
+		LPITrace          trace     = watching;
 		LPIName           name      = trace;
 		LPIModelStructure structure = trace;
 		if (trace && name && structure)
@@ -533,10 +527,10 @@ void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 
 void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 {
-	STL_FOR_ALL_CONST(getDPTSearchs(), it_search)
+	for (const auto& search: getDPTSearchs())
 	{
-		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if((*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
-		if (it_search_act != (*it_search)->getActivities().end())
+		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if(search->getActivities().begin(), search->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
+		if (it_search_act != search->getActivities().end())
 		{
 			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
 			error().push_only((*it_search_act)->src_info(), "См. первое определение");
@@ -544,20 +538,20 @@ void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 //			error("Activity name: " + *_name + " already defined");
 		}
 	}
-	STL_FOR_ALL_CONST(getDPTSomes(), it_some)
+	for (const auto& some: getDPTSomes())
 	{
-		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if((*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
-		if (it_some_act != (*it_some)->getActivities().end())
+		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if(some->getActivities().begin(), some->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
+		if (it_some_act != some->getActivities().end())
 		{
 			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
 			error().push_only((*it_some_act)->src_info(), "См. первое определение");
 			error().push_done();
 		}
 	}
-	STL_FOR_ALL_CONST(getDPTPriors(), it_prior)
+	for (const auto& prior: getDPTPriors())
 	{
-		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if((*it_prior)->getActivities().begin(), (*it_prior)->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
-		if (it_prior_act != (*it_prior)->getActivities().end())
+		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if(prior->getActivities().begin(), prior->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
+		if (it_prior_act != prior->getActivities().end())
 		{
 			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
 			error().push_only((*it_prior_act)->src_info(), "См. первое определение");

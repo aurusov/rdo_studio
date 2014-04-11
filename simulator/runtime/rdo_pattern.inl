@@ -46,16 +46,16 @@ inline void RDOPattern::runCalcs(REF(CalcList) calcList, CREF(LPRDORuntime) pRun
 {
 	LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
 	pRuntime->getMemoryStack()->push(pLocalMemory);
-	STL_FOR_ALL(calcList, calcIt)
-		(*calcIt)->calcValue(pRuntime);
+	for (const auto& calc: calcList)
+		calc->calcValue(pRuntime);
 	pRuntime->getMemoryStack()->pop();
 }
 
 inline rbool RDOPattern::runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime)
 {
-	STL_FOR_ALL(calcList, calcIt)
+	for (const auto& calc: calcList)
 	{
-		if (!(*calcIt)->calcValue(pRuntime).getAsBool())
+		if (!calc->calcValue(pRuntime).getAsBool())
 		{
 			return false;
 		}

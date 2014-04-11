@@ -116,16 +116,16 @@ void RDOParserRSSPost::parse(PTR(Converter) pParser)
 
 	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
 #ifdef RDOSIM_COMPATIBLE
-	STL_FOR_ALL_CONST(pParser->getRTPResTypes(), rtp_it)
+	for (const auto& rtp: pParser->getRTPResTypes())
 	{
 #endif
-		STL_FOR_ALL_CONST(pParser->getRSSResources(), rss_it)
+		for (const auto& rss: pParser->getRSSResources())
 		{
 #ifdef RDOSIM_COMPATIBLE
-			if ((*rss_it)->getType() == *rtp_it)
+			if (rss->getType() == rtp)
 			{
 #endif
-				rdo::runtime::LPRDOCalc calc = (*rss_it)->createCalc();
+				rdo::runtime::LPRDOCalc calc = rss->createCalc();
 				pParser->runtime()->addInitCalc(calc);
 #ifdef RDOSIM_COMPATIBLE
 			}

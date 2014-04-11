@@ -181,8 +181,8 @@ inline NullElement::NullElement()
 
 inline Frame::~Frame()
 {
-	STL_FOR_ALL(m_elements, it)
-		delete (*it);
+	for (const auto& element: m_elements)
+		delete element;
 
 	m_elements.clear();
 }

@@ -128,22 +128,20 @@ Document::TypeOut Document::typeToOut(CREF(Type) typeIn) const
 
 void Document::close()
 {
-	STL_FOR_ALL_CONST(m_memoryFileList, memoryIt)
+	for (const auto& memory: m_memoryFileList)
 	{
-		TypeOut typeOut = typeToOut(memoryIt->first);
+		TypeOut typeOut = typeToOut(memory.first);
 		if (typeOut != rdo::converter::smr2rdox::UNDEFINED_OUT)
 		{
 			LPFileStream pFileStream = getFileStream(typeOut);
 			ASSERT(pFileStream);
-			memoryIt->second->get(*pFileStream.get());
+			memory.second->get(*pFileStream.get());
 		}
 	}
 	m_memoryFileList.clear();
 
-	STL_FOR_ALL_CONST(m_streamFileList, fileIt)
-	{
-		fileIt->second->close();
-	}
+	for (const auto& file: m_streamFileList)
+		file.second->close();
 	m_streamFileList.clear();
 }
 

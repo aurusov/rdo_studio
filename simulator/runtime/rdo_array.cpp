@@ -75,15 +75,15 @@ void RDOArrayValue::erase(CREF(LPRDOArrayIterator) pFirst, CREF(LPRDOArrayIterat
 tstring RDOArrayValue::getAsString() const
 {
 	tstring result("[");
-	STL_FOR_ALL_CONST(m_container, it)
+	for (Container::const_iterator item = m_container.begin(); item != m_container.end(); ++item)
 	{
-		if (it == m_container.begin())
+		if (item == m_container.begin())
 		{
-			result = rdo::format("%s%s", result.c_str(), it->getAsString().c_str());
+			result = rdo::format("%s%s", result.c_str(), item->getAsString().c_str());
 		}
 		else
 		{
-			result = rdo::format("%s, %s", result.c_str(), it->getAsString().c_str());
+			result = rdo::format("%s, %s", result.c_str(), item->getAsString().c_str());
 		}
 	}
 	return rdo::format("%s]", result.c_str());

@@ -1,6 +1,6 @@
 # Java skeleton for Bison -*- autoconf -*-
 
-# Copyright (C) 2007-2012 Free Software Foundation, Inc.
+# Copyright (C) 2007, 2008 Free Software Foundation, Inc.
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,9 +22,10 @@ m4_ifval(m4_defn([b4_symbol_destructors]),
         [b4_fatal([%s: %%destructor does not make sense in Java], [b4_skeleton])],
         [])
 
-b4_output_begin([b4_parser_file_name])
+m4_divert_push(0)dnl
+@output(b4_parser_file_name@)
 b4_copyright([Skeleton implementation for Bison LALR(1) parsers in Java],
-             [2007-2012])
+  [2007, 2008])
 
 b4_percent_define_ifdef([package], [package b4_percent_define_get([package]);
 ])[/* First part of user declarations.  */
@@ -101,7 +102,7 @@ b4_token_enums(b4_tokens)
   private ]b4_location_type[ yylloc (YYStack rhs, int n)
   {
     if (n > 0)
-      return new ]b4_location_type[ (rhs.locationAt (n-1).begin, rhs.locationAt (0).end);
+      return new ]b4_location_type[ (rhs.locationAt (1).begin, rhs.locationAt (n).end);
     else
       return new ]b4_location_type[ (rhs.locationAt (0).end);
   }]])[
@@ -129,7 +130,7 @@ b4_token_enums(b4_tokens)
     /**
      * Entry point for the scanner.  Returns the token identifier corresponding
      * to the next token and prepares to return the semantic value
-     * ]b4_locations_if([and beginning/ending positions ])[of the token.
+     * ]b4_locations_if([and beginning/ending positions ])[of the token. 
      * @@return the token identifier corresponding to the next token. */
     int yylex () ]b4_maybe_throws([b4_lex_throws])[;
 
@@ -227,11 +228,11 @@ b4_lexer_if([[
 
     public int size = 16;
     public int height = -1;
-
+    
     public final void push (int state, ]b4_yystype[ value]dnl
-			    b4_locations_if([, ]b4_location_type[ loc])[) {
+    	   	      	    b4_locations_if([, ]b4_location_type[ loc])[) {
       height++;
-      if (size == height)
+      if (size == height) 
         {
 	  int[] newStateStack = new int[size * 2];
 	  System.arraycopy (stateStack, 0, newStateStack, 0, height);
@@ -240,7 +241,7 @@ b4_lexer_if([[
 	  ]b4_location_type[[] newLocStack = new ]b4_location_type[[size * 2];
 	  System.arraycopy (locStack, 0, newLocStack, 0, height);
 	  locStack = newLocStack;]])
-
+	  
 	  b4_yystype[[] newValueStack = new ]b4_yystype[[size * 2];
 	  System.arraycopy (valueStack, 0, newValueStack, 0, height);
 	  valueStack = newValueStack;
@@ -254,14 +255,14 @@ b4_lexer_if([[
     }
 
     public final void pop () {
-      pop (1);
+      height--;
     }
 
     public final void pop (int num) {
       // Avoid memory leaks... garbage collection is a white lie!
       if (num > 0) {
-	java.util.Arrays.fill (valueStack, height - num + 1, height + 1, null);
-        ]b4_locations_if([[java.util.Arrays.fill (locStack, height - num + 1, height + 1, null);]])[
+	java.util.Arrays.fill (valueStack, height - num + 1, height, null);
+        ]b4_locations_if([[java.util.Arrays.fill (locStack, height - num + 1, height, null);]])[
       }
       height -= num;
     }
@@ -282,8 +283,8 @@ b4_lexer_if([[
     public void print (java.io.PrintStream out)
     {
       out.print ("Stack now");
-
-      for (int i = 0; i <= height; i++)
+      
+      for (int i = 0; i < height; i++)
         {
 	  out.print (' ');
 	  out.print (stateStack[i]);
@@ -307,9 +308,11 @@ b4_lexer_if([[
    * printing an error message.  */
   public static final int YYERROR = 2;
 
-  // Internal return codes that are not supported for user semantic
-  // actions.
-  private static final int YYERRLAB = 3;
+  /**
+   * Returned by a Bison action in order to print an error message and start
+   * error recovery.  */
+  public static final int YYFAIL = 3;
+
   private static final int YYNEWSTATE = 4;
   private static final int YYDEFAULT = 5;
   private static final int YYREDUCE = 6;
@@ -334,7 +337,7 @@ b4_lexer_if([[
 
     /* If YYLEN is nonzero, implement the default value of the action:
        `$$ = $1'.  Otherwise, use the top of the stack.
-
+    
        Otherwise, the following line sets YYVAL to garbage.
        This behavior is undocumented and Bison
        users should not rely upon it.  */
@@ -342,7 +345,7 @@ b4_lexer_if([[
       yyval = yystack.valueAt (yylen - 1);
     else
       yyval = yystack.valueAt (0);
-
+    
     yy_reduce_print (yyn, yystack);
 
     switch (yyn)
@@ -453,14 +456,18 @@ b4_lexer_if([[
     /// Semantic value of the lookahead.
     b4_yystype[ yylval = null;
 
+    int yyresult;
+
     yycdebug ("Starting parse\n");
     yyerrstatus_ = 0;
 
 ]m4_ifdef([b4_initial_action], [
-b4_dollar_pushdef([yylval], [], [yylloc])dnl
-/* User initialization code.  */
-b4_user_initial_action
-b4_dollar_popdef])[]dnl
+m4_pushdef([b4_at_dollar],     [yylloc])dnl
+m4_pushdef([b4_dollar_dollar], [yylval])dnl
+    /* User initialization code.  */
+    b4_user_initial_action
+m4_popdef([b4_dollar_dollar])dnl
+m4_popdef([b4_at_dollar])])dnl
 
   [  /* Initialize the stack.  */
     yystack.push (yystate, yylval]b4_locations_if([, yylloc])[);
@@ -475,19 +482,19 @@ b4_dollar_popdef])[]dnl
         yycdebug ("Entering state " + yystate + "\n");
         if (yydebug > 0)
           yystack.print (yyDebugStream);
-
+    
         /* Accept?  */
         if (yystate == yyfinal_)
           return true;
-
+    
         /* Take a decision.  First try without lookahead.  */
         yyn = yypact_[yystate];
-        if (yy_pact_value_is_default_ (yyn))
+        if (yyn == yypact_ninf_)
           {
             label = YYDEFAULT;
 	    break;
           }
-
+    
         /* Read a lookahead token.  */
         if (yychar == yyempty_)
           {
@@ -495,10 +502,10 @@ b4_dollar_popdef])[]dnl
 	    yychar = yylex ();]
             b4_locations_if([[
 	    yylloc = new ]b4_location_type[(yylexer.getStartPos (),
-				            yylexer.getEndPos ());]])
+	    		   	            yylexer.getEndPos ());]])
             yylval = yylexer.getLVal ();[
           }
-
+    
         /* Convert token to internal form.  */
         if (yychar <= EOF)
           {
@@ -509,58 +516,58 @@ b4_dollar_popdef])[]dnl
           {
 	    yytoken = yytranslate_ (yychar);
 	    yy_symbol_print ("Next token is", yytoken,
-			     yylval]b4_locations_if([, yylloc])[);
+	    		     yylval]b4_locations_if([, yylloc])[);
           }
-
+    
         /* If the proper action on seeing token YYTOKEN is to reduce or to
            detect an error, take that action.  */
         yyn += yytoken;
         if (yyn < 0 || yylast_ < yyn || yycheck_[yyn] != yytoken)
           label = YYDEFAULT;
-
+    
         /* <= 0 means reduce or error.  */
         else if ((yyn = yytable_[yyn]) <= 0)
           {
-	    if (yy_table_value_is_error_ (yyn))
-	      label = YYERRLAB;
+	    if (yyn == 0 || yyn == yytable_ninf_)
+	      label = YYFAIL;
 	    else
 	      {
 	        yyn = -yyn;
 	        label = YYREDUCE;
 	      }
           }
-
+    
         else
           {
             /* Shift the lookahead token.  */
 	    yy_symbol_print ("Shifting", yytoken,
-			     yylval]b4_locations_if([, yylloc])[);
-
+	    		     yylval]b4_locations_if([, yylloc])[);
+    
             /* Discard the token being shifted.  */
             yychar = yyempty_;
-
+    
             /* Count tokens shifted since error; after three, turn off error
                status.  */
             if (yyerrstatus_ > 0)
               --yyerrstatus_;
-
+    
             yystate = yyn;
             yystack.push (yystate, yylval]b4_locations_if([, yylloc])[);
             label = YYNEWSTATE;
           }
         break;
-
+    
       /*-----------------------------------------------------------.
       | yydefault -- do the default action for the current state.  |
       `-----------------------------------------------------------*/
       case YYDEFAULT:
         yyn = yydefact_[yystate];
         if (yyn == 0)
-          label = YYERRLAB;
+          label = YYFAIL;
         else
           label = YYREDUCE;
         break;
-
+    
       /*-----------------------------.
       | yyreduce -- Do a reduction.  |
       `-----------------------------*/
@@ -569,26 +576,24 @@ b4_dollar_popdef])[]dnl
         label = yyaction (yyn, yystack, yylen);
 	yystate = yystack.stateAt (0);
         break;
-
+    
       /*------------------------------------.
       | yyerrlab -- here on detecting error |
       `------------------------------------*/
-      case YYERRLAB:
+      case YYFAIL:
         /* If not already recovering from an error, report this error.  */
         if (yyerrstatus_ == 0)
           {
-            ++yynerrs_;
-            if (yychar == yyempty_)
-              yytoken = yyempty_;
-            yyerror (]b4_locations_if([yylloc, ])[yysyntax_error (yystate, yytoken));
+	    ++yynerrs_;
+	    yyerror (]b4_locations_if([yylloc, ])[yysyntax_error (yystate, yytoken));
           }
-
+    
         ]b4_locations_if([yyerrloc = yylloc;])[
         if (yyerrstatus_ == 3)
           {
 	    /* If just tried and failed to reuse lookahead token after an
 	     error, discard it.  */
-
+    
 	    if (yychar <= EOF)
 	      {
 	      /* Return failure if at end of input.  */
@@ -598,17 +603,17 @@ b4_dollar_popdef])[]dnl
 	    else
 	      yychar = yyempty_;
           }
-
+    
         /* Else will try to reuse lookahead token after shifting the error
            token.  */
         label = YYERRLAB1;
         break;
-
+    
       /*---------------------------------------------------.
       | errorlab -- error raised explicitly by YYERROR.  |
       `---------------------------------------------------*/
       case YYERROR:
-
+    
         ]b4_locations_if([yyerrloc = yystack.locationAt (yylen - 1);])[
         /* Do not reclaim the symbols of the rule which action triggered
            this YYERROR.  */
@@ -617,17 +622,17 @@ b4_dollar_popdef])[]dnl
         yystate = yystack.stateAt (0);
         label = YYERRLAB1;
         break;
-
+    
       /*-------------------------------------------------------------.
       | yyerrlab1 -- common code for both syntax error and YYERROR.  |
       `-------------------------------------------------------------*/
       case YYERRLAB1:
         yyerrstatus_ = 3;	/* Each real token shifted decrements this.  */
-
+    
         for (;;)
           {
 	    yyn = yypact_[yystate];
-	    if (!yy_pact_value_is_default_ (yyn))
+	    if (yyn != yypact_ninf_)
 	      {
 	        yyn += yyterror_;
 	        if (0 <= yyn && yyn <= yylast_ && yycheck_[yyn] == yyterror_)
@@ -637,18 +642,18 @@ b4_dollar_popdef])[]dnl
 		      break;
 	          }
 	      }
-
+    
 	    /* Pop the current state because it cannot handle the error token.  */
-	    if (yystack.height == 0)
+	    if (yystack.height == 1)
 	      return false;
-
+    
 	    ]b4_locations_if([yyerrloc = yystack.locationAt (0);])[
 	    yystack.pop ();
 	    yystate = yystack.stateAt (0);
 	    if (yydebug > 0)
 	      yystack.print (yyDebugStream);
           }
-
+    
 	]b4_locations_if([
 	/* Muck with the stack to setup for yylloc.  */
 	yystack.push (0, null, yylloc);
@@ -659,16 +664,16 @@ b4_dollar_popdef])[]dnl
         /* Shift the error token.  */
         yy_symbol_print ("Shifting", yystos_[yyn],
 			 yylval]b4_locations_if([, yyloc])[);
-
+    
         yystate = yyn;
 	yystack.push (yyn, yylval]b4_locations_if([, yyloc])[);
         label = YYNEWSTATE;
         break;
-
+    
         /* Accept.  */
       case YYACCEPT:
         return true;
-
+    
         /* Abort.  */
       case YYABORT:
         return false;
@@ -680,96 +685,44 @@ b4_dollar_popdef])[]dnl
   {
     if (errorVerbose)
       {
-        /* There are many possibilities here to consider:
-           - Assume YYFAIL is not used.  It's too flawed to consider.
-             See
-             <http://lists.gnu.org/archive/html/bison-patches/2009-12/msg00024.html>
-             for details.  YYERROR is fine as it does not invoke this
-             function.
-           - If this state is a consistent state with a default action,
-             then the only way this function was invoked is if the
-             default action is an error action.  In that case, don't
-             check for expected tokens because there are none.
-           - The only way there can be no lookahead present (in tok) is
-             if this state is a consistent state with a default action.
-             Thus, detecting the absence of a lookahead is sufficient to
-             determine that there is no unexpected or expected token to
-             report.  In that case, just report a simple "syntax error".
-           - Don't assume there isn't a lookahead just because this
-             state is a consistent state with a default action.  There
-             might have been a previous inconsistent state, consistent
-             state with a non-default action, or user semantic action
-             that manipulated yychar.  (However, yychar is currently out
-             of scope during semantic actions.)
-           - Of course, the expected token list depends on states to
-             have correct lookahead information, and it depends on the
-             parser not to perform extra reductions after fetching a
-             lookahead from the scanner and before detecting a syntax
-             error.  Thus, state merging (from LALR or IELR) and default
-             reductions corrupt the expected token list.  However, the
-             list is correct for canonical LR with one exception: it
-             will still contain any token that will not be accepted due
-             to an error action in a later state.
-        */
-        if (tok != yyempty_)
+        int yyn = yypact_[yystate];
+        if (yypact_ninf_ < yyn && yyn <= yylast_)
           {
-            // FIXME: This method of building the message is not compatible
-            // with internationalization.
-            StringBuffer res =
-              new StringBuffer ("syntax error, unexpected ");
-            res.append (yytnamerr_ (yytname_[tok]));
-            int yyn = yypact_[yystate];
-            if (!yy_pact_value_is_default_ (yyn))
-              {
-                /* Start YYX at -YYN if negative to avoid negative
-                   indexes in YYCHECK.  In other words, skip the first
-                   -YYN actions for this state because they are default
-                   actions.  */
-                int yyxbegin = yyn < 0 ? -yyn : 0;
-                /* Stay within bounds of both yycheck and yytname.  */
-                int yychecklim = yylast_ - yyn + 1;
-                int yyxend = yychecklim < yyntokens_ ? yychecklim : yyntokens_;
-                int count = 0;
-                for (int x = yyxbegin; x < yyxend; ++x)
-                  if (yycheck_[x + yyn] == x && x != yyterror_
-                      && !yy_table_value_is_error_ (yytable_[x + yyn]))
-                    ++count;
-                if (count < 5)
-                  {
-                    count = 0;
-                    for (int x = yyxbegin; x < yyxend; ++x)
-                      if (yycheck_[x + yyn] == x && x != yyterror_
-                          && !yy_table_value_is_error_ (yytable_[x + yyn]))
-                        {
-                          res.append (count++ == 0 ? ", expecting " : " or ");
-                          res.append (yytnamerr_ (yytname_[x]));
-                        }
-                  }
-              }
-            return res.toString ();
+	    StringBuffer res;
+
+	    /* Start YYX at -YYN if negative to avoid negative indexes in
+	       YYCHECK.  */
+	    int yyxbegin = yyn < 0 ? -yyn : 0;
+
+	    /* Stay within bounds of both yycheck and yytname.  */
+	    int yychecklim = yylast_ - yyn + 1;
+	    int yyxend = yychecklim < yyntokens_ ? yychecklim : yyntokens_;
+	    int count = 0;
+	    for (int x = yyxbegin; x < yyxend; ++x)
+	      if (yycheck_[x + yyn] == x && x != yyterror_)
+	        ++count;
+
+	    // FIXME: This method of building the message is not compatible
+	    // with internationalization.
+	    res = new StringBuffer ("syntax error, unexpected ");
+	    res.append (yytnamerr_ (yytname_[tok]));
+	    if (count < 5)
+	      {
+	        count = 0;
+	        for (int x = yyxbegin; x < yyxend; ++x)
+	          if (yycheck_[x + yyn] == x && x != yyterror_)
+		    {
+		      res.append (count++ == 0 ? ", expecting " : " or ");
+		      res.append (yytnamerr_ (yytname_[x]));
+		    }
+	      }
+	    return res.toString ();
           }
       }
 
     return "syntax error";
   }
 
-  /**
-   * Whether the given <code>yypact_</code> value indicates a defaulted state.
-   * @@param yyvalue   the value to check
-   */
-  private static boolean yy_pact_value_is_default_ (int yyvalue)
-  {
-    return yyvalue == yypact_ninf_;
-  }
-
-  /**
-   * Whether the given <code>yytable_</code> value indicates a syntax error.
-   * @@param yyvalue   the value to check
-   */
-  private static boolean yy_table_value_is_error_ (int yyvalue)
-  {
-    return yyvalue == yytable_ninf_;
-  }
 
   /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
      STATE-NUM.  */
@@ -779,9 +732,9 @@ b4_dollar_popdef])[]dnl
     ]b4_pact[
   };
 
-  /* YYDEFACT[S] -- default reduction number in state S.  Performed when
-     YYTABLE doesn't specify something else to do.  Zero means the
-     default is an error.  */
+  /* YYDEFACT[S] -- default rule to reduce with in state S when YYTABLE
+     doesn't specify something else to do.  Zero means the default is an
+     error.  */
   private static final ]b4_int_type_for([b4_defact])[ yydefact_[] =
   {
     ]b4_defact[
@@ -802,7 +755,7 @@ b4_dollar_popdef])[]dnl
 
   /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
      positive, shift that token.  If negative, reduce the rule which
-     number is the opposite.  If YYTABLE_NINF_, syntax error.  */
+     number is the opposite.  If zero, do what YYDEFACT says.  */
   private static final ]b4_int_type_for([b4_table])[ yytable_ninf_ = ]b4_table_ninf[;
   private static final ]b4_int_type_for([b4_table])[
   yytable_[] =
@@ -889,7 +842,7 @@ b4_dollar_popdef])[]dnl
     for (int yyi = 0; yyi < yynrhs; yyi++)
       yy_symbol_print ("   $" + (yyi + 1) + " =",
 		       yyrhs_[yyprhs_[yyrule] + yyi],
-		       ]b4_rhs_value(yynrhs, yyi + 1)b4_locations_if([,
+		       ]b4_rhs_value(yynrhs, yyi + 1)b4_locations_if([, 
 		       b4_rhs_location(yynrhs, yyi + 1)])[);
   }
 
@@ -924,4 +877,4 @@ b4_percent_code_get[]dnl
 }
 
 b4_epilogue
-b4_output_end()
+m4_divert_pop(0)dnl

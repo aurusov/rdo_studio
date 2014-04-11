@@ -36,9 +36,9 @@ Array createArray(CREF(Container) data)
 	rdo::runtime::LPRDOArrayValue pValue = rdo::Factory<rdo::runtime::RDOArrayValue>::create(pType);
 	ASSERT(pValue);
 
-	STL_FOR_ALL_CONST(data, it)
+	for (const auto& item: data)
 	{
-		pValue->push_back(rdo::runtime::RDOValue(*it));
+		pValue->push_back(rdo::runtime::RDOValue(item));
 	}
 
 	return std::make_pair(pValue, rdo::runtime::RDOValue(pType, pValue));

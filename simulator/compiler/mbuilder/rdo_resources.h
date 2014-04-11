@@ -181,9 +181,9 @@ public:
 		{
 			parser::LPRDOEnumType pEnum = rdo::Factory<parser::RDOEnumType>::create();
 			ASSERT(pEnum)
-			STL_FOR_ALL_CONST(pType, it)
+			for (const auto& type: pType)
 			{
-				pEnum->add(parser::RDOValue::getIdentificator(*it));
+				pEnum->add(parser::RDOValue::getIdentificator(type));
 			}
 			// m_default = parser::RDOValue(parser::RDOValue::getIdentificator(m_pDefault->value().getAsString()).value(), pEnum, parser::RDOParserSrcInfo(m_default));
 			m_pType = rdo::Factory<parser::TypeInfo>::create(pEnum, parser::RDOParserSrcInfo());

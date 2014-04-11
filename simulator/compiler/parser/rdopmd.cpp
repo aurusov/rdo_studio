@@ -131,11 +131,11 @@ void RDOResultGroup::append(CREF(LPRDOPMDResult) pResult)
 
 LPRDOPMDResult RDOResultGroup::find(CREF(tstring) resultName) const
 {
-	STL_FOR_ALL_CONST(m_resultList, it)
+	for (const auto& result: m_resultList)
 	{
-		if ((*it)->name() == resultName)
+		if (result->name() == resultName)
 		{
-			return *it;
+			return result;
 		}
 	}
 	return NULL;

@@ -31,11 +31,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 inline LPIBaseOperation RDOOrderSimple::sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container)
 {
-	STL_FOR_ALL(container, it)
+	for (auto& operation: container)
 	{
-		if ((*it)->onCheckCondition(pRuntime))
+		if (operation->onCheckCondition(pRuntime))
 		{
-			return *it;
+			return operation;
 		}
 	}
 	return NULL;
@@ -49,9 +49,9 @@ inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, REF(Base
 	if (container.empty())
 		return NULL;
 
-	STL_FOR_ALL_CONST(container, it)
+	for (const auto& operation: container)
 	{
-		LPIPriority pPattern = *it;
+		LPIPriority pPattern = operation;
 		if (pPattern)
 		{
 			LPRDOCalc pPriorCalc = pPattern->getPrior();
@@ -66,11 +66,11 @@ inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, REF(Base
 		}
 	}
 	std::sort(container.begin(), container.end(), RDODPTActivityCompare(pRuntime));
-	STL_FOR_ALL(container, it)
+	for (auto& operation: container)
 	{
-		if ((*it)->onCheckCondition(pRuntime))
+		if (operation->onCheckCondition(pRuntime))
 		{
-			return *it;
+			return operation;
 		}
 	}
 	return NULL;

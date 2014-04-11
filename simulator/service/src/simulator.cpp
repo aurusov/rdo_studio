@@ -1628,9 +1628,9 @@ void RDOThreadCodeComp::proc(REF(RDOMessageInfo) msg)
 //			sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdo::repository::RDOThreadRepository::FileData(data->file, stream));
 //			data->result = stream.data();
 			CREF(rdo::compiler::parser::RDOParser::RTPResTypeList) rtp_list = m_pParser->getRTPResTypes();
-			STL_FOR_ALL_CONST(rtp_list, rtp_it)
+			for (const auto& rtp: rtp_list)
 			{
-				CREF(rdo::compiler::parser::RDORTPResType::ParamList) param_list = (*rtp_it)->getParams();
+				CREF(rdo::compiler::parser::RDORTPResType::ParamList) param_list = rtp->getParams();
 				rdo::compiler::parser::RDORTPResType::ParamList::const_iterator param_it = param_list.begin();
 				while (param_it != param_list.end())
 				{
