@@ -15,11 +15,18 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <list>
+#include <math.h>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_node.h"
 #include "app/rdo_studio/plugins/game5/src/graph_edge.h"
 // --------------------------------------------------------------------------------
+
+namespace
+{
+	const double HEIGHT = 20;
+	const double WIDTH  = 20;
+} // end anonymous namespace
 
 GraphNode::GraphNode(int nodeID, GraphNode* parentGraphNode, int pathCost, int restPathCost,
                      int moveDirection, int moveCost, int relevantTile, int graphLevel,
@@ -39,6 +46,8 @@ GraphNode::GraphNode(int nodeID, GraphNode* parentGraphNode, int pathCost, int r
 	, m_graphOnLevelOrder     (0              )
 	, m_relatedToSolutionState(false          )
 	, isChecked               (false          )
+	, height                  (HEIGHT         )
+	, width                   (WIDTH          )
 {
 	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
@@ -56,13 +65,13 @@ GraphNode::~GraphNode()
 QRectF GraphNode::boundingRect() const
 {
 	double adjust = 2;
-	return QRectF(-10 - adjust, -10 - adjust,
-	               20 + adjust,  20 + adjust);
+	return QRectF((-width  - adjust) / 2, (-height - adjust) / 2,
+	               width + adjust,  height + adjust);
 }
 
 void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget* /*widget*/)
 {
-	QRect nodeRect(-10, -10, 20, 20);
+	QRect nodeRect(-width / 2, -height / 2, width, height);
 	painter->setPen(QPen(Qt::black, 0));
 	if (isChecked)
 	{
@@ -227,6 +236,24 @@ void GraphNode::setChecked(bool state)
 {
 	isChecked = state;
 	update();
+}
+
+QPointF GraphNode::getBorderPointByAngle(double angle) const
+{
+	double xPos;
+	double yPos;
+	const double nodeDiagonal = sqrt(((height / 2.) * (height / 2.)) + ((width / 2.) * (width / 2.)));
+	if (fabs(sin(angle)) * nodeDiagonal < height / 2.)
+	{
+		xPos = cos(angle) > 0 ? width / 2. : -width / 2.;
+		yPos = xPos * sin(angle) / cos(angle);
+	}
+	else
+	{
+		yPos = sin(angle) > 0 ? height / 2. : -height / 2.;
+		xPos = yPos * cos(angle) / sin(angle);
+	}
+	return QPointF(xPos, yPos);
 }
 
 void GraphNode::mousePressEvent(QGraphicsSceneMouseEvent* mEvent)

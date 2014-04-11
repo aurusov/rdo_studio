@@ -42,9 +42,10 @@ GraphEdge::~GraphEdge()
 void GraphEdge::adjust()
 {
 	prepareGeometryChange();
+	const double angle = -QLineF(source.pos(), dest.pos()).angle() * Pi / 180.;
 
-	sourcePoint = mapFromItem(&source, 0,  10);
-	destPoint   = mapFromItem(&dest  , 0, -10);
+	sourcePoint = mapFromItem(&source, source.getBorderPointByAngle(angle));
+	destPoint   = mapFromItem(&dest, dest.getBorderPointByAngle(angle + Pi));
 }
 
 QRectF GraphEdge::boundingRect() const
@@ -65,13 +66,9 @@ void GraphEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*optio
 	painter->drawLine(line);
 
 	painter->setBrush(Qt::black);
-	if (line.length() > arrowSize)
+	if (line.length() > 2 * arrowSize)
 	{
-		double angle = ::asin(line.dy() / line.length());
-		if (line.dx() < 0)
-		{
-			angle = Pi - angle;
-		}
+		const double angle = -line.angle() * Pi / 180.;
 
 		const QPointF destArrowP1 = destPoint - QPointF(cos(angle - Pi / 12.) * arrowSize,
 		                                                sin(angle - Pi / 12.) * arrowSize);

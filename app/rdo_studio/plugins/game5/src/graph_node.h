@@ -67,6 +67,7 @@ public:
 	void   forceShift(double deltaX);
 	void   setChecked(bool state);
 
+	QPointF getBorderPointByAngle(double angle) const;
 signals:
 	void clickedNode(GraphNode* node);
 	void doubleClicked();
@@ -89,6 +90,9 @@ private:
 	int  m_graphOnLevelOrder;
 	bool m_relatedToSolutionState;
 	bool isChecked;
+
+	double height;
+	double width;
 
 	virtual QVariant itemChange           (GraphicsItemChange change, const QVariant &value);
 	virtual void     mousePressEvent      (QGraphicsSceneMouseEvent* mEvent);
