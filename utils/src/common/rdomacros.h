@@ -51,10 +51,4 @@
 //! Макрос подавляет предупреждения компилятора о неиспользуемых переменных
 #define UNUSED(A) ((void)A);
 
-#ifdef COMPILER_VISUAL_STUDIO
-	#define FORCE_INLINE __forceinline
-#else
-	#define FORCE_INLINE inline
-#endif
-
 #endif // _UTILS_MACROS_H_
