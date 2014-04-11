@@ -18,7 +18,7 @@
 
 namespace rdo {
 
-struct NO_V_TABLE IRefCounter
+struct IRefCounter
 {
 	virtual void  addref ()       = 0;
 	virtual void  release()       = 0;

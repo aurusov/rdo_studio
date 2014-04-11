@@ -52,10 +52,8 @@
 #define UNUSED(A) ((void)A);
 
 #ifdef COMPILER_VISUAL_STUDIO
-	#define NO_V_TABLE   __declspec(novtable)
 	#define FORCE_INLINE __forceinline
 #else
-	#define NO_V_TABLE
 	#define FORCE_INLINE inline
 #endif
 
