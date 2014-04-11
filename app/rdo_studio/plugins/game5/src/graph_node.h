@@ -27,8 +27,8 @@ class GraphNode: public QGraphicsObject
 
 public:
 	GraphNode(int graphNode, GraphNode* parentGraphNode, int pathCost, int restPathCost,
-	          int moveDirection, int moveCost, int relevantTile, int graphLevel,
-	          int tileMoveFrom, int tileMoveTo, const std::vector<unsigned int>& boardState
+	          const QString& moveDirection, int moveCost, int relevantTile, int graphLevel, int tileMoveFrom,
+	          int tileMoveTo, const std::vector<unsigned int>& boardState, int width, int height
 	);
 	~GraphNode();
 
@@ -45,17 +45,17 @@ public:
 	GraphNode*                       getParentGraphNode() const;
 	const std::vector<unsigned int>& getBoardState     () const;
 
-	int  getNodeID           () const;
-	int  getPathCost         () const;
-	int  getRestPathCost     () const;
-	int  getMoveDirection    () const;
-	int  getMoveCost         () const;
-	int  getRelevantTile     () const;
-	int  getGraphLevel       () const;
-	int  getGraphOnLevelOrder() const;
-	int  getTileMoveFrom     () const;
-	int  getTileMoveTo       () const;
-	bool isRelatedToSolution () const;
+	int             getNodeID           () const;
+	int             getPathCost         () const;
+	int             getRestPathCost     () const;
+	const QString&  getMoveDirection    () const;
+	int             getMoveCost         () const;
+	int             getRelevantTile     () const;
+	int             getGraphLevel       () const;
+	int             getGraphOnLevelOrder() const;
+	int             getTileMoveFrom     () const;
+	int             getTileMoveTo       () const;
+	bool            isRelatedToSolution () const;
 
 	void addEdge(GraphEdge* edge);
 
@@ -68,6 +68,12 @@ public:
 	void   setChecked(bool state);
 
 	QPointF getBorderPointByAngle(double angle) const;
+
+	static QString generateNodeTextLargeView (int nodeID, int pathCost, int restPathCost, int moveCost,
+	                                          int relevantTile, int tileMoveTo, const QString& moveDirection
+	);
+	static QString generateNodeTextMediumView(int nodeID, int pathCost, int restPathCost, int moveCost);
+	static QString generateNodeTextSmallView (int nodeID);
 signals:
 	void clickedNode(GraphNode* node);
 	void doubleClicked();
@@ -78,21 +84,20 @@ private:
 
 	GraphNode* m_pParentGraphNode;
 	std::vector<unsigned int> m_boardState;
-	int  m_nodeID;
-	int  m_pathCost;
-	int  m_restPathCost;
-	int  m_moveDirection;
-	int  m_moveCost;
-	int  m_relevantTile;
-	int  m_graphLevel;
-	int  m_tileMoveFrom;
-	int  m_tileMoveTo;
-	int  m_graphOnLevelOrder;
-	bool m_relatedToSolutionState;
-	bool isChecked;
-
-	double height;
-	double width;
+	int     m_nodeID;
+	int     m_pathCost;
+	int     m_restPathCost;
+	QString m_moveDirection;
+	int     m_moveCost;
+	int     m_relevantTile;
+	int     m_graphLevel;
+	int     m_tileMoveFrom;
+	int     m_tileMoveTo;
+	int     m_graphOnLevelOrder;
+	bool    m_relatedToSolutionState;
+	bool    isChecked;
+	double  m_width;
+	double  m_height;
 
 	virtual QVariant itemChange           (GraphicsItemChange change, const QVariant &value);
 	virtual void     mousePressEvent      (QGraphicsSceneMouseEvent* mEvent);

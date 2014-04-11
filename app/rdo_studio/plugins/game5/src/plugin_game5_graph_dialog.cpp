@@ -22,6 +22,32 @@
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_graph_dialog.h"
 // --------------------------------------------------------------------------------
 
+namespace
+{
+	const int MARGIN_X2 = 10;
+	const int SPACER_X  = 20;
+	const int SPACER_Y  = 20;
+
+	std::pair<int, int> calcNodeSize(const QFont& font, int nodeID      , int pathCost  , int restPathCost,
+	                                 int moveCost     , int relevantTile, int tileMoveTo, const QString& moveDirection
+	)
+	{
+		QString nodeMultiLine = GraphNode::generateNodeTextLargeView(nodeID, pathCost, restPathCost, moveCost,
+		                                                       relevantTile, tileMoveTo, moveDirection
+		);
+		QFontMetrics fontMetrics = QFontMetrics(font);
+		int nodeWidth = 0;
+		for(const auto& nodeStr: nodeMultiLine.split("\n"))
+		{
+			const int tempWidth = fontMetrics.width(nodeStr);
+			nodeWidth = std::max(tempWidth, nodeWidth);
+		}
+		nodeWidth += MARGIN_X2;
+		const int nodeHeight = fontMetrics.height() * 3 + fontMetrics.leading() * 2 + MARGIN_X2;
+		return std::make_pair(nodeWidth, nodeHeight);
+	}
+} // end anonymous namespace
+
 PluginGame5GraphDialog::PluginGame5GraphDialog(QWidget * pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, m_traceTimeStamp(getTraceTimeStamp())
@@ -160,7 +186,7 @@ int PluginGame5GraphDialog::parseTraceInfo(const QString& key)
 
 void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startBoardState)
 {
-	graphWidget->scene->clear();//@todo Хранить и рисовать 2 разных объекта
+	graphWidget->scene->clear();//@todo (*)Хранить и рисовать 2 разных объекта
 	m_graph.clear();            //Очистка вектора, объекты удалены при очистке сцены
 	m_clickedNode = NULL;
 
@@ -168,8 +194,14 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 	GraphNode* rightNode;
 	std::vector<std::vector<int>> paintLevel;
 	QStringList parsingResult = parseTrace();
+	//@todo Во время парсинга разделять строку на атрибуты GraphNode и запоминать самые широкие
+	//заодно сделать (*)
+	const std::pair<int, int> nodeSize = calcNodeSize(graphWidget->scene->font(), 999, 999, 999, 999, 999, 999, "Вправо");
+	m_nodeWidth  = nodeSize.first;
+	m_nodeHeight = nodeSize.second;
+
 	m_graph.resize(parsingResult.size() + 2);
-	m_graph[1] = new GraphNode(1, NULL, 0, 0, 0, 0, 0, 0, 0, 0, startBoardState);
+	m_graph[1] = new GraphNode(1, NULL, 0, 0, "Начало поиска", 0, 0, 0, 0, 0, startBoardState, m_nodeWidth, m_nodeHeight);
 	for(const auto& string: parsingResult)
 	{
 		int graphNode        = string.section(" ",  1,  1).toInt();
@@ -183,6 +215,15 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 		int tileMoveTo       = string.section(" ", -2, -2).toInt();
 		int relevantTile     = string.section(" ", -4, -4).toInt();
 
+		QString moveDirectionText;
+		switch (moveDirection)
+		{
+			case 1: moveDirectionText = "Вправо"; break;
+			case 2: moveDirectionText = "Влево" ; break;
+			case 3: moveDirectionText = "Вверх" ; break;
+			case 4: moveDirectionText = "Вниз"  ; break;
+		}
+
 		int graphLevel = m_graph[parentGraphNode]->getGraphLevel() + 1;
 		std::vector<unsigned int> boardState = m_graph[parentGraphNode]->getBoardState();
 		unsigned int temp = boardState[tileMoveFrom - 1];
@@ -190,8 +231,9 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 		boardState[tileMoveTo - 1]   = temp;
 		//std::swap(boardState[tileMoveFrom], boardState[tileMoveTo]);
 		
-		m_graph[graphNode] = new GraphNode(graphNode, m_graph[parentGraphNode], pathCost, restPathCost,moveDirection,
-		                                   moveCost, relevantTile, graphLevel, tileMoveFrom, tileMoveTo, boardState
+		m_graph[graphNode] = new GraphNode(graphNode, m_graph[parentGraphNode], pathCost, restPathCost,
+		                                   moveDirectionText, moveCost, relevantTile, graphLevel,
+		                                   tileMoveFrom, tileMoveTo, boardState, m_nodeWidth, m_nodeHeight
 		);
 	}
 
@@ -227,7 +269,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 		int node = paintLevel.back()[j];
 
 		graphWidget->scene->addItem(m_graph[node]);
-		m_graph[node]->setPos(40 * (j + 1), 20 + (paintLevel.size() - 1) * 40);
+		m_graph[node]->setPos((SPACER_X + m_nodeWidth) * (j + 1), (paintLevel.size() - 1) * (SPACER_Y + m_nodeHeight));
 	}
 	leftNode  = m_graph[paintLevel.back().front()];
 	rightNode = m_graph[paintLevel.back().back()];
@@ -244,7 +286,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 			if (m_graph[node]->haveChild())
 			{
 				graphWidget->scene->addItem(m_graph[node]);
-				m_graph[node]->setPos(m_graph[node]->childrenMeanX(), m_graph[node]->childrenMeanY() - 40);
+				m_graph[node]->setPos(m_graph[node]->childrenMeanX(), m_graph[node]->childrenMeanY() - (SPACER_Y + m_nodeHeight));
 				for(auto childNode: m_graph[node]->getChildrenList())
 				{
 					graphWidget->scene->addItem(new GraphEdge(*m_graph[node], *childNode));
@@ -287,7 +329,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 					int segment = unbuiltRange.range - k + unbuiltRange.firstNode;
 
 					graphWidget->scene->addItem(m_graph[node]);
-					m_graph[node]->setPos(m_graph[temp]->pos().x() - 40 * segment, m_graph[temp]->pos().y());
+					m_graph[node]->setPos(m_graph[temp]->pos().x() - (SPACER_X + m_nodeWidth) * segment, m_graph[temp]->pos().y());
 				}
 				if (leftNode->pos().x() > m_graph[paintLevel[i][unbuiltRange.firstNode]]->pos().x())
 				{
@@ -303,7 +345,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 					int segment = k - unbuiltRange.firstNode + 1;
 
 					graphWidget->scene->addItem(m_graph[node]);
-					m_graph[node]->setPos(m_graph[temp]->pos().x() + 40 * segment, m_graph[temp]->pos().y());
+					m_graph[node]->setPos(m_graph[temp]->pos().x() + (SPACER_X + m_nodeWidth) * segment, m_graph[temp]->pos().y());
 				}
 				if (rightNode->pos().x() < m_graph[paintLevel[i][endUnbuiltRange - 1]]->pos().x())
 				{
@@ -316,12 +358,12 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 				int temp2  = paintLevel[i][endUnbuiltRange];
 				double deltaX =  m_graph[temp2]->pos().x() - m_graph[temp1]->pos().x();
 
-				if (deltaX < (unbuiltRange.range + 1) * 40)
+				if (deltaX < (unbuiltRange.range + 1) * (SPACER_X + m_nodeWidth))
 				{
 					for (unsigned int l = endUnbuiltRange; l < paintLevel[i].size(); l++)
 					{
 						int node    = paintLevel[i][l];
-						m_graph[node]->forceShift((unbuiltRange.range + 1) * 40 - deltaX);
+						m_graph[node]->forceShift((unbuiltRange.range + 1) * (SPACER_X + m_nodeWidth) - deltaX);
 					}
 					deltaX = m_graph[temp2]->pos().x() - m_graph[temp1]->pos().x();
 				}
@@ -337,7 +379,6 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 			}
 		}
 	}
-	graphWidget->scene->setSceneRect(leftNode->pos().x() - 20, 0, rightNode->pos().x() - leftNode->pos().x() + 40, paintLevel.size() * 40);
 	graphWidget->scene->addItem(new GraphInfo(parseTraceInfo("DPS_CO"), parseTraceInfo("DPS_TO"), parseTraceInfo("DPS_TT"),
 	                                          graphWidget->scene->sceneRect().x(), graphWidget->scene->sceneRect().y()));
 }

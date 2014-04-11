@@ -24,14 +24,31 @@
 
 namespace
 {
-	const double HEIGHT = 20;
-	const double WIDTH  = 20;
+	QFont fontSizeMultiply(const QFont& baseFont, double multiplier)
+	{
+		QFont newFont(baseFont);
+		if (baseFont.pixelSize() != -1)
+		{
+			newFont.setPixelSize(baseFont.pixelSize() * multiplier);
+		}
+		if (baseFont.pointSize() != -1)
+		{
+			newFont.setPointSize(baseFont.pointSize() * multiplier);
+		}
+		if (baseFont.pointSizeF() != -1)
+		{
+			newFont.setPointSizeF(baseFont.pointSizeF() * multiplier);
+		}
+		return newFont;
+	}
+
+	const double LEVEL_OF_LOW_DETAIL   = 0.8;
+	const double LEVEL_OF_LOWER_DETAIL = 0.6;
 } // end anonymous namespace
 
 GraphNode::GraphNode(int nodeID, GraphNode* parentGraphNode, int pathCost, int restPathCost,
-                     int moveDirection, int moveCost, int relevantTile, int graphLevel,
-                     int tileMoveFrom, int tileMoveTo, const std::vector<unsigned int>& boardState
-)
+                     const QString& moveDirection, int moveCost, int relevantTile, int graphLevel, int tileMoveFrom,
+                     int tileMoveTo, const std::vector<unsigned int>& boardState, int width, int height)
 	: m_pParentGraphNode      (parentGraphNode)
 	, m_boardState            (boardState     )
 	, m_nodeID                (nodeID         )
@@ -46,8 +63,8 @@ GraphNode::GraphNode(int nodeID, GraphNode* parentGraphNode, int pathCost, int r
 	, m_graphOnLevelOrder     (0              )
 	, m_relatedToSolutionState(false          )
 	, isChecked               (false          )
-	, height                  (HEIGHT         )
-	, width                   (WIDTH          )
+	, m_width                 (width          )
+	, m_height                (height         )
 {
 	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
@@ -65,13 +82,14 @@ GraphNode::~GraphNode()
 QRectF GraphNode::boundingRect() const
 {
 	double adjust = 2;
-	return QRectF((-width  - adjust) / 2, (-height - adjust) / 2,
-	               width + adjust,  height + adjust);
+	return QRectF((-m_width  - adjust) / 2, (-m_height - adjust) / 2,
+	               m_width + adjust,  m_height + adjust);
 }
 
 void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget* /*widget*/)
 {
-	QRect nodeRect(-width / 2, -height / 2, width, height);
+	QFont sceneFont = painter->font();
+	QRect nodeRect(-m_width / 2, -m_height / 2, m_width, m_height);
 	painter->setPen(QPen(Qt::black, 0));
 	if (isChecked)
 	{
@@ -87,7 +105,29 @@ void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*optio
 	{
 		painter->setPen(QPen(Qt::white, 0));
 	}
-	painter->drawText(nodeRect, Qt::AlignCenter, QString::number(m_nodeID));
+
+	const double levelOfDetail = QStyleOptionGraphicsItem::levelOfDetailFromTransform(painter->worldTransform());
+	if (levelOfDetail < LEVEL_OF_LOW_DETAIL)
+	{
+		if (levelOfDetail < LEVEL_OF_LOWER_DETAIL)
+		{
+			QString textStr = generateNodeTextSmallView(m_nodeID);
+			painter->setFont(fontSizeMultiply(sceneFont, 3));
+			painter->drawText(nodeRect, Qt::AlignCenter, textStr);
+		}
+		else
+		{
+			QString textStr = generateNodeTextMediumView(m_nodeID, m_pathCost, m_restPathCost, m_moveCost);
+			painter->setFont(fontSizeMultiply(sceneFont, 1.5));
+			painter->drawText(nodeRect, Qt::AlignCenter, textStr);
+		}
+	}
+	else
+	{
+		QString textStr = generateNodeTextLargeView(m_nodeID, m_pathCost, m_restPathCost, m_moveCost, m_relevantTile, m_tileMoveTo, m_moveDirection);
+		painter->drawText(nodeRect, Qt::AlignCenter, textStr);
+	}
+	painter->setFont(sceneFont);
 }
 
 int GraphNode::getNodeID() const
@@ -105,7 +145,7 @@ int GraphNode::getRestPathCost() const
 	return m_restPathCost;
 }
 
-int GraphNode::getMoveDirection() const
+const QString& GraphNode::getMoveDirection() const
 {
 	return m_moveDirection;
 }
@@ -242,15 +282,15 @@ QPointF GraphNode::getBorderPointByAngle(double angle) const
 {
 	double xPos;
 	double yPos;
-	const double nodeDiagonal = sqrt(((height / 2.) * (height / 2.)) + ((width / 2.) * (width / 2.)));
-	if (fabs(sin(angle)) * nodeDiagonal < height / 2.)
+	const double nodeDiagonal = sqrt(((m_height / 2.) * (m_height / 2.)) + ((m_width / 2.) * (m_width / 2.)));
+	if (fabs(sin(angle)) * nodeDiagonal < m_height / 2.)
 	{
-		xPos = cos(angle) > 0 ? width / 2. : -width / 2.;
+		xPos = cos(angle) > 0 ? m_width / 2. : -m_width / 2.;
 		yPos = xPos * sin(angle) / cos(angle);
 	}
 	else
 	{
-		yPos = sin(angle) > 0 ? height / 2. : -height / 2.;
+		yPos = sin(angle) > 0 ? m_height / 2. : -m_height / 2.;
 		xPos = yPos * cos(angle) / sin(angle);
 	}
 	return QPointF(xPos, yPos);
@@ -272,4 +312,26 @@ void GraphNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mEvent)
 {
 	emit doubleClicked();
 	QGraphicsItem::mouseDoubleClickEvent(mEvent);
+}
+
+QString GraphNode::generateNodeTextLargeView(int nodeID, int pathCost, int restPathCost, int moveCost, int relevantTile, int tileMoveTo, const QString& moveDirection)
+{
+	return QString("%1 (%2/%3/%4)\nФишка %5 = %6\n%7")
+		.arg(QString::number(nodeID), QString::number(pathCost), QString::number(restPathCost), QString::number(moveCost),
+		     QString::number(relevantTile), QString::number(tileMoveTo),
+		     moveDirection
+		);
+}
+
+QString GraphNode::generateNodeTextMediumView(int nodeID, int pathCost, int restPathCost, int moveCost)
+{
+	return QString("%1\n%2/%3/%4")
+		.arg(QString::number(nodeID),
+		     QString::number(pathCost), QString::number(restPathCost), QString::number(moveCost)
+	         );
+}
+
+QString GraphNode::generateNodeTextSmallView(int nodeID)
+{
+	return QString("%1").arg(QString::number(nodeID));
 }

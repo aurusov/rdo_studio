@@ -61,11 +61,14 @@ private:
 			return iParentOLO < jParentOLO;
 		}
 	};
-	void quickSort(std::vector<int>& vector);
 
 	QString m_traceTimeStamp;
 	GraphNode* m_clickedNode;
 	std::vector<GraphNode*> m_graph;
+	int m_nodeWidth;
+	int m_nodeHeight;
+
+	void quickSort(std::vector<int>& vector);
 
 	std::vector<int> getSolutionNodes();
 	void updateCheckedNode(GraphNode* node);
