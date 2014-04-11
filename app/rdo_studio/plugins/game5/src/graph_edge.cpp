@@ -28,7 +28,7 @@ GraphEdge::GraphEdge(GraphNode& sourceNode, GraphNode& destNode)
 	, dest     (destNode  )
 	, arrowSize(10        )
 	, pointSize(2         )
-	, penWidth (1         )
+	, penWidth (2         )
 {
 	setAcceptedMouseButtons(Qt::NoButton);
 	adjust();

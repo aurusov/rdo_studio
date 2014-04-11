@@ -16,6 +16,12 @@
 #include "app/rdo_studio/plugins/game5/src/graph_widget.h"
 // --------------------------------------------------------------------------------
 
+namespace
+{
+	const double MAX_FACTOR = 10;
+	const double MIN_FACTOR = 0.1;
+} // end anonymous namespace
+
 GraphWidget::GraphWidget(QWidget* pParent)
 	: QGraphicsView(pParent)
 	, scene        (NULL   )
@@ -69,7 +75,7 @@ void GraphWidget::keyReleaseEvent(QKeyEvent* kEvent)
 void GraphWidget::scaleView(double scaleFactor)
 {
 	double factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-	if (0.5 < factor && factor < 4)
+	if (MIN_FACTOR < factor && factor < MAX_FACTOR)
 	{
 		scale(scaleFactor, scaleFactor);
 	}
