@@ -46,12 +46,12 @@ inline RDOValue RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_two_
 	);
 }
 
-double GetParam<double>::getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
+inline double GetParam<double>::getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
 {
 	return pRuntime->getFuncArgument(paramNumber).getDouble();
 }
 
-int GetParam<int>::getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
+inline int GetParam<int>::getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
 {
 	return pRuntime->getFuncArgument(paramNumber).getInt();
 }

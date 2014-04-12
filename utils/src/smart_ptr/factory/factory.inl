@@ -101,7 +101,7 @@ inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3
 }
 
 template <class T>
-void Factory<T>::destroy(PTR(T) object)
+inline void Factory<T>::destroy(PTR(T) object)
 {
 	delete object;
 }

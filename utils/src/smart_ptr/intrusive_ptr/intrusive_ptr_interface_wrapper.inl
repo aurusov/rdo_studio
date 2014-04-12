@@ -3,7 +3,7 @@
   \file      intrusive_ptr_interface_wrapper.inl
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      22.09.2011
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -19,24 +19,24 @@ namespace rdo {
 // -------------------- RefCounter<T>
 // --------------------------------------------------------------------------------
 template <class T>
-intrusive_ptr_interface_wrapper<T>::intrusive_ptr_interface_wrapper(CREF(rdo::intrusive_ptr<T>) pPointer)
+inline intrusive_ptr_interface_wrapper<T>::intrusive_ptr_interface_wrapper(CREF(rdo::intrusive_ptr<T>) pPointer)
 	: parent_type(pPointer)
 {}
 
 template <class T>
-void intrusive_ptr_interface_wrapper<T>::addref()
+inline void intrusive_ptr_interface_wrapper<T>::addref()
 {
 	parent_type::addref();
 }
 
 template <class T>
-void intrusive_ptr_interface_wrapper<T>::release()
+inline void intrusive_ptr_interface_wrapper<T>::release()
 {
 	parent_type::release();
 }
 
 template <class T>
-rbool intrusive_ptr_interface_wrapper<T>::owner() const
+inline rbool intrusive_ptr_interface_wrapper<T>::owner() const
 {
 	return parent_type::owner();
 }
