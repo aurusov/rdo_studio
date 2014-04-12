@@ -3,7 +3,7 @@
   \file      app/rdo_studio/plugins/game5/src/graph_edge.h
   \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
   \date      22.09.2013
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -28,7 +28,7 @@ public:
 
 	void adjust();
 
-	enum { Type = UserType + TypeID::GRAPH_EDGE };
+	enum { Type = rdo::plugin::game5::TypeID::GRAPH_EDGE };
 	virtual int type() const { return Type; }
 
 private:

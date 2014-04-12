@@ -3,7 +3,7 @@
   \file      app/rdo_studio/plugins/game5/src/graph_node.h
   \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
   \date      22.09.2013
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -32,7 +32,7 @@ public:
 	);
 	~GraphNode();
 
-	enum { Type = UserType + TypeID::GRAPH_NODE };
+	enum { Type = rdo::plugin::game5::TypeID::GRAPH_NODE };
 	virtual int type() const { return Type; }
 
 	virtual QRectF boundingRect() const;

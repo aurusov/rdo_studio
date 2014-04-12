@@ -3,7 +3,7 @@
   \file      app/rdo_studio/plugins/game5/src/graph_info.h
   \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
   \date      22.09.2013
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -26,7 +26,7 @@ public:
 	GraphInfo  (int solutionCost, int numOfOpenNodes, int totalNumOfNodes, double x, double y);
 	~GraphInfo();
 
-	enum { Type = UserType + TypeID::GRAPH_INFO };
+	enum { Type = rdo::plugin::game5::TypeID::GRAPH_INFO };
 	virtual int type() const { return Type; }
 
 private:
