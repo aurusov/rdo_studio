@@ -60,7 +60,7 @@ void PluginGame5::pluginStartAction(QWidget* pParent)
 		if (menuBar)
 		{
 			QMenu* defMenu = NULL;
-			for(auto action: menuBar->actions())
+			for (auto action: menuBar->actions())
 			{
 				if (action->text() == "Плагины")
 				{
@@ -108,7 +108,7 @@ void PluginGame5::pluginStopAction(QWidget* pParent)
 	{
 		QMenuBar* menuBar = pParent->findChild<QMenuBar*>("menuBar");
 		bool defined = false;
-		for(auto action: menuBar->actions())
+		for (auto action: menuBar->actions())
 		{
 			if (!defined && action->text() == "Плагины")
 			{

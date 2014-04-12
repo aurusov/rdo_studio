@@ -1717,7 +1717,7 @@ void ViewPreferences::deletePlugin()
 {
 	onStopPlugin();
 	const std::vector<int> rows = selectedRows();
-	for(int i = rows.size()-1; i >= 0; i--)
+	for (int i = rows.size()-1; i >= 0; i--)
 	{
 		const int current = rows[i];
 		{
@@ -1738,7 +1738,7 @@ void ViewPreferences::deletePlugin()
 void ViewPreferences::onStartPlugin()
 {
 	const std::vector<int> rows = selectedRows();
-	for(int i = rows.size()-1; i >= 0; i--)
+	for (int i = rows.size()-1; i >= 0; i--)
 	{
 		const int current = rows[i];
 		const LPPluginInfo pluginInfo = getPluginInfoFromTable(current);
@@ -1754,7 +1754,7 @@ void ViewPreferences::onStartPlugin()
 void ViewPreferences::onStopPlugin()
 {
 	const std::vector<int> rows = selectedRows();
-	for(int i = rows.size()-1; i >= 0; i--)
+	for (int i = rows.size()-1; i >= 0; i--)
 	{
 		const int current  = rows[i];
 		const LPPluginInfo pluginInfo = getPluginInfoFromTable(current);
@@ -1795,7 +1795,7 @@ void ViewPreferences::updateButtonsState()
 	bool allActive      = true;
 	bool allInactive    = true;
 	bool allUnavailable = true;
-	for(int i = rows.size()-1; i >= 0; i--)
+	for (int i = rows.size()-1; i >= 0; i--)
 	{
 		const int current = rows[i];
 		const LPPluginInfo pluginInfo = getPluginInfoFromTable(current);

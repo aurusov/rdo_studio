@@ -37,7 +37,7 @@ namespace
 		);
 		QFontMetrics fontMetrics = QFontMetrics(font);
 		int nodeWidth = 0;
-		for(const auto& nodeStr: nodeMultiLine.split("\n"))
+		for (const auto& nodeStr: nodeMultiLine.split("\n"))
 		{
 			const int tempWidth = fontMetrics.width(nodeStr);
 			nodeWidth = std::max(tempWidth, nodeWidth);
@@ -202,7 +202,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 
 	m_graph.resize(parsingResult.size() + 2);
 	m_graph[1] = new GraphNode(1, NULL, 0, 0, "Начало поиска", 0, 0, 0, 0, 0, startBoardState, m_nodeWidth, m_nodeHeight);
-	for(const auto& string: parsingResult)
+	for (const auto& string: parsingResult)
 	{
 		int graphNode        = string.section(" ",  1,  1).toInt();
 		int parentGraphNode  = string.section(" ",  2,  2).toInt();
@@ -259,7 +259,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 		}
 	}
 
-	for(auto node: getSolutionNodes())
+	for (auto node: getSolutionNodes())
 	{
 		m_graph[node]->setRelatedToSolution(true);
 	}
@@ -287,7 +287,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 			{
 				graphWidget->scene->addItem(m_graph[node]);
 				m_graph[node]->setPos(m_graph[node]->childrenMeanX(), m_graph[node]->childrenMeanY() - (SPACER_Y + m_nodeHeight));
-				for(auto childNode: m_graph[node]->getChildrenList())
+				for (auto childNode: m_graph[node]->getChildrenList())
 				{
 					graphWidget->scene->addItem(new GraphEdge(*m_graph[node], *childNode));
 				}
@@ -317,7 +317,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 			unbuiltRangeVector.push_back(temp);
 			tempCounter = 0;
 		}
-		for(const auto& unbuiltRange: unbuiltRangeVector)
+		for (const auto& unbuiltRange: unbuiltRangeVector)
 		{
 			unsigned int endUnbuiltRange = unbuiltRange.firstNode + unbuiltRange.range;
 			if (unbuiltRange.firstNode == 0)

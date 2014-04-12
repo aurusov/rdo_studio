@@ -209,7 +209,7 @@ QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant &value)
 	switch (change)
 	{
 		case ItemPositionHasChanged:
-			for(auto edge: edgeList)
+			for (auto edge: edgeList)
 			{
 				edge->adjust();
 			}
@@ -242,7 +242,7 @@ double GraphNode::childrenMeanX() const
 		return 0.;
 
 	double value(0);
-	for(const auto child: childrenList)
+	for (const auto child: childrenList)
 	{
 		value += child->pos().x();
 	}
@@ -265,7 +265,7 @@ const std::list<GraphNode*>& GraphNode::getChildrenList() const
 
 void GraphNode::forceShift(double deltaX)
 {
-	for(auto child: childrenList)
+	for (auto child: childrenList)
 	{
 		child->forceShift(deltaX);
 	}
