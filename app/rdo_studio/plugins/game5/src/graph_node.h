@@ -70,8 +70,7 @@ public:
 	QPointF getBorderPointByAngle(double angle) const;
 
 	static QString generateNodeTextLargeView (int nodeID, int pathCost, int restPathCost, int moveCost,
-	                                          int relevantTile, int tileMoveTo, const QString& moveDirection
-	);
+	                                          int relevantTile, int tileMoveTo, const QString& moveDirection);
 	static QString generateNodeTextMediumView(int nodeID, int pathCost, int restPathCost, int moveCost);
 	static QString generateNodeTextSmallView (int nodeID);
 signals:
@@ -95,7 +94,7 @@ private:
 	int     m_tileMoveTo;
 	int     m_graphOnLevelOrder;
 	bool    m_relatedToSolutionState;
-	bool    isChecked;
+	bool    m_isChecked;
 	double  m_width;
 	double  m_height;
 

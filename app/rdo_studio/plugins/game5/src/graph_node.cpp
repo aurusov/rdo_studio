@@ -62,7 +62,7 @@ GraphNode::GraphNode(int nodeID, GraphNode* parentGraphNode, int pathCost, int r
 	, m_tileMoveTo            (tileMoveTo     )
 	, m_graphOnLevelOrder     (0              )
 	, m_relatedToSolutionState(false          )
-	, isChecked               (false          )
+	, m_isChecked             (false          )
 	, m_width                 (width          )
 	, m_height                (height         )
 {
@@ -91,7 +91,7 @@ void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*optio
 	QFont sceneFont = painter->font();
 	QRect nodeRect(-m_width / 2, -m_height / 2, m_width, m_height);
 	painter->setPen(QPen(Qt::black, 0));
-	if (isChecked)
+	if (m_isChecked)
 	{
 		painter->setBrush(Qt::darkGreen);
 	}
@@ -101,7 +101,7 @@ void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*optio
 	}
 	painter->drawRect(nodeRect);
 
-	if (m_relatedToSolutionState || isChecked)
+	if (m_relatedToSolutionState || m_isChecked)
 	{
 		painter->setPen(QPen(Qt::white, 0));
 	}
@@ -274,7 +274,7 @@ void GraphNode::forceShift(double deltaX)
 
 void GraphNode::setChecked(bool state)
 {
-	isChecked = state;
+	m_isChecked = state;
 	update();
 }
 
@@ -316,19 +316,17 @@ void GraphNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mEvent)
 
 QString GraphNode::generateNodeTextLargeView(int nodeID, int pathCost, int restPathCost, int moveCost, int relevantTile, int tileMoveTo, const QString& moveDirection)
 {
-	return QString("%1 (%2/%3/%4)\nФишка %5 = %6\n%7")
-		.arg(QString::number(nodeID), QString::number(pathCost), QString::number(restPathCost), QString::number(moveCost),
-		     QString::number(relevantTile), QString::number(tileMoveTo),
-		     moveDirection
-		);
+	return QString("%1 (%2/%3/%4)\nФишка %5 = %6\n%7").arg(
+			QString::number(nodeID), QString::number(pathCost), QString::number(restPathCost), QString::number(moveCost),
+			QString::number(relevantTile), QString::number(tileMoveTo),
+			moveDirection);
 }
 
 QString GraphNode::generateNodeTextMediumView(int nodeID, int pathCost, int restPathCost, int moveCost)
 {
-	return QString("%1\n%2/%3/%4")
-		.arg(QString::number(nodeID),
-		     QString::number(pathCost), QString::number(restPathCost), QString::number(moveCost)
-	         );
+	return QString("%1\n%2/%3/%4").arg(
+			QString::number(nodeID),
+			QString::number(pathCost), QString::number(restPathCost), QString::number(moveCost));
 }
 
 QString GraphNode::generateNodeTextSmallView(int nodeID)
