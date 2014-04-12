@@ -173,7 +173,7 @@ std::string PluginGame5GenerateSituationDialog::RSStabText()
 {
 	std::stringstream RSStabTextStream; 
 	RSStabTextStream <<	"$Resources\n";
-	for (unsigned int i = 1; i < gameBoard->getQuantityOfTiles() + 1; i++)
+	for (int i = 1; i < gameBoard->getQuantityOfTiles() + 1; i++)
 	{
 		RSStabTextStream << "\tФишка" << i <<" = Фишка(" << i << ", " << gameBoard->getTilePosition(i) << ");\n";
 	}
@@ -288,7 +288,7 @@ std::string PluginGame5GenerateSituationDialog::FUNtabText()
 	<<	"$Parameters\n"
 	<<	"$Body\n"
 	<<	"	return " << gameBoard->getQuantityOfTiles() << " - (Фишка_на_месте(Фишка1.Номер, Фишка1.Местоположение)+\n";
-	for (unsigned int i = 2; i < gameBoard->getQuantityOfTiles(); i++)
+	for (int i = 2; i < gameBoard->getQuantityOfTiles(); i++)
 	{
 		FUNtabTextStream
 	<<	"	            Фишка_на_месте(Фишка" << i <<".Номер, Фишка" << i <<".Местоположение)+\n";
@@ -311,7 +311,7 @@ std::string PluginGame5GenerateSituationDialog::FUNtabText()
 	<<	"$Parameters\n"
 	<<	"$Body\n"
 	<<	"	return Расстояние_фишки_до_места(Фишка1.Номер, Фишка1.Местоположение)+\n";
-	for (unsigned int i = 2; i < gameBoard->getQuantityOfTiles(); i++)
+	for (int i = 2; i < gameBoard->getQuantityOfTiles(); i++)
 	{
 		FUNtabTextStream
 	<<	"	       Расстояние_фишки_до_места(Фишка" << i << ".Номер, Фишка" << i << ".Местоположение)+\n";
