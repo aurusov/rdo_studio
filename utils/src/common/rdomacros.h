@@ -40,9 +40,6 @@
 #define IMPLEMENTATION_OF(A)   public A
 //! Объект типа A
 #define INSTANCE_OF(A)         public A
-//! Объект типа виртуальный A
-#define INSTANCE_VIRTUAL_OF(A) public virtual A
-//! Класс-потомок от B
 
 #ifdef UNUSED
 	#undef UNUSED
