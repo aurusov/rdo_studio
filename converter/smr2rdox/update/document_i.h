@@ -22,7 +22,8 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- IDocument
 // --------------------------------------------------------------------------------
-OBJECT_INTERFACE(IDocument)
+PREDECLARE_OBJECT_INTERFACE(IDocument)
+struct IDocument: public rdo::RefCounter<IDocument>
 {
 DECLARE_FACTORY(IDocument)
 public:

@@ -80,16 +80,6 @@ private:
 private:              \
 	RDOValue doCalc(CREF(LPRDORuntime) pRuntime);
 
-//! \def    CALC_SUB
-//! \brief  Описывает класс-потомок
-#define CALC_SUB(TYPE, PARENT) \
-PREDECLARE_POINTER(TYPE);      \
-class TYPE: public PARENT
-
-//! \def    CALC
-//! \brief  Описывает класс-потомок от RDOCalc
-#define CALC(TYPE) CALC_SUB(TYPE, RDOCalc)
-
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/calc/calc_base.inl"

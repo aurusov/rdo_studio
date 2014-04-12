@@ -20,7 +20,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Выбор ресурсов
-CALC(RDOSelectResourceCalc)
+PREDECLARE_POINTER(RDOSelectResourceCalc);
+class RDOSelectResourceCalc: public RDOCalc
 {
 public:
 	//! Способ выбора релевантного ресурса
@@ -46,7 +47,8 @@ protected:
 };
 
 //! RDOCalc для оператора !Exist()
-CALC_SUB(RDOSelectResourceNonExistCalc, RDOSelectResourceCalc)
+PREDECLARE_POINTER(RDOSelectResourceNonExistCalc);
+class RDOSelectResourceNonExistCalc: public RDOSelectResourceCalc
 {
 DECLARE_FACTORY(RDOSelectResourceNonExistCalc)
 private:
@@ -55,7 +57,8 @@ private:
 };
 
 //! Выбор релевантного ресурса по имени ресурса
-CALC_SUB(RDOSelectResourceDirectCalc, RDOSelectResourceCalc)
+PREDECLARE_POINTER(RDOSelectResourceDirectCalc);
+class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
 {
 DECLARE_FACTORY(RDOSelectResourceDirectCalc)
 protected:
@@ -69,7 +72,8 @@ protected:
 };
 
 //! Выбор релевантного ресурса по типу
-CALC_SUB(RDOSelectResourceByTypeCalc, RDOSelectResourceCalc)
+PREDECLARE_POINTER(RDOSelectResourceByTypeCalc);
+class RDOSelectResourceByTypeCalc: public RDOSelectResourceCalc
 {
 DECLARE_FACTORY(RDOSelectResourceByTypeCalc)
 protected:
@@ -81,7 +85,8 @@ protected:
 };
 
 //! Интерфейс для выбора релевантных ресурсов
-OBJECT_INTERFACE(IRDOSelectResourceCommon)
+PREDECLARE_OBJECT_INTERFACE(IRDOSelectResourceCommon)
+struct IRDOSelectResourceCommon: public rdo::RefCounter<IRDOSelectResourceCommon>
 {
 DECLARE_FACTORY(IRDOSelectResourceCommon)
 public:
@@ -95,7 +100,8 @@ protected:
 };
 
 //! Выбор
-CALC(RDOSelectResourceCommonCalc)
+PREDECLARE_POINTER(RDOSelectResourceCommonCalc);
+class RDOSelectResourceCommonCalc: public RDOCalc
 {
 DECLARE_FACTORY(RDOSelectResourceCommonCalc)
 private:
@@ -116,7 +122,8 @@ private:
 };
 
 //! Выбор по имени ресурса
-CALC_SUB(RDOSelectResourceDirectCommonCalc, RDOSelectResourceDirectCalc)
+PREDECLARE_POINTER(RDOSelectResourceDirectCommonCalc);
+class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc
 	AND IMPLEMENTATION_OF(IRDOSelectResourceCommon)
 {
 DECLARE_FACTORY(RDOSelectResourceDirectCommonCalc)
@@ -130,7 +137,8 @@ private:
 };
 
 //! Выбор по типу
-CALC_SUB(RDOSelectResourceByTypeCommonCalc, RDOSelectResourceByTypeCalc)
+PREDECLARE_POINTER(RDOSelectResourceByTypeCommonCalc);
+class RDOSelectResourceByTypeCommonCalc: public RDOSelectResourceByTypeCalc
 	AND IMPLEMENTATION_OF(IRDOSelectResourceCommon)
 {
 DECLARE_FACTORY(RDOSelectResourceByTypeCommonCalc)

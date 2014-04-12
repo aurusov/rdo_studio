@@ -23,7 +23,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Передача транзакта в процесс и его запуск
-CALC(RDOCalcProcessControl)
+PREDECLARE_POINTER(RDOCalcProcessControl);
+class RDOCalcProcessControl: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcProcessControl)
 public:
@@ -36,7 +37,8 @@ private:
 };
 
 //! Выполнение блока ASSIGN в процессе
-CALC(RDOCalcProcAssign)
+PREDECLARE_POINTER(RDOCalcProcAssign);
+class RDOCalcProcAssign: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcProcAssign)
 protected:
@@ -49,7 +51,8 @@ private:
 };
 
 //! Получение значения терминального счетчика
-CALC(RDOCalcGetTermNow)
+PREDECLARE_POINTER(RDOCalcGetTermNow);
+class RDOCalcGetTermNow: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetTermNow)
 DECLARE_ICalc;

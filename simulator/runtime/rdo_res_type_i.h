@@ -28,7 +28,8 @@ PREDECLARE_POINTER(RDOResource);
   \interface IResourceType
   \brief     Предоставляет фабричный метод createRes()
 */
-OBJECT_INTERFACE(IResourceType)
+PREDECLARE_OBJECT_INTERFACE(IResourceType)
+struct IResourceType: public rdo::RefCounter<IResourceType>
 {
 DECLARE_FACTORY(IResourceType);
 public:

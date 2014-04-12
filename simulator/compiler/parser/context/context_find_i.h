@@ -20,7 +20,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- IContextFind
 // --------------------------------------------------------------------------------
-OBJECT_INTERFACE(IContextFind)
+PREDECLARE_OBJECT_INTERFACE(IContextFind)
+struct IContextFind: public rdo::RefCounter<IContextFind>
 {
 DECLARE_FACTORY(IContextFind)
 public:

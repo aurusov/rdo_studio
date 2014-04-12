@@ -22,7 +22,8 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-OBJECT_INTERFACE(IInternalStatistics)
+PREDECLARE_OBJECT_INTERFACE(IInternalStatistics)
+struct IInternalStatistics: public rdo::RefCounter<IInternalStatistics>
 {
 DECLARE_FACTORY(IInternalStatistics)
 public:

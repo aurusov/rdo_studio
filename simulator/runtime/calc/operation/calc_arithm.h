@@ -44,7 +44,8 @@ private:
 DECLARE_POINTER(RDOCalcDiv);
 
 //! Бинарный оператор сложения по перечислению
-CALC_SUB(RDOCalcPlusEnumSafe, RDOCalcPlus)
+PREDECLARE_POINTER(RDOCalcPlusEnumSafe);
+class RDOCalcPlusEnumSafe: public RDOCalcPlus
 {
 DECLARE_FACTORY(RDOCalcPlusEnumSafe)
 private:
@@ -54,7 +55,8 @@ private:
 };
 
 //! Бинарный оператор умножить по перечислению
-CALC_SUB(RDOCalcMultEnumSafe, RDOCalcMult)
+PREDECLARE_POINTER(RDOCalcMultEnumSafe);
+class RDOCalcMultEnumSafe: public RDOCalcMult
 {
 DECLARE_FACTORY(RDOCalcMultEnumSafe)
 private:

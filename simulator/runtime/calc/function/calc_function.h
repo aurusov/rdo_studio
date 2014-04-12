@@ -19,7 +19,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Базовый файл функций с закладки FUN
-CALC(RDOFunCalc)
+PREDECLARE_POINTER(RDOFunCalc);
+class RDOFunCalc: public RDOCalc
 {
 public:
 	virtual void addRetCalc(CREF(LPRDOCalc) pCalc);
@@ -29,7 +30,8 @@ protected:
 };
 
 //! Табличная функция
-CALC_SUB(RDOFuncTableCalc, RDOFunCalc)
+PREDECLARE_POINTER(RDOFuncTableCalc);
+class RDOFuncTableCalc: public RDOFunCalc
 {
 DECLARE_FACTORY(RDOFuncTableCalc)
 public:
@@ -47,7 +49,8 @@ private:
 };
 
 //! Функция типа список
-CALC_SUB(RDOFunListCalc, RDOFunCalc)
+PREDECLARE_POINTER(RDOFunListCalc);
+class RDOFunListCalc: public RDOFunCalc
 {
 DECLARE_FACTORY(RDOFunListCalc)
 public:
@@ -66,7 +69,8 @@ private:
 };
 
 //! Алгоритмическая функция
-CALC_SUB(RDOFunAlgorithmicCalc, RDOFunCalc)
+PREDECLARE_POINTER(RDOFunAlgorithmicCalc);
+class RDOFunAlgorithmicCalc: public RDOFunCalc
 {
 DECLARE_FACTORY(RDOFunAlgorithmicCalc)
 public:
@@ -82,7 +86,8 @@ protected:
 };
 
 //! Параметр функции
-CALC(RDOCalcFuncParam)
+PREDECLARE_POINTER(RDOCalcFuncParam);
+class RDOCalcFuncParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFuncParam)
 private:
@@ -94,7 +99,8 @@ private:
 };
 
 //! Получение константы с закладки FUN
-CALC(RDOCalcGetConst)
+PREDECLARE_POINTER(RDOCalcGetConst);
+class RDOCalcGetConst: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetConst)
 private:
@@ -106,7 +112,8 @@ private:
 };
 
 //! Инициализация константы
-CALC(RDOCalcSetConst)
+PREDECLARE_POINTER(RDOCalcSetConst);
+class RDOCalcSetConst: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSetConst)
 private:
@@ -119,7 +126,8 @@ private:
 };
 
 //! Вызов функции (function-caller)
-CALC(RDOCalcFunctionCaller)
+PREDECLARE_POINTER(RDOCalcFunctionCaller);
+class RDOCalcFunctionCaller: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunctionCaller)
 public:

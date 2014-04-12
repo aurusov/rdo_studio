@@ -19,7 +19,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Размер массива
-CALC(RDOCalcArraySize)
+PREDECLARE_POINTER(RDOCalcArraySize);
+class RDOCalcArraySize: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcArraySize)
 private:
@@ -31,7 +32,8 @@ private:
 };
 
 //! Возвращает элемент массива
-CALC(RDOCalcArrayItem)
+PREDECLARE_POINTER(RDOCalcArrayItem);
+class RDOCalcArrayItem: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcArrayItem)
 private:
@@ -44,7 +46,8 @@ private:
 };
 
 //! Устанавливает элемент массива
-CALC(RDOCalcSetArrayItem)
+PREDECLARE_POINTER(RDOCalcSetArrayItem);
+class RDOCalcSetArrayItem: public RDOCalc
 {
 	DECLARE_FACTORY(RDOCalcSetArrayItem)
 private:

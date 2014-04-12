@@ -43,7 +43,6 @@ private:
 
 #define DECLARE_OBJECT_INTERFACE(TYPE)    typedef rdo::interface_ptr<TYPE> LP##TYPE;
 #define PREDECLARE_OBJECT_INTERFACE(TYPE) struct TYPE; DECLARE_OBJECT_INTERFACE(TYPE);
-#define OBJECT_INTERFACE(TYPE)            PREDECLARE_OBJECT_INTERFACE(TYPE) struct TYPE: public rdo::RefCounter<TYPE>
 
 } // namespace rdo
 

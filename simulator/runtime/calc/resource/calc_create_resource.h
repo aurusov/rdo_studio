@@ -21,7 +21,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Создание нового ресурса
-CALC(RDOCalcCreateResource)
+PREDECLARE_POINTER(RDOCalcCreateResource);
+class RDOCalcCreateResource: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcCreateResource)
 private:

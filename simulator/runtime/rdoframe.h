@@ -28,7 +28,8 @@ PREDECLARE_POINTER(RDOFRMItem);
   \interface IRDOFRMItemGetBitmap
   \brief     Интерфейс запроса картинок у элемента анимации
 */
-OBJECT_INTERFACE(IRDOFRMItemGetBitmap)
+PREDECLARE_OBJECT_INTERFACE(IRDOFRMItemGetBitmap)
+struct IRDOFRMItemGetBitmap: public rdo::RefCounter<IRDOFRMItemGetBitmap>
 {
 DECLARE_FACTORY(IRDOFRMItemGetBitmap)
 public:
@@ -48,7 +49,8 @@ protected:
   \class     RDOFRMSprite
   \brief     Спрайт. Владеет и запускает на исполнение основные команды анимации
 */
-CALC(RDOFRMSprite)
+PREDECLARE_POINTER(RDOFRMSprite);
+class RDOFRMSprite: public RDOCalc
 	IS  INSTANCE_OF      (RDORuntimeObject    )
 	AND INSTANCE_OF      (RDOSrcInfo          )
 	AND IMPLEMENTATION_OF(IRDOFRMItemGetBitmap)
@@ -137,7 +139,8 @@ public:
 	  \class     RDOFRMRulet
 	  \brief     Рулетка. Используется для позиционирования
 	*/
-	CALC(RDOFRMRulet)
+	PREDECLARE_POINTER(RDOFRMRulet);
+	class RDOFRMRulet: public RDOCalc
 	{
 	DECLARE_FACTORY(RDOFRMRulet)
 	public:
@@ -258,7 +261,8 @@ private:
   \class     RDOFRMItem
   \brief     Базовый класс для всех элементов
 */
-CALC(RDOFRMItem)
+PREDECLARE_POINTER(RDOFRMItem);
+class RDOFRMItem: public RDOCalc
 {
 DECLARE_FACTORY(RDOFRMItem)
 protected:
@@ -272,18 +276,11 @@ private:
 };
 
 /*!
-  \def       RDOFRM_ITEM(A)
-  \brief     Декларация наследника \a RDOFRMItem
-*/
-#define RDOFRM_ITEM(A) \
-PREDECLARE_POINTER(A); \
-CLASS(A): INSTANCE_OF(RDOFRMItem)
-
-/*!
   \class     RDOFRMText
   \brief     Текст
 */
-RDOFRM_ITEM(RDOFRMText)
+PREDECLARE_POINTER(RDOFRMText);
+class RDOFRMText: public RDOFRMItem
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
 	AND INSTANCE_OF(RDOFRMColoredItem )
 {
@@ -318,7 +315,8 @@ private:
   \class     RDOFRMBitmapBase
   \brief     Базовый класс для картинок
 */
-RDOFRM_ITEM(RDOFRMBitmapBase)
+PREDECLARE_POINTER(RDOFRMBitmapBase);
+class RDOFRMBitmapBase: public RDOFRMItem
 	IS IMPLEMENTATION_OF(IRDOFRMItemGetBitmap)
 {
 protected:
@@ -387,7 +385,8 @@ DECLARE_POINTER(RDOFRMBitmapStretch);
   \class     RDOFRMRect
   \brief     Объект прямоугольник
 */
-RDOFRM_ITEM(RDOFRMRect)
+PREDECLARE_POINTER(RDOFRMRect);
+class RDOFRMRect: public RDOFRMItem
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
 	AND INSTANCE_OF(RDOFRMColoredItem )
 {
@@ -411,7 +410,8 @@ private:
   \class     RDOFRMRectRound
   \brief     Прямоугольник со скругленными углами
 */
-RDOFRM_ITEM(RDOFRMRectRound)
+PREDECLARE_POINTER(RDOFRMRectRound);
+class RDOFRMRectRound: public RDOFRMItem
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
 	AND INSTANCE_OF(RDOFRMColoredItem )
 {
@@ -435,7 +435,8 @@ private:
   \class     RDOFRMCircle
   \brief     Окружность
 */
-RDOFRM_ITEM(RDOFRMCircle) IS INSTANCE_OF(RDOFRMColoredItem)
+PREDECLARE_POINTER(RDOFRMCircle);
+class RDOFRMCircle: public RDOFRMItem IS INSTANCE_OF(RDOFRMColoredItem)
 {
 DECLARE_FACTORY(RDOFRMCircle)
 private:
@@ -460,7 +461,8 @@ private:
   \class     RDOFRMEllipse
   \brief     Эллипс
 */
-RDOFRM_ITEM(RDOFRMEllipse)
+PREDECLARE_POINTER(RDOFRMEllipse);
+class RDOFRMEllipse: public RDOFRMItem
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
 	AND INSTANCE_OF(RDOFRMColoredItem )
 {
@@ -484,7 +486,8 @@ private:
   \class     RDOFRMLine
   \brief     Линия
 */
-RDOFRM_ITEM(RDOFRMLine) AND INSTANCE_OF(RDOFRMBoundingItem)
+PREDECLARE_POINTER(RDOFRMLine);
+class RDOFRMLine: public RDOFRMItem AND INSTANCE_OF(RDOFRMBoundingItem)
 {
 DECLARE_FACTORY(RDOFRMLine)
 private:
@@ -507,7 +510,8 @@ private:
   \class     RDOFRMTriang
   \brief     Треугольник
 */
-RDOFRM_ITEM(RDOFRMTriang) AND INSTANCE_OF(RDOFRMColoredItem)
+PREDECLARE_POINTER(RDOFRMTriang);
+class RDOFRMTriang: public RDOFRMItem AND INSTANCE_OF(RDOFRMColoredItem)
 {
 DECLARE_FACTORY(RDOFRMTriang)
 private:
@@ -538,7 +542,8 @@ private:
   \class     RDOFRMActive
   \brief     Активная область
 */
-RDOFRM_ITEM(RDOFRMActive) AND INSTANCE_OF(RDOFRMBoundingItem)
+PREDECLARE_POINTER(RDOFRMActive);
+class RDOFRMActive: public RDOFRMItem AND INSTANCE_OF(RDOFRMBoundingItem)
 {
 DECLARE_FACTORY(RDOFRMActive)
 private:
@@ -561,7 +566,8 @@ private:
   \class     RDOFRMSpace
   \brief     Пустота
 */
-RDOFRM_ITEM(RDOFRMSpace) AND INSTANCE_OF(RDOFRMBoundingItem)
+PREDECLARE_POINTER(RDOFRMSpace);
+class RDOFRMSpace: public RDOFRMItem AND INSTANCE_OF(RDOFRMBoundingItem)
 {
 DECLARE_FACTORY(RDOFRMSpace)
 private:

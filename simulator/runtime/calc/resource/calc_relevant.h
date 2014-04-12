@@ -20,7 +20,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Получить ресурс по ID релевантного ресурса
-CALC(RDOGetResourceByRelevantResourceID)
+PREDECLARE_POINTER(RDOGetResourceByRelevantResourceID);
+class RDOGetResourceByRelevantResourceID: public RDOCalc
 {
 DECLARE_FACTORY(RDOGetResourceByRelevantResourceID)
 private:
@@ -32,7 +33,8 @@ private:
 };
 
 //! Удаление релевантного ресурса
-CALC(RDOEraseResRelCalc)
+PREDECLARE_POINTER(RDOEraseResRelCalc);
+class RDOEraseResRelCalc: public RDOCalc
 {
 DECLARE_FACTORY(RDOEraseResRelCalc)
 public:
@@ -48,7 +50,8 @@ private:
 };
 
 //! Возвращает ресурс групповой функции
-CALC(RDOCalcGetGroupFunctionResource)
+PREDECLARE_POINTER(RDOCalcGetGroupFunctionResource);
+class RDOCalcGetGroupFunctionResource: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetGroupFunctionResource)
 private:

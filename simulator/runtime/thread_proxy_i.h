@@ -20,7 +20,8 @@
   \interface IThreadProxy
   \brief     Интерфейс IThreadProxy
 */
-OBJECT_INTERFACE(IThreadProxy)
+PREDECLARE_OBJECT_INTERFACE(IThreadProxy)
+struct IThreadProxy: public rdo::RefCounter<IThreadProxy>
 {
 DECLARE_FACTORY(IThreadProxy)
 public:

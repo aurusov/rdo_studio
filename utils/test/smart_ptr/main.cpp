@@ -51,7 +51,8 @@ protected:
 	~MyClass()                    { g_pLog->push_back(-m_a); }
 };
 
-OBJECT_INTERFACE(IMyClass21)
+PREDECLARE_OBJECT_INTERFACE(IMyClass21)
+struct IMyClass21: public rdo::RefCounter<IMyClass21>
 {
 	enum { DAFAUL_VALUE = 21 };
 

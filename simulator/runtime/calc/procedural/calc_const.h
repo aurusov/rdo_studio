@@ -24,7 +24,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \details  Возвращает константное значение
   \ingroup  calc calc_const
 */
-CALC(RDOCalcConst)
+PREDECLARE_POINTER(RDOCalcConst);
+class RDOCalcConst: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcConst)
 public:

@@ -27,7 +27,8 @@ public:
 };
 
 //! Получение ресурса по ID
-CALC(RDOCalcGetResourceByID)
+PREDECLARE_POINTER(RDOCalcGetResourceByID);
+class RDOCalcGetResourceByID: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetResourceByID)
 private:
@@ -39,7 +40,8 @@ private:
 };
 
 //! Получение параметр ресурса по калку ресурса и ID параметра
-CALC(RDOCalcGetResourceParam)
+PREDECLARE_POINTER(RDOCalcGetResourceParam);
+class RDOCalcGetResourceParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetResourceParam)
 private:
@@ -52,7 +54,8 @@ private:
 };
 
 //! Параметры несуществующего ресурса
-CALC(RDOCalcGetUnknowResParam)
+PREDECLARE_POINTER(RDOCalcGetUnknowResParam);
+class RDOCalcGetUnknowResParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetUnknowResParam)
 private:
@@ -65,7 +68,8 @@ private:
 };
 
 //! Установка значения параметра ресурса перед моделированием из SMR
-CALC(RDOSetResourceParamCalc)
+PREDECLARE_POINTER(RDOSetResourceParamCalc);
+class RDOSetResourceParamCalc: public RDOCalc
 {
 DECLARE_FACTORY(RDOSetResourceParamCalc)
 private:
@@ -78,7 +82,8 @@ private:
 	DECLARE_ICalc;
 };
 
-CALC(RDOCalcSetResourceTrace)
+PREDECLARE_POINTER(RDOCalcSetResourceTrace);
+class RDOCalcSetResourceTrace: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSetResourceTrace)
 private:

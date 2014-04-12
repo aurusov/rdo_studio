@@ -18,7 +18,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Получение параметра паттерна
-CALC(RDOCalcPatParam)
+PREDECLARE_POINTER(RDOCalcPatParam);
+class RDOCalcPatParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcPatParam)
 private:

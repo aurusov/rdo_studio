@@ -22,7 +22,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Пустая операция
 //! @todo заменить на CalcNop ?
-CALC(RDOCalcNoChange)
+PREDECLARE_POINTER(RDOCalcNoChange);
+class RDOCalcNoChange: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcNoChange)
 private:
@@ -31,7 +32,8 @@ private:
 };
 
 //! Условный оператор if () then {}
-CALC(RDOCalcIf)
+PREDECLARE_POINTER(RDOCalcIf);
+class RDOCalcIf: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcIf)
 public:
@@ -52,7 +54,8 @@ private:
 };
 
 //! Оператор цикла for
-CALC(RDOCalcFor)
+PREDECLARE_POINTER(RDOCalcFor);
+class RDOCalcFor: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFor)
 public:
@@ -70,7 +73,8 @@ private:
 };
 
 //! Оператор возврата return
-CALC(RDOCalcFunReturn)
+PREDECLARE_POINTER(RDOCalcFunReturn);
+class RDOCalcFunReturn: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunReturn)
 private:
@@ -81,7 +85,8 @@ private:
 };
 
 //! Оператор возврата break
-CALC(RDOCalcFunBreak)
+PREDECLARE_POINTER(RDOCalcFunBreak);
+class RDOCalcFunBreak: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunBreak)
 private:
@@ -91,7 +96,8 @@ private:
 };
 
 //! Простой список операторов
-CALC(RDOCalcBaseStatementList)
+PREDECLARE_POINTER(RDOCalcBaseStatementList);
+class RDOCalcBaseStatementList: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcBaseStatementList)
 public:
@@ -107,7 +113,8 @@ protected:
 };
 
 //! Останавливаемый список операторов
-CALC_SUB(RDOCalcStatementList, RDOCalcBaseStatementList)
+PREDECLARE_POINTER(RDOCalcStatementList);
+class RDOCalcStatementList: public RDOCalcBaseStatementList
 {
 DECLARE_FACTORY(RDOCalcStatementList)
 private:
@@ -117,7 +124,8 @@ private:
 };
 
 //! Ловушка для break
-CALC(RDOCalcBreakCatch)
+PREDECLARE_POINTER(RDOCalcBreakCatch);
+class RDOCalcBreakCatch: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcBreakCatch)
 public:
@@ -132,7 +140,8 @@ private:
 };
 
 //! Ловушка для return
-CALC(RDOCalcReturnCatch)
+PREDECLARE_POINTER(RDOCalcReturnCatch);
+class RDOCalcReturnCatch: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcReturnCatch)
 public:

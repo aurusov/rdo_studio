@@ -19,7 +19,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Проверка на диапазон
-CALC(RDOCalcCheckRange)
+PREDECLARE_POINTER(RDOCalcCheckRange);
+class RDOCalcCheckRange: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcCheckRange)
 private:
