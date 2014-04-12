@@ -16,13 +16,13 @@
 namespace rdo {
 
 template<class T>
-interface_ptr<T>::interface_ptr()
+inline interface_ptr<T>::interface_ptr()
 	: m_pInterface(NULL)
 	, m_pCounter  (NULL)
 {}
 
 template<class T>
-interface_ptr<T>::interface_ptr(PTR(T) pInterface, LPIRefCounter pCounter)
+inline interface_ptr<T>::interface_ptr(PTR(T) pInterface, LPIRefCounter pCounter)
 	: m_pInterface(pInterface)
 	, m_pCounter  (pCounter  )
 {
@@ -31,7 +31,7 @@ interface_ptr<T>::interface_ptr(PTR(T) pInterface, LPIRefCounter pCounter)
 }
 
 template<class T>
-interface_ptr<T>::interface_ptr(CREF(this_type) sptr)
+inline interface_ptr<T>::interface_ptr(CREF(this_type) sptr)
 	: m_pInterface(sptr.m_pInterface)
 	, m_pCounter  (sptr.m_pCounter  )
 {
@@ -40,7 +40,7 @@ interface_ptr<T>::interface_ptr(CREF(this_type) sptr)
 }
 
 template<class T>
-interface_ptr<T>::~interface_ptr()
+inline interface_ptr<T>::~interface_ptr()
 {
 	if (m_pInterface)
 		m_pCounter->release();
@@ -62,19 +62,19 @@ inline REF(typename interface_ptr<T>::this_type) interface_ptr<T>::operator= (CR
 }
 
 template<class T>
-interface_ptr<T>::operator rbool () const
+inline interface_ptr<T>::operator rbool () const
 {
 	return m_pInterface != NULL;
 }
 
 template<class T>
-CPTR(T) interface_ptr<T>::operator-> () const
+inline CPTR(T) interface_ptr<T>::operator-> () const
 {
 	return m_pInterface;
 }
 
 template<class T>
-PTR(T) interface_ptr<T>::operator-> ()
+inline PTR(T) interface_ptr<T>::operator-> ()
 {
 	return m_pInterface;
 }
