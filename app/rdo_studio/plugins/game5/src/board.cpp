@@ -20,7 +20,7 @@
 
 namespace
 {
-	const std::size_t holeIndex = 0;
+	const std::size_t HOLE_NUMBER = 0;
 } // anonymous namespace
 
 Board::Board(QWidget* pParent)
@@ -62,7 +62,7 @@ void Board::init(bool disabledMode)
 		tiles[index]->setDisabled(disabledMode);
 		connect(tiles[index], &Tile::tileClicked, this, &Board::clickOnTile);
 	}
-	tiles[holeIndex]->setVisible(false);
+	tiles[HOLE_NUMBER]->setVisible(false);
 	buildCorrectOrder();
 }
 
@@ -70,7 +70,7 @@ void Board::clickOnTile(int number)
 {
 	if (freePlaceIsNearby(tiles[number]->getPosition()))
 	{
-		swapTiles(number, holeIndex);
+		swapTiles(number, HOLE_NUMBER);
 	}
 }
 
@@ -92,8 +92,8 @@ bool Board::freePlaceIsNearby(int place) const
 {
 	const int tileCol      = place % m_tilesCountX;
 	const int tileRow      = place / m_tilesCountX;
-	const int freePlaceCol = tiles[holeIndex]->getPosition() % m_tilesCountX;
-	const int freePlaceRow = tiles[holeIndex]->getPosition() / m_tilesCountX;
+	const int freePlaceCol = tiles[HOLE_NUMBER]->getPosition() % m_tilesCountX;
+	const int freePlaceRow = tiles[HOLE_NUMBER]->getPosition() / m_tilesCountX;
 
 	return ((tileCol == freePlaceCol + 1) && (tileRow == freePlaceRow)) ||
 	       ((tileCol == freePlaceCol - 1) && (tileRow == freePlaceRow)) ||
@@ -108,7 +108,7 @@ void Board::buildCorrectOrder()
 		std::size_t position = index - 1;
 		moveTile(tiles[index], position);
 	}
-	moveTile(tiles[holeIndex], m_tilesCountX * m_tilesCountY - 1);
+	moveTile(tiles[HOLE_NUMBER], m_tilesCountX * m_tilesCountY - 1);
 }
 
 void Board::buildRandomOrder(bool solvabilityCheck)
@@ -131,7 +131,7 @@ void Board::buildRandomOrder(bool solvabilityCheck)
 
 bool Board::orderIsSolvable(const std::vector<unsigned int>& tilesPosition) const
 {
-	int freePlaceRow = tilesPosition[holeIndex] / m_tilesCountX + 1;
+	int freePlaceRow = tilesPosition[HOLE_NUMBER] / m_tilesCountX + 1;
 	int sum = 0;
 	for (int i = 1; i < m_tilesCountX * m_tilesCountY; i++)
 	{

@@ -50,7 +50,7 @@ public:
 		unsigned int getPosition() const;
 		void setPosition(unsigned int value);
 
-	private :
+	private:
 		unsigned int position;
 	};
 
