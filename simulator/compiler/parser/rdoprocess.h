@@ -54,7 +54,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOPROCOperator);
 
-OBJECT(RDOPROCProcess) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOPROCProcess);
+class RDOPROCProcess
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOPROCProcess);
 public:
@@ -100,7 +103,8 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCOperator
 // --------------------------------------------------------------------------------
-OBJECT(RDOPROCOperator)
+PREDECLARE_POINTER(RDOPROCOperator);
+class RDOPROCOperator: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOPROCOperator);
 public:

@@ -91,8 +91,6 @@ private:
 
 #define DECLARE_POINTER(TYPE)    typedef rdo::intrusive_ptr<TYPE> LP##TYPE;
 #define PREDECLARE_POINTER(TYPE) class TYPE; DECLARE_POINTER(TYPE);
-#define OBJECT(TYPE)             PREDECLARE_POINTER(TYPE); CLASS(TYPE): INSTANCE_OF(rdo::counter_reference)
-#define OBJECT_VIRTUAL(TYPE)     PREDECLARE_POINTER(TYPE); CLASS(TYPE): public virtual rdo::counter_reference
 
 } // namespace rdo
 

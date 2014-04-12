@@ -31,8 +31,10 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- Document
 // --------------------------------------------------------------------------------
-OBJECT(Document)
-	IS IMPLEMENTATION_OF(IDocument)
+PREDECLARE_POINTER(Document);
+class Document
+	: public rdo::counter_reference
+	, public IDocument
 {
 DECLARE_FACTORY(Document)
 public:

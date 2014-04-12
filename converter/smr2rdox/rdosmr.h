@@ -38,7 +38,8 @@ void cnv_smr_sim_error (const char* message);
 // --------------------------------------------------------------------------------
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
-OBJECT(RDOSMR)
+PREDECLARE_POINTER(RDOSMR);
+class RDOSMR: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOSMR);
 public:
@@ -100,7 +101,10 @@ public:
 private:
 	RDOSMR(CREF(tstring) modelName);
 
-	OBJECT(BreakPoint) IS INSTANCE_OF(RDOParserSrcInfo)
+	PREDECLARE_POINTER(BreakPoint);
+	class BreakPoint
+		: public rdo::counter_reference
+		, public RDOParserSrcInfo
 	{
 	DECLARE_FACTORY(BreakPoint);
 	private:

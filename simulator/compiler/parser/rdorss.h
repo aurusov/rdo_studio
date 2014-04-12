@@ -32,11 +32,11 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------
-CLASS(RDORSSResource):
-	    INSTANCE_OF      (RDOParserSrcInfo  )
-	AND INSTANCE_OF      (boost::noncopyable)
-	AND INSTANCE_OF      (Context           )
-	AND IMPLEMENTATION_OF(IContextFind      )
+class RDORSSResource
+	: public RDOParserSrcInfo
+	, public boost::noncopyable
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDORSSResource);
 public:

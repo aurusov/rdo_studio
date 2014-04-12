@@ -50,10 +50,11 @@ protected:
   \brief     Спрайт. Владеет и запускает на исполнение основные команды анимации
 */
 PREDECLARE_POINTER(RDOFRMSprite);
-class RDOFRMSprite: public RDOCalc
-	IS  INSTANCE_OF      (RDORuntimeObject    )
-	AND INSTANCE_OF      (RDOSrcInfo          )
-	AND IMPLEMENTATION_OF(IRDOFRMItemGetBitmap)
+class RDOFRMSprite
+	: public RDOCalc
+	, public RDORuntimeObject
+	, public RDOSrcInfo
+	, public IRDOFRMItemGetBitmap
 {
 DECLARE_FACTORY(RDOFRMSprite)
 public:
@@ -61,7 +62,10 @@ public:
 	  \class     RDOFRMPosition
 	  \brief     Позиция
 	*/
-	OBJECT(RDOFRMPosition) IS INSTANCE_OF(RDORuntimeObject)
+	PREDECLARE_POINTER(RDOFRMPosition);
+	class RDOFRMPosition
+		: public rdo::counter_reference
+		, public RDORuntimeObject
 	{
 	DECLARE_FACTORY(RDOFRMPosition)
 	public:
@@ -101,7 +105,10 @@ public:
 	  \class     RDOFRMColor
 	  \brief     Объект-цвет
 	*/
-	OBJECT(RDOFRMColor) IS INSTANCE_OF(RDORuntimeObject)
+	PREDECLARE_POINTER(RDOFRMColor);
+	class RDOFRMColor
+		: public rdo::counter_reference
+		, public RDORuntimeObject
 	{
 	DECLARE_FACTORY(RDOFRMColor)
 	public:
@@ -280,9 +287,10 @@ private:
   \brief     Текст
 */
 PREDECLARE_POINTER(RDOFRMText);
-class RDOFRMText: public RDOFRMItem
-	IS  INSTANCE_OF(RDOFRMBoundingItem)
-	AND INSTANCE_OF(RDOFRMColoredItem )
+class RDOFRMText
+	: public RDOFRMItem
+	, public RDOFRMBoundingItem
+	, public RDOFRMColoredItem
 {
 DECLARE_FACTORY(RDOFRMText)
 public:
@@ -316,8 +324,9 @@ private:
   \brief     Базовый класс для картинок
 */
 PREDECLARE_POINTER(RDOFRMBitmapBase);
-class RDOFRMBitmapBase: public RDOFRMItem
-	IS IMPLEMENTATION_OF(IRDOFRMItemGetBitmap)
+class RDOFRMBitmapBase
+	: public RDOFRMItem
+	, public IRDOFRMItemGetBitmap
 {
 protected:
 	tstring m_pictFilename;
@@ -334,7 +343,7 @@ private:
   \class     RDOFRMBitmap
   \brief     Картинка
 */
-CLASS(RDOFRMBitmap): INSTANCE_OF(RDOFRMBitmapBase)
+class RDOFRMBitmap: public RDOFRMBitmapBase
 {
 DECLARE_FACTORY(RDOFRMBitmap)
 private:
@@ -359,9 +368,9 @@ DECLARE_POINTER(RDOFRMBitmap)
   \class     RDOFRMBitmapStretch
   \brief     Масштабируемая картинка
 */
-CLASS(RDOFRMBitmapStretch):
-		INSTANCE_OF(RDOFRMBitmapBase  )
-	AND INSTANCE_OF(RDOFRMBoundingItem)
+class RDOFRMBitmapStretch
+	: public RDOFRMBitmapBase
+	, public RDOFRMBoundingItem
 {
 DECLARE_FACTORY(RDOFRMBitmapStretch)
 private:
@@ -386,9 +395,10 @@ DECLARE_POINTER(RDOFRMBitmapStretch);
   \brief     Объект прямоугольник
 */
 PREDECLARE_POINTER(RDOFRMRect);
-class RDOFRMRect: public RDOFRMItem
-	IS  INSTANCE_OF(RDOFRMBoundingItem)
-	AND INSTANCE_OF(RDOFRMColoredItem )
+class RDOFRMRect
+	: public RDOFRMItem
+	, public RDOFRMBoundingItem
+	, public RDOFRMColoredItem
 {
 DECLARE_FACTORY(RDOFRMRect)
 private:
@@ -411,9 +421,10 @@ private:
   \brief     Прямоугольник со скругленными углами
 */
 PREDECLARE_POINTER(RDOFRMRectRound);
-class RDOFRMRectRound: public RDOFRMItem
-	IS  INSTANCE_OF(RDOFRMBoundingItem)
-	AND INSTANCE_OF(RDOFRMColoredItem )
+class RDOFRMRectRound
+	: public RDOFRMItem
+	, public RDOFRMBoundingItem
+	, public RDOFRMColoredItem
 {
 DECLARE_FACTORY(RDOFRMRectRound)
 private:
@@ -436,7 +447,9 @@ private:
   \brief     Окружность
 */
 PREDECLARE_POINTER(RDOFRMCircle);
-class RDOFRMCircle: public RDOFRMItem IS INSTANCE_OF(RDOFRMColoredItem)
+class RDOFRMCircle
+	: public RDOFRMItem
+	, public RDOFRMColoredItem
 {
 DECLARE_FACTORY(RDOFRMCircle)
 private:
@@ -462,9 +475,10 @@ private:
   \brief     Эллипс
 */
 PREDECLARE_POINTER(RDOFRMEllipse);
-class RDOFRMEllipse: public RDOFRMItem
-	IS  INSTANCE_OF(RDOFRMBoundingItem)
-	AND INSTANCE_OF(RDOFRMColoredItem )
+class RDOFRMEllipse
+	: public RDOFRMItem
+	, public RDOFRMBoundingItem
+	, public RDOFRMColoredItem
 {
 DECLARE_FACTORY(RDOFRMEllipse)
 private:
@@ -487,7 +501,9 @@ private:
   \brief     Линия
 */
 PREDECLARE_POINTER(RDOFRMLine);
-class RDOFRMLine: public RDOFRMItem AND INSTANCE_OF(RDOFRMBoundingItem)
+class RDOFRMLine
+	: public RDOFRMItem
+	, public RDOFRMBoundingItem
 {
 DECLARE_FACTORY(RDOFRMLine)
 private:
@@ -511,7 +527,9 @@ private:
   \brief     Треугольник
 */
 PREDECLARE_POINTER(RDOFRMTriang);
-class RDOFRMTriang: public RDOFRMItem AND INSTANCE_OF(RDOFRMColoredItem)
+class RDOFRMTriang
+	: public RDOFRMItem
+	, public RDOFRMColoredItem
 {
 DECLARE_FACTORY(RDOFRMTriang)
 private:
@@ -543,7 +561,9 @@ private:
   \brief     Активная область
 */
 PREDECLARE_POINTER(RDOFRMActive);
-class RDOFRMActive: public RDOFRMItem AND INSTANCE_OF(RDOFRMBoundingItem)
+class RDOFRMActive
+	: public RDOFRMItem
+	, public RDOFRMBoundingItem
 {
 DECLARE_FACTORY(RDOFRMActive)
 private:
@@ -567,7 +587,9 @@ private:
   \brief     Пустота
 */
 PREDECLARE_POINTER(RDOFRMSpace);
-class RDOFRMSpace: public RDOFRMItem AND INSTANCE_OF(RDOFRMBoundingItem)
+class RDOFRMSpace
+	: public RDOFRMItem
+	, public RDOFRMBoundingItem
 {
 DECLARE_FACTORY(RDOFRMSpace)
 private:
@@ -587,8 +609,7 @@ private:
   \class     RDOFRMFrame
   \brief     Фрейм. Формирует кадр анимации
 */
-CLASS(RDOFRMFrame):
-	INSTANCE_OF(RDOFRMSprite)
+class RDOFRMFrame: public RDOFRMSprite
 {
 DECLARE_FACTORY(RDOFRMFrame)
 public:

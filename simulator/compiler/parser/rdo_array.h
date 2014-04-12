@@ -21,7 +21,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOArrayValue
 // --------------------------------------------------------------------------------
-OBJECT(RDOArrayValue) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOArrayValue);
+class RDOArrayValue
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOArrayValue);
 public:

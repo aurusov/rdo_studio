@@ -28,7 +28,8 @@ PREDECLARE_POINTER(RDOArrayType    );
 PREDECLARE_POINTER(RDOArrayIterator);
 
 //! Элемент массива
-OBJECT(RDOArrayValue)
+PREDECLARE_POINTER(RDOArrayValue);
+class RDOArrayValue: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOArrayValue)
 public:

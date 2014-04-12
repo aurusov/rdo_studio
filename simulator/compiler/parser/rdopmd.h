@@ -25,7 +25,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-OBJECT(RDOPMDResult) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOPMDResult);
+class RDOPMDResult
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOPMDResult);
 public:
@@ -44,9 +47,9 @@ protected:
 // --------------------------------------------------------------------------------
 // -------------------- RDOResultGroup
 // --------------------------------------------------------------------------------
-CLASS(RDOResultGroup):
-	    INSTANCE_OF(RDOParserSrcInfo)
-	AND INSTANCE_OF(Context         )
+class RDOResultGroup
+	: public RDOParserSrcInfo
+	, public Context
 {
 DECLARE_FACTORY(RDOResultGroup);
 public:

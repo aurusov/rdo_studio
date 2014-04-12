@@ -66,7 +66,10 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNBase
 // --------------------------------------------------------------------------------
-OBJECT(RDOFUNBase) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNBase);
+class RDOFUNBase
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 public:
 	CREF(LPExpression) expression() const;
@@ -85,7 +88,7 @@ protected:
 PREDECLARE_POINTER(RDOFUNArithm);
 PREDECLARE_POINTER(RDOFUNLogic);
 
-CLASS(RDOFUNLogic): INSTANCE_OF(RDOFUNBase)
+class RDOFUNLogic: public RDOFUNBase
 {
 DECLARE_FACTORY(RDOFUNLogic);
 friend class RDOFUNArithm;
@@ -122,7 +125,7 @@ DECLARE_POINTER(LPRDOFUNLogic);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNArithm
 // --------------------------------------------------------------------------------
-CLASS(RDOFUNArithm): INSTANCE_OF(RDOFUNBase)
+class RDOFUNArithm: public RDOFUNBase
 {
 DECLARE_FACTORY(RDOFUNArithm);
 public:
@@ -195,7 +198,7 @@ DECLARE_POINTER(LPRDOFUNArithm);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNConstant
 // --------------------------------------------------------------------------------
-CLASS(RDOFUNConstant): INSTANCE_OF(RDOParam)
+class RDOFUNConstant: public RDOParam
 {
 DECLARE_FACTORY(RDOFUNConstant);
 public:
@@ -211,7 +214,10 @@ DECLARE_POINTER(RDOFUNConstant);
 
 //! Список арифметических выражений
 //! \details Используется для передачи параметров при вызове событий и функций
-OBJECT(ArithmContainer) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(ArithmContainer);
+class ArithmContainer
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(ArithmContainer);
 public:
@@ -233,7 +239,10 @@ private:
 // --------------------------------------------------------------------------------
 // Параметры, с которыми функция вызывается
 // --------------------------------------------------------------------------------
-OBJECT(RDOFUNParams) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNParams);
+class RDOFUNParams
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFUNParams);
 public:
@@ -259,11 +268,17 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNSequence
 // --------------------------------------------------------------------------------
-OBJECT(RDOFUNSequence) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNSequence);
+class RDOFUNSequence
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFUNSequence);
 public:
-	OBJECT(RDOFUNSequenceHeader) IS INSTANCE_OF(RDOParserSrcInfo)
+	PREDECLARE_POINTER(RDOFUNSequenceHeader);
+	class RDOFUNSequenceHeader
+		: public rdo::counter_reference
+		, public RDOParserSrcInfo
 	{
 	DECLARE_FACTORY(RDOFUNSequenceHeader);
 	public:
@@ -361,7 +376,10 @@ private:
 class RDOFUNSequenceByHist: public RDOFUNSequence
 {
 public:
-	OBJECT(RDOFUNSequenceByHistHeader) IS INSTANCE_OF(RDOParserSrcInfo)
+	PREDECLARE_POINTER(RDOFUNSequenceByHistHeader);
+	class RDOFUNSequenceByHistHeader
+		: public rdo::counter_reference
+		, public RDOParserSrcInfo
 	{
 	DECLARE_FACTORY(RDOFUNSequenceByHistHeader);
 	public:
@@ -465,7 +483,10 @@ DECLARE_POINTER(RDOFUNSequenceEnumerative);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNFunctionListElement
 // --------------------------------------------------------------------------------
-OBJECT(RDOFUNFunctionListElement) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNFunctionListElement);
+class RDOFUNFunctionListElement
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFUNFunctionListElement)
 public:
@@ -542,7 +563,10 @@ DECLARE_POINTER(RDOFUNFunctionListElementEq);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNCalculateIf
 // --------------------------------------------------------------------------------
-OBJECT(RDOFUNCalculateIf) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNCalculateIf);
+class RDOFUNCalculateIf
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFUNCalculateIf)
 public:
@@ -598,10 +622,10 @@ DECLARE_POINTER(RDOFUNFunction);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNGroup
 // --------------------------------------------------------------------------------
-CLASS(RDOFUNGroup):
-	    INSTANCE_OF      (RDOParserSrcInfo)
-	AND INSTANCE_OF      (Context         )
-	AND IMPLEMENTATION_OF(IContextFind    )
+class RDOFUNGroup
+	: public RDOParserSrcInfo
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDOFUNGroup);
 public:
@@ -625,9 +649,9 @@ DECLARE_POINTER(RDOFUNGroup);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNGroupLogic
 // --------------------------------------------------------------------------------
-CLASS(RDOFUNGroupLogic):
-	    INSTANCE_OF(RDOFUNGroup       )
-	AND INSTANCE_OF(boost::noncopyable)
+class RDOFUNGroupLogic
+	: public RDOFUNGroup
+	, public boost::noncopyable
 {
 DECLARE_FACTORY(RDOFUNGroupLogic)
 public:

@@ -24,7 +24,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- BisonValuePair
 // --------------------------------------------------------------------------------
 template <class T1, class T2>
-class BisonValuePair: INSTANCE_OF(rdo::counter_reference)
+class BisonValuePair: public rdo::counter_reference
 {
 public:
 	CREF(T1) getFirst () const;

@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class     RDOSimulator
   \brief     Один из базовых классов для RDORuntime
 */
-CLASS(RDOSimulator): INSTANCE_OF (RDOSimulatorBase)
+class RDOSimulator: public RDOSimulatorBase
 {
 public:
 	RDOSimulator();

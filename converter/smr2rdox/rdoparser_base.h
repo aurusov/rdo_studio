@@ -37,7 +37,8 @@ typedef int  (*t_flex_lexer_fun) (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(vo
 // --------------------------------------------------------------------------------
 class Converter;
 
-OBJECT(RDOParserItem)
+PREDECLARE_POINTER(RDOParserItem);
+class RDOParserItem: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOParserItem);
 public:
@@ -79,7 +80,8 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserContainer
 // --------------------------------------------------------------------------------
-OBJECT(RDOParserContainer)
+PREDECLARE_POINTER(RDOParserContainer);
+class RDOParserContainer: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOParserContainer);
 public:

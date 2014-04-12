@@ -24,7 +24,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class     RDOMemory
   \brief     Память
 */
-OBJECT(RDOMemory)
+PREDECLARE_POINTER(RDOMemory);
+class RDOMemory: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOMemory);
 public:
@@ -45,7 +46,8 @@ private:
   \class     RDOMemoryStack
   \brief     Стэк памяти
 */
-OBJECT(RDOMemoryStack)
+PREDECLARE_POINTER(RDOMemoryStack);
+class RDOMemoryStack: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOMemoryStack);
 public:

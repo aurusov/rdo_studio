@@ -23,7 +23,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- UpdateInsert
 // --------------------------------------------------------------------------------
-CLASS(UpdateInsert): INSTANCE_OF(DocUpdate)
+class UpdateInsert: public DocUpdate
 {
 DECLARE_FACTORY(UpdateInsert)
 private:
@@ -38,7 +38,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- UpdateDelete
 // --------------------------------------------------------------------------------
-CLASS(UpdateDelete): INSTANCE_OF(DocUpdate)
+class UpdateDelete: public DocUpdate
 {
 DECLARE_FACTORY(UpdateDelete)
 private:
@@ -53,7 +53,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- UpdateReplace
 // --------------------------------------------------------------------------------
-CLASS(UpdateReplace): INSTANCE_OF(DocUpdate)
+class UpdateReplace: public DocUpdate
 {
 DECLARE_FACTORY(UpdateReplace)
 private:
@@ -68,7 +68,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- UpdateMove
 // --------------------------------------------------------------------------------
-CLASS(UpdateMove): INSTANCE_OF(DocUpdate)
+class UpdateMove: public DocUpdate
 {
 DECLARE_FACTORY(UpdateMove)
 private:
@@ -89,7 +89,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- UpdateSwap
 // --------------------------------------------------------------------------------
-CLASS(UpdateSwap): INSTANCE_OF(DocUpdate)
+class UpdateSwap: public DocUpdate
 {
 DECLARE_FACTORY(UpdateSwap)
 private:

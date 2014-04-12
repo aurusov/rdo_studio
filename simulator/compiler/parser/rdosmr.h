@@ -29,7 +29,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
-OBJECT(RDOSMR)
+PREDECLARE_POINTER(RDOSMR);
+class RDOSMR: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOSMR);
 public:
@@ -72,7 +73,10 @@ public:
 private:
 	RDOSMR();
 
-	OBJECT(BreakPoint) IS INSTANCE_OF(RDOParserSrcInfo)
+	PREDECLARE_POINTER(BreakPoint);
+	class BreakPoint
+		: public rdo::counter_reference
+		, public RDOParserSrcInfo
 	{
 	DECLARE_FACTORY(BreakPoint);
 	private:

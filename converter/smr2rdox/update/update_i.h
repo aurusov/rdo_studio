@@ -23,7 +23,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- IDocUpdate
 // --------------------------------------------------------------------------------
-S_INTERFACE(IDocUpdate)
+struct IDocUpdate
 {
 public:
 	class Position
@@ -70,7 +70,10 @@ public:
 	void remove(IDocument::Type type, CREF(Position) from, CREF(Position) to); \
 	void dump  (REF(LPIDocument) pDocument) const;
 
-OBJECT(DocUpdate) IS IMPLEMENTATION_OF(IDocUpdate)
+PREDECLARE_POINTER(DocUpdate);
+class DocUpdate
+	: public rdo::counter_reference
+	, public IDocUpdate
 {
 protected:
 	DocUpdate(IDocument::Type file = IDocument::UNDEFINED);

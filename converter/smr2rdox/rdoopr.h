@@ -40,7 +40,10 @@ DECLARE_POINTER(RDOOPROperation);
 // --------------------------------------------------------------------------------
 // -------------------- RDOOperations
 // --------------------------------------------------------------------------------
-OBJECT(RDOOperations) IS public RDOLogicActivity<rdo::runtime::RDOOperations, RDOOPROperation>
+PREDECLARE_POINTER(RDOOperations);
+class RDOOperations
+	: public rdo::counter_reference
+	, public RDOLogicActivity<rdo::runtime::RDOOperations, RDOOPROperation>
 {
 DECLARE_FACTORY(RDOOperations);
 private:

@@ -28,19 +28,6 @@
 //! Константный указатель на константный объект типа А
 #define CPTRC(A) const A* const
 
-//! Объявление класса
-#define  CLASS(A)              class A
-//! Объявление интерфейса
-#define S_INTERFACE(A)         struct A
-//! Наследование
-#define IS  ,
-//! Наследование
-#define AND ,
-//! Реализация интерфейса A
-#define IMPLEMENTATION_OF(A)   public A
-//! Объект типа A
-#define INSTANCE_OF(A)         public A
-
 #ifdef UNUSED
 	#undef UNUSED
 #endif

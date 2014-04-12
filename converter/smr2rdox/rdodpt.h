@@ -68,7 +68,10 @@ void cnv_proc_opr_error(const char* message);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivity
 // --------------------------------------------------------------------------------
-OBJECT(RDODPTActivity) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDODPTActivity);
+class RDODPTActivity
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDODPTActivity);
 public:
@@ -126,7 +129,10 @@ DECLARE_POINTER(RDODPTFreeActivity);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTFree
 // --------------------------------------------------------------------------------
-OBJECT(RDODPTFree) IS public RDOLogicActivity<rdo::runtime::RDODPTFree, RDODPTFreeActivity>
+PREDECLARE_POINTER(RDODPTFree);
+class RDODPTFree
+	: public rdo::counter_reference
+	, public RDOLogicActivity<rdo::runtime::RDODPTFree, RDODPTFreeActivity>
 {
 DECLARE_FACTORY(RDODPTFree);
 private:
@@ -156,7 +162,10 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
-OBJECT(RDODPTSome) IS public RDOLogicActivity<rdo::runtime::RDODPTSome, RDODPTSomeActivity>
+PREDECLARE_POINTER(RDODPTSome);
+class RDODPTSome
+	: public rdo::counter_reference
+	, public RDOLogicActivity<rdo::runtime::RDODPTSome, RDODPTSomeActivity>
 {
 DECLARE_FACTORY(RDODPTSome);
 public:
@@ -175,7 +184,10 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
-OBJECT(RDODPTPrior) IS public RDOLogicActivity<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>
+PREDECLARE_POINTER(RDODPTPrior);
+class RDODPTPrior
+	: public rdo::counter_reference
+	, public RDOLogicActivity<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>
 {
 DECLARE_FACTORY(RDODPTPrior);
 public:
@@ -216,7 +228,10 @@ DECLARE_POINTER(RDODPTSearchActivity);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-OBJECT(RDODPTSearch) IS public RDOLogicActivity<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>
+PREDECLARE_POINTER(RDODPTSearch);
+class RDODPTSearch
+	: public rdo::counter_reference
+	, public RDOLogicActivity<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>
 {
 DECLARE_FACTORY(RDODPTSearch);
 public:
@@ -245,7 +260,10 @@ private:
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOPROCOperator);
 
-OBJECT(RDOPROCProcess) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOPROCProcess);
+class RDOPROCProcess
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOPROCProcess);
 public:
@@ -283,7 +301,8 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCOperator
 // --------------------------------------------------------------------------------
-OBJECT(RDOPROCOperator)
+PREDECLARE_POINTER(RDOPROCOperator);
+class RDOPROCOperator: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOPROCOperator);
 protected:

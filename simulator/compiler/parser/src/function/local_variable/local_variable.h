@@ -25,7 +25,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariable
 // --------------------------------------------------------------------------------
-OBJECT(LocalVariable)
+PREDECLARE_POINTER(LocalVariable);
+class LocalVariable: public rdo::counter_reference
 {
 DECLARE_FACTORY(LocalVariable);
 public:
@@ -46,7 +47,8 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariableList
 // --------------------------------------------------------------------------------
-OBJECT(LocalVariableList)
+PREDECLARE_POINTER(LocalVariableList);
+class LocalVariableList: public rdo::counter_reference
 {
 DECLARE_FACTORY(LocalVariableList);
 public:
@@ -65,7 +67,8 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariableListStack
 // --------------------------------------------------------------------------------
-OBJECT(LocalVariableListStack)
+PREDECLARE_POINTER(LocalVariableListStack);
+class LocalVariableListStack: public rdo::counter_reference
 {
 DECLARE_FACTORY(LocalVariableListStack);
 public:

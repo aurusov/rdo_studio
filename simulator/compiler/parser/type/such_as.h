@@ -21,7 +21,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeParamSuchAs
 // --------------------------------------------------------------------------------
-CLASS(RDOTypeParamSuchAs): INSTANCE_OF(TypeInfo)
+class RDOTypeParamSuchAs: public TypeInfo
 {
 DECLARE_FACTORY(RDOTypeParamSuchAs);
 public:

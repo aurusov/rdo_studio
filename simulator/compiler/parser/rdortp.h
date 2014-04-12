@@ -37,12 +37,12 @@ OPEN_RDO_PARSER_NAMESPACE
 PREDECLARE_POINTER(RDOParser);
 PREDECLARE_POINTER(RDORSSResource);
 
-CLASS(RDORTPResType):
-	    INSTANCE_OF      (RDOParserSrcInfo  )
-	AND INSTANCE_OF      (boost::noncopyable)
-	AND INSTANCE_OF      (RuntimeWrapperType)
-	AND INSTANCE_OF      (Context           )
-	AND IMPLEMENTATION_OF(IContextFind      )
+class RDORTPResType
+	: public RDOParserSrcInfo
+	, public boost::noncopyable
+	, public RuntimeWrapperType
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDORTPResType);
 public:

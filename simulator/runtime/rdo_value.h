@@ -117,7 +117,10 @@ public:
 
 private:
 	//! Строковый тип данных
-	OBJECT(string_class) IS INSTANCE_OF(tstring)
+	PREDECLARE_POINTER(string_class);
+	class string_class
+		: public rdo::counter_reference
+		, public tstring
 	{
 	public:
 		string_class(CREF(tstring) string);

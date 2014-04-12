@@ -33,9 +33,11 @@ void cnv_rsserror(const char*  message);
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------
-OBJECT(RDORSSResource)
-	IS  INSTANCE_OF(RDOParserSrcInfo  )
-	AND INSTANCE_OF(boost::noncopyable)
+PREDECLARE_POINTER(RDORSSResource);
+class RDORSSResource
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
+	, public boost::noncopyable
 {
 DECLARE_FACTORY(RDORSSResource);
 public:

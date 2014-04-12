@@ -32,7 +32,8 @@ typedef int  (*t_flex_lexer_fun) (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(vo
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOParser);
 
-OBJECT(RDOParserItem)
+PREDECLARE_POINTER(RDOParserItem);
+class RDOParserItem: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOParserItem);
 public:

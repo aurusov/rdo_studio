@@ -34,7 +34,8 @@ PREDECLARE_POINTER(RDORuntime);
   \details  Cкомпилированная модель состоит из последовательоности калков, так же как и скомпилированная программа состоит из ассемблеровских команд. Данный класс описывает базовый, абстрактный калк.
   \ingroup  calc calc_base
 */
-OBJECT(RDOCalc)
+PREDECLARE_POINTER(RDOCalc);
+class RDOCalc: public rdo::counter_reference
 {
 //! \details Фабрика для автоматического удаления калка
 DECLARE_FACTORY(RDOCalc)

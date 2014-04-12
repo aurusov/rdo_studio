@@ -60,9 +60,11 @@ public:
 // --------------------------------------------------------------------------------
 // -------------------- RDOType
 // --------------------------------------------------------------------------------
-OBJECT(RDOType)
-	IS  IMPLEMENTATION_OF(IType          )
-	AND IMPLEMENTATION_OF(IModelStructure)
+PREDECLARE_POINTER(RDOType);
+class RDOType
+	: public rdo::counter_reference
+	, public IType
+	, public IModelStructure
 {
 DECLARE_FACTORY(RDOType)
 public:

@@ -27,7 +27,10 @@ void cnv_pmderror(const char* message);
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-OBJECT(RDOPMDResult) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOPMDResult);
+class RDOPMDResult
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOPMDResult);
 public:

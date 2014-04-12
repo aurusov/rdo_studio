@@ -30,7 +30,7 @@ PREDECLARE_POINTER(RDOSimulatorTrace);
   \class     RDOSimulatorTrace
   \brief     Трассировщик симулятора
 */
-CLASS(RDOSimulatorTrace): INSTANCE_OF(RDOSimulator)
+class RDOSimulatorTrace: public RDOSimulator
 {
 DECLARE_FACTORY(RDOSimulatorTrace)
 public:

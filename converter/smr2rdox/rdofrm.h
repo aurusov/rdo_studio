@@ -28,7 +28,10 @@ void cnv_frmerror(const char* message);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
-OBJECT(RDOFRMFrame) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFRMFrame);
+class RDOFRMFrame
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:

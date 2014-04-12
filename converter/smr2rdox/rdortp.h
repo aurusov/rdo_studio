@@ -35,9 +35,11 @@ void cnv_rtperror(const char* message);
 // --------------------------------------------------------------------------------
 class Converter;
 
-OBJECT(RDORTPResType)
-	IS  INSTANCE_OF(RDOParserSrcInfo  )
-	AND INSTANCE_OF(boost::noncopyable)
+PREDECLARE_POINTER(RDORTPResType);
+class RDORTPResType
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
+	, public boost::noncopyable
 {
 DECLARE_FACTORY(RDORTPResType);
 public:

@@ -29,9 +29,11 @@ class RDOKeyboard;
   \class     RDOPattern
   \brief     Базовый класс для паттернов активностей и событий
 */
-OBJECT(RDOPattern)
-	IS  INSTANCE_OF(RDORuntimeObject  )
-	AND INSTANCE_OF(RDOTraceableObject)
+PREDECLARE_POINTER(RDOPattern);
+class RDOPattern
+	: public rdo::counter_reference
+	, public RDORuntimeObject
+	, public RDOTraceableObject
 {
 DECLARE_FACTORY(RDOPattern);
 
@@ -57,7 +59,7 @@ protected:
   \class     RDOPatternEvent
   \brief     Паттерн событий
 */
-CLASS(RDOPatternEvent): INSTANCE_OF(RDOPattern)
+class RDOPatternEvent: public RDOPattern
 {
 DECLARE_FACTORY(RDOPatternEvent);
 friend class RDOEvent;
@@ -90,7 +92,7 @@ DECLARE_POINTER(RDOPatternEvent);
   \class     RDOPatternRule
   \brief     Паттерн активностей типа rule
 */
-CLASS(RDOPatternRule): INSTANCE_OF(RDOPattern)
+class RDOPatternRule: public RDOPattern
 {
 DECLARE_FACTORY(RDOPatternRule);
 friend class RDORule;
@@ -125,7 +127,7 @@ DECLARE_POINTER(RDOPatternRule);
   \class     RDOPatternOperation
   \brief     Паттерн активностей типа operation
 */
-CLASS(RDOPatternOperation): INSTANCE_OF(RDOPattern)
+class RDOPatternOperation: public RDOPattern
 {
 DECLARE_FACTORY(RDOPatternOperation);
 friend class RDOOperation;
@@ -174,7 +176,7 @@ DECLARE_POINTER(RDOPatternOperation);
   \class     RDOPatternKeyboard
   \brief     Паттерн активностей типа keyboard
 */
-CLASS(RDOPatternKeyboard): INSTANCE_OF(RDOPatternOperation)
+class RDOPatternKeyboard: public RDOPatternOperation
 {
 DECLARE_FACTORY(RDOPatternKeyboard);
 public:

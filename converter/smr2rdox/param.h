@@ -22,7 +22,10 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParam
 // --------------------------------------------------------------------------------
-OBJECT(RDOParam) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOParam);
+class RDOParam
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOParam)
 public:

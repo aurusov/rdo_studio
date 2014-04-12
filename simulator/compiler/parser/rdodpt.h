@@ -48,10 +48,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParsEvent
 // --------------------------------------------------------------------------------
-CLASS(RDOParsEvent):
-	INSTANCE_OF      (RDOParserSrcInfo)
-AND INSTANCE_OF      (Context         )
-AND IMPLEMENTATION_OF(IContextFind    )
+class RDOParsEvent
+	: public RDOParserSrcInfo
+	, public Context
+	, public IContextFind
 {
 	DECLARE_FACTORY(RDOParsEvent);
 public:
@@ -82,10 +82,10 @@ DECLARE_POINTER(RDOParsEvent);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivity
 // --------------------------------------------------------------------------------
-CLASS(RDODPTActivity):
-	    INSTANCE_OF      (RDOParserSrcInfo)
-	AND INSTANCE_OF      (Context         )
-	AND IMPLEMENTATION_OF(IContextFind    )
+class RDODPTActivity
+	: public RDOParserSrcInfo
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDODPTActivity);
 public:
@@ -153,9 +153,10 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
-CLASS(RDODPTSome): public RDOLogic<rdo::runtime::RDODPTSome, RDODPTSomeActivity>
-	AND INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+class RDODPTSome
+	: public RDOLogic<rdo::runtime::RDODPTSome, RDODPTSomeActivity>
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDODPTSome);
 
@@ -170,9 +171,10 @@ DECLARE_POINTER(RDODPTSome);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
-CLASS(RDODPTPrior): public RDOLogic<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>
-	AND INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+class RDODPTPrior
+	: public RDOLogic<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDODPTPrior);
 
@@ -209,9 +211,10 @@ DECLARE_POINTER(RDODPTSearchActivity);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-CLASS(RDODPTSearch): public RDOLogic<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>
-	AND INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+class RDODPTSearch
+	: public RDOLogic<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDODPTSearch);
 public:

@@ -23,7 +23,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- Expression
 // --------------------------------------------------------------------------------
 class ExpressionStatement;
-OBJECT(Expression) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(Expression);
+class Expression
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(Expression);
 friend class ExpressionStatement;
@@ -52,7 +55,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- ExpressionEmpty
 // --------------------------------------------------------------------------------
-CLASS(ExpressionEmpty): INSTANCE_OF(Expression)
+class ExpressionEmpty: public Expression
 {
 DECLARE_FACTORY(ExpressionEmpty);
 private:

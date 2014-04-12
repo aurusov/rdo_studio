@@ -36,7 +36,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class     RDOSimulatorBase
   \brief     Один из базовых классов для RDORuntime
 */
-OBJECT(RDOSimulatorBase)
+PREDECLARE_POINTER(RDOSimulatorBase);
+class RDOSimulatorBase: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOSimulatorBase)
 public:

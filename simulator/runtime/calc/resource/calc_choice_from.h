@@ -123,8 +123,9 @@ private:
 
 //! Выбор по имени ресурса
 PREDECLARE_POINTER(RDOSelectResourceDirectCommonCalc);
-class RDOSelectResourceDirectCommonCalc: public RDOSelectResourceDirectCalc
-	AND IMPLEMENTATION_OF(IRDOSelectResourceCommon)
+class RDOSelectResourceDirectCommonCalc
+	: public RDOSelectResourceDirectCalc
+	, public IRDOSelectResourceCommon
 {
 DECLARE_FACTORY(RDOSelectResourceDirectCommonCalc)
 public:
@@ -138,8 +139,9 @@ private:
 
 //! Выбор по типу
 PREDECLARE_POINTER(RDOSelectResourceByTypeCommonCalc);
-class RDOSelectResourceByTypeCommonCalc: public RDOSelectResourceByTypeCalc
-	AND IMPLEMENTATION_OF(IRDOSelectResourceCommon)
+class RDOSelectResourceByTypeCommonCalc
+	: public RDOSelectResourceByTypeCalc
+	, public IRDOSelectResourceCommon
 {
 DECLARE_FACTORY(RDOSelectResourceByTypeCommonCalc)
 public:

@@ -30,10 +30,12 @@ PREDECLARE_OBJECT_INTERFACE(IResourceType);
   \details Ресурсы, которые могут быть релевантны активностям и
  * событиям, но не могут использоваться в процессах
 */
-OBJECT(RDOResource)
-	IS  INSTANCE_OF(RDORuntimeObject)
-	AND INSTANCE_OF(RDOTraceableObject)
-	AND public boost::operators<RDOResource>
+PREDECLARE_POINTER(RDOResource);
+class RDOResource
+	: public rdo::counter_reference
+	, public RDORuntimeObject
+	, public RDOTraceableObject
+	, public boost::operators<RDOResource>
 {
 public:
 	/*!

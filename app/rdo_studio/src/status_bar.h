@@ -21,7 +21,8 @@
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
-OBJECT(StatusBar)
+PREDECLARE_POINTER(StatusBar);
+class StatusBar: public rdo::counter_reference
 {
 DECLARE_FACTORY(StatusBar)
 public:

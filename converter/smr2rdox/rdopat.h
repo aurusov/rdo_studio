@@ -37,7 +37,8 @@ void cnv_paterror(const char* message);
 // --------------------------------------------------------------------------------
 // -------------------- ConvertCmdList
 // --------------------------------------------------------------------------------
-OBJECT(ConvertCmdList)
+PREDECLARE_POINTER(ConvertCmdList);
+class ConvertCmdList: public rdo::counter_reference
 {
 DECLARE_FACTORY(ConvertCmdList)
 public:
@@ -63,7 +64,10 @@ PREDECLARE_POINTER(RDOPATChoiceFrom);
 PREDECLARE_POINTER(RDOPATChoiceOrder);
 PREDECLARE_POINTER(RDORelevantResource);
 
-OBJECT(RDOPATPattern) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOPATPattern);
+class RDOPATPattern
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOPATPattern)
 friend class RDOOPROperation;
@@ -285,9 +289,11 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDORelevantResource
 // --------------------------------------------------------------------------------
-OBJECT(RDORelevantResource)
-	IS  INSTANCE_OF(RDOParserSrcInfo  )
-	AND INSTANCE_OF(boost::noncopyable)
+PREDECLARE_POINTER(RDORelevantResource);
+class RDORelevantResource
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
+	, public boost::noncopyable
 {
 DECLARE_FACTORY(RDORelevantResource)
 public:
@@ -384,7 +390,10 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOPATChoiceFrom
 // --------------------------------------------------------------------------------
-OBJECT(RDOPATChoiceFrom) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOPATChoiceFrom);
+class RDOPATChoiceFrom
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOPATChoiceFrom)
 public:
@@ -408,7 +417,10 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOPATChoiceOrder
 // --------------------------------------------------------------------------------
-OBJECT(RDOPATChoiceOrder) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOPATChoiceOrder);
+class RDOPATChoiceOrder
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOPATChoiceOrder)
 public:

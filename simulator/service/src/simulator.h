@@ -116,9 +116,11 @@ class RDOResult;
 // --------------------------------------------------------------------------------
 // -------------------- RDOThreadRunTime
 // --------------------------------------------------------------------------------
-OBJECT(RDOThreadRunTime)
-	IS  INSTANCE_OF      (RDOThreadMT )
-	AND IMPLEMENTATION_OF(IThreadProxy)
+PREDECLARE_POINTER(RDOThreadRunTime);
+class RDOThreadRunTime
+	: public rdo::counter_reference
+	, public RDOThreadMT
+	, public IThreadProxy
 {
 DECLARE_FACTORY(RDOThreadRunTime);
 public:

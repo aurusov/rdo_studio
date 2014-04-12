@@ -48,7 +48,8 @@ private:
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(ProcGUIBlock);
 
-OBJECT(ProcGUIProcess)
+PREDECLARE_POINTER(ProcGUIProcess);
+class ProcGUIProcess: public rdo::counter_reference
 {
 DECLARE_FACTORY(ProcGUIProcess);
 public:
@@ -77,7 +78,8 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlock
 // --------------------------------------------------------------------------------
-OBJECT(ProcGUIBlock)
+PREDECLARE_POINTER(ProcGUIBlock);
+class ProcGUIBlock: public rdo::counter_reference
 {
 DECLARE_FACTORY(ProcGUIBlock);
 protected:
@@ -90,12 +92,12 @@ private:
 
 #define PROCGUI_BLOCK(A)                  \
 PREDECLARE_POINTER(A);                    \
-CLASS(A): IMPLEMENTATION_OF(ProcGUIBlock)
+class A: public ProcGUIBlock
 
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlockGenerate
 // --------------------------------------------------------------------------------
-PROCGUI_BLOCK(ProcGUIBlockGenerate)	IS IMPLEMENTATION_OF(ProcGUICalc)
+PROCGUI_BLOCK(ProcGUIBlockGenerate), public ProcGUICalc
 {
 DECLARE_FACTORY(ProcGUIBlockGenerate);
 private:
@@ -137,7 +139,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIAdvance
 // --------------------------------------------------------------------------------
-PROCGUI_BLOCK(ProcGUIAdvance) IS IMPLEMENTATION_OF(ProcGUICalc)
+PROCGUI_BLOCK(ProcGUIAdvance), public ProcGUICalc
 {
 DECLARE_FACTORY(ProcGUIAdvance);
 private:

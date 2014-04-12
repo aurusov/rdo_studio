@@ -52,10 +52,10 @@ PREDECLARE_POINTER(RDOPATChoiceFrom);
 PREDECLARE_POINTER(RDOPATChoiceOrder);
 PREDECLARE_POINTER(RDORelevantResource);
 
-CLASS(RDOPATPattern):
-	    INSTANCE_OF      (RDOParserSrcInfo)
-	AND INSTANCE_OF      (Context         )
-	AND IMPLEMENTATION_OF(IContextFind    )
+class RDOPATPattern
+	: public RDOParserSrcInfo
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDOPATPattern)
 friend class RDOOPROperation;
@@ -279,11 +279,11 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDORelevantResource
 // --------------------------------------------------------------------------------
-CLASS(RDORelevantResource):
-	    INSTANCE_OF      (RDOParserSrcInfo  )
-	AND INSTANCE_OF      (boost::noncopyable)
-	AND INSTANCE_OF      (Context           )
-	AND IMPLEMENTATION_OF(IContextFind      )
+class RDORelevantResource
+	: public RDOParserSrcInfo
+	, public boost::noncopyable
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDORelevantResource)
 public:
@@ -377,7 +377,10 @@ DECLARE_POINTER(RDORelevantResource);
 // --------------------------------------------------------------------------------
 // -------------------- RDOPATChoiceFrom
 // --------------------------------------------------------------------------------
-OBJECT(RDOPATChoiceFrom) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOPATChoiceFrom);
+class RDOPATChoiceFrom
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOPATChoiceFrom)
 public:
@@ -401,7 +404,10 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOPATChoiceOrder
 // --------------------------------------------------------------------------------
-OBJECT(RDOPATChoiceOrder) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOPATChoiceOrder);
+class RDOPATChoiceOrder
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOPATChoiceOrder)
 public:

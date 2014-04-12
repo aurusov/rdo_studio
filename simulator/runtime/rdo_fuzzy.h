@@ -26,7 +26,8 @@ PREDECLARE_POINTER(FuzzySet);
 PREDECLARE_POINTER(DefineArea);
 //! Область определения
 
-OBJECT(DefineArea)
+PREDECLARE_POINTER(DefineArea);
+class DefineArea: public rdo::counter_reference
 {
 DECLARE_FACTORY(DefineArea);
 public:
@@ -44,7 +45,8 @@ private:
 };
 
 //! Нечеткое множество
-OBJECT(FuzzySet)
+PREDECLARE_POINTER(FuzzySet);
+class FuzzySet: public rdo::counter_reference
 {
 DECLARE_FACTORY(FuzzySet);
 public:
@@ -118,7 +120,8 @@ public:
 };
 // ! Терм
 
-OBJECT (RDOFuzzyTerm)
+PREDECLARE_POINTER(RDOFuzzyTerm);
+class RDOFuzzyTerm: public rdo::counter_reference
 {
 DECLARE_FACTORY (RDOFuzzyTerm)
 public:
@@ -137,7 +140,8 @@ private:
 
 // !Лингвистическая переменная
 
-OBJECT (RDOLingvoVariable)
+PREDECLARE_POINTER(RDOLingvoVariable);
+class RDOLingvoVariable: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOLingvoVariable)
 public:
@@ -163,7 +167,8 @@ private:
 	virtual ~RDOLingvoVariable();
 };
 
-OBJECT (Statement)
+PREDECLARE_POINTER(Statement);
+class Statement: public rdo::counter_reference
 {
 DECLARE_FACTORY(Statement)
 public:

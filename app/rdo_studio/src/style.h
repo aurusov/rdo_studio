@@ -56,7 +56,8 @@ QSettings& operator>> (QSettings& settings,       StyleFont& font);
 // --------------------------------------------------------------------------------
 // -------------------- StyleBase
 // --------------------------------------------------------------------------------
-OBJECT(StyleBase)
+PREDECLARE_POINTER(StyleBase);
+class StyleBase: public rdo::counter_reference
 {
 public:
 	StyleBase();

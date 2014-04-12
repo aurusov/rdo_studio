@@ -24,7 +24,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(Context);
 
-OBJECT(ContextStack)
+PREDECLARE_POINTER(ContextStack);
+class ContextStack: public rdo::counter_reference
 {
 DECLARE_FACTORY(ContextStack);
 public:

@@ -73,7 +73,7 @@ class RDOCalcCreateResource;
 PREDECLARE_POINTER(RDOEraseResRelCalc);
 
 //! Симулятор, вычислитель, рантайм машина
-CLASS(RDORuntime): INSTANCE_OF(RDOSimulatorTrace)
+class RDORuntime: public RDOSimulatorTrace
 {
 DECLARE_FACTORY(RDORuntime);
 public:
@@ -234,7 +234,10 @@ private:
 #endif
 
 	//! Точка останова
-	OBJECT(BreakPoint) IS INSTANCE_OF(RDORuntimeObject)
+	PREDECLARE_POINTER(BreakPoint);
+	class BreakPoint
+		: public rdo::counter_reference
+		, public RDORuntimeObject
 	{
 	DECLARE_FACTORY(BreakPoint)
 	public:

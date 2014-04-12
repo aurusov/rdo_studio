@@ -38,7 +38,8 @@ const rsint MULTIPLEXER = 100;
 const rsint CHECK1      = 7890;
 const rsint CHECK2      = 5362;
 
-OBJECT(MyClass)
+PREDECLARE_POINTER(MyClass);
+class MyClass: public rdo::counter_reference
 {
 DECLARE_FACTORY(MyClass)
 public:
@@ -66,9 +67,9 @@ struct IMyClass21: public rdo::RefCounter<IMyClass21>
 public:                    \
 	void ifun21();
 
-CLASS(MyClass2):
-	    IMPLEMENTATION_OF(IMyClass21)
-	AND INSTANCE_OF      (MyClass   )
+class MyClass2
+	: public IMyClass21
+	, public MyClass
 {
 DECLARE_FACTORY(MyClass2)
 public:
@@ -95,7 +96,8 @@ void MyClass2::ifun21()
 	UNUSED(i);
 }
 
-OBJECT(MyClass3)
+PREDECLARE_POINTER(MyClass3);
+class MyClass3: public rdo::counter_reference
 {
 public:
 	rsint m_c;
@@ -111,7 +113,7 @@ public:
 	}
 };
 
-CLASS(MyClass4): INSTANCE_OF(MyClass2)
+class MyClass4: public MyClass2
 {
 DECLARE_FACTORY(MyClass4)
 public:

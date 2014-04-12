@@ -24,7 +24,8 @@ OPEN_COMPILER_GUI_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlock
 // --------------------------------------------------------------------------------
-OBJECT(RPShapeDataBlock)
+PREDECLARE_POINTER(RPShapeDataBlock);
+class RPShapeDataBlock: public rdo::counter_reference
 {
 DECLARE_FACTORY(RPShapeDataBlock);
 public:
@@ -86,7 +87,8 @@ DECLARE_POINTER(RPShapeDataBlockCreate);
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlockTerminate
 // --------------------------------------------------------------------------------
-OBJECT(RPShapeDataBlockTerminate)
+PREDECLARE_POINTER(RPShapeDataBlockTerminate);
+class RPShapeDataBlockTerminate: public rdo::counter_reference
 {
 DECLARE_FACTORY(RPShapeDataBlockTerminate)
 public:

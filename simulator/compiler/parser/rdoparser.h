@@ -80,9 +80,9 @@ struct identity
 	typedef T type;
 };
 
-CLASS(RDOParser):
-	    INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+class RDOParser
+	: public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDOParser);
 
