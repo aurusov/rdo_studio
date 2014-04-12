@@ -90,14 +90,13 @@ private:
 	tstring m_name;
 };
 
-#define PROCGUI_BLOCK(A)                  \
-PREDECLARE_POINTER(A);                    \
-class A: public ProcGUIBlock
-
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlockGenerate
 // --------------------------------------------------------------------------------
-PROCGUI_BLOCK(ProcGUIBlockGenerate), public ProcGUICalc
+PREDECLARE_POINTER(ProcGUIBlockGenerate);
+class ProcGUIBlockGenerate
+	: public ProcGUIBlock
+	, public ProcGUICalc
 {
 DECLARE_FACTORY(ProcGUIBlockGenerate);
 private:
@@ -111,7 +110,8 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlockTerminate
 // --------------------------------------------------------------------------------
-PROCGUI_BLOCK(ProcGUIBlockTerminate)
+PREDECLARE_POINTER(ProcGUIBlockTerminate);
+class ProcGUIBlockTerminate: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUIBlockTerminate);
 private:
@@ -125,7 +125,8 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlockProcess
 // --------------------------------------------------------------------------------
-PROCGUI_BLOCK(ProcGUIBlockProcess)
+PREDECLARE_POINTER(ProcGUIBlockProcess);
+class ProcGUIBlockProcess: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUIBlockProcess);
 private:
@@ -139,7 +140,10 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIAdvance
 // --------------------------------------------------------------------------------
-PROCGUI_BLOCK(ProcGUIAdvance), public ProcGUICalc
+PREDECLARE_POINTER(ProcGUIAdvance);
+class ProcGUIAdvance
+	: public ProcGUIBlock
+	, public ProcGUICalc
 {
 DECLARE_FACTORY(ProcGUIAdvance);
 private:
@@ -153,7 +157,8 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUISeize
 // --------------------------------------------------------------------------------
-PROCGUI_BLOCK(ProcGUISeize)
+PREDECLARE_POINTER(ProcGUISeize);
+class ProcGUISeize: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUISeize);
 public:
@@ -176,7 +181,8 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIRelease
 // --------------------------------------------------------------------------------
-PROCGUI_BLOCK(ProcGUIRelease)
+PREDECLARE_POINTER(ProcGUIRelease);
+class ProcGUIRelease: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUIRelease);
 public:
@@ -199,7 +205,8 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIQueue
 // --------------------------------------------------------------------------------
-PROCGUI_BLOCK(ProcGUIQueue)
+PREDECLARE_POINTER(ProcGUIQueue);
+class ProcGUIQueue: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUIQueue);
 public:
@@ -218,7 +225,8 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIDepart
 // --------------------------------------------------------------------------------
-PROCGUI_BLOCK(ProcGUIDepart)
+PREDECLARE_POINTER(ProcGUIDepart);
+class ProcGUIDepart: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUIDepart);
 public:
