@@ -24,28 +24,8 @@
 
 namespace
 {
-	const int MARGIN_X2 = 10;
 	const int SPACER_X  = 20;
 	const int SPACER_Y  = 20;
-
-	std::pair<int, int> calcNodeSize(const QFont& font, int nodeID      , int pathCost  , int restPathCost,
-	                                 int moveCost     , int relevantTile, int tileMoveTo, const QString& moveDirection
-	)
-	{
-		QString nodeMultiLine = GraphNode::generateNodeTextLargeView(nodeID, pathCost, restPathCost, moveCost,
-		                                                       relevantTile, tileMoveTo, moveDirection
-		);
-		QFontMetrics fontMetrics = QFontMetrics(font);
-		int nodeWidth = 0;
-		for (const auto& nodeStr: nodeMultiLine.split("\n"))
-		{
-			const int tempWidth = fontMetrics.width(nodeStr);
-			nodeWidth = std::max(tempWidth, nodeWidth);
-		}
-		nodeWidth += MARGIN_X2;
-		const int nodeHeight = fontMetrics.height() * 3 + fontMetrics.leading() * 2 + MARGIN_X2;
-		return std::make_pair(nodeWidth, nodeHeight);
-	}
 } // end anonymous namespace
 
 PluginGame5GraphDialog::PluginGame5GraphDialog(QWidget * pParent)
@@ -196,9 +176,11 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 	QStringList parsingResult = parseTrace();
 	//@todo Во время парсинга разделять строку на атрибуты GraphNode и запоминать самые широкие
 	//заодно сделать (*)
-	const std::pair<int, int> nodeSize = calcNodeSize(graphWidget->scene->font(), 999, 999, 999, 999, 999, 999, "Вправо");
-	m_nodeWidth  = nodeSize.first;
-	m_nodeHeight = nodeSize.second;
+	QString nodeText = GraphNode::generateNodeTextLargeView(999, 999, 999, 999, 999, 999, "Начало поиска");
+	QFontMetrics fontMetrics = QFontMetrics(graphWidget->scene->font());
+	QRect nodeRect = fontMetrics.boundingRect(QRect(), Qt::AlignCenter, nodeText);
+	m_nodeWidth  = nodeRect.width();
+	m_nodeHeight = nodeRect.height();
 
 	m_graph.resize(parsingResult.size() + 2);
 	m_graph[1] = new GraphNode(1, NULL, 0, 0, "Начало поиска", 0, 0, 0, 0, 0, startBoardState, m_nodeWidth, m_nodeHeight);
