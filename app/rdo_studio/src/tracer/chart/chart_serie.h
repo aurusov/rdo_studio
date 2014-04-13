@@ -49,7 +49,7 @@ public:
 
 	bool  isTracerSerie(CREF(LPSerie) pSerie) const;
 	void  drawSerie    (ChartView* const pView, QPainter& painter, const QRect& rect) const;
-	void  getCaptions  (std::vector<tstring>& captions, const int valueCount) const;
+	void  getCaptions  (std::vector<std::string>& captions, const int valueCount) const;
 	QSize getLegendSize(const QFontMetrics& fm, const QRect& rect) const;
 	QSize drawLegend   (QPainter& painter, const QRect& rect, const QColor& textColor) const;
 

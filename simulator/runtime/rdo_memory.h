@@ -29,12 +29,12 @@ class RDOMemory: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOMemory);
 public:
-	typedef std::map<tstring, RDOValue> LocalMemory;
+	typedef std::map<std::string, RDOValue> LocalMemory;
 
-	void     createVariable(CREF(tstring) name, CREF(RDOValue) variable);
-	RDOValue getVariable   (CREF(tstring) name) const;
-	void     setVariable   (CREF(tstring) name, CREF(RDOValue) variable);
-	rbool    findVariable  (CREF(tstring) name) const;
+	void createVariable(CREF(std::string) name, CREF(RDOValue) variable);
+	RDOValue getVariable(CREF(std::string) name) const;
+	void setVariable(CREF(std::string) name, CREF(RDOValue) variable);
+	rbool findVariable(CREF(std::string) name) const;
 
 private:
 	RDOMemory();
@@ -56,9 +56,9 @@ public:
 	void     push  (LPRDOMemory pMemory);
 	void     pop   ();
 
-	void     create(CREF(tstring) name, CREF(RDOValue) variable);
-	RDOValue get   (CREF(tstring) name) const;
-	void     set   (CREF(tstring) name, CREF(RDOValue) variable);
+	void create(CREF(std::string) name, CREF(RDOValue) variable);
+	RDOValue get(CREF(std::string) name) const;
+	void set(CREF(std::string) name, CREF(RDOValue) variable);
 
 private:
 	RDOMemoryStack();

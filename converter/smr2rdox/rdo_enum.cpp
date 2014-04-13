@@ -45,9 +45,9 @@ RDOEnumType::RDOEnumType(CREF(rdo::runtime::LPRDOEnumType) pEnumType)
 RDOEnumType::~RDOEnumType()
 {}
 
-tstring RDOEnumType::name() const
+std::string RDOEnumType::name() const
 {
-	tstring str = "(";
+	std::string str = "(";
 	rdo::runtime::RDOEnumType::const_iterator it = getEnums()->begin();
 	while (it != getEnums()->end())
 	{

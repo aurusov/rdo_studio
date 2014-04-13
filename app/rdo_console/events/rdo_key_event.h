@@ -27,7 +27,7 @@ public:
 		release
 	};
 
-	key_event(CREF(tstring) name, double time, states state, int key_code);
+	key_event(CREF(std::string) name, double time, states state, int key_code);
 	virtual ~key_event();
 
 	void setState(states state);

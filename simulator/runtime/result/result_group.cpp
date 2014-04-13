@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-RDOPMDResultGroup::RDOPMDResultGroup(CREF(tstring) name)
+RDOPMDResultGroup::RDOPMDResultGroup(CREF(std::string) name)
 	: m_name (name                               )
 	, m_state(name.empty() ? RGS_START : RGS_STOP)
 {}

@@ -78,7 +78,7 @@ inline REF(RDOEndL) RDOTrace::getEOL()
 // --------------------------------------------------------------------------------
 // -------------------- RDOTraceableObject
 // --------------------------------------------------------------------------------
-inline RDOTraceableObject::RDOTraceableObject(rbool trace, ruint id, tstring str)
+inline RDOTraceableObject::RDOTraceableObject(rbool trace, ruint id, std::string str)
 	: m_trace (trace)
 	, m_id    (id   )
 	, m_str_id(str  )
@@ -113,7 +113,7 @@ inline void RDOTraceableObject::setTraceID(ruint id, ruint str_id)
 	m_str_id = rdo::toString(str_id);
 }
 
-inline REF(tstring) RDOTraceableObject::traceId() const
+inline REF(std::string) RDOTraceableObject::traceId() const
 {
 	if (m_str_id.empty())
 	{

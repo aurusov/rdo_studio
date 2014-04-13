@@ -41,13 +41,13 @@ public:
 
 	ParamType getParamType() const;
 
-	int     addEnumValue  (CREF(tstring) value);
-	int     addStringValue(CREF(tstring) value);
-	tstring getEnumValue  (unsigned int index) const;
-	int     getEnumCount  () const;
+	int addEnumValue(CREF(std::string) value);
+	int addStringValue(CREF(std::string) value);
+	std::string getEnumValue (unsigned int index) const;
+	int getEnumCount() const;
 
 private:
-	typedef std::vector<tstring> EnumValueList;
+	typedef std::vector<std::string> EnumValueList;
 
 	QString        m_name;
 	EnumValueList* m_enumValueList;

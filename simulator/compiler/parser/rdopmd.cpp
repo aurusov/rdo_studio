@@ -104,7 +104,7 @@ void RDOResultGroup::init(CREF(RDOParserSrcInfo) src_info)
 	RDOParser::s_parser()->runtime()->addRuntimeResult(m_pResultGroup);
 }
 
-CREF(tstring) RDOResultGroup::name() const
+CREF(std::string) RDOResultGroup::name() const
 {
 	return src_text();
 }
@@ -129,7 +129,7 @@ void RDOResultGroup::append(CREF(LPRDOPMDResult) pResult)
 	RDOParser::s_parser()->runtime()->addRuntimeResult(pResult->getRuntime());
 }
 
-LPRDOPMDResult RDOResultGroup::find(CREF(tstring) resultName) const
+LPRDOPMDResult RDOResultGroup::find(CREF(std::string) resultName) const
 {
 	for (const auto& result: m_resultList)
 	{

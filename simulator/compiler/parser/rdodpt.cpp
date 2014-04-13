@@ -175,7 +175,7 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 RDODPTActivityHotKey::~RDODPTActivityHotKey()
 {}
 
-void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_pos)
+void RDODPTActivityHotKey::addHotKey(CREF(std::string) hotKey, CREF(YYLTYPE) hotkey_pos)
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Keyboard)
 	{

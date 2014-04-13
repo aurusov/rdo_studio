@@ -147,7 +147,7 @@ inline RDOFRMSprite::RDOFRMRulet::~RDOFRMRulet()
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMSprite
 // --------------------------------------------------------------------------------
-inline CREF(tstring) RDOFRMSprite::name() const
+inline CREF(std::string) RDOFRMSprite::name() const
 {
 	return src_text();
 }
@@ -275,7 +275,7 @@ inline CREF(LPRDOFRMSprite) RDOFRMItem::getFrame() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMBitmapBase
 // --------------------------------------------------------------------------------
-inline RDOFRMBitmapBase::RDOFRMBitmapBase(CREF(LPRDOFRMSprite) pSprite, CREF(tstring) pictFilename, CREF(tstring) maskFilename)
+inline RDOFRMBitmapBase::RDOFRMBitmapBase(CREF(LPRDOFRMSprite) pSprite, CREF(std::string) pictFilename, CREF(std::string) maskFilename)
 	: RDOFRMItem    (pSprite     )
 	, m_pictFilename(pictFilename)
 	, m_maskFilename(maskFilename)

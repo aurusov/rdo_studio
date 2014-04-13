@@ -86,7 +86,7 @@ void Function::onPushParam(CREF(LPRDOParam) pParam)
 	m_paramList.push_back(pParam); 
 }
 
-LPRDOParam Function::findParam(CREF(tstring) paramName) const
+LPRDOParam Function::findParam(CREF(std::string) paramName) const
 {
 	ParamList::const_iterator it = find(paramName);
 
@@ -95,7 +95,7 @@ LPRDOParam Function::findParam(CREF(tstring) paramName) const
 		: LPRDOParam(NULL);
 }
 
-Function::ParamID Function::findParamID(CREF(tstring) paramName) const
+Function::ParamID Function::findParamID(CREF(std::string) paramName) const
 {
 	ParamList::const_iterator it = find(paramName);
 
@@ -104,7 +104,7 @@ Function::ParamID Function::findParamID(CREF(tstring) paramName) const
 		: ParamID();
 }
 
-Function::ParamList::const_iterator Function::find(CREF(tstring) paramName) const
+Function::ParamList::const_iterator Function::find(CREF(std::string) paramName) const
 {
 	return boost::range::find_if(m_paramList, compareName<RDOParam>(paramName));
 }

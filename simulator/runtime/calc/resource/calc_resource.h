@@ -59,10 +59,10 @@ class RDOCalcGetUnknowResParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetUnknowResParam)
 private:
-	RDOCalcGetUnknowResParam(CREF(tstring) resName, CREF(tstring) parName);
+	RDOCalcGetUnknowResParam(CREF(std::string) resName, CREF(std::string) parName);
 
-	tstring m_resName;
-	tstring m_parName;
+	std::string m_resName;
+	std::string m_parName;
 
 	DECLARE_ICalc;
 };

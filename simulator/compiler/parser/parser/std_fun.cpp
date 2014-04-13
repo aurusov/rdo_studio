@@ -137,14 +137,14 @@ public:
 };
 #endif
 
-void RDOParserSTDFUN::generate(CREF(tstring) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const
+void RDOParserSTDFUN::generate(CREF(std::string) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const
 {
-	tstring nameLower = boost::algorithm::to_lower_copy(name);
+	const std::string nameLower = boost::algorithm::to_lower_copy(name);
 	generateReal(name,      pCalc, pReturnType, paramList);
 	generateReal(nameLower, pCalc, pReturnType, paramList);
 }
 
-void RDOParserSTDFUN::generateReal(CREF(tstring) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const
+void RDOParserSTDFUN::generateReal(CREF(std::string) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const
 {
 	ASSERT(pCalc);
 

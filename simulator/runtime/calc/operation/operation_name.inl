@@ -19,7 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- OperatorName
 // --------------------------------------------------------------------------------
 template <typename opr_type>
-inline tstring OperatorName<opr_type>::name(CREF(opr_type) pOperator)
+inline std::string OperatorName<opr_type>::name(CREF(opr_type) pOperator)
 {
 	BOOST_AUTO(it, std::find(getList().begin(), getList().end(), pOperator));
 	ASSERT(it != getList().end());
@@ -27,9 +27,9 @@ inline tstring OperatorName<opr_type>::name(CREF(opr_type) pOperator)
 }
 
 template <typename opr_type>
-inline OperatorName<opr_type>::OprItem::OprItem(CREF(opr_type) pOperator, CREF(tstring) name)
+inline OperatorName<opr_type>::OprItem::OprItem(CREF(opr_type) pOperator, CREF(std::string) name)
 	: m_pOperator(pOperator)
-	, m_name     (name     )
+	, m_name(name)
 {}
 
 template <typename opr_type>

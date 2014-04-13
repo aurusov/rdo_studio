@@ -112,13 +112,13 @@ rbool RDORuntime::breakPoints()
 	return false;
 }
 
-void RDORuntime::insertBreakPoint(CREF(tstring) name, CREF(LPRDOCalc) pCalc)
+void RDORuntime::insertBreakPoint(CREF(std::string) name, CREF(LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	m_breakPointList.push_back(rdo::Factory<BreakPoint>::create(name, pCalc));
 }
 
-LPRDOCalc RDORuntime::findBreakPoint(CREF(tstring) name)
+LPRDOCalc RDORuntime::findBreakPoint(CREF(std::string) name)
 {
 	for (const auto& breakPoint: m_breakPointList)
 	{
@@ -130,7 +130,7 @@ LPRDOCalc RDORuntime::findBreakPoint(CREF(tstring) name)
 	return NULL;
 }
 
-tstring RDORuntime::getLastBreakPointName() const
+std::string RDORuntime::getLastBreakPointName() const
 {
 	return m_pLastActiveBreakPoint ? m_pLastActiveBreakPoint->getName() + ": " + m_pLastActiveBreakPoint->getCalc()->srcInfo().src_text() : "";
 }
@@ -466,7 +466,7 @@ void RDORuntime::onPutToTreeNode()
 
 void RDORuntime::writeExitCode()
 {
-	tstring status;
+	std::string status;
 	switch (m_whyStop)
 	{
 	case rdo::simulation::report::EC_OK           : status = "NORMAL_TERMINATION"; break;

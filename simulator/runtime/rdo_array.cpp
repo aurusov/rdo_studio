@@ -72,9 +72,9 @@ void RDOArrayValue::erase(CREF(LPRDOArrayIterator) pFirst, CREF(LPRDOArrayIterat
 	m_container.erase(pFirst->getIterator(), pLast->getIterator());
 }
 
-tstring RDOArrayValue::getAsString() const
+std::string RDOArrayValue::getAsString() const
 {
-	tstring result("[");
+	std::string result("[");
 	for (Container::const_iterator item = m_container.begin(); item != m_container.end(); ++item)
 	{
 		if (item == m_container.begin())

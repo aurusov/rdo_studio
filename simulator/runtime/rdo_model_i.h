@@ -43,10 +43,10 @@ public:
 	  \brief  Получить имя объекта
 	  \return имя объекта
 	*/
-	virtual CREF(tstring) name() const = 0;
+	virtual CREF(std::string) name() const = 0;
 };
 
 #define DECLARE_IName \
-	virtual CREF(tstring) name() const;
+	virtual CREF(std::string) name() const;
 
 #endif // _LIB_RUNTIME_MODEL_I_H_

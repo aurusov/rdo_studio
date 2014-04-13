@@ -23,14 +23,14 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 #ifdef RDOSIM_COMPATIBLE
-tstring doubleToString(double value)
+std::string doubleToString(double value)
 {
 	std::ostringstream _str;
 	_str << value;
-	tstring::size_type pos = _str.str().find("e");
-	if (pos != tstring::npos)
+	const std::string::size_type pos = _str.str().find("e");
+	if (pos != std::string::npos)
 	{
-		tstring __str = _str.str();
+		std::string __str = _str.str();
 		__str.erase(pos + 2, 1);
 		return __str.c_str();
 	}
@@ -50,7 +50,7 @@ double doubleToString(double value)
 // --------------------------------------------------------------------------------
 // -------------------- RDOTrace - Формирует строки трассировки
 // --------------------------------------------------------------------------------
-void RDOTrace::writeSearchBegin(double currentTime, tstring decisionPointId)
+void RDOTrace::writeSearchBegin(double currentTime, std::string decisionPointId)
 {
 	if (!canTrace())
 		return;
@@ -85,7 +85,7 @@ void RDOTrace::writeSearchDecision(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) no
 	             << std::endl << getEOL();
 }
 
-void RDOTrace::writeString(tstring str)
+void RDOTrace::writeString(std::string str)
 {
 	if (!canTrace())
 		return;
@@ -185,9 +185,9 @@ void RDOTrace::writePermanentResources(CREF(LPRDORuntime) pRuntime, CREF(std::li
 	getOStream() << traceResourcesList('\0', pRuntime, res_perm) << getEOL();
 }
 
-tstring RDOTrace::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) rel_res_list)
+std::string RDOTrace::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) rel_res_list)
 {
-	tstring res;
+	std::string res;
 	for (std::list<LPRDOResource>::const_iterator i = rel_res_list.begin(); i != rel_res_list.end(); ++i)
 	{
 		if (*i)
@@ -332,7 +332,7 @@ void RDOTrace::writeTraceEnd(CREF(LPRDORuntime) pRuntime)
       << " 2" << std::endl << getEOL();
 }
 
-void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
+void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(std::string) status)
 {
 	if (isNull()) return;
 

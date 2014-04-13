@@ -79,7 +79,7 @@ void ChartSerie::drawSerie(ChartView* const pView, QPainter& painter, const QRec
 	m_pSerie->drawSerie(pView, painter, rect, m_options.color, m_options.markerType, m_options.markerSize, m_options.markerNeedDraw, m_options.markerTransparent);
 }
 
-void ChartSerie::getCaptions(std::vector<tstring>& captions, const int valueCount) const
+void ChartSerie::getCaptions(std::vector<std::string>& captions, const int valueCount) const
 {
 	m_pSerie->getCaptions(captions, valueCount);
 }

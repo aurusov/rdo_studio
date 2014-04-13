@@ -34,13 +34,13 @@ class RDOSMR: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOSMR);
 public:
-	typedef std::map<tstring, tstring> StringTable;
+	typedef std::map<std::string, std::string> StringTable;
 
-	void setExternalModelName(CREF(tstring) alias, CREF(tstring) modelID)
+	void setExternalModelName(CREF(std::string) alias, CREF(std::string) modelID)
 	{
 		m_extModelList[alias] = modelID;
 	}
-	tstring getExternalModelName(CREF(tstring) alias) const
+	std::string getExternalModelName(CREF(std::string) alias) const
 	{
 		StringTable::const_iterator it = m_extModelList.find(alias);
 		return it != m_extModelList.end() ? it->second : "";

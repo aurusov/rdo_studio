@@ -32,7 +32,7 @@
 #include "app/rdo_console/terminate_codes.h"
 // --------------------------------------------------------------------------------
 
-typedef std::list<tstring> string_list;
+typedef std::list<std::string> string_list;
 typedef rdo::event_xml_parser::event_container event_container;
 
 const boost::filesystem::path LOG_FILE_NAME = "log.txt";

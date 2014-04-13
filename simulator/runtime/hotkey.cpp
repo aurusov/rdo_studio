@@ -72,19 +72,19 @@ RDOHotKey::Toolkit::Toolkit()
 
 	for (char i = '0'; i <= '9'; ++i)
 	{
-		m_keyList.insert(KeySet::value_type(tstring(1, i), (KeyCode)i));
+		m_keyList.insert(KeySet::value_type(std::string(1, i), (KeyCode)i));
 	}
 
 	for (char i = 'A'; i <= 'Z'; ++i)
 	{
-		m_keyList.insert(KeySet::value_type(tstring(1, i), (KeyCode)i));
+		m_keyList.insert(KeySet::value_type(std::string(1, i), (KeyCode)i));
 	}
 }
 
 RDOHotKey::Toolkit::~Toolkit()
 {}
 
-RDOHotKey::KeyCode RDOHotKey::Toolkit::codeFromString(CREF(tstring) keyName) const
+RDOHotKey::KeyCode RDOHotKey::Toolkit::codeFromString(CREF(std::string) keyName) const
 {
 	KeySet::const_iterator it = m_keyList.find(keyName);
 	return it == m_keyList.end() ? KeyCode(UNDEFINED_KEY) : it->second;
@@ -230,7 +230,7 @@ void RDOHotKey::KeyDownList::clear()
 // --------------------------------------------------------------------------------
 // -------------------- RDOHotKey::AreaList
 // --------------------------------------------------------------------------------
-void RDOHotKey::AreaList::click(CREF(tstring) areaName)
+void RDOHotKey::AreaList::click(CREF(std::string) areaName)
 {
 	if (boost::find(m_activeAreasMouseClicked, areaName) != m_activeAreasMouseClicked.end())
 		return;
@@ -238,7 +238,7 @@ void RDOHotKey::AreaList::click(CREF(tstring) areaName)
 	m_activeAreasMouseClicked.push_back(areaName);
 }
 
-rbool RDOHotKey::AreaList::check(CREF(tstring) areaName)
+rbool RDOHotKey::AreaList::check(CREF(std::string) areaName)
 {
 	NameList::iterator it = boost::find(m_activeAreasMouseClicked, areaName);
 	if (it == m_activeAreasMouseClicked.end())

@@ -263,7 +263,7 @@ void RDOKernel::method_registration( RDOTreadMethod& msg )
 // --------------------------------------------------------------------------------
 // -------------------- RDOKernelGUI
 // --------------------------------------------------------------------------------
-RDOKernelGUI::RDOKernelGUI( CREF(tstring) _thread_name ):
+RDOKernelGUI::RDOKernelGUI( CREF(std::string) _thread_name ):
 	RDOThread( _thread_name )
 {
 	notifies.push_back( RT_THREAD_CONNECTION );

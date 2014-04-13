@@ -38,8 +38,8 @@ public:
 	void pushContext();
 	void popContext ();
 
-	LPRDOParam findParam  (CREF(tstring) paramName) const;
-	ParamID    findParamID(CREF(tstring) paramName) const;
+	LPRDOParam findParam(CREF(std::string) paramName) const;
+	ParamID findParamID(CREF(std::string) paramName) const;
 
 	CREF(ParamList) getParams() const;
 
@@ -65,7 +65,7 @@ private:
 	void onPushParam(CREF(LPRDOParam) pParam);
 	void setBody    (CREF(rdo::runtime::LPRDOCalc) pBody);
 
-	ParamList::const_iterator find(CREF(tstring) paramName) const;
+	ParamList::const_iterator find(CREF(std::string) paramName) const;
 	LPFunctionType generateType() const;
 
 	DECLARE_IContextParamDefinitionManager;

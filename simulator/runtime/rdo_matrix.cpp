@@ -71,9 +71,9 @@ void RDOMatrixValue::erase(CREF(LPRDOMatrixIterator) pFirst, CREF(LPRDOMatrixIte
 	m_container.erase(pFirst->getIterator(), pLast->getIterator());
 }
 
-tstring RDOMatrixValue::getAsString() const
+std::string RDOMatrixValue::getAsString() const
 {
-	tstring result("[");
+	std::string result("[");
 	for (Container::const_iterator item = m_container.begin(); item != m_container.end(); ++item)
 	{
 		if (item == m_container.begin())

@@ -89,7 +89,7 @@ inline std::ostream& operator<< (std::ostream& stream, const ResultStreamItem<do
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-RDOPMDResult::RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace)
+RDOPMDResult::RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace)
 	: RDOResultTrace(pRuntime, trace)
 	, m_name        (name           )
 {
@@ -99,12 +99,12 @@ RDOPMDResult::RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rboo
 RDOPMDResult::~RDOPMDResult()
 {}
 
-CREF(tstring) RDOPMDResult::name() const
+CREF(std::string) RDOPMDResult::name() const
 {
 	return m_name;
 }
 
-void RDOPMDResult::printLeft(std::ostream& stream, CREF(tstring) txt)
+void RDOPMDResult::printLeft(std::ostream& stream, CREF(std::string) txt)
 {
 	stream << txt;
 
@@ -119,7 +119,7 @@ void RDOPMDResult::printLeft(std::ostream& stream, CREF(tstring) txt)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, ruint resourceID, ruint paramID)
+RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(std::string) resName, CREF(std::string) parName, ruint resourceID, ruint paramID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_resourceID  (resourceID           )
 	, m_paramID     (paramID              )
@@ -144,7 +144,7 @@ void RDOPMDWatchPar::notify(ruint message, PTR(void) pParam)
 	}
 };
 
-tstring RDOPMDWatchPar::traceValue() const
+std::string RDOPMDWatchPar::traceValue() const
 {
 	return rdo::toString(m_currentValue.rdoValue);
 }
@@ -220,7 +220,7 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 	printLeft(stream, name());
 	stream
 		<< "\t" << "Тип:"        << "\t" << "par"
-		<< "\t" << "Посл.знач.:" << "\t" << ResultStreamItem<tstring> (count > 0, traceValue())
+		<< "\t" << "Посл.знач.:" << "\t" << ResultStreamItem<std::string>(count > 0, traceValue())
 		<< "\t" << "Ср.знач.:"   << "\t" << ResultStreamItem<double>  (count > 0, average     )
 		<< "\t" << "Мин.знач.:"  << "\t" << ResultStreamItem<RDOValue>(count > 0, minValue    )
 		<< "\t" << "Макс.знач.:" << "\t" << ResultStreamItem<RDOValue>(count > 0, maxValue    )
@@ -234,7 +234,7 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchState
 // --------------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic)
+RDOPMDWatchState::RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(LPRDOCalc) pLogic)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_pLogicCalc  (pLogic               )
 	, m_wasFinalCalc(false                )
@@ -243,7 +243,7 @@ RDOPMDWatchState::RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) na
 RDOPMDWatchState::~RDOPMDWatchState()
 {}
 
-tstring RDOPMDWatchState::traceValue() const
+std::string RDOPMDWatchState::traceValue() const
 {
 	return m_currentValue.state ? "TRUE" : "FALSE";
 }
@@ -324,7 +324,7 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& strea
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchQuant
 // --------------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID)
+RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(std::string) resTypeName, int rtpID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_pLogicCalc  (NULL                 )
 	, m_rtpID       (rtpID                )
@@ -336,7 +336,7 @@ RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) na
 RDOPMDWatchQuant::~RDOPMDWatchQuant()
 {}
 
-tstring RDOPMDWatchQuant::traceValue() const
+std::string RDOPMDWatchQuant::traceValue() const
 {
 	return rdo::toString(m_currentValue.quant);
 }
@@ -427,7 +427,7 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& strea
 	printLeft(stream, name());
 	stream
 		<< "\t" << "Тип:"        << "\t" << "quant"
-		<< "\t" << "Посл.знач.:" << "\t" << ResultStreamItem<tstring>(true, traceValue())
+		<< "\t" << "Посл.знач.:" << "\t" << ResultStreamItem<std::string>(true, traceValue())
 		<< "\t" << "Ср.знач.:"   << "\t" << ResultStreamItem<double> (true, average     )
 		<< "\t" << "Мин.знач.:"  << "\t" << ResultStreamItem<int>    (true, (int)(boost::accumulators::min)(m_acc))
 		<< "\t" << "Макс.знач.:" << "\t" << ResultStreamItem<int>    (true, (int)(boost::accumulators::max)(m_acc))
@@ -446,7 +446,7 @@ void RDOPMDWatchQuant::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchValue
 // --------------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID)
+RDOPMDWatchValue::RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(std::string) resTypeName, int rtpID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_pLogicCalc  (NULL                 )
 	, m_pArithmCalc (NULL                 )
@@ -459,7 +459,7 @@ RDOPMDWatchValue::RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) na
 RDOPMDWatchValue::~RDOPMDWatchValue()
 {}
 
-tstring RDOPMDWatchValue::traceValue() const
+std::string RDOPMDWatchValue::traceValue() const
 {
 	return rdo::toString(m_currValue);
 }
@@ -548,7 +548,7 @@ void RDOPMDWatchValue::setArithmCalc(CREF(LPRDOCalc) pArithmCalc)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDGetValue
 // --------------------------------------------------------------------------------
-RDOPMDGetValue::RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, CREF(LPRDOCalc) pArithm)
+RDOPMDGetValue::RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, CREF(LPRDOCalc) pArithm)
 	: RDOPMDResult  (pRuntime, name, false)
 	, m_pArithmCalc (pArithm              )
 	, m_wasFinalCalc(false                )
@@ -557,7 +557,7 @@ RDOPMDGetValue::RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, 
 RDOPMDGetValue::~RDOPMDGetValue()
 {}
 
-tstring RDOPMDGetValue::traceValue() const
+std::string RDOPMDGetValue::traceValue() const
 {
 	return "ERROR";
 }

@@ -114,17 +114,17 @@ public:
 	void scrollToCarret() const;
 	void horzScrollToCurrentPos() const;
 
-	tstring getCurrentWord() const;
-	tstring getSelection  () const;
-	tstring getCurrentOrSelectedWord() const;
+	std::string getCurrentWord() const;
+	std::string getSelection  () const;
+	std::string getCurrentOrSelectedWord() const;
 	QString getWordForFind() const;
 
 	int findPos(CREF(QString) findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false) const;
-	tstring getLine(const int line) const;
+	std::string getLine(const int line) const;
 
 	void load(const std::stringstream& stream);
 	void save(std::stringstream& stream) const;
-	tstring saveAsRTF(int start, int end) const;
+	std::string saveAsRTF(int start, int end) const;
 
 protected:
 	EditStyle* m_pStyle;

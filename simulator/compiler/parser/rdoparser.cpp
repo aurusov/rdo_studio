@@ -47,7 +47,7 @@ void RDOParser::insert##NAME(LPRDO##NAME value) \
 
 #define DECLARE_PARSER_OBJECT_CONTAINER(NAME) \
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
-const LPRDO##NAME RDOParser::find##NAME(CREF(tstring) name) const \
+const LPRDO##NAME RDOParser::find##NAME(CREF(std::string) name) const \
 { \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
 	return it != m_all##NAME.end() ? *it : LPRDO##NAME(NULL); \
@@ -94,7 +94,7 @@ ruint RDOParser::lexer_loc_pos()
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_pos() : 0;
 }
 
-tstring RDOParser::lexer_text()
+std::string RDOParser::lexer_text()
 {
 	LPRDOParserRDOItem pParserItem = !s_parserStack.empty()
 		? s_parserStack.back()->m_parser_item.object_dynamic_cast<RDOParserRDOItem>()
@@ -102,7 +102,7 @@ tstring RDOParser::lexer_text()
 
 	return pParserItem
 		? pParserItem->text()
-		: tstring();
+		: std::string();
 }
 
 LPRDOParser RDOParser::s_parser()
@@ -385,12 +385,12 @@ rbool RDOParser::isCurrentDPTPrior()
 	return getLastDPTPrior() ? true : false;
 }
 
-void RDOParser::insertChanges(CREF(tstring) name, CREF(tstring) value)
+void RDOParser::insertChanges(CREF(std::string) name, CREF(std::string) value)
 {
 	m_changes.push_back(Changes(name, value));
 }
 
-tstring RDOParser::getChanges() const
+std::string RDOParser::getChanges() const
 {
 	std::stringstream stream;
 	stream << "$Changes" << std::endl;
@@ -414,7 +414,7 @@ tstring RDOParser::getChanges() const
 	return stream.str();
 }
 
-tstring RDOParser::getModelStructure()
+std::string RDOParser::getModelStructure()
 {
 	std::stringstream modelStructure;
 

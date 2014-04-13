@@ -249,12 +249,12 @@ inline void RDORuntime::preProcess()
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntime::BreakPoint
 // --------------------------------------------------------------------------------
-inline RDORuntime::BreakPoint::BreakPoint(CREF(tstring) name, CREF(LPRDOCalc) pCalc)
+inline RDORuntime::BreakPoint::BreakPoint(CREF(std::string) name, CREF(LPRDOCalc) pCalc)
 	: m_name (name )
 	, m_pCalc(pCalc)
 {}
 
-inline CREF(tstring) RDORuntime::BreakPoint::getName() const
+inline CREF(std::string) RDORuntime::BreakPoint::getName() const
 {
 	return m_name;
 }

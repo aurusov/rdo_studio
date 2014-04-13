@@ -44,8 +44,8 @@ public:
 	template <class T>
 	CREF(rdo::intrusive_ptr<T>) get() const;
 
-	static LPRDOValue getIdentificator(CREF(tstring)     identificator);
-	static LPRDOValue getUnknow       (CREF(RDOParserSrcInfo) src_info);
+	static LPRDOValue getIdentificator(CREF(std::string) identificator);
+	static LPRDOValue getUnknow(CREF(RDOParserSrcInfo) src_info);
 
 private:
 	// Неопределенный тип
@@ -58,10 +58,10 @@ private:
 	RDOValue(CREF(LPRDOValue) pValue);
 
 	// Он стандартных типов
-	RDOValue(CREF(rdo::explicit_value<rsint>)   value, CREF(RDOParserSrcInfo) src_info);
-	RDOValue(CREF(rdo::explicit_value<ruint>)   value, CREF(RDOParserSrcInfo) src_info);
-	RDOValue(CREF(rdo::explicit_value<double>)  value, CREF(RDOParserSrcInfo) src_info);
-	RDOValue(CREF(rdo::explicit_value<tstring>) value, CREF(RDOParserSrcInfo) src_info);
+	RDOValue(CREF(rdo::explicit_value<rsint>) value, CREF(RDOParserSrcInfo) src_info);
+	RDOValue(CREF(rdo::explicit_value<ruint>) value, CREF(RDOParserSrcInfo) src_info);
+	RDOValue(CREF(rdo::explicit_value<double>) value, CREF(RDOParserSrcInfo) src_info);
+	RDOValue(CREF(rdo::explicit_value<std::string>) value, CREF(RDOParserSrcInfo) src_info);
 
 	// От типа
 	RDOValue(CREF(LPTypeInfo) pType);

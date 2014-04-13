@@ -41,7 +41,7 @@ RDOValue RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOEraseResRelCalc
 // --------------------------------------------------------------------------------
-RDOEraseResRelCalc::RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName)
+RDOEraseResRelCalc::RDOEraseResRelCalc(ruint relResID, CREF(std::string) relResName)
 	: m_relResID  (relResID  )
 	, m_relResName(relResName)
 {}
@@ -52,7 +52,7 @@ RDOValue RDOEraseResRelCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return RDOValue();
 }
 
-CREF(tstring) RDOEraseResRelCalc::getName() const
+CREF(std::string) RDOEraseResRelCalc::getName() const
 {
 	return m_relResName;
 }

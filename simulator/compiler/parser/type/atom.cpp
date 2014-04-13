@@ -25,7 +25,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- ATOM_TYPE_PARSER
 // --------------------------------------------------------------------------------
 #define DECLARE_ATOM_TYPE_PARSER(Type, TypeName) \
-tstring RDOType__##Type::name() const            \
+std::string RDOType__##Type::name() const        \
 {                                                \
 	return TypeName;                             \
 }

@@ -27,7 +27,7 @@ std::fstream file("C:\\rdo_kernel_mt.log", std::ios_base::in | std::ios_base::ou
 std::fstream file("C:\\rdo_kernel_st.log", std::ios_base::in | std::ios_base::out | std::ios_base::trunc);
 #endif
 
-void RDOThread::trace(CREF(tstring) str)
+void RDOThread::trace(CREF(std::string) str)
 {
 	file << str << std::endl;
 	file.flush();
@@ -38,7 +38,7 @@ void RDOThread::trace(CREF(tstring) str)
 // -------------------- RDOThread
 // --------------------------------------------------------------------------------
 #ifdef RDO_MT
-RDOThread::RDOThread(CREF(tstring) _thread_name, RDOThreadFun _thread_fun)
+RDOThread::RDOThread(CREF(std::string) _thread_name, RDOThreadFun _thread_fun)
 	: thread_name      (_thread_name)
 	, thread_id        (0           )
 	, broadcast_cnt    (-1          )
@@ -50,7 +50,7 @@ RDOThread::RDOThread(CREF(tstring) _thread_name, RDOThreadFun _thread_fun)
 	, was_start        (false       )
 	, was_close        (false       )
 #else // not RDO_MT
-RDOThread::RDOThread(CREF(tstring) _thread_name)
+RDOThread::RDOThread(CREF(std::string) _thread_name)
 	: thread_name(_thread_name          )
 #ifdef COMPILER_VISUAL_STUDIO
 	, thread_id  (::GetCurrentThreadId())

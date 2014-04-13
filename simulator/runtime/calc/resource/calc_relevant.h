@@ -38,13 +38,13 @@ class RDOEraseResRelCalc: public RDOCalc
 {
 DECLARE_FACTORY(RDOEraseResRelCalc)
 public:
-	CREF(tstring) getName() const;
+	CREF(std::string) getName() const;
 
 private:
-	RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName);
+	RDOEraseResRelCalc(ruint relResID, CREF(std::string) relResName);
 
-	ruint   m_relResID;
-	tstring m_relResName;
+	ruint m_relResID;
+	std::string m_relResName;
 
 	DECLARE_ICalc;
 };

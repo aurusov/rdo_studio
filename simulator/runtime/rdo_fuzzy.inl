@@ -117,7 +117,7 @@ inline CREF(LPFuzzySet) RDOFuzzyTerm::getFuzzySetDefinition() const
 {
 	return (m_term.second);
 }
-inline tstring RDOFuzzyTerm::getName() const
+inline std::string RDOFuzzyTerm::getName() const
 {
 	return (m_term.first);
 }
@@ -160,11 +160,11 @@ inline void RDOLingvoVariable::setName(nameOfVariable nameVariable)
 {
 	m_name = nameVariable;
 }
-inline REF(LPFuzzySet) RDOLingvoVariable::operator[] (tstring name)
+inline REF(LPFuzzySet) RDOLingvoVariable::operator[] (std::string name)
 {
 	return m_set[name];
 }
-inline void RDOLingvoVariable::append(tstring name,CREF(LPFuzzySet) fuzzySet)
+inline void RDOLingvoVariable::append(std::string name,CREF(LPFuzzySet) fuzzySet)
 {
 	operator[](name) = fuzzySet;
 }

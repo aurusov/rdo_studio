@@ -27,7 +27,7 @@ void Error::push(CREF(RDOSyntaxMessage) message)
 	throw RDORuntimeException("");
 }
 
-void Error::push(CREF(tstring) message, CREF(RDOSrcInfo) srcInfo)
+void Error::push(CREF(std::string) message, CREF(RDOSrcInfo) srcInfo)
 {
 	ASSERT(!message.empty());
 

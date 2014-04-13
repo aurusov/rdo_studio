@@ -52,7 +52,7 @@ ParamInfo::ParamType ParamInfo::getParamType() const
 	return m_paramType;
 }
 
-int ParamInfo::addEnumValue(CREF(tstring) value)
+int ParamInfo::addEnumValue(CREF(std::string) value)
 {
 	if (!m_enumValueList)
 		return -1;
@@ -60,7 +60,7 @@ int ParamInfo::addEnumValue(CREF(tstring) value)
 	return m_enumValueList->size() - 1;
 }
 
-int ParamInfo::addStringValue(CREF(tstring) value)
+int ParamInfo::addStringValue(CREF(std::string) value)
 {
 	if (!m_enumValueList)
 		return -1;
@@ -75,9 +75,9 @@ int ParamInfo::addStringValue(CREF(tstring) value)
 	return m_enumValueList->size() - 1;
 }
 
-static tstring nullStr = "";
+static std::string nullStr = "";
 
-tstring ParamInfo::getEnumValue(unsigned int index) const
+std::string ParamInfo::getEnumValue(unsigned int index) const
 {
 	if (!m_enumValueList)
 		return nullStr;

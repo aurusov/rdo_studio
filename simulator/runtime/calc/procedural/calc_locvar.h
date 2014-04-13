@@ -24,9 +24,9 @@ class RDOCalcCreateLocalVariable: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcCreateLocalVariable)
 private:
-	RDOCalcCreateLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pValueCalc);
+	RDOCalcCreateLocalVariable(CREF(std::string) name, CREF(LPRDOCalc) pValueCalc);
 
-	tstring    m_name;
+	std::string m_name;
 	LPRDOCalc  m_pValueCalc;
 
 	DECLARE_ICalc;
@@ -38,9 +38,9 @@ class RDOCalcGetLocalVariable: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetLocalVariable)
 private:
-	RDOCalcGetLocalVariable(CREF(tstring) name);
+	RDOCalcGetLocalVariable(CREF(std::string) name);
 
-	tstring m_name;
+	std::string m_name;
 
 	DECLARE_ICalc;
 };
@@ -50,10 +50,10 @@ class RDOCalcSetLocalVariable: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSetLocalVariable)
 private:
-	RDOCalcSetLocalVariable(CREF(tstring) name, LPRDOCalc pCalc = NULL);
+	RDOCalcSetLocalVariable(CREF(std::string) name, LPRDOCalc pCalc = NULL);
 	virtual ~RDOCalcSetLocalVariable();
 
-	tstring   m_name;
+	std::string m_name;
 	LPRDOCalc m_pCalc;
 
 	DECLARE_ICalc;

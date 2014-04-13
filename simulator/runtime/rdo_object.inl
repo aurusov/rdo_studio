@@ -69,7 +69,7 @@ inline void RDOSrcInfo::setSrcInfo(CREF(RDOSrcInfo) info)
 	setSrcFileType(info.m_file_type);
 }
 
-inline void RDOSrcInfo::setSrcInfo(CREF(RDOSrcInfo) begin, CREF(tstring) delim, CREF(RDOSrcInfo) end)
+inline void RDOSrcInfo::setSrcInfo(CREF(RDOSrcInfo) begin, CREF(std::string) delim, CREF(RDOSrcInfo) end)
 {
 	setSrcPos     (begin.src_pos().m_first_line, begin.src_pos().m_first_pos, end.src_pos().m_last_line, end.src_pos().m_last_pos);
 	setSrcText    (begin.src_text() + delim + end.src_text());
@@ -100,7 +100,7 @@ inline void RDOSrcInfo::setSrcPos(ruint first_line, ruint first_pos, ruint last_
 	m_position.m_last_pos   = last_pos;
 }
 
-inline void RDOSrcInfo::setSrcText(CREF(tstring) value)
+inline void RDOSrcInfo::setSrcText(CREF(std::string) value)
 {
 	m_text_data = value;
 }
@@ -120,7 +120,7 @@ inline CREF(RDOSrcInfo::Position) RDOSrcInfo::src_pos() const
 	return m_position;
 }
 
-inline CREF(tstring) RDOSrcInfo::src_text() const
+inline CREF(std::string) RDOSrcInfo::src_text() const
 {
 	return m_text_data;
 }

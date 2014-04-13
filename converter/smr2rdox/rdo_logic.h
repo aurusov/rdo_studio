@@ -37,7 +37,7 @@ public:
 	virtual ~RDOLogicActivity()
 	{}
 
-	CREF(tstring) name() const { return src_info().src_text(); }
+	CREF(std::string) name() const { return src_info().src_text(); }
 
 	LPActivity addNewActivity(CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info)
 	{

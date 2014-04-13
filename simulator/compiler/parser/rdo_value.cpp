@@ -84,7 +84,7 @@ RDOValue::RDOValue(CREF(rdo::explicit_value<double>) value, CREF(RDOParserSrcInf
 	m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(src_info);
 }
 
-RDOValue::RDOValue(CREF(rdo::explicit_value<tstring>) value, CREF(RDOParserSrcInfo) src_info)
+RDOValue::RDOValue(CREF(rdo::explicit_value<std::string>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {
@@ -163,7 +163,7 @@ rbool RDOValue::constant() const
 	return false;
 }
 
-LPRDOValue RDOValue::getIdentificator(CREF(tstring) identificator)
+LPRDOValue RDOValue::getIdentificator(CREF(std::string) identificator)
 {
 	return rdo::Factory<RDOValue>::create(RDOParserSrcInfo(identificator));
 }

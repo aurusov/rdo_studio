@@ -34,7 +34,7 @@ inline Time::operator Value() const
 	return m_value;
 }
 
-inline tstring Time::asString() const
+inline std::string Time::asString() const
 {
 	if (m_value == Time::invalid())
 	{
@@ -42,7 +42,7 @@ inline tstring Time::asString() const
 	}
 	else
 	{
-		return boost::posix_time::to_simple_string_type<tchar>(boost::posix_time::microsec_clock::local_time());
+		return boost::posix_time::to_simple_string_type<char>(boost::posix_time::microsec_clock::local_time());
 	}
 }
 

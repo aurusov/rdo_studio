@@ -38,13 +38,13 @@ public:
 	rbool defined () const;
 	rbool constant() const;
 
-	static LPRDOValue getIdentificator(CREF(tstring) identificator);
+	static LPRDOValue getIdentificator(CREF(std::string) identificator);
 
 private:
-	explicit RDOValue(CREF(rsint)   value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(ruint)   value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(double)  value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(tstring) value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(rsint) value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(ruint) value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(double) value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(std::string) value, CREF(RDOParserSrcInfo) src_info);
 
 	explicit RDOValue(CREF(rdo::runtime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
 	         RDOValue(CREF(LPRDOValue) pValue);

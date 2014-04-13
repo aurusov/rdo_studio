@@ -27,21 +27,21 @@ class RDOEnumType: public RDOType
 {
 DECLARE_FACTORY(RDOEnumType);
 public:
-	typedef tstring                EnumItem;
-	typedef rdo::vector<EnumItem>  Enums;
-	typedef Enums::const_iterator  CIterator;
-	typedef Enums::const_iterator  const_iterator;
+	typedef std::string EnumItem;
+	typedef rdo::vector<EnumItem> Enums;
+	typedef Enums::const_iterator CIterator;
+	typedef Enums::const_iterator const_iterator;
 
 	static const ruint END = ruint(~0);
 
-	void  add     (CREF(tstring) next);
-	ruint findEnum(CREF(tstring) val) const;
-	rbool exist   (CREF(tstring) val) const;
+	void  add(CREF(std::string) next);
+	ruint findEnum(CREF(std::string) val) const;
+	rbool exist(CREF(std::string) val) const;
 
-	rbool           empty    () const;
-	const CIterator begin    () const;
-	const CIterator end      () const;
-	CREF(Enums)     getValues() const;
+	rbool empty() const;
+	const CIterator begin() const;
+	const CIterator end() const;
+	CREF(Enums) getValues() const;
 
 private:
 	RDOEnumType();

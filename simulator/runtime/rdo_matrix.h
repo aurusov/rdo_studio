@@ -41,8 +41,8 @@ public:
 	void insert(CREF(LPRDOMatrixIterator) pWhere, CREF(LPRDOMatrixIterator) pFromFirst, CREF(LPRDOMatrixIterator) pFromLast);
 	void  erase(CREF(LPRDOMatrixIterator) pFirst, CREF(LPRDOMatrixIterator) pLast);
 
-	ruint   size       () const;
-	tstring getAsString() const;
+	ruint size() const;
+	std::string getAsString() const;
 
 	CREF(RDOValue) getItem(CREF(RDOValue) index) const;
 	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item);

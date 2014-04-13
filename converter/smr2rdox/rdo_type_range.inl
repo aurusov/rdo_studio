@@ -84,7 +84,7 @@ inline RDOTypeRange<T>::~RDOTypeRange()
 {}
 
 template<class T>
-inline tstring RDOTypeRange<T>::name() const
+inline std::string RDOTypeRange<T>::name() const
 {
 	return rdo::format("%s %s", T::name().c_str(), m_pRange->src_text().c_str());
 }

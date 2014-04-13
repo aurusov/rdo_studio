@@ -171,7 +171,7 @@ void Manager::areaDown(ruint frameIndex, CREF(QPoint) point) const
 	{
 		if (area.second.m_rect.contains(point))
 		{
-			tstring areaName = area.first.toStdString();
+			std::string areaName = area.first.toStdString();
 			g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &areaName);
 		}
 	}

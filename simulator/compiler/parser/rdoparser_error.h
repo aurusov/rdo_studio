@@ -28,10 +28,10 @@ OPEN_RDO_PARSER_NAMESPACE
 class RDOSyntaxException: public rdo::runtime::RDOException
 {
 public:
-   RDOSyntaxException(CREF(tstring) message)
+	RDOSyntaxException(CREF(std::string) message)
 	   : RDOException(message)
-   {}
-   virtual tstring getType() const { return "RDO Syntax Error"; }
+	{}
+	virtual std::string getType() const { return "RDO Syntax Error"; }
 };
 
 // --------------------------------------------------------------------------------
@@ -45,25 +45,25 @@ public:
 	Error();
 
 	//! 1
-	void error    (CREF(RDOParserSrcInfo) src_info, CREF(tstring) message);
-	void warning  (CREF(RDOParserSrcInfo) src_info, CREF(tstring) message);
-	void push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message);
+	void error(CREF(RDOParserSrcInfo) src_info, CREF(std::string) message);
+	void warning(CREF(RDOParserSrcInfo) src_info, CREF(std::string) message);
+	void push_only(CREF(RDOParserSrcInfo) src_info, CREF(std::string) message);
 
 	//! 2
-	void error    (CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message);
+	void error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(std::string) message);
 
 	//! misc
-	void            push_done();
-	void            modify   (CREF(tstring) message);
-	void            clear    ();
-	CREF(ErrorList) getList  () const;
-	void            block    ();
-	void            unblock  ();
-	rbool           blocked  () const;
+	void push_done();
+	void modify(CREF(std::string) message);
+	void clear();
+	CREF(ErrorList) getList () const;
+	void block();
+	void unblock();
+	rbool blocked() const;
 
 private:
-	ErrorList  m_errorList;
-	rbool      m_blocked;
+	ErrorList m_errorList;
+	rbool m_blocked;
 };
 
 REF(Error) g_error();

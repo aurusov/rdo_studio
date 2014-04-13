@@ -198,7 +198,7 @@ void ChartView::recalcLayout()
 	if (m_pYAxis)
 	{
 		m_pYAxis->getCaptions(m_captionList, m_valueCountY);
-		for (std::vector<tstring>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)
+		for (std::vector<std::string>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)
 		{
 			QRect rect = axisFontMetrics.boundingRect(QString::fromStdString(*it));
 			if (rect.width() > sizeMax.width())
@@ -581,7 +581,7 @@ void ChartView::drawYAxis(QPainter& painter, const QRect& chartRect, const Chart
 			int heightoffset = rdo::roundDouble((double)chartRect.height() / (double)(count - 1));
 			tmprect.setTop(chartRect.bottom());
 			int index = 0;
-			for (std::vector<tstring>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)
+			for (std::vector<std::string>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)
 			{
 				index++;
 				painter.drawText(tmprect, Qt::AlignRight, QString::fromStdString(*it));
@@ -616,7 +616,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 	ChartDoc* pDoc = getDocument();
 	if (!pDoc->getTimes().empty())
 	{
-		tstring formatstr = "%.3f";
+		std::string formatstr = "%.3f";
 
 		painter.setFont(m_fontAxis);
 		painter.setPen(m_pStyle->axisFgColor);
@@ -631,7 +631,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 			}
 			double valo = m_drawFromX.time;
 			int x = chartRect.left();
-			tstring str = rdo::format(formatstr.c_str(), valo);
+			std::string str = rdo::format(formatstr.c_str(), valo);
 			tmprect.setLeft(x);
 			painter.drawText(tmprect, Qt::AlignLeft, QString::fromStdString(str));
 			valo += valoffset;
@@ -660,7 +660,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 		else
 		{
 			int ticks = 0;
-			tstring str;
+			std::string str;
 			int lastx = 0;
 			QSize sz;
 			BOOST_FOREACH(const Time* const pTime, m_unwrapTimesList)

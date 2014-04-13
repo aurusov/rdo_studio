@@ -29,15 +29,15 @@ template <typename opr_type>
 class OperatorName
 {
 public:
-	static tstring name(CREF(opr_type) pOperator);
+	static std::string name(CREF(opr_type) pOperator);
 
 private:
 	struct OprItem
 	{
 		opr_type m_pOperator;
-		tstring  m_name;
+		std::string m_name;
 
-		OprItem(CREF(opr_type) pOperator, CREF(tstring) name);
+		OprItem(CREF(opr_type) pOperator, CREF(std::string) name);
 
 		rbool operator== (CREF(opr_type) pOperator) const;
 	};

@@ -154,9 +154,9 @@ public:
 	void setTerminateIf(CREF(LPRDOCalc) pTerminateIfCalc);
 
 	virtual rbool breakPoints();
-	void      insertBreakPoint     (CREF(tstring) name, CREF(LPRDOCalc) pCalc);
-	LPRDOCalc findBreakPoint       (CREF(tstring) name);
-	tstring   getLastBreakPointName() const;
+	void insertBreakPoint(CREF(std::string) name, CREF(LPRDOCalc) pCalc);
+	LPRDOCalc findBreakPoint(CREF(std::string) name);
+	std::string getLastBreakPointName() const;
 
 	LPRDOResource getResourceByID(ruint resourceID) const;
 
@@ -241,13 +241,13 @@ private:
 	{
 	DECLARE_FACTORY(BreakPoint)
 	public:
-		CREF(tstring)   getName() const;
+		CREF(std::string) getName() const;
 		CREF(LPRDOCalc) getCalc() const;
 
 	private:
-		BreakPoint(CREF(tstring) name, CREF(LPRDOCalc) pCalc);
+		BreakPoint(CREF(std::string) name, CREF(LPRDOCalc) pCalc);
 
-		tstring   m_name;
+		std::string m_name;
 		LPRDOCalc m_pCalc;
 	};
 

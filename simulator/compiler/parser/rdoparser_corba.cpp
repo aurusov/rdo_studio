@@ -299,7 +299,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 						//Добавляем, если есть значение по умолчанию
 						if (my_rtpList[i].m_param[j].m_default_enum_ch == 1)
 						{
-							tstring temp_string;
+							std::string temp_string;
 							temp_string = my_rtpList[i].m_param[j].m_default_enum.in();
 							par_enum.setDefault(RDOValue::getIdentificator(temp_string));
 						}
@@ -329,7 +329,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 				TRACE1("rtp.name = %s\n", rtp.name().c_str());
 				for (const auto& param: rtp.m_params)
 				{
-					tstring info = rdo::format("  param: %s: %s", param.name().c_str() , param.typeStr().c_str());
+					const std::string info = rdo::format("  param: %s: %s", param.name().c_str() , param.typeStr().c_str());
 					if (param.hasRange())
 					{
 						info = rdo::format("%s [%s..%s]", info.c_str(), param.getMin()->getAsString().c_str(), param.getMax()->getAsString().c_str());
@@ -386,7 +386,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 						break;
 					case RDOCorba::enum_type:
 					{
-						tstring temp_string;
+						std::string temp_string;
 						temp_string = my_rssList[i].m_param[j].m_enum.in();
 						rss[my_rssList[i].m_param[j].m_name.in()] = RDOValue::getIdentificator(temp_string);
 						break;

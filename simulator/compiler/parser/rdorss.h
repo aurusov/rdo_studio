@@ -68,12 +68,12 @@ public:
 
 	virtual std::vector<rdo::runtime::LPRDOCalc> createCalc() const;
 
-	CREF(tstring)    name   () const { return src_info().src_text(); }
-	LPRDORTPResType  getType() const { return m_pResType;            }
+	CREF(std::string) name() const { return src_info().src_text(); }
+	LPRDORTPResType getType() const { return m_pResType; }
 
-	ruint            getID  () const { return m_id;                  }
+	ruint getID() const { return m_id; }
 
-	CREF(ParamList)  params () const { return m_paramList;           }
+	CREF(ParamList) params () const { return m_paramList; }
 
 	void  addParam(CREF(LPRDOValue) pParam);
 	rbool getTrace() const      { return trace;  }

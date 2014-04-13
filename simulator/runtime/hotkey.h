@@ -44,11 +44,11 @@ public:
 		//! Переводит имя клавиши в код клавиши
 		//! @param  keyName - имя клавиши
 		//! @result код клавиши в операционной системе
-		KeyCode codeFromString(CREF(tstring) keyName) const;
+		KeyCode codeFromString(CREF(std::string) keyName) const;
 
 	private:
-		typedef  std::map<tstring, KeyCode>  KeySet;
-		KeySet  m_keyList;
+		typedef std::map<std::string, KeyCode> KeySet;
+		KeySet m_keyList;
 	};
 
 	//! Используемые в моделе клавиши, список формируется в момент компиляции
@@ -110,12 +110,12 @@ public:
 	public:
 		//! Фиксирует нажатие на область
 		//! @param areaName - имя области
-		void  click(CREF(tstring) areaName);
+		void  click(CREF(std::string) areaName);
 
 		//! Проверяет было ли нажатие на область
 		//! @param  areaName - имя области
 		//! @result true, если было нажатие
-		rbool check(CREF(tstring) areaName);
+		rbool check(CREF(std::string) areaName);
 
 		//! Проверяет было ли нажатие хотя бы на одну область
 		//! @result true, если было нажатие
@@ -125,8 +125,8 @@ public:
 		void clear();
 
 	private:
-		typedef  std::list<tstring>  NameList;
-		NameList  m_activeAreasMouseClicked;
+		typedef std::list<std::string> NameList;
+		NameList m_activeAreasMouseClicked;
 	};
 
 	RDOHotKey();

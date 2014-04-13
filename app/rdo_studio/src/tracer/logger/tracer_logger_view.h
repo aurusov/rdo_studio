@@ -37,9 +37,9 @@ public:
 	LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle);
 	virtual ~LogView();
 
-	void push_back (CREF(tstring) log );
-	void setText   (tstring       text);
-	void clear     ();
+	void push_back(CREF(std::string) log);
+	void setText(std::string text);
+	void clear();
 	void selectLine(rsint index);
 
 	bool getFocusOnly() const;

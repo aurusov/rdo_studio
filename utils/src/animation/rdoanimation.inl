@@ -97,7 +97,7 @@ inline Radius::Radius(double radius)
 	: m_radius(radius)
 {}
 
-inline TextElement::TextElement(CREF(BoundedElement) rect, CREF(ColoredElement) color, CREF(tstring) text, TextAlign align)
+inline TextElement::TextElement(CREF(BoundedElement) rect, CREF(ColoredElement) color, CREF(std::string) text, TextAlign align)
 	: FrameItem     (FIT_TEXT)
 	, BoundedElement(rect    )
 	, ColoredElement(color   )
@@ -145,7 +145,7 @@ inline EllipseElement::EllipseElement(CREF(BoundedElement) rect, CREF(ColoredEle
 	, ColoredElement(color      )
 {}
 
-inline BmpElement::BmpElement(CREF(Point) point, CREF(tstring) bmp_name, CREF(tstring) mask_name)
+inline BmpElement::BmpElement(CREF(Point) point, CREF(std::string) bmp_name, CREF(std::string) mask_name)
 	: FrameItem  (FIT_BMP  )
 	, m_point    (point    )
 	, m_bmp_name (bmp_name )
@@ -157,7 +157,7 @@ inline rbool BmpElement::hasMask() const
 	return !m_mask_name.empty();
 }
 
-inline ScaledBmpElement::ScaledBmpElement(CREF(BoundedElement) rect, CREF(tstring) bmp_name, CREF(tstring) mask_name)
+inline ScaledBmpElement::ScaledBmpElement(CREF(BoundedElement) rect, CREF(std::string) bmp_name, CREF(std::string) mask_name)
 	: FrameItem     (FIT_S_BMP)
 	, BoundedElement(rect     )
 	, m_bmp_name    (bmp_name )
@@ -169,7 +169,7 @@ inline rbool ScaledBmpElement::hasMask() const
 	return !m_mask_name.empty();
 }
 
-inline ActiveElement::ActiveElement(CREF(BoundedElement) rect, CREF(tstring) opr_name)
+inline ActiveElement::ActiveElement(CREF(BoundedElement) rect, CREF(std::string) opr_name)
 	: FrameItem     (FIT_ACTIVE)
 	, BoundedElement(rect      )
 	, m_opr_name    (opr_name  )

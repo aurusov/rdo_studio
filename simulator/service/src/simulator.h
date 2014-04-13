@@ -140,9 +140,9 @@ public:
 	struct FrameAreaDown
 	{
 		ruint   m_number;
-		tstring m_name;
+		std::string m_name;
 
-		FrameAreaDown(ruint number, CREF(tstring) name)
+		FrameAreaDown(ruint number, CREF(std::string) name)
 			: m_number(number)
 			, m_name  (name  )
 		{}
@@ -194,17 +194,17 @@ public:
 	{
 		struct Param
 		{
-			tstring m_name;
+			std::string m_name;
 		};
 		typedef std::vector<Param> ParamList;
 
-		tstring   m_name;
+		std::string m_name;
 		ParamList m_params;
 	};
 
 	struct RSS
 	{
-		tstring m_name;
+		std::string m_name;
 	};
 
 	struct GetRTP: public std::vector<RTP>
@@ -274,7 +274,7 @@ public:
 			bitmaps
 		};
 
-		typedef std::list<tstring> StringList;
+		typedef std::list<std::string> StringList;
 
 		Type            m_type;
 		PTR(StringList) m_list;
@@ -303,11 +303,11 @@ public:
 	struct GetCodeComp: public boost::noncopyable
 	{
 		rdoModelObjects::RDOFileType m_file;
-		int                          m_pos_x;
-		int                          m_pos_y;
-		REF(tstring)                 m_result;
+		int m_pos_x;
+		int m_pos_y;
+		REF(std::string) m_result;
 
-		GetCodeComp(rdoModelObjects::RDOFileType file, int pos_x, int pos_y, REF(tstring) result)
+		GetCodeComp(rdoModelObjects::RDOFileType file, int pos_x, int pos_y, REF(std::string) result)
 			: m_file  (file  )
 			, m_pos_x (pos_x )
 			, m_pos_y (pos_y )

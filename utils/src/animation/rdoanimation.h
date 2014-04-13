@@ -207,15 +207,15 @@ struct TextElement
 		TETA_CENTER  //!< По центру
 	};
 
-	tstring    m_text;  //!< Строка текста
-	TextAlign  m_align; //!< Тип выравнивания
+	std::string m_text; //!< Строка текста
+	TextAlign m_align; //!< Тип выравнивания
 
 	//! Создаёт объект текста
 	//! \param rect  - область вывода
 	//! \param color - цвет текста
 	//! \param text  - строка
 	//! \param align - выравнивание
-	TextElement(CREF(BoundedElement) rect, CREF(ColoredElement) color, CREF(tstring) text, TextAlign align);
+	TextElement(CREF(BoundedElement) rect, CREF(ColoredElement) color, CREF(std::string) text, TextAlign align);
 };
 
 //! \brief   Отрезок
@@ -315,15 +315,15 @@ struct EllipseElement
 //! \details Используется для реализации команды анимации <tt>bitmap[x, y, имя_файла_битовой_карты [, имя_файла_маски]]</tt>
 struct BmpElement: public FrameItem
 {
-	Point    m_point;     //!< Координата левого верхнего угла картинки
-	tstring  m_bmp_name;  //!< Имя файла картинки
-	tstring  m_mask_name; //!< Имя файла маски картинки
+	Point m_point; //!< Координата левого верхнего угла картинки
+	std::string m_bmp_name; //!< Имя файла картинки
+	std::string m_mask_name; //!< Имя файла маски картинки
 
 	//! Создаёт картинку
 	//! \param point     - координата левого верхнего угла картинки
 	//! \param bmp_name  - имя файла картинки
 	//! \param mask_name - имя файла маски картинки, может отсутствовать
-	BmpElement(CREF(Point) point, CREF(tstring) bmp_name, CREF(tstring) mask_name = "");
+	BmpElement(CREF(Point) point, CREF(std::string) bmp_name, CREF(std::string) mask_name = "");
 
 	//! \details Возвращает \b true, если маска указана
 	rbool hasMask() const;
@@ -335,14 +335,14 @@ struct ScaledBmpElement
 	: public FrameItem
 	, public BoundedElement
 {
-	tstring  m_bmp_name;  //!< Имя файла картинки
-	tstring  m_mask_name; //!< Имя файла маски картинки
+	std::string m_bmp_name; //!< Имя файла картинки
+	std::string m_mask_name; //!< Имя файла маски картинки
 
 	//! Создаёт картинку
 	//! \param rect      - координаты и размер фигуры
 	//! \param bmp_name  - имя файла картинки
 	//! \param mask_name - имя файла маски картинки, может отсутствовать
-	ScaledBmpElement(CREF(BoundedElement) rect, CREF(tstring) bmp_name, CREF(tstring) mask_name = "");
+	ScaledBmpElement(CREF(BoundedElement) rect, CREF(std::string) bmp_name, CREF(std::string) mask_name = "");
 
 	//! \details Возвращает \b true, если маска указана
 	rbool hasMask() const;
@@ -354,12 +354,12 @@ struct ActiveElement
 	: public FrameItem
 	, public BoundedElement
 {
-	tstring  m_opr_name; //!< Имя клавиатурной операции
+	std::string m_opr_name; //!< Имя клавиатурной операции
 
 	//! Создаёт активную область
 	//! \param rect      - координаты и размер области
 	//! \param opr_name  - имя клавиатурной операции
-	ActiveElement(CREF(BoundedElement) rect, CREF(tstring) opr_name);
+	ActiveElement(CREF(BoundedElement) rect, CREF(std::string) opr_name);
 };
 
 //! \brief   Пустой элемент
@@ -377,10 +377,10 @@ struct Frame
 {
 	typedef  std::vector<PTR(FrameItem)>  Elements; //!< Тип контейнера элементов анимации
 
-	Color     m_bgColor;     //!< Цвет фона фрейма
-	tstring   m_bgImageName; //!< Имя фоновой картинки
-	Size      m_size;        //!< Размер фрейма
-	Elements  m_elements;    //!< Список элементов анимации
+	Color m_bgColor; //!< Цвет фона фрейма
+	std::string m_bgImageName; //!< Имя фоновой картинки
+	Size m_size; //!< Размер фрейма
+	Elements m_elements; //!< Список элементов анимации
 
 	//! \details Удаляет все элементы
 	~Frame();

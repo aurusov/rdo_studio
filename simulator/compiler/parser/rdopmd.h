@@ -32,8 +32,8 @@ class RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDResult);
 public:
-	CREF(tstring)   name      () const { return src_text(); }
-	CREF(LPIResult) getRuntime() const { return m_pResult;  }
+	CREF(std::string) name() const { return src_text(); }
+	CREF(LPIResult) getRuntime() const { return m_pResult; }
 
 protected:
 	RDOPMDResult(CREF(RDOParserSrcInfo) src_info);
@@ -53,11 +53,11 @@ class RDOResultGroup
 {
 DECLARE_FACTORY(RDOResultGroup);
 public:
-	void                 init      (CREF(RDOParserSrcInfo) src_info);
-	CREF(tstring)        name      () const;
+	void init(CREF(RDOParserSrcInfo) src_info);
+	CREF(std::string) name() const;
 	CREF(LPIResultGroup) getRuntime() const;
-	void                 append    (CREF(LPRDOPMDResult) pResult   );
-	LPRDOPMDResult       find      (CREF(tstring)       resultName) const;
+	void append(CREF(LPRDOPMDResult) pResult);
+	LPRDOPMDResult find(CREF(std::string) resultName) const;
 
 private:
 	RDOResultGroup();

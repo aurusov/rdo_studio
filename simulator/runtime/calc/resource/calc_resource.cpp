@@ -73,7 +73,7 @@ RDOValue RDOCalcGetResourceParam::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetUnknowResParam
 // --------------------------------------------------------------------------------
-RDOCalcGetUnknowResParam::RDOCalcGetUnknowResParam(CREF(tstring) resName, CREF(tstring) parName)
+RDOCalcGetUnknowResParam::RDOCalcGetUnknowResParam(CREF(std::string) resName, CREF(std::string) parName)
 	: m_resName(resName)
 	, m_parName(parName)
 {}

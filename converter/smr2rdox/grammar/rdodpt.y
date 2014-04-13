@@ -735,14 +735,14 @@ dpt_some_descr_keyb
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTSome()->getLastActivity();
 		ASSERT(pActivityHotKey);
-		tstring key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
+		const std::string key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
 		pActivityHotKey->addHotKey(key, @3);
 	}
 	| RDO_STRING_CONST
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTSome()->getLastActivity();
 		ASSERT(pActivityHotKey);
-		tstring key = CONVERTER->stack().pop<RDOValue>($1)->value().getString();
+		const std::string key = CONVERTER->stack().pop<RDOValue>($1)->value().getString();
 		pActivityHotKey->addHotKey(key, @1);
 	}
 	;
@@ -970,14 +970,14 @@ dpt_prior_descr_keyb
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTPrior()->getLastActivity();
 		ASSERT(pActivityHotKey);
-		tstring key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
+		const std::string key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
 		pActivityHotKey->addHotKey(key, @3);
 	}
 	| RDO_STRING_CONST
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTPrior()->getLastActivity();
 		ASSERT(pActivityHotKey);
-		tstring key = CONVERTER->stack().pop<RDOValue>($1)->value().getString();
+		const std::string key = CONVERTER->stack().pop<RDOValue>($1)->value().getString();
 		pActivityHotKey->addHotKey(key, @1);
 	}
 	;
@@ -1144,14 +1144,14 @@ dpt_free_activity_keys
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTFree()->getLastActivity();
 		ASSERT(pActivityHotKey);
-		tstring key = CONVERTER->stack().pop<RDOValue>($2)->value().getString();
+		const std::string key = CONVERTER->stack().pop<RDOValue>($2)->value().getString();
 		pActivityHotKey->addHotKey(key, @2);
 	}
 	| dpt_free_activity_keys '+' RDO_STRING_CONST
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTFree()->getLastActivity();
 		ASSERT(pActivityHotKey);
-		tstring key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
+		const std::string key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
 		pActivityHotKey->addHotKey(key, @3);
 	}
 	;
@@ -1403,7 +1403,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
 		pFunParams->setSrcText(funName + "()");
@@ -1415,7 +1415,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + "(" + pFunParams->src_text() + ")");

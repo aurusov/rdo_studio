@@ -28,7 +28,7 @@ RDORTPParam::RDORTPParam(CREF(LPRDOTypeParam) pParamType, CREF(LPRDOValue) pDefa
 RDORTPParam::~RDORTPParam()
 {}
 
-CREF(tstring) RDORTPParam::name() const
+CREF(std::string) RDORTPParam::name() const
 {
 	return RDOParam::name();
 }

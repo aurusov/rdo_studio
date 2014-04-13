@@ -60,7 +60,7 @@ private: \
 
 #define DEFINE_OBJECT_CONTAINER_WITHNAME(TYPE, NAME) \
 public: \
-	const TYPE find##NAME  (CREF(tstring) name) const; \
+	const TYPE find##NAME  (CREF(std::string) name) const; \
 	rbool      remove##NAME(const TYPE item);
 
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
@@ -105,7 +105,7 @@ public:
 	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkDPTName         (CREF(RDOParserSrcInfo) src_info);
 
-	void  insertChanges        (CREF(tstring) name, CREF(tstring) value);
+	void insertChanges(CREF(std::string) name, CREF(std::string) value);
 
 	rbool isHaveKWResources    ()            const { return m_have_kw_Resources;     }
 	void  setHaveKWResources   (rbool value)       { m_have_kw_Resources = value;    }
@@ -122,8 +122,8 @@ public:
 	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
 	ruint getNumberFrame() const { return m_allFRMFrame.size()    + 0; }
 
-	tstring getModelStructure();
-	tstring getChanges       () const;
+	std::string getModelStructure();
+	std::string getChanges() const;
 
 	LPRDOSMR getSMR() const              { return m_pSMR;                }
 	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
@@ -223,10 +223,10 @@ private:
 
 	struct ChangesData
 	{
-		tstring m_name;
-		tstring m_value;
+		std::string m_name;
+		std::string m_value;
 
-		ChangesData(CREF(tstring) name, CREF(tstring) value)
+		ChangesData(CREF(std::string) name, CREF(std::string) value)
 			: m_name (name )
 			, m_value(value)
 		{}

@@ -17,7 +17,7 @@ namespace rdo {
 namespace simulation {
 namespace report {
 
-LogEditLineInfo::LogEditLineInfo(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type)
+LogEditLineInfo::LogEditLineInfo(CREF(std::string) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type)
 	: FileMessage(text, file, line, pos, type)
 	, m_posInLog(0)
 	, m_simpleTextMessage(false)
@@ -29,7 +29,7 @@ LogEditLineInfo::LogEditLineInfo(CREF(FileMessage) message)
 	, m_simpleTextMessage(false)
 {}
 
-LogEditLineInfo::LogEditLineInfo(CREF(tstring) message)
+LogEditLineInfo::LogEditLineInfo(CREF(std::string) message)
 	: FileMessage(message, rdoModelObjects::PAT, 0, 0)
 	, m_posInLog(0)
 	, m_simpleTextMessage(true)
@@ -38,7 +38,7 @@ LogEditLineInfo::LogEditLineInfo(CREF(tstring) message)
 LogEditLineInfo::~LogEditLineInfo()
 {}
 
-tstring LogEditLineInfo::getMessage() const
+std::string LogEditLineInfo::getMessage() const
 {
 	if (m_simpleTextMessage)
 	{
@@ -46,8 +46,8 @@ tstring LogEditLineInfo::getMessage() const
 	}
 	else
 	{
-		tstring file = rdoModelObjects::getFileTypeString(getFileType());
-		tstring text = rdo::format("%s (%d): %s", file.c_str(), getLineNumber() + 1, getText().c_str());
+		const std::string file = rdoModelObjects::getFileTypeString(getFileType());
+		const std::string text = rdo::format("%s (%d): %s", file.c_str(), getLineNumber() + 1, getText().c_str());
 		return text;
 	}
 }

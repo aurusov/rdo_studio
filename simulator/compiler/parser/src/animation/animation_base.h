@@ -27,9 +27,9 @@ class RDOFRMCommandList
 {
 DECLARE_FACTORY(RDOFRMCommandList);
 public:
-	CREF(tstring) name      () const;
-	LPExpression  expression() const;
-	void          end       ();
+	CREF(std::string) name() const;
+	LPExpression expression() const;
+	void end();
 
 	virtual rdo::runtime::LPRDOFRMSprite list() const = 0;
 

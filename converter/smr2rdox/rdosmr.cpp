@@ -49,7 +49,7 @@ void cnv_smr_sim_error(const char* message)
 // --------------------------------------------------------------------------------
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
-RDOSMR::RDOSMR(CREF(tstring) modelName)
+RDOSMR::RDOSMR(CREF(std::string) modelName)
 	: m_showMode      (rdo::service::simulation::SM_NoShow)
 	, m_frameNumber   (1 )
 	, m_showRate      (60)

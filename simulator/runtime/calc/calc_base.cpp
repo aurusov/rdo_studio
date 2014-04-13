@@ -37,7 +37,7 @@ RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 /*
 		if (src_text().empty())
 		{
-			TRACE("%d\n", sizeof(tstring));
+			TRACE("%d\n", sizeof(std::string));
 		}
 		else if (src_text().length() < 500)
 		{
@@ -49,7 +49,7 @@ RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 		}
 		else 
 		{
-			tstring str = src_text();
+			std::string str = src_text();
 			str.resize(500);
 			TRACE("calc: %s\n", str.c_str());
 		}
@@ -63,7 +63,7 @@ RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 	}
 	catch (CREF(RDORuntimeException) ex)
 	{
-		tstring message = rdo::format("<Модельное время: %f>, '%s'", pRuntime->getTimeNow(), m_srcInfo.src_text().c_str());
+		std::string message = rdo::format("<Модельное время: %f>, '%s'", pRuntime->getTimeNow(), m_srcInfo.src_text().c_str());
 		if (!ex.message().empty())
 		{
 			message = rdo::format("%s: %s", message.c_str(), ex.message().c_str());

@@ -61,16 +61,16 @@ public:
 
 	virtual rdo::runtime::LPRDOCalc createCalc() const;
 
-	CREF(tstring)    name   () const { return src_info().src_text(); }
-	LPRDORTPResType  getType() const { return m_pResType;            }
+	CREF(std::string) name() const { return src_info().src_text(); }
+	LPRDORTPResType getType() const { return m_pResType; }
 
-	int              getID  () const { return m_id;                  }
+	int getID() const { return m_id; }
 
-	CREF(ParamList)  params () const { return m_paramList;           }
+	CREF(ParamList) params() const { return m_paramList; }
 
-	void  addParam(CREF(LPRDOValue) pParam);
-	rbool getTrace() const      { return trace;  }
-	void  setTrace(rbool value) { trace = value; }
+	void addParam(CREF(LPRDOValue) pParam);
+	rbool getTrace() const { return trace; }
+	void setTrace(rbool value) { trace = value; }
 	rbool defined () const;
 
 	void writeModelStructure(REF(std::ostream) stream) const;

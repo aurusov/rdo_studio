@@ -50,14 +50,14 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo::Position) pos)
 	setSrcText(RDOParser::lexer_text());
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(tstring) text)
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(std::string) text)
 	: RDOSrcInfo()
 {
 	init();
 	setSrcText(text);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(tstring) text)
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(std::string) text)
 	: RDOSrcInfo()
 {
 	init();
@@ -89,7 +89,7 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_en
 	}
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, CREF(tstring) text)
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, CREF(std::string) text)
 	: RDOSrcInfo()
 {
 	init();

@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDORule
 // --------------------------------------------------------------------------------
-RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(tstring) name)
+RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(std::string) name)
 	: RDOActivityPattern<RDOPatternRule>(pPattern, trace, name)
 	, RDOPatternPrior                   (                     )
 	, m_pRuntime                        (pRuntime             )
@@ -28,7 +28,7 @@ RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, r
 	init();
 }
 
-RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name)
+RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(std::string) name)
 	: RDOActivityPattern<RDOPatternRule>(pPattern, trace, name)
 	, RDOPatternPrior                   (                     )
 	, m_pRuntime                        (pRuntime             )

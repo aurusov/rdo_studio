@@ -326,13 +326,13 @@ LogView::~LogView()
 	clear();
 }
 
-void LogView::push_back(CREF(tstring) log)
+void LogView::push_back(CREF(std::string) log)
 {
 	if (!log.empty())
 	{
 		rsint posstart = log.find_first_not_of(' ');
-		rsint posend   = log.find_first_of(' ', posstart);
-		tstring key    = boost::algorithm::trim_copy(log.substr(posstart, posend - posstart));
+		rsint posend = log.find_first_of(' ', posstart);
+		std::string key = boost::algorithm::trim_copy(log.substr(posstart, posend - posstart));
 
 		LogColorPair colors;
 
@@ -399,13 +399,13 @@ void LogView::push_back(CREF(tstring) log)
 	}
 }
 
-void LogView::setText(tstring text)
+void LogView::setText(std::string text)
 {
 	clear();
 	while (!text.empty())
 	{
 		ruint pos = text.find_first_of("\r\n");
-		if (pos == tstring::npos)
+		if (pos == std::string::npos)
 		{
 			pos = text.length();
 		}

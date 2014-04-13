@@ -55,9 +55,9 @@ class RDOParsEvent
 {
 	DECLARE_FACTORY(RDOParsEvent);
 public:
-	CREF(tstring)     name    () const { return src_info().src_text(); }
-	CREF(LPIActivity) activity() const { return m_pActivity;           }
-	LPRDOPATPattern   pattern () const { return m_pPattern;            }
+	CREF(std::string) name() const { return src_info().src_text(); }
+	CREF(LPIActivity) activity() const { return m_pActivity; }
+	LPRDOPATPattern pattern () const { return m_pPattern; }
 
 	void addParam(CREF(RDOValue) param    );
 	void endParam(CREF(YYLTYPE)  param_pos);
@@ -89,9 +89,9 @@ class RDODPTActivity
 {
 DECLARE_FACTORY(RDODPTActivity);
 public:
-	CREF(tstring)     name    () const { return src_info().src_text(); }
-	CREF(LPIActivity) activity() const { return m_pActivity;           }
-	LPRDOPATPattern   pattern () const { return m_pPattern;            }
+	CREF(std::string) name() const { return src_info().src_text(); }
+	CREF(LPIActivity) activity() const { return m_pActivity; }
+	LPRDOPATPattern pattern () const { return m_pPattern; }
 
 	void addParam(CREF(LPRDOValue) pParam   );
 	void endParam(CREF(YYLTYPE)    param_pos);
@@ -119,7 +119,7 @@ class RDODPTActivityHotKey: public RDODPTActivity
 {
 DECLARE_FACTORY(RDODPTActivityHotKey)
 public:
-	void addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_pos);
+	void addHotKey(CREF(std::string) hotKey, CREF(YYLTYPE) hotkey_pos);
 
 protected:
 	RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);

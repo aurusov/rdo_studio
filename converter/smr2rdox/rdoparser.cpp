@@ -46,7 +46,7 @@ void Converter::insert##NAME(LPRDO##NAME value) \
 
 #define DECLARE_PARSER_OBJECT_CONTAINER(NAME) \
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
-const LPRDO##NAME Converter::find##NAME(CREF(tstring) name) const \
+const LPRDO##NAME Converter::find##NAME(CREF(std::string) name) const \
 { \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
 	return it != m_all##NAME.end() ? *it : LPRDO##NAME(NULL); \
@@ -144,12 +144,12 @@ rbool Converter::isCurrentDPTPrior()
 	return getLastDPTPrior() ? true : false;
 }
 
-void Converter::insertChanges(CREF(tstring) name, CREF(tstring) value)
+void Converter::insertChanges(CREF(std::string) name, CREF(std::string) value)
 {
 	m_changes.push_back(ChangesData(name, value));
 }
 
-tstring Converter::getChanges() const
+std::string Converter::getChanges() const
 {
 	std::stringstream stream;
 	stream << "$Changes" << std::endl;
@@ -173,7 +173,7 @@ tstring Converter::getChanges() const
 	return stream.str();
 }
 
-tstring Converter::getModelStructure()
+std::string Converter::getModelStructure()
 {
 	std::stringstream modelStructure;
 
@@ -426,11 +426,11 @@ RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smr
 		}
 		catch (CREF(boost::system::error_code) ex)
 		{
-			tstring message = ex.message();
+			std::string message = ex.message();
 			if (message.find("boost") == 0)
 			{
 				BOOST_AUTO(pos, message.find(' '));
-				if (pos != tstring::npos)
+				if (pos != std::string::npos)
 				{
 					message = message.substr(pos + 1);
 				}

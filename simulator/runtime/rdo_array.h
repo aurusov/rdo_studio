@@ -43,8 +43,8 @@ public:
 	void insert(CREF(LPRDOArrayIterator) pWhere, CREF(LPRDOArrayIterator) pFromFirst, CREF(LPRDOArrayIterator) pFromLast);
 	void  erase(CREF(LPRDOArrayIterator) pFirst, CREF(LPRDOArrayIterator) pLast);
 
-	ruint   size       () const;
-	tstring getAsString() const;
+	ruint size() const;
+	std::string getAsString() const;
 
 	CREF(RDOValue) getItem(CREF(RDOValue) index) const;
 	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item);

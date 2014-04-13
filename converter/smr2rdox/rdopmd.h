@@ -34,7 +34,7 @@ class RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDResult);
 public:
-	CREF(tstring) name() const { return src_text(); }
+	CREF(std::string) name() const { return src_text(); }
 
 protected:
 	RDOPMDResult(CREF(RDOParserSrcInfo) src_info);

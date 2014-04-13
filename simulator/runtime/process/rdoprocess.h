@@ -68,12 +68,12 @@ public:
 	DECLARE_IPROCProcess;
 
 protected:
-	tstring                    m_name;
-	LPIPROCProcess             m_parent;
-	std::list<LPIPROCProcess>  m_child;
+	std::string m_name;
+	LPIPROCProcess m_parent;
+	std::list<LPIPROCProcess> m_child;
 
 private:
-	RDOPROCProcess(CREF(tstring) _name, CREF(LPRDORuntime) pRuntime);
+	RDOPROCProcess(CREF(std::string) _name, CREF(LPRDORuntime) pRuntime);
 	LPIResourceType m_pTransactType;
 };
 
@@ -114,7 +114,7 @@ friend class RDOPROCSeize;
 friend class RDOPROCRelease;
 
 public:
-	tstring whoAreYou();
+	std::string whoAreYou();
 	virtual LPRDOResource clone(CREF(LPRDORuntime) pRuntime) const;
 
 protected:

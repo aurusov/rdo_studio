@@ -310,7 +310,7 @@ void Edit::onEditLowerCase()
 	sendEditor(SCI_LOWERCASE);
 }
 
-tstring Edit::getCurrentWord() const
+std::string Edit::getCurrentWord() const
 {
 	int pos_begin = sendEditor(SCI_WORDSTARTPOSITION, getCurrentPos(), true);
 	int pos_end   = sendEditor(SCI_WORDENDPOSITION, getCurrentPos(), true);
@@ -321,22 +321,22 @@ tstring Edit::getCurrentWord() const
 	tr.chrg.cpMin = pos_begin;
 	tr.chrg.cpMax = pos_end;
 	sendEditor(SCI_GETTEXTRANGE, 0, (long)&tr);
-	tstring str(tr.lpstrText);
+	std::string str(tr.lpstrText);
 	delete[] word;
 	return str;
 }
 
-tstring Edit::getSelection() const
+std::string Edit::getSelection() const
 {
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
 	sendEditor(SCI_GETSELTEXT, 0, (long)selection);
-	tstring str = selection;
+	std::string str = selection;
 	delete[] selection;
 	return str;
 }
 
-tstring Edit::getCurrentOrSelectedWord() const
+std::string Edit::getCurrentOrSelectedWord() const
 {
 	return isSelected()
 		? getSelection  ()
@@ -804,7 +804,7 @@ void Edit::onCopyAsRTF(QMimeData* pMimeData)
 		return;
 
 	CharacterRange cr = getSelectionRange();
-	tstring result = saveAsRTF(cr.cpMin, cr.cpMax);
+	std::string result = saveAsRTF(cr.cpMin, cr.cpMax);
 	if (result.empty())
 		return;
 
@@ -955,9 +955,9 @@ void GetRTFStyleChange(char *delta, char *last, const char *current) // \f0\fs20
 // -------------------- some functions for RTF export ---------- END
 // --------------------------------------------------------------------------------
 
-tstring Edit::saveAsRTF(int start, int end) const
+std::string Edit::saveAsRTF(int start, int end) const
 {
-	tstring saveStr;
+	std::string saveStr;
 
 	if (!m_pStyle)
 	{
@@ -1013,7 +1013,7 @@ tstring Edit::saveAsRTF(int start, int end) const
 
 	sprintf(lastStyle, RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0" RTF_SETBACKGROUND "0" RTF_BOLD_OFF RTF_ITALIC_OFF, m_pStyle->font.size * 2);
 
-	tstring::size_type prevLength = saveStr.length();
+	std::string::size_type prevLength = saveStr.length();
 	bool prevCR = false;
 	int styleCurrent = -1;
 
@@ -1024,7 +1024,7 @@ tstring Edit::saveAsRTF(int start, int end) const
 	tr.chrg.cpMin = start;
 	tr.chrg.cpMax = end;
 	sendEditor(SCI_GETTEXTRANGE, 0, (long)&tr);
-	tstring str(tr.lpstrText);
+	std::string str(tr.lpstrText);
 	delete[] word;
 	std::wstring wstr = rdo::locale::convertToWStr(str);
 
@@ -1406,10 +1406,10 @@ int Edit::findPos(CREF(QString) findWhat, const int startFromLine, const bool ma
 	return sendEditorString(SCI_SEARCHINTARGET, findWhat.toStdString());
 }
 
-tstring Edit::getLine(const int line) const
+std::string Edit::getLine(const int line) const
 {
 	int length = sendEditor(SCI_LINELENGTH, line);
-	tstring str;
+	std::string str;
 	str.resize(length);
 	sendEditor(SCI_GETLINE, line, (long)str.data());
 	return str;

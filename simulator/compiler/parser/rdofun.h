@@ -99,11 +99,11 @@ public:
 	LPRDOFUNLogic operator || (CREF(LPRDOFUNLogic) pSecond);
 	LPRDOFUNLogic operator_not(CREF(RDOSrcInfo::Position) position);
 
-	virtual void setSrcInfo(CREF(RDOParserSrcInfo)     srcInfo );
-	virtual void setSrcPos (CREF(RDOSrcInfo::Position) position);
-	virtual void setSrcText(CREF(tstring)              value   );
-	        void setSrcPos (CREF(YYLTYPE) error_pos);
-	        void setSrcPos (CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end);
+	virtual void setSrcInfo(CREF(RDOParserSrcInfo) srcInfo);
+	virtual void setSrcPos(CREF(RDOSrcInfo::Position) position);
+	virtual void setSrcText(CREF(std::string) value);
+	void setSrcPos(CREF(YYLTYPE) error_pos);
+	void setSrcPos(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end);
 
 	static LPRDOFUNLogic generateTrue(CREF(RDOParserSrcInfo) srcInfo);
 
@@ -154,12 +154,12 @@ public:
 	LPRDOEnumType                 enumType  () const { return typeInfo()->type().object_static_cast<RDOEnumType>(); }
 	rdo::runtime::RDOType::TypeID typeID    () const { return typeInfo()->type()->typeID();                         }
 
-	virtual void setSrcInfo(CREF(RDOParserSrcInfo)     srcInfo );
+	virtual void setSrcInfo(CREF(RDOParserSrcInfo) srcInfo );
 	virtual void setSrcPos (CREF(RDOSrcInfo::Position) position);
-	virtual void setSrcText(CREF(tstring) value);
-	        void setSrcInfo(CREF(RDOParserSrcInfo) begin, CREF(tstring) delim, CREF(RDOParserSrcInfo) end);
-	        void setSrcPos (CREF(YYLTYPE) error_pos);
-	        void setSrcPos (CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end);
+	virtual void setSrcText(CREF(std::string) value);
+	void setSrcInfo(CREF(RDOParserSrcInfo) begin, CREF(std::string) delim, CREF(RDOParserSrcInfo) end);
+	void setSrcPos (CREF(YYLTYPE) error_pos);
+	void setSrcPos (CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end);
 
 	void checkParamType(CREF(LPTypeInfo) pType);
 
@@ -176,22 +176,22 @@ private:
 	LPTypeInfo getPreType(CREF(LPRDOFUNArithm) pSecond);
 
 	template <class T>
-	rdo::runtime::LPRDOCalc generateCalc(CREF(rdo::runtime::RDOSrcInfo::Position) position, CREF(tstring) error);
+	rdo::runtime::LPRDOCalc generateCalc(CREF(rdo::runtime::RDOSrcInfo::Position) position, CREF(std::string) error);
 
 	template <class T>
-	rdo::runtime::LPRDOCalc generateCalc(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
+	rdo::runtime::LPRDOCalc generateCalc(CREF(LPRDOFUNArithm) pSecond, CREF(std::string) error);
 
 	template <class T>
-	LPRDOFUNArithm generateArithm(CREF(rdo::runtime::RDOSrcInfo::Position) position, CREF(tstring) error);
+	LPRDOFUNArithm generateArithm(CREF(rdo::runtime::RDOSrcInfo::Position) position, CREF(std::string) error);
 
 	template <class T>
-	LPRDOFUNArithm generateArithm(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
+	LPRDOFUNArithm generateArithm(CREF(LPRDOFUNArithm) pSecond, CREF(std::string) error);
 
 	template <class T>
-	LPRDOFUNLogic generateLogic(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
+	LPRDOFUNLogic generateLogic(CREF(LPRDOFUNArithm) pSecond, CREF(std::string) error);
 
-	void castType (CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
-	void castValue(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error);
+	void castType (CREF(LPRDOFUNArithm) pSecond, CREF(std::string) error);
+	void castValue(CREF(LPRDOFUNArithm) pSecond, CREF(std::string) error);
 };
 DECLARE_POINTER(LPRDOFUNArithm);
 
@@ -252,9 +252,9 @@ public:
 	CREF(LPArithmContainer)  getParamList () const { return m_pArithmContainer ; }
 	rdo::runtime::LPRDOCalc  getCalc      (ruint paramID, CREF(LPTypeInfo) pType);
 
-	LPExpression   createCallExpression(CREF(LPExpression) pFunction);
-	LPRDOFUNArithm createCall   (CREF(tstring) funName);
-	LPRDOFUNArithm createSeqCall(CREF(tstring) seqName);
+	LPExpression createCallExpression(CREF(LPExpression) pFunction);
+	LPRDOFUNArithm createCall(CREF(std::string) funName);
+	LPRDOFUNArithm createSeqCall(CREF(std::string) seqName);
 
 private:
 	RDOFUNParams(CREF(LPArithmContainer) pArithmContainer);
@@ -293,10 +293,10 @@ public:
 		LPTypeInfo m_pType;
 	};
 
-	CREF(tstring)                        name       () const { return m_pHeader->src_text(); }
-	CREF(LPRDOFUNSequenceHeader)         getHeader  () const { return m_pHeader;             }
-	 REF(rdo::runtime::LPRDOCalcSeqInit) getInitCalc()       { return m_pInitCalc;           }
-	 REF(rdo::runtime::LPRDOCalcSeqNext) getNextCalc()       { return m_pNextCalc;           }
+	CREF(std::string) name() const { return m_pHeader->src_text(); }
+	CREF(LPRDOFUNSequenceHeader) getHeader() const { return m_pHeader; }
+	REF(rdo::runtime::LPRDOCalcSeqInit) getInitCalc() { return m_pInitCalc; }
+	REF(rdo::runtime::LPRDOCalcSeqNext) getNextCalc() { return m_pNextCalc; }
 
 	virtual void           createCalcs   () = 0;
 	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) srcInfo) const = 0;
@@ -588,20 +588,22 @@ class RDOFUNFunction: public Function
 {
 DECLARE_FACTORY(RDOFUNFunction)
 public:
-	CREF(tstring)    name           () const;
-	void             add            (CREF(LPRDOFUNFunctionListElement) pListElement);
-	void             add            (CREF(LPRDOFUNCalculateIf)         pCalculateIf);
-	void             createListCalc ();
-	void             createTableCalc(CREF(YYLTYPE)                     elements_pos);
-	CREF(LPRDOParam) getReturn      () const;
-	void             end            ();
+	CREF(std::string) name() const;
 
-	rdo::runtime::LPRDOCalc  getFunctionCalc() const;
-	void                     setFunctionCalc(CREF(rdo::runtime::LPRDOCalc) pCalc);
+	void add(CREF(LPRDOFUNFunctionListElement) pListElement);
+	void add(CREF(LPRDOFUNCalculateIf) pCalculateIf);
+
+	void createListCalc();
+	void createTableCalc(CREF(YYLTYPE) elements_pos);
+	CREF(LPRDOParam) getReturn() const;
+	void end();
+
+	rdo::runtime::LPRDOCalc getFunctionCalc() const;
+	void setFunctionCalc(CREF(rdo::runtime::LPRDOCalc) pCalc);
 
 private:
 	RDOFUNFunction(CREF(RDOParserSrcInfo) srcInfo, CREF(LPRDOParam) pReturn);
-	RDOFUNFunction(CREF(tstring) name,             CREF(LPRDOParam) pReturn);
+	RDOFUNFunction(CREF(std::string) name, CREF(LPRDOParam) pReturn);
 	virtual ~RDOFUNFunction();
 
 	typedef  std::vector<LPRDOFUNFunctionListElement>  ElementList;

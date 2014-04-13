@@ -62,7 +62,7 @@ private: \
 
 #define DEFINE_OBJECT_CONTAINER_WITHNAME(TYPE, NAME) \
 public: \
-	const TYPE find##NAME  (CREF(tstring) name) const; \
+	const TYPE find##NAME  (CREF(std::string) name) const; \
 	rbool      remove##NAME(const TYPE item);
 
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
@@ -118,10 +118,10 @@ public:
 	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkDPTName         (CREF(RDOParserSrcInfo) src_info);
 
-	void  insertChanges        (CREF(tstring) name, CREF(tstring) value);
+	void insertChanges (CREF(std::string) name, CREF(std::string) value);
 
-	rbool isCurrentDPTSearch   ();
-	rbool isCurrentDPTPrior    ();
+	rbool isCurrentDPTSearch();
+	rbool isCurrentDPTPrior();
 
 	ruint getRTP_id     () const { return m_allRTPResType.size()  + 1; }
 	ruint getRSS_id     () const { return m_allRSSResource.size() + 0; }
@@ -129,8 +129,8 @@ public:
 	ruint getPMD_id     ()       { return m_resultGeneratorID.get();   }
 	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
 
-	tstring getModelStructure();
-	tstring getChanges       () const;
+	std::string getModelStructure();
+	std::string getChanges() const;
 
 	LPRDOSMR getSMR() const              { return m_pSMR;                }
 	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
@@ -201,10 +201,10 @@ public:
 	LPContext      context     () const;
 
 	static rdoModelObjects::RDOFileType getFileToParse();
-	static ruint                        lexer_loc_line();
-	static ruint                        lexer_loc_pos ();
-	static tstring                      lexer_text    ();
-	static LPRDOParser                  s_parser      ();
+	static ruint lexer_loc_line();
+	static ruint lexer_loc_pos ();
+	static std::string lexer_text();
+	static LPRDOParser s_parser();
 
 	template <class T>
 	void howIsIt()
@@ -253,9 +253,9 @@ private:
 
 	struct Changes
 	{
-		tstring m_name;
-		tstring m_value;
-		Changes(CREF(tstring) name, CREF(tstring) value)
+		std::string m_name;
+		std::string m_value;
+		Changes(CREF(std::string) name, CREF(std::string) value)
 			: m_name (name )
 			, m_value(value)
 		{}

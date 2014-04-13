@@ -49,7 +49,7 @@ inline void RDOPROCTransact::setBlock(CREF(LPIPROCBlock) block)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCResource
 // --------------------------------------------------------------------------------
-inline tstring RDOPROCResource::whoAreYou()
+inline std::string RDOPROCResource::whoAreYou()
 {
 	return "procRes";
 }

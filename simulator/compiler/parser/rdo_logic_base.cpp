@@ -30,7 +30,7 @@ RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)
 RDOLogicBase::~RDOLogicBase()
 {}
 
-CREF(tstring) RDOLogicBase::name() const
+CREF(std::string) RDOLogicBase::name() const
 {
 	return src_info().src_text();
 }

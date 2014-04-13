@@ -382,7 +382,7 @@ rtp_header
 			LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($2);
 			ASSERT(pTypeName);
 
-			tstring         name = pTypeName->value().getIdentificator();
+			const std::string name = pTypeName->value().getIdentificator();
 			LPRDORTPResType pRTP = PARSER->findRTPResType(name);
 			if (pRTP)
 			{
@@ -405,7 +405,7 @@ rtp_header
 			LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($2);
 			ASSERT(pTypeName);
 
-			tstring         name = pTypeName->value().getIdentificator();
+			const std::string name = pTypeName->value().getIdentificator();
 			LPRDORTPResType pRTP = PARSER->findRTPResType(name);
 			if (pRTP)
 			{
@@ -417,7 +417,7 @@ rtp_header
 			LPRDOValue pParentTypeName = PARSER->stack().pop<RDOValue>($3);
 			ASSERT(pParentTypeName);
 
-			tstring         prnt_name = pParentTypeName->value().getIdentificator();
+			const std::string prnt_name = pParentTypeName->value().getIdentificator();
 			LPRDORTPResType pParentRTP = PARSER->findRTPResType(prnt_name);
 			if (pParentRTP)
 			{
@@ -459,7 +459,7 @@ rtp_header
 	{
 		#PASS1
 		{
-			tstring str(LEXER->YYText());
+			const std::string str(LEXER->YYText());
 			PARSER->error().error(@2, rdo::format("Ошибка в описании имени типа ресурса: %s", str.c_str()));
 		}
 	}
@@ -526,7 +526,7 @@ rtp_param
 		{
 			if (PARSER->lexer_loc_line() == @1.m_last_line)
 			{
-				tstring str(LEXER->YYText());
+				const std::string str(LEXER->YYText());
 				PARSER->error().error(@2, rdo::format("Неверный тип параметра: %s", str.c_str()));
 			}
 			else
@@ -800,8 +800,8 @@ param_type_enum_list
 type_declaration_such_as
 	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF
 	{
-		tstring type  = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
-		tstring param = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
+		const std::string type = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string param = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
 		LPRDORTPResType pResType = PARSER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -820,7 +820,7 @@ type_declaration_such_as
 	}
 	| RDO_such_as RDO_IDENTIF
 	{
-		tstring constName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string constName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDOFUNConstant pConstant = PARSER->findFUNConstant(constName);
 		if (!pConstant)
 		{
@@ -834,7 +834,7 @@ type_declaration_such_as
 	}
 	| RDO_such_as RDO_IDENTIF '.' error
 	{
-		tstring type = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string type = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDORTPResType pResType = PARSER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -1566,8 +1566,8 @@ pat_rel_res
 					ASSERT(pTypeName);
 
 					YYLTYPE convertor_begin_pos = @3;
-					tstring str = boost::algorithm::to_lower_copy(tstring(LEXER->YYText()));
-					tstring::size_type first_nochange = str.find("nochange");
+					const std::string str = boost::algorithm::to_lower_copy(std::string(LEXER->YYText()));
+					const std::string::size_type first_nochange = str.find("nochange");
 					ruint i = 0;
 					for (;;)
 					{
@@ -1628,8 +1628,8 @@ pat_rel_res
 					ASSERT(pTypeName);
 
 					YYLTYPE convertor_begin_pos = @3;
-					tstring str = boost::algorithm::to_lower_copy(tstring(LEXER->YYText()));
-					tstring::size_type first_nochange = str.find("nochange");
+					const std::string str = boost::algorithm::to_lower_copy(std::string(LEXER->YYText()));
+					const std::string::size_type first_nochange = str.find("nochange");
 					ruint i = 0;
 					for (;;)
 					{
@@ -1757,7 +1757,7 @@ pat_rel_res
 					ASSERT(pRelName );
 					ASSERT(pTypeName);
 
-					tstring convert_begin = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
+					const std::string convert_begin = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
 					YYLTYPE convertor_begin_pos = @4;
 					convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
 					convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + convert_begin.length();
@@ -1800,7 +1800,7 @@ pat_rel_res
 					ASSERT(pRelName );
 					ASSERT(pTypeName);
 
-					tstring convert_begin = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
+					const std::string convert_begin = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
 					YYLTYPE convertor_begin_pos = @4;
 					convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
 					convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + convert_begin.length();
@@ -2205,7 +2205,7 @@ pat_body
 		#PASS2
 		{
 			LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-			tstring         name     = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			const std::string name = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 			pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
 			$$ = PARSER->stack().push(pPattern);
 		}
@@ -2215,7 +2215,7 @@ pat_body
 		#PASS2
 		{
 			LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-			tstring         name     = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			const std::string name = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 			pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
 			$$ = PARSER->stack().push(pPattern);
 		}
@@ -2224,7 +2224,7 @@ pat_body
 	{
 		#PASS2
 		{
-			tstring str(LEXER->YYText());
+			const std::string str(LEXER->YYText());
 			PARSER->error().error(@2, rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()));
 		}
 	}
@@ -2232,7 +2232,7 @@ pat_body
 	{
 		#PASS2
 		{
-			tstring str(LEXER->YYText());
+			const std::string str(LEXER->YYText());
 			PARSER->error().error(@2, rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()));
 		}
 	}
@@ -2428,7 +2428,7 @@ pat_convert
 			LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
 			ASSERT(pPattern);
 			LPRDORelevantResource rel_res  = pPattern->m_pCurrRelRes;
-			tstring str;
+			std::string str;
 			if (rel_res->m_pChoiceOrder->m_type != rdo::runtime::RDOSelectResourceCalc::order_empty)
 			{
 				str = "Сразу после ключевого слова " + rel_res->m_pChoiceOrder->asString();
@@ -2493,7 +2493,7 @@ pat_convert
 			ASSERT(pPattern);
 			if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
 			{
-				tstring type = "";
+				std::string type = "";
 				switch (pPattern->getType())
 				{
 				case RDOPATPattern::PT_Event: type = "событии";               break;
@@ -2540,7 +2540,7 @@ pat_convert
 			ASSERT(pPattern);
 			if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
 			{
-				tstring type = "";
+				std::string type = "";
 				switch (pPattern->getType())
 				{
 				case RDOPATPattern::PT_Event: type = "событии";               break;
@@ -2587,7 +2587,7 @@ pat_convert
 			ASSERT(pPattern);
 			if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
 			{
-				tstring type = "";
+				std::string type = "";
 				switch (pPattern->getType())
 				{
 				case RDOPATPattern::PT_Event: type = "событии";               break;
@@ -2655,7 +2655,7 @@ pat_convert
 			ASSERT(pPattern);
 			if (pPattern->getType() != RDOPATPattern::PT_Rule)
 			{
-				tstring type = "";
+				std::string type = "";
 				switch (pPattern->getType())
 				{
 				case RDOPATPattern::PT_Event    : type = "событии";               break;
@@ -2707,7 +2707,7 @@ pat_convert
 
 			if (pPattern->getType() != RDOPATPattern::PT_Event)
 			{
-				tstring type = "";
+				std::string type = "";
 				switch (pPattern->getType())
 				{
 				case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
@@ -2865,8 +2865,8 @@ stopping_statement
 	{
 		#PASS2
 		{
-			tstring         eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPRDOPATPattern pPattern  = PARSER->findPATPattern(eventName);
+			const std::string eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
 			if (!pPattern)
 			{
 				PARSER->error().error(@1, rdo::format("Попытка остановить неизвестное событие: %s", eventName.c_str()));
@@ -2904,7 +2904,7 @@ planning_statement
 	{
 		#PASS2
 		{
-			tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			const std::string eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
 
 			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
@@ -2989,7 +2989,7 @@ process_input_statement
 	{
 		#PASS2
 		{
-			tstring          processName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			const std::string processName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 			LPRDOPROCProcess pProcess    = PARSER->findPROCProcess(processName);
 			if (!pProcess)
 			{
@@ -2999,13 +2999,13 @@ process_input_statement
 			LPIPROCBlock pBlock = (*(pProcess->getBlockList().begin()))->getRuntimeBlock();
 			ASSERT(pBlock);
 
-			tstring relResName = PARSER->stack().pop<RDOValue>($5)->value().getIdentificator();
+			const std::string relResName = PARSER->stack().pop<RDOValue>($5)->value().getIdentificator();
 
 			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
 			ASSERT(pPattern);
 			/*из-за использования RDO_IDENTIF_RELRES findRelevantResource() всегда находит ресурс*/
 			LPRDORelevantResource pRelRes = pPattern->findRelevantResource(relResName);
-			tstring relResTypeName = pRelRes->getType()->name();
+			const std::string relResTypeName = pRelRes->getType()->name();
 
 			if (!pProcess->checkTransactType(relResTypeName))
 			{
@@ -3038,7 +3038,7 @@ watch_start
 	{
 		#PASS2
 		{
-			tstring          name         = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			const std::string name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 			LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
 			if (!pResultGroup)
 			{
@@ -3064,7 +3064,7 @@ watch_stop
 	{
 		#PASS2
 		{
-			tstring          name         = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			const std::string name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 			LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
 			if (!pResultGroup)
 			{
@@ -3863,7 +3863,7 @@ dpt_some_descr_keyb
 		{
 			LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTSome()->getLastActivity();
 			ASSERT(pActivityHotKey);
-			tstring key = PARSER->stack().pop<RDOValue>($3)->value().getString();
+			const std::string key = PARSER->stack().pop<RDOValue>($3)->value().getString();
 			pActivityHotKey->addHotKey(key, @3);
 		}
 	}
@@ -3873,7 +3873,7 @@ dpt_some_descr_keyb
 		{
 			LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTSome()->getLastActivity();
 			ASSERT(pActivityHotKey);
-			tstring key = PARSER->stack().pop<RDOValue>($1)->value().getString();
+			const std::string key = PARSER->stack().pop<RDOValue>($1)->value().getString();
 			pActivityHotKey->addHotKey(key, @1);
 		}
 	}
@@ -4191,7 +4191,7 @@ dpt_prior_descr_keyb
 		{
 			LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTPrior()->getLastActivity();
 			ASSERT(pActivityHotKey);
-			tstring key = PARSER->stack().pop<RDOValue>($3)->value().getString();
+			const std::string key = PARSER->stack().pop<RDOValue>($3)->value().getString();
 			pActivityHotKey->addHotKey(key, @3);
 		}
 	}
@@ -4201,7 +4201,7 @@ dpt_prior_descr_keyb
 		{
 			LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTPrior()->getLastActivity();
 			ASSERT(pActivityHotKey);
-			tstring key = PARSER->stack().pop<RDOValue>($1)->value().getString();
+			const std::string key = PARSER->stack().pop<RDOValue>($1)->value().getString();
 			pActivityHotKey->addHotKey(key, @1);
 		}
 	}
@@ -4537,7 +4537,7 @@ frm_sprite
 			ASSERT(pValue);
 			ASSERT(pArithmContainer);
 
-			tstring funName = pValue->value().getIdentificator();
+			const std::string funName = pValue->value().getIdentificator();
 
 			LPExpression pFunctionExpression = RDOFUNArithm::generateByIdentificator(pValue)->expression();
 			ASSERT(pFunctionExpression);
@@ -6449,7 +6449,7 @@ frm_active
 	{
 		#PASS2
 		{
-			tstring oprName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			const std::string oprName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 			LPRDODPTActivity pActivity = PARSER->findDPTActivity(oprName);
 			if (!pActivity)
 			{
@@ -8280,8 +8280,8 @@ process_begin
 			}
 
 			LPRDOValue transact = PARSER->stack().pop<RDOValue>($3);
-			tstring transactName   = transact->value().getIdentificator();
-			tstring rtp_param_name = "Время_создания";
+			const std::string transactName = transact->value().getIdentificator();
+			const std::string rtp_param_name = "Время_создания";
 
 			// Получили список всех типов ресурсов
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
@@ -8330,7 +8330,7 @@ process_begin
 
 			LPRDORTPResType transactType = PARSER->findRTPResType(transactName);
 
-			tstring procName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			const std::string procName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 			pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(@1, @3, procName), procName, transactType);
 			ASSERT(pProcess);
 		}
@@ -8625,7 +8625,7 @@ proc_planning_statement
 	{
 		#PASS2
 		{
-			tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			const std::string eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
 
 			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
@@ -8703,8 +8703,8 @@ proc_stopping_statement
 	{
 		#PASS2
 		{
-			tstring         eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPRDOPATPattern pPattern  = PARSER->findPATPattern(eventName);
+			const std::string eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
 			if (!pPattern)
 			{
 				PARSER->error().error(@1, rdo::format("Попытка остановить неизвестное событие: %s", eventName.c_str()));
@@ -8737,15 +8737,15 @@ queue_param
 		#PASS2
 		{
 			//! Имя ресурса
-			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info     = @1;
+			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			CREF(RDOParserSrcInfo) info = @1;
 			// Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			//! Получили список всех типов ресурсов
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
-			tstring rtp_name = "QDEPART";
-			tstring q_name   = "Очередь_" + res_name;
+			const std::string rtp_name = "QDEPART";
+			const std::string q_name = "Очередь_" + res_name;
 			//! Если ресурс существует, берем его тип и проверяем
 			if (rssList[res_name].exist())
 			{
@@ -8753,7 +8753,7 @@ queue_param
 				rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, info);
 				LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 				ASSERT(pResult);
-				pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("длина_очереди")));
+				pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(std::string("длина_очереди")));
 			}
 			else
 			{
@@ -8766,7 +8766,7 @@ queue_param
 						rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
 						LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 						ASSERT(pResult);
-						pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("длина_очереди")));
+						pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(std::string("длина_очереди")));
 					}
 				}
 				else
@@ -8777,7 +8777,7 @@ queue_param
 						rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
 						LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 						ASSERT(pResult);
-						pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("длина_очереди")));
+						pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(std::string("длина_очереди")));
 					}
 				}
 			}
@@ -8803,14 +8803,14 @@ depart_param
 		#PASS2
 		{
 			//! Имя ресурса
-			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info     = @1;
+			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			CREF(RDOParserSrcInfo) info = @1;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			//! Получили список всех типов ресурсов
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
-			tstring rtp_name = "QDEPART";
+			const std::string rtp_name = "QDEPART";
 			//! Если ресурс существует, берем его тип и проверяем
 			if (rssList[res_name].exist())
 			{
@@ -8897,8 +8897,8 @@ seize_param
 		#PASS2
 		{
 			//! Имя ресурса
-			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info     = @1;
+			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			CREF(RDOParserSrcInfo) info = @1;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
@@ -8920,7 +8920,7 @@ seize_param
 			{
 				//! Ресурс не найден, сформировать имя типа по имени ресурса
 				//! Сформировать имя типа по имени ресурса
-				tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
+				const std::string rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
 				//! Получили список всех типов ресурсов
 				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 				//! Нашли тип ресурса
@@ -8949,8 +8949,8 @@ seize_param
 		#PASS2
 		{
 			//! Имя ресурса
-			tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info     = @3;
+			const std::string res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
+			CREF(RDOParserSrcInfo) info = @3;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
@@ -8971,7 +8971,7 @@ seize_param
 			{
 				//! Ресурс не найден, сформировать имя типа по имени ресурса
 				//! Сформировать имя типа по имени ресурса
-				tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
+				const std::string rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
 				//! Получили список всех типов ресурсов
 				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 				//! Нашли тип ресурса
@@ -9010,8 +9010,8 @@ release_param
 		#PASS2
 		{
 			//! Имя ресурса
-			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info     = @1;
+			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			CREF(RDOParserSrcInfo) info = @1;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
@@ -9031,7 +9031,7 @@ release_param
 			{
 				//! Ресурс не найден, сформировать имя типа по имени ресурса
 				//! Сформировать имя типа по имени ресурса
-				tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
+				const std::string rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
 				//! Получили список всех типов ресурсов
 				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 				//! Нашли тип ресурса
@@ -9060,8 +9060,8 @@ release_param
 		#PASS2
 		{
 			//! Имя ресурса
-			tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info     = @3;
+			const std::string res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
+			CREF(RDOParserSrcInfo) info = @3;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
@@ -9082,7 +9082,7 @@ release_param
 			{
 				//! Ресурс не найден, сформировать имя типа по имени ресурса
 				//! Сформировать имя типа по имени ресурса
-				tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
+				const std::string rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
 				//! Получили список всех типов ресурсов
 				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 				//! Нашли тип ресурса
@@ -9120,8 +9120,8 @@ assign_param
 	{
 		#PASS2
 		{
-			tstring res   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			tstring param = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
+			const std::string res = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			const std::string param = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
 			rdo::compiler::mbuilder::RDOResType rtp;
 
 			// Получили список всех ресурсов
@@ -9175,7 +9175,7 @@ smr_main
 	{
 		#PASS2
 		{
-			tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			const std::string eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
 
 			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
@@ -9500,8 +9500,8 @@ smr_descr
 	{
 		#PASS1
 		{
-			tstring alias = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
-			tstring model = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
+			const std::string alias = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			const std::string model = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
 			LPRDOSMR pSMR = PARSER->getSMR();
 			ASSERT(pSMR);
 			pSMR->setExternalModelName(alias, model);
@@ -10895,7 +10895,7 @@ fun_arithm_func_call
 	{
 		#PASS2
 		{
-			tstring funName                    = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			const std::string funName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 			LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($3);
 			ASSERT(pArithmContainer);
 

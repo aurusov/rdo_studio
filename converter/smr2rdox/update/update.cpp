@@ -53,7 +53,7 @@ IDocument::Type DocUpdate::getCurrentType() const
 // --------------------------------------------------------------------------------
 // -------------------- UpdateInsert
 // --------------------------------------------------------------------------------
-UpdateInsert::UpdateInsert(CREF(Position) pos, CREF(tstring) value, IDocument::Type file)
+UpdateInsert::UpdateInsert(CREF(Position) pos, CREF(std::string) value, IDocument::Type file)
 	: DocUpdate(file )
 	, m_pos    (pos  )
 	, m_value  (value)
@@ -61,7 +61,7 @@ UpdateInsert::UpdateInsert(CREF(Position) pos, CREF(tstring) value, IDocument::T
 
 void UpdateInsert::dump(REF(LPIDocument) pDocument) const
 {
-	tstring log = rdo::format("update insert <%d>, %d, '%s', dump: '%s'\n"
+	const std::string log = rdo::format("update insert <%d>, %d, '%s', dump: '%s'\n"
 		, m_file
 		, m_pos.get()
 		, m_value.c_str()
@@ -113,7 +113,7 @@ UpdateDelete::UpdateDelete(CREF(Position) posFrom, CREF(Position) posTo)
 
 void UpdateDelete::dump(REF(LPIDocument) pDocument) const
 {
-	tstring log = rdo::format("update delete <%d>, [%d - %d), dump: '%s'\n"
+	const std::string log = rdo::format("update delete <%d>, [%d - %d), dump: '%s'\n"
 		, m_file
 		, m_posFrom.get()
 		, m_posTo.get()
@@ -158,7 +158,7 @@ void UpdateDelete::remove(IDocument::Type type, CREF(Position) from, CREF(Positi
 // --------------------------------------------------------------------------------
 // -------------------- UpdateReplace
 // --------------------------------------------------------------------------------
-UpdateReplace::UpdateReplace(CREF(Position) posFrom, CREF(Position) posTo, CREF(tstring) value, IDocument::Type file)
+UpdateReplace::UpdateReplace(CREF(Position) posFrom, CREF(Position) posTo, CREF(std::string) value, IDocument::Type file)
 	: DocUpdate(file)
 {
 	pDelete = rdo::Factory<UpdateDelete>::create(posFrom, posTo);
@@ -212,7 +212,7 @@ UpdateMove::UpdateMove(CREF(Position) posFromBegin, CREF(Position) posFromEnd, C
 
 void UpdateMove::dump(REF(LPIDocument) pDocument) const
 {
-	tstring log = rdo::format("update move <%d->%d>, [%d - %d) '%s', %d\n"
+	const std::string log = rdo::format("update move <%d->%d>, [%d - %d) '%s', %d\n"
 		, m_fileFrom
 		, m_file
 		, m_posFromBegin.get()
@@ -225,7 +225,7 @@ void UpdateMove::dump(REF(LPIDocument) pDocument) const
 
 void UpdateMove::apply(REF(LPIDocument) pDocument) const
 {
-	tstring cut = pDocument->get(m_fileFrom, m_posFromBegin.get(), m_posFromEnd.get());
+	const std::string cut = pDocument->get(m_fileFrom, m_posFromBegin.get(), m_posFromEnd.get());
 	pDocument->remove(m_fileFrom, m_posFromBegin.get(), m_posFromEnd.get());
 
 	Position pos = m_posTo;
@@ -335,7 +335,7 @@ UpdateSwap::UpdateSwap(CREF(Position) pos1Begin, CREF(Position) pos1End, CREF(Po
 
 void UpdateSwap::dump(REF(LPIDocument) pDocument) const
 {
-	tstring log = rdo::format("update swap <%d>: [%d, %d) <-> [%d - %d), '%s' <-> '%s'\n"
+	const std::string log = rdo::format("update swap <%d>: [%d, %d) <-> [%d - %d), '%s' <-> '%s'\n"
 		, m_file
 		, m_pos1Begin.get()
 		, m_pos1End.get()
@@ -350,8 +350,8 @@ void UpdateSwap::dump(REF(LPIDocument) pDocument) const
 void UpdateSwap::apply(REF(LPIDocument) pDocument) const
 {
 	//! Запомним значения
-	tstring cut1 = pDocument->get(m_file, m_pos1Begin.get(), m_pos1End.get());
-	tstring cut2 = pDocument->get(m_file, m_pos2Begin.get(), m_pos2End.get());
+	const std::string cut1 = pDocument->get(m_file, m_pos1Begin.get(), m_pos1End.get());
+	const std::string cut2 = pDocument->get(m_file, m_pos2Begin.get(), m_pos2End.get());
 
 	//! Удалим первый интервал
 	pDocument->remove(m_file, m_pos1Begin.get(), m_pos1End.get());

@@ -30,7 +30,7 @@ inline ruint RDOPROCQueue::getDefaultValue()
 	return 0;
 }
 
-inline tstring RDOPROCQueue::getQueueParamName()
+inline std::string RDOPROCQueue::getQueueParamName()
 {
 	return "длина_очереди";
 }
@@ -47,7 +47,7 @@ inline ruint RDOPROCDepart::getDefaultValue()
 	return 0;
 }
 
-inline tstring RDOPROCDepart::getDepartParamName()
+inline std::string RDOPROCDepart::getDepartParamName()
 {
 	return "длина_очереди";
 }

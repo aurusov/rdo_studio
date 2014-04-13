@@ -202,7 +202,7 @@ void Log::appendLine(PTR(LogEditLineInfo) pLine)
 	{
 		setReadOnly(false);
 	}
-	tstring str = boost::algorithm::trim_right_copy(pLine->getMessage());
+	std::string str = boost::algorithm::trim_right_copy(pLine->getMessage());
 	str += "\r\n";
 	setCurrentPos(getLength());
 	appendText(QString::fromStdString(str));

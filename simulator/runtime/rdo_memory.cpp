@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOMemory::RDOMemory()
 {}
 
-void RDOMemory::createVariable(CREF(tstring) name, CREF(RDOValue) variable)
+void RDOMemory::createVariable(CREF(std::string) name, CREF(RDOValue) variable)
 {
 	std::pair<LocalMemory::iterator, rbool> result =
 		m_localMemory.insert(LocalMemory::value_type(name, variable));
@@ -30,21 +30,21 @@ void RDOMemory::createVariable(CREF(tstring) name, CREF(RDOValue) variable)
 	UNUSED(result);
 }
 
-RDOValue RDOMemory::getVariable(CREF(tstring) name) const
+RDOValue RDOMemory::getVariable(CREF(std::string) name) const
 {
 	LocalMemory::const_iterator it = m_localMemory.find(name);
 	ASSERT(it != m_localMemory.end());
 	return it->second;
 }
 
-void RDOMemory::setVariable(CREF(tstring) name, CREF(RDOValue) variable)
+void RDOMemory::setVariable(CREF(std::string) name, CREF(RDOValue) variable)
 {
 	LocalMemory::iterator it = m_localMemory.find(name);
 	ASSERT(it != m_localMemory.end());
 	it->second = variable;
 }
 
-rbool RDOMemory::findVariable(CREF(tstring) name) const
+rbool RDOMemory::findVariable(CREF(std::string) name) const
 {
 	return m_localMemory.find(name) != m_localMemory.end();
 }
@@ -67,14 +67,14 @@ void RDOMemoryStack::pop()
 	m_pMemoryStack.pop_back();
 }
 
-void RDOMemoryStack::create(CREF(tstring) name, CREF(RDOValue) variable)
+void RDOMemoryStack::create(CREF(std::string) name, CREF(RDOValue) variable)
 {
 	ASSERT(!m_pMemoryStack.empty());
 
 	m_pMemoryStack.back()->createVariable(name, variable);
 }
 
-RDOValue RDOMemoryStack::get(CREF(tstring) name) const
+RDOValue RDOMemoryStack::get(CREF(std::string) name) const
 {
 	ASSERT(!m_pMemoryStack.empty());
 
@@ -89,7 +89,7 @@ RDOValue RDOMemoryStack::get(CREF(tstring) name) const
 	return (*stack_it)->getVariable(name);
 }
 
-void RDOMemoryStack::set(CREF(tstring) name, CREF(RDOValue) Variable)
+void RDOMemoryStack::set(CREF(std::string) name, CREF(RDOValue) Variable)
 {
 	ASSERT(!m_pMemoryStack.empty());
 

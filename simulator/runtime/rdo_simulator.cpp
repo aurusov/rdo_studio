@@ -136,7 +136,7 @@ void RDOSimulator::preProcess()
 	onResetResult();
 }
 
-tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter)
+std::string writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter)
 {
 	std::stringstream stream;
 	IBaseOperationContainer::CIterator it = pLogic->begin();
@@ -183,7 +183,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 	return stream.str();
 }
 
-tstring RDOSimulator::writeActivitiesStructure(REF(ruint) counter)
+std::string RDOSimulator::writeActivitiesStructure(REF(ruint) counter)
 {
 	return writeActivitiesStructureRecurse(m_pMetaLogic, counter);
 }

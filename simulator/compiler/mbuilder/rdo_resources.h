@@ -61,24 +61,24 @@ public:
 			m_list.push_back(*it);
 	}
 
-	 Iterator     begin()       { return m_list.begin(); }
-	 Iterator     end  ()       { return m_list.end();   }
-	CIterator     begin() const { return m_list.begin(); }
-	CIterator     end  () const { return m_list.end();   }
-	ruint         size () const { return m_list.size();  }
-	CIterator     found(CREF(tstring) name) const
+	 Iterator begin() { return m_list.begin(); }
+	 Iterator end() { return m_list.end(); }
+	CIterator begin() const { return m_list.begin(); }
+	CIterator end() const { return m_list.end(); }
+	ruint size () const { return m_list.size(); }
+	CIterator found(CREF(std::string) name) const
 	{
 		return std::find_if(begin(), end(), parser::compareNameRef<T>(name));
 	}
-	Iterator      found(CREF(tstring) name)
+	Iterator found(CREF(std::string) name)
 	{
 		return std::find_if(begin(), end(), parser::compareNameRef<T>(name));
 	}
-	rbool exist(CREF(tstring) name) const
+	rbool exist(CREF(std::string) name) const
 	{
 		return found( name ) != end();
 	}
-	CREF(T) operator[] (CREF(tstring) name) const
+	CREF(T) operator[] (CREF(std::string) name) const
 	{
 		typename List::const_iterator it = found(name);
 		if (it != end())
@@ -107,12 +107,12 @@ friend class Class##List;                                  \
 public:                                                    \
 	Class(): m_name(""), m_exist( false ) {}               \
                                                            \
-	CREF(tstring)  name () const       { return m_name;  } \
-	rbool          exist() const       { return m_exist; } \
+	CREF(std::string) name () const { return m_name;  }    \
+	rbool exist() const { return m_exist; }                \
                                                            \
 private:                                                   \
-	tstring  m_name;                                       \
-	rbool    m_exist;
+	std::string m_name;                                    \
+	rbool m_exist;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOResType
@@ -127,20 +127,20 @@ public:
 	// Проинициализировать по существующему типу
 	RDOResType(CREF(parser::LPRDORTPResType) rtp);
 	// Создать новый тип
-	RDOResType(CREF(tstring) name, Type type = rt_permanent);
+	RDOResType(CREF(std::string) name, Type type = rt_permanent);
 
 	MBUILDER_OBJECT(Param)
 	friend class RDOResType;
 	public:
 		explicit Param(CREF(parser::LPRDORTPParam) param);
-		explicit Param(CREF(tstring) name, CREF(parser::LPTypeInfo) pType,  CREF(parser::LPRDOValue) pDefault);
-		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<parser::RDOType__int>)  pType, CREF(parser::LPRDOValue) pDefault = parser::LPRDOValue(NULL));
-		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<parser::RDOType__real>) pType, CREF(parser::LPRDOValue) pDefault = parser::LPRDOValue(NULL));
-		explicit Param(CREF(tstring) name, CREF(rdo::runtime::RDOEnumType::Enums)          enums, CREF(parser::LPRDOValue) pDefault = parser::LPRDOValue(NULL));
+		explicit Param(CREF(std::string) name, CREF(parser::LPTypeInfo) pType,  CREF(parser::LPRDOValue) pDefault);
+		explicit Param(CREF(std::string) name, CREF(rdo::intrusive_ptr<parser::RDOType__int>)  pType, CREF(parser::LPRDOValue) pDefault = parser::LPRDOValue(NULL));
+		explicit Param(CREF(std::string) name, CREF(rdo::intrusive_ptr<parser::RDOType__real>) pType, CREF(parser::LPRDOValue) pDefault = parser::LPRDOValue(NULL));
+		explicit Param(CREF(std::string) name, CREF(rdo::runtime::RDOEnumType::Enums) enums, CREF(parser::LPRDOValue) pDefault = parser::LPRDOValue(NULL));
 
-		CREF(parser::LPTypeInfo)             type   () const { return m_pType;                   }
-		const rdo::runtime::RDOType::TypeID  typeID () const { return m_pType->type()->typeID(); }
-		tstring                              typeStr() const { return m_pType->type()->name();   }
+		CREF(parser::LPTypeInfo) type() const { return m_pType; }
+		const rdo::runtime::RDOType::TypeID typeID () const { return m_pType->type()->typeID(); }
+		std::string typeStr() const { return m_pType->type()->name(); }
 
 		rsint                    id() const          { return m_id;  }
 
@@ -214,19 +214,19 @@ public:
 	// Проинициализировать по существующему ресурсу
 	RDOResource(CREF(parser::LPRDORSSResource) rss);
 	// Создать новый ресурс
-	RDOResource(CREF(RDOResType) rtp, CREF(tstring) name);
+	RDOResource(CREF(RDOResType) rtp, CREF(std::string) name);
 
 	CREF(RDOResType)  getType() const { return m_rtp; }
 	rsint             getID  () const { return m_id;  }
 
-	typedef std::map<tstring, parser::LPRDOValue> Params;
+	typedef std::map<std::string, parser::LPRDOValue> Params;
 
 	Params::const_iterator begin() const { return m_params.begin(); }
 	Params::const_iterator end  () const { return m_params.end();   }
 	ruint                  size () const { return m_params.size();  }
 
-	REF(Params::mapped_type)   operator[] (CREF(tstring) param);
-	Params::const_iterator     operator[] (CREF(tstring) param) const;
+	REF(Params::mapped_type) operator[] (CREF(std::string) param);
+	Params::const_iterator operator[] (CREF(std::string) param) const;
 
 	parser::LPRDORSSResource getParserResource(CREF(parser::LPRDOParser) pParser) const;
 

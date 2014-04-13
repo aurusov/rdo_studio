@@ -211,7 +211,7 @@ private:
 	public:
 		ItemType                                type;
 		int&                                    font_size;
-		tstring&                                font_name;
+		std::string&                            font_name;
 		bool&                                   wordwrap;
 		bool&                                   horzscrollbar;
 		bool&                                   warning;
@@ -221,7 +221,7 @@ private:
 
 		PropertyList properties;
 
-		StyleItem(ItemType type, int& font_size, tstring& font_name, bool& wordwrap = null_wordwrap, bool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::EditStyle::Bookmark& bookmarkstyle = null_bookmarkstyle, rdo::gui::editor::ModelStyle::Fold& foldstyle = null_foldstyle, bool& commentfold = null_commentfold, bool& warning = null_warning)
+		StyleItem(ItemType type, int& font_size, std::string& font_name, bool& wordwrap = null_wordwrap, bool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::EditStyle::Bookmark& bookmarkstyle = null_bookmarkstyle, rdo::gui::editor::ModelStyle::Fold& foldstyle = null_foldstyle, bool& commentfold = null_commentfold, bool& warning = null_warning)
 			: type(type)
 			, font_size(font_size)
 			, font_name(font_name)
@@ -239,7 +239,7 @@ private:
 	StyleItemList style_list;
 
 	int         all_font_size;
-	tstring     all_font_name;
+	std::string all_font_name;
 	QColor      all_fg_color;
 	QColor      all_bg_color;
 

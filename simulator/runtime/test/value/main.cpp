@@ -143,7 +143,7 @@ void compareChr(CREF(T1) param1, CREF(T2) param2)
 
 BOOST_AUTO_TEST_CASE(RDOValue_String)
 {
-	const tstring str1 = "qqq";
+	const std::string str1 = "qqq";
 	RDOValue value1(str1);
 	BOOST_CHECK(value1.getString() == str1);
 	BOOST_CHECK(value1.getAsString() == str1);
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_String)
 	BOOST_CHECK(value2.getAsString() == str1);
 	BOOST_CHECK(value2 == value1);
 
-	const tstring str2 = "aaa";
+	const std::string str2 = "aaa";
 	value2 += str2;
 	BOOST_CHECK(value2.getString() == str1 + str2);
 	BOOST_CHECK(value2.getAsString() == str1 + str2);
@@ -358,8 +358,8 @@ BOOST_AUTO_TEST_CASE(RDOValue_Bool)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char)
 {
-	tchar ch1 = 'a';
-	tchar ch2 = 'b';
+	const char ch1 = 'a';
+	const char ch2 = 'b';
 	RDOValue value1 = ch1;
 	RDOValue value2 = ch2;
 	BOOST_CHECK(value1 == ch1   );
@@ -443,50 +443,50 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_ruint)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Rsint_String)
 {
-	compareStr<rsint, tstring>(10, "abc");
+	compareStr<rsint, std::string>(10, "abc");
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_String)
 {
-	compareStr<ruint, tstring>(10, "abc");
+	compareStr<ruint, std::string>(10, "abc");
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Double_String)
 {
-	compareStr<double, tstring>(10, "abc");
+	compareStr<double, std::string>(10, "abc");
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Rsint)
 {
-	compareChr<rsint, tchar>(10, 'a');
+	compareChr<rsint, char>(10, 'a');
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Ruint)
 {
-	compareChr<ruint, tchar>(10, 'a');
+	compareChr<ruint, char>(10, 'a');
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Double)
 {
-	compareChr<double, tchar>(10, 'a');
+	compareChr<double, char>(10, 'a');
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_String_Char)
 {
-	compareStr<tchar, tstring>('a', "abc");
+	compareStr<char, std::string>('a', "abc");
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
 {
-	tstring str = "abc";
+	const std::string str = "abc";
 	RDOValue value1(str, g_identificator);
 	BOOST_CHECK(value1.typeID() == RDOType::t_identificator);
-	tstring iden = value1.getIdentificator();
+	std::string iden = value1.getIdentificator();
 	BOOST_CHECK(iden == str);
 	iden = value1.getAsString();
 	BOOST_CHECK(iden == str);
 
-	tstring str2 ="dba";
+	const std::string str2 ="dba";
 	RDOValue value2(str2, g_identificator);
 	BOOST_CHECK(value1 != value2);
 
@@ -504,12 +504,12 @@ void testUndef(CREF(T1) param1)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Undefined)
 {
-	testUndef<rsint>  (10);
-	testUndef<ruint>  (10);
-	testUndef<double> (10.5);
-	testUndef<tstring>("abc");
-	testUndef<tchar>  ('a');
-	testUndef<rbool>  (true);
+	testUndef<rsint>(10);
+	testUndef<ruint>(10);
+	testUndef<double>(10.5);
+	testUndef<std::string>("abc");
+	testUndef<char>('a');
+	testUndef<rbool>(true);
 
 	rsint val1 = 10;
 	RDOValue value1(val1);

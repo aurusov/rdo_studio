@@ -75,7 +75,7 @@ public:
 	/* 3.108*/  LPFuzzySet operator/  (CREF(LPFuzzySet) pFuzzyValue) const;
 
 
-	tstring getAsString() const;
+	std::string getAsString() const;
 private:
 	FuzzySet();
 	FuzzySet(CREF(LPDefineArea) pDefineArea);
@@ -125,7 +125,7 @@ class RDOFuzzyTerm: public rdo::counter_reference
 {
 DECLARE_FACTORY (RDOFuzzyTerm)
 public:
-	typedef tstring  termName;
+	typedef std::string termName;
 	typedef std::pair<termName,LPFuzzySet> Term;
 
 	CREF(LPFuzzySet)  getFuzzySetDefinition() const;
@@ -146,16 +146,16 @@ class RDOLingvoVariable: public rdo::counter_reference
 DECLARE_FACTORY(RDOLingvoVariable)
 public:
 	typedef std::map<RDOFuzzyTerm::Term::first_type, RDOFuzzyTerm::Term::second_type> TermSet;
-	typedef tstring nameOfVariable;
+	typedef std::string nameOfVariable;
 
-	TermSet::const_iterator            begin () const;
-	TermSet::const_iterator            end   () const;
+	TermSet::const_iterator begin() const;
+	TermSet::const_iterator end() const;
 
-	REF(LPFuzzySet)                    operator[] (tstring name);
+	REF(LPFuzzySet) operator[] (std::string name);
 	
-	void                               setName      (nameOfVariable);
-	nameOfVariable                     getName      () {return m_name;};
-	void                               append       (tstring name,CREF(LPFuzzySet) fuzzySet);
+	void setName(nameOfVariable);
+	nameOfVariable getName() {return m_name;};
+	void append(std::string name,CREF(LPFuzzySet) fuzzySet);
 
 private:
 	TermSet        m_set;

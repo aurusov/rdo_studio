@@ -150,24 +150,24 @@ public:
 	virtual ~RDOSrcInfo();
 
 	void setSrcInfo(CREF(RDOSrcInfo) info);
-	void setSrcInfo(CREF(RDOSrcInfo) begin, CREF(tstring) delim, CREF(RDOSrcInfo) end);
+	void setSrcInfo(CREF(RDOSrcInfo) begin, CREF(std::string) delim, CREF(RDOSrcInfo) end);
 
 	void setSrcPos(CREF(Position) position);
 	void setSrcPos(CREF(Position) position_begin, CREF(Position) position_end);
 	void setSrcPos(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos);
 
-	virtual void setSrcText(CREF(tstring) value);
+	virtual void setSrcText(CREF(std::string) value);
 	void setSrcFileType(rdoModelObjects::RDOFileType value);
 
-	CREF(RDOSrcInfo)             src_info    () const;
-	CREF(Position)               src_pos     () const;
-	CREF(tstring)                src_text    () const;
+	CREF(RDOSrcInfo) src_info() const;
+	CREF(Position) src_pos() const;
+	CREF(std::string) src_text() const;
 	rdoModelObjects::RDOFileType src_filetype() const;
-	rbool                        src_empty   () const;
+	rbool src_empty() const;
 
 private:
-	Position                     m_position;
-	tstring                      m_text_data;
+	Position m_position;
+	std::string m_text_data;
 	rdoModelObjects::RDOFileType m_file_type;
 };
 

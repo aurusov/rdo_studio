@@ -28,7 +28,7 @@ public:
 	rbool operator== (CREF(Time) time);
 	operator Value() const;
 
-	tstring asString() const;
+	std::string asString() const;
 
 	CREF(Value) value() const;
 

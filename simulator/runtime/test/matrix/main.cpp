@@ -45,7 +45,7 @@ Matrix createMatrix(CREF(Container) data)
 	return std::make_pair(pValue, rdo::runtime::RDOValue(pType, pValue));
 }
 
-tstring getString(CREF(rdo::runtime::LPRDOMatrixValue) pMatrix, CREF(rdo::runtime::LPRDOMatrixIterator) pIt)
+std::string getString(CREF(rdo::runtime::LPRDOMatrixValue) pMatrix, CREF(rdo::runtime::LPRDOMatrixIterator) pIt)
 {
 	if (!pIt->equal(pMatrix->end()))
 	{
@@ -54,7 +54,7 @@ tstring getString(CREF(rdo::runtime::LPRDOMatrixValue) pMatrix, CREF(rdo::runtim
 	return "";
 }
 
-tstring getString(CREF(rdo::runtime::RDOValue) it, CREF(rdo::runtime::RDOValue) end)
+std::string getString(CREF(rdo::runtime::RDOValue) it, CREF(rdo::runtime::RDOValue) end)
 {
 	if (it != end)
 	{
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPrePlus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt = matrix.first->begin();
 	while (!pIt->equal(matrix.first->end()))
 	{
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPostPlus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt = matrix.first->begin();
 	while (!pIt->equal(matrix.first->end()))
 	{
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPreMinus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt = matrix.first->end();
 	do
 	{
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPostMinus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt = matrix.first->end();
 	do
 	{
@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePrePlus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt  = matrix.first->begin();
 	rdo::runtime::LPRDOMatrixIterator pEnd = matrix.first->end  ();
 	rdo::runtime::RDOValue it (pIt,  pIt );
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePostPlus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt  = matrix.first->begin();
 	rdo::runtime::LPRDOMatrixIterator pEnd = matrix.first->end  ();
 	rdo::runtime::RDOValue it (pIt,  pIt );
@@ -183,7 +183,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePreMinus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt    = matrix.first->end  ();
 	rdo::runtime::LPRDOMatrixIterator pBegin = matrix.first->begin();
 	rdo::runtime::LPRDOMatrixIterator pEnd   = matrix.first->end  ();
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePostMinus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt    = matrix.first->end  ();
 	rdo::runtime::LPRDOMatrixIterator pBegin = matrix.first->begin();
 	rdo::runtime::LPRDOMatrixIterator pEnd   = matrix.first->end  ();

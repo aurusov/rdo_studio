@@ -14,22 +14,11 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef COMPILER_VISUAL_STUDIO
-#   include <tchar.h>
-#endif // COMPILER_VISUAL_STUDIO
 #ifdef COMPILER_GCC
 #   include <stdint.h>
 #endif // COMPILER_GCC
-
-#include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
-
-//! Тип символа
-typedef  char                        tchar;
-
-//! Тип строки
-typedef  std::basic_string<tchar>    tstring;
 
 //! Булевский тип
 typedef  bool                        rbool;

@@ -26,7 +26,7 @@ OPEN_RDO_PARSER_NAMESPACE
 
 const std::string RDOParam::CONTEXT_PARAM_PARAM_ID = "param_id";
 
-RDOParam::RDOParam(CREF(tstring) name, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault)
+RDOParam::RDOParam(CREF(std::string) name, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault)
 	: RDOParserSrcInfo(name    )
 	, m_pType         (pType   )
 	, m_pDefault      (pDefault)

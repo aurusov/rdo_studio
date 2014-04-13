@@ -33,7 +33,7 @@ struct IRDOFRMItemGetBitmap: public rdo::RefCounter<IRDOFRMItemGetBitmap>
 {
 DECLARE_FACTORY(IRDOFRMItemGetBitmap)
 public:
-	typedef std::list<tstring> ImageNameList;
+	typedef std::list<std::string> ImageNameList;
 
 	virtual void getBitmaps(REF(ImageNameList) list) const = 0;
 
@@ -170,9 +170,9 @@ public:
 	};
 
 public:
-	CREF(tstring) name         () const;
-	void          insertItem   (CREF(LPRDOCalc) pItem      );
-	void          setSpriteCalc(CREF(LPRDOCalc) pSpriteCalc);
+	CREF(std::string) name() const;
+	void insertItem(CREF(LPRDOCalc) pItem);
+	void setSpriteCalc(CREF(LPRDOCalc) pSpriteCalc);
 
 	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg);
 	void setColorLastFG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastFg);
@@ -297,7 +297,7 @@ public:
 	typedef rdo::animation::TextElement::TextAlign Align;
 
 	void setText(Align align, CREF(LPRDOCalc) pValue);
-	void setText(Align align, CREF(tstring)   text  );
+	void setText(Align align, CREF(std::string) text);
 
 private:
 	RDOFRMText(
@@ -311,10 +311,10 @@ private:
 	);
 	virtual ~RDOFRMText();
 
-	Align        m_align;
-	LPRDOCalc    m_pValue;
-	tstring      m_text;
-	rbool        m_isTextString;
+	Align m_align;
+	LPRDOCalc m_pValue;
+	std::string m_text;
+	rbool m_isTextString;
 
 	DECLARE_ICalc;
 };
@@ -329,10 +329,10 @@ class RDOFRMBitmapBase
 	, public IRDOFRMItemGetBitmap
 {
 protected:
-	tstring m_pictFilename;
-	tstring m_maskFilename;
+	std::string m_pictFilename;
+	std::string m_maskFilename;
 
-	RDOFRMBitmapBase(CREF(LPRDOFRMSprite) pSprite, CREF(tstring) pictFilename, CREF(tstring) maskFilename = "");
+	RDOFRMBitmapBase(CREF(LPRDOFRMSprite) pSprite, CREF(std::string) pictFilename, CREF(std::string) maskFilename = "");
 	virtual ~RDOFRMBitmapBase();
 
 private:
@@ -348,11 +348,11 @@ class RDOFRMBitmap: public RDOFRMBitmapBase
 DECLARE_FACTORY(RDOFRMBitmap)
 private:
 	RDOFRMBitmap(
-		CREF(LPRDOFRMSprite)                 pSprite,
+		CREF(LPRDOFRMSprite) pSprite,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
-		CREF(tstring)                        pictFilename,
-		CREF(tstring)                        maskFilename = ""
+		CREF(std::string) pictFilename,
+		CREF(std::string) maskFilename = ""
 	);
 	virtual ~RDOFRMBitmap();
 
@@ -375,13 +375,13 @@ class RDOFRMBitmapStretch
 DECLARE_FACTORY(RDOFRMBitmapStretch)
 private:
 	RDOFRMBitmapStretch(
-		CREF(LPRDOFRMSprite)                 pSprite,
+		CREF(LPRDOFRMSprite) pSprite,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
-		CREF(tstring)                        pictFilename,
-		CREF(tstring)                        maskFilename = ""
+		CREF(std::string) pictFilename,
+		CREF(std::string) maskFilename = ""
 	);
 	virtual ~RDOFRMBitmapStretch();
 
@@ -568,16 +568,16 @@ class RDOFRMActive
 DECLARE_FACTORY(RDOFRMActive)
 private:
 	RDOFRMActive(
-		CREF(LPRDOFRMSprite)                 pSprite,
+		CREF(LPRDOFRMSprite) pSprite,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
-		CREF(tstring)                       operName
+		CREF(std::string) operName
 	);
 	virtual ~RDOFRMActive();
 
-	tstring m_operName;
+	std::string m_operName;
 
 	DECLARE_ICalc;
 };
@@ -613,7 +613,7 @@ class RDOFRMFrame: public RDOFRMSprite
 {
 DECLARE_FACTORY(RDOFRMFrame)
 public:
-	void setBackPicture(CREF(tstring) picFileName);
+	void setBackPicture(CREF(std::string) picFileName);
 	void setBackPicture(int width, int height);
 
 	void prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
@@ -628,9 +628,9 @@ private:
 	virtual ~RDOFRMFrame();
 
 	LPRDOFRMColor m_pBgColor;
-	tstring       m_picFileName;
-	ruint         m_width;
-	ruint         m_height;
+	std::string m_picFileName;
+	ruint m_width;
+	ruint m_height;
 
 	DECLARE_ICalc;
 };

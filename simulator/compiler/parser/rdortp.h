@@ -63,10 +63,10 @@ public:
 	LPRDORSSResource createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info);
 
 	void addParam(CREF(LPRDORTPParam) param);
-	void addParam(CREF(tstring) param_name, rdo::runtime::RDOType::TypeID param_typeID);
-	LPRDORTPParam findRTPParam(CREF(tstring) paramName) const;
+	void addParam(CREF(std::string) param_name, rdo::runtime::RDOType::TypeID param_typeID);
+	LPRDORTPParam findRTPParam(CREF(std::string) paramName) const;
 
-	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
+	ruint getRTPParamNumber(CREF(std::string) paramName) const;
 	CREF(ParamList) getParams() const;
 
 	CREF(rdo::runtime::LPIResourceType) getRuntimeResType() const;
@@ -163,8 +163,8 @@ DECLARE_POINTER(RDORTPResType);
 //		}
 //	virtual ~RDORTPFuzzyTerm() {}
 //
-//	CREF(tstring) name       () const { return src_info().src_text(); }
-//	double        MemberShift() const { return m_fun->getVal();       }
+//	CREF(std::string) name () const { return src_info().src_text(); }
+//	double MemberShift() const { return m_fun->getVal(); }
 //
 //private:
 //	PTR(RDORTPFuzzyMembershiftFun) m_fun;
@@ -211,7 +211,7 @@ DECLARE_POINTER(RDORTPResType);
 //		}
 //	virtual ~RDORTPFuzzyParam() {}
 //
-//	CREF(tstring) name() const { return src_info().src_text(); }
+//	CREF(std::string) name() const { return src_info().src_text(); }
 //
 //private:
 //	PTR(RDORTPFuzzyTermsSet) m_set; // набор терминов параметра

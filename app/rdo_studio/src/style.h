@@ -40,8 +40,8 @@ public:
 
 	enum style { NONE = 0x00, BOLD = 0x01, ITALIC = 0x02, UNDERLINE = 0x04 };
 
-	tstring name;
-	int     size;
+	std::string name;
+	int size;
 
 	static StyleFont getDefaultFont();
 	static StyleFont getClassicFont();

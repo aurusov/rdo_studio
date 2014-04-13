@@ -27,10 +27,10 @@ class UpdateInsert: public DocUpdate
 {
 DECLARE_FACTORY(UpdateInsert)
 private:
-	UpdateInsert(CREF(Position) pos, CREF(tstring) value, IDocument::Type file = IDocument::UNDEFINED);
+	UpdateInsert(CREF(Position) pos, CREF(std::string) value, IDocument::Type file = IDocument::UNDEFINED);
 
 	Position m_pos;
-	tstring  m_value;
+	std::string m_value;
 
 	DECLARE_IDocUpdate;
 };
@@ -57,7 +57,7 @@ class UpdateReplace: public DocUpdate
 {
 DECLARE_FACTORY(UpdateReplace)
 private:
-	UpdateReplace(CREF(Position) posFrom, CREF(Position) posTo, CREF(tstring) value, IDocument::Type file = IDocument::UNDEFINED);
+	UpdateReplace(CREF(Position) posFrom, CREF(Position) posTo, CREF(std::string) value, IDocument::Type file = IDocument::UNDEFINED);
 
 	LPDocUpdate pDelete;
 	LPDocUpdate pInsert;

@@ -28,7 +28,7 @@ Error::Error()
 {}
 
 //! 1
-void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
+void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(std::string) message)
 {
 	if (blocked())
 		return;
@@ -37,7 +37,7 @@ void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 	throw RDOSyntaxException(m_errors.back().getText());
 }
 
-void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message) 
+void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(std::string) message) 
 {
 	if (blocked())
 		return;
@@ -45,7 +45,7 @@ void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 	m_errors.push_back(rdo::simulation::report::FileMessage(message, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, FileMessage::MT_WARNING));
 }
 
-void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
+void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(std::string) message)
 {
 	if (blocked())
 		return;
@@ -57,7 +57,7 @@ void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 }
 
 //! 2
-void Error::error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message)
+void Error::error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(std::string) message)
 {
 	if (blocked())
 		return;
@@ -78,14 +78,14 @@ void Error::push_done()
 	}
 }
 
-void Error::modify(CREF(tstring) message)
+void Error::modify(CREF(std::string) message)
 {
 	if (blocked())
 		return;
 
 	if (!m_errors.empty())
 	{
-		tstring new_text = message + m_errors.front().getText();
+		std::string new_text = message + m_errors.front().getText();
 		m_errors.front().setText(new_text);
 		throw rdo::converter::smr2rdox::RDOSyntaxException("");
 	}

@@ -50,7 +50,7 @@ void OperationBase::incOperationsCount(Time* const pTime, const int eventIndex)
 	addValue(pNewValue);
 }
 
-void OperationBase::getCaptions(std::vector<tstring> &captions, const int valueCount) const
+void OperationBase::getCaptions(std::vector<std::string> &captions, const int valueCount) const
 {
 	Serie::getCaptionsInt(captions, valueCount);
 }

@@ -22,13 +22,13 @@
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 	struct RDOSMRFileInfo
 	{
-		tstring  m_modelName;
-		tstring  m_resourceFile;
-		tstring  m_frameFile;
-		tstring  m_statisticFile;
-		tstring  m_resultsFile;
-		tstring  m_traceFile;
-		rbool    m_error;
+		std::string m_modelName;
+		std::string m_resourceFile;
+		std::string m_frameFile;
+		std::string m_statisticFile;
+		std::string m_resultsFile;
+		std::string m_traceFile;
+		rbool m_error;
 
 		RDOSMRFileInfo()
 			: m_modelName    ("")

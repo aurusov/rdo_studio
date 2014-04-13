@@ -122,7 +122,7 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 		case RT_RUNTIME_TRACE_STRING:
 		{
 			msg.lock();
-			trace(*static_cast<PTR(tstring)>(msg.param));
+			trace(*static_cast<PTR(std::string)>(msg.param));
 			msg.unlock();
 			break;
 		}
@@ -515,7 +515,7 @@ rbool RDOThreadRepository::createFile(CREF(boost::filesystem::path) name, REF(bo
 	                 % name.extension()
 	                 ;
 
-	tstring fullFileName = backupDirName.str();
+	const std::string fullFileName = backupDirName.str();
 	stream.open(rdo::locale::convertToWStr(fullFileName), std::ios::out | std::ios::binary);
 	return stream.is_open();
 }
@@ -566,7 +566,7 @@ void RDOThreadRepository::stopModel()
 	}
 }
 
-void RDOThreadRepository::trace(CREF(tstring) message)
+void RDOThreadRepository::trace(CREF(std::string) message)
 {
 	if (m_traceFile.is_open())
 	{

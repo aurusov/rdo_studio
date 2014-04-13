@@ -25,7 +25,7 @@ namespace rdo {
 class console_controller: public RDOThread
 {
 public:
-	typedef  std::list<tstring>  StringList;
+	typedef  std::list<std::string>  StringList;
 
 	console_controller();
 	virtual ~console_controller();

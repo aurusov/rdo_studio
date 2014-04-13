@@ -26,22 +26,22 @@ class RDOLogicBase
 {
 DECLARE_FACTORY(RDOLogicBase);
 public:
-	CREF(tstring) name             () const;
-	rbool         setPrior         (REF(LPRDOFUNArithm) pPrior);
-	rbool         getMultithreading() const;
-	void          setMultithreading(rbool multithreading = false);
-	void          setCondition     (CREF(LPRDOFUNLogic) pConditon = NULL);
-	LPRDOFUNLogic getConditon      () const;
-	LPILogic      getLogic         () const;
-	virtual void  end              ();
+	CREF(std::string) name () const;
+	rbool setPrior(REF(LPRDOFUNArithm) pPrior);
+	rbool getMultithreading() const;
+	void setMultithreading(rbool multithreading = false);
+	void setCondition(CREF(LPRDOFUNLogic) pConditon = NULL);
+	LPRDOFUNLogic getConditon() const;
+	LPILogic getLogic() const;
+	virtual void end();
 
 protected:
 	RDOLogicBase(CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOLogicBase();
 
 	LPRDOFUNLogic m_pConditon;
-	LPILogic      m_pRuntimeLogic;
-	rbool         m_multithreading;
+	LPILogic m_pRuntimeLogic;
+	rbool m_multithreading;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -65,9 +65,9 @@ rdo::runtime::LPRDOArrayValue RDOArrayValue::createRuntimeValue() const
 	return pArrayValue;
 }
 
-tstring RDOArrayValue::getAsString() const
+std::string RDOArrayValue::getAsString() const
 {
-	tstring arrayValue;
+	std::string arrayValue;
 
 	for (Container::const_iterator it = m_container.begin(); it != m_container.end(); ++it)
 	{

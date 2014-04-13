@@ -20,8 +20,8 @@ mouse_event_xml_reader::~mouse_event_xml_reader()
 
 PTR(event) mouse_event_xml_reader::read(CREF(boost::property_tree::ptree) pt) const
 {
-	const tstring name = pt.get<tstring>("<xmlattr>.name", "");
-	const double time  = pt.get<double>("<xmlattr>.time", 0.0);
+	const std::string name = pt.get<std::string>("<xmlattr>.name", "");
+	const double time = pt.get<double>("<xmlattr>.time", 0.0);
 
 	const boost::property_tree::ptree& param = pt.get_child("param");
 

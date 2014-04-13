@@ -61,10 +61,10 @@ public:
 class IOperationTrace
 {
 public:
-	virtual tstring traceOperId() const = 0;
+	virtual std::string traceOperId() const = 0;
 };
 
 #define DECLARE_IOperationTrace \
-	virtual tstring traceOperId() const;
+	virtual std::string traceOperId() const;
 
 #endif // _LIB_RUNTIME_OPERATION_I_H_

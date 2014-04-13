@@ -29,12 +29,12 @@ class RDOParam
 {
 DECLARE_FACTORY(RDOParam)
 public:
-	CREF(tstring)    name      () const { return src_info().src_text(); }
-	LPRDOTypeParam   getType   () const { return m_pType;               }
-	CREF(LPRDOValue) getDefault() const { return m_pDefault;            }
+	CREF(std::string) name() const { return src_info().src_text(); }
+	LPRDOTypeParam getType() const { return m_pType; }
+	CREF(LPRDOValue) getDefault() const { return m_pDefault; }
 
 protected:
-	RDOParam(CREF(tstring)          name,     CREF(LPRDOTypeParam) pType, CREF(LPRDOValue) pDefault = LPRDOValue(NULL));
+	RDOParam(CREF(std::string) name, CREF(LPRDOTypeParam) pType, CREF(LPRDOValue) pDefault = LPRDOValue(NULL));
 	RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, CREF(LPRDOValue) pDefault = LPRDOValue(NULL));
 	virtual ~RDOParam();
 

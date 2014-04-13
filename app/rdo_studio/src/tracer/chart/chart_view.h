@@ -80,7 +80,7 @@ private:
 	QRect m_clientRect;
 
 	int m_valueCountX;
-	std::vector<tstring> m_captionList;
+	std::vector<std::string> m_captionList;
 	int m_valueCountY;
 
 	bool m_timeWrapFlag;

@@ -35,7 +35,7 @@ RDOFRMCommandList::RDOFRMCommandList(CREF(RDOParserSrcInfo) srcInfo)
 RDOFRMCommandList::~RDOFRMCommandList()
 {}
 
-CREF(tstring) RDOFRMCommandList::name() const
+CREF(std::string) RDOFRMCommandList::name() const
 {
 	return m_pFunction->src_text();
 }

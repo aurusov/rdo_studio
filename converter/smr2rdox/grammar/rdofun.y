@@ -317,7 +317,7 @@ fun_func_header
 	}
 	| RDO_Function RDO_IDENTIF_COLON error
 	{
-		tstring name = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string name = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		CONVERTER->error().error(@3, rdo::format("Ожидается тип возвращаемого значения функции '%s'", name.c_str()));
 	}
 	| RDO_Function error
@@ -423,7 +423,7 @@ fun_func_calc_if
 fun_func_calc_name
 	: RDO_IDENTIF
 	{
-		tstring name = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string name = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		if (name != CONVERTER->getLastFUNFunction()->name() && name != "result")
 		{
 			CONVERTER->error().error(@1, rdo::format("Ожидается имя функции '%s'", CONVERTER->getLastFUNFunction()->name().c_str()));
@@ -532,7 +532,7 @@ fun_func_list_body
 fun_func_list_value
 	: RDO_IDENTIF
 	{
-		tstring str = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string str = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		LPRDOFUNFunctionListElementIdentif pValue = rdo::Factory<RDOFUNFunctionListElementIdentif>::create(RDOParserSrcInfo(@1, str));
 		ASSERT(pValue);
 		CONVERTER->getLastFUNFunction()->add(pValue.object_parent_cast<RDOFUNFunctionListElement>());
@@ -1468,8 +1468,8 @@ param_type_enum_list
 param_type_such_as
 	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF
 	{
-		tstring type  = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
-		tstring param = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
+		const std::string type  = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string param = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -1488,7 +1488,7 @@ param_type_such_as
 	}
 	| RDO_such_as RDO_IDENTIF
 	{
-		tstring constName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string constName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDOFUNConstant pConstant = CONVERTER->findFUNConstant(constName);
 		if (!pConstant)
 		{
@@ -1502,7 +1502,7 @@ param_type_such_as
 	}
 	| RDO_such_as RDO_IDENTIF '.' error
 	{
-		tstring type = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string type = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -1790,7 +1790,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
 		pFunParams->setSrcText(funName + "()");
@@ -1802,7 +1802,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + "(" + pFunParams->src_text() + ")");

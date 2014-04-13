@@ -373,16 +373,16 @@ public:
 
 	void onEndl()
 	{
-		CREF(tstring) trace_str = m_stream.str();
+		CREF(std::string) trace_str = m_stream.str();
 		if (trace_str.empty()        ) return;
 		if (!m_pSimulator->m_canTrace) return;
-		tstring::size_type pos = 0;
+		std::string::size_type pos = 0;
 		for (;;)
 		{
-			tstring::size_type next = trace_str.find('\n', pos);
-			tstring str = trace_str.substr(pos, next-pos);
+			std::string::size_type next = trace_str.find('\n', pos);
+			std::string str = trace_str.substr(pos, next-pos);
 			m_pSimulator->m_pThreadRuntime->broadcastMessage(RDOThread::RT_RUNTIME_TRACE_STRING, &str, true);
-			if (next == tstring::npos)
+			if (next == std::string::npos)
 			{
 				break;
 			}
@@ -429,7 +429,7 @@ private:
 
 	void flush()
 	{
-		CREF(tstring) bufferStr = m_buffer.str();
+		CREF(std::string) bufferStr = m_buffer.str();
 		if (bufferStr.empty())
 		{
 			return;
@@ -437,13 +437,13 @@ private:
 
 		m_stream << bufferStr;
 
-		tstring::size_type pos = 0;
+		std::string::size_type pos = 0;
 		for (;;)
 		{
-			tstring::size_type next = bufferStr.find('\n', pos);
-			tstring str = bufferStr.substr(pos, next-pos+1);
+			std::string::size_type next = bufferStr.find('\n', pos);
+			std::string str = bufferStr.substr(pos, next-pos+1);
 			m_pSimulator->m_pThreadRuntime->broadcastMessage(RDOThread::RT_RESULT_STRING, &str, true);
-			if (next == tstring::npos)
+			if (next == std::string::npos)
 			{
 				break;
 			}
@@ -580,7 +580,7 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 		case RT_RUNTIME_GET_LAST_BREAKPOINT:
 		{
 			msg.lock();
-			*static_cast<PTR(tstring)>(msg.param) = m_pSimulator->m_pRuntime->getLastBreakPointName();
+			*static_cast<PTR(std::string)>(msg.param) = m_pSimulator->m_pRuntime->getLastBreakPointName();
 			msg.unlock();
 			break;
 		}
@@ -610,7 +610,7 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 		case RT_RUNTIME_FRAME_AREA_DOWN:
 		{
 			msg.lock();
-			tstring areaName = *static_cast<PTR(tstring)>(msg.param);
+			std::string areaName = *static_cast<PTR(std::string)>(msg.param);
 			msg.unlock();
 			m_pSimulator->m_pRuntime->hotkey().areaList().click(areaName);
 			m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pRuntime->getShowRate());
@@ -672,7 +672,7 @@ void RDOThreadRunTime::start()
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
-		tstring mess = ex.getType() + " : " + ex.message();
+		std::string mess = ex.getType() + " : " + ex.message();
 		RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
 	}
 
@@ -713,7 +713,7 @@ void RDOThreadRunTime::idle()
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
-		tstring mess = ex.getType() + " : " + ex.message();
+		std::string mess = ex.getType() + " : " + ex.message();
 		RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
 	}
 //	catch (...) {
@@ -820,7 +820,7 @@ void RDOThreadRunTime::stop()
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
-		tstring mess = ex.getType() + " : " + ex.message();
+		std::string mess = ex.getType() + " : " + ex.message();
 		RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
 	}
 
@@ -1117,7 +1117,7 @@ rbool RDOThreadSimulator::parseModel()
 	}
 	catch (REF(rdo::runtime::RDORuntimeException) ex)
 	{
-		tstring mess = ex.getType() + " : " + ex.message();
+		std::string mess = ex.getType() + " : " + ex.message();
 		broadcastMessage(RT_SIMULATOR_PARSE_STRING, &mess);
 		m_exitCode = rdo::simulation::report::EC_ParserError;
 		broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
@@ -1251,14 +1251,14 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::converter::smr2rdox::RDOSMRFi
 			{
 				broadcastMessage(RT_CONVERTOR_ERROR);
 
-				tstring mess("Ошибка конвертора\n");
+				std::string mess("Ошибка конвертора\n");
 				broadcastMessage(RT_DEBUG_STRING, &mess);
 				CREF(rdo::converter::smr2rdox::Error::ErrorList) errorList = converter.error().getList();
 				BOOST_AUTO(it, errorList.begin());
 				while (it != errorList.end())
 				{
-					tstring text = it->getText();
-					broadcastMessage(RT_DEBUG_STRING, const_cast<PTR(tstring)>(&text));
+					std::string text = it->getText();
+					broadcastMessage(RT_DEBUG_STRING, const_cast<PTR(std::string)>(&text));
 					++it;
 				}
 			}

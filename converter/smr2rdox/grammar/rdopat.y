@@ -613,8 +613,8 @@ pat_rel_res
 				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
 				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
 				YYLTYPE convertor_begin_pos = @3;
-				tstring str = boost::algorithm::to_lower_copy(tstring(LEXER->YYText()));
-				tstring::size_type first_nochange = str.find("nochange");
+				const std::string str = boost::algorithm::to_lower_copy(std::string(LEXER->YYText()));
+				const std::string::size_type first_nochange = str.find("nochange");
 				ruint i = 0;
 				for (;;)
 				{
@@ -669,8 +669,8 @@ pat_rel_res
 				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
 				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
 				YYLTYPE convertor_begin_pos = @3;
-				tstring str = boost::algorithm::to_lower_copy(tstring(LEXER->YYText()));
-				tstring::size_type first_nochange = str.find("nochange");
+				const std::string str = boost::algorithm::to_lower_copy(std::string(LEXER->YYText()));
+				const std::string::size_type first_nochange = str.find("nochange");
 				ruint i = 0;
 				for (;;)
 				{
@@ -780,7 +780,7 @@ pat_rel_res
 			{
 				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
 				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
-				tstring convert_begin = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
+				const std::string convert_begin = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
 				YYLTYPE convertor_begin_pos = @4;
 				convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
 				convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + convert_begin.length();
@@ -817,7 +817,7 @@ pat_rel_res
 			{
 				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
 				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
-				tstring convert_begin = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
+				const std::string convert_begin = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
 				YYLTYPE convertor_begin_pos = @4;
 				convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
 				convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + convert_begin.length();
@@ -1130,7 +1130,7 @@ pat_body
 	: pat_time RDO_IDENTIF_RELRES
 	{
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
-		tstring         name     = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string name = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
 
 		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@2.m_last_seek, ":");
@@ -1142,7 +1142,7 @@ pat_body
 	| pat_convert RDO_IDENTIF_RELRES
 	{
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
-		tstring         name     = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string name = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
 
 		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@2.m_last_seek, ":");
@@ -1153,12 +1153,12 @@ pat_body
 	}
 	| pat_time error
 	{
-		tstring str(LEXER->YYText());
+		const std::string str(LEXER->YYText());
 		CONVERTER->error().error(@2, rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()));
 	}
 	| pat_convert error
 	{
-		tstring str(LEXER->YYText());
+		const std::string str(LEXER->YYText());
 		CONVERTER->error().error(@2, rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()));
 	}
 	;
@@ -1289,7 +1289,7 @@ pat_convert
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		LPRDORelevantResource rel_res  = pPattern->m_pCurrRelRes;
-		tstring str;
+		std::string str;
 		if (rel_res->m_pChoiceOrder->m_type != rdo::runtime::RDOSelectResourceCalc::order_empty)
 		{
 			str = "Сразу после ключевого слова " + rel_res->m_pChoiceOrder->asString();
@@ -1350,7 +1350,7 @@ pat_convert
 		ASSERT(pPattern);
 		if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
 		{
-			tstring type = "";
+			std::string type = "";
 			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_IE:
@@ -1377,7 +1377,7 @@ pat_convert
 		ASSERT(pPattern);
 		if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
 		{
-			tstring type = "";
+			std::string type = "";
 			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_IE:
@@ -1404,7 +1404,7 @@ pat_convert
 		ASSERT(pPattern);
 		if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
 		{
-			tstring type = "";
+			std::string type = "";
 			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_IE:
@@ -1432,7 +1432,7 @@ pat_convert
 		ASSERT(pPattern);
 		if (pPattern->getType() != RDOPATPattern::PT_Rule)
 		{
-			tstring type = "";
+			std::string type = "";
 			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_IE:
@@ -1465,7 +1465,7 @@ pat_convert
 		ASSERT(pPattern);
 		if (pPattern->getType() != RDOPATPattern::PT_IE)
 		{
-			tstring type = "";
+			std::string type = "";
 			switch (pPattern->getType())
 			{
 				case RDOPATPattern::PT_Rule     :
@@ -1534,9 +1534,9 @@ pat_convert_cmd
 	}
 	| pat_convert_cmd RDO_IDENTIF param_equal_type fun_arithm
 	{
-		LPConvertCmdList      pCmdList     = CONVERTER->stack().pop<ConvertCmdList>($1);
-		tstring               paramName    = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
-		LPRDORelevantResource pRelRes      = CONVERTER->getLastPATPattern()->m_pCurrRelRes;
+		LPConvertCmdList pCmdList = CONVERTER->stack().pop<ConvertCmdList>($1);
+		const std::string paramName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		LPRDORelevantResource pRelRes = CONVERTER->getLastPATPattern()->m_pCurrRelRes;
 		ASSERT(pRelRes);
 		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
 		if (!param)
@@ -1587,7 +1587,7 @@ pat_pattern
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		if (pPattern->getType() == RDOPATPattern::PT_IE)
 		{
-			const tstring planning_time = boost::str(boost::format("time_now + %s")
+			const std::string planning_time = boost::str(boost::format("time_now + %s")
 				% pPattern->time->calc()->srcInfo().src_text());
 
 			std::vector<std::string> planning_params;
@@ -1598,7 +1598,7 @@ pat_pattern
 				planning_params.push_back(param->name());
 			}
 
-			const tstring planning = boost::str(boost::format("\r\n\t\t%s.planning(%s);")
+			const std::string planning = boost::str(boost::format("\r\n\t\t%s.planning(%s);")
 				% pPattern->name()
 				% boost::algorithm::join(planning_params, ", "));
 
@@ -1833,8 +1833,8 @@ param_type_enum_list
 param_type_such_as
 	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF
 	{
-		tstring type  = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
-		tstring param = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
+		const std::string type = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string param = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -1853,7 +1853,7 @@ param_type_such_as
 	}
 	| RDO_such_as RDO_IDENTIF
 	{
-		tstring constName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string constName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDOFUNConstant pConstant = CONVERTER->findFUNConstant(constName);
 		if (!pConstant)
 		{
@@ -1867,7 +1867,7 @@ param_type_such_as
 	}
 	| RDO_such_as RDO_IDENTIF '.' error
 	{
-		tstring type = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string type = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -2155,7 +2155,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
 		pFunParams->setSrcText(funName + "()");
@@ -2167,7 +2167,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + "(" + pFunParams->src_text() + ")");

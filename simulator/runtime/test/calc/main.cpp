@@ -274,11 +274,11 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 	Error error;
 
 	RDOValue resultFunParam = generator::create(generator::MO_FUN_PARAM)->calcValue(rdo::Factory<RDORuntime>::create(&error));
-	tstring resultFunParamStr = resultFunParam.getAsString();
+	std::string resultFunParamStr = resultFunParam.getAsString();
 	BOOST_CHECK(resultFunParam.getInt() == 120);
 
 	RDOValue resultParamFun = generator::create(generator::MO_PARAM_FUN)->calcValue(rdo::Factory<RDORuntime>::create(&error));
-	tstring resultParamFunStr = resultParamFun.getAsString();
+	std::string resultParamFunStr = resultParamFun.getAsString();
 	BOOST_CHECK(resultParamFun.getInt() == 120);
 }
 

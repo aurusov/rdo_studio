@@ -180,7 +180,7 @@ private:
 
 	void      beforeModelStart   ();
 	void      stopModel          ();
-	void      trace              (CREF(tstring) message);
+	void      trace              (CREF(std::string) message);
 	void      writeModelFilesInfo(REF(boost::filesystem::ofstream) stream) const;
 
 protected:

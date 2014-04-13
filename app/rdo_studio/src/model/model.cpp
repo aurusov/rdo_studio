@@ -467,21 +467,21 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_SIMULATOR_PARSE_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)));
+			g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromStdString(*static_cast<PTR(std::string)>(msg.param)));
 			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_DEBUG_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)));
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdString(*static_cast<PTR(std::string)>(msg.param)));
 			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_RESULT_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)));
+			g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(*static_cast<PTR(std::string)>(msg.param)));
 			msg.unlock();
 			break;
 		}
@@ -966,17 +966,17 @@ void Model::afterModelStart()
 		g_pApp->getIMainWnd()->getDockDebug().appendString("Загрузка ресурсов для анимации...\n");
 		g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 
-		std::list<tstring> frames;
-		std::list<tstring> bitmaps;
+		std::list<std::string> frames;
+		std::list<std::string> bitmaps;
 		rdo::service::simulation::RDOThreadSimulator::GetList getListFrames (rdo::service::simulation::RDOThreadSimulator::GetList::frames,  &frames );
 		rdo::service::simulation::RDOThreadSimulator::GetList getListBitmaps(rdo::service::simulation::RDOThreadSimulator::GetList::bitmaps, &bitmaps);
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListFrames );
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
-		BOOST_FOREACH(const tstring& name, bitmaps)
+		BOOST_FOREACH(const std::string& name, bitmaps)
 		{
 			m_frameManager.insertBitmap(QString::fromStdString(name));
 		}
-		BOOST_FOREACH(const tstring& name, frames)
+		BOOST_FOREACH(const std::string& name, frames)
 		{
 			m_frameManager.insertFrame(QString::fromStdString(name));
 		}
@@ -1049,7 +1049,7 @@ void Model::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 
 QString Model::getLastBreakPointName()
 {
-	tstring str;
+	std::string str;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_LAST_BREAKPOINT, &str);
 	return QString::fromStdString(str);
 }

@@ -35,9 +35,9 @@ public:
 		TRC, EVN, PRC
 	};
 
-	virtual void    insert(Type type, ruint to, CREF(tstring) value) = 0;
-	virtual void    remove(Type type, ruint from, ruint to)          = 0;
-	virtual tstring get   (Type type, ruint from, ruint to)          = 0;
+	virtual void insert(Type type, ruint to, CREF(std::string) value) = 0;
+	virtual void remove(Type type, ruint from, ruint to) = 0;
+	virtual std::string get(Type type, ruint from, ruint to) = 0;
 
 protected:
 	IDocument()
@@ -45,10 +45,10 @@ protected:
 	virtual ~IDocument()
 	{}
 };
-#define DECLARE_IDocument                                     \
-	void    insert(Type type, ruint to, CREF(tstring) value); \
-	void    remove(Type type, ruint from, ruint to);          \
-	tstring get   (Type type, ruint from, ruint to);
+#define DECLARE_IDocument                                      \
+	void insert(Type type, ruint to, CREF(std::string) value); \
+	void remove(Type type, ruint from, ruint to);              \
+	std::string get(Type type, ruint from, ruint to);
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 

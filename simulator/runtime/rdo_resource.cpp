@@ -81,14 +81,14 @@ LPRDOResource RDOResource::clone(CREF(LPRDORuntime) pRuntime) const
 	return pResource;
 }
 
-tstring RDOResource::getTypeId()
+std::string RDOResource::getTypeId()
 {
 	std::ostringstream str;
 	str << m_type;
 	return str.str();
 }
 
-tstring RDOResource::traceParametersValue()
+std::string RDOResource::traceParametersValue()
 {
 	std::ostringstream str;
 	if(m_paramList.size() > 0)
@@ -99,10 +99,10 @@ tstring RDOResource::traceParametersValue()
 #ifdef RDOSIM_COMPATIBLE
 			std::ostringstream _str;
 			_str << *it;
-			tstring::size_type pos = _str.str().find("e");
-			if (pos != tstring::npos)
+			std::string::size_type pos = _str.str().find("e");
+			if (pos != std::string::npos)
 			{
-				tstring __str = _str.str();
+				std::string __str = _str.str();
 				__str.erase(pos + 2, 1);
 				str << __str.c_str();
 			}
@@ -121,7 +121,7 @@ tstring RDOResource::traceParametersValue()
 	return str.str();
 }
 
-tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime)
+std::string RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime)
 {
 	std::ostringstream res;
 	if (traceable() || (prefix != '\0'))
@@ -169,7 +169,7 @@ void RDOResource::setRuntime(CREF(LPRDORuntime) pRuntime)
 	NEVER_REACH_HERE;
 }
 
-tstring RDOResource::whoAreYou()
+std::string RDOResource::whoAreYou()
 {
 	return "rdoRes";
 }
@@ -254,7 +254,7 @@ void RDOResource::decRef()
 	--m_referenceCount;
 }
 
-tstring RDOResource::traceTypeId()
+std::string RDOResource::traceTypeId()
 {
 	return m_typeId.empty() ? (m_typeId = getTypeId()) : m_typeId;
 }

@@ -137,19 +137,19 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 	m_params.push_back(param);
 }
 
-void RDORTPResType::addParam(CREF(tstring) param_name, rdo::runtime::RDOType::TypeID param_typeID)
+void RDORTPResType::addParam(CREF(std::string) param_name, rdo::runtime::RDOType::TypeID param_typeID)
 {
 	UNUSED(param_name  );
 	UNUSED(param_typeID);
 }
 
-LPRDORTPParam RDORTPResType::findRTPParam(CREF(tstring) paramName) const
+LPRDORTPParam RDORTPResType::findRTPParam(CREF(std::string) paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
 	return it != m_params.end() ? *it : LPRDORTPParam();
 }
 
-ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const
+ruint RDORTPResType::getRTPParamNumber(CREF(std::string) paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
 	return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
@@ -165,9 +165,9 @@ void RDORTPResType::writeModelStructure(std::ostream& stream) const
 	}
 }
 
-tstring RDORTPResType::name() const
+std::string RDORTPResType::name() const
 {
-	static tstring s_name;
+	static std::string s_name;
 	s_name = src_text();
 	return s_name;
 }

@@ -30,12 +30,12 @@ public:
 	RDOSimulator();
 	virtual ~RDOSimulator();
 
-	void             appendLogic       (CREF(LPIBaseOperation) pLogic, LPIBaseOperationContainer pParent);
+	void appendLogic(CREF(LPIBaseOperation) pLogic, LPIBaseOperationContainer pParent);
 	LPIBaseOperation getMustContinueOpr() const;
-	void             setMustContinueOpr(CREF(LPIBaseOperation) pOperation);
-	virtual void     onPutToTreeNode   () = 0;
+	void setMustContinueOpr(CREF(LPIBaseOperation) pOperation);
+	virtual void onPutToTreeNode() = 0;
 
-	tstring          writeActivitiesStructure(REF(ruint) counter);
+	std::string writeActivitiesStructure(REF(ruint) counter);
 
 	ruint getSizeofSim() const;
 

@@ -52,7 +52,7 @@ double RDOPatternEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 	return 0;
 }
 
-LPIEvent RDOPatternEvent::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(tstring) oprName)
+LPIEvent RDOPatternEvent::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) oprName)
 {
 	LPIEvent pEvent = RF(RDOEvent)::create(pRuntime, this, traceable(), oprName);
 	ASSERT(pEvent);
@@ -70,7 +70,7 @@ RDOPatternRule::RDOPatternRule(rbool trace)
 RDOPatternRule::~RDOPatternRule()
 {}
 
-LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName)
+LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) _oprName)
 {
 	LPIRule pRule = RF(RDORule)::create(pRuntime, this, traceable(), _oprName);
 	ASSERT(pRule);
@@ -78,7 +78,7 @@ LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, CREF(LP
 	return pRule;
 }
 
-LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) pCondition, CREF(tstring) _oprName)
+LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) pCondition, CREF(std::string) _oprName)
 {
 	LPIRule pRule = RF(RDORule)::create(pRuntime, this, traceable(), pCondition, _oprName);
 	ASSERT(pRule);
@@ -108,7 +108,7 @@ double RDOPatternOperation::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 	return 0;
 }
 
-LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName)
+LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) _oprName)
 {
 	LPIOperation pOperation = RF(RDOOperation)::create(pRuntime, this, traceable(), _oprName);
 	ASSERT(pOperation);
@@ -116,7 +116,7 @@ LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogi
 	return pOperation;
 }
 
-LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) pCondition, CREF(tstring) _oprName)
+LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) pCondition, CREF(std::string) _oprName)
 {
 	LPIOperation pOperation = RF(RDOOperation)::create(pRuntime, this, traceable(), pCondition, _oprName);
 	ASSERT(pOperation);
@@ -134,7 +134,7 @@ RDOPatternKeyboard::RDOPatternKeyboard(rbool trace)
 RDOPatternKeyboard::~RDOPatternKeyboard()
 {}
 
-LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName)
+LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) _oprName)
 {
 	LPIKeyboard pKeyboard = RF(RDOKeyboard)::create(pRuntime, this, traceable(), _oprName);
 	ASSERT(pKeyboard);
@@ -142,7 +142,7 @@ LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic,
 	return pKeyboard;
 }
 
-LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) pCondition, CREF(tstring) _oprName)
+LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) pCondition, CREF(std::string) _oprName)
 {
 	LPIKeyboard pKeyboard = RF(RDOKeyboard)::create(pRuntime, this, traceable(), pCondition, _oprName);
 	ASSERT(pKeyboard);

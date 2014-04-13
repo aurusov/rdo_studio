@@ -60,15 +60,15 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace);
+	RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace);
 	virtual ~RDOPMDResult();
 
-	static void printLeft(std::ostream& stream, CREF(tstring) txt);
+	static void printLeft(std::ostream& stream, CREF(std::string) txt);
 
 	DECLARE_IName;
 
 private:
-	tstring m_name;
+	std::string m_name;
 };
 
 /*!
@@ -100,7 +100,7 @@ private:
 		double
 	> acc_type;
 
-	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, ruint resourceID, ruint paramID);
+	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(std::string) resName, CREF(std::string) parName, ruint resourceID, ruint paramID);
 	virtual ~RDOPMDWatchPar();
 
 	struct CurrentValue
@@ -162,7 +162,7 @@ private:
 		>
 	> acc_type;
 
-	RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic);
+	RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(LPRDOCalc) pLogic);
 	virtual ~RDOPMDWatchState();
 
 	struct CurrentValue
@@ -222,7 +222,7 @@ private:
 		double
 	> acc_type;
 
-	RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
+	RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(std::string) resTypeName, int rtpID);
 	virtual ~RDOPMDWatchQuant();
 
 	struct CurrentValue
@@ -285,7 +285,7 @@ private:
 		>
 	> acc_type;
 
-	RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
+	RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(std::string) resTypeName, int rtpID);
 	virtual ~RDOPMDWatchValue();
 
 	LPRDOCalc m_pLogicCalc;
@@ -316,7 +316,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, CREF(LPRDOCalc) pArithm);
+	RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, CREF(LPRDOCalc) pArithm);
 	virtual ~RDOPMDGetValue();
 
 	LPRDOCalc m_pArithmCalc;

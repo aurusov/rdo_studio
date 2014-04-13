@@ -99,7 +99,7 @@ RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum)
 	setUndefined(false);
 }
 
-RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, CREF(tstring) value)
+RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, CREF(std::string) value)
 	: m_pType(pEnum)
 {
 	__get<ruint>() = pEnum->findEnum(value);
@@ -118,7 +118,7 @@ RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, ruint index)
 	setUndefined(false);
 }
 
-RDOValue::RDOValue(CREF(tstring) value)
+RDOValue::RDOValue(CREF(std::string) value)
 	: m_pType(g_string)
 {
 	STATIC_ASSERT(sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>) >= sizeof(double));
@@ -127,14 +127,14 @@ RDOValue::RDOValue(CREF(tstring) value)
 	setUndefined(false);
 }
 
-RDOValue::RDOValue(CPTR(tchar) value)
+RDOValue::RDOValue(CPTR(char) value)
 	: m_pType(g_string)
 {
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
 	setUndefined(false);
 }
 
-RDOValue::RDOValue(CREF(tstring) value, CREF(LPRDOType) pType)
+RDOValue::RDOValue(CREF(std::string) value, CREF(LPRDOType) pType)
 	: m_pType(g_identificator)
 {
 	if (pType->typeID() != RDOType::t_identificator)
@@ -290,7 +290,7 @@ rbool RDOValue::getAsBool() const
 	throw RDOValueException();
 }
 
-CREF(tstring) RDOValue::getString() const
+CREF(std::string) RDOValue::getString() const
 {
 	if (isUndefined())
 		throw RDOUndefinedException();
@@ -303,7 +303,7 @@ CREF(tstring) RDOValue::getString() const
 	throw RDOValueException();
 }
 
-CREF(tstring) RDOValue::getIdentificator() const
+CREF(std::string) RDOValue::getIdentificator() const
 {
 	if (isUndefined()) 
 		throw RDOUndefinedException();
@@ -316,7 +316,7 @@ CREF(tstring) RDOValue::getIdentificator() const
 	throw RDOValueException();
 }
 
-tstring RDOValue::getAsString() const
+std::string RDOValue::getAsString() const
 {
 	if (isUndefined())
 		throw RDOUndefinedException();
@@ -335,7 +335,7 @@ tstring RDOValue::getAsString() const
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод getAsString()");
 }
 
-tstring RDOValue::getAsStringForTrace() const
+std::string RDOValue::getAsStringForTrace() const
 {
 	if (isUndefined())
 		return "#";
@@ -926,12 +926,12 @@ LPRDOEnumType RDOValue::__enumT() const
 	return m_pType.object_static_cast<RDOEnumType>();
 }
 
-REF(tstring) RDOValue::__stringV()
+REF(std::string) RDOValue::__stringV()
 {
 	return *getPointer<string_class>().get();
 }
 
-CREF(tstring) RDOValue::__stringV() const
+CREF(std::string) RDOValue::__stringV() const
 {
 	return *getPointer<string_class>().get();
 }
@@ -1004,7 +1004,7 @@ RDOValue RDOValue::clone() const
 	return result;
 }
 
-tstring RDOValue::onPointerAsString() const
+std::string RDOValue::onPointerAsString() const
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
@@ -1300,8 +1300,8 @@ rbool RDOValue::isUndefined() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOValue::string_class
 // --------------------------------------------------------------------------------
-RDOValue::string_class::string_class(CREF(tstring) string)
-	: tstring(string)
+RDOValue::string_class::string_class(CREF(std::string) string)
+	: std::string(string)
 {}
 
 rdo::intrusive_ptr<RDOValue::string_class> RDOValue::string_class::clone() const

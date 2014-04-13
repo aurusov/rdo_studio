@@ -298,7 +298,7 @@ void RDOFRMText::setText(Align align, CREF(LPRDOCalc) pValue)
 	m_isTextString = false;
 }
 
-void RDOFRMText::setText(Align align, CREF(tstring) text)
+void RDOFRMText::setText(Align align, CREF(std::string) text)
 {
 	m_align        = align;
 	m_text         = text;
@@ -314,7 +314,7 @@ RDOValue RDOFRMText::doCalc(CREF(LPRDORuntime) pRuntime)
 	getFrame()->setColorLastBGText(getBgColor()->getType(), bg);
 	getFrame()->setColorLastFGText(getFgColor()->getType(), fg);
 
-	tstring t;
+	std::string t;
 	if (m_isTextString)
 	{
 		t = m_text;
@@ -350,11 +350,11 @@ RDOValue RDOFRMText::doCalc(CREF(LPRDORuntime) pRuntime)
 // -------------------- RDOFRMBitmap
 // --------------------------------------------------------------------------------
 RDOFRMBitmap::RDOFRMBitmap(
-		CREF(LPRDOFRMSprite)                 pSprite,
+		CREF(LPRDOFRMSprite) pSprite,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
-		CREF(tstring)                        pictFilename,
-		CREF(tstring)                        maskFilename
+		CREF(std::string) pictFilename,
+		CREF(std::string) maskFilename
 	)
 	: RDOFRMBitmapBase(pSprite, pictFilename, maskFilename)
 	, m_pX            (pX)
@@ -384,13 +384,13 @@ RDOValue RDOFRMBitmap::doCalc(CREF(LPRDORuntime) pRuntime)
 // -------------------- RDOFRMBitmapStretch
 // --------------------------------------------------------------------------------
 RDOFRMBitmapStretch::RDOFRMBitmapStretch(
-		CREF(LPRDOFRMSprite)                 pSprite,
+		CREF(LPRDOFRMSprite) pSprite,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
-		CREF(tstring)                        pictFilename,
-		CREF(tstring)                        maskFilename
+		CREF(std::string) pictFilename,
+		CREF(std::string) maskFilename
 	)
 	: RDOFRMBitmapBase  (pSprite, pictFilename, maskFilename)
 	, RDOFRMBoundingItem(pX, pY, pWidth, pHeight)
@@ -698,12 +698,12 @@ RDOValue RDOFRMTriang::doCalc(CREF(LPRDORuntime) pRuntime)
 // -------------------- RDOFRMActive
 // --------------------------------------------------------------------------------
 RDOFRMActive::RDOFRMActive(
-		CREF(LPRDOFRMSprite)                 pSprite,
+		CREF(LPRDOFRMSprite) pSprite,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
-		CREF(tstring)                       operName
+		CREF(std::string) operName
 	)
 	: RDOFRMItem        (pSprite                )
 	, RDOFRMBoundingItem(pX, pY, pWidth, pHeight)
@@ -802,7 +802,7 @@ void RDOFRMFrame::setBackgroundColor(CREF(LPRDOFRMColor) pBgColor)
 	m_pBgColor = pBgColor;
 }
 
-void RDOFRMFrame::setBackPicture(CREF(tstring) picFileName)
+void RDOFRMFrame::setBackPicture(CREF(std::string) picFileName)
 {
 	m_picFileName = picFileName;
 }

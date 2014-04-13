@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(FuzzySetTest)
 
 	LPFuzzySet pSet = rdo::Factory<FuzzySet>::create();
 
-	tstring stringPresentation = pSet->getAsString();
+	std::string stringPresentation = pSet->getAsString();
 	BOOST_CHECK(stringPresentation == "[empty value]");
 
 	pSet->append(1,0.10);
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(FuzzySetTest)
 BOOST_AUTO_TEST_CASE(TermTest)
 {
 	LPFuzzySet pSet = rdo::Factory<FuzzySet>::create();
-	tstring testname = "test";
+	std::string testname = "test";
 	LPRDOFuzzyTerm pTerm = rdo::Factory<RDOFuzzyTerm>::create(testname, pSet);
 	BOOST_CHECK(pTerm->getName() == "test");
 
@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_CASE(VariableTest)
 	LPRDOFuzzyTerm pTerm2 = rdo::Factory<RDOFuzzyTerm>::create("term2", pFuzzySet2);
 	BOOST_CHECK(pTerm2);
 
-	tstring name1 = pTerm1->getName();
+	std::string name1 = pTerm1->getName();
 	BOOST_CHECK(name1 == "term1");
 	LPRDOLingvoVariable pVariable = rdo::Factory<RDOLingvoVariable>::create(pTerm1,"test");
 	BOOST_CHECK(pVariable);

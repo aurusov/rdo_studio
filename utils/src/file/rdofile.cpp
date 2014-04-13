@@ -37,7 +37,7 @@ rbool File::create(CREF(boost::filesystem::path) name)
 	return create(name, "");
 }
 
-rbool File::create(CREF(boost::filesystem::path) name, CREF(tstring) content)
+rbool File::create(CREF(boost::filesystem::path) name, CREF(std::string) content)
 {
 	boost::filesystem::fstream file(name, std::ios::out | std::ios::binary);
 	file << content << std::endl;
@@ -88,13 +88,13 @@ boost::filesystem::path File::getTempFileName()
 {
 #ifdef COMPILER_VISUAL_STUDIO
 	const ruint BUFSIZE = 4096;
-	tchar lpPathBuffer[BUFSIZE];
+	char lpPathBuffer[BUFSIZE];
 
 	if (::GetTempPath(BUFSIZE, lpPathBuffer) == 0)
 	{
 		return boost::filesystem::path();
 	}
-	tchar szTempName[MAX_PATH];
+	char szTempName[MAX_PATH];
 	if (::GetTempFileName(lpPathBuffer, NULL, 0, szTempName) == 0)
 	{
 		return boost::filesystem::path();

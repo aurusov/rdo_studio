@@ -35,8 +35,8 @@ class RDOFRMFrame
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
-	CREF(tstring)                     name () const  { return src_info().src_text(); }
-	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame;              }
+	CREF(std::string) name() const { return src_info().src_text(); }
+	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame; }
 
 	typedef  boost::optional<ruint>  Seek;
 

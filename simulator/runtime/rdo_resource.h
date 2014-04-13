@@ -71,31 +71,31 @@ public:
 	LPRDOResource          clone       (CREF(LPRDORuntime) pRuntime) const;
 	CREF(ParamList)        getParamList(                           ) const;
 
-	virtual void    appendParams        (CREF(ParamCIt) from_begin, CREF(ParamCIt) from_end);
-	void            setRuntime          (CREF(LPRDORuntime) pRuntime             );
-	void            makeTemporary       (rbool value                             );
-	void            setState            (ConvertStatus value                     );
-	tstring         traceResourceState  (char prefix, CREF(LPRDORuntime) pRuntime);
-	REF(RDOValue)   getParamRaw         (ruint index                             );
-	void            setParam            (ruint index, CREF(RDOValue) value       );
-	tstring         getTypeId           ();
-	tstring         traceParametersValue();
-	virtual tstring whoAreYou           ();
-	void            incRef              ();
-	void            decRef              ();
+	virtual void appendParams(CREF(ParamCIt) from_begin, CREF(ParamCIt) from_end);
+	void setRuntime(CREF(LPRDORuntime) pRuntime);
+	void makeTemporary(rbool value);
+	void setState(ConvertStatus value);
+	std::string traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime);
+	REF(RDOValue) getParamRaw(ruint index);
+	void setParam (ruint index, CREF(RDOValue) value);
+	std::string getTypeId();
+	std::string traceParametersValue();
+	virtual std::string whoAreYou();
+	void incRef();
+	void decRef();
 
 protected:
-	ParamList      m_paramList;
-	rbool          m_temporary;
-	ConvertStatus  m_state;
+	ParamList m_paramList;
+	rbool m_temporary;
+	ConvertStatus m_state;
 
 private:
-	ruint            m_type;
-	ruint            m_referenceCount;
-	LPIResourceType  m_resType;
-	tstring          m_typeId;
+	ruint m_type;
+	ruint m_referenceCount;
+	LPIResourceType m_resType;
+	std::string m_typeId;
 
-	tstring traceTypeId();
+	std::string traceTypeId();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -54,9 +54,9 @@ struct parser_for_Seize
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
 public:
-	static tstring getStateParamName();
-	static tstring getStateEnumFree();
-	static tstring getStateEnumBuzy();
+	static std::string getStateParamName();
+	static std::string getStateEnumFree();
+	static std::string getStateEnumBuzy();
 
 protected:
 	RDOPROCBlockForSeize(LPIPROCProcess process, std::vector<parser_for_Seize> From_Par);

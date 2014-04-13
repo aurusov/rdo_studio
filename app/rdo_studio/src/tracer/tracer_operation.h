@@ -29,7 +29,7 @@ public:
 
 	LPPattern getPattern() const;
 
-	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
+	virtual void getCaptions(std::vector<std::string>& captions, const int valueCount) const;
 	virtual void monitorTime(Time* const pTime, const int eventIndex);
 
 protected:

@@ -26,7 +26,7 @@ class File
 {
 public:
 	static rbool create(CREF(boost::filesystem::path) name);
-	static rbool create(CREF(boost::filesystem::path) name, CREF(tstring) content);
+	static rbool create(CREF(boost::filesystem::path) name, CREF(std::string) content);
 
 	//! Проверяет существование файла
 	//! \param name - имя файла

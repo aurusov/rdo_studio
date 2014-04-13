@@ -164,7 +164,7 @@ void console_controller::fillBuildLogList(REF(std::vector<FileMessage>) errors)
 	BOOST_FOREACH(const FileMessage& error, errors)
 	{
 		const BuildEditLineInfo info(error);
-		const tstring line = info.getMessage();
+		const std::string line = info.getMessage();
 		m_buildLogList.push_back(line);
 	}
 }

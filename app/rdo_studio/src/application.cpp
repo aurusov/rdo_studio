@@ -211,7 +211,7 @@ void Application::onInit(int argc, char** argv)
 	po::options_description desc("RAO-studio");
 	desc.add_options()
 		("help,h", "display help message")
-		("input,i", po::value<tstring>(), "model file name")
+		("input,i", po::value<std::string>(), "model file name")
 		("gui_silent_mode,s", "turn on GUI silent mode from console running")
 		("autorun", "auto run model")
 		("autoexit", "auto exit after simulation stoped")
@@ -239,10 +239,10 @@ void Application::onInit(int argc, char** argv)
 		quit();
 	}
 
-	tstring openModelName;
+	std::string openModelName;
 	if (vm.count("input"))
 	{
-		openModelName = vm["input"].as<tstring>();
+		openModelName = vm["input"].as<std::string>();
 		openModelName = rdo::locale::convertFromCLocale(openModelName);
 	}
 

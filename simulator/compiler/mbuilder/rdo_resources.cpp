@@ -78,7 +78,7 @@ RDOResType::Param::Param(CREF(parser::LPRDORTPParam) param)
 // --------------------------------------------------------------------------------
 // ---- Инициализация *нового* типа ресурса
 // --------------------------------------------------------------------------------
-RDOResType::RDOResType(CREF(tstring) name, Type type)
+RDOResType::RDOResType(CREF(std::string) name, Type type)
 	: m_name (name     )
 	, m_exist(false    )
 	, m_type (type     )
@@ -96,7 +96,7 @@ rbool RDOResType::ParamList::append(REF(Param) param)
 	return true;
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(parser::LPTypeInfo) pType, CREF(parser::LPRDOValue) pDefault)
+RDOResType::Param::Param(CREF(std::string) name, CREF(parser::LPTypeInfo) pType, CREF(parser::LPRDOValue) pDefault)
 	: m_name    (name    )
 	, m_exist   (true    )
 	, m_pType   (pType   )
@@ -104,7 +104,7 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(parser::LPTypeInfo) pType, CRE
 	, m_id      (-1      )
 {}
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<parser::RDOType__int>) pType, CREF(parser::LPRDOValue) pDefault)
+RDOResType::Param::Param(CREF(std::string) name, CREF(rdo::intrusive_ptr<parser::RDOType__int>) pType, CREF(parser::LPRDOValue) pDefault)
 	: m_name    (name    )
 	, m_exist   (true    )
 	, m_pDefault(pDefault)
@@ -113,7 +113,7 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<parser::RDO
 	initType(pType);
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<parser::RDOType__real>) pType, CREF(parser::LPRDOValue) pDefault)
+RDOResType::Param::Param(CREF(std::string) name, CREF(rdo::intrusive_ptr<parser::RDOType__real>) pType, CREF(parser::LPRDOValue) pDefault)
 	: m_name    (name    )
 	, m_exist   (true    )
 	, m_pDefault(pDefault)
@@ -122,7 +122,7 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<parser::RDO
 	initType(pType);
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::runtime::RDOEnumType::Enums) enums, CREF(parser::LPRDOValue) pDefault)
+RDOResType::Param::Param(CREF(std::string) name, CREF(rdo::runtime::RDOEnumType::Enums) enums, CREF(parser::LPRDOValue) pDefault)
 	: m_name    (name    )
 	, m_exist   (true    )
 	, m_pDefault(pDefault)
@@ -268,12 +268,12 @@ RDOResource::RDOResource(CREF(parser::LPRDORSSResource) rss)
 	}
 }
 
-RDOResource::Params::const_iterator RDOResource::operator[] (CREF(tstring) param) const
+RDOResource::Params::const_iterator RDOResource::operator[] (CREF(std::string) param) const
 {
 	return m_params.find(param);
 }
 
-REF(RDOResource::Params::mapped_type) RDOResource::operator[] (CREF(tstring) param)
+REF(RDOResource::Params::mapped_type) RDOResource::operator[] (CREF(std::string) param)
 {
 	RDOResource::Params::iterator param_it = m_params.find(param);
 	if (param_it != m_params.end())
@@ -318,7 +318,7 @@ rbool RDOResource::fillParserResourceParams(REF(parser::LPRDORSSResource) pToPar
 // --------------------------------------------------------------------------------
 // ---- Инициализация *нового* ресурса
 // --------------------------------------------------------------------------------
-RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
+RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(std::string) name)
 	: m_name (name                                )
 	, m_exist(false                               )
 	, m_rtp  (rtp                                 )

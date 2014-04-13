@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOOperation
 // --------------------------------------------------------------------------------
-RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(tstring) name)
+RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(std::string) name)
 	: RDOActivityPattern<RDOPatternOperation>(pPattern, trace, name)
 	, RDOPatternPrior                        (                     )
 {
@@ -32,7 +32,7 @@ RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperati
 	setTraceID(pRuntime->getFreeActivityId());
 }
 
-RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name)
+RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(std::string) name)
 	: RDOActivityPattern<RDOPatternOperation>(pPattern, trace, name)
 	, RDOPatternPrior                        (                     )
 	, m_pAdditionalCondition                 (pCondition           )
@@ -159,7 +159,7 @@ double RDOOperation::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 	return m_pPattern->getNextTimeInterval(pRuntime);
 }
 
-tstring RDOOperation::traceOperId() const
+std::string RDOOperation::traceOperId() const
 {
 	return rdo::toString(m_operId);
 }

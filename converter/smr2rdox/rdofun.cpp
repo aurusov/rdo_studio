@@ -213,7 +213,7 @@ void RDOFUNLogic::setSrcPos(CREF(RDOSrcInfo::Position) position)
 	}
 }
 
-void RDOFUNLogic::setSrcText(CREF(tstring) value)
+void RDOFUNLogic::setSrcText(CREF(std::string) value)
 {
 	RDOParserSrcInfo::setSrcText(value);
 	if (m_pCalc)
@@ -787,7 +787,7 @@ void RDOFUNArithm::setSrcPos(CREF(RDOSrcInfo::Position) position)
 	}
 }
 
-void RDOFUNArithm::setSrcText(CREF(tstring) value)
+void RDOFUNArithm::setSrcText(CREF(std::string) value)
 {
 	RDOParserSrcInfo::setSrcText(value);
 	if (m_pCalc)
@@ -798,7 +798,7 @@ void RDOFUNArithm::setSrcText(CREF(tstring) value)
 	}
 }
 
-void RDOFUNArithm::setSrcInfo(CREF(RDOParserSrcInfo) begin, CREF(tstring) delim, CREF(RDOParserSrcInfo) end)
+void RDOFUNArithm::setSrcInfo(CREF(RDOParserSrcInfo) begin, CREF(std::string) delim, CREF(RDOParserSrcInfo) end)
 {
 	RDOParserSrcInfo::setSrcInfo(begin, delim, end);
 }
@@ -858,7 +858,7 @@ void RDOFUNParams::addParameter(CREF(LPRDOFUNArithm) pParam)
 	m_paramList.push_back(pParam);
 }
 
-LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
+LPRDOFUNArithm RDOFUNParams::createCall(CREF(std::string) funName)
 {
 	LPRDOFUNFunction pFunction = Converter::s_converter()->findFUNFunction(funName);
 	if (!pFunction)
@@ -894,7 +894,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 	return pArithm;
 }
 
-LPRDOFUNArithm RDOFUNParams::createSeqCall(CREF(tstring) seqName)
+LPRDOFUNArithm RDOFUNParams::createSeqCall(CREF(std::string) seqName)
 {
 	LPRDOFUNSequence pSequence = Converter::s_converter()->findFUNSequence(seqName);
 	if (!pSequence)
@@ -1393,7 +1393,7 @@ RDOFUNFunction::RDOFUNFunction(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOParam)
 	Converter::s_converter()->insertFUNFunction(this);
 }
 
-RDOFUNFunction::RDOFUNFunction(CREF(tstring) name, CREF(LPRDOParam) pReturn)
+RDOFUNFunction::RDOFUNFunction(CREF(std::string) name, CREF(LPRDOParam) pReturn)
 	: RDOParserSrcInfo(name   )
 	, m_pReturn       (pReturn)
 {
@@ -1416,13 +1416,13 @@ void RDOFUNFunction::setFunctionCalc(CREF(rdo::runtime::LPRDOFunCalc) pCalc)
 	}
 }
 
-LPRDOParam RDOFUNFunction::findFUNFunctionParam(CREF(tstring) paramName) const
+LPRDOParam RDOFUNFunction::findFUNFunctionParam(CREF(std::string) paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
 	return it != m_paramList.end() ? *it : LPRDOParam(NULL);
 }
 
-int RDOFUNFunction::findFUNFunctionParamNum(CREF(tstring) paramName) const
+int RDOFUNFunction::findFUNFunctionParamNum(CREF(std::string) paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
 	return it != m_paramList.end() ? it - m_paramList.begin() : -1;
@@ -1497,7 +1497,7 @@ void RDOFUNFunction::createListCalc()
 				}
 				else
 				{
-					tstring str = (*param_it)->src_text();
+					std::string str = (*param_it)->src_text();
 					++param_it;
 					while (param_it != m_paramList.end())
 					{

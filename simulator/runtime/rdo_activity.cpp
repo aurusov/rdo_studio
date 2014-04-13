@@ -102,9 +102,9 @@ void RDOActivity::updateConvertStatus(CREF(LPRDORuntime) pRuntime, const std::ve
 	}
 }
 
-tstring RDOActivity::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime)
+std::string RDOActivity::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime)
 {
-	tstring res;
+	std::string res;
 	for (std::list<LPRDOResource>::const_iterator i = m_relevantResources.begin(); i != m_relevantResources.end(); ++i)
 	{
 		if (*i)
@@ -115,7 +115,7 @@ tstring RDOActivity::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime
 	return res;
 }
 
-tstring RDOActivity::traceResourcesListNumbers(CREF(LPRDORuntime) pRuntime, rbool show_create_index)
+std::string RDOActivity::traceResourcesListNumbers(CREF(LPRDORuntime) pRuntime, rbool show_create_index)
 {
 	UNUSED(pRuntime);
 #ifndef RDOSIM_COMPATIBLE

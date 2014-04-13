@@ -81,7 +81,7 @@ rbool RDOValue::constant() const
 		m_value.typeID() == rdo::runtime::RDOType::t_string;
 }
 
-LPRDOValue RDOValue::getIdentificator(CREF(tstring) identificator)
+LPRDOValue RDOValue::getIdentificator(CREF(std::string) identificator)
 {
 	return rdo::Factory<RDOValue>::create(RDOParserSrcInfo(identificator));
 }

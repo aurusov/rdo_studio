@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcCreateLocalVariable
 // --------------------------------------------------------------------------------
-RDOCalcCreateLocalVariable::RDOCalcCreateLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pValueCalc)
+RDOCalcCreateLocalVariable::RDOCalcCreateLocalVariable(CREF(std::string) name, CREF(LPRDOCalc) pValueCalc)
 	: m_name      (name      )
 	, m_pValueCalc(pValueCalc)
 {
@@ -38,7 +38,7 @@ RDOValue RDOCalcCreateLocalVariable::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetLocalVariable
 // --------------------------------------------------------------------------------
-RDOCalcGetLocalVariable::RDOCalcGetLocalVariable(CREF(tstring) name)
+RDOCalcGetLocalVariable::RDOCalcGetLocalVariable(CREF(std::string) name)
 	: m_name(name)
 {}
 
@@ -71,7 +71,7 @@ RDOValue RDOCalcLocalVariableList::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSetLocalVariable
 // --------------------------------------------------------------------------------
-RDOCalcSetLocalVariable::RDOCalcSetLocalVariable(CREF(tstring) name, LPRDOCalc pCalc)
+RDOCalcSetLocalVariable::RDOCalcSetLocalVariable(CREF(std::string) name, LPRDOCalc pCalc)
 	: m_name (name )
 	, m_pCalc(pCalc)
 {}
