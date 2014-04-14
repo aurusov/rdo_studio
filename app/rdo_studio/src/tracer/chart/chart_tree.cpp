@@ -79,12 +79,12 @@ ChartTree::ChartTree(QWidget* pParent)
 ChartTree::~ChartTree()
 {}
 
-LPChartTreeItem ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const
+LPChartTreeItem ChartTree::getIfItemIsDrawable(const QTreeWidgetItem* pCtrlItem) const
 {
 	LPChartTreeItem pRes;
 	if (pCtrlItem)
 	{
-		PTR(ChartTreeItem) pItem = const_cast<PTR(ChartTreeItem)>(pCtrlItem->data(0, Qt::UserRole).value<CPTR(ChartTreeItem)>());
+		PTR(ChartTreeItem) pItem = const_cast<PTR(ChartTreeItem)>(pCtrlItem->data(0, Qt::UserRole).value<const ChartTreeItem*>());
 		pRes = pItem && pItem->isDrawable()
 			? pItem
 			: NULL;

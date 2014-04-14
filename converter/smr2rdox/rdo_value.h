@@ -30,10 +30,10 @@ class RDOValue
 {
 DECLARE_FACTORY(RDOValue);
 public:
-	CREF(LPRDOType)                     type() const;
-	rdo::runtime::RDOType::TypeID     typeID() const;
-	CREF(rdo::runtime::RDOValue)       value() const;
-	CPTR(rdo::runtime::RDOValue) operator-> () const;
+	CREF(LPRDOType) type() const;
+	rdo::runtime::RDOType::TypeID typeID() const;
+	CREF(rdo::runtime::RDOValue) value() const;
+	const rdo::runtime::RDOValue* operator->() const;
 
 	bool defined() const;
 	bool constant() const;

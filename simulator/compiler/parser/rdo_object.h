@@ -104,7 +104,7 @@ public:
 		m_name = obj.m_name;
 		return *this;
 	}
-	bool operator() (CPTR(T) pObj)
+	bool operator()(const T* pObj)
 	{
 		return pObj->name() == m_name;
 	}

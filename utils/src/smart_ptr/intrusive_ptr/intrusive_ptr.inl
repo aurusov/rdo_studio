@@ -170,7 +170,7 @@ inline PTR(T) intrusive_ptr<T>::get()
 }
 
 template<class T>
-inline CPTR(T) intrusive_ptr<T>::get() const
+inline const T* intrusive_ptr<T>::get() const
 {
 	return m_object;
 }

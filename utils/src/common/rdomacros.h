@@ -23,8 +23,6 @@
 #define  CREF(A) const A&
 //! Указатель на А
 #define   PTR(A)       A*
-//! Константный указатель на А
-#define  CPTR(A) const A*
 
 #ifdef UNUSED
 	#undef UNUSED

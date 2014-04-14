@@ -1386,7 +1386,7 @@ PTR(TabCtrl) Model::getTab()
 	return &m_pView->getTab();
 }
 
-CPTR(TabCtrl) Model::getTab() const
+const TabCtrl* Model::getTab() const
 {
 	if (!m_pView)
 		return NULL;

@@ -51,9 +51,9 @@ public:
 	PTR(YYLTYPE)     m_lploc;
 
 protected:
-	virtual int  LexerInput (PTR(char)  buf, int max_size);
-	virtual void LexerOutput(CPTR(char) buf, int size    );
-	virtual void LexerError (CPTR(char) msg);
+	virtual int LexerInput(PTR(char) buf, int max_size);
+	virtual void LexerOutput(const char* buf, int size);
+	virtual void LexerError(const char* msg);
 
 private:
 	PTR(std::istream) m_yyin;

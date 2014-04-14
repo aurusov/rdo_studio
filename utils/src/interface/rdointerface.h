@@ -117,11 +117,11 @@ public:
 	REF(this_type) operator=(CREF(this_type) aInterface);
 	operator bool() const;
 
-	PTR(I)  get();
-	CPTR(I) get() const;
+	PTR(I) get();
+	const I* get() const;
 
-	PTR(I)  operator-> ();
-	CPTR(I) operator-> () const;
+	PTR(I) operator->();
+	const I* operator->() const;
 };
 
 class IUnknown

@@ -74,7 +74,7 @@ public:
 
 	/// @todo переместить в protected
 	PTR(T) get();
-	CPTR(T) get() const;
+	const T* get() const;
 
 	bool owner() const;
 

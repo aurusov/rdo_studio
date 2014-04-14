@@ -88,7 +88,7 @@ void Manager::insertFrame(CREF(QString) frameName)
 	m_frameList.push_back(item);
 }
 
-std::size_t Manager::findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetItem) const
+std::size_t Manager::findFrameIndex(const QTreeWidgetItem* pTreeWidgetItem) const
 {
 	std::size_t index = 0;
 	BOOST_FOREACH(const Frame* pFrame, m_frameList)
@@ -102,7 +102,7 @@ std::size_t Manager::findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetItem) const
 	return std::size_t(~0);
 }
 
-std::size_t Manager::findFrameIndex(CPTR(View) pView) const
+std::size_t Manager::findFrameIndex(const View* pView) const
 {
 	std::size_t index = 0;
 	BOOST_FOREACH(const Frame* pFrame, m_frameList)
@@ -116,7 +116,7 @@ std::size_t Manager::findFrameIndex(CPTR(View) pView) const
 	return std::size_t(~0);
 }
 
-std::size_t Manager::findFrameIndex(CPTR(Content) pContent) const
+std::size_t Manager::findFrameIndex(const Content* pContent) const
 {
 	std::size_t index = 0;
 	BOOST_FOREACH(const Frame* pFrame, m_frameList)
@@ -205,7 +205,7 @@ bool Manager::isShowing() const
 	return false;
 }
 
-void Manager::disconnectView(CPTR(View) pView)
+void Manager::disconnectView(const View* pView)
 {
 	std::size_t index = findFrameIndex(pView);
 	if (index != std::size_t(~0))

@@ -138,7 +138,7 @@ void print_RSS(REF(RDOCorba::GetRSS_var) my_rssList)
 	fclose(f2);
 }
 
-static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, CPTR(char) ObjectName)
+static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, const char* ObjectName)
 {
 	CosNaming::NamingContext_var rootContext;
 
@@ -173,10 +173,10 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, CPTR(char) Objec
 	//! Create a name object, containing the name test/context:
 	CosNaming::Name name;
 	name.length(2);
-	name[0].id   = (CPTR(char)) "RDO";         //! string copied
-	name[0].kind = (CPTR(char)) "RDO_context"; //! string copied
-	name[1].id   = (CPTR(char)) ObjectName;
-	name[1].kind = (CPTR(char)) "Object";
+	name[0].id = (const char*)"RDO"; //! string copied
+	name[0].kind = (const char*)"RDO_context"; //! string copied
+	name[1].id = (const char*)ObjectName;
+	name[1].kind = (const char*)"Object";
 
 	//! Note on kind: The kind field is used to indicate the type
 	//! of the object. This is to avoid conventions such as that used
@@ -217,8 +217,8 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 	RDOParserSMRInfo parser;
 	parser.parse();
 
-	CPTR(char) left;
-	CPTR(char) right;
+	const char* left;
+	const char* right;
 
 	RDOSMR::StringTable tmp = parser.getSMR()->getExternalModelList();
 	for (const auto& pair: tmp)

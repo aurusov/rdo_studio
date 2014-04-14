@@ -77,7 +77,7 @@ private:
 	void  createChart          (PTR(QTreeWidgetItem) pCtrlItem) const;
 	bool  activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const;
 
-	LPChartTreeItem      getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
+	LPChartTreeItem      getIfItemIsDrawable(const QTreeWidgetItem* pCtrlItem) const;
 	PTR(QTreeWidgetItem) getSelected        () const;
 
 	virtual void focusInEvent    (QFocusEvent* pEvent);

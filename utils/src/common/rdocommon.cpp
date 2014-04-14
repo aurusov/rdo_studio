@@ -34,7 +34,7 @@
 
 namespace rdo {
 
-std::string format(CPTR(char) str, ...)
+std::string format(const char* str, ...)
 {
 	va_list params;
 	va_start(params, str);
@@ -43,7 +43,7 @@ std::string format(CPTR(char) str, ...)
 	return res;
 }
 
-std::string format(CPTR(char) str, REF(va_list) params)
+std::string format(const char* str, REF(va_list) params)
 {
 	std::vector<char> s;
 	s.resize(256);

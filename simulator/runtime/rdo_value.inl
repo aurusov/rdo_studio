@@ -107,7 +107,7 @@ inline REF(T) RDOValue::__get()
 template <class T>
 inline CREF(T) RDOValue::__get() const
 {
-	return *reinterpret_cast<CPTR(T)>(&m_value);
+	return *reinterpret_cast<const T*>(&m_value);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

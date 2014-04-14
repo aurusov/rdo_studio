@@ -53,7 +53,7 @@ int RDOLexer::LexerInput(PTR(char) buf, int max_size)
 #endif
 }
 
-void RDOLexer::LexerOutput(CPTR(char) buf, int size)
+void RDOLexer::LexerOutput(const char* buf, int size)
 {
 	(void) m_yyout->write(buf, size);
 }

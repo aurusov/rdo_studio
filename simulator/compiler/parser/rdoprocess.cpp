@@ -34,7 +34,7 @@ int proc_rtp_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void proc_rtp_error(CPTR(char) message)
+void proc_rtp_error(const char* message)
 {
 	UNUSED(message);
 }

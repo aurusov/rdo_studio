@@ -33,8 +33,8 @@ public:
 	REF(this_type) operator= (CREF(this_type) sptr);
 
 	operator bool() const;
-	CPTR(T) operator->() const;
-	 PTR(T) operator->();
+	const T* operator->() const;
+	PTR(T) operator->();
 
 private:
 	PTR(T) m_pInterface;

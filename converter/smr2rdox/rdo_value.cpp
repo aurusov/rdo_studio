@@ -62,7 +62,7 @@ CREF(rdo::runtime::RDOValue) RDOValue::value() const
 	return m_value;
 }
 
-CPTR(rdo::runtime::RDOValue) RDOValue::operator-> () const
+const rdo::runtime::RDOValue* RDOValue::operator->() const
 {
 	return &m_value;
 }

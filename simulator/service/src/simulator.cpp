@@ -101,7 +101,7 @@ PTR(rdo::compiler::parser::RDOCorba::GetRSS) RDOCorba_i::getRDORSSPlist(REF(::CO
 	return my_rssList._retn();
 }
 
-CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CPTR(char) ModelName)
+CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, const char* ModelName)
 {
 	CosNaming::NamingContext_var rootContext;
 
@@ -136,8 +136,8 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 		//! Bind a context called "test" to the root context:
 		CosNaming::Name contextName;
 		contextName.length(1);
-		contextName[0].id   = (CPTR(char)) "RDO";         //! string copied
-		contextName[0].kind = (CPTR(char)) "RDO_context"; //! string copied
+		contextName[0].id = (const char*)"RDO"; //! string copied
+		contextName[0].kind = (const char*)"RDO_context"; //! string copied
 
 		//! Note on kind: The kind field is used to indicate the type
 		//! of the object. This is to avoid conventions such as that used
@@ -173,8 +173,8 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 		//! rdo::compiler::parser::RDOParserSMRInfo parser;
 		//! parser.parse();
 
-		objectName[0].id   = ModelName;
-		objectName[0].kind = (CPTR(char)) "Object";
+		objectName[0].id = ModelName;
+		objectName[0].kind = (const char*)"Object";
 
 		try
 		{
@@ -228,8 +228,8 @@ std::size_t RDOThreadCorba::corbaRunThreadFun(PTR(void) pParam)
 		//! the naming service.
 		obj = myrdocorba->_this();
 
-		CPTR(char) ModelName = "ЦЕХ";
-		//! CPTR(char) ModelName = "СКЛАД";
+		const char* ModelName = "ЦЕХ";
+		//! const char* ModelName = "СКЛАД";
 
 		if (!bindObjectToName(g_orb, obj, ModelName))
 		{

@@ -570,7 +570,7 @@ void Model::onInsertCommand(QObject* pObject)
 	);
 }
 
-CPTR(Log) Model::getLog() const
+const Log* Model::getLog() const
 {
 	return m_pLog;
 }

@@ -1583,7 +1583,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 		switch (pFunctionParam->getTypeInfo()->type()->typeID())
 		{
 		case rdo::runtime::RDOType::t_int:
-			if (dynamic_cast<CPTR(RDOTypeIntRange)>(pFunctionParam->getTypeInfo()->type().get()))
+			if (dynamic_cast<const RDOTypeIntRange*>(pFunctionParam->getTypeInfo()->type().get()))
 			{
 				LPRDOTypeIntRange pRange = pFunctionParam->getTypeInfo()->type().object_static_cast<RDOTypeIntRange>();
 				if (pRange->range()->getMin()->value().getInt() != 1)

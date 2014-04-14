@@ -35,7 +35,7 @@ public:
 
 	void setErrorLine(int line = -1);
 
-	CPTR(Log) getLog() const;
+	const Log* getLog() const;
 	void setLog(REF(Log) log);
 
 	void setCanClearErrorLine(bool value);

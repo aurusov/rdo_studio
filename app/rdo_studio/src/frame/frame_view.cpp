@@ -241,13 +241,13 @@ void Content::drawBackground(const rdo::animation::Frame* const pFrame, CREF(rdo
 }
 
 template <class F>
-void Content::drawColoredElement(CPTR(rdo::animation::ColoredElement) pColor, F drawMethod)
+void Content::drawColoredElement(const rdo::animation::ColoredElement* pColor, F drawMethod)
 {
 	setColors(pColor);
 	drawMethod(m_memDC.dc());
 }
 
-void Content::setColors(CPTR(rdo::animation::ColoredElement) pColor)
+void Content::setColors(const rdo::animation::ColoredElement* pColor)
 {
 	ASSERT(pColor);
 	if (!pColor->m_foreground.m_transparent)
@@ -381,7 +381,7 @@ void Content::elementTriang(PTR(rdo::animation::TriangElement) pElement)
 	pointList[2].setX((int)(pElement->m_point3.m_x));
 	pointList[2].setY((int)(pElement->m_point3.m_y));
 
-	void (QPainter::*pMethod)(CPTR(QPoint), int, Qt::FillRule) = &QPainter::drawPolygon;
+	void (QPainter::*pMethod)(const QPoint*, int, Qt::FillRule) = &QPainter::drawPolygon;
 
 	drawColoredElement(
 		pElement,

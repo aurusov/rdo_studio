@@ -54,19 +54,19 @@ inline PTR(I) Interface<I>::get()
 }
 
 template<class I>
-inline CPTR(I) Interface<I>::get() const
+inline const I* Interface<I>::get() const
 {
 	return static_cast<PTR(I)>(m_pInterface);
 }
 
 template<class I>
-inline PTR(I) Interface<I>::operator-> ()
+inline PTR(I) Interface<I>::operator->()
 {
 	return get();
 }
 
 template<class I>
-inline CPTR(I) Interface<I>::operator-> () const
+inline const I* Interface<I>::operator->() const
 {
 	return get();
 }

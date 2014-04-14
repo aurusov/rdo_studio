@@ -216,7 +216,7 @@ void Log::appendLine(PTR(LogEditLineInfo) pLine)
 	onUpdateEditGUI();
 }
 
-void Log::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, bool useScroll)
+void Log::setSelectLine(int line, const LogEditLineInfo* pLineInfo, bool useScroll)
 {
 	if (pLineInfo->getLineNumber() != std::size_t(~0))
 	{
@@ -250,7 +250,7 @@ void Log::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, bool useScrol
 	}
 }
 
-void Log::updateEdit(PTR(Model) pEdit, CPTR(LogEditLineInfo) pLineInfo)
+void Log::updateEdit(PTR(Model) pEdit, const LogEditLineInfo* pLineInfo)
 {
 	pEdit->scrollToLine(pLineInfo->getLineNumber());
 	int pos = pEdit->getPositionFromLine(pLineInfo->getLineNumber()) + pLineInfo->getPosInLine();

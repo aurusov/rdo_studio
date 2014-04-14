@@ -60,8 +60,8 @@ private:
 
 	void  drawBackground    (const rdo::animation::Frame* const pFrame, CREF(rdo::gui::BitmapList) bitmapList);
 	template <class F>
-	void  drawColoredElement(CPTR(rdo::animation::ColoredElement)   pColor, F drawMethod);
-	void  setColors         (CPTR(rdo::animation::ColoredElement)   pColor);
+	void  drawColoredElement(const rdo::animation::ColoredElement* pColor, F drawMethod);
+	void  setColors         (const rdo::animation::ColoredElement* pColor);
 	void  elementText       ( PTR(rdo::animation::TextElement)      pElement);
 	void  elementRect       ( PTR(rdo::animation::RectElement)      pElement);
 	void  elementRoundRect  ( PTR(rdo::animation::RoundRectElement) pElement);

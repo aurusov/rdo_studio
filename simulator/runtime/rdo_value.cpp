@@ -127,7 +127,7 @@ RDOValue::RDOValue(CREF(std::string) value)
 	setUndefined(false);
 }
 
-RDOValue::RDOValue(CPTR(char) value)
+RDOValue::RDOValue(const char* value)
 	: m_pType(g_string)
 {
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
@@ -918,7 +918,7 @@ REF(PTR(void)) RDOValue::__voidPtrV()
 
 CREF(PTR(void)) RDOValue::__voidPtrV() const
 {
-	return *reinterpret_cast<CPTR(PTR(void))>(&const_cast<PTR(RDOValue)>(this)->m_value);
+	return *reinterpret_cast<const PTR(void)*>(&const_cast<PTR(RDOValue)>(this)->m_value);
 }
 
 LPRDOEnumType RDOValue::__enumT() const

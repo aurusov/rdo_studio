@@ -68,7 +68,7 @@ inline interface_ptr<T>::operator bool() const
 }
 
 template<class T>
-inline CPTR(T) interface_ptr<T>::operator-> () const
+inline const T* interface_ptr<T>::operator->() const
 {
 	return m_pInterface;
 }

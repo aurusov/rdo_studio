@@ -43,7 +43,7 @@ public:
 	RDOValue(CREF(LPRDOEnumType) pEnum, CREF(std::string) value);
 	RDOValue(CREF(LPRDOEnumType) pEnum, std::size_t index);
 	RDOValue(CREF(std::string) value);
-	RDOValue(CPTR(char) value);
+	RDOValue(const char* value);
 	RDOValue(CREF(std::string) value, CREF(LPRDOType) pType);
 
 	template <class T>

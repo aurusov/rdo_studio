@@ -33,13 +33,13 @@ namespace rdo {
 	//! \param  str - исходная строка, которая может содержать символы форматирования
 	//! \param  ... - произвольный набор параметров
 	//! \result Отформатированная строчка
-	std::string format(CPTR(char) str, ...);
+	std::string format(const char* str, ...);
 
 	//! Формирование строки по формату
 	//! \param  str    - исходная строка, которая может содержать символы форматирования
 	//! \param  params - определенный по формату набор параметров (вытащенный по формату из стека)
 	//! \result Отформатированная строчка
-	std::string format(CPTR(char) str, REF(va_list) params);
+	std::string format(const char* str, REF(va_list) params);
 
 	//! Переводит значение в строку
 	//! \tparam T     - тип значения

@@ -50,10 +50,10 @@ protected:
 	void setSciMarkerLine(int sciMarkerLine);
 
 protected:
-	virtual void updateEdit(PTR(Model) pEdit, CPTR(LogEditLineInfo) pLineInfo);
+	virtual void updateEdit(PTR(Model) pEdit, const LogEditLineInfo* pLineInfo);
 
 	void  clearLines     ();
-	void  setSelectLine  (int line, CPTR(LogEditLineInfo) pLineInfo, bool useScroll = false);
+	void  setSelectLine  (int line, const LogEditLineInfo* pLineInfo, bool useScroll = false);
 	void  clearSelectLine();
 	bool  hasSelectLine  () const;
 

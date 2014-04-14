@@ -48,9 +48,9 @@ public:
 	void insertFrame (CREF(QString) frameName );
 	void insertBitmap(CREF(QString) bitmapName);
 
-	std::size_t findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetItem) const;
-	std::size_t findFrameIndex(CPTR(View) pView) const;
-	std::size_t findFrameIndex(CPTR(Content) pContent) const;
+	std::size_t findFrameIndex(const QTreeWidgetItem* pTreeWidgetItem) const;
+	std::size_t findFrameIndex(const View* pView) const;
+	std::size_t findFrameIndex(const Content* pContent) const;
 
 	bool isShowing() const;
 	CREF(QString) getFrameName(std::size_t index) const;
@@ -62,7 +62,7 @@ public:
 	void areaDown(std::size_t frameIndex, CREF(QPoint) point) const;
 
 	PTR(View) createView(std::size_t index);
-	void disconnectView(CPTR(View) pView);
+	void disconnectView(const View* pView);
 	void closeAll();
 	void clear();
 

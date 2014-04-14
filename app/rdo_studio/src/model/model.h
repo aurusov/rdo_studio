@@ -73,7 +73,7 @@ public:
 	bool          isEmpty         () const;
 
 	 PTR(TabCtrl) getTab();
-	CPTR(TabCtrl) getTab() const;
+	const TabCtrl* getTab() const;
 
 	void  updateStyleOfAllModel() const;
 	bool  isPrevModelClosed    () const;
