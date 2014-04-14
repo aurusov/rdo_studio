@@ -21,7 +21,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeParamSuchAs
 // --------------------------------------------------------------------------------
-CLASS(RDOTypeParamSuchAs): INSTANCE_OF(RDOTypeParam)
+class RDOTypeParamSuchAs: public RDOTypeParam
 {
 DECLARE_FACTORY(RDOTypeParamSuchAs);
 public:

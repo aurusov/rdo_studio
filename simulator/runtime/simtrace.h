@@ -30,7 +30,7 @@ PREDECLARE_POINTER(RDOSimulatorTrace);
   \class     RDOSimulatorTrace
   \brief     Трассировщик симулятора
 */
-CLASS(RDOSimulatorTrace): INSTANCE_OF(RDOSimulator)
+class RDOSimulatorTrace: public RDOSimulator
 {
 DECLARE_FACTORY(RDOSimulatorTrace)
 public:
@@ -39,7 +39,7 @@ public:
 	virtual void rdoInit();
 
 	PTR(RDOTrace) getTracer() const;
-	rbool     canTrace() const;
+	bool canTrace() const;
 
 	double getTraceStartTime() const;
 	void   setTraceStartTime(double value);
@@ -49,11 +49,11 @@ public:
 
 	virtual void onNewTimeNow();
 
-	void  memory_insert(ruint mem);
-	void  memory_remove(ruint mem);
-	ruint memory_get   () const;
+	void memory_insert(std::size_t mem);
+	void memory_remove(std::size_t mem);
+	std::size_t memory_get() const;
 
-	ruint getResourceId();
+	std::size_t getResourceId();
 	void incrementResourceIdReference(int id);
 
 	void freeOperationId(int id);
@@ -85,14 +85,14 @@ private:
 	double traceStartTime;
 	double traceEndTime;
 
-	ruint maxResourcesId;
+	std::size_t maxResourcesId;
 
-	std::list<ruint> freeResourcesIds;
+	std::list<std::size_t> freeResourcesIds;
 	typedef std::map<int, int> MAPII;
 	MAPII resourcesIdsRefs;
 	std::list<int> freeOperationsIds;
 
-	void eraseFreeResourceId(ruint id);
+	void eraseFreeResourceId(std::size_t id);
 
 	int m_ieCounter;
 	int m_eventCounter;
@@ -104,10 +104,10 @@ private:
 	void addTemplateRule         (RDORule           *rule);
 	void addTemplateOperation    (RDOOperation      *op  );
 
-	ruint memory_current;
-	ruint memory_max;
+	std::size_t memory_current;
+	std::size_t memory_max;
 
-	rbool timeForTrace() const;
+	bool timeForTrace() const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

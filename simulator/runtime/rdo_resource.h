@@ -30,10 +30,12 @@ PREDECLARE_OBJECT_INTERFACE(IResourceType);
   \details Ресурсы, которые могут быть релевантны активностям и
  * событиям, но не могут использоваться в процессах
 */
-OBJECT(RDOResource)
-	IS  INSTANCE_OF(RDORuntimeObject)
-	AND INSTANCE_OF(RDOTraceableObject)
-	AND public boost::operators<RDOResource>
+PREDECLARE_POINTER(RDOResource);
+class RDOResource
+	: public rdo::counter_reference
+	, public RDORuntimeObject
+	, public RDOTraceableObject
+	, public boost::operators<RDOResource>
 {
 public:
 	/*!
@@ -53,47 +55,47 @@ public:
 	typedef  std::vector<RDOValue>      ParamList;
 	typedef  ParamList::const_iterator  ParamCIt;
 
-	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary);
+	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary);
 	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy);
 	virtual ~RDOResource();
 
 	bool operator== (const RDOResource& other) const;
 
-	ConvertStatus          getState    (                           ) const;
-	CREF(RDOValue)         getParam    (ruint index                ) const;
-	rbool                  checkType   (ruint type                 ) const;
-	rbool                  canFree     (                           ) const;
-	CREF(LPIResourceType)  getResType  (                           ) const;
-	ruint                  getType     (                           ) const;
-	virtual ruint          paramsCount (                           ) const;
-	LPRDOResource          clone       (CREF(LPRDORuntime) pRuntime) const;
-	CREF(ParamList)        getParamList(                           ) const;
+	ConvertStatus getState() const;
+	CREF(RDOValue) getParam(std::size_t index) const;
+	bool checkType(std::size_t type) const;
+	bool canFree() const;
+	CREF(LPIResourceType) getResType() const;
+	std::size_t getType() const;
+	virtual std::size_t paramsCount() const;
+	LPRDOResource clone(CREF(LPRDORuntime) pRuntime) const;
+	CREF(ParamList) getParamList() const;
 
-	virtual void    appendParams        (CREF(ParamCIt) from_begin, CREF(ParamCIt) from_end);
-	void            setRuntime          (CREF(LPRDORuntime) pRuntime             );
-	void            makeTemporary       (rbool value                             );
-	void            setState            (ConvertStatus value                     );
-	tstring         traceResourceState  (char prefix, CREF(LPRDORuntime) pRuntime);
-	REF(RDOValue)   getParamRaw         (ruint index                             );
-	void            setParam            (ruint index, CREF(RDOValue) value       );
-	tstring         getTypeId           ();
-	tstring         traceParametersValue();
-	virtual tstring whoAreYou           ();
-	void            incRef              ();
-	void            decRef              ();
+	virtual void appendParams(CREF(ParamCIt) from_begin, CREF(ParamCIt) from_end);
+	void setRuntime(CREF(LPRDORuntime) pRuntime);
+	void makeTemporary(bool value);
+	void setState(ConvertStatus value);
+	std::string traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime);
+	REF(RDOValue) getParamRaw(std::size_t index);
+	void setParam(std::size_t index, CREF(RDOValue) value);
+	std::string getTypeId();
+	std::string traceParametersValue();
+	virtual std::string whoAreYou();
+	void incRef();
+	void decRef();
 
 protected:
-	ParamList      m_paramList;
-	rbool          m_temporary;
-	ConvertStatus  m_state;
+	ParamList m_paramList;
+	bool m_temporary;
+	ConvertStatus m_state;
 
 private:
-	ruint            m_type;
-	ruint            m_referenceCount;
-	LPIResourceType  m_resType;
-	tstring          m_typeId;
+	std::size_t m_type;
+	std::size_t m_referenceCount;
+	LPIResourceType m_resType;
+	std::string m_typeId;
 
-	tstring traceTypeId();
+	std::string traceTypeId();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

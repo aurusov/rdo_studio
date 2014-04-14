@@ -23,7 +23,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // -------------------- ATOM_TYPE_CONVERTER
 // --------------------------------------------------------------------------------
 #define DECLARE_ATOM_TYPE_PARSER(Type, TypeName)    \
-tstring RDOType__##Type::name() const               \
+std::string RDOType__##Type::name() const           \
 {                                                   \
 	return TypeName;                                \
 }

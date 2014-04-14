@@ -26,7 +26,7 @@
 
 using namespace rdo::gui::tracer;
 
-ruint ChartDoc::s_titleIndex = 0;
+std::size_t ChartDoc::s_titleIndex = 0;
 
 ChartDoc::ChartDoc(const bool preview)
 	: m_minTimeOffset(1.7E+308)

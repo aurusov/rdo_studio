@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternIrregEvent
 // --------------------------------------------------------------------------------
-RDOPatternIrregEvent::RDOPatternIrregEvent(rbool trace)
+RDOPatternIrregEvent::RDOPatternIrregEvent(bool trace)
 	: RDOPattern(trace)
 	, m_timeCalc(NULL )
 {}
@@ -40,11 +40,11 @@ double RDOPatternIrregEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOIrregEvent
 // --------------------------------------------------------------------------------
-RDOIrregEvent::RDOIrregEvent(PTR(RDOPatternIrregEvent) pPattern, rbool trace, CREF(tstring) name)
+RDOIrregEvent::RDOIrregEvent(PTR(RDOPatternIrregEvent) pPattern, bool trace, CREF(std::string) name)
 	: RDOActivityPattern<RDOPatternIrregEvent>(pPattern, trace, name)
 {
-	setTrace  (trace    );
-	setTraceID(ruint(~0));
+	setTrace(trace);
+	setTraceID(std::size_t(~0));
 }
 
 void RDOIrregEvent::onStart(CREF(LPRDORuntime) pRuntime)
@@ -57,7 +57,7 @@ void RDOIrregEvent::onStop(CREF(LPRDORuntime) pRuntime)
 	pRuntime->removeTimePoint(this);
 }
 
-rbool RDOIrregEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOIrregEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 	return false;

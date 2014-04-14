@@ -61,10 +61,11 @@ private:
 typedef RDOCalcUnary<RDOValue, &RDOValue::operator-, OperatorType::OT_ARITHM> RDOCalcUMinus;
 
 //! Оператор праобразования вещественного числа в целое
-typedef RDOCalcUnary<rsint,    &RDOValue::getInt   , OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
+typedef RDOCalcUnary<int, &RDOValue::getInt, OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
 
 //! Преобразование вещественного в целое по типу lvalue
-CALC_SUB(RDOCalcDoubleToIntByResult, RDOCalc)
+PREDECLARE_POINTER(RDOCalcDoubleToIntByResult);
+class RDOCalcDoubleToIntByResult: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcDoubleToIntByResult)
 public:
@@ -73,14 +74,15 @@ public:
 private:
 	RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper);
 
-	rbool     m_round;
+	bool m_round;
 	LPRDOCalc m_pOperation;
 
 	DECLARE_ICalc;
 };
 
 //! Приведение к целому
-CALC_SUB(RDOCalcInt, RDOCalc)
+PREDECLARE_POINTER(RDOCalcInt);
+class RDOCalcInt: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcInt)
 private:

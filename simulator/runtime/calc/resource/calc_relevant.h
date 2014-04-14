@@ -20,35 +20,38 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Получить ресурс по ID релевантного ресурса
-CALC(RDOGetResourceByRelevantResourceID)
+PREDECLARE_POINTER(RDOGetResourceByRelevantResourceID);
+class RDOGetResourceByRelevantResourceID: public RDOCalc
 {
 DECLARE_FACTORY(RDOGetResourceByRelevantResourceID)
 private:
-	RDOGetResourceByRelevantResourceID(ruint relevantResourceID);
+	RDOGetResourceByRelevantResourceID(std::size_t relevantResourceID);
 
-	ruint m_relevantResourceID;
+	std::size_t m_relevantResourceID;
 
 	DECLARE_ICalc;
 };
 
 //! Удаление релевантного ресурса
-CALC(RDOEraseResRelCalc)
+PREDECLARE_POINTER(RDOEraseResRelCalc);
+class RDOEraseResRelCalc: public RDOCalc
 {
 DECLARE_FACTORY(RDOEraseResRelCalc)
 public:
-	CREF(tstring) getName() const;
+	CREF(std::string) getName() const;
 
 private:
-	RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName);
+	RDOEraseResRelCalc(std::size_t relResID, CREF(std::string) relResName);
 
-	ruint   m_relResID;
-	tstring m_relResName;
+	std::size_t m_relResID;
+	std::string m_relResName;
 
 	DECLARE_ICalc;
 };
 
 //! Возвращает ресурс групповой функции
-CALC(RDOCalcGetGroupFunctionResource)
+PREDECLARE_POINTER(RDOCalcGetGroupFunctionResource);
+class RDOCalcGetGroupFunctionResource: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetGroupFunctionResource)
 private:

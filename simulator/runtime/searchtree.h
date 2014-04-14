@@ -33,16 +33,16 @@ public:
 
 	virtual void createRootTreeNode(CREF(LPRDORuntime) pRuntime) = 0;
 
-	std::vector<TreeNode*>		m_OPEN;
-	RDODPTSearch*				m_dp;
-	TreeNode*					m_rootNode;
-	TreeNode*					m_targetNode;
-	LPRDORuntime				m_theRealSimulator;
-	int							m_nodesInGraphCount;
-	int							m_expandedNodesCount;
-	int							m_fullNodesCount;
-	boost::posix_time::ptime	m_ptime;
-	ruint						m_sizeof_dpt;
+	std::vector<TreeNode*> m_OPEN;
+	RDODPTSearch* m_dp;
+	TreeNode* m_rootNode;
+	TreeNode* m_targetNode;
+	LPRDORuntime m_theRealSimulator;
+	int m_nodesInGraphCount;
+	int m_expandedNodesCount;
+	int m_fullNodesCount;
+	boost::posix_time::ptime m_ptime;
+	std::size_t m_sizeof_dpt;
 
 	int getNodesCound() const;
 	int getNewNodeNumber();

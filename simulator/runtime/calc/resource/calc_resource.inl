@@ -18,7 +18,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOSetResourceParam
 // --------------------------------------------------------------------------------
 template <SetOperationType::Type setOperationType>
-inline RDOSetResourceParam<setOperationType>::RDOSetResourceParam(const LPRDOCalc& getResource, const ruint paramID, const LPRDOCalc& pCalc)
+inline RDOSetResourceParam<setOperationType>::RDOSetResourceParam(const LPRDOCalc& getResource, const std::size_t paramID, const LPRDOCalc& pCalc)
 	: m_getResource (getResource)
 	, m_paramID     (paramID )
 	, m_pCalc       (pCalc   )

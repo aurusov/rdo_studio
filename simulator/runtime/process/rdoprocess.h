@@ -68,12 +68,12 @@ public:
 	DECLARE_IPROCProcess;
 
 protected:
-	tstring                    m_name;
-	LPIPROCProcess             m_parent;
-	std::list<LPIPROCProcess>  m_child;
+	std::string m_name;
+	LPIPROCProcess m_parent;
+	std::list<LPIPROCProcess> m_child;
 
 private:
-	RDOPROCProcess(CREF(tstring) _name, CREF(LPRDORuntime) pRuntime);
+	RDOPROCProcess(CREF(std::string) _name, CREF(LPRDORuntime) pRuntime);
 	LPIResourceType m_pTransactType;
 };
 
@@ -83,7 +83,7 @@ PREDECLARE_POINTER(RDOPROCResource);
   \class   RDOPROCTransact
   \brief   Транзакт в РДО
 */
-CLASS_PARENT_OF(RDOPROCTransact, RDOResource)
+class RDOPROCTransact: public RDOResource
 {
 DECLARE_FACTORY(RDOPROCTransact);
 public:
@@ -96,7 +96,7 @@ public:
 	virtual LPRDOResource clone(CREF(LPRDORuntime) pRuntime) const;
 
 private:
-	RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool permanentFlag);
+	RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool permanentFlag);
 	virtual ~RDOPROCTransact();
 
 	LPIPROCBlock       m_block;
@@ -107,21 +107,21 @@ private:
   \class   RDOPROCResource
   \brief   Процессный ресурс РДО - обслуживает транзакты в процессах
 */
-CLASS_PARENT_OF(RDOPROCResource, RDOResource)
+class RDOPROCResource: public RDOResource
 {
 DECLARE_FACTORY(RDOPROCResource);
 friend class RDOPROCSeize;
 friend class RDOPROCRelease;
 
 public:
-	tstring whoAreYou();
+	std::string whoAreYou();
 	virtual LPRDOResource clone(CREF(LPRDORuntime) pRuntime) const;
 
 protected:
 	std::list<LPRDOPROCTransact> transacts;
 
 private:
-	RDOPROCResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool permanentFlag);
+	RDOPROCResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool permanentFlag);
 	virtual ~RDOPROCResource();
 };
 

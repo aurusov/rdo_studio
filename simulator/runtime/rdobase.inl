@@ -56,20 +56,20 @@ inline void RDOSimulatorBase::inc_cnt_choice_from()
 	++m_cnt_choice_from;
 }
 
-inline ruint RDOSimulatorBase::get_cnt_events()
+inline std::size_t RDOSimulatorBase::get_cnt_events()
 {
 	return m_cnt_events;
 }
 
-inline ruint RDOSimulatorBase::get_cnt_choice_from()
+inline std::size_t RDOSimulatorBase::get_cnt_choice_from()
 {
 	return m_cnt_choice_from;
 }
 
-inline ruint RDOSimulatorBase::getMSec(CREF(boost::posix_time::ptime) ptime)
+inline std::size_t RDOSimulatorBase::getMSec(CREF(boost::posix_time::ptime) ptime)
 {
 	boost::posix_time::ptime startTime = boost::posix_time::time_from_string("1970-01-01 00:00:00.000");
-	return (ruint)( ptime - startTime ).total_milliseconds();
+	return (std::size_t)( ptime - startTime ).total_milliseconds();
 }
 
 inline void RDOSimulatorBase::setCurrentTime(double value)

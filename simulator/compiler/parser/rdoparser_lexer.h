@@ -43,24 +43,24 @@ public:
 
 	CREF(LPRDOParser) parser() const;
 
-	void  enumBegin();
-	void  enumReset();
-	rbool enumEmpty();
+	void enumBegin();
+	void enumReset();
+	bool enumEmpty();
 
 	PTR(int)         m_lpval;
 	PTR(YYLTYPE)     m_lploc;
 
 protected:
-	virtual int  LexerInput (PTR(char)  buf, int max_size);
-	virtual void LexerOutput(CPTR(char) buf, int size    );
-	virtual void LexerError (CPTR(char) msg);
+	virtual int LexerInput(PTR(char) buf, int max_size);
+	virtual void LexerOutput(const char* buf, int size);
+	virtual void LexerError(const char* msg);
 
 private:
 	PTR(std::istream) m_yyin;
 	PTR(std::ostream) m_yyout;
-	LPRDOParser       m_pParser;
-	rbool             m_enumEmpty;
-	rsint             m_array_param_cnt;
+	LPRDOParser m_pParser;
+	bool m_enumEmpty;
+	int m_array_param_cnt;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

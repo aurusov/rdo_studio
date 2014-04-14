@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOGetResourceByRelevantResourceID
 // --------------------------------------------------------------------------------
-RDOGetResourceByRelevantResourceID::RDOGetResourceByRelevantResourceID(ruint relevantResourceID)
+RDOGetResourceByRelevantResourceID::RDOGetResourceByRelevantResourceID(std::size_t relevantResourceID)
 	: m_relevantResourceID(relevantResourceID)
 {}
 
@@ -41,7 +41,7 @@ RDOValue RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOEraseResRelCalc
 // --------------------------------------------------------------------------------
-RDOEraseResRelCalc::RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName)
+RDOEraseResRelCalc::RDOEraseResRelCalc(std::size_t relResID, CREF(std::string) relResName)
 	: m_relResID  (relResID  )
 	, m_relResName(relResName)
 {}
@@ -52,7 +52,7 @@ RDOValue RDOEraseResRelCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return RDOValue();
 }
 
-CREF(tstring) RDOEraseResRelCalc::getName() const
+CREF(std::string) RDOEraseResRelCalc::getName() const
 {
 	return m_relResName;
 }

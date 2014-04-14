@@ -26,7 +26,8 @@ PREDECLARE_POINTER(FuzzySet);
 PREDECLARE_POINTER(DefineArea);
 //! Область определения
 
-OBJECT(DefineArea)
+PREDECLARE_POINTER(DefineArea);
+class DefineArea: public rdo::counter_reference
 {
 DECLARE_FACTORY(DefineArea);
 public:
@@ -44,7 +45,8 @@ private:
 };
 
 //! Нечеткое множество
-OBJECT(FuzzySet)
+PREDECLARE_POINTER(FuzzySet);
+class FuzzySet: public rdo::counter_reference
 {
 DECLARE_FACTORY(FuzzySet);
 public:
@@ -61,8 +63,8 @@ public:
 	FuzzySetDefinition::iterator              begin      ();
 	FuzzySetDefinition::iterator              end        ();
 	LPFuzzySet                                clone      () const;
-	rbool                                     empty      () const;
-	rbool                                     inRange    (CREF(RDOValue) rdovalue);
+	bool                                      empty      () const;
+	bool                                      inRange    (CREF(RDOValue) rdovalue);
 	void                                      setValues  (CREF(FuzzySetDefinition) values);
 
 	            LPFuzzySet operator&& (CREF(LPFuzzySet) pFuzzyValue) const;
@@ -73,7 +75,7 @@ public:
 	/* 3.108*/  LPFuzzySet operator/  (CREF(LPFuzzySet) pFuzzyValue) const;
 
 
-	tstring getAsString() const;
+	std::string getAsString() const;
 private:
 	FuzzySet();
 	FuzzySet(CREF(LPDefineArea) pDefineArea);
@@ -118,11 +120,12 @@ public:
 };
 // ! Терм
 
-OBJECT (RDOFuzzyTerm)
+PREDECLARE_POINTER(RDOFuzzyTerm);
+class RDOFuzzyTerm: public rdo::counter_reference
 {
 DECLARE_FACTORY (RDOFuzzyTerm)
 public:
-	typedef tstring  termName;
+	typedef std::string termName;
 	typedef std::pair<termName,LPFuzzySet> Term;
 
 	CREF(LPFuzzySet)  getFuzzySetDefinition() const;
@@ -137,21 +140,22 @@ private:
 
 // !Лингвистическая переменная
 
-OBJECT (RDOLingvoVariable)
+PREDECLARE_POINTER(RDOLingvoVariable);
+class RDOLingvoVariable: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOLingvoVariable)
 public:
 	typedef std::map<RDOFuzzyTerm::Term::first_type, RDOFuzzyTerm::Term::second_type> TermSet;
-	typedef tstring nameOfVariable;
+	typedef std::string nameOfVariable;
 
-	TermSet::const_iterator            begin () const;
-	TermSet::const_iterator            end   () const;
+	TermSet::const_iterator begin() const;
+	TermSet::const_iterator end() const;
 
-	REF(LPFuzzySet)                    operator[] (tstring name);
+	REF(LPFuzzySet) operator[] (std::string name);
 	
-	void                               setName      (nameOfVariable);
-	nameOfVariable                     getName      () {return m_name;};
-	void                               append       (tstring name,CREF(LPFuzzySet) fuzzySet);
+	void setName(nameOfVariable);
+	nameOfVariable getName() {return m_name;};
+	void append(std::string name,CREF(LPFuzzySet) fuzzySet);
 
 private:
 	TermSet        m_set;
@@ -163,7 +167,8 @@ private:
 	virtual ~RDOLingvoVariable();
 };
 
-OBJECT (Statement)
+PREDECLARE_POINTER(Statement);
+class Statement: public rdo::counter_reference
 {
 DECLARE_FACTORY(Statement)
 public:

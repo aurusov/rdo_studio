@@ -37,10 +37,10 @@ public:
 	LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle);
 	virtual ~LogView();
 
-	void push_back (CREF(tstring) log );
-	void setText   (tstring       text);
-	void clear     ();
-	void selectLine(rsint index);
+	void push_back(CREF(std::string) log);
+	void setText(std::string text);
+	void clear();
+	void selectLine(int index);
 
 	bool getFocusOnly() const;
 	void setFocusOnly(bool value);
@@ -71,25 +71,25 @@ private:
 		const_reverse_iterator rbegin() const;
 		const_reverse_iterator rend  () const;
 
-		void   clear    ();
-		rsint  count    () const;
-		rsint  maxLegth () const;
-		void   setCursor(rsint pos, rsint max);
+		void clear();
+		int count() const;
+		int maxLegth() const;
+		void setCursor(int pos, int max);
 
-		const_iterator         findString (rsint index) const;
-		const_reverse_iterator rFindString(rsint index) const;
+		const_iterator findString(int index) const;
+		const_reverse_iterator rFindString(int index) const;
 
 	private:
-		List            m_list;
-		rsint           m_count;
-		List::iterator  m_cursorIt;
-		rsint           m_cursor;
-		rsint           m_maxLegth;
+		List m_list;
+		int m_count;
+		List::iterator m_cursorIt;
+		int m_cursor;
+		int m_maxLegth;
 	};
 
 	struct SubitemColors
 	{
-		typedef std::map<rsint, LogColorPair> List;
+		typedef std::map<int, LogColorPair> List;
 
 		List         m_colorList;
 		bool         m_addingSubitems;
@@ -101,51 +101,51 @@ private:
 
 	struct ScrollMetricVert: public ScrollMetric
 	{
-		rsint lastViewableLine;
+		int lastViewableLine;
 
 		ScrollMetricVert();
-		bool isVisible(rsint index) const;
-		bool applyInc (rsint delta);
+		bool isVisible(int index) const;
+		bool applyInc(int delta);
 	};
 
 	QAbstractScrollArea* m_pScrollArea;
-	StringList           m_strings;
-	LogStyle*            m_logStyle;
-	rsint                m_lineHeight;
-	rsint                m_charWidth;
-	rsint                m_selectedLine;
-	QMenu*               m_pPopupMenu;
-	ScrollMetric         m_SM_X;
-	ScrollMetricVert     m_SM_Y;
-	SubitemColors        m_subitemColors;
-	QRect                m_clientRect;
-	QRect                m_prevWindowRect;
-	rsint                m_fullRepaintLines;
-	bool                 m_focusOnly;
-	FindDialog*          m_pFindDialog;
+	StringList m_strings;
+	LogStyle* m_logStyle;
+	int m_lineHeight;
+	int m_charWidth;
+	int m_selectedLine;
+	QMenu* m_pPopupMenu;
+	ScrollMetric m_SM_X;
+	ScrollMetricVert m_SM_Y;
+	SubitemColors m_subitemColors;
+	QRect m_clientRect;
+	QRect m_prevWindowRect;
+	int m_fullRepaintLines;
+	bool m_focusOnly;
+	FindDialog* m_pFindDialog;
 	FindDialog::Settings m_findSettings;
-	bool                 m_drawLog;
-	QFont                m_font;
+	bool m_drawLog;
+	QFont m_font;
 
 	bool getItemColors(CREF(QString) item, LogColorPair &colors) const;
-	bool getItemColors(rsint index, LogColorPair &colors) const;
+	bool getItemColors(int index, LogColorPair &colors) const;
 
-	rsint selectedLine() const;
-	void  setSelectedLine(rsint selectedLine);
+	int selectedLine() const;
+	void setSelectedLine(int selectedLine);
 
-	QString     getString           (rsint index) const;
+	QString     getString           (int index) const;
 	QString     getSelected         () const;
 
 	QScrollBar& getVertScrollBar    ();
 	QScrollBar& getHorzScrollBar    ();
 	void        updateScrollBars    ();
-	bool        scrollVertically    (rsint inc);
-	bool        scrollHorizontally  (rsint inc);
+	bool        scrollVertically    (int inc);
+	bool        scrollHorizontally  (int inc);
 
-	bool        makeLineVisible     (rsint index);
-	bool        isFullyVisible      (rsint index) const;
-	QRect       getLineRect         (rsint index) const;
-	void        repaintLine         (rsint index);
+	bool        makeLineVisible     (int index);
+	bool        isFullyVisible      (int index) const;
+	QRect       getLineRect         (int index) const;
+	void        repaintLine         (int index);
 
 	void        setFont             ();
 	void        updateActionFind    (bool activated);
@@ -153,9 +153,9 @@ private:
 	void        updateCoordStatusBar(bool activated);
 	bool        canCopy             () const;
 
-	rsint       find                (bool searchDown);
-	void        onFindDlgFind       (CREF(FindDialog::Settings) settings);
-	void        onFindDlgClose      ();
+	int find(bool searchDown);
+	void onFindDlgFind(CREF(FindDialog::Settings) settings);
+	void onFindDlgClose();
 
 	virtual void resizeEvent     (QResizeEvent* pEvent);
 	virtual void paintEvent      (QPaintEvent*  pEvent);

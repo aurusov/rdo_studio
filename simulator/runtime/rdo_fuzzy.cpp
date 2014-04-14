@@ -210,16 +210,16 @@ LPFuzzySet MemberFunctionProperties::u_scale(CREF(LPFuzzySet) pSet, double scale
 LPFuzzySet MemberFunctionProperties::u_log  (CREF(LPFuzzySet) pSet)               { return ext_unary(fun_u_log,             pSet); }
 
 
-tstring FuzzySet::getAsString() const
+std::string FuzzySet::getAsString() const
 {
 	if (empty())
 		return "[empty value]";
 
-	tstring res = "";
+	std::string res = "";
 	FuzzySetDefinition::const_iterator it = begin();
 	while (it != end())
 	{
-		rbool output = it->second > 0.0;
+		const bool output = it->second > 0.0;
 		if (output)
 			res += rdo::format("<%s/%.2lf>", it->first.getAsString().c_str(), it->second);
 

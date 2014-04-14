@@ -60,8 +60,8 @@ private: \
 
 #define DEFINE_OBJECT_CONTAINER_WITHNAME(TYPE, NAME) \
 public: \
-	const TYPE find##NAME  (CREF(tstring) name) const; \
-	rbool      remove##NAME(const TYPE item);
+	const TYPE find##NAME  (CREF(std::string) name) const; \
+	bool remove##NAME(const TYPE item);
 
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
@@ -98,36 +98,36 @@ public:
 
 	rdo::runtime::LPRDORuntime runtime() { return m_pRuntime; }
 
-	rbool             isPattern       () const { return m_pattern;     }
-	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
+	bool isPattern() const { return m_pattern; }
+	REF(FUNGroupList) getFUNGroupStack() { return m_allFUNGroup; }
 
 	void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkDPTName         (CREF(RDOParserSrcInfo) src_info);
 
-	void  insertChanges        (CREF(tstring) name, CREF(tstring) value);
+	void insertChanges(CREF(std::string) name, CREF(std::string) value);
 
-	rbool isHaveKWResources    ()            const { return m_have_kw_Resources;     }
-	void  setHaveKWResources   (rbool value)       { m_have_kw_Resources = value;    }
-	rbool isHaveKWResourcesEnd ()            const { return m_have_kw_ResourcesEnd;  }
-	void  setHaveKWResourcesEnd(rbool value)       { m_have_kw_ResourcesEnd = value; }
+	bool isHaveKWResources() const { return m_have_kw_Resources; }
+	void setHaveKWResources(bool value) { m_have_kw_Resources = value; }
+	bool isHaveKWResourcesEnd() const { return m_have_kw_ResourcesEnd; }
+	void setHaveKWResourcesEnd(bool value) { m_have_kw_ResourcesEnd = value; }
 
-	rbool isCurrentDPTSearch   ();
-	rbool isCurrentDPTPrior    ();
+	bool isCurrentDPTSearch();
+	bool isCurrentDPTPrior();
 
-	ruint getRTP_id     () const { return m_allRTPResType.size()  + 1; }
-	ruint getRSS_id     () const { return m_allRSSResource.size() + 0; }
-	ruint getPAT_id     () const { return m_allPATPattern.size()  + 0; }
-	ruint getPMD_id     () const { return m_allPMDResult.size()   + 1; }
-	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
-	ruint getNumberFrame() const { return m_allFRMFrame.size()    + 0; }
+	std::size_t getRTP_id     () const { return m_allRTPResType.size()  + 1; }
+	std::size_t getRSS_id     () const { return m_allRSSResource.size() + 0; }
+	std::size_t getPAT_id     () const { return m_allPATPattern.size()  + 0; }
+	std::size_t getPMD_id     () const { return m_allPMDResult.size()   + 1; }
+	std::size_t getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
+	std::size_t getNumberFrame() const { return m_allFRMFrame.size()    + 0; }
 
-	tstring getModelStructure();
-	tstring getChanges       () const;
+	std::string getModelStructure();
+	std::string getChanges() const;
 
-	LPRDOSMR getSMR() const              { return m_pSMR;                }
-	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
-	rbool    hasSMR() const              { return m_pSMR ? true : false; }
+	LPRDOSMR getSMR() const { return m_pSMR; }
+	void setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR; }
+	bool hasSMR() const { return m_pSMR ? true : false; }
 
 	CREF(Error) error() const { return m_error; }
 	 REF(Error) error()       { return m_error; }
@@ -181,9 +181,9 @@ public:
 	void insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
 
 	static rdo::converter::smr2rdox::RDOFileTypeIn getFileToParse();
-	static ruint                                   lexer_loc_line();
-	static ruint                                   lexer_loc_pos ();
-	static PTR(Converter)                          s_converter   ();
+	static std::size_t lexer_loc_line();
+	static std::size_t lexer_loc_pos();
+	static PTR(Converter) s_converter();
 
 protected:
 	LPRDOParserItem m_pParserItem;
@@ -199,7 +199,7 @@ protected:
 	{
 		return getContainer()->end();
 	}
-	RDOParserContainer::Iterator find(ruint index)
+	RDOParserContainer::Iterator find(std::size_t index)
 	{
 		return getContainer()->find(index);
 	}
@@ -207,13 +207,13 @@ protected:
 	rdo::runtime::LPRDORuntime m_pRuntime;
 
 private:
-	LPRDOSMR        m_pSMR;
-	rbool           m_have_kw_Resources;
-	rbool           m_have_kw_ResourcesEnd;
-	Error           m_error;
-	Stack           m_movementObjectList;
+	LPRDOSMR m_pSMR;
+	bool m_have_kw_Resources;
+	bool m_have_kw_ResourcesEnd;
+	Error m_error;
+	Stack m_movementObjectList;
 	PreCastTypeList m_preCastTypeList;
-	rbool           m_pattern;
+	bool m_pattern;
 
 	template <class T>
 	void howIsIt()
@@ -223,10 +223,10 @@ private:
 
 	struct ChangesData
 	{
-		tstring m_name;
-		tstring m_value;
+		std::string m_name;
+		std::string m_value;
 
-		ChangesData(CREF(tstring) name, CREF(tstring) value)
+		ChangesData(CREF(std::string) name, CREF(std::string) value)
 			: m_name (name )
 			, m_value(value)
 		{}
@@ -297,7 +297,7 @@ class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
 public:
 	typedef std::map<rdo::converter::smr2rdox::RDOFileTypeIn, boost::filesystem::path> FileList;
 
-	rbool          parseSMR(CREF(boost::filesystem::path) smrFullFileName, REF(boost::filesystem::path) modelName);
+	bool parseSMR(CREF(boost::filesystem::path) smrFullFileName, REF(boost::filesystem::path) modelName);
 	CREF(FileList) getFileList() const;
 
 private:

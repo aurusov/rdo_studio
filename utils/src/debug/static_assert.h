@@ -20,8 +20,8 @@ namespace rdo {
 //! \struct  rdo::CompileTimeError
 //! \brief   Шаблонный класс для генерации ошибки компиляции
 //! \details Используется через макрос \ref STATIC_ASSERT
-//! \tparam  rbool - если \b true, ошибки нет, если \b false - ошибка есть
-template <rbool>
+//! \tparam  bool - если \b true, ошибки нет, если \b false - ошибка есть
+template <bool>
 struct CompileTimeError;
 
 //! Специализация шаблонного класса \ref rdo::CompileTimeError для описание ситуации \b отсутствия ошибки компиляции

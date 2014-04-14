@@ -23,14 +23,14 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- UpdateInsert
 // --------------------------------------------------------------------------------
-CLASS(UpdateInsert): INSTANCE_OF(DocUpdate)
+class UpdateInsert: public DocUpdate
 {
 DECLARE_FACTORY(UpdateInsert)
 private:
-	UpdateInsert(CREF(Position) pos, CREF(tstring) value, IDocument::Type file = IDocument::UNDEFINED);
+	UpdateInsert(CREF(Position) pos, CREF(std::string) value, IDocument::Type file = IDocument::UNDEFINED);
 
 	Position m_pos;
-	tstring  m_value;
+	std::string m_value;
 
 	DECLARE_IDocUpdate;
 };
@@ -38,7 +38,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- UpdateDelete
 // --------------------------------------------------------------------------------
-CLASS(UpdateDelete): INSTANCE_OF(DocUpdate)
+class UpdateDelete: public DocUpdate
 {
 DECLARE_FACTORY(UpdateDelete)
 private:
@@ -53,11 +53,11 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- UpdateReplace
 // --------------------------------------------------------------------------------
-CLASS(UpdateReplace): INSTANCE_OF(DocUpdate)
+class UpdateReplace: public DocUpdate
 {
 DECLARE_FACTORY(UpdateReplace)
 private:
-	UpdateReplace(CREF(Position) posFrom, CREF(Position) posTo, CREF(tstring) value, IDocument::Type file = IDocument::UNDEFINED);
+	UpdateReplace(CREF(Position) posFrom, CREF(Position) posTo, CREF(std::string) value, IDocument::Type file = IDocument::UNDEFINED);
 
 	LPDocUpdate pDelete;
 	LPDocUpdate pInsert;
@@ -68,7 +68,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- UpdateMove
 // --------------------------------------------------------------------------------
-CLASS(UpdateMove): INSTANCE_OF(DocUpdate)
+class UpdateMove: public DocUpdate
 {
 DECLARE_FACTORY(UpdateMove)
 private:
@@ -89,7 +89,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- UpdateSwap
 // --------------------------------------------------------------------------------
-CLASS(UpdateSwap): INSTANCE_OF(DocUpdate)
+class UpdateSwap: public DocUpdate
 {
 DECLARE_FACTORY(UpdateSwap)
 private:
@@ -104,7 +104,7 @@ private:
 	Position m_pos2Begin;
 	Position m_pos2End;
 
-	void insert(CREF(Position) from, CREF(ruint)  size, REF(Position) posBegin, REF(Position) posEnd);
+	void insert(CREF(Position) from, CREF(std::size_t) size, REF(Position) posBegin, REF(Position) posEnd);
 	void remove(CREF(Position) from, CREF(Position) to, REF(Position) posBegin, REF(Position) posEnd);
 
 	DECLARE_IDocUpdate;

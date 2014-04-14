@@ -23,33 +23,36 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Передача транзакта в процесс и его запуск
-CALC(RDOCalcProcessControl)
+PREDECLARE_POINTER(RDOCalcProcessControl);
+class RDOCalcProcessControl: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcProcessControl)
 public:
 protected:
-	RDOCalcProcessControl(LPIPROCBlock pBlock, rsint relResNum);
+	RDOCalcProcessControl(LPIPROCBlock pBlock, int relResNum);
 	DECLARE_ICalc;
 private:
-	LPIPROCBlock  m_Block;
-	rsint         m_relResNum;
+	LPIPROCBlock m_Block;
+	int m_relResNum;
 };
 
 //! Выполнение блока ASSIGN в процессе
-CALC(RDOCalcProcAssign)
+PREDECLARE_POINTER(RDOCalcProcAssign);
+class RDOCalcProcAssign: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcProcAssign)
 protected:
-	RDOCalcProcAssign(CREF(LPRDOCalc) pCalc, ruint res, ruint param);
+	RDOCalcProcAssign(CREF(LPRDOCalc) pCalc, std::size_t res, std::size_t param);
 	DECLARE_ICalc;
 private:
 	LPRDOCalc m_pCalc;
-	ruint     m_res;
-	ruint     m_param;
+	std::size_t m_res;
+	std::size_t m_param;
 };
 
 //! Получение значения терминального счетчика
-CALC(RDOCalcGetTermNow)
+PREDECLARE_POINTER(RDOCalcGetTermNow);
+class RDOCalcGetTermNow: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetTermNow)
 DECLARE_ICalc;

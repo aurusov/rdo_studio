@@ -37,7 +37,7 @@ LocalVariable::LocalVariable(CREF(LPRDOValue) pName, CREF(LPExpression) pExpress
 LocalVariable::~LocalVariable()
 {}
 
-CREF(tstring) LocalVariable::getName() const
+CREF(std::string) LocalVariable::getName() const
 {
 	return m_pName->value().getIdentificator();
 }
@@ -87,7 +87,7 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 	m_variableList.insert(VariableList::value_type(pVariable->getName(), pVariable));
 }
 
-LPLocalVariable LocalVariableList::findLocalVariable(CREF(tstring) name) const
+LPLocalVariable LocalVariableList::findLocalVariable(CREF(std::string) name) const
 {
 	VariableList::const_iterator it = m_variableList.find(name);
 	return it != m_variableList.end() ? it->second : LPLocalVariable(NULL);
@@ -116,13 +116,13 @@ LPLocalVariableList LocalVariableListStack::top() const
 	return m_pVariableListStack.back();
 }
 
-LPLocalVariable LocalVariableListStack::findLocalVariable(CREF(tstring) name) const
+LPLocalVariable LocalVariableListStack::findLocalVariable(CREF(std::string) name) const
 {
-	STL_FOR_ALL_CONST(m_pVariableListStack, it)
+	for (const auto& stack: m_pVariableListStack)
 	{
-		if ((*it)->findLocalVariable(name))
+		if (stack->findLocalVariable(name))
 		{
-			return (*it)->findLocalVariable(name);
+			return stack->findLocalVariable(name);
 		}
 	}
 	return NULL;

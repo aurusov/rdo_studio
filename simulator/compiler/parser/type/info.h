@@ -21,7 +21,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- TypeInfo
 // --------------------------------------------------------------------------------
-OBJECT(TypeInfo)
+PREDECLARE_POINTER(TypeInfo);
+class TypeInfo: public rdo::counter_reference
 {
 DECLARE_FACTORY(TypeInfo)
 public:

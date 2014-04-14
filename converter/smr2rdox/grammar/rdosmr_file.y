@@ -316,8 +316,8 @@ smr_descr
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
 	{
 #ifdef CORBA_ENABLE
-		tstring alias = CONVERTER->stack().pop<RDOValue>($3)->value().getIdentificator();
-		tstring model = CONVERTER->stack().pop<RDOValue>($5)->value().getIdentificator();
+		const std::string alias = CONVERTER->stack().pop<RDOValue>($3)->value().getIdentificator();
+		const std::string model = CONVERTER->stack().pop<RDOValue>($5)->value().getIdentificator();
 		LPRDOSMR pSMR = CONVERTER->getSMR();
 		ASSERT(pSMR);
 		pSMR->setExternalModelName(alias, model);

@@ -17,7 +17,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-RDOResourceTypeList::RDOResourceTypeList(ruint number, CREF(LPRDORuntime) pRuntime)
+RDOResourceTypeList::RDOResourceTypeList(std::size_t number, CREF(LPRDORuntime) pRuntime)
 	: RDOType           (t_pointer)
 	, RDOTraceableObject(false, number, rdo::toString(number + 1))
 {
@@ -36,7 +36,7 @@ void RDOResourceTypeList::setFactoryMethod(const Create& create)
 	m_create = create;
 }
 
-LPRDOResource RDOResourceTypeList::createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
+LPRDOResource RDOResourceTypeList::createRes(CREF(LPRDORuntime) pRuntime, std::size_t resID, CREF(std::vector<RDOValue>) paramsCalcs, bool traceFlag, bool permanentFlag)
 {
 	ASSERT(m_create);
 

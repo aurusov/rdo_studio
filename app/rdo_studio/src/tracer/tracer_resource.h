@@ -30,7 +30,7 @@ public:
 	CREF(LPResource) getResource () const;
 	ParamInfo*       getParamInfo() const;
 
-	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
+	virtual void getCaptions(std::vector<std::string>& captions, const int valueCount) const;
 
 protected:
 	ParamInfo*  paramInfo;
@@ -62,7 +62,7 @@ public:
 	void addParam(CREF(LPParam) pParam);
 	LPParam getParam(unsigned int index) const;
 	int getParamIndex(CREF(LPParam) pParam) const;
-	void setParams(tstring& line, Time* const time, const int eventIndex, const bool erasing = false);
+	void setParams(std::string& line, Time* const time, const int eventIndex, const bool erasing = false);
 	void setErased(const bool value);
 	bool isErased() const;
 

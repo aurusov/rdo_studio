@@ -14,7 +14,7 @@
 
 namespace rdo {
 
-event::event(CREF(tstring) name, etime time, types type) :
+event::event(CREF(std::string) name, etime time, types type) :
 	m_name(name), m_time(time), m_type(type)
 {
 }
@@ -23,7 +23,7 @@ event::~event()
 {
 }
 
-void event::setName(CREF(tstring) name)
+void event::setName(CREF(std::string) name)
 {
 	m_name = name;
 }
@@ -33,7 +33,7 @@ void event::setTime(double time)
 	m_time =  time;
 }
 
-tstring event::getName() const
+std::string event::getName() const
 {
 	return m_name;
 }

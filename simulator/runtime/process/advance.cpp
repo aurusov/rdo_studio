@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/advance.h"
 #include "simulator/runtime/calc/calc_base.h"
@@ -25,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAdvance
 // --------------------------------------------------------------------------------
-rbool RDOPROCAdvance::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCAdvance::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if (!m_transacts.empty())
 	{

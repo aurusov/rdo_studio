@@ -18,14 +18,16 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Получение текущего модельного времени
-CALC(RDOCalcGetTimeNow)
+PREDECLARE_POINTER(RDOCalcGetTimeNow);
+class RDOCalcGetTimeNow: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetTimeNow)
 DECLARE_ICalc;
 };
 
 //! Получение реального времени работы модели
-CALC(RDOCalcGetSeconds)
+PREDECLARE_POINTER(RDOCalcGetSeconds);
+class RDOCalcGetSeconds: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetSeconds)
 DECLARE_ICalc;

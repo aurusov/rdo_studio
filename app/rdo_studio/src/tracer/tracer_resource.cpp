@@ -44,7 +44,7 @@ ParamInfo* Param::getParamInfo() const
 		: NULL;
 }
 
-void Param::getCaptions(std::vector<tstring>& captions, const int valueCount) const
+void Param::getCaptions(std::vector<std::string>& captions, const int valueCount) const
 {
 	switch (getParamInfo()->getParamType())
 	{
@@ -155,14 +155,14 @@ int Resource::getParamIndex(CREF(LPParam) pParam) const
 	return -1;
 }
 
-void Resource::setParams(tstring& line, Time* const pTime, const int eventIndex, const bool erasing)
+void Resource::setParams(std::string& line, Time* const pTime, const int eventIndex, const bool erasing)
 {
 	int count = m_paramList.size();
 	for (int i = 0; i < count; i++)
 	{
 		Value* pPrevValue;
 		m_paramList.at(i)->getLastValue(pPrevValue);
-		tstring nextValue = g_pTracer->getNextValue(line);
+		std::string nextValue = g_pTracer->getNextValue(line);
 		double newValue;
 		if (erasing)
 		{

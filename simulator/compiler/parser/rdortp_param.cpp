@@ -29,7 +29,7 @@ RDORTPParam::RDORTPParam(CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault, CREF
 RDORTPParam::~RDORTPParam()
 {}
 
-CREF(tstring) RDORTPParam::name() const
+CREF(std::string) RDORTPParam::name() const
 {
 	return RDOParam::name();
 }

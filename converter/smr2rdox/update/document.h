@@ -31,8 +31,10 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- Document
 // --------------------------------------------------------------------------------
-OBJECT(Document)
-	IS IMPLEMENTATION_OF(IDocument)
+PREDECLARE_POINTER(Document);
+class Document
+	: public rdo::counter_reference
+	, public IDocument
 {
 DECLARE_FACTORY(Document)
 public:
@@ -54,13 +56,13 @@ private:
 	public:
 		typedef std::vector<char> Buffer;
 
-		void    init  (REF(std::ifstream) stream);
-		void    get   (REF(std::ofstream) stream) const;
+		void init(REF(std::ifstream) stream);
+		void get(REF(std::ofstream) stream) const;
 
-		void    insert(ruint to, CREF(tstring) value);
-		void    remove(ruint from, ruint to);
+		void insert(std::size_t to, CREF(std::string) value);
+		void remove(std::size_t from, std::size_t to);
 
-		tstring get   (ruint from, ruint to);
+		std::string get(std::size_t from, std::size_t to);
 
 	private:
 		Buffer m_buffer;
@@ -71,8 +73,8 @@ private:
 	typedef std::map<Type, LPMemoryStream>   MemoryFileList;
 	typedef std::map<TypeOut, LPFileStream>  StreamFileList;
 
-	typedef std::pair<LPDocUpdate, rbool> Update;
-	typedef std::list<Update>             UpdateContainer;
+	typedef std::pair<LPDocUpdate, bool> Update;
+	typedef std::list<Update> UpdateContainer;
 
 	boost::filesystem::path  m_filePath;
 	boost::filesystem::path  m_modelName;

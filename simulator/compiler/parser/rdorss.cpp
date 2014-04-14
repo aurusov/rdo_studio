@@ -29,7 +29,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 const std::string RDORSSResource::GET_RESOURCE = "resource_expression";
 
-RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id)
+RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, std::size_t id)
 	: RDOParserSrcInfo(src_info                                      )
 	, m_pResType      (pResType                                      )
 	, m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)
@@ -69,7 +69,7 @@ Context::FindResult RDORSSResource::onFindContext(const std::string& method, con
 	{
 		const std::string paramName = params.identifier();
 
-		ruint parNumb = getType()->getRTPParamNumber(paramName);
+		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 		{
 			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Неизвестный параметр ресурса: %s", paramName.c_str()));
@@ -174,7 +174,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 	m_currParam++;
 }
 
-rbool RDORSSResource::defined() const
+bool RDORSSResource::defined() const
 {
 	return m_currParam == getType()->getParams().end();
 }
@@ -183,9 +183,9 @@ std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalc() const
 {
 	std::vector<rdo::runtime::LPRDOCalc> calcList;
 	std::vector<rdo::runtime::LPRDOCalc> paramList;
-	STL_FOR_ALL_CONST(params(), it)
+	for (const auto& param: params())
 	{
-		paramList.push_back(it->param()->calc());
+		paramList.push_back(param.param()->calc());
 	}
 
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(

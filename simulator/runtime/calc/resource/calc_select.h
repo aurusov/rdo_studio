@@ -23,7 +23,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Базовая групповая функция
-CALC_SUB(RDOFunCalcSelect, RDOFunCalcGroup)
+PREDECLARE_POINTER(RDOFunCalcSelect);
+class RDOFunCalcSelect: public RDOFunCalcGroup
 {
 DECLARE_FACTORY(RDOFunCalcSelect)
 public:
@@ -41,7 +42,8 @@ private:
 };
 
 //! Базовая класс для операторов Select
-CALC_SUB(RDOFunCalcSelectBase, RDOFunCalc)
+PREDECLARE_POINTER(RDOFunCalcSelectBase);
+class RDOFunCalcSelectBase: public RDOFunCalc
 {
 protected:
 	RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition);
@@ -54,30 +56,32 @@ protected:
   \def     DEFINE_CALC_SELECT_GROUP
   \brief   Select-группа
 */
-#define DEFINE_CALC_SELECT_GROUP(CalcName) \
-CALC_SUB(RDOFunCalcSelect##CalcName, RDOFunCalcSelectBase) \
-{ \
-DECLARE_FACTORY(RDOFunCalcSelect##CalcName) \
-private: \
+#define DEFINE_CALC_SELECT_GROUP(CalcName)                    \
+PREDECLARE_POINTER(RDOFunCalcSelect##CalcName);               \
+class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase \
+{                                                             \
+DECLARE_FACTORY(RDOFunCalcSelect##CalcName)                   \
+private:                                                      \
 	RDOFunCalcSelect##CalcName(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition) \
-		: RDOFunCalcSelectBase(pSelect, pCondition) \
-	{} \
-	DECLARE_ICalc; \
+		: RDOFunCalcSelectBase(pSelect, pCondition)           \
+	{}                                                        \
+	DECLARE_ICalc;                                            \
 };
 
 /*!
   \def     DEFINE_CALC_SELECT_METHOD
   \brief   Select-метод
 */
-#define DEFINE_CALC_SELECT_METHOD(CalcName) \
-CALC_SUB(RDOFunCalcSelect##CalcName, RDOFunCalcSelectBase) \
-{ \
-DECLARE_FACTORY(RDOFunCalcSelect##CalcName) \
-private: \
+#define DEFINE_CALC_SELECT_METHOD(CalcName)                      \
+PREDECLARE_POINTER(RDOFunCalcSelect##CalcName);                  \
+class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase    \
+{                                                                \
+DECLARE_FACTORY(RDOFunCalcSelect##CalcName)                      \
+private:                                                         \
 	RDOFunCalcSelect##CalcName(CREF(LPRDOFunCalcSelect) pSelect) \
-		: RDOFunCalcSelectBase(pSelect, NULL) \
-	{} \
-	DECLARE_ICalc; \
+		: RDOFunCalcSelectBase(pSelect, NULL)                    \
+	{}                                                           \
+	DECLARE_ICalc;                                               \
 };
 
 /*!

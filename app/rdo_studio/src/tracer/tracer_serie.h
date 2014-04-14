@@ -61,7 +61,7 @@ public:
 	ValuesList::const_iterator end  () const;
 
 	void getLastValue(Value*& val) const;
-	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
+	virtual void getCaptions(std::vector<std::string>& captions, const int valueCount) const;
 
 	void drawSerie(ChartView* const pView,
 	               QPainter& painter,
@@ -89,9 +89,9 @@ protected:
 	mutable double m_minValue;
 	mutable double m_maxValue;
 
-	void getCaptionsInt   (std::vector<tstring>& captions, const int valueCount) const;
-	void getCaptionsDouble(std::vector<tstring>& captions, const int valueCount) const;
-	void getCaptionsBool  (std::vector<tstring>& captions, const int valueCount) const;
+	void getCaptionsInt(std::vector<std::string>& captions, const int valueCount) const;
+	void getCaptionsDouble(std::vector<std::string>& captions, const int valueCount) const;
+	void getCaptionsBool(std::vector<std::string>& captions, const int valueCount) const;
 
 private:
 	typedef  std::vector<ChartDoc*>  DocumentList;

@@ -55,7 +55,7 @@ rdo::runtime::RDOType::TypeID FunctionParamType::typeID() const
 	return rdo::runtime::RDOType::t_unknow;
 }
 
-tstring FunctionParamType::name() const
+std::string FunctionParamType::name() const
 {
 	return src_text();
 }
@@ -147,7 +147,7 @@ CREF(LPFunctionParamType) FunctionType::paramType() const
 	return m_pParamType;
 }
 
-tstring FunctionType::name() const
+std::string FunctionType::name() const
 {
 	return src_text();
 }

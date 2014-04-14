@@ -22,14 +22,14 @@ template<class T>
 class stack
 {
 public:
-	void    push  (CREF(T) item);
-	void    pop   ();
+	void push(CREF(T) item);
+	void pop();
 
-	rbool   empty () const;
-	ruint   size  () const;
+	bool empty() const;
+	std::size_t size() const;
 
-	CREF(T) top   () const;
-	 REF(T) top   ();
+	CREF(T) top() const;
+	 REF(T) top();
 
 private:
 	typedef std::list<T> Container;

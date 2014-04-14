@@ -56,7 +56,7 @@ inline REF(T) RDOValue::__get()
 template <class T>
 inline CREF(T) RDOValue::__get() const
 {
-	return *reinterpret_cast<CPTR(T)>(&m_buffer);
+	return *reinterpret_cast<const T*>(&m_buffer);
 }
 
 template <class T>

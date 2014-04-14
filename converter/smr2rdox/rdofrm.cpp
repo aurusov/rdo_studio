@@ -67,18 +67,18 @@ void RDOFRMFrame::setShowIfBlock(CREF(Seek) firstSeek)
 	m_lastSeek.reset();
 }
 
-void RDOFRMFrame::addItem(CREF(rdo::runtime::LPRDOCalc), ruint lastSeek)
+void RDOFRMFrame::addItem(CREF(rdo::runtime::LPRDOCalc), std::size_t lastSeek)
 {
 	++m_itemCount;
 	m_lastSeek = lastSeek;
 }
 
-void RDOFRMFrame::setFrameConditionPos(ruint firstSeek, ruint lastSeek)
+void RDOFRMFrame::setFrameConditionPos(std::size_t firstSeek, std::size_t lastSeek)
 {
 	m_frameConditionPos = std::make_pair(firstSeek, lastSeek);
 }
 
-void RDOFRMFrame::onAfterBackPicture(ruint lastSeek)
+void RDOFRMFrame::onAfterBackPicture(std::size_t lastSeek)
 {
 	if (!m_frameConditionPos.is_initialized())
 		return;

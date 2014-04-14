@@ -70,21 +70,21 @@ Not_Exist?1 Not_For_All?1 Power?1 Round?1 Sin?1 Sqrt?1 Tan?1 Select?1 Size?1 Emp
 Parser::~Parser()
 {}
 
-tstring Parser::getAllKW() const
+std::string Parser::getAllKW() const
 {
 	return rdo::format("%s %s %s %s", kw0.c_str(), kw1.c_str(), kw2.c_str(), kw3.c_str());
 }
 
-tstring Parser::convertToLexer(CREF(tstring) kw)
+std::string Parser::convertToLexer(CREF(std::string) kw)
 {
-	tstring s = kw;
-	while (s.find('?') != tstring::npos)
+	std::string s = kw;
+	while (s.find('?') != std::string::npos)
 	{
-		tstring::size_type pos1 = s.find('?');
-		tstring::size_type pos2 = s.find(' ', pos1);
+		std::string::size_type pos1 = s.find('?');
+		std::string::size_type pos2 = s.find(' ', pos1);
 		s.erase(pos1, pos2 - pos1);
 	}
-	tstring str_big = boost::algorithm::to_lower_copy(s);
+	std::string str_big = boost::algorithm::to_lower_copy(s);
 	return str_big + " " + s;
 }
 

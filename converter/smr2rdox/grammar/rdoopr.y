@@ -311,7 +311,7 @@ opr_keyb
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
-		tstring key = CONVERTER->stack().pop<RDOValue>($2)->value().getString();
+		const std::string key = CONVERTER->stack().pop<RDOValue>($2)->value().getString();
 		pOperation->addHotKey(key, @2);
 		$$ = CONVERTER->stack().push(pOperation);
 	}
@@ -319,7 +319,7 @@ opr_keyb
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
-		tstring key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
+		const std::string key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
 		pOperation->addHotKey(key, @3);
 		$$ = CONVERTER->stack().push(pOperation);
 	}
@@ -679,7 +679,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
 		pFunParams->setSrcText(funName + "()");
@@ -691,7 +691,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + "(" + pFunParams->src_text() + ")");

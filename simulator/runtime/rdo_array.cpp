@@ -72,31 +72,31 @@ void RDOArrayValue::erase(CREF(LPRDOArrayIterator) pFirst, CREF(LPRDOArrayIterat
 	m_container.erase(pFirst->getIterator(), pLast->getIterator());
 }
 
-tstring RDOArrayValue::getAsString() const
+std::string RDOArrayValue::getAsString() const
 {
-	tstring result("[");
-	STL_FOR_ALL_CONST(m_container, it)
+	std::string result("[");
+	for (Container::const_iterator item = m_container.begin(); item != m_container.end(); ++item)
 	{
-		if (it == m_container.begin())
+		if (item == m_container.begin())
 		{
-			result = rdo::format("%s%s", result.c_str(), it->getAsString().c_str());
+			result = rdo::format("%s%s", result.c_str(), item->getAsString().c_str());
 		}
 		else
 		{
-			result = rdo::format("%s, %s", result.c_str(), it->getAsString().c_str());
+			result = rdo::format("%s, %s", result.c_str(), item->getAsString().c_str());
 		}
 	}
 	return rdo::format("%s]", result.c_str());
 }
 
-ruint RDOArrayValue::size() const
+std::size_t RDOArrayValue::size() const
 {
 	return m_container.size();
 }
 
 CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index) const
 {
-	ruint ind = index.getUInt();
+	const std::size_t ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
 		throw RDORuntimeException("Выход за пределы массива");
@@ -106,7 +106,7 @@ CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index) const
 
 void RDOArrayValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 {
-	ruint ind = index.getUInt();
+	const std::size_t ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
 		throw RDORuntimeException("Выход за пределы массива");
@@ -158,13 +158,13 @@ CREF(RDOValue) RDOArrayIterator::getValue() const
 	return *m_iterator;
 }
 
-LPRDOArrayIterator RDOArrayIterator::preInc(rsint delta)
+LPRDOArrayIterator RDOArrayIterator::preInc(int delta)
 {
 	m_iterator += delta;
 	return LPRDOArrayIterator(this);
 }
 
-LPRDOArrayIterator RDOArrayIterator::postInc(rsint delta)
+LPRDOArrayIterator RDOArrayIterator::postInc(int delta)
 {
 	LPRDOArrayIterator pPrev = rdo::Factory<RDOArrayIterator>::create(m_iterator);
 	ASSERT(pPrev);
@@ -177,7 +177,7 @@ LPRDOArrayIterator RDOArrayIterator::next()
 	return preInc(1);
 }
 
-rbool RDOArrayIterator::equal(CREF(LPRDOArrayIterator) pIterator) const
+bool RDOArrayIterator::equal(CREF(LPRDOArrayIterator) pIterator) const
 {
 	ASSERT(pIterator);
 	return m_iterator == pIterator->m_iterator;

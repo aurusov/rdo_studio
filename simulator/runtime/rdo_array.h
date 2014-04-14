@@ -28,7 +28,8 @@ PREDECLARE_POINTER(RDOArrayType    );
 PREDECLARE_POINTER(RDOArrayIterator);
 
 //! Элемент массива
-OBJECT(RDOArrayValue)
+PREDECLARE_POINTER(RDOArrayValue);
+class RDOArrayValue: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOArrayValue)
 public:
@@ -42,8 +43,8 @@ public:
 	void insert(CREF(LPRDOArrayIterator) pWhere, CREF(LPRDOArrayIterator) pFromFirst, CREF(LPRDOArrayIterator) pFromLast);
 	void  erase(CREF(LPRDOArrayIterator) pFirst, CREF(LPRDOArrayIterator) pLast);
 
-	ruint   size       () const;
-	tstring getAsString() const;
+	std::size_t size() const;
+	std::string getAsString() const;
 
 	CREF(RDOValue) getItem(CREF(RDOValue) index) const;
 	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item);
@@ -66,13 +67,13 @@ DECLARE_FACTORY(RDOArrayIterator)
 public:
 	typedef RDOArrayValue::Container::iterator Iterator;
 
-	Iterator            getIterator() const;
-	CREF(RDOValue)      getValue   () const;
-	LPRDOArrayIterator  preInc     (rsint delta);
-	LPRDOArrayIterator  postInc    (rsint delta);
-	LPRDOArrayIterator  next       ();
-	rbool               equal      (CREF(LPRDOArrayIterator) pIterator) const;
-	LPRDOArrayIterator  clone      () const;
+	Iterator getIterator() const;
+	CREF(RDOValue) getValue() const;
+	LPRDOArrayIterator preInc(int delta);
+	LPRDOArrayIterator postInc(int delta);
+	LPRDOArrayIterator next();
+	bool equal(CREF(LPRDOArrayIterator) pIterator) const;
+	LPRDOArrayIterator clone() const;
 
 private:
 	RDOArrayIterator(CREF(LPRDOArrayIterator) pIterator);

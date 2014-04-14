@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdomacros.h"
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/smart_ptr/ref_counter/counter_reference.h"
 #include "utils/src/smart_ptr/interface_ptr/interface_ptr.h"
 #include "utils/src/smart_ptr/ref_counter/ref_counter_i.h"
@@ -41,19 +40,19 @@ public:
 
 	//! Сравнивает по указателям
 	template <class P>
-	rbool operator== (CREF(intrusive_ptr<P>) sptr) const;
+	bool operator==(CREF(intrusive_ptr<P>) sptr) const;
 	template <class P>
-	rbool operator!= (CREF(intrusive_ptr<P>) sptr) const;
+	bool operator!=(CREF(intrusive_ptr<P>) sptr) const;
 
 	//! Сравнивает по значениям
 	template<class P>
-	rbool compare(CREF(intrusive_ptr<P>) sptr) const;
+	bool compare(CREF(intrusive_ptr<P>) sptr) const;
 
-	operator rbool     () const;
-	 PTR(T) operator-> () const;
-	 PTR(T) operator-> ();
-	CREF(T) operator*  () const;
-	 REF(T) operator*  ();
+	operator bool() const;
+	 PTR(T) operator->() const;
+	 PTR(T) operator->();
+	CREF(T) operator*() const;
+	 REF(T) operator*();
 
 	template <class P>
 	operator intrusive_ptr<P>() const;
@@ -74,25 +73,23 @@ public:
 	interface_ptr<P> interface_dynamic_cast() const;
 
 	/// @todo переместить в protected
-	PTR(T)   get();
-	CPTR(T)  get() const;
+	PTR(T) get();
+	const T* get() const;
 
-	rbool owner () const;
+	bool owner() const;
 
 protected:
-	void  addref ();
-	void  release();
+	void addref();
+	void release();
 
 private:
 	PTR(T) m_object;
 
-	REF(ruint) counter();
+	REF(std::size_t) counter();
 };
 
 #define DECLARE_POINTER(TYPE)    typedef rdo::intrusive_ptr<TYPE> LP##TYPE;
 #define PREDECLARE_POINTER(TYPE) class TYPE; DECLARE_POINTER(TYPE);
-#define OBJECT(TYPE)             PREDECLARE_POINTER(TYPE); CLASS(TYPE): INSTANCE_OF        (rdo::counter_reference)
-#define OBJECT_VIRTUAL(TYPE)     PREDECLARE_POINTER(TYPE); CLASS(TYPE): INSTANCE_VIRTUAL_OF(rdo::counter_reference)
 
 } // namespace rdo
 

@@ -69,7 +69,7 @@ PTR(RDOLexer) RDOParserRDOItem::getLexer(PTR(Converter) pParser, PTR(std::istrea
 	return new RDOLexer(pParser, streamIn, streamOut);
 }
 
-ruint RDOParserRDOItem::lexer_loc_line()
+std::size_t RDOParserRDOItem::lexer_loc_line()
 {
 	if (m_pLexer)
 	{
@@ -77,11 +77,11 @@ ruint RDOParserRDOItem::lexer_loc_line()
 	}
 	else
 	{
-		return ruint(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
+		return std::size_t(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
 	}
 }
 
-ruint RDOParserRDOItem::lexer_loc_pos()
+std::size_t RDOParserRDOItem::lexer_loc_pos()
 {
 	return m_pLexer && m_pLexer->m_lploc ? m_pLexer->m_lploc->m_first_pos : 0;
 }
@@ -116,16 +116,16 @@ void RDOParserRSSPost::parse(PTR(Converter) pParser)
 
 	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
 #ifdef RDOSIM_COMPATIBLE
-	STL_FOR_ALL_CONST(pParser->getRTPResTypes(), rtp_it)
+	for (const auto& rtp: pParser->getRTPResTypes())
 	{
 #endif
-		STL_FOR_ALL_CONST(pParser->getRSSResources(), rss_it)
+		for (const auto& rss: pParser->getRSSResources())
 		{
 #ifdef RDOSIM_COMPATIBLE
-			if ((*rss_it)->getType() == *rtp_it)
+			if (rss->getType() == rtp)
 			{
 #endif
-				rdo::runtime::LPRDOCalc calc = (*rss_it)->createCalc();
+				rdo::runtime::LPRDOCalc calc = rss->createCalc();
 				pParser->runtime()->addInitCalc(calc);
 #ifdef RDOSIM_COMPATIBLE
 			}

@@ -114,24 +114,24 @@ public:
 	void scrollToCarret() const;
 	void horzScrollToCurrentPos() const;
 
-	tstring getCurrentWord() const;
-	tstring getSelection  () const;
-	tstring getCurrentOrSelectedWord() const;
+	std::string getCurrentWord() const;
+	std::string getSelection  () const;
+	std::string getCurrentOrSelectedWord() const;
 	QString getWordForFind() const;
 
 	int findPos(CREF(QString) findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false) const;
-	tstring getLine(const int line) const;
+	std::string getLine(const int line) const;
 
 	void load(const std::stringstream& stream);
 	void save(std::stringstream& stream) const;
-	tstring saveAsRTF(int start, int end) const;
+	std::string saveAsRTF(int start, int end) const;
 
 protected:
 	EditStyle* m_pStyle;
 
-	long sendEditor      (ruint msg, unsigned long wParam = 0, long lParam = 0) const { return super::send (msg, wParam, lParam); }
-	long sendEditorString(ruint msg, unsigned long wParam, const char* str)     const { return super::sends(msg, wParam, str);    }
-	long sendEditorString(ruint msg, CREF(std::string) str) const;
+	long sendEditor(std::size_t msg, unsigned long wParam = 0, long lParam = 0) const { return super::send (msg, wParam, lParam); }
+	long sendEditorString(std::size_t msg, unsigned long wParam, const char* str)     const { return super::sends(msg, wParam, str); }
+	long sendEditorString(std::size_t msg, CREF(std::string) str) const;
 
 	int  getNewMarker();
 	void defineMarker(int marker, int markerType, QColor fore, QColor back) const;
@@ -144,7 +144,7 @@ protected:
 
 	virtual void onUpdateActions(bool activated);
 
-	static ruint convertColor(CREF(QColor) color);
+	static std::size_t convertColor(CREF(QColor) color);
 
 protected slots:
 	        void onUpdateEditGUI();

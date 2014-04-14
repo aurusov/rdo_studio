@@ -114,7 +114,7 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 	{
 		LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
 		RDOParser::s_parser()->error().push_only(param_pos, rdo::format("Указаны не все параметра образца '%s':", m_pPattern->src_text().c_str()));
-		for (ruint i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
+		for (std::size_t i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
 		{
 			pPatternParam = m_pPattern->m_paramList.at(i);
 			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("Ожидаемый параметр '%s' имеет тип '%s'", pPatternParam->name().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
@@ -135,7 +135,7 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 	RDOParser::s_parser()->contextStack()->pop<RDODPTActivity>();
 }
 
-rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
 {
 	LPIPriority pPriorActivity = m_pActivity;
 	if (pPriorActivity)
@@ -175,7 +175,7 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 RDODPTActivityHotKey::~RDODPTActivityHotKey()
 {}
 
-void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_pos)
+void RDODPTActivityHotKey::addHotKey(CREF(std::string) hotKey, CREF(YYLTYPE) hotkey_pos)
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Keyboard)
 	{

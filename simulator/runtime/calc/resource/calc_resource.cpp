@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResourceHelper
 // --------------------------------------------------------------------------------
-rbool RDOCalcGetResourceHelper::getResource(CREF(LPRDORuntime) pRuntime, ruint resourceID, REF(RDOValue) result)
+bool RDOCalcGetResourceHelper::getResource(CREF(LPRDORuntime) pRuntime, std::size_t resourceID, REF(RDOValue) result)
 {
 	LPRDOResource pResource = pRuntime->getResourceByID(resourceID);
 	if (!pResource)
@@ -39,7 +39,7 @@ rbool RDOCalcGetResourceHelper::getResource(CREF(LPRDORuntime) pRuntime, ruint r
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResourceByID
 // --------------------------------------------------------------------------------
-RDOCalcGetResourceByID::RDOCalcGetResourceByID(CREF(ruint) resourceID)
+RDOCalcGetResourceByID::RDOCalcGetResourceByID(CREF(std::size_t) resourceID)
 	: m_resourceID(resourceID)
 {}
 
@@ -56,7 +56,7 @@ RDOValue RDOCalcGetResourceByID::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResourceParam
 // --------------------------------------------------------------------------------
-RDOCalcGetResourceParam::RDOCalcGetResourceParam(CREF(LPRDOCalc) pResource, ruint paramID)
+RDOCalcGetResourceParam::RDOCalcGetResourceParam(CREF(LPRDOCalc) pResource, std::size_t paramID)
 	: m_pResource(pResource)
 	, m_paramID  (paramID  )
 {
@@ -73,7 +73,7 @@ RDOValue RDOCalcGetResourceParam::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetUnknowResParam
 // --------------------------------------------------------------------------------
-RDOCalcGetUnknowResParam::RDOCalcGetUnknowResParam(CREF(tstring) resName, CREF(tstring) parName)
+RDOCalcGetUnknowResParam::RDOCalcGetUnknowResParam(CREF(std::string) resName, CREF(std::string) parName)
 	: m_resName(resName)
 	, m_parName(parName)
 {}
@@ -87,7 +87,7 @@ RDOValue RDOCalcGetUnknowResParam::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOSetResourceParamCalc
 // --------------------------------------------------------------------------------
-RDOSetResourceParamCalc::RDOSetResourceParamCalc(ruint resourceID, ruint paramID, CREF(LPRDOCalc) pCalc)
+RDOSetResourceParamCalc::RDOSetResourceParamCalc(std::size_t resourceID, std::size_t paramID, CREF(LPRDOCalc) pCalc)
 	: m_resourceID(resourceID)
 	, m_paramID   (paramID   )
 	, m_pCalc     (pCalc     )

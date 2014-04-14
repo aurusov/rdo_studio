@@ -16,7 +16,6 @@
 #include <algorithm>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
-#include "utils/src/common/rdotypes.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -132,42 +131,42 @@ public:
 	*/
 	struct Position
 	{
-		static const ruint UNDEFINE_POS  = ruint(~0);
-		static const ruint UNDEFINE_LINE = ruint(~0);
+		static const std::size_t UNDEFINE_POS  = std::size_t(~0);
+		static const std::size_t UNDEFINE_LINE = std::size_t(~0);
 
-		ruint m_first_line;
-		ruint m_first_pos;
-		ruint m_last_line;
-		ruint m_last_pos;
+		std::size_t m_first_line;
+		std::size_t m_first_pos;
+		std::size_t m_last_line;
+		std::size_t m_last_pos;
 
 		Position();
-		Position(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos);
-		rbool empty() const;
-		rbool point() const;
+		Position(std::size_t first_line, std::size_t first_pos, std::size_t last_line, std::size_t last_pos);
+		bool empty() const;
+		bool point() const;
 	};
 
 	RDOSrcInfo();
 	virtual ~RDOSrcInfo();
 
 	void setSrcInfo(CREF(RDOSrcInfo) info);
-	void setSrcInfo(CREF(RDOSrcInfo) begin, CREF(tstring) delim, CREF(RDOSrcInfo) end);
+	void setSrcInfo(CREF(RDOSrcInfo) begin, CREF(std::string) delim, CREF(RDOSrcInfo) end);
 
 	void setSrcPos(CREF(Position) position);
 	void setSrcPos(CREF(Position) position_begin, CREF(Position) position_end);
-	void setSrcPos(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos);
+	void setSrcPos(std::size_t first_line, std::size_t first_pos, std::size_t last_line, std::size_t last_pos);
 
-	virtual void setSrcText(CREF(tstring) value);
+	virtual void setSrcText(CREF(std::string) value);
 	void setSrcFileType(rdoModelObjects::RDOFileType value);
 
-	CREF(RDOSrcInfo)             src_info    () const;
-	CREF(Position)               src_pos     () const;
-	CREF(tstring)                src_text    () const;
+	CREF(RDOSrcInfo) src_info() const;
+	CREF(Position) src_pos() const;
+	CREF(std::string) src_text() const;
 	rdoModelObjects::RDOFileType src_filetype() const;
-	rbool                        src_empty   () const;
+	bool src_empty() const;
 
 private:
-	Position                     m_position;
-	tstring                      m_text_data;
+	Position m_position;
+	std::string m_text_data;
 	rdoModelObjects::RDOFileType m_file_type;
 };
 

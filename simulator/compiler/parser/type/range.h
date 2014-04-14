@@ -22,7 +22,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeRangeRange
 // --------------------------------------------------------------------------------
-OBJECT(RDOTypeRangeRange) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOTypeRangeRange);
+class RDOTypeRangeRange
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOTypeRangeRange);
 public:

@@ -37,12 +37,12 @@ OPEN_RDO_PARSER_NAMESPACE
 PREDECLARE_POINTER(RDOParser);
 PREDECLARE_POINTER(RDORSSResource);
 
-CLASS(RDORTPResType):
-	    INSTANCE_OF      (RDOParserSrcInfo  )
-	AND INSTANCE_OF      (boost::noncopyable)
-	AND INSTANCE_OF      (RuntimeWrapperType)
-	AND INSTANCE_OF      (Context           )
-	AND IMPLEMENTATION_OF(IContextFind      )
+class RDORTPResType
+	: public RDOParserSrcInfo
+	, public boost::noncopyable
+	, public RuntimeWrapperType
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDORTPResType);
 public:
@@ -54,19 +54,19 @@ public:
 		RT_PROCESS_RESOURCE,
 		RT_PROCESS_TRANSACT
 	};
-	static const ruint UNDEFINED_PARAM = ruint(~0);
+	static const std::size_t UNDEFINED_PARAM = std::size_t(~0);
 
-	rsint getNumber  () const;
-	rbool isPermanent() const;
-	rbool isTemporary() const;
+	int getNumber() const;
+	bool isPermanent() const;
+	bool isTemporary() const;
 
 	LPRDORSSResource createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info);
 
 	void addParam(CREF(LPRDORTPParam) param);
-	void addParam(CREF(tstring) param_name, rdo::runtime::RDOType::TypeID param_typeID);
-	LPRDORTPParam findRTPParam(CREF(tstring) paramName) const;
+	void addParam(CREF(std::string) param_name, rdo::runtime::RDOType::TypeID param_typeID);
+	LPRDORTPParam findRTPParam(CREF(std::string) paramName) const;
 
-	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
+	std::size_t getRTPParamNumber(CREF(std::string) paramName) const;
 	CREF(ParamList) getParams() const;
 
 	CREF(rdo::runtime::LPIResourceType) getRuntimeResType() const;
@@ -80,14 +80,14 @@ public:
 	DECLARE_IType;
 
 private:
-	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
+	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, bool permanent);
 	virtual ~RDORTPResType();
 
 	rdo::runtime::LPIResourceType m_pRuntimeResType;
-	const ruint                   m_number;
-	const rbool                   m_permanent;
-	boost::optional<Subtype>      m_subtype;
-	ParamList                     m_params;
+	const std::size_t m_number;
+	const bool m_permanent;
+	boost::optional<Subtype> m_subtype;
+	ParamList m_params;
 
 	virtual runtime::RDOType::TypeID typeID() const;
 	virtual FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
@@ -163,8 +163,8 @@ DECLARE_POINTER(RDORTPResType);
 //		}
 //	virtual ~RDORTPFuzzyTerm() {}
 //
-//	CREF(tstring) name       () const { return src_info().src_text(); }
-//	double        MemberShift() const { return m_fun->getVal();       }
+//	CREF(std::string) name () const { return src_info().src_text(); }
+//	double MemberShift() const { return m_fun->getVal(); }
 //
 //private:
 //	PTR(RDORTPFuzzyMembershiftFun) m_fun;
@@ -188,7 +188,7 @@ DECLARE_POINTER(RDORTPResType);
 //	{
 //		m_terms.push_back(term);
 //	}
-//	rbool empty() const
+//	bool empty() const
 //	{
 //		return m_terms.empty();
 //	}
@@ -211,7 +211,7 @@ DECLARE_POINTER(RDORTPResType);
 //		}
 //	virtual ~RDORTPFuzzyParam() {}
 //
-//	CREF(tstring) name() const { return src_info().src_text(); }
+//	CREF(std::string) name() const { return src_info().src_text(); }
 //
 //private:
 //	PTR(RDORTPFuzzyTermsSet) m_set; // набор терминов параметра

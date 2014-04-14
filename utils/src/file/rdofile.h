@@ -25,23 +25,23 @@ namespace rdo {
 class File
 {
 public:
-	static rbool create(CREF(boost::filesystem::path) name);
-	static rbool create(CREF(boost::filesystem::path) name, CREF(tstring) content);
+	static bool create(CREF(boost::filesystem::path) name);
+	static bool create(CREF(boost::filesystem::path) name, CREF(std::string) content);
 
 	//! Проверяет существование файла
 	//! \param name - имя файла
 	//! \result \b true, если существует
-	static rbool exist(CREF(boost::filesystem::path) name);
+	static bool exist(CREF(boost::filesystem::path) name);
 
 	//! Проверяет признак только чтение
 	//! \param name - имя файла
 	//! \result \b true, если у файла установлен атрибут только чтение
-	static rbool read_only(CREF(boost::filesystem::path) name);
+	static bool read_only(CREF(boost::filesystem::path) name);
 
 	//! Удаляет файл
 	//! \param name - имя файла
 	//! \result \b true, если файл удалён удачно
-	static rbool unlink(CREF(boost::filesystem::path) name);
+	static bool unlink(CREF(boost::filesystem::path) name);
 
 	//! Разбивает полное имя файла на его составляющие
 	//! \param[in]  from     - полное имя файла
@@ -49,7 +49,7 @@ public:
 	//! \param[out] fileName - имя
 	//! \param[out] fileExt  - расширение
 	//! \result \b true, если получилось извлечь данные
-	static rbool splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem::path) fileDir, REF(boost::filesystem::path) fileName, REF(boost::filesystem::path) fileExt);
+	static bool splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem::path) fileDir, REF(boost::filesystem::path) fileName, REF(boost::filesystem::path) fileExt);
 
 	//! Возвращает полное имя временного файла
 	//! \result полное имя временного файла
@@ -63,7 +63,7 @@ public:
 	//! Удаляет пустоты (пробелы, табуляцию, переводы строк) в конце файла
 	//! \param name - имя файла
 	//! \result \b true, если всё прошло успешно
-	static rbool trimLeft(CREF(boost::filesystem::path) name);
+	static bool trimLeft(CREF(boost::filesystem::path) name);
 };
 
 } // namespace rdo

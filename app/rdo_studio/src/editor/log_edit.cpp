@@ -50,7 +50,7 @@ void Log::catchDoubleClick(int position, int line)
 			++it;
 		}
 	}
-	if (it != m_lines.end() && (*it)->getLineNumber() != ruint(~0))
+	if (it != m_lines.end() && (*it)->getLineNumber() != std::size_t(~0))
 	{
 		setSelectLine(line, *it);
 	}
@@ -99,22 +99,22 @@ void Log::gotoPrev()
 	{
 		++it;
 	}
-	while (it != m_lines.begin() && (*it)->getLineNumber() == ruint(~0))
+	while (it != m_lines.begin() && (*it)->getLineNumber() == std::size_t(~0))
 	{
 		--it;
 		--m_currentLine;
 	}
-	if (it == m_lines.begin() && (*it)->getLineNumber() == ruint(~0))
+	if (it == m_lines.begin() && (*it)->getLineNumber() == std::size_t(~0))
 	{
 		it = m_lines.end();
 		m_currentLine = m_lines.size();
-		while (it == m_lines.end() || (it != m_lines.begin() && (*it)->getLineNumber() == ruint(~0)))
+		while (it == m_lines.end() || (it != m_lines.begin() && (*it)->getLineNumber() == std::size_t(~0)))
 		{
 			--it;
 			--m_currentLine;
 		}
 	}
-	if (it != m_lines.end() && (*it)->getLineNumber() != ruint(~0))
+	if (it != m_lines.end() && (*it)->getLineNumber() != std::size_t(~0))
 	{
 		setSelectLine(m_currentLine, *it, true);
 	}
@@ -125,22 +125,22 @@ void Log::getLines(REF(LogEditLineInfoList) lines) const
 	lines = m_lines;
 }
 
-rsint Log::getCurrentLine() const
+int Log::getCurrentLine() const
 {
 	return m_currentLine;
 }
 
-rsint Log::getSciMarkerLine() const
+int Log::getSciMarkerLine() const
 {
 	return m_sciMarkerLine;
 }
 
-void Log::setCurrentLine(rsint currentLine)
+void Log::setCurrentLine(int currentLine)
 {
 	m_currentLine = currentLine;
 }
 
-void Log::setSciMarkerLine(rsint sciMarkerLine)
+void Log::setSciMarkerLine(int sciMarkerLine)
 {
 	m_sciMarkerLine = sciMarkerLine;
 }
@@ -167,7 +167,7 @@ void Log::gotoNext()
 	{
 		++it;
 	}
-	while (it != m_lines.end() && (*it)->getLineNumber() == ruint(~0))
+	while (it != m_lines.end() && (*it)->getLineNumber() == std::size_t(~0))
 	{
 		++it;
 		++m_currentLine;
@@ -176,13 +176,13 @@ void Log::gotoNext()
 	{
 		it = m_lines.begin();
 		m_currentLine = 0;
-		while (it != m_lines.end() && (*it)->getLineNumber() == ruint(~0))
+		while (it != m_lines.end() && (*it)->getLineNumber() == std::size_t(~0))
 		{
 			++it;
 			++m_currentLine;
 		}
 	}
-	if (it != m_lines.end() && (*it)->getLineNumber() != ruint(~0))
+	if (it != m_lines.end() && (*it)->getLineNumber() != std::size_t(~0))
 	{
 		setSelectLine(m_currentLine, *it, true);
 	}
@@ -202,7 +202,7 @@ void Log::appendLine(PTR(LogEditLineInfo) pLine)
 	{
 		setReadOnly(false);
 	}
-	tstring str = boost::algorithm::trim_right_copy(pLine->getMessage());
+	std::string str = boost::algorithm::trim_right_copy(pLine->getMessage());
 	str += "\r\n";
 	setCurrentPos(getLength());
 	appendText(QString::fromStdString(str));
@@ -216,9 +216,9 @@ void Log::appendLine(PTR(LogEditLineInfo) pLine)
 	onUpdateEditGUI();
 }
 
-void Log::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, bool useScroll)
+void Log::setSelectLine(int line, const LogEditLineInfo* pLineInfo, bool useScroll)
 {
-	if (pLineInfo->getLineNumber() != ruint(~0))
+	if (pLineInfo->getLineNumber() != std::size_t(~0))
 	{
 		if (sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine) != line)
 		{
@@ -250,7 +250,7 @@ void Log::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, bool useScrol
 	}
 }
 
-void Log::updateEdit(PTR(Model) pEdit, CPTR(LogEditLineInfo) pLineInfo)
+void Log::updateEdit(PTR(Model) pEdit, const LogEditLineInfo* pLineInfo)
 {
 	pEdit->scrollToLine(pLineInfo->getLineNumber());
 	int pos = pEdit->getPositionFromLine(pLineInfo->getLineNumber()) + pLineInfo->getPosInLine();

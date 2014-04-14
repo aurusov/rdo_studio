@@ -62,8 +62,8 @@ private: \
 
 #define DEFINE_OBJECT_CONTAINER_WITHNAME(TYPE, NAME) \
 public: \
-	const TYPE find##NAME  (CREF(tstring) name) const; \
-	rbool      remove##NAME(const TYPE item);
+	const TYPE find##NAME  (CREF(std::string) name) const; \
+	bool remove##NAME(const TYPE item);
 
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
@@ -80,9 +80,9 @@ struct identity
 	typedef T type;
 };
 
-CLASS(RDOParser):
-	    INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+class RDOParser
+	: public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDOParser);
 
@@ -111,30 +111,30 @@ public:
 
 	CREF(rdo::runtime::LPRDORuntime) runtime() const { return m_pRuntime; }
 
-	rbool             isPattern       () const { return m_pattern;     }
-	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
+	bool isPattern() const { return m_pattern; }
+	REF(FUNGroupList) getFUNGroupStack() { return m_allFUNGroup; }
 
 	void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkDPTName         (CREF(RDOParserSrcInfo) src_info);
 
-	void  insertChanges        (CREF(tstring) name, CREF(tstring) value);
+	void insertChanges (CREF(std::string) name, CREF(std::string) value);
 
-	rbool isCurrentDPTSearch   ();
-	rbool isCurrentDPTPrior    ();
+	bool isCurrentDPTSearch();
+	bool isCurrentDPTPrior();
 
-	ruint getRTP_id     () const { return m_allRTPResType.size()  + 1; }
-	ruint getRSS_id     () const { return m_allRSSResource.size() + 0; }
-	ruint getPAT_id     () const { return m_allPATPattern.size()  + 0; }
-	ruint getPMD_id     ()       { return m_resultGeneratorID.get();   }
-	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
+	std::size_t getRTP_id() const { return m_allRTPResType.size()  + 1; }
+	std::size_t getRSS_id() const { return m_allRSSResource.size() + 0; }
+	std::size_t getPAT_id() const { return m_allPATPattern.size()  + 0; }
+	std::size_t getPMD_id() { return m_resultGeneratorID.get(); }
+	std::size_t getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
 
-	tstring getModelStructure();
-	tstring getChanges       () const;
+	std::string getModelStructure();
+	std::string getChanges() const;
 
-	LPRDOSMR getSMR() const              { return m_pSMR;                }
-	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
-	rbool    hasSMR() const              { return m_pSMR ? true : false; }
+	LPRDOSMR getSMR() const { return m_pSMR; }
+	void setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR; }
+	bool hasSMR() const { return m_pSMR ? true : false; }
 
 	void parse();
 	void parse(REF(std::istream) stream);
@@ -164,7 +164,7 @@ public:
 
 			// Падение в в этом месте означает, что из стека вытаскивается указатель неправильного типа
 			// Что бы узнать тип, необходимо найти команду push для этого указателя
-			ASSERT((pWrapper->getRefCounter() && dynamic_cast<CPTR(T)>(pWrapper->getRefCounter())) || !pWrapper->getRefCounter());
+			ASSERT((pWrapper->getRefCounter() && dynamic_cast<const T*>(pWrapper->getRefCounter())) || !pWrapper->getRefCounter());
 
 			rdo::intrusive_ptr<T> pObject = *reinterpret_cast<PTR(rdo::intrusive_ptr<T>)>(pWrapper->getSmartPtr());
 			pWrapper->destroy();
@@ -181,10 +181,8 @@ public:
 	private:
 		void clear()
 		{
-			STL_FOR_ALL(m_stack, it)
-			{
-				it->second->destroy();
-			}
+			for (const auto& stack: m_stack)
+				stack.second->destroy();
 		}
 	};
 
@@ -203,10 +201,10 @@ public:
 	LPContext      context     () const;
 
 	static rdoModelObjects::RDOFileType getFileToParse();
-	static ruint                        lexer_loc_line();
-	static ruint                        lexer_loc_pos ();
-	static tstring                      lexer_text    ();
-	static LPRDOParser                  s_parser      ();
+	static std::size_t lexer_loc_line();
+	static std::size_t lexer_loc_pos();
+	static std::string lexer_text();
+	static LPRDOParser s_parser();
 
 	template <class T>
 	void howIsIt()
@@ -224,16 +222,16 @@ private:
 
 	typedef std::vector<LPRDOParserItem> Compilers;
 
-	rdo::runtime::LPRDORuntime  m_pRuntime;
-	LPRDOSMR                    m_pSMR;
-	Error                       m_error;
-	Stack                       m_movementObjectList;
-	PreCastTypeList             m_preCastTypeList;
-	LPContextStack              m_pContextStack;
-	rbool                       m_pattern;
-	rdo::IDGenerator            m_resultGeneratorID;
-	Compilers                   m_compilers;
-	LPRDOParserItem             m_parser_item;
+	rdo::runtime::LPRDORuntime m_pRuntime;
+	LPRDOSMR m_pSMR;
+	Error m_error;
+	Stack m_movementObjectList;
+	PreCastTypeList m_preCastTypeList;
+	LPContextStack m_pContextStack;
+	bool m_pattern;
+	rdo::IDGenerator m_resultGeneratorID;
+	Compilers m_compilers;
+	LPRDOParserItem m_parser_item;
 
 	void runRSSPost();
 	void runSMRPost();
@@ -255,9 +253,9 @@ private:
 
 	struct Changes
 	{
-		tstring m_name;
-		tstring m_value;
-		Changes(CREF(tstring) name, CREF(tstring) value)
+		std::string m_name;
+		std::string m_value;
+		Changes(CREF(std::string) name, CREF(std::string) value)
 			: m_name (name )
 			, m_value(value)
 		{}

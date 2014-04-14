@@ -32,11 +32,11 @@ class RDOParserRDOItem: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserRDOItem);
 public:
-	virtual void  parse         (CREF(LPRDOParser) pParser);
-	virtual ruint lexer_loc_line();
-	virtual ruint lexer_loc_pos ();
+	virtual void parse(CREF(LPRDOParser) pParser);
+	virtual std::size_t lexer_loc_line();
+	virtual std::size_t lexer_loc_pos();
 
-	tstring text() const;
+	std::string text() const;
 
 protected:
 	RDOParserRDOItem(rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun, StreamFrom from = sf_repository);

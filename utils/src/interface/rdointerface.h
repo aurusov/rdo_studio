@@ -22,7 +22,7 @@ namespace rdo {
 //! \details Нужен для получения идентификатора интерфейса по его типу
 //! \tparam  T  - тип интерфейса
 //! \tparam  id - уникальный идентификатр интерфейса
-template <class T, ruint id>
+template <class T, std::size_t id>
 class InterfaceRegistrator
 {
 public:
@@ -82,16 +82,16 @@ public:
 	UnknownPointer (CREF(UnknownPointer) pointer);
 	~UnknownPointer();
 
-	rbool               operator== (CREF(UnknownPointer) pointer) const;
-	REF(UnknownPointer) operator=  (CREF(UnknownPointer) pointer);
+	bool operator==(CREF(UnknownPointer) pointer) const;
+	REF(UnknownPointer) operator=(CREF(UnknownPointer) pointer);
 
-	operator rbool() const;
+	operator bool() const;
 
-	UnknownPointer                  query_cast  (ruint id);
+	UnknownPointer                  query_cast  (std::size_t id);
 	template<class I> Interface<I>  query_cast  ();
 	template<class I> operator      Interface<I>();
 
-	UnknownPointer                  query_cast  (ruint id) const;
+	UnknownPointer                  query_cast  (std::size_t id) const;
 	template<class I> Interface<I>  query_cast  () const;
 	template<class I> operator      Interface<I>() const;
 
@@ -114,14 +114,14 @@ public:
 	Interface(PTR(void) pInterface, LPIUnknown pUnknown);
 	Interface(CREF(this_type) aInterface);
 
-	REF(this_type) operator=     (CREF(this_type) aInterface);
-	               operator rbool() const;
+	REF(this_type) operator=(CREF(this_type) aInterface);
+	operator bool() const;
 
-	PTR(I)  get();
-	CPTR(I) get() const;
+	PTR(I) get();
+	const I* get() const;
 
-	PTR(I)  operator-> ();
-	CPTR(I) operator-> () const;
+	PTR(I) operator->();
+	const I* operator->() const;
 };
 
 class IUnknown
@@ -129,7 +129,7 @@ class IUnknown
 public:
 	virtual void           AddRef () = 0;
 	virtual void           Release() = 0;
-	virtual UnknownPointer QueryInterface(ruint id) = 0;
+	virtual UnknownPointer QueryInterface(std::size_t id) = 0;
 };
 typedef PTR(IUnknown) LPIUnknown;
 
@@ -152,7 +152,7 @@ private:
 	friend class IFactory<T>;
 	friend class IFactory<T>::Object;
 	private:
-		ruint  m_counter;
+		std::size_t m_counter;
 		PTR(T) m_pObject;
 
 		Counter();
@@ -160,7 +160,7 @@ private:
 
 		virtual void           AddRef        ();
 		virtual void           Release       ();
-		virtual UnknownPointer QueryInterface(ruint id);
+		virtual UnknownPointer QueryInterface(std::size_t id);
 	};
 
 public:
@@ -267,7 +267,7 @@ private:
 
 #define QUERY_INTERFACE_BEGIN                           \
 public:                                                 \
-PTR(void) QueryInterface(ruint id)                      \
+PTR(void) QueryInterface(std::size_t id)                \
 {
 
 #define QUERY_INTERFACE_PARENT(A)                       \
@@ -284,10 +284,10 @@ PTR(void) QueryInterface(ruint id)                      \
 class IInit
 {
 public:
-	virtual rbool init() = 0;
+	virtual bool init() = 0;
 };
-#define DECLARE_IInit     \
-	virtual rbool init();
+#define DECLARE_IInit \
+	virtual bool init();
 
 INTERFACE_REGISTRATOR(IInit, 0);
 

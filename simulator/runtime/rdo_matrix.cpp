@@ -71,31 +71,31 @@ void RDOMatrixValue::erase(CREF(LPRDOMatrixIterator) pFirst, CREF(LPRDOMatrixIte
 	m_container.erase(pFirst->getIterator(), pLast->getIterator());
 }
 
-tstring RDOMatrixValue::getAsString() const
+std::string RDOMatrixValue::getAsString() const
 {
-	tstring result("[");
-	STL_FOR_ALL_CONST(m_container, it)
+	std::string result("[");
+	for (Container::const_iterator item = m_container.begin(); item != m_container.end(); ++item)
 	{
-		if (it == m_container.begin())
+		if (item == m_container.begin())
 		{
-			result = rdo::format("%s%s", result.c_str(), it->getAsString().c_str());
+			result = rdo::format("%s%s", result.c_str(), item->getAsString().c_str());
 		}
 		else
 		{
-			result = rdo::format("%s, %s", result.c_str(), it->getAsString().c_str());
+			result = rdo::format("%s, %s", result.c_str(), item->getAsString().c_str());
 		}
 	}
 	return rdo::format("%s]", result.c_str());
 }
 
-ruint RDOMatrixValue::size() const
+std::size_t RDOMatrixValue::size() const
 {
 	return m_container.size();
 }
 
 CREF(RDOValue) RDOMatrixValue::getItem(CREF(RDOValue) index) const
 {
-	ruint ind = index.getUInt();
+	std::size_t ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
 		throw RDORuntimeException("Выход за пределы матрицы");
@@ -105,7 +105,7 @@ CREF(RDOValue) RDOMatrixValue::getItem(CREF(RDOValue) index) const
 
 void RDOMatrixValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 {
-	ruint ind = index.getUInt();
+	std::size_t ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
 		throw RDORuntimeException("Выход за пределы матрицы");
@@ -144,13 +144,13 @@ CREF(RDOValue) RDOMatrixIterator::getValue() const
 	return *m_iterator;
 }
 
-LPRDOMatrixIterator RDOMatrixIterator::preInc(rsint delta)
+LPRDOMatrixIterator RDOMatrixIterator::preInc(int delta)
 {
 	m_iterator += delta;
 	return LPRDOMatrixIterator(this);
 }
 
-LPRDOMatrixIterator RDOMatrixIterator::postInc(rsint delta)
+LPRDOMatrixIterator RDOMatrixIterator::postInc(int delta)
 {
 	LPRDOMatrixIterator pPrev = rdo::Factory<RDOMatrixIterator>::create(m_iterator);
 	ASSERT(pPrev);
@@ -163,7 +163,7 @@ LPRDOMatrixIterator RDOMatrixIterator::next()
 	return preInc(1);
 }
 
-rbool RDOMatrixIterator::equal(CREF(LPRDOMatrixIterator) pIterator) const
+bool RDOMatrixIterator::equal(CREF(LPRDOMatrixIterator) pIterator) const
 {
 	ASSERT(pIterator);
 	return m_iterator == pIterator->m_iterator;

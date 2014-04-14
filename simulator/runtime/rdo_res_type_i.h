@@ -28,11 +28,12 @@ PREDECLARE_POINTER(RDOResource);
   \interface IResourceType
   \brief     Предоставляет фабричный метод createRes()
 */
-OBJECT_INTERFACE(IResourceType)
+PREDECLARE_OBJECT_INTERFACE(IResourceType)
+struct IResourceType: public rdo::RefCounter<IResourceType>
 {
 DECLARE_FACTORY(IResourceType);
 public:
-	virtual rdo::runtime::LPRDOResource createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag) = 0;
+	virtual rdo::runtime::LPRDOResource createRes(CREF(LPRDORuntime) pRuntime, std::size_t resID, CREF(std::vector<RDOValue>) paramsCalcs, bool traceFlag, bool permanentFlag) = 0;
 
 	typedef  std::list<rdo::runtime::LPRDOResource>  ResList;
 	typedef  ResList::const_iterator  ResCIterator;
@@ -51,7 +52,7 @@ protected:
 };
 
 #define DECLARE_IResourceType \
-	rdo::runtime::LPRDOResource createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag);
+	rdo::runtime::LPRDOResource createRes(CREF(LPRDORuntime) pRuntime, std::size_t resID, CREF(std::vector<RDOValue>) paramsCalcs, bool traceFlag, bool permanentFlag);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

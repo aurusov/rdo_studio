@@ -46,7 +46,7 @@ int Result::getID() const
 	return m_id;
 }
 
-void Result::getCaptions(std::vector<tstring>& captions, const int valueCount) const
+void Result::getCaptions(std::vector<std::string>& captions, const int valueCount) const
 {
 	switch (m_kind)
 	{
@@ -69,7 +69,7 @@ void Result::getCaptions(std::vector<tstring>& captions, const int valueCount) c
 	}
 }
 
-void Result::setValue(tstring& line, Time* const pTime, const int eventIndex)
+void Result::setValue(std::string& line, Time* const pTime, const int eventIndex)
 {
 	double newValue;
 	boost::algorithm::trim(line);

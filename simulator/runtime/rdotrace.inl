@@ -40,7 +40,7 @@ inline RDOTrace::RDOTrace()
 inline RDOTrace::~RDOTrace()
 {}
 
-inline rbool RDOTrace::canTrace() const
+inline bool RDOTrace::canTrace() const
 {
 	return !isNull() && canWrite();
 }
@@ -55,12 +55,12 @@ inline void  RDOTrace::stopWriting()
 	m_canWriteToStream = false;
 }
 
-inline rbool RDOTrace::canWrite() const
+inline bool RDOTrace::canWrite() const
 {
 	return m_canWriteToStream;
 }
 
-inline rbool RDOTrace::isNull() const
+inline bool RDOTrace::isNull() const
 {
 	return m_isNullTracer;
 }
@@ -78,7 +78,7 @@ inline REF(RDOEndL) RDOTrace::getEOL()
 // --------------------------------------------------------------------------------
 // -------------------- RDOTraceableObject
 // --------------------------------------------------------------------------------
-inline RDOTraceableObject::RDOTraceableObject(rbool trace, ruint id, tstring str)
+inline RDOTraceableObject::RDOTraceableObject(bool trace, std::size_t id, std::string str)
 	: m_trace (trace)
 	, m_id    (id   )
 	, m_str_id(str  )
@@ -87,33 +87,33 @@ inline RDOTraceableObject::RDOTraceableObject(rbool trace, ruint id, tstring str
 inline RDOTraceableObject::~RDOTraceableObject()
 {}
 
-inline rbool RDOTraceableObject::traceable() const
+inline bool RDOTraceableObject::traceable() const
 {
 	return m_trace;
 }
 
-inline void RDOTraceableObject::setTrace(rbool trace)
+inline void RDOTraceableObject::setTrace(bool trace)
 {
 	m_trace = trace;
 }
 
-inline ruint RDOTraceableObject::getTraceID() const
+inline std::size_t RDOTraceableObject::getTraceID() const
 {
 	return m_id;
 }
 
-inline void RDOTraceableObject::setTraceID(ruint id)
+inline void RDOTraceableObject::setTraceID(std::size_t id)
 {
 	setTraceID(id, id);
 }
 
-inline void RDOTraceableObject::setTraceID(ruint id, ruint str_id)
+inline void RDOTraceableObject::setTraceID(std::size_t id, std::size_t str_id)
 {
 	m_id     = id;
 	m_str_id = rdo::toString(str_id);
 }
 
-inline REF(tstring) RDOTraceableObject::traceId() const
+inline REF(std::string) RDOTraceableObject::traceId() const
 {
 	if (m_str_id.empty())
 	{

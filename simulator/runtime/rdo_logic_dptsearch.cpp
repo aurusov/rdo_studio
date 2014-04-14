@@ -20,7 +20,7 @@
 // --------------------------------------------------------------------------------
 
 #ifndef COMPILER_VISUAL_STUDIO
-ruint32 GetTickCount()
+uint32_t GetTickCount()
 {
 	struct timeval tv;
 	gettimeofday(&tv,NULL);
@@ -54,7 +54,7 @@ IBaseOperation::BOResult RDODPTSearch::onDoOperation(CREF(LPRDORuntime) pRuntime
 IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
-	ruint32 time_begin = ::GetTickCount();
+	uint32_t time_begin = ::GetTickCount();
 	for (;;)
 	{
 		// Возмем для раскрытия первую вершину из списка OPEN
@@ -62,14 +62,14 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 		curr->ExpandChildren();
 		if (treeRoot->m_OPEN.empty() || treeRoot->m_targetNode) break;
 
-		ruint32 time_current = ::GetTickCount();
+		uint32_t time_current = ::GetTickCount();
 		if (time_current - time_begin > 1000 / 40)
 		{
 			return BOR_must_continue;
 		}
 	}
 
-	rbool success = treeRoot->m_targetNode ? true : false;
+	bool success = treeRoot->m_targetNode ? true : false;
 	if (success)
 	{
 		// Нашли решение, собрали путь

@@ -327,9 +327,9 @@ $sprite                        return(RDO_Sprite);
 sprite                         return(RDO_sprite_call);
 
 (\'[^\']*\') {
-	tstring n1(YYText());
-	int len = n1.length();
-	tstring name(tstring(n1, 1, len-2));
+	const std::string n1(YYText());
+	const int len = n1.length();
+	const std::string name(std::string(n1, 1, len-2));
 	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__string>(
 		LEXER->m_lploc
 			? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, n1)
@@ -361,7 +361,7 @@ sprite                         return(RDO_sprite_call);
 
 [+-]?[[:digit:]]+ {
 
-	tstring yText = YYText();
+	const std::string yText = YYText();
 
 	rdo::compiler::parser::RDOParserSrcInfo srcInfo(
 		LEXER->m_lploc
@@ -393,9 +393,9 @@ sprite                         return(RDO_sprite_call);
 }
 
 ([+-]?[[:digit:]]+"..") {
-	tstring n1(YYText());
-	tstring::size_type pos = n1.find_first_of("..");
-	tstring yText(n1, 0, pos);
+	const std::string n1(YYText());
+	const std::string::size_type pos = n1.find_first_of("..");
+	const std::string yText(n1, 0, pos);
 	unput('.');
 	unput('.');
 	LEXER->loc_delta_pos(-2);
@@ -431,7 +431,7 @@ sprite                         return(RDO_sprite_call);
 
 ([+-]?[[:digit:]]+"."[[:digit:]]*([Ee][+-]?[[:digit:]]+)?) {
 
-	tstring yText = YYText();
+	const std::string yText = YYText();
 
 	rdo::compiler::parser::RDOParserSrcInfo srcInfo(
 		LEXER->m_lploc
@@ -484,10 +484,10 @@ false {
 }
 
 {IDENTIF}{WS}+NoChange{WS}+NoChange {
-	tstring n1(YYText());
-	tstring::size_type pos = n1.find_first_of("\r\n\t :");
-	tstring name(n1, 0, pos);
-	RUNTIME->memory_insert(name.length() + sizeof(tstring));
+	const std::string n1(YYText());
+	const std::string::size_type pos = n1.find_first_of("\r\n\t :");
+	const std::string name(n1, 0, pos);
+	RUNTIME->memory_insert(name.length() + sizeof(std::string));
 	rdo::compiler::parser::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
@@ -507,10 +507,10 @@ false {
 }
 
 {IDENTIF}{WS}+NoChange {
-	tstring n1(YYText());
-	tstring::size_type pos = n1.find_first_of("\r\n\t :");
-	tstring name(n1, 0, pos);
-	RUNTIME->memory_insert(name.length() + sizeof(tstring));
+	const std::string n1(YYText());
+	const std::string::size_type pos = n1.find_first_of("\r\n\t :");
+	const std::string name(n1, 0, pos);
+	RUNTIME->memory_insert(name.length() + sizeof(std::string));
 	rdo::compiler::parser::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
@@ -530,10 +530,10 @@ false {
 }
 
 {IDENTIF}{WS}*\: {
-	tstring n1(YYText());
-	tstring::size_type pos = n1.find_first_of("\r\n\t :");
-	tstring name(n1, 0, pos);
-	RUNTIME->memory_insert(name.length() + sizeof(tstring));
+	const std::string n1(YYText());
+	const std::string::size_type pos = n1.find_first_of("\r\n\t :");
+	const std::string name(n1, 0, pos);
+	RUNTIME->memory_insert(name.length() + sizeof(std::string));
 	rdo::compiler::parser::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
@@ -554,8 +554,8 @@ false {
 
 {IDENTIF} {
 
-	tstring name(YYText());
-	RUNTIME->memory_insert(name.length() + sizeof(tstring));
+	const std::string name(YYText());
+	RUNTIME->memory_insert(name.length() + sizeof(std::string));
 
 	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, name) : rdo::compiler::parser::RDOParserSrcInfo(name))));
 	return RDO_IDENTIF;

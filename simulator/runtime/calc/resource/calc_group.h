@@ -20,7 +20,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Базовый класс для групповых калков
-CALC_SUB(RDOFunCalcGroup, RDOFunCalc)
+PREDECLARE_POINTER(RDOFunCalcGroup);
+class RDOFunCalcGroup: public RDOFunCalc
 {
 protected:
 	int        m_nResType;
@@ -34,7 +35,8 @@ protected:
   \brief   Групповые калки
 */
 #define DEFINE_CALC_GROUP(CalcName)                                \
-CALC_SUB(RDOFunCalc##CalcName, RDOFunCalcGroup)                    \
+PREDECLARE_POINTER(RDOFunCalc##CalcName);                          \
+class RDOFunCalc##CalcName: public RDOFunCalcGroup                 \
 {                                                                  \
 DECLARE_FACTORY(RDOFunCalc##CalcName)                              \
 private:                                                           \

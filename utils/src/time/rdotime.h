@@ -11,6 +11,7 @@
 #define _UTILS_RDOTIME_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <cstdint>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
@@ -20,20 +21,20 @@ namespace rdo {
 class Time
 {
 public:
-	typedef  ruint64  Value;
+	typedef uint64_t Value;
 
 	Time();
 	Time(CREF(Value) value);
 
-	rbool operator== (CREF(Time) time);
+	bool operator==(CREF(Time) time);
 	operator Value() const;
 
-	tstring asString() const;
+	std::string asString() const;
 
 	CREF(Value) value() const;
 
-	static Time utc    (); // total_nanoseconds
-	static Time local  (); // total_nanoseconds
+	static Time utc(); // total_nanoseconds
+	static Time local(); // total_nanoseconds
 	static Time invalid();
 
 private:

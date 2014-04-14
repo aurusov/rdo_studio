@@ -54,15 +54,15 @@ public:
 	void onSearchResultNotFound(CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot);
 	TreeRoot* createTreeRoot   (CREF(LPRDORuntime) pRuntime);
 
-	ruint calc_cnt; // Количество запусков
-	ruint calc_res_found_cnt;
+	std::size_t calc_cnt; // Количество запусков
+	std::size_t calc_res_found_cnt;
 	std::list<double> calc_times;
 	std::list<double> calc_cost;
-	std::list<ruint > calc_mems;
-	std::list<ruint > calc_nodes;
-	std::list<ruint > calc_nodes_expended;
-	std::list<ruint > calc_nodes_full;
-	std::list<ruint > calc_nodes_in_graph;
+	std::list<std::size_t> calc_mems;
+	std::list<std::size_t> calc_nodes;
+	std::list<std::size_t> calc_nodes_expended;
+	std::list<std::size_t> calc_nodes_full;
+	std::list<std::size_t> calc_nodes_in_graph;
 
 	DPT_TraceFlag traceFlag;
 

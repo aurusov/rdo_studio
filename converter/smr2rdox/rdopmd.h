@@ -27,11 +27,14 @@ void cnv_pmderror(const char* message);
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-OBJECT(RDOPMDResult) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOPMDResult);
+class RDOPMDResult
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOPMDResult);
 public:
-	CREF(tstring) name() const { return src_text(); }
+	CREF(std::string) name() const { return src_text(); }
 
 protected:
 	RDOPMDResult(CREF(RDOParserSrcInfo) src_info);
@@ -49,7 +52,7 @@ class RDOPMDWatchPar: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDWatchPar);
 private:
-	RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info);
+	RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, bool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info);
 };
 
 // --------------------------------------------------------------------------------
@@ -59,7 +62,7 @@ class RDOPMDWatchState: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDWatchState);
 private:
-	RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, rbool trace, LPRDOFUNLogic pLogic);
+	RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, bool trace, LPRDOFUNLogic pLogic);
 };
 
 // --------------------------------------------------------------------------------
@@ -82,7 +85,7 @@ public:
 	void setLogicNoCheck();
 
 private:
-	RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info);
+	RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, bool trace, CREF(RDOParserSrcInfo) res_type_src_info);
 };
 DECLARE_POINTER(RDOPMDWatchQuant);
 
@@ -97,7 +100,7 @@ public:
 	void setLogicNoCheck(REF(LPRDOFUNArithm) pArithm);
 
 private:
-	RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info);
+	RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, bool trace, CREF(RDOParserSrcInfo) res_type_src_info);
 };
 DECLARE_POINTER(RDOPMDWatchValue);
 

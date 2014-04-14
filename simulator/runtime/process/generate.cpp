@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/generate.h"
 #include "simulator/runtime/calc/calc_base.h"
@@ -29,7 +28,7 @@ void RDOPROCGenerate::onStart(CREF(LPRDORuntime) pRuntime)
 	calcNextTimeInterval(pRuntime);
 }
 
-rbool RDOPROCGenerate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCGenerate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_maxCreateTransactCount && m_createdTransactCount >= m_maxCreateTransactCount.get())
 	{

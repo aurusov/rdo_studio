@@ -29,24 +29,24 @@ inline RDOEnumType::RDOEnumType(CREF(Enums) enums)
 	, m_enum (enums          )
 {}
 
-inline void RDOEnumType::add(CREF(tstring) next)
+inline void RDOEnumType::add(CREF(std::string) next)
 {
 	ASSERT(findEnum(next) == END);
 	m_enum.push_back(next);
 }
 
-inline ruint RDOEnumType::findEnum(CREF(tstring) val) const
+inline std::size_t RDOEnumType::findEnum(CREF(std::string) val) const
 {
 	CIterator it = std::find(m_enum.begin(), m_enum.end(), val);
 	return it != m_enum.end() ? it - m_enum.begin() : END;
 }
 
-inline rbool RDOEnumType::exist(CREF(tstring) val) const
+inline bool RDOEnumType::exist(CREF(std::string) val) const
 {
 	return findEnum(val) != END;
 }
 
-inline rbool RDOEnumType::empty() const
+inline bool RDOEnumType::empty() const
 {
 	return m_enum.empty();
 }

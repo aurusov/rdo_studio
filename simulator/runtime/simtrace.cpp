@@ -55,7 +55,7 @@ void RDOSimulatorTrace::rdoInit()
 	RDOSimulator::rdoInit();
 }
 
-ruint RDOSimulatorTrace::getResourceId()
+std::size_t RDOSimulatorTrace::getResourceId()
 {
 	if (freeResourcesIds.empty())
 	{
@@ -64,18 +64,18 @@ ruint RDOSimulatorTrace::getResourceId()
 	else
 	{
 #ifdef _DEBUG
-		STL_FOR_ALL(freeResourcesIds, it)
+		for (const auto& id: freeResourcesIds)
 		{
-			TRACE1("getFreeResourceId: %d\n", *it);
+			TRACE1("getFreeResourceId: %d\n", id);
 		}
 #endif
-		ruint id = freeResourcesIds.back();
+		const std::size_t id = freeResourcesIds.back();
 		freeResourcesIds.pop_back();
 		return id;
 	}
 }
 
-void RDOSimulatorTrace::eraseFreeResourceId(ruint id)
+void RDOSimulatorTrace::eraseFreeResourceId(std::size_t id)
 {
 	MAPII::iterator it = resourcesIdsRefs.find(id);
 	if (it != resourcesIdsRefs.end())

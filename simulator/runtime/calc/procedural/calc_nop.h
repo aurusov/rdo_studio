@@ -18,7 +18,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Пустая операция
-CALC(RDOCalcNop)
+PREDECLARE_POINTER(RDOCalcNop);
+class RDOCalcNop: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcNop)
 private:

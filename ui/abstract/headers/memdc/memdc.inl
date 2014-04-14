@@ -27,13 +27,13 @@ namespace rdo
 		}
 
 		template <class TDC, class TBMP>
-		inline rbool MemDC<TDC, TBMP>::valid() const
+		inline bool MemDC<TDC, TBMP>::valid() const
 		{
 			return m_pDC.get() != NULL ? true : false;
 		}
 
 		template <class TDC, class TBMP>
-		inline rbool MemDC<TDC, TBMP>::create(ruint width, ruint height)
+		inline bool MemDC<TDC, TBMP>::create(std::size_t width, std::size_t height)
 		{
 			if (m_pBitmap.get() || m_pDC.get())
 				return false;
@@ -48,7 +48,7 @@ namespace rdo
 		}
 
 		template <class TDC, class TBMP>
-		inline rbool MemDC<TDC, TBMP>::resize(ruint width, ruint height)
+		inline bool MemDC<TDC, TBMP>::resize(std::size_t width, std::size_t height)
 		{
 			if (width == 0 || height == 0)
 				return false;

@@ -36,7 +36,7 @@ void cnv_rtperror(const char* message)
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
 // --------------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
+RDORTPResType::RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, bool permanent)
 	: RDOParserSrcInfo(src_info            )
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
@@ -56,14 +56,14 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 	m_params.push_back(param);
 }
 
-void RDORTPResType::addParam(CREF(tstring) param_name, rdo::runtime::RDOType::TypeID param_typeID)
+void RDORTPResType::addParam(CREF(std::string) param_name, rdo::runtime::RDOType::TypeID param_typeID)
 {
 	UNUSED(param_name  );
 	UNUSED(param_typeID);
 	NEVER_REACH_HERE;
 }
 
-LPRDORTPParam RDORTPResType::findRTPParam(CREF(tstring) paramName) const
+LPRDORTPParam RDORTPResType::findRTPParam(CREF(std::string) paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
 	return it != m_params.end() ? *it : LPRDORTPParam();
@@ -72,7 +72,7 @@ LPRDORTPParam RDORTPResType::findRTPParam(CREF(tstring) paramName) const
 void RDORTPResType::finish()
 {}
 
-ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const
+std::size_t RDORTPResType::getRTPParamNumber(CREF(std::string) paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
 	return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
@@ -81,7 +81,7 @@ ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const
 void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 {
 	stream << getNumber() << " " << name() << " " << getParams().size() << std::endl;
-	for (ruint i = 0; i < getParams().size(); i++)
+	for (std::size_t i = 0; i < getParams().size(); i++)
 	{
 		stream << "  " << (i+1) << " ";
 		getParams().at(i)->writeModelStructure(stream);
@@ -95,7 +95,7 @@ void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(Converter) pParser):
 	RDOParserObject(pParser)
 {
-	for (ruint i = 0; i < m_points.size(); i++)
+	for (std::size_t i = 0; i < m_points.size(); i++)
 	{
 //		double x = m_points[i]->getX();
 	}

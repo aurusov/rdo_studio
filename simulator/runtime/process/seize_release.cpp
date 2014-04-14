@@ -12,7 +12,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/process/seize_release.h"
@@ -58,19 +57,19 @@ void RDOPROCSeize::onStart(CREF(LPRDORuntime) pRuntime)
 	_onStart(pRuntime);
 }
 
-rbool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_transacts.empty())
 		return false;
 
-	ruint Size_Seizes = forRes.size();
-	for (ruint i = 0; i < Size_Seizes; i++)
+	const std::size_t Size_Seizes = forRes.size();
+	for (std::size_t i = 0; i < Size_Seizes; i++)
 	{
 		// если свободен
 		if (forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_free)
 		{
-			ruint idBlocksTransact    = m_transacts.front()->getTraceID();
-			ruint idResourcesTransact = forRes[i].rss->transacts.front()->getTraceID();
+			const std::size_t idBlocksTransact = m_transacts.front()->getTraceID();
+			const std::size_t idResourcesTransact = forRes[i].rss->transacts.front()->getTraceID();
 			if (idBlocksTransact != idResourcesTransact)
 				return false;
 
@@ -133,7 +132,7 @@ void RDOPROCRelease::onStart(CREF(LPRDORuntime) pRuntime)
 	_onStart(pRuntime);
 }
 
-rbool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if (!m_transacts.empty())
 	{

@@ -44,9 +44,9 @@ RDOEnumType::RDOEnumType(CREF(rdo::runtime::LPRDOEnumType) pEnumType)
 RDOEnumType::~RDOEnumType()
 {}
 
-tstring RDOEnumType::name() const
+std::string RDOEnumType::name() const
 {
-	tstring str = "(";
+	std::string str = "(";
 	rdo::runtime::RDOEnumType::const_iterator it = getEnums()->begin();
 	while (it != getEnums()->end())
 	{
@@ -185,7 +185,7 @@ rdo::runtime::RDOValue RDOEnumType::get_default() const
 void RDOEnumType::writeModelStructure(std::ostream& stream) const
 {
 	stream << "E " << getEnums()->getValues().size() << std::endl;
-	for (ruint i = 0; i < getEnums()->getValues().size(); i++)
+	for (std::size_t i = 0; i < getEnums()->getValues().size(); i++)
 	{
 		stream << "    " << i << " " << getEnums()->getValues().at(i) << std::endl;
 	}

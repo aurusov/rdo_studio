@@ -21,17 +21,17 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCBlockForSeize
 // --------------------------------------------------------------------------------
-inline tstring RDOPROCBlockForSeize::getStateParamName()
+inline std::string RDOPROCBlockForSeize::getStateParamName()
 {
 	return "Состояние";
 }
 
-inline tstring RDOPROCBlockForSeize::getStateEnumFree()
+inline std::string RDOPROCBlockForSeize::getStateEnumFree()
 {
 	return "Свободен";
 }
 
-inline tstring RDOPROCBlockForSeize::getStateEnumBuzy()
+inline std::string RDOPROCBlockForSeize::getStateEnumBuzy()
 {
 	return "Занят";
 }
@@ -42,7 +42,7 @@ inline tstring RDOPROCBlockForSeize::getStateEnumBuzy()
 inline RDOPROCSeize::RDOPROCSeize(LPIPROCProcess process, std::vector<parser_for_Seize> From_Par)
 	: RDOPROCBlockForSeize(process, From_Par)
 {
-	static ruint g_index = 1;
+	static std::size_t g_index = 1;
 	index = g_index++;
 }
 
@@ -52,7 +52,7 @@ inline RDOPROCSeize::RDOPROCSeize(LPIPROCProcess process, std::vector<parser_for
 inline RDOPROCRelease::RDOPROCRelease(LPIPROCProcess process, std::vector<parser_for_Seize> From_Par)
 	: RDOPROCBlockForSeize(process, From_Par)
 {
-	static ruint g_index = 1;
+	static std::size_t g_index = 1;
 	index = g_index++;
 }
 

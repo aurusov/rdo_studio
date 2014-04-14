@@ -52,9 +52,9 @@ console_controller::console_controller()
 console_controller::~console_controller()
 {}
 
-rbool console_controller::finished() const
+bool console_controller::finished() const
 {
-	rbool res = true;
+	bool res = true;
 	{
 		MUTEXT_PROTECTION(m_stateMutex);
 		res = (m_state == SS_FINISHED);
@@ -62,28 +62,28 @@ rbool console_controller::finished() const
 	return res;
 }
 
-rbool console_controller::converted() const
+bool console_controller::converted() const
 {
 	return m_converted;
 }
 
-rbool console_controller::simulationSuccessfully()
+bool console_controller::simulationSuccessfully()
 {
 	sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 	return m_exitCode == rdo::simulation::report::EC_OK;
 }
 
-rbool console_controller::buildError() const
+bool console_controller::buildError() const
 {
 	return m_buildError;
 }
 
-rbool console_controller::runtimeError() const
+bool console_controller::runtimeError() const
 {
 	return m_runtimeError;
 }
 
-rbool console_controller::convertorError() const
+bool console_controller::convertorError() const
 {
 	return m_convertorError;
 }
@@ -164,7 +164,7 @@ void console_controller::fillBuildLogList(REF(std::vector<FileMessage>) errors)
 	BOOST_FOREACH(const FileMessage& error, errors)
 	{
 		const BuildEditLineInfo info(error);
-		const tstring line = info.getMessage();
+		const std::string line = info.getMessage();
 		m_buildLogList.push_back(line);
 	}
 }

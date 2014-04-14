@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOEvent
 // --------------------------------------------------------------------------------
-RDOEvent::RDOEvent(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternEvent) pPattern, rbool trace, CREF(tstring) name)
+RDOEvent::RDOEvent(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternEvent) pPattern, bool trace, CREF(std::string) name)
 	: RDOActivityPattern<RDOPatternEvent>(pPattern, trace, name)
 {
 	setTrace  (trace);
@@ -34,7 +34,7 @@ void RDOEvent::onStart(CREF(LPRDORuntime) /*pRuntime*/)
 void RDOEvent::onStop(CREF(LPRDORuntime) /*pRuntime*/)
 {}
 
-rbool RDOEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 	return false;

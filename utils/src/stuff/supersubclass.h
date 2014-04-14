@@ -41,7 +41,7 @@ public:
 	enum { same   = true };
 };
 
-#define SUPERSUBCLASS(T, U) (SuperSubClass<CPTR(U), CPTR(T)>::exists)
+#define SUPERSUBCLASS(T, U) (SuperSubClass<const U*, const T*>::exists)
 
 } // namespace rdo
 

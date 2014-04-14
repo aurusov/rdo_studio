@@ -73,13 +73,13 @@ public:
 	bool          isEmpty         () const;
 
 	 PTR(TabCtrl) getTab();
-	CPTR(TabCtrl) getTab() const;
+	const TabCtrl* getTab() const;
 
 	void  updateStyleOfAllModel() const;
 	bool  isPrevModelClosed    () const;
 
 	REF(rdo::gui::frame::Manager) getFrameManager();
-	void onChangeFrame(ruint index);
+	void onChangeFrame(std::size_t index);
 
 protected:
 	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
@@ -92,11 +92,11 @@ private:
 		BS_ERROR
 	};
 
-	rdo::gui::frame::Manager  m_frameManager;
-	boost::optional<ruint>    m_templateIndex;
-	bool                      m_GUI_HAS_MODEL;
-	bool                      m_GUI_CAN_RUN;
-	bool                      m_GUI_IS_RUNNING;
+	rdo::gui::frame::Manager m_frameManager;
+	boost::optional<std::size_t> m_templateIndex;
+	bool m_GUI_HAS_MODEL;
+	bool m_GUI_CAN_RUN;
+	bool m_GUI_IS_RUNNING;
 
 	void setHasModel  (bool value);
 	void setCanRun    (bool value);
@@ -127,7 +127,7 @@ private:
 	View*                                   m_pView;
 	QString                                 m_name;
 
-	bool newModel  (CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex);
+	bool newModel  (CREF(QString) modelName, CREF(QString) modelPath, std::size_t templateIndex);
 	bool saveModel () const;
 	bool buildModel();
 	bool stopModel () const;
@@ -147,13 +147,13 @@ private:
 
 	struct ModelTemplateItem
 	{
-		QString                resName;
-		boost::optional<ruint> position;
+		QString resName;
+		boost::optional<std::size_t> position;
 
 		ModelTemplateItem();
 		ModelTemplateItem(CREF(ModelTemplateItem) copy);
 		ModelTemplateItem(CREF(QString) resName);
-		ModelTemplateItem(CREF(QString) resName, ruint position);
+		ModelTemplateItem(CREF(QString) resName, std::size_t position);
 	};
 	typedef  std::map<rdoModelObjects::RDOFileType, ModelTemplateItem>  ModelTemplate;
 	typedef  std::map<int, ModelTemplate>                               ModelTemplateList;

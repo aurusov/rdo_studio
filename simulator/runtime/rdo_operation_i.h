@@ -33,7 +33,7 @@ class IOperation
 {
 public:
 	virtual void   onBeforeChoiceFrom    (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual rbool  choiceFrom            (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
+	virtual bool   choiceFrom            (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
 	virtual void   onBeforeOperationBegin(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
 	virtual void   convertBegin          (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
 	virtual void   onAfterOperationBegin (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
@@ -45,7 +45,7 @@ public:
 
 #define DECLARE_IOperation \
 	virtual void   onBeforeChoiceFrom    (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual rbool  choiceFrom            (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
+	virtual bool   choiceFrom            (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
 	virtual void   onBeforeOperationBegin(CREF(rdo::runtime::LPRDORuntime) pRuntime); \
 	virtual void   convertBegin          (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
 	virtual void   onAfterOperationBegin (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
@@ -61,10 +61,10 @@ public:
 class IOperationTrace
 {
 public:
-	virtual tstring traceOperId() const = 0;
+	virtual std::string traceOperId() const = 0;
 };
 
 #define DECLARE_IOperationTrace \
-	virtual tstring traceOperId() const;
+	virtual std::string traceOperId() const;
 
 #endif // _LIB_RUNTIME_OPERATION_I_H_

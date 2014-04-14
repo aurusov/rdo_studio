@@ -37,7 +37,7 @@ public:
 	virtual bool styleUsing( const int styleType ) const;
 	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
 	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static ParserStyle getDefaultStyle();
 	static ParserStyle getCppStyle();

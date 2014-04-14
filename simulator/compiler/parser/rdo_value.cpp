@@ -63,14 +63,14 @@ RDOValue::RDOValue(CREF(LPRDOValue) pValue)
 	}
 }
 
-RDOValue::RDOValue(CREF(rdo::explicit_value<rsint>) value, CREF(RDOParserSrcInfo) src_info)
+RDOValue::RDOValue(CREF(rdo::explicit_value<int>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {
 	m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(src_info);
 }
 
-RDOValue::RDOValue(CREF(rdo::explicit_value<ruint>) value, CREF(RDOParserSrcInfo) src_info)
+RDOValue::RDOValue(CREF(rdo::explicit_value<std::size_t>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {
@@ -84,7 +84,7 @@ RDOValue::RDOValue(CREF(rdo::explicit_value<double>) value, CREF(RDOParserSrcInf
 	m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(src_info);
 }
 
-RDOValue::RDOValue(CREF(rdo::explicit_value<tstring>) value, CREF(RDOParserSrcInfo) src_info)
+RDOValue::RDOValue(CREF(rdo::explicit_value<std::string>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {
@@ -135,12 +135,12 @@ CREF(rdo::runtime::RDOValue) RDOValue::value() const
 	return m_value;
 }
 
-rbool RDOValue::defined() const
+bool RDOValue::defined() const
 {
 	return m_value.typeID() != rdo::runtime::RDOType::t_unknow;
 }
 
-rbool RDOValue::constant() const
+bool RDOValue::constant() const
 {
 	if (m_value.typeID() == rdo::runtime::RDOType::t_int     ||
 	    m_value.typeID() == rdo::runtime::RDOType::t_real    ||
@@ -163,7 +163,7 @@ rbool RDOValue::constant() const
 	return false;
 }
 
-LPRDOValue RDOValue::getIdentificator(CREF(tstring) identificator)
+LPRDOValue RDOValue::getIdentificator(CREF(std::string) identificator)
 {
 	return rdo::Factory<RDOValue>::create(RDOParserSrcInfo(identificator));
 }

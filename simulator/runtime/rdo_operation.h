@@ -53,8 +53,8 @@ friend class RDOSimulatorTrace;
 friend class RDOSimulator;
 
 protected:
-	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(tstring) name);
-	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name);
+	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, bool trace, CREF(std::string) name);
+	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, bool trace, CREF(LPRDOCalc) pCondition, CREF(std::string) name);
 	virtual ~RDOOperation();
 	DECLARE_IOperation;
 
@@ -64,9 +64,9 @@ private:
 	typedef std::vector<LPIOperation> CloneList;
 
 	CloneList m_cloneList;
-	rbool     m_haveAdditionalCondition;
+	bool m_haveAdditionalCondition;
 	LPRDOCalc m_pAdditionalCondition;
-	int       m_operId;
+	int m_operId;
 
 	virtual void onMakePlaned(CREF(LPRDORuntime) pRuntime, const std::vector<RDOValue>& params);
 

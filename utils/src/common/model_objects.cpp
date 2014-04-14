@@ -14,9 +14,9 @@
 
 namespace rdoModelObjects {
 
-tstring getFileTypeString(RDOFileType type)
+std::string getFileTypeString(RDOFileType type)
 {
-	tstring string("");
+	std::string string;
 	switch ( type ) {
 			case RTP : string = "RTP" ; break;
 			case RSS : string = "RSS" ; break;

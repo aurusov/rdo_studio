@@ -19,7 +19,6 @@
 #include <vector>
 #include <sstream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
 #include "utils/src/common/model_objects.h"
 // --------------------------------------------------------------------------------
@@ -34,20 +33,20 @@ namespace rdo {
 	//! \param  str - исходная строка, которая может содержать символы форматирования
 	//! \param  ... - произвольный набор параметров
 	//! \result Отформатированная строчка
-	tstring format(CPTR(tchar) str, ...);
+	std::string format(const char* str, ...);
 
 	//! Формирование строки по формату
 	//! \param  str    - исходная строка, которая может содержать символы форматирования
 	//! \param  params - определенный по формату набор параметров (вытащенный по формату из стека)
 	//! \result Отформатированная строчка
-	tstring format(CPTR(tchar) str, REF(va_list) params);
+	std::string format(const char* str, REF(va_list) params);
 
 	//! Переводит значение в строку
 	//! \tparam T     - тип значения
 	//! \param  value - значение
 	//! \result Строковое представление значения
 	template< class T >
-	inline tstring toString(const T& value)
+	inline std::string toString(const T& value)
 	{
 		std::stringstream str;
 		str << value;
@@ -59,7 +58,7 @@ namespace rdo {
 	//! \brief    Вектор
 	//! \details  Потомок от std::vector, с парой удобных методов. Пример:
 	//! \code
-	//! rdo::vector<ruint> container;
+	//! rdo::vector<std::size_t> container;
 	//! container(1)(3)(5)(2);        // Размещает в контейнере 4-ре элемента
 	//! \endcode
 	template <class T>

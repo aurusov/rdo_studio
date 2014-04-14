@@ -87,7 +87,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 	}
 }
 
-rbool RDORSSResource::defined() const
+bool RDORSSResource::defined() const
 {
 	return m_currParam == getType()->getParams().end();
 }
@@ -95,9 +95,9 @@ rbool RDORSSResource::defined() const
 rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 {
 	std::vector<rdo::runtime::RDOValue> paramList;
-	STL_FOR_ALL_CONST(params(), it)
+	for (const auto& param: params())
 	{
-		paramList.push_back(it->param()->value());
+		paramList.push_back(param.param()->value());
 	}
 
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
@@ -118,10 +118,8 @@ RDOPROCResource::RDOPROCResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) 
 rdo::runtime::LPRDOCalc RDOPROCResource::createCalc() const
 {
 	std::vector<rdo::runtime::RDOValue> paramList;
-	STL_FOR_ALL_CONST(params(), it)
-	{
-		paramList.push_back(it->param()->value());
-	}
+	for (const auto& param: params())
+		paramList.push_back(param.param()->value());
 
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
 	ASSERT(pCalc);

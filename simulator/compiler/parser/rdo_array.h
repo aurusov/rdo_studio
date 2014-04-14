@@ -21,7 +21,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOArrayValue
 // --------------------------------------------------------------------------------
-OBJECT(RDOArrayValue) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOArrayValue);
+class RDOArrayValue
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOArrayValue);
 public:
@@ -29,12 +32,12 @@ public:
 
 	void insertItem(CREF(LPRDOValue) pValue);
 
-	CREF(LPRDOArrayType)          getArrayType      () const;
-	 REF(LPRDOArrayType)          getArrayType      ();
-	rdo::runtime::RDOValue        getRArray         () const;
+	CREF(LPRDOArrayType) getArrayType() const;
+	 REF(LPRDOArrayType) getArrayType();
+	rdo::runtime::RDOValue getRArray() const;
 	rdo::runtime::LPRDOArrayValue createRuntimeValue() const;
-	tstring                       getAsString       () const;
-	CREF(Container)               getContainer      () const;
+	std::string getAsString() const;
+	CREF(Container) getContainer() const;
 
 private:
 	RDOArrayValue(CREF(LPRDOArrayType) pArrayType);

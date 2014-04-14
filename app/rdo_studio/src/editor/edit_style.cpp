@@ -245,12 +245,12 @@ bool EditStyle::styleItalic( const int /*styleType*/ ) const
 	return defaultStyle & StyleFont::ITALIC ? true : false;
 }
 
-tstring EditStyle::styleFGColorToHEX( const int /*styleType*/ ) const
+std::string EditStyle::styleFGColorToHEX( const int /*styleType*/ ) const
 {
 	return colorToHEX( defaultColor );
 }
 
-tstring EditStyle::styleBGColorToHEX( const int /*styleType*/ ) const
+std::string EditStyle::styleBGColorToHEX( const int /*styleType*/ ) const
 {
 	return colorToHEX( backgroundColor );
 }
@@ -315,7 +315,7 @@ EditStyle EditStyle::getOceanStyle()
 	return style;
 }
 
-tstring EditStyle::colorToHEX( const QColor color )
+std::string EditStyle::colorToHEX( const QColor color )
 {
 	return rdo::format( "#%02X%02X%02X", color.red(), color.green(), color.blue() );
 }

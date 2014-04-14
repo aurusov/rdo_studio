@@ -80,7 +80,7 @@ private:
 	QRect m_clientRect;
 
 	int m_valueCountX;
-	std::vector<tstring> m_captionList;
+	std::vector<std::string> m_captionList;
 	int m_valueCountY;
 
 	bool m_timeWrapFlag;
@@ -94,7 +94,7 @@ private:
 	bool        maxXVisible       () const;
 	QScrollBar& getHorzScrollBar  ();
 	void        updateScrollBars  ();
-	bool        scrollHorizontally(rsint inc);
+	bool        scrollHorizontally(int inc);
 
 	long double         m_timeScale;
 	int                 m_chartShift;

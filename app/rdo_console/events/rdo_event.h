@@ -32,20 +32,20 @@ public:
 	typedef double etime;
 
 public:
-	event(CREF(tstring) name, etime time, types type = none);
+	event(CREF(std::string) name, etime time, types type = none);
 	virtual ~event();
 
-	void setName(CREF(tstring) name);
+	void setName(CREF(std::string) name);
 	void setTime(etime time);
 
-	tstring getName() const;
-	etime   getTime() const;
-	types   getType() const;
+	std::string getName() const;
+	etime getTime() const;
+	types getType() const;
 
 private:
-	tstring m_name;
-	etime   m_time;
-	types   m_type;
+	std::string m_name;
+	etime m_time;
+	types m_type;
 };
 
 } // namespace rdo

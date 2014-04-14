@@ -45,11 +45,11 @@ void RDOSimulator::appendLogic(CREF(LPIBaseOperation) pLogic, LPIBaseOperationCo
 	pParent->append(pLogic);
 }
 
-rbool RDOSimulator::doOperation()
+bool RDOSimulator::doOperation()
 {
 	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
 
-	rbool res;
+	bool res;
 	if (getMustContinueOpr())
 	{
 		// Есть действие, которое необходимо продолжить. Используется в DPT
@@ -62,7 +62,7 @@ rbool RDOSimulator::doOperation()
 	}
 	else
 	{
-		rbool foundPlaned = false;
+		bool foundPlaned = false;
 		// Отработаем все запланированные на данный момент события
 		if (!m_checkOperation && !m_timePoints.empty())
 		{
@@ -136,7 +136,7 @@ void RDOSimulator::preProcess()
 	onResetResult();
 }
 
-tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter)
+std::string writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(std::size_t) counter)
 {
 	std::stringstream stream;
 	IBaseOperationContainer::CIterator it = pLogic->begin();
@@ -155,7 +155,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 	stream << std::endl;
 #endif
 
-	ruint _counter = 1;
+	std::size_t _counter = 1;
 	it = pLogic->begin();
 	while (it != pLogic->end())
 	{
@@ -183,7 +183,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 	return stream.str();
 }
 
-tstring RDOSimulator::writeActivitiesStructure(REF(ruint) counter)
+std::string RDOSimulator::writeActivitiesStructure(REF(std::size_t) counter)
 {
 	return writeActivitiesStructureRecurse(m_pMetaLogic, counter);
 }

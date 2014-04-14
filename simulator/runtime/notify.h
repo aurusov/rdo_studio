@@ -30,13 +30,13 @@ public:
 		RO_BEFOREDELETE = 0
 	};
 
-	void connect    (PTR(INotify) pTo, ruint message);
-	void disconnect (PTR(INotify) pTo               );
-	void disconnect (PTR(INotify) pTo, ruint message);
-	void fireMessage(ruint message, PTR(void) pParam) const;
+	void connect(PTR(INotify) pTo, std::size_t message);
+	void disconnect(PTR(INotify) pTo);
+	void disconnect(PTR(INotify) pTo, std::size_t message);
+	void fireMessage(std::size_t message, PTR(void) pParam) const;
 
 private:
-	typedef std::multimap<ruint, PTR(INotify)> Connected;
+	typedef std::multimap<std::size_t, PTR(INotify)> Connected;
 	Connected m_connected;
 
 	void disconnect(Connected::iterator it, PTR(INotify) pTo);

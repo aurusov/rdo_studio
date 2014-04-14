@@ -12,7 +12,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/queue_depart.h"
 #include "simulator/runtime/calc/calc_base.h"
@@ -47,7 +46,7 @@ void RDOPROCQueue::onStart(CREF(LPRDORuntime) pRuntime)
 	_onStart(pRuntime);
 }
 
-rbool RDOPROCQueue::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCQueue::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 	if (!m_transacts.empty())
@@ -91,7 +90,7 @@ void RDOPROCDepart::onStart(CREF(LPRDORuntime) pRuntime)
 	_onStart(pRuntime);
 }
 
-rbool RDOPROCDepart::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCDepart::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 	if (!m_transacts.empty())

@@ -20,7 +20,7 @@ OPEN_COMPILER_GUI_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlock
 // --------------------------------------------------------------------------------
-RPShapeDataBlock::RPShapeDataBlock(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name)
+RPShapeDataBlock::RPShapeDataBlock(RPShapeDataBlock::zakonRaspr zakon, CREF(std::string) name)
 	: m_zakon(zakon)
 	, m_name (name )
 {}
@@ -48,14 +48,14 @@ void RPShapeDataBlock::setMax(double max)
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlockCreate
 // --------------------------------------------------------------------------------
-RPShapeDataBlockCreate::RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name)
+RPShapeDataBlockCreate::RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, CREF(std::string) name)
 	: RPShapeDataBlock(zakon, name)
 {}
 
 RPShapeDataBlockCreate::~RPShapeDataBlockCreate()
 {}
 
-void RPShapeDataBlockCreate::setAmount(boost::optional<ruint> amount)
+void RPShapeDataBlockCreate::setAmount(boost::optional<std::size_t> amount)
 {
 	m_amount = amount;
 }
@@ -68,7 +68,7 @@ void RPShapeDataBlockCreate::setStatistics(CREF(rdo::runtime::LPIInternalStatist
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlockTerminate
 // --------------------------------------------------------------------------------
-RPShapeDataBlockTerminate::RPShapeDataBlockTerminate(CREF(tstring) name)
+RPShapeDataBlockTerminate::RPShapeDataBlockTerminate(CREF(std::string) name)
 	:m_name(name)
 {}
 
@@ -88,7 +88,7 @@ void RPShapeDataBlockTerminate::setStatistics(CREF(rdo::runtime::LPIInternalStat
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlockProcess
 // --------------------------------------------------------------------------------
-RPShapeDataBlockProcess::RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name)
+RPShapeDataBlockProcess::RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(std::string) name)
 	: RPShapeDataBlock(zakon,name)
 {}
 
@@ -100,7 +100,7 @@ void RPShapeDataBlockProcess::addAction(RPShapeDataBlockProcess::Action action)
 	m_actionList.push_back(action);
 }
 
-void RPShapeDataBlockProcess::addRes(CREF(tstring) resName)
+void RPShapeDataBlockProcess::addRes(CREF(std::string) resName)
 {
 	ASSERT(std::find(m_resNameList.begin(), m_resNameList.end(), resName) == m_resNameList.end());
 

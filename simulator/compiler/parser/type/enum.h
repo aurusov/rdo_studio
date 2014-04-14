@@ -36,11 +36,11 @@ public:
 		return m_pType.object_static_cast<rdo::runtime::RDOEnumType>();
 	}
 
-	rbool operator== (CREF(RDOEnumType) pEnumType) const
+	bool operator== (CREF(RDOEnumType) pEnumType) const
 	{
 		return getEnums()->getValues() == pEnumType.getEnums()->getValues();
 	}
-	rbool operator!= (CREF(RDOEnumType) pEnumType) const
+	bool operator!= (CREF(RDOEnumType) pEnumType) const
 	{
 		return !operator==(pEnumType);
 	}

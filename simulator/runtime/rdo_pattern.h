@@ -29,9 +29,11 @@ class RDOKeyboard;
   \class     RDOPattern
   \brief     Базовый класс для паттернов активностей и событий
 */
-OBJECT(RDOPattern)
-	IS  INSTANCE_OF(RDORuntimeObject  )
-	AND INSTANCE_OF(RDOTraceableObject)
+PREDECLARE_POINTER(RDOPattern);
+class RDOPattern
+	: public rdo::counter_reference
+	, public RDORuntimeObject
+	, public RDOTraceableObject
 {
 DECLARE_FACTORY(RDOPattern);
 
@@ -39,7 +41,7 @@ public:
 	void addPreSelectRelRes(CREF(LPRDOCalc) pCalc);
 
 protected:
-	RDOPattern(rbool trace);
+	RDOPattern(bool trace);
 	virtual ~RDOPattern();
 
 	typedef  std::vector<LPRDOCalc>                   CalcList;
@@ -49,15 +51,15 @@ protected:
 
 	void preSelectRelRes(CREF(LPRDORuntime) pRuntime);
 
-	void  runCalcs    (REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime);
-	rbool runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime);
+	void runCalcs(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime);
+	bool runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime);
 };
 
 /*!
   \class     RDOPatternEvent
   \brief     Паттерн событий
 */
-CLASS(RDOPatternEvent): INSTANCE_OF(RDOPattern)
+class RDOPatternEvent: public RDOPattern
 {
 DECLARE_FACTORY(RDOPatternEvent);
 friend class RDOEvent;
@@ -73,10 +75,10 @@ public:
 
 	double getNextTimeInterval(CREF(LPRDORuntime) pRuntime);
 
-	LPIEvent createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(tstring) oprName);
+	LPIEvent createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) oprName);
 
 private:
-	RDOPatternEvent(rbool trace);
+	RDOPatternEvent(bool trace);
 	virtual ~RDOPatternEvent();
 
 	LPRDOCalc         m_timeCalc;
@@ -90,7 +92,7 @@ DECLARE_POINTER(RDOPatternEvent);
   \class     RDOPatternRule
   \brief     Паттерн активностей типа rule
 */
-CLASS(RDOPatternRule): INSTANCE_OF(RDOPattern)
+class RDOPatternRule: public RDOPattern
 {
 DECLARE_FACTORY(RDOPatternRule);
 friend class RDORule;
@@ -105,13 +107,13 @@ public:
 	void convertRule (CREF(LPRDORuntime) pRuntime);
 	void convertErase(CREF(LPRDORuntime) pRuntime);
 
-	rbool choiceFrom (CREF(LPRDORuntime) pRuntime);
+	bool choiceFrom (CREF(LPRDORuntime) pRuntime);
 
-	LPIRule createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
-	LPIRule createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
+	LPIRule createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) _oprName);
+	LPIRule createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(std::string) _oprName);
 
 private:
-	RDOPatternRule(rbool trace);
+	RDOPatternRule(bool trace);
 	virtual ~RDOPatternRule();
 
 	CalcList          m_choiceFrom;
@@ -125,7 +127,7 @@ DECLARE_POINTER(RDOPatternRule);
   \class     RDOPatternOperation
   \brief     Паттерн активностей типа operation
 */
-CLASS(RDOPatternOperation): INSTANCE_OF(RDOPattern)
+class RDOPatternOperation: public RDOPattern
 {
 DECLARE_FACTORY(RDOPatternOperation);
 friend class RDOOperation;
@@ -146,14 +148,14 @@ public:
 	void convertBeginErase      (CREF(LPRDORuntime) pRuntime);
 	void convertEndErase        (CREF(LPRDORuntime) pRuntime);
 
-	rbool  choiceFrom           (CREF(LPRDORuntime) pRuntime);
-	double getNextTimeInterval  (CREF(LPRDORuntime) pRuntime);
+	bool choiceFrom(CREF(LPRDORuntime) pRuntime);
+	double getNextTimeInterval(CREF(LPRDORuntime) pRuntime);
 
-	LPIOperation createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
-	LPIOperation createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
+	LPIOperation createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) _oprName);
+	LPIOperation createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(std::string) _oprName);
 
 protected:
-	RDOPatternOperation(rbool trace);
+	RDOPatternOperation(bool trace);
 	virtual ~RDOPatternOperation();
 
 private:
@@ -174,15 +176,15 @@ DECLARE_POINTER(RDOPatternOperation);
   \class     RDOPatternKeyboard
   \brief     Паттерн активностей типа keyboard
 */
-CLASS(RDOPatternKeyboard): INSTANCE_OF(RDOPatternOperation)
+class RDOPatternKeyboard: public RDOPatternOperation
 {
 DECLARE_FACTORY(RDOPatternKeyboard);
 public:
-	LPIKeyboard createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
-	LPIKeyboard createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
+	LPIKeyboard createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) _oprName);
+	LPIKeyboard createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(std::string) _oprName);
 
 private:
-	RDOPatternKeyboard(rbool trace);
+	RDOPatternKeyboard(bool trace);
 	virtual ~RDOPatternKeyboard();
 };
 DECLARE_POINTER(RDOPatternKeyboard);

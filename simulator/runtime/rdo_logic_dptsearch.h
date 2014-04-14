@@ -46,14 +46,14 @@ protected:
 	typedef std::list<LPIDPTSearchActivity> ActivityList;
 	ActivityList   m_activityList;
 
-	virtual rbool         TermCondition         (CREF(LPRDORuntime) pRuntime)                          = 0;
+	virtual bool          TermCondition         (CREF(LPRDORuntime) pRuntime)                          = 0;
 	virtual double        EvaluateBy            (CREF(LPRDORuntime) pRuntime)                          = 0;
 	virtual void          onSearchBegin         (CREF(LPRDORuntime) pRuntime)                          = 0;
 	virtual void          onSearchDecisionHeader(CREF(LPRDORuntime) pRuntime)                          = 0;
 	virtual void          onSearchDecision      (CREF(LPRDORuntime) pRuntime, PTR(TreeNode) node )     = 0;
 	virtual void          onSearchResultSuccess (CREF(LPRDORuntime) pRuntime, PTR(TreeRoot) treeRoot ) = 0;
 	virtual void          onSearchResultNotFound(CREF(LPRDORuntime) pRuntime, PTR(TreeRoot) treeRoot ) = 0;
-	virtual rbool         NeedCompareTops       ()                                                     = 0;
+	virtual bool          NeedCompareTops       ()                                                     = 0;
 	virtual PTR(TreeRoot) createTreeRoot        (CREF(LPRDORuntime) pRuntime)                          = 0;
 	virtual BOResult      onContinue            (CREF(LPRDORuntime) pRuntime);
 

@@ -94,7 +94,7 @@ private:
 	virtual void stop();
 
 	PTR(CWinThread) thread_corbaRunThreadFun;
-	static ruint corbaRunThreadFun(PTR(void) pParam);
+	static std::size_t corbaRunThreadFun(PTR(void) pParam);
 };
 
 } //! namespace rdoCorba
@@ -116,20 +116,22 @@ class RDOResult;
 // --------------------------------------------------------------------------------
 // -------------------- RDOThreadRunTime
 // --------------------------------------------------------------------------------
-OBJECT(RDOThreadRunTime)
-	IS  INSTANCE_OF      (RDOThreadMT )
-	AND IMPLEMENTATION_OF(IThreadProxy)
+PREDECLARE_POINTER(RDOThreadRunTime);
+class RDOThreadRunTime
+	: public rdo::counter_reference
+	, public RDOThreadMT
+	, public IThreadProxy
 {
 DECLARE_FACTORY(RDOThreadRunTime);
 public:
-	rbool runtimeError() const;
+	bool runtimeError() const;
 
 	struct GetFrame
 	{
 		PTR(rdo::animation::Frame) m_pFrame;
-		ruint                      m_number;
+		std::size_t m_number;
 
-		GetFrame(PTR(rdo::animation::Frame) pFrame, ruint number)
+		GetFrame(PTR(rdo::animation::Frame) pFrame, std::size_t number)
 			: m_pFrame(pFrame)
 			, m_number(number)
 		{}
@@ -137,19 +139,19 @@ public:
 
 	struct FrameAreaDown
 	{
-		ruint   m_number;
-		tstring m_name;
+		std::size_t m_number;
+		std::string m_name;
 
-		FrameAreaDown(ruint number, CREF(tstring) name)
+		FrameAreaDown(std::size_t number, CREF(std::string) name)
 			: m_number(number)
 			, m_name  (name  )
 		{}
 	};
 
 private:
-	PTR(rdo::service::simulation::RDOThreadSimulator)  m_pSimulator;
-	rbool                                              m_runtimeError;
-	ruint64                                            m_timeStart;
+	PTR(rdo::service::simulation::RDOThreadSimulator) m_pSimulator;
+	bool m_runtimeError;
+	uint64_t m_timeStart;
 
 	RDOThreadRunTime();
 	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
@@ -163,7 +165,7 @@ private:
 
 	void writeResultsInfo();
 
-	void sendMessage(ThreadID threadID, ruint messageID, PTR(void) pParam);
+	void sendMessage(ThreadID threadID, std::size_t messageID, PTR(void) pParam);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
@@ -192,17 +194,17 @@ public:
 	{
 		struct Param
 		{
-			tstring m_name;
+			std::string m_name;
 		};
 		typedef std::vector<Param> ParamList;
 
-		tstring   m_name;
+		std::string m_name;
 		ParamList m_params;
 	};
 
 	struct RSS
 	{
-		tstring m_name;
+		std::string m_name;
 	};
 
 	struct GetRTP: public std::vector<RTP>
@@ -211,13 +213,13 @@ public:
 	{};
 
 private:
-	rdo::compiler::parser::LPRDOParser    m_pParser;
-	rdo::runtime::LPRDORuntime            m_pRuntime;
-	rbool                                 m_canTrace;
-	rdo::compiler::gui::LPProcGUIProcess  m_pGUIProcess;
-	rdo::compiler::gui::LPProcGUIBlock    m_pBlock;
-	rdo::runtime::LPRDOThreadRunTime      m_pThreadRuntime;
-	rdo::simulation::report::RDOExitCode  m_exitCode;
+	rdo::compiler::parser::LPRDOParser m_pParser;
+	rdo::runtime::LPRDORuntime m_pRuntime;
+	bool m_canTrace;
+	rdo::compiler::gui::LPProcGUIProcess m_pGUIProcess;
+	rdo::compiler::gui::LPProcGUIBlock m_pBlock;
+	rdo::runtime::LPRDOThreadRunTime m_pThreadRuntime;
+	rdo::simulation::report::RDOExitCode m_exitCode;
 
 	void terminateModel();
 	void closeModel    ();
@@ -243,9 +245,9 @@ protected:
 
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	rbool parseModel();
-	void  runModel  ();
-	void  stopModel ();
+	bool parseModel();
+	void runModel();
+	void stopModel();
 
 	typedef std::vector<rdo::simulation::report::FileMessage> SyntaxMessageList;
 	SyntaxMessageList getErrors();
@@ -272,7 +274,7 @@ public:
 			bitmaps
 		};
 
-		typedef std::list<tstring> StringList;
+		typedef std::list<std::string> StringList;
 
 		Type            m_type;
 		PTR(StringList) m_list;
@@ -301,11 +303,11 @@ public:
 	struct GetCodeComp: public boost::noncopyable
 	{
 		rdoModelObjects::RDOFileType m_file;
-		int                          m_pos_x;
-		int                          m_pos_y;
-		REF(tstring)                 m_result;
+		int m_pos_x;
+		int m_pos_y;
+		REF(std::string) m_result;
 
-		GetCodeComp(rdoModelObjects::RDOFileType file, int pos_x, int pos_y, REF(tstring) result)
+		GetCodeComp(rdoModelObjects::RDOFileType file, int pos_x, int pos_y, REF(std::string) result)
 			: m_file  (file  )
 			, m_pos_x (pos_x )
 			, m_pos_y (pos_y )

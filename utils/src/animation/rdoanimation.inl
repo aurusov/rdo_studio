@@ -37,7 +37,7 @@ inline Color::Color(CREF(Color) color)
 	, m_transparent(color.m_transparent)
 {}
 
-inline Color::Color(rbyte r, rbyte g, rbyte b, rbool transparent)
+inline Color::Color(unsigned char r, unsigned char g, unsigned char b, bool transparent)
 	: m_r          (r          )
 	, m_g          (g          )
 	, m_b          (b          )
@@ -97,7 +97,7 @@ inline Radius::Radius(double radius)
 	: m_radius(radius)
 {}
 
-inline TextElement::TextElement(CREF(BoundedElement) rect, CREF(ColoredElement) color, CREF(tstring) text, TextAlign align)
+inline TextElement::TextElement(CREF(BoundedElement) rect, CREF(ColoredElement) color, CREF(std::string) text, TextAlign align)
 	: FrameItem     (FIT_TEXT)
 	, BoundedElement(rect    )
 	, ColoredElement(color   )
@@ -145,31 +145,31 @@ inline EllipseElement::EllipseElement(CREF(BoundedElement) rect, CREF(ColoredEle
 	, ColoredElement(color      )
 {}
 
-inline BmpElement::BmpElement(CREF(Point) point, CREF(tstring) bmp_name, CREF(tstring) mask_name)
+inline BmpElement::BmpElement(CREF(Point) point, CREF(std::string) bmp_name, CREF(std::string) mask_name)
 	: FrameItem  (FIT_BMP  )
 	, m_point    (point    )
 	, m_bmp_name (bmp_name )
 	, m_mask_name(mask_name)
 {}
 
-inline rbool BmpElement::hasMask() const
+inline bool BmpElement::hasMask() const
 {
 	return !m_mask_name.empty();
 }
 
-inline ScaledBmpElement::ScaledBmpElement(CREF(BoundedElement) rect, CREF(tstring) bmp_name, CREF(tstring) mask_name)
+inline ScaledBmpElement::ScaledBmpElement(CREF(BoundedElement) rect, CREF(std::string) bmp_name, CREF(std::string) mask_name)
 	: FrameItem     (FIT_S_BMP)
 	, BoundedElement(rect     )
 	, m_bmp_name    (bmp_name )
 	, m_mask_name   (mask_name)
 {}
 
-inline rbool ScaledBmpElement::hasMask() const
+inline bool ScaledBmpElement::hasMask() const
 {
 	return !m_mask_name.empty();
 }
 
-inline ActiveElement::ActiveElement(CREF(BoundedElement) rect, CREF(tstring) opr_name)
+inline ActiveElement::ActiveElement(CREF(BoundedElement) rect, CREF(std::string) opr_name)
 	: FrameItem     (FIT_ACTIVE)
 	, BoundedElement(rect      )
 	, m_opr_name    (opr_name  )
@@ -181,13 +181,13 @@ inline NullElement::NullElement()
 
 inline Frame::~Frame()
 {
-	STL_FOR_ALL(m_elements, it)
-		delete (*it);
+	for (const auto& element: m_elements)
+		delete element;
 
 	m_elements.clear();
 }
 
-inline rbool Frame::hasBgImage() const
+inline bool Frame::hasBgImage() const
 {
 	return !m_bgImageName.empty();
 }

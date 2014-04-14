@@ -100,7 +100,7 @@ inline void RDOLexer::enumReset()
 	m_enumEmpty = true;
 }
 
-inline rbool RDOLexer::enumEmpty()
+inline bool RDOLexer::enumEmpty()
 {
 	return m_enumEmpty;
 }

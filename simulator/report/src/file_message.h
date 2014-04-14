@@ -11,8 +11,8 @@
 #define _SIMULATOR_REPORT_FILE_MESSAGE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
 #include "utils/src/common/model_objects.h"
 // --------------------------------------------------------------------------------
@@ -37,22 +37,22 @@ public:
 	//! \param line    - номер строки с ошибкой
 	//! \param pos     - позиция ошибки в строке
 	//! \param type    - тип сообщения. Значение по умолчанию \b MT_ERROR
-	FileMessage(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR);
+	FileMessage(CREF(std::string) text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type = MT_ERROR);
 
-	tstring getText    () const;
+	std::string getText() const;
 	rdoModelObjects::RDOFileType getFileType() const;
-	ruint getLineNumber() const;
-	ruint getPosInLine () const;
-	Type  getType      () const;
+	std::size_t getLineNumber() const;
+	std::size_t getPosInLine() const;
+	Type getType () const;
 
-	void setText(CREF(tstring) text);
+	void setText(CREF(std::string) text);
 
 private:
-	tstring                      m_text; //!< Текст сообщения
+	std::string m_text; //!< Текст сообщения
 	rdoModelObjects::RDOFileType m_file; //!< Файл с ошибкой
-	ruint                        m_line; //!< Номер строки с ошибкой
-	ruint                        m_pos;  //!< Позиция ошибки в строке
-	Type                         m_type; //!<  Тип сообщения
+	std::size_t m_line; //!< Номер строки с ошибкой
+	std::size_t m_pos; //!< Позиция ошибки в строке
+	Type m_type; //!<  Тип сообщения
 };
 
 }}} // namespace rdo::simulation::report

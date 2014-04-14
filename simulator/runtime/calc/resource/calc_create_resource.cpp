@@ -24,11 +24,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOCalcCreateResource
 // --------------------------------------------------------------------------------
 RDOCalcCreateResource::RDOCalcCreateResource(
-	ruint resourceTypeID,
+	std::size_t resourceTypeID,
 	const std::vector<LPRDOCalc>& rParamCalcList,
-	rbool traceFlag,
-	rbool permanentFlag,
-	ruint relResID
+	bool traceFlag,
+	bool permanentFlag,
+	std::size_t relResID
 )
 	: m_resourceTypeID(resourceTypeID)
 	, m_traceFlag     (traceFlag     )
@@ -53,7 +53,7 @@ RDOValue RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
 	LPRDOResource pResource = resourceType.interface_cast<IResourceType>()->createRes(pRuntime, pRuntime->getResourceId(), paramValueList, m_traceFlag, m_permanentFlag);
 	ASSERT(pResource);
 
-	if (m_relResID != ruint(~0))
+	if (m_relResID != std::size_t(~0))
 	{
 		pRuntime->getCurrentActivity()->setRelRes(m_relResID, pResource->getTraceID());
 	}

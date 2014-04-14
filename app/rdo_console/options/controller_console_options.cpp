@@ -92,7 +92,7 @@ boost::filesystem::path ControllerConsoleOptions::getModelFileName() const
 	boost::filesystem::path result;
 	if (m_variables.count(MODEL_COMMAND))
 	{
-		tstring modelFileName = m_variables[MODEL_COMMAND].as<tstring>();
+		std::string modelFileName = m_variables[MODEL_COMMAND].as<std::string>();
 #if defined(OST_WINDOWS)
 		modelFileName = rdo::locale::convertFromCLocale(modelFileName);
 #elif defined(OST_LINUX)
@@ -108,7 +108,7 @@ boost::filesystem::path ControllerConsoleOptions::getScriptFileName() const
 	boost::filesystem::path result;
 	if (m_variables.count(SCRIPT_COMMAND))
 	{
-		tstring eventsFileName = m_variables[SCRIPT_COMMAND].as<tstring>();
+		std::string eventsFileName = m_variables[SCRIPT_COMMAND].as<std::string>();
 #if defined(OST_WINDOWS)
 		eventsFileName = rdo::locale::convertFromCLocale(eventsFileName);
 #elif defined(OST_LINUX)
@@ -119,12 +119,12 @@ boost::filesystem::path ControllerConsoleOptions::getScriptFileName() const
 	return result;
 }
 
-rbool ControllerConsoleOptions::helpQuery() const
+bool ControllerConsoleOptions::helpQuery() const
 {
 	return m_help;
 }
 
-rbool ControllerConsoleOptions::convertQuery() const
+bool ControllerConsoleOptions::convertQuery() const
 {
 	return m_convert;
 }
@@ -132,8 +132,8 @@ rbool ControllerConsoleOptions::convertQuery() const
 void ControllerConsoleOptions::createGeneralOptions(REF(po::options_description) options)
 {
 	options.add_options()
-			((MODEL_COMMAND + COMMA_STRING + MODEL_COMMAND_SHORT).c_str(), po::value<tstring>(), MODEL_COMMENT.c_str())
-			((SCRIPT_COMMAND + COMMA_STRING + SCRIPT_COMMAND_SHORT).c_str(), po::value<tstring>(), SCRIPT_COMMENT.c_str())
+			((MODEL_COMMAND + COMMA_STRING + MODEL_COMMAND_SHORT).c_str(), po::value<std::string>(), MODEL_COMMENT.c_str())
+			((SCRIPT_COMMAND + COMMA_STRING + SCRIPT_COMMAND_SHORT).c_str(), po::value<std::string>(), SCRIPT_COMMENT.c_str())
 			((LANGUAGE_COMMAND + COMMA_STRING + LANGUAGE_COMMAND_SHORT).c_str(), LANGUAGE_COMMENT.c_str())
 			((VERSION_COMMAND + COMMA_STRING + VERSION_COMMAND_SHORT).c_str(), VERSION_COMMENT.c_str())
 			((HELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str());

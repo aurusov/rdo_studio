@@ -130,12 +130,12 @@ TreeRoot* RDODPTSearchTrace::createTreeRoot(CREF(LPRDORuntime) pRuntime)
 	return root;
 }
 
-ruint RDODPTSearchTrace::getCalcCnt() const
+std::size_t RDODPTSearchTrace::getCalcCnt() const
 {
 	return calc_cnt;
 }
 
-ruint RDODPTSearchTrace::getCalcResFoundCnt() const
+std::size_t RDODPTSearchTrace::getCalcResFoundCnt() const
 {
 	return calc_res_found_cnt;
 }
@@ -143,8 +143,8 @@ ruint RDODPTSearchTrace::getCalcResFoundCnt() const
 template <typename T>
 void __getStats(CREF(std::list<T>) list, REF(T) min, REF(T) max, REF(double) med)
 {
-	T      sum = 0;
-	ruint  cnt = 0;
+	T sum = 0;
+	std::size_t cnt = 0;
 	typename std::list<T>::const_iterator it = list.begin();
 	while (it != list.end())
 	{
@@ -181,20 +181,20 @@ void RDODPTSearchTrace::getStatsDOUBLE(Type type, REF(double) min, REF(double) m
 	NEVER_REACH_HERE;
 }
 
-void RDODPTSearchTrace::getStatsRUINT(Type type, REF(ruint) min, REF(ruint) max, REF(double) med) const
+void RDODPTSearchTrace::getStatsRUINT(Type type, REF(std::size_t) min, REF(std::size_t) max, REF(double) med) const
 {
 	switch (type)
 	{
 	case IDPTSearchTraceStatistics::ST_MEMORY:
-		return __getStats<ruint>(calc_mems, min, max, med);
+		return __getStats<std::size_t>(calc_mems, min, max, med);
 	case IDPTSearchTraceStatistics::ST_NODES:
-		return __getStats<ruint>(calc_nodes, min, max, med);
+		return __getStats<std::size_t>(calc_nodes, min, max, med);
 	case IDPTSearchTraceStatistics::ST_NODES_FULL:
-		return __getStats<ruint>(calc_nodes_full, min, max, med);
+		return __getStats<std::size_t>(calc_nodes_full, min, max, med);
 	case IDPTSearchTraceStatistics::ST_NODES_EXPENDED:
-		return __getStats<ruint>(calc_nodes_expended, min, max, med);
+		return __getStats<std::size_t>(calc_nodes_expended, min, max, med);
 	case IDPTSearchTraceStatistics::ST_NODES_IN_GRAPH:
-		return __getStats<ruint>(calc_nodes_in_graph, min, max, med);
+		return __getStats<std::size_t>(calc_nodes_in_graph, min, max, med);
 	default:
 		break;
 	}

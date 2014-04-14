@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 #include "simulator/report/src/file_message.h"
 // --------------------------------------------------------------------------------
 
@@ -23,20 +22,20 @@ namespace report {
 class LogEditLineInfo : public FileMessage
 {
 public:
-	LogEditLineInfo(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type);
+	LogEditLineInfo(CREF(std::string) text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type);
 	explicit LogEditLineInfo(CREF(FileMessage) message);
-	explicit LogEditLineInfo(CREF(tstring) message);
+	explicit LogEditLineInfo(CREF(std::string) message);
 	virtual ~LogEditLineInfo();
 
-	virtual tstring getMessage() const;
-	rbool isSimpleTextMessage() const;
+	virtual std::string getMessage() const;
+	bool isSimpleTextMessage() const;
 
-	ruint getPosInLog() const;
+	std::size_t getPosInLog() const;
 	void setPosInLog(int posInLog);
 
 private:
-	ruint m_posInLog;
-	rbool m_simpleTextMessage;
+	std::size_t m_posInLog;
+	bool m_simpleTextMessage;
 };
 
 }}} // namespace rdo::simulation::report

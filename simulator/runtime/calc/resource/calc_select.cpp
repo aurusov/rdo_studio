@@ -70,7 +70,7 @@ RDOFunCalcSelectBase::RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CRE
 RDOValue RDOFunCalcSelectExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
-	rbool res = false;
+	bool res = false;
 	std::list<LPRDOResource>::iterator it  = m_pSelect->res_list.begin();
 	std::list<LPRDOResource>::iterator end = m_pSelect->res_list.end();
 	while (it != end && !res)
@@ -90,7 +90,7 @@ RDOValue RDOFunCalcSelectExist::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOValue RDOFunCalcSelectNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
-	rbool res = true;
+	bool res = true;
 	std::list<LPRDOResource>::iterator it  = m_pSelect->res_list.begin();
 	std::list<LPRDOResource>::iterator end = m_pSelect->res_list.end();
 	while (it != end && res)
@@ -114,7 +114,7 @@ RDOValue RDOFunCalcSelectForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 	{
 		return RDOValue(false);
 	}
-	rbool res = true;
+	bool res = true;
 	std::list<LPRDOResource>::iterator it  = m_pSelect->res_list.begin();
 	std::list<LPRDOResource>::iterator end = m_pSelect->res_list.end();
 	while (it != end && res)
@@ -134,7 +134,7 @@ RDOValue RDOFunCalcSelectForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOValue RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
-	rbool res = false;
+	bool res = false;
 	std::list<LPRDOResource>::iterator it  = m_pSelect->res_list.begin();
 	std::list<LPRDOResource>::iterator end = m_pSelect->res_list.end();
 	while (it != end && !res)
@@ -154,7 +154,7 @@ RDOValue RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOValue RDOFunCalcSelectSize::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
-	return RDOValue(static_cast<ruint>(m_pSelect->res_list.size()));
+	return RDOValue(static_cast<std::size_t>(m_pSelect->res_list.size()));
 }
 
 // --------------------------------------------------------------------------------

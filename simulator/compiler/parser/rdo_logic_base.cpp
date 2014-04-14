@@ -30,12 +30,12 @@ RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)
 RDOLogicBase::~RDOLogicBase()
 {}
 
-CREF(tstring) RDOLogicBase::name() const
+CREF(std::string) RDOLogicBase::name() const
 {
 	return src_info().src_text();
 }
 
-rbool RDOLogicBase::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDOLogicBase::setPrior(REF(LPRDOFUNArithm) pPrior)
 {
 	LPIPriority pPriority = m_pRuntimeLogic;
 	if (pPriority)
@@ -45,12 +45,12 @@ rbool RDOLogicBase::setPrior(REF(LPRDOFUNArithm) pPrior)
 	return false;
 }
 
-rbool RDOLogicBase::getMultithreading() const
+bool RDOLogicBase::getMultithreading() const
 {
 	return m_multithreading;
 }
 
-void RDOLogicBase::setMultithreading(rbool multithreading)
+void RDOLogicBase::setMultithreading(bool multithreading)
 {
 	m_multithreading = multithreading;
 }

@@ -28,7 +28,7 @@ class RDOPatternIrregEvent: public RDOPattern
 friend class RDOIrregEvent;
 
 public:
-	RDOPatternIrregEvent(rbool trace);
+	RDOPatternIrregEvent(bool trace);
 
 	void addConvertorCalc  (CREF(LPRDOCalc) pCalc            ) { m_convertor.push_back(pCalc);        }
 	void addConvertorStatus(RDOResource::ConvertStatus status) { m_convertorStatus.push_back(status); }
@@ -69,7 +69,7 @@ QUERY_INTERFACE_END
 friend class RDOTrace;
 
 private:
-	RDOIrregEvent(PTR(RDOPatternIrregEvent) pPattern, rbool trace, CREF(tstring) name);
+	RDOIrregEvent(PTR(RDOPatternIrregEvent) pPattern, bool trace, CREF(std::string) name);
 
 	double  m_time;
 

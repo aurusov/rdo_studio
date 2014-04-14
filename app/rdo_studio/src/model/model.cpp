@@ -57,7 +57,7 @@ Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName)
 	: resName(resName)
 {}
 
-Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, ruint position)
+Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, std::size_t position)
 	: resName (resName )
 	, position(position)
 {}
@@ -467,21 +467,21 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_SIMULATOR_PARSE_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)));
+			g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromStdString(*static_cast<PTR(std::string)>(msg.param)));
 			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_DEBUG_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)));
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdString(*static_cast<PTR(std::string)>(msg.param)));
 			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_RESULT_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)));
+			g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(*static_cast<PTR(std::string)>(msg.param)));
 			msg.unlock();
 			break;
 		}
@@ -509,7 +509,7 @@ void Model::show_result()
 	}
 }
 
-bool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex)
+bool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, std::size_t templateIndex)
 {
 	m_templateIndex = templateIndex;
 	g_pApp->getIMainWnd()->getDockBuild  ().clear();
@@ -966,23 +966,23 @@ void Model::afterModelStart()
 		g_pApp->getIMainWnd()->getDockDebug().appendString("Загрузка ресурсов для анимации...\n");
 		g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 
-		std::list<tstring> frames;
-		std::list<tstring> bitmaps;
+		std::list<std::string> frames;
+		std::list<std::string> bitmaps;
 		rdo::service::simulation::RDOThreadSimulator::GetList getListFrames (rdo::service::simulation::RDOThreadSimulator::GetList::frames,  &frames );
 		rdo::service::simulation::RDOThreadSimulator::GetList getListBitmaps(rdo::service::simulation::RDOThreadSimulator::GetList::bitmaps, &bitmaps);
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListFrames );
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
-		BOOST_FOREACH(const tstring& name, bitmaps)
+		BOOST_FOREACH(const std::string& name, bitmaps)
 		{
 			m_frameManager.insertBitmap(QString::fromStdString(name));
 		}
-		BOOST_FOREACH(const tstring& name, frames)
+		BOOST_FOREACH(const std::string& name, frames)
 		{
 			m_frameManager.insertFrame(QString::fromStdString(name));
 		}
 		m_timeNow = 0;
-		ruint initFrameNumber = kernel->simulator()->getInitialFrameNumber();
-		if (initFrameNumber != ruint(~0))
+		std::size_t initFrameNumber = kernel->simulator()->getInitialFrameNumber();
+		if (initFrameNumber != std::size_t(~0))
 		{
 			--initFrameNumber;
 		}
@@ -1001,7 +1001,7 @@ void Model::afterModelStart()
 	else
 	{
 		m_timeNow = 0;
-		m_frameManager.setLastShowedFrame(ruint(~0));
+		m_frameManager.setLastShowedFrame(std::size_t(~0));
 	}
 }
 
@@ -1049,7 +1049,7 @@ void Model::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 
 QString Model::getLastBreakPointName()
 {
-	tstring str;
+	std::string str;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_LAST_BREAKPOINT, &str);
 	return QString::fromStdString(str);
 }
@@ -1186,7 +1186,7 @@ void Model::updateActions()
 
 	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SPEED>(
 		getRuntimeMode() != rdo::runtime::RTM_MaxSpeed || !isRunning()
-			? QString("Скорость: %1%").arg(rsint(getSpeed() * 100))
+			? QString("Скорость: %1%").arg(int(getSpeed() * 100))
 			: ""
 	);
 
@@ -1373,7 +1373,7 @@ REF(rdo::gui::frame::Manager) Model::getFrameManager()
 	return m_frameManager;
 }
 
-void Model::onChangeFrame(ruint)
+void Model::onChangeFrame(std::size_t)
 {
 	updateActions();
 }
@@ -1386,7 +1386,7 @@ PTR(TabCtrl) Model::getTab()
 	return &m_pView->getTab();
 }
 
-CPTR(TabCtrl) Model::getTab() const
+const TabCtrl* Model::getTab() const
 {
 	if (!m_pView)
 		return NULL;

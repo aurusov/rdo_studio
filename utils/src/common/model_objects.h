@@ -12,8 +12,8 @@
 #define _UTILS_MODEL_OBJECTS_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoModelObjects {
@@ -37,7 +37,7 @@ enum RDOFileType
 	PRCX     //!< Файл GUI-процессов, XML
 };
 
-tstring getFileTypeString(RDOFileType type);
+std::string getFileTypeString(RDOFileType type);
 
 } // namespace rdoModelObjects
 

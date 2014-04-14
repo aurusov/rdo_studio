@@ -128,22 +128,20 @@ Document::TypeOut Document::typeToOut(CREF(Type) typeIn) const
 
 void Document::close()
 {
-	STL_FOR_ALL_CONST(m_memoryFileList, memoryIt)
+	for (const auto& memory: m_memoryFileList)
 	{
-		TypeOut typeOut = typeToOut(memoryIt->first);
+		TypeOut typeOut = typeToOut(memory.first);
 		if (typeOut != rdo::converter::smr2rdox::UNDEFINED_OUT)
 		{
 			LPFileStream pFileStream = getFileStream(typeOut);
 			ASSERT(pFileStream);
-			memoryIt->second->get(*pFileStream.get());
+			memory.second->get(*pFileStream.get());
 		}
 	}
 	m_memoryFileList.clear();
 
-	STL_FOR_ALL_CONST(m_streamFileList, fileIt)
-	{
-		fileIt->second->close();
-	}
+	for (const auto& file: m_streamFileList)
+		file.second->close();
 	m_streamFileList.clear();
 }
 
@@ -176,7 +174,7 @@ Document::LPMemoryStream Document::getMemoryStream(Type type)
 	if (it == m_memoryFileList.end())
 	{
 		LPMemoryStream pMemoryStream = LPMemoryStream(new MemoryStream());
-		std::pair<MemoryFileList::iterator, rbool> result = m_memoryFileList.insert(MemoryFileList::value_type(type, pMemoryStream));
+		std::pair<MemoryFileList::iterator, bool> result = m_memoryFileList.insert(MemoryFileList::value_type(type, pMemoryStream));
 		ASSERT(result.second);
 		it = result.first;
 	}
@@ -189,14 +187,14 @@ Document::LPFileStream Document::getFileStream(TypeOut type)
 	if (it == m_streamFileList.end())
 	{
 		LPFileStream pFileStream = LPFileStream(new boost::filesystem::ofstream(getName(type), std::ios::trunc | std::ios::binary));
-		std::pair<StreamFileList::iterator, rbool> result = m_streamFileList.insert(StreamFileList::value_type(type, pFileStream));
+		std::pair<StreamFileList::iterator, bool> result = m_streamFileList.insert(StreamFileList::value_type(type, pFileStream));
 		ASSERT(result.second);
 		it = result.first;
 	}
 	return it->second;
 }
 
-void Document::insert(Type type, ruint to, CREF(tstring) value)
+void Document::insert(Type type, std::size_t to, CREF(std::string) value)
 {
 	LPMemoryStream streamOut = getMemoryStream(type);
 	streamOut->insert(to, value);
@@ -212,7 +210,7 @@ void Document::insert(Type type, ruint to, CREF(tstring) value)
 	}
 }
 
-void Document::remove(Type type, ruint from, ruint to)
+void Document::remove(Type type, std::size_t from, std::size_t to)
 {
 	LPMemoryStream streamOut = getMemoryStream(type);
 	streamOut->remove(from, to);
@@ -228,7 +226,7 @@ void Document::remove(Type type, ruint from, ruint to)
 	}
 }
 
-tstring Document::get(Type type, ruint from, ruint to)
+std::string Document::get(Type type, std::size_t from, std::size_t to)
 {
 	return getMemoryStream(type)->get(from, to);
 }
@@ -261,7 +259,7 @@ void Document::MemoryStream::get(REF(std::ofstream) stream) const
 	stream << result;
 }
 
-void Document::MemoryStream::insert(ruint to, CREF(tstring) value)
+void Document::MemoryStream::insert(std::size_t to, CREF(std::string) value)
 {
 	Buffer::iterator itTo;
 	switch (to)
@@ -271,14 +269,14 @@ void Document::MemoryStream::insert(ruint to, CREF(tstring) value)
 	default                                  : itTo = m_buffer.begin() + to; break;
 	}
 
-	for (ruint i = 0; i < value.length(); ++i)
+	for (std::size_t i = 0; i < value.length(); ++i)
 	{
 		itTo = m_buffer.insert(itTo, value[i]);
 		++itTo;
 	}
 }
 
-void Document::MemoryStream::remove(ruint from, ruint to)
+void Document::MemoryStream::remove(std::size_t from, std::size_t to)
 {
 	Buffer::iterator itFrom;
 	switch (from)
@@ -299,7 +297,7 @@ void Document::MemoryStream::remove(ruint from, ruint to)
 	m_buffer.erase(itFrom, itTo);
 }
 
-tstring Document::MemoryStream::get(ruint from, ruint to)
+std::string Document::MemoryStream::get(std::size_t from, std::size_t to)
 {
 	switch (from)
 	{
@@ -314,8 +312,8 @@ tstring Document::MemoryStream::get(ruint from, ruint to)
 	}
 
 	Buffer::iterator itFrom = m_buffer.begin() + from;
-	Buffer::iterator itTo   = m_buffer.begin() + to;
-	tstring result;
+	Buffer::iterator itTo = m_buffer.begin() + to;
+	std::string result;
 	result.resize(to - from);
 	std::copy(itFrom, itTo, result.begin());
 	return result;

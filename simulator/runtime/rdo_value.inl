@@ -93,7 +93,7 @@ inline CREF(rdo::intrusive_ptr<typename T::value_type>) RDOValue::getPointerByIn
 }
 
 template <class T>
-inline rbool RDOValue::isType() const
+inline bool RDOValue::isType() const
 {
 	return type().object_dynamic_cast<T>();
 }
@@ -107,7 +107,7 @@ inline REF(T) RDOValue::__get()
 template <class T>
 inline CREF(T) RDOValue::__get() const
 {
-	return *reinterpret_cast<CPTR(T)>(&m_value);
+	return *reinterpret_cast<const T*>(&m_value);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

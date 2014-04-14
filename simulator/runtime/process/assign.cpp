@@ -12,7 +12,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/process/assign.h"
@@ -25,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAssign
 // --------------------------------------------------------------------------------
-rbool RDOPROCAssign::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCAssign::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 	return !m_transacts.empty();

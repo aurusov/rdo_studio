@@ -35,7 +35,7 @@ RDOArrayType::RDOArrayType(CREF(LPTypeInfo) pItemType, CREF(RDOParserSrcInfo) sr
 RDOArrayType::~RDOArrayType()
 {}
 
-tstring RDOArrayType::name() const
+std::string RDOArrayType::name() const
 {
 	return rdo::format("array<%s>", m_pItemType->type()->name().c_str());
 }

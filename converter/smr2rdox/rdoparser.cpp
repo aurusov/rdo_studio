@@ -46,12 +46,12 @@ void Converter::insert##NAME(LPRDO##NAME value) \
 
 #define DECLARE_PARSER_OBJECT_CONTAINER(NAME) \
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
-const LPRDO##NAME Converter::find##NAME(CREF(tstring) name) const \
+const LPRDO##NAME Converter::find##NAME(CREF(std::string) name) const \
 { \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
 	return it != m_all##NAME.end() ? *it : LPRDO##NAME(NULL); \
 } \
-rbool Converter::remove##NAME(const LPRDO##NAME item) \
+bool Converter::remove##NAME(const LPRDO##NAME item) \
 { \
 	NAME##List::iterator it = std::find(m_all##NAME.begin(), m_all##NAME.end(), item); \
 	if (it == m_all##NAME.end()) \
@@ -84,12 +84,12 @@ rdo::converter::smr2rdox::RDOFileTypeIn Converter::getFileToParse()
 	return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->m_type : rdo::converter::smr2rdox::PAT_IN;
 }
 
-ruint Converter::lexer_loc_line()
+std::size_t Converter::lexer_loc_line()
 {
 	return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->lexer_loc_line() : ~0;
 }
 
-ruint Converter::lexer_loc_pos()
+std::size_t Converter::lexer_loc_pos()
 {
 	return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->lexer_loc_pos() : 0;
 }
@@ -134,46 +134,46 @@ void Converter::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
 	}
 }
 
-rbool Converter::isCurrentDPTSearch()
+bool Converter::isCurrentDPTSearch()
 {
 	return getLastDPTSearch() && !getLastDPTSearch()->closed() ? true : false;
 }
 
-rbool Converter::isCurrentDPTPrior()
+bool Converter::isCurrentDPTPrior()
 {
 	return getLastDPTPrior() ? true : false;
 }
 
-void Converter::insertChanges(CREF(tstring) name, CREF(tstring) value)
+void Converter::insertChanges(CREF(std::string) name, CREF(std::string) value)
 {
 	m_changes.push_back(ChangesData(name, value));
 }
 
-tstring Converter::getChanges() const
+std::string Converter::getChanges() const
 {
 	std::stringstream stream;
 	stream << "$Changes" << std::endl;
-	ruint changes_max_length = 0;
-	STL_FOR_ALL_CONST(m_changes, change_it)
+	std::size_t changes_max_length = 0;
+	for (const auto& change: m_changes)
 	{
-		if (change_it->m_name.length() > changes_max_length)
+		if (change.m_name.length() > changes_max_length)
 		{
-			changes_max_length = change_it->m_name.length();
+			changes_max_length = change.m_name.length();
 		}
 	}
-	STL_FOR_ALL_CONST(m_changes, change_it)
+	for (const auto& change: m_changes)
 	{
-		stream << "  " << change_it->m_name;
-		for (ruint i = change_it->m_name.length(); i < changes_max_length; i++)
+		stream << "  " << change.m_name;
+		for (std::size_t i = change.m_name.length(); i < changes_max_length; i++)
 		{
 			stream << " ";
 		}
-		stream << "  = " << change_it->m_value << std::endl;
+		stream << "  = " << change.m_value << std::endl;
 	}
 	return stream.str();
 }
 
-tstring Converter::getModelStructure()
+std::string Converter::getModelStructure()
 {
 	std::stringstream modelStructure;
 
@@ -182,34 +182,28 @@ tstring Converter::getModelStructure()
 
 	// RTP
 	modelStructure << std::endl << std::endl << "$Resource_type" << std::endl;
-	STL_FOR_ALL_CONST(m_allRTPResType, rtp_it)
-	{
-		(*rtp_it)->writeModelStructure(modelStructure);
-	}
+	for (const auto& rtp: m_allRTPResType)
+		rtp->writeModelStructure(modelStructure);
 
 	// RSS
 	modelStructure << std::endl << "$Resources" << std::endl;
-	STL_FOR_ALL_CONST(m_allRSSResource, rss_it)
-	{
-		(*rss_it)->writeModelStructure(modelStructure);
-	}
+	for (const auto& rss: m_allRSSResource)
+		rss->writeModelStructure(modelStructure);
 
 	// PAT
 	modelStructure << std::endl << "$Pattern" << std::endl;
-	STL_FOR_ALL_CONST(m_allPATPattern, pat_it)
-	{
-		(*pat_it)->writeModelStructure(modelStructure);
-	}
+	for (const auto& pat: m_allPATPattern)
+		pat->writeModelStructure(modelStructure);
 
 	// OPR/DPT
-	ruint counter = 1;
+	std::size_t counter = 1;
 	modelStructure << std::endl << "$Activities" << std::endl;
 	modelStructure << m_pRuntime->writeActivitiesStructure(counter);
 
 	// DPT only
-	for (ruint i = 0; i < m_allDPTSearch.size(); i++)
+	for (std::size_t i = 0; i < m_allDPTSearch.size(); i++)
 	{
-		for (ruint j = 0; j < m_allDPTSearch.at(i)->getActivities().size(); j++)
+		for (std::size_t j = 0; j < m_allDPTSearch.at(i)->getActivities().size(); j++)
 		{
 			LPRDODPTSearchActivity pSearchActivity = m_allDPTSearch.at(i)->getActivities().at(j);
 			ASSERT(pSearchActivity);
@@ -219,10 +213,10 @@ tstring Converter::getModelStructure()
 
 	// PMD
 	modelStructure << std::endl << "$Watching" << std::endl;
-	ruint watching_max_length = 0;
-	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
+	std::size_t watching_max_length = 0;
+	for (const auto& watching: m_pRuntime->getResult())
 	{
-		LPITrace          trace     = *watching_it;
+		LPITrace          trace     = watching;
 		LPIName           name      = trace;
 		LPIModelStructure structure = trace;
 		if (trace && name && structure)
@@ -233,9 +227,9 @@ tstring Converter::getModelStructure()
 			}
 		}
 	}
-	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
+	for (const auto& watching: m_pRuntime->getResult())
 	{
-		LPITrace          trace     = *watching_it;
+		LPITrace          trace     = watching;
 		LPIName           name      = trace;
 		LPIModelStructure structure = trace;
 		if (trace && name && structure)
@@ -243,7 +237,7 @@ tstring Converter::getModelStructure()
 			if (trace->traceable())
 			{
 				modelStructure << "  " << name->name();
-				for (ruint i = name->name().length(); i < watching_max_length + 2; i++)
+				for (std::size_t i = name->name().length(); i < watching_max_length + 2; i++)
 					modelStructure << " ";
 
 				structure->writeModelStructure(modelStructure);
@@ -280,7 +274,7 @@ void RDOParserSMRInfo::insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn ty
 	}
 }
 
-rbool RDOParserSMRInfo::parseSMR(CREF(boost::filesystem::path) smrFullFileName, REF(boost::filesystem::path) modelName)
+bool RDOParserSMRInfo::parseSMR(CREF(boost::filesystem::path) smrFullFileName, REF(boost::filesystem::path) modelName)
 {
 	boost::filesystem::ifstream stream(smrFullFileName);
 	if (!stream.is_open())
@@ -432,11 +426,11 @@ RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smr
 		}
 		catch (CREF(boost::system::error_code) ex)
 		{
-			tstring message = ex.message();
+			std::string message = ex.message();
 			if (message.find("boost") == 0)
 			{
 				BOOST_AUTO(pos, message.find(' '));
-				if (pos != tstring::npos)
+				if (pos != std::string::npos)
 				{
 					message = message.substr(pos + 1);
 				}
@@ -533,10 +527,10 @@ void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 
 void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 {
-	STL_FOR_ALL_CONST(getDPTSearchs(), it_search)
+	for (const auto& search: getDPTSearchs())
 	{
-		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if((*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
-		if (it_search_act != (*it_search)->getActivities().end())
+		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if(search->getActivities().begin(), search->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
+		if (it_search_act != search->getActivities().end())
 		{
 			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
 			error().push_only((*it_search_act)->src_info(), "См. первое определение");
@@ -544,20 +538,20 @@ void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 //			error("Activity name: " + *_name + " already defined");
 		}
 	}
-	STL_FOR_ALL_CONST(getDPTSomes(), it_some)
+	for (const auto& some: getDPTSomes())
 	{
-		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if((*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
-		if (it_some_act != (*it_some)->getActivities().end())
+		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if(some->getActivities().begin(), some->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
+		if (it_some_act != some->getActivities().end())
 		{
 			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
 			error().push_only((*it_some_act)->src_info(), "См. первое определение");
 			error().push_done();
 		}
 	}
-	STL_FOR_ALL_CONST(getDPTPriors(), it_prior)
+	for (const auto& prior: getDPTPriors())
 	{
-		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if((*it_prior)->getActivities().begin(), (*it_prior)->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
-		if (it_prior_act != (*it_prior)->getActivities().end())
+		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if(prior->getActivities().begin(), prior->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
+		if (it_prior_act != prior->getActivities().end())
 		{
 			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
 			error().push_only((*it_prior_act)->src_info(), "См. первое определение");

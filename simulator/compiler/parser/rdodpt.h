@@ -48,21 +48,21 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParsEvent
 // --------------------------------------------------------------------------------
-CLASS(RDOParsEvent):
-	INSTANCE_OF      (RDOParserSrcInfo)
-AND INSTANCE_OF      (Context         )
-AND IMPLEMENTATION_OF(IContextFind    )
+class RDOParsEvent
+	: public RDOParserSrcInfo
+	, public Context
+	, public IContextFind
 {
 	DECLARE_FACTORY(RDOParsEvent);
 public:
-	CREF(tstring)     name    () const { return src_info().src_text(); }
-	CREF(LPIActivity) activity() const { return m_pActivity;           }
-	LPRDOPATPattern   pattern () const { return m_pPattern;            }
+	CREF(std::string) name() const { return src_info().src_text(); }
+	CREF(LPIActivity) activity() const { return m_pActivity; }
+	LPRDOPATPattern pattern () const { return m_pPattern; }
 
-	void addParam(CREF(RDOValue) param    );
-	void endParam(CREF(YYLTYPE)  param_pos);
+	void addParam(CREF(RDOValue) param);
+	void endParam(CREF(YYLTYPE) param_pos);
 
-//	rbool setPrior(REF(LPRDOFUNArithm) pPrior);
+//	bool setPrior(REF(LPRDOFUNArithm) pPrior);
 
 protected:
 	RDOParsEvent(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
@@ -71,7 +71,7 @@ protected:
 	LPIActivity m_pActivity;
 
 private:
-	ruint           m_currParam;
+	std::size_t m_currParam;
 	LPRDOPATPattern m_pPattern;
 
 	DECLARE_IContextFind;
@@ -82,21 +82,21 @@ DECLARE_POINTER(RDOParsEvent);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivity
 // --------------------------------------------------------------------------------
-CLASS(RDODPTActivity):
-	    INSTANCE_OF      (RDOParserSrcInfo)
-	AND INSTANCE_OF      (Context         )
-	AND IMPLEMENTATION_OF(IContextFind    )
+class RDODPTActivity
+	: public RDOParserSrcInfo
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDODPTActivity);
 public:
-	CREF(tstring)     name    () const { return src_info().src_text(); }
-	CREF(LPIActivity) activity() const { return m_pActivity;           }
-	LPRDOPATPattern   pattern () const { return m_pPattern;            }
+	CREF(std::string) name() const { return src_info().src_text(); }
+	CREF(LPIActivity) activity() const { return m_pActivity; }
+	LPRDOPATPattern pattern () const { return m_pPattern; }
 
-	void addParam(CREF(LPRDOValue) pParam   );
-	void endParam(CREF(YYLTYPE)    param_pos);
+	void addParam(CREF(LPRDOValue) pParam);
+	void endParam(CREF(YYLTYPE) param_pos);
 
-	rbool setPrior(REF(LPRDOFUNArithm) pPrior);
+	bool setPrior(REF(LPRDOFUNArithm) pPrior);
 
 protected:
 	RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
@@ -105,7 +105,7 @@ protected:
 	LPIActivity m_pActivity;
 
 private:
-	ruint           m_currParam;
+	std::size_t m_currParam;
 	LPRDOPATPattern m_pPattern;
 
 	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
@@ -119,7 +119,7 @@ class RDODPTActivityHotKey: public RDODPTActivity
 {
 DECLARE_FACTORY(RDODPTActivityHotKey)
 public:
-	void addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_pos);
+	void addHotKey(CREF(std::string) hotKey, CREF(YYLTYPE) hotkey_pos);
 
 protected:
 	RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
@@ -153,9 +153,10 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
-CLASS(RDODPTSome): public RDOLogic<rdo::runtime::RDODPTSome, RDODPTSomeActivity>
-	AND INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+class RDODPTSome
+	: public RDOLogic<rdo::runtime::RDODPTSome, RDODPTSomeActivity>
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDODPTSome);
 
@@ -170,9 +171,10 @@ DECLARE_POINTER(RDODPTSome);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
-CLASS(RDODPTPrior): public RDOLogic<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>
-	AND INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+class RDODPTPrior
+	: public RDOLogic<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDODPTPrior);
 
@@ -209,28 +211,29 @@ DECLARE_POINTER(RDODPTSearchActivity);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-CLASS(RDODPTSearch): public RDOLogic<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>
-	AND INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
+class RDODPTSearch
+	: public RDOLogic<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDODPTSearch);
 public:
-	void  setTermCondition(CREF(LPRDOFUNLogic)  pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
-	void  setEvaluateBy   (CREF(LPRDOFUNArithm) pEvalBy             ) { m_pEvalBy       = pEvalBy;       }
-	void  setCompareTops  (rbool compTops                           ) { m_compTops      = compTops;      }
-	void  end             ();
-	rbool closed          () const                                    { return m_closed;                 }
+	void setTermCondition(CREF(LPRDOFUNLogic) pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
+	void setEvaluateBy(CREF(LPRDOFUNArithm) pEvalBy) { m_pEvalBy = pEvalBy; }
+	void setCompareTops(bool compTops) { m_compTops = compTops; }
+	void end();
+	bool closed() const { return m_closed; }
 
 private:
 	RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace = rdo::runtime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
 	virtual ~RDODPTSearch();
 
-	LPRDOFUNLogic                                   m_pTermConditon;
-	LPRDOFUNArithm                                  m_pEvalBy;
-	LPILogic                                        m_pParent;
-	rbool                                           m_compTops;
-	rbool                                           m_closed;
-	rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag  m_trace;
+	LPRDOFUNLogic m_pTermConditon;
+	LPRDOFUNArithm m_pEvalBy;
+	LPILogic m_pParent;
+	bool m_compTops;
+	bool m_closed;
+	rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag m_trace;
 
 	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };

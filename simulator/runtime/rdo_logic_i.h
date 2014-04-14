@@ -33,13 +33,13 @@ class ILogic
 public:
 	virtual void init             (CREF(rdo::runtime::LPRDORuntime) pRuntime      ) = 0;
 	virtual void setCondition     (CREF(rdo::runtime::LPRDOCalc)    pCondition    ) = 0;
-	virtual void setMultithreading(rbool                            multithreading) = 0;
+	virtual void setMultithreading(bool                             multithreading) = 0;
 };
 
 #define DECLARE_ILogic                                                              \
 	virtual void init             (CREF(rdo::runtime::LPRDORuntime) pRuntime      ); \
 	virtual void setCondition     (CREF(rdo::runtime::LPRDOCalc)    pCondition    ); \
-	virtual void setMultithreading(rbool                            multithreading);
+	virtual void setMultithreading(bool                             multithreading);
 
 /*!
   \interface IBaseOperationContainer
@@ -58,7 +58,7 @@ public:
 	virtual CIterator             begin () const          = 0;
 	virtual CIterator             end   () const          = 0;
 	virtual void                  append(CREF(Item) item) = 0;
-	virtual rbool                 empty () const          = 0;
+	virtual bool                  empty () const          = 0;
 	virtual REF(LPIBaseOperation) back  ()                = 0;
 	virtual void                  clear ()                = 0;
 };
@@ -69,7 +69,7 @@ public:
 	virtual CIterator             begin () const;          \
 	virtual CIterator             end   () const;          \
 	virtual void                  append(CREF(Item) item); \
-	virtual rbool                 empty () const;          \
+	virtual bool                  empty () const;          \
 	virtual REF(LPIBaseOperation) back  ();                \
 	virtual void                  clear ();
 

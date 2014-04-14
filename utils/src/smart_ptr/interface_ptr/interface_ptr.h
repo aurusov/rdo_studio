@@ -32,18 +32,17 @@ public:
 
 	REF(this_type) operator= (CREF(this_type) sptr);
 
-	operator rbool      () const;
-	CPTR(T)  operator-> () const;
-	 PTR(T)  operator-> ();
+	operator bool() const;
+	const T* operator->() const;
+	PTR(T) operator->();
 
 private:
-	PTR(T)        m_pInterface;
+	PTR(T) m_pInterface;
 	LPIRefCounter m_pCounter;
 };
 
 #define DECLARE_OBJECT_INTERFACE(TYPE)    typedef rdo::interface_ptr<TYPE> LP##TYPE;
-#define PREDECLARE_OBJECT_INTERFACE(TYPE) struct NO_V_TABLE TYPE; DECLARE_OBJECT_INTERFACE(TYPE);
-#define OBJECT_INTERFACE(TYPE)            PREDECLARE_OBJECT_INTERFACE(TYPE) struct TYPE: public rdo::RefCounter<TYPE>
+#define PREDECLARE_OBJECT_INTERFACE(TYPE) struct TYPE; DECLARE_OBJECT_INTERFACE(TYPE);
 
 } // namespace rdo
 

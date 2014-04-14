@@ -20,7 +20,8 @@
   \interface IThreadProxy
   \brief     Интерфейс IThreadProxy
 */
-OBJECT_INTERFACE(IThreadProxy)
+PREDECLARE_OBJECT_INTERFACE(IThreadProxy)
+struct IThreadProxy: public rdo::RefCounter<IThreadProxy>
 {
 DECLARE_FACTORY(IThreadProxy)
 public:
@@ -28,7 +29,7 @@ public:
 	{
 		TID_REPOSITORY
 	};
-	virtual void sendMessage(ThreadID threadID, ruint messageID, PTR(void) pParam) = 0;
+	virtual void sendMessage(ThreadID threadID, std::size_t messageID, PTR(void) pParam) = 0;
 
 protected:
 	IThreadProxy()

@@ -49,9 +49,9 @@ void funerror(const char* message)
 // --------------------------------------------------------------------------------
 void RDOFUNDoubleToIntByResult::roundCalc()
 {
-	STL_FOR_ALL(m_intOrDouble, it)
+	for (const auto& intOrDouble: m_intOrDouble)
 	{
-		(*it)->needRound();
+		intOrDouble->needRound();
 	}
 }
 
@@ -86,7 +86,7 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm)
 	}
 }
 
-RDOFUNLogic::RDOFUNLogic(CREF(LPExpression) pExpression, rbool hideWarning)
+RDOFUNLogic::RDOFUNLogic(CREF(LPExpression) pExpression, bool hideWarning)
 	: RDOFUNBase(pExpression)
 {
 	rdo::runtime::RDOSrcInfo srcInfo = m_pExpression->src_info();
@@ -206,7 +206,7 @@ void RDOFUNLogic::setSrcPos(CREF(RDOSrcInfo::Position) position)
 	m_pExpression->setSrcInfo(srcInfo);
 }
 
-void RDOFUNLogic::setSrcText(CREF(tstring) value)
+void RDOFUNLogic::setSrcText(CREF(std::string) value)
 {
 	RDOParserSrcInfo::setSrcText(value);
 	rdo::runtime::RDOSrcInfo srcInfo = m_pExpression->src_info();
@@ -302,7 +302,7 @@ LPRDOFUNArithm RDOFUNArithm::generateByIdentificator(CREF(LPRDOValue) pValue1, C
 	return pArithm;
 }
 
-void RDOFUNArithm::castType(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
+void RDOFUNArithm::castType(CREF(LPRDOFUNArithm) pSecond, CREF(std::string) error)
 {
 	try
 	{
@@ -314,7 +314,7 @@ void RDOFUNArithm::castType(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
 	}
 }
 
-void RDOFUNArithm::castValue(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
+void RDOFUNArithm::castValue(CREF(LPRDOFUNArithm) pSecond, CREF(std::string) error)
 {
 	try
 	{
@@ -343,7 +343,7 @@ void RDOFUNArithm::castValue(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
 }
 
 template <class T>
-rdo::runtime::LPRDOCalc RDOFUNArithm::generateCalc(CREF(rdo::runtime::RDOSrcInfo::Position) position, CREF(tstring) error)
+rdo::runtime::LPRDOCalc RDOFUNArithm::generateCalc(CREF(rdo::runtime::RDOSrcInfo::Position) position, CREF(std::string) error)
 {
 	UNUSED(error);
 
@@ -353,7 +353,7 @@ rdo::runtime::LPRDOCalc RDOFUNArithm::generateCalc(CREF(rdo::runtime::RDOSrcInfo
 }
 
 template <class T>
-rdo::runtime::LPRDOCalc RDOFUNArithm::generateCalc(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
+rdo::runtime::LPRDOCalc RDOFUNArithm::generateCalc(CREF(LPRDOFUNArithm) pSecond, CREF(std::string) error)
 {
 	castType(pSecond, error);
 	rdo::runtime::LPRDOCalc pCalc = rdo::runtime::RDOCalcBinaryBase::generateCalc<T>(m_pExpression->calc(), pSecond->m_pExpression->calc());
@@ -362,7 +362,7 @@ rdo::runtime::LPRDOCalc RDOFUNArithm::generateCalc(CREF(LPRDOFUNArithm) pSecond,
 }
 
 template <class T>
-LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(rdo::runtime::RDOSrcInfo::Position) position, CREF(tstring) error)
+LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(rdo::runtime::RDOSrcInfo::Position) position, CREF(std::string) error)
 {
 	rdo::runtime::LPRDOCalc pCalc = generateCalc<T>(position, error);
 	ASSERT(pCalc);
@@ -385,7 +385,7 @@ LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(rdo::runtime::RDOSrcInfo::Posit
 }
 
 template <class T>
-LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
+LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(LPRDOFUNArithm) pSecond, CREF(std::string) error)
 {
 	rdo::runtime::LPRDOCalc pCalc = generateCalc<T>(pSecond, error);
 	ASSERT(pCalc);
@@ -408,7 +408,7 @@ LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(LPRDOFUNArithm) pSecond, CREF(t
 }
 
 template <class T>
-LPRDOFUNLogic RDOFUNArithm::generateLogic(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
+LPRDOFUNLogic RDOFUNArithm::generateLogic(CREF(LPRDOFUNArithm) pSecond, CREF(std::string) error)
 {
 	rdo::runtime::LPRDOCalc pCalc = generateCalc<T>(pSecond, error);
 	ASSERT(pCalc);
@@ -629,7 +629,7 @@ void RDOFUNArithm::setSrcPos(CREF(RDOSrcInfo::Position) position)
 	m_pExpression->setSrcInfo(srcInfo);
 }
 
-void RDOFUNArithm::setSrcText(CREF(tstring) value)
+void RDOFUNArithm::setSrcText(CREF(std::string) value)
 {
 	RDOParserSrcInfo::setSrcText(value);
 	rdo::runtime::RDOSrcInfo srcInfo = m_pExpression->src_info();
@@ -637,7 +637,7 @@ void RDOFUNArithm::setSrcText(CREF(tstring) value)
 	m_pExpression->setSrcInfo(srcInfo);
 }
 
-void RDOFUNArithm::setSrcInfo(CREF(RDOParserSrcInfo) begin, CREF(tstring) delim, CREF(RDOParserSrcInfo) end)
+void RDOFUNArithm::setSrcInfo(CREF(RDOParserSrcInfo) begin, CREF(std::string) delim, CREF(RDOParserSrcInfo) end)
 {
 	RDOParserSrcInfo::setSrcInfo(begin, delim, end);
 }
@@ -723,7 +723,7 @@ RDOFUNParams::RDOFUNParams(CREF(LPArithmContainer) pArithmContainer)
 RDOFUNParams::~RDOFUNParams()
 {}
 
-rdo::runtime::LPRDOCalc RDOFUNParams::getCalc(ruint paramID, CREF(LPTypeInfo) pType)
+rdo::runtime::LPRDOCalc RDOFUNParams::getCalc(std::size_t paramID, CREF(LPTypeInfo) pType)
 {
 	ASSERT(paramID < m_pArithmContainer->getContainer().size());
 	rdo::runtime::LPRDOCalc pCalc = m_pArithmContainer->getContainer()[paramID]->createCalc(pType);
@@ -783,7 +783,7 @@ LPExpression RDOFUNParams::createCallExpression(CREF(LPExpression) pExpression)
 	return pResult;
 }
 
-LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
+LPRDOFUNArithm RDOFUNParams::createCall(CREF(std::string) funName)
 {
 	LPRDOFUNFunction pFunction = RDOParser::s_parser()->findFUNFunction(funName);
 	if (!pFunction)
@@ -791,7 +791,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 		return createSeqCall(funName);
 	}
 
-	ruint nParams = pFunction->getParams().size();
+	const std::size_t nParams = pFunction->getParams().size();
 	if (nParams != m_pArithmContainer->getContainer().size())
 	{
 		RDOParser::s_parser()->error().error(src_info(), rdo::format("Неверное количество параметров функции: %s", funName.c_str()));
@@ -803,7 +803,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 	ASSERT(pCalc);
 	rdo::runtime::LPRDOCalcFunctionCaller pFuncCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(pCalc);
 	pFuncCall->setSrcInfo(src_info());
-	for (ruint i = 0; i < nParams; i++)
+	for (std::size_t i = 0; i < nParams; i++)
 	{
 		LPTypeInfo pFuncParam = pFunction->getParams()[i]->getTypeInfo();
 		LPRDOFUNArithm pArithm = m_pArithmContainer->getContainer()[i];
@@ -824,7 +824,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 	return pArithm;
 }
 
-LPRDOFUNArithm RDOFUNParams::createSeqCall(CREF(tstring) seqName)
+LPRDOFUNArithm RDOFUNParams::createSeqCall(CREF(std::string) seqName)
 {
 	LPRDOFUNSequence pSequence = RDOParser::s_parser()->findFUNSequence(seqName);
 	if (!pSequence)
@@ -1232,8 +1232,8 @@ void RDOFUNSequenceByHistEnum::addEnum(CREF(LPRDOValue) pValue, CREF(LPRDOValue)
 void RDOFUNSequenceByHistEnum::createCalcs()
 {
 	PTR(rdo::runtime::RandGeneratorByHistEnum) pGenerator = new rdo::runtime::RandGeneratorByHistEnum();
-	ruint size = m_values.size();
-	for (ruint i = 0; i < size; i++)
+	const std::size_t size = m_values.size();
+	for (std::size_t i = 0; i < size; i++)
 	{
 		pGenerator->addValues(m_values[i], m_freq[i].getDouble());
 	}
@@ -1276,7 +1276,7 @@ LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pPa
 void RDOFUNSequenceEnumerative::createCalcs()
 {
 	PTR(rdo::runtime::RandGeneratorEnumerative) pGenerator = new rdo::runtime::RandGeneratorEnumerative();
-	for (ruint i = 0; i < m_valueList.size(); i++)
+	for (std::size_t i = 0; i < m_valueList.size(); i++)
 	{
 		pGenerator->addValue(m_valueList[i]->value());
 	}
@@ -1415,7 +1415,7 @@ RDOFUNFunction::RDOFUNFunction(CREF(RDOParserSrcInfo) srcInfo, CREF(LPRDOParam) 
 	init();
 }
 
-RDOFUNFunction::RDOFUNFunction(CREF(tstring) name, CREF(LPRDOParam) pReturn)
+RDOFUNFunction::RDOFUNFunction(CREF(std::string) name, CREF(LPRDOParam) pReturn)
 	: Function (pReturn->getTypeInfo(), RDOParserSrcInfo(name))
 	, m_pReturn(pReturn)
 {
@@ -1436,7 +1436,7 @@ void RDOFUNFunction::end()
 	Function::popContext();
 }
 
-CREF(tstring) RDOFUNFunction::name() const
+CREF(std::string) RDOFUNFunction::name() const
 {
 	return src_info().src_text();
 }
@@ -1498,7 +1498,7 @@ void RDOFUNFunction::createListCalc()
 				}
 				else
 				{
-					tstring str = (*param_it)->src_text();
+					std::string str = (*param_it)->src_text();
 					++param_it;
 					while (param_it != getParams().end())
 					{
@@ -1555,7 +1555,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 		++it;
 	}
 	int   param_cnt = getParams().size();
-	ruint range     = 1;
+	std::size_t range = 1;
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(0);
 	ASSERT(pCalc);
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());
@@ -1583,7 +1583,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 		switch (pFunctionParam->getTypeInfo()->type()->typeID())
 		{
 		case rdo::runtime::RDOType::t_int:
-			if (dynamic_cast<CPTR(RDOTypeIntRange)>(pFunctionParam->getTypeInfo()->type().get()))
+			if (dynamic_cast<const RDOTypeIntRange*>(pFunctionParam->getTypeInfo()->type().get()))
 			{
 				LPRDOTypeIntRange pRange = pFunctionParam->getTypeInfo()->type().object_static_cast<RDOTypeIntRange>();
 				if (pRange->range()->getMin()->value().getInt() != 1)
@@ -1614,7 +1614,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	rdo::runtime::LPRDOFuncTableCalc pFuncTableCalc = rdo::Factory<rdo::runtime::RDOFuncTableCalc>::create(pCalc);
 	ASSERT(pFuncTableCalc);
 	pFuncTableCalc->setSrcInfo(src_info());
-	for (ruint currElem = 0; currElem < range; currElem++)
+	for (std::size_t currElem = 0; currElem < range; currElem++)
 	{
 		LPRDOFUNFunctionListElement pListElement = m_elementList.at(currElem);
 		ASSERT(pListElement);

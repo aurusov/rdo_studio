@@ -13,13 +13,13 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-inline RDOValue::RDOValue(CREF(rsint) value, CREF(RDOParserSrcInfo) src_info)
+inline RDOValue::RDOValue(CREF(int) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value(value)
 	, m_type (rdo::Factory<RDOType__int>::create())
 {}
 
-inline RDOValue::RDOValue(CREF(ruint) value, CREF(RDOParserSrcInfo) src_info)
+inline RDOValue::RDOValue(CREF(std::size_t) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value(value)
 	, m_type (rdo::Factory<RDOType__int>::create())
@@ -31,7 +31,7 @@ inline RDOValue::RDOValue(CREF(double) value, CREF(RDOParserSrcInfo) src_info)
 	, m_type (rdo::Factory<RDOType__real>::create())
 {}
 
-inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOParserSrcInfo) src_info)
+inline RDOValue::RDOValue(CREF(std::string) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 	, m_type          (rdo::Factory<RDOType__string>::create())

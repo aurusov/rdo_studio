@@ -14,7 +14,6 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 #include "app/rdo_studio/src/editor/lexer/word_list_util.h"
 // --------------------------------------------------------------------------------
 
@@ -67,9 +66,9 @@ std::vector<std::string> WordListUtil::getNearestWords(const std::string& userPa
 		if (!findPatternIt.empty())
 		{
 			boost::iterator_range<char*> fullKeywordIt(wl.words[i], wl.words[i] + strlen(wl.words[i]));
-			ruint position = findPatternIt.begin() - fullKeywordIt.begin();
-			ruint diff = position + (fullKeywordIt.end() - findPatternIt.end());
-			ruint wLen = fullKeywordIt.end() - fullKeywordIt.begin();
+			std::size_t position = findPatternIt.begin() - fullKeywordIt.begin();
+			std::size_t diff = position + (fullKeywordIt.end() - findPatternIt.end());
+			std::size_t wLen = fullKeywordIt.end() - fullKeywordIt.begin();
 			float positionPart = float(position) / float(wLen);
 			float diffPart = float(diff) / float(wLen);
 			float priority = 1 - (positionPart + diffPart) / 2;

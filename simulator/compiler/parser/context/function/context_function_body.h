@@ -25,7 +25,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- IContextFunctionBodyManager
 // --------------------------------------------------------------------------------
-OBJECT_INTERFACE(IContextFunctionBodyManager)
+PREDECLARE_OBJECT_INTERFACE(IContextFunctionBodyManager)
+struct IContextFunctionBodyManager: public rdo::RefCounter<IContextFunctionBodyManager>
 {
 DECLARE_FACTORY(IContextFunctionBodyManager)
 public:

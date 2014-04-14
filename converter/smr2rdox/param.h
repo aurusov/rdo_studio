@@ -22,16 +22,19 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParam
 // --------------------------------------------------------------------------------
-OBJECT(RDOParam) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOParam);
+class RDOParam
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOParam)
 public:
-	CREF(tstring)    name      () const { return src_info().src_text(); }
-	LPRDOTypeParam   getType   () const { return m_pType;               }
-	CREF(LPRDOValue) getDefault() const { return m_pDefault;            }
+	CREF(std::string) name() const { return src_info().src_text(); }
+	LPRDOTypeParam getType() const { return m_pType; }
+	CREF(LPRDOValue) getDefault() const { return m_pDefault; }
 
 protected:
-	RDOParam(CREF(tstring)          name,     CREF(LPRDOTypeParam) pType, CREF(LPRDOValue) pDefault = LPRDOValue(NULL));
+	RDOParam(CREF(std::string) name, CREF(LPRDOTypeParam) pType, CREF(LPRDOValue) pDefault = LPRDOValue(NULL));
 	RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, CREF(LPRDOValue) pDefault = LPRDOValue(NULL));
 	virtual ~RDOParam();
 

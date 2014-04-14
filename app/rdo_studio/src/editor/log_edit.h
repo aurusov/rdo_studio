@@ -42,25 +42,25 @@ public:
 	virtual void appendLine(PTR(LogEditLineInfo) pLine);
 
 protected:
-	void  getLines        (REF(LogEditLineInfoList) pLines) const;
-	rsint getCurrentLine  () const;
-	rsint getSciMarkerLine() const;
+	void getLines(REF(LogEditLineInfoList) pLines) const;
+	int getCurrentLine() const;
+	int getSciMarkerLine() const;
 
-	void  setCurrentLine  (rsint currentLine  );
-	void  setSciMarkerLine(rsint sciMarkerLine);
+	void setCurrentLine(int currentLine);
+	void setSciMarkerLine(int sciMarkerLine);
 
 protected:
-	virtual void updateEdit(PTR(Model) pEdit, CPTR(LogEditLineInfo) pLineInfo);
+	virtual void updateEdit(PTR(Model) pEdit, const LogEditLineInfo* pLineInfo);
 
 	void  clearLines     ();
-	void  setSelectLine  (int line, CPTR(LogEditLineInfo) pLineInfo, bool useScroll = false);
+	void  setSelectLine  (int line, const LogEditLineInfo* pLineInfo, bool useScroll = false);
 	void  clearSelectLine();
 	bool  hasSelectLine  () const;
 
 private:
-	LogEditLineInfoList  m_lines;
-	rsint                m_currentLine;
-	rsint                m_sciMarkerLine;
+	LogEditLineInfoList m_lines;
+	int m_currentLine;
+	int m_sciMarkerLine;
 
 private slots:
 	void catchDoubleClick(int position, int line);

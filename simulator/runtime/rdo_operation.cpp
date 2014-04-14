@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOOperation
 // --------------------------------------------------------------------------------
-RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(tstring) name)
+RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, bool trace, CREF(std::string) name)
 	: RDOActivityPattern<RDOPatternOperation>(pPattern, trace, name)
 	, RDOPatternPrior                        (                     )
 {
@@ -32,7 +32,7 @@ RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperati
 	setTraceID(pRuntime->getFreeActivityId());
 }
 
-RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name)
+RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, bool trace, CREF(LPRDOCalc) pCondition, CREF(std::string) name)
 	: RDOActivityPattern<RDOPatternOperation>(pPattern, trace, name)
 	, RDOPatternPrior                        (                     )
 	, m_pAdditionalCondition                 (pCondition           )
@@ -59,7 +59,7 @@ RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(RDOOperation) origi
 RDOOperation::~RDOOperation()
 {}
 
-rbool RDOOperation::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOOperation::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	// Если операция может начаться, то создать её клон и поместить его в список
 	onBeforeChoiceFrom(pRuntime);
@@ -99,7 +99,7 @@ void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime, const std::vector<R
 	onAfterOperationEnd(pRuntime);
 }
 
-rbool RDOOperation::choiceFrom(CREF(LPRDORuntime) pRuntime)
+bool RDOOperation::choiceFrom(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setCurrentActivity(this);
 	if (m_haveAdditionalCondition)
@@ -159,7 +159,7 @@ double RDOOperation::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 	return m_pPattern->getNextTimeInterval(pRuntime);
 }
 
-tstring RDOOperation::traceOperId() const
+std::string RDOOperation::traceOperId() const
 {
 	return rdo::toString(m_operId);
 }

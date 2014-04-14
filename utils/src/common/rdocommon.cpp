@@ -34,37 +34,38 @@
 
 namespace rdo {
 
-tstring format(CPTR(tchar) str, ...)
+std::string format(const char* str, ...)
 {
 	va_list params;
-	va_start( params, str );
-	tstring res = format( str, params );
-	va_end( params );
+	va_start(params, str);
+	std::string res = format(str, params);
+	va_end(params);
 	return res;
 }
 
-tstring format( CPTR(tchar) str, REF(va_list) params )
+std::string format(const char* str, REF(va_list) params)
 {
-	std::vector< tchar > s;
-	s.resize( 256 );
+	std::vector<char> s;
+	s.resize(256);
 	int size = -1;
-	while ( size == -1 ) {
+	while (size == -1)
+	{
 #ifdef COMPILER_VISUAL_STUDIO
 #	pragma warning(disable: 4996)
-		size = _vsnprintf( &s[0], s.size(), str, params );
+		size = _vsnprintf(&s[0], s.size(), str, params);
 #	pragma warning(default: 4996)
-#endif  // COMPILER_VISUAL_STUDIO
+#endif // COMPILER_VISUAL_STUDIO
 
 #ifdef COMPILER_GCC
-		size = vsnprintf( &s[0], s.size(), str, params );
+		size = vsnprintf(&s[0], s.size(), str, params);
 #endif // COMPILER_GCC
-		if ( size == -1 )
+		if (size == -1)
 		{
-			s.resize( s.size() + 256 );
+			s.resize(s.size() + 256);
 		}
 	}
 	s.resize( size );
-	return tstring( s.begin(), s.end() );
+	return std::string(s.begin(), s.end());
 }
 
 int roundDouble(double val)

@@ -49,7 +49,7 @@ void cnv_smr_sim_error(const char* message)
 // --------------------------------------------------------------------------------
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
-RDOSMR::RDOSMR(CREF(tstring) modelName)
+RDOSMR::RDOSMR(CREF(std::string) modelName)
 	: m_showMode      (rdo::service::simulation::SM_NoShow)
 	, m_frameNumber   (1 )
 	, m_showRate      (60)
@@ -72,7 +72,7 @@ void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
 	{
 		Converter::s_converter()->error().error(pos, "Номер кадра должен быть больше нуля");
 	}
-	if (Converter::s_converter()->getNumberFrame() < (ruint)value)
+	if (Converter::s_converter()->getNumberFrame() < (std::size_t)value)
 	{
 		Converter::s_converter()->error().error(pos, rdo::format("Несуществующий кадр: %d", value));
 	}
@@ -172,7 +172,7 @@ void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcIn
 	}
 	ASSERT(pArithm);
 	pArithm->checkParamType(pParam->getType());
-	ruint                 parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
+	const std::size_t parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
 	rdo::runtime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getType());
 	Converter::s_converter()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
 	Converter::s_converter()->insertChanges(res_info.src_text() + "." + par_info.src_text(), pArithm->src_text());
@@ -191,12 +191,12 @@ void RDOSMR::setSeed(CREF(RDOParserSrcInfo) seq_info, int base)
 
 void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, REF(LPRDOFUNLogic) pLogic)
 {
-	STL_FOR_ALL_CONST(m_breakPointList, it)
+	for (const auto& breakPoint: m_breakPointList)
 	{
-		if ((*it)->src_text() == src_info.src_text())
+		if (breakPoint->src_text() == src_info.src_text())
 		{
 			Converter::s_converter()->error().push_only(src_info, rdo::format("Точка останова с именем '%s' уже существует", src_info.src_text().c_str()));
-			Converter::s_converter()->error().push_only((*it)->src_info(), "См. первое определение");
+			Converter::s_converter()->error().push_only(breakPoint->src_info(), "См. первое определение");
 			Converter::s_converter()->error().push_done();
 		}
 	}

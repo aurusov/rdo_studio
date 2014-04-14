@@ -40,7 +40,7 @@ class Manager
 Q_OBJECT
 
 public:
-	typedef  boost::function<void (ruint)>  OnChangeFrame;
+	typedef boost::function<void (std::size_t)> OnChangeFrame;
 
 	Manager(CREF(OnChangeFrame) onChangeFrame);
 	virtual ~Manager();
@@ -48,35 +48,35 @@ public:
 	void insertFrame (CREF(QString) frameName );
 	void insertBitmap(CREF(QString) bitmapName);
 
-	ruint findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetItem) const;
-	ruint findFrameIndex(CPTR(View)            pView          ) const;
-	ruint findFrameIndex(CPTR(Content)         pContent       ) const;
+	std::size_t findFrameIndex(const QTreeWidgetItem* pTreeWidgetItem) const;
+	std::size_t findFrameIndex(const View* pView) const;
+	std::size_t findFrameIndex(const Content* pContent) const;
 
-	bool           isShowing         () const;
-	CREF(QString)  getFrameName      (ruint index) const;
-	PTR(View)      getFrameView      (ruint index) const;
-	PTR(View)      getFrameViewFirst () const;
-	ruint          count             () const;
-	bool           isChanged         ();
+	bool isShowing() const;
+	CREF(QString) getFrameName(std::size_t index) const;
+	PTR(View) getFrameView(std::size_t index) const;
+	PTR(View) getFrameViewFirst() const;
+	std::size_t count() const;
+	bool isChanged();
 
-	void           areaDown          (ruint frameIndex, CREF(QPoint) point) const;
+	void areaDown(std::size_t frameIndex, CREF(QPoint) point) const;
 
-	PTR(View)  createView    (ruint index);
-	void       disconnectView(CPTR(View) pView);
-	void       closeAll      ();
-	void       clear         ();
+	PTR(View) createView(std::size_t index);
+	void disconnectView(const View* pView);
+	void closeAll();
+	void clear();
 
-	ruint getLastShowedFrame      () const;
-	void  setLastShowedFrame      (ruint index);
-	void  setCurrentShowingFrame  (ruint index);
-	void  resetCurrentShowingFrame(ruint index);
-	void  showFrame               (CPTRC(rdo::animation::Frame) pFrame, ruint index);
-	void  showNextFrame           ();
-	void  showPrevFrame           ();
-	void  showFrame               (ruint index);
-	bool  canShowNextFrame        () const;
-	bool  canShowPrevFrame        () const;
-	void  updateStyles            () const;
+	std::size_t getLastShowedFrame() const;
+	void setLastShowedFrame(std::size_t index);
+	void setCurrentShowingFrame(std::size_t index);
+	void resetCurrentShowingFrame(std::size_t index);
+	void showFrame(const rdo::animation::Frame* const pFrame, std::size_t index);
+	void showNextFrame();
+	void showPrevFrame();
+	void showFrame(std::size_t index);
+	bool canShowNextFrame() const;
+	bool canShowPrevFrame() const;
+	void updateStyles() const;
 
 private:
 	struct Frame
@@ -94,14 +94,14 @@ private:
 		void clear();
 	};
 
-	typedef  std::vector<PTR(Frame)>  FrameList;
+	typedef std::vector<PTR(Frame)> FrameList;
 
-	FrameList             m_frameList;
-	rdo::gui::BitmapList  m_bitmapList;
-	ruint                 m_lastShowedFrame;
-	ruint                 m_currentShowingFrame;
-	bool                  m_changed;
-	OnChangeFrame         m_onChangeFrame;
+	FrameList m_frameList;
+	rdo::gui::BitmapList m_bitmapList;
+	std::size_t m_lastShowedFrame;
+	std::size_t m_currentShowingFrame;
+	bool m_changed;
+	OnChangeFrame m_onChangeFrame;
 
 	DECLARE_IInit;
 

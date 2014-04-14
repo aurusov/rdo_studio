@@ -60,18 +60,18 @@ public:
 	RDOTrace();
 	virtual ~RDOTrace();
 
-	rbool canTrace() const;
+	bool canTrace() const;
 
-	void  startWriting();
-	void  stopWriting();
-	rbool canWrite() const;
-	rbool isNull() const;
+	void startWriting();
+	void stopWriting();
+	bool canWrite() const;
+	bool isNull() const;
 
 	// Search in tree
-	virtual void writeSearchBegin(double currentTime, tstring decisionPointId);
+	virtual void writeSearchBegin(double currentTime, std::string decisionPointId);
 	virtual void writeSearchDecisionHeader();
 	virtual void writeSearchDecision(CREF(LPRDORuntime) pRuntime, TreeNode *node);
-	virtual void writeString(tstring);
+	virtual void writeString(std::string);
 	virtual void writeSearchOpenNode(int nodeCount, int parentCount, double pathCost, double restCost);
 	virtual void writeSearchNodeInfo(char sign, TreeNodeTrace *node);
 	virtual void writeSearchResult(char letter, CREF(LPRDORuntime) pRuntime, TreeRoot *treeRoot);
@@ -84,11 +84,11 @@ public:
 	virtual void writeTraceBegin(CREF(LPRDORuntime) pRuntime);
 	virtual void writeModelBegin(CREF(LPRDORuntime) pRuntime);
 	virtual void writeTraceEnd  (CREF(LPRDORuntime) pRuntime);
-	virtual void writeStatus    (CREF(LPRDORuntime) pRuntime, CREF(tstring) status);
+	virtual void writeStatus    (CREF(LPRDORuntime) pRuntime, CREF(std::string) status);
 
 	virtual void writePermanentResources(CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) res_perm);
 
-	tstring traceResourcesList( char prefix, CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) rel_res_list);
+	std::string traceResourcesList( char prefix, CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) rel_res_list);
 
 	virtual void writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok);
 
@@ -97,12 +97,12 @@ public:
 	virtual REF(RDOEndL)  getEOL();
 
 protected:
-	rbool         m_isNullTracer;
+	bool m_isNullTracer;
 
 private:
-	rbool         m_canWriteToStream;
+	bool m_canWriteToStream;
 	std::ofstream m_emptyOut;
-	RDOEndL       m_emptyEndL;
+	RDOEndL m_emptyEndL;
 };
 
 /*!
@@ -118,23 +118,23 @@ QUERY_INTERFACE_END
 public:
 	enum { NONE = 0xFFFFFFFF };
 
-	rbool traceable() const;
-	void  setTrace(rbool trace);
+	bool traceable() const;
+	void setTrace(bool trace);
 
-	ruint getTraceID() const;
-	void  setTraceID(ruint id);
-	void  setTraceID(ruint id, ruint str_id);
+	std::size_t getTraceID() const;
+	void setTraceID(std::size_t id);
+	void setTraceID(std::size_t id, std::size_t str_id);
 
-	REF(tstring) traceId() const;
+	REF(std::string) traceId() const;
 
 protected:
-	RDOTraceableObject(rbool trace, ruint id = NONE, tstring str = "");
+	RDOTraceableObject(bool trace, std::size_t id = NONE, std::string str = "");
 	virtual ~RDOTraceableObject();
 
 private:
-	rbool           m_trace;
-	ruint           m_id;
-	mutable tstring m_str_id;
+	bool m_trace;
+	std::size_t m_id;
+	mutable std::string m_str_id;
 };
 
 /*!
@@ -149,11 +149,11 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	RDOResultTrace(CREF(LPRDORuntime) pRuntime, rbool trace);
+	RDOResultTrace(CREF(LPRDORuntime) pRuntime, bool trace);
 
 protected:
 	LPRDORuntime m_pRuntime;
-	rbool        m_wasChanged;
+	bool m_wasChanged;
 
 	DECLARE_IResultTrace;
 };

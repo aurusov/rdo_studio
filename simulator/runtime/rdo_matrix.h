@@ -26,7 +26,8 @@ PREDECLARE_POINTER(RDOMatrixType    );
 PREDECLARE_POINTER(RDOMatrixIterator);
 
 //! Элемент матрицы
-OBJECT(RDOMatrixValue)
+PREDECLARE_POINTER(RDOMatrixValue);
+class RDOMatrixValue: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOMatrixValue)
 public:
@@ -40,8 +41,8 @@ public:
 	void insert(CREF(LPRDOMatrixIterator) pWhere, CREF(LPRDOMatrixIterator) pFromFirst, CREF(LPRDOMatrixIterator) pFromLast);
 	void  erase(CREF(LPRDOMatrixIterator) pFirst, CREF(LPRDOMatrixIterator) pLast);
 
-	ruint   size       () const;
-	tstring getAsString() const;
+	std::size_t size() const;
+	std::string getAsString() const;
 
 	CREF(RDOValue) getItem(CREF(RDOValue) index) const;
 	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item);
@@ -64,10 +65,10 @@ public:
 
 	Iterator             getIterator() const;
 	CREF(RDOValue)       getValue   () const;
-	LPRDOMatrixIterator  preInc     (rsint delta);
-	LPRDOMatrixIterator  postInc    (rsint delta);
+	LPRDOMatrixIterator  preInc     (int delta);
+	LPRDOMatrixIterator  postInc    (int delta);
 	LPRDOMatrixIterator  next       ();
-	rbool                equal      (CREF(LPRDOMatrixIterator) pIterator) const;
+	bool                 equal      (CREF(LPRDOMatrixIterator) pIterator) const;
 	LPRDOMatrixIterator  clone      () const;
 
 private:

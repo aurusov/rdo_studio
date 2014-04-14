@@ -21,18 +21,19 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Создание нового ресурса
-CALC(RDOCalcCreateResource)
+PREDECLARE_POINTER(RDOCalcCreateResource);
+class RDOCalcCreateResource: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcCreateResource)
 private:
 	//! relResID == ~0 для ресурсов, создаваемых при инициализации модели
-	RDOCalcCreateResource(ruint resourceTypeID, const std::vector<LPRDOCalc>& rParamCalcList, rbool traceFlag, rbool permanentFlag, ruint relResID = ~0);
+	RDOCalcCreateResource(std::size_t resourceTypeID, const std::vector<LPRDOCalc>& rParamCalcList, bool traceFlag, bool permanentFlag, std::size_t relResID = ~0);
 
-	ruint                   m_resourceTypeID;
-	std::vector<LPRDOCalc>  m_paramCalcList;
-	rbool                   m_traceFlag;
-	rbool                   m_permanentFlag;
-	ruint                   m_relResID;
+	std::size_t m_resourceTypeID;
+	std::vector<LPRDOCalc> m_paramCalcList;
+	bool m_traceFlag;
+	bool m_permanentFlag;
+	std::size_t m_relResID;
 
 	DECLARE_ICalc;
 };

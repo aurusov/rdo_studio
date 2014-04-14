@@ -101,7 +101,7 @@ PTR(rdo::compiler::parser::RDOCorba::GetRSS) RDOCorba_i::getRDORSSPlist(REF(::CO
 	return my_rssList._retn();
 }
 
-CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CPTR(char) ModelName)
+CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, const char* ModelName)
 {
 	CosNaming::NamingContext_var rootContext;
 
@@ -136,8 +136,8 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 		//! Bind a context called "test" to the root context:
 		CosNaming::Name contextName;
 		contextName.length(1);
-		contextName[0].id   = (CPTR(char)) "RDO";         //! string copied
-		contextName[0].kind = (CPTR(char)) "RDO_context"; //! string copied
+		contextName[0].id = (const char*)"RDO"; //! string copied
+		contextName[0].kind = (const char*)"RDO_context"; //! string copied
 
 		//! Note on kind: The kind field is used to indicate the type
 		//! of the object. This is to avoid conventions such as that used
@@ -173,8 +173,8 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 		//! rdo::compiler::parser::RDOParserSMRInfo parser;
 		//! parser.parse();
 
-		objectName[0].id   = ModelName;
-		objectName[0].kind = (CPTR(char)) "Object";
+		objectName[0].id = ModelName;
+		objectName[0].kind = (const char*)"Object";
 
 		try
 		{
@@ -210,7 +210,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 	return 1;
 }
 
-ruint RDOThreadCorba::corbaRunThreadFun(PTR(void) pParam)
+std::size_t RDOThreadCorba::corbaRunThreadFun(PTR(void) pParam)
 {
 	try
 	{
@@ -228,8 +228,8 @@ ruint RDOThreadCorba::corbaRunThreadFun(PTR(void) pParam)
 		//! the naming service.
 		obj = myrdocorba->_this();
 
-		CPTR(char) ModelName = "ЦЕХ";
-		//! CPTR(char) ModelName = "СКЛАД";
+		const char* ModelName = "ЦЕХ";
+		//! const char* ModelName = "СКЛАД";
 
 		if (!bindObjectToName(g_orb, obj, ModelName))
 		{
@@ -373,16 +373,16 @@ public:
 
 	void onEndl()
 	{
-		CREF(tstring) trace_str = m_stream.str();
+		CREF(std::string) trace_str = m_stream.str();
 		if (trace_str.empty()        ) return;
 		if (!m_pSimulator->m_canTrace) return;
-		tstring::size_type pos = 0;
+		std::string::size_type pos = 0;
 		for (;;)
 		{
-			tstring::size_type next = trace_str.find('\n', pos);
-			tstring str = trace_str.substr(pos, next-pos);
+			std::string::size_type next = trace_str.find('\n', pos);
+			std::string str = trace_str.substr(pos, next-pos);
 			m_pSimulator->m_pThreadRuntime->broadcastMessage(RDOThread::RT_RUNTIME_TRACE_STRING, &str, true);
-			if (next == tstring::npos)
+			if (next == std::string::npos)
 			{
 				break;
 			}
@@ -429,7 +429,7 @@ private:
 
 	void flush()
 	{
-		CREF(tstring) bufferStr = m_buffer.str();
+		CREF(std::string) bufferStr = m_buffer.str();
 		if (bufferStr.empty())
 		{
 			return;
@@ -437,13 +437,13 @@ private:
 
 		m_stream << bufferStr;
 
-		tstring::size_type pos = 0;
+		std::string::size_type pos = 0;
 		for (;;)
 		{
-			tstring::size_type next = bufferStr.find('\n', pos);
-			tstring str = bufferStr.substr(pos, next-pos+1);
+			std::string::size_type next = bufferStr.find('\n', pos);
+			std::string str = bufferStr.substr(pos, next-pos+1);
 			m_pSimulator->m_pThreadRuntime->broadcastMessage(RDOThread::RT_RESULT_STRING, &str, true);
-			if (next == tstring::npos)
+			if (next == std::string::npos)
 			{
 				break;
 			}
@@ -580,7 +580,7 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 		case RT_RUNTIME_GET_LAST_BREAKPOINT:
 		{
 			msg.lock();
-			*static_cast<PTR(tstring)>(msg.param) = m_pSimulator->m_pRuntime->getLastBreakPointName();
+			*static_cast<PTR(std::string)>(msg.param) = m_pSimulator->m_pRuntime->getLastBreakPointName();
 			msg.unlock();
 			break;
 		}
@@ -610,7 +610,7 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 		case RT_RUNTIME_FRAME_AREA_DOWN:
 		{
 			msg.lock();
-			tstring areaName = *static_cast<PTR(tstring)>(msg.param);
+			std::string areaName = *static_cast<PTR(std::string)>(msg.param);
 			msg.unlock();
 			m_pSimulator->m_pRuntime->hotkey().areaList().click(areaName);
 			m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pRuntime->getShowRate());
@@ -672,7 +672,7 @@ void RDOThreadRunTime::start()
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
-		tstring mess = ex.getType() + " : " + ex.message();
+		std::string mess = ex.getType() + " : " + ex.message();
 		RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
 	}
 
@@ -713,7 +713,7 @@ void RDOThreadRunTime::idle()
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
-		tstring mess = ex.getType() + " : " + ex.message();
+		std::string mess = ex.getType() + " : " + ex.message();
 		RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
 	}
 //	catch (...) {
@@ -746,7 +746,7 @@ void RDOThreadRunTime::writeResultsInfo()
 
 	rdo::Time time;
 
-	ruint64 timeStop = time.local();
+	uint64_t timeStop = time.local();
 	timeStop /= 1000000;
 
 	double delay = -1;
@@ -764,7 +764,7 @@ void RDOThreadRunTime::writeResultsInfo()
 	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "  EventCount           " << m_pSimulator->m_pRuntime->get_cnt_events() << "  " << (double)m_pSimulator->m_pRuntime->get_cnt_events() / m_pSimulator->m_pRuntime->getTimeNow() << "  ";
 	if (delay != -1)
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << (ruint)((double)m_pSimulator->m_pRuntime->get_cnt_events() / delay * 1000);
+		m_pSimulator->m_pRuntime->getResultsInfo() << (std::size_t)((double)m_pSimulator->m_pRuntime->get_cnt_events() / delay * 1000);
 	}
 	else
 	{
@@ -774,7 +774,7 @@ void RDOThreadRunTime::writeResultsInfo()
 	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "  OperRuleCheckCounter " << m_pSimulator->m_pRuntime->get_cnt_choice_from() << "  " << (double)m_pSimulator->m_pRuntime->get_cnt_choice_from() / m_pSimulator->m_pRuntime->getTimeNow() << "  ";
 	if (delay != -1)
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << (ruint)((double)m_pSimulator->m_pRuntime->get_cnt_choice_from() / delay * 1000);
+		m_pSimulator->m_pRuntime->getResultsInfo() << (std::size_t)((double)m_pSimulator->m_pRuntime->get_cnt_choice_from() / delay * 1000);
 	}
 	else
 	{
@@ -783,7 +783,7 @@ void RDOThreadRunTime::writeResultsInfo()
 	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "  AExpCalcCounter      " << m_pSimulator->m_pRuntime->get_cnt_calc_arithm() << "  " << (double)m_pSimulator->m_pRuntime->get_cnt_calc_arithm() / m_pSimulator->m_pRuntime->getTimeNow() << "  ";
 	if (delay != -1)
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << (ruint)((double)m_pSimulator->m_pRuntime->get_cnt_calc_arithm() / delay * 1000);
+		m_pSimulator->m_pRuntime->getResultsInfo() << (std::size_t)((double)m_pSimulator->m_pRuntime->get_cnt_calc_arithm() / delay * 1000);
 	}
 	else
 	{
@@ -792,7 +792,7 @@ void RDOThreadRunTime::writeResultsInfo()
 	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "  BExpCalcCounter      " << m_pSimulator->m_pRuntime->get_cnt_calc_logic() << "  " << (double)m_pSimulator->m_pRuntime->get_cnt_calc_logic() / m_pSimulator->m_pRuntime->getTimeNow() << "  ";
 	if (delay != -1)
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << (ruint)((double)m_pSimulator->m_pRuntime->get_cnt_calc_logic() / delay * 1000);
+		m_pSimulator->m_pRuntime->getResultsInfo() << (std::size_t)((double)m_pSimulator->m_pRuntime->get_cnt_calc_logic() / delay * 1000);
 	}
 	else
 	{
@@ -820,7 +820,7 @@ void RDOThreadRunTime::stop()
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
-		tstring mess = ex.getType() + " : " + ex.message();
+		std::string mess = ex.getType() + " : " + ex.message();
 		RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
 	}
 
@@ -836,12 +836,12 @@ void RDOThreadRunTime::stop()
 void RDOThreadRunTime::destroy()
 {}
 
-rbool RDOThreadRunTime::runtimeError() const
+bool RDOThreadRunTime::runtimeError() const
 {
 	return m_runtimeError;
 }
 
-void RDOThreadRunTime::sendMessage(ThreadID threadID, ruint messageID, PTR(void) pParam)
+void RDOThreadRunTime::sendMessage(ThreadID threadID, std::size_t messageID, PTR(void) pParam)
 {
 	PTR(RDOThread) pThread;
 	switch (threadID)
@@ -1092,7 +1092,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 	}
 }
 
-rbool RDOThreadSimulator::parseModel()
+bool RDOThreadSimulator::parseModel()
 {
 	terminateModel();
 	closeModel();
@@ -1117,7 +1117,7 @@ rbool RDOThreadSimulator::parseModel()
 	}
 	catch (REF(rdo::runtime::RDORuntimeException) ex)
 	{
-		tstring mess = ex.getType() + " : " + ex.message();
+		std::string mess = ex.getType() + " : " + ex.message();
 		broadcastMessage(RT_SIMULATOR_PARSE_STRING, &mess);
 		m_exitCode = rdo::simulation::report::EC_ParserError;
 		broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
@@ -1251,14 +1251,14 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::converter::smr2rdox::RDOSMRFi
 			{
 				broadcastMessage(RT_CONVERTOR_ERROR);
 
-				tstring mess("Ошибка конвертора\n");
+				std::string mess("Ошибка конвертора\n");
 				broadcastMessage(RT_DEBUG_STRING, &mess);
 				CREF(rdo::converter::smr2rdox::Error::ErrorList) errorList = converter.error().getList();
 				BOOST_AUTO(it, errorList.begin());
 				while (it != errorList.end())
 				{
-					tstring text = it->getText();
-					broadcastMessage(RT_DEBUG_STRING, const_cast<PTR(tstring)>(&text));
+					std::string text = it->getText();
+					broadcastMessage(RT_DEBUG_STRING, const_cast<PTR(std::string)>(&text));
 					++it;
 				}
 			}
@@ -1628,9 +1628,9 @@ void RDOThreadCodeComp::proc(REF(RDOMessageInfo) msg)
 //			sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdo::repository::RDOThreadRepository::FileData(data->file, stream));
 //			data->result = stream.data();
 			CREF(rdo::compiler::parser::RDOParser::RTPResTypeList) rtp_list = m_pParser->getRTPResTypes();
-			STL_FOR_ALL_CONST(rtp_list, rtp_it)
+			for (const auto& rtp: rtp_list)
 			{
-				CREF(rdo::compiler::parser::RDORTPResType::ParamList) param_list = (*rtp_it)->getParams();
+				CREF(rdo::compiler::parser::RDORTPResType::ParamList) param_list = rtp->getParams();
 				rdo::compiler::parser::RDORTPResType::ParamList::const_iterator param_it = param_list.begin();
 				while (param_it != param_list.end())
 				{

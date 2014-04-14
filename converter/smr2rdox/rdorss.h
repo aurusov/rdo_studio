@@ -33,9 +33,11 @@ void cnv_rsserror(const char*  message);
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------
-OBJECT(RDORSSResource)
-	IS  INSTANCE_OF(RDOParserSrcInfo  )
-	AND INSTANCE_OF(boost::noncopyable)
+PREDECLARE_POINTER(RDORSSResource);
+class RDORSSResource
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
+	, public boost::noncopyable
 {
 DECLARE_FACTORY(RDORSSResource);
 public:
@@ -59,17 +61,17 @@ public:
 
 	virtual rdo::runtime::LPRDOCalc createCalc() const;
 
-	CREF(tstring)    name   () const { return src_info().src_text(); }
-	LPRDORTPResType  getType() const { return m_pResType;            }
+	CREF(std::string) name() const { return src_info().src_text(); }
+	LPRDORTPResType getType() const { return m_pResType; }
 
-	int              getID  () const { return m_id;                  }
+	int getID() const { return m_id; }
 
-	CREF(ParamList)  params () const { return m_paramList;           }
+	CREF(ParamList) params() const { return m_paramList; }
 
-	void  addParam(CREF(LPRDOValue) pParam);
-	rbool getTrace() const      { return trace;  }
-	void  setTrace(rbool value) { trace = value; }
-	rbool defined () const;
+	void addParam(CREF(LPRDOValue) pParam);
+	bool getTrace() const { return trace; }
+	void setTrace(bool value) { trace = value; }
+	bool defined () const;
 
 	void writeModelStructure(REF(std::ostream) stream) const;
 
@@ -77,9 +79,9 @@ protected:
 	RDORSSResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
 
 	LPRDORTPResType m_pResType;
-	const int       m_id;        //! in system
-	ParamList       m_paramList;
-	rbool           trace;
+	const int m_id; //! in system
+	ParamList m_paramList;
+	bool trace;
 
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;

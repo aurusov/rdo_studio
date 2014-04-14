@@ -23,25 +23,28 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOValue
 // --------------------------------------------------------------------------------
-OBJECT(RDOValue) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOValue);
+class RDOValue
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOValue);
 public:
-	CREF(LPRDOType)                     type() const;
-	rdo::runtime::RDOType::TypeID     typeID() const;
-	CREF(rdo::runtime::RDOValue)       value() const;
-	CPTR(rdo::runtime::RDOValue) operator-> () const;
+	CREF(LPRDOType) type() const;
+	rdo::runtime::RDOType::TypeID typeID() const;
+	CREF(rdo::runtime::RDOValue) value() const;
+	const rdo::runtime::RDOValue* operator->() const;
 
-	rbool defined () const;
-	rbool constant() const;
+	bool defined() const;
+	bool constant() const;
 
-	static LPRDOValue getIdentificator(CREF(tstring) identificator);
+	static LPRDOValue getIdentificator(CREF(std::string) identificator);
 
 private:
-	explicit RDOValue(CREF(rsint)   value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(ruint)   value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(double)  value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(tstring) value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(int) value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(std::size_t) value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(double) value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(std::string) value, CREF(RDOParserSrcInfo) src_info);
 
 	explicit RDOValue(CREF(rdo::runtime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
 	         RDOValue(CREF(LPRDOValue) pValue);

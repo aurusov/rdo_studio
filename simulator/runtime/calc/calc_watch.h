@@ -19,7 +19,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Начало сбора статистики по группе показателей
-CALC(RDOCalcWatchGroupStart)
+PREDECLARE_POINTER(RDOCalcWatchGroupStart);
+class RDOCalcWatchGroupStart: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStart)
 protected:
@@ -32,7 +33,8 @@ protected:
 };
 
 //! Окончание сбора статистики по группе показателей
-CALC(RDOCalcWatchGroupStop)
+PREDECLARE_POINTER(RDOCalcWatchGroupStop);
+class RDOCalcWatchGroupStop: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStop)
 protected:

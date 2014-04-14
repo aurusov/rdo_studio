@@ -32,11 +32,11 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------
-CLASS(RDORSSResource):
-	    INSTANCE_OF      (RDOParserSrcInfo  )
-	AND INSTANCE_OF      (boost::noncopyable)
-	AND INSTANCE_OF      (Context           )
-	AND IMPLEMENTATION_OF(IContextFind      )
+class RDORSSResource
+	: public RDOParserSrcInfo
+	, public boost::noncopyable
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDORSSResource);
 public:
@@ -63,22 +63,22 @@ public:
 		LPExpression m_pValue;
 	};
 	typedef std::vector<Param> ParamList;
-	static const ruint UNDEFINED_ID = ruint(~0);
+	static const std::size_t UNDEFINED_ID = std::size_t(~0);
 
 	virtual std::vector<rdo::runtime::LPRDOCalc> createCalc() const;
 
-	CREF(tstring)    name   () const { return src_info().src_text(); }
-	LPRDORTPResType  getType() const { return m_pResType;            }
+	CREF(std::string) name() const { return src_info().src_text(); }
+	LPRDORTPResType getType() const { return m_pResType; }
 
-	ruint            getID  () const { return m_id;                  }
+	std::size_t getID() const { return m_id; }
 
-	CREF(ParamList)  params () const { return m_paramList;           }
+	CREF(ParamList) params () const { return m_paramList; }
 
-	void  addParam(CREF(LPRDOValue) pParam);
-	rbool getTrace() const      { return trace;  }
-	void  setTrace(rbool value) { trace = value; }
-	rbool defined () const;
-	void  end     ();
+	void addParam(CREF(LPRDOValue) pParam);
+	bool getTrace() const { return trace; }
+	void setTrace(bool value) { trace = value; }
+	bool defined() const;
+	void end();
 
 	void writeModelStructure(std::ostream& stream) const;
 
@@ -90,13 +90,13 @@ public:
 	}
 
 protected:
-	RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id = UNDEFINED_ID);
+	RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, std::size_t id = UNDEFINED_ID);
 	virtual ~RDORSSResource();
 
 	LPRDORTPResType m_pResType;
-	ruint           m_id;        //! in system
-	ParamList       m_paramList;
-	rbool           trace;
+	std::size_t m_id; //! in system
+	ParamList m_paramList;
+	bool trace;
 
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;

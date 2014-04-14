@@ -17,7 +17,6 @@
 #include "converter/smr2rdox/grammar/rdobison.h"
 #include "simulator/runtime/rdo_object.h"
 #include "utils/src/common/rdomacros.h"
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
@@ -33,10 +32,10 @@ public:
 	RDOParserSrcInfo(CREF(YYLTYPE) pos);
 	RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo) info);
 	RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo::Position) pos);
-	explicit RDOParserSrcInfo(CREF(tstring) text);
-	RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(tstring) text);
-	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, rbool first_align = false);
-	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, CREF(tstring) text);
+	explicit RDOParserSrcInfo(CREF(std::string) text);
+	RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(std::string) text);
+	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, bool first_align = false);
+	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, CREF(std::string) text);
 
 	virtual void setSrcInfo(CREF(RDOParserSrcInfo) info)
 	{
@@ -44,7 +43,7 @@ public:
 		setSrcText    (info.src_text()    );
 		setSrcFileType(info.src_filetype());
 	}
-	void setSrcInfo(CREF(RDOParserSrcInfo) begin, CREF(tstring) delim, CREF(RDOParserSrcInfo) end)
+	void setSrcInfo(CREF(RDOParserSrcInfo) begin, CREF(std::string) delim, CREF(RDOParserSrcInfo) end)
 	{
 		RDOParserSrcInfo src_info;
 		src_info.setSrcPos     (begin.src_pos().m_first_line, begin.src_pos().m_first_pos, end.src_pos().m_last_line, end.src_pos().m_last_pos);
@@ -64,7 +63,7 @@ public:
 	{
 		setSrcPos(Position(pos_begin.m_first_line, pos_begin.m_first_pos, pos_end.m_last_line, pos_end.m_last_pos));
 	}
-	void setSrcPos(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos)
+	void setSrcPos(std::size_t first_line, std::size_t first_pos, std::size_t last_line, std::size_t last_pos)
 	{
 		setSrcPos(Position(first_line, first_pos, last_line, last_pos));
 	}
@@ -76,11 +75,11 @@ public:
 		pos1.m_first_pos  = pos2.m_first_pos;
 		pos1.m_last_line  = pos2.m_last_line;
 		pos1.m_last_pos   = pos2.m_last_pos;
-		pos1.m_first_seek = ruint(Position::UNDEFINE_POS);
-		pos1.m_last_seek  = ruint(Position::UNDEFINE_POS);
+		pos1.m_first_seek = std::size_t(Position::UNDEFINE_POS);
+		pos1.m_last_seek  = std::size_t(Position::UNDEFINE_POS);
 		return pos1;
 	}
-	static ruint getPosByLength(ruint pos, CREF(tstring) text)
+	static std::size_t getPosByLength(std::size_t pos, CREF(std::string) text)
 	{
 		return pos + text.length();
 	}
@@ -96,7 +95,7 @@ public:
 	compareName(CREF(compareName<T>) obj)
 		: m_name(obj.m_name)
 	{}
-	compareName(CREF(tstring) name)
+	compareName(CREF(std::string) name)
 		: m_name(name)
 	{}
 	REF(compareName<T>) operator= (CREF(compareName<T>) obj)
@@ -104,17 +103,17 @@ public:
 		m_name = obj.m_name;
 		return *this;
 	}
-	rbool operator() (CPTR(T) pObj)
+	bool operator()(const T* pObj)
 	{
 		return pObj->name() == m_name;
 	}
-	rbool operator() (CREF(rdo::intrusive_ptr<T>) pObj)
+	bool operator() (CREF(rdo::intrusive_ptr<T>) pObj)
 	{
 		return pObj->name() == m_name;
 	}
 
 private:
-	CREF(tstring) m_name;
+	CREF(std::string) m_name;
 };
 
 template <class T>
@@ -124,7 +123,7 @@ public:
 	compareNameRef(CREF(compareNameRef<T>) obj)
 		: m_name(obj.m_name)
 	{}
-	compareNameRef(CREF(tstring) name)
+	compareNameRef(CREF(std::string) name)
 		: m_name(name)
 	{}
 	REF(compareNameRef<T>) operator= (CREF(compareNameRef<T>) obj)
@@ -132,13 +131,13 @@ public:
 		m_name = obj.m_name;
 		return *this;
 	}
-	rbool operator() (CREF(T) obj)
+	bool operator() (CREF(T) obj)
 	{
 		return obj.name() == m_name;
 	}
 
 private:
-	CREF(tstring) m_name;
+	CREF(std::string) m_name;
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

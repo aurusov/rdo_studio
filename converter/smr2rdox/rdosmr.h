@@ -38,35 +38,36 @@ void cnv_smr_sim_error (const char* message);
 // --------------------------------------------------------------------------------
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
-OBJECT(RDOSMR)
+PREDECLARE_POINTER(RDOSMR);
+class RDOSMR: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOSMR);
 public:
-	typedef std::map<tstring, tstring> StringTable;
+	typedef std::map<std::string, std::string> StringTable;
 
-	void setFile(CREF(tstring) file_type, CREF(tstring) file_name)
+	void setFile(CREF(std::string) file_type, CREF(std::string) file_name)
 	{
 		m_files[file_type] = file_name;
 	}
-	rbool hasFile(CREF(tstring) file_type) const
+	bool hasFile(CREF(std::string) file_type) const
 	{
 		return m_files.find(file_type) != m_files.end();
 	}
-	tstring getFile(CREF(tstring) file_type) const
+	std::string getFile(CREF(std::string) file_type) const
 	{
 		StringTable::const_iterator it = m_files.find(file_type);
 		return it != m_files.end() ? it->second : "";
 	}
-	tstring modelName() const
+	std::string modelName() const
 	{
 		return getFile("Model_name");
 	}
 #ifdef CORBA_ENABLE
-	void setExternalModelName(CREF(tstring) alias, CREF(tstring) modelID)
+	void setExternalModelName(CREF(std::string) alias, CREF(std::string) modelID)
 	{
 		m_extModelList[alias] = modelID;
 	}
-	tstring getExternalModelName(CREF(tstring) alias) const
+	std::string getExternalModelName(CREF(std::string) alias) const
 	{
 		StringTable::const_iterator it = m_extModelList.find(alias);
 		return it != m_extModelList.end() ? it->second : "";
@@ -98,9 +99,12 @@ public:
 	void insertBreakPoint(CREF(RDOParserSrcInfo) src_info,   REF(LPRDOFUNLogic) pLogic);
 
 private:
-	RDOSMR(CREF(tstring) modelName);
+	RDOSMR(CREF(std::string) modelName);
 
-	OBJECT(BreakPoint) IS INSTANCE_OF(RDOParserSrcInfo)
+	PREDECLARE_POINTER(BreakPoint);
+	class BreakPoint
+		: public rdo::counter_reference
+		, public RDOParserSrcInfo
 	{
 	DECLARE_FACTORY(BreakPoint);
 	private:

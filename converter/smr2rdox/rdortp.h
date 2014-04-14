@@ -35,38 +35,40 @@ void cnv_rtperror(const char* message);
 // --------------------------------------------------------------------------------
 class Converter;
 
-OBJECT(RDORTPResType)
-	IS  INSTANCE_OF(RDOParserSrcInfo  )
-	AND INSTANCE_OF(boost::noncopyable)
+PREDECLARE_POINTER(RDORTPResType);
+class RDORTPResType
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
+	, public boost::noncopyable
 {
 DECLARE_FACTORY(RDORTPResType);
 public:
 	typedef std::vector<LPRDORTPParam> ParamList;
 
-	static const ruint UNDEFINED_PARAM = ruint(~0);
+	static const std::size_t UNDEFINED_PARAM = std::size_t(~0);
 
-	CREF(tstring) name       () const   { return src_text();   };
-	rsint         getNumber  () const   { return m_number;     };
-	rbool         isPermanent() const   { return m_permanent;  };
-	rbool         isTemporary() const   { return !m_permanent; };
+	CREF(std::string) name() const { return src_text(); };
+	int getNumber() const { return m_number; };
+	bool isPermanent() const { return m_permanent; };
+	bool isTemporary() const { return !m_permanent; };
 
 	void addParam(CREF(LPRDORTPParam) param);
-	void addParam(CREF(tstring) param_name, rdo::runtime::RDOType::TypeID param_typeID);
-	LPRDORTPParam findRTPParam(CREF(tstring) paramName) const;
-	void finish  ();
+	void addParam(CREF(std::string) param_name, rdo::runtime::RDOType::TypeID param_typeID);
+	LPRDORTPParam findRTPParam(CREF(std::string) paramName) const;
+	void finish();
 
-	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
-	CREF(ParamList) getParams        ()                        const { return m_params; }
+	std::size_t getRTPParamNumber(CREF(std::string) paramName) const;
+	CREF(ParamList) getParams() const { return m_params; }
 
 	void writeModelStructure(REF(std::ostream) stream) const;
 
 private:
-	RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
+	RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, bool permanent);
 	virtual ~RDORTPResType();
 
-	const rsint m_number;
-	const rbool m_permanent;
-	ParamList   m_params;
+	const int m_number;
+	const bool m_permanent;
+	ParamList m_params;
 };
 DECLARE_POINTER(RDORTPResType);
 
@@ -139,8 +141,8 @@ DECLARE_POINTER(RDORTPResType);
 //		}
 //	virtual ~RDORTPFuzzyTerm() {}
 //
-//	CREF(tstring) name       () const { return src_info().src_text(); }
-//	double        MemberShift() const { return m_fun->getVal();       }
+//	CREF(std::string) name() const { return src_info().src_text(); }
+//	double MemberShift() const { return m_fun->getVal(); }
 //
 //private:
 //	PTR(RDORTPFuzzyMembershiftFun) m_fun;
@@ -164,7 +166,7 @@ DECLARE_POINTER(RDORTPResType);
 //	{
 //		m_terms.push_back(term);
 //	}
-//	rbool empty() const
+//	bool empty() const
 //	{
 //		return m_terms.empty();
 //	}
@@ -187,7 +189,7 @@ DECLARE_POINTER(RDORTPResType);
 //		}
 //	virtual ~RDORTPFuzzyParam() {}
 //
-//	CREF(tstring) name() const { return src_info().src_text(); }
+//	CREF(std::string) name() const { return src_info().src_text(); }
 //
 //private:
 //	PTR(RDORTPFuzzyTermsSet) m_set; // набор терминов параметра

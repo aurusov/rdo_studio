@@ -50,7 +50,7 @@ void RDOCalcIf::setElseStatement(CREF(LPRDOCalc) pStatement)
 	m_statements.second = pStatement;
 }
 
-rbool RDOCalcIf::hasElse() const
+bool RDOCalcIf::hasElse() const
 {
 	return m_statements.second;
 }
@@ -149,9 +149,9 @@ RDOCalc::RDOCalcList RDOCalcBaseStatementList::statementList()
 RDOValue RDOCalcBaseStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	RDOValue value;
-	STL_FOR_ALL(m_calcStatementList, calcIt)
+	for (const auto& calc: m_calcStatementList)
 	{
-		RDOValue tempValue = (*calcIt)->calcValue(pRuntime);
+		RDOValue tempValue = calc->calcValue(pRuntime);
 		if (tempValue.typeID() != RDOType::t_unknow)
 		{
 			value = tempValue;
@@ -169,9 +169,9 @@ RDOCalcStatementList::RDOCalcStatementList()
 RDOValue RDOCalcStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	RDOValue value;
-	STL_FOR_ALL(m_calcStatementList, calcIt)
+	for (const auto& calc: m_calcStatementList)
 	{
-		value = (*calcIt)->calcValue(pRuntime);
+		value = calc->calcValue(pRuntime);
 
 		if (pRuntime->getFunBreakFlag() != RDORuntime::FBF_NONE)
 		{

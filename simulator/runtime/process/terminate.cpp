@@ -12,7 +12,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/terminate.h"
 #include "simulator/runtime/calc/calc_base.h"
@@ -24,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
-rbool RDOPROCTerminate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCTerminate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 	return !m_transacts.empty() ? true : false;
@@ -43,7 +42,7 @@ IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(CREF(LPRDORuntime) pRun
 	}
 	pRuntime->onEraseRes(transact->getTraceID(), NULL);
 	m_transacts.erase(m_transacts.begin());
-	ruint termNow = pRuntime->getCurrentTerm();
+	std::size_t termNow = pRuntime->getCurrentTerm();
 
 	++m_terminatedTransactCount;
 

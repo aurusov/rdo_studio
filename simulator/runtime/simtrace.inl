@@ -38,7 +38,7 @@ inline PTR(RDOTrace) RDOSimulatorTrace::getTracer() const
 	return m_tracer;
 }
 
-inline rbool RDOSimulatorTrace::canTrace() const
+inline bool RDOSimulatorTrace::canTrace() const
 {
 	return getTracer()->canTrace();
 }
@@ -75,18 +75,18 @@ inline void RDOSimulatorTrace::onNewTimeNow()
 	}
 }
 
-inline void RDOSimulatorTrace::memory_insert(ruint mem)
+inline void RDOSimulatorTrace::memory_insert(std::size_t mem)
 {
 	memory_current += mem;
 	if (memory_current > memory_max) memory_max = memory_current;
 }
 
-inline void RDOSimulatorTrace::memory_remove(ruint mem)
+inline void RDOSimulatorTrace::memory_remove(std::size_t mem)
 {
 	memory_current -= mem;
 }
 
-inline ruint RDOSimulatorTrace::memory_get() const
+inline std::size_t RDOSimulatorTrace::memory_get() const
 {
 	return memory_max;
 }
@@ -106,7 +106,7 @@ inline int RDOSimulatorTrace::getFreeDPTId()
 	return m_dptCounter++;
 }
 
-inline rbool RDOSimulatorTrace::timeForTrace() const
+inline bool RDOSimulatorTrace::timeForTrace() const
 {
 	if (getTraceStartTime() != UNDEFINE_TIME && getTraceStartTime() > getCurrentTime())
 		return false;

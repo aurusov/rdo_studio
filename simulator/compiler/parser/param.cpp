@@ -26,7 +26,7 @@ OPEN_RDO_PARSER_NAMESPACE
 
 const std::string RDOParam::CONTEXT_PARAM_PARAM_ID = "param_id";
 
-RDOParam::RDOParam(CREF(tstring) name, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault)
+RDOParam::RDOParam(CREF(std::string) name, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault)
 	: RDOParserSrcInfo(name    )
 	, m_pType         (pType   )
 	, m_pDefault      (pDefault)
@@ -57,7 +57,7 @@ void RDOParam::checkDefault()
 namespace
 {
 
-LPExpression contextGetParam(const rdo::runtime::LPRDOCalc& resource, ruint paramID, const LPTypeInfo& paramType, const RDOParserSrcInfo& srcInfo)
+LPExpression contextGetParam(const rdo::runtime::LPRDOCalc& resource, std::size_t paramID, const LPTypeInfo& paramType, const RDOParserSrcInfo& srcInfo)
 {
 	return rdo::Factory<Expression>::create(
 		paramType,
@@ -67,7 +67,7 @@ LPExpression contextGetParam(const rdo::runtime::LPRDOCalc& resource, ruint para
 }
 
 template <rdo::runtime::SetOperationType::Type setOperationType>
-LPExpression contextSetParam(const rdo::runtime::LPRDOCalc& getResource, const LPTypeInfo& pTypeInfo, const ruint paramID, const rdo::runtime::LPRDOCalc& rightValue, const RDOParserSrcInfo& srcInfo)
+LPExpression contextSetParam(const rdo::runtime::LPRDOCalc& getResource, const LPTypeInfo& pTypeInfo, const std::size_t paramID, const rdo::runtime::LPRDOCalc& rightValue, const RDOParserSrcInfo& srcInfo)
 {	
 	rdo::runtime::LPRDOCalc setParamCalc = rdo::Factory<rdo::runtime::RDOSetResourceParam<setOperationType> >::create(getResource, paramID, rightValue);
 	
@@ -99,7 +99,7 @@ Context::FindResult RDOParam::onFindContext(const std::string& method, const Con
 	if (method == Context::METHOD_GET)
 	{
 		LPExpression resource = params.get<LPExpression>(RDORSSResource::GET_RESOURCE);
-		const ruint paramID = params.get<ruint>(RDOParam::CONTEXT_PARAM_PARAM_ID);
+		const std::size_t paramID = params.get<std::size_t>(RDOParam::CONTEXT_PARAM_PARAM_ID);
 		return FindResult(CreateExpression(boost::bind(&contextGetParam, resource->calc(), paramID, getTypeInfo(), srcInfo)));
 	}
 
@@ -107,7 +107,7 @@ Context::FindResult RDOParam::onFindContext(const std::string& method, const Con
 	{
 		using namespace rdo::runtime;
 		const LPExpression resource = params.get<LPExpression>(RDORSSResource::GET_RESOURCE);
-		const ruint paramID = params.get<ruint>(RDOParam::CONTEXT_PARAM_PARAM_ID);
+		const std::size_t paramID = params.get<std::size_t>(RDOParam::CONTEXT_PARAM_PARAM_ID);
 		const LPRDOCalc rightValue = params.exists(Expression::CONTEXT_PARAM_SET_EXPRESSION)
 				? params.get<LPExpression>(Expression::CONTEXT_PARAM_SET_EXPRESSION)->calc()
 				: params.get<LPRDOFUNArithm>(RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM)->createCalc(getTypeInfo());

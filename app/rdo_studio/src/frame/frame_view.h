@@ -39,10 +39,10 @@ public:
 	Content(QWidget* pParent);
 	virtual ~Content();
 
-	void update    (CPTRC(rdo::animation::Frame)         pFrame,
-	                 CREF(rdo::gui::BitmapList)          bitmapList,
-	                  REF(rdo::gui::BitmapList)          bitmapGeneratedList,
-	                  REF(rdo::gui::animation::AreaList) areaList);
+	void update(const rdo::animation::Frame* const pFrame,
+		CREF(rdo::gui::BitmapList) bitmapList,
+		REF(rdo::gui::BitmapList) bitmapGeneratedList,
+		REF(rdo::gui::animation::AreaList) areaList);
 	void updateFont();
 
 private:
@@ -53,15 +53,15 @@ private:
 	QFont              m_font;
 
 	bool  valid           () const;
-	void  init            (CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
+	void  init            (const rdo::animation::Frame* const pFrame, CREF(rdo::gui::BitmapList) bitmapList);
 	void  init            (CREF(QSize)   size );
 	void  setBGColor      (CREF(QColor)  color);
 	void  onDraw          (REF(QPainter) painter);
 
-	void  drawBackground    (CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
+	void  drawBackground    (const rdo::animation::Frame* const pFrame, CREF(rdo::gui::BitmapList) bitmapList);
 	template <class F>
-	void  drawColoredElement(CPTR(rdo::animation::ColoredElement)   pColor, F drawMethod);
-	void  setColors         (CPTR(rdo::animation::ColoredElement)   pColor);
+	void  drawColoredElement(const rdo::animation::ColoredElement* pColor, F drawMethod);
+	void  setColors         (const rdo::animation::ColoredElement* pColor);
 	void  elementText       ( PTR(rdo::animation::TextElement)      pElement);
 	void  elementRect       ( PTR(rdo::animation::RectElement)      pElement);
 	void  elementRoundRect  ( PTR(rdo::animation::RoundRectElement) pElement);
@@ -103,10 +103,10 @@ public:
 
 	void updateFont();
 
-	void update(CPTRC(rdo::animation::Frame)         pFrame,
-	             CREF(rdo::gui::BitmapList)          bitmapList,
-	              REF(rdo::gui::BitmapList)          bitmapGeneratedList,
-	              REF(rdo::gui::animation::AreaList) areaList);
+	void update(const rdo::animation::Frame* const pFrame,
+		CREF(rdo::gui::BitmapList) bitmapList,
+		REF(rdo::gui::BitmapList) bitmapGeneratedList,
+		REF(rdo::gui::animation::AreaList) areaList);
 
 private:
 	QWidget* m_pContent;

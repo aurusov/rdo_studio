@@ -429,7 +429,7 @@ void ViewPreferences::onFontType(int index)
 {
 	UNUSED(index);
 
-	tstring name = fontComboBox->currentFont().family().toStdString();
+	std::string name = fontComboBox->currentFont().family().toStdString();
 
 	switch(getStyleItem()->type)
 	{

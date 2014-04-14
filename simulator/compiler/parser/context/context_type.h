@@ -21,7 +21,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- ITypeContext
 // --------------------------------------------------------------------------------
-S_INTERFACE(ITypeContext)
+struct ITypeContext
 {
 	virtual CREF(LPTypeInfo) getTypeInfo() const = 0;
 };
@@ -32,9 +32,9 @@ public:                             \
 // --------------------------------------------------------------------------------
 // -------------------- TypeContext
 // --------------------------------------------------------------------------------
-CLASS(TypeContext):
-	    INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(ITypeContext)
+class TypeContext
+	: public Context
+	, public ITypeContext
 {
 DECLARE_FACTORY(TypeContext);
 private:
