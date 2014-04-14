@@ -58,7 +58,7 @@ private:
 	RDOValue(CREF(LPRDOValue) pValue);
 
 	// Он стандартных типов
-	RDOValue(CREF(rdo::explicit_value<rsint>) value, CREF(RDOParserSrcInfo) src_info);
+	RDOValue(CREF(rdo::explicit_value<int>) value, CREF(RDOParserSrcInfo) src_info);
 	RDOValue(CREF(rdo::explicit_value<ruint>) value, CREF(RDOParserSrcInfo) src_info);
 	RDOValue(CREF(rdo::explicit_value<double>) value, CREF(RDOParserSrcInfo) src_info);
 	RDOValue(CREF(rdo::explicit_value<std::string>) value, CREF(RDOParserSrcInfo) src_info);

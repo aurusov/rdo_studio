@@ -352,8 +352,8 @@ protected:
 	bool was_close;
 #endif
 	const std::string thread_name;
-	rsint thread_id;
-	rsint idle_cnt;
+	int thread_id;
+	int idle_cnt;
 
 	typedef std::vector<RDOTreadMessage> NotifieList;
 

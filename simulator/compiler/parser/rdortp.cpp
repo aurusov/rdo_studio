@@ -92,7 +92,7 @@ RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) s
 RDORTPResType::~RDORTPResType()
 {}
 
-rsint RDORTPResType::getNumber() const
+int RDORTPResType::getNumber() const
 {
 	return m_number;
 }

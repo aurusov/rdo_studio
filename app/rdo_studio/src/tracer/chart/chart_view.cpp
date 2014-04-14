@@ -321,7 +321,7 @@ void ChartView::updateScrollBars()
 	getHorzScrollBar().setValue   (m_SM_X.position);
 }
 
-bool ChartView::scrollHorizontally(rsint inc)
+bool ChartView::scrollHorizontally(int inc)
 {
 	if (!m_SM_X.applyInc(inc))
 	{

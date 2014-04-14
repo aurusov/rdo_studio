@@ -26,8 +26,8 @@
 
 BOOST_AUTO_TEST_SUITE(RDORuntime_Array_Test)
 
-typedef  rdo::vector<rsint>                                                Container;
-typedef  std::pair<rdo::runtime::LPRDOArrayValue, rdo::runtime::RDOValue>  Array;
+typedef rdo::vector<int> Container;
+typedef std::pair<rdo::runtime::LPRDOArrayValue, rdo::runtime::RDOValue> Array;
 
 Array createArray(CREF(Container) data)
 {

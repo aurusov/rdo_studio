@@ -21,13 +21,13 @@ namespace rdo
 	{
 		struct ScrollMetric
 		{
-			rsint position;
-			rsint posMax;
-			rsint pageSize;
+			int position;
+			int posMax;
+			int pageSize;
 
 			ScrollMetric();
 
-			bool applyInc(rsint delta);
+			bool applyInc(int delta);
 		};
 	} // namespace gui
 } // namespace rdo

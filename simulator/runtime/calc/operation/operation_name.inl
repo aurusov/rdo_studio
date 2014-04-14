@@ -93,7 +93,7 @@ inline CREF(OperatorName<RDOValue (RDOValue::*)() const>::NameList) OperatorName
 }
 
 template <>
-inline CREF(OperatorName<rsint (RDOValue::*)() const>::NameList) OperatorName<rsint (RDOValue::*)() const>::getList()
+inline CREF(OperatorName<int (RDOValue::*)() const>::NameList) OperatorName<int (RDOValue::*)() const>::getList()
 {
 	static NameList s_nameList;
 	if (s_nameList.empty())

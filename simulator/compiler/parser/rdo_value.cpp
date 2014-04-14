@@ -63,7 +63,7 @@ RDOValue::RDOValue(CREF(LPRDOValue) pValue)
 	}
 }
 
-RDOValue::RDOValue(CREF(rdo::explicit_value<rsint>) value, CREF(RDOParserSrcInfo) src_info)
+RDOValue::RDOValue(CREF(rdo::explicit_value<int>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {

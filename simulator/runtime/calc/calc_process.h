@@ -29,11 +29,11 @@ class RDOCalcProcessControl: public RDOCalc
 DECLARE_FACTORY(RDOCalcProcessControl)
 public:
 protected:
-	RDOCalcProcessControl(LPIPROCBlock pBlock, rsint relResNum);
+	RDOCalcProcessControl(LPIPROCBlock pBlock, int relResNum);
 	DECLARE_ICalc;
 private:
-	LPIPROCBlock  m_Block;
-	rsint         m_relResNum;
+	LPIPROCBlock m_Block;
+	int m_relResNum;
 };
 
 //! Выполнение блока ASSIGN в процессе

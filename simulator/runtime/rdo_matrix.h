@@ -65,8 +65,8 @@ public:
 
 	Iterator             getIterator() const;
 	CREF(RDOValue)       getValue   () const;
-	LPRDOMatrixIterator  preInc     (rsint delta);
-	LPRDOMatrixIterator  postInc    (rsint delta);
+	LPRDOMatrixIterator  preInc     (int delta);
+	LPRDOMatrixIterator  postInc    (int delta);
 	LPRDOMatrixIterator  next       ();
 	bool                 equal      (CREF(LPRDOMatrixIterator) pIterator) const;
 	LPRDOMatrixIterator  clone      () const;

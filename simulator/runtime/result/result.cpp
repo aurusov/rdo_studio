@@ -108,7 +108,7 @@ void RDOPMDResult::printLeft(std::ostream& stream, CREF(std::string) txt)
 {
 	stream << txt;
 
-	rsint spaceCnt = 30 - (rsint)rdo::locale::length(txt);
+	int spaceCnt = 30 - (int)rdo::locale::length(txt);
 	if (spaceCnt > 0)
 	{
 		stream.width(spaceCnt);

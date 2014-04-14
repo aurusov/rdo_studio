@@ -142,7 +142,7 @@ public:
 		const rdo::runtime::RDOType::TypeID typeID () const { return m_pType->type()->typeID(); }
 		std::string typeStr() const { return m_pType->type()->name(); }
 
-		rsint id() const { return m_id; }
+		int id() const { return m_id; }
 
 		bool hasRange() const { return (m_pMin && m_pMax) ? m_pMin->typeID() != rdo::runtime::RDOType::t_unknow && m_pMax->typeID() != rdo::runtime::RDOType::t_unknow : false; }
 		CREF(parser::LPRDOValue) getMin() const { return m_pMin; }
@@ -166,7 +166,7 @@ public:
 		parser::LPRDOValue m_pMin;
 		parser::LPRDOValue m_pMax;
 		parser::LPRDOValue m_pDefault;
-		rsint m_id;
+		int m_id;
 
 		template <class T>
 		void initType(CREF(T) pType)
@@ -216,8 +216,8 @@ public:
 	// Создать новый ресурс
 	RDOResource(CREF(RDOResType) rtp, CREF(std::string) name);
 
-	CREF(RDOResType)  getType() const { return m_rtp; }
-	rsint             getID  () const { return m_id;  }
+	CREF(RDOResType) getType() const { return m_rtp; }
+	int getID() const { return m_id; }
 
 	typedef std::map<std::string, parser::LPRDOValue> Params;
 
@@ -252,7 +252,7 @@ public:
 private:
 	RDOResType m_rtp;
 	Params m_params;
-	rsint m_id;
+	int m_id;
 };
 
 // --------------------------------------------------------------------------------

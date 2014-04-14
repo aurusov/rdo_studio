@@ -1186,7 +1186,7 @@ void Model::updateActions()
 
 	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SPEED>(
 		getRuntimeMode() != rdo::runtime::RTM_MaxSpeed || !isRunning()
-			? QString("Скорость: %1%").arg(rsint(getSpeed() * 100))
+			? QString("Скорость: %1%").arg(int(getSpeed() * 100))
 			: ""
 	);
 

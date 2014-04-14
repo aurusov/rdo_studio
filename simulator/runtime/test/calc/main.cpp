@@ -188,7 +188,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 				LPRDOCalc pParamLeft = pGetFunParam;
 				BOOST_CHECK(pParamLeft);
 
-				LPRDOCalc pParamRight = rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(1)));
+				LPRDOCalc pParamRight = rdo::Factory<RDOCalcConst>::create(RDOValue(int(1)));
 				BOOST_CHECK(pParamRight);
 
 				pIFCondition = rdo::Factory<RDOCalcIsEqual>::create(pParamLeft, pParamRight);
@@ -200,7 +200,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 
 			//! return 1
 			LPRDOCalc pThen = rdo::Factory<RDOCalcFunReturn>::create(
-				rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(1)))
+				rdo::Factory<RDOCalcConst>::create(RDOValue(int(1)))
 			);
 			BOOST_CHECK(pThen);
 
@@ -213,7 +213,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 					LPRDOCalc pParamLeft = pGetFunParam;
 					BOOST_CHECK(pParamLeft);
 
-					LPRDOCalc pParamRight = rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(1)));
+					LPRDOCalc pParamRight = rdo::Factory<RDOCalcConst>::create(RDOValue(int(1)));
 					BOOST_CHECK(pParamRight);
 
 					pParamValue = rdo::Factory<RDOCalcMinus>::create(pParamLeft, pParamRight);
@@ -251,7 +251,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 		//! ручная набивка вызова функции int fun(5)
 		static LPRDOCalc externalCaller(CREF(LPRDOCalc) pBody)
 		{
-			LPRDOCalc pParam = rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(5)));
+			LPRDOCalc pParam = rdo::Factory<RDOCalcConst>::create(RDOValue(int(5)));
 			BOOST_CHECK(pParam);
 
 			return caller(pBody, pParam);

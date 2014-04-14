@@ -60,7 +60,7 @@ private:
 	PTR(std::ostream) m_yyout;
 	LPRDOParser m_pParser;
 	bool m_enumEmpty;
-	rsint m_array_param_cnt;
+	int m_array_param_cnt;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

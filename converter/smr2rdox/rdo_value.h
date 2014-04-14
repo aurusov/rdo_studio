@@ -41,7 +41,7 @@ public:
 	static LPRDOValue getIdentificator(CREF(std::string) identificator);
 
 private:
-	explicit RDOValue(CREF(rsint) value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(int) value, CREF(RDOParserSrcInfo) src_info);
 	explicit RDOValue(CREF(ruint) value, CREF(RDOParserSrcInfo) src_info);
 	explicit RDOValue(CREF(double) value, CREF(RDOParserSrcInfo) src_info);
 	explicit RDOValue(CREF(std::string) value, CREF(RDOParserSrcInfo) src_info);

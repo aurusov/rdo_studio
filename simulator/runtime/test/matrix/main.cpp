@@ -27,8 +27,8 @@
 
 BOOST_AUTO_TEST_SUITE(RDORuntime_Matrix_Test)
 
-typedef  rdo::vector<rsint>                                                 Container;
-typedef  std::pair<rdo::runtime::LPRDOMatrixValue, rdo::runtime::RDOValue>  Matrix;
+typedef rdo::vector<int> Container;
+typedef std::pair<rdo::runtime::LPRDOMatrixValue, rdo::runtime::RDOValue> Matrix;
 
 Matrix createMatrix(CREF(Container) data)
 {

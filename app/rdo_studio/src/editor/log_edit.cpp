@@ -125,22 +125,22 @@ void Log::getLines(REF(LogEditLineInfoList) lines) const
 	lines = m_lines;
 }
 
-rsint Log::getCurrentLine() const
+int Log::getCurrentLine() const
 {
 	return m_currentLine;
 }
 
-rsint Log::getSciMarkerLine() const
+int Log::getSciMarkerLine() const
 {
 	return m_sciMarkerLine;
 }
 
-void Log::setCurrentLine(rsint currentLine)
+void Log::setCurrentLine(int currentLine)
 {
 	m_currentLine = currentLine;
 }
 
-void Log::setSciMarkerLine(rsint sciMarkerLine)
+void Log::setSciMarkerLine(int sciMarkerLine)
 {
 	m_sciMarkerLine = sciMarkerLine;
 }

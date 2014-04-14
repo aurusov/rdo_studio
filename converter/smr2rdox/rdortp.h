@@ -48,7 +48,7 @@ public:
 	static const ruint UNDEFINED_PARAM = ruint(~0);
 
 	CREF(std::string) name() const { return src_text(); };
-	rsint getNumber() const { return m_number; };
+	int getNumber() const { return m_number; };
 	bool isPermanent() const { return m_permanent; };
 	bool isTemporary() const { return !m_permanent; };
 
@@ -66,7 +66,7 @@ private:
 	RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, bool permanent);
 	virtual ~RDORTPResType();
 
-	const rsint m_number;
+	const int m_number;
 	const bool m_permanent;
 	ParamList m_params;
 };

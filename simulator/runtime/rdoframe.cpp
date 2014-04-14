@@ -44,9 +44,9 @@ RDOFRMSprite::RDOFRMColor::RDOFRMColor(ColorType type)
 RDOFRMSprite::RDOFRMColor::RDOFRMColor(rbyte red, rbyte green, rbyte blue, CREF(RDOSrcInfo) srcInfo)
 	: m_type(CT_RGB)
 {
-	m_pRedCalc   = rdo::Factory<RDOCalcConst>::create((rsint)red  );
-	m_pGreenCalc = rdo::Factory<RDOCalcConst>::create((rsint)green);
-	m_pBlueCalc  = rdo::Factory<RDOCalcConst>::create((rsint)blue );
+	m_pRedCalc = rdo::Factory<RDOCalcConst>::create((int)red);
+	m_pGreenCalc = rdo::Factory<RDOCalcConst>::create((int)green);
+	m_pBlueCalc = rdo::Factory<RDOCalcConst>::create((int)blue);
 	ASSERT(m_pRedCalc  );
 	ASSERT(m_pGreenCalc);
 	ASSERT(m_pBlueCalc );

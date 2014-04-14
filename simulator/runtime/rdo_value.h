@@ -32,7 +32,7 @@ public:
 
 	RDOValue(CREF(RDOValue) rdovalue);
 	RDOValue(CREF(LPRDOType) pType);
-	RDOValue(rsint value);
+	RDOValue(int value);
 	RDOValue(ruint value);
 #ifdef ARCHITECTURE_AMD64
 	RDOValue(ruint64 value);
@@ -51,9 +51,9 @@ public:
 
 	static RDOValue fromDouble(CREF(LPRDOType) pType, double value);
 
-	rsint getInt() const;
+	int getInt() const;
 	ruint getUInt() const;
-	rsint getEnumAsInt() const;
+	int getEnumAsInt() const;
 	LPRDOEnumType getEnum() const;
 	double getDouble() const;
 	bool getBool() const;
@@ -158,7 +158,7 @@ private:
 	REF(RDOValue) onPointerMinus(CREF(RDOValue) rdovalue);
 	REF(RDOValue) onPointerMult(CREF(RDOValue) rdovalue);
 	REF(RDOValue) onPointerDiv(CREF(RDOValue) rdovalue);
-	rsint onPointerGetInt() const;
+	int onPointerGetInt() const;
 	ruint onPointerGetUInt() const;
 	bool onPointerAnd(CREF(RDOValue) rdovalue) const;
 	bool onPointerOr(CREF(RDOValue) rdovalue) const;

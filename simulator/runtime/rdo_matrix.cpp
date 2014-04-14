@@ -144,13 +144,13 @@ CREF(RDOValue) RDOMatrixIterator::getValue() const
 	return *m_iterator;
 }
 
-LPRDOMatrixIterator RDOMatrixIterator::preInc(rsint delta)
+LPRDOMatrixIterator RDOMatrixIterator::preInc(int delta)
 {
 	m_iterator += delta;
 	return LPRDOMatrixIterator(this);
 }
 
-LPRDOMatrixIterator RDOMatrixIterator::postInc(rsint delta)
+LPRDOMatrixIterator RDOMatrixIterator::postInc(int delta)
 {
 	LPRDOMatrixIterator pPrev = rdo::Factory<RDOMatrixIterator>::create(m_iterator);
 	ASSERT(pPrev);

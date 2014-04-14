@@ -53,7 +53,7 @@ StatusBar::StatusBar(QMainWindow* pParent)
 StatusBar::~StatusBar()
 {}
 
-void StatusBar::beginProgress(rsint lower, rsint upper)
+void StatusBar::beginProgress(int lower, int upper)
 {
 	m_pProgressBar->setRange(lower, upper);
 	m_pProgressBar->setValue(lower);

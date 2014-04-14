@@ -13,7 +13,7 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-inline RDOValue::RDOValue(CREF(rsint) value, CREF(RDOParserSrcInfo) src_info)
+inline RDOValue::RDOValue(CREF(int) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value(value)
 	, m_type (rdo::Factory<RDOType__int>::create())

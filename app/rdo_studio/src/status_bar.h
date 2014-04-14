@@ -43,9 +43,9 @@ public:
 		update(StatusBarType<N>(), message);
 	}
 
-	void beginProgress(rsint lower, rsint upper);
-	void stepProgress ();
-	void endProgress  ();
+	void beginProgress(int lower, int upper);
+	void stepProgress();
+	void endProgress();
 
 private:
 	StatusBar(QMainWindow* pParent);

@@ -61,7 +61,7 @@ private:
 typedef RDOCalcUnary<RDOValue, &RDOValue::operator-, OperatorType::OT_ARITHM> RDOCalcUMinus;
 
 //! Оператор праобразования вещественного числа в целое
-typedef RDOCalcUnary<rsint,    &RDOValue::getInt   , OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
+typedef RDOCalcUnary<int, &RDOValue::getInt, OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
 
 //! Преобразование вещественного в целое по типу lvalue
 PREDECLARE_POINTER(RDOCalcDoubleToIntByResult);

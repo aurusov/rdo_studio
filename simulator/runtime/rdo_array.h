@@ -69,8 +69,8 @@ public:
 
 	Iterator getIterator() const;
 	CREF(RDOValue) getValue() const;
-	LPRDOArrayIterator preInc(rsint delta);
-	LPRDOArrayIterator postInc(rsint delta);
+	LPRDOArrayIterator preInc(int delta);
+	LPRDOArrayIterator postInc(int delta);
 	LPRDOArrayIterator next();
 	bool equal(CREF(LPRDOArrayIterator) pIterator) const;
 	LPRDOArrayIterator clone() const;

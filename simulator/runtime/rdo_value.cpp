@@ -53,7 +53,7 @@ RDOValue::RDOValue(CREF(LPRDOType) pType)
 	setUndefined(false);
 }
 
-RDOValue::RDOValue(rsint value)
+RDOValue::RDOValue(int value)
 	: m_pType(g_int)
 {
 	__get<int>() = value;
@@ -181,7 +181,7 @@ void RDOValue::deleteValue()
 	}
 }
 
-rsint RDOValue::getInt() const
+int RDOValue::getInt() const
 {
 	if (isUndefined())
 		throw RDOUndefinedException();
@@ -189,7 +189,7 @@ rsint RDOValue::getInt() const
 	switch (typeID())
 	{
 	case RDOType::t_int    : return __get<int>  ();
-	case RDOType::t_real   : return (rsint)__get<double>();
+	case RDOType::t_real   : return (int)__get<double>();
 	case RDOType::t_enum   : return __get<ruint>();
 	case RDOType::t_bool   : return __get<bool>() ? 1 : 0;
 	case RDOType::t_pointer: return onPointerGetInt();
@@ -215,7 +215,7 @@ ruint RDOValue::getUInt() const
 	throw RDOValueException();
 }
 
-rsint RDOValue::getEnumAsInt() const
+int RDOValue::getEnumAsInt() const
 {
 	if (isUndefined())
 		throw RDOUndefinedException();
@@ -223,7 +223,7 @@ rsint RDOValue::getEnumAsInt() const
 	switch (typeID())
 	{
 	case RDOType::t_int : return __get<int>  ();
-	case RDOType::t_real: return (rsint)__get<double>();
+	case RDOType::t_real: return (int)__get<double>();
 	case RDOType::t_enum: return __get<ruint>();
 	case RDOType::t_bool: return __get<bool>() ? 1 : 0;
 	default             : break;
@@ -1200,7 +1200,7 @@ REF(RDOValue) RDOValue::onPointerDiv(CREF(RDOValue) rdovalue)
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerMult()");
 }
 
-rsint RDOValue::onPointerGetInt() const
+int RDOValue::onPointerGetInt() const
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 

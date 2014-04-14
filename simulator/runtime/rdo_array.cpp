@@ -158,13 +158,13 @@ CREF(RDOValue) RDOArrayIterator::getValue() const
 	return *m_iterator;
 }
 
-LPRDOArrayIterator RDOArrayIterator::preInc(rsint delta)
+LPRDOArrayIterator RDOArrayIterator::preInc(int delta)
 {
 	m_iterator += delta;
 	return LPRDOArrayIterator(this);
 }
 
-LPRDOArrayIterator RDOArrayIterator::postInc(rsint delta)
+LPRDOArrayIterator RDOArrayIterator::postInc(int delta)
 {
 	LPRDOArrayIterator pPrev = rdo::Factory<RDOArrayIterator>::create(m_iterator);
 	ASSERT(pPrev);

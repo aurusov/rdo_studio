@@ -22,7 +22,7 @@ ScrollMetric::ScrollMetric()
 	, pageSize(0)
 {}
 
-bool ScrollMetric::applyInc(rsint delta)
+bool ScrollMetric::applyInc(int delta)
 {
 	if (delta == 0)
 	{

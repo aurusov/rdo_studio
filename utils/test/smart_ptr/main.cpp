@@ -27,23 +27,23 @@
 class Log;
 PTR(Log) g_pLog = NULL;
 
-class Log: public std::list<rsint>
+class Log: public std::list<int>
 {
 public:
 	 Log() { g_pLog = this; }
 	~Log() { g_pLog = NULL; }
 };
 
-const rsint MULTIPLEXER = 100;
-const rsint CHECK1      = 7890;
-const rsint CHECK2      = 5362;
+const int MULTIPLEXER = 100;
+const int CHECK1 = 7890;
+const int CHECK2 = 5362;
 
 PREDECLARE_POINTER(MyClass);
 class MyClass: public rdo::counter_reference
 {
 DECLARE_FACTORY(MyClass)
 public:
-	rsint m_a;
+	int m_a;
 
 	enum { DAFAUL_VALUE = 1 };
 
@@ -73,7 +73,7 @@ class MyClass2
 {
 DECLARE_FACTORY(MyClass2)
 public:
-	rsint m_b;
+	int m_b;
 
 	enum { DAFAUL_VALUE = 2 };
 
@@ -100,7 +100,7 @@ PREDECLARE_POINTER(MyClass3);
 class MyClass3: public rdo::counter_reference
 {
 public:
-	rsint m_c;
+	int m_c;
 
 	enum { DAFAUL_VALUE = 3 };
 
@@ -117,7 +117,7 @@ class MyClass4: public MyClass2
 {
 DECLARE_FACTORY(MyClass4)
 public:
-	rsint m_d;
+	int m_d;
 
 	enum { DAFAUL_VALUE = 4 };
 

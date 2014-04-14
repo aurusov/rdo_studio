@@ -56,7 +56,7 @@ public:
 	};
 	static const ruint UNDEFINED_PARAM = ruint(~0);
 
-	rsint getNumber() const;
+	int getNumber() const;
 	bool isPermanent() const;
 	bool isTemporary() const;
 

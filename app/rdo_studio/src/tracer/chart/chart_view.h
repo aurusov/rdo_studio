@@ -94,7 +94,7 @@ private:
 	bool        maxXVisible       () const;
 	QScrollBar& getHorzScrollBar  ();
 	void        updateScrollBars  ();
-	bool        scrollHorizontally(rsint inc);
+	bool        scrollHorizontally(int inc);
 
 	long double         m_timeScale;
 	int                 m_chartShift;

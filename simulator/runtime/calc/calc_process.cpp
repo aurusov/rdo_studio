@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcProcessControl
 // --------------------------------------------------------------------------------
-RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock, rsint relResNum)
+RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock, int relResNum)
 	: m_Block    (pBlock   )
 	, m_relResNum(relResNum)
 {}

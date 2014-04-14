@@ -36,7 +36,7 @@ namespace rdo { namespace gui { namespace tracer {
 class LogCtrlFindInList
 {
 public:
-	LogCtrlFindInList(REF(rsint) checkCounter, CREF(QString) strToFind, bool matchCase, bool matchWholeWord);
+	LogCtrlFindInList(REF(int) checkCounter, CREF(QString) strToFind, bool matchCase, bool matchWholeWord);
 	bool operator() (CREF(QString) nextStr);
 
 	LogCtrlFindInList& operator= (CREF(LogCtrlFindInList))
@@ -47,12 +47,12 @@ public:
 
 private:
 	boost::optional<boost::regex> m_expression;
-	REF(rsint)                    m_checkCounter;
+	REF(int) m_checkCounter;
 };
 
 }}} // namespace rdo::gui::tracer
 
-LogCtrlFindInList::LogCtrlFindInList(REF(rsint) checkCounter, CREF(QString) strToFind, bool matchCase, bool matchWholeWord)
+LogCtrlFindInList::LogCtrlFindInList(REF(int) checkCounter, CREF(QString) strToFind, bool matchCase, bool matchWholeWord)
 	: m_checkCounter(checkCounter)
 {
 	QString what = matchWholeWord
@@ -148,17 +148,17 @@ void LogView::StringList::clear()
 	m_maxLegth = 0;
 }
 
-rsint LogView::StringList::count() const
+int LogView::StringList::count() const
 {
 	return m_count;
 }
 
-rsint LogView::StringList::maxLegth() const
+int LogView::StringList::maxLegth() const
 {
 	return m_maxLegth;
 }
 
-void LogView::StringList::setCursor(rsint pos, rsint max)
+void LogView::StringList::setCursor(int pos, int max)
 {
 	if (pos == m_cursor)
 		return;
@@ -170,21 +170,21 @@ void LogView::StringList::setCursor(rsint pos, rsint max)
 	else if (pos == max)
 	{
 		m_cursorIt = m_list.end();
-		for (rsint i = m_count; i > max; --i)
+		for (int i = m_count; i > max; --i)
 		{
 			--m_cursorIt;
 		}
 	}
 	else
 	{
-		rsint delta = pos - m_cursor;
+		int delta = pos - m_cursor;
 		ASSERT(m_cursorIt != m_list.end());
 		std::advance(m_cursorIt, delta);
 	}
 	m_cursor = pos;
 }
 
-LogView::StringList::const_iterator LogView::StringList::findString(rsint index) const
+LogView::StringList::const_iterator LogView::StringList::findString(int index) const
 {
 	const_iterator res;
 
@@ -203,11 +203,11 @@ LogView::StringList::const_iterator LogView::StringList::findString(rsint index)
 	}
 	else
 	{
-		rsint deltaPos = index - m_cursor;
-		rsint deltaEnd = index - (m_count - 1);
-		rsint mod_deltaPos = deltaPos >= 0 ? deltaPos : -1 * deltaPos;
-		rsint mod_deltaEnd = deltaEnd >= 0 ? deltaEnd : -1 * deltaEnd;
-		rsint delta = (std::min)(index, mod_deltaPos);
+		int deltaPos = index - m_cursor;
+		int deltaEnd = index - (m_count - 1);
+		int mod_deltaPos = deltaPos >= 0 ? deltaPos : -1 * deltaPos;
+		int mod_deltaEnd = deltaEnd >= 0 ? deltaEnd : -1 * deltaEnd;
+		int delta = (std::min)(index, mod_deltaPos);
 		delta = (std::min)(delta, mod_deltaEnd);
 		if (delta == index)
 		{
@@ -234,7 +234,7 @@ LogView::StringList::const_iterator LogView::StringList::findString(rsint index)
 	return res;
 }
 
-LogView::StringList::const_reverse_iterator LogView::StringList::rFindString(rsint index) const
+LogView::StringList::const_reverse_iterator LogView::StringList::rFindString(int index) const
 {
 	const_reverse_iterator rit(findString(index));
 	return rit;
@@ -262,13 +262,13 @@ LogView::ScrollMetricVert::ScrollMetricVert()
 	, lastViewableLine(0)
 {}
 
-bool LogView::ScrollMetricVert::isVisible(rsint index) const
+bool LogView::ScrollMetricVert::isVisible(int index) const
 {
 	return index >= position &&
 	       index <= lastViewableLine;
 }
 
-bool LogView::ScrollMetricVert::applyInc(rsint delta)
+bool LogView::ScrollMetricVert::applyInc(int delta)
 {
 	if (!ScrollMetric::applyInc(delta))
 	{
@@ -330,8 +330,8 @@ void LogView::push_back(CREF(std::string) log)
 {
 	if (!log.empty())
 	{
-		rsint posstart = log.find_first_not_of(' ');
-		rsint posend = log.find_first_of(' ', posstart);
+		int posstart = log.find_first_not_of(' ');
+		int posend = log.find_first_of(' ', posstart);
 		std::string key = boost::algorithm::trim_copy(log.substr(posstart, posend - posstart));
 
 		LogColorPair colors;
@@ -356,7 +356,7 @@ void LogView::push_back(CREF(std::string) log)
 
 	m_strings.push_back(QString::fromStdString(log));
 
-	rsint lastString = m_strings.count() - 1;
+	int lastString = m_strings.count() - 1;
 	if (lastString == 1)
 	{
 		updateActionFind(isActivated());
@@ -428,15 +428,15 @@ void LogView::clear()
 	update();
 }
 
-void LogView::selectLine(rsint index)
+void LogView::selectLine(int index)
 {
 	if (index < 0 || index > m_strings.count() - 1 || index == selectedLine())
 	{
 		return;
 	}
 
-	rsint prevSel = selectedLine();
-	rsint inc = (std::max)(-prevSel, (std::min)(index - prevSel, m_strings.count() - 1 - prevSel));
+	int prevSel = selectedLine();
+	int inc = (std::max)(-prevSel, (std::min)(index - prevSel, m_strings.count() - 1 - prevSel));
 
 	if (inc)
 	{
@@ -496,7 +496,7 @@ void LogView::setDrawLog(bool value)
 	}
 }
 
-bool LogView::getItemColors(rsint index, LogColorPair &colors) const
+bool LogView::getItemColors(int index, LogColorPair &colors) const
 {
 	bool res = true;
 	SubitemColors::List::const_iterator it = m_subitemColors.m_colorList.find(index);
@@ -517,19 +517,19 @@ bool LogView::getItemColors(CREF(QString) item, LogColorPair &colors) const
 	return m_logStyle->getItemColors(item.toStdString(), colors);
 }
 
-rsint LogView::selectedLine() const
+int LogView::selectedLine() const
 {
 	return m_selectedLine;
 }
 
-void LogView::setSelectedLine(rsint selectedLine)
+void LogView::setSelectedLine(int selectedLine)
 {
 	m_selectedLine = selectedLine;
 	updateActionEditCopy(isActivated());
 	updateCoordStatusBar(isActivated());
 }
 
-QString LogView::getString(rsint index) const
+QString LogView::getString(int index) const
 {
 	QString result;
 
@@ -567,10 +567,10 @@ void LogView::updateScrollBars()
 	m_SM_Y.position = (std::min)(m_SM_Y.position, m_SM_Y.posMax);
 
 	m_SM_X.pageSize = (m_clientRect.width() - m_logStyle->borders.horzBorder) / m_charWidth;
-	m_SM_X.posMax   = (std::max)(0, rsint(m_strings.maxLegth()) - m_SM_X.pageSize);
+	m_SM_X.posMax   = (std::max)(0, int(m_strings.maxLegth()) - m_SM_X.pageSize);
 	m_SM_X.position = (std::min)(m_SM_X.position, m_SM_X.posMax);
 
-	rsint mul = m_SM_Y.pageSize;
+	int mul = m_SM_Y.pageSize;
 	if (mul * m_lineHeight < m_clientRect.height())
 	{
 		mul++;
@@ -588,7 +588,7 @@ void LogView::updateScrollBars()
 	getHorzScrollBar().setValue   (m_SM_X.position);
 }
 
-bool LogView::scrollVertically(rsint inc)
+bool LogView::scrollVertically(int inc)
 {
 	if (!m_SM_Y.applyInc(inc))
 	{
@@ -601,7 +601,7 @@ bool LogView::scrollVertically(rsint inc)
 	return true;
 }
 
-bool LogView::scrollHorizontally(rsint inc)
+bool LogView::scrollHorizontally(int inc)
 {
 	if (!m_SM_X.applyInc(inc))
 	{
@@ -633,7 +633,7 @@ void LogView::onHorzScrollBarValueChanged(int value)
 	scrollHorizontally(value - m_SM_X.position);
 }
 
-bool LogView::makeLineVisible(rsint index)
+bool LogView::makeLineVisible(int index)
 {
 	bool res = false;
 
@@ -642,10 +642,10 @@ bool LogView::makeLineVisible(rsint index)
 		return res;
 	}
 
-	rsint inc;
+	int inc;
 	if (m_SM_Y.position < index)
 	{
-		rsint lastVisible = m_SM_Y.position + m_clientRect.height() / m_lineHeight - 1;
+		int lastVisible = m_SM_Y.position + m_clientRect.height() / m_lineHeight - 1;
 		inc = index - lastVisible;
 	}
 	else
@@ -663,13 +663,13 @@ bool LogView::makeLineVisible(rsint index)
 	return res;
 }
 
-bool LogView::isFullyVisible(rsint index) const
+bool LogView::isFullyVisible(int index) const
 {
-	rsint lastVisible = m_SM_Y.position + m_clientRect.height() / m_lineHeight - 1;
+	int lastVisible = m_SM_Y.position + m_clientRect.height() / m_lineHeight - 1;
 	return index <= lastVisible && index >= m_SM_Y.position;
 }
 
-QRect LogView::getLineRect(rsint index) const
+QRect LogView::getLineRect(int index) const
 {
 	QRect rect(m_clientRect);
 	rect.setTop((index - m_SM_Y.position) * m_lineHeight);
@@ -677,7 +677,7 @@ QRect LogView::getLineRect(rsint index) const
 	return rect;
 }
 
-void LogView::repaintLine(rsint index)
+void LogView::repaintLine(int index)
 {
 	if (m_SM_Y.isVisible(index))
 	{
@@ -757,11 +757,11 @@ bool LogView::canCopy() const
 	return selectedLine() != -1;
 }
 
-rsint LogView::find(bool searchDown)
+int LogView::find(bool searchDown)
 {
-	rsint result = -1;
+	int result = -1;
 
-	rsint startPos = selectedLine() == -1
+	int startPos = selectedLine() == -1
 		? searchDown
 			? 0
 			: m_strings.count()
@@ -769,7 +769,7 @@ rsint LogView::find(bool searchDown)
 			? selectedLine() + 1
 			: selectedLine() - 1;
 
-	rsint checkCounter = 0;
+	int checkCounter = 0;
 	LogCtrlFindInList findInList(checkCounter, m_findSettings.what, m_findSettings.matchCase, m_findSettings.matchWholeWord);
 
 	bool found = searchDown
@@ -843,17 +843,17 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 		{
 			painter.setFont(m_font);
 
-			rsint firstLine = (std::max)(0, m_SM_Y.position + pEvent->rect().top() / m_lineHeight);
-			rsint mul = pEvent->rect().bottom() / m_lineHeight;
+			int firstLine = (std::max)(0, m_SM_Y.position + pEvent->rect().top() / m_lineHeight);
+			int mul = pEvent->rect().bottom() / m_lineHeight;
 			if (pEvent->rect().bottom() > mul * m_lineHeight)
 			{
 				mul++;
 			}
-			rsint lastLine = (std::min)(m_strings.count() - 1, m_SM_Y.position + mul - 1);
+			int lastLine = (std::min)(m_strings.count() - 1, m_SM_Y.position + mul - 1);
 
 			LogColorPair colors;
 
-			rsint y = m_lineHeight * (-m_SM_Y.position + firstLine - 1);
+			int y = m_lineHeight * (-m_SM_Y.position + firstLine - 1);
 			QRect rect(m_charWidth * (-m_SM_X.position), y, pEvent->rect().width() + m_charWidth * m_SM_X.position, m_lineHeight);
 			QRect textRect(
 				rect.left  () + m_logStyle->borders.horzBorder,
@@ -863,7 +863,7 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 			);
 
 			StringList::const_iterator it = m_strings.findString(firstLine);
-			for (rsint i = firstLine; i < lastLine + 1; i++)
+			for (int i = firstLine; i < lastLine + 1; i++)
 			{
 				if (i != selectedLine() || m_focusOnly)
 				{
