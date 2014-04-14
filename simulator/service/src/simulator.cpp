@@ -746,7 +746,7 @@ void RDOThreadRunTime::writeResultsInfo()
 
 	rdo::Time time;
 
-	ruint64 timeStop = time.local();
+	uint64_t timeStop = time.local();
 	timeStop /= 1000000;
 
 	double delay = -1;

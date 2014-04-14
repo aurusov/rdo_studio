@@ -68,10 +68,10 @@ RDOValue::RDOValue(std::size_t value)
 }
 
 #ifdef ARCHITECTURE_AMD64
-RDOValue::RDOValue(ruint64 value)
+RDOValue::RDOValue(uint64_t value)
 	: m_pType(g_int)
 {
-	__get<ruint64>() = value;
+	__get<uint64_t>() = value;
 }
 #endif // ARCHITECTURES_AMD64
 

@@ -20,13 +20,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-//! Целый беззнаковый 64-х битный тип
-#ifdef COMPILER_VISUAL_STUDIO
-	typedef  unsigned long long int  ruint64;
-#elif defined COMPILER_GCC
-	typedef  uint64_t                ruint64;
-#endif
-
 //! Тип байта
 typedef  unsigned char               rbyte;
 

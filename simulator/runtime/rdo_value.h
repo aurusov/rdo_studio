@@ -35,7 +35,7 @@ public:
 	RDOValue(int value);
 	RDOValue(std::size_t value);
 #ifdef ARCHITECTURE_AMD64
-	RDOValue(ruint64 value);
+	RDOValue(uint64_t value);
 #endif // ARCHITECTURES_AMD64
 	RDOValue(double value);
 	RDOValue(bool value);

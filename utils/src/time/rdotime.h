@@ -11,6 +11,7 @@
 #define _UTILS_RDOTIME_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <cstdint>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
@@ -20,7 +21,7 @@ namespace rdo {
 class Time
 {
 public:
-	typedef ruint64 Value;
+	typedef uint64_t Value;
 
 	Time();
 	Time(CREF(Value) value);

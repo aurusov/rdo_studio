@@ -24,7 +24,7 @@
 // --------------------------------------------------------------------------------
 
 const std::string s_testFileName("test_file");
-const ruint64 s_createTestLocalTime = 129557633912040000;
+const uint64_t s_createTestLocalTime = 129557633912040000;
 
 BOOST_AUTO_TEST_SUITE(RDOCommon_Test)
 

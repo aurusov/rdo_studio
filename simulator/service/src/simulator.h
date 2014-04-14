@@ -151,7 +151,7 @@ public:
 private:
 	PTR(rdo::service::simulation::RDOThreadSimulator) m_pSimulator;
 	bool m_runtimeError;
-	ruint64 m_timeStart;
+	uint64_t m_timeStart;
 
 	RDOThreadRunTime();
 	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete

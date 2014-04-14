@@ -29,7 +29,7 @@
 // --------------------------------------------------------------------------------
 
 #if defined( ARCHITECTURE_AMD64 )
-typedef ruint64 ruint_type;
+typedef uint64_t ruint_type;
 #elif defined( ARCHITECTURE_X86 )
 typedef std::size_t ruint_type;
 #elif defined( ARCHITECTURE_ARM )
