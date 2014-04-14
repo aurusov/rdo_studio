@@ -29,7 +29,7 @@ inline void RDOSimulator::setMustContinueOpr(CREF(LPIBaseOperation) pOperation)
 	m_pOprMustContinue = pOperation;
 }
 
-inline ruint RDOSimulator::getSizeofSim() const
+inline std::size_t RDOSimulator::getSizeofSim() const
 {
 	return m_sizeofSim;
 }

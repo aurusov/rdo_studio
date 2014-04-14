@@ -50,7 +50,7 @@ void Log::catchDoubleClick(int position, int line)
 			++it;
 		}
 	}
-	if (it != m_lines.end() && (*it)->getLineNumber() != ruint(~0))
+	if (it != m_lines.end() && (*it)->getLineNumber() != std::size_t(~0))
 	{
 		setSelectLine(line, *it);
 	}
@@ -99,22 +99,22 @@ void Log::gotoPrev()
 	{
 		++it;
 	}
-	while (it != m_lines.begin() && (*it)->getLineNumber() == ruint(~0))
+	while (it != m_lines.begin() && (*it)->getLineNumber() == std::size_t(~0))
 	{
 		--it;
 		--m_currentLine;
 	}
-	if (it == m_lines.begin() && (*it)->getLineNumber() == ruint(~0))
+	if (it == m_lines.begin() && (*it)->getLineNumber() == std::size_t(~0))
 	{
 		it = m_lines.end();
 		m_currentLine = m_lines.size();
-		while (it == m_lines.end() || (it != m_lines.begin() && (*it)->getLineNumber() == ruint(~0)))
+		while (it == m_lines.end() || (it != m_lines.begin() && (*it)->getLineNumber() == std::size_t(~0)))
 		{
 			--it;
 			--m_currentLine;
 		}
 	}
-	if (it != m_lines.end() && (*it)->getLineNumber() != ruint(~0))
+	if (it != m_lines.end() && (*it)->getLineNumber() != std::size_t(~0))
 	{
 		setSelectLine(m_currentLine, *it, true);
 	}
@@ -167,7 +167,7 @@ void Log::gotoNext()
 	{
 		++it;
 	}
-	while (it != m_lines.end() && (*it)->getLineNumber() == ruint(~0))
+	while (it != m_lines.end() && (*it)->getLineNumber() == std::size_t(~0))
 	{
 		++it;
 		++m_currentLine;
@@ -176,13 +176,13 @@ void Log::gotoNext()
 	{
 		it = m_lines.begin();
 		m_currentLine = 0;
-		while (it != m_lines.end() && (*it)->getLineNumber() == ruint(~0))
+		while (it != m_lines.end() && (*it)->getLineNumber() == std::size_t(~0))
 		{
 			++it;
 			++m_currentLine;
 		}
 	}
-	if (it != m_lines.end() && (*it)->getLineNumber() != ruint(~0))
+	if (it != m_lines.end() && (*it)->getLineNumber() != std::size_t(~0))
 	{
 		setSelectLine(m_currentLine, *it, true);
 	}
@@ -218,7 +218,7 @@ void Log::appendLine(PTR(LogEditLineInfo) pLine)
 
 void Log::setSelectLine(int line, CPTR(LogEditLineInfo) pLineInfo, bool useScroll)
 {
-	if (pLineInfo->getLineNumber() != ruint(~0))
+	if (pLineInfo->getLineNumber() != std::size_t(~0))
 	{
 		if (sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine) != line)
 		{

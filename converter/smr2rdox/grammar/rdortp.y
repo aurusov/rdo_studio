@@ -292,8 +292,8 @@ rtp_header
 		{
 			LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(CONVERTER, pTypeName->src_info(), $4 != 0);
 			ASSERT(pResourceType);
-			ruint t_ind   = 0;
-			ruint col_par = _rtp_prnt->getParams().size();
+			std::size_t t_ind = 0;
+			std::size_t col_par = _rtp_prnt->getParams().size();
 			while (t_ind < col_par)
 			{
 				pResourceType->addParam(_rtp_prnt->getParams()[t_ind]);

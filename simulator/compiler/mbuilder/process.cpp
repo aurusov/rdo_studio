@@ -58,7 +58,7 @@ RDOResType BlockForQueue::createType(CREF(std::string) rtp_name, CREF(parser::RD
 	const std::string rtp_param_name = rdo::runtime::RDOPROCQueue::getQueueParamName();
 	// значение длины очереди по умолчанию
 	parser::LPRDOValue pDefaultValue = rdo::Factory<parser::RDOValue>::create(
-		rdo::explicit_value<ruint>(rdo::runtime::RDOPROCQueue::getDefaultValue()),
+		rdo::explicit_value<std::size_t>(rdo::runtime::RDOPROCQueue::getDefaultValue()),
 		info
 	);
 	ASSERT(pDefaultValue);

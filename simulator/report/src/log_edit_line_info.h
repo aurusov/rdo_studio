@@ -23,7 +23,7 @@ namespace report {
 class LogEditLineInfo : public FileMessage
 {
 public:
-	LogEditLineInfo(CREF(std::string) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type);
+	LogEditLineInfo(CREF(std::string) text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type);
 	explicit LogEditLineInfo(CREF(FileMessage) message);
 	explicit LogEditLineInfo(CREF(std::string) message);
 	virtual ~LogEditLineInfo();
@@ -31,11 +31,11 @@ public:
 	virtual std::string getMessage() const;
 	bool isSimpleTextMessage() const;
 
-	ruint getPosInLog() const;
+	std::size_t getPosInLog() const;
 	void setPosInLog(int posInLog);
 
 private:
-	ruint m_posInLog;
+	std::size_t m_posInLog;
 	bool m_simpleTextMessage;
 };
 

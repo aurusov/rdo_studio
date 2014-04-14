@@ -123,11 +123,11 @@ public:
 	bool isCurrentDPTSearch();
 	bool isCurrentDPTPrior();
 
-	ruint getRTP_id     () const { return m_allRTPResType.size()  + 1; }
-	ruint getRSS_id     () const { return m_allRSSResource.size() + 0; }
-	ruint getPAT_id     () const { return m_allPATPattern.size()  + 0; }
-	ruint getPMD_id     ()       { return m_resultGeneratorID.get();   }
-	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
+	std::size_t getRTP_id() const { return m_allRTPResType.size()  + 1; }
+	std::size_t getRSS_id() const { return m_allRSSResource.size() + 0; }
+	std::size_t getPAT_id() const { return m_allPATPattern.size()  + 0; }
+	std::size_t getPMD_id() { return m_resultGeneratorID.get(); }
+	std::size_t getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
 
 	std::string getModelStructure();
 	std::string getChanges() const;
@@ -201,8 +201,8 @@ public:
 	LPContext      context     () const;
 
 	static rdoModelObjects::RDOFileType getFileToParse();
-	static ruint lexer_loc_line();
-	static ruint lexer_loc_pos ();
+	static std::size_t lexer_loc_line();
+	static std::size_t lexer_loc_pos();
 	static std::string lexer_text();
 	static LPRDOParser s_parser();
 

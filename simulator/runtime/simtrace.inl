@@ -75,18 +75,18 @@ inline void RDOSimulatorTrace::onNewTimeNow()
 	}
 }
 
-inline void RDOSimulatorTrace::memory_insert(ruint mem)
+inline void RDOSimulatorTrace::memory_insert(std::size_t mem)
 {
 	memory_current += mem;
 	if (memory_current > memory_max) memory_max = memory_current;
 }
 
-inline void RDOSimulatorTrace::memory_remove(ruint mem)
+inline void RDOSimulatorTrace::memory_remove(std::size_t mem)
 {
 	memory_current -= mem;
 }
 
-inline ruint RDOSimulatorTrace::memory_get() const
+inline std::size_t RDOSimulatorTrace::memory_get() const
 {
 	return memory_max;
 }

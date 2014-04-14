@@ -99,7 +99,7 @@ PTR(RDOLexer) RDOParserRDOItem::getLexer(CREF(LPRDOParser) pParser, PTR(std::ist
 	return new RDOLexer(pParser, in_stream, out_stream);
 }
 
-ruint RDOParserRDOItem::lexer_loc_line()
+std::size_t RDOParserRDOItem::lexer_loc_line()
 {
 	if (m_pLexer)
 	{
@@ -107,11 +107,11 @@ ruint RDOParserRDOItem::lexer_loc_line()
 	}
 	else
 	{
-		return ruint(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
+		return std::size_t(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
 	}
 }
 
-ruint RDOParserRDOItem::lexer_loc_pos()
+std::size_t RDOParserRDOItem::lexer_loc_pos()
 {
 	return m_pLexer && m_pLexer->m_lploc ? m_pLexer->m_lploc->m_first_pos : 0;
 }

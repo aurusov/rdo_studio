@@ -25,7 +25,7 @@ inline RDOPROCQueue::RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_
 	: RDOPROCBlockForQueue(process, From_Par)
 {}
 
-inline ruint RDOPROCQueue::getDefaultValue()
+inline std::size_t RDOPROCQueue::getDefaultValue()
 {
 	return 0;
 }
@@ -42,7 +42,7 @@ inline RDOPROCDepart::RDOPROCDepart(LPIPROCProcess process, parser_for_Queue Fro
 	: RDOPROCBlockForQueue(process, From_Par)
 {}
 
-inline ruint RDOPROCDepart::getDefaultValue()
+inline std::size_t RDOPROCDepart::getDefaultValue()
 {
 	return 0;
 }

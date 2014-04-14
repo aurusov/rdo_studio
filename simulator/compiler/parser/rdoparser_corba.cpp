@@ -35,7 +35,7 @@ void print_RTP(REF(RDOCorba::GetRTP_var) my_rtpList)
 	f1 = fopen(file1, "w");
 #pragma warning(default: 4996)
 
-	for (ruint i = 0; i < my_rtpList->length(); i++)
+	for (std::size_t i = 0; i < my_rtpList->length(); i++)
 	{
 		fprintf(f1, "\nИнформация о типе ресурса №%d:\n", i+1);
 		fprintf(f1, "   Имя типа ресурса №%d: %s \n", i+1, my_rtpList[i].m_name);
@@ -45,7 +45,7 @@ void print_RTP(REF(RDOCorba::GetRTP_var) my_rtpList)
 		else
 			fprintf(f1, "   Вид типа ресурса: tr_temporary\n");
 			
-		for (ruint j = 0; j != my_rtpList[i].m_param_count; j++)
+		for (std::size_t j = 0; j != my_rtpList[i].m_param_count; j++)
 		{
 			fprintf(f1, "\n   Информация о параметре №%d:\n", j+1);
 			fprintf(f1, "      Имя параметра:  %s \n", my_rtpList[i].m_param[j].m_name);
@@ -112,12 +112,12 @@ void print_RSS(REF(RDOCorba::GetRSS_var) my_rssList)
 	f2 = fopen(file2, "w");
 #pragma warning(default: 4996)
 	
-	for (ruint i = 0; i < my_rssList->length(); i++)
+	for (std::size_t i = 0; i < my_rssList->length(); i++)
 	{
 		fprintf(f2, "\nИнформация о ресурсе №%d:\n\n", i+1);
 		fprintf(f2, "Имя ресурса: %s/ Тип ресурса: %s\n", my_rssList[i].m_name, my_rssList[i].m_type);
 
-		for (ruint j = 0; j != my_rssList[i].m_param_count; j++)
+		for (std::size_t j = 0; j != my_rssList[i].m_param_count; j++)
 		{
 			switch (my_rssList[i].m_param[j].m_type)
 			{
@@ -248,12 +248,12 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			//! Получили список всех описанных типов ресурсов
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	
-			for (ruint i = 0; i < my_rtpList->length(); i++)
+			for (std::size_t i = 0; i < my_rtpList->length(); i++)
 			{
 				rdo::compiler::mbuilder::RDOResType rtp(my_rtpList[i].m_name.in());
 
 				//! Наполняем его параметрами
-				for (ruint j = 0; j != my_rtpList[i].m_param_count; j++)
+				for (std::size_t j = 0; j != my_rtpList[i].m_param_count; j++)
 				{
 					switch (my_rtpList[i].m_param[j].m_type)
 					{
@@ -365,7 +365,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			//! Переписали имеющиеся ресурсы в rssList
 			rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 
-			for (ruint i = 0; i < my_rssList->length(); i++)
+			for (std::size_t i = 0; i < my_rssList->length(); i++)
 			{
 				//! Нашли тип ресурса по известному имени и создали ресурс указанного типа
 				rdo::compiler::mbuilder::RDOResType _rtp = rtpList[my_rssList[i].m_type.in()];
@@ -373,7 +373,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 
 				//! rdo::compiler::mbuilder::RDOResource::Params::const_iterator it_param = rss.begin();
 
-				for (ruint j = 0; j != my_rssList[i].m_param_count; j++)
+				for (std::size_t j = 0; j != my_rssList[i].m_param_count; j++)
 				{
 					//! Записываем начальные значения параметров ресурса
 					switch (my_rssList[i].m_param[j].m_type)
@@ -450,14 +450,14 @@ void RDOParserCorbaRSS::parse(CREF(LPRDOParser) pParser)
 	//! Тут надо запросить все ресурсы у парного РДО
 
 	//! Количество полученных ресурсов
-	ruint rss_count = 1;
+	const std::size_t rss_count = 1;
 
 	//! Получили список всех типов ресурсов
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	//! Получили список всех ресурсов
 	rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 
-	for (ruint i = 0; i < rss_count; i++)
+	for (std::size_t i = 0; i < rss_count; i++)
 	{
 		//! Создали новый ресурс
 		rdo::compiler::mbuilder::RDOResource rss(rtpList["Парикмахеры"], "MyRSS1");

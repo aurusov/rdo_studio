@@ -29,7 +29,7 @@ public:
 	{
 		TID_REPOSITORY
 	};
-	virtual void sendMessage(ThreadID threadID, ruint messageID, PTR(void) pParam) = 0;
+	virtual void sendMessage(ThreadID threadID, std::size_t messageID, PTR(void) pParam) = 0;
 
 protected:
 	IThreadProxy()

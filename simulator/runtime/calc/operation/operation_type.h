@@ -34,7 +34,7 @@ public:
 	};
 
 	template <Type>
-	static REF(ruint) getCalcCounter();
+	static REF(std::size_t) getCalcCounter();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

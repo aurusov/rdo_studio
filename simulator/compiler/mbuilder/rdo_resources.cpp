@@ -82,7 +82,7 @@ RDOResType::RDOResType(CREF(std::string) name, Type type)
 	: m_name (name     )
 	, m_exist(false    )
 	, m_type (type     )
-	, m_id   (ruint(~0))
+	, m_id   (std::size_t(~0))
 {}
 
 bool RDOResType::ParamList::append(REF(Param) param)
@@ -259,7 +259,7 @@ RDOResource::RDOResource(CREF(parser::LPRDORSSResource) rss)
 {
 	if (m_rtp.m_params.size() == rss->params().size())
 	{
-		ruint index = 0;
+		std::size_t index = 0;
 		for (const auto& param: m_rtp.m_params)
 		{
 			m_params[param.name()] = rss->params()[index].param();

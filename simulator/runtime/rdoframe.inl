@@ -118,7 +118,7 @@ inline void RDOFRMSprite::RDOFRMColor::setType(ColorType type)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMSprite::RDOFRMRulet
 // --------------------------------------------------------------------------------
-inline ruint RDOFRMSprite::RDOFRMRulet::getIndex() const
+inline std::size_t RDOFRMSprite::RDOFRMRulet::getIndex() const
 {
 	return m_index;
 }
@@ -133,7 +133,7 @@ inline CREF(RDOFRMSprite::LPRDOFRMPosition) RDOFRMSprite::RDOFRMRulet::getY() co
 	return m_pY;
 }
 
-inline RDOFRMSprite::RDOFRMRulet::RDOFRMRulet(CREF(RDOSrcInfo) src_info, ruint index, CREF(LPRDOFRMPosition) pX, CREF(LPRDOFRMPosition) pY)
+inline RDOFRMSprite::RDOFRMRulet::RDOFRMRulet(CREF(RDOSrcInfo) src_info, std::size_t index, CREF(LPRDOFRMPosition) pX, CREF(LPRDOFRMPosition) pY)
 	: m_index(index)
 	, m_pX   (pX   )
 	, m_pY   (pY   )
@@ -165,19 +165,19 @@ inline void RDOFRMSprite::setLastXY(double x, double y)
 	m_lastY = y;
 }
 
-inline int RDOFRMSprite::getRuletX(CREF(LPRDORuntime) pRuntime, ruint ruletID) const
+inline int RDOFRMSprite::getRuletX(CREF(LPRDORuntime) pRuntime, std::size_t ruletID) const
 {
 	LPRDOFRMRulet pRulet = findRulet(ruletID);
 	return pRulet ? pRulet->getX()->getCalc()->calcValue(pRuntime).getInt() : 0;
 }
 
-inline int RDOFRMSprite::getRuletY(CREF(LPRDORuntime) pRuntime, ruint ruletID) const
+inline int RDOFRMSprite::getRuletY(CREF(LPRDORuntime) pRuntime, std::size_t ruletID) const
 {
 	LPRDOFRMRulet pRulet = findRulet(ruletID);
 	return pRulet ? pRulet->getY()->getCalc()->calcValue(pRuntime).getInt() : 0;
 }
 
-inline RDOFRMSprite::LPRDOFRMRulet RDOFRMSprite::findRulet(ruint ruletID) const
+inline RDOFRMSprite::LPRDOFRMRulet RDOFRMSprite::findRulet(std::size_t ruletID) const
 {
 	RuletList::const_iterator it = m_ruletList.find(ruletID);
 	return it != m_ruletList.end() ? it->second : LPRDOFRMRulet(NULL);

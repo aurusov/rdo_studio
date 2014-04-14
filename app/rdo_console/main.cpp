@@ -44,7 +44,7 @@ void process_event(PTR(rdo::console_controller) pAppController, REF(event_contai
 
 int main(int argc, PTR(char) argv[])
 {
-	ruint exitCode = TERMINATION_NORMAL;
+	std::size_t exitCode = TERMINATION_NORMAL;
 
 	rdo::locale::init();
 
@@ -224,7 +224,7 @@ void process_event(PTR(rdo::console_controller) pAppController, REF(event_contai
 			{
 			case rdo::event::key:
 				{
-				ruint code = static_cast<rdo::key_event*>(it->second.get())->getKeyCode();
+				std::size_t code = static_cast<rdo::key_event*>(it->second.get())->getKeyCode();
 					rdo::key_event::states state = static_cast<rdo::key_event*>(it->second.get())->getState();
 
 					rdo::console_controller::RDOTreadMessage message_type;

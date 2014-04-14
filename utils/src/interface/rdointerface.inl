@@ -137,7 +137,7 @@ inline UnknownPointer::operator bool() const
 	return m_pUnknown != NULL;
 }
 
-inline UnknownPointer UnknownPointer::query_cast(ruint id)
+inline UnknownPointer UnknownPointer::query_cast(std::size_t id)
 {
 	return m_pUnknown ? m_pUnknown->QueryInterface(id) : UnknownPointer();
 }
@@ -155,7 +155,7 @@ inline UnknownPointer::operator Interface<I> ()
 	return query_cast<I>();
 }
 
-inline UnknownPointer UnknownPointer::query_cast(ruint id) const
+inline UnknownPointer UnknownPointer::query_cast(std::size_t id) const
 {
 	return m_pUnknown ? m_pUnknown->QueryInterface(id) : UnknownPointer();
 }
@@ -204,7 +204,7 @@ inline void IFactory<T>::Counter::Release()
 }
 
 template <class T>
-inline UnknownPointer IFactory<T>::Counter::QueryInterface(ruint id)
+inline UnknownPointer IFactory<T>::Counter::QueryInterface(std::size_t id)
 {
 	PTR(void) pInterface = m_pObject->QueryInterface(id);
 	return pInterface ? UnknownPointer(pInterface, this) : UnknownPointer();

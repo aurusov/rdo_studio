@@ -42,7 +42,7 @@ inline std::string RDOPROCBlockForSeize::getStateEnumBuzy()
 inline RDOPROCSeize::RDOPROCSeize(LPIPROCProcess process, std::vector<parser_for_Seize> From_Par)
 	: RDOPROCBlockForSeize(process, From_Par)
 {
-	static ruint g_index = 1;
+	static std::size_t g_index = 1;
 	index = g_index++;
 }
 
@@ -52,7 +52,7 @@ inline RDOPROCSeize::RDOPROCSeize(LPIPROCProcess process, std::vector<parser_for
 inline RDOPROCRelease::RDOPROCRelease(LPIPROCProcess process, std::vector<parser_for_Seize> From_Par)
 	: RDOPROCBlockForSeize(process, From_Par)
 {
-	static ruint g_index = 1;
+	static std::size_t g_index = 1;
 	index = g_index++;
 }
 

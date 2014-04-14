@@ -248,9 +248,9 @@ DECLARE_FACTORY(RDOFUNParams);
 public:
 	typedef std::vector<LPRDOFUNArithm> ParamList;
 
-	REF(RDOParserSrcInfo)    getFunseqName()       { return m_funseqName;        }
-	CREF(LPArithmContainer)  getParamList () const { return m_pArithmContainer ; }
-	rdo::runtime::LPRDOCalc  getCalc      (ruint paramID, CREF(LPTypeInfo) pType);
+	REF(RDOParserSrcInfo) getFunseqName() { return m_funseqName; }
+	CREF(LPArithmContainer) getParamList() const { return m_pArithmContainer ; }
+	rdo::runtime::LPRDOCalc getCalc(std::size_t paramID, CREF(LPTypeInfo) pType);
 
 	LPExpression createCallExpression(CREF(LPExpression) pFunction);
 	LPRDOFUNArithm createCall(CREF(std::string) funName);

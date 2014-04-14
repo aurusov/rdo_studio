@@ -35,7 +35,7 @@ inline bool stack<T>::empty() const
 }
 
 template<class T>
-inline ruint stack<T>::size() const
+inline std::size_t stack<T>::size() const
 {
 	return m_container.size();
 }

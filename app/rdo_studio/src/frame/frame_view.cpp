@@ -68,8 +68,8 @@ void Content::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapLis
 	}
 	if (!imageFound)
 	{
-		size.setWidth ((ruint)pFrame->m_size.m_width );
-		size.setHeight((ruint)pFrame->m_size.m_height);
+		size.setWidth((std::size_t)pFrame->m_size.m_width);
+		size.setHeight((std::size_t)pFrame->m_size.m_height);
 	}
 
 	QColor bgColor;
@@ -130,8 +130,8 @@ void Content::mousePressEvent(QMouseEvent* pEvent)
 	ASSERT(pEvent);
 	if (pEvent->button() == Qt::LeftButton)
 	{
-		ruint index = g_pModel->getFrameManager().findFrameIndex(this);
-		if (index != ruint(~0))
+		std::size_t index = g_pModel->getFrameManager().findFrameIndex(this);
+		if (index != std::size_t(~0))
 		{
 			g_pModel->getFrameManager().areaDown(index, pEvent->pos());
 		}
@@ -225,7 +225,7 @@ void Content::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui:
 		m_memDC.dc().setPen(QColor(g_pApp->getStyle()->style_frame.defaultColor));
 		m_memDC.dc().setBrush(m_bgColor);
 
-		const ruint pountListCount = 4;
+		const std::size_t pountListCount = 4;
 		QPoint pointList[pountListCount];
 		pointList[0].setX(0);
 		pointList[0].setY(0);
@@ -372,7 +372,7 @@ void Content::elementTriang(PTR(rdo::animation::TriangElement) pElement)
 {
 	ASSERT(pElement);
 
-	const ruint pountListCount = 3;
+	const std::size_t pountListCount = 3;
 	QPoint pointList[pountListCount];
 	pointList[0].setX((int)(pElement->m_point1.m_x));
 	pointList[0].setY((int)(pElement->m_point1.m_y));
@@ -566,8 +566,8 @@ View::View(QWidget* pParent)
 
 View::~View()
 {
-	ruint index = g_pModel->getFrameManager().findFrameIndex(this);
-	if (index != ruint(~0))
+	std::size_t index = g_pModel->getFrameManager().findFrameIndex(this);
+	if (index != std::size_t(~0))
 	{
 		g_pModel->getFrameManager().disconnectView(this);
 		g_pModel->getFrameManager().resetCurrentShowingFrame(index);
@@ -601,7 +601,7 @@ bool View::event(QEvent* pEvent)
 	if (pEvent->type() == QEvent::KeyPress || pEvent->type() == QEvent::ShortcutOverride)
 	{
 		QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
-		ruint scanCode = pKeyEvent->nativeVirtualKey();
+		std::size_t scanCode = pKeyEvent->nativeVirtualKey();
 		g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_DOWN, &scanCode);
 
 		if (pKeyEvent->key() == Qt::Key_F1)
@@ -616,7 +616,7 @@ bool View::event(QEvent* pEvent)
 	else if (pEvent->type() == QEvent::KeyRelease)
 	{
 		QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
-		ruint scanCode = pKeyEvent->nativeVirtualKey();
+		std::size_t scanCode = pKeyEvent->nativeVirtualKey();
 		g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_UP, &scanCode);
 		return true;
 	}

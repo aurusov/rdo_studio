@@ -65,12 +65,12 @@ public:
 	void inc_cnt_events();
 	void inc_cnt_choice_from();
 
-	ruint get_cnt_events();
-	ruint get_cnt_choice_from();
-	ruint get_cnt_calc_arithm() const;
-	ruint get_cnt_calc_logic()  const;
+	std::size_t get_cnt_events();
+	std::size_t get_cnt_choice_from();
+	std::size_t get_cnt_calc_arithm() const;
+	std::size_t get_cnt_calc_logic() const;
 
-	static ruint getMSec(CREF(boost::posix_time::ptime) ptime);
+	static std::size_t getMSec(CREF(boost::posix_time::ptime) ptime);
 
 protected:
 	RDOSimulatorBase();
@@ -132,17 +132,17 @@ private:
 
 	RunTimeMode  m_mode;
 
-	double       m_speed;
-	ruint        m_speed_range_max;
-	ruint        m_next_delay_count;
-	ruint        m_next_delay_current;
+	double m_speed;
+	std::size_t m_speed_range_max;
+	std::size_t m_next_delay_count;
+	std::size_t m_next_delay_current;
 
-	double       m_showRate;
-	double       m_msec_wait;
-	ruint        m_msec_prev;
+	double m_showRate;
+	double m_msec_wait;
+	std::size_t m_msec_prev;
 
-	ruint        m_cnt_events;
-	ruint        m_cnt_choice_from;
+	std::size_t m_cnt_events;
+	std::size_t m_cnt_choice_from;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

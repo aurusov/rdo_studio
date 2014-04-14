@@ -47,7 +47,7 @@ void RDOFuncTableCalc::addResultCalc(CREF(LPRDOCalcConst) pResult)
 
 RDOValue RDOFuncTableCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	ruint index = m_pArgument->calcValue(pRuntime).getUInt();
+	const std::size_t index = m_pArgument->calcValue(pRuntime).getUInt();
 	return m_pResultList[index]->calcValue(pRuntime);
 }
 
@@ -118,7 +118,7 @@ RDOValue RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcFuncParam
 // --------------------------------------------------------------------------------
-RDOCalcFuncParam::RDOCalcFuncParam(ruint paramID, CREF(RDOSrcInfo) src_info)
+RDOCalcFuncParam::RDOCalcFuncParam(std::size_t paramID, CREF(RDOSrcInfo) src_info)
 	: m_paramID(paramID)
 {
 	setSrcInfo(src_info);
@@ -132,7 +132,7 @@ RDOValue RDOCalcFuncParam::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetConst
 // --------------------------------------------------------------------------------
-RDOCalcGetConst::RDOCalcGetConst(ruint constantID)
+RDOCalcGetConst::RDOCalcGetConst(std::size_t constantID)
 	: m_constantID(constantID)
 {}
 
@@ -144,7 +144,7 @@ RDOValue RDOCalcGetConst::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSetConst
 // --------------------------------------------------------------------------------
-RDOCalcSetConst::RDOCalcSetConst(ruint constantID, CREF(LPRDOCalc) pCalc)
+RDOCalcSetConst::RDOCalcSetConst(std::size_t constantID, CREF(LPRDOCalc) pCalc)
 	: m_constantID(constantID)
 	, m_pCalc     (pCalc     )
 {

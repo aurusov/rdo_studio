@@ -48,13 +48,13 @@ public:
 };
 
 template <class T>
-struct GetParam         { static T      getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
+struct GetParam         { static T      getParam(CREF(LPRDORuntime) pRuntime, std::size_t paramNumber); };
 
 template <>
-struct GetParam<double> { static double getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
+struct GetParam<double> { static double getParam(CREF(LPRDORuntime) pRuntime, std::size_t paramNumber); };
 
 template <>
-struct GetParam<int>    { static int    getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
+struct GetParam<int>    { static int    getParam(CREF(LPRDORuntime) pRuntime, std::size_t paramNumber); };
 
 //! Функции из пространства имен std C++
 template <class F>

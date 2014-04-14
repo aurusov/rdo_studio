@@ -169,7 +169,7 @@ void Edit::catchCharAdded(int ch)
 	}
 }
 
-long Edit::sendEditorString(ruint msg, CREF(std::string) str) const
+long Edit::sendEditorString(std::size_t msg, CREF(std::string) str) const
 {
 	return super::sends(msg, str.length(), str.c_str());
 }
@@ -1029,7 +1029,7 @@ std::string Edit::saveAsRTF(int start, int end) const
 	std::wstring wstr = rdo::locale::convertToWStr(str);
 
 	i = start;
-	for (ruint chIndex = 0; chIndex < wstr.length(); ++chIndex)
+	for (std::size_t chIndex = 0; chIndex < wstr.length(); ++chIndex)
 	{
 		int styleID = sendEditor(SCI_GETSTYLEAT, i);
 		if (!style->styleUsing(styleID))
@@ -1069,7 +1069,7 @@ std::string Edit::saveAsRTF(int start, int end) const
 		}
 		else
 		{
-			saveStr += boost::str(boost::format("\\u%1%?") % + (ruint)ch);
+			saveStr += boost::str(boost::format("\\u%1%?") % + (std::size_t)ch);
 		}
 
 		prevCR = ch == L'\r';
@@ -1318,7 +1318,7 @@ void Edit::onSearchBookmarkNextPrev(
 		Group::List::const_iterator it = std::find(m_pGroup->begin(), m_pGroup->end(), this);
 		ASSERT(it != m_pGroup->end());
 
-		ruint thisBookmarkCount = 0;
+		std::size_t thisBookmarkCount = 0;
 		for (;;)
 		{
 			it = nextPrevGroup(it);
@@ -1661,7 +1661,7 @@ bool Edit::predicateOfGroup(CREF(this_predicate) fun) const
 		: fun(this);
 }
 
-ruint Edit::convertColor(CREF(QColor) color)
+std::size_t Edit::convertColor(CREF(QColor) color)
 {
 	return color.red() | color.green() << 8 | color.blue() << 16;
 }

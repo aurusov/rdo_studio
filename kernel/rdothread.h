@@ -62,7 +62,7 @@
 // -------------------- RDOThread
 // --------------------------------------------------------------------------------
 #ifdef RDO_MT
-typedef ruint (*RDOThreadFun)(PTR(void) pParam);
+typedef std::size_t (*RDOThreadFun)(PTR(void) pParam);
 #endif
 
 class RDOThread: public boost::noncopyable
@@ -275,7 +275,7 @@ public:
 	};
 
 	std::string getName() const { return thread_name; }
-	ruint getID() const { return thread_id; }
+	std::size_t getID() const { return thread_id; }
 #ifdef RDO_MT
 	bool isGUI() const { return thread_fun ? false : true; }
 	PTR(CEvent) getDestroyEvent() const { return thread_destroy; }
@@ -286,7 +286,7 @@ public:
 	public:
 		RDOThread* thread;
 		std::string name;
-		ruint index;
+		std::size_t index;
 	};
 
 	// POST: отправка сообщений без ожидания выполнения
@@ -341,7 +341,7 @@ protected:
 	// 2. Каждая треда имеет доступ к списку уведомлений (notifies), чтобы понять, а надо ли посылать сообщение треде.
 	// Второе еще можно сделать через дублирование: map< key = thread*, value = notifies > в каджой треде,
 	// а вот как добавить сообщение - не совсем понрятно.
-	static ruint threadFun(PTR(void) pParam);
+	static std::size_t threadFun(PTR(void) pParam);
 	const RDOThreadFun thread_fun;
 	PTR(CWinThread) thread_win;
 	CEvent proc_create; // Вызывается из процедуры треды, конструктор должен его дождаться
@@ -374,18 +374,18 @@ protected:
 	class BroadcastData {
 	public:
 		typedef std::vector<PTR(CEvent)> EventList;
-		EventList    events;
-		ruint        cnt;
-		PTR(HANDLE)  handles;
+		EventList events;
+		std::size_t cnt;
+		PTR(HANDLE) handles;
 
 		BroadcastData()
 			: cnt    (0   )
 			, handles(NULL)
 		{}
-		BroadcastData(ruint _cnt)
+		BroadcastData(std::size_t _cnt)
 			: cnt(_cnt)
 		{
-			for (ruint i = 0; i < cnt; i++ )
+			for (std::size_t i = 0; i < cnt; i++ )
 				events.push_back(new CEvent());
 			handles = new HANDLE[cnt];
 		}
@@ -400,7 +400,7 @@ protected:
 
 		void clear()
 		{
-			for (ruint i = 0; i < cnt; i++)
+			for (std::size_t i = 0; i < cnt; i++)
 				delete events[i];
 			delete[] handles;
 		}
@@ -411,7 +411,7 @@ protected:
 				events.resize(cnt * 2);
 				PTR(HANDLE) handles_backup = handles;
 				handles = new HANDLE[cnt * 2];
-				for (ruint i = 0; i < cnt; i++)
+				for (std::size_t i = 0; i < cnt; i++)
 				{
 					events.push_back(new CEvent());
 					handles[i] = handles_backup[i];
@@ -423,15 +423,15 @@ protected:
 			else
 			{
 				cnt = 10;
-				for (ruint i = 0; i < cnt; i++)
+				for (std::size_t i = 0; i < cnt; i++)
 					events.push_back(new CEvent());
 				handles = new HANDLE[cnt];
 			}
 		}
 	};
 	typedef std::vector<BroadcastData> BroadcastDataList;
-	BroadcastDataList  broadcast_data;
-	ruint              broadcast_cnt;
+	BroadcastDataList broadcast_data;
+	std::size_t broadcast_cnt;
 
 #endif
 

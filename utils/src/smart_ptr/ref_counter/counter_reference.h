@@ -28,7 +28,7 @@ public:
 	virtual ~counter_reference();
 
 private:
-	ruint m_intrusive_counter;
+	std::size_t m_intrusive_counter;
 };
 
 } // namespace rdo

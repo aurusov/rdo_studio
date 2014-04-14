@@ -224,7 +224,7 @@ void Function::setDefaultCalc(CREF(rdo::runtime::LPRDOCalc) pDefaultValue)
 namespace
 {
 
-LPExpression contextParameter(const LPRDOParam& param, ruint paramID, const RDOParserSrcInfo& srcInfo)
+LPExpression contextParameter(const LPRDOParam& param, std::size_t paramID, const RDOParserSrcInfo& srcInfo)
 {
 	return rdo::Factory<Expression>::create(
 		param->getTypeInfo(),

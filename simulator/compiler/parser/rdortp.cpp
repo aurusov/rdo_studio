@@ -28,8 +28,8 @@ rdo::runtime::LPRDOResource createSimpleResource(
 	const rdo::runtime::LPRDORuntime runtime,
 	const rdo::runtime::RDOResource::ParamList& params,
 	const rdo::runtime::LPIResourceType& type,
-	ruint resource_id,
-	ruint type_id,
+	std::size_t resource_id,
+	std::size_t type_id,
 	bool trace,
 	bool temporary)
 {
@@ -40,8 +40,8 @@ rdo::runtime::LPRDOPROCResource createProcessResource(
 	const rdo::runtime::LPRDORuntime runtime,
 	const rdo::runtime::RDOResource::ParamList& params,
 	const rdo::runtime::LPIResourceType& type,
-	ruint resource_id,
-	ruint type_id,
+	std::size_t resource_id,
+	std::size_t type_id,
 	bool trace,
 	bool temporary)
 {
@@ -52,8 +52,8 @@ rdo::runtime::LPRDOPROCTransact createProcessTransact(
 	const rdo::runtime::LPRDORuntime runtime,
 	const rdo::runtime::RDOResource::ParamList& params,
 	const rdo::runtime::LPIResourceType& type,
-	ruint resource_id,
-	ruint type_id,
+	std::size_t resource_id,
+	std::size_t type_id,
 	bool trace,
 	bool temporary)
 {
@@ -149,7 +149,7 @@ LPRDORTPParam RDORTPResType::findRTPParam(CREF(std::string) paramName) const
 	return it != m_params.end() ? *it : LPRDORTPParam();
 }
 
-ruint RDORTPResType::getRTPParamNumber(CREF(std::string) paramName) const
+std::size_t RDORTPResType::getRTPParamNumber(CREF(std::string) paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
 	return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
@@ -158,7 +158,7 @@ ruint RDORTPResType::getRTPParamNumber(CREF(std::string) paramName) const
 void RDORTPResType::writeModelStructure(std::ostream& stream) const
 {
 	stream << getNumber() << " " << name() << " " << getParams().size() << std::endl;
-	for (ruint i = 0; i < getParams().size(); i++)
+	for (std::size_t i = 0; i < getParams().size(); i++)
 	{
 		stream << "  " << (i+1) << " ";
 		getParams().at(i)->writeModelStructure(stream);
@@ -263,7 +263,7 @@ Context::FindResult RDORTPResType::onFindContext(const std::string& method, cons
 	{
 		const std::string paramName = params.identifier();
 
-		ruint parNumb = getRTPParamNumber(paramName);
+		const std::size_t parNumb = getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 		{
 			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Неизвестный параметр ресурса: %s", paramName.c_str()));
@@ -326,7 +326,7 @@ void RDORTPResType::setupRuntimeFactory()
 RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(CREF(LPRDOParser) pParser):
 	RDOParserObject(pParser)
 {
-	for (ruint i = 0; i < m_points.size(); i++)
+	for (std::size_t i = 0; i < m_points.size(); i++)
 	{
 //		double x = m_points[i]->getX();
 	}

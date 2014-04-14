@@ -227,8 +227,8 @@ BOOST_AUTO_TEST_CASE(MatrixTestSetItem)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	ruint ind  = 1;
-	ruint item = 48;
+	std::size_t ind = 1;
+	std::size_t item = 48;
 	rdo::runtime::RDOValue index(ind);
 	rdo::runtime::RDOValue value(item);
 	matrix.first->setItem(index, value);
@@ -261,7 +261,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestGetItem)
 {
 	Matrix matrix = createMatrix(Container()(1)(48)(3));
 
-	ruint ind = 1;
+	std::size_t ind = 1;
 	rdo::runtime::RDOValue index(ind);
 	rdo::runtime::RDOValue value(matrix.first->getItem(index));
 

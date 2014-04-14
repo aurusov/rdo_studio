@@ -19,7 +19,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- IDocUpdate::Position
 // --------------------------------------------------------------------------------
-IDocUpdate::Position::Position(ruint pos)
+IDocUpdate::Position::Position(std::size_t pos)
 	: m_position(pos)
 {}
 
@@ -27,24 +27,24 @@ IDocUpdate::Position::Position(CREF(Position) pos)
 	: m_position(pos.m_position)
 {}
 
-ruint IDocUpdate::Position::get() const
+std::size_t IDocUpdate::Position::get() const
 {
 	return m_position;
 }
 
 bool IDocUpdate::Position::begin() const
 {
-	return m_position == ruint(POSITION_BEGIN);
+	return m_position == std::size_t(POSITION_BEGIN);
 }
 
 bool IDocUpdate::Position::end() const
 {
-	return m_position == ruint(POSITION_END);
+	return m_position == std::size_t(POSITION_END);
 }
 
 bool IDocUpdate::Position::real() const
 {
-	return m_position != ruint(POSITION_BEGIN) && m_position != ruint(POSITION_END);
+	return m_position != std::size_t(POSITION_BEGIN) && m_position != std::size_t(POSITION_END);
 }
 
 void IDocUpdate::Position::operator+= (CREF(Position) pos)

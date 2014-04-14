@@ -87,7 +87,7 @@ bool File::splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem::
 boost::filesystem::path File::getTempFileName()
 {
 #ifdef COMPILER_VISUAL_STUDIO
-	const ruint BUFSIZE = 4096;
+	const std::size_t BUFSIZE = 4096;
 	char lpPathBuffer[BUFSIZE];
 
 	if (::GetTempPath(BUFSIZE, lpPathBuffer) == 0)

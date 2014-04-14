@@ -151,7 +151,7 @@ public:
 	{
 	DECLARE_FACTORY(RDOFRMRulet)
 	public:
-		ruint getIndex() const;
+		std::size_t getIndex() const;
 		CREF(LPRDOFRMPosition) getX() const;
 		CREF(LPRDOFRMPosition) getY() const;
 
@@ -159,12 +159,12 @@ public:
 		CREF(RDOSrcInfo) src_info() const;
 
 	private:
-		RDOFRMRulet(CREF(RDOSrcInfo) src_info, ruint index, CREF(LPRDOFRMPosition) pX, CREF(LPRDOFRMPosition) pY);
+		RDOFRMRulet(CREF(RDOSrcInfo) src_info, std::size_t index, CREF(LPRDOFRMPosition) pX, CREF(LPRDOFRMPosition) pY);
 		virtual ~RDOFRMRulet();
 
-		ruint             m_index;
-		LPRDOFRMPosition  m_pX;
-		LPRDOFRMPosition  m_pY;
+		std::size_t m_index;
+		LPRDOFRMPosition m_pX;
+		LPRDOFRMPosition m_pY;
 
 		DECLARE_ICalc;
 	};
@@ -181,9 +181,9 @@ public:
 	void setLastXY         (double x, double y);
 	void setLastXYWH       (double x, double y, double width, double height);
 
-	int getRuletX(CREF(LPRDORuntime) pRuntime, ruint ruletID) const;
-	int getRuletY(CREF(LPRDORuntime) pRuntime, ruint ruletID) const;
-	LPRDOFRMRulet findRulet(ruint ruletID) const;
+	int getRuletX(CREF(LPRDORuntime) pRuntime, std::size_t ruletID) const;
+	int getRuletY(CREF(LPRDORuntime) pRuntime, std::size_t ruletID) const;
+	LPRDOFRMRulet findRulet(std::size_t ruletID) const;
 
 protected:
 	RDOFRMSprite(CREF(RDOSrcInfo) srcInfo);
@@ -194,7 +194,7 @@ protected:
 	DECLARE_IRDOFRMItemGetBitmap;
 
 private:
-	typedef std::map<ruint, LPRDOFRMRulet>    RuletList;
+	typedef std::map<std::size_t, LPRDOFRMRulet> RuletList;
 	typedef std::list<LPIRDOFRMItemGetBitmap> GetBitmapList;
 
 	LPRDOCalc              m_pSpriteCalc;
@@ -629,8 +629,8 @@ private:
 
 	LPRDOFRMColor m_pBgColor;
 	std::string m_picFileName;
-	ruint m_width;
-	ruint m_height;
+	std::size_t m_width;
+	std::size_t m_height;
 
 	DECLARE_ICalc;
 };

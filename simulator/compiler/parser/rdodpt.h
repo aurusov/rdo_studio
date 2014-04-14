@@ -71,7 +71,7 @@ protected:
 	LPIActivity m_pActivity;
 
 private:
-	ruint           m_currParam;
+	std::size_t m_currParam;
 	LPRDOPATPattern m_pPattern;
 
 	DECLARE_IContextFind;
@@ -105,7 +105,7 @@ protected:
 	LPIActivity m_pActivity;
 
 private:
-	ruint           m_currParam;
+	std::size_t m_currParam;
 	LPRDOPATPattern m_pPattern;
 
 	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;

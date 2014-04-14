@@ -43,7 +43,7 @@ IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(CREF(LPRDORuntime) pRun
 	}
 	pRuntime->onEraseRes(transact->getTraceID(), NULL);
 	m_transacts.erase(m_transacts.begin());
-	ruint termNow = pRuntime->getCurrentTerm();
+	std::size_t termNow = pRuntime->getCurrentTerm();
 
 	++m_terminatedTransactCount;
 

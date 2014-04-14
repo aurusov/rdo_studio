@@ -26,12 +26,12 @@ namespace rdo
 		MemDCBase::~MemDCBase()
 		{}
 
-		ruint MemDCBase::width() const
+		std::size_t MemDCBase::width() const
 		{
 			return m_width;
 		}
 
-		ruint MemDCBase::height() const
+		std::size_t MemDCBase::height() const
 		{
 			return m_height;
 		}

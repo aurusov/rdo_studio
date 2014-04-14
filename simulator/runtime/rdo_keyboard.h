@@ -38,7 +38,7 @@ private:
 
 	bool m_shift;
 	bool m_control;
-	ruint m_scan_code;
+	std::size_t m_scan_code;
 
 	virtual bool choiceFrom(CREF(LPRDORuntime) pRuntime);
 

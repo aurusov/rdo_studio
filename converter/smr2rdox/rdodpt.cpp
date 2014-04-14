@@ -162,7 +162,7 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 	{
 		LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
 		Converter::s_converter()->error().push_only(param_pos, rdo::format("Указаны не все параметра образца '%s':", m_pPattern->src_text().c_str()));
-		for (ruint i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
+		for (std::size_t i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
 		{
 			pPatternParam = m_pPattern->m_paramList.at(i);
 			Converter::s_converter()->error().push_only(pPatternParam->src_info(), rdo::format("Ожидаемый параметр '%s' имеет тип '%s'", pPatternParam->name().c_str(), pPatternParam->getType()->src_text().c_str()));

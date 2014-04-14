@@ -70,7 +70,7 @@ RDOValue::RDOValue(CREF(rdo::explicit_value<int>) value, CREF(RDOParserSrcInfo) 
 	m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(src_info);
 }
 
-RDOValue::RDOValue(CREF(rdo::explicit_value<ruint>) value, CREF(RDOParserSrcInfo) src_info)
+RDOValue::RDOValue(CREF(rdo::explicit_value<std::size_t>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {

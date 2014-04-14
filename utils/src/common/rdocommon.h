@@ -59,7 +59,7 @@ namespace rdo {
 	//! \brief    Вектор
 	//! \details  Потомок от std::vector, с парой удобных методов. Пример:
 	//! \code
-	//! rdo::vector<ruint> container;
+	//! rdo::vector<std::size_t> container;
 	//! container(1)(3)(5)(2);        // Размещает в контейнере 4-ре элемента
 	//! \endcode
 	template <class T>

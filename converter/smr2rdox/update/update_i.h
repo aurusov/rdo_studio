@@ -31,14 +31,14 @@ public:
 	public:
 		enum
 		{
-			POSITION_BEGIN = static_cast<ruint>(~0),
-			POSITION_END = static_cast<ruint>(~1)
+			POSITION_BEGIN = static_cast<std::size_t>(~0),
+			POSITION_END = static_cast<std::size_t>(~1)
 		};
 
-		Position(ruint pos);
+		Position(std::size_t pos);
 		Position(CREF(Position) pos);
 
-		ruint get() const;
+		std::size_t get() const;
 
 		bool begin() const;
 		bool end() const;
@@ -56,19 +56,19 @@ public:
 		bool operator!=(CREF(Position) pos) const;
 
 	private:
-		ruint m_position;
+		std::size_t m_position;
 	};
 
-	virtual void apply (REF(LPIDocument) pDocument) const                             = 0;
-	virtual void insert(IDocument::Type type, CREF(Position) to,   ruint size)        = 0;
+	virtual void apply(REF(LPIDocument) pDocument) const                              = 0;
+	virtual void insert(IDocument::Type type, CREF(Position) to,   std::size_t size)  = 0;
 	virtual void remove(IDocument::Type type, CREF(Position) from, CREF(Position) to) = 0;
-	virtual void dump  (REF(LPIDocument) pDocument) const                             = 0;
+	virtual void dump(REF(LPIDocument) pDocument) const                               = 0;
 };
 #define DECLARE_IDocUpdate                                                     \
-	void apply (REF(LPIDocument) pDocument) const;                             \
-	void insert(IDocument::Type type, CREF(Position) to, ruint size);          \
+	void apply(REF(LPIDocument) pDocument) const;                              \
+	void insert(IDocument::Type type, CREF(Position) to, std::size_t size);    \
 	void remove(IDocument::Type type, CREF(Position) from, CREF(Position) to); \
-	void dump  (REF(LPIDocument) pDocument) const;
+	void dump(REF(LPIDocument) pDocument) const;
 
 PREDECLARE_POINTER(DocUpdate);
 class DocUpdate

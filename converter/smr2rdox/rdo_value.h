@@ -42,7 +42,7 @@ public:
 
 private:
 	explicit RDOValue(CREF(int) value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(ruint) value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(std::size_t) value, CREF(RDOParserSrcInfo) src_info);
 	explicit RDOValue(CREF(double) value, CREF(RDOParserSrcInfo) src_info);
 	explicit RDOValue(CREF(std::string) value, CREF(RDOParserSrcInfo) src_info);
 

@@ -132,16 +132,16 @@ public:
 	*/
 	struct Position
 	{
-		static const ruint UNDEFINE_POS  = ruint(~0);
-		static const ruint UNDEFINE_LINE = ruint(~0);
+		static const std::size_t UNDEFINE_POS  = std::size_t(~0);
+		static const std::size_t UNDEFINE_LINE = std::size_t(~0);
 
-		ruint m_first_line;
-		ruint m_first_pos;
-		ruint m_last_line;
-		ruint m_last_pos;
+		std::size_t m_first_line;
+		std::size_t m_first_pos;
+		std::size_t m_last_line;
+		std::size_t m_last_pos;
 
 		Position();
-		Position(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos);
+		Position(std::size_t first_line, std::size_t first_pos, std::size_t last_line, std::size_t last_pos);
 		bool empty() const;
 		bool point() const;
 	};
@@ -154,7 +154,7 @@ public:
 
 	void setSrcPos(CREF(Position) position);
 	void setSrcPos(CREF(Position) position_begin, CREF(Position) position_end);
-	void setSrcPos(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos);
+	void setSrcPos(std::size_t first_line, std::size_t first_pos, std::size_t last_line, std::size_t last_pos);
 
 	virtual void setSrcText(CREF(std::string) value);
 	void setSrcFileType(rdoModelObjects::RDOFileType value);

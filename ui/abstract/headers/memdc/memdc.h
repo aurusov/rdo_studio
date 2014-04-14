@@ -27,12 +27,12 @@ namespace rdo
 			 MemDCBase();
 			~MemDCBase();
 
-			ruint     width () const;
-			ruint     height() const;
+			std::size_t width() const;
+			std::size_t height() const;
 
 		protected:
-			ruint m_width;
-			ruint m_height;
+			std::size_t m_width;
+			std::size_t m_height;
 		};
 
 		template <class TDC, class TBMP>
@@ -43,9 +43,9 @@ namespace rdo
 			~MemDC();
 
 			bool valid() const;
-			bool create(ruint width, ruint height);
-			bool create(ruint width, ruint height, TDC& from);
-			bool resize(ruint width, ruint height);
+			bool create(std::size_t width, std::size_t height);
+			bool create(std::size_t width, std::size_t height, TDC& from);
+			bool resize(std::size_t width, std::size_t height);
 
 			TDC& dc();
 			TBMP& buffer();

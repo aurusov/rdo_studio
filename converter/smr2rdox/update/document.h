@@ -59,10 +59,10 @@ private:
 		void init(REF(std::ifstream) stream);
 		void get(REF(std::ofstream) stream) const;
 
-		void insert(ruint to, CREF(std::string) value);
-		void remove(ruint from, ruint to);
+		void insert(std::size_t to, CREF(std::string) value);
+		void remove(std::size_t from, std::size_t to);
 
-		std::string get(ruint from, ruint to);
+		std::string get(std::size_t from, std::size_t to);
 
 	private:
 		Buffer m_buffer;

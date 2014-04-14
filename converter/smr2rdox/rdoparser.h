@@ -115,12 +115,12 @@ public:
 	bool isCurrentDPTSearch();
 	bool isCurrentDPTPrior();
 
-	ruint getRTP_id     () const { return m_allRTPResType.size()  + 1; }
-	ruint getRSS_id     () const { return m_allRSSResource.size() + 0; }
-	ruint getPAT_id     () const { return m_allPATPattern.size()  + 0; }
-	ruint getPMD_id     () const { return m_allPMDResult.size()   + 1; }
-	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
-	ruint getNumberFrame() const { return m_allFRMFrame.size()    + 0; }
+	std::size_t getRTP_id     () const { return m_allRTPResType.size()  + 1; }
+	std::size_t getRSS_id     () const { return m_allRSSResource.size() + 0; }
+	std::size_t getPAT_id     () const { return m_allPATPattern.size()  + 0; }
+	std::size_t getPMD_id     () const { return m_allPMDResult.size()   + 1; }
+	std::size_t getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
+	std::size_t getNumberFrame() const { return m_allFRMFrame.size()    + 0; }
 
 	std::string getModelStructure();
 	std::string getChanges() const;
@@ -181,9 +181,9 @@ public:
 	void insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
 
 	static rdo::converter::smr2rdox::RDOFileTypeIn getFileToParse();
-	static ruint                                   lexer_loc_line();
-	static ruint                                   lexer_loc_pos ();
-	static PTR(Converter)                          s_converter   ();
+	static std::size_t lexer_loc_line();
+	static std::size_t lexer_loc_pos();
+	static PTR(Converter) s_converter();
 
 protected:
 	LPRDOParserItem m_pParserItem;
@@ -199,7 +199,7 @@ protected:
 	{
 		return getContainer()->end();
 	}
-	RDOParserContainer::Iterator find(ruint index)
+	RDOParserContainer::Iterator find(std::size_t index)
 	{
 		return getContainer()->find(index);
 	}

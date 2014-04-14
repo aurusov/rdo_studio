@@ -45,7 +45,7 @@ void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
 	{
 		RDOParser::s_parser()->error().error(pos, "Номер кадра должен быть больше нуля");
 	}
-	if (RDOParser::s_parser()->runtime()->m_frameList.size() + 1 <= (ruint)value)
+	if (RDOParser::s_parser()->runtime()->m_frameList.size() + 1 <= (std::size_t)value)
 	{
 		RDOParser::s_parser()->error().error(pos, rdo::format("Несуществующий кадр: %d", value));
 	}
@@ -145,7 +145,7 @@ void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcIn
 	}
 	ASSERT(pArithm);
 	pArithm->checkParamType(pParam->getTypeInfo());
-	ruint                 parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
+	const std::size_t parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
 	rdo::runtime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getTypeInfo());
 	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
 	RDOParser::s_parser()->insertChanges(res_info.src_text() + "." + par_info.src_text(), pArithm->src_text());

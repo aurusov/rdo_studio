@@ -35,9 +35,9 @@ public:
 	void setMustContinueOpr(CREF(LPIBaseOperation) pOperation);
 	virtual void onPutToTreeNode() = 0;
 
-	std::string writeActivitiesStructure(REF(ruint) counter);
+	std::string writeActivitiesStructure(REF(std::size_t) counter);
 
-	ruint getSizeofSim() const;
+	std::size_t getSizeofSim() const;
 
 	LPIBaseOperationContainer m_pMetaLogic;
 
@@ -51,7 +51,7 @@ protected:
 	virtual void onCheckResult     () = 0;
 	virtual void onAfterCheckResult() = 0;
 
-	ruint m_sizeofSim;
+	std::size_t m_sizeofSim;
 
 private:
 	LPIBaseOperation m_pOprMustContinue;

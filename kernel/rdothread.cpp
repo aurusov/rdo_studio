@@ -71,7 +71,7 @@ RDOThread::RDOThread(CREF(std::string) _thread_name)
 	// Чтобы треда не получала ниодного сообщения. RT_THREAD_CLOSE обрабатывается автоматически
 	notifies.push_back(RT_THREAD_CLOSE);
 #ifdef RDO_MT
-	for (ruint i = 0; i < 10; i++)
+	for (std::size_t i = 0; i < 10; i++)
 		broadcast_data.push_back(BroadcastData(10));
 
 	if (!isGUI()) {
@@ -140,7 +140,7 @@ void RDOThread::after_constructor()
 }
 
 #ifdef RDO_MT
-ruint RDOThread::threadFun(PTR(void) pParam)
+std::size_t RDOThread::threadFun(PTR(void) pParam)
 {
 	PTR(RDOThread) thread = static_cast<PTR(RDOThread)>(pParam);
 	thread->thread_id = ::GetCurrentThreadId();
@@ -251,7 +251,7 @@ void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) pParam, bool
 		broadcast_data.push_back(BroadcastData(10));
 
 	kernel->threads_mutex.Lock();
-	ruint       cnt        = 0;
+	std::size_t cnt = 0;
 	PTR(CMutex) param_lock = NULL;
 	for (RDOKernel::RDOThreadList::iterator it = kernel->threads.begin(); it != kernel->threads.end(); ++it)
 	{
@@ -279,7 +279,7 @@ void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) pParam, bool
 	kernel->threads_mutex.Unlock();
 	if (cnt)
 	{
-		for (ruint i = 0; i < cnt; i++)
+		for (std::size_t i = 0; i < cnt; i++)
 			broadcast_data[broadcast_cnt].handles[i] = broadcast_data[broadcast_cnt].events[i]->m_hObject;
 
 		broadcast_waiting = true;

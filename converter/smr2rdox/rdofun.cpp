@@ -393,7 +393,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 	if (pResource)
 	{
 		//! Это ресурс с закладки RSS
-		ruint parNumb = pResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
+		const std::size_t parNumb = pResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 		{
 			Converter::s_converter()->error().error(pParName->src_info(), rdo::format("Неизвестный параметр ресурса: %s", pParName->value().getIdentificator().c_str()));
@@ -419,7 +419,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 	{
 		//! Это ресурс внутри групповой функции
 		LPRDOFUNGroup pFUNGroup = Converter::s_converter()->getFUNGroupStack().back();
-		ruint         parNumb   = pFUNGroup->getResType()->getRTPParamNumber(pParName->value().getIdentificator());
+		const std::size_t parNumb = pFUNGroup->getResType()->getRTPParamNumber(pParName->value().getIdentificator());
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 		{
 			Converter::s_converter()->error().error(pParName->src_info(), rdo::format("Неизвестный параметр ресурса: %s", pParName->value().getIdentificator().c_str()));
@@ -534,7 +534,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 						}
 					}
 				}
-				ruint parNumb = pRelevantResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
+				const std::size_t parNumb = pRelevantResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
 				if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 				{
 					Converter::s_converter()->error().error(pParName->src_info(), rdo::format("Неизвестный параметр ресурса: %s", pParName->value().getIdentificator().c_str()));
@@ -553,7 +553,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 				if (pPattern && pPattern->findRelevantResource(pResName->value().getIdentificator())) {
 					//! Это ресурс, который используется в DPT (condition, term_condition, evaluate_by, value before, value after)
 					LPRDORelevantResource pRelevantResource = pPattern->findRelevantResource(pResName->value().getIdentificator());
-					ruint                 parNumb           = pRelevantResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
+					const std::size_t parNumb = pRelevantResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
 					if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 					{
 						Converter::s_converter()->error().error(pParName->src_info(), rdo::format("Неизвестный параметр ресурса: %s", pParName->value().getIdentificator().c_str()));
@@ -570,7 +570,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 				if (pPattern && pPattern->findRelevantResource(pResName->value().getIdentificator())) {
 					//! Это ресурс, который используется в выражении приоритета активности DPTPrior
 					LPRDORelevantResource pRelevantResource = pPattern->findRelevantResource(pResName->value().getIdentificator());
-					ruint                 parNumb           = pRelevantResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
+					const std::size_t parNumb = pRelevantResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
 					if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 					{
 						Converter::s_converter()->error().error(pParName->src_info(), rdo::format("Неизвестный параметр ресурса: %s", pParName->value().getIdentificator().c_str()));
@@ -844,7 +844,7 @@ RDOFUNParams::RDOFUNParams()
 RDOFUNParams::~RDOFUNParams()
 {}
 
-rdo::runtime::LPRDOCalc RDOFUNParams::getCalc(ruint paramID, CREF(LPRDOTypeParam) pType)
+rdo::runtime::LPRDOCalc RDOFUNParams::getCalc(std::size_t paramID, CREF(LPRDOTypeParam) pType)
 {
 	ASSERT(paramID < m_paramList.size());
 	rdo::runtime::LPRDOCalc pCalc = m_paramList[paramID]->createCalc(pType);
@@ -866,7 +866,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(std::string) funName)
 		return createSeqCall(funName);
 	}
 
-	ruint nParams = pFunction->getParams().size();
+	const std::size_t nParams = pFunction->getParams().size();
 	if (nParams != m_paramList.size())
 	{
 		Converter::s_converter()->error().error(src_info(), rdo::format("Неверное количество параметров функции: %s", funName.c_str()));
@@ -875,7 +875,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(std::string) funName)
 	rdo::runtime::LPRDOCalcFunctionCaller pFuncCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(pFunction->getFunctionCalc());
 	pFunction->insertPostLinked(pFuncCall);
 	pFuncCall->setSrcInfo(src_info());
-	for (ruint i = 0; i < nParams; i++)
+	for (std::size_t i = 0; i < nParams; i++)
 	{
 		LPRDOTypeParam pFuncParam = pFunction->getParams()[i]->getType();
 		LPRDOFUNArithm pArithm = m_paramList[i];
@@ -1234,8 +1234,8 @@ void RDOFUNSequenceByHistEnum::addEnum(CREF(LPRDOValue) pValue, CREF(LPRDOValue)
 void RDOFUNSequenceByHistEnum::createCalcs()
 {
 	PTR(rdo::runtime::RandGeneratorByHistEnum) pGenerator = new rdo::runtime::RandGeneratorByHistEnum();
-	ruint size = m_values.size();
-	for (ruint i = 0; i < size; i++)
+	const std::size_t size = m_values.size();
+	for (std::size_t i = 0; i < size; i++)
 	{
 		pGenerator->addValues(m_values[i], m_freq[i].getDouble());
 	}
@@ -1275,7 +1275,7 @@ LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pPa
 void RDOFUNSequenceEnumerative::createCalcs()
 {
 	PTR(rdo::runtime::RandGeneratorEnumerative) pGenerator = new rdo::runtime::RandGeneratorEnumerative();
-	for (ruint i = 0; i < m_valueList.size(); i++)
+	for (std::size_t i = 0; i < m_valueList.size(); i++)
 	{
 		pGenerator->addValue(m_valueList[i]->value());
 	}
@@ -1553,14 +1553,14 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 		}
 		++it;
 	}
-	ruint param_cnt = m_paramList.size();
-	ruint range     = 1;
+	const std::size_t param_cnt = m_paramList.size();
+	std::size_t range = 1;
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(0);
 	ASSERT(pCalc);
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());
 	srcInfo.setSrcText("0");
 	pCalc->setSrcInfo(srcInfo);
-	for (ruint currParam = 0; currParam < param_cnt; currParam++)
+	for (std::size_t currParam = 0; currParam < param_cnt; currParam++)
 	{
 		LPRDOParam pFunctionParam = m_paramList.at(currParam);
 		ASSERT(pFunctionParam);
@@ -1613,7 +1613,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	rdo::runtime::LPRDOFuncTableCalc pFuncTableCalc = rdo::Factory<rdo::runtime::RDOFuncTableCalc>::create(pCalc);
 	ASSERT(pFuncTableCalc);
 	pFuncTableCalc->setSrcInfo(src_info());
-	for (ruint currElem = 0; currElem < range; currElem++)
+	for (std::size_t currElem = 0; currElem < range; currElem++)
 	{
 		LPRDOFUNFunctionListElement pListElement = m_elementList.at(currElem);
 		ASSERT(pListElement);

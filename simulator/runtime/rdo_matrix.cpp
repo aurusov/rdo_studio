@@ -88,14 +88,14 @@ std::string RDOMatrixValue::getAsString() const
 	return rdo::format("%s]", result.c_str());
 }
 
-ruint RDOMatrixValue::size() const
+std::size_t RDOMatrixValue::size() const
 {
 	return m_container.size();
 }
 
 CREF(RDOValue) RDOMatrixValue::getItem(CREF(RDOValue) index) const
 {
-	ruint ind = index.getUInt();
+	std::size_t ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
 		throw RDORuntimeException("Выход за пределы матрицы");
@@ -105,7 +105,7 @@ CREF(RDOValue) RDOMatrixValue::getItem(CREF(RDOValue) index) const
 
 void RDOMatrixValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 {
-	ruint ind = index.getUInt();
+	std::size_t ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
 		throw RDORuntimeException("Выход за пределы матрицы");

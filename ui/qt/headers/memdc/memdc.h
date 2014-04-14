@@ -36,7 +36,7 @@ namespace rdo
 		}
 
 		template <>
-		inline bool MemDC<QPainter, QPixmap>::resize(ruint width, ruint height)
+		inline bool MemDC<QPainter, QPixmap>::resize(std::size_t width, std::size_t height)
 		{
 			if (width == 0 || height == 0)
 				return false;

@@ -88,9 +88,9 @@ protected:
 	virtual ~RDODPTActivity();
 
 private:
-	ruint                     m_currParam;
-	LPRDOPATPattern           m_pPattern;
-	std::vector<std::string>  m_paramValuesAsString;
+	std::size_t m_currParam;
+	LPRDOPATPattern m_pPattern;
+	std::vector<std::string> m_paramValuesAsString;
 
 	void planningInsertIntoSMR() const;
 };
@@ -110,7 +110,7 @@ protected:
 private:
 	IKeyboard::AddHotKeyResult addHotKey(CREF(std::string) hotKey);
 
-	typedef std::vector<ruint> ScanCodeList;
+	typedef std::vector<std::size_t> ScanCodeList;
 	ScanCodeList m_scanCodeList;
 };
 DECLARE_POINTER(RDODPTActivityHotKey);

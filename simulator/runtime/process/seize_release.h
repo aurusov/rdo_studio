@@ -82,7 +82,7 @@ QUERY_INTERFACE_END
 private:
 	RDOPROCSeize(LPIPROCProcess process, std::vector <parser_for_Seize> From_Par);
 
-	ruint index;
+	std::size_t index;
 
 	virtual void transactGoIn (CREF(LPTransact) pTransact);
 	virtual void transactGoOut(CREF(LPTransact) pTransact);
@@ -105,7 +105,7 @@ QUERY_INTERFACE_END
 private:
 	RDOPROCRelease(LPIPROCProcess process, std::vector <parser_for_Seize> From_Par);
 
-	ruint index;
+	std::size_t index;
 
 	DECLARE_IBaseOperation;
 };

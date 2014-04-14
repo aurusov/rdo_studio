@@ -154,9 +154,11 @@ void RDOKernel::idle()
 class CheckThreadID
 {
 protected:
-	ruint thread_id;
+	std::size_t thread_id;
 public:
-	CheckThreadID( ruint _thread_id ): thread_id( _thread_id ) {}
+	CheckThreadID( std::size_t _thread_id )
+		: thread_id(_thread_id)
+	{}
 	bool operator() ( RDOThread* thread ) { return thread->getID() == thread_id; }
 };
 

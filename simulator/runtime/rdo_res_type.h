@@ -35,7 +35,7 @@ private:
 	friend class rdo::Factory<RDOResourceTypeList>;
 
 public:
-	typedef  boost::function<LPRDOResource (const LPRDORuntime&, const std::vector<RDOValue>&, const LPIResourceType&, ruint, ruint, bool, bool)>  Create;
+	typedef  boost::function<LPRDOResource (const LPRDORuntime&, const std::vector<RDOValue>&, const LPIResourceType&, std::size_t, std::size_t, bool, bool)>  Create;
 	void setFactoryMethod(const Create& create);
 
 	virtual ResCIterator res_begin() const;
@@ -45,7 +45,7 @@ public:
 	LPRDOResourceTypeList clone   (CREF(LPRDORuntime) pRuntime) const;
 
 private:
-	RDOResourceTypeList(ruint number, CREF(LPRDORuntime) pRuntime);
+	RDOResourceTypeList(std::size_t number, CREF(LPRDORuntime) pRuntime);
 	virtual ~RDOResourceTypeList();
 
 	void insertNewResource(CREF(LPRDORuntime) pRuntime, CREF(LPRDOResource) pResource);
@@ -54,7 +54,7 @@ private:
 	ResourceList m_resourceList;
 	Create       m_create;
 
-	virtual LPRDOResource createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, bool traceFlag, bool permanentFlag);
+	virtual LPRDOResource createRes(CREF(LPRDORuntime) pRuntime, std::size_t resID, CREF(std::vector<RDOValue>) paramsCalcs, bool traceFlag, bool permanentFlag);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

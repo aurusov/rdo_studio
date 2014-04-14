@@ -69,8 +69,8 @@ class RPShapeDataBlockCreate: public RPShapeDataBlock
 {
 DECLARE_FACTORY(RPShapeDataBlockCreate)
 public:
-	boost::optional<ruint>  getAmount() const      { return m_amount; }
-	void setAmount(boost::optional<ruint> amount);
+	boost::optional<std::size_t> getAmount() const { return m_amount; }
+	void setAmount(boost::optional<std::size_t> amount);
 
 	CREF(rdo::runtime::LPIInternalStatistics) getStatistics() const      { return m_pStatistics; }
 	void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
@@ -79,7 +79,7 @@ private:
 	RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, CREF(std::string) name);
 	virtual ~RPShapeDataBlockCreate();
 
-	boost::optional<ruint> m_amount;
+	boost::optional<std::size_t> m_amount;
 	rdo::runtime::LPIInternalStatistics m_pStatistics;
 };
 DECLARE_POINTER(RPShapeDataBlockCreate);

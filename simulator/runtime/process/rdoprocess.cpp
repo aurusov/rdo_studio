@@ -108,7 +108,7 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTransact
 // --------------------------------------------------------------------------------
-RDOPROCTransact::RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, bool trace, bool temporary)
+RDOPROCTransact::RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary)
 	: RDOResource(pRuntime, paramsCalcs, pResType, resID, typeID, trace, temporary)
 {
 	m_state = RDOResource::CS_Create;
@@ -133,7 +133,7 @@ void RDOPROCTransact::next()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCResource
 // --------------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, bool trace, bool temporary)
+RDOPROCResource::RDOPROCResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary)
 	: RDOResource(pRuntime, paramsCalcs, pResType, resID, typeID, trace, temporary)
 {}
 

@@ -31,9 +31,9 @@
 #if defined( ARCHITECTURE_AMD64 )
 typedef ruint64 ruint_type;
 #elif defined( ARCHITECTURE_X86 )
-typedef ruint ruint_type;
+typedef std::size_t ruint_type;
 #elif defined( ARCHITECTURE_ARM )
-typedef ruint ruint_type;
+typedef std::size_t ruint_type;
 #endif // ARCHITECTURES_AMD64
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -119,7 +119,7 @@ void RDOPMDResult::printLeft(std::ostream& stream, CREF(std::string) txt)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resName, CREF(std::string) parName, ruint resourceID, ruint paramID)
+RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resName, CREF(std::string) parName, std::size_t resourceID, std::size_t paramID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_resourceID  (resourceID           )
 	, m_paramID     (paramID              )
@@ -133,13 +133,13 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) na
 RDOPMDWatchPar::~RDOPMDWatchPar()
 {}
 
-void RDOPMDWatchPar::notify(ruint message, PTR(void) pParam)
+void RDOPMDWatchPar::notify(std::size_t message, PTR(void) pParam)
 {
 	UNUSED(message);
 
 	if ((ruint_type)pParam == m_resourceID)
 	{
-		m_resourceID = ruint(~0);
+		m_resourceID = std::size_t(~0);
 		m_timeErase = m_pRuntime->getCurrentTime();
 	}
 };
@@ -166,7 +166,7 @@ void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 	if (!m_pResource)
 		return;
 
-	if (m_resourceID == ruint(~0))
+	if (m_resourceID == std::size_t(~0))
 		return;
 
 	double currTime = pRuntime->getCurrentTime();
@@ -195,8 +195,8 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 		m_wasFinalCalc = true;
 	}
 
-	double average  = boost::accumulators::weighted_mean(m_acc);
-	ruint  count    = boost::accumulators::count(m_acc);
+	double average = boost::accumulators::weighted_mean(m_acc);
+	std::size_t count = boost::accumulators::count(m_acc);
 	double variance = boost::accumulators::weighted_variance(m_acc);
 
 	bool averageEnable = count > 0 && fabs(variance) > DBL_EPSILON;
@@ -307,8 +307,8 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& strea
 	}
 
 	double currTime = pRuntime->getCurrentTime();
-	double average  = boost::accumulators::sum(m_acc) / (currTime - m_timeBegin);
-	ruint  count    = boost::accumulators::count(m_acc);
+	double average = boost::accumulators::sum(m_acc) / (currTime - m_timeBegin);
+	std::size_t count = boost::accumulators::count(m_acc);
 
 	printLeft(stream, name());
 	stream
@@ -348,9 +348,9 @@ void RDOPMDWatchQuant::resetResult(CREF(LPRDORuntime) pRuntime)
 	m_wasFinalCalc = false;
 }
 
-ruint RDOPMDWatchQuant::calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const
+std::size_t RDOPMDWatchQuant::calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const
 {
-	ruint newQuant = 0;
+	std::size_t newQuant = 0;
 	RDORuntime::ResCIterator end = pRuntime->getResType(m_rtpID)->res_end();
 	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_rtpID)->res_begin(); it != end; ++it)
 	{
@@ -370,7 +370,7 @@ ruint RDOPMDWatchQuant::calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const
 
 void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 {
-	ruint newQuant = calcCurrentQuant(pRuntime);
+	std::size_t newQuant = calcCurrentQuant(pRuntime);
 
 	double currTime = pRuntime->getCurrentTime();
 	m_currentValue.weight += currTime - m_timePrev;
@@ -389,7 +389,7 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& strea
 {
 	if (!m_wasFinalCalc)
 	{
-		ruint newQuant = calcCurrentQuant(pRuntime);
+		std::size_t newQuant = calcCurrentQuant(pRuntime);
 		if (newQuant != m_currentValue.quant)
 		{
 			m_acc(m_currentValue.quant, boost::accumulators::weight = m_currentValue.weight);
@@ -405,8 +405,8 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& strea
 		m_wasFinalCalc = true;
 	}
 
-	double average  = boost::accumulators::weighted_mean(m_acc);
-	ruint  count    = boost::accumulators::count(m_acc);
+	double average = boost::accumulators::weighted_mean(m_acc);
+	std::size_t count = boost::accumulators::count(m_acc);
 	double variance = boost::accumulators::weighted_variance(m_acc);
 
 	bool averageEnable = count > 0 && fabs(variance) > DBL_EPSILON;
@@ -480,8 +480,8 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& strea
 {
 	UNUSED(pRuntime);
 
-	double average  = boost::accumulators::mean(m_acc);
-	ruint  count    = boost::accumulators::count(m_acc);
+	double average = boost::accumulators::mean(m_acc);
+	std::size_t count = boost::accumulators::count(m_acc);
 	double variance = boost::accumulators::variance(m_acc);
 
 	bool averageEnable = count > 0 && fabs(variance) > DBL_EPSILON;

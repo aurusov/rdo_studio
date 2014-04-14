@@ -29,7 +29,7 @@ void RDOActivity::addParamCalc(CREF(LPRDOCalc) pCalc)
 	m_paramsCalcs.push_back(pCalc);
 }
 
-int RDOActivity::getResByRelRes(ruint rel_res_id) const
+int RDOActivity::getResByRelRes(std::size_t rel_res_id) const
 {
 	if (m_relResID.size() <= rel_res_id)
 	{
@@ -38,7 +38,7 @@ int RDOActivity::getResByRelRes(ruint rel_res_id) const
 	return m_relResID.at(rel_res_id);
 }
 
-void RDOActivity::setRelRes(ruint rel_res_id, ruint res_id)
+void RDOActivity::setRelRes(std::size_t rel_res_id, std::size_t res_id)
 {
 	if (m_relResID.size() <= rel_res_id)
 	{

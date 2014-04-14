@@ -48,12 +48,12 @@ void RDOParserItem::parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream
 	UNUSED(in_stream);
 }
 
-ruint RDOParserItem::lexer_loc_line()
+std::size_t RDOParserItem::lexer_loc_line()
 {
-	return ruint(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
+	return std::size_t(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
 }
 
-ruint RDOParserItem::lexer_loc_pos()
+std::size_t RDOParserItem::lexer_loc_pos()
 {
 	return 0;
 }

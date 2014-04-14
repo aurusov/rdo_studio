@@ -210,7 +210,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 	return 1;
 }
 
-ruint RDOThreadCorba::corbaRunThreadFun(PTR(void) pParam)
+std::size_t RDOThreadCorba::corbaRunThreadFun(PTR(void) pParam)
 {
 	try
 	{
@@ -764,7 +764,7 @@ void RDOThreadRunTime::writeResultsInfo()
 	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "  EventCount           " << m_pSimulator->m_pRuntime->get_cnt_events() << "  " << (double)m_pSimulator->m_pRuntime->get_cnt_events() / m_pSimulator->m_pRuntime->getTimeNow() << "  ";
 	if (delay != -1)
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << (ruint)((double)m_pSimulator->m_pRuntime->get_cnt_events() / delay * 1000);
+		m_pSimulator->m_pRuntime->getResultsInfo() << (std::size_t)((double)m_pSimulator->m_pRuntime->get_cnt_events() / delay * 1000);
 	}
 	else
 	{
@@ -774,7 +774,7 @@ void RDOThreadRunTime::writeResultsInfo()
 	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "  OperRuleCheckCounter " << m_pSimulator->m_pRuntime->get_cnt_choice_from() << "  " << (double)m_pSimulator->m_pRuntime->get_cnt_choice_from() / m_pSimulator->m_pRuntime->getTimeNow() << "  ";
 	if (delay != -1)
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << (ruint)((double)m_pSimulator->m_pRuntime->get_cnt_choice_from() / delay * 1000);
+		m_pSimulator->m_pRuntime->getResultsInfo() << (std::size_t)((double)m_pSimulator->m_pRuntime->get_cnt_choice_from() / delay * 1000);
 	}
 	else
 	{
@@ -783,7 +783,7 @@ void RDOThreadRunTime::writeResultsInfo()
 	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "  AExpCalcCounter      " << m_pSimulator->m_pRuntime->get_cnt_calc_arithm() << "  " << (double)m_pSimulator->m_pRuntime->get_cnt_calc_arithm() / m_pSimulator->m_pRuntime->getTimeNow() << "  ";
 	if (delay != -1)
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << (ruint)((double)m_pSimulator->m_pRuntime->get_cnt_calc_arithm() / delay * 1000);
+		m_pSimulator->m_pRuntime->getResultsInfo() << (std::size_t)((double)m_pSimulator->m_pRuntime->get_cnt_calc_arithm() / delay * 1000);
 	}
 	else
 	{
@@ -792,7 +792,7 @@ void RDOThreadRunTime::writeResultsInfo()
 	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << "  BExpCalcCounter      " << m_pSimulator->m_pRuntime->get_cnt_calc_logic() << "  " << (double)m_pSimulator->m_pRuntime->get_cnt_calc_logic() / m_pSimulator->m_pRuntime->getTimeNow() << "  ";
 	if (delay != -1)
 	{
-		m_pSimulator->m_pRuntime->getResultsInfo() << (ruint)((double)m_pSimulator->m_pRuntime->get_cnt_calc_logic() / delay * 1000);
+		m_pSimulator->m_pRuntime->getResultsInfo() << (std::size_t)((double)m_pSimulator->m_pRuntime->get_cnt_calc_logic() / delay * 1000);
 	}
 	else
 	{
@@ -841,7 +841,7 @@ bool RDOThreadRunTime::runtimeError() const
 	return m_runtimeError;
 }
 
-void RDOThreadRunTime::sendMessage(ThreadID threadID, ruint messageID, PTR(void) pParam)
+void RDOThreadRunTime::sendMessage(ThreadID threadID, std::size_t messageID, PTR(void) pParam)
 {
 	PTR(RDOThread) pThread;
 	switch (threadID)

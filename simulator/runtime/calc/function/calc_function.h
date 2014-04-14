@@ -91,9 +91,9 @@ class RDOCalcFuncParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFuncParam)
 private:
-	RDOCalcFuncParam(ruint paramID, CREF(RDOSrcInfo) src_info);
+	RDOCalcFuncParam(std::size_t paramID, CREF(RDOSrcInfo) src_info);
 
-	ruint m_paramID;
+	std::size_t m_paramID;
 
 	DECLARE_ICalc;
 };
@@ -104,9 +104,9 @@ class RDOCalcGetConst: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetConst)
 private:
-	RDOCalcGetConst(ruint constantID);
+	RDOCalcGetConst(std::size_t constantID);
 
-	ruint m_constantID;
+	std::size_t m_constantID;
 
 	DECLARE_ICalc;
 };
@@ -117,10 +117,10 @@ class RDOCalcSetConst: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSetConst)
 private:
-	RDOCalcSetConst(ruint constantID, CREF(LPRDOCalc) pCalc);
+	RDOCalcSetConst(std::size_t constantID, CREF(LPRDOCalc) pCalc);
 
-	ruint      m_constantID;
-	LPRDOCalc  m_pCalc;
+	std::size_t m_constantID;
+	LPRDOCalc m_pCalc;
 
 	DECLARE_ICalc;
 };

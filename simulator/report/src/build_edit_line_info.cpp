@@ -24,7 +24,7 @@ namespace
 	const std::string ERROR_STRING("ошибка");
 }
 
-BuildEditLineInfo::BuildEditLineInfo(CREF(std::string) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type)
+BuildEditLineInfo::BuildEditLineInfo(CREF(std::string) text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type)
 	: LogEditLineInfo(text, file, line, pos, type)
 {}
 

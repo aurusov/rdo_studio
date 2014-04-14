@@ -57,7 +57,7 @@ Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName)
 	: resName(resName)
 {}
 
-Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, ruint position)
+Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, std::size_t position)
 	: resName (resName )
 	, position(position)
 {}
@@ -509,7 +509,7 @@ void Model::show_result()
 	}
 }
 
-bool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex)
+bool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, std::size_t templateIndex)
 {
 	m_templateIndex = templateIndex;
 	g_pApp->getIMainWnd()->getDockBuild  ().clear();
@@ -981,8 +981,8 @@ void Model::afterModelStart()
 			m_frameManager.insertFrame(QString::fromStdString(name));
 		}
 		m_timeNow = 0;
-		ruint initFrameNumber = kernel->simulator()->getInitialFrameNumber();
-		if (initFrameNumber != ruint(~0))
+		std::size_t initFrameNumber = kernel->simulator()->getInitialFrameNumber();
+		if (initFrameNumber != std::size_t(~0))
 		{
 			--initFrameNumber;
 		}
@@ -1001,7 +1001,7 @@ void Model::afterModelStart()
 	else
 	{
 		m_timeNow = 0;
-		m_frameManager.setLastShowedFrame(ruint(~0));
+		m_frameManager.setLastShowedFrame(std::size_t(~0));
 	}
 }
 
@@ -1373,7 +1373,7 @@ REF(rdo::gui::frame::Manager) Model::getFrameManager()
 	return m_frameManager;
 }
 
-void Model::onChangeFrame(ruint)
+void Model::onChangeFrame(std::size_t)
 {
 	updateActions();
 }

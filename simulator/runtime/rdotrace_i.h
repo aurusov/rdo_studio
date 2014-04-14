@@ -25,19 +25,19 @@ public:
 	virtual bool traceable() const = 0;
 	virtual void setTrace (bool trace) = 0;
 
-	virtual ruint getTraceID() const = 0;
-	virtual void setTraceID(ruint id) = 0;
-	virtual void setTraceID(ruint id, ruint str_id) = 0;
+	virtual std::size_t getTraceID() const = 0;
+	virtual void setTraceID(std::size_t id) = 0;
+	virtual void setTraceID(std::size_t id, std::size_t str_id) = 0;
 
 	virtual REF(std::string) traceId() const = 0;
 };
 
-#define DECLARE_ITrace                               \
-	virtual bool traceable() const;                  \
-	virtual void setTrace(bool trace);               \
-	virtual ruint getTraceID() const;                \
-	virtual void setTraceID(ruint id);               \
-	virtual void setTraceID(ruint id, ruint str_id); \
+#define DECLARE_ITrace                                           \
+	virtual bool traceable() const;                              \
+	virtual void setTrace(bool trace);                           \
+	virtual std::size_t getTraceID() const;                      \
+	virtual void setTraceID(std::size_t id);                     \
+	virtual void setTraceID(std::size_t id, std::size_t str_id); \
 	virtual REF(std::string) traceId() const ;
 
 /*!

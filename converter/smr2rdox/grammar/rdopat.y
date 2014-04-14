@@ -615,7 +615,7 @@ pat_rel_res
 				YYLTYPE convertor_begin_pos = @3;
 				const std::string str = boost::algorithm::to_lower_copy(std::string(LEXER->YYText()));
 				const std::string::size_type first_nochange = str.find("nochange");
-				ruint i = 0;
+				std::size_t i = 0;
 				for (;;)
 				{
 					if (str[i] == '\n')
@@ -671,7 +671,7 @@ pat_rel_res
 				YYLTYPE convertor_begin_pos = @3;
 				const std::string str = boost::algorithm::to_lower_copy(std::string(LEXER->YYText()));
 				const std::string::size_type first_nochange = str.find("nochange");
-				ruint i = 0;
+				std::size_t i = 0;
 				for (;;)
 				{
 					if (str[i] == '\n')

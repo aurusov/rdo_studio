@@ -32,10 +32,10 @@ public:
 	typedef Enums::const_iterator CIterator;
 	typedef Enums::const_iterator const_iterator;
 
-	static const ruint END = ruint(~0);
+	static const std::size_t END = std::size_t(~0);
 
 	void add(CREF(std::string) next);
-	ruint findEnum(CREF(std::string) val) const;
+	std::size_t findEnum(CREF(std::string) val) const;
 	bool exist(CREF(std::string) val) const;
 
 	bool empty() const;

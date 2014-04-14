@@ -86,7 +86,7 @@ protected:
 private:
 	PTR(T) m_object;
 
-	REF(ruint) counter();
+	REF(std::size_t) counter();
 };
 
 #define DECLARE_POINTER(TYPE)    typedef rdo::intrusive_ptr<TYPE> LP##TYPE;

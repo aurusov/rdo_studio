@@ -52,8 +52,8 @@ public:
 	virtual void parse(CREF(LPRDOParser) pParser) = 0;
 	virtual void parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream);
 
-	virtual ruint lexer_loc_line();
-	virtual ruint lexer_loc_pos ();
+	virtual std::size_t lexer_loc_line();
+	virtual std::size_t lexer_loc_pos();
 
 protected:
 	RDOParserItem();

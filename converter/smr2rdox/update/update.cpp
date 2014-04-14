@@ -75,7 +75,7 @@ void UpdateInsert::apply(REF(LPIDocument) pDocument) const
 	pDocument->insert(m_file, m_pos.get(), m_value);
 }
 
-void UpdateInsert::insert(IDocument::Type type, CREF(Position) to, ruint size)
+void UpdateInsert::insert(IDocument::Type type, CREF(Position) to, std::size_t size)
 {
 	if (m_file != type)
 		return;
@@ -127,7 +127,7 @@ void UpdateDelete::apply(REF(LPIDocument) pDocument) const
 	pDocument->remove(m_file, m_posFrom.get(), m_posTo.get());
 }
 
-void UpdateDelete::insert(IDocument::Type type, CREF(Position) to, ruint size)
+void UpdateDelete::insert(IDocument::Type type, CREF(Position) to, std::size_t size)
 {
 	if (m_file != type)
 		return;
@@ -182,7 +182,7 @@ void UpdateReplace::apply(REF(LPIDocument) pDocument) const
 	pInsert->apply(pDocument);
 }
 
-void UpdateReplace::insert(IDocument::Type type, CREF(Position) to, ruint size)
+void UpdateReplace::insert(IDocument::Type type, CREF(Position) to, std::size_t size)
 {
 	pDelete->insert(type, to, size);
 	pInsert->insert(type, to, size);
@@ -240,7 +240,7 @@ void UpdateMove::apply(REF(LPIDocument) pDocument) const
 	pDocument->insert(m_file, pos.get(), cut);
 }
 
-void UpdateMove::insert(IDocument::Type type, CREF(Position) to, ruint size)
+void UpdateMove::insert(IDocument::Type type, CREF(Position) to, std::size_t size)
 {
 	if (to.end())
 		return;
@@ -391,7 +391,7 @@ void UpdateSwap::apply(REF(LPIDocument) pDocument) const
 	pDocument->insert(m_file, pos1Begin.get(), cut2);
 }
 
-void UpdateSwap::insert(IDocument::Type type, CREF(Position) to, ruint size)
+void UpdateSwap::insert(IDocument::Type type, CREF(Position) to, std::size_t size)
 {
 	if (m_file != type)
 		return;
@@ -409,7 +409,7 @@ void UpdateSwap::remove(IDocument::Type type, CREF(Position) from, CREF(Position
 	remove(from, to, m_pos2Begin, m_pos2End);
 }
 
-void UpdateSwap::insert(CREF(Position) from, CREF(ruint) size, REF(Position) posBegin, REF(Position) posEnd)
+void UpdateSwap::insert(CREF(Position) from, CREF(std::size_t) size, REF(Position) posBegin, REF(Position) posEnd)
 {
 	if (from < posBegin)
 	{

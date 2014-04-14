@@ -68,17 +68,17 @@ public:
 	double getMinTimeOffset() const;
 
 private:
-	TimesList            m_docTimes;
-	TimesList::iterator  m_insertedIt;
-	SerieList            m_serieList;
-	double               m_minTimeOffset;
-	int                  m_ticksCount;
-	bool                 m_previewMode;
+	TimesList m_docTimes;
+	TimesList::iterator m_insertedIt;
+	SerieList m_serieList;
+	double m_minTimeOffset;
+	int m_ticksCount;
+	bool m_previewMode;
 
 	std::vector<ChartView*> m_widgetList;
-	QString                 m_title;
+	QString m_title;
 	std::vector<ChartView*> m_viewList;
-	static ruint            s_titleIndex;
+	static std::size_t s_titleIndex;
 
 	int getSerieIndex(ChartSerie* serie) const;
 	QColor selectColor() const;

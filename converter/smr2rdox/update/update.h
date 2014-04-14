@@ -104,7 +104,7 @@ private:
 	Position m_pos2Begin;
 	Position m_pos2End;
 
-	void insert(CREF(Position) from, CREF(ruint)  size, REF(Position) posBegin, REF(Position) posEnd);
+	void insert(CREF(Position) from, CREF(std::size_t) size, REF(Position) posBegin, REF(Position) posEnd);
 	void remove(CREF(Position) from, CREF(Position) to, REF(Position) posBegin, REF(Position) posEnd);
 
 	DECLARE_IDocUpdate;

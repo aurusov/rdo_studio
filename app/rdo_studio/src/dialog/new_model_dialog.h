@@ -31,7 +31,7 @@ public:
 
 	QString getModelName() const;
 	QString getModelPath() const;
-	ruint   getTemplateIndex() const;
+	std::size_t getTemplateIndex() const;
 
 private:
 	QFont    m_font;

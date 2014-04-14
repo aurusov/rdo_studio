@@ -23,7 +23,7 @@ namespace report {
 class BuildEditLineInfo: public LogEditLineInfo
 {
 public:
-	BuildEditLineInfo(CREF(std::string) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type);
+	BuildEditLineInfo(CREF(std::string) text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type);
 	explicit BuildEditLineInfo(CREF(FileMessage) message);
 	explicit BuildEditLineInfo(CREF(std::string) message);
 	virtual ~BuildEditLineInfo();

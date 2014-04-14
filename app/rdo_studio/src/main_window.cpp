@@ -813,7 +813,7 @@ void MainWindow::saveMenuFileReopen() const
 	QSettings settings;
 	settings.beginGroup("reopen");
 
-	ruint index = 1;
+	std::size_t index = 1;
 	BOOST_FOREACH(const QString& fileName, m_reopenList)
 	{
 		settings.setValue(QString::number(index++), fileName);

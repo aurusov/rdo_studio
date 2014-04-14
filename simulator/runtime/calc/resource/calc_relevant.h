@@ -25,9 +25,9 @@ class RDOGetResourceByRelevantResourceID: public RDOCalc
 {
 DECLARE_FACTORY(RDOGetResourceByRelevantResourceID)
 private:
-	RDOGetResourceByRelevantResourceID(ruint relevantResourceID);
+	RDOGetResourceByRelevantResourceID(std::size_t relevantResourceID);
 
-	ruint m_relevantResourceID;
+	std::size_t m_relevantResourceID;
 
 	DECLARE_ICalc;
 };
@@ -41,9 +41,9 @@ public:
 	CREF(std::string) getName() const;
 
 private:
-	RDOEraseResRelCalc(ruint relResID, CREF(std::string) relResName);
+	RDOEraseResRelCalc(std::size_t relResID, CREF(std::string) relResName);
 
-	ruint m_relResID;
+	std::size_t m_relResID;
 	std::string m_relResName;
 
 	DECLARE_ICalc;

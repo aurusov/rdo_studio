@@ -35,7 +35,7 @@ inline void RDOEnumType::add(CREF(std::string) next)
 	m_enum.push_back(next);
 }
 
-inline ruint RDOEnumType::findEnum(CREF(std::string) val) const
+inline std::size_t RDOEnumType::findEnum(CREF(std::string) val) const
 {
 	CIterator it = std::find(m_enum.begin(), m_enum.end(), val);
 	return it != m_enum.end() ? it - m_enum.begin() : END;

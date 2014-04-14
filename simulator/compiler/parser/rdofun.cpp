@@ -723,7 +723,7 @@ RDOFUNParams::RDOFUNParams(CREF(LPArithmContainer) pArithmContainer)
 RDOFUNParams::~RDOFUNParams()
 {}
 
-rdo::runtime::LPRDOCalc RDOFUNParams::getCalc(ruint paramID, CREF(LPTypeInfo) pType)
+rdo::runtime::LPRDOCalc RDOFUNParams::getCalc(std::size_t paramID, CREF(LPTypeInfo) pType)
 {
 	ASSERT(paramID < m_pArithmContainer->getContainer().size());
 	rdo::runtime::LPRDOCalc pCalc = m_pArithmContainer->getContainer()[paramID]->createCalc(pType);
@@ -791,7 +791,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(std::string) funName)
 		return createSeqCall(funName);
 	}
 
-	ruint nParams = pFunction->getParams().size();
+	const std::size_t nParams = pFunction->getParams().size();
 	if (nParams != m_pArithmContainer->getContainer().size())
 	{
 		RDOParser::s_parser()->error().error(src_info(), rdo::format("Неверное количество параметров функции: %s", funName.c_str()));
@@ -803,7 +803,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(std::string) funName)
 	ASSERT(pCalc);
 	rdo::runtime::LPRDOCalcFunctionCaller pFuncCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(pCalc);
 	pFuncCall->setSrcInfo(src_info());
-	for (ruint i = 0; i < nParams; i++)
+	for (std::size_t i = 0; i < nParams; i++)
 	{
 		LPTypeInfo pFuncParam = pFunction->getParams()[i]->getTypeInfo();
 		LPRDOFUNArithm pArithm = m_pArithmContainer->getContainer()[i];
@@ -1232,8 +1232,8 @@ void RDOFUNSequenceByHistEnum::addEnum(CREF(LPRDOValue) pValue, CREF(LPRDOValue)
 void RDOFUNSequenceByHistEnum::createCalcs()
 {
 	PTR(rdo::runtime::RandGeneratorByHistEnum) pGenerator = new rdo::runtime::RandGeneratorByHistEnum();
-	ruint size = m_values.size();
-	for (ruint i = 0; i < size; i++)
+	const std::size_t size = m_values.size();
+	for (std::size_t i = 0; i < size; i++)
 	{
 		pGenerator->addValues(m_values[i], m_freq[i].getDouble());
 	}
@@ -1276,7 +1276,7 @@ LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pPa
 void RDOFUNSequenceEnumerative::createCalcs()
 {
 	PTR(rdo::runtime::RandGeneratorEnumerative) pGenerator = new rdo::runtime::RandGeneratorEnumerative();
-	for (ruint i = 0; i < m_valueList.size(); i++)
+	for (std::size_t i = 0; i < m_valueList.size(); i++)
 	{
 		pGenerator->addValue(m_valueList[i]->value());
 	}
@@ -1555,7 +1555,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 		++it;
 	}
 	int   param_cnt = getParams().size();
-	ruint range     = 1;
+	std::size_t range = 1;
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(0);
 	ASSERT(pCalc);
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());
@@ -1614,7 +1614,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	rdo::runtime::LPRDOFuncTableCalc pFuncTableCalc = rdo::Factory<rdo::runtime::RDOFuncTableCalc>::create(pCalc);
 	ASSERT(pFuncTableCalc);
 	pFuncTableCalc->setSrcInfo(src_info());
-	for (ruint currElem = 0; currElem < range; currElem++)
+	for (std::size_t currElem = 0; currElem < range; currElem++)
 	{
 		LPRDOFUNFunctionListElement pListElement = m_elementList.at(currElem);
 		ASSERT(pListElement);

@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- Notify
 // --------------------------------------------------------------------------------
-void Notify::connect(PTR(INotify) pTo, ruint message)
+void Notify::connect(PTR(INotify) pTo, std::size_t message)
 {
 	Connected::iterator it = m_connected.find(message);
 	while (it != m_connected.end())
@@ -56,12 +56,12 @@ void Notify::disconnect(PTR(INotify) pTo)
 	disconnect(m_connected.begin(), pTo);
 }
 
-void Notify::disconnect(PTR(INotify) pTo, ruint message)
+void Notify::disconnect(PTR(INotify) pTo, std::size_t message)
 {
 	disconnect(m_connected.find(message), pTo);
 }
 
-void Notify::fireMessage(ruint message, PTR(void) pParam) const
+void Notify::fireMessage(std::size_t message, PTR(void) pParam) const
 {
 	Connected::const_iterator it = m_connected.find(message);
 	while (it != m_connected.end())

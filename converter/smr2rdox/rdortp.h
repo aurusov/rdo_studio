@@ -45,7 +45,7 @@ DECLARE_FACTORY(RDORTPResType);
 public:
 	typedef std::vector<LPRDORTPParam> ParamList;
 
-	static const ruint UNDEFINED_PARAM = ruint(~0);
+	static const std::size_t UNDEFINED_PARAM = std::size_t(~0);
 
 	CREF(std::string) name() const { return src_text(); };
 	int getNumber() const { return m_number; };
@@ -57,7 +57,7 @@ public:
 	LPRDORTPParam findRTPParam(CREF(std::string) paramName) const;
 	void finish();
 
-	ruint getRTPParamNumber(CREF(std::string) paramName) const;
+	std::size_t getRTPParamNumber(CREF(std::string) paramName) const;
 	CREF(ParamList) getParams() const { return m_params; }
 
 	void writeModelStructure(REF(std::ostream) stream) const;

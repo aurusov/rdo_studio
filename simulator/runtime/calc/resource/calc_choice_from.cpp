@@ -46,7 +46,7 @@ RDOSelectResourceNonExistCalc::RDOSelectResourceNonExistCalc(ResourceID relResID
 
 RDOValue RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+	pRuntime->getCurrentActivity()->setRelRes(m_relResID, std::size_t(~0));
 	return RDOValue(true);
 }
 
@@ -73,7 +73,7 @@ RDOValue RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	pRuntime->getCurrentActivity()->setRelRes(m_relResID, m_resID);
 	if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 	{
-		pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+		pRuntime->getCurrentActivity()->setRelRes(m_relResID, std::size_t(~0));
 		return RDOValue(0);
 	}
 	return RDOValue(1);
@@ -106,7 +106,7 @@ RDOValue RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 				pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
 				if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 				{
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+					pRuntime->getCurrentActivity()->setRelRes(m_relResID, std::size_t(~0));
 					continue;
 				}
 				return RDOValue(1);
@@ -116,7 +116,7 @@ RDOValue RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 				pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
 				if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 				{
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+					pRuntime->getCurrentActivity()->setRelRes(m_relResID, std::size_t(~0));
 					continue;
 				}
 				RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
@@ -132,7 +132,7 @@ RDOValue RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 				pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
 				if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 				{
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+					pRuntime->getCurrentActivity()->setRelRes(m_relResID, std::size_t(~0));
 					continue;
 				}
 				RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
@@ -177,11 +177,11 @@ RDOSelectResourceCommonCalc::RDOSelectResourceCommonCalc(CREF(SelectResourceComm
 	}
 }
 
-void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, ruint level, REF(ResourceIDList) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(bool) hasBest) const
+void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, std::size_t level, REF(ResourceIDList) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(bool) hasBest) const
 {
 	if (level >= allNumbs.size())
 	{
-		for (ruint i = 0; i < m_resSelectorList.size(); i++)
+		for (std::size_t i = 0; i < m_resSelectorList.size(); i++)
 		{
 			if (!m_resSelectorList[i]->callChoice(pRuntime))
 			{
@@ -193,7 +193,7 @@ void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, ruint l
 		   (!m_useCommonWithMax && (newVal < bestVal))) // found better value
 		{
 			ASSERT(res.size() == m_resSelectorList.size());
-			for (ruint i = 0; i < m_resSelectorList.size(); i++)
+			for (std::size_t i = 0; i < m_resSelectorList.size(); i++)
 			{
 				res[i] = pRuntime->getCurrentActivity()->getResByRelRes(i);
 			}
@@ -204,18 +204,18 @@ void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, ruint l
 	}
 	ASSERT(level < allNumbs.size());
 	REF(ResourceIDList) ourLevel = allNumbs[level];
-	for (ruint i = 0; i < ourLevel.size(); i++)
+	for (std::size_t i = 0; i < ourLevel.size(); i++)
 	{
 		pRuntime->getCurrentActivity()->setRelRes(level, ourLevel[i]);
 		getBest(allNumbs, level+1, res, bestVal, pRuntime, hasBest);
 	}
 }
 
-bool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint level, CREF(LPRDORuntime) pRuntime) const
+bool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, std::size_t level, CREF(LPRDORuntime) pRuntime) const
 {
 	if (level >= allNumbs.size())
 	{
-		for (ruint i = 0; i < m_resSelectorList.size(); i++)
+		for (std::size_t i = 0; i < m_resSelectorList.size(); i++)
 		{
 			if (!m_resSelectorList[i]->callChoice(pRuntime))
 			{
@@ -226,7 +226,7 @@ bool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint 
 	}
 	ASSERT(level < allNumbs.size());
 	REF(ResourceIDList) ourLevel = allNumbs[level];
-	for (ruint i = 0; i < ourLevel.size(); i++)
+	for (std::size_t i = 0; i < ourLevel.size(); i++)
 	{
 		pRuntime->getCurrentActivity()->setRelRes(level, ourLevel[i]);
 		if (getFirst(allNumbs, level+1, pRuntime)) return true;
@@ -237,7 +237,7 @@ bool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint 
 //bool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, int level,CREF(LPRDORuntime) pRuntime) const
 //{
 //	if (level <= 0) {
-//		for (ruint i = 0; i < m_resSelectorList.size(); i++) {
+//		for (std::size_t i = 0; i < m_resSelectorList.size(); i++) {
 //			if (!m_resSelectorList[i]->callChoice(pRuntime)) {
 //				return false;
 //			}
@@ -247,7 +247,7 @@ bool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint 
 //		level--;
 //		ASSERT(level < allNumbs.size());
 //		REF(ResourceIDList) ourLevel = allNumbs[level];
-//		for (ruint i = 0; i < ourLevel.size(); i++) {
+//		for (std::size_t i = 0; i < ourLevel.size(); i++) {
 //			pRuntime->setRelRes(level, ourLevel[i]);
 //			if (getFirst(allNumbs, level, pRuntime)) return true;
 //		}
@@ -259,7 +259,7 @@ RDOValue RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ResourceIDTable allNumbs;
 	ResourceIDList res;
-	for (ruint i = 0; i < m_resSelectorList.size(); i++)
+	for (std::size_t i = 0; i < m_resSelectorList.size(); i++)
 	{
 		ResourceIDList resourceIDList;
 		m_resSelectorList[i]->getPossibleNumbers(pRuntime, resourceIDList);
@@ -285,7 +285,7 @@ RDOValue RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 		getBest(allNumbs, 0, res, bestVal, pRuntime, found);
 		if (found)
 		{
-			for (ruint i = 0; i < res.size(); i++)
+			for (std::size_t i = 0; i < res.size(); i++)
 			{
 				pRuntime->getCurrentActivity()->setRelRes(i, res[i]);
 			}

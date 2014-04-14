@@ -34,7 +34,7 @@ inline RDOSrcInfo::Position::Position()
 	, m_last_pos  (UNDEFINE_POS )
 {}
 
-inline RDOSrcInfo::Position::Position(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos)
+inline RDOSrcInfo::Position::Position(std::size_t first_line, std::size_t first_pos, std::size_t last_line, std::size_t last_pos)
 	: m_first_line(first_line)
 	, m_first_pos (first_pos )
 	, m_last_line (last_line )
@@ -92,7 +92,7 @@ inline void RDOSrcInfo::setSrcPos(CREF(Position) position_begin, CREF(Position) 
 	m_position.m_last_pos   = position_end.m_last_pos;
 }
 
-inline void RDOSrcInfo::setSrcPos(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos)
+inline void RDOSrcInfo::setSrcPos(std::size_t first_line, std::size_t first_pos, std::size_t last_line, std::size_t last_pos)
 {
 	m_position.m_first_line = first_line;
 	m_position.m_first_pos  = first_pos;

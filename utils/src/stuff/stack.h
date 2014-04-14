@@ -26,7 +26,7 @@ public:
 	void pop();
 
 	bool empty() const;
-	ruint size() const;
+	std::size_t size() const;
 
 	CREF(T) top() const;
 	 REF(T) top();

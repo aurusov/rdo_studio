@@ -202,10 +202,10 @@ int RDOPATPattern::findPATPatternParamNum(CREF(std::string) paramName) const
 	return it != m_paramList.end() ? it - m_paramList.begin() : -1;
 }
 
-ruint RDOPATPattern::findRelevantResourceNum(CREF(std::string) resName) const
+std::size_t RDOPATPattern::findRelevantResourceNum(CREF(std::string) resName) const
 {
 	RelResList::const_iterator it = std::find_if(m_relResList.begin(), m_relResList.end(), compareName<RDORelevantResource>(resName));
-	return it != m_relResList.end() ? it - m_relResList.begin() : ruint(~0);
+	return it != m_relResList.end() ? it - m_relResList.begin() : std::size_t(~0);
 }
 
 void RDOPATPattern::add(CREF(LPRDOParam) pParam)

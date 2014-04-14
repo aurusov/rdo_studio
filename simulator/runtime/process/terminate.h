@@ -40,9 +40,9 @@ QUERY_INTERFACE_END
 private:
 	RDOPROCTerminate(CREF(LPIPROCProcess) pProcess, CREF(LPRDOCalc) pCalc);
 
-	ruint                  m_terminatedTransactCount;
-	LPRDOCalc              m_pTermCalc;
-	LPIInternalStatistics  m_pStatistics;
+	std::size_t m_terminatedTransactCount;
+	LPRDOCalc m_pTermCalc;
+	LPIInternalStatistics m_pStatistics;
 
 	DECLARE_IBaseOperation;
 	DECLARE_IInternalStatisticsManager;

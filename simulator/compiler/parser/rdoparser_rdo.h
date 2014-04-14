@@ -32,9 +32,9 @@ class RDOParserRDOItem: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserRDOItem);
 public:
-	virtual void  parse         (CREF(LPRDOParser) pParser);
-	virtual ruint lexer_loc_line();
-	virtual ruint lexer_loc_pos ();
+	virtual void parse(CREF(LPRDOParser) pParser);
+	virtual std::size_t lexer_loc_line();
+	virtual std::size_t lexer_loc_pos();
 
 	std::string text() const;
 

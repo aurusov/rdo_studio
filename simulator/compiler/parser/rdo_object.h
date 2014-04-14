@@ -65,7 +65,7 @@ public:
 	{
 		setSrcPos(Position(pos_begin.m_first_line, pos_begin.m_first_pos, pos_end.m_last_line, pos_end.m_last_pos));
 	}
-	void setSrcPos(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos)
+	void setSrcPos(std::size_t first_line, std::size_t first_pos, std::size_t last_line, std::size_t last_pos)
 	{
 		setSrcPos(Position(first_line, first_pos, last_line, last_pos));
 	}
@@ -77,11 +77,11 @@ public:
 		pos1.m_first_pos  = pos2.m_first_pos;
 		pos1.m_last_line  = pos2.m_last_line;
 		pos1.m_last_pos   = pos2.m_last_pos;
-		pos1.m_first_seek = ruint(Position::UNDEFINE_POS);
-		pos1.m_last_seek  = ruint(Position::UNDEFINE_POS);
+		pos1.m_first_seek = std::size_t(Position::UNDEFINE_POS);
+		pos1.m_last_seek  = std::size_t(Position::UNDEFINE_POS);
 		return pos1;
 	}
-	static ruint getPosByLength(ruint pos, CREF(std::string) text)
+	static std::size_t getPosByLength(std::size_t pos, CREF(std::string) text)
 	{
 		return pos + text.length();
 	}

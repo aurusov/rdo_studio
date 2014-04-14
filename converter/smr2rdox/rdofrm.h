@@ -38,23 +38,23 @@ public:
 	CREF(std::string) name() const { return src_info().src_text(); }
 	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame; }
 
-	typedef  boost::optional<ruint>  Seek;
+	typedef boost::optional<std::size_t> Seek;
 
-	void  setShowIfBlock      (CREF(Seek) firstSeek);
-	void  addItem             (CREF(rdo::runtime::LPRDOCalc) pItem, ruint lastSeek);
-	void  setFrameConditionPos(ruint firstSeek, ruint lastSeek);
-	void  onAfterBackPicture  (ruint lastSeek);
+	void setShowIfBlock(CREF(Seek) firstSeek);
+	void addItem(CREF(rdo::runtime::LPRDOCalc) pItem, std::size_t lastSeek);
+	void setFrameConditionPos(std::size_t firstSeek, std::size_t lastSeek);
+	void onAfterBackPicture(std::size_t lastSeek);
 
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info);
 
-	typedef  boost::optional<std::pair<ruint, ruint> > PosPair;
+	typedef  boost::optional<std::pair<std::size_t, std::size_t>> PosPair;
 
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
-	Seek                        m_firstSeek;
-	Seek                        m_lastSeek;
-	ruint                       m_itemCount;
-	PosPair                     m_frameConditionPos;
+	Seek m_firstSeek;
+	Seek m_lastSeek;
+	std::size_t m_itemCount;
+	PosPair m_frameConditionPos;
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

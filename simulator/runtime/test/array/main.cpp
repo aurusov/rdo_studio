@@ -226,8 +226,8 @@ BOOST_AUTO_TEST_CASE(ArrayTestSetItem)
 {
 	Array array = createArray(Container()(1)(2)(3));
 
-	ruint ind  = 1;
-	ruint item = 48;
+	std::size_t ind = 1;
+	std::size_t item = 48;
 	rdo::runtime::RDOValue index(ind);
 	rdo::runtime::RDOValue value(item);
 	array.first->setItem(index, value);
@@ -260,7 +260,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
 {
 	Array array = createArray(Container()(1)(48)(3));
 
-	ruint ind = 1;
+	std::size_t ind = 1;
 	rdo::runtime::RDOValue index(ind);
 	rdo::runtime::RDOValue value(array.first->getItem(index));
 

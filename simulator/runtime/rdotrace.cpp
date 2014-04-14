@@ -148,8 +148,8 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 
 	boost::posix_time::ptime systime_current = boost::posix_time::microsec_clock::local_time();
 
-	ruint msec_current = RDOSimulatorBase::getMSec(systime_current);
-	ruint msec_begin   = RDOSimulatorBase::getMSec(treeRoot->m_ptime);
+	const std::size_t msec_current = RDOSimulatorBase::getMSec(systime_current);
+	const std::size_t msec_begin = RDOSimulatorBase::getMSec(treeRoot->m_ptime);
 	double sec_delay = static_cast<double>(msec_current - msec_begin) / 1000;
 
 	static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_times.push_back(sec_delay);
@@ -365,8 +365,8 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(std::string) status
 				getOStream() << boost::format("DPS_TM %0.3f  %0.3f  %0.3f") % d_med % d_min % d_max << std::endl << getEOL();
 
 				// Используемая память
-				ruint ui_min = 0;
-				ruint ui_max = 0;
+				std::size_t ui_min = 0;
+				std::size_t ui_max = 0;
 				dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_MEMORY, ui_min, ui_max, d_med);
 				getOStream() << rdo::format("DPS_ME %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 

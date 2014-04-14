@@ -202,7 +202,7 @@ inline bool intrusive_ptr<T>::owner() const
 }
 
 template<class T>
-inline REF(ruint) intrusive_ptr<T>::counter()
+inline REF(std::size_t) intrusive_ptr<T>::counter()
 {
 	return m_object->m_intrusive_counter;
 }

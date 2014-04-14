@@ -189,7 +189,7 @@ LPRDORelevantResource RDOPATPattern::findRelRes(const std::string& identifier, c
 namespace
 {
 
-LPExpression contextParameters(const LPRDOParam& param, ruint paramID, const RDOParserSrcInfo& srcInfo)
+LPExpression contextParameters(const LPRDOParam& param, std::size_t paramID, const RDOParserSrcInfo& srcInfo)
 {
 	return rdo::Factory<Expression>::create(
 		param->getTypeInfo(),
@@ -385,7 +385,7 @@ std::vector<runtime::LPRDOCalc> RDOPATPattern::createParamsCalcs(CREF(std::vecto
 	std::vector<runtime::LPRDOCalc> result;
 	result.reserve(m_paramList.size());
 
-	ruint currParam = 0;
+	std::size_t currParam = 0;
 	BOOST_FOREACH(const LPRDOFUNArithm& pParam, params)
 	{
 		ASSERT(pParam);
@@ -457,10 +457,10 @@ int RDOPATPattern::findPATPatternParamNum(CREF(std::string) paramName) const
 	return it != m_paramList.end() ? it - m_paramList.begin() : -1;
 }
 
-ruint RDOPATPattern::findRelevantResourceNum(CREF(std::string) resName) const
+std::size_t RDOPATPattern::findRelevantResourceNum(CREF(std::string) resName) const
 {
 	RelResList::const_iterator it = std::find_if(m_relResList.begin(), m_relResList.end(), compareName<RDORelevantResource>(resName));
-	return it != m_relResList.end() ? it - m_relResList.begin() : ruint(~0);
+	return it != m_relResList.end() ? it - m_relResList.begin() : std::size_t(~0);
 }
 
 void RDOPATPattern::add(CREF(LPRDOParam) pParam)
@@ -1095,7 +1095,7 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 	{
 		const std::string paramName = params.identifier();
 
-		ruint parNumb = getType()->getRTPParamNumber(paramName);
+		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 			return FindResult();
 		//! Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе

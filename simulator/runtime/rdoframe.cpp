@@ -144,7 +144,7 @@ RDOValue RDOFRMSprite::doCalc(CREF(LPRDORuntime) pRuntime)
 			point.m_x -= size.m_width  / 2;
 			point.m_y -= size.m_height / 2;
 
-			ruint colorRuint = (*it)->getParam(7).getUInt();
+			const std::size_t colorRuint = (*it)->getParam(7).getUInt();
 			rdo::animation::Color color(GetBValue(colorRuint), GetGValue(colorRuint), GetRValue(colorRuint));
 
 			PTR(rdo::animation::FrameItem) pRect = new rdo::animation::RectElement(

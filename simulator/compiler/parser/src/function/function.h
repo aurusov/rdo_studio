@@ -32,7 +32,7 @@ class Function
 {
 DECLARE_FACTORY(Function);
 public:
-	typedef boost::optional<ruint>  ParamID;
+	typedef boost::optional<std::size_t> ParamID;
 	typedef std::vector<LPRDOParam> ParamList;
 
 	void pushContext();

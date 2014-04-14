@@ -44,7 +44,7 @@ RDOValue::RDOValue(CREF(LPRDOType) pType)
 	case RDOType::t_unknow        : break;
 	case RDOType::t_int           : __get<int>   () = 0; break;
 	case RDOType::t_real          : __get<double>() = 0; break;
-	case RDOType::t_enum          : __get<ruint> () = 0; break;
+	case RDOType::t_enum          : __get<std::size_t> () = 0; break;
 	case RDOType::t_bool          : __get<bool> () = false; break;
 	case RDOType::t_string        : new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class("")); break;
 	case RDOType::t_identificator : new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class("")); break;
@@ -60,10 +60,10 @@ RDOValue::RDOValue(int value)
 	setUndefined(false);
 }
 
-RDOValue::RDOValue(ruint value)
+RDOValue::RDOValue(std::size_t value)
 	: m_pType(g_int)
 {
-	__get<ruint>() = value;
+	__get<std::size_t>() = value;
 	setUndefined(false);
 }
 
@@ -95,26 +95,26 @@ RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum)
 	if (pEnum->empty())
 		RDOValueException();
 
-	__get<ruint>() = pEnum->findEnum(pEnum->getValues()[0]);
+	__get<std::size_t>() = pEnum->findEnum(pEnum->getValues()[0]);
 	setUndefined(false);
 }
 
 RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, CREF(std::string) value)
 	: m_pType(pEnum)
 {
-	__get<ruint>() = pEnum->findEnum(value);
-	if (__get<ruint>() == RDOEnumType::END)
+	__get<std::size_t>() = pEnum->findEnum(value);
+	if (__get<std::size_t>() == RDOEnumType::END)
 		RDOValueException();
 	setUndefined(false);
 }
 
-RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, ruint index)
+RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, std::size_t index)
 	: m_pType(pEnum)
 {
 	if (index == RDOEnumType::END || index >= pEnum->getValues().size())
 		RDOValueException();
 
-	__get<ruint>() = index;
+	__get<std::size_t>() = index;
 	setUndefined(false);
 }
 
@@ -158,7 +158,7 @@ RDOValue RDOValue::fromDouble(CREF(LPRDOType) pType, double value)
 	case RDOType::t_unknow: break;
 	case RDOType::t_int   : result.__get<int>   () = int(value); break;
 	case RDOType::t_real  : result.__get<double>() = value; break;
-	case RDOType::t_enum  : result.__get<ruint> () = ruint(value); break;
+	case RDOType::t_enum  : result.__get<std::size_t> () = std::size_t(value); break;
 	case RDOType::t_bool  : result.__get<bool> () = value != 0.0; break;
 	default               : throw RDOValueException();
 	}
@@ -188,9 +188,9 @@ int RDOValue::getInt() const
 
 	switch (typeID())
 	{
-	case RDOType::t_int    : return __get<int>  ();
+	case RDOType::t_int    : return __get<int>();
 	case RDOType::t_real   : return (int)__get<double>();
-	case RDOType::t_enum   : return __get<ruint>();
+	case RDOType::t_enum   : return __get<std::size_t>();
 	case RDOType::t_bool   : return __get<bool>() ? 1 : 0;
 	case RDOType::t_pointer: return onPointerGetInt();
 	default                : break;
@@ -198,16 +198,16 @@ int RDOValue::getInt() const
 	throw RDOValueException();
 }
 
-ruint RDOValue::getUInt() const
+std::size_t RDOValue::getUInt() const
 {
 	if (isUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
 	{
-	case RDOType::t_int    : return __get<ruint>();
-	case RDOType::t_real   : return (ruint)__get<double>();
-	case RDOType::t_enum   : return __get<ruint>();
+	case RDOType::t_int    : return __get<std::size_t>();
+	case RDOType::t_real   : return (std::size_t)__get<double>();
+	case RDOType::t_enum   : return __get<std::size_t>();
 	case RDOType::t_bool   : return __get<bool>() ? 1 : 0;
 	case RDOType::t_pointer: return onPointerGetUInt();
 	default                : break;
@@ -222,9 +222,9 @@ int RDOValue::getEnumAsInt() const
 
 	switch (typeID())
 	{
-	case RDOType::t_int : return __get<int>  ();
+	case RDOType::t_int : return __get<int>();
 	case RDOType::t_real: return (int)__get<double>();
-	case RDOType::t_enum: return __get<ruint>();
+	case RDOType::t_enum: return __get<std::size_t>();
 	case RDOType::t_bool: return __get<bool>() ? 1 : 0;
 	default             : break;
 	}
@@ -251,10 +251,10 @@ double RDOValue::getDouble() const
 
 	switch (typeID())
 	{
-	case RDOType::t_int : return __get<int>   ();
+	case RDOType::t_int : return __get<int>();
 	case RDOType::t_real: return __get<double>();
-	case RDOType::t_enum: return __get<ruint> ();
-	case RDOType::t_bool: return __get<bool> () ? 1 : 0;
+	case RDOType::t_enum: return __get<std::size_t>();
+	case RDOType::t_bool: return __get<bool>() ? 1 : 0;
 	default             : break;
 	}
 	throw RDOValueException();
@@ -280,9 +280,9 @@ bool RDOValue::getAsBool() const
 
 	switch (typeID())
 	{
-	case RDOType::t_int   : return __get<int>   ()      ? true : false;
-	case RDOType::t_real  : return __get<double>()      ? true : false;
-	case RDOType::t_enum  : return __get<ruint> ()      ? true : false;
+	case RDOType::t_int   : return __get<int>() ? true : false;
+	case RDOType::t_real  : return __get<double>() ? true : false;
+	case RDOType::t_enum  : return __get<std::size_t>() ? true : false;
 	case RDOType::t_string: return !__stringV().empty() ? true : false;
 	case RDOType::t_bool  : return __get<bool> ();
 	default               : break;
@@ -325,7 +325,7 @@ std::string RDOValue::getAsString() const
 	{
 	case RDOType::t_int          : return rdo::format("%d", __get<int>());
 	case RDOType::t_real         : return rdo::toString(__get<double>());
-	case RDOType::t_enum         : return __enumT()->getValues().at(__get<ruint>());
+	case RDOType::t_enum         : return __enumT()->getValues().at(__get<std::size_t>());
 	case RDOType::t_bool         : return __get<bool>() ? "true" : "false";
 	case RDOType::t_string       : return __stringV();
 	case RDOType::t_identificator: return __stringV();
@@ -344,7 +344,7 @@ std::string RDOValue::getAsStringForTrace() const
 	{
 	case RDOType::t_int    : return rdo::format("%d", __get<int>());
 	case RDOType::t_real   : return rdo::toString(__get<double>());
-	case RDOType::t_enum   : return rdo::format("%d", __get<ruint>());
+	case RDOType::t_enum   : return rdo::format("%d", __get<std::size_t>());
 	case RDOType::t_bool   : return __get<bool>() ? "true" : "false";
 	case RDOType::t_string : return __stringV();
 	case RDOType::t_pointer: return onPointerAsString();
@@ -422,7 +422,7 @@ bool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 		{
 			switch (rdovalue.typeID())
 			{
-			case RDOType::t_enum: if (m_pType == rdovalue.m_pType) return __get<ruint>() == rdovalue.__get<ruint>(); break;
+			case RDOType::t_enum: if (m_pType == rdovalue.m_pType) return __get<std::size_t>() == rdovalue.__get<std::size_t>(); break;
 			default             : break;
 			}
 			break;
@@ -1215,7 +1215,7 @@ int RDOValue::onPointerGetInt() const
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerGetInt()");
 }
 
-ruint RDOValue::onPointerGetUInt() const
+std::size_t RDOValue::onPointerGetUInt() const
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
@@ -1224,7 +1224,7 @@ ruint RDOValue::onPointerGetUInt() const
 	//{
 	//	LPFuzzySet pThisValue = getPointer<FuzzySet>();
 	//	ASSERT(pThisValue);
-	//	return (ruint)MemberFunctionProperties::defuzzyfication(pThisValue).getInt();
+	//	return (std::size_t)MemberFunctionProperties::defuzzyfication(pThisValue).getInt();
 	//}
 
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerGetUInt()");

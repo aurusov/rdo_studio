@@ -83,7 +83,7 @@ public:
 	class InsertMenuData: public QObject
 	{
 	public:
-		typedef  boost::optional<ruint>  Position;
+		typedef boost::optional<std::size_t> Position;
 
 		InsertMenuData(QObject* pParent, const QString& text, const Position& position = Position());
 

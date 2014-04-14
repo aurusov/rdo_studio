@@ -94,7 +94,7 @@ private:
 	virtual void stop();
 
 	PTR(CWinThread) thread_corbaRunThreadFun;
-	static ruint corbaRunThreadFun(PTR(void) pParam);
+	static std::size_t corbaRunThreadFun(PTR(void) pParam);
 };
 
 } //! namespace rdoCorba
@@ -129,9 +129,9 @@ public:
 	struct GetFrame
 	{
 		PTR(rdo::animation::Frame) m_pFrame;
-		ruint                      m_number;
+		std::size_t m_number;
 
-		GetFrame(PTR(rdo::animation::Frame) pFrame, ruint number)
+		GetFrame(PTR(rdo::animation::Frame) pFrame, std::size_t number)
 			: m_pFrame(pFrame)
 			, m_number(number)
 		{}
@@ -139,10 +139,10 @@ public:
 
 	struct FrameAreaDown
 	{
-		ruint   m_number;
+		std::size_t m_number;
 		std::string m_name;
 
-		FrameAreaDown(ruint number, CREF(std::string) name)
+		FrameAreaDown(std::size_t number, CREF(std::string) name)
 			: m_number(number)
 			, m_name  (name  )
 		{}
@@ -165,7 +165,7 @@ private:
 
 	void writeResultsInfo();
 
-	void sendMessage(ThreadID threadID, ruint messageID, PTR(void) pParam);
+	void sendMessage(ThreadID threadID, std::size_t messageID, PTR(void) pParam);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

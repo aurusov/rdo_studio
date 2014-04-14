@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOResource
 // --------------------------------------------------------------------------------
-RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList, LPIResourceType pResType, ruint resID, ruint typeID, bool trace, bool temporary)
+RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary)
 	: RDORuntimeObject   (                                      )
 	, RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
 	, m_temporary        (temporary                             )
@@ -189,7 +189,7 @@ void RDOResource::setState(RDOResource::ConvertStatus value)
 	m_state = value;
 }
 
-bool RDOResource::checkType(ruint type) const
+bool RDOResource::checkType(std::size_t type) const
 {
 	return m_type == type;
 }
@@ -199,7 +199,7 @@ CREF(LPIResourceType) RDOResource::getResType() const
 	return m_resType;
 }
 
-ruint RDOResource::getType() const
+std::size_t RDOResource::getType() const
 {
 	return m_type;
 }
@@ -209,27 +209,27 @@ CREF(RDOResource::ParamList) RDOResource::getParamList() const
 	return m_paramList;
 }
 
-CREF(RDOValue) RDOResource::getParam(ruint index) const
+CREF(RDOValue) RDOResource::getParam(std::size_t index) const
 {
 	ASSERT(index < m_paramList.size());
 	return m_paramList[index];
 }
 
-REF(RDOValue) RDOResource::getParamRaw(ruint index)
+REF(RDOValue) RDOResource::getParamRaw(std::size_t index)
 {
 	ASSERT(index < m_paramList.size());
 	setState(CS_Keep);
 	return m_paramList[index];
 }
 
-void RDOResource::setParam(ruint index, CREF(RDOValue) value)
+void RDOResource::setParam(std::size_t index, CREF(RDOValue) value)
 {
 	ASSERT(index < m_paramList.size());
 	setState(CS_Keep);
 	m_paramList[index] = value;
 }
 
-ruint RDOResource::paramsCount() const
+std::size_t RDOResource::paramsCount() const
 {
 	return m_paramList.size();
 }

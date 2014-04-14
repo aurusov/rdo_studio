@@ -64,14 +64,14 @@ public:
 		LPRDOValue m_pValue;
 	};
 	typedef std::vector<Param> ParamList;
-	static const ruint UNDEFINED_ID = ruint(~0);
+	static const std::size_t UNDEFINED_ID = std::size_t(~0);
 
 	virtual std::vector<rdo::runtime::LPRDOCalc> createCalc() const;
 
 	CREF(std::string) name() const { return src_info().src_text(); }
 	LPRDORTPResType getType() const { return m_pResType; }
 
-	ruint getID() const { return m_id; }
+	std::size_t getID() const { return m_id; }
 
 	CREF(ParamList) params () const { return m_paramList; }
 
@@ -91,11 +91,11 @@ public:
 	}
 
 protected:
-	RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id = UNDEFINED_ID);
+	RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, std::size_t id = UNDEFINED_ID);
 	virtual ~RDORSSResource();
 
 	LPRDORTPResType m_pResType;
-	ruint m_id; //! in system
+	std::size_t m_id; //! in system
 	ParamList m_paramList;
 	bool trace;
 

@@ -514,7 +514,7 @@ frm_color
 		LPRDOFUNArithm pRed   = rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($2));
 		LPRDOFUNArithm pGreen = rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($3));
 		LPRDOFUNArithm pBlue  = rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($4));
-		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(ruint(0), RDOParserSrcInfo()), rdo::Factory<RDOValue>::create(ruint(255), RDOParserSrcInfo()), RDOParserSrcInfo());
+		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(std::size_t(0), RDOParserSrcInfo()), rdo::Factory<RDOValue>::create(std::size_t(255), RDOParserSrcInfo()), RDOParserSrcInfo());
 		LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 		LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOParserSrcInfo());
 		pRed->checkParamType  (pType);
@@ -542,7 +542,7 @@ frm_color
 		LPRDOFUNArithm pRed   = CONVERTER->stack().pop<RDOFUNArithm>($2);
 		LPRDOFUNArithm pGreen = CONVERTER->stack().pop<RDOFUNArithm>($4);
 		LPRDOFUNArithm pBlue  = CONVERTER->stack().pop<RDOFUNArithm>($6);
-		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(ruint(0), RDOParserSrcInfo()), rdo::Factory<RDOValue>::create(ruint(255), RDOParserSrcInfo()), RDOParserSrcInfo());
+		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(std::size_t(0), RDOParserSrcInfo()), rdo::Factory<RDOValue>::create(std::size_t(255), RDOParserSrcInfo()), RDOParserSrcInfo());
 		LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 		LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOParserSrcInfo());
 		pRed->checkParamType  (pType);

@@ -705,7 +705,7 @@ void Application::convertSettings() const
 
 	if (convertor.contains("reopen"))
 	{
-		for (ruint i = 0; i < 10; i++)
+		for (std::size_t i = 0; i < 10; i++)
 		{
 			QString value = convertor.value<QString>(QString("reopen/%1%2").arg(i+1 < 10 ? "0" : "").arg(i+1));
 			if (value.isEmpty())

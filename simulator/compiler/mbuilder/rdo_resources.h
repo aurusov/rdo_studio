@@ -65,7 +65,7 @@ public:
 	 Iterator end() { return m_list.end(); }
 	CIterator begin() const { return m_list.begin(); }
 	CIterator end() const { return m_list.end(); }
-	ruint size () const { return m_list.size(); }
+	std::size_t size () const { return m_list.size(); }
 	CIterator found(CREF(std::string) name) const
 	{
 		return std::find_if(begin(), end(), parser::compareNameRef<T>(name));
@@ -199,11 +199,11 @@ public:
 
 	Type getType() const { return m_type; }
 	bool isPermanent() const { return m_type == rt_permanent; }
-	ruint id() const { return m_id; }
+	std::size_t id() const { return m_id; }
 
 private:
-	Type   m_type;
-	ruint  m_id;
+	Type m_type;
+	std::size_t m_id;
 };
 	
 // --------------------------------------------------------------------------------
@@ -222,8 +222,8 @@ public:
 	typedef std::map<std::string, parser::LPRDOValue> Params;
 
 	Params::const_iterator begin() const { return m_params.begin(); }
-	Params::const_iterator end  () const { return m_params.end();   }
-	ruint                  size () const { return m_params.size();  }
+	Params::const_iterator end() const { return m_params.end(); }
+	std::size_t size() const { return m_params.size(); }
 
 	REF(Params::mapped_type) operator[] (CREF(std::string) param);
 	Params::const_iterator operator[] (CREF(std::string) param) const;
@@ -238,7 +238,7 @@ public:
 	}
 
 	template <class T>
-	parser::LPRDORSSResource createParserResource(CREF(parser::LPRDOParser) pParser, ruint id = parser::RDORSSResource::UNDEFINED_ID) const
+	parser::LPRDORSSResource createParserResource(CREF(parser::LPRDOParser) pParser, std::size_t id = parser::RDORSSResource::UNDEFINED_ID) const
 	{
 		parser::LPRDORTPResType pRTP = pParser->findRTPResType(getType().name());
 		if (!pRTP)

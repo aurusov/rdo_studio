@@ -121,19 +121,19 @@ public:
 	bool traceable() const;
 	void setTrace(bool trace);
 
-	ruint getTraceID() const;
-	void  setTraceID(ruint id);
-	void  setTraceID(ruint id, ruint str_id);
+	std::size_t getTraceID() const;
+	void setTraceID(std::size_t id);
+	void setTraceID(std::size_t id, std::size_t str_id);
 
 	REF(std::string) traceId() const;
 
 protected:
-	RDOTraceableObject(bool trace, ruint id = NONE, std::string str = "");
+	RDOTraceableObject(bool trace, std::size_t id = NONE, std::string str = "");
 	virtual ~RDOTraceableObject();
 
 private:
 	bool m_trace;
-	ruint m_id;
+	std::size_t m_id;
 	mutable std::string m_str_id;
 };
 

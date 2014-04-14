@@ -50,12 +50,12 @@ RDOSimulatorBase::RDOSimulatorBase()
 	, m_cnt_choice_from   (0           )
 {}
 
-ruint RDOSimulatorBase::get_cnt_calc_arithm() const
+std::size_t RDOSimulatorBase::get_cnt_calc_arithm() const
 {
 	return OperatorType::getCalcCounter<OperatorType::OT_ARITHM>();
 }
 
-ruint RDOSimulatorBase::get_cnt_calc_logic() const
+std::size_t RDOSimulatorBase::get_cnt_calc_logic() const
 {
 	return OperatorType::getCalcCounter<OperatorType::OT_LOGIC>();
 }
@@ -107,8 +107,8 @@ bool RDOSimulatorBase::rdoNext()
 		if (m_msec_wait > 1)
 		{
 			boost::posix_time::ptime systime_current = boost::posix_time::microsec_clock::local_time();
-			ruint msec_curr = getMSec(systime_current);
-			ruint msec_delta;
+			std::size_t msec_curr = getMSec(systime_current);
+			std::size_t msec_delta;
 			// Милисекунды считаются с учетом часов, но при смене суток часы сбрасываются на ноль,
 			// и текущее время в милисекундах становится меньше предыдущего. Учитываем этот момент
 			// через ветку ELSE. Теперь система сможет учесть переход на один день вперед между
@@ -224,7 +224,7 @@ void RDOSimulatorBase::setSpeed( double value )
 	if (value < 0) value = 0;
 	if (value > 1) value = 1;
 	m_speed = value;
-	m_next_delay_count = (ruint)((1 - m_speed) * m_speed_range_max);
+	m_next_delay_count = (std::size_t)((1 - m_speed) * m_speed_range_max);
 	// Чтобы сразу перейти к следующей операции
 	m_next_delay_current = m_next_delay_count;
 	m_msec_wait          = 0;

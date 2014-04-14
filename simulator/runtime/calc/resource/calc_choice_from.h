@@ -33,9 +33,9 @@ public:
 		order_with_max   //!< С максимальным значением выражения
 	};
 
-	typedef  ruint                        ResourceID;
-	typedef  std::vector<ResourceID>      ResourceIDList;
-	typedef  std::vector<ResourceIDList>  ResourceIDTable;
+	typedef std::size_t ResourceID;
+	typedef std::vector<ResourceID> ResourceIDList;
+	typedef std::vector<ResourceIDList> ResourceIDTable;
 
 protected:
 	RDOSelectResourceCalc(ResourceID relResID, CREF(LPRDOCalc) pCalcChoiceFrom, CREF(LPRDOCalc) pCalcOrder, Type orderType = order_empty);
@@ -115,8 +115,8 @@ private:
 	SelectResourceCommonList m_resSelectorList;
 	bool m_useCommonWithMax;
 
-	void getBest(REF(ResourceIDTable) allNumbs, ruint level, REF(ResourceIDList) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(bool) hasBest) const;
-	bool getFirst(REF(ResourceIDTable) allNumbs, ruint level, CREF(LPRDORuntime) pRuntime) const;
+	void getBest(REF(ResourceIDTable) allNumbs, std::size_t level, REF(ResourceIDList) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(bool) hasBest) const;
+	bool getFirst(REF(ResourceIDTable) allNumbs, std::size_t level, CREF(LPRDORuntime) pRuntime) const;
 
 	DECLARE_ICalc;
 };

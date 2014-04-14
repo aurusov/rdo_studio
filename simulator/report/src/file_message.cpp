@@ -16,7 +16,7 @@ namespace rdo {
 namespace simulation {
 namespace report {
 
-FileMessage::FileMessage(CREF(std::string) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type)
+FileMessage::FileMessage(CREF(std::string) text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type)
 	: m_text(text)
 	, m_file(file)
 	, m_line(line)
@@ -34,12 +34,12 @@ rdoModelObjects::RDOFileType FileMessage::getFileType() const
 	return m_file;
 }
 
-ruint FileMessage::getLineNumber() const
+std::size_t FileMessage::getLineNumber() const
 {
 	return m_line;
 }
 
-ruint FileMessage::getPosInLine() const
+std::size_t FileMessage::getPosInLine() const
 {
 	return m_pos;
 }

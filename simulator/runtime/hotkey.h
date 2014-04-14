@@ -25,13 +25,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOHotKey
 {
 public:
-	typedef  ruint               KeyCode;
+	typedef std::size_t KeyCode;
 
 private:
 	typedef  std::list<KeyCode>  KeyList;
 
 public:
-	static const ruint UNDEFINED_KEY = ruint(~0);
+	static const std::size_t UNDEFINED_KEY = std::size_t(~0);
 
 	//! Вспомогательный класс
 	class Toolkit

@@ -404,7 +404,7 @@ void LogView::setText(std::string text)
 	clear();
 	while (!text.empty())
 	{
-		ruint pos = text.find_first_of("\r\n");
+		std::size_t pos = text.find_first_of("\r\n");
 		if (pos == std::string::npos)
 		{
 			pos = text.length();

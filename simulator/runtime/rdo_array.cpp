@@ -89,14 +89,14 @@ std::string RDOArrayValue::getAsString() const
 	return rdo::format("%s]", result.c_str());
 }
 
-ruint RDOArrayValue::size() const
+std::size_t RDOArrayValue::size() const
 {
 	return m_container.size();
 }
 
 CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index) const
 {
-	ruint ind = index.getUInt();
+	const std::size_t ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
 		throw RDORuntimeException("Выход за пределы массива");
@@ -106,7 +106,7 @@ CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index) const
 
 void RDOArrayValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 {
-	ruint ind = index.getUInt();
+	const std::size_t ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
 		throw RDORuntimeException("Выход за пределы массива");

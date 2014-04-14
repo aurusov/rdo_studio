@@ -119,16 +119,16 @@ public:
 
 
 		boost::posix_time::ptime tnow = boost::posix_time::microsec_clock::local_time();
-		ruint tnow1 = rdo::runtime::RDOSimulatorBase::getMSec(tnow);
+		const std::size_t tnow1 = rdo::runtime::RDOSimulatorBase::getMSec(tnow);
 
-		for (ruint i = 0; i < 10000000; i++)
+		for (std::size_t i = 0; i < 10000000; i++)
 		{
 			pCalc->calcValue(runtime);
 		}
 
 		tnow = boost::posix_time::microsec_clock::local_time();
-		ruint tnow2 = rdo::runtime::RDOSimulatorBase::getMSec(tnow);
-		ruint delta = tnow2 - tnow1;
+		const std::size_t tnow2 = rdo::runtime::RDOSimulatorBase::getMSec(tnow);
+		const std::size_t delta = tnow2 - tnow1;
 		YYLTYPE pos = {1, 1, 1, 1, 1, 1};
 		RDOParser::s_parser()->error().error(RDOParserSrcInfo(pos), rdo::format("delay %d", delta));
 
@@ -160,7 +160,7 @@ void RDOParserSTDFUN::generateReal(CREF(std::string) name, CREF(rdo::runtime::LP
 	LPContextParamDefinition pContextParamDefinition = pContext->cast<ContextParamDefinition>();
 	ASSERT(pContextParamDefinition);
 
-	ruint paramIndex = 1;
+	std::size_t paramIndex = 1;
 	for (const auto& param: paramList)
 	{
 		LPRDOParam pParam = rdo::Factory<RDOParam>::create(rdo::format("p%d", paramIndex), param);

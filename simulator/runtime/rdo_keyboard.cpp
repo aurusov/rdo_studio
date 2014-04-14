@@ -17,8 +17,8 @@
 
 #ifndef COMPILER_VISUAL_STUDIO
 	//! @todo А что на самом деле делать под линухами ?
-	const ruint VK_SHIFT   = 0x10;
-	const ruint VK_CONTROL = 0x11;
+	const std::size_t VK_SHIFT = 0x10;
+	const std::size_t VK_CONTROL = 0x11;
 #endif
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -45,7 +45,7 @@ RDOKeyboard::~RDOKeyboard()
 
 bool RDOKeyboard::hasHotKey() const
 {
-	return m_scan_code != ruint(-1) ? true : false;
+	return m_scan_code != std::size_t(-1) ? true : false;
 }
 
 IKeyboard::AddHotKeyResult RDOKeyboard::addHotKey(CREF(LPRDORuntime) pRuntime, CREF(std::string) hotKey)

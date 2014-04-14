@@ -54,7 +54,7 @@ public:
 	RDOResults();
 	virtual ~RDOResults();
 
-	void width(ruint w);
+	void width(std::size_t w);
 
 	template<class T>
 	REF(RDOResults) operator<< (CREF(T) value);
@@ -97,8 +97,8 @@ public:
 	void copyFrom(CREF(LPRDORuntime) pOther);
 	bool equal(CREF(LPRDORuntime) pOther) const;
 
-	void     setConstValue(ruint constID, CREF(RDOValue) constValue);
-	RDOValue getConstValue(ruint constID) const;
+	void setConstValue(std::size_t constID, CREF(RDOValue) constValue);
+	RDOValue getConstValue(std::size_t constID) const;
 
 	void rdoInit(PTR(RDOTrace) tracer, PTR(RDOResults) customResults, PTR(RDOResults) customResultsInfo, CREF(LPIThreadProxy) pThreadProxy);
 
@@ -108,8 +108,8 @@ public:
 	double getTimeNow();
 	double getSeconds();
 
-	ruint getCurrentTerm() const;
-	void  setCurrentTerm(ruint value);
+	std::size_t getCurrentTerm() const;
+	void  setCurrentTerm(std::size_t value);
 
 	REF(LPIActivity) getCurrentActivity();
 	void             setCurrentActivity(CREF(LPIActivity) activity);
@@ -127,20 +127,20 @@ public:
 	void addInitCalc(CREF(LPRDOCalc) initCalc);
 
 	// Параметры ресурса
-	REF(RDOValue) getResParamValRaw(ruint resID, ruint paramID);
-	void          setResParamVal   (ruint resID, ruint paramID, CREF(RDOValue) value);
+	REF(RDOValue) getResParamValRaw(std::size_t resID, std::size_t paramID);
+	void setResParamVal(std::size_t resID, std::size_t paramID, CREF(RDOValue) value);
 
 #ifdef _DEBUG
 	bool checkState();
 	void showResources(int node) const;
 #endif
 
-	void onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc);
-	LPRDOResource createNewResource(ruint type, PTR(RDOCalcCreateResource) calc);
-	LPRDOResource createNewResource(ruint type, bool trace);
+	void onEraseRes(std::size_t resourceID, CREF(LPRDOEraseResRelCalc) pCalc);
+	LPRDOResource createNewResource(std::size_t type, PTR(RDOCalcCreateResource) calc);
+	LPRDOResource createNewResource(std::size_t type, bool trace);
 	void insertNewResource(CREF(LPRDOResource) pResource);
 
-	RDOValue      getFuncArgument (ruint paramID) const;
+	RDOValue      getFuncArgument (std::size_t paramID) const;
 	LPRDOResource getGroupFuncRes () const;
 	void          pushFuncArgument(RDOValue arg);
 	void          pushGroupFunc   (CREF(LPRDOResource) pResource);
@@ -158,10 +158,10 @@ public:
 	LPRDOCalc findBreakPoint(CREF(std::string) name);
 	std::string getLastBreakPointName() const;
 
-	LPRDOResource getResourceByID(ruint resourceID) const;
+	LPRDOResource getResourceByID(std::size_t resourceID) const;
 
-	void     setPatternParameter(ruint paramID, CREF(RDOValue) paramValue);
-	RDOValue getPatternParameter(ruint paramID) const;
+	void     setPatternParameter(std::size_t paramID, CREF(RDOValue) paramValue);
+	RDOValue getPatternParameter(std::size_t paramID) const;
 
 	typedef  std::vector<LPRDOFRMFrame>  FrameList;
 	FrameList m_frameList;
@@ -197,7 +197,7 @@ public:
 	typedef ResList::const_iterator  ResCIterator;
 
 	void addResType(CREF(LPRDOResourceTypeList) pResType);
-	CREF(LPRDOResourceTypeList) getResType(ruint number) const;
+	CREF(LPRDOResourceTypeList) getResType(std::size_t number) const;
 
 	CREF(LPIThreadProxy) getThreadProxy() const;
 
@@ -289,7 +289,7 @@ private:
 	virtual void onCheckResult();
 	virtual void onAfterCheckResult();
 
-	ruint m_currentTerm;
+	std::size_t m_currentTerm;
 
 	PTR(rdo::animation::Frame) m_pPreparingFrame;
 };

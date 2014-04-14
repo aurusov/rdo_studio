@@ -54,7 +54,7 @@ public:
 		RT_PROCESS_RESOURCE,
 		RT_PROCESS_TRANSACT
 	};
-	static const ruint UNDEFINED_PARAM = ruint(~0);
+	static const std::size_t UNDEFINED_PARAM = std::size_t(~0);
 
 	int getNumber() const;
 	bool isPermanent() const;
@@ -66,7 +66,7 @@ public:
 	void addParam(CREF(std::string) param_name, rdo::runtime::RDOType::TypeID param_typeID);
 	LPRDORTPParam findRTPParam(CREF(std::string) paramName) const;
 
-	ruint getRTPParamNumber(CREF(std::string) paramName) const;
+	std::size_t getRTPParamNumber(CREF(std::string) paramName) const;
 	CREF(ParamList) getParams() const;
 
 	CREF(rdo::runtime::LPIResourceType) getRuntimeResType() const;
@@ -84,7 +84,7 @@ private:
 	virtual ~RDORTPResType();
 
 	rdo::runtime::LPIResourceType m_pRuntimeResType;
-	const ruint m_number;
+	const std::size_t m_number;
 	const bool m_permanent;
 	boost::optional<Subtype> m_subtype;
 	ParamList m_params;

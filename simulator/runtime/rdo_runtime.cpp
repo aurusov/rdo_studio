@@ -135,7 +135,7 @@ std::string RDORuntime::getLastBreakPointName() const
 	return m_pLastActiveBreakPoint ? m_pLastActiveBreakPoint->getName() + ": " + m_pLastActiveBreakPoint->getCalc()->srcInfo().src_text() : "";
 }
 
-void RDORuntime::setConstValue(ruint constID, CREF(RDOValue) constValue)
+void RDORuntime::setConstValue(std::size_t constID, CREF(RDOValue) constValue)
 {
 	if (m_constantList.size() <= constID)
 	{
@@ -144,7 +144,7 @@ void RDORuntime::setConstValue(ruint constID, CREF(RDOValue) constValue)
 	m_constantList[constID] = constValue;
 }
 
-RDOValue RDORuntime::getConstValue(ruint constID) const
+RDOValue RDORuntime::getConstValue(std::size_t constID) const
 {
 	ASSERT(constID < m_constantList.size());
 	return m_constantList[constID];
@@ -176,10 +176,10 @@ bool RDORuntime::checkState()
 		m_state.push_back(res);
 	}
 	if (m_state.size() != m_resourceListByID.size()) return false;
-	for (ruint i = 0; i < m_state.size(); ++i)
+	for (std::size_t i = 0; i < m_state.size(); ++i)
 	{
 		if (m_state[i].size() != m_resourceListByID[i]->paramsCount()) return false;
-		for (ruint j = 0; j < m_resourceListByID[i]->paramsCount(); ++j)
+		for (std::size_t j = 0; j < m_resourceListByID[i]->paramsCount(); ++j)
 		{
 			if (m_state[i][j] != m_resourceListByID[i]->getParam(j)) return false;
 		}
@@ -197,7 +197,7 @@ void RDORuntime::showResources(int node) const
 		if (*it)
 		{
 			TRACE1("%d. ", index);
-			for (ruint i = 0; i < (*it)->paramsCount(); ++i)
+			for (std::size_t i = 0; i < (*it)->paramsCount(); ++i)
 			{
 				TRACE1("%s ", (*it)->getParam(i).getAsString().c_str());
 			}
@@ -213,7 +213,7 @@ void RDORuntime::showResources(int node) const
 }
 #endif
 
-void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
+void RDORuntime::onEraseRes(std::size_t resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 {
 	LPRDOResource res = m_resourceListByID.at(resourceID);
 	if (!res)
@@ -366,7 +366,7 @@ void RDORuntime::onDestroy()
 	}
 }
 
-RDOValue RDORuntime::getFuncArgument(ruint paramID) const
+RDOValue RDORuntime::getFuncArgument(std::size_t paramID) const
 {
 	ASSERT(m_currFuncTop + paramID < m_funcStack.size());
 	return m_funcStack[m_currFuncTop + paramID];
@@ -409,8 +409,8 @@ bool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
 {
 	if (pOther->m_resourceListByID.size() != m_resourceListByID.size()) return false;
 
-	ruint size = m_resourceListByID.size();
-	for (ruint i = 0; i < size; ++i)
+	const std::size_t size = m_resourceListByID.size();
+	for (std::size_t i = 0; i < size; ++i)
 	{
 		if (m_resourceListByID.at(i) == LPRDOResource(NULL) && pOther->m_resourceListByID.at(i) != LPRDOResource(NULL)) return false;
 		if (m_resourceListByID.at(i) != LPRDOResource(NULL) && pOther->m_resourceListByID.at(i) == LPRDOResource(NULL)) return false;
@@ -455,7 +455,7 @@ void RDORuntime::onPutToTreeNode()
 	// when create TreeNode with new RDOSimulator,
 	// make all resources permanent, to avoid trace their
 	// erase when delete TreeNode
-	for (ruint i = 0; i < m_resourceListByID.size(); ++i)
+	for (std::size_t i = 0; i < m_resourceListByID.size(); ++i)
 	{
 		if (m_resourceListByID[i])
 		{

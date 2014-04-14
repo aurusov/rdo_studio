@@ -29,7 +29,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 const std::string RDORSSResource::GET_RESOURCE = "resource_expression";
 
-RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id)
+RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, std::size_t id)
 	: RDOParserSrcInfo(src_info                                      )
 	, m_pResType      (pResType                                      )
 	, m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)
@@ -69,7 +69,7 @@ Context::FindResult RDORSSResource::onFindContext(const std::string& method, con
 	{
 		const std::string paramName = params.identifier();
 
-		ruint parNumb = getType()->getRTPParamNumber(paramName);
+		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 		{
 			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Неизвестный параметр ресурса: %s", paramName.c_str()));

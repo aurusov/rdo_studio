@@ -72,7 +72,7 @@ rdo::runtime::LPRDOCalc ProcGUICalc::getCalc()
 	return m_pCalc;
 }
 
-rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getNormalCalc(ruint base, double arg1, double arg2)
+rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getNormalCalc(std::size_t base, double arg1, double arg2)
 {
 	PTR(rdo::runtime::RandGeneratorNormal) pGenerator = new rdo::runtime::RandGeneratorNormal();
 	ASSERT(pGenerator);
@@ -92,7 +92,7 @@ rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getNormalCalc(ruint base, dou
 	return pFuctionCall;
 }
 
-rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getUniformCalc(ruint base, double arg1, double arg2)
+rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getUniformCalc(std::size_t base, double arg1, double arg2)
 {
 	PTR(rdo::runtime::RandGeneratorUniform) pGenerator = new rdo::runtime::RandGeneratorUniform();
 	ASSERT(pGenerator);
@@ -112,7 +112,7 @@ rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getUniformCalc(ruint base, do
 	return pFuctionCall;
 }
 
-rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getExpCalc(ruint base, double arg)
+rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getExpCalc(std::size_t base, double arg)
 {
 	PTR(rdo::runtime::RandGeneratorExponential) pGenerator = new rdo::runtime::RandGeneratorExponential();
 	ASSERT(pGenerator);
@@ -129,7 +129,7 @@ rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getExpCalc(ruint base, double
 	return pFuctionCall;
 }
 
-rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getTriangularCalc(ruint base, double arg1, double arg2, double arg3)
+rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getTriangularCalc(std::size_t base, double arg1, double arg2, double arg3)
 {
 	PTR(rdo::runtime::RandGeneratorTriangular) pGenerator = new rdo::runtime::RandGeneratorTriangular();
 	rdo::runtime::LPRDOCalcSeqInit pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(base, pGenerator);
@@ -294,7 +294,7 @@ ProcGUIBlockTerminate::ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CR
 	ASSERT(m_pParams);
 
 	//! \todo добавить поддержку арифметических выражений
-	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(static_cast<ruint>(m_pParams->getTermInc())));
+	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(static_cast<std::size_t>(m_pParams->getTermInc())));
 	ASSERT(pCalc);
 	m_pBlock = RF(rdo::runtime::RDOPROCTerminate)::create(pProcess->getProcess(), pCalc);
 	ASSERT(m_pBlock);

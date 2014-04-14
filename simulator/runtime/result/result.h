@@ -100,7 +100,7 @@ private:
 		double
 	> acc_type;
 
-	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resName, CREF(std::string) parName, ruint resourceID, ruint paramID);
+	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resName, CREF(std::string) parName, std::size_t resourceID, std::size_t paramID);
 	virtual ~RDOPMDWatchPar();
 
 	struct CurrentValue
@@ -122,8 +122,8 @@ private:
 	};
 
 	LPRDOResource m_pResource;
-	ruint m_resourceID;
-	ruint m_paramID;
+	std::size_t m_resourceID;
+	std::size_t m_paramID;
 	CurrentValue m_currentValue;
 	double m_timeBegin;
 	double m_timePrev;
@@ -227,7 +227,7 @@ private:
 
 	struct CurrentValue
 	{
-		ruint   quant;
+		std::size_t quant;
 		double  weight;
 
 		CurrentValue()
@@ -235,7 +235,7 @@ private:
 			, weight(0.0)
 		{}
 
-		CurrentValue(ruint quant)
+		CurrentValue(std::size_t quant)
 			: quant (quant)
 			, weight(0.0  )
 		{}
@@ -249,7 +249,7 @@ private:
 	bool m_wasFinalCalc;
 	acc_type m_acc;
 
-	ruint calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const;
+	std::size_t calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;

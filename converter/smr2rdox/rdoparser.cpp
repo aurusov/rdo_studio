@@ -84,12 +84,12 @@ rdo::converter::smr2rdox::RDOFileTypeIn Converter::getFileToParse()
 	return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->m_type : rdo::converter::smr2rdox::PAT_IN;
 }
 
-ruint Converter::lexer_loc_line()
+std::size_t Converter::lexer_loc_line()
 {
 	return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->lexer_loc_line() : ~0;
 }
 
-ruint Converter::lexer_loc_pos()
+std::size_t Converter::lexer_loc_pos()
 {
 	return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->lexer_loc_pos() : 0;
 }
@@ -153,7 +153,7 @@ std::string Converter::getChanges() const
 {
 	std::stringstream stream;
 	stream << "$Changes" << std::endl;
-	ruint changes_max_length = 0;
+	std::size_t changes_max_length = 0;
 	for (const auto& change: m_changes)
 	{
 		if (change.m_name.length() > changes_max_length)
@@ -164,7 +164,7 @@ std::string Converter::getChanges() const
 	for (const auto& change: m_changes)
 	{
 		stream << "  " << change.m_name;
-		for (ruint i = change.m_name.length(); i < changes_max_length; i++)
+		for (std::size_t i = change.m_name.length(); i < changes_max_length; i++)
 		{
 			stream << " ";
 		}
@@ -196,14 +196,14 @@ std::string Converter::getModelStructure()
 		pat->writeModelStructure(modelStructure);
 
 	// OPR/DPT
-	ruint counter = 1;
+	std::size_t counter = 1;
 	modelStructure << std::endl << "$Activities" << std::endl;
 	modelStructure << m_pRuntime->writeActivitiesStructure(counter);
 
 	// DPT only
-	for (ruint i = 0; i < m_allDPTSearch.size(); i++)
+	for (std::size_t i = 0; i < m_allDPTSearch.size(); i++)
 	{
-		for (ruint j = 0; j < m_allDPTSearch.at(i)->getActivities().size(); j++)
+		for (std::size_t j = 0; j < m_allDPTSearch.at(i)->getActivities().size(); j++)
 		{
 			LPRDODPTSearchActivity pSearchActivity = m_allDPTSearch.at(i)->getActivities().at(j);
 			ASSERT(pSearchActivity);
@@ -213,7 +213,7 @@ std::string Converter::getModelStructure()
 
 	// PMD
 	modelStructure << std::endl << "$Watching" << std::endl;
-	ruint watching_max_length = 0;
+	std::size_t watching_max_length = 0;
 	for (const auto& watching: m_pRuntime->getResult())
 	{
 		LPITrace          trace     = watching;
@@ -237,7 +237,7 @@ std::string Converter::getModelStructure()
 			if (trace->traceable())
 			{
 				modelStructure << "  " << name->name();
-				for (ruint i = name->name().length(); i < watching_max_length + 2; i++)
+				for (std::size_t i = name->name().length(); i < watching_max_length + 2; i++)
 					modelStructure << " ";
 
 				structure->writeModelStructure(modelStructure);

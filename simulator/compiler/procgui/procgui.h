@@ -26,21 +26,21 @@ OPEN_COMPILER_GUI_NAMESPACE
 class ProcGUICalc
 {
 public:
-	rdo::runtime::LPRDOCalcConst          getConstCalc     (double arg                                       );
-	rdo::runtime::LPRDOCalcFunctionCaller getNormalCalc    (ruint base, double arg1, double arg2             );
-	rdo::runtime::LPRDOCalcFunctionCaller getUniformCalc   (ruint base, double arg1, double arg2             );
-	rdo::runtime::LPRDOCalcFunctionCaller getExpCalc       (ruint base, double arg                           );
-	rdo::runtime::LPRDOCalcFunctionCaller getTriangularCalc(ruint base, double arg1, double arg2, double arg3);
-	rdo::runtime::LPRDOCalc               getCalc();
+	rdo::runtime::LPRDOCalcConst getConstCalc(double arg);
+	rdo::runtime::LPRDOCalcFunctionCaller getNormalCalc(std::size_t base, double arg1, double arg2);
+	rdo::runtime::LPRDOCalcFunctionCaller getUniformCalc(std::size_t base, double arg1, double arg2);
+	rdo::runtime::LPRDOCalcFunctionCaller getExpCalc(std::size_t base, double arg);
+	rdo::runtime::LPRDOCalcFunctionCaller getTriangularCalc(std::size_t base, double arg1, double arg2, double arg3);
+	rdo::runtime::LPRDOCalc getCalc();
 
 protected:
 	ProcGUICalc(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(LPRPShapeDataBlock) pParams);
 	virtual ~ProcGUICalc();
 
 private:
-	rdo::runtime::LPRDORuntime  m_pRuntime;
-	LPRPShapeDataBlock          m_pParams;
-	rdo::runtime::LPRDOCalc     m_pCalc;
+	rdo::runtime::LPRDORuntime m_pRuntime;
+	LPRPShapeDataBlock m_pParams;
+	rdo::runtime::LPRDOCalc m_pCalc;
 };
 
 // --------------------------------------------------------------------------------

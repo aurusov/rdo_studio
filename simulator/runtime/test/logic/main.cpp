@@ -26,7 +26,7 @@
 class MyOperation
 {
 public:
-	MyOperation(ruint dummy)
+	MyOperation(std::size_t dummy)
 		: m_dummy(dummy)
 	{}
 
@@ -35,13 +35,13 @@ public:
 		return m_dummy < opr.m_dummy;
 	}
 
-	ruint getData()
+	std::size_t getData()
 	{
 		return m_dummy;
 	}
 
 private:
-	ruint m_dummy;
+	std::size_t m_dummy;
 };
 
 template <class T, class C = std::vector<T> >

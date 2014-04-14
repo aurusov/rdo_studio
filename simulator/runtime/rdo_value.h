@@ -33,7 +33,7 @@ public:
 	RDOValue(CREF(RDOValue) rdovalue);
 	RDOValue(CREF(LPRDOType) pType);
 	RDOValue(int value);
-	RDOValue(ruint value);
+	RDOValue(std::size_t value);
 #ifdef ARCHITECTURE_AMD64
 	RDOValue(ruint64 value);
 #endif // ARCHITECTURES_AMD64
@@ -41,7 +41,7 @@ public:
 	RDOValue(bool value);
 	RDOValue(CREF(LPRDOEnumType) pEnum);
 	RDOValue(CREF(LPRDOEnumType) pEnum, CREF(std::string) value);
-	RDOValue(CREF(LPRDOEnumType) pEnum, ruint index);
+	RDOValue(CREF(LPRDOEnumType) pEnum, std::size_t index);
 	RDOValue(CREF(std::string) value);
 	RDOValue(CPTR(char) value);
 	RDOValue(CREF(std::string) value, CREF(LPRDOType) pType);
@@ -52,7 +52,7 @@ public:
 	static RDOValue fromDouble(CREF(LPRDOType) pType, double value);
 
 	int getInt() const;
-	ruint getUInt() const;
+	std::size_t getUInt() const;
 	int getEnumAsInt() const;
 	LPRDOEnumType getEnum() const;
 	double getDouble() const;
@@ -159,7 +159,7 @@ private:
 	REF(RDOValue) onPointerMult(CREF(RDOValue) rdovalue);
 	REF(RDOValue) onPointerDiv(CREF(RDOValue) rdovalue);
 	int onPointerGetInt() const;
-	ruint onPointerGetUInt() const;
+	std::size_t onPointerGetUInt() const;
 	bool onPointerAnd(CREF(RDOValue) rdovalue) const;
 	bool onPointerOr(CREF(RDOValue) rdovalue) const;
 	RDOValue onPointerUMinus() const;

@@ -72,7 +72,7 @@ void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
 	{
 		Converter::s_converter()->error().error(pos, "Номер кадра должен быть больше нуля");
 	}
-	if (Converter::s_converter()->getNumberFrame() < (ruint)value)
+	if (Converter::s_converter()->getNumberFrame() < (std::size_t)value)
 	{
 		Converter::s_converter()->error().error(pos, rdo::format("Несуществующий кадр: %d", value));
 	}
@@ -172,7 +172,7 @@ void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcIn
 	}
 	ASSERT(pArithm);
 	pArithm->checkParamType(pParam->getType());
-	ruint                 parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
+	const std::size_t parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
 	rdo::runtime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getType());
 	Converter::s_converter()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
 	Converter::s_converter()->insertChanges(res_info.src_text() + "." + par_info.src_text(), pArithm->src_text());

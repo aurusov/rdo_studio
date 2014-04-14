@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Arifmethic)
 	const int val1 = 30;
 	RDOValue value1(val1);
 	BOOST_CHECK(value1.getInt      () == val1);
-	BOOST_CHECK(value1.getUInt     () == ruint(val1));
+	BOOST_CHECK(value1.getUInt     () == std::size_t(val1));
 	BOOST_CHECK(value1.getDouble   () == val1);
 	BOOST_CHECK(value1.getAsString () == "30");
 	BOOST_CHECK(value1.getEnumAsInt() == 30  );
@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Compare)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Arifmethic)
 {
-	const ruint val1 = 30;
+	const std::size_t val1 = 30;
 	RDOValue value1(val1);
 	BOOST_CHECK(value1 == val1);
 	BOOST_CHECK(value1.getInt      () == int(val1));
@@ -230,21 +230,21 @@ BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Arifmethic)
 	BOOST_CHECK(value2 == val1  );
 	BOOST_CHECK(value2 == value1);
 
-	const ruint val2 = 20;
+	const std::size_t val2 = 20;
 	value1 += val2;
 	BOOST_CHECK(value1 == val1 + val2);
 	value1 = val1;
 	value1 = value1 + val2;
 	BOOST_CHECK(value1 == val1 + val2);
 
-	const ruint val3 = 10;
+	const std::size_t val3 = 10;
 	value1 -= val3;
 	BOOST_CHECK(value1 == val1 + val2 - val3);
 	value1 += val3;
 	value1 = value1 - val3;
 	BOOST_CHECK(value1 == val1 + val2 - val3);
 
-	const ruint val4 = 2;
+	const std::size_t val4 = 2;
 	value2 = value1;
 	value2 *= val4;
 	BOOST_CHECK(value2 == (val1 + val2 - val3) * val4);
@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Arifmethic)
 	value2 = value2 * val4;
 	BOOST_CHECK(value2 == (val1 + val2 - val3) * val4);
 
-	const ruint val5 = 5;
+	const std::size_t val5 = 5;
 	value2 = value1;
 	value2 /= val5;
 	BOOST_CHECK(value2 == ((val1 + val2 - val3) / val5));
@@ -269,7 +269,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Arifmethic)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Compare)
 {
-	compareOne<ruint>(30, 20);
+	compareOne<std::size_t>(30, 20);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Double_Arifmethic)
@@ -413,12 +413,12 @@ BOOST_AUTO_TEST_CASE(RDOValue_Enum)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Ruint)
 {
-	compareValue<int, ruint>(10, 15, RDOType::t_int, RDOType::t_real);
+	compareValue<int, std::size_t>(10, 15, RDOType::t_int, RDOType::t_real);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Rsint)
 {
-	compareValue<ruint, int>(10, 15, RDOType::t_int, RDOType::t_real);
+	compareValue<std::size_t, int>(10, 15, RDOType::t_int, RDOType::t_real);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Double)
@@ -433,12 +433,12 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_rsint)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Double)
 {
-	compareValue<ruint, double>(10, 15.2, RDOType::t_int, RDOType::t_real);
+	compareValue<std::size_t, double>(10, 15.2, RDOType::t_int, RDOType::t_real);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Double_ruint)
 {
-	compareValue<double, ruint>(10.2, 15, RDOType::t_real, RDOType::t_real);
+	compareValue<double, std::size_t>(10.2, 15, RDOType::t_real, RDOType::t_real);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Rsint_String)
@@ -448,7 +448,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_String)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_String)
 {
-	compareStr<ruint, std::string>(10, "abc");
+	compareStr<std::size_t, std::string>(10, "abc");
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Double_String)
@@ -463,7 +463,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Char_Rsint)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Ruint)
 {
-	compareChr<ruint, char>(10, 'a');
+	compareChr<std::size_t, char>(10, 'a');
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Double)
@@ -505,7 +505,7 @@ void testUndef(CREF(T1) param1)
 BOOST_AUTO_TEST_CASE(RDOValue_Undefined)
 {
 	testUndef<int>(10);
-	testUndef<ruint>(10);
+	testUndef<std::size_t>(10);
 	testUndef<double>(10.5);
 	testUndef<std::string>("abc");
 	testUndef<char>('a');
@@ -530,8 +530,8 @@ rdo::runtime::LPRDOResource createSimpleResource(
 	const rdo::runtime::LPRDORuntime            runtime,
 	const rdo::runtime::RDOResource::ParamList& params,
 	const rdo::runtime::LPIResourceType&        type,
-	ruint resource_id,
-	ruint type_id,
+	std::size_t resource_id,
+	std::size_t type_id,
 	bool trace,
 	bool temporary)
 {

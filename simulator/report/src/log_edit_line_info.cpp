@@ -17,7 +17,7 @@ namespace rdo {
 namespace simulation {
 namespace report {
 
-LogEditLineInfo::LogEditLineInfo(CREF(std::string) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type)
+LogEditLineInfo::LogEditLineInfo(CREF(std::string) text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type)
 	: FileMessage(text, file, line, pos, type)
 	, m_posInLog(0)
 	, m_simpleTextMessage(false)
@@ -57,7 +57,7 @@ bool LogEditLineInfo::isSimpleTextMessage() const
 	return m_simpleTextMessage;
 }
 
-ruint LogEditLineInfo::getPosInLog() const
+std::size_t LogEditLineInfo::getPosInLog() const
 {
 	return m_posInLog;
 }

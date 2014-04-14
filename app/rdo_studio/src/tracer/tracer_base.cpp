@@ -83,9 +83,9 @@ ParamInfo* TracerBase::getParamType(std::istream& stream)
 	ParamInfo* pParam = new ParamInfo(parType.get());
 	if (parType == ParamInfo::PT_ENUMERATIVE)
 	{
-		ruint enumCount;
+		std::size_t enumCount;
 		stream >> enumCount;
-		for (ruint j = 0; j < enumCount; j++)
+		for (std::size_t j = 0; j < enumCount; j++)
 		{
 			std::string enumID;
 			stream >> enumID;
@@ -462,7 +462,7 @@ LPResource TracerBase::getResource(REF(std::string) line)
 
 LPResource TracerBase::resourceCreation(REF(std::string) line, Time* const pTime)
 {
-	ruint typeID = boost::lexical_cast<int>(getNextValue(line)) - 1;
+	std::size_t typeID = boost::lexical_cast<int>(getNextValue(line)) - 1;
 	ASSERT(typeID < m_resourceTypeList.size());
 	LPResourceType pResourceType = m_resourceTypeList.at(typeID);
 	int id = boost::lexical_cast<int>(getNextValue(line));

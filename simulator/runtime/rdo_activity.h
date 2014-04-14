@@ -39,7 +39,7 @@ protected:
 
 	std::string m_oprName;
 	std::list<LPRDOResource> m_relevantResources; // Список релевантных ресурсов
-	std::vector<ruint> m_relResID; // Содержит список id ресурсов, которые стали релевантными образцу
+	std::vector<std::size_t> m_relResID; // Содержит список id ресурсов, которые стали релевантными образцу
 	std::vector<LPRDOCalc> m_paramsCalcs;
 
 	void setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::vector<LPRDOCalc>& params);

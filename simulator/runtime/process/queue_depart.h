@@ -71,7 +71,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	static ruint getDefaultValue();
+	static std::size_t getDefaultValue();
 	static std::string getQueueParamName();
 
 private:
@@ -93,7 +93,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	static ruint getDefaultValue();
+	static std::size_t getDefaultValue();
 	static std::string getDepartParamName();
 
 private:

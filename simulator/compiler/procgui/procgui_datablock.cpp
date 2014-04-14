@@ -55,7 +55,7 @@ RPShapeDataBlockCreate::RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zako
 RPShapeDataBlockCreate::~RPShapeDataBlockCreate()
 {}
 
-void RPShapeDataBlockCreate::setAmount(boost::optional<ruint> amount)
+void RPShapeDataBlockCreate::setAmount(boost::optional<std::size_t> amount)
 {
 	m_amount = amount;
 }

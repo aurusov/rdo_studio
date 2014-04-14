@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalcGetResourceHelper
 {
 public:
-	static bool getResource(CREF(LPRDORuntime) pRuntime, ruint resourceID, REF(RDOValue) result);
+	static bool getResource(CREF(LPRDORuntime) pRuntime, std::size_t resourceID, REF(RDOValue) result);
 };
 
 //! Получение ресурса по ID
@@ -32,9 +32,9 @@ class RDOCalcGetResourceByID: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetResourceByID)
 private:
-	RDOCalcGetResourceByID(CREF(ruint) resourceID);
+	RDOCalcGetResourceByID(CREF(std::size_t) resourceID);
 
-	ruint m_resourceID;
+	std::size_t m_resourceID;
 
 	DECLARE_ICalc;
 };
@@ -45,10 +45,10 @@ class RDOCalcGetResourceParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetResourceParam)
 private:
-	RDOCalcGetResourceParam(CREF(LPRDOCalc) pResource, ruint paramID);
+	RDOCalcGetResourceParam(CREF(LPRDOCalc) pResource, std::size_t paramID);
 
 	LPRDOCalc m_pResource;
-	int       m_paramID;
+	int m_paramID;
 
 	DECLARE_ICalc;
 };
@@ -73,11 +73,11 @@ class RDOSetResourceParamCalc: public RDOCalc
 {
 DECLARE_FACTORY(RDOSetResourceParamCalc)
 private:
-	RDOSetResourceParamCalc(ruint resourceID, ruint paramID, CREF(LPRDOCalc) pCalc);
+	RDOSetResourceParamCalc(std::size_t resourceID, std::size_t paramID, CREF(LPRDOCalc) pCalc);
 
-	ruint      m_resourceID;
-	ruint      m_paramID;
-	LPRDOCalc  m_pCalc;
+	std::size_t m_resourceID;
+	std::size_t m_paramID;
+	LPRDOCalc m_pCalc;
 
 	DECLARE_ICalc;
 };
@@ -99,12 +99,12 @@ template <SetOperationType::Type setOperationType>
 class RDOSetResourceParam: public RDOCalc
 {
 public:
-	RDOSetResourceParam(const LPRDOCalc& getResource, const ruint paramID, const LPRDOCalc& pCalc = NULL);
+	RDOSetResourceParam(const LPRDOCalc& getResource, const std::size_t paramID, const LPRDOCalc& pCalc = NULL);
 	virtual ~RDOSetResourceParam();
 
 protected:
 	LPRDOCalc m_getResource;
-	ruint     m_paramID;
+	std::size_t m_paramID;
 	LPRDOCalc m_pCalc;
 
 	DECLARE_ICalc;

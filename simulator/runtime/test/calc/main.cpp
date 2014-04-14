@@ -293,10 +293,10 @@ BOOST_AUTO_TEST_CASE(RDOCalc_SpeedTest)
 
 	typedef  boost::chrono::process_user_cpu_clock  clock;
 
-	static const ruint RUN_TEST_COUNT = 1000000;
+	static const std::size_t RUN_TEST_COUNT = 1000000;
 
 	clock::time_point timeStart = clock::now();
-	for (ruint i = 0; i < RUN_TEST_COUNT; ++i)
+	for (std::size_t i = 0; i < RUN_TEST_COUNT; ++i)
 	{
 		pPlus->calcValue(pRuntime);
 	}

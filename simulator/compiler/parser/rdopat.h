@@ -100,7 +100,7 @@ public:
 	LPRDOParam findPATPatternParam(CREF(std::string) paramName) const;
 	int findPATPatternParamNum(CREF(std::string) paramName) const;
 	LPRDORelevantResource findRelevantResource(CREF(std::string) resName) const;
-	ruint findRelevantResourceNum(CREF(std::string) resName) const;
+	std::size_t findRelevantResourceNum(CREF(std::string) resName) const;
 	virtual void addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdo::runtime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos) = 0;
 
 	CREF(std::string) name() const { return src_text(); }
@@ -141,7 +141,7 @@ private:
 	bool m_useCommonChoice;
 	bool m_useCommonWithMax;
 	LPRDOFUNArithm m_pCommonChoice;
-	ruint m_currentRelResIndex;
+	std::size_t m_currentRelResIndex;
 	LPContextMemory m_pContextMemory;
 
 	std::string typeToString(PatType type) const;
