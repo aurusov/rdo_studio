@@ -14,7 +14,6 @@
 #include <memory>
 #include <boost/config.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo

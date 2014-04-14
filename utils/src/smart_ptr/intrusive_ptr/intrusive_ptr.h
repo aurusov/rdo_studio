@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdomacros.h"
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/smart_ptr/ref_counter/counter_reference.h"
 #include "utils/src/smart_ptr/interface_ptr/interface_ptr.h"
 #include "utils/src/smart_ptr/ref_counter/ref_counter_i.h"

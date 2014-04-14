@@ -16,7 +16,6 @@
 #include <algorithm>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
-#include "utils/src/common/rdotypes.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
