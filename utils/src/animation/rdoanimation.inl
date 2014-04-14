@@ -37,7 +37,7 @@ inline Color::Color(CREF(Color) color)
 	, m_transparent(color.m_transparent)
 {}
 
-inline Color::Color(rbyte r, rbyte g, rbyte b, bool transparent)
+inline Color::Color(unsigned char r, unsigned char g, unsigned char b, bool transparent)
 	: m_r          (r          )
 	, m_g          (g          )
 	, m_b          (b          )

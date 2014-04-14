@@ -128,7 +128,7 @@ private:
 	};
 
 	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
-	typedef rbyte Value[sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>)];
+	typedef unsigned char Value[sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>)];
 
 	Value m_value; //!< контейнер значения
 	LPRDOType m_pType; //!< тип значения

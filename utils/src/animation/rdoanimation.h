@@ -59,9 +59,9 @@ private:
 //! \details Хранит RGB-цвет и признак прозрачности
 struct Color
 {
-	rbyte m_r; //!< Красная составляющая цвета
-	rbyte m_g; //!< Зелёная составляющая цвета
-	rbyte m_b; //!< Синяя составляющая цвета
+	unsigned char m_r; //!< Красная составляющая цвета
+	unsigned char m_g; //!< Зелёная составляющая цвета
+	unsigned char m_b; //!< Синяя составляющая цвета
 	bool m_transparent; //!< Признак прозрачности
 
 	//! \details Создаёт прозрачный цвет. Значения других атрибутов неопределены.
@@ -76,7 +76,7 @@ struct Color
 	//! \param g           - зелёная составляющая цвета
 	//! \param b           - синяя составляющая цвета
 	//! \param transparent - признак прозрачности
-	Color(rbyte r, rbyte g, rbyte b, bool transparent = false);
+	Color(unsigned char r, unsigned char g, unsigned char b, bool transparent = false);
 
 	bool operator== (CREF(Color) color) const
 	{

@@ -41,7 +41,7 @@ RDOFRMSprite::RDOFRMColor::RDOFRMColor(ColorType type)
 	: m_type(type)
 {}
 
-RDOFRMSprite::RDOFRMColor::RDOFRMColor(rbyte red, rbyte green, rbyte blue, CREF(RDOSrcInfo) srcInfo)
+RDOFRMSprite::RDOFRMColor::RDOFRMColor(unsigned char red, unsigned char green, unsigned char blue, CREF(RDOSrcInfo) srcInfo)
 	: m_type(CT_RGB)
 {
 	m_pRedCalc = rdo::Factory<RDOCalcConst>::create((int)red);
@@ -76,9 +76,9 @@ rdo::animation::Color RDOFRMSprite::RDOFRMColor::getColor(CREF(LPRDORuntime) pRu
 	case CT_NONE        : return rdo::animation::Color(50, 200, 50);
 	case CT_RGB         : return rdo::animation::Color
 						  (
-							(rbyte)m_pRedCalc  ->calcValue(pRuntime).getUInt(),
-							(rbyte)m_pGreenCalc->calcValue(pRuntime).getUInt(),
-							(rbyte)m_pBlueCalc ->calcValue(pRuntime).getUInt()
+							(unsigned char)m_pRedCalc  ->calcValue(pRuntime).getUInt(),
+							(unsigned char)m_pGreenCalc->calcValue(pRuntime).getUInt(),
+							(unsigned char)m_pBlueCalc ->calcValue(pRuntime).getUInt()
 						  );
 	case CT_TRANSPARENT : return rdo::animation::Color();
 	case CT_LAST_BG     : return pSprite->m_colorLastBg;

@@ -4738,7 +4738,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(255), rbyte(255), rbyte(255), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(unsigned char(255), unsigned char(255), unsigned char(255), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4747,7 +4747,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(0), rbyte(0), rbyte(0), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(unsigned char(0), unsigned char(0), unsigned char(0), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4756,7 +4756,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(255), rbyte(0), rbyte(0), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(unsigned char(255), unsigned char(0), unsigned char(0), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4765,7 +4765,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(0), rbyte(255), rbyte(0), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(unsigned char(0), unsigned char(255), unsigned char(0), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4774,7 +4774,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(0), rbyte(0), rbyte(255), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(unsigned char(0), unsigned char(0), unsigned char(255), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4783,7 +4783,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(0), rbyte(255), rbyte(255), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(unsigned char(0), unsigned char(255), unsigned char(255), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4792,7 +4792,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(255), rbyte(0), rbyte(255), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(unsigned char(255), unsigned char(0), unsigned char(255), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4801,7 +4801,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(255), rbyte(255), rbyte(0), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(unsigned char(255), unsigned char(255), unsigned char(0), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4810,7 +4810,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(127), rbyte(127), rbyte(127), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(unsigned char(127), unsigned char(127), unsigned char(127), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
