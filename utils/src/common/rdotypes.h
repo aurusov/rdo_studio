@@ -20,13 +20,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-//! Целый беззнаковый 32-х битный тип
-#ifdef COMPILER_VISUAL_STUDIO
-	typedef  unsigned long           ruint32;
-#elif defined COMPILER_GCC
-	typedef  uint32_t                ruint32;
-#endif
-
 //! Целый знаковый 64-х битный тип
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef  signed long long int    rsint64;
