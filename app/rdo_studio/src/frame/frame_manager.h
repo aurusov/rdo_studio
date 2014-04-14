@@ -70,7 +70,7 @@ public:
 	void setLastShowedFrame(std::size_t index);
 	void setCurrentShowingFrame(std::size_t index);
 	void resetCurrentShowingFrame(std::size_t index);
-	void showFrame(CPTRC(rdo::animation::Frame) pFrame, std::size_t index);
+	void showFrame(const rdo::animation::Frame* const pFrame, std::size_t index);
 	void showNextFrame();
 	void showPrevFrame();
 	void showFrame(std::size_t index);

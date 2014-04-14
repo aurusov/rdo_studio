@@ -206,7 +206,7 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 	return fm_ok;
 }
 
-void RDOThreadRepository::newModel(CPTRC(NewModel) data)
+void RDOThreadRepository::newModel(const NewModel* const data)
 {
 	if (canCloseModel())
 	{

@@ -187,7 +187,7 @@ protected:
 	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	void newModel(CPTRC(NewModel) data);
+	void newModel(const NewModel* const data);
 	bool openModel(CREF(boost::filesystem::path) modelFileName);
 	void closeModel();
 	bool saveModel();

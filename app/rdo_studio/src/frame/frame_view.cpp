@@ -50,7 +50,7 @@ bool Content::valid() const
 	return m_memDC.valid();
 }
 
-void Content::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
+void Content::init(const rdo::animation::Frame* const pFrame, CREF(rdo::gui::BitmapList) bitmapList)
 {
 	ASSERT(pFrame);
 
@@ -162,10 +162,10 @@ void Content::onDraw(REF(QPainter) painter)
 }
 
 void Content::update(
-	CPTRC(rdo::animation::Frame)         pFrame,
-	 CREF(rdo::gui::BitmapList)          bitmapList,
-	  REF(rdo::gui::BitmapList)          bitmapGeneratedList,
-	  REF(rdo::gui::animation::AreaList) areaList
+	const rdo::animation::Frame* const pFrame,
+	CREF(rdo::gui::BitmapList) bitmapList,
+	REF(rdo::gui::BitmapList) bitmapGeneratedList,
+	REF(rdo::gui::animation::AreaList) areaList
 )
 {
 	ASSERT(pFrame);
@@ -205,7 +205,7 @@ void Content::update(
 	parent_type::update();
 }
 
-void Content::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
+void Content::drawBackground(const rdo::animation::Frame* const pFrame, CREF(rdo::gui::BitmapList) bitmapList)
 {
 	ASSERT(pFrame);
 
@@ -582,10 +582,10 @@ PTR(Content) View::getContent()
 }
 
 void View::update(
-	CPTRC(rdo::animation::Frame)         pFrame,
-	 CREF(rdo::gui::BitmapList)          bitmapList,
-	  REF(rdo::gui::BitmapList)          bitmapGeneratedList,
-	  REF(rdo::gui::animation::AreaList) areaList
+	const rdo::animation::Frame* const pFrame,
+	CREF(rdo::gui::BitmapList) bitmapList,
+	REF(rdo::gui::BitmapList) bitmapGeneratedList,
+	REF(rdo::gui::animation::AreaList) areaList
 )
 {
 	getContent()->update(pFrame, bitmapList, bitmapGeneratedList, areaList);

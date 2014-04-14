@@ -321,7 +321,7 @@ void Manager::insertBitmap(CREF(QString) bitmapName)
 	g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 }
 
-void Manager::showFrame(CPTRC(rdo::animation::Frame) pFrame, std::size_t index)
+void Manager::showFrame(const rdo::animation::Frame* const pFrame, std::size_t index)
 {
 	if (index < count())
 	{

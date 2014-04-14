@@ -25,8 +25,6 @@
 #define   PTR(A)       A*
 //! Константный указатель на А
 #define  CPTR(A) const A*
-//! Константный указатель на константный объект типа А
-#define CPTRC(A) const A* const
 
 #ifdef UNUSED
 	#undef UNUSED
