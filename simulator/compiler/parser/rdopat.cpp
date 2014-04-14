@@ -742,7 +742,7 @@ void RDOPatternEvent::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(
 
 rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(bool trace) const
 {
-	std::vector<rdo::runtime::RDOValue> params_default;
+	std::vector<rdo::runtime::LPRDOCalc> params_default;
 	for (const auto& param: m_pCurrRelRes->getType()->getParams())
 	{
 		if (!param->getDefault()->defined())
