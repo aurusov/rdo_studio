@@ -34,11 +34,11 @@ public:
 
 	static const ruint END = ruint(~0);
 
-	void  add(CREF(std::string) next);
+	void add(CREF(std::string) next);
 	ruint findEnum(CREF(std::string) val) const;
-	rbool exist(CREF(std::string) val) const;
+	bool exist(CREF(std::string) val) const;
 
-	rbool empty() const;
+	bool empty() const;
 	const CIterator begin() const;
 	const CIterator end() const;
 	CREF(Enums) getValues() const;

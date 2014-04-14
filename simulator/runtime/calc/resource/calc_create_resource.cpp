@@ -26,8 +26,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOCalcCreateResource::RDOCalcCreateResource(
 	ruint resourceTypeID,
 	CREF(std::vector<RDOValue>) rParamsCalcs,
-	rbool traceFlag,
-	rbool permanentFlag,
+	bool traceFlag,
+	bool permanentFlag,
 	ruint relResID
 )
 	: m_resourceTypeID(resourceTypeID)

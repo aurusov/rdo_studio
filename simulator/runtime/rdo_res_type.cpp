@@ -36,7 +36,7 @@ void RDOResourceTypeList::setFactoryMethod(const Create& create)
 	m_create = create;
 }
 
-LPRDOResource RDOResourceTypeList::createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
+LPRDOResource RDOResourceTypeList::createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, bool traceFlag, bool permanentFlag)
 {
 	ASSERT(m_create);
 

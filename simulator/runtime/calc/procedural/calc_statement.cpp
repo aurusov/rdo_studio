@@ -50,7 +50,7 @@ void RDOCalcIf::setElseStatement(CREF(LPRDOCalc) pStatement)
 	m_statements.second = pStatement;
 }
 
-rbool RDOCalcIf::hasElse() const
+bool RDOCalcIf::hasElse() const
 {
 	return m_statements.second;
 }

@@ -115,7 +115,7 @@ std::string RDOActivity::traceResourcesList(char prefix, CREF(LPRDORuntime) pRun
 	return res;
 }
 
-std::string RDOActivity::traceResourcesListNumbers(CREF(LPRDORuntime) pRuntime, rbool show_create_index)
+std::string RDOActivity::traceResourcesListNumbers(CREF(LPRDORuntime) pRuntime, bool show_create_index)
 {
 	UNUSED(pRuntime);
 #ifndef RDOSIM_COMPATIBLE

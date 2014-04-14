@@ -28,7 +28,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 		std::string m_statisticFile;
 		std::string m_resultsFile;
 		std::string m_traceFile;
-		rbool m_error;
+		bool m_error;
 
 		RDOSMRFileInfo()
 			: m_modelName    ("")

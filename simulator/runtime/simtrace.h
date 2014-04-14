@@ -39,7 +39,7 @@ public:
 	virtual void rdoInit();
 
 	PTR(RDOTrace) getTracer() const;
-	rbool     canTrace() const;
+	bool canTrace() const;
 
 	double getTraceStartTime() const;
 	void   setTraceStartTime(double value);
@@ -107,7 +107,7 @@ private:
 	ruint memory_current;
 	ruint memory_max;
 
-	rbool timeForTrace() const;
+	bool timeForTrace() const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

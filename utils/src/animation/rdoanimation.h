@@ -46,7 +46,7 @@ struct FrameItem
 	//! \details Возвращает тип элемента
 	Type getType() const;
 
-	rbool operator== (CREF(FrameItem) item) const
+	bool operator== (CREF(FrameItem) item) const
 	{
 		return m_type == item.m_type;
 	}
@@ -59,10 +59,10 @@ private:
 //! \details Хранит RGB-цвет и признак прозрачности
 struct Color
 {
-	rbyte m_r;           //!< Красная составляющая цвета
-	rbyte m_g;           //!< Зелёная составляющая цвета
-	rbyte m_b;           //!< Синяя составляющая цвета
-	rbool m_transparent; //!< Признак прозрачности
+	rbyte m_r; //!< Красная составляющая цвета
+	rbyte m_g; //!< Зелёная составляющая цвета
+	rbyte m_b; //!< Синяя составляющая цвета
+	bool m_transparent; //!< Признак прозрачности
 
 	//! \details Создаёт прозрачный цвет. Значения других атрибутов неопределены.
 	Color();
@@ -76,9 +76,9 @@ struct Color
 	//! \param g           - зелёная составляющая цвета
 	//! \param b           - синяя составляющая цвета
 	//! \param transparent - признак прозрачности
-	Color(rbyte r, rbyte g, rbyte b, rbool transparent = false);
+	Color(rbyte r, rbyte g, rbyte b, bool transparent = false);
 
-	rbool operator== (CREF(Color) color) const
+	bool operator== (CREF(Color) color) const
 	{
 		return m_r == color.m_r && m_g == color.m_g && m_b == color.m_b && m_transparent == color.m_transparent;
 	}
@@ -100,7 +100,7 @@ struct ColoredElement
 	//! \param foreground - цвет переднего плана
 	ColoredElement(CREF(Color) background, CREF(Color) foreground);
 
-	rbool operator== (CREF(ColoredElement) element) const
+	bool operator== (CREF(ColoredElement) element) const
 	{
 		return m_background == element.m_background && m_foreground == element.m_foreground;
 	}
@@ -122,7 +122,7 @@ struct Point
 	//! \param y - координата y
 	Point(double x, double y);
 
-	rbool operator== (CREF(Point) point) const
+	bool operator== (CREF(Point) point) const
 	{
 		return m_x == point.m_x && m_y == point.m_y;
 	}
@@ -146,7 +146,7 @@ struct Size
 	//! \param height - высота
 	Size(double width, double height);
 
-	rbool operator== (CREF(Size) size) const
+	bool operator== (CREF(Size) size) const
 	{
 		return m_width == size.m_width && m_height == size.m_height;
 	}
@@ -167,7 +167,7 @@ struct BoundedElement
 	//! \param size  - размер элемента
 	BoundedElement(CREF(Point) point, CREF(Size) size);
 
-	rbool operator== (CREF(BoundedElement) element) const
+	bool operator== (CREF(BoundedElement) element) const
 	{
 		return m_point == element.m_point && m_size == element.m_size;
 	}
@@ -186,7 +186,7 @@ struct Radius
 	//! \param radius - значение радиуса
 	Radius(double radius);
 
-	rbool operator== (CREF(Radius) radius) const
+	bool operator== (CREF(Radius) radius) const
 	{
 		return m_radius == radius.m_radius;
 	}
@@ -232,7 +232,7 @@ struct LineElement: public FrameItem
 	//! \param color  - цвет отрезка
 	LineElement(CREF(Point) point1, CREF(Point) point2, CREF(Color) color);
 
-	rbool operator== (CREF(LineElement) element) const
+	bool operator== (CREF(LineElement) element) const
 	{
 		return m_point1 == element.m_point1 && m_point2 == element.m_point2 && m_color == element.m_color;
 	}
@@ -326,7 +326,7 @@ struct BmpElement: public FrameItem
 	BmpElement(CREF(Point) point, CREF(std::string) bmp_name, CREF(std::string) mask_name = "");
 
 	//! \details Возвращает \b true, если маска указана
-	rbool hasMask() const;
+	bool hasMask() const;
 };
 
 //! \brief   Масштабируемая картинка
@@ -345,7 +345,7 @@ struct ScaledBmpElement
 	ScaledBmpElement(CREF(BoundedElement) rect, CREF(std::string) bmp_name, CREF(std::string) mask_name = "");
 
 	//! \details Возвращает \b true, если маска указана
-	rbool hasMask() const;
+	bool hasMask() const;
 };
 
 //! \brief   Активная область
@@ -386,7 +386,7 @@ struct Frame
 	~Frame();
 
 	//! \details Возвращает \b true, если указана фоновая картинка
-	rbool hasBgImage() const;
+	bool hasBgImage() const;
 };
 
 }} // namespace rdo::animation

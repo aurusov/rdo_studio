@@ -41,12 +41,12 @@ inline RDOSrcInfo::Position::Position(ruint first_line, ruint first_pos, ruint l
 	, m_last_pos  (last_pos  )
 {}
 
-inline rbool RDOSrcInfo::Position::empty() const
+inline bool RDOSrcInfo::Position::empty() const
 {
 	return m_first_line == UNDEFINE_LINE && m_first_pos == UNDEFINE_POS && m_last_line == UNDEFINE_LINE && m_last_pos == UNDEFINE_POS;
 }
 
-inline rbool RDOSrcInfo::Position::point() const
+inline bool RDOSrcInfo::Position::point() const
 {
 	return m_first_line == m_last_line && m_first_pos == m_last_pos;
 }
@@ -130,7 +130,7 @@ inline rdoModelObjects::RDOFileType RDOSrcInfo::src_filetype() const
 	return m_file_type;
 }
 
-inline rbool RDOSrcInfo::src_empty() const
+inline bool RDOSrcInfo::src_empty() const
 {
 	return m_position.empty() && m_text_data.empty() && m_file_type == rdoModelObjects::TRC;
 }

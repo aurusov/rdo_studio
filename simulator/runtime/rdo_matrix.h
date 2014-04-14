@@ -68,7 +68,7 @@ public:
 	LPRDOMatrixIterator  preInc     (rsint delta);
 	LPRDOMatrixIterator  postInc    (rsint delta);
 	LPRDOMatrixIterator  next       ();
-	rbool                equal      (CREF(LPRDOMatrixIterator) pIterator) const;
+	bool                 equal      (CREF(LPRDOMatrixIterator) pIterator) const;
 	LPRDOMatrixIterator  clone      () const;
 
 private:

@@ -82,10 +82,10 @@ public:
 	UnknownPointer (CREF(UnknownPointer) pointer);
 	~UnknownPointer();
 
-	rbool               operator== (CREF(UnknownPointer) pointer) const;
-	REF(UnknownPointer) operator=  (CREF(UnknownPointer) pointer);
+	bool operator==(CREF(UnknownPointer) pointer) const;
+	REF(UnknownPointer) operator=(CREF(UnknownPointer) pointer);
 
-	operator rbool() const;
+	operator bool() const;
 
 	UnknownPointer                  query_cast  (ruint id);
 	template<class I> Interface<I>  query_cast  ();
@@ -114,8 +114,8 @@ public:
 	Interface(PTR(void) pInterface, LPIUnknown pUnknown);
 	Interface(CREF(this_type) aInterface);
 
-	REF(this_type) operator=     (CREF(this_type) aInterface);
-	               operator rbool() const;
+	REF(this_type) operator=(CREF(this_type) aInterface);
+	operator bool() const;
 
 	PTR(I)  get();
 	CPTR(I) get() const;
@@ -284,10 +284,10 @@ PTR(void) QueryInterface(ruint id)                      \
 class IInit
 {
 public:
-	virtual rbool init() = 0;
+	virtual bool init() = 0;
 };
-#define DECLARE_IInit     \
-	virtual rbool init();
+#define DECLARE_IInit \
+	virtual bool init();
 
 INTERFACE_REGISTRATOR(IInit, 0);
 

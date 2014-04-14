@@ -69,28 +69,28 @@ public:
 
 	std::string name() const { return m_name; }
 
-	void  end   ();
-	rbool closed() const { return m_closed; }
+	void end();
+	bool closed() const { return m_closed; }
 
 	void            setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
 	LPRDOFUNLogic   getConditon () const                               { return m_pConditon;      }
 	CREF(BlockList) getBlockList() const                               { return m_blockList;      }
 	LPRDORTPResType getTransacType()                                   { return m_transactType;   }
 
-	rbool checkTransactType(CREF(std::string) name) const;
+	bool checkTransactType(CREF(std::string) name) const;
 
-	rbool    setPrior   (REF(LPRDOFUNArithm)     pPrior  );
-	void     insertBlock(CREF(LPRDOPROCOperator) pBlock  );
-	void     insertChild(REF(LPRDOPROCProcess)   pProcess);
+	bool setPrior(REF(LPRDOFUNArithm) pPrior);
+	void insertBlock(CREF(LPRDOPROCOperator) pBlock);
+	void insertChild(REF(LPRDOPROCProcess) pProcess);
 
 	LPILogic getRunTime () const { return m_pRuntime; }
 
 protected:
-	rbool             m_closed;
-	LPRDOPROCProcess  m_pParentProcess;
-	ProcessList       m_childProcessList;
-	BlockList         m_blockList;
-	LPILogic          m_pRuntime;
+	bool m_closed;
+	LPRDOPROCProcess m_pParentProcess;
+	ProcessList m_childProcessList;
+	BlockList m_blockList;
+	LPILogic m_pRuntime;
 
 private:
 	RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(std::string) name, LPRDORTPResType transactType);

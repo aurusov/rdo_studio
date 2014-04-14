@@ -29,7 +29,7 @@ inline void stack<T>::pop()
 }
 
 template<class T>
-inline rbool stack<T>::empty() const
+inline bool stack<T>::empty() const
 {
 	return m_container.empty();
 }

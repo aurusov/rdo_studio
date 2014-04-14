@@ -30,7 +30,7 @@ public:
 		: m_dummy(dummy)
 	{}
 
-	rbool operator< (CREF(MyOperation) opr) const
+	bool operator< (CREF(MyOperation) opr) const
 	{
 		return m_dummy < opr.m_dummy;
 	}
@@ -53,11 +53,11 @@ public:
 	typedef typename List::iterator       Iterator;
 	typedef typename List::const_iterator CIterator;
 
-	Iterator  begin()       { return m_list.begin(); }
-	Iterator  end  ()       { return m_list.end  (); }
+	Iterator begin() { return m_list.begin(); }
+	Iterator end() { return m_list.end(); }
 	CIterator begin() const { return m_list.begin(); }
-	CIterator end  () const { return m_list.end  (); }
-	rbool     empty() const { return m_list.empty(); }
+	CIterator end() const { return m_list.end(); }
+	bool empty() const { return m_list.empty(); }
 
 	REF(Container) operator() (CREF(Item) item)
 	{
@@ -111,7 +111,7 @@ public:
 			m_container(*it);
 		}
 	}
-	rbool checkOperation(const data_vector& data)
+	bool checkOperation(const data_vector& data)
 	{
 		Order::sort(m_container);
 

@@ -66,7 +66,7 @@ protected:
 
 	ResourceID m_resID;
 
-	virtual rbool compare(CREF(LPRDOCalc) pCalc) const;
+	virtual bool compare(CREF(LPRDOCalc) pCalc) const;
 
 	DECLARE_ICalc;
 };
@@ -90,9 +90,9 @@ struct IRDOSelectResourceCommon: public rdo::RefCounter<IRDOSelectResourceCommon
 {
 DECLARE_FACTORY(IRDOSelectResourceCommon)
 public:
-	virtual void  getPossibleNumbers(CREF(LPRDORuntime)                          pRuntime,
-	                                  REF(RDOSelectResourceCalc::ResourceIDList) resourceIDList) const = 0;
-	virtual rbool callChoice        (CREF(LPRDORuntime) pRuntime)                                const = 0;
+	virtual void getPossibleNumbers(CREF(LPRDORuntime) pRuntime,
+	                                REF(RDOSelectResourceCalc::ResourceIDList) resourceIDList) const = 0;
+	virtual bool callChoice(CREF(LPRDORuntime) pRuntime) const = 0;
 
 protected:
 	IRDOSelectResourceCommon();
@@ -109,14 +109,14 @@ private:
 	typedef  RDOSelectResourceCalc::ResourceIDList    ResourceIDList;
 	typedef  RDOSelectResourceCalc::ResourceIDTable   ResourceIDTable;
 
-	RDOSelectResourceCommonCalc(CREF(SelectResourceCommonList) resSelectorList, rbool useCommonWithMax, CREF(LPRDOCalc) pCalcChoiceFrom);
+	RDOSelectResourceCommonCalc(CREF(SelectResourceCommonList) resSelectorList, bool useCommonWithMax, CREF(LPRDOCalc) pCalcChoiceFrom);
 
-	LPRDOCalc                 m_pCalcChoiceFrom;
-	SelectResourceCommonList  m_resSelectorList;
-	rbool                     m_useCommonWithMax;
+	LPRDOCalc m_pCalcChoiceFrom;
+	SelectResourceCommonList m_resSelectorList;
+	bool m_useCommonWithMax;
 
-	void  getBest (REF(ResourceIDTable) allNumbs, ruint level, REF(ResourceIDList) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(rbool) hasBest) const;
-	rbool getFirst(REF(ResourceIDTable) allNumbs, ruint level, CREF(LPRDORuntime) pRuntime) const;
+	void getBest(REF(ResourceIDTable) allNumbs, ruint level, REF(ResourceIDList) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(bool) hasBest) const;
+	bool getFirst(REF(ResourceIDTable) allNumbs, ruint level, CREF(LPRDORuntime) pRuntime) const;
 
 	DECLARE_ICalc;
 };
@@ -129,8 +129,8 @@ class RDOSelectResourceDirectCommonCalc
 {
 DECLARE_FACTORY(RDOSelectResourceDirectCommonCalc)
 public:
-	virtual void  getPossibleNumbers(CREF(LPRDORuntime) pRuntime, REF(ResourceIDList) resourceIDList) const;
-	virtual rbool callChoice        (CREF(LPRDORuntime) pRuntime)                                     const;
+	virtual void getPossibleNumbers(CREF(LPRDORuntime) pRuntime, REF(ResourceIDList) resourceIDList) const;
+	virtual bool callChoice (CREF(LPRDORuntime) pRuntime) const;
 
 private:
 	RDOSelectResourceDirectCommonCalc(ResourceID relResID, ResourceID resID, CREF(LPRDOCalc) pCalcChoiceFrom = NULL, CREF(LPRDOCalc) pCalcOrder = NULL, Type orderType = order_empty);
@@ -145,8 +145,8 @@ class RDOSelectResourceByTypeCommonCalc
 {
 DECLARE_FACTORY(RDOSelectResourceByTypeCommonCalc)
 public:
-	virtual void  getPossibleNumbers(CREF(LPRDORuntime) pRuntime, REF(ResourceIDList) resourceIDList) const;
-	virtual rbool callChoice        (CREF(LPRDORuntime) pRuntime)                                     const;
+	virtual void getPossibleNumbers(CREF(LPRDORuntime) pRuntime, REF(ResourceIDList) resourceIDList) const;
+	virtual bool callChoice(CREF(LPRDORuntime) pRuntime) const;
 
 private:
 	RDOSelectResourceByTypeCommonCalc(ResourceID relResID, ResourceID resTypeID, CREF(LPRDOCalc) pChoiceCalc = NULL, CREF(LPRDOCalc) pOrderCalc = NULL, Type orderType = order_empty);

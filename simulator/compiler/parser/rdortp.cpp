@@ -25,37 +25,37 @@ namespace
 {
 
 rdo::runtime::LPRDOResource createSimpleResource(
-	const rdo::runtime::LPRDORuntime            runtime,
+	const rdo::runtime::LPRDORuntime runtime,
 	const rdo::runtime::RDOResource::ParamList& params,
-	const rdo::runtime::LPIResourceType&        type,
+	const rdo::runtime::LPIResourceType& type,
 	ruint resource_id,
 	ruint type_id,
-	rbool trace,
-	rbool temporary)
+	bool trace,
+	bool temporary)
 {
 	return rdo::Factory<rdo::runtime::RDOResource>::create(runtime, params, type, resource_id, type_id, trace, temporary);
 }
 
 rdo::runtime::LPRDOPROCResource createProcessResource(
-	const rdo::runtime::LPRDORuntime            runtime,
+	const rdo::runtime::LPRDORuntime runtime,
 	const rdo::runtime::RDOResource::ParamList& params,
-	const rdo::runtime::LPIResourceType&        type,
+	const rdo::runtime::LPIResourceType& type,
 	ruint resource_id,
 	ruint type_id,
-	rbool trace,
-	rbool temporary)
+	bool trace,
+	bool temporary)
 {
 	return rdo::Factory<rdo::runtime::RDOPROCResource>::create(runtime, params, type, resource_id, type_id, trace, temporary);
 }
 
 rdo::runtime::LPRDOPROCTransact createProcessTransact(
-	const rdo::runtime::LPRDORuntime            runtime,
+	const rdo::runtime::LPRDORuntime runtime,
 	const rdo::runtime::RDOResource::ParamList& params,
-	const rdo::runtime::LPIResourceType&        type,
+	const rdo::runtime::LPIResourceType& type,
 	ruint resource_id,
 	ruint type_id,
-	rbool trace,
-	rbool temporary)
+	bool trace,
+	bool temporary)
 {
 	return rdo::Factory<rdo::runtime::RDOPROCTransact>::create(runtime, params, type, resource_id, type_id, trace, temporary);
 }
@@ -77,7 +77,7 @@ void rtperror(const char* message)
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
 // --------------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
+RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, bool permanent)
 	: RDOParserSrcInfo(src_info            )
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
@@ -97,12 +97,12 @@ rsint RDORTPResType::getNumber() const
 	return m_number;
 }
 
-rbool RDORTPResType::isPermanent() const
+bool RDORTPResType::isPermanent() const
 {
 	return m_permanent;
 }
 
-rbool RDORTPResType::isTemporary() const
+bool RDORTPResType::isTemporary() const
 {
 	return !m_permanent;
 }

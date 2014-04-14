@@ -52,7 +52,7 @@ const LPRDO##NAME RDOParser::find##NAME(CREF(std::string) name) const \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
 	return it != m_all##NAME.end() ? *it : LPRDO##NAME(NULL); \
 } \
-rbool RDOParser::remove##NAME(const LPRDO##NAME item) \
+bool RDOParser::remove##NAME(const LPRDO##NAME item) \
 { \
 	NAME##List::iterator it = std::find(m_all##NAME.begin(), m_all##NAME.end(), item); \
 	if (it == m_all##NAME.end()) \
@@ -375,12 +375,12 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 	return Context::FindResult();
 }
 
-rbool RDOParser::isCurrentDPTSearch()
+bool RDOParser::isCurrentDPTSearch()
 {
 	return getLastDPTSearch() && !getLastDPTSearch()->closed() ? true : false;
 }
 
-rbool RDOParser::isCurrentDPTPrior()
+bool RDOParser::isCurrentDPTPrior()
 {
 	return getLastDPTPrior() ? true : false;
 }

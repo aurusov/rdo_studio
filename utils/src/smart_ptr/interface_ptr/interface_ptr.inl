@@ -62,7 +62,7 @@ inline REF(typename interface_ptr<T>::this_type) interface_ptr<T>::operator= (CR
 }
 
 template<class T>
-inline interface_ptr<T>::operator rbool () const
+inline interface_ptr<T>::operator bool() const
 {
 	return m_pInterface != NULL;
 }

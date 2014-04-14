@@ -38,12 +38,12 @@ public:
 		addhk_notfound, //!< клавиша не найдена
 		addhk_dont	    //!< клавиша не нажата
 	};
-	virtual rbool           hasHotKey() const = 0;
+	virtual bool hasHotKey() const = 0;
 	virtual AddHotKeyResult addHotKey(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(std::string) hotKey) = 0;
 };
 
 #define DECLARE_IKeyboard \
-	virtual rbool           hasHotKey() const; \
+	virtual bool hasHotKey() const; \
 	virtual AddHotKeyResult addHotKey(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(std::string) hotKey);
 
 #endif // _LIB_RUNTIME_KEYBOARD_I_H_

@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPattern
 // --------------------------------------------------------------------------------
-RDOPattern::RDOPattern(rbool trace)
+RDOPattern::RDOPattern(bool trace)
 	: RDORuntimeObject  (     )
 	, RDOTraceableObject(trace)
 {}
@@ -32,7 +32,7 @@ RDOPattern::RDOPattern(rbool trace)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternEvent
 // --------------------------------------------------------------------------------
-RDOPatternEvent::RDOPatternEvent(rbool trace)
+RDOPatternEvent::RDOPatternEvent(bool trace)
 	: RDOPattern(trace)
 	, m_timeCalc(NULL )
 {}
@@ -63,7 +63,7 @@ LPIEvent RDOPatternEvent::createActivity(LPIBaseOperationContainer pLogic, CREF(
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternRule
 // --------------------------------------------------------------------------------
-RDOPatternRule::RDOPatternRule(rbool trace)
+RDOPatternRule::RDOPatternRule(bool trace)
 	: RDOPattern(trace)
 {}
 
@@ -89,7 +89,7 @@ LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, CREF(LP
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternOperation
 // --------------------------------------------------------------------------------
-RDOPatternOperation::RDOPatternOperation(rbool trace)
+RDOPatternOperation::RDOPatternOperation(bool trace)
 	: RDOPattern(trace)
 	, m_timeCalc(NULL )
 {}
@@ -127,7 +127,7 @@ LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogi
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternKeyboard
 // --------------------------------------------------------------------------------
-RDOPatternKeyboard::RDOPatternKeyboard(rbool trace)
+RDOPatternKeyboard::RDOPatternKeyboard(bool trace)
 	: RDOPatternOperation(trace)
 {}
 

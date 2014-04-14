@@ -174,7 +174,7 @@ Document::LPMemoryStream Document::getMemoryStream(Type type)
 	if (it == m_memoryFileList.end())
 	{
 		LPMemoryStream pMemoryStream = LPMemoryStream(new MemoryStream());
-		std::pair<MemoryFileList::iterator, rbool> result = m_memoryFileList.insert(MemoryFileList::value_type(type, pMemoryStream));
+		std::pair<MemoryFileList::iterator, bool> result = m_memoryFileList.insert(MemoryFileList::value_type(type, pMemoryStream));
 		ASSERT(result.second);
 		it = result.first;
 	}
@@ -187,7 +187,7 @@ Document::LPFileStream Document::getFileStream(TypeOut type)
 	if (it == m_streamFileList.end())
 	{
 		LPFileStream pFileStream = LPFileStream(new boost::filesystem::ofstream(getName(type), std::ios::trunc | std::ios::binary));
-		std::pair<StreamFileList::iterator, rbool> result = m_streamFileList.insert(StreamFileList::value_type(type, pFileStream));
+		std::pair<StreamFileList::iterator, bool> result = m_streamFileList.insert(StreamFileList::value_type(type, pFileStream));
 		ASSERT(result.second);
 		it = result.first;
 	}

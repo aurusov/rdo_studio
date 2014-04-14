@@ -314,7 +314,7 @@ private:
 	Align m_align;
 	LPRDOCalc m_pValue;
 	std::string m_text;
-	rbool m_isTextString;
+	bool m_isTextString;
 
 	DECLARE_ICalc;
 };

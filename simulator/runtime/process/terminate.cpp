@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
-rbool RDOPROCTerminate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCTerminate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 	return !m_transacts.empty() ? true : false;

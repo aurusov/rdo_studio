@@ -120,7 +120,7 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stre
 		}
 	}
 
-	rbool tableWrite = false;
+	bool tableWrite = false;
 	BOOST_FOREACH(LPIResult& pResult, m_resultList)
 	{
 		std::stringstream textStream;

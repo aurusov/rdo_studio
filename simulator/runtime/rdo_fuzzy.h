@@ -63,8 +63,8 @@ public:
 	FuzzySetDefinition::iterator              begin      ();
 	FuzzySetDefinition::iterator              end        ();
 	LPFuzzySet                                clone      () const;
-	rbool                                     empty      () const;
-	rbool                                     inRange    (CREF(RDOValue) rdovalue);
+	bool                                      empty      () const;
+	bool                                      inRange    (CREF(RDOValue) rdovalue);
 	void                                      setValues  (CREF(FuzzySetDefinition) values);
 
 	            LPFuzzySet operator&& (CREF(LPFuzzySet) pFuzzyValue) const;

@@ -29,14 +29,14 @@ public:
 	virtual ~LogEditLineInfo();
 
 	virtual std::string getMessage() const;
-	rbool isSimpleTextMessage() const;
+	bool isSimpleTextMessage() const;
 
 	ruint getPosInLog() const;
 	void setPosInLog(int posInLog);
 
 private:
 	ruint m_posInLog;
-	rbool m_simpleTextMessage;
+	bool m_simpleTextMessage;
 };
 
 }}} // namespace rdo::simulation::report

@@ -32,15 +32,15 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(std::string) name);
-	RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(std::string) name);
+	RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, bool trace, CREF(std::string) name);
+	RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, bool trace, CREF(LPRDOCalc) pCondition, CREF(std::string) name);
 	virtual ~RDOKeyboard();
 
-	rbool m_shift;
-	rbool m_control;
+	bool m_shift;
+	bool m_control;
 	ruint m_scan_code;
 
-	virtual rbool choiceFrom(CREF(LPRDORuntime) pRuntime);
+	virtual bool choiceFrom(CREF(LPRDORuntime) pRuntime);
 
 	DECLARE_IKeyboard;
 };

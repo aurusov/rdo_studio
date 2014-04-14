@@ -64,11 +64,11 @@ public:
 	};
 	struct OpenFile
 	{
-		boost::filesystem::path  m_name;
-		rbool                    m_readOnly;
-		rbool                    m_result;
+		boost::filesystem::path m_name;
+		bool m_readOnly;
+		bool m_result;
 
-		OpenFile(CREF(boost::filesystem::path) name = boost::filesystem::path(), rbool readOnly = false)
+		OpenFile(CREF(boost::filesystem::path) name = boost::filesystem::path(), bool readOnly = false)
 			: m_name    (name    )
 			, m_readOnly(readOnly)
 			, m_result  (false   )
@@ -86,19 +86,19 @@ public:
 	};
 	struct FileInfo
 	{
-		rdoModelObjects::RDOFileType  m_type;
-		boost::filesystem::path       m_name;
-		boost::filesystem::path       m_fullName;
-		boost::filesystem::path       m_extension;
-		rbool                         m_readOnly;
-		rbool                         m_described;
+		rdoModelObjects::RDOFileType m_type;
+		boost::filesystem::path m_name;
+		boost::filesystem::path m_fullName;
+		boost::filesystem::path m_extension;
+		bool m_readOnly;
+		bool m_described;
 
-		FileInfo(  rdoModelObjects::RDOFileType  type      = rdoModelObjects::SMR
-		         , CREF(boost::filesystem::path) name      = boost::filesystem::path()
-		         , CREF(boost::filesystem::path) fullName  = boost::filesystem::path()
-		         , CREF(boost::filesystem::path) extension = "smr"
-		         , rbool                         readOnly  = false
-		         , rbool                         described = false
+		FileInfo(rdoModelObjects::RDOFileType type = rdoModelObjects::SMR
+		       , CREF(boost::filesystem::path) name = boost::filesystem::path()
+		       , CREF(boost::filesystem::path) fullName = boost::filesystem::path()
+		       , CREF(boost::filesystem::path) extension = "smr"
+		       , bool readOnly  = false
+		       , bool described = false
 		)
 			: m_type     (type     )
 			, m_name     (name     )
@@ -114,12 +114,12 @@ public:
 private:
 	struct fileInfo
 	{
-		boost::filesystem::path  m_fileName;
-		boost::filesystem::path  m_extension;
-		rbool                    m_described;
-		rbool                    m_mustExist;
-		rbool                    m_deleteIfEmpty;
-		rbool                    m_readOnly;
+		boost::filesystem::path m_fileName;
+		boost::filesystem::path m_extension;
+		bool m_described;
+		bool m_mustExist;
+		bool m_deleteIfEmpty;
+		bool m_readOnly;
 
 		fileInfo()
 			: m_deleteIfEmpty(false)
@@ -146,8 +146,8 @@ private:
 
 	struct ProjectName
 	{
-		boost::filesystem::path  m_fullFileName;
-		rbool                    m_rdox;
+		boost::filesystem::path m_fullFileName;
+		bool m_rdox;
 
 		ProjectName()
 			: m_rdox(true)
@@ -156,53 +156,53 @@ private:
 
 	typedef boost::posix_time::ptime SystemTime;
 
-	boost::filesystem::path      m_modelName;
-	boost::filesystem::path      m_modelPath;
-	rbool                        m_hasModel;
-	boost::filesystem::ofstream  m_traceFile;
-	FileList                     m_files;
-	rbool                        m_realOnlyInDlg;
-	ProjectName                  m_projectName;
-	SystemTime                   m_systemTime;
+	boost::filesystem::path m_modelName;
+	boost::filesystem::path m_modelPath;
+	bool m_hasModel;
+	boost::filesystem::ofstream m_traceFile;
+	FileList m_files;
+	bool m_realOnlyInDlg;
+	ProjectName m_projectName;
+	SystemTime m_systemTime;
 
-	void      resetModelNames ();
+	void resetModelNames();
 	FindModel updateModelNames();
-	rbool     canCloseModel   ();
-	void      realCloseModel  ();
-	void      extractName     (CREF(boost::filesystem::path) fullName);
-	void      setName         (CREF(boost::filesystem::path) name);
-	void      createRDOX      ();
+	bool canCloseModel();
+	void realCloseModel();
+	void extractName(CREF(boost::filesystem::path) fullName);
+	void setName(CREF(boost::filesystem::path) name);
+	void createRDOX();
 
-	void      loadFile(CREF(boost::filesystem::path) fileName, std::ostream& stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;
-	void      saveFile(CREF(boost::filesystem::path) fileName, const std::stringstream& stream, rbool deleteIfEmpty = false) const;
+	void loadFile(CREF(boost::filesystem::path) fileName, std::ostream& stream, bool described, bool mustExist, REF(bool) reanOnly) const;
+	void saveFile(CREF(boost::filesystem::path) fileName, const std::stringstream& stream, bool deleteIfEmpty = false) const;
 
-	rbool     createFile(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream) const;
+	bool createFile(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream) const;
 
-	void      beforeModelStart   ();
-	void      stopModel          ();
-	void      trace              (CREF(std::string) message);
-	void      writeModelFilesInfo(REF(boost::filesystem::ofstream) stream) const;
+	void beforeModelStart();
+	void stopModel();
+	void trace(CREF(std::string) message);
+	void writeModelFilesInfo(REF(boost::filesystem::ofstream) stream) const;
 
 protected:
 	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	void  newModel  (CPTRC(NewModel) data);
-	rbool openModel (CREF(boost::filesystem::path) modelFileName);
-	void  closeModel();
-	rbool saveModel ();
+	void newModel(CPTRC(NewModel) data);
+	bool openModel(CREF(boost::filesystem::path) modelFileName);
+	void closeModel();
+	bool saveModel();
 
 	void load(rdoModelObjects::RDOFileType type, std::ostream& stream);
 	void save(rdoModelObjects::RDOFileType type, const std::stringstream& stream) const;
 
-	boost::filesystem::path getFileName    (rdoModelObjects::RDOFileType type) const;
-	boost::filesystem::path getExtension   (rdoModelObjects::RDOFileType type) const;
-	boost::filesystem::path getFileExtName (rdoModelObjects::RDOFileType type) const;
+	boost::filesystem::path getFileName(rdoModelObjects::RDOFileType type) const;
+	boost::filesystem::path getExtension(rdoModelObjects::RDOFileType type) const;
+	boost::filesystem::path getFileExtName(rdoModelObjects::RDOFileType type) const;
 	boost::filesystem::path getFullFileName(rdoModelObjects::RDOFileType type) const;
-	rbool   isReadOnly     (rdoModelObjects::RDOFileType type) const;
-	rbool   isDescribed    (rdoModelObjects::RDOFileType type) const;
-	rbool   isMustExist    (rdoModelObjects::RDOFileType type) const;
-	rbool   isDeleteIfEmpty(rdoModelObjects::RDOFileType type) const;
+	bool isReadOnly(rdoModelObjects::RDOFileType type) const;
+	bool isDescribed(rdoModelObjects::RDOFileType type) const;
+	bool isMustExist(rdoModelObjects::RDOFileType type) const;
+	bool isDeleteIfEmpty(rdoModelObjects::RDOFileType type) const;
 
 	void loadBMP(REF(boost::filesystem::path) name, std::ostream& stream) const;
 };

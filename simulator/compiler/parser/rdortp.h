@@ -56,9 +56,9 @@ public:
 	};
 	static const ruint UNDEFINED_PARAM = ruint(~0);
 
-	rsint getNumber  () const;
-	rbool isPermanent() const;
-	rbool isTemporary() const;
+	rsint getNumber() const;
+	bool isPermanent() const;
+	bool isTemporary() const;
 
 	LPRDORSSResource createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info);
 
@@ -80,14 +80,14 @@ public:
 	DECLARE_IType;
 
 private:
-	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
+	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, bool permanent);
 	virtual ~RDORTPResType();
 
 	rdo::runtime::LPIResourceType m_pRuntimeResType;
-	const ruint                   m_number;
-	const rbool                   m_permanent;
-	boost::optional<Subtype>      m_subtype;
-	ParamList                     m_params;
+	const ruint m_number;
+	const bool m_permanent;
+	boost::optional<Subtype> m_subtype;
+	ParamList m_params;
 
 	virtual runtime::RDOType::TypeID typeID() const;
 	virtual FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
@@ -188,7 +188,7 @@ DECLARE_POINTER(RDORTPResType);
 //	{
 //		m_terms.push_back(term);
 //	}
-//	rbool empty() const
+//	bool empty() const
 //	{
 //		return m_terms.empty();
 //	}

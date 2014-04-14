@@ -41,7 +41,7 @@ public:
 	void addPreSelectRelRes(CREF(LPRDOCalc) pCalc);
 
 protected:
-	RDOPattern(rbool trace);
+	RDOPattern(bool trace);
 	virtual ~RDOPattern();
 
 	typedef  std::vector<LPRDOCalc>                   CalcList;
@@ -51,8 +51,8 @@ protected:
 
 	void preSelectRelRes(CREF(LPRDORuntime) pRuntime);
 
-	void  runCalcs    (REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime);
-	rbool runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime);
+	void runCalcs(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime);
+	bool runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime);
 };
 
 /*!
@@ -78,7 +78,7 @@ public:
 	LPIEvent createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) oprName);
 
 private:
-	RDOPatternEvent(rbool trace);
+	RDOPatternEvent(bool trace);
 	virtual ~RDOPatternEvent();
 
 	LPRDOCalc         m_timeCalc;
@@ -107,13 +107,13 @@ public:
 	void convertRule (CREF(LPRDORuntime) pRuntime);
 	void convertErase(CREF(LPRDORuntime) pRuntime);
 
-	rbool choiceFrom (CREF(LPRDORuntime) pRuntime);
+	bool choiceFrom (CREF(LPRDORuntime) pRuntime);
 
 	LPIRule createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) _oprName);
 	LPIRule createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(std::string) _oprName);
 
 private:
-	RDOPatternRule(rbool trace);
+	RDOPatternRule(bool trace);
 	virtual ~RDOPatternRule();
 
 	CalcList          m_choiceFrom;
@@ -148,14 +148,14 @@ public:
 	void convertBeginErase      (CREF(LPRDORuntime) pRuntime);
 	void convertEndErase        (CREF(LPRDORuntime) pRuntime);
 
-	rbool  choiceFrom           (CREF(LPRDORuntime) pRuntime);
-	double getNextTimeInterval  (CREF(LPRDORuntime) pRuntime);
+	bool choiceFrom(CREF(LPRDORuntime) pRuntime);
+	double getNextTimeInterval(CREF(LPRDORuntime) pRuntime);
 
 	LPIOperation createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) _oprName);
 	LPIOperation createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(std::string) _oprName);
 
 protected:
-	RDOPatternOperation(rbool trace);
+	RDOPatternOperation(bool trace);
 	virtual ~RDOPatternOperation();
 
 private:
@@ -184,7 +184,7 @@ public:
 	LPIKeyboard createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(std::string) _oprName);
 
 private:
-	RDOPatternKeyboard(rbool trace);
+	RDOPatternKeyboard(bool trace);
 	virtual ~RDOPatternKeyboard();
 };
 DECLARE_POINTER(RDOPatternKeyboard);

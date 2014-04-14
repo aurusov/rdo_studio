@@ -160,7 +160,7 @@ ruint RDOThread::threadFun(PTR(void) pParam)
 #endif
 
 #ifdef RDO_MT
-rbool RDOThread::processMessages()
+bool RDOThread::processMessages()
 {
 	messages_mutex.Lock();
 	if (was_close)
@@ -242,7 +242,7 @@ PTR(CEvent) RDOThread::manualMessageFrom(RDOTreadMessage message, PTR(void) pPar
 }
 #endif
 
-void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) pParam, rbool lock)
+void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) pParam, bool lock)
 {
 #ifdef RDO_MT
 	if (pParam) lock = true;
@@ -340,7 +340,7 @@ RDOThread* RDOThreadGUI::getKernel()
 	return kernel_gui;
 }
 
-rbool RDOThreadGUI::processMessages()
+bool RDOThreadGUI::processMessages()
 {
 	return kernel_gui->processMessages();
 }

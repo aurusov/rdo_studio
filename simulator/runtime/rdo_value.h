@@ -38,7 +38,7 @@ public:
 	RDOValue(ruint64 value);
 #endif // ARCHITECTURES_AMD64
 	RDOValue(double value);
-	RDOValue(rbool value);
+	RDOValue(bool value);
 	RDOValue(CREF(LPRDOEnumType) pEnum);
 	RDOValue(CREF(LPRDOEnumType) pEnum, CREF(std::string) value);
 	RDOValue(CREF(LPRDOEnumType) pEnum, ruint index);
@@ -56,7 +56,7 @@ public:
 	rsint getEnumAsInt() const;
 	LPRDOEnumType getEnum() const;
 	double getDouble() const;
-	rbool getBool() const;
+	bool getBool() const;
 	CREF(std::string) getString() const;
 	CREF(std::string) getIdentificator() const;
 
@@ -70,38 +70,38 @@ public:
 	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerByInterface() const;
 
 	template <class T>
-	rbool isType() const;
+	bool isType() const;
 
-	rbool getAsBool() const;
+	bool getAsBool() const;
 	std::string getAsString() const;
 	std::string getAsStringForTrace() const;
 
-	REF(RDOValue)  operator=  (CREF(RDOValue) rdovalue);
-	rbool          operator== (CREF(RDOValue) rdovalue) const;
-	rbool          operator!= (CREF(RDOValue) rdovalue) const;
-	rbool          operator<  (CREF(RDOValue) rdovalue) const;
-	rbool          operator>  (CREF(RDOValue) rdovalue) const;
-	rbool          operator<= (CREF(RDOValue) rdovalue) const;
-	rbool          operator>= (CREF(RDOValue) rdovalue) const;
-	RDOValue       operator&& (CREF(RDOValue) rdovalue) const;
-	RDOValue       operator|| (CREF(RDOValue) rdovalue) const;
-	RDOValue       operator-  () const;
-	rbool          operator!  () const;
-	CREF(RDOValue) operator++ ();
-	RDOValue       operator++ (int inc);
-	CREF(RDOValue) operator-- ();
-	RDOValue       operator-- (int inc);
-	REF(RDOValue)  operator+= (CREF(RDOValue) rdovalue);
-	REF(RDOValue)  operator-= (CREF(RDOValue) rdovalue);
-	REF(RDOValue)  operator*= (CREF(RDOValue) rdovalue);
-	REF(RDOValue)  operator/= (CREF(RDOValue) rdovalue);
-	RDOValue       operator+  (CREF(RDOValue) rdovalue) const;
-	RDOValue       operator-  (CREF(RDOValue) rdovalue) const;
-	RDOValue       operator*  (CREF(RDOValue) rdovalue) const;
-	RDOValue       operator/  (CREF(RDOValue) rdovalue) const;
+	REF(RDOValue) operator=(CREF(RDOValue) rdovalue);
+	bool operator==(CREF(RDOValue) rdovalue) const;
+	bool operator!=(CREF(RDOValue) rdovalue) const;
+	bool operator<(CREF(RDOValue) rdovalue) const;
+	bool operator>(CREF(RDOValue) rdovalue) const;
+	bool operator<=(CREF(RDOValue) rdovalue) const;
+	bool operator>=(CREF(RDOValue) rdovalue) const;
+	RDOValue operator&&(CREF(RDOValue) rdovalue) const;
+	RDOValue operator||(CREF(RDOValue) rdovalue) const;
+	RDOValue operator-() const;
+	bool operator!() const;
+	CREF(RDOValue) operator++();
+	RDOValue operator++(int inc);
+	CREF(RDOValue) operator--();
+	RDOValue operator--(int inc);
+	REF(RDOValue) operator+=(CREF(RDOValue) rdovalue);
+	REF(RDOValue) operator-=(CREF(RDOValue) rdovalue);
+	REF(RDOValue) operator*=(CREF(RDOValue) rdovalue);
+	REF(RDOValue) operator/=(CREF(RDOValue) rdovalue);
+	RDOValue operator+(CREF(RDOValue) rdovalue) const;
+	RDOValue operator-(CREF(RDOValue) rdovalue) const;
+	RDOValue operator*(CREF(RDOValue) rdovalue) const;
+	RDOValue operator/(CREF(RDOValue) rdovalue) const;
 
-	void  setUndefined(rbool undefined);
-	rbool isUndefined () const;
+	void  setUndefined(bool undefined);
+	bool isUndefined () const;
 
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
@@ -130,9 +130,9 @@ private:
 	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
 	typedef rbyte Value[sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>)];
 
-	Value       m_value;     //!< контейнер значения
-	LPRDOType   m_pType;     //!< тип значения
-	rbool       m_undefined; //!< неопределенность значения
+	Value m_value; //!< контейнер значения
+	LPRDOType m_pType; //!< тип значения
+	bool m_undefined; //!< неопределенность значения
 
 	void set        (CREF(RDOValue) rdovalue);
 	void deleteValue();
@@ -153,15 +153,15 @@ private:
 	template <class T> CREF(rdo::intrusive_ptr<T>) getPointer() const;
 
 	std::string onPointerAsString() const;
-	rbool onPointerEqual(CREF(RDOValue) rdovalue) const;
+	bool onPointerEqual(CREF(RDOValue) rdovalue) const;
 	REF(RDOValue) onPointerPlus(CREF(RDOValue) rdovalue);
 	REF(RDOValue) onPointerMinus(CREF(RDOValue) rdovalue);
 	REF(RDOValue) onPointerMult(CREF(RDOValue) rdovalue);
 	REF(RDOValue) onPointerDiv(CREF(RDOValue) rdovalue);
 	rsint onPointerGetInt() const;
 	ruint onPointerGetUInt() const;
-	rbool onPointerAnd(CREF(RDOValue) rdovalue) const;
-	rbool onPointerOr(CREF(RDOValue) rdovalue) const;
+	bool onPointerAnd(CREF(RDOValue) rdovalue) const;
+	bool onPointerOr(CREF(RDOValue) rdovalue) const;
 	RDOValue onPointerUMinus() const;
 };
 

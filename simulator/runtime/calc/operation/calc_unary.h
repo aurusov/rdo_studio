@@ -74,7 +74,7 @@ public:
 private:
 	RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper);
 
-	rbool     m_round;
+	bool m_round;
 	LPRDOCalc m_pOperation;
 
 	DECLARE_ICalc;

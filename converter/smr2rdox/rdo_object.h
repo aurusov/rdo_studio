@@ -35,7 +35,7 @@ public:
 	RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo::Position) pos);
 	explicit RDOParserSrcInfo(CREF(std::string) text);
 	RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(std::string) text);
-	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, rbool first_align = false);
+	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, bool first_align = false);
 	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, CREF(std::string) text);
 
 	virtual void setSrcInfo(CREF(RDOParserSrcInfo) info)
@@ -104,11 +104,11 @@ public:
 		m_name = obj.m_name;
 		return *this;
 	}
-	rbool operator() (CPTR(T) pObj)
+	bool operator() (CPTR(T) pObj)
 	{
 		return pObj->name() == m_name;
 	}
-	rbool operator() (CREF(rdo::intrusive_ptr<T>) pObj)
+	bool operator() (CREF(rdo::intrusive_ptr<T>) pObj)
 	{
 		return pObj->name() == m_name;
 	}
@@ -132,7 +132,7 @@ public:
 		m_name = obj.m_name;
 		return *this;
 	}
-	rbool operator() (CREF(T) obj)
+	bool operator() (CREF(T) obj)
 	{
 		return obj.name() == m_name;
 	}

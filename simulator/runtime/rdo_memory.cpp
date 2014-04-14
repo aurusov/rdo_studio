@@ -23,7 +23,7 @@ RDOMemory::RDOMemory()
 
 void RDOMemory::createVariable(CREF(std::string) name, CREF(RDOValue) variable)
 {
-	std::pair<LocalMemory::iterator, rbool> result =
+	std::pair<LocalMemory::iterator, bool> result =
 		m_localMemory.insert(LocalMemory::value_type(name, variable));
 
 	ASSERT(result.second);
@@ -44,7 +44,7 @@ void RDOMemory::setVariable(CREF(std::string) name, CREF(RDOValue) variable)
 	it->second = variable;
 }
 
-rbool RDOMemory::findVariable(CREF(std::string) name) const
+bool RDOMemory::findVariable(CREF(std::string) name) const
 {
 	return m_localMemory.find(name) != m_localMemory.end();
 }

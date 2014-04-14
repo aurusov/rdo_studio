@@ -71,27 +71,27 @@ inline REF(typename intrusive_ptr<T>::this_type) intrusive_ptr<T>::operator= (CR
 
 template<class T>
 template<class P>
-inline rbool intrusive_ptr<T>::operator== (CREF(intrusive_ptr<P>) sptr) const
+inline bool intrusive_ptr<T>::operator== (CREF(intrusive_ptr<P>) sptr) const
 {
 	return &m_object->m_intrusive_counter == &sptr.m_object->m_intrusive_counter;
 }
 
 template<class T>
 template<class P>
-inline rbool intrusive_ptr<T>::operator!= (CREF(intrusive_ptr<P>) sptr) const
+inline bool intrusive_ptr<T>::operator!= (CREF(intrusive_ptr<P>) sptr) const
 {
 	return !operator==(sptr);
 }
 
 template<class T>
 template<class P>
-inline rbool intrusive_ptr<T>::compare(CREF(intrusive_ptr<P>) sptr) const
+inline bool intrusive_ptr<T>::compare(CREF(intrusive_ptr<P>) sptr) const
 {
 	return *m_object == *sptr.m_object;
 }
 
 template<class T>
-inline intrusive_ptr<T>::operator rbool () const
+inline intrusive_ptr<T>::operator bool() const
 {
 	return m_object != NULL;
 }
@@ -196,7 +196,7 @@ inline void intrusive_ptr<T>::release()
 }
 
 template<class T>
-inline rbool intrusive_ptr<T>::owner() const
+inline bool intrusive_ptr<T>::owner() const
 {
 	return m_object->m_intrusive_counter == 1;
 }

@@ -836,7 +836,7 @@ void RDOThreadRunTime::stop()
 void RDOThreadRunTime::destroy()
 {}
 
-rbool RDOThreadRunTime::runtimeError() const
+bool RDOThreadRunTime::runtimeError() const
 {
 	return m_runtimeError;
 }
@@ -1092,7 +1092,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 	}
 }
 
-rbool RDOThreadSimulator::parseModel()
+bool RDOThreadSimulator::parseModel()
 {
 	terminateModel();
 	closeModel();

@@ -38,7 +38,7 @@ inline void RefCounter<T>::release()
 }
 
 template<class T>
-inline rbool RefCounter<T>::owner() const
+inline bool RefCounter<T>::owner() const
 {
 	CPTR(counter_reference) pCounter = dynamic_cast<CPTR(counter_reference)>(this);
 	ASSERT(pCounter);

@@ -249,7 +249,7 @@ void RDOFRMSprite::insertGetBitmap(CREF(LPIRDOFRMItemGetBitmap) pGetBitmap)
 void RDOFRMSprite::insertRulet(CREF(LPRDOFRMRulet) pRulet)
 {
 	ASSERT(pRulet);
-	std::pair<RuletList::const_iterator, rbool> result =
+	std::pair<RuletList::const_iterator, bool> result =
 		m_ruletList.insert(RuletList::value_type(pRulet->getIndex(), pRulet));
 	ASSERT(result.second);
 	UNUSED(result);

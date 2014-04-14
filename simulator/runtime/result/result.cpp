@@ -45,7 +45,7 @@ template <class T>
 class ResultStreamItem
 {
 public:
-	ResultStreamItem(rbool predicate, const T& value)
+	ResultStreamItem(bool predicate, const T& value)
 		: predicate(predicate)
 		, value    (value    )
 	{}
@@ -54,8 +54,8 @@ public:
 	friend std::ostream& operator<< (std::ostream& stream, const ResultStreamItem<TS>& item);
 
 private:
-	rbool predicate;
-	T     value;
+	bool predicate;
+	T value;
 };
 
 template <class T>
@@ -89,7 +89,7 @@ inline std::ostream& operator<< (std::ostream& stream, const ResultStreamItem<do
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-RDOPMDResult::RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace)
+RDOPMDResult::RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace)
 	: RDOResultTrace(pRuntime, trace)
 	, m_name        (name           )
 {
@@ -119,7 +119,7 @@ void RDOPMDResult::printLeft(std::ostream& stream, CREF(std::string) txt)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(std::string) resName, CREF(std::string) parName, ruint resourceID, ruint paramID)
+RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resName, CREF(std::string) parName, ruint resourceID, ruint paramID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_resourceID  (resourceID           )
 	, m_paramID     (paramID              )
@@ -199,8 +199,8 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 	ruint  count    = boost::accumulators::count(m_acc);
 	double variance = boost::accumulators::weighted_variance(m_acc);
 
-	rbool averageEnable  = count > 0 && fabs(variance) > DBL_EPSILON;
-	rbool varianceEnable = count > 0 && fabs(variance) > DBL_EPSILON;
+	bool averageEnable = count > 0 && fabs(variance) > DBL_EPSILON;
+	bool varianceEnable = count > 0 && fabs(variance) > DBL_EPSILON;
 
 	double stdDeviation = varianceEnable
 		? sqrt(variance)
@@ -234,7 +234,7 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchState
 // --------------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(LPRDOCalc) pLogic)
+RDOPMDWatchState::RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(LPRDOCalc) pLogic)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_pLogicCalc  (pLogic               )
 	, m_wasFinalCalc(false                )
@@ -264,7 +264,7 @@ void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 
 void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 {
-	rbool newValue;
+	bool newValue;
 	try
 	{
 		newValue = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
@@ -324,7 +324,7 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& strea
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchQuant
 // --------------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(std::string) resTypeName, int rtpID)
+RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resTypeName, int rtpID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_pLogicCalc  (NULL                 )
 	, m_rtpID       (rtpID                )
@@ -409,8 +409,8 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& strea
 	ruint  count    = boost::accumulators::count(m_acc);
 	double variance = boost::accumulators::weighted_variance(m_acc);
 
-	rbool averageEnable  = count > 0 && fabs(variance) > DBL_EPSILON;
-	rbool varianceEnable = count > 0 && fabs(variance) > DBL_EPSILON;
+	bool averageEnable = count > 0 && fabs(variance) > DBL_EPSILON;
+	bool varianceEnable = count > 0 && fabs(variance) > DBL_EPSILON;
 
 	double stdDeviation = varianceEnable
 		? sqrt(variance)
@@ -446,7 +446,7 @@ void RDOPMDWatchQuant::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchValue
 // --------------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(std::string) resTypeName, int rtpID)
+RDOPMDWatchValue::RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resTypeName, int rtpID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_pLogicCalc  (NULL                 )
 	, m_pArithmCalc (NULL                 )
@@ -484,8 +484,8 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& strea
 	ruint  count    = boost::accumulators::count(m_acc);
 	double variance = boost::accumulators::variance(m_acc);
 
-	rbool averageEnable  = count > 0 && fabs(variance) > DBL_EPSILON;
-	rbool varianceEnable = count > 0 && fabs(variance) > DBL_EPSILON;
+	bool averageEnable = count > 0 && fabs(variance) > DBL_EPSILON;
+	bool varianceEnable = count > 0 && fabs(variance) > DBL_EPSILON;
 
 	double stdDeviation = varianceEnable
 		? sqrt(variance)

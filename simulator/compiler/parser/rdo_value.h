@@ -38,8 +38,8 @@ public:
 	 REF(rdo::runtime::RDOValue)   value   ();
 	CREF(rdo::runtime::RDOValue)   value   () const;
 
-	rbool defined () const;
-	rbool constant() const;
+	bool defined () const;
+	bool constant() const;
 
 	template <class T>
 	CREF(rdo::intrusive_ptr<T>) get() const;

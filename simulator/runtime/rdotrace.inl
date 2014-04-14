@@ -40,7 +40,7 @@ inline RDOTrace::RDOTrace()
 inline RDOTrace::~RDOTrace()
 {}
 
-inline rbool RDOTrace::canTrace() const
+inline bool RDOTrace::canTrace() const
 {
 	return !isNull() && canWrite();
 }
@@ -55,12 +55,12 @@ inline void  RDOTrace::stopWriting()
 	m_canWriteToStream = false;
 }
 
-inline rbool RDOTrace::canWrite() const
+inline bool RDOTrace::canWrite() const
 {
 	return m_canWriteToStream;
 }
 
-inline rbool RDOTrace::isNull() const
+inline bool RDOTrace::isNull() const
 {
 	return m_isNullTracer;
 }
@@ -78,7 +78,7 @@ inline REF(RDOEndL) RDOTrace::getEOL()
 // --------------------------------------------------------------------------------
 // -------------------- RDOTraceableObject
 // --------------------------------------------------------------------------------
-inline RDOTraceableObject::RDOTraceableObject(rbool trace, ruint id, std::string str)
+inline RDOTraceableObject::RDOTraceableObject(bool trace, ruint id, std::string str)
 	: m_trace (trace)
 	, m_id    (id   )
 	, m_str_id(str  )
@@ -87,12 +87,12 @@ inline RDOTraceableObject::RDOTraceableObject(rbool trace, ruint id, std::string
 inline RDOTraceableObject::~RDOTraceableObject()
 {}
 
-inline rbool RDOTraceableObject::traceable() const
+inline bool RDOTraceableObject::traceable() const
 {
 	return m_trace;
 }
 
-inline void RDOTraceableObject::setTrace(rbool trace)
+inline void RDOTraceableObject::setTrace(bool trace)
 {
 	m_trace = trace;
 }

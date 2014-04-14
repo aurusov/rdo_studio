@@ -177,7 +177,7 @@ LPRDOArrayIterator RDOArrayIterator::next()
 	return preInc(1);
 }
 
-rbool RDOArrayIterator::equal(CREF(LPRDOArrayIterator) pIterator) const
+bool RDOArrayIterator::equal(CREF(LPRDOArrayIterator) pIterator) const
 {
 	ASSERT(pIterator);
 	return m_iterator == pIterator->m_iterator;

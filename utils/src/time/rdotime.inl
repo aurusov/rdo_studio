@@ -24,7 +24,7 @@ inline Time::Time(CREF(Value) value)
 	: m_value(value)
 {}
 
-inline rbool Time::operator== (CREF(Time) time)
+inline bool Time::operator==(CREF(Time) time)
 {
 	return m_value == time.m_value;
 }

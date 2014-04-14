@@ -45,11 +45,11 @@ void RDOSimulator::appendLogic(CREF(LPIBaseOperation) pLogic, LPIBaseOperationCo
 	pParent->append(pLogic);
 }
 
-rbool RDOSimulator::doOperation()
+bool RDOSimulator::doOperation()
 {
 	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
 
-	rbool res;
+	bool res;
 	if (getMustContinueOpr())
 	{
 		// Есть действие, которое необходимо продолжить. Используется в DPT
@@ -62,7 +62,7 @@ rbool RDOSimulator::doOperation()
 	}
 	else
 	{
-		rbool foundPlaned = false;
+		bool foundPlaned = false;
 		// Отработаем все запланированные на данный момент события
 		if (!m_checkOperation && !m_timePoints.empty())
 		{

@@ -84,7 +84,7 @@ void RDORuntime::setStudioThread(PTR(RDOThread) pStudioThread)
 	m_pStudioThread = pStudioThread;
 }
 
-rbool RDORuntime::endCondition()
+bool RDORuntime::endCondition()
 {
 	if (!m_pTerminateIfCalc)
 	{
@@ -99,7 +99,7 @@ void RDORuntime::setTerminateIf(CREF(LPRDOCalc) pTerminateIfCalc)
 	m_pTerminateIfCalc = pTerminateIfCalc;
 }
 
-rbool RDORuntime::breakPoints()
+bool RDORuntime::breakPoints()
 {
 	for (const auto& breakPoint: m_breakPointList)
 	{
@@ -151,7 +151,7 @@ RDOValue RDORuntime::getConstValue(ruint constID) const
 }
 
 #ifdef _DEBUG
-rbool RDORuntime::checkState()
+bool RDORuntime::checkState()
 {
 	if (m_state.empty())
 	{
@@ -325,7 +325,7 @@ LPRDOFRMFrame RDORuntime::lastFrame() const
 	return !m_frameList.empty() ? m_frameList.front() : LPRDOFRMFrame(NULL);
 }
 
-rbool RDORuntime::isKeyDown() const
+bool RDORuntime::isKeyDown() const
 {
 	return m_hotKey.isKeyDown();
 }
@@ -405,7 +405,7 @@ void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 	parent_type::copyFrom(pOther.object_parent_cast<parent_type>());
 }
 
-rbool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
+bool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
 {
 	if (pOther->m_resourceListByID.size() != m_resourceListByID.size()) return false;
 

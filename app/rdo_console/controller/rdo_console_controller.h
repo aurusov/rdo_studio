@@ -30,13 +30,13 @@ public:
 	console_controller();
 	virtual ~console_controller();
 
-	rbool finished              () const;
-	rbool converted             () const;
-	rbool simulationSuccessfully();
+	bool finished() const;
+	bool converted() const;
+	bool simulationSuccessfully();
 
-	rbool buildError            () const;
-	rbool runtimeError          () const;
-	rbool convertorError        () const;
+	bool buildError() const;
+	bool runtimeError() const;
+	bool convertorError() const;
 
 	void getBuildLogList(StringList& list) const;
 
@@ -56,13 +56,13 @@ private:
 		SS_FINISHED
 	};
 
-	SimulatorState       m_state;
-	rbool                m_converted;
-	rbool                m_buildError;
-	rbool                m_runtimeError;
-	rbool                m_convertorError;
-	RDOExitCode          m_exitCode;
-	StringList           m_buildLogList;
+	SimulatorState m_state;
+	bool m_converted;
+	bool m_buildError;
+	bool m_runtimeError;
+	bool m_convertorError;
+	RDOExitCode m_exitCode;
+	StringList m_buildLogList;
 
 	mutable boost::mutex m_stateMutex;
 };

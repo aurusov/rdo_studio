@@ -39,7 +39,7 @@ private:
 
 		OprItem(CREF(opr_type) pOperator, CREF(std::string) name);
 
-		rbool operator== (CREF(opr_type) pOperator) const;
+		bool operator== (CREF(opr_type) pOperator) const;
 	};
 	typedef std::list<OprItem> NameList;
 

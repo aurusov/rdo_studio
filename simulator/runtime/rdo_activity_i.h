@@ -41,12 +41,12 @@ class IActivityTrace
 {
 public:
 	virtual std::string traceResourcesList(char prefix, CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual std::string traceResourcesListNumbers(CREF(rdo::runtime::LPRDORuntime) pRuntime, rbool show_create_index) = 0;
+	virtual std::string traceResourcesListNumbers(CREF(rdo::runtime::LPRDORuntime) pRuntime, bool show_create_index) = 0;
 };
 
 #define DECLARE_IActivityTrace                                                                      \
 	virtual std::string traceResourcesList(char prefix, CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual std::string traceResourcesListNumbers(CREF(rdo::runtime::LPRDORuntime) pRuntime, rbool show_create_index);
+	virtual std::string traceResourcesListNumbers(CREF(rdo::runtime::LPRDORuntime) pRuntime, bool show_create_index);
 
 /*!
   \interface IActivityPatternTrace

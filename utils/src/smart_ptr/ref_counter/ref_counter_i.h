@@ -20,14 +20,14 @@ namespace rdo {
 
 struct IRefCounter
 {
-	virtual void  addref ()       = 0;
-	virtual void  release()       = 0;
-	virtual rbool owner  () const = 0;
+	virtual void addref() = 0;
+	virtual void release() = 0;
+	virtual bool owner() const = 0;
 };
 #define DECLARE_IRefCounter \
-	void  addref ();        \
-	void  release();        \
-	rbool owner  () const;
+	void addref();          \
+	void release();         \
+	bool owner() const;
 
 typedef PTR(IRefCounter) LPIRefCounter;
 

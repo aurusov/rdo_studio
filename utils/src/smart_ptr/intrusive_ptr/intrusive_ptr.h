@@ -41,19 +41,19 @@ public:
 
 	//! Сравнивает по указателям
 	template <class P>
-	rbool operator== (CREF(intrusive_ptr<P>) sptr) const;
+	bool operator==(CREF(intrusive_ptr<P>) sptr) const;
 	template <class P>
-	rbool operator!= (CREF(intrusive_ptr<P>) sptr) const;
+	bool operator!=(CREF(intrusive_ptr<P>) sptr) const;
 
 	//! Сравнивает по значениям
 	template<class P>
-	rbool compare(CREF(intrusive_ptr<P>) sptr) const;
+	bool compare(CREF(intrusive_ptr<P>) sptr) const;
 
-	operator rbool     () const;
-	 PTR(T) operator-> () const;
-	 PTR(T) operator-> ();
-	CREF(T) operator*  () const;
-	 REF(T) operator*  ();
+	operator bool() const;
+	 PTR(T) operator->() const;
+	 PTR(T) operator->();
+	CREF(T) operator*() const;
+	 REF(T) operator*();
 
 	template <class P>
 	operator intrusive_ptr<P>() const;
@@ -74,14 +74,14 @@ public:
 	interface_ptr<P> interface_dynamic_cast() const;
 
 	/// @todo переместить в protected
-	PTR(T)   get();
-	CPTR(T)  get() const;
+	PTR(T) get();
+	CPTR(T) get() const;
 
-	rbool owner () const;
+	bool owner() const;
 
 protected:
-	void  addref ();
-	void  release();
+	void addref();
+	void release();
 
 private:
 	PTR(T) m_object;

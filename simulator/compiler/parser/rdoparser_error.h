@@ -59,11 +59,11 @@ public:
 	CREF(ErrorList) getList () const;
 	void block();
 	void unblock();
-	rbool blocked() const;
+	bool blocked() const;
 
 private:
 	ErrorList m_errorList;
-	rbool m_blocked;
+	bool m_blocked;
 };
 
 REF(Error) g_error();

@@ -32,12 +32,12 @@
 
 namespace rdo {
 
-rbool File::create(CREF(boost::filesystem::path) name)
+bool File::create(CREF(boost::filesystem::path) name)
 {
 	return create(name, "");
 }
 
-rbool File::create(CREF(boost::filesystem::path) name, CREF(std::string) content)
+bool File::create(CREF(boost::filesystem::path) name, CREF(std::string) content)
 {
 	boost::filesystem::fstream file(name, std::ios::out | std::ios::binary);
 	file << content << std::endl;
@@ -45,12 +45,12 @@ rbool File::create(CREF(boost::filesystem::path) name, CREF(std::string) content
 	return true;
 }
 
-rbool File::exist(CREF(boost::filesystem::path) name)
+bool File::exist(CREF(boost::filesystem::path) name)
 {
 	return boost::filesystem::exists(name);
 }
 
-rbool File::read_only(CREF(boost::filesystem::path) name)
+bool File::read_only(CREF(boost::filesystem::path) name)
 {
 #ifdef COMPILER_VISUAL_STUDIO
 	return _waccess(name.wstring().c_str(), 04) == 0 && _waccess(name.wstring().c_str(), 06) == -1;
@@ -62,12 +62,12 @@ rbool File::read_only(CREF(boost::filesystem::path) name)
 #endif // COMPILER_GCC
 }
 
-rbool File::unlink(CREF(boost::filesystem::path) name)
+bool File::unlink(CREF(boost::filesystem::path) name)
 {
 	return boost::filesystem::remove(name);
 }
 
-rbool File::splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem::path) fileDir, REF(boost::filesystem::path) fileName, REF(boost::filesystem::path) fileExt)
+bool File::splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem::path) fileDir, REF(boost::filesystem::path) fileName, REF(boost::filesystem::path) fileExt)
 {
 	boost::filesystem::path parentDir(from.parent_path());
 	boost::filesystem::path rootName      = parentDir.root_name();
@@ -119,7 +119,7 @@ boost::filesystem::path File::extractFilePath(CREF(boost::filesystem::path) name
 		: parentPath / boost::filesystem::path("/").make_preferred();
 }
 
-rbool File::trimLeft(CREF(boost::filesystem::path) name)
+bool File::trimLeft(CREF(boost::filesystem::path) name)
 {
 	boost::filesystem::ifstream inputStream(name, std::ios::binary);
 	std::stringstream sstream;
@@ -129,7 +129,7 @@ rbool File::trimLeft(CREF(boost::filesystem::path) name)
 		return false;
 	}
 
-	rbool empty = true;
+	bool empty = true;
 	while (!inputStream.eof())
 	{
 		char byte;

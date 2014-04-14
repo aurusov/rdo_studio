@@ -52,7 +52,7 @@ std::string LogEditLineInfo::getMessage() const
 	}
 }
 
-rbool LogEditLineInfo::isSimpleTextMessage() const
+bool LogEditLineInfo::isSimpleTextMessage() const
 {
 	return m_simpleTextMessage;
 }

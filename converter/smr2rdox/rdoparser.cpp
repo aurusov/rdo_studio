@@ -51,7 +51,7 @@ const LPRDO##NAME Converter::find##NAME(CREF(std::string) name) const \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
 	return it != m_all##NAME.end() ? *it : LPRDO##NAME(NULL); \
 } \
-rbool Converter::remove##NAME(const LPRDO##NAME item) \
+bool Converter::remove##NAME(const LPRDO##NAME item) \
 { \
 	NAME##List::iterator it = std::find(m_all##NAME.begin(), m_all##NAME.end(), item); \
 	if (it == m_all##NAME.end()) \
@@ -134,12 +134,12 @@ void Converter::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
 	}
 }
 
-rbool Converter::isCurrentDPTSearch()
+bool Converter::isCurrentDPTSearch()
 {
 	return getLastDPTSearch() && !getLastDPTSearch()->closed() ? true : false;
 }
 
-rbool Converter::isCurrentDPTPrior()
+bool Converter::isCurrentDPTPrior()
 {
 	return getLastDPTPrior() ? true : false;
 }
@@ -274,7 +274,7 @@ void RDOParserSMRInfo::insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn ty
 	}
 }
 
-rbool RDOParserSMRInfo::parseSMR(CREF(boost::filesystem::path) smrFullFileName, REF(boost::filesystem::path) modelName)
+bool RDOParserSMRInfo::parseSMR(CREF(boost::filesystem::path) smrFullFileName, REF(boost::filesystem::path) modelName)
 {
 	boost::filesystem::ifstream stream(smrFullFileName);
 	if (!stream.is_open())

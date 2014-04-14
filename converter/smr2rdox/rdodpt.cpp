@@ -212,7 +212,7 @@ void RDODPTActivity::planningInsertIntoSMR() const
 	Converter::s_converter()->insertDocUpdate(pPlanningInsertIntoSMR);
 }
 
-rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
 {
 	UNUSED(pPrior);
 	return false;
@@ -254,7 +254,7 @@ IKeyboard::AddHotKeyResult RDODPTActivityHotKey::addHotKey(CREF(std::string) hot
 	return IKeyboard::addhk_ok;
 }
 
-rbool RDODPTActivityHotKey::hasHotKey() const
+bool RDODPTActivityHotKey::hasHotKey() const
 {
 	for (const auto key: m_scanCodeList)
 	{
@@ -469,7 +469,7 @@ RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info)
 	m_pRuntime.query_cast<ILogic>()->init(Converter::s_converter()->runtime());
 }
 
-rbool RDOPROCProcess::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDOPROCProcess::setPrior(REF(LPRDOFUNArithm) pPrior)
 {
 	LPILogic pRuntimeLogic = getRunTime();
 	LPIPriority pPriority = pRuntimeLogic.query_cast<IPriority>();

@@ -62,7 +62,7 @@ inline void FuzzySet::setValues(CREF(FuzzySetDefinition) values)
 
 inline LPFuzzySet FuzzySet::append(CREF(RDOValue) rdovalue, double appertain)
 {
-	std::pair<FuzzySet::FuzzySetDefinition::iterator, rbool> checkValue;
+	std::pair<FuzzySet::FuzzySetDefinition::iterator, bool> checkValue;
 	checkValue = m_fuzzySet.insert(std::pair<RDOValue,double>(rdovalue, appertain));
 	return LPFuzzySet(this);
 }
@@ -93,8 +93,8 @@ inline FuzzySet::FuzzySetDefinition::const_iterator FuzzySet::begin() const { re
 inline FuzzySet::FuzzySetDefinition::const_iterator FuzzySet::end  () const { return m_fuzzySet.end();   }
 inline FuzzySet::FuzzySetDefinition::iterator       FuzzySet::begin()       { return m_fuzzySet.begin(); }
 inline FuzzySet::FuzzySetDefinition::iterator       FuzzySet::end  ()       { return m_fuzzySet.end();   }
-inline rbool                                        FuzzySet::empty() const { return m_fuzzySet.empty(); }
-inline rbool FuzzySet::inRange (CREF(RDOValue) rdovalue)
+inline bool                                         FuzzySet::empty() const { return m_fuzzySet.empty(); }
+inline bool FuzzySet::inRange (CREF(RDOValue) rdovalue)
 {
 	return m_fuzzySet.find(rdovalue) != m_fuzzySet.end();
 }

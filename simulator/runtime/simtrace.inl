@@ -38,7 +38,7 @@ inline PTR(RDOTrace) RDOSimulatorTrace::getTracer() const
 	return m_tracer;
 }
 
-inline rbool RDOSimulatorTrace::canTrace() const
+inline bool RDOSimulatorTrace::canTrace() const
 {
 	return getTracer()->canTrace();
 }
@@ -106,7 +106,7 @@ inline int RDOSimulatorTrace::getFreeDPTId()
 	return m_dptCounter++;
 }
 
-inline rbool RDOSimulatorTrace::timeForTrace() const
+inline bool RDOSimulatorTrace::timeForTrace() const
 {
 	if (getTraceStartTime() != UNDEFINE_TIME && getTraceStartTime() > getCurrentTime())
 		return false;

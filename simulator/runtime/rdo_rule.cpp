@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDORule
 // --------------------------------------------------------------------------------
-RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(std::string) name)
+RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, bool trace, CREF(std::string) name)
 	: RDOActivityPattern<RDOPatternRule>(pPattern, trace, name)
 	, RDOPatternPrior                   (                     )
 	, m_pRuntime                        (pRuntime             )
@@ -28,7 +28,7 @@ RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, r
 	init();
 }
 
-RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(std::string) name)
+RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, bool trace, CREF(LPRDOCalc) pCondition, CREF(std::string) name)
 	: RDOActivityPattern<RDOPatternRule>(pPattern, trace, name)
 	, RDOPatternPrior                   (                     )
 	, m_pRuntime                        (pRuntime             )
@@ -51,7 +51,7 @@ void RDORule::onBeforeChoiceFrom(CREF(LPRDORuntime) pRuntime)
 	setPatternParameters(pRuntime, m_paramsCalcs);
 }
 
-rbool RDORule::choiceFrom(CREF(LPRDORuntime) pRuntime)
+bool RDORule::choiceFrom(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setCurrentActivity(this);
 	if (m_pAdditionalCondition && !m_pAdditionalCondition->calcValue(pRuntime).getAsBool())
@@ -72,7 +72,7 @@ void RDORule::convertRule(CREF(LPRDORuntime) pRuntime)
 	m_pPattern->convertRule(pRuntime);
 }
 
-void RDORule::onAfterRule(CREF(LPRDORuntime) pRuntime, rbool inSearch)
+void RDORule::onAfterRule(CREF(LPRDORuntime) pRuntime, bool inSearch)
 {
 	updateConvertStatus(pRuntime, m_pPattern->m_convertorStatus);
 	if (!inSearch)
@@ -91,11 +91,11 @@ void RDORule::trace()
 	}
 }
 
-rbool RDORule::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDORule::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	onBeforeChoiceFrom(pRuntime);
 	pRuntime->inc_cnt_choice_from();
-	rbool result = choiceFrom(pRuntime);
+	bool result = choiceFrom(pRuntime);
 	if (result)
 	{
 		m_traceOFF = true;

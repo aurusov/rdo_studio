@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAdvance
 // --------------------------------------------------------------------------------
-rbool RDOPROCAdvance::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCAdvance::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if (!m_transacts.empty())
 	{

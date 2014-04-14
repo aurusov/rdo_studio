@@ -73,8 +73,8 @@ private:
 	typedef std::map<Type, LPMemoryStream>   MemoryFileList;
 	typedef std::map<TypeOut, LPFileStream>  StreamFileList;
 
-	typedef std::pair<LPDocUpdate, rbool> Update;
-	typedef std::list<Update>             UpdateContainer;
+	typedef std::pair<LPDocUpdate, bool> Update;
+	typedef std::list<Update> UpdateContainer;
 
 	boost::filesystem::path  m_filePath;
 	boost::filesystem::path  m_modelName;

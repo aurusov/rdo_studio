@@ -27,9 +27,9 @@ class RDOLogicBase
 DECLARE_FACTORY(RDOLogicBase);
 public:
 	CREF(std::string) name () const;
-	rbool setPrior(REF(LPRDOFUNArithm) pPrior);
-	rbool getMultithreading() const;
-	void setMultithreading(rbool multithreading = false);
+	bool setPrior(REF(LPRDOFUNArithm) pPrior);
+	bool getMultithreading() const;
+	void setMultithreading(bool multithreading = false);
 	void setCondition(CREF(LPRDOFUNLogic) pConditon = NULL);
 	LPRDOFUNLogic getConditon() const;
 	LPILogic getLogic() const;
@@ -41,7 +41,7 @@ protected:
 
 	LPRDOFUNLogic m_pConditon;
 	LPILogic m_pRuntimeLogic;
-	rbool m_multithreading;
+	bool m_multithreading;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

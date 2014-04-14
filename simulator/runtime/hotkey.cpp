@@ -93,7 +93,7 @@ RDOHotKey::KeyCode RDOHotKey::Toolkit::codeFromString(CREF(std::string) keyName)
 // --------------------------------------------------------------------------------
 // -------------------- RDOHotKey::KeyInModelList
 // --------------------------------------------------------------------------------
-rbool RDOHotKey::KeyInModelList::insert(CREF(KeyCode) keyCode)
+bool RDOHotKey::KeyInModelList::insert(CREF(KeyCode) keyCode)
 {
 	if (check(keyCode))
 	{
@@ -103,7 +103,7 @@ rbool RDOHotKey::KeyInModelList::insert(CREF(KeyCode) keyCode)
 	return true;
 }
 
-rbool RDOHotKey::KeyInModelList::check(CREF(KeyCode) keyCode) const
+bool RDOHotKey::KeyInModelList::check(CREF(KeyCode) keyCode) const
 {
 	return boost::find(m_keyList, keyCode) != m_keyList.end();
 }
@@ -118,7 +118,7 @@ RDOHotKey::KeyDownList::KeyDownList()
 RDOHotKey::KeyDownList::~KeyDownList()
 {}
 
-rbool RDOHotKey::KeyDownList::down(CREF(KeyCode) keyCode)
+bool RDOHotKey::KeyDownList::down(CREF(KeyCode) keyCode)
 {
 	// Если нажаты VK_SHIFT или VK_CONTROL, то сбросим буфер клавиатуры
 	if (keyCode == VK_SHIFT || keyCode == VK_CONTROL)
@@ -176,11 +176,11 @@ void RDOHotKey::KeyDownList::up(CREF(KeyCode) keyCode)
 	//}
 }
 
-rbool RDOHotKey::KeyDownList::isPressed(CREF(KeyCode) keyCode, rbool shift, rbool control)
+bool RDOHotKey::KeyDownList::isPressed(CREF(KeyCode) keyCode, bool shift, bool control)
 {
 	if (keyCode == 0) return false;
-	rbool shift_found   = false;
-	rbool control_found = false;
+	bool shift_found   = false;
+	bool control_found = false;
 	// Найдем VK_SHIFT и/или VK_CONTROL в буфере
 	KeyList::iterator it = m_keyList.begin();
 	while (it != m_keyList.end())
@@ -217,7 +217,7 @@ rbool RDOHotKey::KeyDownList::isPressed(CREF(KeyCode) keyCode, rbool shift, rboo
 	return false;
 }
 
-rbool RDOHotKey::KeyDownList::isFound() const
+bool RDOHotKey::KeyDownList::isFound() const
 {
 	return m_keyFound;
 }
@@ -238,7 +238,7 @@ void RDOHotKey::AreaList::click(CREF(std::string) areaName)
 	m_activeAreasMouseClicked.push_back(areaName);
 }
 
-rbool RDOHotKey::AreaList::check(CREF(std::string) areaName)
+bool RDOHotKey::AreaList::check(CREF(std::string) areaName)
 {
 	NameList::iterator it = boost::find(m_activeAreasMouseClicked, areaName);
 	if (it == m_activeAreasMouseClicked.end())
@@ -249,7 +249,7 @@ rbool RDOHotKey::AreaList::check(CREF(std::string) areaName)
 	return true;
 }
 
-rbool RDOHotKey::AreaList::empty() const
+bool RDOHotKey::AreaList::empty() const
 {
 	return m_activeAreasMouseClicked.empty();
 }
@@ -274,7 +274,7 @@ void RDOHotKey::clear()
 	m_areaList.clear();
 }
 
-rbool RDOHotKey::isKeyDown() const
+bool RDOHotKey::isKeyDown() const
 {
 	return m_keyDown.isFound() || !m_areaList.empty();
 }

@@ -34,7 +34,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOActivity(rbool trace, CREF(std::string) name);
+	RDOActivity(bool trace, CREF(std::string) name);
 	virtual ~RDOActivity();
 
 	std::string m_oprName;
@@ -67,7 +67,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOActivityPattern(CREF(rdo::intrusive_ptr<T>) pPattern, rbool trace, CREF(std::string) name);
+	RDOActivityPattern(CREF(rdo::intrusive_ptr<T>) pPattern, bool trace, CREF(std::string) name);
 	virtual ~RDOActivityPattern();
 
 	rdo::intrusive_ptr<T> m_pPattern;

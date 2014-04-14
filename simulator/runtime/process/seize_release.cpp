@@ -58,7 +58,7 @@ void RDOPROCSeize::onStart(CREF(LPRDORuntime) pRuntime)
 	_onStart(pRuntime);
 }
 
-rbool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_transacts.empty())
 		return false;
@@ -133,7 +133,7 @@ void RDOPROCRelease::onStart(CREF(LPRDORuntime) pRuntime)
 	_onStart(pRuntime);
 }
 
-rbool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if (!m_transacts.empty())
 	{

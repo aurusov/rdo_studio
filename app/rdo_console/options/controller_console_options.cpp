@@ -119,12 +119,12 @@ boost::filesystem::path ControllerConsoleOptions::getScriptFileName() const
 	return result;
 }
 
-rbool ControllerConsoleOptions::helpQuery() const
+bool ControllerConsoleOptions::helpQuery() const
 {
 	return m_help;
 }
 
-rbool ControllerConsoleOptions::convertQuery() const
+bool ControllerConsoleOptions::convertQuery() const
 {
 	return m_convert;
 }

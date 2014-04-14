@@ -61,7 +61,7 @@ public:
 	virtual ruint lexer_loc_line() { return ruint(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE); };
 	virtual ruint lexer_loc_pos () { return 0; };
 
-	rbool needStream() const
+	bool needStream() const
 	{
 		return m_needStream;
 	}
@@ -71,7 +71,7 @@ protected:
 	RDOParserItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun);
 	virtual ~RDOParserItem();
 
-	rbool m_needStream;
+	bool m_needStream;
 
 private:
 	void init();

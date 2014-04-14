@@ -235,9 +235,9 @@ BOOST_AUTO_TEST_CASE(MatrixTestSetItem)
 
 	BOOST_CHECK(matrix.second.getAsString() == "[1, 48, 3]");
 
-	ind         = 3;
-	index       = ind;
-	rbool found = false;
+	ind = 3;
+	index = ind;
+	bool found = false;
 
 	try
 	{
@@ -267,9 +267,9 @@ BOOST_AUTO_TEST_CASE(MatrixTestGetItem)
 
 	BOOST_CHECK(value.getAsString() == "48");
 
-	ind         = 3;
-	index       = ind;
-	rbool found = false;
+	ind = 3;
+	index = ind;
+	bool found = false;
 
 	try
 	{

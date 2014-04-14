@@ -416,7 +416,7 @@ void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok)
 // --------------------------------------------------------------------------------
 // -------------------- RDOResultTrace
 // --------------------------------------------------------------------------------
-RDOResultTrace::RDOResultTrace(CREF(LPRDORuntime) pRuntime, rbool trace)
+RDOResultTrace::RDOResultTrace(CREF(LPRDORuntime) pRuntime, bool trace)
 	: RDOTraceableObject(trace   )
 	, m_pRuntime        (pRuntime)
 	, m_wasChanged      (true    )

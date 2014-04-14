@@ -96,7 +96,7 @@ public:
 	virtual LPRDOResource clone(CREF(LPRDORuntime) pRuntime) const;
 
 private:
-	RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool permanentFlag);
+	RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, bool trace, bool permanentFlag);
 	virtual ~RDOPROCTransact();
 
 	LPIPROCBlock       m_block;
@@ -121,7 +121,7 @@ protected:
 	std::list<LPRDOPROCTransact> transacts;
 
 private:
-	RDOPROCResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool permanentFlag);
+	RDOPROCResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, bool trace, bool permanentFlag);
 	virtual ~RDOPROCResource();
 };
 

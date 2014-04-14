@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_SUITE(RDOValue_Test)
 template <class F>
 void testException(F binder)
 {
-	rbool flag = false;
+	bool flag = false;
 	try
 	{
 		binder();
@@ -331,10 +331,10 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_Compare)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Bool)
 {
-	rbool bool1 = true;
-	rbool bool2 = false;
-	rbool bool3 = true;
-	rbool bool4 = false;
+	bool bool1 = true;
+	bool bool2 = false;
+	bool bool3 = true;
+	bool bool4 = false;
 
 	RDOValue value1(bool1);
 	RDOValue value2(bool2);
@@ -509,7 +509,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Undefined)
 	testUndef<double>(10.5);
 	testUndef<std::string>("abc");
 	testUndef<char>('a');
-	testUndef<rbool>(true);
+	testUndef<bool>(true);
 
 	rsint val1 = 10;
 	RDOValue value1(val1);
@@ -532,8 +532,8 @@ rdo::runtime::LPRDOResource createSimpleResource(
 	const rdo::runtime::LPIResourceType&        type,
 	ruint resource_id,
 	ruint type_id,
-	rbool trace,
-	rbool temporary)
+	bool trace,
+	bool temporary)
 {
 	return rdo::Factory<rdo::runtime::RDOResource>::create(runtime, params, type, resource_id, type_id, trace, temporary);
 }

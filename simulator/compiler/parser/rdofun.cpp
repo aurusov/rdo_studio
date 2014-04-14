@@ -86,7 +86,7 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm)
 	}
 }
 
-RDOFUNLogic::RDOFUNLogic(CREF(LPExpression) pExpression, rbool hideWarning)
+RDOFUNLogic::RDOFUNLogic(CREF(LPExpression) pExpression, bool hideWarning)
 	: RDOFUNBase(pExpression)
 {
 	rdo::runtime::RDOSrcInfo srcInfo = m_pExpression->src_info();

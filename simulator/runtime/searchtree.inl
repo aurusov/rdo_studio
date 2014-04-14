@@ -55,10 +55,10 @@ inline void TreeNode::onSearchNodeInfoNew(CREF(LPRDORuntime) pRuntime)
 }
 
 /*!
-  \fn      rbool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
+  \fn      bool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
   \brief   функция сравнения вершин графа для сортировки списка OPEN
 */
-inline rbool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
+inline bool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
 {
 	if (fabs(tn1->m_costRest - tn2->m_costRest) > 0.0000001)
 	{

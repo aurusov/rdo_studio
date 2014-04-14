@@ -29,7 +29,7 @@ void RDOPROCGenerate::onStart(CREF(LPRDORuntime) pRuntime)
 	calcNextTimeInterval(pRuntime);
 }
 
-rbool RDOPROCGenerate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCGenerate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_maxCreateTransactCount && m_createdTransactCount >= m_maxCreateTransactCount.get())
 	{

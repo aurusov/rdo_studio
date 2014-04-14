@@ -42,23 +42,23 @@ namespace rdo
 			 MemDC();
 			~MemDC();
 
-			rbool valid () const;
-			rbool create(ruint width, ruint height);
-			rbool create(ruint width, ruint height, TDC& from);
-			rbool resize(ruint width, ruint height);
+			bool valid() const;
+			bool create(ruint width, ruint height);
+			bool create(ruint width, ruint height, TDC& from);
+			bool resize(ruint width, ruint height);
 
-			TDC&  dc    ();
+			TDC& dc();
 			TBMP& buffer();
 
 		private:
 #ifdef BOOST_NO_CXX11_SMART_PTR
-			std::auto_ptr<TDC>     m_pDC;
-			std::auto_ptr<TBMP>    m_pBitmap;
+			std::auto_ptr<TDC> m_pDC;
+			std::auto_ptr<TBMP> m_pBitmap;
 #else
-			std::unique_ptr<TDC>   m_pDC;
-			std::unique_ptr<TBMP>  m_pBitmap;
+			std::unique_ptr<TDC> m_pDC;
+			std::unique_ptr<TBMP> m_pBitmap;
 #endif
-			rbool onCreate();
+			bool onCreate();
 
 			void clear();
 		};

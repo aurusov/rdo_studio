@@ -35,8 +35,8 @@ public:
 	CREF(rdo::runtime::RDOValue)       value() const;
 	CPTR(rdo::runtime::RDOValue) operator-> () const;
 
-	rbool defined () const;
-	rbool constant() const;
+	bool defined() const;
+	bool constant() const;
 
 	static LPRDOValue getIdentificator(CREF(std::string) identificator);
 

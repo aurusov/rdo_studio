@@ -26,14 +26,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOKeyboard
 // --------------------------------------------------------------------------------
-RDOKeyboard::RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(std::string) name)
+RDOKeyboard::RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, bool trace, CREF(std::string) name)
 	: RDOOperation(pRuntime, pattern, trace, name)
 	, m_shift     (false                         )
 	, m_control   (false                         )
 	, m_scan_code (RDOHotKey::UNDEFINED_KEY      )
 {}
 
-RDOKeyboard::RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(std::string) name)
+RDOKeyboard::RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, bool trace, CREF(LPRDOCalc) pCondition, CREF(std::string) name)
 	: RDOOperation(pRuntime, pattern, trace, pCondition, name)
 	, m_shift     (false                                     )
 	, m_control   (false                                     )
@@ -43,7 +43,7 @@ RDOKeyboard::RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* patter
 RDOKeyboard::~RDOKeyboard()
 {}
 
-rbool RDOKeyboard::hasHotKey() const
+bool RDOKeyboard::hasHotKey() const
 {
 	return m_scan_code != ruint(-1) ? true : false;
 }
@@ -76,7 +76,7 @@ IKeyboard::AddHotKeyResult RDOKeyboard::addHotKey(CREF(LPRDORuntime) pRuntime, C
 	return IKeyboard::addhk_ok;
 }
 
-rbool RDOKeyboard::choiceFrom(CREF(LPRDORuntime) pRuntime)
+bool RDOKeyboard::choiceFrom(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setCurrentActivity(this);
 

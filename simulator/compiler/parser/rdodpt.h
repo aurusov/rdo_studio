@@ -59,10 +59,10 @@ public:
 	CREF(LPIActivity) activity() const { return m_pActivity; }
 	LPRDOPATPattern pattern () const { return m_pPattern; }
 
-	void addParam(CREF(RDOValue) param    );
-	void endParam(CREF(YYLTYPE)  param_pos);
+	void addParam(CREF(RDOValue) param);
+	void endParam(CREF(YYLTYPE) param_pos);
 
-//	rbool setPrior(REF(LPRDOFUNArithm) pPrior);
+//	bool setPrior(REF(LPRDOFUNArithm) pPrior);
 
 protected:
 	RDOParsEvent(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
@@ -93,10 +93,10 @@ public:
 	CREF(LPIActivity) activity() const { return m_pActivity; }
 	LPRDOPATPattern pattern () const { return m_pPattern; }
 
-	void addParam(CREF(LPRDOValue) pParam   );
-	void endParam(CREF(YYLTYPE)    param_pos);
+	void addParam(CREF(LPRDOValue) pParam);
+	void endParam(CREF(YYLTYPE) param_pos);
 
-	rbool setPrior(REF(LPRDOFUNArithm) pPrior);
+	bool setPrior(REF(LPRDOFUNArithm) pPrior);
 
 protected:
 	RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
@@ -218,22 +218,22 @@ class RDODPTSearch
 {
 DECLARE_FACTORY(RDODPTSearch);
 public:
-	void  setTermCondition(CREF(LPRDOFUNLogic)  pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
-	void  setEvaluateBy   (CREF(LPRDOFUNArithm) pEvalBy             ) { m_pEvalBy       = pEvalBy;       }
-	void  setCompareTops  (rbool compTops                           ) { m_compTops      = compTops;      }
-	void  end             ();
-	rbool closed          () const                                    { return m_closed;                 }
+	void setTermCondition(CREF(LPRDOFUNLogic) pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
+	void setEvaluateBy(CREF(LPRDOFUNArithm) pEvalBy) { m_pEvalBy = pEvalBy; }
+	void setCompareTops(bool compTops) { m_compTops = compTops; }
+	void end();
+	bool closed() const { return m_closed; }
 
 private:
 	RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace = rdo::runtime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
 	virtual ~RDODPTSearch();
 
-	LPRDOFUNLogic                                   m_pTermConditon;
-	LPRDOFUNArithm                                  m_pEvalBy;
-	LPILogic                                        m_pParent;
-	rbool                                           m_compTops;
-	rbool                                           m_closed;
-	rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag  m_trace;
+	LPRDOFUNLogic m_pTermConditon;
+	LPRDOFUNArithm m_pEvalBy;
+	LPILogic m_pParent;
+	bool m_compTops;
+	bool m_closed;
+	rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag m_trace;
 
 	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };

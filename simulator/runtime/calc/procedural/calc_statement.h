@@ -37,10 +37,10 @@ class RDOCalcIf: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcIf)
 public:
-	void  setThenStatement(CREF(LPRDOCalc) pStatement);
-	void  setElseStatement(CREF(LPRDOCalc) pStatement);
+	void setThenStatement(CREF(LPRDOCalc) pStatement);
+	void setElseStatement(CREF(LPRDOCalc) pStatement);
 
-	rbool hasElse() const;
+	bool hasElse() const;
 
 private:
 	typedef  std::pair<LPRDOCalc, LPRDOCalc>  Statements;

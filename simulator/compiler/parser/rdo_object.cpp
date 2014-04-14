@@ -65,7 +65,7 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(std::string) text)
 	setSrcText(text);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, rbool first_align)
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, bool first_align)
 	: RDOSrcInfo()
 {
 	init();

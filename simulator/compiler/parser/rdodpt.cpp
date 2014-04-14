@@ -135,7 +135,7 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 	RDOParser::s_parser()->contextStack()->pop<RDODPTActivity>();
 }
 
-rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
 {
 	LPIPriority pPriorActivity = m_pActivity;
 	if (pPriorActivity)

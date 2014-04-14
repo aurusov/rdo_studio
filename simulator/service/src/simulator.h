@@ -124,7 +124,7 @@ class RDOThreadRunTime
 {
 DECLARE_FACTORY(RDOThreadRunTime);
 public:
-	rbool runtimeError() const;
+	bool runtimeError() const;
 
 	struct GetFrame
 	{
@@ -149,9 +149,9 @@ public:
 	};
 
 private:
-	PTR(rdo::service::simulation::RDOThreadSimulator)  m_pSimulator;
-	rbool                                              m_runtimeError;
-	ruint64                                            m_timeStart;
+	PTR(rdo::service::simulation::RDOThreadSimulator) m_pSimulator;
+	bool m_runtimeError;
+	ruint64 m_timeStart;
 
 	RDOThreadRunTime();
 	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
@@ -213,13 +213,13 @@ public:
 	{};
 
 private:
-	rdo::compiler::parser::LPRDOParser    m_pParser;
-	rdo::runtime::LPRDORuntime            m_pRuntime;
-	rbool                                 m_canTrace;
-	rdo::compiler::gui::LPProcGUIProcess  m_pGUIProcess;
-	rdo::compiler::gui::LPProcGUIBlock    m_pBlock;
-	rdo::runtime::LPRDOThreadRunTime      m_pThreadRuntime;
-	rdo::simulation::report::RDOExitCode  m_exitCode;
+	rdo::compiler::parser::LPRDOParser m_pParser;
+	rdo::runtime::LPRDORuntime m_pRuntime;
+	bool m_canTrace;
+	rdo::compiler::gui::LPProcGUIProcess m_pGUIProcess;
+	rdo::compiler::gui::LPProcGUIBlock m_pBlock;
+	rdo::runtime::LPRDOThreadRunTime m_pThreadRuntime;
+	rdo::simulation::report::RDOExitCode m_exitCode;
 
 	void terminateModel();
 	void closeModel    ();
@@ -245,9 +245,9 @@ protected:
 
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	rbool parseModel();
-	void  runModel  ();
-	void  stopModel ();
+	bool parseModel();
+	void runModel();
+	void stopModel();
 
 	typedef std::vector<rdo::simulation::report::FileMessage> SyntaxMessageList;
 	SyntaxMessageList getErrors();

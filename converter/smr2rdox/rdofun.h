@@ -87,7 +87,7 @@ public:
 
 private:
 	RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm);
-	RDOFUNLogic(CREF(rdo::runtime::LPRDOCalc) pCalc, rbool hideWarning);
+	RDOFUNLogic(CREF(rdo::runtime::LPRDOCalc) pCalc, bool hideWarning);
 	virtual ~RDOFUNLogic();
 
 	rdo::runtime::LPRDOCalc    m_pCalc;
@@ -416,8 +416,8 @@ class RDOFUNFunctionListElement
 DECLARE_FACTORY(RDOFUNFunctionListElement)
 public:
 	virtual rdo::runtime::LPRDOCalcIsEqual createIsEqualCalc(CREF(LPRDOTypeParam) pRetType, CREF(rdo::runtime::LPRDOCalcFuncParam) pFuncParam, CREF(RDOParserSrcInfo) src_pos) const;
-	virtual rdo::runtime::LPRDOCalcConst   createResultCalc (CREF(LPRDOTypeParam) pRetType, CREF(RDOParserSrcInfo) src_pos) const = 0;
-	virtual rbool                          isEquivalence    () const { return false; }
+	virtual rdo::runtime::LPRDOCalcConst createResultCalc(CREF(LPRDOTypeParam) pRetType, CREF(RDOParserSrcInfo) src_pos) const = 0;
+	virtual bool isEquivalence() const { return false; }
 
 protected:
 	RDOFUNFunctionListElement(CREF(RDOParserSrcInfo) src_info);
@@ -481,7 +481,7 @@ private:
 	RDOFUNFunctionListElementEq(CREF(YYLTYPE) position);
 
 	virtual rdo::runtime::LPRDOCalcConst createResultCalc(CREF(LPRDOTypeParam) pRetType, CREF(RDOParserSrcInfo) src_pos) const;
-	virtual rbool                        isEquivalence   () const { return true; }
+	virtual bool isEquivalence() const { return true; }
 };
 DECLARE_POINTER(RDOFUNFunctionListElementEq);
 

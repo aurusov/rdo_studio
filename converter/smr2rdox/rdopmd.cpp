@@ -69,7 +69,7 @@ void RDOPMDResult::endOfCreation(CREF(LPIResult) pResult)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info)
+RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, bool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info)
 	: RDOPMDResult(src_info)
 {
 	LPRDORSSResource pResource = Converter::s_converter()->findRSSResource(res_src_info.src_text());
@@ -106,7 +106,7 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CRE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchState
 // --------------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, rbool trace, LPRDOFUNLogic pLogic)
+RDOPMDWatchState::RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, bool trace, LPRDOFUNLogic pLogic)
 	: RDOPMDResult(src_info)
 {
 	endOfCreation(RF(rdo::runtime::RDOPMDWatchState)::create(Converter::s_converter()->runtime(), src_text(), trace, pLogic->getCalc()));
@@ -134,7 +134,7 @@ RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParser
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchQuant
 // --------------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info)
+RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, bool trace, CREF(RDOParserSrcInfo) res_type_src_info)
 	: RDOPMDWatchTemp(src_info, res_type_src_info)
 {
 	LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
@@ -161,7 +161,7 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchValue
 // --------------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info)
+RDOPMDWatchValue::RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, bool trace, CREF(RDOParserSrcInfo) res_type_src_info)
 	: RDOPMDWatchTemp(src_info, res_type_src_info)
 {
 	LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));

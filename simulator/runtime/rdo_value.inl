@@ -93,7 +93,7 @@ inline CREF(rdo::intrusive_ptr<typename T::value_type>) RDOValue::getPointerByIn
 }
 
 template <class T>
-inline rbool RDOValue::isType() const
+inline bool RDOValue::isType() const
 {
 	return type().object_dynamic_cast<T>();
 }

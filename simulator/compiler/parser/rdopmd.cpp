@@ -151,7 +151,7 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info)
 RDOPMDWatchPar::~RDOPMDWatchPar()
 {}
 
-void RDOPMDWatchPar::init(rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info)
+void RDOPMDWatchPar::init(bool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info)
 {
 	LPRDORSSResource pResource = RDOParser::s_parser()->findRSSResource(res_src_info.src_text());
 	if (!pResource)
@@ -194,7 +194,7 @@ RDOPMDWatchState::RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info)
 RDOPMDWatchState::~RDOPMDWatchState()
 {}
 
-void RDOPMDWatchState::init(rbool trace, LPRDOFUNLogic pLogic)
+void RDOPMDWatchState::init(bool trace, LPRDOFUNLogic pLogic)
 {
 	endOfCreation(RF(rdo::runtime::RDOPMDWatchState)::create(RDOParser::s_parser()->runtime(), src_text(), trace, pLogic->getCalc()));
 }
@@ -231,7 +231,7 @@ RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, CREF(RDOPars
 RDOPMDWatchQuant::~RDOPMDWatchQuant()
 {}
 
-void RDOPMDWatchQuant::init(rbool trace, CREF(RDOParserSrcInfo) res_type_src_info)
+void RDOPMDWatchQuant::init(bool trace, CREF(RDOParserSrcInfo) res_type_src_info)
 {
 	m_pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
 	ASSERT(m_pGroupLogic);
@@ -264,7 +264,7 @@ RDOPMDWatchValue::RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, CREF(RDOPars
 RDOPMDWatchValue::~RDOPMDWatchValue()
 {}
 
-void RDOPMDWatchValue::init(rbool trace, CREF(RDOParserSrcInfo) res_type_src_info)
+void RDOPMDWatchValue::init(bool trace, CREF(RDOParserSrcInfo) res_type_src_info)
 {
 	m_pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
 	ASSERT(m_pGroupLogic);

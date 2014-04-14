@@ -54,10 +54,10 @@ int main(int argc, PTR(char) argv[])
 	optionsController.parseOptions();
 
 	const boost::filesystem::path modelFileName = optionsController.getModelFileName();
-	const rbool modelExist = rdo::File::exist(modelFileName);
+	const bool modelExist = rdo::File::exist(modelFileName);
 
 	const boost::filesystem::path eventsFileName = optionsController.getScriptFileName();
-	const rbool eventExist = rdo::File::exist(eventsFileName);
+	const bool eventExist = rdo::File::exist(eventsFileName);
 
 	if (optionsController.helpQuery())
 	{

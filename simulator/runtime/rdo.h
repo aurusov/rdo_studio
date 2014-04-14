@@ -61,12 +61,12 @@ public:
 	virtual void onStop(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
 
 	/*!
-	  \fn      virtual rbool onCheckCondition(CREF(rdo::runtime::LPRDORuntime) pRuntime)
+	  \fn      virtual bool onCheckCondition(CREF(rdo::runtime::LPRDORuntime) pRuntime)
 	  \brief   Проверка
 	  \details Вызывается для проверки выполнимости операции
 	  \param   pRuntime константная ссылка на указатель на Рантайм
 	*/
-	virtual rbool onCheckCondition(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
+	virtual bool onCheckCondition(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
 
 	/*!
 	  \fn      virtual BOResult onDoOperation(CREF(rdo::runtime::LPRDORuntime) pRuntime)
@@ -90,7 +90,7 @@ public:
 #define DECLARE_IBaseOperation                                                    \
 	virtual void     onStart         (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
 	virtual void     onStop          (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual rbool    onCheckCondition(CREF(rdo::runtime::LPRDORuntime) pRuntime); \
+	virtual bool     onCheckCondition(CREF(rdo::runtime::LPRDORuntime) pRuntime); \
 	virtual BOResult onDoOperation   (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
 	virtual BOResult onContinue      (CREF(rdo::runtime::LPRDORuntime) pRuntime);
 

@@ -37,7 +37,7 @@ inline Color::Color(CREF(Color) color)
 	, m_transparent(color.m_transparent)
 {}
 
-inline Color::Color(rbyte r, rbyte g, rbyte b, rbool transparent)
+inline Color::Color(rbyte r, rbyte g, rbyte b, bool transparent)
 	: m_r          (r          )
 	, m_g          (g          )
 	, m_b          (b          )
@@ -152,7 +152,7 @@ inline BmpElement::BmpElement(CREF(Point) point, CREF(std::string) bmp_name, CRE
 	, m_mask_name(mask_name)
 {}
 
-inline rbool BmpElement::hasMask() const
+inline bool BmpElement::hasMask() const
 {
 	return !m_mask_name.empty();
 }
@@ -164,7 +164,7 @@ inline ScaledBmpElement::ScaledBmpElement(CREF(BoundedElement) rect, CREF(std::s
 	, m_mask_name   (mask_name)
 {}
 
-inline rbool ScaledBmpElement::hasMask() const
+inline bool ScaledBmpElement::hasMask() const
 {
 	return !m_mask_name.empty();
 }
@@ -187,7 +187,7 @@ inline Frame::~Frame()
 	m_elements.clear();
 }
 
-inline rbool Frame::hasBgImage() const
+inline bool Frame::hasBgImage() const
 {
 	return !m_bgImageName.empty();
 }

@@ -36,7 +36,7 @@ inline void intrusive_ptr_interface_wrapper<T>::release()
 }
 
 template <class T>
-inline rbool intrusive_ptr_interface_wrapper<T>::owner() const
+inline bool intrusive_ptr_interface_wrapper<T>::owner() const
 {
 	return parent_type::owner();
 }

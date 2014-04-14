@@ -135,7 +135,7 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm)
 	}
 }
 
-RDOFUNLogic::RDOFUNLogic(CREF(rdo::runtime::LPRDOCalc) pCalc, rbool hideWarning)
+RDOFUNLogic::RDOFUNLogic(CREF(rdo::runtime::LPRDOCalc) pCalc, bool hideWarning)
 	: RDOParserSrcInfo(     )
 	, m_pCalc         (pCalc)
 {
@@ -1630,8 +1630,8 @@ void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) /* body_src_in
 	ASSERT(pFunAlgorithmicCalc);
 
 	pFunAlgorithmicCalc->setSrcInfo(src_info());
-	rbool defaultFlag = false;
-	rbool trueConst   = false;
+	bool defaultFlag = false;
+	bool trueConst = false;
 	rdo::runtime::LPRDOCalcConst pCondition;
 	int size = m_calculateIfList.size();
 	int cnt  = 0;

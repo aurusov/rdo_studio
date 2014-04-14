@@ -51,7 +51,7 @@ inline void RDOPattern::runCalcs(REF(CalcList) calcList, CREF(LPRDORuntime) pRun
 	pRuntime->getMemoryStack()->pop();
 }
 
-inline rbool RDOPattern::runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime)
+inline bool RDOPattern::runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime)
 {
 	for (const auto& calc: calcList)
 	{
@@ -115,7 +115,7 @@ inline void RDOPatternRule::addEraseCalc(CREF(LPRDOCalc) pCalc)
 	m_erase.push_back(pCalc);
 }
 
-inline rbool RDOPatternRule::choiceFrom(CREF(LPRDORuntime) pRuntime)
+inline bool RDOPatternRule::choiceFrom(CREF(LPRDORuntime) pRuntime)
 {
 	preSelectRelRes(pRuntime);
 	return runCalcsBool(m_choiceFrom, pRuntime);
@@ -174,7 +174,7 @@ inline void RDOPatternOperation::setTime(CREF(LPRDOCalc) pCalc)
 	m_timeCalc = pCalc;
 }
 
-inline rbool RDOPatternOperation::choiceFrom(CREF(LPRDORuntime) pRuntime)
+inline bool RDOPatternOperation::choiceFrom(CREF(LPRDORuntime) pRuntime)
 {
 	preSelectRelRes(pRuntime);
 	return runCalcsBool(m_choiceFrom, pRuntime);

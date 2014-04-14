@@ -42,9 +42,9 @@ class RDOSimulatorBase: public rdo::counter_reference
 DECLARE_FACTORY(RDOSimulatorBase)
 public:
 	// Публичные методы управления симулятором
-	virtual void  rdoInit();
-	virtual rbool rdoNext();
-	virtual void  rdoPostProcess();
+	virtual void rdoInit();
+	virtual bool rdoNext();
+	virtual void rdoPostProcess();
 
 	void   setStartTime  (double value);
 	double getCurrentTime() const;
@@ -81,20 +81,20 @@ protected:
 	typedef  std::map<double, BOPlannedList>             BOPlannedMap;
 
 	BOPlannedMap m_timePoints;
-	rbool        m_checkOperation;
+	bool m_checkOperation;
 
 	void setCurrentTime(double value);
 
 	// Выполнение любых операций (паттерны, DPT и процессы)
 	// Если вернулось значение true, то необходимо вызвать doOperation
 	// и в следующий раз/ без перевода модельного времени вперед
-	virtual rbool doOperation()  = 0;
+	virtual bool doOperation() = 0;
 
 	//! Проверка на условие конца моделирования
-	virtual rbool endCondition() = 0;
+	virtual bool endCondition() = 0;
 
 	//! Проверка на точки останова
-	virtual rbool breakPoints() = 0;
+	virtual bool breakPoints() = 0;
 
 	//! Инициализация симулятора
 	virtual void onInit()    = 0;
@@ -118,7 +118,7 @@ protected:
 	virtual void postProcess() = 0;
 
 	// Проверка на нажатие клавиши или активной области
-	virtual rbool isKeyDown() const = 0;
+	virtual bool isKeyDown() const = 0;
 
 	/// @todo не ошибочная ли это реализация по умолчанию?
 	// Вызывается при увеличении модельного времени

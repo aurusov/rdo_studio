@@ -142,8 +142,8 @@ public:
 
 		Position();
 		Position(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos);
-		rbool empty() const;
-		rbool point() const;
+		bool empty() const;
+		bool point() const;
 	};
 
 	RDOSrcInfo();
@@ -163,7 +163,7 @@ public:
 	CREF(Position) src_pos() const;
 	CREF(std::string) src_text() const;
 	rdoModelObjects::RDOFileType src_filetype() const;
-	rbool src_empty() const;
+	bool src_empty() const;
 
 private:
 	Position m_position;

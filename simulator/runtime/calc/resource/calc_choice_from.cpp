@@ -58,7 +58,7 @@ RDOSelectResourceDirectCalc::RDOSelectResourceDirectCalc(ResourceID relResID, Re
 	, m_resID              (resID                                           )
 {}
 
-rbool RDOSelectResourceDirectCalc::compare(CREF(LPRDOCalc) pCalc) const
+bool RDOSelectResourceDirectCalc::compare(CREF(LPRDOCalc) pCalc) const
 {
 	LPRDOSelectResourceDirectCalc pDirectCalc = pCalc.object_dynamic_cast<RDOSelectResourceDirectCalc>();
 	if (!pDirectCalc)
@@ -166,7 +166,7 @@ IRDOSelectResourceCommon::~IRDOSelectResourceCommon()
 // --------------------------------------------------------------------------------
 // -------------------- RDOSelectResourceCommonCalc
 // --------------------------------------------------------------------------------
-RDOSelectResourceCommonCalc::RDOSelectResourceCommonCalc(CREF(SelectResourceCommonList) resSelectorList, rbool useCommonWithMax, CREF(LPRDOCalc) pCalcChoiceFrom)
+RDOSelectResourceCommonCalc::RDOSelectResourceCommonCalc(CREF(SelectResourceCommonList) resSelectorList, bool useCommonWithMax, CREF(LPRDOCalc) pCalcChoiceFrom)
 	: m_pCalcChoiceFrom (pCalcChoiceFrom )
 	, m_resSelectorList (resSelectorList )
 	, m_useCommonWithMax(useCommonWithMax)
@@ -177,7 +177,7 @@ RDOSelectResourceCommonCalc::RDOSelectResourceCommonCalc(CREF(SelectResourceComm
 	}
 }
 
-void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, ruint level, REF(ResourceIDList) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(rbool) hasBest) const
+void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, ruint level, REF(ResourceIDList) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(bool) hasBest) const
 {
 	if (level >= allNumbs.size())
 	{
@@ -211,7 +211,7 @@ void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, ruint l
 	}
 }
 
-rbool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint level, CREF(LPRDORuntime) pRuntime) const
+bool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint level, CREF(LPRDORuntime) pRuntime) const
 {
 	if (level >= allNumbs.size())
 	{
@@ -234,7 +234,7 @@ rbool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint
 	return false;
 }
 
-//rbool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, int level,CREF(LPRDORuntime) pRuntime) const
+//bool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, int level,CREF(LPRDORuntime) pRuntime) const
 //{
 //	if (level <= 0) {
 //		for (ruint i = 0; i < m_resSelectorList.size(); i++) {
@@ -281,7 +281,7 @@ RDOValue RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	{
 		// with_min / with_max
 		RDOValue bestVal = 0;
-		rbool found = false;
+		bool found = false;
 		getBest(allNumbs, 0, res, bestVal, pRuntime, found);
 		if (found)
 		{
@@ -308,7 +308,7 @@ void RDOSelectResourceDirectCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pR
 	resourceIDList.push_back(m_resID);
 }
 
-rbool RDOSelectResourceDirectCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
+bool RDOSelectResourceDirectCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
 {
 	return (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 		? false
@@ -337,7 +337,7 @@ void RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pR
 	}
 }
 
-rbool RDOSelectResourceByTypeCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
+bool RDOSelectResourceByTypeCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
 {
 	return (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 		? false

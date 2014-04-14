@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOResource
 // --------------------------------------------------------------------------------
-RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList, LPIResourceType pResType, ruint resID, ruint typeID, bool trace, bool temporary)
 	: RDORuntimeObject   (                                      )
 	, RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
 	, m_temporary        (temporary                             )
@@ -174,7 +174,7 @@ std::string RDOResource::whoAreYou()
 	return "rdoRes";
 }
 
-void RDOResource::makeTemporary(rbool value)
+void RDOResource::makeTemporary(bool value)
 {
 	m_temporary = value;
 }
@@ -189,7 +189,7 @@ void RDOResource::setState(RDOResource::ConvertStatus value)
 	m_state = value;
 }
 
-rbool RDOResource::checkType(ruint type) const
+bool RDOResource::checkType(ruint type) const
 {
 	return m_type == type;
 }
@@ -239,7 +239,7 @@ void RDOResource::appendParams(CREF(ParamCIt) from_begin, CREF(ParamCIt) from_en
 	m_paramList.insert(m_paramList.end(), from_begin, from_end);
 }
 
-rbool RDOResource::canFree() const
+bool RDOResource::canFree() const
 {
 	return m_referenceCount == 0;
 }

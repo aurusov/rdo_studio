@@ -63,7 +63,7 @@ private: \
 #define DEFINE_OBJECT_CONTAINER_WITHNAME(TYPE, NAME) \
 public: \
 	const TYPE find##NAME  (CREF(std::string) name) const; \
-	rbool      remove##NAME(const TYPE item);
+	bool remove##NAME(const TYPE item);
 
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
@@ -111,8 +111,8 @@ public:
 
 	CREF(rdo::runtime::LPRDORuntime) runtime() const { return m_pRuntime; }
 
-	rbool             isPattern       () const { return m_pattern;     }
-	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
+	bool isPattern() const { return m_pattern; }
+	REF(FUNGroupList) getFUNGroupStack() { return m_allFUNGroup; }
 
 	void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
@@ -120,8 +120,8 @@ public:
 
 	void insertChanges (CREF(std::string) name, CREF(std::string) value);
 
-	rbool isCurrentDPTSearch();
-	rbool isCurrentDPTPrior();
+	bool isCurrentDPTSearch();
+	bool isCurrentDPTPrior();
 
 	ruint getRTP_id     () const { return m_allRTPResType.size()  + 1; }
 	ruint getRSS_id     () const { return m_allRSSResource.size() + 0; }
@@ -132,9 +132,9 @@ public:
 	std::string getModelStructure();
 	std::string getChanges() const;
 
-	LPRDOSMR getSMR() const              { return m_pSMR;                }
-	void     setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR;                }
-	rbool    hasSMR() const              { return m_pSMR ? true : false; }
+	LPRDOSMR getSMR() const { return m_pSMR; }
+	void setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR; }
+	bool hasSMR() const { return m_pSMR ? true : false; }
 
 	void parse();
 	void parse(REF(std::istream) stream);
@@ -222,16 +222,16 @@ private:
 
 	typedef std::vector<LPRDOParserItem> Compilers;
 
-	rdo::runtime::LPRDORuntime  m_pRuntime;
-	LPRDOSMR                    m_pSMR;
-	Error                       m_error;
-	Stack                       m_movementObjectList;
-	PreCastTypeList             m_preCastTypeList;
-	LPContextStack              m_pContextStack;
-	rbool                       m_pattern;
-	rdo::IDGenerator            m_resultGeneratorID;
-	Compilers                   m_compilers;
-	LPRDOParserItem             m_parser_item;
+	rdo::runtime::LPRDORuntime m_pRuntime;
+	LPRDOSMR m_pSMR;
+	Error m_error;
+	Stack m_movementObjectList;
+	PreCastTypeList m_preCastTypeList;
+	LPContextStack m_pContextStack;
+	bool m_pattern;
+	rdo::IDGenerator m_resultGeneratorID;
+	Compilers m_compilers;
+	LPRDOParserItem m_parser_item;
 
 	void runRSSPost();
 	void runSMRPost();

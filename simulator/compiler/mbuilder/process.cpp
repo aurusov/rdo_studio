@@ -31,7 +31,7 @@ void BlockForQueue::createRes(RDOResType rtp, CREF(std::string) res_name)
 	rssList.append<parser::RDORSSResource>(rss);
 }
 
-rbool BlockForQueue::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info)
+bool BlockForQueue::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info)
 {
 	UNUSED(info);
 
@@ -86,7 +86,7 @@ RDOResType BlockForQueue::createType(CREF(std::string) rtp_name, CREF(parser::RD
 // --------------------------------------------------------------------------------
 // -------------------- BlockForSeize
 // --------------------------------------------------------------------------------
-rbool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info)
+bool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info)
 {
 	// "Состояние"
 	const std::string rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();

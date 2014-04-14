@@ -69,9 +69,9 @@ public:
 	CREF(ParamList) params() const { return m_paramList; }
 
 	void addParam(CREF(LPRDOValue) pParam);
-	rbool getTrace() const { return trace; }
-	void setTrace(rbool value) { trace = value; }
-	rbool defined () const;
+	bool getTrace() const { return trace; }
+	void setTrace(bool value) { trace = value; }
+	bool defined () const;
 
 	void writeModelStructure(REF(std::ostream) stream) const;
 
@@ -79,9 +79,9 @@ protected:
 	RDORSSResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
 
 	LPRDORTPResType m_pResType;
-	const int       m_id;        //! in system
-	ParamList       m_paramList;
-	rbool           trace;
+	const int m_id; //! in system
+	ParamList m_paramList;
+	bool trace;
 
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;

@@ -74,7 +74,7 @@ public:
 	{
 		return std::find_if(begin(), end(), parser::compareNameRef<T>(name));
 	}
-	rbool exist(CREF(std::string) name) const
+	bool exist(CREF(std::string) name) const
 	{
 		return found( name ) != end();
 	}
@@ -108,11 +108,11 @@ public:                                                    \
 	Class(): m_name(""), m_exist( false ) {}               \
                                                            \
 	CREF(std::string) name () const { return m_name;  }    \
-	rbool exist() const { return m_exist; }                \
+	bool exist() const { return m_exist; }                 \
                                                            \
 private:                                                   \
 	std::string m_name;                                    \
-	rbool m_exist;
+	bool m_exist;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOResType
@@ -142,16 +142,16 @@ public:
 		const rdo::runtime::RDOType::TypeID typeID () const { return m_pType->type()->typeID(); }
 		std::string typeStr() const { return m_pType->type()->name(); }
 
-		rsint                    id() const          { return m_id;  }
+		rsint id() const { return m_id; }
 
-		rbool                    hasRange() const    { return (m_pMin && m_pMax) ? m_pMin->typeID() != rdo::runtime::RDOType::t_unknow && m_pMax->typeID() != rdo::runtime::RDOType::t_unknow : false; }
-		CREF(parser::LPRDOValue) getMin  () const    { return m_pMin; }
-		CREF(parser::LPRDOValue) getMax  () const    { return m_pMax; }
-		void                     setRange(CREF(parser::LPRDOValue) pMin, CREF(parser::LPRDOValue) pMax);
+		bool hasRange() const { return (m_pMin && m_pMax) ? m_pMin->typeID() != rdo::runtime::RDOType::t_unknow && m_pMax->typeID() != rdo::runtime::RDOType::t_unknow : false; }
+		CREF(parser::LPRDOValue) getMin() const { return m_pMin; }
+		CREF(parser::LPRDOValue) getMax() const { return m_pMax; }
+		void setRange(CREF(parser::LPRDOValue) pMin, CREF(parser::LPRDOValue) pMax);
 
-		rbool                    hasDefault() const  { return m_pDefault ? m_pDefault->defined() : false; }
+		bool hasDefault() const { return m_pDefault ? m_pDefault->defined() : false; }
 		CREF(parser::LPRDOValue) getDefault() const  { return m_pDefault; }
-		void                     setDefault(CREF(parser::LPRDOValue) pDefault);
+		void setDefault(CREF(parser::LPRDOValue) pDefault);
 
 		parser::LPRDOEnumType    getEnum() const
 		{
@@ -159,14 +159,14 @@ public:
 			return type()->type().object_static_cast<parser::RDOEnumType>();
 		}
 
-		rbool operator== (CREF(Param) param) const;
+		bool operator== (CREF(Param) param) const;
 
 	private:
-		parser::LPTypeInfo  m_pType;
-		parser::LPRDOValue  m_pMin;
-		parser::LPRDOValue  m_pMax;
-		parser::LPRDOValue  m_pDefault;
-		rsint               m_id;
+		parser::LPTypeInfo m_pType;
+		parser::LPRDOValue m_pMin;
+		parser::LPRDOValue m_pMax;
+		parser::LPRDOValue m_pDefault;
+		rsint m_id;
 
 		template <class T>
 		void initType(CREF(T) pType)
@@ -193,13 +193,13 @@ public:
 	class ParamList: public RDOList<Param>
 	{
 	public:
-		rbool append(REF(Param) param);
+		bool append(REF(Param) param);
 	};
 	ParamList m_params;
 
-	Type   getType    () const { return m_type;                 }
-	rbool  isPermanent() const { return m_type == rt_permanent; }
-	ruint  id         () const { return m_id;                   }
+	Type getType() const { return m_type; }
+	bool isPermanent() const { return m_type == rt_permanent; }
+	ruint id() const { return m_id; }
 
 private:
 	Type   m_type;
@@ -231,7 +231,7 @@ public:
 	parser::LPRDORSSResource getParserResource(CREF(parser::LPRDOParser) pParser) const;
 
 	template <class T>
-	rbool checkParserResourceType(CREF(parser::LPRDOParser) pParser) const
+	bool checkParserResourceType(CREF(parser::LPRDOParser) pParser) const
 	{
 		parser::LPRDORSSResource pResource = getParserResource(pParser);
 		return pResource.object_dynamic_cast<T>();
@@ -247,12 +247,12 @@ public:
 		return rdo::Factory<T>::create(pParser, RDOParserSrcInfo(name()), pRTP, id == parser::RDORSSResource::UNDEFINED_ID ? getID() : id);
 	}
 
-	rbool fillParserResourceParams(REF(parser::LPRDORSSResource) pToParserRSS) const;
+	bool fillParserResourceParams(REF(parser::LPRDORSSResource) pToParserRSS) const;
 
 private:
-	RDOResType  m_rtp;
-	Params      m_params;
-	rsint       m_id;
+	RDOResType m_rtp;
+	Params m_params;
+	rsint m_id;
 };
 
 // --------------------------------------------------------------------------------
@@ -263,7 +263,7 @@ class RDOResTypeList: public RDOList<RDOResType>
 public:
 	RDOResTypeList(CREF(parser::LPRDOParser) pParser);
 
-	rbool append(REF(RDOResType) rtp)
+	bool append(REF(RDOResType) rtp)
 	{
 		parser::LPRDORTPResType pResourceType = appendBefore(rtp);
 		if (!pResourceType)
@@ -276,7 +276,7 @@ public:
 
 private:
 	parser::LPRDORTPResType appendBefore(REF(RDOResType) rtp);
-	rbool                   appendAfter (REF(RDOResType) rtp, CREF(parser::LPRDORTPResType) pResourceType);
+	bool appendAfter (REF(RDOResType) rtp, CREF(parser::LPRDORTPResType) pResourceType);
 };
 
 // --------------------------------------------------------------------------------
@@ -290,7 +290,7 @@ public:
 	// --------------------------------------------------------------------------------
 	// ---- Добавление *нового* ресурса
 	// --------------------------------------------------------------------------------
-	template<class T> rbool append(REF(RDOResource) mbuilderRSS)
+	template<class T> bool append(REF(RDOResource) mbuilderRSS)
 	{
 		if (exist(mbuilderRSS.name()))
 			return false;
@@ -312,7 +312,7 @@ public:
 	// --------------------------------------------------------------------------------
 	// ---- Замена существующего ресурса новым
 	// --------------------------------------------------------------------------------
-	template<class T> rbool replace(REF(RDOResource) mbuilderRSSNew)
+	template<class T> bool replace(REF(RDOResource) mbuilderRSSNew)
 	{
 		Iterator mbuilderRSSPrevIt = found(mbuilderRSSNew.name());
 		if (mbuilderRSSPrevIt == end())

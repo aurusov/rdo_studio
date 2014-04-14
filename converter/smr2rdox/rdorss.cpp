@@ -87,7 +87,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 	}
 }
 
-rbool RDORSSResource::defined() const
+bool RDORSSResource::defined() const
 {
 	return m_currParam == getType()->getParams().end();
 }

@@ -34,7 +34,7 @@ public:
 	void createVariable(CREF(std::string) name, CREF(RDOValue) variable);
 	RDOValue getVariable(CREF(std::string) name) const;
 	void setVariable(CREF(std::string) name, CREF(RDOValue) variable);
-	rbool findVariable(CREF(std::string) name) const;
+	bool findVariable(CREF(std::string) name) const;
 
 private:
 	RDOMemory();

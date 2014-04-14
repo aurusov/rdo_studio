@@ -114,7 +114,7 @@ void Error::unblock()
 	m_blocked = false;
 }
 
-rbool Error::blocked() const
+bool Error::blocked() const
 {
 	return m_blocked;
 }

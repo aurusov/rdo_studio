@@ -163,7 +163,7 @@ LPRDOMatrixIterator RDOMatrixIterator::next()
 	return preInc(1);
 }
 
-rbool RDOMatrixIterator::equal(CREF(LPRDOMatrixIterator) pIterator) const
+bool RDOMatrixIterator::equal(CREF(LPRDOMatrixIterator) pIterator) const
 {
 	ASSERT(pIterator);
 	return m_iterator == pIterator->m_iterator;

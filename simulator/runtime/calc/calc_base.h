@@ -51,7 +51,7 @@ public:
 	//! Реализовывать этот метод в новых калках необязательно.
 	//! \param pCalc - калк, с которым проводит сравнение текущий
 	//! \result true, если калки одинаковые. Значение по умолчанию false
-	virtual rbool compare(CREF(LPRDOCalc) pCalc) const;
+	virtual bool compare(CREF(LPRDOCalc) pCalc) const;
 
 	//! Узнать привязку калка к исходникам
 	CREF(RDOSrcInfo) srcInfo   () const;

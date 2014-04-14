@@ -43,9 +43,9 @@ public:
 
 	CREF(LPRDOParser) parser() const;
 
-	void  enumBegin();
-	void  enumReset();
-	rbool enumEmpty();
+	void enumBegin();
+	void enumReset();
+	bool enumEmpty();
 
 	PTR(int)         m_lpval;
 	PTR(YYLTYPE)     m_lploc;
@@ -58,9 +58,9 @@ protected:
 private:
 	PTR(std::istream) m_yyin;
 	PTR(std::ostream) m_yyout;
-	LPRDOParser       m_pParser;
-	rbool             m_enumEmpty;
-	rsint             m_array_param_cnt;
+	LPRDOParser m_pParser;
+	bool m_enumEmpty;
+	rsint m_array_param_cnt;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

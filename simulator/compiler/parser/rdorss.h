@@ -75,11 +75,11 @@ public:
 
 	CREF(ParamList) params () const { return m_paramList; }
 
-	void  addParam(CREF(LPRDOValue) pParam);
-	rbool getTrace() const      { return trace;  }
-	void  setTrace(rbool value) { trace = value; }
-	rbool defined () const;
-	void  end     ();
+	void addParam(CREF(LPRDOValue) pParam);
+	bool getTrace() const { return trace; }
+	void setTrace(bool value) { trace = value; }
+	bool defined() const;
+	void end();
 
 	void writeModelStructure(std::ostream& stream) const;
 
@@ -95,9 +95,9 @@ protected:
 	virtual ~RDORSSResource();
 
 	LPRDORTPResType m_pResType;
-	ruint           m_id;        //! in system
-	ParamList       m_paramList;
-	rbool           trace;
+	ruint m_id; //! in system
+	ParamList m_paramList;
+	bool trace;
 
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;

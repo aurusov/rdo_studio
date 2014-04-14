@@ -325,7 +325,7 @@ void RDOPATPattern::rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource
 	m_relResList.push_back(pRelevantResource);
 }
 
-void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPExpression) pStatementList, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdo::runtime::RDOResource::ConvertStatus status)
+void RDOPATPattern::addRelResConvert(bool trace, CREF(LPExpression) pStatementList, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdo::runtime::RDOResource::ConvertStatus status)
 {
 	ASSERT(pStatementList);
 	ASSERT(m_pCurrRelRes );
@@ -657,7 +657,7 @@ void RDOPATPattern::end()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternEvent
 // --------------------------------------------------------------------------------
-RDOPatternEvent::RDOPatternEvent(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
+RDOPatternEvent::RDOPatternEvent(CREF(RDOParserSrcInfo) name_src_info, bool trace)
 	: RDOPATPattern(name_src_info)
 {
 	m_pPatRuntime = rdo::Factory<rdo::runtime::RDOPatternEvent>::create(trace);
@@ -740,7 +740,7 @@ void RDOPatternEvent::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
 }
 
-rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
+rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(bool trace) const
 {
 	std::vector<rdo::runtime::RDOValue> params_default;
 	for (const auto& param: m_pCurrRelRes->getType()->getParams())
@@ -804,7 +804,7 @@ runtime::LPRDOCalcEventStop RDOPatternEvent::stoping() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternRule
 // --------------------------------------------------------------------------------
-RDOPatternRule::RDOPatternRule(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
+RDOPatternRule::RDOPatternRule(CREF(RDOParserSrcInfo) name_src_info, bool trace)
 	: RDOPATPattern(name_src_info)
 {
 //	RDOParser::s_parser()->runtime()->addRuntimeRule((RDOPatternRule *)(m_pPatRuntime = new RDOPatternRule(RDOParser::s_parser()->runtime(), _trace)));
@@ -876,7 +876,7 @@ std::string RDOPatternRule::getWarningMessage_EmptyConvertor(CREF(std::string) n
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternOperation
 // --------------------------------------------------------------------------------
-RDOPatternOperation::RDOPatternOperation(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
+RDOPatternOperation::RDOPatternOperation(CREF(RDOParserSrcInfo) name_src_info, bool trace)
 	: RDOPATPattern  (name_src_info )
 	, m_convertorType(convert_unknow)
 {
@@ -885,7 +885,7 @@ RDOPatternOperation::RDOPatternOperation(CREF(RDOParserSrcInfo) name_src_info, r
 	m_pPatRuntime->setTraceID(RDOParser::s_parser()->getPAT_id());
 }
 
-RDOPatternOperation::RDOPatternOperation(rbool trace, CREF(RDOParserSrcInfo) name_src_info)
+RDOPatternOperation::RDOPatternOperation(bool trace, CREF(RDOParserSrcInfo) name_src_info)
 	: RDOPATPattern  (name_src_info )
 	, m_convertorType(convert_unknow)
 {
@@ -1013,7 +1013,7 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 	}
 }
 
-void RDOPatternOperation::addRelResConvertBeginEnd(rbool trace_begin, CREF(LPExpression) pBeginStatementList, rbool trace_end, CREF(LPExpression) pEndStatementList, CREF(YYLTYPE) convertor_begin_pos, CREF(YYLTYPE) convertor_end_pos, CREF(YYLTYPE) trace_begin_pos, CREF(YYLTYPE) trace_end_pos)
+void RDOPatternOperation::addRelResConvertBeginEnd(bool trace_begin, CREF(LPExpression) pBeginStatementList, bool trace_end, CREF(LPExpression) pEndStatementList, CREF(YYLTYPE) convertor_begin_pos, CREF(YYLTYPE) convertor_end_pos, CREF(YYLTYPE) trace_begin_pos, CREF(YYLTYPE) trace_end_pos)
 {
 	if (pBeginStatementList)
 	{
@@ -1066,7 +1066,7 @@ std::string RDOPatternOperation::getWarningMessage_EmptyConvertor(CREF(std::stri
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternKeyboard
 // --------------------------------------------------------------------------------
-RDOPatternKeyboard::RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
+RDOPatternKeyboard::RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, bool trace)
 	: RDOPatternOperation(trace, name_src_info)
 {
 	m_pPatRuntime = rdo::Factory<rdo::runtime::RDOPatternKeyboard>::create(trace);

@@ -69,7 +69,7 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 		}
 	}
 
-	rbool success = treeRoot->m_targetNode ? true : false;
+	bool success = treeRoot->m_targetNode ? true : false;
 	if (success)
 	{
 		// Нашли решение, собрали путь

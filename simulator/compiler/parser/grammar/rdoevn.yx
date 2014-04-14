@@ -8474,8 +8474,8 @@ process_line
 			LPRDORTPResType pParserType = pProc->getTransacType();
 			ASSERT(pParserType);
 			
-			rbool permanentFlag = pParserType->isPermanent();
-			rbool traceFlag     = true;
+			const bool permanentFlag = pParserType->isPermanent();
+			const bool traceFlag = true;
 
 			std::vector<rdo::runtime::RDOValue> paramList;
 			//! \error вместо настоящих значений параметров транзакта просто 0

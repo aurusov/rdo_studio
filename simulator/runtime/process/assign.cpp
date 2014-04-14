@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAssign
 // --------------------------------------------------------------------------------
-rbool RDOPROCAssign::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCAssign::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 	return !m_transacts.empty();

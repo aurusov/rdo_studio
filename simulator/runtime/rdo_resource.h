@@ -55,7 +55,7 @@ public:
 	typedef  std::vector<RDOValue>      ParamList;
 	typedef  ParamList::const_iterator  ParamCIt;
 
-	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary);
+	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList, LPIResourceType pResType, ruint resID, ruint typeID, bool trace, bool temporary);
 	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy);
 	virtual ~RDOResource();
 
@@ -63,8 +63,8 @@ public:
 
 	ConvertStatus          getState    (                           ) const;
 	CREF(RDOValue)         getParam    (ruint index                ) const;
-	rbool                  checkType   (ruint type                 ) const;
-	rbool                  canFree     (                           ) const;
+	bool                   checkType   (ruint type                 ) const;
+	bool                   canFree     (                           ) const;
 	CREF(LPIResourceType)  getResType  (                           ) const;
 	ruint                  getType     (                           ) const;
 	virtual ruint          paramsCount (                           ) const;
@@ -73,7 +73,7 @@ public:
 
 	virtual void appendParams(CREF(ParamCIt) from_begin, CREF(ParamCIt) from_end);
 	void setRuntime(CREF(LPRDORuntime) pRuntime);
-	void makeTemporary(rbool value);
+	void makeTemporary(bool value);
 	void setState(ConvertStatus value);
 	std::string traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime);
 	REF(RDOValue) getParamRaw(ruint index);
@@ -86,7 +86,7 @@ public:
 
 protected:
 	ParamList m_paramList;
-	rbool m_temporary;
+	bool m_temporary;
 	ConvertStatus m_state;
 
 private:

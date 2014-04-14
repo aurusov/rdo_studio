@@ -49,8 +49,8 @@ public:
 
 	CREF(std::string) name() const { return src_text(); };
 	rsint getNumber() const { return m_number; };
-	rbool isPermanent() const { return m_permanent; };
-	rbool isTemporary() const { return !m_permanent; };
+	bool isPermanent() const { return m_permanent; };
+	bool isTemporary() const { return !m_permanent; };
 
 	void addParam(CREF(LPRDORTPParam) param);
 	void addParam(CREF(std::string) param_name, rdo::runtime::RDOType::TypeID param_typeID);
@@ -63,12 +63,12 @@ public:
 	void writeModelStructure(REF(std::ostream) stream) const;
 
 private:
-	RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
+	RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, bool permanent);
 	virtual ~RDORTPResType();
 
 	const rsint m_number;
-	const rbool m_permanent;
-	ParamList   m_params;
+	const bool m_permanent;
+	ParamList m_params;
 };
 DECLARE_POINTER(RDORTPResType);
 
@@ -166,7 +166,7 @@ DECLARE_POINTER(RDORTPResType);
 //	{
 //		m_terms.push_back(term);
 //	}
-//	rbool empty() const
+//	bool empty() const
 //	{
 //		return m_terms.empty();
 //	}

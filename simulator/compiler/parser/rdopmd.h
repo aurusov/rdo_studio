@@ -77,7 +77,7 @@ class RDOPMDWatchPar: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDWatchPar);
 public:
-	void init(rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info);
+	void init(bool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info);
 
 private:
 	RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info);
@@ -92,7 +92,7 @@ class RDOPMDWatchState: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDWatchState);
 public:
-	void init(rbool trace, LPRDOFUNLogic pLogic);
+	void init(bool trace, LPRDOFUNLogic pLogic);
 
 private:
 	RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info);
@@ -117,7 +117,7 @@ class RDOPMDWatchQuant: public RDOPMDWatchTemp
 {
 DECLARE_FACTORY(RDOPMDWatchQuant);
 public:
-	void init           (rbool trace, CREF(RDOParserSrcInfo) res_type_src_info);
+	void init           (bool trace, CREF(RDOParserSrcInfo) res_type_src_info);
 	void setLogic       (REF(LPRDOFUNLogic) pLogic);
 	void setLogicNoCheck();
 
@@ -136,7 +136,7 @@ class RDOPMDWatchValue: public RDOPMDWatchTemp
 {
 DECLARE_FACTORY(RDOPMDWatchValue);
 public:
-	void init           (rbool trace, CREF(RDOParserSrcInfo) res_type_src_info);
+	void init           (bool trace, CREF(RDOParserSrcInfo) res_type_src_info);
 	void setLogic       (REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) pArithm);
 	void setLogicNoCheck(REF(LPRDOFUNArithm) pArithm);
 

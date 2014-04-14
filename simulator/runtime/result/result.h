@@ -60,7 +60,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace);
+	RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace);
 	virtual ~RDOPMDResult();
 
 	static void printLeft(std::ostream& stream, CREF(std::string) txt);
@@ -100,7 +100,7 @@ private:
 		double
 	> acc_type;
 
-	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(std::string) resName, CREF(std::string) parName, ruint resourceID, ruint paramID);
+	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resName, CREF(std::string) parName, ruint resourceID, ruint paramID);
 	virtual ~RDOPMDWatchPar();
 
 	struct CurrentValue
@@ -122,14 +122,14 @@ private:
 	};
 
 	LPRDOResource m_pResource;
-	ruint         m_resourceID;
-	ruint         m_paramID;
-	CurrentValue  m_currentValue;
-	double        m_timeBegin;
-	double        m_timePrev;
-	double        m_timeErase;
-	rbool         m_wasFinalCalc;
-	acc_type      m_acc;
+	ruint m_resourceID;
+	ruint m_paramID;
+	CurrentValue m_currentValue;
+	double m_timeBegin;
+	double m_timePrev;
+	double m_timeErase;
+	bool m_wasFinalCalc;
+	acc_type m_acc;
 
 	DECLARE_INotify;
 	DECLARE_IResult;
@@ -162,12 +162,12 @@ private:
 		>
 	> acc_type;
 
-	RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(LPRDOCalc) pLogic);
+	RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(LPRDOCalc) pLogic);
 	virtual ~RDOPMDWatchState();
 
 	struct CurrentValue
 	{
-		rbool  state;
+		bool state;
 		double duration;
 
 		CurrentValue()
@@ -175,18 +175,18 @@ private:
 			, duration(0.0  )
 		{}
 
-		CurrentValue(rbool state)
+		CurrentValue(bool state)
 			: state   (state)
 			, duration(0.0  )
 		{}
 	};
 
-	LPRDOCalc     m_pLogicCalc;
-	CurrentValue  m_currentValue;
-	double        m_timeBegin;
-	double        m_timePrev;
-	rbool         m_wasFinalCalc;
-	acc_type      m_acc;
+	LPRDOCalc m_pLogicCalc;
+	CurrentValue m_currentValue;
+	double m_timeBegin;
+	double m_timePrev;
+	bool m_wasFinalCalc;
+	acc_type m_acc;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;
@@ -222,7 +222,7 @@ private:
 		double
 	> acc_type;
 
-	RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(std::string) resTypeName, int rtpID);
+	RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resTypeName, int rtpID);
 	virtual ~RDOPMDWatchQuant();
 
 	struct CurrentValue
@@ -241,13 +241,13 @@ private:
 		{}
 	};
 
-	LPRDOCalc    m_pLogicCalc;
-	int          m_rtpID;
+	LPRDOCalc m_pLogicCalc;
+	int m_rtpID;
 	CurrentValue m_currentValue;
-	double       m_timeBegin;
-	double       m_timePrev;
-	rbool        m_wasFinalCalc;
-	acc_type     m_acc;
+	double m_timeBegin;
+	double m_timePrev;
+	bool m_wasFinalCalc;
+	acc_type m_acc;
 
 	ruint calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const;
 
@@ -285,7 +285,7 @@ private:
 		>
 	> acc_type;
 
-	RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, rbool trace, CREF(std::string) resTypeName, int rtpID);
+	RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resTypeName, int rtpID);
 	virtual ~RDOPMDWatchValue();
 
 	LPRDOCalc m_pLogicCalc;
@@ -320,8 +320,8 @@ private:
 	virtual ~RDOPMDGetValue();
 
 	LPRDOCalc m_pArithmCalc;
-	RDOValue  m_value;
-	rbool     m_wasFinalCalc;
+	RDOValue m_value;
+	bool m_wasFinalCalc;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;

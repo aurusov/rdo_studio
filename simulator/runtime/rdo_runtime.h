@@ -94,8 +94,8 @@ public:
 	REF(RDOHotKey) hotkey();
 
 	LPRDORuntime clone   () const;
-	void         copyFrom(CREF(LPRDORuntime) pOther);
-	rbool        equal   (CREF(LPRDORuntime) pOther) const;
+	void copyFrom(CREF(LPRDORuntime) pOther);
+	bool equal(CREF(LPRDORuntime) pOther) const;
 
 	void     setConstValue(ruint constID, CREF(RDOValue) constValue);
 	RDOValue getConstValue(ruint constID) const;
@@ -131,14 +131,14 @@ public:
 	void          setResParamVal   (ruint resID, ruint paramID, CREF(RDOValue) value);
 
 #ifdef _DEBUG
-	rbool checkState   ();
-	void  showResources(int node) const;
+	bool checkState();
+	void showResources(int node) const;
 #endif
 
 	void onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc);
 	LPRDOResource createNewResource(ruint type, PTR(RDOCalcCreateResource) calc);
-	LPRDOResource createNewResource(ruint type, rbool trace);
-	void insertNewResource         (CREF(LPRDOResource) pResource);
+	LPRDOResource createNewResource(ruint type, bool trace);
+	void insertNewResource(CREF(LPRDOResource) pResource);
 
 	RDOValue      getFuncArgument (ruint paramID) const;
 	LPRDOResource getGroupFuncRes () const;
@@ -150,10 +150,10 @@ public:
 	void          resetFuncTop    (int numArg);
 	void          popFuncTop      ();
 
-	virtual rbool endCondition();
+	virtual bool endCondition();
 	void setTerminateIf(CREF(LPRDOCalc) pTerminateIfCalc);
 
-	virtual rbool breakPoints();
+	virtual bool breakPoints();
 	void insertBreakPoint(CREF(std::string) name, CREF(LPRDOCalc) pCalc);
 	LPRDOCalc findBreakPoint(CREF(std::string) name);
 	std::string getLastBreakPointName() const;
@@ -283,7 +283,7 @@ private:
 
 	void writeExitCode();
 
-	virtual rbool isKeyDown() const;
+	virtual bool isKeyDown() const;
 
 	virtual void onResetResult();
 	virtual void onCheckResult();

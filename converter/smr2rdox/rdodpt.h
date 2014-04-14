@@ -81,7 +81,7 @@ public:
 	void addParam(CREF(LPRDOValue) pParam   );
 	void endParam(CREF(YYLTYPE)    param_pos);
 
-	rbool setPrior(REF(LPRDOFUNArithm) pPrior);
+	bool setPrior(REF(LPRDOFUNArithm) pPrior);
 
 protected:
 	RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
@@ -101,8 +101,8 @@ private:
 class RDODPTActivityHotKey: public RDODPTActivity
 {
 public:
-	void  addHotKey(CREF(std::string) hotKey, CREF(YYLTYPE) hotkey_pos);
-	rbool hasHotKey() const;
+	void addHotKey(CREF(std::string) hotKey, CREF(YYLTYPE) hotkey_pos);
+	bool hasHotKey() const;
 
 protected:
 	RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
@@ -235,24 +235,24 @@ class RDODPTSearch
 {
 DECLARE_FACTORY(RDODPTSearch);
 public:
-	void setCondition    (CREF(LPRDOFUNLogic)  pConditon     = NULL) { m_pConditon     = pConditon;     }
-	void setTermCondition(CREF(LPRDOFUNLogic)  pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
-	void setEvaluateBy   (CREF(LPRDOFUNArithm) pEvalBy             ) { m_pEvalBy       = pEvalBy;       }
-	void setCompareTops  (rbool compTops                           ) { m_compTops      = compTops;      }
+	void setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
+	void setTermCondition(CREF(LPRDOFUNLogic) pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
+	void setEvaluateBy(CREF(LPRDOFUNArithm) pEvalBy) { m_pEvalBy = pEvalBy; }
+	void setCompareTops(bool compTops ) { m_compTops = compTops; }
 
-	void  end   ();
-	rbool closed() const { return m_closed; }
+	void end();
+	bool closed() const { return m_closed; }
 
 private:
 	RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace = rdo::runtime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
 
-	LPRDOFUNLogic                                   m_pConditon;
-	LPRDOFUNLogic                                   m_pTermConditon;
-	LPRDOFUNArithm                                  m_pEvalBy;
-	LPILogic                                        m_pParent;
-	rbool                                           m_compTops;
-	rbool                                           m_closed;
-	rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag  m_trace;
+	LPRDOFUNLogic m_pConditon;
+	LPRDOFUNLogic m_pTermConditon;
+	LPRDOFUNArithm m_pEvalBy;
+	LPILogic m_pParent;
+	bool m_compTops;
+	bool m_closed;
+	rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag m_trace;
 };
 
 // --------------------------------------------------------------------------------
@@ -270,15 +270,15 @@ public:
 	static std::string s_name_prefix;
 	static std::string s_name_sufix;
 
-	void  end   ();
-	rbool closed() const { return m_closed; }
+	void end();
+	bool closed() const { return m_closed; }
 
 	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
 	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
 
-	rbool    setPrior   (REF(LPRDOFUNArithm)     pPrior  );
-	void     insertBlock(CREF(LPRDOPROCOperator) pBlock  );
-	void     insertChild(REF(LPRDOPROCProcess)   pProcess);
+	bool setPrior(REF(LPRDOFUNArithm) pPrior);
+	void insertBlock(CREF(LPRDOPROCOperator) pBlock);
+	void insertChild(REF(LPRDOPROCProcess) pProcess);
 
 	LPILogic getRunTime () const { return m_pRuntime; }
 
@@ -286,11 +286,11 @@ protected:
 	typedef  std::list<LPRDOPROCProcess >  ProcessList;
 	typedef  std::list<LPRDOPROCOperator>  BlockList;
 
-	rbool             m_closed;
-	LPRDOPROCProcess  m_pParentProcess;
-	ProcessList       m_childProcessList;
-	BlockList         m_blockList;
-	LPILogic          m_pRuntime;
+	bool m_closed;
+	LPRDOPROCProcess m_pParentProcess;
+	ProcessList m_childProcessList;
+	BlockList m_blockList;
+	LPILogic m_pRuntime;
 
 private:
 	RDOPROCProcess(CREF(RDOParserSrcInfo) info);

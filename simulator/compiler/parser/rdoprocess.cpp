@@ -80,7 +80,7 @@ RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(std::string) na
 	m_pRuntime.query_cast<ILogic>()->init(RDOParser::s_parser()->runtime());
 }
 
-rbool RDOPROCProcess::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDOPROCProcess::setPrior(REF(LPRDOFUNArithm) pPrior)
 {
 	LPILogic pRuntimeLogic = getRunTime();
 	LPIPriority pPriority = pRuntimeLogic.query_cast<IPriority>();
@@ -113,7 +113,7 @@ void RDOPROCProcess::insertChild(REF(LPRDOPROCProcess) pProcess)
 	pProcess->m_pParentProcess = this;
 }
 
-rbool RDOPROCProcess::checkTransactType(CREF(std::string) name) const
+bool RDOPROCProcess::checkTransactType(CREF(std::string) name) const
 {
 	return (name == m_transactType->name());
 }

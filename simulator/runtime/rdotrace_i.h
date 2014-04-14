@@ -22,8 +22,8 @@
 class ITrace
 {
 public:
-	virtual rbool traceable() const = 0;
-	virtual void setTrace (rbool trace) = 0;
+	virtual bool traceable() const = 0;
+	virtual void setTrace (bool trace) = 0;
 
 	virtual ruint getTraceID() const = 0;
 	virtual void setTraceID(ruint id) = 0;
@@ -33,8 +33,8 @@ public:
 };
 
 #define DECLARE_ITrace                               \
-	virtual rbool traceable() const;                 \
-	virtual void setTrace(rbool trace);              \
+	virtual bool traceable() const;                  \
+	virtual void setTrace(bool trace);               \
 	virtual ruint getTraceID() const;                \
 	virtual void setTraceID(ruint id);               \
 	virtual void setTraceID(ruint id, ruint str_id); \

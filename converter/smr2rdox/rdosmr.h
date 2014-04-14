@@ -49,7 +49,7 @@ public:
 	{
 		m_files[file_type] = file_name;
 	}
-	rbool hasFile(CREF(std::string) file_type) const
+	bool hasFile(CREF(std::string) file_type) const
 	{
 		return m_files.find(file_type) != m_files.end();
 	}

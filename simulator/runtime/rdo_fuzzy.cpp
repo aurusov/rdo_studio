@@ -219,7 +219,7 @@ std::string FuzzySet::getAsString() const
 	FuzzySetDefinition::const_iterator it = begin();
 	while (it != end())
 	{
-		rbool output = it->second > 0.0;
+		const bool output = it->second > 0.0;
 		if (output)
 			res += rdo::format("<%s/%.2lf>", it->first.getAsString().c_str(), it->second);
 

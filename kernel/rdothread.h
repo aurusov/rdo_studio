@@ -95,7 +95,7 @@ public:
 		RT_REPOSITORY_MODEL_SAVE,
 		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdo::repository::RDOThreadRepository::OpenFile*
 		RT_REPOSITORY_MODEL_CLOSE,
-		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:rbool*, работает как И
+		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:bool*, работает как И
 		RT_REPOSITORY_MODEL_CLOSE_ERROR,
 		RT_REPOSITORY_MODEL_GET_FILEINFO,      // param = rdo::repository::RDOThreadRepository::FileInfo*
 		RT_REPOSITORY_LOAD,                    // param = rdo::repository::RDOThreadRepository::FileData*
@@ -277,7 +277,7 @@ public:
 	std::string getName() const { return thread_name; }
 	ruint getID() const { return thread_id; }
 #ifdef RDO_MT
-	rbool isGUI() const { return thread_fun ? false : true; }
+	bool isGUI() const { return thread_fun ? false : true; }
 	PTR(CEvent) getDestroyEvent() const { return thread_destroy; }
 #endif
 
@@ -328,7 +328,7 @@ public:
 
 	// Рассылка уведомлений всем тредам с учетом их notifies
 	// Важно: должна вызываться только для this (в собственной треде)
-	void broadcastMessage(RDOTreadMessage message, PTR(void) pParam = NULL, rbool lock = false);
+	void broadcastMessage(RDOTreadMessage message, PTR(void) pParam = NULL, bool lock = false);
 
 #ifdef TR_TRACE
 	static void trace(CREF(std::string) str);
@@ -347,9 +347,9 @@ protected:
 	CEvent proc_create; // Вызывается из процедуры треды, конструктор должен его дождаться
 	CEvent thread_create; // Вызывается из конструктора объекта, процедура должна его дождаться
 	PTR(CEvent) thread_destroy; // Вызывается из деструктора объекта
-	rbool broadcast_waiting; // Без мутекса, т.к. меняется только в одной треде
-	rbool was_start; // Без мутекса, т.к. меняется только в одной треде
-	rbool was_close;
+	bool broadcast_waiting; // Без мутекса, т.к. меняется только в одной треде
+	bool was_start; // Без мутекса, т.к. меняется только в одной треде
+	bool was_close;
 #endif
 	const std::string thread_name;
 	rsint thread_id;
@@ -458,7 +458,7 @@ protected:
 	virtual void  start();
 	virtual void  stop ();
 #ifdef RDO_MT
-	virtual rbool processMessages();
+	virtual bool processMessages();
 #else
 	void          processMessages(REF(RDOMessageInfo) msg)
 	{
@@ -520,8 +520,8 @@ protected:
 		: RDOThread (_thread_name)
 		, kernel_gui(_kernel_gui )
 	{}
-	virtual PTR(RDOThread) getKernel      ();
-	virtual rbool          processMessages();
+	virtual PTR(RDOThread) getKernel();
+	virtual bool processMessages();
 };
 #else
 class RDOThreadGUI: public RDOThread

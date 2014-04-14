@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalcGetResourceHelper
 {
 public:
-	static rbool getResource(CREF(LPRDORuntime) pRuntime, ruint resourceID, REF(RDOValue) result);
+	static bool getResource(CREF(LPRDORuntime) pRuntime, ruint resourceID, REF(RDOValue) result);
 };
 
 //! Получение ресурса по ID

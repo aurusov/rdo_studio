@@ -135,12 +135,12 @@ CREF(rdo::runtime::RDOValue) RDOValue::value() const
 	return m_value;
 }
 
-rbool RDOValue::defined() const
+bool RDOValue::defined() const
 {
 	return m_value.typeID() != rdo::runtime::RDOType::t_unknow;
 }
 
-rbool RDOValue::constant() const
+bool RDOValue::constant() const
 {
 	if (m_value.typeID() == rdo::runtime::RDOType::t_int     ||
 	    m_value.typeID() == rdo::runtime::RDOType::t_real    ||

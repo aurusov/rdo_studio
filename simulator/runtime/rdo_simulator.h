@@ -56,7 +56,7 @@ protected:
 private:
 	LPIBaseOperation m_pOprMustContinue;
 
-	virtual rbool doOperation();
+	virtual bool doOperation();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -60,12 +60,12 @@ public:
 	RDOTrace();
 	virtual ~RDOTrace();
 
-	rbool canTrace() const;
+	bool canTrace() const;
 
-	void  startWriting();
-	void  stopWriting();
-	rbool canWrite() const;
-	rbool isNull() const;
+	void startWriting();
+	void stopWriting();
+	bool canWrite() const;
+	bool isNull() const;
 
 	// Search in tree
 	virtual void writeSearchBegin(double currentTime, std::string decisionPointId);
@@ -97,12 +97,12 @@ public:
 	virtual REF(RDOEndL)  getEOL();
 
 protected:
-	rbool         m_isNullTracer;
+	bool m_isNullTracer;
 
 private:
-	rbool         m_canWriteToStream;
+	bool m_canWriteToStream;
 	std::ofstream m_emptyOut;
-	RDOEndL       m_emptyEndL;
+	RDOEndL m_emptyEndL;
 };
 
 /*!
@@ -118,8 +118,8 @@ QUERY_INTERFACE_END
 public:
 	enum { NONE = 0xFFFFFFFF };
 
-	rbool traceable() const;
-	void  setTrace(rbool trace);
+	bool traceable() const;
+	void setTrace(bool trace);
 
 	ruint getTraceID() const;
 	void  setTraceID(ruint id);
@@ -128,11 +128,11 @@ public:
 	REF(std::string) traceId() const;
 
 protected:
-	RDOTraceableObject(rbool trace, ruint id = NONE, std::string str = "");
+	RDOTraceableObject(bool trace, ruint id = NONE, std::string str = "");
 	virtual ~RDOTraceableObject();
 
 private:
-	rbool m_trace;
+	bool m_trace;
 	ruint m_id;
 	mutable std::string m_str_id;
 };
@@ -149,11 +149,11 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	RDOResultTrace(CREF(LPRDORuntime) pRuntime, rbool trace);
+	RDOResultTrace(CREF(LPRDORuntime) pRuntime, bool trace);
 
 protected:
 	LPRDORuntime m_pRuntime;
-	rbool        m_wasChanged;
+	bool m_wasChanged;
 
 	DECLARE_IResultTrace;
 };

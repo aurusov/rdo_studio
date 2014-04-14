@@ -32,28 +32,28 @@ public:
 		enum
 		{
 			POSITION_BEGIN = static_cast<ruint>(~0),
-			POSITION_END   = static_cast<ruint>(~1)
+			POSITION_END = static_cast<ruint>(~1)
 		};
 
-		Position(ruint          pos);
+		Position(ruint pos);
 		Position(CREF(Position) pos);
 
-		ruint get  () const;
+		ruint get() const;
 
-		rbool begin() const;
-		rbool end  () const;
-		rbool real () const;
+		bool begin() const;
+		bool end() const;
+		bool real() const;
 
-		void     operator+= (CREF(Position) pos);
-		void     operator-= (CREF(Position) pos);
-		Position operator+  (CREF(Position) pos) const;
-		Position operator-  (CREF(Position) pos) const;
-		rbool    operator<= (CREF(Position) pos) const;
-		rbool    operator>= (CREF(Position) pos) const;
-		rbool    operator<  (CREF(Position) pos) const;
-		rbool    operator>  (CREF(Position) pos) const;
-		rbool    operator== (CREF(Position) pos) const;
-		rbool    operator!= (CREF(Position) pos) const;
+		void operator+=(CREF(Position) pos);
+		void operator-=(CREF(Position) pos);
+		Position operator+(CREF(Position) pos) const;
+		Position operator-(CREF(Position) pos) const;
+		bool operator<=(CREF(Position) pos) const;
+		bool operator>=(CREF(Position) pos) const;
+		bool operator<(CREF(Position) pos) const;
+		bool operator>(CREF(Position) pos) const;
+		bool operator==(CREF(Position) pos) const;
+		bool operator!=(CREF(Position) pos) const;
 
 	private:
 		ruint m_position;

@@ -47,7 +47,7 @@ void RDOPROCQueue::onStart(CREF(LPRDORuntime) pRuntime)
 	_onStart(pRuntime);
 }
 
-rbool RDOPROCQueue::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCQueue::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 	if (!m_transacts.empty())
@@ -91,7 +91,7 @@ void RDOPROCDepart::onStart(CREF(LPRDORuntime) pRuntime)
 	_onStart(pRuntime);
 }
 
-rbool RDOPROCDepart::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCDepart::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 	if (!m_transacts.empty())

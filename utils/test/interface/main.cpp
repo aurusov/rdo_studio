@@ -93,7 +93,7 @@ protected:
 #endif
 		s_logList.push_back(strMyClass1Destroy + m_i);
 	}
-	rbool init()
+	bool init()
 	{
 		return true;
 	}

@@ -120,7 +120,7 @@ void onCheckData(F binder, const std::string& g_fileName)
 				s >> valueTest;
 			}
 
-			rbool check = valueOriginal == valueTest;
+			const bool check = valueOriginal == valueTest;
 			BOOST_CHECK(check);
 			if (!check)
 			{

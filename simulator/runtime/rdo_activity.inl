@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOActivity
 // --------------------------------------------------------------------------------
-inline RDOActivity::RDOActivity(rbool trace, CREF(std::string) name)
+inline RDOActivity::RDOActivity(bool trace, CREF(std::string) name)
 	: RDOTraceableObject(trace)
 	, m_oprName         (name )
 {}
@@ -38,7 +38,7 @@ inline void RDOActivity::updateRelRes(CREF(LPRDORuntime) pRuntime)
 // -------------------- RDOActivityPattern
 // --------------------------------------------------------------------------------
 template<class T>
-inline RDOActivityPattern<T>::RDOActivityPattern(CREF(rdo::intrusive_ptr<T>) pPattern, rbool trace, CREF(std::string) name)
+inline RDOActivityPattern<T>::RDOActivityPattern(CREF(rdo::intrusive_ptr<T>) pPattern, bool trace, CREF(std::string) name)
 	: RDOActivity(trace, name)
 	, m_pPattern (pPattern   )
 {}

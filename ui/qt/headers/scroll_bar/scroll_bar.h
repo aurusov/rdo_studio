@@ -27,7 +27,7 @@ namespace rdo
 
 			ScrollMetric();
 
-			rbool applyInc(rsint delta);
+			bool applyInc(rsint delta);
 		};
 	} // namespace gui
 } // namespace rdo

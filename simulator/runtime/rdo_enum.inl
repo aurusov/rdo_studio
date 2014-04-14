@@ -41,12 +41,12 @@ inline ruint RDOEnumType::findEnum(CREF(std::string) val) const
 	return it != m_enum.end() ? it - m_enum.begin() : END;
 }
 
-inline rbool RDOEnumType::exist(CREF(std::string) val) const
+inline bool RDOEnumType::exist(CREF(std::string) val) const
 {
 	return findEnum(val) != END;
 }
 
-inline rbool RDOEnumType::empty() const
+inline bool RDOEnumType::empty() const
 {
 	return m_enum.empty();
 }

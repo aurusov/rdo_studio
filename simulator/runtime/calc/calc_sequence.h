@@ -52,8 +52,8 @@ public:
 		Range(CREF(double) min, CREF(double) max);
 	};
 
-	rbool                   m_res_real;
-	boost::optional<Range>  m_range;
+	bool m_res_real;
+	boost::optional<Range> m_range;
 
 protected:
 	RDOCalcSeqNext();

@@ -33,7 +33,7 @@ inline OperatorName<opr_type>::OprItem::OprItem(CREF(opr_type) pOperator, CREF(s
 {}
 
 template <typename opr_type>
-inline rbool OperatorName<opr_type>::OprItem::operator== (CREF(opr_type) pOperator) const
+inline bool OperatorName<opr_type>::OprItem::operator== (CREF(opr_type) pOperator) const
 {
 	return m_pOperator == pOperator;
 }
@@ -55,7 +55,7 @@ inline CREF(OperatorName<RDOValue (RDOValue::*)(CREF(RDOValue)) const>::NameList
 }
 
 template <>
-inline CREF(OperatorName<rbool (RDOValue::*)(CREF(RDOValue)) const>::NameList) OperatorName<rbool (RDOValue::*)(CREF(RDOValue)) const>::getList()
+inline CREF(OperatorName<bool (RDOValue::*)(CREF(RDOValue)) const>::NameList) OperatorName<bool (RDOValue::*)(CREF(RDOValue)) const>::getList()
 {
 	static NameList s_nameList;
 	if (s_nameList.empty())
@@ -71,7 +71,7 @@ inline CREF(OperatorName<rbool (RDOValue::*)(CREF(RDOValue)) const>::NameList) O
 }
 
 template <>
-inline CREF(OperatorName<rbool (RDOValue::*)() const>::NameList) OperatorName<rbool (RDOValue::*)() const>::getList()
+inline CREF(OperatorName<bool (RDOValue::*)() const>::NameList) OperatorName<bool (RDOValue::*)() const>::getList()
 {
 	static NameList s_nameList;
 	if (s_nameList.empty())

@@ -77,7 +77,7 @@ public:
 
 	enum { DAFAUL_VALUE = 2 };
 
-	rbool operator== (CREF(MyClass2) obj) const
+	bool operator==(CREF(MyClass2) obj) const
 	{
 		return m_b == obj.m_b;
 	}
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(CastSmartPtrToBool)
 	Log log;
 	{
 		LPMyClass pMyClass2 = rdo::Factory<MyClass>::create();
-		BOOST_CHECK((rbool)pMyClass2);
+		BOOST_CHECK((bool)pMyClass2);
 	}
 	BOOST_CHECK(log.size() == 2);
 	auto it = log.begin();

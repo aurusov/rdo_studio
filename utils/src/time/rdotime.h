@@ -20,20 +20,20 @@ namespace rdo {
 class Time
 {
 public:
-	typedef  ruint64  Value;
+	typedef ruint64 Value;
 
 	Time();
 	Time(CREF(Value) value);
 
-	rbool operator== (CREF(Time) time);
+	bool operator==(CREF(Time) time);
 	operator Value() const;
 
 	std::string asString() const;
 
 	CREF(Value) value() const;
 
-	static Time utc    (); // total_nanoseconds
-	static Time local  (); // total_nanoseconds
+	static Time utc(); // total_nanoseconds
+	static Time local(); // total_nanoseconds
 	static Time invalid();
 
 private:

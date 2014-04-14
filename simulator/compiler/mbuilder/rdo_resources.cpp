@@ -85,7 +85,7 @@ RDOResType::RDOResType(CREF(std::string) name, Type type)
 	, m_id   (ruint(~0))
 {}
 
-rbool RDOResType::ParamList::append(REF(Param) param)
+bool RDOResType::ParamList::append(REF(Param) param)
 {
 	if (std::find_if(begin(), end(), parser::compareNameRef<Param>(param.name())) != end())
 	{
@@ -147,7 +147,7 @@ void RDOResType::Param::setDefault(CREF(parser::LPRDOValue) pDefault)
 	m_pDefault = pDefault;
 }
 
-rbool RDOResType::Param::operator== (CREF(Param) param) const
+bool RDOResType::Param::operator== (CREF(Param) param) const
 {
 	UNUSED(param);
 	NEVER_REACH_HERE;
@@ -184,7 +184,7 @@ parser::LPRDORTPResType RDOResTypeList::appendBefore(REF(RDOResType) rtp)
 	return pResourceType;
 }
 
-rbool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(parser::LPRDORTPResType) pResourceType)
+bool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(parser::LPRDORTPResType) pResourceType)
 {
 	ASSERT(pResourceType);
 
@@ -297,7 +297,7 @@ parser::LPRDORSSResource RDOResource::getParserResource(CREF(parser::LPRDOParser
 	return pParser->findRSSResource(name());
 }
 
-rbool RDOResource::fillParserResourceParams(REF(parser::LPRDORSSResource) pToParserRSS) const
+bool RDOResource::fillParserResourceParams(REF(parser::LPRDORSSResource) pToParserRSS) const
 {
 	for (const auto& param: getType().m_params)
 	{

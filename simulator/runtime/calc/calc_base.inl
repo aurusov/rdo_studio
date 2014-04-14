@@ -19,7 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalc
 // --------------------------------------------------------------------------------
-inline rbool RDOCalc::compare(CREF(LPRDOCalc) pCalc) const
+inline bool RDOCalc::compare(CREF(LPRDOCalc) pCalc) const
 {
 	UNUSED(pCalc);
 	return false;
