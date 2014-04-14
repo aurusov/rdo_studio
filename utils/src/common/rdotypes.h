@@ -20,13 +20,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-//! Целый знаковый 64-х битный тип
-#ifdef COMPILER_VISUAL_STUDIO
-	typedef  signed long long int    rsint64;
-#elif defined COMPILER_GCC
-	typedef  int64_t                 rsint64;
-#endif
-
 //! Целый беззнаковый 64-х битный тип
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef  unsigned long long int  ruint64;
