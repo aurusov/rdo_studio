@@ -66,8 +66,8 @@ public:
 	template <class T>
 	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerByType() const;
 
-	template <class Pair>
-	CREF(rdo::intrusive_ptr<typename Pair::Value>) getPointerByType() const;
+	template <class V, class T>
+	CREF(rdo::intrusive_ptr<V>) getPointerByType() const;
 
 	template <class T>
 	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerByInterface() const;

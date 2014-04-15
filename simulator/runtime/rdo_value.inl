@@ -61,24 +61,18 @@ inline CREF(rdo::intrusive_ptr<T>) RDOValue::getPointer() const
 template <class T>
 inline CREF(rdo::intrusive_ptr<typename T::value_type>) RDOValue::getPointerByType() const
 {
-	struct Pair
-	{
-		typedef  T                       Type;
-		typedef  typename T::value_type  Value;
-	};
-
-	return getPointerByType<Pair>();
+	return getPointerByType<typename T::value_type, T>();
 }
 
-template <class Pair>
-inline CREF(rdo::intrusive_ptr<typename Pair::Value>) RDOValue::getPointerByType() const
+template <class V, class T>
+inline CREF(rdo::intrusive_ptr<V>) RDOValue::getPointerByType() const
 {
 #ifdef _DEBUG
-	rdo::intrusive_ptr<typename Pair::Type> pType = type().object_dynamic_cast<typename Pair::Type>();
+	rdo::intrusive_ptr<T> pType = type().object_dynamic_cast<T>();
 	ASSERT(pType);
 #endif // _DEBUG
 
-	return getPointer<typename Pair::Value>();
+	return getPointer<V>();
 }
 
 template <class T>
