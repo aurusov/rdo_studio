@@ -33,7 +33,7 @@ public:
 	void insertItem(CREF(LPRDOValue) pValue);
 
 	CREF(LPRDOArrayType) getArrayType() const;
-	 REF(LPRDOArrayType) getArrayType();
+	 LPRDOArrayType& getArrayType();
 	rdo::runtime::RDOValue getRArray() const;
 	rdo::runtime::LPRDOArrayValue createRuntimeValue() const;
 	std::string getAsString() const;

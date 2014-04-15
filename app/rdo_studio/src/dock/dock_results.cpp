@@ -46,7 +46,7 @@ void DockResults::clear()
 	getContext().clearAll();
 }
 
-REF(DockResults::context_type) DockResults::getContext()
+DockResults::context_type& DockResults::getContext()
 {
 	return *static_cast<context_type*>(widget());
 }

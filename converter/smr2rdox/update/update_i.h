@@ -59,16 +59,16 @@ public:
 		std::size_t m_position;
 	};
 
-	virtual void apply(REF(LPIDocument) pDocument) const                              = 0;
-	virtual void insert(IDocument::Type type, CREF(Position) to,   std::size_t size)  = 0;
+	virtual void apply(LPIDocument& pDocument) const = 0;
+	virtual void insert(IDocument::Type type, CREF(Position) to, std::size_t size) = 0;
 	virtual void remove(IDocument::Type type, CREF(Position) from, CREF(Position) to) = 0;
-	virtual void dump(REF(LPIDocument) pDocument) const                               = 0;
+	virtual void dump(LPIDocument& pDocument) const = 0;
 };
 #define DECLARE_IDocUpdate                                                     \
-	void apply(REF(LPIDocument) pDocument) const;                              \
+	void apply(LPIDocument& pDocument) const;                                  \
 	void insert(IDocument::Type type, CREF(Position) to, std::size_t size);    \
 	void remove(IDocument::Type type, CREF(Position) from, CREF(Position) to); \
-	void dump(REF(LPIDocument) pDocument) const;
+	void dump(LPIDocument& pDocument) const;
 
 PREDECLARE_POINTER(DocUpdate);
 class DocUpdate

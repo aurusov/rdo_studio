@@ -55,7 +55,7 @@ public:
 
 	LPFuzzySet                                append     (CREF(RDOValue) rdovalue, double appertain); // вставка с проверкой значения, если такое же есть - не вставит
 	LPFuzzySet                                operator() (CREF(RDOValue) rdovalue, double appertain);
-	REF(double)                               operator[] (CREF(RDOValue) rdovalue); // вставка без проверки значения
+	double&                                   operator[] (CREF(RDOValue) rdovalue); // вставка без проверки значения
 	FuzzySetDefinition::const_iterator        find       (CREF(RDOValue) rdovalue) const;
 	FuzzyItem                                 findValue  (CREF(RDOValue) rdovalue) const;
 	FuzzySetDefinition::const_iterator        begin      () const;
@@ -151,7 +151,7 @@ public:
 	TermSet::const_iterator begin() const;
 	TermSet::const_iterator end() const;
 
-	REF(LPFuzzySet) operator[] (std::string name);
+	LPFuzzySet& operator[] (std::string name);
 	
 	void setName(nameOfVariable);
 	nameOfVariable getName() {return m_name;};

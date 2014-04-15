@@ -28,7 +28,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-void print_RTP(REF(RDOCorba::GetRTP_var) my_rtpList)
+void print_RTP(RDOCorba::GetRTP_var& my_rtpList)
 {
 	FILE* f1;
 #pragma warning(disable: 4996)
@@ -105,7 +105,7 @@ void print_RTP(REF(RDOCorba::GetRTP_var) my_rtpList)
 	fclose(f1);
 }
 
-void print_RSS(REF(RDOCorba::GetRSS_var) my_rssList)
+void print_RSS(RDOCorba::GetRSS_var& my_rssList)
 {
 	FILE* f2;
 #pragma warning(disable: 4996)
@@ -158,12 +158,12 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, const char* Obje
 			return CORBA::Object::_nil();
 		}
 	}
-	catch (REF(CORBA::NO_RESOURCES))
+	catch (const CORBA::NO_RESOURCES&)
 	{
 		TRACE("Caught NO_RESOURCES exception. You must configure omniORB with the location of the naming service.\n");
 		return 0;
 	}
-	catch (REF(CORBA::ORB::InvalidName))
+	catch (const CORBA::ORB::InvalidName&)
 	{
 		//! This should not happen!
 		TRACE("Service required is invalid [does not exist].\n");
@@ -186,17 +186,17 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, const char* Obje
 		//! Resolve the name to an object reference.
 		return rootContext->resolve(name);
 	}
-	catch(REF(CosNaming::NamingContext::NotFound))
+	catch(const CosNaming::NamingContext::NotFound&)
 	{
 		//! This exception is thrown if any of the components of the
 		//! path [contexts or the object] aren’t found:
 		TRACE("Context not found.");
 	}
-	catch(REF(CORBA::TRANSIENT))
+	catch(const CORBA::TRANSIENT&)
 	{
 		TRACE("Caught system exception TRANSIENT -- unable to contact the naming service. Make sure the naming server is running and that omniORB is configured correctly. \n");
 	}
-	catch(REF(CORBA::SystemException) ex)
+	catch(const CORBA::SystemException& ex)
 	{
 		TRACE1("Caught a CORBA:: %s while using the naming service.\n", ex._name());
 		return 0;
@@ -422,19 +422,19 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			//-------------------------------------------------------------
 			orb->destroy();
 		}	
-		catch(REF(CORBA::TRANSIENT))
+		catch(const CORBA::TRANSIENT&)
 		{
 			TRACE("Caught system exception TRANSIENT -- unable to contact the server.\n");
 		}
-		catch(REF(CORBA::SystemException) ex)
+		catch(const CORBA::SystemException& ex)
 		{
 			TRACE1("Caught a CORBA:: %s\n", ex._name());
 		}
-		catch(REF(CORBA::Exception) ex)
+		catch(const CORBA::Exception& ex)
 		{
 			TRACE1("Caught CORBA::Exception: %s\n", ex._name());
 		}
-		catch(REF(omniORB::fatalException) fe)
+		catch(const omniORB::fatalException& fe)
 		{
 			TRACE3("Caught omniORB::fatalException: file: %s line: %d mesg: %s\n", fe.file() , fe.line() , fe.errmsg());
 		}

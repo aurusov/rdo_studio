@@ -25,7 +25,7 @@ class ChartTreeItem: public rdo::counter_reference
 DECLARE_FACTORY(ChartTreeItem)
 public:
 	void setCtrlItem(QTreeWidgetItem* pCtrlItem);
-	REF(QTreeWidgetItem) getCtrlItem();
+	QTreeWidgetItem& getCtrlItem();
 
 	bool isDrawable() const;
 

@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResourceHelper
 // --------------------------------------------------------------------------------
-bool RDOCalcGetResourceHelper::getResource(CREF(LPRDORuntime) pRuntime, std::size_t resourceID, REF(RDOValue) result)
+bool RDOCalcGetResourceHelper::getResource(CREF(LPRDORuntime) pRuntime, std::size_t resourceID, RDOValue& result)
 {
 	LPRDOResource pResource = pRuntime->getResourceByID(resourceID);
 	if (!pResource)

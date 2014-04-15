@@ -56,7 +56,7 @@ inline intrusive_ptr<T>::~intrusive_ptr()
 }
 
 template<class T>
-inline REF(typename intrusive_ptr<T>::this_type) intrusive_ptr<T>::operator= (CREF(this_type) sptr)
+inline intrusive_ptr<T>& intrusive_ptr<T>::operator=(CREF(this_type) sptr)
 {
 	if (m_object)
 		release();
@@ -115,7 +115,7 @@ inline CREF(T) intrusive_ptr<T>::operator* () const
 }
 
 template<class T>
-inline REF(T) intrusive_ptr<T>::operator* ()
+inline T& intrusive_ptr<T>::operator* ()
 {
 	return *m_object;
 }
@@ -202,7 +202,7 @@ inline bool intrusive_ptr<T>::owner() const
 }
 
 template<class T>
-inline REF(std::size_t) intrusive_ptr<T>::counter()
+inline std::size_t& intrusive_ptr<T>::counter()
 {
 	return m_object->m_intrusive_counter;
 }

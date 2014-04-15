@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOOrderDPTPrior
 {
 public:
-	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
+	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, BaseOperationList& container);
 };
 
 /*!

@@ -27,7 +27,7 @@ class RDOLogicBase
 DECLARE_FACTORY(RDOLogicBase);
 public:
 	CREF(std::string) name () const;
-	bool setPrior(REF(LPRDOFUNArithm) pPrior);
+	bool setPrior(LPRDOFUNArithm& pPrior);
 	bool getMultithreading() const;
 	void setMultithreading(bool multithreading = false);
 	void setCondition(CREF(LPRDOFUNLogic) pConditon = NULL);

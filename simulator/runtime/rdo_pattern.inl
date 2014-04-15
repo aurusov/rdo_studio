@@ -42,7 +42,7 @@ inline void RDOPattern::preSelectRelRes(CREF(LPRDORuntime) pRuntime)
 	runCalcs(m_preSelectRelRes, pRuntime);
 }
 
-inline void RDOPattern::runCalcs(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime)
+inline void RDOPattern::runCalcs(CalcList& calcList, CREF(LPRDORuntime) pRuntime)
 {
 	LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
 	pRuntime->getMemoryStack()->push(pLocalMemory);
@@ -51,7 +51,7 @@ inline void RDOPattern::runCalcs(REF(CalcList) calcList, CREF(LPRDORuntime) pRun
 	pRuntime->getMemoryStack()->pop();
 }
 
-inline bool RDOPattern::runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime)
+inline bool RDOPattern::runCalcsBool(CalcList& calcList, CREF(LPRDORuntime) pRuntime)
 {
 	for (const auto& calc: calcList)
 	{

@@ -73,7 +73,7 @@ private:
 class RDOOrderSimple
 {
 public:
-	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
+	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, BaseOperationList& container);
 };
 
 /*!
@@ -83,7 +83,7 @@ public:
 class RDOOrderMeta
 {
 public:
-	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
+	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, BaseOperationList& container);
 };
 
 /*!

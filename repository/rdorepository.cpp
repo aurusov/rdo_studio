@@ -74,7 +74,7 @@ RDOThreadRepository::~RDOThreadRepository()
 	m_traceFile.close();
 }
 
-void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
+void RDOThreadRepository::proc(RDOMessageInfo& msg)
 {
 	switch (msg.message)
 	{
@@ -376,7 +376,7 @@ void RDOThreadRepository::setName(CREF(boost::filesystem::path) name)
 	}
 }
 
-void RDOThreadRepository::loadFile(CREF(boost::filesystem::path) fileName, std::ostream& stream, bool described, bool mustExist, REF(bool) reanOnly) const
+void RDOThreadRepository::loadFile(CREF(boost::filesystem::path) fileName, std::ostream& stream, bool described, bool mustExist, bool& reanOnly) const
 {
 	if (described)
 	{
@@ -475,7 +475,7 @@ void RDOThreadRepository::save(rdoModelObjects::RDOFileType type, const std::str
 	}
 }
 
-void RDOThreadRepository::loadBMP(REF(boost::filesystem::path) name, std::ostream& stream) const
+void RDOThreadRepository::loadBMP(boost::filesystem::path& name, std::ostream& stream) const
 {
 	boost::filesystem::path fileName = (m_modelPath / name).replace_extension("bmp");
 	if (rdo::File::exist(fileName))
@@ -491,7 +491,7 @@ void RDOThreadRepository::loadBMP(REF(boost::filesystem::path) name, std::ostrea
 	}
 }
 
-void RDOThreadRepository::writeModelFilesInfo(REF(boost::filesystem::ofstream) stream) const
+void RDOThreadRepository::writeModelFilesInfo(boost::filesystem::ofstream& stream) const
 {
 	stream << "Results_file   = " << rdo::locale::convertFromWStr(getFileExtName(rdoModelObjects::PMV).wstring()) << "    " << rdo::Time::local().asString() << std::endl;
 	stream << "Run_file       = " << rdo::locale::convertFromWStr(getFileExtName(rdoModelObjects::SMR).wstring()) << std::endl;
@@ -499,7 +499,7 @@ void RDOThreadRepository::writeModelFilesInfo(REF(boost::filesystem::ofstream) s
 	stream << "Resource_file  = " << rdo::locale::convertFromWStr(getFileName(rdoModelObjects::RSS).replace_extension(getExtension(rdoModelObjects::RSS)).wstring()) << std::endl;
 }
 
-bool RDOThreadRepository::createFile(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream) const
+bool RDOThreadRepository::createFile(CREF(boost::filesystem::path) name, boost::filesystem::ofstream& stream) const
 {
 	//! TODO: проверить name с русскими буквами
 	std::stringstream backupDirName;

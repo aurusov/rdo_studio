@@ -129,7 +129,7 @@ void RDOSMR::setTraceEndTime(double value, CREF(YYLTYPE) pos)
 	m_traceEndTime_pos = pos;
 }
 
-void RDOSMR::setTerminateIf(REF(LPRDOFUNLogic) pLogic)
+void RDOSMR::setTerminateIf(LPRDOFUNLogic& pLogic)
 {
 	if (m_pTerminateIf)
 	{
@@ -141,7 +141,7 @@ void RDOSMR::setTerminateIf(REF(LPRDOFUNLogic) pLogic)
 	Converter::s_converter()->runtime()->setTerminateIf(pLogic->getCalc());
 }
 
-void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm) pArithm)
+void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, LPRDOFUNArithm& pArithm)
 {
 	LPRDOFUNConstant pConstant = Converter::s_converter()->findFUNConstant(const_info.src_text());
 	if (!pConstant)
@@ -155,7 +155,7 @@ void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm
 	Converter::s_converter()->insertChanges(pConstant->src_text(), pArithm->src_text());
 }
 
-void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcInfo) par_info, REF(LPRDOFUNArithm) pArithm)
+void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcInfo) par_info, LPRDOFUNArithm& pArithm)
 {
 	LPRDORSSResource pResource = Converter::s_converter()->findRSSResource(res_info.src_text());
 	if (!pResource)
@@ -189,7 +189,7 @@ void RDOSMR::setSeed(CREF(RDOParserSrcInfo) seq_info, int base)
 	Converter::s_converter()->insertChanges(pSequence->src_text() + ".Seed", rdo::format("%d", base));
 }
 
-void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, REF(LPRDOFUNLogic) pLogic)
+void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic& pLogic)
 {
 	for (const auto& breakPoint: m_breakPointList)
 	{

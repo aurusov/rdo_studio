@@ -44,8 +44,8 @@ private:
 	typedef rdo::simulation::report::RDOExitCode RDOExitCode;
 
 private:
-	void proc(REF(RDOMessageInfo) msg);
-	void fillBuildLogList(REF(std::vector<FileMessage>) errors);
+	void proc(RDOMessageInfo& msg);
+	void fillBuildLogList(std::vector<FileMessage>& errors);
 
 private:
 	enum SimulatorState

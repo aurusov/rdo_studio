@@ -35,7 +35,7 @@ DECLARE_FACTORY(RDOValue);
 public:
 	CREF(LPTypeInfo)               typeInfo() const;
 	rdo::runtime::RDOType::TypeID  typeID  () const;
-	 REF(rdo::runtime::RDOValue)   value   ();
+	 rdo::runtime::RDOValue&       value   ();
 	CREF(rdo::runtime::RDOValue)   value   () const;
 
 	bool defined () const;
@@ -87,7 +87,7 @@ private:
 	LPTypeInfo             m_pType;
 
 	template <class T>
-	REF(T) __get();
+	T& __get();
 
 	template <class T>
 	CREF(T) __get() const;

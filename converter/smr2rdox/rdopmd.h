@@ -81,7 +81,7 @@ class RDOPMDWatchQuant: public RDOPMDWatchTemp
 {
 DECLARE_FACTORY(RDOPMDWatchQuant);
 public:
-	void setLogic       (REF(LPRDOFUNLogic) pLogic);
+	void setLogic       (LPRDOFUNLogic& pLogic);
 	void setLogicNoCheck();
 
 private:
@@ -96,8 +96,8 @@ class RDOPMDWatchValue: public RDOPMDWatchTemp
 {
 DECLARE_FACTORY(RDOPMDWatchValue);
 public:
-	void setLogic       (REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) pArithm);
-	void setLogicNoCheck(REF(LPRDOFUNArithm) pArithm);
+	void setLogic       (LPRDOFUNLogic& pLogic, LPRDOFUNArithm& pArithm);
+	void setLogicNoCheck(LPRDOFUNArithm& pArithm);
 
 private:
 	RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, bool trace, CREF(RDOParserSrcInfo) res_type_src_info);

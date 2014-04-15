@@ -78,11 +78,11 @@ public:
 	void  updateStyleOfAllModel() const;
 	bool  isPrevModelClosed    () const;
 
-	REF(rdo::gui::frame::Manager) getFrameManager();
+	rdo::gui::frame::Manager& getFrameManager();
 	void onChangeFrame(std::size_t index);
 
 protected:
-	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
+	virtual void proc(RDOThread::RDOMessageInfo& msg);
 
 private:
 	enum BuildState

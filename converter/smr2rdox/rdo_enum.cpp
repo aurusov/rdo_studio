@@ -164,7 +164,7 @@ LPRDOValue RDOEnumType::get_default() const
 	return rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(getEnums(), 0), pEnum, RDOParserSrcInfo());
 }
 
-void RDOEnumType::writeModelStructure(REF(std::ostream) stream) const
+void RDOEnumType::writeModelStructure(std::ostream& stream) const
 {
 	stream << "E " << getEnums()->getValues().size() << std::endl;
 	for (std::size_t i = 0; i < getEnums()->getValues().size(); i++)

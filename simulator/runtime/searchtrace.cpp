@@ -141,7 +141,7 @@ std::size_t RDODPTSearchTrace::getCalcResFoundCnt() const
 }
 
 template <typename T>
-void __getStats(CREF(std::list<T>) list, REF(T) min, REF(T) max, REF(double) med)
+void __getStats(CREF(std::list<T>) list, T& min, T& max, double& med)
 {
 	T sum = 0;
 	std::size_t cnt = 0;
@@ -167,7 +167,7 @@ void __getStats(CREF(std::list<T>) list, REF(T) min, REF(T) max, REF(double) med
 	}
 }
 
-void RDODPTSearchTrace::getStatsDOUBLE(Type type, REF(double) min, REF(double) max, REF(double) med) const
+void RDODPTSearchTrace::getStatsDOUBLE(Type type, double& min, double& max, double& med) const
 {
 	switch (type)
 	{
@@ -181,7 +181,7 @@ void RDODPTSearchTrace::getStatsDOUBLE(Type type, REF(double) min, REF(double) m
 	NEVER_REACH_HERE;
 }
 
-void RDODPTSearchTrace::getStatsRUINT(Type type, REF(std::size_t) min, REF(std::size_t) max, REF(double) med) const
+void RDODPTSearchTrace::getStatsRUINT(Type type, std::size_t& min, std::size_t& max, double& med) const
 {
 	switch (type)
 	{

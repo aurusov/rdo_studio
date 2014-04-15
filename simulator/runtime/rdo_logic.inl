@@ -29,7 +29,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOOrderSimple
 // --------------------------------------------------------------------------------
-inline LPIBaseOperation RDOOrderSimple::sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container)
+inline LPIBaseOperation RDOOrderSimple::sort(CREF(LPRDORuntime) pRuntime, BaseOperationList& container)
 {
 	for (auto& operation: container)
 	{
@@ -44,7 +44,7 @@ inline LPIBaseOperation RDOOrderSimple::sort(CREF(LPRDORuntime) pRuntime, REF(Ba
 // --------------------------------------------------------------------------------
 // -------------------- RDOOrderMeta
 // --------------------------------------------------------------------------------
-inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container)
+inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, BaseOperationList& container)
 {
 	if (container.empty())
 		return NULL;
@@ -242,7 +242,7 @@ inline typename RDOLogic<Order>::CIterator RDOLogic<Order>::end() const
 }
 
 template <class Order>
-inline REF(LPIBaseOperation) RDOLogic<Order>::back()
+inline LPIBaseOperation& RDOLogic<Order>::back()
 {
 	return m_childList.back();
 }

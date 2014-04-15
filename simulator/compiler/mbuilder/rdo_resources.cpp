@@ -85,7 +85,7 @@ RDOResType::RDOResType(CREF(std::string) name, Type type)
 	, m_id   (std::size_t(~0))
 {}
 
-bool RDOResType::ParamList::append(REF(Param) param)
+bool RDOResType::ParamList::append(Param& param)
 {
 	if (std::find_if(begin(), end(), parser::compareNameRef<Param>(param.name())) != end())
 	{
@@ -172,7 +172,7 @@ RDOResTypeList::RDOResTypeList(CREF(parser::LPRDOParser) pParser)
 // --------------------------------------------------------------------------------
 // ---- Добавление *нового* типа ресурса
 // --------------------------------------------------------------------------------
-parser::LPRDORTPResType RDOResTypeList::appendBefore(REF(RDOResType) rtp)
+parser::LPRDORTPResType RDOResTypeList::appendBefore(RDOResType& rtp)
 {
 	if (std::find_if(begin(), end(), parser::compareNameRef<RDOResType>(rtp.name())) != end())
 	{
@@ -184,7 +184,7 @@ parser::LPRDORTPResType RDOResTypeList::appendBefore(REF(RDOResType) rtp)
 	return pResourceType;
 }
 
-bool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(parser::LPRDORTPResType) pResourceType)
+bool RDOResTypeList::appendAfter(RDOResType& rtp, CREF(parser::LPRDORTPResType) pResourceType)
 {
 	ASSERT(pResourceType);
 
@@ -268,12 +268,12 @@ RDOResource::RDOResource(CREF(parser::LPRDORSSResource) rss)
 	}
 }
 
-RDOResource::Params::const_iterator RDOResource::operator[] (CREF(std::string) param) const
+RDOResource::Params::const_iterator RDOResource::operator[](CREF(std::string) param) const
 {
 	return m_params.find(param);
 }
 
-REF(RDOResource::Params::mapped_type) RDOResource::operator[] (CREF(std::string) param)
+RDOResource::Params::mapped_type& RDOResource::operator[](CREF(std::string) param)
 {
 	RDOResource::Params::iterator param_it = m_params.find(param);
 	if (param_it != m_params.end())
@@ -297,7 +297,7 @@ parser::LPRDORSSResource RDOResource::getParserResource(CREF(parser::LPRDOParser
 	return pParser->findRSSResource(name());
 }
 
-bool RDOResource::fillParserResourceParams(REF(parser::LPRDORSSResource) pToParserRSS) const
+bool RDOResource::fillParserResourceParams(parser::LPRDORSSResource& pToParserRSS) const
 {
 	for (const auto& param: getType().m_params)
 	{

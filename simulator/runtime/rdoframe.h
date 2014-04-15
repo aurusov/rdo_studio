@@ -35,14 +35,14 @@ DECLARE_FACTORY(IRDOFRMItemGetBitmap)
 public:
 	typedef std::list<std::string> ImageNameList;
 
-	virtual void getBitmaps(REF(ImageNameList) list) const = 0;
+	virtual void getBitmaps(ImageNameList& list) const = 0;
 
 protected:
 	IRDOFRMItemGetBitmap();
 	virtual ~IRDOFRMItemGetBitmap();
 };
 #define DECLARE_IRDOFRMItemGetBitmap \
-	virtual void getBitmaps(REF(ImageNameList) list) const;
+	virtual void getBitmaps(ImageNameList& list) const;
 
 
 /*!

@@ -35,7 +35,7 @@ inline Interface<I>::Interface(CREF(this_type) aInterface)
 {}
 
 template<class I>
-inline REF(typename Interface<I>::this_type) Interface<I>::operator= (CREF(this_type) aInterface)
+inline typename Interface<I>::this_type& Interface<I>::operator= (CREF(this_type) aInterface)
 {
 	parent_type::operator= (aInterface);
 	return *this;
@@ -76,7 +76,7 @@ inline UnknownPointer::UnknownPointer()
 	, m_pUnknown  (NULL)
 {}
 
-inline UnknownPointer::UnknownPointer(REF(IUnknown) unknown)
+inline UnknownPointer::UnknownPointer(IUnknown& unknown)
 	: m_pInterface(NULL    )
 	, m_pUnknown  (&unknown)
 {
@@ -119,7 +119,7 @@ inline bool UnknownPointer::operator==(CREF(UnknownPointer) pointer) const
 	return m_pUnknown == pointer.m_pUnknown;
 }
 
-inline REF(UnknownPointer) UnknownPointer::operator= (CREF(UnknownPointer) pointer)
+inline UnknownPointer& UnknownPointer::operator= (CREF(UnknownPointer) pointer)
 {
 	if (m_pUnknown)
 		m_pUnknown->Release();

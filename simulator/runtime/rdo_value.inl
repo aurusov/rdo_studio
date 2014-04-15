@@ -47,7 +47,7 @@ inline std::ostream& operator<< (std::ostream& stream, CREF(RDOValue) rdovalue)
 }
 
 template <class T>
-inline REF(rdo::intrusive_ptr<T>) RDOValue::getPointer()
+inline rdo::intrusive_ptr<T>& RDOValue::getPointer()
 {
 	return __get<rdo::intrusive_ptr_interface_wrapper<T> >();
 }
@@ -93,7 +93,7 @@ inline bool RDOValue::isType() const
 }
 
 template <class T>
-inline REF(T) RDOValue::__get()
+inline T& RDOValue::__get()
 {
 	return *reinterpret_cast<T*>(&m_value);
 }

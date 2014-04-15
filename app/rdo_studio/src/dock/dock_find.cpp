@@ -53,7 +53,7 @@ void DockFind::clear()
 	getContext().clearAll();
 }
 
-REF(DockFind::context_type) DockFind::getContext()
+DockFind::context_type& DockFind::getContext()
 {
 	return *static_cast<context_type*>(widget());
 }

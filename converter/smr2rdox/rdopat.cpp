@@ -175,7 +175,7 @@ std::string RDOPATPattern::getPatternId() const
 	return m_pPatRuntime->traceId(); 
 }
 
-void RDOPATPattern::writeModelStructure(REF(std::ostream) stream) const
+void RDOPATPattern::writeModelStructure(std::ostream& stream) const
 {
 	stream << getPatternId() << " " << name() << " " << getModelStructureLetter() << " " << m_relResList.size();
 	for (const auto& resource: m_relResList)
@@ -248,7 +248,7 @@ void RDOPATPattern::setCommonChoiceWithMax(CREF(LPRDOFUNArithm) arithm)
 	m_pCommonChoice    = arithm;
 }
 
-void RDOPATPattern::setTime(REF(LPRDOFUNArithm) arithm)
+void RDOPATPattern::setTime(LPRDOFUNArithm& arithm)
 { 
 	switch (getType())
 	{

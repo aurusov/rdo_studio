@@ -79,9 +79,9 @@ public:
 
 	bool checkTransactType(CREF(std::string) name) const;
 
-	bool setPrior(REF(LPRDOFUNArithm) pPrior);
+	bool setPrior(LPRDOFUNArithm& pPrior);
 	void insertBlock(CREF(LPRDOPROCOperator) pBlock);
-	void insertChild(REF(LPRDOPROCProcess) pProcess);
+	void insertChild(LPRDOPROCProcess& pProcess);
 
 	LPILogic getRunTime () const { return m_pRuntime; }
 

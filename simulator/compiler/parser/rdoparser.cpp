@@ -506,7 +506,7 @@ void RDOParser::parse()
 	runRTPPost();
 }
 
-void RDOParser::parse(REF(std::istream) stream)
+void RDOParser::parse(std::istream& stream)
 {
 	BOOST_FOREACH(const LPRDOParserItem& compiler, m_compilers)
 	{

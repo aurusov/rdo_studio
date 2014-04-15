@@ -498,7 +498,7 @@ void RDOPATPattern::setCommonChoiceWithMax(CREF(LPRDOFUNArithm) arithm)
 	m_pCommonChoice    = arithm;
 }
 
-void RDOPATPattern::setTime(REF(LPRDOFUNArithm) arithm)
+void RDOPATPattern::setTime(LPRDOFUNArithm& arithm)
 {
 	switch (getType())
 	{

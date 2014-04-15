@@ -42,7 +42,7 @@ RDOParserItem::RDOParserItem(
 RDOParserItem::~RDOParserItem()
 {}
 
-void RDOParserItem::parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream)
+void RDOParserItem::parse(CREF(LPRDOParser) pParser, std::istream& in_stream)
 {
 	UNUSED(pParser  );
 	UNUSED(in_stream);

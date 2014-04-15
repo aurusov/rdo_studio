@@ -47,7 +47,7 @@ inline interface_ptr<T>::~interface_ptr()
 }
 
 template<class T>
-inline REF(typename interface_ptr<T>::this_type) interface_ptr<T>::operator= (CREF(this_type) sptr)
+inline typename interface_ptr<T>::this_type& interface_ptr<T>::operator= (CREF(this_type) sptr)
 {
 	if (m_pInterface)
 		m_pCounter->release();

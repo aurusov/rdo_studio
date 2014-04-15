@@ -284,17 +284,17 @@ CREF(RDOHotKey::Toolkit) RDOHotKey::toolkit() const
 	return m_toolkit;
 }
 
-REF(RDOHotKey::KeyInModelList) RDOHotKey::keyInModel()
+RDOHotKey::KeyInModelList& RDOHotKey::keyInModel()
 {
 	return m_keyInModel;
 }
 
-REF(RDOHotKey::KeyDownList) RDOHotKey::keyDown()
+RDOHotKey::KeyDownList& RDOHotKey::keyDown()
 {
 	return m_keyDown;
 }
 
-REF(RDOHotKey::AreaList) RDOHotKey::areaList()
+RDOHotKey::AreaList& RDOHotKey::areaList()
 {
 	return m_areaList;
 }

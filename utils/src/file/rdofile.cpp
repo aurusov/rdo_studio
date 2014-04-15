@@ -67,7 +67,7 @@ bool File::unlink(CREF(boost::filesystem::path) name)
 	return boost::filesystem::remove(name);
 }
 
-bool File::splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem::path) fileDir, REF(boost::filesystem::path) fileName, REF(boost::filesystem::path) fileExt)
+bool File::splitpath(CREF(boost::filesystem::path) from, boost::filesystem::path& fileDir, boost::filesystem::path& fileName, boost::filesystem::path& fileExt)
 {
 	boost::filesystem::path parentDir(from.parent_path());
 	boost::filesystem::path rootName      = parentDir.root_name();

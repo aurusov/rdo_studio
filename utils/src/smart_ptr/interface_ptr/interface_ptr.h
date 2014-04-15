@@ -30,7 +30,7 @@ public:
 	interface_ptr (CREF(this_type) sptr);
 	~interface_ptr();
 
-	REF(this_type) operator= (CREF(this_type) sptr);
+	this_type& operator= (CREF(this_type) sptr);
 
 	operator bool() const;
 	const T* operator->() const;

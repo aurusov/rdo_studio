@@ -89,7 +89,7 @@ DECLARE_FACTORY(RDOPROCTransact);
 public:
 	LPRDOPROCResource getRes();
 	void setRes(CREF(LPRDOPROCResource) pResource);
-	REF(LPIPROCBlock) getBlock();
+	LPIPROCBlock& getBlock();
 	void setBlock(CREF(LPIPROCBlock) block);
 
 	void next();

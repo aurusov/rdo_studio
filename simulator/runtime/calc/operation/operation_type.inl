@@ -19,7 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- OperatorType
 // --------------------------------------------------------------------------------
 template <OperatorType::Type>
-inline REF(std::size_t) OperatorType::getCalcCounter()
+inline std::size_t& OperatorType::getCalcCounter()
 {
 	static std::size_t s_counter = 0;
 	return s_counter;

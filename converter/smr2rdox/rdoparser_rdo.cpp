@@ -46,7 +46,7 @@ RDOParserRDOItem::~RDOParserRDOItem()
 	}
 }
 
-void RDOParserRDOItem::parse(Converter* pParser, REF(std::istream) streamIn)
+void RDOParserRDOItem::parse(Converter* pParser, std::istream& streamIn)
 {
 	ASSERT(pParser);
 
@@ -93,7 +93,7 @@ RDOParserRSS::RDOParserRSS()
 	: RDOParserRDOItem(rdo::converter::smr2rdox::RSS_IN, cnv_rssparse, cnv_rsserror, cnv_rsslex)
 {}
 
-void RDOParserRSS::parse(Converter* pParser, REF(std::istream) streamIn)
+void RDOParserRSS::parse(Converter* pParser, std::istream& streamIn)
 {
 	ASSERT(pParser);
 	pParser->setHaveKWResources   (false);

@@ -129,7 +129,7 @@ bool ControllerConsoleOptions::convertQuery() const
 	return m_convert;
 }
 
-void ControllerConsoleOptions::createGeneralOptions(REF(po::options_description) options)
+void ControllerConsoleOptions::createGeneralOptions(po::options_description& options)
 {
 	options.add_options()
 			((MODEL_COMMAND + COMMA_STRING + MODEL_COMMAND_SHORT).c_str(), po::value<std::string>(), MODEL_COMMENT.c_str())
@@ -139,13 +139,13 @@ void ControllerConsoleOptions::createGeneralOptions(REF(po::options_description)
 			((HELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str());
 }
 
-void ControllerConsoleOptions::createConvertorOptions(REF(po::options_description) options)
+void ControllerConsoleOptions::createConvertorOptions(po::options_description& options)
 {
 	options.add_options()
 		((CONVERTOR_COMMAND + COMMA_STRING + CONVERTOR_COMMAND_SHORT).c_str(), CONVERTOR_COMMENT.c_str());
 }
 
-void ControllerConsoleOptions::createAdditionalOptions(REF(po::options_description) options)
+void ControllerConsoleOptions::createAdditionalOptions(po::options_description& options)
 {
 	options.add_options()
 			(AUTO_RUN_COMMAND.c_str(), AUTO_RUN_COMMENT.c_str())

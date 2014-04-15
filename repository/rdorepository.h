@@ -54,10 +54,10 @@ public:
 	};
 	struct CreateFileInfo: public boost::noncopyable
 	{
-		boost::filesystem::path          m_name;
-		REF(boost::filesystem::ofstream) m_stream;
+		boost::filesystem::path m_name;
+		boost::filesystem::ofstream& m_stream;
 
-		CreateFileInfo(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream)
+		CreateFileInfo(CREF(boost::filesystem::path) name, boost::filesystem::ofstream& stream)
 			: m_name  (name  )
 			, m_stream(stream)
 		{}
@@ -173,19 +173,19 @@ private:
 	void setName(CREF(boost::filesystem::path) name);
 	void createRDOX();
 
-	void loadFile(CREF(boost::filesystem::path) fileName, std::ostream& stream, bool described, bool mustExist, REF(bool) reanOnly) const;
+	void loadFile(CREF(boost::filesystem::path) fileName, std::ostream& stream, bool described, bool mustExist, bool& reanOnly) const;
 	void saveFile(CREF(boost::filesystem::path) fileName, const std::stringstream& stream, bool deleteIfEmpty = false) const;
 
-	bool createFile(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream) const;
+	bool createFile(CREF(boost::filesystem::path) name, boost::filesystem::ofstream& stream) const;
 
 	void beforeModelStart();
 	void stopModel();
 	void trace(CREF(std::string) message);
-	void writeModelFilesInfo(REF(boost::filesystem::ofstream) stream) const;
+	void writeModelFilesInfo(boost::filesystem::ofstream& stream) const;
 
 protected:
 	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete
-	virtual void proc(REF(RDOMessageInfo) msg);
+	virtual void proc(RDOMessageInfo& msg);
 
 	void newModel(const NewModel* const data);
 	bool openModel(CREF(boost::filesystem::path) modelFileName);
@@ -204,7 +204,7 @@ protected:
 	bool isMustExist(rdoModelObjects::RDOFileType type) const;
 	bool isDeleteIfEmpty(rdoModelObjects::RDOFileType type) const;
 
-	void loadBMP(REF(boost::filesystem::path) name, std::ostream& stream) const;
+	void loadBMP(boost::filesystem::path& name, std::ostream& stream) const;
 };
 
 }} // namespace rdo::repository

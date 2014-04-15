@@ -18,7 +18,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOOrderDPTPrior
 // --------------------------------------------------------------------------------
-inline LPIBaseOperation RDOOrderDPTPrior::sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container)
+inline LPIBaseOperation RDOOrderDPTPrior::sort(CREF(LPRDORuntime) pRuntime, BaseOperationList& container)
 {
 	BaseOperationList priorContainer;
 	for (const auto& operation: container)

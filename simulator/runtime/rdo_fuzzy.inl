@@ -72,7 +72,7 @@ inline LPFuzzySet FuzzySet::operator() (CREF(RDOValue) rdovalue, double appertai
 	return append(rdovalue, appertain);
 }
 
-inline REF(double) FuzzySet::operator[] (CREF(RDOValue) rdovalue)
+inline double& FuzzySet::operator[] (CREF(RDOValue) rdovalue)
 {
 	return m_fuzzySet[rdovalue];
 }
@@ -160,7 +160,7 @@ inline void RDOLingvoVariable::setName(nameOfVariable nameVariable)
 {
 	m_name = nameVariable;
 }
-inline REF(LPFuzzySet) RDOLingvoVariable::operator[] (std::string name)
+inline LPFuzzySet& RDOLingvoVariable::operator[] (std::string name)
 {
 	return m_set[name];
 }

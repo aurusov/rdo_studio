@@ -76,14 +76,14 @@ class UnknownPointer
 {
 public:
 	UnknownPointer ();
-	UnknownPointer (REF(IUnknown) unknown    );
+	UnknownPointer (IUnknown& unknown);
 	UnknownPointer (LPIGetUnknown pGetUnknown);
 	UnknownPointer (void* pInterface, LPIUnknown pUnknown);
 	UnknownPointer (CREF(UnknownPointer) pointer);
 	~UnknownPointer();
 
 	bool operator==(CREF(UnknownPointer) pointer) const;
-	REF(UnknownPointer) operator=(CREF(UnknownPointer) pointer);
+	UnknownPointer& operator=(CREF(UnknownPointer) pointer);
 
 	operator bool() const;
 
@@ -114,7 +114,7 @@ public:
 	Interface(void* pInterface, LPIUnknown pUnknown);
 	Interface(CREF(this_type) aInterface);
 
-	REF(this_type) operator=(CREF(this_type) aInterface);
+	this_type& operator=(CREF(this_type) aInterface);
 	operator bool() const;
 
 	I* get();

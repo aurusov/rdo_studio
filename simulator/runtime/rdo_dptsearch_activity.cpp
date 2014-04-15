@@ -31,7 +31,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(CREF(LPIRule) rule, ValueTime valueTi
 	setTraceID(trace->getTraceID());
 }
 
-REF(LPIRule) RDODPTSearchActivity::rule()
+LPIRule& RDODPTSearchActivity::rule()
 {
 	return m_rule;
 }

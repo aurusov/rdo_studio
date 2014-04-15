@@ -41,7 +41,7 @@ void DockDebug::clear()
 	getContext().clearAll();
 }
 
-REF(DockDebug::context_type) DockDebug::getContext()
+DockDebug::context_type& DockDebug::getContext()
 {
 	return *static_cast<context_type*>(widget());
 }

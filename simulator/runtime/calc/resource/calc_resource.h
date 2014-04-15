@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalcGetResourceHelper
 {
 public:
-	static bool getResource(CREF(LPRDORuntime) pRuntime, std::size_t resourceID, REF(RDOValue) result);
+	static bool getResource(CREF(LPRDORuntime) pRuntime, std::size_t resourceID, RDOValue& result);
 };
 
 //! Получение ресурса по ID

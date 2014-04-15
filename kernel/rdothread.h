@@ -453,14 +453,14 @@ protected:
 	// Надо обязательно вызвать из конструктора объекта, чтобы настроить правильно this для виртуальных функций,
 	void after_constructor();
 
-	virtual void  proc (REF(RDOMessageInfo) msg) = 0;
+	virtual void  proc (RDOMessageInfo& msg) = 0;
 	virtual void  idle ();
 	virtual void  start();
 	virtual void  stop ();
 #ifdef RDO_MT
 	virtual bool processMessages();
 #else
-	void          processMessages(REF(RDOMessageInfo) msg)
+	void          processMessages(RDOMessageInfo& msg)
 	{
 #ifdef TR_TRACE
 		RDOThread::trace("---------------- " + messageToString(msg.message) + ": " + (msg.from ? msg.from->thread_name : "NULL") + " -> " + thread_name);

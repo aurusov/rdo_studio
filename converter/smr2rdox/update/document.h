@@ -41,7 +41,7 @@ public:
 	typedef rdo::converter::smr2rdox::RDOFileTypeOut TypeOut;
 
 	void  create      (CREF(boost::filesystem::path) filePath, CREF(boost::filesystem::path) modelName);
-	void  init        (rdo::converter::smr2rdox::RDOFileTypeIn type, REF(std::ifstream) stream);
+	void  init        (rdo::converter::smr2rdox::RDOFileTypeIn type, std::ifstream& stream);
 	void  insertUpdate(CREF(LPDocUpdate) pUpdate);
 	void  convert     ();
 	void  close       ();
@@ -56,8 +56,8 @@ private:
 	public:
 		typedef std::vector<char> Buffer;
 
-		void init(REF(std::ifstream) stream);
-		void get(REF(std::ofstream) stream) const;
+		void init(std::ifstream& stream);
+		void get(std::ofstream& stream) const;
 
 		void insert(std::size_t to, CREF(std::string) value);
 		void remove(std::size_t from, std::size_t to);

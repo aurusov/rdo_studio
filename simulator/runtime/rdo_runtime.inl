@@ -31,7 +31,7 @@ inline void RDOResults::width(std::size_t w)
 }
 
 template<class T> 
-inline REF(RDOResults) RDOResults::operator<< (CREF(T) value)
+inline RDOResults& RDOResults::operator<< (CREF(T) value)
 {
 	getOStream() << value;
 	return *this;
@@ -40,28 +40,28 @@ inline REF(RDOResults) RDOResults::operator<< (CREF(T) value)
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntime
 // --------------------------------------------------------------------------------
-inline REF(Notify) RDORuntime::notify()
+inline Notify& RDORuntime::notify()
 {
 	return m_notify;
 }
 
-inline REF(Error) RDORuntime::error()
+inline Error& RDORuntime::error()
 {
 	ASSERT(m_pError);
 	return *m_pError;
 }
 
-inline REF(RDOHotKey) RDORuntime::hotkey()
+inline RDOHotKey& RDORuntime::hotkey()
 {
 	return m_hotKey;
 }
 
-inline REF(RDOResults) RDORuntime::getResults()
+inline RDOResults& RDORuntime::getResults()
 {
 	return *m_resultList;
 }
 
-inline REF(RDOResults) RDORuntime::getResultsInfo()
+inline RDOResults& RDORuntime::getResultsInfo()
 {
 	return *m_resultListInfo;
 }
@@ -87,7 +87,7 @@ inline void RDORuntime::setCurrentTerm(std::size_t value)
 	m_currentTerm = value;
 }
 
-inline REF(LPIActivity) RDORuntime::getCurrentActivity()
+inline LPIActivity& RDORuntime::getCurrentActivity()
 {
 	return m_currActivity;
 }
@@ -107,7 +107,7 @@ inline void RDORuntime::addInitCalc(CREF(LPRDOCalc) initCalc)
 	m_initCalcList.push_back(initCalc);
 }
 
-inline REF(RDOValue) RDORuntime::getResParamValRaw(std::size_t resID, std::size_t paramID)
+inline RDOValue& RDORuntime::getResParamValRaw(std::size_t resID, std::size_t paramID)
 {
 	LPRDOResource pResource = getResourceByID(resID);
 	ASSERT(pResource);

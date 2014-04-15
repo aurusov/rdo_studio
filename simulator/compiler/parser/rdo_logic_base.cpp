@@ -35,7 +35,7 @@ CREF(std::string) RDOLogicBase::name() const
 	return src_info().src_text();
 }
 
-bool RDOLogicBase::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDOLogicBase::setPrior(LPRDOFUNArithm& pPrior)
 {
 	LPIPriority pPriority = m_pRuntimeLogic;
 	if (pPriority)

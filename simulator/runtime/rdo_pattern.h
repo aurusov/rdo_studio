@@ -51,8 +51,8 @@ protected:
 
 	void preSelectRelRes(CREF(LPRDORuntime) pRuntime);
 
-	void runCalcs(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime);
-	bool runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime);
+	void runCalcs(CalcList& calcList, CREF(LPRDORuntime) pRuntime);
+	bool runCalcsBool(CalcList& calcList, CREF(LPRDORuntime) pRuntime);
 };
 
 /*!

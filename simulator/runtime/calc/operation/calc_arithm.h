@@ -19,7 +19,7 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Оператор присваивания
-typedef RDOCalcBinary<BinaryOperatorNonConstP1<REF(RDOValue), &RDOValue::operator= >, OperatorType::OT_ARITHM> RDOCalcSet;  DECLARE_POINTER(RDOCalcSet);
+typedef RDOCalcBinary<BinaryOperatorNonConstP1<RDOValue&, &RDOValue::operator= >, OperatorType::OT_ARITHM> RDOCalcSet;  DECLARE_POINTER(RDOCalcSet);
 
 //! Бинарный оператор плюс
 typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator+ >, OperatorType::OT_ARITHM> RDOCalcPlus;  DECLARE_POINTER(RDOCalcPlus);

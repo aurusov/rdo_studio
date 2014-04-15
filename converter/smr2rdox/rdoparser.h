@@ -99,7 +99,7 @@ public:
 	rdo::runtime::LPRDORuntime runtime() { return m_pRuntime; }
 
 	bool isPattern() const { return m_pattern; }
-	REF(FUNGroupList) getFUNGroupStack() { return m_allFUNGroup; }
+	FUNGroupList& getFUNGroupStack() { return m_allFUNGroup; }
 
 	void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
@@ -130,7 +130,7 @@ public:
 	bool hasSMR() const { return m_pSMR ? true : false; }
 
 	CREF(Error) error() const { return m_error; }
-	 REF(Error) error()       { return m_error; }
+	 Error& error() { return m_error; }
 
 	class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
 	{
@@ -163,7 +163,7 @@ public:
 		}
 	};
 
-	REF(Stack) stack()
+	Stack& stack()
 	{
 		return m_movementObjectList;
 	}
@@ -189,7 +189,7 @@ protected:
 	LPRDOParserItem m_pParserItem;
 	LPDocument      m_pDocument;
 
-	virtual REF(LPRDOParserContainer) getContainer() = 0;
+	virtual LPRDOParserContainer& getContainer() = 0;
 
 	RDOParserContainer::Iterator begin()
 	{
@@ -263,7 +263,7 @@ public:
 private:
 	LPRDOParserContainer m_container;
 
-	virtual REF(LPRDOParserContainer) getContainer()
+	virtual LPRDOParserContainer& getContainer()
 	{
 		if (!m_container)
 		{
@@ -286,7 +286,7 @@ public:
 		CNV_OK,
 		CNV_ERROR
 	};
-	Result convert(CREF(boost::filesystem::path) smrFullFileName, REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info);
+	Result convert(CREF(boost::filesystem::path) smrFullFileName, rdo::converter::smr2rdox::RDOSMRFileInfo& info);
 };
 
 // --------------------------------------------------------------------------------
@@ -297,7 +297,7 @@ class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
 public:
 	typedef std::map<rdo::converter::smr2rdox::RDOFileTypeIn, boost::filesystem::path> FileList;
 
-	bool parseSMR(CREF(boost::filesystem::path) smrFullFileName, REF(boost::filesystem::path) modelName);
+	bool parseSMR(CREF(boost::filesystem::path) smrFullFileName, boost::filesystem::path& modelName);
 	CREF(FileList) getFileList() const;
 
 private:

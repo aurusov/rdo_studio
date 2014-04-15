@@ -185,7 +185,7 @@ DECLARE_FACTORY(RDOFUNParams);
 public:
 	typedef std::vector<LPRDOFUNArithm> ParamList;
 
-	REF(RDOParserSrcInfo) getFunseqName() { return m_funseqName; }
+	RDOParserSrcInfo& getFunseqName() { return m_funseqName; }
 	CREF(ParamList) getParamList() const { return m_paramList ; }
 	rdo::runtime::LPRDOCalc getCalc(std::size_t paramID, CREF(LPRDOTypeParam) pType);
 
@@ -233,11 +233,11 @@ public:
 
 	CREF(std::string) name() const { return m_pHeader->src_text(); }
 	CREF(LPRDOFUNSequenceHeader) getHeader() const { return m_pHeader; }
-	 REF(rdo::runtime::LPRDOCalcSeqInit) getInitCalc() { return m_pInitCalc; }
-	 REF(rdo::runtime::LPRDOCalcSeqNext) getNextCalc() { return m_pNextCalc; }
+	 rdo::runtime::LPRDOCalcSeqInit& getInitCalc() { return m_pInitCalc; }
+	 rdo::runtime::LPRDOCalcSeqNext& getNextCalc() { return m_pNextCalc; }
 
 	virtual void           createCalcs   () = 0;
-	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) src_info) const = 0;
+	virtual LPRDOFUNArithm createCallCalc(LPRDOFUNParams& pParamList, CREF(RDOParserSrcInfo) src_info) const = 0;
 
 protected:
 	RDOFUNSequence(CREF(LPRDOFUNSequenceHeader) pHeader, int seed);
@@ -264,7 +264,7 @@ private:
 	RDOFUNSequenceUniform(CREF(LPRDOFUNSequenceHeader) pHeader, int seed = 123456789);
 
 	virtual void           createCalcs   ();
-	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const;
+	virtual LPRDOFUNArithm createCallCalc(LPRDOFUNParams& pParamList, CREF(RDOParserSrcInfo) seq_src_info) const;
 };
 
 // --------------------------------------------------------------------------------
@@ -277,7 +277,7 @@ private:
 	RDOFUNSequenceExponential(CREF(LPRDOFUNSequenceHeader) pHeader, int seed = 123456789);
 
 	virtual void           createCalcs   ();
-	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const;
+	virtual LPRDOFUNArithm createCallCalc(LPRDOFUNParams& pParamList, CREF(RDOParserSrcInfo) seq_src_info) const;
 };
 
 // --------------------------------------------------------------------------------
@@ -290,7 +290,7 @@ private:
 	RDOFUNSequenceNormal(CREF(LPRDOFUNSequenceHeader) pHeader, int seed = 123456789);
 
 	virtual void           createCalcs   ();
-	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const;
+	virtual LPRDOFUNArithm createCallCalc(LPRDOFUNParams& pParamList, CREF(RDOParserSrcInfo) seq_src_info) const;
 };
 
 // --------------------------------------------------------------------------------
@@ -326,7 +326,7 @@ protected:
 	RDOFUNSequenceByHist(CREF(LPRDOFUNSequenceByHistHeader) pHeader);
 
 private:
-	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) src_info) const;
+	virtual LPRDOFUNArithm createCallCalc(LPRDOFUNParams& pParamList, CREF(RDOParserSrcInfo) src_info) const;
 };
 
 // --------------------------------------------------------------------------------
@@ -397,7 +397,7 @@ private:
 	ValueList m_valueList;
 
 	virtual void           createCalcs   ();
-	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) src_info) const;
+	virtual LPRDOFUNArithm createCallCalc(LPRDOFUNParams& pParamList, CREF(RDOParserSrcInfo) src_info) const;
 };
 DECLARE_POINTER(RDOFUNSequenceEnumerative);
 
@@ -495,8 +495,8 @@ class RDOFUNCalculateIf
 {
 DECLARE_FACTORY(RDOFUNCalculateIf)
 public:
-	REF(LPRDOFUNLogic)  getCondition() { return m_pCondition; }
-	REF(LPRDOFUNArithm) getAction   () { return m_pAction;    }
+	LPRDOFUNLogic&  getCondition() { return m_pCondition; }
+	LPRDOFUNArithm& getAction   () { return m_pAction;    }
 
 private:
 	RDOFUNCalculateIf(CREF(LPRDOFUNLogic) pCondition, CREF(LPRDOFUNArithm) pAction);
@@ -602,7 +602,7 @@ public:
 		fgt_notforall = 4
 	};
 
-	LPRDOFUNLogic createFunLogic(REF(LPRDOFUNLogic) pCondition);
+	LPRDOFUNLogic createFunLogic(LPRDOFUNLogic& pCondition);
 
 private:
 	RDOFUNGroupLogic(FunGroupType funType, CREF(RDOParserSrcInfo) res_info);
@@ -619,7 +619,7 @@ class RDOFUNSelect: public RDOFUNGroup
 DECLARE_FACTORY(RDOFUNSelect)
 public:
 	void           initSelect          (LPRDOFUNLogic pCondition = NULL);
-	LPRDOFUNLogic  createFunSelectGroup(RDOFUNGroupLogic::FunGroupType funType, REF(LPRDOFUNLogic) pCondition);
+	LPRDOFUNLogic  createFunSelectGroup(RDOFUNGroupLogic::FunGroupType funType, LPRDOFUNLogic& pCondition);
 	LPRDOFUNLogic  createFunSelectEmpty(CREF(RDOParserSrcInfo) empty_info);
 	LPRDOFUNArithm createFunSelectSize (CREF(RDOParserSrcInfo) size_info );
 

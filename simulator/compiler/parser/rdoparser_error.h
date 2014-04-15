@@ -66,7 +66,7 @@ private:
 	bool m_blocked;
 };
 
-REF(Error) g_error();
+Error& g_error();
 
 class ErrorBlockMonicker
 {

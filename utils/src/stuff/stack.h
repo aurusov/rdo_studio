@@ -29,7 +29,7 @@ public:
 	std::size_t size() const;
 
 	CREF(T) top() const;
-	 REF(T) top();
+	 T& top();
 
 private:
 	typedef std::list<T> Container;

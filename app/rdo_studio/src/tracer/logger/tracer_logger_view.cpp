@@ -36,7 +36,7 @@ namespace rdo { namespace gui { namespace tracer {
 class LogCtrlFindInList
 {
 public:
-	LogCtrlFindInList(REF(int) checkCounter, CREF(QString) strToFind, bool matchCase, bool matchWholeWord);
+	LogCtrlFindInList(int& checkCounter, CREF(QString) strToFind, bool matchCase, bool matchWholeWord);
 	bool operator() (CREF(QString) nextStr);
 
 	LogCtrlFindInList& operator= (CREF(LogCtrlFindInList))
@@ -47,12 +47,12 @@ public:
 
 private:
 	boost::optional<boost::regex> m_expression;
-	REF(int) m_checkCounter;
+	int& m_checkCounter;
 };
 
 }}} // namespace rdo::gui::tracer
 
-LogCtrlFindInList::LogCtrlFindInList(REF(int) checkCounter, CREF(QString) strToFind, bool matchCase, bool matchWholeWord)
+LogCtrlFindInList::LogCtrlFindInList(int& checkCounter, CREF(QString) strToFind, bool matchCase, bool matchWholeWord)
 	: m_checkCounter(checkCounter)
 {
 	QString what = matchWholeWord
@@ -546,14 +546,14 @@ QString LogView::getSelected() const
 	return getString(selectedLine());
 }
 
-REF(QScrollBar) LogView::getVertScrollBar()
+QScrollBar& LogView::getVertScrollBar()
 {
 	QScrollBar* pScrollBar = m_pScrollArea->verticalScrollBar();
 	ASSERT(pScrollBar);
 	return *pScrollBar;
 }
 
-REF(QScrollBar) LogView::getHorzScrollBar()
+QScrollBar& LogView::getHorzScrollBar()
 {
 	QScrollBar* pScrollBar = m_pScrollArea->horizontalScrollBar();
 	ASSERT(pScrollBar);

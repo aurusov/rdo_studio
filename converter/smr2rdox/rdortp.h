@@ -60,7 +60,7 @@ public:
 	std::size_t getRTPParamNumber(CREF(std::string) paramName) const;
 	CREF(ParamList) getParams() const { return m_params; }
 
-	void writeModelStructure(REF(std::ostream) stream) const;
+	void writeModelStructure(std::ostream& stream) const;
 
 private:
 	RDORTPResType(Converter* pParser, CREF(RDOParserSrcInfo) src_info, bool permanent);

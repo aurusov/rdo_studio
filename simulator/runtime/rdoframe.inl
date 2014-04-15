@@ -284,7 +284,7 @@ inline RDOFRMBitmapBase::RDOFRMBitmapBase(CREF(LPRDOFRMSprite) pSprite, CREF(std
 inline RDOFRMBitmapBase::~RDOFRMBitmapBase()
 {}
 
-inline void RDOFRMBitmapBase::getBitmaps(REF(IRDOFRMItemGetBitmap::ImageNameList) list) const
+inline void RDOFRMBitmapBase::getBitmaps(IRDOFRMItemGetBitmap::ImageNameList& list) const
 {
 	list.push_back(m_pictFilename);
 	if (!m_maskFilename.empty())

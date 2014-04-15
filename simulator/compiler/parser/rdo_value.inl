@@ -48,7 +48,7 @@ inline void RDOValue::setPointer(CREF(rdo::intrusive_ptr<T>) pObject)
 }
 
 template <class T>
-inline REF(T) RDOValue::__get()
+inline T& RDOValue::__get()
 {
 	return *reinterpret_cast<T*>(&m_buffer);
 }

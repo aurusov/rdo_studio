@@ -44,7 +44,7 @@ protected:
 
 	void setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::vector<LPRDOCalc>& params);
 	void setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::vector<RDOValue>& params);
-	void getRelevantResources(CREF(LPRDORuntime) pRuntime, REF(std::list<LPRDOResource>) rel_res_list);
+	void getRelevantResources(CREF(LPRDORuntime) pRuntime, std::list<LPRDOResource>& rel_res_list);
 	void updateRelRes        (CREF(LPRDORuntime) pRuntime);
 	void updateConvertStatus (CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOResource::ConvertStatus>) status_list);
 

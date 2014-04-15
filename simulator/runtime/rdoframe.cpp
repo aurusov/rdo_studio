@@ -159,7 +159,7 @@ RDOValue RDOFRMSprite::doCalc(CREF(LPRDORuntime) pRuntime)
 	return RDOValue();
 }
 
-void RDOFRMSprite::getBitmaps(REF(IRDOFRMItemGetBitmap::ImageNameList) list) const
+void RDOFRMSprite::getBitmaps(IRDOFRMItemGetBitmap::ImageNameList& list) const
 {
 	BOOST_FOREACH(const LPIRDOFRMItemGetBitmap& pGetBitmap, m_getBitmapList)
 	{
@@ -827,7 +827,7 @@ void RDOFRMFrame::prepareFrame(rdo::animation::Frame* pFrame, CREF(LPRDORuntime)
 	pRuntime->resetPreparingFrame();
 }
 
-void RDOFRMFrame::getBitmaps(REF(IRDOFRMItemGetBitmap::ImageNameList) list) const
+void RDOFRMFrame::getBitmaps(IRDOFRMItemGetBitmap::ImageNameList& list) const
 {
 	if (!m_picFileName.empty())
 		list.push_back(m_picFileName);

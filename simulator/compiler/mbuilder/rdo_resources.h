@@ -193,7 +193,7 @@ public:
 	class ParamList: public RDOList<Param>
 	{
 	public:
-		bool append(REF(Param) param);
+		bool append(Param& param);
 	};
 	ParamList m_params;
 
@@ -225,8 +225,8 @@ public:
 	Params::const_iterator end() const { return m_params.end(); }
 	std::size_t size() const { return m_params.size(); }
 
-	REF(Params::mapped_type) operator[] (CREF(std::string) param);
-	Params::const_iterator operator[] (CREF(std::string) param) const;
+	Params::mapped_type& operator[](CREF(std::string) param);
+	Params::const_iterator operator[](CREF(std::string) param) const;
 
 	parser::LPRDORSSResource getParserResource(CREF(parser::LPRDOParser) pParser) const;
 
@@ -247,7 +247,7 @@ public:
 		return rdo::Factory<T>::create(pParser, RDOParserSrcInfo(name()), pRTP, id == parser::RDORSSResource::UNDEFINED_ID ? getID() : id);
 	}
 
-	bool fillParserResourceParams(REF(parser::LPRDORSSResource) pToParserRSS) const;
+	bool fillParserResourceParams(parser::LPRDORSSResource& pToParserRSS) const;
 
 private:
 	RDOResType m_rtp;
@@ -263,7 +263,7 @@ class RDOResTypeList: public RDOList<RDOResType>
 public:
 	RDOResTypeList(CREF(parser::LPRDOParser) pParser);
 
-	bool append(REF(RDOResType) rtp)
+	bool append(RDOResType& rtp)
 	{
 		parser::LPRDORTPResType pResourceType = appendBefore(rtp);
 		if (!pResourceType)
@@ -275,8 +275,8 @@ public:
 	}
 
 private:
-	parser::LPRDORTPResType appendBefore(REF(RDOResType) rtp);
-	bool appendAfter (REF(RDOResType) rtp, CREF(parser::LPRDORTPResType) pResourceType);
+	parser::LPRDORTPResType appendBefore(RDOResType& rtp);
+	bool appendAfter(RDOResType& rtp, CREF(parser::LPRDORTPResType) pResourceType);
 };
 
 // --------------------------------------------------------------------------------
@@ -290,7 +290,7 @@ public:
 	// --------------------------------------------------------------------------------
 	// ---- Добавление *нового* ресурса
 	// --------------------------------------------------------------------------------
-	template<class T> bool append(REF(RDOResource) mbuilderRSS)
+	template<class T> bool append(RDOResource& mbuilderRSS)
 	{
 		if (exist(mbuilderRSS.name()))
 			return false;
@@ -312,7 +312,7 @@ public:
 	// --------------------------------------------------------------------------------
 	// ---- Замена существующего ресурса новым
 	// --------------------------------------------------------------------------------
-	template<class T> bool replace(REF(RDOResource) mbuilderRSSNew)
+	template<class T> bool replace(RDOResource& mbuilderRSSNew)
 	{
 		Iterator mbuilderRSSPrevIt = found(mbuilderRSSNew.name());
 		if (mbuilderRSSPrevIt == end())

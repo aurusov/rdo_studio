@@ -36,7 +36,7 @@ public:
 	 intrusive_ptr(CREF(interface_ptr<P>) pInterface);
 	~intrusive_ptr();
 
-	REF(this_type) operator= (CREF(this_type) sptr);
+	this_type& operator=(CREF(this_type) sptr);
 
 	//! Сравнивает по указателям
 	template <class P>
@@ -49,10 +49,10 @@ public:
 	bool compare(CREF(intrusive_ptr<P>) sptr) const;
 
 	operator bool() const;
-	 T* operator->() const;
-	 T* operator->();
+	T* operator->() const;
+	T* operator->();
 	CREF(T) operator*() const;
-	 REF(T) operator*();
+	T& operator*();
 
 	template <class P>
 	operator intrusive_ptr<P>() const;
@@ -85,7 +85,7 @@ protected:
 private:
 	T* m_object;
 
-	REF(std::size_t) counter();
+	std::size_t& counter();
 };
 
 #define DECLARE_POINTER(TYPE)    typedef rdo::intrusive_ptr<TYPE> LP##TYPE;

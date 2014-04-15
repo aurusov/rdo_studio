@@ -39,7 +39,7 @@ namespace rdo {
 	//! \param  str    - исходная строка, которая может содержать символы форматирования
 	//! \param  params - определенный по формату набор параметров (вытащенный по формату из стека)
 	//! \result Отформатированная строчка
-	std::string format(const char* str, REF(va_list) params);
+	std::string format(const char* str, va_list& params);
 
 	//! Переводит значение в строку
 	//! \tparam T     - тип значения
@@ -79,7 +79,7 @@ namespace rdo {
 		//! Добавляет в контейнер новый эелемент, более удобный аналог std::vector::push_back()
 		//! \param item - Элемент контейнера
 		//! \result Возвращает сам контейнер, чтобы эту же операцию можно было вызвать снова
-		REF(vector) operator() (CREF(T) item)
+		vector& operator() (CREF(T) item)
 		{
 			std::vector<T>::push_back(item);
 			return *this;

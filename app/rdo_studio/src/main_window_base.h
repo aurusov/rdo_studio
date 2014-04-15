@@ -44,13 +44,13 @@ public:
 
 	bool isMDIMaximazed() const { return true; }
 
-	REF(DockBuild)      getDockBuild    () { ASSERT(m_pDockBuild    ); return *m_pDockBuild;     }
-	REF(DockDebug)      getDockDebug    () { ASSERT(m_pDockDebug    ); return *m_pDockDebug;     }
-	REF(DockTrace)      getDockTrace    () { ASSERT(m_pDockTrace    ); return *m_pDockTrace;     }
-	REF(DockResults)    getDockResults  () { ASSERT(m_pDockResults  ); return *m_pDockResults;   }
-	REF(DockFind)       getDockFind     () { ASSERT(m_pDockFind     ); return *m_pDockFind;      }
-	REF(DockChartTree)  getDockChartTree() { ASSERT(m_pDockChartTree); return *m_pDockChartTree; }
-	REF(DockFrame)      getDockFrame    () { ASSERT(m_pDockFrame    ); return *m_pDockFrame;     }
+	DockBuild&      getDockBuild    () { ASSERT(m_pDockBuild    ); return *m_pDockBuild;     }
+	DockDebug&      getDockDebug    () { ASSERT(m_pDockDebug    ); return *m_pDockDebug;     }
+	DockTrace&      getDockTrace    () { ASSERT(m_pDockTrace    ); return *m_pDockTrace;     }
+	DockResults&    getDockResults  () { ASSERT(m_pDockResults  ); return *m_pDockResults;   }
+	DockFind&       getDockFind     () { ASSERT(m_pDockFind     ); return *m_pDockFind;      }
+	DockChartTree&  getDockChartTree() { ASSERT(m_pDockChartTree); return *m_pDockChartTree; }
+	DockFrame&      getDockFrame    () { ASSERT(m_pDockFrame    ); return *m_pDockFrame;     }
 
 	virtual void updateAllStyles() = 0;
 

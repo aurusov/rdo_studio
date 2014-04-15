@@ -375,7 +375,7 @@ void RDOValue::set(CREF(RDOValue) rdovalue)
 	}
 }
 
-REF(RDOValue) RDOValue::operator= (CREF(RDOValue) rdovalue)
+RDOValue& RDOValue::operator= (CREF(RDOValue) rdovalue)
 {
 	deleteValue();
 	set(rdovalue);
@@ -607,7 +607,7 @@ bool RDOValue::operator! () const
 	}
 }
 
-REF(RDOValue) RDOValue::operator+= (CREF(RDOValue) rdovalue)
+RDOValue& RDOValue::operator+= (CREF(RDOValue) rdovalue)
 {
 	if (isUndefined() || rdovalue.isUndefined())
 		throw RDOUndefinedException();
@@ -706,7 +706,7 @@ RDOValue RDOValue::operator--(int inc)
 	return prevValue;
 }
 
-REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
+RDOValue& RDOValue::operator-= (CREF(RDOValue) rdovalue)
 {
 	if (isUndefined() || rdovalue.isUndefined())
 		throw RDOUndefinedException();
@@ -744,7 +744,7 @@ REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
 	throw RDOValueException();
 }
 
-REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
+RDOValue& RDOValue::operator*= (CREF(RDOValue) rdovalue)
 {
 	if (isUndefined() || rdovalue.isUndefined())
 		throw RDOUndefinedException();
@@ -782,7 +782,7 @@ REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
 	throw RDOValueException();
 }
 
-REF(RDOValue) RDOValue::operator/= (CREF(RDOValue) rdovalue)
+RDOValue& RDOValue::operator/= (CREF(RDOValue) rdovalue)
 {
 	if (isUndefined() || rdovalue.isUndefined())
 		throw RDOUndefinedException();
@@ -911,7 +911,7 @@ RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 //	throw RDOValueException();
 //}
 
-REF(void*) RDOValue::__voidPtrV()
+void*& RDOValue::__voidPtrV()
 {
 	return __get<void*>();
 }
@@ -926,7 +926,7 @@ LPRDOEnumType RDOValue::__enumT() const
 	return m_pType.object_static_cast<RDOEnumType>();
 }
 
-REF(std::string) RDOValue::__stringV()
+std::string& RDOValue::__stringV()
 {
 	return *getPointer<string_class>().get();
 }
@@ -1074,7 +1074,7 @@ bool RDOValue::onPointerEqual(CREF(RDOValue) rdovalue) const
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerEqual()");
 }
 
-REF(RDOValue) RDOValue::onPointerPlus(CREF(RDOValue) rdovalue)
+RDOValue& RDOValue::onPointerPlus(CREF(RDOValue) rdovalue)
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
@@ -1115,7 +1115,7 @@ REF(RDOValue) RDOValue::onPointerPlus(CREF(RDOValue) rdovalue)
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerPlus()");
 }
 
-REF(RDOValue) RDOValue::onPointerMinus(CREF(RDOValue) rdovalue)
+RDOValue& RDOValue::onPointerMinus(CREF(RDOValue) rdovalue)
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
@@ -1156,7 +1156,7 @@ REF(RDOValue) RDOValue::onPointerMinus(CREF(RDOValue) rdovalue)
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerMinus()");
 }
 
-REF(RDOValue) RDOValue::onPointerMult(CREF(RDOValue) rdovalue)
+RDOValue& RDOValue::onPointerMult(CREF(RDOValue) rdovalue)
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
@@ -1178,7 +1178,7 @@ REF(RDOValue) RDOValue::onPointerMult(CREF(RDOValue) rdovalue)
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerMult()");
 }
 
-REF(RDOValue) RDOValue::onPointerDiv(CREF(RDOValue) rdovalue)
+RDOValue& RDOValue::onPointerDiv(CREF(RDOValue) rdovalue)
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 

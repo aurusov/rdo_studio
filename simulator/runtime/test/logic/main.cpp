@@ -58,7 +58,7 @@ public:
 	CIterator end() const { return m_list.end(); }
 	bool empty() const { return m_list.empty(); }
 
-	REF(Container) operator() (CREF(Item) item)
+	Container& operator() (CREF(Item) item)
 	{
 		m_list.push_back(item);
 		return *this;
@@ -72,7 +72,7 @@ class OrderFIFO
 {
 public:
 	template <class Container>
-	static void sort(REF(Container))
+	static void sort(Container&)
 	{}
 };
 
@@ -80,7 +80,7 @@ class OrderLIFO
 {
 public:
 	template <class Container>
-	static void sort(REF(Container) container)
+	static void sort(Container& container)
 	{
 		std::reverse(container.begin(), container.end());
 	}
@@ -90,7 +90,7 @@ class OrderPrior
 {
 public:
 	template <class Container>
-	static void sort(REF(Container) container)
+	static void sort(Container& container)
 	{
 		std::sort(container.begin(), container.end());
 	}

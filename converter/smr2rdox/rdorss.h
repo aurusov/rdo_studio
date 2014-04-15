@@ -73,7 +73,7 @@ public:
 	void setTrace(bool value) { trace = value; }
 	bool defined () const;
 
-	void writeModelStructure(REF(std::ostream) stream) const;
+	void writeModelStructure(std::ostream& stream) const;
 
 protected:
 	RDORSSResource(Converter* pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);

@@ -42,7 +42,7 @@ public:
 	virtual void appendLine(LogEditLineInfo* pLine);
 
 protected:
-	void getLines(REF(LogEditLineInfoList) pLines) const;
+	void getLines(LogEditLineInfoList& pLines) const;
 	int getCurrentLine() const;
 	int getSciMarkerLine() const;
 

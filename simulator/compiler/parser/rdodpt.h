@@ -62,7 +62,7 @@ public:
 	void addParam(CREF(RDOValue) param);
 	void endParam(CREF(YYLTYPE) param_pos);
 
-//	bool setPrior(REF(LPRDOFUNArithm) pPrior);
+//	bool setPrior(LPRDOFUNArithm& pPrior);
 
 protected:
 	RDOParsEvent(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
@@ -96,7 +96,7 @@ public:
 	void addParam(CREF(LPRDOValue) pParam);
 	void endParam(CREF(YYLTYPE) param_pos);
 
-	bool setPrior(REF(LPRDOFUNArithm) pPrior);
+	bool setPrior(LPRDOFUNArithm& pPrior);
 
 protected:
 	RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);

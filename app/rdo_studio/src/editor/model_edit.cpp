@@ -575,7 +575,7 @@ const Log* Model::getLog() const
 	return m_pLog;
 }
 
-void Model::setLog(REF(Log) pLog)
+void Model::setLog(Log& pLog)
 {
 	m_pLog = &pLog;
 }

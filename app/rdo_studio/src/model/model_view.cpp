@@ -73,7 +73,7 @@ void View::closeEvent(QCloseEvent* event)
 	}
 }
 
-REF(TabCtrl) View::getTab()
+TabCtrl& View::getTab()
 {
 	return *m_pTabCtrl;
 }

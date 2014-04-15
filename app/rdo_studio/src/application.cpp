@@ -326,7 +326,7 @@ MainWindowBase* Application::getIMainWnd()
 	return m_pMainFrame;
 }
 
-REF(std::ofstream) Application::log()
+std::ofstream& Application::log()
 {
 	return m_log;
 }

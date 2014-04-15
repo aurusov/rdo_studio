@@ -31,7 +31,7 @@ DockFrame::DockFrame(QWidget* pParent)
 DockFrame::~DockFrame()
 {}
 
-REF(DockFrame::context_type) DockFrame::getContext()
+DockFrame::context_type& DockFrame::getContext()
 {
 	return *static_cast<context_type*>(widget());
 }

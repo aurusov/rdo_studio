@@ -81,7 +81,7 @@ public:
 	void addParam(CREF(LPRDOValue) pParam   );
 	void endParam(CREF(YYLTYPE)    param_pos);
 
-	bool setPrior(REF(LPRDOFUNArithm) pPrior);
+	bool setPrior(LPRDOFUNArithm& pPrior);
 
 protected:
 	RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
@@ -276,9 +276,9 @@ public:
 	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
 	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
 
-	bool setPrior(REF(LPRDOFUNArithm) pPrior);
+	bool setPrior(LPRDOFUNArithm& pPrior);
 	void insertBlock(CREF(LPRDOPROCOperator) pBlock);
-	void insertChild(REF(LPRDOPROCProcess) pProcess);
+	void insertChild(LPRDOPROCProcess& pProcess);
 
 	LPILogic getRunTime () const { return m_pRuntime; }
 

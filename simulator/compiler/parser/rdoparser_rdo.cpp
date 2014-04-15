@@ -74,7 +74,7 @@ void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser)
 	}
 }
 
-void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream)
+void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser, std::istream& in_stream)
 {
 	ASSERT(pParser  );
 	ASSERT(!m_pLexer);

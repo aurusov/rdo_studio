@@ -38,7 +38,7 @@ void Document::create(CREF(boost::filesystem::path) filePath, CREF(boost::filesy
 	m_modelName = modelName;
 }
 
-void Document::init(rdo::converter::smr2rdox::RDOFileTypeIn type, REF(std::ifstream) stream)
+void Document::init(rdo::converter::smr2rdox::RDOFileTypeIn type, std::ifstream& stream)
 {
 	Type typeOut;
 	switch (type)
@@ -234,7 +234,7 @@ std::string Document::get(Type type, std::size_t from, std::size_t to)
 // --------------------------------------------------------------------------------
 // -------------------- MemoryStream
 // --------------------------------------------------------------------------------
-void Document::MemoryStream::init(REF(std::ifstream) stream)
+void Document::MemoryStream::init(std::ifstream& stream)
 {
 	if (!m_buffer.empty())
 	{
@@ -253,7 +253,7 @@ void Document::MemoryStream::init(REF(std::ifstream) stream)
 	}
 }
 
-void Document::MemoryStream::get(REF(std::ofstream) stream) const
+void Document::MemoryStream::get(std::ofstream& stream) const
 {
 	std::string result = rdo::locale::convertFromCLocale(std::string(&m_buffer[0], m_buffer.size()));
 	stream << result;

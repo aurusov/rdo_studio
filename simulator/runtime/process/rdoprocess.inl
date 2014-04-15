@@ -36,7 +36,7 @@ inline void RDOPROCTransact::setRes(CREF(LPRDOPROCResource) pResource)
 	m_res = pResource;
 }
 
-inline REF(LPIPROCBlock) RDOPROCTransact::getBlock()
+inline LPIPROCBlock& RDOPROCTransact::getBlock()
 {
 	return m_block;
 }

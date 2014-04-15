@@ -49,7 +49,7 @@ inline CREF(T) stack<T>::top() const
 }
 
 template<class T>
-inline REF(T) stack<T>::top()
+inline T& stack<T>::top()
 {
 	ASSERT(!empty());
 

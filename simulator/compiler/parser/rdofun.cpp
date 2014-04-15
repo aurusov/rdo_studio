@@ -308,7 +308,7 @@ void RDOFUNArithm::castType(CREF(LPRDOFUNArithm) pSecond, CREF(std::string) erro
 	{
 		expression()->typeInfo()->type()->type_cast(pSecond->expression()->typeInfo()->type(), pSecond->expression()->src_info(), expression()->src_info(), expression()->src_info());
 	}
-	catch (REF(RDOSyntaxException))
+	catch (const RDOSyntaxException&)
 	{
 		RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format(error.c_str(), typeInfo()->type()->name().c_str(), pSecond->typeInfo()->type()->name().c_str()));
 	}
@@ -336,7 +336,7 @@ void RDOFUNArithm::castValue(CREF(LPRDOFUNArithm) pSecond, CREF(std::string) err
 			ASSERT(pSecond->m_pExpression);
 		}
 	}
-	catch (REF(RDOSyntaxException))
+	catch (const RDOSyntaxException&)
 	{
 		RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format(error.c_str(), expression()->src_info().src_text().c_str(), pSecond->expression()->src_info().src_text().c_str()));
 	}
@@ -918,7 +918,7 @@ void RDOFUNSequenceUniform::createCalcs()
 	initResult();
 }
 
-LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seqSrcInfo) const
+LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(LPRDOFUNParams& pParamList, CREF(RDOParserSrcInfo) seqSrcInfo) const
 {
 	if (pParamList->getParamList()->getContainer().size() != 2)
 	{
@@ -972,7 +972,7 @@ void RDOFUNSequenceExponential::createCalcs()
 	initResult();
 }
 
-LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seqSrcInfo) const
+LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(LPRDOFUNParams& pParamList, CREF(RDOParserSrcInfo) seqSrcInfo) const
 {
 	if (pParamList->getParamList()->getContainer().size() != 1)
 	{
@@ -1024,7 +1024,7 @@ void RDOFUNSequenceNormal::createCalcs()
 	initResult();
 }
 
-LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seqSrcInfo) const
+LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(LPRDOFUNParams& pParamList, CREF(RDOParserSrcInfo) seqSrcInfo) const
 {
 	if (pParamList->getParamList()->getContainer().size() != 2)
 	{
@@ -1078,7 +1078,7 @@ void RDOFUNSequenceTriangular::createCalcs()
 	initResult();
 }
 
-LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seqSrcInfo) const
+LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(LPRDOFUNParams& pParamList, CREF(RDOParserSrcInfo) seqSrcInfo) const
 {
 	if (pParamList->getParamList()->getContainer().size() != 3)
 	{
@@ -1122,7 +1122,7 @@ RDOFUNSequenceByHist::RDOFUNSequenceByHist(CREF(LPRDOFUNSequenceByHistHeader) pH
 	: RDOFUNSequence(pHeader->getHeader(), pHeader->getSeed())
 {}
 
-LPRDOFUNArithm RDOFUNSequenceByHist::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) srcInfo) const
+LPRDOFUNArithm RDOFUNSequenceByHist::createCallCalc(LPRDOFUNParams& pParamList, CREF(RDOParserSrcInfo) srcInfo) const
 {
 	if (pParamList->getParamList()->getContainer().size() != 0)
 	{
@@ -1248,7 +1248,7 @@ void RDOFUNSequenceByHistEnum::createCalcs()
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNSequenceEnumerative
 // --------------------------------------------------------------------------------
-LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) srcInfo) const
+LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(LPRDOFUNParams& pParamList, CREF(RDOParserSrcInfo) srcInfo) const
 {
 	if (pParamList->getParamList()->getContainer().size() != 0)
 	{
@@ -1704,7 +1704,7 @@ RDOFUNGroupLogic::RDOFUNGroupLogic(FunGroupType funType, CREF(RDOParserSrcInfo) 
 	, m_funType  (funType )
 {}
 
-LPRDOFUNLogic RDOFUNGroupLogic::createFunLogic(REF(LPRDOFUNLogic) pCondition)
+LPRDOFUNLogic RDOFUNGroupLogic::createFunLogic(LPRDOFUNLogic& pCondition)
 {
 	rdo::runtime::LPRDOFunCalcGroup pCalc;
 	switch (m_funType)

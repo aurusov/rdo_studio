@@ -59,7 +59,7 @@ public:
 	//! Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы
 	RDOThread*          m_pStudioGUI;
 
-	REF(std::ofstream)      log();
+	std::ofstream& log();
 
 	void           broadcastMessage(RDOThread::RDOTreadMessage message, void* pParam = NULL);
 

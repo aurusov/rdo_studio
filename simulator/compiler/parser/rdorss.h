@@ -54,7 +54,7 @@ public:
 			return m_pValue;
 		}
 
-		REF(LPRDOValue) param()
+		LPRDOValue& param()
 		{
 			return m_pValue;
 		}

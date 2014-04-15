@@ -92,11 +92,11 @@ public:
 	void setTraceStartTime(double value, CREF(YYLTYPE) pos);
 	void setTraceEndTime  (double value, CREF(YYLTYPE) pos);
 
-	void setTerminateIf  (REF(LPRDOFUNLogic) pLogic);
-	void setConstValue   (CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm)    pArithm);
-	void setResParValue  (CREF(RDOParserSrcInfo) res_info,   CREF(RDOParserSrcInfo) par_info, REF(LPRDOFUNArithm) pArithm);
-	void setSeed         (CREF(RDOParserSrcInfo) seq_info,   int base);
-	void insertBreakPoint(CREF(RDOParserSrcInfo) src_info,   REF(LPRDOFUNLogic) pLogic);
+	void setTerminateIf  (LPRDOFUNLogic& pLogic);
+	void setConstValue   (CREF(RDOParserSrcInfo) const_info, LPRDOFUNArithm& pArithm);
+	void setResParValue  (CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcInfo) par_info, LPRDOFUNArithm& pArithm);
+	void setSeed         (CREF(RDOParserSrcInfo) seq_info, int base);
+	void insertBreakPoint(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic& pLogic);
 
 private:
 	RDOSMR(CREF(std::string) modelName);

@@ -46,7 +46,7 @@ protected:
 	YYLTYPE m_loc;
 
 private:
-	void parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream);
+	void parse(CREF(LPRDOParser) pParser, std::istream& in_stream);
 	RDOLexer* getLexer(CREF(LPRDOParser) pParser, std::istream* in_stream, std::ostream* out_stream);
 };
 DECLARE_POINTER(RDOParserRDOItem);

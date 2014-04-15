@@ -108,7 +108,7 @@ public:
 	void setCommonChoiceFirst();
 	void setCommonChoiceWithMin(CREF(LPRDOFUNArithm) arithm);
 	void setCommonChoiceWithMax(CREF(LPRDOFUNArithm) arithm);
-	void setTime( REF(LPRDOFUNArithm) arithm);
+	void setTime(LPRDOFUNArithm& arithm);
 	void addRelResBody(CREF(RDOParserSrcInfo) body_name);
 	virtual void addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LPRDOPATChoiceOrder) pChoiceOrder);
 	void addRelResConvert(bool trace, CREF(LPExpression) pStatementList, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdo::runtime::RDOResource::ConvertStatus status);
@@ -354,7 +354,7 @@ public:
 	{
 		return m_paramSetList;
 	}
-	REF(ParamSetList) getParamSetList()
+	ParamSetList& getParamSetList()
 	{
 		return m_paramSetList;
 	}

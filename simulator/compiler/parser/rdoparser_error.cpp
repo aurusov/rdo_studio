@@ -119,7 +119,7 @@ bool Error::blocked() const
 	return m_blocked;
 }
 
-REF(Error) g_error()
+Error& g_error()
 {
 	return RDOParser::s_parser()->error();
 }

@@ -242,7 +242,7 @@ bool Model::init()
 	return true;
 }
 
-void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
+void Model::proc(RDOThread::RDOMessageInfo& msg)
 {
 	switch (msg.message)
 	{
@@ -1267,7 +1267,7 @@ void Model::update()
 					sendMessage(kernel->runtime(), RT_RUNTIME_GET_FRAME, &getFrame);
 					m_frameManager.showFrame(&frame, i);
 				}
-				catch (REF(rdo::runtime::RDORuntimeException))
+				catch (const rdo::runtime::RDORuntimeException&)
 				{
 					sendMessage(kernel->runtime(), RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY);
 					return;
@@ -1368,7 +1368,7 @@ rdo::runtime::RunTimeMode Model::getRuntimeMode() const
 	return m_runtimeMode;
 }
 
-REF(rdo::gui::frame::Manager) Model::getFrameManager()
+rdo::gui::frame::Manager& Model::getFrameManager()
 {
 	return m_frameManager;
 }

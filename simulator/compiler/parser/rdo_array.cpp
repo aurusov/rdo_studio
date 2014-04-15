@@ -44,7 +44,7 @@ CREF(LPRDOArrayType) RDOArrayValue::getArrayType() const
 	return m_pArrayType;
 }
 
-REF(LPRDOArrayType) RDOArrayValue::getArrayType()
+LPRDOArrayType& RDOArrayValue::getArrayType()
 {
 	return m_pArrayType;
 }

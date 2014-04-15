@@ -80,7 +80,7 @@ RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(std::string) na
 	m_pRuntime.query_cast<ILogic>()->init(RDOParser::s_parser()->runtime());
 }
 
-bool RDOPROCProcess::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDOPROCProcess::setPrior(LPRDOFUNArithm& pPrior)
 {
 	LPILogic pRuntimeLogic = getRunTime();
 	LPIPriority pPriority = pRuntimeLogic.query_cast<IPriority>();
@@ -106,7 +106,7 @@ void RDOPROCProcess::insertBlock(CREF(LPRDOPROCOperator) pBlock)
 	m_blockList.push_back(pBlock);
 }
 
-void RDOPROCProcess::insertChild(REF(LPRDOPROCProcess) pProcess)
+void RDOPROCProcess::insertChild(LPRDOPROCProcess& pProcess)
 {
 	ASSERT(pProcess);
 	m_childProcessList.push_back(pProcess);

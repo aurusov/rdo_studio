@@ -47,7 +47,7 @@ RDORSSResource::RDORSSResource(Converter* pParser, CREF(RDOParserSrcInfo) src_in
 	m_currParam = m_pResType->getParams().begin();
 }
 
-void RDORSSResource::writeModelStructure(REF(std::ostream) stream) const
+void RDORSSResource::writeModelStructure(std::ostream& stream) const
 {
 	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
 }
@@ -81,7 +81,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 			m_currParam++;
 		}
 	}
-	catch(REF(RDOSyntaxException))
+	catch(const RDOSyntaxException&)
 	{
 		Converter::s_converter()->error().modify(rdo::format("Для параметра '%s': ", (*m_currParam)->name().c_str()));
 	}

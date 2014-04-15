@@ -238,7 +238,7 @@ void RDOPMDWatchQuant::init(bool trace, CREF(RDOParserSrcInfo) res_type_src_info
 	endOfCreation(RF(rdo::runtime::RDOPMDWatchQuant)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_type_src_info.src_text(), m_pGroupLogic->getResType()->getNumber()));
 }
 
-void RDOPMDWatchQuant::setLogic(REF(LPRDOFUNLogic) pLogic)
+void RDOPMDWatchQuant::setLogic(LPRDOFUNLogic& pLogic)
 {
 	LPIResultWatchQuant pQuant = m_pResult;
 	ASSERT(pQuant);
@@ -271,7 +271,7 @@ void RDOPMDWatchValue::init(bool trace, CREF(RDOParserSrcInfo) res_type_src_info
 	endOfCreation(RF(rdo::runtime::RDOPMDWatchValue)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_type_src_info.src_text(), m_pGroupLogic->getResType()->getNumber()));
 }
 
-void RDOPMDWatchValue::setLogic(REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) pArithm)
+void RDOPMDWatchValue::setLogic(LPRDOFUNLogic& pLogic, LPRDOFUNArithm& pArithm)
 {
 	LPIResultWatchValue pWatch = m_pResult;
 	ASSERT(pWatch);
@@ -280,7 +280,7 @@ void RDOPMDWatchValue::setLogic(REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) p
 	m_pGroupLogic->end();
 }
 
-void RDOPMDWatchValue::setLogicNoCheck(REF(LPRDOFUNArithm) pArithm)
+void RDOPMDWatchValue::setLogicNoCheck(LPRDOFUNArithm& pArithm)
 {
 	LPIResultWatchValue pWatch = m_pResult;
 	ASSERT(pWatch);

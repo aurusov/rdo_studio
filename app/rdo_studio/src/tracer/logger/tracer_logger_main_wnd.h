@@ -29,7 +29,7 @@ class LogMainWnd: public QAbstractScrollArea
 public:
 	LogMainWnd(QWidget* pParent);
 
-	REF(LogView) view()
+	LogView& view()
 	{
 		return *static_cast<LogView*>(viewport());
 	}

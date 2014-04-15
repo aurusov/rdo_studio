@@ -52,7 +52,7 @@ public:
 	{
 		UNUSED(pParser);
 	}
-	virtual void parse(Converter* pParser, REF(std::istream) streamIn)
+	virtual void parse(Converter* pParser, std::istream& streamIn)
 	{
 		UNUSED(pParser );
 		UNUSED(streamIn);
@@ -94,7 +94,7 @@ public:
 	Iterator end() { return m_list.end(); }
 	Iterator find(std::size_t index) { return m_list.find(index); }
 
-	static void getMinMax(rdo::converter::smr2rdox::RDOParseType type, REF(std::size_t) min, REF(std::size_t) max);
+	static void getMinMax(rdo::converter::smr2rdox::RDOParseType type, std::size_t& min, std::size_t& max);
 
 protected:
 	RDOParserContainer();

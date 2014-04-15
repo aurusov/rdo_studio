@@ -33,7 +33,7 @@ public:
 
 	void setModel(Model* pModel);
 
-	REF(TabCtrl) getTab();
+	TabCtrl& getTab();
 
 private:
 	typedef  QWidget  parent_type;

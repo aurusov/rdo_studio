@@ -73,13 +73,13 @@ public:
 	virtual ~RDOCorba_i()
 	{}
 
-	virtual rdo::compiler::parser::RDOCorba::GetRTP* getRDORTPlist (REF(::CORBA::Long) rtp_count);
-	virtual rdo::compiler::parser::RDOCorba::GetRSS* getRDORSSPlist(REF(::CORBA::Long) rss_count);
+	virtual rdo::compiler::parser::RDOCorba::GetRTP* getRDORTPlist (::CORBA::Long& rtp_count);
+	virtual rdo::compiler::parser::RDOCorba::GetRSS* getRDORSSPlist(::CORBA::Long& rss_count);
 
 	static CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref);
 };
 
-rdo::compiler::parser::RDOCorba::GetRTP* RDOCorba_i::getRDORTPlist(REF(::CORBA::Long) rtp_count)
+rdo::compiler::parser::RDOCorba::GetRTP* RDOCorba_i::getRDORTPlist(::CORBA::Long& rtp_count)
 {
 	//! Создаем список структур для хранения информации об искомых типах ресурсов
 	rdo::compiler::parser::RDOCorba::GetRTP_var my_rtpList = new rdo::compiler::parser::RDOCorba::GetRTP;
@@ -90,7 +90,7 @@ rdo::compiler::parser::RDOCorba::GetRTP* RDOCorba_i::getRDORTPlist(REF(::CORBA::
 	return my_rtpList._retn();
 }
 
-rdo::compiler::parser::RDOCorba::GetRSS* RDOCorba_i::getRDORSSPlist(REF(::CORBA::Long) rss_count)
+rdo::compiler::parser::RDOCorba::GetRSS* RDOCorba_i::getRDORSSPlist(::CORBA::Long& rss_count)
 {
 	//! Создаем список структур для хранения информации об искомых ресурсах
 	rdo::compiler::parser::RDOCorba::GetRSS_var my_rssList = new rdo::compiler::parser::RDOCorba::GetRSS;
@@ -119,12 +119,12 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 			return 0;
 		}
 	}
-	catch (REF(CORBA::NO_RESOURCES))
+	catch (const CORBA::NO_RESOURCES&)
 	{
 		TRACE("Caught NO_RESOURCES exception. You must configure omniORB with the location of the naming service.");
 		return 0;
 	}
-	catch (REF(CORBA::ORB::InvalidName))
+	catch (const CORBA::ORB::InvalidName&)
 	{
 		//! This should not happen!
 		TRACE("Service required is invalid [does not exist].");
@@ -149,7 +149,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 			//! Bind the context to root.
 			testContext = rootContext->bind_new_context(contextName);
 		}
-		catch(REF(CosNaming::NamingContext::AlreadyBound))
+		catch(const CosNaming::NamingContext::AlreadyBound&)
 		{
 			//! If the context already exists, this exception will be raised.
 			//! In this case, just resolve the name and assign testContext
@@ -180,7 +180,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 		{
 			testContext->bind(objectName, objref);
 		}
-		catch(REF(CosNaming::NamingContext::AlreadyBound))
+		catch(const CosNaming::NamingContext::AlreadyBound&)
 		{
 			testContext->rebind(objectName, objref);
 		}
@@ -195,13 +195,13 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 		//! the Name has not already been bound. [This is incorrect behaviour -
 		//! it should just bind].
 	}
-	catch(REF(CORBA::TRANSIENT))
+	catch(const CORBA::TRANSIENT&)
 	{
 		TRACE("Caught system exception TRANSIENT -- unable to contact the naming service.");
 		TRACE("Make sure the naming server is running and that omniORB is configured correctly.");
 		return 0;
 	}
-	catch(REF(CORBA::SystemException) ex)
+	catch(const CORBA::SystemException& ex)
 	{
 		TRACE1("Caught a CORBA:: %s while using the naming service.", ex._name());
 		return 0;
@@ -245,15 +245,15 @@ std::size_t RDOThreadCorba::corbaRunThreadFun(void* pParam)
 
 		g_orb->run();
 	}
-	catch(REF(CORBA::SystemException) ex)
+	catch(const CORBA::SystemException& ex)
 	{
 		TRACE1("Caught CORBA::%s", ex._name());
 	}
-	catch(REF(CORBA::Exception))
+	catch(const CORBA::Exception&)
 	{
 		TRACE("Caught CORBA::Exception: ");
 	}
-	catch(REF(omniORB::fatalException) fe)
+	catch(const omniORB::fatalException& fe)
 	{
 		TRACE3("Caught omniORB::fatalException: file: %s, line: %d, mesg: %s ", fe.file(), fe.line(), fe.errmsg());
 	}
@@ -270,7 +270,7 @@ RDOThreadCorba::RDOThreadCorba()
 	after_constructor();
 }
 
-void RDOThreadCorba::proc(REF(RDOMessageInfo) msg)
+void RDOThreadCorba::proc(RDOMessageInfo& msg)
 {
 	//! Место для обработки сообщений корбе
 }
@@ -368,8 +368,8 @@ namespace simulation {
 class RDORuntimeTracer: public rdo::runtime::RDOTrace, public rdo::runtime::RDOEndL
 {
 public:
-	virtual std::ostream&          getOStream()    { return m_stream; }
-	virtual REF(rdo::runtime::RDOEndL) getEOL()    { return *this;    }
+	virtual std::ostream& getOStream() { return m_stream; }
+	virtual rdo::runtime::RDOEndL& getEOL() { return *this; }
 
 	void onEndl()
 	{
@@ -514,7 +514,7 @@ RDOThreadRunTime::RDOThreadRunTime()
 	after_constructor();
 }
 
-void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
+void RDOThreadRunTime::proc(RDOMessageInfo& msg)
 {
 	switch (msg.message)
 	{
@@ -663,12 +663,12 @@ void RDOThreadRunTime::start()
 		}
 		m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pParser->getSMR()->getShowRate());
 	}
-	catch (REF(rdo::compiler::parser::RDOSyntaxException))
+	catch (const rdo::compiler::parser::RDOSyntaxException&)
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
 	}
-	catch (REF(rdo::runtime::RDORuntimeException) ex)
+	catch (const rdo::runtime::RDORuntimeException& ex)
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
@@ -704,12 +704,12 @@ void RDOThreadRunTime::idle()
 			RDOThreadMT::sendMessage(this, RT_THREAD_CLOSE);
 		}
 	}
-	catch (REF(rdo::compiler::parser::RDOSyntaxException))
+	catch (const rdo::compiler::parser::RDOSyntaxException&)
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
 	}
-	catch (REF(rdo::runtime::RDORuntimeException) ex)
+	catch (const rdo::runtime::RDORuntimeException& ex)
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
@@ -811,12 +811,12 @@ void RDOThreadRunTime::stop()
 		m_pSimulator->m_pRuntime->rdoPostProcess();
 		writeResultsInfo();
 	}
-	catch (REF(rdo::compiler::parser::RDOSyntaxException))
+	catch (const rdo::compiler::parser::RDOSyntaxException&)
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
 	}
-	catch (REF(rdo::runtime::RDORuntimeException) ex)
+	catch (const rdo::runtime::RDORuntimeException& ex)
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
@@ -897,7 +897,7 @@ RDOThreadSimulator::~RDOThreadSimulator()
 	closeModel    ();
 }
 
-void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
+void RDOThreadSimulator::proc(RDOMessageInfo& msg)
 {
 	switch (msg.message)
 	{
@@ -1108,14 +1108,14 @@ bool RDOThreadSimulator::parseModel()
 		m_exitCode = rdo::simulation::report::EC_OK;
 		m_pParser->parse();
 	}
-	catch (REF(rdo::compiler::parser::RDOSyntaxException))
+	catch (const rdo::compiler::parser::RDOSyntaxException&)
 	{
 		m_exitCode = rdo::simulation::report::EC_ParserError;
 		broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
 		closeModel();
 		return false;
 	}
-	catch (REF(rdo::runtime::RDORuntimeException) ex)
+	catch (const rdo::runtime::RDORuntimeException& ex)
 	{
 		std::string mess = ex.getType() + " : " + ex.message();
 		broadcastMessage(RT_SIMULATOR_PARSE_STRING, &mess);
@@ -1222,7 +1222,7 @@ void RDOThreadSimulator::closeModel()
 	}
 }
 
-void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info)
+void RDOThreadSimulator::parseSMRFileInfo(rdo::converter::smr2rdox::RDOSMRFileInfo& info)
 {
 #ifdef DISABLE_CONVERTER
 	UNUSED(info);
@@ -1267,9 +1267,9 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::converter::smr2rdox::RDOSMRFi
 		default : NEVER_REACH_HERE;
 		}
 	}
-	catch (REF(rdo::converter::smr2rdox::RDOSyntaxException))
+	catch (const rdo::converter::smr2rdox::RDOSyntaxException&)
 	{}
-	catch (REF(rdo::runtime::RDORuntimeException))
+	catch (const rdo::runtime::RDORuntimeException&)
 	{}
 	catch (...)
 	{}
@@ -1310,7 +1310,7 @@ void RDOThreadSimulator::codeCompletion()
 
 #ifdef CORBA_ENABLE
 
-void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP_var) my_rtpList)
+void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var& my_rtpList)
 {
 	//! Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
 	rdo::compiler::parser::RDOParserCorba parser;
@@ -1318,9 +1318,9 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 	{
 		parser.parse();
 	}
-	catch (REF(rdo::compiler::parser::RDOSyntaxException))
+	catch (const rdo::compiler::parser::RDOSyntaxException&)
 	{}
-	catch (REF(rdo::runtime::RDORuntimeException))
+	catch (const rdo::runtime::RDORuntimeException&)
 	{}
 
 	::CORBA::Long i = 0, j = 0;
@@ -1474,7 +1474,7 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 
 }
 
-void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS_var) my_rssList)
+void RDOThreadSimulator::corbaGetRSS(rdo::compiler::parser::RDOCorba::GetRSS_var& my_rssList)
 {
 	//! Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
 	rdo::compiler::parser::RDOParserCorba parser;
@@ -1482,9 +1482,9 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS
 	{
 		parser.parse();
 	}
-	catch (REF(rdo::compiler::parser::RDOSyntaxException))
+	catch (const rdo::compiler::parser::RDOSyntaxException&)
 	{}
-	catch (REF(rdo::runtime::RDORuntimeException))
+	catch (const rdo::runtime::RDORuntimeException&)
 	{}
 
 	//! Пробежались по всем ресурсам и переписали в RSSList
@@ -1579,9 +1579,9 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS
 	{
 		parser.parse();
 	}
-	catch (REF(rdo::compiler::parser::RDOSyntaxException))
+	catch (const rdo::compiler::parser::RDOSyntaxException&)
 	{}
-	catch (REF(rdo::runtime::RDORuntimeException))
+	catch (const rdo::runtime::RDORuntimeException&)
 	{}
 
 	//! Пробежались по всем ресурсам и переписали в RSSList
@@ -1614,7 +1614,7 @@ RDOThreadCodeComp::RDOThreadCodeComp()
 RDOThreadCodeComp::~RDOThreadCodeComp()
 {}
 
-void RDOThreadCodeComp::proc(REF(RDOMessageInfo) msg)
+void RDOThreadCodeComp::proc(RDOMessageInfo& msg)
 {
 	switch (msg.message)
 	{

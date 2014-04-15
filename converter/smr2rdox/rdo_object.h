@@ -98,7 +98,7 @@ public:
 	compareName(CREF(std::string) name)
 		: m_name(name)
 	{}
-	REF(compareName<T>) operator= (CREF(compareName<T>) obj)
+	compareName<T>& operator= (CREF(compareName<T>) obj)
 	{
 		m_name = obj.m_name;
 		return *this;
@@ -126,7 +126,7 @@ public:
 	compareNameRef(CREF(std::string) name)
 		: m_name(name)
 	{}
-	REF(compareNameRef<T>) operator= (CREF(compareNameRef<T>) obj)
+	compareNameRef<T>& operator= (CREF(compareNameRef<T>) obj)
 	{
 		m_name = obj.m_name;
 		return *this;

@@ -76,7 +76,7 @@ public:
 	void makeTemporary(bool value);
 	void setState(ConvertStatus value);
 	std::string traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime);
-	REF(RDOValue) getParamRaw(std::size_t index);
+	RDOValue& getParamRaw(std::size_t index);
 	void setParam(std::size_t index, CREF(RDOValue) value);
 	std::string getTypeId();
 	std::string traceParametersValue();

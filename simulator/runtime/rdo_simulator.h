@@ -35,7 +35,7 @@ public:
 	void setMustContinueOpr(CREF(LPIBaseOperation) pOperation);
 	virtual void onPutToTreeNode() = 0;
 
-	std::string writeActivitiesStructure(REF(std::size_t) counter);
+	std::string writeActivitiesStructure(std::size_t& counter);
 
 	std::size_t getSizeofSim() const;
 

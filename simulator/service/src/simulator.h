@@ -88,7 +88,7 @@ public:
 
 private:
 	virtual ~RDOThreadCorba() {}; //! Чтобы нельзя было удалить через delete
-	virtual void proc(REF(RDOMessageInfo) msg);
+	virtual void proc(RDOMessageInfo& msg);
 	virtual void idle();
 	virtual void start();
 	virtual void stop();
@@ -157,7 +157,7 @@ private:
 	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
 	{};
 
-	virtual void proc   (REF(RDOMessageInfo) msg);
+	virtual void proc   (RDOMessageInfo& msg);
 	virtual void idle   ();
 	virtual void start  ();
 	virtual void stop   ();
@@ -233,17 +233,17 @@ private:
 
 #ifdef CORBA_ENABLE
 
-//	void corbaGetRTPcount(REF(::CORBA::Long) rtp_count);
-//	void corbaGetRTPParamscount(REF(rdo::compiler::parser::RDOCorba::PARAM_count) params_count);
-	void corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP_var) my_rtpList);
-	void corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS_var) my_rssList);
+//	void corbaGetRTPcount(::CORBA::Long& rtp_count);
+//	void corbaGetRTPParamscount(rdo::compiler::parser::RDOCorba::PARAM_count& params_count);
+	void corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var& my_rtpList);
+	void corbaGetRSS(rdo::compiler::parser::RDOCorba::GetRSS_var& my_rssList);
 
 #endif // CORBA_ENABLE
 
 protected:
 	virtual ~RDOThreadSimulator(); //! Чтобы нельзя было удалить через delete помещаем его в protected
 
-	virtual void proc(REF(RDOMessageInfo) msg);
+	virtual void proc(RDOMessageInfo& msg);
 
 	bool parseModel();
 	void runModel();
@@ -260,7 +260,7 @@ protected:
 public:
 	RDOThreadSimulator();
 
-	void parseSMRFileInfo(REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info);
+	void parseSMRFileInfo(rdo::converter::smr2rdox::RDOSMRFileInfo& info);
 
 	ShowMode getInitialShowMode   () const;
 	int      getInitialFrameNumber() const;
@@ -295,7 +295,7 @@ protected:
 	rdo::compiler::parser::LPRDOParser m_pParser;
 
 	virtual ~RDOThreadCodeComp(); //! Чтобы нельзя было удалить через delete помещаем его в protected
-	virtual void proc(REF(RDOMessageInfo) msg);
+	virtual void proc(RDOMessageInfo& msg);
 
 public:
 	RDOThreadCodeComp();
@@ -305,9 +305,9 @@ public:
 		rdoModelObjects::RDOFileType m_file;
 		int m_pos_x;
 		int m_pos_y;
-		REF(std::string) m_result;
+		std::string& m_result;
 
-		GetCodeComp(rdoModelObjects::RDOFileType file, int pos_x, int pos_y, REF(std::string) result)
+		GetCodeComp(rdoModelObjects::RDOFileType file, int pos_x, int pos_y, std::string& result)
 			: m_file  (file  )
 			, m_pos_x (pos_x )
 			, m_pos_y (pos_y )

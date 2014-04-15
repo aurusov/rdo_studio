@@ -215,7 +215,7 @@ CREF(RDOValue) RDOResource::getParam(std::size_t index) const
 	return m_paramList[index];
 }
 
-REF(RDOValue) RDOResource::getParamRaw(std::size_t index)
+RDOValue& RDOResource::getParamRaw(std::size_t index)
 {
 	ASSERT(index < m_paramList.size());
 	setState(CS_Keep);

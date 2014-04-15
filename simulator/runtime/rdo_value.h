@@ -77,7 +77,7 @@ public:
 	std::string getAsString() const;
 	std::string getAsStringForTrace() const;
 
-	REF(RDOValue) operator=(CREF(RDOValue) rdovalue);
+	RDOValue& operator=(CREF(RDOValue) rdovalue);
 	bool operator==(CREF(RDOValue) rdovalue) const;
 	bool operator!=(CREF(RDOValue) rdovalue) const;
 	bool operator<(CREF(RDOValue) rdovalue) const;
@@ -92,10 +92,10 @@ public:
 	RDOValue operator++(int inc);
 	CREF(RDOValue) operator--();
 	RDOValue operator--(int inc);
-	REF(RDOValue) operator+=(CREF(RDOValue) rdovalue);
-	REF(RDOValue) operator-=(CREF(RDOValue) rdovalue);
-	REF(RDOValue) operator*=(CREF(RDOValue) rdovalue);
-	REF(RDOValue) operator/=(CREF(RDOValue) rdovalue);
+	RDOValue& operator+=(CREF(RDOValue) rdovalue);
+	RDOValue& operator-=(CREF(RDOValue) rdovalue);
+	RDOValue& operator*=(CREF(RDOValue) rdovalue);
+	RDOValue& operator/=(CREF(RDOValue) rdovalue);
 	RDOValue operator+(CREF(RDOValue) rdovalue) const;
 	RDOValue operator-(CREF(RDOValue) rdovalue) const;
 	RDOValue operator*(CREF(RDOValue) rdovalue) const;
@@ -139,26 +139,26 @@ private:
 	void deleteValue();
 
 	template <class T>
-	REF(T) __get();
+	T& __get();
 
 	template <class T>
 	CREF(T) __get() const;
 
-	 REF(void*) __voidPtrV();
+	void*& __voidPtrV();
 	CREF(void*) __voidPtrV() const;
-	LPRDOEnumType __enumT   () const;
-	 REF(std::string) __stringV ();
-	CREF(std::string) __stringV () const;
+	LPRDOEnumType __enumT() const;
+	std::string& __stringV();
+	CREF(std::string) __stringV() const;
 
-	template <class T>  REF(rdo::intrusive_ptr<T>) getPointer();
+	template <class T>  rdo::intrusive_ptr<T>& getPointer();
 	template <class T> CREF(rdo::intrusive_ptr<T>) getPointer() const;
 
 	std::string onPointerAsString() const;
 	bool onPointerEqual(CREF(RDOValue) rdovalue) const;
-	REF(RDOValue) onPointerPlus(CREF(RDOValue) rdovalue);
-	REF(RDOValue) onPointerMinus(CREF(RDOValue) rdovalue);
-	REF(RDOValue) onPointerMult(CREF(RDOValue) rdovalue);
-	REF(RDOValue) onPointerDiv(CREF(RDOValue) rdovalue);
+	RDOValue& onPointerPlus(CREF(RDOValue) rdovalue);
+	RDOValue& onPointerMinus(CREF(RDOValue) rdovalue);
+	RDOValue& onPointerMult(CREF(RDOValue) rdovalue);
+	RDOValue& onPointerDiv(CREF(RDOValue) rdovalue);
 	int onPointerGetInt() const;
 	uint32_t onPointerGetUInt() const;
 	bool onPointerAnd(CREF(RDOValue) rdovalue) const;

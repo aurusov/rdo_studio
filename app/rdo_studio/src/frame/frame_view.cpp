@@ -140,7 +140,7 @@ void Content::mousePressEvent(QMouseEvent* pEvent)
 	parent_type::mousePressEvent(pEvent);
 }
 
-void Content::onDraw(REF(QPainter) painter)
+void Content::onDraw(QPainter& painter)
 {
 	if (valid())
 	{
@@ -164,8 +164,8 @@ void Content::onDraw(REF(QPainter) painter)
 void Content::update(
 	const rdo::animation::Frame* const pFrame,
 	CREF(rdo::gui::BitmapList) bitmapList,
-	REF(rdo::gui::BitmapList) bitmapGeneratedList,
-	REF(rdo::gui::animation::AreaList) areaList
+	rdo::gui::BitmapList& bitmapGeneratedList,
+	rdo::gui::animation::AreaList& areaList
 )
 {
 	ASSERT(pFrame);
@@ -441,7 +441,7 @@ void Content::elementEllipse(rdo::animation::EllipseElement* pElement)
 void Content::elementBMP(
 	rdo::animation::BmpElement* pElement,
 	CREF(rdo::gui::BitmapList) bitmapList,
-	REF(rdo::gui::BitmapList) bitmapGeneratedList)
+	rdo::gui::BitmapList& bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
@@ -461,7 +461,7 @@ void Content::elementBMP(
 void Content::elementSBMP(
 	rdo::animation::ScaledBmpElement* pElement,
 	CREF(rdo::gui::BitmapList) bitmapList,
-	REF(rdo::gui::BitmapList) bitmapGeneratedList)
+	rdo::gui::BitmapList& bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
@@ -479,10 +479,10 @@ void Content::elementSBMP(
 }
 
 QPixmap Content::getBitmap(
-	CREF(QString)              bitmapName,
-	CREF(QString)              maskName,
+	CREF(QString) bitmapName,
+	CREF(QString) maskName,
 	CREF(rdo::gui::BitmapList) bitmapList,
-	 REF(rdo::gui::BitmapList) bitmapGeneratedList)
+	 rdo::gui::BitmapList& bitmapGeneratedList)
 {
 	rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(bitmapName);
 	if (bmpIt == bitmapList.end())
@@ -522,7 +522,7 @@ QPixmap Content::getBitmap(
 	return bmpIt->second;
 }
 
-void Content::elementActive(rdo::animation::ActiveElement* pElement, REF(rdo::gui::animation::AreaList) areaList)
+void Content::elementActive(rdo::animation::ActiveElement* pElement, rdo::gui::animation::AreaList& areaList)
 {
 	ASSERT(pElement);
 
@@ -584,8 +584,8 @@ Content* View::getContent()
 void View::update(
 	const rdo::animation::Frame* const pFrame,
 	CREF(rdo::gui::BitmapList) bitmapList,
-	REF(rdo::gui::BitmapList) bitmapGeneratedList,
-	REF(rdo::gui::animation::AreaList) areaList
+	rdo::gui::BitmapList& bitmapGeneratedList,
+	rdo::gui::animation::AreaList& areaList
 )
 {
 	getContent()->update(pFrame, bitmapList, bitmapGeneratedList, areaList);

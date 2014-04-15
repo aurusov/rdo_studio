@@ -57,7 +57,7 @@ public:
 	void width(std::size_t w);
 
 	template<class T>
-	REF(RDOResults) operator<< (CREF(T) value);
+	RDOResults& operator<< (CREF(T) value);
 
 	virtual void          flush     () = 0;
 	virtual std::ostream& getOStream() = 0;
@@ -85,13 +85,13 @@ public:
 	typedef  std::vector<LPIResultWatchValue> LPIResultWatchValueList;
 
 	//! Подписка на внутренние сообщения
-	REF(Notify) notify();
+	Notify& notify();
 
 	//! Формирование ошибок рантайма
-	REF(Error) error();
+	Error& error();
 
 	//! Горячие клавиши
-	REF(RDOHotKey) hotkey();
+	RDOHotKey& hotkey();
 
 	LPRDORuntime clone   () const;
 	void copyFrom(CREF(LPRDORuntime) pOther);
@@ -102,8 +102,8 @@ public:
 
 	void rdoInit(RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo, CREF(LPIThreadProxy) pThreadProxy);
 
-	REF(RDOResults) getResults    ();
-	REF(RDOResults) getResultsInfo();
+	RDOResults& getResults();
+	RDOResults& getResultsInfo();
 
 	double getTimeNow();
 	double getSeconds();
@@ -111,8 +111,8 @@ public:
 	std::size_t getCurrentTerm() const;
 	void  setCurrentTerm(std::size_t value);
 
-	REF(LPIActivity) getCurrentActivity();
-	void             setCurrentActivity(CREF(LPIActivity) activity);
+	LPIActivity& getCurrentActivity();
+	void setCurrentActivity(CREF(LPIActivity) activity);
 
 	void addRuntimeEvent    (LPIBaseOperationContainer pLogic, CREF(LPIEvent)      pEvent    );
 	void addRuntimeRule     (LPIBaseOperationContainer pLogic, CREF(LPIRule)       pRule     );
@@ -127,7 +127,7 @@ public:
 	void addInitCalc(CREF(LPRDOCalc) initCalc);
 
 	// Параметры ресурса
-	REF(RDOValue) getResParamValRaw(std::size_t resID, std::size_t paramID);
+	RDOValue& getResParamValRaw(std::size_t resID, std::size_t paramID);
 	void setResParamVal(std::size_t resID, std::size_t paramID, CREF(RDOValue) value);
 
 #ifdef _DEBUG

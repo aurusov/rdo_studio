@@ -94,7 +94,7 @@ public:
 
 public:
 	virtual std::ostream& getOStream();
-	virtual REF(RDOEndL)  getEOL();
+	virtual RDOEndL& getEOL();
 
 protected:
 	bool m_isNullTracer;
@@ -125,7 +125,7 @@ public:
 	void setTraceID(std::size_t id);
 	void setTraceID(std::size_t id, std::size_t str_id);
 
-	REF(std::string) traceId() const;
+	std::string& traceId() const;
 
 protected:
 	RDOTraceableObject(bool trace, std::size_t id = NONE, std::string str = "");

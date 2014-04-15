@@ -489,7 +489,7 @@ void RDORuntime::postProcess()
 		{
 			(*it)->calcStat(this, getResults().getOStream());
 		}
-		catch (REF(RDORuntimeException))
+		catch (const RDORuntimeException&)
 		{}
 		++it;
 	}
@@ -500,7 +500,7 @@ void RDORuntime::postProcess()
 		writeExitCode();
 		getTracer()->stopWriting();
 	}
-	catch (REF(RDORuntimeException) e)
+	catch (const RDORuntimeException& e)
 	{
 		writeExitCode();
 		getTracer()->stopWriting();

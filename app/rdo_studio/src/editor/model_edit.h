@@ -36,7 +36,7 @@ public:
 	void setErrorLine(int line = -1);
 
 	const Log* getLog() const;
-	void setLog(REF(Log) log);
+	void setLog(Log& log);
 
 	void setCanClearErrorLine(bool value);
 

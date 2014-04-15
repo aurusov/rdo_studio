@@ -274,7 +274,7 @@ void RDOParserSMRInfo::insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn ty
 	}
 }
 
-bool RDOParserSMRInfo::parseSMR(CREF(boost::filesystem::path) smrFullFileName, REF(boost::filesystem::path) modelName)
+bool RDOParserSMRInfo::parseSMR(CREF(boost::filesystem::path) smrFullFileName, boost::filesystem::path& modelName)
 {
 	boost::filesystem::ifstream stream(smrFullFileName);
 	if (!stream.is_open())
@@ -323,7 +323,7 @@ bool RDOParserSMRInfo::parseSMR(CREF(boost::filesystem::path) smrFullFileName, R
 	return true;
 }
 
-RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smrFullFileName, REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info)
+RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smrFullFileName, rdo::converter::smr2rdox::RDOSMRFileInfo& info)
 {
 	info.m_error = true;
 
@@ -345,11 +345,11 @@ RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smr
 			info.m_traceFile     = pSMRParser->getSMR()->getFile("Trace_file"    );
 			info.m_error         = false;
 		}
-		catch (REF(RDOSyntaxException))
+		catch (const RDOSyntaxException&)
 		{
 			return CNV_NONE;
 		}
-		catch (REF(rdo::runtime::RDORuntimeException))
+		catch (const rdo::runtime::RDORuntimeException&)
 		{
 			return CNV_NONE;
 		}
@@ -383,11 +383,11 @@ RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smr
 			++it;
 		}
 	}
-	catch (REF(rdo::converter::smr2rdox::RDOSyntaxException))
+	catch (const rdo::converter::smr2rdox::RDOSyntaxException&)
 	{
 		return CNV_NONE;
 	}
-	catch (REF(rdo::runtime::RDORuntimeException))
+	catch (const rdo::runtime::RDORuntimeException&)
 	{
 		return CNV_NONE;
 	}
@@ -449,11 +449,11 @@ RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smr
 			path.second = to;
 		}
 	}
-	catch (REF(rdo::converter::smr2rdox::RDOSyntaxException))
+	catch (const rdo::converter::smr2rdox::RDOSyntaxException&)
 	{
 		return CNV_ERROR;
 	}
-	catch (REF(rdo::runtime::RDORuntimeException))
+	catch (const rdo::runtime::RDORuntimeException&)
 	{
 		return CNV_ERROR;
 	}

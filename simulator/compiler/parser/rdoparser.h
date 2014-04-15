@@ -112,7 +112,7 @@ public:
 	CREF(rdo::runtime::LPRDORuntime) runtime() const { return m_pRuntime; }
 
 	bool isPattern() const { return m_pattern; }
-	REF(FUNGroupList) getFUNGroupStack() { return m_allFUNGroup; }
+	FUNGroupList& getFUNGroupStack() { return m_allFUNGroup; }
 
 	void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
 	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
@@ -137,12 +137,12 @@ public:
 	bool hasSMR() const { return m_pSMR ? true : false; }
 
 	void parse();
-	void parse(REF(std::istream) stream);
+	void parse(std::istream& stream);
 
 	void beforeRun();
 
 	CREF(Error) error() const { return m_error; }
-	 REF(Error) error()       { return m_error; }
+	 Error& error() { return m_error; }
 
 	class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
 	{
@@ -186,7 +186,7 @@ public:
 		}
 	};
 
-	REF(Stack) stack()
+	Stack& stack()
 	{
 		return m_movementObjectList;
 	}

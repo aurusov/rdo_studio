@@ -212,7 +212,7 @@ void RDODPTActivity::planningInsertIntoSMR() const
 	Converter::s_converter()->insertDocUpdate(pPlanningInsertIntoSMR);
 }
 
-bool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDODPTActivity::setPrior(LPRDOFUNArithm& pPrior)
 {
 	UNUSED(pPrior);
 	return false;
@@ -469,7 +469,7 @@ RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info)
 	m_pRuntime.query_cast<ILogic>()->init(Converter::s_converter()->runtime());
 }
 
-bool RDOPROCProcess::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDOPROCProcess::setPrior(LPRDOFUNArithm& pPrior)
 {
 	LPILogic pRuntimeLogic = getRunTime();
 	LPIPriority pPriority = pRuntimeLogic.query_cast<IPriority>();
@@ -495,7 +495,7 @@ void RDOPROCProcess::insertBlock(CREF(LPRDOPROCOperator) pBlock)
 	m_blockList.push_back(pBlock);
 }
 
-void RDOPROCProcess::insertChild(REF(LPRDOPROCProcess) pProcess)
+void RDOPROCProcess::insertChild(LPRDOPROCProcess& pProcess)
 {
 	ASSERT(pProcess);
 	m_childProcessList.push_back(pProcess);

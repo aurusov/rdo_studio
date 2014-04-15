@@ -49,7 +49,7 @@ public:
 	//! \param[out] fileName - имя
 	//! \param[out] fileExt  - расширение
 	//! \result \b true, если получилось извлечь данные
-	static bool splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem::path) fileDir, REF(boost::filesystem::path) fileName, REF(boost::filesystem::path) fileExt);
+	static bool splitpath(CREF(boost::filesystem::path) from, boost::filesystem::path& fileDir, boost::filesystem::path& fileName, boost::filesystem::path& fileExt);
 
 	//! Возвращает полное имя временного файла
 	//! \result полное имя временного файла
