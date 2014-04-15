@@ -13,6 +13,9 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef ARCHITECTURE_AMD64
+#include <cstdint>
+#endif // ARCHITECTURES_AMD64
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr_interface_wrapper.h"
@@ -33,7 +36,7 @@ public:
 	RDOValue(CREF(RDOValue) rdovalue);
 	RDOValue(CREF(LPRDOType) pType);
 	RDOValue(int value);
-	RDOValue(std::size_t value);
+	RDOValue(uint32_t value);
 #ifdef ARCHITECTURE_AMD64
 	RDOValue(uint64_t value);
 #endif // ARCHITECTURES_AMD64
@@ -52,7 +55,7 @@ public:
 	static RDOValue fromDouble(CREF(LPRDOType) pType, double value);
 
 	int getInt() const;
-	std::size_t getUInt() const;
+	uint32_t getUInt() const;
 	int getEnumAsInt() const;
 	LPRDOEnumType getEnum() const;
 	double getDouble() const;
@@ -159,7 +162,7 @@ private:
 	REF(RDOValue) onPointerMult(CREF(RDOValue) rdovalue);
 	REF(RDOValue) onPointerDiv(CREF(RDOValue) rdovalue);
 	int onPointerGetInt() const;
-	std::size_t onPointerGetUInt() const;
+	uint32_t onPointerGetUInt() const;
 	bool onPointerAnd(CREF(RDOValue) rdovalue) const;
 	bool onPointerOr(CREF(RDOValue) rdovalue) const;
 	RDOValue onPointerUMinus() const;
