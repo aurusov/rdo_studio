@@ -13,9 +13,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef ARCHITECTURE_AMD64
 #include <cstdint>
-#endif // ARCHITECTURES_AMD64
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr_interface_wrapper.h"
