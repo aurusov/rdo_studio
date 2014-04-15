@@ -33,7 +33,7 @@
 #undef LEXER_POS
 #endif
 
-#define LEXER     reinterpret_cast<PTR(rdo::converter::smr2rdox::RDOLexer)>(this)
+#define LEXER     reinterpret_cast<rdo::converter::smr2rdox::RDOLexer*>(this)
 #define LEXER_POS (*LEXER->m_lploc)
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()

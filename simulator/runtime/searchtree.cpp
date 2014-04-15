@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- TreeRoot
 // --------------------------------------------------------------------------------
-TreeRoot::TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
+TreeRoot::TreeRoot(CREF(LPRDORuntime) pRuntime, RDODPTSearch* pDP)
 	: m_dp                (pDP     )
 	, m_rootNode          (NULL    )
 	, m_targetNode        (NULL    )
@@ -40,7 +40,7 @@ TreeRoot::TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
 // --------------------------------------------------------------------------------
 // -------------------- TreeNode
 // --------------------------------------------------------------------------------
-TreeNode::TreeNode(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) pParent, PTR(TreeRoot) pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt)
+TreeNode::TreeNode(CREF(LPRDORuntime) pRuntime, TreeNode* pParent, TreeRoot* pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt)
 	: m_pRuntime     (pRuntime )
 	, m_parent       (pParent  )
 	, m_root         (pRoot    )

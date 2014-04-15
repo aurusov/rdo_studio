@@ -33,7 +33,7 @@ inline RDOSimulatorTrace::RDOSimulatorTrace()
 	, memory_max       (0            )
 {}
 
-inline PTR(RDOTrace) RDOSimulatorTrace::getTracer() const
+inline RDOTrace* RDOSimulatorTrace::getTracer() const
 {
 	return m_tracer;
 }

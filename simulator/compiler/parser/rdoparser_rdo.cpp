@@ -93,7 +93,7 @@ void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser, REF(std::istream) in_str
 	}
 }
 
-PTR(RDOLexer) RDOParserRDOItem::getLexer(CREF(LPRDOParser) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream)
+RDOLexer* RDOParserRDOItem::getLexer(CREF(LPRDOParser) pParser, std::istream* in_stream, std::ostream* out_stream)
 {
 	ASSERT(pParser);
 	return new RDOLexer(pParser, in_stream, out_stream);

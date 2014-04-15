@@ -72,7 +72,7 @@ Log::~Log()
 	clearLines();
 }
 
-void Log::setEditorStyle(PTR(LogStyle) pStyle)
+void Log::setEditorStyle(LogStyle* pStyle)
 {
 	Edit::setEditorStyle(pStyle);
 	if (!m_pStyle)
@@ -80,7 +80,7 @@ void Log::setEditorStyle(PTR(LogStyle) pStyle)
 
 	// ----------
 	// Selected Line
-	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<PTR(LogStyle)>(m_pStyle)->selectLineBgColor);
+	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, QColor(0xFF, 0xFF, 0xFF), static_cast<LogStyle*>(m_pStyle)->selectLineBgColor);
 }
 
 void Log::gotoPrev()
@@ -194,7 +194,7 @@ void Log::clearAll()
 	clearLines();
 }
 
-void Log::appendLine(PTR(LogEditLineInfo) pLine)
+void Log::appendLine(LogEditLineInfo* pLine)
 {
 	m_lines.push_back(pLine);
 	bool readOnly = isReadOnly();
@@ -230,18 +230,18 @@ void Log::setSelectLine(int line, const LogEditLineInfo* pLineInfo, bool useScro
 				scrollToCarret();
 			}
 		}
-		PTR(model::TabCtrl) pTab = g_pModel->getTab();
+		model::TabCtrl* pTab = g_pModel->getTab();
 		if (pTab)
 		{
 			if (pTab->getCurrentRDOItem() != pLineInfo->getFileType())
 			{
-				PTR(Model) pEdit = pTab->getCurrentEdit();
+				Model* pEdit = pTab->getCurrentEdit();
 				if (!pEdit || (pEdit && pEdit->getLog() == this))
 				{
 					pTab->setCurrentRDOItem(pLineInfo->getFileType());
 				}
 			}
-			PTR(Model) pEdit = pTab->getCurrentEdit();
+			Model* pEdit = pTab->getCurrentEdit();
 			if (pEdit && pEdit->getLog() == this)
 			{
 				updateEdit(pEdit, pLineInfo);
@@ -250,7 +250,7 @@ void Log::setSelectLine(int line, const LogEditLineInfo* pLineInfo, bool useScro
 	}
 }
 
-void Log::updateEdit(PTR(Model) pEdit, const LogEditLineInfo* pLineInfo)
+void Log::updateEdit(Model* pEdit, const LogEditLineInfo* pLineInfo)
 {
 	pEdit->scrollToLine(pLineInfo->getLineNumber());
 	int pos = pEdit->getPositionFromLine(pLineInfo->getLineNumber()) + pLineInfo->getPosInLine();

@@ -24,7 +24,7 @@ inline intrusive_ptr<T>::intrusive_ptr()
 {}
 
 template<class T>
-inline intrusive_ptr<T>::intrusive_ptr(PTR(T) object)
+inline intrusive_ptr<T>::intrusive_ptr(T* object)
 	: m_object(object)
 {
 	if (m_object)
@@ -43,7 +43,7 @@ template <class T>
 template <class P>
 inline intrusive_ptr<T>::intrusive_ptr(CREF(interface_ptr<P>) pInterface)
 {
-	m_object = dynamic_cast<PTR(T)>(pInterface.m_pInterface);
+	m_object = dynamic_cast<T*>(pInterface.m_pInterface);
 	if (m_object)
 		addref();
 }
@@ -97,13 +97,13 @@ inline intrusive_ptr<T>::operator bool() const
 }
 
 template<class T>
-inline PTR(T) intrusive_ptr<T>::operator-> () const
+inline T* intrusive_ptr<T>::operator->() const
 {
 	return m_object;
 }
 
 template<class T>
-inline PTR(T) intrusive_ptr<T>::operator-> ()
+inline T* intrusive_ptr<T>::operator->()
 {
 	return m_object;
 }
@@ -138,33 +138,33 @@ template<class T>
 template<class P>
 inline intrusive_ptr<P> intrusive_ptr<T>::object_static_cast() const
 {
-	return intrusive_ptr<P>(static_cast<PTR(P)>(m_object));
+	return intrusive_ptr<P>(static_cast<P*>(m_object));
 }
 
 template<class T>
 template<class P>
 inline intrusive_ptr<P> intrusive_ptr<T>::object_dynamic_cast() const
 {
-	return intrusive_ptr<P>(dynamic_cast<PTR(P)>(m_object));
+	return intrusive_ptr<P>(dynamic_cast<P*>(m_object));
 }
 
 template<class T>
 template<class P>
 inline interface_ptr<P> intrusive_ptr<T>::interface_cast() const
 {
-	return interface_ptr<P>(static_cast<PTR(P)>(m_object), static_cast<LPIRefCounter>(m_object));
+	return interface_ptr<P>(static_cast<P*>(m_object), static_cast<LPIRefCounter>(m_object));
 }
 
 template<class T>
 template<class P>
 inline interface_ptr<P> intrusive_ptr<T>::interface_dynamic_cast() const
 {
-	PTR(P) pInterface = dynamic_cast<PTR(P)>(m_object);
+	P* pInterface = dynamic_cast<P*>(m_object);
 	return interface_ptr<P>(pInterface, dynamic_cast<LPIRefCounter>(pInterface));
 }
 
 template<class T>
-inline PTR(T) intrusive_ptr<T>::get()
+inline T* intrusive_ptr<T>::get()
 {
 	return m_object;
 }

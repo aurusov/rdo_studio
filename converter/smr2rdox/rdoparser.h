@@ -149,7 +149,7 @@ public:
 		{
 			rdo::LPISmartPtrWrapper pWrapper = IndexedStack::pop(id);
 			ASSERT(pWrapper);
-			rdo::intrusive_ptr<T> pObject = *reinterpret_cast<PTR(rdo::intrusive_ptr<T>)>(pWrapper->getSmartPtr());
+			rdo::intrusive_ptr<T> pObject = *reinterpret_cast<rdo::intrusive_ptr<T>*>(pWrapper->getSmartPtr());
 			pWrapper->destroy();
 			return pObject;
 		}
@@ -183,7 +183,7 @@ public:
 	static rdo::converter::smr2rdox::RDOFileTypeIn getFileToParse();
 	static std::size_t lexer_loc_line();
 	static std::size_t lexer_loc_pos();
-	static PTR(Converter) s_converter();
+	static Converter* s_converter();
 
 protected:
 	LPRDOParserItem m_pParserItem;
@@ -235,7 +235,7 @@ private:
 	typedef std::vector<ChangesData> ChangesList;
 	ChangesList m_changes;
 
-	typedef std::list<PTR(Converter)> ParserList;
+	typedef std::list<Converter*> ParserList;
 	static ParserList s_parserStack;
 };
 

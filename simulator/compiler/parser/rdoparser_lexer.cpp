@@ -21,7 +21,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOLexer
 // --------------------------------------------------------------------------------
-RDOLexer::RDOLexer(CREF(LPRDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout)
+RDOLexer::RDOLexer(CREF(LPRDOParser) pParser, std::istream* yyin, std::ostream* yyout)
 	: yyFlexLexer(yyin, yyout)
 	, m_lpval    (NULL       )
 	, m_lploc    (NULL       )
@@ -38,9 +38,9 @@ CREF(LPRDOParser) RDOLexer::parser() const
 }
 
 #ifdef YY_INTERACTIVE
-int RDOLexer::LexerInput(PTR(char) buf, int /* max_size */)
+int RDOLexer::LexerInput(char* buf, int /* max_size */)
 #else
-int RDOLexer::LexerInput(PTR(char) buf, int max_size)
+int RDOLexer::LexerInput(char* buf, int max_size)
 #endif
 {
 	if (m_yyin->eof() || m_yyin->fail())

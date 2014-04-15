@@ -911,14 +911,14 @@ RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 //	throw RDOValueException();
 //}
 
-REF(PTR(void)) RDOValue::__voidPtrV()
+REF(void*) RDOValue::__voidPtrV()
 {
-	return __get<PTR(void)>();
+	return __get<void*>();
 }
 
-CREF(PTR(void)) RDOValue::__voidPtrV() const
+CREF(void*) RDOValue::__voidPtrV() const
 {
-	return *reinterpret_cast<const PTR(void)*>(&const_cast<PTR(RDOValue)>(this)->m_value);
+	return *reinterpret_cast<const void**>(&const_cast<RDOValue*>(this)->m_value);
 }
 
 LPRDOEnumType RDOValue::__enumT() const

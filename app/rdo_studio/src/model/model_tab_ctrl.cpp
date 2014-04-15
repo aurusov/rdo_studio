@@ -41,7 +41,7 @@ TabCtrl::~TabCtrl()
 
 void TabCtrl::createPage(QWidget* pView, const QString& name)
 {
-	PTR(context_type) pPage = new context_type(this, pView);
+	context_type* pPage = new context_type(this, pView);
 
 	ASSERT(pPage);
 
@@ -100,7 +100,7 @@ void TabCtrl::setCurrentRDOItem(rdoModelObjects::RDOFileType type)
 		setCurrentIndex(index);
 }
 
-PTR(TabCtrl::context_type) TabCtrl::getItemEdit(rdoModelObjects::RDOFileType type) const
+TabCtrl::context_type* TabCtrl::getItemEdit(rdoModelObjects::RDOFileType type) const
 {
 	int index = typeToIndex(type);
 	return index != -1
@@ -108,12 +108,12 @@ PTR(TabCtrl::context_type) TabCtrl::getItemEdit(rdoModelObjects::RDOFileType typ
 		: NULL;
 }
 
-PTR(TabCtrl::context_type) TabCtrl::getCurrentEdit() const
+TabCtrl::context_type* TabCtrl::getCurrentEdit() const
 {
-	return static_cast<PTR(context_type)>(currentWidget());
+	return static_cast<context_type*>(currentWidget());
 }
 
-PTR(TabCtrl::context_type) TabCtrl::getItemEdit(int index) const
+TabCtrl::context_type* TabCtrl::getItemEdit(int index) const
 {
-	return static_cast<PTR(context_type)>(widget(index));
+	return static_cast<context_type*>(widget(index));
 }

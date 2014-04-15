@@ -375,7 +375,7 @@ struct NullElement: public FrameItem
 //!          Аналог $Frame, но содержит только те элементы, которые необходимо вывести
 struct Frame
 {
-	typedef  std::vector<PTR(FrameItem)>  Elements; //!< Тип контейнера элементов анимации
+	typedef std::vector<FrameItem*> Elements; //!< Тип контейнера элементов анимации
 
 	Color m_bgColor; //!< Цвет фона фрейма
 	std::string m_bgImageName; //!< Имя фоновой картинки

@@ -26,7 +26,7 @@ public:
 	typedef interface_ptr<T> this_type;
 
 	interface_ptr ();
-	interface_ptr (PTR (T) pInterface, LPIRefCounter pCounter);
+	interface_ptr (T* pInterface, LPIRefCounter pCounter);
 	interface_ptr (CREF(this_type) sptr);
 	~interface_ptr();
 
@@ -34,10 +34,10 @@ public:
 
 	operator bool() const;
 	const T* operator->() const;
-	PTR(T) operator->();
+	T* operator->();
 
 private:
-	PTR(T) m_pInterface;
+	T* m_pInterface;
 	LPIRefCounter m_pCounter;
 };
 

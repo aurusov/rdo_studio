@@ -22,7 +22,7 @@ inline interface_ptr<T>::interface_ptr()
 {}
 
 template<class T>
-inline interface_ptr<T>::interface_ptr(PTR(T) pInterface, LPIRefCounter pCounter)
+inline interface_ptr<T>::interface_ptr(T* pInterface, LPIRefCounter pCounter)
 	: m_pInterface(pInterface)
 	, m_pCounter  (pCounter  )
 {
@@ -74,7 +74,7 @@ inline const T* interface_ptr<T>::operator->() const
 }
 
 template<class T>
-inline PTR(T) interface_ptr<T>::operator-> ()
+inline T* interface_ptr<T>::operator-> ()
 {
 	return m_pInterface;
 }

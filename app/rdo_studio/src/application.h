@@ -51,17 +51,17 @@ public:
 	virtual rdo::gui::tracer::Tracer* getTracer   () const;
 	virtual MainWindow*               getMainWndUI() const;
 
-	PTR(QMainWindow)     getMainWnd  ();
-	PTR(MainWindowBase)  getIMainWnd ();
-	PTR(MainWindowBase)  getStyle    ();
+	QMainWindow*     getMainWnd ();
+	MainWindowBase*  getIMainWnd();
+	MainWindowBase*  getStyle   ();
 
 	//! см. описание RDOKernelGUI
 	//! Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы
-	PTR(RDOThread)          m_pStudioGUI;
+	RDOThread*          m_pStudioGUI;
 
 	REF(std::ofstream)      log();
 
-	void           broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam = NULL);
+	void           broadcastMessage(RDOThread::RDOTreadMessage message, void* pParam = NULL);
 
 	bool           getFileAssociationSetup() const;
 	void           setFileAssociationSetup(bool value);
@@ -83,7 +83,7 @@ public:
 	QString        getFullHelpFileName (CREF(QString) helpFileName = "RAO-help.qhc") const;
 	QString        chkHelpExist        (CREF(QString) helpFileName) const;
 	void           chkAndRunQtAssistant();
-	PTR(QProcess)  runQtAssistant      () const;
+	QProcess*      runQtAssistant      () const;
 	void           callQtAssistant     (CREF(QByteArray) ba);
 
 	CREF(rdo::gui::editor::LPModelStyle) getModelStyle() const;
@@ -94,7 +94,7 @@ private:
 	// Используется для рассылки широковещательных уведомлений из приложения.
 	// При этом, не происходит остановки работы самого приложения, и имеется возможность
 	// обрабатывать новые присылаемые приложению сообщения.
-	PTR(ThreadStudio) m_pStudioMT;
+	ThreadStudio* m_pStudioMT;
 #endif
 
 	std::ofstream                          m_log;
@@ -107,7 +107,7 @@ private:
 	bool                                   m_dontCloseIfError;
 	rdo::simulation::report::RDOExitCode   m_exitCode;
 	QProcess*                              m_pAssistant;
-	PTR(MainWindow)                        m_pMainFrame;
+	MainWindow*                            m_pMainFrame;
 	rdo::gui::editor::LPModelStyle         m_pModelStyle;
 	QTimer                                 m_initTimer;
 	QTimer                                 m_idleTimer;

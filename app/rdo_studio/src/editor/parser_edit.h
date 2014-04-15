@@ -24,7 +24,7 @@ public:
 	Parser(QWidget* pParent);
 	virtual ~Parser();
 
-	void setEditorStyle(PTR(ParserStyle) pStyle);
+	void setEditorStyle(ParserStyle* pStyle);
 
 	void replaceCurrent(CREF(QString) str, int changePosValue = -1) const;
 

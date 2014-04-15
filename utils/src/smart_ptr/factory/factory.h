@@ -133,7 +133,7 @@ public:
 	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7, CREF(P8) p8, CREF(P9) p9);
 
 private:
-	static void destroy(PTR(T) object);
+	static void destroy(T* object);
 };
 
 #define DECLARE_FACTORY(TYPE) friend class rdo::Factory<TYPE>;

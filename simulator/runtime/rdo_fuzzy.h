@@ -95,7 +95,7 @@ class MemberFunctionProperties
 {
 public:
 	typedef RDOValue (*ExtUnaryFun )(CREF(RDOValue) rdovalue);
-	typedef RDOValue (*ExtUnaryFunP)(CREF(RDOValue) rdovalue, PTR(void) pParam);
+	typedef RDOValue (*ExtUnaryFunP)(CREF(RDOValue) rdovalue, void* pParam);
 	typedef RDOValue (*ExtBinaryFun)(CREF(RDOValue) rdovalue1, CREF(RDOValue) rdovalue2);
 
 	/* 3.116*/  static LPFuzzySet u_minus(CREF(LPFuzzySet) pSet);
@@ -114,7 +114,7 @@ public:
 
 	            static LPFuzzySet a_pow     (LPFuzzySet pSet, double power);
 	/* 3.114*/  static LPFuzzySet ext_unary (ExtUnaryFun  fun, CREF(LPFuzzySet) pSet);
-	/* 3.114*/  static LPFuzzySet ext_unary (ExtUnaryFunP fun, PTR(void) pParam, CREF(LPFuzzySet) pSet);
+	/* 3.114*/  static LPFuzzySet ext_unary (ExtUnaryFunP fun, void* pParam, CREF(LPFuzzySet) pSet);
 	/* 3.83 */  static LPFuzzySet ext_binary(ExtBinaryFun fun, CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2);
 
 };

@@ -49,7 +49,7 @@ LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) 
 	LPRDOArrayType pFromArrayType = pFrom.object_dynamic_cast<RDOArrayType>();
 	if (pFromArrayType)
 	{
-		LPRDOArrayType pThisArrayType(const_cast<PTR(RDOArrayType)>(this));
+		LPRDOArrayType pThisArrayType(const_cast<RDOArrayType*>(this));
 
 		if (pThisArrayType->getItemType()->type()->type_cast(pFromArrayType->getItemType()->type(), pFromArrayType->src_info(), pThisArrayType->src_info(), pFromArrayType->src_info()))
 		{
@@ -76,7 +76,7 @@ LPRDOValue RDOArrayType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInf
 	LPRDOArrayType pFromArrayType = pFrom->typeInfo()->type().object_dynamic_cast<RDOArrayType>();
 	if (pFromArrayType)
 	{
-		LPRDOArrayType  pThisArrayType(const_cast<PTR(RDOArrayType)>(this));
+		LPRDOArrayType  pThisArrayType(const_cast<RDOArrayType*>(this));
 		LPRDOArrayValue pThisArrayValue = rdo::Factory<RDOArrayValue>::create(pThisArrayType);
 		ASSERT(pThisArrayValue);
 
@@ -128,7 +128,7 @@ rdo::runtime::LPRDOArrayType RDOArrayType::getRuntimeArrayType() const
 LPTypeInfo RDOArrayType::typeInfo() const
 {
 	LPTypeInfo pType = rdo::Factory<TypeInfo>::create(
-		const_cast<PTR(RDOArrayType)>(this),
+		const_cast<RDOArrayType*>(this),
 		src_info()
 	);
 	ASSERT(pType);

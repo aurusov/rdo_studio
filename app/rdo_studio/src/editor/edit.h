@@ -45,7 +45,7 @@ public:
 	class Group
 	{
 	public:
-		typedef std::vector<PTR(Edit)> List;
+		typedef std::vector<Edit*> List;
 
 		bool    bMatchCase;
 		bool    bMatchWholeWord;
@@ -55,7 +55,7 @@ public:
 
 		Group();
 
-		void insert(PTR(Edit) pEdit);
+		void insert(Edit* pEdit);
 
 		List::const_iterator begin() const;
 		List::const_iterator end  () const;
@@ -72,7 +72,7 @@ public:
 	const EditStyle* getEditorStyle() const;
 	void setEditorStyle(EditStyle* pStyle);
 
-	void setGroup(PTR(Group) pGroup);
+	void setGroup(Group* pGroup);
 
 	bool  isEmpty() const                                  { return getLength() == 0;                                                     }
 	bool  isSelected() const                               { return sendEditor(SCI_GETSELECTIONSTART) != sendEditor(SCI_GETSELECTIONEND); }
@@ -153,10 +153,10 @@ protected slots:
 private:
 	typedef  ScintillaEditBase  super;
 
-	PTR(Group) m_pGroup;
-	int        m_sciMarkerBookmark;
-	int        m_firstFoundPos;
-	bool       m_haveFound;
+	Group* m_pGroup;
+	int m_sciMarkerBookmark;
+	int m_firstFoundPos;
+	bool m_haveFound;
 
 	void gotoLineEnsureVisible(int line) const;
 	void ensureRangeVisible(int posStart, int posEnd, bool enforcePolicy = true) const;

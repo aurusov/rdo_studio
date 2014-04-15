@@ -20,7 +20,7 @@
 
 using namespace rdo::gui::tracer;
 
-ChartPreferences::ChartPreferences(PTR(ChartView) pView)
+ChartPreferences::ChartPreferences(ChartView* pView)
 	: QDialog(pView, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, traceIndex(0)
 	, m_pView(pView)

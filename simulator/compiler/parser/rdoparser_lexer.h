@@ -34,12 +34,12 @@ PREDECLARE_POINTER(RDOParser);
 class RDOLexer: public yyFlexLexer
 {
 public:
-	RDOLexer(CREF(LPRDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout);
+	RDOLexer(CREF(LPRDOParser) pParser, std::istream* yyin, std::ostream* yyout);
 
-	void loc_init     ();
-	void loc_action   ();
+	void loc_init();
+	void loc_action();
 	void loc_delta_pos(int value);
-	void setvalue     (int value);
+	void setvalue(int value);
 
 	CREF(LPRDOParser) parser() const;
 
@@ -47,17 +47,17 @@ public:
 	void enumReset();
 	bool enumEmpty();
 
-	PTR(int)         m_lpval;
-	PTR(YYLTYPE)     m_lploc;
+	int* m_lpval;
+	YYLTYPE* m_lploc;
 
 protected:
-	virtual int LexerInput(PTR(char) buf, int max_size);
+	virtual int LexerInput(char* buf, int max_size);
 	virtual void LexerOutput(const char* buf, int size);
 	virtual void LexerError(const char* msg);
 
 private:
-	PTR(std::istream) m_yyin;
-	PTR(std::ostream) m_yyout;
+	std::istream* m_yyin;
+	std::ostream* m_yyout;
 	LPRDOParser m_pParser;
 	bool m_enumEmpty;
 	int m_array_param_cnt;
@@ -65,7 +65,7 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#define LEXER     reinterpret_cast<PTR(rdo::compiler::parser::RDOLexer)>(lexer)
+#define LEXER     reinterpret_cast<rdo::compiler::parser::RDOLexer*>(lexer)
 #define LEXER_POS (*LEXER->m_lploc)
 
 #include "simulator/compiler/parser/rdoparser_lexer.inl"

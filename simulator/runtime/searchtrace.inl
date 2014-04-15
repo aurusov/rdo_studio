@@ -33,7 +33,7 @@ inline RDODPTSearchTrace::RDODPTSearchTrace(CREF(LPRDORuntime) pRuntime, LPIBase
 // --------------------------------------------------------------------------------
 // -------------------- TreeRootTrace
 // --------------------------------------------------------------------------------
-inline TreeRootTrace::TreeRootTrace(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
+inline TreeRootTrace::TreeRootTrace(CREF(LPRDORuntime) pRuntime, RDODPTSearch* pDP)
 	: TreeRoot(pRuntime, pDP)
 {}
 

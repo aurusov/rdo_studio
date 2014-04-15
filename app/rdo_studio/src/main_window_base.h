@@ -61,13 +61,13 @@ public:
 	virtual void activateSubWindow(QWidget* pWidget) = 0;
 
 protected:
-	PTR(DockBuild)      m_pDockBuild;
-	PTR(DockDebug)      m_pDockDebug;
-	PTR(DockTrace)      m_pDockTrace;
-	PTR(DockResults)    m_pDockResults;
-	PTR(DockFind)       m_pDockFind;
-	PTR(DockChartTree)  m_pDockChartTree;
-	PTR(DockFrame)      m_pDockFrame;
+	DockBuild*      m_pDockBuild;
+	DockDebug*      m_pDockDebug;
+	DockTrace*      m_pDockTrace;
+	DockResults*    m_pDockResults;
+	DockFind*       m_pDockFind;
+	DockChartTree*  m_pDockChartTree;
+	DockFrame*      m_pDockFrame;
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOW_BASE_H_

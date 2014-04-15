@@ -72,7 +72,7 @@ public:
 	bool          isModify        () const;
 	bool          isEmpty         () const;
 
-	 PTR(TabCtrl) getTab();
+	 TabCtrl* getTab();
 	const TabCtrl* getTab() const;
 
 	void  updateStyleOfAllModel() const;

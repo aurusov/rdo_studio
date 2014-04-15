@@ -22,8 +22,8 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int  cnv_oprparse(PTR(void) lexer);
-int  cnv_oprlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+int  cnv_oprparse(void* lexer);
+int  cnv_oprlex  (YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 void cnv_oprerror(const char* message);
 
 // --------------------------------------------------------------------------------

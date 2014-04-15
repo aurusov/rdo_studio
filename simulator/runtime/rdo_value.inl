@@ -95,7 +95,7 @@ inline bool RDOValue::isType() const
 template <class T>
 inline REF(T) RDOValue::__get()
 {
-	return *reinterpret_cast<PTR(T)>(&m_value);
+	return *reinterpret_cast<T*>(&m_value);
 }
 
 template <class T>

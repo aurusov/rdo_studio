@@ -66,7 +66,7 @@ void RDOTrace::writeSearchDecisionHeader()
 	getOStream() << "SD" << std::endl << getEOL();
 }
 
-void RDOTrace::writeSearchDecision(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) node)
+void RDOTrace::writeSearchDecision(CREF(LPRDORuntime) pRuntime, TreeNode* node)
 {
 	if (!canTrace())
 		return;
@@ -104,12 +104,12 @@ void RDOTrace::writeSearchOpenNode(int nodeCount, int parentCount, double pathCo
 	             << " " << doubleToString(restCost) << std::endl << getEOL();
 }
 
-void RDOTrace::writeSearchNodeInfo(char sign, PTR(TreeNodeTrace) node)
+void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace* node)
 {
 	if (!canTrace())
 		return;
 
-	PTR(RDODPTSearchTrace) dpTrace = static_cast<PTR(RDODPTSearchTrace)>(node->m_root->m_dp);
+	RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->m_root->m_dp);
 	if (dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all)
 	{
 		CREF(LPRDORuntime)      pRuntime             = node->m_pRuntime;
@@ -132,7 +132,7 @@ void RDOTrace::writeSearchNodeInfo(char sign, PTR(TreeNodeTrace) node)
 		             << " " << activityTrace->traceResourcesListNumbers(pRuntime, true)
 		             << std::endl << getEOL();
 
-		PTR(RDODPTSearchTrace) dpTrace = static_cast<PTR(RDODPTSearchTrace)>(node->m_root->m_dp);
+		RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->m_root->m_dp);
 		if (dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all)
 		{
 			getOStream() << activityTrace->traceResourcesList('S', pRuntime) << getEOL();
@@ -140,7 +140,7 @@ void RDOTrace::writeSearchNodeInfo(char sign, PTR(TreeNodeTrace) node)
 	}
 }
 
-void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(TreeRoot) treeRoot)
+void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, TreeRoot* treeRoot)
 {
 	if (!canTrace())
 		return;
@@ -152,7 +152,7 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 	const std::size_t msec_begin = RDOSimulatorBase::getMSec(treeRoot->m_ptime);
 	double sec_delay = static_cast<double>(msec_current - msec_begin) / 1000;
 
-	static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_times.push_back(sec_delay);
+	static_cast<RDODPTSearchTrace*>(treeRoot->m_dp)->calc_times.push_back(sec_delay);
 
 	getOStream() << "SE" << letter
 	             << " " << simTr->getCurrentTime()
@@ -169,11 +169,11 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 		             << " " << simTr->getCurrentTime()
 		             << " 4"
 		             << std::endl << getEOL();
-		static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_cost.push_back(treeRoot->m_targetNode->m_costPath);
-		static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_nodes.push_back(treeRoot->getNodesCound());
-		static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_nodes_expended.push_back(treeRoot->m_expandedNodesCount);
-		static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_nodes_full.push_back(treeRoot->m_fullNodesCount);
-		static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_nodes_in_graph.push_back(treeRoot->m_nodesInGraphCount);
+		static_cast<RDODPTSearchTrace*>(treeRoot->m_dp)->calc_cost.push_back(treeRoot->m_targetNode->m_costPath);
+		static_cast<RDODPTSearchTrace*>(treeRoot->m_dp)->calc_nodes.push_back(treeRoot->getNodesCound());
+		static_cast<RDODPTSearchTrace*>(treeRoot->m_dp)->calc_nodes_expended.push_back(treeRoot->m_expandedNodesCount);
+		static_cast<RDODPTSearchTrace*>(treeRoot->m_dp)->calc_nodes_full.push_back(treeRoot->m_fullNodesCount);
+		static_cast<RDODPTSearchTrace*>(treeRoot->m_dp)->calc_nodes_in_graph.push_back(treeRoot->m_nodesInGraphCount);
 	}
 }
 
@@ -403,7 +403,7 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(std::string) status
 	getOStream() << "DPS_MM " << pRuntime->memory_get() << std::endl << getEOL();
 }
 
-void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok)
+void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, RDOResultTrace* pok)
 {
 	if (!canTrace())
 		return;

@@ -37,7 +37,7 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int cnv_dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_dptlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
@@ -49,7 +49,7 @@ void cnv_dpterror(const char* message)
 	UNUSED(message);
 }
 
-int cnv_proc_rtp_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_proc_rtp_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
@@ -61,7 +61,7 @@ void cnv_proc_rtp_error(const char* message)
 	UNUSED(message);
 }
 
-int cnv_proc_rss_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_proc_rss_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
@@ -73,7 +73,7 @@ void cnv_proc_rss_error(const char* message)
 	UNUSED(message);
 }
 
-int cnv_proc_opr_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_proc_opr_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
@@ -111,7 +111,7 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 	{
 		if (pParam->src_pos().m_first_line == src_pos().m_first_line)
 		{
-			if (dynamic_cast<PTR(RDOOPROperation)>(this))
+			if (dynamic_cast<RDOOPROperation*>(this))
 			{
 				Converter::s_converter()->error().push_only(pParam->src_info(), rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pPattern->name().c_str(), name().c_str()));
 			}
@@ -124,7 +124,7 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 		}
 		else
 		{
-			if (dynamic_cast<PTR(RDOOPROperation)>(this))
+			if (dynamic_cast<RDOOPROperation*>(this))
 			{
 				Converter::s_converter()->error().error(pParam->src_info(), "Имя операции должно заканчиваться двоеточием");
 			}
@@ -171,9 +171,9 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 	}
 	if (m_pPattern->getType() == RDOPATPattern::PT_Keyboard)
 	{
-		if (!static_cast<PTR(RDODPTActivityHotKey)>(this)->hasHotKey())
+		if (!static_cast<RDODPTActivityHotKey*>(this)->hasHotKey())
 		{
-			if (dynamic_cast<PTR(RDOOPROperation)>(this))
+			if (dynamic_cast<RDOOPROperation*>(this))
 			{
 				Converter::s_converter()->error().push_only(param_pos, "Для клавиатурной операции должна быть указана клавиша");
 			}
@@ -279,7 +279,7 @@ void RDODPTActivityHotKey::addHotKey(CREF(std::string) hotKey, CREF(YYLTYPE) hot
 		break;
 
 	case rdo::runtime::RDOKeyboard::addhk_already:
-		if (dynamic_cast<PTR(RDOOPROperation)>(this))
+		if (dynamic_cast<RDOOPROperation*>(this))
 		{
 			Converter::s_converter()->error().error(hotkey_pos, rdo::format("Для операции '%s' клавиша уже назначена", src_text().c_str()));
 		}

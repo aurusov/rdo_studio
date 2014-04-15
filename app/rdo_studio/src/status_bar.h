@@ -69,13 +69,13 @@ private:
 	template <Type N>
 	void update(StatusBarType<N> statusBar, CREF(QString) message)
 	{
-		PTR(QLabel) pLabel = getLabel(statusBar);
+		QLabel* pLabel = getLabel(statusBar);
 		ASSERT(pLabel);
 		pLabel->setText(message);
 	}
 
 	template <Type N>
-	PTR(QLabel) getLabel(StatusBarType<N>);
+	QLabel* getLabel(StatusBarType<N>);
 };
 
 #endif // _RDO_STUDIO_STATUS_BAR_H_

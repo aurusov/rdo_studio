@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSeqInit
 // --------------------------------------------------------------------------------
-RDOCalcSeqInit::RDOCalcSeqInit(int base, PTR(RandGenerator) gen)
+RDOCalcSeqInit::RDOCalcSeqInit(int base, RandGenerator* gen)
 	: m_base(base)
 	, m_gen (gen )
 {}

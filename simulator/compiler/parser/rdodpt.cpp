@@ -31,7 +31,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-int dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int dptlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;

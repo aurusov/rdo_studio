@@ -100,7 +100,7 @@ public:
 	void setConstValue(std::size_t constID, CREF(RDOValue) constValue);
 	RDOValue getConstValue(std::size_t constID) const;
 
-	void rdoInit(PTR(RDOTrace) tracer, PTR(RDOResults) customResults, PTR(RDOResults) customResultsInfo, CREF(LPIThreadProxy) pThreadProxy);
+	void rdoInit(RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo, CREF(LPIThreadProxy) pThreadProxy);
 
 	REF(RDOResults) getResults    ();
 	REF(RDOResults) getResultsInfo();
@@ -136,7 +136,7 @@ public:
 #endif
 
 	void onEraseRes(std::size_t resourceID, CREF(LPRDOEraseResRelCalc) pCalc);
-	LPRDOResource createNewResource(std::size_t type, PTR(RDOCalcCreateResource) calc);
+	LPRDOResource createNewResource(std::size_t type, RDOCalcCreateResource* calc);
 	LPRDOResource createNewResource(std::size_t type, bool trace);
 	void insertNewResource(CREF(LPRDOResource) pResource);
 
@@ -201,14 +201,14 @@ public:
 
 	CREF(LPIThreadProxy) getThreadProxy() const;
 
-	void setStudioThread(PTR(RDOThread) pStudioThread);
+	void setStudioThread(RDOThread* pStudioThread);
 
-	PTR(rdo::animation::Frame) getPreparingFrame() const;
-	void setPreparingFrame  (PTR(rdo::animation::Frame) pPreparingFrame);
+	rdo::animation::Frame* getPreparingFrame() const;
+	void setPreparingFrame(rdo::animation::Frame* pPreparingFrame);
 	void resetPreparingFrame();
 
 private:
-	RDORuntime(PTR(Error) pError);
+	RDORuntime(Error* pError);
 	virtual ~RDORuntime();
 
 	typedef  RDOSimulatorTrace                   parent_type;
@@ -223,9 +223,9 @@ private:
 	LPRDOMemoryStack    m_pMemoryStack;
 	FunBreakFlag        m_funBreakFlag;
 	LPIThreadProxy      m_pThreadProxy;
-	PTR(RDOThread)      m_pStudioThread;
+	RDOThread*          m_pStudioThread;
 	Notify              m_notify;
-	PTR(Error)          m_pError;
+	Error*              m_pError;
 	RDOHotKey           m_hotKey;
 
 #ifdef _DEBUG
@@ -275,8 +275,8 @@ private:
 	time_t m_physicTime;
 	virtual void preProcess();
 
-	PTR(RDOResults) m_resultList;
-	PTR(RDOResults) m_resultListInfo;
+	RDOResults* m_resultList;
+	RDOResults* m_resultListInfo;
 
 	LPRDOCalc       m_pTerminateIfCalc;
 	ValueList       m_constantList;
@@ -291,7 +291,7 @@ private:
 
 	std::size_t m_currentTerm;
 
-	PTR(rdo::animation::Frame) m_pPreparingFrame;
+	rdo::animation::Frame* m_pPreparingFrame;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

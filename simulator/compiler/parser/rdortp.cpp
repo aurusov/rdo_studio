@@ -62,7 +62,7 @@ rdo::runtime::LPRDOPROCTransact createProcessTransact(
 
 }
 
-int rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int rtplex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
@@ -180,7 +180,7 @@ LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo)
 	{
 	case rdo::runtime::RDOType::t_pointer:
 		{	
-			LPRDOType pThisRTPType(const_cast<PTR(RDORTPResType)>(this));
+			LPRDOType pThisRTPType(const_cast<RDORTPResType*>(this));
 
 			//! Это один и тот же тип
 			if (pThisRTPType == pFrom)
@@ -211,7 +211,7 @@ LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 	LPRDORTPResType pRTPResType = pFrom->typeInfo()->type().object_dynamic_cast<RDORTPResType>();
 	if (pRTPResType)
 	{
-		LPRDOType pThisType = const_cast<PTR(RDORTPResType)>(this);
+		LPRDOType pThisType = const_cast<RDORTPResType*>(this);
 
 		//! Это один и тот же тип
 		if (pThisType == pRTPResType.object_parent_cast<RDOType>())
@@ -341,7 +341,7 @@ RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(CREF(LPRDOParser) pParser):
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPFuzzyTerm - нечеткий термин
 // --------------------------------------------------------------------------------
-RDORTPFuzzyTerm::RDORTPFuzzyTerm(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
+RDORTPFuzzyTerm::RDORTPFuzzyTerm(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, RDORTPFuzzyMembershiftFun* pMembersfift_fun):
 	RDOParserObject(pParser)
 {
 

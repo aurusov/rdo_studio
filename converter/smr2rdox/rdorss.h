@@ -26,9 +26,9 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int  cnv_rssparse(PTR(void)    lexer);
-int  cnv_rsslex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void cnv_rsserror(const char*  message);
+int cnv_rssparse(void* lexer);
+int cnv_rsslex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
+void cnv_rsserror(const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
@@ -76,7 +76,7 @@ public:
 	void writeModelStructure(REF(std::ostream) stream) const;
 
 protected:
-	RDORSSResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+	RDORSSResource(Converter* pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
 
 	LPRDORTPResType m_pResType;
 	const int m_id; //! in system
@@ -94,7 +94,7 @@ class RDOPROCResource: public RDORSSResource
 {
 DECLARE_FACTORY(RDOPROCResource);
 private:
-	RDOPROCResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+	RDOPROCResource(Converter* pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
 	virtual rdo::runtime::LPRDOCalc createCalc() const;
 };
 DECLARE_POINTER(RDOPROCResource);

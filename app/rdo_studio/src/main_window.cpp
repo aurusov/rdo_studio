@@ -492,7 +492,7 @@ void MainWindow::init()
 	tabifyDockWidget(m_pDockChartTree, m_pDockFrame);
 	m_pDockChartTree->raise();
 
-	PTR(QMenu) pMenuDockView = new QMenu("Окна");
+	QMenu* pMenuDockView = new QMenu("Окна");
 	ASSERT(pMenuDockView);
 	menuView->insertMenu(actViewSettings, pMenuDockView);
 	pMenuDockView->addAction(m_pDockBuild->toggleViewAction());
@@ -503,7 +503,7 @@ void MainWindow::init()
 	pMenuDockView->addAction(m_pDockChartTree->toggleViewAction());
 	pMenuDockView->addAction(m_pDockFrame->toggleViewAction());
 
-	PTR(QMenu) pMenuToolbarView = new QMenu("Панели");
+	QMenu* pMenuToolbarView = new QMenu("Панели");
 	ASSERT(pMenuToolbarView);
 	menuView->insertMenu(actViewSettings, pMenuToolbarView);
 	pMenuToolbarView->addAction(toolBarFile->toggleViewAction());
@@ -513,7 +513,7 @@ void MainWindow::init()
 
 	menuView->insertSeparator(actViewSettings);
 
-	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(g_pModel);
+	IInit* pModelInit = dynamic_cast<IInit*>(g_pModel);
 	ASSERT(pModelInit);
 	pModelInit->init();
 }

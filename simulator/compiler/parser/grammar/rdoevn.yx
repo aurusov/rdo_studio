@@ -3214,18 +3214,18 @@ dpt_search_begin
 				{
 					LPILogic pParent = pParentDPTPrior->getLogic();
 					ASSERT(pParent);
-					pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
+					pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5), pParent);
 				}
 				else if (pParentDPTSome)
 				{
 					LPILogic pParent = pParentDPTSome->getLogic();
 					ASSERT(pParent);
-					pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
+					pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5), pParent);
 				}
 			}
 			else
 			{
-				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5));
+				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5));
 			}
 			ASSERT(pDPTSearch);
 			$$ = PARSER->stack().push(pDPTSearch);

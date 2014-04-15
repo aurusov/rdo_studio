@@ -62,7 +62,7 @@
 // -------------------- RDOThread
 // --------------------------------------------------------------------------------
 #ifdef RDO_MT
-typedef std::size_t (*RDOThreadFun)(PTR(void) pParam);
+typedef std::size_t (*RDOThreadFun)(void* pParam);
 #endif
 
 class RDOThread: public boost::noncopyable
@@ -232,15 +232,15 @@ public:
 #ifdef RDO_MT
 	private:
 		enum Type { post = 0, send, manual } type;
-		PTR(CEvent) send_event;
-		PTR(CMutex) param_lock;
+		CEvent* send_event;
+		CMutex* param_lock;
 #endif
 	public:
-		PTR(RDOThread)   from;
-		RDOTreadMessage  message;
-		PTR(void)        param;
+		RDOThread* from;
+		RDOTreadMessage message;
+		void* param;
 #ifdef RDO_MT
-		RDOMessageInfo(PTR(RDOThread) _from, RDOTreadMessage _message, PTR(void) _param, Type _type )
+		RDOMessageInfo(RDOThread* _from, RDOTreadMessage _message, void* _param, Type _type )
 			: from      (_from   )
 			, message   (_message)
 			, param     (_param  )
@@ -259,7 +259,7 @@ public:
 		void lock()   { if ( param_lock ) param_lock->Lock();   }
 		void unlock() { if ( param_lock ) param_lock->Unlock(); }
 #else
-		RDOMessageInfo(PTR(RDOThread) _from, RDOTreadMessage _message, PTR(void) _param)
+		RDOMessageInfo(RDOThread* _from, RDOTreadMessage _message, void* _param)
 			: from   (_from   )
 			, message(_message)
 			, param  (_param  )
@@ -278,7 +278,7 @@ public:
 	std::size_t getID() const { return thread_id; }
 #ifdef RDO_MT
 	bool isGUI() const { return thread_fun ? false : true; }
-	PTR(CEvent) getDestroyEvent() const { return thread_destroy; }
+	CEvent* getDestroyEvent() const { return thread_destroy; }
 #endif
 
 /*
@@ -300,7 +300,7 @@ public:
 	}
 */
 	// SEND: отправка сообщений с ожиданием выполнения
-	void sendMessage(PTR(RDOThread) to, RDOTreadMessage message, PTR(void) pParam = NULL)
+	void sendMessage(RDOThread* to, RDOTreadMessage message, void* pParam = NULL)
 	{
 #ifdef RDO_MT
 		RDOMessageInfo msg(this, message, pParam, RDOThread::RDOMessageInfo::send);
@@ -323,12 +323,12 @@ public:
 
 #ifdef RDO_MT
 	// MANUAL: отправка сообщений с 'ручным' ожиданием выполнения для this
-	PTR(CEvent) manualMessageFrom(RDOTreadMessage message, PTR(void) pParam = NULL);
+	CEvent* manualMessageFrom(RDOTreadMessage message, void* pParam = NULL);
 #endif
 
 	// Рассылка уведомлений всем тредам с учетом их notifies
 	// Важно: должна вызываться только для this (в собственной треде)
-	void broadcastMessage(RDOTreadMessage message, PTR(void) pParam = NULL, bool lock = false);
+	void broadcastMessage(RDOTreadMessage message, void* pParam = NULL, bool lock = false);
 
 #ifdef TR_TRACE
 	static void trace(CREF(std::string) str);
@@ -341,12 +341,12 @@ protected:
 	// 2. Каждая треда имеет доступ к списку уведомлений (notifies), чтобы понять, а надо ли посылать сообщение треде.
 	// Второе еще можно сделать через дублирование: map< key = thread*, value = notifies > в каджой треде,
 	// а вот как добавить сообщение - не совсем понрятно.
-	static std::size_t threadFun(PTR(void) pParam);
+	static std::size_t threadFun(void* pParam);
 	const RDOThreadFun thread_fun;
-	PTR(CWinThread) thread_win;
+	CWinThread* thread_win;
 	CEvent proc_create; // Вызывается из процедуры треды, конструктор должен его дождаться
 	CEvent thread_create; // Вызывается из конструктора объекта, процедура должна его дождаться
-	PTR(CEvent) thread_destroy; // Вызывается из деструктора объекта
+	CEvent* thread_destroy; // Вызывается из деструктора объекта
 	bool broadcast_waiting; // Без мутекса, т.к. меняется только в одной треде
 	bool was_start; // Без мутекса, т.к. меняется только в одной треде
 	bool was_close;
@@ -373,10 +373,10 @@ protected:
 
 	class BroadcastData {
 	public:
-		typedef std::vector<PTR(CEvent)> EventList;
+		typedef std::vector<CEvent*> EventList;
 		EventList events;
 		std::size_t cnt;
-		PTR(HANDLE) handles;
+		HANDLE* handles;
 
 		BroadcastData()
 			: cnt    (0   )
@@ -409,7 +409,7 @@ protected:
 			if (cnt)
 			{
 				events.resize(cnt * 2);
-				PTR(HANDLE) handles_backup = handles;
+				HANDLE* handles_backup = handles;
 				handles = new HANDLE[cnt * 2];
 				for (std::size_t i = 0; i < cnt; i++)
 				{
@@ -436,9 +436,9 @@ protected:
 #endif
 
 #ifdef RDO_MT
-	virtual PTR(RDOThread) getKernel();
+	virtual RDOThread* getKernel();
 #else
-	PTR(RDOThread) getKernel();
+	RDOThread* getKernel();
 #endif
 
 	// Создавать можно только через потомков
@@ -513,21 +513,21 @@ class RDOThreadGUI: public RDOThread
 {
 friend class RDOKernelGUI;
 private:
-	PTR(RDOThread) kernel_gui;
+	RDOThread* kernel_gui;
 
 protected:
-	RDOThreadGUI(CREF(std::string) _thread_name, PTR(RDOThread) _kernel_gui)
+	RDOThreadGUI(CREF(std::string) _thread_name, RDOThread* _kernel_gui)
 		: RDOThread (_thread_name)
 		, kernel_gui(_kernel_gui )
 	{}
-	virtual PTR(RDOThread) getKernel();
+	virtual RDOThread* getKernel();
 	virtual bool processMessages();
 };
 #else
 class RDOThreadGUI: public RDOThread
 {
 protected:
-	RDOThreadGUI(CREF(std::string) _thread_name, PTR(RDOThread))
+	RDOThreadGUI(CREF(std::string) _thread_name, RDOThread*)
 		: RDOThread(_thread_name)
 	{}
 };

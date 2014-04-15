@@ -28,7 +28,7 @@ struct IRefCounter
 	void release();         \
 	bool owner() const;
 
-typedef PTR(IRefCounter) LPIRefCounter;
+typedef IRefCounter* LPIRefCounter;
 
 } // namespace rdo
 

@@ -23,9 +23,9 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-typedef int  (*t_bison_parse_fun)(PTR(void) lexer  );
+typedef int(*t_bison_parse_fun)(void* lexer);
 typedef void (*t_bison_error_fun)(const char* message);
-typedef int  (*t_flex_lexer_fun) (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+typedef int(*t_flex_lexer_fun)(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserItem

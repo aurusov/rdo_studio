@@ -161,7 +161,7 @@ LPRDOValue RDOType__int::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInf
 	LPRDOValue pToValue;
 	try
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<PTR(RDOType__int)>(this), pFrom->src_info());
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<RDOType__int*>(this), pFrom->src_info());
 		ASSERT(pType);
 		pToValue = rdo::Factory<RDOValue>::create(pFrom->value().getInt(), pFrom->src_info(), pType);
 		ASSERT(pToValue);
@@ -224,7 +224,7 @@ LPRDOValue RDOType__real::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 	LPRDOValue pToValue;
 	try
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<PTR(RDOType__real)>(this), pFrom->src_info());
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<RDOType__real*>(this), pFrom->src_info());
 		ASSERT(pType);
 		pToValue = rdo::Factory<RDOValue>::create(pFrom->value().getDouble(), pFrom->src_info(), pType);
 		ASSERT(pToValue);
@@ -282,7 +282,7 @@ LPRDOValue RDOType__string::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrc
 	LPRDOValue pToValue;
 	try
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<PTR(RDOType__string)>(this), pFrom->src_info());
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<RDOType__string*>(this), pFrom->src_info());
 		ASSERT(pType);
 		pToValue = rdo::Factory<RDOValue>::create(pFrom->value().getString(), pFrom->src_info(), pType);
 		ASSERT(pToValue);
@@ -391,7 +391,7 @@ LPRDOValue RDOType__bool::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 	LPRDOValue pToValue;
 	try
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<PTR(RDOType__bool)>(this), pFrom->src_info());
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<RDOType__bool*>(this), pFrom->src_info());
 		ASSERT(pType);
 		pToValue = rdo::Factory<RDOValue>::create(pFrom->value().getBool(), pFrom->src_info(), pType);
 		ASSERT(pToValue);

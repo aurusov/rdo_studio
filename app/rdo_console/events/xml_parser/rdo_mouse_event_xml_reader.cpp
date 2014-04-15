@@ -18,7 +18,7 @@ namespace rdo {
 mouse_event_xml_reader::~mouse_event_xml_reader()
 {}
 
-PTR(event) mouse_event_xml_reader::read(CREF(boost::property_tree::ptree) pt) const
+event* mouse_event_xml_reader::read(CREF(boost::property_tree::ptree) pt) const
 {
 	const std::string name = pt.get<std::string>("<xmlattr>.name", "");
 	const double time = pt.get<double>("<xmlattr>.time", 0.0);

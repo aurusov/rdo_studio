@@ -19,7 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOCalcRandomDistribution
 // --------------------------------------------------------------------------------
 template<class T>
-inline RDOCalcRandomDistribution<T>::RDOCalcRandomDistribution(PTR(T) gen)
+inline RDOCalcRandomDistribution<T>::RDOCalcRandomDistribution(T* gen)
 	: m_gen(gen)
 {}
 

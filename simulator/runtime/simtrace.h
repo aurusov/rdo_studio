@@ -38,7 +38,7 @@ public:
 
 	virtual void rdoInit();
 
-	PTR(RDOTrace) getTracer() const;
+	RDOTrace* getTracer() const;
 	bool canTrace() const;
 
 	double getTraceStartTime() const;

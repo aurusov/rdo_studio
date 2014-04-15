@@ -144,8 +144,8 @@ private:
 	template <class T>
 	CREF(T) __get() const;
 
-	 REF(PTR(void)) __voidPtrV();
-	CREF(PTR(void)) __voidPtrV() const;
+	 REF(void*) __voidPtrV();
+	CREF(void*) __voidPtrV() const;
 	LPRDOEnumType __enumT   () const;
 	 REF(std::string) __stringV ();
 	CREF(std::string) __stringV () const;

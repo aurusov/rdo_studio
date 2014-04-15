@@ -30,8 +30,8 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int  cnv_patparse(PTR(void) lexer);
-int  cnv_patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+int cnv_patparse(void* lexer);
+int cnv_patlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 void cnv_paterror(const char* message);
 
 // --------------------------------------------------------------------------------

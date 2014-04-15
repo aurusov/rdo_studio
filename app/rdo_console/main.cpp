@@ -39,10 +39,10 @@ const boost::filesystem::path LOG_FILE_NAME = "log.txt";
 
 void read_events(REF(std::istream) stream, REF(event_container) container);
 void write_build_log(REF(std::ostream) stream, CREF(string_list) list);
-bool run(PTR(rdo::console_controller) pAppController, REF(event_container) container);
-void process_event(PTR(rdo::console_controller) pAppController, REF(event_container) container);
+bool run(rdo::console_controller* pAppController, REF(event_container) container);
+void process_event(rdo::console_controller* pAppController, REF(event_container) container);
 
-int main(int argc, PTR(char) argv[])
+int main(int argc, char* argv[])
 {
 	std::size_t exitCode = TERMINATION_NORMAL;
 
@@ -181,7 +181,7 @@ void write_build_log(REF(std::ostream) stream, CREF(string_list) list)
 	}
 }
 
-bool run(PTR(rdo::console_controller) pAppController, REF(event_container) container)
+bool run(rdo::console_controller* pAppController, REF(event_container) container)
 {
 	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
 
@@ -202,7 +202,7 @@ bool run(PTR(rdo::console_controller) pAppController, REF(event_container) conta
 	return pAppController->simulationSuccessfully();
 }
 
-void process_event(PTR(rdo::console_controller) pAppController, REF(event_container) container)
+void process_event(rdo::console_controller* pAppController, REF(event_container) container)
 {
 	double runtime_time = 0;
 	pAppController->broadcastMessage(RDOThread::RT_RUNTIME_GET_TIMENOW, &runtime_time);

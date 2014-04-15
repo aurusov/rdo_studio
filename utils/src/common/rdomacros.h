@@ -21,8 +21,6 @@
 #define   REF(A)       A&
 //! Константная ссылка на A
 #define  CREF(A) const A&
-//! Указатель на А
-#define   PTR(A)       A*
 
 #ifdef UNUSED
 	#undef UNUSED

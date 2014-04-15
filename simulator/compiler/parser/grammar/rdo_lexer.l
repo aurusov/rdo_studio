@@ -32,7 +32,7 @@
 #undef LEXER_POS
 #endif
 
-#define LEXER     reinterpret_cast<PTR(rdo::compiler::parser::RDOLexer)>(this)
+#define LEXER     reinterpret_cast<rdo::compiler::parser::RDOLexer*>(this)
 #define LEXER_POS (*LEXER->m_lploc)
 #define PARSER    LEXER->parser()
 #define RUNTIME   PARSER->runtime()

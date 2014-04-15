@@ -17,7 +17,7 @@ namespace rdo {
 template <class T>
 inline intrusive_ptr<T> Factory<T>::create()
 {
-	PTR(T) pObject = new T();
+	T* pObject = new T();
 	return intrusive_ptr<T>(pObject);
 }
 
@@ -25,7 +25,7 @@ template <class T>
 template <typename P1>
 inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1)
 {
-	PTR(T) pObject = new T(p1);
+	T* pObject = new T(p1);
 	return intrusive_ptr<T>(pObject);
 }
 
@@ -40,7 +40,7 @@ template <class T>
 template <typename P1, typename P2>
 inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1, CREF(P2) p2)
 {
-	PTR(T) pObject = new T(p1, p2);
+	T* pObject = new T(p1, p2);
 	return intrusive_ptr<T>(pObject);
 }
 
@@ -48,7 +48,7 @@ template <class T>
 template <typename P1, typename P2, typename P3>
 inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)
 {
-	PTR(T) pObject = new T(p1, p2, p3);
+	T* pObject = new T(p1, p2, p3);
 	return intrusive_ptr<T>(pObject);
 }
 
@@ -56,7 +56,7 @@ template <class T>
 template <typename P1, typename P2, typename P3, typename P4>
 inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)
 {
-	PTR(T) pObject = new T(p1, p2, p3, p4);
+	T* pObject = new T(p1, p2, p3, p4);
 	return intrusive_ptr<T>(pObject);
 }
 
@@ -64,7 +64,7 @@ template <class T>
 template <typename P1, typename P2, typename P3, typename P4, typename P5>
 inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)
 {
-	PTR(T) pObject = new T(p1, p2, p3, p4, p5);
+	T* pObject = new T(p1, p2, p3, p4, p5);
 	return intrusive_ptr<T>(pObject);
 }
 
@@ -72,7 +72,7 @@ template <class T>
 template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
 inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)
 {
-	PTR(T) pObject = new T(p1, p2, p3, p4, p5, p6);
+	T* pObject = new T(p1, p2, p3, p4, p5, p6);
 	return intrusive_ptr<T>(pObject);
 }
 
@@ -80,7 +80,7 @@ template <class T>
 template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
 inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
 {
-	PTR(T) pObject = new T(p1, p2, p3, p4, p5, p6, p7);
+	T* pObject = new T(p1, p2, p3, p4, p5, p6, p7);
 	return intrusive_ptr<T>(pObject);
 }
 
@@ -88,7 +88,7 @@ template <class T>
 template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7, typename P8>
 inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7, CREF(P8) p8)
 {
-	PTR(T) pObject = new T(p1, p2, p3, p4, p5, p6, p7, p8);
+	T* pObject = new T(p1, p2, p3, p4, p5, p6, p7, p8);
 	return intrusive_ptr<T>(pObject);
 }
 
@@ -96,12 +96,12 @@ template <class T>
 template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7, typename P8, typename P9>
 inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7, CREF(P8) p8, CREF(P9) p9)
 {
-	PTR(T) pObject = new T(p1, p2, p3, p4, p5, p6, p7, p8, p9);
+	T* pObject = new T(p1, p2, p3, p4, p5, p6, p7, p8, p9);
 	return intrusive_ptr<T>(pObject);
 }
 
 template <class T>
-inline void Factory<T>::destroy(PTR(T) object)
+inline void Factory<T>::destroy(T* object)
 {
 	delete object;
 }

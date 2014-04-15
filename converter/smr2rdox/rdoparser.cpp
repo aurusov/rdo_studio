@@ -94,7 +94,7 @@ std::size_t Converter::lexer_loc_pos()
 	return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->lexer_loc_pos() : 0;
 }
 
-PTR(Converter) Converter::s_converter()
+Converter* Converter::s_converter()
 {
 	return !s_parserStack.empty() ? s_parserStack.back() : NULL;
 }

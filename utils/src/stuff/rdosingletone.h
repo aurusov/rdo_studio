@@ -32,14 +32,14 @@ public:
 		if (m_object)
 			delete m_object;
 	}
-	PTR(T) instance()
+	T* instance()
 	{
 		if (!m_object)
 			m_object = new T();
 		return m_object;
 	}
 	template <typename P1>
-	PTR(T) instance(CREF(P1) p1)
+	T* instance(CREF(P1) p1)
 	{
 		if (!m_object)
 			m_object = new T(p1);
@@ -47,7 +47,7 @@ public:
 	}
 
 private:
-	PTR(T) m_object;
+	T* m_object;
 };
 
 } // namespace rdo

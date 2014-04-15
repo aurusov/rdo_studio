@@ -102,7 +102,7 @@ int roundLocal(double value)
 class MaxCalc: public rdo::runtime::RDOFunCalc
 {
 private:
-	REF(rdo::runtime::RDOValue) doCalc(PTR(rdo::runtime::RDORuntime) pRuntime)
+	REF(rdo::runtime::RDOValue) doCalc(rdo::runtime::RDORuntime* pRuntime)
 	{
 		m_value = max(pRuntime->getFuncArgument(0).getDouble(), pRuntime->getFuncArgument(1).getDouble());
 		return m_value;
@@ -112,7 +112,7 @@ private:
 class Test: public rdo::runtime::RDOFunCalc
 {
 public:
-	REF(rdo::runtime::RDOValue) doCalc(PTR(rdo::runtime::RDORuntime) runtime)
+	REF(rdo::runtime::RDOValue) doCalc(rdo::runtime::RDORuntime* runtime)
 	{
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<MaxCalc>::create();
 		ASSERT(pCalc);

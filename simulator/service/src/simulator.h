@@ -93,8 +93,8 @@ private:
 	virtual void start();
 	virtual void stop();
 
-	PTR(CWinThread) thread_corbaRunThreadFun;
-	static std::size_t corbaRunThreadFun(PTR(void) pParam);
+	CWinThread* thread_corbaRunThreadFun;
+	static std::size_t corbaRunThreadFun(void* pParam);
 };
 
 } //! namespace rdoCorba
@@ -128,10 +128,10 @@ public:
 
 	struct GetFrame
 	{
-		PTR(rdo::animation::Frame) m_pFrame;
+		rdo::animation::Frame* m_pFrame;
 		std::size_t m_number;
 
-		GetFrame(PTR(rdo::animation::Frame) pFrame, std::size_t number)
+		GetFrame(rdo::animation::Frame* pFrame, std::size_t number)
 			: m_pFrame(pFrame)
 			, m_number(number)
 		{}
@@ -149,7 +149,7 @@ public:
 	};
 
 private:
-	PTR(rdo::service::simulation::RDOThreadSimulator) m_pSimulator;
+	rdo::service::simulation::RDOThreadSimulator* m_pSimulator;
 	bool m_runtimeError;
 	uint64_t m_timeStart;
 
@@ -165,7 +165,7 @@ private:
 
 	void writeResultsInfo();
 
-	void sendMessage(ThreadID threadID, std::size_t messageID, PTR(void) pParam);
+	void sendMessage(ThreadID threadID, std::size_t messageID, void* pParam);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
@@ -254,8 +254,8 @@ protected:
 
 	void codeCompletion();
 
-	void corbaGetRTP(PTR(GetRTP) RTPList);
-	void corbaGetRSS(PTR(GetRSS) RSSList);
+	void corbaGetRTP(GetRTP* RTPList);
+	void corbaGetRSS(GetRSS* RSSList);
 
 public:
 	RDOThreadSimulator();
@@ -276,10 +276,10 @@ public:
 
 		typedef std::list<std::string> StringList;
 
-		Type            m_type;
-		PTR(StringList) m_list;
+		Type m_type;
+		StringList* m_list;
 
-		GetList(Type type, PTR(StringList) list)
+		GetList(Type type, StringList* list)
 			: m_type(type)
 			, m_list(list)
 		{}

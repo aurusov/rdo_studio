@@ -40,7 +40,7 @@ double RDOPatternIrregEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOIrregEvent
 // --------------------------------------------------------------------------------
-RDOIrregEvent::RDOIrregEvent(PTR(RDOPatternIrregEvent) pPattern, bool trace, CREF(std::string) name)
+RDOIrregEvent::RDOIrregEvent(RDOPatternIrregEvent* pPattern, bool trace, CREF(std::string) name)
 	: RDOActivityPattern<RDOPatternIrregEvent>(pPattern, trace, name)
 {
 	setTrace(trace);

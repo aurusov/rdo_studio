@@ -32,7 +32,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-int funlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int funlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
@@ -911,7 +911,7 @@ RDOFUNSequenceUniform::RDOFUNSequenceUniform(CREF(LPRDOFUNSequenceHeader) pHeade
 
 void RDOFUNSequenceUniform::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorUniform) pGenerator = new rdo::runtime::RandGeneratorUniform();
+	rdo::runtime::RandGeneratorUniform* pGenerator = new rdo::runtime::RandGeneratorUniform();
 	m_pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(m_seed, pGenerator);
 	RDOParser::s_parser()->runtime()->addInitCalc(m_pInitCalc);
 	m_pNextCalc = rdo::Factory<rdo::runtime::RDOCalcSeqNextUniform>::create(pGenerator);
@@ -965,7 +965,7 @@ RDOFUNSequenceExponential::RDOFUNSequenceExponential(CREF(LPRDOFUNSequenceHeader
 
 void RDOFUNSequenceExponential::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorExponential) pGenerator = new rdo::runtime::RandGeneratorExponential();
+	rdo::runtime::RandGeneratorExponential* pGenerator = new rdo::runtime::RandGeneratorExponential();
 	m_pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(m_seed, pGenerator);
 	RDOParser::s_parser()->runtime()->addInitCalc(m_pInitCalc);
 	m_pNextCalc = rdo::Factory<rdo::runtime::RDOCalcSeqNextExponential>::create(pGenerator);
@@ -1017,7 +1017,7 @@ RDOFUNSequenceNormal::RDOFUNSequenceNormal(CREF(LPRDOFUNSequenceHeader) pHeader,
 
 void RDOFUNSequenceNormal::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorNormal) pGenerator = new rdo::runtime::RandGeneratorNormal();
+	rdo::runtime::RandGeneratorNormal* pGenerator = new rdo::runtime::RandGeneratorNormal();
 	m_pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(m_seed, pGenerator);
 	RDOParser::s_parser()->runtime()->addInitCalc(m_pInitCalc);
 	m_pNextCalc = rdo::Factory<rdo::runtime::RDOCalcSeqNextNormal>::create(pGenerator);
@@ -1071,7 +1071,7 @@ RDOFUNSequenceTriangular::RDOFUNSequenceTriangular(CREF(LPRDOFUNSequenceHeader) 
 
 void RDOFUNSequenceTriangular::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorTriangular) pGenerator = new rdo::runtime::RandGeneratorTriangular();
+	rdo::runtime::RandGeneratorTriangular* pGenerator = new rdo::runtime::RandGeneratorTriangular();
 	m_pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(m_seed, pGenerator);
 	RDOParser::s_parser()->runtime()->addInitCalc(m_pInitCalc);
 	m_pNextCalc = rdo::Factory<rdo::runtime::RDOCalcSeqNextTriangular>::create(pGenerator);
@@ -1184,7 +1184,7 @@ void RDOFUNSequenceByHistReal::addReal(CREF(LPRDOValue) pFrom, CREF(LPRDOValue) 
 
 void RDOFUNSequenceByHistReal::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorByHistReal) pGenerator = new rdo::runtime::RandGeneratorByHistReal();
+	rdo::runtime::RandGeneratorByHistReal* pGenerator = new rdo::runtime::RandGeneratorByHistReal();
 	int size = m_from.size();
 	for (int i = 0; i < size; i++)
 	{
@@ -1231,7 +1231,7 @@ void RDOFUNSequenceByHistEnum::addEnum(CREF(LPRDOValue) pValue, CREF(LPRDOValue)
 
 void RDOFUNSequenceByHistEnum::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorByHistEnum) pGenerator = new rdo::runtime::RandGeneratorByHistEnum();
+	rdo::runtime::RandGeneratorByHistEnum* pGenerator = new rdo::runtime::RandGeneratorByHistEnum();
 	const std::size_t size = m_values.size();
 	for (std::size_t i = 0; i < size; i++)
 	{
@@ -1275,7 +1275,7 @@ LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pPa
 // --------------------------------------------------------------------------------
 void RDOFUNSequenceEnumerative::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorEnumerative) pGenerator = new rdo::runtime::RandGeneratorEnumerative();
+	rdo::runtime::RandGeneratorEnumerative* pGenerator = new rdo::runtime::RandGeneratorEnumerative();
 	for (std::size_t i = 0; i < m_valueList.size(); i++)
 	{
 		pGenerator->addValue(m_valueList[i]->value());

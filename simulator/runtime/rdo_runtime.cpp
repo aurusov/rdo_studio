@@ -48,7 +48,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntime
 // --------------------------------------------------------------------------------
-RDORuntime::RDORuntime(PTR(Error) pError)
+RDORuntime::RDORuntime(Error* pError)
 	: RDOSimulatorTrace()
 	, m_whyStop        (rdo::simulation::report::EC_OK)
 	, m_funBreakFlag   (FBF_NONE)
@@ -79,7 +79,7 @@ void RDORuntime::deinit()
 	onDestroy();
 }
 
-void RDORuntime::setStudioThread(PTR(RDOThread) pStudioThread)
+void RDORuntime::setStudioThread(RDOThread* pStudioThread)
 {
 	m_pStudioThread = pStudioThread;
 }
@@ -378,7 +378,7 @@ LPRDORuntime RDORuntime::clone() const
 	ASSERT(pRuntime);
 	pRuntime->m_sizeofSim = sizeof(RDORuntime);
 
-	LPRDORuntime pThis(const_cast<PTR(RDORuntime)>(this));
+	LPRDORuntime pThis(const_cast<RDORuntime*>(this));
 	pRuntime->copyFrom(pThis);
 
 	return pRuntime;
@@ -389,7 +389,7 @@ void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 	ASSERT(pOther);
 	ASSERT(m_resourceTypeList.empty());
 
-	LPRDORuntime pThis(const_cast<PTR(RDORuntime)>(this));
+	LPRDORuntime pThis(const_cast<RDORuntime*>(this));
 
 	BOOST_FOREACH(const LPRDOResourceTypeList& pRTP, pOther->m_resourceTypeList)
 	{
@@ -523,12 +523,12 @@ CREF(RDORuntime::FunBreakFlag) RDORuntime::getFunBreakFlag() const
 	return m_funBreakFlag;
 }
 
-PTR(rdo::animation::Frame) RDORuntime::getPreparingFrame() const
+rdo::animation::Frame* RDORuntime::getPreparingFrame() const
 {
 	return m_pPreparingFrame;
 }
 
-void RDORuntime::setPreparingFrame(PTR(rdo::animation::Frame) pPreparingFrame)
+void RDORuntime::setPreparingFrame(rdo::animation::Frame* pPreparingFrame)
 {
 	ASSERT(pPreparingFrame);
 	ASSERT(!m_pPreparingFrame);

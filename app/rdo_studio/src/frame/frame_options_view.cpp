@@ -32,7 +32,7 @@ OptionsView::OptionsView(QWidget* pParent)
 	russianSampleLabel->setText("Пример текста");
 }
 
-void OptionsView::setStyle(PTR(FrameStyle) style)
+void OptionsView::setStyle(FrameStyle* style)
 {
 	m_style = style;
 
@@ -42,7 +42,7 @@ void OptionsView::setStyle(PTR(FrameStyle) style)
 	font.setItalic((m_style->defaultStyle & StyleFont::ITALIC) != 0 ? true : false);
 	font.setUnderline((m_style->defaultStyle & StyleFont::UNDERLINE) != 0 ? true : false);
 
-	PTR(QPalette) fontPalette = new QPalette();
+	QPalette* fontPalette = new QPalette();
 	fontPalette->setColor(QPalette::WindowText, Qt::yellow);
 	englishSampleLabel->setPalette(*fontPalette);
 	russianSampleLabel->setPalette(*fontPalette);
@@ -51,7 +51,7 @@ void OptionsView::setStyle(PTR(FrameStyle) style)
 
 	pictureLabel->setStyleSheet("border: 1px solid "+m_style->defaultColor.name()+";");
 
-	PTR(QPalette) palette = new QPalette();
+	QPalette* palette = new QPalette();
 	palette->setColor(QPalette::Background, m_style->backgroundColor);
 	setAutoFillBackground(true);
 	setPalette(*palette);

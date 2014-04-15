@@ -133,8 +133,8 @@ DECLARE_POINTER(RDORTPResType);
 //		}
 //	virtual ~RDORTPFuzzyMembershiftFun() {}
 //
-//	typedef PTR(RDORTPFuzzyMembershiftPoint) Item;
-//	typedef std::vector< Item >              Items;
+//	typedef RDORTPFuzzyMembershiftPoint* Item;
+//	typedef std::vector<Item> Items;
 //
 //	void add(Item point)
 //	{
@@ -155,7 +155,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyTerm: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyTerm(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
+//	RDORTPFuzzyTerm(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, RDORTPFuzzyMembershiftFun* pMembersfift_fun):
 //		RDOParserObject(pParser),
 //		RDOParserSrcInfo(src_info),
 //		m_fun (pMembersfift_fun)
@@ -167,7 +167,7 @@ DECLARE_POINTER(RDORTPResType);
 //	double MemberShift() const { return m_fun->getVal(); }
 //
 //private:
-//	PTR(RDORTPFuzzyMembershiftFun) m_fun;
+//	RDORTPFuzzyMembershiftFun* m_fun;
 //};
 //// --------------------------------------------------------------------------------
 //// -------------------- RDORTPFuzzyTermsSet - набор терминов одного параметра
@@ -181,8 +181,8 @@ DECLARE_POINTER(RDORTPResType);
 //	}
 //	virtual ~RDORTPFuzzyTermsSet() {}
 //
-//	typedef PTR(RDORTPFuzzyTerm) Item;
-//	typedef std::vector<Item>    Items;
+//	typedef RDORTPFuzzyTerm* Item;
+//	typedef std::vector<Item> Items;
 //
 //	void add(Item term)
 //	{
@@ -203,7 +203,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyParam : public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyParam(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyTermsSet) terms_set):
+//	RDORTPFuzzyParam(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, RDORTPFuzzyTermsSet* terms_set):
 //		RDOParserObject(pParser),
 //		RDOParserSrcInfo(src_info),
 //		m_set (terms_set)
@@ -214,7 +214,7 @@ DECLARE_POINTER(RDORTPResType);
 //	CREF(std::string) name() const { return src_info().src_text(); }
 //
 //private:
-//	PTR(RDORTPFuzzyTermsSet) m_set; // набор терминов параметра
+//	RDORTPFuzzyTermsSet* m_set; // набор терминов параметра
 //};
 
 CLOSE_RDO_PARSER_NAMESPACE

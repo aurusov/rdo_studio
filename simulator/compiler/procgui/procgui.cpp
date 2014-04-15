@@ -74,7 +74,7 @@ rdo::runtime::LPRDOCalc ProcGUICalc::getCalc()
 
 rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getNormalCalc(std::size_t base, double arg1, double arg2)
 {
-	PTR(rdo::runtime::RandGeneratorNormal) pGenerator = new rdo::runtime::RandGeneratorNormal();
+	rdo::runtime::RandGeneratorNormal* pGenerator = new rdo::runtime::RandGeneratorNormal();
 	ASSERT(pGenerator);
 	rdo::runtime::LPRDOCalcSeqInit pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(base, pGenerator);
 	ASSERT(pInitCalc);
@@ -94,7 +94,7 @@ rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getNormalCalc(std::size_t bas
 
 rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getUniformCalc(std::size_t base, double arg1, double arg2)
 {
-	PTR(rdo::runtime::RandGeneratorUniform) pGenerator = new rdo::runtime::RandGeneratorUniform();
+	rdo::runtime::RandGeneratorUniform* pGenerator = new rdo::runtime::RandGeneratorUniform();
 	ASSERT(pGenerator);
 	rdo::runtime::LPRDOCalcSeqInit pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(base, pGenerator);
 	ASSERT(pInitCalc);
@@ -114,7 +114,7 @@ rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getUniformCalc(std::size_t ba
 
 rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getExpCalc(std::size_t base, double arg)
 {
-	PTR(rdo::runtime::RandGeneratorExponential) pGenerator = new rdo::runtime::RandGeneratorExponential();
+	rdo::runtime::RandGeneratorExponential* pGenerator = new rdo::runtime::RandGeneratorExponential();
 	ASSERT(pGenerator);
 	rdo::runtime::LPRDOCalcSeqInit pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(base, pGenerator);
 	ASSERT(pInitCalc);
@@ -131,7 +131,7 @@ rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getExpCalc(std::size_t base, 
 
 rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getTriangularCalc(std::size_t base, double arg1, double arg2, double arg3)
 {
-	PTR(rdo::runtime::RandGeneratorTriangular) pGenerator = new rdo::runtime::RandGeneratorTriangular();
+	rdo::runtime::RandGeneratorTriangular* pGenerator = new rdo::runtime::RandGeneratorTriangular();
 	rdo::runtime::LPRDOCalcSeqInit pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(base, pGenerator);
 	ASSERT(pInitCalc);
 	m_pRuntime->addInitCalc(pInitCalc);

@@ -22,7 +22,7 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int cnv_smr_file_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_smr_file_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
@@ -34,7 +34,7 @@ void cnv_smr_file_error(const char* message)
 	UNUSED(message);
 }
 
-int cnv_smr_sim_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_smr_sim_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;

@@ -616,7 +616,7 @@ public:
 	void setBackPicture(CREF(std::string) picFileName);
 	void setBackPicture(int width, int height);
 
-	void prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
+	void prepareFrame(rdo::animation::Frame* pFrame, CREF(LPRDORuntime) pRuntime);
 
 	void setBackgroundColor(CREF(LPRDOFRMColor) pBgColor);
 

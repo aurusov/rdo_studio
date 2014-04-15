@@ -18,7 +18,7 @@ namespace rdo {
 template<class T>
 inline void RefCounter<T>::addref()
 {
-	PTR(counter_reference) pCounter = dynamic_cast<PTR(counter_reference)>(this);
+	counter_reference* pCounter = dynamic_cast<counter_reference*>(this);
 	ASSERT(pCounter);
 	pCounter->m_intrusive_counter++;
 }
@@ -26,12 +26,12 @@ inline void RefCounter<T>::addref()
 template<class T>
 inline void RefCounter<T>::release()
 {
-	PTR(counter_reference) pCounter = dynamic_cast<PTR(counter_reference)>(this);
+	counter_reference* pCounter = dynamic_cast<counter_reference*>(this);
 	ASSERT(pCounter);
 	pCounter->m_intrusive_counter--;
 	if (pCounter->m_intrusive_counter == 0)
 	{
-		PTR(T) pObject = dynamic_cast<PTR(T)>(this);
+		T* pObject = dynamic_cast<T*>(this);
 		ASSERT(pObject);
 		Factory<T>::destroy(pObject);
 	}

@@ -65,9 +65,9 @@ Registered##I::ID
 namespace rdo {
 
 class IUnknown;
-typedef PTR(IUnknown) LPIUnknown;
+typedef IUnknown* LPIUnknown;
 class IGetUnknown;
-typedef PTR(IGetUnknown) LPIGetUnknown;
+typedef IGetUnknown* LPIGetUnknown;
 
 template<class T> class Interface;
 
@@ -78,7 +78,7 @@ public:
 	UnknownPointer ();
 	UnknownPointer (REF(IUnknown) unknown    );
 	UnknownPointer (LPIGetUnknown pGetUnknown);
-	UnknownPointer (PTR(void) pInterface, LPIUnknown pUnknown);
+	UnknownPointer (void* pInterface, LPIUnknown pUnknown);
 	UnknownPointer (CREF(UnknownPointer) pointer);
 	~UnknownPointer();
 
@@ -96,7 +96,7 @@ public:
 	template<class I> operator      Interface<I>() const;
 
 protected:
-	PTR(void)   m_pInterface;
+	void* m_pInterface;
 
 private:
 	LPIUnknown  m_pUnknown;
@@ -111,16 +111,16 @@ public:
 
 	Interface();
 	Interface(LPIGetUnknown pGetUnknown);
-	Interface(PTR(void) pInterface, LPIUnknown pUnknown);
+	Interface(void* pInterface, LPIUnknown pUnknown);
 	Interface(CREF(this_type) aInterface);
 
 	REF(this_type) operator=(CREF(this_type) aInterface);
 	operator bool() const;
 
-	PTR(I) get();
+	I* get();
 	const I* get() const;
 
-	PTR(I) operator->();
+	I* operator->();
 	const I* operator->() const;
 };
 
@@ -131,14 +131,14 @@ public:
 	virtual void           Release() = 0;
 	virtual UnknownPointer QueryInterface(std::size_t id) = 0;
 };
-typedef PTR(IUnknown) LPIUnknown;
+typedef IUnknown* LPIUnknown;
 
 class IGetUnknown
 {
 public:
 	virtual LPIUnknown GetUnknown() = 0;
 };
-typedef PTR(IGetUnknown) LPIGetUnknown;
+typedef IGetUnknown* LPIGetUnknown;
 
 template <class T>
 class IFactory
@@ -153,7 +153,7 @@ private:
 	friend class IFactory<T>::Object;
 	private:
 		std::size_t m_counter;
-		PTR(T) m_pObject;
+		T* m_pObject;
 
 		Counter();
 		operator UnknownPointer();
@@ -251,10 +251,10 @@ public:
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
 	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7);
 
-	static void destroy(PTR(T) pObject);
+	static void destroy(T* pObject);
 
 private:
-	static UnknownPointer init(PTR(Object) pObject);
+	static UnknownPointer init(Object* pObject);
 };
 
 } // namespace rdo
@@ -267,15 +267,15 @@ private:
 
 #define QUERY_INTERFACE_BEGIN                           \
 public:                                                 \
-PTR(void) QueryInterface(std::size_t id)                \
+void* QueryInterface(std::size_t id)                    \
 {
 
 #define QUERY_INTERFACE_PARENT(A)                       \
-	PTR(void) pIterface##A = A::QueryInterface(id);     \
+	void* pIterface##A = A::QueryInterface(id);         \
 	if (pIterface##A) return pIterface##A;
 
 #define QUERY_INTERFACE(A)                              \
-	if (id == IID(A)) return static_cast<PTR(A)>(this);
+	if (id == IID(A)) return static_cast<A*>(this);
 
 #define QUERY_INTERFACE_END                             \
 	return NULL;                                        \

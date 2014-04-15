@@ -483,7 +483,7 @@ Serie::ExportData Serie::exportData()
 	exportData.reserve(m_valueList.size() + 1);
 	exportData.push_back(QString("%1;%2").arg("время").arg(m_title));
 
-	BOOST_FOREACH(PTR(Value) pValue, m_valueList)
+	BOOST_FOREACH(Value* pValue, m_valueList)
 	{
 		exportData.push_back(QString("%1;%2").arg(pValue->getModelTime()->time).arg(pValue->getValue()));
 	}

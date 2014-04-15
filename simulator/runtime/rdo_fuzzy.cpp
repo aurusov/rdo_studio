@@ -142,7 +142,7 @@ LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFun fun, CREF(LPFuzzySet)
 	return LPFuzzySet();
 }
 
-LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFunP fun, PTR(void) pParam, CREF(LPFuzzySet) pSet)
+LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFunP fun, void* pParam, CREF(LPFuzzySet) pSet)
 {
 	FuzzySet::FuzzySetDefinition values;
 	FuzzySet::FuzzySetDefinition::const_iterator it = pSet->begin();
@@ -180,29 +180,29 @@ RDOValue fun_div (CREF(RDOValue) value1, CREF(RDOValue) value2) { return value1 
 
 LPFuzzySet FuzzySet::operator+ (CREF(LPFuzzySet) pSet) const
 {
-	LPFuzzySet pThis(const_cast<PTR(FuzzySet)>(this));
+	LPFuzzySet pThis(const_cast<FuzzySet*>(this));
 	return MemberFunctionProperties::ext_binary(fun_add, pThis, pSet);
 }
 LPFuzzySet FuzzySet::operator- (CREF(LPFuzzySet) pSet) const 
 {
-	LPFuzzySet pThis(const_cast<PTR(FuzzySet)>(this));
+	LPFuzzySet pThis(const_cast<FuzzySet*>(this));
 	return MemberFunctionProperties::ext_binary(fun_sub, pThis, pSet);
 }
 LPFuzzySet FuzzySet::operator* (CREF(LPFuzzySet) pSet) const
 {
-	LPFuzzySet pThis(const_cast<PTR(FuzzySet)>(this));
+	LPFuzzySet pThis(const_cast<FuzzySet*>(this));
 	return MemberFunctionProperties::ext_binary(fun_mult, pThis, pSet);
 }
 LPFuzzySet FuzzySet::operator/ (CREF(LPFuzzySet) pSet) const
 {
-	LPFuzzySet pThis(const_cast<PTR(FuzzySet)>(this));
+	LPFuzzySet pThis(const_cast<FuzzySet*>(this));
 	return MemberFunctionProperties::ext_binary(fun_div, pThis, pSet);
 }
 
-RDOValue fun_u_minus(CREF(RDOValue) rdovalue                 ) { return -rdovalue;                                     }
-RDOValue fun_u_obr  (CREF(RDOValue) rdovalue                 ) { return RDOValue(1)/rdovalue;                          }
-RDOValue fun_u_scale(CREF(RDOValue) rdovalue, PTR(void) scale) { return rdovalue * (*static_cast<PTR(double)>(scale)); }
-RDOValue fun_u_log  (CREF(RDOValue) rdovalue                 ) { return rdovalue > 0 ? log(rdovalue.getDouble()) : 0;     }
+RDOValue fun_u_minus(CREF(RDOValue) rdovalue             ) { return -rdovalue;                                    }
+RDOValue fun_u_obr  (CREF(RDOValue) rdovalue             ) { return RDOValue(1)/rdovalue;                         }
+RDOValue fun_u_scale(CREF(RDOValue) rdovalue, void* scale) { return rdovalue * (*static_cast<double*>(scale));    }
+RDOValue fun_u_log  (CREF(RDOValue) rdovalue             ) { return rdovalue > 0 ? log(rdovalue.getDouble()) : 0; }
 
 LPFuzzySet MemberFunctionProperties::u_minus(CREF(LPFuzzySet) pSet)               { return ext_unary(fun_u_minus,           pSet); }
 LPFuzzySet MemberFunctionProperties::u_obr  (CREF(LPFuzzySet) pSet)               { return ext_unary(fun_u_obr,             pSet); }
@@ -233,7 +233,7 @@ std::string FuzzySet::getAsString() const
 
 LPFuzzySet FuzzySet::clone() const
 {
-	return rdo::Factory<FuzzySet>::create(LPFuzzySet(const_cast<PTR(FuzzySet)>(this)));
+	return rdo::Factory<FuzzySet>::create(LPFuzzySet(const_cast<FuzzySet*>(this)));
 }
 // --------------------------------------------------------------------------------
 // -------------------- MemberFunctionProperties

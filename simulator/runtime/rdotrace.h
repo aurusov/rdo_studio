@@ -90,7 +90,7 @@ public:
 
 	std::string traceResourcesList( char prefix, CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) rel_res_list);
 
-	virtual void writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok);
+	virtual void writeResult(CREF(LPRDORuntime) pRuntime, RDOResultTrace* pok);
 
 public:
 	virtual std::ostream& getOStream();

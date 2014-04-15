@@ -30,14 +30,14 @@ public:
 	TreeCtrl(QWidget* pParent);
 	virtual ~TreeCtrl();
 
-	PTR(QTreeWidgetItem) insertFrame(CREF(QString) name);
+	QTreeWidgetItem* insertFrame(CREF(QString) name);
 
 	void clear();
 
 private:
 	typedef  QTreeWidget  parent_type;
 
-	PTR(QTreeWidgetItem) m_pRootItem;
+	QTreeWidgetItem* m_pRootItem;
 
 	virtual void focusInEvent   (QFocusEvent* pEvent);
 	virtual void focusOutEvent  (QFocusEvent* pEvent);

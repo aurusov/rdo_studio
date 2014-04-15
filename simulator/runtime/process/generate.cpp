@@ -73,7 +73,7 @@ void RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime)
 	pTransact->setBlock(this);
 	pTransact->next();
 
-	PTR(RDOTrace) tracer = pRuntime->getTracer();
+	RDOTrace* tracer = pRuntime->getTracer();
 	if (!tracer->isNull())
 	{
 		tracer->getOStream() << pTransact->traceResourceState('\0', pRuntime) << tracer->getEOL();

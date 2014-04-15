@@ -37,12 +37,12 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-int  evnparse(PTR(void) lexer);
-int  evnlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+int evnparse(void* lexer);
+int evnlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 void evnerror(const char* message);
 
-int  evn_preparse_parse(PTR(void) lexer);
-int  evn_preparse_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+int evn_preparse_parse(void* lexer);
+int evn_preparse_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 void evn_preparse_error(const char* message);
 
 // --------------------------------------------------------------------------------

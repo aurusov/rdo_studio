@@ -88,7 +88,7 @@ std::string Parser::convertToLexer(CREF(std::string) kw)
 	return str_big + " " + s;
 }
 
-void Parser::setEditorStyle(PTR(ParserStyle) pStyle)
+void Parser::setEditorStyle(ParserStyle* pStyle)
 {
 	super::setEditorStyle(pStyle);
 	if (!m_pStyle)

@@ -29,15 +29,15 @@ public:
 	virtual ~TabCtrl();
 
 	rdoModelObjects::RDOFileType indexToType(int index) const;
-	int   typeToIndex  (rdoModelObjects::RDOFileType type) const;
-	bool  typeSupported(rdoModelObjects::RDOFileType type) const   { return typeToIndex(type) != -1;     }
+	int typeToIndex(rdoModelObjects::RDOFileType type) const;
+	bool typeSupported(rdoModelObjects::RDOFileType type) const { return typeToIndex(type) != -1; }
 
-	rdoModelObjects::RDOFileType getCurrentRDOItem() const         { return indexToType(currentIndex()); }
+	rdoModelObjects::RDOFileType getCurrentRDOItem() const { return indexToType(currentIndex()); }
 	void setCurrentRDOItem(rdoModelObjects::RDOFileType type);
 
-	PTR(context_type) getCurrentEdit() const;
-	PTR(context_type) getItemEdit   (int index) const;
-	PTR(context_type) getItemEdit   (rdoModelObjects::RDOFileType type) const;
+	context_type* getCurrentEdit() const;
+	context_type* getItemEdit(int index) const;
+	context_type* getItemEdit(rdoModelObjects::RDOFileType type) const;
 
 private:
 	editor::Edit::Group m_group;

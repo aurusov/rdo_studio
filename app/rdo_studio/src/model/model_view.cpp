@@ -33,7 +33,7 @@ View::View(QWidget* pParent)
 {
 	m_pTabCtrl = new TabCtrl(this, this);
 
-	PTR(QVBoxLayout) pLayout = new QVBoxLayout(this);
+	QVBoxLayout* pLayout = new QVBoxLayout(this);
 	pLayout->setSpacing(0);
 	pLayout->setContentsMargins(0, 0, 0, 0);
 	pLayout->addWidget(m_pTabCtrl);
@@ -52,13 +52,13 @@ View::~View()
 	disconnect(pMainWindow->actSearchFindInModel, SIGNAL(triggered(bool)), this, SLOT(onSearchFindInModel()));
 }
 
-void View::setModel(PTR(Model) pModel)
+void View::setModel(Model* pModel)
 {
 	ASSERT(m_pModel != pModel);
 	m_pModel = pModel;
 }
 
-void View::closeEvent(PTR(QCloseEvent) event)
+void View::closeEvent(QCloseEvent* event)
 {
 	if (m_pModel)
 	{
@@ -120,7 +120,7 @@ void View::onSearchFindAll()
 	int count = 0;
 	for (int i = 0; i < m_pTabCtrl->count(); i++)
 	{
-		PTR(editor::Model) pEdit = m_pTabCtrl->getItemEdit(i);
+		editor::Model* pEdit = m_pTabCtrl->getItemEdit(i);
 		int pos  = 0;
 		int line = 0;
 		while (pos != -1)

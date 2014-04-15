@@ -30,7 +30,7 @@ public:
 	typedef intrusive_ptr<T> this_type;
 
 	 intrusive_ptr();
-	 intrusive_ptr(PTR (T)         object);
+	 intrusive_ptr(T* object);
 	 intrusive_ptr(CREF(this_type) sptr  );
 	 template <class P>
 	 intrusive_ptr(CREF(interface_ptr<P>) pInterface);
@@ -49,8 +49,8 @@ public:
 	bool compare(CREF(intrusive_ptr<P>) sptr) const;
 
 	operator bool() const;
-	 PTR(T) operator->() const;
-	 PTR(T) operator->();
+	 T* operator->() const;
+	 T* operator->();
 	CREF(T) operator*() const;
 	 REF(T) operator*();
 
@@ -73,7 +73,7 @@ public:
 	interface_ptr<P> interface_dynamic_cast() const;
 
 	/// @todo переместить в protected
-	PTR(T) get();
+	T* get();
 	const T* get() const;
 
 	bool owner() const;
@@ -83,7 +83,7 @@ protected:
 	void release();
 
 private:
-	PTR(T) m_object;
+	T* m_object;
 
 	REF(std::size_t) counter();
 };

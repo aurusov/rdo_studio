@@ -69,7 +69,7 @@ QUERY_INTERFACE_END
 friend class RDOTrace;
 
 private:
-	RDOIrregEvent(PTR(RDOPatternIrregEvent) pPattern, bool trace, CREF(std::string) name);
+	RDOIrregEvent(RDOPatternIrregEvent* pPattern, bool trace, CREF(std::string) name);
 
 	double  m_time;
 

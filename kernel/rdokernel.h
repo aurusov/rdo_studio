@@ -48,13 +48,13 @@ protected:
 	virtual void proc( RDOMessageInfo& msg );
 	virtual void start();
 
-	typedef std::list<PTR(RDOThread)> RDOThreadList;
-	RDOThreadList               threads;
+	typedef std::list<RDOThread*> RDOThreadList;
+	RDOThreadList threads;
 #ifdef RDO_MT
-	mutable CMutex              threads_mutex;
+	mutable CMutex threads_mutex;
 #endif
 //	std::list< RDOTreadMethod > methods;
-//	CMutex                      methods_mutex;
+//	CMutex methods_mutex;
 //	void method_registration( RDOTreadMethod& msg ); // thread-safety
 
 	RDOThread*                                     thread_studio;

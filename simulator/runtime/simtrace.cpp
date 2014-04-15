@@ -127,7 +127,7 @@ void RDOSimulatorTrace::preProcess()
 {
 	RDOSimulator::preProcess();
 	getTracer()->startWriting();
-	LPRDORuntime pRuntime = static_cast<PTR(RDORuntime)>(this);
+	LPRDORuntime pRuntime = static_cast<RDORuntime*>(this);
 	getTracer()->writeTraceBegin(pRuntime);
 	getTracer()->writePermanentResources(pRuntime, getResourcesBeforeSim());
 	getTracer()->writeModelBegin(pRuntime);
@@ -138,7 +138,7 @@ void RDOSimulatorTrace::preProcess()
 
 void RDOSimulatorTrace::postProcess()
 {
-	LPRDORuntime pRuntime = static_cast<PTR(RDORuntime)>(this);
+	LPRDORuntime pRuntime = static_cast<RDORuntime*>(this);
 	getTracer()->writeTraceEnd(pRuntime);
 //	getTracer()->stopWriting();
 }
