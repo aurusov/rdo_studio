@@ -161,7 +161,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 	ASSERT(pAddParamValue);
 	try
 	{
-		if(pAddParamValue->value().type().object_dynamic_cast<rdo::runtime::RDOResourceTypeList>())
+		if (pAddParamValue->value().type().object_dynamic_cast<rdo::runtime::RDOResourceTypeList>())
 		{
 			LPRDORSSResource pResourceValue = pAddParamValue->value().getPointerByType<RDORTPResType>();
 			ASSERT(pResourceValue);
