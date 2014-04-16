@@ -65,7 +65,8 @@ public:
 	typedef std::vector<Param> ParamList;
 	static const std::size_t UNDEFINED_ID = std::size_t(~0);
 
-	virtual std::vector<rdo::runtime::LPRDOCalc> createCalc() const;
+	virtual rdo::runtime::LPRDOCalc createCalc() const;
+	virtual std::vector<rdo::runtime::LPRDOCalc> createCalcList() const;
 
 	CREF(std::string) name() const { return src_info().src_text(); }
 	LPRDORTPResType getType() const { return m_pResType; }

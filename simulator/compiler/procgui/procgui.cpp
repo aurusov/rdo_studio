@@ -3,7 +3,7 @@
   \file      procgui.cpp
   \author    Шувалов Андрей
   \date      22.04.2011
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -29,11 +29,11 @@ ProcGUICalc::ProcGUICalc(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(LPRPSha
 	ASSERT(m_pParams );
 	switch(pParams->getZakon())
 	{
-		case RPShapeDataBlock::Const: // константа 
+		case RPShapeDataBlock::Const: // константа
 		{
 			m_pCalc = static_cast<rdo::runtime::LPRDOCalc>(getConstCalc(pParams->getExp()));
 			break;
-		}	
+		}
 		case RPShapeDataBlock::Normal: // нормальный
 		{
 			m_pCalc = static_cast<rdo::runtime::LPRDOCalc>(getNormalCalc(pParams->getBase(), pParams->getExp(), pParams->getDisp()));
@@ -184,10 +184,9 @@ void ProcGUIProcess::initResources(CREF(parser::LPRDOParser) pParser)
 	{
 		parser::LPRDORSSResource pResource = pParser->findRSSResource(name);
 		ASSERT(pResource);
-		const std::vector<rdo::runtime::LPRDOCalc> calcList = pResource->createCalc();
-		ASSERT(!calcList.empty());
-		ASSERT(calcList[0]);
-		pParser->runtime()->addInitCalc(calcList[0]);
+		const rdo::runtime::LPRDOCalc pCalc = pResource->createCalc();
+		ASSERT(pCalc);
+		pParser->runtime()->addInitCalc(pCalc);
 	}
 }
 
@@ -471,7 +470,7 @@ void ProcGUISeize::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::L
 			}
 			rdo::runtime::parser_for_Seize bbb;
 			bbb.Id_res   = pResource->getID();
-			bbb.Id_param = rtp.m_params[rtpParamName].id(); 
+			bbb.Id_param = rtp.m_params[rtpParamName].id();
 			m_parserForRuntime.push_back(bbb);
 		}
 		else
@@ -581,7 +580,7 @@ void ProcGUIRelease::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser:
 			}
 			rdo::runtime::parser_for_Seize bbb;
 			bbb.Id_res   = pResource->getID();
-			bbb.Id_param = rtp.m_params[rtpParamName].id(); 
+			bbb.Id_param = rtp.m_params[rtpParamName].id();
 			m_parserForRuntime.push_back(bbb);
 		}
 		else
@@ -755,7 +754,7 @@ void ProcGUIDepart::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::
 		const std::string rtpParamName = rdo::runtime::RDOPROCDepart::getDepartParamName();
 		m_parserForRuntime.Id_res = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtpParamName].id();
-	}	
+	}
 	else
 	{
 		pParser->error().error(parser::RDOParserSrcInfo(), rdo::format("Внутренняя ошибка ProcGUIDepart: не нашли parser-ресурс '%s'", m_resourceName.c_str()));

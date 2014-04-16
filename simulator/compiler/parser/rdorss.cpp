@@ -166,16 +166,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 			LPRDORSSResource pResourceValue = pAddParamValue->value().getPointerByType<RDORTPResType>();
 			ASSERT(pResourceValue);
 
-			std::vector<rdo::runtime::LPRDOCalc> paramList;
-			for (const auto& param : pResourceValue->params())
-				paramList.push_back(param.param()->calc());
-
-			rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
-				pResourceValue->getType()->getNumber(),
-				paramList,
-				pResourceValue->getTrace(),
-				pResourceValue->getType()->isPermanent()
-			);
+			rdo::runtime::LPRDOCalc pCalc = pResourceValue->createCalc();
 
 			pAddParam = rdo::Factory<Expression>::create(
 				rdo::Factory<TypeInfo>::create(pAddParamValue->typeInfo()),
@@ -203,9 +194,9 @@ bool RDORSSResource::defined() const
 	return m_currParam == getType()->getParams().end();
 }
 
-std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalc() const
+
+rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 {
-	std::vector<rdo::runtime::LPRDOCalc> calcList;
 	std::vector<rdo::runtime::LPRDOCalc> paramList;
 	for (const auto& param: params())
 		paramList.push_back(param.param()->calc());
@@ -221,6 +212,13 @@ std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalc() const
 	srcInfo.setSrcText("Создание ресурса " + src_text());
 	pCalc->setSrcInfo(srcInfo);
 
+	return pCalc;
+}
+
+std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalcList() const
+{
+	std::vector<rdo::runtime::LPRDOCalc> calcList;
+	rdo::runtime::LPRDOCalc pCalc = createCalc();
 	calcList.push_back(pCalc);
 	if (m_traceCalc)
 		calcList.push_back(m_traceCalc);
