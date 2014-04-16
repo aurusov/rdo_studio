@@ -1036,6 +1036,12 @@ std::string RDOValue::onPointerAsString() const
 		return pThisMatrixIterator->getValue().getAsString();
 	}
 
+	LPRDOResourceTypeList pThisResource = m_pType.object_dynamic_cast<RDOResourceTypeList>();
+	if (pThisResource)
+	{
+		return "nested_resource";
+	}
+
 	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
 	//if (pThisFuzzyType)
 	//{
