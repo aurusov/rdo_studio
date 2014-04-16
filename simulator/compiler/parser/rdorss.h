@@ -4,8 +4,8 @@
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Романов Ярослав (robot.xet@gmail.com)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -79,6 +79,8 @@ public:
 	void setTrace(bool value) { trace = value; }
 	bool defined() const;
 	void end();
+	void setIsNested(bool nested) { isNested = nested; }
+	bool getIsNested() { return isNested; }
 
 	void writeModelStructure(std::ostream& stream) const;
 
@@ -97,6 +99,7 @@ protected:
 	std::size_t m_id; //! in system
 	ParamList m_paramList;
 	bool trace;
+	bool isNested;
 
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;
