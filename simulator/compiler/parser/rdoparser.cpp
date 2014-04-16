@@ -3,8 +3,8 @@
   \file      rdoparser.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -535,10 +535,13 @@ void RDOParser::runRSSPost()
 			if (rss->getType() == rtp)
 			{
 #endif
-				const std::vector<rdo::runtime::LPRDOCalc> calcList = rss->createCalc();
-				BOOST_FOREACH(const rdo::runtime::LPRDOCalc& calc, calcList)
+				if (!rss->getIsNested())
 				{
-					runtime()->addInitCalc(calc);
+					const std::vector<rdo::runtime::LPRDOCalc> calcList = rss->createCalc();
+					BOOST_FOREACH(const rdo::runtime::LPRDOCalc& calc, calcList)
+					{
+						runtime()->addInitCalc(calc);
+					}
 				}
 #ifdef RDOSIM_COMPATIBLE
 			}

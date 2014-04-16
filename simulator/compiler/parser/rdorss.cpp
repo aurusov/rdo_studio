@@ -4,8 +4,8 @@
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Романов Ярослав (robot.xet@gmail.com)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -34,6 +34,7 @@ RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo)
 	, m_pResType      (pResType                                      )
 	, m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)
 	, trace           (false                                         )
+	, isNested        (false                                         )
 {
 	ASSERT(m_pResType);
 	pParser->insertRSSResource(LPRDORSSResource(this));
@@ -49,7 +50,7 @@ void RDORSSResource::end()
 	RDOParser::s_parser()->contextStack()->pop<RDORSSResource>();
 }
 
-namespace 
+namespace
 {
 
 LPExpression contextSetTrace(const rdo::runtime::LPRDOCalc& getResource, bool traceValue, const RDOParserSrcInfo& srcInfo)
@@ -83,14 +84,14 @@ Context::FindResult RDORSSResource::onFindContext(const std::string& method, con
 		ASSERT(pParam);
 		return pParam->find(Context::METHOD_GET, params_, srcInfo);
 	}
-	
+
 	if (method == "trace()")
 	{
 		rdo::runtime::LPRDOCalc getResource = rdo::Factory<rdo::runtime::RDOCalcGetResourceByID>::create(getID());
 		const bool traceValue = params.get<bool>("traceValue");
 		return FindResult(CreateExpression(boost::bind(&contextSetTrace, getResource, traceValue, srcInfo)));
 	}
-	
+
 	return FindResult();
 }
 
@@ -160,11 +161,36 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 	ASSERT(pAddParamValue);
 	try
 	{
-		pAddParam = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::create(pAddParamValue->typeInfo()),
-			rdo::Factory<rdo::runtime::RDOCalcConst>::create(pAddParamValue->value().clone()),
-			pAddParamValue->src_info()
-		);
+		if(pAddParamValue->value().type().object_dynamic_cast<rdo::runtime::RDOResourceTypeList>())
+		{
+			LPRDORSSResource pResourceValue = RDOParser::s_parser()->findRSSResource(
+				pAddParamValue->src_info().src_text()
+			);
+			ASSERT(pResourceValue);
+
+			std::vector<rdo::runtime::LPRDOCalc> paramList;
+			for (const auto& param : pResourceValue->params())
+				paramList.push_back(param.param()->calc());
+
+			rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
+				pResourceValue->getType()->getNumber(),
+				paramList,
+				pResourceValue->getTrace(),
+				pResourceValue->getType()->isPermanent()
+			);
+
+			pAddParam = rdo::Factory<Expression>::create(
+				rdo::Factory<TypeInfo>::create(pAddParamValue->typeInfo()),
+				pCalc,
+				pAddParamValue->src_info()
+			);
+		}
+		else
+			pAddParam = rdo::Factory<Expression>::create(
+				rdo::Factory<TypeInfo>::create(pAddParamValue->typeInfo()),
+				rdo::Factory<rdo::runtime::RDOCalcConst>::create(pAddParamValue->value().clone()),
+				pAddParamValue->src_info()
+			);
 	}
 	catch (const rdo::runtime::RDOValueException& e)
 	{
@@ -184,9 +210,7 @@ std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalc() const
 	std::vector<rdo::runtime::LPRDOCalc> calcList;
 	std::vector<rdo::runtime::LPRDOCalc> paramList;
 	for (const auto& param: params())
-	{
 		paramList.push_back(param.param()->calc());
-	}
 
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
 		getType()->getNumber(),
@@ -198,7 +222,7 @@ std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalc() const
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());
 	srcInfo.setSrcText("Создание ресурса " + src_text());
 	pCalc->setSrcInfo(srcInfo);
-	
+
 	calcList.push_back(pCalc);
 	if (m_traceCalc)
 		calcList.push_back(m_traceCalc);
