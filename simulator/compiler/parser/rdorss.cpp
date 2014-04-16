@@ -194,7 +194,6 @@ bool RDORSSResource::defined() const
 	return m_currParam == getType()->getParams().end();
 }
 
-
 rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 {
 	std::vector<rdo::runtime::LPRDOCalc> paramList;
