@@ -24,11 +24,11 @@ namespace
 
 GraphWidget::GraphWidget(QWidget* pParent)
 	: QGraphicsView(pParent)
-	, scene        (NULL   )
 {
-	scene = new QGraphicsScene(this);
-	scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-	setScene(scene);
+	QGraphicsScene* pScene = new QGraphicsScene(this);
+	pScene->setItemIndexMethod(QGraphicsScene::NoIndex);
+
+	setScene(pScene);
 
 	setCacheMode(CacheBackground);
 	setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -74,7 +74,7 @@ void GraphWidget::keyReleaseEvent(QKeyEvent* kEvent)
 
 void GraphWidget::scaleView(double scaleFactor)
 {
-	double factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
+	const double factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
 	if (MIN_FACTOR < factor && factor < MAX_FACTOR)
 	{
 		scale(scaleFactor, scaleFactor);

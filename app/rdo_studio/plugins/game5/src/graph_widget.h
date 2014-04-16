@@ -24,14 +24,11 @@ public:
 	GraphWidget(QWidget* parent = 0);
 	~GraphWidget();
 
-	QGraphicsScene* scene;
-
-protected:
+private:
 	virtual void wheelEvent     (QWheelEvent* wEvent);
 	virtual void keyPressEvent  (QKeyEvent* kEvent);
 	virtual void keyReleaseEvent(QKeyEvent* kEvent);
 
-private:
 	void scaleView(double scaleFactor);
 };
 

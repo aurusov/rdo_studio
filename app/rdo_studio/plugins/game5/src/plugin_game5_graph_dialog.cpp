@@ -166,7 +166,7 @@ int PluginGame5GraphDialog::parseTraceInfo(const QString& key)
 
 void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startBoardState)
 {
-	graphWidget->scene->clear();//@todo (*)Хранить и рисовать 2 разных объекта
+	graphWidget->scene()->clear();//@todo (*)Хранить и рисовать 2 разных объекта
 	m_graph.clear();            //Очистка вектора, объекты удалены при очистке сцены
 	m_clickedNode = NULL;
 
@@ -177,7 +177,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 	//@todo Во время парсинга разделять строку на атрибуты GraphNode и запоминать самые широкие
 	//заодно сделать (*)
 	QString nodeText = GraphNode::generateNodeTextLargeView(999, 999, 999, 999, 999, 999, "Начало поиска");
-	QFontMetrics fontMetrics = QFontMetrics(graphWidget->scene->font());
+	QFontMetrics fontMetrics = QFontMetrics(graphWidget->scene()->font());
 	QRect nodeRect = fontMetrics.boundingRect(QRect(), Qt::AlignCenter, nodeText);
 	m_nodeWidth  = nodeRect.width();
 	m_nodeHeight = nodeRect.height();
@@ -250,7 +250,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 	{
 		int node = paintLevel.back()[j];
 
-		graphWidget->scene->addItem(m_graph[node]);
+		graphWidget->scene()->addItem(m_graph[node]);
 		m_graph[node]->setPos((SPACER_X + m_nodeWidth) * (j + 1), (paintLevel.size() - 1) * (SPACER_Y + m_nodeHeight));
 	}
 	leftNode  = m_graph[paintLevel.back().front()];
@@ -267,11 +267,11 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 			int node = paintLevel[i][j];
 			if (m_graph[node]->haveChild())
 			{
-				graphWidget->scene->addItem(m_graph[node]);
+				graphWidget->scene()->addItem(m_graph[node]);
 				m_graph[node]->setPos(m_graph[node]->childrenMeanX(), m_graph[node]->childrenMeanY() - (SPACER_Y + m_nodeHeight));
 				for (auto childNode: m_graph[node]->getChildrenList())
 				{
-					graphWidget->scene->addItem(new GraphEdge(*m_graph[node], *childNode));
+					graphWidget->scene()->addItem(new GraphEdge(*m_graph[node], *childNode));
 				}
 
 				if (!buildFlag)
@@ -310,7 +310,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 					int node  = paintLevel[i][k];
 					int segment = unbuiltRange.range - k + unbuiltRange.firstNode;
 
-					graphWidget->scene->addItem(m_graph[node]);
+					graphWidget->scene()->addItem(m_graph[node]);
 					m_graph[node]->setPos(m_graph[temp]->pos().x() - (SPACER_X + m_nodeWidth) * segment, m_graph[temp]->pos().y());
 				}
 				if (leftNode->pos().x() > m_graph[paintLevel[i][unbuiltRange.firstNode]]->pos().x())
@@ -326,7 +326,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 					int node  = paintLevel[i][k];
 					int segment = k - unbuiltRange.firstNode + 1;
 
-					graphWidget->scene->addItem(m_graph[node]);
+					graphWidget->scene()->addItem(m_graph[node]);
 					m_graph[node]->setPos(m_graph[temp]->pos().x() + (SPACER_X + m_nodeWidth) * segment, m_graph[temp]->pos().y());
 				}
 				if (rightNode->pos().x() < m_graph[paintLevel[i][endUnbuiltRange - 1]]->pos().x())
@@ -355,14 +355,14 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 					int node    = paintLevel[i][k];
 					int segment = k - unbuiltRange.firstNode + 1;
 
-					graphWidget->scene->addItem(m_graph[node]);
+					graphWidget->scene()->addItem(m_graph[node]);
 					m_graph[node]->setPos(m_graph[temp1]->pos().x() + segment * deltaX/(unbuiltRange.range + 1), m_graph[temp1]->pos().y());
 				}
 			}
 		}
 	}
-	graphWidget->scene->addItem(new GraphInfo(parseTraceInfo("DPS_CO"), parseTraceInfo("DPS_TO"), parseTraceInfo("DPS_TT"),
-	                                          graphWidget->scene->sceneRect().x(), graphWidget->scene->sceneRect().y()));
+	graphWidget->scene()->addItem(new GraphInfo(parseTraceInfo("DPS_CO"), parseTraceInfo("DPS_TO"), parseTraceInfo("DPS_TT"),
+	                                          graphWidget->scene()->sceneRect().x(), graphWidget->scene()->sceneRect().y()));
 }
 
 void PluginGame5GraphDialog::onPluginAction(const std::vector<unsigned int>& boardState)
