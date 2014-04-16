@@ -163,9 +163,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 	{
 		if(pAddParamValue->value().type().object_dynamic_cast<rdo::runtime::RDOResourceTypeList>())
 		{
-			LPRDORSSResource pResourceValue = RDOParser::s_parser()->findRSSResource(
-				pAddParamValue->src_info().src_text()
-			);
+			LPRDORSSResource pResourceValue = pAddParamValue->value().getPointerByType<RDORTPResType>();
 			ASSERT(pResourceValue);
 
 			std::vector<rdo::runtime::LPRDOCalc> paramList;

@@ -3,8 +3,8 @@
   \file      rdortp.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -77,6 +77,8 @@ public:
 
 	void writeModelStructure(std::ostream& stream) const;
 
+	typedef RDORSSResource value_type;
+
 	DECLARE_IType;
 
 private:
@@ -95,7 +97,7 @@ private:
 DECLARE_POINTER(RDORTPResType);
 
 //// --------------------------------------------------------------------------------
-////------------------------------ FOR FUZZY LOGIC ------------------------------	
+////------------------------------ FOR FUZZY LOGIC ------------------------------
 //// --------------------------------------------------------------------------------
 //
 //// --------------------------------------------------------------------------------
@@ -140,9 +142,9 @@ DECLARE_POINTER(RDORTPResType);
 //	{
 //		m_points.push_back(point);
 //	}
-//	double  getVal() const 
-//	{ 
-//		return m_value; 
+//	double  getVal() const
+//	{
+//		return m_value;
 //	}
 //
 //private:
