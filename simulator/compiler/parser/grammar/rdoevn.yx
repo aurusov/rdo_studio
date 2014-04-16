@@ -206,6 +206,9 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
@@ -894,7 +897,7 @@ rss_resource
 		{
 			LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
 			ASSERT(pName);
-			
+
 			LPRDORSSResource pResourceExist = PARSER->findRSSResource(pName->value().getIdentificator());
 			if (pResourceExist)
 			{
@@ -938,7 +941,7 @@ rss_resource
 			Context::Params traceParams;
 			traceParams["traceValue"] = traceValue;
 			result = result.getSwitchContext().context->find("trace()", traceParams, pName->src_info());
-			
+
 			LPExpression pExpression = result.getCreateExpression()();
 			ASSERT(pExpression);
 
@@ -1078,6 +1081,30 @@ rss_value
 			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
 		}
 	}
+	| rss_constructor_call
+	{
+		#PASS2
+		{
+			LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
+			pResource->setIsNested(true);
+			pResource->setSrcInfo(RDOParserSrcInfo( to_string(boost::uuids::random_generator()()) ));
+			rdo::runtime::RDOValue runtimeValue(
+				pResource->getType()->type(),
+				pResource
+			);
+			LPTypeInfo pResourceTypeInfo = Factory<TypeInfo>::create(
+				pResource->getType(),
+				pResource->getType()->src_info()
+			);
+			LPRDOValue pValue = Factory<parser::RDOValue>::create(
+				runtimeValue,
+				pResource->src_info(),
+				pResourceTypeInfo
+			);
+
+			PARSER->context()->cast<RDORSSResource>()->addParam(pValue);
+		}
+	}
 	| error
 	{
 		#PASS2
@@ -1214,7 +1241,7 @@ pat_trace
 	{
 		$$ = 0;
 	}
-	| RDO_trace	
+	| RDO_trace
 	{
 		$$ = 1;
 	}
@@ -8491,7 +8518,7 @@ process_line
 
 			LPRDORTPResType pParserType = pProc->getTransacType();
 			ASSERT(pParserType);
-			
+
 			const bool permanentFlag = pParserType->isPermanent();
 			const bool traceFlag = true;
 
@@ -8861,7 +8888,7 @@ depart_param
 			$$ = PARSER->stack().push(pDepart);
 		}
 	}
-	| RDO_IDENTIF error 
+	| RDO_IDENTIF error
 	{
 		#PASS1
 		{
@@ -9153,7 +9180,7 @@ assign_param
 				{
 					PARSER->error().error(@1, rdo::format("Ссылка на неизвестный параметр ресурса: %s.%s", res.c_str(), param.c_str()));
 				}
-			
+
 				LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
 				ASSERT(pArithm);
 
@@ -10255,7 +10282,7 @@ for_header
 
 			LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($5);
 			ASSERT(pCondition);
-			
+
 			rdo::runtime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 			ASSERT(pConditionCalc);
 
