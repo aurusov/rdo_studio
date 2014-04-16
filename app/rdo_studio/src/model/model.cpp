@@ -65,10 +65,10 @@ Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, std::size_t p
 // --------------------------------------------------------------------------------
 // -------------------- Model
 // --------------------------------------------------------------------------------
-PTR(Model) g_pModel = NULL;
+Model* g_pModel = NULL;
 
 Model::Model()
-	: RDOThreadGUI("RDOThreadModelGUI", static_cast<PTR(RDOKernelGUI)>(g_pApp->m_pStudioGUI))
+	: RDOThreadGUI("RDOThreadModelGUI", static_cast<RDOKernelGUI*>(g_pApp->m_pStudioGUI))
 	, m_frameManager   (boost::bind(&Model::onChangeFrame, this, _1))
 	, m_GUI_HAS_MODEL  (false                     )
 	, m_GUI_CAN_RUN    (true                      )
@@ -235,7 +235,7 @@ Model::~Model()
 
 bool Model::init()
 {
-	PTR(IInit) pFrameManagerInit = dynamic_cast<PTR(IInit)>(&m_frameManager);
+	IInit* pFrameManagerInit = dynamic_cast<IInit*>(&m_frameManager);
 	ASSERT(pFrameManagerInit);
 	pFrameManagerInit->init();
 
@@ -249,8 +249,8 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_STUDIO_MODEL_GET_TEXT:
 		{
 			msg.lock();
-			PTR(rdo::repository::RDOThreadRepository::FileData) fdata = static_cast<PTR(rdo::repository::RDOThreadRepository::FileData)>(msg.param);
-			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(fdata->m_type);
+			rdo::repository::RDOThreadRepository::FileData* fdata = static_cast<rdo::repository::RDOThreadRepository::FileData*>(msg.param);
+			editor::Model* pEdit = m_pView->getTab().getItemEdit(fdata->m_type);
 			if (pEdit)
 			{
 				pEdit->save(fdata->m_stream);
@@ -273,7 +273,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			QMessageBox::critical(
 				g_pApp->getMainWnd(),
 				"Ошибка открытия модели",
-				QString("Невозможно открыть модель '%1'.").arg(QString::fromStdWString(static_cast<PTR(boost::filesystem::path)>(msg.param)->wstring()))
+				QString("Невозможно открыть модель '%1'.").arg(QString::fromStdWString(static_cast<boost::filesystem::path*>(msg.param)->wstring()))
 			);
 			break;
 		}
@@ -285,7 +285,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_REPOSITORY_MODEL_OPEN_GET_NAME:
 		{
 			msg.lock();
-			PTR(rdo::repository::RDOThreadRepository::OpenFile) data = static_cast<PTR(rdo::repository::RDOThreadRepository::OpenFile)>(msg.param);
+			rdo::repository::RDOThreadRepository::OpenFile* data = static_cast<rdo::repository::RDOThreadRepository::OpenFile*>(msg.param);
 
 			QString modelName = QFileDialog::getOpenFileName(
 				NULL,
@@ -323,7 +323,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			int index = m_frameManager.getLastShowedFrame();
 			if (index != -1)
 			{
-				PTR(rdo::gui::frame::View) pView = m_frameManager.getFrameView(index);
+				rdo::gui::frame::View* pView = m_frameManager.getFrameView(index);
 				if (pView) pView->setFocus();
 			}
 			g_pApp->getIMainWnd()->update_start();
@@ -389,7 +389,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			}
 			if (errors_cnt || warnings_cnt)
 			{
-//				const_cast<PTR(rdo::gui::editor::Build)>(output->getBuild())->showFirstError();
+//				const_cast<rdo::gui::editor::Build*>(output->getBuild())->showFirstError();
 			}
 
 			g_pApp->autoCloseByModel();
@@ -467,21 +467,21 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_SIMULATOR_PARSE_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromStdString(*static_cast<PTR(std::string)>(msg.param)));
+			g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromStdString(*static_cast<std::string*>(msg.param)));
 			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_DEBUG_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdString(*static_cast<PTR(std::string)>(msg.param)));
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdString(*static_cast<std::string*>(msg.param)));
 			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_RESULT_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(*static_cast<PTR(std::string)>(msg.param)));
+			g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(*static_cast<std::string*>(msg.param)));
 			msg.unlock();
 			break;
 		}
@@ -661,7 +661,7 @@ void Model::createView()
 
 	for (int i = 0; i < m_pView->getTab().count(); i++)
 	{
-		PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
+		editor::Model* pEdit = m_pView->getTab().getItemEdit(i);
 		connect(pEdit, SIGNAL(modifyChanged(bool)), this, SLOT(onEditModifyChanged(bool)));
 	}
 }
@@ -672,7 +672,7 @@ void Model::resetView()
 	{
 		for (int i = 0; i < m_pView->getTab().count(); i++)
 		{
-			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
+			editor::Model* pEdit = m_pView->getTab().getItemEdit(i);
 			disconnect(pEdit, SIGNAL(modifyChanged(bool)), this, SLOT(onEditModifyChanged(bool)));
 		}
 		m_pView->setModel(NULL);
@@ -694,7 +694,7 @@ void Model::newModelFromRepository()
 
 	for (int i = 0; i < m_pView->getTab().count(); i++)
 	{
-		PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
+		editor::Model* pEdit = m_pView->getTab().getItemEdit(i);
 		pEdit->setReadOnly(false);
 		pEdit->clearAll();
 		if (templateIt != m_modelTemplates.end())
@@ -728,7 +728,7 @@ void Model::newModelFromRepository()
 		saveModel();
 		for (int i = 0; i < m_pView->getTab().count(); i++)
 		{
-			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
+			editor::Model* pEdit = m_pView->getTab().getItemEdit(i);
 			pEdit->clearUndoBuffer();
 		}
 	}
@@ -748,7 +748,7 @@ void Model::openModelFromRepository()
 	g_pApp->getMainWndUI()->statusBar()->stepProgress();
 	for (int i = 0; i < cnt; i++)
 	{
-		PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
+		editor::Model* pEdit = m_pView->getTab().getItemEdit(i);
 		pEdit->setReadOnly(false);
 		pEdit->clearAll();
 		std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
@@ -815,7 +815,7 @@ void Model::openModelFromRepository()
 void Model::saveModelToRepository()
 {
 	bool smr_modified = false;
-	PTR(editor::Model) pSmrEdit = m_pView->getTab().getItemEdit(rdoModelObjects::SMR);
+	editor::Model* pSmrEdit = m_pView->getTab().getItemEdit(rdoModelObjects::SMR);
 	if (pSmrEdit->isModify())
 	{
 		std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
@@ -846,7 +846,7 @@ void Model::saveModelToRepository()
 		g_pApp->getMainWndUI()->statusBar()->stepProgress();
 		for (int i = 0; i < cnt; i++)
 		{
-			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
+			editor::Model* pEdit = m_pView->getTab().getItemEdit(i);
 			if (smr_modified || pEdit->isModify())
 			{
 				std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
@@ -989,7 +989,7 @@ void Model::afterModelStart()
 		m_frameManager.setLastShowedFrame(initFrameNumber);
 		if (getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && initFrameNumber < m_frameManager.count())
 		{
-			PTR(rdo::gui::frame::View) pView = m_frameManager.createView(initFrameNumber);
+			rdo::gui::frame::View* pView = m_frameManager.createView(initFrameNumber);
 			if (pView)
 			{
 				m_frameManager.getFrameView(initFrameNumber)->setFocus();
@@ -1035,7 +1035,7 @@ void Model::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 			case rdo::runtime::RTM_MaxSpeed: closeAllFrame(); break;
 			default:
 			{
-				PTR(rdo::gui::frame::View) pView = m_frameManager.getFrameViewFirst();
+				rdo::gui::frame::View* pView = m_frameManager.getFrameViewFirst();
 				if (!pView)
 				{
 					m_frameManager.createView(m_frameManager.getLastShowedFrame());
@@ -1252,7 +1252,7 @@ void Model::update()
 		{
 			break;
 		}
-		PTR(rdo::gui::frame::View) pView = m_frameManager.getFrameView(i);
+		rdo::gui::frame::View* pView = m_frameManager.getFrameView(i);
 		if (pView)
 		{
 			//! @todo qt: переделать модель отрисовки.
@@ -1378,7 +1378,7 @@ void Model::onChangeFrame(std::size_t)
 	updateActions();
 }
 
-PTR(TabCtrl) Model::getTab()
+TabCtrl* Model::getTab()
 {
 	if (!m_pView)
 		return NULL;

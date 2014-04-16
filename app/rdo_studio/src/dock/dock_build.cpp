@@ -24,7 +24,7 @@
 DockBuild::DockBuild(QWidget* pParent)
 	: DockFocusable("Компилятор", pParent)
 {
-	PTR(context_type) pWidget = new context_type(this);
+	context_type* pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 110));
 
 	setWidget(pWidget);
@@ -37,7 +37,7 @@ DockBuild::~DockBuild()
 
 void DockBuild::appendString(CREF(QString) str)
 {
-	PTR(rdo::simulation::report::BuildEditLineInfo) pLine = new rdo::simulation::report::BuildEditLineInfo(str.toStdString());
+	rdo::simulation::report::BuildEditLineInfo* pLine = new rdo::simulation::report::BuildEditLineInfo(str.toStdString());
 	getContext().appendLine(pLine);
 }
 
@@ -52,7 +52,7 @@ void DockBuild::appendString(CREF(rdo::simulation::report::FileMessage) message)
 
 	if (message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == rdo::simulation::report::FileMessage::MT_WARNING && static_cast<rdo::gui::editor::BuildStyle>(g_pApp->getStyle()->style_build).warning))
 	{
-		PTR(rdo::simulation::report::BuildEditLineInfo) pLine = new rdo::simulation::report::BuildEditLineInfo(message);
+		rdo::simulation::report::BuildEditLineInfo* pLine = new rdo::simulation::report::BuildEditLineInfo(message);
 		getContext().appendLine(pLine);
 	}
 }
@@ -64,5 +64,5 @@ void DockBuild::clear()
 
 REF(DockBuild::context_type) DockBuild::getContext()
 {
-	return *static_cast<PTR(context_type)>(widget());
+	return *static_cast<context_type*>(widget());
 }

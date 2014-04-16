@@ -29,8 +29,8 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int  cnv_funparse(PTR(void) lexer);
-int  cnv_funlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+int  cnv_funparse(void* lexer);
+int  cnv_funlex  (YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 void cnv_funerror(const char* message);
 
 // --------------------------------------------------------------------------------

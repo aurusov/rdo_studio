@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <cstdint>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr_interface_wrapper.h"
@@ -33,7 +34,7 @@ public:
 	RDOValue(CREF(RDOValue) rdovalue);
 	RDOValue(CREF(LPRDOType) pType);
 	RDOValue(int value);
-	RDOValue(std::size_t value);
+	RDOValue(uint32_t value);
 #ifdef ARCHITECTURE_AMD64
 	RDOValue(uint64_t value);
 #endif // ARCHITECTURES_AMD64
@@ -52,7 +53,7 @@ public:
 	static RDOValue fromDouble(CREF(LPRDOType) pType, double value);
 
 	int getInt() const;
-	std::size_t getUInt() const;
+	uint32_t getUInt() const;
 	int getEnumAsInt() const;
 	LPRDOEnumType getEnum() const;
 	double getDouble() const;
@@ -63,8 +64,8 @@ public:
 	template <class T>
 	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerByType() const;
 
-	template <class Pair>
-	CREF(rdo::intrusive_ptr<typename Pair::Value>) getPointerByType() const;
+	template <class V, class T>
+	CREF(rdo::intrusive_ptr<V>) getPointerByType() const;
 
 	template <class T>
 	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerByInterface() const;
@@ -143,8 +144,8 @@ private:
 	template <class T>
 	CREF(T) __get() const;
 
-	 REF(PTR(void)) __voidPtrV();
-	CREF(PTR(void)) __voidPtrV() const;
+	 REF(void*) __voidPtrV();
+	CREF(void*) __voidPtrV() const;
 	LPRDOEnumType __enumT   () const;
 	 REF(std::string) __stringV ();
 	CREF(std::string) __stringV () const;
@@ -159,7 +160,7 @@ private:
 	REF(RDOValue) onPointerMult(CREF(RDOValue) rdovalue);
 	REF(RDOValue) onPointerDiv(CREF(RDOValue) rdovalue);
 	int onPointerGetInt() const;
-	std::size_t onPointerGetUInt() const;
+	uint32_t onPointerGetUInt() const;
 	bool onPointerAnd(CREF(RDOValue) rdovalue) const;
 	bool onPointerOr(CREF(RDOValue) rdovalue) const;
 	RDOValue onPointerUMinus() const;

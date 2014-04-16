@@ -31,7 +31,7 @@ public:
 	Model(QWidget* pParent, QWidget* pView = NULL);
 	virtual ~Model();
 
-	void setEditorStyle(PTR(ModelStyle) pStyle);
+	void setEditorStyle(ModelStyle* pStyle);
 
 	void setErrorLine(int line = -1);
 

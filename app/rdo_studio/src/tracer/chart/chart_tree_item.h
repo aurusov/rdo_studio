@@ -24,7 +24,7 @@ class ChartTreeItem: public rdo::counter_reference
 {
 DECLARE_FACTORY(ChartTreeItem)
 public:
-	void setCtrlItem(PTR(QTreeWidgetItem) pCtrlItem);
+	void setCtrlItem(QTreeWidgetItem* pCtrlItem);
 	REF(QTreeWidgetItem) getCtrlItem();
 
 	bool isDrawable() const;
@@ -34,8 +34,8 @@ protected:
 	~ChartTreeItem();
 
 private:
-	PTR(QTreeWidgetItem) m_pCtrlItem;
-	bool                 m_drawable; // set to true ONLY for TracerSerie and descendants
+	QTreeWidgetItem* m_pCtrlItem;
+	bool m_drawable; // set to true ONLY for TracerSerie and descendants
 };
 
 typedef  rdo::intrusive_ptr<ChartTreeItem>  LPChartTreeItem;

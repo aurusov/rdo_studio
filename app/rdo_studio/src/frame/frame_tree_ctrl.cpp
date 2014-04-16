@@ -35,9 +35,9 @@ TreeCtrl::TreeCtrl(QWidget* pParent)
 TreeCtrl::~TreeCtrl()
 {}
 
-PTR(QTreeWidgetItem) TreeCtrl::insertFrame(CREF(QString) name)
+QTreeWidgetItem* TreeCtrl::insertFrame(CREF(QString) name)
 {
-	PTR(QTreeWidgetItem) pItem = new QTreeWidgetItem(m_pRootItem);
+	QTreeWidgetItem* pItem = new QTreeWidgetItem(m_pRootItem);
 	ASSERT(pItem);
 	pItem->setText(0, name);
 	pItem->setIcon(0, QIcon(QString::fromUtf8(":/images/images/tree_frame_item.png")));
@@ -46,8 +46,8 @@ PTR(QTreeWidgetItem) TreeCtrl::insertFrame(CREF(QString) name)
 
 void TreeCtrl::clear()
 {
-	QList<PTR(QTreeWidgetItem)> children = m_pRootItem->takeChildren();
-	BOOST_FOREACH(PTR(QTreeWidgetItem) item, children)
+	QList<QTreeWidgetItem*> children = m_pRootItem->takeChildren();
+	BOOST_FOREACH(QTreeWidgetItem* item, children)
 	{
 		m_pRootItem->removeChild(item);
 	}

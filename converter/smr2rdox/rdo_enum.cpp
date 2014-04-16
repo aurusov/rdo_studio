@@ -68,7 +68,7 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) f
 	{
 		case rdo::runtime::RDOType__int::t_enum:
 		{
-			LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+			LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 			//! Это один и тот же тип
 			if (pEnum == pFrom)
 				return pEnum;
@@ -97,7 +97,7 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) f
 		{
 			if (getEnums()->exist(from_src_info.src_text()))
 			{
-				LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+				LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 				return pEnum;
 			}
 			rdo::converter::smr2rdox::g_error().error(src_info, rdo::format("Значение '%s' не является элементом перечислимого типа %s", from_src_info.src_text().c_str(), to_src_info.src_text().c_str()));
@@ -115,7 +115,7 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) f
 LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	LPRDOValue pToValue;
-	LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+	LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 	try
 	{
 		switch (pFrom->typeID())
@@ -160,7 +160,7 @@ rdo::runtime::LPRDOCalc RDOEnumType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCa
 
 LPRDOValue RDOEnumType::get_default() const
 {
-	LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+	LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 	return rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(getEnums(), 0), pEnum, RDOParserSrcInfo());
 }
 

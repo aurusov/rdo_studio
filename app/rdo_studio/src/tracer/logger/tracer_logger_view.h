@@ -34,7 +34,7 @@ class LogView: public ActionActivatorWidget
 Q_OBJECT
 
 public:
-	LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle);
+	LogView(QAbstractScrollArea* pParent, LogStyle* pStyle);
 	virtual ~LogView();
 
 	void push_back(CREF(std::string) log);

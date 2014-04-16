@@ -166,7 +166,7 @@ public:
 			// Что бы узнать тип, необходимо найти команду push для этого указателя
 			ASSERT((pWrapper->getRefCounter() && dynamic_cast<const T*>(pWrapper->getRefCounter())) || !pWrapper->getRefCounter());
 
-			rdo::intrusive_ptr<T> pObject = *reinterpret_cast<PTR(rdo::intrusive_ptr<T>)>(pWrapper->getSmartPtr());
+			rdo::intrusive_ptr<T> pObject = *reinterpret_cast<rdo::intrusive_ptr<T>*>(pWrapper->getSmartPtr());
 			pWrapper->destroy();
 			return pObject;
 		}

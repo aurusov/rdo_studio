@@ -38,8 +38,8 @@ class LogMainWnd;
 class TracerBase: public RDOThreadGUI
 {
 public:
-	void setLog (PTR(LogMainWnd) pTracerLog);
-	void setTree(PTR(ChartTree) pTreeCtrl);
+	void setLog(LogMainWnd* pTracerLog);
+	void setTree(ChartTree* pTreeCtrl);
 
 	void startTrace();
 	void getModelStructure(std::istream& stream);

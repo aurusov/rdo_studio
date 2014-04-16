@@ -28,9 +28,9 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-typedef int  (*t_bison_parse_fun)(PTR(void) lexer  );
+typedef int (*t_bison_parse_fun)(void* lexer);
 typedef void (*t_bison_error_fun)(const char* message);
-typedef int  (*t_flex_lexer_fun) (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+typedef int (*t_flex_lexer_fun)(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserItem
@@ -48,11 +48,11 @@ public:
 	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
-	virtual void parse(PTR(Converter) pParser)
+	virtual void parse(Converter* pParser)
 	{
 		UNUSED(pParser);
 	}
-	virtual void parse(PTR(Converter) pParser, REF(std::istream) streamIn)
+	virtual void parse(Converter* pParser, REF(std::istream) streamIn)
 	{
 		UNUSED(pParser );
 		UNUSED(streamIn);

@@ -112,7 +112,7 @@ RDOThread::~RDOThread()
 #endif
 }
 
-PTR(RDOThread) RDOThread::getKernel()
+RDOThread* RDOThread::getKernel()
 {
 	return kernel;
 }
@@ -140,9 +140,9 @@ void RDOThread::after_constructor()
 }
 
 #ifdef RDO_MT
-std::size_t RDOThread::threadFun(PTR(void) pParam)
+std::size_t RDOThread::threadFun(void* pParam)
 {
-	PTR(RDOThread) thread = static_cast<PTR(RDOThread)>(pParam);
+	RDOThread* thread = static_cast<RDOThread*>(pParam);
 	thread->thread_id = ::GetCurrentThreadId();
 	thread->proc_create.SetEvent();
 	thread->thread_create.Lock();
@@ -210,7 +210,7 @@ bool RDOThread::processMessages()
 }
 #endif
 /*
-void RDOThread::sendMessage(PTR(RDOThread) to, RDOTreadMessage message, PTR(void) pParam)
+void RDOThread::sendMessage(RDOThread* to, RDOTreadMessage message, void* pParam)
 {
 #ifdef RDO_MT
 	RDOMessageInfo msg(this, message, pParam, RDOThread::RDOMessageInfo::send);
@@ -229,7 +229,7 @@ void RDOThread::sendMessage(PTR(RDOThread) to, RDOTreadMessage message, PTR(void
 }
 */
 #ifdef RDO_MT
-PTR(CEvent) RDOThread::manualMessageFrom(RDOTreadMessage message, PTR(void) pParam)
+CEvent* RDOThread::manualMessageFrom(RDOTreadMessage message, void* pParam)
 {
 	RDOMessageInfo msg(this, message, pParam, RDOThread::RDOMessageInfo::manual);
 	msg.send_event = new CEvent();
@@ -242,7 +242,7 @@ PTR(CEvent) RDOThread::manualMessageFrom(RDOTreadMessage message, PTR(void) pPar
 }
 #endif
 
-void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) pParam, bool lock)
+void RDOThread::broadcastMessage(RDOTreadMessage message, void* pParam, bool lock)
 {
 #ifdef RDO_MT
 	if (pParam) lock = true;
@@ -252,10 +252,10 @@ void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) pParam, bool
 
 	kernel->threads_mutex.Lock();
 	std::size_t cnt = 0;
-	PTR(CMutex) param_lock = NULL;
+	CMutex* param_lock = NULL;
 	for (RDOKernel::RDOThreadList::iterator it = kernel->threads.begin(); it != kernel->threads.end(); ++it)
 	{
-		PTR(RDOThread) thread = *it;
+		RDOThread* thread = *it;
 		thread->notifies_mutex.Lock();
 		if (thread != this && (thread->notifies.empty() || std::find(thread->notifies.begin(), thread->notifies.end(), message) != thread->notifies.end()))
 		{

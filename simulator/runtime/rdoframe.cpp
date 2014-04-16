@@ -147,7 +147,7 @@ RDOValue RDOFRMSprite::doCalc(CREF(LPRDORuntime) pRuntime)
 			const std::size_t colorRuint = (*it)->getParam(7).getUInt();
 			rdo::animation::Color color(GetBValue(colorRuint), GetGValue(colorRuint), GetRValue(colorRuint));
 
-			PTR(rdo::animation::FrameItem) pRect = new rdo::animation::RectElement(
+			rdo::animation::FrameItem* pRect = new rdo::animation::RectElement(
 				rdo::animation::BoundedElement(point, size),
 				rdo::animation::ColoredElement(color, color)
 			);
@@ -774,7 +774,7 @@ RDOFRMFrame::~RDOFRMFrame()
 
 RDOValue RDOFRMFrame::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	PTR(rdo::animation::Frame) pFrame = pRuntime->getPreparingFrame();
+	rdo::animation::Frame* pFrame = pRuntime->getPreparingFrame();
 	ASSERT(pFrame);
 
 	if (m_pBgColor)
@@ -814,7 +814,7 @@ void RDOFRMFrame::setBackPicture(int width, int height)
 	m_height      = height;
 }
 
-void RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime)
+void RDOFRMFrame::prepareFrame(rdo::animation::Frame* pFrame, CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(pFrame);
 

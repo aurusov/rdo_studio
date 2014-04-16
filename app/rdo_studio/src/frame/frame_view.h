@@ -62,16 +62,16 @@ private:
 	template <class F>
 	void  drawColoredElement(const rdo::animation::ColoredElement* pColor, F drawMethod);
 	void  setColors         (const rdo::animation::ColoredElement* pColor);
-	void  elementText       ( PTR(rdo::animation::TextElement)      pElement);
-	void  elementRect       ( PTR(rdo::animation::RectElement)      pElement);
-	void  elementRoundRect  ( PTR(rdo::animation::RoundRectElement) pElement);
-	void  elementLine       ( PTR(rdo::animation::LineElement)      pElement);
-	void  elementTriang     ( PTR(rdo::animation::TriangElement)    pElement);
-	void  elementCircle     ( PTR(rdo::animation::CircleElement)    pElement);
-	void  elementEllipse    ( PTR(rdo::animation::EllipseElement)   pElement);
-	void  elementBMP        ( PTR(rdo::animation::BmpElement)       pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
-	void  elementSBMP       ( PTR(rdo::animation::ScaledBmpElement) pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
-	void  elementActive     ( PTR(rdo::animation::ActiveElement)    pElement, REF(rdo::gui::animation::AreaList) areaList);
+	void  elementText       (rdo::animation::TextElement*      pElement);
+	void  elementRect       (rdo::animation::RectElement*      pElement);
+	void  elementRoundRect  (rdo::animation::RoundRectElement* pElement);
+	void  elementLine       (rdo::animation::LineElement*      pElement);
+	void  elementTriang     (rdo::animation::TriangElement*    pElement);
+	void  elementCircle     (rdo::animation::CircleElement*    pElement);
+	void  elementEllipse    (rdo::animation::EllipseElement*   pElement);
+	void  elementBMP        (rdo::animation::BmpElement*       pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
+	void  elementSBMP       (rdo::animation::ScaledBmpElement* pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
+	void  elementActive     (rdo::animation::ActiveElement*    pElement, REF(rdo::gui::animation::AreaList) areaList);
 
 	static QPixmap getBitmap(CREF(QString)              bitmapName,
 	                         CREF(QString)              maskName,
@@ -97,7 +97,7 @@ public:
 	View(QWidget* pParent);
 	virtual ~View();
 
-	PTR(Content) getContent();
+	Content* getContent();
 
 	using QWidget::update;
 

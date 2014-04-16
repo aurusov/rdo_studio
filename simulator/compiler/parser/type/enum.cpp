@@ -67,7 +67,7 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 	{
 		case rdo::runtime::RDOType__int::t_enum:
 		{
-			LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+			LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 			//! Это один и тот же тип
 			if (pEnum == from)
 				return pEnum;
@@ -96,7 +96,7 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 		{
 			if (getEnums()->exist(from_src_info.src_text()))
 			{
-				LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+				LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 				return pEnum;
 			}
 			parser::g_error().error(src_info, rdo::format("Значение '%s' не является элементом перечислимого типа %s", from_src_info.src_text().c_str(), to_src_info.src_text().c_str()));
@@ -116,7 +116,7 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 	ASSERT(pFrom);
 
 	LPRDOValue pToValue;
-	LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+	LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 	try
 	{
 		switch (pFrom->typeID())

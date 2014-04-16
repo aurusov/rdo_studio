@@ -73,7 +73,7 @@ bool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 			if (idBlocksTransact != idResourcesTransact)
 				return false;
 
-			PTR(RDOTrace) tracer = pRuntime->getTracer();
+			RDOTrace* tracer = pRuntime->getTracer();
 			forRes[i].rss->setParam(forRes[i].Id_param, forRes[i].enum_buzy);
 			TRACE3("%7.1f SEIZES-%d, resId = %d\n", pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
 			if (!tracer->isNull())

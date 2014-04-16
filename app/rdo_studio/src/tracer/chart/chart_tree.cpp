@@ -84,7 +84,7 @@ LPChartTreeItem ChartTree::getIfItemIsDrawable(const QTreeWidgetItem* pCtrlItem)
 	LPChartTreeItem pRes;
 	if (pCtrlItem)
 	{
-		PTR(ChartTreeItem) pItem = const_cast<PTR(ChartTreeItem)>(pCtrlItem->data(0, Qt::UserRole).value<const ChartTreeItem*>());
+		ChartTreeItem* pItem = const_cast<ChartTreeItem*>(pCtrlItem->data(0, Qt::UserRole).value<const ChartTreeItem*>());
 		pRes = pItem && pItem->isDrawable()
 			? pItem
 			: NULL;
@@ -112,7 +112,7 @@ void ChartTree::setModelName(CREF(QString) modelName)
 
 void ChartTree::createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType)
 {
-	PTR(QTreeWidgetItem) pCtrlItem = new QTreeWidgetItem(&parent->getCtrlItem());
+	QTreeWidgetItem* pCtrlItem = new QTreeWidgetItem(&parent->getCtrlItem());
 	pCtrlItem->setText(0, name);
 	pCtrlItem->setIcon(0, m_iconList[iconType]);
 	//! @todo smart_ptr
@@ -174,8 +174,8 @@ void ChartTree::addResult(CREF(LPResult) pPMV)
 
 void ChartTree::deleteChildren(CREF(LPChartTreeItem) pParent)
 {
-	QList<PTR(QTreeWidgetItem)> children = pParent->getCtrlItem().takeChildren();
-	BOOST_FOREACH(PTR(QTreeWidgetItem) item, children)
+	QList<QTreeWidgetItem*> children = pParent->getCtrlItem().takeChildren();
+	BOOST_FOREACH(QTreeWidgetItem* item, children)
 	{
 		pParent->getCtrlItem().removeChild(item);
 	}
@@ -189,7 +189,7 @@ void ChartTree::clear()
 	m_root->getCtrlItem().setText(0, "Модель");
 }
 
-void ChartTree::createChart(PTR(QTreeWidgetItem) pCtrlItem) const
+void ChartTree::createChart(QTreeWidgetItem* pCtrlItem) const
 {
 	LPSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<Serie>();
 	if (pSerie)
@@ -198,7 +198,7 @@ void ChartTree::createChart(PTR(QTreeWidgetItem) pCtrlItem) const
 	}
 }
 
-bool ChartTree::activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const
+bool ChartTree::activateExistingChart(QTreeWidgetItem* pCtrlItem) const
 {
 	LPSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<Serie>();
 	if (pSerie)
@@ -208,9 +208,9 @@ bool ChartTree::activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const
 	return false;
 }
 
-PTR(QTreeWidgetItem) ChartTree::getSelected() const
+QTreeWidgetItem* ChartTree::getSelected() const
 {
-	QList<PTR(QTreeWidgetItem)> selected = selectedItems();
+	QList<QTreeWidgetItem*> selected = selectedItems();
 	return selected.size() == 1
 		? selected.front()
 		: NULL;

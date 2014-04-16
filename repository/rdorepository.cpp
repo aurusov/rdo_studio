@@ -81,7 +81,7 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 		case RT_STUDIO_MODEL_NEW:
 		{
 			msg.lock();
-			PTR(NewModel) data = static_cast<PTR(NewModel)>(msg.param);
+			NewModel* data = static_cast<NewModel*>(msg.param);
 			newModel(data);
 			msg.unlock();
 			break;
@@ -89,7 +89,7 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 		case RT_STUDIO_MODEL_OPEN:
 		{
 			msg.lock();
-			PTR(OpenFile) data = static_cast<PTR(OpenFile)>(msg.param);
+			OpenFile* data = static_cast<OpenFile*>(msg.param);
 			data->m_result = openModel(data->m_name);
 			msg.unlock();
 			break;
@@ -103,7 +103,7 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 		{
 			bool res = saveModel();
 			msg.lock();
-			if (msg.param) *static_cast<PTR(bool)>(msg.param) = res;
+			if (msg.param) *static_cast<bool*>(msg.param) = res;
 			msg.unlock();
 			break;
 		}
@@ -122,14 +122,14 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 		case RT_RUNTIME_TRACE_STRING:
 		{
 			msg.lock();
-			trace(*static_cast<PTR(std::string)>(msg.param));
+			trace(*static_cast<std::string*>(msg.param));
 			msg.unlock();
 			break;
 		}
 		case RT_REPOSITORY_MODEL_GET_FILEINFO:
 		{
 			msg.lock();
-			PTR(FileInfo) data = static_cast<PTR(FileInfo)>(msg.param);
+			FileInfo* data = static_cast<FileInfo*>(msg.param);
 			data->m_name      = getFileName    (data->m_type);
 			data->m_fullName  = getFullFileName(data->m_type);
 			data->m_extension = getExtension   (data->m_type);
@@ -141,7 +141,7 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 		case RT_REPOSITORY_LOAD:
 		{
 			msg.lock();
-			PTR(FileData) fdata = static_cast<PTR(FileData)>(msg.param);
+			FileData* fdata = static_cast<FileData*>(msg.param);
 			load(fdata->m_type, fdata->m_stream);
 			msg.unlock();
 			break;
@@ -149,7 +149,7 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 		case RT_REPOSITORY_SAVE:
 		{
 			msg.lock();
-			PTR(FileData) fdata = static_cast<PTR(FileData)>(msg.param);
+			FileData* fdata = static_cast<FileData*>(msg.param);
 			save(fdata->m_type, fdata->m_stream);
 			msg.unlock();
 			break;
@@ -157,7 +157,7 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 		case RT_REPOSITORY_LOAD_BINARY:
 		{
 			msg.lock();
-			PTR(BinaryFile) data = static_cast<PTR(BinaryFile)>(msg.param);
+			BinaryFile* data = static_cast<BinaryFile*>(msg.param);
 			loadBMP(data->m_name, data->m_stream);
 			msg.unlock();
 			break;
@@ -165,7 +165,7 @@ void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
 		case RT_REPOSITORY_CREATE_FILE:
 		{
 			msg.lock();
-			PTR(CreateFileInfo) data = static_cast<PTR(CreateFileInfo)>(msg.param);
+			CreateFileInfo* data = static_cast<CreateFileInfo*>(msg.param);
 			createFile(data->m_name, data->m_stream);
 			msg.unlock();
 			break;
@@ -301,7 +301,7 @@ bool RDOThreadRepository::openModel(CREF(boost::filesystem::path) modelFileName)
 			else
 			{
 				setName(boost::filesystem::path());
-				broadcastMessage(RT_REPOSITORY_MODEL_OPEN_ERROR, const_cast<PTR(boost::filesystem::path)>(&modelFileName));
+				broadcastMessage(RT_REPOSITORY_MODEL_OPEN_ERROR, const_cast<boost::filesystem::path*>(&modelFileName));
 			}
 		}
 	}
@@ -471,7 +471,7 @@ void RDOThreadRepository::save(rdoModelObjects::RDOFileType type, const std::str
 	saveFile(getFullFileName(type), stream, isDeleteIfEmpty(type));
 	if (type == rdoModelObjects::SMR)
 	{
-		const_cast<PTR(RDOThreadRepository)>(this)->updateModelNames();
+		const_cast<RDOThreadRepository*>(this)->updateModelNames();
 	}
 }
 

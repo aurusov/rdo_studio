@@ -182,7 +182,7 @@ Application::~Application()
 	if (m_pStudioGUI)
 	{
 		m_pStudioGUI->sendMessage(m_pStudioGUI, RDOThread::RT_THREAD_CLOSE);
-		delete static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI);
+		delete static_cast<ThreadStudioGUI*>(m_pStudioGUI);
 		m_pStudioGUI = NULL;
 	}
 #endif
@@ -311,17 +311,17 @@ rdo::gui::tracer::Tracer* Application::getTracer() const
 	return g_pTracer;
 }
 
-PTR(QMainWindow) Application::getMainWnd()
+QMainWindow* Application::getMainWnd()
 {
 	return m_pMainFrame;
 }
 
-PTR(MainWindowBase) Application::getStyle()
+MainWindowBase* Application::getStyle()
 {
 	return m_pMainFrame;
 }
 
-PTR(MainWindowBase) Application::getIMainWnd()
+MainWindowBase* Application::getIMainWnd()
 {
 	return m_pMainFrame;
 }
@@ -372,9 +372,9 @@ void Application::chkAndRunQtAssistant()
 		m_pAssistant = runQtAssistant();
 }
 
-PTR(QProcess) Application::runQtAssistant() const
+QProcess* Application::runQtAssistant() const
 {
-	PTR(QProcess) pProcess = new QProcess;
+	QProcess* pProcess = new QProcess;
 	QStringList args;
 	args << QString("-collectionFile")
 		<< getFullHelpFileName()
@@ -536,12 +536,13 @@ void Application::autoCloseByModel()
 	}
 }
 
-void Application::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam)
+void Application::broadcastMessage(RDOThread::RDOTreadMessage message, void* pParam)
 {
 #ifdef RDO_MT
-	PTR(CEvent) pEvent = m_pStudioMT->manualMessageFrom(message, pParam);
-	while (::WaitForSingleObject(pEvent->m_hObject, 0) == WAIT_TIMEOUT) {
-		static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI)->processMessages();
+	CEvent* pEvent = m_pStudioMT->manualMessageFrom(message, pParam);
+	while (::WaitForSingleObject(pEvent->m_hObject, 0) == WAIT_TIMEOUT)
+	{
+		static_cast<ThreadStudioGUI*>(m_pStudioGUI)->processMessages();
 		if (m_pMainFrame) {
 			m_pMainFrame->UpdateWindow();
 		} else {
@@ -557,7 +558,7 @@ void Application::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void)
 void Application::onIdle()
 {
 #ifdef RDO_MT
-	static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI)->processMessages();
+	static_cast<ThreadStudioGUI*>(m_pStudioGUI)->processMessages();
 #else
 	kernel->idle();
 #endif

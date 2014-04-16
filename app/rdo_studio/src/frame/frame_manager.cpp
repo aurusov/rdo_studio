@@ -82,7 +82,7 @@ bool Manager::init()
 
 void Manager::insertFrame(CREF(QString) frameName)
 {
-	PTR(Frame) item = new Frame();
+	Frame* item = new Frame();
 	item->m_pTreeWidgetItem = g_pApp->getIMainWnd()->getDockFrame().getContext().insertFrame(frameName);
 	item->m_name            = frameName;
 	m_frameList.push_back(item);
@@ -136,13 +136,13 @@ CREF(QString) Manager::getFrameName(std::size_t index) const
 	return m_frameList[index]->m_name;
 }
 
-PTR(View) Manager::getFrameView(std::size_t index) const
+View* Manager::getFrameView(std::size_t index) const
 {
 	ASSERT(index < m_frameList.size());
 	return m_frameList[index]->m_pView;
 }
 
-PTR(View) Manager::getFrameViewFirst() const
+View* Manager::getFrameViewFirst() const
 {
 	if (m_frameList.empty())
 		return NULL;
@@ -177,9 +177,9 @@ void Manager::areaDown(std::size_t frameIndex, CREF(QPoint) point) const
 	}
 }
 
-PTR(View) Manager::createView(std::size_t index)
+View* Manager::createView(std::size_t index)
 {
-	PTR(View) pView = NULL;
+	View* pView = NULL;
 	if (index != std::size_t(~0))
 	{
 		pView = new View(NULL);
@@ -325,7 +325,7 @@ void Manager::showFrame(const rdo::animation::Frame* const pFrame, std::size_t i
 {
 	if (index < count())
 	{
-		PTR(View) pFrameView = getFrameView(index);
+		View* pFrameView = getFrameView(index);
 		ASSERT(pFrameView);
 		rdo::gui::BitmapList bitmapGeneratedList;
 		pFrameView->update(pFrame, m_bitmapList, bitmapGeneratedList, m_frameList[index]->m_areaList);
@@ -342,7 +342,7 @@ void Manager::showNextFrame()
 	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame < cnt-1)
 	{
 		std::size_t index = m_currentShowingFrame + 1;
-		PTR(View) pView = getFrameView(index);
+		View* pView = getFrameView(index);
 		if (!pView)
 		{
 			pView = createView(index);
@@ -363,7 +363,7 @@ void Manager::showPrevFrame()
 	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame != std::size_t(~0))
 	{
 		std::size_t index = m_currentShowingFrame - 1;
-		PTR(View) pView = getFrameView(index);
+		View* pView = getFrameView(index);
 		if (!pView)
 		{
 			pView = createView(index);
@@ -383,7 +383,7 @@ void Manager::showFrame(std::size_t index)
 	std::size_t cnt = count();
 	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt)
 	{
-		PTR(View) pView = getFrameView(index);
+		View* pView = getFrameView(index);
 		if (!pView)
 		{
 			pView = createView(index);
@@ -414,7 +414,7 @@ void Manager::updateStyles() const
 {
 	BOOST_FOREACH(Frame* pFrame, m_frameList)
 	{
-		PTR(View) pFrameView = pFrame->m_pView;
+		View* pFrameView = pFrame->m_pView;
 		if (pFrameView)
 		{
 			pFrameView->updateFont();
@@ -446,7 +446,7 @@ void Manager::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pTreeWidgetItem, in
 	if (index == std::size_t(~0))
 		return;
 
-	PTR(View) pView = getFrameView(index);
+	View* pView = getFrameView(index);
 	if (!pView)
 	{
 		createView(index);

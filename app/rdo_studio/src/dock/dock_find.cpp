@@ -21,7 +21,7 @@
 DockFind::DockFind(QWidget* pParent)
 	: DockFocusable("Поиск", pParent)
 {
-	PTR(context_type) pWidget = new context_type(this);
+	context_type* pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 110));
 
 	setWidget(pWidget);
@@ -37,7 +37,7 @@ void DockFind::appendString(
 	rdoModelObjects::RDOFileType fileType,
 	int lineNumber, int posInLine)
 {
-	PTR(rdo::simulation::report::LogEditLineInfo) pLine = new rdo::simulation::report::LogEditLineInfo(
+	rdo::simulation::report::LogEditLineInfo* pLine = new rdo::simulation::report::LogEditLineInfo(
 		rdo::simulation::report::FileMessage(
 			str.toStdString(),
 			fileType,
@@ -55,5 +55,5 @@ void DockFind::clear()
 
 REF(DockFind::context_type) DockFind::getContext()
 {
-	return *static_cast<PTR(context_type)>(widget());
+	return *static_cast<context_type*>(widget());
 }

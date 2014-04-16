@@ -1099,10 +1099,10 @@ ChartViewMainWnd::~ChartViewMainWnd()
 
 ChartView& ChartViewMainWnd::view()
 {
-	return *static_cast<PTR(ChartView)>(viewport());
+	return *static_cast<ChartView*>(viewport());
 }
 
-bool ChartViewMainWnd::viewportEvent(PTR(QEvent) pEvent)
+bool ChartViewMainWnd::viewportEvent(QEvent* pEvent)
 {
 	UNUSED(pEvent);
 	return false;
@@ -1118,7 +1118,7 @@ void ChartViewMainWnd::focusOutEvent(QFocusEvent* pEvent)
 	static_cast<QObject*>(viewport())->event(pEvent);
 }
 
-void ChartViewMainWnd::keyPressEvent(PTR(QKeyEvent) pEvent)
+void ChartViewMainWnd::keyPressEvent(QKeyEvent* pEvent)
 {
 	switch (pEvent->key())
 	{

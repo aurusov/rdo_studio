@@ -74,11 +74,11 @@ private:
 
 	void createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType);
 
-	void  createChart          (PTR(QTreeWidgetItem) pCtrlItem) const;
-	bool  activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const;
+	void  createChart          (QTreeWidgetItem* pCtrlItem) const;
+	bool  activateExistingChart(QTreeWidgetItem* pCtrlItem) const;
 
-	LPChartTreeItem      getIfItemIsDrawable(const QTreeWidgetItem* pCtrlItem) const;
-	PTR(QTreeWidgetItem) getSelected        () const;
+	LPChartTreeItem getIfItemIsDrawable(const QTreeWidgetItem* pCtrlItem) const;
+	QTreeWidgetItem* getSelected() const;
 
 	virtual void focusInEvent    (QFocusEvent* pEvent);
 	virtual void focusOutEvent   (QFocusEvent* pEvent);

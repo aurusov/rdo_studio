@@ -85,7 +85,7 @@ LPRDOType FunctionParamType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcI
 		++paramFromIt;
 	}
 
-	return const_cast<PTR(FunctionParamType)>(this);
+	return const_cast<FunctionParamType*>(this);
 }
 
 LPRDOValue FunctionParamType::value_cast(CREF(LPRDOValue) /*pFrom*/, CREF(RDOParserSrcInfo) /*to_src_info*/, CREF(RDOParserSrcInfo) /*src_info*/) const

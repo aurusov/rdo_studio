@@ -83,7 +83,7 @@ private:
 	virtual void createRootTreeNode(CREF(LPRDORuntime) pRuntime);
 
 public:
-	TreeRootTrace(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP);
+	TreeRootTrace(CREF(LPRDORuntime) pRuntime, RDODPTSearch* pDP);
 };
 
 /*!
@@ -95,11 +95,11 @@ class TreeNodeTrace: public TreeNode
 friend class RDOTrace;
 
 private:
-	void          onSearchOpenNode        (CREF(LPRDORuntime) pRuntime);
-	void          onSearchNodeInfoDeleted (CREF(LPRDORuntime) pRuntime);
-	void          onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime);
-	void          onSearchNodeInfoNew     (CREF(LPRDORuntime) pRuntime);
-	PTR(TreeNode) createChildTreeNode     ();
+	void      onSearchOpenNode        (CREF(LPRDORuntime) pRuntime);
+	void      onSearchNodeInfoDeleted (CREF(LPRDORuntime) pRuntime);
+	void      onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime);
+	void      onSearchNodeInfoNew     (CREF(LPRDORuntime) pRuntime);
+	TreeNode* createChildTreeNode     ();
 
 public:
 	TreeNodeTrace(CREF(LPRDORuntime) pRuntime, TreeNode* i_parent, TreeRoot* i_root, LPIDPTSearchActivity i_activity, double cost, int cnt);

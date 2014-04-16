@@ -30,7 +30,7 @@ OPEN_RDO_PARSER_NAMESPACE
 
 void print_RTP(REF(RDOCorba::GetRTP_var) my_rtpList)
 {
-	PTR(FILE) f1;
+	FILE* f1;
 #pragma warning(disable: 4996)
 	f1 = fopen(file1, "w");
 #pragma warning(default: 4996)
@@ -107,7 +107,7 @@ void print_RTP(REF(RDOCorba::GetRTP_var) my_rtpList)
 
 void print_RSS(REF(RDOCorba::GetRSS_var) my_rssList)
 {
-	PTR(FILE) f2;
+	FILE* f2;
 #pragma warning(disable: 4996)
 	f2 = fopen(file2, "w");
 #pragma warning(default: 4996)

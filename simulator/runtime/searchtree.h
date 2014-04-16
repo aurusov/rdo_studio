@@ -48,7 +48,7 @@ public:
 	int getNewNodeNumber();
 
 protected:
-	TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP);
+	TreeRoot(CREF(LPRDORuntime) pRuntime, RDODPTSearch* pDP);
 
 private:
 	int m_nodesCount;
@@ -92,7 +92,7 @@ public:
 	void ReCostSubTree(double cost);
 
 protected:
-	TreeNode(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) pParent, PTR(TreeRoot) pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt);
+	TreeNode(CREF(LPRDORuntime) pRuntime, TreeNode* pParent, TreeRoot* pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt);
 
 	LPIDPTSearchActivity  m_currAct; // вершина пытается применять различные активности
 	LPRDORuntime          m_pChildRuntime;
@@ -101,11 +101,11 @@ protected:
 	double m_newCostRest;
 	double m_newCostRule;
 
-	virtual void          onSearchOpenNode        (CREF(LPRDORuntime) pRuntime);
-	virtual void          onSearchNodeInfoDeleted (CREF(LPRDORuntime) pRuntime);
-	virtual void          onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime);
-	virtual void          onSearchNodeInfoNew     (CREF(LPRDORuntime) pRuntime);
-	virtual PTR(TreeNode) createChildTreeNode     ();
+	virtual void      onSearchOpenNode        (CREF(LPRDORuntime) pRuntime);
+	virtual void      onSearchNodeInfoDeleted (CREF(LPRDORuntime) pRuntime);
+	virtual void      onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime);
+	virtual void      onSearchNodeInfoNew     (CREF(LPRDORuntime) pRuntime);
+	virtual TreeNode* createChildTreeNode     ();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

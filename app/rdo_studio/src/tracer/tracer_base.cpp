@@ -556,12 +556,12 @@ void TracerBase::clearCharts()
 	}
 }
 
-void TracerBase::setLog(PTR(LogMainWnd) pTracerLog)
+void TracerBase::setLog(LogMainWnd* pTracerLog)
 {
 	m_pLog = pTracerLog;
 }
 
-void TracerBase::setTree(PTR(ChartTree) pTreeCtrl)
+void TracerBase::setTree(ChartTree* pTreeCtrl)
 {
 	m_pChartTree = pTreeCtrl;
 }

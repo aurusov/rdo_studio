@@ -33,7 +33,7 @@ Results::Results(QWidget* pParent)
 Results::~Results()
 {}
 
-void Results::setEditorStyle(PTR(ResultsStyle) pStyle)
+void Results::setEditorStyle(ResultsStyle* pStyle)
 {
 	super::setEditorStyle(pStyle);
 }

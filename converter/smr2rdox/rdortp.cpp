@@ -21,7 +21,7 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int cnv_rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_rtplex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
@@ -36,7 +36,7 @@ void cnv_rtperror(const char* message)
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
 // --------------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, bool permanent)
+RDORTPResType::RDORTPResType(Converter* pParser, CREF(RDOParserSrcInfo) src_info, bool permanent)
 	: RDOParserSrcInfo(src_info            )
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
@@ -92,7 +92,7 @@ void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
 // --------------------------------------------------------------------------------
-RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(Converter) pParser):
+RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(Converter* pParser):
 	RDOParserObject(pParser)
 {
 	for (std::size_t i = 0; i < m_points.size(); i++)
@@ -110,7 +110,7 @@ RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(Converter) pParser):
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPFuzzyTerm - нечеткий термин
 // --------------------------------------------------------------------------------
-RDORTPFuzzyTerm::RDORTPFuzzyTerm(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
+RDORTPFuzzyTerm::RDORTPFuzzyTerm(Converter* pParser, CREF(RDOParserSrcInfo) src_info, RDORTPFuzzyMembershiftFun* pMembersfift_fun):
 	RDOParserObject(pParser)
 {
 

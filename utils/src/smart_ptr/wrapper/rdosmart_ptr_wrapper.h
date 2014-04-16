@@ -22,14 +22,14 @@ class ISmartPtrWrapper
 {
 public:
 	virtual void destroy() = 0;
-	virtual PTR(void) getSmartPtr() = 0;
+	virtual void* getSmartPtr() = 0;
 	virtual const counter_reference* getRefCounter() const = 0;
 };
-typedef PTR(ISmartPtrWrapper) LPISmartPtrWrapper;
+typedef ISmartPtrWrapper* LPISmartPtrWrapper;
 
-#define DECLARE_ISmartPtrWrapper     \
-	virtual void destroy();          \
-	virtual PTR(void) getSmartPtr(); \
+#define DECLARE_ISmartPtrWrapper \
+	virtual void destroy();      \
+	virtual void* getSmartPtr(); \
 	virtual const counter_reference* getRefCounter() const;
 
 template<class T>
@@ -45,7 +45,7 @@ public:
 	{
 		delete this;
 	}
-	PTR(void) getSmartPtr()
+	void* getSmartPtr()
 	{
 		return &m_intrusive_ptr;
 	}
@@ -78,7 +78,7 @@ public:
 	template <class T>
 	intrusive_ptr<T> cast() const
 	{
-		PTR(rdo::smart_ptr_wrapper<T>) pSmartPtrWrapper = dynamic_cast<PTR(rdo::smart_ptr_wrapper<T>)>(m_pISmartPtrWrapper);
+		rdo::smart_ptr_wrapper<T>* pSmartPtrWrapper = dynamic_cast<rdo::smart_ptr_wrapper<T>*>(m_pISmartPtrWrapper);
 		return pSmartPtrWrapper ? pSmartPtrWrapper->get() : intrusive_ptr<T>();
 	}
 

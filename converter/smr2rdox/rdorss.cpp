@@ -21,7 +21,7 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int cnv_rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_rsslex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
@@ -36,7 +36,7 @@ void cnv_rsserror(const char* message)
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------
-RDORSSResource::RDORSSResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
+RDORSSResource::RDORSSResource(Converter* pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
 	: RDOParserSrcInfo(src_info                                      )
 	, m_pResType      (pResType                                      )
 	, m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)
@@ -111,7 +111,7 @@ rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCResource
 // --------------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
+RDOPROCResource::RDOPROCResource(Converter* pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
 	: RDORSSResource(pParser, src_info, pResType, id)
 {}
 

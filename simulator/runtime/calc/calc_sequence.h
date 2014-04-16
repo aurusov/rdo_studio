@@ -29,11 +29,11 @@ public:
 	void setBase(int base);
 
 private:
-	RDOCalcSeqInit(int base, PTR(RandGenerator) gen);
+	RDOCalcSeqInit(int base, RandGenerator* gen);
 	virtual ~RDOCalcSeqInit();
 
-	int                m_base;
-	PTR(RandGenerator) m_gen;
+	int m_base;
+	RandGenerator* m_gen;
 
 	DECLARE_ICalc;
 };
@@ -66,9 +66,9 @@ template<class T>
 class RDOCalcRandomDistribution: public RDOCalcSeqNext
 {
 protected:
-	RDOCalcRandomDistribution(PTR(T) gen);
+	RDOCalcRandomDistribution(T* gen);
 	virtual ~RDOCalcRandomDistribution();
-	PTR(T) m_gen;
+	T* m_gen;
 
 private:
 	DECLARE_ICalc;
@@ -84,7 +84,7 @@ class RDOCalcSeqNext##CalcName: public RDOCalcRandomDistribution<Distribution> \
 {                                                                              \
 DECLARE_FACTORY(RDOCalcSeqNext##CalcName)                                      \
 private:                                                                       \
-	RDOCalcSeqNext##CalcName(PTR(Distribution) gen)                            \
+	RDOCalcSeqNext##CalcName(Distribution* gen)                                \
 		: RDOCalcRandomDistribution<Distribution>(gen)                         \
 	{}                                                                         \
                                                                                \

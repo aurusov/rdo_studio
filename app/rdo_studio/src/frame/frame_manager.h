@@ -54,14 +54,14 @@ public:
 
 	bool isShowing() const;
 	CREF(QString) getFrameName(std::size_t index) const;
-	PTR(View) getFrameView(std::size_t index) const;
-	PTR(View) getFrameViewFirst() const;
+	View* getFrameView(std::size_t index) const;
+	View* getFrameViewFirst() const;
 	std::size_t count() const;
 	bool isChanged();
 
 	void areaDown(std::size_t frameIndex, CREF(QPoint) point) const;
 
-	PTR(View) createView(std::size_t index);
+	View* createView(std::size_t index);
 	void disconnectView(const View* pView);
 	void closeAll();
 	void clear();
@@ -84,17 +84,17 @@ private:
 		 Frame();
 		~Frame();
 
-		PTR(QTreeWidgetItem)           m_pTreeWidgetItem;
-		QString                        m_name;
-		PTR(View)                      m_pView;
-		PTR(Content)                   m_pContent;
-		rdo::gui::animation::AreaList  m_areaList;
+		QTreeWidgetItem* m_pTreeWidgetItem;
+		QString m_name;
+		View* m_pView;
+		Content* m_pContent;
+		rdo::gui::animation::AreaList m_areaList;
 
 	private:
 		void clear();
 	};
 
-	typedef std::vector<PTR(Frame)> FrameList;
+	typedef std::vector<Frame*> FrameList;
 
 	FrameList m_frameList;
 	rdo::gui::BitmapList m_bitmapList;

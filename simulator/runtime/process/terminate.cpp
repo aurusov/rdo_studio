@@ -35,7 +35,7 @@ IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(CREF(LPRDORuntime) pRun
 	LPRDOPROCTransact transact = m_transacts.front();
 	ASSERT(transact);
 	transact->setState(RDOResource::CS_Erase);
-	PTR(RDOTrace) tracer = pRuntime->getTracer();
+	RDOTrace* tracer = pRuntime->getTracer();
 	if (!tracer->isNull())
 	{
 		tracer->getOStream() << transact->traceResourceState('\0', pRuntime) << tracer->getEOL();

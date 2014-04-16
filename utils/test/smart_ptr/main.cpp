@@ -25,7 +25,7 @@
 // --------------------------------------------------------------------------------
 
 class Log;
-PTR(Log) g_pLog = NULL;
+Log* g_pLog = NULL;
 
 class Log: public std::list<int>
 {
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(CreateSmartPtrByThis)
 {
 	Log log;
 	{
-		PTR(MyClass3) pMyClass3Raw = new MyClass3();
+		MyClass3* pMyClass3Raw = new MyClass3();
 		BOOST_CHECK(pMyClass3Raw);
 
 		LPMyClass3 pMyClass3_1(pMyClass3Raw);

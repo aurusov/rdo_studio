@@ -34,7 +34,7 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int cnv_funlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_funlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
@@ -981,7 +981,7 @@ RDOFUNSequenceUniform::RDOFUNSequenceUniform(CREF(LPRDOFUNSequenceHeader) pHeade
 
 void RDOFUNSequenceUniform::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorUniform) pGenerator = new rdo::runtime::RandGeneratorUniform();
+	rdo::runtime::RandGeneratorUniform* pGenerator = new rdo::runtime::RandGeneratorUniform();
 	m_pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(m_seed, pGenerator);
 	Converter::s_converter()->runtime()->addInitCalc(m_pInitCalc);
 	m_pNextCalc = rdo::Factory<rdo::runtime::RDOCalcSeqNextUniform>::create(pGenerator);
@@ -1032,7 +1032,7 @@ RDOFUNSequenceExponential::RDOFUNSequenceExponential(CREF(LPRDOFUNSequenceHeader
 
 void RDOFUNSequenceExponential::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorExponential) pGenerator = new rdo::runtime::RandGeneratorExponential();
+	rdo::runtime::RandGeneratorExponential* pGenerator = new rdo::runtime::RandGeneratorExponential();
 	m_pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(m_seed, pGenerator);
 	Converter::s_converter()->runtime()->addInitCalc(m_pInitCalc);
 	m_pNextCalc = rdo::Factory<rdo::runtime::RDOCalcSeqNextExponential>::create(pGenerator);
@@ -1081,7 +1081,7 @@ RDOFUNSequenceNormal::RDOFUNSequenceNormal(CREF(LPRDOFUNSequenceHeader) pHeader,
 
 void RDOFUNSequenceNormal::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorNormal) pGenerator = new rdo::runtime::RandGeneratorNormal();
+	rdo::runtime::RandGeneratorNormal* pGenerator = new rdo::runtime::RandGeneratorNormal();
 	m_pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(m_seed, pGenerator);
 	Converter::s_converter()->runtime()->addInitCalc(m_pInitCalc);
 	m_pNextCalc = rdo::Factory<rdo::runtime::RDOCalcSeqNextNormal>::create(pGenerator);
@@ -1186,7 +1186,7 @@ void RDOFUNSequenceByHistReal::addReal(CREF(LPRDOValue) pFrom, CREF(LPRDOValue) 
 
 void RDOFUNSequenceByHistReal::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorByHistReal) pGenerator = new rdo::runtime::RandGeneratorByHistReal();
+	rdo::runtime::RandGeneratorByHistReal* pGenerator = new rdo::runtime::RandGeneratorByHistReal();
 	int size = m_from.size();
 	for (int i = 0; i < size; i++)
 	{
@@ -1233,7 +1233,7 @@ void RDOFUNSequenceByHistEnum::addEnum(CREF(LPRDOValue) pValue, CREF(LPRDOValue)
 
 void RDOFUNSequenceByHistEnum::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorByHistEnum) pGenerator = new rdo::runtime::RandGeneratorByHistEnum();
+	rdo::runtime::RandGeneratorByHistEnum* pGenerator = new rdo::runtime::RandGeneratorByHistEnum();
 	const std::size_t size = m_values.size();
 	for (std::size_t i = 0; i < size; i++)
 	{
@@ -1274,7 +1274,7 @@ LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pPa
 // --------------------------------------------------------------------------------
 void RDOFUNSequenceEnumerative::createCalcs()
 {
-	PTR(rdo::runtime::RandGeneratorEnumerative) pGenerator = new rdo::runtime::RandGeneratorEnumerative();
+	rdo::runtime::RandGeneratorEnumerative* pGenerator = new rdo::runtime::RandGeneratorEnumerative();
 	for (std::size_t i = 0; i < m_valueList.size(); i++)
 	{
 		pGenerator->addValue(m_valueList[i]->value());
@@ -1582,7 +1582,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 		switch (pFunctionParam->getType()->type()->typeID())
 		{
 		case rdo::runtime::RDOType::t_int:
-			if (dynamic_cast<PTR(RDOTypeIntRange)>(pFunctionParam->getType()->type().get()))
+			if (dynamic_cast<RDOTypeIntRange*>(pFunctionParam->getType()->type().get()))
 			{
 				LPRDOTypeIntRange pRange = pFunctionParam->getType()->type().object_static_cast<RDOTypeIntRange>();
 				if (pRange->range()->getMin()->value().getInt() != 1)

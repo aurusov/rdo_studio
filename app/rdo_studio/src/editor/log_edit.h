@@ -28,18 +28,18 @@ Q_OBJECT
 
 public:
 	typedef rdo::simulation::report::LogEditLineInfo LogEditLineInfo;
-	typedef std::list<PTR(LogEditLineInfo)> LogEditLineInfoList;
+	typedef std::list<LogEditLineInfo*> LogEditLineInfoList;
 
 	Log(QWidget* pParent);
 	virtual ~Log();
 
-	virtual void setEditorStyle(PTR(LogStyle) pStyle);
+	virtual void setEditorStyle(LogStyle* pStyle);
 
 	void gotoNext();
 	void gotoPrev();
 
 	virtual void clearAll();
-	virtual void appendLine(PTR(LogEditLineInfo) pLine);
+	virtual void appendLine(LogEditLineInfo* pLine);
 
 protected:
 	void getLines(REF(LogEditLineInfoList) pLines) const;
@@ -50,7 +50,7 @@ protected:
 	void setSciMarkerLine(int sciMarkerLine);
 
 protected:
-	virtual void updateEdit(PTR(Model) pEdit, const LogEditLineInfo* pLineInfo);
+	virtual void updateEdit(Model* pEdit, const LogEditLineInfo* pLineInfo);
 
 	void  clearLines     ();
 	void  setSelectLine  (int line, const LogEditLineInfo* pLineInfo, bool useScroll = false);

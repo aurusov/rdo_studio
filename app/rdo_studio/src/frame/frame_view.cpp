@@ -94,7 +94,7 @@ void Content::init(CREF(QSize) size)
 
 void Content::updateFont()
 {
-	PTR(FrameStyle) pStyle = &g_pApp->getStyle()->style_frame;
+	FrameStyle* pStyle = &g_pApp->getStyle()->style_frame;
 	ASSERT(pStyle);
 
 	m_font = QFont(pStyle->font.name.c_str());
@@ -181,21 +181,21 @@ void Content::update(
 
 	m_memDC.dc().setFont(m_font);
 
-	BOOST_FOREACH(PTR(rdo::animation::FrameItem) pCurrElement, pFrame->m_elements)
+	BOOST_FOREACH(rdo::animation::FrameItem* pCurrElement, pFrame->m_elements)
 	{
 		ASSERT(pCurrElement);
 		switch (pCurrElement->getType())
 		{
-		case rdo::animation::FrameItem::FIT_TEXT   : elementText     (static_cast<PTR(rdo::animation::TextElement     )>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_RECT   : elementRect     (static_cast<PTR(rdo::animation::RectElement     )>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_R_RECT : elementRoundRect(static_cast<PTR(rdo::animation::RoundRectElement)>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_LINE   : elementLine     (static_cast<PTR(rdo::animation::LineElement     )>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_TRIANG : elementTriang   (static_cast<PTR(rdo::animation::TriangElement   )>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_CIRCLE : elementCircle   (static_cast<PTR(rdo::animation::CircleElement   )>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_ELLIPSE: elementEllipse  (static_cast<PTR(rdo::animation::EllipseElement  )>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_BMP    : elementBMP      (static_cast<PTR(rdo::animation::BmpElement      )>(pCurrElement), bitmapList, bitmapGeneratedList); break;
-		case rdo::animation::FrameItem::FIT_S_BMP  : elementSBMP     (static_cast<PTR(rdo::animation::ScaledBmpElement)>(pCurrElement), bitmapList, bitmapGeneratedList); break;
-		case rdo::animation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<PTR(rdo::animation::ActiveElement   )>(pCurrElement), areaList); break;
+		case rdo::animation::FrameItem::FIT_TEXT   : elementText     (static_cast<rdo::animation::TextElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_RECT   : elementRect     (static_cast<rdo::animation::RectElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_R_RECT : elementRoundRect(static_cast<rdo::animation::RoundRectElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_LINE   : elementLine     (static_cast<rdo::animation::LineElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_TRIANG : elementTriang   (static_cast<rdo::animation::TriangElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_CIRCLE : elementCircle   (static_cast<rdo::animation::CircleElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_ELLIPSE: elementEllipse  (static_cast<rdo::animation::EllipseElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_BMP    : elementBMP      (static_cast<rdo::animation::BmpElement*>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+		case rdo::animation::FrameItem::FIT_S_BMP  : elementSBMP     (static_cast<rdo::animation::ScaledBmpElement*>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+		case rdo::animation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<rdo::animation::ActiveElement*>(pCurrElement), areaList); break;
 		case rdo::animation::FrameItem::FIT_NULL   : break;
 		}
 	}
@@ -277,7 +277,7 @@ void Content::setColors(const rdo::animation::ColoredElement* pColor)
 	}
 }
 
-void Content::elementText(PTR(rdo::animation::TextElement) pElement)
+void Content::elementText(rdo::animation::TextElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -317,7 +317,7 @@ void Content::elementText(PTR(rdo::animation::TextElement) pElement)
 	m_memDC.dc().drawText(rect, flags, QString::fromStdString(pElement->m_text), &rect);
 }
 
-void Content::elementRect(PTR(rdo::animation::RectElement) pElement)
+void Content::elementRect(rdo::animation::RectElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -333,7 +333,7 @@ void Content::elementRect(PTR(rdo::animation::RectElement) pElement)
 	);
 }
 
-void Content::elementRoundRect(PTR(rdo::animation::RoundRectElement) pElement)
+void Content::elementRoundRect(rdo::animation::RoundRectElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -354,7 +354,7 @@ void Content::elementRoundRect(PTR(rdo::animation::RoundRectElement) pElement)
 	);
 }
 
-void Content::elementLine(PTR(rdo::animation::LineElement) pElement)
+void Content::elementLine(rdo::animation::LineElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -368,7 +368,7 @@ void Content::elementLine(PTR(rdo::animation::LineElement) pElement)
 	}
 }
 
-void Content::elementTriang(PTR(rdo::animation::TriangElement) pElement)
+void Content::elementTriang(rdo::animation::TriangElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -394,7 +394,7 @@ void Content::elementTriang(PTR(rdo::animation::TriangElement) pElement)
 	);
 }
 
-void Content::elementCircle(PTR(rdo::animation::CircleElement) pElement)
+void Content::elementCircle(rdo::animation::CircleElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -416,7 +416,7 @@ void Content::elementCircle(PTR(rdo::animation::CircleElement) pElement)
 	);
 }
 
-void Content::elementEllipse(PTR(rdo::animation::EllipseElement) pElement)
+void Content::elementEllipse(rdo::animation::EllipseElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -439,9 +439,9 @@ void Content::elementEllipse(PTR(rdo::animation::EllipseElement) pElement)
 }
 
 void Content::elementBMP(
-	 PTR(rdo::animation::BmpElement) pElement,
-	CREF(rdo::gui::BitmapList)       bitmapList,
-	 REF(rdo::gui::BitmapList)       bitmapGeneratedList)
+	rdo::animation::BmpElement* pElement,
+	CREF(rdo::gui::BitmapList) bitmapList,
+	REF(rdo::gui::BitmapList) bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
@@ -459,9 +459,9 @@ void Content::elementBMP(
 }
 
 void Content::elementSBMP(
-	 PTR(rdo::animation::ScaledBmpElement) pElement,
-	CREF(rdo::gui::BitmapList)             bitmapList,
-	 REF(rdo::gui::BitmapList)             bitmapGeneratedList)
+	rdo::animation::ScaledBmpElement* pElement,
+	CREF(rdo::gui::BitmapList) bitmapList,
+	REF(rdo::gui::BitmapList) bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
@@ -522,7 +522,7 @@ QPixmap Content::getBitmap(
 	return bmpIt->second;
 }
 
-void Content::elementActive(PTR(rdo::animation::ActiveElement) pElement, REF(rdo::gui::animation::AreaList) areaList)
+void Content::elementActive(rdo::animation::ActiveElement* pElement, REF(rdo::gui::animation::AreaList) areaList)
 {
 	ASSERT(pElement);
 
@@ -574,9 +574,9 @@ View::~View()
 	}
 }
 
-PTR(Content) View::getContent()
+Content* View::getContent()
 {
-	PTR(Content) pContent = static_cast<PTR(Content)>(widget());
+	Content* pContent = static_cast<Content*>(widget());
 	ASSERT(pContent);
 	return pContent;
 }

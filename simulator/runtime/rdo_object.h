@@ -39,19 +39,19 @@ public:
 //friend class RDORuntime;
 //public:
 //	virtual ~RDORuntimeObject();
-//	PTR(RDORuntimeParent) getParent() const                         { return m_parent;  }
-//	void                  reparent (PTR(RDORuntimeParent) parent);
-//	void                  detach   ();
+//	RDORuntimeParent* getParent() const { return m_parent;  }
+//	void reparent(RDORuntimeParent* parent);
+//	void detach();
 //
 ////#ifndef _DEBUG
-////	PTR(void) operator new   (size_t   sz);
-////	void      operator delete(PTR(void) v);
+////	void* operator new(size_t sz);
+////	void operator delete(void* v);
 ////#endif
 //
 //protected:
-//	RDORuntimeObject(PTR(RDORuntimeParent) parent );
+//	RDORuntimeObject(RDORuntimeParent* parent );
 //
-//	PTR(RDORuntimeParent) m_parent;
+//	RDORuntimeParent* m_parent;
 //
 //private:
 //	size_t        m_object_size; // Размер текущего объекта
@@ -64,10 +64,10 @@ public:
 //class RDORuntimeParent: public RDORuntimeObject
 //{
 //public:
-//	RDORuntimeParent(PTR(RDORuntimeParent) parent);
+//	RDORuntimeParent(RDORuntimeParent* parent);
 //	virtual ~RDORuntimeParent();
 //
-//	void insertObject(PTR(RDORuntimeObject) object)
+//	void insertObject(RDORuntimeObject* object)
 //	{
 //		if (object)
 //		{
@@ -86,7 +86,7 @@ public:
 ////			TRACE( "insert object NULL !!!!!!!!!!!!!!!\n" );
 //		}
 //	}
-//	void removeObject(PTR(RDORuntimeObject) object)
+//	void removeObject(RDORuntimeObject* object)
 //	{
 //		ChildList::reverse_iterator it = std::find(m_childList.rbegin(), m_childList.rend(), object);
 //		if (it != m_childList.rend())
@@ -114,7 +114,7 @@ public:
 //	}
 //
 //protected:
-//	typedef std::vector<PTR(RDORuntimeObject)> ChildList;
+//	typedef std::vector<RDORuntimeObject*> ChildList;
 //	ChildList m_childList;
 //};
 

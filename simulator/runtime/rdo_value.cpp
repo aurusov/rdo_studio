@@ -60,10 +60,10 @@ RDOValue::RDOValue(int value)
 	setUndefined(false);
 }
 
-RDOValue::RDOValue(std::size_t value)
+RDOValue::RDOValue(uint32_t value)
 	: m_pType(g_int)
 {
-	__get<std::size_t>() = value;
+	__get<uint32_t>() = value;
 	setUndefined(false);
 }
 
@@ -198,15 +198,15 @@ int RDOValue::getInt() const
 	throw RDOValueException();
 }
 
-std::size_t RDOValue::getUInt() const
+uint32_t RDOValue::getUInt() const
 {
 	if (isUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
 	{
-	case RDOType::t_int    : return __get<std::size_t>();
-	case RDOType::t_real   : return (std::size_t)__get<double>();
+	case RDOType::t_int    : return __get<uint32_t>();
+	case RDOType::t_real   : return (uint32_t)__get<double>();
 	case RDOType::t_enum   : return __get<std::size_t>();
 	case RDOType::t_bool   : return __get<bool>() ? 1 : 0;
 	case RDOType::t_pointer: return onPointerGetUInt();
@@ -305,7 +305,7 @@ CREF(std::string) RDOValue::getString() const
 
 CREF(std::string) RDOValue::getIdentificator() const
 {
-	if (isUndefined()) 
+	if (isUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -542,7 +542,7 @@ RDOValue RDOValue::operator&& (CREF(RDOValue) rdovalue) const
 			}
 			break;
 		}
-	case RDOType::t_pointer: 
+	case RDOType::t_pointer:
 		{
 			return onPointerAnd(rdovalue);
 		}
@@ -911,14 +911,14 @@ RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 //	throw RDOValueException();
 //}
 
-REF(PTR(void)) RDOValue::__voidPtrV()
+REF(void*) RDOValue::__voidPtrV()
 {
-	return __get<PTR(void)>();
+	return __get<void*>();
 }
 
-CREF(PTR(void)) RDOValue::__voidPtrV() const
+CREF(void*) RDOValue::__voidPtrV() const
 {
-	return *reinterpret_cast<const PTR(void)*>(&const_cast<PTR(RDOValue)>(this)->m_value);
+	return *reinterpret_cast<const void**>(&const_cast<RDOValue*>(this)->m_value);
 }
 
 LPRDOEnumType RDOValue::__enumT() const
@@ -1215,7 +1215,7 @@ int RDOValue::onPointerGetInt() const
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerGetInt()");
 }
 
-std::size_t RDOValue::onPointerGetUInt() const
+uint32_t RDOValue::onPointerGetUInt() const
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
@@ -1224,7 +1224,7 @@ std::size_t RDOValue::onPointerGetUInt() const
 	//{
 	//	LPFuzzySet pThisValue = getPointer<FuzzySet>();
 	//	ASSERT(pThisValue);
-	//	return (std::size_t)MemberFunctionProperties::defuzzyfication(pThisValue).getInt();
+	//	return (uint32_t)MemberFunctionProperties::defuzzyfication(pThisValue).getInt();
 	//}
 
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerGetUInt()");

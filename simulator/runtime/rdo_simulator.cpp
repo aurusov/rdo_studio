@@ -47,7 +47,7 @@ void RDOSimulator::appendLogic(CREF(LPIBaseOperation) pLogic, LPIBaseOperationCo
 
 bool RDOSimulator::doOperation()
 {
-	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
+	LPRDORuntime pRuntime(static_cast<RDORuntime*>(this));
 
 	bool res;
 	if (getMustContinueOpr())
@@ -131,7 +131,7 @@ bool RDOSimulator::doOperation()
 
 void RDOSimulator::preProcess()
 {
-	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
+	LPRDORuntime pRuntime(static_cast<RDORuntime*>(this));
 	m_pMetaLogic.query_cast<IBaseOperation>()->onStart(pRuntime);
 	onResetResult();
 }

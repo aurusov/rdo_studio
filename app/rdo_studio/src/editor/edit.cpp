@@ -41,7 +41,7 @@ Edit::Group::Group()
 	, bSearchDown    (true )
 {}
 
-void Edit::Group::insert(PTR(Edit) pEdit)
+void Edit::Group::insert(Edit* pEdit)
 {
 	m_list.push_back(pEdit);
 }
@@ -260,7 +260,7 @@ void Edit::setEditorStyle(EditStyle* pStyle)
 	sendEditor(SCI_SETHSCROLLBAR, m_pStyle->window.showHorzScrollBar);
 }
 
-void Edit::setGroup(PTR(Group) pGroup)
+void Edit::setGroup(Group* pGroup)
 {
 	m_pGroup = pGroup;
 }

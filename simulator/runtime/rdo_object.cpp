@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 //size_t RDORuntimeObject::s_memory_size = 0;
 //
-//RDORuntimeObject::RDORuntimeObject(PTR(RDORuntimeParent) parent)
+//RDORuntimeObject::RDORuntimeObject(RDORuntimeParent* parent)
 //	: m_parent(parent)
 //{
 //	if (m_parent)
@@ -56,7 +56,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 //	}
 //}
 //
-//void RDORuntimeObject::reparent(PTR(RDORuntimeParent) parent)
+//void RDORuntimeObject::reparent(RDORuntimeParent* parent)
 //{
 //	if (m_parent != parent)
 //	{
@@ -73,18 +73,18 @@ OPEN_RDO_RUNTIME_NAMESPACE
 //}
 
 //#ifndef _DEBUG
-//PTR(void) RDORuntimeObject::operator new(size_t sz)
+//void* RDORuntimeObject::operator new(size_t sz)
 //{
 //	s_memory_size += sz;
-//	PTR(RDORuntimeObject) obj = static_cast<PTR(RDORuntimeObject)>(::operator new(sz));
+//	RDORuntimeObject* obj = static_cast<RDORuntimeObject*>(::operator new(sz));
 //	obj->m_object_size = sz;
 ////	obj->pRuntime->memory_insert(sz);
 //	return obj;
 //}
 //
-//void RDORuntimeObject::operator delete(PTR(void) v)
+//void RDORuntimeObject::operator delete(void* v)
 //{
-//	s_memory_size -= static_cast<PTR(RDORuntimeObject)>(v)->m_object_size;
+//	s_memory_size -= static_cast<RDORuntimeObject*>(v)->m_object_size;
 //	::operator delete(v);
 //}
 //#endif
@@ -92,7 +92,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntimeParent
 // --------------------------------------------------------------------------------
-//RDORuntimeParent::RDORuntimeParent(PTR(RDORuntimeParent) parent)
+//RDORuntimeParent::RDORuntimeParent(RDORuntimeParent* parent)
 //	: RDORuntimeObject(parent)
 //{}
 //

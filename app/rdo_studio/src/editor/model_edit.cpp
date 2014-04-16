@@ -102,7 +102,7 @@ void Model::catchMarginClick(int position, int modifiers, int margin)
 	}
 }
 
-void Model::setEditorStyle(PTR(ModelStyle) pStyle)
+void Model::setEditorStyle(ModelStyle* pStyle)
 {
 	super::setEditorStyle(pStyle);
 	if (!m_pStyle)
@@ -475,7 +475,7 @@ void Model::onEditCompleteWord()
 	}
 	const char* list;
 
-	if (static_cast<PTR(ModelStyle)>(m_pStyle)->autoComplete.showFullList)
+	if (static_cast<ModelStyle*>(m_pStyle)->autoComplete.showFullList)
 	{
 		list = primaryKwList.c_str();
 	}

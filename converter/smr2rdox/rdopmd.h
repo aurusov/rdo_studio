@@ -20,8 +20,8 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int  cnv_pmdparse(PTR(void) lexer);
-int  cnv_pmdlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+int cnv_pmdparse(void* lexer);
+int cnv_pmdlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 void cnv_pmderror(const char* message);
 
 // --------------------------------------------------------------------------------

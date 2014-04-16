@@ -31,14 +31,14 @@ public:
 
 	REF(LogView) view()
 	{
-		return *static_cast<PTR(LogView)>(viewport());
+		return *static_cast<LogView*>(viewport());
 	}
 
 private:
-	virtual bool viewportEvent(PTR(QEvent)      pEvent);
-	virtual void focusInEvent (PTR(QFocusEvent) pEvent);
-	virtual void focusOutEvent(PTR(QFocusEvent) pEvent);
-	virtual void keyPressEvent(PTR(QKeyEvent)   pEvent);
+	virtual bool viewportEvent(QEvent*      pEvent);
+	virtual void focusInEvent (QFocusEvent* pEvent);
+	virtual void focusOutEvent(QFocusEvent* pEvent);
+	virtual void keyPressEvent(QKeyEvent*   pEvent);
 };
 
 }}} // namespace rdo::gui::tracer

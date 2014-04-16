@@ -133,7 +133,7 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) na
 RDOPMDWatchPar::~RDOPMDWatchPar()
 {}
 
-void RDOPMDWatchPar::notify(std::size_t message, PTR(void) pParam)
+void RDOPMDWatchPar::notify(std::size_t message, void* pParam)
 {
 	UNUSED(message);
 

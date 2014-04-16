@@ -58,7 +58,7 @@ public:
 	virtual void addSubWindow     (QWidget* pWidget);
 	virtual void activateSubWindow(QWidget* pWidget);
 
-	PTR(QSlider) m_pModelSpeedSlider;
+	QSlider* m_pModelSpeedSlider;
 
 	void insertMenuFileReopenItem(CREF(QString) item);
 

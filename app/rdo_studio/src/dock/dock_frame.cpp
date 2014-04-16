@@ -20,7 +20,7 @@
 DockFrame::DockFrame(QWidget* pParent)
 	: DockFocusable("Анимация", pParent)
 {
-	PTR(context_type) pWidget = new context_type(this);
+	context_type* pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(150, 200));
 
 	setWidget(pWidget);
@@ -33,5 +33,5 @@ DockFrame::~DockFrame()
 
 REF(DockFrame::context_type) DockFrame::getContext()
 {
-	return *static_cast<PTR(context_type)>(widget());
+	return *static_cast<context_type*>(widget());
 }

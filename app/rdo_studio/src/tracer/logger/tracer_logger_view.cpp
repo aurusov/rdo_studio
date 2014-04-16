@@ -282,7 +282,7 @@ bool LogView::ScrollMetricVert::applyInc(int delta)
 // --------------------------------------------------------------------------------
 // -------------------- LogView
 // --------------------------------------------------------------------------------
-LogView::LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle)
+LogView::LogView(QAbstractScrollArea* pParent, LogStyle* pStyle)
 	: parent_type       (pParent)
 	, m_pScrollArea     (pParent)
 	, m_logStyle        (pStyle )
@@ -548,14 +548,14 @@ QString LogView::getSelected() const
 
 REF(QScrollBar) LogView::getVertScrollBar()
 {
-	PTR(QScrollBar) pScrollBar = m_pScrollArea->verticalScrollBar();
+	QScrollBar* pScrollBar = m_pScrollArea->verticalScrollBar();
 	ASSERT(pScrollBar);
 	return *pScrollBar;
 }
 
 REF(QScrollBar) LogView::getHorzScrollBar()
 {
-	PTR(QScrollBar) pScrollBar = m_pScrollArea->horizontalScrollBar();
+	QScrollBar* pScrollBar = m_pScrollArea->horizontalScrollBar();
 	ASSERT(pScrollBar);
 	return *pScrollBar;
 }

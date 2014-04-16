@@ -66,19 +66,14 @@ void RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime)
 	if (m_pStatistics)
 		m_pStatistics->setTransCount(m_createdTransactCount);
 
-	struct Pair
-	{
-		typedef  RDOResourceTypeList  Type;
-		typedef  RDOPROCTransact      Value;
-	};
-
-	LPRDOPROCTransact pTransact = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime).getPointerByType<Pair>();
+	LPRDOPROCTransact pTransact = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime).
+			getPointerByType<RDOPROCTransact, RDOResourceTypeList>();
 	ASSERT(pTransact);
 
 	pTransact->setBlock(this);
 	pTransact->next();
 
-	PTR(RDOTrace) tracer = pRuntime->getTracer();
+	RDOTrace* tracer = pRuntime->getTracer();
 	if (!tracer->isNull())
 	{
 		tracer->getOStream() << pTransact->traceResourceState('\0', pRuntime) << tracer->getEOL();
