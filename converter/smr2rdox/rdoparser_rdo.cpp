@@ -188,10 +188,8 @@ int roundLocal(double value)
 	return (int)floor(value + 0.5);
 }
 
-void RDOParserSTDFUN::parse(Converter* pParser)
+void RDOParserSTDFUN::parse(Converter* /*pParser*/)
 {
-	UNUSED(pParser);
-
 	typedef rdo::runtime::std_fun1<double, double>         StdFun_D_D;
 	typedef rdo::runtime::std_fun2<double, double, double> StdFun_D_DD;
 	typedef rdo::runtime::std_fun2<double, double, int>    StdFun_D_DI;

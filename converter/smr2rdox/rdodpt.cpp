@@ -44,10 +44,8 @@ int cnv_dptlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_dpterror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_dpterror(const char* /*message*/)
+{}
 
 int cnv_proc_rtp_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
@@ -56,10 +54,8 @@ int cnv_proc_rtp_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_proc_rtp_error(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_proc_rtp_error(const char* /*message*/)
+{}
 
 int cnv_proc_rss_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
@@ -68,10 +64,8 @@ int cnv_proc_rss_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_proc_rss_error(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_proc_rss_error(const char* /*message*/)
+{}
 
 int cnv_proc_opr_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
@@ -80,10 +74,8 @@ int cnv_proc_opr_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_proc_opr_error(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_proc_opr_error(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivity
@@ -212,9 +204,8 @@ void RDODPTActivity::planningInsertIntoSMR() const
 	Converter::s_converter()->insertDocUpdate(pPlanningInsertIntoSMR);
 }
 
-bool RDODPTActivity::setPrior(LPRDOFUNArithm& pPrior)
+bool RDODPTActivity::setPrior(LPRDOFUNArithm& /*pPrior*/)
 {
-	UNUSED(pPrior);
 	return false;
 }
 
@@ -519,11 +510,9 @@ RDOPROCOperator::~RDOPROCOperator()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCGenerate
 // --------------------------------------------------------------------------------
-RDOPROCGenerate::RDOPROCGenerate(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pTimeCalc)
+RDOPROCGenerate::RDOPROCGenerate(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& /*pTimeCalc*/)
 	: RDOPROCOperator(pProcess, name)
-{
-	UNUSED(pTimeCalc);
-}
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCBlockForQueue

@@ -28,10 +28,8 @@ int cnv_rtplex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_rtperror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_rtperror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
@@ -56,10 +54,8 @@ void RDORTPResType::addParam(const LPRDORTPParam& param)
 	m_params.push_back(param);
 }
 
-void RDORTPResType::addParam(const std::string& param_name, rdo::runtime::RDOType::TypeID param_typeID)
+void RDORTPResType::addParam(const std::string& /*param_name*/, rdo::runtime::RDOType::TypeID /*param_typeID*/)
 {
-	UNUSED(param_name  );
-	UNUSED(param_typeID);
 	NEVER_REACH_HERE;
 }
 

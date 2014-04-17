@@ -292,7 +292,7 @@ void RDOThread::broadcastMessage(RDOTreadMessage message, void* pParam, bool loc
 	if (lock && param_lock)
 		delete param_lock;
 #else
-	UNUSED(lock);
+	(void)lock;
 	RDOMessageInfo msg(this, message, pParam);
 	std::list< RDOThread* >::iterator it = kernel->threads.begin();
 	while ( it != kernel->threads.end() ) {

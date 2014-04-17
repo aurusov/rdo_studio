@@ -31,10 +31,8 @@ void BlockForQueue::createRes(RDOResType rtp, const std::string& res_name)
 	rssList.append<parser::RDORSSResource>(rss);
 }
 
-bool BlockForQueue::checkType(RDOResType rtp, const parser::RDOParserSrcInfo& info)
+bool BlockForQueue::checkType(RDOResType rtp, const parser::RDOParserSrcInfo& /*info*/)
 {
-	UNUSED(info);
-
 	// "длина_очереди"
 	const std::string rtp_param_name = rdo::runtime::RDOPROCQueue::getQueueParamName();
 	// Тип найден, проверим его на наличие параметра "длина_очереди"

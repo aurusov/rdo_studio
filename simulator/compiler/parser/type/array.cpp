@@ -42,8 +42,6 @@ std::string RDOArrayType::name() const
 
 LPRDOType RDOArrayType::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
-	UNUSED(from_src_info);
-
 	ASSERT(pFrom);
 
 	LPRDOArrayType pFromArrayType = pFrom.object_dynamic_cast<RDOArrayType>();

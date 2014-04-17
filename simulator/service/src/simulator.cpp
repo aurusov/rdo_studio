@@ -336,11 +336,6 @@ void RDOThreadCorba::stop()
 					break;
 				}
 			}
-			else
-			{
-				int i = 0;
-				UNUSED(i);
-			}
 		}
 //		thread_corbaRunThreadFun->Delete();
 		delete thread_corbaRunThreadFun;
@@ -1225,7 +1220,7 @@ void RDOThreadSimulator::closeModel()
 void RDOThreadSimulator::parseSMRFileInfo(rdo::converter::smr2rdox::RDOSMRFileInfo& info)
 {
 #ifdef DISABLE_CONVERTER
-	UNUSED(info);
+	(void)info;
 #else
 	try
 	{

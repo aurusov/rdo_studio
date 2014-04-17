@@ -39,10 +39,8 @@ int funlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void funerror(const char* message)
-{
-	UNUSED(message);
-}
+void funerror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNDoubleToIntByResult
@@ -343,10 +341,8 @@ void RDOFUNArithm::castValue(const LPRDOFUNArithm& pSecond, const std::string& e
 }
 
 template <class T>
-rdo::runtime::LPRDOCalc RDOFUNArithm::generateCalc(const rdo::runtime::RDOSrcInfo::Position& position, const std::string& error)
+rdo::runtime::LPRDOCalc RDOFUNArithm::generateCalc(const rdo::runtime::RDOSrcInfo::Position& position, const std::string& /*error*/)
 {
-	UNUSED(error);
-
 	rdo::runtime::LPRDOCalc pCalc = rdo::runtime::RDOCalcUnaryBase::generateCalc<T>(position, m_pExpression->calc());
 	ASSERT(pCalc);
 	return pCalc;
@@ -1372,9 +1368,8 @@ RDOFUNFunctionListElementEq::RDOFUNFunctionListElementEq(const YYLTYPE& position
 	: RDOFUNFunctionListElement(RDOParserSrcInfo(position, "="))
 {}
 
-rdo::runtime::LPRDOCalcConst RDOFUNFunctionListElementEq::createResultCalc(const LPTypeInfo& pRetType, const RDOParserSrcInfo& src_pos) const
+rdo::runtime::LPRDOCalcConst RDOFUNFunctionListElementEq::createResultCalc(const LPTypeInfo& /*pRetType*/, const RDOParserSrcInfo& src_pos) const
 {
-	UNUSED(pRetType);
 	RDOParser::s_parser()->error().error(src_pos, "Внутренная ошибка парсера: RDOFUNFunctionListElementEq::createResultCalc");
 	NEVER_REACH_HERE;
 	return NULL;

@@ -23,9 +23,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOCalcNoChange::RDOCalcNoChange()
 {}
 
-RDOValue RDOCalcNoChange::doCalc(const LPRDORuntime& pRuntime)
+RDOValue RDOCalcNoChange::doCalc(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return RDOValue();
 }
 

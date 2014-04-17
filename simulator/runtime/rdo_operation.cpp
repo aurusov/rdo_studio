@@ -255,9 +255,9 @@ void RDOOperation::decrementRelevantResourceReference(const LPRDORuntime& pRunti
 	}
 }
 
-void                     RDOOperation::onBeforeOperationBegin(const LPRDORuntime& pRuntime) { UNUSED(pRuntime); }
-void                     RDOOperation::onStart               (const LPRDORuntime& pRuntime) { UNUSED(pRuntime); }
-void                     RDOOperation::onStop                (const LPRDORuntime& pRuntime) { UNUSED(pRuntime); }
-IBaseOperation::BOResult RDOOperation::onContinue            (const LPRDORuntime& pRuntime) { UNUSED(pRuntime); return IBaseOperation::BOR_cant_run; }
+void                     RDOOperation::onBeforeOperationBegin(const LPRDORuntime& /*pRuntime*/) {}
+void                     RDOOperation::onStart               (const LPRDORuntime& /*pRuntime*/) {}
+void                     RDOOperation::onStop                (const LPRDORuntime& /*pRuntime*/) {}
+IBaseOperation::BOResult RDOOperation::onContinue            (const LPRDORuntime& /*pRuntime*/) { return IBaseOperation::BOR_cant_run; }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

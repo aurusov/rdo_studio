@@ -1077,7 +1077,7 @@ pat_main
 	{
 		#PASS1
 		{
-			UNUSED(@1);
+			(void)(@1);
 		}
 
 		#PASS2

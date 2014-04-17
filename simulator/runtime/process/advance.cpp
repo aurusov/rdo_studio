@@ -71,15 +71,11 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(const LPRDORuntime& pRunt
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCAdvance::onStart(const LPRDORuntime& pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCAdvance::onStart(const LPRDORuntime& /*pRuntime*/)
+{}
 
-void RDOPROCAdvance::onStop(const LPRDORuntime& pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCAdvance::onStop(const LPRDORuntime& /*pRuntime*/)
+{}
 
 void RDOPROCAdvance::onMakePlaned(const LPRDORuntime& pRuntime)
 {
@@ -103,9 +99,8 @@ void RDOPROCAdvance::onMakePlaned(const LPRDORuntime& pRuntime)
 	}
 }
 
-IBaseOperation::BOResult RDOPROCAdvance::onContinue(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOPROCAdvance::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 

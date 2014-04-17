@@ -51,9 +51,8 @@ IBaseOperation::BOResult RDODPTSearch::onDoOperation(const LPRDORuntime& pRuntim
 	return onContinue(pRuntime);
 }
 
-IBaseOperation::BOResult RDODPTSearch::onContinue(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDODPTSearch::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	uint32_t time_begin = ::GetTickCount();
 	for (;;)
 	{

@@ -41,10 +41,8 @@ int cnv_funlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_funerror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_funerror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNDoubleToIntByResult
@@ -1361,10 +1359,8 @@ RDOFUNFunctionListElementEq::RDOFUNFunctionListElementEq(const YYLTYPE& position
 	: RDOFUNFunctionListElement(RDOParserSrcInfo(position, "="))
 {}
 
-rdo::runtime::LPRDOCalcConst RDOFUNFunctionListElementEq::createResultCalc(const LPRDOTypeParam& pRetType, const RDOParserSrcInfo& src_pos) const
+rdo::runtime::LPRDOCalcConst RDOFUNFunctionListElementEq::createResultCalc(const LPRDOTypeParam& /*pRetType*/, const RDOParserSrcInfo& src_pos) const
 {
-	UNUSED(pRetType);
-
 	Converter::s_converter()->error().error(src_pos, "Внутренная ошибка парсера: RDOFUNFunctionListElementEq::createResultCalc");
 	NEVER_REACH_HERE;
 	return NULL;

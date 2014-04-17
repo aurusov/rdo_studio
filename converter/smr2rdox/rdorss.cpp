@@ -28,10 +28,8 @@ int cnv_rsslex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_rsserror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_rsserror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource

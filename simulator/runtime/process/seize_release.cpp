@@ -86,9 +86,8 @@ bool RDOPROCSeize::onCheckCondition(const LPRDORuntime& pRuntime)
 	return false;
 }
 
-IBaseOperation::BOResult RDOPROCSeize::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOPROCSeize::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
@@ -113,14 +112,11 @@ void RDOPROCSeize::transactGoOut(const LPTransact& pTransact)
 	RDOPROCBlockForSeize::transactGoOut(pTransact);
 }
 
-void RDOPROCSeize::onStop(const LPRDORuntime& pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCSeize::onStop(const LPRDORuntime& /*pRuntime*/)
+{}
 
-IBaseOperation::BOResult RDOPROCSeize::onContinue(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOPROCSeize::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
@@ -177,21 +173,17 @@ bool RDOPROCRelease::onCheckCondition(const LPRDORuntime& pRuntime)
 	return false;
 }
 
-IBaseOperation::BOResult RDOPROCRelease::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOPROCRelease::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCRelease::onStop(const LPRDORuntime& pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCRelease::onStop(const LPRDORuntime& /*pRuntime*/)
+{}
 
-IBaseOperation::BOResult RDOPROCRelease::onContinue(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOPROCRelease::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 

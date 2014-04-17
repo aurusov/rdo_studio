@@ -221,9 +221,8 @@ LogStyle::~LogStyle()
 {
 }
 
-bool LogStyle::getItemColors(int index, LogColorPair &colors) const
+bool LogStyle::getItemColors(int /*index*/, LogColorPair &colors) const
 {
-	UNUSED(index);
 	return getDefaultColor(colors);
 }
 

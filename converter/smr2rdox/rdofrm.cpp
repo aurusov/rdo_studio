@@ -27,10 +27,8 @@ int cnv_frmlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_frmerror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_frmerror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame

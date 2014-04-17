@@ -115,11 +115,10 @@ std::string RDOActivity::traceResourcesList(char prefix, const LPRDORuntime& pRu
 	return res;
 }
 
-std::string RDOActivity::traceResourcesListNumbers(const LPRDORuntime& pRuntime, bool show_create_index)
+std::string RDOActivity::traceResourcesListNumbers(const LPRDORuntime& /*pRuntime*/, bool show_create_index)
 {
-	UNUSED(pRuntime);
 #ifndef RDOSIM_COMPATIBLE
-	UNUSED(show_create_index);
+	(void)show_create_index;
 #endif
 	std::ostringstream res;
 	res << m_relevantResources.size() << " ";

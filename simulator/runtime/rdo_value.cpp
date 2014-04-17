@@ -673,10 +673,8 @@ const RDOValue& RDOValue::operator++()
 	return *this;
 }
 
-RDOValue RDOValue::operator++(int inc)
+RDOValue RDOValue::operator++(int /*inc*/)
 {
-	UNUSED(inc);
-
 	if (isUndefined())
 		throw RDOUndefinedException();
 
@@ -694,10 +692,8 @@ const RDOValue& RDOValue::operator--()
 	return *this;
 }
 
-RDOValue RDOValue::operator--(int inc)
+RDOValue RDOValue::operator--(int /*inc*/)
 {
-	UNUSED(inc);
-
 	if (isUndefined())
 		throw RDOUndefinedException();
 
@@ -1156,11 +1152,10 @@ RDOValue& RDOValue::onPointerMinus(const RDOValue& rdovalue)
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerMinus()");
 }
 
-RDOValue& RDOValue::onPointerMult(const RDOValue& rdovalue)
+RDOValue& RDOValue::onPointerMult(const RDOValue& /*rdovalue*/)
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
-	UNUSED(rdovalue);
 	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
 	//if (pThisFuzzyType)
 	//{
@@ -1178,11 +1173,10 @@ RDOValue& RDOValue::onPointerMult(const RDOValue& rdovalue)
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerMult()");
 }
 
-RDOValue& RDOValue::onPointerDiv(const RDOValue& rdovalue)
+RDOValue& RDOValue::onPointerDiv(const RDOValue& /*rdovalue*/)
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
-	UNUSED(rdovalue);
 	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
 	//if (pThisFuzzyType)
 	//{
@@ -1230,11 +1224,10 @@ uint32_t RDOValue::onPointerGetUInt() const
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerGetUInt()");
 }
 
-bool RDOValue::onPointerAnd(const RDOValue& rdovalue) const
+bool RDOValue::onPointerAnd(const RDOValue& /*rdovalue*/) const
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
-	UNUSED(rdovalue);
 	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
 	//if (pThisFuzzyType)
 	//{
@@ -1251,11 +1244,10 @@ bool RDOValue::onPointerAnd(const RDOValue& rdovalue) const
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerAnd()");
 }
 
-bool RDOValue::onPointerOr(const RDOValue& rdovalue) const
+bool RDOValue::onPointerOr(const RDOValue& /*rdovalue*/) const
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
-	UNUSED(rdovalue);
 	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
 	//if (pThisFuzzyType)
 	//{

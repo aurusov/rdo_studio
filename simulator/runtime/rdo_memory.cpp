@@ -27,7 +27,7 @@ void RDOMemory::createVariable(const std::string& name, const RDOValue& variable
 		m_localMemory.insert(LocalMemory::value_type(name, variable));
 
 	ASSERT(result.second);
-	UNUSED(result);
+	(void)result;
 }
 
 RDOValue RDOMemory::getVariable(const std::string& name) const

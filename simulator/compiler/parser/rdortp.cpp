@@ -69,10 +69,8 @@ int rtplex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void rtperror(const char* message)
-{
-	UNUSED(message);
-}
+void rtperror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
@@ -137,11 +135,8 @@ void RDORTPResType::addParam(const LPRDORTPParam& param)
 	m_params.push_back(param);
 }
 
-void RDORTPResType::addParam(const std::string& param_name, rdo::runtime::RDOType::TypeID param_typeID)
-{
-	UNUSED(param_name  );
-	UNUSED(param_typeID);
-}
+void RDORTPResType::addParam(const std::string& /*param_name*/, rdo::runtime::RDOType::TypeID /*param_typeID*/)
+{}
 
 LPRDORTPParam RDORTPResType::findRTPParam(const std::string& paramName) const
 {
@@ -174,8 +169,6 @@ std::string RDORTPResType::name() const
 
 LPRDOType RDORTPResType::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
-	UNUSED(from_src_info);
-
 	switch (pFrom->typeID())
 	{
 	case rdo::runtime::RDOType::t_pointer:

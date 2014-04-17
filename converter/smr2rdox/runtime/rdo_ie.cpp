@@ -57,33 +57,28 @@ void RDOIrregEvent::onStop(const LPRDORuntime& pRuntime)
 	pRuntime->removeTimePoint(this);
 }
 
-bool RDOIrregEvent::onCheckCondition(const LPRDORuntime& pRuntime)
+bool RDOIrregEvent::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return false;
 }
 
-IBaseOperation::BOResult RDOIrregEvent::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOIrregEvent::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOIrregEvent::convertEvent(const LPRDORuntime& pRuntime) 
+void RDOIrregEvent::convertEvent(const LPRDORuntime& /*pRuntime*/) 
 { 
-	UNUSED(pRuntime);
 	NEVER_REACH_HERE;
 }
 
-void RDOIrregEvent::onBeforeIrregularEvent(const LPRDORuntime& pRuntime)
+void RDOIrregEvent::onBeforeIrregularEvent(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	NEVER_REACH_HERE;
 }
 
-void RDOIrregEvent::onAfterIrregularEvent(const LPRDORuntime& pRuntime)
+void RDOIrregEvent::onAfterIrregularEvent(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	NEVER_REACH_HERE;
 }
 
@@ -93,9 +88,8 @@ double RDOIrregEvent::getNextTimeInterval(const LPRDORuntime& pRuntime)
 	return m_pPattern->getNextTimeInterval(pRuntime); 
 }
 
-IBaseOperation::BOResult RDOIrregEvent::onContinue(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOIrregEvent::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 

@@ -24,10 +24,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOFunCalc::RDOFunCalc()
 {}
 
-void RDOFunCalc::addRetCalc(const LPRDOCalc& pCalc)
-{
-	UNUSED(pCalc);
-}
+void RDOFunCalc::addRetCalc(const LPRDOCalc& /*pCalc*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuncTableCalc

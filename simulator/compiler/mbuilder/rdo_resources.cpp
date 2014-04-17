@@ -147,9 +147,8 @@ void RDOResType::Param::setDefault(const parser::LPRDOValue& pDefault)
 	m_pDefault = pDefault;
 }
 
-bool RDOResType::Param::operator== (const Param& param) const
+bool RDOResType::Param::operator== (const Param& /*param*/) const
 {
-	UNUSED(param);
 	NEVER_REACH_HERE;
 	return true;
 }

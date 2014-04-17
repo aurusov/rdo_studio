@@ -40,11 +40,8 @@ DECLARE_ATOM_TYPE_PARSER(string,        "string"       );
 // --------------------------------------------------------------------------------
 
 //! RDOType__unknow
-LPRDOType RDOType__unknow::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
+LPRDOType RDOType__unknow::type_cast(const LPRDOType& /*pFrom*/, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& src_info) const
 {
-	UNUSED(pFrom      );
-	UNUSED(to_src_info);
-
 	rdo::converter::smr2rdox::g_error().error(src_info, rdo::format("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к неизвестному типу", from_src_info.src_text().c_str()));
 	return NULL;
 }
@@ -67,10 +64,8 @@ LPRDOValue RDOType__unknow::get_default() const
 	return rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(), rdo::Factory<RDOType__unknow>::create(), RDOParserSrcInfo());
 }
 
-void RDOType__unknow::writeModelStructure(std::ostream& stream) const
+void RDOType__unknow::writeModelStructure(std::ostream& /*stream*/) const
 {
-	UNUSED(stream);
-
 	rdo::converter::smr2rdox::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать неизвестный тип в отчет");
 	NEVER_REACH_HERE;
 }
@@ -231,11 +226,8 @@ void RDOType__string::writeModelStructure(std::ostream& stream) const
 }
 
 //! RDOType__identificator
-LPRDOType RDOType__identificator::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
+LPRDOType RDOType__identificator::type_cast(const LPRDOType& /*pFrom*/, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& src_info) const
 {
-	UNUSED(pFrom       );
-	UNUSED(to_src_info);
-
 	rdo::converter::smr2rdox::g_error().error(src_info, rdo::format("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к идентификатору", from_src_info.src_text().c_str()));
 	return NULL;
 }
@@ -258,10 +250,8 @@ LPRDOValue RDOType__identificator::get_default() const
 	return rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue("", rdo::runtime::g_identificator), rdo::Factory<RDOType__identificator>::create(), RDOParserSrcInfo());
 }
 
-void RDOType__identificator::writeModelStructure(std::ostream& stream) const
+void RDOType__identificator::writeModelStructure(std::ostream& /*stream*/) const
 {
-	UNUSED(stream);
-
 	rdo::converter::smr2rdox::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать тип идектификатор в отчет");
 	NEVER_REACH_HERE;
 }

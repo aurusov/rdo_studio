@@ -30,10 +30,8 @@ int cnv_pmdlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_pmderror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_pmderror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult

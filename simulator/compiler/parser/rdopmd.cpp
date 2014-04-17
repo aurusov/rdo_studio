@@ -31,10 +31,8 @@ int pmdlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void pmderror(const char* message)
-{
-	UNUSED(message);
-}
+void pmderror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult

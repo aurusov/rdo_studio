@@ -23,11 +23,6 @@ RuntimeWrapperType::RuntimeWrapperType(const rdo::runtime::LPRDOType& pType)
 	: m_pType(pType)
 {
 	ASSERT(m_pType);
-	if (typeID() == rdo::runtime::RDOType::t_unknow)
-	{
-		int i = 1;
-		UNUSED(i);
-	}
 }
 
 RuntimeWrapperType::~RuntimeWrapperType()
@@ -43,9 +38,8 @@ rdo::runtime::RDOType::TypeID RuntimeWrapperType::typeID() const
 	return m_pType->typeID();
 }
 
-rdo::runtime::LPRDOCalc RuntimeWrapperType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
+rdo::runtime::LPRDOCalc RuntimeWrapperType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& /*pType*/) const
 {
-	UNUSED(pType);
 	return pCalc;
 }
 

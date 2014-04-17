@@ -39,9 +39,8 @@ void GoToLineDialog::onOkButtonClicked()
 	done(Accepted);
 }
 
-void GoToLineDialog::onCheckInput(const QString& text)
+void GoToLineDialog::onCheckInput(const QString& /*text*/)
 {
-	UNUSED(text);
 	buttonOk->setEnabled(lineEdit->text().toInt() >= 1 ? true : false);
 }
 

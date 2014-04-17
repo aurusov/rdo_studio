@@ -31,9 +31,8 @@ void RDOCalcSeqInit::setBase(int base)
 	m_base = base;
 }
 
-RDOValue RDOCalcSeqInit::doCalc(const LPRDORuntime& pRuntime)
+RDOValue RDOCalcSeqInit::doCalc(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	m_gen->setSeed(m_base);
 	return RDOValue();
 }
@@ -119,9 +118,8 @@ RDOValue RDOCalcSeqNextTriangular::getNextValue(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSeqNextByHist
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcSeqNextByHist::getNextValue(const LPRDORuntime& pRuntime)
+RDOValue RDOCalcSeqNextByHist::getNextValue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return m_gen->next();
 }
 

@@ -73,9 +73,8 @@ public:
 
 	rdo::runtime::RDOType::TypeID      typeID() const { return m_pType->typeID(); }
 
-	virtual rdo::runtime::LPRDOCalc calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
+	virtual rdo::runtime::LPRDOCalc calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& /*pType*/) const
 	{
-		UNUSED(pType);
 		return pCalc;
 	}
 

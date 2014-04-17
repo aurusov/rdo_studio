@@ -46,9 +46,8 @@ void RDOPROCQueue::onStart(const LPRDORuntime& pRuntime)
 	_onStart(pRuntime);
 }
 
-bool RDOPROCQueue::onCheckCondition(const LPRDORuntime& pRuntime)
+bool RDOPROCQueue::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	if (!m_transacts.empty())
 	{
 		RDOValue i = forRes.rss->getParam(forRes.Id_param);
@@ -62,23 +61,17 @@ bool RDOPROCQueue::onCheckCondition(const LPRDORuntime& pRuntime)
 	}
 }
 
-IBaseOperation::BOResult RDOPROCQueue::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOPROCQueue::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
-
-	TRACE1("%7.1f QUEUE\n", pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCQueue::onStop (const LPRDORuntime& pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCQueue::onStop (const LPRDORuntime& /*pRuntime*/)
+{}
 
-IBaseOperation::BOResult RDOPROCQueue::onContinue(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOPROCQueue::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
@@ -90,9 +83,8 @@ void RDOPROCDepart::onStart(const LPRDORuntime& pRuntime)
 	_onStart(pRuntime);
 }
 
-bool RDOPROCDepart::onCheckCondition(const LPRDORuntime& pRuntime)
+bool RDOPROCDepart::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	if (!m_transacts.empty())
 	{
 		RDOValue i = forRes.rss->getParam(forRes.Id_param);
@@ -106,23 +98,17 @@ bool RDOPROCDepart::onCheckCondition(const LPRDORuntime& pRuntime)
 	}
 }
 
-IBaseOperation::BOResult RDOPROCDepart::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOPROCDepart::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
-
-	TRACE1("%7.1f DEPART\n", pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCDepart::onStop(const LPRDORuntime& pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCDepart::onStop(const LPRDORuntime& /*pRuntime*/)
+{}
 
-IBaseOperation::BOResult RDOPROCDepart::onContinue(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOPROCDepart::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 

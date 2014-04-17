@@ -39,7 +39,6 @@ inline RDOValue RDOSetResourceParam<SetOperationType::NOCHANGE>::doCalc(const LP
 {
 	LPRDOResource pResource = m_getResource->calcValue(pRuntime).getPointerByInterface<IResourceType>();
 	ASSERT(pResource);
-	UNUSED(pRuntime);
 	RDOValue value(true);
 	return value;
 }

@@ -60,10 +60,8 @@ LPExpression sprite(const LPRDOFRMSprite& sprite)
 
 }
 
-Context::FindResult RDOFRMCommandList::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::FindResult RDOFRMCommandList::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& /*srcInfo*/) const
 {
-	UNUSED(srcInfo);
-
 	if (method == Context::METHOD_GET)
 	{
 		LPRDOFRMSprite pSprite = RDOParser::s_parser()->findFRMSprite(params.identifier());

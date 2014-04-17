@@ -103,7 +103,7 @@ ParamInfo* TracerBase::getParamType(std::istream& stream)
 	else if (parType == ParamInfo::PT_ARRAY)
 	{
 		ParamInfo* pArrayItem = getParamType(stream);
-		UNUSED(pArrayItem);
+		(void)pArrayItem;
 	}
 	return pParam;
 }

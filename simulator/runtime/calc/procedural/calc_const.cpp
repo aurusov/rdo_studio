@@ -30,10 +30,8 @@ const RDOValue& RDOCalcConst::getValue() const
 	return m_value;
 }
 
-RDOValue RDOCalcConst::doCalc(const LPRDORuntime& pRuntime)
+RDOValue RDOCalcConst::doCalc(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
-
 	return m_value;
 }
 

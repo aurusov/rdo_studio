@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOResource
 // --------------------------------------------------------------------------------
-RDOResource::RDOResource(const LPRDORuntime& pRuntime, const ParamList& paramList, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary)
+RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const ParamList& paramList, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary)
 	: RDORuntimeObject   (                                      )
 	, RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
 	, m_temporary        (temporary                             )
@@ -30,12 +30,11 @@ RDOResource::RDOResource(const LPRDORuntime& pRuntime, const ParamList& paramLis
 	, m_referenceCount   (0                                     )
 	, m_resType          (pResType                              )
 {
-	UNUSED(pRuntime);
 	appendParams(paramList.begin(), paramList.end());
 }
 
 /// @todo копирующий конструктор не используется - нужен ли он?
-RDOResource::RDOResource(const LPRDORuntime& pRuntime, const RDOResource& copy)
+RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const RDOResource& copy)
 	: RDORuntimeObject   (                 )
 	, RDOTraceableObject (copy.traceable(), copy.getTraceID(), copy.traceId())
 	, m_paramList        (copy.m_paramList )
@@ -46,7 +45,6 @@ RDOResource::RDOResource(const LPRDORuntime& pRuntime, const RDOResource& copy)
 	, m_resType          (copy.m_resType   )
 	, m_typeId           (copy.m_typeId    )
 {
-	UNUSED(pRuntime);
 	appendParams(copy.m_paramList.begin(), copy.m_paramList.end());
 /// @todo посмотреть history и принять решение о комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
@@ -161,10 +159,8 @@ std::string RDOResource::traceResourceState(char prefix, const LPRDORuntime& pRu
 	return res.str();
 }
 
-void RDOResource::setRuntime(const LPRDORuntime& pRuntime)
+void RDOResource::setRuntime(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
-
 	/// @todo походу надо удалить метод
 	NEVER_REACH_HERE;
 }

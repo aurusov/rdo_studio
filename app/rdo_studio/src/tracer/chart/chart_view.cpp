@@ -763,10 +763,8 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 	}
 }
 
-void ChartView::setZoom(double new_zoom, const bool force_update)
+void ChartView::setZoom(double new_zoom, const bool /*force_update*/)
 {
-	UNUSED(force_update);
-
 	/*scale_koeff = new_zoom;
 	 if (scale_koeff < auto_zoom) {
 	 scale_koeff = auto_zoom;
@@ -873,10 +871,8 @@ const ChartViewStyle& ChartView::getStyle() const
 	return (*m_pStyle);
 }
 
-void ChartView::setFonts(const bool needRedraw)
+void ChartView::setFonts(const bool /*needRedraw*/)
 {
-	UNUSED(needRedraw);
-
 	if (!m_pStyle)
 		return;
 
@@ -1102,9 +1098,8 @@ ChartView& ChartViewMainWnd::view()
 	return *static_cast<ChartView*>(viewport());
 }
 
-bool ChartViewMainWnd::viewportEvent(QEvent* pEvent)
+bool ChartViewMainWnd::viewportEvent(QEvent* /*pEvent*/)
 {
-	UNUSED(pEvent);
 	return false;
 }
 

@@ -34,15 +34,13 @@ void RDOEvent::onStart(const LPRDORuntime& /*pRuntime*/)
 void RDOEvent::onStop(const LPRDORuntime& /*pRuntime*/)
 {}
 
-bool RDOEvent::onCheckCondition(const LPRDORuntime& pRuntime)
+bool RDOEvent::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return false;
 }
 
-IBaseOperation::BOResult RDOEvent::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOEvent::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
@@ -73,9 +71,8 @@ void RDOEvent::onAfterEvent(const LPRDORuntime& pRuntime)
 	updateRelRes(pRuntime);
 }
 
-IBaseOperation::BOResult RDOEvent::onContinue(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOEvent::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 

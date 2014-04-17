@@ -91,10 +91,7 @@ protected:
 DECLARE_POINTER(MyClass2)
 
 void MyClass2::ifun21()
-{
-	int i = 1;
-	UNUSED(i);
-}
+{}
 
 PREDECLARE_POINTER(MyClass3);
 class MyClass3: public rdo::counter_reference

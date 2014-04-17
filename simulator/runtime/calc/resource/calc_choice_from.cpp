@@ -302,9 +302,8 @@ RDOSelectResourceDirectCommonCalc::RDOSelectResourceDirectCommonCalc(ResourceID 
 	: RDOSelectResourceDirectCalc(relResID, resID, pCalcChoiceFrom, pCalcOrder, orderType)
 {}
 
-void RDOSelectResourceDirectCommonCalc::getPossibleNumbers(const LPRDORuntime& pRuntime, ResourceIDList& resourceIDList) const
+void RDOSelectResourceDirectCommonCalc::getPossibleNumbers(const LPRDORuntime& /*pRuntime*/, ResourceIDList& resourceIDList) const
 {
-	UNUSED(pRuntime);
 	resourceIDList.push_back(m_resID);
 }
 

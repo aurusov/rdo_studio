@@ -38,10 +38,8 @@ int dptlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void dpterror(const char* message)
-{
-	UNUSED(message);
-}
+void dpterror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivity
@@ -246,12 +244,8 @@ RDODPTSome::RDODPTSome(const RDOParserSrcInfo& src_info, LPILogic pParent)
 RDODPTSome::~RDODPTSome()
 {}
 
-Context::FindResult RDODPTSome::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::FindResult RDODPTSome::onFindContext(const std::string& /*method*/, const Context::Params& /*params*/, const RDOParserSrcInfo& /*srcInfo*/) const
 {
-	UNUSED(method);
-	UNUSED(params);
-	UNUSED(srcInfo);
-
 	//! Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return FindResult();
 }
@@ -273,12 +267,8 @@ RDODPTPrior::RDODPTPrior(const RDOParserSrcInfo& src_info, LPILogic pParent)
 RDODPTPrior::~RDODPTPrior()
 {}
 
-Context::FindResult RDODPTPrior::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::FindResult RDODPTPrior::onFindContext(const std::string& /*method*/, const Context::Params& /*params*/, const RDOParserSrcInfo& /*srcInfo*/) const
 {
-	UNUSED(method);
-	UNUSED(params);
-	UNUSED(srcInfo);
-
 	//! Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return FindResult();
 }
@@ -336,12 +326,8 @@ RDODPTSearch::RDODPTSearch(const RDOParserSrcInfo& src_info, rdo::runtime::RDODP
 RDODPTSearch::~RDODPTSearch()
 {}
 
-Context::FindResult RDODPTSearch::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::FindResult RDODPTSearch::onFindContext(const std::string& /*method*/, const Context::Params& /*params*/, const RDOParserSrcInfo& /*srcInfo*/) const
 {
-	UNUSED(method);
-	UNUSED(params);
-	UNUSED(srcInfo);
-
 	//! Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return FindResult();
 }

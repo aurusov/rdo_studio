@@ -27,10 +27,8 @@ int cnv_oprlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_oprerror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_oprerror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOOPROperation

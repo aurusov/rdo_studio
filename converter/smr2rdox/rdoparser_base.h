@@ -48,15 +48,10 @@ public:
 	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
-	virtual void parse(Converter* pParser)
-	{
-		UNUSED(pParser);
-	}
-	virtual void parse(Converter* pParser, std::istream& streamIn)
-	{
-		UNUSED(pParser );
-		UNUSED(streamIn);
-	}
+	virtual void parse(Converter* /*pParser*/)
+	{}
+	virtual void parse(Converter* /*pParser*/, std::istream& /*streamIn*/)
+	{}
 
 	virtual std::size_t lexer_loc_line() { return std::size_t(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE); };
 	virtual std::size_t lexer_loc_pos() { return 0; };

@@ -30,10 +30,8 @@ int cnv_patlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_paterror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_paterror(const char* /*message*/)
+{}
 
 int pat_preparse_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
@@ -42,10 +40,8 @@ int pat_preparse_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void pat_preparse_error(const char* message)
-{
-	UNUSED(message);
-}
+void pat_preparse_error(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPATPattern
@@ -477,10 +473,8 @@ void RDOPatternIrregEvent::addRelResUsage(const LPRDOPATChoiceFrom& pChoiceFrom,
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
 }
 
-rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(bool trace) const
+rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(bool /*trace*/) const
 {
-	UNUSED(trace);
-
 	std::vector<rdo::runtime::RDOValue> params_default;
 	for (const auto& param: m_pCurrRelRes->getType()->getParams())
 	{
@@ -599,12 +593,10 @@ RDOPatternOperation::RDOPatternOperation(const RDOParserSrcInfo& name_src_info, 
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
-RDOPatternOperation::RDOPatternOperation(bool trace, const RDOParserSrcInfo& name_src_info)
+RDOPatternOperation::RDOPatternOperation(bool /*trace*/, const RDOParserSrcInfo& name_src_info)
 	: RDOPATPattern  (name_src_info )
 	, m_convertorType(convert_unknow)
-{
-	UNUSED(trace);
-}
+{}
 
 void RDOPatternOperation::rel_res_insert(const LPRDORelevantResource& pRelevantResource)
 {
@@ -613,12 +605,8 @@ void RDOPatternOperation::rel_res_insert(const LPRDORelevantResource& pRelevantR
 	getPatRuntime<rdo::runtime::RDOPatternOperation>()->addConvertorEndStatus(pRelevantResource->m_statusEnd);
 }
 
-void RDOPatternOperation::addRelRes(const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdo::runtime::RDOResource::ConvertStatus beg, const YYLTYPE& convertor_pos)
+void RDOPatternOperation::addRelRes(const RDOParserSrcInfo& /*rel_info*/, const RDOParserSrcInfo& /*type_info*/, rdo::runtime::RDOResource::ConvertStatus /*beg*/, const YYLTYPE& convertor_pos)
 {
-	UNUSED(rel_info );
-	UNUSED(type_info);
-	UNUSED(beg      );
-
 	rdo::converter::smr2rdox::g_error().error(convertor_pos, "Внутренняя ошибка парсера");
 }
 

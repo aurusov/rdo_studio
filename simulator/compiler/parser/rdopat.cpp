@@ -33,10 +33,8 @@ int patlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void paterror(const char* message)
-{
-	UNUSED(message);
-}
+void paterror(const char* /*message*/)
+{}
 
 int evnlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
@@ -45,10 +43,8 @@ int evnlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void evnerror(const char* message)
-{
-	UNUSED(message);
-}
+void evnerror(const char* /*message*/)
+{}
 
 int evn_preparse_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
@@ -57,10 +53,8 @@ int evn_preparse_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void evn_preparse_error(const char* message)
-{
-	UNUSED(message);
-}
+void evn_preparse_error(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPATPattern
@@ -885,12 +879,10 @@ RDOPatternOperation::RDOPatternOperation(const RDOParserSrcInfo& name_src_info, 
 	m_pPatRuntime->setTraceID(RDOParser::s_parser()->getPAT_id());
 }
 
-RDOPatternOperation::RDOPatternOperation(bool trace, const RDOParserSrcInfo& name_src_info)
+RDOPatternOperation::RDOPatternOperation(bool /*trace*/, const RDOParserSrcInfo& name_src_info)
 	: RDOPATPattern  (name_src_info )
 	, m_convertorType(convert_unknow)
-{
-	UNUSED(trace);
-}
+{}
 
 void RDOPatternOperation::rel_res_insert(const LPRDORelevantResource& pRelevantResource)
 {
@@ -899,12 +891,8 @@ void RDOPatternOperation::rel_res_insert(const LPRDORelevantResource& pRelevantR
 	getPatRuntime<rdo::runtime::RDOPatternOperation>()->addConvertorEndStatus(pRelevantResource->m_statusEnd);
 }
 
-void RDOPatternOperation::addRelRes(const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdo::runtime::RDOResource::ConvertStatus beg, const YYLTYPE& convertor_pos)
+void RDOPatternOperation::addRelRes(const RDOParserSrcInfo& /*rel_info*/, const RDOParserSrcInfo& /*type_info*/, rdo::runtime::RDOResource::ConvertStatus /*beg*/, const YYLTYPE& convertor_pos)
 {
-	UNUSED(rel_info );
-	UNUSED(type_info);
-	UNUSED(beg      );
-
 	parser::g_error().error(convertor_pos, "Внутренняя ошибка парсера");
 }
 

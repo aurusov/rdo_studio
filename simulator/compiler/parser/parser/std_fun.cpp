@@ -175,10 +175,8 @@ void RDOParserSTDFUN::generateReal(const std::string& name, const rdo::runtime::
 	pFunction->end();
 }
 
-void RDOParserSTDFUN::parse(const LPRDOParser& pParser)
+void RDOParserSTDFUN::parse(const LPRDOParser& /*pParser*/)
 {
-	UNUSED(pParser);
-
 	typedef rdo::runtime::std_fun1<double, double>         StdFun_D_D;
 	typedef rdo::runtime::std_fun2<double, double, double> StdFun_D_DD;
 	typedef rdo::runtime::std_fun2<double, double, int>    StdFun_D_DI;

@@ -252,15 +252,14 @@ void RDOFRMSprite::insertRulet(const LPRDOFRMRulet& pRulet)
 	std::pair<RuletList::const_iterator, bool> result =
 		m_ruletList.insert(RuletList::value_type(pRulet->getIndex(), pRulet));
 	ASSERT(result.second);
-	UNUSED(result);
+	(void)result;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMSprite::RDOFRMRulet
 // --------------------------------------------------------------------------------
-RDOValue RDOFRMSprite::RDOFRMRulet::doCalc(const LPRDORuntime& pRuntime)
+RDOValue RDOFRMSprite::RDOFRMRulet::doCalc(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return RDOValue();
 }
 

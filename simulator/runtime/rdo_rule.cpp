@@ -61,10 +61,8 @@ bool RDORule::choiceFrom(const LPRDORuntime& pRuntime)
 	return m_pPattern->choiceFrom(pRuntime);
 }
 
-void RDORule::onBeforeRule(const LPRDORuntime& pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDORule::onBeforeRule(const LPRDORuntime& /*pRuntime*/)
+{}
 
 void RDORule::convertRule(const LPRDORuntime& pRuntime)
 { 
@@ -123,8 +121,8 @@ IBaseOperation::BOResult RDORule::onDoOperation(const LPRDORuntime& pRuntime)
 	return IBaseOperation::BOR_done;
 }
 
-void                     RDORule::onStart   (const LPRDORuntime& pRuntime) { UNUSED(pRuntime); }
-void                     RDORule::onStop    (const LPRDORuntime& pRuntime) { UNUSED(pRuntime); }
-IBaseOperation::BOResult RDORule::onContinue(const LPRDORuntime& pRuntime) { UNUSED(pRuntime); return IBaseOperation::BOR_cant_run; }
+void                     RDORule::onStart   (const LPRDORuntime& /*pRuntime*/) {}
+void                     RDORule::onStop    (const LPRDORuntime& /*pRuntime*/) {}
+IBaseOperation::BOResult RDORule::onContinue(const LPRDORuntime& /*pRuntime*/) { return IBaseOperation::BOR_cant_run; }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

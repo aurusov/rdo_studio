@@ -119,24 +119,20 @@ void RDOPMDResult::printLeft(std::ostream& stream, const std::string& txt)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& resName, const std::string& parName, std::size_t resourceID, std::size_t paramID)
+RDOPMDWatchPar::RDOPMDWatchPar(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& /*resName*/, const std::string& /*parName*/, std::size_t resourceID, std::size_t paramID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_resourceID  (resourceID           )
 	, m_paramID     (paramID              )
 	, m_wasFinalCalc(false                )
 {
-	UNUSED(resName);
-	UNUSED(parName);
 	pRuntime->notify().connect(this, Notify::RO_BEFOREDELETE);
 }
 
 RDOPMDWatchPar::~RDOPMDWatchPar()
 {}
 
-void RDOPMDWatchPar::notify(std::size_t message, void* pParam)
+void RDOPMDWatchPar::notify(std::size_t /*message*/, void* pParam)
 {
-	UNUSED(message);
-
 	if ((ruint_type)pParam == m_resourceID)
 	{
 		m_resourceID = std::size_t(~0);
@@ -324,14 +320,12 @@ void RDOPMDWatchState::calcStat(const LPRDORuntime& pRuntime, std::ostream& stre
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchQuant
 // --------------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& resTypeName, int rtpID)
+RDOPMDWatchQuant::RDOPMDWatchQuant(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& /*resTypeName*/, int rtpID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_pLogicCalc  (NULL                 )
 	, m_rtpID       (rtpID                )
 	, m_wasFinalCalc(false                )
-{
-	UNUSED(resTypeName);
-}
+{}
 
 RDOPMDWatchQuant::~RDOPMDWatchQuant()
 {}
@@ -446,13 +440,12 @@ void RDOPMDWatchQuant::setLogicCalc(const LPRDOCalc& pLogicCalc)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchValue
 // --------------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& resTypeName, int rtpID)
+RDOPMDWatchValue::RDOPMDWatchValue(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& /*resTypeName*/, int rtpID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_pLogicCalc  (NULL                 )
 	, m_pArithmCalc (NULL                 )
 	, m_rtpID       (rtpID                )
 {
-	UNUSED(resTypeName);
 	m_wasChanged = false;
 }
 
@@ -464,22 +457,16 @@ std::string RDOPMDWatchValue::traceValue() const
 	return rdo::toString(m_currValue);
 }
 
-void RDOPMDWatchValue::resetResult(const LPRDORuntime& pRuntime)
+void RDOPMDWatchValue::resetResult(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
-
 	m_currValue = 0;
 }
 
-void RDOPMDWatchValue::checkResult(const LPRDORuntime& pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPMDWatchValue::checkResult(const LPRDORuntime& /*pRuntime*/)
+{}
 
-void RDOPMDWatchValue::calcStat(const LPRDORuntime& pRuntime, std::ostream& stream)
+void RDOPMDWatchValue::calcStat(const LPRDORuntime& /*pRuntime*/, std::ostream& stream)
 {
-	UNUSED(pRuntime);
-
 	double average = boost::accumulators::mean(m_acc);
 	std::size_t count = boost::accumulators::count(m_acc);
 	double variance = boost::accumulators::variance(m_acc);
@@ -562,17 +549,13 @@ std::string RDOPMDGetValue::traceValue() const
 	return "ERROR";
 }
 
-void RDOPMDGetValue::resetResult(const LPRDORuntime& pRuntime)
+void RDOPMDGetValue::resetResult(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
-
 	m_wasFinalCalc = false;
 }
 
-void RDOPMDGetValue::checkResult(const LPRDORuntime& pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPMDGetValue::checkResult(const LPRDORuntime& /*pRuntime*/)
+{}
 
 void RDOPMDGetValue::calcStat(const LPRDORuntime& pRuntime, std::ostream& stream)
 {

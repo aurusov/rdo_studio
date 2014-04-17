@@ -117,8 +117,6 @@ void Content::resizeEvent(QResizeEvent* pEvent)
 
 void Content::paintEvent(QPaintEvent* pEvent)
 {
-	UNUSED(pEvent);
-
 	QPainter painter(this);
 	onDraw(painter);
 
@@ -512,7 +510,7 @@ QPixmap Content::getBitmap(
 			{
 				std::pair<rdo::gui::BitmapList::const_iterator, bool> result =
 					bitmapGeneratedList.insert(rdo::gui::BitmapList::value_type(maskedBitmapName, pixmap));
-				UNUSED(result);
+				(void)result;
 				ASSERT(result.second);
 				return pixmap;
 			}

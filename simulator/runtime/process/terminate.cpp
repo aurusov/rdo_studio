@@ -23,9 +23,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
-bool RDOPROCTerminate::onCheckCondition(const LPRDORuntime& pRuntime)
+bool RDOPROCTerminate::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return !m_transacts.empty() ? true : false;
 }
 
@@ -54,19 +53,14 @@ IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(const LPRDORuntime& pRu
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCTerminate::onStart(const LPRDORuntime& pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCTerminate::onStart(const LPRDORuntime& /*pRuntime*/)
+{}
 
-void RDOPROCTerminate::onStop(const LPRDORuntime& pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCTerminate::onStop(const LPRDORuntime& /*pRuntime*/)
+{}
 
-IBaseOperation::BOResult RDOPROCTerminate::onContinue(const LPRDORuntime& pRuntime)
+IBaseOperation::BOResult RDOPROCTerminate::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
